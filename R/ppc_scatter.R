@@ -23,6 +23,16 @@
 #' @templateVar bdaRef (Ch. 6)
 #' @template reference-bda
 #'
+#' @examples
+#' y <- rnorm(100)
+#' yrep <- matrix(rnorm(2500), ncol = 100)
+#' (p1 <- ppc_scatter(y, yrep))
+#' (p2 <- ppc_scatter(y, yrep[1:3, ], average = FALSE))
+#'
+#' lims <- ggplot2::lims(x = c(-3, 3), y = c(-3, 3))
+#' p1 + lims
+#' p2 + lims
+#'
 ppc_scatter <- function(y, yrep, average = TRUE, ...) {
   stopifnot(is.vector(y), is.matrix(yrep))
   if (ncol(yrep) != length(y))
@@ -38,17 +48,20 @@ ppc_scatter <- function(y, yrep, average = TRUE, ...) {
   geom_args <- set_geom_args(defaults, ...)
   if (average) {
     avg_yrep <- colMeans(yrep)
-    dat <- data.frame(x = y, y = avg_yrep, z = abs(y - avg_yrep))
-    graph <- ggplot(dat, aes_string("x", "y")) +
+    base <- ggplot(
+      data = data.frame(x = y, y = avg_yrep),
+      mapping = aes_string("x", "y")
+    )
+    graph <- base +
       geom_abline(intercept = 0, slope = 1, linetype = 2) +
       call_geom("point", geom_args) +
       labs(x = "y", y = "Average yrep")
   } else {
-    dat <- data.frame(
-      melt_yrep(yrep),
-      y = rep(y, each = nrow(yrep))
+    base <- ggplot(
+      data = data.frame(melt_yrep(yrep), y = rep(y, each = nrow(yrep))),
+      mapping = aes_string(x = "y", y = "value")
     )
-    graph <- ggplot(dat, aes_string(x = "y", y = "value")) +
+    graph <- base +
       geom_abline(intercept = 0, slope = 1, linetype = 2) +
       call_geom("point", geom_args) +
       labs(x = "y", y = "yrep") +

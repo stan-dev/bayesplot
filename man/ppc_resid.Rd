@@ -48,6 +48,13 @@ as a vector of 0s and 1s, whereas for binomial data \code{y} should be a
 vector of "success" proportions (not a matrix of "success" and "failure"
 counts).
 }
+\examples{
+y <- rnorm(100)
+yrep <- matrix(rnorm(2500), ncol = 100)
+ppc_resid(y, yrep[1:3, ])
+ppc_resid(y, yrep[10:15, ])
+
+}
 \references{
 Gelman, A., Carlin, J. B., Stern, H. S., Dunson, D. B., Vehtari,
   A., and Rubin, D. B. (2013). \emph{Bayesian Data Analysis.} Chapman & Hall/CRC

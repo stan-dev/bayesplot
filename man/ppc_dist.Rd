@@ -39,8 +39,8 @@ For binomial (not Bernoulli) data, \code{y} and \code{yrep} should
   ordinal data, \code{y} and \code{yrep} should both contain integers.
 }
 \examples{
-y <- rnorm(50)
-yrep <- matrix(rnorm(5000), ncol = 50)
+y <- rnorm(100)
+yrep <- matrix(rnorm(2500), ncol = 100)
 ppc_dist(y, yrep)
 ppc_dist(y, yrep[1:8, ], overlay = FALSE)
 

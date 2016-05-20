@@ -40,6 +40,17 @@ For binomial (not Bernoulli) data, \code{y} and \code{yrep} should
   contain the "success" proportions (not "success" or "failure" counts). For 
   ordinal data, \code{y} and \code{yrep} should both contain integers.
 }
+\examples{
+y <- rnorm(100)
+yrep <- matrix(rnorm(2500), ncol = 100)
+(p1 <- ppc_scatter(y, yrep))
+(p2 <- ppc_scatter(y, yrep[1:3, ], average = FALSE))
+
+lims <- ggplot2::lims(x = c(-3, 3), y = c(-3, 3))
+p1 + lims
+p2 + lims
+
+}
 \references{
 Gelman, A., Carlin, J. B., Stern, H. S., Dunson, D. B., Vehtari,
   A., and Rubin, D. B. (2013). \emph{Bayesian Data Analysis.} Chapman & Hall/CRC

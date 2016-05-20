@@ -24,6 +24,17 @@
 #' @templateVar bdaRef (Ch. 6)
 #' @template reference-bda
 #'
+#' @examples
+#' y <- rnorm(30)
+#' yrep <- matrix(rnorm(3000), ncol = 30)
+#' ppc_stat(y, yrep)
+#' ppc_stat(y, yrep, stat = "var")
+#' ppc_stat(y, yrep, stat = c("mean", "sd"))
+#'
+#' # define a custom test statistic
+#' q25 <- function(y) quantile(y, 0.25)
+#' ppc_stat(y, yrep, stat = "q25")
+#'
 ppc_stat <- function(y, yrep, stat = "mean", ...) {
   stopifnot(is.vector(y), is.matrix(yrep))
   if (ncol(yrep) != length(y))
@@ -31,12 +42,12 @@ ppc_stat <- function(y, yrep, stat = "mean", ...) {
 
   vline_color <- .PP_FILL
   fill_color <- "black"
-  if (missing(stat) || !length(stat) || length(stat) > 2L)
-    stop("'stat' should have length 1 or 2.", call. = FALSE)
+  if (!length(stat) || length(stat) > 2)
+    stop("'stat' should have length 1 or 2.")
   if (!is.character(stat))
-    stop("'stat' should be a character vector.", call. = FALSE)
+    stop("'stat' should be a character vector.")
 
-  if (length(stat) == 1L) {
+  if (length(stat) == 1) {
     defaults <- list(fill = fill_color, na.rm = TRUE)
     geom_args <- set_geom_args(defaults, ...)
     geom_args$mapping <- aes_string(y = "..density..")
@@ -44,13 +55,13 @@ ppc_stat <- function(y, yrep, stat = "mean", ...) {
 
     stat1 <- match.fun(stat)
     T_y <- stat1(y)
-    T_yrep <- apply(yrep, 1L, stat1)
+    T_yrep <- apply(yrep, 1, stat1)
     base <- ggplot(data.frame(x = T_yrep), aes_string(x = "x", color = "'A'"))
     graph <- base +
       call_geom("histogram", geom_args) +
       geom_vline(
         data = data.frame(t = T_y),
-        aes_string(xintercept = "t", color = "factor(t)"),
+        mapping = aes_string(xintercept = "t", color = "factor(t)"),
         size = 2,
         show.legend = TRUE
       ) +
@@ -72,16 +83,19 @@ ppc_stat <- function(y, yrep, stat = "mean", ...) {
     )
     geom_args <- set_geom_args(defaults, ...)
 
-    if (is.character(stat[1L]))
-      stat1 <- match.fun(stat[1L])
-    if (is.character(stat[2L]))
-      stat2 <- match.fun(stat[2L])
+    if (is.character(stat[1]))
+      stat1 <- match.fun(stat[1])
+    if (is.character(stat[2]))
+      stat2 <- match.fun(stat[2])
     T_y1 <- stat1(y)
     T_y2 <- stat2(y)
-    T_yrep1 <- apply(yrep, 1L, stat1)
-    T_yrep2 <- apply(yrep, 1L, stat2)
-    base <- ggplot(data.frame(x = T_yrep1, y = T_yrep2),
-                   aes_string(x = "x", y = "y", color = "'A'"))
+    T_yrep1 <- apply(yrep, 1, stat1)
+    T_yrep2 <- apply(yrep, 1, stat2)
+
+    base <- ggplot(
+      data = data.frame(x = T_yrep1, y = T_yrep2),
+      mapping = aes_string(x = "x", y = "y", color = "'A'")
+    )
     graph <- base +
       call_geom("point", geom_args) +
       annotate(
@@ -95,7 +109,7 @@ ppc_stat <- function(y, yrep, stat = "mean", ...) {
       ) +
       geom_point(
         data = data.frame(x = T_y1, y = T_y2),
-        aes_string(x = "x", y = "y", color = "'B'"),
+        mapping = aes_string(x = "x", y = "y", color = "'B'"),
         size = 4
       ) +
       scale_color_manual(
@@ -103,8 +117,10 @@ ppc_stat <- function(y, yrep, stat = "mean", ...) {
         values = c('B' = vline_color, 'A' = fill_color),
         labels = c('B' = "T(y)", 'A' = "T(yrep)")
       ) +
-      labs(x = paste("Stat =", stat[1L]),
-           y = paste("Stat =", stat[2L]))
+      labs(
+        x = paste("Stat =", stat[1]),
+        y = paste("Stat =", stat[2])
+      )
 
     thm <- pp_check_theme(no_y = FALSE) %+replace%
       theme(legend.position = "right")

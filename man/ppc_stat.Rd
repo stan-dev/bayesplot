@@ -41,6 +41,18 @@ For binomial (not Bernoulli) data, \code{y} and \code{yrep} should
   contain the "success" proportions (not "success" or "failure" counts). For 
   ordinal data, \code{y} and \code{yrep} should both contain integers.
 }
+\examples{
+y <- rnorm(30)
+yrep <- matrix(rnorm(3000), ncol = 30)
+ppc_stat(y, yrep)
+ppc_stat(y, yrep, stat = "var")
+ppc_stat(y, yrep, stat = c("mean", "sd"))
+
+# define a custom test statistic
+q25 <- function(y) quantile(y, 0.25)
+ppc_stat(y, yrep, stat = "q25")
+
+}
 \references{
 Gelman, A., Carlin, J. B., Stern, H. S., Dunson, D. B., Vehtari,
   A., and Rubin, D. B. (2013). \emph{Bayesian Data Analysis.} Chapman & Hall/CRC

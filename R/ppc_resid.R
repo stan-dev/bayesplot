@@ -30,6 +30,12 @@
 #' @templateVar bdaRef (Ch. 6)
 #' @template reference-bda
 #'
+#' @examples
+#' y <- rnorm(100)
+#' yrep <- matrix(rnorm(2500), ncol = 100)
+#' ppc_resid(y, yrep[1:3, ])
+#' ppc_resid(y, yrep[10:15, ])
+#'
 ppc_resid <- function(y, yrep, ...) {
   stopifnot(is.vector(y), is.matrix(yrep))
   if (ncol(yrep) != length(y))
@@ -69,16 +75,7 @@ ppc_resid <- function(y, yrep, ...) {
 #'
 ppc_resid_binned <- function(y, Ey, ...) {
   if (!requireNamespace("arm", quietly = TRUE))
-    stop("This plot requires the 'arm' package (install.packages('arm'))",
-         call. = FALSE)
-
-  binner <- function(rep_id, ey, r, nbins) {
-    br <- arm::binned.resids(ey, r, nbins)$binned[, c("xbar", "ybar", "2se")]
-    if (length(dim(br)) < 2L)
-      br <- t(br)
-    colnames(br) <- c("xbar", "ybar", "se2")
-    data.frame(rep = paste0("yrep_", rep_id), br)
-  }
+    stop("Please install the 'arm' package.")
 
   stopifnot(is.vector(y), is.matrix(Ey))
   if (ncol(Ey) != length(y))
@@ -90,13 +87,18 @@ ppc_resid_binned <- function(y, Ey, ...) {
     nbins <- floor(sqrt(ny))
   } else if (ny > 10 && ny < 100) {
     nbins <- 10
-  } else { # nocov start
+  } else {
     # if (ny <= 10)
     nbins <- floor(ny / 2)
-  } # nocov end
+  }
 
   n <- nrow(Ey)
-  binned <- binner(rep_id = 1, ey = Ey[1L, ], r = resids[1L, ], nbins)
+  binned <- binner(
+    rep_id = 1,
+    ey = Ey[1, ],
+    r = resids[1, ],
+    nbins = nbins
+  )
   if (n > 1) {
     for (i in 2:nrow(resids))
       binned <- rbind(binned, binner(
@@ -106,6 +108,7 @@ ppc_resid_binned <- function(y, Ey, ...) {
         nbins
       ))
   }
+
   dots <- list(...)
   line_color <- dots$color %ORifNULL% .PP_FILL
   line_size <- dots$size %ORifNULL% 1
@@ -121,7 +124,15 @@ ppc_resid_binned <- function(y, Ey, ...) {
     pp_check_theme(no_y = FALSE)
 
   if (n > 1)
-    graph <- graph + facet_wrap(~rep, scales = "free")
+    graph <- graph + facet_wrap("rep", scales = "free")
 
   graph
+}
+
+binner <- function(rep_id, ey, r, nbins) {
+  br <- arm::binned.resids(ey, r, nbins)$binned[, c("xbar", "ybar", "2se")]
+  if (length(dim(br)) < 2L)
+    br <- t(br)
+  colnames(br) <- c("xbar", "ybar", "se2")
+  data.frame(rep = paste0("yrep_", rep_id), br)
 }
