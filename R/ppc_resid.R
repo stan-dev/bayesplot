@@ -1,0 +1,127 @@
+#' Residuals
+#'
+#' \code{ppc_resid} plots the distributions of residuals computed from
+#' \eqn{y} and simulated datasets \eqn{y^{rep}}{yrep}. For binomial data,
+#' \code{ppc_resid_binned} generates binned residual plots (similar to
+#' \code{\link[arm]{binnedplot}}) from \eqn{y} and the posterior draws of the
+#' linear predictor transformed by the inverse-link function.
+#'
+#' @export
+#' @family PPCs
+#'
+#' @template args-ppc
+#' @param ... For \code{ppc_resid}, optional arguments to
+#'   \code{\link[ggplot2]{geom_histogram}} (e.g. \code{binwidth}) to control the
+#'   appearance of the plot.
+#'
+#' @details
+#' \code{ppc_resid} and \code{ppc_resid_binned} compute and plot
+#' residuals for each row of the matrices \code{yrep} and \code{Ey},
+#' respectively, so it is usually a good idea to \code{yrep} and \code{Ey} to
+#' contain only a small number of draws (rows).
+#'
+#' For binomial and Bernoulli data the \code{ppc_resid_binned} function
+#' should be used to generate binned residual plots. Bernoulli data can be input
+#' as a vector of 0s and 1s, whereas for binomial data \code{y} should be a
+#' vector of "success" proportions (not a matrix of "success" and "failure"
+#' counts).
+#'
+#' @template return-ggplot
+#' @templateVar bdaRef (Ch. 6)
+#' @template reference-bda
+#'
+ppc_resid <- function(y, yrep, ...) {
+  stopifnot(is.vector(y), is.matrix(yrep))
+  if (ncol(yrep) != length(y))
+    stop("ncol(yrep) should be equal to length(y)")
+
+  n <- nrow(yrep)
+  defaults <- list(fill = "black")
+  geom_args <- set_geom_args(defaults, ...)
+  geom_args$mapping <- aes_string(y = "..density..")
+
+  if (n == 1) {
+    resids <- data.frame(x = y - as.vector(yrep))
+    base <- ggplot(resids, aes_string(x = "x"))
+    xylabs <- labs(y = NULL, x = "y - yrep")
+  } else {
+    resids <- melt_yrep(as.matrix(-1 * sweep(yrep, 2L, y)))
+    resids$rep_id <- factor(resids$rep_id, labels = paste("y -", unique(resids$rep_id)))
+    base <- ggplot(resids, aes_string(x = "value"))
+    xylabs <- labs(y = NULL, x = NULL)
+  }
+
+  graph <- base +
+    call_geom("histogram", geom_args) +
+    xylabs +
+    pp_check_theme()
+
+  if (n > 1)
+    graph <- graph + facet_wrap("rep_id", scales = "free")
+
+  graph
+}
+
+#' @rdname ppc_resid
+#' @export
+#' @param Ey A matrix of posterior draws of the linear predictor transformed by
+#'   the inverse-link function.
+#'
+ppc_resid_binned <- function(y, Ey, ...) {
+  if (!requireNamespace("arm", quietly = TRUE))
+    stop("This plot requires the 'arm' package (install.packages('arm'))",
+         call. = FALSE)
+
+  binner <- function(rep_id, ey, r, nbins) {
+    br <- arm::binned.resids(ey, r, nbins)$binned[, c("xbar", "ybar", "2se")]
+    if (length(dim(br)) < 2L)
+      br <- t(br)
+    colnames(br) <- c("xbar", "ybar", "se2")
+    data.frame(rep = paste0("yrep_", rep_id), br)
+  }
+
+  stopifnot(is.vector(y), is.matrix(Ey))
+  if (ncol(Ey) != length(y))
+    stop("ncol(Ey) should be equal to length(y).")
+
+  resids <- sweep(-Ey, MARGIN = 2L, STATS = y, "+")
+  ny <- length(y)
+  if (ny >= 100) {
+    nbins <- floor(sqrt(ny))
+  } else if (ny > 10 && ny < 100) {
+    nbins <- 10
+  } else { # nocov start
+    # if (ny <= 10)
+    nbins <- floor(ny / 2)
+  } # nocov end
+
+  n <- nrow(Ey)
+  binned <- binner(rep_id = 1, ey = Ey[1L, ], r = resids[1L, ], nbins)
+  if (n > 1) {
+    for (i in 2:nrow(resids))
+      binned <- rbind(binned, binner(
+        rep_id = i,
+        ey = Ey[i,],
+        r = resids[i,],
+        nbins
+      ))
+  }
+  dots <- list(...)
+  line_color <- dots$color %ORifNULL% .PP_FILL
+  line_size <- dots$size %ORifNULL% 1
+  pt_color <- dots$fill %ORifNULL% .PP_VLINE_CLR
+  base <- ggplot(binned, aes_string(x = "xbar"))
+  graph <- base +
+    geom_hline(yintercept = 0, linetype = 2) +
+    geom_path(aes_string(y = "se2"), color = line_color, size = line_size) +
+    geom_path(aes_string(y = "-se2"), color = line_color, size = line_size) +
+    geom_point(aes_string(y = "ybar"), shape = 19, color = pt_color) +
+    labs(x = "Expected Values", y = "Average Residual \n (with 2SE bounds)") +
+    ggtitle("Binned Residuals") +
+    pp_check_theme(no_y = FALSE)
+
+  if (n > 1)
+    graph <- graph + facet_wrap(~rep, scales = "free")
+
+  graph
+}

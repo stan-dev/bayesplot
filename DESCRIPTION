@@ -1,0 +1,22 @@
+Package: ppcheck
+Type: Package
+Title: Graphical Posterior Predictive Checking
+Version: 0.1.0
+Date: 2016-05-20
+Author: Jonah Gabry <jsg2201@columbia.edu>
+Maintainer: Jonah Gabry <jsg2201@columbia.edu>
+Description: Graphical posterior predictive checks for Bayesian models.
+License: GPL (>= 3)
+LazyData: TRUE
+Depends:
+    R (>= 3.0.2)
+Imports:
+    ggplot2 (>= 2.1.0),
+    reshape2 (>= 1.4.1)
+Suggests:
+    arm,
+    knitr,
+    rmarkdown
+    testthat,
+RoxygenNote: 5.0.1
+VignetteBuilder: knitr
