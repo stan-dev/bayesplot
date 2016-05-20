@@ -5,11 +5,3 @@
 # ppcheck
 
 An R package for graphical posterior predictive checks.
-
-#### Installing the ppcheck R package
-
-```{r}
-if (!require("devtools")) 
-  install.packages("devtools")
-devtools::install_github("jgabry/ppcheck")
-```
