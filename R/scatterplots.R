@@ -52,10 +52,11 @@ ppc_scatter_multiple <- function(y, yrep, ...) {
 ppc_scatter <- function(y, yrep, average = TRUE, ...) {
   validate_y_and_yrep(y, yrep)
 
+  scheme <- get_color_scheme()
   defaults <- list(
     shape = 21,
-    fill = .PP_MID,
-    color = .PP_MID_highlight,
+    fill = scheme[["mid"]],
+    color = scheme[["mid_highlight"]],
     size = 2.5
   )
   geom_args <- set_geom_args(defaults, ...)
@@ -80,5 +81,5 @@ ppc_scatter <- function(y, yrep, average = TRUE, ...) {
   if (!average)
     graph <- graph + facet_wrap("rep_id")
 
-  graph + theme_ppc(y_text = TRUE)
+  graph + theme_ppc()
 }

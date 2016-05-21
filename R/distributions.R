@@ -56,10 +56,11 @@ ppc_dist <- function(y, yrep, overlay = TRUE, ...) {
   })
   plot_function <- paste0("ppc_", ifelse(overlay, "density", "histogram"))
   graph <- do.call(plot_function, list(data = plot_data, ...))
-  graph + theme_ppc()
+  graph + theme_ppc(y_text = FALSE)
 }
 
 ppc_histogram <- function(data, ...) {
+  scheme <- get_color_scheme()
   defaults <- list(size = 0.2)
   geom_args <- set_geom_args(defaults, ...)
   geom_args$mapping <- aes_string(y = "..density..")
@@ -74,12 +75,17 @@ ppc_histogram <- function(data, ...) {
   base +
     call_geom("histogram", geom_args) +
     facet_wrap("rep_id", switch = "x") +
-    scale_fill_manual(values = c(.PP_DARK, .PP_LIGHT)) +
-    scale_color_manual(values = c(.PP_DARK_highlight, .PP_LIGHT_highlight)) +
+    scale_fill_manual(
+      values = c(scheme[["dark"]], scheme[["light"]])
+    ) +
+    scale_color_manual(
+      values = c(scheme[["dark_highlight"]], scheme[["light_highlight"]])
+    ) +
     xlab(NULL)
 }
 
 ppc_density <- function(data, ...) {
+  scheme <- get_color_scheme()
   base <- ggplot(
     data = data,
     mapping = aes_string(
@@ -92,8 +98,8 @@ ppc_density <- function(data, ...) {
   )
   base +
     geom_density(...) +
-    scale_color_manual(values = c(.PP_LIGHT, .PP_DARK_highlight)) +
-    scale_fill_manual(values = c(NA, .PP_DARK)) +
+    scale_color_manual(values = c(scheme[["light"]], scheme[["dark_highlight"]])) +
+    scale_fill_manual(values = c(NA, scheme[["dark"]])) +
     scale_size_manual(values = c(0.2, 1)) +
     xlab("y")
 }

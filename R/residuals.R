@@ -44,11 +44,12 @@ NULL
 ppc_resid <- function(y, yrep, ...) {
   validate_y_and_yrep(y, yrep)
 
+  scheme <- get_color_scheme()
   n <- nrow(yrep)
   defaults <- list(
     size = 0.2,
-    fill = .PP_DARK,
-    color = .PP_DARK_highlight
+    fill = scheme[["dark"]],
+    color = scheme[["dark_highlight"]]
   )
   geom_args <- set_geom_args(defaults, ...)
   geom_args$mapping <- aes_string(y = "..density..")
@@ -67,7 +68,7 @@ ppc_resid <- function(y, yrep, ...) {
   graph <- base +
     call_geom("histogram", geom_args) +
     xylabs +
-    theme_ppc()
+    theme_ppc(y_text = FALSE)
 
   if (n > 1)
     graph <- graph + facet_wrap("rep_id", switch = "x")
@@ -114,11 +115,12 @@ ppc_resid_binned <- function(y, Ey, ...) {
       ))
   }
 
+  scheme <- get_color_scheme()
   dots <- list(...)
-  line_color <- dots$color %ORifNULL% .PP_LIGHT
+  line_color <- dots$color %ORifNULL% scheme[["light"]]
   line_size <- dots$size %ORifNULL% 1
-  pt_fill <- dots$fill %ORifNULL% .PP_DARK
-  pt_color <- dots$fill %ORifNULL% .PP_DARK_highlight
+  pt_fill <- dots$fill %ORifNULL% scheme[["dark"]]
+  pt_color <- dots$fill %ORifNULL% scheme[["dark_highlight"]]
   base <- ggplot(binned, aes_string(x = "xbar"))
   graph <- base +
     geom_hline(
@@ -146,7 +148,7 @@ ppc_resid_binned <- function(y, Ey, ...) {
       x = "Expected Values",
       y = "Average Residual \n (with 2SE bounds)"
     ) +
-    theme_ppc(y_text = TRUE)
+    theme_ppc()
 
   if (n > 1)
     graph <- graph + facet_wrap("rep", switch = "x")

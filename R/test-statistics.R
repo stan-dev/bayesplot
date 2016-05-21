@@ -50,9 +50,10 @@ ppc_stat <- function(y, yrep, stat = "mean", ...) {
   T_y <- stat1(y)
   T_yrep <- apply(yrep, 1, stat1)
 
-  vline_color <- .PP_DARK
-  fill_color <- .PP_LIGHT
-  outline_color <- .PP_LIGHT_highlight
+  scheme <- get_color_scheme()
+  vline_color <- scheme[["dark"]]
+  fill_color <- scheme[["light"]]
+  outline_color <- scheme[["light_highlight"]]
   defaults <- list(
     fill = fill_color,
     color = outline_color,
@@ -99,11 +100,12 @@ ppc_stat_2d <- function(y, yrep, stat = c("mean", "sd"), ...) {
   T_yrep1 <- apply(yrep, 1, stat1)
   T_yrep2 <- apply(yrep, 1, stat2)
 
+  scheme <- get_color_scheme()
   defaults <- list(
     shape = 21,
     size = 2,
-    color = .PP_LIGHT_highlight,
-    fill = .PP_LIGHT
+    fill = scheme[["light"]],
+    color = scheme[["light_highlight"]]
   )
   geom_args <- set_geom_args(defaults, ...)
 
@@ -118,7 +120,7 @@ ppc_stat_2d <- function(y, yrep, stat = c("mean", "sd"), ...) {
     xend = c(T_y1, T_y1),
     y = c(-Inf, T_y2),
     yend = c(T_y2, T_y2),
-    color = .PP_DARK_highlight,
+    color = scheme[["dark_highlight"]],
     linetype = 2,
     size = 0.5
   ) +
@@ -136,12 +138,12 @@ ppc_stat_2d <- function(y, yrep, stat = c("mean", "sd"), ...) {
   ) +
   scale_fill_manual(
     name = "",
-    values = c('Ty' = .PP_DARK),
+    values = c('Ty' = scheme[["dark"]]),
     labels = c('Ty' = "T(y)")
   ) +
   scale_color_manual(
     name = "",
-    values = c('Ty' = .PP_DARK_highlight),
+    values = c('Ty' = scheme[["dark_highlight"]]),
     labels = c('Ty' = "T(y)")
   ) +
   labs(

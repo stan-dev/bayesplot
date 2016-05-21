@@ -47,7 +47,6 @@
 #' @template reference-bda
 #'
 #' @import stats
-#' @importFrom reshape2 melt
 #' @importFrom ggplot2
 #'   %+replace%
 #'   aes_string

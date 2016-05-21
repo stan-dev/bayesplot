@@ -78,15 +78,13 @@ set_geom_args <- function(defaults, ...) {
 }
 
 
-# colors and ggplot theme
-.PP_LIGHT <- "#DCBCBC"
-.PP_LIGHT_highlight <- "#C79999"
-.PP_MID <- "#B97C7C"
-.PP_MID_highlight <- "#A25050"
-.PP_DARK <- "#8F2727"
-.PP_DARK_highlight <- "#7C0000"
 
-theme_ppc <- function(y_text = FALSE, legend_position = "none") {
+# ggplot theme
+#
+# @param y_text Set to FALSE to remove any text from the y-axis.
+# @param legend_position A valid value to use for \code{legend.position}
+# when calling ggplot2::theme
+theme_ppc <- function(y_text = TRUE, legend_position = "none") {
   thm <- theme_classic() %+replace%
     theme(
       axis.line.x = element_line(size = 0.25),
