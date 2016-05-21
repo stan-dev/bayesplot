@@ -1,4 +1,4 @@
-# library(testthat)
-# library(ppcheck)
-#
-# test_check("ppcheck")
+library(testthat)
+library(ppcheck)
+
+test_check("ppcheck")
