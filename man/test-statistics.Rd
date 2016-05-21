@@ -42,9 +42,9 @@ observed data, \eqn{T(y)}, is shown in the plot as a vertical line. For
 large point.
 }
 \details{
-For binomial (not Bernoulli) data, \code{y} and \code{yrep} should 
-  contain the "success" proportions (not "success" or "failure" counts). For 
-  ordinal data, \code{y} and \code{yrep} should both contain integers.
+For binomial (not Bernoulli) data, the plots will be most useful if
+  \code{y} and \code{yrep} contain the "success" proportions (not "success"
+  or "failure" counts).
 }
 \examples{
 y <- rnorm(30)
