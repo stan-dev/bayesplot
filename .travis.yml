@@ -1,8 +1,10 @@
-# R for travis: see documentation at https://docs.travis-ci.com/user/languages/r
-
-language: R
+language: r
+r: devel
 sudo: false
 cache: packages
 
+r_github_packages:
+  - jimhester/covr
+
 after_success:
-  - bash <(curl -s https://codecov.io/bash)
+  - Rscript -e 'covr::codecov()'
