@@ -41,6 +41,8 @@
 #' Chapter 6 of Gelman et. al. (2013).
 #' }
 #'
+#' @author Jonah Gabry
+#'
 #' @templateVar bdaRef (Ch. 6)
 #' @template reference-bda
 #'
@@ -50,7 +52,7 @@
 #'   %+replace%
 #'   aes_string
 #'   annotate
-#'   element_blank element_line element_text
+#'   element_blank element_line element_rect element_text
 #'   facet_wrap facet_grid
 #'   geom_abline geom_density geom_histogram geom_hline geom_path geom_point geom_vline
 #'   ggplot

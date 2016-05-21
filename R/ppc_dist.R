@@ -2,17 +2,14 @@
 #'
 #' Compare the empirical distribution of the data \eqn{y} to the distributions
 #' of simulated/replicated data \eqn{y^{rep}}{yrep} from the posterior
-#' predictive distribution.
+#' predictive distribution. \code{ppc_dens_overlay} plots the distributions as
+#' overlaid densities. \code{ppc_hist} plots a separate histogram for each (so
+#' \code{yrep} should contain only a small number of rows).
 #'
 #' @export
 #' @family PPCs
 #'
 #' @template args-ppc
-#' @param overlay Should distributions be plotted as density estimates overlaid
-#'   in a single plot (\code{TRUE}, the default) or as separate histograms
-#'   (\code{FALSE})? Especially if \code{overlay} is \code{FALSE}, \code{yrep}
-#'   should only contain a small number of draws (\code{nrow(yrep)} should be
-#'   small).
 #' @param ... Optional arguments to geoms to control features of the plots
 #'   (e.g. \code{binwidth} if the plot is a histogram).
 #'
@@ -24,9 +21,21 @@
 #' @examples
 #' y <- rnorm(100)
 #' yrep <- matrix(rnorm(2500), ncol = 100)
-#' ppc_dist(y, yrep)
-#' ppc_dist(y, yrep[1:8, ], overlay = FALSE)
+#' ppc_dens_overlay(y, yrep)
+#' ppc_hist(y, yrep[1:8, ])
 #'
+ppc_dens_overlay <- function(y, yrep, ...) {
+  ppc_dist(y, yrep, overlay = TRUE, ...)
+}
+
+#' @export
+#' @rdname ppc_dens_overlay
+#'
+ppc_hist <- function(y, yrep, ...) {
+  ppc_dist(y, yrep, overlay = FALSE, ...)
+}
+
+
 ppc_dist <- function(y, yrep, overlay = TRUE, ...) {
   validate_y_and_yrep(y, yrep)
 
@@ -41,12 +50,12 @@ ppc_dist <- function(y, yrep, overlay = TRUE, ...) {
     rep_id <- relevel(rep_id, ref = "Observed y")
     is_y <- rep_id == "Observed y"
   })
-  plot_function <- paste0("ppc_", ifelse(overlay, "dens", "hist"))
+  plot_function <- paste0("ppc_", ifelse(overlay, "density", "histogram"))
   graph <- do.call(plot_function, list(data = plot_data, ...))
   graph + theme_ppc()
 }
 
-ppc_hist <- function(data, ...) {
+ppc_histogram <- function(data, ...) {
   defaults <- list(size = 0.2)
   geom_args <- set_geom_args(defaults, ...)
   geom_args$mapping <- aes_string(y = "..density..")
@@ -66,7 +75,7 @@ ppc_hist <- function(data, ...) {
     xlab(NULL)
 }
 
-ppc_dens <- function(data, ...) {
+ppc_density <- function(data, ...) {
   base <- ggplot(
     data = data,
     mapping = aes_string(

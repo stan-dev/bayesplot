@@ -2,9 +2,12 @@
 % Please edit documentation in R/ppc_stat.R
 \name{ppc_stat}
 \alias{ppc_stat}
+\alias{ppc_stat_2d}
 \title{Test statistics}
 \usage{
 ppc_stat(y, yrep, stat = "mean", ...)
+
+ppc_stat_2d(y, yrep, stat = c("mean", "sd"), ...)
 }
 \arguments{
 \item{y}{A vector of observed data. See Details.}
@@ -15,17 +18,14 @@ predictive distribution, where \eqn{S} is the size of the posterior sample
 \eqn{N} is the number of observations (the length of \code{y}). 
 See Details for additional instructions.}
 
-\item{stat}{A character vector (of length 1 or 2) naming a single function or
-a pair of functions. The function(s) should take a vector input and return
-a scalar test statistic. If \code{stat} specifies a single function then
-the resulting plot is a histogram of \eqn{{T(y^{rep})}}{T(yrep)} and the
-value of the test statistic in the observed data, \eqn{T(y)}, is shown in
-the plot as a vertical line. If two functions are specified then the plot
-is a scatterplot and \eqn{T(y)} is shown as a large point.}
+\item{stat}{A character vector of function names of length 1 (for
+\code{ppc_stat}) and length 2 (for \code{ppc_stat_2d}).
+The function(s) should take a vector input and return
+a scalar test statistic.}
 
-\item{...}{Optional arguments to \code{\link[ggplot2]{geom_histogram}} (if
-\code{stat} is a single function) or \code{\link[ggplot2]{geom_point}} (if
-\code{stat} specifies two functions).}
+\item{...}{Optional arguments to \code{\link[ggplot2]{geom_histogram}} (for
+\code{ppc_stat}) or \code{\link[ggplot2]{geom_point}} (for
+\code{ppc_stat_2d}).}
 }
 \value{
 A ggplot object that can be further customized using the
@@ -33,8 +33,12 @@ A ggplot object that can be further customized using the
 }
 \description{
 The distribution of a single test statistic \eqn{{T(y^{rep})}}{T(yrep)}, or a
-pair of test statistics over the \code{nreps} simulated datasets, compared
-to the observed value \eqn{T(y)}.
+pair of test statistics over the \code{nreps} simulated datasets, compared to
+the observed value \eqn{T(y)}. For \code{ppc_stat}, the plot is a histogram
+of \eqn{{T(y^{rep})}}{T(yrep)} and the value of the test statistic in the
+observed data, \eqn{T(y)}, is shown in the plot as a vertical line. For
+\code{ppc_stat_2d}, the plot is a scatterplot and \eqn{T(y)} is shown as a
+large point.
 }
 \details{
 For binomial (not Bernoulli) data, \code{y} and \code{yrep} should 
@@ -46,7 +50,8 @@ y <- rnorm(30)
 yrep <- matrix(rnorm(3000), ncol = 30)
 ppc_stat(y, yrep)
 ppc_stat(y, yrep, stat = "var")
-ppc_stat(y, yrep, stat = c("mean", "sd"))
+ppc_stat_2d(y, yrep)
+ppc_stat_2d(y, yrep, stat = c("median", "mean"))
 
 # define a custom test statistic
 q25 <- function(y) quantile(y, 0.25)
@@ -59,7 +64,7 @@ Gelman, A., Carlin, J. B., Stern, H. S., Dunson, D. B., Vehtari,
   Press, London, third edition. (Ch. 6)
 }
 \seealso{
-Other PPCs: \code{\link{ppc_dist}},
+Other PPCs: \code{\link{ppc_dens_overlay}},
   \code{\link{ppc_resid}}, \code{\link{ppc_scatter}}
 }
 

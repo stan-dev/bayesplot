@@ -42,6 +42,9 @@ For a more thorough discussion of posterior predictive checking see
 Chapter 6 of Gelman et. al. (2013).
 }
 }
+\author{
+Jonah Gabry
+}
 \references{
 Gelman, A., Carlin, J. B., Stern, H. S., Dunson, D. B., Vehtari,
   A., and Rubin, D. B. (2013). \emph{Bayesian Data Analysis.} Chapman & Hall/CRC

@@ -5,7 +5,7 @@
 validate_y_and_yrep <- function(y, yrep) {
   stopifnot(is.vector(y), is.matrix(yrep))
   if (ncol(yrep) != length(y))
-    stop("'ncol(yrep)' must equal 'length(y)'.")
+    stop("ncol(yrep) not equal to length(y).")
   if (any(is.na(yrep)))
     stop("NAs not allowed in 'yrep'.")
   if (any(is.na(y)))
@@ -93,7 +93,7 @@ theme_ppc <- function(y_text = FALSE, legend_position = "none") {
       axis.line.y = element_line(size = 0.25),
       axis.ticks = element_blank(),
       legend.position = legend_position,
-      strip.background = element_blank()
+      strip.background = element_rect(fill = "gray95", color = NA)
     )
   if (y_text)
     return(thm)

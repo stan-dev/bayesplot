@@ -57,7 +57,7 @@ Gelman, A., Carlin, J. B., Stern, H. S., Dunson, D. B., Vehtari,
   Press, London, third edition. (Ch. 6)
 }
 \seealso{
-Other PPCs: \code{\link{ppc_dist}},
+Other PPCs: \code{\link{ppc_dens_overlay}},
   \code{\link{ppc_resid}}, \code{\link{ppc_stat}}
 }
 
