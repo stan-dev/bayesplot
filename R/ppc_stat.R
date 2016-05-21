@@ -36,19 +36,20 @@
 #' ppc_stat(y, yrep, stat = "q25")
 #'
 ppc_stat <- function(y, yrep, stat = "mean", ...) {
-  stopifnot(is.vector(y), is.matrix(yrep))
-  if (ncol(yrep) != length(y))
-    stop("ncol(yrep) should be equal to length(y).")
+  validate_y_and_yrep(y, yrep)
 
-  vline_color <- .PP_FILL
-  fill_color <- "black"
+  vline_color <- .PP_DARK
+  fill_color <- .PP_LIGHT
+  outline_color <- .PP_LIGHT_highlight
+
   if (!length(stat) || length(stat) > 2)
     stop("'stat' should have length 1 or 2.")
   if (!is.character(stat))
     stop("'stat' should be a character vector.")
 
   if (length(stat) == 1) {
-    defaults <- list(fill = fill_color, na.rm = TRUE)
+    defaults <- list(fill = fill_color, color = outline_color,
+                     size = .25, na.rm = TRUE)
     geom_args <- set_geom_args(defaults, ...)
     geom_args$mapping <- aes_string(y = "..density..")
     geom_args$show.legend <- FALSE
@@ -72,14 +73,14 @@ ppc_stat <- function(y, yrep, stat = "mean", ...) {
       ) +
       xlab(paste("Stat =", stat))
 
-    thm <- pp_check_theme() %+replace% theme(legend.position = "right")
+    thm <- theme_ppc() %+replace% theme(legend.position = "right")
 
   } else { # length(stat) == 2
     defaults <- list(
       shape = 21,
-      color = "black",
-      fill = "black",
-      alpha = 0.75
+      size = 2,
+      color = .PP_LIGHT_highlight,
+      fill = .PP_LIGHT
     )
     geom_args <- set_geom_args(defaults, ...)
 
@@ -94,7 +95,7 @@ ppc_stat <- function(y, yrep, stat = "mean", ...) {
 
     base <- ggplot(
       data = data.frame(x = T_yrep1, y = T_yrep2),
-      mapping = aes_string(x = "x", y = "y", color = "'A'")
+      mapping = aes_string(x = "x", y = "y")
     )
     graph <- base +
       call_geom("point", geom_args) +
@@ -104,26 +105,33 @@ ppc_stat <- function(y, yrep, stat = "mean", ...) {
         xend = c(T_y1, T_y1),
         y = c(-Inf, T_y2),
         yend = c(T_y2, T_y2),
-        color = vline_color,
-        linetype = 2
+        color = .PP_DARK_highlight,
+        linetype = 2,
+        size = 0.5
       ) +
       geom_point(
         data = data.frame(x = T_y1, y = T_y2),
-        mapping = aes_string(x = "x", y = "y", color = "'B'"),
-        size = 4
+        mapping = aes_string(x = "x", y = "y", fill = "'Ty'", color = "'Ty'"),
+        size = 4,
+        shape = 21,
+        stroke = 1
+      ) +
+      scale_fill_manual(
+        name = "",
+        values = c('Ty' = .PP_DARK),
+        labels = c('Ty' = "T(y)")
       ) +
       scale_color_manual(
         name = "",
-        values = c('B' = vline_color, 'A' = fill_color),
-        labels = c('B' = "T(y)", 'A' = "T(yrep)")
+        values = c('Ty' = .PP_DARK_highlight),
+        labels = c('Ty' = "T(y)")
       ) +
       labs(
         x = paste("Stat =", stat[1]),
         y = paste("Stat =", stat[2])
       )
 
-    thm <- pp_check_theme(no_y = FALSE) %+replace%
-      theme(legend.position = "right")
+    thm <- theme_ppc(y_text = TRUE, legend_position = "right")
   }
 
   graph + thm

@@ -28,10 +28,7 @@
 #' ppc_dist(y, yrep[1:8, ], overlay = FALSE)
 #'
 ppc_dist <- function(y, yrep, overlay = TRUE, ...) {
-  stopifnot(is.vector(y), is.matrix(yrep))
-  if (ncol(yrep) != length(y))
-    stop("ncol(yrep) should be equal to length(y).")
-
+  validate_y_and_yrep(y, yrep)
   yrep <- melt_yrep(yrep)
   levels(yrep$rep_id) <- c(levels(yrep$rep_id), "Observed y")
   ydat <- data.frame(
@@ -46,7 +43,7 @@ ppc_dist <- function(y, yrep, overlay = TRUE, ...) {
 
   plotfun <- paste0("ppc_", ifelse(overlay, "dens", "hist"))
   graph <- do.call(plotfun, list(data = plot_data, ...))
-  graph + pp_check_theme()
+  graph + theme_ppc()
 }
 
 ppc_hist <- function(data, ...) {
@@ -58,16 +55,14 @@ ppc_hist <- function(data, ...) {
     mapping = aes_string(
       x = 'value',
       fill = 'is_y',
-      color = "is_y",
-      size = "is_y"
+      color = "is_y"
     )
   )
   base +
     call_geom("histogram", geom_args) +
-    facet_wrap("rep_id", scales = "free") +
-    scale_fill_manual(values = c("black", .PP_FILL)) +
-    scale_color_manual(values = c(NA, NA)) +
-    scale_size_manual(values = c(NA, NA)) +
+    facet_wrap("rep_id", switch = "x") +
+    scale_fill_manual(values = c(.PP_DARK, .PP_LIGHT)) +
+    scale_color_manual(values = c(.PP_DARK_highlight, .PP_LIGHT_highlight)) +
     xlab(NULL)
 }
 
@@ -84,8 +79,8 @@ ppc_dens <- function(data, ...) {
   )
   base +
     geom_density(...) +
-    scale_color_manual(values = c("black", .PP_DARK)) +
-    scale_fill_manual(values = c(NA, .PP_FILL)) +
+    scale_color_manual(values = c(.PP_LIGHT, .PP_DARK_highlight)) +
+    scale_fill_manual(values = c(NA, .PP_DARK)) +
     scale_size_manual(values = c(0.2, 1)) +
     xlab("y")
 }

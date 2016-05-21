@@ -34,16 +34,13 @@
 #' p2 + lims
 #'
 ppc_scatter <- function(y, yrep, average = TRUE, ...) {
-  stopifnot(is.vector(y), is.matrix(yrep))
-  if (ncol(yrep) != length(y))
-    stop("ncol(yrep) should be equal to length(y).")
+  validate_y_and_yrep(y, yrep)
 
   defaults <- list(
     shape = 21,
-    fill = .PP_FILL,
-    color = "black",
-    size = 2.5,
-    alpha = 1
+    fill = .PP_MID,
+    color = .PP_MID_highlight,
+    size = 2.5
   )
   geom_args <- set_geom_args(defaults, ...)
   if (average) {
@@ -52,21 +49,20 @@ ppc_scatter <- function(y, yrep, average = TRUE, ...) {
       data = data.frame(x = y, y = avg_yrep),
       mapping = aes_string("x", "y")
     )
-    graph <- base +
-      geom_abline(intercept = 0, slope = 1, linetype = 2) +
-      call_geom("point", geom_args) +
-      labs(x = "y", y = "Average yrep")
   } else {
     base <- ggplot(
       data = data.frame(melt_yrep(yrep), y = rep(y, each = nrow(yrep))),
       mapping = aes_string(x = "y", y = "value")
     )
-    graph <- base +
-      geom_abline(intercept = 0, slope = 1, linetype = 2) +
-      call_geom("point", geom_args) +
-      labs(x = "y", y = "yrep") +
-      facet_wrap("rep_id", scales = "free")
   }
 
-  graph + pp_check_theme(no_y = FALSE)
+  graph <- base +
+    geom_abline(intercept = 0, slope = 1, linetype = 2) +
+    call_geom("point", geom_args) +
+    labs(x = "y", y = if (average) "Average yrep" else "yrep")
+
+  if (!average)
+    graph <- graph + facet_wrap("rep_id")
+
+  graph + theme_ppc(y_text = TRUE)
 }

@@ -37,12 +37,10 @@
 #' ppc_resid(y, yrep[10:15, ])
 #'
 ppc_resid <- function(y, yrep, ...) {
-  stopifnot(is.vector(y), is.matrix(yrep))
-  if (ncol(yrep) != length(y))
-    stop("ncol(yrep) should be equal to length(y)")
+  validate_y_and_yrep(y, yrep)
 
   n <- nrow(yrep)
-  defaults <- list(fill = "black")
+  defaults <- list(size = 0.2, fill = .PP_DARK, color = .PP_DARK_highlight)
   geom_args <- set_geom_args(defaults, ...)
   geom_args$mapping <- aes_string(y = "..density..")
 
@@ -60,10 +58,10 @@ ppc_resid <- function(y, yrep, ...) {
   graph <- base +
     call_geom("histogram", geom_args) +
     xylabs +
-    pp_check_theme()
+    theme_ppc()
 
   if (n > 1)
-    graph <- graph + facet_wrap("rep_id", scales = "free")
+    graph <- graph + facet_wrap("rep_id", switch = "x")
 
   graph
 }
@@ -77,9 +75,7 @@ ppc_resid_binned <- function(y, Ey, ...) {
   if (!requireNamespace("arm", quietly = TRUE))
     stop("Please install the 'arm' package.")
 
-  stopifnot(is.vector(y), is.matrix(Ey))
-  if (ncol(Ey) != length(y))
-    stop("ncol(Ey) should be equal to length(y).")
+  validate_y_and_yrep(y, Ey)
 
   resids <- sweep(-Ey, MARGIN = 2L, STATS = y, "+")
   ny <- length(y)
@@ -110,21 +106,22 @@ ppc_resid_binned <- function(y, Ey, ...) {
   }
 
   dots <- list(...)
-  line_color <- dots$color %ORifNULL% .PP_FILL
+  line_color <- dots$color %ORifNULL% .PP_LIGHT
   line_size <- dots$size %ORifNULL% 1
-  pt_color <- dots$fill %ORifNULL% .PP_VLINE_CLR
+  pt_fill <- dots$fill %ORifNULL% .PP_DARK
+  pt_color <- dots$fill %ORifNULL% .PP_DARK_highlight
   base <- ggplot(binned, aes_string(x = "xbar"))
   graph <- base +
     geom_hline(yintercept = 0, linetype = 2) +
     geom_path(aes_string(y = "se2"), color = line_color, size = line_size) +
     geom_path(aes_string(y = "-se2"), color = line_color, size = line_size) +
-    geom_point(aes_string(y = "ybar"), shape = 19, color = pt_color) +
+    geom_point(aes_string(y = "ybar"), shape = 21, fill = pt_fill, color = pt_color) +
     labs(x = "Expected Values", y = "Average Residual \n (with 2SE bounds)") +
     ggtitle("Binned Residuals") +
-    pp_check_theme(no_y = FALSE)
+    theme_ppc(y_text = TRUE)
 
   if (n > 1)
-    graph <- graph + facet_wrap("rep", scales = "free")
+    graph <- graph + facet_wrap("rep", switch = "x")
 
   graph
 }
