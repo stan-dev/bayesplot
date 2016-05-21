@@ -8,10 +8,12 @@ Maintainer: Jonah Gabry <jsg2201@columbia.edu>
 Description: Graphical posterior predictive checks for Bayesian models.
 License: GPL (>= 3)
 LazyData: TRUE
+URL: https://github.com/jgabry/ppcheck/
+BugReports: https://github.com/jgabry/ppcheck/issues/
 Depends:
     R (>= 3.0.2)
 Imports:
-    ggplot2 (>= 2.1.0),
+    ggplot2 (>= 2.0.0),
     RColorBrewer,
     reshape2 (>= 1.4.1)
 Suggests:

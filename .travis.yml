@@ -3,3 +3,6 @@
 language: R
 sudo: false
 cache: packages
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
