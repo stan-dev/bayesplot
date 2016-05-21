@@ -1,3 +1,18 @@
+# Validate y and yrep inputs
+#
+validate_y_and_yrep <- function(y, yrep) {
+  stopifnot(is.vector(y), is.matrix(yrep))
+  if (ncol(yrep) != length(y))
+    stop("'ncol(yrep)' must equal 'length(y)'.")
+  if (any(is.na(yrep)))
+    stop("NAs not allowed in 'yrep'.")
+  if (any(is.na(y)))
+    stop("NAs not allowed in 'y'.")
+
+  invisible(TRUE)
+}
+
+
 # Convert yrep matrix into a molten data frame
 #
 # @param yrep A matrix.
@@ -63,32 +78,30 @@ set_geom_args <- function(defaults, ...) {
 }
 
 
+# colors and ggplot theme
+.PP_LIGHT <- "#DCBCBC"
+.PP_LIGHT_highlight <- "#C79999"
+.PP_MID <- "#B97C7C"
+.PP_MID_highlight <- "#A25050"
+.PP_DARK <- "#8F2727"
+.PP_DARK_highlight <- "#7C0000"
 
-.PP_FILL <- "skyblue"
-.PP_DARK <- "skyblue4"
-.PP_VLINE_CLR <- "#222222"
-.PP_YREP_CLR <- "#487575"
-.PP_YREP_FILL <- "#222222"
-
-pp_check_theme <- function(no_y = TRUE) {
-  thm <- theme_classic() +
+theme_ppc <- function(y_text = FALSE, legend_position = "none") {
+  thm <- theme_classic() %+replace%
     theme(
-      axis.line = element_line(color = "#222222"),
-      axis.line.y = if (no_y) element_blank() else element_line(size = 0.5),
-      axis.line.x = element_line(size = 2),
-      axis.title = element_text(face = "bold", size = 13),
-      strip.background = element_blank(),
-      strip.text = element_text(color = "black", face = "bold"),
-      legend.position = "none",
-      legend.title = element_text(size = 11),
-      legend.text = element_text(size = 13),
-      plot.title = element_text(size = 18)
+      axis.line.x = element_line(size = 0.25),
+      axis.line.y = element_line(size = 0.25),
+      axis.ticks = element_blank(),
+      legend.position = legend_position,
+      strip.background = element_blank()
     )
-  if (no_y)
-    thm <- thm %+replace% theme(
-      axis.text.y = element_blank(),
-      axis.ticks.y = element_blank(),
-      axis.title.y = element_blank()
-    )
-  thm
+  if (y_text)
+    return(thm)
+
+
+  thm %+replace%
+    theme(
+    axis.text.y = element_blank(),
+    axis.title.y = element_blank()
+  )
 }
