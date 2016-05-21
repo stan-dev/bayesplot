@@ -6,7 +6,7 @@
 #' \code{\link[arm]{binnedplot}}) from \eqn{y} and the posterior draws of the
 #' linear predictor transformed by the inverse-link function.
 #'
-#' @export
+#' @name residuals
 #' @family PPCs
 #'
 #' @template args-ppc
@@ -35,6 +35,11 @@
 #' yrep <- matrix(rnorm(2500), ncol = 100)
 #' ppc_resid(y, yrep[1:3, ])
 #' ppc_resid(y, yrep[10:15, ])
+#'
+NULL
+
+#' @rdname residuals
+#' @export
 #'
 ppc_resid <- function(y, yrep, ...) {
   validate_y_and_yrep(y, yrep)
@@ -70,7 +75,7 @@ ppc_resid <- function(y, yrep, ...) {
   graph
 }
 
-#' @rdname ppc_resid
+#' @rdname residuals
 #' @export
 #' @param Ey A matrix of posterior draws of the linear predictor transformed by
 #'   the inverse-link function.

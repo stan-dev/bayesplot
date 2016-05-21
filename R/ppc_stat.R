@@ -8,7 +8,7 @@
 #' \code{ppc_stat_2d}, the plot is a scatterplot and \eqn{T(y)} is shown as a
 #' large point.
 #'
-#' @export
+#' @name test-statistics
 #' @family PPCs
 #'
 #' @template args-ppc
@@ -36,6 +36,11 @@
 #' # define a custom test statistic
 #' q25 <- function(y) quantile(y, 0.25)
 #' ppc_stat(y, yrep, stat = "q25")
+#'
+NULL
+
+#' @export
+#' @rdname test-statistics
 #'
 ppc_stat <- function(y, yrep, stat = "mean", ...) {
   validate_y_and_yrep(y, yrep)
@@ -81,7 +86,7 @@ ppc_stat <- function(y, yrep, stat = "mean", ...) {
 }
 
 #' @export
-#' @rdname ppc_stat
+#' @rdname test-statistics
 #'
 ppc_stat_2d <- function(y, yrep, stat = c("mean", "sd"), ...) {
   validate_y_and_yrep(y, yrep)

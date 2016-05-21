@@ -1,20 +1,20 @@
 #' Scatterplots
 #'
 #' Scatterplots of the observed data \eqn{y} vs. simulated/replicated data
-#' \eqn{y^{rep}}{yrep} from the posterior predictive distribution.
+#' \eqn{y^{rep}}{yrep} from the posterior predictive distribution. For
+#' \code{ppc_scatter_average}, \eqn{y} is plotted against the average values of
+#' \eqn{y^{rep}}{yrep}, i.e., the points \eqn{(y_n, \bar{y}^{rep}_n),\, n = 1,
+#' \dots, N}{(y_n, mean(yrep_n)), n = 1,...,N}, where each
+#' \eqn{y^{rep}_n}{yrep_n} is a vector of length equal to the number of
+#' posterior draws. For \code{ppc_scatter_multiple}, each of the
+#' \code{nrow(yrep)} simulated datasets is plotted separately against \eqn{y}
+#' (and so \code{yrep} should only contain a small number of draws, i.e.,
+#' \code{nrow(yrep)} should be small).
 #'
-#' @export
+#' @name scatterplots
 #' @family PPCs
 #'
 #' @template args-ppc
-#' @param average If \code{TRUE} (the default) then \eqn{y} is plotted against
-#'   the average values of \eqn{y^{rep}}{yrep}, i.e., the points \eqn{(y_n,
-#'   \bar{y}^{rep}_n),\, n = 1, \dots, N}{(y_n, mean(yrep_n)), n = 1,...,N},
-#'   where each \eqn{y^{rep}_n}{yrep_n} is a vector of length equal to the
-#'   number of posterior draws. If \code{FALSE} then each of the
-#'   \code{nrow(yrep)} simulated datasets is plotted separately against \eqn{y}.
-#'   Thus, if \code{average} is \code{FALSE}, \code{yrep} should only contain a
-#'   small number of draws (\code{nrow(yrep)} should be small).
 #' @param ... Optional arguments to \code{\link[ggplot2]{geom_point}} to control
 #'   the appearance of the plotted points.
 #'
@@ -26,13 +26,29 @@
 #' @examples
 #' y <- rnorm(100)
 #' yrep <- matrix(rnorm(2500), ncol = 100)
-#' (p1 <- ppc_scatter(y, yrep))
-#' (p2 <- ppc_scatter(y, yrep[1:3, ], average = FALSE))
+#' (p1 <- ppc_scatter_average(y, yrep))
+#' (p2 <- ppc_scatter_multiple(y, yrep[1:3, ]))
 #'
 #' lims <- ggplot2::lims(x = c(-3, 3), y = c(-3, 3))
 #' p1 + lims
 #' p2 + lims
 #'
+NULL
+
+#' @export
+#' @rdname scatterplots
+ppc_scatter_average <- function(y, yrep, ...) {
+  ppc_scatter(y, yrep, average = TRUE, ...)
+}
+
+#' @export
+#' @rdname scatterplots
+ppc_scatter_multiple <- function(y, yrep, ...) {
+  ppc_scatter(y, yrep, average = FALSE, ...)
+}
+
+
+
 ppc_scatter <- function(y, yrep, average = TRUE, ...) {
   validate_y_and_yrep(y, yrep)
 

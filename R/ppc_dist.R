@@ -6,7 +6,7 @@
 #' overlaid densities. \code{ppc_hist} plots a separate histogram for each (so
 #' \code{yrep} should contain only a small number of rows).
 #'
-#' @export
+#' @name distributions
 #' @family PPCs
 #'
 #' @template args-ppc
@@ -24,12 +24,16 @@
 #' ppc_dens_overlay(y, yrep)
 #' ppc_hist(y, yrep[1:8, ])
 #'
+NULL
+
+#' @export
+#' @rdname distributions
 ppc_dens_overlay <- function(y, yrep, ...) {
   ppc_dist(y, yrep, overlay = TRUE, ...)
 }
 
 #' @export
-#' @rdname ppc_dens_overlay
+#' @rdname distributions
 #'
 ppc_hist <- function(y, yrep, ...) {
   ppc_dist(y, yrep, overlay = FALSE, ...)

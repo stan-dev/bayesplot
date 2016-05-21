@@ -6,19 +6,19 @@ y <- rnorm(100)
 yrep <- matrix(rnorm(2500), ncol = 100)
 
 
-context("ppc_dens_overlay and ppc_hist")
+context("distributions")
 test_that("ppc_dist returns ggplot object", {
   expect_gg(ppc_dens_overlay(y, yrep))
   expect_gg(ppc_hist(y, yrep[1:8, ]))
 })
 
-context("ppc_scatter")
+context("scatterplots")
 test_that("ppc_scatter returns ggplot object", {
-  expect_gg(ppc_scatter(y, yrep))
-  expect_gg(ppc_scatter(y, yrep[1:3, ], average = FALSE))
+  expect_gg(ppc_scatter_average(y, yrep))
+  expect_gg(ppc_scatter_multiple(y, yrep[1:3, ]))
 })
 
-context("ppc_stat")
+context("test-statistics")
 test_that("ppc_stat returns ggplot object", {
   q25 <- function(x) quantile(x, 0.25)
   expect_gg(ppc_stat(y, yrep))
@@ -28,7 +28,7 @@ test_that("ppc_stat returns ggplot object", {
   expect_gg(ppc_stat_2d(y, yrep, stat = c("mean", "median")))
 })
 
-context("ppc_resid")
+context("residuals")
 test_that("ppc_resid returns ggplot object", {
   expect_gg(ppc_resid(y, yrep[1:5, ]))
 })
