@@ -29,6 +29,7 @@
 #'
 ppc_dist <- function(y, yrep, overlay = TRUE, ...) {
   validate_y_and_yrep(y, yrep)
+
   yrep <- melt_yrep(yrep)
   levels(yrep$rep_id) <- c(levels(yrep$rep_id), "Observed y")
   ydat <- data.frame(
@@ -40,9 +41,8 @@ ppc_dist <- function(y, yrep, overlay = TRUE, ...) {
     rep_id <- relevel(rep_id, ref = "Observed y")
     is_y <- rep_id == "Observed y"
   })
-
-  plotfun <- paste0("ppc_", ifelse(overlay, "dens", "hist"))
-  graph <- do.call(plotfun, list(data = plot_data, ...))
+  plot_function <- paste0("ppc_", ifelse(overlay, "dens", "hist"))
+  graph <- do.call(plot_function, list(data = plot_data, ...))
   graph + theme_ppc()
 }
 

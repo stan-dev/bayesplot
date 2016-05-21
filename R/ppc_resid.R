@@ -40,7 +40,11 @@ ppc_resid <- function(y, yrep, ...) {
   validate_y_and_yrep(y, yrep)
 
   n <- nrow(yrep)
-  defaults <- list(size = 0.2, fill = .PP_DARK, color = .PP_DARK_highlight)
+  defaults <- list(
+    size = 0.2,
+    fill = .PP_DARK,
+    color = .PP_DARK_highlight
+  )
   geom_args <- set_geom_args(defaults, ...)
   geom_args$mapping <- aes_string(y = "..density..")
 
@@ -112,12 +116,31 @@ ppc_resid_binned <- function(y, Ey, ...) {
   pt_color <- dots$fill %ORifNULL% .PP_DARK_highlight
   base <- ggplot(binned, aes_string(x = "xbar"))
   graph <- base +
-    geom_hline(yintercept = 0, linetype = 2) +
-    geom_path(aes_string(y = "se2"), color = line_color, size = line_size) +
-    geom_path(aes_string(y = "-se2"), color = line_color, size = line_size) +
-    geom_point(aes_string(y = "ybar"), shape = 21, fill = pt_fill, color = pt_color) +
-    labs(x = "Expected Values", y = "Average Residual \n (with 2SE bounds)") +
-    ggtitle("Binned Residuals") +
+    geom_hline(
+      yintercept = 0,
+      linetype = 2,
+      color = "black"
+    ) +
+    geom_path(
+      mapping = aes_string(y = "se2"),
+      color = line_color,
+      size = line_size
+    ) +
+    geom_path(
+      mapping = aes_string(y = "-se2"),
+      color = line_color,
+      size = line_size
+    ) +
+    geom_point(
+      mapping = aes_string(y = "ybar"),
+      shape = 21,
+      fill = pt_fill,
+      color = pt_color
+    ) +
+    labs(
+      x = "Expected Values",
+      y = "Average Residual \n (with 2SE bounds)"
+    ) +
     theme_ppc(y_text = TRUE)
 
   if (n > 1)
@@ -127,9 +150,12 @@ ppc_resid_binned <- function(y, Ey, ...) {
 }
 
 binner <- function(rep_id, ey, r, nbins) {
-  br <- arm::binned.resids(ey, r, nbins)$binned[, c("xbar", "ybar", "2se")]
-  if (length(dim(br)) < 2L)
-    br <- t(br)
-  colnames(br) <- c("xbar", "ybar", "se2")
-  data.frame(rep = paste0("yrep_", rep_id), br)
+  binned_resids <- arm::binned.resids(ey, r, nbins)$binned[, c("xbar", "ybar", "2se")]
+  if (length(dim(binned_resids)) < 2L)
+    binned_resids <- t(binned_resids)
+  colnames(binned_resids) <- c("xbar", "ybar", "se2")
+  data.frame(
+    rep = paste0("yrep_", rep_id),
+    binned_resids
+  )
 }

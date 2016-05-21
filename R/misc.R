@@ -1,5 +1,7 @@
 # Validate y and yrep inputs
 #
+# @param y,yrep The y and yrep objects from the user.
+# @return TRUE, invisibly, if no issues, otherwise throws an error.
 validate_y_and_yrep <- function(y, yrep) {
   stopifnot(is.vector(y), is.matrix(yrep))
   if (ncol(yrep) != length(y))
@@ -26,9 +28,6 @@ validate_y_and_yrep <- function(y, yrep) {
 # }
 #
 melt_yrep <- function(yrep) {
-  stopifnot(is.matrix(yrep))
-  if (any(is.na(yrep)))
-    stop("NAs not allowed in 'yrep'.", call. = FALSE)
   out <- reshape2::melt(
     data = yrep,
     varnames = c("rep_id", "y_id")
@@ -38,7 +37,8 @@ melt_yrep <- function(yrep) {
   out
 }
 
-# Call a geom passing arguments as a list
+
+# Call a geom, passing arguments as a list
 #
 # @param geom A string naming the geom (e.g. "histogram", "ribbon", etc.)
 # @param args A list of arguments to pass to \code{geom}.
@@ -98,10 +98,9 @@ theme_ppc <- function(y_text = FALSE, legend_position = "none") {
   if (y_text)
     return(thm)
 
-
   thm %+replace%
     theme(
-    axis.text.y = element_blank(),
-    axis.title.y = element_blank()
-  )
+      axis.text.y = element_blank(),
+      axis.title.y = element_blank()
+    )
 }
