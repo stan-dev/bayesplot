@@ -1,13 +1,7 @@
 library(ppcheck)
+context("convenience functions")
 
-y1 <- rnorm(100)
-y2 <- rnorm(30)
-yrep1 <- matrix(rnorm(100), ncol = 100)
-yrep2 <- matrix(rnorm(3000), ncol = 30)
-
-
-context("validate_y_and_yrep")
-
+# validate_y_and_yrep -----------------------------------------------------
 test_that("validate_y_and_yrep works", {
   expect_true(validate_y_and_yrep(y1, yrep1))
   expect_true(validate_y_and_yrep(y2, yrep2))
@@ -25,8 +19,7 @@ test_that("validate_y_and_yrep works", {
 })
 
 
-context("melt_yrep")
-
+# melt_yrep ---------------------------------------------------------------
 expect_correct_structure <- function(yrep) {
   x <- melt_yrep(yrep)
   expect_equal(ncol(x), 3)
@@ -43,8 +36,7 @@ test_that("melt_yrep returns correct structure", {
 })
 
 
-context("call_geom")
-
+# call_geom ---------------------------------------------------------------
 test_that("call_geom works", {
   expect_error(call_geom(density, list(1)), "character")
   expect_error(call_geom("path", 3), "list")
