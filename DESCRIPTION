@@ -16,7 +16,8 @@ Depends:
 Imports:
     ggplot2 (>= 2.0.0),
     RColorBrewer,
-    reshape2 (>= 1.4.1)
+    reshape2 (>= 1.4.1),
+    stats
 Suggests:
     arm,
     knitr,
