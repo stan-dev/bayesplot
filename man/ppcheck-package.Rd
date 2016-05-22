@@ -2,6 +2,7 @@
 % Please edit documentation in R/ppcheck-package.R
 \docType{package}
 \name{ppcheck-package}
+\alias{ppcheck}
 \alias{ppcheck-package}
 \title{Graphical posterior predictive checking for Bayesian Models}
 \description{

@@ -51,6 +51,10 @@ ppc_scatter_multiple <- function(y, yrep, ...) {
   ppc_scatter(y, yrep, average = FALSE, ...)
 }
 
+# @param y, yrep Already validated y (numeric vector) and yrep (numeric matrix)
+#   objects.
+# @param average Plot y vs avg yrep? If FALSE y is plotted again each row of
+#   yrep separately.
 ppc_scatter <- function(y, yrep, average = TRUE, ...) {
   scheme <- get_color_scheme()
   defaults <- list(
@@ -79,7 +83,7 @@ ppc_scatter <- function(y, yrep, average = TRUE, ...) {
     labs(x = "y", y = if (average) "Average yrep" else "yrep")
 
   if (!average)
-    graph <- graph + facet_wrap("rep_id")
+    graph <- graph + facet_wrap("rep_id", switch = "x")
 
   graph + theme_ppc()
 }

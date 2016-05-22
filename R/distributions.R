@@ -10,8 +10,9 @@
 #' @family PPCs
 #'
 #' @template args-ppc
-#' @param ... Optional arguments to geoms to control features of the plots
-#'   (e.g. \code{binwidth} if the plot is a histogram).
+#' @param ... Optional arguments to \code{\link[ggplot2]{geom_density}} (for
+#'   \code{ppc_dens_overlay}) or \code{\link[ggplot2]{geom_histogram}} (for
+#'   \code{ppc_hist}).
 #'
 #' @template details-ppc
 #' @template return-ggplot
