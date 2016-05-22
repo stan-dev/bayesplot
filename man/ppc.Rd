@@ -47,6 +47,7 @@ ppc.foo <- function(object, ..., type = c("multiple", "overlaid")) {
          overlaid = ppc_dens_overlay(y, yrep)
   )
 }
+ppc(x)
 ppc(x, type = "overlaid")
 
 }

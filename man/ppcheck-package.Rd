@@ -43,6 +43,14 @@ For a more thorough discussion of posterior predictive checking see
 Chapter 6 of Gelman et. al. (2013).
 }
 }
+\section{Providing an interface to ppcheck from another package}{
+
+
+The \pkg{ppcheck} package provides the S3 generic \code{\link{ppc}}. Authors
+of \R packages for Bayesian inference are encouraged to define \code{ppc}
+methods for the fitted model objects created by their packages. See the
+vignettes for more details and an example.
+}
 \author{
 Jonah Gabry
 }
@@ -50,9 +58,5 @@ Jonah Gabry
 Gelman, A., Carlin, J. B., Stern, H. S., Dunson, D. B., Vehtari,
   A., and Rubin, D. B. (2013). \emph{Bayesian Data Analysis.} Chapman & Hall/CRC
   Press, London, third edition. (Ch. 6)
-}
-\seealso{
-\code{\link{ppc}} for incorporating \pkg{ppcheck}'s functionality in
-other \R packages
 }
 
