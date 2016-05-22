@@ -2,6 +2,7 @@
 #'
 #' @docType package
 #' @name ppcheck-package
+#' @aliases ppcheck
 #'
 #' @description
 #' The \pkg{ppcheck} package provides various plotting functions for creating
