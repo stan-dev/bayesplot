@@ -1,5 +1,4 @@
 library(ppcheck)
-
 context("schemes and themes")
 
 test_that("getting and setting color scheme works", {
