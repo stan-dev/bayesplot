@@ -24,9 +24,7 @@ See Details for additional instructions.}
 The function(s) should take a vector input and return
 a scalar test statistic.}
 
-\item{...}{Optional arguments to \code{\link[ggplot2]{geom_histogram}} (for
-\code{ppc_stat}) or \code{\link[ggplot2]{geom_point}} (for
-\code{ppc_stat_2d}).}
+\item{...}{Currently unused.}
 }
 \value{
 A ggplot object that can be further customized using the

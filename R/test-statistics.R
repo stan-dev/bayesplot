@@ -16,9 +16,7 @@
 #'   \code{ppc_stat}) and length 2 (for \code{ppc_stat_2d}).
 #'   The function(s) should take a vector input and return
 #'   a scalar test statistic.
-#' @param ... Optional arguments to \code{\link[ggplot2]{geom_histogram}} (for
-#'   \code{ppc_stat}) or \code{\link[ggplot2]{geom_point}} (for
-#'   \code{ppc_stat_2d}).
+#' @param ... Currently unused.
 #'
 #' @template details-ppc
 #' @template return-ggplot
@@ -47,44 +45,42 @@ ppc_stat <- function(y, yrep, stat = "mean", ...) {
   yrep <- validate_yrep(yrep, y)
   stopifnot(is.character(stat), length(stat) == 1)
 
-  stat1 <- match.fun(stat)
-  T_y <- stat1(y)
-  T_yrep <- apply(yrep, 1, stat1)
-
   scheme <- get_color_scheme()
   vline_color <- scheme[["dark"]]
   fill_color <- scheme[["light"]]
   outline_color <- scheme[["light_highlight"]]
-  defaults <- list(
-    fill = fill_color,
-    color = outline_color,
-    size = .25,
-    na.rm = TRUE
-  )
-  geom_args <- set_geom_args(defaults, ...)
-  geom_args$mapping <- aes_string(y = "..density..")
+
+  stat1 <- match.fun(stat)
+  T_y <- stat1(y)
+  T_yrep <- apply(yrep, 1, stat1)
 
   ggplot(
     data = data.frame(x = T_yrep),
     mapping = aes_string(x = "x", color = "'A'")
   ) +
-  call_geom("histogram", geom_args) +
-  geom_vline(
-    data = data.frame(t = T_y),
-    mapping = aes_string(xintercept = "t", color = "factor(t)"),
-    size = 2,
-    show.legend = TRUE
-  ) +
-  scale_color_manual(
-    name = "",
-    values = c(vline_color, fill_color),
-    labels = c("T(y)", "T(yrep)")
-  ) +
-  xlab(paste("Stat =", stat)) +
-  theme_ppc(
-    y_text = FALSE,
-    legend_position = "right"
-  )
+    geom_histogram(
+      mapping = aes_string(y = "..density.."),
+      fill = fill_color,
+      color = outline_color,
+      size = .25,
+      na.rm = TRUE
+    ) +
+    geom_vline(
+      data = data.frame(t = T_y),
+      mapping = aes_string(xintercept = "t", color = "factor(t)"),
+      size = 2,
+      show.legend = TRUE
+    ) +
+    scale_color_manual(
+      name = "",
+      values = c(vline_color, fill_color),
+      labels = c("T(y)", "T(yrep)")
+    ) +
+    xlab(paste("Stat =", stat)) +
+    theme_ppc(
+      y_text = FALSE,
+      legend_position = "right"
+    )
 }
 
 #' @export
@@ -95,6 +91,8 @@ ppc_stat_2d <- function(y, yrep, stat = c("mean", "sd"), ...) {
   yrep <- validate_yrep(yrep, y)
   stopifnot(is.character(stat), length(stat) == 2)
 
+  scheme <- get_color_scheme()
+
   stat1 <- match.fun(stat[1])
   stat2 <- match.fun(stat[2])
   T_y1 <- stat1(y)
@@ -102,58 +100,54 @@ ppc_stat_2d <- function(y, yrep, stat = c("mean", "sd"), ...) {
   T_yrep1 <- apply(yrep, 1, stat1)
   T_yrep2 <- apply(yrep, 1, stat2)
 
-  scheme <- get_color_scheme()
-  defaults <- list(
-    shape = 21,
-    size = 2,
-    fill = scheme[["light"]],
-    color = scheme[["light_highlight"]]
-  )
-  geom_args <- set_geom_args(defaults, ...)
-
   ggplot(
     data = data.frame(x = T_yrep1, y = T_yrep2),
     mapping = aes_string(x = "x", y = "y")
   ) +
-  call_geom("point", geom_args) +
-  annotate(
-    geom = "segment",
-    x = c(T_y1,-Inf),
-    xend = c(T_y1, T_y1),
-    y = c(-Inf, T_y2),
-    yend = c(T_y2, T_y2),
-    color = scheme[["dark_highlight"]],
-    linetype = 2,
-    size = 0.5
-  ) +
-  geom_point(
-    data = data.frame(x = T_y1, y = T_y2),
-    mapping = aes_string(
-      x = "x",
-      y = "y",
-      fill = "'Ty'",
-      color = "'Ty'"
-    ),
-    size = 4,
-    shape = 21,
-    stroke = 1
-  ) +
-  scale_fill_manual(
-    name = "",
-    values = c('Ty' = scheme[["dark"]]),
-    labels = c('Ty' = "T(y)")
-  ) +
-  scale_color_manual(
-    name = "",
-    values = c('Ty' = scheme[["dark_highlight"]]),
-    labels = c('Ty' = "T(y)")
-  ) +
-  labs(
-    x = paste("Stat =", stat[1]),
-    y = paste("Stat =", stat[2])
-  ) +
-  theme_ppc(
-    y_text = TRUE,
-    legend_position = "right"
-  )
+    geom_point(
+      shape = 21,
+      size = 2,
+      fill = scheme[["light"]],
+      color = scheme[["light_highlight"]]
+    ) +
+    annotate(
+      geom = "segment",
+      x = c(T_y1, -Inf),
+      xend = c(T_y1, T_y1),
+      y = c(-Inf, T_y2),
+      yend = c(T_y2, T_y2),
+      color = scheme[["dark_highlight"]],
+      linetype = 2,
+      size = 0.5
+    ) +
+    geom_point(
+      data = data.frame(x = T_y1, y = T_y2),
+      mapping = aes_string(
+        x = "x",
+        y = "y",
+        fill = "'Ty'",
+        color = "'Ty'"
+      ),
+      size = 4,
+      shape = 21,
+      stroke = 1
+    ) +
+    scale_fill_manual(
+      name = "",
+      values = c('Ty' = scheme[["dark"]]),
+      labels = c('Ty' = "T(y)")
+    ) +
+    scale_color_manual(
+      name = "",
+      values = c('Ty' = scheme[["dark_highlight"]]),
+      labels = c('Ty' = "T(y)")
+    ) +
+    labs(
+      x = paste("Stat =", stat[1]),
+      y = paste("Stat =", stat[2])
+    ) +
+    theme_ppc(
+      y_text = TRUE,
+      legend_position = "right"
+    )
 }

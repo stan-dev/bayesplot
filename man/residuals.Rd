@@ -19,9 +19,7 @@ predictive distribution, where \eqn{S} is the size of the posterior sample
 \eqn{N} is the number of observations (the length of \code{y}). 
 See Details for additional instructions.}
 
-\item{...}{For \code{ppc_resid}, optional arguments to
-\code{\link[ggplot2]{geom_histogram}} (e.g. \code{binwidth}) to control the
-appearance of the plot.}
+\item{...}{Currently unused.}
 
 \item{Ey}{A matrix of posterior draws of the linear predictor transformed by
 the inverse-link function.}

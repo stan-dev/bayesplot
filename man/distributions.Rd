@@ -19,9 +19,7 @@ predictive distribution, where \eqn{S} is the size of the posterior sample
 \eqn{N} is the number of observations (the length of \code{y}). 
 See Details for additional instructions.}
 
-\item{...}{Optional arguments to \code{\link[ggplot2]{geom_density}} (for
-\code{ppc_dens_overlay}) or \code{\link[ggplot2]{geom_histogram}} (for
-\code{ppc_hist}).}
+\item{...}{Currently unused.}
 }
 \value{
 A ggplot object that can be further customized using the

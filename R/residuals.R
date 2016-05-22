@@ -10,9 +10,7 @@
 #' @family PPCs
 #'
 #' @template args-ppc
-#' @param ... For \code{ppc_resid}, optional arguments to
-#'   \code{\link[ggplot2]{geom_histogram}} (e.g. \code{binwidth}) to control the
-#'   appearance of the plot.
+#' @param ... Currently unused.
 #'
 #' @details
 #' \code{ppc_resid} and \code{ppc_resid_binned} compute and plot
@@ -44,17 +42,9 @@ NULL
 ppc_resid <- function(y, yrep, ...) {
   y <- validate_y(y)
   yrep <- validate_yrep(yrep, y)
-
   scheme <- get_color_scheme()
-  n <- nrow(yrep)
-  defaults <- list(
-    size = 0.2,
-    fill = scheme[["dark"]],
-    color = scheme[["dark_highlight"]]
-  )
-  geom_args <- set_geom_args(defaults, ...)
-  geom_args$mapping <- aes_string(y = "..density..")
 
+  n <- nrow(yrep)
   if (n == 1) {
     resids <- data.frame(x = y - as.vector(yrep))
     base <- ggplot(resids, aes_string(x = "x"))
@@ -67,7 +57,12 @@ ppc_resid <- function(y, yrep, ...) {
   }
 
   graph <- base +
-    call_geom("histogram", geom_args) +
+    geom_histogram(
+      mapping = aes_string(y = "..density.."),
+      size = 0.25,
+      fill = scheme[["dark"]],
+      color = scheme[["dark_highlight"]]
+    ) +
     xylabs +
     theme_ppc(y_text = FALSE)
 
@@ -88,6 +83,12 @@ ppc_resid_binned <- function(y, Ey, ...) {
 
   y <- validate_y(y)
   yrep <- validate_yrep(Ey, y)
+
+  scheme <- get_color_scheme()
+  line_color <- scheme[["light"]]
+  line_size <- 1
+  pt_fill <- scheme[["dark"]]
+  pt_color <- scheme[["dark_highlight"]]
 
   resids <- sweep(-Ey, MARGIN = 2L, STATS = y, "+")
   ny <- length(y)
@@ -117,12 +118,6 @@ ppc_resid_binned <- function(y, Ey, ...) {
       ))
   }
 
-  scheme <- get_color_scheme()
-  dots <- list(...)
-  line_color <- dots$color %ORifNULL% scheme[["light"]]
-  line_size <- dots$size %ORifNULL% 1
-  pt_fill <- dots$fill %ORifNULL% scheme[["dark"]]
-  pt_color <- dots$fill %ORifNULL% scheme[["dark_highlight"]]
   base <- ggplot(binned, aes_string(x = "xbar"))
   graph <- base +
     geom_hline(

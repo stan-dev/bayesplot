@@ -19,8 +19,7 @@ predictive distribution, where \eqn{S} is the size of the posterior sample
 \eqn{N} is the number of observations (the length of \code{y}). 
 See Details for additional instructions.}
 
-\item{...}{Optional arguments to \code{\link[ggplot2]{geom_point}} to control
-the appearance of the plotted points.}
+\item{...}{Currently unused.}
 }
 \value{
 A ggplot object that can be further customized using the

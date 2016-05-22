@@ -10,9 +10,7 @@
 #' @family PPCs
 #'
 #' @template args-ppc
-#' @param ... Optional arguments to \code{\link[ggplot2]{geom_density}} (for
-#'   \code{ppc_dens_overlay}) or \code{\link[ggplot2]{geom_histogram}} (for
-#'   \code{ppc_hist}).
+#' @param ... Currently unused.
 #'
 #' @template details-ppc
 #' @template return-ggplot
@@ -32,9 +30,9 @@ NULL
 ppc_dens_overlay <- function(y, yrep, ...) {
   y <- validate_y(y)
   yrep <- validate_yrep(yrep, y)
-
   plot_data <- ppc_dist_data(y, yrep)
   scheme <- get_color_scheme()
+
   ggplot(
     data = plot_data,
     mapping = aes_string(
@@ -45,7 +43,7 @@ ppc_dens_overlay <- function(y, yrep, ...) {
       size = "is_y"
     )
   ) +
-    geom_density(...) +
+    geom_density() +
     scale_color_manual(values = c(scheme[["light"]], scheme[["dark_highlight"]])) +
     scale_fill_manual(values = c(NA, scheme[["dark"]])) +
     scale_size_manual(values = c(0.2, 1)) +
@@ -59,12 +57,8 @@ ppc_dens_overlay <- function(y, yrep, ...) {
 ppc_hist <- function(y, yrep, ...) {
   y <- validate_y(y)
   yrep <- validate_yrep(yrep, y)
-
   plot_data <- ppc_dist_data(y, yrep)
   scheme <- get_color_scheme()
-  defaults <- list(size = 0.2)
-  geom_args <- set_geom_args(defaults, ...)
-  geom_args$mapping <- aes_string(y = "..density..")
 
   ggplot(
     data = plot_data,
@@ -74,7 +68,7 @@ ppc_hist <- function(y, yrep, ...) {
       color = "is_y"
       )
   ) +
-    call_geom("histogram", geom_args) +
+    geom_histogram(aes_string(y = "..density.."), size = 0.25) +
     facet_wrap("rep_id", switch = "x") +
     scale_fill_manual(values = c(scheme[["dark"]], scheme[["light"]])) +
     scale_color_manual(values = c(scheme[["dark_highlight"]], scheme[["light_highlight"]])) +

@@ -15,8 +15,7 @@
 #' @family PPCs
 #'
 #' @template args-ppc
-#' @param ... Optional arguments to \code{\link[ggplot2]{geom_point}} to control
-#'   the appearance of the plotted points.
+#' @param ... Currently unused.
 #'
 #' @template details-ppc
 #' @template return-ggplot
@@ -57,13 +56,7 @@ ppc_scatter_multiple <- function(y, yrep, ...) {
 #   yrep separately.
 ppc_scatter <- function(y, yrep, average = TRUE, ...) {
   scheme <- get_color_scheme()
-  defaults <- list(
-    shape = 21,
-    fill = scheme[["mid"]],
-    color = scheme[["mid_highlight"]],
-    size = 2.5
-  )
-  geom_args <- set_geom_args(defaults, ...)
+
   if (average) {
     avg_yrep <- colMeans(yrep)
     base <- ggplot(
@@ -78,12 +71,24 @@ ppc_scatter <- function(y, yrep, average = TRUE, ...) {
   }
 
   graph <- base +
-    geom_abline(intercept = 0, slope = 1, linetype = 2) +
-    call_geom("point", geom_args) +
-    labs(x = "y", y = if (average) "Average yrep" else "yrep")
+    geom_abline(
+      intercept = 0,
+      slope = 1,
+      linetype = 2
+    ) +
+    geom_point(
+      shape = 21,
+      fill = scheme[["mid"]],
+      color = scheme[["mid_highlight"]],
+      size = 2.5
+    ) +
+    labs(
+      x = "y",
+      y = if (average) "Average yrep" else "yrep"
+    )
 
   if (!average)
-    graph <- graph + facet_wrap("rep_id", switch = "x")
+    graph <- graph + facet_wrap("rep_id")
 
   graph + theme_ppc()
 }
