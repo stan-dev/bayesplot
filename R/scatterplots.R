@@ -38,20 +38,20 @@ NULL
 #' @export
 #' @rdname scatterplots
 ppc_scatter_average <- function(y, yrep, ...) {
+  y <- validate_y(y)
+  yrep <- validate_yrep(yrep, y)
   ppc_scatter(y, yrep, average = TRUE, ...)
 }
 
 #' @export
 #' @rdname scatterplots
 ppc_scatter_multiple <- function(y, yrep, ...) {
+  y <- validate_y(y)
+  yrep <- validate_yrep(yrep, y)
   ppc_scatter(y, yrep, average = FALSE, ...)
 }
 
-
-
 ppc_scatter <- function(y, yrep, average = TRUE, ...) {
-  validate_y_and_yrep(y, yrep)
-
   scheme <- get_color_scheme()
   defaults <- list(
     shape = 21,

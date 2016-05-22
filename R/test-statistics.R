@@ -43,7 +43,8 @@ NULL
 #' @rdname test-statistics
 #'
 ppc_stat <- function(y, yrep, stat = "mean", ...) {
-  validate_y_and_yrep(y, yrep)
+  y <- validate_y(y)
+  yrep <- validate_yrep(yrep, y)
   stopifnot(is.character(stat), length(stat) == 1)
 
   stat1 <- match.fun(stat)
@@ -90,7 +91,8 @@ ppc_stat <- function(y, yrep, stat = "mean", ...) {
 #' @rdname test-statistics
 #'
 ppc_stat_2d <- function(y, yrep, stat = c("mean", "sd"), ...) {
-  validate_y_and_yrep(y, yrep)
+  y <- validate_y(y)
+  yrep <- validate_yrep(yrep, y)
   stopifnot(is.character(stat), length(stat) == 2)
 
   stat1 <- match.fun(stat[1])

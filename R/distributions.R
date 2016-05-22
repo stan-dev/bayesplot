@@ -29,7 +29,8 @@ NULL
 #' @export
 #' @rdname distributions
 ppc_dens_overlay <- function(y, yrep, ...) {
-  validate_y_and_yrep(y, yrep)
+  y <- validate_y(y)
+  yrep <- validate_yrep(yrep, y)
 
   plot_data <- ppc_dist_data(y, yrep)
   scheme <- get_color_scheme()
@@ -55,7 +56,8 @@ ppc_dens_overlay <- function(y, yrep, ...) {
 #' @rdname distributions
 #'
 ppc_hist <- function(y, yrep, ...) {
-  validate_y_and_yrep(y, yrep)
+  y <- validate_y(y)
+  yrep <- validate_yrep(yrep, y)
 
   plot_data <- ppc_dist_data(y, yrep)
   scheme <- get_color_scheme()
@@ -92,7 +94,4 @@ ppc_dist_data <- function(y, yrep) {
     rep_id <- relevel(rep_id, ref = yobs_lab)
     is_y <- rep_id == yobs_lab
   })
-}
-
-
 }

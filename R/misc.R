@@ -1,17 +1,41 @@
-# Validate y and yrep inputs
+# Validate y
 #
-# @param y,yrep The y and yrep objects from the user.
-# @return TRUE, invisibly, if no issues, otherwise throws an error.
-validate_y_and_yrep <- function(y, yrep) {
-  stopifnot(is.vector(y), is.matrix(yrep))
-  if (ncol(yrep) != length(y))
-    stop("ncol(yrep) not equal to length(y).")
-  if (any(is.na(yrep)))
-    stop("NAs not allowed in 'yrep'.")
-  if (any(is.na(y)))
+# Checks that y is numeric, doesn't have any NAs, and is either a vector or 1-D
+# array.
+#
+# @param y The y object from the user.
+# @return Either throws an error or returns a numeric vector.
+#
+validate_y <- function(y) {
+  stopifnot(is.numeric(y))
+  if (!is.vector(y)) {
+    if (!(is.array(y) && length(dim(y)) == 1))
+      stop("'y' must be a vector or a 1-D array.")
+    y <- as.vector(y)
+  }
+  if (anyNA(y))
     stop("NAs not allowed in 'y'.")
 
-  invisible(TRUE)
+  y
+}
+
+# Validate yrep
+#
+# Checks that yrep is a numeric matrix, doesn't have any NAs, and has the
+# correct number of columns (equal to the length of y).
+#
+# @param yrep,y The user's yrep object and the y object returned by validate_y.
+# @return Either throws an error or returns a numeric matrix.
+#
+validate_yrep <- function(yrep, y) {
+  stopifnot(is.vector(y)) # y should already be validated
+  stopifnot(is.matrix(yrep), is.numeric(yrep))
+  if (anyNA(yrep))
+    stop("NAs not allowed in 'yrep'.")
+  if (ncol(yrep) != length(y))
+    stop("ncol(yrep) not equal to length(y).")
+
+  yrep
 }
 
 

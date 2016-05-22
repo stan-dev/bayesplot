@@ -42,7 +42,8 @@ NULL
 #' @export
 #'
 ppc_resid <- function(y, yrep, ...) {
-  validate_y_and_yrep(y, yrep)
+  y <- validate_y(y)
+  yrep <- validate_yrep(yrep, y)
 
   scheme <- get_color_scheme()
   n <- nrow(yrep)
@@ -85,7 +86,8 @@ ppc_resid_binned <- function(y, Ey, ...) {
   if (!requireNamespace("arm", quietly = TRUE))
     stop("Please install the 'arm' package.")
 
-  validate_y_and_yrep(y, Ey)
+  y <- validate_y(y)
+  yrep <- validate_yrep(Ey, y)
 
   resids <- sweep(-Ey, MARGIN = 2L, STATS = y, "+")
   ny <- length(y)
