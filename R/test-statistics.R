@@ -20,8 +20,10 @@
 #'
 #' @template details-ppc
 #' @template return-ggplot
+#'
 #' @templateVar bdaRef (Ch. 6)
 #' @template reference-bda
+#' @template seealso-color-scheme
 #'
 #' @examples
 #' y <- rnorm(30)
