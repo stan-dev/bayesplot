@@ -40,12 +40,3 @@ test_that("melt_yrep returns correct structure", {
   expect_correct_structure(yrep1)
   expect_correct_structure(yrep2)
 })
-
-
-# call_geom ---------------------------------------------------------------
-test_that("call_geom works", {
-  expect_error(call_geom(density, list(1)), "character")
-  expect_error(call_geom("path", 3), "list")
-  expect_error(call_geom("paths", list(size = 2)), "could not find function")
-  expect_is(call_geom("path", list(size = 2)), "LayerInstance")
-})
