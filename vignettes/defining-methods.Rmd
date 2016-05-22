@@ -1,0 +1,67 @@
+---
+title: "Providing an interface to ppcheck from another package"
+author: "Jonah Gabry"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Providing an interface to ppcheck from another package}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, settings, include=FALSE}
+library(ppcheck)
+knitr::opts_chunk$set(
+  dev = "pdf",
+  fig.align = "center",
+  fig.width = 4,
+  fig.height = 4
+)
+```
+
+The **ppcheck** package provides the S3 generic function `ppc`. Authors of R
+packages for Bayesian inference are encouraged to define methods for the fitted
+model objects created by their packages. This will hopefully be convenient for
+both users and developers and contribute to the use of the same naming
+conventions across many of the R packages for Bayesian data analysis.
+
+
+To provide an provide interface to **ppcheck** from your package, you can very 
+easily define a `ppc` method (or multiple `ppc` methods) for the fitted model 
+objects created by your package. All a `ppc` method needs to do is provide the
+`y` vector and `yrep` matrix arguments to the various plotting functions 
+included in **ppcheck**.
+
+Here is an example for how to define a simple `ppc` method in a package that
+creates fitted model objects of class `"foo"`. We will define a method `ppc.foo`
+that extracts the data `y` and the draws from the posterior predictive 
+distribution `yrep` from an object of class `"foo"` and then calls 
+one of the plotting functions from **ppcheck**.
+
+Suppose that objects of class `"foo"` are lists with named components, two of
+which are `y` and `yrep`. Here's a simple method `ppc.foo` that offers the user
+the option of two different plots:
+
+```{r, ppc.foo}
+ppc.foo <- function(object, ..., type = c("multiple", "overlaid")) {
+  y <- object[["y"]]
+  yrep <- object[["yrep"]]
+  switch(
+    match.arg(type),
+    multiple = ppc_hist(y, yrep[1:min(8, nrow(yrep)),, drop = FALSE]),
+    overlaid = ppc_dens_overlay(y, yrep)
+  )
+}
+
+print(methods("ppc"))
+```
+
+To try out `ppc.foo` we can just make a list with `y` and `yrep` components and 
+give it class `foo`:
+
+```{r, plots}
+x <- list(y = rnorm(50), yrep = matrix(rnorm(5000), nrow = 100, ncol = 50))
+class(x) <- "foo"
+ppc(x)
+ppc(x, type = "overlaid")
+```
