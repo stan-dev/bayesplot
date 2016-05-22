@@ -3,7 +3,8 @@ Type: Package
 Title: Graphical Posterior Predictive Checking
 Version: 0.1.0
 Date: 2016-05-21
-Author: Jonah Gabry <jsg2201@columbia.edu>
+Authors@R: c(person("Jonah", "Gabry", role = c("aut", "cre"), email = "jsg2201@columbia.edu"),
+             person("Paul-Christian", "Buerkner", role = "ctb"))
 Maintainer: Jonah Gabry <jsg2201@columbia.edu>
 Description: Graphical posterior predictive checks for Bayesian models.
 License: GPL (>= 3)
