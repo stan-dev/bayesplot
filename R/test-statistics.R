@@ -11,7 +11,7 @@
 #' @name test-statistics
 #' @family PPCs
 #'
-#' @template args-ppc
+#' @template args-y-yrep
 #' @template args-hist
 #' @param stat A character vector of function names of length 1 (for
 #'   \code{ppc_stat}) and length 2 (for \code{ppc_stat_2d}).
@@ -19,7 +19,7 @@
 #'   a scalar test statistic.
 #' @param ... Currently unused.
 #'
-#' @template details-ppc
+#' @template details-binomial
 #' @template return-ggplot
 #'
 #' @templateVar bdaRef (Ch. 6)
@@ -30,7 +30,7 @@
 #' y <- rnorm(30)
 #' yrep <- matrix(rnorm(3000), ncol = 30)
 #' ppc_stat(y, yrep)
-#' ppc_stat(y, yrep, stat = "var")
+#' ppc_stat(y, yrep, stat = "var", binwidth = 0.1)
 #' ppc_stat_2d(y, yrep)
 #' ppc_stat_2d(y, yrep, stat = c("median", "mean"))
 #'

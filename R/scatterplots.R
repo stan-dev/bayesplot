@@ -14,10 +14,10 @@
 #' @name scatterplots
 #' @family PPCs
 #'
-#' @template args-ppc
+#' @template args-y-yrep
 #' @param ... Currently unused.
 #'
-#' @template details-ppc
+#' @template details-binomial
 #' @template return-ggplot
 #'
 #' @templateVar bdaRef (Ch. 6)

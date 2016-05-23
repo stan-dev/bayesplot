@@ -11,11 +11,11 @@
 #' @name distributions
 #' @family PPCs
 #'
-#' @template args-ppc
+#' @template args-y-yrep
 #' @template args-hist
 #' @param ... Currently unused.
 #'
-#' @template details-ppc
+#' @template details-binomial
 #' @template return-ggplot
 #'
 #' @templateVar bdaRef (Ch. 6)
@@ -49,8 +49,8 @@ ppc_hist <- function(y, yrep, ..., binwidth = NULL) {
     )
   ) +
     geom_histogram(
-      mapping = aes_string(y = "..density.."), 
-      size = 0.25, 
+      mapping = aes_string(y = "..density.."),
+      size = 0.25,
       binwidth = binwidth,
     ) +
     facet_wrap("rep_id", switch = "x") +

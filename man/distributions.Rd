@@ -41,9 +41,9 @@ kernel density estimates, respectively, for \code{y} and each row of
 contain only a small number of rows).
 }
 \details{
-For binomial (not Bernoulli) data, the plots will be most useful if
-  \code{y} and \code{yrep} contain the "success" proportions (not "success"
-  or "failure" counts).
+For Binomial data, the plots will be most useful if \code{y} and
+  \code{yrep} contain the "success" proportions (not "success" or "failure"
+  counts).
 }
 \examples{
 y <- rnorm(100)

@@ -9,7 +9,7 @@
 #' @name residuals
 #' @family PPCs
 #'
-#' @template args-ppc
+#' @template args-y-yrep
 #' @template args-hist
 #' @param ... Currently unused.
 #'
