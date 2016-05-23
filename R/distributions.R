@@ -51,7 +51,7 @@ ppc_hist <- function(y, yrep, ..., binwidth = NULL) {
     geom_histogram(
       mapping = aes_string(y = "..density.."),
       size = 0.25,
-      binwidth = binwidth,
+      binwidth = binwidth
     ) +
     facet_wrap("rep_id", switch = "x") +
     scale_fill_manual(values = fills) +
