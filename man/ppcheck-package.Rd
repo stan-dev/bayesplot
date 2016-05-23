@@ -46,10 +46,10 @@ Chapter 6 of Gelman et. al. (2013).
 \section{Providing an interface to ppcheck from another package}{
 
 
-The \pkg{ppcheck} package provides the S3 generic \code{\link{ppc}}. Authors
-of \R packages for Bayesian inference are encouraged to define \code{ppc}
-methods for the fitted model objects created by their packages. See the
-vignettes for more details and an example.
+The \pkg{ppcheck} package provides the S3 generic \code{\link{pp_check}}.
+Authors of \R packages for Bayesian inference are encouraged to define
+\code{pp_check} methods for the fitted model objects created by their
+packages. See the vignettes for more details and an example.
 }
 \author{
 Jonah Gabry

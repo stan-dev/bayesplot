@@ -19,31 +19,31 @@ knitr::opts_chunk$set(
 )
 ```
 
-The **ppcheck** package provides the S3 generic function `ppc`. Authors of R
-packages for Bayesian inference are encouraged to define methods for the fitted
-model objects created by their packages. This will hopefully be convenient for
-both users and developers and contribute to the use of the same naming
-conventions across many of the R packages for Bayesian data analysis.
+The **ppcheck** package provides the S3 generic function `pp_check`. Authors of
+R packages for Bayesian inference are encouraged to define methods for the
+fitted model objects created by their packages. This will hopefully be
+convenient for both users and developers and contribute to the use of the same
+naming conventions across many of the R packages for Bayesian data analysis.
 
 
 To provide an provide interface to **ppcheck** from your package, you can very 
-easily define a `ppc` method (or multiple `ppc` methods) for the fitted model 
-objects created by your package. All a `ppc` method needs to do is provide the
-`y` vector and `yrep` matrix arguments to the various plotting functions 
-included in **ppcheck**.
+easily define a `pp_check` method (or multiple `pp_check` methods) for the
+fitted model objects created by your package. All a `pp_check` method needs to
+do is provide the `y` vector and `yrep` matrix arguments to the various plotting
+functions included in **ppcheck**.
 
-Here is an example for how to define a simple `ppc` method in a package that
-creates fitted model objects of class `"foo"`. We will define a method `ppc.foo`
-that extracts the data `y` and the draws from the posterior predictive 
-distribution `yrep` from an object of class `"foo"` and then calls 
+Here is an example for how to define a simple `pp_check` method in a package
+that creates fitted model objects of class `"foo"`. We will define a method
+`pp_check.foo` that extracts the data `y` and the draws from the posterior
+predictive distribution `yrep` from an object of class `"foo"` and then calls 
 one of the plotting functions from **ppcheck**.
 
-Suppose that objects of class `"foo"` are lists with named components, two of
-which are `y` and `yrep`. Here's a simple method `ppc.foo` that offers the user
-the option of two different plots:
+Suppose that objects of class `"foo"` are lists with named components, two of 
+which are `y` and `yrep`. Here's a simple method `pp_check.foo` that offers the
+user the option of two different plots:
 
-```{r, ppc.foo}
-ppc.foo <- function(object, ..., type = c("multiple", "overlaid")) {
+```{r, pp_check.foo}
+pp_check.foo <- function(object, ..., type = c("multiple", "overlaid")) {
   y <- object[["y"]]
   yrep <- object[["yrep"]]
   switch(
@@ -53,15 +53,15 @@ ppc.foo <- function(object, ..., type = c("multiple", "overlaid")) {
   )
 }
 
-print(methods("ppc"))
+print(methods("pp_check"))
 ```
 
-To try out `ppc.foo` we can just make a list with `y` and `yrep` components and 
-give it class `foo`:
+To try out `pp_check.foo` we can just make a list with `y` and `yrep` components
+and give it class `foo`:
 
 ```{r, plots}
 x <- list(y = rnorm(50), yrep = matrix(rnorm(5000), nrow = 100, ncol = 50))
 class(x) <- "foo"
-ppc(x)
-ppc(x, type = "overlaid")
+pp_check(x)
+pp_check(x, type = "overlaid")
 ```
