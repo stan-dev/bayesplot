@@ -20,6 +20,7 @@ Imports:
     stats
 Suggests:
     arm,
+    dplyr,
     knitr,
     rmarkdown,
     testthat

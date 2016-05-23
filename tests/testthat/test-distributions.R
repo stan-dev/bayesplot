@@ -1,13 +1,24 @@
 library(ppcheck)
 context("distributions")
 
-test_that("ppc_dist returns ggplot object", {
+test_that("ppc_dens_overlay returns a ggplot object", {
   expect_gg(ppc_dens_overlay(y, yrep))
+})
+
+test_that("ppc_dens and pp_hist return ggplot objects", {
+  expect_gg(ppc_hist(y, yrep[1,, drop = FALSE]))
   expect_gg(ppc_hist(y, yrep[1:8, ]))
+  expect_gg(ppc_dens(y, yrep[1:8, ]))
 
   expect_gg(p <- ppc_hist(y, yrep[1:8, ], binwidth = 3))
   facet_var <- "list(rep_id)"
   labels <- list(fill = "is_y", colour = "is_y", x = "value", y = "density")
   expect_equal(as.character(p$facet)[1], facet_var)
   expect_equal(p$labels, labels)
+})
+
+test_that("ppc_violin_grouped returns a ggplot object", {
+  expect_gg(ppc_violin_grouped(y, yrep, group))
+  expect_gg(ppc_violin_grouped(y, yrep, as.numeric(group)))
+  expect_gg(ppc_violin_grouped(y, yrep, as.integer(group)))
 })

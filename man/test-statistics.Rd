@@ -3,10 +3,13 @@
 \name{test-statistics}
 \alias{ppc_stat}
 \alias{ppc_stat_2d}
+\alias{ppc_stat_grouped}
 \alias{test-statistics}
 \title{Test statistics}
 \usage{
 ppc_stat(y, yrep, stat = "mean", ..., binwidth = NULL)
+
+ppc_stat_grouped(y, yrep, group, stat = "mean", ..., binwidth = NULL)
 
 ppc_stat_2d(y, yrep, stat = c("mean", "sd"), ...)
 }
@@ -20,14 +23,16 @@ predictive distribution, where \eqn{S} is the size of the posterior sample
 See Details for additional instructions.}
 
 \item{stat}{A character vector of function names of length 1 (for
-\code{ppc_stat}) and length 2 (for \code{ppc_stat_2d}).
-The function(s) should take a vector input and return
+\code{ppc_stat}, \code{ppc_stat_grouped}) and length 2 (for
+\code{ppc_stat_2d}). The function(s) should take a vector input and return
 a scalar test statistic.}
 
 \item{...}{Currently unused.}
 
 \item{binwidth}{An optional value to override
 \code{\link[ggplot2]{geom_histogram}}'s default binwidth.}
+
+\item{group}{A grouping variable of the same length as \code{y}.}
 }
 \value{
 A ggplot object that can be further customized using the
@@ -51,9 +56,12 @@ For Binomial data, the plots will be most useful if \code{y} and
 y <- rnorm(30)
 yrep <- matrix(rnorm(3000), ncol = 30)
 ppc_stat(y, yrep)
-ppc_stat(y, yrep, stat = "var")
+ppc_stat(y, yrep, stat = "var", binwidth = 0.1)
 ppc_stat_2d(y, yrep)
 ppc_stat_2d(y, yrep, stat = c("median", "mean"))
+
+group <- gl(3, 10, labels = LETTERS[1:3])
+ppc_stat_grouped(y, yrep, group)
 
 # define a custom test statistic
 q25 <- function(y) quantile(y, 0.25)

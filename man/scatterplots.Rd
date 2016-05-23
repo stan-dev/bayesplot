@@ -2,13 +2,16 @@
 % Please edit documentation in R/scatterplots.R
 \name{scatterplots}
 \alias{ppc_scatter}
-\alias{ppc_scatter_average}
+\alias{ppc_scatter_avg}
+\alias{ppc_scatter_avg_grouped}
 \alias{scatterplots}
 \title{Scatterplots}
 \usage{
-ppc_scatter_average(y, yrep, ...)
-
 ppc_scatter(y, yrep, ...)
+
+ppc_scatter_avg(y, yrep, ...)
+
+ppc_scatter_avg_grouped(y, yrep, group, ...)
 }
 \arguments{
 \item{y}{A vector of observed data. See Details.}
@@ -20,6 +23,8 @@ predictive distribution, where \eqn{S} is the size of the posterior sample
 See Details for additional instructions.}
 
 \item{...}{Currently unused.}
+
+\item{group}{A grouping variable of the same length as \code{y}.}
 }
 \value{
 A ggplot object that can be further customized using the
@@ -28,7 +33,7 @@ A ggplot object that can be further customized using the
 \description{
 Scatterplots of the observed data \eqn{y} vs. simulated/replicated data
 \eqn{y^{rep}}{yrep} from the posterior predictive distribution. For
-\code{ppc_scatter_average}, \eqn{y} is plotted against the average values of
+\code{ppc_scatter_avg}, \eqn{y} is plotted against the average values of
 \eqn{y^{rep}}{yrep}, i.e., the points \eqn{(y_n, \bar{y}^{rep}_n),\, n = 1,
 \dots, N}{(y_n, mean(yrep_n)), n = 1,...,N}, where each
 \eqn{y^{rep}_n}{yrep_n} is a vector of length equal to the number of
@@ -45,12 +50,15 @@ For Binomial data, the plots will be most useful if \code{y} and
 \examples{
 y <- rnorm(100)
 yrep <- matrix(rnorm(2500), ncol = 100)
-(p1 <- ppc_scatter_average(y, yrep))
+(p1 <- ppc_scatter_avg(y, yrep))
 (p2 <- ppc_scatter(y, yrep[1:3, ]))
 
 lims <- ggplot2::lims(x = c(-3, 3), y = c(-3, 3))
 p1 + lims
 p2 + lims
+
+group <- gl(5, 20, labels = month.abb[1:5])
+ppc_scatter_avg_grouped(y, yrep, group)
 
 }
 \references{
