@@ -28,7 +28,7 @@
 #' y <- rnorm(100)
 #' yrep <- matrix(rnorm(2500), ncol = 100)
 #' (p1 <- ppc_scatter_average(y, yrep))
-#' (p2 <- ppc_scatter_multiple(y, yrep[1:3, ]))
+#' (p2 <- ppc_scatter(y, yrep[1:3, ]))
 #'
 #' lims <- ggplot2::lims(x = c(-3, 3), y = c(-3, 3))
 #' p1 + lims
@@ -41,22 +41,22 @@ NULL
 ppc_scatter_average <- function(y, yrep, ...) {
   y <- validate_y(y)
   yrep <- validate_yrep(yrep, y)
-  ppc_scatter(y, yrep, average = TRUE, ...)
+  ppc_scatterplot(y, yrep, average = TRUE, ...)
 }
 
 #' @export
 #' @rdname scatterplots
-ppc_scatter_multiple <- function(y, yrep, ...) {
+ppc_scatter <- function(y, yrep, ...) {
   y <- validate_y(y)
   yrep <- validate_yrep(yrep, y)
-  ppc_scatter(y, yrep, average = FALSE, ...)
+  ppc_scatterplot(y, yrep, average = FALSE, ...)
 }
 
 # @param y, yrep Already validated y (numeric vector) and yrep (numeric matrix)
 #   objects.
 # @param average Plot y vs avg yrep? If FALSE y is plotted again each row of
 #   yrep separately.
-ppc_scatter <- function(y, yrep, average = TRUE, ...) {
+ppc_scatterplot <- function(y, yrep, average = TRUE, ...) {
   scheme <- get_color_scheme()
 
   if (average) {
