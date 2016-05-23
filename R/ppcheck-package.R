@@ -47,7 +47,8 @@
 #' The \pkg{ppcheck} package provides the S3 generic \code{\link{pp_check}}.
 #' Authors of \R packages for Bayesian inference are encouraged to define
 #' \code{pp_check} methods for the fitted model objects created by their
-#' packages. See the vignettes for more details and an example.
+#' packages. See \code{vignette("ppcheck")} for more details and an
+#' example.
 #'
 #' @author Jonah Gabry
 #'
