@@ -41,12 +41,11 @@ validate_yrep <- function(yrep, y) {
 
 # Convert yrep matrix into a molten data frame
 #
-# @param yrep A matrix.
+# @param yrep A matrix, already validated using validate_yrep().
 # @return A data frame with three columns:
 # \itemize{
 #  \item 'value': the numeric values.
-#  \item 'y_id': integer indicating which yrep column each of the values comes
-#  from.
+#  \item 'y_id': integer indicating from which yrep column each values comes.
 # \item 'rep_id': factor with levels 'yrep_1', ..., 'yrep_S', where S is
 #  nrow(yrep), i.e. the number of simulations included in yrep.
 # }
@@ -56,7 +55,7 @@ melt_yrep <- function(yrep) {
     data = yrep,
     varnames = c("rep_id", "y_id")
   )
-  out$rep_id <- paste0('yrep_', out$rep_id)
-  out$rep_id <- factor(out$rep_id, levels = unique(out$rep_id))
+  id <- paste0('yrep_', out$rep_id)
+  out$rep_id <- factor(id, levels = unique(id))
   out
 }

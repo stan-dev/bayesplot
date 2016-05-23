@@ -33,7 +33,8 @@ set_color_scheme <- function(scheme = c("reds", "blues", "greens", "greys", "pur
 #'   color values used by the current scheme.
 #'
 get_color_scheme <- function() {
-  as.list(.ppcheck_aesthetics)[scheme_level_names()]
+  x <- as.list(.ppcheck_aesthetics)
+  x[scheme_level_names()]
 }
 
 # scheme level names
@@ -49,7 +50,8 @@ scheme_level_names <- function() {
 # create a scheme from RColorBrewer palette
 brew_scheme <- function(name) {
   x <- RColorBrewer::brewer.pal(9, name)
-  setNames(as.list(x[3:8]), scheme_level_names())
+  x <- as.list(x[3:8])
+  setNames(x, scheme_level_names())
 }
 
 scheme_blues <- function() brew_scheme("Blues")
