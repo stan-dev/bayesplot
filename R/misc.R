@@ -30,6 +30,9 @@ validate_y <- function(y) {
 validate_yrep <- function(yrep, y) {
   stopifnot(is.vector(y)) # y should already be validated
   stopifnot(is.matrix(yrep), is.numeric(yrep))
+  if (is.integer(yrep))
+    yrep <- apply(yrep, 2, as.numeric)
+
   if (anyNA(yrep))
     stop("NAs not allowed in 'yrep'.")
   if (ncol(yrep) != length(y))

@@ -39,4 +39,8 @@ expect_correct_structure <- function(yrep) {
 test_that("melt_yrep returns correct structure", {
   expect_correct_structure(yrep1)
   expect_correct_structure(yrep2)
+
+  load("data-for-binomial.rda")
+  expect_correct_structure(Ey)
+  expect_correct_structure(validate_yrep(yrep, y))
 })

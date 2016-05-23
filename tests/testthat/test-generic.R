@@ -19,5 +19,3 @@ test_that("pp_check method can be defined", {
   expect_gg(pp_check(x))
   expect_gg(pp_check(x, type = "overlaid"))
 })
-
-
