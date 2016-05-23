@@ -12,6 +12,7 @@
 #' @family PPCs
 #'
 #' @template args-ppc
+#' @template args-hist
 #' @param stat A character vector of function names of length 1 (for
 #'   \code{ppc_stat}) and length 2 (for \code{ppc_stat_2d}).
 #'   The function(s) should take a vector input and return
@@ -42,7 +43,7 @@ NULL
 #' @export
 #' @rdname test-statistics
 #'
-ppc_stat <- function(y, yrep, stat = "mean", ...) {
+ppc_stat <- function(y, yrep, stat = "mean", ..., binwidth = NULL) {
   y <- validate_y(y)
   yrep <- validate_yrep(yrep, y)
   stopifnot(is.character(stat), length(stat) == 1)
@@ -65,7 +66,8 @@ ppc_stat <- function(y, yrep, stat = "mean", ...) {
       fill = fill_color,
       color = outline_color,
       size = .25,
-      na.rm = TRUE
+      na.rm = TRUE,
+      binwidth = binwidth
     ) +
     geom_vline(
       data = data.frame(t = T_y),

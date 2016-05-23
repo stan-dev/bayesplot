@@ -10,6 +10,7 @@
 #' @family PPCs
 #'
 #' @template args-ppc
+#' @template args-hist
 #' @param ... Currently unused.
 #'
 #' @details
@@ -41,7 +42,7 @@ NULL
 #' @rdname residuals
 #' @export
 #'
-ppc_resid <- function(y, yrep, ...) {
+ppc_resid <- function(y, yrep, ..., binwidth = NULL) {
   y <- validate_y(y)
   yrep <- validate_yrep(yrep, y)
   scheme <- get_color_scheme()
@@ -63,7 +64,8 @@ ppc_resid <- function(y, yrep, ...) {
       mapping = aes_string(y = "..density.."),
       size = 0.25,
       fill = scheme[["dark"]],
-      color = scheme[["dark_highlight"]]
+      color = scheme[["dark_highlight"]],
+      binwidth = binwidth
     ) +
     xylabs +
     coord_cartesian(expand = FALSE) +

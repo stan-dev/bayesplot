@@ -12,6 +12,7 @@
 #' @family PPCs
 #'
 #' @template args-ppc
+#' @template args-hist
 #' @param ... Currently unused.
 #'
 #' @template details-ppc
@@ -32,7 +33,7 @@ NULL
 #' @export
 #' @rdname distributions
 #'
-ppc_hist <- function(y, yrep, ...) {
+ppc_hist <- function(y, yrep, ..., binwidth = NULL) {
   y <- validate_y(y)
   yrep <- validate_yrep(yrep, y)
   plot_data <- ppc_dist_data(y, yrep)
@@ -47,7 +48,11 @@ ppc_hist <- function(y, yrep, ...) {
       color = "is_y"
     )
   ) +
-    geom_histogram(aes_string(y = "..density.."), size = 0.25) +
+    geom_histogram(
+      mapping = aes_string(y = "..density.."), 
+      size = 0.25, 
+      binwidth = binwidth,
+    ) +
     facet_wrap("rep_id", switch = "x") +
     scale_fill_manual(values = fills) +
     scale_color_manual(values = colors) +

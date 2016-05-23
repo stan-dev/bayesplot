@@ -6,7 +6,7 @@
 \alias{residuals}
 \title{Residuals}
 \usage{
-ppc_resid(y, yrep, ...)
+ppc_resid(y, yrep, ..., binwidth = NULL)
 
 ppc_resid_binned(y, Ey, ...)
 }
@@ -20,6 +20,9 @@ predictive distribution, where \eqn{S} is the size of the posterior sample
 See Details for additional instructions.}
 
 \item{...}{Currently unused.}
+
+\item{binwidth}{An optional value to override
+\code{\link[ggplot2]{geom_histogram}}'s default binwidth.}
 
 \item{Ey}{A matrix of posterior draws of the linear predictor transformed by
 the inverse-link function.}

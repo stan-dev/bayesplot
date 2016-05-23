@@ -7,7 +7,7 @@
 \alias{ppc_hist}
 \title{Distributions}
 \usage{
-ppc_hist(y, yrep, ...)
+ppc_hist(y, yrep, ..., binwidth = NULL)
 
 ppc_dens(y, yrep, ...)
 
@@ -23,6 +23,9 @@ predictive distribution, where \eqn{S} is the size of the posterior sample
 See Details for additional instructions.}
 
 \item{...}{Currently unused.}
+
+\item{binwidth}{An optional value to override
+\code{\link[ggplot2]{geom_histogram}}'s default binwidth.}
 }
 \value{
 A ggplot object that can be further customized using the

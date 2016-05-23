@@ -6,7 +6,7 @@
 \alias{test-statistics}
 \title{Test statistics}
 \usage{
-ppc_stat(y, yrep, stat = "mean", ...)
+ppc_stat(y, yrep, stat = "mean", ..., binwidth = NULL)
 
 ppc_stat_2d(y, yrep, stat = c("mean", "sd"), ...)
 }
@@ -25,6 +25,9 @@ The function(s) should take a vector input and return
 a scalar test statistic.}
 
 \item{...}{Currently unused.}
+
+\item{binwidth}{An optional value to override
+\code{\link[ggplot2]{geom_histogram}}'s default binwidth.}
 }
 \value{
 A ggplot object that can be further customized using the
