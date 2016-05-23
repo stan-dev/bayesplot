@@ -5,6 +5,7 @@
 \alias{ppc_dens}
 \alias{ppc_dens_overlay}
 \alias{ppc_hist}
+\alias{ppc_violin_grouped}
 \title{Distributions}
 \usage{
 ppc_hist(y, yrep, ..., binwidth = NULL)
@@ -12,6 +13,8 @@ ppc_hist(y, yrep, ..., binwidth = NULL)
 ppc_dens(y, yrep, ...)
 
 ppc_dens_overlay(y, yrep, ...)
+
+ppc_violin_grouped(y, yrep, group, ...)
 }
 \arguments{
 \item{y}{A vector of observed data. See Details.}
@@ -26,6 +29,8 @@ See Details for additional instructions.}
 
 \item{binwidth}{An optional value to override
 \code{\link[ggplot2]{geom_histogram}}'s default binwidth.}
+
+\item{group}{A grouping variable of the same length as \code{y}.}
 }
 \value{
 A ggplot object that can be further customized using the
@@ -50,6 +55,9 @@ y <- rnorm(100)
 yrep <- matrix(rnorm(2500), ncol = 100)
 ppc_dens_overlay(y, yrep)
 ppc_hist(y, yrep[1:8, ])
+
+group <- gl(4, 25, labels = LETTERS[1:4])
+ppc_violin_grouped(y, yrep, group)
 
 }
 \references{

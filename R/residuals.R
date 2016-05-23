@@ -51,7 +51,7 @@ ppc_resid <- function(y, yrep, ..., binwidth = NULL) {
   if (n == 1) {
     resids <- data.frame(x = y - as.vector(yrep))
     base <- ggplot(resids, aes_string(x = "x"))
-    xylabs <- labs(y = NULL, x = "y - yrep")
+    xylabs <- labs(y = NULL, x = expression(italic(y) - italic(y)^rep))
   } else {
     resids <- melt_yrep(as.matrix(-1 * sweep(yrep, 2L, y)))
     resids$rep_id <- factor(resids$rep_id, labels = paste("y -", unique(resids$rep_id)))
@@ -72,7 +72,7 @@ ppc_resid <- function(y, yrep, ..., binwidth = NULL) {
     theme_ppc(y_text = FALSE)
 
   if (n > 1)
-    graph <- graph + facet_wrap("rep_id", switch = "x")
+    graph <- graph + facet_wrap("rep_id", switch = "x", labeller = label_parsed)
 
   graph
 }
@@ -153,18 +153,21 @@ ppc_resid_binned <- function(y, Ey, ...) {
     theme_ppc()
 
   if (n > 1)
-    graph <- graph + facet_wrap("rep", switch = "x")
+    graph <- graph + facet_wrap("rep", labeller = label_parsed)
 
   graph
 }
 
 binner <- function(rep_id, ey, r, nbins) {
-  binned_resids <- arm::binned.resids(ey, r, nbins)$binned[, c("xbar", "ybar", "2se")]
-  if (length(dim(binned_resids)) < 2L)
+  binned_resids <- arm::binned.resids(ey, r, nbins)$binned
+  binned_resids <- binned_resids[, c("xbar", "ybar", "2se")]
+  if (length(dim(binned_resids)) < 2)
     binned_resids <- t(binned_resids)
   colnames(binned_resids) <- c("xbar", "ybar", "se2")
   data.frame(
-    rep = paste0("yrep_", rep_id),
+    rep = create_yrep_ids(rep_id),
     binned_resids
   )
 }
+
+

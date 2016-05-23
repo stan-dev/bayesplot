@@ -11,12 +11,13 @@ theme_ppc <-
            x_lab = TRUE,
            legend_position = "none",
            ...) {
-    thm <- theme_classic() %+replace%
+    thm <- theme_classic() +
       theme(
         axis.line.x = element_line(size = 0.25),
         axis.line.y = element_line(size = 0.25),
         axis.ticks = element_blank(),
         legend.position = legend_position,
+        strip.text = element_text(size = rel(0.75)),
         strip.background = element_rect(fill = "gray95", color = NA),
         ...
       )

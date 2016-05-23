@@ -24,4 +24,14 @@ get_color_scheme()
 \description{
 Set or get the color scheme used for plotting.
 }
+\examples{
+get_color_scheme()
+y <- rnorm(100)
+yrep <- matrix(rnorm(2500), ncol = 100)
+ppc_stat_2d(y, yrep)
+
+set_color_scheme("greens")
+ppc_stat_2d(y, yrep)
+
+}
 

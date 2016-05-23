@@ -28,6 +28,9 @@
 #' ppc_dens_overlay(y, yrep)
 #' ppc_hist(y, yrep[1:8, ])
 #'
+#' group <- gl(4, 25, labels = LETTERS[1:4])
+#' ppc_violin_grouped(y, yrep, group)
+#'
 NULL
 
 #' @export
@@ -44,18 +47,15 @@ ppc_hist <- function(y, yrep, ..., binwidth = NULL) {
     data = plot_data,
     mapping = aes_string(
       x = 'value',
+      y = "..density..",
       fill = 'is_y',
       color = "is_y"
     )
   ) +
-    geom_histogram(
-      mapping = aes_string(y = "..density.."),
-      size = 0.25,
-      binwidth = binwidth
-    ) +
-    facet_wrap("rep_id", switch = "x") +
+    geom_histogram(size = 0.25, binwidth = binwidth) +
     scale_fill_manual(values = fills) +
     scale_color_manual(values = colors) +
+    facet_wrap("rep_id", switch = "x", labeller = label_parsed) +
     coord_cartesian(expand = FALSE) +
     theme_ppc(y_text = FALSE, x_lab = FALSE)
 }
@@ -81,9 +81,9 @@ ppc_dens <- function(y, yrep, ...) {
     )
   ) +
     geom_density(size = 1) +
-    facet_wrap("rep_id", switch = "x") +
     scale_fill_manual(values = fills) +
     scale_color_manual(values = colors) +
+    facet_wrap("rep_id", switch = "x", labeller = label_parsed) +
     coord_cartesian(expand = FALSE) +
     theme_ppc(y_text = FALSE, x_lab = FALSE)
 }
@@ -112,14 +112,14 @@ ppc_dens_overlay <- function(y, yrep, ...) {
     scale_color_manual(values = colors) +
     scale_fill_manual(values = fills) +
     scale_size_manual(values = c(0.25, 1)) +
-    xlab("y") +
+    xlab(y_label()) +
     coord_cartesian(expand = FALSE) +
     theme_ppc(y_text = FALSE)
 }
 
 ppc_dist_data <- function(y, yrep) {
   yrep <- melt_yrep(yrep)
-  yobs_lab <- "Observed y"
+  yobs_lab <- "italic(y)"
   levels(yrep$rep_id) <- c(levels(yrep$rep_id), yobs_lab)
   ydat <- data.frame(
     rep_id = yobs_lab,
@@ -130,4 +130,44 @@ ppc_dist_data <- function(y, yrep) {
     rep_id <- relevel(rep_id, ref = yobs_lab)
     is_y <- rep_id == yobs_lab
   })
+}
+
+
+#' @export
+#' @rdname distributions
+#' @template args-group
+#'
+ppc_violin_grouped <- function(y, yrep, group, ...) {
+  y <- validate_y(y)
+  yrep <- validate_yrep(yrep, y)
+  group <- validate_group(group, y)
+  plot_data <- ppc_group_data(y, yrep, group, stat = NULL)
+  scheme <- get_color_scheme()
+
+  is_y <- plot_data$variable == "y"
+  ggplot(
+    data = plot_data[!is_y,, drop = FALSE],
+    mapping = aes_string(
+      x = "group",
+      y = "value",
+      fill = "variable"
+    )
+  ) +
+    geom_violin(
+      fill = scheme[["light"]],
+      color = scheme[["light_highlight"]],
+      draw_quantiles = c(0.1, 0.5, 0.9)
+    ) +
+    geom_point(
+      data = plot_data[is_y,, drop = FALSE],
+      color = scheme[["dark_highlight"]],
+      shape = 21
+    ) +
+    scale_fill_manual(
+      name = "",
+      values = scheme[["dark"]],
+      labels = expression(italic(y))
+    ) +
+    labs(x = "Group", y = yrep_label()) +
+    theme_ppc(legend_position = "right")
 }
