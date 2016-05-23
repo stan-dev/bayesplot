@@ -13,10 +13,10 @@ ppc_resid_binned(y, Ey, ...)
 \arguments{
 \item{y}{A vector of observed data. See Details.}
 
-\item{yrep}{An \eqn{S} by \eqn{N} matrix of draws from the posterior 
-predictive distribution, where \eqn{S} is the size of the posterior sample 
-(or subset of the posterior sample used to generate \code{yrep}) and 
-\eqn{N} is the number of observations (the length of \code{y}). 
+\item{yrep}{An \eqn{S} by \eqn{N} matrix of draws from the posterior
+predictive distribution, where \eqn{S} is the size of the posterior sample
+(or subset of the posterior sample used to generate \code{yrep}) and
+\eqn{N} is the number of observations (the length of \code{y}).
 See Details for additional instructions.}
 
 \item{...}{Currently unused.}
@@ -38,7 +38,7 @@ linear predictor transformed by the inverse-link function.
 \details{
 \code{ppc_resid} and \code{ppc_resid_binned} compute and plot
 residuals for each row of the matrices \code{yrep} and \code{Ey},
-respectively, so it is usually a good idea to \code{yrep} and \code{Ey} to
+respectively, so it is usually a good idea for \code{yrep} and \code{Ey} to
 contain only a small number of draws (rows).
 
 For binomial and Bernoulli data the \code{ppc_resid_binned} function

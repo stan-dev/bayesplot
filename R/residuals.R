@@ -15,7 +15,7 @@
 #' @details
 #' \code{ppc_resid} and \code{ppc_resid_binned} compute and plot
 #' residuals for each row of the matrices \code{yrep} and \code{Ey},
-#' respectively, so it is usually a good idea to \code{yrep} and \code{Ey} to
+#' respectively, so it is usually a good idea for \code{yrep} and \code{Ey} to
 #' contain only a small number of draws (rows).
 #'
 #' For binomial and Bernoulli data the \code{ppc_resid_binned} function

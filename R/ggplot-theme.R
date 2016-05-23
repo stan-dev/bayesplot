@@ -1,4 +1,4 @@
-# ggplot themes
+# ggplot theme
 #
 #
 # @param y_text Should y-axis text be displayed?
