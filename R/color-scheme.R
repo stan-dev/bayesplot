@@ -9,6 +9,15 @@
 #'   \code{\link[=invisible]{invisibly}}, a list of the hexidecimal color values
 #'   used in \code{scheme}.
 #'
+#' @examples
+#' get_color_scheme()
+#' y <- rnorm(100)
+#' yrep <- matrix(rnorm(2500), ncol = 100)
+#' ppc_stat_2d(y, yrep)
+#'
+#' set_color_scheme("greens")
+#' ppc_stat_2d(y, yrep)
+#'
 set_color_scheme <- function(scheme = c("reds", "blues", "greens", "greys", "purples")) {
   x <- switch(
     match.arg(scheme),
@@ -69,6 +78,7 @@ scheme_reds <- function() {
   setNames(reds, scheme_level_names())
 }
 
-# instantiate aesthetics
+
+# instantiate aesthetics --------------------------------------------------
 .ppcheck_aesthetics <- new.env(parent = emptyenv())
 set_color_scheme("reds")
