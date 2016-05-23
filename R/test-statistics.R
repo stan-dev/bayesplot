@@ -79,6 +79,7 @@ ppc_stat <- function(y, yrep, stat = "mean", ...) {
       labels = c("T(y)", "T(yrep)")
     ) +
     xlab(paste("Stat =", stat)) +
+    coord_cartesian(expand = FALSE) +
     theme_ppc(
       y_text = FALSE,
       legend_position = "right"

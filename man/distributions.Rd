@@ -2,13 +2,16 @@
 % Please edit documentation in R/distributions.R
 \name{distributions}
 \alias{distributions}
+\alias{ppc_dens}
 \alias{ppc_dens_overlay}
 \alias{ppc_hist}
 \title{Distributions}
 \usage{
-ppc_dens_overlay(y, yrep, ...)
-
 ppc_hist(y, yrep, ...)
+
+ppc_dens(y, yrep, ...)
+
+ppc_dens_overlay(y, yrep, ...)
 }
 \arguments{
 \item{y}{A vector of observed data. See Details.}
@@ -26,11 +29,13 @@ A ggplot object that can be further customized using the
   \pkg{ggplot2} package.
 }
 \description{
-Compare the empirical distribution of the data \eqn{y} to the distributions
-of simulated/replicated data \eqn{y^{rep}}{yrep} from the posterior
-predictive distribution. \code{ppc_dens_overlay} plots the distributions as
-overlaid densities. \code{ppc_hist} plots a separate histogram for each (so
-\code{yrep} should contain only a small number of rows).
+Compare the empirical distribution of the data \code{y} to the distributions
+of simulated/replicated data \code{yrep} from the posterior predictive
+distribution. \code{ppc_dens_overlay} plots the distributions as overlaid
+densities. \code{ppc_hist} and \code{ppc_dens} plot separate histograms and
+kernel density estimates, respectively, for \code{y} and each row of
+\code{yrep} (so for \code{ppc_hist} and \code{ppc_dens} \code{yrep} should
+contain only a small number of rows).
 }
 \details{
 For binomial (not Bernoulli) data, the plots will be most useful if

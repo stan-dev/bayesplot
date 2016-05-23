@@ -66,6 +66,7 @@ ppc_resid <- function(y, yrep, ...) {
       color = scheme[["dark_highlight"]]
     ) +
     xylabs +
+    coord_cartesian(expand = FALSE) +
     theme_ppc(y_text = FALSE)
 
   if (n > 1)
