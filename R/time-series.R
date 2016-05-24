@@ -48,7 +48,7 @@ ppc_ts_grouped <- function(y, yrep, group, ..., prob = 0.9) {
 }
 
 
-ppc_time_series <- function(y, yrep, group, prob = 0.8, ...) {
+ppc_time_series <- function(y, yrep, group, prob = 0.9, ...) {
   d <- melt_yrep(yrep)
   if (missing(group)) {
     dots <- list(~y_id)
