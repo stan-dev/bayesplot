@@ -27,7 +27,7 @@ NULL
 #' @rdname time-series
 #' @export
 #' @param prob A value between 0 and 1 indicating the desired probability mass
-#'   to include in the \code{yrep} intervals.
+#'   to include in the \code{yrep} intervals. The default is 0.9.
 #'
 ppc_ts <- function(y, yrep, ..., prob = 0.9) {
   y <- validate_y(y)
@@ -39,7 +39,7 @@ ppc_ts <- function(y, yrep, ..., prob = 0.9) {
 #' @export
 #' @template args-group
 #'
-ppc_ts_grouped <- function(y, yrep, group, ..., prob = 0.8) {
+ppc_ts_grouped <- function(y, yrep, group, ..., prob = 0.9) {
   y <- validate_y(y)
   yrep <- validate_yrep(yrep, y)
   group <- validate_group(group, y)
