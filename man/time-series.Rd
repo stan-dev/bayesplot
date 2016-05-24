@@ -37,9 +37,8 @@ optionally, levels of a grouping variable, with \eqn{y} points overlaid.
 \examples{
 y <- rnorm(50)
 yrep <- matrix(rnorm(5000), ncol = 50)
-ppc_ts(y, yrep)
-
 group <- gl(5, 10)
+ppc_ts(y, yrep)
 ppc_ts_grouped(y, yrep, group)
 
 }
