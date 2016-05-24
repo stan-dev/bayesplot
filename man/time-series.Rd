@@ -2,13 +2,11 @@
 % Please edit documentation in R/time-series.R
 \name{time-series}
 \alias{ppc_ts}
-\alias{ppc_ts_grouped}
 \alias{time-series}
 \title{PPCs for time series}
 \usage{
-ppc_ts(y, yrep, ..., prob = 0.8)
-
-ppc_ts_grouped(y, yrep, group, ..., prob = 0.8)
+ppc_ts(y, yrep, time, ..., prob = 0.8, y_style = c("both", "points",
+  "lines"))
 }
 \arguments{
 \item{y}{A vector of observed data. See Details.}
@@ -16,30 +14,38 @@ ppc_ts_grouped(y, yrep, group, ..., prob = 0.8)
 \item{yrep}{An \eqn{S} by \eqn{N} matrix of draws from the posterior
 predictive distribution, where \eqn{S} is the size of the posterior sample
 (or subset of the posterior sample used to generate \code{yrep}) and
-\eqn{N} is the number of observations (the length of \code{y}).
-See Details for additional instructions.}
+\eqn{N} is the number of observations (the length of \code{y}). The columns
+of \code{yrep} should be in the same order as the data points in \code{y}
+for the plots to make sense. See Details for additional instructions.}
+
+\item{time}{An optional numeric vector, the same length as \eqn{y}, of
+\emph{unique} time values. If \code{time} is missing then it is set to
+\code{1:length(y)}.}
 
 \item{...}{Currently unused.}
 
 \item{prob}{A value between 0 and 1 indicating the desired probability mass
 to include in the \code{yrep} intervals. The default is 0.8.}
 
-\item{group}{A grouping variable of the same length as \code{y}.}
+\item{y_style}{Should \code{y} be plotted as points connected by lines, only
+the points, or only the lines?}
 }
 \value{
 A ggplot object that can be further customized using the
   \pkg{ggplot2} package.
 }
 \description{
-Central interval estimates (quantiles) of \eqn{y^{rep}}{yrep} by time and,
-optionally, levels of a grouping variable, with \eqn{y} points overlaid.
+Central interval estimates (quantiles) of \eqn{y^{rep}}{yrep} by time,
+with \eqn{y} overlaid.
 }
 \examples{
 y <- rnorm(50)
-yrep <- matrix(rnorm(5000), ncol = 50)
-group <- gl(5, 10)
+yrep <- matrix(rnorm(5000, 0, 2), ncol = 50)
 ppc_ts(y, yrep)
-ppc_ts_grouped(y, yrep, group)
+
+time <- sample(200, size = 50)
+ppc_ts(y, yrep, time)
+
 
 }
 \references{
