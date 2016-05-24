@@ -1,7 +1,7 @@
 #' PPCs for time series
 #'
-#' Central interval estimates (quantiles) of \eqn{y^{rep}}{yrep} by time,
-#' with \eqn{y} overlaid.
+#' Medians and central interval estimates of \eqn{y^{rep}}{yrep} by time, with
+#' \eqn{y} overlaid.
 #'
 #'
 #' @name time-series
