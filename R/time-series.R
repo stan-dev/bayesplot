@@ -115,17 +115,6 @@ ppc_ts <- function(y,
     theme_ppc()
 }
 
-validate_time <- function(time, y) {
-  if (missing(time)) {
-    time <- 1:length(y)
-  } else {
-    stopifnot(is.numeric(time),
-              identical(length(time), length(y)),
-              identical(length(time), length(unique(time))))
-  }
-  time
-}
-
 
 # @rdname time-series
 # @export
