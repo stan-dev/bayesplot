@@ -77,6 +77,7 @@ Gelman, A., Carlin, J. B., Stern, H. S., Dunson, D. B., Vehtari,
 \code{\link{set_color_scheme}} to change the aesthetic theme
 
 Other PPCs: \code{\link{distributions}},
-  \code{\link{residuals}}, \code{\link{scatterplots}}
+  \code{\link{residuals}}, \code{\link{scatterplots}},
+  \code{\link{time-series}}
 }
 

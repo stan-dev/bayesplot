@@ -102,11 +102,12 @@ ppc_scatter_avg_grouped <- function(y, yrep, group, ...) {
   )
 }
 
-.ppc_scatter_points <- function(scheme) {
+.ppc_scatter_points <- function(scheme, value = c("mid", "light", "dark")) {
+  value <- match.arg(value)
   geom_point(
     shape = 21,
-    fill = scheme[["mid"]],
-    color = scheme[["mid_highlight"]],
+    fill = scheme[[value]],
+    color = scheme[[paste0(value, "_highlight")]],
     size = 2.5
   )
 }

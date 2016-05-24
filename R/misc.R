@@ -76,12 +76,12 @@ validate_group <- function(group, y) {
 #   of simulations included in yrep.
 # }
 #
-melt_yrep <- function(yrep) {
+melt_yrep <- function(yrep, label = TRUE) {
   out <- reshape2::melt(
     data = yrep,
     varnames = c("rep_id", "y_id")
   )
-  id <- create_yrep_ids(out$rep_id)
+  id <- if (label) create_yrep_ids(out$rep_id) else out$rep_id
   out$rep_id <- factor(id, levels = unique(id))
   out
 }
