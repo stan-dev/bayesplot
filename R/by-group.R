@@ -14,6 +14,10 @@
 #'    \eqn{T(y^{rep})}{T(yrep)} compared to the
 #'    observed value \eqn{T(y)} at each level of a grouping variable.
 #'   }
+#'   \item{\code{\link{ppc_ts_grouped}}}{
+#'     Interval estimates of \eqn{y^{rep}}{yrep} by time and level of a grouping
+#'     variable, with \eqn{y} points overlaid.
+#'   }
 #'   \item{\code{\link{ppc_violin_grouped}}}{
 #'     Density estimates of \eqn{y^{rep}}{yrep} by level of a grouping variable,
 #'     with \eqn{y} points overlaid.
