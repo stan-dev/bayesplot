@@ -1,7 +1,7 @@
 #' PPCs for time series
 #'
-#' Interval estimates of \eqn{y^{rep}}{yrep} by time and, optionally, levels of
-#' a grouping variable, with \eqn{y} points overlaid.
+#' Central interval estimates (quantiles) of \eqn{y^{rep}}{yrep} by time and,
+#' optionally, levels of a grouping variable, with \eqn{y} points overlaid.
 #'
 #' @name time-series
 #' @family PPCs
@@ -25,29 +25,31 @@
 #'
 NULL
 
-#' @export
 #' @rdname time-series
+#' @export
+#' @param prob A value between 0 and 1 indicating the desired probability mass
+#'   to include in the \code{yrep} intervals.
 #'
-ppc_ts <- function(y, yrep, ...) {
+ppc_ts <- function(y, yrep, ..., prob = 0.9) {
   y <- validate_y(y)
   yrep <- validate_yrep(yrep, y)
-  ppc_time_series(y, yrep, size = 2)
+  ppc_time_series(y, yrep, prob = prob, size = 2)
 }
 
 #' @rdname time-series
 #' @export
 #' @template args-group
 #'
-ppc_ts_grouped <- function(y, yrep, group, ...) {
+ppc_ts_grouped <- function(y, yrep, group, ..., prob = 0.8) {
   y <- validate_y(y)
   yrep <- validate_yrep(yrep, y)
   group <- validate_group(group, y)
-  ppc_time_series(y, yrep, group, size = 1) +
+  ppc_time_series(y, yrep, group, prob = prob, size = 1) +
     facet_wrap("group", scales = "free", labeller = label_both)
 }
 
 
-ppc_time_series <- function(y, yrep, group, ...) {
+ppc_time_series <- function(y, yrep, group, prob = 0.8, ...) {
   d <- melt_yrep(yrep)
   if (missing(group)) {
     dots <- list(~y_id)
@@ -56,12 +58,14 @@ ppc_time_series <- function(y, yrep, group, ...) {
     dots <- list(~y_id, ~group)
   }
   molten_d <- dplyr::group_by_(d, .dots = dots)
+  alpha <- (1 - prob) / 2
+  probs <- c(alpha, 1 - alpha)
   plot_data <- dplyr::summarise_(
     .data = molten_d,
     .dots = list(
       median = ~median(value),
-      lower = ~quantile(value, prob = 0.1),
-      upper = ~quantile(value, prob = 0.9)
+      lower = ~quantile(value, prob = probs[1]),
+      upper = ~quantile(value, prob = probs[2])
     )
   )
 
@@ -78,8 +82,7 @@ ppc_time_series <- function(y, yrep, group, ...) {
     geom_smooth(
       stat = "identity",
       fill = scheme[["light"]],
-      color = scheme[["light_highlight"]],
-      alpha = 0.25
+      color = scheme[["light_highlight"]]
     ) +
     geom_line(color = scheme[["mid"]]) +
     geom_point(
