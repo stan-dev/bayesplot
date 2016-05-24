@@ -17,14 +17,15 @@ ppc_dens_overlay(y, yrep, ...)
 ppc_violin_grouped(y, yrep, group, ...)
 }
 \arguments{
-\item{y}{A vector of observed data. See Details.}
+\item{y}{A vector of observed data. See \strong{Details}.}
 
 \item{yrep}{An \eqn{S} by \eqn{N} matrix of draws from the posterior
 predictive distribution, where \eqn{S} is the size of the posterior sample
 (or subset of the posterior sample used to generate \code{yrep}) and
 \eqn{N} is the number of observations (the length of \code{y}). The columns
 of \code{yrep} should be in the same order as the data points in \code{y}
-for the plots to make sense. See Details for additional instructions.}
+for the plots to make sense. See \strong{Details} for additional
+instructions.}
 
 \item{...}{Currently unused.}
 
@@ -40,16 +41,37 @@ A ggplot object that can be further customized using the
 \description{
 Compare the empirical distribution of the data \code{y} to the distributions
 of simulated/replicated data \code{yrep} from the posterior predictive
-distribution. \code{ppc_dens_overlay} plots the distributions as overlaid
-densities. \code{ppc_hist} and \code{ppc_dens} plot separate histograms and
-kernel density estimates, respectively, for \code{y} and each row of
-\code{yrep} (so for \code{ppc_hist} and \code{ppc_dens} \code{yrep} should
-contain only a small number of rows).
+distribution.
 }
 \details{
 For Binomial data, the plots will be most useful if \code{y} and
   \code{yrep} contain the "success" proportions (not "success" or "failure"
   counts).
+}
+\section{Plot Descriptions}{
+
+\describe{
+  \item{\code{ppc_dens_overlay}}{
+   The kernel density estimate for \code{y} is plotted with the area under
+   the curve shaded. The density estimates of each dataset (row) in
+   \code{yrep} are then overlaid but unshaded.
+  }
+  \item{\code{ppc_hist}}{
+   A separate histogram is plotted for \code{y} and each dataset (row) in
+   \code{yrep}. For this plot \code{yrep} should therefore contain only a
+   small number of rows.
+  }
+  \item{\code{ppc_dens}}{
+   The same as \code{ppc_hist} but kernel density estimates are plotted
+   instead of histograms.
+  }
+  \item{\code{ppc_violin_grouped}}{
+   The density estimate of \code{yrep} within each level of a grouping
+   variable is plotted as a violin with 10\%, 50\%, and 90\% quantiles
+   indicated by horizontal lines. The points in \code{y} corresponding to
+   each grouping level are then overlaid on top of the violins.
+  }
+}
 }
 \examples{
 y <- rnorm(100)

@@ -11,14 +11,15 @@ ppc_resid(y, yrep, ..., binwidth = NULL)
 ppc_resid_binned(y, Ey, ...)
 }
 \arguments{
-\item{y}{A vector of observed data. See Details.}
+\item{y}{A vector of observed data. See \strong{Details}.}
 
 \item{yrep}{An \eqn{S} by \eqn{N} matrix of draws from the posterior
 predictive distribution, where \eqn{S} is the size of the posterior sample
 (or subset of the posterior sample used to generate \code{yrep}) and
 \eqn{N} is the number of observations (the length of \code{y}). The columns
 of \code{yrep} should be in the same order as the data points in \code{y}
-for the plots to make sense. See Details for additional instructions.}
+for the plots to make sense. See \strong{Details} for additional
+instructions.}
 
 \item{...}{Currently unused.}
 
@@ -34,9 +35,9 @@ A ggplot object that can be further customized using the
 }
 \description{
 \code{ppc_resid} plots the distributions of residuals computed from
-\eqn{y} and simulated datasets \eqn{y^{rep}}{yrep}. For binomial data,
+\code{y} and simulated datasets \code{yrep}. For binomial data,
 \code{ppc_resid_binned} generates binned residual plots (similar to
-\code{\link[arm]{binnedplot}}) from \eqn{y} and the posterior draws of the
+\code{\link[arm]{binnedplot}}) from \code{y} and the posterior draws of the
 linear predictor transformed by the inverse-link function.
 }
 \details{
@@ -50,6 +51,23 @@ should be used to generate binned residual plots. Bernoulli data can be input
 as a vector of 0s and 1s, whereas for binomial data \code{y} should be a
 vector of "success" proportions (not a matrix of "success" and "failure"
 counts).
+}
+\section{Plot descriptions}{
+
+\describe{
+  \item{\code{ppc_resid}}{
+   A separate histogram is plotted for the residuals computed from \code{y}
+   and each dataset (row) in \code{yrep}. For this plot
+   \code{yrep} should have only a small number of rows.
+  }
+  \item{\code{ppc_resid_binned}}{
+   Intended for use with binomial data. A separate binned residual plot
+   (similar to \code{\link[arm]{binnedplot}}) is generated for each dataset
+   (row) in \code{Ey}, the posterior draws of the linear predictor
+   transformed by the inverse-link function. For this plot \code{Ey} should
+   have only a small number of rows.
+  }
+}
 }
 \examples{
 y <- rnorm(100)

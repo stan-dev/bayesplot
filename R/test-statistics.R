@@ -1,12 +1,8 @@
 #' Test statistics
 #'
-#' The distribution of a single test statistic \eqn{{T(y^{rep})}}{T(yrep)}, or a
-#' pair of test statistics over the \code{nreps} simulated datasets, compared to
-#' the observed value \eqn{T(y)}. For \code{ppc_stat}, the plot is a histogram
-#' of \eqn{{T(y^{rep})}}{T(yrep)} and the value of the test statistic in the
-#' observed data, \eqn{T(y)}, is shown in the plot as a vertical line. For
-#' \code{ppc_stat_2d}, the plot is a scatterplot and \eqn{T(y)} is shown as a
-#' large point.
+#' The distribution of a test statistic \eqn{{T(y^{rep})}}{T(yrep)}, or a
+#' pair of test statistics, over the simulated datasets in \code{yrep},
+#' compared to the observed value \eqn{T(y)}.
 #'
 #' @name test-statistics
 #' @family PPCs
@@ -25,6 +21,25 @@
 #' @templateVar bdaRef (Ch. 6)
 #' @template reference-bda
 #' @template seealso-color-scheme
+#'
+#' @section Plot Descriptions:
+#' \describe{
+#'   \item{\code{ppc_stat}}{
+#'    A histogram of the distribution of a test statistic computed by applying
+#'    \code{stat} to each dataset (row) in \code{yrep}. The value of the
+#'    statistic in the observed data, \code{stat(y)}, is overlaid as a vertical
+#'    line.
+#'   }
+#'   \item{\code{ppc_stat_grouped}}{
+#'    The same as \code{ppc_stat}, but a separate plot is generated for
+#'    each level of a grouping variable.
+#'   }
+#'   \item{\code{ppc_stat_2d}}{
+#'    A scatterplot showing the joint distribution of two test statistics
+#'    computed over the datasets (rows) in \code{yrep}. The value of the
+#'    statistics in the observed data is overlaid as large point.
+#'   }
+#' }
 #'
 #' @examples
 #' y <- rnorm(30)

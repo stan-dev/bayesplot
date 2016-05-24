@@ -9,17 +9,18 @@ ppc_ts(y, yrep, time, ..., prob = 0.8, y_style = c("both", "points",
   "lines"))
 }
 \arguments{
-\item{y}{A vector of observed data. See Details.}
+\item{y}{A vector of observed data. See \strong{Details}.}
 
 \item{yrep}{An \eqn{S} by \eqn{N} matrix of draws from the posterior
 predictive distribution, where \eqn{S} is the size of the posterior sample
 (or subset of the posterior sample used to generate \code{yrep}) and
 \eqn{N} is the number of observations (the length of \code{y}). The columns
 of \code{yrep} should be in the same order as the data points in \code{y}
-for the plots to make sense. See Details for additional instructions.}
+for the plots to make sense. See \strong{Details} for additional
+instructions.}
 
-\item{time}{An optional numeric vector, the same length as \eqn{y}, of
-\emph{unique} time values. If \code{time} is missing then it is set to
+\item{time}{An optional numeric vector, the same length as \code{y}, of
+\emph{unique} time values. If \code{time} is not provided then it is set to
 \code{1:length(y)}.}
 
 \item{...}{Currently unused.}
@@ -35,8 +36,19 @@ A ggplot object that can be further customized using the
   \pkg{ggplot2} package.
 }
 \description{
-Central interval estimates (quantiles) of \eqn{y^{rep}}{yrep} by time,
-with \eqn{y} overlaid.
+Medians and central interval estimates of \code{yrep} by time, with
+\code{y} overlaid.
+}
+\section{Plot Descriptions}{
+
+\describe{
+  \item{\code{ppc_ts}}{
+   \code{100*prob}\% central intervals for \code{yrep} at each time point,
+   with a line through the median of \code{yrep} at each time. Values of
+   \code{y} are overlaid as points connected by lines, just points, or just
+   lines.
+  }
+}
 }
 \examples{
 y <- rnorm(50)

@@ -14,14 +14,15 @@ ppc_scatter_avg(y, yrep, ...)
 ppc_scatter_avg_grouped(y, yrep, group, ...)
 }
 \arguments{
-\item{y}{A vector of observed data. See Details.}
+\item{y}{A vector of observed data. See \strong{Details}.}
 
 \item{yrep}{An \eqn{S} by \eqn{N} matrix of draws from the posterior
 predictive distribution, where \eqn{S} is the size of the posterior sample
 (or subset of the posterior sample used to generate \code{yrep}) and
 \eqn{N} is the number of observations (the length of \code{y}). The columns
 of \code{yrep} should be in the same order as the data points in \code{y}
-for the plots to make sense. See Details for additional instructions.}
+for the plots to make sense. See \strong{Details} for additional
+instructions.}
 
 \item{...}{Currently unused.}
 
@@ -32,21 +33,33 @@ A ggplot object that can be further customized using the
   \pkg{ggplot2} package.
 }
 \description{
-Scatterplots of the observed data \eqn{y} vs. simulated/replicated data
-\eqn{y^{rep}}{yrep} from the posterior predictive distribution. For
-\code{ppc_scatter_avg}, \eqn{y} is plotted against the average values of
-\eqn{y^{rep}}{yrep}, i.e., the points \eqn{(y_n, \bar{y}^{rep}_n),\, n = 1,
-\dots, N}{(y_n, mean(yrep_n)), n = 1,...,N}, where each
-\eqn{y^{rep}_n}{yrep_n} is a vector of length equal to the number of
-posterior draws. For \code{ppc_scatter_multiple}, each of the
-\code{nrow(yrep)} simulated datasets is plotted separately against \eqn{y}
-(and so \code{yrep} should only contain a small number of draws, i.e.,
-\code{nrow(yrep)} should be small).
+Scatterplots of the observed data \code{y} vs. simulated/replicated data
+\code{yrep} from the posterior predictive distribution.
 }
 \details{
 For Binomial data, the plots will be most useful if \code{y} and
   \code{yrep} contain the "success" proportions (not "success" or "failure"
   counts).
+}
+\section{Plot Descriptions}{
+
+\describe{
+  \item{\code{ppc_scatter}}{
+   For each dataset (row) in \code{yrep} a scatterplot is generated showing
+   \code{y} against that row of \code{yrep}. For this plot \code{yrep} should
+   only contain a small number of rows.
+  }
+  \item{\code{ppc_scatter_avg}}{
+   A scatterplot of \code{y} against the average values of \code{yrep}, i.e.,
+   the points \eqn{(y_n, \bar{y}^{rep}_n),\, n = 1, \dots, N}{(y_n,
+   mean(yrep_n)), n = 1,...,N}, where each \eqn{y^{rep}_n}{yrep_n} is a
+   vector of length equal to the number of posterior draws.
+  }
+  \item{\code{ppc_scatter_avg_grouped}}{
+   The same as \code{ppc_scatter_avg}, but a separate plot is generated for
+   each level of a grouping variable.
+  }
+}
 }
 \examples{
 y <- rnorm(100)

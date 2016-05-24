@@ -1,20 +1,37 @@
 #' PPCs for time series
 #'
-#' Medians and central interval estimates of \eqn{y^{rep}}{yrep} by time, with
-#' \eqn{y} overlaid.
+#' Medians and central interval estimates of \code{yrep} by time, with
+#' \code{y} overlaid.
 #'
 #'
 #' @name time-series
 #' @family PPCs
 #'
 #' @template args-y-yrep
+#' @param time An optional numeric vector, the same length as \code{y}, of
+#'   \emph{unique} time values. If \code{time} is not provided then it is set to
+#'   \code{1:length(y)}.
 #' @param ... Currently unused.
+#' @param prob A value between 0 and 1 indicating the desired probability mass
+#'   to include in the \code{yrep} intervals. The default is 0.8.
+#' @param y_style Should \code{y} be plotted as points connected by lines, only
+#'   the points, or only the lines?
 #'
 #' @template return-ggplot
 #'
 #' @templateVar bdaRef (Ch. 6)
 #' @template reference-bda
 #' @template seealso-color-scheme
+#'
+#' @section Plot Descriptions:
+#' \describe{
+#'   \item{\code{ppc_ts}}{
+#'    \code{100*prob}\% central intervals for \code{yrep} at each time point,
+#'    with a line through the median of \code{yrep} at each time. Values of
+#'    \code{y} are overlaid as points connected by lines, just points, or just
+#'    lines.
+#'   }
+#' }
 #'
 #' @examples
 #' y <- rnorm(50)
@@ -29,13 +46,6 @@ NULL
 
 #' @rdname time-series
 #' @export
-#' @param time An optional numeric vector, the same length as \eqn{y}, of
-#'   \emph{unique} time values. If \code{time} is missing then it is set to
-#'   \code{1:length(y)}.
-#' @param prob A value between 0 and 1 indicating the desired probability mass
-#'   to include in the \code{yrep} intervals. The default is 0.8.
-#' @param y_style Should \code{y} be plotted as points connected by lines, only
-#'   the points, or only the lines?
 #'
 ppc_ts <- function(y,
                    yrep,

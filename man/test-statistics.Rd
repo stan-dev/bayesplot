@@ -14,14 +14,15 @@ ppc_stat_grouped(y, yrep, group, stat = "mean", ..., binwidth = NULL)
 ppc_stat_2d(y, yrep, stat = c("mean", "sd"), ...)
 }
 \arguments{
-\item{y}{A vector of observed data. See Details.}
+\item{y}{A vector of observed data. See \strong{Details}.}
 
 \item{yrep}{An \eqn{S} by \eqn{N} matrix of draws from the posterior
 predictive distribution, where \eqn{S} is the size of the posterior sample
 (or subset of the posterior sample used to generate \code{yrep}) and
 \eqn{N} is the number of observations (the length of \code{y}). The columns
 of \code{yrep} should be in the same order as the data points in \code{y}
-for the plots to make sense. See Details for additional instructions.}
+for the plots to make sense. See \strong{Details} for additional
+instructions.}
 
 \item{stat}{A character vector of function names of length 1 (for
 \code{ppc_stat}, \code{ppc_stat_grouped}) and length 2 (for
@@ -40,18 +41,34 @@ A ggplot object that can be further customized using the
   \pkg{ggplot2} package.
 }
 \description{
-The distribution of a single test statistic \eqn{{T(y^{rep})}}{T(yrep)}, or a
-pair of test statistics over the \code{nreps} simulated datasets, compared to
-the observed value \eqn{T(y)}. For \code{ppc_stat}, the plot is a histogram
-of \eqn{{T(y^{rep})}}{T(yrep)} and the value of the test statistic in the
-observed data, \eqn{T(y)}, is shown in the plot as a vertical line. For
-\code{ppc_stat_2d}, the plot is a scatterplot and \eqn{T(y)} is shown as a
-large point.
+The distribution of a test statistic \eqn{{T(y^{rep})}}{T(yrep)}, or a
+pair of test statistics, over the simulated datasets in \code{yrep},
+compared to the observed value \eqn{T(y)}.
 }
 \details{
 For Binomial data, the plots will be most useful if \code{y} and
   \code{yrep} contain the "success" proportions (not "success" or "failure"
   counts).
+}
+\section{Plot Descriptions}{
+
+\describe{
+  \item{\code{ppc_stat}}{
+   A histogram of the distribution of a test statistic computed by applying
+   \code{stat} to each dataset (row) in \code{yrep}. The value of the
+   statistic in the observed data, \code{stat(y)}, is overlaid as a vertical
+   line.
+  }
+  \item{\code{ppc_stat_grouped}}{
+   The same as \code{ppc_stat}, but a separate plot is generated for
+   each level of a grouping variable.
+  }
+  \item{\code{ppc_stat_2d}}{
+   A scatterplot showing the joint distribution of two test statistics
+   computed over the datasets (rows) in \code{yrep}. The value of the
+   statistics in the observed data is overlaid as large point.
+  }
+}
 }
 \examples{
 y <- rnorm(30)
