@@ -18,6 +18,9 @@
 #' set_color_scheme("greens")
 #' ppc_stat_2d(y, yrep)
 #'
+#' set_color_scheme("purples")
+#' ppc_hist(y, yrep[1:8,])
+#'
 set_color_scheme <- function(scheme = c("reds", "blues", "greens", "greys", "purples")) {
   x <- switch(
     match.arg(scheme),

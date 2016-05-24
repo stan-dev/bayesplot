@@ -6,9 +6,9 @@
 \alias{time-series}
 \title{PPCs for time series}
 \usage{
-ppc_ts(y, yrep, ..., prob = 0.9)
+ppc_ts(y, yrep, ..., prob = 0.8)
 
-ppc_ts_grouped(y, yrep, group, ..., prob = 0.9)
+ppc_ts_grouped(y, yrep, group, ..., prob = 0.8)
 }
 \arguments{
 \item{y}{A vector of observed data. See Details.}
@@ -22,7 +22,7 @@ See Details for additional instructions.}
 \item{...}{Currently unused.}
 
 \item{prob}{A value between 0 and 1 indicating the desired probability mass
-to include in the \code{yrep} intervals. The default is 0.9.}
+to include in the \code{yrep} intervals. The default is 0.8.}
 
 \item{group}{A grouping variable of the same length as \code{y}.}
 }
