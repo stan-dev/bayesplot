@@ -6,7 +6,7 @@
 \alias{time-series}
 \title{PPCs for time series}
 \usage{
-ppc_ts(y, yrep, ..., prob = 0.8)
+ppc_ts(y, yrep, ..., prob = 0.9)
 
 ppc_ts_grouped(y, yrep, group, ..., prob = 0.8)
 }
@@ -31,8 +31,8 @@ A ggplot object that can be further customized using the
   \pkg{ggplot2} package.
 }
 \description{
-Interval estimates of \eqn{y^{rep}}{yrep} by time and, optionally, levels of
-a grouping variable, with \eqn{y} points overlaid.
+Central interval estimates (quantiles) of \eqn{y^{rep}}{yrep} by time and,
+optionally, levels of a grouping variable, with \eqn{y} points overlaid.
 }
 \examples{
 y <- rnorm(50)
