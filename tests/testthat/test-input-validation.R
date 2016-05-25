@@ -1,5 +1,5 @@
 library(ppcheck)
-context("Input validation")
+context("input validation")
 
 source("data-for-all-tests.R")
 
@@ -8,6 +8,9 @@ test_that("validate_y works", {
   expect_identical(validate_y(y), y)
   expect_identical(validate_y(as.array(y)), y)
   expect_identical(validate_y(y2), y2)
+
+  names(y) <- paste0("y", 1:length(y))
+  expect_identical(validate_y(y), unname(y))
 })
 test_that("validate_y throws errors", {
   expect_error(validate_y(yrep), "vector")
@@ -20,6 +23,9 @@ test_that("validate_y throws errors", {
 test_that("validate_yrep works", {
   expect_identical(validate_yrep(yrep, y), yrep)
   expect_equal(validate_yrep(yrep2, y2), yrep2)
+
+  colnames(yrep) <- paste0("yrep", 1:ncol(yrep))
+  expect_identical(validate_yrep(yrep, y), unname(yrep))
 })
 test_that("validate_yrep throws errors", {
   expect_error(validate_yrep(as.matrix(LETTERS), y), "numeric")
