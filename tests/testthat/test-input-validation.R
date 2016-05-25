@@ -43,11 +43,13 @@ test_that("validate_group works", {
 test_that("validate_time works", {
   expect_identical(validate_time(time = 1:3, y = 1:3), 1:3)
   expect_identical(validate_time(time = as.numeric(1:3), y = 4:6), as.numeric(1:3))
+  expect_identical(validate_time(y = rnorm(3)), 1:3)
 
   tt <- rnorm(length(y))
   expect_identical(validate_time(tt, y), tt)
   expect_identical(validate_time(as.array(tt), y), tt)
 
   expect_error(validate_time(time = letters[1:3], y = 1:3), "numeric")
+  expect_error(validate_time(time = yrep, y = 1:3), "vector")
   expect_error(validate_time(time = c(1,2,NA), y = 1:3), "NAs not allowed")
 })
