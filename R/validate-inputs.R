@@ -28,10 +28,14 @@ validate_y <- function(y) {
 # @return Either throws an error or returns a numeric matrix.
 #
 validate_yrep <- function(yrep, y) {
-  stopifnot(is.vector(y)) # y should already be validated
+  stopifnot(is.vector(y))
   stopifnot(is.matrix(yrep), is.numeric(yrep))
-  if (is.integer(yrep))
-    yrep <- apply(yrep, 2, as.numeric)
+  if (is.integer(yrep)) {
+    if (nrow(yrep) == 1)
+      yrep[1, ] <- as.numeric(yrep[1,, drop = FALSE])
+    else
+      yrep <- apply(yrep, 2, as.numeric)
+  }
 
   if (anyNA(yrep))
     stop("NAs not allowed in 'yrep'.")
@@ -51,7 +55,6 @@ validate_yrep <- function(yrep, y) {
 # @return Either throws an error or returns a numeric matrix.
 #
 validate_group <- function(group, y) {
-  stopifnot(is.vector(y)) # y should already be validated
   stopifnot(is.vector(group) || is.factor(group))
   if (is.character(group))
     group <- factor(group)

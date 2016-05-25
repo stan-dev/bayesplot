@@ -1,6 +1,8 @@
 library(ppcheck)
 context("pp_check generic")
 
+source("data-for-all-tests.R")
+
 test_that("pp_check method can be defined", {
   pp_check.foo <- function(object, ..., type = c("multiple", "overlaid")) {
     y <- object[["y"]]

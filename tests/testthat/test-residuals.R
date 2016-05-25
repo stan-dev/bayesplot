@@ -1,9 +1,13 @@
 library(ppcheck)
 context("residuals")
 
+source("data-for-all-tests.R")
+
 test_that("ppc_resid returns ggplot object", {
   expect_gg(ppc_resid(y, yrep[1:5, ]))
   expect_gg(ppc_resid(y, yrep[1,, drop = FALSE]))
+
+  expect_gg(ppc_resid(y2, yrep2))
 })
 
 test_that("ppc_resid_binned returns ggplot object", {
