@@ -29,27 +29,36 @@
 #'    \code{stat} to each dataset (row) in \code{yrep}. The value of the
 #'    statistic in the observed data, \code{stat(y)}, is overlaid as a vertical
 #'    line.
+#'
+#'    \if{html}{\figure{stat.png}{options: width="30\%" alt="Figure: stat.png"}}
+#'    \if{latex}{\figure{stat.png}{options: width=4cm}}
 #'   }
 #'   \item{\code{ppc_stat_grouped}}{
 #'    The same as \code{ppc_stat}, but a separate plot is generated for
 #'    each level of a grouping variable.
+#'
+#'    \if{html}{\figure{statGrouped.png}{options: width="30\%" alt="Figure: stat_grouped.png"}}
+#'    \if{latex}{\figure{statGrouped.png}{options: width=4cm}}
 #'   }
 #'   \item{\code{ppc_stat_2d}}{
 #'    A scatterplot showing the joint distribution of two test statistics
 #'    computed over the datasets (rows) in \code{yrep}. The value of the
 #'    statistics in the observed data is overlaid as large point.
+#'
+#'    \if{html}{\figure{stat2d.png}{options: width="30\%" alt="Figure: stat_2d.png"}}
+#'    \if{latex}{\figure{stat2d.png}{options: width=4cm}}
 #'   }
 #' }
 #'
 #' @examples
-#' y <- rnorm(30)
-#' yrep <- matrix(rnorm(3000), ncol = 30)
+#' y <- rnorm(500)
+#' yrep <- matrix(rnorm(1e5), ncol = 500)
 #' ppc_stat(y, yrep)
 #' ppc_stat(y, yrep, stat = "var", binwidth = 0.1)
 #' ppc_stat_2d(y, yrep)
 #' ppc_stat_2d(y, yrep, stat = c("median", "mean"))
 #'
-#' group <- gl(3, 10, labels = LETTERS[1:3])
+#' group <- gl(3, 10, length = length(y), labels = LETTERS[1:3])
 #' ppc_stat_grouped(y, yrep, group)
 #'
 #' # define a custom test statistic

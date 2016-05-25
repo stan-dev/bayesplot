@@ -22,16 +22,25 @@
 #'    For each dataset (row) in \code{yrep} a scatterplot is generated showing
 #'    \code{y} against that row of \code{yrep}. For this plot \code{yrep} should
 #'    only contain a small number of rows.
+#'
+#'    \if{html}{\figure{scatter.png}{options: width="30\%" alt="Figure: scatter.png"}}
+#'    \if{latex}{\figure{scatter.png}{options: width=4cm}}
 #'   }
 #'   \item{\code{ppc_scatter_avg}}{
 #'    A scatterplot of \code{y} against the average values of \code{yrep}, i.e.,
 #'    the points \eqn{(y_n, \bar{y}^{rep}_n),\, n = 1, \dots, N}{(y_n,
 #'    mean(yrep_n)), n = 1,...,N}, where each \eqn{y^{rep}_n}{yrep_n} is a
 #'    vector of length equal to the number of posterior draws.
+#'
+#'    \if{html}{\figure{scatterAvg.png}{options: width="30\%" alt="Figure: scatterAvg.png"}}
+#'    \if{latex}{\figure{scatterAvg.png}{options: width=4cm}}
 #'   }
 #'   \item{\code{ppc_scatter_avg_grouped}}{
 #'    The same as \code{ppc_scatter_avg}, but a separate plot is generated for
 #'    each level of a grouping variable.
+#'
+#'    \if{html}{\figure{scatterAvgGrouped.png}{options: width="30\%" alt="Figure: scatterAvgGrouped.png"}}
+#'    \if{latex}{\figure{scatterAvgGrouped.png}{options: width=4cm}}
 #'   }
 #' }
 #'

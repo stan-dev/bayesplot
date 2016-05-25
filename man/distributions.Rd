@@ -55,21 +55,33 @@ For Binomial data, the plots will be most useful if \code{y} and
    The kernel density estimate for \code{y} is plotted with the area under
    the curve shaded. The density estimates of each dataset (row) in
    \code{yrep} are then overlaid but unshaded.
+
+   \if{html}{\figure{densOverlay.png}{options: width="30\%" alt="Figure: densOverlay.png"}}
+   \if{latex}{\figure{densOverlay.png}{options: width=4cm}}
   }
   \item{\code{ppc_hist}}{
    A separate histogram is plotted for \code{y} and each dataset (row) in
    \code{yrep}. For this plot \code{yrep} should therefore contain only a
    small number of rows.
+
+   \if{html}{\figure{hist.png}{options: width="30\%" alt="Figure: hist.png"}}
+   \if{latex}{\figure{hist.png}{options: width=4cm}}
   }
   \item{\code{ppc_dens}}{
    The same as \code{ppc_hist} but kernel density estimates are plotted
    instead of histograms.
+
+   \if{html}{\figure{dens.png}{options: width="30\%" alt="Figure: dens.png"}}
+   \if{latex}{\figure{dens.png}{options: width=4cm}}
   }
   \item{\code{ppc_violin_grouped}}{
    The density estimate of \code{yrep} within each level of a grouping
    variable is plotted as a violin with 10\%, 50\%, and 90\% quantiles
    indicated by horizontal lines. The points in \code{y} corresponding to
    each grouping level are then overlaid on top of the violins.
+
+   \if{html}{\figure{violin.png}{options: width="30\%" alt="Figure: violin.png"}}
+   \if{latex}{\figure{violin.png}{options: width=4cm}}
   }
 }
 }

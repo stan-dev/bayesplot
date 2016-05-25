@@ -31,6 +31,9 @@
 #'    A separate histogram is plotted for the residuals computed from \code{y}
 #'    and each dataset (row) in \code{yrep}. For this plot
 #'    \code{yrep} should have only a small number of rows.
+#'
+#'    \if{html}{\figure{resid.png}{options: width="30\%" alt="Figure: resid.png"}}
+#'    \if{latex}{\figure{resid.png}{options: width=4cm}}
 #'   }
 #'   \item{\code{ppc_resid_binned}}{
 #'    Intended for use with binomial data. A separate binned residual plot
@@ -38,6 +41,9 @@
 #'    (row) in \code{Ey}, the posterior draws of the linear predictor
 #'    transformed by the inverse-link function. For this plot \code{Ey} should
 #'    have only a small number of rows.
+#'
+#'    \if{html}{\figure{residBinned.png}{options: width="30\%" alt="Figure: residBinned.png"}}
+#'    \if{latex}{\figure{residBinned.png}{options: width=4cm}}
 #'   }
 #' }
 #'

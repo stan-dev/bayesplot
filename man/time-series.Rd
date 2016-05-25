@@ -47,6 +47,9 @@ Medians and central interval estimates of \code{yrep} by time, with
    with a line through the median of \code{yrep} at each time. Values of
    \code{y} are overlaid as points connected by lines, just points, or just
    lines.
+
+   \if{html}{\figure{ts.png}{options: width="30\%" alt="Figure: ts.png"}}
+   \if{latex}{\figure{ts.png}{options: width=4cm}}
   }
 }
 }
