@@ -20,8 +20,8 @@ Index of functions in the \pkg{ppcheck} package that accept a
    observed value \eqn{T(y)} at each level of a grouping variable.
   }
   \item{\code{\link{ppc_violin_grouped}}}{
-    Density estimates of \eqn{y^{rep}}{yrep} by level of a grouping variable,
-    with \eqn{y} points overlaid.
+    Density estimates of \code{yrep} by level of a grouping variable,
+    with \code{y} points overlaid.
   }
 }
 }

@@ -16,7 +16,7 @@ validate_y <- function(y) {
   if (anyNA(y))
     stop("NAs not allowed in 'y'.")
 
-  y
+  unname(y)
 }
 
 # Validate yrep
@@ -42,7 +42,7 @@ validate_yrep <- function(yrep, y) {
   if (ncol(yrep) != length(y))
     stop("ncol(yrep) not equal to length(y).")
 
-  yrep
+  unname(yrep)
 }
 
 
@@ -93,5 +93,5 @@ validate_time <- function(time, y) {
     identical(length(time), length(unique(time)))
   )
 
-  time
+  unname(time)
 }

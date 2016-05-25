@@ -19,8 +19,8 @@
 # #'     variable, with \eqn{y} points overlaid.
 # #'   }
 #'   \item{\code{\link{ppc_violin_grouped}}}{
-#'     Density estimates of \eqn{y^{rep}}{yrep} by level of a grouping variable,
-#'     with \eqn{y} points overlaid.
+#'     Density estimates of \code{yrep} by level of a grouping variable,
+#'     with \code{y} points overlaid.
 #'   }
 #' }
 #'
