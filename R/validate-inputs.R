@@ -74,7 +74,7 @@ validate_group <- function(group, y) {
 # @param time,y The user's time object and the y object returned by validate_y.
 # @return Either throws an error or returns a numeric vector.
 #
-validate_time <- function(time, y) {
+validate_time <- function(time, y, unique_times = TRUE) {
   if (missing(time))
     return(1:length(y))
 
@@ -88,10 +88,9 @@ validate_time <- function(time, y) {
   if (anyNA(time))
     stop("NAs not allowed in 'time'.")
 
-  stopifnot(
-    identical(length(time), length(y)),
-    identical(length(time), length(unique(time)))
-  )
+  stopifnot(identical(length(time), length(y)))
+  if (unique_times)
+    stopifnot(identical(length(time), length(unique(time))))
 
   unname(time)
 }
