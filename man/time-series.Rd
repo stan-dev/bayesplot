@@ -55,6 +55,10 @@ Medians and central interval estimates of \code{yrep} by time, with
    \code{y} are overlaid as points connected by lines, just points, or just
    lines.
   }
+  \item{\code{ppc_ts_grouped}}{
+   Same as \code{ppc_ts} but a separate plot is generated for each level of a
+   grouping variable.
+  }
 }
 }
 \examples{

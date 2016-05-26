@@ -25,9 +25,8 @@
 #'   }
 #'   \item{\code{ppc_scatter_avg}}{
 #'    A scatterplot of \code{y} against the average values of \code{yrep}, i.e.,
-#'    the points \eqn{(y_n, \bar{y}^{rep}_n),\, n = 1, \dots, N}{(y_n,
-#'    mean(yrep_n)), n = 1,...,N}, where each \eqn{y^{rep}_n}{yrep_n} is a
-#'    vector of length equal to the number of posterior draws.
+#'    the points \code{(y[n], mean(yrep[, n]))}, where each \code{yrep[, n]} is
+#'    a vector of length equal to the number of posterior draws.
 #'   }
 #'   \item{\code{ppc_scatter_avg_grouped}}{
 #'    The same as \code{ppc_scatter_avg}, but a separate plot is generated for
