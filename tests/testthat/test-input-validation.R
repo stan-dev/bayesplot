@@ -60,6 +60,9 @@ test_that("validate_time works", {
   tt <- rnorm(length(y))
   expect_identical(validate_time(tt, y), tt)
   expect_identical(validate_time(as.array(tt), y), tt)
+
+  tt <- c(1,2,2)
+  expect_identical(validate_time(tt, y = 1:3, unique_times = FALSE), tt)
 })
 test_that("validate_time throws errors", {
   expect_error(validate_time(letters[1:3], y = 1:3), "numeric")
