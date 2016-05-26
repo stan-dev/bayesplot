@@ -2,11 +2,15 @@
 % Please edit documentation in R/time-series.R
 \name{time-series}
 \alias{ppc_ts}
+\alias{ppc_ts_grouped}
 \alias{time-series}
 \title{PPCs for time series}
 \usage{
 ppc_ts(y, yrep, time, ..., prob = 0.8, y_style = c("both", "points",
   "lines"))
+
+ppc_ts_grouped(y, yrep, time, group, ..., prob = 0.8, y_style = c("both",
+  "points", "lines"))
 }
 \arguments{
 \item{y}{A vector of observed data. See \strong{Details}.}
@@ -19,9 +23,10 @@ of \code{yrep} should be in the same order as the data points in \code{y}
 for the plots to make sense. See \strong{Details} for additional
 instructions.}
 
-\item{time}{An optional numeric vector, the same length as \code{y}, of
-\emph{unique} time values. If \code{time} is not provided then it is set to
-\code{1:length(y)}.}
+\item{time}{An optional numeric vector, the same length as \code{y}. If
+\code{time} is not provided then it is set to \code{1:length(y)}. For
+\code{ppc_ts} the values in \code{time} must be unique. For
+\code{ppc_ts_grouped} times can be repeated.}
 
 \item{...}{Currently unused.}
 
@@ -30,6 +35,8 @@ to include in the \code{yrep} intervals. The default is 0.8.}
 
 \item{y_style}{Should \code{y} be plotted as points connected by lines, only
 the points, or only the lines?}
+
+\item{group}{A grouping variable of the same length as \code{y}.}
 }
 \value{
 A ggplot object that can be further customized using the
@@ -55,8 +62,9 @@ y <- rnorm(50)
 yrep <- matrix(rnorm(5000, 0, 2), ncol = 50)
 ppc_ts(y, yrep)
 
-time <- sample(200, size = 50)
-ppc_ts(y, yrep, time)
+time <- rep(1:10, each = 5)
+group <- gl(5, 1, length = 50, labels = LETTERS[1:5])
+ppc_ts_grouped(y, yrep, time, group)
 
 
 }

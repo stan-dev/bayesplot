@@ -99,7 +99,7 @@ ppc_scatter_avg_grouped <- function(y, yrep, group, ...) {
     .ppc_scatter_abline() +
     .ppc_scatter_points(scheme) +
     labs(x = y_label(), y = yrep_avg_label()) +
-    facet_wrap("group", scales = "free", labeller = label_both) +
+    facet_wrap("group", scales = "free") +
     theme_ppc()
 }
 

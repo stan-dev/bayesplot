@@ -171,8 +171,7 @@ ppc_ts_plotter <- function(data, y_style = "both") {
     graph <- graph +
       facet_wrap(
         facets = "group",
-        scales = "free_y",
-        labeller = label_both
+        scales = "free_y"
       )
 
   graph +

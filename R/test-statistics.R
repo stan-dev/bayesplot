@@ -126,7 +126,7 @@ ppc_stat_grouped <- function(y, yrep, group, stat = "mean", ..., binwidth = NULL
       color = scheme[["dark"]],
       size = 2
     ) +
-    facet_wrap("group", scales = "free", labeller = label_both) +
+    facet_wrap("group", scales = "free") +
     coord_cartesian(expand = FALSE) +
     xlab(paste("Stat =", stat)) +
     theme_ppc(y_text = FALSE)
