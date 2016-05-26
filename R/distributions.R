@@ -59,7 +59,7 @@ NULL
 ppc_hist <- function(y, yrep, ..., binwidth = NULL) {
   y <- validate_y(y)
   yrep <- validate_yrep(yrep, y)
-  plot_data <- ppc_dist_data(y, yrep)
+  plot_data <- melt_and_stack(y, yrep)
   scheme <- get_color_scheme()
   fills <- c(scheme[["dark"]], scheme[["light"]])
   colors <- c(scheme[["dark_highlight"]], scheme[["light_highlight"]])
@@ -76,7 +76,7 @@ ppc_hist <- function(y, yrep, ..., binwidth = NULL) {
     scale_fill_manual(values = fills) +
     scale_color_manual(values = colors) +
     facet_wrap("rep_id", switch = "x", labeller = label_parsed) +
-    coord_cartesian(expand = FALSE) +
+    dont_expand_y_axis() +
     theme_ppc(y_text = FALSE, x_lab = FALSE)
 }
 
@@ -87,7 +87,7 @@ ppc_hist <- function(y, yrep, ..., binwidth = NULL) {
 ppc_dens <- function(y, yrep, ...) {
   y <- validate_y(y)
   yrep <- validate_yrep(yrep, y)
-  plot_data <- ppc_dist_data(y, yrep)
+  plot_data <- melt_and_stack(y, yrep)
   scheme <- get_color_scheme()
   fills <- c(scheme[["dark"]], scheme[["light"]])
   colors <- c(scheme[["dark_highlight"]], scheme[["light_highlight"]])
@@ -104,7 +104,7 @@ ppc_dens <- function(y, yrep, ...) {
     scale_fill_manual(values = fills) +
     scale_color_manual(values = colors) +
     facet_wrap("rep_id", switch = "x", labeller = label_parsed) +
-    coord_cartesian(expand = FALSE) +
+    dont_expand_y_axis() +
     theme_ppc(y_text = FALSE, x_lab = FALSE)
 }
 
@@ -113,7 +113,7 @@ ppc_dens <- function(y, yrep, ...) {
 ppc_dens_overlay <- function(y, yrep, ...) {
   y <- validate_y(y)
   yrep <- validate_yrep(yrep, y)
-  plot_data <- ppc_dist_data(y, yrep)
+  plot_data <- melt_and_stack(y, yrep)
   scheme <- get_color_scheme()
   colors <- c(scheme[["light"]], scheme[["dark_highlight"]])
   fills <- c(NA, scheme[["dark"]])
@@ -133,25 +133,9 @@ ppc_dens_overlay <- function(y, yrep, ...) {
     scale_fill_manual(values = fills) +
     scale_size_manual(values = c(0.25, 1)) +
     xlab(y_label()) +
-    coord_cartesian(expand = FALSE) +
+    dont_expand_axes() +
     theme_ppc(y_text = FALSE)
 }
-
-ppc_dist_data <- function(y, yrep) {
-  yrep <- melt_yrep(yrep)
-  yobs_lab <- "italic(y)"
-  levels(yrep$rep_id) <- c(levels(yrep$rep_id), yobs_lab)
-  ydat <- data.frame(
-    rep_id = yobs_lab,
-    y_id = seq_along(y),
-    value = y
-  )
-  within(data = rbind(yrep, ydat), {
-    rep_id <- relevel(rep_id, ref = yobs_lab)
-    is_y <- rep_id == yobs_lab
-  })
-}
-
 
 #' @export
 #' @rdname distributions

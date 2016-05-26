@@ -66,7 +66,6 @@ time <- rep(1:10, each = 5)
 group <- gl(5, 1, length = 50, labels = LETTERS[1:5])
 ppc_ts_grouped(y, yrep, time, group)
 
-
 }
 \references{
 Gelman, A., Carlin, J. B., Stern, H. S., Dunson, D. B., Vehtari,

@@ -82,15 +82,20 @@ ppc_resid <- function(y, yrep, ..., binwidth = NULL) {
       fill = scheme[["dark"]],
       color = scheme[["dark_highlight"]],
       binwidth = binwidth
-    ) +
-    xylabs +
-    coord_cartesian(expand = FALSE) +
-    theme_ppc(y_text = FALSE)
+    )
 
   if (n > 1)
-    graph <- graph + facet_wrap("rep_id", switch = "x", labeller = label_parsed)
+    graph <- graph +
+    facet_wrap(
+      facets = "rep_id",
+      switch = "x",
+      labeller = label_parsed
+    )
 
-  graph
+  graph +
+    xylabs +
+    dont_expand_y_axis() +
+    theme_ppc(y_text = FALSE)
 }
 
 #' @rdname residuals
@@ -165,13 +170,12 @@ ppc_resid_binned <- function(y, Ey, ...) {
     labs(
       x = "Expected Values",
       y = "Average Residual \n (with 2SE bounds)"
-    ) +
-    theme_ppc()
+    )
 
   if (n > 1)
     graph <- graph + facet_wrap("rep", labeller = label_parsed)
 
-  graph
+  graph + theme_ppc()
 }
 
 binner <- function(rep_id, ey, r, nbins) {
@@ -185,5 +189,3 @@ binner <- function(rep_id, ey, r, nbins) {
     binned_resids
   )
 }
-
-

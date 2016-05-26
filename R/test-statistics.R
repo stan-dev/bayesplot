@@ -93,7 +93,7 @@ ppc_stat <- function(y, yrep, stat = "mean", ..., binwidth = NULL) {
       labels = c(Ty_label(), Tyrep_label())
     ) +
     xlab(paste("Stat =", stat)) +
-    coord_cartesian(expand = FALSE) +
+    dont_expand_y_axis() +
     theme_ppc(
       y_text = FALSE,
       legend_position = "right"
@@ -104,33 +104,39 @@ ppc_stat <- function(y, yrep, stat = "mean", ..., binwidth = NULL) {
 #' @rdname test-statistics
 #' @template args-group
 #'
-ppc_stat_grouped <- function(y, yrep, group, stat = "mean", ..., binwidth = NULL) {
-  y <- validate_y(y)
-  yrep <- validate_yrep(yrep, y)
-  group <- validate_group(group, y)
+ppc_stat_grouped <-
+  function(y,
+           yrep,
+           group,
+           stat = "mean",
+           ...,
+           binwidth = NULL) {
+    y <- validate_y(y)
+    yrep <- validate_yrep(yrep, y)
+    group <- validate_group(group, y)
 
-  plot_data <- ppc_group_data(y, yrep, group, stat = stat)
-  scheme <- get_color_scheme()
-  fills <- c(scheme[["dark"]], scheme[["light"]])
-  colors <- c(scheme[["dark_highlight"]], scheme[["light_highlight"]])
+    plot_data <- ppc_group_data(y, yrep, group, stat = stat)
+    scheme <- get_color_scheme()
+    fills <- c(scheme[["dark"]], scheme[["light"]])
+    colors <- c(scheme[["dark_highlight"]], scheme[["light_highlight"]])
 
-  is_y <- plot_data$variable == "y"
-  ggplot(
-    data = plot_data[!is_y,, drop = FALSE],
-    mapping = aes_string(x = "value", y = "..density..")
-  ) +
-    .ppc_stat_histogram(scheme, binwidth) +
-    geom_vline(
-      data = plot_data[is_y,, drop = FALSE],
-      mapping = aes_string(xintercept = "value"),
-      color = scheme[["dark"]],
-      size = 2
+    is_y <- plot_data$variable == "y"
+    ggplot(
+      data = plot_data[!is_y, , drop = FALSE],
+      mapping = aes_string(x = "value", y = "..density..")
     ) +
-    facet_wrap("group", scales = "free") +
-    coord_cartesian(expand = FALSE) +
-    xlab(paste("Stat =", stat)) +
-    theme_ppc(y_text = FALSE)
-}
+      .ppc_stat_histogram(scheme, binwidth) +
+      geom_vline(
+        data = plot_data[is_y, , drop = FALSE],
+        mapping = aes_string(xintercept = "value"),
+        color = scheme[["dark"]],
+        size = 2
+      ) +
+      facet_wrap("group", scales = "free") +
+      xlab(paste("Stat =", stat)) +
+      dont_expand_y_axis() +
+      theme_ppc(y_text = FALSE)
+  }
 
 
 #' @export

@@ -43,51 +43,52 @@
 #' group <- gl(5, 1, length = 50, labels = LETTERS[1:5])
 #' ppc_ts_grouped(y, yrep, time, group)
 #'
-#'
 NULL
 
-#' @rdname time-series
 #' @export
+#' @rdname time-series
 #'
-ppc_ts <- function(y,
-                   yrep,
-                   time,
-                   ...,
-                   prob = 0.8,
-                   y_style = c("both", "points", "lines")) {
-  y <- validate_y(y)
-  plot_data <- ppc_ts_data(
-    y = y,
-    yrep = validate_yrep(yrep, y),
-    time = validate_time(time, y),
-    group = NULL,
-    prob = prob
-  )
-  ppc_ts_plotter(plot_data, y_style = match.arg(y_style))
-}
+ppc_ts <-
+  function(y,
+           yrep,
+           time,
+           ...,
+           prob = 0.8,
+           y_style = c("both", "points", "lines")) {
+    y <- validate_y(y)
+    plot_data <- ppc_ts_data(
+      y = y,
+      yrep = validate_yrep(yrep, y),
+      time = validate_time(time, y),
+      group = NULL,
+      prob = prob
+    )
+    ppc_ts_plotter(plot_data, y_style = match.arg(y_style))
+  }
 
 
-#' @rdname time-series
 #' @export
+#' @rdname time-series
 #' @template args-group
 #'
-ppc_ts_grouped <- function(y,
-                           yrep,
-                           time,
-                           group,
-                           ...,
-                           prob = 0.8,
-                           y_style = c("both", "points", "lines")) {
-  y <- validate_y(y)
-  plot_data <- ppc_ts_data(
-    y = y,
-    yrep = validate_yrep(yrep, y),
-    time = validate_time(time, y, unique_times = FALSE),
-    group = validate_group(group, y),
-    prob = prob
-  )
-  ppc_ts_plotter(plot_data, y_style = match.arg(y_style))
-}
+ppc_ts_grouped <-
+  function(y,
+           yrep,
+           time,
+           group,
+           ...,
+           prob = 0.8,
+           y_style = c("both", "points", "lines")) {
+    y <- validate_y(y)
+    plot_data <- ppc_ts_data(
+      y = y,
+      yrep = validate_yrep(yrep, y),
+      time = validate_time(time, y, unique_times = FALSE),
+      group = validate_group(group, y),
+      prob = prob
+    )
+    ppc_ts_plotter(plot_data, y_style = match.arg(y_style))
+  }
 
 
 # Prepare data for time series plots
@@ -102,50 +103,48 @@ ppc_ts_data <-
            yrep,
            time,
            group = NULL,
-           prob = 0.8
-           ) {
+           prob = 0.8) {
 
-  grouped <- !is.null(group)
-  stopifnot(prob > 0 && prob < 1)
+    grouped <- !is.null(group)
+    stopifnot(prob > 0 && prob < 1)
 
-  molten_d <- dplyr::rename_(
-    .data = ppc_dist_data(y, yrep),
-    .dots = setNames(list(~y_id), "time")
-  )
-  molten_d <- dplyr::arrange_(
-    .data = molten_d,
-    .dots = list(~rep_id, ~time)
-  )
-  molten_d$time <- time
-  if (grouped) {
-    molten_d$group <- group
-    dots <- list(~time, ~group, ~is_y)
-  } else {
-    dots <- list(~time, ~is_y)
-  }
-  grouped_d <- dplyr::group_by_(molten_d, .dots = dots)
-  alpha <- (1 - prob) / 2
-  probs <- c(alpha, 1 - alpha)
-  plot_data <- dplyr::summarise_(
-    .data = grouped_d,
-    .dots = list(
-      median = ~median(value),
-      lower = ~quantile(value, prob = probs[1]),
-      upper = ~quantile(value, prob = probs[2])
+    molten_d <- dplyr::rename_(.data = melt_and_stack(y, yrep),
+                               .dots = setNames(list( ~ y_id), "time"))
+    molten_d <- dplyr::arrange_(.data = molten_d,
+                                .dots = list( ~ rep_id, ~ time))
+    molten_d$time <- time
+    if (grouped) {
+      molten_d$group <- group
+      dots <- list( ~ time, ~ group, ~ is_y)
+    } else {
+      dots <- list( ~ time, ~ is_y)
+    }
+    grouped_d <- dplyr::group_by_(molten_d, .dots = dots)
+    alpha <- (1 - prob) / 2
+    probs <- c(alpha, 1 - alpha)
+    plot_data <- dplyr::summarise_(
+      .data = grouped_d,
+      .dots = list(
+        median = ~ median(value),
+        lower = ~ quantile(value, prob = probs[1]),
+        upper = ~ quantile(value, prob = probs[2])
+      )
     )
-  )
-}
+  }
+
 
 # Make time series plot
 #
 # @param data The object returned by ppc_ts_data
 # @param y_style Same as above
 # @return A ggplot object
+#
 ppc_ts_plotter <- function(data, y_style = "both") {
-  grouped <- "group" %in% colnames(data)
-  scheme <- get_color_scheme()
+  grouped <- isTRUE("group" %in% colnames(data))
   yrep_data <- data[!data$is_y, , drop = FALSE]
   y_data <- data[data$is_y, , drop = FALSE]
+
+  scheme <- get_color_scheme()
   graph <- ggplot(
     data = yrep_data,
     mapping = aes_string(
@@ -180,14 +179,10 @@ ppc_ts_plotter <- function(data, y_style = "both") {
       )
 
   if (grouped)
-    graph <- graph +
-      facet_wrap(
-        facets = "group",
-        scales = "free_y"
-      )
+    graph <- graph + facet_wrap(facets = "group", scales = "free_y")
 
   graph +
     labs(x = "Time", y = yrep_label()) +
-    scale_x_continuous(expand = c(0,0)) +
+    dont_expand_x_axis() +
     theme_ppc()
 }
