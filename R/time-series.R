@@ -90,6 +90,13 @@ ppc_ts_grouped <- function(y,
 }
 
 
+# Prepare data for time series plots
+#
+# @param y,yrep,time,group Validated user inputs
+# @param prob Same as above
+# @return A grouped_df (dplyr) with columns: time, group (if not NULL), is_y,
+#   median, lower, upper
+#
 ppc_ts_data <-
   function(y,
            yrep,
@@ -129,6 +136,11 @@ ppc_ts_data <-
   )
 }
 
+# Make time series plot
+#
+# @param data The object returned by ppc_ts_data
+# @param y_style Same as above
+# @return A ggplot object
 ppc_ts_plotter <- function(data, y_style = "both") {
   grouped <- "group" %in% colnames(data)
   scheme <- get_color_scheme()
