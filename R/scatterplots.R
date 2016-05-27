@@ -104,7 +104,7 @@ ppc_scatter_plotter <-
            mapping,
            x_lab = "",
            y_lab = "") {
-    scheme <- get_color_scheme()
+
     ggplot(data, mapping) +
       geom_abline(
         intercept = 0,
@@ -113,8 +113,8 @@ ppc_scatter_plotter <-
       ) +
       geom_point(
         shape = 21,
-        fill = scheme[["mid"]],
-        color = scheme[["mid_highlight"]],
+        fill = ppc_color("mid"),
+        color = ppc_color("mid_highlight"),
         size = 2.5
       ) +
       labs(x = x_lab, y = y_lab) +

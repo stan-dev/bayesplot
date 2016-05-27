@@ -152,7 +152,6 @@ ppc_ts_plotter <- function(data, y_style = "both") {
   yrep_data <- data[!data$is_y, , drop = FALSE]
   y_data <- data[data$is_y, , drop = FALSE]
 
-  scheme <- get_color_scheme()
   graph <- ggplot(
     data = yrep_data,
     mapping = aes_string(
@@ -164,8 +163,8 @@ ppc_ts_plotter <- function(data, y_style = "both") {
   ) +
     geom_smooth(
       stat = "identity",
-      fill = scheme[["light"]],
-      color = scheme[["light_highlight"]]
+      fill = ppc_color("light"),
+      color = ppc_color("light_highlight")
     )
 
   if (y_style %in% c("both", "lines"))
@@ -181,8 +180,8 @@ ppc_ts_plotter <- function(data, y_style = "both") {
       geom_point(
         data = y_data,
         shape = 21,
-        fill = scheme[["dark"]],
-        color = scheme[["dark_highlight"]],
+        fill = ppc_color("dark"),
+        color = ppc_color("dark_highlight"),
         size = 1
       )
 

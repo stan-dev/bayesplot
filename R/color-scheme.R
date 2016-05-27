@@ -49,6 +49,20 @@ get_color_scheme <- function() {
 
 
 
+
+# helpers -----------------------------------------------------------------
+
+# Access a single color value
+#
+# @param level A haracter vector of level names (see scheme_level_names())
+# @return A character vector of color values.
+#
+ppc_color <- function(levels) {
+  stopifnot(all(levels %in% scheme_level_names()))
+  color_vals <- get_color_scheme()[levels]
+  unlist(color_vals, use.names = FALSE)
+}
+
 # Color scheme level names
 scheme_level_names <- function() {
   c("light",

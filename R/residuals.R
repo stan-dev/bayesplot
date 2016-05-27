@@ -61,9 +61,8 @@ NULL
 ppc_resid <- function(y, yrep, ..., binwidth = NULL) {
   y <- validate_y(y)
   yrep <- validate_yrep(yrep, y)
-  scheme <- get_color_scheme()
-
   n <- nrow(yrep)
+
   if (n == 1) {
     resids <- data.frame(x = y - as.vector(yrep))
     graph <- ggplot(resids, aes_string(x = "x")) +
@@ -79,8 +78,8 @@ ppc_resid <- function(y, yrep, ..., binwidth = NULL) {
   graph +
     geom_histogram(
       mapping = aes_string(y = "..density.."),
-      fill = scheme[["dark"]],
-      color = scheme[["dark_highlight"]],
+      fill = ppc_color("dark"),
+      color = ppc_color("dark_highlight"),
       size = 0.25,
       binwidth = binwidth
     ) +
@@ -128,7 +127,6 @@ ppc_resid_binned <- function(y, Ey, ...) {
       ))
   }
 
-  scheme <- get_color_scheme()
   graph <-
     ggplot(binned, aes_string(x = "xbar")) +
     geom_hline(
@@ -138,19 +136,19 @@ ppc_resid_binned <- function(y, Ey, ...) {
     ) +
     geom_path(
       mapping = aes_string(y = "se2"),
-      color = scheme[["light"]],
+      color = ppc_color("light"),
       size = 1
     ) +
     geom_path(
       mapping = aes_string(y = "-se2"),
-      color = scheme[["light"]],
+      color = ppc_color("light"),
       size = 1
     ) +
     geom_point(
       mapping = aes_string(y = "ybar"),
       shape = 21,
-      fill = scheme[["dark"]],
-      color = scheme[["dark_highlight"]]
+      fill = ppc_color("dark"),
+      color = ppc_color("dark_highlight")
     ) +
     labs(
       x = "Expected Values",
