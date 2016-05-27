@@ -54,16 +54,14 @@ NULL
 ppc_scatter <- function(y, yrep, ...) {
   y <- validate_y(y)
   yrep <- validate_yrep(yrep, y)
-  scheme <- get_color_scheme()
-  ggplot(
+
+  graph <- ppc_scatter_plotter(
     data = data.frame(melt_yrep(yrep), y = rep(y, each = nrow(yrep))),
-    mapping = aes_string(x = "y", y = "value")
-  ) +
-    .ppc_scatter_abline() +
-    .ppc_scatter_points(scheme) +
-    labs(x = y_label(), y = yrep_label()) +
-    facet_wrap_parsed("rep_id") +
-    theme_ppc()
+    mapping = aes_string(x = "y", y = "value"),
+    x_lab = y_label(),
+    y_lab = yrep_label()
+  )
+  graph + facet_wrap_parsed("rep_id")
 }
 
 #' @export
@@ -71,15 +69,13 @@ ppc_scatter <- function(y, yrep, ...) {
 ppc_scatter_avg <- function(y, yrep, ...) {
   y <- validate_y(y)
   yrep <- validate_yrep(yrep, y)
-  scheme <- get_color_scheme()
-  ggplot(
+
+  ppc_scatter_plotter(
     data = data.frame(y, avg_y_rep = colMeans(yrep)),
-    mapping = aes_string(x = "y", y = "avg_y_rep")
-  ) +
-    .ppc_scatter_abline() +
-    .ppc_scatter_points(scheme) +
-    labs(x = y_label(), y = yrep_avg_label()) +
-    theme_ppc()
+    mapping = aes_string(x = "y", y = "avg_y_rep"),
+    x_lab = y_label(),
+    y_lab = yrep_avg_label()
+  )
 }
 
 #' @export
@@ -90,34 +86,37 @@ ppc_scatter_avg_grouped <- function(y, yrep, group, ...) {
   y <- validate_y(y)
   yrep <- validate_yrep(yrep, y)
   group <- validate_group(group, y)
-  scheme <- get_color_scheme()
-  ggplot(
+
+  graph <- ppc_scatter_plotter(
     data = data.frame(group, y, avg_yrep = colMeans(yrep)),
-    mapping = aes_string(x = "y", y = "avg_yrep")
-  ) +
-    .ppc_scatter_abline() +
-    .ppc_scatter_points(scheme) +
-    labs(x = y_label(), y = yrep_avg_label()) +
-    facet_wrap("group", scales = "free") +
-    theme_ppc()
+    mapping = aes_string(x = "y", y = "avg_yrep"),
+    x_lab = y_label(),
+    y_lab = yrep_avg_label()
+  )
+  graph + facet_wrap("group", scales = "free")
 }
 
 
 # helpers -----------------------------------------------------------------
-.ppc_scatter_abline <- function() {
-  geom_abline(
-    intercept = 0,
-    slope = 1,
-    linetype = 2
-  )
-}
 
-.ppc_scatter_points <- function(scheme, value = c("mid", "light", "dark")) {
-  value <- match.arg(value)
-  geom_point(
-    shape = 21,
-    fill = scheme[[value]],
-    color = scheme[[paste0(value, "_highlight")]],
-    size = 2.5
-  )
-}
+ppc_scatter_plotter <-
+  function(data,
+           mapping,
+           x_lab = "",
+           y_lab = "") {
+    scheme <- get_color_scheme()
+    ggplot(data, mapping) +
+      geom_abline(
+        intercept = 0,
+        slope = 1,
+        linetype = 2
+      ) +
+      geom_point(
+        shape = 21,
+        fill = scheme[["mid"]],
+        color = scheme[["mid_highlight"]],
+        size = 2.5
+      ) +
+      labs(x = x_lab, y = y_lab) +
+      theme_ppc()
+  }
