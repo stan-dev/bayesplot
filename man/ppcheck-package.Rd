@@ -29,8 +29,7 @@ X)}{p(\theta | y, X)} we generate an entire vector of outcomes. The result is
 an \eqn{S \times N}{S x N} matrix of simulations, where \eqn{S} is the the
 size of the posterior sample (number of draws from the posterior
 distribution) and \eqn{N} is the number of data points in \eqn{y}.
-That is, each row of the \code{yrep} matrix is an individual "replicated"
-dataset.
+That is, each row of the matrix is an individual "replicated" dataset.
 }
 \subsection{Notation}{
 When simulating from the posterior predictive distribution we can use either
@@ -89,8 +88,7 @@ categories, each with its own documentation:
 The \pkg{ppcheck} package provides the S3 generic \code{\link{pp_check}}.
 Authors of \R packages for Bayesian inference are encouraged to define
 \code{pp_check} methods for the fitted model objects created by their
-packages. See \code{vignette("ppcheck")} for more details and an
-example.
+packages. See \code{vignette("ppcheck")} for more details and an example.
 }
 \author{
 Jonah Gabry

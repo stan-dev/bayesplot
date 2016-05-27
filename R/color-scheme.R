@@ -21,23 +21,21 @@
 #' set_color_scheme("purples")
 #' ppc_hist(y, yrep[1:8,])
 #'
-set_color_scheme <- function(scheme = c("reds", "blues", "greens", "greys", "purples")) {
-  x <- switch(
-    match.arg(scheme),
-    "reds" = scheme_reds(),
-    "blues" = scheme_blues(),
-    "greens" = scheme_greens(),
-    "greys" = scheme_greys(),
-    "purples" = scheme_purples()
-  )
-  .ppcheck_aesthetics$light <- x$light
-  .ppcheck_aesthetics$light_highlight <- x$light_highlight
-  .ppcheck_aesthetics$mid <- x$mid
-  .ppcheck_aesthetics$mid_highlight <- x$mid_highlight
-  .ppcheck_aesthetics$dark <- x$dark
-  .ppcheck_aesthetics$dark_highlight <- x$dark_highlight
-  invisible(as.list(x))
-}
+set_color_scheme <-
+  function(scheme = c("reds", "blues", "greens", "greys", "purples")) {
+    x <- switch(
+      match.arg(scheme),
+      "reds" = scheme_reds(),
+      "blues" = scheme_blues(),
+      "greens" = scheme_greens(),
+      "greys" = scheme_greys(),
+      "purples" = scheme_purples()
+    )
+    for (lev in scheme_level_names())
+      .ppcheck_aesthetics[[lev]] <- x[[lev]]
+
+    invisible(x)
+  }
 
 #' @export
 #' @rdname set_color_scheme
@@ -49,7 +47,9 @@ get_color_scheme <- function() {
   x[scheme_level_names()]
 }
 
-# scheme level names
+
+
+# Color scheme level names
 scheme_level_names <- function() {
   c("light",
     "light_highlight",
@@ -59,13 +59,18 @@ scheme_level_names <- function() {
     "dark_highlight")
 }
 
-# create a scheme from RColorBrewer palette
+# Create a scheme from RColorBrewer palette
+#
+# @param name Palette named passed to RColorBrewer::brewer.pal
+# @return A list of six colors
+#
 brew_scheme <- function(name) {
   x <- RColorBrewer::brewer.pal(9, name)
   x <- as.list(x[3:8])
   setNames(x, scheme_level_names())
 }
 
+# Color schemes
 scheme_blues <- function() brew_scheme("Blues")
 scheme_greens <- function() brew_scheme("Greens")
 scheme_purples <- function() brew_scheme("Purples")

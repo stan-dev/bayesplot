@@ -66,17 +66,17 @@ ppc_resid <- function(y, yrep, ..., binwidth = NULL) {
   n <- nrow(yrep)
   if (n == 1) {
     resids <- data.frame(x = y - as.vector(yrep))
-    base <- ggplot(resids, aes_string(x = "x")) +
+    graph <- ggplot(resids, aes_string(x = "x")) +
       labs(y = NULL, x = expression(italic(y) - italic(y)^rep))
   } else {
     resids <- melt_yrep(as.matrix(-1 * sweep(yrep, 2L, y)))
     resids$rep_id <- factor(resids$rep_id, labels = paste("y -", unique(resids$rep_id)))
-    base <- ggplot(resids, aes_string(x = "value")) +
+    graph <- ggplot(resids, aes_string(x = "value")) +
       labs(y = NULL, x = NULL) +
       facet_wrap_parsed("rep_id", switch = "x")
   }
 
-  base +
+  graph +
     geom_histogram(
       mapping = aes_string(y = "..density.."),
       fill = scheme[["dark"]],
@@ -99,14 +99,8 @@ ppc_resid_binned <- function(y, Ey, ...) {
 
   y <- validate_y(y)
   yrep <- validate_yrep(Ey, y)
-
-  scheme <- get_color_scheme()
-  line_color <- scheme[["light"]]
-  line_size <- 1
-  pt_fill <- scheme[["dark"]]
-  pt_color <- scheme[["dark_highlight"]]
-
   resids <- sweep(-Ey, MARGIN = 2L, STATS = y, "+")
+
   ny <- length(y)
   if (ny >= 100) {
     nbins <- floor(sqrt(ny))
@@ -134,7 +128,9 @@ ppc_resid_binned <- function(y, Ey, ...) {
       ))
   }
 
-  graph <- ggplot(binned, aes_string(x = "xbar")) +
+  scheme <- get_color_scheme()
+  graph <-
+    ggplot(binned, aes_string(x = "xbar")) +
     geom_hline(
       yintercept = 0,
       linetype = 2,
@@ -142,19 +138,19 @@ ppc_resid_binned <- function(y, Ey, ...) {
     ) +
     geom_path(
       mapping = aes_string(y = "se2"),
-      color = line_color,
-      size = line_size
+      color = scheme[["light"]],
+      size = 1
     ) +
     geom_path(
       mapping = aes_string(y = "-se2"),
-      color = line_color,
-      size = line_size
+      color = scheme[["light"]],
+      size = 1
     ) +
     geom_point(
       mapping = aes_string(y = "ybar"),
       shape = 21,
-      fill = pt_fill,
-      color = pt_color
+      fill = scheme[["dark"]],
+      color = scheme[["dark_highlight"]]
     ) +
     labs(
       x = "Expected Values",
