@@ -62,7 +62,7 @@ ppc_scatter <- function(y, yrep, ...) {
     .ppc_scatter_abline() +
     .ppc_scatter_points(scheme) +
     labs(x = y_label(), y = yrep_label()) +
-    facet_wrap("rep_id", labeller = label_parsed) +
+    facet_wrap_parsed("rep_id") +
     theme_ppc()
 }
 

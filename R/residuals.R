@@ -66,34 +66,24 @@ ppc_resid <- function(y, yrep, ..., binwidth = NULL) {
   n <- nrow(yrep)
   if (n == 1) {
     resids <- data.frame(x = y - as.vector(yrep))
-    base <- ggplot(resids, aes_string(x = "x"))
-    xylabs <- labs(y = NULL, x = expression(italic(y) - italic(y)^rep))
+    base <- ggplot(resids, aes_string(x = "x")) +
+      labs(y = NULL, x = expression(italic(y) - italic(y)^rep))
   } else {
     resids <- melt_yrep(as.matrix(-1 * sweep(yrep, 2L, y)))
     resids$rep_id <- factor(resids$rep_id, labels = paste("y -", unique(resids$rep_id)))
-    base <- ggplot(resids, aes_string(x = "value"))
-    xylabs <- labs(y = NULL, x = NULL)
+    base <- ggplot(resids, aes_string(x = "value")) +
+      labs(y = NULL, x = NULL) +
+      facet_wrap_parsed("rep_id", switch = "x")
   }
 
-  graph <- base +
+  base +
     geom_histogram(
       mapping = aes_string(y = "..density.."),
-      size = 0.25,
       fill = scheme[["dark"]],
       color = scheme[["dark_highlight"]],
+      size = 0.25,
       binwidth = binwidth
-    )
-
-  if (n > 1)
-    graph <- graph +
-    facet_wrap(
-      facets = "rep_id",
-      switch = "x",
-      labeller = label_parsed
-    )
-
-  graph +
-    xylabs +
+    ) +
     dont_expand_y_axis() +
     theme_ppc(y_text = FALSE)
 }
@@ -144,8 +134,7 @@ ppc_resid_binned <- function(y, Ey, ...) {
       ))
   }
 
-  base <- ggplot(binned, aes_string(x = "xbar"))
-  graph <- base +
+  graph <- ggplot(binned, aes_string(x = "xbar")) +
     geom_hline(
       yintercept = 0,
       linetype = 2,
@@ -173,7 +162,7 @@ ppc_resid_binned <- function(y, Ey, ...) {
     )
 
   if (n > 1)
-    graph <- graph + facet_wrap("rep", labeller = label_parsed)
+    graph <- graph + facet_wrap_parsed("rep")
 
   graph + theme_ppc()
 }
