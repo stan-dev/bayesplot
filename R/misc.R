@@ -51,9 +51,6 @@ melt_and_stack <- function(y, yrep) {
 #   by dplyr::summarise.
 #
 ppc_group_data <- function(y, yrep, group, stat = NULL) {
-  if (!requireNamespace("dplyr", quietly = TRUE))
-    stop("Please install the dplyr package.")
-
   d <- data.frame(
     group = factor(group),
     y = y,
@@ -80,6 +77,9 @@ Tyrep_label <- function() expression(italic(T)(italic(y)^rep))
 
 
 # ggplot helpers ----------------------------------------------------------
+facet_wrap_parsed <- function(...) {
+  facet_wrap(..., labeller = label_parsed)
+}
 dont_expand_y_axis <- function() {
   scale_y_continuous(expand = c(0,0))
 }
