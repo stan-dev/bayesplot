@@ -34,7 +34,9 @@ a scalar test statistic.}
 \item{binwidth}{An optional value to override
 \code{\link[ggplot2]{geom_histogram}}'s default binwidth.}
 
-\item{group}{A grouping variable of the same length as \code{y}.}
+\item{group}{A grouping variable the same length as \code{y}. Each value
+in \code{group} is interpreted as the group level pertaining to the
+corresponding value of \code{y}.}
 }
 \value{
 A ggplot object that can be further customized using the

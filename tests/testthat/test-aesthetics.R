@@ -25,6 +25,6 @@ test_that("ppc_color returns correct color values", {
 test_that("theme_ppc creates ggplot theme", {
   thm1 <- theme_ppc()
   thm2 <- theme_ppc(y_text = FALSE, legend_position = "right")
-  expect_is(thm1, "theme")
-  expect_is(thm2, "theme")
+  expect_s3_class(thm1, "theme")
+  expect_s3_class(thm2, "theme")
 })

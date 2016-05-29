@@ -28,7 +28,6 @@ validate_y <- function(y) {
 # @return Either throws an error or returns a numeric matrix.
 #
 validate_yrep <- function(yrep, y) {
-  stopifnot(is.vector(y))
   stopifnot(is.matrix(yrep), is.numeric(yrep))
   if (is.integer(yrep)) {
     if (nrow(yrep) == 1)
@@ -36,7 +35,6 @@ validate_yrep <- function(yrep, y) {
     else
       yrep <- apply(yrep, 2, as.numeric)
   }
-
   if (anyNA(yrep))
     stop("NAs not allowed in 'yrep'.")
   if (ncol(yrep) != length(y))
@@ -52,19 +50,18 @@ validate_yrep <- function(yrep, y) {
 # factor variable.
 #
 # @param group,y The user's group object and the y object returned by validate_y.
-# @return Either throws an error or returns a numeric matrix.
+# @return Either throws an error or returns \code{group} (coerced to a factor).
 #
 validate_group <- function(group, y) {
   stopifnot(is.vector(group) || is.factor(group))
-  if (is.character(group))
-    group <- factor(group)
-
+  if (!is.factor(group))
+    group <- as.factor(group)
   if (anyNA(group))
     stop("NAs not allowed in 'group'.")
   if (length(group) != length(y))
     stop("length(group) not equal to length(y).")
 
-  group
+  unname(group)
 }
 
 # Validate time

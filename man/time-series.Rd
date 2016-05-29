@@ -36,7 +36,9 @@ to include in the \code{yrep} intervals. The default is 0.8.}
 \item{y_style}{Should \code{y} be plotted as points connected by lines, only
 the points, or only the lines?}
 
-\item{group}{A grouping variable of the same length as \code{y}.}
+\item{group}{A grouping variable the same length as \code{y}. Each value
+in \code{group} is interpreted as the group level pertaining to the
+corresponding value of \code{y}.}
 }
 \value{
 A ggplot object that can be further customized using the

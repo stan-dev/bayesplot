@@ -31,15 +31,14 @@ test_that("validate_yrep throws errors", {
   expect_error(validate_yrep(as.matrix(LETTERS), y), "numeric")
   expect_error(validate_yrep(rbind(yrep, NA), y), "NAs not allowed")
   expect_error(validate_yrep(y, y), "matrix")
-  expect_error(validate_yrep(yrep, yrep), "vector")
   expect_error(validate_yrep(yrep2, y), "not equal to")
   expect_error(validate_yrep(yrep, y2), "not equal to")
 })
 
 # validating group --------------------------------------------------------
 test_that("validate_group works", {
-  expect_identical(validate_group(1:3, y = 1:3), 1:3)
-  expect_identical(validate_group(as.numeric(1:3), y = 4:6), as.numeric(1:3))
+  expect_identical(validate_group(1:3, y = 1:3), as.factor(1:3))
+  expect_identical(validate_group(as.numeric(1:3), y = 4:6), as.factor(1:3))
   expect_identical(validate_group(group, y), group)
   expect_identical(validate_group(letters[1:3], y = 1:3), factor(letters[1:3]))
 })

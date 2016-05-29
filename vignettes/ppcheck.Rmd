@@ -56,7 +56,6 @@ replications of the outcome $y$ rather than predictions for future observations
 from Gelman et. al. (2013) and is the notation used throughout the package
 documentation.
 
-
 #### Graphical posterior predictive checking
 Using the replicated datasets drawn from the posterior predictive
 distribution, the functions in the **ppcheck** package create various
