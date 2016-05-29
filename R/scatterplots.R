@@ -51,6 +51,7 @@ NULL
 
 #' @export
 #' @rdname scatterplots
+#'
 ppc_scatter <- function(y, yrep, ...) {
   y <- validate_y(y)
   yrep <- validate_yrep(yrep, y)
@@ -66,6 +67,7 @@ ppc_scatter <- function(y, yrep, ...) {
 
 #' @export
 #' @rdname scatterplots
+#'
 ppc_scatter_avg <- function(y, yrep, ...) {
   y <- validate_y(y)
   yrep <- validate_yrep(yrep, y)

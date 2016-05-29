@@ -91,3 +91,25 @@ validate_time <- function(time, y, unique_times = TRUE) {
 
   unname(time)
 }
+
+
+# Validate test statistic
+#
+# Checks that the correct number of functions is specified for computing test
+# statistics and that they are specified using strings.
+#
+# @param stat The user's 'stat' argument.
+# @param n_allowed The allowed length of 'stat'. Either 1 or 2.
+# @return Either throws an error or returns a character vector.
+#
+validate_stat <- function(stat, n_allowed) {
+  stopifnot(
+    n_allowed %in% c(1,2),
+    is.character(stat)
+  )
+
+  if (length(stat) != n_allowed)
+    stop("For this function 'stat' must have length ", n_allowed, ".")
+
+  stat
+}

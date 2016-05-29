@@ -69,3 +69,18 @@ test_that("validate_time throws errors", {
   expect_error(validate_time(c(1,2,NA), y = 1:3), "NAs not allowed")
   expect_error(validate_time(c(1,2,2), y = 1:3), "unique")
 })
+
+
+# validating stat ---------------------------------------------------------
+test_that("validate_stat works", {
+  expect_identical(validate_stat("mean", 1), "mean")
+  expect_identical(validate_stat(c("sd","mean"), 2), c("sd","mean"))
+})
+test_that("validate_stat throws errors", {
+  expect_error(validate_stat("mean", 2), "length")
+  expect_error(validate_stat(c("sd","mean"), 1), "length")
+  expect_error(validate_stat(mean, 1), "character")
+  expect_error(validate_stat(c(sd, mean), 2), "character")
+  expect_error(validate_stat("mean", 3), "n_allowed")
+})
+
