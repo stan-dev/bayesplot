@@ -1,14 +1,20 @@
-# ggplot theme
-#
-#
-# @param y_text Should y-axis text be displayed?
-# @param legend_position A valid value to use for \code{legend.position} when
-#   calling ggplot2::theme.
-# @param ... Arguments passed to \code{\link[ggplot2]{theme}}.
-#
+#' ggplot theme
+#'
+#' @export
+#' @param x_text,y_text Toggle axis text.
+#' @param x_lab,y_lab Toggle axis labels (titles). Overrided by \code{x_text},
+#'   \code{y_text}.
+#' @param legend_position A valid value to use for \code{legend.position} passed
+#'   to \code{\link[ggplot2]{theme}}.
+#' @param ... Other arguments to pass to \code{\link[ggplot2]{theme}}.
+#'
+#' @return A ggplot \code{\link[ggplot2]{theme}} object.
+#'
 theme_ppc <-
-  function(y_text = TRUE,
+  function(x_text = TRUE,
+           y_text = TRUE,
            x_lab = TRUE,
+           y_lab = TRUE,
            legend_position = "none",
            ...) {
     thm <- theme_classic() +
@@ -21,12 +27,18 @@ theme_ppc <-
         strip.background = element_rect(fill = "gray95", color = NA),
         ...
       )
-    if (!y_text)
-      thm <- thm %+replace%
-        theme(axis.text.y = element_blank(), axis.title.y = element_blank())
+    if (!y_text) {
+      y_lab <- FALSE
+      thm <- thm %+replace% theme(axis.text.y = element_blank())
+    }
+    if (!x_text) {
+      x_lab <- FALSE
+      thm <- thm %+replace% theme(axis.text.x = element_blank())
+    }
+    if (!y_lab)
+      thm <- thm %+replace% theme(axis.title.y = element_blank())
     if (!x_lab)
-      thm <- thm %+replace%
-        theme(axis.title.x = element_blank())
+      thm <- thm %+replace% theme(axis.title.x = element_blank())
 
     thm
   }
