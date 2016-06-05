@@ -4,7 +4,7 @@
 #' pair of test statistics, over the simulated datasets in \code{yrep},
 #' compared to the observed value \eqn{T(y)}.
 #'
-#' @name test-statistics
+#' @name TestStatistics
 #' @family PPCs
 #'
 #' @template args-y-yrep
@@ -59,7 +59,7 @@
 NULL
 
 #' @export
-#' @rdname test-statistics
+#' @rdname TestStatistics
 #'
 ppc_stat <- function(y, yrep, stat = "mean", ..., binwidth = NULL) {
   y <- validate_y(y)
@@ -99,7 +99,7 @@ ppc_stat <- function(y, yrep, stat = "mean", ..., binwidth = NULL) {
 }
 
 #' @export
-#' @rdname test-statistics
+#' @rdname TestStatistics
 #' @template args-group
 #'
 ppc_stat_grouped <-
@@ -135,7 +135,7 @@ ppc_stat_grouped <-
 
 
 #' @export
-#' @rdname test-statistics
+#' @rdname TestStatistics
 #'
 ppc_stat_2d <- function(y, yrep, stat = c("mean", "sd"), ...) {
   y <- validate_y(y)

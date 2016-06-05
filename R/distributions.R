@@ -4,7 +4,7 @@
 #' of simulated/replicated data \code{yrep} from the posterior predictive
 #' distribution.
 #'
-#' @name distributions
+#' @name Distributions
 #' @family PPCs
 #'
 #' @template args-y-yrep
@@ -54,7 +54,7 @@
 NULL
 
 #' @export
-#' @rdname distributions
+#' @rdname Distributions
 #'
 ppc_hist <- function(y, yrep, ..., binwidth = NULL) {
   y <- validate_y(y)
@@ -79,7 +79,7 @@ ppc_hist <- function(y, yrep, ..., binwidth = NULL) {
 
 
 #' @export
-#' @rdname distributions
+#' @rdname Distributions
 #'
 ppc_dens <- function(y, yrep, ...) {
   y <- validate_y(y)
@@ -102,7 +102,8 @@ ppc_dens <- function(y, yrep, ...) {
 }
 
 #' @export
-#' @rdname distributions
+#' @rdname Distributions
+#'
 ppc_dens_overlay <- function(y, yrep, ...) {
   y <- validate_y(y)
   yrep <- validate_yrep(yrep, y)
@@ -127,7 +128,7 @@ ppc_dens_overlay <- function(y, yrep, ...) {
 }
 
 #' @export
-#' @rdname distributions
+#' @rdname Distributions
 #' @template args-group
 #'
 ppc_violin_grouped <- function(y, yrep, group, ...) {
