@@ -4,7 +4,7 @@
 #' \code{y} overlaid.
 #'
 #'
-#' @name time-series
+#' @name TimeSeries
 #' @family PPCs
 #'
 #' @template args-y-yrep
@@ -53,7 +53,7 @@
 NULL
 
 #' @export
-#' @rdname time-series
+#' @rdname TimeSeries
 #'
 ppc_ts <-
   function(y,
@@ -75,7 +75,7 @@ ppc_ts <-
 
 
 #' @export
-#' @rdname time-series
+#' @rdname TimeSeries
 #' @template args-group
 #'
 ppc_ts_grouped <-

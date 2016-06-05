@@ -56,27 +56,27 @@ The plotting functions in this package are organized into several
 categories, each with its own documentation:
 
 \describe{
-  \item{\link[=distributions]{Distributions}}{
+  \item{\link[=Distributions]{Distributions}}{
     Histograms and density plots comparing the empirical distribution of the
     observed data \code{y} to the distributions of individual replicated
     datasets (rows) in \code{yrep}.
   }
-  \item{\link[=residuals]{Residuals}}{
+  \item{\link[=Residuals]{Residuals}}{
     Plots of residuals computed from \code{y} and individual replicated
     datasets (rows) in \code{yrep}. For binomial data binned residual plots
     are also available.
   }
-  \item{\link[=scatterplots]{Scatterplots}}{
+  \item{\link[=Scatterplots]{Scatterplots}}{
     Scatterplots of the observed data \code{y} vs. individual replicated
     datasets (rows) in \code{yrep}, or vs. the average value of the
     distributions of each data point (columns) in \code{yrep}.
   }
-  \item{\link[=test-statistics]{Test statistics}}{
+  \item{\link[=TestStatistics]{Test statistics}}{
     The distribution of a test statistic, or a pair of test statistics, over
     the replicated datasets (rows) in \code{yrep} compared to value of the
     statistic(s) computed from \code{y}.
   }
-  \item{\link[=time-series]{Time series}}{
+  \item{\link[=TimeSeries]{Time series}}{
     Interval estimates of \code{yrep} by time, with \code{y} overlaid.
   }
 }
