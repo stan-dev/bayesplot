@@ -15,7 +15,7 @@
 #' @param ... Other arguments for use by methods.
 #' @return The exact form of the value returned by \code{pp_check} may vary by
 #'   the class of \code{object}, but for consistency we encourage authors of
-#'   methods to always return the \code{ggplot} object created by one of
+#'   methods to always return the ggplot object created by one of
 #'   \pkg{ppcheck}'s plotting functions.
 #'
 #' @details A package that creates fitted model objects of class \code{"foo"}

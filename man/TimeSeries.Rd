@@ -4,7 +4,7 @@
 \alias{TimeSeries}
 \alias{ppc_ts}
 \alias{ppc_ts_grouped}
-\title{PPCs for time series}
+\title{Time Series}
 \usage{
 ppc_ts(y, yrep, time, ..., prob = 0.8, y_style = c("both", "points",
   "lines"))
@@ -45,8 +45,8 @@ A ggplot object that can be further customized using the
   \pkg{ggplot2} package.
 }
 \description{
-Medians and central interval estimates of \code{yrep} by time, with
-\code{y} overlaid.
+PPCs for time series. Medians and central interval estimates of \code{yrep}
+by time, with \code{y} overlaid.
 }
 \section{Plot Descriptions}{
 
