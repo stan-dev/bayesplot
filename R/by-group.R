@@ -1,6 +1,6 @@
 #' Index of \code{ppc} functions that stratify by group level
 #'
-#' @name ppcs-by-group
+#' @name ByGroup
 #' @description Index of functions in the \pkg{ppcheck} package that accept a
 #'   \code{group} argument.
 #' @section Functions:
@@ -10,17 +10,17 @@
 #'    variable.
 #'   }
 #'   \item{\code{\link{ppc_stat_grouped}}}{
-#'    The posterior predictive distributions of a test statistic
-#'    \eqn{T(y^{rep})}{T(yrep)} compared to the
-#'    observed value \eqn{T(y)} at each level of a grouping variable.
+#'    The distribution of a test statistic computed over the simulated datasets
+#'    from the posterior predictive distribution, \code{T(yrep)}, compared to
+#'    the observed value, \code{T(y)}, at each level of a grouping variable.
 #'   }
 #'   \item{\code{\link{ppc_ts_grouped}}}{
-#'     Interval estimates of \eqn{y^{rep}}{yrep} by time and level of a grouping
-#'     variable, with \eqn{y} points overlaid.
+#'    Interval estimates of \code{yrep} by time and level of a grouping
+#'    variable, with \code{y} points overlaid.
 #'   }
 #'   \item{\code{\link{ppc_violin_grouped}}}{
-#'     Density estimates of \code{yrep} by level of a grouping variable, with
-#'     \code{y} points overlaid.
+#'    Density estimates of \code{yrep} by level of a grouping variable, with
+#'    \code{y} points overlaid.
 #'   }
 #' }
 #'

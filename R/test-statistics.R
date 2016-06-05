@@ -1,8 +1,8 @@
 #' Test statistics
 #'
-#' The distribution of a test statistic \eqn{{T(y^{rep})}}{T(yrep)}, or a
+#' The distribution of a test statistic \code{T(yrep)}, or a
 #' pair of test statistics, over the simulated datasets in \code{yrep},
-#' compared to the observed value \eqn{T(y)}.
+#' compared to the observed value \code{T(y)}.
 #'
 #' @name TestStatistics
 #' @family PPCs
