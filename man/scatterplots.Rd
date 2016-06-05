@@ -26,7 +26,9 @@ instructions.}
 
 \item{...}{Currently unused.}
 
-\item{group}{A grouping variable of the same length as \code{y}.}
+\item{group}{A grouping variable the same length as \code{y}. Each value
+in \code{group} is interpreted as the group level pertaining to the
+corresponding value of \code{y}.}
 }
 \value{
 A ggplot object that can be further customized using the
@@ -54,9 +56,8 @@ For Binomial data, the plots will be most useful if \code{y} and
   }
   \item{\code{ppc_scatter_avg}}{
    A scatterplot of \code{y} against the average values of \code{yrep}, i.e.,
-   the points \eqn{(y_n, \bar{y}^{rep}_n),\, n = 1, \dots, N}{(y_n,
-   mean(yrep_n)), n = 1,...,N}, where each \eqn{y^{rep}_n}{yrep_n} is a
-   vector of length equal to the number of posterior draws.
+   the points \code{(y[n], mean(yrep[, n]))}, where each \code{yrep[, n]} is
+   a vector of length equal to the number of posterior draws.
 
    \if{html}{\figure{scatterAvg.png}{options: width="30\%" alt="Figure: scatterAvg.png"}}
    \if{latex}{\figure{scatterAvg.png}{options: width=4cm}}
