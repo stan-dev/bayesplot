@@ -28,7 +28,6 @@ validate_y <- function(y) {
 # @return Either throws an error or returns a numeric matrix.
 #
 validate_yrep <- function(yrep, y) {
-  stopifnot(is.vector(y))
   stopifnot(is.matrix(yrep), is.numeric(yrep))
   if (is.integer(yrep)) {
     if (nrow(yrep) == 1)
@@ -36,7 +35,6 @@ validate_yrep <- function(yrep, y) {
     else
       yrep <- apply(yrep, 2, as.numeric)
   }
-
   if (anyNA(yrep))
     stop("NAs not allowed in 'yrep'.")
   if (ncol(yrep) != length(y))
@@ -52,19 +50,18 @@ validate_yrep <- function(yrep, y) {
 # factor variable.
 #
 # @param group,y The user's group object and the y object returned by validate_y.
-# @return Either throws an error or returns a numeric matrix.
+# @return Either throws an error or returns \code{group} (coerced to a factor).
 #
 validate_group <- function(group, y) {
   stopifnot(is.vector(group) || is.factor(group))
-  if (is.character(group))
-    group <- factor(group)
-
+  if (!is.factor(group))
+    group <- as.factor(group)
   if (anyNA(group))
     stop("NAs not allowed in 'group'.")
   if (length(group) != length(y))
     stop("length(group) not equal to length(y).")
 
-  group
+  unname(group)
 }
 
 # Validate time
@@ -74,7 +71,7 @@ validate_group <- function(group, y) {
 # @param time,y The user's time object and the y object returned by validate_y.
 # @return Either throws an error or returns a numeric vector.
 #
-validate_time <- function(time, y) {
+validate_time <- function(time, y, unique_times = TRUE) {
   if (missing(time))
     return(1:length(y))
 
@@ -88,10 +85,31 @@ validate_time <- function(time, y) {
   if (anyNA(time))
     stop("NAs not allowed in 'time'.")
 
-  stopifnot(
-    identical(length(time), length(y)),
-    identical(length(time), length(unique(time)))
-  )
+  stopifnot(identical(length(time), length(y)))
+  if (unique_times)
+    stopifnot(identical(length(time), length(unique(time))))
 
   unname(time)
+}
+
+
+# Validate test statistic
+#
+# Checks that the correct number of functions is specified for computing test
+# statistics and that they are specified using strings.
+#
+# @param stat The user's 'stat' argument.
+# @param n_allowed The allowed length of 'stat'. Either 1 or 2.
+# @return Either throws an error or returns a character vector.
+#
+validate_stat <- function(stat, n_allowed) {
+  stopifnot(
+    n_allowed %in% c(1,2),
+    is.character(stat)
+  )
+
+  if (length(stat) != n_allowed)
+    stop("For this function 'stat' must have length ", n_allowed, ".")
+
+  stat
 }

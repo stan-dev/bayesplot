@@ -19,6 +19,29 @@ melt_yrep <- function(yrep, label = TRUE) {
   out
 }
 
+# Stack y below melted yrep data
+#
+# @param y Validated y input.
+# @param yrep Validated yrep input.
+# @return A data frame with the all the columns as the one returned by
+#   melt_yrep(), plus a column "is_y" indicating whether the values pertain
+#   to y (or yrep).
+#
+melt_and_stack <- function(y, yrep) {
+  molten_yrep <- melt_yrep(yrep)
+  yobs_lab <- "italic(y)"
+  levels(molten_yrep$rep_id) <- c(levels(molten_yrep$rep_id), yobs_lab)
+  ydat <- data.frame(
+    rep_id = yobs_lab,
+    y_id = seq_along(y),
+    value = y
+  )
+  within(data = rbind(molten_yrep, ydat), {
+    rep_id <- relevel(rep_id, ref = yobs_lab)
+    is_y <- rep_id == yobs_lab
+  })
+}
+
 # Prepare data for use in PPCs by group
 #
 # @param y,yrep,group Validated y, yrep, and group objects from the user.
@@ -28,9 +51,6 @@ melt_yrep <- function(yrep, label = TRUE) {
 #   by dplyr::summarise.
 #
 ppc_group_data <- function(y, yrep, group, stat = NULL) {
-  if (!requireNamespace("dplyr", quietly = TRUE))
-    stop("Please install the dplyr package.")
-
   d <- data.frame(
     group = factor(group),
     y = y,
@@ -46,9 +66,26 @@ ppc_group_data <- function(y, yrep, group, stat = NULL) {
   dplyr::summarise_(molten_d, value = ~stat(value))
 }
 
+
+# labels ----------------------------------------------------------------
 create_yrep_ids <- function(ids) paste('italic(y)[rep] (', ids, ")")
 yrep_label <- function() expression(italic(y)^rep)
 yrep_avg_label <- function() expression(paste("Average ", italic(y)^rep))
 y_label <- function() expression(italic(y))
 Ty_label <- function() expression(italic(T(y)))
 Tyrep_label <- function() expression(italic(T)(italic(y)^rep))
+
+
+# ggplot helpers ----------------------------------------------------------
+facet_wrap_parsed <- function(...) {
+  facet_wrap(..., labeller = label_parsed)
+}
+dont_expand_y_axis <- function() {
+  scale_y_continuous(expand = c(0,0))
+}
+dont_expand_x_axis <- function() {
+  scale_x_continuous(expand = c(0,0))
+}
+dont_expand_axes <- function() {
+  coord_cartesian(expand = FALSE)
+}

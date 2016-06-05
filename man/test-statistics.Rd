@@ -25,7 +25,7 @@ for the plots to make sense. See \strong{Details} for additional
 instructions.}
 
 \item{stat}{A character vector of function names of length 1 (for
-\code{ppc_stat}, \code{ppc_stat_grouped}) and length 2 (for
+\code{ppc_stat} and \code{ppc_stat_grouped}) or length 2 (for
 \code{ppc_stat_2d}). The function(s) should take a vector input and return
 a scalar test statistic.}
 
@@ -34,7 +34,9 @@ a scalar test statistic.}
 \item{binwidth}{An optional value to override
 \code{\link[ggplot2]{geom_histogram}}'s default binwidth.}
 
-\item{group}{A grouping variable of the same length as \code{y}.}
+\item{group}{A grouping variable the same length as \code{y}. Each value
+in \code{group} is interpreted as the group level pertaining to the
+corresponding value of \code{y}.}
 }
 \value{
 A ggplot object that can be further customized using the
@@ -90,7 +92,7 @@ ppc_stat_2d(y, yrep, stat = c("median", "mean"))
 group <- gl(3, 10, length = length(y), labels = LETTERS[1:3])
 ppc_stat_grouped(y, yrep, group)
 
-# define a custom test statistic
+# use your own function to compute test statistics
 q25 <- function(y) quantile(y, 0.25)
 ppc_stat(y, yrep, stat = "q25")
 

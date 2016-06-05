@@ -67,36 +67,30 @@ NULL
 ppc_resid <- function(y, yrep, ..., binwidth = NULL) {
   y <- validate_y(y)
   yrep <- validate_yrep(yrep, y)
-  scheme <- get_color_scheme()
-
   n <- nrow(yrep)
+
   if (n == 1) {
     resids <- data.frame(x = y - as.vector(yrep))
-    base <- ggplot(resids, aes_string(x = "x"))
-    xylabs <- labs(y = NULL, x = expression(italic(y) - italic(y)^rep))
+    graph <- ggplot(resids, aes_string(x = "x")) +
+      labs(y = NULL, x = expression(italic(y) - italic(y)^rep))
   } else {
     resids <- melt_yrep(as.matrix(-1 * sweep(yrep, 2L, y)))
     resids$rep_id <- factor(resids$rep_id, labels = paste("y -", unique(resids$rep_id)))
-    base <- ggplot(resids, aes_string(x = "value"))
-    xylabs <- labs(y = NULL, x = NULL)
+    graph <- ggplot(resids, aes_string(x = "value")) +
+      labs(y = NULL, x = NULL) +
+      facet_wrap_parsed("rep_id", switch = "x")
   }
 
-  graph <- base +
+  graph +
     geom_histogram(
       mapping = aes_string(y = "..density.."),
+      fill = ppc_color("dark"),
+      color = ppc_color("dark_highlight"),
       size = 0.25,
-      fill = scheme[["dark"]],
-      color = scheme[["dark_highlight"]],
       binwidth = binwidth
     ) +
-    xylabs +
-    coord_cartesian(expand = FALSE) +
+    dont_expand_y_axis() +
     theme_ppc(y_text = FALSE)
-
-  if (n > 1)
-    graph <- graph + facet_wrap("rep_id", switch = "x", labeller = label_parsed)
-
-  graph
 }
 
 #' @rdname residuals
@@ -110,14 +104,8 @@ ppc_resid_binned <- function(y, Ey, ...) {
 
   y <- validate_y(y)
   yrep <- validate_yrep(Ey, y)
-
-  scheme <- get_color_scheme()
-  line_color <- scheme[["light"]]
-  line_size <- 1
-  pt_fill <- scheme[["dark"]]
-  pt_color <- scheme[["dark_highlight"]]
-
   resids <- sweep(-Ey, MARGIN = 2L, STATS = y, "+")
+
   ny <- length(y)
   if (ny >= 100) {
     nbins <- floor(sqrt(ny))
@@ -145,8 +133,8 @@ ppc_resid_binned <- function(y, Ey, ...) {
       ))
   }
 
-  base <- ggplot(binned, aes_string(x = "xbar"))
-  graph <- base +
+  graph <-
+    ggplot(binned, aes_string(x = "xbar")) +
     geom_hline(
       yintercept = 0,
       linetype = 2,
@@ -154,30 +142,29 @@ ppc_resid_binned <- function(y, Ey, ...) {
     ) +
     geom_path(
       mapping = aes_string(y = "se2"),
-      color = line_color,
-      size = line_size
+      color = ppc_color("light"),
+      size = 1
     ) +
     geom_path(
       mapping = aes_string(y = "-se2"),
-      color = line_color,
-      size = line_size
+      color = ppc_color("light"),
+      size = 1
     ) +
     geom_point(
       mapping = aes_string(y = "ybar"),
       shape = 21,
-      fill = pt_fill,
-      color = pt_color
+      fill = ppc_color("dark"),
+      color = ppc_color("dark_highlight")
     ) +
     labs(
       x = "Expected Values",
       y = "Average Residual \n (with 2SE bounds)"
-    ) +
-    theme_ppc()
+    )
 
   if (n > 1)
-    graph <- graph + facet_wrap("rep", labeller = label_parsed)
+    graph <- graph + facet_wrap_parsed("rep")
 
-  graph
+  graph + theme_ppc()
 }
 
 binner <- function(rep_id, ey, r, nbins) {
@@ -191,5 +178,3 @@ binner <- function(rep_id, ey, r, nbins) {
     binned_resids
   )
 }
-
-

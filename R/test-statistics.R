@@ -10,7 +10,7 @@
 #' @template args-y-yrep
 #' @template args-hist
 #' @param stat A character vector of function names of length 1 (for
-#'   \code{ppc_stat}, \code{ppc_stat_grouped}) and length 2 (for
+#'   \code{ppc_stat} and \code{ppc_stat_grouped}) or length 2 (for
 #'   \code{ppc_stat_2d}). The function(s) should take a vector input and return
 #'   a scalar test statistic.
 #' @param ... Currently unused.
@@ -61,7 +61,7 @@
 #' group <- gl(3, 10, length = length(y), labels = LETTERS[1:3])
 #' ppc_stat_grouped(y, yrep, group)
 #'
-#' # define a custom test statistic
+#' # use your own function to compute test statistics
 #' q25 <- function(y) quantile(y, 0.25)
 #' ppc_stat(y, yrep, stat = "q25")
 #'
@@ -73,9 +73,7 @@ NULL
 ppc_stat <- function(y, yrep, stat = "mean", ..., binwidth = NULL) {
   y <- validate_y(y)
   yrep <- validate_yrep(yrep, y)
-  stopifnot(is.character(stat), length(stat) == 1)
-
-  scheme <- get_color_scheme()
+  stat <- validate_stat(stat, 1)
 
   stat1 <- match.fun(stat)
   T_y <- stat1(y)
@@ -89,7 +87,7 @@ ppc_stat <- function(y, yrep, stat = "mean", ..., binwidth = NULL) {
       color = "'A'"
     )
   ) +
-    .ppc_stat_histogram(scheme, binwidth) +
+    .ppc_stat_histogram(binwidth) +
     geom_vline(
       data = data.frame(t = T_y),
       mapping = aes_string(xintercept = "t", color = "factor(t)"),
@@ -98,11 +96,11 @@ ppc_stat <- function(y, yrep, stat = "mean", ..., binwidth = NULL) {
     ) +
     scale_color_manual(
       name = "",
-      values = c(scheme[["dark"]], scheme[["light"]]),
+      values = ppc_color(c("dark", "light")),
       labels = c(Ty_label(), Tyrep_label())
     ) +
     xlab(paste("Stat =", stat)) +
-    coord_cartesian(expand = FALSE) +
+    dont_expand_y_axis() +
     theme_ppc(
       y_text = FALSE,
       legend_position = "right"
@@ -113,33 +111,36 @@ ppc_stat <- function(y, yrep, stat = "mean", ..., binwidth = NULL) {
 #' @rdname test-statistics
 #' @template args-group
 #'
-ppc_stat_grouped <- function(y, yrep, group, stat = "mean", ..., binwidth = NULL) {
-  y <- validate_y(y)
-  yrep <- validate_yrep(yrep, y)
-  group <- validate_group(group, y)
+ppc_stat_grouped <-
+  function(y,
+           yrep,
+           group,
+           stat = "mean",
+           ...,
+           binwidth = NULL) {
+    y <- validate_y(y)
+    yrep <- validate_yrep(yrep, y)
+    group <- validate_group(group, y)
+    stat <- validate_stat(stat, 1)
+    plot_data <- ppc_group_data(y, yrep, group, stat = stat)
+    is_y <- plot_data$variable == "y"
 
-  plot_data <- ppc_group_data(y, yrep, group, stat = stat)
-  scheme <- get_color_scheme()
-  fills <- c(scheme[["dark"]], scheme[["light"]])
-  colors <- c(scheme[["dark_highlight"]], scheme[["light_highlight"]])
-
-  is_y <- plot_data$variable == "y"
-  ggplot(
-    data = plot_data[!is_y,, drop = FALSE],
-    mapping = aes_string(x = "value", y = "..density..")
-  ) +
-    .ppc_stat_histogram(scheme, binwidth) +
-    geom_vline(
-      data = plot_data[is_y,, drop = FALSE],
-      mapping = aes_string(xintercept = "value"),
-      color = scheme[["dark"]],
-      size = 2
+    ggplot(
+      data = plot_data[!is_y, , drop = FALSE],
+      mapping = aes_string(x = "value", y = "..density..")
     ) +
-    facet_wrap("group", scales = "free", labeller = label_both) +
-    coord_cartesian(expand = FALSE) +
-    xlab(paste("Stat =", stat)) +
-    theme_ppc(y_text = FALSE)
-}
+      .ppc_stat_histogram(binwidth) +
+      geom_vline(
+        data = plot_data[is_y, , drop = FALSE],
+        mapping = aes_string(xintercept = "value"),
+        color = ppc_color("dark"),
+        size = 2
+      ) +
+      facet_wrap("group", scales = "free") +
+      xlab(paste("Stat =", stat)) +
+      dont_expand_y_axis() +
+      theme_ppc(y_text = FALSE)
+  }
 
 
 #' @export
@@ -148,9 +149,7 @@ ppc_stat_grouped <- function(y, yrep, group, stat = "mean", ..., binwidth = NULL
 ppc_stat_2d <- function(y, yrep, stat = c("mean", "sd"), ...) {
   y <- validate_y(y)
   yrep <- validate_yrep(yrep, y)
-  stopifnot(is.character(stat), length(stat) == 2)
-
-  scheme <- get_color_scheme()
+  stat <- validate_stat(stat, 2)
 
   stat1 <- match.fun(stat[1])
   stat2 <- match.fun(stat[2])
@@ -166,8 +165,8 @@ ppc_stat_2d <- function(y, yrep, stat = c("mean", "sd"), ...) {
     geom_point(
       shape = 21,
       size = 2,
-      fill = scheme[["light"]],
-      color = scheme[["light_highlight"]]
+      fill = ppc_color("light"),
+      color = ppc_color("light_highlight")
     ) +
     annotate(
       geom = "segment",
@@ -177,7 +176,7 @@ ppc_stat_2d <- function(y, yrep, stat = c("mean", "sd"), ...) {
       yend = c(T_y2, T_y2),
       linetype = 2,
       size = 0.4,
-      color = scheme[["dark_highlight"]]
+      color = ppc_color("dark_highlight")
     ) +
     geom_point(
       data = data.frame(x = T_y1, y = T_y2),
@@ -193,12 +192,12 @@ ppc_stat_2d <- function(y, yrep, stat = c("mean", "sd"), ...) {
     ) +
     scale_fill_manual(
       name = "",
-      values = c('Ty' = scheme[["dark"]]),
+      values = c('Ty' = ppc_color("dark")),
       labels = c('Ty' = Ty_label())
     ) +
     scale_color_manual(
       name = "",
-      values = c('Ty' = scheme[["dark_highlight"]]),
+      values = c('Ty' = ppc_color("dark_highlight")),
       labels = c('Ty' = Ty_label())
     ) +
     labs(
@@ -213,10 +212,10 @@ ppc_stat_2d <- function(y, yrep, stat = c("mean", "sd"), ...) {
 
 
 # helpers -----------------------------------------------------------------
-.ppc_stat_histogram <- function(scheme, binwidth) {
+.ppc_stat_histogram <- function(binwidth) {
   geom_histogram(
-    fill = scheme[["light"]],
-    color = scheme[["light_highlight"]],
+    fill = ppc_color("light"),
+    color = ppc_color("light_highlight"),
     size = .25,
     na.rm = TRUE,
     binwidth = binwidth

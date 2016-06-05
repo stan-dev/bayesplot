@@ -8,7 +8,9 @@
 \description{
 The \pkg{ppcheck} package provides various plotting functions for creating
 graphical displays comparing observed data to simulated data from the
-posterior predictive distribution.
+posterior predictive distribution. See below for a brief discussion of the
+ideas behind posterior predictive checking as well as a description of the
+structure of this package.
 }
 \details{
 The idea behind posterior predictive checking is simple: if a model is a good
@@ -22,35 +24,72 @@ distribution is the distribution of the outcome variable implied by a model
 after using the observed data \eqn{y} (a vector of outcome values) and
 \eqn{X} (a matrix of predictor variables) to update our beliefs about the
 unknown parameters \eqn{\theta} in the model. For each draw of the parameters
-\eqn{\theta} from the posterior distribution we generate an entire vector of
-outcomes, obtaining a matrix of simulations.
+\eqn{\theta} from the posterior distribution \eqn{p(\theta \,|\, y,
+X)}{p(\theta | y, X)} we generate an entire vector of outcomes. The result is
+an \eqn{S \times N}{S x N} matrix of simulations, where \eqn{S} is the the
+size of the posterior sample (number of draws from the posterior
+distribution) and \eqn{N} is the number of data points in \eqn{y}.
+That is, each row of the matrix is an individual "replicated" dataset.
 }
 \subsection{Notation}{
 When simulating from the posterior predictive distribution we can use either
 the same values of the predictors \eqn{X} that we used when fitting the model
 or new observations of those predictors. When we use the same values of
-\eqn{X} denote the resulting simulations by \eqn{y^{rep}}{yrep} as they can
-be thought of as replications of the outcome \eqn{y} rather than predictions
-for future observations. This corresponds to the notation from Gelman et. al.
-(2013) and is the notation used throughtout the documentation for this
-package.
+\eqn{X} we denote the resulting simulations by \eqn{y^{rep}}{yrep} as they
+can be thought of as \emph{replications} of the outcome \eqn{y} rather than
+predictions for future observations. This corresponds to the notation from
+Gelman et. al. (2013) and is the notation used throughtout the documentation
+for this package.
 }
 \subsection{Graphical posterior predictive checking}{
 Using the datasets \eqn{y^{rep}}{yrep} drawn from the posterior predictive
-distribution, the functions in the \pkg{ppcheck} package create various
+distribution, the functions in the \pkg{ppcheck} package produce various
 graphical displays comparing the observed data \eqn{y} to the replications.
 For a more thorough discussion of posterior predictive checking see
 Chapter 6 of Gelman et. al. (2013).
 }
 }
+\section{Package structure}{
+
+
+The plotting functions in this package are organized into several
+categories, each with its own documentation:
+
+\describe{
+  \item{\link[=distributions]{Distributions}}{
+    Histograms and density plots comparing the empirical distribution of the
+    observed data \code{y} to the distributions of individual replicated
+    datasets (rows) in \code{yrep}.
+  }
+  \item{\link[=residuals]{Residuals}}{
+    Plots of residuals computed from \code{y} and individual replicated
+    datasets (rows) in \code{yrep}. For binomial data binned residual plots
+    are also available.
+  }
+  \item{\link[=scatterplots]{Scatterplots}}{
+    Scatterplots of the observed data \code{y} vs. individual replicated
+    datasets (rows) in \code{yrep}, or vs. the average value of the
+    distributions of each data point (columns) in \code{yrep}.
+  }
+  \item{\link[=test-statistics]{Test statistics}}{
+    The distribution of a test statistic, or a pair of test statistics, over
+    the replicated datasets (rows) in \code{yrep} compared to value of the
+    statistic(s) computed from \code{y}.
+  }
+  \item{\link[=time-series]{Time series}}{
+    Interval estimates of \code{yrep} by time, with \code{y} overlaid.
+  }
+}
+}
+
 \section{Providing an interface to ppcheck from another package}{
 
 
-The \pkg{ppcheck} package provides the S3 generic \code{\link{pp_check}}.
-Authors of \R packages for Bayesian inference are encouraged to define
-\code{pp_check} methods for the fitted model objects created by their
-packages. See \code{vignette("ppcheck")} for more details and an
-example.
+In addition to the various plotting functions, the \pkg{ppcheck} package
+provides the S3 generic \code{\link{pp_check}}. Authors of \R packages for
+Bayesian inference are encouraged to define \code{pp_check} methods for the
+fitted model objects created by their packages. See
+\code{vignette("ppcheck")} for more details and an example.
 }
 \author{
 Jonah Gabry

@@ -20,10 +20,10 @@
 #'    \if{html}{\figure{statGrouped.png}{options: width="30\%" alt="Figure: statGrouped.png"}}
 #'    \if{latex}{\figure{statGrouped.png}{options: width=4cm}}
 #'   }
-# #'   \item{\code{\link{ppc_ts_grouped}}}{
-# #'     Interval estimates of \eqn{y^{rep}}{yrep} by time and level of a grouping
-# #'     variable, with \eqn{y} points overlaid.
-# #'   }
+#'   \item{\code{\link{ppc_ts_grouped}}}{
+#'     Interval estimates of \eqn{y^{rep}}{yrep} by time and level of a grouping
+#'     variable, with \eqn{y} points overlaid.
+#'   }
 #'   \item{\code{\link{ppc_violin_grouped}}}{
 #'     Density estimates of \code{yrep} by level of a grouping variable,
 #'     with \code{y} points overlaid.
