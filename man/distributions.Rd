@@ -17,7 +17,7 @@ ppc_dens_overlay(y, yrep, ...)
 ppc_violin_grouped(y, yrep, group, ...)
 }
 \arguments{
-\item{y}{A vector of observed data. See \strong{Details}.}
+\item{y}{A vector of observations. See \strong{Details}.}
 
 \item{yrep}{An \eqn{S} by \eqn{N} matrix of draws from the posterior
 predictive distribution, where \eqn{S} is the size of the posterior sample
@@ -32,9 +32,9 @@ instructions.}
 \item{binwidth}{An optional value to override
 \code{\link[ggplot2]{geom_histogram}}'s default binwidth.}
 
-\item{group}{A grouping variable the same length as \code{y}. Each value
-in \code{group} is interpreted as the group level pertaining to the
-corresponding value of \code{y}.}
+\item{group}{A grouping variable (a vector or factor) the same length as
+\code{y}. Each value in \code{group} is interpreted as the group level
+pertaining to the corresponding value of \code{y}.}
 }
 \value{
 A ggplot object that can be further customized using the
@@ -46,9 +46,9 @@ of simulated/replicated data \code{yrep} from the posterior predictive
 distribution.
 }
 \details{
-For Binomial data, the plots will be most useful if \code{y} and
-  \code{yrep} contain the "success" proportions (not "success" or "failure"
-  counts).
+For Binomial data, the plots will typically be most useful if
+  \code{y} and \code{yrep} contain the "success" proportions (not discrete
+  "success" or "failure" counts).
 }
 \section{Plot Descriptions}{
 

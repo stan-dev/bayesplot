@@ -13,7 +13,7 @@ ppc_ts_grouped(y, yrep, time, group, ..., prob = 0.8, y_style = c("both",
   "points", "lines"))
 }
 \arguments{
-\item{y}{A vector of observed data. See \strong{Details}.}
+\item{y}{A vector of observations. See \strong{Details}.}
 
 \item{yrep}{An \eqn{S} by \eqn{N} matrix of draws from the posterior
 predictive distribution, where \eqn{S} is the size of the posterior sample
@@ -36,9 +36,9 @@ to include in the \code{yrep} intervals. The default is 0.8.}
 \item{y_style}{Should \code{y} be plotted as points connected by lines, only
 the points, or only the lines?}
 
-\item{group}{A grouping variable the same length as \code{y}. Each value
-in \code{group} is interpreted as the group level pertaining to the
-corresponding value of \code{y}.}
+\item{group}{A grouping variable (a vector or factor) the same length as
+\code{y}. Each value in \code{group} is interpreted as the group level
+pertaining to the corresponding value of \code{y}.}
 }
 \value{
 A ggplot object that can be further customized using the
