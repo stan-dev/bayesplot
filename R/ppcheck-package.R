@@ -8,8 +8,9 @@
 #' The \pkg{ppcheck} package provides various plotting functions for creating
 #' graphical displays comparing observed data to simulated data from the
 #' posterior predictive distribution. See below for a brief discussion of the
-#' ideas behind posterior predictive checking as well as a description of the
-#' structure of this package.
+#' ideas behind posterior predictive checking, a description of the
+#' structure of this package, and tips on providing an interface to
+#' \pkg{ppcheck} from another package.
 #'
 #' @details
 #' The idea behind posterior predictive checking is simple: if a model is a good
@@ -20,15 +21,16 @@
 #' To generate the data used for posterior predictive checks we simulate from
 #' the \emph{posterior predictive distribution}. The posterior predictive
 #' distribution is the distribution of the outcome variable implied by a model
-#' after using the observed data \eqn{y} (a vector of outcome values) and
-#' \eqn{X} (a matrix of predictor variables) to update our beliefs about the
-#' unknown parameters \eqn{\theta} in the model. For each draw of the parameters
+#' after using the observed data \eqn{y} (a vector of outcome values), and
+#' typically predictors \eqn{X}, to update our beliefs about the unknown
+#' parameters \eqn{\theta} in the model. For each draw of the parameters
 #' \eqn{\theta} from the posterior distribution \eqn{p(\theta \,|\, y,
 #' X)}{p(\theta | y, X)} we generate an entire vector of outcomes. The result is
 #' an \eqn{S \times N}{S x N} matrix of simulations, where \eqn{S} is the the
 #' size of the posterior sample (number of draws from the posterior
-#' distribution) and \eqn{N} is the number of data points in \eqn{y}.
-#' That is, each row of the matrix is an individual "replicated" dataset.
+#' distribution) and \eqn{N} is the number of data points in \eqn{y}. That is,
+#' each row of the matrix is an individual "replicated" dataset of \eqn{N}
+#' observations.
 #' }
 #' \subsection{Notation}{
 #' When simulating from the posterior predictive distribution we can use either
@@ -54,27 +56,27 @@
 #' categories, each with its own documentation:
 #'
 #' \describe{
-#'   \item{\link[=Distributions]{Distributions}}{
+#'   \item{\strong{\link[=Distributions]{Distributions}}}{
 #'     Histograms and density plots comparing the empirical distribution of the
 #'     observed data \code{y} to the distributions of individual replicated
 #'     datasets (rows) in \code{yrep}.
 #'   }
-#'   \item{\link[=Residuals]{Residuals}}{
+#'   \item{\strong{\link[=Residuals]{Residuals}}}{
 #'     Plots of residuals computed from \code{y} and individual replicated
 #'     datasets (rows) in \code{yrep}. For binomial data binned residual plots
 #'     are also available.
 #'   }
-#'   \item{\link[=Scatterplots]{Scatterplots}}{
+#'   \item{\strong{\link[=Scatterplots]{Scatterplots}}}{
 #'     Scatterplots of the observed data \code{y} vs. individual replicated
 #'     datasets (rows) in \code{yrep}, or vs. the average value of the
 #'     distributions of each data point (columns) in \code{yrep}.
 #'   }
-#'   \item{\link[=TestStatistics]{Test statistics}}{
+#'   \item{\strong{\link[=TestStatistics]{Test statistics}}}{
 #'     The distribution of a test statistic, or a pair of test statistics, over
 #'     the replicated datasets (rows) in \code{yrep} compared to value of the
 #'     statistic(s) computed from \code{y}.
 #'   }
-#'   \item{\link[=TimeSeries]{Time series}}{
+#'   \item{\strong{\link[=TimeSeries]{Time series}}}{
 #'     Interval estimates of \code{yrep} by time, with \code{y} overlaid.
 #'   }
 #' }

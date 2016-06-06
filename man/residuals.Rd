@@ -11,7 +11,7 @@ ppc_resid(y, yrep, ..., binwidth = NULL)
 ppc_resid_binned(y, Ey, ...)
 }
 \arguments{
-\item{y}{A vector of observed data. See \strong{Details}.}
+\item{y}{A vector of observations. See \strong{Details}.}
 
 \item{yrep}{An \eqn{S} by \eqn{N} matrix of draws from the posterior
 predictive distribution, where \eqn{S} is the size of the posterior sample
