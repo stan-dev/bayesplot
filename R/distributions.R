@@ -62,11 +62,11 @@ ppc_hist <- function(y, yrep, ..., binwidth = NULL) {
 
   ggplot(
     data = melt_and_stack(y, yrep),
-    mapping = aes_string(
-      x = 'value',
-      y = "..density..",
-      fill = "is_y",
-      color = "is_y"
+    mapping = aes_(
+      x = ~ value,
+      y = ~ ..density..,
+      fill = ~ is_y,
+      color = ~ is_y
     )
   ) +
     geom_histogram(size = 0.25, binwidth = binwidth) +
@@ -87,10 +87,10 @@ ppc_dens <- function(y, yrep, ...) {
 
   ggplot(
     data = melt_and_stack(y, yrep),
-    mapping = aes_string(
-      x = 'value',
-      fill = 'is_y',
-      color = "is_y"
+    mapping = aes_(
+      x = ~ value,
+      fill = ~ is_y,
+      color = ~ is_y
     )
   ) +
     geom_density(size = 1) +
@@ -110,12 +110,12 @@ ppc_dens_overlay <- function(y, yrep, ...) {
 
   ggplot(
     data = melt_and_stack(y, yrep),
-    mapping = aes_string(
-      x = "value",
-      group = "rep_id",
-      color = "is_y",
-      fill = "is_y",
-      size = "is_y"
+    mapping = aes_(
+      x = ~ value,
+      group = ~ rep_id,
+      color = ~ is_y,
+      fill = ~ is_y,
+      size = ~ is_y
     )
   ) +
     geom_density() +
@@ -140,10 +140,10 @@ ppc_violin_grouped <- function(y, yrep, group, ...) {
 
   ggplot(
     data = plot_data[!is_y,, drop = FALSE],
-    mapping = aes_string(
-      x = "group",
-      y = "value",
-      fill = "variable"
+    mapping = aes_(
+      x = ~ group,
+      y = ~ value,
+      fill = ~ variable
     )
   ) +
     geom_violin(

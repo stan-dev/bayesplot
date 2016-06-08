@@ -154,11 +154,11 @@ ppc_ts_plotter <- function(data, y_style = "both") {
 
   graph <- ggplot(
     data = yrep_data,
-    mapping = aes_string(
-      x = "time",
-      y = "median",
-      ymin = "lower",
-      ymax = "upper"
+    mapping = aes_(
+      x = ~ time,
+      y = ~ median,
+      ymin = ~ lower,
+      ymax = ~ upper
     )
   ) +
     geom_smooth(

@@ -65,19 +65,19 @@ ppc_resid <- function(y, yrep, ..., binwidth = NULL) {
 
   if (n == 1) {
     resids <- data.frame(x = y - as.vector(yrep))
-    graph <- ggplot(resids, aes_string(x = "x")) +
+    graph <- ggplot(resids, aes_(x = ~ x)) +
       labs(y = NULL, x = expression(italic(y) - italic(y)^rep))
   } else {
     resids <- melt_yrep(as.matrix(-1 * sweep(yrep, 2L, y)))
     resids$rep_id <- factor(resids$rep_id, labels = paste("y -", unique(resids$rep_id)))
-    graph <- ggplot(resids, aes_string(x = "value")) +
+    graph <- ggplot(resids, aes_(x = ~ value)) +
       labs(y = NULL, x = NULL) +
       facet_wrap_parsed("rep_id", switch = "x")
   }
 
   graph +
     geom_histogram(
-      mapping = aes_string(y = "..density.."),
+      mapping = aes_(y = ~ ..density..),
       fill = ppc_color("dark"),
       color = ppc_color("dark_highlight"),
       size = 0.25,
@@ -128,24 +128,24 @@ ppc_resid_binned <- function(y, Ey, ...) {
   }
 
   graph <-
-    ggplot(binned, aes_string(x = "xbar")) +
+    ggplot(binned, aes_(x = ~ xbar)) +
     geom_hline(
       yintercept = 0,
       linetype = 2,
       color = "black"
     ) +
     geom_path(
-      mapping = aes_string(y = "se2"),
+      mapping = aes_(y = ~ se2),
       color = ppc_color("light"),
       size = 1
     ) +
     geom_path(
-      mapping = aes_string(y = "-se2"),
+      mapping = aes_(y = ~ -se2),
       color = ppc_color("light"),
       size = 1
     ) +
     geom_point(
-      mapping = aes_string(y = "ybar"),
+      mapping = aes_(y = ~ ybar),
       shape = 21,
       fill = ppc_color("dark"),
       color = ppc_color("dark_highlight")

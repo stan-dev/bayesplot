@@ -58,7 +58,7 @@ ppc_scatter <- function(y, yrep, ...) {
 
   graph <- ppc_scatter_plotter(
     data = data.frame(melt_yrep(yrep), y = rep(y, each = nrow(yrep))),
-    mapping = aes_string(x = "y", y = "value"),
+    mapping = aes_(x = ~ y, y = ~ value),
     x_lab = y_label(),
     y_lab = yrep_label()
   )
@@ -74,7 +74,7 @@ ppc_scatter_avg <- function(y, yrep, ...) {
 
   ppc_scatter_plotter(
     data = data.frame(y, avg_y_rep = colMeans(yrep)),
-    mapping = aes_string(x = "y", y = "avg_y_rep"),
+    mapping = aes_(x = ~ y, y = ~ avg_y_rep),
     x_lab = y_label(),
     y_lab = yrep_avg_label()
   )
@@ -91,7 +91,7 @@ ppc_scatter_avg_grouped <- function(y, yrep, group, ...) {
 
   graph <- ppc_scatter_plotter(
     data = data.frame(group, y, avg_yrep = colMeans(yrep)),
-    mapping = aes_string(x = "y", y = "avg_yrep"),
+    mapping = aes_(x = ~ y, y = ~ avg_yrep),
     x_lab = y_label(),
     y_lab = yrep_avg_label()
   )
