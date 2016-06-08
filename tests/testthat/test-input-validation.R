@@ -64,12 +64,12 @@ test_that("validate_time works", {
   expect_identical(validate_time(tt, y = 1:3, unique_times = FALSE), tt)
 })
 test_that("validate_time throws errors", {
-  expect_error(validate_time(letters[1:3], y = 1:3), "numeric")
-  expect_error(validate_time(yrep, y = 1:3), "vector")
-  expect_error(validate_time(c(1,2,NA), y = 1:3), "NAs not allowed")
-  expect_error(validate_time(c(1,2,2), y = 1:3), "unique")
+  expect_error(validate_time(time = letters[1:3], y = 1:3), "numeric")
+  expect_error(validate_time(time = yrep, y = 1:3), "vector")
+  expect_error(validate_time(time = 1:2, y = 1:3), "same length")
+  expect_error(validate_time(time = c(1,2,NA), y = 1:3), "NAs not allowed")
+  expect_error(validate_time(time = c(1,2,2), y = 1:3), "unique")
 })
-
 
 # validating stat ---------------------------------------------------------
 test_that("validate_stat works", {
@@ -83,4 +83,3 @@ test_that("validate_stat throws errors", {
   expect_error(validate_stat(c(sd, mean), 2), "character")
   expect_error(validate_stat("mean", 3), "n_allowed")
 })
-
