@@ -1,4 +1,4 @@
-#' Graphical posterior predictive checking for Bayesian Models
+#' Graphical posterior predictive checking
 #'
 #' @name PPC-overview
 #' @family PPCs

@@ -4,8 +4,8 @@
 \name{bayesplot-package}
 \alias{bayesplot}
 \alias{bayesplot-package}
-\title{Graphical posterior predictive checking for Bayesian Models}
+\title{Plotting for Bayesian Models}
 \description{
-Graphical posterior predictive checking for Bayesian Models
+Plotting for Bayesian Models
 }
 
