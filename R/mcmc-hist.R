@@ -5,11 +5,14 @@
 #' @export
 #' @template args-hist
 #' @param x Posterior draws.
-#' @param pars Parameter names.
-#' @param regex_pars Regular expression.
+#' @template args-pars
+#' @template args-regex_pars
 #' @param by_chain Separate by chain or merge chains?
-#' @param ... Passed to \code{\link[ggplot2]{facet_wrap}} or
-#'   \code{\link[ggplot2]{facet_grid}} (e.g. \code{scales}).
+#' @param facet_args Arguments (other than \code{facets}) passed to
+#'   \code{\link[ggplot2]{facet_wrap}} (if \code{by_chain} is \code{FALSE}) or
+#'   \code{\link[ggplot2]{facet_grid}} (if \code{by_chain} is \code{TRUE}) to
+#'   control faceting.
+#' @param ... Currently unused.
 #'
 #' @template return-ggplot
 #'
@@ -19,6 +22,7 @@ mcmc_hist <- function(x,
                       by_chain = FALSE,
                       transform = NULL,
                       binwidth = NULL,
+                      facet_args = list(),
                       ...) {
   UseMethod("mcmc_hist")
 }
@@ -32,8 +36,8 @@ mcmc_hist.array <- function(x,
                             by_chain = FALSE,
                             binwidth = NULL,
                             transform = NULL,
+                            facet_args = list(),
                             ...) {
-
   if (length(dim(x)) == 2)
     return(mcmc_hist.matrix(as.matrix(x)))
 
@@ -46,11 +50,13 @@ mcmc_hist.array <- function(x,
   dimnames(x) <- list(
     Iteration = NULL,
     Chain = NULL,
-    Parameter = dimnames(x)[[3]]
+    Parameter = parnames
   )
 
+  if (is.null(pars))
+    pars <- parnames[1]
   if (!is.null(regex_pars))
-    regex_pars <- grep(regex_pars, dimnames(x)[[3]], value = TRUE)
+    regex_pars <- grep(regex_pars, parnames, value = TRUE)
 
   sel <- unique(c(pars, regex_pars))
   x <- x[, , sel, drop = FALSE]
@@ -73,10 +79,17 @@ mcmc_hist.array <- function(x,
     dont_expand_y_axis() +
     theme_ppc(y_text = FALSE, x_lab = FALSE)
 
-  if (!by_chain)
-    graph + facet_wrap( ~ Parameter, ...)
-  else
-    graph + facet_grid(Parameter ~ Chain, ...)
+
+  if (is.null(facet_args$scales))
+    facet_args$scales <- "free"
+
+  if (!by_chain) {
+    facet_args$facets <- ~ Parameter
+    graph + do.call("facet_wrap", facet_args)
+  } else {
+    facet_args$facets <- Parameter ~ Chain
+    graph + do.call("facet_grid", facet_args)
+  }
 }
 
 #' @rdname mcmc_hist
@@ -88,6 +101,7 @@ mcmc_hist.matrix <- function(x,
                              by_chain = FALSE,
                              binwidth = NULL,
                              transform = NULL,
+                             facet_args = list(),
                              ...) {
   A <- array(x, dim = c(nrow(x), 1, ncol(x)))
   dimnames(A) <- list(
@@ -102,6 +116,7 @@ mcmc_hist.matrix <- function(x,
                   by_chain,
                   binwidth,
                   transform,
+                  facet_args,
                   ...)
 }
 
@@ -115,6 +130,7 @@ mcmc_hist.data.frame <- function(x,
                                  by_chain = FALSE,
                                  binwidth = NULL,
                                  transform = NULL,
+                                 facet_args = list(),
                                  ...) {
   mcmc_hist.matrix(as.matrix(x),
                    pars,
@@ -122,5 +138,6 @@ mcmc_hist.data.frame <- function(x,
                    by_chain,
                    binwidth,
                    transform,
+                   facet_args,
                    ...)
 }
