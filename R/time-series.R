@@ -1,10 +1,10 @@
-#' Time Series
+#' PPC time series
 #'
 #' PPCs for time series. Medians and central interval estimates of \code{yrep}
 #' by time, with \code{y} overlaid.
 #'
 #'
-#' @name TimeSeries
+#' @name PPC-time-series
 #' @family PPCs
 #'
 #' @template args-y-yrep
@@ -50,7 +50,7 @@
 NULL
 
 #' @export
-#' @rdname TimeSeries
+#' @rdname PPC-time-series
 #'
 ppc_ts <-
   function(y,
@@ -72,7 +72,7 @@ ppc_ts <-
 
 
 #' @export
-#' @rdname TimeSeries
+#' @rdname PPC-time-series
 #' @template args-group
 #'
 ppc_ts_grouped <-

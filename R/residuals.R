@@ -1,4 +1,4 @@
-#' Residuals
+#' PPC residuals
 #'
 #' \code{ppc_resid} plots the distributions of residuals computed from
 #' \code{y} and simulated datasets \code{yrep}. For binomial data,
@@ -6,7 +6,7 @@
 #' \code{\link[arm]{binnedplot}}) from \code{y} and the posterior draws of the
 #' linear predictor transformed by the inverse-link function.
 #'
-#' @name Residuals
+#' @name PPC-residuals
 #' @family PPCs
 #'
 #' @template args-y-yrep
@@ -55,7 +55,7 @@
 #'
 NULL
 
-#' @rdname Residuals
+#' @rdname PPC-residuals
 #' @export
 #'
 ppc_resid <- function(y, yrep, ..., binwidth = NULL) {
@@ -87,7 +87,7 @@ ppc_resid <- function(y, yrep, ..., binwidth = NULL) {
     theme_ppc(y_text = FALSE)
 }
 
-#' @rdname Residuals
+#' @rdname PPC-residuals
 #' @export
 #' @param Ey A matrix of posterior draws of the linear predictor transformed by
 #'   the inverse-link function.

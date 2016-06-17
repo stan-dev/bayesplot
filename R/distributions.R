@@ -1,10 +1,10 @@
-#' Distributions
+#' PPC distributions
 #'
 #' Compare the empirical distribution of the data \code{y} to the distributions
 #' of simulated/replicated data \code{yrep} from the posterior predictive
 #' distribution.
 #'
-#' @name Distributions
+#' @name PPC-distributions
 #' @family PPCs
 #'
 #' @template args-y-yrep
@@ -54,7 +54,7 @@
 NULL
 
 #' @export
-#' @rdname Distributions
+#' @rdname PPC-distributions
 #'
 ppc_hist <- function(y, yrep, ..., binwidth = NULL) {
   y <- validate_y(y)
@@ -79,7 +79,7 @@ ppc_hist <- function(y, yrep, ..., binwidth = NULL) {
 
 
 #' @export
-#' @rdname Distributions
+#' @rdname PPC-distributions
 #'
 ppc_dens <- function(y, yrep, ...) {
   y <- validate_y(y)
@@ -102,7 +102,7 @@ ppc_dens <- function(y, yrep, ...) {
 }
 
 #' @export
-#' @rdname Distributions
+#' @rdname PPC-distributions
 #'
 ppc_dens_overlay <- function(y, yrep, ...) {
   y <- validate_y(y)
@@ -128,7 +128,7 @@ ppc_dens_overlay <- function(y, yrep, ...) {
 }
 
 #' @export
-#' @rdname Distributions
+#' @rdname PPC-distributions
 #' @template args-group
 #'
 ppc_violin_grouped <- function(y, yrep, group, ...) {
