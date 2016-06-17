@@ -8,18 +8,18 @@
 \title{Histogram of posterior draws}
 \usage{
 mcmc_hist(x, pars = NULL, regex_pars = NULL, by_chain = FALSE,
-  transform = NULL, binwidth = NULL, facet_args = list(), ...)
+  binwidth = NULL, transformations = list(), facet_args = list(), ...)
 
 \method{mcmc_hist}{array}(x, pars = NULL, regex_pars = NULL,
-  by_chain = FALSE, binwidth = NULL, transform = NULL,
+  by_chain = FALSE, binwidth = NULL, transformations = list(),
   facet_args = list(), ...)
 
 \method{mcmc_hist}{matrix}(x, pars = NULL, regex_pars = NULL,
-  by_chain = FALSE, binwidth = NULL, transform = NULL,
+  by_chain = FALSE, binwidth = NULL, transformations = list(),
   facet_args = list(), ...)
 
 \method{mcmc_hist}{data.frame}(x, pars = NULL, regex_pars = NULL,
-  by_chain = FALSE, binwidth = NULL, transform = NULL,
+  by_chain = FALSE, binwidth = NULL, transformations = list(),
   facet_args = list(), ...)
 }
 \arguments{
@@ -28,10 +28,21 @@ mcmc_hist(x, pars = NULL, regex_pars = NULL, by_chain = FALSE,
 \item{pars}{An optional character vector of parameter names. If not specified
 then the first parameter is used.}
 
-\item{by_chain}{Separate by chain or merge chains?}
+\item{regex_pars}{An optional \link[=grep]{regular expression} to use for
+parameter selection. Can be specified instead of \code{pars} or in addition
+to \code{pars}.}
+
+\item{by_chain}{A logical value indicating whether to plot each chain
+separately (\code{TRUE}) or merge the chains (\code{FALSE}, the default).}
 
 \item{binwidth}{An optional value to override
 \code{\link[ggplot2]{geom_histogram}}'s default binwidth.}
+
+\item{transformations}{A named list specifying transformations to apply
+to parameters. The name of each list element should be a parameter name and
+the content of each list element should be a function (or any item to match
+as a function via \code{\link{match.fun}}, e.g. a string naming a
+function).}
 
 \item{facet_args}{Arguments (other than \code{facets}) passed to
 \code{\link[ggplot2]{facet_wrap}} (if \code{by_chain} is \code{FALSE}) or
@@ -39,10 +50,6 @@ then the first parameter is used.}
 control faceting.}
 
 \item{...}{Currently unused.}
-
-\item{pars}{An optional \link[=grep]{regular expression} to use for parameter
-selection. Can be specified instead of \code{pars} or in addition to
-\code{pars}.}
 }
 \value{
 A ggplot object that can be further customized using the
@@ -52,7 +59,7 @@ A ggplot object that can be further customized using the
 Histogram of posterior draws
 }
 \seealso{
-Other MCMC: \code{\link{mcmc_dens}},
-  \code{\link{mcmc_trace}}
+Other MCMC: \code{\link{MCMC-overview}},
+  \code{\link{mcmc_dens}}, \code{\link{mcmc_trace}}
 }
 

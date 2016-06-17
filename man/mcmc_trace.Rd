@@ -28,6 +28,10 @@ mcmc_trace(x, pars = NULL, regex_pars = NULL, size = NULL, n_warmup = 0,
 \item{pars}{An optional character vector of parameter names. If not specified
 then the first parameter is used.}
 
+\item{regex_pars}{An optional \link[=grep]{regular expression} to use for
+parameter selection. Can be specified instead of \code{pars} or in addition
+to \code{pars}.}
+
 \item{size}{An optional value to override \code{\link[ggplot2]{geom_line}}'s
 default line size.}
 
@@ -42,10 +46,6 @@ of iterations to display.}
 \code{\link[ggplot2]{facet_wrap}} to control faceting.}
 
 \item{...}{Currently unused.}
-
-\item{pars}{An optional \link[=grep]{regular expression} to use for parameter
-selection. Can be specified instead of \code{pars} or in addition to
-\code{pars}.}
 }
 \value{
 A ggplot object that can be further customized using the
@@ -55,7 +55,7 @@ A ggplot object that can be further customized using the
 Traceplot (time series plot) of MCMC draws
 }
 \seealso{
-Other MCMC: \code{\link{mcmc_dens}},
-  \code{\link{mcmc_hist}}
+Other MCMC: \code{\link{MCMC-overview}},
+  \code{\link{mcmc_dens}}, \code{\link{mcmc_hist}}
 }
 

@@ -91,7 +91,4 @@
 #' @templateVar bdaRef (Ch. 6)
 #' @template reference-bda
 #'
-#' @import stats
-#' @import ggplot2
-#'
 NULL

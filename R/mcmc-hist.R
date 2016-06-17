@@ -3,11 +3,12 @@
 #' @family MCMC
 #'
 #' @export
-#' @template args-hist
 #' @param x Posterior draws.
 #' @template args-pars
 #' @template args-regex_pars
-#' @param by_chain Separate by chain or merge chains?
+#' @template args-by_chain
+#' @template args-hist
+#' @template args-transformations
 #' @param facet_args Arguments (other than \code{facets}) passed to
 #'   \code{\link[ggplot2]{facet_wrap}} (if \code{by_chain} is \code{FALSE}) or
 #'   \code{\link[ggplot2]{facet_grid}} (if \code{by_chain} is \code{TRUE}) to
@@ -20,8 +21,8 @@ mcmc_hist <- function(x,
                       pars = NULL,
                       regex_pars = NULL,
                       by_chain = FALSE,
-                      transform = NULL,
                       binwidth = NULL,
+                      transformations = list(),
                       facet_args = list(),
                       ...) {
   UseMethod("mcmc_hist")
@@ -35,7 +36,7 @@ mcmc_hist.array <- function(x,
                             regex_pars = NULL,
                             by_chain = FALSE,
                             binwidth = NULL,
-                            transform = NULL,
+                            transformations = list(),
                             facet_args = list(),
                             ...) {
   if (length(dim(x)) == 2)
@@ -61,12 +62,18 @@ mcmc_hist.array <- function(x,
   sel <- unique(c(pars, regex_pars))
   x <- x[, , sel, drop = FALSE]
 
-  t_x <- if (is.null(transform))
-    NULL else match.fun(transform)
+  if (length(transformations)) {
+    t_x <- lapply(transformations, match.fun)
+    if (!all(names(t_x) %in% sel)) {
+      not_found <- which(!names(t_x) %in% sel)
+      stop("Some names(transformations) don't match parameter names: ",
+           paste(names(t_x)[not_found], collapse = ", "))
+    }
+    for (p in names(t_x))
+      x[, , p] <- t_x[[p]](x[, , p])
+  }
 
   data <- reshape2::melt(x, value.name = "Value")
-  if (!is.null(t_x))
-    data$Value <- t_x(data$Value)
 
   graph <- ggplot(data, aes_(x = ~ Value)) +
     geom_histogram(
@@ -100,7 +107,7 @@ mcmc_hist.matrix <- function(x,
                              regex_pars = NULL,
                              by_chain = FALSE,
                              binwidth = NULL,
-                             transform = NULL,
+                             transformations = list(),
                              facet_args = list(),
                              ...) {
   A <- array(x, dim = c(nrow(x), 1, ncol(x)))
@@ -115,7 +122,7 @@ mcmc_hist.matrix <- function(x,
                   regex_pars,
                   by_chain,
                   binwidth,
-                  transform,
+                  transformations,
                   facet_args,
                   ...)
 }
@@ -129,7 +136,7 @@ mcmc_hist.data.frame <- function(x,
                                  regex_pars = NULL,
                                  by_chain = FALSE,
                                  binwidth = NULL,
-                                 transform = NULL,
+                                 transformations = list(),
                                  facet_args = list(),
                                  ...) {
   mcmc_hist.matrix(as.matrix(x),
@@ -137,7 +144,7 @@ mcmc_hist.data.frame <- function(x,
                    regex_pars,
                    by_chain,
                    binwidth,
-                   transform,
+                   transformations,
                    facet_args,
                    ...)
 }
