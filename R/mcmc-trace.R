@@ -1,0 +1,106 @@
+#' Traceplot (time series plot) of MCMC draws
+#'
+#' @family MCMC
+#' @aliases MCMC-trace
+#'
+#' @param x Posterior draws.
+#' @template args-pars
+#' @template args-regex_pars
+#' @param size An optional value to override \code{\link[ggplot2]{geom_line}}'s
+#'   default line size.
+#' @param n_warmup The number of warmup iterations included in \code{x}.
+#' @param inc_warmup Include warmup iterations in the plot?
+#' @param window Integer vector of length two specifying the limits of a range
+#'   of iterations to display.
+#' @param style Either \code{"points"} or \code{"lines"}.
+#' @param facet_args Arguments (other than \code{facets}) passed to
+#'   \code{\link[ggplot2]{facet_wrap}} to control faceting.
+#' @param ... For the generic, arguments passed to the individual methods. For
+#'   the methods themselves \code{...} is ignored.
+#'
+#' @template return-ggplot
+#'
+mcmc_trace <- function(x,
+                       pars = NULL,
+                       regex_pars = NULL,
+                       n_warmup = 0,
+                       inc_warmup = n_warmup > 0,
+                       window = NULL,
+                       showcase_chain = NULL,
+                       style = c("line", "point"),
+                       size = NULL,
+                       facet_args = list(),
+                       ...) {
+
+  if (is.data.frame(x))
+    x <- as.matrix(x)
+  if (length(dim(x)) == 2) {
+    x <- array(x, dim = c(nrow(x), 1, ncol(x)))
+    dimnames(x) <- list(
+      Iteration = NULL,
+      Chain = NULL,
+      Parameter = colnames(x)
+    )
+  }
+
+  if (!is.null(dimnames(x)[[3]])) {
+    parnames <- dimnames(x)[[3]]
+  } else {
+    stop("No parameter names found.")
+  }
+
+
+  dimnames(x) <- list(
+    Iteration = seq_len(nrow(x)),
+    Chain = seq_len(ncol(x)),
+    Parameter = parnames
+  )
+
+  if (is.null(pars))
+    pars <- parnames[1]
+  if (!is.null(regex_pars))
+    regex_pars <- grep(regex_pars, parnames, value = TRUE)
+
+  sel <- unique(c(pars, regex_pars))
+  x <- x[, , sel, drop = FALSE]
+
+  if (!inc_warmup && n_warmup > 0)
+    x <- x[-seq_len(n_warmup), , , drop = FALSE]
+
+  data <- reshape2::melt(x, value.name = "Value")
+  data$Chain <- factor(data$Chain)
+
+  geom_args <- list()
+  if (!is.null(size))
+    geom_args$size <- size
+
+  if (is.null(showcase_chain)) {
+    mapping <- aes_(x = ~ Iteration, y = ~ Value, color = ~ Chain)
+  } else {
+    mapping <- aes_(x = ~ Iteration, y = ~ Value, color = ~ Chain,
+                    alpha = ~ Chain == showcase_chain)
+  }
+  graph <- ggplot(data, mapping)
+
+  if (inc_warmup && n_warmup > 0) {
+    graph <- graph +
+      annotate("rect", xmin = -Inf, xmax = n_warmup,
+               ymin = -Inf, ymax = Inf, fill = "lightgray")
+  }
+
+  if (!is.null(window))
+    graph <- graph + coord_cartesian(xlim = window)
+
+  if (!is.null(showcase_chain))
+    graph <- graph + scale_alpha_discrete("", range = c(.2, 1))
+
+  graph <- graph +
+    do.call(paste0("geom_", match.arg(style)), geom_args) +
+    theme_ppc(x_lab = FALSE, legend_position = "right")
+
+  facet_args$facets <- ~ Parameter
+  if (is.null(facet_args$scales))
+    facet_args$scales <- "free_y"
+
+  graph + do.call("facet_wrap", facet_args)
+}

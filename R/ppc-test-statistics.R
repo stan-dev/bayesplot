@@ -1,10 +1,10 @@
-#' Test statistics
+#' PPC test statistics
 #'
 #' The distribution of a test statistic \code{T(yrep)}, or a
 #' pair of test statistics, over the simulated datasets in \code{yrep},
 #' compared to the observed value \code{T(y)}.
 #'
-#' @name TestStatistics
+#' @name PPC-test-statistics
 #' @family PPCs
 #'
 #' @template args-y-yrep
@@ -59,7 +59,7 @@
 NULL
 
 #' @export
-#' @rdname TestStatistics
+#' @rdname PPC-test-statistics
 #'
 ppc_stat <- function(y, yrep, stat = "mean", ..., binwidth = NULL) {
   y <- validate_y(y)
@@ -99,7 +99,7 @@ ppc_stat <- function(y, yrep, stat = "mean", ..., binwidth = NULL) {
 }
 
 #' @export
-#' @rdname TestStatistics
+#' @rdname PPC-test-statistics
 #' @template args-group
 #'
 ppc_stat_grouped <-
@@ -135,7 +135,7 @@ ppc_stat_grouped <-
 
 
 #' @export
-#' @rdname TestStatistics
+#' @rdname PPC-test-statistics
 #'
 ppc_stat_2d <- function(y, yrep, stat = c("mean", "sd"), ...) {
   y <- validate_y(y)

@@ -1,9 +1,9 @@
-#' Scatterplots
+#' PPC scatterplots
 #'
 #' Scatterplots of the observed data \code{y} vs. simulated/replicated data
 #' \code{yrep} from the posterior predictive distribution.
 #'
-#' @name Scatterplots
+#' @name PPC-scatterplots
 #' @family PPCs
 #'
 #' @template args-y-yrep
@@ -50,7 +50,7 @@
 NULL
 
 #' @export
-#' @rdname Scatterplots
+#' @rdname PPC-scatterplots
 #'
 ppc_scatter <- function(y, yrep, ...) {
   y <- validate_y(y)
@@ -66,7 +66,7 @@ ppc_scatter <- function(y, yrep, ...) {
 }
 
 #' @export
-#' @rdname Scatterplots
+#' @rdname PPC-scatterplots
 #'
 ppc_scatter_avg <- function(y, yrep, ...) {
   y <- validate_y(y)
@@ -81,7 +81,7 @@ ppc_scatter_avg <- function(y, yrep, ...) {
 }
 
 #' @export
-#' @rdname Scatterplots
+#' @rdname PPC-scatterplots
 #' @template args-group
 #'
 ppc_scatter_avg_grouped <- function(y, yrep, group, ...) {

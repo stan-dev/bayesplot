@@ -1,9 +1,9 @@
 #' Posterior predictive checks (S3 generic)
 #'
-#' This is an S3 generic function. The \pkg{ppcheck} package itself provides no
+#' This is an S3 generic function. The \pkg{bayesplot} package itself provides no
 #' methods accompanying the \code{pp_check} generic. The intent is to provide a
 #' generic so authors of other \R packages who wish to provide interfaces to the
-#' functions in \pkg{ppcheck} will be encouraged to include \code{pp_check}
+#' functions in \pkg{bayesplot} will be encouraged to include \code{pp_check}
 #' methods in their package, preserving the same naming conventions for
 #' posterior predictive checking across many \R packages for Bayesian inference.
 #' This is for the convenience of both users and developers. See the Details and
@@ -22,8 +22,8 @@
 #'   can include a method \code{pp_check.foo} that prepares the appropriate
 #'   inputs (\code{y}, \code{yrep}, etc.) for the \pkg{ppcheck} functions. The
 #'   \code{pp_check.foo} method may, for example, let the user choose between
-#'   various \pkg{ppcheck} plots, calling the functions from \pkg{ppcheck}
-#'   internally as needed. See Examples, below, and the package vignettes.
+#'   various plots, calling the functions from \pkg{bayesplot} internally as
+#'   needed. See Examples, below, and the package vignettes.
 #'
 #' @examples
 #' x <- list(y = rnorm(50), yrep = matrix(rnorm(5000), nrow = 100, ncol = 50))

@@ -1,16 +1,15 @@
-#' Graphical posterior predictive checking for Bayesian Models
+#' Graphical posterior predictive checking
 #'
-#' @docType package
-#' @name ppcheck-package
-#' @aliases ppcheck
+#' @name PPC-overview
+#' @family PPCs
 #'
 #' @description
-#' The \pkg{ppcheck} package provides various plotting functions for creating
+#' The \pkg{bayesplot} package provides various plotting functions for creating
 #' graphical displays comparing observed data to simulated data from the
 #' posterior predictive distribution. See below for a brief discussion of the
 #' ideas behind posterior predictive checking, a description of the
 #' structure of this package, and tips on providing an interface to
-#' \pkg{ppcheck} from another package.
+#' \pkg{bayesplot} from another package.
 #'
 #' @details
 #' The idea behind posterior predictive checking is simple: if a model is a good
@@ -44,57 +43,52 @@
 #' }
 #' \subsection{Graphical posterior predictive checking}{
 #' Using the datasets \eqn{y^{rep}}{yrep} drawn from the posterior predictive
-#' distribution, the functions in the \pkg{ppcheck} package produce various
+#' distribution, the functions in the \pkg{bayesplot} package produce various
 #' graphical displays comparing the observed data \eqn{y} to the replications.
 #' For a more thorough discussion of posterior predictive checking see
 #' Chapter 6 of Gelman et. al. (2013).
 #' }
 #'
-#' @section Package structure:
+#' @section PPC plotting functions:
 #'
-#' The plotting functions in this package are organized into several
-#' categories, each with its own documentation:
+#' The plotting functions for posterior predictive checking in this package are
+#' organized into several categories, each with its own documentation:
 #'
 #' \describe{
-#'   \item{\strong{\link[=Distributions]{Distributions}}}{
+#'   \item{\strong{\link[=PPC-distributions]{Distributions}}}{
 #'     Histograms and density plots comparing the empirical distribution of the
 #'     observed data \code{y} to the distributions of individual replicated
 #'     datasets (rows) in \code{yrep}.
 #'   }
-#'   \item{\strong{\link[=Residuals]{Residuals}}}{
+#'   \item{\strong{\link[=PPC-residuals]{Residuals}}}{
 #'     Plots of residuals computed from \code{y} and individual replicated
 #'     datasets (rows) in \code{yrep}. For binomial data binned residual plots
 #'     are also available.
 #'   }
-#'   \item{\strong{\link[=Scatterplots]{Scatterplots}}}{
+#'   \item{\strong{\link[=PPC-scatterplots]{Scatterplots}}}{
 #'     Scatterplots of the observed data \code{y} vs. individual replicated
 #'     datasets (rows) in \code{yrep}, or vs. the average value of the
 #'     distributions of each data point (columns) in \code{yrep}.
 #'   }
-#'   \item{\strong{\link[=TestStatistics]{Test statistics}}}{
+#'   \item{\strong{\link[=PPC-test-statistics]{Test statistics}}}{
 #'     The distribution of a test statistic, or a pair of test statistics, over
 #'     the replicated datasets (rows) in \code{yrep} compared to value of the
 #'     statistic(s) computed from \code{y}.
 #'   }
-#'   \item{\strong{\link[=TimeSeries]{Time series}}}{
+#'   \item{\strong{\link[=PPC-time-series]{Time series}}}{
 #'     Interval estimates of \code{yrep} by time, with \code{y} overlaid.
 #'   }
 #' }
 #'
-#' @section Providing an interface to ppcheck from another package:
+#' @section Providing an interface for posterior predictive checking from another package:
 #'
-#' In addition to the various plotting functions, the \pkg{ppcheck} package
+#' In addition to the various plotting functions, the \pkg{bayesplot} package
 #' provides the S3 generic \code{\link{pp_check}}. Authors of \R packages for
 #' Bayesian inference are encouraged to define \code{pp_check} methods for the
 #' fitted model objects created by their packages. See
-#' \code{vignette("ppcheck")} for more details and an example.
-#'
-#' @author Jonah Gabry
+#' \code{vignette("bayesplot")} for more details and an example.
 #'
 #' @templateVar bdaRef (Ch. 6)
 #' @template reference-bda
-#'
-#' @import stats
-#' @import ggplot2
 #'
 NULL

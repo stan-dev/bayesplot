@@ -1,16 +1,17 @@
-Package: ppcheck
+Package: bayesplot
 Type: Package
-Title: Graphical Posterior Predictive Checks for Bayesian Models
+Title: Plots for Bayesian Models
 Version: 0.1.0
-Date: 2016-06-05
+Date: 2016-06-17
 Authors@R: c(person("Jonah", "Gabry", role = c("aut", "cre"), email = "jsg2201@columbia.edu"),
              person("Paul-Christian", "Buerkner", role = "ctb"))
 Maintainer: Jonah Gabry <jsg2201@columbia.edu>
-Description: Functions for creating graphical displays comparing observed data to simulated data from the posterior predictive distribution after fitting Bayesian models.
+Description: Plotting functions for posterior analysis, model checking,
+    and MCMC diagnostics.
 License: GPL (>= 3)
 LazyData: TRUE
-URL: https://github.com/jgabry/ppcheck/
-BugReports: https://github.com/jgabry/ppcheck/issues/
+URL: https://github.com/jgabry/bayesplot/
+BugReports: https://github.com/jgabry/bayesplot/issues/
 Depends:
     R (>= 3.0.2)
 Imports:
@@ -23,6 +24,8 @@ Suggests:
     arm,
     knitr,
     rmarkdown,
-    testthat
+    rstanarm,
+    testthat,
+    GGally
 RoxygenNote: 5.0.1
 VignetteBuilder: knitr
