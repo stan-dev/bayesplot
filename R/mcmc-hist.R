@@ -66,15 +66,16 @@ mcmc_hist.array <- function(x,
     t_x <- lapply(transformations, match.fun)
     if (!all(names(t_x) %in% sel)) {
       not_found <- which(!names(t_x) %in% sel)
-      stop("Some names(transformations) don't match parameter names: ",
-           paste(names(t_x)[not_found], collapse = ", "))
+      stop(
+        "Some transformation names don't match parameter names: ",
+        paste(names(t_x)[not_found], collapse = ", ")
+      )
     }
     for (p in names(t_x))
       x[, , p] <- t_x[[p]](x[, , p])
   }
 
   data <- reshape2::melt(x, value.name = "Value")
-
   graph <- ggplot(data, aes_(x = ~ Value)) +
     geom_histogram(
       fill = ppc_color("mid"),

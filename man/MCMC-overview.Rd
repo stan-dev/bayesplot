@@ -8,28 +8,29 @@ The \pkg{bayesplot} package provides various plotting functions for creating
 graphical displays of Markov chain Monte Carlo (MCMC) simulations. Future
 versions of \pkg{bayesplot} will provide many more MCMC plotting functions.
 }
-\section{Available MCMC plotting functions}{
+\section{MCMC plotting functions}{
 
 
 \describe{
-  \item{\strong{\link[=MCMC-trace]{Traceplots}}}{
+  \item{\strong{\link[=mcmc_trace]{Traceplots}}}{
     Times series of parameter draws.
   }
-  \item{\strong{\link[=MCMC-dens]{Kernel density estimates}}}{
+  \item{\strong{\link[=mcmc_dens]{Kernel density estimates}}}{
     Density estimates of parameter draws, optionally showing each
     Markov chain separately.
   }
-  \item{\strong{\link[=MCMC-hist]{Histograms}}}{
+  \item{\strong{\link[=mcmc_hist]{Histograms}}}{
     Histograms of parameter draws, optionally showing each
     Markov chain separately.
   }
-  \item{\strong{\link[=MCMC-scatter]{Scatterplots}}}{
-    Scatterplots of parameter draws.
+  \item{\strong{\link[=mcmc_pairs]{Pairs}}}{
+    Scatterplot matrix of parameter draws.
   }
 }
 }
 \seealso{
 Other MCMC: \code{\link{mcmc_dens}},
-  \code{\link{mcmc_hist}}, \code{\link{mcmc_trace}}
+  \code{\link{mcmc_hist}}, \code{\link{mcmc_pairs}},
+  \code{\link{mcmc_trace}}
 }
 

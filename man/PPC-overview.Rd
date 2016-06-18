@@ -49,7 +49,7 @@ For a more thorough discussion of posterior predictive checking see
 Chapter 6 of Gelman et. al. (2013).
 }
 }
-\section{Available PPC plotting functions}{
+\section{PPC plotting functions}{
 
 
 The plotting functions for posterior predictive checking in this package are

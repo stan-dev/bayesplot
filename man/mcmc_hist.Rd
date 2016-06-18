@@ -60,6 +60,7 @@ Histogram of posterior draws
 }
 \seealso{
 Other MCMC: \code{\link{MCMC-overview}},
-  \code{\link{mcmc_dens}}, \code{\link{mcmc_trace}}
+  \code{\link{mcmc_dens}}, \code{\link{mcmc_pairs}},
+  \code{\link{mcmc_trace}}
 }
 
