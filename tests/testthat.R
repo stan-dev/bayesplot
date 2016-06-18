@@ -1,4 +1,4 @@
 library(testthat)
-library(ppcheck)
+library(bayesplot)
 
-test_check("ppcheck")
+test_check("bayesplot")
