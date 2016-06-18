@@ -1,6 +1,7 @@
 #' Graphical posterior predictive checking
 #'
 #' @name PPC-overview
+#' @aliases PPC
 #' @family PPCs
 #'
 #' @description
