@@ -17,14 +17,7 @@ then the first parameter is used.}
 parameter selection. Can be specified instead of \code{pars} or in addition
 to \code{pars}.}
 
-\item{...}{For the generic, arguments passed to the various methods. For the
-methods themselves \code{...} is ignored.}
-
-\item{size}{An optional value to override \code{\link[ggplot2]{geom_line}}'s
-default line size.}
-
-\item{facet_args}{Arguments (other than \code{facets}) passed to
-\code{\link[ggplot2]{facet_grid}} to control faceting.}
+\item{...}{Currently ignored.}
 }
 \value{
 A ggplot object that can be further customized using the

@@ -13,8 +13,7 @@
 #'   \code{\link[ggplot2]{facet_wrap}} (if \code{by_chain} is \code{FALSE}) or
 #'   \code{\link[ggplot2]{facet_grid}} (if \code{by_chain} is \code{TRUE}) to
 #'   control faceting.
-#' @param ... For the generic, arguments passed to the various methods. For the
-#'   methods themselves \code{...} is ignored.
+#' @param ... Currently ignored.
 #'
 #' @template return-ggplot
 #'

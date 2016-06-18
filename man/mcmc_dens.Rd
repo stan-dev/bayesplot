@@ -32,8 +32,7 @@ function).}
 \code{\link[ggplot2]{facet_grid}} (if \code{by_chain} is \code{TRUE}) to
 control faceting.}
 
-\item{...}{For the generic, arguments passed to the various methods. For the
-methods themselves \code{...} is ignored.}
+\item{...}{Currently ignored.}
 }
 \value{
 A ggplot object that can be further customized using the

@@ -6,7 +6,7 @@
 \title{Traceplot (time series plot) of MCMC draws}
 \usage{
 mcmc_trace(x, pars = NULL, regex_pars = NULL, n_warmup = 0,
-  inc_warmup = n_warmup > 0, window = NULL, showcase_chain = NULL,
+  inc_warmup = n_warmup > 0, window = NULL, highlight_chain = NULL,
   style = c("line", "point"), size = NULL, facet_args = list(), ...)
 }
 \arguments{
@@ -26,6 +26,9 @@ to \code{pars}.}
 \item{window}{Integer vector of length two specifying the limits of a range
 of iterations to display.}
 
+\item{highlight_chain}{If not \code{NULL}, an integer specifying one of the
+chains that will be more visible than the others in the plot.}
+
 \item{style}{Either \code{"points"} or \code{"lines"}.}
 
 \item{size}{An optional value to override \code{\link[ggplot2]{geom_line}}'s
@@ -34,8 +37,7 @@ default line size.}
 \item{facet_args}{Arguments (other than \code{facets}) passed to
 \code{\link[ggplot2]{facet_wrap}} to control faceting.}
 
-\item{...}{For the generic, arguments passed to the individual methods. For
-the methods themselves \code{...} is ignored.}
+\item{...}{Currently ignored.}
 }
 \value{
 A ggplot object that can be further customized using the

@@ -12,11 +12,12 @@
 #' @param inc_warmup Include warmup iterations in the plot?
 #' @param window Integer vector of length two specifying the limits of a range
 #'   of iterations to display.
+#' @param highlight_chain If not \code{NULL}, an integer specifying one of the
+#'   chains that will be more visible than the others in the plot.
 #' @param style Either \code{"points"} or \code{"lines"}.
 #' @param facet_args Arguments (other than \code{facets}) passed to
 #'   \code{\link[ggplot2]{facet_wrap}} to control faceting.
-#' @param ... For the generic, arguments passed to the individual methods. For
-#'   the methods themselves \code{...} is ignored.
+#' @param ... Currently ignored.
 #'
 #' @template return-ggplot
 #'
@@ -26,7 +27,7 @@ mcmc_trace <- function(x,
                        n_warmup = 0,
                        inc_warmup = n_warmup > 0,
                        window = NULL,
-                       showcase_chain = NULL,
+                       highlight_chain = NULL,
                        style = c("line", "point"),
                        size = NULL,
                        facet_args = list(),
@@ -56,6 +57,14 @@ mcmc_trace <- function(x,
     Parameter = parnames
   )
 
+  if (!is.null(highlight_chain)) {
+    if (!highlight_chain %in% seq_len(ncol(x)))
+      stop(
+        "'highlight_chain' is ", highlight_chain,
+        ", but 'x' contains ", ncol(x), " chains."
+      )
+  }
+
   if (is.null(pars))
     pars <- parnames[1]
   if (!is.null(regex_pars))
@@ -74,11 +83,11 @@ mcmc_trace <- function(x,
   if (!is.null(size))
     geom_args$size <- size
 
-  if (is.null(showcase_chain)) {
+  if (is.null(highlight_chain)) {
     mapping <- aes_(x = ~ Iteration, y = ~ Value, color = ~ Chain)
   } else {
     mapping <- aes_(x = ~ Iteration, y = ~ Value, color = ~ Chain,
-                    alpha = ~ Chain == showcase_chain)
+                    alpha = ~ Chain == highlight_chain)
   }
   graph <- ggplot(data, mapping)
 
@@ -91,7 +100,7 @@ mcmc_trace <- function(x,
   if (!is.null(window))
     graph <- graph + coord_cartesian(xlim = window)
 
-  if (!is.null(showcase_chain))
+  if (!is.null(highlight_chain))
     graph <- graph + scale_alpha_discrete("", range = c(.2, 1))
 
   graph <- graph +

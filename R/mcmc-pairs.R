@@ -6,12 +6,7 @@
 #' @param x Posterior draws.
 #' @template args-pars
 #' @template args-regex_pars
-#' @param size An optional value to override \code{\link[ggplot2]{geom_line}}'s
-#'   default line size.
-#' @param facet_args Arguments (other than \code{facets}) passed to
-#'   \code{\link[ggplot2]{facet_grid}} to control faceting.
-#' @param ... For the generic, arguments passed to the various methods. For the
-#'   methods themselves \code{...} is ignored.
+#' @param ... Currently ignored.
 #'
 #' @template return-ggplot
 #'
@@ -63,7 +58,7 @@ mcmc_pairs <- function(x,
     data,
     upper = list(),
     lower = list(
-      continuous = wrap("points",
+      continuous = GGally::wrap("points",
                         shape = 21,
                         fill = get_color("dark"),
                         color = get_color("dark_highlight"),
@@ -71,7 +66,7 @@ mcmc_pairs <- function(x,
                         )
     ),
     diag = list(
-      continuous = wrap("barDiag",
+      continuous = GGally::wrap("barDiag",
                         fill = get_color("mid"),
                         color = get_color("mid_highlight"),
                         size = .25)
