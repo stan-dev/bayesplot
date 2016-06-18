@@ -117,22 +117,16 @@ mcmc_dens_overlay <- function(x,
 }
 
 
+# internal -----------------------------------------------------------------
 .mcmc_hist <- function(x,
                       pars = character(),
                       regex_pars = character(),
-                      by_chain = FALSE,
                       transformations = list(),
                       facet_args = list(),
                       binwidth = NULL,
+                      by_chain = FALSE,
                       ...) {
-  x <- prepare_mcmc_array(x)
-  pars <- select_parameters(explicit = pars,
-                            patterns = regex_pars,
-                            complete = dimnames(x)[[3]])
-  x <- x[, , pars, drop = FALSE]
-  if (length(transformations))
-    x <- transform_draws(x, transformations)
-
+  x <- prepare_mcmc_array(x, pars, regex_pars, transformations)
   data <- reshape2::melt(x, value.name = "Value")
 
   graph <- ggplot(data, aes_(x = ~ Value)) +
@@ -161,18 +155,11 @@ mcmc_dens_overlay <- function(x,
 .mcmc_dens <- function(x,
                        pars = character(),
                        regex_pars = character(),
-                       by_chain = FALSE,
                        transformations = list(),
                        facet_args = list(),
+                       by_chain = FALSE,
                        ...) {
-  x <- prepare_mcmc_array(x)
-  pars <- select_parameters(explicit = pars,
-                            patterns = regex_pars,
-                            complete = dimnames(x)[[3]])
-  x <- x[, , pars, drop = FALSE]
-  if (length(transformations))
-    x <- transform_draws(x, transformations)
-
+  x <- prepare_mcmc_array(x, pars, regex_pars, transformations)
   data <- reshape2::melt(x, value.name = "Value")
   data$Chain <- factor(data$Chain)
 

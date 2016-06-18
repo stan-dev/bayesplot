@@ -5,7 +5,8 @@
 \alias{mcmc_pairs}
 \title{Pairs plot of MCMC draws}
 \usage{
-mcmc_pairs(x, pars = NULL, regex_pars = NULL, ...)
+mcmc_pairs(x, pars = character(), regex_pars = character(),
+  transformations = list(), ...)
 }
 \arguments{
 \item{x}{A 3-D array, matrix, or data frame of posterior draws. If \code{x}
@@ -22,6 +23,12 @@ data.frame with a column for each parameter.}
 parameter selection. Can be specified instead of \code{pars} or in addition
 to \code{pars}. If neither \code{pars} nor \code{regex_pars} is specified
 then the default is to use \emph{all} parameters.}
+
+\item{transformations}{A named list specifying transformations to apply
+to parameters. The name of each list element should be a parameter name and
+the content of each list element should be a function (or any item to match
+as a function via \code{\link{match.fun}}, e.g. a string naming a
+function).}
 
 \item{...}{Currently ignored.}
 }

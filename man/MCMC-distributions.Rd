@@ -6,7 +6,7 @@
 \alias{mcmc_dens_overlay}
 \alias{mcmc_hist}
 \alias{mcmc_hist_by_chain}
-\title{Histograms and kernel density plots of posterior draws}
+\title{Histograms and kernel density plots of MCMC draws}
 \usage{
 mcmc_hist(x, pars = character(), regex_pars = character(),
   transformations = list(), facet_args = list(), binwidth = NULL, ...)
@@ -57,7 +57,7 @@ A ggplot object that can be further customized using the
   \pkg{ggplot2} package.
 }
 \description{
-Histograms and kernel density plots of posterior draws
+Histograms and kernel density plots of MCMC draws
 }
 \section{Plot Descriptions}{
 

@@ -6,6 +6,7 @@
 #' @template args-mcmc-x
 #' @template args-pars
 #' @template args-regex_pars
+#' @template args-transformations
 #' @param size An optional value to override the default line size (if calling
 #'   \code{mcmc_trace}) or the default point size (if calling
 #'   \code{mcmc_trace_highlight}).
@@ -39,6 +40,7 @@ NULL
 mcmc_trace <- function(x,
                        pars = character(),
                        regex_pars = character(),
+                       transformations = list(),
                        n_warmup = 0,
                        inc_warmup = n_warmup > 0,
                        window = NULL,
@@ -49,6 +51,7 @@ mcmc_trace <- function(x,
     x,
     pars = pars,
     regex_pars = regex_pars,
+    transformations = transformations,
     n_warmup = n_warmup,
     inc_warmup = inc_warmup,
     window = window,
@@ -66,6 +69,7 @@ mcmc_trace <- function(x,
 mcmc_trace_highlight <- function(x,
                               pars = character(),
                               regex_pars = character(),
+                              transformations = list(),
                               n_warmup = 0,
                               inc_warmup = n_warmup > 0,
                               window = NULL,
@@ -80,6 +84,7 @@ mcmc_trace_highlight <- function(x,
     x,
     pars = pars,
     regex_pars = regex_pars,
+    transformations = transformations,
     n_warmup = n_warmup,
     inc_warmup = inc_warmup,
     window = window,
@@ -92,9 +97,11 @@ mcmc_trace_highlight <- function(x,
 }
 
 
+# internal -----------------------------------------------------------------
 .mcmc_trace <- function(x,
                        pars = character(),
                        regex_pars = character(),
+                       transformations = list(),
                        n_warmup = 0,
                        inc_warmup = n_warmup > 0,
                        window = NULL,
@@ -104,11 +111,7 @@ mcmc_trace_highlight <- function(x,
                        style = c("line", "point"),
                        ...) {
 
-  x <- prepare_mcmc_array(x)
-  pars <- select_parameters(explicit = pars,
-                            patterns = regex_pars,
-                            complete = dimnames(x)[[3]])
-  x <- x[, , pars, drop = FALSE]
+  x <- prepare_mcmc_array(x, pars, regex_pars, transformations)
 
   if (!is.null(highlight_chain)) {
     if (!highlight_chain %in% seq_len(ncol(x)))

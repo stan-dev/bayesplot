@@ -3,27 +3,40 @@
 # @param x User's 'x' input to one of the mcmc_* functions.
 # @return A 3-D (Iterations x Chains x Parameters) array.
 #
-prepare_mcmc_array <- function(x) {
-  x <- validate_mcmc_x(x)
+prepare_mcmc_array <-
+  function(x,
+           pars = character(),
+           regex_pars = character(),
+           transformations = list()) {
 
-  parnames <- if (is.matrix(x)) {
-    colnames(x)
-  } else if (is.array(x)) {
-    dimnames(x)[[3]]
-  } else {
-    stop("No parameter names found.")
+    x <- validate_mcmc_x(x)
+
+    parnames <- if (is.matrix(x)) {
+      colnames(x)
+    } else if (is.array(x)) {
+      dimnames(x)[[3]]
+    } else {
+      stop("No parameter names found.")
+    }
+
+    if (is.matrix(x))
+      x <- array(x, dim = c(nrow(x), 1, ncol(x)))
+
+    pars <-
+      select_parameters(explicit = pars,
+                        patterns = regex_pars,
+                        complete = parnames)
+    x <- x[, , pars, drop = FALSE]
+    if (length(transformations))
+      x <- apply_transformations(x, transformations)
+
+    structure(x,
+              dimnames = list(
+                Iteration = NULL,
+                Chain = seq_len(ncol(x)),
+                Parameter = pars
+              ))
   }
-
-  if (is.matrix(x))
-    x <- array(x, dim = c(nrow(x), 1, ncol(x)))
-
-  structure(x,
-            dimnames = list(
-              Iteration = NULL,
-              Chain = seq_len(ncol(x)),
-              Parameter = parnames
-            ))
-}
 
 # Perform some checks on user's 'x' input for MCMC plots
 #
@@ -48,7 +61,7 @@ validate_mcmc_x <- function(x) {
 #   functions.
 # @return x, with tranformations having been applied to some parameters.
 #
-transform_draws <- function(x, transformations = list()) {
+apply_transformations <- function(x, transformations = list()) {
   x_transforms <- lapply(transformations, match.fun)
   pars <- dimnames(x)[[3]]
 
@@ -61,7 +74,7 @@ transform_draws <- function(x, transformations = list()) {
   }
 
   for (p in names(x_transforms))
-      x[, , p] <- x_transforms[[p]](x[, , p])
+    x[, , p] <- x_transforms[[p]](x[, , p])
 
   x
 }

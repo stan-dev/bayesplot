@@ -6,6 +6,7 @@
 #' @template args-mcmc-x
 #' @template args-pars
 #' @template args-regex_pars
+#' @template args-transformations
 #' @param ... Currently ignored.
 #'
 #' @template return-ggplot
@@ -15,20 +16,14 @@ NULL
 #' @rdname MCMC-pairs
 #' @export
 mcmc_pairs <- function(x,
-                       pars = NULL,
-                       regex_pars = NULL,
+                       pars = character(),
+                       regex_pars = character(),
+                       transformations = list(),
                        ...) {
   if (!requireNamespace("GGally", quietly = TRUE))
     stop("Please install the GGally package to use this function.")
 
-  x <- prepare_mcmc_array(x)
-  pars <- select_parameters(explicit = pars,
-                            patterns = regex_pars,
-                            complete = dimnames(x)[[3]])
-  x <- x[, , pars, drop = FALSE]
-  if (length(transformations))
-    x <- transform_draws(x, transformations)
-
+  x <- prepare_mcmc_array(x, pars, regex_pars, transformations)
   xdim <- dim(x)
   data <- as.data.frame(array(x, dim = c(prod(xdim[1:2]), xdim[3])))
   colnames(data) <- pars
