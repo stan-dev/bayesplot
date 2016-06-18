@@ -85,7 +85,9 @@ validate_time <- function(time, y, unique_times = TRUE) {
   if (anyNA(time))
     stop("NAs not allowed in 'time'.")
 
-  stopifnot(identical(length(time), length(y)))
+  if (!identical(length(time), length(y)))
+    stop("'time' and 'y' must have the same length.")
+
   if (unique_times)
     stopifnot(identical(length(time), length(unique(time))))
 

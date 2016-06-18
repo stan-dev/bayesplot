@@ -81,16 +81,16 @@ ppc_stat <- function(y, yrep, stat = "mean", ..., binwidth = NULL) {
 
   ggplot(
     data = data.frame(x = T_yrep),
-    mapping = aes_string(
-      x = "x",
-      y = "..density..",
-      color = "'A'"
+    mapping = aes_(
+      x = ~ x,
+      y = ~ ..density..,
+      color = ~ 'A'
     )
   ) +
     .ppc_stat_histogram(binwidth) +
     geom_vline(
       data = data.frame(t = T_y),
-      mapping = aes_string(xintercept = "t", color = "factor(t)"),
+      mapping = aes_(xintercept = ~ t, color = ~ factor(t)),
       size = 2,
       show.legend = TRUE
     ) +
@@ -127,12 +127,12 @@ ppc_stat_grouped <-
 
     ggplot(
       data = plot_data[!is_y, , drop = FALSE],
-      mapping = aes_string(x = "value", y = "..density..")
+      mapping = aes_(x = ~ value, y = ~ ..density..)
     ) +
       .ppc_stat_histogram(binwidth) +
       geom_vline(
         data = plot_data[is_y, , drop = FALSE],
-        mapping = aes_string(xintercept = "value"),
+        mapping = aes_(xintercept = ~ value),
         color = ppc_color("dark"),
         size = 2
       ) +
@@ -160,7 +160,7 @@ ppc_stat_2d <- function(y, yrep, stat = c("mean", "sd"), ...) {
 
   ggplot(
     data = data.frame(x = T_yrep1, y = T_yrep2),
-    mapping = aes_string(x = "x", y = "y")
+    mapping = aes_(x = ~ x, y = ~ y)
   ) +
     geom_point(
       shape = 21,
@@ -180,11 +180,11 @@ ppc_stat_2d <- function(y, yrep, stat = c("mean", "sd"), ...) {
     ) +
     geom_point(
       data = data.frame(x = T_y1, y = T_y2),
-      mapping = aes_string(
-        x = "x",
-        y = "y",
-        fill = "'Ty'",
-        color = "'Ty'"
+      mapping = aes_(
+        x = ~ x,
+        y = ~ y,
+        fill = ~ 'Ty',
+        color = ~ 'Ty'
       ),
       size = 4,
       shape = 21,
