@@ -1,8 +1,8 @@
 #' Kernel density plot of posterior draws
 #'
 #' @family MCMC
+#' @name MCMC-dens
 #'
-#' @export
 #' @param x Posterior draws.
 #' @template args-pars
 #' @template args-regex_pars
@@ -12,23 +12,22 @@
 #'   \code{\link[ggplot2]{facet_wrap}} (if \code{by_chain} is \code{FALSE}) or
 #'   \code{\link[ggplot2]{facet_grid}} (if \code{by_chain} is \code{TRUE}) to
 #'   control faceting.
-#' @param ... Currently unused.
+#' @param ... For the generic, arguments passed to the various methods. For the
+#'   methods themselves \code{...} is ignored.
 #'
 #' @template return-ggplot
 #'
-mcmc_dens <- function(x,
-                      pars = NULL,
-                      regex_pars = NULL,
-                      by_chain = FALSE,
-                      transformations = list(),
-                      facet_args = list(),
-                      ...) {
+NULL
+
+#' @rdname MCMC-dens
+#' @export
+mcmc_dens <- function(x, ...) {
   UseMethod("mcmc_dens")
 }
 
-#' @rdname mcmc_dens
-#' @method mcmc_dens array
+#' @rdname MCMC-dens
 #' @export
+#' @method mcmc_dens array
 mcmc_dens.array <- function(x,
                             pars = NULL,
                             regex_pars = NULL,
@@ -94,9 +93,9 @@ mcmc_dens.array <- function(x,
   }
 }
 
-#' @rdname mcmc_dens
-#' @method mcmc_dens matrix
+#' @rdname MCMC-dens
 #' @export
+#' @method mcmc_dens matrix
 mcmc_dens.matrix <- function(x,
                              pars = NULL,
                              regex_pars = NULL,
@@ -121,9 +120,9 @@ mcmc_dens.matrix <- function(x,
 }
 
 
-#' @rdname mcmc_dens
-#' @method mcmc_dens data.frame
+#' @rdname MCMC-dens
 #' @export
+#' @method mcmc_dens data.frame
 mcmc_dens.data.frame <- function(x,
                                  pars = NULL,
                                  regex_pars = NULL,

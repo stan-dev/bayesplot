@@ -1,8 +1,8 @@
 #' Pairs plot of MCMC draws
 #'
 #' @family MCMC
+#' @name MCMC-pairs
 #'
-#' @export
 #' @param x Posterior draws.
 #' @template args-pars
 #' @template args-regex_pars
@@ -10,18 +10,20 @@
 #'   default line size.
 #' @param facet_args Arguments (other than \code{facets}) passed to
 #'   \code{\link[ggplot2]{facet_grid}} to control faceting.
-#' @param ... Currently unused.
+#' @param ... For the generic, arguments passed to the various methods. For the
+#'   methods themselves \code{...} is ignored.
 #'
 #' @template return-ggplot
 #'
-mcmc_pairs <- function(x,
-                      pars = NULL,
-                      regex_pars = NULL,
-                      ...) {
+NULL
+
+#' @rdname MCMC-pairs
+#' @export
+mcmc_pairs <- function(x, ...) {
   UseMethod("mcmc_pairs")
 }
 
-#' @rdname mcmc_pairs
+#' @rdname MCMC-pairs
 #' @method mcmc_pairs array
 #' @export
 mcmc_pairs.array <- function(x,
@@ -81,7 +83,7 @@ mcmc_pairs.array <- function(x,
   graph + theme_ppc()
 }
 
-#' @rdname mcmc_pairs
+#' @rdname MCMC-pairs
 #' @method mcmc_pairs matrix
 #' @export
 mcmc_pairs.matrix <- function(x,
@@ -102,7 +104,7 @@ mcmc_pairs.matrix <- function(x,
 }
 
 
-#' @rdname mcmc_pairs
+#' @rdname MCMC-pairs
 #' @method mcmc_pairs data.frame
 #' @export
 mcmc_pairs.data.frame <- function(x,

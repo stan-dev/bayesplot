@@ -1,8 +1,8 @@
 #' Histogram of posterior draws
 #'
 #' @family MCMC
+#' @name MCMC-hist
 #'
-#' @export
 #' @param x Posterior draws.
 #' @template args-pars
 #' @template args-regex_pars
@@ -13,22 +13,20 @@
 #'   \code{\link[ggplot2]{facet_wrap}} (if \code{by_chain} is \code{FALSE}) or
 #'   \code{\link[ggplot2]{facet_grid}} (if \code{by_chain} is \code{TRUE}) to
 #'   control faceting.
-#' @param ... Currently unused.
+#' @param ... For the generic, arguments passed to the various methods. For the
+#'   methods themselves \code{...} is ignored.
 #'
 #' @template return-ggplot
 #'
-mcmc_hist <- function(x,
-                      pars = NULL,
-                      regex_pars = NULL,
-                      by_chain = FALSE,
-                      binwidth = NULL,
-                      transformations = list(),
-                      facet_args = list(),
-                      ...) {
+NULL
+
+#' @rdname MCMC-hist
+#' @export
+mcmc_hist <- function(x, ...) {
   UseMethod("mcmc_hist")
 }
 
-#' @rdname mcmc_hist
+#' @rdname MCMC-hist
 #' @method mcmc_hist array
 #' @export
 mcmc_hist.array <- function(x,
@@ -100,7 +98,7 @@ mcmc_hist.array <- function(x,
   }
 }
 
-#' @rdname mcmc_hist
+#' @rdname MCMC-hist
 #' @method mcmc_hist matrix
 #' @export
 mcmc_hist.matrix <- function(x,
@@ -129,7 +127,7 @@ mcmc_hist.matrix <- function(x,
 }
 
 
-#' @rdname mcmc_hist
+#' @rdname MCMC-hist
 #' @method mcmc_hist data.frame
 #' @export
 mcmc_hist.data.frame <- function(x,

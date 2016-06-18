@@ -1,8 +1,8 @@
 #' Traceplot (time series plot) of MCMC draws
 #'
 #' @family MCMC
+#' @name MCMC-trace
 #'
-#' @export
 #' @param x Posterior draws.
 #' @template args-pars
 #' @template args-regex_pars
@@ -12,34 +12,34 @@
 #' @param inc_warmup Include warmup iterations in the plot?
 #' @param window Integer vector of length two specifying the limits of a range
 #'   of iterations to display.
+#' @param style Either \code{"points"} or \code{"lines"}.
 #' @param facet_args Arguments (other than \code{facets}) passed to
 #'   \code{\link[ggplot2]{facet_wrap}} to control faceting.
-#' @param ... Currently unused.
+#' @param ... For the generic, arguments passed to the individual methods. For
+#'   the methods themselves \code{...} is ignored.
 #'
 #' @template return-ggplot
 #'
-mcmc_trace <- function(x,
-                      pars = NULL,
-                      regex_pars = NULL,
-                      size = NULL,
-                      n_warmup = 0,
-                      inc_warmup = n_warmup > 0,
-                      window = NULL,
-                      facet_args = list(),
-                      ...) {
+NULL
+
+#' @rdname MCMC-trace
+#' @export
+mcmc_trace <- function(x, ...) {
   UseMethod("mcmc_trace")
 }
 
-#' @rdname mcmc_trace
+#' @rdname MCMC-trace
 #' @method mcmc_trace array
 #' @export
 mcmc_trace.array <- function(x,
                             pars = NULL,
                             regex_pars = NULL,
-                            size = NULL,
                             n_warmup = 0,
                             inc_warmup = n_warmup > 0,
                             window = NULL,
+                            showcase_chain = NULL,
+                            style = c("line", "point"),
+                            size = NULL,
                             facet_args = list(),
                             ...) {
   if (length(dim(x)) == 2)
@@ -75,8 +75,13 @@ mcmc_trace.array <- function(x,
   if (!is.null(size))
     geom_args$size <- size
 
-  graph <-
-    ggplot(data, aes_(x = ~ Iteration, y = ~ Value, color = ~ Chain))
+  if (is.null(showcase_chain)) {
+    mapping <- aes_(x = ~ Iteration, y = ~ Value, color = ~ Chain)
+  } else {
+    mapping <- aes_(x = ~ Iteration, y = ~ Value, color = ~ Chain,
+                    alpha = ~ Chain == showcase_chain)
+  }
+  graph <- ggplot(data, mapping)
 
   if (inc_warmup && n_warmup > 0) {
     graph <- graph +
@@ -87,8 +92,11 @@ mcmc_trace.array <- function(x,
   if (!is.null(window))
     graph <- graph + coord_cartesian(xlim = window)
 
+  if (!is.null(showcase_chain))
+    graph <- graph + scale_alpha_discrete("", range = c(.2, 1))
+
   graph <- graph +
-    do.call("geom_line", geom_args) +
+    do.call(paste0("geom_", match.arg(style)), geom_args) +
     theme_ppc(x_lab = FALSE, legend_position = "right")
 
   facet_args$facets <- ~ Parameter
@@ -98,16 +106,17 @@ mcmc_trace.array <- function(x,
   graph + do.call("facet_wrap", facet_args)
 }
 
-#' @rdname mcmc_trace
+#' @rdname MCMC-trace
 #' @method mcmc_trace matrix
 #' @export
 mcmc_trace.matrix <- function(x,
                              pars = NULL,
                              regex_pars = NULL,
-                             size = NULL,
                              n_warmup = 0,
                              inc_warmup = n_warmup > 0,
                              window = NULL,
+                             style = c("line", "point"),
+                             size = NULL,
                              facet_args = list(),
                              ...) {
   A <- array(x, dim = c(nrow(x), 1, ncol(x)))
@@ -120,34 +129,37 @@ mcmc_trace.matrix <- function(x,
   mcmc_trace.array(A,
                   pars,
                   regex_pars,
-                  size,
                   n_warmup,
                   inc_warmup,
                   window,
+                  style,
+                  size,
                   facet_args,
                   ...)
 }
 
 
-#' @rdname mcmc_trace
+#' @rdname MCMC-trace
 #' @method mcmc_trace data.frame
 #' @export
 mcmc_trace.data.frame <- function(x,
                                  pars = NULL,
                                  regex_pars = NULL,
-                                 size = NULL,
                                  n_warmup = 0,
                                  inc_warmup = n_warmup > 0,
                                  window = NULL,
+                                 style = c("line", "point"),
+                                 size = NULL,
                                  facet_args = list(),
                                  ...) {
   mcmc_trace.matrix(as.matrix(x),
                    pars,
                    regex_pars,
-                   size,
                    n_warmup,
                    inc_warmup,
                    window,
+                   style,
+                   size,
                    facet_args,
                    ...)
 }
