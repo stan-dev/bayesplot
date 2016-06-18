@@ -1,5 +1,8 @@
 language: r
-r: devel
+r:
+ - release
+ - devel
+
 sudo: false
 cache: packages
 

@@ -11,9 +11,11 @@
 #'   \code{mcmc_trace}) or the default point size (if calling
 #'   \code{mcmc_trace_highlight}).
 #' @param n_warmup An integer; the number of warmup iterations included in
-#'   \code{x}.
+#'   \code{x}. The default is \code{n_warmup = 0}, i.e. to assume no warmup
+#'   iterations are included.
 #' @param inc_warmup A logical value indicating if warmup iterations should be
-#'   included in the plot if \code{n_warmup > 0}.
+#'   included in the plot if \code{n_warmup > 0}. If \code{inc_warmup} is
+#'   \code{TRUE} then the background for warmup iterations is shaded gray.
 #' @param window An integer vector of length two specifying the limits of a
 #'   range of iterations to display.
 #' @param facet_args Arguments (other than \code{facets}) passed to
@@ -52,11 +54,11 @@ mcmc_trace <- function(x,
     pars = pars,
     regex_pars = regex_pars,
     transformations = transformations,
+    facet_args = facet_args,
     n_warmup = n_warmup,
     inc_warmup = inc_warmup,
     window = window,
     size = size,
-    facet_args = facet_args,
     style = "line",
     ...
   )
@@ -64,7 +66,7 @@ mcmc_trace <- function(x,
 
 #' @rdname MCMC-traces
 #' @export
-#' @param highlight_chain An integer specifying one of the chains that will be
+#' @param highlight An integer specifying one of the chains that will be
 #'   more visible than the others in the plot.
 mcmc_trace_highlight <- function(x,
                               pars = character(),
@@ -75,22 +77,22 @@ mcmc_trace_highlight <- function(x,
                               window = NULL,
                               size = NULL,
                               facet_args = list(),
-                              highlight_chain = 1,
+                              highlight = 1,
                               ...) {
   if (length(dim(x)) != 3)
-    stop("mcmc_trace_highlight requires 'x' contain multiple chains.")
+    stop("mcmc_trace_highlight requires a 3-D array (multiple chains).")
 
   .mcmc_trace(
     x,
     pars = pars,
     regex_pars = regex_pars,
     transformations = transformations,
+    facet_args = facet_args,
     n_warmup = n_warmup,
     inc_warmup = inc_warmup,
     window = window,
     size = size,
-    facet_args = facet_args,
-    highlight_chain = highlight_chain,
+    highlight = highlight,
     style = "point",
     ...
   )
@@ -107,16 +109,16 @@ mcmc_trace_highlight <- function(x,
                        window = NULL,
                        size = NULL,
                        facet_args = list(),
-                       highlight_chain = NULL,
+                       highlight = NULL,
                        style = c("line", "point"),
                        ...) {
 
   x <- prepare_mcmc_array(x, pars, regex_pars, transformations)
 
-  if (!is.null(highlight_chain)) {
-    if (!highlight_chain %in% seq_len(ncol(x)))
+  if (!is.null(highlight)) {
+    if (!highlight %in% seq_len(ncol(x)))
       stop(
-        "'highlight_chain' is ", highlight_chain,
+        "'highlight' is ", highlight,
         ", but 'x' contains ", ncol(x), " chains."
       )
   }
@@ -131,12 +133,12 @@ mcmc_trace_highlight <- function(x,
   if (!is.null(size))
     geom_args$size <- size
 
-  if (is.null(highlight_chain)) {
+  if (is.null(highlight)) {
     mapping <- aes_(x = ~ Iteration, y = ~ Value, color = ~ Chain)
   } else {
-    stopifnot(length(highlight_chain) == 1)
+    stopifnot(length(highlight) == 1)
     mapping <- aes_(x = ~ Iteration, y = ~ Value, color = ~ Chain,
-                    alpha = ~ Chain == highlight_chain)
+                    alpha = ~ Chain == highlight)
   }
   graph <- ggplot(data, mapping)
 
@@ -151,7 +153,7 @@ mcmc_trace_highlight <- function(x,
     graph <- graph + coord_cartesian(xlim = window)
   }
 
-  if (!is.null(highlight_chain)) {
+  if (!is.null(highlight)) {
     graph <- graph +
       scale_alpha_discrete("", range = c(.2, 1), guide = "none")
   }
