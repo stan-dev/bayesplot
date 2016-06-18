@@ -1,5 +1,5 @@
-library(ppcheck)
-context("residuals")
+library(bayesplot)
+context("PPC: residuals")
 
 source("data-for-all-tests.R")
 

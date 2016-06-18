@@ -1,5 +1,5 @@
-library(ppcheck)
-context("time-series")
+library(bayesplot)
+context("PPC: time-series")
 
 source("data-for-all-tests.R")
 

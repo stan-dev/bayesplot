@@ -1,5 +1,5 @@
-library(ppcheck)
-context("distributions")
+library(bayesplot)
+context("PPC: distributions")
 
 source("data-for-all-tests.R")
 

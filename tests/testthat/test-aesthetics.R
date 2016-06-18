@@ -1,5 +1,5 @@
-library(ppcheck)
-context("schemes and themes")
+library(bayesplot)
+context("Aesthetics")
 
 test_that("getting and setting the color scheme works", {
   expect_identical(get_color_scheme(), scheme_reds())

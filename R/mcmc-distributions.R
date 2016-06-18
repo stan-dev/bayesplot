@@ -1,4 +1,4 @@
-#' Histograms and kernel density plots of posterior draws
+#' Histograms and kernel density plots of MCMC draws
 #'
 #' @name MCMC-distributions
 #' @family MCMC

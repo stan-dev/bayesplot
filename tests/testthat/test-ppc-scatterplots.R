@@ -1,5 +1,5 @@
-library(ppcheck)
-context("scatterplots")
+library(bayesplot)
+context("PPC: scatterplots")
 
 source("data-for-all-tests.R")
 

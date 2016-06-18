@@ -1,5 +1,5 @@
-library(ppcheck)
-context("input validation")
+library(bayesplot)
+context("Input validation")
 
 source("data-for-all-tests.R")
 

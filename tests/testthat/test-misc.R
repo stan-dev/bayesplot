@@ -1,5 +1,5 @@
-library(ppcheck)
-context("misc functions")
+library(bayesplot)
+context("Misc. functions")
 
 source("data-for-all-tests.R")
 

@@ -1,5 +1,5 @@
-library(ppcheck)
-context("pp_check generic")
+library(bayesplot)
+context("PPC: pp_check generic")
 
 source("data-for-all-tests.R")
 
