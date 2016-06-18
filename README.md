@@ -1,7 +1,7 @@
 # bayesplot
 
-[![Travis-CI Build Status](https://travis-ci.org/jgabry/ppcheck.svg?branch=master)](https://travis-ci.org/jgabry/ppcheck)
-[![codecov](https://codecov.io/gh/jgabry/ppcheck/branch/master/graph/badge.svg)](https://codecov.io/gh/jgabry/ppcheck)
+[![Travis-CI Build Status](https://travis-ci.org/jgabry/bayesplot.svg?branch=master)](https://travis-ci.org/jgabry/bayesplot)
+[![codecov](https://codecov.io/gh/jgabry/bayesplot/branch/master/graph/badge.svg)](https://codecov.io/gh/jgabry/bayesplot)
 
 
 Early draft of an R package providing a library a plotting functions for use
@@ -15,5 +15,5 @@ for Bayesian modeling.
 ```{r}
 if (!require("devtools"))
   install.packages("devtools")
-devtools::install_github("jgabry/ppcheck", build_vignettes = TRUE)
+devtools::install_github("jgabry/bayesplot", build_vignettes = TRUE)
 ```
