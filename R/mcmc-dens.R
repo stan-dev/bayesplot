@@ -1,9 +1,9 @@
 #' Kernel density plot of posterior draws
 #'
 #' @family MCMC
-#' @name MCMC-dens
+#' @aliases MCMC-dens
 #'
-#' @param x Posterior draws.
+#' @param x A 3-D array, matrix or data frame of posterior draws.
 #' @template args-pars
 #' @template args-regex_pars
 #' @template args-by_chain
@@ -17,26 +17,24 @@
 #'
 #' @template return-ggplot
 #'
-NULL
+mcmc_dens <- function(x,
+                      pars = NULL,
+                      regex_pars = NULL,
+                      by_chain = FALSE,
+                      transformations = list(),
+                      facet_args = list(),
+                      ...) {
 
-#' @rdname MCMC-dens
-#' @export
-mcmc_dens <- function(x, ...) {
-  UseMethod("mcmc_dens")
-}
-
-#' @rdname MCMC-dens
-#' @export
-#' @method mcmc_dens array
-mcmc_dens.array <- function(x,
-                            pars = NULL,
-                            regex_pars = NULL,
-                            by_chain = FALSE,
-                            transformations = list(),
-                            facet_args = list(),
-                            ...) {
-  if (length(dim(x)) == 2)
-    return(mcmc_dens.matrix(as.matrix(x)))
+  if (is.data.frame(x))
+    x <- as.matrix(x)
+  if (length(dim(x)) == 2) {
+    x <- array(x, dim = c(nrow(x), 1, ncol(x)))
+    dimnames(x) <- list(
+      Iteration = NULL,
+      Chain = NULL,
+      Parameter = colnames(x)
+    )
+  }
 
   if (!is.null(dimnames(x)[[3]])) {
     parnames <- dimnames(x)[[3]]
@@ -91,50 +89,4 @@ mcmc_dens.array <- function(x,
     facet_args$facets <- Parameter ~ Chain
     graph + do.call("facet_grid", facet_args)
   }
-}
-
-#' @rdname MCMC-dens
-#' @export
-#' @method mcmc_dens matrix
-mcmc_dens.matrix <- function(x,
-                             pars = NULL,
-                             regex_pars = NULL,
-                             by_chain = FALSE,
-                             transformations = list(),
-                             facet_args = list(),
-                             ...) {
-  A <- array(x, dim = c(nrow(x), 1, ncol(x)))
-  dimnames(A) <- list(
-    Iteration = NULL,
-    Chain = NULL,
-    Parameter = colnames(x)
-  )
-
-  mcmc_dens.array(A,
-                  pars,
-                  regex_pars,
-                  by_chain,
-                  transformations,
-                  facet_args,
-                  ...)
-}
-
-
-#' @rdname MCMC-dens
-#' @export
-#' @method mcmc_dens data.frame
-mcmc_dens.data.frame <- function(x,
-                                 pars = NULL,
-                                 regex_pars = NULL,
-                                 by_chain = FALSE,
-                                 transformations = list(),
-                                 facet_args = list(),
-                                 ...) {
-  mcmc_dens.matrix(as.matrix(x),
-                   pars,
-                   regex_pars,
-                   by_chain,
-                   transformations,
-                   facet_args,
-                   ...)
 }

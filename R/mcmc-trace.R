@@ -1,7 +1,7 @@
 #' Traceplot (time series plot) of MCMC draws
 #'
 #' @family MCMC
-#' @name MCMC-trace
+#' @aliases MCMC-trace
 #'
 #' @param x Posterior draws.
 #' @template args-pars
@@ -20,36 +20,35 @@
 #'
 #' @template return-ggplot
 #'
-NULL
+mcmc_trace <- function(x,
+                       pars = NULL,
+                       regex_pars = NULL,
+                       n_warmup = 0,
+                       inc_warmup = n_warmup > 0,
+                       window = NULL,
+                       showcase_chain = NULL,
+                       style = c("line", "point"),
+                       size = NULL,
+                       facet_args = list(),
+                       ...) {
 
-#' @rdname MCMC-trace
-#' @export
-mcmc_trace <- function(x, ...) {
-  UseMethod("mcmc_trace")
-}
-
-#' @rdname MCMC-trace
-#' @method mcmc_trace array
-#' @export
-mcmc_trace.array <- function(x,
-                            pars = NULL,
-                            regex_pars = NULL,
-                            n_warmup = 0,
-                            inc_warmup = n_warmup > 0,
-                            window = NULL,
-                            showcase_chain = NULL,
-                            style = c("line", "point"),
-                            size = NULL,
-                            facet_args = list(),
-                            ...) {
-  if (length(dim(x)) == 2)
-    return(mcmc_trace.matrix(as.matrix(x)))
+  if (is.data.frame(x))
+    x <- as.matrix(x)
+  if (length(dim(x)) == 2) {
+    x <- array(x, dim = c(nrow(x), 1, ncol(x)))
+    dimnames(x) <- list(
+      Iteration = NULL,
+      Chain = NULL,
+      Parameter = colnames(x)
+    )
+  }
 
   if (!is.null(dimnames(x)[[3]])) {
     parnames <- dimnames(x)[[3]]
   } else {
     stop("No parameter names found.")
   }
+
 
   dimnames(x) <- list(
     Iteration = seq_len(nrow(x)),
@@ -104,62 +103,4 @@ mcmc_trace.array <- function(x,
     facet_args$scales <- "free_y"
 
   graph + do.call("facet_wrap", facet_args)
-}
-
-#' @rdname MCMC-trace
-#' @method mcmc_trace matrix
-#' @export
-mcmc_trace.matrix <- function(x,
-                             pars = NULL,
-                             regex_pars = NULL,
-                             n_warmup = 0,
-                             inc_warmup = n_warmup > 0,
-                             window = NULL,
-                             style = c("line", "point"),
-                             size = NULL,
-                             facet_args = list(),
-                             ...) {
-  A <- array(x, dim = c(nrow(x), 1, ncol(x)))
-  dimnames(A) <- list(
-    Iteration = NULL,
-    Chain = NULL,
-    Parameter = colnames(x)
-  )
-
-  mcmc_trace.array(A,
-                  pars,
-                  regex_pars,
-                  n_warmup,
-                  inc_warmup,
-                  window,
-                  style,
-                  size,
-                  facet_args,
-                  ...)
-}
-
-
-#' @rdname MCMC-trace
-#' @method mcmc_trace data.frame
-#' @export
-mcmc_trace.data.frame <- function(x,
-                                 pars = NULL,
-                                 regex_pars = NULL,
-                                 n_warmup = 0,
-                                 inc_warmup = n_warmup > 0,
-                                 window = NULL,
-                                 style = c("line", "point"),
-                                 size = NULL,
-                                 facet_args = list(),
-                                 ...) {
-  mcmc_trace.matrix(as.matrix(x),
-                   pars,
-                   regex_pars,
-                   n_warmup,
-                   inc_warmup,
-                   window,
-                   style,
-                   size,
-                   facet_args,
-                   ...)
 }

@@ -1,7 +1,7 @@
 #' Pairs plot of MCMC draws
 #'
 #' @family MCMC
-#' @name MCMC-pairs
+#' @aliases MCMC-pairs
 #'
 #' @param x Posterior draws.
 #' @template args-pars
@@ -15,26 +15,24 @@
 #'
 #' @template return-ggplot
 #'
-NULL
+mcmc_pairs <- function(x,
+                       pars = NULL,
+                       regex_pars = NULL,
+                       ...) {
 
-#' @rdname MCMC-pairs
-#' @export
-mcmc_pairs <- function(x, ...) {
-  UseMethod("mcmc_pairs")
-}
-
-#' @rdname MCMC-pairs
-#' @method mcmc_pairs array
-#' @export
-mcmc_pairs.array <- function(x,
-                            pars = NULL,
-                            regex_pars = NULL,
-                            ...) {
   if (!requireNamespace("GGally", quietly = TRUE))
     stop("Please install the GGally package to use this function.")
 
-  if (length(dim(x)) == 2)
-    return(mcmc_pairs.matrix(as.matrix(x)))
+  if (is.data.frame(x))
+    x <- as.matrix(x)
+  if (length(dim(x)) == 2) {
+    x <- array(x, dim = c(nrow(x), 1, ncol(x)))
+    dimnames(x) <- list(
+      Iteration = NULL,
+      Chain = NULL,
+      Parameter = colnames(x)
+    )
+  }
 
   if (!is.null(dimnames(x)[[3]])) {
     parnames <- dimnames(x)[[3]]
@@ -81,38 +79,4 @@ mcmc_pairs.array <- function(x,
   )
 
   graph + theme_ppc()
-}
-
-#' @rdname MCMC-pairs
-#' @method mcmc_pairs matrix
-#' @export
-mcmc_pairs.matrix <- function(x,
-                             pars = NULL,
-                             regex_pars = NULL,
-                             ...) {
-  A <- array(x, dim = c(nrow(x), 1, ncol(x)))
-  dimnames(A) <- list(
-    Iteration = NULL,
-    Chain = NULL,
-    Parameter = colnames(x)
-  )
-
-  mcmc_pairs.array(A,
-                  pars,
-                  regex_pars,
-                  ...)
-}
-
-
-#' @rdname MCMC-pairs
-#' @method mcmc_pairs data.frame
-#' @export
-mcmc_pairs.data.frame <- function(x,
-                                 pars = NULL,
-                                 regex_pars = NULL,
-                                 ...) {
-  mcmc_pairs.matrix(as.matrix(x),
-                   pars,
-                   regex_pars,
-                   ...)
 }

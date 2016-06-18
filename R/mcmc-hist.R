@@ -1,7 +1,7 @@
 #' Histogram of posterior draws
 #'
 #' @family MCMC
-#' @name MCMC-hist
+#' @aliases MCMC-hist
 #'
 #' @param x Posterior draws.
 #' @template args-pars
@@ -18,27 +18,25 @@
 #'
 #' @template return-ggplot
 #'
-NULL
+mcmc_hist <- function(x,
+                      pars = NULL,
+                      regex_pars = NULL,
+                      by_chain = FALSE,
+                      binwidth = NULL,
+                      transformations = list(),
+                      facet_args = list(),
+                      ...) {
 
-#' @rdname MCMC-hist
-#' @export
-mcmc_hist <- function(x, ...) {
-  UseMethod("mcmc_hist")
-}
-
-#' @rdname MCMC-hist
-#' @method mcmc_hist array
-#' @export
-mcmc_hist.array <- function(x,
-                            pars = NULL,
-                            regex_pars = NULL,
-                            by_chain = FALSE,
-                            binwidth = NULL,
-                            transformations = list(),
-                            facet_args = list(),
-                            ...) {
-  if (length(dim(x)) == 2)
-    return(mcmc_hist.matrix(as.matrix(x)))
+  if (is.data.frame(x))
+    x <- as.matrix(x)
+  if (length(dim(x)) == 2) {
+    x <- array(x, dim = c(nrow(x), 1, ncol(x)))
+    dimnames(x) <- list(
+      Iteration = NULL,
+      Chain = NULL,
+      Parameter = colnames(x)
+    )
+  }
 
   if (!is.null(dimnames(x)[[3]])) {
     parnames <- dimnames(x)[[3]]
@@ -96,54 +94,4 @@ mcmc_hist.array <- function(x,
     facet_args$facets <- Parameter ~ Chain
     graph + do.call("facet_grid", facet_args)
   }
-}
-
-#' @rdname MCMC-hist
-#' @method mcmc_hist matrix
-#' @export
-mcmc_hist.matrix <- function(x,
-                             pars = NULL,
-                             regex_pars = NULL,
-                             by_chain = FALSE,
-                             binwidth = NULL,
-                             transformations = list(),
-                             facet_args = list(),
-                             ...) {
-  A <- array(x, dim = c(nrow(x), 1, ncol(x)))
-  dimnames(A) <- list(
-    Iteration = NULL,
-    Chain = NULL,
-    Parameter = colnames(x)
-  )
-
-  mcmc_hist.array(A,
-                  pars,
-                  regex_pars,
-                  by_chain,
-                  binwidth,
-                  transformations,
-                  facet_args,
-                  ...)
-}
-
-
-#' @rdname MCMC-hist
-#' @method mcmc_hist data.frame
-#' @export
-mcmc_hist.data.frame <- function(x,
-                                 pars = NULL,
-                                 regex_pars = NULL,
-                                 by_chain = FALSE,
-                                 binwidth = NULL,
-                                 transformations = list(),
-                                 facet_args = list(),
-                                 ...) {
-  mcmc_hist.matrix(as.matrix(x),
-                   pars,
-                   regex_pars,
-                   by_chain,
-                   binwidth,
-                   transformations,
-                   facet_args,
-                   ...)
 }

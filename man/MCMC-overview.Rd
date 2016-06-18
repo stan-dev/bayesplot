@@ -29,8 +29,8 @@ versions of \pkg{bayesplot} will provide many more MCMC plotting functions.
 }
 }
 \seealso{
-Other MCMC: \code{\link{MCMC-dens}},
-  \code{\link{MCMC-hist}}, \code{\link{MCMC-pairs}},
-  \code{\link{MCMC-trace}}
+Other MCMC: \code{\link{mcmc_dens}},
+  \code{\link{mcmc_hist}}, \code{\link{mcmc_pairs}},
+  \code{\link{mcmc_trace}}
 }
 
