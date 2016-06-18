@@ -17,9 +17,9 @@ test_that("ppc_color returns correct color values", {
   scheme <- set_color_scheme("greens")
   levs <- scheme_level_names()
 
-  expect_identical(ppc_color(levs), unlist(scheme[levs], use.names = FALSE))
+  expect_identical(get_color(levs), unlist(scheme[levs], use.names = FALSE))
   for (lev in levs)
-    expect_identical(ppc_color(lev), scheme[[lev]], info = lev)
+    expect_identical(get_color(lev), scheme[[lev]], info = lev)
 })
 
 test_that("theme_ppc creates ggplot theme", {

@@ -74,8 +74,8 @@ mcmc_hist <- function(x,
   data <- reshape2::melt(x, value.name = "Value")
   graph <- ggplot(data, aes_(x = ~ Value)) +
     geom_histogram(
-      fill = ppc_color("mid"),
-      color = ppc_color("mid_highlight"),
+      fill = get_color("mid"),
+      color = get_color("mid_highlight"),
       size = .25,
       na.rm = TRUE,
       binwidth = binwidth

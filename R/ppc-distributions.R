@@ -70,8 +70,8 @@ ppc_hist <- function(y, yrep, ..., binwidth = NULL) {
     )
   ) +
     geom_histogram(size = 0.25, binwidth = binwidth) +
-    scale_fill_manual(values = ppc_color(c("dark", "light"))) +
-    scale_color_manual(values = ppc_color(c("dark_highlight", "light_highlight"))) +
+    scale_fill_manual(values = get_color(c("dark", "light"))) +
+    scale_color_manual(values = get_color(c("dark_highlight", "light_highlight"))) +
     facet_wrap_parsed("rep_id", switch = "x") +
     dont_expand_y_axis() +
     theme_ppc(y_text = FALSE, x_lab = FALSE)
@@ -94,8 +94,8 @@ ppc_dens <- function(y, yrep, ...) {
     )
   ) +
     geom_density(size = 1) +
-    scale_fill_manual(values = ppc_color(c("dark", "light"))) +
-    scale_color_manual(values = ppc_color(c("dark_highlight", "light_highlight"))) +
+    scale_fill_manual(values = get_color(c("dark", "light"))) +
+    scale_color_manual(values = get_color(c("dark_highlight", "light_highlight"))) +
     facet_wrap_parsed("rep_id", switch = "x") +
     dont_expand_y_axis() +
     theme_ppc(y_text = FALSE, x_lab = FALSE)
@@ -119,8 +119,8 @@ ppc_dens_overlay <- function(y, yrep, ...) {
     )
   ) +
     geom_density() +
-    scale_color_manual(values = ppc_color(c("light", "dark_highlight"))) +
-    scale_fill_manual(values = c(NA, ppc_color("dark"))) +
+    scale_color_manual(values = get_color(c("light", "dark_highlight"))) +
+    scale_fill_manual(values = c(NA, get_color("dark"))) +
     scale_size_manual(values = c(0.25, 1)) +
     xlab(y_label()) +
     dont_expand_axes() +
@@ -147,18 +147,18 @@ ppc_violin_grouped <- function(y, yrep, group, ...) {
     )
   ) +
     geom_violin(
-      fill = ppc_color("light"),
-      color = ppc_color("light_highlight"),
+      fill = get_color("light"),
+      color = get_color("light_highlight"),
       draw_quantiles = c(0.1, 0.5, 0.9)
     ) +
     geom_point(
       data = plot_data[is_y,, drop = FALSE],
-      color = ppc_color("dark_highlight"),
+      color = get_color("dark_highlight"),
       shape = 21
     ) +
     scale_fill_manual(
       name = "",
-      values = ppc_color("dark"),
+      values = get_color("dark"),
       labels = expression(italic(y))
     ) +
     labs(x = "Group", y = yrep_label()) +

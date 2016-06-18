@@ -87,7 +87,7 @@ ppc_stat <- function(y, yrep, stat = "mean", ..., binwidth = NULL) {
     ) +
     scale_color_manual(
       name = "",
-      values = ppc_color(c("dark", "light")),
+      values = get_color(c("dark", "light")),
       labels = c(Ty_label(), Tyrep_label())
     ) +
     xlab(paste("Stat =", stat)) +
@@ -124,7 +124,7 @@ ppc_stat_grouped <-
       geom_vline(
         data = plot_data[is_y, , drop = FALSE],
         mapping = aes_(xintercept = ~ value),
-        color = ppc_color("dark"),
+        color = get_color("dark"),
         size = 2
       ) +
       facet_wrap("group", scales = "free") +
@@ -156,8 +156,8 @@ ppc_stat_2d <- function(y, yrep, stat = c("mean", "sd"), ...) {
     geom_point(
       shape = 21,
       size = 2,
-      fill = ppc_color("light"),
-      color = ppc_color("light_highlight")
+      fill = get_color("light"),
+      color = get_color("light_highlight")
     ) +
     annotate(
       geom = "segment",
@@ -167,7 +167,7 @@ ppc_stat_2d <- function(y, yrep, stat = c("mean", "sd"), ...) {
       yend = c(T_y2, T_y2),
       linetype = 2,
       size = 0.4,
-      color = ppc_color("dark_highlight")
+      color = get_color("dark_highlight")
     ) +
     geom_point(
       data = data.frame(x = T_y1, y = T_y2),
@@ -183,12 +183,12 @@ ppc_stat_2d <- function(y, yrep, stat = c("mean", "sd"), ...) {
     ) +
     scale_fill_manual(
       name = "",
-      values = c('Ty' = ppc_color("dark")),
+      values = c('Ty' = get_color("dark")),
       labels = c('Ty' = Ty_label())
     ) +
     scale_color_manual(
       name = "",
-      values = c('Ty' = ppc_color("dark_highlight")),
+      values = c('Ty' = get_color("dark_highlight")),
       labels = c('Ty' = Ty_label())
     ) +
     labs(
@@ -205,8 +205,8 @@ ppc_stat_2d <- function(y, yrep, stat = c("mean", "sd"), ...) {
 # helpers -----------------------------------------------------------------
 .ppc_stat_histogram <- function(binwidth) {
   geom_histogram(
-    fill = ppc_color("light"),
-    color = ppc_color("light_highlight"),
+    fill = get_color("light"),
+    color = get_color("light_highlight"),
     size = .25,
     na.rm = TRUE,
     binwidth = binwidth

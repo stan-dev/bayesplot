@@ -32,7 +32,7 @@ set_color_scheme <-
       "purples" = scheme_purples()
     )
     for (lev in scheme_level_names())
-      .ppcheck_aesthetics[[lev]] <- x[[lev]]
+      .bayesplot_aesthetics[[lev]] <- x[[lev]]
 
     invisible(x)
   }
@@ -43,7 +43,7 @@ set_color_scheme <-
 #'   color values used by the current scheme.
 #'
 get_color_scheme <- function() {
-  x <- as.list(.ppcheck_aesthetics)
+  x <- as.list(.bayesplot_aesthetics)
   x[scheme_level_names()]
 }
 
@@ -57,7 +57,7 @@ get_color_scheme <- function() {
 # @param level A haracter vector of level names (see scheme_level_names())
 # @return A character vector of color values.
 #
-ppc_color <- function(levels) {
+get_color <- function(levels) {
   stopifnot(all(levels %in% scheme_level_names()))
   color_vals <- get_color_scheme()[levels]
   unlist(color_vals, use.names = FALSE)
@@ -102,5 +102,5 @@ scheme_reds <- function() {
 
 
 # instantiate aesthetics --------------------------------------------------
-.ppcheck_aesthetics <- new.env(parent = emptyenv())
+.bayesplot_aesthetics <- new.env(parent = emptyenv())
 set_color_scheme("reds")

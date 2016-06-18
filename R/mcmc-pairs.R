@@ -65,15 +65,15 @@ mcmc_pairs <- function(x,
     lower = list(
       continuous = wrap("points",
                         shape = 21,
-                        fill = ppc_color("dark"),
-                        color = ppc_color("dark_highlight"),
+                        fill = get_color("dark"),
+                        color = get_color("dark_highlight"),
                         alpha = 0.5
                         )
     ),
     diag = list(
       continuous = wrap("barDiag",
-                        fill = ppc_color("mid"),
-                        color = ppc_color("mid_highlight"),
+                        fill = get_color("mid"),
+                        color = get_color("mid_highlight"),
                         size = .25)
       )
   )
