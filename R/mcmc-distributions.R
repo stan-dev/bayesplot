@@ -30,6 +30,10 @@
 #'    Kernel density plots of posterior draws with chains separated but
 #'    overlaid on a single plot.
 #'   }
+#'   \item{\code{mcmc_violin}}{
+#'    The density estimate of each chain is plotted as a violin with
+#'    horizontal lines at notable quantiles.
+#'   }
 #' }
 #'
 NULL
@@ -117,6 +121,29 @@ mcmc_dens_overlay <- function(x,
   )
 }
 
+#' @rdname MCMC-distributions
+#' @inheritParams ppc_violin_grouped
+#' @export
+mcmc_violin <- function(x,
+                        pars = character(),
+                        regex_pars = character(),
+                        transformations = list(),
+                        facet_args = list(),
+                        probs = c(0.1, 0.5, 0.9),
+                        ...) {
+  .mcmc_dens(
+    x,
+    pars = pars,
+    regex_pars = regex_pars,
+    transformations = transformations,
+    facet_args = facet_args,
+    geom = "violin",
+    probs = probs,
+    ...
+  )
+}
+
+
 
 # internal -----------------------------------------------------------------
 .mcmc_hist <- function(x,
@@ -159,13 +186,25 @@ mcmc_dens_overlay <- function(x,
                        transformations = list(),
                        facet_args = list(),
                        by_chain = FALSE,
+                       geom = c("density", "violin"),
+                       probs = c(0.1, 0.5, 0.9),
                        ...) {
   x <- prepare_mcmc_array(x, pars, regex_pars, transformations)
   data <- reshape2::melt(x, value.name = "Value")
   data$Chain <- factor(data$Chain)
 
-  aes_mapping <- list(x = ~ Value)
+  geom <- match.arg(geom)
+  violin <- geom == "violin"
+
+  aes_mapping <- if (violin) {
+    list(x = ~ Chain, y = ~ Value)
+  } else {
+    list(x = ~ Value)
+  }
   geom_args <- list(size = 0.25, na.rm = TRUE)
+  if (violin)
+    geom_args$draw_quantiles <- probs
+
   if (by_chain) {
     aes_mapping[["fill"]] <- ~ Chain
     aes_mapping[["color"]] <- ~ Chain
@@ -175,11 +214,11 @@ mcmc_dens_overlay <- function(x,
     geom_args[["fill"]] <- get_color("mid")
     geom_args[["color"]] <- get_color("mid_highlight")
   }
+
   graph <- ggplot(data, mapping = do.call("aes_", aes_mapping)) +
-    do.call("geom_density", geom_args) +
+    do.call(paste0("geom_", geom), geom_args) +
     dont_expand_y_axis(c(0.005, 0)) +
-    theme_ppc(y_text = FALSE, x_lab = FALSE,
-              legend_position = ifelse(by_chain, "right", "none"))
+    theme_ppc(legend_position = ifelse(by_chain, "right", "none"))
 
   if (is.null(facet_args$scales))
     facet_args$scales <- "free"

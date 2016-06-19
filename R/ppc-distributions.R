@@ -32,8 +32,8 @@
 #'   }
 #'   \item{\code{ppc_violin_grouped}}{
 #'    The density estimate of \code{yrep} within each level of a grouping
-#'    variable is plotted as a violin with 10\%, 50\%, and 90\% quantiles
-#'    indicated by horizontal lines. The points in \code{y} corresponding to
+#'    variable is plotted as a violin with horizontal lines at
+#'    notable quantiles. The points in \code{y} corresponding to
 #'    each grouping level are then overlaid on top of the violins.
 #'   }
 #' }
@@ -130,8 +130,11 @@ ppc_dens_overlay <- function(y, yrep, ...) {
 #' @export
 #' @rdname PPC-distributions
 #' @template args-group
+#' @param probs A numeric vector passed to \code{\link[ggplot2]{geom_violin}}'s
+#'   \code{draw_quantiles} argument to specify at which quantiles to draw
+#'   horizontal lines. Set to \code{NULL} to remove the lines.
 #'
-ppc_violin_grouped <- function(y, yrep, group, ...) {
+ppc_violin_grouped <- function(y, yrep, group, ..., probs = c(0.1, 0.5, 0.9)) {
   y <- validate_y(y)
   yrep <- validate_yrep(yrep, y)
   group <- validate_group(group, y)
@@ -149,7 +152,7 @@ ppc_violin_grouped <- function(y, yrep, group, ...) {
     geom_violin(
       fill = get_color("light"),
       color = get_color("light_highlight"),
-      draw_quantiles = c(0.1, 0.5, 0.9)
+      draw_quantiles = probs
     ) +
     geom_point(
       data = plot_data[is_y,, drop = FALSE],

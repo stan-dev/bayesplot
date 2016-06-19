@@ -14,7 +14,7 @@ ppc_dens(y, yrep, ...)
 
 ppc_dens_overlay(y, yrep, ...)
 
-ppc_violin_grouped(y, yrep, group, ...)
+ppc_violin_grouped(y, yrep, group, ..., probs = c(0.1, 0.5, 0.9))
 }
 \arguments{
 \item{y}{A vector of observations. See \strong{Details}.}
@@ -35,6 +35,10 @@ instructions.}
 \item{group}{A grouping variable (a vector or factor) the same length as
 \code{y}. Each value in \code{group} is interpreted as the group level
 pertaining to the corresponding value of \code{y}.}
+
+\item{probs}{A numeric vector passed to \code{\link[ggplot2]{geom_violin}}'s
+\code{draw_quantiles} argument to specify at which quantiles to draw
+horizontal lines. Set to \code{NULL} to remove the lines.}
 }
 \value{
 A ggplot object that can be further customized using the
@@ -69,8 +73,8 @@ For Binomial data, the plots will typically be most useful if
   }
   \item{\code{ppc_violin_grouped}}{
    The density estimate of \code{yrep} within each level of a grouping
-   variable is plotted as a violin with 10\%, 50\%, and 90\% quantiles
-   indicated by horizontal lines. The points in \code{y} corresponding to
+   variable is plotted as a violin with horizontal lines at
+   notable quantiles. The points in \code{y} corresponding to
    each grouping level are then overlaid on top of the violins.
   }
 }

@@ -6,6 +6,7 @@
 \alias{mcmc_dens_overlay}
 \alias{mcmc_hist}
 \alias{mcmc_hist_by_chain}
+\alias{mcmc_violin}
 \title{Histograms and kernel density plots of MCMC draws}
 \usage{
 mcmc_hist(x, pars = character(), regex_pars = character(),
@@ -19,6 +20,10 @@ mcmc_hist_by_chain(x, pars = character(), regex_pars = character(),
 
 mcmc_dens_overlay(x, pars = character(), regex_pars = character(),
   transformations = list(), facet_args = list(), ...)
+
+mcmc_violin(x, pars = character(), regex_pars = character(),
+  transformations = list(), facet_args = list(), probs = c(0.1, 0.5, 0.9),
+  ...)
 }
 \arguments{
 \item{x}{A 3-D array, matrix, or data frame of posterior draws. If \code{x}
@@ -51,6 +56,10 @@ control faceting.}
 \code{\link[ggplot2]{geom_histogram}}'s default binwidth.}
 
 \item{...}{Currently ignored.}
+
+\item{probs}{A numeric vector passed to \code{\link[ggplot2]{geom_violin}}'s
+\code{draw_quantiles} argument to specify at which quantiles to draw
+horizontal lines. Set to \code{NULL} to remove the lines.}
 }
 \value{
 A ggplot object that can be further customized using the
@@ -74,6 +83,10 @@ Histograms and kernel density plots of MCMC draws
   \item{\code{mcmc_dens_overlay}}{
    Kernel density plots of posterior draws with chains separated but
    overlaid on a single plot.
+  }
+  \item{\code{mcmc_violin}}{
+   The density estimate of each chain is plotted as a violin with
+   horizontal lines at notable quantiles.
   }
 }
 }
