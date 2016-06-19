@@ -23,7 +23,7 @@
 #'     Scatterplot matrix of parameter draws.
 #'   }
 #'   \item{\strong{\link[=MCMC-combos]{Combinations}}}{
-#'     Combinations of various plots.
+#'     Combination plots (e.g. traceplot + histogram)
 #'   }
 #' }
 #'

@@ -23,8 +23,10 @@ the name of one of the available \link{MCMC} functions (omitting the
 \code{mcmc_} prefix).}
 
 \item{widths}{A numeric vector the same length as \code{combo} specifying
-relative column widths. The default, \code{NULL}, allocates the same
-horiztonal space for each column.}
+relative column widths. For example, if the plot has two columns, then
+\code{widths = c(2, 1)} will allocate more space for the first column by a
+factor of 2 (as would \code{widths = c(.3, .15)}, etc.). The default,
+\code{NULL}, allocates the same horiztonal space for each column.}
 
 \item{plot}{A logical value indicating whether or not to display the plots.
 If \code{plot} is \code{FALSE} then the object is returned invisibly
