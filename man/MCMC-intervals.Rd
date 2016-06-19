@@ -8,11 +8,11 @@
 \usage{
 mcmc_intervals(x, pars = character(), regex_pars = character(),
   transformations = list(), ..., prob = 0.5, prob_outer = 0.9,
-  point_est = c("median", "mean"))
+  point_est = c("median", "mean"), rhat = numeric())
 
 mcmc_areas(x, pars = character(), regex_pars = character(),
   transformations = list(), ..., prob = 0.5, point_est = c("median",
-  "mean"))
+  "mean"), rhat = numeric())
 }
 \arguments{
 \item{x}{A 3-D array, matrix, or data frame of posterior draws. If \code{x}
@@ -38,7 +38,7 @@ function).}
 
 \item{...}{Currently unused.}
 
-\item{prob}{Probability mass to include in inner interval (for
+\item{prob}{The probability mass to include in inner interval (for
 \code{mcmc_intervals}) or in the shaded region (for \code{mcmc_areas}). The
 default is \code{0.5} (50\% interval).}
 
@@ -48,6 +48,11 @@ include in outer interval. The default is \code{0.9} for
 
 \item{point_est}{The point estimate to show. Either \code{"median"} (the
 default) or \code{"mean"}.}
+
+\item{rhat}{An optional numeric vector of \eqn{\hat{R}}{Rhat} estimates, with
+one element per parameter included in \code{x}. If \code{rhat} is provided,
+the intervals/areas and point estimates in the resulting plot are colored
+based on \eqn{\hat{R}}{Rhat} value.}
 }
 \value{
 A ggplot object that can be further customized using the

@@ -92,3 +92,46 @@ apply_transformations <- function(x, transformations = list()) {
 
   x
 }
+
+# Convert numeric vector of Rhat values to a factor
+#
+# @param x A numeric vector
+# @param breaks A numeric vector of length two. The resulting factor variable
+#   will have three levels ('low', 'ok', and 'high') corresponding to (x <=
+#   breaks[1], breaks[1] < x <= breaks[2], x > breaks[2]).
+# @return A factor the same length as x with three levels.
+#
+factor_rhat <- function(rhat, breaks = c(1.05, 1.1)) {
+  stopifnot(is.numeric(rhat),
+            isTRUE(all(rhat > 0)),
+            length(breaks) == 2)
+  cut(
+    rhat,
+    breaks = c(-Inf, breaks, Inf),
+    labels = c("low", "ok", "high"),
+    ordered_result = TRUE
+  )
+}
+
+# Functions wrapping around scale_color_manual and scale_fill_manual, used to
+# color the intervals by rhat value
+scale_color_rhat <- function() rhat_color_scale("color")
+scale_fill_rhat <- function() rhat_color_scale("fill")
+rhat_color_scale <- function(aesthetic = c("color", "fill")) {
+  aesthetic <- match.arg(aesthetic)
+  color_levels <- c("light", "mid", "dark")
+  if (aesthetic == "color")
+    color_levels <- paste0(color_levels, "_highlight")
+
+  do.call(
+    match.fun(paste0("scale_", aesthetic, "_manual")),
+    list(
+      name = NULL,
+      drop = FALSE,
+      values = setNames(get_color(color_levels), c("low", "ok", "high")),
+      labels = c(expression(hat(R) <= 1.05),
+                 expression(hat(R) <= 1.10),
+                 expression(hat(R) > 1.10))
+    )
+  )
+}
