@@ -113,6 +113,7 @@ mcmc_trace_highlight <- function(x,
                        style = c("line", "point"),
                        ...) {
 
+  style <- match.arg(style)
   x <- prepare_mcmc_array(x, pars, regex_pars, transformations)
 
   if (!is.null(highlight)) {
@@ -144,8 +145,10 @@ mcmc_trace_highlight <- function(x,
 
   if (inc_warmup && n_warmup > 0) {
     graph <- graph +
-      annotate("rect", xmin = -Inf, xmax = n_warmup,
-               ymin = -Inf, ymax = Inf, fill = "lightgray")
+      annotate("rect",
+               xmin = -Inf, xmax = n_warmup,
+               ymin = -Inf, ymax = Inf,
+               fill = "lightgray")
   }
 
   if (!is.null(window)) {
@@ -155,11 +158,11 @@ mcmc_trace_highlight <- function(x,
 
   if (!is.null(highlight)) {
     graph <- graph +
-      scale_alpha_discrete("", range = c(.2, 1), guide = "none")
+      scale_alpha_discrete(range = c(.2, 1), guide = "none")
   }
 
   graph <- graph +
-    do.call(paste0("geom_", match.arg(style)), geom_args) +
+    do.call(paste0("geom_", style), geom_args) +
     theme_ppc(legend_position =
                 if (nlevels(data$Chain) > 1) "right" else "none")
 
