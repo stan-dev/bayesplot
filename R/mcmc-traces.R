@@ -138,8 +138,9 @@ mcmc_trace_highlight <- function(x,
     mapping <- aes_(x = ~ Iteration, y = ~ Value, color = ~ Chain)
   } else {
     stopifnot(length(highlight) == 1)
-    mapping <- aes_(x = ~ Iteration, y = ~ Value, color = ~ Chain,
-                    alpha = ~ Chain == highlight)
+    mapping <- aes_(x = ~ Iteration, y = ~ Value,
+                    alpha = ~ Chain == highlight,
+                    color = ~ Chain == highlight)
   }
   graph <- ggplot(data, mapping)
 
@@ -158,7 +159,9 @@ mcmc_trace_highlight <- function(x,
 
   if (!is.null(highlight)) {
     graph <- graph +
-      scale_alpha_discrete(range = c(.2, 1), guide = "none")
+      scale_alpha_discrete(range = c(.2, 1), guide = "none") +
+      scale_color_manual("", values = get_color(c("light", "dark")),
+                         labels = c("Other chains", paste("Chain", highlight)))
   }
 
   graph <- graph +

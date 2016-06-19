@@ -27,6 +27,11 @@ theme_ppc <-
         strip.background = element_rect(fill = "gray95", color = NA),
         ...
       )
+    if (!"legend.text" %in% names(list(...)))
+      thm <- thm + theme(legend.text = element_text(face = "bold"))
+    if (!"legend.key" %in% names(list(...)))
+      thm <- thm + theme(legend.key = element_rect(color = "gray95", fill = NA))
+
     if (!y_text) {
       y_lab <- FALSE
       thm <- thm %+replace% theme(axis.text.y = element_blank())
