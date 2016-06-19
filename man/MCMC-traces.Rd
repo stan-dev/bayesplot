@@ -7,12 +7,12 @@
 \title{Traceplot (time series plot) of MCMC draws}
 \usage{
 mcmc_trace(x, pars = character(), regex_pars = character(),
-  transformations = list(), n_warmup = 0, inc_warmup = n_warmup > 0,
-  window = NULL, size = NULL, facet_args = list(), ...)
+  transformations = list(), n_warmup = 0, window = NULL, size = NULL,
+  facet_args = list(), ...)
 
 mcmc_trace_highlight(x, pars = character(), regex_pars = character(),
-  transformations = list(), n_warmup = 0, inc_warmup = n_warmup > 0,
-  window = NULL, size = NULL, facet_args = list(), highlight = 1, ...)
+  transformations = list(), n_warmup = 0, window = NULL, size = NULL,
+  facet_args = list(), highlight = 1, ...)
 }
 \arguments{
 \item{x}{A 3-D array, matrix, or data frame of posterior draws. If \code{x}
@@ -38,11 +38,8 @@ function).}
 
 \item{n_warmup}{An integer; the number of warmup iterations included in
 \code{x}. The default is \code{n_warmup = 0}, i.e. to assume no warmup
-iterations are included.}
-
-\item{inc_warmup}{A logical value indicating if warmup iterations should be
-included in the plot if \code{n_warmup > 0}. If \code{inc_warmup} is
-\code{TRUE} then the background for warmup iterations is shaded gray.}
+iterations are included. If \code{n_warmup > 0} then the background for
+iterations \code{1:n_warmup} is shaded gray.}
 
 \item{window}{An integer vector of length two specifying the limits of a
 range of iterations to display.}

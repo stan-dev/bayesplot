@@ -12,10 +12,8 @@
 #'   \code{mcmc_trace_highlight}).
 #' @param n_warmup An integer; the number of warmup iterations included in
 #'   \code{x}. The default is \code{n_warmup = 0}, i.e. to assume no warmup
-#'   iterations are included.
-#' @param inc_warmup A logical value indicating if warmup iterations should be
-#'   included in the plot if \code{n_warmup > 0}. If \code{inc_warmup} is
-#'   \code{TRUE} then the background for warmup iterations is shaded gray.
+#'   iterations are included. If \code{n_warmup > 0} then the background for
+#'   iterations \code{1:n_warmup} is shaded gray.
 #' @param window An integer vector of length two specifying the limits of a
 #'   range of iterations to display.
 #' @param facet_args Arguments (other than \code{facets}) passed to
@@ -44,7 +42,6 @@ mcmc_trace <- function(x,
                        regex_pars = character(),
                        transformations = list(),
                        n_warmup = 0,
-                       inc_warmup = n_warmup > 0,
                        window = NULL,
                        size = NULL,
                        facet_args = list(),
@@ -56,7 +53,6 @@ mcmc_trace <- function(x,
     transformations = transformations,
     facet_args = facet_args,
     n_warmup = n_warmup,
-    inc_warmup = inc_warmup,
     window = window,
     size = size,
     style = "line",
@@ -73,7 +69,6 @@ mcmc_trace_highlight <- function(x,
                               regex_pars = character(),
                               transformations = list(),
                               n_warmup = 0,
-                              inc_warmup = n_warmup > 0,
                               window = NULL,
                               size = NULL,
                               facet_args = list(),
@@ -89,7 +84,6 @@ mcmc_trace_highlight <- function(x,
     transformations = transformations,
     facet_args = facet_args,
     n_warmup = n_warmup,
-    inc_warmup = inc_warmup,
     window = window,
     size = size,
     highlight = highlight,
@@ -105,7 +99,6 @@ mcmc_trace_highlight <- function(x,
                        regex_pars = character(),
                        transformations = list(),
                        n_warmup = 0,
-                       inc_warmup = n_warmup > 0,
                        window = NULL,
                        size = NULL,
                        facet_args = list(),
@@ -124,9 +117,6 @@ mcmc_trace_highlight <- function(x,
       )
   }
 
-  if (!inc_warmup && n_warmup > 0)
-    x <- x[-seq_len(n_warmup), , , drop = FALSE]
-
   data <- reshape2::melt(x, value.name = "Value")
   data$Chain <- factor(data$Chain)
 
@@ -144,7 +134,7 @@ mcmc_trace_highlight <- function(x,
   }
   graph <- ggplot(data, mapping)
 
-  if (inc_warmup && n_warmup > 0) {
+  if (n_warmup > 0) {
     graph <- graph +
       annotate("rect",
                xmin = -Inf, xmax = n_warmup,
