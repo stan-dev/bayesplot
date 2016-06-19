@@ -29,6 +29,8 @@ theme_ppc <-
       )
     if (!"legend.text" %in% names(list(...)))
       thm <- thm + theme(legend.text = element_text(face = "bold"))
+    if (!"legend.title" %in% names(list(...)))
+      thm <- thm + theme(legend.title = element_text(size = rel(0.8)))
     if (!"legend.key" %in% names(list(...)))
       thm <- thm + theme(legend.key = element_rect(color = "gray95", fill = NA))
 

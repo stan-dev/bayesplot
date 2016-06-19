@@ -5,7 +5,8 @@
 \alias{mcmc_combo}
 \title{Combination plots}
 \usage{
-mcmc_combo(x, ..., combo = c("trace", "dense"), plot = TRUE)
+mcmc_combo(x, ..., combo = c("trace", "dense"), widths = NULL,
+  plot = TRUE)
 }
 \arguments{
 \item{x}{A 3-D array, matrix, or data frame of posterior draws. If \code{x}
@@ -20,6 +21,10 @@ data.frame with a column for each parameter.}
 \code{combo} corresponds to a column in the resulting graphic and should be
 the name of one of the available \link{MCMC} functions (omitting the
 \code{mcmc_} prefix).}
+
+\item{widths}{A numeric vector the same length as \code{combo} specifying
+relative column widths. The default, \code{NULL}, allocates the same
+horiztonal space for each column.}
 
 \item{plot}{A logical value indicating whether or not to display the plots.
 If \code{plot} is \code{FALSE} then the object is returned invisibly
