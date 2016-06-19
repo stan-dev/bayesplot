@@ -23,9 +23,7 @@ mcmc_pairs <- function(x,
   suggested_package("GGally")
 
   x <- prepare_mcmc_array(x, pars, regex_pars, transformations)
-  xdim <- dim(x)
-  data <- as.data.frame(array(x, dim = c(prod(xdim[1:2]), xdim[3])))
-  colnames(data) <- pars
+  data <- merge_chains(x)
 
   message("Processing... this may take a little while")
   graph <- GGally::ggpairs(

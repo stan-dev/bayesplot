@@ -92,6 +92,7 @@ Histograms and kernel density plots of MCMC draws
 }
 \seealso{
 Other MCMC: \code{\link{MCMC-combos}},
+  \code{\link{MCMC-intervals}},
   \code{\link{MCMC-overview}}, \code{\link{MCMC-pairs}},
   \code{\link{MCMC-traces}}
 }

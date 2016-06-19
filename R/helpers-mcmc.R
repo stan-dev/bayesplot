@@ -19,8 +19,10 @@ prepare_mcmc_array <-
       stop("No parameter names found.")
     }
 
-    if (is.matrix(x))
+    if (is.matrix(x)) {
       x <- array(x, dim = c(nrow(x), 1, ncol(x)))
+      dimnames(x)[[3]] <- parnames
+    }
 
     pars <-
       select_parameters(explicit = pars,
@@ -37,6 +39,18 @@ prepare_mcmc_array <-
                 Parameter = pars
               ))
   }
+
+# Convert 3-D array to matrix with chains merged
+#
+# @param x A 3-D array (iter x chain x param)
+# @return A matrix with one column per parameter
+#
+merge_chains <- function(x) {
+  xdim <- dim(x)
+  mat <- array(x, dim = c(prod(xdim[1:2]), xdim[3]))
+  colnames(mat) <- dimnames(x)[[3]]
+  mat
+}
 
 # Perform some checks on user's 'x' input for MCMC plots
 #

@@ -42,6 +42,7 @@ Combination plots
 }
 \seealso{
 Other MCMC: \code{\link{MCMC-distributions}},
+  \code{\link{MCMC-intervals}},
   \code{\link{MCMC-overview}}, \code{\link{MCMC-pairs}},
   \code{\link{MCMC-traces}}
 }
