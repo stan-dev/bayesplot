@@ -5,8 +5,8 @@
 \alias{mcmc_combo}
 \title{Combination plots}
 \usage{
-mcmc_combo(x, ..., combo = c("trace", "dense"), widths = NULL,
-  plot = TRUE)
+mcmc_combo(x, combo = c("trace", "dense"), widths = NULL, plot = TRUE,
+  ...)
 }
 \arguments{
 \item{x}{A 3-D array, matrix, or data frame of posterior draws. If \code{x}
@@ -14,8 +14,6 @@ is a 3-D array then the dimensions must be \code{[Iteration, Chain,
 Parameter]} in that order. If there is only one Markov chain or if all
 chains have already been merged, then \code{x} can be a matrix or
 data.frame with a column for each parameter.}
-
-\item{...}{Arguments passed to the plotting functions named in \code{combo}.}
 
 \item{combo}{A character vector with at least two elements. Each element of
 \code{combo} corresponds to a column in the resulting graphic and should be
@@ -31,6 +29,8 @@ factor of 2 (as would \code{widths = c(.3, .15)}, etc.). The default,
 \item{plot}{A logical value indicating whether or not to display the plots.
 If \code{plot} is \code{FALSE} then the object is returned invisibly
 without plotting.}
+
+\item{...}{Arguments passed to the plotting functions named in \code{combo}.}
 }
 \value{
 A gtable object (the result of calling

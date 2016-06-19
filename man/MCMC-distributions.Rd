@@ -10,20 +10,20 @@
 \title{Histograms and kernel density plots of MCMC draws}
 \usage{
 mcmc_hist(x, pars = character(), regex_pars = character(),
-  transformations = list(), facet_args = list(), binwidth = NULL, ...)
+  transformations = list(), facet_args = list(), ..., binwidth = NULL)
 
 mcmc_dens(x, pars = character(), regex_pars = character(),
   transformations = list(), facet_args = list(), ...)
 
 mcmc_hist_by_chain(x, pars = character(), regex_pars = character(),
-  transformations = list(), facet_args = list(), binwidth = NULL, ...)
+  transformations = list(), facet_args = list(), ..., binwidth = NULL)
 
 mcmc_dens_overlay(x, pars = character(), regex_pars = character(),
   transformations = list(), facet_args = list(), ...)
 
 mcmc_violin(x, pars = character(), regex_pars = character(),
-  transformations = list(), facet_args = list(), probs = c(0.1, 0.5, 0.9),
-  ...)
+  transformations = list(), facet_args = list(), ..., probs = c(0.1, 0.5,
+  0.9))
 }
 \arguments{
 \item{x}{A 3-D array, matrix, or data frame of posterior draws. If \code{x}
@@ -52,10 +52,10 @@ function).}
 \code{\link[ggplot2]{facet_grid}} (if \code{by_chain} is \code{TRUE}) to
 control faceting.}
 
+\item{...}{Currently ignored.}
+
 \item{binwidth}{An optional value to override
 \code{\link[ggplot2]{geom_histogram}}'s default binwidth.}
-
-\item{...}{Currently ignored.}
 
 \item{probs}{A numeric vector passed to \code{\link[ggplot2]{geom_violin}}'s
 \code{draw_quantiles} argument to specify at which quantiles to draw

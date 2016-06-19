@@ -25,30 +25,35 @@ NULL
 
 #' @rdname MCMC-combos
 #' @export
-mcmc_combo <- function(x, ..., combo = c("trace", "dense"), widths = NULL, plot = TRUE) {
-  suggested_package("gridExtra")
-  plotfuns <- lapply(paste0("mcmc_", combo), function(f) {
-    fun <- try(match.fun(f), silent = TRUE)
-    if (inherits(fun, "try-error"))
-      stop("Function '", f, "' not found.")
-    fun
-  })
-  args <- list(x = x, ...)
-  if (is.list(args$facet_args)) {
-    args$facet_args[["ncol"]] <- 1
-    args$facet_args[["nrow"]] <- NULL
-  } else {
-    args$facet_args <- list(ncol = 1, nrow = NULL)
+mcmc_combo <-
+  function(x,
+           combo = c("trace", "dense"),
+           widths = NULL,
+           plot = TRUE,
+           ...) {
+    suggested_package("gridExtra")
+    plotfuns <- lapply(paste0("mcmc_", combo), function(f) {
+      fun <- try(match.fun(f), silent = TRUE)
+      if (inherits(fun, "try-error"))
+        stop("Function '", f, "' not found.")
+      fun
+    })
+    args <- list(x = x, ...)
+    if (is.list(args$facet_args)) {
+      args$facet_args[["ncol"]] <- 1
+      args$facet_args[["nrow"]] <- NULL
+    } else {
+      args$facet_args <- list(ncol = 1, nrow = NULL)
+    }
+
+    plots <- lapply(plotfuns, function(f) do.call(f, args))
+    combo_plot <-
+      gridExtra::arrangeGrob(grobs = plots,
+                             ncol = length(combo),
+                             widths = widths)
+
+    if (plot)
+      gridExtra::grid.arrange(combo_plot)
+
+    invisible(combo_plot)
   }
-
-  plots <- lapply(plotfuns, function(f) do.call(f, args))
-  combo_plot <-
-    gridExtra::arrangeGrob(grobs = plots,
-                           ncol = length(combo),
-                           widths = widths)
-
-  if (plot)
-    gridExtra::grid.arrange(combo_plot)
-
-  invisible(combo_plot)
-}

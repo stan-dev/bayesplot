@@ -17,6 +17,9 @@ versions of \pkg{bayesplot} will provide many more MCMC plotting functions.
     Histograms and kernel density plots of parameter draws, optionally
     showing each Markov chain separately.
   }
+  \item{\strong{\link[=MCMC-intervals]{Uncertainty intervals}}}{
+    Uncertainty intervals computed from parameter draws.
+  }
   \item{\strong{\link[=MCMC-traces]{Traceplots}}}{
     Times series of parameter draws.
   }

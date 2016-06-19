@@ -7,32 +7,85 @@
 #' @template args-pars
 #' @template args-regex_pars
 #' @template args-transformations
-#' @param prob_inner Probability mass to include in inner interval.
-#' @param prob_outer Probability mass to include in outer interval.
+#' @param ... Currently unused.
+#' @param prob Probability mass to include in inner interval (for
+#'   \code{mcmc_intervals}) or in the shaded region (for \code{mcmc_areas}). The
+#'   default is \code{0.5} (50\% interval).
 #' @param point_est The point estimate to show. Either \code{"median"} (the
 #'   default) or \code{"mean"}.
+#'
+#' @template return-ggplot
+#'
+#' @section Plot Descriptions:
+#' \describe{
+#'   \item{\code{mcmc_intervals}}{
+#'    Plots of uncertainty intervals computed from posterior draws with all
+#'    chains merged.
+#'   }
+#'   \item{\code{mcmc_areas}}{
+#'    Density plots of computed from posterior draws with all chains merged,
+#'    with uncertainty intervals shown as shaded areas under the curves.
+#'   }
+#' }
 #'
 NULL
 
 #' @rdname MCMC-intervals
 #' @export
+#' @param prob_outer For \code{mcmc_intervals} only, the probability mass to
+#'   include in outer interval. The default is \code{0.9} for
+#'   \code{mcmc_intervals} (90\% interval).
+#'
 mcmc_intervals <- function(x,
                            pars = character(),
                            regex_pars = character(),
                            transformations = list(),
                            ...,
-                           show_density = FALSE,
+                           prob = 0.5,
+                           prob_outer = 0.9,
+                           point_est = c("median", "mean")) {
+  x <- prepare_mcmc_array(x, pars, regex_pars, transformations)
+  .mcmc_intervals(
+    x = merge_chains(x),
+    prob_inner = prob,
+    prob_outer = prob_outer,
+    point_est = point_est
+  )
+}
+
+#' @rdname MCMC-intervals
+#' @export
+mcmc_areas <- function(x,
+                       pars = character(),
+                       regex_pars = character(),
+                       transformations = list(),
+                       ...,
+                       prob = 0.5,
+                       point_est = c("median", "mean")) {
+  x <- prepare_mcmc_array(x, pars, regex_pars, transformations)
+  .mcmc_intervals(
+    x = merge_chains(x),
+    prob_inner = prob,
+    prob_outer = 1,
+    point_est = point_est,
+    show_density = TRUE
+  )
+}
+
+
+
+# internal ----------------------------------------------------------------
+.mcmc_intervals <- function(x,
                            prob_inner = 0.5,
                            prob_outer = 0.95,
-                           point_est = c("median", "mean")) {
+                           point_est = c("median", "mean"),
+                           show_density = FALSE) {
                            # rhat_values = c(),
                            # color_by_rhat = FALSE) {
   color_by_rhat <- FALSE
 
-  x <- prepare_mcmc_array(x, pars, regex_pars, transformations)
-  samps_use <- merge_chains(x)
-  n_param <- ncol(samps_use)
-  parnames <- colnames(samps_use)
+  n_param <- ncol(x)
+  parnames <- colnames(x)
 
 
   # rhat_pal <- get_color(c("light_highlight", "mid_highlight", "dark_highlight"))
@@ -58,7 +111,7 @@ mcmc_intervals <- function(x,
              0.5 + prob_inner / 2,
              0.5 + prob_outer / 2)
 
-  quantiles <- t(apply(samps_use, 2, quantile, probs = probs))
+  quantiles <- t(apply(x, 2, quantile, probs = probs))
   y <- as.numeric(seq(n_param, 1, by = -1))
   x_lim <- c(min(quantiles[, 1]), max(quantiles[, 5]))
   x_range <- diff(x_lim)
@@ -68,7 +121,7 @@ mcmc_intervals <- function(x,
   data <- data.frame(parnames, y, quantiles)
   colnames(data) <- c("parameter", "y", "ll", "l", "m", "h", "hh")
   if (match.arg(point_est) == "mean")
-    data$m <- unname(colMeans(samps_use))
+    data$m <- unname(colMeans(x))
 
 
 
@@ -95,7 +148,7 @@ mcmc_intervals <- function(x,
     y.den <- matrix(0, nrow = nPoint.den, ncol = n_param)
     x.den <- matrix(0, nrow = nPoint.den, ncol = n_param)
     for (i in 1:n_param) {
-      d.temp <- density(samps_use[, i],
+      d.temp <- density(x[, i],
                         from = quantiles[i, 1],
                         to = quantiles[i, 5],
                         n = nPoint.den)
@@ -117,7 +170,7 @@ mcmc_intervals <- function(x,
     y.poly <- matrix(0, nrow = nPoint.den + 2, ncol = n_param)
     x.poly <- matrix(0, nrow = nPoint.den + 2, ncol = n_param)
     for (i in 1:n_param) {
-      d.temp <- density(samps_use[, i],
+      d.temp <- density(x[, i],
                         from = quantiles[i, 2],
                         to = quantiles[i, 4],
                         n = nPoint.den)
@@ -145,19 +198,18 @@ mcmc_intervals <- function(x,
                           high = get_color("light"),
                           guide = "none")
 
-    #point estimator
     if (color_by_rhat) {
-      p_point <-
-        geom_segment(aes_(
-          x = ~ m,
-          xend = ~ m,
-          y = ~ y,
-          yend = ~ y + 0.25,
-          color = ~ rhat_id
-        ), size = 1.5)
-
-      graph <- graph +
-        p_poly + p_den + p_fill + p_point + rhat_colors + rhat_lgnd
+      # p_point <-
+      #   geom_segment(aes_(
+      #     x = ~ m,
+      #     xend = ~ m,
+      #     y = ~ y,
+      #     yend = ~ y + 0.25,
+      #     color = ~ rhat_id
+      #   ), size = 1.5)
+      #
+      # graph <- graph +
+      #   p_poly + p_den + p_fill + p_point + rhat_colors + rhat_lgnd
 
     } else {
       p_point <-
@@ -196,15 +248,15 @@ mcmc_intervals <- function(x,
     size = 2)
 
     if (color_by_rhat) {
-      graph <- graph +
-        geom_point(
-          aes_(x = ~ m, y = ~ y, fill = ~ rhat_id),
-          color = "black",
-          shape = 21,
-          size = 4
-        ) +
-        rhat_colors +
-        rhat_lgnd
+      # graph <- graph +
+      #   geom_point(
+      #     aes_(x = ~ m, y = ~ y, fill = ~ rhat_id),
+      #     color = "black",
+      #     shape = 21,
+      #     size = 4
+      #   ) +
+      #   rhat_colors +
+      #   rhat_lgnd
 
     } else {
       graph <- graph +

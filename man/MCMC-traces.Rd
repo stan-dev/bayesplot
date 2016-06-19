@@ -7,12 +7,12 @@
 \title{Traceplot (time series plot) of MCMC draws}
 \usage{
 mcmc_trace(x, pars = character(), regex_pars = character(),
-  transformations = list(), n_warmup = 0, window = NULL, size = NULL,
-  facet_args = list(), ...)
+  transformations = list(), facet_args = list(), ..., n_warmup = 0,
+  window = NULL, size = NULL)
 
 mcmc_trace_highlight(x, pars = character(), regex_pars = character(),
-  transformations = list(), n_warmup = 0, window = NULL, size = NULL,
-  facet_args = list(), highlight = 1, ...)
+  transformations = list(), facet_args = list(), ..., n_warmup = 0,
+  window = NULL, size = NULL, highlight = 1)
 }
 \arguments{
 \item{x}{A 3-D array, matrix, or data frame of posterior draws. If \code{x}
@@ -36,6 +36,11 @@ the content of each list element should be a function (or any item to match
 as a function via \code{\link{match.fun}}, e.g. a string naming a
 function).}
 
+\item{facet_args}{Arguments (other than \code{facets}) passed to
+\code{\link[ggplot2]{facet_wrap}} to control faceting.}
+
+\item{...}{Currently ignored.}
+
 \item{n_warmup}{An integer; the number of warmup iterations included in
 \code{x}. The default is \code{n_warmup = 0}, i.e. to assume no warmup
 iterations are included. If \code{n_warmup > 0} then the background for
@@ -47,11 +52,6 @@ range of iterations to display.}
 \item{size}{An optional value to override the default line size (if calling
 \code{mcmc_trace}) or the default point size (if calling
 \code{mcmc_trace_highlight}).}
-
-\item{facet_args}{Arguments (other than \code{facets}) passed to
-\code{\link[ggplot2]{facet_wrap}} to control faceting.}
-
-\item{...}{Currently ignored.}
 
 \item{highlight}{An integer specifying one of the chains that will be
 more visible than the others in the plot.}

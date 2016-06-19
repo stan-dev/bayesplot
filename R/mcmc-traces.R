@@ -41,11 +41,11 @@ mcmc_trace <- function(x,
                        pars = character(),
                        regex_pars = character(),
                        transformations = list(),
+                       facet_args = list(),
+                       ...,
                        n_warmup = 0,
                        window = NULL,
-                       size = NULL,
-                       facet_args = list(),
-                       ...) {
+                       size = NULL) {
   .mcmc_trace(
     x,
     pars = pars,
@@ -65,15 +65,15 @@ mcmc_trace <- function(x,
 #' @param highlight An integer specifying one of the chains that will be
 #'   more visible than the others in the plot.
 mcmc_trace_highlight <- function(x,
-                              pars = character(),
-                              regex_pars = character(),
-                              transformations = list(),
-                              n_warmup = 0,
-                              window = NULL,
-                              size = NULL,
-                              facet_args = list(),
-                              highlight = 1,
-                              ...) {
+                                 pars = character(),
+                                 regex_pars = character(),
+                                 transformations = list(),
+                                 facet_args = list(),
+                                 ...,
+                                 n_warmup = 0,
+                                 window = NULL,
+                                 size = NULL,
+                                 highlight = 1) {
   if (length(dim(x)) != 3)
     stop("mcmc_trace_highlight requires a 3-D array (multiple chains).")
 

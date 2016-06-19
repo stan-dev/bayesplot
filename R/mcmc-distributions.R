@@ -47,8 +47,8 @@ mcmc_hist <- function(x,
                       regex_pars = character(),
                       transformations = list(),
                       facet_args = list(),
-                      binwidth = NULL,
-                      ...) {
+                      ...,
+                      binwidth = NULL) {
   .mcmc_hist(
     x,
     pars = pars,
@@ -84,12 +84,12 @@ mcmc_dens <- function(x,
 #' @export
 #'
 mcmc_hist_by_chain <- function(x,
-                      pars = character(),
-                      regex_pars = character(),
-                      transformations = list(),
-                      facet_args = list(),
-                      binwidth = NULL,
-                      ...) {
+                               pars = character(),
+                               regex_pars = character(),
+                               transformations = list(),
+                               facet_args = list(),
+                               ...,
+                               binwidth = NULL) {
   .mcmc_hist(
     x,
     pars = pars,
@@ -129,8 +129,8 @@ mcmc_violin <- function(x,
                         regex_pars = character(),
                         transformations = list(),
                         facet_args = list(),
-                        probs = c(0.1, 0.5, 0.9),
-                        ...) {
+                        ...,
+                        probs = c(0.1, 0.5, 0.9)) {
   .mcmc_dens(
     x,
     pars = pars,
