@@ -22,6 +22,9 @@
 #'   \item{\strong{\link[=MCMC-pairs]{Pairs}}}{
 #'     Scatterplot matrix of parameter draws.
 #'   }
+#'   \item{\strong{\link[=MCMC-combos]{Combinations}}}{
+#'     Combinations of various plots.
+#'   }
 #' }
 #'
 NULL

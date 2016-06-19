@@ -40,7 +40,8 @@ A ggplot object that can be further customized using the
 Pairs plot of MCMC draws
 }
 \seealso{
-Other MCMC: \code{\link{MCMC-distributions}},
+Other MCMC: \code{\link{MCMC-combos}},
+  \code{\link{MCMC-distributions}},
   \code{\link{MCMC-overview}}, \code{\link{MCMC-traces}}
 }
 

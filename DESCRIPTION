@@ -22,10 +22,11 @@ Imports:
     stats
 Suggests:
     arm,
+    GGally (>= 1.1.0),
+    gridExtra,
     knitr,
     rmarkdown,
     rstanarm,
     testthat,
-    GGally (>= 1.1.0)
 RoxygenNote: 5.0.1
 VignetteBuilder: knitr

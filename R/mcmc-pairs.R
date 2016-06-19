@@ -20,8 +20,7 @@ mcmc_pairs <- function(x,
                        regex_pars = character(),
                        transformations = list(),
                        ...) {
-  if (!requireNamespace("GGally", quietly = TRUE))
-    stop("Please install the GGally package to use this function.")
+  suggested_package("GGally")
 
   x <- prepare_mcmc_array(x, pars, regex_pars, transformations)
   xdim <- dim(x)

@@ -49,9 +49,10 @@ mcmc_hist <- function(x,
     x,
     pars = pars,
     regex_pars = regex_pars,
-    by_chain = FALSE,
     transformations = transformations,
+    facet_args = facet_args,
     binwidth = binwidth,
+    by_chain = FALSE,
     ...
   )
 }
@@ -68,9 +69,9 @@ mcmc_dens <- function(x,
     x,
     pars = pars,
     regex_pars = regex_pars,
-    by_chain = FALSE,
     transformations = transformations,
     facet_args = facet_args,
+    by_chain = FALSE,
     ...
   )
 }
@@ -89,10 +90,10 @@ mcmc_hist_by_chain <- function(x,
     x,
     pars = pars,
     regex_pars = regex_pars,
-    by_chain = TRUE,
     transformations = transformations,
     facet_args = facet_args,
     binwidth = binwidth,
+    by_chain = TRUE,
     ...
   )
 }
@@ -109,9 +110,9 @@ mcmc_dens_overlay <- function(x,
     x,
     pars = pars,
     regex_pars = regex_pars,
-    by_chain = TRUE,
     transformations = transformations,
     facet_args = facet_args,
+    by_chain = TRUE,
     ...
   )
 }
