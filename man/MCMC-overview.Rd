@@ -13,12 +13,12 @@ versions of \pkg{bayesplot} will provide many more MCMC plotting functions.
 
 
 \describe{
-  \item{\strong{\link[=MCMC-traces]{Traceplots}}}{
-    Times series of parameter draws.
-  }
   \item{\strong{\link[=MCMC-distributions]{Posterior distributions}}}{
     Histograms and kernel density plots of parameter draws, optionally
     showing each Markov chain separately.
+  }
+  \item{\strong{\link[=MCMC-traces]{Traceplots}}}{
+    Times series of parameter draws.
   }
   \item{\strong{\link[=MCMC-pairs]{Pairs}}}{
     Scatterplot matrix of parameter draws.

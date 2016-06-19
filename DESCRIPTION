@@ -26,6 +26,6 @@ Suggests:
     rmarkdown,
     rstanarm,
     testthat,
-    GGally
+    GGally (>= 1.1.0)
 RoxygenNote: 5.0.1
 VignetteBuilder: knitr

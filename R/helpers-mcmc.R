@@ -69,7 +69,7 @@ apply_transformations <- function(x, transformations = list()) {
     not_found <- which(!names(x_transforms) %in% pars)
     stop(
       "Some names(transformations) don't match parameter names: ",
-      paste(names(t_x)[not_found], collapse = ", ")
+      paste(names(x_transforms)[not_found], collapse = ", ")
     )
   }
 
