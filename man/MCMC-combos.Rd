@@ -5,8 +5,7 @@
 \alias{mcmc_combo}
 \title{Combination plots}
 \usage{
-mcmc_combo(x, combo = c("trace", "dense"), widths = NULL, plot = TRUE,
-  ...)
+mcmc_combo(x, combo = c("trace", "dens"), widths = NULL, plot = TRUE, ...)
 }
 \arguments{
 \item{x}{A 3-D array, matrix, or data frame of posterior draws. If \code{x}
