@@ -19,14 +19,24 @@ validate_df_with_chain <- function(x) {
 df_with_chain2array <- function(x) {
   chain <- x$Chain
   n_chain <- length(unique(chain))
-  a <- x[, !colnames(x) %in% "Chain"]
+  a <- x[, !colnames(x) %in% "Chain", drop = FALSE]
   parnames <- colnames(a)
   a <- as.matrix(a)
   x <- array(NA, dim = c(ceiling(nrow(a) / n_chain), n_chain, ncol(a)))
   for (j in seq_len(n_chain))
     x[, j, ] <- a[chain == j,, drop=FALSE]
-  dimnames(x)[[3]] <- parnames
-  x
+
+  set_mcmc_dimnames(x, parnames)
+}
+
+set_mcmc_dimnames <- function(x, parnames) {
+  stopifnot(is.array(x) && length(dim(x)) == 3)
+  structure(x,
+            dimnames = list(
+              Iteration = seq_len(nrow(x)),
+              Chain = seq_len(ncol(x)),
+              Parameter = parnames
+            ))
 }
 
 # Prepare 3-D array for MCMC plots
@@ -54,25 +64,23 @@ prepare_mcmc_array <-
       stop("No parameter names found.")
     }
 
-    if (is.matrix(x)) {
-      x <- array(x, dim = c(nrow(x), 1, ncol(x)))
-      dimnames(x)[[3]] <- parnames
-    }
-
     pars <-
       select_parameters(explicit = pars,
                         patterns = regex_pars,
                         complete = parnames)
-    x <- x[, , pars, drop = FALSE]
-    if (length(transformations))
-      x <- apply_transformations(x, transformations)
 
-    structure(x,
-              dimnames = list(
-                Iteration = seq_len(nrow(x)),
-                Chain = seq_len(ncol(x)),
-                Parameter = pars
-              ))
+    if (is.matrix(x)) {
+      x <- x[, pars, drop=FALSE]
+      if (length(transformations))
+        x <- apply_transformations(x, transformations)
+      x <- array(x, dim = c(nrow(x), 1, ncol(x)))
+    } else {
+      x <- x[, , pars, drop = FALSE]
+      if (length(transformations))
+        x <- apply_transformations(x, transformations)
+    }
+
+    set_mcmc_dimnames(x, pars)
   }
 
 # Convert 3-D array to matrix with chains merged
@@ -112,7 +120,8 @@ validate_mcmc_x <- function(x) {
 #
 apply_transformations <- function(x, transformations = list()) {
   x_transforms <- lapply(transformations, match.fun)
-  pars <- dimnames(x)[[3]]
+  pars <- if (is.matrix(x))
+    colnames(x) else dimnames(x)[[3]]
 
   if (!all(names(x_transforms) %in% pars)) {
     not_found <- which(!names(x_transforms) %in% pars)
@@ -122,8 +131,12 @@ apply_transformations <- function(x, transformations = list()) {
     )
   }
 
-  for (p in names(x_transforms))
-    x[, , p] <- x_transforms[[p]](x[, , p])
+  for (p in names(x_transforms)) {
+    if (is.matrix(x))
+      x[, p] <- x_transforms[[p]](x[, p])
+    else
+      x[, , p] <- x_transforms[[p]](x[, , p])
+  }
 
   x
 }
