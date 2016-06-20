@@ -27,7 +27,7 @@ NULL
 #' @export
 mcmc_combo <-
   function(x,
-           combo = c("trace", "dense"),
+           combo = c("trace", "dens"),
            widths = NULL,
            plot = TRUE,
            ...) {
