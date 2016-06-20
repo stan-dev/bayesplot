@@ -37,10 +37,11 @@ test_that("is_mcmc_array works", {
 })
 
 test_that("has_multiple_chains works", {
-  expect_error(has_multiple_chains(mat), "is_mcmc_array")
-  expect_error(has_multiple_chains(dframe_multiple_chains), "is_mcmc_array")
-  expect_error(has_multiple_chains(chainlist), "is_mcmc_array")
-  expect_error(has_multiple_chains(arr), "is_mcmc_array")
+  expect_error(has_multiple_chains(mat), "is_3d_array")
+  expect_error(has_multiple_chains(dframe_multiple_chains), "is_3d_array")
+  expect_error(has_multiple_chains(chainlist), "is_3d_array")
+
+  expect_true(has_multiple_chains(arr))
 
   arr2 <- set_mcmc_dimnames(arr, parnames = dimnames(arr)[[3]])
   expect_true(has_multiple_chains(arr2))
@@ -50,9 +51,10 @@ test_that("has_multiple_chains works", {
 })
 
 test_that("has_multiple_params works", {
-  expect_error(has_multiple_params(mat), "is_mcmc_array")
-  expect_error(has_multiple_params(dframe_multiple_chains), "is_mcmc_array")
-  expect_error(has_multiple_params(arr), "is_mcmc_array")
+  expect_error(has_multiple_params(mat), "is_3d_array")
+  expect_error(has_multiple_params(dframe_multiple_chains), "is_3d_array")
+
+  expect_true(has_multiple_params(arr), "is_3d_array")
 
   arr2 <- set_mcmc_dimnames(arr, parnames = dimnames(arr)[[3]])
   expect_true(has_multiple_params(arr2))
