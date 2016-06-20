@@ -27,4 +27,25 @@ test_that("mcmc_areas returns a ggplot object", {
   expect_gg(mcmc_areas(dframe1))
 })
 
+test_that("mcmc_intervals/areas with rhat", {
+  r <- runif(ncol(mat), 0.9, 1.3)
+  rbad <- c(NA, r[-1])
+
+  expect_error(mcmc_intervals(arr, rhat = r[-1]), "'rhat' has length")
+  expect_error(mcmc_intervals(arr, rhat = rbad), "rhat > 0")
+
+  expect_gg(g <- mcmc_intervals(arr, rhat = r))
+  rhat_map <- g$layers[[4]][["mapping"]]
+  expect_identical(rhat_map$colour, as.name("rhat"))
+  expect_identical(rhat_map$fill, as.name("rhat"))
+
+  expect_gg(g2 <- mcmc_areas(arr, rhat = r))
+  rhat_map2 <- g2$layers[[2]][["mapping"]]
+  expect_identical(rhat_map2$fill, as.name("rhat"))
+  for (j in 3:length(g2$layers)) {
+    rhat_map2 <- g2$layers[[j]][["mapping"]]
+    expect_identical(rhat_map2$colour, as.name("rhat"),
+                     info = paste("layer: ", j))
+  }
+})
 

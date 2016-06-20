@@ -92,7 +92,6 @@ mcmc_areas <- function(x,
                            # rhat_values = c(),
                            # color_by_rhat = FALSE) {
 
-
   n_param <- ncol(x)
   parnames <- colnames(x)
 

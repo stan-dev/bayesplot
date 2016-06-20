@@ -7,7 +7,7 @@ is_df_with_chain <- function(x) {
 }
 
 validate_df_with_chain <- function(x) {
-  stopifnot(is.data.frame(x))
+  stopifnot(is_df_with_chain(x))
   if (!is.null(x$chain)) {
     if (is.null(x$Chain))
       x$Chain <- x$chain
@@ -17,9 +17,10 @@ validate_df_with_chain <- function(x) {
   x
 }
 
+
 # Convert data.frame with Chain variable to a 3-D array
 df_with_chain2array <- function(x) {
-  stopifnot(is_df_with_chain(x))
+  x <- validate_df_with_chain(x)
   chain <- x$Chain
   n_chain <- length(unique(chain))
   a <- x[, !colnames(x) %in% "Chain", drop = FALSE]
@@ -30,6 +31,74 @@ df_with_chain2array <- function(x) {
     x[, j, ] <- a[chain == j,, drop=FALSE]
 
   set_mcmc_dimnames(x, parnames)
+}
+
+
+# Check if an object is a list but not a data.frame
+#
+# @param x object to check
+# @return TRUE or FALSE
+is_chain_list <- function(x) {
+  !is.data.frame(x) && is.list(x)
+}
+
+validate_chain_list <- function(x) {
+  stopifnot(is_chain_list(x))
+  dims <- sapply(x, function(chain) length(dim(chain)))
+  if (!isTRUE(all(dims == 2)))
+    stop("If 'x' is a list then all elements must be matrices.")
+
+  n_chain <- length(x)
+  for (i in seq_len(n_chain)) {
+    nms <- colnames(as.matrix(x[[i]]))
+    if (is.null(nms) || !all(nzchar(nms)))
+      stop(
+        "Some parameters are missing names. ",
+        "Check the column names for the matrices in your list of chains.",
+        call. = FALSE
+      )
+  }
+  if (n_chain > 1) {
+    n_iter <- sapply(x, nrow)
+    same_iters <- length(unique(n_iter)) == 1
+    if (!same_iters)
+      stop("Each chain should have the same number of iterations.")
+
+    cnames <- sapply(x, colnames)
+    if (is.array(cnames)) {
+      same_params <- identical(cnames[, 1], cnames[, 2])
+    } else {
+      same_params <- length(unique(cnames)) == 1
+    }
+    if (!same_params)
+      stop("The parameters for each chain should be in the same order ",
+           "and have the same names.")
+  }
+
+  x
+}
+
+# Convert list of matrices to 3-D array
+chain_list2array <- function(x) {
+  x <- validate_chain_list(x)
+  n_chain <- length(x)
+  if (n_chain == 1) {
+    n_iter <- nrow(x[[1]])
+    param_names <- colnames(x[[1]])
+  } else {
+    n_iter <- sapply(x, nrow)
+    cnames <- sapply(x, colnames)
+    param_names <- if (is.array(cnames))
+      cnames[, 1] else cnames
+    n_iter <- n_iter[1]
+  }
+  param_names <- unique(param_names)
+  n_param <- length(param_names)
+  out <- array(NA, dim = c(n_iter, n_chain, n_param))
+  for (i in seq_len(n_chain))
+    out[, i,] <- x[[i]]
+
+  set_mcmc_dimnames(out, param_names)
 }
 
 # Set dimnames of 3-D array
@@ -86,8 +155,9 @@ prepare_mcmc_array <-
            transformations = list()) {
 
     if (is_df_with_chain(x)) {
-      x <- validate_df_with_chain(x)
       x <- df_with_chain2array(x)
+    } else if (is_chain_list(x)) {
+      x <- chain_list2array(x)
     }
     x <- validate_mcmc_x(x)
 
@@ -136,7 +206,7 @@ merge_chains <- function(x) {
 # @return x, unless an error is thrown.
 #
 validate_mcmc_x <- function(x) {
-  stopifnot(!is_df_with_chain(x))
+  stopifnot(!is_df_with_chain(x), !is_chain_list(x))
   if (is.data.frame(x))
     x <- as.matrix(x)
 

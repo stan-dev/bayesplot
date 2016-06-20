@@ -15,11 +15,23 @@ mcmc_trace_highlight(x, pars = character(), regex_pars = character(),
   window = NULL, size = NULL, highlight = 1)
 }
 \arguments{
-\item{x}{A 3-D array, matrix, or data frame of posterior draws. If \code{x}
-is a 3-D array then the dimensions must be \code{[Iteration, Chain,
-Parameter]} in that order. If there is only one Markov chain or if all
-chains have already been merged, then \code{x} can be a matrix or
-data.frame with a column for each parameter.}
+\item{x}{A 3-D array, matrix, or data frame of posterior draws:
+\itemize{
+ \item \strong{3-D array}: An \code{\link{array}} with dimensions
+ \code{[Iteration, Chain, Parameter]} in that order.
+ \item \strong{matrix}: A \code{\link{matrix}} with one column per
+ parameter. If \code{x} is a matrix then there should only be a single
+ Markov chain or all chains should already be merged (stacked).
+ \item \strong{data frame}: There are two types of data frames allowed.
+ Either a data frame with one column per parameter (if only a single chain or
+ all chains have already been merged), or a data frame with one column per
+ parameter plus an additional column \code{"Chain"} that contains the chain
+ number (an integer) corresponding to each row in \code{x}.
+ \item \strong{list}: A \code{list} of matrices, where each matrix
+ corresponds to a Markov chain. All of the matrices should have the same
+ number of iterations (rows) and parameters (columns), and parameters should
+ have the same names and be in the same order.
+}}
 
 \item{pars}{An optional character vector of parameter names. If neither
 \code{pars} nor \code{regex_pars} is specified then the default is to use

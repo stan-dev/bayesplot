@@ -39,6 +39,7 @@ test_that("is_mcmc_array works", {
 test_that("has_multiple_chains works", {
   expect_error(has_multiple_chains(mat), "is_mcmc_array")
   expect_error(has_multiple_chains(dframe_multiple_chains), "is_mcmc_array")
+  expect_error(has_multiple_chains(chainlist), "is_mcmc_array")
   expect_error(has_multiple_chains(arr), "is_mcmc_array")
 
   arr2 <- set_mcmc_dimnames(arr, parnames = dimnames(arr)[[3]])
@@ -64,6 +65,7 @@ test_that("has_multiple_params works", {
 test_that("is_df_with_chain works", {
   expect_false(is_df_with_chain(arr))
   expect_false(is_df_with_chain(mat))
+  expect_false(is_df_with_chain(chainlist))
   expect_false(is_df_with_chain(dframe))
   expect_true(is_df_with_chain(dframe_multiple_chains))
 
@@ -77,7 +79,7 @@ test_that("is_df_with_chain works", {
 })
 
 test_that("validate_df_with_chain works", {
-  expect_error(validate_df_with_chain(mat), "is.data.frame")
+  expect_error(validate_df_with_chain(mat), "is_df_with_chain")
 
   dframe_multiple_chains2 <-
     cbind(dframe_multiple_chains, Chain = dframe_multiple_chains$chain)
@@ -93,8 +95,45 @@ test_that("validate_df_with_chain works", {
 })
 
 test_that("df_with_chain2array works", {
-  a <- validate_df_with_chain(dframe_multiple_chains)
-  expect_mcmc_array(df_with_chain2array(a))
+  a <- df_with_chain2array(dframe_multiple_chains)
+  expect_mcmc_array(a)
 
   expect_error(df_with_chain2array(dframe), "is_df_with_chain")
+})
+
+
+
+# list of chains ----------------------------------------------------------
+test_that("is_chain_list works", {
+  expect_false(is_chain_list(arr))
+  expect_false(is_chain_list(mat))
+  expect_false(is_chain_list(dframe))
+  expect_false(is_chain_list(dframe_multiple_chains))
+  expect_true(is_chain_list(chainlist))
+  expect_true(is_chain_list(chainlist1))
+  expect_true(is_chain_list(chainlist1chain))
+})
+
+test_that("validate_chain_list works", {
+  expect_error(validate_chain_list(mat), "is_chain_list")
+  expect_identical(validate_chain_list(chainlist), chainlist)
+  expect_identical(validate_chain_list(chainlist1), chainlist1)
+  expect_identical(validate_chain_list(chainlist1chain), chainlist1chain)
+
+  chainlist2 <- chainlist
+  colnames(chainlist2[[1]]) <- colnames(chainlist[[1]])
+  colnames(chainlist2[[1]])[1] <- "AAA"
+  expect_error(validate_chain_list(chainlist2), "parameters for each chain")
+
+  chainlist[[1]] <- chainlist[[1]][-1, ]
+  expect_error(validate_chain_list(chainlist),
+               "Each chain should have the same number of iterations")
+})
+
+test_that("chain_list2array works", {
+  expect_mcmc_array(chain_list2array(chainlist))
+  expect_mcmc_array(chain_list2array(chainlist1))
+  expect_mcmc_array(chain_list2array(chainlist1chain))
+
+  expect_error(chain_list2array(dframe), "is_chain_list")
 })
