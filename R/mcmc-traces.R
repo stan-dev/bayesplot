@@ -74,9 +74,6 @@ mcmc_trace_highlight <- function(x,
                                  window = NULL,
                                  size = NULL,
                                  highlight = 1) {
-  if (length(dim(x)) != 3)
-    stop("mcmc_trace_highlight requires a 3-D array (multiple chains).")
-
   .mcmc_trace(
     x,
     pars = pars,
@@ -110,6 +107,9 @@ mcmc_trace_highlight <- function(x,
   x <- prepare_mcmc_array(x, pars, regex_pars, transformations)
 
   if (!is.null(highlight)) {
+    if (!has_multiple_chains(x))
+      STOP_need_multiple_chains()
+
     if (!highlight %in% seq_len(ncol(x)))
       stop(
         "'highlight' is ", highlight,

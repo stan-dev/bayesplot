@@ -1,7 +1,7 @@
 library(bayesplot)
 context("Misc. functions")
 
-source("data-for-all-tests.R")
+source("data-for-ppc-tests.R")
 
 # melt_yrep ---------------------------------------------------------------
 expect_molten_yrep <- function(yrep) {

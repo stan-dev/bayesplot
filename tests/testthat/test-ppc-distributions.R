@@ -1,7 +1,7 @@
 library(bayesplot)
 context("PPC: distributions")
 
-source("data-for-all-tests.R")
+source("data-for-ppc-tests.R")
 
 test_that("ppc_dens_overlay returns a ggplot object", {
   expect_gg(ppc_dens_overlay(y, yrep))

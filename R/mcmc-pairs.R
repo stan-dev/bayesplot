@@ -23,6 +23,9 @@ mcmc_pairs <- function(x,
   suggested_package("GGally")
 
   x <- prepare_mcmc_array(x, pars, regex_pars, transformations)
+  if (!has_multiple_params(x))
+    STOP_need_multiple_params()
+
   data <- merge_chains(x)
 
   message("Processing... this may take a little while")

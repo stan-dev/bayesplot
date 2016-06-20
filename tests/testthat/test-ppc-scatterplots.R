@@ -1,7 +1,7 @@
 library(bayesplot)
 context("PPC: scatterplots")
 
-source("data-for-all-tests.R")
+source("data-for-ppc-tests.R")
 
 expect_gg <- function(x) expect_is(x, "ggplot")
 

@@ -1,7 +1,7 @@
 library(bayesplot)
 context("PPC: residuals")
 
-source("data-for-all-tests.R")
+source("data-for-ppc-tests.R")
 
 test_that("ppc_resid returns ggplot object", {
   expect_gg(ppc_resid(y, yrep[1:5, ]))

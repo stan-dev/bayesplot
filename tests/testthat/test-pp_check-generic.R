@@ -1,7 +1,7 @@
 library(bayesplot)
 context("PPC: pp_check generic")
 
-source("data-for-all-tests.R")
+source("data-for-ppc-tests.R")
 
 test_that("pp_check method can be defined", {
   pp_check.foo <- function(object, ..., type = c("multiple", "overlaid")) {

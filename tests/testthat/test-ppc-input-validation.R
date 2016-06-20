@@ -1,7 +1,7 @@
 library(bayesplot)
 context("Input validation")
 
-source("data-for-all-tests.R")
+source("data-for-ppc-tests.R")
 
 # validating y ------------------------------------------------------------
 test_that("validate_y works", {

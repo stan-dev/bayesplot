@@ -5,6 +5,7 @@
 is_df_with_chain <- function(x) {
   is.data.frame(x) && any(tolower(colnames(x)) %in% "chain")
 }
+
 validate_df_with_chain <- function(x) {
   stopifnot(is.data.frame(x))
   if (!is.null(x$chain)) {
@@ -16,6 +17,7 @@ validate_df_with_chain <- function(x) {
   x
 }
 
+# Convert data.frame with Chain variable to a 3-D array
 df_with_chain2array <- function(x) {
   chain <- x$Chain
   n_chain <- length(unique(chain))
@@ -29,6 +31,7 @@ df_with_chain2array <- function(x) {
   set_mcmc_dimnames(x, parnames)
 }
 
+# Set dimnames of 3-D array
 set_mcmc_dimnames <- function(x, parnames) {
   stopifnot(is.array(x) && length(dim(x)) == 3)
   structure(x,
@@ -37,6 +40,24 @@ set_mcmc_dimnames <- function(x, parnames) {
               Chain = seq_len(ncol(x)),
               Parameter = parnames
             ))
+}
+
+# Check if 3-D array has multiple chains
+has_multiple_chains <- function(x) {
+  stopifnot(is.array(x) && length(dim(x)) == 3)
+  isTRUE(dim(x)[2] > 1)
+}
+# Check if 3-D array has multiple parameters
+has_multiple_params <- function(x) {
+  stopifnot(is.array(x) && length(dim(x)) == 3)
+  isTRUE(dim(x)[3] > 1)
+}
+
+STOP_need_multiple_chains <- function(call. = FALSE) {
+  stop("This function requires multiple chains.", call. = call.)
+}
+STOP_need_multiple_params <- function(call. = FALSE) {
+  stop("This function requires multiple parameters", call. = call.)
 }
 
 # Prepare 3-D array for MCMC plots
@@ -60,9 +81,9 @@ prepare_mcmc_array <-
       colnames(x)
     } else if (is.array(x)) {
       dimnames(x)[[3]]
-    } else {
-      stop("No parameter names found.")
     }
+    if (is.null(parnames))
+      stop("No parameter names found.")
 
     pars <-
       select_parameters(explicit = pars,

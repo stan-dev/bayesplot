@@ -155,8 +155,10 @@ mcmc_violin <- function(x,
                       by_chain = FALSE,
                       ...) {
   x <- prepare_mcmc_array(x, pars, regex_pars, transformations)
-  data <- reshape2::melt(x, value.name = "Value")
+  if (by_chain && !has_multiple_chains(x))
+    STOP_need_multiple_chains()
 
+  data <- reshape2::melt(x, value.name = "Value")
   graph <- ggplot(data, aes_(x = ~ Value)) +
     geom_histogram(
       fill = get_color("mid"),
@@ -195,6 +197,9 @@ mcmc_violin <- function(x,
 
   geom <- match.arg(geom)
   violin <- geom == "violin"
+
+  if ((by_chain || violin) && !has_multiple_chains(x))
+    STOP_need_multiple_chains()
 
   aes_mapping <- if (violin) {
     list(x = ~ Chain, y = ~ Value)

@@ -1,7 +1,7 @@
 library(bayesplot)
 context("PPC: time-series")
 
-source("data-for-all-tests.R")
+source("data-for-ppc-tests.R")
 
 test_that("ppc_ts returns ggplot object", {
   expect_gg(ppc_ts(y, yrep))
