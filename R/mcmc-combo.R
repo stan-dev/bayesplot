@@ -17,6 +17,8 @@
 #' @param plot A logical value indicating whether or not to display the plots.
 #'   If \code{plot} is \code{FALSE} then the object is returned invisibly
 #'   without plotting.
+#' @param gg_theme A \pkg{ggplot2} \link[ggplot2]{theme} object to apply to each
+#'   of the plots before combining them.
 #' @return A gtable object (the result of calling
 #'   \code{\link[gridExtra]{arrangeGrob}}) with \code{length(combo)} columns and
 #'   a row for each parameter.
@@ -30,6 +32,7 @@ mcmc_combo <-
            combo = c("trace", "dens"),
            widths = NULL,
            plot = TRUE,
+           gg_theme = NULL,
            ...) {
     suggested_package("gridExtra")
     plotfuns <- lapply(paste0("mcmc_", combo), function(f) {
@@ -47,6 +50,9 @@ mcmc_combo <-
     }
 
     plots <- lapply(plotfuns, function(f) do.call(f, args))
+    if (!is.null(gg_theme))
+      plots <- lapply(plots, function(x) x + gg_theme)
+
     combo_plot <-
       gridExtra::arrangeGrob(grobs = plots,
                              ncol = length(combo),

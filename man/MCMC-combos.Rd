@@ -5,7 +5,8 @@
 \alias{mcmc_combo}
 \title{Combination plots}
 \usage{
-mcmc_combo(x, combo = c("trace", "dens"), widths = NULL, plot = TRUE, ...)
+mcmc_combo(x, combo = c("trace", "dens"), widths = NULL, plot = TRUE,
+  gg_theme = NULL, ...)
 }
 \arguments{
 \item{x}{A 3-D array, matrix, or data frame of posterior draws. If \code{x}
@@ -28,6 +29,9 @@ factor of 2 (as would \code{widths = c(.3, .15)}, etc.). The default,
 \item{plot}{A logical value indicating whether or not to display the plots.
 If \code{plot} is \code{FALSE} then the object is returned invisibly
 without plotting.}
+
+\item{gg_theme}{A \pkg{ggplot2} \link[ggplot2]{theme} object to apply to each
+of the plots before combining them.}
 
 \item{...}{Arguments passed to the plotting functions named in \code{combo}.}
 }
