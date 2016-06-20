@@ -1,3 +1,34 @@
+# Check if an object is a data.frame with a chain index column
+#
+# @param x object to check
+# @return TRUE or FALSE
+is_df_with_chain <- function(x) {
+  is.data.frame(x) && any(tolower(colnames(x)) %in% "chain")
+}
+validate_df_with_chain <- function(x) {
+  stopifnot(is.data.frame(x))
+  if (!is.null(x$chain)) {
+    if (is.null(x$Chain))
+      x$Chain <- x$chain
+    x$chain <- NULL
+  }
+  x$Chain <- as.integer(x$Chain)
+  x
+}
+
+df_with_chain2array <- function(x) {
+  chain <- x$Chain
+  n_chain <- length(unique(chain))
+  a <- x[, !colnames(x) %in% "Chain"]
+  parnames <- colnames(a)
+  a <- as.matrix(a)
+  x <- array(NA, dim = c(ceiling(nrow(a) / n_chain), n_chain, ncol(a)))
+  for (j in seq_len(n_chain))
+    x[, j, ] <- a[chain == j,, drop=FALSE]
+  dimnames(x)[[3]] <- parnames
+  x
+}
+
 # Prepare 3-D array for MCMC plots
 #
 # @param x User's 'x' input to one of the mcmc_* functions.
@@ -9,6 +40,10 @@ prepare_mcmc_array <-
            regex_pars = character(),
            transformations = list()) {
 
+    if (is_df_with_chain(x)) {
+      x <- validate_df_with_chain(x)
+      x <- df_with_chain2array(x)
+    }
     x <- validate_mcmc_x(x)
 
     parnames <- if (is.matrix(x)) {
@@ -34,7 +69,7 @@ prepare_mcmc_array <-
 
     structure(x,
               dimnames = list(
-                Iteration = NULL,
+                Iteration = seq_len(nrow(x)),
                 Chain = seq_len(ncol(x)),
                 Parameter = pars
               ))
