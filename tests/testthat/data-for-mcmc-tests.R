@@ -1,4 +1,4 @@
-# Prepare acceptable input objects
+# Prepare input objects
 
 arr <- array(rnorm(4000), dim = c(100, 4, 10))
 arr1chain <- arr[, 1, , drop = FALSE]

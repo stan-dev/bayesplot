@@ -3,8 +3,6 @@ context("MCMC: combo")
 
 source("data-for-mcmc-tests.R")
 
-expect_gtable <- function(x) testthat::expect_s3_class(x, "gtable")
-
 test_that("mcmc_combo returns a gtable object", {
   expect_gtable(mcmc_combo(arr, regex_pars = "beta", plot = FALSE))
   expect_gtable(mcmc_combo(mat, regex_pars = "beta", plot = FALSE,

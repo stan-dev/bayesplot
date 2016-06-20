@@ -1,5 +1,5 @@
 library(bayesplot)
-context("Misc. functions")
+context("PPC: misc. functions")
 
 source("data-for-ppc-tests.R")
 

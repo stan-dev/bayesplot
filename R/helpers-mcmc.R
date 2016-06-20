@@ -19,6 +19,7 @@ validate_df_with_chain <- function(x) {
 
 # Convert data.frame with Chain variable to a 3-D array
 df_with_chain2array <- function(x) {
+  stopifnot(is_df_with_chain(x))
   chain <- x$Chain
   n_chain <- length(unique(chain))
   a <- x[, !colnames(x) %in% "Chain", drop = FALSE]
@@ -42,14 +43,26 @@ set_mcmc_dimnames <- function(x, parnames) {
             ))
 }
 
+# Check if an object is a 3-D array with the correct dimension names
+is_mcmc_array <- function(x) {
+  if (!is.array(x))
+    return(FALSE)
+  if (length(dim(x)) != 3)
+    return(FALSE)
+  if (!identical(names(dimnames(x)), c("Iteration", "Chain", "Parameter")))
+    return(FALSE)
+
+  TRUE
+}
+
 # Check if 3-D array has multiple chains
 has_multiple_chains <- function(x) {
-  stopifnot(is.array(x) && length(dim(x)) == 3)
+  stopifnot(is_mcmc_array(x))
   isTRUE(dim(x)[2] > 1)
 }
 # Check if 3-D array has multiple parameters
 has_multiple_params <- function(x) {
-  stopifnot(is.array(x) && length(dim(x)) == 3)
+  stopifnot(is_mcmc_array(x))
   isTRUE(dim(x)[3] > 1)
 }
 
@@ -59,6 +72,7 @@ STOP_need_multiple_chains <- function(call. = FALSE) {
 STOP_need_multiple_params <- function(call. = FALSE) {
   stop("This function requires multiple parameters", call. = call.)
 }
+
 
 # Prepare 3-D array for MCMC plots
 #
@@ -122,6 +136,7 @@ merge_chains <- function(x) {
 # @return x, unless an error is thrown.
 #
 validate_mcmc_x <- function(x) {
+  stopifnot(!is_df_with_chain(x))
   if (is.data.frame(x))
     x <- as.matrix(x)
 
@@ -132,32 +147,46 @@ validate_mcmc_x <- function(x) {
   x
 }
 
-# Apply transformations to parameter draws
+
+# Validate that transformations match parameter names
+validate_transformations <-
+  function(transformations = list(),
+           pars = character()) {
+    transformations <- lapply(transformations, match.fun)
+    if (!all(names(transformations) %in% pars)) {
+      not_found <- which(!names(transformations) %in% pars)
+      stop(
+        "Some names(transformations) don't match parameter names: ",
+        paste(names(transformations)[not_found], collapse = ", ")
+      )
+    }
+  }
+
+
+# Apply transformations to matrix or 3-D array of parameter draws
 #
-# @param x 3-D array of draws
+# @param x A matrix or 3-D array of draws
 # @param transformation User's 'transformations' argument to one of the mcmc_*
 #   functions.
 # @return x, with tranformations having been applied to some parameters.
 #
-apply_transformations <- function(x, transformations = list()) {
-  x_transforms <- lapply(transformations, match.fun)
-  pars <- if (is.matrix(x))
-    colnames(x) else dimnames(x)[[3]]
+apply_transformations <- function(x, transformations = list(), ...) {
+  UseMethod("apply_transformations")
+}
+apply_transformations.matrix <- function(x, transformations = list()) {
+  pars <- colnames(x)
+  x_transforms <- validate_transformations(transformations, pars)
+  for (p in names(x_transforms))
+    x[, p] <- x_transforms[[p]](x[, p])
 
-  if (!all(names(x_transforms) %in% pars)) {
-    not_found <- which(!names(x_transforms) %in% pars)
-    stop(
-      "Some names(transformations) don't match parameter names: ",
-      paste(names(x_transforms)[not_found], collapse = ", ")
-    )
-  }
-
-  for (p in names(x_transforms)) {
-    if (is.matrix(x))
-      x[, p] <- x_transforms[[p]](x[, p])
-    else
-      x[, , p] <- x_transforms[[p]](x[, , p])
-  }
+  x
+}
+apply_transformations.array <- function(x, transformations = list()) {
+  stopifnot(length(dim(x)) == 3)
+  pars <- dimnames(x)[[3]]
+  x_transforms <- validate_transformations(transformations, pars)
+  for (p in names(x_transforms))
+    x[, , p] <- x_transforms[[p]](x[, , p])
 
   x
 }

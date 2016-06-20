@@ -1,5 +1,5 @@
 library(bayesplot)
-context("Input validation")
+context("PPC: input validation")
 
 source("data-for-ppc-tests.R")
 

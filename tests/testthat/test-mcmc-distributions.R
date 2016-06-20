@@ -57,4 +57,3 @@ test_that("mcmc_* throws error if 1 chain but multiple chains required", {
   expect_error(mcmc_violin(dframe), "requires multiple chains")
   expect_error(mcmc_violin(arr1chain), "requires multiple chains")
 })
-

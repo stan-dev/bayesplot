@@ -11,7 +11,3 @@ dont_expand_x_axis <- function(expand = c(0,0)) {
 dont_expand_axes <- function() {
   coord_cartesian(expand = FALSE)
 }
-
-
-# expect_gg for testthat --------------------------------------------------
-expect_gg <- function(x) testthat::expect_s3_class(x, "ggplot")
