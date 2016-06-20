@@ -23,6 +23,6 @@ test_that("mcmc_trace_highlight returns a ggplot object", {
 
 test_that("mcmc_trace_highlight throws error if 1 chain but multiple chains required", {
   expect_error(mcmc_trace_highlight(mat), "requires multiple")
-  expect_error(mcmc_trace_highlight(dframe, highlight = 1), "requires multiple")
-  expect_error(mcmc_trace_highlight(arr1chain, highlight = 1), "requires multiple")
+  expect_error(mcmc_trace_highlight(dframe, highlight = 1), "requires multiple chains")
+  expect_error(mcmc_trace_highlight(arr1chain, highlight = 1), "requires multiple chains")
 })
