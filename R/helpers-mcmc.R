@@ -103,7 +103,7 @@ chain_list2array <- function(x) {
 
 # Set dimnames of 3-D array
 set_mcmc_dimnames <- function(x, parnames) {
-  stopifnot(is.array(x) && length(dim(x)) == 3)
+  stopifnot(is_3d_array(x))
   structure(x,
             dimnames = list(
               Iteration = seq_len(nrow(x)),
@@ -112,11 +112,31 @@ set_mcmc_dimnames <- function(x, parnames) {
             ))
 }
 
-# Check if an object is a 3-D array with the correct dimension names
-is_mcmc_array <- function(x) {
+# Get parameter names from a 3-D array
+parameter_names <- function(x) {
+  stopifnot(is_3d_array(x))
+  if (is_mcmc_array(x))
+    return(dimnames(x)[[3]])
+
+  if (is.null(dimnames(x)[[3]]))
+    stop("No parameter names found.")
+  else
+    dimnames(x)[[3]]
+}
+
+
+# Check if an object is a 3-D array
+is_3d_array <- function(x) {
   if (!is.array(x))
     return(FALSE)
   if (length(dim(x)) != 3)
+    return(FALSE)
+
+  TRUE
+}
+# Check if an object is a 3-D array AND has correct dimension names
+is_mcmc_array <- function(x) {
+  if (!is_3d_array(x))
     return(FALSE)
   if (!identical(names(dimnames(x)), c("Iteration", "Chain", "Parameter")))
     return(FALSE)
@@ -126,12 +146,12 @@ is_mcmc_array <- function(x) {
 
 # Check if 3-D array has multiple chains
 has_multiple_chains <- function(x) {
-  stopifnot(is_mcmc_array(x))
+  stopifnot(is_3d_array(x))
   isTRUE(dim(x)[2] > 1)
 }
 # Check if 3-D array has multiple parameters
 has_multiple_params <- function(x) {
-  stopifnot(is_mcmc_array(x))
+  stopifnot(is_3d_array(x))
   isTRUE(dim(x)[3] > 1)
 }
 

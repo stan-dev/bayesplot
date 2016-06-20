@@ -23,6 +23,8 @@ mcmc_pairs <- function(x,
   suggested_package("GGally")
 
   x <- prepare_mcmc_array(x, pars, regex_pars, transformations)
+  user_pars <- parameter_names(x)
+  dimnames(x)[[3]] <- rename_pairs_parameters(user_pars)
   if (!has_multiple_params(x))
     STOP_need_multiple_params()
 
@@ -51,5 +53,24 @@ mcmc_pairs <- function(x,
     )
   )
 
+  graph <- reset_pairs_parameters(graph, user_pars)
   graph + theme_ppc()
+}
+
+
+
+# internal ----------------------------------------------------------------
+# Remove special characters in parameter names so ggpairs doesn't complain
+rename_pairs_parameters <- function(pars) {
+  stopifnot(is.character(pars))
+  pars <- gsub("\\[|\\:", "_", pars)
+  pars <- gsub("\\(|\\)|\\]", "", pars)
+  gsub(" ", "_", pars)
+}
+
+# Reset axis labels to original parameter names
+reset_pairs_parameters <- function(ggmatrix, pars) {
+  ggmatrix$xAxisLabels <- pars
+  ggmatrix$yAxisLabels <- pars
+  ggmatrix
 }
