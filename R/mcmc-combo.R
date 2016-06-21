@@ -23,6 +23,8 @@
 #'   \code{\link[gridExtra]{arrangeGrob}}) with \code{length(combo)} columns and
 #'   a row for each parameter.
 #'
+#' @template seealso-color-scheme
+#'
 NULL
 
 #' @rdname MCMC-combos

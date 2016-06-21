@@ -11,6 +11,8 @@
 #'
 #' @template return-ggplot
 #'
+#' @template seealso-color-scheme
+#'
 NULL
 
 #' @rdname MCMC-pairs

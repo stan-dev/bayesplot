@@ -4,6 +4,10 @@
 #' @name bayesplot-package
 #' @aliases bayesplot
 #'
+#' @description
+#' \if{html}{\figure{bayesplot.png}{options: width="50\%" alt="Figure: bayesplot.png"}}
+#' \if{latex}{\figure{bayesplot.pdf}{options: width=5in}}
+#'
 #' @section Plotting functionality:
 #' \itemize{
 #'   \item \strong{\link[=MCMC-overview]{MCMC (general)}}:
@@ -18,7 +22,6 @@
 #'   \item \strong{\link[=PPC-overview]{PPC}}:
 #'   Graphical posterior predictive checks (PPC).
 #' }
-#'
 #'
 #' @import ggplot2
 #' @import stats

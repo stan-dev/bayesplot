@@ -11,8 +11,8 @@ mcmc_intervals(x, pars = character(), regex_pars = character(),
   point_est = c("median", "mean"), rhat = numeric())
 
 mcmc_areas(x, pars = character(), regex_pars = character(),
-  transformations = list(), ..., prob = 0.5, point_est = c("median",
-  "mean"), rhat = numeric())
+  transformations = list(), ..., prob = 0.5, prob_outer = 1,
+  point_est = c("median", "mean"), rhat = numeric())
 }
 \arguments{
 \item{x}{A 3-D array, matrix, or data frame of posterior draws:
@@ -54,9 +54,9 @@ function).}
 \code{mcmc_intervals}) or in the shaded region (for \code{mcmc_areas}). The
 default is \code{0.5} (50\% interval).}
 
-\item{prob_outer}{For \code{mcmc_intervals} only, the probability mass to
-include in outer interval. The default is \code{0.9} for
-\code{mcmc_intervals} (90\% interval).}
+\item{prob_outer}{The probability mass to include in outer interval. The
+default is \code{0.9} for \code{mcmc_intervals} (90\% interval)
+and \code{1} for \code{mcmc_areas}.}
 
 \item{point_est}{The point estimate to show. Either \code{"median"} (the
 default) or \code{"mean"}.}
@@ -87,6 +87,8 @@ Plot interval estimates from MCMC draws
 }
 }
 \seealso{
+\code{\link{set_color_scheme}} to change the aesthetic theme
+
 Other MCMC: \code{\link{MCMC-combos}},
   \code{\link{MCMC-distributions}},
   \code{\link{MCMC-overview}}, \code{\link{MCMC-pairs}},

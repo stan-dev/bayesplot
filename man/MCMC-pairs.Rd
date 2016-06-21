@@ -52,6 +52,8 @@ A ggplot object that can be further customized using the
 Pairs plot of MCMC draws
 }
 \seealso{
+\code{\link{set_color_scheme}} to change the aesthetic theme
+
 Other MCMC: \code{\link{MCMC-combos}},
   \code{\link{MCMC-distributions}},
   \code{\link{MCMC-intervals}},

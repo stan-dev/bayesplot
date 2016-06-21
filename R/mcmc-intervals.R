@@ -11,6 +11,9 @@
 #' @param prob The probability mass to include in inner interval (for
 #'   \code{mcmc_intervals}) or in the shaded region (for \code{mcmc_areas}). The
 #'   default is \code{0.5} (50\% interval).
+#' @param prob_outer The probability mass to include in outer interval. The
+#'   default is \code{0.9} for \code{mcmc_intervals} (90\% interval)
+#'   and \code{1} for \code{mcmc_areas}.
 #' @param point_est The point estimate to show. Either \code{"median"} (the
 #'   default) or \code{"mean"}.
 #' @param rhat An optional numeric vector of \eqn{\hat{R}}{Rhat} estimates, with
@@ -32,14 +35,12 @@
 #'   }
 #' }
 #'
+#' @template seealso-color-scheme
+#'
 NULL
 
 #' @rdname MCMC-intervals
 #' @export
-#' @param prob_outer For \code{mcmc_intervals} only, the probability mass to
-#'   include in outer interval. The default is \code{0.9} for
-#'   \code{mcmc_intervals} (90\% interval).
-#'
 mcmc_intervals <- function(x,
                            pars = character(),
                            regex_pars = character(),
@@ -55,6 +56,7 @@ mcmc_intervals <- function(x,
     prob_inner = prob,
     prob_outer = prob_outer,
     point_est = point_est,
+    show_density = FALSE,
     rhat = rhat
   )
 }
@@ -67,13 +69,14 @@ mcmc_areas <- function(x,
                        transformations = list(),
                        ...,
                        prob = 0.5,
+                       prob_outer = 1,
                        point_est = c("median", "mean"),
                        rhat = numeric()) {
   x <- prepare_mcmc_array(x, pars, regex_pars, transformations)
   .mcmc_intervals(
     x = merge_chains(x),
     prob_inner = prob,
-    prob_outer = 1,
+    prob_outer = prob_outer,
     point_est = point_est,
     show_density = TRUE,
     rhat = rhat

@@ -36,6 +36,8 @@
 #'   }
 #' }
 #'
+#' @template seealso-color-scheme
+#'
 NULL
 
 #' @rdname MCMC-distributions
