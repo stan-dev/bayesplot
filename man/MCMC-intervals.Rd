@@ -91,7 +91,7 @@ Plot interval estimates from MCMC draws
 
 Other MCMC: \code{\link{MCMC-combos}},
   \code{\link{MCMC-distributions}},
-  \code{\link{MCMC-overview}}, \code{\link{MCMC-pairs}},
-  \code{\link{MCMC-traces}}
+  \code{\link{MCMC-nuts}}, \code{\link{MCMC-overview}},
+  \code{\link{MCMC-pairs}}, \code{\link{MCMC-traces}}
 }
 

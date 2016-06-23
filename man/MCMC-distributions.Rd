@@ -106,7 +106,7 @@ Histograms and kernel density plots of MCMC draws
 \code{\link{set_color_scheme}} to change the aesthetic theme
 
 Other MCMC: \code{\link{MCMC-combos}},
-  \code{\link{MCMC-intervals}},
+  \code{\link{MCMC-intervals}}, \code{\link{MCMC-nuts}},
   \code{\link{MCMC-overview}}, \code{\link{MCMC-pairs}},
   \code{\link{MCMC-traces}}
 }

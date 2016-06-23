@@ -92,7 +92,7 @@ Traceplot (time series plot) of MCMC draws
 
 Other MCMC: \code{\link{MCMC-combos}},
   \code{\link{MCMC-distributions}},
-  \code{\link{MCMC-intervals}},
+  \code{\link{MCMC-intervals}}, \code{\link{MCMC-nuts}},
   \code{\link{MCMC-overview}}, \code{\link{MCMC-pairs}}
 }
 

@@ -59,7 +59,7 @@ Combination plots
 \code{\link{set_color_scheme}} to change the aesthetic theme
 
 Other MCMC: \code{\link{MCMC-distributions}},
-  \code{\link{MCMC-intervals}},
+  \code{\link{MCMC-intervals}}, \code{\link{MCMC-nuts}},
   \code{\link{MCMC-overview}}, \code{\link{MCMC-pairs}},
   \code{\link{MCMC-traces}}
 }
