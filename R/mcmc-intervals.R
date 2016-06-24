@@ -92,9 +92,6 @@ mcmc_areas <- function(x,
                            point_est = c("median", "mean"),
                            rhat = numeric(),
                            show_density = FALSE) {
-                           # rhat_values = c(),
-                           # color_by_rhat = FALSE) {
-
   n_param <- ncol(x)
   parnames <- colnames(x)
 

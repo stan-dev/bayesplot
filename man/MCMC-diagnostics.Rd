@@ -31,11 +31,11 @@ Rhat, effective sample size, Monte Carlo standard error
 \section{Plot Descriptions}{
 
 \describe{
-  \item{\code{mcmc_rhat}}{
+  \item{\code{mcmc_rhat_hist, mcmc_rhat_dot}}{
   }
-  \item{\code{mcmc_neff}}{
+  \item{\code{mcmc_neff_hist, mcmc_neff_dot}}{
   }
-  \item{\code{mcmc_mcse}}{
+  \item{\code{mcmc_mcse_hist, mcmc_mcse_dot}}{
   }
   \item{\code{mcmc_diagnostics}}{
   }

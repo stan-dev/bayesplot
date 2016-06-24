@@ -161,7 +161,7 @@ mcmc_violin <- function(x,
     STOP_need_multiple_chains()
 
   data <- reshape2::melt(x, value.name = "Value")
-  graph <- ggplot(data, aes_(x = ~ Value)) +
+  graph <- ggplot(data, aes_(x = ~ Value, y = ~..density..)) +
     geom_histogram(
       fill = get_color("mid"),
       color = get_color("mid_highlight"),
