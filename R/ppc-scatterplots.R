@@ -120,5 +120,5 @@ ppc_scatter_plotter <-
         size = 2.5
       ) +
       labs(x = x_lab, y = y_lab) +
-      theme_ppc()
+      theme_default()
   }

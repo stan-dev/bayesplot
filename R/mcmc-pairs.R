@@ -56,7 +56,7 @@ mcmc_pairs <- function(x,
   )
 
   graph <- reset_pairs_parameters(graph, user_pars)
-  graph + theme_ppc()
+  graph + theme_default()
 }
 
 

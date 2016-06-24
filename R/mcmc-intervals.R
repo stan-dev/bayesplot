@@ -298,6 +298,6 @@ mcmc_areas <- function(x,
       limits = c(0.5, n_param + 1)
     ) +
     xlim(x_lim) +
-    theme_ppc(y_lab = FALSE, x_lab = FALSE,
+    theme_default(y_lab = FALSE, x_lab = FALSE,
               legend_position = ifelse(color_by_rhat, "top", "none"))
 }

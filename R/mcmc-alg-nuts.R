@@ -66,7 +66,7 @@ mcmc_nuts_accept_stat <- function(x,
     ) +
     dont_expand_y_axis(c(0.005, 0)) +
     facet_wrap(~ Parameter, scales = "free") +
-    theme_ppc(y_text = FALSE, x_lab = FALSE)
+    theme_default(y_text = FALSE, x_lab = FALSE)
 
   scatter <- ggplot(NULL) +
     geom_point(
@@ -77,7 +77,7 @@ mcmc_nuts_accept_stat <- function(x,
     ) +
     labs(x = "accept_stat__",
          y = "Log-posterior") +
-    theme_ppc()
+    theme_default()
 
 
   if (!is.null(chain)) {
@@ -147,7 +147,7 @@ mcmc_nuts_treedepth <- function(x,
       binwidth = 1
     ) +
     xlab("treedepth__") +
-    theme_ppc(y_text = FALSE)
+    theme_default(y_text = FALSE)
 
   violin_lp_data <- data.frame(treedepth, lp = lp$Value)
   violin_lp <- ggplot(violin_lp_data,
@@ -157,7 +157,7 @@ mcmc_nuts_treedepth <- function(x,
       color = get_color("mid_highlight")
     ) +
     labs(x = "treedepth__", y = "Log-posterior") +
-    theme_ppc()
+    theme_default()
 
   violin_accept_stat_data <- data.frame(treedepth, as = accept_stat$Value)
   violin_accept_stat <- ggplot(violin_accept_stat_data,
@@ -167,7 +167,7 @@ mcmc_nuts_treedepth <- function(x,
       color = get_color("mid_highlight")
     ) +
     labs(x = "treedepth__", y = "accept_stat__") +
-    theme_ppc()
+    theme_default()
 
   if (!is.null(chain)) {
     chain_color <- color_vector_chain(n_chain)[chain]
@@ -230,7 +230,7 @@ mcmc_nuts_divergent <- function(x,
       color = get_color("mid_highlight")
     ) +
     ylab("Log-posterior") +
-    theme_ppc(x_lab = FALSE)
+    theme_default(x_lab = FALSE)
 
   violin_accept_stat_data <- data.frame(divergent, as = accept_stat$Value)
   violin_accept_stat <- ggplot(violin_accept_stat_data,
@@ -240,7 +240,7 @@ mcmc_nuts_divergent <- function(x,
       color = get_color("mid_highlight")
     ) +
     ylab("accept_stat__") +
-    theme_ppc(x_lab = FALSE)
+    theme_default(x_lab = FALSE)
 
   if (!is.null(chain)) {
     chain_color <- color_vector_chain(n_chain)[chain]
@@ -300,7 +300,7 @@ mcmc_nuts_stepsize <- function(x,
     ) +
     ylab("Log-posterior") +
     stepsize_labels +
-    theme_ppc(x_lab = FALSE)
+    theme_default(x_lab = FALSE)
 
   violin_accept_stat_data <-
     dplyr::left_join(accept_stat, stepsize_by_chain, by = "Chain")
@@ -312,7 +312,7 @@ mcmc_nuts_stepsize <- function(x,
     ) +
     ylab("accept_stat__") +
     stepsize_labels +
-    theme_ppc(x_lab = FALSE)
+    theme_default(x_lab = FALSE)
 
   if (!is.null(chain)) {
     chain_color <- color_vector_chain(n_chain)[chain]

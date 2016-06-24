@@ -84,7 +84,7 @@ ppc_resid <- function(y, yrep, ..., binwidth = NULL) {
       binwidth = binwidth
     ) +
     dont_expand_y_axis() +
-    theme_ppc(y_text = FALSE)
+    theme_default(y_text = FALSE)
 }
 
 #' @rdname PPC-residuals
@@ -156,7 +156,7 @@ ppc_resid_binned <- function(y, Ey, ...) {
   if (n > 1)
     graph <- graph + facet_wrap_parsed("rep")
 
-  graph + theme_ppc()
+  graph + theme_default()
 }
 
 binner <- function(rep_id, ey, r, nbins) {

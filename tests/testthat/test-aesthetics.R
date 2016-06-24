@@ -22,11 +22,11 @@ test_that("ppc_color returns correct color values", {
     expect_identical(get_color(lev), scheme[[lev]], info = lev)
 })
 
-test_that("theme_ppc creates ggplot theme", {
-  thm1 <- theme_ppc()
+test_that("theme_default creates ggplot theme", {
+  thm1 <- theme_default()
   expect_s3_class(thm1, "theme")
 
-  thm2 <- theme_ppc(y_text = FALSE, x_lab = FALSE, legend_position = "right")
+  thm2 <- theme_default(y_text = FALSE, x_lab = FALSE, legend_position = "right")
   expect_s3_class(thm2, "theme")
   expect_s3_class(thm2$axis.title.x, "element_blank")
   expect_s3_class(thm2$axis.text.x, "element_text")
@@ -34,7 +34,7 @@ test_that("theme_ppc creates ggplot theme", {
   expect_s3_class(thm2$axis.text.y, "element_blank")
   expect_identical(thm2$legend.position, "right")
 
-  thm3 <- theme_ppc(y_text = TRUE, y_lab = FALSE, x_text = FALSE)
+  thm3 <- theme_default(y_text = TRUE, y_lab = FALSE, x_text = FALSE)
   expect_s3_class(thm3, "theme")
   expect_s3_class(thm3$axis.title.x, "element_blank")
   expect_s3_class(thm3$axis.text.x, "element_blank")

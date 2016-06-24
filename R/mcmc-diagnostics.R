@@ -46,7 +46,7 @@ mcmc_rhat_hist <- function(rhat, ..., binwidth = NULL) {
     scale_fill_rhat() +
     labs(x = bquote(hat(R)), y = NULL) +
     dont_expand_y_axis(c(0.005, 0)) +
-    theme_ppc(y_text = FALSE)
+    theme_default(y_text = FALSE)
 }
 
 #' @rdname MCMC-diagnostics
@@ -99,6 +99,6 @@ mcmc_rhat_dot <- function(rhat, ..., size = NULL) {
     labs(x = NULL, y = bquote(hat(R))) +
     scale_fill_rhat() +
     scale_color_rhat() +
-    theme_ppc(y_text = FALSE) +
+    theme_default(y_text = FALSE) +
     coord_flip()
 }

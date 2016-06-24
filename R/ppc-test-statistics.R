@@ -92,7 +92,7 @@ ppc_stat <- function(y, yrep, stat = "mean", ..., binwidth = NULL) {
     ) +
     xlab(paste("Stat =", stat)) +
     dont_expand_y_axis() +
-    theme_ppc(
+    theme_default(
       y_text = FALSE,
       legend_position = "right"
     )
@@ -130,7 +130,7 @@ ppc_stat_grouped <-
       facet_wrap("group", scales = "free") +
       xlab(paste("Stat =", stat)) +
       dont_expand_y_axis() +
-      theme_ppc(y_text = FALSE)
+      theme_default(y_text = FALSE)
   }
 
 
@@ -195,7 +195,7 @@ ppc_stat_2d <- function(y, yrep, stat = c("mean", "sd"), ...) {
       x = paste("Stat =", stat[1]),
       y = paste("Stat =", stat[2])
     ) +
-    theme_ppc(
+    theme_default(
       y_text = TRUE,
       legend_position = "right"
     )

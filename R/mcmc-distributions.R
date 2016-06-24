@@ -170,7 +170,7 @@ mcmc_violin <- function(x,
       binwidth = binwidth
     ) +
     dont_expand_y_axis(c(0.005, 0)) +
-    theme_ppc(y_text = FALSE, x_lab = FALSE)
+    theme_default(y_text = FALSE, x_lab = FALSE)
 
   if (is.null(facet_args$scales))
     facet_args$scales <- "free"
@@ -225,7 +225,7 @@ mcmc_violin <- function(x,
   graph <- ggplot(data, mapping = do.call("aes_", aes_mapping)) +
     do.call(paste0("geom_", geom), geom_args) +
     dont_expand_y_axis(c(0.005, 0)) +
-    theme_ppc(y_text = FALSE,
+    theme_default(y_text = FALSE,
               legend_position = ifelse(by_chain, "right", "none"))
 
   if (is.null(facet_args$scales))

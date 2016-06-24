@@ -191,5 +191,5 @@ ppc_ts_plotter <- function(data, y_style = "both") {
   graph +
     labs(x = "Time", y = yrep_label()) +
     dont_expand_x_axis() +
-    theme_ppc()
+    theme_default()
 }

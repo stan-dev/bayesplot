@@ -158,7 +158,7 @@ mcmc_trace_highlight <- function(x,
 
   graph <- graph +
     do.call(paste0("geom_", style), geom_args) +
-    theme_ppc(legend_position =
+    theme_default(legend_position =
                 if (nlevels(data$Chain) > 1) "right" else "none")
 
   facet_args$facets <- ~ Parameter

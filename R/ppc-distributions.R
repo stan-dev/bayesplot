@@ -74,7 +74,7 @@ ppc_hist <- function(y, yrep, ..., binwidth = NULL) {
     scale_color_manual(values = get_color(c("dark_highlight", "light_highlight"))) +
     facet_wrap_parsed("rep_id", switch = "x") +
     dont_expand_y_axis() +
-    theme_ppc(y_text = FALSE, x_lab = FALSE)
+    theme_default(y_text = FALSE, x_lab = FALSE)
 }
 
 
@@ -98,7 +98,7 @@ ppc_dens <- function(y, yrep, ...) {
     scale_color_manual(values = get_color(c("dark_highlight", "light_highlight"))) +
     facet_wrap_parsed("rep_id", switch = "x") +
     dont_expand_y_axis() +
-    theme_ppc(y_text = FALSE, x_lab = FALSE)
+    theme_default(y_text = FALSE, x_lab = FALSE)
 }
 
 #' @export
@@ -124,7 +124,7 @@ ppc_dens_overlay <- function(y, yrep, ...) {
     scale_size_manual(values = c(0.25, 1)) +
     xlab(y_label()) +
     dont_expand_axes() +
-    theme_ppc(y_text = FALSE)
+    theme_default(y_text = FALSE)
 }
 
 #' @export
@@ -165,5 +165,5 @@ ppc_violin_grouped <- function(y, yrep, group, ..., probs = c(0.1, 0.5, 0.9)) {
       labels = expression(italic(y))
     ) +
     labs(x = "Group", y = yrep_label()) +
-    theme_ppc(legend_position = "right")
+    theme_default(legend_position = "right")
 }
