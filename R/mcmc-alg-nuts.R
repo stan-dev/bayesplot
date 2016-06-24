@@ -4,8 +4,10 @@
 #' @aliases NUTS
 #' @family MCMC
 #'
-#' @param lp Log-posterior. A list with one component (a vector) per chain or
-#'   a matrix with one column per chain.
+#' @param x A molten data frame of NUTS sampler parameters, probably created
+#' by \code{\link{nuts_params}}.
+#' @param lp A molten data frame of log-posterior draws, probably created by
+#'   \code{\link{log_posterior}}.
 #' @param chain A positive integer for selecting a particular chain. The default
 #'   (\code{NULL}) is to merge the chains before plotting. If \code{chain = k}
 #'   then the plot for chain \code{k} is overlaid on top of the plot for all
@@ -21,23 +23,23 @@ NULL
 
 #' @rdname MCMC-nuts
 #' @export
-#' @template args-nuts-pars
-#' @templateVar NUTSparam accept_stat
 #' @template args-hist
 #'
-mcmc_nuts_accept_stat <- function(accept_stat, lp,
-                                   chain = NULL,
-                                   ...,
-                                   binwidth = NULL) {
+mcmc_nuts_accept_stat <- function(x,
+                                  lp,
+                                  chain = NULL,
+                                  ...,
+                                  binwidth = NULL) {
 
-  accept_stat <- maybe_cbind_then_melt(accept_stat)
-  lp <- maybe_cbind_then_melt(lp)
-  stopifnot(dim(accept_stat) == dim(lp))
-  chain <- validate_enough_chains(chain, length(unique(lp$Chain)))
+  x <- validate_nuts_data_frame(x, lp)
+  n_chain <- length(unique(lp$Chain))
+  chain <- validate_enough_chains(chain, n_chain)
 
-  data <- rbind(accept_stat, lp)
-  data$Parameter <-
-    rep(c("accept_stat__", "Log-posterior"), each = nrow(lp))
+  accept_stat <- dplyr::filter_(x, ~ Parameter == "accept_stat__")
+  data <- suppressWarnings(dplyr::bind_rows(
+    accept_stat,
+    data.frame(lp, Parameter = "Log-posterior")
+    ))
 
   grp_par <- dplyr::group_by_(data, ~ Parameter)
   stats_par <-
@@ -124,23 +126,17 @@ mcmc_nuts_accept_stat <- function(accept_stat, lp,
 
 #' @rdname MCMC-nuts
 #' @export
-#' @template args-nuts-pars
-#' @templateVar NUTSparam treedepth
-#'
-mcmc_nuts_treedepth <- function(treedepth,
-                                accept_stat,
+mcmc_nuts_treedepth <- function(x,
                                 lp,
                                 chain = NULL,
                                 ...) {
 
-  accept_stat <- maybe_cbind_then_melt(accept_stat)
-  treedepth <- maybe_cbind_then_melt(treedepth)
-  lp <- maybe_cbind_then_melt(lp)
-  stopifnot(dim(accept_stat) == dim(lp),
-            dim(treedepth) == dim(lp))
-
+  x <- validate_nuts_data_frame(x, lp)
   n_chain <- length(unique(lp$Chain))
   chain <- validate_enough_chains(chain, n_chain)
+
+  treedepth <- dplyr::filter_(x, ~ Parameter == "treedepth__")
+  accept_stat <- dplyr::filter_(x, ~ Parameter == "accept_stat__")
 
   hist_td <- ggplot(treedepth, aes_(x = ~ Value, y = ~ ..density..)) +
     geom_histogram(
@@ -210,30 +206,21 @@ mcmc_nuts_treedepth <- function(treedepth,
 }
 
 
-
-
-
-
 #' @rdname MCMC-nuts
 #' @export
-#' @template args-nuts-pars
-#' @templateVar NUTSparam divergent
-#'
-mcmc_nuts_divergent <- function(divergent,
-                                accept_stat,
+mcmc_nuts_divergent <- function(x,
                                 lp,
                                 chain = NULL,
                                 ...) {
 
-  divergent <- maybe_cbind_then_melt(divergent)
-  divergent$Value <- factor(divergent$Value, levels = c(0, 1), labels = c("No divergence", "Divergence"))
-  accept_stat <- maybe_cbind_then_melt(accept_stat)
-  lp <- maybe_cbind_then_melt(lp)
-  stopifnot(dim(accept_stat) == dim(lp),
-            dim(divergent) == dim(lp))
-
+  x <- validate_nuts_data_frame(x, lp)
   n_chain <- length(unique(lp$Chain))
   chain <- validate_enough_chains(chain, n_chain)
+
+  accept_stat <- dplyr::filter_(x, ~ Parameter == "accept_stat__")
+  divergent <- dplyr::filter_(x, ~ Parameter == "divergent__")
+  divergent$Value <- factor(divergent$Value, levels = c(0, 1),
+                            labels = c("No divergence", "Divergence"))
 
   violin_lp_data <- data.frame(divergent, lp = lp$Value)
   violin_lp <- ggplot(violin_lp_data,
@@ -282,27 +269,18 @@ mcmc_nuts_divergent <- function(divergent,
 
 
 
-
-
 #' @rdname MCMC-nuts
 #' @export
-#' @template args-nuts-pars
-#' @templateVar NUTSparam stepsize
-#'
-mcmc_nuts_stepsize <- function(stepsize,
-                               accept_stat,
+mcmc_nuts_stepsize <- function(x,
                                lp,
                                chain = NULL,
                                ...) {
-
-  stepsize <- maybe_cbind_then_melt(stepsize)
-  accept_stat <- maybe_cbind_then_melt(accept_stat)
-  lp <- maybe_cbind_then_melt(lp)
-  stopifnot(dim(accept_stat) == dim(lp),
-            dim(stepsize) == dim(lp))
-
+  x <- validate_nuts_data_frame(x, lp)
   n_chain <- length(unique(lp$Chain))
   chain <- validate_enough_chains(chain, n_chain)
+
+  stepsize <- dplyr::filter_(x, ~ Parameter == "stepsize__")
+  accept_stat <- dplyr::filter_(x, ~ Parameter == "accept_stat__")
 
   stepsize_by_chain <-
     dplyr::summarise_(dplyr::group_by_(stepsize, ~Chain),
@@ -383,6 +361,15 @@ validate_enough_chains <- function(chain = NULL, n_chain) {
       stop("'chain' is ", chain, " but only ", n_chain, " chains found.")
   }
   chain
+}
+
+validate_nuts_data_frame <- function(x, lp) {
+  stopifnot(
+    is.data.frame(x),
+    is.data.frame(lp),
+    length(unique(x$Chain)) == length(unique(lp$Chain))
+  )
+  x
 }
 
 color_vector_chain <- function(n) {

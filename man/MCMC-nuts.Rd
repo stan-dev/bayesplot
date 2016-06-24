@@ -9,20 +9,20 @@
 \alias{mcmc_nuts_treedepth}
 \title{Plots for the No-U-Turn-Sampler (NUTS)}
 \usage{
-mcmc_nuts_accept_stat(accept_stat, lp, chain = NULL, ..., binwidth = NULL)
+mcmc_nuts_accept_stat(x, lp, chain = NULL, ..., binwidth = NULL)
 
-mcmc_nuts_treedepth(treedepth, accept_stat, lp, chain = NULL, ...)
+mcmc_nuts_treedepth(x, lp, chain = NULL, ...)
 
-mcmc_nuts_divergent(divergent, accept_stat, lp, chain = NULL, ...)
+mcmc_nuts_divergent(x, lp, chain = NULL, ...)
 
-mcmc_nuts_stepsize(stepsize, accept_stat, lp, chain = NULL, ...)
+mcmc_nuts_stepsize(x, lp, chain = NULL, ...)
 }
 \arguments{
-\item{accept_stat}{NUTS \code{accept_stat} parameter. A list with
-one component (a vector) per chain or a matrix with one column per chain.}
+\item{x}{A molten data frame of NUTS sampler parameters, probably created
+by \code{\link{nuts_params}}.}
 
-\item{lp}{Log-posterior. A list with one component (a vector) per chain or
-a matrix with one column per chain.}
+\item{lp}{A molten data frame of log-posterior draws, probably created by
+\code{\link{log_posterior}}.}
 
 \item{chain}{A positive integer for selecting a particular chain. The default
 (\code{NULL}) is to merge the chains before plotting. If \code{chain = k}
@@ -33,15 +33,6 @@ chains.}
 
 \item{binwidth}{An optional value to override
 \code{\link[ggplot2]{geom_histogram}}'s default binwidth.}
-
-\item{treedepth}{NUTS \code{treedepth} parameter. A list with
-one component (a vector) per chain or a matrix with one column per chain.}
-
-\item{divergent}{NUTS \code{divergent} parameter. A list with
-one component (a vector) per chain or a matrix with one column per chain.}
-
-\item{stepsize}{NUTS \code{stepsize} parameter. A list with
-one component (a vector) per chain or a matrix with one column per chain.}
 }
 \value{
 A gtable object (the result of calling
@@ -54,6 +45,7 @@ Plots for the No-U-Turn-Sampler (NUTS)
 \code{\link{set_color_scheme}} to change the aesthetic theme
 
 Other MCMC: \code{\link{MCMC-combos}},
+  \code{\link{MCMC-diagnostics}},
   \code{\link{MCMC-distributions}},
   \code{\link{MCMC-intervals}},
   \code{\link{MCMC-overview}}, \code{\link{MCMC-pairs}},
