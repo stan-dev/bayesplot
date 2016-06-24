@@ -10,7 +10,7 @@
 #'
 #' @return A ggplot \code{\link[ggplot2]{theme}} object.
 #'
-theme_ppc <-
+theme_default <-
   function(x_text = TRUE,
            y_text = TRUE,
            x_lab = TRUE,
