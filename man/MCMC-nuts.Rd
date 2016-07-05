@@ -18,11 +18,13 @@ mcmc_nuts_divergent(x, lp, chain = NULL, ...)
 mcmc_nuts_stepsize(x, lp, chain = NULL, ...)
 }
 \arguments{
-\item{x}{A molten data frame of NUTS sampler parameters, probably created
-by \code{\link{nuts_params}}.}
+\item{x}{A molten data frame of NUTS sampler parameters, either created by
+\code{\link{nuts_params}} or in the same form as the object returned by
+\code{\link{nuts_params}}.}
 
-\item{lp}{A molten data frame of log-posterior draws, probably created by
-\code{\link{log_posterior}}.}
+\item{lp}{A molten data frame of log-posterior draws, either created by
+\code{\link{log_posterior}} or in the same form as the object returned
+by \code{\link{log_posterior}}.}
 
 \item{chain}{A positive integer for selecting a particular chain. The default
 (\code{NULL}) is to merge the chains before plotting. If \code{chain = k}

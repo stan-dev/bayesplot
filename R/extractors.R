@@ -74,7 +74,7 @@ log_posterior.stanfit <- function(object, inc_warmup = FALSE, ...) {
                                 ...)
   lp <- lapply(lp, as.array)
   lp <- setNames(reshape2::melt(lp),
-           c("Iteration", "Value", "Chain"))
+                 c("Iteration", "Value", "Chain"))
   validate_df_classes(lp, c("integer", "numeric", "integer"))
 }
 

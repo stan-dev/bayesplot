@@ -4,10 +4,12 @@
 #' @aliases NUTS
 #' @family MCMC
 #'
-#' @param x A molten data frame of NUTS sampler parameters, probably created
-#' by \code{\link{nuts_params}}.
-#' @param lp A molten data frame of log-posterior draws, probably created by
-#'   \code{\link{log_posterior}}.
+#' @param x A molten data frame of NUTS sampler parameters, either created by
+#'   \code{\link{nuts_params}} or in the same form as the object returned by
+#'   \code{\link{nuts_params}}.
+#' @param lp A molten data frame of log-posterior draws, either created by
+#'   \code{\link{log_posterior}} or in the same form as the object returned
+#'   by \code{\link{log_posterior}}.
 #' @param chain A positive integer for selecting a particular chain. The default
 #'   (\code{NULL}) is to merge the chains before plotting. If \code{chain = k}
 #'   then the plot for chain \code{k} is overlaid on top of the plot for all
@@ -49,8 +51,8 @@ mcmc_nuts_accept_stat <- function(x,
 
   hists <- ggplot(data, aes_(x = ~ Value, y = ~ ..density..)) +
     geom_histogram(
-      fill = get_color("mid"),
-      color = get_color("mid_highlight"),
+      fill = get_color("light"),
+      color = get_color("light_highlight"),
       size = .25,
       na.rm = TRUE,
       binwidth = binwidth
@@ -140,8 +142,8 @@ mcmc_nuts_treedepth <- function(x,
 
   hist_td <- ggplot(treedepth, aes_(x = ~ Value, y = ~ ..density..)) +
     geom_histogram(
-      fill = get_color("mid"),
-      color = get_color("mid_highlight"),
+      fill = get_color("light"),
+      color = get_color("light_highlight"),
       size = .25,
       na.rm = TRUE,
       binwidth = 1
