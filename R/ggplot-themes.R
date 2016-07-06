@@ -4,8 +4,8 @@
 #' @param x_text,y_text Toggle axis text.
 #' @param x_lab,y_lab Toggle axis labels (titles). Overrided by \code{x_text},
 #'   \code{y_text}.
-#' @param legend_position A valid value to use for \code{legend.position} passed
-#'   to \code{\link[ggplot2]{theme}}.
+#' @param legend_position A valid value to use for \code{legend.position} to
+#'   pass to \code{\link[ggplot2]{theme}}.
 #' @param ... Other arguments to pass to \code{\link[ggplot2]{theme}}.
 #'
 #' @return A ggplot \code{\link[ggplot2]{theme}} object.

@@ -13,8 +13,8 @@ theme_default(x_text = TRUE, y_text = TRUE, x_lab = TRUE, y_lab = TRUE,
 \item{x_lab, y_lab}{Toggle axis labels (titles). Overrided by \code{x_text},
 \code{y_text}.}
 
-\item{legend_position}{A valid value to use for \code{legend.position} passed
-to \code{\link[ggplot2]{theme}}.}
+\item{legend_position}{A valid value to use for \code{legend.position} to
+pass to \code{\link[ggplot2]{theme}}.}
 
 \item{...}{Other arguments to pass to \code{\link[ggplot2]{theme}}.}
 }

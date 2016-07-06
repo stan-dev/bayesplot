@@ -152,14 +152,15 @@ mcmc_trace_highlight <- function(x,
   if (!is.null(highlight)) {
     graph <- graph +
       scale_alpha_discrete(range = c(.2, 1), guide = "none") +
-      scale_color_manual("", values = get_color(c("light", "dark")),
+      scale_color_manual("",
+                         values = get_color(c("light", "dark")),
                          labels = c("Other chains", paste("Chain", highlight)))
   }
 
   graph <- graph +
     do.call(paste0("geom_", style), geom_args) +
     theme_default(legend_position =
-                if (nlevels(data$Chain) > 1) "right" else "none")
+                    if (nlevels(data$Chain) > 1) "right" else "none")
 
   facet_args$facets <- ~ Parameter
   if (is.null(facet_args$scales))

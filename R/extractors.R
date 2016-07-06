@@ -1,5 +1,8 @@
-#' Generics and methods for extracting quantities needed for plotting from model
-#' objects
+#' Extract quantities needed for plotting from model objects
+#'
+#' Generics and methods for extracting quantities needed for plotting from
+#' various types of model objects. Currently methods are provided for stanfit
+#' (\pkg{rstan}) and stanreg (\pkg{rstanarm}) objects.
 #'
 #' @name extractors
 #' @param object A fitted model object.
@@ -7,7 +10,6 @@
 #' @param pars An optional character vector of parameter names. For
 #'   \code{nuts_params} these will be NUTS sampler parameter names rather than
 #'   model parameters. If \code{pars} is omitted all parameters are included.
-#'
 #'
 #' @return
 #' \describe{

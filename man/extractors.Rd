@@ -14,8 +14,7 @@
 \alias{r_hat}
 \alias{r_hat.stanfit}
 \alias{r_hat.stanreg}
-\title{Generics and methods for extracting quantities needed for plotting from model
-objects}
+\title{Extract quantities needed for plotting from model objects}
 \usage{
 log_posterior(object, ...)
 
@@ -82,7 +81,8 @@ Methods should return (named) vectors.
 }
 }
 \description{
-Generics and methods for extracting quantities needed for plotting from model
-objects
+Generics and methods for extracting quantities needed for plotting from
+various types of model objects. Currently methods are provided for stanfit
+(\pkg{rstan}) and stanreg (\pkg{rstanarm}) objects.
 }
 
