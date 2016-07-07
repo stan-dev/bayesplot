@@ -21,6 +21,16 @@
 #'
 #' @template seealso-color-scheme
 #'
+#' @examples
+#' \dontrun{
+#' # Assuming 'fit' is a stanfit (rstan) or stanreg (rstanarm) object
+#' np <- nuts_params(fit)
+#' lp <- log_posterior(fit)
+#'
+#' mcmc_nuts_accept_stat(np, lp)
+#' mcmc_nuts_accept_stat(np, lp, chain = 3)
+#' }
+#'
 NULL
 
 #' @rdname MCMC-nuts

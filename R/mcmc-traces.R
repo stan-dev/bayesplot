@@ -64,8 +64,8 @@ mcmc_trace <- function(x,
 
 #' @rdname MCMC-traces
 #' @export
-#' @param highlight An integer specifying one of the chains that will be
-#'   more visible than the others in the plot.
+#' @param highlight For \code{mcmc_trace_highlight}, an integer specifying one
+#'   of the chains that will be more visible than the others in the plot.
 mcmc_trace_highlight <- function(x,
                                  pars = character(),
                                  regex_pars = character(),

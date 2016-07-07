@@ -86,6 +86,25 @@ Plot interval estimates from MCMC draws
   }
 }
 }
+\examples{
+x <- cbind(alpha = rnorm(100),
+           beta = rnorm(100, 0.5, 2),
+           sigma = rexp(100))
+mcmc_intervals(x)
+mcmc_areas(x)
+
+# color by rhat value
+mcmc_intervals(x, rhat = c(1, 1.07, 1.3))
+
+\dontrun{
+# Assuming fit is a stanfit (rstan) or stanreg (rstanarm) object
+x <- as.matrix(fit)
+mcmc_intervals(x, point_est = "mean", prob = 0.8, prob_outer = 0.95)
+mcmc_areas(x, rhat = r_hat(fit))
+}
+
+
+}
 \seealso{
 \code{\link{set_color_scheme}} to change the aesthetic theme
 

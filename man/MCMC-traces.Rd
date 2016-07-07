@@ -65,8 +65,8 @@ range of iterations to display.}
 \code{mcmc_trace}) or the default point size (if calling
 \code{mcmc_trace_highlight}).}
 
-\item{highlight}{An integer specifying one of the chains that will be
-more visible than the others in the plot.}
+\item{highlight}{For \code{mcmc_trace_highlight}, an integer specifying one
+of the chains that will be more visible than the others in the plot.}
 }
 \value{
 A ggplot object that can be further customized using the

@@ -43,6 +43,17 @@ A gtable object (the result of calling
 \description{
 Plots for the No-U-Turn-Sampler (NUTS)
 }
+\examples{
+\dontrun{
+# Assuming 'fit' is a stanfit (rstan) or stanreg (rstanarm) object
+np <- nuts_params(fit)
+lp <- log_posterior(fit)
+
+mcmc_nuts_accept_stat(np, lp)
+mcmc_nuts_accept_stat(np, lp, chain = 3)
+}
+
+}
 \seealso{
 \code{\link{set_color_scheme}} to change the aesthetic theme
 
