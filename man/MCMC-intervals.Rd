@@ -81,7 +81,7 @@ Plot interval estimates from MCMC draws
    chains merged.
   }
   \item{\code{mcmc_areas}}{
-   Density plots of computed from posterior draws with all chains merged,
+   Density plots computed from posterior draws with all chains merged,
    with uncertainty intervals shown as shaded areas under the curves.
   }
 }
