@@ -45,12 +45,12 @@ Plots for the No-U-Turn-Sampler (NUTS)
 }
 \examples{
 \dontrun{
-# Assuming 'fit' is a stanfit (rstan) or stanreg (rstanarm) object
+library(rstanarm)
+fit <- stan_glm(mpg ~ wt + am, data = mtcars, iter = 1000)
 np <- nuts_params(fit)
 lp <- log_posterior(fit)
-
 mcmc_nuts_accept_stat(np, lp)
-mcmc_nuts_accept_stat(np, lp, chain = 3)
+mcmc_nuts_accept_stat(np, lp, chain = 2)
 }
 
 }

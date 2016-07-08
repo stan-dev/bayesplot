@@ -19,7 +19,8 @@
 #' @param rhat An optional numeric vector of \eqn{\hat{R}}{Rhat} estimates, with
 #'   one element per parameter included in \code{x}. If \code{rhat} is provided,
 #'   the intervals/areas and point estimates in the resulting plot are colored
-#'   based on \eqn{\hat{R}}{Rhat} value.
+#'   based on \eqn{\hat{R}}{Rhat} value. See \code{\link{r_hat}} for methods for
+#'   extracting \eqn{\hat{R}}{Rhat} estimates.
 #'
 #' @template return-ggplot
 #'
@@ -48,10 +49,11 @@
 #' mcmc_intervals(x, rhat = c(1, 1.07, 1.3))
 #'
 #' \dontrun{
-#' # Assuming fit is a stanfit (rstan) or stanreg (rstanarm) object
+#' library(rstanarm)
+#' fit <- stan_glm(mpg ~ 0 + wt + factor(cyl), data = mtcars, iter = 500)
 #' x <- as.matrix(fit)
 #' mcmc_intervals(x, point_est = "mean", prob = 0.8, prob_outer = 0.95)
-#' mcmc_areas(x, rhat = r_hat(fit))
+#' mcmc_areas(x, regex_pars = "cyl")
 #' }
 #'
 #'

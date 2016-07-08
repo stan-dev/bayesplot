@@ -8,11 +8,11 @@
 \usage{
 mcmc_intervals(x, pars = character(), regex_pars = character(),
   transformations = list(), ..., prob = 0.5, prob_outer = 0.9,
-  point_est = c("median", "mean"), rhat = numeric())
+  point_est = c("median", "mean", "none"), rhat = numeric())
 
 mcmc_areas(x, pars = character(), regex_pars = character(),
   transformations = list(), ..., prob = 0.5, prob_outer = 1,
-  point_est = c("median", "mean"), rhat = numeric())
+  point_est = c("median", "mean", "none"), rhat = numeric())
 }
 \arguments{
 \item{x}{A 3-D array, matrix, or data frame of posterior draws:
@@ -59,12 +59,13 @@ default is \code{0.9} for \code{mcmc_intervals} (90\% interval)
 and \code{1} for \code{mcmc_areas}.}
 
 \item{point_est}{The point estimate to show. Either \code{"median"} (the
-default) or \code{"mean"}.}
+default), \code{"mean"}, or \code{"none"}.}
 
 \item{rhat}{An optional numeric vector of \eqn{\hat{R}}{Rhat} estimates, with
 one element per parameter included in \code{x}. If \code{rhat} is provided,
 the intervals/areas and point estimates in the resulting plot are colored
-based on \eqn{\hat{R}}{Rhat} value.}
+based on \eqn{\hat{R}}{Rhat} value. See \code{\link{r_hat}} for methods for
+extracting \eqn{\hat{R}}{Rhat} estimates.}
 }
 \value{
 A ggplot object that can be further customized using the
@@ -97,10 +98,11 @@ mcmc_areas(x)
 mcmc_intervals(x, rhat = c(1, 1.07, 1.3))
 
 \dontrun{
-# Assuming fit is a stanfit (rstan) or stanreg (rstanarm) object
+library(rstanarm)
+fit <- stan_glm(mpg ~ 0 + wt + factor(cyl), data = mtcars, iter = 500)
 x <- as.matrix(fit)
 mcmc_intervals(x, point_est = "mean", prob = 0.8, prob_outer = 0.95)
-mcmc_areas(x, rhat = r_hat(fit))
+mcmc_areas(x, regex_pars = "cyl")
 }
 
 
