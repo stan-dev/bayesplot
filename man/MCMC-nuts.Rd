@@ -5,6 +5,7 @@
 \alias{NUTS}
 \alias{mcmc_nuts_accept_stat}
 \alias{mcmc_nuts_divergent}
+\alias{mcmc_nuts_energy}
 \alias{mcmc_nuts_stepsize}
 \alias{mcmc_nuts_treedepth}
 \title{Plots for the No-U-Turn-Sampler (NUTS)}
@@ -16,6 +17,8 @@ mcmc_nuts_treedepth(x, lp, chain = NULL, ...)
 mcmc_nuts_divergent(x, lp, chain = NULL, ...)
 
 mcmc_nuts_stepsize(x, lp, chain = NULL, ...)
+
+mcmc_nuts_energy(x, ..., binwidth = NULL)
 }
 \arguments{
 \item{x}{A molten data frame of NUTS sampler parameters, either created by
@@ -28,8 +31,8 @@ by \code{\link{log_posterior}}.}
 
 \item{chain}{A positive integer for selecting a particular chain. The default
 (\code{NULL}) is to merge the chains before plotting. If \code{chain = k}
-then the plot for chain \code{k} is overlaid on top of the plot for all
-chains.}
+then the plot for chain \code{k} is overlaid (in a darker shade but with
+transparency) on top of the plot for all chains.}
 
 \item{...}{Currently ignored.}
 
