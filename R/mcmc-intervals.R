@@ -15,7 +15,7 @@
 #'   default is \code{0.9} for \code{mcmc_intervals} (90\% interval)
 #'   and \code{1} for \code{mcmc_areas}.
 #' @param point_est The point estimate to show. Either \code{"median"} (the
-#'   default) or \code{"mean"}.
+#'   default), \code{"mean"}, or \code{"none"}.
 #' @param rhat An optional numeric vector of \eqn{\hat{R}}{Rhat} estimates, with
 #'   one element per parameter included in \code{x}. If \code{rhat} is provided,
 #'   the intervals/areas and point estimates in the resulting plot are colored
@@ -68,7 +68,7 @@ mcmc_intervals <- function(x,
                            ...,
                            prob = 0.5,
                            prob_outer = 0.9,
-                           point_est = c("median", "mean"),
+                           point_est = c("median", "mean", "none"),
                            rhat = numeric()) {
   x <- prepare_mcmc_array(x, pars, regex_pars, transformations)
   .mcmc_intervals(
@@ -90,7 +90,7 @@ mcmc_areas <- function(x,
                        ...,
                        prob = 0.5,
                        prob_outer = 1,
-                       point_est = c("median", "mean"),
+                       point_est = c("median", "mean", "none"),
                        rhat = numeric()) {
   x <- prepare_mcmc_array(x, pars, regex_pars, transformations)
   .mcmc_intervals(
@@ -109,7 +109,7 @@ mcmc_areas <- function(x,
 .mcmc_intervals <- function(x,
                            prob_inner = 0.5,
                            prob_outer = 0.95,
-                           point_est = c("median", "mean"),
+                           point_est = c("median", "mean", "none"),
                            rhat = numeric(),
                            show_density = FALSE) {
   n_param <- ncol(x)
@@ -130,7 +130,9 @@ mcmc_areas <- function(x,
 
   data <- data.frame(parnames, y, quantiles)
   colnames(data) <- c("parameter", "y", "ll", "l", "m", "h", "hh")
-  if (match.arg(point_est) == "mean")
+  point_est <- match.arg(point_est)
+  no_point_est <- identical(point_est, "none")
+  if (point_est == "mean")
     data$m <- unname(colMeans(x))
 
 
@@ -247,11 +249,10 @@ mcmc_areas <- function(x,
       bottom_args$color <- get_color("dark")
     g_bottom <- do.call("geom_segment", bottom_args)
 
-    graph <- graph +
-      g_poly +
-      g_point +
-      g_bottom +
-      g_dens
+    graph <- graph + g_poly
+    if (!no_point_est)
+      graph <- graph + g_point
+    graph <- graph + g_bottom + g_dens
 
     if (color_by_rhat) {
       graph <- graph + scale_fill_rhat() + scale_color_rhat()
@@ -305,7 +306,8 @@ mcmc_areas <- function(x,
       point_args$fill <- get_color("light")
     }
 
-    graph <- graph + do.call("geom_point", point_args)
+    if (!no_point_est)
+      graph <- graph + do.call("geom_point", point_args)
 
     if (color_by_rhat)
       graph <- graph + scale_color_rhat() + scale_fill_rhat()
