@@ -15,7 +15,6 @@
 #'   then the plot for chain \code{k} is overlaid (in a darker shade but with
 #'   transparency) on top of the plot for all chains.
 #' @param ... Currently ignored.
-#' @template args-hist
 #'
 #' @return A gtable object (the result of calling
 #'   \code{\link[gridExtra]{arrangeGrob}}) created from several ggplot objects.
@@ -31,68 +30,18 @@
 #' mcmc_nuts_accept_stat(np, lp)
 #' mcmc_nuts_accept_stat(np, lp, chain = 2)
 #'
-#' set_color_scheme("purples")
-#' mcmc_nuts_energy(np, binwidth = .25)
+#' set_color_scheme("blues")
+#' mcmc_nuts_energy(np)
+#' mcmc_nuts_energy(np, binwidth = .25, alpha = .8)
 #' }
 #'
 NULL
 
-#' @rdname MCMC-nuts
-#' @export
-mcmc_nuts_energy <- function(x, ..., binwidth = NULL) {
-  x <- validate_nuts_data_frame(x)
-  energy <- dplyr::filter_(x, ~ Parameter == "energy__")
-  dots <- setNames(list(
-    ~ Value - lag(Value),
-    ~ Value - mean(Value),
-    ~ Ediff - mean(Ediff, na.rm = TRUE)),
-    c("Ediff", "E_centered", "Ediff_centered"))
-  data <- dplyr::mutate_(dplyr::group_by_(energy, ~ Chain), .dots = dots)
-
-  fills <- setNames(get_color(c("light", "mid")),
-                    c("E_fill", "Ediff_fill"))
-  clrs <- setNames(get_color(c("light_highlight", "mid_highlight")),
-                   c("E_fill", "Ediff_fill"))
-  aes_labs <- c(expression(pi[E]), expression(pi[paste(Delta, E)]))
-
-  ggplot(data, aes_(y = ~ ..density..)) +
-    geom_histogram(
-      aes_(
-        x = ~ Ediff_centered,
-        fill = ~ "Ediff_fill",
-        color = ~ "Ediff_fill"
-      ),
-      size = .25,
-      na.rm = TRUE,
-      binwidth = binwidth
-    ) +
-    geom_histogram(
-      aes_(
-        x = ~ E_centered,
-        fill = ~ "E_fill",
-        color = ~ "E_fill"
-      ),
-      size = 0.25,
-      na.rm = TRUE,
-      alpha = 0.5,
-      binwidth = binwidth
-    ) +
-    scale_fill_manual("", values = fills, labels = aes_labs) +
-    scale_color_manual("", values = clrs, labels = aes_labs) +
-    dont_expand_y_axis(c(0.005, 0)) +
-    scale_x_continuous(expand = c(0.2, 0)) +
-    labs(y = NULL, x = expression(E - bar(E))) +
-    theme_default(
-      y_text = FALSE,
-      legend.text.align = 0,
-      legend.text = element_text(size = rel(1.1)),
-      legend_position = c(.8, .5)
-    )
-}
-
 
 #' @rdname MCMC-nuts
 #' @export
+#' @template args-hist
+#'
 mcmc_nuts_accept_stat <- function(x,
                                   lp,
                                   chain = NULL,
@@ -393,6 +342,64 @@ mcmc_nuts_treedepth <- function(x,
   gridExtra::grid.arrange(nuts_plot)
   invisible(nuts_plot)
 }
+
+
+#' @rdname MCMC-nuts
+#' @export
+#' @param alpha For \code{mcmc_nuts_energy} only, the transparency (alpha) level
+#'   in [0,1] used for the overlaid histogram.
+#'
+mcmc_nuts_energy <- function(x, ..., binwidth = NULL, alpha = 0.5) {
+  x <- validate_nuts_data_frame(x)
+  energy <- dplyr::filter_(x, ~ Parameter == "energy__")
+  dots <- setNames(list(
+    ~ Value - lag(Value),
+    ~ Value - mean(Value),
+    ~ Ediff - mean(Ediff, na.rm = TRUE)),
+    c("Ediff", "E_centered", "Ediff_centered"))
+  data <- dplyr::mutate_(dplyr::group_by_(energy, ~ Chain), .dots = dots)
+
+  fills <- setNames(get_color(c("light", "mid")),
+                    c("E_fill", "Ediff_fill"))
+  clrs <- setNames(get_color(c("light_highlight", "mid_highlight")),
+                   c("E_fill", "Ediff_fill"))
+  aes_labs <- c(expression(pi[E]), expression(pi[paste(Delta, E)]))
+
+  ggplot(data, aes_(y = ~ ..density..)) +
+    geom_histogram(
+      aes_(
+        x = ~ Ediff_centered,
+        fill = ~ "Ediff_fill",
+        color = ~ "Ediff_fill"
+      ),
+      size = .25,
+      na.rm = TRUE,
+      binwidth = binwidth
+    ) +
+    geom_histogram(
+      aes_(
+        x = ~ E_centered,
+        fill = ~ "E_fill",
+        color = ~ "E_fill"
+      ),
+      size = 0.25,
+      na.rm = TRUE,
+      alpha = alpha,
+      binwidth = binwidth
+    ) +
+    scale_fill_manual("", values = fills, labels = aes_labs) +
+    scale_color_manual("", values = clrs, labels = aes_labs) +
+    dont_expand_y_axis(c(0.005, 0)) +
+    scale_x_continuous(expand = c(0.2, 0)) +
+    labs(y = NULL, x = expression(E - bar(E))) +
+    theme_default(
+      y_text = FALSE,
+      legend.text.align = 0,
+      legend.text = element_text(size = rel(1.1)),
+      legend_position = c(.8, .5)
+    )
+}
+
 
 
 # internal ----------------------------------------------------------------
