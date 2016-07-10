@@ -15,6 +15,7 @@
 #'   then the plot for chain \code{k} is overlaid (in a darker shade but with
 #'   transparency) on top of the plot for all chains.
 #' @param ... Currently ignored.
+#' @template args-hist
 #'
 #' @return A gtable object (the result of calling
 #'   \code{\link[gridExtra]{arrangeGrob}}) created from several ggplot objects.
@@ -29,14 +30,69 @@
 #' lp <- log_posterior(fit)
 #' mcmc_nuts_accept_stat(np, lp)
 #' mcmc_nuts_accept_stat(np, lp, chain = 2)
+#'
+#' set_color_scheme("purples")
+#' mcmc_nuts_energy(np, binwidth = .25)
 #' }
 #'
 NULL
 
 #' @rdname MCMC-nuts
 #' @export
-#' @template args-hist
-#'
+mcmc_nuts_energy <- function(x, ..., binwidth = NULL) {
+  x <- validate_nuts_data_frame(x)
+  energy <- dplyr::filter_(x, ~ Parameter == "energy__")
+  dots <- setNames(list(
+    ~ Value - lag(Value),
+    ~ Value - mean(Value),
+    ~ Ediff - mean(Ediff, na.rm = TRUE)),
+    c("Ediff", "E_centered", "Ediff_centered"))
+  data <- dplyr::mutate_(dplyr::group_by_(energy, ~ Chain), .dots = dots)
+
+  fills <- setNames(get_color(c("light", "mid")),
+                    c("E_fill", "Ediff_fill"))
+  clrs <- setNames(get_color(c("light_highlight", "mid_highlight")),
+                   c("E_fill", "Ediff_fill"))
+  aes_labs <- c(expression(pi[E]), expression(pi[paste(Delta, E)]))
+
+  ggplot(data, aes_(y = ~ ..density..)) +
+    geom_histogram(
+      aes_(
+        x = ~ Ediff_centered,
+        fill = ~ "Ediff_fill",
+        color = ~ "Ediff_fill"
+      ),
+      size = .25,
+      na.rm = TRUE,
+      binwidth = binwidth
+    ) +
+    geom_histogram(
+      aes_(
+        x = ~ E_centered,
+        fill = ~ "E_fill",
+        color = ~ "E_fill"
+      ),
+      size = 0.25,
+      na.rm = TRUE,
+      alpha = 0.5,
+      binwidth = binwidth
+    ) +
+    scale_fill_manual("", values = fills, labels = aes_labs) +
+    scale_color_manual("", values = clrs, labels = aes_labs) +
+    dont_expand_y_axis(c(0.005, 0)) +
+    scale_x_continuous(expand = c(0.2, 0)) +
+    labs(y = NULL, x = expression(E - bar(E))) +
+    theme_default(
+      y_text = FALSE,
+      legend.text.align = 0,
+      legend.text = element_text(size = rel(1.1)),
+      legend_position = c(.8, .5)
+    )
+}
+
+
+#' @rdname MCMC-nuts
+#' @export
 mcmc_nuts_accept_stat <- function(x,
                                   lp,
                                   chain = NULL,
@@ -125,84 +181,6 @@ mcmc_nuts_accept_stat <- function(x,
   }
 
   nuts_plot <- gridExtra::arrangeGrob(scatter, hists, nrow = 2)
-  gridExtra::grid.arrange(nuts_plot)
-  invisible(nuts_plot)
-}
-
-
-
-#' @rdname MCMC-nuts
-#' @export
-mcmc_nuts_treedepth <- function(x,
-                                lp,
-                                chain = NULL,
-                                ...) {
-
-  x <- validate_nuts_data_frame(x, lp)
-  n_chain <- length(unique(lp$Chain))
-  chain <- validate_enough_chains(chain, n_chain)
-  overlay_chain <- !is.null(chain)
-
-  treedepth <- dplyr::filter_(x, ~ Parameter == "treedepth__")
-  accept_stat <- dplyr::filter_(x, ~ Parameter == "accept_stat__")
-
-  hist_td <- ggplot(treedepth, aes_(x = ~ Value, y = ~ ..density..)) +
-    geom_histogram(
-      fill = get_color("light"),
-      color = get_color("light_highlight"),
-      size = .5,
-      na.rm = TRUE,
-      binwidth = 1
-    ) +
-    xlab("treedepth__") +
-    theme_default(y_text = FALSE)
-
-  violin_lp_data <- data.frame(treedepth, lp = lp$Value)
-  violin_lp <-
-    ggplot(violin_lp_data, aes_(x = ~ factor(Value), y = ~ lp)) +
-    geom_violin(fill = get_color("light"),
-                color = get_color("light_highlight")) +
-    labs(x = "treedepth__", y = "Log-posterior") +
-    theme_default()
-
-  violin_accept_stat_data <- data.frame(treedepth, as = accept_stat$Value)
-  violin_accept_stat <-
-    ggplot(violin_accept_stat_data, aes_(x = ~ factor(Value), y = ~ as)) +
-    geom_violin(fill = get_color("light"),
-                color = get_color("light_highlight")) +
-    labs(x = "treedepth__", y = "accept_stat__") +
-    theme_default()
-
-  if (overlay_chain) {
-    hist_td <- hist_td +
-      geom_histogram(
-        data = dplyr::filter_(treedepth, ~Chain == chain),
-        fill = get_color("dark"),
-        color = NA,
-        alpha = 0.5,
-        na.rm = TRUE,
-        binwidth = 1
-      )
-
-    violin_lp <- violin_lp +
-      geom_violin(
-        data = dplyr::filter_(violin_lp_data, ~Chain == chain),
-        fill = get_color("dark"),
-        color = NA,
-        alpha = 0.5
-      )
-
-    violin_accept_stat <- violin_accept_stat +
-      geom_violin(
-        data = dplyr::filter_(violin_accept_stat_data, ~Chain == chain),
-        fill = get_color("dark"),
-        color = NA,
-        alpha = 0.5
-      )
-  }
-
-  nuts_plot <- gridExtra::arrangeGrob(violin_lp, violin_accept_stat,
-                                      hist_td, nrow = 3)
   gridExtra::grid.arrange(nuts_plot)
   invisible(nuts_plot)
 }
@@ -340,61 +318,81 @@ mcmc_nuts_stepsize <- function(x,
 }
 
 
-
 #' @rdname MCMC-nuts
 #' @export
-mcmc_nuts_energy <- function(x, ..., binwidth = NULL) {
-  x <- validate_nuts_data_frame(x)
-  energy <- dplyr::filter_(x, ~ Parameter == "energy__")
-  dots <- setNames(list(
-      ~ Value - lag(Value),
-      ~ Value - mean(Value),
-      ~ Ediff - mean(Ediff, na.rm = TRUE)),
-    c("Ediff", "E_centered", "Ediff_centered"))
-  data <- dplyr::mutate_(dplyr::group_by_(energy, ~ Chain), .dots = dots)
+mcmc_nuts_treedepth <- function(x,
+                                lp,
+                                chain = NULL,
+                                ...) {
 
-  fills <- setNames(get_color(c("light", "mid")),
-                    c("E_fill", "Ediff_fill"))
-  clrs <- setNames(get_color(c("light_highlight", "mid_highlight")),
-                   c("E_fill", "Ediff_fill"))
-  aes_labs <- c(expression(pi[E]), expression(pi[paste(Delta, E)]))
+  x <- validate_nuts_data_frame(x, lp)
+  n_chain <- length(unique(lp$Chain))
+  chain <- validate_enough_chains(chain, n_chain)
+  overlay_chain <- !is.null(chain)
 
-  ggplot(data, aes_(y = ~ ..density..)) +
+  treedepth <- dplyr::filter_(x, ~ Parameter == "treedepth__")
+  accept_stat <- dplyr::filter_(x, ~ Parameter == "accept_stat__")
+
+  hist_td <- ggplot(treedepth, aes_(x = ~ Value, y = ~ ..density..)) +
     geom_histogram(
-      aes_(
-        x = ~ Ediff_centered,
-        fill = ~ "Ediff_fill",
-        color = ~ "Ediff_fill"
-      ),
-      size = .25,
+      fill = get_color("light"),
+      color = get_color("light_highlight"),
+      size = .5,
       na.rm = TRUE,
-      binwidth = binwidth
+      binwidth = 1
     ) +
-    geom_histogram(
-      aes_(
-        x = ~ E_centered,
-        fill = ~ "E_fill",
-        color = ~ "E_fill"
-      ),
-      size = 0.25,
-      na.rm = TRUE,
-      alpha = 0.5,
-      binwidth = binwidth
-    ) +
-    scale_fill_manual("", values = fills, labels = aes_labs) +
-    scale_color_manual("", values = clrs, labels = aes_labs) +
-    dont_expand_y_axis(c(0.005, 0)) +
-    scale_x_continuous(expand = c(0.2, 0)) +
-    labs(y = NULL, x = "E - <E>") +
-    theme_default(
-      y_text = FALSE,
-      legend.text.align = 0,
-      legend.text = element_text(size = rel(1.1)),
-      legend_position = c(.8, .5)
-    )
+    xlab("treedepth__") +
+    theme_default(y_text = FALSE)
+
+  violin_lp_data <- data.frame(treedepth, lp = lp$Value)
+  violin_lp <-
+    ggplot(violin_lp_data, aes_(x = ~ factor(Value), y = ~ lp)) +
+    geom_violin(fill = get_color("light"),
+                color = get_color("light_highlight")) +
+    labs(x = "treedepth__", y = "Log-posterior") +
+    theme_default()
+
+  violin_accept_stat_data <- data.frame(treedepth, as = accept_stat$Value)
+  violin_accept_stat <-
+    ggplot(violin_accept_stat_data, aes_(x = ~ factor(Value), y = ~ as)) +
+    geom_violin(fill = get_color("light"),
+                color = get_color("light_highlight")) +
+    labs(x = "treedepth__", y = "accept_stat__") +
+    theme_default()
+
+  if (overlay_chain) {
+    hist_td <- hist_td +
+      geom_histogram(
+        data = dplyr::filter_(treedepth, ~Chain == chain),
+        fill = get_color("dark"),
+        color = NA,
+        alpha = 0.5,
+        na.rm = TRUE,
+        binwidth = 1
+      )
+
+    violin_lp <- violin_lp +
+      geom_violin(
+        data = dplyr::filter_(violin_lp_data, ~Chain == chain),
+        fill = get_color("dark"),
+        color = NA,
+        alpha = 0.5
+      )
+
+    violin_accept_stat <- violin_accept_stat +
+      geom_violin(
+        data = dplyr::filter_(violin_accept_stat_data, ~Chain == chain),
+        fill = get_color("dark"),
+        color = NA,
+        alpha = 0.5
+      )
+  }
+
+  nuts_plot <- gridExtra::arrangeGrob(violin_lp, violin_accept_stat,
+                                      hist_td, nrow = 3)
+  gridExtra::grid.arrange(nuts_plot)
+  invisible(nuts_plot)
 }
-
-
 
 
 # internal ----------------------------------------------------------------

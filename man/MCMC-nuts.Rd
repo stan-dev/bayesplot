@@ -10,20 +10,25 @@
 \alias{mcmc_nuts_treedepth}
 \title{Plots for the No-U-Turn-Sampler (NUTS)}
 \usage{
-mcmc_nuts_accept_stat(x, lp, chain = NULL, ..., binwidth = NULL)
+mcmc_nuts_energy(x, ..., binwidth = NULL)
 
-mcmc_nuts_treedepth(x, lp, chain = NULL, ...)
+mcmc_nuts_accept_stat(x, lp, chain = NULL, ..., binwidth = NULL)
 
 mcmc_nuts_divergent(x, lp, chain = NULL, ...)
 
 mcmc_nuts_stepsize(x, lp, chain = NULL, ...)
 
-mcmc_nuts_energy(x, ..., binwidth = NULL)
+mcmc_nuts_treedepth(x, lp, chain = NULL, ...)
 }
 \arguments{
 \item{x}{A molten data frame of NUTS sampler parameters, either created by
 \code{\link{nuts_params}} or in the same form as the object returned by
 \code{\link{nuts_params}}.}
+
+\item{...}{Currently ignored.}
+
+\item{binwidth}{An optional value to override
+\code{\link[ggplot2]{geom_histogram}}'s default binwidth.}
 
 \item{lp}{A molten data frame of log-posterior draws, either created by
 \code{\link{log_posterior}} or in the same form as the object returned
@@ -33,11 +38,6 @@ by \code{\link{log_posterior}}.}
 (\code{NULL}) is to merge the chains before plotting. If \code{chain = k}
 then the plot for chain \code{k} is overlaid (in a darker shade but with
 transparency) on top of the plot for all chains.}
-
-\item{...}{Currently ignored.}
-
-\item{binwidth}{An optional value to override
-\code{\link[ggplot2]{geom_histogram}}'s default binwidth.}
 }
 \value{
 A gtable object (the result of calling
