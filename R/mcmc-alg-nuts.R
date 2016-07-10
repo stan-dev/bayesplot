@@ -105,7 +105,6 @@ mcmc_nuts_accept_stat <- function(x,
     stats_par_chain <- dplyr::summarise_(grp_par_chain,
                                          Mean = ~ mean(Value),
                                          Median = ~ median(Value))
-    chain_color <- color_vector_chain(length(unique(data$Chain)))[chain]
     hists <- hists +
       geom_histogram(
         data = dplyr::filter_(data, ~Chain == chain),
@@ -430,7 +429,3 @@ validate_nuts_data_frame <- function(x, lp) {
   x
 }
 
-color_vector_chain <- function(n) {
-  hues = seq(15, 375, length = n + 2)
-  hcl(h = hues, l = 80, c = 50)[2:(n+1)]
-}

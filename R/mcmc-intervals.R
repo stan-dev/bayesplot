@@ -151,10 +151,11 @@ mcmc_areas <- function(x,
 
   graph <- ggplot(data)
 
-  if (findInterval(0, x_lim))
-    graph <- graph + geom_vline(xintercept = 0, color = "gray90", size = 0.5)
-
   if (show_density) {
+    # faint vertical line at zero if zero is within x_lim
+    if (findInterval(0, x_lim))
+      graph <- graph + vline0(color = "gray90", size = 0.5)
+
 
     # density outline
     n_dens_pts <- 512
@@ -184,7 +185,8 @@ mcmc_areas <- function(x,
         y = ~ y,
         group = ~ name,
         color = if (color_by_rhat) ~ rhat else NULL
-      )
+      ),
+      lineend = "round"
     )
     if (!color_by_rhat)
       dens_args$color <- get_color("dark")
@@ -272,7 +274,8 @@ mcmc_areas <- function(x,
         y = ~ y,
         yend = ~ y
       ),
-      colour = get_color("mid"))
+      colour = get_color("mid"),
+      lineend = "round")
 
     # inner interval
     segment_args <- list(
@@ -284,6 +287,7 @@ mcmc_areas <- function(x,
         color = if (color_by_rhat) ~ rhat else NULL
       ),
       size = 2,
+      lineend = "round",
       show.legend = FALSE
     )
     if (!color_by_rhat)
