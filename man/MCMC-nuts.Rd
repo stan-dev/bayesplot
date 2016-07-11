@@ -3,22 +3,23 @@
 \name{MCMC-nuts}
 \alias{MCMC-nuts}
 \alias{NUTS}
-\alias{mcmc_nuts_accept_stat}
-\alias{mcmc_nuts_divergent}
+\alias{mcmc_nuts_acceptance}
+\alias{mcmc_nuts_divergence}
 \alias{mcmc_nuts_energy}
 \alias{mcmc_nuts_stepsize}
 \alias{mcmc_nuts_treedepth}
 \title{Plots for the No-U-Turn-Sampler (NUTS)}
 \usage{
-mcmc_nuts_accept_stat(x, lp, chain = NULL, ..., binwidth = NULL)
+mcmc_nuts_acceptance(x, lp, chain = NULL, ..., binwidth = NULL)
 
-mcmc_nuts_divergent(x, lp, chain = NULL, ...)
+mcmc_nuts_divergence(x, lp, chain = NULL, ...)
 
 mcmc_nuts_stepsize(x, lp, chain = NULL, ...)
 
 mcmc_nuts_treedepth(x, lp, chain = NULL, ...)
 
-mcmc_nuts_energy(x, ..., binwidth = NULL, alpha = 0.5)
+mcmc_nuts_energy(x, ..., binwidth = NULL, alpha = 0.5,
+  merge_chains = TRUE)
 }
 \arguments{
 \item{x}{A molten data frame of NUTS sampler parameters, either created by
@@ -32,7 +33,8 @@ by \code{\link{log_posterior}}.}
 \item{chain}{A positive integer for selecting a particular chain. The default
 (\code{NULL}) is to merge the chains before plotting. If \code{chain = k}
 then the plot for chain \code{k} is overlaid (in a darker shade but with
-transparency) on top of the plot for all chains.}
+transparency) on top of the plot for all chains. The \code{chain} argument
+is not used by \code{mcmc_nuts_energy}.}
 
 \item{...}{Currently ignored.}
 
@@ -41,6 +43,9 @@ transparency) on top of the plot for all chains.}
 
 \item{alpha}{For \code{mcmc_nuts_energy} only, the transparency (alpha) level
 in [0,1] used for the overlaid histogram.}
+
+\item{merge_chains}{For \code{mcmc_nuts_energy} only, should all chains be
+merged or displayed separately?}
 }
 \value{
 A gtable object (the result of calling
@@ -51,16 +56,21 @@ Plots for the No-U-Turn-Sampler (NUTS)
 }
 \examples{
 \dontrun{
+library(ggplot2)
 library(rstanarm)
 fit <- stan_glm(mpg ~ wt + am, data = mtcars, iter = 1000)
 np <- nuts_params(fit)
 lp <- log_posterior(fit)
-mcmc_nuts_accept_stat(np, lp)
-mcmc_nuts_accept_stat(np, lp, chain = 2)
+mcmc_nuts_acceptance(np, lp)
+mcmc_nuts_acceptance(np, lp, chain = 2)
 
 set_color_scheme("blue")
 mcmc_nuts_energy(np)
 mcmc_nuts_energy(np, binwidth = .25, alpha = .8)
+(energy_plot <- mcmc_nuts_energy(np, merge_chains = FALSE))
+energy_plot +
+ facet_wrap(~ Chain, nrow = 1) +
+ coord_fixed(ratio = 150)
 }
 
 }

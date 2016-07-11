@@ -13,7 +13,8 @@
 #' @param chain A positive integer for selecting a particular chain. The default
 #'   (\code{NULL}) is to merge the chains before plotting. If \code{chain = k}
 #'   then the plot for chain \code{k} is overlaid (in a darker shade but with
-#'   transparency) on top of the plot for all chains.
+#'   transparency) on top of the plot for all chains. The \code{chain} argument
+#'   is not used by \code{mcmc_nuts_energy}.
 #' @param ... Currently ignored.
 #'
 #' @return A gtable object (the result of calling
@@ -23,16 +24,21 @@
 #'
 #' @examples
 #' \dontrun{
+#' library(ggplot2)
 #' library(rstanarm)
 #' fit <- stan_glm(mpg ~ wt + am, data = mtcars, iter = 1000)
 #' np <- nuts_params(fit)
 #' lp <- log_posterior(fit)
-#' mcmc_nuts_accept_stat(np, lp)
-#' mcmc_nuts_accept_stat(np, lp, chain = 2)
+#' mcmc_nuts_acceptance(np, lp)
+#' mcmc_nuts_acceptance(np, lp, chain = 2)
 #'
 #' set_color_scheme("blue")
 #' mcmc_nuts_energy(np)
 #' mcmc_nuts_energy(np, binwidth = .25, alpha = .8)
+#' (energy_plot <- mcmc_nuts_energy(np, merge_chains = FALSE))
+#' energy_plot +
+#'  facet_wrap(~ Chain, nrow = 1) +
+#'  coord_fixed(ratio = 150)
 #' }
 #'
 NULL
@@ -42,12 +48,11 @@ NULL
 #' @export
 #' @template args-hist
 #'
-mcmc_nuts_accept_stat <- function(x,
-                                  lp,
-                                  chain = NULL,
-                                  ...,
-                                  binwidth = NULL) {
-
+mcmc_nuts_acceptance <- function(x,
+                                 lp,
+                                 chain = NULL,
+                                 ...,
+                                 binwidth = NULL) {
   x <- validate_nuts_data_frame(x, lp)
   n_chain <- length(unique(lp$Chain))
   chain <- validate_enough_chains(chain, n_chain)
@@ -67,8 +72,8 @@ mcmc_nuts_accept_stat <- function(x,
 
   hists <- ggplot(data, aes_(x = ~ Value, y = ~ ..density..)) +
     geom_histogram(
-      fill = get_color("light"),
-      color = get_color("light_highlight"),
+      fill = get_color("l"),
+      color = get_color("lh"),
       size = .25,
       na.rm = TRUE,
       binwidth = binwidth
@@ -79,12 +84,12 @@ mcmc_nuts_accept_stat <- function(x,
       geom_vline(
         aes_(xintercept = ~ Mean),
         data = stats_par,
-        color = get_color("dark_highlight")
+        color = get_color("dh")
       ) +
       geom_vline(
         aes_(xintercept = ~ Median),
         data = stats_par,
-        color = get_color("dark"),
+        color = get_color("d"),
         linetype = 2
       )
   }
@@ -97,8 +102,8 @@ mcmc_nuts_accept_stat <- function(x,
     geom_point(
       aes_(x = ~ accept_stat$Value, y = ~ lp$Value),
       shape = 21,
-      fill = get_color(ifelse(overlay_chain, "light", "mid")),
-      color = get_color(ifelse(overlay_chain, "light_highlight", "mid_highlight"))
+      fill = get_color(ifelse(overlay_chain, "l", "m")),
+      color = get_color(ifelse(overlay_chain, "lh", "mh"))
     ) +
     labs(x = "accept_stat__",
          y = "Log-posterior") +
@@ -106,14 +111,10 @@ mcmc_nuts_accept_stat <- function(x,
 
 
   if (overlay_chain) {
-    grp_par_chain <- dplyr::group_by_(data, .dots = list( ~ Parameter, ~ Chain))
-    stats_par_chain <- dplyr::summarise_(grp_par_chain,
-                                         Mean = ~ mean(Value),
-                                         Median = ~ median(Value))
     hists <- hists +
       geom_histogram(
         data = dplyr::filter_(data, ~Chain == chain),
-        fill = get_color("dark"),
+        fill = get_color("d"),
         color = NA,
         alpha = 0.5,
         na.rm = TRUE,
@@ -124,7 +125,7 @@ mcmc_nuts_accept_stat <- function(x,
       geom_point(
         aes_(x = ~ accept_stat$Value[accept_stat$Chain == chain],
              y = ~ lp$Value[lp$Chain == chain]),
-        color = get_color("dark"),
+        color = get_color("d"),
         alpha = 0.5
       )
   }
@@ -137,7 +138,7 @@ mcmc_nuts_accept_stat <- function(x,
 
 #' @rdname MCMC-nuts
 #' @export
-mcmc_nuts_divergent <- function(x,
+mcmc_nuts_divergence <- function(x,
                                 lp,
                                 chain = NULL,
                                 ...) {
@@ -156,8 +157,8 @@ mcmc_nuts_divergent <- function(x,
   violin_lp <- ggplot(violin_lp_data,
                       aes_(x = ~Value, y = ~lp)) +
     geom_violin(
-      fill = get_color("light"),
-      color = get_color("light_highlight")
+      fill = get_color("l"),
+      color = get_color("lh")
     ) +
     ylab("Log-posterior") +
     theme_default(x_lab = FALSE)
@@ -166,28 +167,17 @@ mcmc_nuts_divergent <- function(x,
   violin_accept_stat <- ggplot(violin_accept_stat_data,
                                aes_(x = ~Value, y = ~as)) +
     geom_violin(
-      fill = get_color("light"),
-      color = get_color("light_highlight")
+      fill = get_color("l"),
+      color = get_color("lh")
     ) +
     ylab("accept_stat__") +
     theme_default(x_lab = FALSE)
 
   if (!is.null(chain)) {
     violin_lp <- violin_lp +
-      geom_violin(
-        data = dplyr::filter_(violin_lp_data, ~Chain == chain),
-        fill = get_color("dark"),
-        color = NA,
-        alpha = 0.5
-      )
-
+      .chain_violin(violin_lp_data, chain)
     violin_accept_stat <- violin_accept_stat +
-      geom_violin(
-        data = dplyr::filter_(violin_accept_stat_data, ~Chain == chain),
-        fill = get_color("dark"),
-        color = NA,
-        alpha = 0.5
-      )
+      .chain_violin(violin_accept_stat_data, chain)
   }
 
   nuts_plot <- gridExtra::arrangeGrob(violin_lp, violin_accept_stat, nrow = 2)
@@ -224,8 +214,8 @@ mcmc_nuts_stepsize <- function(x,
   violin_lp <- ggplot(violin_lp_data,
                       aes_(x = ~as.factor(ss), y = ~Value)) +
     geom_violin(
-      fill = get_color("light"),
-      color = get_color("light_highlight")
+      fill = get_color("l"),
+      color = get_color("lh")
     ) +
     ylab("Log-posterior") +
     stepsize_labels +
@@ -236,8 +226,8 @@ mcmc_nuts_stepsize <- function(x,
   violin_accept_stat <- ggplot(violin_accept_stat_data,
                                aes_(x = ~as.factor(ss), y = ~Value)) +
     geom_violin(
-      fill = get_color("light"),
-      color = get_color("light_highlight")
+      fill = get_color("l"),
+      color = get_color("lh")
     ) +
     ylab("accept_stat__") +
     stepsize_labels +
@@ -245,20 +235,9 @@ mcmc_nuts_stepsize <- function(x,
 
   if (!is.null(chain)) {
     violin_lp <- violin_lp +
-      geom_violin(
-        data = dplyr::filter_(violin_lp_data, ~Chain == chain),
-        fill = get_color("dark"),
-        color = NA,
-        alpha = 0.5
-      )
-
+      .chain_violin(violin_lp_data, chain)
     violin_accept_stat <- violin_accept_stat +
-      geom_violin(
-        data = dplyr::filter_(violin_accept_stat_data, ~Chain == chain),
-        fill = get_color("dark"),
-        color = NA,
-        alpha = 0.5
-      )
+      .chain_violin(violin_accept_stat_data, chain)
   }
 
   nuts_plot <- gridExtra::arrangeGrob(violin_lp, violin_accept_stat, nrow = 2)
@@ -284,8 +263,8 @@ mcmc_nuts_treedepth <- function(x,
 
   hist_td <- ggplot(treedepth, aes_(x = ~ Value, y = ~ ..density..)) +
     geom_histogram(
-      fill = get_color("light"),
-      color = get_color("light_highlight"),
+      fill = get_color("l"),
+      color = get_color("lh"),
       size = .5,
       na.rm = TRUE,
       binwidth = 1
@@ -296,16 +275,16 @@ mcmc_nuts_treedepth <- function(x,
   violin_lp_data <- data.frame(treedepth, lp = lp$Value)
   violin_lp <-
     ggplot(violin_lp_data, aes_(x = ~ factor(Value), y = ~ lp)) +
-    geom_violin(fill = get_color("light"),
-                color = get_color("light_highlight")) +
+    geom_violin(fill = get_color("l"),
+                color = get_color("lh")) +
     labs(x = "treedepth__", y = "Log-posterior") +
     theme_default()
 
   violin_accept_stat_data <- data.frame(treedepth, as = accept_stat$Value)
   violin_accept_stat <-
     ggplot(violin_accept_stat_data, aes_(x = ~ factor(Value), y = ~ as)) +
-    geom_violin(fill = get_color("light"),
-                color = get_color("light_highlight")) +
+    geom_violin(fill = get_color("l"),
+                color = get_color("lh")) +
     labs(x = "treedepth__", y = "accept_stat__") +
     theme_default()
 
@@ -313,7 +292,7 @@ mcmc_nuts_treedepth <- function(x,
     hist_td <- hist_td +
       geom_histogram(
         data = dplyr::filter_(treedepth, ~Chain == chain),
-        fill = get_color("dark"),
+        fill = get_color("d"),
         color = NA,
         alpha = 0.5,
         na.rm = TRUE,
@@ -321,20 +300,9 @@ mcmc_nuts_treedepth <- function(x,
       )
 
     violin_lp <- violin_lp +
-      geom_violin(
-        data = dplyr::filter_(violin_lp_data, ~Chain == chain),
-        fill = get_color("dark"),
-        color = NA,
-        alpha = 0.5
-      )
-
+      .chain_violin(violin_lp_data, chain)
     violin_accept_stat <- violin_accept_stat +
-      geom_violin(
-        data = dplyr::filter_(violin_accept_stat_data, ~Chain == chain),
-        fill = get_color("dark"),
-        color = NA,
-        alpha = 0.5
-      )
+      .chain_violin(violin_accept_stat_data, chain)
   }
 
   nuts_plot <- gridExtra::arrangeGrob(violin_lp, violin_accept_stat,
@@ -348,57 +316,77 @@ mcmc_nuts_treedepth <- function(x,
 #' @export
 #' @param alpha For \code{mcmc_nuts_energy} only, the transparency (alpha) level
 #'   in [0,1] used for the overlaid histogram.
+#' @param merge_chains For \code{mcmc_nuts_energy} only, should all chains be
+#'   merged or displayed separately?
 #'
-mcmc_nuts_energy <- function(x, ..., binwidth = NULL, alpha = 0.5) {
-  x <- validate_nuts_data_frame(x)
-  energy <- dplyr::filter_(x, ~ Parameter == "energy__")
-  dots <- setNames(list(
-    ~ Value - lag(Value),
-    ~ Value - mean(Value),
-    ~ Ediff - mean(Ediff, na.rm = TRUE)),
-    c("Ediff", "E_centered", "Ediff_centered"))
-  data <- dplyr::mutate_(dplyr::group_by_(energy, ~ Chain), .dots = dots)
+mcmc_nuts_energy <-
+  function(x,
+           ...,
+           binwidth = NULL,
+           alpha = 0.5,
+           merge_chains = TRUE) {
+    x <- validate_nuts_data_frame(x)
 
-  fills <- setNames(get_color(c("light", "mid")),
-                    c("E_fill", "Ediff_fill"))
-  clrs <- setNames(get_color(c("light_highlight", "mid_highlight")),
-                   c("E_fill", "Ediff_fill"))
-  aes_labs <- c(expression(pi[E]), expression(pi[paste(Delta, E)]))
+    if ("chain" %in% names(list(...)))
+      stop(
+        "'mcmc_nuts_energy' does not accept a 'chain' argument. ",
+        "Use 'merge_chains = FALSE' to view chains separately."
+      )
 
-  ggplot(data, aes_(y = ~ ..density..)) +
-    geom_histogram(
-      aes_(
-        x = ~ Ediff_centered,
-        fill = ~ "Ediff_fill",
-        color = ~ "Ediff_fill"
+    energy <- dplyr::filter_(x, ~ Parameter == "energy__")
+    dots <- setNames(
+      list(
+        ~ Value - lag(Value),
+        ~ Value - mean(Value),
+        ~ Ediff - mean(Ediff, na.rm = TRUE)
       ),
-      size = .25,
-      na.rm = TRUE,
-      binwidth = binwidth
-    ) +
-    geom_histogram(
-      aes_(
-        x = ~ E_centered,
-        fill = ~ "E_fill",
-        color = ~ "E_fill"
-      ),
-      size = 0.25,
-      na.rm = TRUE,
-      alpha = alpha,
-      binwidth = binwidth
-    ) +
-    scale_fill_manual("", values = fills, labels = aes_labs) +
-    scale_color_manual("", values = clrs, labels = aes_labs) +
-    dont_expand_y_axis(c(0.005, 0)) +
-    scale_x_continuous(expand = c(0.2, 0)) +
-    labs(y = NULL, x = expression(E - bar(E))) +
-    theme_default(
-      y_text = FALSE,
-      legend.text.align = 0,
-      legend.text = element_text(size = rel(1.1)),
-      legend_position = c(.8, .5)
+      c("Ediff", "E_centered", "Ediff_centered")
     )
-}
+    data <- dplyr::mutate_(dplyr::group_by_(energy, ~ Chain), .dots = dots)
+
+    fills <- setNames(get_color(c("l", "m")), c("E_fill", "Ediff_fill"))
+    clrs <- setNames(get_color(c("lh", "mh")), c("E_fill", "Ediff_fill"))
+    aes_labs <- c(expression(pi[E]), expression(pi[paste(Delta, E)]))
+
+    graph <- ggplot(data, aes_(y = ~ ..density..)) +
+      geom_histogram(
+        aes_(
+          x = ~ Ediff_centered,
+          fill = ~ "Ediff_fill",
+          color = ~ "Ediff_fill"
+        ),
+        size = 0.25,
+        na.rm = TRUE,
+        binwidth = binwidth
+      ) +
+      geom_histogram(
+        aes_(
+          x = ~ E_centered,
+          fill = ~ "E_fill",
+          color = ~ "E_fill"
+        ),
+        size = 0.25,
+        na.rm = TRUE,
+        alpha = alpha,
+        binwidth = binwidth
+      ) +
+      scale_fill_manual("", values = fills, labels = aes_labs) +
+      scale_color_manual("", values = clrs, labels = aes_labs) +
+      dont_expand_y_axis(c(0.005, 0)) +
+      scale_x_continuous(expand = c(0.2, 0)) +
+      labs(y = NULL, x = expression(E - bar(E))) +
+      theme_default(
+        y_text = FALSE,
+        legend.text.align = 0,
+        legend.text = element_text(size = rel(1.1)),
+        legend_position = if (merge_chains) c(.8, .5) else "right"
+      )
+
+    if (merge_chains)
+      return(graph)
+
+    graph + facet_wrap( ~ Chain)
+  }
 
 
 
@@ -433,4 +421,18 @@ validate_nuts_data_frame <- function(x, lp) {
   }
   x
 }
+
+.chain_violin <-
+  function(df,
+           chain,
+           fill = "d",
+           color = NA,
+           alpha = 0.5) {
+    geom_violin(
+      data = dplyr::filter_(df, ~ Chain == chain),
+      fill = get_color(fill),
+      color = color,
+      alpha = alpha
+    )
+  }
 
