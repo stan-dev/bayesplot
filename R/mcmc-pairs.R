@@ -40,16 +40,16 @@ mcmc_pairs <- function(x,
       continuous = GGally::wrap(
         "points",
         shape = 21,
-        fill = get_color("dark"),
-        color = get_color("dark_highlight"),
+        fill = get_color("d"),
+        color = get_color("dh"),
         alpha = 0.5
       )
     ),
     diag = list(
       continuous = GGally::wrap(
         "barDiag",
-        fill = get_color("mid"),
-        color = get_color("mid_highlight"),
+        fill = get_color("m"),
+        color = get_color("mh"),
         size = .25
       )
     )

@@ -159,7 +159,7 @@ mcmc_trace_highlight <- function(x,
     graph <- graph +
       scale_alpha_discrete(range = c(.2, 1), guide = "none") +
       scale_color_manual("",
-                         values = get_color(c("light", "dark")),
+                         values = get_color(c("l", "d")),
                          labels = c("Other chains", paste("Chain", highlight)))
   } else {
     graph <- graph +
@@ -177,9 +177,9 @@ chain_colors <- function(n) {
   all_clrs <- unlist(get_color_scheme())
   clrs <- switch(
     as.character(n),
-    "1" = get_color("mid"),
-    "2" = get_color(c("light", "dark")),
-    "3" = get_color(c("light", "mid", "dark")),
+    "1" = get_color("m"),
+    "2" = get_color(c("l", "d")),
+    "3" = get_color(c("l", "m", "d")),
     "4" = all_clrs[-c(3, 5)],
     "5" = all_clrs[-3],
     "6" = all_clrs,

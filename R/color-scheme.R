@@ -23,7 +23,7 @@
 #'
 set_color_scheme <-
   function(scheme = c("red", "blue", "gray", "green", "pink", "teal")) {
-    x <- color_scheme_lookup[[scheme]]
+    x <- prepare_colors(scheme)
     for (lev in names(x))
       .bayesplot_aesthetics[[lev]] <- x[[lev]]
 
@@ -45,26 +45,27 @@ get_color_scheme <- function() {
 
 # helpers -----------------------------------------------------------------
 
-# Access a single color value
+# Access a subset of the scheme colors
 #
-# @param level A haracter vector of level names (see scheme_level_names())
+# @param level A character vector of level names (see scheme_level_names()). The
+#   abbreviations "l", "lh", "m", "mh", "d", and "dh" can also be used instead
+#   of the full names.
 # @return A character vector of color values.
 #
 get_color <- function(levels) {
+  sel <- which(!levels %in% scheme_level_names())
+  if (length(sel))
+    levels[sel] <- sapply(levels[sel], full_level_name)
   stopifnot(all(levels %in% scheme_level_names()))
   color_vals <- get_color_scheme()[levels]
   unlist(color_vals, use.names = FALSE)
 }
-
-# Create a scheme from RColorBrewer palette
-#
-# @param name Palette named passed to RColorBrewer::brewer.pal
-# @return A list of six colors
-#
-brew_scheme <- function(name) {
-  x <- RColorBrewer::brewer.pal(9, name)
-  x <- as.list(x[3:8])
-  setNames(x, scheme_level_names())
+full_level_name <- function(x) {
+  switch(x,
+         l = "light", lh = "light_highlight",
+         m = "mid", mh = "mid_highlight",
+         d = "dark", dh = "dark_highlight"
+         )
 }
 
 
@@ -135,10 +136,10 @@ master_color_list <- list(
       "#007C7C"
     )
 )
-color_scheme_lookup <-
-  lapply(master_color_list, setNames,
-         nm = scheme_level_names())
-
+prepare_colors <- function(scheme) {
+  setNames(master_color_list[[scheme]],
+           scheme_level_names())
+}
 
 
 # instantiate aesthetics --------------------------------------------------

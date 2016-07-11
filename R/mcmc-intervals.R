@@ -189,7 +189,7 @@ mcmc_areas <- function(x,
       lineend = "round"
     )
     if (!color_by_rhat)
-      dens_args$color <- get_color("dark")
+      dens_args$color <- get_color("d")
     g_dens <- do.call("geom_line", dens_args)
 
     #shaded interval
@@ -234,7 +234,7 @@ mcmc_areas <- function(x,
       size = 1.5
     )
     if (!color_by_rhat)
-      segment_args$color <- get_color("mid")
+      segment_args$color <- get_color("m")
     g_point <- do.call("geom_segment", segment_args)
 
     # bottom line
@@ -248,7 +248,7 @@ mcmc_areas <- function(x,
       )
     )
     if (!color_by_rhat)
-      bottom_args$color <- get_color("dark")
+      bottom_args$color <- get_color("d")
     g_bottom <- do.call("geom_segment", bottom_args)
 
     graph <- graph + g_poly
@@ -259,8 +259,8 @@ mcmc_areas <- function(x,
     if (color_by_rhat) {
       graph <- graph + scale_fill_rhat() + scale_color_rhat()
     } else {
-      graph <- graph + scale_fill_gradient(low = get_color("light"),
-                                           high = get_color("light"),
+      graph <- graph + scale_fill_gradient(low = get_color("l"),
+                                           high = get_color("l"),
                                            guide = "none")
     }
 
@@ -274,7 +274,7 @@ mcmc_areas <- function(x,
         y = ~ y,
         yend = ~ y
       ),
-      colour = get_color("mid"),
+      colour = get_color("m"),
       lineend = "round")
 
     # inner interval
@@ -291,7 +291,7 @@ mcmc_areas <- function(x,
       show.legend = FALSE
     )
     if (!color_by_rhat)
-      segment_args$color <- get_color("dark")
+      segment_args$color <- get_color("d")
     graph <- graph + do.call("geom_segment", segment_args)
 
     # point estimate
@@ -306,8 +306,8 @@ mcmc_areas <- function(x,
       shape = 21
     )
     if (!color_by_rhat) {
-      point_args$color <- get_color("dark_highlight")
-      point_args$fill <- get_color("light")
+      point_args$color <- get_color("dh")
+      point_args$fill <- get_color("l")
     }
 
     if (!no_point_est)

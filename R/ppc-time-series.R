@@ -163,8 +163,8 @@ ppc_ts_plotter <- function(data, y_style = "both") {
   ) +
     geom_smooth(
       stat = "identity",
-      fill = get_color("light"),
-      color = get_color("light_highlight")
+      fill = get_color("l"),
+      color = get_color("lh")
     )
 
   if (y_style %in% c("both", "lines"))
@@ -180,8 +180,8 @@ ppc_ts_plotter <- function(data, y_style = "both") {
       geom_point(
         data = y_data,
         shape = 21,
-        fill = get_color("dark"),
-        color = get_color("dark_highlight"),
+        fill = get_color("d"),
+        color = get_color("dh"),
         size = 1
       )
 

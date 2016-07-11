@@ -81,8 +81,8 @@ mcmc_rhat_dot <- function(rhat, ..., size = NULL) {
     )
 
   .rhat_dots <- function(size = NULL) {
-    args <- list(color = get_color("mid_highlight"),
-                 fill = get_color("mid"),
+    args <- list(color = get_color("mh"),
+                 fill = get_color("m"),
                  shape = 21,
                  na.rm = TRUE)
     do.call("geom_point", c(args, size = size))
@@ -91,7 +91,7 @@ mcmc_rhat_dot <- function(rhat, ..., size = NULL) {
   graph +
     geom_segment(
       aes_(xend = ~x, yend = ~1),
-      color = get_color("light"),
+      color = get_color("l"),
       na.rm = TRUE
     ) +
     geom_hline(yintercept = 1) +

@@ -2,10 +2,10 @@ library(bayesplot)
 context("Aesthetics")
 
 test_that("getting and setting the color scheme works", {
-  expect_identical(get_color_scheme(), color_scheme_lookup[["red"]])
-  for (clr in names(color_scheme_lookup)) {
+  expect_identical(get_color_scheme(), prepare_colors("red"))
+  for (clr in names(master_color_list)) {
     set_color_scheme(clr)
-    expect_identical(get_color_scheme(), color_scheme_lookup[[clr]],
+    expect_identical(get_color_scheme(), prepare_colors(clr),
                      info = clr)
   }
 })
@@ -14,7 +14,7 @@ test_that("ppc_color returns correct color values", {
   scheme <- set_color_scheme("green")
   levs <- scheme_level_names()
 
-  ans <- unlist(color_scheme_lookup[["green"]][levs], use.names = FALSE)
+  ans <- unlist(prepare_colors("green")[levs], use.names = FALSE)
   expect_identical(get_color(levs), ans)
   for (lev in levs)
     expect_identical(get_color(lev), scheme[[lev]], info = lev)
