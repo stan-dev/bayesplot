@@ -30,7 +30,7 @@
 #' mcmc_nuts_accept_stat(np, lp)
 #' mcmc_nuts_accept_stat(np, lp, chain = 2)
 #'
-#' set_color_scheme("blues")
+#' set_color_scheme("blue")
 #' mcmc_nuts_energy(np)
 #' mcmc_nuts_energy(np, binwidth = .25, alpha = .8)
 #' }

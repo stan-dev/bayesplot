@@ -15,23 +15,16 @@
 #' yrep <- matrix(rnorm(2500), ncol = 100)
 #' ppc_stat_2d(y, yrep)
 #'
-#' set_color_scheme("greens")
+#' set_color_scheme("teal")
 #' ppc_stat_2d(y, yrep)
 #'
-#' set_color_scheme("purples")
+#' set_color_scheme("blue")
 #' ppc_hist(y, yrep[1:8,])
 #'
 set_color_scheme <-
-  function(scheme = c("reds", "blues", "greens", "greys", "purples")) {
-    x <- switch(
-      match.arg(scheme),
-      "reds" = scheme_reds(),
-      "blues" = scheme_blues(),
-      "greens" = scheme_greens(),
-      "greys" = scheme_greys(),
-      "purples" = scheme_purples()
-    )
-    for (lev in scheme_level_names())
+  function(scheme = c("red", "blue", "gray", "green", "pink", "teal")) {
+    x <- color_scheme_lookup[[scheme]]
+    for (lev in names(x))
       .bayesplot_aesthetics[[lev]] <- x[[lev]]
 
     invisible(x)
@@ -63,16 +56,6 @@ get_color <- function(levels) {
   unlist(color_vals, use.names = FALSE)
 }
 
-# Color scheme level names
-scheme_level_names <- function() {
-  c("light",
-    "light_highlight",
-    "mid",
-    "mid_highlight",
-    "dark",
-    "dark_highlight")
-}
-
 # Create a scheme from RColorBrewer palette
 #
 # @param name Palette named passed to RColorBrewer::brewer.pal
@@ -84,23 +67,80 @@ brew_scheme <- function(name) {
   setNames(x, scheme_level_names())
 }
 
-# Color schemes
-scheme_blues <- function() brew_scheme("Blues")
-scheme_greens <- function() brew_scheme("Greens")
-scheme_purples <- function() brew_scheme("Purples")
-scheme_greys <- function() brew_scheme("Greys")
-scheme_reds <- function() {
-  reds <-
-    list("#DCBCBC",
-         "#C79999",
-         "#B97C7C",
-         "#A25050",
-         "#8F2727",
-         "#7C0000")
-  setNames(reds, scheme_level_names())
+
+# Color scheme level names
+scheme_level_names <- function() {
+  c("light",
+    "light_highlight",
+    "mid",
+    "mid_highlight",
+    "dark",
+    "dark_highlight")
 }
+
+# Color schemes
+master_color_list <- list(
+  blue =
+    list(
+      "#bcccdc",
+      "#99b0c7",
+      "#7c9bb9",
+      "#5079a2",
+      "#275b8f",
+      "#003e7c"
+    ),
+  gray =
+    list(
+      "#D9D9D9",
+      "#BDBDBD",
+      "#969696",
+      "#737373",
+      "#525252",
+      "#252525"
+    ),
+  green =
+    list(
+      "#bcdcbc",
+      "#99c799",
+      "#7cb97c",
+      "#50a250",
+      "#278f27",
+      "#007c00"
+    ),
+  pink =
+    list(
+      "#dcbccc",
+      "#c799b0",
+      "#b97c9b",
+      "#a25079",
+      "#8f275b",
+      "#7c003e"
+    ),
+  red =
+    list(
+      "#DCBCBC",
+      "#C79999",
+      "#B97C7C",
+      "#A25050",
+      "#8F2727",
+      "#7C0000"
+    ),
+  teal =
+    list(
+      "#bcdcdc",
+      "#99c7c7",
+      "#7cb9b9",
+      "#50a2a2",
+      "#278f8f",
+      "#007C7C"
+    )
+)
+color_scheme_lookup <-
+  lapply(master_color_list, setNames,
+         nm = scheme_level_names())
+
 
 
 # instantiate aesthetics --------------------------------------------------
 .bayesplot_aesthetics <- new.env(parent = emptyenv())
-set_color_scheme("reds")
+set_color_scheme("red")
