@@ -2,9 +2,10 @@
 % Please edit documentation in R/utilities.R
 \name{bayesplot-utilities}
 \alias{bayesplot-utilities}
-\alias{hline0}
+\alias{hline_0}
 \alias{hline_at}
-\alias{vline0}
+\alias{lbub}
+\alias{vline_0}
 \alias{vline_at}
 \title{Convenience functions for adding details to plots}
 \usage{
@@ -12,9 +13,11 @@ vline_at(v, fun, ...)
 
 hline_at(v, fun, ...)
 
-vline0(...)
+vline_0(...)
 
-hline0(...)
+hline_0(...)
+
+lbub(p, med = TRUE)
 }
 \arguments{
 \item{v}{Either a numeric vector specifying the value(s) at which to draw the
@@ -26,41 +29,49 @@ vector.}
 
 \item{...}{Arguments passed to \code{\link[ggplot2]{geom_vline}} or
 \code{\link[ggplot2]{geom_hline}} to control the appearance of the line(s).}
+
+\item{p}{The probability mass (in [0,1]) to include in the interval.}
+
+\item{med}{Should the median also be included in addition to the lower
+and upper bounds of the interval?}
+}
+\value{
+\describe{
+\item{\code{vline_at}, \code{hline_at}}{
+These functions return an object created by either \code{geom_vline} or
+\code{geom_hline} and are used to add a vertical or horizontal line (at one
+or several values) to a ggplot object. If \code{fun} is missing then the
+lines are drawn at the values in \code{v}. If \code{fun} is specified then
+the lines are drawn at the values returned by \code{fun(v)}.
+
+\code{vline_0} and \code{hline_0} are wrappers for \code{vline_at} and
+\code{hline_at} with \code{v = 0} and \code{fun} missing.
+}
+\item{\code{lbub}}{
+The \code{lbub} function returns a \emph{function} that takes a single
+argument \code{x} and returns the lower and upper bounds (\code{lb},
+\code{ub}) of the \code{100*p}\% central interval of \code{x}, as well as the
+median (if \code{med} is \code{TRUE}).
+}
+}
 }
 \description{
 Convenience functions for adding details to plots (ggplot objects)
 }
-\details{
-\describe{
-\item{\code{vline_at}, \code{hline_at}}{
-Add a vertical or horizontal line at one or several value(s) to a ggplot
-object.
-}
-\item{\code{vline0}, \code{hline0}}{
-Add a vertical or horizontal line at zero to a ggplot object. These are
-wrappers for \code{vline_at} and \code{hline_at} with \code{v = 0} and
-\code{fun} missing.
-}
-}
-}
 \examples{
-y <- rnorm(100)
-yrep <- matrix(rnorm(10000), ncol = 100)
-group <- gl(4, 25, labels = LETTERS[1:4])
+x <- cbind(alpha = rnorm(300),
+           beta = rnorm(300, 0.5, 2),
+           sigma = rexp(300))
 
-x <- cbind(alpha = rnorm(100),
-           beta = rnorm(100, 0.5, 2),
-           sigma = rexp(100))
-
-set_color_scheme("greys")
+set_color_scheme("gray")
 (p <- mcmc_intervals(x))
 
-# vertical line at 0
-p + vline0()
-p + vline0(size = 0.15, color = "maroon")
+### vertical line at 0
+p + vline_0()
+p + vline_0(size = 0.15, color = "maroon")
 
 
-# vertical line(s) at specified values
+### vertical line(s) at specified values
 p + vline_at(c(-1, 0, 1), linetype = 3)
 
 my_lines <- vline_at(
@@ -71,12 +82,29 @@ my_lines <- vline_at(
 )
 p + my_lines
 
-# vertical line(s) at computed values
+### vertical line(s) at computed values
 p + vline_at(x, colMeans)
 p + vline_at(x, "colMeans",
              lty = 2, color = "seagreen", size = 0.25)
-p + vline_at(x, function(x) apply(x, 2, mean),
+p + vline_at(x, function(a) apply(a, 2, mean),
              color = rainbow(ncol(x)), size = 0.25)
+
+
+### using the lbub function
+set_color_scheme("blue")
+(p2 <- mcmc_hist(x, pars = "beta"))
+
+p2 + vline_at(x[, "beta"], fun = lbub(0.8))
+p2 + vline_at(x[, "beta"], lbub(0.8, med = FALSE))
+
+p2 +
+ vline_at(
+   x[, "beta"],
+   lbub(0.5),
+   color = "red4",
+   lty = c(2, 1, 2),
+   size = .5 * c(1,2,1)
+ )
 
 }
 
