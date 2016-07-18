@@ -5,7 +5,7 @@
 \alias{set_color_scheme}
 \title{Set or get the color scheme}
 \usage{
-set_color_scheme(scheme = c("reds", "blues", "greens", "greys", "purples"))
+set_color_scheme(scheme = c("red", "blue", "gray", "green", "pink", "teal"))
 
 get_color_scheme()
 }
@@ -30,10 +30,10 @@ y <- rnorm(100)
 yrep <- matrix(rnorm(2500), ncol = 100)
 ppc_stat_2d(y, yrep)
 
-set_color_scheme("greens")
+set_color_scheme("teal")
 ppc_stat_2d(y, yrep)
 
-set_color_scheme("purples")
+set_color_scheme("blue")
 ppc_hist(y, yrep[1:8,])
 
 }

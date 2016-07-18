@@ -115,10 +115,10 @@ ppc_scatter_plotter <-
       ) +
       geom_point(
         shape = 21,
-        fill = get_color("mid"),
-        color = get_color("mid_highlight"),
+        fill = get_color("m"),
+        color = get_color("mh"),
         size = 2.5
       ) +
       labs(x = x_lab, y = y_lab) +
-      theme_ppc()
+      theme_default()
   }

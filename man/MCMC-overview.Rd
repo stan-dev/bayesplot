@@ -33,8 +33,9 @@ versions of \pkg{bayesplot} will provide many more MCMC plotting functions.
 }
 \seealso{
 Other MCMC: \code{\link{MCMC-combos}},
+  \code{\link{MCMC-diagnostics}},
   \code{\link{MCMC-distributions}},
-  \code{\link{MCMC-intervals}}, \code{\link{MCMC-pairs}},
-  \code{\link{MCMC-traces}}
+  \code{\link{MCMC-intervals}}, \code{\link{MCMC-nuts}},
+  \code{\link{MCMC-pairs}}, \code{\link{MCMC-traces}}
 }
 

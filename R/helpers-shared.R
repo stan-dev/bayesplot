@@ -53,3 +53,7 @@ select_parameters <-
 
     unique(c(explicit, regex_pars))
   }
+
+
+# Return x if not NULL, otherwise y
+`%||%` <- function(x, y) if (!is.null(x)) x else y

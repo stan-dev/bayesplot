@@ -64,8 +64,8 @@ mcmc_trace <- function(x,
 
 #' @rdname MCMC-traces
 #' @export
-#' @param highlight An integer specifying one of the chains that will be
-#'   more visible than the others in the plot.
+#' @param highlight For \code{mcmc_trace_highlight}, an integer specifying one
+#'   of the chains that will be more visible than the others in the plot.
 mcmc_trace_highlight <- function(x,
                                  pars = character(),
                                  regex_pars = character(),
@@ -121,10 +121,11 @@ mcmc_trace_highlight <- function(x,
 
   data <- reshape2::melt(x, value.name = "Value")
   data$Chain <- factor(data$Chain)
+  n_chain <- length(unique(data$Chain))
+  n_iter <- length(unique(data$Iteration))
 
   geom_args <- list()
-  if (!is.null(size))
-    geom_args$size <- size
+  geom_args$size <- size %||% ifelse(style == "line", 1/3, 1)
 
   if (is.null(highlight)) {
     mapping <- aes_(x = ~ Iteration, y = ~ Value, color = ~ Chain)
@@ -149,21 +150,40 @@ mcmc_trace_highlight <- function(x,
     graph <- graph + coord_cartesian(xlim = window)
   }
 
+  graph <- graph +
+    do.call(paste0("geom_", style), geom_args) +
+    theme_default(legend_position =
+                    if (nlevels(data$Chain) > 1) "right" else "none")
+
   if (!is.null(highlight)) {
     graph <- graph +
       scale_alpha_discrete(range = c(.2, 1), guide = "none") +
-      scale_color_manual("", values = get_color(c("light", "dark")),
+      scale_color_manual("",
+                         values = get_color(c("l", "d")),
                          labels = c("Other chains", paste("Chain", highlight)))
+  } else {
+    graph <- graph +
+      scale_color_manual("Chain", values = chain_colors(n_chain))
   }
-
-  graph <- graph +
-    do.call(paste0("geom_", style), geom_args) +
-    theme_ppc(legend_position =
-                if (nlevels(data$Chain) > 1) "right" else "none")
 
   facet_args$facets <- ~ Parameter
   if (is.null(facet_args$scales))
-    facet_args$scales <- "free_y"
+    facet_args$scales <- "free"
 
   graph + do.call("facet_wrap", facet_args)
+}
+
+chain_colors <- function(n) {
+  all_clrs <- unlist(get_color_scheme())
+  clrs <- switch(
+    as.character(n),
+    "1" = get_color("m"),
+    "2" = get_color(c("l", "d")),
+    "3" = get_color(c("l", "m", "d")),
+    "4" = all_clrs[-c(3, 5)],
+    "5" = all_clrs[-3],
+    "6" = all_clrs,
+    rep_len(all_clrs, n)
+  )
+  unname(rev(clrs))
 }

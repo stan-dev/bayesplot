@@ -15,11 +15,12 @@
 #'   default is \code{0.9} for \code{mcmc_intervals} (90\% interval)
 #'   and \code{1} for \code{mcmc_areas}.
 #' @param point_est The point estimate to show. Either \code{"median"} (the
-#'   default) or \code{"mean"}.
+#'   default), \code{"mean"}, or \code{"none"}.
 #' @param rhat An optional numeric vector of \eqn{\hat{R}}{Rhat} estimates, with
 #'   one element per parameter included in \code{x}. If \code{rhat} is provided,
 #'   the intervals/areas and point estimates in the resulting plot are colored
-#'   based on \eqn{\hat{R}}{Rhat} value.
+#'   based on \eqn{\hat{R}}{Rhat} value. See \code{\link{r_hat}} for methods for
+#'   extracting \eqn{\hat{R}}{Rhat} estimates.
 #'
 #' @template return-ggplot
 #'
@@ -30,12 +31,31 @@
 #'    chains merged.
 #'   }
 #'   \item{\code{mcmc_areas}}{
-#'    Density plots of computed from posterior draws with all chains merged,
+#'    Density plots computed from posterior draws with all chains merged,
 #'    with uncertainty intervals shown as shaded areas under the curves.
 #'   }
 #' }
 #'
 #' @template seealso-color-scheme
+#'
+#' @examples
+#' x <- cbind(alpha = rnorm(100),
+#'            beta = rnorm(100, 0.5, 2),
+#'            sigma = rexp(100))
+#' mcmc_intervals(x)
+#' mcmc_areas(x)
+#'
+#' # color by rhat value
+#' mcmc_intervals(x, rhat = c(1, 1.07, 1.3))
+#'
+#' \dontrun{
+#' library(rstanarm)
+#' fit <- stan_glm(mpg ~ 0 + wt + factor(cyl), data = mtcars, iter = 500)
+#' x <- as.matrix(fit)
+#' mcmc_intervals(x, point_est = "mean", prob = 0.8, prob_outer = 0.95)
+#' mcmc_areas(x, regex_pars = "cyl")
+#' }
+#'
 #'
 NULL
 
@@ -48,7 +68,7 @@ mcmc_intervals <- function(x,
                            ...,
                            prob = 0.5,
                            prob_outer = 0.9,
-                           point_est = c("median", "mean"),
+                           point_est = c("median", "mean", "none"),
                            rhat = numeric()) {
   x <- prepare_mcmc_array(x, pars, regex_pars, transformations)
   .mcmc_intervals(
@@ -70,7 +90,7 @@ mcmc_areas <- function(x,
                        ...,
                        prob = 0.5,
                        prob_outer = 1,
-                       point_est = c("median", "mean"),
+                       point_est = c("median", "mean", "none"),
                        rhat = numeric()) {
   x <- prepare_mcmc_array(x, pars, regex_pars, transformations)
   .mcmc_intervals(
@@ -89,12 +109,9 @@ mcmc_areas <- function(x,
 .mcmc_intervals <- function(x,
                            prob_inner = 0.5,
                            prob_outer = 0.95,
-                           point_est = c("median", "mean"),
+                           point_est = c("median", "mean", "none"),
                            rhat = numeric(),
                            show_density = FALSE) {
-                           # rhat_values = c(),
-                           # color_by_rhat = FALSE) {
-
   n_param <- ncol(x)
   parnames <- colnames(x)
 
@@ -113,7 +130,9 @@ mcmc_areas <- function(x,
 
   data <- data.frame(parnames, y, quantiles)
   colnames(data) <- c("parameter", "y", "ll", "l", "m", "h", "hh")
-  if (match.arg(point_est) == "mean")
+  point_est <- match.arg(point_est)
+  no_point_est <- identical(point_est, "none")
+  if (point_est == "mean")
     data$m <- unname(colMeans(x))
 
 
@@ -132,68 +151,70 @@ mcmc_areas <- function(x,
 
   graph <- ggplot(data)
 
-  if (findInterval(0, x_lim))
-    graph <- graph + geom_vline(xintercept = 0, color = "gray90", size = 0.5)
-
   if (show_density) {
+    # faint vertical line at zero if zero is within x_lim
+    if (findInterval(0, x_lim))
+      graph <- graph + vline_0(color = "gray90", size = 0.5)
+
 
     # density outline
-    nPoint.den <- 512
-    y.den <- matrix(0, nrow = nPoint.den, ncol = n_param)
-    x.den <- matrix(0, nrow = nPoint.den, ncol = n_param)
+    n_dens_pts <- 512
+    y_dens <- matrix(0, nrow = n_dens_pts, ncol = n_param)
+    x_dens <- matrix(0, nrow = n_dens_pts, ncol = n_param)
     for (i in 1:n_param) {
-      d.temp <- density(x[, i],
+      d_temp <- density(x[, i],
                         from = quantiles[i, 1],
                         to = quantiles[i, 5],
-                        n = nPoint.den)
-      x.den[, i] <- d.temp$x
-      y.max <- max(d.temp$y)
-      y.den[, i] <- d.temp$y / y.max * 0.8 + y[i]
+                        n = n_dens_pts)
+      x_dens[, i] <- d_temp$x
+      y_max <- max(d_temp$y)
+      y_dens[, i] <- d_temp$y / y_max * 0.8 + y[i]
     }
-    df_den <- data.frame(
-      x = as.vector(x.den),
-      y = as.vector(y.den),
-      name = rep(parnames, each = nPoint.den)
+    df_dens <- data.frame(
+      x = as.vector(x_dens),
+      y = as.vector(y_dens),
+      name = rep(parnames, each = n_dens_pts)
     )
     if (color_by_rhat)
-      df_den$rhat <- rep(rhat, each = nPoint.den)
+      df_dens$rhat <- rep(rhat, each = n_dens_pts)
 
-    den_args <- list(
-      data = df_den,
+    dens_args <- list(
+      data = df_dens,
       mapping = aes_(
         x = ~ x,
         y = ~ y,
         group = ~ name,
         color = if (color_by_rhat) ~ rhat else NULL
-      )
+      ),
+      lineend = "round"
     )
     if (!color_by_rhat)
-      den_args$color <- get_color("dark")
-    p_den <- do.call("geom_line", den_args)
+      dens_args$color <- get_color("d")
+    g_dens <- do.call("geom_line", dens_args)
 
     #shaded interval
-    y.poly <- matrix(0, nrow = nPoint.den + 2, ncol = n_param)
-    x.poly <- matrix(0, nrow = nPoint.den + 2, ncol = n_param)
+    y_poly <- matrix(0, nrow = n_dens_pts + 2, ncol = n_param)
+    x_poly <- matrix(0, nrow = n_dens_pts + 2, ncol = n_param)
     for (i in 1:n_param) {
-      d.temp <- density(x[, i],
+      d_temp <- density(x[, i],
                         from = quantiles[i, 2],
                         to = quantiles[i, 4],
-                        n = nPoint.den)
-      x.poly[, i] <-
-        c(d.temp$x[1], as.vector(d.temp$x), d.temp$x[nPoint.den])
-      y.max <- max(d.temp$y)
-      y.poly[, i] <-
-        as.vector(c(0, as.vector(d.temp$y) / y.max * 0.8, 0) + y[i])
+                        n = n_dens_pts)
+      x_poly[, i] <-
+        c(d_temp$x[1], as.vector(d_temp$x), d_temp$x[n_dens_pts])
+      y_max <- max(d_temp$y)
+      y_poly[, i] <-
+        as.vector(c(0, as.vector(d_temp$y) / y_max * 0.8, 0) + y[i])
     }
     df_poly <-
       data.frame(
-        x = as.vector(x.poly),
-        y = as.vector(y.poly),
-        name = rep(parnames, each = nPoint.den + 2)
+        x = as.vector(x_poly),
+        y = as.vector(y_poly),
+        name = rep(parnames, each = n_dens_pts + 2)
       )
     if (color_by_rhat)
-      df_poly$rhat <- rep(rhat, each = nPoint.den + 2)
-    p_poly <-
+      df_poly$rhat <- rep(rhat, each = n_dens_pts + 2)
+    g_poly <-
       geom_polygon(data = df_poly, aes_(
         x = ~ x,
         y = ~ y,
@@ -213,8 +234,8 @@ mcmc_areas <- function(x,
       size = 1.5
     )
     if (!color_by_rhat)
-      segment_args$color <- get_color("mid")
-    p_point <- do.call("geom_segment", segment_args)
+      segment_args$color <- get_color("m")
+    g_point <- do.call("geom_segment", segment_args)
 
     # bottom line
     bottom_args <- list(
@@ -227,20 +248,19 @@ mcmc_areas <- function(x,
       )
     )
     if (!color_by_rhat)
-      bottom_args$color <- get_color("dark")
-    p_bottom <- do.call("geom_segment", bottom_args)
+      bottom_args$color <- get_color("d")
+    g_bottom <- do.call("geom_segment", bottom_args)
 
-    graph <- graph +
-      p_poly +
-      p_point +
-      p_bottom +
-      p_den
+    graph <- graph + g_poly
+    if (!no_point_est)
+      graph <- graph + g_point
+    graph <- graph + g_bottom + g_dens
 
     if (color_by_rhat) {
       graph <- graph + scale_fill_rhat() + scale_color_rhat()
     } else {
-      graph <- graph + scale_fill_gradient(low = get_color("light"),
-                                           high = get_color("light"),
+      graph <- graph + scale_fill_gradient(low = get_color("l"),
+                                           high = get_color("l"),
                                            guide = "none")
     }
 
@@ -254,7 +274,8 @@ mcmc_areas <- function(x,
         y = ~ y,
         yend = ~ y
       ),
-      colour = get_color("mid"))
+      colour = get_color("m"),
+      lineend = "round")
 
     # inner interval
     segment_args <- list(
@@ -266,10 +287,11 @@ mcmc_areas <- function(x,
         color = if (color_by_rhat) ~ rhat else NULL
       ),
       size = 2,
+      lineend = "round",
       show.legend = FALSE
     )
     if (!color_by_rhat)
-      segment_args$color <- get_color("dark")
+      segment_args$color <- get_color("d")
     graph <- graph + do.call("geom_segment", segment_args)
 
     # point estimate
@@ -284,11 +306,12 @@ mcmc_areas <- function(x,
       shape = 21
     )
     if (!color_by_rhat) {
-      point_args$color <- get_color("dark_highlight")
-      point_args$fill <- get_color("light")
+      point_args$color <- get_color("dh")
+      point_args$fill <- get_color("l")
     }
 
-    graph <- graph + do.call("geom_point", point_args)
+    if (!no_point_est)
+      graph <- graph + do.call("geom_point", point_args)
 
     if (color_by_rhat)
       graph <- graph + scale_color_rhat() + scale_fill_rhat()
@@ -301,6 +324,9 @@ mcmc_areas <- function(x,
       limits = c(0.5, n_param + 1)
     ) +
     xlim(x_lim) +
-    theme_ppc(y_lab = FALSE, x_lab = FALSE,
-              legend_position = ifelse(color_by_rhat, "top", "none"))
+    theme_default(
+      y_lab = FALSE,
+      x_lab = FALSE,
+      legend_position = ifelse(color_by_rhat, "top", "none")
+    )
 }

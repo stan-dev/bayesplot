@@ -87,12 +87,12 @@ ppc_stat <- function(y, yrep, stat = "mean", ..., binwidth = NULL) {
     ) +
     scale_color_manual(
       name = "",
-      values = get_color(c("dark", "light")),
+      values = get_color(c("d", "l")),
       labels = c(Ty_label(), Tyrep_label())
     ) +
     xlab(paste("Stat =", stat)) +
     dont_expand_y_axis() +
-    theme_ppc(
+    theme_default(
       y_text = FALSE,
       legend_position = "right"
     )
@@ -124,13 +124,13 @@ ppc_stat_grouped <-
       geom_vline(
         data = plot_data[is_y, , drop = FALSE],
         mapping = aes_(xintercept = ~ value),
-        color = get_color("dark"),
+        color = get_color("d"),
         size = 2
       ) +
       facet_wrap("group", scales = "free") +
       xlab(paste("Stat =", stat)) +
       dont_expand_y_axis() +
-      theme_ppc(y_text = FALSE)
+      theme_default(y_text = FALSE)
   }
 
 
@@ -156,8 +156,8 @@ ppc_stat_2d <- function(y, yrep, stat = c("mean", "sd"), ...) {
     geom_point(
       shape = 21,
       size = 2,
-      fill = get_color("light"),
-      color = get_color("light_highlight")
+      fill = get_color("l"),
+      color = get_color("lh")
     ) +
     annotate(
       geom = "segment",
@@ -167,7 +167,7 @@ ppc_stat_2d <- function(y, yrep, stat = c("mean", "sd"), ...) {
       yend = c(T_y2, T_y2),
       linetype = 2,
       size = 0.4,
-      color = get_color("dark_highlight")
+      color = get_color("dh")
     ) +
     geom_point(
       data = data.frame(x = T_y1, y = T_y2),
@@ -183,19 +183,19 @@ ppc_stat_2d <- function(y, yrep, stat = c("mean", "sd"), ...) {
     ) +
     scale_fill_manual(
       name = "",
-      values = c('Ty' = get_color("dark")),
+      values = c('Ty' = get_color("d")),
       labels = c('Ty' = Ty_label())
     ) +
     scale_color_manual(
       name = "",
-      values = c('Ty' = get_color("dark_highlight")),
+      values = c('Ty' = get_color("dh")),
       labels = c('Ty' = Ty_label())
     ) +
     labs(
       x = paste("Stat =", stat[1]),
       y = paste("Stat =", stat[2])
     ) +
-    theme_ppc(
+    theme_default(
       y_text = TRUE,
       legend_position = "right"
     )
@@ -205,8 +205,8 @@ ppc_stat_2d <- function(y, yrep, stat = c("mean", "sd"), ...) {
 # helpers -----------------------------------------------------------------
 .ppc_stat_histogram <- function(binwidth) {
   geom_histogram(
-    fill = get_color("light"),
-    color = get_color("light_highlight"),
+    fill = get_color("l"),
+    color = get_color("lh"),
     size = .25,
     na.rm = TRUE,
     binwidth = binwidth

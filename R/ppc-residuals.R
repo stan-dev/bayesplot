@@ -78,13 +78,13 @@ ppc_resid <- function(y, yrep, ..., binwidth = NULL) {
   graph +
     geom_histogram(
       mapping = aes_(y = ~ ..density..),
-      fill = get_color("dark"),
-      color = get_color("dark_highlight"),
+      fill = get_color("d"),
+      color = get_color("dh"),
       size = 0.25,
       binwidth = binwidth
     ) +
     dont_expand_y_axis() +
-    theme_ppc(y_text = FALSE)
+    theme_default(y_text = FALSE)
 }
 
 #' @rdname PPC-residuals
@@ -134,19 +134,19 @@ ppc_resid_binned <- function(y, Ey, ...) {
     ) +
     geom_path(
       mapping = aes_(y = ~ se2),
-      color = get_color("light"),
+      color = get_color("l"),
       size = 1
     ) +
     geom_path(
       mapping = aes_(y = ~ -se2),
-      color = get_color("light"),
+      color = get_color("l"),
       size = 1
     ) +
     geom_point(
       mapping = aes_(y = ~ ybar),
       shape = 21,
-      fill = get_color("dark"),
-      color = get_color("dark_highlight")
+      fill = get_color("d"),
+      color = get_color("dh")
     ) +
     labs(
       x = "Expected Values",
@@ -156,7 +156,7 @@ ppc_resid_binned <- function(y, Ey, ...) {
   if (n > 1)
     graph <- graph + facet_wrap_parsed("rep")
 
-  graph + theme_ppc()
+  graph + theme_default()
 }
 
 binner <- function(rep_id, ey, r, nbins) {

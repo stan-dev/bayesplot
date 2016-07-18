@@ -8,11 +8,11 @@
 \usage{
 mcmc_intervals(x, pars = character(), regex_pars = character(),
   transformations = list(), ..., prob = 0.5, prob_outer = 0.9,
-  point_est = c("median", "mean"), rhat = numeric())
+  point_est = c("median", "mean", "none"), rhat = numeric())
 
 mcmc_areas(x, pars = character(), regex_pars = character(),
   transformations = list(), ..., prob = 0.5, prob_outer = 1,
-  point_est = c("median", "mean"), rhat = numeric())
+  point_est = c("median", "mean", "none"), rhat = numeric())
 }
 \arguments{
 \item{x}{A 3-D array, matrix, or data frame of posterior draws:
@@ -59,12 +59,13 @@ default is \code{0.9} for \code{mcmc_intervals} (90\% interval)
 and \code{1} for \code{mcmc_areas}.}
 
 \item{point_est}{The point estimate to show. Either \code{"median"} (the
-default) or \code{"mean"}.}
+default), \code{"mean"}, or \code{"none"}.}
 
 \item{rhat}{An optional numeric vector of \eqn{\hat{R}}{Rhat} estimates, with
 one element per parameter included in \code{x}. If \code{rhat} is provided,
 the intervals/areas and point estimates in the resulting plot are colored
-based on \eqn{\hat{R}}{Rhat} value.}
+based on \eqn{\hat{R}}{Rhat} value. See \code{\link{r_hat}} for methods for
+extracting \eqn{\hat{R}}{Rhat} estimates.}
 }
 \value{
 A ggplot object that can be further customized using the
@@ -81,17 +82,38 @@ Plot interval estimates from MCMC draws
    chains merged.
   }
   \item{\code{mcmc_areas}}{
-   Density plots of computed from posterior draws with all chains merged,
+   Density plots computed from posterior draws with all chains merged,
    with uncertainty intervals shown as shaded areas under the curves.
   }
 }
+}
+\examples{
+x <- cbind(alpha = rnorm(100),
+           beta = rnorm(100, 0.5, 2),
+           sigma = rexp(100))
+mcmc_intervals(x)
+mcmc_areas(x)
+
+# color by rhat value
+mcmc_intervals(x, rhat = c(1, 1.07, 1.3))
+
+\dontrun{
+library(rstanarm)
+fit <- stan_glm(mpg ~ 0 + wt + factor(cyl), data = mtcars, iter = 500)
+x <- as.matrix(fit)
+mcmc_intervals(x, point_est = "mean", prob = 0.8, prob_outer = 0.95)
+mcmc_areas(x, regex_pars = "cyl")
+}
+
+
 }
 \seealso{
 \code{\link{set_color_scheme}} to change the aesthetic theme
 
 Other MCMC: \code{\link{MCMC-combos}},
+  \code{\link{MCMC-diagnostics}},
   \code{\link{MCMC-distributions}},
-  \code{\link{MCMC-overview}}, \code{\link{MCMC-pairs}},
-  \code{\link{MCMC-traces}}
+  \code{\link{MCMC-nuts}}, \code{\link{MCMC-overview}},
+  \code{\link{MCMC-pairs}}, \code{\link{MCMC-traces}}
 }
 
