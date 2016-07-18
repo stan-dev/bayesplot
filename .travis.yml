@@ -7,6 +7,7 @@ sudo: false
 cache: packages
 
 r_github_packages:
+  - HenrikBengtsson/matrixStats
   - jimhester/covr
 
 after_success:
