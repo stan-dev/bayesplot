@@ -250,6 +250,7 @@ validate_transformations <-
         paste(names(transformations)[not_found], collapse = ", ")
       )
     }
+    return(transformations)
   }
 
 
