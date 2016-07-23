@@ -1,6 +1,7 @@
-#' Convenience functions for adding details to plots
+#' Convenience functions for adding or changing plot details
 #'
-#' Convenience functions for adding details to plots (ggplot objects)
+#' Convenience functions for adding or changing details of plots that are ggplot
+#' objects.
 #'
 #' @name bayesplot-utilities
 #'
@@ -26,6 +27,16 @@
 #' The \code{facet_fontsize} function returns a ggplot2 theme object that can
 #' be added to an existing plot (ggplot object) to change the size of the text
 #' in facet labels.
+#' }
+#' \item{\code{axis_fontsize}}{
+#' The \code{axis_fontsize} function returns a ggplot2 theme object that can be
+#' added to an existing plot (ggplot object) to change the size of the axis
+#' text.
+#' }
+#' \item{\code{axis_ticksize}}{
+#' The \code{axis_ticksize} function returns a ggplot2 theme object that can be
+#' added to an existing plot (ggplot object) to change the size of the axis tick
+#' marks.
 #' }
 #' }
 #'
@@ -66,22 +77,30 @@
 #' set_color_scheme("blue")
 #' (p2 <- mcmc_hist(x, pars = "beta[1]"))
 #'
-#' p2 + vline_at(x[, "beta[1]"], fun = lbub(0.8))
-#' p2 + vline_at(x[, "beta[1]"], lbub(0.8, med = FALSE))
+#' b1 <- x[, "beta[1]"]
+#' p2 + vline_at(b1, fun = lbub(0.8))
+#' p2 + vline_at(b1, lbub(0.8, med = FALSE))
 #'
 #' p2 +
 #'  vline_at(
-#'    x[, "beta[1]"],
+#'    b1,
 #'    lbub(0.5),
 #'    color = "red4",
 #'    lty = c(2, 1, 2),
 #'    size = .5 * c(1,2,1)
 #'  )
 #'
-#'
-#' ### increasing the font size in facets
+#' ### control font size of facet text
 #' p2 + facet_fontsize(rel(1.5)) # increase by factor of 1.5
 #' p2 + facet_fontsize(15) # set to 15pt
+#'
+#' ### control font size of axis text
+#' p2 + axis_fontsize(rel(1.1))
+#' p2 + axis_fontsize(8)
+#'
+#' ### control size of axis tick marks
+#' p2 + axis_ticksize(.25)
+#'
 #'
 NULL
 
@@ -167,3 +186,18 @@ facet_fontsize <- function(fontsize = rel(1)) {
   theme(strip.text = element_text(size = fontsize))
 }
 
+#' @rdname bayesplot-utilities
+#' @export
+axis_fontsize <- function(fontsize = rel(1)) {
+  theme(axis.text = element_text(size = fontsize))
+}
+
+#' @rdname bayesplot-utilities
+#' @export
+#' @param ticksize A value to use for the \code{size} argument of
+#'   \code{\link[ggplot2]{element_line}}. The default of zero means
+#'   no tick marks.
+#'
+axis_ticksize <- function(ticksize = 0) {
+  theme(axis.ticks = element_line(size = ticksize))
+}
