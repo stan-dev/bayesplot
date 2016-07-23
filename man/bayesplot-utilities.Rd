@@ -2,9 +2,11 @@
 % Please edit documentation in R/utilities.R
 \name{bayesplot-utilities}
 \alias{bayesplot-utilities}
+\alias{facet_fontsize}
 \alias{hline_0}
 \alias{hline_at}
 \alias{lbub}
+\alias{rel}
 \alias{vline_0}
 \alias{vline_at}
 \title{Convenience functions for adding details to plots}
@@ -18,6 +20,8 @@ vline_0(...)
 hline_0(...)
 
 lbub(p, med = TRUE)
+
+facet_fontsize(fontsize = rel(1))
 }
 \arguments{
 \item{v}{Either a numeric vector specifying the value(s) at which to draw the
@@ -34,6 +38,9 @@ vector.}
 
 \item{med}{Should the median also be included in addition to the lower
 and upper bounds of the interval?}
+
+\item{fontsize}{Either a fontsize (in pts) or a relative fontsize (via a call
+to \code{\link[ggplot2]{rel}}). The default \code{rel(1)} has no effect.}
 }
 \value{
 \describe{
@@ -53,17 +60,22 @@ argument \code{x} and returns the lower and upper bounds (\code{lb},
 \code{ub}) of the \code{100*p}\% central interval of \code{x}, as well as the
 median (if \code{med} is \code{TRUE}).
 }
+\item{\code{facet_fontsize}}{
+The \code{facet_fontsize} function returns a ggplot2 theme object that can
+be added to an existing plot (ggplot object) to change the size of the text
+in facet labels.
+}
 }
 }
 \description{
 Convenience functions for adding details to plots (ggplot objects)
 }
 \examples{
-x <- cbind(alpha = rnorm(300),
-           beta = rnorm(300, 0.5, 2),
-           sigma = rexp(300))
-
 set_color_scheme("gray")
+x <- fake_draws(chains = 1)
+dim(x)
+colnames(x)
+
 (p <- mcmc_intervals(x))
 
 ### vertical line at 0
@@ -92,19 +104,24 @@ p + vline_at(x, function(a) apply(a, 2, mean),
 
 ### using the lbub function
 set_color_scheme("blue")
-(p2 <- mcmc_hist(x, pars = "beta"))
+(p2 <- mcmc_hist(x, pars = "beta[1]"))
 
-p2 + vline_at(x[, "beta"], fun = lbub(0.8))
-p2 + vline_at(x[, "beta"], lbub(0.8, med = FALSE))
+p2 + vline_at(x[, "beta[1]"], fun = lbub(0.8))
+p2 + vline_at(x[, "beta[1]"], lbub(0.8, med = FALSE))
 
 p2 +
  vline_at(
-   x[, "beta"],
+   x[, "beta[1]"],
    lbub(0.5),
    color = "red4",
    lty = c(2, 1, 2),
    size = .5 * c(1,2,1)
  )
+
+
+### increasing the font size in facets
+p2 + facet_fontsize(rel(1.5)) # increase by factor of 1.5
+p2 + facet_fontsize(15) # set to 15pt
 
 }
 

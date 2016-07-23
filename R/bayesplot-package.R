@@ -26,4 +26,5 @@
 #' @import ggplot2
 #' @import stats
 #'
+#' @export rel
 NULL
