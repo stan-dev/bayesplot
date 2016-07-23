@@ -42,14 +42,14 @@
 #' }
 #'
 #' @examples
-#' y <- rnorm(30)
-#' yrep <- matrix(rnorm(3000), ncol = 30)
+#' y <- rnorm(100)
+#' yrep <- matrix(rnorm(30000), ncol = 100)
 #' ppc_stat(y, yrep)
-#' ppc_stat(y, yrep, stat = "var", binwidth = 0.1)
+#' ppc_stat(y, yrep, stat = "var", binwidth = .05) + no_legend()
 #' ppc_stat_2d(y, yrep)
-#' ppc_stat_2d(y, yrep, stat = c("median", "mean"))
+#' ppc_stat_2d(y, yrep, stat = c("median", "mean")) + no_legend()
 #'
-#' group <- gl(3, 10, labels = LETTERS[1:3])
+#' group <- gl(3, 10, length = 100, labels = LETTERS[1:3])
 #' ppc_stat_grouped(y, yrep, group)
 #'
 #' # use your own function to compute test statistics
@@ -82,12 +82,12 @@ ppc_stat <- function(y, yrep, stat = "mean", ..., binwidth = NULL) {
     geom_vline(
       data = data.frame(t = T_y),
       mapping = aes_(xintercept = ~ t, color = ~ factor(t)),
-      size = 2,
+      size = 1.5,
       show.legend = TRUE
     ) +
     scale_color_manual(
       name = "",
-      values = get_color(c("d", "l")),
+      values = get_color(c("dh", "l")),
       labels = c(Ty_label(), Tyrep_label())
     ) +
     xlab(paste("Stat =", stat)) +
@@ -124,8 +124,8 @@ ppc_stat_grouped <-
       geom_vline(
         data = plot_data[is_y, , drop = FALSE],
         mapping = aes_(xintercept = ~ value),
-        color = get_color("d"),
-        size = 2
+        color = get_color("dh"),
+        size = 1.5
       ) +
       facet_wrap("group", scales = "free") +
       xlab(paste("Stat =", stat)) +

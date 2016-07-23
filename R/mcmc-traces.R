@@ -35,6 +35,33 @@
 #'
 #' @template seealso-color-scheme
 #'
+#' @examples
+#' # some fake parameter draws to use for demonstration
+#' x <- fake_draws(n = 500, chains = 4, params = 6)
+#' dim(x)
+#' dimnames(x)
+#'
+#' mcmc_trace(x)
+#' mcmc_trace_highlight(x, chain = 2)
+#'
+#' # use traditional ggplot discrete color scale
+#' mcmc_trace(x) + ggplot2::scale_color_hue()
+#'
+#' # zoom in on a window of iterations
+#' mcmc_trace(x, window = c(100, 200))
+#'
+#' # parse facet label text
+#' p <- mcmc_trace(
+#'  x,
+#'  regex_pars = "beta\\[[1,3]\\]",
+#'  facet_args = list(labeller = ggplot2::label_parsed)
+#' )
+#' # plot with bigger facet fontsize and add tick marks
+#' p + facet_fontsize(15) + axis_ticksize(.5)
+#'
+#' # mark first 200 draws as warmup
+#' mcmc_trace(x, n_warmup = 200)
+#'
 NULL
 
 #' @rdname MCMC-traces
@@ -142,7 +169,11 @@ mcmc_trace_highlight <- function(x,
       annotate("rect",
                xmin = -Inf, xmax = n_warmup,
                ymin = -Inf, ymax = Inf,
-               fill = "lightgray")
+               # fill = NA,
+               size = 2,
+               color = "gray95",
+               fill = "gray95",
+               alpha = 0.5)
   }
 
   if (!is.null(window)) {
@@ -152,8 +183,11 @@ mcmc_trace_highlight <- function(x,
 
   graph <- graph +
     do.call(paste0("geom_", style), geom_args) +
-    theme_default(legend_position =
-                    if (nlevels(data$Chain) > 1) "right" else "none")
+    theme_default(
+      x_lab = FALSE,
+      y_lab = FALSE,
+      legend_position = if (nlevels(data$Chain) > 1) "right" else "none"
+    )
 
   if (!is.null(highlight)) {
     graph <- graph +

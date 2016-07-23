@@ -119,7 +119,7 @@ set_color_scheme("blue")
 mcmc_intervals(x, rhat = fake_rhat_values)
 
 \dontrun{
-# Example using fitted model from rstanarm package
+# example using fitted model from rstanarm package
 library(rstanarm)
 fit <- stan_glm(mpg ~ 0 + wt + factor(cyl), data = mtcars, iter = 500)
 x <- as.matrix(fit)

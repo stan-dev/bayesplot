@@ -55,6 +55,37 @@ A gtable object (the result of calling
 \description{
 Combination plots
 }
+\examples{
+# some fake parameter draws to use for demonstration
+x <- fake_draws()
+dim(x)
+dimnames(x)
+
+set_color_scheme("blue")
+mcmc_combo(x)
+mcmc_combo(x, widths = c(2, 1))
+
+# show log(sigma) instead of sigma
+mcmc_combo(x, transformations = list(sigma = "log"))
+
+# change the type of plots
+mcmc_combo(
+ x,
+ combo = c("intervals", "areas"),
+ prob = 0.8,
+ prob_outer = 0.95,
+ transformations = list(sigma = "log")
+)
+
+# also change ggplot theme
+mcmc_combo(
+ x,
+ pars = c("sigma", "alpha"),
+ combo = c("trace", "areas"),
+ gg_theme = ggplot2::theme_gray()
+)
+
+}
 \seealso{
 \code{\link{set_color_scheme}} to change the aesthetic theme
 

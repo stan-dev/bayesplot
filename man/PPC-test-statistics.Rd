@@ -73,14 +73,14 @@ For Binomial data, the plots will typically be most useful if
 }
 }
 \examples{
-y <- rnorm(30)
-yrep <- matrix(rnorm(3000), ncol = 30)
+y <- rnorm(100)
+yrep <- matrix(rnorm(30000), ncol = 100)
 ppc_stat(y, yrep)
-ppc_stat(y, yrep, stat = "var", binwidth = 0.1)
+ppc_stat(y, yrep, stat = "var", binwidth = .05) + no_legend()
 ppc_stat_2d(y, yrep)
-ppc_stat_2d(y, yrep, stat = c("median", "mean"))
+ppc_stat_2d(y, yrep, stat = c("median", "mean")) + no_legend()
 
-group <- gl(3, 10, labels = LETTERS[1:3])
+group <- gl(3, 10, length = 100, labels = LETTERS[1:3])
 ppc_stat_grouped(y, yrep, group)
 
 # use your own function to compute test statistics

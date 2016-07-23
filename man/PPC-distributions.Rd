@@ -58,9 +58,9 @@ For Binomial data, the plots will typically be most useful if
 
 \describe{
   \item{\code{ppc_dens_overlay}}{
-   The kernel density estimate for \code{y} is plotted with the area under
-   the curve shaded. The density estimates of each dataset (row) in
-   \code{yrep} are then overlaid but unshaded.
+   Kernel density estimates of each dataset (row) in \code{yrep} are
+   overlaid, with the distribution of \code{y} itself on top (and in a darker
+   shade).
   }
   \item{\code{ppc_hist}}{
    A separate histogram is plotted for \code{y} and each dataset (row) in
@@ -83,10 +83,12 @@ For Binomial data, the plots will typically be most useful if
 y <- rnorm(100)
 yrep <- matrix(rnorm(2500), ncol = 100)
 ppc_dens_overlay(y, yrep)
-ppc_hist(y, yrep[1:8, ])
+ppc_hist(y, yrep[1:8, ]) + facet_fontsize(8)
 
+set_color_scheme("blue")
 group <- gl(4, 25, labels = LETTERS[1:4])
-ppc_violin_grouped(y, yrep, group)
+ppc_violin_grouped(y, yrep, group) +
+ axis_ticksize(.75)
 
 }
 \references{

@@ -17,9 +17,9 @@
 #' @section Plot Descriptions:
 #' \describe{
 #'   \item{\code{ppc_dens_overlay}}{
-#'    The kernel density estimate for \code{y} is plotted with the area under
-#'    the curve shaded. The density estimates of each dataset (row) in
-#'    \code{yrep} are then overlaid but unshaded.
+#'    Kernel density estimates of each dataset (row) in \code{yrep} are
+#'    overlaid, with the distribution of \code{y} itself on top (and in a darker
+#'    shade).
 #'   }
 #'   \item{\code{ppc_hist}}{
 #'    A separate histogram is plotted for \code{y} and each dataset (row) in
@@ -46,10 +46,12 @@
 #' y <- rnorm(100)
 #' yrep <- matrix(rnorm(2500), ncol = 100)
 #' ppc_dens_overlay(y, yrep)
-#' ppc_hist(y, yrep[1:8, ])
+#' ppc_hist(y, yrep[1:8, ]) + facet_fontsize(8)
 #'
+#' set_color_scheme("blue")
 #' group <- gl(4, 25, labels = LETTERS[1:4])
-#' ppc_violin_grouped(y, yrep, group)
+#' ppc_violin_grouped(y, yrep, group) +
+#'  axis_ticksize(.75)
 #'
 NULL
 
@@ -109,22 +111,48 @@ ppc_dens_overlay <- function(y, yrep, ...) {
   yrep <- validate_yrep(yrep, y)
 
   ggplot(
-    data = melt_and_stack(y, yrep),
+    data = melt_yrep(yrep),
     mapping = aes_(
       x = ~ value,
-      group = ~ rep_id,
-      color = ~ is_y,
-      fill = ~ is_y,
-      size = ~ is_y
+      group = ~ rep_id
     )
   ) +
-    geom_density() +
-    scale_color_manual(values = get_color(c("l", "dh"))) +
-    scale_fill_manual(values = c(NA, get_color("d"))) +
-    scale_size_manual(values = c(0.25, 1)) +
+    geom_density(
+      color = get_color("l"),
+      fill = NA,
+      size = 0.25,
+      alpha = 0.1
+    ) +
+    geom_density(
+      data = data.frame(y = y),
+      mapping = aes_(x = ~ y),
+      inherit.aes = FALSE,
+      color = get_color("d"),
+      fill = NA,
+      size = 1
+    ) +
     xlab(y_label()) +
     dont_expand_axes() +
     theme_default(y_text = FALSE)
+
+#
+#   ggplot(
+#     data = melt_and_stack(y, yrep),
+#     mapping = aes_(
+#       x = ~ value,
+#       group = ~ rep_id,
+#       color = ~ is_y,
+#       fill = ~ is_y,
+#       size = ~ is_y
+#     )
+#   ) +
+#     geom_density(alpha = 0.1) +
+#     scale_color_manual(values = get_color(c("l", "dh"))) +
+#     scale_fill_manual(values = c(NA, get_color("d"))) +
+#     scale_size_manual(values = c(0.25, 1)) +
+#     xlab(y_label()) +
+#     dont_expand_axes() +
+#     theme_default(y_text = FALSE)
 }
 
 #' @export
