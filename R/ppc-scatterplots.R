@@ -105,8 +105,12 @@ ppc_scatter_plotter <-
   function(data,
            mapping,
            x_lab = "",
-           y_lab = "") {
+           y_lab = "",
+           color = c("mid", "light"),
+           size = 2.5,
+           alpha = 1) {
 
+    mid <- isTRUE(match.arg(color) == "mid")
     ggplot(data, mapping) +
       geom_abline(
         intercept = 0,
@@ -115,9 +119,10 @@ ppc_scatter_plotter <-
       ) +
       geom_point(
         shape = 21,
-        fill = get_color("m"),
-        color = get_color("mh"),
-        size = 2.5
+        fill = get_color(ifelse(mid, "m", "l")),
+        color = get_color(ifelse(mid, "mh", "lh")),
+        size = size,
+        alpha = alpha
       ) +
       labs(x = x_lab, y = y_lab) +
       theme_default()

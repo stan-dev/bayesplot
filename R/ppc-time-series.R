@@ -30,7 +30,7 @@
 #'    \code{100*prob}\% central intervals for \code{yrep} at each time point,
 #'    with a line through the median of \code{yrep} at each time. Values of
 #'    \code{y} are overlaid as points connected by lines, just points, or just
-#'    lines.
+#'    lines (depending on the value \code{y_style}).
 #'   }
 #'   \item{\code{ppc_ts_grouped}}{
 #'    Same as \code{ppc_ts} but a separate plot is generated for each level of a
@@ -81,6 +81,7 @@ ppc_ts_grouped <-
            time,
            group,
            ...,
+           facet_args = list(),
            prob = 0.8,
            y_style = c("both", "points", "lines")) {
     y <- validate_y(y)
@@ -91,7 +92,11 @@ ppc_ts_grouped <-
       group = validate_group(group, y),
       prob = prob
     )
-    ppc_ts_plotter(plot_data, y_style = match.arg(y_style))
+    ppc_ts_plotter(
+      plot_data,
+      y_style = match.arg(y_style),
+      facet_args = facet_args
+    )
   }
 
 
@@ -147,7 +152,7 @@ ppc_ts_data <-
 # @param y_style Same as above
 # @return A ggplot object
 #
-ppc_ts_plotter <- function(data, y_style = "both") {
+ppc_ts_plotter <- function(data, y_style = "both", facet_args = list()) {
   grouped <- isTRUE("group" %in% colnames(data))
   yrep_data <- data[!data$is_y, , drop = FALSE]
   y_data <- data[data$is_y, , drop = FALSE]
@@ -172,7 +177,7 @@ ppc_ts_plotter <- function(data, y_style = "both") {
       geom_line(
         data = y_data,
         color = "black",
-        size = 0.25
+        size = ifelse(y_style == "both", 0.25, 0.5)
       )
 
   if (y_style %in% c("both", "points"))
@@ -182,11 +187,15 @@ ppc_ts_plotter <- function(data, y_style = "both") {
         shape = 21,
         fill = get_color("d"),
         color = get_color("dh"),
-        size = 1
+        size = ifelse(y_style == "both", 1, 1.5)
       )
 
-  if (grouped)
-    graph <- graph + facet_wrap(facets = "group", scales = "free_y")
+  if (grouped) {
+    facet_args[["facets"]] <- "group"
+    if (is.null(facet_args[["scales"]]))
+      facet_args[["scales"]] <- "free_y"
+    graph <- graph + do.call("facet_wrap", facet_args)
+  }
 
   graph +
     labs(x = "Time", y = yrep_label()) +

@@ -14,7 +14,7 @@ test_that("validate_y works", {
 })
 test_that("validate_y throws errors", {
   expect_error(validate_y(yrep), "vector")
-  expect_error(validate_y(as.array(yrep)), "vector or a 1-D array")
+  expect_error(validate_y(as.array(yrep)), "vector or 1D array")
   expect_error(validate_y(LETTERS), "numeric")
   expect_error(validate_y(c(y, NA)), "NAs not allowed")
 })
@@ -31,8 +31,8 @@ test_that("validate_yrep throws errors", {
   expect_error(validate_yrep(as.matrix(LETTERS), y), "numeric")
   expect_error(validate_yrep(rbind(yrep, NA), y), "NAs not allowed")
   expect_error(validate_yrep(y, y), "matrix")
-  expect_error(validate_yrep(yrep2, y), "not equal to")
-  expect_error(validate_yrep(yrep, y2), "not equal to")
+  expect_error(validate_yrep(yrep2, y), "must be equal to")
+  expect_error(validate_yrep(yrep, y2), "must be equal to ")
 })
 
 # validating group --------------------------------------------------------
@@ -45,7 +45,7 @@ test_that("validate_group works", {
 test_that("validate_group throws errors", {
   expect_error(validate_group(array(1:3), y = 1:3), "vector")
   expect_error(validate_group(c(1,2,NA), y = 1:3), "NAs not allowed")
-  expect_error(validate_group(1:4, y = 1:3), "not equal to")
+  expect_error(validate_group(1:4, y = 1:3), "must be equal to")
 })
 
 # validating time --------------------------------------------------------
@@ -66,9 +66,24 @@ test_that("validate_time works", {
 test_that("validate_time throws errors", {
   expect_error(validate_time(time = letters[1:3], y = 1:3), "numeric")
   expect_error(validate_time(time = yrep, y = 1:3), "vector")
-  expect_error(validate_time(time = 1:2, y = 1:3), "same length")
+  expect_error(validate_time(time = 1:2, y = 1:3), "must be equal to")
   expect_error(validate_time(time = c(1,2,NA), y = 1:3), "NAs not allowed")
   expect_error(validate_time(time = c(1,2,2), y = 1:3), "unique")
+})
+
+# validating x --------------------------------------------------------
+test_that("validate_x works", {
+  x <- rnorm(3)
+  expect_identical(validate_x(x, y = 1:3), x)
+  expect_identical(validate_x(array(x), y = rnorm(3)), x)
+
+  names(x) <- letters[1:3]
+  expect_identical(validate_x(x, y = 1:3), unname(x))
+})
+test_that("validate_x throws errors", {
+  expect_error(validate_x(factor(1:3), y = 1:3), "numeric")
+  expect_error(validate_x(c(1,2,NA), y = 1:3), "NAs not allowed")
+  expect_error(validate_x(1:4, y = 1:3), "must be equal to")
 })
 
 # validating stat ---------------------------------------------------------

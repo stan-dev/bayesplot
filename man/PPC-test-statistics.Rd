@@ -99,6 +99,6 @@ Gelman, A., Carlin, J. B., Stern, H. S., Dunson, D. B., Vehtari,
 Other PPCs: \code{\link{PPC-distributions}},
   \code{\link{PPC-overview}}, \code{\link{PPC-residuals}},
   \code{\link{PPC-scatterplots}},
-  \code{\link{PPC-time-series}}
+  \code{\link{PPC-time-series}}, \code{\link{PPC-vs-x}}
 }
 
