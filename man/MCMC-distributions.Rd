@@ -53,11 +53,17 @@ parameter selection. Can be specified instead of \code{pars} or in addition
 to \code{pars}. If neither \code{pars} nor \code{regex_pars} is specified
 then the default is to use \emph{all} parameters.}
 
-\item{transformations}{A named list specifying transformations to apply
-to parameters. The name of each list element should be a parameter name and
-the content of each list element should be a function (or any item to match
-as a function via \code{\link{match.fun}}, e.g. a string naming a
-function).}
+\item{transformations}{An optional named list specifying transformations to
+apply to parameters. The name of each list element should be a parameter
+name and the content of each list element should be a function (or any item
+to match as a function via \code{\link{match.fun}}, e.g. a string naming a
+function). If a function in the list of transformations is specified by its
+name as a string (e.g. \code{"log"}), then it can be used to construct a
+new parameter label for the appropriate parameter (e.g.
+\code{"log(sigma)"}). If a function itself is specified (e.g. \code{log} or
+\code{function(x) log(x)}) then \code{"t"} is used in the new parameter
+label to indicate that the parameter is transformed (e.g.
+\code{"t(sigma)"}).}
 
 \item{facet_args}{Arguments (other than \code{facets}) passed to
 \code{\link[ggplot2]{facet_wrap}} (if \code{by_chain} is \code{FALSE}) or
@@ -101,6 +107,79 @@ Histograms and kernel density plots of MCMC draws
    horizontal lines at notable quantiles.
   }
 }
+}
+\examples{
+# some fake parameter draws to use for demonstration
+x <- fake_draws()
+dim(x)
+dimnames(x)
+
+##################
+### Histograms ###
+##################
+
+# histograms of all parameters
+mcmc_hist(x)
+
+# histograms of some parameters
+mcmc_hist(x, pars = c("alpha", "beta[2]"))
+mcmc_hist(x, pars = "sigma", regex_pars = "beta")
+
+# interpret facet labels as plotmath expressions
+# (e.g. to get greek letters for parameters)
+mcmc_hist(
+ x,
+ pars = c("alpha", "beta[2]"),
+ facet_args = list(labeller = ggplot2::label_parsed)
+)
+
+# with sigma on log scale
+mcmc_hist(x, transformations = list(sigma = "log"))
+
+# can specify transformation as function(x) log(x) or
+# as log (without quotes), but then the label is 't(sigma)'
+# instead of 'log(sigma)'
+mcmc_hist(x, transformations = list(sigma = log))
+
+# separate histograms by chain
+set_color_scheme("blue")
+mcmc_hist_by_chain(x, pars = "sigma", regex_pars = "beta")
+
+#################
+### Densities ###
+#################
+
+mcmc_dens(
+ x,
+ pars = c("sigma", "beta[2]"),
+ facet_args = list(nrow = 2)
+)
+
+# separate and overlay chains
+mcmc_dens_overlay(
+ x,
+ pars = c("sigma", "beta[2]"),
+ facet_args = list(nrow = 2)
+)
+
+# parse facet labels, put them on the y axis, and increase their font size
+p <- mcmc_dens_overlay(
+ x,
+ pars = c("sigma", "beta[2]"),
+ facet_args =
+   list(nrow = 2, labeller = ggplot2::label_parsed, switch = "y")
+)
+p + facet_fontsize(15)
+
+# separate chains as violin plots
+mcmc_violin(x)
+mcmc_violin(
+ x,
+ probs = c(0.1, 0.9), # where to draw quantile lines
+ transformations = list(sigma = "log")
+)
+
+
 }
 \seealso{
 \code{\link{set_color_scheme}} to change the aesthetic theme

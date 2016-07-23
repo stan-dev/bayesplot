@@ -38,6 +38,78 @@
 #'
 #' @template seealso-color-scheme
 #'
+#' @examples
+#' # some fake parameter draws to use for demonstration
+#' x <- fake_draws()
+#' dim(x)
+#' dimnames(x)
+#'
+#' ##################
+#' ### Histograms ###
+#' ##################
+#'
+#' # histograms of all parameters
+#' mcmc_hist(x)
+#'
+#' # histograms of some parameters
+#' mcmc_hist(x, pars = c("alpha", "beta[2]"))
+#' mcmc_hist(x, pars = "sigma", regex_pars = "beta")
+#'
+#' # interpret facet labels as plotmath expressions
+#' # (e.g. to get greek letters for parameters)
+#' mcmc_hist(
+#'  x,
+#'  pars = c("alpha", "beta[2]"),
+#'  facet_args = list(labeller = ggplot2::label_parsed)
+#' )
+#'
+#' # with sigma on log scale
+#' mcmc_hist(x, transformations = list(sigma = "log"))
+#'
+#' # can specify transformation as function(x) log(x) or
+#' # as log (without quotes), but then the label is 't(sigma)'
+#' # instead of 'log(sigma)'
+#' mcmc_hist(x, transformations = list(sigma = log))
+#'
+#' # separate histograms by chain
+#' set_color_scheme("blue")
+#' mcmc_hist_by_chain(x, pars = "sigma", regex_pars = "beta")
+#'
+#' #################
+#' ### Densities ###
+#' #################
+#'
+#' mcmc_dens(
+#'  x,
+#'  pars = c("sigma", "beta[2]"),
+#'  facet_args = list(nrow = 2)
+#' )
+#'
+#' # separate and overlay chains
+#' mcmc_dens_overlay(
+#'  x,
+#'  pars = c("sigma", "beta[2]"),
+#'  facet_args = list(nrow = 2)
+#' )
+#'
+#' # parse facet labels, put them on the y axis, and increase their font size
+#' p <- mcmc_dens_overlay(
+#'  x,
+#'  pars = c("sigma", "beta[2]"),
+#'  facet_args =
+#'    list(nrow = 2, labeller = ggplot2::label_parsed, switch = "y")
+#' )
+#' p + facet_fontsize(15)
+#'
+#' # separate chains as violin plots
+#' mcmc_violin(x)
+#' mcmc_violin(
+#'  x,
+#'  probs = c(0.1, 0.9), # where to draw quantile lines
+#'  transformations = list(sigma = "log")
+#' )
+#'
+#'
 NULL
 
 #' @rdname MCMC-distributions
@@ -179,7 +251,7 @@ mcmc_violin <- function(x,
     facet_args$facets <- ~ Parameter
     graph + do.call("facet_wrap", facet_args)
   } else {
-    facet_args$facets <- Parameter ~ Chain
+    facet_args$facets <- Chain ~ Parameter
     graph + do.call("facet_grid", facet_args)
   }
 }
@@ -200,23 +272,26 @@ mcmc_violin <- function(x,
   geom <- match.arg(geom)
   violin <- geom == "violin"
 
-  if ((by_chain || violin) && !has_multiple_chains(x))
-    STOP_need_multiple_chains()
+  if (by_chain || violin) {
+    if (!has_multiple_chains(x))
+      STOP_need_multiple_chains()
+    else
+      n_chain <- length(unique(data$Chain))
+  }
 
   aes_mapping <- if (violin) {
     list(x = ~ Chain, y = ~ Value)
   } else {
     list(x = ~ Value)
   }
-  geom_args <- list(size = 0.25, na.rm = TRUE)
+  geom_args <- list(size = 0.5, na.rm = TRUE)
   if (violin)
     geom_args$draw_quantiles <- probs
 
   if (by_chain) {
-    aes_mapping[["fill"]] <- ~ Chain
     aes_mapping[["color"]] <- ~ Chain
     aes_mapping[["group"]] <- ~ Chain
-    geom_args[["alpha"]] <- 0.5
+    geom_args[["alpha"]] <- 0.33
   } else {
     geom_args[["fill"]] <- get_color("mid")
     geom_args[["color"]] <- get_color("mid_highlight")
@@ -228,6 +303,10 @@ mcmc_violin <- function(x,
     theme_default(y_text = FALSE, x_lab = FALSE,
               legend_position = ifelse(by_chain, "right", "none"))
 
+  if (!violin)
+    graph <- graph + dont_expand_x_axis()
+  if (by_chain)
+    graph <- graph + scale_color_manual(values = chain_colors(n_chain))
   if (is.null(facet_args$scales))
     facet_args$scales <- "free"
 

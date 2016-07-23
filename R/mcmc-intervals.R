@@ -39,19 +39,37 @@
 #' @template seealso-color-scheme
 #'
 #' @examples
-#' x <- cbind(alpha = rnorm(100),
-#'            beta = rnorm(100, 0.5, 2),
-#'            sigma = rexp(100))
+#' # some fake parameter draws to use for demonstration
+#' x <- fake_draws()
+#' dim(x)
+#' dimnames(x)
+#'
 #' mcmc_intervals(x)
 #' mcmc_areas(x)
 #'
+#' # can modify plot object using ggplot2 functions
+#' mcmc_areas(x, prob = 0.8) +
+#'  ggplot2::ggtitle("Posterior medians & 80% intervals")
+#'
+#' # same plot but with sigma on the log scale
+#' (p <- mcmc_areas(x, prob = 0.8, transformations = list(sigma = log)))
+#' y_labs <- expression(alpha, log(sigma), beta[1], beta[2])
+#' p + ggplot2::scale_y_continuous(breaks = 4:1, labels = y_labs)
+#'
+#'
 #' # color by rhat value
-#' mcmc_intervals(x, rhat = c(1, 1.07, 1.3))
+#' fake_rhat_values <- c(1, 1.07, 1.3, 1.01)
+#' mcmc_intervals(x, rhat = fake_rhat_values)
+#' set_color_scheme("blue")
+#' mcmc_intervals(x, rhat = fake_rhat_values)
 #'
 #' \dontrun{
+#' # Example using fitted model from rstanarm package
 #' library(rstanarm)
 #' fit <- stan_glm(mpg ~ 0 + wt + factor(cyl), data = mtcars, iter = 500)
 #' x <- as.matrix(fit)
+#'
+#' set_color_scheme("teal")
 #' mcmc_intervals(x, point_est = "mean", prob = 0.8, prob_outer = 0.95)
 #' mcmc_areas(x, regex_pars = "cyl")
 #' }
@@ -184,7 +202,7 @@ mcmc_areas <- function(x,
         x = ~ x,
         y = ~ y,
         group = ~ name,
-        color = if (color_by_rhat) ~ rhat else NULL
+        color = if (!color_by_rhat) NULL else ~ rhat
       ),
       lineend = "round"
     )
@@ -229,7 +247,7 @@ mcmc_areas <- function(x,
         xend = ~ m,
         y = ~ y,
         yend = ~ y + 0.25,
-        color = if (color_by_rhat) ~ rhat else NULL
+        color = if (!color_by_rhat) NULL else ~ rhat
       ),
       size = 1.5
     )
@@ -244,7 +262,7 @@ mcmc_areas <- function(x,
         xend = ~ hh,
         y = ~ y,
         yend = ~ y,
-        color = if (color_by_rhat) ~ rhat else NULL
+        color = if (!color_by_rhat) NULL else ~ rhat
       )
     )
     if (!color_by_rhat)
@@ -284,7 +302,7 @@ mcmc_areas <- function(x,
         xend = ~ h,
         y = ~ y,
         yend = ~ y,
-        color = if (color_by_rhat) ~ rhat else NULL
+        color = if (!color_by_rhat) NULL else ~ rhat
       ),
       size = 2,
       lineend = "round",
@@ -299,8 +317,8 @@ mcmc_areas <- function(x,
       mapping = aes_(
         x = ~ m,
         y = ~ y,
-        color = if (color_by_rhat) ~ rhat else NULL,
-        fill = if (color_by_rhat) ~ rhat else NULL
+        color = if (color_by_rhat) NULL else ~ rhat,
+        fill = if (color_by_rhat) NULL else ~ rhat
       ),
       size = 4,
       shape = 21
