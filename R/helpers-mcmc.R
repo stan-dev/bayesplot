@@ -205,6 +205,7 @@ prepare_mcmc_array <-
         x <- apply_transformations(x, transformations)
     }
 
+    pars <- rename_transformed_pars(pars, transformations)
     set_mcmc_dimnames(x, pars)
   }
 
@@ -242,6 +243,9 @@ validate_mcmc_x <- function(x) {
 validate_transformations <-
   function(transformations = list(),
            pars = character()) {
+    if (is.null(names(transformations)))
+      stop("If specified, 'transformations' must be a _named_ list.")
+
     transformations <- lapply(transformations, match.fun)
     if (!all(names(transformations) %in% pars)) {
       not_found <- which(!names(transformations) %in% pars)
@@ -270,7 +274,7 @@ apply_transformations.matrix <- function(x, transformations = list()) {
   for (p in names(x_transforms))
     x[, p] <- x_transforms[[p]](x[, p])
 
-  x
+  return(x)
 }
 apply_transformations.array <- function(x, transformations = list()) {
   stopifnot(length(dim(x)) == 3)
@@ -279,7 +283,26 @@ apply_transformations.array <- function(x, transformations = list()) {
   for (p in names(x_transforms))
     x[, , p] <- x_transforms[[p]](x[, , p])
 
-  x
+  return(x)
+}
+
+rename_transformed_pars <- function(pars, transformations) {
+  stopifnot(is.character(pars), is.list(transformations))
+  has_names <- sapply(transformations, is.character)
+  if (any(has_names)) {
+    nms <- names(which(has_names))
+    for (nm in nms)
+      pars[which(pars == nm)] <-
+        paste0(
+          transformations[[nm]], "(",
+          pars[which(pars == nm)], ")"
+        )
+  }
+  if (any(!has_names)) {
+    nms <- names(which(!has_names))
+    pars[pars %in% nms] <- paste0("t(", pars[pars %in% nms], ")")
+  }
+  return(pars)
 }
 
 # Convert numeric vector of Rhat values to a factor
