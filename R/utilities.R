@@ -28,15 +28,17 @@
 #' be added to an existing plot (ggplot object) to change the size of the text
 #' in facet labels.
 #' }
-#' \item{\code{axis_fontsize}}{
-#' The \code{axis_fontsize} function returns a ggplot2 theme object that can be
-#' added to an existing plot (ggplot object) to change the size of the axis
-#' text.
+#' \item{\code{axis_fontsize}, \code{axis_ticksize}}{
+#' The \code{axis_fontsize} and \code{axis_ticksize} functions return a ggplot2
+#' theme object that can be added to an existing plot (ggplot object) to change
+#' the size of the axis text (\code{axis_fontsize}) or tick marks
+#' (\code{axis_ticksize}).
 #' }
-#' \item{\code{axis_ticksize}}{
-#' The \code{axis_ticksize} function returns a ggplot2 theme object that can be
-#' added to an existing plot (ggplot object) to change the size of the axis tick
-#' marks.
+#' \item{\code{move_legend}, \code{no_legend}}{
+#' The \code{move_legend} and \code{no_legend} functions return a ggplot2 theme
+#' object that can be added to an existing plot (ggplot object) in order to
+#' change the position of the legend (\code{move_legend}) or remove the legend
+#' (\code{no_legend}).
 #' }
 #' }
 #'
@@ -108,9 +110,9 @@ NULL
 # lines -------------------------------------------------------------------
 #' @rdname bayesplot-utilities
 #' @export
-#' @param v Either a numeric vector specifying the value(s) at which to draw the
-#'   vertical or horizontal line(s), or an object of any type to use as the
-#'   first argument to \code{fun}.
+#' @param v Either a numeric vector specifying the \code{v}alue(s) at which to
+#'   draw the vertical or horizontal line(s), or an object of any type to use as
+#'   the first argument to \code{fun}.
 #' @param fun A function, or the name of a function, that returns a numeric
 #'   vector.
 #' @param ... Arguments passed to \code{\link[ggplot2]{geom_vline}} or
@@ -180,7 +182,7 @@ calc_intervals <- function(x, p, med = TRUE, ...) {
 #' @export
 #' @aliases rel
 #' @param fontsize Either a fontsize (in pts) or a relative fontsize (via a call
-#'   to \code{\link[ggplot2]{rel}}). The default \code{rel(1)} has no effect.
+#'   to \code{\link[ggplot2]{rel}}).
 #'
 facet_fontsize <- function(fontsize = rel(1)) {
   theme(strip.text = element_text(size = fontsize))
@@ -200,4 +202,24 @@ axis_fontsize <- function(fontsize = rel(1)) {
 #'
 axis_ticksize <- function(ticksize = 0) {
   theme(axis.ticks = element_line(size = ticksize))
+}
+
+
+# move or remove legend ---------------------------------------------------
+#' @rdname bayesplot-utilities
+#' @export
+no_legend <- function() {
+  theme(legend.position = "none")
+}
+
+#' @rdname bayesplot-utilities
+#' @export
+#' @param position The position of the legend. Either a numeric vector (of
+#'   length 2) giving the relative coordinates (between 0 and 1) for the legend,
+#'   or a string among \code{"right"}, \code{"left"}, \code{"top"},
+#'   \code{"bottom"}. Using \code{position = "none"} is also allowed and is
+#'   equivalent to using \code{no_legend()}.
+#'
+move_legend <- function(position = "right") {
+  theme(legend.position = position)
 }

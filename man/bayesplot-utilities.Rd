@@ -8,6 +8,8 @@
 \alias{hline_0}
 \alias{hline_at}
 \alias{lbub}
+\alias{move_legend}
+\alias{no_legend}
 \alias{rel}
 \alias{vline_0}
 \alias{vline_at}
@@ -28,11 +30,15 @@ facet_fontsize(fontsize = rel(1))
 axis_fontsize(fontsize = rel(1))
 
 axis_ticksize(ticksize = 0)
+
+no_legend()
+
+move_legend(position = "right")
 }
 \arguments{
-\item{v}{Either a numeric vector specifying the value(s) at which to draw the
-vertical or horizontal line(s), or an object of any type to use as the
-first argument to \code{fun}.}
+\item{v}{Either a numeric vector specifying the \code{v}alue(s) at which to
+draw the vertical or horizontal line(s), or an object of any type to use as
+the first argument to \code{fun}.}
 
 \item{fun}{A function, or the name of a function, that returns a numeric
 vector.}
@@ -46,11 +52,17 @@ vector.}
 and upper bounds of the interval?}
 
 \item{fontsize}{Either a fontsize (in pts) or a relative fontsize (via a call
-to \code{\link[ggplot2]{rel}}). The default \code{rel(1)} has no effect.}
+to \code{\link[ggplot2]{rel}}).}
 
 \item{ticksize}{A value to use for the \code{size} argument of
 \code{\link[ggplot2]{element_line}}. The default of zero means
 no tick marks.}
+
+\item{position}{The position of the legend. Either a numeric vector (of
+length 2) giving the relative coordinates (between 0 and 1) for the legend,
+or a string among \code{"right"}, \code{"left"}, \code{"top"},
+\code{"bottom"}. Using \code{position = "none"} is also allowed and is
+equivalent to using \code{no_legend()}.}
 }
 \value{
 \describe{
@@ -75,15 +87,17 @@ The \code{facet_fontsize} function returns a ggplot2 theme object that can
 be added to an existing plot (ggplot object) to change the size of the text
 in facet labels.
 }
-\item{\code{axis_fontsize}}{
-The \code{axis_fontsize} function returns a ggplot2 theme object that can be
-added to an existing plot (ggplot object) to change the size of the axis
-text.
+\item{\code{axis_fontsize}, \code{axis_ticksize}}{
+The \code{axis_fontsize} and \code{axis_ticksize} functions return a ggplot2
+theme object that can be added to an existing plot (ggplot object) to change
+the size of the axis text (\code{axis_fontsize}) or tick marks
+(\code{axis_ticksize}).
 }
-\item{\code{axis_ticksize}}{
-The \code{axis_ticksize} function returns a ggplot2 theme object that can be
-added to an existing plot (ggplot object) to change the size of the axis tick
-marks.
+\item{\code{move_legend}, \code{no_legend}}{
+The \code{move_legend} and \code{no_legend} functions return a ggplot2 theme
+object that can be added to an existing plot (ggplot object) in order to
+change the position of the legend (\code{move_legend}) or remove the legend
+(\code{no_legend}).
 }
 }
 }
