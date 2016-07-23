@@ -317,8 +317,8 @@ mcmc_areas <- function(x,
       mapping = aes_(
         x = ~ m,
         y = ~ y,
-        color = if (color_by_rhat) NULL else ~ rhat,
-        fill = if (color_by_rhat) NULL else ~ rhat
+        color = if (!color_by_rhat) NULL else ~ rhat,
+        fill = if (!color_by_rhat) NULL else ~ rhat
       ),
       size = 4,
       shape = 21
