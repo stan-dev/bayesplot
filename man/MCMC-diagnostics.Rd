@@ -2,13 +2,13 @@
 % Please edit documentation in R/mcmc-diagnostics.R
 \name{MCMC-diagnostics}
 \alias{MCMC-diagnostics}
-\alias{mcmc_rhat_dot}
+\alias{mcmc_rhat_dots}
 \alias{mcmc_rhat_hist}
 \title{Rhat, effective sample size, Monte Carlo standard error}
 \usage{
 mcmc_rhat_hist(rhat, ..., binwidth = NULL)
 
-mcmc_rhat_dot(rhat, ..., size = NULL)
+mcmc_rhat_dots(rhat, ..., size = NULL)
 }
 \arguments{
 \item{rhat}{Vector of \code{\link[=r_hat]{Rhat}} estimates.}
@@ -40,6 +40,18 @@ Rhat, effective sample size, Monte Carlo standard error
   \item{\code{mcmc_diagnostics}}{
   }
 }
+}
+\examples{
+
+# fake rhat values to use for demonstration
+rhat <- c(runif(100, 1, 1.15))
+mcmc_rhat_hist(rhat)
+mcmc_rhat_dots(rhat)
+
+set_color_scheme("blue")
+mcmc_rhat_dots(runif(1000, 1, 1.3))
+mcmc_rhat_dots(runif(1000, 1, 1.07)) + ggplot2::ylim(1,1.1)
+
 }
 \seealso{
 \code{\link{set_color_scheme}} to change the aesthetic theme
