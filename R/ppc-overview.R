@@ -79,6 +79,10 @@
 #'   \item{\strong{\link[=PPC-time-series]{Time series}}}{
 #'     Interval estimates of \code{yrep} by time, with \code{y} overlaid.
 #'   }
+#'   \item{\strong{\link[=PPC-vs-x]{Vs. x}}}{
+#'     Interval estimates of \code{yrep} at values of a variable \code{x},
+#'     with \code{y} overlaid.
+#'   }
 #' }
 #'
 #' @section Providing an interface for posterior predictive checking from another package:

@@ -1,4 +1,4 @@
-#' PPC time series
+#' PPC vs. \eqn{x}
 #'
 #' Medians and central interval estimates of \code{yrep} by value of \code{x},
 #' with \code{y} overlaid.

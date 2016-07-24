@@ -4,7 +4,7 @@
 \alias{PPC-vs-x}
 \alias{ppc_vs_x}
 \alias{ppc_vs_x_grouped}
-\title{PPC time series}
+\title{PPC vs. \eqn{x}}
 \usage{
 ppc_vs_x(y, yrep, x, ..., prob = 0.8, y_style = c("both", "points",
   "lines"))
