@@ -81,7 +81,8 @@ Other MCMC: \code{\link{MCMC-combos}},
   \code{\link{MCMC-diagnostics}},
   \code{\link{MCMC-distributions}},
   \code{\link{MCMC-intervals}},
-  \code{\link{MCMC-overview}}, \code{\link{MCMC-pairs}},
+  \code{\link{MCMC-overview}},
+  \code{\link{MCMC-scatterplots}},
   \code{\link{MCMC-traces}}
 }
 

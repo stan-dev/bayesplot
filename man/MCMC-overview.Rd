@@ -23,8 +23,8 @@ versions of \pkg{bayesplot} will provide many more MCMC plotting functions.
   \item{\strong{\link[=MCMC-traces]{Traceplots}}}{
     Times series of parameter draws.
   }
-  \item{\strong{\link[=MCMC-pairs]{Pairs}}}{
-    Scatterplot matrix of parameter draws.
+  \item{\strong{\link[=MCMC-scatterplots]{Scatterplots}}}{
+    Various scatterplots of parameter draws.
   }
   \item{\strong{\link[=MCMC-combos]{Combinations}}}{
     Combination plots (e.g. traceplot + histogram)
@@ -36,6 +36,7 @@ Other MCMC: \code{\link{MCMC-combos}},
   \code{\link{MCMC-diagnostics}},
   \code{\link{MCMC-distributions}},
   \code{\link{MCMC-intervals}}, \code{\link{MCMC-nuts}},
-  \code{\link{MCMC-pairs}}, \code{\link{MCMC-traces}}
+  \code{\link{MCMC-scatterplots}},
+  \code{\link{MCMC-traces}}
 }
 

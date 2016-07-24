@@ -59,7 +59,8 @@ mcmc_rhat_dots(runif(1000, 1, 1.07)) + ggplot2::ylim(1,1.1)
 Other MCMC: \code{\link{MCMC-combos}},
   \code{\link{MCMC-distributions}},
   \code{\link{MCMC-intervals}}, \code{\link{MCMC-nuts}},
-  \code{\link{MCMC-overview}}, \code{\link{MCMC-pairs}},
+  \code{\link{MCMC-overview}},
+  \code{\link{MCMC-scatterplots}},
   \code{\link{MCMC-traces}}
 }
 

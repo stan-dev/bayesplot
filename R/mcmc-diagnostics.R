@@ -38,6 +38,7 @@ NULL
 #' @export
 #' @param rhat Vector of \code{\link[=r_hat]{Rhat}} estimates.
 #' @template args-hist
+#'
 mcmc_rhat_hist <- function(rhat, ..., binwidth = NULL) {
   ggplot(
     data.frame(x = rhat, lev = factor_rhat(rhat)),

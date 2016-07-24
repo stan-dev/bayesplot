@@ -22,8 +22,8 @@
 #'   \item{\strong{\link[=MCMC-traces]{Traceplots}}}{
 #'     Times series of parameter draws.
 #'   }
-#'   \item{\strong{\link[=MCMC-pairs]{Pairs}}}{
-#'     Scatterplot matrix of parameter draws.
+#'   \item{\strong{\link[=MCMC-scatterplots]{Scatterplots}}}{
+#'     Various scatterplots of parameter draws.
 #'   }
 #'   \item{\strong{\link[=MCMC-combos]{Combinations}}}{
 #'     Combination plots (e.g. traceplot + histogram)
