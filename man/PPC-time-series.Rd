@@ -39,6 +39,9 @@ the points, or only the lines?}
 \item{group}{A grouping variable (a vector or factor) the same length as
 \code{y}. Each value in \code{group} is interpreted as the group level
 pertaining to the corresponding value of \code{y}.}
+
+\item{facet_args}{An optional list of  arguments (other than \code{facets})
+passed to \code{\link[ggplot2]{facet_wrap}} to control faceting.}
 }
 \value{
 A ggplot object that can be further customized using the

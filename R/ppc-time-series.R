@@ -17,6 +17,8 @@
 #'   to include in the \code{yrep} intervals. The default is 0.8.
 #' @param y_style Should \code{y} be plotted as points connected by lines, only
 #'   the points, or only the lines?
+#' @param facet_args An optional list of  arguments (other than \code{facets})
+#'   passed to \code{\link[ggplot2]{facet_wrap}} to control faceting.
 #'
 #' @template return-ggplot
 #'
