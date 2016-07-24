@@ -5,9 +5,12 @@
 \alias{axis_ticksize}
 \alias{bayesplot-utilities}
 \alias{facet_fontsize}
+\alias{ggtitle}
 \alias{hline_0}
 \alias{hline_at}
+\alias{labs}
 \alias{lbub}
+\alias{lims}
 \alias{move_legend}
 \alias{no_legend}
 \alias{rel}
@@ -98,6 +101,10 @@ The \code{move_legend} and \code{no_legend} functions return a ggplot2 theme
 object that can be added to an existing plot (ggplot object) in order to
 change the position of the legend (\code{move_legend}) or remove the legend
 (\code{no_legend}).
+}
+\item{\code{ggtitle}, \code{labs}, \code{lims}}{
+These functions are from \pkg{ggplot2} and but are exported by
+\pkg{bayesplot} for convenience.
 }
 }
 }
