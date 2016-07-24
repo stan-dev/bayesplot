@@ -38,19 +38,30 @@
 #'
 #'
 #' @examples
-#' x <- rnorm(200)
-#' y <- rnorm(200, 1 + 2*x, 2)
-#' yrep <- t(replicate(50, matrix(rnorm(200, 1 + 2*x, 3)), simplify = TRUE))
-#' ppc_vs_x(y, yrep, x)
-#' ppc_vs_x(y, yrep, x, prob = 0.5, y_style = "lines") + axis_ticksize(0.25)
+#' y <- mtcars$mpg
+#' x <- mtcars$wt
+#' yrep <- t(replicate(50, {
+#'  xb <- c(37, -5) %*% rbind(1, x)
+#'  rnorm(length(xb), xb, 3)
+#' }))
 #'
+#' xy_labs <- labs(x = "wt", y = expression(mpg^rep))
+#' ppc_vs_x(y, yrep, x) +
+#'  axis_ticksize(0.25) +
+#'  xy_labs
+#'
+#' # by group
 #' set_color_scheme("green")
-#' group <- gl(5, 1, length = 200, labels = LETTERS[1:5])
-#' ppc_vs_x_grouped(y, yrep, x, group)
+#' group <- mtcars$gear
+#' ppc_vs_x_grouped(y, yrep, x, group) +
+#'  ggplot2::geom_rug(sides = "b") +
+#'  xy_labs
 #'
-#' # don't force all facets to have same x axis scale
-#' ppc_vs_x_grouped(y, yrep, x, group, y_style = "lines",
-#'                  facet_args = list(scales = "free", ncol = 1))
+#' # force all facets to have same y axis scale (only x is "free")
+#' ppc_vs_x_grouped(y, yrep, x, group,
+#'                  facet_args = list(scales = "free_x")) +
+#'  axis_ticksize(0.25) +
+#'  xy_labs
 #'
 NULL
 
@@ -63,12 +74,17 @@ ppc_vs_x <- function(y,
                      prob = 0.8,
                      y_style = c("both", "points", "lines")) {
   y <- validate_y(y)
-  ppc_ts(y,
-         yrep = validate_yrep(yrep, y),
-         time = validate_x(x, y),
-         prob = prob,
-         y_style = y_style,
-         ...) +
+  plot_data <- ppc_ts_data(
+    y = y,
+    yrep = validate_yrep(yrep, y),
+    time = validate_x(x, y),
+    group = NULL,
+    prob = prob
+  )
+  ppc_ts_plotter(
+    plot_data,
+    y_style = match.arg(y_style)
+  ) +
     xlab("x")
 }
 
@@ -87,6 +103,9 @@ ppc_vs_x_grouped <-
            prob = 0.8,
            y_style = c("both", "points", "lines")) {
     y <- validate_y(y)
+    if (is.null(facet_args[["scales"]]))
+      facet_args[["scales"]] <- "free"
+
     ppc_ts_grouped(
       y = y,
       yrep = validate_yrep(yrep, y),
