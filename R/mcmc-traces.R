@@ -57,7 +57,7 @@
 #'  facet_args = list(labeller = ggplot2::label_parsed)
 #' )
 #' # plot with bigger facet fontsize and add tick marks
-#' p + facet_fontsize(15) + axis_ticksize(.5)
+#' p + facet_text(size = 15) + axis_ticksize(.5)
 #'
 #' # mark first 200 draws as warmup
 #' mcmc_trace(x, n_warmup = 200)

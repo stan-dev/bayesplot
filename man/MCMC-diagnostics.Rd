@@ -2,19 +2,19 @@
 % Please edit documentation in R/mcmc-diagnostics.R
 \name{MCMC-diagnostics}
 \alias{MCMC-diagnostics}
-\alias{mcmc_neff_dots}
+\alias{mcmc_neff}
 \alias{mcmc_neff_hist}
-\alias{mcmc_rhat_dots}
+\alias{mcmc_rhat}
 \alias{mcmc_rhat_hist}
 \title{Rhat and effective sample size}
 \usage{
 mcmc_rhat_hist(rhat, ..., binwidth = NULL)
 
-mcmc_rhat_dots(rhat, ..., size = NULL)
+mcmc_rhat(rhat, ..., size = NULL)
 
 mcmc_neff_hist(ratio, ..., binwidth = NULL)
 
-mcmc_neff_dots(ratio, ..., size = NULL)
+mcmc_neff(ratio, ..., size = NULL)
 }
 \arguments{
 \item{rhat}{Vector of \code{\link[=rhat]{Rhat}} estimates.}
@@ -40,9 +40,9 @@ Rhat and effective sample size
 \section{Plot Descriptions}{
 
 \describe{
-  \item{\code{mcmc_rhat_hist, mcmc_rhat_dots}}{
+  \item{\code{mcmc_rhat_hist, mcmc_rhat}}{
   }
-  \item{\code{mcmc_neff_hist, mcmc_neff_dots}}{
+  \item{\code{mcmc_neff_hist, mcmc_neff}}{
   }
   \item{\code{mcmc_diagnostics}}{
   }
@@ -53,18 +53,18 @@ Rhat and effective sample size
 # fake rhat values to use for demonstration
 rhat <- c(runif(100, 1, 1.15))
 mcmc_rhat_hist(rhat)
-mcmc_rhat_dots(rhat)
+mcmc_rhat(rhat)
 
 set_color_scheme("blue")
-mcmc_rhat_dots(runif(1000, 1, 1.3))
-mcmc_rhat_dots(runif(1000, 1, 1.07))
+mcmc_rhat(runif(1000, 1, 1.3))
+mcmc_rhat(runif(1000, 1, 1.07))
 
 
 # fake neff ratio values to use for demonstration
 ratio <- c(runif(100, 0, 1))
 mcmc_neff_hist(ratio)
-mcmc_neff_dots(ratio)
-mcmc_neff_dots(ratio) + move_legend("top")
+mcmc_neff(ratio)
+mcmc_neff(ratio) + move_legend("top")
 
 
 

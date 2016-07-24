@@ -9,9 +9,9 @@
 #'
 #' @section Plot Descriptions:
 #' \describe{
-#'   \item{\code{mcmc_rhat_hist, mcmc_rhat_dots}}{
+#'   \item{\code{mcmc_rhat_hist, mcmc_rhat}}{
 #'   }
-#'   \item{\code{mcmc_neff_hist, mcmc_neff_dots}}{
+#'   \item{\code{mcmc_neff_hist, mcmc_neff}}{
 #'   }
 #'   \item{\code{mcmc_diagnostics}}{
 #'   }
@@ -24,18 +24,18 @@
 #' # fake rhat values to use for demonstration
 #' rhat <- c(runif(100, 1, 1.15))
 #' mcmc_rhat_hist(rhat)
-#' mcmc_rhat_dots(rhat)
+#' mcmc_rhat(rhat)
 #'
 #' set_color_scheme("blue")
-#' mcmc_rhat_dots(runif(1000, 1, 1.3))
-#' mcmc_rhat_dots(runif(1000, 1, 1.07))
+#' mcmc_rhat(runif(1000, 1, 1.3))
+#' mcmc_rhat(runif(1000, 1, 1.07))
 #'
 #'
 #' # fake neff ratio values to use for demonstration
 #' ratio <- c(runif(100, 0, 1))
 #' mcmc_neff_hist(ratio)
-#' mcmc_neff_dots(ratio)
-#' mcmc_neff_dots(ratio) + move_legend("top")
+#' mcmc_neff(ratio)
+#' mcmc_neff(ratio) + move_legend("top")
 #'
 #'
 #'
@@ -73,7 +73,7 @@ mcmc_rhat_hist <- function(rhat, ..., binwidth = NULL) {
 #' @param size An optional value to override \code{\link[ggplot2]{geom_point}}'s
 #'   default size.
 #'
-mcmc_rhat_dots <- function(rhat, ..., size = NULL) {
+mcmc_rhat <- function(rhat, ..., size = NULL) {
   stopifnot(length(rhat) > 1)
 
   .rhat_dots <- function(size = NULL) {
@@ -89,17 +89,12 @@ mcmc_rhat_dots <- function(rhat, ..., size = NULL) {
   }
 
   data <- data.frame(y = rhat, x = frhat)
+  rownames(data) <- NULL
   graph <- ggplot(data, aes_(
     x = ~ x, y = ~ y,
     color = ~factor_rhat(rhat),
     fill = ~factor_rhat(rhat)
   )) +
-    hline_at(
-      c(1.05, 1.1),
-      color = "gray",
-      linetype = 2,
-      size = 0.25
-    ) +
     geom_segment(
       mapping = aes_(
         xend = ~x,
@@ -111,10 +106,16 @@ mcmc_rhat_dots <- function(rhat, ..., size = NULL) {
 
   if (min(rhat) < 1)
     graph <- graph +
-      geom_hline(yintercept = 1, color = "gray", size = 1)
+      hline_at(1, color = "gray", size = 1)
 
   graph +
     .rhat_dots(size) +
+    hline_at(
+      c(1.05, 1.1),
+      color = "gray",
+      linetype = 2,
+      size = 0.25
+    ) +
     labs(x = NULL, y = bquote(hat(R))) +
     scale_fill_diagnostic("rhat") +
     scale_color_diagnostic("rhat") +
@@ -153,7 +154,7 @@ mcmc_neff_hist <- function(ratio, ..., binwidth = NULL) {
 
 #' @rdname MCMC-diagnostics
 #' @export
-mcmc_neff_dots <- function(ratio, ..., size = NULL) {
+mcmc_neff <- function(ratio, ..., size = NULL) {
   stopifnot(length(ratio) > 1)
 
   .neff_dots <- function(size = NULL) {
@@ -168,28 +169,30 @@ mcmc_neff_dots <- function(ratio, ..., size = NULL) {
     factor(ratio)
   }
   data <- data.frame(y = ratio, x = fratio)
+  rownames(data) <- NULL
   ggplot(data, aes_(
     x = ~ x,
     y = ~ y,
     color = ~factor_neff(ratio),
     fill = ~factor_neff(ratio)
   )) +
+    geom_segment(
+      aes_(xend = ~x, yend = -Inf, color = ~factor_neff(ratio)),
+      na.rm = TRUE
+    ) +
+    .neff_dots(size) +
     hline_at(
       c(0.1, 0.5, 1),
       color = "gray",
       linetype = 2,
       size = 0.25
     ) +
-    geom_segment(
-      aes_(xend = ~x, yend = -Inf, color = ~factor_neff(ratio)),
-      na.rm = TRUE
-    ) +
-    .neff_dots(size) +
     labs(x = NULL, y = bquote(N[eff]/N)) +
     scale_fill_diagnostic("neff") +
     scale_color_diagnostic("neff") +
     theme_default(y_text = FALSE) +
     coord_flip() +
     scale_y_continuous(breaks = c(0.1, seq(0, 1, .25)),
+                       limits = c(0, 1),
                        expand = c(0,.01))
 }

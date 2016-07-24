@@ -5,47 +5,45 @@
 #'
 #' @name bayesplot-utilities
 #'
-#' @export ggtitle labs lims
-#' @aliases ggtitle labs lims
-#'
 #' @return
 #' \describe{
 #' \item{\code{vline_at}, \code{hline_at}}{
-#' These functions return an object created by either \code{geom_vline} or
-#' \code{geom_hline} and are used to add a vertical or horizontal line (at one
-#' or several values) to a ggplot object. If \code{fun} is missing then the
-#' lines are drawn at the values in \code{v}. If \code{fun} is specified then
-#' the lines are drawn at the values returned by \code{fun(v)}.
+#' \code{vline_at} and \code{hline_at} return an object created by either
+#' \code{geom_vline} or \code{geom_hline} that can be added to a ggplot object
+#' to draw a vertical or horizontal line (at one or several values). If
+#' \code{fun} is missing then the lines are drawn at the values in \code{v}. If
+#' \code{fun} is specified then the lines are drawn at the values returned by
+#' \code{fun(v)}.
 #'
 #' \code{vline_0} and \code{hline_0} are wrappers for \code{vline_at} and
 #' \code{hline_at} with \code{v = 0} and \code{fun} missing.
 #' }
 #' \item{\code{lbub}}{
-#' The \code{lbub} function returns a \emph{function} that takes a single
+#' \code{lbub} returns a \emph{function} that takes a single
 #' argument \code{x} and returns the lower and upper bounds (\code{lb},
 #' \code{ub}) of the \code{100*p}\% central interval of \code{x}, as well as the
 #' median (if \code{med} is \code{TRUE}).
 #' }
-#' \item{\code{facet_fontsize}}{
-#' The \code{facet_fontsize} function returns a ggplot2 theme object that can
-#' be added to an existing plot (ggplot object) to change the size of the text
-#' in facet labels.
+#' \item{\code{facet_text}}{
+#' \code{facet_text} returns a ggplot2 theme object that can be added to an
+#' existing plot (ggplot object) to format the text in facet labels.
 #' }
-#' \item{\code{axis_fontsize}, \code{axis_ticksize}}{
-#' The \code{axis_fontsize} and \code{axis_ticksize} functions return a ggplot2
+#' \item{\code{axis_ticksize}}{
+#' \code{axis_ticksize} returns a ggplot2
 #' theme object that can be added to an existing plot (ggplot object) to change
-#' the size of the axis text (\code{axis_fontsize}) or tick marks
-#' (\code{axis_ticksize}).
+#' the size of the axis tick marks.
 #' }
 #' \item{\code{move_legend}, \code{no_legend}}{
-#' The \code{move_legend} and \code{no_legend} functions return a ggplot2 theme
-#' object that can be added to an existing plot (ggplot object) in order to
-#' change the position of the legend (\code{move_legend}) or remove the legend
+#' \code{move_legend} and \code{no_legend} return a ggplot2 theme object that
+#' can be added to an existing plot (ggplot object) in order to change the
+#' position of the legend (\code{move_legend}) or remove the legend
 #' (\code{no_legend}).
 #' }
-#' \item{\code{ggtitle}, \code{labs}, \code{lims}}{
-#' These functions are from \pkg{ggplot2} and but are exported by
-#' \pkg{bayesplot} for convenience.
+#' \item{\code{xaxis_text}, \code{yaxis_text}}{
+#' \code{xaxis_text} and \code{yaxis_text} return a ggplot2 theme object that
+#' can be added to an existing plot (ggplot object) in order to toggle or format
+#' the text displayed on the \code{x} or \code{y} axis. These functions do not
+#' affect the axis \emph{titles}.
 #' }
 #' }
 #'
@@ -100,12 +98,13 @@
 #'  )
 #'
 #' ### control font size of facet text
-#' p2 + facet_fontsize(rel(1.5)) # increase by factor of 1.5
-#' p2 + facet_fontsize(15) # set to 15pt
+#' p2 + facet_text(size = rel(1.5)) # increase by factor of 1.5
+#' p2 + facet_text(size = 15) # set to 15pt
 #'
-#' ### control font size of axis text
-#' p2 + axis_fontsize(rel(1.1))
-#' p2 + axis_fontsize(8)
+#' ### format or turn off axis text
+#' p2 + xaxis_text(FALSE)
+#' p2 + xaxis_text(size = 8)
+#' p2 + xaxis_text(size = rel(1.2))
 #'
 #' ### control size of axis tick marks
 #' p2 + axis_ticksize(.25)
@@ -122,8 +121,12 @@ NULL
 #'   the first argument to \code{fun}.
 #' @param fun A function, or the name of a function, that returns a numeric
 #'   vector.
-#' @param ... Arguments passed to \code{\link[ggplot2]{geom_vline}} or
+#' @param ... For the \code{vline_} and \code{hline_} functions, \code{...} can
+#'   be arguments passed to \code{\link[ggplot2]{geom_vline}} or
 #'   \code{\link[ggplot2]{geom_hline}} to control the appearance of the line(s).
+#'
+#'   For \code{xaxis_text} and \code{yaxis_text}, \code{...} can be arguments
+#'   passed to \code{\link[ggplot2]{element_text}} if \code{on = TRUE}.
 #'
 vline_at <- function(v, fun, ...) {
   geom_vline(xintercept = calc_v(v, fun),
@@ -183,24 +186,7 @@ calc_intervals <- function(x, p, med = TRUE, ...) {
 }
 
 
-
-# text sizes --------------------------------------------------------
-#' @rdname bayesplot-utilities
-#' @export
-#' @aliases rel
-#' @param fontsize Either a fontsize (in pts) or a relative fontsize (via a call
-#'   to \code{\link[ggplot2]{rel}}).
-#'
-facet_fontsize <- function(fontsize = rel(1)) {
-  theme(strip.text = element_text(size = fontsize))
-}
-
-#' @rdname bayesplot-utilities
-#' @export
-axis_fontsize <- function(fontsize = rel(1)) {
-  theme(axis.text = element_text(size = fontsize))
-}
-
+# tick marks --------------------------------------------------------------
 #' @rdname bayesplot-utilities
 #' @export
 #' @param ticksize A value to use for the \code{size} argument of
@@ -229,4 +215,32 @@ no_legend <- function() {
 #'
 move_legend <- function(position = "right") {
   theme(legend.position = position)
+}
+
+
+# axis and facet text --------------------------------------------------
+#' @rdname bayesplot-utilities
+#' @export
+#' @param on On/off switch. On if \code{TRUE}.
+xaxis_text <- function(on = TRUE, ...) {
+  theme(axis.text.x = if (on)
+    element_text(...)
+    else
+      element_blank())
+}
+#' @rdname bayesplot-utilities
+#' @export
+yaxis_text <- function(on = TRUE, ...) {
+  theme(axis.text.y = if (on)
+    element_text(...)
+    else
+      element_blank())
+}
+#' @rdname bayesplot-utilities
+#' @export
+facet_text <- function(on = TRUE, ...) {
+  theme(strip.text = if (on)
+    element_text(...)
+    else
+      element_blank())
 }

@@ -99,7 +99,7 @@
 #'  facet_args =
 #'    list(nrow = 2, labeller = ggplot2::label_parsed, switch = "y")
 #' )
-#' p + facet_fontsize(15)
+#' p + facet_text(size = 15)
 #'
 #' # separate chains as violin plots
 #' mcmc_violin(x)
