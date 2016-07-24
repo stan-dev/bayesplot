@@ -2,6 +2,8 @@
 % Please edit documentation in R/mcmc-diagnostics.R
 \name{MCMC-diagnostics}
 \alias{MCMC-diagnostics}
+\alias{mcmc_neff_dots}
+\alias{mcmc_neff_hist}
 \alias{mcmc_rhat_dots}
 \alias{mcmc_rhat_hist}
 \title{Rhat, effective sample size, Monte Carlo standard error}
@@ -9,9 +11,13 @@
 mcmc_rhat_hist(rhat, ..., binwidth = NULL)
 
 mcmc_rhat_dots(rhat, ..., size = NULL)
+
+mcmc_neff_hist(ratio, ..., binwidth = NULL)
+
+mcmc_neff_dots(ratio, ..., size = NULL)
 }
 \arguments{
-\item{rhat}{Vector of \code{\link[=r_hat]{Rhat}} estimates.}
+\item{rhat}{Vector of \code{\link[=rhat]{Rhat}} estimates.}
 
 \item{...}{Currently ignored.}
 
@@ -20,6 +26,9 @@ mcmc_rhat_dots(rhat, ..., size = NULL)
 
 \item{size}{An optional value to override \code{\link[ggplot2]{geom_point}}'s
 default size.}
+
+\item{ratio}{Vector of ratios of effective sample size (estimates) to total
+sample size. See \code{\link{neff_ratio}}.}
 }
 \value{
 A ggplot object that can be further customized using the

@@ -5,24 +5,24 @@
 \alias{log_posterior}
 \alias{log_posterior.stanfit}
 \alias{log_posterior.stanreg}
-\alias{n_eff}
-\alias{n_eff.stanfit}
-\alias{n_eff.stanreg}
+\alias{neff_ratio}
+\alias{neff_ratio.stanfit}
+\alias{neff_ratio.stanreg}
 \alias{nuts_params}
 \alias{nuts_params.stanfit}
 \alias{nuts_params.stanreg}
-\alias{r_hat}
-\alias{r_hat.stanfit}
-\alias{r_hat.stanreg}
+\alias{rhat}
+\alias{rhat.stanfit}
+\alias{rhat.stanreg}
 \title{Extract quantities needed for plotting from model objects}
 \usage{
 log_posterior(object, ...)
 
 nuts_params(object, ...)
 
-r_hat(object, ...)
+rhat(object, ...)
 
-n_eff(object, ...)
+neff_ratio(object, ...)
 
 \method{log_posterior}{stanfit}(object, inc_warmup = FALSE, ...)
 
@@ -32,13 +32,13 @@ n_eff(object, ...)
 
 \method{nuts_params}{stanreg}(object, pars = NULL, inc_warmup = FALSE, ...)
 
-\method{r_hat}{stanfit}(object, pars = NULL, ...)
+\method{rhat}{stanfit}(object, pars = NULL, ...)
 
-\method{r_hat}{stanreg}(object, pars = NULL, regex_pars = NULL, ...)
+\method{rhat}{stanreg}(object, pars = NULL, regex_pars = NULL, ...)
 
-\method{n_eff}{stanfit}(object, pars = NULL, ...)
+\method{neff_ratio}{stanfit}(object, pars = NULL, ...)
 
-\method{n_eff}{stanreg}(object, pars = NULL, regex_pars = NULL, ...)
+\method{neff_ratio}{stanreg}(object, pars = NULL, regex_pars = NULL, ...)
 }
 \arguments{
 \item{object}{A fitted model object.}
@@ -75,7 +75,7 @@ frame should have columns \code{"Parameter"} (factor), \code{"Iteration"}
 (integer), \code{"Chain"} (integer), and \code{"Value"} (numeric), in any
 order.
 }
-\item{\code{r_hat}, \code{n_eff}}{
+\item{\code{rhat}, \code{neff_ratio}}{
 Methods should return (named) vectors.
 }
 }

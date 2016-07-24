@@ -29,7 +29,7 @@
 #' (integer), \code{"Chain"} (integer), and \code{"Value"} (numeric), in any
 #' order.
 #' }
-#' \item{\code{r_hat}, \code{n_eff}}{
+#' \item{\code{rhat}, \code{neff_ratio}}{
 #' Methods should return (named) vectors.
 #' }
 #' }
@@ -49,17 +49,17 @@ log_posterior <- function(object, ...) {
 nuts_params <- function(object, ...) {
   UseMethod("nuts_params")
 }
-# r_hat -------------------------------------------------------------
+# rhat -------------------------------------------------------------
 #' @rdname extractors
 #' @export
-r_hat <- function(object, ...) {
-  UseMethod("r_hat")
+rhat <- function(object, ...) {
+  UseMethod("rhat")
 }
-# n_eff -------------------------------------------------------------
+# neff_ratio -------------------------------------------------------------
 #' @rdname extractors
 #' @export
-n_eff <- function(object, ...) {
-  UseMethod("n_eff")
+neff_ratio <- function(object, ...) {
+  UseMethod("neff_ratio")
 }
 
 
@@ -130,9 +130,9 @@ nuts_params.stanreg <-
 
 #' @rdname extractors
 #' @export
-#' @method r_hat stanfit
+#' @method rhat stanfit
 #'
-r_hat.stanfit <- function(object, pars = NULL, ...) {
+rhat.stanfit <- function(object, pars = NULL, ...) {
   suggested_package("rstan")
   s <- if (!is.null(pars)) {
     rstan::summary(object, pars = pars, ...)
@@ -145,10 +145,10 @@ r_hat.stanfit <- function(object, pars = NULL, ...) {
 
 #' @rdname extractors
 #' @export
-#' @method r_hat stanreg
+#' @method rhat stanreg
 #' @template args-regex_pars
 #'
-r_hat.stanreg <- function(object, pars = NULL, regex_pars = NULL, ...) {
+rhat.stanreg <- function(object, pars = NULL, regex_pars = NULL, ...) {
   suggested_package("rstanarm")
   r <- summary(object, pars = pars, regex_pars = regex_pars, ...)[, "Rhat"]
   if (!is.null(pars) || !is.null(regex_pars))
@@ -160,30 +160,33 @@ r_hat.stanreg <- function(object, pars = NULL, regex_pars = NULL, ...) {
 
 #' @rdname extractors
 #' @export
-#' @method n_eff stanfit
+#' @method neff_ratio stanfit
 #'
-n_eff.stanfit <- function(object, pars = NULL, ...) {
+neff_ratio.stanfit <- function(object, pars = NULL, ...) {
   suggested_package("rstan")
   s <- if (!is.null(pars)) {
     rstan::summary(object, pars = pars, ...)
   } else {
     rstan::summary(object, ...)
   }
-
-  round(s$summary[, "n_eff"])
+  tss <- nrow(as.matrix(object, pars = "lp__"))
+  s$summary[, "n_eff"] / tss
 }
 
 #' @rdname extractors
 #' @export
-#' @method n_eff stanreg
+#' @method neff_ratio stanreg
 #'
-n_eff.stanreg <- function(object, pars = NULL, regex_pars = NULL, ...) {
+neff_ratio.stanreg <- function(object, pars = NULL, regex_pars = NULL, ...) {
   suggested_package("rstanarm")
-  n <- summary(object, pars = pars, regex_pars = regex_pars, ...)[, "n_eff"]
+  s <- summary(object, pars = pars, regex_pars = regex_pars, ...)
+  ess <- s[, "n_eff"]
+  tss <- attr(s, "posterior_sample_size")
+  ratio <- ess / tss
   if (!is.null(pars) || !is.null(regex_pars))
-    return(n)
+    return(ratio)
 
-  n[!names(n) %in% c("mean_PPD", "log-posterior")]
+  ratio[!names(ratio) %in% c("mean_PPD", "log-posterior")]
 }
 
 

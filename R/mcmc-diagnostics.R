@@ -36,7 +36,7 @@ NULL
 
 #' @rdname MCMC-diagnostics
 #' @export
-#' @param rhat Vector of \code{\link[=r_hat]{Rhat}} estimates.
+#' @param rhat Vector of \code{\link[=rhat]{Rhat}} estimates.
 #' @template args-hist
 #'
 mcmc_rhat_hist <- function(rhat, ..., binwidth = NULL) {
@@ -111,6 +111,85 @@ mcmc_rhat_dots <- function(rhat, ..., size = NULL) {
     geom_hline(yintercept = 1, color = get_color("dh")) +
     .rhat_dots(size) +
     labs(x = NULL, y = bquote(hat(R))) +
+    scale_fill_rhat() +
+    scale_color_rhat() +
+    theme_default(y_text = FALSE) +
+    coord_flip()
+}
+
+
+
+
+#' @rdname MCMC-diagnostics
+#' @export
+#' @param ratio Vector of ratios of effective sample size (estimates) to total
+#'   sample size. See \code{\link{neff_ratio}}.
+#'
+mcmc_neff_hist <- function(ratio, ..., binwidth = NULL) {
+  ggplot(
+    data.frame(x = ratio, lev = factor_rhat(ratio, breaks = c(.1, .5))),
+    aes_(
+      x = ~ x,
+      color = ~ lev,
+      fill = ~ lev
+    )
+  ) +
+    geom_histogram(
+      size = .25,
+      na.rm = TRUE,
+      binwidth = binwidth
+    ) +
+    scale_color_rhat() +
+    scale_fill_rhat() +
+    labs(x = bquote(N[eff]), y = NULL) +
+    dont_expand_y_axis(c(0.005, 0)) +
+    theme_default(y_text = FALSE)
+}
+
+#' @rdname MCMC-diagnostics
+#' @export
+mcmc_neff_dots <- function(ratio, ..., size = NULL) {
+  stopifnot(length(ratio) > 1)
+
+  # factor rhat by parameter instead of value
+  fratio <- if (!is.null(names(ratio))) {
+    factor(ratio, labels = names(ratio))
+  } else {
+    factor(ratio)
+  }
+  data <- data.frame(y = ratio, x = fratio)
+  graph <- ggplot(data, aes_(x = ~ x, y = ~ y,
+                             color = ~factor_rhat(ratio, breaks = c(0.1, 0.5)),
+                             fill = ~factor_rhat(ratio, breaks = c(0.1, 0.5))))
+
+  if (any(ratio < 0.1))
+    graph <- graph + geom_hline(
+      yintercept = 0.1,
+      color = "gray",
+      linetype = 2,
+      size = 0.25
+    )
+  if (any(rhat < 0.5))
+    graph <- graph + geom_hline(
+      yintercept = 0.5,
+      color = "gray",
+      linetype = 2,
+      size = 0.25
+    )
+
+  .neff_dots <- function(size = NULL) {
+    args <- list(shape = 21, na.rm = TRUE)
+    do.call("geom_point", c(args, size = size))
+  }
+
+  graph +
+    geom_segment(
+      aes_(xend = ~x, yend = ~1, color = ~factor_rhat(ratio, breaks = c(0.1, 0.5))),
+      na.rm = TRUE
+    ) +
+    geom_hline(yintercept = 1, color = get_color("dh")) +
+    .neff_dots(size) +
+    labs(x = NULL, y = bquote(N[eff])) +
     scale_fill_rhat() +
     scale_color_rhat() +
     theme_default(y_text = FALSE) +
