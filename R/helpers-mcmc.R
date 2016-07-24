@@ -325,15 +325,43 @@ factor_rhat <- function(rhat, breaks = c(1.05, 1.1)) {
   )
 }
 
+# factor neff ratio
+factor_neff <- function(ratio, breaks = c(0.1, 0.5)) {
+  factor_rhat(ratio, breaks = breaks)
+}
+
 # Functions wrapping around scale_color_manual and scale_fill_manual, used to
 # color the intervals by rhat value
-scale_color_rhat <- function() rhat_color_scale("color")
-scale_fill_rhat <- function() rhat_color_scale("fill")
-rhat_color_scale <- function(aesthetic = c("color", "fill")) {
+scale_color_diagnostic <- function(diagnostic = c("rhat", "neff")) {
+  d <- match.arg(diagnostic)
+  diagnostic_color_scale(d, aesthetic = "color")
+}
+scale_fill_diagnostic <- function(diagnostic = c("rhat", "neff")) {
+  d <- match.arg(diagnostic)
+  diagnostic_color_scale(d, aesthetic = "fill")
+}
+
+diagnostic_color_scale <- function(diagnostic = c("rhat", "neff"),
+                                   aesthetic = c("color", "fill")) {
+  diagnostic <- match.arg(diagnostic)
   aesthetic <- match.arg(aesthetic)
   color_levels <- c("light", "mid", "dark")
   if (aesthetic == "color")
     color_levels <- paste0(color_levels, "_highlight")
+
+  color_labels <- if (diagnostic == "rhat") {
+    c(
+      expression(hat(R) <= 1.05),
+      expression(hat(R) <= 1.10),
+      expression(hat(R) > 1.10)
+    )
+  } else {
+    c(
+      expression(N[eff]/N <= 0.1),
+      expression(N[eff]/N <= 0.5),
+      expression(N[eff]/N > 0.5)
+    )
+  }
 
   do.call(
     match.fun(paste0("scale_", aesthetic, "_manual")),
@@ -341,9 +369,7 @@ rhat_color_scale <- function(aesthetic = c("color", "fill")) {
       name = NULL,
       drop = FALSE,
       values = setNames(get_color(color_levels), c("low", "ok", "high")),
-      labels = c(expression(hat(R) <= 1.05),
-                 expression(hat(R) <= 1.10),
-                 expression(hat(R) > 1.10))
+      labels = color_labels
     )
   )
 }

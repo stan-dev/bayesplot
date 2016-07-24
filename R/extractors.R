@@ -170,7 +170,7 @@ neff_ratio.stanfit <- function(object, pars = NULL, ...) {
     rstan::summary(object, ...)
   }
   tss <- nrow(as.matrix(object, pars = "lp__"))
-  s$summary[, "n_eff"] / tss
+  jitter_neff(s$summary[, "n_eff"]) / tss
 }
 
 #' @rdname extractors
@@ -182,7 +182,7 @@ neff_ratio.stanreg <- function(object, pars = NULL, regex_pars = NULL, ...) {
   s <- summary(object, pars = pars, regex_pars = regex_pars, ...)
   ess <- s[, "n_eff"]
   tss <- attr(s, "posterior_sample_size")
-  ratio <- ess / tss
+  ratio <- jitter_neff(ess) / tss
   if (!is.null(pars) || !is.null(regex_pars))
     return(ratio)
 
@@ -210,3 +210,9 @@ validate_df_classes <- function(x, classes = character()) {
   }
   return(x)
 }
+
+# for jittering neff estimates so no duplicate values
+jitter_neff <- function(x) {
+  x + rnorm(length(x), sd = 0.001)
+}
+

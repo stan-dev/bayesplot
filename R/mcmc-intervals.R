@@ -275,7 +275,9 @@ mcmc_areas <- function(x,
     graph <- graph + g_bottom + g_dens
 
     if (color_by_rhat) {
-      graph <- graph + scale_fill_rhat() + scale_color_rhat()
+      graph <- graph +
+        scale_fill_diagnostic("rhat") +
+        scale_color_diagnostic("rhat")
     } else {
       graph <- graph + scale_fill_gradient(low = get_color("l"),
                                            high = get_color("l"),
@@ -332,7 +334,9 @@ mcmc_areas <- function(x,
       graph <- graph + do.call("geom_point", point_args)
 
     if (color_by_rhat)
-      graph <- graph + scale_color_rhat() + scale_fill_rhat()
+      graph <- graph +
+        scale_color_diagnostic("rhat") +
+        scale_fill_diagnostic("rhat")
   }
 
   graph +
