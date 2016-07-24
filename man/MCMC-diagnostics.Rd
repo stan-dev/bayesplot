@@ -6,7 +6,7 @@
 \alias{mcmc_neff_hist}
 \alias{mcmc_rhat_dots}
 \alias{mcmc_rhat_hist}
-\title{Rhat, effective sample size, Monte Carlo standard error}
+\title{Rhat and effective sample size}
 \usage{
 mcmc_rhat_hist(rhat, ..., binwidth = NULL)
 
@@ -35,16 +35,14 @@ A ggplot object that can be further customized using the
   \pkg{ggplot2} package.
 }
 \description{
-Rhat, effective sample size, Monte Carlo standard error
+Rhat and effective sample size
 }
 \section{Plot Descriptions}{
 
 \describe{
-  \item{\code{mcmc_rhat_hist, mcmc_rhat_dot}}{
+  \item{\code{mcmc_rhat_hist, mcmc_rhat_dots}}{
   }
-  \item{\code{mcmc_neff_hist, mcmc_neff_dot}}{
-  }
-  \item{\code{mcmc_mcse_hist, mcmc_mcse_dot}}{
+  \item{\code{mcmc_neff_hist, mcmc_neff_dots}}{
   }
   \item{\code{mcmc_diagnostics}}{
   }
@@ -59,7 +57,16 @@ mcmc_rhat_dots(rhat)
 
 set_color_scheme("blue")
 mcmc_rhat_dots(runif(1000, 1, 1.3))
-mcmc_rhat_dots(runif(1000, 1, 1.07)) + ggplot2::ylim(1,1.1)
+mcmc_rhat_dots(runif(1000, 1, 1.07))
+
+
+# fake neff ratio values to use for demonstration
+ratio <- c(runif(100, 0, 1))
+mcmc_neff_hist(ratio)
+mcmc_neff_dots(ratio)
+mcmc_neff_dots(ratio) + move_legend("top")
+
+
 
 }
 \seealso{

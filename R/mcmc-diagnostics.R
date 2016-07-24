@@ -1,4 +1,4 @@
-#' Rhat, effective sample size, Monte Carlo standard error
+#' Rhat and effective sample size
 #'
 #' @name MCMC-diagnostics
 #' @family MCMC
@@ -9,11 +9,9 @@
 #'
 #' @section Plot Descriptions:
 #' \describe{
-#'   \item{\code{mcmc_rhat_hist, mcmc_rhat_dot}}{
+#'   \item{\code{mcmc_rhat_hist, mcmc_rhat_dots}}{
 #'   }
-#'   \item{\code{mcmc_neff_hist, mcmc_neff_dot}}{
-#'   }
-#'   \item{\code{mcmc_mcse_hist, mcmc_mcse_dot}}{
+#'   \item{\code{mcmc_neff_hist, mcmc_neff_dots}}{
 #'   }
 #'   \item{\code{mcmc_diagnostics}}{
 #'   }
@@ -30,7 +28,16 @@
 #'
 #' set_color_scheme("blue")
 #' mcmc_rhat_dots(runif(1000, 1, 1.3))
-#' mcmc_rhat_dots(runif(1000, 1, 1.07)) + ggplot2::ylim(1,1.1)
+#' mcmc_rhat_dots(runif(1000, 1, 1.07))
+#'
+#'
+#' # fake neff ratio values to use for demonstration
+#' ratio <- c(runif(100, 0, 1))
+#' mcmc_neff_hist(ratio)
+#' mcmc_neff_dots(ratio)
+#' mcmc_neff_dots(ratio) + move_legend("top")
+#'
+#'
 #'
 NULL
 
@@ -69,55 +76,53 @@ mcmc_rhat_hist <- function(rhat, ..., binwidth = NULL) {
 mcmc_rhat_dots <- function(rhat, ..., size = NULL) {
   stopifnot(length(rhat) > 1)
 
+  .rhat_dots <- function(size = NULL) {
+    args <- list(shape = 21, na.rm = TRUE)
+    do.call("geom_point", c(args, size = size))
+  }
+
   # factor rhat by parameter instead of value
   frhat <- if (!is.null(names(rhat))) {
     factor(rhat, labels = names(rhat))
   } else {
     factor(rhat)
   }
+
   data <- data.frame(y = rhat, x = frhat)
-  graph <- ggplot(data, aes_(x = ~ x, y = ~ y,
-                             color = ~factor_rhat(rhat),
-                             fill = ~factor_rhat(rhat)))
-
-  if (any(rhat > 1.05))
-    graph <- graph + geom_hline(
-      yintercept = 1.05,
+  graph <- ggplot(data, aes_(
+    x = ~ x, y = ~ y,
+    color = ~factor_rhat(rhat),
+    fill = ~factor_rhat(rhat)
+  )) +
+    hline_at(
+      c(1.05, 1.1),
       color = "gray",
       linetype = 2,
       size = 0.25
-    )
-  if (any(rhat > 1.1))
-    graph <- graph + geom_hline(
-      yintercept = 1.1,
-      color = "gray",
-      linetype = 2,
-      size = 0.25
+    ) +
+    geom_segment(
+      mapping = aes_(
+        xend = ~x,
+        yend = ifelse(min(rhat) < 1, 1, -Inf),
+        color = ~factor_rhat(rhat)
+      ),
+      na.rm = TRUE
     )
 
-  .rhat_dots <- function(size = NULL) {
-    args <- list(#color = get_color("mh"),
-                 # fill = get_color("m"),
-                 shape = 21,
-                 na.rm = TRUE)
-    do.call("geom_point", c(args, size = size))
-  }
+  if (min(rhat) < 1)
+    graph <- graph +
+      geom_hline(yintercept = 1, color = "gray", size = 1)
 
   graph +
-    geom_segment(
-      aes_(xend = ~x, yend = ~1, color = ~factor_rhat(rhat)),
-      na.rm = TRUE
-    ) +
-    geom_hline(yintercept = 1, color = get_color("dh")) +
     .rhat_dots(size) +
     labs(x = NULL, y = bquote(hat(R))) +
     scale_fill_diagnostic("rhat") +
     scale_color_diagnostic("rhat") +
     theme_default(y_text = FALSE) +
-    coord_flip()
+    coord_flip() +
+    scale_y_continuous(breaks = c(1, 1.05, 1.1),
+                       expand = c(0,.001))
 }
-
-
 
 
 #' @rdname MCMC-diagnostics
@@ -141,7 +146,7 @@ mcmc_neff_hist <- function(ratio, ..., binwidth = NULL) {
     ) +
     scale_color_diagnostic("neff") +
     scale_fill_diagnostic("neff") +
-    labs(x = bquote(N[eff]), y = NULL) +
+    labs(x = bquote(N[eff]/N), y = NULL) +
     dont_expand_y_axis(c(0.005, 0)) +
     theme_default(y_text = FALSE)
 }
@@ -151,6 +156,11 @@ mcmc_neff_hist <- function(ratio, ..., binwidth = NULL) {
 mcmc_neff_dots <- function(ratio, ..., size = NULL) {
   stopifnot(length(ratio) > 1)
 
+  .neff_dots <- function(size = NULL) {
+    args <- list(shape = 21, na.rm = TRUE)
+    do.call("geom_point", c(args, size = size))
+  }
+
   # factor neff ratio by parameter instead of value
   fratio <- if (!is.null(names(ratio))) {
     factor(ratio, labels = names(ratio))
@@ -158,40 +168,28 @@ mcmc_neff_dots <- function(ratio, ..., size = NULL) {
     factor(ratio)
   }
   data <- data.frame(y = ratio, x = fratio)
-  graph <- ggplot(data, aes_(x = ~ x, y = ~ y,
-                             color = ~factor_neff(ratio),
-                             fill = ~factor_neff(ratio)))
-
-  if (any(ratio < 0.1))
-    graph <- graph + geom_hline(
-      yintercept = 0.1,
+  ggplot(data, aes_(
+    x = ~ x,
+    y = ~ y,
+    color = ~factor_neff(ratio),
+    fill = ~factor_neff(ratio)
+  )) +
+    hline_at(
+      c(0.1, 0.5, 1),
       color = "gray",
       linetype = 2,
       size = 0.25
-    )
-  if (any(ratio < 0.5))
-    graph <- graph + geom_hline(
-      yintercept = 0.5,
-      color = "gray",
-      linetype = 2,
-      size = 0.25
-    )
-
-  .neff_dots <- function(size = NULL) {
-    args <- list(shape = 21, na.rm = TRUE)
-    do.call("geom_point", c(args, size = size))
-  }
-
-  graph +
+    ) +
     geom_segment(
-      aes_(xend = ~x, yend = ~0, color = ~factor_neff(ratio)),
+      aes_(xend = ~x, yend = -Inf, color = ~factor_neff(ratio)),
       na.rm = TRUE
     ) +
-    geom_hline(yintercept = 0, color = get_color("dh")) +
     .neff_dots(size) +
-    labs(x = NULL, y = bquote(N[eff])) +
+    labs(x = NULL, y = bquote(N[eff]/N)) +
     scale_fill_diagnostic("neff") +
     scale_color_diagnostic("neff") +
     theme_default(y_text = FALSE) +
-    coord_flip()
+    coord_flip() +
+    scale_y_continuous(breaks = c(0.1, seq(0, 1, .25)),
+                       expand = c(0,.01))
 }

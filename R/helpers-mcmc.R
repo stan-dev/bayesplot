@@ -346,6 +346,8 @@ diagnostic_color_scale <- function(diagnostic = c("rhat", "neff"),
   diagnostic <- match.arg(diagnostic)
   aesthetic <- match.arg(aesthetic)
   color_levels <- c("light", "mid", "dark")
+  if (diagnostic == "neff")
+    color_levels <- rev(color_levels)
   if (aesthetic == "color")
     color_levels <- paste0(color_levels, "_highlight")
 
