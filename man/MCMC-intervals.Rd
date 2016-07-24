@@ -70,7 +70,7 @@ default), \code{"mean"}, or \code{"none"}.}
 \item{rhat}{An optional numeric vector of \eqn{\hat{R}}{Rhat} estimates, with
 one element per parameter included in \code{x}. If \code{rhat} is provided,
 the intervals/areas and point estimates in the resulting plot are colored
-based on \eqn{\hat{R}}{Rhat} value. See \code{\link{r_hat}} for methods for
+based on \eqn{\hat{R}}{Rhat} value. See \code{\link{rhat}} for methods for
 extracting \eqn{\hat{R}}{Rhat} estimates.}
 }
 \value{
