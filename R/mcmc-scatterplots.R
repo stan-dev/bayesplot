@@ -4,7 +4,8 @@
 #' @family MCMC
 #'
 #' @template args-mcmc-x
-#' @template args-pars
+#' @param pars An optional character vector of parameter names. (\strong{Note}:
+#' for \code{mcmc_scatter} only two parameters can be selected.)
 #' @template args-regex_pars
 #' @template args-transformations
 #' @param ... Currently ignored.
@@ -17,9 +18,11 @@
 #'
 #'
 #' @examples
+#' # Some draws to play with for examples
 #' x <- fake_draws(params = 6)
 #' dimnames(x)
 #'
+#' # scatterplot of alpha vs log(sigma)
 #' (p <- mcmc_scatter(x, pars = c("alpha", "sigma"),
 #'                   trans = list(sigma = "log")))
 #'
@@ -46,13 +49,15 @@ mcmc_scatter <- function(x,
                          alpha = 0.75) {
 
   x <- prepare_mcmc_array(x, pars, regex_pars, transformations)
-  if (dim(x)[3] > 2)
-    stop("Only 2 parameters can be selected.")
+  if (dim(x)[3] != 2)
+    stop("For 'mcmc_scatter' exactly 2 parameters must be selected.")
 
   x <- merge_chains(x)
-  parnames <- colnames(x)
-  d <- data.frame(x = c(x[, 1]), y = c(x[, 2]))
-  ggplot(d, aes_(x = ~ x, y = ~ y)) +
+  parnames <- colnames(x)[1:2]
+  ggplot(
+    data = data.frame(x = c(x[, 1]), y = c(x[, 2])),
+    mapping = aes_(x = ~ x, y = ~ y)
+  ) +
     geom_point(
       shape = 21,
       color = get_color("dh"),

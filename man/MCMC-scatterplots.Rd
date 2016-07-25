@@ -7,7 +7,7 @@
 \title{Scatterplots of MCMC draws}
 \usage{
 mcmc_scatter(x, pars = character(), regex_pars = character(),
-  transformations = list(), ..., size = 2.5, alpha = 1)
+  transformations = list(), ..., size = 2.5, alpha = 0.75)
 
 mcmc_pairs(x, pars = character(), regex_pars = character(),
   transformations = list(), ...)
@@ -31,14 +31,12 @@ mcmc_pairs(x, pars = character(), regex_pars = character(),
  have the same names and be in the same order.
 }}
 
-\item{pars}{An optional character vector of parameter names. If neither
-\code{pars} nor \code{regex_pars} is specified then the default is to use
-\emph{all} parameters.}
+\item{pars}{An optional character vector of parameter names. (\strong{Note}:
+for \code{mcmc_scatter} only two parameters can be selected.)}
 
 \item{regex_pars}{An optional \link[=grep]{regular expression} to use for
 parameter selection. Can be specified instead of \code{pars} or in addition
-to \code{pars}. If neither \code{pars} nor \code{regex_pars} is specified
-then the default is to use \emph{all} parameters.}
+to \code{pars}.}
 
 \item{transformations}{An optional named list specifying transformations to
 apply to parameters. The name of each list element should be a parameter
@@ -65,17 +63,23 @@ For \code{mcmc_scatter}, a ggplot object that can be further
 Scatterplots of MCMC draws
 }
 \examples{
+# Some draws to play with for examples
 x <- fake_draws(params = 6)
 dimnames(x)
 
-mcmc_scatter(x, pars = c("alpha", "sigma"),
-             trans = list(sigma = "log"))
+# scatterplot of alpha vs log(sigma)
+(p <- mcmc_scatter(x, pars = c("alpha", "sigma"),
+                  trans = list(sigma = "log")))
+
+# add ellipse
+p + ggplot2::stat_ellipse(level = 0.9)
 
 mcmc_scatter(x, pars = c("beta[1]", "beta[4]"))
 mcmc_scatter(x, regex = "beta\\\\[[1,4]")
 
 # pairs plot with histograms along the diagonal
 mcmc_pairs(x, pars = c("alpha", "sigma", "beta[3]"))
+
 }
 \seealso{
 \code{\link{set_color_scheme}} to change the aesthetic theme
