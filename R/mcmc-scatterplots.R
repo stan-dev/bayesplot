@@ -20,14 +20,18 @@
 #' x <- fake_draws(params = 6)
 #' dimnames(x)
 #'
-#' mcmc_scatter(x, pars = c("alpha", "sigma"),
-#'              trans = list(sigma = "log"))
+#' (p <- mcmc_scatter(x, pars = c("alpha", "sigma"),
+#'                   trans = list(sigma = "log")))
+#'
+#' # add ellipse
+#' p + ggplot2::stat_ellipse(level = 0.9)
 #'
 #' mcmc_scatter(x, pars = c("beta[1]", "beta[4]"))
 #' mcmc_scatter(x, regex = "beta\\[[1,4]")
 #'
 #' # pairs plot with histograms along the diagonal
 #' mcmc_pairs(x, pars = c("alpha", "sigma", "beta[3]"))
+#'
 NULL
 
 #' @rdname MCMC-scatterplots
@@ -39,7 +43,7 @@ mcmc_scatter <- function(x,
                          transformations = list(),
                          ...,
                          size = 2.5,
-                         alpha = 1) {
+                         alpha = 0.75) {
 
   x <- prepare_mcmc_array(x, pars, regex_pars, transformations)
   if (dim(x)[3] > 2)
@@ -59,7 +63,6 @@ mcmc_scatter <- function(x,
     labs(x = parnames[1], y = parnames[2]) +
     theme_default()
 }
-
 
 #' @rdname MCMC-scatterplots
 #' @export
