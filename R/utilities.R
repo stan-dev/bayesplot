@@ -5,6 +5,16 @@
 #'
 #' @name bayesplot-utilities
 #'
+#' @param ... For the \code{vline_} and \code{hline_} functions, \code{...}
+#'   is passed to \code{\link[ggplot2]{geom_vline}} or
+#'   \code{\link[ggplot2]{geom_hline}} to control the appearance of the line(s).
+#'
+#'   For \code{facet_text}, \code{xaxis_text} and \code{yaxis_text}, \code{...}
+#'   is passed to \code{\link[ggplot2]{element_text}} if \code{on = TRUE}.
+#'
+#'   For \code{xaxis_ticks} and \code{yaxis_ticks}, \code{...} is passed to
+#'   \code{\link[ggplot2]{element_line}} if \code{on = TRUE}.
+#'
 #' @return
 #' \describe{
 #' \item{\code{vline_at}, \code{hline_at}}{
@@ -24,26 +34,26 @@
 #' \code{ub}) of the \code{100*p}\% central interval of \code{x}, as well as the
 #' median (if \code{med} is \code{TRUE}).
 #' }
-#' \item{\code{facet_text}}{
-#' \code{facet_text} returns a ggplot2 theme object that can be added to an
-#' existing plot (ggplot object) to format the text in facet labels.
-#' }
-#' \item{\code{axis_ticksize}}{
-#' \code{axis_ticksize} returns a ggplot2
-#' theme object that can be added to an existing plot (ggplot object) to change
-#' the size of the axis tick marks.
-#' }
 #' \item{\code{move_legend}, \code{no_legend}}{
 #' \code{move_legend} and \code{no_legend} return a ggplot2 theme object that
 #' can be added to an existing plot (ggplot object) in order to change the
 #' position of the legend (\code{move_legend}) or remove the legend
 #' (\code{no_legend}).
 #' }
+#' \item{\code{facet_text}}{
+#' \code{facet_text} returns a ggplot2 theme object that can be added to an
+#' existing plot (ggplot object) to format the text in facet labels.
+#' }
 #' \item{\code{xaxis_text}, \code{yaxis_text}}{
 #' \code{xaxis_text} and \code{yaxis_text} return a ggplot2 theme object that
 #' can be added to an existing plot (ggplot object) in order to toggle or format
 #' the text displayed on the \code{x} or \code{y} axis. These functions do not
 #' affect the axis \emph{titles}.
+#' }
+#' \item{\code{xaxis_ticks}, \code{yaxis_ticks}}{
+#' \code{xaxis_ticks} and \code{yaxis_ticks} return a ggplot2
+#' theme object that can be added to an existing plot (ggplot object) to change
+#' the appearance of the axis tick marks.
 #' }
 #' }
 #'
@@ -97,18 +107,13 @@
 #'    size = .5 * c(1,2,1)
 #'  )
 #'
-#' ### control font size of facet text
-#' p2 + facet_text(size = rel(1.5)) # increase by factor of 1.5
-#' p2 + facet_text(size = 15) # set to 15pt
-#'
-#' ### format or turn off axis text
+#' ### control appearance facet and axis text
+#' p2 + facet_text(face = "bold", color = "gray50", size = 14)
 #' p2 + xaxis_text(FALSE)
-#' p2 + xaxis_text(size = 8)
-#' p2 + xaxis_text(size = rel(1.2))
+#' p2 + xaxis_text(size = 14)
 #'
 #' ### control size of axis tick marks
-#' p2 + axis_ticksize(.25)
-#'
+#' p2 + xaxis_ticks(.25)
 #'
 NULL
 
@@ -121,12 +126,6 @@ NULL
 #'   the first argument to \code{fun}.
 #' @param fun A function, or the name of a function, that returns a numeric
 #'   vector.
-#' @param ... For the \code{vline_} and \code{hline_} functions, \code{...} can
-#'   be arguments passed to \code{\link[ggplot2]{geom_vline}} or
-#'   \code{\link[ggplot2]{geom_hline}} to control the appearance of the line(s).
-#'
-#'   For \code{xaxis_text} and \code{yaxis_text}, \code{...} can be arguments
-#'   passed to \code{\link[ggplot2]{element_text}} if \code{on = TRUE}.
 #'
 vline_at <- function(v, fun, ...) {
   geom_vline(xintercept = calc_v(v, fun),
@@ -186,17 +185,6 @@ calc_intervals <- function(x, p, med = TRUE, ...) {
 }
 
 
-# tick marks --------------------------------------------------------------
-#' @rdname bayesplot-utilities
-#' @export
-#' @param ticksize A value to use for the \code{size} argument of
-#'   \code{\link[ggplot2]{element_line}}. The default of zero means
-#'   no tick marks.
-#'
-axis_ticksize <- function(ticksize = 0) {
-  theme(axis.ticks = element_line(size = ticksize))
-}
-
 
 # move or remove legend ---------------------------------------------------
 #' @rdname bayesplot-utilities
@@ -222,6 +210,15 @@ move_legend <- function(position = "right") {
 #' @rdname bayesplot-utilities
 #' @export
 #' @param on On/off switch. On if \code{TRUE}.
+#'
+facet_text <- function(on = TRUE, ...) {
+  theme(strip.text = if (on)
+    element_text(...)
+    else
+      element_blank())
+}
+#' @rdname bayesplot-utilities
+#' @export
 xaxis_text <- function(on = TRUE, ...) {
   theme(axis.text.x = if (on)
     element_text(...)
@@ -236,11 +233,22 @@ yaxis_text <- function(on = TRUE, ...) {
     else
       element_blank())
 }
+
+
+# tick marks --------------------------------------------------------------
 #' @rdname bayesplot-utilities
 #' @export
-facet_text <- function(on = TRUE, ...) {
-  theme(strip.text = if (on)
-    element_text(...)
+xaxis_ticks <- function(on = TRUE, ...) {
+  theme(axis.ticks.x = if (on)
+    element_line(...)
+    else
+      element_blank())
+}
+#' @rdname bayesplot-utilities
+#' @export
+yaxis_ticks <- function(on = TRUE, ...) {
+  theme(axis.ticks.y = if (on)
+    element_line(...)
     else
       element_blank())
 }

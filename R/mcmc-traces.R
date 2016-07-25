@@ -51,13 +51,15 @@
 #' mcmc_trace(x, window = c(100, 200))
 #'
 #' # parse facet label text
-#' p <- mcmc_trace(
-#'  x,
-#'  regex_pars = "beta\\[[1,3]\\]",
-#'  facet_args = list(labeller = ggplot2::label_parsed)
-#' )
+#' (p <- mcmc_trace(
+#'   x,
+#'   regex_pars = "beta\\[[1,3]\\]",
+#'   facet_args = list(labeller = ggplot2::label_parsed)
+#' ))
 #' # plot with bigger facet fontsize and add tick marks
-#' p + facet_text(size = 15) + axis_ticksize(.5)
+#' p +
+#'  facet_text(size = 15) +
+#'  xaxis_ticks(size = .25)
 #'
 #' # mark first 200 draws as warmup
 #' mcmc_trace(x, n_warmup = 200)

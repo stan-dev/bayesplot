@@ -46,12 +46,13 @@
 #' y <- rnorm(100)
 #' yrep <- matrix(rnorm(2500), ncol = 100)
 #' ppc_dens_overlay(y, yrep)
-#' ppc_hist(y, yrep[1:8, ]) + facet_text(size = 8)
+#' ppc_hist(y, yrep[1:8, ])
 #'
 #' set_color_scheme("blue")
 #' group <- gl(4, 25, labels = LETTERS[1:4])
 #' ppc_violin_grouped(y, yrep, group) +
-#'  axis_ticksize(.75)
+#'  yaxis_ticks(size = .75) +
+#'  xaxis_text(size = 15)
 #'
 NULL
 

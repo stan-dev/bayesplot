@@ -45,22 +45,25 @@
 #'  rnorm(length(xb), xb, 3)
 #' }))
 #'
-#' xy_labs <- labs(x = "wt", y = expression(mpg^rep))
-#' ppc_vs_x(y, yrep, x) +
-#'  axis_ticksize(0.25) +
+#' (p <- ppc_vs_x(y, yrep, x))
+#'
+#' xy_labs <- ggplot2::labs(x = "wt", y = expression(mpg^rep))
+#' p +
+#'  xaxis_ticks(size = 0.25) +
+#'  yaxis_ticks(size = 0.25) +
 #'  xy_labs
 #'
 #' # by group
 #' set_color_scheme("green")
 #' group <- mtcars$gear
 #' ppc_vs_x_grouped(y, yrep, x, group) +
-#'  ggplot2::geom_rug(sides = "b") +
+#'  ggplot2::geom_rug(sides = "b", size = 0.1) +
 #'  xy_labs
 #'
 #' # force all facets to have same y axis scale (only x is "free")
 #' ppc_vs_x_grouped(y, yrep, x, group,
 #'                  facet_args = list(scales = "free_x")) +
-#'  axis_ticksize(0.25) +
+#'  xaxis_ticks(size = 0.25) +
 #'  xy_labs
 #'
 NULL
