@@ -38,18 +38,29 @@ A ggplot object that can be further customized using the
 Plots of Rhat and ratio of effective sample size to total sample size.
 }
 \section{Plot Descriptions}{
- \describe{ \item{\code{mcmc_rhat,
-  mcmc_rhat_hist}}{ Rhat values as either points or a histogram. Values are
-  colored using different shades: \itemize { \item \emph{light}: below 1.05
-  (good) \item \emph{mid}: between 1.05 and 1.1 (ok) \item \emph{dark}: above
-  1.1 (too high) } } \item{\code{mcmc_neff, mcmc_neff_hist}}{ Ratios of
-  effective sample size to total sample size as either points or a histogram.
-  Values are colored using different shades: \itemize { \item \emph{light}:
-  between 0.5 and 1 (good) \item \emph{mid}: between 0.1 and 0.5 (ok) \item
-  \emph{dark}: below 0.1 (maybe too low) } } }
+
+\describe{
+\item{\code{mcmc_rhat, mcmc_rhat_hist}}{
+Rhat values as either points or a histogram. Values are
+colored using different shades:
+ \itemize{
+   \item \emph{light}: below 1.05 (good)
+   \item \emph{mid}: between 1.05 and 1.1 (ok)
+   \item \emph{dark}: above 1.1 (too high)
+ }
+}
+\item{\code{mcmc_neff, mcmc_neff_hist}}{
+Ratios of effective sample size to total sample size as either points or a histogram.
+Values are colored using different shades:
+ \itemize{
+   \item \emph{light}: between 0.5 and 1 (good)
+   \item \emph{mid}: between 0.1 and 0.5 (ok)
+   \item \emph{dark}: below 0.1 (maybe too low)
+ }
+}
+}
 }
 \examples{
-
 # fake rhat values to use for demonstration
 rhat <- c(runif(100, 1, 1.15))
 mcmc_rhat_hist(rhat)
@@ -59,20 +70,17 @@ set_color_scheme("blue")
 mcmc_rhat(runif(1000, 1, 1.3))
 mcmc_rhat(runif(1000, 1, 1.07))
 
-
 # fake neff ratio values to use for demonstration
 ratio <- c(runif(100, 0, 1))
 mcmc_neff_hist(ratio)
 mcmc_neff(ratio)
 mcmc_neff(ratio) + move_legend("top")
 
-
-
 }
 \references{
 Gelman, A. and Rubin, D. B. (1992). Inference from iterative
-  simulation using multiple sequences. \emph{Statistical Science}. 7(4),
-  457--472.
+simulation using multiple sequences. \emph{Statistical Science}. 7(4),
+457--472.
 
 Stan Development Team. (2016). \emph{Stan Modeling Language Users
 Guide and Reference Manual.} \url{http://mc-stan.org/documentation/}
