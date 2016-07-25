@@ -41,28 +41,31 @@
 #' dim(x)
 #' dimnames(x)
 #'
-#' mcmc_trace(x)
-#' mcmc_trace_highlight(x, chain = 2)
+#' mcmc_trace(x, pars = c("alpha", "sigma"))
 #'
 #' # use traditional ggplot discrete color scale
-#' mcmc_trace(x) + ggplot2::scale_color_hue()
+#' mcmc_trace(x, pars = c("alpha", "sigma")) +
+#'  ggplot2::scale_color_discrete()
 #'
 #' # zoom in on a window of iterations
-#' mcmc_trace(x, window = c(100, 200))
+#' # and add tickmarks
+#' mcmc_trace(x, window = c(100, 130)) +
+#'  xaxis_ticks(size = 0.25)
 #'
+#' \dontrun{
 #' # parse facet label text
-#' (p <- mcmc_trace(
+#' p <- mcmc_trace(
 #'   x,
 #'   regex_pars = "beta\\[[1,3]\\]",
 #'   facet_args = list(labeller = ggplot2::label_parsed)
-#' ))
-#' # plot with bigger facet fontsize and add tick marks
+#' )
 #' p +
 #'  facet_text(size = 15) +
 #'  xaxis_ticks(size = .25)
 #'
 #' # mark first 200 draws as warmup
 #' mcmc_trace(x, n_warmup = 200)
+#' }
 #'
 NULL
 

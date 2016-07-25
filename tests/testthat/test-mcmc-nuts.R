@@ -1,13 +1,11 @@
 library(bayesplot)
-suppressPackageStartupMessages(library(rstanarm))
+library(rstanarm)
 context("MCMC: nuts")
 
 ITER <- 1000
 CHAINS <- 3
-fit <- suppressWarnings(
-  stan_glm(mpg ~ wt + am, data = mtcars,
-           refresh = 0, iter = ITER, chains = CHAINS)
-)
+fit <- stan_glm(mpg ~ wt + am, data = mtcars,
+                iter = ITER, chains = CHAINS, refresh = 0)
 np <- nuts_params(fit)
 lp <- log_posterior(fit)
 
