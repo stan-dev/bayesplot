@@ -8,45 +8,45 @@
 \alias{mcmc_rhat_hist}
 \title{Rhat and effective sample size}
 \usage{
-mcmc_rhat_hist(rhat, ..., binwidth = NULL)
-
 mcmc_rhat(rhat, ..., size = NULL)
 
-mcmc_neff_hist(ratio, ..., binwidth = NULL)
+mcmc_rhat_hist(rhat, ..., binwidth = NULL)
 
 mcmc_neff(ratio, ..., size = NULL)
+
+mcmc_neff_hist(ratio, ..., binwidth = NULL)
 }
 \arguments{
-\item{rhat}{Vector of \code{\link[=rhat]{Rhat}} estimates.}
+\item{rhat}{A vector of \code{\link[=rhat]{Rhat}} estimates.}
 
 \item{...}{Currently ignored.}
-
-\item{binwidth}{An optional value to override
-\code{\link[ggplot2]{geom_histogram}}'s default binwidth.}
 
 \item{size}{An optional value to override \code{\link[ggplot2]{geom_point}}'s
 default size.}
 
-\item{ratio}{Vector of ratios of effective sample size (estimates) to total
-sample size. See \code{\link{neff_ratio}}.}
+\item{binwidth}{An optional value to override
+\code{\link[ggplot2]{geom_histogram}}'s default binwidth.}
+
+\item{ratio}{A vector of \emph{ratios} of effective sample size estimates to
+total sample size. See \code{\link{neff_ratio}}.}
 }
 \value{
 A ggplot object that can be further customized using the
   \pkg{ggplot2} package.
 }
 \description{
-Rhat and effective sample size
+Plots of Rhat and ratio of effective sample size to total sample size.
 }
 \section{Plot Descriptions}{
-
-\describe{
-  \item{\code{mcmc_rhat_hist, mcmc_rhat}}{
-  }
-  \item{\code{mcmc_neff_hist, mcmc_neff}}{
-  }
-  \item{\code{mcmc_diagnostics}}{
-  }
-}
+ \describe{ \item{\code{mcmc_rhat,
+  mcmc_rhat_hist}}{ Rhat values as either points or a histogram. Values are
+  colored using different shades: \itemize { \item \emph{light}: below 1.05
+  (good) \item \emph{mid}: between 1.05 and 1.1 (ok) \item \emph{dark}: above
+  1.1 (too high) } } \item{\code{mcmc_neff, mcmc_neff_hist}}{ Ratios of
+  effective sample size to total sample size as either points or a histogram.
+  Values are colored using different shades: \itemize { \item \emph{light}:
+  between 0.5 and 1 (good) \item \emph{mid}: between 0.1 and 0.5 (ok) \item
+  \emph{dark}: below 0.1 (maybe too low) } } }
 }
 \examples{
 
@@ -68,6 +68,14 @@ mcmc_neff(ratio) + move_legend("top")
 
 
 
+}
+\references{
+Gelman, A. and Rubin, D. B. (1992). Inference from iterative
+  simulation using multiple sequences. \emph{Statistical Science}. 7(4),
+  457--472.
+
+Stan Development Team. (2016). \emph{Stan Modeling Language Users
+Guide and Reference Manual.} \url{http://mc-stan.org/documentation/}
 }
 \seealso{
 \code{\link{set_color_scheme}} to change the aesthetic theme
