@@ -171,7 +171,7 @@ mcmc_areas <- function(x,
 
   if (show_density) {
     # faint vertical line at zero if zero is within x_lim
-    if (findInterval(0, x_lim))
+    if (0 > x_lim[1] && 0 < x_lim[2])
       graph <- graph + vline_0(color = "gray90", size = 0.5)
 
 
