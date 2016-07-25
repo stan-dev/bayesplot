@@ -36,6 +36,12 @@ test_that("is_mcmc_array works", {
   expect_mcmc_array(arr2)
 })
 
+test_that("parameter_names works", {
+  x <- fake_draws()
+  expect_identical(parameter_names(x), dimnames(x)[[3]])
+  expect_error(parameter_names(x[, 1, ]), "is_3d_array")
+})
+
 test_that("has_multiple_chains works", {
   expect_error(has_multiple_chains(mat), "is_3d_array")
   expect_error(has_multiple_chains(dframe_multiple_chains), "is_3d_array")
@@ -139,3 +145,69 @@ test_that("chain_list2array works", {
 
   expect_error(chain_list2array(dframe), "is_chain_list")
 })
+
+
+
+# transformations ---------------------------------------------------------
+test_that("validate_transformations throws correct works", {
+  trans <- list(x = "exp", 'beta[1]' = function(x) x^2, sigma = log)
+  expect_silent(
+    validate_transformations(trans, pars = c("x", "beta[1]", "sigma"))
+  )
+
+  trans2 <- trans
+  trans2[[1]] <- match.fun(trans[[1]])
+  expect_equal(
+    validate_transformations(trans, pars = c("x", "beta[1]", "sigma")),
+    trans2
+  )
+})
+test_that("validate_transformations throws correct errors", {
+  expect_error(
+    validate_transformations(list("log", exp)),
+    "must be a _named_ list"
+  )
+  expect_error(
+    validate_transformations(list(x = "log", function(x) x^2)),
+    "Each element of 'transformations' must have a name"
+  )
+  expect_error(
+    validate_transformations(list(x = "log", 'beta[2]' = exp),
+                             pars = c("x", "beta[1]")),
+    regexp = "don't match parameter names: beta[2]", fixed = TRUE
+  )
+})
+
+test_that("apply_transformations works", {
+  trans <- list('beta[1]' = "exp", sigma = function(x) x^2)
+
+  arr_trans <- apply_transformations(arr, trans)
+  expect_equal(arr_trans[,, "sigma"], arr[,, "sigma"]^2)
+  expect_equal(arr_trans[,, "beta[1]"], exp(arr[,, "beta[1]"]))
+
+  mat_trans <- apply_transformations(mat, trans)
+  expect_equal(mat_trans[, "sigma"], mat[, "sigma"]^2)
+  expect_equal(mat_trans[, "beta[1]"], exp(mat[, "beta[1]"]))
+})
+
+
+# rhat and neff helpers ---------------------------------------------------
+test_that("factor_rhat works", {
+  rhats <- c(low = 0.99, low = 1, low = 1.01,
+             ok = 1.06, ok = 1.09, ok = 1.1,
+             high = 1.2, high = 1.7)
+
+  r <- factor_rhat(unname(rhats))
+  expect_equivalent(r, as.factor(names(rhats)))
+  expect_identical(levels(r), c("low", "ok", "high"))
+})
+test_that("factor_neff works", {
+  ratios <- c(low = 0.05, low = 0.01,
+             ok = 0.2, ok = 0.49,
+             high = 0.51, high = 0.99, high = 1)
+
+  r <- factor_neff(unname(ratios))
+  expect_equivalent(r, as.factor(names(ratios)))
+  expect_identical(levels(r), c("low", "ok", "high"))
+})
+

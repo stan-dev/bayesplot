@@ -243,8 +243,11 @@ validate_mcmc_x <- function(x) {
 validate_transformations <-
   function(transformations = list(),
            pars = character()) {
-    if (is.null(names(transformations)))
-      stop("If specified, 'transformations' must be a _named_ list.")
+    if (is.null(names(transformations))) {
+      stop("'transformations' must be a _named_ list.")
+    } else if (any(!nzchar(names(transformations)))) {
+      stop("Each element of 'transformations' must have a name.")
+    }
 
     transformations <- lapply(transformations, match.fun)
     if (!all(names(transformations) %in% pars)) {
