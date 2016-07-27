@@ -6,11 +6,11 @@
 \alias{ppc_ts_grouped}
 \title{PPC time series}
 \usage{
-ppc_ts(y, yrep, time, ..., prob = 0.8, y_style = c("both", "points",
-  "lines"))
+ppc_ts(y, yrep, time, ..., prob = 0.8, alpha = 0.33, size = 1,
+  y_style = c("points", "lines"))
 
 ppc_ts_grouped(y, yrep, time, group, ..., facet_args = list(), prob = 0.8,
-  y_style = c("both", "points", "lines"))
+  alpha = 0.33, size = 1, y_style = c("points", "lines"))
 }
 \arguments{
 \item{y}{A vector of observations. See \strong{Details}.}
@@ -33,8 +33,14 @@ instructions.}
 \item{prob}{A value between 0 and 1 indicating the desired probability mass
 to include in the \code{yrep} intervals. The default is 0.8.}
 
-\item{y_style}{Should \code{y} be plotted as points connected by lines, only
-the points, or only the lines?}
+\item{alpha, size}{Arguments passed to \code{\link[ggplot2]{geom_ribbon}}. See
+Examples.}
+
+\item{y_style}{A character vector of length 1 or 2 indicating how \code{y}
+should be plotted. If \code{c("points","lines")}, the default, then
+\code{y} is plotted as connected points. Use only \code{"points"} to omit
+the connecting lines, and use only \code{"lines"} to show the lines
+without the points.}
 
 \item{group}{A grouping variable (a vector or factor) the same length as
 \code{y}. Each value in \code{group} is interpreted as the group level
@@ -69,7 +75,11 @@ by time, with \code{y} overlaid.
 \examples{
 y <- rnorm(50)
 yrep <- matrix(rnorm(5000, 0, 2), ncol = 50)
-ppc_ts(y, yrep)
+ppc_ts(y, yrep, y_style = "lines")
+
+ppc_ts(y, yrep, alpha = 1, size = .5)
+ppc_ts(y, yrep, size = .5, y_style = "lines")
+ppc_ts(y, yrep, alpha = 1, size = .25, y_style = "lines")
 
 time <- rep(1:10, each = 5)
 group <- gl(5, 1, length = 50, labels = LETTERS[1:5])

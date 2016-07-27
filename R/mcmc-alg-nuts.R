@@ -175,9 +175,9 @@ mcmc_nuts_divergence <- function(x,
 
   if (!is.null(chain)) {
     violin_lp <- violin_lp +
-      .chain_violin(violin_lp_data, chain)
+      chain_violin(violin_lp_data, chain)
     violin_accept_stat <- violin_accept_stat +
-      .chain_violin(violin_accept_stat_data, chain)
+      chain_violin(violin_accept_stat_data, chain)
   }
 
   nuts_plot <- gridExtra::arrangeGrob(violin_lp, violin_accept_stat, nrow = 2)
@@ -235,9 +235,9 @@ mcmc_nuts_stepsize <- function(x,
 
   if (!is.null(chain)) {
     violin_lp <- violin_lp +
-      .chain_violin(violin_lp_data, chain)
+      chain_violin(violin_lp_data, chain)
     violin_accept_stat <- violin_accept_stat +
-      .chain_violin(violin_accept_stat_data, chain)
+      chain_violin(violin_accept_stat_data, chain)
   }
 
   nuts_plot <- gridExtra::arrangeGrob(violin_lp, violin_accept_stat, nrow = 2)
@@ -300,9 +300,9 @@ mcmc_nuts_treedepth <- function(x,
       )
 
     violin_lp <- violin_lp +
-      .chain_violin(violin_lp_data, chain)
+      chain_violin(violin_lp_data, chain)
     violin_accept_stat <- violin_accept_stat +
-      .chain_violin(violin_accept_stat_data, chain)
+      chain_violin(violin_accept_stat_data, chain)
   }
 
   nuts_plot <- gridExtra::arrangeGrob(violin_lp, violin_accept_stat,
@@ -391,17 +391,6 @@ mcmc_nuts_energy <-
 
 
 # internal ----------------------------------------------------------------
-maybe_cbind_then_melt <- function(x) {
-  if (is.list(x)) {
-    x <- do.call("cbind", x)
-  } else {
-    stopifnot(is.matrix(x))
-  }
-  out <- reshape2::melt(x)
-  colnames(out) <- c("Iteration", "Chain", "Value")
-  out
-}
-
 validate_enough_chains <- function(chain = NULL, n_chain) {
   if (!is.null(chain)) {
     stopifnot(chain >= 1)
@@ -422,7 +411,7 @@ validate_nuts_data_frame <- function(x, lp) {
   x
 }
 
-.chain_violin <-
+chain_violin <-
   function(df,
            chain,
            fill = "d",

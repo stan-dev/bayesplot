@@ -6,11 +6,11 @@
 \alias{ppc_vs_x_grouped}
 \title{PPC vs. \eqn{x}}
 \usage{
-ppc_vs_x(y, yrep, x, ..., prob = 0.8, y_style = c("both", "points",
-  "lines"))
+ppc_vs_x(y, yrep, x, ..., prob = 0.8, alpha = 0.33, size = 1,
+  y_style = c("points", "lines"))
 
 ppc_vs_x_grouped(y, yrep, x, group, ..., facet_args = list(), prob = 0.8,
-  y_style = c("both", "points", "lines"))
+  alpha = 0.33, size = 1, y_style = c("points", "lines"))
 }
 \arguments{
 \item{y}{A vector of observations. See \strong{Details}.}
@@ -30,8 +30,17 @@ instructions.}
 \item{prob}{A value between 0 and 1 indicating the desired probability mass
 to include in the \code{yrep} intervals. The default is 0.8.}
 
-\item{y_style}{Should \code{y} be plotted as points connected by lines, only
-the points, or only the lines?}
+\item{alpha}{Arguments passed to \code{\link[ggplot2]{geom_ribbon}}. See
+Examples.}
+
+\item{size}{Arguments passed to \code{\link[ggplot2]{geom_ribbon}}. See
+Examples.}
+
+\item{y_style}{A character vector of length 1 or 2 indicating how \code{y}
+should be plotted. If \code{c("points","lines")}, the default, then
+\code{y} is plotted as connected points. Use only \code{"points"} to omit
+the connecting lines, and use only \code{"lines"} to show the lines
+without the points.}
 
 \item{group}{A grouping variable (a vector or factor) the same length as
 \code{y}. Each value in \code{group} is interpreted as the group level
@@ -66,12 +75,14 @@ with \code{y} overlaid.
 \examples{
 y <- mtcars$mpg
 x <- mtcars$wt
+# some fake yrep data
 yrep <- t(replicate(50, {
  xb <- c(37, -5) \%*\% rbind(1, x)
  rnorm(length(xb), xb, 3)
 }))
 
-(p <- ppc_vs_x(y, yrep, x))
+ppc_vs_x(y, yrep, x)
+(p <- ppc_vs_x(y, yrep, x, y_style = "points"))
 
 xy_labs <- ggplot2::labs(x = "wt", y = expression(mpg^rep))
 p +
@@ -80,16 +91,17 @@ p +
  xy_labs
 
 # by group
-set_color_scheme("green")
+set_color_scheme("teal")
 group <- mtcars$gear
-ppc_vs_x_grouped(y, yrep, x, group) +
+ppc_vs_x_grouped(y, yrep, x, group, y_style = "points",
+                 alpha = 0.2, size = 0.5) +
  ggplot2::geom_rug(sides = "b", size = 0.1) +
  xy_labs
 
 # force all facets to have same y axis scale (only x is "free")
-ppc_vs_x_grouped(y, yrep, x, group,
+ppc_vs_x_grouped(y, yrep, x, group, y_style = "points",
                  facet_args = list(scales = "free_x")) +
- xaxis_ticks(size = 0.25) +
+ xaxis_ticks(size = 0.5) +
  xy_labs
 
 }
