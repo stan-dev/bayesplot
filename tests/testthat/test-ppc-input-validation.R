@@ -46,7 +46,8 @@ test_that("validate_group throws errors", {
   expect_error(validate_group(array(1:3), y = 1:3), "vector")
   expect_error(validate_group(c(1,2,NA), y = 1:3), "NAs not allowed")
   expect_error(validate_group(1:4, y = 1:3), "must be equal to")
-  expect_error(validate_group(rep(1,3)), "must have more than one unique value")
+  expect_error(validate_group(rep(1,3), y = 1:3),
+               "must have more than one unique value")
 })
 
 # validating time --------------------------------------------------------
