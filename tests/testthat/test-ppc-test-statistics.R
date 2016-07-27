@@ -27,5 +27,6 @@ test_that("ppc_stat_grouped returns ggplot object", {
   expect_gg(ppc_stat_grouped(y, yrep, as.numeric(group)))
   expect_gg(ppc_stat_grouped(y, yrep, as.integer(group), stat = "sd"))
 
-  expect_gg(ppc_stat_grouped(y2, yrep2, group2))
+  expect_error(ppc_stat_grouped(y2, yrep2, group2),
+               "'group' must have more than one unique value")
 })

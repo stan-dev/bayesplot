@@ -67,6 +67,8 @@ validate_group <- function(group, y) {
     stop("NAs not allowed in 'group'.")
   if (length(group) != length(y))
     stop("length(group) must be equal to length(y).")
+  if (length(unique(group)) == 1)
+    stop("'group' must have more than one unique value.")
 
   unname(group)
 }

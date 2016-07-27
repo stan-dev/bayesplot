@@ -1,5 +1,5 @@
 library(bayesplot)
-library(rstanarm)
+suppressPackageStartupMessages(library(rstanarm))
 context("MCMC: nuts")
 
 ITER <- 1000
