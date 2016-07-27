@@ -61,14 +61,14 @@ with \code{y} overlaid.
 
 \describe{
   \item{\code{ppc_vs_x}}{
-   \code{100*prob}\% central intervals for \code{yrep} at each \code{x} value,
-   with a line through the median of \code{yrep}. Values of
-   \code{y} are overlaid as points connected by lines, just points, or just
-   lines (depending on the value \code{y_style}).
+   \code{100*prob}\% central intervals for \code{yrep} at each \code{x}
+   value, with a line through the median of \code{yrep}. Values of \code{y}
+   are overlaid as points connected by lines, just points, or just lines
+   (depending on the value \code{y_style}).
   }
   \item{\code{ppc_vs_x_grouped}}{
-   Same as \code{ppc_vs_x} but a separate plot is generated for each level of a
-   grouping variable.
+   Same as \code{ppc_vs_x} but a separate plot is generated for each level of
+   a grouping variable.
   }
 }
 }
