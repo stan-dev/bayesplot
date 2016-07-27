@@ -5,7 +5,7 @@
 #' (\pkg{rstan}) and stanreg (\pkg{rstanarm}) objects.
 #'
 #' @name extractors
-#' @param object A fitted model object.
+#' @param object The object to use.
 #' @param ... Arguments passed to individual methods.
 #' @param pars An optional character vector of parameter names. For
 #'   \code{nuts_params} these will be NUTS sampler parameter names rather than
@@ -14,23 +14,21 @@
 #' @return
 #' \describe{
 #' \item{\code{log_posterior}}{
-#' \code{log_posterior} methods should return a molten data frame, typically
-#' (but not necessarily) created by \code{\link[reshape2]{melt}}. If the model
-#' represented by \code{object} was fit via MCMC the molten data frame should
-#' have columns \code{"Iteration"} (integer), \code{"Chain"} (integer), and
-#' \code{"Value"} (numeric), in any order. For models fit using other methods,
-#' \code{log_posterior} methods can return a data frame with a single column
-#' \code{"Value"}.
+#' \code{log_posterior} methods return a molten data frame
+#' (\code{\link[reshape2]{melt}}). If the model represented by \code{object} was
+#' fit via MCMC the molten data frame should have columns \code{"Iteration"}
+#' (integer), \code{"Chain"} (integer), and \code{"Value"} (numeric).
+#' For models fit using other methods, \code{log_posterior} methods can
+#' return a data frame with a single column \code{"Value"}.
 #' }
 #' \item{\code{nuts_params}}{
-#' \code{nuts_params} methods should return a molten data frame, typically (but
-#' not necessarily) created by \code{\link[reshape2]{melt}}. The molten data
-#' frame should have columns \code{"Parameter"} (factor), \code{"Iteration"}
-#' (integer), \code{"Chain"} (integer), and \code{"Value"} (numeric), in any
-#' order.
+#' \code{nuts_params} methods return a molten data frame
+#' (\code{\link[reshape2]{melt}}). The molten data frame should have columns
+#' \code{"Parameter"} (factor), \code{"Iteration"} (integer), \code{"Chain"}
+#' (integer), and \code{"Value"} (numeric), in any order.
 #' }
 #' \item{\code{rhat}, \code{neff_ratio}}{
-#' Methods should return (named) vectors.
+#' Methods return (named) vectors.
 #' }
 #' }
 #'
@@ -90,6 +88,19 @@ log_posterior.stanreg <- function(object, inc_warmup = FALSE, ...) {
                         ...)
 }
 
+#' @rdname extractors
+#' @export
+#' @method nuts_params list
+#'
+nuts_params.list <- function(object, pars = NULL, ...) {
+  if (length(pars))
+    object <- lapply(object, function(x)
+      x[, pars, drop = FALSE])
+
+  object <- setNames(reshape2::melt(object),
+                     c("Iteration", "Parameter", "Value", "Chain"))
+  validate_df_classes(object, c("integer", "factor", "numeric", "integer"))
+}
 
 #' @rdname extractors
 #' @export
@@ -103,13 +114,7 @@ nuts_params.stanfit <-
     suggested_package("rstan")
 
     np <- rstan::get_sampler_params(object, inc_warmup = inc_warmup)
-    if (length(pars))
-      np <- lapply(np, function(x)
-        x[, pars, drop = FALSE])
-
-    np <- setNames(reshape2::melt(np),
-                   c("Iteration", "Parameter", "Value", "Chain"))
-    validate_df_classes(np, c("integer", "factor", "numeric", "integer"))
+    nuts_params.list(np, pars = pars, ...)
   }
 
 #' @rdname extractors
