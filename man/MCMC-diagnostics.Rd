@@ -42,7 +42,7 @@ Plots of Rhat and ratio of effective sample size to total sample size.
 \describe{
 \item{\code{mcmc_rhat, mcmc_rhat_hist}}{
 Rhat values as either points or a histogram. Values are
-colored using different shades:
+colored using different shades (lighter is better):
  \itemize{
    \item \emph{light}: below 1.05 (good)
    \item \emph{mid}: between 1.05 and 1.1 (ok)
@@ -50,8 +50,8 @@ colored using different shades:
  }
 }
 \item{\code{mcmc_neff, mcmc_neff_hist}}{
-Ratios of effective sample size to total sample size as either points or a histogram.
-Values are colored using different shades:
+Ratios of effective sample size to total sample size as either points or a
+histogram. Values are colored using different shades (lighter is better):
  \itemize{
    \item \emph{light}: between 0.5 and 1 (good)
    \item \emph{mid}: between 0.1 and 0.5 (ok)
@@ -74,7 +74,24 @@ mcmc_rhat(runif(1000, 1, 1.07))
 ratio <- c(runif(100, 0, 1))
 mcmc_neff_hist(ratio)
 mcmc_neff(ratio)
-mcmc_neff(ratio) + move_legend("top")
+mcmc_neff(ratio) + move_legend("top") # add legend above plot
+
+\dontrun{
+# Example using rstanarm model (requires rstanarm package)
+library(rstanarm)
+
+# intentionally use small 'iter' so there are some
+# problems with rhat and neff for demonstration
+fit <- stan_glm(mpg ~ ., data = mtcars, iter = 50)
+rhats <- rhat(fit)
+ratios <- neff_ratio(fit)
+mcmc_rhat(rhats)
+mcmc_neff(ratios)
+
+# there's a small enough number of parameters in the
+# model that we can display their names on the y-axis
+mcmc_neff(ratios) + yaxis_text()
+}
 
 }
 \references{

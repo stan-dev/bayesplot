@@ -218,6 +218,6 @@ validate_df_classes <- function(x, classes = character()) {
 
 # for jittering neff estimates so no duplicate values
 jitter_neff <- function(x) {
-  x + rnorm(length(x), sd = 0.001)
+  x - abs(rnorm(length(x), sd = 0.0001))
 }
 

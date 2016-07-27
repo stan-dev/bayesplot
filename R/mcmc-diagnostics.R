@@ -16,7 +16,7 @@
 #' \describe{
 #' \item{\code{mcmc_rhat, mcmc_rhat_hist}}{
 #' Rhat values as either points or a histogram. Values are
-#' colored using different shades:
+#' colored using different shades (lighter is better):
 #'  \itemize{
 #'    \item \emph{light}: below 1.05 (good)
 #'    \item \emph{mid}: between 1.05 and 1.1 (ok)
@@ -24,8 +24,8 @@
 #'  }
 #' }
 #' \item{\code{mcmc_neff, mcmc_neff_hist}}{
-#' Ratios of effective sample size to total sample size as either points or a histogram.
-#' Values are colored using different shades:
+#' Ratios of effective sample size to total sample size as either points or a
+#' histogram. Values are colored using different shades (lighter is better):
 #'  \itemize{
 #'    \item \emph{light}: between 0.5 and 1 (good)
 #'    \item \emph{mid}: between 0.1 and 0.5 (ok)
@@ -57,7 +57,24 @@
 #' ratio <- c(runif(100, 0, 1))
 #' mcmc_neff_hist(ratio)
 #' mcmc_neff(ratio)
-#' mcmc_neff(ratio) + move_legend("top")
+#' mcmc_neff(ratio) + move_legend("top") # add legend above plot
+#'
+#' \dontrun{
+#' # Example using rstanarm model (requires rstanarm package)
+#' library(rstanarm)
+#'
+#' # intentionally use small 'iter' so there are some
+#' # problems with rhat and neff for demonstration
+#' fit <- stan_glm(mpg ~ ., data = mtcars, iter = 50)
+#' rhats <- rhat(fit)
+#' ratios <- neff_ratio(fit)
+#' mcmc_rhat(rhats)
+#' mcmc_neff(ratios)
+#'
+#' # there's a small enough number of parameters in the
+#' # model that we can display their names on the y-axis
+#' mcmc_neff(ratios) + yaxis_text()
+#' }
 #'
 NULL
 
@@ -69,26 +86,22 @@ NULL
 #'
 mcmc_rhat <- function(rhat, ..., size = NULL) {
   rhat <- validate_rhat(rhat)
-
-  # factor rhat by parameter instead of value
-  frhat <- if (!is.null(names(rhat))) {
-    factor(rhat, labels = names(rhat))
-  } else {
-    factor(rhat)
-  }
-
-  data <- data.frame(y = rhat, x = frhat)
-  rownames(data) <- NULL
-  graph <- ggplot(data, aes_(
-    x = ~ x, y = ~ y,
-    color = ~factor_rhat(rhat),
-    fill = ~factor_rhat(rhat)
-  )) +
+  graph <- ggplot(
+    data = diagnostic_data_frame(
+      x = rhat,
+      diagnostic = "rhat"
+    ),
+    mapping = aes_(
+      y = ~ value,
+      x = ~ factor_by_name,
+      color = ~ factor_by_value,
+      fill = ~ factor_by_value
+    )
+  ) +
     geom_segment(
       mapping = aes_(
-        xend = ~x,
-        yend = ifelse(min(rhat) < 1, 1, -Inf),
-        color = ~factor_rhat(rhat)
+        xend = ~ factor_by_name,
+        yend = ifelse(min(rhat) < 1, 1, -Inf)
       ),
       na.rm = TRUE
     )
@@ -97,10 +110,16 @@ mcmc_rhat <- function(rhat, ..., size = NULL) {
     graph <- graph +
       hline_at(1, color = "gray", size = 1)
 
+  brks <- c(1, 1.05, 1.1)
+  for (k in c(1.5, 2)) {
+    if (any(rhat > k))
+      brks <- c(brks, k)
+  }
+
   graph +
     diagnostic_points(size) +
     hline_at(
-      c(1.05, 1.1),
+      brks[-1],
       color = "gray",
       linetype = 2,
       size = 0.25
@@ -110,20 +129,22 @@ mcmc_rhat <- function(rhat, ..., size = NULL) {
     scale_color_diagnostic("rhat") +
     theme_default(y_text = FALSE) +
     coord_flip() +
-    scale_y_continuous(breaks = c(1, 1.05, 1.1),
-                       expand = c(0,.001))
+    scale_y_continuous(breaks = brks,
+                       expand = c(0,.01))
 }
 
 #' @rdname MCMC-diagnostics
 #' @export
 mcmc_rhat_hist <- function(rhat, ..., binwidth = NULL) {
-  rhat <- validate_rhat(rhat)
   ggplot(
-    data.frame(x = rhat, lev = factor_rhat(rhat)),
-    aes_(
-      x = ~ x,
-      color = ~ lev,
-      fill = ~ lev
+    data = diagnostic_data_frame(
+      x = validate_rhat(rhat),
+      diagnostic = "rhat"
+    ),
+    mapping = aes_(
+      x = ~ value,
+      color = ~ factor_by_value,
+      fill = ~ factor_by_value
     )
   ) +
     geom_histogram(
@@ -146,29 +167,20 @@ mcmc_rhat_hist <- function(rhat, ..., binwidth = NULL) {
 #'   total sample size. See \code{\link{neff_ratio}}.
 #'
 mcmc_neff <- function(ratio, ..., size = NULL) {
-  .neff_dots <- function(size = NULL) {
-    args <- list(shape = 21, na.rm = TRUE)
-    do.call("geom_point", c(args, size = size))
-  }
-
-  ratio <- validate_neff_ratio(ratio)
-
-  # factor neff ratio by parameter instead of value
-  fratio <- if (!is.null(names(ratio))) {
-    factor(ratio, labels = names(ratio))
-  } else {
-    factor(ratio)
-  }
-  data <- data.frame(y = ratio, x = fratio)
-  rownames(data) <- NULL
-  ggplot(data, aes_(
-    x = ~ x,
-    y = ~ y,
-    color = ~factor_neff(ratio),
-    fill = ~factor_neff(ratio)
-  )) +
+  ggplot(
+    data = diagnostic_data_frame(
+      x = validate_neff_ratio(ratio),
+      diagnostic = "neff"
+    ),
+    mapping = aes_(
+      y = ~ value,
+      x = ~ factor_by_name,
+      color = ~ factor_by_value,
+      fill = ~ factor_by_value
+    )
+  ) +
     geom_segment(
-      aes_(xend = ~x, yend = -Inf, color = ~factor_neff(ratio)),
+      aes_(xend = ~factor_by_name, yend = -Inf),
       na.rm = TRUE
     ) +
     diagnostic_points(size) +
@@ -191,13 +203,15 @@ mcmc_neff <- function(ratio, ..., size = NULL) {
 #' @rdname MCMC-diagnostics
 #' @export
 mcmc_neff_hist <- function(ratio, ..., binwidth = NULL) {
-  ratio <- validate_neff_ratio(ratio)
   ggplot(
-    data.frame(x = ratio, lev = factor_neff(ratio)),
-    aes_(
-      x = ~ x,
-      color = ~ lev,
-      fill = ~ lev
+    data = diagnostic_data_frame(
+      x = validate_neff_ratio(ratio),
+      diagnostic = "neff"
+    ),
+    mapping = aes_(
+      x = ~ value,
+      color = ~ factor_by_value,
+      fill = ~ factor_by_value
     )
   ) +
     geom_histogram(
@@ -220,6 +234,28 @@ diagnostic_points <- function(size = NULL) {
   do.call("geom_point", c(args, size = size))
 }
 
+# data frame with y=rhat (or neff) and x = factor(rhat) or factor(neff) with
+# factor labels as names instead of value
+diagnostic_data_frame <- function(x, diagnostic = c("rhat", "neff")) {
+  diagnostic <- match.arg(diagnostic)
+  fac <- if (!is.null(names(x))) {
+    factor(x, labels = names(x))
+  } else {
+    factor(x)
+  }
+
+  fun <- match.fun(paste0("factor_", diagnostic))
+  d <- data.frame(
+    value = x,
+    factor_by_name = fac,
+    factor_by_value = fun(x)
+  )
+  rownames(d) <- NULL
+  return(d)
+}
+
+
+
 # drop NAs from a vector and issue warning
 drop_NAs_and_warn <- function(x) {
   if (!anyNA(x))
@@ -239,7 +275,7 @@ validate_rhat <- function(rhat) {
   if (any(rhat < 0, na.rm = TRUE))
     stop("All 'rhat' values must be positive.")
 
-  rhat <- as.vector(rhat)
+  rhat <- setNames(as.vector(rhat), names(rhat))
   drop_NAs_and_warn(rhat)
 }
 
@@ -249,6 +285,6 @@ validate_neff_ratio <- function(ratio) {
   if (any(ratio < 0 | ratio > 1, na.rm = TRUE))
     stop("All elements of 'ratio' must be between 0 and 1.")
 
-  ratio <- as.vector(ratio)
+  ratio <- setNames(as.vector(ratio), names(ratio))
   drop_NAs_and_warn(ratio)
 }
