@@ -1,4 +1,4 @@
-#' Plots for the No-U-Turn-Sampler (NUTS)
+#' Diagnostic plots for the No-U-Turn-Sampler (NUTS)
 #'
 #' @name MCMC-nuts
 #' @aliases NUTS
@@ -21,6 +21,10 @@
 #'   \code{\link[gridExtra]{arrangeGrob}}) created from several ggplot objects.
 #'
 #' @template seealso-color-scheme
+#'
+#' @template reference-betancourt
+#' @template reference-nuts
+#' @template reference-stan-manual
 #'
 #' @examples
 #' \dontrun{

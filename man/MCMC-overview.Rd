@@ -27,7 +27,10 @@ versions of \pkg{bayesplot} will provide many more MCMC plotting functions.
     Various scatterplots of parameter draws.
   }
   \item{\strong{\link[=MCMC-combos]{Combinations}}}{
-    Combination plots (e.g. traceplot + histogram)
+    Combination plots (e.g. traceplot + histogram).
+  }
+  \item{\strong{\link[=MCMC-nuts]{NUTS diagnostics}}}{
+    Diagnostic plots for the No-U-Turn Sampler.
   }
 }
 }

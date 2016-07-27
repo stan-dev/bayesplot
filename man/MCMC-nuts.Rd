@@ -8,7 +8,7 @@
 \alias{mcmc_nuts_energy}
 \alias{mcmc_nuts_stepsize}
 \alias{mcmc_nuts_treedepth}
-\title{Plots for the No-U-Turn-Sampler (NUTS)}
+\title{Diagnostic plots for the No-U-Turn-Sampler (NUTS)}
 \usage{
 mcmc_nuts_acceptance(x, lp, chain = NULL, ..., binwidth = NULL)
 
@@ -52,7 +52,7 @@ A gtable object (the result of calling
   \code{\link[gridExtra]{arrangeGrob}}) created from several ggplot objects.
 }
 \description{
-Plots for the No-U-Turn-Sampler (NUTS)
+Diagnostic plots for the No-U-Turn-Sampler (NUTS)
 }
 \examples{
 \dontrun{
@@ -73,6 +73,21 @@ energy_plot +
  coord_fixed(ratio = 150)
 }
 
+}
+\references{
+Betancourt, M. (2016). Diagnosing suboptimal cotangent
+  disintegrations in Hamiltonian Monte Carlo.
+  \url{https://arxiv.org/abs/1604.00695}
+
+Betancourt, M. and Girolami, M. (2016). Hamiltonian Monte Carlo for
+hierarchical models. \url{https://arxiv.org/abs/1312.0906}
+
+Hoffman, M. D. and Gelman, A. (2014). The No-U-Turn Sampler:
+  adaptively setting path lengths in Hamiltonian Monte Carlo. \emph{Journal of
+  Machine Learning Research}. 15:1593--1623.
+
+Stan Development Team. (2016). \emph{Stan Modeling Language Users
+Guide and Reference Manual.} \url{http://mc-stan.org/documentation/}
 }
 \seealso{
 \code{\link{set_color_scheme}} to change the aesthetic theme
