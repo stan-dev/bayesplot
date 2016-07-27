@@ -3,23 +3,31 @@
 #' Set or get the color scheme used for plotting.
 #'
 #' @export
-#' @param scheme A string naming the color scheme to use.
+#' @param scheme A string naming a color scheme.
 #' @return \code{set_color_scheme} has the side effect of setting the color
-#'   scheme used for plotting. It also returns,
-#'   \code{\link[=invisible]{invisibly}}, a list of the hexidecimal color values
-#'   used in \code{scheme}.
+#'   scheme used for plotting. It also returns
+#'   (\code{\link[=invisible]{invisibly}}) a list of the hexidecimal color
+#'   values used in \code{scheme}.
 #'
 #' @examples
 #' get_color_scheme()
-#' y <- rnorm(100)
-#' yrep <- matrix(rnorm(2500), ncol = 100)
-#' ppc_stat_2d(y, yrep)
+#'
+#' x <- fake_draws()
+#' mcmc_intervals(x)
 #'
 #' set_color_scheme("teal")
-#' ppc_stat_2d(y, yrep)
+#' mcmc_intervals(x)
 #'
 #' set_color_scheme("blue")
-#' ppc_hist(y, yrep[1:8,])
+#' mcmc_areas(x)
+#'
+#' set_color_scheme("pink")
+#' y <- rnorm(100)
+#' yrep <- matrix(rnorm(5e4), ncol = 100)
+#' ppc_stat(y, yrep, stat = "sd") + no_legend()
+#'
+#' # lightest color in the 'gray' color scheme
+#' get_color_scheme("gray")$light
 #'
 set_color_scheme <-
   function(scheme = c("red", "blue", "gray", "green", "pink", "teal")) {
@@ -33,11 +41,18 @@ set_color_scheme <-
 #' @export
 #' @rdname set_color_scheme
 #' @return \code{get_color_scheme} returns a \code{list} of the hexadecimal
-#'   color values used by the current scheme.
+#'   color values (without changing the current scheme). If the \code{scheme}
+#'   argument is not specified the returned values correspond to the current
+#'   color scheme.
 #'
-get_color_scheme <- function() {
-  x <- as.list(.bayesplot_aesthetics)
-  x[scheme_level_names()]
+get_color_scheme <- function(scheme) {
+  if (missing(scheme)) {
+    x <- as.list(.bayesplot_aesthetics)
+    return(x[scheme_level_names()])
+  }
+
+  scheme <- match.arg(scheme, choices = names(master_color_list))
+  prepare_colors(scheme)
 }
 
 
