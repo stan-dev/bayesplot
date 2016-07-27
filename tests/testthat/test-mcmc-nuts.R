@@ -9,7 +9,6 @@ fit <- stan_glm(mpg ~ wt + am, data = mtcars,
 np <- nuts_params(fit)
 lp <- log_posterior(fit)
 
-
 test_that("all mcmc_nuts_* (except energy) return gtable objects", {
   expect_gtable(mcmc_nuts_acceptance(np, lp))
   expect_gtable(mcmc_nuts_acceptance(np, lp, chain = CHAINS))
@@ -49,22 +48,3 @@ test_that("mcmc_nuts_energy throws correct errors", {
   expect_error(mcmc_nuts_energy(np, lp, chain = 1),
                "does not accept a 'chain' argument")
 })
-
-
-# nuts_params and log_posterior methods -----------------------------------
-test_that("nuts_params.stanreg returns correct structure", {
-  expect_identical(colnames(np), c("Iteration", "Parameter", "Value", "Chain"))
-
-  np_names <- paste0(c("accept_stat", "stepsize", "treedepth", "n_leapfrog",
-                       "divergent", "energy"), "__")
-  expect_identical(levels(np$Parameter), np_names)
-
-  expect_equal(length(unique(np$Iteration)), floor(ITER / 2))
-  expect_equal(length(unique(np$Chain)), CHAINS)
-})
-test_that("log_posterior.stanreg returns correct structure", {
-  expect_identical(colnames(lp), c("Iteration", "Value", "Chain"))
-  expect_equal(length(unique(lp$Iteration)), floor(ITER / 2))
-  expect_equal(length(unique(lp$Chain)), CHAINS)
-})
-
