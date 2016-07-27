@@ -97,11 +97,11 @@
 #' )
 #' p + my_lines
 #'
-#' ### vertical line(s) at computed values
+#' ### add vertical line(s) at computed values
+#' # three ways of getting lines at column means
 #' set_color_scheme("teal")
 #' p <- mcmc_intervals(x)
 #'
-#' # three ways of getting lines at column means
 #' p + vline_at(x, colMeans)
 #' p + vline_at(x, "colMeans", lty = 2, size = 0.25,
 #'              color = get_color_scheme()[["mid"]])
@@ -122,18 +122,44 @@
 #'  vline_at(
 #'    b1,
 #'    lbub(0.5),
-#'    color = get_color_scheme()[["dark_highlight"]],
-#'    alpha = 0.25,
-#'    size = 2 * c(1,2,1)
+#'    color = get_color_scheme("pink")[["dark_highlight"]],
+#'    alpha = 0.5,
+#'    size = 1.5 * c(1,2,1)
 #'  )
 #'
-#' ### control appearance facet and axis text
-#' p2 + facet_text(face = "bold", color = "gray50", size = 14)
-#' p2 + xaxis_text(FALSE)
-#' p2 + xaxis_text(size = 14)
+#' ### control appearance of axis titles
+#' set_color_scheme("pink")
+#' y <- rnorm(100)
+#' yrep <- t(replicate(150, rnorm(length(y), mean = y, sd = 5)))
+#' (p3 <- ppc_stat(y, yrep, stat = "median", binwidth = 0.15))
 #'
-#' ### control size of axis tick marks
-#' p2 + xaxis_ticks(.25)
+#' # reformat x-axis title
+#' (p3 <- p3 + xaxis_title(size = 15, color = "darkgray"))
+#'
+#' # formatting stays even if we change the title content
+#' p3 + ggplot2::xlab(expression(bolditalic(T): y %->% median(y)))
+#'
+#' # remove x axis title and turn on y-axis title
+#' p3 +
+#'  yaxis_title() +
+#'  xaxis_title(on = FALSE)
+#'
+#'
+#' ### control appearance facet and axis text
+#' set_color_scheme("gray")
+#' p4 <- mcmc_trace(fake_draws(), pars = c("alpha", "sigma"))
+#'
+#' myfacets <- facet_text(face = "bold", color = "purple4", size = 14)
+#' p4 + myfacets
+#'
+#' # dont show y-axis text
+#' p4 + myfacets + yaxis_text(FALSE)
+#'
+#' ### control axis tick marks
+#' p4 +
+#'  myfacets +
+#'  yaxis_text(FALSE) +
+#'  xaxis_ticks(size = .75, color = "purple4")
 #'
 NULL
 

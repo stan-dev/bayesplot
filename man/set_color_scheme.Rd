@@ -43,7 +43,11 @@ y <- rnorm(100)
 yrep <- matrix(rnorm(5e4), ncol = 100)
 ppc_stat(y, yrep, stat = "sd") + no_legend()
 
-# lightest color in the 'gray' color scheme
+# all color scheme lists use the same names
+names(get_color_scheme("red"))
+names(get_color_scheme("blue"))
+
+# hex value of lightest color in the 'gray' color scheme
 get_color_scheme("gray")$light
 
 }
