@@ -8,6 +8,9 @@ test_that("getting and setting the color scheme works", {
     expect_identical(get_color_scheme(), prepare_colors(clr),
                      info = clr)
   }
+
+  set_color_scheme("blue")
+  expect_equal(get_color_scheme("teal"), prepare_colors("teal"))
 })
 
 test_that("ppc_color returns correct color values", {

@@ -1,4 +1,4 @@
-# ggplot helpers ----------------------------------------------------------
+# ggplot2 convenience functions for internal use --------------------------
 facet_wrap_parsed <- function(...) {
   facet_wrap(..., labeller = label_parsed)
 }

@@ -1,5 +1,5 @@
 library(bayesplot)
-context("Plotting utilities")
+context("Convenience functions (for ggplot objects)")
 
 
 # vline_ and hline_ -------------------------------------------------------
