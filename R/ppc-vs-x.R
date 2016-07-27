@@ -6,15 +6,8 @@
 #' @name PPC-vs-x
 #' @family PPCs
 #'
-#' @template args-y-yrep
+#' @inheritParams ppc_ts
 #' @param x A numeric vector the same length as \code{y}.
-#' @param facet_args An optional list of  arguments (other than \code{facets})
-#'   passed to \code{\link[ggplot2]{facet_wrap}} to control faceting.
-#' @param prob A value between 0 and 1 indicating the desired probability mass
-#'   to include in the \code{yrep} intervals. The default is 0.8.
-#' @param y_style Should \code{y} be plotted as points connected by lines, only
-#'   the points, or only the lines?
-#' @param ... Currently unused.
 #'
 #' @template return-ggplot
 #'
@@ -31,8 +24,8 @@
 #'    lines (depending on the value \code{y_style}).
 #'   }
 #'   \item{\code{ppc_vs_x_grouped}}{
-#'    Same as \code{ppc_vs_x} but a separate plot is generated for each level of a
-#'    grouping variable.
+#'    Same as \code{ppc_vs_x} but a separate plot is generated for each level of
+#'    a grouping variable.
 #'   }
 #' }
 #'
@@ -40,12 +33,14 @@
 #' @examples
 #' y <- mtcars$mpg
 #' x <- mtcars$wt
+#' # some fake yrep data
 #' yrep <- t(replicate(50, {
 #'  xb <- c(37, -5) %*% rbind(1, x)
 #'  rnorm(length(xb), xb, 3)
 #' }))
 #'
-#' (p <- ppc_vs_x(y, yrep, x))
+#' ppc_vs_x(y, yrep, x)
+#' (p <- ppc_vs_x(y, yrep, x, y_style = "points"))
 #'
 #' xy_labs <- ggplot2::labs(x = "wt", y = expression(mpg^rep))
 #' p +
@@ -54,16 +49,17 @@
 #'  xy_labs
 #'
 #' # by group
-#' set_color_scheme("green")
+#' set_color_scheme("teal")
 #' group <- mtcars$gear
-#' ppc_vs_x_grouped(y, yrep, x, group) +
+#' ppc_vs_x_grouped(y, yrep, x, group, y_style = "points",
+#'                  alpha = 0.2, size = 0.5) +
 #'  ggplot2::geom_rug(sides = "b", size = 0.1) +
 #'  xy_labs
 #'
 #' # force all facets to have same y axis scale (only x is "free")
-#' ppc_vs_x_grouped(y, yrep, x, group,
+#' ppc_vs_x_grouped(y, yrep, x, group, y_style = "points",
 #'                  facet_args = list(scales = "free_x")) +
-#'  xaxis_ticks(size = 0.25) +
+#'  xaxis_ticks(size = 0.5) +
 #'  xy_labs
 #'
 NULL
@@ -75,7 +71,9 @@ ppc_vs_x <- function(y,
                      x,
                      ...,
                      prob = 0.8,
-                     y_style = c("both", "points", "lines")) {
+                     alpha = 0.33,
+                     size = 1,
+                     y_style = c("points", "lines")) {
   y <- validate_y(y)
   plot_data <- ppc_ts_data(
     y = y,
@@ -86,7 +84,9 @@ ppc_vs_x <- function(y,
   )
   ppc_ts_plotter(
     plot_data,
-    y_style = match.arg(y_style)
+    y_style = y_style,
+    alpha = alpha,
+    size = size
   ) +
     xlab("x")
 }
@@ -104,7 +104,9 @@ ppc_vs_x_grouped <-
            ...,
            facet_args = list(),
            prob = 0.8,
-           y_style = c("both", "points", "lines")) {
+           alpha = 0.33,
+           size = 1,
+           y_style = c("points", "lines")) {
     y <- validate_y(y)
     if (is.null(facet_args[["scales"]]))
       facet_args[["scales"]] <- "free"
@@ -117,7 +119,10 @@ ppc_vs_x_grouped <-
       prob = prob,
       y_style = y_style,
       facet_args = facet_args,
+      alpha = alpha,
+      size = size,
       ...
     ) +
       xlab("x")
   }
+
