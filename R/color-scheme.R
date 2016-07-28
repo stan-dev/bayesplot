@@ -1,15 +1,46 @@
 #' Set or get the color scheme
 #'
-#' Set or get the color scheme used for plotting.
+#' Set or get the color scheme used for plotting. Choose from a preset scheme or
+#' create your own.
 #'
 #' @export
-#' @param scheme A string naming a color scheme.
+#' @param scheme For \code{set_color_scheme}, either a string naming one of the
+#'   available color schemes or a character vector of \emph{exactly six} colors
+#'   specifying a custom scheme (see \strong{Custom Color Schemes}, below, for
+#'   more on specifying a custom scheme). For \code{get_color_scheme},
+#'   \code{scheme} can be missing (to return the current color scheme) or be a
+#'   string naming one of the preset schemes. The available preset color schemes
+#'   are:
+#'   \itemize{
+#'    \item \code{"blue"}
+#'    \item \code{"brightblue"}
+#'    \item \code{"gray"}
+#'    \item \code{"green"}
+#'    \item \code{"pink"}
+#'    \item \code{"purple"}
+#'    \item \code{"red"}
+#'    \item \code{"teal"}
+#'    \item \code{"yellow"}
+#'    \item \code{"mix-blue-red"}
+#'    \item \code{"mix-green-blue"}
+#'    \item \code{"mix-teal-pink"}
+#'   }
+#'
 #' @return \code{set_color_scheme} has the side effect of setting the color
 #'   scheme used for plotting. It also returns
 #'   (\code{\link[=invisible]{invisibly}}) a list of the hexidecimal color
 #'   values used in \code{scheme}.
 #'
+#' @section Custom Color Schemes:
+#' A \pkg{bayesplot} color scheme consists of six colors. To specify a custom
+#' color scheme simply pass a character vector containing either the names of
+#' six \code{\link[grDevices]{colors}} or six hexidecimal color values (or a mix
+#' of names and hex values). The colors should be in order from lightest to
+#' darkest. See the \strong{Examples} section for a demonstrations of specifying
+#' a custom scheme.
+#'
 #' @examples
+#' # current color scheme
 #' get_color_scheme()
 #'
 #' x <- fake_draws()
@@ -26,6 +57,10 @@
 #' yrep <- matrix(rnorm(5e4), ncol = 100)
 #' ppc_stat(y, yrep, stat = "sd") + no_legend()
 #'
+#' set_color_scheme("mix-teal-pink")
+#' ppc_stat(y, yrep, stat = "sd") + no_legend()
+#' mcmc_areas(x)
+#'
 #' # all color scheme lists use the same names
 #' names(get_color_scheme("red"))
 #' names(get_color_scheme("blue"))
@@ -33,14 +68,34 @@
 #' # hex value of lightest color in the 'gray' color scheme
 #' get_color_scheme("gray")$light
 #'
-set_color_scheme <-
-  function(scheme = c("red", "blue", "gray", "green", "pink", "teal")) {
+#' ###########################
+#' ### custom color scheme ###
+#' ###########################
+#' orange_scheme <- c("#ffebcc", "#ffcc80",
+#'                    "#ffad33", "#e68a00",
+#'                    "#995c00", "#663d00")
+#' set_color_scheme(orange_scheme)
+#' get_color_scheme()
+#' mcmc_areas(x)
+#' mcmc_dens_overlay(x)
+#' ppc_stat(y, yrep, stat = "var")
+#'
+set_color_scheme <- function(scheme) {
+  stopifnot(is.character(scheme))
+  if (length(scheme) == 1) {
+    scheme <- match.arg(scheme, choices = names(master_color_list))
     x <- prepare_colors(scheme)
-    for (lev in names(x))
-      .bayesplot_aesthetics[[lev]] <- x[[lev]]
-
-    invisible(x)
+  } else if (length(scheme) == 6) {
+    x <- prepare_custom_colors(scheme)
+  } else {
+    stop("'scheme' should be a character vector of length 1 or 6.")
   }
+
+  for (lev in names(x))
+    .bayesplot_aesthetics[[lev]] <- x[[lev]]
+
+  invisible(x)
+}
 
 #' @export
 #' @rdname set_color_scheme
@@ -54,15 +109,13 @@ get_color_scheme <- function(scheme) {
     x <- as.list(.bayesplot_aesthetics)
     return(x[scheme_level_names()])
   }
-
   scheme <- match.arg(scheme, choices = names(master_color_list))
   prepare_colors(scheme)
 }
 
 
 
-
-# helpers -----------------------------------------------------------------
+# internal -----------------------------------------------------------------
 
 # Access a subset of the scheme colors
 #
@@ -98,68 +151,81 @@ scheme_level_names <- function() {
     "dark_highlight")
 }
 
-# Color schemes
-master_color_list <- list(
-  blue =
-    list(
-      "#bcccdc",
-      "#99b0c7",
-      "#7c9bb9",
-      "#5079a2",
-      "#275b8f",
-      "#003e7c"
-    ),
-  gray =
-    list(
-      "#D9D9D9",
-      "#BDBDBD",
-      "#969696",
-      "#737373",
-      "#525252",
-      "#252525"
-    ),
-  green =
-    list(
-      "#bcdcbc",
-      "#99c799",
-      "#7cb97c",
-      "#50a250",
-      "#278f27",
-      "#007c00"
-    ),
-  pink =
-    list(
-      "#dcbccc",
-      "#c799b0",
-      "#b97c9b",
-      "#a25079",
-      "#8f275b",
-      "#7c003e"
-    ),
-  red =
-    list(
-      "#DCBCBC",
-      "#C79999",
-      "#B97C7C",
-      "#A25050",
-      "#8F2727",
-      "#7C0000"
-    ),
-  teal =
-    list(
-      "#bcdcdc",
-      "#99c7c7",
-      "#7cb9b9",
-      "#50a2a2",
-      "#278f8f",
-      "#007C7C"
-    )
-)
 prepare_colors <- function(scheme) {
   setNames(master_color_list[[scheme]],
            scheme_level_names())
 }
+prepare_custom_colors <- function(scheme) {
+  if (length(scheme) != 6)
+    stop("Custom color schemes must contain exactly 6 colors.",
+         call. = FALSE)
 
+  not_found <- character(0)
+  for (j in seq_along(scheme)) {
+    clr <- scheme[j]
+    if (!is_hex_color(clr)  && !clr %in% grDevices::colors())
+      not_found <- c(not_found, clr)
+  }
+  if (length(not_found))
+    STOP_bad_colors(not_found)
+
+  setNames(as.list(scheme), scheme_level_names())
+}
+
+is_hex_color <- function(x) {
+  if (!identical(substr(x, 1, 1), "#"))
+    return(FALSE)
+  isTRUE(nchar(x) == 7)
+}
+
+# @param x character vector of bad color names
+STOP_bad_colors <- function(x) {
+  stop(
+    "Each color must specified as either a hexidecimal color value ",
+    "(e.g. '#C79999') or the name of a color (e.g. 'blue'). ",
+    "The following provided colors were not found: ",
+    paste(unlist(x), collapse = ", "),
+    call. = FALSE
+  )
+}
+
+# master color list -------------------------------------------------------
+# create mixed scheme
+mixed_scheme <- function(scheme1, scheme2) {
+  scheme1 <- get_color_scheme(scheme1)
+  scheme2 <- get_color_scheme(scheme2)
+  unname(list(
+    scheme1$light,
+    scheme2$light_highlight,
+    scheme2$mid,
+    scheme1$mid_highlight,
+    scheme1$dark,
+    scheme2$dark_highlight
+  ))
+}
+master_color_list <- list(
+  blue =
+    list("#d1e1ec", "#b3cde0", "#6497b1", "#005b96", "#03396c", "#011f4b"),
+  brightblue =
+    list("#cce5ff", "#99cbff", "#4ca5ff", "#198bff", "#0065cc", "#004c99"),
+  gray =
+    list("#D9D9D9", "#BDBDBD", "#969696", "#737373", "#525252", "#252525"),
+  green =
+    list("#d9f2e6", "#9fdfbf", "#66cc99", "#40bf80", "#2d8659", "#194d33"),
+  pink =
+    list("#dcbccc", "#c799b0", "#b97c9b", "#a25079", "#8f275b", "#7c003e"),
+  purple =
+    list("#e5cce5", "#bf7fbf", "#a64ca6", "#800080", "#660066", "#400040"),
+  red =
+    list("#DCBCBC", "#C79999", "#B97C7C", "#A25050", "#8F2727", "#7C0000"),
+  teal =
+    list("#bcdcdc", "#99c7c7", "#7cb9b9", "#50a2a2", "#278f8f", "#007C7C"),
+  yellow =
+    list("#fbf3da", "#f8e8b5", "#f5dc90", "#dbc376", "#aa975c", "#7a6c42")
+)
+master_color_list[["mix-blue-red"]] <- mixed_scheme("blue", "red")
+master_color_list[["mix-green-blue"]] <- mixed_scheme("green", "blue")
+master_color_list[["mix-teal-pink"]] <- mixed_scheme("teal", "pink")
 
 # instantiate aesthetics --------------------------------------------------
 .bayesplot_aesthetics <- new.env(parent = emptyenv())

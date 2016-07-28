@@ -13,6 +13,33 @@ test_that("getting and setting the color scheme works", {
   expect_equal(get_color_scheme("teal"), prepare_colors("teal"))
 })
 
+orange_scheme_bad <-
+  orange_scheme_ok <-
+  c("not_a_color1",
+    "#ffcc80",
+    "#ffad33",
+    "#e68a00",
+    "#995c00",
+    "not_a_color2")
+orange_scheme_ok[c(1, 6)] <- c("#ffebcc", "#663d00")
+
+test_that("set_color_scheme throws correct errors for custom schemes ", {
+  expect_error(set_color_scheme(orange_scheme_bad),
+               "not found: not_a_color1, not_a_color2")
+  expect_error(set_color_scheme(c("red", "blue")),
+               "should be a character vector of length 1 or 6")
+})
+
+test_that("custom color schemes work", {
+  set_color_scheme(orange_scheme_ok)
+  expect_named(get_color_scheme())
+  expect_equivalent(unlist(get_color_scheme()), orange_scheme_ok)
+
+  random_scheme <- colors()[sample(length(colors()), 6)]
+  set_color_scheme(random_scheme)
+  expect_equivalent(unlist(get_color_scheme()), random_scheme)
+})
+
 test_that("ppc_color returns correct color values", {
   scheme <- set_color_scheme("green")
   levs <- scheme_level_names()

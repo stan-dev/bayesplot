@@ -115,7 +115,8 @@ ppc_scatter_plotter <-
       geom_abline(
         intercept = 0,
         slope = 1,
-        linetype = 2
+        linetype = 2,
+        color = get_color("d")
       ) +
       geom_point(
         shape = 21,

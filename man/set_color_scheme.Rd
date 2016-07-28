@@ -5,12 +5,32 @@
 \alias{set_color_scheme}
 \title{Set or get the color scheme}
 \usage{
-set_color_scheme(scheme = c("red", "blue", "gray", "green", "pink", "teal"))
+set_color_scheme(scheme)
 
 get_color_scheme(scheme)
 }
 \arguments{
-\item{scheme}{A string naming a color scheme.}
+\item{scheme}{For \code{set_color_scheme}, either a string naming one of the
+available color schemes or a character vector of \emph{exactly six} colors
+specifying a custom scheme (see \strong{Custom Color Schemes}, below, for
+more on specifying a custom scheme). For \code{get_color_scheme},
+\code{scheme} can be missing (to return the current color scheme) or be a
+string naming one of the preset schemes. The available preset color schemes
+are:
+\itemize{
+ \item \code{"blue"}
+ \item \code{"brightblue"}
+ \item \code{"gray"}
+ \item \code{"green"}
+ \item \code{"pink"}
+ \item \code{"purple"}
+ \item \code{"red"}
+ \item \code{"teal"}
+ \item \code{"yellow"}
+ \item \code{"mix-blue-red"}
+ \item \code{"mix-green-blue"}
+ \item \code{"mix-teal-pink"}
+}}
 }
 \value{
 \code{set_color_scheme} has the side effect of setting the color
@@ -24,9 +44,20 @@ get_color_scheme(scheme)
   color scheme.
 }
 \description{
-Set or get the color scheme used for plotting.
+Set or get the color scheme used for plotting. Choose from a preset scheme or
+create your own.
+}
+\section{Custom Color Schemes}{
+
+A \pkg{bayesplot} color scheme consists of six colors. To specify a custom
+color scheme simply pass a character vector containing either the names of
+six \code{\link[grDevices]{colors}} or six hexidecimal color values (or a mix
+of names and hex values). The colors should be in order from lightest to
+darkest. See the \strong{Examples} section for a demonstrations of specifying
+a custom scheme.
 }
 \examples{
+# current color scheme
 get_color_scheme()
 
 x <- fake_draws()
@@ -43,12 +74,28 @@ y <- rnorm(100)
 yrep <- matrix(rnorm(5e4), ncol = 100)
 ppc_stat(y, yrep, stat = "sd") + no_legend()
 
+set_color_scheme("mix-teal-pink")
+ppc_stat(y, yrep, stat = "sd") + no_legend()
+mcmc_areas(x)
+
 # all color scheme lists use the same names
 names(get_color_scheme("red"))
 names(get_color_scheme("blue"))
 
 # hex value of lightest color in the 'gray' color scheme
 get_color_scheme("gray")$light
+
+###########################
+### custom color scheme ###
+###########################
+orange_scheme <- c("#ffebcc", "#ffcc80",
+                   "#ffad33", "#e68a00",
+                   "#995c00", "#663d00")
+set_color_scheme(orange_scheme)
+get_color_scheme()
+mcmc_areas(x)
+mcmc_dens_overlay(x)
+ppc_stat(y, yrep, stat = "var")
 
 }
 
