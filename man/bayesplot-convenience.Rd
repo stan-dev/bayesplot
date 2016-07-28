@@ -8,6 +8,7 @@
 \alias{lbub}
 \alias{move_legend}
 \alias{no_legend}
+\alias{plot_bg}
 \alias{vline_0}
 \alias{vline_at}
 \alias{xaxis_text}
@@ -45,6 +46,8 @@ yaxis_text(on = TRUE, ...)
 xaxis_ticks(on = TRUE, ...)
 
 yaxis_ticks(on = TRUE, ...)
+
+plot_bg(on = TRUE, ...)
 }
 \arguments{
 \item{v}{Either a numeric vector specifying the \code{v}alue(s) at which to
@@ -63,7 +66,10 @@ vector.}
   \code{\link[ggplot2]{element_text}} if \code{on = TRUE}.
 
   For \code{xaxis_ticks} and \code{yaxis_ticks}, \code{...} is passed to
-  \code{\link[ggplot2]{element_line}} if \code{on = TRUE}.}
+  \code{\link[ggplot2]{element_line}} if \code{on = TRUE}.
+
+  For \code{plot_bg}, \code{...} is passed to
+  \code{\link[ggplot2]{element_rect}} if \code{on = TRUE}.}
 
 \item{p}{The probability mass (in [0,1]) to include in the interval.}
 
@@ -138,6 +144,12 @@ that can be added to an existing plot (ggplot object) to change the
 appearance of the axis tick marks.
 }
 }
+\subsection{Customize plot background}{
+\itemize{
+\item \code{plot_bg} returns a ggplot2 theme object that can be added to an
+existing plot (ggplot object) to format the plot background.
+}
+}
 }
 \examples{
 set_color_scheme("gray")
@@ -147,12 +159,15 @@ colnames(x)
 
 (p <- mcmc_intervals(x))
 
-### vertical line at 0
+###################################
+### vertical & horizontal lines ###
+###################################
+
+# vertical line at zero
 p + vline_0()
 p + vline_0(size = 0.25, color = "darkgray", linetype = 2)
 
-
-### vertical line(s) at specified values
+# vertical line(s) at specified values
 p + vline_at(c(-1, 0, 1), linetype = 3, size = 0.25)
 
 my_lines <- vline_at(
@@ -163,11 +178,10 @@ my_lines <- vline_at(
 )
 p + my_lines
 
-### add vertical line(s) at computed values
-# three ways of getting lines at column means
+# add vertical line(s) at computed values
+# (three ways of getting lines at column means)
 set_color_scheme("teal")
 p <- mcmc_intervals(x)
-
 p + vline_at(x, colMeans)
 p + vline_at(x, "colMeans", lty = 2, size = 0.25,
              color = get_color_scheme()[["mid"]])
@@ -176,7 +190,7 @@ p + vline_at(x, function(a) apply(a, 2, mean),
              color = get_color_scheme()[["dark"]])
 
 
-### using the lbub function
+# using the lbub function to get interval lower and upper bounds (lb, ub)
 set_color_scheme("blue")
 (p2 <- mcmc_hist(x, pars = "beta[1]"))
 
@@ -193,11 +207,13 @@ p2 +
    size = 1.5 * c(1,2,1)
  )
 
-### control appearance of axis titles
+##########################
+### format axis titles ###
+##########################
 set_color_scheme("pink")
 y <- rnorm(100)
-yrep <- t(replicate(150, rnorm(length(y), mean = y, sd = 5)))
-(p3 <- ppc_stat(y, yrep, stat = "median", binwidth = 0.15))
+yrep <- t(replicate(150, rnorm(100, mean = rnorm(100, y, 3))))
+(p3 <- ppc_stat(y, yrep, stat = "median", binwidth = 0.1))
 
 # reformat x-axis title
 (p3 <- p3 + xaxis_title(size = 15, color = "darkgray"))
@@ -205,13 +221,13 @@ yrep <- t(replicate(150, rnorm(length(y), mean = y, sd = 5)))
 # formatting stays even if we change the title content
 p3 + ggplot2::xlab(expression(bolditalic(T): y \%->\% median(y)))
 
-# remove x axis title and turn on y-axis title
-p3 +
- yaxis_title() +
- xaxis_title(on = FALSE)
+# remove x axis title and legend
+p3 + xaxis_title(on = FALSE) + no_legend()
 
 
-### control appearance facet and axis text
+################################
+### format axis & facet text ###
+################################
 set_color_scheme("gray")
 p4 <- mcmc_trace(fake_draws(), pars = c("alpha", "sigma"))
 
@@ -221,11 +237,25 @@ p4 + myfacets
 # dont show y-axis text
 p4 + myfacets + yaxis_text(FALSE)
 
-### control axis tick marks
+##########################
+### control tick marks ###
+##########################
 p4 +
  myfacets +
  yaxis_text(FALSE) +
  xaxis_ticks(size = .75, color = "purple4")
+
+
+##############################
+### change plot background ###
+##############################
+set_color_scheme("yellow")
+p5 <- ppc_scatter_avg(y, yrep)
+p5 + plot_bg(fill = get_color_scheme("purple")$light)
+
+set_color_scheme("purple")
+ppc_dens_overlay(y, yrep[1:30, ]) +
+ plot_bg(color = "black", size = 3)
 
 }
 
