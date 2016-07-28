@@ -209,7 +209,7 @@ master_color_list <- list(
   brightblue =
     list("#cce5ff", "#99cbff", "#4ca5ff", "#198bff", "#0065cc", "#004c99"),
   gray =
-    list("#D9D9D9", "#BDBDBD", "#969696", "#737373", "#525252", "#252525"),
+    list("#e6e6e6", "#bfbfbf", "#999999", "#737373", "#595959", "#0d0d0d"),
   green =
     list("#d9f2e6", "#9fdfbf", "#66cc99", "#40bf80", "#2d8659", "#194d33"),
   pink =
