@@ -11,26 +11,28 @@ get_color_scheme(scheme)
 }
 \arguments{
 \item{scheme}{For \code{set_color_scheme}, either a string naming one of the
-available color schemes or a character vector of \emph{exactly six} colors
-specifying a custom scheme (see \strong{Custom Color Schemes}, below, for
-more on specifying a custom scheme). For \code{get_color_scheme},
-\code{scheme} can be missing (to return the current color scheme) or be a
-string naming one of the preset schemes. The available preset color schemes
-are:
-\itemize{
- \item \code{"blue"}
- \item \code{"brightblue"}
- \item \code{"gray"}
- \item \code{"green"}
- \item \code{"pink"}
- \item \code{"purple"}
- \item \code{"red"}
- \item \code{"teal"}
- \item \code{"yellow"}
- \item \code{"mix-blue-red"}
- \item \code{"mix-green-blue"}
- \item \code{"mix-teal-pink"}
-}}
+  available color schemes or a character vector of \emph{exactly six} colors
+  specifying a custom scheme (see the \strong{Custom Color Schemes} section,
+  below, for more on specifying a custom scheme).
+
+  For \code{get_color_scheme}, \code{scheme} can be missing (to get the
+  current color scheme) or a string naming one of the preset schemes.
+
+  Currently, the available preset color schemes are:
+  \itemize{
+   \item \code{"blue"}
+   \item \code{"brightblue"}
+   \item \code{"gray"}
+   \item \code{"green"}
+   \item \code{"pink"}
+   \item \code{"purple"}
+   \item \code{"red"}
+   \item \code{"teal"}
+   \item \code{"yellow"}
+   \item \code{"mix-blue-red"}
+   \item \code{"mix-green-blue"}
+   \item \code{"mix-teal-pink"}
+  }}
 }
 \value{
 \code{set_color_scheme} has the side effect of setting the color
@@ -38,23 +40,22 @@ are:
   (\code{\link[=invisible]{invisibly}}) a list of the hexidecimal color
   values used in \code{scheme}.
 
-\code{get_color_scheme} returns a \code{list} of the hexadecimal
-  color values (without changing the current scheme). If the \code{scheme}
-  argument is not specified the returned values correspond to the current
-  color scheme.
+  \code{get_color_scheme} returns a \code{list} of the hexadecimal color
+  values (without changing the current scheme). If the \code{scheme} argument
+  is not specified the returned values correspond to the current color
+  scheme.
 }
 \description{
 Set or get the color scheme used for plotting. Choose from a preset scheme or
 create your own.
 }
 \section{Custom Color Schemes}{
-
-A \pkg{bayesplot} color scheme consists of six colors. To specify a custom
-color scheme simply pass a character vector containing either the names of
-six \code{\link[grDevices]{colors}} or six hexidecimal color values (or a mix
-of names and hex values). The colors should be in order from lightest to
-darkest. See the \strong{Examples} section for a demonstrations of specifying
-a custom scheme.
+ A \pkg{bayesplot} color scheme consists of six
+  colors. To specify a custom color scheme simply pass a character vector
+  containing either the names of six \code{\link[grDevices]{colors}} or six
+  hexidecimal color values (or a mix of names and hex values). The colors
+  should be in order from lightest to darkest. See the \strong{Examples}
+  section for a demonstrations of specifying a custom scheme.
 }
 \examples{
 # current color scheme

@@ -6,11 +6,13 @@
 #' @export
 #' @param scheme For \code{set_color_scheme}, either a string naming one of the
 #'   available color schemes or a character vector of \emph{exactly six} colors
-#'   specifying a custom scheme (see \strong{Custom Color Schemes}, below, for
-#'   more on specifying a custom scheme). For \code{get_color_scheme},
-#'   \code{scheme} can be missing (to return the current color scheme) or be a
-#'   string naming one of the preset schemes. The available preset color schemes
-#'   are:
+#'   specifying a custom scheme (see the \strong{Custom Color Schemes} section,
+#'   below, for more on specifying a custom scheme).
+#'
+#'   For \code{get_color_scheme}, \code{scheme} can be missing (to get the
+#'   current color scheme) or a string naming one of the preset schemes.
+#'
+#'   Currently, the available preset color schemes are:
 #'   \itemize{
 #'    \item \code{"blue"}
 #'    \item \code{"brightblue"}
@@ -31,13 +33,18 @@
 #'   (\code{\link[=invisible]{invisibly}}) a list of the hexidecimal color
 #'   values used in \code{scheme}.
 #'
-#' @section Custom Color Schemes:
-#' A \pkg{bayesplot} color scheme consists of six colors. To specify a custom
-#' color scheme simply pass a character vector containing either the names of
-#' six \code{\link[grDevices]{colors}} or six hexidecimal color values (or a mix
-#' of names and hex values). The colors should be in order from lightest to
-#' darkest. See the \strong{Examples} section for a demonstrations of specifying
-#' a custom scheme.
+#'   \code{get_color_scheme} returns a \code{list} of the hexadecimal color
+#'   values (without changing the current scheme). If the \code{scheme} argument
+#'   is not specified the returned values correspond to the current color
+#'   scheme.
+#'
+#'
+#' @section Custom Color Schemes: A \pkg{bayesplot} color scheme consists of six
+#'   colors. To specify a custom color scheme simply pass a character vector
+#'   containing either the names of six \code{\link[grDevices]{colors}} or six
+#'   hexidecimal color values (or a mix of names and hex values). The colors
+#'   should be in order from lightest to darkest. See the end of the
+#'   \strong{Examples} section for a demonstration.
 #'
 #' @examples
 #' # current color scheme
@@ -78,7 +85,7 @@
 #' get_color_scheme()
 #' mcmc_areas(x)
 #' mcmc_dens_overlay(x)
-#' ppc_stat(y, yrep, stat = "var")
+#' ppc_stat(y, yrep, stat = "var") + no_legend()
 #'
 set_color_scheme <- function(scheme) {
   stopifnot(is.character(scheme))
@@ -97,13 +104,8 @@ set_color_scheme <- function(scheme) {
   invisible(x)
 }
 
-#' @export
 #' @rdname set_color_scheme
-#' @return \code{get_color_scheme} returns a \code{list} of the hexadecimal
-#'   color values (without changing the current scheme). If the \code{scheme}
-#'   argument is not specified the returned values correspond to the current
-#'   color scheme.
-#'
+#' @export
 get_color_scheme <- function(scheme) {
   if (missing(scheme)) {
     x <- as.list(.bayesplot_aesthetics)
