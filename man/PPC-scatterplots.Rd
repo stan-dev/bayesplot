@@ -36,7 +36,8 @@ A ggplot object that can be further customized using the
 }
 \description{
 Scatterplots of the observed data \code{y} vs. simulated/replicated data
-\code{yrep} from the posterior predictive distribution.
+\code{yrep} from the posterior predictive distribution. See the \strong{Plot
+Descriptions} and \strong{Details} sections, below.
 }
 \details{
 For Binomial data, the plots will typically be most useful if

@@ -2,7 +2,8 @@
 #'
 #' The distribution of a test statistic \code{T(yrep)}, or a
 #' pair of test statistics, over the simulated datasets in \code{yrep},
-#' compared to the observed value \code{T(y)}.
+#' compared to the observed value \code{T(y)}. See the \strong{Plot
+#' Descriptions} and \strong{Details} sections, below.
 #'
 #' @name PPC-test-statistics
 #' @family PPCs

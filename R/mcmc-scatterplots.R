@@ -1,5 +1,8 @@
 #' Scatterplots of MCMC draws
 #'
+#' Scatterplots of MCMC draws. See the \strong{Plot Descriptions} section,
+#' below, for details.
+#'
 #' @name MCMC-scatterplots
 #' @family MCMC
 #'
@@ -14,6 +17,17 @@
 #'   customized using the \pkg{ggplot2} package. For \code{mcmc_pairs}, a
 #'   \code{\link[GGally]{ggpairs}} object.
 #'
+#' @section Plot Descriptions:
+#' \describe{
+#'   \item{\code{mcmc_scatter}}{
+#'    Bivariate scatterplot of posterior draws (for two parameters).
+#'   }
+#'   \item{\code{mcmc_pairs}}{
+#'   Scatterplot matrix with histograms along the diagonal.
+#'   }
+#' }
+#'
+#'
 #' @template seealso-color-scheme
 #'
 #'
@@ -27,13 +41,15 @@
 #'                   trans = list(sigma = "log")))
 #'
 #' # add ellipse
-#' p + ggplot2::stat_ellipse(level = 0.9)
+#' p + ggplot2::stat_ellipse(level = 0.9, color = "darkgray", size = 2)
 #'
+#' set_color_scheme("purple")
 #' mcmc_scatter(x, pars = c("beta[1]", "beta[4]"))
-#' mcmc_scatter(x, regex = "beta\\[[1,4]")
+#' mcmc_scatter(x, regex = "beta\\[[1,4]", alpha = 0.33, size = 3.5)
 #'
 #' # pairs plot with histograms along the diagonal
-#' mcmc_pairs(x, pars = c("alpha", "sigma", "beta[3]"))
+#' set_color_scheme("mix-green-blue")
+#' mcmc_pairs(x, pars = c("alpha", "sigma", "beta[3]"), alpha = 0.25)
 #'
 NULL
 
@@ -50,7 +66,10 @@ mcmc_scatter <- function(x,
 
   x <- prepare_mcmc_array(x, pars, regex_pars, transformations)
   if (dim(x)[3] != 2)
-    stop("For 'mcmc_scatter' exactly 2 parameters must be selected.")
+    stop(
+      "For 'mcmc_scatter' exactly 2 parameters must be selected. ",
+      "Use 'mcmc_pairs' to include more than 2 parameters."
+    )
 
   x <- merge_chains(x)
   parnames <- colnames(x)[1:2]
@@ -75,6 +94,8 @@ mcmc_pairs <- function(x,
                        pars = character(),
                        regex_pars = character(),
                        transformations = list(),
+                       size = 1.5,
+                       alpha = 0.5,
                        ...) {
   suggested_package("GGally")
 
@@ -96,14 +117,15 @@ mcmc_pairs <- function(x,
         shape = 21,
         fill = get_color("d"),
         color = get_color("dh"),
-        alpha = 0.5
+        alpha = alpha,
+        size = size
       )
     ),
     diag = list(
       continuous = GGally::wrap(
         "barDiag",
-        fill = get_color("m"),
-        color = get_color("mh"),
+        fill = get_color("l"),
+        color = get_color("lh"),
         size = .25
       )
     )

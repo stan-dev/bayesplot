@@ -1,7 +1,8 @@
 #' PPC scatterplots
 #'
 #' Scatterplots of the observed data \code{y} vs. simulated/replicated data
-#' \code{yrep} from the posterior predictive distribution.
+#' \code{yrep} from the posterior predictive distribution. See the \strong{Plot
+#' Descriptions} and \strong{Details} sections, below.
 #'
 #' @name PPC-scatterplots
 #' @family PPCs

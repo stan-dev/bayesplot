@@ -10,7 +10,7 @@ mcmc_scatter(x, pars = character(), regex_pars = character(),
   transformations = list(), ..., size = 2.5, alpha = 0.75)
 
 mcmc_pairs(x, pars = character(), regex_pars = character(),
-  transformations = list(), ...)
+  transformations = list(), size = 1.5, alpha = 0.5, ...)
 }
 \arguments{
 \item{x}{A 3-D array, matrix, or data frame of posterior draws:
@@ -60,7 +60,19 @@ For \code{mcmc_scatter}, a ggplot object that can be further
   \code{\link[GGally]{ggpairs}} object.
 }
 \description{
-Scatterplots of MCMC draws
+Scatterplots of MCMC draws. See the \strong{Plot Descriptions} section,
+below, for details.
+}
+\section{Plot Descriptions}{
+
+\describe{
+  \item{\code{mcmc_scatter}}{
+   Bivariate scatterplot of posterior draws (for two parameters).
+  }
+  \item{\code{mcmc_pairs}}{
+  Scatterplot matrix with histograms along the diagonal.
+  }
+}
 }
 \examples{
 # Some draws to play with for examples
@@ -72,13 +84,15 @@ dimnames(x)
                   trans = list(sigma = "log")))
 
 # add ellipse
-p + ggplot2::stat_ellipse(level = 0.9)
+p + ggplot2::stat_ellipse(level = 0.9, color = "darkgray", size = 2)
 
+set_color_scheme("purple")
 mcmc_scatter(x, pars = c("beta[1]", "beta[4]"))
-mcmc_scatter(x, regex = "beta\\\\[[1,4]")
+mcmc_scatter(x, regex = "beta\\\\[[1,4]", alpha = 0.33, size = 3.5)
 
 # pairs plot with histograms along the diagonal
-mcmc_pairs(x, pars = c("alpha", "sigma", "beta[3]"))
+set_color_scheme("mix-green-blue")
+mcmc_pairs(x, pars = c("alpha", "sigma", "beta[3]"), alpha = 0.25)
 
 }
 \seealso{

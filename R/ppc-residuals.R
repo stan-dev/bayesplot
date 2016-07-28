@@ -1,10 +1,11 @@
 #' PPC residuals
 #'
-#' \code{ppc_resid} plots the distributions of residuals computed from
-#' \code{y} and simulated datasets \code{yrep}. For binomial data,
+#' \code{ppc_resid} plots the distributions of residuals computed from \code{y}
+#' and simulated datasets \code{yrep}. For binomial data,
 #' \code{ppc_resid_binned} generates binned residual plots (similar to
 #' \code{\link[arm]{binnedplot}}) from \code{y} and the posterior draws of the
-#' linear predictor transformed by the inverse-link function.
+#' linear predictor transformed by the inverse-link function. See the
+#' \strong{Details} and \strong{Plot Descriptions} sections, below.
 #'
 #' @name PPC-residuals
 #' @family PPCs
@@ -14,10 +15,10 @@
 #' @param ... Currently unused.
 #'
 #' @details
-#' \code{ppc_resid} and \code{ppc_resid_binned} compute and plot
-#' residuals for each row of the matrices \code{yrep} and \code{Ey},
-#' respectively, so it is usually a good idea for \code{yrep} and \code{Ey} to
-#' contain only a small number of draws (rows).
+#' \code{ppc_resid} and \code{ppc_resid_binned} compute and plot residuals for
+#' each row of the matrices \code{yrep} and \code{Ey}, respectively, so it is
+#' usually a good idea for \code{yrep} and \code{Ey} to contain only a small
+#' number of draws (rows). See \strong{Examples}, below.
 #'
 #' For binomial and Bernoulli data the \code{ppc_resid_binned} function
 #' should be used to generate binned residual plots. Bernoulli data can be input

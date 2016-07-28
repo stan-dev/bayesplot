@@ -1,5 +1,8 @@
 #' Histograms and kernel density plots of MCMC draws
 #'
+#' Histograms and kernel density plots of MCMC draws. See the \strong{Plot
+#' Descriptions} section, below, for details.
+#'
 #' @name MCMC-distributions
 #' @family MCMC
 #'

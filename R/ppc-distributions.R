@@ -2,7 +2,8 @@
 #'
 #' Compare the empirical distribution of the data \code{y} to the distributions
 #' of simulated/replicated data \code{yrep} from the posterior predictive
-#' distribution.
+#' distribution. See the \strong{Plot Descriptions} section, below,
+#' for details.
 #'
 #' @name PPC-distributions
 #' @family PPCs
@@ -24,7 +25,7 @@
 #'   \item{\code{ppc_hist}}{
 #'    A separate histogram is plotted for \code{y} and each dataset (row) in
 #'    \code{yrep}. For this plot \code{yrep} should therefore contain only a
-#'    small number of rows.
+#'    small number of rows. See the \strong{Examples} section.
 #'   }
 #'   \item{\code{ppc_dens}}{
 #'    The same as \code{ppc_hist} but kernel density estimates are plotted
@@ -44,15 +45,21 @@
 #'
 #' @examples
 #' y <- rnorm(100)
-#' yrep <- matrix(rnorm(2500), ncol = 100)
-#' ppc_dens_overlay(y, yrep)
+#' yrep <- matrix(rnorm(5000), ncol = 100)
+#' dim(yrep)
+#' ppc_dens_overlay(y, yrep[1:30, ])
+#'
+#' # for ppc_hist, definitely subset yrep so only some instead of
+#' # nrow(yrep) histograms are plotted
 #' ppc_hist(y, yrep[1:8, ])
 #'
 #' set_color_scheme("blue")
 #' group <- gl(4, 25, labels = LETTERS[1:4])
-#' ppc_violin_grouped(y, yrep, group) +
-#'  yaxis_ticks(size = .75) +
-#'  xaxis_text(size = 15)
+#' (p <- ppc_violin_grouped(y, yrep, group))
+#' p +
+#'  yaxis_ticks(size = .75) +  # add tickmarks to y-axis
+#'  xaxis_text(size = 15) +    # make x-axis labels bigger
+#'  xaxis_title(on = FALSE)    # remove x-axis title
 #'
 NULL
 
@@ -135,25 +142,6 @@ ppc_dens_overlay <- function(y, yrep, ...) {
     xlab(y_label()) +
     dont_expand_axes() +
     theme_default(y_text = FALSE)
-
-#
-#   ggplot(
-#     data = melt_and_stack(y, yrep),
-#     mapping = aes_(
-#       x = ~ value,
-#       group = ~ rep_id,
-#       color = ~ is_y,
-#       fill = ~ is_y,
-#       size = ~ is_y
-#     )
-#   ) +
-#     geom_density(alpha = 0.1) +
-#     scale_color_manual(values = get_color(c("l", "dh"))) +
-#     scale_fill_manual(values = c(NA, get_color("d"))) +
-#     scale_size_manual(values = c(0.25, 1)) +
-#     xlab(y_label()) +
-#     dont_expand_axes() +
-#     theme_default(y_text = FALSE)
 }
 
 #' @export

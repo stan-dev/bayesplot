@@ -55,7 +55,7 @@ A ggplot object that can be further customized using the
 }
 \description{
 Medians and central interval estimates of \code{yrep} by value of \code{x},
-with \code{y} overlaid.
+with \code{y} overlaid. See the \strong{Plot Descriptions} section, below.
 }
 \section{Plot Descriptions}{
 
@@ -81,6 +81,7 @@ yrep <- t(replicate(50, {
  rnorm(length(xb), xb, 3)
 }))
 
+set_color_scheme("teal")
 ppc_vs_x(y, yrep, x)
 (p <- ppc_vs_x(y, yrep, x, y_style = "points"))
 
@@ -90,19 +91,37 @@ p +
  yaxis_ticks(size = 0.25) +
  xy_labs
 
-# by group
-set_color_scheme("teal")
-group <- mtcars$gear
-ppc_vs_x_grouped(y, yrep, x, group, y_style = "points",
-                 alpha = 0.2, size = 0.5) +
- ggplot2::geom_rug(sides = "b", size = 0.1) +
- xy_labs
+\dontrun{
+# example using rstanarm model
+library(rstanarm)
+fit <- stan_glmer(mpg ~ disp + am + (1|cyl),
+                  data = mtcars, iter = 1000)
 
-# force all facets to have same y axis scale (only x is "free")
-ppc_vs_x_grouped(y, yrep, x, group, y_style = "points",
-                 facet_args = list(scales = "free_x")) +
- xaxis_ticks(size = 0.5) +
- xy_labs
+
+set_color_scheme("purple")
+with(model.frame(fit),
+ ppc_vs_x_grouped(
+   y = mpg,
+   yrep = posterior_predict(fit),
+   x = disp,
+   group = cyl, # grouping by level of cyl
+   y_style = "points"
+ )
+)
+
+# same plot but forcing all facets to have
+# same y axis scale (only x is "free")
+with(model.frame(fit),
+ ppc_vs_x_grouped(
+   y = mpg,
+   yrep = posterior_predict(fit),
+   x = disp,
+   group = cyl, # grouping by level of cyl
+   y_style = "points",
+   facet_args = list(scales = "free_x")
+ )
+)
+}
 
 }
 \references{

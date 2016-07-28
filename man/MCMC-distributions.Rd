@@ -83,7 +83,8 @@ A ggplot object that can be further customized using the
   \pkg{ggplot2} package.
 }
 \description{
-Histograms and kernel density plots of MCMC draws
+Histograms and kernel density plots of MCMC draws. See the \strong{Plot
+Descriptions} section, below, for details.
 }
 \section{Plot Descriptions}{
 

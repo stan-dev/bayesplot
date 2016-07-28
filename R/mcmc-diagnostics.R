@@ -1,6 +1,7 @@
 #' Rhat and effective sample size
 #'
-#' Plots of Rhat and ratio of effective sample size to total sample size.
+#' Plots of Rhat and ratio of effective sample size to total sample size. See
+#' the \strong{Plot Descriptions} section, below, for details.
 #'
 #' @name MCMC-diagnostics
 #' @family MCMC

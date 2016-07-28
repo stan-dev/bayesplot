@@ -35,7 +35,8 @@ A ggplot object that can be further customized using the
   \pkg{ggplot2} package.
 }
 \description{
-Plots of Rhat and ratio of effective sample size to total sample size.
+Plots of Rhat and ratio of effective sample size to total sample size. See
+the \strong{Plot Descriptions} section, below, for details.
 }
 \section{Plot Descriptions}{
 

@@ -1,5 +1,8 @@
 #' Traceplot (time series plot) of MCMC draws
 #'
+#' Traceplot of MCMC draws. See the \strong{Plot Descriptions} section, below,
+#' for details.
+#'
 #' @name MCMC-traces
 #' @family MCMC
 #'
@@ -41,16 +44,22 @@
 #' dim(x)
 #' dimnames(x)
 #'
+#' # traceplots of alpha and sigma
+#' mcmc_trace(x, pars = c("alpha", "sigma"))
+#'
+#' # use a mixed color scheme
+#' set_color_scheme("mix-blue-red")
 #' mcmc_trace(x, pars = c("alpha", "sigma"))
 #'
 #' # use traditional ggplot discrete color scale
 #' mcmc_trace(x, pars = c("alpha", "sigma")) +
 #'  ggplot2::scale_color_discrete()
 #'
-#' # zoom in on a window of iterations
-#' # and add tickmarks
-#' mcmc_trace(x, window = c(100, 130)) +
-#'  xaxis_ticks(size = 0.25)
+#' # zoom in on a window of iterations, increase line size,
+#' # add tick marks, and move legend to the top
+#' mcmc_trace(x, window = c(100, 130), size = 1) +
+#'  xaxis_ticks(size = 0.25) +
+#'  move_legend("top")
 #'
 #' \dontrun{
 #' # parse facet label text
@@ -63,8 +72,15 @@
 #'  facet_text(size = 15) +
 #'  xaxis_ticks(size = .25)
 #'
-#' # mark first 200 draws as warmup
+#' # mark first 200 draws as warmup and move
+#' # legend to the top
 #' mcmc_trace(x, n_warmup = 200)
+#'
+#'
+#' # plot as points, highlighting chain 2
+#' set_color_scheme("brightblue")
+#' mcmc_trace_highlight(x, pars = c("alpha", "sigma"),
+#'                      highlight = 2, size = 2)
 #' }
 #'
 NULL

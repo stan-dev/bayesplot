@@ -55,7 +55,13 @@ A ggplot object that can be further customized using the
 }
 \description{
 PPCs for time series. Medians and central interval estimates of \code{yrep}
-by time, with \code{y} overlaid.
+by time, with \code{y} overlaid. See the \strong{Plot
+Descriptions} section, below.
+}
+\details{
+For Binomial data, the plots will typically be most useful if
+  \code{y} and \code{yrep} contain the "success" proportions (not discrete
+  "success" or "failure" counts).
 }
 \section{Plot Descriptions}{
 
@@ -75,15 +81,28 @@ by time, with \code{y} overlaid.
 \examples{
 y <- rnorm(50)
 yrep <- matrix(rnorm(5000, 0, 2), ncol = 50)
+ppc_ts(y, yrep)
 ppc_ts(y, yrep, y_style = "lines")
 
-ppc_ts(y, yrep, alpha = 1, size = .5)
-ppc_ts(y, yrep, size = .5, y_style = "lines")
-ppc_ts(y, yrep, alpha = 1, size = .25, y_style = "lines")
+set_color_scheme("mix-green-blue")
+time <- seq(1, 100, by = 2)
+ppc_ts(y, yrep, time, alpha = 1, size = .5)
+ppc_ts(y, yrep, time, size = .5, y_style = "lines")
+ppc_ts(y, yrep, time, alpha = 1, size = .25, y_style = "lines")
 
+set_color_scheme("pink")
 time <- rep(1:10, each = 5)
 group <- gl(5, 1, length = 50, labels = LETTERS[1:5])
-ppc_ts_grouped(y, yrep, time, group)
+ppc_ts_grouped(y, yrep, time, group) + xaxis_text(FALSE)
+
+ppc_ts_grouped(
+ y, yrep, time, group,
+ facet_args = list(scales = "fixed"),
+ alpha = 1,
+ size = 2
+) +
+ xaxis_text(FALSE) +
+ plot_bg(fill = "gray20")
 
 }
 \references{
