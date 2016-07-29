@@ -40,7 +40,7 @@
 #'
 #' @examples
 #' # some parameter draws to use for demonstration
-#' x <- example_mcmc_draws(n = 500, chains = 4, params = 6)
+#' x <- example_mcmc_draws(chains = 4, params = 6)
 #' dim(x)
 #' dimnames(x)
 #'
