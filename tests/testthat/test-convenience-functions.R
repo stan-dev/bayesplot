@@ -26,7 +26,7 @@ test_that("vline_* and hline_* return correct objects", {
 })
 
 test_that("vline_at with 'fun' works", {
-  x <- fake_draws(chains = 1)
+  x <- example_mcmc_draws(chains = 1)
   vMeans <- vline_at(x, colMeans)
   expect_identical(vMeans$data, data.frame(xintercept = colMeans(x)))
 })

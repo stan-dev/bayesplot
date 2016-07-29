@@ -27,8 +27,8 @@
 #' @template seealso-color-scheme
 #'
 #' @examples
-#' # some fake parameter draws to use for demonstration
-#' x <- fake_draws()
+#' # some parameter draws to use for demonstration
+#' x <- example_mcmc_draws()
 #' dim(x)
 #' dimnames(x)
 #'

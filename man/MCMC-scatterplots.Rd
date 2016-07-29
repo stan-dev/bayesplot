@@ -75,8 +75,8 @@ below, for details.
 }
 }
 \examples{
-# Some draws to play with for examples
-x <- fake_draws(params = 6)
+# some parameter draws to use for demonstration
+x <- example_mcmc_draws(params = 6)
 dimnames(x)
 
 # scatterplot of alpha vs log(sigma)
