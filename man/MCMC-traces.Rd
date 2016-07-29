@@ -94,8 +94,8 @@ for details.
 }
 }
 \examples{
-# some fake parameter draws to use for demonstration
-x <- fake_draws(n = 500, chains = 4, params = 6)
+# some parameter draws to use for demonstration
+x <- example_mcmc_draws(n = 500, chains = 4, params = 6)
 dim(x)
 dimnames(x)
 

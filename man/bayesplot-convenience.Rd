@@ -153,7 +153,7 @@ existing plot (ggplot object) to format the plot background.
 }
 \examples{
 set_color_scheme("gray")
-x <- fake_draws(chains = 1)
+x <- example_mcmc_draws(chains = 1)
 dim(x)
 colnames(x)
 
@@ -229,7 +229,7 @@ p3 + xaxis_title(on = FALSE) + no_legend()
 ### format axis & facet text ###
 ################################
 set_color_scheme("gray")
-p4 <- mcmc_trace(fake_draws(), pars = c("alpha", "sigma"))
+p4 <- mcmc_trace(example_mcmc_draws(), pars = c("alpha", "sigma"))
 
 myfacets <- facet_text(face = "bold", color = "purple4", size = 14)
 p4 + myfacets

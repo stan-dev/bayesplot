@@ -37,7 +37,7 @@ test_that("is_mcmc_array works", {
 })
 
 test_that("parameter_names works", {
-  x <- fake_draws()
+  x <- example_mcmc_draws()
   expect_identical(parameter_names(x), dimnames(x)[[3]])
   expect_error(parameter_names(x[, 1, ]), "is_3d_array")
 })

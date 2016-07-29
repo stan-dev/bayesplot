@@ -50,7 +50,7 @@
 #' # current color scheme
 #' get_color_scheme()
 #'
-#' x <- fake_draws()
+#' x <- example_mcmc_draws()
 #' mcmc_intervals(x)
 #'
 #' set_color_scheme("teal")
