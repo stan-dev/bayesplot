@@ -14,7 +14,9 @@ chains.}
 parameters.}
 }
 \value{
-A \code{500} (iterations) by \code{chains} by \code{params} array.
+If \code{chains > 1}, a \code{500} (iterations) by \code{chains} by
+  \code{params} array. If \code{chains = 1}, a \code{500} by \code{params}
+  matrix.
 }
 \description{
 Example MCMC draws to use in examples and tests. The draws are from the

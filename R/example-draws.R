@@ -16,7 +16,9 @@
 #'   then draws for regression coefficients \code{beta[k]} (\code{k} in
 #'   \code{1:(params-2)}) are also included.
 #'
-#' @return A \code{500} (iterations) by \code{chains} by \code{params} array.
+#' @return If \code{chains > 1}, a \code{500} (iterations) by \code{chains} by
+#'   \code{params} array. If \code{chains = 1}, a \code{500} by \code{params}
+#'   matrix.
 #'
 #' @examples
 #' x <- example_mcmc_draws()
@@ -41,6 +43,10 @@ example_mcmc_draws <- function(chains = 4, params = 4) {
 # internal ----------------------------------------------------------------
 .example_mcmc_draws <- function(chains, params) {
   # exdraws is stored internally in R/sysdata.rda
-  exdraws[ , seq_len(chains), seq_len(params), drop = FALSE]
+  x <- exdraws[, seq_len(chains), ]
+  if (chains > 1)
+    x[, , seq_len(params), drop = FALSE]
+  else
+    x[, seq_len(params), drop = FALSE]
 }
 
