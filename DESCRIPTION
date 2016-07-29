@@ -18,7 +18,8 @@ Imports:
     dplyr (>= 0.4.3),
     ggplot2 (>= 2.0.0),
     reshape2,
-    stats
+    stats,
+    utils
 Suggests:
     arm,
     GGally (>= 1.1.0),

@@ -54,8 +54,8 @@ create your own.
   colors. To specify a custom color scheme simply pass a character vector
   containing either the names of six \code{\link[grDevices]{colors}} or six
   hexidecimal color values (or a mix of names and hex values). The colors
-  should be in order from lightest to darkest. See the \strong{Examples}
-  section for a demonstrations of specifying a custom scheme.
+  should be in order from lightest to darkest. See the end of the
+  \strong{Examples} section for a demonstration.
 }
 \examples{
 # current color scheme
@@ -96,7 +96,7 @@ set_color_scheme(orange_scheme)
 get_color_scheme()
 mcmc_areas(x)
 mcmc_dens_overlay(x)
-ppc_stat(y, yrep, stat = "var")
+ppc_stat(y, yrep, stat = "var") + no_legend()
 
 }
 
