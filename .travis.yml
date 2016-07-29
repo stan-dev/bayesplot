@@ -2,6 +2,7 @@ language: r
 r:
  - release
  - devel
+ - oldrel
 
 sudo: false
 cache: packages
