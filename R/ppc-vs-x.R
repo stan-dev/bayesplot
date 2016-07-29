@@ -31,23 +31,16 @@
 #'
 #'
 #' @examples
-#' y <- mtcars$mpg
-#' x <- mtcars$wt
-#' # some fake yrep data
-#' yrep <- t(replicate(50, {
-#'  xb <- c(37, -5) %*% rbind(1, x)
-#'  rnorm(length(xb), xb, 3)
-#' }))
+#' y <- example_y_data()
+#' x <- example_x_data()
+#' yrep <- example_yrep_draws()
 #'
 #' set_color_scheme("teal")
-#' ppc_vs_x(y, yrep, x)
-#' (p <- ppc_vs_x(y, yrep, x, y_style = "points"))
+#' ppc_vs_x(y, yrep, x, size = 0.5, y_style = "points")
 #'
-#' xy_labs <- ggplot2::labs(x = "wt", y = expression(mpg^rep))
-#' p +
-#'  xaxis_ticks(size = 0.25) +
-#'  yaxis_ticks(size = 0.25) +
-#'  xy_labs
+#' group <- example_group_data()
+#' ppc_vs_x_grouped(y, yrep, x, group,
+#'                  prob = 0.95, y_style = "lines")
 #'
 #' \dontrun{
 #' # example using rstanarm model

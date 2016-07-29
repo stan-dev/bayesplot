@@ -95,25 +95,23 @@ Plot central (quantile-based) interval estimates from MCMC draws. See the
 }
 \examples{
 # some parameter draws to use for demonstration
-x <- example_mcmc_draws()
+x <- example_mcmc_draws(params = 6)
 dim(x)
 dimnames(x)
 
 mcmc_intervals(x)
-mcmc_areas(x)
-
-# can modify plot object using ggplot2 functions
-mcmc_areas(x, prob = 0.8) +
+mcmc_areas(x, pars = c("beta[3]", "beta[4]"), prob = 0.8) +
  ggplot2::ggtitle("Posterior medians & 80\% intervals")
 
-# same plot but with sigma on the log scale
-(p <- mcmc_areas(x, prob = 0.8, transformations = list(sigma = log)))
-y_labs <- expression(alpha, log(sigma), beta[1], beta[2])
-p + ggplot2::scale_y_continuous(breaks = 4:1, labels = y_labs)
+(p <- mcmc_areas(x, pars = c("sigma", "beta[3]"),
+                 transformations = list(sigma = "log"),
+                 prob = 0.95, point_est = "mean"))
+y_labs <- expression(log(sigma), beta[3])
+p + ggplot2::scale_y_continuous(breaks = 2:1, labels = y_labs)
 
 
 # color by rhat value
-fake_rhat_values <- c(1, 1.07, 1.3, 1.01)
+fake_rhat_values <- c(1, 1.07, 1.3, 1.01, 1.15, 1.005)
 mcmc_intervals(x, rhat = fake_rhat_values)
 set_color_scheme("blue")
 mcmc_intervals(x, rhat = fake_rhat_values)

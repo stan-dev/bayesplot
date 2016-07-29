@@ -12,6 +12,7 @@
 #' @template args-regex_pars
 #' @template args-transformations
 #' @param ... Currently ignored.
+#' @param size,alpha Passed to \code{\link[ggplot2]{geom_point}}.
 #'
 #' @return For \code{mcmc_scatter}, a ggplot object that can be further
 #'   customized using the \pkg{ggplot2} package. For \code{mcmc_pairs}, a
@@ -49,20 +50,19 @@
 #'
 #' # pairs plot with histograms along the diagonal
 #' set_color_scheme("mix-green-blue")
-#' mcmc_pairs(x, pars = c("alpha", "sigma", "beta[3]"), alpha = 0.25)
+#' mcmc_pairs(x, pars = c("alpha", "sigma", "beta[3]"))
 #'
 NULL
 
 #' @rdname MCMC-scatterplots
 #' @export
-#' @param size,alpha Passed to \code{\link[ggplot2]{geom_point}}.
 mcmc_scatter <- function(x,
                          pars = character(),
                          regex_pars = character(),
                          transformations = list(),
                          ...,
                          size = 2.5,
-                         alpha = 0.75) {
+                         alpha = 0.8) {
 
   x <- prepare_mcmc_array(x, pars, regex_pars, transformations)
   if (dim(x)[3] != 2)
@@ -94,9 +94,9 @@ mcmc_pairs <- function(x,
                        pars = character(),
                        regex_pars = character(),
                        transformations = list(),
+                       ...,
                        size = 1.5,
-                       alpha = 0.5,
-                       ...) {
+                       alpha = 0.8) {
   suggested_package("GGally")
 
   x <- prepare_mcmc_array(x, pars, regex_pars, transformations)

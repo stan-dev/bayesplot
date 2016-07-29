@@ -7,10 +7,10 @@
 \title{Scatterplots of MCMC draws}
 \usage{
 mcmc_scatter(x, pars = character(), regex_pars = character(),
-  transformations = list(), ..., size = 2.5, alpha = 0.75)
+  transformations = list(), ..., size = 2.5, alpha = 0.8)
 
 mcmc_pairs(x, pars = character(), regex_pars = character(),
-  transformations = list(), size = 1.5, alpha = 0.5, ...)
+  transformations = list(), ..., size = 1.5, alpha = 0.8)
 }
 \arguments{
 \item{x}{A 3-D array, matrix, or data frame of posterior draws:
@@ -92,7 +92,7 @@ mcmc_scatter(x, regex = "beta\\\\[[1,4]", alpha = 0.33, size = 3.5)
 
 # pairs plot with histograms along the diagonal
 set_color_scheme("mix-green-blue")
-mcmc_pairs(x, pars = c("alpha", "sigma", "beta[3]"), alpha = 0.25)
+mcmc_pairs(x, pars = c("alpha", "sigma", "beta[3]"))
 
 }
 \seealso{

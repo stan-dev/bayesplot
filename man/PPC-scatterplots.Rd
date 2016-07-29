@@ -7,11 +7,11 @@
 \alias{ppc_scatter_avg_grouped}
 \title{PPC scatterplots}
 \usage{
-ppc_scatter(y, yrep, ...)
+ppc_scatter(y, yrep, ..., size = 1.5, alpha = 0.8)
 
-ppc_scatter_avg(y, yrep, ...)
+ppc_scatter_avg(y, yrep, ..., size = 2.5, alpha = 0.8)
 
-ppc_scatter_avg_grouped(y, yrep, group, ...)
+ppc_scatter_avg_grouped(y, yrep, group, ..., size = 2.5, alpha = 0.8)
 }
 \arguments{
 \item{y}{A vector of observations. See \strong{Details}.}
@@ -25,6 +25,9 @@ for the plots to make sense. See \strong{Details} for additional
 instructions.}
 
 \item{...}{Currently unused.}
+
+\item{size, alpha}{Arguments passed to \code{\link[ggplot2]{geom_point}} to
+control the appearance of the points.}
 
 \item{group}{A grouping variable (a vector or factor) the same length as
 \code{y}. Each value in \code{group} is interpreted as the group level
@@ -64,17 +67,17 @@ For Binomial data, the plots will typically be most useful if
 }
 }
 \examples{
-y <- rnorm(100)
-yrep <- matrix(rnorm(2500), ncol = 100)
+y <- example_y_data()
+yrep <- example_yrep_draws()
 (p1 <- ppc_scatter_avg(y, yrep))
-(p2 <- ppc_scatter(y, yrep[1:3, ]))
+(p2 <- ppc_scatter(y, yrep[20:23, ], alpha = 0.5, size = 1.5))
 
-lims <- ggplot2::lims(x = c(-3, 3), y = c(-3, 3))
+lims <- ggplot2::lims(x = c(0, 160), y = c(0, 160))
 p1 + lims
 p2 + lims
 
-group <- gl(5, 20, labels = month.abb[1:5])
-ppc_scatter_avg_grouped(y, yrep, group)
+group <- example_group_data()
+ppc_scatter_avg_grouped(y, yrep, group, alpha = 0.7) + lims
 
 }
 \references{

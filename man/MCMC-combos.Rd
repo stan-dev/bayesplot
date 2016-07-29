@@ -71,16 +71,16 @@ mcmc_combo(x, transformations = list(sigma = "log"))
 # change the type of plots
 mcmc_combo(
  x,
+ pars = c("alpha", "beta[2]"),
  combo = c("intervals", "areas"),
  prob = 0.8,
- prob_outer = 0.95,
- transformations = list(sigma = "log")
+ prob_outer = 0.95
 )
 
-# also change ggplot theme
+# change ggplot theme
 mcmc_combo(
  x,
- pars = c("sigma", "alpha"),
+ pars = c("alpha", "beta[2]"),
  combo = c("trace", "areas"),
  gg_theme = ggplot2::theme_gray()
 )

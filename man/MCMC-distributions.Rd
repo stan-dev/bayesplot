@@ -127,14 +127,11 @@ mcmc_hist(x, pars = "sigma", regex_pars = "beta")
 
 # interpret facet labels as plotmath expressions
 # (e.g. to get greek letters for parameters)
-mcmc_hist(
- x,
- pars = c("alpha", "beta[2]"),
- facet_args = list(labeller = ggplot2::label_parsed)
-)
+mcmc_hist(x, facet_args = list(labeller = ggplot2::label_parsed))
 
 # with sigma on log scale
-mcmc_hist(x, transformations = list(sigma = "log"))
+mcmc_hist(x, transformations = list(sigma = "log"),
+          facet_args = list(labeller = ggplot2::label_parsed))
 
 # can specify transformation as function(x) log(x) or
 # as log (without quotes), but then the label is 't(sigma)'
@@ -144,6 +141,7 @@ mcmc_hist(x, transformations = list(sigma = log))
 # separate histograms by chain
 set_color_scheme("blue")
 mcmc_hist_by_chain(x, pars = "sigma", regex_pars = "beta")
+mcmc_hist_by_chain(x, pars = c("sigma", "beta[1]"))
 
 #################
 ### Densities ###
@@ -178,7 +176,6 @@ mcmc_violin(
  probs = c(0.1, 0.9), # where to draw quantile lines
  transformations = list(sigma = "log")
 )
-
 
 }
 \seealso{

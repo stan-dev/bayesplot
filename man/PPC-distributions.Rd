@@ -81,17 +81,17 @@ For Binomial data, the plots will typically be most useful if
 }
 }
 \examples{
-y <- rnorm(100)
-yrep <- matrix(rnorm(5000), ncol = 100)
+y <- example_y_data()
+yrep <- example_yrep_draws()
 dim(yrep)
-ppc_dens_overlay(y, yrep[1:30, ])
+ppc_dens_overlay(y, yrep[1:40, ])
 
 # for ppc_hist, definitely subset yrep so only some instead of
 # nrow(yrep) histograms are plotted
 ppc_hist(y, yrep[1:8, ])
 
 set_color_scheme("blue")
-group <- gl(4, 25, labels = LETTERS[1:4])
+group <- example_group_data()
 (p <- ppc_violin_grouped(y, yrep, group))
 p +
  yaxis_ticks(size = .75) +  # add tickmarks to y-axis

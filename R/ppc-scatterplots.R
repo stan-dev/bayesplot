@@ -9,6 +9,8 @@
 #'
 #' @template args-y-yrep
 #' @param ... Currently unused.
+#' @param size,alpha Arguments passed to \code{\link[ggplot2]{geom_point}} to
+#'   control the appearance of the points.
 #'
 #' @template details-binomial
 #' @template return-ggplot
@@ -36,24 +38,24 @@
 #' }
 #'
 #' @examples
-#' y <- rnorm(100)
-#' yrep <- matrix(rnorm(2500), ncol = 100)
+#' y <- example_y_data()
+#' yrep <- example_yrep_draws()
 #' (p1 <- ppc_scatter_avg(y, yrep))
-#' (p2 <- ppc_scatter(y, yrep[1:3, ]))
+#' (p2 <- ppc_scatter(y, yrep[20:23, ], alpha = 0.5, size = 1.5))
 #'
-#' lims <- ggplot2::lims(x = c(-3, 3), y = c(-3, 3))
+#' lims <- ggplot2::lims(x = c(0, 160), y = c(0, 160))
 #' p1 + lims
 #' p2 + lims
 #'
-#' group <- gl(5, 20, labels = month.abb[1:5])
-#' ppc_scatter_avg_grouped(y, yrep, group)
+#' group <- example_group_data()
+#' ppc_scatter_avg_grouped(y, yrep, group, alpha = 0.7) + lims
 #'
 NULL
 
 #' @export
 #' @rdname PPC-scatterplots
 #'
-ppc_scatter <- function(y, yrep, ...) {
+ppc_scatter <- function(y, yrep, ..., size = 1.5, alpha = 0.8) {
   y <- validate_y(y)
   yrep <- validate_yrep(yrep, y)
 
@@ -61,7 +63,9 @@ ppc_scatter <- function(y, yrep, ...) {
     data = data.frame(melt_yrep(yrep), y = rep(y, each = nrow(yrep))),
     mapping = aes_(x = ~ y, y = ~ value),
     x_lab = y_label(),
-    y_lab = yrep_label()
+    y_lab = yrep_label(),
+    alpha = alpha,
+    size = size
   )
   graph + facet_wrap_parsed("rep_id")
 }
@@ -69,7 +73,7 @@ ppc_scatter <- function(y, yrep, ...) {
 #' @export
 #' @rdname PPC-scatterplots
 #'
-ppc_scatter_avg <- function(y, yrep, ...) {
+ppc_scatter_avg <- function(y, yrep, ..., size = 2.5, alpha = 0.8) {
   y <- validate_y(y)
   yrep <- validate_yrep(yrep, y)
 
@@ -77,7 +81,9 @@ ppc_scatter_avg <- function(y, yrep, ...) {
     data = data.frame(y, avg_y_rep = colMeans(yrep)),
     mapping = aes_(x = ~ y, y = ~ avg_y_rep),
     x_lab = y_label(),
-    y_lab = yrep_avg_label()
+    y_lab = yrep_avg_label(),
+    alpha = alpha,
+    size = size
   )
 }
 
@@ -85,7 +91,8 @@ ppc_scatter_avg <- function(y, yrep, ...) {
 #' @rdname PPC-scatterplots
 #' @template args-group
 #'
-ppc_scatter_avg_grouped <- function(y, yrep, group, ...) {
+ppc_scatter_avg_grouped <- function(y, yrep, group, ...,
+                                    size = 2.5, alpha = 0.8) {
   y <- validate_y(y)
   yrep <- validate_yrep(yrep, y)
   group <- validate_group(group, y)
@@ -94,7 +101,9 @@ ppc_scatter_avg_grouped <- function(y, yrep, group, ...) {
     data = data.frame(group, y, avg_yrep = colMeans(yrep)),
     mapping = aes_(x = ~ y, y = ~ avg_yrep),
     x_lab = y_label(),
-    y_lab = yrep_avg_label()
+    y_lab = yrep_avg_label(),
+    alpha = alpha,
+    size = size
   )
   graph + facet_wrap("group", scales = "free")
 }
@@ -117,7 +126,7 @@ ppc_scatter_plotter <-
         intercept = 0,
         slope = 1,
         linetype = 2,
-        color = get_color("d")
+        color = get_color("dh")
       ) +
       geom_point(
         shape = 21,

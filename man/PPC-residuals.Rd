@@ -71,8 +71,8 @@ counts).
 }
 }
 \examples{
-y <- rnorm(100)
-yrep <- matrix(rnorm(2500), ncol = 100)
+y <- example_y_data()
+yrep <- example_yrep_draws()
 ppc_resid(y, yrep[1:3, ])
 ppc_resid(y, yrep[10:15, ])
 

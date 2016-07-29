@@ -49,8 +49,8 @@
 #' @template seealso-color-scheme
 #'
 #' @examples
-#' y <- rnorm(100)
-#' yrep <- matrix(rnorm(2500), ncol = 100)
+#' y <- example_y_data()
+#' yrep <- example_yrep_draws()
 #' ppc_resid(y, yrep[1:3, ])
 #' ppc_resid(y, yrep[10:15, ])
 #'
@@ -79,8 +79,8 @@ ppc_resid <- function(y, yrep, ..., binwidth = NULL) {
   graph +
     geom_histogram(
       mapping = aes_(y = ~ ..density..),
-      fill = get_color("d"),
-      color = get_color("dh"),
+      fill = get_color("l"),
+      color = get_color("lh"),
       size = 0.25,
       binwidth = binwidth
     ) +
