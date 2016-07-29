@@ -7,6 +7,8 @@
 #' deviation \code{sigma}.
 #'
 #' @name example-draws
+#' @keywords internal
+#'
 #' @details
 #' \describe{
 #' \item{\code{example_mcmc_draws}}{

@@ -17,8 +17,15 @@
 #' @param plot A logical value indicating whether or not to display the plots.
 #'   If \code{plot} is \code{FALSE} then the object is returned invisibly
 #'   without plotting.
-#' @param gg_theme A \pkg{ggplot2} \link[ggplot2]{theme} object to apply to each
-#'   of the plots before combining them.
+#' @param gg_theme Unlike most of the other \pkg{bayesplot} functions,
+#'   \code{mcmc_combo} returns a gtable object rather than a ggplot object, and
+#'   so theme objects can't be added directly to the returned plot object. The
+#'   \code{gg_theme} argument helps get around this problem by accepting a
+#'   \pkg{ggplot2} \link[ggplot2]{theme} object that is applied to each of the
+#'   plots \emph{before} combining them into the gtable object that is returned.
+#'   This can be a theme object created by a call to \code{ggplot2::theme} or
+#'   one of the \pkg{bayesplot} convenience functions, e.g.
+#'   \code{\link{no_legend}} (see the \strong{Examples} section, below).
 #'
 #' @return A gtable object (the result of calling
 #'   \code{\link[gridExtra]{arrangeGrob}}) with \code{length(combo)} columns and
@@ -33,27 +40,27 @@
 #' dimnames(x)
 #'
 #' set_color_scheme("blue")
-#' mcmc_combo(x)
-#' mcmc_combo(x, widths = c(2, 1))
+#' mcmc_combo(x, pars = c("alpha", "sigma"))
+#' mcmc_combo(x, pars = c("alpha", "sigma"), widths = c(2, 1))
 #'
-#' # show log(sigma) instead of sigma
-#' mcmc_combo(x, transformations = list(sigma = "log"))
-#'
-#' # change the type of plots
+#' # change second plot, show log(sigma) instead of sigma,
+#' # and remove the legends
+#' set_color_scheme("mix-blue-red")
 #' mcmc_combo(
 #'  x,
-#'  pars = c("alpha", "beta[2]"),
-#'  combo = c("intervals", "areas"),
-#'  prob = 0.8,
-#'  prob_outer = 0.95
+#'  combo = c("trace", "dens_overlay"),
+#'  pars = c("alpha", "sigma"),
+#'  transformations = list(sigma = "log"),
+#'  gg_theme = no_legend()
 #' )
 #'
-#' # change ggplot theme
+#' # same thing but this time also change the entire ggplot theme
 #' mcmc_combo(
 #'  x,
-#'  pars = c("alpha", "beta[2]"),
-#'  combo = c("trace", "areas"),
-#'  gg_theme = ggplot2::theme_gray()
+#'  combo = c("trace", "dens_overlay"),
+#'  pars = c("alpha", "sigma"),
+#'  transformations = list(sigma = "log"),
+#'  gg_theme = ggplot2::theme_gray() + no_legend()
 #' )
 #'
 NULL

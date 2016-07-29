@@ -38,15 +38,17 @@
 #' dimnames(x)
 #'
 #' # scatterplot of alpha vs log(sigma)
+#' set_color_scheme("teal")
 #' (p <- mcmc_scatter(x, pars = c("alpha", "sigma"),
 #'                   trans = list(sigma = "log")))
 #'
 #' # add ellipse
 #' p + ggplot2::stat_ellipse(level = 0.9, color = "darkgray", size = 2)
 #'
-#' set_color_scheme("purple")
-#' mcmc_scatter(x, pars = c("beta[1]", "beta[4]"))
-#' mcmc_scatter(x, regex = "beta\\[[1,4]", alpha = 0.33, size = 3.5)
+#' # can also add lines/smooths
+#' set_color_scheme("pink")
+#' (p2 <- mcmc_scatter(x, pars = c("alpha", "beta[3]"), alpha = 0.5, size = 3))
+#' p2 + ggplot2::geom_smooth(method = "lm", se = FALSE, color = "gray20")
 #'
 #' # pairs plot with histograms along the diagonal
 #' set_color_scheme("mix-green-blue")

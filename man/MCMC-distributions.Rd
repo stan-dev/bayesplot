@@ -109,6 +109,8 @@ Descriptions} section, below, for details.
 }
 }
 \examples{
+set_color_scheme("red")
+
 # some parameter draws to use for demonstration
 x <- example_mcmc_draws()
 dim(x)
@@ -121,7 +123,22 @@ dimnames(x)
 # histograms of all parameters
 mcmc_hist(x)
 
+# override bayesplot theme and use one of the
+# themes included in ggplot2
+mcmc_hist(x) + ggplot2::theme_dark()
+
+# use a ggplot2 theme but override certain elements
+# using bayesplot convenience functions
+# (see help("bayesplot-convenience") for more examples)
+mcmc_hist(x) +
+ ggplot2::theme_dark() +
+ xaxis_title(FALSE) +
+ xaxis_text(size = 10, face = "bold") +
+ yaxis_title(FALSE) +
+ yaxis_text(FALSE)
+
 # histograms of some parameters
+set_color_scheme("blue")
 mcmc_hist(x, pars = c("alpha", "beta[2]"))
 mcmc_hist(x, pars = "sigma", regex_pars = "beta")
 
@@ -129,19 +146,18 @@ mcmc_hist(x, pars = "sigma", regex_pars = "beta")
 # (e.g. to get greek letters for parameters)
 mcmc_hist(x, facet_args = list(labeller = ggplot2::label_parsed))
 
-# with sigma on log scale
+# show log(sigma) instead of sigam
 mcmc_hist(x, transformations = list(sigma = "log"),
           facet_args = list(labeller = ggplot2::label_parsed))
 
-# can specify transformation as function(x) log(x) or
-# as log (without quotes), but then the label is 't(sigma)'
-# instead of 'log(sigma)'
+# instead of list(sigma = "log"), you could specify the transformation as
+# list(sigma = log) or list(sigma = function(x) log(x)), but then the
+# label is 't(sigma)' instead of 'log(sigma)'
 mcmc_hist(x, transformations = list(sigma = log))
 
 # separate histograms by chain
-set_color_scheme("blue")
-mcmc_hist_by_chain(x, pars = "sigma", regex_pars = "beta")
-mcmc_hist_by_chain(x, pars = c("sigma", "beta[1]"))
+set_color_scheme("pink")
+mcmc_hist_by_chain(x, pars = "alpha")
 
 #################
 ### Densities ###
@@ -154,28 +170,21 @@ mcmc_dens(
 )
 
 # separate and overlay chains
+set_color_scheme("mix-teal-pink")
 mcmc_dens_overlay(
  x,
  pars = c("sigma", "beta[2]"),
  facet_args = list(nrow = 2)
 )
 
-# parse facet labels, put them on the y axis, and increase their font size
-p <- mcmc_dens_overlay(
- x,
- pars = c("sigma", "beta[2]"),
- facet_args =
-   list(nrow = 2, labeller = ggplot2::label_parsed, switch = "y")
-)
-p + facet_text(size = 15)
-
 # separate chains as violin plots
+set_color_scheme("green")
 mcmc_violin(x)
-mcmc_violin(
- x,
- probs = c(0.1, 0.9), # where to draw quantile lines
- transformations = list(sigma = "log")
-)
+
+# change theme
+mcmc_violin(x, probs = 0.5) +
+ ggplot2::theme_dark() +
+ yaxis_title(FALSE)
 
 }
 \seealso{

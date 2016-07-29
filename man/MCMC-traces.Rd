@@ -100,11 +100,12 @@ dim(x)
 dimnames(x)
 
 # traceplots of alpha and sigma
+set_color_scheme("brightblue")
 mcmc_trace(x, pars = c("alpha", "sigma"))
 
 # use a mixed color scheme
 set_color_scheme("mix-blue-red")
-mcmc_trace(x, pars = c("alpha", "sigma"))
+mcmc_trace(x, pars = c("alpha", "sigma", "beta[3]"))
 
 # use traditional ggplot discrete color scale
 mcmc_trace(x, pars = c("alpha", "sigma")) +
@@ -118,6 +119,7 @@ mcmc_trace(x, window = c(100, 130), size = 1) +
 
 \dontrun{
 # parse facet label text
+set_color_scheme("purple")
 p <- mcmc_trace(
   x,
   regex_pars = "beta\\\\[[1,3]\\\\]",
@@ -127,9 +129,8 @@ p +
  facet_text(size = 15) +
  xaxis_ticks(size = .25)
 
-# mark first 200 draws as warmup and move
-# legend to the top
-mcmc_trace(x, n_warmup = 200)
+# mark first 100 draws as warmup
+mcmc_trace(x, n_warmup = 100)
 
 
 # plot as points, highlighting chain 2

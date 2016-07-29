@@ -47,22 +47,27 @@
 #' dim(x)
 #' dimnames(x)
 #'
+#' set_color_scheme("red")
 #' mcmc_intervals(x)
-#' mcmc_areas(x, pars = c("beta[3]", "beta[4]"), prob = 0.8) +
+#' mcmc_intervals(x, pars = c("beta[1]", "beta[2]"))
+#' mcmc_areas(x, regex_pars = "beta\\[[1-3]", prob = 0.8) +
 #'  ggplot2::ggtitle("Posterior medians & 80% intervals")
 #'
-#' (p <- mcmc_areas(x, pars = c("sigma", "beta[3]"),
-#'                  transformations = list(sigma = "log"),
-#'                  prob = 0.95, point_est = "mean"))
-#' y_labs <- expression(log(sigma), beta[3])
-#' p + ggplot2::scale_y_continuous(breaks = 2:1, labels = y_labs)
-#'
+#' set_color_scheme("mix-green-blue")
+#' mcmc_areas(x,
+#'    pars = c("alpha", "beta[4]"),
+#'    prob = 2/3,
+#'    prob_outer = 0.9,
+#'    point_est = "mean"
+#' )
 #'
 #' # color by rhat value
+#' set_color_scheme("gray")
 #' fake_rhat_values <- c(1, 1.07, 1.3, 1.01, 1.15, 1.005)
 #' mcmc_intervals(x, rhat = fake_rhat_values)
+#'
 #' set_color_scheme("blue")
-#' mcmc_intervals(x, rhat = fake_rhat_values)
+#' mcmc_areas(x, pars = c("alpha", "beta[4]"), rhat = c(1, 1.1))
 #'
 #' \dontrun{
 #' # example using fitted model from rstanarm package
@@ -72,7 +77,7 @@
 #'
 #' set_color_scheme("teal")
 #' mcmc_intervals(x, point_est = "mean", prob = 0.8, prob_outer = 0.95)
-#' mcmc_areas(x, regex_pars = "cyl")
+#' mcmc_areas(x, regex_pars = "cyl") + xaxis_ticks(size = .5)
 #' }
 #'
 #'

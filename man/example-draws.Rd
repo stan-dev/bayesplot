@@ -99,4 +99,5 @@ yrep <- example_yrep_draws()
 dim(yrep) # ncol(yrep) = length(y) = length(x) = length(group)
 
 }
+\keyword{internal}
 

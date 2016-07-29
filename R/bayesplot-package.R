@@ -23,4 +23,29 @@
 #' @import ggplot2
 #' @import stats
 #'
+#'
+#' @examples
+#' # A few quick examples (all of the functions have many examples
+#' # on their individual help pages)
+#'
+#' x <- example_mcmc_draws()
+#' mcmc_intervals(x, prob = 0.5)
+#' mcmc_intervals(x, regex_pars = "beta") # or pars = c("beta[1], "beta[2]")
+#'
+#' set_color_scheme("blue")
+#' mcmc_areas(x, regex_pars = "beta", prob = 0.8)
+#'
+#' set_color_scheme("mix-blue-red")
+#' mcmc_trace(x, pars = c("alpha", "sigma"),
+#'            facet_args = list(nrow = 2))
+#'
+#' set_color_scheme("teal")
+#' y <- example_y_data()
+#' yrep <- example_yrep_draws()
+#' ppc_dens_overlay(y, yrep[1:50, ])
+#'
+#' set_color_scheme("pink")
+#' ppc_hist(y, yrep[1:8, ])
+#' ppc_stat(y, yrep, stat = "mean")
+#'
 NULL
