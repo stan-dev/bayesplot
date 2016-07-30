@@ -111,12 +111,7 @@ mcmc_rhat <- function(rhat, ..., size = NULL) {
     graph <- graph +
       hline_at(1, color = "gray", size = 1)
 
-  brks <- c(1, 1.05, 1.1)
-  for (k in c(1.5, 2)) {
-    if (any(rhat > k))
-      brks <- c(brks, k)
-  }
-
+  brks <- set_rhat_breaks(rhat)
   graph +
     diagnostic_points(size) +
     hline_at(
@@ -253,6 +248,22 @@ diagnostic_data_frame <- function(x, diagnostic = c("rhat", "neff")) {
   )
   rownames(d) <- NULL
   return(d)
+}
+
+
+# set x-axis breaks based on rhat values
+set_rhat_breaks <- function(rhat) {
+  br <- c(1, 1.05)
+  if (any(rhat > 1.05))
+    br <- c(br, 1.1)
+  for (k in c(1.5, 2)) {
+    if (any(rhat > k))
+      br <- c(br, k)
+  }
+  if (max(rhat) >= max(br) + .1)
+    br <- c(br, round(max(rhat), 2))
+
+  return(br)
 }
 
 
