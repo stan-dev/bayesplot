@@ -132,17 +132,17 @@ x <- list(y = rnorm(50), yrep = matrix(rnorm(5000), nrow = 100, ncol = 50))
 class(x) <- "foo"
 ```
 ```{r, pp_check-1, eval=FALSE}
-pp_check(x)
+bayesplot::pp_check(x)
 ```
 ```{r, print-1, echo=FALSE}
-gg <- pp_check(x)
+gg <- bayesplot::pp_check(x)
 suppressMessages(print(gg))
 ```
 ```{r, pp_check-2, eval=FALSE}
-pp_check(x, type = "overlaid")
+bayesplot::pp_check(x, type = "overlaid")
 ```
 ```{r, print2, echo=FALSE}
-pp_check(x, type = "overlaid")
+bayesplot::pp_check(x, type = "overlaid")
 ```
 
 
