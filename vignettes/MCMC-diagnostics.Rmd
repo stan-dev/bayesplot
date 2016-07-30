@@ -1,0 +1,153 @@
+---
+title: "Visual MCMC diagnostics using the bayesplot package"
+author: "Jonah Gabry"
+date: "`r Sys.Date()`"
+output: 
+  rmarkdown::html_vignette:
+    toc: true
+vignette: >
+  %\VignetteIndexEntry{Visual MCMC diagnostics}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, settings, include=FALSE}
+library("bayesplot")
+knitr::opts_chunk$set(
+  dev = "svg",
+  fig.align = "center",
+  fig.width = 6,
+  fig.height = 4
+)
+```
+
+## Overview
+
+A Markov chain generates samples from the target distribution only after it has
+converged to equilibrium. Unfortunately, this is only guaranteed in the limit
+in theory. In practice, diagnostics must be applied to monitor whether the
+Markov chain(s) have converged.
+
+The __bayesplot__ package provides various plotting functions for visualizing 
+Markov chain Monte Carlo (MCMC) diagnostics after fitting a Bayesian model.
+
+## General MCMC diagnostics
+
+#### Rhat: potential scale reduction statistic
+
+> One way to monitor whether a chain has converged to the equilibrium distribution
+is to compare its behavior to other randomly initialized chains. This is the 
+motivation for the Gelman and Rubin (1992) potential scale reduction statistic, 
+$\hat{R}$. The $\hat{R}$ statistic measures the ratio of the average variance of
+samples within each chain to the variance of the pooled samples across chains;
+if all chains are at equilibrium, these will be the same and $\hat{R}$ will be
+one. If the chains have not converged to a common distribution, the $\hat{R}$
+statistic will be greater than one. ([Stan Modeling Language Users Guide and Reference Manual](http://mc-stan.org/documentation/))
+
+The **bayesplot** package provides the functions `mcmc_rhat` and
+`mcmc_rhat_hist` for visualizing $\hat{R}$ estimates. To demostrate, 
+we'll use the `stan_glm` function in the **rstanarm** package to quickly 
+get some real $\hat{R}$ values to work with.
+
+First we'll intentionally use too few MCMC iterations, which should 
+lead to some high $\hat{R}$ values (we'll probably get convergence
+warnings from **rstanarm**).
+
+```{r, eval=FALSE, results='hide'}
+library("rstanarm")
+fit <- stan_glm(
+  mpg ~ ., data = mtcars, 
+  chains = 4, iter = 50, # intentionally too few iterations
+  seed = 1111
+)
+```
+
+```{r stan_glm, echo=FALSE, results='hide'}
+suppressPackageStartupMessages(library("rstanarm"))
+fit <- stan_glm(
+  mpg ~ ., data = mtcars, 
+  chains = 4, 
+  iter = 50,
+  seed = 1111
+)
+```
+
+The **bayesplot** package provides a generic `rhat` extractor function, 
+currently with methods defined for models fit using the **rstan** and
+**rstanarm** packages. But regardless of how you fit your model, all 
+**bayesplot** needs is a vector of $\hat{R}$ values.
+
+```{r print-rhats}
+library("bayesplot")
+rhats <- rhat(fit)
+print(rhats)
+```
+
+We can visualize the $\hat{R}$ values with the `mcmc_rhat` function:
+
+```{r mcmc_rhat}
+mcmc_rhat(rhats)
+```
+
+In the plot, the points representing the $\hat{R}$ values are colored based on
+whether they are less than $1.05$, between $1.05$ and $1.1$, or greater than
+$1.1$.
+
+We can see which parameters have the concerning $\hat{R}$ values by turning
+on the $y$-axis text using the `yaxis_text` convenience function:
+
+```{r, mcmc_rhat-2}
+mcmc_rhat(rhats) + yaxis_text()
+```
+
+The axis $y$-axis text if off by default for this plot because it's only 
+possible to see the labels for models like this one with very few parameters.
+
+If we refit the model using longer Markov chains we should see all $\hat{R} <
+1.1$, and all points in the plot the same (light) color:
+
+```{r, results='hide'}
+fit2 <- stan_glm(
+  mpg ~ ., data = mtcars, 
+  chains = 4, iter = 1000,
+  seed = 1111
+)
+
+mcmc_rhat(rhat = rhat(fit2))
+```
+
+
+
+We can see the same information shown by `mcmc_rhat` but in histogram form using
+the `mcmc_rhat_hist` function. See the **Examples** section in
+`help("mcmc_rhat_hist")` for examples.
+
+
+#### Effective sample size
+
+Write this section.
+
+## Algorithm specific MCMC diagnostics
+
+#### Diagnostics for the No-U-Turn sampler (NUTS)
+
+Write this section.
+
+
+
+## References
+
+Gabry, J., and Goodrich, B. (2016). rstanarm: Bayesian Applied Regression 
+Modeling via Stan. R package version `r packageVersion("rstanarm")`.
+http://mc-stan.org/interfaces/rstanarm.html
+
+Gelman, A. and Rubin, D. B. (1992). Inference from iterative simulation using
+multiple sequences. *Statistical Science*. 7(4): 457--472.
+
+Gelman, A., Carlin, J. B., Stern, H. S., Dunson, D. B., Vehtari, A., and
+Rubin, D. B. (2013). *Bayesian Data Analysis*. Chapman & Hall/CRC Press, London,
+third edition.
+
+Stan Development Team. (2016). *Stan Modeling Language Users
+Guide and Reference Manual*. http://mc-stan.org/documentation/
+

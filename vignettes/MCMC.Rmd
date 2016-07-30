@@ -1,0 +1,56 @@
+---
+title: "Plotting MCMC draws using the bayesplot package"
+author: "Jonah Gabry"
+date: "`r Sys.Date()`"
+output: 
+  rmarkdown::html_vignette:
+    toc: true
+vignette: >
+  %\VignetteIndexEntry{Plotting MCMC draws}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, settings, include=FALSE}
+library(bayesplot)
+knitr::opts_chunk$set(
+  dev = "pdf",
+  fig.align = "center",
+  fig.width = 4,
+  fig.height = 4
+)
+```
+
+## Overview
+
+The __bayesplot__ package provides various plotting functions for visualizing
+Markov chain Monte Carlo (MCMC) draws from the posterior distribution of the
+parameters of a Bayesian model.
+
+## Plots for MCMC draws
+
+### Traceplots 
+
+Write this section.
+
+### Histograms and density estimates
+
+Write this section.
+
+### Interval estimates
+
+Write this section.
+
+### Scatterplots
+
+Write this section.
+
+
+## References
+
+Gelman, A., Carlin, J. B., Stern, H. S., Dunson, D. B., Vehtari, A., and
+Rubin, D. B. (2013). *Bayesian Data Analysis*. Chapman & Hall/CRC Press, London,
+third edition.
+
+Stan Development Team. (2016). *Stan Modeling Language Users
+Guide and Reference Manual*. http://mc-stan.org/documentation/

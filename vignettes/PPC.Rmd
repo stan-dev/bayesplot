@@ -1,12 +1,12 @@
 ---
-title: "bayesplot: Graphical Posterior Predictive Checks for Bayesian Models"
+title: "Graphical posterior predictive checks using the bayesplot package"
 author: "Jonah Gabry"
 date: "`r Sys.Date()`"
 output: 
   rmarkdown::html_vignette:
     toc: true
 vignette: >
-  %\VignetteIndexEntry{bayesplot}
+  %\VignetteIndexEntry{Graphical posterior predictive checks}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -57,10 +57,32 @@ from Gelman et. al. (2013) and is the notation used throughout the package
 documentation.
 
 
-#### Graphical posterior predictive checking
+## Graphical posterior predictive checks
+
 Using the replicated datasets drawn from the posterior predictive
 distribution, the functions in the __bayesplot__ package create various
 graphical displays comparing the observed data $y$ to the replications.
+
+
+### Histograms and density estimates
+
+Write this section.
+
+### Scatterplots
+
+Write this section.
+
+### Distributions of test statistics
+
+Write this section.
+
+### Distributions of residuals
+
+Write this section.
+
+### Checks for time series data
+
+Write this section.
 
 
 ## Providing an interface to bayesplot from another package
@@ -126,6 +148,9 @@ pp_check(x, type = "overlaid")
 
 ## References
 
-> Gelman, A., Carlin, J. B., Stern, H. S., Dunson, D. B., Vehtari, A., and
+Gelman, A., Carlin, J. B., Stern, H. S., Dunson, D. B., Vehtari, A., and
 Rubin, D. B. (2013). *Bayesian Data Analysis*. Chapman & Hall/CRC Press, London,
 third edition.
+
+Stan Development Team. (2016). *Stan Modeling Language Users
+Guide and Reference Manual*. http://mc-stan.org/documentation/
