@@ -5,6 +5,7 @@ date: "`r Sys.Date()`"
 output: 
   rmarkdown::html_vignette:
     toc: true
+    toc_depth: 4
 vignette: >
   %\VignetteIndexEntry{Visual MCMC diagnostics}
   %\VignetteEngine{knitr::rmarkdown}
@@ -125,7 +126,49 @@ the `mcmc_rhat_hist` function. See the **Examples** section in
 
 #### Effective sample size
 
-Write this section.
+The effective sample size is an estimate of the number of 
+independent draws from the posterior distribution of the estimand of interest. 
+Because the draws within a Markov chain are not independent if there is
+autocorrelation, the effective sample size, $n_{eff}$, will be smaller than the total sample size, $N$. The larger the ratio of $n_{eff}$ to $N$ the better.
+
+The **bayesplot** package provides the functions `mcmc_neff` and
+`mcmc_neff_hist` for visualizing $n_{eff}/N$ estimates. For demonstration we'll use the models we fit in the $\hat{R}$ examples above.
+
+The **bayesplot** package provides a generic `neff_ratio` extractor function, 
+currently with methods defined for models fit using the **rstan** and
+**rstanarm** packages. But regardless of how you fit your model, all 
+**bayesplot** needs is a vector of $n_{eff}/N$ values.
+
+```{r print-neff-ratios}
+ratios <- neff_ratio(fit)
+print(ratios)
+```
+
+We can visualize the these values with the `mcmc_neff` function:
+
+```{r mcmc_neff}
+mcmc_neff(ratios)
+```
+
+In the plot, the points representing the values of $n_{eff}/N$ are colored based
+on whether they are less than $0.1$, between $0.1$ and $0.5$, or greater than 
+$0.5$. These particular values are arbitrary in that they have no particular
+theoretical meaning, but a useful heuristic is to worry about any $n_{eff}/N$
+less than $0.1$.
+
+If we look at the same plot for `fit2` we see a much nicer picture, with 
+all ratios well above $0.1$:
+
+```{r mcmc_neff-2}
+mcmc_neff(neff_ratio(fit2))
+```
+
+One important thing to keep in mind is that these ratios will depend not only on
+the model being fit but also on the particular MCMC algorithm used. One reason
+why we have such high ratios of $n_{eff}$ to $N$ is that **rstanarm** uses
+Hamiltonian Monte Carlo, which in general produces draws from the posterior
+distribution with much lower autocorrelations compared to draws obtained using
+other MCMC algorithms (e.g., Gibbs).
 
 ## Algorithm specific MCMC diagnostics
 
