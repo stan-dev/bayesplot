@@ -49,10 +49,56 @@ merged or displayed separately?}
 }
 \value{
 A gtable object (the result of calling
-  \code{\link[gridExtra]{arrangeGrob}}) created from several ggplot objects.
+  \code{\link[gridExtra]{arrangeGrob}}) created from several ggplot objects,
+  except for \code{mcmc_nuts_energy}, which returns a ggplot object.
 }
 \description{
 Diagnostic plots for the No-U-Turn-Sampler (NUTS)
+}
+\section{Plot Descriptions}{
+
+\describe{
+  \item{\code{mcmc_nuts_acceptance}}{
+  Three plots:
+  \itemize{
+   \item Histogram of \code{accept_stat__}, which for NUTS is the the
+   average acceptance probabilities of all possible samples in the proposed
+   tree (NUTS uses a slice sampling algorithm for rejection).
+   \item Histogram of the log-posterior (up to a constant).
+   \item Scatterplot of \code{accept_stat__} vs log-posterior.
+   }
+  }
+  \item{\code{mcmc_nuts_divergence}}{
+  Two plots:
+  \itemize{
+   \item Violin plots of \code{log-posterior|divergent__=1} and
+     \code{log-posterior|divergent__=0}.
+   \item Violin plots of \code{accept_stat__|divergent__=1} and
+     \code{log-posterior|divergent__=0}.
+   }
+  }
+  \item{\code{mcmc_nuts_stepsize}}{
+  Two plots:
+  \itemize{
+   \item Violin plots of \code{log-posterior} by chain ordered by
+   \code{stepsize__} value.
+   \item Violin plots of \code{accept_stat__} by chain ordered by
+   \code{stepsize__} value.
+   }
+  }
+  \item{\code{mcmc_nuts_treedepth}}{
+  Three plots:
+  \itemize{
+   \item Violin plots of \code{log-posterior} by value of \code{treedepth__}.
+   \item Violin plots of \code{accept_stat__} by value of \code{treedepth__}.
+   \item Histogram of \code{treedepth__}.
+   }
+  }
+  \item{\code{mcmc_nuts_energy}}{
+  Overlaid histograms showing \code{energy__} vs the change in
+  \code{energy__}. See Betancourt (2016) for details.
+  }
+}
 }
 \examples{
 \dontrun{
@@ -79,7 +125,7 @@ Betancourt, M. (2016). Diagnosing suboptimal cotangent
   disintegrations in Hamiltonian Monte Carlo.
   \url{https://arxiv.org/abs/1604.00695}
 
-Betancourt, M. and Girolami, M. (2016). Hamiltonian Monte Carlo for
+Betancourt, M. and Girolami, M. (2013). Hamiltonian Monte Carlo for
 hierarchical models. \url{https://arxiv.org/abs/1312.0906}
 
 Hoffman, M. D. and Gelman, A. (2014). The No-U-Turn Sampler:
