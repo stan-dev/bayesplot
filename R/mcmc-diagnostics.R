@@ -126,39 +126,38 @@ mcmc_rhat <- function(rhat, ..., size = NULL) {
       diagnostic = "rhat"
     ),
     mapping = aes_(
-      y = ~ value,
-      x = ~ factor_by_name,
+      x = ~ value,
+      y = ~ factor_by_name,
       color = ~ factor_by_value,
       fill = ~ factor_by_value
     )
   ) +
     geom_segment(
       mapping = aes_(
-        xend = ~ factor_by_name,
-        yend = ifelse(min(rhat) < 1, 1, -Inf)
+        yend = ~ factor_by_name,
+        xend = ifelse(min(rhat) < 1, 1, -Inf)
       ),
       na.rm = TRUE
     )
 
   if (min(rhat) < 1)
     graph <- graph +
-      hline_at(1, color = "gray", size = 1)
+      vline_at(1, color = "gray", size = 1)
 
   brks <- set_rhat_breaks(rhat)
   graph +
     diagnostic_points(size) +
-    hline_at(
+    vline_at(
       brks[-1],
       color = "gray",
       linetype = 2,
       size = 0.25
     ) +
-    labs(x = NULL, y = bquote(hat(R))) +
+    labs(y = NULL, x = bquote(hat(R))) +
     scale_fill_diagnostic("rhat") +
     scale_color_diagnostic("rhat") +
     theme_default(y_text = FALSE) +
-    coord_flip() +
-    scale_y_continuous(breaks = brks,
+    scale_x_continuous(breaks = brks,
                        expand = c(0,.01))
 }
 
@@ -202,29 +201,29 @@ mcmc_neff <- function(ratio, ..., size = NULL) {
       diagnostic = "neff"
     ),
     mapping = aes_(
-      y = ~ value,
-      x = ~ factor_by_name,
+      x = ~ value,
+      y = ~ factor_by_name,
       color = ~ factor_by_value,
       fill = ~ factor_by_value
     )
   ) +
     geom_segment(
-      aes_(xend = ~factor_by_name, yend = -Inf),
+      aes_(yend = ~factor_by_name, xend = -Inf),
       na.rm = TRUE
     ) +
     diagnostic_points(size) +
-    hline_at(
+    vline_at(
       c(0.1, 0.5, 1),
       color = "gray",
       linetype = 2,
       size = 0.25
     ) +
-    labs(x = NULL, y = bquote(N[eff]/N)) +
+    labs(y = NULL, x = bquote(N[eff]/N)) +
     scale_fill_diagnostic("neff") +
     scale_color_diagnostic("neff") +
     theme_default(y_text = FALSE) +
-    coord_flip() +
-    scale_y_continuous(breaks = c(0.1, seq(0, 1, .25)),
+    # coord_flip() +
+    scale_x_continuous(breaks = c(0.1, seq(0, 1, .25)),
                        limits = c(0, 1),
                        expand = c(0,.01))
 }
@@ -310,12 +309,11 @@ diagnostic_points <- function(size = NULL) {
   do.call("geom_point", c(args, size = size))
 }
 
-# data frame with y=rhat (or neff) and x = factor(rhat) or factor(neff) with
-# factor labels as names instead of value
+# @param x The object returned by validate_rhat or validate_neff_ratio
 diagnostic_data_frame <- function(x, diagnostic = c("rhat", "neff")) {
   diagnostic <- match.arg(diagnostic)
   fac <- if (!is.null(names(x))) {
-    factor(x, labels = names(x))
+    factor(x, labels = names(sort(x)))
   } else {
     factor(x)
   }
