@@ -8,7 +8,7 @@
 \alias{mcmc_neff_hist}
 \alias{mcmc_rhat}
 \alias{mcmc_rhat_hist}
-\title{Rhat, effective sample size, autocorrelation}
+\title{Autocorrelation, Rhat, and effective sample size}
 \usage{
 mcmc_rhat(rhat, ..., size = NULL)
 
@@ -75,8 +75,9 @@ A ggplot object that can be further customized using the
   \pkg{ggplot2} package.
 }
 \description{
-Plots of Rhat and ratio of effective sample size to total sample size. See
-the \strong{Plot Descriptions} section, below, for details.
+Plots of Rhat statistics, ratios of effective sample size to total sample
+size, and autocorrelation of MCMC draws. See the \strong{Plot Descriptions}
+section, below, for details.
 }
 \section{Plot Descriptions}{
 

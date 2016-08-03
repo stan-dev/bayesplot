@@ -1,7 +1,8 @@
-#' Rhat, effective sample size, autocorrelation
+#' Autocorrelation, Rhat, and effective sample size
 #'
-#' Plots of Rhat and ratio of effective sample size to total sample size. See
-#' the \strong{Plot Descriptions} section, below, for details.
+#' Plots of Rhat statistics, ratios of effective sample size to total sample
+#' size, and autocorrelation of MCMC draws. See the \strong{Plot Descriptions}
+#' section, below, for details.
 #'
 #' @name MCMC-diagnostics
 #' @family MCMC
