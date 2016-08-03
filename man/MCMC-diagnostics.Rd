@@ -19,10 +19,10 @@ mcmc_neff(ratio, ..., size = NULL)
 mcmc_neff_hist(ratio, ..., binwidth = NULL)
 
 mcmc_acf(x, pars = character(), regex_pars = character(),
-  facet_args = list(), ..., lags = 25, size = NULL)
+  facet_args = list(), ..., lags = 20, size = NULL)
 
 mcmc_acf_bar(x, pars = character(), regex_pars = character(),
-  facet_args = list(), ..., lags = 25)
+  facet_args = list(), ..., lags = 20)
 }
 \arguments{
 \item{rhat}{A vector of \code{\link[=rhat]{Rhat}} estimates.}

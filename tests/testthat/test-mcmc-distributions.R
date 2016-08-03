@@ -19,8 +19,12 @@ test_that("mcmc_dens returns a ggplot object", {
   expect_gg(mcmc_dens(arr, pars = "beta[2]", regex_pars = "x\\:"))
   expect_gg(mcmc_dens(arr1chain, regex_pars = "beta"))
   expect_gg(mcmc_dens(mat))
-  expect_gg(mcmc_dens(dframe))
-  expect_gg(mcmc_dens(dframe_multiple_chains))
+  expect_gg(mcmc_dens(dframe, transformations = list(sigma = "log")))
+  expect_gg(mcmc_dens(
+    dframe_multiple_chains,
+    transformations =
+      list(sigma = function(x) x ^ 2, 'beta[1]' = "exp")
+  ))
 
   expect_gg(mcmc_dens(arr1))
   expect_gg(mcmc_dens(mat1))

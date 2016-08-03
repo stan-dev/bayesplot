@@ -30,6 +30,12 @@ test_that("set_color_scheme throws correct errors for custom schemes ", {
                "should be a character vector of length 1 or 6")
 })
 
+test_that("mixed_scheme internal function doesn't error", {
+  x <- mixed_scheme("green", "red")
+  expect_equal(length(x), 6)
+  expect_true(all(sapply(x, is.character)))
+})
+
 test_that("custom color schemes work", {
   set_color_scheme(orange_scheme_ok)
   expect_named(get_color_scheme())

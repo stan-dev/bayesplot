@@ -32,6 +32,26 @@ test_that("vline_at with 'fun' works", {
 })
 
 
+
+# lbub --------------------------------------------------------------------
+test_that("lbub works", {
+  f1 <- lbub(p = 0.5)
+  f2 <- lbub(p = 0.5, med = FALSE)
+
+  expect_type(f1, "closure")
+  expect_type(f2, "closure")
+
+  expect_identical(
+    f1(1:50),
+    setNames(c(13.25, 25.5, 37.75), c("25%", "50%", "75%"))
+  )
+  expect_identical(
+    f2(1:50),
+    setNames(c(13.25, 37.75), c("25%", "75%"))
+  )
+})
+
+
 # legends -----------------------------------------------------------------
 test_that("no_legend and move_legend return correct theme objects", {
   none <- no_legend()
@@ -80,6 +100,18 @@ test_that("facet_text, xaxis_text, yaxis_text return correct theme objects", {
 })
 
 
+# axis titles -------------------------------------------------------------
+test_that("xaxis_title, yaxis_title return correct theme objects", {
+  xttl <- xaxis_title(face = "bold", angle = 30)
+  expect_s3_class(xttl, "theme")
+  expect_false(attr(xttl, "complete"))
+
+  yttl <- yaxis_title(size = 14)
+  expect_s3_class(yttl, "theme")
+  expect_false(attr(yttl, "complete"))
+})
+
+
 # tick marks --------------------------------------------------
 test_that("xaxis_ticks, yaxis_ticks return correct theme objects", {
   expect_s3_class(xaxis_ticks(FALSE)[["axis.ticks.x"]], "element_blank")
@@ -99,4 +131,3 @@ test_that("xaxis_ticks, yaxis_ticks return correct theme objects", {
   )
   expect_false(attr(yticks, "complete"))
 })
-

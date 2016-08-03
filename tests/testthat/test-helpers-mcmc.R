@@ -39,6 +39,12 @@ test_that("is_mcmc_array works", {
 test_that("parameter_names works", {
   x <- example_mcmc_draws()
   expect_identical(parameter_names(x), dimnames(x)[[3]])
+
+  dimnames(x) <- list(a = NULL, b = NULL, c = letters[1:dim(x)[3]])
+  expect_identical(parameter_names(x), dimnames(x)[[3]])
+
+  dimnames(x) <- NULL
+  expect_error(parameter_names(x), "No parameter names found")
   expect_error(parameter_names(x[, 1, ]), "is_3d_array")
 })
 

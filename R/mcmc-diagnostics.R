@@ -271,7 +271,7 @@ mcmc_acf <-
            regex_pars = character(),
            facet_args = list(),
            ...,
-           lags = 25,
+           lags = 20,
            size = NULL) {
     .mcmc_acf(
       x,
@@ -292,7 +292,7 @@ mcmc_acf_bar <-
            regex_pars = character(),
            facet_args = list(),
            ...,
-           lags = 25) {
+           lags = 20) {
     .mcmc_acf(
       x,
       pars = pars,
@@ -393,7 +393,7 @@ validate_neff_ratio <- function(ratio) {
            size = NULL) {
 
     style <- match.arg(style)
-    plot_data <- autocorr_data(
+    plot_data <- acf_data(
       x = prepare_mcmc_array(x, pars, regex_pars),
       lags = lags
     )
@@ -450,7 +450,7 @@ validate_neff_ratio <- function(ratio) {
 # Prepare data for autocorr plot
 # @param x object returned by prepare_mcmc_array
 # @param lags user's 'lags' argument
-autocorr_data <- function(x, lags) {
+acf_data <- function(x, lags) {
   stopifnot(is_mcmc_array(x))
   dims <- dim(x)
   n_iter <- dims[1]
@@ -458,15 +458,17 @@ autocorr_data <- function(x, lags) {
   n_param <- dims[3]
   n_lags <- lags + 1
   if (n_lags >= n_iter)
-    stop("Too few iterations for this value of 'lags'.", call. = FALSE)
+    stop("Too few iterations for lags=", lags, ".",
+         call. = FALSE)
 
   data <- reshape2::melt(x, value.name = "Value")
   data$Chain <- factor(data$Chain)
   ac_list <- tapply(
     data[["Value"]],
-    INDEX = list(data[["Chain"]], data[["Parameter"]]),
+    # INDEX = list(data[["Chain"]], data[["Parameter"]]),
+    INDEX = with(data, list(Chain, Parameter)),
     FUN = function(x, lag.max) {
-      stats::acf(x, lag.max = lag.max, plot = FALSE)$acf[, , 1L]
+      stats::acf(x, lag.max = lag.max, plot = FALSE)$acf[, , 1]
     },
     lag.max = lags,
     simplify = FALSE

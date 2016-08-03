@@ -18,3 +18,23 @@ test_that("example_mcmc_draws returns correct structure", {
                    c("alpha", "sigma", paste0("beta[", 1:4,"]")))
 })
 
+
+test_that("example ppc data works", {
+  y <- example_y_data()
+  expect_type(y, "integer")
+  expect_true(is_vector_or_1Darray(y))
+
+  yrep <- example_yrep_draws()
+  expect_type(yrep, "double")
+  expect_is(yrep, "matrix")
+  expect_equal(ncol(yrep), length(y))
+
+  group <- example_group_data()
+  expect_s3_class(group, "factor")
+  expect_equal(length(group), length(y))
+
+  x <- example_x_data()
+  expect_type(x, "double")
+  expect_true(is_vector_or_1Darray(x))
+  expect_equal(length(x), length(y))
+})
