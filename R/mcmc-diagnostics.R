@@ -1,4 +1,4 @@
-#' Rhat and effective sample size
+#' Rhat, effective sample size, autocorrelation
 #'
 #' Plots of Rhat and ratio of effective sample size to total sample size. See
 #' the \strong{Plot Descriptions} section, below, for details.
@@ -8,7 +8,8 @@
 #'
 #' @template args-hist
 #' @param size An optional value to override \code{\link[ggplot2]{geom_point}}'s
-#'   default size.
+#'   default size (for \code{mcmc_rhat}, \code{mcmc_neff}) or
+#'   \code{\link[ggplot2]{geom_line}}'s default size (for \code{mcmc_acf}).
 #' @param ... Currently ignored.
 #'
 #' @template return-ggplot
@@ -33,6 +34,12 @@
 #'    \item \emph{dark}: below 0.1 (maybe too low)
 #'  }
 #' }
+#' \item{\code{mcmc_acf}}{
+#' Grid of autocorrelation plots by chain and parameter. The \code{lags}
+#' argument gives the maximum number of lags at which to calculate the
+#' autocorrelation function. \code{mcmc_acf} is a line plot whereas
+#' \code{mcmc_acf_bar} is a barplot.
+#' }
 #'}
 #'
 #' @template seealso-color-scheme
@@ -45,20 +52,35 @@
 #' @template reference-stan-manual
 #'
 #' @examples
+#' # autocorrelation
+#' x <- example_mcmc_draws()
+#' dim(x)
+#' dimnames(x)
+#'
+#' set_color_scheme("green")
+#' mcmc_acf(x, pars = c("alpha", "beta[1]"))
+#' set_color_scheme("pink")
+#' (p <- mcmc_acf_bar(x, pars = c("alpha", "beta[1]")))
+#'
+#' # add tick marks on y axis and horiztonal dashed line at 0.5
+#' p +
+#'  yaxis_ticks() +
+#'  hline_at(0.5, linetype = 2, size = 0.15, color = "gray")
+#'
+#'
 #' # fake rhat values to use for demonstration
 #' rhat <- c(runif(100, 1, 1.15))
 #' mcmc_rhat_hist(rhat)
 #' mcmc_rhat(rhat)
 #'
 #' set_color_scheme("blue")
-#' mcmc_rhat(runif(1000, 1, 1.3))
 #' mcmc_rhat(runif(1000, 1, 1.07))
+#' mcmc_rhat(runif(1000, 1, 1.3)) + move_legend("top") # add legend above plot
 #'
 #' # fake neff ratio values to use for demonstration
 #' ratio <- c(runif(100, 0, 1))
 #' mcmc_neff_hist(ratio)
 #' mcmc_neff(ratio)
-#' mcmc_neff(ratio) + move_legend("top") # add legend above plot
 #'
 #' \dontrun{
 #' # Example using rstanarm model (requires rstanarm package)
@@ -75,6 +97,16 @@
 #' # there's a small enough number of parameters in the
 #' # model that we can display their names on the y-axis
 #' mcmc_neff(ratios) + yaxis_text()
+#'
+#' # can also look at autocorrelation
+#' draws <- as.array(fit)
+#' mcmc_acf(draws, pars = c("wt", "cyl"), lags = 10)
+#'
+#' # increase number of iterations and plots look much better
+#' fit2 <- update(fit, iter = 500)
+#' mcmc_rhat(rhat(fit2))
+#' mcmc_neff(neff_ratio(fit2))
+#' mcmc_acf(as.array(fit2), pars = c("wt", "cyl"), lags = 10)
 #' }
 #'
 NULL
@@ -223,6 +255,53 @@ mcmc_neff_hist <- function(ratio, ..., binwidth = NULL) {
 }
 
 
+# autocorrelation ---------------------------------------------------------
+#' @rdname MCMC-diagnostics
+#' @export
+#' @template args-mcmc-x
+#' @template args-pars
+#' @template args-regex_pars
+#' @param facet_args Arguments (other than \code{facets}) passed to
+#'   \code{\link[ggplot2]{facet_grid}} to control faceting.
+#' @param lags The number of lags to show in the autocorrelation plot.
+#'
+mcmc_acf <-
+  function(x,
+           pars = character(),
+           regex_pars = character(),
+           facet_args = list(),
+           ...,
+           lags = 25,
+           size = NULL) {
+    .mcmc_acf(
+      x,
+      pars = pars,
+      regex_pars = regex_pars,
+      facet_args = facet_args,
+      lags = lags,
+      size = size,
+      style = "line"
+    )
+  }
+
+#' @rdname MCMC-diagnostics
+#' @export
+mcmc_acf_bar <-
+  function(x,
+           pars = character(),
+           regex_pars = character(),
+           facet_args = list(),
+           ...,
+           lags = 25) {
+    .mcmc_acf(
+      x,
+      pars = pars,
+      regex_pars = regex_pars,
+      facet_args = facet_args,
+      lags = lags,
+      style = "bar"
+    )
+  }
 
 # internal ----------------------------------------------------------------
 diagnostic_points <- function(size = NULL) {
@@ -300,3 +379,105 @@ validate_neff_ratio <- function(ratio) {
   ratio <- setNames(as.vector(ratio), names(ratio))
   drop_NAs_and_warn(ratio)
 }
+
+
+# autocorr plot (either bar or line)
+# @param size passed to geom_line if style="line"
+.mcmc_acf <-
+  function(x,
+           pars = character(),
+           regex_pars = character(),
+           facet_args = list(),
+           lags = 25,
+           style = c("bar", "line"),
+           size = NULL) {
+
+    style <- match.arg(style)
+    plot_data <- autocorr_data(
+      x = prepare_mcmc_array(x, pars, regex_pars),
+      lags = lags
+    )
+    if (dim(x)[2] > 1) { # multiple chains
+      facet_args$facets <- "Chain ~ Parameter"
+      facet_fun <- "facet_grid"
+    } else { # 1 chain
+      facet_args$facets <- "Parameter"
+      facet_fun <- "facet_wrap"
+    }
+
+    graph <- ggplot(plot_data, aes_(x = ~ Lag, y = ~ AC))
+    if (style == "bar") {
+      graph <- graph +
+        hline_0(size = 0.5, color = get_color("dh")) +
+        geom_bar(
+          position = "identity",
+          stat = "identity",
+          size = 0.2,
+          fill = get_color("l"),
+          color = get_color("lh"),
+          width = 1
+        )
+    } else {
+      graph <- graph +
+        hline_0(size = 0.25, color = get_color("lh")) +
+        geom_segment(
+          aes_(xend = ~ Lag),
+          yend = 0,
+          color = get_color("l"),
+          size = 0.2
+        ) +
+        do.call(
+          "geom_line",
+          args = c(list(color = get_color("d")), size = size)
+        )
+    }
+
+    graph +
+      do.call(facet_fun, facet_args) +
+      scale_y_continuous(
+        limits = c(min(0, plot_data$AC), 1.05),
+        breaks = c(0, 0.5, 1)
+      ) +
+      scale_x_continuous(
+        limits = c(-0.5, lags + 0.5),
+        breaks = function(x) as.integer(pretty(x, n = 3)),
+        expand = c(0, 0)
+      ) +
+      labs(x = "Lag", y = "Autocorrelation") +
+      theme_default()
+  }
+
+# Prepare data for autocorr plot
+# @param x object returned by prepare_mcmc_array
+# @param lags user's 'lags' argument
+autocorr_data <- function(x, lags) {
+  stopifnot(is_mcmc_array(x))
+  dims <- dim(x)
+  n_iter <- dims[1]
+  n_chain <- dims[2]
+  n_param <- dims[3]
+  n_lags <- lags + 1
+  if (n_lags >= n_iter)
+    stop("Too few iterations for this value of 'lags'.", call. = FALSE)
+
+  data <- reshape2::melt(x, value.name = "Value")
+  data$Chain <- factor(data$Chain)
+  ac_list <- tapply(
+    data[["Value"]],
+    INDEX = list(data[["Chain"]], data[["Parameter"]]),
+    FUN = function(x, lag.max) {
+      stats::acf(x, lag.max = lag.max, plot = FALSE)$acf[, , 1L]
+    },
+    lag.max = lags,
+    simplify = FALSE
+  )
+
+  data.frame(
+    Chain = rep(rep(1:n_chain, each = n_lags), times = n_param),
+    Parameter = factor(rep(1:n_param, each = n_chain * n_lags),
+                       labels = levels(data[["Parameter"]])),
+    Lag = rep(seq(0, lags), times = n_chain * n_param),
+    AC = do.call("c", ac_list)
+  )
+}
+

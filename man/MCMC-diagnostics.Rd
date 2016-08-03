@@ -2,11 +2,13 @@
 % Please edit documentation in R/mcmc-diagnostics.R
 \name{MCMC-diagnostics}
 \alias{MCMC-diagnostics}
+\alias{mcmc_acf}
+\alias{mcmc_acf_bar}
 \alias{mcmc_neff}
 \alias{mcmc_neff_hist}
 \alias{mcmc_rhat}
 \alias{mcmc_rhat_hist}
-\title{Rhat and effective sample size}
+\title{Rhat, effective sample size, autocorrelation}
 \usage{
 mcmc_rhat(rhat, ..., size = NULL)
 
@@ -15,6 +17,12 @@ mcmc_rhat_hist(rhat, ..., binwidth = NULL)
 mcmc_neff(ratio, ..., size = NULL)
 
 mcmc_neff_hist(ratio, ..., binwidth = NULL)
+
+mcmc_acf(x, pars = character(), regex_pars = character(),
+  facet_args = list(), ..., lags = 25, size = NULL)
+
+mcmc_acf_bar(x, pars = character(), regex_pars = character(),
+  facet_args = list(), ..., lags = 25)
 }
 \arguments{
 \item{rhat}{A vector of \code{\link[=rhat]{Rhat}} estimates.}
@@ -22,13 +30,45 @@ mcmc_neff_hist(ratio, ..., binwidth = NULL)
 \item{...}{Currently ignored.}
 
 \item{size}{An optional value to override \code{\link[ggplot2]{geom_point}}'s
-default size.}
+default size (for \code{mcmc_rhat}, \code{mcmc_neff}) or
+\code{\link[ggplot2]{geom_line}}'s default size (for \code{mcmc_acf}).}
 
 \item{binwidth}{An optional value to override
 \code{\link[ggplot2]{geom_histogram}}'s default binwidth.}
 
 \item{ratio}{A vector of \emph{ratios} of effective sample size estimates to
 total sample size. See \code{\link{neff_ratio}}.}
+
+\item{x}{A 3-D array, matrix, or data frame of posterior draws:
+\itemize{
+ \item \strong{3-D array}: An \code{\link{array}} with dimensions
+ \code{[Iteration, Chain, Parameter]} in that order.
+ \item \strong{matrix}: A \code{\link{matrix}} with one column per
+ parameter. If \code{x} is a matrix then there should only be a single
+ Markov chain or all chains should already be merged (stacked).
+ \item \strong{data frame}: There are two types of data frames allowed.
+ Either a data frame with one column per parameter (if only a single chain or
+ all chains have already been merged), or a data frame with one column per
+ parameter plus an additional column \code{"Chain"} that contains the chain
+ number (an integer) corresponding to each row in \code{x}.
+ \item \strong{list}: A \code{list} of matrices, where each matrix
+ corresponds to a Markov chain. All of the matrices should have the same
+ number of iterations (rows) and parameters (columns), and parameters should
+ have the same names and be in the same order.
+}}
+
+\item{pars}{An optional character vector of parameter names. If neither
+\code{pars} nor \code{regex_pars} is specified then the default is to use
+\emph{all} parameters.}
+
+\item{regex_pars}{An optional \link[=grep]{regular expression} to use for
+parameter selection. Can be specified instead of \code{pars} or in addition
+to \code{pars}.}
+
+\item{facet_args}{Arguments (other than \code{facets}) passed to
+\code{\link[ggplot2]{facet_grid}} to control faceting.}
+
+\item{lags}{The number of lags to show in the autocorrelation plot.}
 }
 \value{
 A ggplot object that can be further customized using the
@@ -59,23 +99,44 @@ histogram. Values are colored using different shades (lighter is better):
    \item \emph{dark}: below 0.1 (maybe too low)
  }
 }
+\item{\code{mcmc_acf}}{
+Grid of autocorrelation plots by chain and parameter. The \code{lags}
+argument gives the maximum number of lags at which to calculate the
+autocorrelation function. \code{mcmc_acf} is a line plot whereas
+\code{mcmc_acf_bar} is a barplot.
+}
 }
 }
 \examples{
+# autocorrelation
+x <- example_mcmc_draws()
+dim(x)
+dimnames(x)
+
+set_color_scheme("green")
+mcmc_acf(x, pars = c("alpha", "beta[1]"))
+set_color_scheme("pink")
+(p <- mcmc_acf_bar(x, pars = c("alpha", "beta[1]")))
+
+# add tick marks on y axis and horiztonal dashed line at 0.5
+p +
+ yaxis_ticks() +
+ hline_at(0.5, linetype = 2, size = 0.15, color = "gray")
+
+
 # fake rhat values to use for demonstration
 rhat <- c(runif(100, 1, 1.15))
 mcmc_rhat_hist(rhat)
 mcmc_rhat(rhat)
 
 set_color_scheme("blue")
-mcmc_rhat(runif(1000, 1, 1.3))
 mcmc_rhat(runif(1000, 1, 1.07))
+mcmc_rhat(runif(1000, 1, 1.3)) + move_legend("top") # add legend above plot
 
 # fake neff ratio values to use for demonstration
 ratio <- c(runif(100, 0, 1))
 mcmc_neff_hist(ratio)
 mcmc_neff(ratio)
-mcmc_neff(ratio) + move_legend("top") # add legend above plot
 
 \dontrun{
 # Example using rstanarm model (requires rstanarm package)
@@ -92,6 +153,16 @@ mcmc_neff(ratios)
 # there's a small enough number of parameters in the
 # model that we can display their names on the y-axis
 mcmc_neff(ratios) + yaxis_text()
+
+# can also look at autocorrelation
+draws <- as.array(fit)
+mcmc_acf(draws, pars = c("wt", "cyl"), lags = 10)
+
+# increase number of iterations and plots look much better
+fit2 <- update(fit, iter = 500)
+mcmc_rhat(rhat(fit2))
+mcmc_neff(neff_ratio(fit2))
+mcmc_acf(as.array(fit2), pars = c("wt", "cyl"), lags = 10)
 }
 
 }

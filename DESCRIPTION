@@ -12,8 +12,7 @@ License: GPL (>= 3)
 LazyData: TRUE
 URL: https://github.com/jgabry/bayesplot/
 BugReports: https://github.com/jgabry/bayesplot/issues/
-Depends:
-    R (>= 3.0.2)
+Depends: R (>= 3.1.0)
 Imports:
     dplyr (>= 0.4.3),
     ggplot2 (>= 2.0.0),
@@ -26,8 +25,8 @@ Suggests:
     gridExtra,
     knitr,
     rmarkdown,
-    rstan (>= 2.10.0),
-    rstanarm (>= 2.10.0),
+    rstan (>= 2.11.1),
+    rstanarm (>= 2.11.1),
     shinystan (>= 2.2.0),
     testthat,
 RoxygenNote: 5.0.1
