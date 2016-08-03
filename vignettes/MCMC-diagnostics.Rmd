@@ -101,23 +101,17 @@ on the $y$-axis text using the `yaxis_text` convenience function:
 mcmc_rhat(rhats) + yaxis_text()
 ```
 
-The axis $y$-axis text if off by default for this plot because it's only 
+The axis $y$-axis text is off by default for this plot because it's only 
 possible to see the labels for models like this one with very few parameters.
 
 If we refit the model using longer Markov chains we should see all $\hat{R} <
 1.1$, and all points in the plot the same (light) color:
 
 ```{r, results='hide'}
-fit2 <- stan_glm(
-  mpg ~ ., data = mtcars, 
-  chains = 4, iter = 1000,
-  seed = 1111
-)
+fit2 <- update(fit, iter = 1000)
 
 mcmc_rhat(rhat = rhat(fit2))
 ```
-
-
 
 We can see the same information shown by `mcmc_rhat` but in histogram form using
 the `mcmc_rhat_hist` function. See the **Examples** section in
@@ -169,6 +163,21 @@ why we have such high ratios of $n_{eff}$ to $N$ is that **rstanarm** uses
 Hamiltonian Monte Carlo, which in general produces draws from the posterior
 distribution with much lower autocorrelations compared to draws obtained using
 other MCMC algorithms (e.g., Gibbs).
+
+
+#### Autocorrelation
+
+As mentioned above, the effective sample size decreases as autocorrelation
+becomes more extreme. We can visualize the autocorrelation using the 
+`mcmc_acf` (line plot) or `mcmc_acf_bar` (bar plot) functions. Here are
+plots showing the estimates of the autocorrelation function by chain for the 
+`"(Intercept)"` parameter from `fit` (left) and `fit2` (right):
+
+```{r mcmc_acf}
+acf_fit <- mcmc_acf(as.array(fit), pars = "(Intercept)", lags = 15)
+acf_fit2 <- mcmc_acf(as.array(fit2), pars = "(Intercept)", lags = 15)
+gridExtra::grid.arrange(acf_fit, acf_fit2, ncol = 2)
+```
 
 ## Algorithm specific MCMC diagnostics
 
