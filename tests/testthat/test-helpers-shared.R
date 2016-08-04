@@ -3,8 +3,12 @@ context("Shared: misc. functions")
 
 # suggested packages ------------------------------------------------------
 test_that("suggested_package throws correct errors", {
-  expect_error(suggested_package("NOPACKAGE"), "Please install")
+  expect_error(suggested_package("NOPACKAGE"),
+               "Please install the NOPACKAGE package")
+  expect_error(suggested_package(c("testthat", "NOPACKAGE")),
+               "Please install the NOPACKAGE package")
   expect_silent(suggested_package("testthat"))
+  expect_silent(suggested_package(c("testthat", "grid")))
 })
 
 

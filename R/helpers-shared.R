@@ -2,12 +2,14 @@
 #
 # @param pkg Package name as a string
 #
-suggested_package <- function(pkg) {
-  if (!requireNamespace(pkg, quietly = TRUE))
-    stop(
-      "Please install the ", pkg, " package to use this function.",
-      call. = FALSE
-    )
+suggested_package <- function(pkgs) {
+  for (pkg in pkgs) {
+    if (!requireNamespace(pkg, quietly = TRUE))
+      stop(
+        "Please install the ", pkg, " package to use this function.",
+        call. = FALSE
+      )
+  }
 }
 
 # Explicit and/or regex parameter selection
