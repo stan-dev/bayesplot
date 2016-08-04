@@ -135,7 +135,7 @@ ppc_dens_overlay <- function(y, yrep, ...) {
       data = data.frame(y = y),
       mapping = aes_(x = ~ y),
       inherit.aes = FALSE,
-      color = get_color("d"),
+      color = get_color("dh"),
       fill = NA,
       size = 1
     ) +
