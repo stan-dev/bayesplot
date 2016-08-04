@@ -22,6 +22,7 @@ Imports:
 Suggests:
     arm,
     GGally (>= 1.1.0),
+    grid,
     gridExtra,
     knitr,
     rmarkdown,

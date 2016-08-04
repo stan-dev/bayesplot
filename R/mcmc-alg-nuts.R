@@ -121,6 +121,8 @@ mcmc_nuts_acceptance <- function(x,
                                  chain = NULL,
                                  ...,
                                  binwidth = NULL) {
+  suggested_package("gridExtra")
+
   x <- validate_nuts_data_frame(x, lp)
   n_chain <- length(unique(lp$Chain))
   chain <- validate_enough_chains(chain, n_chain)
@@ -130,7 +132,7 @@ mcmc_nuts_acceptance <- function(x,
   data <- suppressWarnings(dplyr::bind_rows(
     accept_stat,
     data.frame(lp, Parameter = "Log-posterior")
-    ))
+  ))
 
   grp_par <- dplyr::group_by_(data, ~ Parameter)
   stats_par <-
@@ -192,23 +194,25 @@ mcmc_nuts_acceptance <- function(x,
 
     scatter <- scatter +
       geom_point(
-        aes_(x = ~ accept_stat$Value[accept_stat$Chain == chain],
-             y = ~ lp$Value[lp$Chain == chain]),
+        mapping = aes_(
+          x = ~ accept_stat$Value[accept_stat$Chain == chain],
+          y = ~ lp$Value[lp$Chain == chain]
+        ),
         color = get_color("d"),
         alpha = 0.5
       )
   }
 
-  nuts_plot <- gridExtra::arrangeGrob(
+  nuts_plot <- arrangeGrob(
     hists,
-    arrangeGrob(grob()),
-    gridExtra::arrangeGrob(
-      grob(), scatter, grob(),
+    arrangeGrob(grid::grob()),
+    arrangeGrob(
+      grid::grob(), scatter, grid::grob(),
       ncol = 3, widths = c(1, 3, 1)
     ),
     nrow = 3, heights = c(1, 0.1, 1)
   )
-  gridExtra::grid.arrange(nuts_plot)
+  grid.arrange(nuts_plot)
   invisible(nuts_plot)
 }
 
@@ -219,6 +223,7 @@ mcmc_nuts_divergence <- function(x,
                                 lp,
                                 chain = NULL,
                                 ...) {
+  suggested_package("gridExtra")
 
   x <- validate_nuts_data_frame(x, lp)
   n_chain <- length(unique(lp$Chain))
@@ -257,8 +262,8 @@ mcmc_nuts_divergence <- function(x,
       chain_violin(violin_accept_stat_data, chain)
   }
 
-  nuts_plot <- gridExtra::arrangeGrob(violin_lp, violin_accept_stat, nrow = 2)
-  gridExtra::grid.arrange(nuts_plot)
+  nuts_plot <- arrangeGrob(violin_lp, violin_accept_stat, nrow = 2)
+  grid.arrange(nuts_plot)
   invisible(nuts_plot)
 }
 
@@ -270,6 +275,8 @@ mcmc_nuts_stepsize <- function(x,
                                lp,
                                chain = NULL,
                                ...) {
+  suggested_package("gridExtra")
+
   x <- validate_nuts_data_frame(x, lp)
   n_chain <- length(unique(lp$Chain))
   chain <- validate_enough_chains(chain, n_chain)
@@ -317,8 +324,8 @@ mcmc_nuts_stepsize <- function(x,
       chain_violin(violin_accept_stat_data, chain)
   }
 
-  nuts_plot <- gridExtra::arrangeGrob(violin_lp, violin_accept_stat, nrow = 2)
-  gridExtra::grid.arrange(nuts_plot)
+  nuts_plot <- arrangeGrob(violin_lp, violin_accept_stat, nrow = 2)
+  grid.arrange(nuts_plot)
   invisible(nuts_plot)
 }
 
@@ -330,6 +337,7 @@ mcmc_nuts_treedepth <- function(x,
                                 chain = NULL,
                                 ...) {
 
+  suggested_package("gridExtra")
   x <- validate_nuts_data_frame(x, lp)
   n_chain <- length(unique(lp$Chain))
   chain <- validate_enough_chains(chain, n_chain)
@@ -382,21 +390,19 @@ mcmc_nuts_treedepth <- function(x,
       chain_violin(violin_accept_stat_data, chain)
   }
 
-  nuts_plot <- gridExtra::arrangeGrob(
-    gridExtra::arrangeGrob(
+  nuts_plot <- arrangeGrob(
+    arrangeGrob(
       violin_lp, violin_accept_stat,
       nrow = 1
     ),
-    gridExtra::arrangeGrob(
-      grob()
-    ),
-    gridExtra::arrangeGrob(
-      grob(), hist_td, grob(),
+    arrangeGrob(grid::grob()),
+    arrangeGrob(
+      grid::grob(), hist_td, grid::grob(),
       ncol = 3, widths = c(1, 3, 1)
     ),
     nrow = 3, heights = c(1, 0.1, 1)
   )
-  gridExtra::grid.arrange(nuts_plot)
+  grid.arrange(nuts_plot)
   invisible(nuts_plot)
 }
 

@@ -22,7 +22,7 @@
 #'
 #' @import ggplot2
 #' @import stats
-#'
+#' @importFrom gridExtra arrangeGrob grid.arrange
 #'
 #' @examples
 #' # A few quick examples (all of the functions have many examples
