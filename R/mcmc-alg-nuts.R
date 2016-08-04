@@ -26,10 +26,10 @@
 #'   \item{\code{mcmc_nuts_acceptance}}{
 #'   Three plots:
 #'   \itemize{
-#'    \item Histogram of \code{accept_stat__}, which for NUTS is the the
-#'    average acceptance probabilities of all possible samples in the proposed
-#'    tree (NUTS uses a slice sampling algorithm for rejection).
-#'    \item Histogram of the log-posterior (up to a constant).
+#'    \item Histogram of \code{accept_stat__} with vertical lines indicating the
+#'    mean (solid line) and median (dashed line).
+#'    \item Histogram of the log-posterior (up to a constant) with vertical
+#'    lines indicating the mean (solid line) and median (dashed line).
 #'    \item Scatterplot of \code{accept_stat__} vs log-posterior.
 #'    }
 #'   }
@@ -63,6 +63,25 @@
 #'   Overlaid histograms showing \code{energy__} vs the change in
 #'   \code{energy__}. See Betancourt (2016) for details.
 #'   }
+#' }
+#'
+#' @section NUTS parameter quick definitions:
+#' For more thorough information on these sampler parameters see Stan
+#' Development Team (2016).
+#' \itemize{
+#'   \item \code{accept_stat__}: the average acceptance probabilities of all
+#'   possible samples in the proposed tree (NUTS uses a slice sampling algorithm
+#'   for rejection).
+#'   \item \code{divergent__}: the number of leapfrog transitions with diverging
+#'   error. Because NUTS terminates at the first divergence this will be either
+#'   0 or 1 for each iteration.
+#'   \item \code{stepsize__}: the step size used by NUTS in its Hamiltonian
+#'   simulation.
+#'   \item \code{treedepth__}: the depth of tree used by NUTS, which is the log
+#'   (base 2) of the number of leapfrog steps taken during the Hamiltonian
+#'   simulation.
+#'   \item \code{energy__}: the value of the Hamiltonian (up to an additive
+#'   constant) at each sample.
 #' }
 #'
 #' @template seealso-color-scheme
@@ -152,7 +171,8 @@ mcmc_nuts_acceptance <- function(x,
       aes_(x = ~ accept_stat$Value, y = ~ lp$Value),
       shape = 21,
       fill = get_color(ifelse(overlay_chain, "l", "m")),
-      color = get_color(ifelse(overlay_chain, "lh", "mh"))
+      color = get_color(ifelse(overlay_chain, "lh", "mh")),
+      alpha = 0.75
     ) +
     labs(x = "accept_stat__",
          y = "Log-posterior") +
@@ -179,7 +199,15 @@ mcmc_nuts_acceptance <- function(x,
       )
   }
 
-  nuts_plot <- gridExtra::arrangeGrob(scatter, hists, nrow = 2)
+  nuts_plot <- gridExtra::arrangeGrob(
+    hists,
+    arrangeGrob(grob()),
+    gridExtra::arrangeGrob(
+      grob(), scatter, grob(),
+      ncol = 3, widths = c(1, 3, 1)
+    ),
+    nrow = 3, heights = c(1, 0.1, 1)
+  )
   gridExtra::grid.arrange(nuts_plot)
   invisible(nuts_plot)
 }
@@ -314,7 +342,7 @@ mcmc_nuts_treedepth <- function(x,
     geom_histogram(
       fill = get_color("l"),
       color = get_color("lh"),
-      size = .5,
+      size = .2,
       na.rm = TRUE,
       binwidth = 1
     ) +
@@ -354,8 +382,20 @@ mcmc_nuts_treedepth <- function(x,
       chain_violin(violin_accept_stat_data, chain)
   }
 
-  nuts_plot <- gridExtra::arrangeGrob(violin_lp, violin_accept_stat,
-                                      hist_td, nrow = 3)
+  nuts_plot <- gridExtra::arrangeGrob(
+    gridExtra::arrangeGrob(
+      violin_lp, violin_accept_stat,
+      nrow = 1
+    ),
+    gridExtra::arrangeGrob(
+      grob()
+    ),
+    gridExtra::arrangeGrob(
+      grob(), hist_td, grob(),
+      ncol = 3, widths = c(1, 3, 1)
+    ),
+    nrow = 3, heights = c(1, 0.1, 1)
+  )
   gridExtra::grid.arrange(nuts_plot)
   invisible(nuts_plot)
 }

@@ -61,10 +61,10 @@ Diagnostic plots for the No-U-Turn-Sampler (NUTS)
   \item{\code{mcmc_nuts_acceptance}}{
   Three plots:
   \itemize{
-   \item Histogram of \code{accept_stat__}, which for NUTS is the the
-   average acceptance probabilities of all possible samples in the proposed
-   tree (NUTS uses a slice sampling algorithm for rejection).
-   \item Histogram of the log-posterior (up to a constant).
+   \item Histogram of \code{accept_stat__} with vertical lines indicating the
+   mean (solid line) and median (dashed line).
+   \item Histogram of the log-posterior (up to a constant) with vertical
+   lines indicating the mean (solid line) and median (dashed line).
    \item Scatterplot of \code{accept_stat__} vs log-posterior.
    }
   }
@@ -98,6 +98,27 @@ Diagnostic plots for the No-U-Turn-Sampler (NUTS)
   Overlaid histograms showing \code{energy__} vs the change in
   \code{energy__}. See Betancourt (2016) for details.
   }
+}
+}
+
+\section{NUTS parameter quick definitions}{
+
+For more thorough information on these sampler parameters see Stan
+Development Team (2016).
+\itemize{
+  \item \code{accept_stat__}: the average acceptance probabilities of all
+  possible samples in the proposed tree (NUTS uses a slice sampling algorithm
+  for rejection).
+  \item \code{divergent__}: the number of leapfrog transitions with diverging
+  error. Because NUTS terminates at the first divergence this will be either
+  0 or 1 for each iteration.
+  \item \code{stepsize__}: the step size used by NUTS in its Hamiltonian
+  simulation.
+  \item \code{treedepth__}: the depth of tree used by NUTS, which is the log
+  (base 2) of the number of leapfrog steps taken during the Hamiltonian
+  simulation.
+  \item \code{energy__}: the value of the Hamiltonian (up to an additive
+  constant) at each sample.
 }
 }
 \examples{
