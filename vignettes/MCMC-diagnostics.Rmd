@@ -7,7 +7,7 @@ output:
     toc: true
     toc_depth: 4
 vignette: >
-  %\VignetteIndexEntry{Visual MCMC diagnostics}
+  %\VignetteIndexEntry{General MCMC diagnostics}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -18,11 +18,12 @@ knitr::opts_chunk$set(
   dev = "svg",
   fig.align = "center",
   fig.width = 6,
-  fig.height = 4
+  fig.height = 4,
+  comment = NA
 )
 ```
 
-## Overview
+## General MCMC diagnostics
 
 A Markov chain generates samples from the target distribution only after it has
 converged to equilibrium. Unfortunately, this is only guaranteed in the limit
@@ -32,9 +33,7 @@ Markov chain(s) have converged.
 The __bayesplot__ package provides various plotting functions for visualizing 
 Markov chain Monte Carlo (MCMC) diagnostics after fitting a Bayesian model.
 
-## General MCMC diagnostics
-
-#### Rhat: potential scale reduction statistic
+### Rhat: potential scale reduction statistic
 
 > One way to monitor whether a chain has converged to the equilibrium distribution
 is to compare its behavior to other randomly initialized chains. This is the 
@@ -45,10 +44,10 @@ if all chains are at equilibrium, these will be the same and $\hat{R}$ will be
 one. If the chains have not converged to a common distribution, the $\hat{R}$
 statistic will be greater than one. ([Stan Modeling Language Users Guide and Reference Manual](http://mc-stan.org/documentation/))
 
-The **bayesplot** package provides the functions `mcmc_rhat` and
-`mcmc_rhat_hist` for visualizing $\hat{R}$ estimates. To demostrate, 
-we'll use the `stan_glm` function in the **rstanarm** package to quickly 
-get some real $\hat{R}$ values to work with.
+The **bayesplot** package provides the functions `mcmc_rhat` and 
+`mcmc_rhat_hist` for visualizing $\hat{R}$ estimates. To demostrate, we'll use
+the `stan_glm` function in the **rstanarm** package (Gabry and Goodrich, 2016)
+to quickly get some real $\hat{R}$ values to work with.
 
 First we'll intentionally use too few MCMC iterations, which should 
 lead to some high $\hat{R}$ values (we'll probably get convergence
@@ -118,7 +117,7 @@ the `mcmc_rhat_hist` function. See the **Examples** section in
 `help("mcmc_rhat_hist")` for examples.
 
 
-#### Effective sample size
+### Effective sample size
 
 The effective sample size is an estimate of the number of 
 independent draws from the posterior distribution of the estimand of interest. 
@@ -165,7 +164,7 @@ distribution with much lower autocorrelations compared to draws obtained using
 other MCMC algorithms (e.g., Gibbs).
 
 
-#### Autocorrelation
+### Autocorrelation
 
 As mentioned above, the effective sample size decreases as autocorrelation
 becomes more extreme. We can visualize the autocorrelation using the 
@@ -179,18 +178,11 @@ acf_fit2 <- mcmc_acf(as.array(fit2), pars = "(Intercept)", lags = 15)
 gridExtra::grid.arrange(acf_fit, acf_fit2, ncol = 2)
 ```
 
-## Algorithm specific MCMC diagnostics
-
-#### Diagnostics for the No-U-Turn sampler (NUTS)
-
-Write this section.
-
-
 
 ## References
 
 Gabry, J., and Goodrich, B. (2016). rstanarm: Bayesian Applied Regression 
-Modeling via Stan. R package version `r packageVersion("rstanarm")`.
+Modeling via Stan. R package version 2.11.1.
 http://mc-stan.org/interfaces/rstanarm.html
 
 Gelman, A. and Rubin, D. B. (1992). Inference from iterative simulation using

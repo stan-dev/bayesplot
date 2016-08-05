@@ -16,35 +16,165 @@ library(bayesplot)
 knitr::opts_chunk$set(
   dev = "pdf",
   fig.align = "center",
-  fig.width = 4,
-  fig.height = 4
+  fig.width = 6,
+  fig.height = 4,
+  comment = NA
 )
 ```
 
 ## Overview
 
-The __bayesplot__ package provides various plotting functions for visualizing
+The **bayesplot** package provides various plotting functions for visualizing
 Markov chain Monte Carlo (MCMC) draws from the posterior distribution of the
 parameters of a Bayesian model.
 
 ## Plots for MCMC draws
 
-### Traceplots 
+MCMC draws obtained using any software package can be used with the functions in
+the **bayesplot** package. In this vignette we'll use draws obtained using the
+`stan_glmer` function in the **rstanarm** package (Gabry and Goodrich, 2016).
 
-Write this section.
+```{r, eval=FALSE, results='hide'}
+library("rstanarm")
+fit <- stan_glm(
+  mpg ~ ., data = mtcars, 
+  chains = 4, iter = 2000,
+  seed = 1111
+)
+print(fit)
+```
 
-### Histograms and density estimates
+```{r stan_glm, echo=FALSE, results='hide'}
+suppressPackageStartupMessages(library("rstanarm"))
+fit <- stan_glm(
+  mpg ~ ., data = mtcars, 
+  chains = 4, 
+  iter = 2000,
+  seed = 1111
+)
+```
 
-Write this section.
+```{r, print-fit, echo=FALSE}
+print(fit)
+```
+
+To use the posterior draws with the functions in the **bayesplot** package
+we'll extract them from the fitted model object: 
+
+```{r, get-draws}
+posterior <- as.array(fit)
+dim(posterior)
+dimnames(posterior)
+```
 
 ### Interval estimates
 
-Write this section.
+Posterior intervals for the parameters can be plotted using the `mcmc_intervals`
+function.
+
+```{r, mcmc_intervals}
+mcmc_intervals(posterior, pars = c("cyl", "drat", "am", "sigma"))
+```
+
+The default is to show 50% intervals (the think lines above) and 90% intervals 
+(the thinner outer lines above). These defaults can be changed using the `prob`
+and `prob_outer` arguments, respectively. The points in the above plot 
+are posterior medians. The `point_est` argument can be used to select posterior
+means instead or to omit the point estimates.
+
+To show the uncertainty intervals as shaded areas under the estimated posterior
+density curves we can use the `mcmc_areas` function:
+
+```{r, mcmc_areas}
+mcmc_areas(
+  posterior, 
+  pars = c("cyl", "drat", "am", "sigma"),
+  prob = 0.8, # 80% intervals
+  prob_outer = 0.99, # 99%
+  point_est = "mean"
+)
+```
+
+
+### Histograms and density estimates
+
+Histograms or kernel density estimates of posterior distributions of the various
+model parameters can be visualized using the functions described on the 
+`MCMC-distributions` page in the **bayesplot** documentation.
+
+#### Histograms
+
+First we'll use the `mcmc_hist` function to plot the posterior distributions
+of several of the regression coefficients:
+
+```{r, mcmc_hist}
+mcmc_hist(posterior, pars = c("wt", "am"))
+```
+
+In the plot above the four Markov chains are merged. To view the chains 
+separately we can use the `mcmc_hist_by_chain` function:
+
+```{r, mcmc_hist_by_chain}
+mcmc_hist_by_chain(posterior, pars = c("wt", "am"))
+```
+
+#### Densities
+
+The `mcmc_dens` function is the same as `mcmc_hist` except it plots 
+density estimates rather than histograms:
+
+```{r, mcmc_dens}
+mcmc_dens(posterior, pars = c("wt", "am"))
+```
+
+We can also view density estimates for the individual chains overlaid on the 
+same plot using the `mcmc_dens_overlay` function:
+
+```{r, mcmc_dens_overlay}
+mcmc_dens_overlay(posterior, pars = c("wt", "am"))
+```
+
+And the `mcmc_violin` function plots the density estimates of each chain as
+violins with horizontal lines at notable quantiles:
+
+```{r, mcmc_violin}
+mcmc_violin(posterior, pars = c("wt", "am"), probs = c(0.1, 0.5, 0.9))
+```
 
 ### Scatterplots
 
-Write this section.
+The `mcmc_scatter` function creates a scatterplot with two parameters:
 
+```{r, mcmc_scatter}
+mcmc_scatter(posterior, pars = c("(Intercept)", "wt"))
+```
+
+The `mcmc_pairs` function creates a scatterplot matrix of multiple parameters
+with histograms along the diagonal and estimated correlations displayed
+in the upper triangle:
+
+```{r, mcmc_pairs, fig.width=6, fig.height=6}
+mcmc_pairs(posterior, pars = c("(Intercept)", "wt", "carb", "sigma"))
+```
+
+### Traceplots 
+
+The `mcmc_trace` function creates standard traceplots:
+
+```{r, mcmc_trace}
+mcmc_trace(posterior, pars = c("wt", "sigma"))
+```
+
+The `mcmc_trace_highlight` uses points instead of lines and reduces the opacity
+of all but a single chain.
+
+```{r, mcmc_trace_highlight}
+mcmc_trace_highlight(
+  posterior, 
+  pars = c("wt", "sigma"), 
+  highlight = 3 # highlight the third chain by reducing opacity of others
+)
+```
 
 ## References
 
