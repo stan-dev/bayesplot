@@ -12,12 +12,13 @@ vignette: >
 ---
 
 ```{r, settings, include=FALSE}
-library(bayesplot)
+library("bayesplot")
 knitr::opts_chunk$set(
   dev = "pdf",
   fig.align = "center",
   fig.width = 4,
-  fig.height = 4
+  fig.height = 4,
+  comment = NA
 )
 ```
 
@@ -28,17 +29,17 @@ _graphical posterior predictive checking_, that is, creating graphical displays
 comparing observed data to simulated data from the posterior predictive
 distribution.
 
-The idea behind posterior predictive checking is simple: if a model is a good
-fit then we should be able to use it to generate data that looks a lot like
+The idea behind posterior predictive checking is simple: if a model is a
+good fit then we should be able to use it to generate data that looks a lot like
 the data we observed.
 
 #### Posterior predictive distribution
-To generate the data used for posterior predictive checks we simulate from
-the _posterior predictive distribution_ The posterior predictive
-distribution is the distribution of the outcome variable implied by a model
-after using the observed data $y$ (a vector of $N$ outcome values)
-to update our beliefs about unknown model parameters $\theta$, 
-$$p(\tilde{y} \,|\, y) = \int p(\tilde{y} \,|\, \theta) \, p(\theta \,|\, y) \, d\theta.$$
+To generate the data used for posterior predictive checks (PPCs) we simulate
+from the _posterior predictive distribution_ The posterior predictive 
+distribution is the distribution of the outcome variable implied by a model 
+after using the observed data $y$ (a vector of $N$ outcome values) to update our
+beliefs about unknown model parameters $\theta$, $$p(\tilde{y} \,|\, y) = \int
+p(\tilde{y} \,|\, \theta) \, p(\theta \,|\, y) \, d\theta.$$
 Typically we will also condition on $X$ (a matrix of predictor variables).
 
 For each draw (simulation) $s = 1, \ldots, S$ of the parameters from the 
@@ -62,11 +63,84 @@ documentation.
 Using the replicated datasets drawn from the posterior predictive
 distribution, the functions in the __bayesplot__ package create various
 graphical displays comparing the observed data $y$ to the replications.
+The names of the __bayesplot__ plotting functions for posterior predictive
+checking all have the prefix `ppc_`. 
 
+To demonstrate the various PPCs that can be created with the __bayesplot__ 
+package we'll use an example of comparing Poisson and Negative binomial
+regression models from the
+[**rstanarm**](https://cran.r-project.org/web/packages/rstanarm/) package
+vignette [_stan_glm: GLMs for Count
+Data_](https://cran.r-project.org/web/packages/rstanarm/vignettes/count.html).
+
+> We want to make inferences about the efficacy of a certain pest management system at reducing the number of roaches in urban apartments. [...] 
+The regression predictors for the model are the pre-treatment number of roaches `roach1`, the treatment indicator `treatment`, and a variable `senior` indicating whether the apartment is in a building restricted to elderly residents. Because the number of days for which the roach traps were used is not the same for all apartments in the sample, we include it as an exposure [...]. 
+
+First we fit a Poisson regression model with outcome variable `y` representing 
+the roach count in each apartment at the end of the experiment.
+
+```{r, roaches-model, results="hide", message=FALSE,warning=FALSE}
+library("rstanarm")
+data(roaches) # see help("rstanarm-datasets")
+head(roaches)
+
+roaches$roach1 <- roaches$roach1 / 100 # pre-treatment number of roaches (in 100s)
+fit_poisson <- stan_glm(
+  y ~ roach1 + treatment + senior, 
+  data = roaches,
+  offset = log(exposure2), 
+  family = poisson(link = "log"), 
+  prior = normal(0,2.5), 
+  prior_intercept = normal(0,5),
+  chains = 4, 
+  iter = 2000,
+  seed = 1111
+)
+```
+
+```{r, print}
+print(fit_poisson)
+```
+
+In order to use the PPC functions from the __bayesplot__ package we need
+a matrix of draws from the posterior predictive distribution. Since we fit 
+the model using __rstanarm__ we can use its `posterior_predict` function:
+
+```{r, posterior_predict}
+yrep <- posterior_predict(fit_poisson)
+dim(yrep)
+```
+
+Each row of this matrix is a draw from the posterior predictive distribution, 
+i.e. a vector with `r ncol(yrep)` elements, one for each of the data points in
+`y`.
 
 ### Histograms and density estimates
 
-Write this section.
+The first PPC we'll look at is a comparison of the distribution of `y` and the
+distributions of some of the simulated datasets (rows) in the `yrep` matrix.
+
+```{r ppc_dens_overlay}
+library("bayesplot")
+
+y <- roaches$y
+ppc_dens_overlay(y, yrep[1:50, ])
+```
+
+In the plot above, the dark line is the distribution of the observed outcomes 
+`y` and each of the lighter lines is the kernel density estimate of one of the
+replications of `y` from the posterior predictive distribution. This 
+plot makes it easy to see that this model fails to account for large 
+proportion of zeros in `y`. That is, the model predicts fewer zeros than 
+were actually observed.
+
+We could see the same thing by looking at separate histograms of `y` and some 
+of the `yrep` datasets using the `ppc_hist` function:
+
+```{r ppc_hist}
+ppc_hist(y, yrep[1:8, ])
+```
+
 
 ### Scatterplots
 
@@ -85,7 +159,7 @@ Write this section.
 Write this section.
 
 
-## Providing an interface to bayesplot from another package
+## Providing an interface to bayesplot PPCs from another package
 
 The __bayesplot__ package provides the S3 generic function `pp_check`. Authors of
 R packages for Bayesian inference are encouraged to define methods for the
