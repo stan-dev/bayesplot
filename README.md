@@ -7,7 +7,7 @@ An R package providing a library of plotting functions for use after fitting
 Bayesian models (typically with MCMC). The idea is not only to provide
 convenient functionality for users, but also a common set of functions that can
 be easily used by developers working on a variety of packages for Bayesian
-modeling, particularly (but necessarily) those powered by 
+modeling, particularly (but not necessarily) those powered by 
 [**RStan**](https://github.com/stan-dev/rstan).
 
 
