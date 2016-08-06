@@ -69,7 +69,7 @@ checking all have the prefix `ppc_`.
 To demonstrate the various PPCs that can be created with the __bayesplot__ 
 package we'll use an example of comparing Poisson and Negative binomial
 regression models from the
-[**rstanarm**](https://cran.r-project.org/web/packages/rstanarm/) package
+[**rstanarm**](https://cran.r-project.org/package=rstanarm) package
 vignette [_stan_glm: GLMs for Count
 Data_](https://cran.r-project.org/web/packages/rstanarm/vignettes/count.html).
 
