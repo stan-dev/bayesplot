@@ -10,9 +10,9 @@
 \usage{
 ppc_hist(y, yrep, ..., binwidth = NULL)
 
-ppc_dens(y, yrep, ...)
+ppc_dens(y, yrep, ..., trim = FALSE)
 
-ppc_dens_overlay(y, yrep, ...)
+ppc_dens_overlay(y, yrep, ..., trim = FALSE)
 
 ppc_violin_grouped(y, yrep, group, ..., probs = c(0.1, 0.5, 0.9))
 }
@@ -29,8 +29,10 @@ instructions.}
 
 \item{...}{Currently unused.}
 
-\item{binwidth}{An optional value to override
-\code{\link[ggplot2]{geom_histogram}}'s default binwidth.}
+\item{binwidth}{An optional value used as the \code{binwidth} argument to
+\code{\link[ggplot2]{geom_histogram}} to override the default binwidth.}
+
+\item{trim}{A logical scalar passed to \code{\link[ggplot2]{geom_density}}.}
 
 \item{group}{A grouping variable (a vector or factor) the same length as
 \code{y}. Each value in \code{group} is interpreted as the group level

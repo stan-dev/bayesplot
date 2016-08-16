@@ -13,13 +13,13 @@ mcmc_hist(x, pars = character(), regex_pars = character(),
   transformations = list(), facet_args = list(), ..., binwidth = NULL)
 
 mcmc_dens(x, pars = character(), regex_pars = character(),
-  transformations = list(), facet_args = list(), ...)
+  transformations = list(), facet_args = list(), ..., trim = FALSE)
 
 mcmc_hist_by_chain(x, pars = character(), regex_pars = character(),
   transformations = list(), facet_args = list(), ..., binwidth = NULL)
 
 mcmc_dens_overlay(x, pars = character(), regex_pars = character(),
-  transformations = list(), facet_args = list(), ...)
+  transformations = list(), facet_args = list(), ..., trim = FALSE)
 
 mcmc_violin(x, pars = character(), regex_pars = character(),
   transformations = list(), facet_args = list(), ..., probs = c(0.1, 0.5,
@@ -71,8 +71,10 @@ control faceting.}
 
 \item{...}{Currently ignored.}
 
-\item{binwidth}{An optional value to override
-\code{\link[ggplot2]{geom_histogram}}'s default binwidth.}
+\item{binwidth}{An optional value used as the \code{binwidth} argument to
+\code{\link[ggplot2]{geom_histogram}} to override the default binwidth.}
+
+\item{trim}{A logical scalar passed to \code{\link[ggplot2]{geom_density}}.}
 
 \item{probs}{A numeric vector passed to \code{\link[ggplot2]{geom_violin}}'s
 \code{draw_quantiles} argument to specify at which quantiles to draw

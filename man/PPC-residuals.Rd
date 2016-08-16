@@ -23,8 +23,8 @@ instructions.}
 
 \item{...}{Currently unused.}
 
-\item{binwidth}{An optional value to override
-\code{\link[ggplot2]{geom_histogram}}'s default binwidth.}
+\item{binwidth}{An optional value used as the \code{binwidth} argument to
+\code{\link[ggplot2]{geom_histogram}} to override the default binwidth.}
 
 \item{Ey}{A matrix of posterior draws of the linear predictor transformed by
 the inverse-link function.}

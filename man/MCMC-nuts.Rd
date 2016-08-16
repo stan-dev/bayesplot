@@ -38,8 +38,8 @@ is not used by \code{mcmc_nuts_energy}.}
 
 \item{...}{Currently ignored.}
 
-\item{binwidth}{An optional value to override
-\code{\link[ggplot2]{geom_histogram}}'s default binwidth.}
+\item{binwidth}{An optional value used as the \code{binwidth} argument to
+\code{\link[ggplot2]{geom_histogram}} to override the default binwidth.}
 
 \item{alpha}{For \code{mcmc_nuts_energy} only, the transparency (alpha) level
 in [0,1] used for the overlaid histogram.}

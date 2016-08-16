@@ -33,8 +33,8 @@ mcmc_acf_bar(x, pars = character(), regex_pars = character(),
 default size (for \code{mcmc_rhat}, \code{mcmc_neff}) or
 \code{\link[ggplot2]{geom_line}}'s default size (for \code{mcmc_acf}).}
 
-\item{binwidth}{An optional value to override
-\code{\link[ggplot2]{geom_histogram}}'s default binwidth.}
+\item{binwidth}{An optional value used as the \code{binwidth} argument to
+\code{\link[ggplot2]{geom_histogram}} to override the default binwidth.}
 
 \item{ratio}{A vector of \emph{ratios} of effective sample size estimates to
 total sample size. See \code{\link{neff_ratio}}.}

@@ -10,6 +10,7 @@
 #'
 #' @template args-y-yrep
 #' @template args-hist
+#' @template args-dens
 #' @param ... Currently unused.
 #'
 #' @template details-binomial
@@ -91,7 +92,7 @@ ppc_hist <- function(y, yrep, ..., binwidth = NULL) {
 #' @export
 #' @rdname PPC-distributions
 #'
-ppc_dens <- function(y, yrep, ...) {
+ppc_dens <- function(y, yrep, ..., trim = FALSE) {
   y <- validate_y(y)
   yrep <- validate_yrep(yrep, y)
 
@@ -103,7 +104,7 @@ ppc_dens <- function(y, yrep, ...) {
       color = ~ is_y
     )
   ) +
-    geom_density(size = 1) +
+    geom_density(size = 1, trim = trim) +
     scale_fill_manual(values = get_color(c("d", "l"))) +
     scale_color_manual(values = get_color(c("dh", "lh"))) +
     facet_wrap_parsed("rep_id", switch = "x") +
@@ -114,7 +115,7 @@ ppc_dens <- function(y, yrep, ...) {
 #' @export
 #' @rdname PPC-distributions
 #'
-ppc_dens_overlay <- function(y, yrep, ...) {
+ppc_dens_overlay <- function(y, yrep, ..., trim = FALSE) {
   y <- validate_y(y)
   yrep <- validate_yrep(yrep, y)
 
@@ -129,7 +130,8 @@ ppc_dens_overlay <- function(y, yrep, ...) {
       color = get_color("l"),
       fill = NA,
       size = 0.25,
-      alpha = 0.1
+      alpha = 0.1,
+      trim = trim
     ) +
     geom_density(
       data = data.frame(y = y),
@@ -137,7 +139,8 @@ ppc_dens_overlay <- function(y, yrep, ...) {
       inherit.aes = FALSE,
       color = get_color("dh"),
       fill = NA,
-      size = 1
+      size = 1,
+      trim = trim
     ) +
     xlab(y_label()) +
     dont_expand_axes() +

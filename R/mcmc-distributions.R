@@ -151,7 +151,8 @@ mcmc_dens <- function(x,
                       regex_pars = character(),
                       transformations = list(),
                       facet_args = list(),
-                      ...) {
+                      ...,
+                      trim = FALSE) {
   .mcmc_dens(
     x,
     pars = pars,
@@ -159,6 +160,7 @@ mcmc_dens <- function(x,
     transformations = transformations,
     facet_args = facet_args,
     by_chain = FALSE,
+    trim = trim,
     ...
   )
 }
@@ -192,7 +194,8 @@ mcmc_dens_overlay <- function(x,
                               regex_pars = character(),
                               transformations = list(),
                               facet_args = list(),
-                              ...) {
+                              ...,
+                              trim = FALSE) {
   .mcmc_dens(
     x,
     pars = pars,
@@ -200,6 +203,7 @@ mcmc_dens_overlay <- function(x,
     transformations = transformations,
     facet_args = facet_args,
     by_chain = TRUE,
+    trim = trim,
     ...
   )
 }
@@ -273,6 +277,7 @@ mcmc_violin <- function(x,
                        by_chain = FALSE,
                        geom = c("density", "violin"),
                        probs = c(0.1, 0.5, 0.9),
+                       trim = FALSE,
                        ...) {
   x <- prepare_mcmc_array(x, pars, regex_pars, transformations)
   data <- reshape2::melt(x, value.name = "Value")
@@ -294,8 +299,11 @@ mcmc_violin <- function(x,
     list(x = ~ Value)
   }
   geom_args <- list(size = 0.5, na.rm = TRUE)
-  if (violin)
-    geom_args$draw_quantiles <- probs
+  if (violin) {
+    geom_args[["draw_quantiles"]] <- probs
+  } else {
+    geom_args[["trim"]] <- trim
+  }
 
   if (by_chain) {
     aes_mapping[["color"]] <- ~ Chain

@@ -88,57 +88,59 @@ NULL
 
 #' @rdname MCMC-traces
 #' @export
-mcmc_trace <- function(x,
-                       pars = character(),
-                       regex_pars = character(),
-                       transformations = list(),
-                       facet_args = list(),
-                       ...,
-                       n_warmup = 0,
-                       window = NULL,
-                       size = NULL) {
-  .mcmc_trace(
-    x,
-    pars = pars,
-    regex_pars = regex_pars,
-    transformations = transformations,
-    facet_args = facet_args,
-    n_warmup = n_warmup,
-    window = window,
-    size = size,
-    style = "line",
-    ...
-  )
-}
+mcmc_trace <-
+  function(x,
+           pars = character(),
+           regex_pars = character(),
+           transformations = list(),
+           facet_args = list(),
+           ...,
+           n_warmup = 0,
+           window = NULL,
+           size = NULL) {
+    .mcmc_trace(
+      x,
+      pars = pars,
+      regex_pars = regex_pars,
+      transformations = transformations,
+      facet_args = facet_args,
+      n_warmup = n_warmup,
+      window = window,
+      size = size,
+      style = "line",
+      ...
+    )
+  }
 
 #' @rdname MCMC-traces
 #' @export
 #' @param highlight For \code{mcmc_trace_highlight}, an integer specifying one
 #'   of the chains that will be more visible than the others in the plot.
-mcmc_trace_highlight <- function(x,
-                                 pars = character(),
-                                 regex_pars = character(),
-                                 transformations = list(),
-                                 facet_args = list(),
-                                 ...,
-                                 n_warmup = 0,
-                                 window = NULL,
-                                 size = NULL,
-                                 highlight = 1) {
-  .mcmc_trace(
-    x,
-    pars = pars,
-    regex_pars = regex_pars,
-    transformations = transformations,
-    facet_args = facet_args,
-    n_warmup = n_warmup,
-    window = window,
-    size = size,
-    highlight = highlight,
-    style = "point",
-    ...
-  )
-}
+mcmc_trace_highlight <-
+  function(x,
+           pars = character(),
+           regex_pars = character(),
+           transformations = list(),
+           facet_args = list(),
+           ...,
+           n_warmup = 0,
+           window = NULL,
+           size = NULL,
+           highlight = 1) {
+    .mcmc_trace(
+      x,
+      pars = pars,
+      regex_pars = regex_pars,
+      transformations = transformations,
+      facet_args = facet_args,
+      n_warmup = n_warmup,
+      window = window,
+      size = size,
+      highlight = highlight,
+      style = "point",
+      ...
+    )
+  }
 
 
 # internal -----------------------------------------------------------------
