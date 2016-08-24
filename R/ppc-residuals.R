@@ -70,7 +70,10 @@ ppc_resid <- function(y, yrep, ..., binwidth = NULL) {
       labs(y = NULL, x = expression(italic(y) - italic(y)^rep))
   } else {
     resids <- melt_yrep(as.matrix(-1 * sweep(yrep, 2L, y)))
-    resids$rep_id <- factor(resids$rep_id, labels = paste("y -", unique(resids$rep_id)))
+    resids$rep_id <- factor(
+      resids$rep_id,
+      labels = paste("italic(y)", "-", unique(resids$rep_id))
+    )
     graph <- ggplot(resids, aes_(x = ~ value)) +
       labs(y = NULL, x = NULL) +
       facet_wrap_parsed("rep_id", switch = "x")
@@ -151,7 +154,7 @@ ppc_resid_binned <- function(y, Ey, ...) {
     ) +
     labs(
       x = "Expected Values",
-      y = "Average Residual \n (with 2SE bounds)"
+      y = "Average Residuals \n (with 2SE bounds)"
     )
 
   if (n > 1)
