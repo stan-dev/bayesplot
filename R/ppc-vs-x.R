@@ -123,6 +123,9 @@ ppc_vs_x_grouped <-
     if (is.null(facet_args[["scales"]]))
       facet_args[["scales"]] <- "free"
 
+    if ("time" %in% names(list(...)))
+      stop("'time' argument not allowed.")
+
     ppc_ts_grouped(
       y = y,
       yrep = validate_yrep(yrep, y),
