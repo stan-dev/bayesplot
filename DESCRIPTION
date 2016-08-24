@@ -29,6 +29,6 @@ Suggests:
     rstan (>= 2.11.1),
     rstanarm (>= 2.11.1),
     shinystan (>= 2.2.0),
-    testthat,
+    testthat
 RoxygenNote: 5.0.1
 VignetteBuilder: knitr
