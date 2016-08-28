@@ -1,16 +1,34 @@
 library(bayesplot)
 context("Aesthetics")
 
+
+# color scheme stuff ------------------------------------------------------
 test_that("getting and setting the color scheme works", {
-  expect_identical(get_color_scheme(), prepare_colors("red"))
+  expect_equivalent(get_color_scheme(), prepare_colors("red"))
+  expect_named(prepare_colors("blue"), scheme_level_names())
+  expect_named(get_color_scheme(), scheme_level_names())
   for (clr in names(master_color_list)) {
     set_color_scheme(clr)
-    expect_identical(get_color_scheme(), prepare_colors(clr),
-                     info = clr)
+    expect_equivalent(get_color_scheme(), prepare_colors(clr),
+                      info = clr)
+    expect_named(get_color_scheme(), scheme_level_names())
   }
 
   set_color_scheme("blue")
-  expect_equal(get_color_scheme("teal"), prepare_colors("teal"))
+  expect_equivalent(get_color_scheme("teal"), prepare_colors("teal"))
+})
+
+test_that("setting mixed scheme works", {
+  set_color_scheme("mix-gray-blue")
+  expect_equivalent(get_color_scheme(), mixed_scheme("gray", "blue"))
+
+  set_color_scheme("mix-blue-gray")
+  expect_equivalent(get_color_scheme(), mixed_scheme("blue", "gray"))
+
+  expect_error(set_color_scheme("mix-green-reds"),
+               "should be one of")
+  expect_error(set_color_scheme("mix-greens-red"),
+               "should be one of")
 })
 
 orange_scheme_bad <-
@@ -46,7 +64,7 @@ test_that("custom color schemes work", {
   expect_equivalent(unlist(get_color_scheme()), random_scheme)
 })
 
-test_that("ppc_color returns correct color values", {
+test_that("get_color returns correct color values", {
   scheme <- set_color_scheme("green")
   levs <- scheme_level_names()
 
@@ -55,6 +73,10 @@ test_that("ppc_color returns correct color values", {
   for (lev in levs)
     expect_identical(get_color(lev), scheme[[lev]], info = lev)
 })
+
+
+
+# ggplot theme ------------------------------------------------------------
 
 test_that("theme_default creates ggplot theme", {
   thm1 <- theme_default()

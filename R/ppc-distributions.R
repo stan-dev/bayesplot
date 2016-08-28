@@ -71,6 +71,10 @@ ppc_hist <- function(y, yrep, ..., binwidth = NULL) {
   y <- validate_y(y)
   yrep <- validate_yrep(yrep, y)
 
+  mixed_scheme <- is_mixed_scheme(get_color_scheme())
+  hist_fills <- get_color(c(ifelse(mixed_scheme, "m", "d"), "l"))
+  hist_colors <- get_color(c(ifelse(mixed_scheme, "mh", "dh"), "lh"))
+
   ggplot(
     data = melt_and_stack(y, yrep),
     mapping = aes_(
@@ -81,8 +85,8 @@ ppc_hist <- function(y, yrep, ..., binwidth = NULL) {
     )
   ) +
     geom_histogram(size = 0.25, binwidth = binwidth) +
-    scale_fill_manual(values = get_color(c("d", "l"))) +
-    scale_color_manual(values = get_color(c("dh", "lh"))) +
+    scale_fill_manual(values = hist_fills) +
+    scale_color_manual(values = hist_colors) +
     facet_wrap_parsed("rep_id", switch = "x") +
     dont_expand_y_axis() +
     theme_default(y_text = FALSE, x_lab = FALSE)

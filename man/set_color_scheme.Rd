@@ -29,9 +29,11 @@ get_color_scheme(scheme)
    \item \code{"red"}
    \item \code{"teal"}
    \item \code{"yellow"}
-   \item \code{"mix-blue-red"}
-   \item \code{"mix-green-blue"}
-   \item \code{"mix-teal-pink"}
+   \item \code{"mix-x-y"}, replacing \code{x} and \code{y} with any two of
+   the scheme names listed above (e.g. "mix-teal-pink", "mix-blue-red",
+   etc.). The order of \code{x} and \code{y} matters, i.e., the color schemes
+   "mix-blue-red" and "mix-red-blue" are not identical. There is no gaurantee
+   that every possible mixed scheme will look good with every possible plot.
   }}
 }
 \value{
@@ -94,7 +96,7 @@ orange_scheme <- c("#ffebcc", "#ffcc80",
                    "#995c00", "#663d00")
 set_color_scheme(orange_scheme)
 get_color_scheme()
-mcmc_areas(x)
+mcmc_areas(x, regex_pars = "alpha")
 mcmc_dens_overlay(x)
 ppc_stat(y, yrep, stat = "var") + no_legend()
 

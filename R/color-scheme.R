@@ -23,9 +23,11 @@
 #'    \item \code{"red"}
 #'    \item \code{"teal"}
 #'    \item \code{"yellow"}
-#'    \item \code{"mix-blue-red"}
-#'    \item \code{"mix-green-blue"}
-#'    \item \code{"mix-teal-pink"}
+#'    \item \code{"mix-x-y"}, replacing \code{x} and \code{y} with any two of
+#'    the scheme names listed above (e.g. "mix-teal-pink", "mix-blue-red",
+#'    etc.). The order of \code{x} and \code{y} matters, i.e., the color schemes
+#'    "mix-blue-red" and "mix-red-blue" are not identical. There is no gaurantee
+#'    that every possible mixed scheme will look good with every possible plot.
 #'   }
 #'
 #' @return \code{set_color_scheme} has the side effect of setting the color
@@ -83,15 +85,14 @@
 #'                    "#995c00", "#663d00")
 #' set_color_scheme(orange_scheme)
 #' get_color_scheme()
-#' mcmc_areas(x)
+#' mcmc_areas(x, regex_pars = "alpha")
 #' mcmc_dens_overlay(x)
 #' ppc_stat(y, yrep, stat = "var") + no_legend()
 #'
 set_color_scheme <- function(scheme) {
   stopifnot(is.character(scheme))
   if (length(scheme) == 1) {
-    scheme <- match.arg(scheme, choices = names(master_color_list))
-    x <- prepare_colors(scheme)
+    x <- scheme_from_string(scheme)
   } else if (length(scheme) == 6) {
     x <- prepare_custom_colors(scheme)
   } else {
@@ -99,8 +100,9 @@ set_color_scheme <- function(scheme) {
   }
 
   for (lev in names(x))
-    .bayesplot_aesthetics[[lev]] <- x[[lev]]
+    .bayesplot_aesthetics$scheme[[lev]] <- x[[lev]]
 
+  attr(.bayesplot_aesthetics$scheme, "mixed") <- attr(x, "mixed")
   invisible(x)
 }
 
@@ -108,16 +110,39 @@ set_color_scheme <- function(scheme) {
 #' @export
 get_color_scheme <- function(scheme) {
   if (missing(scheme)) {
-    x <- as.list(.bayesplot_aesthetics)
-    return(x[scheme_level_names()])
+    x <- .bayesplot_aesthetics$scheme
+    scheme <- as.list(x)[scheme_level_names()]
+    attr(scheme, "mixed") <- attr(x, "mixed")
+    return(scheme)
   }
-  scheme <- match.arg(scheme, choices = names(master_color_list))
-  prepare_colors(scheme)
+  scheme_from_string(scheme)
 }
 
 
 
 # internal -----------------------------------------------------------------
+
+# @param scheme A string (length 1) naming a scheme
+scheme_from_string <- function(scheme) {
+  stopifnot(length(scheme) == 1)
+  if (identical(substr(scheme, 1, 4), "mix-")) {
+    to_mix <- unlist(strsplit(scheme, split = "-"))[2:3]
+    x <- setNames(mixed_scheme(to_mix[1], to_mix[2]), scheme_level_names())
+    structure(x, mixed = TRUE)
+  } else {
+    scheme <- match.arg(scheme, choices = names(master_color_list))
+    x <- prepare_colors(scheme)
+    structure(x, mixed = FALSE)
+  }
+}
+
+
+# check if object returned by get_color_scheme is a mixed scheme
+# @param x object returned by get_color_scheme
+is_mixed_scheme <- function(x) {
+  stopifnot(is.list(x))
+  isTRUE(attr(x, "mixed"))
+}
 
 # Access a subset of the scheme colors
 #
@@ -154,9 +179,12 @@ scheme_level_names <- function() {
 }
 
 prepare_colors <- function(scheme) {
-  setNames(master_color_list[[scheme]],
-           scheme_level_names())
+  setNames(
+    master_color_list[[scheme]],
+    scheme_level_names()
+  )
 }
+
 prepare_custom_colors <- function(scheme) {
   if (length(scheme) != 6)
     stop("Custom color schemes must contain exactly 6 colors.",
@@ -196,7 +224,7 @@ STOP_bad_colors <- function(x) {
 mixed_scheme <- function(scheme1, scheme2) {
   scheme1 <- get_color_scheme(scheme1)
   scheme2 <- get_color_scheme(scheme2)
-  unname(list(
+  scheme <- unname(list(
     scheme1$light,
     scheme2$light_highlight,
     scheme2$mid,
@@ -204,7 +232,10 @@ mixed_scheme <- function(scheme1, scheme2) {
     scheme1$dark,
     scheme2$dark_highlight
   ))
+  attr(scheme, "mixed") <- TRUE
+  return(scheme)
 }
+
 master_color_list <- list(
   blue =
     list("#d1e1ec", "#b3cde0", "#6497b1", "#005b96", "#03396c", "#011f4b"),
@@ -225,10 +256,8 @@ master_color_list <- list(
   yellow =
     list("#fbf3da", "#f8e8b5", "#f5dc90", "#dbc376", "#aa975c", "#7a6c42")
 )
-master_color_list[["mix-blue-red"]] <- mixed_scheme("blue", "red")
-master_color_list[["mix-green-blue"]] <- mixed_scheme("green", "blue")
-master_color_list[["mix-teal-pink"]] <- mixed_scheme("teal", "pink")
 
 # instantiate aesthetics --------------------------------------------------
 .bayesplot_aesthetics <- new.env(parent = emptyenv())
+.bayesplot_aesthetics$scheme <- list()
 set_color_scheme("red")

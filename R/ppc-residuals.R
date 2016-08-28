@@ -129,6 +129,9 @@ ppc_resid_binned <- function(y, Ey, ...) {
       ))
   }
 
+  mixed_scheme <- is_mixed_scheme(get_color_scheme())
+  point_fill <- get_color(ifelse(mixed_scheme, "m", "d"))
+  point_color <- get_color(ifelse(mixed_scheme, "mh", "dh"))
   graph <-
     ggplot(binned, aes_(x = ~ xbar)) +
     geom_hline(
@@ -149,8 +152,8 @@ ppc_resid_binned <- function(y, Ey, ...) {
     geom_point(
       mapping = aes_(y = ~ ybar),
       shape = 21,
-      fill = get_color("d"),
-      color = get_color("dh")
+      fill = point_fill,
+      color = point_color
     ) +
     labs(
       x = "Expected Values",
