@@ -157,8 +157,9 @@ ppc_stat_2d <- function(y, yrep, stat = c("mean", "sd"), ...) {
     geom_point(
       shape = 21,
       size = 2,
-      fill = get_color("l"),
-      color = get_color("lh")
+      fill = get_color("m"),
+      color = get_color("mh"),
+      alpha = 0.8
     ) +
     annotate(
       geom = "segment",
@@ -168,7 +169,8 @@ ppc_stat_2d <- function(y, yrep, stat = c("mean", "sd"), ...) {
       yend = c(T_y2, T_y2),
       linetype = 2,
       size = 0.4,
-      color = get_color("dh")
+      color = "black"
+      # color = get_color("dh")
     ) +
     geom_point(
       data = data.frame(x = T_y1, y = T_y2),
@@ -178,18 +180,18 @@ ppc_stat_2d <- function(y, yrep, stat = c("mean", "sd"), ...) {
         fill = ~ 'Ty',
         color = ~ 'Ty'
       ),
-      size = 4,
-      shape = 21,
+      size = 4.5,
+      shape = 23,
       stroke = 1
     ) +
     scale_fill_manual(
       name = "",
-      values = c('Ty' = get_color("d")),
+      values = c('Ty' = get_color("l")),
       labels = c('Ty' = Ty_label())
     ) +
     scale_color_manual(
       name = "",
-      values = c('Ty' = get_color("dh")),
+      values = c('Ty' = "black"),
       labels = c('Ty' = Ty_label())
     ) +
     labs(
