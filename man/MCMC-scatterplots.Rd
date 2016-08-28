@@ -2,15 +2,11 @@
 % Please edit documentation in R/mcmc-scatterplots.R
 \name{MCMC-scatterplots}
 \alias{MCMC-scatterplots}
-\alias{mcmc_pairs}
 \alias{mcmc_scatter}
 \title{Scatterplots of MCMC draws}
 \usage{
 mcmc_scatter(x, pars = character(), regex_pars = character(),
   transformations = list(), ..., size = 2.5, alpha = 0.8)
-
-mcmc_pairs(x, pars = character(), regex_pars = character(),
-  transformations = list(), ..., size = 1.5, alpha = 0.8)
 }
 \arguments{
 \item{x}{A 3-D array, matrix, or data frame of posterior draws:
@@ -55,9 +51,8 @@ label to indicate that the parameter is transformed (e.g.
 \item{size, alpha}{Passed to \code{\link[ggplot2]{geom_point}}.}
 }
 \value{
-For \code{mcmc_scatter}, a ggplot object that can be further
-  customized using the \pkg{ggplot2} package. For \code{mcmc_pairs}, a
-  \code{\link[GGally]{ggpairs}} object.
+A ggplot object that can be further customized using the
+  \pkg{ggplot2} package.
 }
 \description{
 Scatterplots of MCMC draws. See the \strong{Plot Descriptions} section,
@@ -70,7 +65,7 @@ below, for details.
    Bivariate scatterplot of posterior draws (for two parameters).
   }
   \item{\code{mcmc_pairs}}{
-  Scatterplot matrix with histograms along the diagonal.
+  Coming soon.
   }
 }
 }
@@ -91,10 +86,6 @@ p + ggplot2::stat_ellipse(level = 0.9, color = "darkgray", size = 2)
 set_color_scheme("pink")
 (p2 <- mcmc_scatter(x, pars = c("alpha", "beta[3]"), alpha = 0.5, size = 3))
 p2 + ggplot2::geom_smooth(method = "lm", se = FALSE, color = "gray20")
-
-# pairs plot with histograms along the diagonal
-set_color_scheme("mix-green-blue")
-mcmc_pairs(x, pars = c("alpha", "sigma", "beta[3]"))
 
 }
 \seealso{

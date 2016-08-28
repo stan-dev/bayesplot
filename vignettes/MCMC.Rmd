@@ -149,14 +149,6 @@ The `mcmc_scatter` function creates a scatterplot with two parameters:
 mcmc_scatter(posterior, pars = c("(Intercept)", "wt"))
 ```
 
-The `mcmc_pairs` function creates a scatterplot matrix of multiple parameters
-with histograms along the diagonal and estimated correlations displayed
-in the upper triangle:
-
-```{r, mcmc_pairs, fig.width=6, fig.height=6}
-mcmc_pairs(posterior, pars = c("(Intercept)", "wt", "carb", "sigma"))
-```
-
 ### Traceplots 
 
 The `mcmc_trace` function creates standard traceplots:

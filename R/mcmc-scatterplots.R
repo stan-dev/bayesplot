@@ -14,9 +14,8 @@
 #' @param ... Currently ignored.
 #' @param size,alpha Passed to \code{\link[ggplot2]{geom_point}}.
 #'
-#' @return For \code{mcmc_scatter}, a ggplot object that can be further
-#'   customized using the \pkg{ggplot2} package. For \code{mcmc_pairs}, a
-#'   \code{\link[GGally]{ggpairs}} object.
+#' @return A ggplot object that can be further customized using the
+#'   \pkg{ggplot2} package.
 #'
 #' @section Plot Descriptions:
 #' \describe{
@@ -24,7 +23,7 @@
 #'    Bivariate scatterplot of posterior draws (for two parameters).
 #'   }
 #'   \item{\code{mcmc_pairs}}{
-#'   Scatterplot matrix with histograms along the diagonal.
+#'   Coming soon.
 #'   }
 #' }
 #'
@@ -49,10 +48,6 @@
 #' set_color_scheme("pink")
 #' (p2 <- mcmc_scatter(x, pars = c("alpha", "beta[3]"), alpha = 0.5, size = 3))
 #' p2 + ggplot2::geom_smooth(method = "lm", se = FALSE, color = "gray20")
-#'
-#' # pairs plot with histograms along the diagonal
-#' set_color_scheme("mix-green-blue")
-#' mcmc_pairs(x, pars = c("alpha", "sigma", "beta[3]"))
 #'
 NULL
 
@@ -90,67 +85,68 @@ mcmc_scatter <- function(x,
     theme_default()
 }
 
-#' @rdname MCMC-scatterplots
-#' @export
-mcmc_pairs <- function(x,
-                       pars = character(),
-                       regex_pars = character(),
-                       transformations = list(),
-                       ...,
-                       size = 1.5,
-                       alpha = 0.8) {
-  suggested_package("GGally")
-
-  x <- prepare_mcmc_array(x, pars, regex_pars, transformations)
-  user_pars <- parameter_names(x)
-  dimnames(x)[[3]] <- rename_pairs_parameters(user_pars)
-  if (!has_multiple_params(x))
-    STOP_need_multiple_params()
-
-  data <- merge_chains(x)
-
-  message("Processing... this may take a little while")
-  graph <- GGally::ggpairs(
-    data,
-    upper = list(),
-    lower = list(
-      continuous = GGally::wrap(
-        "points",
-        shape = 21,
-        fill = get_color("d"),
-        color = get_color("dh"),
-        alpha = alpha,
-        size = size
-      )
-    ),
-    diag = list(
-      continuous = GGally::wrap(
-        "barDiag",
-        fill = get_color("l"),
-        color = get_color("lh"),
-        size = .25
-      )
-    )
-  )
-
-  graph <- reset_pairs_parameters(graph, user_pars)
-  graph + theme_default()
-}
-
-
-
-# internal ----------------------------------------------------------------
-# Remove special characters in parameter names so ggpairs doesn't complain
-rename_pairs_parameters <- function(pars) {
-  stopifnot(is.character(pars))
-  pars <- gsub("\\[|\\:", "_", pars)
-  pars <- gsub("\\(|\\)|\\]", "", pars)
-  gsub(" ", "_", pars)
-}
-
-# Reset axis labels to original parameter names
-reset_pairs_parameters <- function(ggmatrix, pars) {
-  ggmatrix$xAxisLabels <- pars
-  ggmatrix$yAxisLabels <- pars
-  ggmatrix
-}
+#
+# #' @rdname MCMC-scatterplots
+# #' @export
+# mcmc_pairs <- function(x,
+#                        pars = character(),
+#                        regex_pars = character(),
+#                        transformations = list(),
+#                        ...,
+#                        size = 1.5,
+#                        alpha = 0.8) {
+#   suggested_package("GGally")
+#
+#   x <- prepare_mcmc_array(x, pars, regex_pars, transformations)
+#   user_pars <- parameter_names(x)
+#   dimnames(x)[[3]] <- rename_pairs_parameters(user_pars)
+#   if (!has_multiple_params(x))
+#     STOP_need_multiple_params()
+#
+#   data <- merge_chains(x)
+#
+#   message("Processing... this may take a little while")
+#   graph <- GGally::ggpairs(
+#     data,
+#     upper = list(),
+#     lower = list(
+#       continuous = GGally::wrap(
+#         "points",
+#         shape = 21,
+#         fill = get_color("d"),
+#         color = get_color("dh"),
+#         alpha = alpha,
+#         size = size
+#       )
+#     ),
+#     diag = list(
+#       continuous = GGally::wrap(
+#         "barDiag",
+#         fill = get_color("l"),
+#         color = get_color("lh"),
+#         size = .25
+#       )
+#     )
+#   )
+#
+#   graph <- reset_pairs_parameters(graph, user_pars)
+#   graph + theme_default()
+# }
+#
+#
+#
+# # internal ----------------------------------------------------------------
+# # Remove special characters in parameter names so ggpairs doesn't complain
+# rename_pairs_parameters <- function(pars) {
+#   stopifnot(is.character(pars))
+#   pars <- gsub("\\[|\\:", "_", pars)
+#   pars <- gsub("\\(|\\)|\\]", "", pars)
+#   gsub(" ", "_", pars)
+# }
+#
+# # Reset axis labels to original parameter names
+# reset_pairs_parameters <- function(ggmatrix, pars) {
+#   ggmatrix$xAxisLabels <- pars
+#   ggmatrix$yAxisLabels <- pars
+#   ggmatrix
+# }
