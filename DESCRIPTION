@@ -1,8 +1,8 @@
 Package: bayesplot
 Type: Package
 Title: Plots for Bayesian Models
-Version: 0.0.4
-Date: 2016-07-27
+Version: 0.0.5
+Date: 2016-08-28
 Authors@R: c(person("Jonah", "Gabry", role = c("aut", "cre"), email = "jsg2201@columbia.edu"),
              person("Paul-Christian", "Buerkner", role = "ctb"))
 Maintainer: Jonah Gabry <jsg2201@columbia.edu>

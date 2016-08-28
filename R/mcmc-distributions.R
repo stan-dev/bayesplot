@@ -324,9 +324,9 @@ mcmc_violin <- function(x,
     graph <- graph + dont_expand_x_axis()
   if (by_chain)
     graph <- graph + scale_color_manual(values = chain_colors(n_chain))
-  if (is.null(facet_args$scales))
-    facet_args$scales <- "free"
+  if (is.null(facet_args[["scales"]]))
+    facet_args[["scales"]] <- "free"
 
-  facet_args$facets <- ~ Parameter
+  facet_args[["facets"]] <- ~ Parameter
   graph + do.call("facet_wrap", facet_args)
 }
