@@ -2,11 +2,14 @@
 % Please edit documentation in R/ppc-residuals.R
 \name{PPC-residuals}
 \alias{PPC-residuals}
-\alias{ppc_resid}
 \alias{ppc_resid_binned}
+\alias{ppc_resid_hist}
+\alias{ppc_resid_scatter}
 \title{PPC residuals}
 \usage{
-ppc_resid(y, yrep, ..., binwidth = NULL)
+ppc_resid_hist(y, yrep, ..., binwidth = NULL)
+
+ppc_resid_scatter(y, yrep, ..., size = 2.5, alpha = 0.8)
 
 ppc_resid_binned(y, Ey, ...)
 }
@@ -26,6 +29,9 @@ instructions.}
 \item{binwidth}{An optional value used as the \code{binwidth} argument to
 \code{\link[ggplot2]{geom_histogram}} to override the default binwidth.}
 
+\item{size, alpha}{Arguments passed to \code{\link[ggplot2]{geom_point}} to
+control the appearance of scatterplot points.}
+
 \item{Ey}{A matrix of posterior draws of the linear predictor transformed by
 the inverse-link function.}
 }
@@ -34,8 +40,9 @@ A ggplot object that can be further customized using the
   \pkg{ggplot2} package.
 }
 \description{
-\code{ppc_resid} plots the distributions of residuals computed from \code{y}
-and simulated datasets \code{yrep}. For binomial data,
+\code{ppc_resid_hist} plots histograms of residuals computed from \code{y}
+and simulated datasets \code{yrep}. \code{ppc_resid_scatter} plots
+scatterplots of residuals vs. \code{y}. For binomial data,
 \code{ppc_resid_binned} generates binned residual plots (similar to
 \code{\link[arm]{binnedplot}}) from \code{y} and the posterior draws of the
 linear predictor transformed by the inverse-link function. See the
@@ -56,10 +63,15 @@ counts).
 \section{Plot descriptions}{
 
 \describe{
-  \item{\code{ppc_resid}}{
+  \item{\code{ppc_resid_hist}}{
    A separate histogram is plotted for the residuals computed from \code{y}
    and each dataset (row) in \code{yrep}. For this plot
    \code{yrep} should have only a small number of rows.
+  }
+  \item{\code{ppc_resid_scatter}}{
+   A separate scatterplot is displayed for \code{y} vs. the residuals
+   computed from \code{y} and each dataset (row) in \code{yrep}. For this
+   plot \code{yrep} should have only a small number of rows.
   }
   \item{\code{ppc_resid_binned}}{
    Intended for use with binomial data. A separate binned residual plot
@@ -73,8 +85,8 @@ counts).
 \examples{
 y <- example_y_data()
 yrep <- example_yrep_draws()
-ppc_resid(y, yrep[1:3, ])
-ppc_resid(y, yrep[10:15, ])
+ppc_resid_hist(y, yrep[1:3, ])
+ppc_resid_scatter(y, yrep[10:14, ])
 
 }
 \references{

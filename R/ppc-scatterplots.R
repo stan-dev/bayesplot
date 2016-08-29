@@ -118,16 +118,19 @@ ppc_scatter_plotter <-
            y_lab = "",
            color = c("mid", "light"),
            size = 2.5,
-           alpha = 1) {
-
+           alpha = 1,
+           abline = TRUE) {
     mid <- isTRUE(match.arg(color) == "mid")
-    ggplot(data, mapping) +
-      geom_abline(
+    graph <- ggplot(data, mapping)
+    if (abline) {
+      graph <- graph + geom_abline(
         intercept = 0,
         slope = 1,
         linetype = 2,
         color = get_color("dh")
-      ) +
+      )
+    }
+    graph +
       geom_point(
         shape = 21,
         fill = get_color(ifelse(mid, "m", "l")),
