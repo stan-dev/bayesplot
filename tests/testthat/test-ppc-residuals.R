@@ -3,11 +3,15 @@ context("PPC: residuals")
 
 source("data-for-ppc-tests.R")
 
-test_that("ppc_resid returns ggplot object", {
-  expect_gg(ppc_resid(y, yrep[1:5, ]))
-  expect_gg(ppc_resid(y, yrep[1,, drop = FALSE]))
+test_that("ppc_resid_hist and ppc_resid_scatter return ggplot object", {
+  expect_gg(ppc_resid_hist(y, yrep[1:5, ]))
+  expect_gg(ppc_resid_scatter(y, yrep[1:5, ]))
 
-  expect_gg(ppc_resid(y2, yrep2))
+  expect_gg(ppc_resid_hist(y, yrep[1,, drop = FALSE]))
+  expect_gg(ppc_resid_scatter(y, yrep[1,, drop = FALSE]))
+
+  expect_gg(ppc_resid_hist(y2, yrep2))
+  expect_gg(ppc_resid_scatter(y2, yrep2))
 })
 
 test_that("ppc_resid_binned returns ggplot object", {
