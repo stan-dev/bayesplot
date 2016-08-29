@@ -257,14 +257,14 @@ mcmc_violin <- function(x,
     dont_expand_y_axis(c(0.005, 0)) +
     theme_default(y_text = FALSE, x_lab = FALSE)
 
-  if (is.null(facet_args$scales))
-    facet_args$scales <- "free"
+  if (is.null(facet_args[["scales"]]))
+    facet_args[["scales"]] <- "free"
 
   if (!by_chain) {
-    facet_args$facets <- ~ Parameter
+    facet_args[["facets"]] <- ~ Parameter
     graph + do.call("facet_wrap", facet_args)
   } else {
-    facet_args$facets <- Chain ~ Parameter
+    facet_args[["facets"]] <- Chain ~ Parameter
     graph + do.call("facet_grid", facet_args)
   }
 }

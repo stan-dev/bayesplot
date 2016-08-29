@@ -157,8 +157,7 @@ mcmc_rhat <- function(rhat, ..., size = NULL) {
     scale_fill_diagnostic("rhat") +
     scale_color_diagnostic("rhat") +
     theme_default(y_text = FALSE) +
-    scale_x_continuous(breaks = brks,
-                       expand = c(0,.01))
+    scale_x_continuous(breaks = brks, expand = c(0, .01))
 }
 
 #' @rdname MCMC-diagnostics

@@ -65,7 +65,8 @@ mcmc_scatter <- function(x,
   if (dim(x)[3] != 2)
     stop(
       "For 'mcmc_scatter' exactly 2 parameters must be selected. ",
-      "Use 'mcmc_pairs' to include more than 2 parameters."
+      "'mcmc_pairs' for more than 2 parameters will be available ",
+      "in a future release."
     )
 
   x <- merge_chains(x)
