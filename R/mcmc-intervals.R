@@ -159,7 +159,6 @@ mcmc_areas <- function(x,
   if (point_est == "mean")
     data$m <- unname(colMeans(x))
 
-
   color_by_rhat <- isTRUE(length(rhat) > 0)
   if (color_by_rhat) {
     rhat <- factor_rhat(rhat)
@@ -247,12 +246,23 @@ mcmc_areas <- function(x,
       ))
 
     # point estimate
+    df_dens$parameter <- df_dens$name
+    pt_data <- dplyr::summarise_(
+      # find y value at which to stop vertical pt est segment
+      dplyr::group_by_(
+        dplyr::left_join(df_dens, data[, c("parameter", "m")],
+                         by = "parameter"),
+        .dots = list(~ parameter)
+      ),
+      .dots = list(maxy = ~ y[which.min(abs(x - m))])
+    )
     segment_args <- list(
+      data = dplyr::left_join(data, pt_data, by = "parameter"),
       mapping = aes_(
         x = ~ m,
         xend = ~ m,
         y = ~ y,
-        yend = ~ y + 0.25,
+        yend = ~ maxy,
         color = if (!color_by_rhat) NULL else ~ rhat
       ),
       size = 1.5
