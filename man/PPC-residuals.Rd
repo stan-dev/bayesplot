@@ -49,10 +49,10 @@ linear predictor transformed by the inverse-link function. See the
 \strong{Details} and \strong{Plot Descriptions} sections, below.
 }
 \details{
-\code{ppc_resid} and \code{ppc_resid_binned} compute and plot residuals for
-each row of the matrices \code{yrep} and \code{Ey}, respectively, so it is
-usually a good idea for \code{yrep} and \code{Ey} to contain only a small
-number of draws (rows). See \strong{Examples}, below.
+These plots compute and plot residuals for each row of the matrix \code{yrep}
+(or for \code{ppc_resid_binned} the matrix \code{Ey}), so it is usually a
+good idea for \code{yrep} and \code{Ey} to contain only a small number of
+draws (rows). See \strong{Examples}, below.
 
 For binomial and Bernoulli data the \code{ppc_resid_binned} function
 should be used to generate binned residual plots. Bernoulli data can be input
