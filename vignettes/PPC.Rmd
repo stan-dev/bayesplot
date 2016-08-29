@@ -102,18 +102,30 @@ fit_poisson <- stan_glm(
 print(fit_poisson)
 ```
 
-In order to use the PPC functions from the __bayesplot__ package we need
-a matrix of draws from the posterior predictive distribution. Since we fit 
-the model using __rstanarm__ we can use its `posterior_predict` function:
+We'll also fit the negative binomial model that we'll compare to the poisson:
 
-```{r, posterior_predict}
-yrep <- posterior_predict(fit_poisson)
-dim(yrep)
+```{r, roaches-model-2, results="hide", message=FALSE,warning=FALSE}
+fit_nb <- update(fit_poisson, family = "neg_binomial_2")
 ```
 
-Each row of this matrix is a draw from the posterior predictive distribution, 
-i.e. a vector with `r ncol(yrep)` elements, one for each of the data points in
-`y`.
+```{r, print-2}
+print(fit_nb)
+```
+
+In order to use the PPC functions from the __bayesplot__ package we need
+a matrix of draws from the posterior predictive distribution. Since we fit 
+the models using __rstanarm__ we can use its `posterior_predict` function:
+
+```{r, posterior_predict}
+yrep_poisson <- posterior_predict(fit_poisson)
+yrep_nb <- posterior_predict(fit_nb)
+dim(yrep_poisson)
+dim(yrep_nb)
+```
+
+For each of the `yrep` matrices, every row is a draw from the posterior 
+predictive distribution, i.e. a vector with `r ncol(yrep_poisson)` elements, one
+for each of the data points in `y`.
 
 ### Histograms and density estimates
 
@@ -121,10 +133,11 @@ The first PPC we'll look at is a comparison of the distribution of `y` and the
 distributions of some of the simulated datasets (rows) in the `yrep` matrix.
 
 ```{r ppc_dens_overlay}
+library("ggplot2")
 library("bayesplot")
 
 y <- roaches$y
-ppc_dens_overlay(y, yrep[1:50, ])
+ppc_dens_overlay(y, yrep_poisson[1:50, ])
 ```
 
 In the plot above, the dark line is the distribution of the observed outcomes 
@@ -138,15 +151,73 @@ We could see the same thing by looking at separate histograms of `y` and some
 of the `yrep` datasets using the `ppc_hist` function:
 
 ```{r ppc_hist}
-ppc_hist(y, yrep[1:8, ])
+ppc_hist(y, yrep_poisson[1:5, ])
+```
+
+The same plot for the negative binomial model looks much different:
+
+```{r ppc_hist-nb}
+ppc_hist(y, yrep_nb[1:5, ])
+```
+
+The negative binomial model does better handling the number of zeros in the
+data, but it occasionally predicts values that are way too large, which is why 
+the x-axes extend to such high values in the plot. To see the predictions for
+the smaller values more clearly we can zoom in:
+
+```{r ppc_dens_overlay-2}
+ppc_hist(y, yrep_nb[1:5, ], binwidth = 20) + 
+  coord_cartesian(xlim = c(-1, 500))
 ```
 
 
-### Scatterplots
-
-Write this section.
-
 ### Distributions of test statistics
+
+Another way to see that the Poisson model predicts too few zeros is to use the 
+`ppc_stat` function to look at the distribution of the proportion of zeros over 
+the replicated datasets from the posterior predictive distribution in `yrep` and
+compare to the proportion of observed zeros in `y`.
+
+First we define a function that takes a vector as input and returns the
+proportion of zeros:
+
+```{r, prop_zero}
+prop_zero <- function(x) mean(x == 0)
+prop_zero(y) # check proportion of zeros in y
+```
+
+Then we can use this function as the `stat` argument to `ppc_stat`:
+
+```{r ppc_stat}
+ppc_stat(y, yrep_poisson, stat = "prop_zero")
+```
+
+In the plot the dark red line is at the value of `prop_zero(y)`, in this case 
+roughly `r round(prop_zero(y), 2)`. It's hard to see because almost all the 
+datasets in `yrep` have no zeros, but the lighter red bar is actually a
+histogram of the the proportion of zeros in each of the replicated datasets.
+
+Here's the same plot for the negative binomial model:
+
+```{r ppc_stat-nb}
+ppc_stat(y, yrep_nb, stat = "prop_zero")
+```
+
+Again we see that the negative binomial model does a much better job 
+predicting the proportion of observed zeros than the Poisson.
+
+However, if we look instead at the distribution of the maximum value in the 
+replications then we can see that the Poisson model makes more realistic
+predictions than the negative binomial:
+
+```{r ppc_stat-max}
+ppc_stat(y, yrep_poisson, stat = "max")
+ppc_stat(y, yrep_nb, stat = "max")
+ppc_stat(y, yrep_nb, stat = "max", binwidth = 20) + 
+  coord_cartesian(xlim = c(-1, 1000))
+```
+
+### Scatterplots
 
 Write this section.
 
