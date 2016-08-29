@@ -132,7 +132,7 @@ mcmc_nuts_acceptance <- function(x,
   accept_stat <- dplyr::filter_(x, ~ Parameter == "accept_stat__")
   data <- suppressWarnings(dplyr::bind_rows(
     accept_stat,
-    data.frame(lp, Parameter = "Log-posterior")
+    data.frame(lp, Parameter = "lp__")
   ))
 
   grp_par <- dplyr::group_by_(data, ~ Parameter)
@@ -177,7 +177,7 @@ mcmc_nuts_acceptance <- function(x,
       color = get_color(ifelse(overlay_chain, "lh", "mh")),
       alpha = 0.75
     ) +
-    labs(x = "accept_stat__", y = "Log-posterior") +
+    labs(x = "accept_stat__", y = "lp__") +
     theme_default()
 
 
@@ -248,7 +248,7 @@ mcmc_nuts_divergence <- function(x,
       fill = get_color("l"),
       color = get_color("lh")
     ) +
-    ylab("Log-posterior") +
+    ylab("lp__") +
     theme_default(x_lab = FALSE)
 
   violin_accept_stat_data <- data.frame(divergent, as = accept_stat$Value)
@@ -311,7 +311,7 @@ mcmc_nuts_stepsize <- function(x,
       fill = get_color("l"),
       color = get_color("lh")
     ) +
-    ylab("Log-posterior") +
+    ylab("lp__") +
     stepsize_labels +
     theme_default(x_lab = FALSE)
 
@@ -372,7 +372,7 @@ mcmc_nuts_treedepth <- function(x,
     ggplot(violin_lp_data, aes_(x = ~ factor(Value), y = ~ lp)) +
     geom_violin(fill = get_color("l"),
                 color = get_color("lh")) +
-    labs(x = "treedepth__", y = "Log-posterior") +
+    labs(x = "treedepth__", y = "lp__") +
     theme_default()
 
   violin_accept_stat_data <- data.frame(treedepth, as = accept_stat$Value)
