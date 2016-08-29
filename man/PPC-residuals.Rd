@@ -55,7 +55,7 @@ good idea for \code{yrep} and \code{Ey} to contain only a small number of
 draws (rows). See \strong{Examples}, below.
 
 For binomial and Bernoulli data the \code{ppc_resid_binned} function
-should be used to generate binned residual plots. Bernoulli data can be input
+can be used to generate binned residual plots. Bernoulli data can be input
 as a vector of 0s and 1s, whereas for binomial data \code{y} should be a
 vector of "success" proportions (not a matrix of "success" and "failure"
 counts).
