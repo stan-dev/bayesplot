@@ -7,9 +7,11 @@
 #' @param x A molten data frame of NUTS sampler parameters, either created by
 #'   \code{\link{nuts_params}} or in the same form as the object returned by
 #'   \code{\link{nuts_params}}.
-#' @param lp A molten data frame of log-posterior draws, either created by
-#'   \code{\link{log_posterior}} or in the same form as the object returned
-#'   by \code{\link{log_posterior}}.
+#' @param lp A molten data frame of draws of the log-posterior or, more
+#'   commonly, of a quantity equal to the log-posterior up to a constant.
+#'   \code{lp} should either be created via \code{\link{log_posterior}} or be an
+#'   object with the same form as the object returned by
+#'   \code{\link{log_posterior}}.
 #' @param chain A positive integer for selecting a particular chain. The default
 #'   (\code{NULL}) is to merge the chains before plotting. If \code{chain = k}
 #'   then the plot for chain \code{k} is overlaid (in a darker shade but with
@@ -21,53 +23,8 @@
 #'   \code{\link[gridExtra]{arrangeGrob}}) created from several ggplot objects,
 #'   except for \code{mcmc_nuts_energy}, which returns a ggplot object.
 #'
-#' @section Plot Descriptions:
-#' \describe{
-#'   \item{\code{mcmc_nuts_acceptance}}{
-#'   Three plots:
-#'   \itemize{
-#'    \item Histogram of \code{accept_stat__} with vertical lines indicating the
-#'    mean (solid line) and median (dashed line).
-#'    \item Histogram of the log-posterior (up to a constant) with vertical
-#'    lines indicating the mean (solid line) and median (dashed line).
-#'    \item Scatterplot of \code{accept_stat__} vs log-posterior.
-#'    }
-#'   }
-#'   \item{\code{mcmc_nuts_divergence}}{
-#'   Two plots:
-#'   \itemize{
-#'    \item Violin plots of \code{log-posterior|divergent__=1} and
-#'      \code{log-posterior|divergent__=0}.
-#'    \item Violin plots of \code{accept_stat__|divergent__=1} and
-#'      \code{log-posterior|divergent__=0}.
-#'    }
-#'   }
-#'   \item{\code{mcmc_nuts_stepsize}}{
-#'   Two plots:
-#'   \itemize{
-#'    \item Violin plots of \code{log-posterior} by chain ordered by
-#'    \code{stepsize__} value.
-#'    \item Violin plots of \code{accept_stat__} by chain ordered by
-#'    \code{stepsize__} value.
-#'    }
-#'   }
-#'   \item{\code{mcmc_nuts_treedepth}}{
-#'   Three plots:
-#'   \itemize{
-#'    \item Violin plots of \code{log-posterior} by value of \code{treedepth__}.
-#'    \item Violin plots of \code{accept_stat__} by value of \code{treedepth__}.
-#'    \item Histogram of \code{treedepth__}.
-#'    }
-#'   }
-#'   \item{\code{mcmc_nuts_energy}}{
-#'   Overlaid histograms showing \code{energy__} vs the change in
-#'   \code{energy__}. See Betancourt (2016) for details.
-#'   }
-#' }
-#'
-#' @section NUTS parameter quick definitions:
-#' For more thorough information on these sampler parameters see Stan
-#' Development Team (2016).
+#' @section Quick definitions:
+#' For more details see Stan Development Team (2016).
 #' \itemize{
 #'   \item \code{accept_stat__}: the average acceptance probabilities of all
 #'   possible samples in the proposed tree (NUTS uses a slice sampling algorithm
@@ -82,6 +39,50 @@
 #'   simulation.
 #'   \item \code{energy__}: the value of the Hamiltonian (up to an additive
 #'   constant) at each sample.
+#' }
+#'
+#' @section Plot Descriptions:
+#' \describe{
+#'   \item{\code{mcmc_nuts_acceptance}}{
+#'   Three plots:
+#'   \itemize{
+#'    \item Histogram of \code{accept_stat__} with vertical lines indicating the
+#'    mean (solid line) and median (dashed line).
+#'    \item Histogram of \code{lp__} with vertical
+#'    lines indicating the mean (solid line) and median (dashed line).
+#'    \item Scatterplot of \code{accept_stat__} vs \code{lp__}.
+#'    }
+#'   }
+#'   \item{\code{mcmc_nuts_divergence}}{
+#'   Two plots:
+#'   \itemize{
+#'    \item Violin plots of \code{lp__|divergent__=1} and
+#'      \code{lp__|divergent__=0}.
+#'    \item Violin plots of \code{accept_stat__|divergent__=1} and
+#'      \code{lp__|divergent__=0}.
+#'    }
+#'   }
+#'   \item{\code{mcmc_nuts_stepsize}}{
+#'   Two plots:
+#'   \itemize{
+#'    \item Violin plots of \code{lp__} by chain ordered by
+#'    \code{stepsize__} value.
+#'    \item Violin plots of \code{accept_stat__} by chain ordered by
+#'    \code{stepsize__} value.
+#'    }
+#'   }
+#'   \item{\code{mcmc_nuts_treedepth}}{
+#'   Three plots:
+#'   \itemize{
+#'    \item Violin plots of \code{lp__} by value of \code{treedepth__}.
+#'    \item Violin plots of \code{accept_stat__} by value of \code{treedepth__}.
+#'    \item Histogram of \code{treedepth__}.
+#'    }
+#'   }
+#'   \item{\code{mcmc_nuts_energy}}{
+#'   Overlaid histograms showing \code{energy__} vs the change in
+#'   \code{energy__}. See Betancourt (2016) for details.
+#'   }
 #' }
 #'
 #' @template seealso-color-scheme
