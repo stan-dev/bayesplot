@@ -173,8 +173,6 @@ prepare_mcmc_array <-
            pars = character(),
            regex_pars = character(),
            transformations = list()) {
-    if (is_mcmc_array(x))
-      return(x)
 
     if (is_df_with_chain(x)) {
       x <- df_with_chain2array(x)
