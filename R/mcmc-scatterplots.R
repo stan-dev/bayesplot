@@ -102,7 +102,7 @@ mcmc_scatter <- function(x,
 #   user_pars <- parameter_names(x)
 #   dimnames(x)[[3]] <- rename_pairs_parameters(user_pars)
 #   if (!has_multiple_params(x))
-#     STOP_need_multiple_params()
+#     stop("This function requires multiple parameters.")
 #
 #   data <- merge_chains(x)
 #

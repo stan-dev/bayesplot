@@ -158,9 +158,6 @@ has_multiple_params <- function(x) {
 STOP_need_multiple_chains <- function(call. = FALSE) {
   stop("This function requires multiple chains.", call. = call.)
 }
-STOP_need_multiple_params <- function(call. = FALSE) {
-  stop("This function requires multiple parameters", call. = call.)
-}
 
 
 # Prepare 3-D array for MCMC plots

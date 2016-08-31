@@ -32,6 +32,14 @@ test_that("vline_at with 'fun' works", {
 })
 
 
+test_that("calc_v (internal function) works", {
+  a <- 1:4
+  expect_identical(calc_v(a, "mean"), 2.5)
+  expect_identical(calc_v(a, median), 2.5)
+  expect_equal(calc_v(c(a, NA), mean), NA_real_)
+  expect_identical(calc_v(c(a, NA), min, list(na.rm = TRUE)), 1L)
+})
+
 
 # lbub --------------------------------------------------------------------
 test_that("lbub works", {
@@ -51,6 +59,22 @@ test_that("lbub works", {
   )
 })
 
+
+
+# plot background ---------------------------------------------------------
+test_that("plot_bg returns correct theme object", {
+  bg1 <- plot_bg()
+  expect_s3_class(bg1, "theme")
+  expect_identical(bg1, theme(panel.background = element_rect()))
+  expect_false(attr(bg1, "complete"))
+
+  bg2 <- plot_bg(fill = "blue", linetype = 2)
+  expect_s3_class(bg2, "theme")
+  expect_identical(bg2, theme(panel.background = element_rect(fill = "blue", linetype = 2)))
+  expect_false(attr(bg2, "complete"))
+
+  expect_identical(plot_bg(on = FALSE), theme(panel.background = element_blank()))
+})
 
 # legends -----------------------------------------------------------------
 test_that("no_legend and move_legend return correct theme objects", {
