@@ -24,6 +24,9 @@
 #'   the intervals/areas and point estimates in the resulting plot are colored
 #'   based on \eqn{\hat{R}}{Rhat} value. See \code{\link{rhat}} for methods for
 #'   extracting \eqn{\hat{R}}{Rhat} estimates.
+#' @param bw,adjust,kernel For \code{mcmc_areas}, optional arguments passed to
+#'   \code{\link[stats]{density}} to override default kernel density estimation
+#'   parameters.
 #'
 #' @template return-ggplot
 #'
@@ -54,7 +57,8 @@
 #'  ggplot2::ggtitle("Posterior medians & 80% intervals")
 #'
 #' set_color_scheme("mix-green-blue")
-#' mcmc_areas(x,
+#' mcmc_areas(
+#'    x,
 #'    pars = c("alpha", "beta[4]"),
 #'    prob = 2/3,
 #'    prob_outer = 0.9,
@@ -62,22 +66,29 @@
 #' )
 #'
 #' # color by rhat value
-#' set_color_scheme("gray")
+#' set_color_scheme("brightblue")
 #' fake_rhat_values <- c(1, 1.07, 1.3, 1.01, 1.15, 1.005)
 #' mcmc_intervals(x, rhat = fake_rhat_values)
 #'
-#' set_color_scheme("blue")
-#' mcmc_areas(x, pars = c("alpha", "beta[4]"), rhat = c(1, 1.1))
+#' set_color_scheme("gray")
+#' p <- mcmc_areas(x, pars = c("alpha", "beta[4]"), rhat = c(1, 1.1))
+#' p + move_legend("bottom")
+#' p + move_legend("none")
+#'
 #'
 #' \dontrun{
 #' # example using fitted model from rstanarm package
 #' library(rstanarm)
-#' fit <- stan_glm(mpg ~ 0 + wt + factor(cyl), data = mtcars, iter = 500)
+#' fit <- stan_glm(
+#'  mpg ~ 0 + wt + factor(cyl),
+#'  data = mtcars,
+#'  iter = 500
+#' )
 #' x <- as.matrix(fit)
 #'
 #' set_color_scheme("teal")
 #' mcmc_intervals(x, point_est = "mean", prob = 0.8, prob_outer = 0.95)
-#' mcmc_areas(x, regex_pars = "cyl") + xaxis_ticks(size = .5)
+#' mcmc_areas(x, regex_pars = "cyl", bw = "SJ") + xaxis_ticks(size = .5)
 #' }
 #'
 #'
@@ -115,27 +126,38 @@ mcmc_areas <- function(x,
                        prob = 0.5,
                        prob_outer = 1,
                        point_est = c("median", "mean", "none"),
-                       rhat = numeric()) {
+                       rhat = numeric(),
+                       bw = NULL,
+                       adjust = NULL,
+                       kernel = NULL) {
   x <- prepare_mcmc_array(x, pars, regex_pars, transformations)
   .mcmc_intervals(
     x = merge_chains(x),
     prob_inner = prob,
     prob_outer = prob_outer,
     point_est = point_est,
+    rhat = rhat,
     show_density = TRUE,
-    rhat = rhat
+    bw = bw,
+    adjust = adjust,
+    kernel = kernel
   )
 }
 
 
 
 # internal ----------------------------------------------------------------
+
+# @param x A matrix (not a 3-D array) created by merge_chains()
 .mcmc_intervals <- function(x,
                            prob_inner = 0.5,
                            prob_outer = 0.95,
                            point_est = c("median", "mean", "none"),
                            rhat = numeric(),
-                           show_density = FALSE) {
+                           show_density = FALSE,
+                           bw = NULL,
+                           adjust = NULL,
+                           kernel = NULL) {
   n_param <- ncol(x)
   parnames <- colnames(x)
 
@@ -184,11 +206,16 @@ mcmc_areas <- function(x,
     n_dens_pts <- 512
     y_dens <- matrix(0, nrow = n_dens_pts, ncol = n_param)
     x_dens <- matrix(0, nrow = n_dens_pts, ncol = n_param)
-    for (i in 1:n_param) {
-      d_temp <- density(x[, i],
-                        from = quantiles[i, 1],
-                        to = quantiles[i, 5],
-                        n = n_dens_pts)
+    for (i in seq_len(n_param)) {
+      d_temp <- compute_dens_i(
+        x = x[, i],
+        from = quantiles[i, 1],
+        to = quantiles[i, 5],
+        n = n_dens_pts,
+        bw = bw,
+        adjust = adjust,
+        kernel = kernel
+      )
       x_dens[, i] <- d_temp$x
       y_max <- max(d_temp$y)
       y_dens[, i] <- d_temp$y / y_max * 0.8 + y[i]
@@ -218,11 +245,16 @@ mcmc_areas <- function(x,
     #shaded interval
     y_poly <- matrix(0, nrow = n_dens_pts + 2, ncol = n_param)
     x_poly <- matrix(0, nrow = n_dens_pts + 2, ncol = n_param)
-    for (i in 1:n_param) {
-      d_temp <- density(x[, i],
-                        from = quantiles[i, 2],
-                        to = quantiles[i, 4],
-                        n = n_dens_pts)
+    for (i in seq_len(n_param)) {
+      d_temp <- compute_dens_i(
+        x = x[, i],
+        from = quantiles[i, 2],
+        to = quantiles[i, 4],
+        n = n_dens_pts,
+        bw = bw,
+        adjust = adjust,
+        kernel = kernel
+      )
       x_poly[, i] <-
         c(d_temp$x[1], as.vector(d_temp$x), d_temp$x[n_dens_pts])
       y_max <- max(d_temp$y)
@@ -265,7 +297,7 @@ mcmc_areas <- function(x,
         yend = ~ maxy,
         color = if (!color_by_rhat) NULL else ~ rhat
       ),
-      size = 1.5
+      size = 1.25
     )
     if (!color_by_rhat)
       segment_args$color <- get_color("m")
@@ -367,4 +399,24 @@ mcmc_areas <- function(x,
       x_lab = FALSE,
       legend_position = ifelse(color_by_rhat, "top", "none")
     )
+}
+
+
+# compute kernel density estimates
+# all arguments are passed to stats::density
+compute_dens_i <- function(x, bw, adjust, kernel, n, from, to) {
+  args <- c(
+    # can't be null
+    list(
+      x = x,
+      from = from,
+      to = to,
+      n = n
+    ),
+    # might be null
+    bw = bw,
+    adjust = adjust,
+    kernel = kernel
+  )
+  do.call("density", args)
 }
