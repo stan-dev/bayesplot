@@ -45,7 +45,7 @@ test_that("parameter_names works", {
 
   dimnames(x) <- NULL
   expect_error(parameter_names(x), "No parameter names found")
-  expect_error(parameter_names(x[, 1, ]), "is_3d_array")
+  expect_error(parameter_names(x[, 1, ]), "No parameter names found")
 })
 
 test_that("has_multiple_chains works", {

@@ -113,15 +113,13 @@ set_mcmc_dimnames <- function(x, parnames) {
 }
 
 # Get parameter names from a 3-D array
-parameter_names <- function(x) {
+parameter_names <- function(x) UseMethod("parameter_names")
+parameter_names.array <- function(x) {
   stopifnot(is_3d_array(x))
-  if (is_mcmc_array(x))
-    return(dimnames(x)[[3]])
-
-  if (is.null(dimnames(x)[[3]]))
-    stop("No parameter names found.")
-  else
-    dimnames(x)[[3]]
+  dimnames(x)[[3]] %||% stop("No parameter names found.")
+}
+parameter_names.matrix <- function(x) {
+  colnames(x) %||% stop("No parameter names found.")
 }
 
 
@@ -181,7 +179,7 @@ prepare_mcmc_array <-
     parnames <- if (is.matrix(x)) {
       colnames(x)
     } else if (is.array(x)) {
-      dimnames(x)[[3]]
+      parameter_names(x)
     }
     if (is.null(parnames))
       stop("No parameter names found.")
@@ -214,7 +212,7 @@ prepare_mcmc_array <-
 merge_chains <- function(x) {
   xdim <- dim(x)
   mat <- array(x, dim = c(prod(xdim[1:2]), xdim[3]))
-  colnames(mat) <- dimnames(x)[[3]]
+  colnames(mat) <- parameter_names(x)
   mat
 }
 

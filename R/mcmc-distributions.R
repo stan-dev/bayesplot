@@ -90,7 +90,7 @@
 #'
 #' # separate histograms by chain
 #' set_color_scheme("pink")
-#' mcmc_hist_by_chain(x, pars = "alpha")
+#' mcmc_hist_by_chain(x, pars = "sigma")
 #'
 #' #################
 #' ### Densities ###
