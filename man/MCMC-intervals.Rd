@@ -12,7 +12,8 @@ mcmc_intervals(x, pars = character(), regex_pars = character(),
 
 mcmc_areas(x, pars = character(), regex_pars = character(),
   transformations = list(), ..., prob = 0.5, prob_outer = 1,
-  point_est = c("median", "mean", "none"), rhat = numeric())
+  point_est = c("median", "mean", "none"), rhat = numeric(), bw = NULL,
+  adjust = NULL, kernel = NULL)
 }
 \arguments{
 \item{x}{A 3-D array, matrix, or data frame of posterior draws:
@@ -71,6 +72,10 @@ one element per parameter included in \code{x}. If \code{rhat} is provided,
 the intervals/areas and point estimates in the resulting plot are colored
 based on \eqn{\hat{R}}{Rhat} value. See \code{\link{rhat}} for methods for
 extracting \eqn{\hat{R}}{Rhat} estimates.}
+
+\item{bw, adjust, kernel}{For \code{mcmc_areas}, optional arguments passed to
+\code{\link[stats]{density}} to override default kernel density estimation
+parameters.}
 }
 \value{
 A ggplot object that can be further customized using the
@@ -106,7 +111,8 @@ mcmc_areas(x, regex_pars = "beta\\\\[[1-3]", prob = 0.8) +
  ggplot2::ggtitle("Posterior medians & 80\% intervals")
 
 set_color_scheme("mix-green-blue")
-mcmc_areas(x,
+mcmc_areas(
+   x,
    pars = c("alpha", "beta[4]"),
    prob = 2/3,
    prob_outer = 0.9,
@@ -114,22 +120,29 @@ mcmc_areas(x,
 )
 
 # color by rhat value
-set_color_scheme("gray")
+set_color_scheme("brightblue")
 fake_rhat_values <- c(1, 1.07, 1.3, 1.01, 1.15, 1.005)
 mcmc_intervals(x, rhat = fake_rhat_values)
 
-set_color_scheme("blue")
-mcmc_areas(x, pars = c("alpha", "beta[4]"), rhat = c(1, 1.1))
+set_color_scheme("gray")
+p <- mcmc_areas(x, pars = c("alpha", "beta[4]"), rhat = c(1, 1.1))
+p + move_legend("bottom")
+p + move_legend("none")
+
 
 \dontrun{
 # example using fitted model from rstanarm package
 library(rstanarm)
-fit <- stan_glm(mpg ~ 0 + wt + factor(cyl), data = mtcars, iter = 500)
+fit <- stan_glm(
+ mpg ~ 0 + wt + factor(cyl),
+ data = mtcars,
+ iter = 500
+)
 x <- as.matrix(fit)
 
 set_color_scheme("teal")
 mcmc_intervals(x, point_est = "mean", prob = 0.8, prob_outer = 0.95)
-mcmc_areas(x, regex_pars = "cyl") + xaxis_ticks(size = .5)
+mcmc_areas(x, regex_pars = "cyl", bw = "SJ") + xaxis_ticks(size = .5)
 }
 
 

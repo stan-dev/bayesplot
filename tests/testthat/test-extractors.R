@@ -31,6 +31,9 @@ test_that("rhat.stanreg returns correct structure", {
   r <- rhat(fit)
   expect_named(r)
   expect_equal(r, summary(fit)[1:length(r), "Rhat"])
+
+  expect_identical(names(rhat(fit, regex_pars = c("wt", "am"))),
+                   c("wt", "am"))
 })
 
 test_that("neff_ratio.stanreg returns correct structure", {
@@ -44,11 +47,22 @@ test_that("rhat.stanfit returns correct structure", {
   r <- rhat(fit$stanfit)
   expect_named(r)
   expect_equal(r, summary(fit)[, "Rhat"])
+
+  r2 <- rhat(fit$stanfit, pars = c("wt", "sigma"))
+  expect_named(r2)
+  expect_equal(r2, summary(fit, pars = c("wt", "sigma"))[, "Rhat"])
 })
 
 test_that("neff_ratio.stanreg returns correct structure", {
+  denom <- floor(ITER / 2) * CHAINS
+
   ratio <- neff_ratio(fit$stanfit)
   expect_named(ratio)
-  ans <- summary(fit)[, "n_eff"] / (floor(ITER / 2) * CHAINS)
+  ans <- summary(fit)[, "n_eff"] / denom
   expect_equal(ratio, ans, tol = 0.001)
+
+  ratio2 <- neff_ratio(fit$stanfit, pars = c("wt", "sigma"))
+  expect_named(ratio2)
+  ans2 <- summary(fit, pars = c("wt", "sigma"))[, "n_eff"] / denom
+  expect_equal(ratio2, ans2, tol = 0.001)
 })
