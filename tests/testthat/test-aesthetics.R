@@ -74,6 +74,17 @@ test_that("get_color returns correct color values", {
     expect_identical(get_color(lev), scheme[[lev]], info = lev)
 })
 
+test_that("view_color_scheme returns correct ggplot object", {
+  set_color_scheme("red")
+
+  a <- view_color_scheme()
+  b <- view_color_scheme("green")
+  expect_gg(a)
+  expect_gg(b)
+  expect_identical(a$plot_env$x, get_color_scheme())
+  expect_identical(b$plot_env$x, get_color_scheme("green"))
+})
+
 
 
 # ggplot theme ------------------------------------------------------------

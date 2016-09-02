@@ -1,7 +1,7 @@
-#' Set or get the color scheme
+#' Set, get, or view the color scheme
 #'
-#' Set or get the color scheme used for plotting. Choose from a preset scheme or
-#' create your own.
+#' Set, get, or view the color scheme used for plotting. Choose from a preset
+#' scheme or create your own.
 #'
 #' @export
 #' @param scheme For \code{set_color_scheme}, either a string naming one of the
@@ -9,8 +9,9 @@
 #'   specifying a custom scheme (see the \strong{Custom Color Schemes} section,
 #'   below, for more on specifying a custom scheme).
 #'
-#'   For \code{get_color_scheme}, \code{scheme} can be missing (to get the
-#'   current color scheme) or a string naming one of the preset schemes.
+#'   For \code{get_color_scheme} and \code{view_color_scheme}, \code{scheme} can
+#'   be missing (to get the current color scheme) or a string naming one of the
+#'   preset schemes.
 #'
 #'   Currently, the available preset color schemes are:
 #'   \itemize{
@@ -40,6 +41,8 @@
 #'   is not specified the returned values correspond to the current color
 #'   scheme.
 #'
+#'   \code{view_color_scheme} returns a ggplot object.
+#'
 #'
 #' @section Custom Color Schemes: A \pkg{bayesplot} color scheme consists of six
 #'   colors. To specify a custom color scheme simply pass a character vector
@@ -49,33 +52,37 @@
 #'   \strong{Examples} section for a demonstration.
 #'
 #' @examples
-#' # current color scheme
+#' set_color_scheme("red")
 #' get_color_scheme()
+#' view_color_scheme()
+#'
+#' get_color_scheme("brightblue")
+#' view_color_scheme("brightblue")
+#' view_color_scheme("purple")
+#'
+#' view_color_scheme("gray")
+#' get_color_scheme("gray")$light
+#'
 #'
 #' x <- example_mcmc_draws()
 #' mcmc_intervals(x)
 #'
 #' set_color_scheme("teal")
+#' view_color_scheme()
 #' mcmc_intervals(x)
 #'
 #' set_color_scheme("blue")
-#' mcmc_areas(x)
+#' mcmc_areas(x, regex_pars = "beta")
 #'
 #' set_color_scheme("pink")
-#' y <- rnorm(100)
-#' yrep <- matrix(rnorm(5e4), ncol = 100)
-#' ppc_stat(y, yrep, stat = "sd") + no_legend()
+#' view_color_scheme()
+#' y <- example_y_data()
+#' yrep <- example_yrep_draws()
+#' ppc_stat(y, yrep, stat = "mean") + no_legend()
 #'
 #' set_color_scheme("mix-teal-pink")
 #' ppc_stat(y, yrep, stat = "sd") + no_legend()
-#' mcmc_areas(x)
-#'
-#' # all color scheme lists use the same names
-#' names(get_color_scheme("red"))
-#' names(get_color_scheme("blue"))
-#'
-#' # hex value of lightest color in the 'gray' color scheme
-#' get_color_scheme("gray")$light
+#' mcmc_areas(x, regex_pars = "beta")
 #'
 #' ###########################
 #' ### custom color scheme ###
@@ -116,6 +123,28 @@ get_color_scheme <- function(scheme) {
     return(scheme)
   }
   scheme_from_string(scheme)
+}
+
+#' @rdname set_color_scheme
+#' @export
+view_color_scheme <- function(scheme) {
+  x <- if (missing(scheme))
+    get_color_scheme() else get_color_scheme(scheme)
+
+  color_data <- data.frame(
+    group = factor(names(x), levels = rev(names(x))),
+    value = rep(1, length(x))
+  )
+  ggplot(color_data, aes_(x = "", y = ~ value, fill = ~ group)) +
+    geom_bar(
+      width = .5,
+      stat = "identity",
+      color = "white",
+      size = 0.1
+    ) +
+    scale_fill_manual("", values = unlist(x)) +
+    theme_void() +
+    move_legend("none")
 }
 
 
