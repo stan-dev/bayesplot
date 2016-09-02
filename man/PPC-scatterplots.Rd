@@ -7,7 +7,7 @@
 \alias{ppc_scatter_avg_grouped}
 \title{PPC scatterplots}
 \usage{
-ppc_scatter(y, yrep, ..., size = 1.5, alpha = 0.8)
+ppc_scatter(y, yrep, ..., size = 2.5, alpha = 0.8)
 
 ppc_scatter_avg(y, yrep, ..., size = 2.5, alpha = 0.8)
 
@@ -57,7 +57,7 @@ For Binomial data, the plots will typically be most useful if
   }
   \item{\code{ppc_scatter_avg}}{
    A scatterplot of \code{y} against the average values of \code{yrep}, i.e.,
-   the points \code{(y[n], mean(yrep[, n]))}, where each \code{yrep[, n]} is
+   the points \code{(mean(yrep[, n]), y[n])}, where each \code{yrep[, n]} is
    a vector of length equal to the number of posterior draws.
   }
   \item{\code{ppc_scatter_avg_grouped}}{
@@ -72,6 +72,7 @@ yrep <- example_yrep_draws()
 (p1 <- ppc_scatter_avg(y, yrep))
 (p2 <- ppc_scatter(y, yrep[20:23, ], alpha = 0.5, size = 1.5))
 
+# give x and y axes the same limits
 lims <- ggplot2::lims(x = c(0, 160), y = c(0, 160))
 p1 + lims
 p2 + lims

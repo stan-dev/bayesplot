@@ -28,7 +28,7 @@
 #'   }
 #'   \item{\code{ppc_scatter_avg}}{
 #'    A scatterplot of \code{y} against the average values of \code{yrep}, i.e.,
-#'    the points \code{(y[n], mean(yrep[, n]))}, where each \code{yrep[, n]} is
+#'    the points \code{(mean(yrep[, n]), y[n])}, where each \code{yrep[, n]} is
 #'    a vector of length equal to the number of posterior draws.
 #'   }
 #'   \item{\code{ppc_scatter_avg_grouped}}{
@@ -43,6 +43,7 @@
 #' (p1 <- ppc_scatter_avg(y, yrep))
 #' (p2 <- ppc_scatter(y, yrep[20:23, ], alpha = 0.5, size = 1.5))
 #'
+#' # give x and y axes the same limits
 #' lims <- ggplot2::lims(x = c(0, 160), y = c(0, 160))
 #' p1 + lims
 #' p2 + lims
@@ -55,7 +56,7 @@ NULL
 #' @export
 #' @rdname PPC-scatterplots
 #'
-ppc_scatter <- function(y, yrep, ..., size = 1.5, alpha = 0.8) {
+ppc_scatter <- function(y, yrep, ..., size = 2.5, alpha = 0.8) {
   y <- validate_y(y)
   yrep <- validate_yrep(yrep, y)
 
@@ -67,6 +68,9 @@ ppc_scatter <- function(y, yrep, ..., size = 1.5, alpha = 0.8) {
     alpha = alpha,
     size = size
   )
+  if (nrow(yrep) == 1)
+    return(graph)
+
   graph + facet_wrap_parsed("rep_id")
 }
 
@@ -76,6 +80,8 @@ ppc_scatter <- function(y, yrep, ..., size = 1.5, alpha = 0.8) {
 ppc_scatter_avg <- function(y, yrep, ..., size = 2.5, alpha = 0.8) {
   y <- validate_y(y)
   yrep <- validate_yrep(yrep, y)
+  if (nrow(yrep) == 1)
+    return(ppc_scatter(y, yrep, size = size, alpha = alpha, ...))
 
   ppc_scatter_plotter(
     data = data.frame(y, avg_y_rep = colMeans(yrep)),
@@ -118,16 +124,19 @@ ppc_scatter_plotter <-
            y_lab = "",
            color = c("mid", "light"),
            size = 2.5,
-           alpha = 1) {
-
+           alpha = 1,
+           abline = TRUE) {
     mid <- isTRUE(match.arg(color) == "mid")
-    ggplot(data, mapping) +
-      geom_abline(
+    graph <- ggplot(data, mapping)
+    if (abline) {
+      graph <- graph + geom_abline(
         intercept = 0,
         slope = 1,
         linetype = 2,
         color = get_color("dh")
-      ) +
+      )
+    }
+    graph +
       geom_point(
         shape = 21,
         fill = get_color(ifelse(mid, "m", "l")),
