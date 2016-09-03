@@ -69,6 +69,22 @@
 #' ppc_resid_scatter(y, yrep[10:14, ])
 #' ppc_resid_scatter_avg(y, yrep)
 #'
+#' # ppc_resid_binned with binomial model from rstanarm
+#' \dontrun{
+#' library(rstanarm)
+#' example("example_model", package = "rstanarm")
+#' formula(example_model)
+#'
+#' # get linear predictor transformed by inverse-link function
+#' Ey <- posterior_linpred(example_model, transform = TRUE)
+#'
+#' # get observed proportion of "successes"
+#' y <- example_model$y  # matrix of "success" and "failure" counts
+#' y <- y[, 1] / rowSums(y)  # proportions
+#'
+#' ppc_resid_binned(y, Ey[1:6, ])
+#' }
+#'
 NULL
 
 #' @rdname PPC-residuals
