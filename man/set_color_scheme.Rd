@@ -74,6 +74,10 @@ get_color_scheme("brightblue")
 view_color_scheme("brightblue")
 view_color_scheme("purple")
 
+view_color_scheme("gray")
+get_color_scheme("gray")$light
+
+
 x <- example_mcmc_draws()
 mcmc_intervals(x)
 
@@ -82,23 +86,17 @@ view_color_scheme()
 mcmc_intervals(x)
 
 set_color_scheme("blue")
-mcmc_areas(x)
+mcmc_areas(x, regex_pars = "beta")
 
 set_color_scheme("pink")
-y <- rnorm(100)
-yrep <- matrix(rnorm(5e4), ncol = 100)
-ppc_stat(y, yrep, stat = "sd") + no_legend()
+view_color_scheme()
+y <- example_y_data()
+yrep <- example_yrep_draws()
+ppc_stat(y, yrep, stat = "mean") + no_legend()
 
 set_color_scheme("mix-teal-pink")
 ppc_stat(y, yrep, stat = "sd") + no_legend()
-mcmc_areas(x)
-
-# all color scheme lists use the same names
-names(get_color_scheme("red"))
-names(get_color_scheme("blue"))
-
-# hex value of lightest color in the 'gray' color scheme
-get_color_scheme("gray")$light
+mcmc_areas(x, regex_pars = "beta")
 
 ###########################
 ### custom color scheme ###
