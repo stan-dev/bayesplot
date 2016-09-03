@@ -112,31 +112,34 @@ ppc_resid_hist <- function(y, yrep, ..., binwidth = NULL) {
 #' @param size,alpha Arguments passed to \code{\link[ggplot2]{geom_point}} to
 #'   control the appearance of scatterplot points.
 #'
-ppc_resid_scatter <- function(y, yrep, ..., size = 2.5, alpha = 0.8) {
-  y <- validate_y(y)
-  yrep <- validate_yrep(yrep, y)
+ppc_resid_scatter <-
+  function(y,
+           yrep,
+           ...,
+           size = 2.5,
+           alpha = 0.8) {
+    y <- validate_y(y)
+    yrep <- validate_yrep(yrep, y)
 
-  if (nrow(yrep) == 1) {
-    graph <-
-      ppc_scatter_plotter(
-        data = data.frame(y = y, x = y - as.vector(yrep)),
-        mapping = aes_(x = ~ x, y = ~ y),
-        x_lab = expression(italic(y) - italic(y)^rep),
-        y_lab = expression(italic(y)),
-        size = size,
-        alpha = alpha,
-        abline = FALSE
+    if (nrow(yrep) == 1) {
+      return(
+        .ppc_scatter(
+          data = data.frame(y = y, x = y - as.vector(yrep)),
+          mapping = aes_(x = ~ x, y = ~ y),
+          x_lab = expression(italic(y) - italic(y) ^ rep),
+          y_lab = expression(italic(y)),
+          size = size,
+          alpha = alpha,
+          abline = FALSE
+        )
       )
-    return(graph)
-  }
+    }
 
-  resids <- melt_yrep(compute_resids(y, yrep))
-  resids$rep_id <- factor(
-    resids$rep_id,
-    labels = paste("italic(y)", "-", unique(resids$rep_id))
-  )
-  graph <-
-    ppc_scatter_plotter(
+    resids <- melt_yrep(compute_resids(y, yrep))
+    resid_labs <- paste("italic(y)", "-", unique(resids$rep_id))
+    resids$rep_id <- factor(resids$rep_id, labels = resid_labs)
+
+    .ppc_scatter(
       data = dplyr::left_join(
         resids,
         data.frame(y = y, y_id = seq_along(y)),
@@ -149,28 +152,37 @@ ppc_resid_scatter <- function(y, yrep, ..., size = 2.5, alpha = 0.8) {
       alpha = alpha,
       abline = FALSE
     ) +
-    facet_wrap_parsed("rep_id", switch = "x")
-}
+      facet_wrap_parsed("rep_id", switch = "x")
+  }
 
 #' @rdname PPC-residuals
 #' @export
-ppc_resid_scatter_avg <- function(y, yrep, ..., size = 2.5, alpha = 0.8) {
-  y <- validate_y(y)
-  yrep <- validate_yrep(yrep, y)
+ppc_resid_scatter_avg <-
+  function(y,
+           yrep,
+           ...,
+           size = 2.5,
+           alpha = 0.8) {
+    y <- validate_y(y)
+    yrep <- validate_yrep(yrep, y)
 
-  if (nrow(yrep) == 1)
-    return(ppc_resid_scatter(y, yrep, size = size, alpha = alpha, ...))
+    if (nrow(yrep) == 1)
+      return(
+        ppc_resid_scatter(y, yrep,
+                          size = size,
+                          alpha = alpha, ...)
+      )
 
-  ppc_scatter_plotter(
-    data = data.frame(y, avg_resid = y - colMeans(yrep)),
-    mapping = aes_(x = ~ avg_resid, y = ~ y),
-    y_lab = y_label(),
-    x_lab = "Average residual",
-    alpha = alpha,
-    size = size,
-    abline = FALSE
-  )
-}
+    .ppc_scatter(
+      data = data.frame(y, avg_resid = y - colMeans(yrep)),
+      mapping = aes_(x = ~ avg_resid, y = ~ y),
+      y_lab = y_label(),
+      x_lab = "Average residual",
+      alpha = alpha,
+      size = size,
+      abline = FALSE
+    )
+  }
 
 
 #' @rdname PPC-residuals
