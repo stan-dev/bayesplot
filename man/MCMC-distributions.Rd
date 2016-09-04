@@ -154,39 +154,31 @@ mcmc_hist(x, transformations = list(sigma = "log"),
 
 # instead of list(sigma = "log"), you could specify the transformation as
 # list(sigma = log) or list(sigma = function(x) log(x)), but then the
-# label is 't(sigma)' instead of 'log(sigma)'
+# label for the transformed sigma is 't(sigma)' instead of 'log(sigma)'
 mcmc_hist(x, transformations = list(sigma = log))
 
 # separate histograms by chain
 set_color_scheme("pink")
-mcmc_hist_by_chain(x, pars = "sigma")
+mcmc_hist_by_chain(x, regex_pars = "beta")
 
 #################
 ### Densities ###
 #################
 
-mcmc_dens(
- x,
- pars = c("sigma", "beta[2]"),
- facet_args = list(nrow = 2)
-)
+mcmc_dens(x, pars = c("sigma", "beta[2]"),
+          facet_args = list(nrow = 2))
 
 # separate and overlay chains
 set_color_scheme("mix-teal-pink")
-mcmc_dens_overlay(
- x,
- pars = c("sigma", "beta[2]"),
- facet_args = list(nrow = 2)
-)
+mcmc_dens_overlay(x, pars = c("sigma", "beta[2]"),
+                  facet_args = list(nrow = 2))
 
 # separate chains as violin plots
 set_color_scheme("green")
 mcmc_violin(x)
 
 # change theme
-mcmc_violin(x, probs = 0.5) +
- ggplot2::theme_dark() +
- yaxis_title(FALSE)
+mcmc_violin(x, probs = 0.5) + ggplot2::theme_dark()
 
 }
 \seealso{

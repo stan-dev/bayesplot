@@ -4,7 +4,7 @@
 \alias{get_color_scheme}
 \alias{set_color_scheme}
 \alias{view_color_scheme}
-\title{Set, get, or view the color scheme}
+\title{Set, get, or view color schemes}
 \usage{
 set_color_scheme(scheme)
 
@@ -18,9 +18,12 @@ view_color_scheme(scheme)
   specifying a custom scheme (see the \strong{Custom Color Schemes} section,
   below, for more on specifying a custom scheme).
 
-  For \code{get_color_scheme} and \code{view_color_scheme}, \code{scheme} can
-  be missing (to get the current color scheme) or a string naming one of the
-  preset schemes.
+  For \code{get_color_scheme}, \code{scheme} can be missing (to get the
+  current color scheme) or a string naming one of the preset schemes.
+
+  For \code{view_color_scheme}, \code{scheme} can be missing (to use the
+  current color scheme) or a character vector containing a subset of the
+  available scheme names.
 
   Currently, the available preset color schemes are:
   \itemize{
@@ -51,11 +54,12 @@ view_color_scheme(scheme)
   is not specified the returned values correspond to the current color
   scheme.
 
-  \code{view_color_scheme} returns a ggplot object.
+  \code{view_color_scheme} returns a ggplot object if only a single scheme is
+  specified and a gtable object if multiple schemes names are specified.
 }
 \description{
-Set, get, or view the color scheme used for plotting. Choose from a preset
-scheme or create your own.
+Set, get, or view color schemes. Choose from a preset
+scheme or create a custom scheme.
 }
 \section{Custom Color Schemes}{
  A \pkg{bayesplot} color scheme consists of six
@@ -70,14 +74,16 @@ set_color_scheme("red")
 get_color_scheme()
 view_color_scheme()
 
+# compare multiple schemes
+view_color_scheme(c("pink", "gray", "teal"))
+
 get_color_scheme("brightblue")
 view_color_scheme("brightblue")
 view_color_scheme("purple")
-
-view_color_scheme("gray")
-get_color_scheme("gray")$light
+get_color_scheme("purple")$light
 
 
+set_color_scheme("pink")
 x <- example_mcmc_draws()
 mcmc_intervals(x)
 

@@ -1,7 +1,7 @@
-#' Set, get, or view the color scheme
+#' Set, get, or view color schemes
 #'
-#' Set, get, or view the color scheme used for plotting. Choose from a preset
-#' scheme or create your own.
+#' Set, get, or view color schemes. Choose from a preset
+#' scheme or create a custom scheme.
 #'
 #' @export
 #' @param scheme For \code{set_color_scheme}, either a string naming one of the
@@ -9,9 +9,12 @@
 #'   specifying a custom scheme (see the \strong{Custom Color Schemes} section,
 #'   below, for more on specifying a custom scheme).
 #'
-#'   For \code{get_color_scheme} and \code{view_color_scheme}, \code{scheme} can
-#'   be missing (to get the current color scheme) or a string naming one of the
-#'   preset schemes.
+#'   For \code{get_color_scheme}, \code{scheme} can be missing (to get the
+#'   current color scheme) or a string naming one of the preset schemes.
+#'
+#'   For \code{view_color_scheme}, \code{scheme} can be missing (to use the
+#'   current color scheme) or a character vector containing a subset of the
+#'   available scheme names.
 #'
 #'   Currently, the available preset color schemes are:
 #'   \itemize{
@@ -41,7 +44,8 @@
 #'   is not specified the returned values correspond to the current color
 #'   scheme.
 #'
-#'   \code{view_color_scheme} returns a ggplot object.
+#'   \code{view_color_scheme} returns a ggplot object if only a single scheme is
+#'   specified and a gtable object if multiple schemes names are specified.
 #'
 #'
 #' @section Custom Color Schemes: A \pkg{bayesplot} color scheme consists of six
@@ -56,14 +60,16 @@
 #' get_color_scheme()
 #' view_color_scheme()
 #'
+#' # compare multiple schemes
+#' view_color_scheme(c("pink", "gray", "teal"))
+#'
 #' get_color_scheme("brightblue")
 #' view_color_scheme("brightblue")
 #' view_color_scheme("purple")
-#'
-#' view_color_scheme("gray")
-#' get_color_scheme("gray")$light
+#' get_color_scheme("purple")$light
 #'
 #'
+#' set_color_scheme("pink")
 #' x <- example_mcmc_draws()
 #' mcmc_intervals(x)
 #'
@@ -128,6 +134,23 @@ get_color_scheme <- function(scheme) {
 #' @rdname set_color_scheme
 #' @export
 view_color_scheme <- function(scheme) {
+  suggested_package("gridExtra")
+  if (missing(scheme) || length(scheme) == 1)
+    return(.view_scheme(scheme))
+
+  gridExtra::grid.arrange(
+    grobs = lapply(scheme, .view_scheme),
+    ncol = length(scheme)
+  )
+}
+
+
+
+# internal -----------------------------------------------------------------
+
+# plot color scheme
+# @param scheme A string (length 1) naming a scheme
+.view_scheme <- function(scheme) {
   x <- if (missing(scheme))
     get_color_scheme() else get_color_scheme(scheme)
 
@@ -135,7 +158,14 @@ view_color_scheme <- function(scheme) {
     group = factor(names(x), levels = rev(names(x))),
     value = rep(1, length(x))
   )
-  ggplot(color_data, aes_(x = "", y = ~ value, fill = ~ group)) +
+  ggplot(
+    color_data,
+    aes_(
+      x = if (missing(scheme)) "" else factor(scheme),
+      y = ~ value,
+      fill = ~ group
+    )
+  ) +
     geom_bar(
       width = .5,
       stat = "identity",
@@ -144,12 +174,14 @@ view_color_scheme <- function(scheme) {
     ) +
     scale_fill_manual("", values = unlist(x)) +
     theme_void() +
-    move_legend("none")
+    no_legend() +
+    xaxis_text(
+      size = rel(1.1),
+      face = "bold",
+      margin = margin(t = -3, b = 10)
+    )
 }
 
-
-
-# internal -----------------------------------------------------------------
 
 # @param scheme A string (length 1) naming a scheme
 scheme_from_string <- function(scheme) {
@@ -164,7 +196,6 @@ scheme_from_string <- function(scheme) {
     structure(x, mixed = FALSE)
   }
 }
-
 
 # check if object returned by get_color_scheme is a mixed scheme
 # @param x object returned by get_color_scheme
@@ -271,7 +302,7 @@ master_color_list <- list(
   brightblue =
     list("#cce5ff", "#99cbff", "#4ca5ff", "#198bff", "#0065cc", "#004c99"),
   gray =
-    list("#e6e6e6", "#bfbfbf", "#999999", "#737373", "#595959", "#0d0d0d"),
+    list("#DFDFDF", "#bfbfbf", "#999999", "#737373", "#505050", "#383838"), # "#0d0d0d"),
   green =
     list("#d9f2e6", "#9fdfbf", "#66cc99", "#40bf80", "#2d8659", "#194d33"),
   pink =
@@ -280,6 +311,8 @@ master_color_list <- list(
     list("#e5cce5", "#bf7fbf", "#a64ca6", "#800080", "#660066", "#400040"),
   red =
     list("#DCBCBC", "#C79999", "#B97C7C", "#A25050", "#8F2727", "#7C0000"),
+  brightred =
+    list("#fdb7b7", "#fc8787", "#fb3e3e", "#ee1515", "#af0a0a", "#7d0707"),
   teal =
     list("#bcdcdc", "#99c7c7", "#7cb9b9", "#50a2a2", "#278f8f", "#007C7C"),
   yellow =

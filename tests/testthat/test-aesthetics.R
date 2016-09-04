@@ -85,6 +85,11 @@ test_that("view_color_scheme returns correct ggplot object", {
   expect_identical(b$plot_env$x, get_color_scheme("green"))
 })
 
+test_that("view_color_scheme returns gtable if length(scheme) >= 1", {
+  expect_gtable(view_color_scheme(c("red", "gray")))
+  expect_gtable(view_color_scheme(c("red", "gray", "blue")))
+})
+
 
 
 # ggplot theme ------------------------------------------------------------
