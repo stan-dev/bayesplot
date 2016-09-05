@@ -4,7 +4,7 @@
 \name{bayesplot-package}
 \alias{bayesplot}
 \alias{bayesplot-package}
-\title{Plotting for Bayesian Models}
+\title{Plots for Bayesian Models}
 \description{
 \if{html}{\figure{bayesplot.png}{options: width="50\%" alt="Figure: bayesplot.png"}}
 \if{latex}{\figure{bayesplot.pdf}{options: width=5in}}

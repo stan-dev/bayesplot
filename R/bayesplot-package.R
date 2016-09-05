@@ -1,4 +1,4 @@
-#' Plotting for Bayesian Models
+#' Plots for Bayesian Models
 #'
 #' @docType package
 #' @name bayesplot-package
@@ -20,8 +20,7 @@
 #'   (Coming soon) Plots designed to assist with inference and prediction.
 #' }
 #'
-#' @import ggplot2
-#' @import stats
+#' @import ggplot2 stats
 #'
 #'
 #' @examples

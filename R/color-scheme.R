@@ -311,8 +311,8 @@ master_color_list <- list(
     list("#e5cce5", "#bf7fbf", "#a64ca6", "#800080", "#660066", "#400040"),
   red =
     list("#DCBCBC", "#C79999", "#B97C7C", "#A25050", "#8F2727", "#7C0000"),
-  brightred =
-    list("#fdb7b7", "#fc8787", "#fb3e3e", "#ee1515", "#af0a0a", "#7d0707"),
+  # brightred =
+  #   list("gray90", "gray70", "#ff4c4c", "#ff0000", "#b20000", "red4"),
   teal =
     list("#bcdcdc", "#99c7c7", "#7cb9b9", "#50a2a2", "#278f8f", "#007C7C"),
   yellow =
