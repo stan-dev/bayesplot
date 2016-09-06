@@ -148,8 +148,6 @@ mcmc_areas(x, regex_pars = "cyl", bw = "SJ") + xaxis_ticks(size = .5)
 
 }
 \seealso{
-\code{\link{set_color_scheme}} to change the aesthetic theme
-
 Other MCMC: \code{\link{MCMC-combos}},
   \code{\link{MCMC-diagnostics}},
   \code{\link{MCMC-distributions}},

@@ -31,8 +31,6 @@
 #'   \code{\link[gridExtra]{arrangeGrob}}) with \code{length(combo)} columns and
 #'   a row for each parameter.
 #'
-#' @template seealso-color-scheme
-#'
 #' @examples
 #' # some parameter draws to use for demonstration
 #' x <- example_mcmc_draws()

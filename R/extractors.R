@@ -1,8 +1,9 @@
 #' Extract quantities needed for plotting from model objects
 #'
 #' Generics and methods for extracting quantities needed for plotting from
-#' various types of model objects. Currently methods are provided for stanfit
-#' (\pkg{rstan}) and stanreg (\pkg{rstanarm}) objects.
+#' various types of model objects. Currently methods are only provided for
+#' stanfit (\pkg{rstan}) and stanreg (\pkg{rstanarm}) objects, but adding new
+#' methods should be relatively straightforward.
 #'
 #' @name extractors
 #' @param object The object to use.

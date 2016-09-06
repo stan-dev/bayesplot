@@ -60,7 +60,6 @@
 #'
 #' @templateVar bdaRef (Ch. 6)
 #' @template reference-bda
-#' @template seealso-color-scheme
 #'
 #' @examples
 #' y <- example_y_data()

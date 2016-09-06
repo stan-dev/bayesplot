@@ -9,7 +9,7 @@
 ppc_vs_x(y, yrep, x, ..., prob = 0.8, alpha = 0.33, size = 1,
   y_style = c("points", "lines"))
 
-ppc_vs_x_grouped(y, yrep, x, group, ..., facet_args = list(), prob = 0.8,
+ppc_vs_x_grouped(y, yrep, x, group, facet_args = list(), ..., prob = 0.8,
   alpha = 0.33, size = 1, y_style = c("points", "lines"))
 }
 \arguments{
@@ -123,8 +123,6 @@ Gelman, A., Carlin, J. B., Stern, H. S., Dunson, D. B., Vehtari,
   Press, London, third edition. (Ch. 6)
 }
 \seealso{
-\code{\link{set_color_scheme}} to change the aesthetic theme
-
 Other PPCs: \code{\link{PPC-distributions}},
   \code{\link{PPC-overview}}, \code{\link{PPC-residuals}},
   \code{\link{PPC-scatterplots}},

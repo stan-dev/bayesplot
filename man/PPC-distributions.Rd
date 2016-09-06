@@ -107,8 +107,6 @@ Gelman, A., Carlin, J. B., Stern, H. S., Dunson, D. B., Vehtari,
   Press, London, third edition. (Ch. 6)
 }
 \seealso{
-\code{\link{set_color_scheme}} to change the aesthetic theme
-
 Other PPCs: \code{\link{PPC-overview}},
   \code{\link{PPC-residuals}},
   \code{\link{PPC-scatterplots}},

@@ -27,10 +27,6 @@
 #'   }
 #' }
 #'
-#'
-#' @template seealso-color-scheme
-#'
-#'
 #' @examples
 #' # some parameter draws to use for demonstration
 #' x <- example_mcmc_draws(params = 6)

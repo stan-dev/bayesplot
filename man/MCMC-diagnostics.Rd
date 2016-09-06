@@ -176,8 +176,6 @@ Stan Development Team. (2016). \emph{Stan Modeling Language Users
 Guide and Reference Manual.} \url{http://mc-stan.org/documentation/}
 }
 \seealso{
-\code{\link{set_color_scheme}} to change the aesthetic theme
-
 Other MCMC: \code{\link{MCMC-combos}},
   \code{\link{MCMC-distributions}},
   \code{\link{MCMC-intervals}}, \code{\link{MCMC-nuts}},

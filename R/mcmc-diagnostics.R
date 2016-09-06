@@ -43,8 +43,6 @@
 #' }
 #'}
 #'
-#' @template seealso-color-scheme
-#'
 #' @references
 #' Gelman, A. and Rubin, D. B. (1992). Inference from iterative
 #' simulation using multiple sequences. \emph{Statistical Science}. 7(4),

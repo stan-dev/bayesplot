@@ -9,7 +9,7 @@
 ppc_ts(y, yrep, time, ..., prob = 0.8, alpha = 0.33, size = 1,
   y_style = c("points", "lines"))
 
-ppc_ts_grouped(y, yrep, time, group, ..., facet_args = list(), prob = 0.8,
+ppc_ts_grouped(y, yrep, time, group, facet_args = list(), ..., prob = 0.8,
   alpha = 0.33, size = 1, y_style = c("points", "lines"))
 }
 \arguments{
@@ -111,8 +111,6 @@ Gelman, A., Carlin, J. B., Stern, H. S., Dunson, D. B., Vehtari,
   Press, London, third edition. (Ch. 6)
 }
 \seealso{
-\code{\link{set_color_scheme}} to change the aesthetic theme
-
 Other PPCs: \code{\link{PPC-distributions}},
   \code{\link{PPC-overview}}, \code{\link{PPC-residuals}},
   \code{\link{PPC-scatterplots}},

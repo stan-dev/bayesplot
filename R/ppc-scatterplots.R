@@ -17,7 +17,6 @@
 #'
 #' @templateVar bdaRef (Ch. 6)
 #' @template reference-bda
-#' @template seealso-color-scheme
 #'
 #' @section Plot Descriptions:
 #' \describe{

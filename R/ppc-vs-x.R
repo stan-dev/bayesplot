@@ -13,7 +13,6 @@
 #'
 #' @templateVar bdaRef (Ch. 6)
 #' @template reference-bda
-#' @template seealso-color-scheme
 #'
 #' @section Plot Descriptions:
 #' \describe{
@@ -113,8 +112,8 @@ ppc_vs_x_grouped <-
            yrep,
            x,
            group,
-           ...,
            facet_args = list(),
+           ...,
            prob = 0.8,
            alpha = 0.33,
            size = 1,

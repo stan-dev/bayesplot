@@ -85,8 +85,6 @@
 #'   }
 #' }
 #'
-#' @template seealso-color-scheme
-#'
 #' @template reference-betancourt
 #' @template reference-nuts
 #' @template reference-stan-manual

@@ -182,8 +182,6 @@ mcmc_violin(x, probs = 0.5) + ggplot2::theme_dark()
 
 }
 \seealso{
-\code{\link{set_color_scheme}} to change the aesthetic theme
-
 Other MCMC: \code{\link{MCMC-combos}},
   \code{\link{MCMC-diagnostics}},
   \code{\link{MCMC-intervals}}, \code{\link{MCMC-nuts}},

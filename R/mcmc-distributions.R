@@ -39,8 +39,6 @@
 #'   }
 #' }
 #'
-#' @template seealso-color-scheme
-#'
 #' @examples
 #' set_color_scheme("red")
 #'

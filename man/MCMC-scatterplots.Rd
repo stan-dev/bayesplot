@@ -89,8 +89,6 @@ p2 + ggplot2::geom_smooth(method = "lm", se = FALSE, color = "gray20")
 
 }
 \seealso{
-\code{\link{set_color_scheme}} to change the aesthetic theme
-
 Other MCMC: \code{\link{MCMC-combos}},
   \code{\link{MCMC-diagnostics}},
   \code{\link{MCMC-distributions}},

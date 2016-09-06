@@ -29,7 +29,6 @@
 #'
 #' @templateVar bdaRef (Ch. 6)
 #' @template reference-bda
-#' @template seealso-color-scheme
 #'
 #' @section Plot Descriptions:
 #' \describe{
@@ -113,8 +112,8 @@ ppc_ts_grouped <-
            yrep,
            time,
            group,
-           ...,
            facet_args = list(),
+           ...,
            prob = 0.8,
            alpha = 0.33,
            size = 1,
@@ -251,6 +250,5 @@ ppc_ts_plotter <-
 
   graph +
     labs(x = "Time", y = yrep_label()) +
-    # dont_expand_x_axis(expand = c(.005, 0)) +
     theme_default()
 }
