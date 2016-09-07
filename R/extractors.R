@@ -16,7 +16,7 @@
 #' \describe{
 #' \item{\code{log_posterior}}{
 #' \code{log_posterior} methods return a molten data frame
-#' (\code{\link[reshape2]{melt}}). If the model represented by \code{object} was
+#' (see \code{\link[reshape2]{melt}}). If the model represented by \code{object} was
 #' fit via MCMC the molten data frame should have columns \code{"Iteration"}
 #' (integer), \code{"Chain"} (integer), and \code{"Value"} (numeric).
 #' For models fit using other methods, \code{log_posterior} methods can
@@ -24,7 +24,7 @@
 #' }
 #' \item{\code{nuts_params}}{
 #' \code{nuts_params} methods return a molten data frame
-#' (\code{\link[reshape2]{melt}}). The molten data frame should have columns
+#' (see \code{\link[reshape2]{melt}}). The molten data frame should have columns
 #' \code{"Parameter"} (factor), \code{"Iteration"} (integer), \code{"Chain"}
 #' (integer), and \code{"Value"} (numeric), in any order.
 #' }
