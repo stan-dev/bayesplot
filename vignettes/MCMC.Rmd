@@ -33,7 +33,7 @@ Markov chain Monte Carlo (MCMC) draws from the posterior distribution of the
 parameters of a Bayesian model.
 
 In this vignette we'll use draws obtained using the `stan_glm` function in the 
-**rstanarm** package (Gabry and Goodrich, 2016), but MCMC draws obtained using 
+**rstanarm** package (Gabry and Goodrich, 2016), but MCMC draws from using 
 any package can be used with the functions in the **bayesplot** package. See,
 for example, **brms** (which, like **rstanarm**, calls the **rstan** package
 internally to use [Stan](http://mc-stan.org/)'s MCMC sampler).

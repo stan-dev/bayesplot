@@ -34,7 +34,12 @@ in theory. In practice, diagnostics must be applied to monitor whether the
 Markov chain(s) have converged.
 
 The __bayesplot__ package provides various plotting functions for visualizing 
-Markov chain Monte Carlo (MCMC) diagnostics after fitting a Bayesian model.
+Markov chain Monte Carlo (MCMC) diagnostics after fitting a Bayesian model. In
+this vignette we'll use MCMC draws obtained using the `stan_glm` function in the
+**rstanarm** package (Gabry and Goodrich, 2016), but MCMC draws from 
+any package can be used with the functions in the **bayesplot** package. See, 
+for example, **brms** (which, like **rstanarm**, calls the **rstan** package 
+internally to use [Stan](http://mc-stan.org/)'s MCMC sampler).
 
 ### Rhat: potential scale reduction statistic
 
