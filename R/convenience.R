@@ -194,7 +194,7 @@ NULL
 # lines -------------------------------------------------------------------
 #' @rdname bayesplot-convenience
 #' @export
-#' @param v Either a numeric vector specifying the \code{v}alue(s) at which to
+#' @param v Either a numeric vector specifying the value(s) at which to
 #'   draw the vertical or horizontal line(s), or an object of any type to use as
 #'   the first argument to \code{fun}.
 #' @param fun A function, or the name of a function, that returns a numeric
