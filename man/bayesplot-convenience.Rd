@@ -50,7 +50,7 @@ yaxis_ticks(on = TRUE, ...)
 plot_bg(on = TRUE, ...)
 }
 \arguments{
-\item{v}{Either a numeric vector specifying the \code{v}alue(s) at which to
+\item{v}{Either a numeric vector specifying the value(s) at which to
 draw the vertical or horizontal line(s), or an object of any type to use as
 the first argument to \code{fun}.}
 
@@ -82,7 +82,12 @@ or a string among \code{"right"}, \code{"left"}, \code{"top"},
 \code{"bottom"}. Using \code{position = "none"} is also allowed and is
 equivalent to using \code{no_legend()}.}
 
-\item{on}{On/off switch. On if \code{TRUE}.}
+\item{on}{For functions modifying ggplot \link[ggplot2]{theme} elements, set
+\code{on=FALSE} to set the element to \code{\link[ggplot2]{element_blank}}.
+For example, facet text can be removed by adding
+\code{facet_text(on=FALSE)}, or simply \code{facet_text(FALSE)} to a ggplot
+object. If \code{on=TRUE} (the default), then \code{...} can be used to
+customize the appearance of the theme element.}
 }
 \value{
 A \pkg{ggplot2} layer or \code{\link[ggplot2]{theme}} object that can be

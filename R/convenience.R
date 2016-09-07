@@ -297,7 +297,12 @@ yaxis_title <- function(on = TRUE, ...) {
 
 #' @rdname bayesplot-convenience
 #' @export
-#' @param on On/off switch. On if \code{TRUE}.
+#' @param on For functions modifying ggplot \link[ggplot2]{theme} elements, set
+#'   \code{on=FALSE} to set the element to \code{\link[ggplot2]{element_blank}}.
+#'   For example, facet text can be removed by adding
+#'   \code{facet_text(on=FALSE)}, or simply \code{facet_text(FALSE)} to a ggplot
+#'   object. If \code{on=TRUE} (the default), then \code{...} can be used to
+#'   customize the appearance of the theme element.
 #'
 facet_text <- function(on = TRUE, ...) {
   theme(strip.text = if (on)
