@@ -71,7 +71,7 @@ package we'll use an example of comparing Poisson and Negative binomial
 regression models from the
 [**rstanarm**](https://cran.r-project.org/package=rstanarm) package
 vignette [_stan_glm: GLMs for Count
-Data_](https://cran.r-project.org/web/packages/rstanarm/vignettes/count.html).
+Data_](https://cran.r-project.org/web/packages/rstanarm/vignettes/count.html) (Gabry and Goodrich, 2016).
 
 > We want to make inferences about the efficacy of a certain pest management system at reducing the number of roaches in urban apartments. [...] 
 The regression predictors for the model are the pre-treatment number of roaches `roach1`, the treatment indicator `treatment`, and a variable `senior` indicating whether the apartment is in a building restricted to elderly residents. Because the number of days for which the roach traps were used is not the same for all apartments in the sample, we include it as an exposure [...]. 
@@ -248,6 +248,8 @@ fitted model objects created by your package. All a `pp_check` method needs to
 do is provide the `y` vector and `yrep` matrix arguments to the various plotting
 functions included in __bayesplot__.
 
+### Defining a `pp_check` method
+
 Here is an example for how to define a simple `pp_check` method in a package
 that creates fitted model objects of class `"foo"`. We will define a method
 `pp_check.foo` that extracts the data `y` and the draws from the posterior
@@ -293,12 +295,26 @@ bayesplot::pp_check(x, type = "overlaid")
 bayesplot::pp_check(x, type = "overlaid")
 ```
 
+### Examples of `pp_check` methods in other packages
+
+Several packages currently (or will soon) use this approach to provide an 
+interface to **bayesplot**'s graphical posterior predictive checks. See, for 
+example, the `pp_check` methods in the
+[**rstanarm**](https://github.com/stan-dev/rstanarm) 
+and [**brms**](https://github.com/paul-buerkner/brms) packages.
 
 ## References
 
-Gelman, A., Carlin, J. B., Stern, H. S., Dunson, D. B., Vehtari, A., and
-Rubin, D. B. (2013). *Bayesian Data Analysis*. Chapman & Hall/CRC Press, London,
-third edition.
+Buerkner, P. (2016). brms: Bayesian Regression Models using Stan. R package version 0.10.0. 
+https://CRAN.R-project.org/package=brms
+
+Gabry, J., and Goodrich, B. (2016). rstanarm: Bayesian Applied Regression 
+Modeling via Stan. R package version 2.11.1. 
+http://mc-stan.org/interfaces/rstanarm.html
+
+Gelman, A., Carlin, J. B., Stern, H. S., Dunson, D. B., Vehtari, A., and Rubin, 
+D. B. (2013). *Bayesian Data Analysis*. Chapman & Hall/CRC Press, London, third 
+edition.
 
 Stan Development Team. (2016). *Stan Modeling Language Users
 Guide and Reference Manual*. http://mc-stan.org/documentation/

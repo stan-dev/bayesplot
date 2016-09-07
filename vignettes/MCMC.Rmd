@@ -181,6 +181,10 @@ mcmc_trace_highlight(
 
 ## References
 
+Gabry, J., and Goodrich, B. (2016). rstanarm: Bayesian Applied Regression 
+Modeling via Stan. R package version 2.11.1. 
+http://mc-stan.org/interfaces/rstanarm.html
+
 Gelman, A., Carlin, J. B., Stern, H. S., Dunson, D. B., Vehtari, A., and
 Rubin, D. B. (2013). *Bayesian Data Analysis*. Chapman & Hall/CRC Press, London,
 third edition.
