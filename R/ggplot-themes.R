@@ -29,6 +29,7 @@ theme_default <-
         legend.position = legend_position,
         strip.text = element_text(size = rel(0.75)),
         strip.background = element_rect(fill = "gray95", color = NA),
+        strip.placement = "outside",
         plot.caption = element_text(hjust = 0.5, size = rel(0.8)),
         ...
       )

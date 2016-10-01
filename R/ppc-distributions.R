@@ -86,7 +86,7 @@ ppc_hist <- function(y, yrep, ..., binwidth = NULL) {
     geom_histogram(size = 0.25, binwidth = binwidth) +
     scale_fill_manual(values = hist_fills) +
     scale_color_manual(values = hist_colors) +
-    facet_wrap_parsed("rep_id", switch = "x") +
+    facet_wrap_parsed("rep_id") +
     dont_expand_y_axis() +
     theme_default(y_text = FALSE, x_lab = FALSE)
 }
@@ -110,7 +110,7 @@ ppc_dens <- function(y, yrep, ..., trim = FALSE) {
     geom_density(size = 1, trim = trim) +
     scale_fill_manual(values = get_color(c("d", "l"))) +
     scale_color_manual(values = get_color(c("dh", "lh"))) +
-    facet_wrap_parsed("rep_id", switch = "x") +
+    facet_wrap_parsed("rep_id") +
     dont_expand_y_axis() +
     theme_default(y_text = FALSE, x_lab = FALSE)
 }
