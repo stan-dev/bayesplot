@@ -241,8 +241,7 @@ fitted model objects created by their packages. This will hopefully be
 convenient for both users and developers and contribute to the use of the same
 naming conventions across many of the R packages for Bayesian data analysis.
 
-
-To provide an provide interface to __bayesplot__ from your package, you can very 
+To provide an interface to __bayesplot__ from your package, you can very 
 easily define a `pp_check` method (or multiple `pp_check` methods) for the
 fitted model objects created by your package. All a `pp_check` method needs to
 do is provide the `y` vector and `yrep` matrix arguments to the various plotting

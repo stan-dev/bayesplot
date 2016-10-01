@@ -7,7 +7,17 @@
 \title{Plots for Bayesian Models}
 \description{
 \if{html}{\figure{bayesplot.png}{options: width="50\%" alt="Figure: bayesplot.png"}}
-\if{latex}{\figure{bayesplot.pdf}{options: width=5in}}
+ \if{latex}{\figure{bayesplot.pdf}{options: width=5in}}
+
+The \pkg{bayesplot} package provides a variety of plotting functions for use
+after fitting Bayesian models (typically, though not exclusively, via Markov
+chain Monte Carlo). The package is designed not only to provide convenient
+functionality for users, but also a common set of functions that can be
+easily used by developers working on a variety of packages for Bayesian
+modeling, particularly (but not necessarily) packages powered by
+\pkg{\link{rstan}}. Examples of packages already (or soon to be) using
+\pkg{bayesplot} are \pkg{rstan} itself, as well as the \pkg{rstan}-dependent
+\pkg{rstanarm} and \pkg{brms} packages.
 }
 \section{Plotting functionality}{
 
