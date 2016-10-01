@@ -1,6 +1,7 @@
 #' ggplot theme
 #'
 #' @export
+#' @param base_size,base_family Passed to \code{\link[ggplot2]{theme_classic}}.
 #' @param x_text,y_text Toggle axis text.
 #' @param x_lab,y_lab Toggle axis labels (titles). Overrided by \code{x_text},
 #'   \code{y_text}.
@@ -11,29 +12,34 @@
 #' @return A ggplot \code{\link[ggplot2]{theme}} object.
 #'
 theme_default <-
-  function(x_text = TRUE,
+  function(base_size = 12,
+           base_family = "",
+           x_text = TRUE,
            y_text = TRUE,
            x_lab = TRUE,
            y_lab = TRUE,
            legend_position = "none",
            ...) {
-    thm <- theme_classic() +
+    thm <-
+      theme_classic(base_size = base_size,
+                    base_family = base_family) +
       theme(
-        axis.line.x = element_line(size = 0.25),
-        axis.line.y = element_line(size = 0.25),
-        axis.ticks.x = element_blank(),
-        axis.ticks.y = element_blank(),
+        axis.line = element_line(size = 0.3),
+        axis.ticks = element_blank(),
         legend.position = legend_position,
         strip.text = element_text(size = rel(0.75)),
         strip.background = element_rect(fill = "gray95", color = NA),
+        plot.caption = element_text(hjust = 0.5, size = rel(0.8)),
         ...
       )
     if (!"legend.text" %in% names(list(...)))
       thm <- thm + theme(legend.text = element_text(face = "bold"))
     if (!"legend.title" %in% names(list(...)))
-      thm <- thm + theme(legend.title = element_text(size = rel(0.8)))
+      thm <-
+        thm + theme(legend.title = element_text(size = rel(0.8)))
     if (!"legend.key" %in% names(list(...)))
-      thm <- thm + theme(legend.key = element_rect(color = "gray95", fill = NA))
+      thm <-
+        thm + theme(legend.key = element_rect(color = "gray95", fill = NA))
 
     if (!y_text) {
       y_lab <- FALSE

@@ -4,10 +4,13 @@
 \alias{theme_default}
 \title{ggplot theme}
 \usage{
-theme_default(x_text = TRUE, y_text = TRUE, x_lab = TRUE, y_lab = TRUE,
-  legend_position = "none", ...)
+theme_default(base_size = 12, base_family = "", x_text = TRUE,
+  y_text = TRUE, x_lab = TRUE, y_lab = TRUE, legend_position = "none",
+  ...)
 }
 \arguments{
+\item{base_size, base_family}{Passed to \code{\link[ggplot2]{theme_classic}}.}
+
 \item{x_text, y_text}{Toggle axis text.}
 
 \item{x_lab, y_lab}{Toggle axis labels (titles). Overrided by \code{x_text},

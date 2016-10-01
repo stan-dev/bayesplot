@@ -70,31 +70,28 @@ ppc_stat <- function(y, yrep, stat = "mean", ..., binwidth = NULL) {
   T_y <- stat1(y)
   T_yrep <- apply(yrep, 1, stat1)
 
-  ggplot(
-    data = data.frame(x = T_yrep),
-    mapping = aes_(
-      x = ~ x,
-      y = ~ ..density..,
-      color = ~ 'A'
-    )
-  ) +
+  ggplot(data.frame(x = T_yrep),
+         aes_(x = ~ x, y = ~ ..density..)) +
     .ppc_stat_histogram(binwidth) +
     geom_vline(
       data = data.frame(t = T_y),
-      mapping = aes_(xintercept = ~ t, color = ~ factor(t)),
-      size = 1.5,
-      show.legend = TRUE
+      mapping = aes_(xintercept = ~ t, color = "A"),
+      size = 1.5
     ) +
     scale_color_manual(
-      name = "",
-      values = get_color(c("dh", "l")),
-      labels = c(Ty_label(), Tyrep_label())
+      name = "Observed",
+      values = get_color("dh"),
+      labels = Ty_label()
     ) +
-    xlab(paste("Stat =", stat)) +
+    labs(
+      x = Tyrep_label(),
+      subtitle = paste0("(Stat = ", stat, ")")
+    ) +
     dont_expand_y_axis() +
     theme_default(
       y_text = FALSE,
-      legend_position = "right"
+      legend_position = "right",
+      legend.title = element_text(size = rel(0.75))
     )
 }
 
@@ -123,14 +120,25 @@ ppc_stat_grouped <-
       .ppc_stat_histogram(binwidth) +
       geom_vline(
         data = plot_data[is_y, , drop = FALSE],
-        mapping = aes_(xintercept = ~ value),
-        color = get_color("dh"),
+        mapping = aes_(xintercept = ~ value, color = "A"),
         size = 1.5
       ) +
       facet_wrap("group", scales = "free") +
-      xlab(paste("Stat =", stat)) +
+      scale_color_manual(
+        name = "Observed",
+        values = get_color("dh"),
+        labels = Ty_label()
+      ) +
+      labs(
+        x = Tyrep_label(),
+        subtitle = paste0("(Stat = ", stat, ")")
+      ) +
       dont_expand_y_axis() +
-      theme_default(y_text = FALSE)
+      theme_default(
+        y_text = FALSE,
+        legend_position = "right",
+        legend.title = element_text(size = rel(0.75))
+      )
   }
 
 
@@ -156,50 +164,45 @@ ppc_stat_2d <- function(y, yrep, stat = c("mean", "sd"), ...) {
     geom_point(
       shape = 21,
       size = 2,
-      fill = get_color("m"),
-      color = get_color("mh"),
+      fill = get_color("l"),
+      color = get_color("lh"),
       alpha = 0.8
     ) +
     annotate(
       geom = "segment",
-      x = c(T_y1, -Inf),
-      xend = c(T_y1, T_y1),
-      y = c(-Inf, T_y2),
-      yend = c(T_y2, T_y2),
+      x = c(T_y1, -Inf), xend = c(T_y1, T_y1),
+      y = c(-Inf, T_y2), yend = c(T_y2, T_y2),
       linetype = 2,
       size = 0.4,
-      color = "black"
-      # color = get_color("dh")
+      color = get_color("dh")
     ) +
     geom_point(
       data = data.frame(x = T_y1, y = T_y2),
-      mapping = aes_(
-        x = ~ x,
-        y = ~ y,
-        fill = ~ 'Ty',
-        color = ~ 'Ty'
-      ),
-      size = 4.5,
-      shape = 23,
-      stroke = 1
+      mapping = aes_(x = ~ x, y = ~ y, fill = "Ty", color = "Ty"),
+      size = rel(4),
+      shape = 21,
+      stroke = 0.75
     ) +
     scale_fill_manual(
-      name = "",
-      values = c('Ty' = get_color("l")),
-      labels = c('Ty' = Ty_label())
+      name = "Observed",
+      values = get_color("d"),
+      labels = Ty_label_2d()
     ) +
     scale_color_manual(
-      name = "",
-      values = c('Ty' = "black"),
-      labels = c('Ty' = Ty_label())
+      name = "Observed",
+      values = get_color("dh"),
+      labels = Ty_label_2d()
     ) +
     labs(
-      x = paste("Stat =", stat[1]),
-      y = paste("Stat =", stat[2])
+      x = Tyrep_label_2d(1),
+      y = Tyrep_label_2d(2),
+      subtitle = paste0("(Stat1 = ", stat[1], ", Stat2 = ", stat[2], ")")
     ) +
     theme_default(
       y_text = TRUE,
-      legend_position = "right"
+      legend_position = "right",
+      legend.title = element_text(size = rel(0.75)),
+      legend.title.align = .5
     )
 }
 
