@@ -178,7 +178,9 @@ view_color_scheme <- function(scheme) {
     xaxis_text(
       size = rel(1.1),
       face = "bold",
-      margin = margin(t = -3, b = 10)
+      margin = margin(t = -3, b = 10),
+      angle = 0,
+      debug = FALSE
     )
 }
 
