@@ -1,8 +1,8 @@
 Package: bayesplot
 Type: Package
 Title: Plots for Bayesian Models
-Version: 0.0.5
-Date: 2016-08-28
+Version: 0.0.6
+Date: 2016-10-01
 Authors@R: c(person("Jonah", "Gabry", role = c("aut", "cre"), email = "jsg2201@columbia.edu"),
              person("Paul-Christian", "Buerkner", role = "ctb"))
 Maintainer: Jonah Gabry <jsg2201@columbia.edu>
@@ -15,7 +15,7 @@ BugReports: https://github.com/jgabry/bayesplot/issues/
 Depends: R (>= 3.1.0)
 Imports:
     dplyr (>= 0.4.3),
-    ggplot2 (>= 2.0.0),
+    ggplot2 (>= 2.1.0.9001),
     reshape2,
     stats,
     utils
@@ -25,9 +25,9 @@ Suggests:
     gridExtra,
     knitr,
     rmarkdown,
-    rstan (>= 2.11.1),
-    rstanarm (>= 2.11.1),
-    shinystan (>= 2.2.0),
+    rstan (>= 2.12.1),
+    rstanarm (>= 2.12.1),
+    shinystan (>= 2.2.1),
     testthat
 RoxygenNote: 5.0.1
 VignetteBuilder: knitr
