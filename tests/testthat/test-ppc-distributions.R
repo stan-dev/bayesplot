@@ -17,9 +17,9 @@ test_that("ppc_dens and pp_hist return ggplot objects", {
   expect_gg(ppc_dens(y2, yrep2))
 
   expect_gg(p <- ppc_hist(y, yrep[1:8, ], binwidth = 3))
-  facet_var <- "list(rep_id)"
+  facet_var <- "rep_id"
   labels <- list(fill = "is_y", colour = "is_y", x = "value", y = "density")
-  expect_equal(as.character(p$facet)[1], facet_var)
+  expect_equal(as.character(p$facet$params$facets[1]), facet_var)
   expect_equal(p$labels, labels)
 })
 

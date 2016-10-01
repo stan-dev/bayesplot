@@ -1,4 +1,5 @@
 library(bayesplot)
+library(ggplot2)
 context("Convenience functions (for ggplot objects)")
 
 
