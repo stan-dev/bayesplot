@@ -73,11 +73,8 @@
 #' mcmc_hist(x, pars = c("alpha", "beta[2]"))
 #' mcmc_hist(x, pars = "sigma", regex_pars = "beta")
 #'
-#' # interpret facet labels as plotmath expressions
-#' # (e.g. to get greek letters for parameters)
-#' mcmc_hist(x, facet_args = list(labeller = ggplot2::label_parsed))
-#'
-#' # show log(sigma) instead of sigam
+#' # example of using 'transformations' argument to plot log(sigma),
+#' # and parsing facet labels (e.g. to get greek letters for parameters)
 #' mcmc_hist(x, transformations = list(sigma = "log"),
 #'           facet_args = list(labeller = ggplot2::label_parsed))
 #'

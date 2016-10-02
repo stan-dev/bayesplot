@@ -69,8 +69,10 @@ For Binomial data, the plots will typically be most useful if
 \examples{
 y <- example_y_data()
 yrep <- example_yrep_draws()
-(p1 <- ppc_scatter_avg(y, yrep))
-(p2 <- ppc_scatter(y, yrep[20:23, ], alpha = 0.5, size = 1.5))
+p1 <- ppc_scatter_avg(y, yrep)
+p1
+p2 <- ppc_scatter(y, yrep[20:23, ], alpha = 0.5, size = 1.5)
+p2
 
 # give x and y axes the same limits
 lims <- ggplot2::lims(x = c(0, 160), y = c(0, 160))
