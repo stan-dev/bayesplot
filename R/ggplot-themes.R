@@ -1,10 +1,11 @@
-#' ggplot theme
+#' bayesplot's default ggplot theme
 #'
 #' @export
 #' @param base_size,base_family Passed to \code{\link[ggplot2]{theme_classic}}.
 #' @param x_text,y_text Toggle axis text.
 #' @param x_lab,y_lab Toggle axis labels (titles). Overrided by \code{x_text},
 #'   \code{y_text}.
+#' @param x_ticks,y_ticks Toggle axis tick marks.
 #' @param legend_position A valid value to use for \code{legend.position} to
 #'   pass to \code{\link[ggplot2]{theme}}.
 #' @param ... Other arguments to pass to \code{\link[ggplot2]{theme}}.
@@ -18,6 +19,8 @@ theme_default <-
            y_text = TRUE,
            x_lab = TRUE,
            y_lab = TRUE,
+           x_ticks = FALSE,
+           y_ticks = FALSE,
            legend_position = "none",
            ...) {
     thm <-
@@ -33,7 +36,12 @@ theme_default <-
         plot.caption = element_text(hjust = 0.5, size = rel(0.8)),
         ...
       )
-    if (!"legend.text" %in% names(list(...)))
+    dotnames <- names(list(...))
+    if (x_ticks)
+      thm <- thm + theme(axis.ticks.x = element_line())
+    if (y_ticks)
+      thm <- thm + theme(axis.ticks.y = element_line())
+    if (!"legend.text" %in% dotnames)
       thm <- thm + theme(legend.text = element_text(face = "bold"))
     if (!"legend.title" %in% names(list(...)))
       thm <-
