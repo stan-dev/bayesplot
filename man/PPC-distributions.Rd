@@ -4,6 +4,7 @@
 \alias{PPC-distributions}
 \alias{ppc_dens}
 \alias{ppc_dens_overlay}
+\alias{ppc_ecdf_overlay}
 \alias{ppc_hist}
 \alias{ppc_violin_grouped}
 \title{PPC distributions}
@@ -12,7 +13,9 @@ ppc_hist(y, yrep, ..., binwidth = NULL)
 
 ppc_dens(y, yrep, ..., trim = FALSE)
 
-ppc_dens_overlay(y, yrep, ..., trim = FALSE)
+ppc_dens_overlay(y, yrep, ..., size = 0.25, alpha = 0.7, trim = FALSE)
+
+ppc_ecdf_overlay(y, yrep, ..., size = 0.25, alpha = 0.7, pad = TRUE)
 
 ppc_violin_grouped(y, yrep, group, ..., probs = c(0.1, 0.5, 0.9))
 }
@@ -33,6 +36,14 @@ instructions.}
 \code{\link[ggplot2]{geom_histogram}} to override the default binwidth.}
 
 \item{trim}{A logical scalar passed to \code{\link[ggplot2]{geom_density}}.}
+
+\item{size, alpha}{For \code{ppc_dens_overlay} and \code{ppc_ecdf_overlay},
+passed to \code{\link[ggplot2]{stat_density}} or
+\code{\link[ggplot2]{stat_ecdf}} to control the appearance of the
+\code{yrep} distributions.}
+
+\item{pad}{For \code{ppc_ecdf_overlay}, a logical scalar passed to
+\code{\link[ggplot2]{stat_ecdf}}.}
 
 \item{group}{A grouping variable (a vector or factor) the same length as
 \code{y}. Each value in \code{group} is interpreted as the group level
@@ -65,6 +76,10 @@ For Binomial data, the plots will typically be most useful if
    overlaid, with the distribution of \code{y} itself on top (and in a darker
    shade).
   }
+  \item{\code{ppc_ecdf_overlay}}{
+   Empirical CDF estimates of each dataset (row) in \code{yrep} are overlaid,
+   with the distribution of \code{y} itself on top (and in a darker shade).
+  }
   \item{\code{ppc_hist}}{
    A separate histogram is plotted for \code{y} and each dataset (row) in
    \code{yrep}. For this plot \code{yrep} should therefore contain only a
@@ -87,9 +102,10 @@ y <- example_y_data()
 yrep <- example_yrep_draws()
 dim(yrep)
 ppc_dens_overlay(y, yrep[1:40, ])
+ppc_ecdf_overlay(y, yrep[sample(nrow(yrep), 50), ])
 
-# for ppc_hist, definitely subset yrep so only some instead of
-# nrow(yrep) histograms are plotted
+# for ppc_hist, definitely use a subset yrep rows so only
+# a few (instead of nrow(yrep)) histograms are plotted
 ppc_hist(y, yrep[1:8, ])
 
 set_color_scheme("blue")

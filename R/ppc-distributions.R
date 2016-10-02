@@ -23,6 +23,10 @@
 #'    overlaid, with the distribution of \code{y} itself on top (and in a darker
 #'    shade).
 #'   }
+#'   \item{\code{ppc_ecdf_overlay}}{
+#'    Empirical CDF estimates of each dataset (row) in \code{yrep} are overlaid,
+#'    with the distribution of \code{y} itself on top (and in a darker shade).
+#'   }
 #'   \item{\code{ppc_hist}}{
 #'    A separate histogram is plotted for \code{y} and each dataset (row) in
 #'    \code{yrep}. For this plot \code{yrep} should therefore contain only a
@@ -48,9 +52,10 @@
 #' yrep <- example_yrep_draws()
 #' dim(yrep)
 #' ppc_dens_overlay(y, yrep[1:40, ])
+#' ppc_ecdf_overlay(y, yrep[sample(nrow(yrep), 50), ])
 #'
-#' # for ppc_hist, definitely subset yrep so only some instead of
-#' # nrow(yrep) histograms are plotted
+#' # for ppc_hist, definitely use a subset yrep rows so only
+#' # a few (instead of nrow(yrep)) histograms are plotted
 #' ppc_hist(y, yrep[1:8, ])
 #'
 #' set_color_scheme("blue")
@@ -63,9 +68,8 @@
 #'
 NULL
 
-#' @export
 #' @rdname PPC-distributions
-#'
+#' @export
 ppc_hist <- function(y, yrep, ..., binwidth = NULL) {
   y <- validate_y(y)
   yrep <- validate_yrep(yrep, y)
@@ -92,9 +96,8 @@ ppc_hist <- function(y, yrep, ..., binwidth = NULL) {
 }
 
 
-#' @export
 #' @rdname PPC-distributions
-#'
+#' @export
 ppc_dens <- function(y, yrep, ..., trim = FALSE) {
   y <- validate_y(y)
   yrep <- validate_yrep(yrep, y)
@@ -115,39 +118,70 @@ ppc_dens <- function(y, yrep, ..., trim = FALSE) {
     theme_default(y_text = FALSE, x_lab = FALSE)
 }
 
-#' @export
 #' @rdname PPC-distributions
-#'
-ppc_dens_overlay <- function(y, yrep, ..., trim = FALSE) {
+#' @export
+#' @param size,alpha For \code{ppc_dens_overlay} and \code{ppc_ecdf_overlay},
+#'   passed to \code{\link[ggplot2]{stat_density}} or
+#'   \code{\link[ggplot2]{stat_ecdf}} to control the appearance of the
+#'   \code{yrep} distributions.
+ppc_dens_overlay <- function(y, yrep, ...,
+                             size = 0.25, alpha = 0.7,
+                             trim = FALSE) {
   y <- validate_y(y)
   yrep <- validate_yrep(yrep, y)
 
-  ggplot(
-    data = melt_yrep(yrep),
-    mapping = aes_(
-      x = ~ value,
-      group = ~ rep_id
-    )
-  ) +
-    geom_density(
+  ggplot(melt_yrep(yrep), aes_(x = ~ value)) +
+    stat_density(
+      aes_(group = ~ rep_id),
+      geom = "line",
+      position = "identity",
       color = get_color("l"),
-      fill = NA,
-      size = 0.25,
-      alpha = 0.1,
+      size = size,
+      alpha = alpha,
       trim = trim
     ) +
-    geom_density(
-      data = data.frame(y = y),
-      mapping = aes_(x = ~ y),
-      inherit.aes = FALSE,
+    stat_density(
+      data = data.frame(value = y),
+      geom = "line",
+      position = "identity",
       color = get_color("dh"),
-      fill = NA,
       size = 1,
       trim = trim
     ) +
     xlab(y_label()) +
     dont_expand_axes() +
     theme_default(y_text = FALSE)
+}
+
+#' @export
+#' @rdname PPC-distributions
+#' @param pad For \code{ppc_ecdf_overlay}, a logical scalar passed to
+#'   \code{\link[ggplot2]{stat_ecdf}}.
+ppc_ecdf_overlay <- function(y, yrep, ..., size = 0.25, alpha = 0.7, pad = TRUE) {
+  y <- validate_y(y)
+  yrep <- validate_yrep(yrep, y)
+
+  ggplot(melt_yrep(yrep), aes_(x = ~ value)) +
+    hline_at(c(0, 0.5, 1), size = c(0.2, 0.1, 0.2),
+             linetype = 2, color = get_color("dh")) +
+    stat_ecdf(
+      aes_(group = ~ rep_id),
+      geom = "line",
+      color = get_color("l"),
+      size = size,
+      alpha = alpha,
+      pad = pad
+    ) +
+    stat_ecdf(
+      data = data.frame(value = y),
+      geom = c("line"),
+      color = get_color("dh"),
+      size = 1,
+      pad = pad
+    ) +
+    xlab(y_label()) +
+    scale_y_continuous(breaks = c(0, 0.5, 1)) +
+    theme_default(y_lab = FALSE)
 }
 
 #' @export

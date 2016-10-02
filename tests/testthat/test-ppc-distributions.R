@@ -5,7 +5,12 @@ source("data-for-ppc-tests.R")
 
 test_that("ppc_dens_overlay returns a ggplot object", {
   expect_gg(ppc_dens_overlay(y, yrep))
-  expect_gg(ppc_dens_overlay(y2, yrep2))
+  expect_gg(ppc_dens_overlay(y2, yrep2, size = 0.5, alpha = 0.2))
+})
+
+test_that("ppc_ecdf_overlay returns a ggplot object", {
+  expect_gg(ppc_ecdf_overlay(y, yrep, size = 0.5, alpha = 0.2))
+  expect_gg(ppc_ecdf_overlay(y2, yrep2))
 })
 
 test_that("ppc_dens and pp_hist return ggplot objects", {
