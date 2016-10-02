@@ -17,7 +17,7 @@ ppc_dens_overlay(y, yrep, ..., size = 0.25, alpha = 0.7, trim = FALSE)
 
 ppc_ecdf_overlay(y, yrep, ..., size = 0.25, alpha = 0.7, pad = TRUE)
 
-ppc_violin_grouped(y, yrep, group, ..., probs = c(0.1, 0.5, 0.9))
+ppc_violin_grouped(y, yrep, group, ..., probs = c(0.1, 0.5, 0.9), alpha = 1)
 }
 \arguments{
 \item{y}{A vector of observations. See \strong{Details}.}
@@ -37,10 +37,8 @@ instructions.}
 
 \item{trim}{A logical scalar passed to \code{\link[ggplot2]{geom_density}}.}
 
-\item{size, alpha}{For \code{ppc_dens_overlay} and \code{ppc_ecdf_overlay},
-passed to \code{\link[ggplot2]{stat_density}} or
-\code{\link[ggplot2]{stat_ecdf}} to control the appearance of the
-\code{yrep} distributions.}
+\item{size, alpha}{Passed to the appropriate geom to control the appearance of
+the \code{yrep} distributions.}
 
 \item{pad}{For \code{ppc_ecdf_overlay}, a logical scalar passed to
 \code{\link[ggplot2]{stat_ecdf}}.}
@@ -112,7 +110,7 @@ set_color_scheme("blue")
 group <- example_group_data()
 (p <- ppc_violin_grouped(y, yrep, group))
 p +
- yaxis_ticks(size = .75) +  # add tickmarks to y-axis
+ yaxis_ticks(size = .5) +  # add tickmarks to y-axis
  xaxis_text(size = 15) +    # make x-axis labels bigger
  xaxis_title(on = FALSE)    # remove x-axis title
 

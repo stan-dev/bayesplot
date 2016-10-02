@@ -11,6 +11,8 @@
 #' @template args-y-yrep
 #' @template args-hist
 #' @template args-dens
+#' @param size,alpha Passed to the appropriate geom to control the appearance of
+#'   the \code{yrep} distributions.
 #' @param ... Currently unused.
 #'
 #' @template details-binomial
@@ -60,9 +62,11 @@
 #'
 #' set_color_scheme("blue")
 #' group <- example_group_data()
-#' (p <- ppc_violin_grouped(y, yrep, group))
+#' ppc_violin_grouped(y, yrep, group)
+#'
+#' (p <- ppc_violin_grouped(y, yrep, group, alpha = 0))
 #' p +
-#'  yaxis_ticks(size = .75) +  # add tickmarks to y-axis
+#'  yaxis_ticks(size = .5) +  # add tickmarks to y-axis
 #'  xaxis_text(size = 15) +    # make x-axis labels bigger
 #'  xaxis_title(on = FALSE)    # remove x-axis title
 #'
@@ -120,10 +124,6 @@ ppc_dens <- function(y, yrep, ..., trim = FALSE) {
 
 #' @rdname PPC-distributions
 #' @export
-#' @param size,alpha For \code{ppc_dens_overlay} and \code{ppc_ecdf_overlay},
-#'   passed to \code{\link[ggplot2]{stat_density}} or
-#'   \code{\link[ggplot2]{stat_ecdf}} to control the appearance of the
-#'   \code{yrep} distributions.
 ppc_dens_overlay <- function(y, yrep, ...,
                              size = 0.25, alpha = 0.7,
                              trim = FALSE) {
@@ -157,7 +157,9 @@ ppc_dens_overlay <- function(y, yrep, ...,
 #' @rdname PPC-distributions
 #' @param pad For \code{ppc_ecdf_overlay}, a logical scalar passed to
 #'   \code{\link[ggplot2]{stat_ecdf}}.
-ppc_ecdf_overlay <- function(y, yrep, ..., size = 0.25, alpha = 0.7, pad = TRUE) {
+ppc_ecdf_overlay <- function(y, yrep, ...,
+                             size = 0.25, alpha = 0.7,
+                             pad = TRUE) {
   y <- validate_y(y)
   yrep <- validate_yrep(yrep, y)
 
@@ -191,7 +193,8 @@ ppc_ecdf_overlay <- function(y, yrep, ..., size = 0.25, alpha = 0.7, pad = TRUE)
 #'   \code{draw_quantiles} argument to specify at which quantiles to draw
 #'   horizontal lines. Set to \code{NULL} to remove the lines.
 #'
-ppc_violin_grouped <- function(y, yrep, group, ..., probs = c(0.1, 0.5, 0.9)) {
+ppc_violin_grouped <- function(y, yrep, group, ...,
+                               probs = c(0.1, 0.5, 0.9), alpha = 1) {
   y <- validate_y(y)
   yrep <- validate_yrep(yrep, y)
   group <- validate_group(group, y)
@@ -209,18 +212,23 @@ ppc_violin_grouped <- function(y, yrep, group, ..., probs = c(0.1, 0.5, 0.9)) {
     geom_violin(
       fill = get_color("l"),
       color = get_color("lh"),
-      draw_quantiles = probs
+      draw_quantiles = probs,
+      alpha = alpha
     ) +
     geom_point(
       data = plot_data[is_y,, drop = FALSE],
       color = get_color("dh"),
-      shape = 21
+      shape = 21,
+      alpha = 0.9
     ) +
     scale_fill_manual(
-      name = "",
+      name = "Observed",
       values = get_color("d"),
       labels = expression(italic(y))
     ) +
     labs(x = "Group", y = yrep_label()) +
-    theme_default(legend_position = "right")
+    theme_default(
+      legend_position = "right",
+      legend.title = element_text(size = rel(0.75))
+    )
 }

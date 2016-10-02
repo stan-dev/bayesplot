@@ -28,7 +28,7 @@ theme_default <-
                     base_family = base_family) +
       theme(
         axis.line = element_line(size = 0.3),
-        axis.ticks = element_blank(),
+        axis.ticks = element_line(size = 0.25),
         legend.position = legend_position,
         strip.text = element_text(size = rel(0.75)),
         strip.background = element_rect(fill = "gray95", color = NA),
@@ -37,10 +37,7 @@ theme_default <-
         ...
       )
     dotnames <- names(list(...))
-    if (x_ticks)
-      thm <- thm + theme(axis.ticks.x = element_line())
-    if (y_ticks)
-      thm <- thm + theme(axis.ticks.y = element_line())
+
     if (!"legend.text" %in% dotnames)
       thm <- thm + theme(legend.text = element_text(face = "bold"))
     if (!"legend.title" %in% names(list(...)))
@@ -62,6 +59,10 @@ theme_default <-
       thm <- thm %+replace% theme(axis.title.y = element_blank())
     if (!x_lab)
       thm <- thm %+replace% theme(axis.title.x = element_blank())
+    if (!x_ticks)
+      thm <- thm %+replace% theme(axis.ticks.x = element_blank())
+    if (!y_ticks)
+      thm <- thm %+replace% theme(axis.ticks.y = element_blank())
 
     thm
   }
