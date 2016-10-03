@@ -259,15 +259,23 @@ mcmc_nuts_divergence <- function(x,
       color = get_color("lh")
     ) +
     ylab("accept_stat__") +
+    scale_y_continuous(breaks = c(0, 0.5, 1)) +
     theme_default(x_lab = FALSE)
 
+  div_count_label <- paste(table(divergent$Value)[[2]], "divergences")
   if (!is.null(chain)) {
     violin_lp <- violin_lp +
       chain_violin(violin_lp_data, chain)
     violin_accept_stat <- violin_accept_stat +
       chain_violin(violin_accept_stat_data, chain)
+
+    div_count_by_chain <-
+      table(divergent$Value, divergent$Chain)["Divergence", chain]
+    div_count_label <- paste0(div_count_label, " (", div_count_by_chain,
+                              " from chain ", chain, ")")
   }
 
+  violin_lp <- violin_lp + labs(subtitle = div_count_label)
   nuts_plot <- gridExtra::arrangeGrob(violin_lp, violin_accept_stat, nrow = 2)
   gridExtra::grid.arrange(nuts_plot)
   invisible(nuts_plot)
@@ -322,6 +330,7 @@ mcmc_nuts_stepsize <- function(x,
       color = get_color("lh")
     ) +
     ylab("accept_stat__") +
+    scale_y_continuous(breaks = c(0, 0.5, 1)) +
     stepsize_labels +
     theme_default(x_lab = FALSE)
 
@@ -379,6 +388,7 @@ mcmc_nuts_treedepth <- function(x,
     geom_violin(fill = get_color("l"),
                 color = get_color("lh")) +
     labs(x = "treedepth__", y = "accept_stat__") +
+    scale_y_continuous(breaks = c(0, 0.5, 1)) +
     theme_default()
 
   if (overlay_chain) {
@@ -390,7 +400,8 @@ mcmc_nuts_treedepth <- function(x,
         alpha = 0.5,
         na.rm = TRUE,
         binwidth = 1
-      )
+      ) +
+      dont_expand_y_axis()
 
     violin_lp <- violin_lp +
       chain_violin(violin_lp_data, chain)
