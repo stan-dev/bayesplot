@@ -372,7 +372,7 @@ distribution $\pi_{\Delta E}$, which should look the same under ideal conditions
 plots for the models we fit above. The better parameterization for this model
 (non-centered) is in the bottom panel:
 
-```{r, energy-plot-1}
+```{r, energy-plot-1, message=FALSE}
 gridExtra::grid.arrange(
   mcmc_nuts_energy(np1),
   mcmc_nuts_energy(np2)
@@ -383,7 +383,7 @@ If we force the stepsize to a smaller value to allow for better exploration
 of the target distribution the difference between the parameterizations is
 even more apparent:
 
-```{r, energy-plot-2}
+```{r, energy-plot-2, message=FALSE}
 np1b <- nuts_params(fit1b)
 np2b <- nuts_params(fit2b)
 gridExtra::grid.arrange(
