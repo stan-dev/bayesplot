@@ -30,14 +30,17 @@ theme_default <-
         axis.line = element_line(size = 0.3),
         axis.ticks = element_line(size = 0.25),
         legend.position = legend_position,
-        strip.text = element_text(size = rel(0.75)),
-        strip.background = element_rect(fill = "gray95", color = NA),
         strip.placement = "outside",
-        plot.caption = element_text(hjust = 0.5, size = rel(0.8)),
         ...
       )
     dotnames <- names(list(...))
 
+    # if (!"strip.text" %in% dotnames)
+    #   thm <- thm + theme(strip.text = element_text(size = rel(0.75)))
+    if (!"strip.background" %in% dotnames)
+      thm <- thm + theme(strip.background = element_rect(fill = "gray95", color = NA))
+    if (!"plot.caption" %in% dotnames)
+      thm <- thm + theme(plot.caption = element_text(hjust = 0.5, size = rel(0.8)))
     if (!"legend.text" %in% dotnames)
       thm <- thm + theme(legend.text = element_text(face = "bold"))
     if (!"legend.title" %in% names(list(...)))
