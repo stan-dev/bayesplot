@@ -108,7 +108,9 @@ ppc_hist(y, yrep[1:8, ])
 
 set_color_scheme("blue")
 group <- example_group_data()
-(p <- ppc_violin_grouped(y, yrep, group))
+ppc_violin_grouped(y, yrep, group)
+
+(p <- ppc_violin_grouped(y, yrep, group, alpha = 0))
 p +
  yaxis_ticks(size = .5) +  # add tickmarks to y-axis
  xaxis_text(size = 15) +    # make x-axis labels bigger

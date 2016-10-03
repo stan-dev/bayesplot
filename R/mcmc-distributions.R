@@ -241,18 +241,20 @@ mcmc_violin <- function(x,
       na.rm = TRUE,
       binwidth = binwidth
     ) +
-    dont_expand_y_axis(c(0.005, 0)) +
-    theme_default(y_text = FALSE, x_lab = FALSE)
+    dont_expand_y_axis(c(0.005, 0))
 
   if (is.null(facet_args[["scales"]]))
     facet_args[["scales"]] <- "free"
-
   if (!by_chain) {
     facet_args[["facets"]] <- ~ Parameter
-    graph + do.call("facet_wrap", facet_args)
+    graph +
+      do.call("facet_wrap", facet_args) +
+      theme_default(y_text = FALSE, x_lab = FALSE)
   } else {
     facet_args[["facets"]] <- Chain ~ Parameter
-    graph + do.call("facet_grid", facet_args)
+    graph +
+      do.call("facet_grid", facet_args) +
+      theme_default(y_text = FALSE, x_lab = FALSE)
   }
 }
 
@@ -272,6 +274,8 @@ mcmc_violin <- function(x,
 
   geom <- match.arg(geom)
   violin <- geom == "violin"
+  geom_fun <- if (by_chain)
+    "stat_density" else paste0("geom_", geom)
 
   if (by_chain || violin) {
     if (!has_multiple_chains(x))
@@ -295,17 +299,15 @@ mcmc_violin <- function(x,
   if (by_chain) {
     aes_mapping[["color"]] <- ~ Chain
     aes_mapping[["group"]] <- ~ Chain
-    geom_args[["alpha"]] <- 0.33
+    geom_args[["geom"]] <- "line"
+    geom_args[["position"]] <- "identity"
   } else {
     geom_args[["fill"]] <- get_color("mid")
     geom_args[["color"]] <- get_color("mid_highlight")
   }
 
   graph <- ggplot(data, mapping = do.call("aes_", aes_mapping)) +
-    do.call(paste0("geom_", geom), geom_args) +
-    dont_expand_y_axis(c(0.005, 0)) +
-    theme_default(y_text = FALSE, x_lab = FALSE,
-              legend_position = ifelse(by_chain, "right", "none"))
+    do.call(geom_fun, geom_args)
 
   if (!violin)
     graph <- graph + dont_expand_x_axis()
@@ -315,5 +317,9 @@ mcmc_violin <- function(x,
     facet_args[["scales"]] <- "free"
 
   facet_args[["facets"]] <- ~ Parameter
-  graph + do.call("facet_wrap", facet_args)
+  graph +
+    do.call("facet_wrap", facet_args) +
+    dont_expand_y_axis(c(0.005, 0)) +
+    theme_default(y_text = FALSE, x_lab = FALSE,
+                  legend_position = ifelse(by_chain, "right", "none"))
 }
