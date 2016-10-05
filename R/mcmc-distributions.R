@@ -1,7 +1,7 @@
 #' Histograms and kernel density plots of MCMC draws
 #'
-#' Histograms and kernel density plots of MCMC draws. See the \strong{Plot
-#' Descriptions} section, below, for details.
+#' Various types of histograms and kernel density plots of MCMC draws. See the
+#' \strong{Plot Descriptions} section, below, for details.
 #'
 #' @name MCMC-distributions
 #' @family MCMC
@@ -40,12 +40,12 @@
 #' }
 #'
 #' @examples
-#' set_color_scheme("red")
-#'
 #' # some parameter draws to use for demonstration
 #' x <- example_mcmc_draws()
 #' dim(x)
 #' dimnames(x)
+#'
+#' set_color_scheme("blue")
 #'
 #' ##################
 #' ### Histograms ###
@@ -56,20 +56,20 @@
 #'
 #' # override bayesplot theme and use one of the
 #' # themes included in ggplot2
-#' mcmc_hist(x) + ggplot2::theme_dark()
+#' mcmc_hist(x) + ggplot2::theme_gray()
 #'
 #' # use a ggplot2 theme but override certain elements
 #' # using bayesplot convenience functions
 #' # (see help("bayesplot-convenience") for more examples)
 #' mcmc_hist(x) +
-#'  ggplot2::theme_dark() +
+#'  ggplot2::theme_gray() +
 #'  xaxis_title(FALSE) +
 #'  xaxis_text(size = 10, face = "bold") +
 #'  yaxis_title(FALSE) +
 #'  yaxis_text(FALSE)
 #'
 #' # histograms of some parameters
-#' set_color_scheme("blue")
+#' set_color_scheme("red")
 #' mcmc_hist(x, pars = c("alpha", "beta[2]"))
 #' mcmc_hist(x, pars = "sigma", regex_pars = "beta")
 #'

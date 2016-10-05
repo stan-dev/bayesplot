@@ -11,7 +11,7 @@ ppc_stat(y, yrep, stat = "mean", ..., binwidth = NULL)
 
 ppc_stat_grouped(y, yrep, group, stat = "mean", ..., binwidth = NULL)
 
-ppc_stat_2d(y, yrep, stat = c("mean", "sd"), ...)
+ppc_stat_2d(y, yrep, stat = c("mean", "sd"), ..., size = 2.5, alpha = 0.7)
 }
 \arguments{
 \item{y}{A vector of observations. See \strong{Details}.}
@@ -37,6 +37,9 @@ a scalar test statistic.}
 \item{group}{A grouping variable (a vector or factor) the same length as
 \code{y}. Each value in \code{group} is interpreted as the group level
 pertaining to the corresponding value of \code{y}.}
+
+\item{size, alpha}{Arguments passed to \code{\link[ggplot2]{geom_point}} to
+control the appearance of scatterplot points.}
 }
 \value{
 A ggplot object that can be further customized using the

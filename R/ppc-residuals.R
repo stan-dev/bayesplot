@@ -1,7 +1,8 @@
-#' PPC residuals
+#' PPC residuals (predictive errors)
 #'
-#' Various plots of residuals. See the \strong{Details} and \strong{Plot
-#' Descriptions} sections, below.
+#' Various plots of residuals (or more precisely, \emph{predictive errors})
+#' computed from \code{y} and \code{yrep}. See the \strong{Details} and
+#' \strong{Plot Descriptions} sections, below.
 #'
 #' @name PPC-residuals
 #' @family PPCs
@@ -25,25 +26,25 @@
 #' @section Plot descriptions:
 #' \describe{
 #'   \item{\code{ppc_resid_hist}}{
-#'    A separate histogram is plotted for the residuals computed from \code{y}
-#'    and each dataset (row) in \code{yrep}. For this plot
-#'    \code{yrep} should have only a small number of rows.
+#'    A separate histogram is plotted for the predictive errors computed from
+#'    \code{y} and each dataset (row) in \code{yrep}. For this plot \code{yrep}
+#'    should have only a small number of rows.
 #'   }
 #'   \item{\code{ppc_resid_scatter}}{
-#'    A separate scatterplot is displayed for \code{y} vs. the residuals
+#'    A separate scatterplot is displayed for \code{y} vs. the predictive errors
 #'    computed from \code{y} and each dataset (row) in \code{yrep}. For this
 #'    plot \code{yrep} should have only a small number of rows.
 #'   }
 #'   \item{\code{ppc_resid_scatter_avg}}{
-#'    A single scatterplot of \code{y} vs. the average of the residuals computed
+#'    A single scatterplot of \code{y} vs. the average of the errors computed
 #'    from \code{y} and each dataset (row) in \code{yrep}. For each individual
-#'    data point \code{y[n]} the average residual is the average of the
-#'    residuals for \code{y[n]} computed over the the draws from the posterior
+#'    data point \code{y[n]} the average error is the average of the
+#'    errors for \code{y[n]} computed over the the draws from the posterior
 #'    predictive distribution.
 #'   }
 #'   \item{\code{ppc_resid_scatter_avg_vs_x}}{
-#'    Same as ppc_resid_scatter_avg, except the average residual is plotted
-#'    on the \eqn{y}-axis and a a predictor variable \code{x} is plotted on the
+#'    Same as ppc_resid_scatter_avg, except the average is plotted on the
+#'    \eqn{y}-axis and a a predictor variable \code{x} is plotted on the
 #'    \eqn{x}-axis.
 #'   }
 #'   \item{\code{ppc_resid_binned}}{

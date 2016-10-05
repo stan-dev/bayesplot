@@ -142,10 +142,12 @@ ppc_stat_grouped <-
   }
 
 
-#' @export
 #' @rdname PPC-test-statistics
-#'
-ppc_stat_2d <- function(y, yrep, stat = c("mean", "sd"), ...) {
+#' @export
+#' @param size,alpha Arguments passed to \code{\link[ggplot2]{geom_point}} to
+#'   control the appearance of scatterplot points.
+ppc_stat_2d <- function(y, yrep, stat = c("mean", "sd"), ...,
+                        size = 2.5, alpha = 0.7) {
   y <- validate_y(y)
   yrep <- validate_yrep(yrep, y)
   stat <- validate_stat(stat, 2)
@@ -163,10 +165,10 @@ ppc_stat_2d <- function(y, yrep, stat = c("mean", "sd"), ...) {
   ) +
     geom_point(
       shape = 21,
-      size = 2,
       fill = get_color("l"),
       color = get_color("lh"),
-      alpha = 0.8
+      size = size,
+      alpha = alpha
     ) +
     annotate(
       geom = "segment",
@@ -179,7 +181,7 @@ ppc_stat_2d <- function(y, yrep, stat = c("mean", "sd"), ...) {
     geom_point(
       data = data.frame(x = T_y1, y = T_y2),
       mapping = aes_(x = ~ x, y = ~ y, fill = "Ty", color = "Ty"),
-      size = rel(4),
+      size = size * 1.5,
       shape = 21,
       stroke = 0.75
     ) +

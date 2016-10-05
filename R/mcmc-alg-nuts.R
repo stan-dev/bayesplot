@@ -115,11 +115,7 @@ NULL
 #' @export
 #' @template args-hist
 #'
-mcmc_nuts_acceptance <- function(x,
-                                 lp,
-                                 chain = NULL,
-                                 ...,
-                                 binwidth = NULL) {
+mcmc_nuts_acceptance <- function(x, lp, chain = NULL, ..., binwidth = NULL) {
   suggested_package(c("grid", "gridExtra"))
 
   x <- validate_nuts_data_frame(x, lp)
@@ -221,10 +217,7 @@ mcmc_nuts_acceptance <- function(x,
 
 #' @rdname MCMC-nuts
 #' @export
-mcmc_nuts_divergence <- function(x,
-                                 lp,
-                                 chain = NULL,
-                                 ...) {
+mcmc_nuts_divergence <- function(x, lp, chain = NULL, ...) {
   suggested_package("gridExtra")
 
   x <- validate_nuts_data_frame(x, lp)
@@ -285,10 +278,7 @@ mcmc_nuts_divergence <- function(x,
 
 #' @rdname MCMC-nuts
 #' @export
-mcmc_nuts_stepsize <- function(x,
-                               lp,
-                               chain = NULL,
-                               ...) {
+mcmc_nuts_stepsize <- function(x, lp, chain = NULL, ...) {
   suggested_package("gridExtra")
 
   x <- validate_nuts_data_frame(x, lp)
@@ -349,10 +339,7 @@ mcmc_nuts_stepsize <- function(x,
 
 #' @rdname MCMC-nuts
 #' @export
-mcmc_nuts_treedepth <- function(x,
-                                lp,
-                                chain = NULL,
-                                ...) {
+mcmc_nuts_treedepth <- function(x, lp, chain = NULL, ...) {
   suggested_package(c("grid", "gridExtra"))
 
   x <- validate_nuts_data_frame(x, lp)
