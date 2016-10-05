@@ -41,7 +41,9 @@ control the appearance of scatterplot points.}
 \item{x}{A numeric vector the same length as \code{y}.}
 
 \item{Ey}{A matrix of posterior draws of the linear predictor transformed by
-the inverse-link function.}
+the inverse-link function. For logistic regression models, \code{Ey} would
+be a matrix of predicted probabilities (with the same dimensions as the
+\code{yrep} used by the other PPC plotting functions).}
 }
 \value{
 A ggplot object that can be further customized using the

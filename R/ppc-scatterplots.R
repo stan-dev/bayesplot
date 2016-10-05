@@ -157,12 +157,13 @@ ppc_scatter_avg_grouped <-
     mid <- isTRUE(match.arg(color) == "mid")
     graph <- ggplot(data, mapping)
     if (abline) {
-      graph <- graph + geom_abline(
-        intercept = 0,
-        slope = 1,
-        linetype = 2,
-        color = get_color("dh")
-      )
+      graph <- graph +
+        geom_abline(
+          intercept = 0,
+          slope = 1,
+          linetype = 2,
+          color = get_color("dh")
+        )
     }
     graph +
       geom_point(
