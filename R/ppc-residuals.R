@@ -99,16 +99,15 @@ ppc_resid_hist <- function(y, yrep, ..., binwidth = NULL) {
   if (nrow(yrep) == 1) {
     resids <- data.frame(x = y - as.vector(yrep))
     graph <- ggplot(resids, aes_(x = ~ x)) +
-      labs(y = NULL, x = expression(italic(y) - italic(y)^rep))
+      labs(y = NULL, x = expression(italic(y) - italic(y)[rep]))
   } else {
-    resids <- melt_yrep(compute_resids(y, yrep))
-    resids$rep_id <- factor(
-      resids$rep_id,
-      labels = paste("italic(y)", "-", unique(resids$rep_id))
-    )
-    graph <- ggplot(resids, aes_(x = ~ value)) +
+    resids <- compute_resids(y, yrep)
+    graph <- ggplot(melt_yrep(resids, label = FALSE), aes_(x = ~ value)) +
       labs(y = NULL, x = NULL) +
-      facet_wrap_parsed("rep_id")
+      facet_wrap(
+        facets = ~rep_id,
+        labeller = label_bquote(italic(y) - italic(y)[rep](.(rep_id)))
+      )
   }
 
   graph +
@@ -143,7 +142,7 @@ ppc_resid_scatter <-
         .ppc_scatter(
           data = data.frame(y = y, x = y - as.vector(yrep)),
           mapping = aes_(x = ~ x, y = ~ y),
-          x_lab = expression(italic(y) - italic(y) ^ rep),
+          x_lab = expression(italic(y) - italic(y)[rep]),
           y_lab = expression(italic(y)),
           size = size,
           alpha = alpha,
@@ -152,24 +151,24 @@ ppc_resid_scatter <-
       )
     }
 
-    resids <- melt_yrep(compute_resids(y, yrep))
-    resid_labs <- paste("italic(y)", "-", unique(resids$rep_id))
-    resids$rep_id <- factor(resids$rep_id, labels = resid_labs)
-
+    resids <- compute_resids(y, yrep)
     .ppc_scatter(
       data = dplyr::left_join(
-        resids,
+        melt_yrep(resids, label = FALSE),
         data.frame(y = y, y_id = seq_along(y)),
         by = "y_id"
       ),
       mapping = aes_(x = ~ value, y = ~ y),
       y_lab = expression(italic(y)),
-      x_lab = NULL,
+      x_lab = expression(y - italic(y)[rep]),
       size = size,
       alpha = alpha,
       abline = FALSE
     ) +
-      facet_wrap_parsed("rep_id")
+      facet_wrap(
+        facets = ~ rep_id,
+        labeller = label_bquote(italic(y) - italic(y)[rep](.(rep_id)))
+      )
   }
 
 #' @rdname PPC-residuals
@@ -229,7 +228,9 @@ ppc_resid_scatter_avg_vs_x <-
 #' @rdname PPC-residuals
 #' @export
 #' @param Ey A matrix of posterior draws of the linear predictor transformed by
-#'   the inverse-link function.
+#'   the inverse-link function. For logistic regression models, \code{Ey} would
+#'   be a matrix of predicted probabilities (with the same dimensions as the
+#'   \code{yrep} used by the other PPC plotting functions).
 #'
 ppc_resid_binned <- function(y, Ey, ...) {
   suggested_package("arm")
@@ -296,7 +297,11 @@ ppc_resid_binned <- function(y, Ey, ...) {
     )
 
   if (n > 1)
-    graph <- graph + facet_wrap_parsed("rep")
+    graph <- graph +
+      facet_wrap(
+        facets = ~rep_id,
+        labeller = label_bquote(italic(y)[rep](.(rep_id)))
+      )
 
   graph + theme_default()
 }
@@ -317,7 +322,7 @@ binner <- function(rep_id, ey, r, nbins) {
     binned_resids <- t(binned_resids)
   colnames(binned_resids) <- c("xbar", "ybar", "se2")
   data.frame(
-    rep = create_yrep_ids(rep_id),
+    rep_id = as.integer(rep_id), #create_yrep_ids(rep_id),
     binned_resids
   )
 }
