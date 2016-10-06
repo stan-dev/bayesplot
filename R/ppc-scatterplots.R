@@ -80,7 +80,10 @@ ppc_scatter <-
     if (nrow(yrep) == 1)
       return(graph)
 
-    graph + facet_wrap_parsed("rep_id")
+    graph +
+      facet_wrap_parsed("rep_id") +
+      facet_text(FALSE) +
+      facet_bg(FALSE)
   }
 
 #' @export

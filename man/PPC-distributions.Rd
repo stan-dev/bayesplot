@@ -17,7 +17,8 @@ ppc_dens_overlay(y, yrep, ..., size = 0.25, alpha = 0.7, trim = FALSE)
 
 ppc_ecdf_overlay(y, yrep, ..., size = 0.25, alpha = 0.7, pad = TRUE)
 
-ppc_violin_grouped(y, yrep, group, ..., probs = c(0.1, 0.5, 0.9), alpha = 1)
+ppc_violin_grouped(y, yrep, group, ..., probs = c(0.1, 0.5, 0.9), alpha = 1,
+  size = 1)
 }
 \arguments{
 \item{y}{A vector of observations. See \strong{Details}.}

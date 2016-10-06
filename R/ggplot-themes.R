@@ -13,7 +13,7 @@
 #' @return A ggplot \code{\link[ggplot2]{theme}} object.
 #'
 theme_default <-
-  function(base_size = 12,
+  function(base_size = 11,
            base_family = "",
            x_text = TRUE,
            y_text = TRUE,
@@ -39,6 +39,8 @@ theme_default <-
     #   thm <- thm + theme(strip.text = element_text(size = rel(0.75)))
     if (!"strip.background" %in% dotnames)
       thm <- thm + theme(strip.background = element_rect(fill = "gray95", color = NA))
+    if (!"panel.spacing" %in% dotnames)
+      thm <- thm + theme(panel.spacing = unit(1.5, "lines"))
     if (!"plot.caption" %in% dotnames)
       thm <- thm + theme(plot.caption = element_text(hjust = 0.5, size = rel(0.8)))
     if (!"legend.text" %in% dotnames)
