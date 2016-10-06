@@ -2,6 +2,7 @@
 % Please edit documentation in R/convenience.R
 \name{bayesplot-convenience}
 \alias{bayesplot-convenience}
+\alias{facet_bg}
 \alias{facet_text}
 \alias{hline_0}
 \alias{hline_at}
@@ -38,6 +39,8 @@ xaxis_title(on = TRUE, ...)
 yaxis_title(on = TRUE, ...)
 
 facet_text(on = TRUE, ...)
+
+facet_bg(on = TRUE, ...)
 
 xaxis_text(on = TRUE, ...)
 

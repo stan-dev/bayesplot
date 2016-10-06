@@ -198,6 +198,7 @@ ppc_ts_plotter <-
            size = 1) {
   y_style <- match.arg(y_style, several.ok = TRUE)
   grouped <- isTRUE("group" %in% colnames(data))
+  data[["is_y"]] <- as.logical(data[["is_y"]])
   yrep_data <- dplyr::filter_(data, ~ !is_y)
   y_data <- dplyr::filter_(data, ~ is_y)
 

@@ -78,9 +78,9 @@ ppc_hist <- function(y, yrep, ..., binwidth = NULL) {
   y <- validate_y(y)
   yrep <- validate_yrep(yrep, y)
 
-  mixed_scheme <- is_mixed_scheme(get_color_scheme())
-  hist_fills <- get_color(c(ifelse(mixed_scheme, "m", "d"), "l"))
-  hist_colors <- get_color(c(ifelse(mixed_scheme, "mh", "dh"), "lh"))
+  # mixed_scheme <- is_mixed_scheme(get_color_scheme())
+  # hist_fills <- get_color(c(ifelse(mixed_scheme, "m", "d"), "l"))
+  # hist_colors <- get_color(c(ifelse(mixed_scheme, "mh", "dh"), "lh"))
 
   ggplot(
     data = melt_and_stack(y, yrep),
@@ -92,11 +92,23 @@ ppc_hist <- function(y, yrep, ..., binwidth = NULL) {
     )
   ) +
     geom_histogram(size = 0.25, binwidth = binwidth) +
-    scale_fill_manual(values = hist_fills) +
-    scale_color_manual(values = hist_colors) +
+    scale_fill_manual(
+      name = "",
+      values = get_color(c("d", "l")),
+      labels = c(expression(italic(y)), expression(italic(y)[rep]))
+    ) +
+    scale_color_manual(
+      name = "",
+      values = get_color(c("dh", "lh")),
+      labels = c(expression(italic(y)), expression(italic(y)[rep]))
+    ) +
     facet_wrap_parsed("rep_id") +
     dont_expand_y_axis() +
-    theme_default(y_text = FALSE, x_lab = FALSE)
+    theme_default(y_text = FALSE, x_lab = FALSE,
+                  legend_position = "right",
+                  legend.text.align = 0) +
+    facet_text(FALSE) +
+    facet_bg(FALSE)
 }
 
 
@@ -114,12 +126,24 @@ ppc_dens <- function(y, yrep, ..., trim = FALSE) {
       color = ~ is_y
     )
   ) +
-    geom_density(size = 1, trim = trim) +
-    scale_fill_manual(values = get_color(c("d", "l"))) +
-    scale_color_manual(values = get_color(c("dh", "lh"))) +
+    geom_density(size = 0.5, trim = trim) +
+    scale_fill_manual(
+      name = "",
+      values = get_color(c("d", "l")),
+      labels = c(expression(italic(y)), expression(italic(y)[rep]))
+    ) +
+    scale_color_manual(
+      name = "",
+      values = get_color(c("dh", "lh")),
+      labels = c(expression(italic(y)), expression(italic(y)[rep]))
+    ) +
     facet_wrap_parsed("rep_id") +
     dont_expand_y_axis() +
-    theme_default(y_text = FALSE, x_lab = FALSE)
+    theme_default(y_text = FALSE, x_lab = FALSE,
+                  legend_position = "right",
+                  legend.text.align = 0) +
+    facet_text(FALSE) +
+    facet_bg(FALSE)
 }
 
 #' @rdname PPC-distributions
@@ -132,25 +156,34 @@ ppc_dens_overlay <- function(y, yrep, ...,
 
   ggplot(melt_yrep(yrep), aes_(x = ~ value)) +
     stat_density(
-      aes_(group = ~ rep_id),
+      aes_(group = ~ rep_id, color = "yrep"),
       geom = "line",
       position = "identity",
-      color = get_color("l"),
+      # color = get_color("l"),
       size = size,
       alpha = alpha,
       trim = trim
     ) +
     stat_density(
       data = data.frame(value = y),
+      aes_(color = "y"),
       geom = "line",
       position = "identity",
-      color = get_color("dh"),
+      # color = get_color("dh"),
       size = 1,
       trim = trim
     ) +
+    scale_color_manual(
+      name = "",
+      values = setNames(get_color(c("dh", "l")), c("y", "yrep")),
+      labels = c(expression(italic(y)), expression(italic(y)[rep]))
+    ) +
     xlab(y_label()) +
     dont_expand_axes() +
-    theme_default(y_text = FALSE)
+    theme_default(y_text = FALSE,
+                  x_lab = FALSE,
+                  legend_position = "right",
+                  legend.text.align = 0)
 }
 
 #' @export
@@ -167,23 +200,32 @@ ppc_ecdf_overlay <- function(y, yrep, ...,
     hline_at(c(0, 0.5, 1), size = c(0.2, 0.1, 0.2),
              linetype = 2, color = get_color("dh")) +
     stat_ecdf(
-      aes_(group = ~ rep_id),
+      mapping = aes_(group = ~ rep_id, color = "yrep"),
       geom = "line",
-      color = get_color("l"),
+      # color = get_color("l"),
       size = size,
       alpha = alpha,
       pad = pad
     ) +
     stat_ecdf(
       data = data.frame(value = y),
+      mapping = aes_(color = "y"),
       geom = c("line"),
-      color = get_color("dh"),
+      # color = get_color("dh"),
       size = 1,
       pad = pad
     ) +
+    scale_color_manual(
+      name = "",
+      values = setNames(get_color(c("dh", "l")), c("y", "yrep")),
+      labels = c(expression(italic(y)), expression(italic(y)[rep]))
+    ) +
     xlab(y_label()) +
     scale_y_continuous(breaks = c(0, 0.5, 1)) +
-    theme_default(y_lab = FALSE)
+    theme_default(y_lab = FALSE,
+                  x_lab = FALSE,
+                  legend_position = "right",
+                  legend.text.align = 0)
 }
 
 #' @export
@@ -194,7 +236,9 @@ ppc_ecdf_overlay <- function(y, yrep, ...,
 #'   horizontal lines. Set to \code{NULL} to remove the lines.
 #'
 ppc_violin_grouped <- function(y, yrep, group, ...,
-                               probs = c(0.1, 0.5, 0.9), alpha = 1) {
+                               probs = c(0.1, 0.5, 0.9),
+                               alpha = 1,
+                               size = 1) {
   y <- validate_y(y)
   yrep <- validate_yrep(yrep, y)
   group <- validate_group(group, y)
@@ -202,33 +246,34 @@ ppc_violin_grouped <- function(y, yrep, group, ...,
   is_y <- plot_data$variable == "y"
 
   ggplot(
-    data = plot_data[!is_y,, drop = FALSE],
-    mapping = aes_(
-      x = ~ group,
-      y = ~ value,
-      fill = ~ variable
-    )
+    plot_data[!is_y,, drop = FALSE],
+    aes_(x = ~ group, y = ~ value)
   ) +
     geom_violin(
-      fill = get_color("l"),
-      color = get_color("lh"),
+      aes_(fill = "yrep", color = "yrep"),
       draw_quantiles = probs,
       alpha = alpha
     ) +
     geom_point(
       data = plot_data[is_y,, drop = FALSE],
-      color = get_color("dh"),
+      aes_(fill = "y", color = "y"),
       shape = 21,
-      alpha = 0.9
+      alpha = 0.9,
+      size = size
     ) +
     scale_fill_manual(
-      name = "Observed",
-      values = get_color("d"),
-      labels = expression(italic(y))
+      name = "",
+      values = setNames(c(NA, get_color(c("l"))), c("y", "yrep")),
+      labels = c(expression(italic(y)), expression(italic(y)[rep]))
+    ) +
+    scale_color_manual(
+      name = "",
+      values = setNames(get_color(c("dh", "lh")), c("y", "yrep")),
+      labels = c(expression(italic(y)), expression(italic(y)[rep]))
     ) +
     labs(x = "Group", y = yrep_label()) +
-    theme_default(
-      legend_position = "right",
-      legend.title = element_text(size = rel(0.75))
-    )
+    theme_default(y_lab = FALSE,
+                  x_lab = FALSE,
+                  legend_position = "right",
+                  legend.text.align = 0)
 }

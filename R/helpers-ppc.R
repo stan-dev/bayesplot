@@ -184,7 +184,7 @@ melt_and_stack <- function(y, yrep) {
   )
   within(data = rbind(molten_yrep, ydat), {
     rep_id <- relevel(rep_id, ref = yobs_lab)
-    is_y <- rep_id == yobs_lab
+    is_y <- factor(rep_id == yobs_lab, levels = c(TRUE, FALSE))
   })
 }
 

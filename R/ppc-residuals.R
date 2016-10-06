@@ -104,7 +104,7 @@ ppc_resid_hist <- function(y, yrep, ..., binwidth = NULL) {
   } else {
     resids <- compute_resids(y, yrep)
     graph <- ggplot(melt_yrep(resids, label = FALSE), aes_(x = ~ value)) +
-      labs(y = NULL, x = NULL) +
+      labs(y = NULL, x = expression(italic(y) - italic(y)[rep])) +
       facet_wrap(
         facets = ~rep_id,
         labeller = label_bquote(italic(y) - italic(y)[rep](.(rep_id)))
@@ -120,7 +120,9 @@ ppc_resid_hist <- function(y, yrep, ..., binwidth = NULL) {
       binwidth = binwidth
     ) +
     dont_expand_y_axis() +
-    theme_default(y_text = FALSE)
+    theme_default(y_text = FALSE) +
+    facet_text(FALSE) +
+    facet_bg(FALSE)
 }
 
 
@@ -169,7 +171,9 @@ ppc_resid_scatter <-
       facet_wrap(
         facets = ~ rep_id,
         labeller = label_bquote(italic(y) - italic(y)[rep](.(rep_id)))
-      )
+      ) +
+      facet_text(FALSE) +
+      facet_bg(FALSE)
   }
 
 #' @rdname PPC-residuals
@@ -304,7 +308,10 @@ ppc_resid_binned <- function(y, Ey, ...) {
         labeller = label_bquote(italic(y)[rep](.(rep_id)))
       )
 
-  graph + theme_default()
+  graph +
+    theme_default() +
+    facet_text(FALSE) +
+    facet_bg(FALSE)
 }
 
 

@@ -4,7 +4,7 @@
 \alias{theme_default}
 \title{bayesplot's default ggplot theme}
 \usage{
-theme_default(base_size = 12, base_family = "", x_text = TRUE,
+theme_default(base_size = 11, base_family = "", x_text = TRUE,
   y_text = TRUE, x_lab = TRUE, y_lab = TRUE, x_ticks = FALSE,
   y_ticks = FALSE, legend_position = "none", ...)
 }

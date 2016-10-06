@@ -312,6 +312,14 @@ facet_text <- function(on = TRUE, ...) {
 }
 #' @rdname bayesplot-convenience
 #' @export
+facet_bg <- function(on = TRUE, ...) {
+  theme(strip.background = if (on)
+    element_rect(...)
+    else
+      element_blank())
+}
+#' @rdname bayesplot-convenience
+#' @export
 xaxis_text <- function(on = TRUE, ...) {
   theme(axis.text.x = if (on)
     element_text(...)
