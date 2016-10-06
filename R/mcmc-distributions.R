@@ -247,15 +247,17 @@ mcmc_violin <- function(x,
     facet_args[["scales"]] <- "free"
   if (!by_chain) {
     facet_args[["facets"]] <- ~ Parameter
-    graph +
-      do.call("facet_wrap", facet_args) +
-      theme_default(y_text = FALSE, x_lab = FALSE)
+    graph <- graph + do.call("facet_wrap", facet_args)
   } else {
     facet_args[["facets"]] <- Chain ~ Parameter
-    graph +
-      do.call("facet_grid", facet_args) +
-      theme_default(y_text = FALSE, x_lab = FALSE)
+    graph <- grah + do.call("facet_grid", facet_args)
   }
+  graph +
+    theme_default() +
+    yaxis_text(FALSE) +
+    yaxis_title(FALSE) +
+    yaxis_ticks(FALSE) +
+    xaxis_title(FALSE)
 }
 
 .mcmc_dens <- function(x,
@@ -320,6 +322,9 @@ mcmc_violin <- function(x,
   graph +
     do.call("facet_wrap", facet_args) +
     dont_expand_y_axis(c(0.005, 0)) +
-    theme_default(y_text = FALSE, x_lab = FALSE,
-                  legend_position = ifelse(by_chain, "right", "none"))
+    theme_default() +
+    yaxis_text(FALSE) +
+    yaxis_title(FALSE) +
+    yaxis_ticks(FALSE) +
+    xaxis_title(FALSE)
 }

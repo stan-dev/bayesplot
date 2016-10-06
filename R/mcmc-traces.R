@@ -202,13 +202,7 @@ mcmc_trace_highlight <-
     graph <- graph + coord_cartesian(xlim = window)
   }
 
-  graph <- graph +
-    do.call(paste0("geom_", style), geom_args) +
-    theme_default(
-      x_lab = FALSE,
-      y_lab = FALSE,
-      legend_position = if (nlevels(data$Chain) > 1) "right" else "none"
-    )
+  graph <- graph + do.call(paste0("geom_", style), geom_args)
 
   if (!is.null(highlight)) {
     graph <- graph +
@@ -225,7 +219,12 @@ mcmc_trace_highlight <-
   if (is.null(facet_args$scales))
     facet_args$scales <- "free"
 
-  graph + do.call("facet_wrap", facet_args)
+  graph +
+    do.call("facet_wrap", facet_args) +
+    theme_default() +
+    move_legend(ifelse(nlevels(data$Chain) > 1, "right", "none")) +
+    xaxis_title(FALSE) +
+    yaxis_title(FALSE)
 }
 
 chain_colors <- function(n) {
