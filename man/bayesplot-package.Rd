@@ -15,9 +15,9 @@ chain Monte Carlo). The package is designed not only to provide convenient
 functionality for users, but also a common set of functions that can be
 easily used by developers working on a variety of packages for Bayesian
 modeling, particularly (but not necessarily) packages powered by
-\pkg{\link{rstan}}. Examples of packages already (or soon to be) using
+\pkg{\link[rstan]{rstan}}. Examples of packages already (or soon to be) using
 \pkg{bayesplot} are \pkg{rstan} itself, as well as the \pkg{rstan}-dependent
-\pkg{rstanarm} and \pkg{brms} packages.
+\pkg{rstanarm} and \pkg{brms} packages for applied regression modeling.
 }
 \section{Plotting functionality}{
 
@@ -36,7 +36,9 @@ modeling, particularly (but not necessarily) packages powered by
 # A few quick examples (all of the functions have many examples
 # on their individual help pages)
 
+# MCMC plots
 x <- example_mcmc_draws(params = 5)
+
 mcmc_intervals(x, prob = 0.5)
 mcmc_intervals(x, regex_pars = "beta")
 
@@ -51,6 +53,8 @@ set_color_scheme("brightblue")
 mcmc_scatter(x, pars = c("beta[1]", "sigma"),
              transformations = list(sigma = "log"))
 
+
+# Graphical PPCs
 y <- example_y_data()
 yrep <- example_yrep_draws()
 ppc_dens_overlay(y, yrep[1:50, ])

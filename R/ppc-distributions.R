@@ -11,6 +11,8 @@
 #' @template args-y-yrep
 #' @template args-hist
 #' @template args-dens
+#' @param size,alpha Passed to the appropriate geom to control the appearance of
+#'   the \code{yrep} distributions.
 #' @param ... Currently unused.
 #'
 #' @template details-binomial
@@ -22,6 +24,10 @@
 #'    Kernel density estimates of each dataset (row) in \code{yrep} are
 #'    overlaid, with the distribution of \code{y} itself on top (and in a darker
 #'    shade).
+#'   }
+#'   \item{\code{ppc_ecdf_overlay}}{
+#'    Empirical CDF estimates of each dataset (row) in \code{yrep} are overlaid,
+#'    with the distribution of \code{y} itself on top (and in a darker shade).
 #'   }
 #'   \item{\code{ppc_hist}}{
 #'    A separate histogram is plotted for \code{y} and each dataset (row) in
@@ -48,24 +54,26 @@
 #' yrep <- example_yrep_draws()
 #' dim(yrep)
 #' ppc_dens_overlay(y, yrep[1:40, ])
+#' ppc_ecdf_overlay(y, yrep[sample(nrow(yrep), 50), ])
 #'
-#' # for ppc_hist, definitely subset yrep so only some instead of
-#' # nrow(yrep) histograms are plotted
+#' # for ppc_hist, definitely use a subset yrep rows so only
+#' # a few (instead of nrow(yrep)) histograms are plotted
 #' ppc_hist(y, yrep[1:8, ])
 #'
 #' set_color_scheme("blue")
 #' group <- example_group_data()
-#' (p <- ppc_violin_grouped(y, yrep, group))
+#' ppc_violin_grouped(y, yrep, group)
+#'
+#' (p <- ppc_violin_grouped(y, yrep, group, alpha = 0))
 #' p +
-#'  yaxis_ticks(size = .75) +  # add tickmarks to y-axis
+#'  yaxis_ticks(size = .5) +  # add tickmarks to y-axis
 #'  xaxis_text(size = 15) +    # make x-axis labels bigger
 #'  xaxis_title(on = FALSE)    # remove x-axis title
 #'
 NULL
 
-#' @export
 #' @rdname PPC-distributions
-#'
+#' @export
 ppc_hist <- function(y, yrep, ..., binwidth = NULL) {
   y <- validate_y(y)
   yrep <- validate_yrep(yrep, y)
@@ -86,15 +94,14 @@ ppc_hist <- function(y, yrep, ..., binwidth = NULL) {
     geom_histogram(size = 0.25, binwidth = binwidth) +
     scale_fill_manual(values = hist_fills) +
     scale_color_manual(values = hist_colors) +
-    facet_wrap_parsed("rep_id", switch = "x") +
+    facet_wrap_parsed("rep_id") +
     dont_expand_y_axis() +
     theme_default(y_text = FALSE, x_lab = FALSE)
 }
 
 
-#' @export
 #' @rdname PPC-distributions
-#'
+#' @export
 ppc_dens <- function(y, yrep, ..., trim = FALSE) {
   y <- validate_y(y)
   yrep <- validate_yrep(yrep, y)
@@ -110,38 +117,34 @@ ppc_dens <- function(y, yrep, ..., trim = FALSE) {
     geom_density(size = 1, trim = trim) +
     scale_fill_manual(values = get_color(c("d", "l"))) +
     scale_color_manual(values = get_color(c("dh", "lh"))) +
-    facet_wrap_parsed("rep_id", switch = "x") +
+    facet_wrap_parsed("rep_id") +
     dont_expand_y_axis() +
     theme_default(y_text = FALSE, x_lab = FALSE)
 }
 
-#' @export
 #' @rdname PPC-distributions
-#'
-ppc_dens_overlay <- function(y, yrep, ..., trim = FALSE) {
+#' @export
+ppc_dens_overlay <- function(y, yrep, ...,
+                             size = 0.25, alpha = 0.7,
+                             trim = FALSE) {
   y <- validate_y(y)
   yrep <- validate_yrep(yrep, y)
 
-  ggplot(
-    data = melt_yrep(yrep),
-    mapping = aes_(
-      x = ~ value,
-      group = ~ rep_id
-    )
-  ) +
-    geom_density(
+  ggplot(melt_yrep(yrep), aes_(x = ~ value)) +
+    stat_density(
+      aes_(group = ~ rep_id),
+      geom = "line",
+      position = "identity",
       color = get_color("l"),
-      fill = NA,
-      size = 0.25,
-      alpha = 0.1,
+      size = size,
+      alpha = alpha,
       trim = trim
     ) +
-    geom_density(
-      data = data.frame(y = y),
-      mapping = aes_(x = ~ y),
-      inherit.aes = FALSE,
+    stat_density(
+      data = data.frame(value = y),
+      geom = "line",
+      position = "identity",
       color = get_color("dh"),
-      fill = NA,
       size = 1,
       trim = trim
     ) +
@@ -152,12 +155,46 @@ ppc_dens_overlay <- function(y, yrep, ..., trim = FALSE) {
 
 #' @export
 #' @rdname PPC-distributions
+#' @param pad For \code{ppc_ecdf_overlay}, a logical scalar passed to
+#'   \code{\link[ggplot2]{stat_ecdf}}.
+ppc_ecdf_overlay <- function(y, yrep, ...,
+                             size = 0.25, alpha = 0.7,
+                             pad = TRUE) {
+  y <- validate_y(y)
+  yrep <- validate_yrep(yrep, y)
+
+  ggplot(melt_yrep(yrep), aes_(x = ~ value)) +
+    hline_at(c(0, 0.5, 1), size = c(0.2, 0.1, 0.2),
+             linetype = 2, color = get_color("dh")) +
+    stat_ecdf(
+      aes_(group = ~ rep_id),
+      geom = "line",
+      color = get_color("l"),
+      size = size,
+      alpha = alpha,
+      pad = pad
+    ) +
+    stat_ecdf(
+      data = data.frame(value = y),
+      geom = c("line"),
+      color = get_color("dh"),
+      size = 1,
+      pad = pad
+    ) +
+    xlab(y_label()) +
+    scale_y_continuous(breaks = c(0, 0.5, 1)) +
+    theme_default(y_lab = FALSE)
+}
+
+#' @export
+#' @rdname PPC-distributions
 #' @template args-group
 #' @param probs A numeric vector passed to \code{\link[ggplot2]{geom_violin}}'s
 #'   \code{draw_quantiles} argument to specify at which quantiles to draw
 #'   horizontal lines. Set to \code{NULL} to remove the lines.
 #'
-ppc_violin_grouped <- function(y, yrep, group, ..., probs = c(0.1, 0.5, 0.9)) {
+ppc_violin_grouped <- function(y, yrep, group, ...,
+                               probs = c(0.1, 0.5, 0.9), alpha = 1) {
   y <- validate_y(y)
   yrep <- validate_yrep(yrep, y)
   group <- validate_group(group, y)
@@ -175,18 +212,23 @@ ppc_violin_grouped <- function(y, yrep, group, ..., probs = c(0.1, 0.5, 0.9)) {
     geom_violin(
       fill = get_color("l"),
       color = get_color("lh"),
-      draw_quantiles = probs
+      draw_quantiles = probs,
+      alpha = alpha
     ) +
     geom_point(
       data = plot_data[is_y,, drop = FALSE],
       color = get_color("dh"),
-      shape = 21
+      shape = 21,
+      alpha = 0.9
     ) +
     scale_fill_manual(
-      name = "",
+      name = "Observed",
       values = get_color("d"),
       labels = expression(italic(y))
     ) +
     labs(x = "Group", y = yrep_label()) +
-    theme_default(legend_position = "right")
+    theme_default(
+      legend_position = "right",
+      legend.title = element_text(size = rel(0.75))
+    )
 }

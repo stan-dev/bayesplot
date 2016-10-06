@@ -37,12 +37,12 @@ test_that("all mcmc_nuts_* (except energy) error if chain argument is bad", {
 test_that("mcmc_nuts_energy returns a ggplot object", {
   p <- mcmc_nuts_energy(np, lp)
   expect_gg(p)
-  expect_s3_class(p$facet, c("null", "facet"))
+  expect_s3_class(p$facet, "FacetNull")
 
   p <- mcmc_nuts_energy(np, lp, merge_chains = FALSE)
   expect_gg(p)
-  expect_s3_class(p$facet, c("wrap", "facet"))
-  expect_equal(names(p$facet$facets), "Chain")
+  expect_s3_class(p$facet, "FacetWrap")
+  expect_equal(names(p$facet$params$facets), "Chain")
 })
 test_that("mcmc_nuts_energy throws correct errors", {
   expect_error(mcmc_nuts_energy(np, lp, chain = 1),

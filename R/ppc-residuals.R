@@ -1,13 +1,8 @@
-#' PPC residuals
+#' PPC residuals (predictive errors)
 #'
-#' \code{ppc_resid_hist} plots histograms of residuals computed from \code{y}
-#' and simulated datasets \code{yrep}. \code{ppc_resid_scatter} and
-#' \code{ppc_resid_scatter_avg} plot scatterplots of residuals vs. \code{y} and
-#' average residuals vs. \code{y}, respectively. For binomial data,
-#' \code{ppc_resid_binned} generates binned residual plots (similar to
-#' \code{\link[arm]{binnedplot}}) from \code{y} and the posterior draws of the
-#' linear predictor transformed by the inverse-link function. See the
-#' \strong{Details} and \strong{Plot Descriptions} sections, below.
+#' Various plots of residuals (or more precisely, \emph{predictive errors})
+#' computed from \code{y} and \code{yrep}. See the \strong{Details} and
+#' \strong{Plot Descriptions} sections, below.
 #'
 #' @name PPC-residuals
 #' @family PPCs
@@ -16,8 +11,8 @@
 #' @param ... Currently unused.
 #'
 #' @details
-#' All of these plots (aside from \code{ppc_resid_scatter_avg}) compute and plot
-#' residuals for each row of the matrix \code{yrep} (or for
+#' All of these functions (aside from the \code{*_scatter_avg} functions)
+#' compute and plot residuals for each row of the matrix \code{yrep} (or for
 #' \code{ppc_resid_binned} the matrix \code{Ey}), so it is usually a good idea
 #' for \code{yrep} and \code{Ey} to contain only a small number of draws (rows).
 #' See \strong{Examples}, below.
@@ -31,21 +26,26 @@
 #' @section Plot descriptions:
 #' \describe{
 #'   \item{\code{ppc_resid_hist}}{
-#'    A separate histogram is plotted for the residuals computed from \code{y}
-#'    and each dataset (row) in \code{yrep}. For this plot
-#'    \code{yrep} should have only a small number of rows.
+#'    A separate histogram is plotted for the predictive errors computed from
+#'    \code{y} and each dataset (row) in \code{yrep}. For this plot \code{yrep}
+#'    should have only a small number of rows.
 #'   }
 #'   \item{\code{ppc_resid_scatter}}{
-#'    A separate scatterplot is displayed for \code{y} vs. the residuals
+#'    A separate scatterplot is displayed for \code{y} vs. the predictive errors
 #'    computed from \code{y} and each dataset (row) in \code{yrep}. For this
 #'    plot \code{yrep} should have only a small number of rows.
 #'   }
 #'   \item{\code{ppc_resid_scatter_avg}}{
-#'    A single scatterplot of \code{y} vs. the average of the residuals computed
+#'    A single scatterplot of \code{y} vs. the average of the errors computed
 #'    from \code{y} and each dataset (row) in \code{yrep}. For each individual
-#'    data point \code{y[n]} the average residual is the average of the
-#'    residuals for \code{y[n]} computed over the the draws from the posterior
+#'    data point \code{y[n]} the average error is the average of the
+#'    errors for \code{y[n]} computed over the the draws from the posterior
 #'    predictive distribution.
+#'   }
+#'   \item{\code{ppc_resid_scatter_avg_vs_x}}{
+#'    Same as ppc_resid_scatter_avg, except the average is plotted on the
+#'    \eqn{y}-axis and a a predictor variable \code{x} is plotted on the
+#'    \eqn{x}-axis.
 #'   }
 #'   \item{\code{ppc_resid_binned}}{
 #'    Intended for use with binomial data. A separate binned residual plot
@@ -67,6 +67,9 @@
 #' ppc_resid_hist(y, yrep[1:3, ])
 #' ppc_resid_scatter(y, yrep[10:14, ])
 #' ppc_resid_scatter_avg(y, yrep)
+#'
+#' x <- example_x_data()
+#' ppc_resid_scatter_avg_vs_x(y, yrep, x)
 #'
 #' # ppc_resid_binned with binomial model from rstanarm
 #' \dontrun{
@@ -97,16 +100,15 @@ ppc_resid_hist <- function(y, yrep, ..., binwidth = NULL) {
   if (nrow(yrep) == 1) {
     resids <- data.frame(x = y - as.vector(yrep))
     graph <- ggplot(resids, aes_(x = ~ x)) +
-      labs(y = NULL, x = expression(italic(y) - italic(y)^rep))
+      labs(y = NULL, x = expression(italic(y) - italic(y)[rep]))
   } else {
-    resids <- melt_yrep(compute_resids(y, yrep))
-    resids$rep_id <- factor(
-      resids$rep_id,
-      labels = paste("italic(y)", "-", unique(resids$rep_id))
-    )
-    graph <- ggplot(resids, aes_(x = ~ value)) +
+    resids <- compute_resids(y, yrep)
+    graph <- ggplot(melt_yrep(resids, label = FALSE), aes_(x = ~ value)) +
       labs(y = NULL, x = NULL) +
-      facet_wrap_parsed("rep_id", switch = "x")
+      facet_wrap(
+        facets = ~rep_id,
+        labeller = label_bquote(italic(y) - italic(y)[rep](.(rep_id)))
+      )
   }
 
   graph +
@@ -141,7 +143,7 @@ ppc_resid_scatter <-
         .ppc_scatter(
           data = data.frame(y = y, x = y - as.vector(yrep)),
           mapping = aes_(x = ~ x, y = ~ y),
-          x_lab = expression(italic(y) - italic(y) ^ rep),
+          x_lab = expression(italic(y) - italic(y)[rep]),
           y_lab = expression(italic(y)),
           size = size,
           alpha = alpha,
@@ -150,24 +152,24 @@ ppc_resid_scatter <-
       )
     }
 
-    resids <- melt_yrep(compute_resids(y, yrep))
-    resid_labs <- paste("italic(y)", "-", unique(resids$rep_id))
-    resids$rep_id <- factor(resids$rep_id, labels = resid_labs)
-
+    resids <- compute_resids(y, yrep)
     .ppc_scatter(
       data = dplyr::left_join(
-        resids,
+        melt_yrep(resids, label = FALSE),
         data.frame(y = y, y_id = seq_along(y)),
         by = "y_id"
       ),
       mapping = aes_(x = ~ value, y = ~ y),
       y_lab = expression(italic(y)),
-      x_lab = NULL,
+      x_lab = expression(y - italic(y)[rep]),
       size = size,
       alpha = alpha,
       abline = FALSE
     ) +
-      facet_wrap_parsed("rep_id", switch = "x")
+      facet_wrap(
+        facets = ~ rep_id,
+        labeller = label_bquote(italic(y) - italic(y)[rep](.(rep_id)))
+      )
   }
 
 #' @rdname PPC-residuals
@@ -199,11 +201,37 @@ ppc_resid_scatter_avg <-
     )
   }
 
+#' @rdname PPC-residuals
+#' @export
+#' @inheritParams ppc_vs_x
+ppc_resid_scatter_avg_vs_x <-
+  function(y,
+           yrep,
+           x,
+           ...,
+           size = 2.5,
+           alpha = 0.8) {
+    y <- validate_y(y)
+    yrep <- validate_yrep(yrep, y)
+    x <- validate_x(x, y)
+    .ppc_scatter(
+      data = data.frame(x, avg_resid = y - colMeans(yrep)),
+      mapping = aes_(x = ~ x, y = ~ avg_resid),
+      x_lab = expression(italic(x)),
+      y_lab = "Average residual",
+      alpha = alpha,
+      size = size,
+      abline = FALSE
+    )
+  }
+
 
 #' @rdname PPC-residuals
 #' @export
 #' @param Ey A matrix of posterior draws of the linear predictor transformed by
-#'   the inverse-link function.
+#'   the inverse-link function. For logistic regression models, \code{Ey} would
+#'   be a matrix of predicted probabilities (with the same dimensions as the
+#'   \code{yrep} used by the other PPC plotting functions).
 #'
 ppc_resid_binned <- function(y, Ey, ...) {
   suggested_package("arm")
@@ -270,7 +298,11 @@ ppc_resid_binned <- function(y, Ey, ...) {
     )
 
   if (n > 1)
-    graph <- graph + facet_wrap_parsed("rep")
+    graph <- graph +
+      facet_wrap(
+        facets = ~rep_id,
+        labeller = label_bquote(italic(y)[rep](.(rep_id)))
+      )
 
   graph + theme_default()
 }
@@ -291,7 +323,7 @@ binner <- function(rep_id, ey, r, nbins) {
     binned_resids <- t(binned_resids)
   colnames(binned_resids) <- c("xbar", "ybar", "se2")
   data.frame(
-    rep = create_yrep_ids(rep_id),
+    rep_id = as.integer(rep_id), #create_yrep_ids(rep_id),
     binned_resids
   )
 }

@@ -26,6 +26,11 @@ test_that("ppc_resid_scatter_avg same as ppc_resid_scatter if nrow(yrep) = 1", {
                ppc_resid_scatter(y, yrep[1,, drop = FALSE]))
 })
 
+test_that("ppc_resid_scatter_avg_vs_x returns ggplot2 object", {
+  expect_gg(ppc_resid_scatter_avg_vs_x(y, yrep, x = rnorm(length(y))))
+  expect_gg(ppc_resid_scatter_avg_vs_x(y, yrep[1:5, ], x = rnorm(length(y))))
+})
+
 test_that("ppc_resid_binned returns ggplot object", {
   load("data-for-binomial.rda")
   expect_gg(ppc_resid_binned(y, Ey))

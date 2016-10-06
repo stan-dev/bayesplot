@@ -39,8 +39,10 @@
 #' @examples
 #' y <- example_y_data()
 #' yrep <- example_yrep_draws()
-#' (p1 <- ppc_scatter_avg(y, yrep))
-#' (p2 <- ppc_scatter(y, yrep[20:23, ], alpha = 0.5, size = 1.5))
+#' p1 <- ppc_scatter_avg(y, yrep)
+#' p1
+#' p2 <- ppc_scatter(y, yrep[20:23, ], alpha = 0.5, size = 1.5)
+#' p2
 #'
 #' # give x and y axes the same limits
 #' lims <- ggplot2::lims(x = c(0, 160), y = c(0, 160))
@@ -118,20 +120,27 @@ ppc_scatter_avg_grouped <-
            alpha = 0.8) {
     y <- validate_y(y)
     yrep <- validate_yrep(yrep, y)
-
-    .ppc_scatter(
+    ggplot(
       data = data.frame(
         y = y,
         avg_yrep = colMeans(yrep),
         group = validate_group(group, y)
       ),
-      mapping = aes_(x = ~ avg_yrep, y = ~ y),
-      y_lab = y_label(),
-      x_lab = yrep_avg_label(),
-      alpha = alpha,
-      size = size
+      mapping = aes_(x = ~ avg_yrep, y = ~ y, group = ~ group)
     ) +
-      facet_wrap("group", scales = "free")
+      geom_point(
+        shape = 21,
+        fill = get_color("m"),
+        color = get_color("mh"),
+        alpha = alpha,
+        size = size
+      ) +
+      labs(
+        y = y_label(),
+        x = yrep_avg_label()
+      ) +
+      facet_wrap("group", scales = "free") +
+      theme_default()
   }
 
 
@@ -148,12 +157,13 @@ ppc_scatter_avg_grouped <-
     mid <- isTRUE(match.arg(color) == "mid")
     graph <- ggplot(data, mapping)
     if (abline) {
-      graph <- graph + geom_abline(
-        intercept = 0,
-        slope = 1,
-        linetype = 2,
-        color = get_color("dh")
-      )
+      graph <- graph +
+        geom_abline(
+          intercept = 0,
+          slope = 1,
+          linetype = 2,
+          color = get_color("dh")
+        )
     }
     graph +
       geom_point(

@@ -91,10 +91,8 @@ validate_time <- function(time, y, unique_times = TRUE) {
 
   if (anyNA(time))
     stop("NAs not allowed in 'time'.")
-
   if (!identical(length(time), length(y)))
     stop("length(time) must be equal to length(y).")
-
   if (unique_times)
     stopifnot(identical(length(time), length(unique(time))))
 
@@ -112,7 +110,6 @@ validate_time <- function(time, y, unique_times = TRUE) {
 #
 validate_x <- function(x, y) {
   stopifnot(is.numeric(x))
-
   if (!is_vector_or_1Darray(x))
     stop("'x' must be a vector or 1D array.")
 
@@ -140,7 +137,6 @@ validate_stat <- function(stat, n_allowed) {
     n_allowed %in% c(1,2),
     is.character(stat)
   )
-
   if (length(stat) != n_allowed)
     stop("For this function 'stat' must have length ", n_allowed, ".")
 
@@ -155,7 +151,7 @@ validate_stat <- function(stat, n_allowed) {
 # \itemize{
 #  \item 'value': the numeric values.
 #  \item 'y_id': integer indicating from which yrep column each values comes.
-# \item 'rep_id': factor with S levels, where S is nrow(yrep), i.e. the number
+#  \item 'rep_id': factor with S levels, where S is nrow(yrep), i.e. the number
 #   of simulations included in yrep.
 # }
 #
@@ -219,8 +215,19 @@ ppc_group_data <- function(y, yrep, group, stat = NULL) {
 
 # labels ----------------------------------------------------------------
 create_yrep_ids <- function(ids) paste('italic(y)[rep] (', ids, ")")
-yrep_label <- function() expression(italic(y)^rep)
-yrep_avg_label <- function() expression(paste("Average ", italic(y)^rep))
+yrep_label <- function() expression(italic(y)[rep])
+yrep_avg_label <- function() expression(paste("Average ", italic(y)[rep]))
 y_label <- function() expression(italic(y))
-Ty_label <- function() expression(italic(T(y)))
-Tyrep_label <- function() expression(italic(T)(italic(y)^rep))
+Ty_label <- function() expression(italic(T(italic(y))))
+Tyrep_label <- function() expression(italic(T)(italic(y)[rep]))
+Ty_label_2d <- function() {
+  expression(bgroup(
+    "(", list(italic(T)[1](italic(y)),
+              italic(T)[2](italic(y))), ")"
+  ))
+}
+Tyrep_label_2d <- function(k) {
+  stopifnot(k == 1 || k == 2)
+  if (k == 1) expression(paste(italic(T)[1](italic(y)[rep])))
+  else expression(paste(italic(T)[2](italic(y)[rep])))
+}

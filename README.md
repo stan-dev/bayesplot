@@ -13,11 +13,14 @@ modeling, particularly (but not necessarily) those powered by
 
 #### Installation
 
-**bayesplot** is not yet on CRAN (coming soon) but can be installed from GitHub
-using the **devtools** package.
+**bayesplot** is not yet on CRAN (coming soon) but can be installed from GitHub 
+using the **devtools** package. You will also need the preview version of the 
+upcoming ggplot2 update.
 
 ```{r}
 if (!require("devtools"))
   install.packages("devtools")
+
+devtools::install_github("hadley/ggplot2")
 devtools::install_github("jgabry/bayesplot", build_vignettes = TRUE)
 ```

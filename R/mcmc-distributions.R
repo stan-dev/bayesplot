@@ -1,7 +1,7 @@
 #' Histograms and kernel density plots of MCMC draws
 #'
-#' Histograms and kernel density plots of MCMC draws. See the \strong{Plot
-#' Descriptions} section, below, for details.
+#' Various types of histograms and kernel density plots of MCMC draws. See the
+#' \strong{Plot Descriptions} section, below, for details.
 #'
 #' @name MCMC-distributions
 #' @family MCMC
@@ -40,12 +40,12 @@
 #' }
 #'
 #' @examples
-#' set_color_scheme("red")
-#'
 #' # some parameter draws to use for demonstration
 #' x <- example_mcmc_draws()
 #' dim(x)
 #' dimnames(x)
+#'
+#' set_color_scheme("blue")
 #'
 #' ##################
 #' ### Histograms ###
@@ -56,28 +56,25 @@
 #'
 #' # override bayesplot theme and use one of the
 #' # themes included in ggplot2
-#' mcmc_hist(x) + ggplot2::theme_dark()
+#' mcmc_hist(x) + ggplot2::theme_gray()
 #'
 #' # use a ggplot2 theme but override certain elements
 #' # using bayesplot convenience functions
 #' # (see help("bayesplot-convenience") for more examples)
 #' mcmc_hist(x) +
-#'  ggplot2::theme_dark() +
+#'  ggplot2::theme_gray() +
 #'  xaxis_title(FALSE) +
 #'  xaxis_text(size = 10, face = "bold") +
 #'  yaxis_title(FALSE) +
 #'  yaxis_text(FALSE)
 #'
 #' # histograms of some parameters
-#' set_color_scheme("blue")
+#' set_color_scheme("red")
 #' mcmc_hist(x, pars = c("alpha", "beta[2]"))
 #' mcmc_hist(x, pars = "sigma", regex_pars = "beta")
 #'
-#' # interpret facet labels as plotmath expressions
-#' # (e.g. to get greek letters for parameters)
-#' mcmc_hist(x, facet_args = list(labeller = ggplot2::label_parsed))
-#'
-#' # show log(sigma) instead of sigam
+#' # example of using 'transformations' argument to plot log(sigma),
+#' # and parsing facet labels (e.g. to get greek letters for parameters)
 #' mcmc_hist(x, transformations = list(sigma = "log"),
 #'           facet_args = list(labeller = ggplot2::label_parsed))
 #'
@@ -244,18 +241,20 @@ mcmc_violin <- function(x,
       na.rm = TRUE,
       binwidth = binwidth
     ) +
-    dont_expand_y_axis(c(0.005, 0)) +
-    theme_default(y_text = FALSE, x_lab = FALSE)
+    dont_expand_y_axis(c(0.005, 0))
 
   if (is.null(facet_args[["scales"]]))
     facet_args[["scales"]] <- "free"
-
   if (!by_chain) {
     facet_args[["facets"]] <- ~ Parameter
-    graph + do.call("facet_wrap", facet_args)
+    graph +
+      do.call("facet_wrap", facet_args) +
+      theme_default(y_text = FALSE, x_lab = FALSE)
   } else {
     facet_args[["facets"]] <- Chain ~ Parameter
-    graph + do.call("facet_grid", facet_args)
+    graph +
+      do.call("facet_grid", facet_args) +
+      theme_default(y_text = FALSE, x_lab = FALSE)
   }
 }
 
@@ -275,6 +274,8 @@ mcmc_violin <- function(x,
 
   geom <- match.arg(geom)
   violin <- geom == "violin"
+  geom_fun <- if (by_chain)
+    "stat_density" else paste0("geom_", geom)
 
   if (by_chain || violin) {
     if (!has_multiple_chains(x))
@@ -298,17 +299,15 @@ mcmc_violin <- function(x,
   if (by_chain) {
     aes_mapping[["color"]] <- ~ Chain
     aes_mapping[["group"]] <- ~ Chain
-    geom_args[["alpha"]] <- 0.33
+    geom_args[["geom"]] <- "line"
+    geom_args[["position"]] <- "identity"
   } else {
     geom_args[["fill"]] <- get_color("mid")
     geom_args[["color"]] <- get_color("mid_highlight")
   }
 
   graph <- ggplot(data, mapping = do.call("aes_", aes_mapping)) +
-    do.call(paste0("geom_", geom), geom_args) +
-    dont_expand_y_axis(c(0.005, 0)) +
-    theme_default(y_text = FALSE, x_lab = FALSE,
-              legend_position = ifelse(by_chain, "right", "none"))
+    do.call(geom_fun, geom_args)
 
   if (!violin)
     graph <- graph + dont_expand_x_axis()
@@ -318,5 +317,9 @@ mcmc_violin <- function(x,
     facet_args[["scales"]] <- "free"
 
   facet_args[["facets"]] <- ~ Parameter
-  graph + do.call("facet_wrap", facet_args)
+  graph +
+    do.call("facet_wrap", facet_args) +
+    dont_expand_y_axis(c(0.005, 0)) +
+    theme_default(y_text = FALSE, x_lab = FALSE,
+                  legend_position = ifelse(by_chain, "right", "none"))
 }

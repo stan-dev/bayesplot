@@ -151,7 +151,7 @@ mcmc_rhat <- function(rhat, ..., size = NULL) {
       linetype = 2,
       size = 0.25
     ) +
-    labs(y = NULL, x = bquote(hat(R))) +
+    labs(y = NULL, x = expression(hat(R))) +
     scale_fill_diagnostic("rhat") +
     scale_color_diagnostic("rhat") +
     theme_default(y_text = FALSE) +
@@ -179,7 +179,7 @@ mcmc_rhat_hist <- function(rhat, ..., binwidth = NULL) {
     ) +
     scale_color_diagnostic("rhat") +
     scale_fill_diagnostic("rhat") +
-    labs(x = bquote(hat(R)), y = NULL) +
+    labs(x = expression(hat(R)), y = NULL) +
     dont_expand_y_axis(c(0.005, 0)) +
     theme_default(y_text = FALSE)
 }
@@ -215,7 +215,7 @@ mcmc_neff <- function(ratio, ..., size = NULL) {
       linetype = 2,
       size = 0.25
     ) +
-    labs(y = NULL, x = bquote(N[eff]/N)) +
+    labs(y = NULL, x = expression(N[eff]/N)) +
     scale_fill_diagnostic("neff") +
     scale_color_diagnostic("neff") +
     theme_default(y_text = FALSE) +
@@ -246,7 +246,7 @@ mcmc_neff_hist <- function(ratio, ..., binwidth = NULL) {
     ) +
     scale_color_diagnostic("neff") +
     scale_fill_diagnostic("neff") +
-    labs(x = bquote(N[eff]/N), y = NULL) +
+    labs(x = expression(N[eff]/N), y = NULL) +
     dont_expand_y_axis(c(0.005, 0)) +
     theme_default(y_text = FALSE)
 }

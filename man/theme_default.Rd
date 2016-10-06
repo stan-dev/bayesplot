@@ -2,16 +2,21 @@
 % Please edit documentation in R/ggplot-themes.R
 \name{theme_default}
 \alias{theme_default}
-\title{ggplot theme}
+\title{bayesplot's default ggplot theme}
 \usage{
-theme_default(x_text = TRUE, y_text = TRUE, x_lab = TRUE, y_lab = TRUE,
-  legend_position = "none", ...)
+theme_default(base_size = 12, base_family = "", x_text = TRUE,
+  y_text = TRUE, x_lab = TRUE, y_lab = TRUE, x_ticks = FALSE,
+  y_ticks = FALSE, legend_position = "none", ...)
 }
 \arguments{
+\item{base_size, base_family}{Passed to \code{\link[ggplot2]{theme_classic}}.}
+
 \item{x_text, y_text}{Toggle axis text.}
 
 \item{x_lab, y_lab}{Toggle axis labels (titles). Overrided by \code{x_text},
 \code{y_text}.}
+
+\item{x_ticks, y_ticks}{Toggle axis tick marks.}
 
 \item{legend_position}{A valid value to use for \code{legend.position} to
 pass to \code{\link[ggplot2]{theme}}.}
@@ -22,6 +27,6 @@ pass to \code{\link[ggplot2]{theme}}.}
 A ggplot \code{\link[ggplot2]{theme}} object.
 }
 \description{
-ggplot theme
+bayesplot's default ggplot theme
 }
 
