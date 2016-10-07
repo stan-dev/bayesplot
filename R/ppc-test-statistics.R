@@ -215,15 +215,3 @@ ppc_stat_2d <- function(y, yrep, stat = c("mean", "sd"), ...,
     xaxis_title(FALSE) +
     yaxis_title(FALSE)
 }
-
-
-# helpers -----------------------------------------------------------------
-.ppc_stat_histogram <- function(binwidth) {
-  geom_histogram(
-    fill = get_color("l"),
-    color = get_color("lh"),
-    size = .25,
-    na.rm = TRUE,
-    binwidth = binwidth
-  )
-}
