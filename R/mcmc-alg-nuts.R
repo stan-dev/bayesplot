@@ -161,7 +161,11 @@ mcmc_nuts_acceptance <- function(x, lp, chain = NULL, ..., binwidth = NULL) {
   hists <- hists +
     dont_expand_y_axis(c(0.005, 0)) +
     facet_wrap(~ Parameter, scales = "free") +
-    theme_default(y_text = FALSE, x_lab = FALSE)
+    theme_default() +
+    yaxis_text(FALSE) +
+    yaxis_title(FALSE) +
+    yaxis_ticks(FALSE) +
+    xaxis_title(FALSE)
 
   scatter <- ggplot(NULL) +
     geom_point(
@@ -240,7 +244,8 @@ mcmc_nuts_divergence <- function(x, lp, chain = NULL, ...) {
       color = get_color("lh")
     ) +
     ylab("lp__") +
-    theme_default(x_lab = FALSE)
+    theme_default() +
+    xaxis_title(FALSE)
 
   violin_accept_stat_data <- data.frame(divergent, as = accept_stat$Value)
   violin_accept_stat <- ggplot(
@@ -252,8 +257,9 @@ mcmc_nuts_divergence <- function(x, lp, chain = NULL, ...) {
       color = get_color("lh")
     ) +
     ylab("accept_stat__") +
-    scale_y_continuous(breaks = c(0, 0.5, 1)) +
-    theme_default(x_lab = FALSE)
+    scale_y_continuous(limits = c(NA, 1.05)) +
+    theme_default() +
+    xaxis_title(FALSE)
 
   div_count_label <- paste(table(divergent$Value)[[2]], "divergences")
   if (!is.null(chain)) {
@@ -309,7 +315,8 @@ mcmc_nuts_stepsize <- function(x, lp, chain = NULL, ...) {
     ) +
     ylab("lp__") +
     stepsize_labels +
-    theme_default(x_lab = FALSE)
+    theme_default() +
+    xaxis_title(FALSE)
 
   violin_accept_stat_data <-
     dplyr::left_join(accept_stat, stepsize_by_chain, by = "Chain")
@@ -320,9 +327,10 @@ mcmc_nuts_stepsize <- function(x, lp, chain = NULL, ...) {
       color = get_color("lh")
     ) +
     ylab("accept_stat__") +
-    scale_y_continuous(breaks = c(0, 0.5, 1)) +
+    scale_y_continuous(limits = c(NA, 1.05)) +
     stepsize_labels +
-    theme_default(x_lab = FALSE)
+    theme_default() +
+    xaxis_title(FALSE)
 
   if (!is.null(chain)) {
     violin_lp <- violin_lp +
@@ -359,7 +367,10 @@ mcmc_nuts_treedepth <- function(x, lp, chain = NULL, ...) {
       binwidth = 1
     ) +
     xlab("treedepth__") +
-    theme_default(y_text = FALSE)
+    theme_default() +
+    yaxis_text(FALSE) +
+    yaxis_title(FALSE) +
+    yaxis_ticks(FALSE)
 
   violin_lp_data <- data.frame(treedepth, lp = lp$Value)
   violin_lp <-
@@ -478,11 +489,11 @@ mcmc_nuts_energy <-
       dont_expand_y_axis(c(0.005, 0)) +
       scale_x_continuous(expand = c(0.2, 0)) +
       labs(y = NULL, x = expression(E - bar(E))) +
-      theme_default(
-        y_text = FALSE,
-        legend.text = element_text(size = rel(1.1)),
-        legend_position = if (merge_chains) c(.8, .5) else "right"
-      )
+      theme_default() +
+      theme(legend.text = element_text(size = rel(1.1))) +
+      yaxis_text(FALSE) +
+      yaxis_title(FALSE) +
+      yaxis_ticks(FALSE)
 
     if (merge_chains)
       return(graph)

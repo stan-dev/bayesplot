@@ -250,7 +250,9 @@ mcmc_violin <- function(x,
     graph <- graph + do.call("facet_wrap", facet_args)
   } else {
     facet_args[["facets"]] <- Chain ~ Parameter
-    graph <- grah + do.call("facet_grid", facet_args)
+    graph <- graph +
+      do.call("facet_grid", facet_args) +
+      force_axes_in_facets()
   }
   graph +
     theme_default() +

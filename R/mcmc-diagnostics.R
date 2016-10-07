@@ -118,11 +118,12 @@ NULL
 #'
 mcmc_rhat <- function(rhat, ..., size = NULL) {
   rhat <- validate_rhat(rhat)
+  plot_data <- diagnostic_data_frame(
+    x = rhat,
+    diagnostic = "rhat"
+  )
   graph <- ggplot(
-    data = diagnostic_data_frame(
-      x = rhat,
-      diagnostic = "rhat"
-    ),
+    data = plot_data,
     mapping = aes_(
       x = ~ value,
       y = ~ factor_by_name,
@@ -154,8 +155,12 @@ mcmc_rhat <- function(rhat, ..., size = NULL) {
     labs(y = NULL, x = expression(hat(R))) +
     scale_fill_diagnostic("rhat") +
     scale_color_diagnostic("rhat") +
-    theme_default(y_text = FALSE) +
-    scale_x_continuous(breaks = brks, expand = c(0, .01))
+    scale_x_continuous(breaks = brks, expand = c(0, .01)) +
+    scale_y_discrete(expand = c(.025,0)) +
+    theme_default() +
+    yaxis_title(FALSE) +
+    yaxis_text(FALSE) +
+    yaxis_ticks(FALSE)
 }
 
 #' @rdname MCMC-diagnostics
@@ -181,7 +186,10 @@ mcmc_rhat_hist <- function(rhat, ..., binwidth = NULL) {
     scale_fill_diagnostic("rhat") +
     labs(x = expression(hat(R)), y = NULL) +
     dont_expand_y_axis(c(0.005, 0)) +
-    theme_default(y_text = FALSE)
+    theme_default() +
+    yaxis_title(FALSE) +
+    yaxis_text(FALSE) +
+    yaxis_ticks(FALSE)
 }
 
 
@@ -218,11 +226,13 @@ mcmc_neff <- function(ratio, ..., size = NULL) {
     labs(y = NULL, x = expression(N[eff]/N)) +
     scale_fill_diagnostic("neff") +
     scale_color_diagnostic("neff") +
-    theme_default(y_text = FALSE) +
-    # coord_flip() +
     scale_x_continuous(breaks = c(0.1, seq(0, 1, .25)),
-                       limits = c(0, 1),
-                       expand = c(0,.01))
+                       limits = c(0, 1), expand = c(0,.01)) +
+    scale_y_discrete(expand = c(.025,0)) +
+    theme_default() +
+    yaxis_text(FALSE) +
+    yaxis_title(FALSE) +
+    yaxis_ticks(FALSE)
 }
 
 #' @rdname MCMC-diagnostics
@@ -248,7 +258,10 @@ mcmc_neff_hist <- function(ratio, ..., binwidth = NULL) {
     scale_fill_diagnostic("neff") +
     labs(x = expression(N[eff]/N), y = NULL) +
     dont_expand_y_axis(c(0.005, 0)) +
-    theme_default(y_text = FALSE)
+    theme_default() +
+    yaxis_title(FALSE) +
+    yaxis_text(FALSE) +
+    yaxis_ticks(FALSE)
 }
 
 
@@ -319,12 +332,83 @@ diagnostic_data_frame <- function(x, diagnostic = c("rhat", "neff")) {
   d <- data.frame(
     value = x,
     factor_by_name = fac,
-    factor_by_value = fun(x)
+    factor_by_value = factor(fun(x), levels = c("high", "ok", "low"))
   )
+  # d$factor_by_value <- factor(d$factor_by_value, levels = c("high", "ok", "low"))
   rownames(d) <- NULL
   return(d)
 }
 
+# Convert numeric vector of Rhat values to a factor
+#
+# @param x A numeric vector
+# @param breaks A numeric vector of length two. The resulting factor variable
+#   will have three levels ('low', 'ok', and 'high') corresponding to (x <=
+#   breaks[1], breaks[1] < x <= breaks[2], x > breaks[2]).
+# @return A factor the same length as x with three levels.
+#
+factor_rhat <- function(x, breaks = c(1.05, 1.1)) {
+  stopifnot(is.numeric(x),
+            isTRUE(all(x > 0)),
+            length(breaks) == 2)
+  cut(
+    x,
+    breaks = c(-Inf, breaks, Inf),
+    labels = c("low", "ok", "high"),
+    ordered_result = FALSE
+  )
+}
+
+# factor neff ratio
+factor_neff <- function(ratio, breaks = c(0.1, 0.5)) {
+  factor_rhat(ratio, breaks = breaks)
+}
+
+# Functions wrapping around scale_color_manual and scale_fill_manual, used to
+# color the intervals by rhat value
+scale_color_diagnostic <- function(diagnostic = c("rhat", "neff")) {
+  d <- match.arg(diagnostic)
+  diagnostic_color_scale(d, aesthetic = "color")
+}
+scale_fill_diagnostic <- function(diagnostic = c("rhat", "neff")) {
+  d <- match.arg(diagnostic)
+  diagnostic_color_scale(d, aesthetic = "fill")
+}
+
+diagnostic_color_scale <- function(diagnostic = c("rhat", "neff"),
+                                   aesthetic = c("color", "fill")) {
+  diagnostic <- match.arg(diagnostic)
+  aesthetic <- match.arg(aesthetic)
+  color_levels <- c("light", "mid", "dark")
+  if (diagnostic == "neff")
+    color_levels <- rev(color_levels)
+  if (aesthetic == "color")
+    color_levels <- paste0(color_levels, "_highlight")
+
+  color_labels <- if (diagnostic == "rhat") {
+    c(
+      expression(hat(R) > 1.10),
+      expression(hat(R) <= 1.10),
+      expression(hat(R) <= 1.05)
+    )
+  } else {
+    c(
+      expression(N[eff]/N > 0.5),
+      expression(N[eff]/N <= 0.5),
+      expression(N[eff]/N <= 0.1)
+    )
+  }
+
+  do.call(
+    match.fun(paste0("scale_", aesthetic, "_manual")),
+    list(
+      name = NULL,
+      drop = FALSE,
+      values = setNames(get_color(color_levels), c("low", "ok", "high")),
+      labels = color_labels
+    )
+  )
+}
 
 # set x-axis breaks based on rhat values
 set_rhat_breaks <- function(rhat) {
@@ -404,7 +488,6 @@ validate_neff_ratio <- function(ratio) {
     graph <- ggplot(plot_data, aes_(x = ~ Lag, y = ~ AC))
     if (style == "bar") {
       graph <- graph +
-        hline_0(size = 0.5, color = get_color("dh")) +
         geom_bar(
           position = "identity",
           stat = "identity",
@@ -412,7 +495,8 @@ validate_neff_ratio <- function(ratio) {
           fill = get_color("l"),
           color = get_color("lh"),
           width = 1
-        )
+        ) +
+        hline_0(size = 0.25, color = get_color("dh"))
     } else {
       graph <- graph +
         hline_0(size = 0.25, color = get_color("lh")) +
@@ -440,6 +524,7 @@ validate_neff_ratio <- function(ratio) {
         expand = c(0, 0)
       ) +
       labs(x = "Lag", y = "Autocorrelation") +
+      force_axes_in_facets() +
       theme_default()
   }
 

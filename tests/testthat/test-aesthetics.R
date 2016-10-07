@@ -93,31 +93,13 @@ test_that("view_color_scheme returns gtable if length(scheme) >= 1", {
 
 
 # ggplot theme ------------------------------------------------------------
-
 test_that("theme_default creates ggplot theme", {
   thm1 <- theme_default()
+  expect_type(thm1, "list")
   expect_s3_class(thm1, "theme")
 
-  thm2 <- theme_default(y_text = FALSE, x_lab = FALSE, legend_position = "right")
+  thm2 <- theme_default(base_size = 13)
+  expect_type(thm2, "list")
   expect_s3_class(thm2, "theme")
-  expect_identical(thm2$legend.position, "right")
-  expect_s3_class(thm2$axis.title.x, "element_blank")
-  expect_s3_class(thm2$axis.text.x, "element_text")
-  expect_s3_class(thm2$axis.title.y, "element_blank")
-  expect_s3_class(thm2$axis.text.y, "element_blank")
-  expect_s3_class(thm2$axis.ticks, "element_line")
-  expect_s3_class(thm2$axis.ticks.x, "element_blank")
-  expect_s3_class(thm2$axis.ticks.y, "element_blank")
-
-  thm3 <- theme_default(y_text = TRUE, y_lab = FALSE, y_ticks = TRUE,
-                        x_text = FALSE, x_ticks = TRUE)
-  expect_s3_class(thm3, "theme")
-  expect_identical(thm3$legend.position, "none")
-  expect_s3_class(thm3$axis.title.x, "element_blank")
-  expect_s3_class(thm3$axis.text.x, "element_blank")
-  expect_s3_class(thm3$axis.title.y, "element_blank")
-  expect_s3_class(thm3$axis.text.y, "element_text")
-  expect_s3_class(thm3$axis.ticks, "element_line")
-  expect_null(thm3$axis.ticks.x)
-  expect_null(thm3$axis.ticks.y)
+  expect_equal(thm2[["text"]][["size"]], 13)
 })
