@@ -4,29 +4,20 @@
 \alias{theme_default}
 \title{bayesplot's default ggplot theme}
 \usage{
-theme_default(base_size = 11, base_family = "", x_text = TRUE,
-  y_text = TRUE, x_lab = TRUE, y_lab = TRUE, x_ticks = FALSE,
-  y_ticks = FALSE, legend_position = "none", ...)
+theme_default(base_size = 11, base_family = "")
 }
 \arguments{
 \item{base_size, base_family}{Passed to \code{\link[ggplot2]{theme_classic}}.}
-
-\item{x_text, y_text}{Toggle axis text.}
-
-\item{x_lab, y_lab}{Toggle axis labels (titles). Overrided by \code{x_text},
-\code{y_text}.}
-
-\item{x_ticks, y_ticks}{Toggle axis tick marks.}
-
-\item{legend_position}{A valid value to use for \code{legend.position} to
-pass to \code{\link[ggplot2]{theme}}.}
-
-\item{...}{Other arguments to pass to \code{\link[ggplot2]{theme}}.}
 }
 \value{
 A ggplot \code{\link[ggplot2]{theme}} object.
 }
 \description{
-bayesplot's default ggplot theme
+A modified version of \code{\link[ggplot2]{theme_classic}}.
+}
+\seealso{
+The \link[=bayesplot-convenience]{bayesplot convenience functions},
+  many of which provide shortcuts for tweaking theme elements after creating
+  a plot.
 }
 

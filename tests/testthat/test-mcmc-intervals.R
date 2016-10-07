@@ -32,7 +32,7 @@ test_that("mcmc_intervals/areas with rhat", {
   rbad <- c(NA, r[-1])
 
   expect_error(mcmc_intervals(arr, rhat = r[-1]), "'rhat' has length")
-  expect_error(mcmc_intervals(arr, rhat = rbad), "rhat > 0")
+  expect_error(mcmc_intervals(arr, rhat = rbad))
 
   expect_gg(g <- mcmc_intervals(arr, rhat = r))
   rhat_map <- g$layers[[3]][["mapping"]]

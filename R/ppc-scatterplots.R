@@ -82,6 +82,8 @@ ppc_scatter <-
 
     graph +
       facet_wrap_parsed("rep_id") +
+      force_axes_in_facets() +
+      theme_default() +
       facet_text(FALSE) +
       facet_bg(FALSE)
   }
@@ -107,7 +109,8 @@ ppc_scatter_avg <-
       x_lab = yrep_avg_label(),
       alpha = alpha,
       size = size
-    )
+    ) +
+      theme_default()
   }
 
 #' @export
@@ -143,7 +146,9 @@ ppc_scatter_avg_grouped <-
         x = yrep_avg_label()
       ) +
       facet_wrap("group", scales = "free") +
-      theme_default()
+      theme_default() +
+      facet_bg(FALSE) +
+      facet_text(face = "bold")
   }
 
 
@@ -176,6 +181,5 @@ ppc_scatter_avg_grouped <-
         size = size,
         alpha = alpha
       ) +
-      labs(x = x_lab, y = y_lab) +
-      theme_default()
+      labs(x = x_lab, y = y_lab)
   }

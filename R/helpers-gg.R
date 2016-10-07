@@ -11,3 +11,11 @@ dont_expand_x_axis <- function(expand = c(0,0)) {
 dont_expand_axes <- function() {
   coord_cartesian(expand = FALSE)
 }
+force_axes_in_facets <- function() {
+  thm <- theme_default()
+  annotate("segment",
+           x = c(-Inf, -Inf), xend = c(Inf,-Inf),
+           y = c(-Inf,-Inf), yend = c(-Inf, Inf),
+           color = thm$axis.line$colour %||% "black",
+           size = thm$axis.line$size %||% 0.5)
+}
