@@ -103,10 +103,13 @@ ppc_hist <- function(y, yrep, ..., binwidth = NULL) {
       labels = c(expression(italic(y)), expression(italic(y)[rep]))
     ) +
     facet_wrap_parsed("rep_id") +
+    force_axes_in_facets() +
     dont_expand_y_axis() +
-    theme_default(y_text = FALSE, x_lab = FALSE,
-                  legend_position = "right",
-                  legend.text.align = 0) +
+    theme_default() +
+    yaxis_text(FALSE) +
+    yaxis_title(FALSE) +
+    yaxis_ticks(FALSE) +
+    xaxis_title(FALSE) +
     facet_text(FALSE) +
     facet_bg(FALSE)
 }
@@ -138,10 +141,13 @@ ppc_dens <- function(y, yrep, ..., trim = FALSE) {
       labels = c(expression(italic(y)), expression(italic(y)[rep]))
     ) +
     facet_wrap_parsed("rep_id") +
+    force_axes_in_facets() +
     dont_expand_y_axis() +
-    theme_default(y_text = FALSE, x_lab = FALSE,
-                  legend_position = "right",
-                  legend.text.align = 0) +
+    theme_default() +
+    yaxis_text(FALSE) +
+    yaxis_title(FALSE) +
+    yaxis_ticks(FALSE) +
+    xaxis_title(FALSE) +
     facet_text(FALSE) +
     facet_bg(FALSE)
 }
@@ -180,10 +186,11 @@ ppc_dens_overlay <- function(y, yrep, ...,
     ) +
     xlab(y_label()) +
     dont_expand_axes() +
-    theme_default(y_text = FALSE,
-                  x_lab = FALSE,
-                  legend_position = "right",
-                  legend.text.align = 0)
+    theme_default() +
+    yaxis_title(FALSE) +
+    xaxis_title(FALSE) +
+    yaxis_text(FALSE) +
+    yaxis_ticks(FALSE)
 }
 
 #' @export
@@ -222,10 +229,10 @@ ppc_ecdf_overlay <- function(y, yrep, ...,
     ) +
     xlab(y_label()) +
     scale_y_continuous(breaks = c(0, 0.5, 1)) +
-    theme_default(y_lab = FALSE,
-                  x_lab = FALSE,
-                  legend_position = "right",
-                  legend.text.align = 0)
+    theme_default() +
+    yaxis_title(FALSE) +
+    xaxis_title(FALSE) +
+    yaxis_ticks(FALSE)
 }
 
 #' @export
@@ -272,8 +279,9 @@ ppc_violin_grouped <- function(y, yrep, group, ...,
       labels = c(expression(italic(y)), expression(italic(y)[rep]))
     ) +
     labs(x = "Group", y = yrep_label()) +
-    theme_default(y_lab = FALSE,
-                  x_lab = FALSE,
-                  legend_position = "right",
-                  legend.text.align = 0)
+    theme_default() +
+    yaxis_title(FALSE) +
+    xaxis_title(FALSE) +
+    xaxis_ticks(FALSE) +
+    xaxis_text(face = "bold")
 }

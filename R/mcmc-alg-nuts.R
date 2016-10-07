@@ -480,7 +480,6 @@ mcmc_nuts_energy <-
       labs(y = NULL, x = expression(E - bar(E))) +
       theme_default(
         y_text = FALSE,
-        legend.text.align = 0,
         legend.text = element_text(size = rel(1.1)),
         legend_position = if (merge_chains) c(.8, .5) else "right"
       )

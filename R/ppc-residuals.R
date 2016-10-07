@@ -9,6 +9,10 @@
 #'
 #' @template args-y-yrep
 #' @param ... Currently unused.
+#' @param size,alpha For scatterplots, arguments passed to
+#'   \code{\link[ggplot2]{geom_point}} to control the appearance of the
+#'   points. For the binned residual plot, arguments controlling the size of
+#'   the outline and opacity of the shaded region indicating the 2-SE bounds.
 #'
 #' @details
 #' All of these functions (aside from the \code{*_scatter_avg} functions)
@@ -99,8 +103,7 @@ ppc_resid_hist <- function(y, yrep, ..., binwidth = NULL) {
 
   if (nrow(yrep) == 1) {
     resids <- data.frame(x = y - as.vector(yrep))
-    graph <- ggplot(resids, aes_(x = ~ x)) +
-      labs(y = NULL, x = expression(italic(y) - italic(y)[rep]))
+    graph <- ggplot(resids, aes_(x = ~ x))
   } else {
     resids <- compute_resids(y, yrep)
     graph <- ggplot(melt_yrep(resids, label = FALSE), aes_(x = ~ value)) +
@@ -119,8 +122,13 @@ ppc_resid_hist <- function(y, yrep, ..., binwidth = NULL) {
       size = 0.25,
       binwidth = binwidth
     ) +
+    xlab(expression(italic(y) - italic(y)[rep])) +
     dont_expand_y_axis() +
-    theme_default(y_text = FALSE) +
+    force_axes_in_facets() +
+    theme_default() +
+    yaxis_title(FALSE) +
+    yaxis_text(FALSE) +
+    yaxis_ticks(FALSE) +
     facet_text(FALSE) +
     facet_bg(FALSE)
 }
@@ -128,9 +136,6 @@ ppc_resid_hist <- function(y, yrep, ..., binwidth = NULL) {
 
 #' @rdname PPC-residuals
 #' @export
-#' @param size,alpha Arguments passed to \code{\link[ggplot2]{geom_point}} to
-#'   control the appearance of scatterplot points.
-#'
 ppc_resid_scatter <-
   function(y,
            yrep,
@@ -150,7 +155,8 @@ ppc_resid_scatter <-
           size = size,
           alpha = alpha,
           abline = FALSE
-        )
+        ) +
+          theme_default()
       )
     }
 
@@ -172,6 +178,8 @@ ppc_resid_scatter <-
         facets = ~ rep_id,
         labeller = label_bquote(italic(y) - italic(y)[rep](.(rep_id)))
       ) +
+      force_axes_in_facets() +
+      theme_default() +
       facet_text(FALSE) +
       facet_bg(FALSE)
   }
@@ -202,7 +210,8 @@ ppc_resid_scatter_avg <-
       alpha = alpha,
       size = size,
       abline = FALSE
-    )
+    ) +
+      theme_default()
   }
 
 #' @rdname PPC-residuals
@@ -226,7 +235,8 @@ ppc_resid_scatter_avg_vs_x <-
       alpha = alpha,
       size = size,
       abline = FALSE
-    )
+    ) +
+      theme_default()
   }
 
 
@@ -237,7 +247,7 @@ ppc_resid_scatter_avg_vs_x <-
 #'   be a matrix of predicted probabilities (with the same dimensions as the
 #'   \code{yrep} used by the other PPC plotting functions).
 #'
-ppc_resid_binned <- function(y, Ey, ...) {
+ppc_resid_binned <- function(y, Ey, ..., size = 1, alpha = 0.25) {
   suggested_package("arm")
   y <- validate_y(y)
   Ey <- validate_yrep(Ey, y)
@@ -280,15 +290,21 @@ ppc_resid_binned <- function(y, Ey, ...) {
       linetype = 2,
       color = "black"
     ) +
+    geom_ribbon(
+      aes_(ymax = ~ se2, ymin = ~ -se2),
+      fill = get_color("l"),
+      color = NA,
+      alpha = alpha
+    ) +
     geom_path(
       mapping = aes_(y = ~ se2),
       color = get_color("l"),
-      size = 1
+      size = size
     ) +
     geom_path(
       mapping = aes_(y = ~ -se2),
       color = get_color("l"),
-      size = 1
+      size = size
     ) +
     geom_point(
       mapping = aes_(y = ~ ybar),
@@ -309,6 +325,7 @@ ppc_resid_binned <- function(y, Ey, ...) {
       )
 
   graph +
+    force_axes_in_facets() +
     theme_default() +
     facet_text(FALSE) +
     facet_bg(FALSE)

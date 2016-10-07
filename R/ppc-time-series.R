@@ -1,8 +1,8 @@
 #' PPC time series
 #'
 #' PPCs for time series. Medians and central interval estimates of \code{yrep}
-#' by time, with \code{y} overlaid. See the \strong{Plot
-#' Descriptions} section, below.
+#' by time, with \code{y} overlaid. See the \strong{Plot Descriptions} section,
+#' below.
 #'
 #'
 #' @name PPC-time-series
@@ -245,11 +245,18 @@ ppc_ts_plotter <-
   if (grouped) {
     facet_args[["facets"]] <- "group"
     if (is.null(facet_args[["scales"]]))
-      facet_args[["scales"]] <- "free_y"
-    graph <- graph + do.call("facet_wrap", facet_args)
+      facet_args[["scales"]] <- "free"
+    graph <- graph +
+      do.call("facet_wrap", facet_args)
   }
 
-  graph +
+  graph <- graph +
     labs(x = "Time", y = yrep_label()) +
     theme_default()
+  if (!grouped)
+    return(graph)
+
+  graph +
+    facet_bg(FALSE) +
+    facet_text(face = "bold")
 }

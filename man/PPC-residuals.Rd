@@ -17,7 +17,7 @@ ppc_resid_scatter_avg(y, yrep, ..., size = 2.5, alpha = 0.8)
 
 ppc_resid_scatter_avg_vs_x(y, yrep, x, ..., size = 2.5, alpha = 0.8)
 
-ppc_resid_binned(y, Ey, ...)
+ppc_resid_binned(y, Ey, ..., size = 1, alpha = 0.25)
 }
 \arguments{
 \item{y}{A vector of observations. See \strong{Details}.}
@@ -35,8 +35,10 @@ instructions.}
 \item{binwidth}{An optional value used as the \code{binwidth} argument to
 \code{\link[ggplot2]{geom_histogram}} to override the default binwidth.}
 
-\item{size, alpha}{Arguments passed to \code{\link[ggplot2]{geom_point}} to
-control the appearance of scatterplot points.}
+\item{size, alpha}{For scatterplots, arguments passed to
+\code{\link[ggplot2]{geom_point}} to control the appearance of the
+points. For the binned residual plot, arguments controlling the size of
+the outline and opacity of the shaded region indicating the 2-SE bounds.}
 
 \item{x}{A numeric vector the same length as \code{y}.}
 

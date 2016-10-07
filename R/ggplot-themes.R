@@ -15,13 +15,15 @@ theme_default <- function(base_size = 11, base_family = "") {
       theme_classic(base_size = base_size,
                     base_family = base_family) +
       theme(
-        axis.line = element_line(size = 0.3),
-        axis.ticks = element_line(size = 0.25),
+        axis.line = element_line(size = 0.5),
+        axis.ticks = element_line(size = 0.4),
         legend.position = "right",
         strip.placement = "outside",
+        # strip.text = element_text(size = base_size),
         strip.background = element_rect(fill = "gray95", color = NA),
         panel.spacing = unit(1.5, "lines"),
         plot.caption = element_text(hjust = 0.5, size = rel(0.8)),
+        legend.text.align = 0,
         legend.text = element_text(face = "bold"),
         legend.key = element_rect(color = "gray95", fill = NA)
       )
