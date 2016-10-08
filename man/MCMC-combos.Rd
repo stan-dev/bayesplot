@@ -5,27 +5,13 @@
 \alias{mcmc_combo}
 \title{Combination plots}
 \usage{
-mcmc_combo(x, combo = c("trace", "dens"), widths = NULL, plot = TRUE,
+mcmc_combo(x, combo = c("dens", "trace"), widths = NULL, plot = TRUE,
   gg_theme = NULL, ...)
 }
 \arguments{
-\item{x}{A 3-D array, matrix, or data frame of posterior draws:
-\itemize{
- \item \strong{3-D array}: An \code{\link{array}} with dimensions
- \code{[Iteration, Chain, Parameter]} in that order.
- \item \strong{matrix}: A \code{\link{matrix}} with one column per
- parameter. If \code{x} is a matrix then there should only be a single
- Markov chain or all chains should already be merged (stacked).
- \item \strong{data frame}: There are two types of data frames allowed.
- Either a data frame with one column per parameter (if only a single chain or
- all chains have already been merged), or a data frame with one column per
- parameter plus an additional column \code{"Chain"} that contains the chain
- number (an integer) corresponding to each row in \code{x}.
- \item \strong{list}: A \code{list} of matrices, where each matrix
- corresponds to a Markov chain. All of the matrices should have the same
- number of iterations (rows) and parameters (columns), and parameters should
- have the same names and be in the same order.
-}}
+\item{x}{A 3-D array, matrix, list of matrices, or data frame of MCMC draws.
+The \link{MCMC-overview} page provides details on how to specify each these
+allowed inputs.}
 
 \item{combo}{A character vector with at least two elements. Each element of
 \code{combo} corresponds to a column in the resulting graphic and should be
@@ -46,7 +32,7 @@ without plotting.}
 \code{mcmc_combo} returns a gtable object rather than a ggplot object, and
 so theme objects can't be added directly to the returned plot object. The
 \code{gg_theme} argument helps get around this problem by accepting a
-\pkg{ggplot2} \link[ggplot2]{theme} object that is applied to each of the
+\pkg{ggplot2} \link[ggplot2]{theme} object that is added to each of the
 plots \emph{before} combining them into the gtable object that is returned.
 This can be a theme object created by a call to \code{ggplot2::theme} or
 one of the \pkg{bayesplot} convenience functions, e.g.
@@ -68,16 +54,15 @@ x <- example_mcmc_draws()
 dim(x)
 dimnames(x)
 
-set_color_scheme("blue")
 mcmc_combo(x, pars = c("alpha", "sigma"))
-mcmc_combo(x, pars = c("alpha", "sigma"), widths = c(2, 1))
+mcmc_combo(x, pars = c("alpha", "sigma"), widths = c(1, 2))
 
 # change second plot, show log(sigma) instead of sigma,
 # and remove the legends
 set_color_scheme("mix-blue-red")
 mcmc_combo(
  x,
- combo = c("trace", "dens_overlay"),
+ combo = c("dens_overlay", "trace"),
  pars = c("alpha", "sigma"),
  transformations = list(sigma = "log"),
  gg_theme = no_legend()
@@ -86,7 +71,7 @@ mcmc_combo(
 # same thing but this time also change the entire ggplot theme
 mcmc_combo(
  x,
- combo = c("trace", "dens_overlay"),
+ combo = c("dens_overlay", "trace"),
  pars = c("alpha", "sigma"),
  transformations = list(sigma = "log"),
  gg_theme = ggplot2::theme_gray() + no_legend()

@@ -16,23 +16,9 @@ mcmc_areas(x, pars = character(), regex_pars = character(),
   adjust = NULL, kernel = NULL)
 }
 \arguments{
-\item{x}{A 3-D array, matrix, or data frame of posterior draws:
-\itemize{
- \item \strong{3-D array}: An \code{\link{array}} with dimensions
- \code{[Iteration, Chain, Parameter]} in that order.
- \item \strong{matrix}: A \code{\link{matrix}} with one column per
- parameter. If \code{x} is a matrix then there should only be a single
- Markov chain or all chains should already be merged (stacked).
- \item \strong{data frame}: There are two types of data frames allowed.
- Either a data frame with one column per parameter (if only a single chain or
- all chains have already been merged), or a data frame with one column per
- parameter plus an additional column \code{"Chain"} that contains the chain
- number (an integer) corresponding to each row in \code{x}.
- \item \strong{list}: A \code{list} of matrices, where each matrix
- corresponds to a Markov chain. All of the matrices should have the same
- number of iterations (rows) and parameters (columns), and parameters should
- have the same names and be in the same order.
-}}
+\item{x}{A 3-D array, matrix, list of matrices, or data frame of MCMC draws.
+The \link{MCMC-overview} page provides details on how to specify each these
+allowed inputs.}
 
 \item{pars}{An optional character vector of parameter names. If neither
 \code{pars} nor \code{regex_pars} is specified then the default is to use
@@ -56,11 +42,11 @@ label to indicate that the parameter is transformed (e.g.
 
 \item{...}{Currently unused.}
 
-\item{prob}{The probability mass to include in inner interval (for
+\item{prob}{The probability mass to include in the inner interval (for
 \code{mcmc_intervals}) or in the shaded region (for \code{mcmc_areas}). The
 default is \code{0.5} (50\% interval).}
 
-\item{prob_outer}{The probability mass to include in outer interval. The
+\item{prob_outer}{The probability mass to include in the outer interval. The
 default is \code{0.9} for \code{mcmc_intervals} (90\% interval)
 and \code{1} for \code{mcmc_areas}.}
 
@@ -104,13 +90,16 @@ x <- example_mcmc_draws(params = 6)
 dim(x)
 dimnames(x)
 
-set_color_scheme("red")
+set_color_scheme("brightblue")
 mcmc_intervals(x)
 mcmc_intervals(x, pars = c("beta[1]", "beta[2]"))
 mcmc_areas(x, regex_pars = "beta\\\\[[1-3]", prob = 0.8) +
- ggplot2::ggtitle("Posterior medians & 80\% intervals")
+ ggplot2::labs(
+   title = "Posterior distributions",
+   subtitle = "with medians and 80\% intervals"
+ )
 
-set_color_scheme("mix-green-blue")
+set_color_scheme("red")
 mcmc_areas(
    x,
    pars = c("alpha", "beta[4]"),
@@ -120,14 +109,14 @@ mcmc_areas(
 )
 
 # color by rhat value
-set_color_scheme("brightblue")
+set_color_scheme("blue")
 fake_rhat_values <- c(1, 1.07, 1.3, 1.01, 1.15, 1.005)
 mcmc_intervals(x, rhat = fake_rhat_values)
 
 set_color_scheme("gray")
 p <- mcmc_areas(x, pars = c("alpha", "beta[4]"), rhat = c(1, 1.1))
 p + move_legend("bottom")
-p + move_legend("none")
+p + move_legend("none") # or p + no_legend()
 
 
 \dontrun{
@@ -142,7 +131,7 @@ x <- as.matrix(fit)
 
 set_color_scheme("teal")
 mcmc_intervals(x, point_est = "mean", prob = 0.8, prob_outer = 0.95)
-mcmc_areas(x, regex_pars = "cyl", bw = "SJ") + xaxis_ticks(size = .5)
+mcmc_areas(x, regex_pars = "cyl", bw = "SJ")
 }
 
 

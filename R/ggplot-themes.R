@@ -22,10 +22,24 @@
 #' class(thm)
 #' names(thm)
 #'
-#' # Using a different theme instead of theme_default()
+#' # plot using the default theme
 #' x <- example_mcmc_draws()
-#' mcmc_hist(x) # uses theme_default
-#' mcmc_hist(x) + ggplot2::theme_gray() # use theme_gray() from ggplot2
+#' mcmc_hist(x)
+#'
+#' # override default theme and use one of the themes
+#' # included in ggplot2
+#' mcmc_hist(x) + ggplot2::theme_gray()
+#'
+#' # use a ggplot2 theme but override certain elements
+#' # using bayesplot convenience functions
+#' # (see help("bayesplot-convenience") for more examples)
+#' mcmc_hist(x) +
+#'  ggplot2::theme_gray() +
+#'  xaxis_title(FALSE) +
+#'  yaxis_title(FALSE) +
+#'  xaxis_ticks(FALSE) +
+#'  yaxis_ticks(FALSE) +
+#'  facet_text(size = 10, face = "bold")
 #'
 theme_default <- function(base_size = 11, base_family = "") {
     ggthemes::theme_tufte(
@@ -40,7 +54,6 @@ theme_default <- function(base_size = 11, base_family = "") {
       strip.placement = "outside",
       # strip.background = element_rect(fill = "gray95", color = NA),
       panel.spacing = unit(1.5, "lines"),
-      plot.caption = element_text(hjust = 0.5, size = rel(0.8)),
       legend.text.align = 0,
       legend.text = element_text(face = "bold"),
       legend.key = element_rect(color = "gray95", fill = NA)

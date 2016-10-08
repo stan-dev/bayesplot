@@ -26,10 +26,24 @@ thm <- theme_default()
 class(thm)
 names(thm)
 
-# Using a different theme instead of theme_default()
+# plot using the default theme
 x <- example_mcmc_draws()
-mcmc_hist(x) # uses theme_default
-mcmc_hist(x) + ggplot2::theme_gray() # use theme_gray() from ggplot2
+mcmc_hist(x)
+
+# override default theme and use one of the themes
+# included in ggplot2
+mcmc_hist(x) + ggplot2::theme_gray()
+
+# use a ggplot2 theme but override certain elements
+# using bayesplot convenience functions
+# (see help("bayesplot-convenience") for more examples)
+mcmc_hist(x) +
+ ggplot2::theme_gray() +
+ xaxis_title(FALSE) +
+ yaxis_title(FALSE) +
+ xaxis_ticks(FALSE) +
+ yaxis_ticks(FALSE) +
+ facet_text(size = 10, face = "bold")
 
 }
 \seealso{

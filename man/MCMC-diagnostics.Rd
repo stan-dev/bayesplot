@@ -39,23 +39,9 @@ default size (for \code{mcmc_rhat}, \code{mcmc_neff}) or
 \item{ratio}{A vector of \emph{ratios} of effective sample size estimates to
 total sample size. See \code{\link{neff_ratio}}.}
 
-\item{x}{A 3-D array, matrix, or data frame of posterior draws:
-\itemize{
- \item \strong{3-D array}: An \code{\link{array}} with dimensions
- \code{[Iteration, Chain, Parameter]} in that order.
- \item \strong{matrix}: A \code{\link{matrix}} with one column per
- parameter. If \code{x} is a matrix then there should only be a single
- Markov chain or all chains should already be merged (stacked).
- \item \strong{data frame}: There are two types of data frames allowed.
- Either a data frame with one column per parameter (if only a single chain or
- all chains have already been merged), or a data frame with one column per
- parameter plus an additional column \code{"Chain"} that contains the chain
- number (an integer) corresponding to each row in \code{x}.
- \item \strong{list}: A \code{list} of matrices, where each matrix
- corresponds to a Markov chain. All of the matrices should have the same
- number of iterations (rows) and parameters (columns), and parameters should
- have the same names and be in the same order.
-}}
+\item{x}{A 3-D array, matrix, list of matrices, or data frame of MCMC draws.
+The \link{MCMC-overview} page provides details on how to specify each these
+allowed inputs.}
 
 \item{pars}{An optional character vector of parameter names. If neither
 \code{pars} nor \code{regex_pars} is specified then the default is to use

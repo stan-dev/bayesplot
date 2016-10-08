@@ -45,28 +45,12 @@
 #' dim(x)
 #' dimnames(x)
 #'
-#' set_color_scheme("blue")
-#'
 #' ##################
 #' ### Histograms ###
 #' ##################
 #'
 #' # histograms of all parameters
 #' mcmc_hist(x)
-#'
-#' # override bayesplot theme and use one of the
-#' # themes included in ggplot2
-#' mcmc_hist(x) + ggplot2::theme_gray()
-#'
-#' # use a ggplot2 theme but override certain elements
-#' # using bayesplot convenience functions
-#' # (see help("bayesplot-convenience") for more examples)
-#' mcmc_hist(x) +
-#'  ggplot2::theme_gray() +
-#'  xaxis_title(FALSE) +
-#'  xaxis_text(size = 10, face = "bold") +
-#'  yaxis_title(FALSE) +
-#'  yaxis_text(FALSE)
 #'
 #' # histograms of some parameters
 #' set_color_scheme("red")
@@ -96,15 +80,21 @@
 #'
 #' # separate and overlay chains
 #' set_color_scheme("mix-teal-pink")
-#' mcmc_dens_overlay(x, pars = c("sigma", "beta[2]"),
-#'                   facet_args = list(nrow = 2))
+#' mcmc_dens_overlay(
+#'  x,
+#'  pars = c("sigma", "beta[2]"),
+#'  facet_args = list(nrow = 2, labeller = ggplot2::label_parsed)
+#' ) +
+#'  facet_text(size = 14)
 #'
 #' # separate chains as violin plots
 #' set_color_scheme("green")
 #' mcmc_violin(x)
 #'
-#' # change theme
-#' mcmc_violin(x, probs = 0.5) + ggplot2::theme_dark()
+#' # change plot background
+#' mcmc_violin(x, probs = 0.5) +
+#'  plot_bg(color = "gray50", size = 3,
+#'          fill = "gray20")
 #'
 NULL
 
