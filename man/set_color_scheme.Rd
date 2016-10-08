@@ -6,7 +6,7 @@
 \alias{view_color_scheme}
 \title{Set, get, or view color schemes}
 \usage{
-set_color_scheme(scheme)
+set_color_scheme(scheme = "blue")
 
 get_color_scheme(scheme)
 
@@ -33,7 +33,7 @@ view_color_scheme(scheme)
    \item \code{"green"}
    \item \code{"pink"}
    \item \code{"purple"}
-   \item \code{"red"} (default)
+   \item \code{"red"}
    \item \code{"teal"}
    \item \code{"yellow"}
    \item \code{"mix-x-y"}, replacing \code{x} and \code{y} with any two of

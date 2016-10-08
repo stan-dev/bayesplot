@@ -19,3 +19,6 @@ force_axes_in_facets <- function() {
            color = thm$axis.line$colour %||% "black",
            size = thm$axis.line$size %||% 0.5)
 }
+no_legend_spacing <- function() {
+  theme(legend.spacing.y = unit(0, "cm"))
+}

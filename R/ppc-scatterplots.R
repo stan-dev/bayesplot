@@ -146,9 +146,7 @@ ppc_scatter_avg_grouped <-
         x = yrep_avg_label()
       ) +
       facet_wrap("group", scales = "free") +
-      theme_default() +
-      facet_bg(FALSE) +
-      facet_text(face = "bold")
+      theme_default()
   }
 
 

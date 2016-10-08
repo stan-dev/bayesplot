@@ -16,6 +16,7 @@ Depends: R (>= 3.1.0)
 Imports:
     dplyr (>= 0.4.3),
     ggplot2 (>= 2.1.0.9001),
+    ggthemes (>= 3.0.3),
     reshape2,
     stats,
     utils

@@ -240,8 +240,7 @@ mcmc_violin <- function(x,
       size = .25,
       na.rm = TRUE,
       binwidth = binwidth
-    ) +
-    dont_expand_y_axis(c(0.005, 0))
+    )
 
   if (is.null(facet_args[["scales"]]))
     facet_args[["scales"]] <- "free"
@@ -255,6 +254,7 @@ mcmc_violin <- function(x,
       force_axes_in_facets()
   }
   graph +
+    dont_expand_y_axis(c(0.005, 0)) +
     theme_default() +
     yaxis_text(FALSE) +
     yaxis_title(FALSE) +
