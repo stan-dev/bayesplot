@@ -104,6 +104,10 @@
 #' mcmc_dens_overlay(x)
 #' ppc_stat(y, yrep, stat = "var") + legend_none()
 #'
+NULL
+
+#' @rdname bayesplot-colors
+#' @export
 color_scheme_set <- function(scheme = "blue") {
   stopifnot(is.character(scheme))
   if (length(scheme) == 1) {

@@ -5,7 +5,7 @@
 #' stanfit (\pkg{rstan}) and stanreg (\pkg{rstanarm}) objects, but adding new
 #' methods should be relatively straightforward.
 #'
-#' @name extractors
+#' @name bayesplot-extractors
 #' @param object The object to use.
 #' @param ... Arguments passed to individual methods.
 #' @param pars An optional character vector of parameter names. For
@@ -15,16 +15,16 @@
 #' @return
 #' \describe{
 #' \item{\code{log_posterior}}{
-#' \code{log_posterior} methods return a molten data frame
-#' (see \code{\link[reshape2]{melt}}). If the model represented by \code{object} was
+#' \code{log_posterior} methods return a molten data frame (see
+#' \code{\link[reshape2]{melt}}). If the model represented by \code{object} was
 #' fit via MCMC the molten data frame should have columns \code{"Iteration"}
-#' (integer), \code{"Chain"} (integer), and \code{"Value"} (numeric).
-#' For models fit using other methods, \code{log_posterior} methods can
-#' return a data frame with a single column \code{"Value"}.
+#' (integer), \code{"Chain"} (integer), and \code{"Value"} (numeric). For models
+#' fit using other methods, \code{log_posterior} methods can return a data frame
+#' with a single column \code{"Value"}.
 #' }
 #' \item{\code{nuts_params}}{
-#' \code{nuts_params} methods return a molten data frame
-#' (see \code{\link[reshape2]{melt}}). The molten data frame should have columns
+#' \code{nuts_params} methods return a molten data frame (see
+#' \code{\link[reshape2]{melt}}). The molten data frame should have columns
 #' \code{"Parameter"} (factor), \code{"Iteration"} (integer), \code{"Chain"}
 #' (integer), and \code{"Value"} (numeric), in any order.
 #' }
