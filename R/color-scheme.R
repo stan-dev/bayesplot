@@ -3,16 +3,17 @@
 #' Set, get, or view color schemes. Choose from a preset
 #' scheme or create a custom scheme.
 #'
-#' @export
-#' @param scheme For \code{set_color_scheme}, either a string naming one of the
+#' @name bayesplot-colors
+#'
+#' @param scheme For \code{color_scheme_set}, either a string naming one of the
 #'   available color schemes or a character vector of \emph{exactly six} colors
 #'   specifying a custom scheme (see the \strong{Custom Color Schemes} section,
 #'   below, for more on specifying a custom scheme).
 #'
-#'   For \code{get_color_scheme}, \code{scheme} can be missing (to get the
+#'   For \code{color_scheme_get}, \code{scheme} can be missing (to get the
 #'   current color scheme) or a string naming one of the preset schemes.
 #'
-#'   For \code{view_color_scheme}, \code{scheme} can be missing (to use the
+#'   For \code{color_scheme_view}, \code{scheme} can be missing (to use the
 #'   current color scheme) or a character vector containing a subset of the
 #'   available scheme names.
 #'
@@ -34,17 +35,17 @@
 #'    that every possible mixed scheme will look good with every possible plot.
 #'   }
 #'
-#' @return \code{set_color_scheme} has the side effect of setting the color
+#' @return \code{color_scheme_set} has the side effect of setting the color
 #'   scheme used for plotting. It also returns
 #'   (\code{\link[=invisible]{invisibly}}) a list of the hexidecimal color
 #'   values used in \code{scheme}.
 #'
-#'   \code{get_color_scheme} returns a \code{list} of the hexadecimal color
+#'   \code{color_scheme_get} returns a \code{list} of the hexadecimal color
 #'   values (without changing the current scheme). If the \code{scheme} argument
 #'   is not specified the returned values correspond to the current color
 #'   scheme.
 #'
-#'   \code{view_color_scheme} returns a ggplot object if only a single scheme is
+#'   \code{color_scheme_view} returns a ggplot object if only a single scheme is
 #'   specified and a gtable object if multiple schemes names are specified.
 #'
 #' @section Custom Color Schemes: A \pkg{bayesplot} color scheme consists of six
@@ -54,41 +55,40 @@
 #'   should be in order from lightest to darkest. See the end of the
 #'   \strong{Examples} section for a demonstration.
 #'
-#' @seealso \code{\link{theme_default}} for the default ggplot theme used by
-#'   \pkg{bayesplot}.
+#' @template seealso-theme
 #'
 #' @examples
-#' set_color_scheme("red")
-#' get_color_scheme()
-#' view_color_scheme()
+#' color_scheme_set("red")
+#' color_scheme_get()
+#' color_scheme_view()
 #'
 #' # compare multiple schemes
-#' view_color_scheme(c("pink", "gray", "teal"))
+#' color_scheme_view(c("pink", "gray", "teal"))
 #'
-#' get_color_scheme("brightblue")
-#' view_color_scheme("brightblue")
-#' view_color_scheme("purple")
-#' get_color_scheme("purple")$light
+#' color_scheme_get("brightblue")
+#' color_scheme_view("brightblue")
+#' color_scheme_view("purple")
+#' color_scheme_get("purple")$light
 #'
 #'
-#' set_color_scheme("pink")
+#' color_scheme_set("pink")
 #' x <- example_mcmc_draws()
 #' mcmc_intervals(x)
 #'
-#' set_color_scheme("teal")
-#' view_color_scheme()
+#' color_scheme_set("teal")
+#' color_scheme_view()
 #' mcmc_intervals(x)
 #'
-#' set_color_scheme("blue")
+#' color_scheme_set("blue")
 #' mcmc_areas(x, regex_pars = "beta")
 #'
-#' set_color_scheme("pink")
-#' view_color_scheme()
+#' color_scheme_set("pink")
+#' color_scheme_view()
 #' y <- example_y_data()
 #' yrep <- example_yrep_draws()
 #' ppc_stat(y, yrep, stat = "mean") + legend_none()
 #'
-#' set_color_scheme("mix-teal-pink")
+#' color_scheme_set("mix-teal-pink")
 #' ppc_stat(y, yrep, stat = "sd") + legend_none()
 #' mcmc_areas(x, regex_pars = "beta")
 #'
@@ -98,13 +98,13 @@
 #' orange_scheme <- c("#ffebcc", "#ffcc80",
 #'                    "#ffad33", "#e68a00",
 #'                    "#995c00", "#663d00")
-#' set_color_scheme(orange_scheme)
-#' get_color_scheme()
+#' color_scheme_set(orange_scheme)
+#' color_scheme_get()
 #' mcmc_areas(x, regex_pars = "alpha")
 #' mcmc_dens_overlay(x)
 #' ppc_stat(y, yrep, stat = "var") + legend_none()
 #'
-set_color_scheme <- function(scheme = "blue") {
+color_scheme_set <- function(scheme = "blue") {
   stopifnot(is.character(scheme))
   if (length(scheme) == 1) {
     x <- scheme_from_string(scheme)
@@ -121,9 +121,9 @@ set_color_scheme <- function(scheme = "blue") {
   invisible(x)
 }
 
-#' @rdname set_color_scheme
+#' @rdname color_scheme_set
 #' @export
-get_color_scheme <- function(scheme) {
+color_scheme_get <- function(scheme) {
   if (missing(scheme)) {
     x <- .bayesplot_aesthetics$scheme
     scheme <- as.list(x)[scheme_level_names()]
@@ -133,9 +133,9 @@ get_color_scheme <- function(scheme) {
   scheme_from_string(scheme)
 }
 
-#' @rdname set_color_scheme
+#' @rdname color_scheme_set
 #' @export
-view_color_scheme <- function(scheme) {
+color_scheme_view <- function(scheme) {
   suggested_package("gridExtra")
   if (missing(scheme) || length(scheme) == 1)
     return(.view_scheme(scheme))
@@ -154,7 +154,7 @@ view_color_scheme <- function(scheme) {
 # @param scheme A string (length 1) naming a scheme
 .view_scheme <- function(scheme) {
   x <- if (missing(scheme))
-    get_color_scheme() else get_color_scheme(scheme)
+    color_scheme_get() else color_scheme_get(scheme)
 
   color_data <- data.frame(
     group = factor(names(x), levels = rev(names(x))),
@@ -201,8 +201,8 @@ scheme_from_string <- function(scheme) {
   }
 }
 
-# check if object returned by get_color_scheme is a mixed scheme
-# @param x object returned by get_color_scheme
+# check if object returned by color_scheme_get is a mixed scheme
+# @param x object returned by color_scheme_get
 is_mixed_scheme <- function(x) {
   stopifnot(is.list(x))
   isTRUE(attr(x, "mixed"))
@@ -220,7 +220,7 @@ get_color <- function(levels) {
   if (length(sel))
     levels[sel] <- sapply(levels[sel], full_level_name)
   stopifnot(all(levels %in% scheme_level_names()))
-  color_vals <- get_color_scheme()[levels]
+  color_vals <- color_scheme_get()[levels]
   unlist(color_vals, use.names = FALSE)
 }
 full_level_name <- function(x) {
@@ -286,8 +286,8 @@ STOP_bad_colors <- function(x) {
 # master color list -------------------------------------------------------
 # create mixed scheme
 mixed_scheme <- function(scheme1, scheme2) {
-  scheme1 <- get_color_scheme(scheme1)
-  scheme2 <- get_color_scheme(scheme2)
+  scheme1 <- color_scheme_get(scheme1)
+  scheme2 <- color_scheme_get(scheme2)
   scheme <- unname(list(
     scheme1$light,
     scheme2$light_highlight,
@@ -324,4 +324,4 @@ master_color_list <- list(
 # instantiate aesthetics --------------------------------------------------
 .bayesplot_aesthetics <- new.env(parent = emptyenv())
 .bayesplot_aesthetics$scheme <- list()
-set_color_scheme()
+color_scheme_set()

@@ -60,7 +60,7 @@
 #' # a few (instead of nrow(yrep)) histograms are plotted
 #' ppc_hist(y, yrep[1:8, ])
 #'
-#' set_color_scheme("blue")
+#' color_scheme_set("blue")
 #' group <- example_group_data()
 #' ppc_violin_grouped(y, yrep, group)
 #'
@@ -78,7 +78,7 @@ ppc_hist <- function(y, yrep, ..., binwidth = NULL) {
   y <- validate_y(y)
   yrep <- validate_yrep(yrep, y)
 
-  # mixed_scheme <- is_mixed_scheme(get_color_scheme())
+  # mixed_scheme <- is_mixed_scheme(color_scheme_get())
   # hist_fills <- get_color(c(ifelse(mixed_scheme, "m", "d"), "l"))
   # hist_colors <- get_color(c(ifelse(mixed_scheme, "mh", "dh"), "lh"))
 

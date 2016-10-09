@@ -198,7 +198,7 @@ print(rhats)
 We can visualize the $\hat{R}$ values with the `mcmc_rhat` function:
 
 ```{r mcmc_rhat}
-set_color_scheme("brightblue") # see help("set_color_scheme")
+color_scheme_set("brightblue") # see help("color_scheme_set")
 mcmc_rhat(rhats)
 ```
 
@@ -344,7 +344,7 @@ To look at some information about the divergences we can use the
 `mcmc_nuts_divergence` function:
 
 ```{r, mcmc_nuts_divergence}
-set_color_scheme("red")
+color_scheme_set("red")
 mcmc_nuts_divergence(np1, lp1)
 ```
 

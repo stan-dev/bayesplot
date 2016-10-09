@@ -107,7 +107,7 @@ ppc_ecdf_overlay(y, yrep[sample(nrow(yrep), 50), ])
 # a few (instead of nrow(yrep)) histograms are plotted
 ppc_hist(y, yrep[1:8, ])
 
-set_color_scheme("blue")
+color_scheme_set("blue")
 group <- example_group_data()
 ppc_violin_grouped(y, yrep, group)
 

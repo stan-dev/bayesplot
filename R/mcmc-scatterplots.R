@@ -33,7 +33,7 @@
 #' dimnames(x)
 #'
 #' # scatterplot of alpha vs log(sigma)
-#' set_color_scheme("teal")
+#' color_scheme_set("teal")
 #' p <- mcmc_scatter(x, pars = c("alpha", "sigma"),
 #'                   trans = list(sigma = "log"),
 #'                   alpha = 0.5)
@@ -43,12 +43,12 @@
 #' p + ggplot2::stat_ellipse(level = 0.9, color = "gray20", size = 1)
 #'
 #' # add contour
-#' set_color_scheme("red")
+#' color_scheme_set("red")
 #' p2 <- mcmc_scatter(x, pars = c("alpha", "sigma"))
 #' p2 + ggplot2::stat_density_2d(color = "black")
 #'
 #' # can also add lines/smooths
-#' set_color_scheme("pink")
+#' color_scheme_set("pink")
 #' (p3 <- mcmc_scatter(x, pars = c("alpha", "beta[3]"), alpha = 0.5, size = 3))
 #' p3 + ggplot2::geom_smooth(method = "lm", se = FALSE, color = "gray20")
 #'

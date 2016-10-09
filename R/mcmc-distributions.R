@@ -53,7 +53,7 @@
 #' mcmc_hist(x)
 #'
 #' # histograms of some parameters
-#' set_color_scheme("red")
+#' color_scheme_set("red")
 #' mcmc_hist(x, pars = c("alpha", "beta[2]"))
 #' mcmc_hist(x, pars = "sigma", regex_pars = "beta")
 #'
@@ -68,7 +68,7 @@
 #' mcmc_hist(x, transformations = list(sigma = log))
 #'
 #' # separate histograms by chain
-#' set_color_scheme("pink")
+#' color_scheme_set("pink")
 #' mcmc_hist_by_chain(x, regex_pars = "beta")
 #'
 #' #################
@@ -79,7 +79,7 @@
 #'           facet_args = list(nrow = 2))
 #'
 #' # separate and overlay chains
-#' set_color_scheme("mix-teal-pink")
+#' color_scheme_set("mix-teal-pink")
 #' mcmc_dens_overlay(
 #'  x,
 #'  pars = c("sigma", "beta[2]"),
@@ -88,7 +88,7 @@
 #'  facet_text(size = 14)
 #'
 #' # separate chains as violin plots
-#' set_color_scheme("green")
+#' color_scheme_set("green")
 #' mcmc_violin(x)
 #'
 #' # change plot background

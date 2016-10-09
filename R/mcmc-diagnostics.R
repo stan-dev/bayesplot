@@ -56,9 +56,9 @@
 #' dim(x)
 #' dimnames(x)
 #'
-#' set_color_scheme("green")
+#' color_scheme_set("green")
 #' mcmc_acf(x, pars = c("alpha", "beta[1]"))
-#' set_color_scheme("pink")
+#' color_scheme_set("pink")
 #' (p <- mcmc_acf_bar(x, pars = c("alpha", "beta[1]")))
 #'
 #' # add tick marks on y axis and horiztonal dashed line at 0.5
@@ -72,7 +72,7 @@
 #' mcmc_rhat_hist(rhat)
 #' mcmc_rhat(rhat)
 #'
-#' set_color_scheme("blue")
+#' color_scheme_set("blue")
 #' mcmc_rhat(runif(1000, 1, 1.07))
 #' mcmc_rhat(runif(1000, 1, 1.3)) + legend_move("top") # add legend above plot
 #'

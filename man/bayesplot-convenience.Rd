@@ -167,7 +167,7 @@ existing plot (ggplot object) to format the plot background.
 }
 }
 \examples{
-set_color_scheme("gray")
+color_scheme_set("gray")
 x <- example_mcmc_draws(chains = 1)
 dim(x)
 colnames(x)
@@ -191,7 +191,7 @@ p + my_lines
 
 # add vertical line(s) at computed values
 # (three ways of getting lines at column means)
-set_color_scheme("brightblue")
+color_scheme_set("brightblue")
 p <- mcmc_intervals(x, regex_pars = "beta")
 p + vline_at(x[, 3:4], colMeans)
 p + vline_at(x[, 3:4], "colMeans", color = "darkgray",
@@ -202,7 +202,7 @@ p + vline_at(x[, 3:4], function(a) apply(a, 2, mean),
 
 
 # using the lbub function to get interval lower and upper bounds (lb, ub)
-set_color_scheme("pink")
+color_scheme_set("pink")
 parsed <- ggplot2::label_parsed
 p2 <- mcmc_hist(x, pars = "beta[1]", binwidth = 1/20,
                 facet_args = list(labeller = parsed))
@@ -217,7 +217,7 @@ p2 + vline_at(b1, lbub(0.8, med = FALSE), color = "gray20",
 ##########################
 ### format axis titles ###
 ##########################
-set_color_scheme("green")
+color_scheme_set("green")
 y <- example_y_data()
 yrep <- example_yrep_draws()
 (p3 <- ppc_stat(y, yrep, stat = "median", binwidth = 1/4))
@@ -235,7 +235,7 @@ p3 + xaxis_title(FALSE) + legend_none()
 ################################
 ### format axis & facet text ###
 ################################
-set_color_scheme("gray")
+color_scheme_set("gray")
 p4 <- mcmc_trace(example_mcmc_draws(), pars = c("alpha", "sigma"))
 
 myfacets <-
@@ -259,11 +259,11 @@ p4 +
 ##############################
 ### change plot background ###
 ##############################
-set_color_scheme("yellow")
+color_scheme_set("yellow")
 p5 <- ppc_scatter_avg(y, yrep)
 p5 + plot_bg(fill = "gray20")
 
-set_color_scheme("purple")
+color_scheme_set("purple")
 ppc_dens_overlay(y, yrep[1:30, ]) +
  legend_text(size = 14) +
  legend_move(c(0.75, 0.5)) +

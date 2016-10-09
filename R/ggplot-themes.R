@@ -16,11 +16,8 @@
 #'
 #' @return A ggplot \link[ggplot2]{theme} object.
 #'
-#' @seealso
-#' \link{bayesplot-convenience} for a variety of convenience functions, many of
-#' which provide shortcuts for tweaking theme elements after creating a plot.
-#'
-#' \code{\link{set_color_scheme}} to set, get, or view the color scheme.
+#' @template seealso-helpers
+#' @template seealso-colors
 #'
 #' @examples
 #' thm <- theme_default()

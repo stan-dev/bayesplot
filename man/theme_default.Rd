@@ -50,9 +50,11 @@ mcmc_dens_overlay(x) + ggplot2::theme_gray()
 
 }
 \seealso{
-\link{bayesplot-convenience} for a variety of convenience functions, many of
-which provide shortcuts for tweaking theme elements after creating a plot.
+\link{bayesplot-helpers} for a variety of convenience functions,
+  many of which provide shortcuts for tweaking theme elements after creating
+  a plot.
 
-\code{\link{set_color_scheme}} to set, get, or view the color scheme.
+\code{\link{bayesplot-colors}} to set or view the color scheme used
+  for plotting.
 }
 

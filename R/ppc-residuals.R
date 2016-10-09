@@ -280,7 +280,7 @@ ppc_resid_binned <- function(y, Ey, ..., size = 1, alpha = 0.25) {
       ))
   }
 
-  mixed_scheme <- is_mixed_scheme(get_color_scheme())
+  mixed_scheme <- is_mixed_scheme(color_scheme_get())
   point_fill <- get_color(ifelse(mixed_scheme, "m", "d"))
   point_color <- get_color(ifelse(mixed_scheme, "mh", "dh"))
   graph <-

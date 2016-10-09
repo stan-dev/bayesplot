@@ -138,7 +138,7 @@ distributions of some of the simulated datasets (rows) in the `yrep` matrix.
 library("ggplot2")
 library("bayesplot")
 
-set_color_scheme("brightblue") # see set_color_scheme()
+color_scheme_set("brightblue") # see color_scheme_set()
 
 y <- roaches$y
 ppc_dens_overlay(y, yrep_poisson[1:50, ])
