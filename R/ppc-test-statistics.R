@@ -92,7 +92,7 @@ ppc_stat <- function(y, yrep, stat = "mean", ..., binwidth = NULL) {
     ) +
     dont_expand_y_axis() +
     theme_default() +
-    theme(legend.spacing.y = unit(0, "cm")) +
+    no_legend_spacing() +
     xaxis_title(FALSE) +
     yaxis_text(FALSE) +
     yaxis_ticks(FALSE) +
@@ -142,9 +142,7 @@ ppc_stat_grouped <-
       ) +
       dont_expand_y_axis() +
       theme_default() +
-      theme(legend.spacing.y = unit(0, "cm")) +
-      facet_bg(FALSE) +
-      facet_text(face = "bold") +
+      no_legend_spacing() +
       xaxis_title(FALSE) +
       yaxis_text(FALSE) +
       yaxis_ticks(FALSE) +

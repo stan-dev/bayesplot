@@ -34,19 +34,21 @@ good fit then we should be able to use it to generate data that looks a lot like
 the data we observed.
 
 #### Posterior predictive distribution
-To generate the data used for posterior predictive checks (PPCs) we simulate
+To generate the data used for posterior predictive checks (PPCs) we simulate 
 from the _posterior predictive distribution_ The posterior predictive 
 distribution is the distribution of the outcome variable implied by a model 
 after using the observed data $y$ (a vector of $N$ outcome values) to update our
-beliefs about unknown model parameters $\theta$, $$p(\tilde{y} \,|\, y) = \int
+beliefs about unknown model parameters $\theta$. The posterior predictive
+distribution for observation $\tilde{y}$ can be written as
+$$p(\tilde{y} \,|\, y) = \int
 p(\tilde{y} \,|\, \theta) \, p(\theta \,|\, y) \, d\theta.$$
 Typically we will also condition on $X$ (a matrix of predictor variables).
 
 For each draw (simulation) $s = 1, \ldots, S$ of the parameters from the 
-posterior distribution, $\theta_s \sim p(\theta \,|\, y)$, we draw an entire
-vector of $N$ outcomes $y^{rep}_s$ from the posterior predictive distribution
-by simulating from the data model conditional on parameters $\theta_s$.
-The result is an $S \times N$ matrix of draws $y^{rep}$.
+posterior distribution, $\theta^{(s)} \sim p(\theta \,|\, y)$, we draw an entire
+vector of $N$ outcomes $\tilde{y}^{(s)}$ from the posterior predictive distribution
+by simulating from the data model conditional on parameters $\theta^{(s)}$.
+The result is an $S \times N$ matrix of draws $\tilde{y}$.
 
 When simulating from the posterior predictive distribution we can use either the
 same values of the predictors $X$ that we used when fitting the model or new 
@@ -54,7 +56,7 @@ observations of those predictors. When we use the same values of $X$ we denote
 the resulting simulations by $y^{rep}$, as they can be thought of as 
 replications of the outcome $y$ rather than predictions for future observations 
 ($\tilde{y}$ using predictors $\tilde{X}$). This corresponds to the notation 
-from Gelman et. al. (2013) and is the notation used throughout the package
+from Gelman et. al. (2013) and is the notation used throughout the package 
 documentation.
 
 
@@ -132,7 +134,7 @@ for each of the data points in `y`.
 The first PPC we'll look at is a comparison of the distribution of `y` and the
 distributions of some of the simulated datasets (rows) in the `yrep` matrix.
 
-```{r ppc_dens_overlay}
+```{r ppc_dens_overlay, fig.height=3}
 library("ggplot2")
 library("bayesplot")
 
@@ -152,13 +154,13 @@ were actually observed.
 We could see the same thing by looking at separate histograms of `y` and some 
 of the `yrep` datasets using the `ppc_hist` function:
 
-```{r ppc_hist}
+```{r ppc_hist, fig.width=6}
 ppc_hist(y, yrep_poisson[1:5, ])
 ```
 
 The same plot for the negative binomial model looks much different:
 
-```{r ppc_hist-nb}
+```{r ppc_hist-nb, fig.width=6}
 ppc_hist(y, yrep_nb[1:5, ])
 ```
 
@@ -167,7 +169,7 @@ data, but it occasionally predicts values that are way too large, which is why
 the x-axes extend to such high values in the plot and make it difficult to read.
 To see the predictions for the smaller values more clearly we can zoom in:
 
-```{r ppc_dens_overlay-2}
+```{r ppc_hist-nb-2, fig.width=6}
 ppc_hist(y, yrep_nb[1:5, ], binwidth = 20) + 
   coord_cartesian(xlim = c(-1, 500))
 ```
@@ -190,19 +192,19 @@ prop_zero(y) # check proportion of zeros in y
 
 Then we can use this function as the `stat` argument to `ppc_stat`:
 
-```{r ppc_stat}
+```{r ppc_stat, fig.height=3}
 ppc_stat(y, yrep_poisson, stat = "prop_zero")
 ```
 
 In the plot the dark line is at the value $T(y)$, i.e. the value of the test
-statistic computed from the observe $y$, in this case `prop_zero(y)` ( roughly
+statistic computed from the observed $y$, in this case `prop_zero(y)` ( roughly
 `r round(prop_zero(y), 2)`). It's hard to see because almost all the datasets in
 `yrep` have no zeros, but the lighter bar is actually a histogram of the the
 proportion of zeros in each of the replicated datasets.
 
 Here's the same plot for the negative binomial model:
 
-```{r ppc_stat-nb}
+```{r ppc_stat-nb, fig.height=3}
 ppc_stat(y, yrep_nb, stat = "prop_zero")
 ```
 
@@ -213,7 +215,7 @@ However, if we look instead at the distribution of the maximum value in the
 replications then we can see that the Poisson model makes more realistic 
 predictions than the negative binomial:
 
-```{r ppc_stat-max}
+```{r ppc_stat-max, fig.height=3}
 ppc_stat(y, yrep_poisson, stat = "max")
 ppc_stat(y, yrep_nb, stat = "max")
 ppc_stat(y, yrep_nb, stat = "max", binwidth = 100) + 

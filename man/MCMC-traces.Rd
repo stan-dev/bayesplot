@@ -12,26 +12,12 @@ mcmc_trace(x, pars = character(), regex_pars = character(),
 
 mcmc_trace_highlight(x, pars = character(), regex_pars = character(),
   transformations = list(), facet_args = list(), ..., n_warmup = 0,
-  window = NULL, size = NULL, highlight = 1)
+  window = NULL, size = NULL, alpha = 0.2, highlight = 1)
 }
 \arguments{
-\item{x}{A 3-D array, matrix, or data frame of posterior draws:
-\itemize{
- \item \strong{3-D array}: An \code{\link{array}} with dimensions
- \code{[Iteration, Chain, Parameter]} in that order.
- \item \strong{matrix}: A \code{\link{matrix}} with one column per
- parameter. If \code{x} is a matrix then there should only be a single
- Markov chain or all chains should already be merged (stacked).
- \item \strong{data frame}: There are two types of data frames allowed.
- Either a data frame with one column per parameter (if only a single chain or
- all chains have already been merged), or a data frame with one column per
- parameter plus an additional column \code{"Chain"} that contains the chain
- number (an integer) corresponding to each row in \code{x}.
- \item \strong{list}: A \code{list} of matrices, where each matrix
- corresponds to a Markov chain. All of the matrices should have the same
- number of iterations (rows) and parameters (columns), and parameters should
- have the same names and be in the same order.
-}}
+\item{x}{A 3-D array, matrix, list of matrices, or data frame of MCMC draws.
+The \link{MCMC-overview} page provides details on how to specify each these
+allowed inputs.}
 
 \item{pars}{An optional character vector of parameter names. If neither
 \code{pars} nor \code{regex_pars} is specified then the default is to use
@@ -70,6 +56,10 @@ range of iterations to display.}
 \code{mcmc_trace}) or the default point size (if calling
 \code{mcmc_trace_highlight}).}
 
+\item{alpha}{For \code{mcmc_trace_highlight}, passed to
+\code{\link[ggplot2]{geom_point}} to control the transparency of the points
+for the chains not highlighted.}
+
 \item{highlight}{For \code{mcmc_trace_highlight}, an integer specifying one
 of the chains that will be more visible than the others in the plot.}
 }
@@ -99,13 +89,13 @@ x <- example_mcmc_draws(chains = 4, params = 6)
 dim(x)
 dimnames(x)
 
-# traceplots of alpha and sigma
+# traceplots of the betas
 set_color_scheme("brightblue")
-mcmc_trace(x, pars = c("alpha", "sigma"))
+mcmc_trace(x, regex_pars = "beta")
 
-# use a mixed color scheme
+# can use a mixed color scheme to better differentiate the chains
 set_color_scheme("mix-blue-red")
-mcmc_trace(x, pars = c("alpha", "sigma", "beta[3]"))
+mcmc_trace(x, regex_pars = "beta")
 
 # use traditional ggplot discrete color scale
 mcmc_trace(x, pars = c("alpha", "sigma")) +
@@ -113,9 +103,7 @@ mcmc_trace(x, pars = c("alpha", "sigma")) +
 
 # zoom in on a window of iterations, increase line size,
 # add tick marks, and move legend to the top
-mcmc_trace(x, window = c(100, 130), size = 1) +
- xaxis_ticks(size = 0.25) +
- move_legend("top")
+mcmc_trace(x, window = c(100, 130), size = 1) + move_legend("top")
 
 \dontrun{
 # parse facet label text
@@ -125,9 +113,7 @@ p <- mcmc_trace(
   regex_pars = "beta\\\\[[1,3]\\\\]",
   facet_args = list(labeller = ggplot2::label_parsed)
 )
-p +
- facet_text(size = 15) +
- xaxis_ticks(size = .25)
+p + facet_text(size = 15)
 
 # mark first 100 draws as warmup
 mcmc_trace(x, n_warmup = 100)
@@ -135,8 +121,7 @@ mcmc_trace(x, n_warmup = 100)
 
 # plot as points, highlighting chain 2
 set_color_scheme("brightblue")
-mcmc_trace_highlight(x, pars = c("alpha", "sigma"),
-                     highlight = 2, size = 2)
+mcmc_trace_highlight(x, pars = "sigma", highlight = 2, size = 2)
 }
 
 }

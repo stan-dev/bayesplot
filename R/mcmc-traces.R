@@ -13,6 +13,9 @@
 #' @param size An optional value to override the default line size (if calling
 #'   \code{mcmc_trace}) or the default point size (if calling
 #'   \code{mcmc_trace_highlight}).
+#' @param alpha For \code{mcmc_trace_highlight}, passed to
+#'   \code{\link[ggplot2]{geom_point}} to control the transparency of the points
+#'   for the chains not highlighted.
 #' @param n_warmup An integer; the number of warmup iterations included in
 #'   \code{x}. The default is \code{n_warmup = 0}, i.e. to assume no warmup
 #'   iterations are included. If \code{n_warmup > 0} then the background for
@@ -42,13 +45,13 @@
 #' dim(x)
 #' dimnames(x)
 #'
-#' # traceplots of alpha and sigma
+#' # traceplots of the betas
 #' set_color_scheme("brightblue")
-#' mcmc_trace(x, pars = c("alpha", "sigma"))
+#' mcmc_trace(x, regex_pars = "beta")
 #'
-#' # use a mixed color scheme
+#' # can use a mixed color scheme to better differentiate the chains
 #' set_color_scheme("mix-blue-red")
-#' mcmc_trace(x, pars = c("alpha", "sigma", "beta[3]"))
+#' mcmc_trace(x, regex_pars = "beta")
 #'
 #' # use traditional ggplot discrete color scale
 #' mcmc_trace(x, pars = c("alpha", "sigma")) +
@@ -56,9 +59,7 @@
 #'
 #' # zoom in on a window of iterations, increase line size,
 #' # add tick marks, and move legend to the top
-#' mcmc_trace(x, window = c(100, 130), size = 1) +
-#'  xaxis_ticks(size = 0.25) +
-#'  move_legend("top")
+#' mcmc_trace(x, window = c(100, 130), size = 1) + move_legend("top")
 #'
 #' \dontrun{
 #' # parse facet label text
@@ -68,9 +69,7 @@
 #'   regex_pars = "beta\\[[1,3]\\]",
 #'   facet_args = list(labeller = ggplot2::label_parsed)
 #' )
-#' p +
-#'  facet_text(size = 15) +
-#'  xaxis_ticks(size = .25)
+#' p + facet_text(size = 15)
 #'
 #' # mark first 100 draws as warmup
 #' mcmc_trace(x, n_warmup = 100)
@@ -78,8 +77,7 @@
 #'
 #' # plot as points, highlighting chain 2
 #' set_color_scheme("brightblue")
-#' mcmc_trace_highlight(x, pars = c("alpha", "sigma"),
-#'                      highlight = 2, size = 2)
+#' mcmc_trace_highlight(x, pars = "sigma", highlight = 2, size = 2)
 #' }
 #'
 NULL
@@ -124,6 +122,7 @@ mcmc_trace_highlight <-
            n_warmup = 0,
            window = NULL,
            size = NULL,
+           alpha = 0.2,
            highlight = 1) {
     .mcmc_trace(
       x,
@@ -134,6 +133,7 @@ mcmc_trace_highlight <-
       n_warmup = n_warmup,
       window = window,
       size = size,
+      alpha = alpha,
       highlight = highlight,
       style = "point",
       ...
@@ -152,6 +152,7 @@ mcmc_trace_highlight <-
                        facet_args = list(),
                        highlight = NULL,
                        style = c("line", "point"),
+                       alpha = 0.2,
                        ...) {
 
   style <- match.arg(style)
@@ -192,8 +193,8 @@ mcmc_trace_highlight <-
                xmin = -Inf, xmax = n_warmup,
                ymin = -Inf, ymax = Inf,
                size = 2,
-               color = "gray95",
-               fill = "gray95",
+               color = "gray90",
+               fill = "gray90",
                alpha = 0.5)
   }
 
@@ -206,7 +207,7 @@ mcmc_trace_highlight <-
 
   if (!is.null(highlight)) {
     graph <- graph +
-      scale_alpha_discrete(range = c(.2, 1), guide = "none") +
+      scale_alpha_discrete(range = c(alpha, 1), guide = "none") +
       scale_color_manual("",
                          values = get_color(c("lh", "d")),
                          labels = c("Other chains", paste("Chain", highlight)))

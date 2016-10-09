@@ -250,13 +250,7 @@ ppc_ts_plotter <-
       do.call("facet_wrap", facet_args)
   }
 
-  graph <- graph +
+  graph +
     labs(x = "Time", y = yrep_label()) +
     theme_default()
-  if (!grouped)
-    return(graph)
-
-  graph +
-    facet_bg(FALSE) +
-    facet_text(face = "bold")
 }

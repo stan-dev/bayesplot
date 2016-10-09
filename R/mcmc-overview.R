@@ -6,8 +6,28 @@
 #'
 #' @description
 #' The \pkg{bayesplot} package provides various plotting functions for creating
-#' graphical displays of Markov chain Monte Carlo (MCMC) simulations. Future
-#' versions of \pkg{bayesplot} will provide many more MCMC plotting functions.
+#' graphical displays of Markov chain Monte Carlo (MCMC) simulations. The
+#' \strong{MCMC plotting functions} section, below, provides links to the
+#' documentation for various categories of MCMC plots. Currently the MCMC
+#' plotting functions accept posterior draws provided in one of the following
+#' formats:
+#' \itemize{
+#'  \item \strong{3-D array}: An \code{\link{array}} with dimensions
+#'  \code{[Iteration, Chain, Parameter]} in that order.
+#'  \item \strong{list}: A \code{list} of matrices, where each matrix
+#'  corresponds to a Markov chain. All of the matrices should have the same
+#'  number of iterations (rows) and parameters (columns), and parameters should
+#'  have the same names and be in the same order.
+#'  \item \strong{matrix}: A \code{\link{matrix}} with one column per parameter.
+#'  If using matrix there should only be a single Markov chain or all chains
+#'  should already be merged (stacked).
+#'  \item \strong{data frame}: There are two types of \link[=data.frame]{data
+#'  frames} allowed. Either a data frame with one column per parameter (if only
+#'  a single chain or all chains have already been merged), or a data frame with
+#'  one column per parameter plus an additional column \code{"Chain"} that
+#'  contains the chain number (an integer) corresponding to each row in
+#'  the data frame.
+#' }
 #'
 #' @section MCMC plotting functions:
 #'

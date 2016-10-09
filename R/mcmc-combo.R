@@ -21,7 +21,7 @@
 #'   \code{mcmc_combo} returns a gtable object rather than a ggplot object, and
 #'   so theme objects can't be added directly to the returned plot object. The
 #'   \code{gg_theme} argument helps get around this problem by accepting a
-#'   \pkg{ggplot2} \link[ggplot2]{theme} object that is applied to each of the
+#'   \pkg{ggplot2} \link[ggplot2]{theme} object that is added to each of the
 #'   plots \emph{before} combining them into the gtable object that is returned.
 #'   This can be a theme object created by a call to \code{ggplot2::theme} or
 #'   one of the \pkg{bayesplot} convenience functions, e.g.
@@ -37,16 +37,15 @@
 #' dim(x)
 #' dimnames(x)
 #'
-#' set_color_scheme("blue")
 #' mcmc_combo(x, pars = c("alpha", "sigma"))
-#' mcmc_combo(x, pars = c("alpha", "sigma"), widths = c(2, 1))
+#' mcmc_combo(x, pars = c("alpha", "sigma"), widths = c(1, 2))
 #'
 #' # change second plot, show log(sigma) instead of sigma,
 #' # and remove the legends
 #' set_color_scheme("mix-blue-red")
 #' mcmc_combo(
 #'  x,
-#'  combo = c("trace", "dens_overlay"),
+#'  combo = c("dens_overlay", "trace"),
 #'  pars = c("alpha", "sigma"),
 #'  transformations = list(sigma = "log"),
 #'  gg_theme = no_legend()
@@ -55,7 +54,7 @@
 #' # same thing but this time also change the entire ggplot theme
 #' mcmc_combo(
 #'  x,
-#'  combo = c("trace", "dens_overlay"),
+#'  combo = c("dens_overlay", "trace"),
 #'  pars = c("alpha", "sigma"),
 #'  transformations = list(sigma = "log"),
 #'  gg_theme = ggplot2::theme_gray() + no_legend()
@@ -67,7 +66,7 @@ NULL
 #' @export
 mcmc_combo <-
   function(x,
-           combo = c("trace", "dens"),
+           combo = c("dens", "trace"),
            widths = NULL,
            plot = TRUE,
            gg_theme = NULL,

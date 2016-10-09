@@ -26,23 +26,9 @@ mcmc_violin(x, pars = character(), regex_pars = character(),
   0.9))
 }
 \arguments{
-\item{x}{A 3-D array, matrix, or data frame of posterior draws:
-\itemize{
- \item \strong{3-D array}: An \code{\link{array}} with dimensions
- \code{[Iteration, Chain, Parameter]} in that order.
- \item \strong{matrix}: A \code{\link{matrix}} with one column per
- parameter. If \code{x} is a matrix then there should only be a single
- Markov chain or all chains should already be merged (stacked).
- \item \strong{data frame}: There are two types of data frames allowed.
- Either a data frame with one column per parameter (if only a single chain or
- all chains have already been merged), or a data frame with one column per
- parameter plus an additional column \code{"Chain"} that contains the chain
- number (an integer) corresponding to each row in \code{x}.
- \item \strong{list}: A \code{list} of matrices, where each matrix
- corresponds to a Markov chain. All of the matrices should have the same
- number of iterations (rows) and parameters (columns), and parameters should
- have the same names and be in the same order.
-}}
+\item{x}{A 3-D array, matrix, list of matrices, or data frame of MCMC draws.
+The \link{MCMC-overview} page provides details on how to specify each these
+allowed inputs.}
 
 \item{pars}{An optional character vector of parameter names. If neither
 \code{pars} nor \code{regex_pars} is specified then the default is to use
@@ -116,28 +102,12 @@ x <- example_mcmc_draws()
 dim(x)
 dimnames(x)
 
-set_color_scheme("blue")
-
 ##################
 ### Histograms ###
 ##################
 
 # histograms of all parameters
 mcmc_hist(x)
-
-# override bayesplot theme and use one of the
-# themes included in ggplot2
-mcmc_hist(x) + ggplot2::theme_gray()
-
-# use a ggplot2 theme but override certain elements
-# using bayesplot convenience functions
-# (see help("bayesplot-convenience") for more examples)
-mcmc_hist(x) +
- ggplot2::theme_gray() +
- xaxis_title(FALSE) +
- xaxis_text(size = 10, face = "bold") +
- yaxis_title(FALSE) +
- yaxis_text(FALSE)
 
 # histograms of some parameters
 set_color_scheme("red")
@@ -167,15 +137,21 @@ mcmc_dens(x, pars = c("sigma", "beta[2]"),
 
 # separate and overlay chains
 set_color_scheme("mix-teal-pink")
-mcmc_dens_overlay(x, pars = c("sigma", "beta[2]"),
-                  facet_args = list(nrow = 2))
+mcmc_dens_overlay(
+ x,
+ pars = c("sigma", "beta[2]"),
+ facet_args = list(nrow = 2, labeller = ggplot2::label_parsed)
+) +
+ facet_text(size = 14)
 
 # separate chains as violin plots
 set_color_scheme("green")
 mcmc_violin(x)
 
-# change theme
-mcmc_violin(x, probs = 0.5) + ggplot2::theme_dark()
+# change plot background
+mcmc_violin(x, probs = 0.5) +
+ plot_bg(color = "gray50", size = 3,
+         fill = "gray20")
 
 }
 \seealso{

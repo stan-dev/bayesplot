@@ -24,7 +24,7 @@
 #'    \item \code{"green"}
 #'    \item \code{"pink"}
 #'    \item \code{"purple"}
-#'    \item \code{"red"} (default)
+#'    \item \code{"red"}
 #'    \item \code{"teal"}
 #'    \item \code{"yellow"}
 #'    \item \code{"mix-x-y"}, replacing \code{x} and \code{y} with any two of
@@ -46,7 +46,6 @@
 #'
 #'   \code{view_color_scheme} returns a ggplot object if only a single scheme is
 #'   specified and a gtable object if multiple schemes names are specified.
-#'
 #'
 #' @section Custom Color Schemes: A \pkg{bayesplot} color scheme consists of six
 #'   colors. To specify a custom color scheme simply pass a character vector
@@ -102,7 +101,7 @@
 #' mcmc_dens_overlay(x)
 #' ppc_stat(y, yrep, stat = "var") + no_legend()
 #'
-set_color_scheme <- function(scheme) {
+set_color_scheme <- function(scheme = "blue") {
   stopifnot(is.character(scheme))
   if (length(scheme) == 1) {
     x <- scheme_from_string(scheme)
@@ -322,4 +321,4 @@ master_color_list <- list(
 # instantiate aesthetics --------------------------------------------------
 .bayesplot_aesthetics <- new.env(parent = emptyenv())
 .bayesplot_aesthetics$scheme <- list()
-set_color_scheme("red")
+set_color_scheme()

@@ -2,22 +2,68 @@
 % Please edit documentation in R/ggplot-themes.R
 \name{theme_default}
 \alias{theme_default}
-\title{bayesplot's default ggplot theme}
+\title{Default plotting theme}
 \usage{
-theme_default(base_size = 11, base_family = "")
+theme_default(base_size = getOption("bayesplot.base_size", 12),
+  base_family = getOption("bayesplot.base_family", "serif"))
 }
 \arguments{
-\item{base_size, base_family}{Passed to \code{\link[ggplot2]{theme_classic}}.}
+\item{base_size, base_family}{Base font size and family (passed to
+\code{\link[ggplot2]{theme_bw}}). It is possible to set
+\code{"bayesplot.base_size"} and \code{"bayesplot.base_family"} via
+\code{\link{options}} to change the defaults, which are \code{12} and
+\code{"serif"}, respectively.}
 }
 \value{
-A ggplot \code{\link[ggplot2]{theme}} object.
+A ggplot \link[ggplot2]{theme} object.
 }
 \description{
-A modified version of \code{\link[ggplot2]{theme_classic}}.
+The \code{\link{theme_default}} function returns the default ggplot
+\link{theme} used by the \pkg{bayesplot} plotting functions. Many of the
+individual plotting functions also make small alterations to the theme using
+the \pkg{bayesplot} \link[=bayesplot-convenience]{convenience functions}.
+To use a different theme simply add that theme to the ggplot objects created
+by the \pkg{bayesplot} plotting functions (see \strong{Examples}, below).
+}
+\examples{
+thm <- theme_default()
+class(thm)
+names(thm)
+
+# plot using the default theme
+x <- example_mcmc_draws()
+mcmc_hist(x)
+
+# change the default font size and family
+options(bayesplot.base_size = 10,
+        bayesplot.base_family = "sans")
+mcmc_hist(x)
+mcmc_areas(x, regex_pars = "beta")
+
+# change back
+options(bayesplot.base_size = 12,
+        bayesplot.base_family = "serif")
+mcmc_areas(x, regex_pars = "beta")
+
+# override default theme and use one of the themes
+# included in ggplot2
+mcmc_hist(x) + ggplot2::theme_gray()
+
+# use a ggplot2 theme but override certain elements
+# using bayesplot convenience functions
+# (see help("bayesplot-convenience") for more examples)
+mcmc_hist(x) +
+ ggplot2::theme_gray() +
+ xaxis_title(FALSE) +
+ yaxis_title(FALSE) +
+ xaxis_ticks(FALSE) +
+ yaxis_ticks(FALSE) +
+ facet_text(size = 10, face = "bold")
+
 }
 \seealso{
-The \link[=bayesplot-convenience]{bayesplot convenience functions},
-  many of which provide shortcuts for tweaking theme elements after creating
-  a plot.
+The \pkg{bayesplot} \link[=bayesplot-convenience]{convenience
+  functions}, many of which provide shortcuts for tweaking theme elements
+  after creating a plot.
 }
 

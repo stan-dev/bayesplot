@@ -11,10 +11,10 @@
 #' @template args-regex_pars
 #' @template args-transformations
 #' @param ... Currently unused.
-#' @param prob The probability mass to include in inner interval (for
+#' @param prob The probability mass to include in the inner interval (for
 #'   \code{mcmc_intervals}) or in the shaded region (for \code{mcmc_areas}). The
 #'   default is \code{0.5} (50\% interval).
-#' @param prob_outer The probability mass to include in outer interval. The
+#' @param prob_outer The probability mass to include in the outer interval. The
 #'   default is \code{0.9} for \code{mcmc_intervals} (90\% interval)
 #'   and \code{1} for \code{mcmc_areas}.
 #' @param point_est The point estimate to show. Either \code{"median"} (the
@@ -48,13 +48,16 @@
 #' dim(x)
 #' dimnames(x)
 #'
-#' set_color_scheme("red")
+#' set_color_scheme("brightblue")
 #' mcmc_intervals(x)
 #' mcmc_intervals(x, pars = c("beta[1]", "beta[2]"))
 #' mcmc_areas(x, regex_pars = "beta\\[[1-3]", prob = 0.8) +
-#'  ggplot2::ggtitle("Posterior medians & 80% intervals")
+#'  ggplot2::labs(
+#'    title = "Posterior distributions",
+#'    subtitle = "with medians and 80% intervals"
+#'  )
 #'
-#' set_color_scheme("mix-green-blue")
+#' set_color_scheme("red")
 #' mcmc_areas(
 #'    x,
 #'    pars = c("alpha", "beta[4]"),
@@ -64,14 +67,14 @@
 #' )
 #'
 #' # color by rhat value
-#' set_color_scheme("brightblue")
+#' set_color_scheme("blue")
 #' fake_rhat_values <- c(1, 1.07, 1.3, 1.01, 1.15, 1.005)
 #' mcmc_intervals(x, rhat = fake_rhat_values)
 #'
 #' set_color_scheme("gray")
 #' p <- mcmc_areas(x, pars = c("alpha", "beta[4]"), rhat = c(1, 1.1))
 #' p + move_legend("bottom")
-#' p + move_legend("none")
+#' p + move_legend("none") # or p + no_legend()
 #'
 #'
 #' \dontrun{
@@ -86,7 +89,7 @@
 #'
 #' set_color_scheme("teal")
 #' mcmc_intervals(x, point_est = "mean", prob = 0.8, prob_outer = 0.95)
-#' mcmc_areas(x, regex_pars = "cyl", bw = "SJ") + xaxis_ticks(size = .5)
+#' mcmc_areas(x, regex_pars = "cyl", bw = "SJ")
 #' }
 #'
 #'
@@ -181,7 +184,7 @@ mcmc_areas <- function(x,
 
   color_by_rhat <- isTRUE(length(rhat) > 0)
   if (color_by_rhat) {
-    rhat <- factor_rhat(rhat)
+    rhat <- factor(factor_rhat(rhat), levels = c("high", "ok", "low"))
     if (length(rhat) != nrow(data))
       stop(
         "'rhat' has length ", length(rhat),

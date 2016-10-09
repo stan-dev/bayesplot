@@ -9,23 +9,9 @@ mcmc_scatter(x, pars = character(), regex_pars = character(),
   transformations = list(), ..., size = 2.5, alpha = 0.8)
 }
 \arguments{
-\item{x}{A 3-D array, matrix, or data frame of posterior draws:
-\itemize{
- \item \strong{3-D array}: An \code{\link{array}} with dimensions
- \code{[Iteration, Chain, Parameter]} in that order.
- \item \strong{matrix}: A \code{\link{matrix}} with one column per
- parameter. If \code{x} is a matrix then there should only be a single
- Markov chain or all chains should already be merged (stacked).
- \item \strong{data frame}: There are two types of data frames allowed.
- Either a data frame with one column per parameter (if only a single chain or
- all chains have already been merged), or a data frame with one column per
- parameter plus an additional column \code{"Chain"} that contains the chain
- number (an integer) corresponding to each row in \code{x}.
- \item \strong{list}: A \code{list} of matrices, where each matrix
- corresponds to a Markov chain. All of the matrices should have the same
- number of iterations (rows) and parameters (columns), and parameters should
- have the same names and be in the same order.
-}}
+\item{x}{A 3-D array, matrix, list of matrices, or data frame of MCMC draws.
+The \link{MCMC-overview} page provides details on how to specify each these
+allowed inputs.}
 
 \item{pars}{An optional character vector of parameter names. (\strong{Note}:
 for \code{mcmc_scatter} only two parameters can be selected.)}
@@ -76,16 +62,25 @@ dimnames(x)
 
 # scatterplot of alpha vs log(sigma)
 set_color_scheme("teal")
-(p <- mcmc_scatter(x, pars = c("alpha", "sigma"),
-                  trans = list(sigma = "log")))
+p <- mcmc_scatter(x, pars = c("alpha", "sigma"),
+                  trans = list(sigma = "log"),
+                  alpha = 0.5)
+p + ggplot2::labs(caption = "A fascinating caption")
 
 # add ellipse
-p + ggplot2::stat_ellipse(level = 0.9, color = "darkgray", size = 2)
+p + ggplot2::stat_ellipse(level = 0.9, color = "gray20", size = 1)
+
+# add contour
+set_color_scheme("red")
+p2 <- mcmc_scatter(x, pars = c("alpha", "sigma"))
+p2 + ggplot2::stat_density_2d(color = "black")
 
 # can also add lines/smooths
 set_color_scheme("pink")
-(p2 <- mcmc_scatter(x, pars = c("alpha", "beta[3]"), alpha = 0.5, size = 3))
-p2 + ggplot2::geom_smooth(method = "lm", se = FALSE, color = "gray20")
+(p3 <- mcmc_scatter(x, pars = c("alpha", "beta[3]"), alpha = 0.5, size = 3))
+p3 + ggplot2::geom_smooth(method = "lm", se = FALSE, color = "gray20")
+
+
 
 }
 \seealso{
