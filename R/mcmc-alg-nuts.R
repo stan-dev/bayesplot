@@ -116,7 +116,7 @@ NULL
 #' @template args-hist
 #'
 mcmc_nuts_acceptance <- function(x, lp, chain = NULL, ..., binwidth = NULL) {
-  suggested_package(c("grid", "gridExtra"))
+  suggested_package("gridExtra")
 
   x <- validate_nuts_data_frame(x, lp)
   n_chain <- length(unique(lp$Chain))
@@ -203,11 +203,11 @@ mcmc_nuts_acceptance <- function(x, lp, chain = NULL, ..., binwidth = NULL) {
 
   nuts_plot <- gridExtra::arrangeGrob(
     hists,
-    gridExtra::arrangeGrob(grid::grob()),
+    gridExtra::arrangeGrob(empty_grob()),
     gridExtra::arrangeGrob(
-      grid::grob(),
+      empty_grob(),
       scatter,
-      grid::grob(),
+      empty_grob(),
       ncol = 3,
       widths = c(1, 3, 1)
     ),
@@ -348,7 +348,7 @@ mcmc_nuts_stepsize <- function(x, lp, chain = NULL, ...) {
 #' @rdname MCMC-nuts
 #' @export
 mcmc_nuts_treedepth <- function(x, lp, chain = NULL, ...) {
-  suggested_package(c("grid", "gridExtra"))
+  suggested_package("gridExtra")
 
   x <- validate_nuts_data_frame(x, lp)
   n_chain <- length(unique(lp$Chain))
@@ -413,10 +413,10 @@ mcmc_nuts_treedepth <- function(x, lp, chain = NULL, ...) {
       nrow = 1
     ),
     gridExtra::arrangeGrob(
-      grid::grob()
+      empty_grob()
     ),
     gridExtra::arrangeGrob(
-      grid::grob(), hist_td, grid::grob(),
+      empty_grob(), hist_td, empty_grob(),
       ncol = 3, widths = c(1, 3, 1)
     ),
     nrow = 3, heights = c(1, 0.1, 1)
@@ -538,3 +538,6 @@ chain_violin <-
     )
   }
 
+empty_grob <- function() {
+  structure(list(), class = c("grob", "gDesc"))
+}

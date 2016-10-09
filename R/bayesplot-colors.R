@@ -125,7 +125,7 @@ color_scheme_set <- function(scheme = "blue") {
   invisible(x)
 }
 
-#' @rdname color_scheme_set
+#' @rdname bayesplot-colors
 #' @export
 color_scheme_get <- function(scheme) {
   if (missing(scheme)) {
@@ -137,7 +137,7 @@ color_scheme_get <- function(scheme) {
   scheme_from_string(scheme)
 }
 
-#' @rdname color_scheme_set
+#' @rdname bayesplot-colors
 #' @export
 color_scheme_view <- function(scheme) {
   suggested_package("gridExtra")

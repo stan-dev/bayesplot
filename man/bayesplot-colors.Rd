@@ -2,10 +2,16 @@
 % Please edit documentation in R/bayesplot-colors.R
 \name{bayesplot-colors}
 \alias{bayesplot-colors}
+\alias{color_scheme_get}
 \alias{color_scheme_set}
+\alias{color_scheme_view}
 \title{Set, get, or view color schemes}
 \usage{
 color_scheme_set(scheme = "blue")
+
+color_scheme_get(scheme)
+
+color_scheme_view(scheme)
 }
 \arguments{
 \item{scheme}{For \code{color_scheme_set}, either a string naming one of the
