@@ -65,7 +65,6 @@ mcmc_scatter <- function(x,
                          ...,
                          size = 2.5,
                          alpha = 0.8) {
-
   x <- prepare_mcmc_array(x, pars, regex_pars, transformations)
   if (dim(x)[3] != 2)
     stop(

@@ -26,11 +26,17 @@ knitr::opts_chunk$set(
 )
 ```
 
+This vignette focuses on MCMC diagnostic plots. Plots of parameter estimates
+from MCMC draws are covered in the separate vignette
+[*Plotting MCMC draws using the bayesplot package*]("MCMC.html"), 
+and graphical posterior predictive checks are covered in 
+[*Graphical posterior predictive checks using the bayesplot package*]("PPC.rmd").
+
 In addition to __bayesplot__ we'll load the following packages: 
 
 * __ggplot2__ for customizing the ggplot objects created by __bayesplot__
 * __gridExtra__ for displaying multiple ggplot objects in a grid
-* __rstan__ for fiting the example models used throughout the vignette
+* __rstan__ for fitting the example models used throughout the vignette
 
 ```{r, eval=FALSE}
 library("bayesplot")
@@ -38,12 +44,6 @@ library("ggplot2")
 library("gridExtra") 
 library("rstan")      
 ```
-
-This vignette focuses on MCMC diagnostic plots. Plots of parameter estimates
-from MCMC draws are covered in the separate vignette
-[*Plotting MCMC draws using the bayesplot package*]("MCMC.html"), 
-and graphical posterior predictive checks are covered in 
-[*Graphical posterior predictive checks using the bayesplot package*]("PPC.rmd").
 
 ## General MCMC diagnostics
 
@@ -80,7 +80,7 @@ y_j &\sim {\rm Normal}(\theta_j, \sigma_j), \quad j = 1,\dots,J \\
 \tau &\sim {\rm half-Cauchy}(0, 10),
 \end{align*}
 $$
-the normal distribution is parameterized by the mean and standard deviation, 
+with the normal distribution parameterized by the mean and standard deviation, 
 not the variance or precision. In Stan code the model can be written:
 ```{stan, stancode1, output.var = "schools_mod1"}
 // Saved in 'schools_mod1.stan'
@@ -95,7 +95,7 @@ parameters {
   vector[J] theta;
 }
 model {
-  mu ~ normal(0, 10);  // Stan uses SD for normal
+  mu ~ normal(0, 10);
   tau ~ cauchy(0, 10);
   theta ~ normal(mu, tau);
   y ~ normal(theta, sigma);
