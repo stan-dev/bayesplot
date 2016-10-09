@@ -4,7 +4,7 @@
 #' (many of the objects returned by \pkg{bayesplot} functions). See the
 #' \strong{Examples} section, below.
 #'
-#' @name bayesplot-convenience
+#' @name bayesplot-helpers
 #'
 #' @param ... For the various \code{vline_} and \code{hline_} functions,
 #'   \code{...} is passed to \code{\link[ggplot2]{geom_vline}} or
@@ -193,7 +193,7 @@ NULL
 
 
 # lines -------------------------------------------------------------------
-#' @rdname bayesplot-convenience
+#' @rdname bayesplot-helpers
 #' @export
 #' @param v Either a numeric vector specifying the value(s) at which to
 #'   draw the vertical or horizontal line(s), or an object of any type to use as
@@ -209,7 +209,7 @@ vline_at <- function(v, fun, ..., na.rm = TRUE) {
              ...)
 }
 
-#' @rdname bayesplot-convenience
+#' @rdname bayesplot-helpers
 #' @export
 hline_at <- function(v, fun, ..., na.rm = TRUE) {
   geom_hline(yintercept = calc_v(v, fun),
@@ -217,7 +217,7 @@ hline_at <- function(v, fun, ..., na.rm = TRUE) {
              ...)
 }
 
-#' @rdname bayesplot-convenience
+#' @rdname bayesplot-helpers
 #' @export
 vline_0 <- function(..., na.rm = TRUE) {
   geom_vline(xintercept = 0,
@@ -225,7 +225,7 @@ vline_0 <- function(..., na.rm = TRUE) {
              ...)
 }
 
-#' @rdname bayesplot-convenience
+#' @rdname bayesplot-helpers
 #' @export
 #'
 hline_0 <- function(..., na.rm = TRUE) {
@@ -236,7 +236,7 @@ hline_0 <- function(..., na.rm = TRUE) {
 
 
 # intervals ---------------------------------------------------------------
-#' @rdname bayesplot-convenience
+#' @rdname bayesplot-helpers
 #' @export
 #' @param p The probability mass (in [0,1]) to include in the interval.
 #' @param med Should the median also be included in addition to the lower
@@ -267,7 +267,7 @@ calc_intervals <- function(x, p, med = TRUE, ...) {
 
 
 # legend stuff ------------------------------------------------------------
-#' @rdname bayesplot-convenience
+#' @rdname bayesplot-helpers
 #' @export
 #' @param position The position of the legend. Either a numeric vector (of
 #'   length 2) giving the relative coordinates (between 0 and 1) for the legend,
@@ -278,12 +278,12 @@ calc_intervals <- function(x, p, med = TRUE, ...) {
 legend_move <- function(position = "right") {
   theme(legend.position = position)
 }
-#' @rdname bayesplot-convenience
+#' @rdname bayesplot-helpers
 #' @export
 legend_none <- function() {
   theme(legend.position = "none")
 }
-#' @rdname bayesplot-convenience
+#' @rdname bayesplot-helpers
 #' @export
 legend_text <- function(...) {
   theme(legend.text = element_text(...))
@@ -291,7 +291,7 @@ legend_text <- function(...) {
 
 
 # axis stuff --------------------------------------------------------------
-#' @rdname bayesplot-convenience
+#' @rdname bayesplot-helpers
 #' @export
 xaxis_title <- function(on = TRUE, ...) {
   theme(axis.title.x = if (on)
@@ -299,7 +299,7 @@ xaxis_title <- function(on = TRUE, ...) {
     else
       element_blank())
 }
-#' @rdname bayesplot-convenience
+#' @rdname bayesplot-helpers
 #' @export
 xaxis_text <- function(on = TRUE, ...) {
   theme(axis.text.x = if (on)
@@ -307,7 +307,7 @@ xaxis_text <- function(on = TRUE, ...) {
     else
       element_blank())
 }
-#' @rdname bayesplot-convenience
+#' @rdname bayesplot-helpers
 #' @export
 xaxis_ticks <- function(on = TRUE, ...) {
   theme(axis.ticks.x = if (on)
@@ -315,7 +315,7 @@ xaxis_ticks <- function(on = TRUE, ...) {
     else
       element_blank())
 }
-#' @rdname bayesplot-convenience
+#' @rdname bayesplot-helpers
 #' @export
 yaxis_title <- function(on = TRUE, ...) {
   theme(axis.title.y = if (on)
@@ -323,7 +323,7 @@ yaxis_title <- function(on = TRUE, ...) {
     else
       element_blank())
 }
-#' @rdname bayesplot-convenience
+#' @rdname bayesplot-helpers
 #' @export
 yaxis_text <- function(on = TRUE, ...) {
   theme(axis.text.y = if (on)
@@ -331,7 +331,7 @@ yaxis_text <- function(on = TRUE, ...) {
     else
       element_blank())
 }
-#' @rdname bayesplot-convenience
+#' @rdname bayesplot-helpers
 #' @export
 yaxis_ticks <- function(on = TRUE, ...) {
   theme(axis.ticks.y = if (on)
@@ -342,7 +342,7 @@ yaxis_ticks <- function(on = TRUE, ...) {
 
 
 # facet stuff -------------------------------------------------------------
-#' @rdname bayesplot-convenience
+#' @rdname bayesplot-helpers
 #' @export
 #' @param on For functions modifying ggplot \link[ggplot2]{theme} elements, set
 #'   \code{on=FALSE} to set the element to \code{\link[ggplot2]{element_blank}}.
@@ -357,7 +357,7 @@ facet_text <- function(on = TRUE, ...) {
     else
       element_blank())
 }
-#' @rdname bayesplot-convenience
+#' @rdname bayesplot-helpers
 #' @export
 facet_bg <- function(on = TRUE, ...) {
   theme(strip.background = if (on)
@@ -367,7 +367,7 @@ facet_bg <- function(on = TRUE, ...) {
 }
 
 # plot background ---------------------------------------------------------
-#' @rdname bayesplot-convenience
+#' @rdname bayesplot-helpers
 #' @export
 plot_bg <- function(on = TRUE, ...) {
   theme(panel.background = if (on)
