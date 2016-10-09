@@ -499,7 +499,7 @@ validate_neff_ratio <- function(ratio) {
         hline_0(size = 0.25, color = get_color("dh"))
     } else {
       graph <- graph +
-        hline_0(size = 0.25, color = get_color("lh")) +
+        hline_0(size = 0.25, color = get_color("m")) +
         geom_segment(
           aes_(xend = ~ Lag),
           yend = 0,

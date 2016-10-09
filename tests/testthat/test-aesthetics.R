@@ -4,6 +4,7 @@ context("Aesthetics")
 
 # color scheme stuff ------------------------------------------------------
 test_that("getting and setting the color scheme works", {
+  set_color_scheme("red")
   expect_equivalent(get_color_scheme(), prepare_colors("red"))
   expect_named(prepare_colors("blue"), scheme_level_names())
   expect_named(get_color_scheme(), scheme_level_names())

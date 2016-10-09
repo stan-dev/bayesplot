@@ -4,11 +4,15 @@
 \alias{theme_default}
 \title{Default plotting theme}
 \usage{
-theme_default(base_size = 11, base_family = "")
+theme_default(base_size = getOption("bayesplot.base_size", 12),
+  base_family = getOption("bayesplot.base_family", "serif"))
 }
 \arguments{
-\item{base_size, base_family}{Base font size and family. Passed to
-\code{\link[ggplot2]{theme_classic}} (\pkg{ggplot2}).}
+\item{base_size, base_family}{Base font size and family (passed to
+\code{\link[ggplot2]{theme_bw}}). It is possible to set
+\code{"bayesplot.base_size"} and \code{"bayesplot.base_family"} via
+\code{\link{options}} to change the defaults, which are \code{12} and
+\code{"serif"}, respectively.}
 }
 \value{
 A ggplot \link[ggplot2]{theme} object.
@@ -29,6 +33,17 @@ names(thm)
 # plot using the default theme
 x <- example_mcmc_draws()
 mcmc_hist(x)
+
+# change the default font size and family
+options(bayesplot.base_size = 10,
+        bayesplot.base_family = "sans")
+mcmc_hist(x)
+mcmc_areas(x, regex_pars = "beta")
+
+# change back
+options(bayesplot.base_size = 12,
+        bayesplot.base_family = "serif")
+mcmc_areas(x, regex_pars = "beta")
 
 # override default theme and use one of the themes
 # included in ggplot2
