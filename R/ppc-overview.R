@@ -90,8 +90,8 @@
 #' In addition to the various plotting functions, the \pkg{bayesplot} package
 #' provides the S3 generic \code{\link{pp_check}}. Authors of \R packages for
 #' Bayesian inference are encouraged to define \code{pp_check} methods for the
-#' fitted model objects created by their packages. See
-#' \code{vignette("bayesplot")} for more details and an example.
+#' fitted model objects created by their packages. See the package vignettes for
+#' more details and an example.
 #'
 #' @templateVar bdaRef (Ch. 6)
 #' @template reference-bda

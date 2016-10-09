@@ -52,10 +52,10 @@
 #' }
 #' \subsection{Move legend, remove legend, or style the legend text}{
 #' \itemize{
-#' \item \code{move_legend} and \code{no_legend} return a ggplot2 theme object
+#' \item \code{legend_move} and \code{legend_none} return a ggplot2 theme object
 #' that can be added to an existing plot (ggplot object) in order to change the
-#' position of the legend (\code{move_legend}) or remove the legend
-#' (\code{no_legend}). \code{legend_text} works much like \code{facet_text},
+#' position of the legend (\code{legend_move}) or remove the legend
+#' (\code{legend_none}). \code{legend_text} works much like \code{facet_text},
 #' except it controls the legend text.
 #' }
 #' }
@@ -144,12 +144,12 @@
 #'
 #' # turn off the legend, turn on x-axis title
 #' p3 +
-#'  no_legend() +
+#'  legend_none() +
 #'  xaxis_title(size = 13, family = "sans") +
 #'  ggplot2::xlab(expression(italic(T(y)) == median(italic(y))))
 #'
 #' # remove x axis title and legend
-#' p3 + xaxis_title(FALSE) + no_legend()
+#' p3 + xaxis_title(FALSE) + legend_none()
 #'
 #'
 #' ################################
@@ -186,7 +186,7 @@
 #' set_color_scheme("purple")
 #' ppc_dens_overlay(y, yrep[1:30, ]) +
 #'  legend_text(size = 14) +
-#'  move_legend(c(0.75, 0.5)) +
+#'  legend_move(c(0.75, 0.5)) +
 #'  plot_bg(color = "black", fill = "gray99", size = 3)
 #'
 NULL
@@ -266,25 +266,23 @@ calc_intervals <- function(x, p, med = TRUE, ...) {
 }
 
 
-# move or remove legend ---------------------------------------------------
-#' @rdname bayesplot-convenience
-#' @export
-no_legend <- function() {
-  theme(legend.position = "none")
-}
-
+# legend stuff ------------------------------------------------------------
 #' @rdname bayesplot-convenience
 #' @export
 #' @param position The position of the legend. Either a numeric vector (of
 #'   length 2) giving the relative coordinates (between 0 and 1) for the legend,
 #'   or a string among \code{"right"}, \code{"left"}, \code{"top"},
 #'   \code{"bottom"}. Using \code{position = "none"} is also allowed and is
-#'   equivalent to using \code{no_legend()}.
+#'   equivalent to using \code{legend_none()}.
 #'
-move_legend <- function(position = "right") {
+legend_move <- function(position = "right") {
   theme(legend.position = position)
 }
-
+#' @rdname bayesplot-convenience
+#' @export
+legend_none <- function() {
+  theme(legend.position = "none")
+}
 #' @rdname bayesplot-convenience
 #' @export
 legend_text <- function(...) {
@@ -292,12 +290,28 @@ legend_text <- function(...) {
 }
 
 
-# axis and facet text --------------------------------------------------
+# axis stuff --------------------------------------------------------------
 #' @rdname bayesplot-convenience
 #' @export
 xaxis_title <- function(on = TRUE, ...) {
   theme(axis.title.x = if (on)
     element_text(...)
+    else
+      element_blank())
+}
+#' @rdname bayesplot-convenience
+#' @export
+xaxis_text <- function(on = TRUE, ...) {
+  theme(axis.text.x = if (on)
+    element_text(...)
+    else
+      element_blank())
+}
+#' @rdname bayesplot-convenience
+#' @export
+xaxis_ticks <- function(on = TRUE, ...) {
+  theme(axis.ticks.x = if (on)
+    element_line(...)
     else
       element_blank())
 }
@@ -309,7 +323,25 @@ yaxis_title <- function(on = TRUE, ...) {
     else
       element_blank())
 }
+#' @rdname bayesplot-convenience
+#' @export
+yaxis_text <- function(on = TRUE, ...) {
+  theme(axis.text.y = if (on)
+    element_text(...)
+    else
+      element_blank())
+}
+#' @rdname bayesplot-convenience
+#' @export
+yaxis_ticks <- function(on = TRUE, ...) {
+  theme(axis.ticks.y = if (on)
+    element_line(...)
+    else
+      element_blank())
+}
 
+
+# facet stuff -------------------------------------------------------------
 #' @rdname bayesplot-convenience
 #' @export
 #' @param on For functions modifying ggplot \link[ggplot2]{theme} elements, set
@@ -333,42 +365,6 @@ facet_bg <- function(on = TRUE, ...) {
     else
       element_blank())
 }
-#' @rdname bayesplot-convenience
-#' @export
-xaxis_text <- function(on = TRUE, ...) {
-  theme(axis.text.x = if (on)
-    element_text(...)
-    else
-      element_blank())
-}
-#' @rdname bayesplot-convenience
-#' @export
-yaxis_text <- function(on = TRUE, ...) {
-  theme(axis.text.y = if (on)
-    element_text(...)
-    else
-      element_blank())
-}
-
-
-# tick marks --------------------------------------------------------------
-#' @rdname bayesplot-convenience
-#' @export
-xaxis_ticks <- function(on = TRUE, ...) {
-  theme(axis.ticks.x = if (on)
-    element_line(...)
-    else
-      element_blank())
-}
-#' @rdname bayesplot-convenience
-#' @export
-yaxis_ticks <- function(on = TRUE, ...) {
-  theme(axis.ticks.y = if (on)
-    element_line(...)
-    else
-      element_blank())
-}
-
 
 # plot background ---------------------------------------------------------
 #' @rdname bayesplot-convenience

@@ -62,7 +62,7 @@ theme_default <- function(base_size = getOption("bayesplot.base_size", 12),
       # strip.background = element_rect(fill = "gray95", color = NA),
       panel.spacing = unit(1.5, "lines"),
       legend.background = element_blank(),
-      legend.text = element_text(face = "bold"),
+      legend.text = element_text(size = 13),
       legend.text.align = 0,
       legend.key = element_blank()
     )

@@ -115,8 +115,8 @@ mcmc_intervals(x, rhat = fake_rhat_values)
 
 set_color_scheme("gray")
 p <- mcmc_areas(x, pars = c("alpha", "beta[4]"), rhat = c(1, 1.1))
-p + move_legend("bottom")
-p + move_legend("none") # or p + no_legend()
+p + legend_move("bottom")
+p + legend_move("none") # or p + legend_none()
 
 
 \dontrun{

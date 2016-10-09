@@ -4,10 +4,9 @@
 #' @name bayesplot-package
 #' @aliases bayesplot
 #'
-#' @description
-#'  \if{html}{\figure{bayesplot.png}{options: width="50\%" alt="Figure: bayesplot.png"}}
-#'  \if{latex}{\figure{bayesplot.pdf}{options: width=5in}}
+#' @import ggplot2 stats
 #'
+#' @description
 #' The \pkg{bayesplot} package provides a variety of plotting functions for use
 #' after fitting Bayesian models (typically, though not exclusively, via Markov
 #' chain Monte Carlo). The package is designed not only to provide convenient
@@ -17,6 +16,12 @@
 #' \pkg{\link[rstan]{rstan}}. Examples of packages already (or soon to be) using
 #' \pkg{bayesplot} are \pkg{rstan} itself, as well as the \pkg{rstan}-dependent
 #' \pkg{rstanarm} and \pkg{brms} packages for applied regression modeling.
+#'
+#'  \if{html}{
+#'    \figure{bayesplot.png}{options: width="30\%" alt="Figure: bayesplot.png"}
+#'    \figure{bayesplot2.png}{options: width="30\%" alt="Figure: bayesplot2.png"}
+#'    \figure{bayesplot3.png}{options: width="30\%" alt="Figure: bayesplot3.png"}
+#'  }
 #'
 #' @section Plotting functionality:
 #' \itemize{
@@ -29,9 +34,6 @@
 #'   \item \strong{Inference/Prediction}:
 #'   (Coming soon) Plots designed to assist with inference and prediction.
 #' }
-#'
-#' @import ggplot2 stats
-#'
 #'
 #' @examples
 #' # A few quick examples (all of the functions have many examples

@@ -45,9 +45,9 @@
 #' y <- example_y_data()
 #' yrep <- example_yrep_draws()
 #' ppc_stat(y, yrep)
-#' ppc_stat(y, yrep, stat = "sd") + no_legend()
+#' ppc_stat(y, yrep, stat = "sd") + legend_none()
 #' ppc_stat_2d(y, yrep)
-#' ppc_stat_2d(y, yrep, stat = c("median", "mean")) + no_legend()
+#' ppc_stat_2d(y, yrep, stat = c("median", "mean")) + legend_none()
 #'
 #' group <- example_group_data()
 #' ppc_stat_grouped(y, yrep, group)

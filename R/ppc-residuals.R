@@ -109,8 +109,8 @@ ppc_resid_hist <- function(y, yrep, ..., binwidth = NULL) {
     graph <- ggplot(melt_yrep(resids, label = FALSE), aes_(x = ~ value)) +
       labs(y = NULL, x = expression(italic(y) - italic(y)[rep])) +
       facet_wrap(
-        facets = ~rep_id,
-        labeller = label_bquote(italic(y) - italic(y)[rep](.(rep_id)))
+        facets = ~rep_id
+        # labeller = label_bquote(italic(y) - italic(y)[rep](.(rep_id)))
       )
   }
 
@@ -175,8 +175,8 @@ ppc_resid_scatter <-
       abline = FALSE
     ) +
       facet_wrap(
-        facets = ~ rep_id,
-        labeller = label_bquote(italic(y) - italic(y)[rep](.(rep_id)))
+        facets = ~ rep_id
+        # labeller = label_bquote(italic(y) - italic(y)[rep](.(rep_id)))
       ) +
       force_axes_in_facets() +
       theme_default() +
@@ -320,8 +320,8 @@ ppc_resid_binned <- function(y, Ey, ..., size = 1, alpha = 0.25) {
   if (n > 1)
     graph <- graph +
       facet_wrap(
-        facets = ~rep_id,
-        labeller = label_bquote(italic(y)[rep](.(rep_id)))
+        facets = ~rep_id
+        # labeller = label_bquote(italic(y)[rep](.(rep_id)))
       )
 
   graph +

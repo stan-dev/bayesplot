@@ -59,7 +59,7 @@
 #'
 #' # zoom in on a window of iterations, increase line size,
 #' # add tick marks, and move legend to the top
-#' mcmc_trace(x, window = c(100, 130), size = 1) + move_legend("top")
+#' mcmc_trace(x, window = c(100, 130), size = 1) + legend_move("top")
 #'
 #' \dontrun{
 #' # parse facet label text
@@ -223,7 +223,7 @@ mcmc_trace_highlight <-
   graph +
     do.call("facet_wrap", facet_args) +
     theme_default() +
-    move_legend(ifelse(nlevels(data$Chain) > 1, "right", "none")) +
+    legend_move(ifelse(nlevels(data$Chain) > 1, "right", "none")) +
     xaxis_title(FALSE) +
     yaxis_title(FALSE)
 }

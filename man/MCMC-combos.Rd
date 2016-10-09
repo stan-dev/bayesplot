@@ -36,7 +36,7 @@ so theme objects can't be added directly to the returned plot object. The
 plots \emph{before} combining them into the gtable object that is returned.
 This can be a theme object created by a call to \code{ggplot2::theme} or
 one of the \pkg{bayesplot} convenience functions, e.g.
-\code{\link{no_legend}} (see the \strong{Examples} section, below).}
+\code{\link{legend_none}} (see the \strong{Examples} section, below).}
 
 \item{...}{Arguments passed to the plotting functions named in \code{combo}.}
 }
@@ -65,7 +65,7 @@ mcmc_combo(
  combo = c("dens_overlay", "trace"),
  pars = c("alpha", "sigma"),
  transformations = list(sigma = "log"),
- gg_theme = no_legend()
+ gg_theme = legend_none()
 )
 
 # same thing but this time also change the entire ggplot theme
@@ -74,7 +74,7 @@ mcmc_combo(
  combo = c("dens_overlay", "trace"),
  pars = c("alpha", "sigma"),
  transformations = list(sigma = "log"),
- gg_theme = ggplot2::theme_gray() + no_legend()
+ gg_theme = ggplot2::theme_gray() + legend_none()
 )
 
 }

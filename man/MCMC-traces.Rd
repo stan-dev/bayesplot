@@ -103,7 +103,7 @@ mcmc_trace(x, pars = c("alpha", "sigma")) +
 
 # zoom in on a window of iterations, increase line size,
 # add tick marks, and move legend to the top
-mcmc_trace(x, window = c(100, 130), size = 1) + move_legend("top")
+mcmc_trace(x, window = c(100, 130), size = 1) + legend_move("top")
 
 \dontrun{
 # parse facet label text

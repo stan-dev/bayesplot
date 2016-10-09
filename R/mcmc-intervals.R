@@ -73,8 +73,8 @@
 #'
 #' set_color_scheme("gray")
 #' p <- mcmc_areas(x, pars = c("alpha", "beta[4]"), rhat = c(1, 1.1))
-#' p + move_legend("bottom")
-#' p + move_legend("none") # or p + no_legend()
+#' p + legend_move("bottom")
+#' p + legend_move("none") # or p + legend_none()
 #'
 #'
 #' \dontrun{
@@ -396,7 +396,7 @@ mcmc_areas <- function(x,
     ) +
     xlim(x_lim) +
     theme_default() +
-    move_legend(ifelse(color_by_rhat, "top", "none")) +
+    legend_move(ifelse(color_by_rhat, "top", "none")) +
     yaxis_text(face = "bold") +
     yaxis_title(FALSE) +
     yaxis_ticks(size = 1) +

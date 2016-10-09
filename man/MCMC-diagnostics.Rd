@@ -118,7 +118,7 @@ mcmc_rhat(rhat)
 
 set_color_scheme("blue")
 mcmc_rhat(runif(1000, 1, 1.07))
-mcmc_rhat(runif(1000, 1, 1.3)) + move_legend("top") # add legend above plot
+mcmc_rhat(runif(1000, 1, 1.3)) + legend_move("top") # add legend above plot
 
 # fake neff ratio values to use for demonstration
 ratio <- c(runif(100, 0, 1))

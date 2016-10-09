@@ -7,9 +7,9 @@
 \alias{hline_0}
 \alias{hline_at}
 \alias{lbub}
+\alias{legend_move}
+\alias{legend_none}
 \alias{legend_text}
-\alias{move_legend}
-\alias{no_legend}
 \alias{plot_bg}
 \alias{vline_0}
 \alias{vline_at}
@@ -31,27 +31,27 @@ hline_0(..., na.rm = TRUE)
 
 lbub(p, med = TRUE)
 
-no_legend()
+legend_move(position = "right")
 
-move_legend(position = "right")
+legend_none()
 
 legend_text(...)
 
 xaxis_title(on = TRUE, ...)
 
+xaxis_text(on = TRUE, ...)
+
+xaxis_ticks(on = TRUE, ...)
+
 yaxis_title(on = TRUE, ...)
+
+yaxis_text(on = TRUE, ...)
+
+yaxis_ticks(on = TRUE, ...)
 
 facet_text(on = TRUE, ...)
 
 facet_bg(on = TRUE, ...)
-
-xaxis_text(on = TRUE, ...)
-
-yaxis_text(on = TRUE, ...)
-
-xaxis_ticks(on = TRUE, ...)
-
-yaxis_ticks(on = TRUE, ...)
 
 plot_bg(on = TRUE, ...)
 }
@@ -88,7 +88,7 @@ and upper bounds of the interval?}
 length 2) giving the relative coordinates (between 0 and 1) for the legend,
 or a string among \code{"right"}, \code{"left"}, \code{"top"},
 \code{"bottom"}. Using \code{position = "none"} is also allowed and is
-equivalent to using \code{no_legend()}.}
+equivalent to using \code{legend_none()}.}
 
 \item{on}{For functions modifying ggplot \link[ggplot2]{theme} elements, set
 \code{on=FALSE} to set the element to \code{\link[ggplot2]{element_blank}}.
@@ -135,10 +135,10 @@ background for the facet strips.
 }
 \subsection{Move legend, remove legend, or style the legend text}{
 \itemize{
-\item \code{move_legend} and \code{no_legend} return a ggplot2 theme object
+\item \code{legend_move} and \code{legend_none} return a ggplot2 theme object
 that can be added to an existing plot (ggplot object) in order to change the
-position of the legend (\code{move_legend}) or remove the legend
-(\code{no_legend}). \code{legend_text} works much like \code{facet_text},
+position of the legend (\code{legend_move}) or remove the legend
+(\code{legend_none}). \code{legend_text} works much like \code{facet_text},
 except it controls the legend text.
 }
 }
@@ -224,12 +224,12 @@ yrep <- example_yrep_draws()
 
 # turn off the legend, turn on x-axis title
 p3 +
- no_legend() +
+ legend_none() +
  xaxis_title(size = 13, family = "sans") +
  ggplot2::xlab(expression(italic(T(y)) == median(italic(y))))
 
 # remove x axis title and legend
-p3 + xaxis_title(FALSE) + no_legend()
+p3 + xaxis_title(FALSE) + legend_none()
 
 
 ################################
@@ -266,7 +266,7 @@ p5 + plot_bg(fill = "gray20")
 set_color_scheme("purple")
 ppc_dens_overlay(y, yrep[1:30, ]) +
  legend_text(size = 14) +
- move_legend(c(0.75, 0.5)) +
+ legend_move(c(0.75, 0.5)) +
  plot_bg(color = "black", fill = "gray99", size = 3)
 
 }

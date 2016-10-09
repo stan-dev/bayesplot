@@ -86,10 +86,10 @@
 #' view_color_scheme()
 #' y <- example_y_data()
 #' yrep <- example_yrep_draws()
-#' ppc_stat(y, yrep, stat = "mean") + no_legend()
+#' ppc_stat(y, yrep, stat = "mean") + legend_none()
 #'
 #' set_color_scheme("mix-teal-pink")
-#' ppc_stat(y, yrep, stat = "sd") + no_legend()
+#' ppc_stat(y, yrep, stat = "sd") + legend_none()
 #' mcmc_areas(x, regex_pars = "beta")
 #'
 #' ###########################
@@ -102,7 +102,7 @@
 #' get_color_scheme()
 #' mcmc_areas(x, regex_pars = "alpha")
 #' mcmc_dens_overlay(x)
-#' ppc_stat(y, yrep, stat = "var") + no_legend()
+#' ppc_stat(y, yrep, stat = "var") + legend_none()
 #'
 set_color_scheme <- function(scheme = "blue") {
   stopifnot(is.character(scheme))
@@ -176,7 +176,7 @@ view_color_scheme <- function(scheme) {
     ) +
     scale_fill_manual("", values = unlist(x)) +
     theme_void() +
-    no_legend() +
+    legend_none() +
     xaxis_text(
       size = rel(1.1),
       face = "bold",
