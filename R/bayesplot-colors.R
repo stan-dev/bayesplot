@@ -1,7 +1,7 @@
 #' Set, get, or view color schemes
 #'
-#' Set, get, or view color schemes. Choose from a preset
-#' scheme or create a custom scheme.
+#' Set, get, or view color schemes. Choose from a preset scheme or create a
+#' custom scheme.
 #'
 #' @name bayesplot-colors
 #'
