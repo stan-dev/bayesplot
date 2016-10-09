@@ -10,15 +10,14 @@
 #'   \code{...} is passed to \code{\link[ggplot2]{geom_vline}} or
 #'   \code{\link[ggplot2]{geom_hline}} to control the appearance of the line(s).
 #'
-#'   For \code{facet_text}, \code{xaxis_text}, \code{yaxis_text},
-#'   \code{xaxis_title}, and \code{yaxis_title}, \code{...} is passed to
-#'   \code{\link[ggplot2]{element_text}} if \code{on = TRUE}.
+#'   For functions ending in \code{_bg}, \code{...} is passed to
+#'   \code{\link[ggplot2]{element_rect}}.
+#'
+#'   For functions ending in \code{_text}, \code{...} is passed to
+#'   \code{\link[ggplot2]{element_text}}.
 #'
 #'   For \code{xaxis_ticks} and \code{yaxis_ticks}, \code{...} is passed to
-#'   \code{\link[ggplot2]{element_line}} if \code{on = TRUE}.
-#'
-#'   For \code{plot_bg}, \code{...} is passed to
-#'   \code{\link[ggplot2]{element_rect}} if \code{on = TRUE}.
+#'   \code{\link[ggplot2]{element_line}}.
 #'
 #' @return
 #' A \pkg{ggplot2} layer or \code{\link[ggplot2]{theme}} object that can be
@@ -44,18 +43,20 @@
 #' \code{med} is \code{TRUE}).
 #' }
 #' }
-#' \subsection{Move or remove plot legend}{
+#' \subsection{Control appearance of facet strips}{
+#' \itemize{
+#' \item \code{facet_text} and \code{facet_bg} return ggplot2 theme objects that
+#' can be added to an existing plot (ggplot object) to format the text and the
+#' background for the facet strips.
+#' }
+#' }
+#' \subsection{Move legend, remove legend, or style the legend text}{
 #' \itemize{
 #' \item \code{move_legend} and \code{no_legend} return a ggplot2 theme object
 #' that can be added to an existing plot (ggplot object) in order to change the
 #' position of the legend (\code{move_legend}) or remove the legend
-#' (\code{no_legend}).
-#' }
-#' }
-#' \subsection{Control appearance of facet labels}{
-#' \itemize{
-#' \item \code{facet_text} returns a ggplot2 theme object that can be added to
-#' an existing plot (ggplot object) to format the text in facet labels.
+#' (\code{no_legend}). \code{legend_text} works much like \code{facet_text},
+#' except it controls the legend text.
 #' }
 #' }
 #' \subsection{Control appearance of \eqn{x}-axis and \eqn{y}-axis features}{
@@ -82,78 +83,73 @@
 #' }
 #' }
 #'
+#' @seealso \code{\link{theme_default}} for the default ggplot theme used by
+#'   \pkg{bayesplot}.
+#'
 #' @examples
 #' set_color_scheme("gray")
 #' x <- example_mcmc_draws(chains = 1)
 #' dim(x)
 #' colnames(x)
 #'
-#' (p <- mcmc_intervals(x))
-#'
+#' (p <- mcmc_intervals(x, regex_pars = "beta"))
 #' ###################################
 #' ### vertical & horizontal lines ###
 #' ###################################
 #'
-#' # vertical line at zero
+#' # vertical line at zero (with some optional styling)
 #' p + vline_0()
 #' p + vline_0(size = 0.25, color = "darkgray", linetype = 2)
 #'
 #' # vertical line(s) at specified values
-#' p + vline_at(c(-1, 0, 1), linetype = 3, size = 0.25)
+#' v <- c(-0.5, 0, 0.5)
+#' p + vline_at(v, linetype = 3, size = 0.25)
 #'
-#' my_lines <- vline_at(
-#'   v = c(-1, 0, 1),
-#'   color = c("maroon", "skyblue", "violet"),
-#'   size = 0.75 * c(1, 2, 1),
-#'   alpha = 0.25
-#' )
+#' my_lines <- vline_at(v, alpha = 0.25, size = 0.75 * c(1, 2, 1),
+#'                      color = c("maroon", "skyblue", "violet"))
 #' p + my_lines
 #'
 #' # add vertical line(s) at computed values
 #' # (three ways of getting lines at column means)
-#' set_color_scheme("teal")
-#' p <- mcmc_intervals(x)
-#' p + vline_at(x, colMeans)
-#' p + vline_at(x, "colMeans", lty = 2, size = 0.25,
-#'              color = get_color_scheme()[["mid"]])
-#' p + vline_at(x, function(a) apply(a, 2, mean),
-#'              size = 2, alpha = 0.1,
-#'              color = get_color_scheme()[["dark"]])
+#' set_color_scheme("brightblue")
+#' p <- mcmc_intervals(x, regex_pars = "beta")
+#' p + vline_at(x[, 3:4], colMeans)
+#' p + vline_at(x[, 3:4], "colMeans", color = "darkgray",
+#'              lty = 2, size = 0.25)
+#' p + vline_at(x[, 3:4], function(a) apply(a, 2, mean),
+#'              color = "orange",
+#'              size = 2, alpha = 0.1)
 #'
 #'
 #' # using the lbub function to get interval lower and upper bounds (lb, ub)
-#' set_color_scheme("blue")
-#' (p2 <- mcmc_hist(x, pars = "beta[1]"))
+#' set_color_scheme("pink")
+#' parsed <- ggplot2::label_parsed
+#' p2 <- mcmc_hist(x, pars = "beta[1]", binwidth = 1/20,
+#'                 facet_args = list(labeller = parsed))
+#' (p2 <- p2 + facet_text(size = 16))
 #'
 #' b1 <- x[, "beta[1]"]
-#' p2 + vline_at(b1, fun = lbub(0.8))
-#' p2 + vline_at(b1, lbub(0.8, med = FALSE))
-#'
-#' p2 +
-#'  vline_at(
-#'    b1,
-#'    lbub(0.5),
-#'    color = get_color_scheme("pink")[["dark_highlight"]],
-#'    alpha = 0.5,
-#'    size = 1.5 * c(1,2,1)
-#'  )
+#' p2 + vline_at(b1, fun = lbub(0.8), color = "gray20",
+#'               size = 2 * c(1,.5,1), alpha = 0.75)
+#' p2 + vline_at(b1, lbub(0.8, med = FALSE), color = "gray20",
+#'               size = 2, alpha = 0.75)
 #'
 #' ##########################
 #' ### format axis titles ###
 #' ##########################
-#' set_color_scheme("pink")
-#' y <- rnorm(100)
-#' yrep <- t(replicate(150, rnorm(100, mean = rnorm(100, y, 3))))
-#' (p3 <- ppc_stat(y, yrep, stat = "median", binwidth = 0.1))
+#' set_color_scheme("green")
+#' y <- example_y_data()
+#' yrep <- example_yrep_draws()
+#' (p3 <- ppc_stat(y, yrep, stat = "median", binwidth = 1/4))
 #'
-#' # reformat x-axis title
-#' (p3 <- p3 + xaxis_title(size = 15, color = "darkgray"))
-#'
-#' # formatting stays even if we change the title content
-#' p3 + ggplot2::xlab(expression(bolditalic(T): y %->% median(y)))
+#' # turn off the legend, turn on x-axis title
+#' p3 +
+#'  no_legend() +
+#'  xaxis_title(size = 13, family = "sans") +
+#'  ggplot2::xlab(expression(italic(T(y)) == median(italic(y))))
 #'
 #' # remove x axis title and legend
-#' p3 + xaxis_title(on = FALSE) + no_legend()
+#' p3 + xaxis_title(FALSE) + no_legend()
 #'
 #'
 #' ################################
@@ -162,7 +158,9 @@
 #' set_color_scheme("gray")
 #' p4 <- mcmc_trace(example_mcmc_draws(), pars = c("alpha", "sigma"))
 #'
-#' myfacets <- facet_text(face = "bold", color = "purple4", size = 14)
+#' myfacets <-
+#'  facet_bg(fill = "gray30", color = NA) +
+#'  facet_text(face = "bold", color = "skyblue", size = 14)
 #' p4 + myfacets
 #'
 #' # dont show y-axis text
@@ -174,7 +172,8 @@
 #' p4 +
 #'  myfacets +
 #'  yaxis_text(FALSE) +
-#'  xaxis_ticks(size = .75, color = "purple4")
+#'  yaxis_ticks(FALSE) +
+#'  xaxis_ticks(size = 1, color = "skyblue")
 #'
 #'
 #' ##############################
@@ -182,11 +181,13 @@
 #' ##############################
 #' set_color_scheme("yellow")
 #' p5 <- ppc_scatter_avg(y, yrep)
-#' p5 + plot_bg(fill = get_color_scheme("purple")$light)
+#' p5 + plot_bg(fill = "gray20")
 #'
 #' set_color_scheme("purple")
 #' ppc_dens_overlay(y, yrep[1:30, ]) +
-#'  plot_bg(color = "black", size = 3)
+#'  legend_text(size = 14) +
+#'  move_legend(c(0.75, 0.5)) +
+#'  plot_bg(color = "black", fill = "gray99", size = 3)
 #'
 NULL
 
@@ -199,30 +200,38 @@ NULL
 #'   the first argument to \code{fun}.
 #' @param fun A function, or the name of a function, that returns a numeric
 #'   vector.
+#' @param na.rm A logical scalar passed to the appropriate geom (e.g.
+#'   \code{\link[ggplot2]{geom_vline}}). The default is \code{TRUE}.
 #'
-vline_at <- function(v, fun, ...) {
+vline_at <- function(v, fun, ..., na.rm = TRUE) {
   geom_vline(xintercept = calc_v(v, fun),
+             na.rm = na.rm,
              ...)
 }
 
 #' @rdname bayesplot-convenience
 #' @export
-hline_at <- function(v, fun, ...) {
+hline_at <- function(v, fun, ..., na.rm = TRUE) {
   geom_hline(yintercept = calc_v(v, fun),
+             na.rm = na.rm,
              ...)
 }
 
 #' @rdname bayesplot-convenience
 #' @export
-vline_0 <- function(...) {
-  geom_vline(xintercept = 0, ...)
+vline_0 <- function(..., na.rm = TRUE) {
+  geom_vline(xintercept = 0,
+             na.rm = na.rm,
+             ...)
 }
 
 #' @rdname bayesplot-convenience
 #' @export
 #'
-hline_0 <- function(...) {
-  geom_hline(yintercept = 0, ...)
+hline_0 <- function(..., na.rm = TRUE) {
+  geom_hline(yintercept = 0,
+             na.rm = na.rm,
+             ...)
 }
 
 
@@ -274,6 +283,12 @@ no_legend <- function() {
 #'
 move_legend <- function(position = "right") {
   theme(legend.position = position)
+}
+
+#' @rdname bayesplot-convenience
+#' @export
+legend_text <- function(...) {
+  theme(legend.text = element_text(...))
 }
 
 

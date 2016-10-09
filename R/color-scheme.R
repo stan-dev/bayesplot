@@ -54,6 +54,9 @@
 #'   should be in order from lightest to darkest. See the end of the
 #'   \strong{Examples} section for a demonstration.
 #'
+#' @seealso \code{\link{theme_default}} for the default ggplot theme used by
+#'   \pkg{bayesplot}.
+#'
 #' @examples
 #' set_color_scheme("red")
 #' get_color_scheme()

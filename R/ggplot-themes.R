@@ -16,9 +16,11 @@
 #'
 #' @return A ggplot \link[ggplot2]{theme} object.
 #'
-#' @seealso The \pkg{bayesplot} \link[=bayesplot-convenience]{convenience
-#'   functions}, many of which provide shortcuts for tweaking theme elements
-#'   after creating a plot.
+#' @seealso
+#' \link{bayesplot-convenience} for a variety of convenience functions, many of
+#' which provide shortcuts for tweaking theme elements after creating a plot.
+#'
+#' \code{\link{set_color_scheme}} to set, get, or view the color scheme.
 #'
 #' @examples
 #' thm <- theme_default()
@@ -40,20 +42,8 @@
 #'         bayesplot.base_family = "serif")
 #' mcmc_areas(x, regex_pars = "beta")
 #'
-#' # override default theme and use one of the themes
-#' # included in ggplot2
-#' mcmc_hist(x) + ggplot2::theme_gray()
-#'
-#' # use a ggplot2 theme but override certain elements
-#' # using bayesplot convenience functions
-#' # (see help("bayesplot-convenience") for more examples)
-#' mcmc_hist(x) +
-#'  ggplot2::theme_gray() +
-#'  xaxis_title(FALSE) +
-#'  yaxis_title(FALSE) +
-#'  xaxis_ticks(FALSE) +
-#'  yaxis_ticks(FALSE) +
-#'  facet_text(size = 10, face = "bold")
+#' # use one of the themes included in ggplot2
+#' mcmc_dens_overlay(x) + ggplot2::theme_gray()
 #'
 theme_default <- function(base_size = getOption("bayesplot.base_size", 12),
                           base_family = getOption("bayesplot.base_family", "serif")) {
