@@ -15,7 +15,7 @@ modeling, particularly (but not necessarily) those powered by
 
 **bayesplot** is not yet on CRAN (coming soon) but can be installed from GitHub 
 using the **devtools** package. You will also need the preview version of the 
-upcoming ggplot2 update.
+upcoming **ggplot2** update.
 
 ```{r}
 if (!require("devtools"))
