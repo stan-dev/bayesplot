@@ -23,7 +23,7 @@ Suggests:
     arm,
     gridExtra (>= 2.2.1),
     knitr (>= 1.14),
-    rmarkdown (>= 1.0.2),
+    rmarkdown (>= 1.0.0),
     rstan (>= 2.12.1),
     rstanarm (>= 2.12.1),
     shinystan (>= 2.2.1),
