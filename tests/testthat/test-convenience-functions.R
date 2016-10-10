@@ -58,6 +58,14 @@ test_that("panel_bg returns correct theme object", {
   expect_identical(bg2, theme(panel.background = element_rect(fill = "blue", linetype = 2)))
   expect_identical(panel_bg(on = FALSE), theme(panel.background = element_blank()))
 })
+test_that("panel_bg returns correct theme object", {
+  bg1 <- plot_bg()
+  bg2 <- plot_bg(fill = "blue", linetype = 2)
+
+  expect_identical(bg1, theme(panel.background = element_rect()))
+  expect_identical(bg2, theme(panel.background = element_rect(fill = "blue", linetype = 2)))
+  expect_identical(panel_bg(on = FALSE), theme(panel.background = element_blank()))
+})
 test_that("facet_bg returns correct theme object", {
   bg1 <- facet_bg()
   bg2 <- facet_bg(fill = "blue", linetype = 2)
