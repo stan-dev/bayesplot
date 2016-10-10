@@ -31,11 +31,11 @@
 #' @section Plot Descriptions:
 #' \describe{
 #'   \item{\code{mcmc_trace}}{
-#'    Standard traceplot of MCMC draws.
+#'    Standard traceplots of MCMC draws.
 #'   }
 #'   \item{\code{mcmc_trace_highlight}}{
 #'    Traces are plotted using points rather than lines and the opacity of all
-#'    chains but one is reduced.
+#'    chains but one (specified by the \code{highlight} argument) is reduced.
 #'   }
 #' }
 #'

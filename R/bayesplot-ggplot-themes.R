@@ -44,7 +44,7 @@
 #'
 theme_default <- function(base_size = getOption("bayesplot.base_size", 12),
                           base_family = getOption("bayesplot.base_family", "serif")) {
-    theme_bw(base_family = base_family, base_size = base_size) +
+  theme_bw(base_family = base_family, base_size = base_size) +
     theme(
       plot.background = element_blank(),
       panel.grid = element_blank(),
