@@ -87,7 +87,7 @@ ppc_stat <- function(y, yrep, stat = "mean", ..., binwidth = NULL) {
     scale_fill_manual(values = get_color("l"), labels = Tyrep_label()) +
     scale_color_manual(values = get_color("dh"), labels = Ty_label()) +
     guides(
-      fill = guide_legend(title = bquote(italic(T) %==% .(stat)), order = 1),
+      fill = guide_legend(title = bquote(italic(T) == .(stat)), order = 1),
       color = guide_legend(title = NULL)
     ) +
     dont_expand_y_axis() +
@@ -137,7 +137,7 @@ ppc_stat_grouped <-
       scale_fill_manual(values = get_color("l"), labels = Tyrep_label()) +
       scale_color_manual(values = get_color("dh"), labels = Ty_label()) +
       guides(
-        fill = guide_legend(title = bquote(italic(T) %==% .(stat)), order = 1),
+        fill = guide_legend(title = bquote(italic(T) == .(stat)), order = 1),
         color = guide_legend(title = NULL)
       ) +
       dont_expand_y_axis() +
@@ -166,7 +166,7 @@ ppc_stat_2d <- function(y, yrep, stat = c("mean", "sd"), ...,
   T_y2 <- stat2(y)
   T_yrep1 <- apply(yrep, 1, stat1)
   T_yrep2 <- apply(yrep, 1, stat2)
-  lgnd_title <- bquote(italic(T) %==% (list(.(stat[1]), .(stat[2]))))
+  lgnd_title <- bquote(italic(T) == (list(.(stat[1]), .(stat[2]))))
   ggplot(
     data = data.frame(x = T_yrep1, y = T_yrep2),
     mapping = aes_(x = ~ x, y = ~ y)
