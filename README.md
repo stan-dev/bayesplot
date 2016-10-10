@@ -62,11 +62,11 @@ fit %>%
 <img src=https://github.com/jgabry/bayesplot/blob/master/images/ppc_stat_grouped-rstanarm.png width=50% />
 ```r
 library("rstan")
-fit2 <- stan_demo("eight_schools")
+fit2 <- stan_demo("eight_schools", warmup = 300, iter = 700)
 posterior2 <- extract(fit2, inc_warmup = TRUE, permuted = FALSE)
 
 color_scheme_set("mix-blue-pink")
-p <- mcmc_trace(posterior2,  pars = c("mu", "tau"), 
+p <- mcmc_trace(posterior2,  pars = c("mu", "tau"), n_warmup = 300,
                 facet_args = list(nrow = 2, labeller = label_parsed))
 p + facet_text(size = 15)
 ```
