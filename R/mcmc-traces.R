@@ -192,9 +192,9 @@ mcmc_trace_highlight <-
       annotate("rect",
                xmin = -Inf, xmax = n_warmup,
                ymin = -Inf, ymax = Inf,
-               size = 2,
-               color = "gray90",
-               fill = "gray90",
+               size = 1,
+               color = "gray88",
+               fill = "gray88",
                alpha = 0.5)
   }
 
