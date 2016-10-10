@@ -498,7 +498,9 @@ mcmc_nuts_energy <-
     if (merge_chains)
       return(graph)
 
-    graph + facet_wrap( ~ Chain)
+    graph +
+      facet_wrap(~ Chain) +
+      force_axes_in_facets()
   }
 
 
