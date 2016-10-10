@@ -269,7 +269,5 @@ ppc_violin_grouped <- function(y, yrep, group, ...,
     labs(x = "Group", y = yrep_label()) +
     theme_default() +
     yaxis_title(FALSE) +
-    xaxis_title(FALSE) +
-    xaxis_ticks(FALSE) +
-    xaxis_text(face = "bold")
+    xaxis_title(FALSE)
 }
