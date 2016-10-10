@@ -4,6 +4,7 @@
 \alias{bayesplot-helpers}
 \alias{facet_bg}
 \alias{facet_text}
+\alias{grid_lines}
 \alias{hline_0}
 \alias{hline_at}
 \alias{lbub}
@@ -54,6 +55,8 @@ facet_text(on = TRUE, ...)
 facet_bg(on = TRUE, ...)
 
 plot_bg(on = TRUE, ...)
+
+grid_lines(color = "gray50", size = 0.2)
 }
 \arguments{
 \item{v}{Either a numeric vector specifying the value(s) at which to
@@ -96,6 +99,8 @@ For example, facet text can be removed by adding
 \code{facet_text(on=FALSE)}, or simply \code{facet_text(FALSE)} to a ggplot
 object. If \code{on=TRUE} (the default), then \code{...} can be used to
 customize the appearance of the theme element.}
+
+\item{color, size}{Passed to \code{\link[ggplot2]{element_line}}.}
 }
 \value{
 A \pkg{ggplot2} layer or \code{\link[ggplot2]{theme}} object that can be
@@ -163,6 +168,8 @@ appearance of the axis tick marks.
 \itemize{
 \item \code{plot_bg} returns a ggplot2 theme object that can be added to an
 existing plot (ggplot object) to format the plot background.
+\item \code{grid_lines} returns a ggplot2 theme object that can be added to
+an existing plot (ggplot object) to add grid lines to the plot background.
 }
 }
 }
@@ -172,10 +179,10 @@ x <- example_mcmc_draws(chains = 1)
 dim(x)
 colnames(x)
 
-(p <- mcmc_intervals(x, regex_pars = "beta"))
 ###################################
 ### vertical & horizontal lines ###
 ###################################
+(p <- mcmc_intervals(x, regex_pars = "beta"))
 
 # vertical line at zero (with some optional styling)
 p + vline_0()
@@ -259,9 +266,12 @@ p4 +
 ##############################
 ### change plot background ###
 ##############################
+color_scheme_set("blue")
+ppc_stat(y, yrep) + grid_lines()
+
 color_scheme_set("yellow")
-p5 <- ppc_scatter_avg(y, yrep)
-p5 + plot_bg(fill = "gray20")
+p5 <- ppc_scatter_avg(y, yrep, alpha = 1)
+p5 + plot_bg(fill = "gray20") + grid_lines(color = "white")
 
 color_scheme_set("purple")
 ppc_dens_overlay(y, yrep[1:30, ]) +

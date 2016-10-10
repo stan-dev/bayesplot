@@ -17,14 +17,14 @@
 #' \item{\code{log_posterior}}{
 #' \code{log_posterior} methods return a molten data frame (see
 #' \code{\link[reshape2]{melt}}). If the model represented by \code{object} was
-#' fit via MCMC the molten data frame should have columns \code{"Iteration"}
-#' (integer), \code{"Chain"} (integer), and \code{"Value"} (numeric). For models
-#' fit using other methods, \code{log_posterior} methods can return a data frame
-#' with a single column \code{"Value"}.
+#' fit via MCMC the data frame should have columns \code{"Iteration"} (integer),
+#' \code{"Chain"} (integer), and \code{"Value"} (numeric). For models fit using
+#' other methods, \code{log_posterior} methods can return a data frame with a
+#' single column \code{"Value"}.
 #' }
 #' \item{\code{nuts_params}}{
 #' \code{nuts_params} methods return a molten data frame (see
-#' \code{\link[reshape2]{melt}}). The molten data frame should have columns
+#' \code{\link[reshape2]{melt}}). The data frame should have columns
 #' \code{"Parameter"} (factor), \code{"Iteration"} (integer), \code{"Chain"}
 #' (integer), and \code{"Value"} (numeric), in any order.
 #' }
@@ -207,6 +207,7 @@ validate_df_classes <- function(x, classes = character()) {
   stopifnot(
     is.data.frame(x),
     is.character(classes),
+    ncol(x) >= 1,
     ncol(x) == length(classes)
   )
   for (j in 1:ncol(x)) {
