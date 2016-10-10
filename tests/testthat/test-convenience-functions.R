@@ -50,13 +50,13 @@ test_that("grid_lines returns correct theme object", {
   expect_equal(thm$panel.grid.major, element_line(size = 1.5, color = "purple"))
   expect_equal(thm$panel.grid.minor, element_line(size = 0.75, color = "purple"))
 })
-test_that("plot_bg returns correct theme object", {
-  bg1 <- plot_bg()
-  bg2 <- plot_bg(fill = "blue", linetype = 2)
+test_that("panel_bg returns correct theme object", {
+  bg1 <- panel_bg()
+  bg2 <- panel_bg(fill = "blue", linetype = 2)
 
   expect_identical(bg1, theme(panel.background = element_rect()))
   expect_identical(bg2, theme(panel.background = element_rect(fill = "blue", linetype = 2)))
-  expect_identical(plot_bg(on = FALSE), theme(panel.background = element_blank()))
+  expect_identical(panel_bg(on = FALSE), theme(panel.background = element_blank()))
 })
 test_that("facet_bg returns correct theme object", {
   bg1 <- facet_bg()

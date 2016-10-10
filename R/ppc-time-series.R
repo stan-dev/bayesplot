@@ -68,7 +68,7 @@
 #'  size = 2
 #' ) +
 #'  xaxis_text(FALSE) +
-#'  plot_bg(fill = "gray20")
+#'  panel_bg(fill = "gray20")
 #'
 NULL
 

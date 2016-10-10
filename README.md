@@ -61,6 +61,7 @@ fit %>%
 ```
 <img src=https://github.com/jgabry/bayesplot/blob/master/images/ppc_stat_grouped-rstanarm.png width=50% />
 ```r
+# with rstan demo model
 library("rstan")
 fit2 <- stan_demo("eight_schools", warmup = 300, iter = 700)
 posterior2 <- extract(fit2, inc_warmup = TRUE, permuted = FALSE)

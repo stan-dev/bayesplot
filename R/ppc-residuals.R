@@ -169,7 +169,7 @@ ppc_resid_scatter <-
       ),
       mapping = aes_(x = ~ value, y = ~ y),
       y_lab = expression(italic(y)),
-      x_lab = expression(y - italic(y)[rep]),
+      x_lab = expression(italic(y) - italic(y)[rep]),
       size = size,
       alpha = alpha,
       abline = FALSE

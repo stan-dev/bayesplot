@@ -145,7 +145,7 @@ mcmc_dens_overlay(x, pars = c("sigma", "beta[2]"),
 
 # separate chains as violin plots
 color_scheme_set("green")
-mcmc_violin(x) + plot_bg(color = "gray20", size = 2, fill = "gray30")
+mcmc_violin(x) + panel_bg(color = "gray20", size = 2, fill = "gray30")
 
 }
 \seealso{

@@ -78,7 +78,7 @@
 #' }
 #' \subsection{Customize plot background}{
 #' \itemize{
-#' \item \code{plot_bg} returns a ggplot2 theme object that can be added to an
+#' \item \code{panel_bg} returns a ggplot2 theme object that can be added to an
 #' existing plot (ggplot object) to format the plot background.
 #' \item \code{grid_lines} returns a ggplot2 theme object that can be added to
 #' an existing plot (ggplot object) to add grid lines to the plot background.
@@ -180,13 +180,13 @@
 #'
 #' color_scheme_set("yellow")
 #' p5 <- ppc_scatter_avg(y, yrep, alpha = 1)
-#' p5 + plot_bg(fill = "gray20") + grid_lines(color = "white")
+#' p5 + panel_bg(fill = "gray20") + grid_lines(color = "white")
 #'
 #' color_scheme_set("purple")
 #' ppc_dens_overlay(y, yrep[1:30, ]) +
 #'  legend_text(size = 14) +
 #'  legend_move(c(0.75, 0.5)) +
-#'  plot_bg(color = "black", fill = "gray99", size = 3)
+#'  panel_bg(color = "black", fill = "gray99", size = 3)
 #'
 NULL
 
@@ -368,7 +368,7 @@ facet_bg <- function(on = TRUE, ...) {
 # plot background ---------------------------------------------------------
 #' @rdname bayesplot-helpers
 #' @export
-plot_bg <- function(on = TRUE, ...) {
+panel_bg <- function(on = TRUE, ...) {
   theme(panel.background = if (on)
     element_rect(...)
     else
