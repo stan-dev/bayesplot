@@ -150,9 +150,6 @@
 #'  xaxis_title(size = 13, family = "sans") +
 #'  ggplot2::xlab(expression(italic(T(y)) == median(italic(y))))
 #'
-#' # remove x axis title and legend
-#' p3 + xaxis_title(FALSE) + legend_none()
-#'
 #'
 #' ################################
 #' ### format axis & facet text ###
@@ -164,9 +161,6 @@
 #'  facet_bg(fill = "gray30", color = NA) +
 #'  facet_text(face = "bold", color = "skyblue", size = 14)
 #' p4 + myfacets
-#'
-#' # dont show y-axis text
-#' p4 + myfacets + yaxis_text(FALSE)
 #'
 #' ##########################
 #' ### control tick marks ###

@@ -65,7 +65,6 @@ ppc_dens_overlay(y, yrep[1:50, ])
 
 color_scheme_set("pink")
 ppc_hist(y, yrep[1:8, ])
-ppc_stat(y, yrep, stat = "mean")
 ppc_stat(y, yrep, stat = "median") + grid_lines()
 
 }

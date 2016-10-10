@@ -58,18 +58,15 @@
 #' @template seealso-theme
 #'
 #' @examples
-#' color_scheme_set("red")
+#' color_scheme_set("blue")
 #' color_scheme_get()
 #' color_scheme_view()
 #'
-#' # compare multiple schemes
-#' color_scheme_view(c("pink", "gray", "teal"))
-#'
 #' color_scheme_get("brightblue")
 #' color_scheme_view("brightblue")
-#' color_scheme_view("purple")
-#' color_scheme_get("purple")$light
 #'
+#' # compare multiple schemes
+#' color_scheme_view(c("pink", "gray", "teal"))
 #'
 #' color_scheme_set("pink")
 #' x <- example_mcmc_draws()
@@ -79,10 +76,10 @@
 #' color_scheme_view()
 #' mcmc_intervals(x)
 #'
-#' color_scheme_set("blue")
+#' color_scheme_set("red")
 #' mcmc_areas(x, regex_pars = "beta")
 #'
-#' color_scheme_set("pink")
+#' color_scheme_set("purple")
 #' color_scheme_view()
 #' y <- example_y_data()
 #' yrep <- example_yrep_draws()
