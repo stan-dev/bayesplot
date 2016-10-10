@@ -97,25 +97,21 @@ For Binomial data, the plots will typically be most useful if
 }
 }
 \examples{
+color_scheme_set("brightblue")
 y <- example_y_data()
 yrep <- example_yrep_draws()
 dim(yrep)
-ppc_dens_overlay(y, yrep[1:40, ])
-ppc_ecdf_overlay(y, yrep[sample(nrow(yrep), 50), ])
+ppc_dens_overlay(y, yrep[1:50, ])
+ppc_ecdf_overlay(y, yrep[sample(nrow(yrep), 25), ])
 
 # for ppc_hist, definitely use a subset yrep rows so only
 # a few (instead of nrow(yrep)) histograms are plotted
 ppc_hist(y, yrep[1:8, ])
 
-set_color_scheme("blue")
+color_scheme_set("gray")
 group <- example_group_data()
-ppc_violin_grouped(y, yrep, group)
-
-(p <- ppc_violin_grouped(y, yrep, group, alpha = 0))
-p +
- yaxis_ticks(size = .5) +  # add tickmarks to y-axis
- xaxis_text(size = 15) +    # make x-axis labels bigger
- xaxis_title(on = FALSE)    # remove x-axis title
+ppc_violin_grouped(y, yrep, group, size = 1.5)
+ppc_violin_grouped(y, yrep, group, alpha = 0)
 
 }
 \references{

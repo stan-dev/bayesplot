@@ -59,7 +59,7 @@ mcmc_combo(x, pars = c("alpha", "sigma"), widths = c(1, 2))
 
 # change second plot, show log(sigma) instead of sigma,
 # and remove the legends
-set_color_scheme("mix-blue-red")
+color_scheme_set("mix-blue-red")
 mcmc_combo(
  x,
  combo = c("dens_overlay", "trace"),

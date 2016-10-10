@@ -5,7 +5,7 @@
 #' stanfit (\pkg{rstan}) and stanreg (\pkg{rstanarm}) objects, but adding new
 #' methods should be relatively straightforward.
 #'
-#' @name extractors
+#' @name bayesplot-extractors
 #' @param object The object to use.
 #' @param ... Arguments passed to individual methods.
 #' @param pars An optional character vector of parameter names. For
@@ -15,16 +15,16 @@
 #' @return
 #' \describe{
 #' \item{\code{log_posterior}}{
-#' \code{log_posterior} methods return a molten data frame
-#' (see \code{\link[reshape2]{melt}}). If the model represented by \code{object} was
-#' fit via MCMC the molten data frame should have columns \code{"Iteration"}
-#' (integer), \code{"Chain"} (integer), and \code{"Value"} (numeric).
-#' For models fit using other methods, \code{log_posterior} methods can
-#' return a data frame with a single column \code{"Value"}.
+#' \code{log_posterior} methods return a molten data frame (see
+#' \code{\link[reshape2]{melt}}). If the model represented by \code{object} was
+#' fit via MCMC the data frame should have columns \code{"Iteration"} (integer),
+#' \code{"Chain"} (integer), and \code{"Value"} (numeric). For models fit using
+#' other methods, \code{log_posterior} methods can return a data frame with a
+#' single column \code{"Value"}.
 #' }
 #' \item{\code{nuts_params}}{
-#' \code{nuts_params} methods return a molten data frame
-#' (see \code{\link[reshape2]{melt}}). The molten data frame should have columns
+#' \code{nuts_params} methods return a molten data frame (see
+#' \code{\link[reshape2]{melt}}). The data frame should have columns
 #' \code{"Parameter"} (factor), \code{"Iteration"} (integer), \code{"Chain"}
 #' (integer), and \code{"Value"} (numeric), in any order.
 #' }
@@ -37,25 +37,25 @@ NULL
 
 
 # log_posterior -----------------------------------------------------------
-#' @rdname extractors
+#' @rdname bayesplot-extractors
 #' @export
 log_posterior <- function(object, ...) {
   UseMethod("log_posterior")
 }
 # nuts_params -------------------------------------------------------------
-#' @rdname extractors
+#' @rdname bayesplot-extractors
 #' @export
 nuts_params <- function(object, ...) {
   UseMethod("nuts_params")
 }
 # rhat -------------------------------------------------------------
-#' @rdname extractors
+#' @rdname bayesplot-extractors
 #' @export
 rhat <- function(object, ...) {
   UseMethod("rhat")
 }
 # neff_ratio -------------------------------------------------------------
-#' @rdname extractors
+#' @rdname bayesplot-extractors
 #' @export
 neff_ratio <- function(object, ...) {
   UseMethod("neff_ratio")
@@ -63,7 +63,7 @@ neff_ratio <- function(object, ...) {
 
 
 
-#' @rdname extractors
+#' @rdname bayesplot-extractors
 #' @export
 #' @method log_posterior stanfit
 #' @param inc_warmup A logical scalar (defaulting to \code{FALSE}) indicating
@@ -79,7 +79,7 @@ log_posterior.stanfit <- function(object, inc_warmup = FALSE, ...) {
   validate_df_classes(lp, c("integer", "numeric", "integer"))
 }
 
-#' @rdname extractors
+#' @rdname bayesplot-extractors
 #' @export
 #' @method log_posterior stanreg
 #'
@@ -89,7 +89,7 @@ log_posterior.stanreg <- function(object, inc_warmup = FALSE, ...) {
                         ...)
 }
 
-#' @rdname extractors
+#' @rdname bayesplot-extractors
 #' @export
 #' @method nuts_params list
 #'
@@ -103,7 +103,7 @@ nuts_params.list <- function(object, pars = NULL, ...) {
   validate_df_classes(object, c("integer", "factor", "numeric", "integer"))
 }
 
-#' @rdname extractors
+#' @rdname bayesplot-extractors
 #' @export
 #' @method nuts_params stanfit
 #'
@@ -118,7 +118,7 @@ nuts_params.stanfit <-
     nuts_params.list(np, pars = pars, ...)
   }
 
-#' @rdname extractors
+#' @rdname bayesplot-extractors
 #' @export
 #' @method nuts_params stanreg
 #'
@@ -134,7 +134,7 @@ nuts_params.stanreg <-
   }
 
 
-#' @rdname extractors
+#' @rdname bayesplot-extractors
 #' @export
 #' @method rhat stanfit
 #'
@@ -149,7 +149,7 @@ rhat.stanfit <- function(object, pars = NULL, ...) {
   s$summary[, "Rhat"]
 }
 
-#' @rdname extractors
+#' @rdname bayesplot-extractors
 #' @export
 #' @method rhat stanreg
 #' @template args-regex_pars
@@ -164,7 +164,7 @@ rhat.stanreg <- function(object, pars = NULL, regex_pars = NULL, ...) {
 }
 
 
-#' @rdname extractors
+#' @rdname bayesplot-extractors
 #' @export
 #' @method neff_ratio stanfit
 #'
@@ -179,7 +179,7 @@ neff_ratio.stanfit <- function(object, pars = NULL, ...) {
   jitter_neff(s$summary[, "n_eff"]) / tss
 }
 
-#' @rdname extractors
+#' @rdname bayesplot-extractors
 #' @export
 #' @method neff_ratio stanreg
 #'
@@ -207,6 +207,7 @@ validate_df_classes <- function(x, classes = character()) {
   stopifnot(
     is.data.frame(x),
     is.character(classes),
+    ncol(x) >= 1,
     ncol(x) == length(classes)
   )
   for (j in 1:ncol(x)) {

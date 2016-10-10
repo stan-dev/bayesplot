@@ -34,7 +34,7 @@
 #' x <- example_x_data()
 #' yrep <- example_yrep_draws()
 #'
-#' set_color_scheme("teal")
+#' color_scheme_set("teal")
 #' ppc_vs_x(y, yrep, x, size = 0.5, y_style = "points")
 #'
 #' group <- example_group_data()
@@ -48,7 +48,7 @@
 #'                   data = mtcars, iter = 1000)
 #'
 #'
-#' set_color_scheme("purple")
+#' color_scheme_set("purple")
 #' with(model.frame(fit),
 #'  ppc_vs_x_grouped(
 #'    y = mpg,

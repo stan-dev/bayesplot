@@ -11,7 +11,7 @@ modeling, particularly (but not necessarily) those powered by
 [**RStan**](https://github.com/stan-dev/rstan).
 
 
-#### Installation
+### Installation
 
 **bayesplot** is not yet on CRAN (coming soon) but can be installed from GitHub 
 using the **devtools** package. You will also need the preview version of the 

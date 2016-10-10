@@ -50,17 +50,19 @@
 #' ##################
 #'
 #' # histograms of all parameters
+#' color_scheme_set("brightblue")
 #' mcmc_hist(x)
 #'
 #' # histograms of some parameters
-#' set_color_scheme("red")
+#' color_scheme_set("pink")
 #' mcmc_hist(x, pars = c("alpha", "beta[2]"))
 #' mcmc_hist(x, pars = "sigma", regex_pars = "beta")
 #'
 #' # example of using 'transformations' argument to plot log(sigma),
 #' # and parsing facet labels (e.g. to get greek letters for parameters)
 #' mcmc_hist(x, transformations = list(sigma = "log"),
-#'           facet_args = list(labeller = ggplot2::label_parsed))
+#'           facet_args = list(labeller = ggplot2::label_parsed)) +
+#'           facet_text(size = 15)
 #'
 #' # instead of list(sigma = "log"), you could specify the transformation as
 #' # list(sigma = log) or list(sigma = function(x) log(x)), but then the
@@ -68,7 +70,7 @@
 #' mcmc_hist(x, transformations = list(sigma = log))
 #'
 #' # separate histograms by chain
-#' set_color_scheme("pink")
+#' color_scheme_set("pink")
 #' mcmc_hist_by_chain(x, regex_pars = "beta")
 #'
 #' #################
@@ -79,22 +81,14 @@
 #'           facet_args = list(nrow = 2))
 #'
 #' # separate and overlay chains
-#' set_color_scheme("mix-teal-pink")
-#' mcmc_dens_overlay(
-#'  x,
-#'  pars = c("sigma", "beta[2]"),
-#'  facet_args = list(nrow = 2, labeller = ggplot2::label_parsed)
-#' ) +
-#'  facet_text(size = 14)
+#' color_scheme_set("mix-teal-pink")
+#' mcmc_dens_overlay(x, pars = c("sigma", "beta[2]"),
+#'                   facet_args = list(nrow = 2)) +
+#'                   facet_text(size = 14)
 #'
 #' # separate chains as violin plots
-#' set_color_scheme("green")
-#' mcmc_violin(x)
-#'
-#' # change plot background
-#' mcmc_violin(x, probs = 0.5) +
-#'  plot_bg(color = "gray50", size = 3,
-#'          fill = "gray20")
+#' color_scheme_set("green")
+#' mcmc_violin(x) + plot_bg(color = "gray20", size = 2, fill = "gray30")
 #'
 NULL
 

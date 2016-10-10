@@ -4,7 +4,7 @@
 #' (many of the objects returned by \pkg{bayesplot} functions). See the
 #' \strong{Examples} section, below.
 #'
-#' @name bayesplot-convenience
+#' @name bayesplot-helpers
 #'
 #' @param ... For the various \code{vline_} and \code{hline_} functions,
 #'   \code{...} is passed to \code{\link[ggplot2]{geom_vline}} or
@@ -80,6 +80,8 @@
 #' \itemize{
 #' \item \code{plot_bg} returns a ggplot2 theme object that can be added to an
 #' existing plot (ggplot object) to format the plot background.
+#' \item \code{grid_lines} returns a ggplot2 theme object that can be added to
+#' an existing plot (ggplot object) to add grid lines to the plot background.
 #' }
 #' }
 #'
@@ -87,15 +89,15 @@
 #'   \pkg{bayesplot}.
 #'
 #' @examples
-#' set_color_scheme("gray")
+#' color_scheme_set("gray")
 #' x <- example_mcmc_draws(chains = 1)
 #' dim(x)
 #' colnames(x)
 #'
-#' (p <- mcmc_intervals(x, regex_pars = "beta"))
 #' ###################################
 #' ### vertical & horizontal lines ###
 #' ###################################
+#' (p <- mcmc_intervals(x, regex_pars = "beta"))
 #'
 #' # vertical line at zero (with some optional styling)
 #' p + vline_0()
@@ -111,7 +113,7 @@
 #'
 #' # add vertical line(s) at computed values
 #' # (three ways of getting lines at column means)
-#' set_color_scheme("brightblue")
+#' color_scheme_set("brightblue")
 #' p <- mcmc_intervals(x, regex_pars = "beta")
 #' p + vline_at(x[, 3:4], colMeans)
 #' p + vline_at(x[, 3:4], "colMeans", color = "darkgray",
@@ -122,7 +124,7 @@
 #'
 #'
 #' # using the lbub function to get interval lower and upper bounds (lb, ub)
-#' set_color_scheme("pink")
+#' color_scheme_set("pink")
 #' parsed <- ggplot2::label_parsed
 #' p2 <- mcmc_hist(x, pars = "beta[1]", binwidth = 1/20,
 #'                 facet_args = list(labeller = parsed))
@@ -137,7 +139,7 @@
 #' ##########################
 #' ### format axis titles ###
 #' ##########################
-#' set_color_scheme("green")
+#' color_scheme_set("green")
 #' y <- example_y_data()
 #' yrep <- example_yrep_draws()
 #' (p3 <- ppc_stat(y, yrep, stat = "median", binwidth = 1/4))
@@ -148,23 +150,17 @@
 #'  xaxis_title(size = 13, family = "sans") +
 #'  ggplot2::xlab(expression(italic(T(y)) == median(italic(y))))
 #'
-#' # remove x axis title and legend
-#' p3 + xaxis_title(FALSE) + legend_none()
-#'
 #'
 #' ################################
 #' ### format axis & facet text ###
 #' ################################
-#' set_color_scheme("gray")
+#' color_scheme_set("gray")
 #' p4 <- mcmc_trace(example_mcmc_draws(), pars = c("alpha", "sigma"))
 #'
 #' myfacets <-
 #'  facet_bg(fill = "gray30", color = NA) +
 #'  facet_text(face = "bold", color = "skyblue", size = 14)
 #' p4 + myfacets
-#'
-#' # dont show y-axis text
-#' p4 + myfacets + yaxis_text(FALSE)
 #'
 #' ##########################
 #' ### control tick marks ###
@@ -179,11 +175,14 @@
 #' ##############################
 #' ### change plot background ###
 #' ##############################
-#' set_color_scheme("yellow")
-#' p5 <- ppc_scatter_avg(y, yrep)
-#' p5 + plot_bg(fill = "gray20")
+#' color_scheme_set("blue")
+#' ppc_stat(y, yrep) + grid_lines()
 #'
-#' set_color_scheme("purple")
+#' color_scheme_set("yellow")
+#' p5 <- ppc_scatter_avg(y, yrep, alpha = 1)
+#' p5 + plot_bg(fill = "gray20") + grid_lines(color = "white")
+#'
+#' color_scheme_set("purple")
 #' ppc_dens_overlay(y, yrep[1:30, ]) +
 #'  legend_text(size = 14) +
 #'  legend_move(c(0.75, 0.5)) +
@@ -193,7 +192,7 @@ NULL
 
 
 # lines -------------------------------------------------------------------
-#' @rdname bayesplot-convenience
+#' @rdname bayesplot-helpers
 #' @export
 #' @param v Either a numeric vector specifying the value(s) at which to
 #'   draw the vertical or horizontal line(s), or an object of any type to use as
@@ -209,7 +208,7 @@ vline_at <- function(v, fun, ..., na.rm = TRUE) {
              ...)
 }
 
-#' @rdname bayesplot-convenience
+#' @rdname bayesplot-helpers
 #' @export
 hline_at <- function(v, fun, ..., na.rm = TRUE) {
   geom_hline(yintercept = calc_v(v, fun),
@@ -217,7 +216,7 @@ hline_at <- function(v, fun, ..., na.rm = TRUE) {
              ...)
 }
 
-#' @rdname bayesplot-convenience
+#' @rdname bayesplot-helpers
 #' @export
 vline_0 <- function(..., na.rm = TRUE) {
   geom_vline(xintercept = 0,
@@ -225,7 +224,7 @@ vline_0 <- function(..., na.rm = TRUE) {
              ...)
 }
 
-#' @rdname bayesplot-convenience
+#' @rdname bayesplot-helpers
 #' @export
 #'
 hline_0 <- function(..., na.rm = TRUE) {
@@ -236,7 +235,7 @@ hline_0 <- function(..., na.rm = TRUE) {
 
 
 # intervals ---------------------------------------------------------------
-#' @rdname bayesplot-convenience
+#' @rdname bayesplot-helpers
 #' @export
 #' @param p The probability mass (in [0,1]) to include in the interval.
 #' @param med Should the median also be included in addition to the lower
@@ -267,7 +266,7 @@ calc_intervals <- function(x, p, med = TRUE, ...) {
 
 
 # legend stuff ------------------------------------------------------------
-#' @rdname bayesplot-convenience
+#' @rdname bayesplot-helpers
 #' @export
 #' @param position The position of the legend. Either a numeric vector (of
 #'   length 2) giving the relative coordinates (between 0 and 1) for the legend,
@@ -278,12 +277,12 @@ calc_intervals <- function(x, p, med = TRUE, ...) {
 legend_move <- function(position = "right") {
   theme(legend.position = position)
 }
-#' @rdname bayesplot-convenience
+#' @rdname bayesplot-helpers
 #' @export
 legend_none <- function() {
   theme(legend.position = "none")
 }
-#' @rdname bayesplot-convenience
+#' @rdname bayesplot-helpers
 #' @export
 legend_text <- function(...) {
   theme(legend.text = element_text(...))
@@ -291,7 +290,7 @@ legend_text <- function(...) {
 
 
 # axis stuff --------------------------------------------------------------
-#' @rdname bayesplot-convenience
+#' @rdname bayesplot-helpers
 #' @export
 xaxis_title <- function(on = TRUE, ...) {
   theme(axis.title.x = if (on)
@@ -299,7 +298,7 @@ xaxis_title <- function(on = TRUE, ...) {
     else
       element_blank())
 }
-#' @rdname bayesplot-convenience
+#' @rdname bayesplot-helpers
 #' @export
 xaxis_text <- function(on = TRUE, ...) {
   theme(axis.text.x = if (on)
@@ -307,7 +306,7 @@ xaxis_text <- function(on = TRUE, ...) {
     else
       element_blank())
 }
-#' @rdname bayesplot-convenience
+#' @rdname bayesplot-helpers
 #' @export
 xaxis_ticks <- function(on = TRUE, ...) {
   theme(axis.ticks.x = if (on)
@@ -315,7 +314,7 @@ xaxis_ticks <- function(on = TRUE, ...) {
     else
       element_blank())
 }
-#' @rdname bayesplot-convenience
+#' @rdname bayesplot-helpers
 #' @export
 yaxis_title <- function(on = TRUE, ...) {
   theme(axis.title.y = if (on)
@@ -323,7 +322,7 @@ yaxis_title <- function(on = TRUE, ...) {
     else
       element_blank())
 }
-#' @rdname bayesplot-convenience
+#' @rdname bayesplot-helpers
 #' @export
 yaxis_text <- function(on = TRUE, ...) {
   theme(axis.text.y = if (on)
@@ -331,7 +330,7 @@ yaxis_text <- function(on = TRUE, ...) {
     else
       element_blank())
 }
-#' @rdname bayesplot-convenience
+#' @rdname bayesplot-helpers
 #' @export
 yaxis_ticks <- function(on = TRUE, ...) {
   theme(axis.ticks.y = if (on)
@@ -342,7 +341,7 @@ yaxis_ticks <- function(on = TRUE, ...) {
 
 
 # facet stuff -------------------------------------------------------------
-#' @rdname bayesplot-convenience
+#' @rdname bayesplot-helpers
 #' @export
 #' @param on For functions modifying ggplot \link[ggplot2]{theme} elements, set
 #'   \code{on=FALSE} to set the element to \code{\link[ggplot2]{element_blank}}.
@@ -357,7 +356,7 @@ facet_text <- function(on = TRUE, ...) {
     else
       element_blank())
 }
-#' @rdname bayesplot-convenience
+#' @rdname bayesplot-helpers
 #' @export
 facet_bg <- function(on = TRUE, ...) {
   theme(strip.background = if (on)
@@ -367,11 +366,20 @@ facet_bg <- function(on = TRUE, ...) {
 }
 
 # plot background ---------------------------------------------------------
-#' @rdname bayesplot-convenience
+#' @rdname bayesplot-helpers
 #' @export
 plot_bg <- function(on = TRUE, ...) {
   theme(panel.background = if (on)
     element_rect(...)
     else
       element_blank())
+}
+
+#' @rdname bayesplot-helpers
+#' @export
+#' @param color,size Passed to \code{\link[ggplot2]{element_line}}.
+#'
+grid_lines <- function(color = "gray50", size = 0.2) {
+  theme(panel.grid.major = element_line(color = color, size = size),
+        panel.grid.minor = element_line(color = color, size = size * 0.5))
 }

@@ -4,31 +4,31 @@ context("Aesthetics")
 
 # color scheme stuff ------------------------------------------------------
 test_that("getting and setting the color scheme works", {
-  set_color_scheme("red")
-  expect_equivalent(get_color_scheme(), prepare_colors("red"))
+  color_scheme_set("red")
+  expect_equivalent(color_scheme_get(), prepare_colors("red"))
   expect_named(prepare_colors("blue"), scheme_level_names())
-  expect_named(get_color_scheme(), scheme_level_names())
+  expect_named(color_scheme_get(), scheme_level_names())
   for (clr in names(master_color_list)) {
-    set_color_scheme(clr)
-    expect_equivalent(get_color_scheme(), prepare_colors(clr),
+    color_scheme_set(clr)
+    expect_equivalent(color_scheme_get(), prepare_colors(clr),
                       info = clr)
-    expect_named(get_color_scheme(), scheme_level_names())
+    expect_named(color_scheme_get(), scheme_level_names())
   }
 
-  set_color_scheme("blue")
-  expect_equivalent(get_color_scheme("teal"), prepare_colors("teal"))
+  color_scheme_set("blue")
+  expect_equivalent(color_scheme_get("teal"), prepare_colors("teal"))
 })
 
 test_that("setting mixed scheme works", {
-  set_color_scheme("mix-gray-blue")
-  expect_equivalent(get_color_scheme(), mixed_scheme("gray", "blue"))
+  color_scheme_set("mix-gray-blue")
+  expect_equivalent(color_scheme_get(), mixed_scheme("gray", "blue"))
 
-  set_color_scheme("mix-blue-gray")
-  expect_equivalent(get_color_scheme(), mixed_scheme("blue", "gray"))
+  color_scheme_set("mix-blue-gray")
+  expect_equivalent(color_scheme_get(), mixed_scheme("blue", "gray"))
 
-  expect_error(set_color_scheme("mix-green-reds"),
+  expect_error(color_scheme_set("mix-green-reds"),
                "should be one of")
-  expect_error(set_color_scheme("mix-greens-red"),
+  expect_error(color_scheme_set("mix-greens-red"),
                "should be one of")
 })
 
@@ -42,10 +42,10 @@ orange_scheme_bad <-
     "not_a_color2")
 orange_scheme_ok[c(1, 6)] <- c("#ffebcc", "#663d00")
 
-test_that("set_color_scheme throws correct errors for custom schemes ", {
-  expect_error(set_color_scheme(orange_scheme_bad),
+test_that("color_scheme_set throws correct errors for custom schemes ", {
+  expect_error(color_scheme_set(orange_scheme_bad),
                "not found: not_a_color1, not_a_color2")
-  expect_error(set_color_scheme(c("red", "blue")),
+  expect_error(color_scheme_set(c("red", "blue")),
                "should be a character vector of length 1 or 6")
 })
 
@@ -56,17 +56,17 @@ test_that("mixed_scheme internal function doesn't error", {
 })
 
 test_that("custom color schemes work", {
-  set_color_scheme(orange_scheme_ok)
-  expect_named(get_color_scheme())
-  expect_equivalent(unlist(get_color_scheme()), orange_scheme_ok)
+  color_scheme_set(orange_scheme_ok)
+  expect_named(color_scheme_get())
+  expect_equivalent(unlist(color_scheme_get()), orange_scheme_ok)
 
   random_scheme <- colors()[sample(length(colors()), 6)]
-  set_color_scheme(random_scheme)
-  expect_equivalent(unlist(get_color_scheme()), random_scheme)
+  color_scheme_set(random_scheme)
+  expect_equivalent(unlist(color_scheme_get()), random_scheme)
 })
 
 test_that("get_color returns correct color values", {
-  scheme <- set_color_scheme("green")
+  scheme <- color_scheme_set("green")
   levs <- scheme_level_names()
 
   ans <- unlist(prepare_colors("green")[levs], use.names = FALSE)
@@ -75,20 +75,20 @@ test_that("get_color returns correct color values", {
     expect_identical(get_color(lev), scheme[[lev]], info = lev)
 })
 
-test_that("view_color_scheme returns correct ggplot object", {
-  set_color_scheme("red")
+test_that("color_scheme_view returns correct ggplot object", {
+  color_scheme_set("red")
 
-  a <- view_color_scheme()
-  b <- view_color_scheme("green")
+  a <- color_scheme_view()
+  b <- color_scheme_view("green")
   expect_gg(a)
   expect_gg(b)
-  expect_identical(a$plot_env$x, get_color_scheme())
-  expect_identical(b$plot_env$x, get_color_scheme("green"))
+  expect_identical(a$plot_env$x, color_scheme_get())
+  expect_identical(b$plot_env$x, color_scheme_get("green"))
 })
 
-test_that("view_color_scheme returns gtable if length(scheme) >= 1", {
-  expect_gtable(view_color_scheme(c("red", "gray")))
-  expect_gtable(view_color_scheme(c("red", "gray", "blue")))
+test_that("color_scheme_view returns gtable if length(scheme) >= 1", {
+  expect_gtable(color_scheme_view(c("red", "gray")))
+  expect_gtable(color_scheme_view(c("red", "gray", "blue")))
 })
 
 

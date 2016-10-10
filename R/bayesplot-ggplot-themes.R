@@ -2,8 +2,8 @@
 #'
 #' The \code{\link{theme_default}} function returns the default ggplot
 #' \link{theme} used by the \pkg{bayesplot} plotting functions. Many of the
-#' individual plotting functions also make small alterations to the theme using
-#' the \pkg{bayesplot} \link[=bayesplot-convenience]{convenience functions}.
+#' individual plotting functions also make small alterations to the default
+#' theme using the convenience functions documented at \link{bayesplot-helpers}.
 #' To use a different theme simply add that theme to the ggplot objects created
 #' by the \pkg{bayesplot} plotting functions (see \strong{Examples}, below).
 #'
@@ -16,11 +16,8 @@
 #'
 #' @return A ggplot \link[ggplot2]{theme} object.
 #'
-#' @seealso
-#' \link{bayesplot-convenience} for a variety of convenience functions, many of
-#' which provide shortcuts for tweaking theme elements after creating a plot.
-#'
-#' \code{\link{set_color_scheme}} to set, get, or view the color scheme.
+#' @template seealso-helpers
+#' @template seealso-colors
 #'
 #' @examples
 #' thm <- theme_default()

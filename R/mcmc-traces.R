@@ -46,11 +46,11 @@
 #' dimnames(x)
 #'
 #' # traceplots of the betas
-#' set_color_scheme("brightblue")
+#' color_scheme_set("brightblue")
 #' mcmc_trace(x, regex_pars = "beta")
 #'
 #' # can use a mixed color scheme to better differentiate the chains
-#' set_color_scheme("mix-blue-red")
+#' color_scheme_set("mix-blue-red")
 #' mcmc_trace(x, regex_pars = "beta")
 #'
 #' # use traditional ggplot discrete color scale
@@ -63,7 +63,7 @@
 #'
 #' \dontrun{
 #' # parse facet label text
-#' set_color_scheme("purple")
+#' color_scheme_set("purple")
 #' p <- mcmc_trace(
 #'   x,
 #'   regex_pars = "beta\\[[1,3]\\]",
@@ -76,7 +76,7 @@
 #'
 #'
 #' # plot as points, highlighting chain 2
-#' set_color_scheme("brightblue")
+#' color_scheme_set("brightblue")
 #' mcmc_trace_highlight(x, pars = "sigma", highlight = 2, size = 2)
 #' }
 #'
@@ -229,7 +229,7 @@ mcmc_trace_highlight <-
 }
 
 chain_colors <- function(n) {
-  all_clrs <- unlist(get_color_scheme())
+  all_clrs <- unlist(color_scheme_get())
   clrs <- switch(
     as.character(n),
     "1" = get_color("m"),

@@ -132,7 +132,7 @@ lp <- log_posterior(fit)
 mcmc_nuts_acceptance(np, lp)
 mcmc_nuts_acceptance(np, lp, chain = 2)
 
-set_color_scheme("blue")
+color_scheme_set("blue")
 mcmc_nuts_energy(np)
 mcmc_nuts_energy(np, binwidth = .25, alpha = .8)
 (energy_plot <- mcmc_nuts_energy(np, merge_chains = FALSE))

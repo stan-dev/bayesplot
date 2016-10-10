@@ -90,7 +90,7 @@ x <- example_mcmc_draws(params = 6)
 dim(x)
 dimnames(x)
 
-set_color_scheme("brightblue")
+color_scheme_set("brightblue")
 mcmc_intervals(x)
 mcmc_intervals(x, pars = c("beta[1]", "beta[2]"))
 mcmc_areas(x, regex_pars = "beta\\\\[[1-3]", prob = 0.8) +
@@ -99,7 +99,7 @@ mcmc_areas(x, regex_pars = "beta\\\\[[1-3]", prob = 0.8) +
    subtitle = "with medians and 80\% intervals"
  )
 
-set_color_scheme("red")
+color_scheme_set("red")
 mcmc_areas(
    x,
    pars = c("alpha", "beta[4]"),
@@ -109,11 +109,11 @@ mcmc_areas(
 )
 
 # color by rhat value
-set_color_scheme("blue")
+color_scheme_set("blue")
 fake_rhat_values <- c(1, 1.07, 1.3, 1.01, 1.15, 1.005)
 mcmc_intervals(x, rhat = fake_rhat_values)
 
-set_color_scheme("gray")
+color_scheme_set("gray")
 p <- mcmc_areas(x, pars = c("alpha", "beta[4]"), rhat = c(1, 1.1))
 p + legend_move("bottom")
 p + legend_move("none") # or p + legend_none()
@@ -129,7 +129,7 @@ fit <- stan_glm(
 )
 x <- as.matrix(fit)
 
-set_color_scheme("teal")
+color_scheme_set("teal")
 mcmc_intervals(x, point_est = "mean", prob = 0.8, prob_outer = 0.95)
 mcmc_areas(x, regex_pars = "cyl", bw = "SJ")
 }

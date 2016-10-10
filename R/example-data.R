@@ -40,7 +40,7 @@
 #'  two levels.
 #' }
 #' \item{\code{example_yrep_draws}}{
-#'  A \code{1000} (draws) by \code{434} (data points) matrix of draws from the
+#'  A \code{500} (draws) by \code{434} (data points) matrix of draws from the
 #'  posterior predictive distribution. Each row represents a full dataset drawn
 #'  from the posterior predictive distribution of the outcome \code{y} after
 #'  fitting the linear regression model mentioned above.

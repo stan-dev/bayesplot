@@ -158,7 +158,7 @@ If it's hard to see the difference between the chains we can
 easily change to a different color scheme, for example:
 
 ```{r, change-scheme}
-set_color_scheme("mix-blue-red")
+color_scheme_set("mix-blue-red")
 mcmc_trace(posterior, pars = c("wt", "sigma"))
 ```
 
