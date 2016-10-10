@@ -10,17 +10,68 @@ be easily used by developers working on a variety of packages for Bayesian
 modeling, particularly (but not necessarily) those powered by 
 [**RStan**](https://github.com/stan-dev/rstan).
 
-
 ### Installation
 
 **bayesplot** is not yet on CRAN (coming soon) but can be installed from GitHub 
 using the **devtools** package. You will also need the preview version of the 
 upcoming **ggplot2** update.
 
-```{r}
+```r
 if (!require("devtools"))
   install.packages("devtools")
 
 devtools::install_github("hadley/ggplot2")
 devtools::install_github("jgabry/bayesplot", build_vignettes = TRUE)
 ```
+
+### Examples
+Some quick examples using MCMC draws obtained from the __rstanarm__ and __rstan__ packages. 
+
+```r
+library("bayesplot")
+library("rstanarm")
+library("ggplot2")
+
+fit <- stan_glm(mpg ~ ., data = mtcars)
+posterior <- as.matrix(fit)
+
+plot_title <- ggtitle("Posterior distributions",
+                      "with medians and 80% intervals")
+mcmc_areas(posterior, 
+           pars = c("cyl", "drat", "am", "wt"), 
+           prob = 0.8) + plot_title
+```
+<img src=https://github.com/jgabry/bayesplot/blob/master/images/mcmc_areas-rstanarm.png width=50% />
+```r
+color_scheme_set("red")
+ppc_dens_overlay(y = fit$y, 
+                 yrep = posterior_predict(fit, draws = 50))
+```
+<img src=https://github.com/jgabry/bayesplot/blob/master/images/ppc_dens_overlay-rstanarm.png width=50% />
+```r
+# also works nicely with piping
+library("dplyr")
+color_scheme_set("brightblue")
+fit %>% 
+  posterior_predict(draws = 500) %>%
+  ppc_stat(y = fit$y, stat = "mean")
+
+```
+<img src=https://github.com/jgabry/bayesplot/blob/master/images/ppc_stat-rstanarm.png width=50% />
+```r
+library("rstan")
+fit2 <- stan_demo("eight_schools")
+posterior2 <- extract(fit2, inc_warmup = TRUE, permuted = FALSE)
+
+color_scheme_set("mix-blue-pink")
+p <- mcmc_trace(posterior2,  pars = c("mu", "tau"), 
+                facet_args = list(nrow = 2, labeller = label_parsed))
+p + facet_text(size = 15)
+```
+<img src=https://github.com/jgabry/bayesplot/blob/master/images/mcmc_trace-rstan.png width=50% />
+```r
+color_scheme_set("red")
+np <- nuts_params(fit2)
+mcmc_nuts_energy(np, merge_chains = FALSE) + ggtitle("NUTS Energy Diagnostic")
+```
+<img src=https://github.com/jgabry/bayesplot/blob/master/images/mcmc_nuts_energy-rstan.png width=50% />
