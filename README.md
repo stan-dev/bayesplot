@@ -1,7 +1,7 @@
 # bayesplot
 
-[![Travis-CI Build Status](https://travis-ci.org/jgabry/bayesplot.svg?branch=master)](https://travis-ci.org/jgabry/bayesplot)
-[![codecov](https://codecov.io/gh/jgabry/bayesplot/branch/master/graph/badge.svg)](https://codecov.io/gh/jgabry/bayesplot)
+[![Travis-CI Build Status](https://travis-ci.org/stan-dev/bayesplot.svg?branch=master)](https://travis-ci.org/stan-dev/bayesplot)
+[![codecov](https://codecov.io/gh/stan-dev/bayesplot/branch/master/graph/badge.svg)](https://codecov.io/gh/stan-dev/bayesplot)
 
 An R package providing a library of plotting functions for use after fitting 
 Bayesian models (typically with MCMC). The idea is not only to provide
@@ -21,7 +21,7 @@ if (!require("devtools"))
   install.packages("devtools")
 
 devtools::install_github("hadley/ggplot2")
-devtools::install_github("jgabry/bayesplot", build_vignettes = TRUE)
+devtools::install_github("stan-dev/bayesplot", build_vignettes = TRUE)
 ```
 
 ### Examples
