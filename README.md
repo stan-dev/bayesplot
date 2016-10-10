@@ -54,10 +54,12 @@ library("dplyr")
 color_scheme_set("brightblue")
 fit %>% 
   posterior_predict(draws = 500) %>%
-  ppc_stat(y = fit$y, stat = "mean")
+  ppc_stat_grouped(y = mtcars$mpg, 
+                   group = mtcars$carb, 
+                   stat = "median")
 
 ```
-<img src=https://github.com/jgabry/bayesplot/blob/master/images/ppc_stat-rstanarm.png width=50% />
+<img src=https://github.com/jgabry/bayesplot/blob/master/images/ppc_stat_grouped-rstanarm.png width=50% />
 ```r
 library("rstan")
 fit2 <- stan_demo("eight_schools")
