@@ -157,7 +157,6 @@ ppc_dens_overlay <- function(y, yrep, ...,
       aes_(group = ~ rep_id, color = "yrep"),
       geom = "line",
       position = "identity",
-      # color = get_color("l"),
       size = size,
       alpha = alpha,
       trim = trim
@@ -167,7 +166,6 @@ ppc_dens_overlay <- function(y, yrep, ...,
       aes_(color = "y"),
       geom = "line",
       position = "identity",
-      # color = get_color("dh"),
       size = 1,
       trim = trim
     ) +
@@ -201,7 +199,6 @@ ppc_ecdf_overlay <- function(y, yrep, ...,
     stat_ecdf(
       mapping = aes_(group = ~ rep_id, color = "yrep"),
       geom = "line",
-      # color = get_color("l"),
       size = size,
       alpha = alpha,
       pad = pad
@@ -210,7 +207,6 @@ ppc_ecdf_overlay <- function(y, yrep, ...,
       data = data.frame(value = y),
       mapping = aes_(color = "y"),
       geom = c("line"),
-      # color = get_color("dh"),
       size = 1,
       pad = pad
     ) +
