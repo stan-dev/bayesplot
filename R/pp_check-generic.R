@@ -15,12 +15,12 @@
 #' @param ... Other arguments for use by methods.
 #' @return The exact form of the value returned by \code{pp_check} may vary by
 #'   the class of \code{object}, but for consistency we encourage authors of
-#'   methods to always return the ggplot object created by one of
-#'   \pkg{ppcheck}'s plotting functions.
+#'   methods to return the ggplot object created by one of \pkg{bayesplot}'s
+#'   plotting functions.
 #'
 #' @details A package that creates fitted model objects of class \code{"foo"}
 #'   can include a method \code{pp_check.foo} that prepares the appropriate
-#'   inputs (\code{y}, \code{yrep}, etc.) for the \pkg{ppcheck} functions. The
+#'   inputs (\code{y}, \code{yrep}, etc.) for the \pkg{bayesplot} functions. The
 #'   \code{pp_check.foo} method may, for example, let the user choose between
 #'   various plots, calling the functions from \pkg{bayesplot} internally as
 #'   needed. See Examples, below, and the package vignettes.
@@ -33,8 +33,7 @@
 #'   yrep <- object[["yrep"]]
 #'   switch(match.arg(type),
 #'          multiple = ppc_hist(y, yrep[1:min(8, nrow(yrep)),, drop = FALSE]),
-#'          overlaid = ppc_dens_overlay(y, yrep)
-#'   )
+#'          overlaid = ppc_dens_overlay(y, yrep))
 #' }
 #' pp_check(x)
 #' pp_check(x, type = "overlaid")
