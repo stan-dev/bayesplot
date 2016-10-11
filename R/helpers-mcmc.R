@@ -307,6 +307,8 @@ rename_transformed_pars <- function(pars, transformations) {
 as_bayesplot_grid <- function(x) {
   structure(x, class = unique(c("bayesplot_grid", class(x))))
 }
+
+#' @export
 print.bayesplot_grid <- function(x, ...) {
   gridExtra::grid.arrange(x, ...)
 }
