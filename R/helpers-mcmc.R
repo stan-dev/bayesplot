@@ -312,3 +312,5 @@ as_bayesplot_grid <- function(x) {
 print.bayesplot_grid <- function(x, ...) {
   gridExtra::grid.arrange(x, ...)
 }
+#' @export
+plot.bayesplot_grid <- print.bayesplot_grid
