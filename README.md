@@ -10,6 +10,10 @@ be easily used by developers working on a variety of packages for Bayesian
 modeling, particularly (but not necessarily) those powered by 
 [**RStan**](https://github.com/stan-dev/rstan).
 
+The plots created by **bayesplot** are ggplot objects, which means that after 
+a plot is created it can be further customized using the various functions for 
+modifying ggplot objects provided by the **ggplot2** package.
+
 ### Installation
 
 **bayesplot** is not yet on CRAN (coming soon) but can be installed from GitHub 
@@ -25,7 +29,7 @@ devtools::install_github("stan-dev/bayesplot", build_vignettes = TRUE)
 ```
 
 ### Examples
-Some quick examples using MCMC draws obtained from the __rstanarm__ and __rstan__ packages. 
+Some quick examples using MCMC draws obtained from the __rstanarm__ and __rstan__ packages.
 
 ```r
 library("bayesplot")
