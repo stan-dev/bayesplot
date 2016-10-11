@@ -6,7 +6,7 @@
 \title{Combination plots}
 \usage{
 mcmc_combo(x, combo = c("dens", "trace"), widths = NULL, plot = TRUE,
-  gg_theme = NULL, ...)
+  newpage = TRUE, gg_theme = NULL, ...)
 }
 \arguments{
 \item{x}{A 3-D array, matrix, list of matrices, or data frame of MCMC draws.
@@ -27,6 +27,9 @@ factor of 2 (as would \code{widths = c(.3, .15)}, etc.). The default,
 \item{plot}{A logical value indicating whether or not to display the plots.
 If \code{plot} is \code{FALSE} then the object is returned invisibly
 without plotting.}
+
+\item{newpage}{Passed to \code{\link[gridExtra]{grid.arrange}} if
+\code{plot=TRUE}.}
 
 \item{gg_theme}{Unlike most of the other \pkg{bayesplot} functions,
 \code{mcmc_combo} returns a gtable object rather than a ggplot object, and

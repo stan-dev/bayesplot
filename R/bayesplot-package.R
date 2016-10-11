@@ -39,6 +39,7 @@
 #'
 #' @template seealso-theme
 #' @template seealso-colors
+#' @seealso \code{\link[ggplot2]{ggsave}} in \pkg{ggplot2} for saving plots.
 #'
 #' @examples
 #' # A few quick examples (all of the functions have many examples

@@ -21,6 +21,7 @@ Imports:
     utils
 Suggests:
     arm,
+    grid,
     gridExtra (>= 2.2.1),
     knitr (>= 1.14),
     rmarkdown (>= 1.0.0),

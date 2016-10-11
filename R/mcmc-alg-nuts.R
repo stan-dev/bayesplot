@@ -96,10 +96,12 @@
 #' fit <- stan_glm(mpg ~ wt + am, data = mtcars, iter = 1000)
 #' np <- nuts_params(fit)
 #' lp <- log_posterior(fit)
+#'
+#' color_scheme_set("brightblue")
 #' mcmc_nuts_acceptance(np, lp)
 #' mcmc_nuts_acceptance(np, lp, chain = 2)
 #'
-#' color_scheme_set("blue")
+#' color_scheme_set("red")
 #' mcmc_nuts_energy(np)
 #' mcmc_nuts_energy(np, binwidth = .25, alpha = .8)
 #' (energy_plot <- mcmc_nuts_energy(np, merge_chains = FALSE))
@@ -215,7 +217,6 @@ mcmc_nuts_acceptance <- function(x, lp, chain = NULL, ..., binwidth = NULL) {
     heights = c(1, 0.1, 1)
   )
   gridExtra::grid.arrange(nuts_plot)
-  invisible(nuts_plot)
 }
 
 
@@ -273,11 +274,12 @@ mcmc_nuts_divergence <- function(x, lp, chain = NULL, ...) {
     div_count_label <- paste0(div_count_label, " (", div_count_by_chain,
                               " from chain ", chain, ")")
   }
-
   violin_lp <- violin_lp + labs(subtitle = div_count_label)
-  nuts_plot <- gridExtra::arrangeGrob(violin_lp, violin_accept_stat, nrow = 2)
-  gridExtra::grid.arrange(nuts_plot)
-  invisible(nuts_plot)
+  gridExtra::grid.arrange(
+    violin_lp,
+    violin_accept_stat,
+    nrow = 2
+  )
 }
 
 
@@ -338,10 +340,11 @@ mcmc_nuts_stepsize <- function(x, lp, chain = NULL, ...) {
     violin_accept_stat <- violin_accept_stat +
       chain_violin(violin_accept_stat_data, chain)
   }
-
-  nuts_plot <- gridExtra::arrangeGrob(violin_lp, violin_accept_stat, nrow = 2)
-  gridExtra::grid.arrange(nuts_plot)
-  invisible(nuts_plot)
+  gridExtra::grid.arrange(
+    violin_lp,
+    violin_accept_stat,
+    nrow = 2
+  )
 }
 
 
@@ -407,7 +410,7 @@ mcmc_nuts_treedepth <- function(x, lp, chain = NULL, ...) {
       chain_violin(violin_accept_stat_data, chain)
   }
 
-  nuts_plot <- gridExtra::arrangeGrob(
+  gridExtra::grid.arrange(
     gridExtra::arrangeGrob(
       violin_lp, violin_accept_stat,
       nrow = 1
@@ -421,8 +424,6 @@ mcmc_nuts_treedepth <- function(x, lp, chain = NULL, ...) {
     ),
     nrow = 3, heights = c(1, 0.1, 1)
   )
-  gridExtra::grid.arrange(nuts_plot)
-  invisible(nuts_plot)
 }
 
 

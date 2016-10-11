@@ -17,6 +17,8 @@
 #' @param plot A logical value indicating whether or not to display the plots.
 #'   If \code{plot} is \code{FALSE} then the object is returned invisibly
 #'   without plotting.
+#' @param newpage Passed to \code{\link[gridExtra]{grid.arrange}} if
+#'   \code{plot=TRUE}.
 #' @param gg_theme Unlike most of the other \pkg{bayesplot} functions,
 #'   \code{mcmc_combo} returns a gtable object rather than a ggplot object, and
 #'   so theme objects can't be added directly to the returned plot object. The
@@ -69,6 +71,7 @@ mcmc_combo <-
            combo = c("dens", "trace"),
            widths = NULL,
            plot = TRUE,
+           newpage = TRUE,
            gg_theme = NULL,
            ...) {
     suggested_package("gridExtra")
@@ -95,8 +98,10 @@ mcmc_combo <-
                              ncol = length(combo),
                              widths = widths)
 
-    if (plot)
-      gridExtra::grid.arrange(combo_plot)
-
+    if (plot) {
+      if (newpage)
+        grid::grid.newpage()
+      grid::grid.draw(combo_plot)
+    }
     invisible(combo_plot)
   }

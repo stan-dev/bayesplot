@@ -74,5 +74,7 @@ ppc_stat(y, yrep, stat = "median") + grid_lines()
 
 \code{\link{bayesplot-colors}} to set or view the color scheme used
   for plotting.
+
+\code{\link[ggplot2]{ggsave}} in \pkg{ggplot2} for saving plots.
 }
 

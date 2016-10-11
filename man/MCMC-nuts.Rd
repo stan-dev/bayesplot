@@ -129,10 +129,12 @@ library(rstanarm)
 fit <- stan_glm(mpg ~ wt + am, data = mtcars, iter = 1000)
 np <- nuts_params(fit)
 lp <- log_posterior(fit)
+
+color_scheme_set("brightblue")
 mcmc_nuts_acceptance(np, lp)
 mcmc_nuts_acceptance(np, lp, chain = 2)
 
-color_scheme_set("blue")
+color_scheme_set("red")
 mcmc_nuts_energy(np)
 mcmc_nuts_energy(np, binwidth = .25, alpha = .8)
 (energy_plot <- mcmc_nuts_energy(np, merge_chains = FALSE))
