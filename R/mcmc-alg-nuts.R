@@ -216,7 +216,7 @@ mcmc_nuts_acceptance <- function(x, lp, chain = NULL, ..., binwidth = NULL) {
     nrow = 3,
     heights = c(1, 0.1, 1)
   )
-  gridExtra::grid.arrange(nuts_plot)
+  as_bayesplot_grid(nuts_plot)
 }
 
 
@@ -275,11 +275,12 @@ mcmc_nuts_divergence <- function(x, lp, chain = NULL, ...) {
                               " from chain ", chain, ")")
   }
   violin_lp <- violin_lp + labs(subtitle = div_count_label)
-  gridExtra::grid.arrange(
+  nuts_plot <- gridExtra::arrangeGrob(
     violin_lp,
     violin_accept_stat,
     nrow = 2
   )
+  as_bayesplot_grid(nuts_plot)
 }
 
 
@@ -340,11 +341,12 @@ mcmc_nuts_stepsize <- function(x, lp, chain = NULL, ...) {
     violin_accept_stat <- violin_accept_stat +
       chain_violin(violin_accept_stat_data, chain)
   }
-  gridExtra::grid.arrange(
+  nuts_plot <- gridExtra::arrangeGrob(
     violin_lp,
     violin_accept_stat,
     nrow = 2
   )
+  as_bayesplot_grid(nuts_plot)
 }
 
 
@@ -410,7 +412,7 @@ mcmc_nuts_treedepth <- function(x, lp, chain = NULL, ...) {
       chain_violin(violin_accept_stat_data, chain)
   }
 
-  gridExtra::grid.arrange(
+  nuts_plot <- gridExtra::arrangeGrob(
     gridExtra::arrangeGrob(
       violin_lp, violin_accept_stat,
       nrow = 1
@@ -424,6 +426,7 @@ mcmc_nuts_treedepth <- function(x, lp, chain = NULL, ...) {
     ),
     nrow = 3, heights = c(1, 0.1, 1)
   )
+  as_bayesplot_grid(nuts_plot)
 }
 
 

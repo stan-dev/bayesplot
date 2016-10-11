@@ -302,3 +302,11 @@ rename_transformed_pars <- function(pars, transformations) {
   }
   return(pars)
 }
+
+# for plots that are ggplot objects arranged with gridExtra
+as_bayesplot_grid <- function(x) {
+  structure(x, class = unique(c("bayesplot_grid", class(x))))
+}
+print.bayesplot_grid <- function(x, ...) {
+  gridExtra::grid.arrange(x, ...)
+}
