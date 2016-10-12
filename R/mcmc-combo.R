@@ -99,4 +99,3 @@ mcmc_combo <-
                              widths = widths)
     as_bayesplot_grid(arranged)
   }
-

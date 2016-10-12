@@ -86,7 +86,7 @@ For Binomial data, the plots will typically be most useful if
   }
   \item{\code{ppc_dens}}{
    The same as \code{ppc_hist} but kernel density estimates are plotted
-   instead of histograms.
+   instead of histograms. These plots often look like wizard hats.
   }
   \item{\code{ppc_violin_grouped}}{
    The density estimate of \code{yrep} within each level of a grouping
@@ -107,6 +107,10 @@ ppc_ecdf_overlay(y, yrep[sample(nrow(yrep), 25), ])
 # for ppc_hist, definitely use a subset yrep rows so only
 # a few (instead of nrow(yrep)) histograms are plotted
 ppc_hist(y, yrep[1:8, ])
+
+# wizard hat plot
+color_scheme_set("blue")
+ppc_dens(y, yrep[200:202, ])
 
 color_scheme_set("gray")
 group <- example_group_data()

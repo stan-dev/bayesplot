@@ -22,3 +22,6 @@ force_axes_in_facets <- function() {
 no_legend_spacing <- function() {
   theme(legend.spacing.y = unit(0, "cm"))
 }
+space_legend_keys <- function(size = rel(2), color = "white") {
+  theme(legend.key = element_rect(size = size, color = color))
+}

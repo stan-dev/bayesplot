@@ -28,11 +28,12 @@
 #' }
 #' \item{\code{mcmc_neff, mcmc_neff_hist}}{
 #' Ratios of effective sample size to total sample size as either points or a
-#' histogram. Values are colored using different shades (lighter is better):
+#' histogram. Values are colored using different shades (lighter is better).
+#' The chosen thresholds are somewhat arbitrary.
 #'  \itemize{
-#'    \item \emph{light}: between 0.5 and 1 (good)
-#'    \item \emph{mid}: between 0.1 and 0.5 (ok)
-#'    \item \emph{dark}: below 0.1 (maybe too low)
+#'    \item \emph{light}: between 0.5 and 1 (high)
+#'    \item \emph{mid}: between 0.1 and 0.5 (good)
+#'    \item \emph{dark}: below 0.1 (low)
 #'  }
 #' }
 #' \item{\code{mcmc_acf}}{
@@ -71,6 +72,10 @@
 #' rhat <- c(runif(100, 1, 1.15))
 #' mcmc_rhat_hist(rhat)
 #' mcmc_rhat(rhat)
+#'
+#' # lollipops
+#' color_scheme_set("purple")
+#' mcmc_rhat(rhat[1:10], size = 5)
 #'
 #' color_scheme_set("blue")
 #' mcmc_rhat(runif(1000, 1, 1.07))
