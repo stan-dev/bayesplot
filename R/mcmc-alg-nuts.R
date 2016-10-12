@@ -494,6 +494,7 @@ mcmc_nuts_energy <-
       scale_x_continuous(expand = c(0.2, 0)) +
       labs(y = NULL, x = expression(E - bar(E))) +
       theme_default() +
+      space_legend_keys() +
       theme(legend.text = element_text(size = rel(1.1))) +
       yaxis_text(FALSE) +
       yaxis_title(FALSE) +
