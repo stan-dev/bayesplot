@@ -15,6 +15,10 @@ test_that("getting and setting the color scheme works", {
     expect_named(color_scheme_get(), scheme_level_names())
   }
 
+  expect_output(print(color_scheme_get("mix-blue-green")),
+                "mix-blue-green")
+  expect_gg(plot(color_scheme_get("mix-blue-green")))
+
   color_scheme_set("blue")
   expect_equivalent(color_scheme_get("teal"), prepare_colors("teal"))
 })

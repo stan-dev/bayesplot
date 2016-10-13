@@ -109,7 +109,6 @@ orange_scheme <- c("#ffebcc", "#ffcc80",
                    "#ffad33", "#e68a00",
                    "#995c00", "#663d00")
 color_scheme_set(orange_scheme)
-color_scheme_get()
 mcmc_areas(x, regex_pars = "alpha")
 mcmc_dens_overlay(x)
 ppc_stat(y, yrep, stat = "var") + legend_none()

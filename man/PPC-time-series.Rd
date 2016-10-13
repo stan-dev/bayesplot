@@ -24,9 +24,9 @@ for the plots to make sense. See \strong{Details} for additional
 instructions.}
 
 \item{time}{An optional numeric vector, the same length as \code{y}. If
-\code{time} is not provided then it is set to \code{1:length(y)}. For
-\code{ppc_ts} the values in \code{time} must be unique. For
-\code{ppc_ts_grouped} times can be repeated.}
+\code{time} is not provided then it is set to \code{1:length(y)}.
+Currently, for \code{ppc_ts} the values in \code{time} must be unique and
+for \code{ppc_ts_grouped} times should be unique within group levels.}
 
 \item{...}{Currently unused.}
 

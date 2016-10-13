@@ -96,7 +96,6 @@
 #'                    "#ffad33", "#e68a00",
 #'                    "#995c00", "#663d00")
 #' color_scheme_set(orange_scheme)
-#' color_scheme_get()
 #' mcmc_areas(x, regex_pars = "alpha")
 #' mcmc_dens_overlay(x)
 #' ppc_stat(y, yrep, stat = "var") + legend_none()
@@ -114,25 +113,38 @@ color_scheme_set <- function(scheme = "blue") {
   } else {
     stop("'scheme' should be a character vector of length 1 or 6.")
   }
-
-  for (lev in names(x))
-    .bayesplot_aesthetics$scheme[[lev]] <- x[[lev]]
-
-  attr(.bayesplot_aesthetics$scheme, "mixed") <- attr(x, "mixed")
+  .bayesplot_aesthetics[["scheme"]] <- x
   invisible(x)
 }
 
 #' @rdname bayesplot-colors
 #' @export
 color_scheme_get <- function(scheme) {
-  if (missing(scheme)) {
+  if (!missing(scheme)) {
+    scheme <- scheme_from_string(scheme)
+  } else {
     x <- .bayesplot_aesthetics$scheme
     scheme <- as.list(x)[scheme_level_names()]
     attr(scheme, "mixed") <- attr(x, "mixed")
-    return(scheme)
+    attr(scheme, "scheme_name") <- attr(x, "scheme_name")
   }
-  scheme_from_string(scheme)
+  class(scheme) <- c("bayesplot_scheme", "list")
+  scheme
 }
+
+#' @export
+print.bayesplot_scheme <- function(x, ...) {
+  tab <- data.frame(unlist(x, use.names = FALSE),
+                    stringsAsFactors = FALSE)
+  colnames(tab) <- attr(x, "scheme_name") %||% "hex_color"
+  print(tab, ...)
+}
+#' @export
+plot.bayesplot_scheme <- function(x, ...) {
+  scheme <- attr(x, "scheme_name") %||% stop("Scheme name not found.")
+  .view_scheme(scheme)
+}
+
 
 #' @rdname bayesplot-colors
 #' @export
@@ -194,11 +206,11 @@ scheme_from_string <- function(scheme) {
   if (identical(substr(scheme, 1, 4), "mix-")) {
     to_mix <- unlist(strsplit(scheme, split = "-"))[2:3]
     x <- setNames(mixed_scheme(to_mix[1], to_mix[2]), scheme_level_names())
-    structure(x, mixed = TRUE)
+    structure(x, mixed = TRUE, scheme_name = scheme)
   } else {
     scheme <- match.arg(scheme, choices = names(master_color_list))
     x <- prepare_colors(scheme)
-    structure(x, mixed = FALSE)
+    structure(x, mixed = FALSE, scheme_name = scheme)
   }
 }
 
@@ -264,7 +276,9 @@ prepare_custom_colors <- function(scheme) {
   if (length(not_found))
     STOP_bad_colors(not_found)
 
-  setNames(as.list(scheme), scheme_level_names())
+  x <- setNames(as.list(scheme), scheme_level_names())
+  attr(x, "scheme_name") <- "custom"
+  x
 }
 
 is_hex_color <- function(x) {

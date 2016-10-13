@@ -18,8 +18,9 @@
 #' @section Plot Descriptions:
 #' \describe{
 #' \item{\code{mcmc_rhat, mcmc_rhat_hist}}{
-#' Rhat values as either points or a histogram. Values are
-#' colored using different shades (lighter is better):
+#' Rhat values as either points or a histogram. Values are colored using
+#' different shades (lighter is better). The chosen thresholds are somewhat
+#' arbitrary, but can be useful guidelines in practice.
 #'  \itemize{
 #'    \item \emph{light}: below 1.05 (good)
 #'    \item \emph{mid}: between 1.05 and 1.1 (ok)
@@ -28,8 +29,9 @@
 #' }
 #' \item{\code{mcmc_neff, mcmc_neff_hist}}{
 #' Ratios of effective sample size to total sample size as either points or a
-#' histogram. Values are colored using different shades (lighter is better).
-#' The chosen thresholds are somewhat arbitrary.
+#' histogram. Values are colored using different shades (lighter is better). The
+#' chosen thresholds are somewhat arbitrary, but can be useful guidelines in
+#' practice.
 #'  \itemize{
 #'    \item \emph{light}: between 0.5 and 1 (high)
 #'    \item \emph{mid}: between 0.1 and 0.5 (good)

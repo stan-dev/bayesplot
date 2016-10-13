@@ -81,7 +81,7 @@ y_j &\sim {\rm Normal}(\theta_j, \sigma_j), \quad j = 1,\dots,J \\
 \end{align*}
 $$
 with the normal distribution parameterized by the mean and standard deviation, 
-not the variance or precision. In Stan code the model can be written:
+not the variance or precision. In Stan code:
 ```{stan, stancode1, output.var = "schools_mod1"}
 // Saved in 'schools_mod1.stan'
 data {
@@ -102,7 +102,12 @@ model {
 }
 ```
 
-We'll also fit the same statistical model but using the so-called non-centered parameterization, which replaces the vector $\theta$ with a vector $\eta$ of a priori i.i.d. standard normal parameters and then contructs $\theta$ deterministically from $\eta$, $\mu$, and $\tau$:
+This parameterization of the model is referred to as the centered 
+parameterization (CP). We'll also fit the same statistical model but using the 
+so-called non-centered parameterization (NCP), which replaces the vector 
+$\theta$ with a vector $\eta$ of a priori _i.i.d._ standard normal parameters 
+and then contructs $\theta$ deterministically from $\eta$ by scaling by $\tau$ 
+and shifting by $\mu$:
 $$
 \begin{align*}
 \theta_j &= \mu + \tau \,\eta_j, \quad j = 1,\dots,J \\
@@ -133,24 +138,24 @@ model {
   y ~ normal(theta, sigma);
 }
 ```
-The centered (first model) and non-centered (second model) are two 
-parameterizations of the same statistical model, but they have very different 
-practical implications for MCMC. Using the __bayesplot__ diagnostic plots, we'll
-see that, for this data, the non-centered parameterization of the model is 
-required in order to properly explore the target distribution.
+The centered and non-centered are two parameterizations of the same statistical 
+model, but they have very different practical implications for MCMC. Using the 
+__bayesplot__ diagnostic plots, we'll see that, for this data, the NCP is 
+required in order to properly explore the posterior distribution.
 
-To fit both models we first translate the Stan code to C++ and compile it
-using `stan_model`,
+To fit both models we first translate the Stan code to C++ and compile it using 
+the `stan_model` function.
 ```{r, compile-models, eval=FALSE}
 schools_mod1 <- stan_model("schools_mod1.stan")
 schools_mod2 <- stan_model("schools_mod2.stan")
 ```
-then fit the model using `sampling`,
+We then fit the model by calling Stan's MCMC algorithm using the `sampling` 
+function,
 ```{r, fit-models-hidden, results='hide', message=FALSE}
 fit1 <- sampling(schools_mod1, data = schools_dat)
 fit2 <- sampling(schools_mod2, data = schools_dat)
 ```
-and extract a `iterations x chains x parameters` array of posterior draws with
+and extract a `iterations x chains x parameters` array of posterior draws with 
 `as.array`,
 ```{r, extract-draws}
 # Extract posterior draws for later use
@@ -172,7 +177,8 @@ $\hat{R}$. The $\hat{R}$ statistic measures the ratio of the average variance of
 samples within each chain to the variance of the pooled samples across chains;
 if all chains are at equilibrium, these will be the same and $\hat{R}$ will be
 one. If the chains have not converged to a common distribution, the $\hat{R}$
-statistic will be greater than one. ([Stan Modeling Language Users Guide and Reference Manual](http://mc-stan.org/documentation/))
+statistic will be greater than one. 
+(Stan Development Team, 2016).
 
 The **bayesplot** package provides the functions `mcmc_rhat` and
 `mcmc_rhat_hist` for visualizing $\hat{R}$ estimates.
@@ -232,8 +238,8 @@ the `mcmc_rhat_hist` function. See the **Examples** section in
 
 The effective sample size is an estimate of the number of independent draws from
 the posterior distribution of the estimand of interest. Because the draws within
-a Markov chain are _not_ independent if there is autocorrelation, the effective
-sample size, $n_{eff}$, will be smaller than the total sample size, $N$. The
+a Markov chain are _not_ independent if there is autocorrelation, the effective 
+sample size, $n_{eff}$, will be smaller than the total sample size, $N$. The 
 larger the ratio of $n_{eff}$ to $N$ the better.
 
 The **bayesplot** package provides a generic `neff_ratio` extractor function,
@@ -264,26 +270,35 @@ Even for models fit using **rstan** the parameterization can make a big
 difference. Here are the $n_{eff}/N$ plots for `fit1` and `fit2` side by side.
 
 ```{r mcmc_neff-compare}
+# A function we'll use several times to plot comparisons of the centered
+# parameterization (cp) and the non-centered parameterization (ncp)
+compare_ <- function(cp_plot, ncp_plot) {
+  grid.arrange(
+    cp_plot + labs(subtitle = "Centered parameterization"),
+    ncp_plot + labs(subtitle = "Non-centered parameterization")
+  )
+}
+
 neff1 <- neff_ratio(fit1, pars = c("theta", "mu", "tau"))
 neff2 <- neff_ratio(fit2, pars = c("theta", "mu", "tau"))
-grid.arrange(mcmc_neff(neff1), mcmc_neff(neff2))
+compare_parameterizations(mcmc_neff(neff1), mcmc_neff(neff2))
 ```
 
-Because of the difference in parameterization, the effective sample sizes are
-much better for the second model.
+Because of the difference in parameterization, the effective sample sizes are 
+much better for the second model, the non-centered parameterization.
 
 ### Autocorrelation
 
-As mentioned above, $n_{eff}/N$ decreases as autocorrelation becomes more
-extreme. We can visualize the autocorrelation using the `mcmc_acf` (line plot)
-or `mcmc_acf_bar` (bar plot) functions. For the selected parameters, these
-functions show the autocorrelation for each Markov chain separately up to a
-user-specified number of lages.
+As mentioned above, $n_{eff}/N$ decreases as autocorrelation becomes more 
+extreme. We can visualize the autocorrelation using the `mcmc_acf` (line plot) 
+or `mcmc_acf_bar` (bar plot) functions. For the selected parameters, these 
+functions show the autocorrelation for each Markov chain separately up to a 
+user-specified number of lags.
 
-Here we can again see a difference when comparing the two parameterizations of
+Here we can again see a difference when comparing the two parameterizations of 
 the same model. For model 1, $\theta_1$ is the primitive parameter for school 1,
 whereas for the non-centered parameterization in model 2 the primitive parameter
-is $\eta_1$ (and $\theta_1$ is later constructed from $\eta_1$, $\mu$, and
+is $\eta_1$ (and $\theta_1$ is later constructed from $\eta_1$, $\mu$, and 
 $\tau$):
 
 ```{r mcmc_acf}
