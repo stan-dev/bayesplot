@@ -272,16 +272,17 @@ difference. Here are the $n_{eff}/N$ plots for `fit1` and `fit2` side by side.
 ```{r mcmc_neff-compare}
 # A function we'll use several times to plot comparisons of the centered
 # parameterization (cp) and the non-centered parameterization (ncp)
-compare_ <- function(cp_plot, ncp_plot) {
+compare_cp_ncp <- function(cp_plot, ncp_plot, ...) {
   grid.arrange(
     cp_plot + labs(subtitle = "Centered parameterization"),
-    ncp_plot + labs(subtitle = "Non-centered parameterization")
+    ncp_plot + labs(subtitle = "Non-centered parameterization"), 
+    ...
   )
 }
 
 neff1 <- neff_ratio(fit1, pars = c("theta", "mu", "tau"))
 neff2 <- neff_ratio(fit2, pars = c("theta", "mu", "tau"))
-compare_parameterizations(mcmc_neff(neff1), mcmc_neff(neff2))
+compare_cp_ncp(mcmc_neff(neff1), mcmc_neff(neff2))
 ```
 
 Because of the difference in parameterization, the effective sample sizes are 
@@ -432,12 +433,10 @@ The two histograms ideally look the same (Betancourt, 2016), which is only the
 case for the non-centered parameterization (bottom panel):
 
 ```{r, mcmc_nuts_energy-3, message=FALSE}
-grid.arrange(
-  mcmc_nuts_energy(np1, binwidth = 1 / 2) + 
-    labs(subtitle = "Centered parameterization"),
-  mcmc_nuts_energy(np2, binwidth = 1 / 2) + 
-    labs(subtitle = "Non-centered parameterization")
-  )
+compare_cp_ncp(
+  mcmc_nuts_energy(np1, binwidth = 1/2),
+  mcmc_nuts_energy(np2, binwidth = 1/2)
+)
 ```
 
 The difference between the parameterizations is even more apparent if we force 
@@ -447,8 +446,10 @@ posterior
 ```{r, mcmc_nuts_energy-4, message=FALSE}
 np1b <- nuts_params(fit1b)
 np2b <- nuts_params(fit2b)
-grid.arrange(mcmc_nuts_energy(np1b), 
-             mcmc_nuts_energy(np2b))
+compare_cp_ncp(
+  mcmc_nuts_energy(np1b), 
+  mcmc_nuts_energy(np2b)
+)
 ```
 
 See Betancourt (2016) for more on this particular example as well as the general
