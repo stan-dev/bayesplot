@@ -10,6 +10,7 @@
 #'
 #' @template args-y-yrep
 #' @template args-hist
+#' @template args-hist-freq
 #' @template args-dens
 #' @param size,alpha Passed to the appropriate geom to control the appearance of
 #'   the \code{yrep} distributions. For \code{ppc_violin_grouped} only,
