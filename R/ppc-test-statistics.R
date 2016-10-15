@@ -73,6 +73,8 @@ ppc_stat <-
            ...,
            binwidth = NULL,
            freq = TRUE) {
+    check_ignored_arguments(...)
+
     y <- validate_y(y)
     yrep <- validate_yrep(yrep, y)
     stat <- validate_stat(stat, 1)
@@ -120,6 +122,8 @@ ppc_stat_grouped <-
            ...,
            binwidth = NULL,
            freq = TRUE) {
+    check_ignored_arguments(...)
+
     y <- validate_y(y)
     yrep <- validate_yrep(yrep, y)
     group <- validate_group(group, y)
@@ -169,6 +173,8 @@ ppc_stat_grouped_freqpoly <-
            ...,
            binwidth = NULL,
            freq = TRUE) {
+    check_ignored_arguments(...)
+
     y <- validate_y(y)
     yrep <- validate_yrep(yrep, y)
     group <- validate_group(group, y)
@@ -210,6 +216,8 @@ ppc_stat_grouped_freqpoly <-
 #'   control the appearance of scatterplot points.
 ppc_stat_2d <- function(y, yrep, stat = c("mean", "sd"), ...,
                         size = 2.5, alpha = 0.7) {
+  check_ignored_arguments(...)
+
   y <- validate_y(y)
   yrep <- validate_yrep(yrep, y)
   stat <- validate_stat(stat, 2)

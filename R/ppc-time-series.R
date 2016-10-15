@@ -84,6 +84,8 @@ ppc_ts <-
            alpha = 0.33,
            size = 1,
            y_style = c("points", "lines")) {
+    check_ignored_arguments(...)
+
     y <- validate_y(y)
     plot_data <- ppc_ts_data(
       y = y,
@@ -118,6 +120,7 @@ ppc_ts_grouped <-
            alpha = 0.33,
            size = 1,
            y_style = c("points", "lines")) {
+    check_ignored_arguments(...)
 
     y <- validate_y(y)
     plot_data <- ppc_ts_data(

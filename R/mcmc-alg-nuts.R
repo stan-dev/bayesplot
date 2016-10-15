@@ -119,6 +119,7 @@ NULL
 #'
 mcmc_nuts_acceptance <- function(x, lp, chain = NULL, ..., binwidth = NULL) {
   suggested_package("gridExtra")
+  check_ignored_arguments(...)
 
   x <- validate_nuts_data_frame(x, lp)
   n_chain <- length(unique(lp$Chain))
@@ -224,6 +225,7 @@ mcmc_nuts_acceptance <- function(x, lp, chain = NULL, ..., binwidth = NULL) {
 #' @export
 mcmc_nuts_divergence <- function(x, lp, chain = NULL, ...) {
   suggested_package("gridExtra")
+  check_ignored_arguments(...)
 
   x <- validate_nuts_data_frame(x, lp)
   n_chain <- length(unique(lp$Chain))
@@ -289,6 +291,7 @@ mcmc_nuts_divergence <- function(x, lp, chain = NULL, ...) {
 #' @export
 mcmc_nuts_stepsize <- function(x, lp, chain = NULL, ...) {
   suggested_package("gridExtra")
+  check_ignored_arguments(...)
 
   x <- validate_nuts_data_frame(x, lp)
   n_chain <- length(unique(lp$Chain))
@@ -354,6 +357,7 @@ mcmc_nuts_stepsize <- function(x, lp, chain = NULL, ...) {
 #' @export
 mcmc_nuts_treedepth <- function(x, lp, chain = NULL, ...) {
   suggested_package("gridExtra")
+  check_ignored_arguments(...)
 
   x <- validate_nuts_data_frame(x, lp)
   n_chain <- length(unique(lp$Chain))
@@ -443,14 +447,9 @@ mcmc_nuts_energy <-
            binwidth = NULL,
            alpha = 0.5,
            merge_chains = TRUE) {
+    check_ignored_arguments(...)
+
     x <- validate_nuts_data_frame(x)
-
-    if ("chain" %in% names(list(...)))
-      stop(
-        "'mcmc_nuts_energy' does not accept a 'chain' argument. ",
-        "Use 'merge_chains = FALSE' to view chains separately."
-      )
-
     energy <- dplyr::filter_(x, ~ Parameter == "energy__")
     dots <- setNames(
       list(

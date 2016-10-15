@@ -85,6 +85,8 @@ ppc_vs_x <- function(y,
                      alpha = 0.33,
                      size = 1,
                      y_style = c("points", "lines")) {
+  check_ignored_arguments(...)
+
   y <- validate_y(y)
   plot_data <- ppc_ts_data(
     y = y,
@@ -118,6 +120,8 @@ ppc_vs_x_grouped <-
            alpha = 0.33,
            size = 1,
            y_style = c("points", "lines")) {
+    check_ignored_arguments(...)
+
     y <- validate_y(y)
     if (is.null(facet_args[["scales"]]))
       facet_args[["scales"]] <- "free"

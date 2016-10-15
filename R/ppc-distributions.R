@@ -75,9 +75,10 @@ NULL
 #' @rdname PPC-distributions
 #' @export
 ppc_hist <- function(y, yrep, ..., binwidth = NULL, freq = TRUE) {
+  check_ignored_arguments(...)
+
   y <- validate_y(y)
   yrep <- validate_yrep(yrep, y)
-
   ggplot(melt_and_stack(y, yrep),
          set_hist_aes(freq, fill = ~ is_y, color = ~ is_y)) +
     geom_histogram(size = 0.25, binwidth = binwidth) +
@@ -108,9 +109,10 @@ ppc_hist <- function(y, yrep, ..., binwidth = NULL, freq = TRUE) {
 #' @rdname PPC-distributions
 #' @export
 ppc_dens <- function(y, yrep, ..., trim = FALSE) {
+  check_ignored_arguments(...)
+
   y <- validate_y(y)
   yrep <- validate_yrep(yrep, y)
-
   ggplot(
     data = melt_and_stack(y, yrep),
     mapping = aes_(
@@ -148,9 +150,10 @@ ppc_dens <- function(y, yrep, ..., trim = FALSE) {
 ppc_dens_overlay <- function(y, yrep, ...,
                              size = 0.25, alpha = 0.7,
                              trim = FALSE) {
+  check_ignored_arguments(...)
+
   y <- validate_y(y)
   yrep <- validate_yrep(yrep, y)
-
   ggplot(melt_yrep(yrep), aes_(x = ~ value)) +
     stat_density(
       aes_(group = ~ rep_id, color = "yrep"),
@@ -189,9 +192,10 @@ ppc_dens_overlay <- function(y, yrep, ...,
 ppc_ecdf_overlay <- function(y, yrep, ...,
                              size = 0.25, alpha = 0.7,
                              pad = TRUE) {
+  check_ignored_arguments(...)
+
   y <- validate_y(y)
   yrep <- validate_yrep(yrep, y)
-
   ggplot(melt_yrep(yrep), aes_(x = ~ value)) +
     hline_at(c(0, 0.5, 1), size = c(0.2, 0.1, 0.2),
              linetype = 2, color = get_color("dh")) +
@@ -233,6 +237,8 @@ ppc_violin_grouped <- function(y, yrep, group, ...,
                                probs = c(0.1, 0.5, 0.9),
                                alpha = 1,
                                size = 1) {
+  check_ignored_arguments(...)
+
   y <- validate_y(y)
   yrep <- validate_yrep(yrep, y)
   group <- validate_group(group, y)

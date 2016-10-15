@@ -59,3 +59,19 @@ select_parameters <-
 
 # Return x if not NULL, otherwise y
 `%||%` <- function(x, y) if (!is.null(x)) x else y
+
+# Check for ignored arguments
+check_ignored_arguments <- function(..., ok_args = character()) {
+  dots <- list(...)
+  if (length(dots)) {
+    unrecognized <- if (!length(ok_args))
+      names(dots) else setdiff(names(dots), ok_args)
+    if (length(unrecognized)) {
+      warning(
+        "The following arguments were unrecognized and ignored: ",
+        paste(unrecognized, collapse = ", "),
+        call. = FALSE
+      )
+    }
+  }
+}

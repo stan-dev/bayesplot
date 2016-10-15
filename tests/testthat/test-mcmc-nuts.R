@@ -35,16 +35,15 @@ test_that("all mcmc_nuts_* (except energy) error if chain argument is bad", {
 })
 
 test_that("mcmc_nuts_energy returns a ggplot object", {
-  p <- mcmc_nuts_energy(np, lp)
+  p <- mcmc_nuts_energy(np)
   expect_gg(p)
   expect_s3_class(p$facet, "FacetNull")
 
-  p <- mcmc_nuts_energy(np, lp, merge_chains = FALSE)
+  p <- mcmc_nuts_energy(np, merge_chains = FALSE)
   expect_gg(p)
   expect_s3_class(p$facet, "FacetWrap")
   expect_equal(names(p$facet$params$facets), "Chain")
 })
-test_that("mcmc_nuts_energy throws correct errors", {
-  expect_error(mcmc_nuts_energy(np, lp, chain = 1),
-               "does not accept a 'chain' argument")
+test_that("mcmc_nuts_energy throws correct warnings", {
+  expect_warning(mcmc_nuts_energy(np, chain = 1), "ignored: chain")
 })

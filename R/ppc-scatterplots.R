@@ -63,9 +63,10 @@ ppc_scatter <-
            ...,
            size = 2.5,
            alpha = 0.8) {
+    check_ignored_arguments(...)
+
     y <- validate_y(y)
     yrep <- validate_yrep(yrep, y)
-
     graph <- .ppc_scatter(
       data = data.frame(
         melt_yrep(yrep),
@@ -97,6 +98,8 @@ ppc_scatter_avg <-
            ...,
            size = 2.5,
            alpha = 0.8) {
+    check_ignored_arguments(...)
+
     y <- validate_y(y)
     yrep <- validate_yrep(yrep, y)
     if (nrow(yrep) == 1)
@@ -124,6 +127,8 @@ ppc_scatter_avg_grouped <-
            ...,
            size = 2.5,
            alpha = 0.8) {
+    check_ignored_arguments(...)
+
     y <- validate_y(y)
     yrep <- validate_yrep(yrep, y)
     ggplot(

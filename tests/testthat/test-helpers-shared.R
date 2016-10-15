@@ -12,6 +12,16 @@ test_that("suggested_package throws correct errors", {
 })
 
 
+# check_ignored_arguments -------------------------------------------------
+test_that("check_ignored_arguments throws correct warnings", {
+  expect_warning(check_ignored_arguments(a = 1, b = "2"),
+               "The following arguments were unrecognized and ignored: a, b")
+  expect_warning(check_ignored_arguments(a = 1, b = "2", ok_args = c("a", "c")),
+                 "The following arguments were unrecognized and ignored: b")
+  expect_silent(check_ignored_arguments(a = 1, b = "2", ok_args = c("a", "b", "c")))
+})
+
+
 # parameter selection -----------------------------------------------------
 all_pars <- c("param_1", "param_2",
               "param[1]", "param[2]",

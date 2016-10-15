@@ -124,6 +124,7 @@ NULL
 #' @param rhat A vector of \code{\link[=rhat]{Rhat}} estimates.
 #'
 mcmc_rhat <- function(rhat, ..., size = NULL) {
+  check_ignored_arguments(...)
   rhat <- validate_rhat(rhat)
   plot_data <- diagnostic_data_frame(
     x = rhat,
@@ -173,6 +174,7 @@ mcmc_rhat <- function(rhat, ..., size = NULL) {
 #' @rdname MCMC-diagnostics
 #' @export
 mcmc_rhat_hist <- function(rhat, ..., binwidth = NULL) {
+  check_ignored_arguments(...)
   ggplot(
     data = diagnostic_data_frame(
       x = validate_rhat(rhat),
@@ -207,6 +209,7 @@ mcmc_rhat_hist <- function(rhat, ..., binwidth = NULL) {
 #'   total sample size. See \code{\link{neff_ratio}}.
 #'
 mcmc_neff <- function(ratio, ..., size = NULL) {
+  check_ignored_arguments(...)
   ggplot(
     data = diagnostic_data_frame(
       x = validate_neff_ratio(ratio),
@@ -245,6 +248,7 @@ mcmc_neff <- function(ratio, ..., size = NULL) {
 #' @rdname MCMC-diagnostics
 #' @export
 mcmc_neff_hist <- function(ratio, ..., binwidth = NULL) {
+  check_ignored_arguments(...)
   ggplot(
     data = diagnostic_data_frame(
       x = validate_neff_ratio(ratio),
@@ -290,6 +294,7 @@ mcmc_acf <-
            ...,
            lags = 20,
            size = NULL) {
+    check_ignored_arguments(...)
     .mcmc_acf(
       x,
       pars = pars,
@@ -310,6 +315,7 @@ mcmc_acf_bar <-
            facet_args = list(),
            ...,
            lags = 20) {
+    check_ignored_arguments(...)
     .mcmc_acf(
       x,
       pars = pars,

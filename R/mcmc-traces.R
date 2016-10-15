@@ -94,6 +94,7 @@ mcmc_trace <-
            n_warmup = 0,
            window = NULL,
            size = NULL) {
+    check_ignored_arguments(...)
     .mcmc_trace(
       x,
       pars = pars,
@@ -124,6 +125,7 @@ mcmc_trace_highlight <-
            size = NULL,
            alpha = 0.2,
            highlight = 1) {
+    check_ignored_arguments(...)
     .mcmc_trace(
       x,
       pars = pars,

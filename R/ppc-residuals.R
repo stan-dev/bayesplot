@@ -99,6 +99,8 @@ NULL
 #' @template args-hist-freq
 #'
 ppc_resid_hist <- function(y, yrep, ..., binwidth = NULL, freq = TRUE) {
+  check_ignored_arguments(...)
+
   y <- validate_y(y)
   yrep <- validate_yrep(yrep, y)
 
@@ -139,6 +141,8 @@ ppc_resid_scatter <-
            ...,
            size = 2.5,
            alpha = 0.8) {
+    check_ignored_arguments(...)
+
     y <- validate_y(y)
     yrep <- validate_yrep(yrep, y)
 
@@ -189,6 +193,8 @@ ppc_resid_scatter_avg <-
            ...,
            size = 2.5,
            alpha = 0.8) {
+    check_ignored_arguments(...)
+
     y <- validate_y(y)
     yrep <- validate_yrep(yrep, y)
 
@@ -221,6 +227,8 @@ ppc_resid_scatter_avg_vs_x <-
            ...,
            size = 2.5,
            alpha = 0.8) {
+    check_ignored_arguments(...)
+
     y <- validate_y(y)
     yrep <- validate_yrep(yrep, y)
     x <- validate_x(x, y)
@@ -246,6 +254,8 @@ ppc_resid_scatter_avg_vs_x <-
 #'
 ppc_resid_binned <- function(y, Ey, ..., size = 1, alpha = 0.25) {
   suggested_package("arm")
+  check_ignored_arguments(...)
+
   y <- validate_y(y)
   Ey <- validate_yrep(Ey, y)
   resids <- compute_resids(y, Ey)
