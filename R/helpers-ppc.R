@@ -212,6 +212,14 @@ ppc_group_data <- function(y, yrep, group, stat = NULL) {
   dplyr::summarise_(molten_d, value = ~stat(value))
 }
 
+# set mapping depending on freq argument
+set_hist_aes <- function(freq = TRUE, ...) {
+  if (freq)
+    aes_(x = ~ value, ...)
+  else
+    aes_(x = ~ value, y = ~ ..density.., ...)
+}
+
 
 # labels ----------------------------------------------------------------
 create_yrep_ids <- function(ids) paste('italic(y)[rep] (', ids, ")")

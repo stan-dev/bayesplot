@@ -9,7 +9,7 @@
 \alias{ppc_resid_scatter_avg_vs_x}
 \title{PPC residuals (predictive errors)}
 \usage{
-ppc_resid_hist(y, yrep, ..., binwidth = NULL)
+ppc_resid_hist(y, yrep, ..., binwidth = NULL, freq = TRUE)
 
 ppc_resid_scatter(y, yrep, ..., size = 2.5, alpha = 0.8)
 
@@ -34,6 +34,12 @@ instructions.}
 
 \item{binwidth}{An optional value used as the \code{binwidth} argument to
 \code{\link[ggplot2]{geom_histogram}} to override the default binwidth.}
+
+\item{freq}{For histograms, \code{freq=TRUE} (the default) puts count on the
+y-axis. Setting \code{freq=FALSE} puts density on the y-axis. (For many
+plots the y-axis text is off by default. To view the count or density
+labels on the y-axis see the \code{\link{yaxis_text}} convenience
+function.)}
 
 \item{size, alpha}{For scatterplots, arguments passed to
 \code{\link[ggplot2]{geom_point}} to control the appearance of the

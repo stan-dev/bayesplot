@@ -9,11 +9,10 @@
 #' @family PPCs
 #'
 #' @template args-y-yrep
-#' @template args-hist
-#' @param stat A character vector of function names of length 1 (for
-#'   \code{ppc_stat} and \code{ppc_stat_grouped}) or length 2 (for
-#'   \code{ppc_stat_2d}). The function(s) should take a vector input and return
-#'   a scalar test statistic.
+#' @param stat A single function name as a string, except for
+#'   \code{ppc_stat_2d}, which requires a character vector of exactly two
+#'   function names. The function(s) should take a vector input and return a
+#'   scalar test statistic.
 #' @param ... Currently unused.
 #'
 #' @template details-binomial
@@ -33,6 +32,10 @@
 #'   \item{\code{ppc_stat_grouped}}{
 #'    The same as \code{ppc_stat}, but a separate plot is generated for
 #'    each level of a grouping variable.
+#'   }
+#'   \item{\code{ppc_stat_grouped_freqpoly}}{
+#'    The same as \code{ppc_stat_grouped}, but frequency polygons are used
+#'    instead of histograms.
 #'   }
 #'   \item{\code{ppc_stat_2d}}{
 #'    A scatterplot showing the joint distribution of two test statistics
@@ -58,45 +61,52 @@
 #'
 NULL
 
-#' @export
 #' @rdname PPC-test-statistics
+#' @export
+#' @template args-hist
+#' @template args-hist-freq
 #'
-ppc_stat <- function(y, yrep, stat = "mean", ..., binwidth = NULL) {
-  y <- validate_y(y)
-  yrep <- validate_yrep(yrep, y)
-  stat <- validate_stat(stat, 1)
+ppc_stat <-
+  function(y,
+           yrep,
+           stat = "mean",
+           ...,
+           binwidth = NULL,
+           freq = TRUE) {
+    y <- validate_y(y)
+    yrep <- validate_yrep(yrep, y)
+    stat <- validate_stat(stat, 1)
 
-  stat1 <- match.fun(stat)
-  T_y <- stat1(y)
-  T_yrep <- apply(yrep, 1, stat1)
+    stat1 <- match.fun(stat)
+    T_y <- stat1(y)
+    T_yrep <- apply(yrep, 1, stat1)
 
-  ggplot(data.frame(x = T_yrep), aes_(x = ~ x)) +
-    geom_histogram(
-      aes_(fill = "yrep"),
-      color = get_color("lh"),
-      size = .25,
-      na.rm = TRUE,
-      binwidth = binwidth
-    ) +
-    geom_vline(
-      data = data.frame(Ty = T_y),
-      mapping = aes_(xintercept = ~ Ty, color = "y"),
-      size = 1.5
-    ) +
-    scale_fill_manual(values = get_color("l"), labels = Tyrep_label()) +
-    scale_color_manual(values = get_color("dh"), labels = Ty_label()) +
-    guides(
-      fill = guide_legend(title = bquote(italic(T) == .(stat)), order = 1),
-      color = guide_legend(title = NULL)
-    ) +
-    dont_expand_y_axis() +
-    theme_default() +
-    no_legend_spacing() +
-    xaxis_title(FALSE) +
-    yaxis_text(FALSE) +
-    yaxis_ticks(FALSE) +
-    yaxis_title(FALSE)
-}
+    ggplot(data.frame(value = T_yrep),
+           set_hist_aes(freq)) +
+      geom_histogram(
+        aes_(fill = "yrep"),
+        color = get_color("lh"),
+        size = .25,
+        na.rm = TRUE,
+        binwidth = binwidth
+      ) +
+      geom_vline(
+        data = data.frame(Ty = T_y),
+        mapping = aes_(xintercept = ~ Ty, color = "y"),
+        size = 1.5
+      ) +
+      scale_fill_manual(values = get_color("l"), labels = Tyrep_label()) +
+      scale_color_manual(values = get_color("dh"), labels = Ty_label()) +
+      guides(fill = guide_legend(title = bquote(italic(T) == .(stat)), order = 1),
+             color = guide_legend(title = NULL)) +
+      dont_expand_y_axis() +
+      theme_default() +
+      no_legend_spacing() +
+      xaxis_title(FALSE) +
+      yaxis_text(FALSE) +
+      yaxis_ticks(FALSE) +
+      yaxis_title(FALSE)
+  }
 
 #' @export
 #' @rdname PPC-test-statistics
@@ -108,7 +118,8 @@ ppc_stat_grouped <-
            group,
            stat = "mean",
            ...,
-           binwidth = NULL) {
+           binwidth = NULL,
+           freq = TRUE) {
     y <- validate_y(y)
     yrep <- validate_yrep(yrep, y)
     group <- validate_group(group, y)
@@ -117,7 +128,7 @@ ppc_stat_grouped <-
     is_y <- plot_data$variable == "y"
 
     ggplot(plot_data[!is_y, , drop = FALSE],
-           aes_(x = ~ value)) +
+           set_hist_aes(freq)) +
       geom_histogram(
         aes_(fill = "yrep"),
         color = get_color("lh"),
@@ -140,6 +151,52 @@ ppc_stat_grouped <-
       dont_expand_y_axis() +
       theme_default() +
       no_legend_spacing() +
+      xaxis_title(FALSE) +
+      yaxis_text(FALSE) +
+      yaxis_ticks(FALSE) +
+      yaxis_title(FALSE)
+  }
+
+
+#' @export
+#' @rdname PPC-test-statistics
+#'
+ppc_stat_grouped_freqpoly <-
+  function(y,
+           yrep,
+           group,
+           stat = "mean",
+           ...,
+           binwidth = NULL,
+           freq = TRUE) {
+    y <- validate_y(y)
+    yrep <- validate_yrep(yrep, y)
+    group <- validate_group(group, y)
+    stat <- validate_stat(stat, 1)
+    plot_data <- ppc_group_data(y, yrep, group, stat = stat)
+    is_y <- plot_data$variable == "y"
+
+    ggplot(plot_data[!is_y, , drop = FALSE],
+           set_hist_aes(freq)) +
+      geom_freqpoly(
+        aes_(color = "yrep"),
+        size = .5,
+        na.rm = TRUE,
+        binwidth = binwidth
+      ) +
+      geom_vline(
+        data = plot_data[is_y, , drop = FALSE],
+        mapping = aes_(xintercept = ~ value, color = "y"),
+        size = 1
+      ) +
+      facet_wrap("group", scales = "free") +
+      scale_color_manual(
+        name = bquote(italic(T) == .(stat)),
+        values = setNames(get_color(c("m", "dh")), c("yrep", "y")),
+        labels = c(yrep = Tyrep_label(), y = Ty_label())
+      ) +
+      dont_expand_y_axis(c(0.005, 0)) +
+      theme_default() +
       xaxis_title(FALSE) +
       yaxis_text(FALSE) +
       yaxis_ticks(FALSE) +
@@ -205,3 +262,4 @@ ppc_stat_2d <- function(y, yrep, stat = c("mean", "sd"), ...,
     xaxis_title(FALSE) +
     yaxis_title(FALSE)
 }
+

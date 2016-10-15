@@ -9,7 +9,7 @@
 \alias{ppc_violin_grouped}
 \title{PPC distributions}
 \usage{
-ppc_hist(y, yrep, ..., binwidth = NULL)
+ppc_hist(y, yrep, ..., binwidth = NULL, freq = TRUE)
 
 ppc_dens(y, yrep, ..., trim = FALSE)
 

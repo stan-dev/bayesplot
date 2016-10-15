@@ -96,17 +96,18 @@ NULL
 #' @rdname PPC-residuals
 #' @export
 #' @template args-hist
+#' @template args-hist-freq
 #'
-ppc_resid_hist <- function(y, yrep, ..., binwidth = NULL) {
+ppc_resid_hist <- function(y, yrep, ..., binwidth = NULL, freq = TRUE) {
   y <- validate_y(y)
   yrep <- validate_yrep(yrep, y)
 
   if (nrow(yrep) == 1) {
-    resids <- data.frame(x = y - as.vector(yrep))
-    graph <- ggplot(resids, aes_(x = ~ x))
+    resids <- data.frame(value = y - as.vector(yrep))
+    graph <- ggplot(resids, set_hist_aes(freq))
   } else {
     resids <- compute_resids(y, yrep)
-    graph <- ggplot(melt_yrep(resids, label = FALSE), aes_(x = ~ value)) +
+    graph <- ggplot(melt_yrep(resids, label = FALSE), set_hist_aes(freq)) +
       labs(y = NULL, x = expression(italic(y) - italic(y)[rep])) +
       facet_wrap(facets = ~ rep_id)
   }

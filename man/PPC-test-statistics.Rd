@@ -5,11 +5,16 @@
 \alias{ppc_stat}
 \alias{ppc_stat_2d}
 \alias{ppc_stat_grouped}
+\alias{ppc_stat_grouped_freqpoly}
 \title{PPC test statistics}
 \usage{
-ppc_stat(y, yrep, stat = "mean", ..., binwidth = NULL)
+ppc_stat(y, yrep, stat = "mean", ..., binwidth = NULL, freq = TRUE)
 
-ppc_stat_grouped(y, yrep, group, stat = "mean", ..., binwidth = NULL)
+ppc_stat_grouped(y, yrep, group, stat = "mean", ..., binwidth = NULL,
+  freq = TRUE)
+
+ppc_stat_grouped_freqpoly(y, yrep, group, stat = "mean", ...,
+  binwidth = NULL, freq = TRUE)
 
 ppc_stat_2d(y, yrep, stat = c("mean", "sd"), ..., size = 2.5, alpha = 0.7)
 }
@@ -24,15 +29,21 @@ of \code{yrep} should be in the same order as the data points in \code{y}
 for the plots to make sense. See \strong{Details} for additional
 instructions.}
 
-\item{stat}{A character vector of function names of length 1 (for
-\code{ppc_stat} and \code{ppc_stat_grouped}) or length 2 (for
-\code{ppc_stat_2d}). The function(s) should take a vector input and return
-a scalar test statistic.}
+\item{stat}{A single function name as a string, except for
+\code{ppc_stat_2d}, which requires a character vector of exactly two
+function names. The function(s) should take a vector input and return a
+scalar test statistic.}
 
 \item{...}{Currently unused.}
 
 \item{binwidth}{An optional value used as the \code{binwidth} argument to
 \code{\link[ggplot2]{geom_histogram}} to override the default binwidth.}
+
+\item{freq}{For histograms, \code{freq=TRUE} (the default) puts count on the
+y-axis. Setting \code{freq=FALSE} puts density on the y-axis. (For many
+plots the y-axis text is off by default. To view the count or density
+labels on the y-axis see the \code{\link{yaxis_text}} convenience
+function.)}
 
 \item{group}{A grouping variable (a vector or factor) the same length as
 \code{y}. Each value in \code{group} is interpreted as the group level
@@ -68,6 +79,10 @@ For Binomial data, the plots will typically be most useful if
   \item{\code{ppc_stat_grouped}}{
    The same as \code{ppc_stat}, but a separate plot is generated for
    each level of a grouping variable.
+  }
+  \item{\code{ppc_stat_grouped_freqpoly}}{
+   The same as \code{ppc_stat_grouped}, but frequency polygons are used
+   instead of histograms.
   }
   \item{\code{ppc_stat_2d}}{
    A scatterplot showing the joint distribution of two test statistics
