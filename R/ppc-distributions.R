@@ -78,15 +78,8 @@ ppc_hist <- function(y, yrep, ..., binwidth = NULL) {
   y <- validate_y(y)
   yrep <- validate_yrep(yrep, y)
 
-  ggplot(
-    data = melt_and_stack(y, yrep),
-    mapping = aes_(
-      x = ~ value,
-      y = ~ ..density..,
-      fill = ~ is_y,
-      color = ~ is_y
-    )
-  ) +
+  ggplot(melt_and_stack(y, yrep),
+         aes_(x = ~ value, fill = ~ is_y, color = ~ is_y)) +
     geom_histogram(size = 0.25, binwidth = binwidth) +
     scale_fill_manual(
       name = "",

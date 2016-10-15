@@ -108,15 +108,11 @@ ppc_resid_hist <- function(y, yrep, ..., binwidth = NULL) {
     resids <- compute_resids(y, yrep)
     graph <- ggplot(melt_yrep(resids, label = FALSE), aes_(x = ~ value)) +
       labs(y = NULL, x = expression(italic(y) - italic(y)[rep])) +
-      facet_wrap(
-        facets = ~rep_id
-        # labeller = label_bquote(italic(y) - italic(y)[rep](.(rep_id)))
-      )
+      facet_wrap(facets = ~ rep_id)
   }
 
   graph +
     geom_histogram(
-      mapping = aes_(y = ~ ..density..),
       fill = get_color("l"),
       color = get_color("lh"),
       size = 0.25,

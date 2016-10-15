@@ -70,8 +70,7 @@ ppc_stat <- function(y, yrep, stat = "mean", ..., binwidth = NULL) {
   T_y <- stat1(y)
   T_yrep <- apply(yrep, 1, stat1)
 
-  ggplot(data.frame(x = T_yrep),
-         aes_(x = ~ x, y = ~ ..density..)) +
+  ggplot(data.frame(x = T_yrep), aes_(x = ~ x)) +
     geom_histogram(
       aes_(fill = "yrep"),
       color = get_color("lh"),
@@ -117,10 +116,8 @@ ppc_stat_grouped <-
     plot_data <- ppc_group_data(y, yrep, group, stat = stat)
     is_y <- plot_data$variable == "y"
 
-    ggplot(
-      data = plot_data[!is_y, , drop = FALSE],
-      mapping = aes_(x = ~ value, y = ~ ..density..)
-    ) +
+    ggplot(plot_data[!is_y, , drop = FALSE],
+           aes_(x = ~ value)) +
       geom_histogram(
         aes_(fill = "yrep"),
         color = get_color("lh"),
@@ -204,11 +201,6 @@ ppc_stat_2d <- function(y, yrep, stat = c("mean", "sd"), ...,
       values = setNames(get_color(c("dh", "lh")), c("y", "yrep")),
       labels = c(y = Ty_label(), yrep = Tyrep_label())
     ) +
-    # labs(
-    #   x = Tyrep_label_2d(1),
-    #   y = Tyrep_label_2d(2),
-    #   subtitle = paste0("(Stat1 = ", stat[1], ", Stat2 = ", stat[2], ")")
-    # ) +
     theme_default() +
     xaxis_title(FALSE) +
     yaxis_title(FALSE)
