@@ -12,7 +12,8 @@
 #' @template args-hist
 #' @template args-dens
 #' @param size,alpha Passed to the appropriate geom to control the appearance of
-#'   the \code{yrep} distributions.
+#'   the \code{yrep} distributions. For \code{ppc_violin_grouped} only,
+#'   \code{size} controls the size of the \code{y} points.
 #' @param ... Currently unused.
 #'
 #' @template details-binomial
@@ -20,23 +21,16 @@
 #'
 #' @section Plot Descriptions:
 #' \describe{
-#'   \item{\code{ppc_dens_overlay}}{
-#'    Kernel density estimates of each dataset (row) in \code{yrep} are
-#'    overlaid, with the distribution of \code{y} itself on top (and in a darker
-#'    shade).
+#'   \item{\code{ppc_hist, ppc_freqpoly, ppc_dens}}{
+#'    A separate histogram, shaded frequency polygon, or smoothed kernel density
+#'    estimate is plotted for \code{y} and each dataset (row) in \code{yrep}.
+#'    For these plots \code{yrep} should therefore contain only a small number
+#'    of rows. See the \strong{Examples} section.
 #'   }
-#'   \item{\code{ppc_ecdf_overlay}}{
-#'    Empirical CDF estimates of each dataset (row) in \code{yrep} are overlaid,
-#'    with the distribution of \code{y} itself on top (and in a darker shade).
-#'   }
-#'   \item{\code{ppc_hist}}{
-#'    A separate histogram is plotted for \code{y} and each dataset (row) in
-#'    \code{yrep}. For this plot \code{yrep} should therefore contain only a
-#'    small number of rows. See the \strong{Examples} section.
-#'   }
-#'   \item{\code{ppc_dens}}{
-#'    The same as \code{ppc_hist} but kernel density estimates are plotted
-#'    instead of histograms. These plots often look like wizard hats.
+#'   \item{\code{ppc_dens_overlay, ppc_ecdf_overlay}}{
+#'    Kernel density or empirical CDF estimates of each dataset (row) in
+#'    \code{yrep} are overlaid, with the distribution of \code{y} itself on top
+#'    (and in a darker shade).
 #'   }
 #'   \item{\code{ppc_violin_grouped}}{
 #'    The density estimate of \code{yrep} within each level of a grouping
@@ -65,6 +59,8 @@
 #' color_scheme_set("blue")
 #' ppc_dens(y, yrep[200:202, ])
 #'
+#' ppc_freqpoly(y, yrep[1:3,], alpha = 0.1, size = 1, binwidth = 5)
+#'
 #' color_scheme_set("gray")
 #' group <- example_group_data()
 #' ppc_violin_grouped(y, yrep, group, size = 1.5)
@@ -74,7 +70,9 @@ NULL
 
 #' @rdname PPC-distributions
 #' @export
-ppc_hist <- function(y, yrep, ..., binwidth = NULL, freq = TRUE) {
+ppc_hist <- function(y, yrep, ...,
+                     binwidth = NULL,
+                     freq = TRUE) {
   check_ignored_arguments(...)
 
   y <- validate_y(y)
@@ -105,10 +103,54 @@ ppc_hist <- function(y, yrep, ..., binwidth = NULL, freq = TRUE) {
     facet_bg(FALSE)
 }
 
+#' @rdname PPC-distributions
+#' @export
+ppc_freqpoly <- function(y, yrep, ...,
+                         binwidth = NULL,
+                         freq = TRUE,
+                         size = 0.25,
+                         alpha = 1) {
+  check_ignored_arguments(...)
+
+  y <- validate_y(y)
+  yrep <- validate_yrep(yrep, y)
+  ggplot(melt_and_stack(y, yrep),
+         set_hist_aes(freq, fill = ~ is_y, color = ~ is_y)) +
+    geom_area(
+      stat = "bin",
+      binwidth = binwidth,
+      size = size,
+      alpha = alpha
+    ) +
+    scale_fill_manual(
+      name = "",
+      values = get_color(c("d", "l")),
+      labels = c(expression(italic(y)), expression(italic(y)[rep]))
+    ) +
+    scale_color_manual(
+      name = "",
+      values = get_color(c("dh", "lh")),
+      labels = c(expression(italic(y)), expression(italic(y)[rep]))
+    ) +
+    facet_wrap_parsed("rep_id") +
+    force_axes_in_facets() +
+    dont_expand_y_axis() +
+    theme_default() +
+    space_legend_keys() +
+    yaxis_text(FALSE) +
+    yaxis_title(FALSE) +
+    yaxis_ticks(FALSE) +
+    xaxis_title(FALSE) +
+    facet_text(FALSE) +
+    facet_bg(FALSE)
+}
 
 #' @rdname PPC-distributions
 #' @export
-ppc_dens <- function(y, yrep, ..., trim = FALSE) {
+ppc_dens <- function(y, yrep, ...,
+                     trim = FALSE,
+                     size = 0.5,
+                     alpha = 1) {
   check_ignored_arguments(...)
 
   y <- validate_y(y)
@@ -121,7 +163,7 @@ ppc_dens <- function(y, yrep, ..., trim = FALSE) {
       color = ~ is_y
     )
   ) +
-    geom_density(size = 0.5, trim = trim) +
+    geom_density(size = size, alpha = alpha, trim = trim) +
     scale_fill_manual(
       name = "",
       values = get_color(c("d", "l")),
@@ -148,8 +190,9 @@ ppc_dens <- function(y, yrep, ..., trim = FALSE) {
 #' @rdname PPC-distributions
 #' @export
 ppc_dens_overlay <- function(y, yrep, ...,
-                             size = 0.25, alpha = 0.7,
-                             trim = FALSE) {
+                             trim = FALSE,
+                             size = 0.25,
+                             alpha = 0.7) {
   check_ignored_arguments(...)
 
   y <- validate_y(y)
@@ -190,8 +233,9 @@ ppc_dens_overlay <- function(y, yrep, ...,
 #' @param pad For \code{ppc_ecdf_overlay}, a logical scalar passed to
 #'   \code{\link[ggplot2]{stat_ecdf}}.
 ppc_ecdf_overlay <- function(y, yrep, ...,
-                             size = 0.25, alpha = 0.7,
-                             pad = TRUE) {
+                             pad = TRUE,
+                             size = 0.25,
+                             alpha = 0.7) {
   check_ignored_arguments(...)
 
   y <- validate_y(y)
@@ -235,8 +279,8 @@ ppc_ecdf_overlay <- function(y, yrep, ...,
 #'
 ppc_violin_grouped <- function(y, yrep, group, ...,
                                probs = c(0.1, 0.5, 0.9),
-                               alpha = 1,
-                               size = 1) {
+                               size = 1,
+                               alpha = 1) {
   check_ignored_arguments(...)
 
   y <- validate_y(y)

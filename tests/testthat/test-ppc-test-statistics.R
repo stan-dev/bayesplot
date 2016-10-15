@@ -30,3 +30,6 @@ test_that("ppc_stat_grouped returns ggplot object", {
   expect_error(ppc_stat_grouped(y2, yrep2, group2),
                "'group' must have more than one unique value")
 })
+test_that("ppc_stat_grouped_freqpoly returns ggplot object", {
+  expect_gg(ppc_stat_grouped_freqpoly(y, yrep, group, stat = "sd", freq = FALSE))
+})

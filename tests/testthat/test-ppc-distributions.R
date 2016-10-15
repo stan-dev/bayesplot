@@ -13,13 +13,16 @@ test_that("ppc_ecdf_overlay returns a ggplot object", {
   expect_gg(ppc_ecdf_overlay(y2, yrep2))
 })
 
-test_that("ppc_dens and pp_hist return ggplot objects", {
+test_that("ppc_dens,pp_hist,ppc_freqpoly return ggplot objects", {
   expect_gg(ppc_hist(y, yrep[1,, drop = FALSE]))
   expect_gg(ppc_hist(y, yrep[1:8, ]))
   expect_gg(ppc_hist(y2, yrep2))
 
   expect_gg(ppc_dens(y, yrep[1:8, ]))
   expect_gg(ppc_dens(y2, yrep2))
+
+  expect_gg(ppc_freqpoly(y, yrep[1:8, ], binwidth = 2, size = 2, alpha = 0.1))
+  expect_gg(ppc_freqpoly(y2, yrep2))
 
   expect_gg(p <- ppc_hist(y, yrep[1:8, ], binwidth = 3))
   facet_var <- "rep_id"

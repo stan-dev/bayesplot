@@ -5,20 +5,24 @@
 \alias{ppc_dens}
 \alias{ppc_dens_overlay}
 \alias{ppc_ecdf_overlay}
+\alias{ppc_freqpoly}
 \alias{ppc_hist}
 \alias{ppc_violin_grouped}
 \title{PPC distributions}
 \usage{
 ppc_hist(y, yrep, ..., binwidth = NULL, freq = TRUE)
 
-ppc_dens(y, yrep, ..., trim = FALSE)
+ppc_freqpoly(y, yrep, ..., binwidth = NULL, freq = TRUE, size = 0.25,
+  alpha = 1)
 
-ppc_dens_overlay(y, yrep, ..., size = 0.25, alpha = 0.7, trim = FALSE)
+ppc_dens(y, yrep, ..., trim = FALSE, size = 0.5, alpha = 1)
 
-ppc_ecdf_overlay(y, yrep, ..., size = 0.25, alpha = 0.7, pad = TRUE)
+ppc_dens_overlay(y, yrep, ..., trim = FALSE, size = 0.25, alpha = 0.7)
 
-ppc_violin_grouped(y, yrep, group, ..., probs = c(0.1, 0.5, 0.9), alpha = 1,
-  size = 1)
+ppc_ecdf_overlay(y, yrep, ..., pad = TRUE, size = 0.25, alpha = 0.7)
+
+ppc_violin_grouped(y, yrep, group, ..., probs = c(0.1, 0.5, 0.9), size = 1,
+  alpha = 1)
 }
 \arguments{
 \item{y}{A vector of observations. See \strong{Details}.}
@@ -36,10 +40,11 @@ instructions.}
 \item{binwidth}{An optional value used as the \code{binwidth} argument to
 \code{\link[ggplot2]{geom_histogram}} to override the default binwidth.}
 
-\item{trim}{A logical scalar passed to \code{\link[ggplot2]{geom_density}}.}
-
 \item{size, alpha}{Passed to the appropriate geom to control the appearance of
-the \code{yrep} distributions.}
+the \code{yrep} distributions. For \code{ppc_violin_grouped} only,
+\code{size} controls the size of the \code{y} points.}
+
+\item{trim}{A logical scalar passed to \code{\link[ggplot2]{geom_density}}.}
 
 \item{pad}{For \code{ppc_ecdf_overlay}, a logical scalar passed to
 \code{\link[ggplot2]{stat_ecdf}}.}
@@ -70,23 +75,16 @@ For Binomial data, the plots will typically be most useful if
 \section{Plot Descriptions}{
 
 \describe{
-  \item{\code{ppc_dens_overlay}}{
-   Kernel density estimates of each dataset (row) in \code{yrep} are
-   overlaid, with the distribution of \code{y} itself on top (and in a darker
-   shade).
+  \item{\code{ppc_hist, ppc_freqpoly, ppc_dens}}{
+   A separate histogram, shaded frequency polygon, or smoothed kernel density
+   estimate is plotted for \code{y} and each dataset (row) in \code{yrep}.
+   For these plots \code{yrep} should therefore contain only a small number
+   of rows. See the \strong{Examples} section.
   }
-  \item{\code{ppc_ecdf_overlay}}{
-   Empirical CDF estimates of each dataset (row) in \code{yrep} are overlaid,
-   with the distribution of \code{y} itself on top (and in a darker shade).
-  }
-  \item{\code{ppc_hist}}{
-   A separate histogram is plotted for \code{y} and each dataset (row) in
-   \code{yrep}. For this plot \code{yrep} should therefore contain only a
-   small number of rows. See the \strong{Examples} section.
-  }
-  \item{\code{ppc_dens}}{
-   The same as \code{ppc_hist} but kernel density estimates are plotted
-   instead of histograms. These plots often look like wizard hats.
+  \item{\code{ppc_dens_overlay, ppc_ecdf_overlay}}{
+   Kernel density or empirical CDF estimates of each dataset (row) in
+   \code{yrep} are overlaid, with the distribution of \code{y} itself on top
+   (and in a darker shade).
   }
   \item{\code{ppc_violin_grouped}}{
    The density estimate of \code{yrep} within each level of a grouping
@@ -111,6 +109,8 @@ ppc_hist(y, yrep[1:8, ])
 # wizard hat plot
 color_scheme_set("blue")
 ppc_dens(y, yrep[200:202, ])
+
+ppc_freqpoly(y, yrep[1:3,], alpha = 0.1, size = 1, binwidth = 5)
 
 color_scheme_set("gray")
 group <- example_group_data()
