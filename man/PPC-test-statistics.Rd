@@ -4,8 +4,8 @@
 \alias{PPC-test-statistics}
 \alias{ppc_stat}
 \alias{ppc_stat_2d}
+\alias{ppc_stat_freqpoly_grouped}
 \alias{ppc_stat_grouped}
-\alias{ppc_stat_grouped_freqpoly}
 \title{PPC test statistics}
 \usage{
 ppc_stat(y, yrep, stat = "mean", ..., binwidth = NULL, freq = TRUE)
@@ -13,7 +13,7 @@ ppc_stat(y, yrep, stat = "mean", ..., binwidth = NULL, freq = TRUE)
 ppc_stat_grouped(y, yrep, group, stat = "mean", ..., binwidth = NULL,
   freq = TRUE)
 
-ppc_stat_grouped_freqpoly(y, yrep, group, stat = "mean", ...,
+ppc_stat_freqpoly_grouped(y, yrep, group, stat = "mean", ...,
   binwidth = NULL, freq = TRUE)
 
 ppc_stat_2d(y, yrep, stat = c("mean", "sd"), ..., size = 2.5, alpha = 0.7)
@@ -76,13 +76,11 @@ For Binomial data, the plots will typically be most useful if
    statistic in the observed data, \code{stat(y)}, is overlaid as a vertical
    line.
   }
-  \item{\code{ppc_stat_grouped}}{
-   The same as \code{ppc_stat}, but a separate plot is generated for
-   each level of a grouping variable.
-  }
-  \item{\code{ppc_stat_grouped_freqpoly}}{
-   The same as \code{ppc_stat_grouped}, but frequency polygons are used
-   instead of histograms.
+  \item{\code{ppc_stat_grouped,ppc_stat_freqpoly_grouped}}{
+   The same as \code{ppc_stat}, but a separate plot is generated for each
+   level of a grouping variable. In the case of
+   \code{ppc_stat_freqpoly_grouped} the plots are frequency polygons rather
+   than histograms.
   }
   \item{\code{ppc_stat_2d}}{
    A scatterplot showing the joint distribution of two test statistics
@@ -99,8 +97,12 @@ ppc_stat(y, yrep, stat = "sd") + legend_none()
 ppc_stat_2d(y, yrep)
 ppc_stat_2d(y, yrep, stat = c("median", "mean")) + legend_none()
 
+color_scheme_set("teal")
 group <- example_group_data()
 ppc_stat_grouped(y, yrep, group)
+
+color_scheme_set("mix-red-blue")
+ppc_stat_freqpoly_grouped(y, yrep, group)
 
 # use your own function to compute test statistics
 q25 <- function(y) quantile(y, 0.25)

@@ -29,13 +29,11 @@
 #'    statistic in the observed data, \code{stat(y)}, is overlaid as a vertical
 #'    line.
 #'   }
-#'   \item{\code{ppc_stat_grouped}}{
-#'    The same as \code{ppc_stat}, but a separate plot is generated for
-#'    each level of a grouping variable.
-#'   }
-#'   \item{\code{ppc_stat_grouped_freqpoly}}{
-#'    The same as \code{ppc_stat_grouped}, but frequency polygons are used
-#'    instead of histograms.
+#'   \item{\code{ppc_stat_grouped,ppc_stat_freqpoly_grouped}}{
+#'    The same as \code{ppc_stat}, but a separate plot is generated for each
+#'    level of a grouping variable. In the case of
+#'    \code{ppc_stat_freqpoly_grouped} the plots are frequency polygons rather
+#'    than histograms.
 #'   }
 #'   \item{\code{ppc_stat_2d}}{
 #'    A scatterplot showing the joint distribution of two test statistics
@@ -52,8 +50,12 @@
 #' ppc_stat_2d(y, yrep)
 #' ppc_stat_2d(y, yrep, stat = c("median", "mean")) + legend_none()
 #'
+#' color_scheme_set("teal")
 #' group <- example_group_data()
 #' ppc_stat_grouped(y, yrep, group)
+#'
+#' color_scheme_set("mix-red-blue")
+#' ppc_stat_freqpoly_grouped(y, yrep, group)
 #'
 #' # use your own function to compute test statistics
 #' q25 <- function(y) quantile(y, 0.25)
@@ -165,7 +167,7 @@ ppc_stat_grouped <-
 #' @export
 #' @rdname PPC-test-statistics
 #'
-ppc_stat_grouped_freqpoly <-
+ppc_stat_freqpoly_grouped <-
   function(y,
            yrep,
            group,
@@ -193,12 +195,13 @@ ppc_stat_grouped_freqpoly <-
       geom_vline(
         data = plot_data[is_y, , drop = FALSE],
         mapping = aes_(xintercept = ~ value, color = "y"),
+        show.legend = FALSE,
         size = 1
       ) +
       facet_wrap("group", scales = "free") +
       scale_color_manual(
         name = bquote(italic(T) == .(stat)),
-        values = setNames(get_color(c("m", "dh")), c("yrep", "y")),
+        values = setNames(get_color(c("mh", "dh")), c("yrep", "y")),
         labels = c(yrep = Tyrep_label(), y = Ty_label())
       ) +
       dont_expand_y_axis(c(0.005, 0)) +

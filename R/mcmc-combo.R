@@ -14,11 +14,6 @@
 #'   \code{widths = c(2, 1)} will allocate more space for the first column by a
 #'   factor of 2 (as would \code{widths = c(.3, .15)}, etc.). The default,
 #'   \code{NULL}, allocates the same horiztonal space for each column.
-#' @param plot A logical value indicating whether or not to display the plots.
-#'   If \code{plot} is \code{FALSE} then the object is returned invisibly
-#'   without plotting.
-#' @param newpage Passed to \code{\link[gridExtra]{grid.arrange}} if
-#'   \code{plot=TRUE}.
 #' @param gg_theme Unlike most of the other \pkg{bayesplot} functions,
 #'   \code{mcmc_combo} returns a gtable object rather than a ggplot object, and
 #'   so theme objects can't be added directly to the returned plot object. The
@@ -70,8 +65,6 @@ mcmc_combo <-
   function(x,
            combo = c("dens", "trace"),
            widths = NULL,
-           plot = TRUE,
-           newpage = TRUE,
            gg_theme = NULL,
            ...) {
     suggested_package("gridExtra")

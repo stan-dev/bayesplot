@@ -5,8 +5,8 @@
 \alias{mcmc_combo}
 \title{Combination plots}
 \usage{
-mcmc_combo(x, combo = c("dens", "trace"), widths = NULL, plot = TRUE,
-  newpage = TRUE, gg_theme = NULL, ...)
+mcmc_combo(x, combo = c("dens", "trace"), widths = NULL, gg_theme = NULL,
+  ...)
 }
 \arguments{
 \item{x}{A 3-D array, matrix, list of matrices, or data frame of MCMC draws.
@@ -23,13 +23,6 @@ relative column widths. For example, if the plot has two columns, then
 \code{widths = c(2, 1)} will allocate more space for the first column by a
 factor of 2 (as would \code{widths = c(.3, .15)}, etc.). The default,
 \code{NULL}, allocates the same horiztonal space for each column.}
-
-\item{plot}{A logical value indicating whether or not to display the plots.
-If \code{plot} is \code{FALSE} then the object is returned invisibly
-without plotting.}
-
-\item{newpage}{Passed to \code{\link[gridExtra]{grid.arrange}} if
-\code{plot=TRUE}.}
 
 \item{gg_theme}{Unlike most of the other \pkg{bayesplot} functions,
 \code{mcmc_combo} returns a gtable object rather than a ggplot object, and
