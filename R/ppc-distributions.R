@@ -28,6 +28,12 @@
 #'    For these plots \code{yrep} should therefore contain only a small number
 #'    of rows. See the \strong{Examples} section.
 #'   }
+#'   \item{\code{ppc_freqpoly_grouped}}{
+#'    A separate frequency polygon is plotted for each level of a grouping
+#'    variable for \code{y} and each dataset (row) in \code{yrep}. For this plot
+#'    \code{yrep} should therefore contain only a small number of rows. See the
+#'    \strong{Examples} section.
+#'   }
 #'   \item{\code{ppc_dens_overlay, ppc_ecdf_overlay}}{
 #'    Kernel density or empirical CDF estimates of each dataset (row) in
 #'    \code{yrep} are overlaid, with the distribution of \code{y} itself on top
@@ -62,8 +68,14 @@
 #'
 #' ppc_freqpoly(y, yrep[1:3,], alpha = 0.1, size = 1, binwidth = 5)
 #'
-#' color_scheme_set("gray")
+#' # if groups are different sizes then the 'freq' argument can be useful
 #' group <- example_group_data()
+#' ppc_freqpoly_grouped(y, yrep[1:3,], group) + yaxis_text()
+#' ppc_freqpoly_grouped(y, yrep[1:3,], group, freq = FALSE) + yaxis_text()
+#'
+#' # don't need to only use small number of rows for ppc_violin_grouped
+#' # (as it pools yrep draws within groups)
+#' color_scheme_set("gray")
 #' ppc_violin_grouped(y, yrep, group, size = 1.5)
 #' ppc_violin_grouped(y, yrep, group, alpha = 0)
 #'
@@ -145,6 +157,60 @@ ppc_freqpoly <- function(y, yrep, ...,
     facet_text(FALSE) +
     facet_bg(FALSE)
 }
+
+#' @export
+#' @rdname PPC-distributions
+#'
+ppc_freqpoly_grouped <-
+  function(y,
+           yrep,
+           group,
+           ...,
+           binwidth = NULL,
+           freq = TRUE,
+           size = 0.25,
+           alpha = 1) {
+    check_ignored_arguments(...)
+
+    y <- validate_y(y)
+    yrep <- validate_yrep(yrep, y)
+    group <- validate_group(group, y)
+    plot_data <- ppc_group_data(y, yrep, group)
+    is_y <- factor(plot_data$variable == "y",
+                   levels = c(TRUE, FALSE))
+
+    ggplot(plot_data, set_hist_aes(freq)) +
+      geom_area(
+        aes_(color = ~ is_y, fill = ~ is_y),
+        stat = "bin",
+        size = size,
+        alpha = alpha,
+        binwidth = binwidth,
+        na.rm = TRUE
+      ) +
+      facet_grid(variable ~ group, scales = "free") +
+      scale_fill_manual(
+        name = "",
+        values = get_color(c("d", "l")),
+        labels = c(expression(italic(y)), expression(italic(y)[rep]))
+      ) +
+      scale_color_manual(
+        name = "",
+        values = get_color(c("dh", "lh")),
+        labels = c(expression(italic(y)), expression(italic(y)[rep]))
+      ) +
+      dont_expand_y_axis(c(0.005, 0)) +
+      force_axes_in_facets() +
+      theme_default() +
+      space_legend_keys() +
+      xaxis_title(FALSE) +
+      yaxis_text(FALSE) +
+      yaxis_ticks(FALSE) +
+      yaxis_title(FALSE) +
+      facet_bg(FALSE) +
+      theme(strip.text.y = element_blank())
+  }
+
 
 #' @rdname PPC-distributions
 #' @export

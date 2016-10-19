@@ -29,6 +29,15 @@ test_that("ppc_dens,pp_hist,ppc_freqpoly return ggplot objects", {
   expect_equal(as.character(p$facet$params$facets[1]), facet_var)
 })
 
+test_that("ppc_freqpoly_grouped returns a ggplot object", {
+  expect_gg(ppc_freqpoly_grouped(y, yrep[1:4, ], group))
+  expect_gg(ppc_freqpoly_grouped(y, yrep[1:4, ], group,
+                                 freq = TRUE, alpha = 0.5))
+
+  expect_error(ppc_freqpoly_grouped(y2, yrep2, group2),
+               "'group' must have more than one unique value")
+})
+
 test_that("ppc_violin_grouped returns a ggplot object", {
   expect_gg(ppc_violin_grouped(y, yrep, group))
   expect_gg(ppc_violin_grouped(y, yrep, as.numeric(group)))
