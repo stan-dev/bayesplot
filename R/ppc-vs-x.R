@@ -1,7 +1,9 @@
 #' PPC vs. \eqn{x}
 #'
-#' Medians and central interval estimates of \code{yrep} by value of \code{x},
-#' with \code{y} overlaid. See the \strong{Plot Descriptions} section, below.
+#' Medians and central interval estimates of \code{yrep} by value of a variable
+#' \code{x}, with \code{y} overlaid. See the \strong{Plot Descriptions} section,
+#' below. This functionality  will greatly expand in future releases of the
+#' package.
 #'
 #' @name PPC-vs-x
 #' @family PPCs

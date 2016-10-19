@@ -5,9 +5,9 @@
 #' @family MCMC
 #'
 #' @description
-#' The \pkg{bayesplot} package provides various plotting functions for creating
-#' graphical displays of Markov chain Monte Carlo (MCMC) simulations. The
-#' \strong{MCMC plotting functions} section, below, provides links to the
+#' The \pkg{bayesplot} MCMC module provides various plotting functions for
+#' creating graphical displays of Markov chain Monte Carlo (MCMC) simulations.
+#' The \strong{MCMC plotting functions} section, below, provides links to the
 #' documentation for various categories of MCMC plots. Currently the MCMC
 #' plotting functions accept posterior draws provided in one of the following
 #' formats:

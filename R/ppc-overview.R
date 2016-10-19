@@ -5,10 +5,10 @@
 #' @family PPCs
 #'
 #' @description
-#' The \pkg{bayesplot} package provides various plotting functions for creating
-#' graphical displays comparing observed data to simulated data from the
-#' posterior predictive distribution. See below for a brief discussion of the
-#' ideas behind posterior predictive checking, a description of the
+#' The \pkg{bayesplot} PPC module provides various plotting functions for
+#' creating graphical displays comparing observed data to simulated data from
+#' the posterior predictive distribution. See below for a brief discussion of
+#' the ideas behind posterior predictive checking, a description of the
 #' structure of this package, and tips on providing an interface to
 #' \pkg{bayesplot} from another package.
 #'

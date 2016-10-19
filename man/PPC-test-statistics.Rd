@@ -95,7 +95,7 @@ yrep <- example_yrep_draws()
 ppc_stat(y, yrep)
 ppc_stat(y, yrep, stat = "sd") + legend_none()
 ppc_stat_2d(y, yrep)
-ppc_stat_2d(y, yrep, stat = c("median", "mean")) + legend_none()
+ppc_stat_2d(y, yrep, stat = c("median", "mean")) + legend_move("bottom")
 
 color_scheme_set("teal")
 group <- example_group_data()
@@ -105,6 +105,7 @@ color_scheme_set("mix-red-blue")
 ppc_stat_freqpoly_grouped(y, yrep, group)
 
 # use your own function to compute test statistics
+color_scheme_set("brightblue")
 q25 <- function(y) quantile(y, 0.25)
 ppc_stat(y, yrep, stat = "q25")
 

@@ -83,8 +83,7 @@ the roach count in each apartment at the end of the experiment.
 
 ```{r, roaches-model, results="hide", message=FALSE,warning=FALSE}
 library("rstanarm")
-data(roaches) # see help("rstanarm-datasets")
-head(roaches)
+head(roaches) # see help("rstanarm-datasets")
 
 roaches$roach1 <- roaches$roach1 / 100 # pre-treatment number of roaches (in 100s)
 fit_poisson <- stan_glm(
@@ -271,8 +270,6 @@ pp_check.foo <- function(object, ..., type = c("multiple", "overlaid")) {
     overlaid = ppc_dens_overlay(y, yrep)
   )
 }
-
-print(methods("pp_check"))
 ```
 
 To try out `pp_check.foo` we can just make a list with `y` and `yrep` components

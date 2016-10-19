@@ -33,8 +33,9 @@ The plotting functions in \pkg{bayesplot} are organized into several modules:
   using the \link[=NUTS]{No-U-Turn Sampler (NUTS)}.
   \item \strong{\link[=PPC-overview]{PPC}}:
   Graphical posterior predictive checks (PPCs).
-  \item \strong{Inference/Prediction}:
-  (Coming soon) Plots designed to assist with inference and prediction.
+  \item \strong{Prediction/forecasting}:
+  (Coming in a future release) Plots designed to assist with out-of-sample
+  prediction.
 }
 }
 \examples{

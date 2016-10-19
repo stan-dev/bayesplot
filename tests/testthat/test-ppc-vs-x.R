@@ -1,5 +1,5 @@
 library(bayesplot)
-context("PPC: time-series")
+context("PPC: vs X")
 
 source("data-for-ppc-tests.R")
 

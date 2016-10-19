@@ -6,6 +6,7 @@
 \alias{ppc_dens_overlay}
 \alias{ppc_ecdf_overlay}
 \alias{ppc_freqpoly}
+\alias{ppc_freqpoly_grouped}
 \alias{ppc_hist}
 \alias{ppc_violin_grouped}
 \title{PPC distributions}
@@ -14,6 +15,9 @@ ppc_hist(y, yrep, ..., binwidth = NULL, freq = TRUE)
 
 ppc_freqpoly(y, yrep, ..., binwidth = NULL, freq = TRUE, size = 0.25,
   alpha = 1)
+
+ppc_freqpoly_grouped(y, yrep, group, ..., binwidth = NULL, freq = TRUE,
+  size = 0.25, alpha = 1)
 
 ppc_dens(y, yrep, ..., trim = FALSE, size = 0.5, alpha = 1)
 
@@ -50,14 +54,14 @@ function.)}
 the \code{yrep} distributions. For \code{ppc_violin_grouped} only,
 \code{size} controls the size of the \code{y} points.}
 
+\item{group}{A grouping variable (a vector or factor) the same length as
+\code{y}. Each value in \code{group} is interpreted as the group level
+pertaining to the corresponding value of \code{y}.}
+
 \item{trim}{A logical scalar passed to \code{\link[ggplot2]{geom_density}}.}
 
 \item{pad}{For \code{ppc_ecdf_overlay}, a logical scalar passed to
 \code{\link[ggplot2]{stat_ecdf}}.}
-
-\item{group}{A grouping variable (a vector or factor) the same length as
-\code{y}. Each value in \code{group} is interpreted as the group level
-pertaining to the corresponding value of \code{y}.}
 
 \item{probs}{A numeric vector passed to \code{\link[ggplot2]{geom_violin}}'s
 \code{draw_quantiles} argument to specify at which quantiles to draw
@@ -86,6 +90,12 @@ For Binomial data, the plots will typically be most useful if
    estimate is plotted for \code{y} and each dataset (row) in \code{yrep}.
    For these plots \code{yrep} should therefore contain only a small number
    of rows. See the \strong{Examples} section.
+  }
+  \item{\code{ppc_freqpoly_grouped}}{
+   A separate frequency polygon is plotted for each level of a grouping
+   variable for \code{y} and each dataset (row) in \code{yrep}. For this plot
+   \code{yrep} should therefore contain only a small number of rows. See the
+   \strong{Examples} section.
   }
   \item{\code{ppc_dens_overlay, ppc_ecdf_overlay}}{
    Kernel density or empirical CDF estimates of each dataset (row) in
@@ -118,8 +128,14 @@ ppc_dens(y, yrep[200:202, ])
 
 ppc_freqpoly(y, yrep[1:3,], alpha = 0.1, size = 1, binwidth = 5)
 
-color_scheme_set("gray")
+# if groups are different sizes then the 'freq' argument can be useful
 group <- example_group_data()
+ppc_freqpoly_grouped(y, yrep[1:3,], group) + yaxis_text()
+ppc_freqpoly_grouped(y, yrep[1:3,], group, freq = FALSE) + yaxis_text()
+
+# don't need to only use small number of rows for ppc_violin_grouped
+# (as it pools yrep draws within groups)
+color_scheme_set("gray")
 ppc_violin_grouped(y, yrep, group, size = 1.5)
 ppc_violin_grouped(y, yrep, group, alpha = 0)
 

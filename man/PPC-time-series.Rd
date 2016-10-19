@@ -56,7 +56,8 @@ A ggplot object that can be further customized using the
 \description{
 PPCs for time series. Medians and central interval estimates of \code{yrep}
 by time, with \code{y} overlaid. See the \strong{Plot Descriptions} section,
-below.
+below. Functionality for time series models will greatly expand in future
+releases of the package.
 }
 \details{
 For Binomial data, the plots will typically be most useful if
