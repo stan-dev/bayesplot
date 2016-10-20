@@ -77,12 +77,10 @@ organized into several categories, each with its own documentation:
     the replicated datasets (rows) in \code{yrep} compared to value of the
     statistic(s) computed from \code{y}.
   }
-  \item{\strong{\link[=PPC-time-series]{Time series}}}{
-    Interval estimates of \code{yrep} by time, with \code{y} overlaid.
-  }
-  \item{\strong{\link[=PPC-vs-x]{Vs. x}}}{
-    Interval estimates of \code{yrep} at values of a variable \code{x},
-    with \code{y} overlaid.
+  \item{\strong{\link[=PPC-intervals]{Intervals}}}{
+    Interval estimates of \code{yrep} with \code{y} overlaid. The x-axis
+    variable can be optionally specified by the user (e.g. to plot against
+    against a predictor variable or over time).
   }
 }
 }
@@ -103,9 +101,8 @@ Gelman, A., Carlin, J. B., Stern, H. S., Dunson, D. B., Vehtari,
 }
 \seealso{
 Other PPCs: \code{\link{PPC-distributions}},
-  \code{\link{PPC-residuals}},
+  \code{\link{PPC-intervals}}, \code{\link{PPC-residuals}},
   \code{\link{PPC-scatterplots}},
-  \code{\link{PPC-test-statistics}},
-  \code{\link{PPC-time-series}}, \code{\link{PPC-vs-x}}
+  \code{\link{PPC-test-statistics}}
 }
 

@@ -90,8 +90,8 @@ Gelman, A., Carlin, J. B., Stern, H. S., Dunson, D. B., Vehtari,
 }
 \seealso{
 Other PPCs: \code{\link{PPC-distributions}},
-  \code{\link{PPC-overview}}, \code{\link{PPC-residuals}},
-  \code{\link{PPC-test-statistics}},
-  \code{\link{PPC-time-series}}, \code{\link{PPC-vs-x}}
+  \code{\link{PPC-intervals}}, \code{\link{PPC-overview}},
+  \code{\link{PPC-residuals}},
+  \code{\link{PPC-test-statistics}}
 }
 

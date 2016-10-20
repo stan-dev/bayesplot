@@ -219,7 +219,9 @@ ppc_resid_scatter_avg <-
 
 #' @rdname PPC-residuals
 #' @export
-#' @inheritParams ppc_vs_x
+#' @param x A numeric vector the same length as \code{y} to use as the x-axis
+#'   variable.
+#'
 ppc_resid_scatter_avg_vs_x <-
   function(y,
            yrep,

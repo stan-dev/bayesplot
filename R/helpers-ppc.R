@@ -108,7 +108,10 @@ validate_time <- function(time, y, unique_times = TRUE) {
 # @param x,y The user's x vector and the y object returned by validate_y.
 # @return Either throws an error or returns a numeric vector.
 #
-validate_x <- function(x, y) {
+validate_x <- function(x, y, unique_x = FALSE) {
+  if (missing(x))
+    return(1:length(y))
+
   stopifnot(is.numeric(x))
   if (!is_vector_or_1Darray(x))
     stop("'x' must be a vector or 1D array.")
@@ -118,6 +121,8 @@ validate_x <- function(x, y) {
     stop("length(x) must be equal to length(y).")
   if (anyNA(x))
     stop("NAs not allowed in 'x'.")
+  if (unique_x)
+    stopifnot(identical(length(x), length(unique(x))))
 
   unname(x)
 }

@@ -146,10 +146,9 @@ Gelman, A., Carlin, J. B., Stern, H. S., Dunson, D. B., Vehtari,
   Press, London, third edition. (Ch. 6)
 }
 \seealso{
-Other PPCs: \code{\link{PPC-overview}},
-  \code{\link{PPC-residuals}},
+Other PPCs: \code{\link{PPC-intervals}},
+  \code{\link{PPC-overview}}, \code{\link{PPC-residuals}},
   \code{\link{PPC-scatterplots}},
-  \code{\link{PPC-test-statistics}},
-  \code{\link{PPC-time-series}}, \code{\link{PPC-vs-x}}
+  \code{\link{PPC-test-statistics}}
 }
 
