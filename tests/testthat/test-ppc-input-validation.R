@@ -50,34 +50,13 @@ test_that("validate_group throws errors", {
                "must have more than one unique value")
 })
 
-# validating time --------------------------------------------------------
-test_that("validate_time works", {
-  expect_identical(validate_time(1:3, y = 1:3), 1:3)
-  expect_identical(validate_time(as.numeric(1:3), y = 4:6), as.numeric(1:3))
-
-  # with time missing it should return 1:length(y)
-  expect_identical(validate_time(y = rnorm(3)), 1:3)
-
-  tt <- rnorm(length(y))
-  expect_identical(validate_time(tt, y), tt)
-  expect_identical(validate_time(as.array(tt), y), tt)
-
-  tt <- c(1,2,2)
-  expect_identical(validate_time(tt, y = 1:3, unique_times = FALSE), tt)
-})
-test_that("validate_time throws errors", {
-  expect_error(validate_time(time = letters[1:3], y = 1:3), "numeric")
-  expect_error(validate_time(time = yrep, y = 1:3), "vector")
-  expect_error(validate_time(time = 1:2, y = 1:3), "must be equal to")
-  expect_error(validate_time(time = c(1,2,NA), y = 1:3), "NAs not allowed")
-  expect_error(validate_time(time = c(1,2,2), y = 1:3), "unique")
-})
 
 # validating x --------------------------------------------------------
 test_that("validate_x works", {
   x <- rnorm(3)
   expect_identical(validate_x(x, y = 1:3), x)
   expect_identical(validate_x(array(x), y = rnorm(3)), x)
+  expect_identical(validate_x(y = rnorm(3)), 1:3)
 
   names(x) <- letters[1:3]
   expect_identical(validate_x(x, y = 1:3), unname(x))
