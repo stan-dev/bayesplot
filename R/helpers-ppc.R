@@ -73,33 +73,6 @@ validate_group <- function(group, y) {
   unname(group)
 }
 
-# Validate time
-#
-# Checks that time variable has same length as y and is numeric.
-#
-# @param time,y The user's time object and the y object returned by validate_y.
-# @return Either throws an error or returns a numeric vector.
-#
-validate_time <- function(time, y, unique_times = TRUE) {
-  if (missing(time))
-    return(1:length(y))
-
-  stopifnot(is.numeric(time))
-  if (!is_vector_or_1Darray(time))
-    stop("'time' must be a vector or a 1D array.")
-  time <- as.vector(time)
-
-  if (anyNA(time))
-    stop("NAs not allowed in 'time'.")
-  if (!identical(length(time), length(y)))
-    stop("length(time) must be equal to length(y).")
-  if (unique_times)
-    stopifnot(identical(length(time), length(unique(time))))
-
-  unname(time)
-}
-
-
 # Validate x
 #
 # Checks that x is a numeric vector, doesn't have any NAs, and has the
@@ -108,7 +81,10 @@ validate_time <- function(time, y, unique_times = TRUE) {
 # @param x,y The user's x vector and the y object returned by validate_y.
 # @return Either throws an error or returns a numeric vector.
 #
-validate_x <- function(x, y) {
+validate_x <- function(x, y, unique_x = FALSE) {
+  if (missing(x))
+    return(1:length(y))
+
   stopifnot(is.numeric(x))
   if (!is_vector_or_1Darray(x))
     stop("'x' must be a vector or 1D array.")
@@ -118,6 +94,8 @@ validate_x <- function(x, y) {
     stop("length(x) must be equal to length(y).")
   if (anyNA(x))
     stop("NAs not allowed in 'x'.")
+  if (unique_x)
+    stopifnot(identical(length(x), length(unique(x))))
 
   unname(x)
 }

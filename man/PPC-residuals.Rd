@@ -46,7 +46,8 @@ function.)}
 points. For the binned residual plot, arguments controlling the size of
 the outline and opacity of the shaded region indicating the 2-SE bounds.}
 
-\item{x}{A numeric vector the same length as \code{y}.}
+\item{x}{A numeric vector the same length as \code{y} to use as the x-axis
+variable.}
 
 \item{Ey}{A matrix of posterior draws of the linear predictor transformed by
 the inverse-link function. For logistic regression models, \code{Ey} would
@@ -143,9 +144,8 @@ Gelman, A., Carlin, J. B., Stern, H. S., Dunson, D. B., Vehtari,
 }
 \seealso{
 Other PPCs: \code{\link{PPC-distributions}},
-  \code{\link{PPC-overview}},
+  \code{\link{PPC-intervals}}, \code{\link{PPC-overview}},
   \code{\link{PPC-scatterplots}},
-  \code{\link{PPC-test-statistics}},
-  \code{\link{PPC-time-series}}, \code{\link{PPC-vs-x}}
+  \code{\link{PPC-test-statistics}}
 }
 
