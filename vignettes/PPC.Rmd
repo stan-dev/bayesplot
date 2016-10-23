@@ -225,7 +225,7 @@ ppc_stat(y, yrep_nb, stat = "max", binwidth = 100) +
 
 Write this section.
 
-### Distributions of residuals
+### Distributions of predictive errors
 
 Write this section.
 
