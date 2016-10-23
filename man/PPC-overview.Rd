@@ -62,16 +62,6 @@ organized into several categories, each with its own documentation:
     observed data \code{y} to the distributions of individual replicated
     datasets (rows) in \code{yrep}.
   }
-  \item{\strong{\link[=PPC-residuals]{Residuals}}}{
-    Plots of residuals computed from \code{y} and individual replicated
-    datasets (rows) in \code{yrep}. For binomial data binned residual plots
-    are also available.
-  }
-  \item{\strong{\link[=PPC-scatterplots]{Scatterplots}}}{
-    Scatterplots of the observed data \code{y} vs. individual replicated
-    datasets (rows) in \code{yrep}, or vs. the average value of the
-    distributions of each data point (columns) in \code{yrep}.
-  }
   \item{\strong{\link[=PPC-test-statistics]{Test statistics}}}{
     The distribution of a test statistic, or a pair of test statistics, over
     the replicated datasets (rows) in \code{yrep} compared to value of the
@@ -81,6 +71,16 @@ organized into several categories, each with its own documentation:
     Interval estimates of \code{yrep} with \code{y} overlaid. The x-axis
     variable can be optionally specified by the user (e.g. to plot against
     against a predictor variable or over time).
+  }
+  \item{\strong{\link[=PPC-errors]{Predictive errors}}}{
+    Plots of predictive errors (\code{y - yrep}) computed from \code{y} and
+    replicated datasets (rows) in \code{yrep}. For binomial models binned
+    error plots are also available.
+  }
+  \item{\strong{\link[=PPC-scatterplots]{Scatterplots}}}{
+    Scatterplots of the observed data \code{y} vs. individual replicated
+    datasets (rows) in \code{yrep}, or vs. the average value of the
+    distributions of each data point (columns) in \code{yrep}.
   }
 }
 }
@@ -101,7 +101,7 @@ Gelman, A., Carlin, J. B., Stern, H. S., Dunson, D. B., Vehtari,
 }
 \seealso{
 Other PPCs: \code{\link{PPC-distributions}},
-  \code{\link{PPC-intervals}}, \code{\link{PPC-residuals}},
+  \code{\link{PPC-errors}}, \code{\link{PPC-intervals}},
   \code{\link{PPC-scatterplots}},
   \code{\link{PPC-test-statistics}}
 }

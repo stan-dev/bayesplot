@@ -1,62 +1,60 @@
-#' PPC residuals (predictive errors)
+#' PPC errors
 #'
-#' Various plots of residuals (or more precisely, \emph{predictive errors})
-#' computed from \code{y} and \code{yrep}. See the \strong{Details} and
-#' \strong{Plot Descriptions} sections, below.
+#' Various plots of predictive errors \code{y} - \code{yrep}. See the
+#' \strong{Details} and \strong{Plot Descriptions} sections, below.
 #'
-#' @name PPC-residuals
+#' @name PPC-errors
 #' @family PPCs
 #'
 #' @template args-y-yrep
 #' @param ... Currently unused.
 #' @param size,alpha For scatterplots, arguments passed to
 #'   \code{\link[ggplot2]{geom_point}} to control the appearance of the
-#'   points. For the binned residual plot, arguments controlling the size of
+#'   points. For the binned error plot, arguments controlling the size of
 #'   the outline and opacity of the shaded region indicating the 2-SE bounds.
 #'
 #' @details
 #' All of these functions (aside from the \code{*_scatter_avg} functions)
-#' compute and plot residuals for each row of the matrix \code{yrep} (or for
-#' \code{ppc_resid_binned} the matrix \code{Ey}), so it is usually a good idea
-#' for \code{yrep} and \code{Ey} to contain only a small number of draws (rows).
-#' See \strong{Examples}, below.
+#' compute and plot predictive errors for each row of the matrix \code{yrep}, so
+#' it is usually a good idea for \code{yrep} to contain only a small number of
+#' draws (rows). See \strong{Examples}, below.
 #'
-#' For binomial and Bernoulli data the \code{ppc_resid_binned} function
-#' can be used to generate binned residual plots. Bernoulli data can be input
-#' as a vector of 0s and 1s, whereas for binomial data \code{y} should be a
-#' vector of "success" proportions (not a matrix of "success" and "failure"
-#' counts).
+#' For binomial and Bernoulli data the \code{ppc_error_binned} function can be
+#' used to generate binned error plots. Bernoulli data can be input as a vector
+#' of 0s and 1s, whereas for binomial data \code{y} and \code{yrep} should
+#' contain "success" proportions (not counts). See the \strong{Examples}
+#' section, below.
 #'
 #' @section Plot descriptions:
 #' \describe{
-#'   \item{\code{ppc_resid_hist}}{
+#'   \item{\code{ppc_error_hist}}{
 #'    A separate histogram is plotted for the predictive errors computed from
 #'    \code{y} and each dataset (row) in \code{yrep}. For this plot \code{yrep}
 #'    should have only a small number of rows.
 #'   }
-#'   \item{\code{ppc_resid_scatter}}{
+#'   \item{\code{ppc_error_scatter}}{
 #'    A separate scatterplot is displayed for \code{y} vs. the predictive errors
 #'    computed from \code{y} and each dataset (row) in \code{yrep}. For this
 #'    plot \code{yrep} should have only a small number of rows.
 #'   }
-#'   \item{\code{ppc_resid_scatter_avg}}{
+#'   \item{\code{ppc_error_scatter_avg}}{
 #'    A single scatterplot of \code{y} vs. the average of the errors computed
 #'    from \code{y} and each dataset (row) in \code{yrep}. For each individual
 #'    data point \code{y[n]} the average error is the average of the
 #'    errors for \code{y[n]} computed over the the draws from the posterior
 #'    predictive distribution.
 #'   }
-#'   \item{\code{ppc_resid_scatter_avg_vs_x}}{
-#'    Same as ppc_resid_scatter_avg, except the average is plotted on the
+#'   \item{\code{ppc_error_scatter_avg_vs_x}}{
+#'    Same as \code{ppc_error_scatter_avg}, except the average is plotted on the
 #'    \eqn{y}-axis and a a predictor variable \code{x} is plotted on the
 #'    \eqn{x}-axis.
 #'   }
-#'   \item{\code{ppc_resid_binned}}{
-#'    Intended for use with binomial data. A separate binned residual plot
-#'    (similar to \code{\link[arm]{binnedplot}}) is generated for each dataset
-#'    (row) in \code{Ey}, the posterior draws of the linear predictor
-#'    transformed by the inverse-link function. For this plot \code{Ey} should
-#'    have only a small number of rows.
+#'   \item{\code{ppc_error_binned}}{
+#'    Intended for use with binomial data. A separate binned error plot (similar
+#'    to \code{\link[arm]{binnedplot}}) is generated for each dataset (row) in
+#'    \code{yrep}. For this plot \code{y} and \code{yrep} should contain
+#'    proportions rather than counts, and \code{yrep} should have only a small
+#'    number of rows.
 #'   }
 #' }
 #'
@@ -68,48 +66,51 @@
 #' @examples
 #' y <- example_y_data()
 #' yrep <- example_yrep_draws()
-#' ppc_resid_hist(y, yrep[1:3, ])
-#' ppc_resid_scatter(y, yrep[10:14, ])
-#' ppc_resid_scatter_avg(y, yrep)
+#' ppc_error_hist(y, yrep[1:3, ])
+#' ppc_error_scatter(y, yrep[10:14, ])
+#' ppc_error_scatter_avg(y, yrep)
 #'
 #' x <- example_x_data()
-#' ppc_resid_scatter_avg_vs_x(y, yrep, x)
+#' ppc_error_scatter_avg_vs_x(y, yrep, x)
 #'
-#' # ppc_resid_binned with binomial model from rstanarm
+#' # ppc_error_binned with binomial model from rstanarm
 #' \dontrun{
 #' library(rstanarm)
 #' example("example_model", package = "rstanarm")
 #' formula(example_model)
 #'
-#' # get linear predictor transformed by inverse-link function
-#' Ey <- posterior_linpred(example_model, transform = TRUE)
-#'
 #' # get observed proportion of "successes"
 #' y <- example_model$y  # matrix of "success" and "failure" counts
-#' y <- y[, 1] / rowSums(y)  # proportions
+#' trials <- rowSums(y)
+#' y_prop <- y[, 1] / trials  # proportions
 #'
-#' ppc_resid_binned(y, Ey[1:6, ])
+#' # get predicted success proportions
+#' yrep <- posterior_predict(example_model)
+#' yrep_prop <- sweep(yrep, 2, trials, "/")
+#'
+#'
+#' ppc_error_binned(y_prop, yrep_prop[1:6, ])
 #' }
 #'
 NULL
 
-#' @rdname PPC-residuals
+#' @rdname PPC-errors
 #' @export
 #' @template args-hist
 #' @template args-hist-freq
 #'
-ppc_resid_hist <- function(y, yrep, ..., binwidth = NULL, freq = TRUE) {
+ppc_error_hist <- function(y, yrep, ..., binwidth = NULL, freq = TRUE) {
   check_ignored_arguments(...)
 
   y <- validate_y(y)
   yrep <- validate_yrep(yrep, y)
 
   if (nrow(yrep) == 1) {
-    resids <- data.frame(value = y - as.vector(yrep))
-    graph <- ggplot(resids, set_hist_aes(freq))
+    errors <- data.frame(value = y - as.vector(yrep))
+    graph <- ggplot(errors, set_hist_aes(freq))
   } else {
-    resids <- compute_resids(y, yrep)
-    graph <- ggplot(melt_yrep(resids, label = FALSE), set_hist_aes(freq)) +
+    errors <- compute_errors(y, yrep)
+    graph <- ggplot(melt_yrep(errors, label = FALSE), set_hist_aes(freq)) +
       labs(y = NULL, x = expression(italic(y) - italic(y)[rep])) +
       facet_wrap(facets = ~ rep_id)
   }
@@ -133,9 +134,9 @@ ppc_resid_hist <- function(y, yrep, ..., binwidth = NULL, freq = TRUE) {
 }
 
 
-#' @rdname PPC-residuals
+#' @rdname PPC-errors
 #' @export
-ppc_resid_scatter <-
+ppc_error_scatter <-
   function(y,
            yrep,
            ...,
@@ -161,10 +162,10 @@ ppc_resid_scatter <-
       )
     }
 
-    resids <- compute_resids(y, yrep)
+    errors <- compute_errors(y, yrep)
     .ppc_scatter(
       data = dplyr::left_join(
-        melt_yrep(resids, label = FALSE),
+        melt_yrep(errors, label = FALSE),
         data.frame(y = y, y_id = seq_along(y)),
         by = "y_id"
       ),
@@ -185,9 +186,9 @@ ppc_resid_scatter <-
       facet_bg(FALSE)
   }
 
-#' @rdname PPC-residuals
+#' @rdname PPC-errors
 #' @export
-ppc_resid_scatter_avg <-
+ppc_error_scatter_avg <-
   function(y,
            yrep,
            ...,
@@ -200,16 +201,16 @@ ppc_resid_scatter_avg <-
 
     if (nrow(yrep) == 1)
       return(
-        ppc_resid_scatter(y, yrep,
+        ppc_error_scatter(y, yrep,
                           size = size,
                           alpha = alpha, ...)
       )
 
     .ppc_scatter(
-      data = data.frame(y, avg_resid = y - colMeans(yrep)),
-      mapping = aes_(x = ~ avg_resid, y = ~ y),
+      data = data.frame(y, avg_error = y - colMeans(yrep)),
+      mapping = aes_(x = ~ avg_error, y = ~ y),
       y_lab = y_label(),
-      x_lab = "Average residual",
+      x_lab = "Average predictive error",
       alpha = alpha,
       size = size,
       abline = FALSE
@@ -217,12 +218,12 @@ ppc_resid_scatter_avg <-
       theme_default()
   }
 
-#' @rdname PPC-residuals
+#' @rdname PPC-errors
 #' @export
 #' @param x A numeric vector the same length as \code{y} to use as the x-axis
 #'   variable.
 #'
-ppc_resid_scatter_avg_vs_x <-
+ppc_error_scatter_avg_vs_x <-
   function(y,
            yrep,
            x,
@@ -235,10 +236,10 @@ ppc_resid_scatter_avg_vs_x <-
     yrep <- validate_yrep(yrep, y)
     x <- validate_x(x, y)
     .ppc_scatter(
-      data = data.frame(x, avg_resid = y - colMeans(yrep)),
-      mapping = aes_(x = ~ x, y = ~ avg_resid),
+      data = data.frame(x, avg_error = y - colMeans(yrep)),
+      mapping = aes_(x = ~ x, y = ~ avg_error),
       x_lab = expression(italic(x)),
-      y_lab = "Average residual",
+      y_lab = "Average predictive error",
       alpha = alpha,
       size = size,
       abline = FALSE
@@ -247,20 +248,15 @@ ppc_resid_scatter_avg_vs_x <-
   }
 
 
-#' @rdname PPC-residuals
+#' @rdname PPC-errors
 #' @export
-#' @param Ey A matrix of posterior draws of the linear predictor transformed by
-#'   the inverse-link function. For logistic regression models, \code{Ey} would
-#'   be a matrix of predicted probabilities (with the same dimensions as the
-#'   \code{yrep} used by the other PPC plotting functions).
-#'
-ppc_resid_binned <- function(y, Ey, ..., size = 1, alpha = 0.25) {
+ppc_error_binned <- function(y, yrep, ..., size = 1, alpha = 0.25) {
   suggested_package("arm")
   check_ignored_arguments(...)
 
   y <- validate_y(y)
-  Ey <- validate_yrep(Ey, y)
-  resids <- compute_resids(y, Ey)
+  yrep <- validate_yrep(yrep, y)
+  errors <- compute_errors(y, yrep)
 
   ny <- length(y)
   if (ny >= 100) {
@@ -272,19 +268,19 @@ ppc_resid_binned <- function(y, Ey, ..., size = 1, alpha = 0.25) {
     nbins <- floor(ny / 2)
   }
 
-  n <- nrow(Ey)
-  binned <- binner(
+  n <- nrow(yrep)
+  binned <- .binner(
     rep_id = 1,
-    ey = Ey[1, ],
-    r = resids[1, ],
+    ey = yrep[1, ],
+    r = errors[1, ],
     nbins = nbins
   )
   if (n > 1) {
-    for (i in 2:nrow(resids))
-      binned <- rbind(binned, binner(
+    for (i in 2:nrow(errors))
+      binned <- rbind(binned, .binner(
         rep_id = i,
-        ey = Ey[i,],
-        r = resids[i,],
+        ey = yrep[i,],
+        r = errors[i,],
         nbins
       ))
   }
@@ -322,8 +318,8 @@ ppc_resid_binned <- function(y, Ey, ..., size = 1, alpha = 0.25) {
       color = point_color
     ) +
     labs(
-      x = "Expected Values",
-      y = "Average Residuals \n (with 2SE bounds)"
+      x = "Predicted proportion",
+      y = "Average Errors \n (with 2SE bounds)"
     )
 
   if (n > 1)
@@ -344,19 +340,19 @@ ppc_resid_binned <- function(y, Ey, ..., size = 1, alpha = 0.25) {
 
 
 # internal ----------------------------------------------------------------
-compute_resids <- function(y, yrep) {
-  r <- sweep(yrep, MARGIN = 2L, STATS = as.array(y), FUN = "-")
-  as.matrix(-1 * r)
+compute_errors <- function(y, yrep) {
+  errs <- sweep(yrep, MARGIN = 2L, STATS = as.array(y), FUN = "-")
+  as.matrix(-1 * errs)
 }
 
-binner <- function(rep_id, ey, r, nbins) {
-  binned_resids <- arm::binned.resids(ey, r, nbins)$binned
-  binned_resids <- binned_resids[, c("xbar", "ybar", "2se")]
-  if (length(dim(binned_resids)) < 2)
-    binned_resids <- t(binned_resids)
-  colnames(binned_resids) <- c("xbar", "ybar", "se2")
+.binner <- function(rep_id, ey, r, nbins) {
+  binned_errors <- arm::binned.resids(ey, r, nbins)$binned
+  binned_errors <- binned_errors[, c("xbar", "ybar", "2se")]
+  if (length(dim(binned_errors)) < 2)
+    binned_errors <- t(binned_errors)
+  colnames(binned_errors) <- c("xbar", "ybar", "se2")
   data.frame(
     rep_id = as.integer(rep_id), #create_yrep_ids(rep_id),
-    binned_resids
+    binned_errors
   )
 }
