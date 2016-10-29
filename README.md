@@ -82,3 +82,24 @@ np <- nuts_params(fit2)
 mcmc_nuts_energy(np, merge_chains = FALSE) + ggtitle("NUTS Energy Diagnostic")
 ```
 <img src=https://github.com/jgabry/bayesplot/blob/master/images/mcmc_nuts_energy-rstan.png width=50% />
+```r
+# more exampels with rstanarm
+color_scheme_set("purple")
+
+fit <- stan_glmer(mpg ~ wt + (1|cyl), data = mtcars)
+ppc_intervals(
+  y = mtcars$mpg,
+  yrep = posterior_predict(fit),
+  x = mtcars$wt,
+  prob = 0.5
+) +
+  labs(
+    x = "Weight (1000 lbs)",
+    y = "MPG",
+    title = "50% posterior predictive intervals \nvs observed miles per gallon",
+    subtitle = "by vehicle weight"
+  ) +
+  panel_bg(fill = "gray95", color = NA) +
+  grid_lines(color = "white")
+```
+<img src=https://github.com/jgabry/bayesplot/blob/master/images/ppc_intervals-rstanarm.png width=50% />
