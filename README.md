@@ -83,7 +83,7 @@ mcmc_nuts_energy(np, merge_chains = FALSE) + ggtitle("NUTS Energy Diagnostic")
 ```
 <img src=https://github.com/jgabry/bayesplot/blob/master/images/mcmc_nuts_energy-rstan.png width=50% />
 ```r
-# more exampels with rstanarm
+# another example with rstanarm
 color_scheme_set("purple")
 
 fit <- stan_glmer(mpg ~ wt + (1|cyl), data = mtcars)
@@ -102,4 +102,4 @@ ppc_intervals(
   panel_bg(fill = "gray95", color = NA) +
   grid_lines(color = "white")
 ```
-<img src=https://github.com/jgabry/bayesplot/blob/master/images/ppc_intervals-rstanarm.png width=50% />
+<img src=https://github.com/jgabry/bayesplot/blob/master/images/ppc_intervals-rstanarm.png width=55% />
