@@ -29,7 +29,7 @@ devtools::install_github("stan-dev/bayesplot", build_vignettes = TRUE)
 ```
 
 ### Examples
-Some quick examples using MCMC draws obtained from the __rstanarm__ and __rstan__ packages.
+Some quick examples using MCMC draws obtained from the [__rstanarm__](https://github.com/stan-dev/rstanarm) and [__rstan__](https://github.com/stan-dev/rstan) packages.
 
 ```r
 library("bayesplot")
