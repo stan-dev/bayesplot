@@ -20,8 +20,8 @@ default method, these are additional arguments to pass to \code{fun}.}
 \code{fun}.}
 
 \item{fun}{For the default method, the plotting function to call. Can be any
-of the \link{PPC functions}. The \code{"ppc_"} prefix can optionally be
-dropped if \code{fun} is specified as a string.}
+of the \link[=PPC]{PPC functions}. The \code{"ppc_"} prefix can optionally
+be dropped if \code{fun} is specified as a string.}
 }
 \value{
 The exact form of the value returned by \code{pp_check} may vary by

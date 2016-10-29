@@ -58,8 +58,8 @@ pp_check <- function(object, ...) {
 #' @param yrep For the default method, a \code{yrep} matrix passed to
 #'   \code{fun}.
 #' @param fun For the default method, the plotting function to call. Can be any
-#'   of the \link{PPC functions}. The \code{"ppc_"} prefix can optionally be
-#'   dropped if \code{fun} is specified as a string.
+#'   of the \link[=PPC]{PPC functions}. The \code{"ppc_"} prefix can optionally
+#'   be dropped if \code{fun} is specified as a string.
 #'
 pp_check.default <- function(object, yrep, fun, ...) {
   if (is.character(fun) && substr(fun, 1, 4) != "ppc_")
