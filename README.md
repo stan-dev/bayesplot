@@ -30,8 +30,10 @@ if (!require("devtools"))
   install.packages("devtools")
 
 devtools::install_github("hadley/ggplot2")
-devtools::install_github("stan-dev/bayesplot", build_vignettes = TRUE)
+devtools::install_github("stan-dev/bayesplot", dependencies = TRUE, build_vignettes = TRUE)
 ```
+
+If you are not using RStudio and you get an error related to "pandoc" you will either need to install [pandoc](http://pandoc.org/) or remove the argument `build_vignettes=TRUE` to avoid building the package vignettes.
 
 ### Examples
 Some quick examples using MCMC draws obtained from the [__rstanarm__](https://github.com/stan-dev/rstanarm) and [__rstan__](https://github.com/stan-dev/rstan) packages.
