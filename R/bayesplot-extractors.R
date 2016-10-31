@@ -16,21 +16,35 @@
 #' \describe{
 #' \item{\code{log_posterior}}{
 #' \code{log_posterior} methods return a molten data frame (see
-#' \code{\link[reshape2]{melt}}). If the model represented by \code{object} was
-#' fit via MCMC the data frame should have columns \code{"Iteration"} (integer),
-#' \code{"Chain"} (integer), and \code{"Value"} (numeric). For models fit using
-#' other methods, \code{log_posterior} methods can return a data frame with a
-#' single column \code{"Value"}.
+#' \code{\link[reshape2]{melt}}). The data frame should have columns
+#' \code{"Iteration"} (integer), \code{"Chain"} (integer), and \code{"Value"}
+#' (numeric). See \strong{Examples}, below.
 #' }
 #' \item{\code{nuts_params}}{
 #' \code{nuts_params} methods return a molten data frame (see
 #' \code{\link[reshape2]{melt}}). The data frame should have columns
 #' \code{"Parameter"} (factor), \code{"Iteration"} (integer), \code{"Chain"}
-#' (integer), and \code{"Value"} (numeric), in any order.
+#' (integer), and \code{"Value"} (numeric). See \strong{Examples}, below.
 #' }
 #' \item{\code{rhat}, \code{neff_ratio}}{
 #' Methods return (named) vectors.
 #' }
+#' }
+#'
+#' @seealso \code{\link{MCMC-nuts}}, \code{\link{MCMC-diagnostics}}
+#'
+#' @examples
+#' \dontrun{
+#' library(rstanarm)
+#' fit <- stan_glm(mpg ~ wt, data = mtcars)
+#'
+#' np <- nuts_params(fit)
+#' head(np)
+#' tail(np)
+#'
+#' lp <- log_posterior(fit)
+#' head(lp)
+#' tail(lp)
 #' }
 #'
 NULL
@@ -89,19 +103,6 @@ log_posterior.stanreg <- function(object, inc_warmup = FALSE, ...) {
                         ...)
 }
 
-#' @rdname bayesplot-extractors
-#' @export
-#' @method nuts_params list
-#'
-nuts_params.list <- function(object, pars = NULL, ...) {
-  if (length(pars))
-    object <- lapply(object, function(x)
-      x[, pars, drop = FALSE])
-
-  object <- setNames(reshape2::melt(object),
-                     c("Iteration", "Parameter", "Value", "Chain"))
-  validate_df_classes(object, c("integer", "factor", "numeric", "integer"))
-}
 
 #' @rdname bayesplot-extractors
 #' @export
@@ -132,6 +133,30 @@ nuts_params.stanreg <-
                         inc_warmup = inc_warmup,
                         ...)
   }
+
+#' @rdname bayesplot-extractors
+#' @export
+#' @method nuts_params list
+nuts_params.list <- function(object, pars = NULL, ...) {
+  if (!all(sapply(object, is.matrix)))
+    stop("All list elements should be matrices.")
+
+  dd <- lapply(object, dim)
+  if (length(unique(dd)) != 1)
+    stop("All matrices in the list must have the same dimensions.")
+
+  nms <- lapply(object, colnames)
+  if (length(unique(nms)) != 1)
+    stop("All matrices in the list must have the same column names.")
+
+  if (length(pars))
+    object <- lapply(object, function(x)
+      x[, pars, drop = FALSE])
+
+  object <- setNames(reshape2::melt(object),
+                     c("Iteration", "Parameter", "Value", "Chain"))
+  validate_df_classes(object, c("integer", "factor", "numeric", "integer"))
+}
 
 
 #' @rdname bayesplot-extractors

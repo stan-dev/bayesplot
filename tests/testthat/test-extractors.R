@@ -7,7 +7,38 @@ CHAINS <- 3
 fit <- stan_glm(mpg ~ wt + am, data = mtcars,
                 iter = ITER, chains = CHAINS, refresh = 0)
 
+x <- list(cbind(a = 1:3, b = rnorm(3)), cbind(a = 1:3, b = rnorm(3)))
+
 # nuts_params and log_posterior methods -----------------------------------
+test_that("nuts_params.list throws errors", {
+  x[[3]] <- c(a = 1:3, b = rnorm(3))
+  expect_error(nuts_params.list(x), "list elements should be matrices")
+
+  x[[3]] <- cbind(a = 1:3, d = rnorm(3))
+  expect_error(nuts_params.list(x), "same column names")
+
+  x[[3]] <- cbind(a = 1:4, b = rnorm(4))
+  expect_error(nuts_params.list(x), "same dimensions")
+})
+
+test_that("nuts_params.list parameter selection ok", {
+  expect_error(nuts_params.list(x, pars = "apple"), "subscript out of bounds")
+
+  np <- nuts_params.list(x, pars = "b")
+  expect_true(all(np$Parameter == "b"))
+})
+
+test_that("all nuts_params methods identical", {
+  expect_identical(
+    nuts_params(fit),
+    nuts_params(fit$stanfit)
+  )
+  expect_identical(
+    nuts_params(fit),
+    nuts_params(rstan::get_sampler_params(fit$stanfit, inc_warmup = FALSE))
+  )
+})
+
 test_that("nuts_params.stanreg returns correct structure", {
   np <- nuts_params(fit)
   expect_identical(colnames(np), c("Iteration", "Parameter", "Value", "Chain"))

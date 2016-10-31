@@ -29,11 +29,11 @@ neff_ratio(object, ...)
 
 \method{log_posterior}{stanreg}(object, inc_warmup = FALSE, ...)
 
-\method{nuts_params}{list}(object, pars = NULL, ...)
-
 \method{nuts_params}{stanfit}(object, pars = NULL, inc_warmup = FALSE, ...)
 
 \method{nuts_params}{stanreg}(object, pars = NULL, inc_warmup = FALSE, ...)
+
+\method{nuts_params}{list}(object, pars = NULL, ...)
 
 \method{rhat}{stanfit}(object, pars = NULL, ...)
 
@@ -63,17 +63,15 @@ to \code{pars}.}
 \describe{
 \item{\code{log_posterior}}{
 \code{log_posterior} methods return a molten data frame (see
-\code{\link[reshape2]{melt}}). If the model represented by \code{object} was
-fit via MCMC the data frame should have columns \code{"Iteration"} (integer),
-\code{"Chain"} (integer), and \code{"Value"} (numeric). For models fit using
-other methods, \code{log_posterior} methods can return a data frame with a
-single column \code{"Value"}.
+\code{\link[reshape2]{melt}}). The data frame should have columns
+\code{"Iteration"} (integer), \code{"Chain"} (integer), and \code{"Value"}
+(numeric). See \strong{Examples}, below.
 }
 \item{\code{nuts_params}}{
 \code{nuts_params} methods return a molten data frame (see
 \code{\link[reshape2]{melt}}). The data frame should have columns
 \code{"Parameter"} (factor), \code{"Iteration"} (integer), \code{"Chain"}
-(integer), and \code{"Value"} (numeric), in any order.
+(integer), and \code{"Value"} (numeric). See \strong{Examples}, below.
 }
 \item{\code{rhat}, \code{neff_ratio}}{
 Methods return (named) vectors.
@@ -85,5 +83,23 @@ Generics and methods for extracting quantities needed for plotting from
 various types of model objects. Currently methods are only provided for
 stanfit (\pkg{rstan}) and stanreg (\pkg{rstanarm}) objects, but adding new
 methods should be relatively straightforward.
+}
+\examples{
+\dontrun{
+library(rstanarm)
+fit <- stan_glm(mpg ~ wt, data = mtcars)
+
+np <- nuts_params(fit)
+head(np)
+tail(np)
+
+lp <- log_posterior(fit)
+head(lp)
+tail(lp)
+}
+
+}
+\seealso{
+\code{\link{MCMC-nuts}}, \code{\link{MCMC-diagnostics}}
 }
 

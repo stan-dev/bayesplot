@@ -519,14 +519,39 @@ validate_enough_chains <- function(chain = NULL, n_chain) {
   chain
 }
 
+# @param x data frame with nuts params
+# @param lp data frame with lp__
 validate_nuts_data_frame <- function(x, lp) {
-  stopifnot(is.data.frame(x))
-  if (!missing(lp)) {
-    stopifnot(
-      is.data.frame(lp),
-      length(unique(x$Chain)) == length(unique(lp$Chain))
+  if (!is.data.frame(x))
+    stop("NUTS parameters should be in a data frame.")
+
+  valid_cols <- c("Iteration", "Parameter", "Value", "Chain")
+  if (!identical(colnames(x), valid_cols))
+    stop(
+      "NUTS parameter data frame must have columns: ",
+      paste(valid_cols, collapse = ", ")
     )
+
+  if (!missing(lp)) {
+    if (!is.data.frame(lp))
+      stop("lp should be in a data frame.")
+
+    valid_lp_cols <- c("Iteration", "Value", "Chain")
+    if (!identical(colnames(lp), valid_lp_cols))
+      stop(
+        "lp data frame must have columns: ",
+        paste(valid_lp_cols, collapse = ", ")
+      )
+
+    n_chain <- length(unique(x$Chain))
+    n_lp_chain <- length(unique(lp$Chain))
+    if (n_chain != n_lp_chain)
+      stop(
+        "Number of chains for NUTS parameters is ", n_chain,
+        " but number of chains for lp is ", n_lp_chain, "."
+      )
   }
+
   x
 }
 
