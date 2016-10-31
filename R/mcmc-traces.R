@@ -224,6 +224,7 @@ mcmc_trace_highlight <-
 
   graph +
     do.call("facet_wrap", facet_args) +
+    scale_x_continuous(breaks = pretty) +
     theme_default() +
     legend_move(ifelse(nlevels(data$Chain) > 1, "right", "none")) +
     xaxis_title(FALSE) +
