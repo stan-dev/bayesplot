@@ -89,6 +89,9 @@
 #' @template reference-nuts
 #' @template reference-stan-manual
 #'
+#' @seealso \code{\link{mcmc_trace}}, which will plot divergences on the
+#'   traceplot if the optional \code{divergences} argument is specified.
+#'
 #' @examples
 #' \dontrun{
 #' library(ggplot2)
