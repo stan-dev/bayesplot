@@ -8,7 +8,7 @@
 \usage{
 mcmc_trace(x, pars = character(), regex_pars = character(),
   transformations = list(), facet_args = list(), ..., n_warmup = 0,
-  window = NULL, size = NULL)
+  window = NULL, size = NULL, divergences = NULL)
 
 mcmc_trace_highlight(x, pars = character(), regex_pars = character(),
   transformations = list(), facet_args = list(), ..., n_warmup = 0,
@@ -55,6 +55,16 @@ range of iterations to display.}
 \item{size}{An optional value to override the default line size (if calling
 \code{mcmc_trace}) or the default point size (if calling
 \code{mcmc_trace_highlight}).}
+
+\item{divergences}{For models fit using \code{\link{NUTS}}, an optional
+vector or data frame providing information about divergent transitions. If
+a data frame is provided it should be the object returned by
+\code{\link{nuts_params}} (or an object with the same structure). If a
+vector is provided it should be a vector with one element per iteration,
+with each element either \code{0} (no divergence) or \code{1} (divergence).
+If \code{divergences} is specified then red tick marks are added to the
+bottom of the traceplot indicating within which iterations there was a
+divergence.}
 
 \item{alpha}{For \code{mcmc_trace_highlight}, passed to
 \code{\link[ggplot2]{geom_point}} to control the transparency of the points
@@ -117,7 +127,6 @@ p + facet_text(size = 15)
 
 # mark first 100 draws as warmup
 mcmc_trace(x, n_warmup = 100)
-
 
 # plot as points, highlighting chain 2
 color_scheme_set("brightblue")

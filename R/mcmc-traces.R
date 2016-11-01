@@ -25,7 +25,15 @@
 #' @param facet_args Arguments (other than \code{facets}) passed to
 #'   \code{\link[ggplot2]{facet_wrap}} to control faceting.
 #' @param ... Currently ignored.
-#'
+#' @param divergences For models fit using \code{\link{NUTS}}, an optional
+#'   vector or data frame providing information about divergent transitions. If
+#'   a data frame is provided it should be the object returned by
+#'   \code{\link{nuts_params}} (or an object with the same structure). If a
+#'   vector is provided it should be a vector with one element per iteration,
+#'   with each element either \code{0} (no divergence) or \code{1} (divergence).
+#'   If \code{divergences} is specified then red tick marks are added to the
+#'   bottom of the traceplot indicating within which iterations there was a
+#'   divergence.
 #' @template return-ggplot
 #'
 #' @section Plot Descriptions:
@@ -74,7 +82,6 @@
 #' # mark first 100 draws as warmup
 #' mcmc_trace(x, n_warmup = 100)
 #'
-#'
 #' # plot as points, highlighting chain 2
 #' color_scheme_set("brightblue")
 #' mcmc_trace_highlight(x, pars = "sigma", highlight = 2, size = 2)
@@ -93,7 +100,8 @@ mcmc_trace <-
            ...,
            n_warmup = 0,
            window = NULL,
-           size = NULL) {
+           size = NULL,
+           divergences = NULL) {
     check_ignored_arguments(...)
     .mcmc_trace(
       x,
@@ -105,6 +113,7 @@ mcmc_trace <-
       window = window,
       size = size,
       style = "line",
+      divergences = divergences,
       ...
     )
   }
@@ -144,6 +153,7 @@ mcmc_trace_highlight <-
 
 
 # internal -----------------------------------------------------------------
+#' @importFrom dplyr %>% filter_ group_by_ summarise_ select_
 .mcmc_trace <- function(x,
                        pars = character(),
                        regex_pars = character(),
@@ -155,6 +165,7 @@ mcmc_trace_highlight <-
                        highlight = NULL,
                        style = c("line", "point"),
                        alpha = 0.2,
+                       divergences = NULL,
                        ...) {
 
   style <- match.arg(style)
@@ -216,6 +227,9 @@ mcmc_trace_highlight <-
   } else {
     graph <- graph +
       scale_color_manual("Chain", values = chain_colors(n_chain))
+
+    if (!is.null(divergences))
+      graph <- graph + divergence_rug(divergences, n_iter)
   }
 
   facet_args$facets <- ~ Parameter
@@ -244,4 +258,41 @@ chain_colors <- function(n) {
     rep_len(all_clrs, n)
   )
   unname(rev(clrs))
+}
+
+
+# Add divergences to traceplot using geom_rug
+#
+# @param divergences User's 'divergences' argument, if specified
+# @param n_iter Number of iterations in the trace plot (to check against number
+#   of iterations provided in 'divergences')
+divergence_rug <- function(divergences, n_iter) {
+  if (is.data.frame(divergences)) {
+    divergences <- validate_nuts_data_frame(divergences)
+    stopifnot(length(unique(divergences$Iteration)) == n_iter)
+    div_info <-
+      filter_(divergences, ~ Parameter == "divergent__") %>%
+      group_by_(~ Iteration) %>%
+      summarise_(Divergent = ~ ifelse(sum(Value) > 0, Iteration, NA)) %>%
+      select_(~ Divergent)
+  } else {
+    stopifnot(
+      is_vector_or_1Darray(divergences),
+      length(divergences) == n_iter,
+      all(divergences %in% c(0, 1))
+    )
+    divergences <- ifelse(divergences == 1, seq_along(divergences), NA)
+    div_info <- data.frame(Divergent = divergences)
+  }
+  if (all(is.na(div_info$Divergent)))
+    message("No divergences to plot.")
+
+  geom_rug(
+    aes_(x = ~ Divergent),
+    data = div_info,
+    na.rm = TRUE,
+    inherit.aes = FALSE,
+    sides = "b",
+    color = "red"
+  )
 }

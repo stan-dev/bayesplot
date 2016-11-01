@@ -508,36 +508,6 @@ mcmc_nuts_energy <-
   }
 
 
-#' @rdname MCMC-nuts
-#' @export
-#' @importFrom dplyr %>% filter_ group_by_ summarise_
-nuts_divergence_rug <- function(x, color = "red", size = .5, alpha = 1) {
-  x <- validate_nuts_data_frame(x)
-  div_info <-
-    filter_(x, ~ Parameter == "divergent__") %>%
-    group_by_(~ Iteration) %>%
-    summarise_(Divergent = ~ ifelse(sum(Value) > 0, Iteration, NA)) %>%
-    select_(~ Divergent)
-
-  if (all(is.na(div_info$Divergent))) {
-    message("No divergences to plot.")
-    return(NULL)
-  }
-
-  n_chain <- length(unique(x$Chain))
-  geom_rug(
-    aes_(x = ~ Divergent, color = "Div."),
-    data = div_info,
-    na.rm = TRUE,
-    inherit.aes = FALSE,
-    sides = "b",
-    size = size,
-    color = color,
-    alpha = alpha
-  )
-}
-
-
 # internal ----------------------------------------------------------------
 validate_enough_chains <- function(chain = NULL, n_chain) {
   if (!is.null(chain)) {

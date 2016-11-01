@@ -8,7 +8,6 @@
 \alias{mcmc_nuts_energy}
 \alias{mcmc_nuts_stepsize}
 \alias{mcmc_nuts_treedepth}
-\alias{nuts_divergence_rug}
 \title{Diagnostic plots for the No-U-Turn-Sampler (NUTS)}
 \usage{
 mcmc_nuts_acceptance(x, lp, chain = NULL, ..., binwidth = NULL)
@@ -21,8 +20,6 @@ mcmc_nuts_treedepth(x, lp, chain = NULL, ...)
 
 mcmc_nuts_energy(x, ..., binwidth = NULL, alpha = 0.5,
   merge_chains = TRUE)
-
-nuts_divergence_rug(x, color = "red", size = 0.5, alpha = 1)
 }
 \arguments{
 \item{x}{A molten data frame of NUTS sampler parameters, either created by
