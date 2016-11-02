@@ -40,7 +40,9 @@
 #' @section Plot Descriptions:
 #' \describe{
 #'   \item{\code{mcmc_trace}}{
-#'    Standard traceplots of MCMC draws.
+#'    Standard traceplots of MCMC draws. For models fit using \code{\link{NUTS}}
+#'    the \code{divergences} argument can be used to also show divergences on
+#'    the traceplot.
 #'   }
 #'   \item{\code{mcmc_trace_highlight}}{
 #'    Traces are plotted using points rather than lines and the opacity of all
