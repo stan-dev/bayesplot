@@ -124,13 +124,13 @@ ppc_hist <- function(y, yrep, ...,
 #' @param notch A logical scalar passed to \code{\link[ggplot2]{geom_boxplot}}.
 #'   Unlike for \code{geom_boxplot}, the default is \code{notch=TRUE}.
 #'
-ppc_boxplot <- function(y, yrep, ..., notch = TRUE) {
+ppc_boxplot <- function(y, yrep, ..., notch = TRUE, size = 0.5, alpha = 1) {
   check_ignored_arguments(...)
 
   y <- validate_y(y)
   yrep <- validate_yrep(yrep, y)
   ggplot(
-    data = melt_and_stack(y, yrep),
+    data = melt_and_stack(y, yrep, label = FALSE),
     mapping = aes_(
       x = ~ rep_id,
       y = ~ value,
@@ -139,7 +139,9 @@ ppc_boxplot <- function(y, yrep, ..., notch = TRUE) {
   )) +
     geom_boxplot(
       notch = notch,
-      outlier.alpha = 2/3
+      outlier.alpha = 2/3,
+      size = size,
+      alpha = alpha
     ) +
     scale_fill_manual(
       name = "",
