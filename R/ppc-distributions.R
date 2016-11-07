@@ -93,19 +93,13 @@ ppc_hist <- function(y, yrep, ...,
 
   y <- validate_y(y)
   yrep <- validate_yrep(yrep, y)
-  ggplot(melt_and_stack(y, yrep),
-         set_hist_aes(freq, fill = ~ is_y, color = ~ is_y)) +
+  ggplot(
+    melt_and_stack(y, yrep),
+    set_hist_aes(freq, fill = ~ is_y, color = ~ is_y)
+  ) +
     geom_histogram(size = 0.25, binwidth = binwidth) +
-    scale_fill_manual(
-      name = "",
-      values = get_color(c("d", "l")),
-      labels = c(y_label(), yrep_label())
-    ) +
-    scale_color_manual(
-      name = "",
-      values = get_color(c("dh", "lh")),
-      labels = c(y_label(), yrep_label())
-    ) +
+    scale_fill_ppc_dist() +
+    scale_color_ppc_dist() +
     facet_wrap_parsed("rep_id") +
     force_axes_in_facets() +
     dont_expand_y_axis() +
@@ -139,20 +133,12 @@ ppc_boxplot <- function(y, yrep, ..., notch = TRUE, size = 0.5, alpha = 1) {
   )) +
     geom_boxplot(
       notch = notch,
-      outlier.alpha = 2/3,
       size = size,
-      alpha = alpha
+      alpha = alpha,
+      outlier.alpha = 2/3
     ) +
-    scale_fill_manual(
-      name = "",
-      values = get_color(c("d", "l")),
-      labels = c(y_label(), yrep_label())
-    ) +
-    scale_color_manual(
-      name = "",
-      values = get_color(c("dh", "lh")),
-      labels = c(y_label(), yrep_label())
-    ) +
+    scale_fill_ppc_dist() +
+    scale_color_ppc_dist() +
     theme_default() +
     yaxis_title(FALSE) +
     xaxis_ticks(FALSE) +
@@ -179,16 +165,8 @@ ppc_freqpoly <- function(y, yrep, ...,
       size = size,
       alpha = alpha
     ) +
-    scale_fill_manual(
-      name = "",
-      values = get_color(c("d", "l")),
-      labels = c(y_label(), yrep_label())
-    ) +
-    scale_color_manual(
-      name = "",
-      values = get_color(c("dh", "lh")),
-      labels = c(y_label(), yrep_label())
-    ) +
+    scale_fill_ppc_dist() +
+    scale_color_ppc_dist() +
     facet_wrap_parsed("rep_id") +
     force_axes_in_facets() +
     dont_expand_y_axis() +
@@ -233,16 +211,8 @@ ppc_freqpoly_grouped <-
         na.rm = TRUE
       ) +
       facet_grid(variable ~ group, scales = "free") +
-      scale_fill_manual(
-        name = "",
-        values = get_color(c("d", "l")),
-        labels = c(y_label(), yrep_label())
-      ) +
-      scale_color_manual(
-        name = "",
-        values = get_color(c("dh", "lh")),
-        labels = c(y_label(), yrep_label())
-      ) +
+      scale_fill_ppc_dist() +
+      scale_color_ppc_dist() +
       dont_expand_y_axis(c(0.005, 0)) +
       force_axes_in_facets() +
       theme_default() +
@@ -275,16 +245,8 @@ ppc_dens <- function(y, yrep, ...,
     )
   ) +
     geom_density(size = size, alpha = alpha, trim = trim) +
-    scale_fill_manual(
-      name = "",
-      values = get_color(c("d", "l")),
-      labels = c(y_label(), yrep_label())
-    ) +
-    scale_color_manual(
-      name = "",
-      values = get_color(c("dh", "lh")),
-      labels = c(y_label(), yrep_label())
-    ) +
+    scale_fill_ppc_dist() +
+    scale_color_ppc_dist() +
     facet_wrap_parsed("rep_id") +
     force_axes_in_facets() +
     dont_expand_y_axis() +
@@ -325,11 +287,7 @@ ppc_dens_overlay <- function(y, yrep, ...,
       size = 1,
       trim = trim
     ) +
-    scale_color_manual(
-      name = "",
-      values = setNames(get_color(c("dh", "l")), c("y", "yrep")),
-      labels = c(y_label(), yrep_label())
-    ) +
+    scale_color_ppc_dist() +
     xlab(y_label()) +
     dont_expand_axes() +
     theme_default() +
@@ -367,11 +325,7 @@ ppc_ecdf_overlay <- function(y, yrep, ...,
       size = 1,
       pad = pad
     ) +
-    scale_color_manual(
-      name = "",
-      values = setNames(get_color(c("dh", "l")), c("y", "yrep")),
-      labels = c(y_label(), yrep_label())
-    ) +
+    scale_color_ppc_dist() +
     xlab(y_label()) +
     scale_y_continuous(breaks = c(0, 0.5, 1)) +
     theme_default() +
@@ -415,18 +369,27 @@ ppc_violin_grouped <- function(y, yrep, group, ...,
       alpha = 0.9,
       size = size
     ) +
-    scale_fill_manual(
-      name = "",
-      values = setNames(c(NA, get_color(c("l"))), c("y", "yrep")),
-      labels = c(y_label(), yrep_label())
-    ) +
-    scale_color_manual(
-      name = "",
-      values = setNames(get_color(c("dh", "lh")), c("y", "yrep")),
-      labels = c(y_label(), yrep_label())
-    ) +
+    scale_fill_ppc_dist(values = c(NA, get_color("l"))) +
+    scale_color_ppc_dist() +
     labs(x = "Group", y = yrep_label()) +
     theme_default() +
     yaxis_title(FALSE) +
     xaxis_title(FALSE)
+}
+
+
+# internal ----------------------------------------------------------------
+scale_color_ppc_dist <- function(name = NULL, values = NULL, labels = NULL) {
+  scale_color_manual(
+    name = name %||% "",
+    values = values %||% get_color(c("dh", "lh")),
+    labels = labels %||% c(y_label(), yrep_label())
+  )
+}
+scale_fill_ppc_dist <- function(name = NULL, values = NULL, labels = NULL) {
+  scale_fill_manual(
+    name = name %||% "",
+    values = values %||% get_color(c("d", "l")),
+    labels = labels %||% c(y_label(), yrep_label())
+  )
 }
