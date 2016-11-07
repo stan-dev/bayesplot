@@ -13,10 +13,14 @@ test_that("ppc_ecdf_overlay returns a ggplot object", {
   expect_gg(ppc_ecdf_overlay(y2, yrep2))
 })
 
-test_that("ppc_dens,pp_hist,ppc_freqpoly return ggplot objects", {
+test_that("ppc_dens,pp_hist,ppc_freqpoly,ppc_boxplot return ggplot objects", {
   expect_gg(ppc_hist(y, yrep[1,, drop = FALSE]))
   expect_gg(ppc_hist(y, yrep[1:8, ]))
   expect_gg(ppc_hist(y2, yrep2))
+
+  expect_gg(ppc_boxplot(y, yrep[1,, drop = FALSE]))
+  expect_gg(ppc_boxplot(y, yrep[1:8, ]))
+  expect_gg(ppc_boxplot(y2, yrep2, notch = FALSE))
 
   expect_gg(ppc_dens(y, yrep[1:8, ]))
   expect_gg(ppc_dens(y2, yrep2))

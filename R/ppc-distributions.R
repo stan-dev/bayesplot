@@ -22,11 +22,11 @@
 #'
 #' @section Plot Descriptions:
 #' \describe{
-#'   \item{\code{ppc_hist, ppc_freqpoly, ppc_dens}}{
-#'    A separate histogram, shaded frequency polygon, or smoothed kernel density
-#'    estimate is plotted for \code{y} and each dataset (row) in \code{yrep}.
-#'    For these plots \code{yrep} should therefore contain only a small number
-#'    of rows. See the \strong{Examples} section.
+#'   \item{\code{ppc_hist, ppc_freqpoly, ppc_dens, ppc_boxplot}}{
+#'    A separate histogram, shaded frequency polygon, smoothed kernel density
+#'    estimate, or box and whiskers plot is displayed for \code{y} and each
+#'    dataset (row) in \code{yrep}. For these plots \code{yrep} should therefore
+#'    contain only a small number of rows. See the \strong{Examples} section.
 #'   }
 #'   \item{\code{ppc_freqpoly_grouped}}{
 #'    A separate frequency polygon is plotted for each level of a grouping
@@ -58,9 +58,12 @@
 #' ppc_dens_overlay(y, yrep[1:50, ])
 #' ppc_ecdf_overlay(y, yrep[sample(nrow(yrep), 25), ])
 #'
-#' # for ppc_hist, definitely use a subset yrep rows so only
-#' # a few (instead of nrow(yrep)) histograms are plotted
+#' # for ppc_hist,dens,freqpoly,boxplot definitely use a subset yrep rows so
+#' # only a few (instead of nrow(yrep)) histograms are plotted
 #' ppc_hist(y, yrep[1:8, ])
+#'
+#' color_scheme_set("red")
+#' ppc_boxplot(y, yrep[1:8, ])
 #'
 #' # wizard hat plot
 #' color_scheme_set("blue")
@@ -90,19 +93,13 @@ ppc_hist <- function(y, yrep, ...,
 
   y <- validate_y(y)
   yrep <- validate_yrep(yrep, y)
-  ggplot(melt_and_stack(y, yrep),
-         set_hist_aes(freq, fill = ~ is_y, color = ~ is_y)) +
+  ggplot(
+    melt_and_stack(y, yrep),
+    set_hist_aes(freq, fill = ~ is_y, color = ~ is_y)
+  ) +
     geom_histogram(size = 0.25, binwidth = binwidth) +
-    scale_fill_manual(
-      name = "",
-      values = get_color(c("d", "l")),
-      labels = c(expression(italic(y)), expression(italic(y)[rep]))
-    ) +
-    scale_color_manual(
-      name = "",
-      values = get_color(c("dh", "lh")),
-      labels = c(expression(italic(y)), expression(italic(y)[rep]))
-    ) +
+    scale_fill_ppc_dist() +
+    scale_color_ppc_dist() +
     facet_wrap_parsed("rep_id") +
     force_axes_in_facets() +
     dont_expand_y_axis() +
@@ -114,6 +111,39 @@ ppc_hist <- function(y, yrep, ...,
     xaxis_title(FALSE) +
     facet_text(FALSE) +
     facet_bg(FALSE)
+}
+
+#' @rdname PPC-distributions
+#' @export
+#' @param notch A logical scalar passed to \code{\link[ggplot2]{geom_boxplot}}.
+#'   Unlike for \code{geom_boxplot}, the default is \code{notch=TRUE}.
+#'
+ppc_boxplot <- function(y, yrep, ..., notch = TRUE, size = 0.5, alpha = 1) {
+  check_ignored_arguments(...)
+
+  y <- validate_y(y)
+  yrep <- validate_yrep(yrep, y)
+  ggplot(
+    data = melt_and_stack(y, yrep, label = FALSE),
+    mapping = aes_(
+      x = ~ rep_id,
+      y = ~ value,
+      fill = ~ is_y,
+      color = ~ is_y
+  )) +
+    geom_boxplot(
+      notch = notch,
+      size = size,
+      alpha = alpha,
+      outlier.alpha = 2/3
+    ) +
+    scale_fill_ppc_dist() +
+    scale_color_ppc_dist() +
+    theme_default() +
+    yaxis_title(FALSE) +
+    xaxis_ticks(FALSE) +
+    xaxis_text(FALSE) +
+    xaxis_title(FALSE)
 }
 
 #' @rdname PPC-distributions
@@ -135,16 +165,8 @@ ppc_freqpoly <- function(y, yrep, ...,
       size = size,
       alpha = alpha
     ) +
-    scale_fill_manual(
-      name = "",
-      values = get_color(c("d", "l")),
-      labels = c(expression(italic(y)), expression(italic(y)[rep]))
-    ) +
-    scale_color_manual(
-      name = "",
-      values = get_color(c("dh", "lh")),
-      labels = c(expression(italic(y)), expression(italic(y)[rep]))
-    ) +
+    scale_fill_ppc_dist() +
+    scale_color_ppc_dist() +
     facet_wrap_parsed("rep_id") +
     force_axes_in_facets() +
     dont_expand_y_axis() +
@@ -189,16 +211,8 @@ ppc_freqpoly_grouped <-
         na.rm = TRUE
       ) +
       facet_grid(variable ~ group, scales = "free") +
-      scale_fill_manual(
-        name = "",
-        values = get_color(c("d", "l")),
-        labels = c(expression(italic(y)), expression(italic(y)[rep]))
-      ) +
-      scale_color_manual(
-        name = "",
-        values = get_color(c("dh", "lh")),
-        labels = c(expression(italic(y)), expression(italic(y)[rep]))
-      ) +
+      scale_fill_ppc_dist() +
+      scale_color_ppc_dist() +
       dont_expand_y_axis(c(0.005, 0)) +
       force_axes_in_facets() +
       theme_default() +
@@ -231,16 +245,8 @@ ppc_dens <- function(y, yrep, ...,
     )
   ) +
     geom_density(size = size, alpha = alpha, trim = trim) +
-    scale_fill_manual(
-      name = "",
-      values = get_color(c("d", "l")),
-      labels = c(expression(italic(y)), expression(italic(y)[rep]))
-    ) +
-    scale_color_manual(
-      name = "",
-      values = get_color(c("dh", "lh")),
-      labels = c(expression(italic(y)), expression(italic(y)[rep]))
-    ) +
+    scale_fill_ppc_dist() +
+    scale_color_ppc_dist() +
     facet_wrap_parsed("rep_id") +
     force_axes_in_facets() +
     dont_expand_y_axis() +
@@ -282,11 +288,7 @@ ppc_dens_overlay <- function(y, yrep, ...,
       size = 1,
       trim = trim
     ) +
-    scale_color_manual(
-      name = "",
-      values = setNames(get_color(c("dh", "l")), c("y", "yrep")),
-      labels = c(expression(italic(y)), expression(italic(y)[rep]))
-    ) +
+    scale_color_ppc_dist() +
     xlab(y_label()) +
     dont_expand_axes() +
     theme_default() +
@@ -298,8 +300,7 @@ ppc_dens_overlay <- function(y, yrep, ...,
 
 #' @export
 #' @rdname PPC-distributions
-#' @param pad For \code{ppc_ecdf_overlay}, a logical scalar passed to
-#'   \code{\link[ggplot2]{stat_ecdf}}.
+#' @param pad A logical scalar passed to \code{\link[ggplot2]{stat_ecdf}}.
 ppc_ecdf_overlay <- function(y, yrep, ...,
                              pad = TRUE,
                              size = 0.25,
@@ -325,11 +326,7 @@ ppc_ecdf_overlay <- function(y, yrep, ...,
       size = 1,
       pad = pad
     ) +
-    scale_color_manual(
-      name = "",
-      values = setNames(get_color(c("dh", "l")), c("y", "yrep")),
-      labels = c(expression(italic(y)), expression(italic(y)[rep]))
-    ) +
+    scale_color_ppc_dist() +
     xlab(y_label()) +
     scale_y_continuous(breaks = c(0, 0.5, 1)) +
     theme_default() +
@@ -373,18 +370,27 @@ ppc_violin_grouped <- function(y, yrep, group, ...,
       alpha = 0.9,
       size = size
     ) +
-    scale_fill_manual(
-      name = "",
-      values = setNames(c(NA, get_color(c("l"))), c("y", "yrep")),
-      labels = c(expression(italic(y)), expression(italic(y)[rep]))
-    ) +
-    scale_color_manual(
-      name = "",
-      values = setNames(get_color(c("dh", "lh")), c("y", "yrep")),
-      labels = c(expression(italic(y)), expression(italic(y)[rep]))
-    ) +
+    scale_fill_ppc_dist(values = c(NA, get_color("l"))) +
+    scale_color_ppc_dist() +
     labs(x = "Group", y = yrep_label()) +
     theme_default() +
     yaxis_title(FALSE) +
     xaxis_title(FALSE)
+}
+
+
+# internal ----------------------------------------------------------------
+scale_color_ppc_dist <- function(name = NULL, values = NULL, labels = NULL) {
+  scale_color_manual(
+    name = name %||% "",
+    values = values %||% get_color(c("dh", "lh")),
+    labels = labels %||% c(y_label(), yrep_label())
+  )
+}
+scale_fill_ppc_dist <- function(name = NULL, values = NULL, labels = NULL) {
+  scale_fill_manual(
+    name = name %||% "",
+    values = values %||% get_color(c("d", "l")),
+    labels = labels %||% c(y_label(), yrep_label())
+  )
 }

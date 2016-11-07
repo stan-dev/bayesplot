@@ -151,9 +151,9 @@ melt_yrep <- function(yrep, label = TRUE) {
 #   melt_yrep(), plus a column "is_y" indicating whether the values pertain
 #   to y (or yrep).
 #
-melt_and_stack <- function(y, yrep) {
-  molten_yrep <- melt_yrep(yrep)
-  yobs_lab <- "italic(y)"
+melt_and_stack <- function(y, yrep, label = TRUE) {
+  molten_yrep <- melt_yrep(yrep, label = label)
+  yobs_lab <- if (label) "italic(y)" else "y"
   levels(molten_yrep$rep_id) <- c(levels(molten_yrep$rep_id), yobs_lab)
   ydat <- data.frame(
     rep_id = yobs_lab,
