@@ -2,6 +2,7 @@
 % Please edit documentation in R/ppc-distributions.R
 \name{PPC-distributions}
 \alias{PPC-distributions}
+\alias{ppc_boxplot}
 \alias{ppc_dens}
 \alias{ppc_dens_overlay}
 \alias{ppc_ecdf_overlay}
@@ -12,6 +13,8 @@
 \title{PPC distributions}
 \usage{
 ppc_hist(y, yrep, ..., binwidth = NULL, freq = TRUE)
+
+ppc_boxplot(y, yrep, ..., notch = TRUE, size = 0.5, alpha = 1)
 
 ppc_freqpoly(y, yrep, ..., binwidth = NULL, freq = TRUE, size = 0.25,
   alpha = 1)
@@ -50,6 +53,9 @@ plots the y-axis text is off by default. To view the count or density
 labels on the y-axis see the \code{\link{yaxis_text}} convenience
 function.)}
 
+\item{notch}{A logical scalar passed to \code{\link[ggplot2]{geom_boxplot}}.
+Unlike for \code{geom_boxplot}, the default is \code{notch=TRUE}.}
+
 \item{size, alpha}{Passed to the appropriate geom to control the appearance of
 the \code{yrep} distributions. For \code{ppc_violin_grouped} only,
 \code{size} controls the size of the \code{y} points.}
@@ -60,8 +66,7 @@ pertaining to the corresponding value of \code{y}.}
 
 \item{trim}{A logical scalar passed to \code{\link[ggplot2]{geom_density}}.}
 
-\item{pad}{For \code{ppc_ecdf_overlay}, a logical scalar passed to
-\code{\link[ggplot2]{stat_ecdf}}.}
+\item{pad}{A logical scalar passed to \code{\link[ggplot2]{stat_ecdf}}.}
 
 \item{probs}{A numeric vector passed to \code{\link[ggplot2]{geom_violin}}'s
 \code{draw_quantiles} argument to specify at which quantiles to draw
@@ -85,11 +90,11 @@ For Binomial data, the plots will typically be most useful if
 \section{Plot Descriptions}{
 
 \describe{
-  \item{\code{ppc_hist, ppc_freqpoly, ppc_dens}}{
-   A separate histogram, shaded frequency polygon, or smoothed kernel density
-   estimate is plotted for \code{y} and each dataset (row) in \code{yrep}.
-   For these plots \code{yrep} should therefore contain only a small number
-   of rows. See the \strong{Examples} section.
+  \item{\code{ppc_hist, ppc_freqpoly, ppc_dens, ppc_boxplot}}{
+   A separate histogram, shaded frequency polygon, smoothed kernel density
+   estimate, or box and whiskers plot is displayed for \code{y} and each
+   dataset (row) in \code{yrep}. For these plots \code{yrep} should therefore
+   contain only a small number of rows. See the \strong{Examples} section.
   }
   \item{\code{ppc_freqpoly_grouped}}{
    A separate frequency polygon is plotted for each level of a grouping
@@ -118,9 +123,12 @@ dim(yrep)
 ppc_dens_overlay(y, yrep[1:50, ])
 ppc_ecdf_overlay(y, yrep[sample(nrow(yrep), 25), ])
 
-# for ppc_hist, definitely use a subset yrep rows so only
-# a few (instead of nrow(yrep)) histograms are plotted
+# for ppc_hist,dens,freqpoly,boxplot definitely use a subset yrep rows so
+# only a few (instead of nrow(yrep)) histograms are plotted
 ppc_hist(y, yrep[1:8, ])
+
+color_scheme_set("red")
+ppc_boxplot(y, yrep[1:8, ])
 
 # wizard hat plot
 color_scheme_set("blue")
