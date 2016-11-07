@@ -22,11 +22,11 @@
 #'
 #' @section Plot Descriptions:
 #' \describe{
-#'   \item{\code{ppc_hist, ppc_freqpoly, ppc_dens}}{
-#'    A separate histogram, shaded frequency polygon, or smoothed kernel density
-#'    estimate is plotted for \code{y} and each dataset (row) in \code{yrep}.
-#'    For these plots \code{yrep} should therefore contain only a small number
-#'    of rows. See the \strong{Examples} section.
+#'   \item{\code{ppc_hist, ppc_freqpoly, ppc_dens, ppc_boxplot}}{
+#'    A separate histogram, shaded frequency polygon, smoothed kernel density
+#'    estimate, or box and whiskers plot is displayed for \code{y} and each
+#'    dataset (row) in \code{yrep}. For these plots \code{yrep} should therefore
+#'    contain only a small number of rows. See the \strong{Examples} section.
 #'   }
 #'   \item{\code{ppc_freqpoly_grouped}}{
 #'    A separate frequency polygon is plotted for each level of a grouping
@@ -58,9 +58,12 @@
 #' ppc_dens_overlay(y, yrep[1:50, ])
 #' ppc_ecdf_overlay(y, yrep[sample(nrow(yrep), 25), ])
 #'
-#' # for ppc_hist, definitely use a subset yrep rows so only
-#' # a few (instead of nrow(yrep)) histograms are plotted
+#' # for ppc_hist,dens,freqpoly,boxplot definitely use a subset yrep rows so
+#' # only a few (instead of nrow(yrep)) histograms are plotted
 #' ppc_hist(y, yrep[1:8, ])
+#'
+#' color_scheme_set("red")
+#' ppc_boxplot(y, yrep[1:8, ])
 #'
 #' # wizard hat plot
 #' color_scheme_set("blue")
@@ -96,12 +99,12 @@ ppc_hist <- function(y, yrep, ...,
     scale_fill_manual(
       name = "",
       values = get_color(c("d", "l")),
-      labels = c(expression(italic(y)), expression(italic(y)[rep]))
+      labels = c(y_label(), yrep_label())
     ) +
     scale_color_manual(
       name = "",
       values = get_color(c("dh", "lh")),
-      labels = c(expression(italic(y)), expression(italic(y)[rep]))
+      labels = c(y_label(), yrep_label())
     ) +
     facet_wrap_parsed("rep_id") +
     force_axes_in_facets() +
@@ -114,6 +117,45 @@ ppc_hist <- function(y, yrep, ...,
     xaxis_title(FALSE) +
     facet_text(FALSE) +
     facet_bg(FALSE)
+}
+
+#' @rdname PPC-distributions
+#' @export
+#' @param notch A logical scalar passed to \code{\link[ggplot2]{geom_boxplot}}.
+#'   Unlike for \code{geom_boxplot}, the default is \code{notch=TRUE}.
+#'
+ppc_boxplot <- function(y, yrep, ..., notch = TRUE) {
+  check_ignored_arguments(...)
+
+  y <- validate_y(y)
+  yrep <- validate_yrep(yrep, y)
+  ggplot(
+    data = melt_and_stack(y, yrep),
+    mapping = aes_(
+      x = ~ rep_id,
+      y = ~ value,
+      fill = ~ is_y,
+      color = ~ is_y
+  )) +
+    geom_boxplot(
+      notch = notch,
+      outlier.alpha = 2/3
+    ) +
+    scale_fill_manual(
+      name = "",
+      values = get_color(c("d", "l")),
+      labels = c(y_label(), yrep_label())
+    ) +
+    scale_color_manual(
+      name = "",
+      values = get_color(c("dh", "lh")),
+      labels = c(y_label(), yrep_label())
+    ) +
+    theme_default() +
+    yaxis_title(FALSE) +
+    xaxis_ticks(FALSE) +
+    xaxis_text(FALSE) +
+    xaxis_title(FALSE)
 }
 
 #' @rdname PPC-distributions
@@ -138,12 +180,12 @@ ppc_freqpoly <- function(y, yrep, ...,
     scale_fill_manual(
       name = "",
       values = get_color(c("d", "l")),
-      labels = c(expression(italic(y)), expression(italic(y)[rep]))
+      labels = c(y_label(), yrep_label())
     ) +
     scale_color_manual(
       name = "",
       values = get_color(c("dh", "lh")),
-      labels = c(expression(italic(y)), expression(italic(y)[rep]))
+      labels = c(y_label(), yrep_label())
     ) +
     facet_wrap_parsed("rep_id") +
     force_axes_in_facets() +
@@ -192,12 +234,12 @@ ppc_freqpoly_grouped <-
       scale_fill_manual(
         name = "",
         values = get_color(c("d", "l")),
-        labels = c(expression(italic(y)), expression(italic(y)[rep]))
+        labels = c(y_label(), yrep_label())
       ) +
       scale_color_manual(
         name = "",
         values = get_color(c("dh", "lh")),
-        labels = c(expression(italic(y)), expression(italic(y)[rep]))
+        labels = c(y_label(), yrep_label())
       ) +
       dont_expand_y_axis(c(0.005, 0)) +
       force_axes_in_facets() +
@@ -234,12 +276,12 @@ ppc_dens <- function(y, yrep, ...,
     scale_fill_manual(
       name = "",
       values = get_color(c("d", "l")),
-      labels = c(expression(italic(y)), expression(italic(y)[rep]))
+      labels = c(y_label(), yrep_label())
     ) +
     scale_color_manual(
       name = "",
       values = get_color(c("dh", "lh")),
-      labels = c(expression(italic(y)), expression(italic(y)[rep]))
+      labels = c(y_label(), yrep_label())
     ) +
     facet_wrap_parsed("rep_id") +
     force_axes_in_facets() +
@@ -284,7 +326,7 @@ ppc_dens_overlay <- function(y, yrep, ...,
     scale_color_manual(
       name = "",
       values = setNames(get_color(c("dh", "l")), c("y", "yrep")),
-      labels = c(expression(italic(y)), expression(italic(y)[rep]))
+      labels = c(y_label(), yrep_label())
     ) +
     xlab(y_label()) +
     dont_expand_axes() +
@@ -297,8 +339,7 @@ ppc_dens_overlay <- function(y, yrep, ...,
 
 #' @export
 #' @rdname PPC-distributions
-#' @param pad For \code{ppc_ecdf_overlay}, a logical scalar passed to
-#'   \code{\link[ggplot2]{stat_ecdf}}.
+#' @param pad A logical scalar passed to \code{\link[ggplot2]{stat_ecdf}}.
 ppc_ecdf_overlay <- function(y, yrep, ...,
                              pad = TRUE,
                              size = 0.25,
@@ -327,7 +368,7 @@ ppc_ecdf_overlay <- function(y, yrep, ...,
     scale_color_manual(
       name = "",
       values = setNames(get_color(c("dh", "l")), c("y", "yrep")),
-      labels = c(expression(italic(y)), expression(italic(y)[rep]))
+      labels = c(y_label(), yrep_label())
     ) +
     xlab(y_label()) +
     scale_y_continuous(breaks = c(0, 0.5, 1)) +
@@ -375,12 +416,12 @@ ppc_violin_grouped <- function(y, yrep, group, ...,
     scale_fill_manual(
       name = "",
       values = setNames(c(NA, get_color(c("l"))), c("y", "yrep")),
-      labels = c(expression(italic(y)), expression(italic(y)[rep]))
+      labels = c(y_label(), yrep_label())
     ) +
     scale_color_manual(
       name = "",
       values = setNames(get_color(c("dh", "lh")), c("y", "yrep")),
-      labels = c(expression(italic(y)), expression(italic(y)[rep]))
+      labels = c(y_label(), yrep_label())
     ) +
     labs(x = "Group", y = yrep_label()) +
     theme_default() +
