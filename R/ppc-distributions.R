@@ -278,6 +278,7 @@ ppc_dens_overlay <- function(y, yrep, ...,
       aes_(color = "y"),
       geom = "line",
       position = "identity",
+      lineend = "round",
       size = 1,
       trim = trim
     ) +
