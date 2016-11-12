@@ -240,8 +240,6 @@ ppc_stat_2d <- function(y, yrep, stat = c("mean", "sd"), ...,
     geom_point(
       aes_(fill = "yrep", color = "yrep"),
       shape = 21,
-      # fill = get_color("l"),
-      # color = get_color("lh"),
       size = size,
       alpha = alpha
     ) +
@@ -270,8 +268,6 @@ ppc_stat_2d <- function(y, yrep, stat = c("mean", "sd"), ...,
       values = setNames(get_color(c("dh", "lh")), c("y", "yrep")),
       labels = c(y = Ty_label(), yrep = Tyrep_label())
     ) +
-    theme_default() +
-    xaxis_title(FALSE) +
-    yaxis_title(FALSE)
+    labs(x = stat[1], y = stat[2]) +
+    theme_default()
 }
-
