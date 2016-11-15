@@ -22,14 +22,12 @@ modifying ggplot objects provided by the **ggplot2** package.
 ### Installation
 
 **bayesplot** is not yet on CRAN (coming soon) but can be installed from GitHub 
-using the **devtools** package. You will also need the preview version of the 
-upcoming **ggplot2** update.
+using the **devtools** package.
 
 ```r
 if (!require("devtools"))
   install.packages("devtools")
 
-devtools::install_github("hadley/ggplot2")
 devtools::install_github("stan-dev/bayesplot", dependencies = TRUE, build_vignettes = TRUE)
 ```
 
