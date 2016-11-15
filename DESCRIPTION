@@ -1,8 +1,8 @@
 Package: bayesplot
 Type: Package
 Title: Plotting for Bayesian Models
-Version: 0.0.12
-Date: 2016-10-31
+Version: 0.0.13
+Date: 2016-11-15
 Authors@R: c(person("Jonah", "Gabry", role = c("aut", "cre"), email = "jsg2201@columbia.edu"),
              person("Paul-Christian", "Buerkner", role = "ctb"))
 Maintainer: Jonah Gabry <jsg2201@columbia.edu>
@@ -13,12 +13,12 @@ Description: Plotting functions for posterior analysis, model checking,
     modeling, particularly (but not exclusively) packages interfacing with Stan.
 License: GPL (>= 3)
 LazyData: TRUE
-URL: https://github.com/stan-dev/bayesplot/
+URL: http://mc-stan.org/, https://groups.google.com/forum/#!forum/stan-users
 BugReports: https://github.com/stan-dev/bayesplot/issues/
 Depends: R (>= 3.1.0)
 Imports:
     dplyr (>= 0.4.3),
-    ggplot2 (>= 2.1.0.9001),
+    ggplot2 (>= 2.2.0),
     reshape2,
     stats,
     utils
