@@ -68,12 +68,20 @@ mcmc_combo <-
            gg_theme = NULL,
            ...) {
     suggested_package("gridExtra")
-    plotfuns <- lapply(paste0("mcmc_", combo), function(f) {
-      fun <- try(match.fun(f), silent = TRUE)
-      if (inherits(fun, "try-error"))
-        stop("Function '", f, "' not found.")
-      fun
-    })
+
+    if (length(combo) < 2)
+      stop("'combo' should have at least two elements.")
+
+    plotfuns <- paste0("mcmc_", combo)
+    not_found <- setdiff(plotfuns, available_mcmc())
+    if (length(not_found)) {
+      stop("The following functions were not found: ",
+           paste(not_found, collapse = ", "))
+    }
+    plotfuns <-
+      lapply(plotfuns, function(x)
+        get(x, pos = asNamespace("bayesplot"), mode = "function"))
+
     args <- list(x = x, ...)
     if (is.list(args$facet_args)) {
       args$facet_args[["ncol"]] <- 1

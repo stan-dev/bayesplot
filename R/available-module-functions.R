@@ -43,7 +43,11 @@ print.bayesplot_function_list <- function(x, ...) {
   if (missing(.pattern))
     .pattern <- NULL
 
-  funs <- objects("package:bayesplot", pattern = paste0("^", .module, "_"))
+  funs <- sort(grep(
+      paste0("^", .module, "_"),
+      getNamespaceExports("bayesplot"),
+      value = TRUE
+    ))
   structure(
     .Data = if (is.null(.pattern))
       funs else grep(.pattern, funs, value = TRUE),
