@@ -13,15 +13,15 @@
 #' only to provide convenient functionality for users, but also a common set of
 #' functions that can be easily used by developers working on a variety of
 #' packages for Bayesian modeling, particularly (but not necessarily) packages
-#' powered by \pkg{\link[rstan]{rstan}}. Examples of packages already (or soon
-#' to be) using \pkg{bayesplot} are \pkg{rstan} itself, as well as the
+#' powered by \pkg{\link[rstan]{rstan}}. Examples of packages that will soon (or
+#' already are) using \pkg{bayesplot} are \pkg{rstan} itself, as well as the
 #' \pkg{rstan}-dependent \pkg{rstanarm} and \pkg{brms} packages for applied
 #' regression modeling.
 #'
 #'  \if{html}{
-#'    \figure{bayesplot.png}{options: width="30\%" alt="Figure: bayesplot.png"}
-#'    \figure{bayesplot2.png}{options: width="30\%" alt="Figure: bayesplot2.png"}
-#'    \figure{bayesplot3.png}{options: width="30\%" alt="Figure: bayesplot3.png"}
+#'    \figure{bayesplot1.png}{options: width="30\%" alt="mcmc_areas"}
+#'    \figure{bayesplot2.png}{options: width="30\%" alt="ppc_hist"}
+#'    \figure{bayesplot3.png}{options: width="30\%" alt="ppc_dens_overlay"}
 #'  }
 #'
 #' @section Plotting functionality:
@@ -33,9 +33,26 @@
 #'   using the \link[=NUTS]{No-U-Turn Sampler (NUTS)}.
 #'   \item \strong{\link[=PPC-overview]{PPC}}:
 #'   Graphical posterior predictive checks (PPCs).
-#'   \item \strong{Prediction/forecasting}:
-#'   (Coming in a future release) Plots designed to assist with out-of-sample
-#'   prediction.
+#'   \item \strong{Coming soon}:
+#'   In future releases modules will be added specifically for
+#'   forecasting/out-of-sample prediction and other inference-related tasks.
+#' }
+#'
+#' @section Questions, feature requests, bug reports:
+#' \itemize{
+#'  \item{\strong{Bug reports and feature requests}:}{
+#'  If you'd like to request a new feature or if you've noticed a bug that needs
+#'  to be fixed please let us know at the \pkg{bayesplot} issue tracker on
+#'  GitHub:
+#'
+#'  \url{https://github.com/stan-dev/bayesplot/issues/}.
+#'  }
+#'  \item{\strong{General questions and help}:}{
+#'  To ask a question about \pkg{bayesplot} on the Stan-users
+#'  forum please visit
+#'
+#'  \url{https://groups.google.com/forum/#!forum/stan-users/}.
+#' }
 #' }
 #'
 #' @template seealso-theme
@@ -69,7 +86,7 @@
 #' ppc_dens_overlay(y, yrep[1:50, ])
 #'
 #' color_scheme_set("pink")
-#' ppc_hist(y, yrep[1:8, ])
 #' ppc_stat(y, yrep, stat = "median") + grid_lines()
+#' ppc_hist(y, yrep[1:8, ])
 #'
 NULL
