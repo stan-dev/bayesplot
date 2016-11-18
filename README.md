@@ -21,8 +21,14 @@ modifying ggplot objects provided by the **ggplot2** package.
 
 ### Installation
 
-**bayesplot** is not yet on CRAN (coming soon) but can be installed from GitHub 
-using the **devtools** package.
+
+* Install from CRAN:
+
+```{r}
+install.packages("bayesplot")
+```
+
+* Install from GitHub (requires [devtools](https://github.com/hadley/devtools) package):
 
 ```r
 if (!require("devtools"))
