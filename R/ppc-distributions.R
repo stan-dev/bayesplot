@@ -56,7 +56,9 @@
 #' yrep <- example_yrep_draws()
 #' dim(yrep)
 #' ppc_dens_overlay(y, yrep[1:50, ])
+#' \donttest{
 #' ppc_ecdf_overlay(y, yrep[sample(nrow(yrep), 25), ])
+#' }
 #'
 #' # for ppc_hist,dens,freqpoly,boxplot definitely use a subset yrep rows so
 #' # only a few (instead of nrow(yrep)) histograms are plotted
@@ -74,13 +76,17 @@
 #' # if groups are different sizes then the 'freq' argument can be useful
 #' group <- example_group_data()
 #' ppc_freqpoly_grouped(y, yrep[1:3,], group) + yaxis_text()
+#' \donttest{
 #' ppc_freqpoly_grouped(y, yrep[1:3,], group, freq = FALSE) + yaxis_text()
+#' }
 #'
 #' # don't need to only use small number of rows for ppc_violin_grouped
 #' # (as it pools yrep draws within groups)
 #' color_scheme_set("gray")
 #' ppc_violin_grouped(y, yrep, group, size = 1.5)
+#' \donttest{
 #' ppc_violin_grouped(y, yrep, group, alpha = 0)
+#' }
 #'
 NULL
 

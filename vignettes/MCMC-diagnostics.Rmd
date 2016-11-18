@@ -18,7 +18,7 @@ library("ggplot2")
 library("gridExtra")
 library("rstan")
 knitr::opts_chunk$set(
-  dev = "svg",
+  dev = "pdf",
   fig.align = "center",
   fig.width = 4,
   fig.height = 3,

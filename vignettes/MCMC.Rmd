@@ -82,6 +82,7 @@ function.
 
 ```{r, mcmc_intervals}
 library("bayesplot")
+color_scheme_set("red")
 mcmc_intervals(posterior, pars = c("cyl", "drat", "am", "sigma"))
 ```
 
@@ -116,6 +117,7 @@ model parameters can be visualized using the functions described on the
 The `mcmc_hist` and `mcmc_dens` functions plot posterior distributions (combining all chains):
 
 ```{r, mcmc_hist, message=FALSE, fig.height=3}
+color_scheme_set("green")
 mcmc_hist(posterior, pars = c("wt", "am"))
 mcmc_dens(posterior, pars = c("wt", "am"))
 ```
@@ -123,6 +125,7 @@ mcmc_dens(posterior, pars = c("wt", "am"))
 To view the four Markov chain separately we can use  `mcmc_hist_by_chain`, `mcmc_dens_overlay`:
 
 ```{r, mcmc_hist_by_chain, message=FALSE, fig.height=3}
+color_scheme_set("brightblue")
 mcmc_hist_by_chain(posterior, pars = c("wt", "am"))
 mcmc_dens_overlay(posterior, pars = c("wt", "am"))
 ```
@@ -139,6 +142,7 @@ mcmc_violin(posterior, pars = c("wt", "am"), probs = c(0.1, 0.5, 0.9))
 The `mcmc_scatter` function creates a scatterplot with two parameters:
 
 ```{r, mcmc_scatter}
+color_scheme_set("gray")
 mcmc_scatter(posterior, pars = c("(Intercept)", "wt"), size = 1.5, alpha = 0.5)
 ```
 
@@ -151,11 +155,12 @@ releases of the package.
 The `mcmc_trace` function creates standard traceplots:
 
 ```{r, mcmc_trace}
+color_scheme_set("blue")
 mcmc_trace(posterior, pars = c("wt", "sigma"))
 ```
 
 If it's hard to see the difference between the chains we can 
-easily change to a different color scheme, for example:
+change to a mixed color scheme, for example:
 
 ```{r, change-scheme}
 color_scheme_set("mix-blue-red")
