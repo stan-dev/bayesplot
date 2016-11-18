@@ -7,6 +7,11 @@
 #' @import ggplot2 stats
 #'
 #' @description
+#' \if{html}{
+#'    \figure{stanlogo.png}{options: width="50px" alt="mc-stan.org"}
+#'    \emph{Stan Development Team}
+#' }
+#'
 #' The \pkg{bayesplot} package provides a variety of \pkg{ggplot2}-based
 #' plotting functions for use after fitting Bayesian models (typically, though
 #' not exclusively, via Markov chain Monte Carlo). The package is designed not
@@ -18,13 +23,13 @@
 #' \pkg{rstan}-dependent \pkg{rstanarm} and \pkg{brms} packages for applied
 #' regression modeling.
 #'
+#' @section Plotting functionality:
 #'  \if{html}{
 #'    \figure{bayesplot1.png}{options: width="30\%" alt="mcmc_areas"}
 #'    \figure{bayesplot2.png}{options: width="30\%" alt="ppc_hist"}
 #'    \figure{bayesplot3.png}{options: width="30\%" alt="ppc_dens_overlay"}
 #'  }
 #'
-#' @section Plotting functionality:
 #' The plotting functions in \pkg{bayesplot} are organized into several modules:
 #' \itemize{
 #'   \item \strong{\link[=MCMC-overview]{MCMC}}: Visualizations of Markov chain

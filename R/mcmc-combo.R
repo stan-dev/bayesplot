@@ -35,10 +35,9 @@
 #' dimnames(x)
 #'
 #' mcmc_combo(x, pars = c("alpha", "sigma"))
-#' \donttest{
 #' mcmc_combo(x, pars = c("alpha", "sigma"), widths = c(1, 2))
-#' }
 #'
+#' \donttest{
 #' # change second plot, show log(sigma) instead of sigma,
 #' # and remove the legends
 #' color_scheme_set("mix-blue-red")
@@ -50,7 +49,6 @@
 #'  gg_theme = legend_none()
 #' )
 #'
-#' \donttest{
 #' # same thing but this time also change the entire ggplot theme
 #' mcmc_combo(
 #'  x,

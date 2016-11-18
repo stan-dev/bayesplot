@@ -120,7 +120,7 @@ color_scheme_set("brightblue")
 y <- example_y_data()
 yrep <- example_yrep_draws()
 dim(yrep)
-ppc_dens_overlay(y, yrep[1:50, ])
+ppc_dens_overlay(y, yrep[1:25, ])
 \donttest{
 ppc_ecdf_overlay(y, yrep[sample(nrow(yrep), 25), ])
 }
@@ -129,12 +129,14 @@ ppc_ecdf_overlay(y, yrep[sample(nrow(yrep), 25), ])
 # only a few (instead of nrow(yrep)) histograms are plotted
 ppc_hist(y, yrep[1:8, ])
 
+\donttest{
 color_scheme_set("red")
 ppc_boxplot(y, yrep[1:8, ])
 
 # wizard hat plot
 color_scheme_set("blue")
 ppc_dens(y, yrep[200:202, ])
+}
 
 ppc_freqpoly(y, yrep[1:3,], alpha = 0.1, size = 1, binwidth = 5)
 
