@@ -101,27 +101,6 @@ validate_x <- function(x, y, unique_x = FALSE) {
 }
 
 
-# Validate test statistic
-#
-# Checks that the correct number of functions is specified for computing test
-# statistics and that they are specified using strings.
-#
-# @param stat The user's 'stat' argument.
-# @param n_allowed The allowed length of 'stat'. Either 1 or 2.
-# @return Either throws an error or returns a character vector.
-#
-validate_stat <- function(stat, n_allowed) {
-  stopifnot(
-    n_allowed %in% c(1,2),
-    is.character(stat)
-  )
-  if (length(stat) != n_allowed)
-    stop("For this function 'stat' must have length ", n_allowed, ".")
-
-  stat
-}
-
-
 # Convert yrep matrix into a molten data frame
 #
 # @param yrep A matrix, already validated using validate_yrep().
@@ -186,7 +165,9 @@ ppc_group_data <- function(y, yrep, group, stat = NULL) {
   if (is.null(stat))
     return(molten_d)
 
-  stat <- match.fun(stat)
+  if (!is.function(stat))
+    stat <- match.fun(stat)
+
   dplyr::summarise_(molten_d, value = ~stat(value))
 }
 

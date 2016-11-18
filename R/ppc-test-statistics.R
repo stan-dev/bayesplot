@@ -9,10 +9,12 @@
 #' @family PPCs
 #'
 #' @template args-y-yrep
-#' @param stat A single function name as a string, except for
-#'   \code{ppc_stat_2d}, which requires a character vector of exactly two
-#'   function names. The function(s) should take a vector input and return a
-#'   scalar test statistic.
+#' @param stat A single function or a string naming a function, except for
+#'   \code{ppc_stat_2d} which requires a vector of exactly two functions or
+#'   function names. In all cases the function(s) should take a vector input and
+#'   return a scalar test statistic. If specified as a string (or strings) then
+#'   the legend will display function names. If specified as a function (or
+#'   functions) then generic naming is used in the legend.
 #' @param ... Currently unused.
 #'
 #' @template details-binomial
@@ -60,7 +62,11 @@
 #' # use your own function to compute test statistics
 #' color_scheme_set("brightblue")
 #' q25 <- function(y) quantile(y, 0.25)
-#' ppc_stat(y, yrep, stat = "q25")
+#' ppc_stat(y, yrep, stat = "q25") # legend includes function name
+#'
+#' # can define the function in the 'stat' argument but then
+#' # the legend doesn't include a function name
+#' ppc_stat(y, yrep, stat = function(y) quantile(y, 0.25))
 #'
 NULL
 
@@ -80,8 +86,6 @@ ppc_stat <-
 
     y <- validate_y(y)
     yrep <- validate_yrep(yrep, y)
-    stat <- validate_stat(stat, 1)
-
     stat1 <- match.fun(stat)
     T_y <- stat1(y)
     T_yrep <- apply(yrep, 1, stat1)
@@ -102,8 +106,13 @@ ppc_stat <-
       ) +
       scale_fill_manual(values = get_color("l"), labels = Tyrep_label()) +
       scale_color_manual(values = get_color("dh"), labels = Ty_label()) +
-      guides(fill = guide_legend(title = bquote(italic(T) == .(stat)), order = 1),
-             color = guide_legend(title = NULL)) +
+      guides(
+        color = guide_legend(title = NULL),
+        fill = guide_legend(
+          order = 1,
+          title = stat_legend_title(stat, deparse(substitute(stat)))
+        )
+      ) +
       dont_expand_y_axis() +
       theme_default() +
       no_legend_spacing() +
@@ -130,8 +139,7 @@ ppc_stat_grouped <-
     y <- validate_y(y)
     yrep <- validate_yrep(yrep, y)
     group <- validate_group(group, y)
-    stat <- validate_stat(stat, 1)
-    plot_data <- ppc_group_data(y, yrep, group, stat = stat)
+    plot_data <- ppc_group_data(y, yrep, group, stat = match.fun(stat))
     is_y <- plot_data$variable == "y"
 
     ggplot(plot_data[!is_y, , drop = FALSE],
@@ -152,8 +160,11 @@ ppc_stat_grouped <-
       scale_fill_manual(values = get_color("l"), labels = Tyrep_label()) +
       scale_color_manual(values = get_color("dh"), labels = Ty_label()) +
       guides(
-        fill = guide_legend(title = bquote(italic(T) == .(stat)), order = 1),
-        color = guide_legend(title = NULL)
+        color = guide_legend(title = NULL),
+        fill = guide_legend(
+          order = 1,
+          title = stat_legend_title(stat, deparse(substitute(stat)))
+        )
       ) +
       dont_expand_y_axis() +
       theme_default() +
@@ -181,8 +192,7 @@ ppc_stat_freqpoly_grouped <-
     y <- validate_y(y)
     yrep <- validate_yrep(yrep, y)
     group <- validate_group(group, y)
-    stat <- validate_stat(stat, 1)
-    plot_data <- ppc_group_data(y, yrep, group, stat = stat)
+    plot_data <- ppc_group_data(y, yrep, group, stat = match.fun(stat))
     is_y <- plot_data$variable == "y"
 
     ggplot(plot_data[!is_y, , drop = FALSE],
@@ -201,8 +211,8 @@ ppc_stat_freqpoly_grouped <-
       ) +
       facet_wrap("group", scales = "free") +
       scale_color_manual(
-        name = bquote(italic(T) == .(stat)),
-        values = setNames(get_color(c("mh", "dh")), c("yrep", "y")),
+        name = stat_legend_title(stat, deparse(substitute(stat))),
+        values = setNames(get_color(c("m", "dh")), c("yrep", "y")),
         labels = c(yrep = Tyrep_label(), y = Ty_label())
       ) +
       dont_expand_y_axis(c(0.005, 0)) +
@@ -224,15 +234,24 @@ ppc_stat_2d <- function(y, yrep, stat = c("mean", "sd"), ...,
 
   y <- validate_y(y)
   yrep <- validate_yrep(yrep, y)
-  stat <- validate_stat(stat, 2)
+  if (length(stat) != 2)
+    stop("For ppc_stat_2d the 'stat' argument must have length 2.")
 
-  stat1 <- match.fun(stat[1])
-  stat2 <- match.fun(stat[2])
+  if (is.character(stat)) {
+    lgnd_title <- bquote(italic(T) == (list(.(stat[1]), .(stat[2]))))
+    stat_labs <- stat
+  } else {
+    lgnd_title <- expression(italic(T) == (list(italic(T)[1], italic(T)[2])))
+    stat_labs <- expression(italic(T)[1], italic(T)[2])
+  }
+
+  stat1 <- match.fun(stat[[1]])
+  stat2 <- match.fun(stat[[2]])
   T_y1 <- stat1(y)
   T_y2 <- stat2(y)
   T_yrep1 <- apply(yrep, 1, stat1)
   T_yrep2 <- apply(yrep, 1, stat2)
-  lgnd_title <- bquote(italic(T) == (list(.(stat[1]), .(stat[2]))))
+
   ggplot(
     data = data.frame(x = T_yrep1, y = T_yrep2),
     mapping = aes_(x = ~ x, y = ~ y)
@@ -268,6 +287,31 @@ ppc_stat_2d <- function(y, yrep, stat = c("mean", "sd"), ...,
       values = setNames(get_color(c("dh", "lh")), c("y", "yrep")),
       labels = c(y = Ty_label(), yrep = Tyrep_label())
     ) +
-    labs(x = stat[1], y = stat[2]) +
+    labs(x = stat_labs[1], y = stat_labs[2]) +
     theme_default()
 }
+
+
+
+# internal ----------------------------------------------------------------
+
+# Make legend title for ppc_stat,ppc_stat_grouped,ppc_stat_freqpoly_grouped
+#
+# @param stat The user's 'stat' argument.
+# @param stat_txt deparse(substitute()) applied to users 'stat' argument
+# @return Either throws an error or returns a legend title (possibly NULL)
+#
+stat_legend_title <- function(stat, stat_txt) {
+  stopifnot(is.character(stat) || is.function(stat))
+  if (is.character(stat)) {
+    lgnd_txt <- stat
+  } else {
+    lgnd_txt <- if (length(stat_txt) == 1 && !grepl("^function", stat_txt))
+      stat_txt else NA
+  }
+  if (is.na(lgnd_txt))
+    return(NULL)
+
+  bquote(italic(T) == .(lgnd_txt))
+}
+
