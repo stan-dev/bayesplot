@@ -7,3 +7,5 @@ inst/doc
 tests/testthat/Rplots.pdf
 
 .DS_Store
+
+cran-comments.md
