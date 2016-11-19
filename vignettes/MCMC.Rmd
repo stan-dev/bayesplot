@@ -14,7 +14,7 @@ vignette: >
 ```{r, settings, include=FALSE}
 library(bayesplot)
 knitr::opts_chunk$set(
-  dev = "pdf",
+  dev = "png",
   fig.align = "center",
   fig.width = 6,
   fig.height = 4,
