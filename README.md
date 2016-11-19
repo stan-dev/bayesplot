@@ -28,7 +28,7 @@ modifying ggplot objects provided by the **ggplot2** package.
 install.packages("bayesplot")
 ```
 
-* Install from GitHub (requires [devtools](https://github.com/hadley/devtools) package):
+* Install latest development version from GitHub (requires [devtools](https://github.com/hadley/devtools) package):
 
 ```r
 if (!require("devtools"))
