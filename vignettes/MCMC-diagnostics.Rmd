@@ -28,9 +28,9 @@ knitr::opts_chunk$set(
 
 This vignette focuses on MCMC diagnostic plots. Plots of parameter estimates
 from MCMC draws are covered in the separate vignette
-[*Plotting MCMC draws using the bayesplot package*]("MCMC.html"), 
+[*Plotting MCMC draws using the bayesplot package*](MCMC.html), 
 and graphical posterior predictive checks are covered in 
-[*Graphical posterior predictive checks using the bayesplot package*]("PPC.rmd").
+[*Graphical posterior predictive checks using the bayesplot package*](PPC.html).
 
 In addition to __bayesplot__ we'll load the following packages: 
 
