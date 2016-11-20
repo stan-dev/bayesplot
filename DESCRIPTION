@@ -29,6 +29,7 @@ Suggests:
     rmarkdown (>= 1.0.0),
     rstan (>= 2.12.1),
     rstanarm (>= 2.12.1),
+    rstantools (>= 1.0.0),
     shinystan (>= 2.2.1),
     testthat
 RoxygenNote: 5.0.1
