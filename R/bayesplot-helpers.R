@@ -13,8 +13,8 @@
 #'   For functions ending in \code{_bg}, \code{...} is passed to
 #'   \code{\link[ggplot2]{element_rect}}.
 #'
-#'   For functions ending in \code{_text}, \code{...} is passed to
-#'   \code{\link[ggplot2]{element_text}}.
+#'   For functions ending in \code{_text} or \code{_title}, \code{...} is passed
+#'   to \code{\link[ggplot2]{element_text}}.
 #'
 #'   For \code{xaxis_ticks} and \code{yaxis_ticks}, \code{...} is passed to
 #'   \code{\link[ggplot2]{element_line}}.
@@ -303,10 +303,9 @@ legend_text <- function(...) {
 #' @rdname bayesplot-helpers
 #' @export
 xaxis_title <- function(on = TRUE, ...) {
-  theme(axis.title.x = if (on)
-    element_text(...)
-    else
-      element_blank())
+  if (!on)
+    return(xlab(NULL))
+  theme(axis.title.x = element_text(...))
 }
 #' @rdname bayesplot-helpers
 #' @export
@@ -327,10 +326,9 @@ xaxis_ticks <- function(on = TRUE, ...) {
 #' @rdname bayesplot-helpers
 #' @export
 yaxis_title <- function(on = TRUE, ...) {
-  theme(axis.title.y = if (on)
-    element_text(...)
-    else
-      element_blank())
+  if (!on)
+    return(ylab(NULL))
+  theme(axis.title.y = element_text(...))
 }
 #' @rdname bayesplot-helpers
 #' @export
