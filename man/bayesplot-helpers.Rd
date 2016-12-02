@@ -76,8 +76,8 @@ vector.}
   For functions ending in \code{_bg}, \code{...} is passed to
   \code{\link[ggplot2]{element_rect}}.
 
-  For functions ending in \code{_text}, \code{...} is passed to
-  \code{\link[ggplot2]{element_text}}.
+  For functions ending in \code{_text} or \code{_title}, \code{...} is passed
+  to \code{\link[ggplot2]{element_text}}.
 
   For \code{xaxis_ticks} and \code{yaxis_ticks}, \code{...} is passed to
   \code{\link[ggplot2]{element_line}}.}

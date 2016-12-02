@@ -15,12 +15,20 @@ vignette: >
 library("bayesplot")
 knitr::opts_chunk$set(
   dev = "png",
+  dpi = 150,
+  fig.asp = 0.618,
+  fig.width = 5,
+  out.width = "60%",
   fig.align = "center",
-  fig.width = 4,
-  fig.height = 4,
   comment = NA
 )
 ```
+
+This vignette focuses on graphical posterior predictive checks (PPC). Plots of parameter estimates
+from MCMC draws are covered in the separate vignette
+[Plotting MCMC draws using the bayesplot package](MCMC.html), 
+and MCMC diagnostics are covered in 
+[Visual MCMC diagnostics using the bayesplot package](MCMC-diagnostics.html).
 
 ## Overview
 
@@ -68,7 +76,7 @@ graphical displays comparing the observed data $y$ to the replications.
 The names of the __bayesplot__ plotting functions for posterior predictive
 checking all have the prefix `ppc_`. 
 
-To demonstrate the various PPCs that can be created with the __bayesplot__ 
+To demonstrate some of the various PPCs that can be created with the __bayesplot__ 
 package we'll use an example of comparing Poisson and Negative binomial
 regression models from the
 [**rstanarm**](https://CRAN.R-project.org/package=rstanarm) package
@@ -133,7 +141,7 @@ for each of the data points in `y`.
 The first PPC we'll look at is a comparison of the distribution of `y` and the
 distributions of some of the simulated datasets (rows) in the `yrep` matrix.
 
-```{r ppc_dens_overlay, fig.height=3}
+```{r ppc_dens_overlay}
 library("ggplot2")
 library("bayesplot")
 
@@ -153,13 +161,13 @@ zeros than were actually observed.
 We could see the same thing by looking at separate histograms of `y` and some 
 of the `yrep` datasets using the `ppc_hist` function:
 
-```{r ppc_hist, fig.width=6, message=FALSE}
+```{r ppc_hist, message=FALSE}
 ppc_hist(y, yrep_poisson[1:5, ])
 ```
 
 The same plot for the negative binomial model looks much different:
 
-```{r ppc_hist-nb, fig.width=6, message=FALSE}
+```{r ppc_hist-nb, message=FALSE}
 ppc_hist(y, yrep_nb[1:5, ])
 ```
 
@@ -168,7 +176,7 @@ data, but it occasionally predicts values that are way too large, which is why
 the x-axes extend to such high values in the plot and make it difficult to read.
 To see the predictions for the smaller values more clearly we can zoom in:
 
-```{r ppc_hist-nb-2, fig.width=6, message=FALSE}
+```{r ppc_hist-nb-2, message=FALSE}
 ppc_hist(y, yrep_nb[1:5, ], binwidth = 20) + 
   coord_cartesian(xlim = c(-1, 500))
 ```
@@ -191,7 +199,7 @@ prop_zero(y) # check proportion of zeros in y
 
 Then we can use this function as the `stat` argument to `ppc_stat`:
 
-```{r ppc_stat, fig.height=3, message=FALSE}
+```{r ppc_stat, message=FALSE}
 ppc_stat(y, yrep_poisson, stat = "prop_zero")
 ```
 
@@ -203,7 +211,7 @@ proportion of zeros in each of the replicated datasets.
 
 Here's the same plot for the negative binomial model:
 
-```{r ppc_stat-nb, fig.height=3, message=FALSE}
+```{r ppc_stat-nb, message=FALSE}
 ppc_stat(y, yrep_nb, stat = "prop_zero")
 ```
 
@@ -214,7 +222,7 @@ However, if we look instead at the distribution of the maximum value in the
 replications then we can see that the Poisson model makes more realistic 
 predictions than the negative binomial:
 
-```{r ppc_stat-max, fig.height=3, message=FALSE}
+```{r ppc_stat-max, message=FALSE}
 ppc_stat(y, yrep_poisson, stat = "max")
 ppc_stat(y, yrep_nb, stat = "max")
 ppc_stat(y, yrep_nb, stat = "max", binwidth = 100) + 
@@ -280,17 +288,14 @@ x <- list(y = rnorm(50), yrep = matrix(rnorm(5000), nrow = 100, ncol = 50))
 class(x) <- "foo"
 ```
 ```{r, pp_check-1, eval=FALSE}
-bayesplot::pp_check(x)
+pp_check(x)
 ```
 ```{r, print-1, echo=FALSE}
-gg <- bayesplot::pp_check(x)
+gg <- pp_check(x)
 suppressMessages(print(gg))
 ```
-```{r, pp_check-2, eval=FALSE}
-bayesplot::pp_check(x, type = "overlaid")
-```
-```{r, print2, echo=FALSE}
-bayesplot::pp_check(x, type = "overlaid")
+```{r, pp_check-2}
+pp_check(x, type = "overlaid")
 ```
 
 ### Examples of `pp_check` methods in other packages

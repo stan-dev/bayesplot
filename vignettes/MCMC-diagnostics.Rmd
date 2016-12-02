@@ -19,18 +19,20 @@ library("gridExtra")
 library("rstan")
 knitr::opts_chunk$set(
   dev = "png",
+  dpi = 150,
+  fig.asp = 0.618,
+  fig.width = 5,
+  out.width = "60%",
   fig.align = "center",
-  fig.width = 4,
-  fig.height = 3,
   comment = NA
 )
 ```
 
 This vignette focuses on MCMC diagnostic plots. Plots of parameter estimates
 from MCMC draws are covered in the separate vignette
-[*Plotting MCMC draws using the bayesplot package*](MCMC.html), 
+[Plotting MCMC draws using the bayesplot package](MCMC.html), 
 and graphical posterior predictive checks are covered in 
-[*Graphical posterior predictive checks using the bayesplot package*](PPC.html).
+[Graphical posterior predictive checks using the bayesplot package](PPC.html).
 
 In addition to __bayesplot__ we'll load the following packages: 
 
@@ -134,7 +136,7 @@ transformed parameters {
 model {
   mu ~ normal(0, 10);
   tau ~ cauchy(0, 10);
-  eta ~ normal(0,1); // implies theta ~ normal(mu, tau)
+  eta ~ normal(0, 1); // implies theta ~ normal(mu, tau)
   y ~ normal(theta, sigma);
 }
 ```
