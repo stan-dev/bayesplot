@@ -21,8 +21,14 @@ modifying ggplot objects provided by the **ggplot2** package.
 
 ### Installation
 
-**bayesplot** is not yet on CRAN (coming soon) but can be installed from GitHub 
-using the **devtools** package.
+
+* Install from CRAN:
+
+```{r}
+install.packages("bayesplot")
+```
+
+* Install latest development version from GitHub (requires [devtools](https://github.com/hadley/devtools) package):
 
 ```r
 if (!require("devtools"))
@@ -30,8 +36,11 @@ if (!require("devtools"))
 
 devtools::install_github("stan-dev/bayesplot", dependencies = TRUE, build_vignettes = TRUE)
 ```
+If you are not using the [RStudio IDE](https://www.rstudio.com/) and you get an error related to "pandoc" you will either need to remove the argument `build_vignettes=TRUE` (to avoid building the vignettes) or install [pandoc](http://pandoc.org/) (e.g., `brew install pandoc`) and probably also pandoc-citeproc (e.g., `brew install pandoc-citeproc`). If you have the `rmarkdown` R package installed then you can check if you have pandoc by running the following in R:
+```r
+rmarkdown::pandoc_available()
+```
 
-If you are not using RStudio and you get an error related to "pandoc" you will either need to install [pandoc](http://pandoc.org/) or remove the argument `build_vignettes=TRUE` to avoid building the package vignettes.
 
 ### Examples
 Some quick examples using MCMC draws obtained from the [__rstanarm__](https://github.com/stan-dev/rstanarm) and [__rstan__](https://github.com/stan-dev/rstan) packages.
