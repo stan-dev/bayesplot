@@ -148,7 +148,6 @@ mcmc_areas <- function(x,
 }
 
 
-
 # internal ----------------------------------------------------------------
 
 # @param x A matrix (not a 3-D array) created by merge_chains()

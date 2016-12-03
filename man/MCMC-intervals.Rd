@@ -141,6 +141,7 @@ Other MCMC: \code{\link{MCMC-combos}},
   \code{\link{MCMC-diagnostics}},
   \code{\link{MCMC-distributions}},
   \code{\link{MCMC-nuts}}, \code{\link{MCMC-overview}},
+  \code{\link{MCMC-recovery}},
   \code{\link{MCMC-scatterplots}},
   \code{\link{MCMC-traces}}
 }
