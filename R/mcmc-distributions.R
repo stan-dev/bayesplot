@@ -103,6 +103,7 @@ mcmc_hist <- function(x,
                       facet_args = list(),
                       ...,
                       binwidth = NULL) {
+  check_ignored_arguments(...)
   .mcmc_hist(
     x,
     pars = pars,
@@ -124,6 +125,7 @@ mcmc_dens <- function(x,
                       facet_args = list(),
                       ...,
                       trim = FALSE) {
+  check_ignored_arguments(...)
   .mcmc_dens(
     x,
     pars = pars,
@@ -146,6 +148,7 @@ mcmc_hist_by_chain <- function(x,
                                facet_args = list(),
                                ...,
                                binwidth = NULL) {
+  check_ignored_arguments(...)
   .mcmc_hist(
     x,
     pars = pars,
@@ -167,6 +170,7 @@ mcmc_dens_overlay <- function(x,
                               facet_args = list(),
                               ...,
                               trim = FALSE) {
+  check_ignored_arguments(...)
   .mcmc_dens(
     x,
     pars = pars,
@@ -189,6 +193,7 @@ mcmc_violin <- function(x,
                         facet_args = list(),
                         ...,
                         probs = c(0.1, 0.5, 0.9)) {
+  check_ignored_arguments(...)
   .mcmc_dens(
     x,
     pars = pars,
