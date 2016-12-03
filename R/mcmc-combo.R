@@ -92,7 +92,7 @@ mcmc_combo <-
       args$facet_args <- list(ncol = 1, nrow = NULL)
     }
 
-    plots <- lapply(plotfuns, function(f) do.call(f, args))
+    plots <- lapply(plotfuns, function(f) suppressWarnings(do.call(f, args)))
     if (!is.null(gg_theme))
       plots <- lapply(plots, function(x) x + gg_theme)
 
