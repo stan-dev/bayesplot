@@ -1,5 +1,5 @@
 # bayesplot 1.0.0.9000
-
+* New `bayesplot_grid` function for juxtaposing plots
 * The `stat` argument for all `ppc_stat_*` functions now accepts a function
 instead of only the name of a function. (#31)
 * `xaxis_title(FALSE)` and `yaxis_title(FALSE)` now set axis titles to `NULL` 

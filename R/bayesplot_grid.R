@@ -67,15 +67,15 @@ bayesplot_grid <-
     if (length(dots) && length(plots)) {
       stop("Arguments '...' and 'plots' can't both be specified.")
     } else if (length(plots)) {
-      stopifnot(is.list(plots))
+      if (!is.list(plots) || !all_ggplot(plots))
+        stop("'plots' must be a list of ggplot objects.")
     } else if (length(dots)) {
+      if (!all_ggplot(dots))
+        stop("All objects in '...' must be ggplot objects.")
       plots <- dots
     } else {
       stop("No plots specified.")
     }
-    all_ggplot <- all(sapply(plots, "inherits", what = "ggplot"))
-    if (!all_ggplot)
-      stop("All plots must be ggplot objects.")
 
     if (length(titles)) {
       stopifnot(is.character(titles), length(titles) == length(plots))
@@ -99,6 +99,10 @@ bayesplot_grid <-
 
 as_bayesplot_grid <- function(x) {
   structure(x, class = unique(c("bayesplot_grid", class(x))))
+}
+
+all_ggplot <- function(x) {
+  all(sapply(x, "inherits", what = "ggplot"))
 }
 
 #' @export
