@@ -43,7 +43,6 @@ test_that("mcmc_intervals/areas with rhat", {
   expect_gg(g <- mcmc_intervals(arr, rhat = r))
   rhat_map <- g$layers[[3]][["mapping"]]
   expect_identical(rhat_map$colour, as.name("rhat"))
-  expect_identical(rhat_map$fill, as.name("rhat"))
 
   expect_gg(g2 <- mcmc_areas(arr, rhat = r))
   rhat_map2 <- g2$layers[[2]][["mapping"]]
