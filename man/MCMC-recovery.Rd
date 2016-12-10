@@ -5,8 +5,8 @@
 \alias{mcmc_recover}
 \title{Compare MCMC estimates to true parameter values}
 \usage{
-mcmc_recover(x, true, ..., prob = 0.9, point_est = c("median", "mean",
-  "none"), fatten = 3, size = 1)
+mcmc_recover(x, true, facet_args = list(), ..., prob = 0.5,
+  prob_outer = 0.9, point_est = c("median", "mean"))
 }
 \arguments{
 \item{x}{A 3-D array, matrix, list of matrices, or data frame of MCMC draws.
@@ -21,15 +21,28 @@ be the same as the order of the parameters in \code{x}.}
 \item{...}{Currently unused.}
 
 \item{prob}{The probability mass to include in the interval. The
-default is \code{0.9} (90\% interval).}
+default is \code{0.5} (50\% interval).}
 
 \item{point_est}{The point estimate to show. Either \code{"median"} (the
 default), \code{"mean"}, or \code{"none"}.}
 
-\item{fatten, size}{Passed to \code{\link[ggplot2]{geom_pointrange}}.}
+\item{size}{Passed to \code{\link[ggplot2]{geom_point}}.}
 }
 \description{
 See the \strong{Plot Descriptions} section, below, for details.
+}
+\examples{
+\dontrun{
+library(rstanarm)
+alpha <- 1; beta <- c(-.5, .5); sigma <- 2
+X <- matrix(rnorm(200), 100, 2)
+y <- rnorm(100, mean = c(alpha + X \%*\% beta), sd = sigma)
+fit <- stan_glm(y ~ X)
+draws <- as.matrix(fit)
+print(colnames(draws))
+mcmc_recover(draws, true, prob = )
+}
+
 }
 \seealso{
 Other MCMC: \code{\link{MCMC-combos}},

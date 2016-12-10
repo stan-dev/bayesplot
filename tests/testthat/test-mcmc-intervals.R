@@ -3,6 +3,12 @@ context("MCMC: intervals")
 
 source("data-for-mcmc-tests.R")
 
+test_that("mcmc_intervals/areas errors if prob > prob_outer", {
+  expect_error(mcmc_intervals(arr, prob = 0.8, prob_outer = 0.5),
+               "prob_outer >= prob is not TRUE", fixed = TRUE)
+  expect_error(mcmc_areas(arr, prob = 0.8, prob_outer = 0.5),
+               "prob_outer >= prob is not TRUE", fixed = TRUE)
+})
 test_that("mcmc_intervals returns a ggplot object", {
   expect_gg(mcmc_intervals(arr, pars = "beta[1]", regex_pars = "x\\:"))
   expect_gg(mcmc_intervals(arr1chain, pars = "beta[1]", regex_pars = "Intercept"))
