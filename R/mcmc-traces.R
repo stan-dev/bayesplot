@@ -183,7 +183,8 @@ mcmc_trace_highlight <-
     mapping <- aes_(x = ~ Iteration, y = ~ Value, color = ~ Chain)
   } else {
     stopifnot(length(highlight) == 1)
-    mapping <- aes_(x = ~ Iteration, y = ~ Value,
+    mapping <- aes_(x = ~ Iteration,
+                    y = ~ Value,
                     alpha = ~ Chain == highlight,
                     color = ~ Chain == highlight)
   }
