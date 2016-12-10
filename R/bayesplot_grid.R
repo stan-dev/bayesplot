@@ -1,7 +1,7 @@
-#' Compare plots
+#' Arrange plots in a grid
 #'
-#' The \code{bayesplot_grid} function makes it simple to juxtapose plots
-#' using common \eqn{x} and/or \eqn{y} axes.
+#' The \code{bayesplot_grid} function makes it simple to juxtapose plots using
+#' common \eqn{x} and/or \eqn{y} axes.
 #'
 #' @export
 #' @param ... One or more ggplot objects.
