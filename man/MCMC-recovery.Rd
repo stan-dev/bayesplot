@@ -2,11 +2,12 @@
 % Please edit documentation in R/mcmc-recovery.R
 \name{MCMC-recovery}
 \alias{MCMC-recovery}
-\alias{mcmc_recover}
-\title{Compare MCMC estimates to true parameter values}
+\alias{mcmc_recover_intervals}
+\title{Compare MCMC estimates to "true" parameter values}
 \usage{
-mcmc_recover(x, true, facet_args = list(), ..., prob = 0.5,
-  prob_outer = 0.9, point_est = c("median", "mean"))
+mcmc_recover_intervals(x, true, batch = rep(1, length(true)),
+  facet_args = list(), ..., prob = 0.5, prob_outer = 0.9,
+  point_est = c("median", "mean"))
 }
 \arguments{
 \item{x}{A 3-D array, matrix, list of matrices, or data frame of MCMC draws.
@@ -18,6 +19,19 @@ allowed inputs.}
 included in \code{x} and the order of the parameters in \code{true} should
 be the same as the order of the parameters in \code{x}.}
 
+\item{batch}{Optionally, a vector (numeric, character, integer, factor) used
+to split the parameters into batches. If specified \code{batch} must have
+the same length as \code{true} and be in the same order as \code{true}.
+Parameters in the same batch will be grouped together in the same facet in
+the plot (see the \strong{Examples} section, below). The default is to
+group all parameters together into a single batch. Changing the default is
+most useful when parameters are on very different scales, in which case
+\code{batch} can be used to group them into batches for within which it
+makes sense to use the same \eqn{y}-axis.}
+
+\item{facet_args}{Arguments (other than \code{facets}) passed to
+\code{\link[ggplot2]{facet_wrap}} to control faceting.}
+
 \item{...}{Currently unused.}
 
 \item{prob}{The probability mass to include in the interval. The
@@ -25,11 +39,22 @@ default is \code{0.5} (50\% interval).}
 
 \item{point_est}{The point estimate to show. Either \code{"median"} (the
 default), \code{"mean"}, or \code{"none"}.}
-
-\item{size}{Passed to \code{\link[ggplot2]{geom_point}}.}
+}
+\value{
+A ggplot object that can be further customized using the
+  \pkg{ggplot2} package.
 }
 \description{
 See the \strong{Plot Descriptions} section, below, for details.
+}
+\section{Plot Descriptions}{
+
+\describe{
+  \item{\code{mcmc_recover_intervals}}{
+   Plots comparing "true" parameter values to estimates (intervals and point
+   estimates) computed from MCMC draws.
+  }
+}
 }
 \examples{
 \dontrun{
@@ -40,7 +65,22 @@ y <- rnorm(100, mean = c(alpha + X \%*\% beta), sd = sigma)
 fit <- stan_glm(y ~ X)
 draws <- as.matrix(fit)
 print(colnames(draws))
-mcmc_recover(draws, true, prob = )
+true <- c(alpha, beta, sigma)
+mcmc_recover_intervals(draws, true)
+
+# put the coefficients on X into the same batch
+mcmc_recover_intervals(draws, true, batch = c(1, 2, 2, 1))
+# equivalent
+mcmc_recover_intervals(draws, true, batch = grepl("X", colnames(draws)))
+# same but stacked vertically
+mcmc_recover_intervals(draws, true,
+                       batch = grepl("X", colnames(draws)),
+                       facet_args = list(ncol = 1))
+
+# each parameter in its own facet
+mcmc_recover_intervals(draws, true, batch = 1:4)
+# same but in a different order
+mcmc_recover_intervals(draws, true, batch = c(1, 3, 4, 2))
 }
 
 }
