@@ -14,10 +14,10 @@ mcmc_recover_intervals(x, true, batch = rep(1, length(true)),
 The \link{MCMC-overview} page provides details on how to specify each these
 allowed inputs.}
 
-\item{true}{A numeric vector of true values for each of the parameters in
-\code{x}. There should be one value in \code{true} for each parameter
-included in \code{x} and the order of the parameters in \code{true} should
-be the same as the order of the parameters in \code{x}.}
+\item{true}{A numeric vector of "true" values of the parameters in \code{x}.
+There should be one value in \code{true} for each parameter included in
+\code{x} and the order of the parameters in \code{true} should be the same
+as the order of the parameters in \code{x}.}
 
 \item{batch}{Optionally, a vector-like object (numeric, character, integer,
 factor) used to split the parameters into batches. If \code{batch} is
@@ -27,7 +27,7 @@ in the same facet in the plot (see the \strong{Examples} section, below).
 The default is to group all parameters together into a single batch.
 Changing the default is most useful when parameters are on very different
 scales, in which case \code{batch} can be used to group them into batches
-for within which it makes sense to use the same \eqn{y}-axis.}
+within which it makes sense to use the same \eqn{y}-axis.}
 
 \item{facet_args}{Arguments (other than \code{facets}) passed to
 \code{\link[ggplot2]{facet_wrap}} to control faceting.}
@@ -60,7 +60,7 @@ available plots.
 \describe{
   \item{\code{mcmc_recover_intervals}}{
    Central intervals and point estimates computed from MCMC draws, with
-   "true" values
+   "true" values plotted using a different shape.
   }
 }
 }

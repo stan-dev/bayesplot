@@ -11,10 +11,10 @@
 #' @family MCMC
 #'
 #' @template args-mcmc-x
-#' @param true A numeric vector of true values for each of the parameters in
-#'   \code{x}. There should be one value in \code{true} for each parameter
-#'   included in \code{x} and the order of the parameters in \code{true} should
-#'   be the same as the order of the parameters in \code{x}.
+#' @param true A numeric vector of "true" values of the parameters in \code{x}.
+#'   There should be one value in \code{true} for each parameter included in
+#'   \code{x} and the order of the parameters in \code{true} should be the same
+#'   as the order of the parameters in \code{x}.
 #' @param batch Optionally, a vector-like object (numeric, character, integer,
 #'   factor) used to split the parameters into batches. If \code{batch} is
 #'   specified, it must have the same length as \code{true} and be in the same
@@ -23,7 +23,7 @@
 #'   The default is to group all parameters together into a single batch.
 #'   Changing the default is most useful when parameters are on very different
 #'   scales, in which case \code{batch} can be used to group them into batches
-#'   for within which it makes sense to use the same \eqn{y}-axis.
+#'   within which it makes sense to use the same \eqn{y}-axis.
 #' @param facet_args Arguments (other than \code{facets}) passed to
 #'   \code{\link[ggplot2]{facet_wrap}} to control faceting.
 #' @param ... Currently unused.
@@ -40,7 +40,7 @@
 #' \describe{
 #'   \item{\code{mcmc_recover_intervals}}{
 #'    Central intervals and point estimates computed from MCMC draws, with
-#'    "true" values
+#'    "true" values plotted using a different shape.
 #'   }
 #' }
 #'
