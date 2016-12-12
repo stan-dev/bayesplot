@@ -34,3 +34,11 @@ test_that("mcmc_combo throws error if 1 chain but multiple chains required", {
                "requires multiple chains")
 })
 
+# other errors ------------------------------------------------------------
+test_that("mcmc_combo throws errors", {
+  expect_error(mcmc_combo(arr, combo = c("trace_highlight")),
+               "'combo' should have at least two elements")
+  expect_error(mcmc_combo(arr, regex_pars = "beta",
+                          combo = c("animal", "hist", "tornado")),
+               "The following functions were not found: mcmc_animal, mcmc_tornado")
+})

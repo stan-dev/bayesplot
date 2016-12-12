@@ -29,10 +29,12 @@ of \code{yrep} should be in the same order as the data points in \code{y}
 for the plots to make sense. See \strong{Details} for additional
 instructions.}
 
-\item{stat}{A single function name as a string, except for
-\code{ppc_stat_2d}, which requires a character vector of exactly two
-function names. The function(s) should take a vector input and return a
-scalar test statistic.}
+\item{stat}{A single function or a string naming a function, except for
+\code{ppc_stat_2d} which requires a vector of exactly two functions or
+function names. In all cases the function(s) should take a vector input and
+return a scalar test statistic. If specified as a string (or strings) then
+the legend will display function names. If specified as a function (or
+functions) then generic naming is used in the legend.}
 
 \item{...}{Currently unused.}
 
@@ -107,7 +109,11 @@ ppc_stat_freqpoly_grouped(y, yrep, group)
 # use your own function to compute test statistics
 color_scheme_set("brightblue")
 q25 <- function(y) quantile(y, 0.25)
-ppc_stat(y, yrep, stat = "q25")
+ppc_stat(y, yrep, stat = "q25") # legend includes function name
+
+# can define the function in the 'stat' argument but then
+# the legend doesn't include a function name
+ppc_stat(y, yrep, stat = function(y) quantile(y, 0.25))
 
 }
 \references{

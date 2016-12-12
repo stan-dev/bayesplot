@@ -125,14 +125,14 @@ test_that("facet_text returns correct theme object", {
 
 # axis titles -------------------------------------------------------------
 test_that("xaxis_title returns correct theme object", {
-  expect_identical(xaxis_title(FALSE), theme(axis.title.x = element_blank()))
+  expect_identical(xaxis_title(FALSE), xlab(NULL))
   expect_equal(
     xaxis_title(face = "bold", angle = 30),
     theme(axis.title.x = element_text(face = "bold", angle = 30))
   )
 })
 test_that("yaxis_title returns correct theme object", {
-  expect_identical(yaxis_title(FALSE), theme(axis.title.y = element_blank()))
+  expect_identical(yaxis_title(FALSE), ylab(NULL))
   expect_equal(
     yaxis_title(face = "bold", angle = 30),
     theme(axis.title.y = element_text(face = "bold", angle = 30))

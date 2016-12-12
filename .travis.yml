@@ -7,9 +7,7 @@ sudo: false
 cache: packages
 
 r_github_packages:
-  - HenrikBengtsson/matrixStats@develop
   - jimhester/covr
-  - hadley/ggplot2
 
 after_success:
   - Rscript -e 'covr::codecov()'
