@@ -1,6 +1,11 @@
 #' Compare MCMC estimates to "true" parameter values
 #'
-#' See the \strong{Plot Descriptions} section, below, for details.
+#' Plots comparing MCMC estimates to "true" parameter values. Before fitting a
+#' model to real data it is useful to simulate data according to the model using
+#' known (fixed) parameter values and to check that these "true" parameter
+#' values are (approximately) recovered by fitting the model to the simulated
+#' data. See the \strong{Plot Descriptions} section, below, for details on the
+#' available plots.
 #'
 #' @name MCMC-recovery
 #' @family MCMC
@@ -10,20 +15,23 @@
 #'   \code{x}. There should be one value in \code{true} for each parameter
 #'   included in \code{x} and the order of the parameters in \code{true} should
 #'   be the same as the order of the parameters in \code{x}.
-#' @param batch Optionally, a vector (numeric, character, integer, factor) used
-#'   to split the parameters into batches. If specified \code{batch} must have
-#'   the same length as \code{true} and be in the same order as \code{true}.
-#'   Parameters in the same batch will be grouped together in the same facet in
-#'   the plot (see the \strong{Examples} section, below). The default is to
-#'   group all parameters together into a single batch. Changing the default is
-#'   most useful when parameters are on very different scales, in which case
-#'   \code{batch} can be used to group them into batches for within which it
-#'   makes sense to use the same \eqn{y}-axis.
+#' @param batch Optionally, a vector-like object (numeric, character, integer,
+#'   factor) used to split the parameters into batches. If \code{batch} is
+#'   specified, it must have the same length as \code{true} and be in the same
+#'   order as \code{true}. Parameters in the same batch will be grouped together
+#'   in the same facet in the plot (see the \strong{Examples} section, below).
+#'   The default is to group all parameters together into a single batch.
+#'   Changing the default is most useful when parameters are on very different
+#'   scales, in which case \code{batch} can be used to group them into batches
+#'   for within which it makes sense to use the same \eqn{y}-axis.
 #' @param facet_args Arguments (other than \code{facets}) passed to
 #'   \code{\link[ggplot2]{facet_wrap}} to control faceting.
 #' @param ... Currently unused.
-#' @param prob The probability mass to include in the interval. The
+#' @param prob The probability mass to include in the inner interval. The
 #'   default is \code{0.5} (50\% interval).
+#' @param prob_outer
+#' @inher The probability mass to include in the outer interval. The default is
+#'   \code{0.9} (90\% interval).
 #' @param point_est The point estimate to show. Either \code{"median"} (the
 #'   default), \code{"mean"}, or \code{"none"}.
 #'
@@ -32,8 +40,8 @@
 #' @section Plot Descriptions:
 #' \describe{
 #'   \item{\code{mcmc_recover_intervals}}{
-#'    Plots comparing "true" parameter values to estimates (intervals and point
-#'    estimates) computed from MCMC draws.
+#'    Central intervals and point estimates computed from MCMC draws, with
+#'    "true" values
 #'   }
 #' }
 #'
@@ -76,9 +84,13 @@ mcmc_recover_intervals <-
            ...,
            prob = 0.5,
            prob_outer = 0.9,
-           point_est = c("median", "mean")) {
+           point_est = c("median", "mean", "none")) {
     check_ignored_arguments(...)
+
     point_est <- match.arg(point_est)
+    if (point_est == "none")
+      point_est <- NULL
+
     stopifnot(is.numeric(true), length(batch) == length(true))
     stopifnot(prob_outer >= prob, prob > 0, prob_outer <= 1)
     alpha1 <- (1 - prob) / 2
@@ -88,8 +100,7 @@ mcmc_recover_intervals <-
     x <- merge_chains(prepare_mcmc_array(x))
     intervals <- t(apply(x, 2, quantile, probs = probs))
     colnames(intervals) <- c("ll", "l", "u", "uu")
-    point <- apply(x, 2, point_est)
-
+    point <- apply(x, 2, point_est %||% function(x) NA)
     all_separate <- length(unique(batch)) == length(true)
     plot_data <- data.frame(
       Parameter = rownames(intervals),
@@ -117,12 +128,17 @@ mcmc_recover_intervals <-
         size = 2,
         lineend = "round",
         show.legend = FALSE
-      ) +
-      geom_point(
-        aes_(y = ~ Point, shape = "Estimated",
-             color = "Estimated", fill = "Estimated"),
-        size = 4
-      ) +
+      )
+
+    if (!is.null(point_est))
+      graph <- graph +
+        geom_point(
+          aes_(y = ~ Point, shape = "Estimated",
+               color = "Estimated", fill = "Estimated"),
+          size = 4
+        )
+
+    graph <- graph +
       geom_point(
         aes_(y = ~ True, shape = "True",
              color = "True", fill = "True"),
@@ -130,7 +146,8 @@ mcmc_recover_intervals <-
       ) +
       scale_color_manual(
         name = "",
-        values = c(Estimated = get_color("d"), True = get_color("dh"))
+        values = c(Estimated = get_color("d"), True = get_color("dh")),
+        guide = if (is.null(point_est)) "none" else "legend"
       ) +
       scale_fill_manual(
         name = "",

@@ -7,7 +7,7 @@
 \usage{
 mcmc_recover_intervals(x, true, batch = rep(1, length(true)),
   facet_args = list(), ..., prob = 0.5, prob_outer = 0.9,
-  point_est = c("median", "mean"))
+  point_est = c("median", "mean", "none"))
 }
 \arguments{
 \item{x}{A 3-D array, matrix, list of matrices, or data frame of MCMC draws.
@@ -34,8 +34,13 @@ makes sense to use the same \eqn{y}-axis.}
 
 \item{...}{Currently unused.}
 
-\item{prob}{The probability mass to include in the interval. The
+\item{prob}{The probability mass to include in the inner interval (for
+\code{mcmc_intervals}) or in the shaded region (for \code{mcmc_areas}). The
 default is \code{0.5} (50\% interval).}
+
+\item{prob_outer}{The probability mass to include in the outer interval. The
+default is \code{0.9} for \code{mcmc_intervals} (90\% interval)
+and \code{1} for \code{mcmc_areas}.}
 
 \item{point_est}{The point estimate to show. Either \code{"median"} (the
 default), \code{"mean"}, or \code{"none"}.}
@@ -45,14 +50,19 @@ A ggplot object that can be further customized using the
   \pkg{ggplot2} package.
 }
 \description{
-See the \strong{Plot Descriptions} section, below, for details.
+Plots comparing MCMC estimates to "true" parameter values. Before fitting a
+model to real data it is useful to simulate data according to the model using
+known (fixed) parameter values and to check that these "true" parameter
+values are (approximately) recovered by fitting the model to the simulated
+data. See the \strong{Plot Descriptions} section, below, for details on the
+available plots.
 }
 \section{Plot Descriptions}{
 
 \describe{
   \item{\code{mcmc_recover_intervals}}{
-   Plots comparing "true" parameter values to estimates (intervals and point
-   estimates) computed from MCMC draws.
+   Central intervals and point estimates computed from MCMC draws, with
+   "true" values
   }
 }
 }
