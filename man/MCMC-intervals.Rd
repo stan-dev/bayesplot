@@ -131,7 +131,8 @@ x <- as.matrix(fit)
 
 color_scheme_set("teal")
 mcmc_intervals(x, point_est = "mean", prob = 0.8, prob_outer = 0.95)
-mcmc_areas(x, regex_pars = "cyl", bw = "SJ")
+mcmc_areas(x, regex_pars = "cyl", bw = "SJ",
+           rhat = rhat(fit, regex_pars = "cyl"))
 }
 
 

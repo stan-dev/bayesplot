@@ -144,11 +144,12 @@ fit <- stan_glm(mpg ~ ., data = mtcars,
 # extract draws using as.array (instead of as.matrix) to keep
 # chains separate for traceplot
 posterior <- as.array(fit)
+
+# for stanfit and stanreg objects use nuts_params() to get the divergences
 mcmc_trace(
   posterior,
-  pars = c("am", "sigma"),
-  facet_args = list(ncol = 1),
-  divergences = nuts_params(fit, pars = "divergent__")
+  pars = "sigma",
+  divergences = nuts_params(fit, pars = "divergent__") # just nuts_params(fit) also fine
 )
 }
 

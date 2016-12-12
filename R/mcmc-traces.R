@@ -98,11 +98,12 @@
 #' # extract draws using as.array (instead of as.matrix) to keep
 #' # chains separate for traceplot
 #' posterior <- as.array(fit)
+#'
+#' # for stanfit and stanreg objects use nuts_params() to get the divergences
 #' mcmc_trace(
 #'   posterior,
-#'   pars = c("am", "sigma"),
-#'   facet_args = list(ncol = 1),
-#'   divergences = nuts_params(fit, pars = "divergent__")
+#'   pars = "sigma",
+#'   divergences = nuts_params(fit, pars = "divergent__") # just nuts_params(fit) also fine
 #' )
 #' }
 #'
@@ -248,7 +249,13 @@ mcmc_trace_highlight <-
       scale_color_manual("Chain", values = chain_colors(n_chain))
 
     if (!is.null(divergences))
-      graph <- graph + divergence_rug(divergences, n_iter)
+      graph <- graph +
+        divergence_rug(divergences, n_iter) +
+        guides(
+          color = guide_legend(order = 1),
+          linetype = guide_legend(order = 2, title = NULL, keywidth = rel(1/2),
+                                  override.aes = list(size = rel(1/2)))
+        )
   }
 
   facet_args$facets <- ~ Parameter
@@ -285,7 +292,8 @@ chain_colors <- function(n) {
 # @param divergences User's 'divergences' argument, if specified
 # @param n_iter Number of iterations in the trace plot (to check against number
 #   of iterations provided in 'divergences')
-divergence_rug <- function(divergences, n_iter) {
+# @param color,size Passed to geom_rug.
+divergence_rug <- function(divergences, n_iter, color = "red", size = 1/4) {
   if (is.data.frame(divergences)) {
     divergences <- validate_nuts_data_frame(divergences)
     stopifnot(length(unique(divergences$Iteration)) == n_iter)
@@ -307,11 +315,12 @@ divergence_rug <- function(divergences, n_iter) {
     message("No divergences to plot.")
 
   geom_rug(
-    aes_(x = ~ Divergent),
+    aes_(x = ~ Divergent, linetype = "Divergence"),
     data = div_info,
     na.rm = TRUE,
     inherit.aes = FALSE,
     sides = "b",
-    color = "red"
+    color = color,
+    size = size
   )
 }
