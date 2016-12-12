@@ -29,9 +29,8 @@
 #' @param ... Currently unused.
 #' @param prob The probability mass to include in the inner interval. The
 #'   default is \code{0.5} (50\% interval).
-#' @param prob_outer
-#' @inher The probability mass to include in the outer interval. The default is
-#'   \code{0.9} (90\% interval).
+#' @param prob_outer The probability mass to include in the outer interval. The
+#'   default is \code{0.9} (90\% interval).
 #' @param point_est The point estimate to show. Either \code{"median"} (the
 #'   default), \code{"mean"}, or \code{"none"}.
 #'
@@ -74,7 +73,7 @@
 #'
 NULL
 
-#' @rdname MCMC-recovery
+#' @rdname MCMC-recover
 #' @export
 mcmc_recover_intervals <-
   function(x,
@@ -85,28 +84,34 @@ mcmc_recover_intervals <-
            prob = 0.5,
            prob_outer = 0.9,
            point_est = c("median", "mean", "none")) {
-    check_ignored_arguments(...)
 
+    check_ignored_arguments(...)
+    x <- merge_chains(prepare_mcmc_array(x))
+
+    stopifnot(
+      is.numeric(true),
+      ncol(x) == length(true),
+      length(batch) == length(true),
+      prob_outer >= prob,
+      prob > 0,
+      prob_outer <= 1
+    )
+    all_separate <- length(unique(batch)) == length(true)
     point_est <- match.arg(point_est)
     if (point_est == "none")
       point_est <- NULL
 
-    stopifnot(is.numeric(true), length(batch) == length(true))
-    stopifnot(prob_outer >= prob, prob > 0, prob_outer <= 1)
     alpha1 <- (1 - prob) / 2
     alpha2 <- (1 - prob_outer) / 2
     probs <- sort(c(alpha1, 1 - alpha1, alpha2, 1 - alpha2))
-
-    x <- merge_chains(prepare_mcmc_array(x))
     intervals <- t(apply(x, 2, quantile, probs = probs))
     colnames(intervals) <- c("ll", "l", "u", "uu")
-    point <- apply(x, 2, point_est %||% function(x) NA)
-    all_separate <- length(unique(batch)) == length(true)
+
     plot_data <- data.frame(
       Parameter = rownames(intervals),
       Batch = if (!all_separate) batch else rownames(intervals),
       True = true,
-      Point = point,
+      Point = apply(x, 2, point_est %||% function(x) NA),
       intervals
     )
     facet_args[["facets"]] <- ~ Batch
