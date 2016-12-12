@@ -7,7 +7,7 @@
 #' data. See the \strong{Plot Descriptions} section, below, for details on the
 #' available plots.
 #'
-#' @name MCMC-recovery
+#' @name MCMC-recover
 #' @family MCMC
 #'
 #' @template args-mcmc-x
