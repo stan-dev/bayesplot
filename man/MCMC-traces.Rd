@@ -56,16 +56,17 @@ range of iterations to display.}
 \code{mcmc_trace}) or the default point size (if calling
 \code{mcmc_trace_highlight}).}
 
-\item{divergences}{For models fit using \code{\link{NUTS}}, an optional
-vector or data frame providing information about divergent transitions. If
-a data frame is provided it should be an object returned by
-\code{\link{nuts_params}} (or an object with the same structure). If a
-vector is provided it should be a vector with one element per iteration,
-with each element either \code{0} (no divergence) or \code{1} (a divergence
-in at least one chain). If \code{divergences} is specified then red tick
-marks are added to the bottom of the traceplot indicating within which
-iterations there was a divergence. See the end of the \strong{Examples}
-section, below.}
+\item{divergences}{For models fit using \code{\link{NUTS}} (more generally,
+any \href{http://en.wikipedia.org/wiki/Symplectic_integrator}{simpleptic
+integrator}), an optional vector or data frame providing information about
+divergent transitions. If a data frame is provided it should be an object
+returned by \code{\link{nuts_params}} (or an object with the same
+structure). If a vector is provided it should be a vector with one element
+per iteration, with each element either \code{0} (no divergence) or
+\code{1} (a divergence in at least one chain). If \code{divergences} is
+specified then red tick marks are added to the bottom of the traceplot
+indicating within which iterations there was a divergence. See the end of
+the \strong{Examples} section, below.}
 
 \item{alpha}{For \code{mcmc_trace_highlight}, passed to
 \code{\link[ggplot2]{geom_point}} to control the transparency of the points
@@ -149,7 +150,7 @@ posterior <- as.array(fit)
 mcmc_trace(
   posterior,
   pars = "sigma",
-  divergences = nuts_params(fit, pars = "divergent__") # just nuts_params(fit) also fine
+  divergences = nuts_params(fit) # or nuts_params(fit, pars = "divergent__")
 )
 }
 
