@@ -1,5 +1,7 @@
 # bayesplot 1.0.0.9000
 
+(GitHub issue/PR numbers in parentheses)
+
 * Introduce `mcmc_recover_intervals` for comparing MCMC estimates to "true"
 parameter values used to simulate the data. (#56)
 * The `stat` argument for all `ppc_stat_*` functions now accepts a function
