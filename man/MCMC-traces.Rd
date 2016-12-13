@@ -160,7 +160,7 @@ Other MCMC: \code{\link{MCMC-combos}},
   \code{\link{MCMC-diagnostics}},
   \code{\link{MCMC-distributions}},
   \code{\link{MCMC-intervals}}, \code{\link{MCMC-nuts}},
-  \code{\link{MCMC-overview}},
+  \code{\link{MCMC-overview}}, \code{\link{MCMC-recover}},
   \code{\link{MCMC-scatterplots}}
 }
 

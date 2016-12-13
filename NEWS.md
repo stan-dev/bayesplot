@@ -1,7 +1,12 @@
 # bayesplot 1.0.0.9000
 
-* Add argument `divergences` to `mcmc_trace`. For models fit using HMC/NUTS this
-can be used to display divergences as a rug at the bottom of the trace plot. (#42)
+(GitHub issue/PR numbers in parentheses)
+
+* Introduce `mcmc_recover_intervals` for comparing MCMC estimates to "true"
+parameter values used to simulate the data. (#56)
+* Add argument `divergences` to `mcmc_trace` function. For models fit using
+HMC/NUTS this can be used to display divergences as a rug at the bottom of the
+trace plot. (#42)
 * The `stat` argument for all `ppc_stat_*` functions now accepts a function
 instead of only the name of a function. (#31)
 * `xaxis_title(FALSE)` and `yaxis_title(FALSE)` now set axis titles to `NULL` 
