@@ -39,3 +39,45 @@ test_that("mcmc_trace options work", {
   ll <- g2$labels
   expect_true(all(c("xmin", "xmax", "ymin", "ymax") %in% names(ll)))
 })
+
+
+# displaying divergences in traceplot -------------------------------------
+test_that("mcmc_trace 'divergences' argument works", {
+  suppressPackageStartupMessages(library(rstanarm))
+  fit <- suppressWarnings(
+    stan_glm(mpg ~ ., data = mtcars, iter = 200, refresh = 0,
+             prior = hs(), adapt_delta = 0.7)
+  )
+  draws <- as.array(fit)
+
+  # divergences via nuts_params
+  divs <- nuts_params(fit, pars = "divergent__")
+  g <- mcmc_trace(
+    draws,
+    pars = "sigma",
+    divergences = divs
+  )
+  expect_gg(g)
+  l2_data <- g$layers[[2]]$data
+  expect_equal(names(l2_data), "Divergent")
+
+  # divergences as vector
+  g2 <- mcmc_trace(
+    draws,
+    pars = "sigma",
+    divergences = sample(c(0,1), nrow(draws), replace = TRUE)
+  )
+  expect_gg(g2)
+  l2_data2 <- g2$layers[[2]]$data
+  expect_equal(names(l2_data2), "Divergent")
+
+  # check errors & messages
+  expect_error(mcmc_trace(draws, pars = "sigma", divergences = 1),
+               "length(divergences) == n_iter is not TRUE",
+               fixed = TRUE)
+  expect_error(mcmc_trace(draws, pars = "sigma", divergences = divs[1:10, ]),
+               "length(unique(divergences$Iteration)) == n_iter is not TRUE",
+               fixed = TRUE)
+  expect_message(mcmc_trace(draws, pars = "sigma", divergences = rep(0, nrow(draws))),
+                 "No divergences to plot.")
+})

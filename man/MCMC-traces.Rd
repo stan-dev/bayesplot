@@ -8,7 +8,7 @@
 \usage{
 mcmc_trace(x, pars = character(), regex_pars = character(),
   transformations = list(), facet_args = list(), ..., n_warmup = 0,
-  window = NULL, size = NULL)
+  window = NULL, size = NULL, divergences = NULL)
 
 mcmc_trace_highlight(x, pars = character(), regex_pars = character(),
   transformations = list(), facet_args = list(), ..., n_warmup = 0,
@@ -56,6 +56,18 @@ range of iterations to display.}
 \code{mcmc_trace}) or the default point size (if calling
 \code{mcmc_trace_highlight}).}
 
+\item{divergences}{For models fit using \code{\link{NUTS}} (more generally,
+any \href{http://en.wikipedia.org/wiki/Symplectic_integrator}{simpleptic
+integrator}), an optional vector or data frame providing information about
+divergent transitions. If a data frame is provided it should be an object
+returned by \code{\link{nuts_params}} (or an object with the same
+structure). If a vector is provided it should be a vector with one element
+per iteration, with each element either \code{0} (no divergence) or
+\code{1} (a divergence in at least one chain). If \code{divergences} is
+specified then red tick marks are added to the bottom of the traceplot
+indicating within which iterations there was a divergence. See the end of
+the \strong{Examples} section, below.}
+
 \item{alpha}{For \code{mcmc_trace_highlight}, passed to
 \code{\link[ggplot2]{geom_point}} to control the transparency of the points
 for the chains not highlighted.}
@@ -75,7 +87,9 @@ for details.
 
 \describe{
   \item{\code{mcmc_trace}}{
-   Standard traceplots of MCMC draws.
+   Standard traceplots of MCMC draws. For models fit using \code{\link{NUTS}}
+   the \code{divergences} argument can be used to also show divergences on
+   the traceplot.
   }
   \item{\code{mcmc_trace_highlight}}{
    Traces are plotted using points rather than lines and the opacity of all
@@ -118,10 +132,26 @@ p + facet_text(size = 15)
 # mark first 100 draws as warmup
 mcmc_trace(x, n_warmup = 100)
 
-
 # plot as points, highlighting chain 2
 color_scheme_set("brightblue")
 mcmc_trace_highlight(x, pars = "sigma", highlight = 2, size = 2)
+
+# for models fit using NUTS divergences can be displayed in the traceplot
+library("rstanarm")
+fit <- stan_glm(mpg ~ ., data = mtcars,
+  # next lines to keep example fast and also ensure we get some divergences
+                prior = hs(), iter = 400, adapt_delta = 0.8)
+
+# extract draws using as.array (instead of as.matrix) to keep
+# chains separate for traceplot
+posterior <- as.array(fit)
+
+# for stanfit and stanreg objects use nuts_params() to get the divergences
+mcmc_trace(
+  posterior,
+  pars = "sigma",
+  divergences = nuts_params(fit) # or nuts_params(fit, pars = "divergent__")
+)
 }
 
 }
