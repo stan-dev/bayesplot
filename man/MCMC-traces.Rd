@@ -57,7 +57,7 @@ range of iterations to display.}
 \code{mcmc_trace_highlight}).}
 
 \item{divergences}{For models fit using \code{\link{NUTS}} (more generally,
-any \href{http://en.wikipedia.org/wiki/Symplectic_integrator}{simpleptic
+any \href{http://en.wikipedia.org/wiki/Symplectic_integrator}{symplectic
 integrator}), an optional vector or data frame providing information about
 divergent transitions. If a data frame is provided it should be an object
 returned by \code{\link{nuts_params}} (or an object with the same
@@ -139,7 +139,7 @@ mcmc_trace_highlight(x, pars = "sigma", highlight = 2, size = 2)
 # for models fit using NUTS divergences can be displayed in the traceplot
 library("rstanarm")
 fit <- stan_glm(mpg ~ ., data = mtcars,
-  # next lines to keep example fast and also ensure we get some divergences
+  # next line to keep example fast and also ensure we get some divergences
                 prior = hs(), iter = 400, adapt_delta = 0.8)
 
 # extract draws using as.array (instead of as.matrix) to keep
