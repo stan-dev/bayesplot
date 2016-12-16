@@ -5,9 +5,9 @@
 * Introduce `mcmc_recover_intervals` for comparing MCMC estimates to "true"
 parameter values used to simulate the data. (#56)
 * Add argument `divergences` to `mcmc_trace` function. For models fit using
-* Introduce `bayesplot_grid` function for juxtaposing plots and enforcing shared axis limits (#59)
 HMC/NUTS this can be used to display divergences as a rug at the bottom of the
 trace plot. (#42)
+* Introduce `bayesplot_grid` function for juxtaposing plots and enforcing shared axis limits (#59)
 * The `stat` argument for all `ppc_stat_*` functions now accepts a function
 instead of only the name of a function. (#31)
 * `xaxis_title(FALSE)` and `yaxis_title(FALSE)` now set axis titles to `NULL` 
@@ -18,6 +18,3 @@ add axis titles to plots that don’t have them by default. (#53)
 # bayesplot 1.0.0
 
 * Initial CRAN release
-
-
-
