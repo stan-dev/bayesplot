@@ -122,38 +122,39 @@ ppc_error_hist <-
            ...,
            binwidth = NULL,
            freq = TRUE) {
-  check_ignored_arguments(...)
+    check_ignored_arguments(...)
 
-  y <- validate_y(y)
-  yrep <- validate_yrep(yrep, y)
+    y <- validate_y(y)
+    yrep <- validate_yrep(yrep, y)
 
-  if (nrow(yrep) == 1) {
-    errors <- data.frame(value = y - as.vector(yrep))
-    graph <- ggplot(errors, set_hist_aes(freq))
-  } else {
-    errors <- compute_errors(y, yrep)
-    graph <- ggplot(melt_yrep(errors, label = FALSE), set_hist_aes(freq)) +
-      labs(y = NULL, x = expression(italic(y) - italic(y)[rep])) +
-      facet_wrap(facets = ~ rep_id)
+    if (nrow(yrep) == 1) {
+      errors <- data.frame(value = y - as.vector(yrep))
+      graph <- ggplot(errors, set_hist_aes(freq))
+    } else {
+      errors <- compute_errors(y, yrep)
+      graph <-
+        ggplot(melt_yrep(errors, label = FALSE), set_hist_aes(freq)) +
+        labs(y = NULL, x = expression(italic(y) - italic(y)[rep])) +
+        facet_wrap(facets = ~ rep_id)
+    }
+
+    graph +
+      geom_histogram(
+        fill = get_color("l"),
+        color = get_color("lh"),
+        size = 0.25,
+        binwidth = binwidth
+      ) +
+      xlab(expression(italic(y) - italic(y)[rep])) +
+      dont_expand_y_axis() +
+      force_axes_in_facets() +
+      theme_default() +
+      yaxis_title(FALSE) +
+      yaxis_text(FALSE) +
+      yaxis_ticks(FALSE) +
+      facet_text(FALSE) +
+      facet_bg(FALSE)
   }
-
-  graph +
-    geom_histogram(
-      fill = get_color("l"),
-      color = get_color("lh"),
-      size = 0.25,
-      binwidth = binwidth
-    ) +
-    xlab(expression(italic(y) - italic(y)[rep])) +
-    dont_expand_y_axis() +
-    force_axes_in_facets() +
-    theme_default() +
-    yaxis_title(FALSE) +
-    yaxis_text(FALSE) +
-    yaxis_ticks(FALSE) +
-    facet_text(FALSE) +
-    facet_bg(FALSE)
-}
 
 
 #' @rdname PPC-errors
@@ -172,19 +173,9 @@ ppc_error_hist_grouped <-
     y <- validate_y(y)
     yrep <- validate_yrep(yrep, y)
     group <- validate_group(group, y)
+    errors <- grouped_error_data(y, yrep, group)
 
-    grps <- unique(group)
-    err <- list()
-    for (j in seq_along(grps)) {
-      g_j <- grps[j]
-      ee <- compute_errors(y[group == g_j], yrep[, group == g_j, drop=FALSE])
-      err[[j]] <- melt_yrep(ee, label = FALSE)
-      err[[j]]$group <- g_j
-    }
-    plot_data <- dplyr::bind_rows(err)
-    plot_data$y_id <- NULL
-
-    ggplot(plot_data, set_hist_aes(freq)) +
+    ggplot(errors, set_hist_aes(freq)) +
       geom_histogram(
         fill = get_color("l"),
         color = get_color("lh"),
@@ -412,6 +403,21 @@ compute_errors <- function(y, yrep) {
   errs <- sweep(yrep, MARGIN = 2L, STATS = as.array(y), FUN = "-")
   as.matrix(-1 * errs)
 }
+
+grouped_error_data <- function(y, yrep, group) {
+  grps <- unique(group)
+  errs <- list()
+  for (j in seq_along(grps)) {
+    g_j <- grps[j]
+    err_j <- compute_errors(y[group == g_j], yrep[, group == g_j, drop=FALSE])
+    errs[[j]] <- melt_yrep(err_j, label = FALSE)
+    errs[[j]]$group <- g_j
+  }
+  dat <- dplyr::bind_rows(errs)
+  dat$y_id <- NULL
+  return(dat)
+}
+
 
 .binner <- function(rep_id, ey, r, nbins) {
   binned_errors <- arm::binned.resids(ey, r, nbins)$binned
