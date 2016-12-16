@@ -134,6 +134,52 @@ ppc_error_hist <- function(y, yrep, ..., binwidth = NULL, freq = TRUE) {
 }
 
 
+#' @export
+#' @rdname PPC-errors
+#'
+ppc_error_hist_grouped <-
+  function(y,
+           yrep,
+           group,
+           ...,
+           binwidth = NULL,
+           freq = TRUE) {
+    check_ignored_arguments(...)
+
+    y <- validate_y(y)
+    yrep <- validate_yrep(yrep, y)
+    group <- validate_group(group, y)
+
+    grps <- unique(group)
+    err <- list()
+    for (j in seq_along(grps)) {
+      ee <- compute_errors(y[group == grps[j]], yrep[, group == grps[j], drop=FALSE])
+      err[[j]] <- melt_yrep(ee, label = FALSE)
+      err[[j]]$group <- grps[j]
+    }
+    plot_data <- dplyr::bind_rows(err)
+    plot_data$y_id <- NULL
+
+    ggplot(plot_data, set_hist_aes(freq)) +
+      geom_histogram(
+        fill = get_color("l"),
+        color = get_color("lh"),
+        size = 0.25,
+        binwidth = binwidth
+      ) +
+      facet_grid(rep_id ~ group, scales = "free") +
+      dont_expand_y_axis(c(0.005, 0)) +
+      force_axes_in_facets() +
+      theme_default() +
+      xaxis_title(FALSE) +
+      yaxis_text(FALSE) +
+      yaxis_ticks(FALSE) +
+      yaxis_title(FALSE) +
+      facet_bg(FALSE) +
+      theme(strip.text.y = element_blank())
+  }
+
+
 #' @rdname PPC-errors
 #' @export
 ppc_error_scatter <-
@@ -335,8 +381,6 @@ ppc_error_binned <- function(y, yrep, ..., size = 1, alpha = 0.25) {
     facet_text(FALSE) +
     facet_bg(FALSE)
 }
-
-
 
 
 # internal ----------------------------------------------------------------
