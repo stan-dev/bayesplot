@@ -27,7 +27,8 @@ upper limits for the axes that will be shared across all plots.}
 Defaults to \code{TRUE}.}
 }
 \value{
-An object of class "bayesplot_grid", which has a \code{plot} method.
+An object of class "bayesplot_grid" (essentially a gtable object from
+  \code{\link[gridExtra]{arrangeGrob}}), which has a \code{plot} method.
 }
 \description{
 The \code{bayesplot_grid} function makes it simple to juxtapose plots using

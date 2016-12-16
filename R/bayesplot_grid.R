@@ -17,7 +17,8 @@
 #' @param legends If any of the plots have legends should they be displayed?
 #'   Defaults to \code{TRUE}.
 #'
-#' @return An object of class "bayesplot_grid", which has a \code{plot} method.
+#' @return An object of class "bayesplot_grid" (essentially a gtable object from
+#'   \code{\link[gridExtra]{arrangeGrob}}), which has a \code{plot} method.
 #'
 #' @examples
 #' y <- example_y_data()
