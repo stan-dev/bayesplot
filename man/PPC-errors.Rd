@@ -44,6 +44,10 @@ plots the y-axis text is off by default. To view the count or density
 labels on the y-axis see the \code{\link{yaxis_text}} convenience
 function.)}
 
+\item{group}{A grouping variable (a vector or factor) the same length as
+\code{y}. Each value in \code{group} is interpreted as the group level
+pertaining to the corresponding value of \code{y}.}
+
 \item{size, alpha}{For scatterplots, arguments passed to
 \code{\link[ggplot2]{geom_point}} to control the appearance of the
 points. For the binned error plot, arguments controlling the size of
@@ -80,6 +84,12 @@ section, below.
    \code{y} and each dataset (row) in \code{yrep}. For this plot \code{yrep}
    should have only a small number of rows.
   }
+  \item{\code{ppc_error_hist_grouped}}{
+   Like \code{ppc_error_hist}, except errors are computed within levels of a
+   grouping variable. The number of histograms is therefore equal to the
+   product of the number of rows in \code{yrep} and the number of groups
+   (unique values of \code{group}).
+  }
   \item{\code{ppc_error_scatter}}{
    A separate scatterplot is displayed for \code{y} vs. the predictive errors
    computed from \code{y} and each dataset (row) in \code{yrep}. For this
@@ -110,6 +120,18 @@ section, below.
 y <- example_y_data()
 yrep <- example_yrep_draws()
 ppc_error_hist(y, yrep[1:3, ])
+
+# errors within groups
+group <- example_group_data()
+(p1 <- ppc_error_hist_grouped(y, yrep[1:3, ], group))
+p1 + yaxis_text() # defaults to showing counts on y-axis
+\donttest{
+table(group) # more obs in GroupB, can set freq=FALSE to show density on y-axis
+(p2 <- ppc_error_hist_grouped(y, yrep[1:3, ], group, freq = FALSE))
+p2 + yaxis_text()
+}
+
+# scatterplots
 ppc_error_scatter(y, yrep[10:14, ])
 ppc_error_scatter_avg(y, yrep)
 
@@ -130,7 +152,6 @@ y_prop <- y[, 1] / trials  # proportions
 # get predicted success proportions
 yrep <- posterior_predict(example_model)
 yrep_prop <- sweep(yrep, 2, trials, "/")
-
 
 ppc_error_binned(y_prop, yrep_prop[1:6, ])
 }

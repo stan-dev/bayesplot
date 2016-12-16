@@ -32,6 +32,12 @@
 #'    \code{y} and each dataset (row) in \code{yrep}. For this plot \code{yrep}
 #'    should have only a small number of rows.
 #'   }
+#'   \item{\code{ppc_error_hist_grouped}}{
+#'    Like \code{ppc_error_hist}, except errors are computed within levels of a
+#'    grouping variable. The number of histograms is therefore equal to the
+#'    product of the number of rows in \code{yrep} and the number of groups
+#'    (unique values of \code{group}).
+#'   }
 #'   \item{\code{ppc_error_scatter}}{
 #'    A separate scatterplot is displayed for \code{y} vs. the predictive errors
 #'    computed from \code{y} and each dataset (row) in \code{yrep}. For this
@@ -67,6 +73,18 @@
 #' y <- example_y_data()
 #' yrep <- example_yrep_draws()
 #' ppc_error_hist(y, yrep[1:3, ])
+#'
+#' # errors within groups
+#' group <- example_group_data()
+#' (p1 <- ppc_error_hist_grouped(y, yrep[1:3, ], group))
+#' p1 + yaxis_text() # defaults to showing counts on y-axis
+#' \donttest{
+#' table(group) # more obs in GroupB, can set freq=FALSE to show density on y-axis
+#' (p2 <- ppc_error_hist_grouped(y, yrep[1:3, ], group, freq = FALSE))
+#' p2 + yaxis_text()
+#' }
+#'
+#' # scatterplots
 #' ppc_error_scatter(y, yrep[10:14, ])
 #' ppc_error_scatter_avg(y, yrep)
 #'
@@ -88,7 +106,6 @@
 #' yrep <- posterior_predict(example_model)
 #' yrep_prop <- sweep(yrep, 2, trials, "/")
 #'
-#'
 #' ppc_error_binned(y_prop, yrep_prop[1:6, ])
 #' }
 #'
@@ -99,8 +116,13 @@ NULL
 #' @template args-hist
 #' @template args-hist-freq
 #'
-ppc_error_hist <- function(y, yrep, ..., binwidth = NULL, freq = TRUE) {
-  check_ignored_arguments(...)
+ppc_error_hist <-
+  function(y,
+           yrep,
+           ...,
+           binwidth = NULL,
+           freq = TRUE) {
+    check_ignored_arguments(...)
 
   y <- validate_y(y)
   yrep <- validate_yrep(yrep, y)
@@ -134,8 +156,9 @@ ppc_error_hist <- function(y, yrep, ..., binwidth = NULL, freq = TRUE) {
 }
 
 
-#' @export
 #' @rdname PPC-errors
+#' @export
+#' @template args-group
 #'
 ppc_error_hist_grouped <-
   function(y,
@@ -153,9 +176,10 @@ ppc_error_hist_grouped <-
     grps <- unique(group)
     err <- list()
     for (j in seq_along(grps)) {
-      ee <- compute_errors(y[group == grps[j]], yrep[, group == grps[j], drop=FALSE])
+      g_j <- grps[j]
+      ee <- compute_errors(y[group == g_j], yrep[, group == g_j, drop=FALSE])
       err[[j]] <- melt_yrep(ee, label = FALSE)
-      err[[j]]$group <- grps[j]
+      err[[j]]$group <- g_j
     }
     plot_data <- dplyr::bind_rows(err)
     plot_data$y_id <- NULL

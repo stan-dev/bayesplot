@@ -2,6 +2,8 @@
 
 (GitHub issue/PR numbers in parentheses)
 
+* Introduce `ppc_error_hist_grouped` for plotting predictive errors
+by level of a grouping variable (#40)
 * Introduce `mcmc_recover_intervals` for comparing MCMC estimates to "true"
 parameter values used to simulate the data. (#56)
 * Add argument `divergences` to `mcmc_trace` function. For models fit using

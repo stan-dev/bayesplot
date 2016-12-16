@@ -14,6 +14,14 @@ test_that("ppc_error_hist and ppc_error_scatter return ggplot object", {
   expect_gg(ppc_error_scatter(y2, yrep2))
 })
 
+test_that("ppc_error_hist_grouped returns ggplot object", {
+  expect_gg(ppc_error_hist_grouped(y, yrep[1:5, ], group))
+  expect_gg(ppc_error_hist_grouped(y, yrep[1,, drop = FALSE], group,
+                                   freq = FALSE, binwidth = 1))
+  expect_error(ppc_error_hist_grouped(y2, yrep2, group2),
+               "'group' must have more than one unique value")
+})
+
 test_that("ppc_error_scatter_avg returns ggplot2 object", {
   expect_gg(ppc_error_scatter_avg(y, yrep))
   expect_gg(ppc_error_scatter_avg(y, yrep[1:5, ]))
