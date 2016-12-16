@@ -2,7 +2,7 @@
 % Please edit documentation in R/bayesplot_grid.R
 \name{bayesplot_grid}
 \alias{bayesplot_grid}
-\title{Compare plots}
+\title{Arrange plots in a grid}
 \usage{
 bayesplot_grid(..., plots = list(), grid_args = list(),
   titles = character(), xlim = NULL, ylim = NULL, legends = TRUE)
@@ -30,8 +30,8 @@ Defaults to \code{TRUE}.}
 An object of class "bayesplot_grid", which has a \code{plot} method.
 }
 \description{
-The \code{bayesplot_grid} function makes it simple to juxtapose plots
-using common \eqn{x} and/or \eqn{y} axes.
+The \code{bayesplot_grid} function makes it simple to juxtapose plots using
+common \eqn{x} and/or \eqn{y} axes.
 }
 \examples{
 y <- example_y_data()
@@ -64,6 +64,8 @@ ppc1 + yaxis_text()
 color_scheme_set("red")
 ppc2 <- ppc_dens_overlay(y, yrep2)
 bayesplot_grid(ppc1, ppc2)
+
+# make sure the plots use the same limits for the axes
 bayesplot_grid(ppc1, ppc2, xlim = c(-5, 60), ylim = c(0, 0.15))
 }
 

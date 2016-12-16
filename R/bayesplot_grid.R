@@ -50,6 +50,8 @@
 #' color_scheme_set("red")
 #' ppc2 <- ppc_dens_overlay(y, yrep2)
 #' bayesplot_grid(ppc1, ppc2)
+#'
+#' # make sure the plots use the same limits for the axes
 #' bayesplot_grid(ppc1, ppc2, xlim = c(-5, 60), ylim = c(0, 0.15))
 #' }
 #'
@@ -97,6 +99,8 @@ bayesplot_grid <-
     as_bayesplot_grid(g)
   }
 
+
+# internal ----------------------------------------------------------------
 as_bayesplot_grid <- function(x) {
   structure(x, class = unique(c("bayesplot_grid", class(x))))
 }
@@ -111,4 +115,3 @@ print.bayesplot_grid <- function(x, ...) {
 }
 #' @export
 plot.bayesplot_grid <- print.bayesplot_grid
-
