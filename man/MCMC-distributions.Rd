@@ -120,7 +120,7 @@ mcmc_hist(x, pars = "sigma", regex_pars = "beta")
 mcmc_hist(x, transformations = list(sigma = "log"),
           facet_args = list(labeller = ggplot2::label_parsed)) +
           facet_text(size = 15)
-
+\donttest{
 # instead of list(sigma = "log"), you could specify the transformation as
 # list(sigma = log) or list(sigma = function(x) log(x)), but then the
 # label for the transformed sigma is 't(sigma)' instead of 'log(sigma)'
@@ -129,20 +129,20 @@ mcmc_hist(x, transformations = list(sigma = log))
 # separate histograms by chain
 color_scheme_set("pink")
 mcmc_hist_by_chain(x, regex_pars = "beta")
-
+}
 #################
 ### Densities ###
 #################
 
 mcmc_dens(x, pars = c("sigma", "beta[2]"),
           facet_args = list(nrow = 2))
-
+\donttest{
 # separate and overlay chains
 color_scheme_set("mix-teal-pink")
 mcmc_dens_overlay(x, pars = c("sigma", "beta[2]"),
                   facet_args = list(nrow = 2)) +
                   facet_text(size = 14)
-
+}
 # separate chains as violin plots
 color_scheme_set("green")
 mcmc_violin(x) + panel_bg(color = "gray20", size = 2, fill = "gray30")
@@ -152,7 +152,7 @@ mcmc_violin(x) + panel_bg(color = "gray20", size = 2, fill = "gray30")
 Other MCMC: \code{\link{MCMC-combos}},
   \code{\link{MCMC-diagnostics}},
   \code{\link{MCMC-intervals}}, \code{\link{MCMC-nuts}},
-  \code{\link{MCMC-overview}},
+  \code{\link{MCMC-overview}}, \code{\link{MCMC-recover}},
   \code{\link{MCMC-scatterplots}},
   \code{\link{MCMC-traces}}
 }

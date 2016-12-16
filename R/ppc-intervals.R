@@ -327,7 +327,7 @@ label_x <- function(x) {
         ) +
         geom_point(
           data = y_data,
-          aes_(color = "y", fill = "y"),
+          mapping = aes_(color = "y", fill = "y"),
           shape = 21,
           size = 1.5
         ) +

@@ -1,4 +1,5 @@
 library(testthat)
 library(bayesplot)
 
-test_check("bayesplot")
+if (!grepl("^sparc",  R.version$platform))
+  test_check("bayesplot")

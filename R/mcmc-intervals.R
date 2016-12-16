@@ -108,6 +108,7 @@ mcmc_intervals <- function(x,
                            point_est = c("median", "mean", "none"),
                            rhat = numeric()) {
   check_ignored_arguments(...)
+  stopifnot(prob_outer >= prob)
   x <- prepare_mcmc_array(x, pars, regex_pars, transformations)
   .mcmc_intervals(
     x = merge_chains(x),
@@ -134,6 +135,7 @@ mcmc_areas <- function(x,
                        adjust = NULL,
                        kernel = NULL) {
   check_ignored_arguments(...)
+  stopifnot(prob_outer >= prob)
   x <- prepare_mcmc_array(x, pars, regex_pars, transformations)
   .mcmc_intervals(
     x = merge_chains(x),
@@ -147,7 +149,6 @@ mcmc_areas <- function(x,
     kernel = kernel
   )
 }
-
 
 
 # internal ----------------------------------------------------------------
