@@ -114,6 +114,7 @@
 #'                      color = c("maroon", "skyblue", "violet"))
 #' p + my_lines
 #'
+#' \donttest{
 #' # add vertical line(s) at computed values
 #' # (three ways of getting lines at column means)
 #' color_scheme_set("brightblue")
@@ -124,7 +125,7 @@
 #' p + vline_at(x[, 3:4], function(a) apply(a, 2, mean),
 #'              color = "orange",
 #'              size = 2, alpha = 0.1)
-#'
+#' }
 #'
 #' # using the lbub function to get interval lower and upper bounds (lb, ub)
 #' color_scheme_set("pink")
@@ -165,6 +166,7 @@
 #'  facet_text(face = "bold", color = "skyblue", size = 14)
 #' p4 + myfacets
 #'
+#' \donttest{
 #' ##########################
 #' ### control tick marks ###
 #' ##########################
@@ -173,7 +175,7 @@
 #'  yaxis_text(FALSE) +
 #'  yaxis_ticks(FALSE) +
 #'  xaxis_ticks(size = 1, color = "skyblue")
-#'
+#' }
 #'
 #' ##############################
 #' ### change plot background ###
@@ -190,14 +192,14 @@
 #' color_scheme_set("yellow")
 #' p5 <- ppc_scatter_avg(y, yrep, alpha = 1)
 #' p5 + panel_bg(fill = "gray20") + grid_lines(color = "white")
-#'
+#' \donttest{
 #' color_scheme_set("purple")
 #' ppc_dens_overlay(y, yrep[1:30, ]) +
 #'  legend_text(size = 14) +
 #'  legend_move(c(0.75, 0.5)) +
 #'  plot_bg(fill = "gray90") +
 #'  panel_bg(color = "black", fill = "gray99", size = 3)
-#'
+#' }
 NULL
 
 
