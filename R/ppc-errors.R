@@ -122,7 +122,7 @@ ppc_error_hist <-
            ...,
            binwidth = NULL,
            freq = TRUE) {
-    check_ignored_arguments(...)
+  check_ignored_arguments(...)
 
   y <- validate_y(y)
   yrep <- validate_yrep(yrep, y)
@@ -192,10 +192,10 @@ ppc_error_hist_grouped <-
         binwidth = binwidth
       ) +
       facet_grid(rep_id ~ group, scales = "free") +
+      xlab(expression(italic(y) - italic(y)[rep])) +
       dont_expand_y_axis(c(0.005, 0)) +
       force_axes_in_facets() +
       theme_default() +
-      xaxis_title(FALSE) +
       yaxis_text(FALSE) +
       yaxis_ticks(FALSE) +
       yaxis_title(FALSE) +
