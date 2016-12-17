@@ -32,6 +32,12 @@
 #'    \code{y} and each dataset (row) in \code{yrep}. For this plot \code{yrep}
 #'    should have only a small number of rows.
 #'   }
+#'   \item{\code{ppc_error_hist_grouped}}{
+#'    Like \code{ppc_error_hist}, except errors are computed within levels of a
+#'    grouping variable. The number of histograms is therefore equal to the
+#'    product of the number of rows in \code{yrep} and the number of groups
+#'    (unique values of \code{group}).
+#'   }
 #'   \item{\code{ppc_error_scatter}}{
 #'    A separate scatterplot is displayed for \code{y} vs. the predictive errors
 #'    computed from \code{y} and each dataset (row) in \code{yrep}. For this
@@ -67,6 +73,18 @@
 #' y <- example_y_data()
 #' yrep <- example_yrep_draws()
 #' ppc_error_hist(y, yrep[1:3, ])
+#'
+#' # errors within groups
+#' group <- example_group_data()
+#' (p1 <- ppc_error_hist_grouped(y, yrep[1:3, ], group))
+#' p1 + yaxis_text() # defaults to showing counts on y-axis
+#' \donttest{
+#' table(group) # more obs in GroupB, can set freq=FALSE to show density on y-axis
+#' (p2 <- ppc_error_hist_grouped(y, yrep[1:3, ], group, freq = FALSE))
+#' p2 + yaxis_text()
+#' }
+#'
+#' # scatterplots
 #' ppc_error_scatter(y, yrep[10:14, ])
 #' ppc_error_scatter_avg(y, yrep)
 #'
@@ -88,7 +106,6 @@
 #' yrep <- posterior_predict(example_model)
 #' yrep_prop <- sweep(yrep, 2, trials, "/")
 #'
-#'
 #' ppc_error_binned(y_prop, yrep_prop[1:6, ])
 #' }
 #'
@@ -99,39 +116,83 @@ NULL
 #' @template args-hist
 #' @template args-hist-freq
 #'
-ppc_error_hist <- function(y, yrep, ..., binwidth = NULL, freq = TRUE) {
-  check_ignored_arguments(...)
+ppc_error_hist <-
+  function(y,
+           yrep,
+           ...,
+           binwidth = NULL,
+           freq = TRUE) {
+    check_ignored_arguments(...)
 
-  y <- validate_y(y)
-  yrep <- validate_yrep(yrep, y)
+    y <- validate_y(y)
+    yrep <- validate_yrep(yrep, y)
 
-  if (nrow(yrep) == 1) {
-    errors <- data.frame(value = y - as.vector(yrep))
-    graph <- ggplot(errors, set_hist_aes(freq))
-  } else {
-    errors <- compute_errors(y, yrep)
-    graph <- ggplot(melt_yrep(errors, label = FALSE), set_hist_aes(freq)) +
-      labs(y = NULL, x = expression(italic(y) - italic(y)[rep])) +
-      facet_wrap(facets = ~ rep_id)
+    if (nrow(yrep) == 1) {
+      errors <- data.frame(value = y - as.vector(yrep))
+      graph <- ggplot(errors, set_hist_aes(freq))
+    } else {
+      errors <- compute_errors(y, yrep)
+      graph <-
+        ggplot(melt_yrep(errors, label = FALSE), set_hist_aes(freq)) +
+        labs(y = NULL, x = expression(italic(y) - italic(y)[rep])) +
+        facet_wrap(facets = ~ rep_id)
+    }
+
+    graph +
+      geom_histogram(
+        fill = get_color("l"),
+        color = get_color("lh"),
+        size = 0.25,
+        binwidth = binwidth
+      ) +
+      xlab(expression(italic(y) - italic(y)[rep])) +
+      dont_expand_y_axis() +
+      force_axes_in_facets() +
+      theme_default() +
+      yaxis_title(FALSE) +
+      yaxis_text(FALSE) +
+      yaxis_ticks(FALSE) +
+      facet_text(FALSE) +
+      facet_bg(FALSE)
   }
 
-  graph +
-    geom_histogram(
-      fill = get_color("l"),
-      color = get_color("lh"),
-      size = 0.25,
-      binwidth = binwidth
-    ) +
-    xlab(expression(italic(y) - italic(y)[rep])) +
-    dont_expand_y_axis() +
-    force_axes_in_facets() +
-    theme_default() +
-    yaxis_title(FALSE) +
-    yaxis_text(FALSE) +
-    yaxis_ticks(FALSE) +
-    facet_text(FALSE) +
-    facet_bg(FALSE)
-}
+
+#' @rdname PPC-errors
+#' @export
+#' @template args-group
+#'
+ppc_error_hist_grouped <-
+  function(y,
+           yrep,
+           group,
+           ...,
+           binwidth = NULL,
+           freq = TRUE) {
+    check_ignored_arguments(...)
+
+    y <- validate_y(y)
+    yrep <- validate_yrep(yrep, y)
+    group <- validate_group(group, y)
+    errors <- grouped_error_data(y, yrep, group)
+
+    ggplot(errors, set_hist_aes(freq)) +
+      geom_histogram(
+        fill = get_color("l"),
+        color = get_color("lh"),
+        size = 0.25,
+        binwidth = binwidth
+      ) +
+      facet_grid(rep_id ~ group, scales = "free") +
+      xlab(expression(italic(y) - italic(y)[rep])) +
+      dont_expand_y_axis(c(0.005, 0)) +
+      force_axes_in_facets() +
+      theme_default() +
+      yaxis_text(FALSE) +
+      yaxis_ticks(FALSE) +
+      yaxis_title(FALSE) +
+      facet_bg(FALSE) +
+      theme(strip.text.y = element_blank())
+  }
 
 
 #' @rdname PPC-errors
@@ -337,13 +398,26 @@ ppc_error_binned <- function(y, yrep, ..., size = 1, alpha = 0.25) {
 }
 
 
-
-
 # internal ----------------------------------------------------------------
 compute_errors <- function(y, yrep) {
   errs <- sweep(yrep, MARGIN = 2L, STATS = as.array(y), FUN = "-")
   as.matrix(-1 * errs)
 }
+
+grouped_error_data <- function(y, yrep, group) {
+  grps <- unique(group)
+  errs <- list()
+  for (j in seq_along(grps)) {
+    g_j <- grps[j]
+    err_j <- compute_errors(y[group == g_j], yrep[, group == g_j, drop=FALSE])
+    errs[[j]] <- melt_yrep(err_j, label = FALSE)
+    errs[[j]]$group <- g_j
+  }
+  dat <- dplyr::bind_rows(errs)
+  dat$y_id <- NULL
+  return(dat)
+}
+
 
 .binner <- function(rep_id, ey, r, nbins) {
   binned_errors <- arm::binned.resids(ey, r, nbins)$binned
