@@ -3,7 +3,8 @@
 (GitHub issue/PR numbers in parentheses)
 
 #### Fixes
-* Images in vignettes should now render properly. Thanks to TJ Mahr. (#51)
+* Images in vignettes should now render properly using `png` device. Thanks to
+TJ Mahr. (#51)
 * `xaxis_title(FALSE)` and `yaxis_title(FALSE)` now set axis titles to `NULL` 
 rather than changing theme elements to `element_blank()`. This makes it easier
 to add axis titles to plots that don’t have them by default. Thanks to Bill
