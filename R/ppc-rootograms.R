@@ -14,11 +14,21 @@ NULL
 
 #' @rdname PPC-rootograms
 #' @export
-ppc_rootogram <- function(y, yrep, style = c("standing", "suspended"), ..., size = 1) {
+ppc_rootogram <- function(y, yrep, style = c("standing", "suspended"),
+                          ..., prob = 0.9, size = 1) {
   suspended <- match.arg(style) == "suspended"
   y <- validate_y(y)
+  if (any(!is.wholenumber(y)) || min(y) < 0L) {
+    stop("ppc_rootogram expects counts as input to 'y'.",
+         call. = FALSE)
+  }
   yrep <- validate_yrep(yrep, y)
-
+  if (any(!is.wholenumber(yrep)) || min(yrep) < 0L) {
+    stop("ppc_rootogram expects counts as input to 'yrep'.",
+         call. = FALSE)
+  }
+  alpha <- (1 - prob) / 2
+  probs <- c(alpha, 1 - alpha)
   ymax <- max(y, yrep)
   x <- 0L:ymax
 
@@ -30,6 +40,8 @@ ppc_rootogram <- function(y, yrep, style = c("standing", "suspended"), ..., size
   tyrep <- do.call(rbind, tyrep)
   tyrep[is.na(tyrep)] <- 0
   tyexp <- sqrt(colMeans(tyrep))
+  tyquantile <- sqrt(t(apply(tyrep, 2, quantile, probs = probs)))
+  colnames(tyquantile) <- c("tylower", "tyupper")
 
   # prepare a table for y
   ty <- table(y)
@@ -39,21 +51,24 @@ ppc_rootogram <- function(y, yrep, style = c("standing", "suspended"), ..., size
   }
   ty[is.na(ty)] <- 0
 
-  graph <- ggplot(data.frame(x, tyexp, ty)) +
+  graph <- ggplot(data.frame(x, ty, tyexp, tyquantile)) +
     geom_col(
       aes_(x = ~ x, y = ~ ty, fill = "Observed"),
       color = get_color("lh"),
       size = 0.25,
       width = 1
-    ) +
+    )
 
   if (suspended)
     graph <- graph + hline_0(size = 0.4)
 
   graph <- graph +
-    geom_line(
-      aes_(x = ~ x, y = ~ tyexp, color = "Expected"),
-      size = size
+    geom_smooth(
+      aes_(x = ~ x, y = ~ tyexp, color = "Expected",
+           ymin = ~ tylower, ymax = ~ tyupper),
+      fill = get_color("m"),
+      size = size,
+      stat = "identity"
     ) +
     scale_fill_manual("", values = get_color("l")) +
     scale_color_manual("", values = get_color("dh")) +
@@ -68,4 +83,13 @@ ppc_rootogram <- function(y, yrep, style = c("standing", "suspended"), ..., size
   graph +
     bayesplot::theme_default() +
     no_legend_spacing()
+}
+
+is.wholenumber <- function(x, tol = .Machine$double.eps) {
+  # check if x consists of whole numbers (nearly integers)
+  if (!is.numeric(x)) {
+    FALSE
+  } else {
+    abs(x - round(x)) < tol
+  }
 }
