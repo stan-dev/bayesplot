@@ -1,4 +1,4 @@
-# bayesplot 1.0.0.9000
+# bayesplot 1.1.0
 
 (GitHub issue/PR numbers in parentheses)
 
@@ -9,7 +9,7 @@ rather than changing theme elements to `element_blank()`. This makes it easier
 to add axis titles to plots that don’t have them by default. Thanks to Bill
 Harris. (#53)
 
-#### Features
+#### New Features
 * Introduce `ppc_error_hist_grouped` for plotting predictive errors
 by level of a grouping variable. (#40)
 * Introduce `mcmc_recover_intervals` for comparing MCMC estimates to "true"
