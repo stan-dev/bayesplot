@@ -8,6 +8,8 @@
 #' @template args-y-yrep
 #' @param style Rootogram style. Either \code{"standing"} or \code{"suspended"}.
 #' @param ... Currently unused.
+#' @param prob The probability mass to include in the uncertainty interval
+#'   around the expected (root) counts. Defaults to \code{0.9}.
 #' @param size Passed to \code{\link[ggplot2]{geom_line}}.
 #'
 NULL
@@ -19,13 +21,11 @@ ppc_rootogram <- function(y, yrep, style = c("standing", "suspended"),
   suspended <- match.arg(style) == "suspended"
   y <- validate_y(y)
   if (any(!is.wholenumber(y)) || min(y) < 0L) {
-    stop("ppc_rootogram expects counts as input to 'y'.",
-         call. = FALSE)
+    stop("ppc_rootogram expects counts as inputs to 'y'.")
   }
   yrep <- validate_yrep(yrep, y)
   if (any(!is.wholenumber(yrep)) || min(yrep) < 0L) {
-    stop("ppc_rootogram expects counts as input to 'yrep'.",
-         call. = FALSE)
+    stop("ppc_rootogram expects counts as inputs to 'yrep'.")
   }
   alpha <- (1 - prob) / 2
   probs <- c(alpha, 1 - alpha)
@@ -85,8 +85,9 @@ ppc_rootogram <- function(y, yrep, style = c("standing", "suspended"),
     no_legend_spacing()
 }
 
+# TODO: move to another file?
 is.wholenumber <- function(x, tol = .Machine$double.eps) {
-  # check if x consists of whole numbers (nearly integers)
+  # check if x consists of whole numbers (very close to integers)
   if (!is.numeric(x)) {
     FALSE
   } else {

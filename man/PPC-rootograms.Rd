@@ -5,7 +5,8 @@
 \alias{ppc_rootogram}
 \title{PPC rootograms}
 \usage{
-ppc_rootogram(y, yrep, style = c("standing", "suspended"), ..., size = 1)
+ppc_rootogram(y, yrep, style = c("standing", "suspended"), ..., prob = 0.9,
+  size = 1)
 }
 \arguments{
 \item{y}{A vector of observations. See \strong{Details}.}
@@ -21,6 +22,9 @@ instructions.}
 \item{style}{Rootogram style. Either \code{"standing"} or \code{"suspended"}.}
 
 \item{...}{Currently unused.}
+
+\item{prob}{The probability mass to include in the uncertainty interval
+around the expected (root) counts. Defaults to \code{0.9}.}
 
 \item{size}{Passed to \code{\link[ggplot2]{geom_line}}.}
 }
