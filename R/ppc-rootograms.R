@@ -51,7 +51,8 @@ ppc_rootogram <- function(y, yrep, style = c("standing", "suspended"),
   }
   ty[is.na(ty)] <- 0
 
-  graph <- ggplot(data.frame(x, ty, tyexp, tyquantile)) +
+  data <- data.frame(x, ty, tyexp, tyquantile)
+  graph <- ggplot(data) +
     geom_col(
       aes_(x = ~ x, y = ~ ty, fill = "Observed"),
       color = get_color("lh"),
@@ -66,7 +67,7 @@ ppc_rootogram <- function(y, yrep, style = c("standing", "suspended"),
     geom_smooth(
       aes_(x = ~ x, y = ~ tyexp, color = "Expected",
            ymin = ~ tylower, ymax = ~ tyupper),
-      fill = get_color("m"),
+      fill = get_color("d"),
       size = size,
       stat = "identity"
     ) +
