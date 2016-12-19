@@ -9,19 +9,11 @@ vignette: >
   %\VignetteIndexEntry{Plotting MCMC draws}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+params: 
+  DONTRUN: !r grepl("^sparc", R.version$platform)
 ---
 
-```{r, settings, include=FALSE}
-library("bayesplot")
-knitr::opts_chunk$set(
-  dev = "png",
-  dpi = 150,
-  fig.asp = 0.618,
-  fig.width = 5,
-  out.width = "60%",
-  fig.align = "center",
-  comment = NA
-)
+```{r, child="children/SETTINGS-knitr.txt"}
 ```
 
 This vignette focuses on plotting parameter estimates from MCMC draws. MCMC 

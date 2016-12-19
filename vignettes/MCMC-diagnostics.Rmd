@@ -10,22 +10,17 @@ vignette: >
   %\VignetteIndexEntry{Visual MCMC diagnostics}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+params: 
+  DONTRUN: !r grepl("^sparc", R.version$platform)
 ---
 
-```{r, settings, include=FALSE}
-library("bayesplot")
+```{r, child="children/SETTINGS-knitr.txt"}
+```
+
+```{r, pkgs, include=FALSE}
 library("ggplot2")
 library("gridExtra")
 library("rstan")
-knitr::opts_chunk$set(
-  dev = "png",
-  dpi = 150,
-  fig.asp = 0.618,
-  fig.width = 5,
-  out.width = "60%",
-  fig.align = "center",
-  comment = NA
-)
 ```
 
 This vignette focuses on MCMC diagnostic plots. Plots of parameter estimates
