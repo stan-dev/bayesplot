@@ -59,8 +59,9 @@ ppc_rootogram <- function(y, yrep,
   xpos <- 0L:ymax
 
   # prepare a table for yrep
-  tyrep <- apply(yrep, 1, table)
+  tyrep <- as.list(rep(NA, nrow(yrep)))
   for (i in seq_along(tyrep)) {
+    tyrep[[i]] <- table(yrep[i, ])
     matches <- match(xpos, rownames(tyrep[[i]]))
     tyrep[[i]] <- as.numeric(tyrep[[i]][matches])
   }
