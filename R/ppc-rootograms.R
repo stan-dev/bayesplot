@@ -53,6 +53,7 @@ ppc_rootogram <- function(y, yrep, style = c("standing", "suspended"),
 
   data <- data.frame(x, ty, tyexp, tyquantile)
   graph <- ggplot(data) +
+    aes_(ymin = ~ tylower, ymax = ~ tyupper) +
     geom_col(
       aes_(x = ~ x, y = ~ ty, fill = "Observed"),
       color = get_color("lh"),
@@ -65,8 +66,7 @@ ppc_rootogram <- function(y, yrep, style = c("standing", "suspended"),
 
   graph <- graph +
     geom_smooth(
-      aes_(x = ~ x, y = ~ tyexp, color = "Expected",
-           ymin = ~ tylower, ymax = ~ tyupper),
+      aes_(x = ~ x, y = ~ tyexp, color = "Expected"),
       fill = get_color("d"),
       size = size,
       stat = "identity"
