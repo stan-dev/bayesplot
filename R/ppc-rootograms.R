@@ -16,9 +16,10 @@ NULL
 
 #' @rdname PPC-rootograms
 #' @export
-ppc_rootogram <- function(y, yrep, style = c("standing", "suspended"),
+ppc_rootogram <- function(y, yrep,
+                          style = c("standing", "hanging", "suspended"),
                           ..., prob = 0.9, size = 1) {
-  suspended <- match.arg(style) == "suspended"
+  style <- match.arg(style)
   y <- validate_y(y)
   if (any(!is.wholenumber(y)) || min(y) < 0L) {
     stop("ppc_rootogram expects counts as inputs to 'y'.")
@@ -30,12 +31,13 @@ ppc_rootogram <- function(y, yrep, style = c("standing", "suspended"),
   alpha <- (1 - prob) / 2
   probs <- c(alpha, 1 - alpha)
   ymax <- max(y, yrep)
-  x <- 0L:ymax
+  xpos <- 0L:ymax
 
   # prepare a table for yrep
   tyrep <- apply(yrep, 1, table)
   for (i in seq_along(tyrep)) {
-    tyrep[[i]] <- as.numeric(tyrep[[i]][match(x, rownames(tyrep[[i]]))])
+    matches <- match(xpos, rownames(tyrep[[i]]))
+    tyrep[[i]] <- as.numeric(tyrep[[i]][matches])
   }
   tyrep <- do.call(rbind, tyrep)
   tyrep[is.na(tyrep)] <- 0
@@ -45,28 +47,31 @@ ppc_rootogram <- function(y, yrep, style = c("standing", "suspended"),
 
   # prepare a table for y
   ty <- table(y)
-  ty <- sqrt(as.numeric(ty[match(x, rownames(ty))]))
-  if (suspended) {
-    ty <- ty - tyexp
+  ty <- sqrt(as.numeric(ty[match(xpos, rownames(ty))]))
+  if (style == "suspended") {
+    ty <- tyexp - ty
   }
   ty[is.na(ty)] <- 0
+  ypos <- ty / 2
+  if (style == "hanging")
+    ypos <- tyexp - ypos
 
-  data <- data.frame(x, ty, tyexp, tyquantile)
+  data <- data.frame(xpos, ypos, ty, tyexp, tyquantile)
   graph <- ggplot(data) +
-    aes_(ymin = ~ tylower, ymax = ~ tyupper) +
-    geom_col(
-      aes_(x = ~ x, y = ~ ty, fill = "Observed"),
+    aes_(ymin = ~ tylower, ymax = ~ tyupper, height = ~ ty) +
+    geom_tile(
+      aes_(x = ~ xpos, y = ~ ypos, fill = "Observed"),
       color = get_color("lh"),
       size = 0.25,
       width = 1
     )
 
-  if (suspended)
+  if (style != "standing")
     graph <- graph + hline_0(size = 0.4)
 
   graph <- graph +
     geom_smooth(
-      aes_(x = ~ x, y = ~ tyexp, color = "Expected"),
+      aes_(x = ~ xpos, y = ~ tyexp, color = "Expected"),
       fill = get_color("d"),
       size = size,
       stat = "identity"
@@ -78,7 +83,7 @@ ppc_rootogram <- function(y, yrep, style = c("standing", "suspended"),
       y = expression(sqrt(Count))
     )
 
-  if (!suspended)
+  if (style == "standing")
     graph <- graph + dont_expand_y_axis()
 
   graph +
