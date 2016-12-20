@@ -19,7 +19,6 @@ params:
 
 ```{r, pkgs, include=FALSE}
 library("ggplot2")
-library("gridExtra")
 library("rstan")
 ```
 
@@ -32,13 +31,11 @@ and graphical posterior predictive checks are covered in
 In addition to __bayesplot__ we'll load the following packages: 
 
 * __ggplot2__ for customizing the ggplot objects created by __bayesplot__
-* __gridExtra__ for displaying multiple ggplot objects in a grid
 * __rstan__ for fitting the example models used throughout the vignette
 
 ```{r, eval=FALSE}
 library("bayesplot")
-library("ggplot2")    
-library("gridExtra") 
+library("ggplot2")
 library("rstan")      
 ```
 
@@ -267,14 +264,13 @@ Even for models fit using **rstan** the parameterization can make a big
 difference. Here are the $n_{eff}/N$ plots for `fit1` and `fit2` side by side.
 
 ```{r mcmc_neff-compare}
-# A function we'll use several times to plot comparisons of the centered
-# parameterization (cp) and the non-centered parameterization (ncp)
-compare_cp_ncp <- function(cp_plot, ncp_plot, ...) {
-  grid.arrange(
-    cp_plot + labs(subtitle = "Centered parameterization"),
-    ncp_plot + labs(subtitle = "Non-centered parameterization"), 
-    ...
-  )
+# A function we'll use several times to plot comparisons of the centered 
+# parameterization (cp) and the non-centered parameterization (ncp). See
+# help("bayesplot_grid") for details on the bayesplot_grid function used here.
+compare_cp_ncp <- function(cp_plot, ncp_plot, ncol = 1) {
+  txt <- c("Centered parameterization", "Non-centered parameterization")
+  bayesplot_grid(cp_plot, ncp_plot, subtitles = txt, 
+                 grid_args = list(ncol = ncol))
 }
 
 neff1 <- neff_ratio(fit1, pars = c("theta", "mu", "tau"))
@@ -300,9 +296,9 @@ is $\eta_1$ (and $\theta_1$ is later constructed from $\eta_1$, $\mu$, and
 $\tau$):
 
 ```{r mcmc_acf}
-grid.arrange(
+compare_cp_ncp(
   mcmc_acf(posterior1, pars = "theta[1]", lags = 10),
-  mcmc_acf(posterior2, pars = "eta[1]", lags = 10),
+  mcmc_acf(posterior2, pars = "eta[1]", lags = 10), 
   ncol = 2
 )
 ```
@@ -321,11 +317,9 @@ details on the concepts.
 
 The special **bayesplot** functions for NUTS diagnostics are
 
-* `mcmc_nuts_acceptance`
-* `mcmc_nuts_divergence`
-* `mcmc_nuts_stepsize`
-* `mcmc_nuts_treedepth`
-* `mcmc_nuts_energy`
+```{r, available_mcmc-nuts}
+available_mcmc(pattern = "_nuts_")
+```
 
 The **bayesplot** package also provides generic functions `log_posterior` and 
 `nuts_params` for extracting the required information for the plots from fitted
