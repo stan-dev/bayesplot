@@ -5,8 +5,8 @@
 \alias{ppc_rootogram}
 \title{PPC rootograms}
 \usage{
-ppc_rootogram(y, yrep, style = c("standing", "suspended"), ..., prob = 0.9,
-  size = 1)
+ppc_rootogram(y, yrep, style = c("standing", "hanging", "suspended"), ...,
+  prob = 0.9, size = 1)
 }
 \arguments{
 \item{y}{A vector of observations. See \strong{Details}.}
@@ -19,17 +19,43 @@ of \code{yrep} should be in the same order as the data points in \code{y}
 for the plots to make sense. See \strong{Details} for additional
 instructions.}
 
-\item{style}{Rootogram style. Either \code{"standing"} or \code{"suspended"}.}
+\item{style}{Rootogram style. Either
+\code{"standing"} (basic histogram of observed counts),
+\code{"hanging"} (histogram of the expected counts hanging
+from the curve representing the expected counts),
+ or \code{"suspended"} (histogram of the differences between
+ expected and observed counts).}
 
 \item{...}{Currently unused.}
 
 \item{prob}{The probability mass to include in the uncertainty interval
-around the expected (root) counts. Defaults to \code{0.9}.}
+around the square roots of the expected counts. Defaults to \code{0.9}.}
 
 \item{size}{Passed to \code{\link[ggplot2]{geom_line}}.}
 }
 \description{
-FIXME: add description
+Rootograms allow for diagnosing problems in count data models
+such as overdispersion or excess zeros. They consist of a histogram
+of \code{y} with the expected counts based on \code{yrep} overlaid
+as a line along with uncertainty intervals. The histogram
+style may be adjusted to focus on different aspects of the data.
+The y-axis represents the square roots of the counts to
+approximately adjust for scale differences and thus ease
+comparison between observed and expected counts.
+For a detailed introduction to rootograms see Kleiber and Zeileis (2016).
+}
+\examples{
+y <- rpois(100, 20)
+yrep <- matrix(rpois(10000, 20), ncol = 100)
+
+ppc_rootogram(y, yrep)
+ppc_rootogram(y, yrep, style = "hanging", prob = 0.8)
+ppc_rootogram(y, yrep, style = "suspended")
+
+}
+\references{
+Kleiber, C. & Zeileis, A. (2016). Visualizing count data regressions
+using rootograms. https://arxiv.org/pdf/1605.01311.pdf
 }
 \seealso{
 Other PPCs: \code{\link{PPC-distributions}},
