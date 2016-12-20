@@ -89,9 +89,10 @@
 #' y <- example_y_data()
 #' yrep <- example_yrep_draws()
 #' ppc_dens_overlay(y, yrep[1:50, ])
-#'
+#' \donttest{
 #' color_scheme_set("pink")
 #' ppc_stat(y, yrep, stat = "median") + grid_lines()
 #' ppc_hist(y, yrep[1:8, ])
+#' }
 #'
 NULL

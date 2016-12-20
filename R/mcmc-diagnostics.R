@@ -61,6 +61,7 @@
 #'
 #' color_scheme_set("green")
 #' mcmc_acf(x, pars = c("alpha", "beta[1]"))
+#' \donttest{
 #' color_scheme_set("pink")
 #' (p <- mcmc_acf_bar(x, pars = c("alpha", "beta[1]")))
 #'
@@ -68,7 +69,7 @@
 #' p +
 #'  yaxis_ticks() +
 #'  hline_at(0.5, linetype = 2, size = 0.15, color = "gray")
-#'
+#' }
 #'
 #' # fake rhat values to use for demonstration
 #' rhat <- c(runif(100, 1, 1.15))

@@ -56,8 +56,9 @@
 #' # histograms of some parameters
 #' color_scheme_set("pink")
 #' mcmc_hist(x, pars = c("alpha", "beta[2]"))
+#' \donttest{
 #' mcmc_hist(x, pars = "sigma", regex_pars = "beta")
-#'
+#' }
 #' # example of using 'transformations' argument to plot log(sigma),
 #' # and parsing facet labels (e.g. to get greek letters for parameters)
 #' mcmc_hist(x, transformations = list(sigma = "log"),
