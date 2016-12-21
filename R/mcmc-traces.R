@@ -250,14 +250,19 @@ mcmc_trace_highlight <-
     graph <- graph +
       scale_color_manual("Chain", values = chain_colors(n_chain))
 
-    if (!is.null(divergences))
-      graph <- graph +
-        divergence_rug(divergences, n_iter) +
-        guides(
-          color = guide_legend(order = 1),
-          linetype = guide_legend(order = 2, title = NULL, keywidth = rel(1/2),
-                                  override.aes = list(size = rel(1/2)))
-        )
+    if (!is.null(divergences)) {
+      div_rug <- divergence_rug(divergences, n_iter)
+      if (!is.null(div_rug))
+        graph <- graph +
+          div_rug +
+          guides(
+            color = guide_legend(order = 1),
+            linetype = guide_legend(order = 2,
+                                    title = NULL,
+                                    keywidth = rel(1/2),
+                                    override.aes = list(size = rel(1/2)))
+          )
+    }
   }
 
   facet_args$facets <- ~ Parameter
@@ -313,8 +318,10 @@ divergence_rug <- function(divergences, n_iter, color = "red", size = 1/4) {
     divergences <- ifelse(divergences == 1, seq_along(divergences), NA)
     div_info <- data.frame(Divergent = divergences)
   }
-  if (all(is.na(div_info$Divergent)))
+  if (all(is.na(div_info$Divergent))) {
     message("No divergences to plot.")
+    return(NULL)
+  }
 
   geom_rug(
     aes_(x = ~ Divergent, linetype = "Divergence"),

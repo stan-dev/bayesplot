@@ -1,3 +1,12 @@
+# bayesplot 1.1.0.9000
+
+(GitHub issue/PR numbers in parentheses)
+
+#### Fixes
+* Avoid error in some cases when `divergences` specified in call to `mcmc_trace`
+but there are not actually any divergent transitions.
+
+
 # bayesplot 1.1.0
 
 (GitHub issue/PR numbers in parentheses)
@@ -22,6 +31,7 @@ trace plot. (#42)
 axis limits. (#59)
 * The `stat` argument for all `ppc_stat_*` functions now accepts a function
 instead of only the name of a function. (#31)
+
 
 # bayesplot 1.0.0
 
