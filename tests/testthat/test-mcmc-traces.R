@@ -44,10 +44,10 @@ test_that("mcmc_trace options work", {
 # displaying divergences in traceplot -------------------------------------
 test_that("mcmc_trace 'divergences' argument works", {
   suppressPackageStartupMessages(library(rstanarm))
-  fit <- suppressWarnings(
-    stan_glm(mpg ~ ., data = mtcars, iter = 200, refresh = 0,
+  suppressWarnings(capture.output(
+    fit <- stan_glm(mpg ~ ., data = mtcars, iter = 200, refresh = 0,
              prior = hs(), adapt_delta = 0.7)
-  )
+  ))
   draws <- as.array(fit)
 
   # divergences via nuts_params

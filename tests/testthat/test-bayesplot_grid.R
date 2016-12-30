@@ -43,5 +43,4 @@ test_that("bayesplot_grid works", {
   expect_s3_class(b, "bayesplot_grid")
   expect_equal(length(a$grobs), 2)
   expect_equal(length(b$grobs), 2)
-  expect_identical(a$layout, b$layout)
 })
