@@ -25,6 +25,12 @@
 #'   around the square roots of the expected counts. Defaults to \code{0.9}.
 #' @param size Passed to \code{\link[ggplot2]{geom_line}}.
 #'
+#' @details For rootograms to make sense, \code{y} and \code{yrep} have to
+#' represent count data. That is they should only contain natural numbers
+#' (non-negative integers).
+#'
+#' @template return-ggplot
+#'
 #' @references
 #' Kleiber, C. & Zeileis, A. (2016). Visualizing count data regressions
 #' using rootograms. https://arxiv.org/pdf/1605.01311.pdf

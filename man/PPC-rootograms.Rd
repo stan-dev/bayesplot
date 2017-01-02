@@ -33,6 +33,10 @@ around the square roots of the expected counts. Defaults to \code{0.9}.}
 
 \item{size}{Passed to \code{\link[ggplot2]{geom_line}}.}
 }
+\value{
+A ggplot object that can be further customized using the
+  \pkg{ggplot2} package.
+}
 \description{
 Rootograms allow for diagnosing problems in count data models
 such as overdispersion or excess zeros. They consist of a histogram
@@ -43,6 +47,11 @@ The y-axis represents the square roots of the counts to
 approximately adjust for scale differences and thus ease
 comparison between observed and expected counts.
 For a detailed introduction to rootograms see Kleiber and Zeileis (2016).
+}
+\details{
+For rootograms to make sense, \code{y} and \code{yrep} have to
+represent count data. That is they should only contain natural numbers
+(non-negative integers).
 }
 \examples{
 y <- rpois(100, 20)
