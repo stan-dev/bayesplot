@@ -116,13 +116,3 @@ ppc_rootogram <- function(y, yrep,
     bayesplot::theme_default() +
     no_legend_spacing()
 }
-
-# TODO: move to another file?
-is.wholenumber <- function(x, tol = .Machine$double.eps) {
-  # check if x consists of whole numbers (very close to integers)
-  if (!is.numeric(x)) {
-    FALSE
-  } else {
-    abs(x - round(x)) < tol
-  }
-}
