@@ -72,3 +72,11 @@ test_that("ppc_group_data with stat returns correct values for yrep", {
     }
   }
 })
+
+
+# is.wholenumber --------------------------------------------------------
+test_that("is.wholenumber works correctly", {
+  expect_equal(is.wholenumber(c(1L, 2, 3/3, 4/5)),
+               c(rep(TRUE, 3), FALSE))
+  expect_true(!is.wholenumber("1"))
+})
