@@ -74,9 +74,18 @@ test_that("ppc_group_data with stat returns correct values for yrep", {
 })
 
 
-# is.wholenumber --------------------------------------------------------
-test_that("is.wholenumber works correctly", {
-  expect_equal(is.wholenumber(c(1L, 2, 3/3, 4/5)),
+# is_whole_number, all_counts --------------------------------------------
+test_that("is_whole_number works correctly", {
+  expect_equal(is_whole_number(c(1L, 2, 3/3, 4/5)),
                c(rep(TRUE, 3), FALSE))
-  expect_true(!is.wholenumber("1"))
+  expect_true(!is_whole_number("1"))
+})
+test_that("all_counts works correctly", {
+  expect_true(all_counts(1))
+  expect_true(all_counts(0:5))
+  expect_true(all_counts(matrix(rpois(10, 1), 2, 5)))
+  expect_false(all_counts(rnorm(5)))
+  expect_false(all_counts(c("1", "2")))
+  expect_false(all_counts(c(1, 1.5)))
+  expect_false(all_counts(c(-1, 2)))
 })

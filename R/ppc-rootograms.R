@@ -50,13 +50,12 @@ ppc_rootogram <- function(y, yrep,
                           ..., prob = 0.9, size = 1) {
   style <- match.arg(style)
   y <- validate_y(y)
-  if (any(!is.wholenumber(y)) || min(y) < 0L) {
-    stop("ppc_rootogram expects counts as inputs to 'y'.")
-  }
   yrep <- validate_yrep(yrep, y)
-  if (any(!is.wholenumber(yrep)) || min(yrep) < 0L) {
+  if (!all_counts(y))
+    stop("ppc_rootogram expects counts as inputs to 'y'.")
+  if (!all_counts(yrep))
     stop("ppc_rootogram expects counts as inputs to 'yrep'.")
-  }
+
   alpha <- (1 - prob) / 2
   probs <- c(alpha, 1 - alpha)
   ymax <- max(y, yrep)
