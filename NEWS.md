@@ -6,6 +6,9 @@
 * Avoid error in some cases when `divergences` specified in call to `mcmc_trace`
 but there are not actually any divergent transitions.
 
+#### New Features
+* Introduce `ppc_rootogram` for use with models for count data. (#28)
+
 
 # bayesplot 1.1.0
 
