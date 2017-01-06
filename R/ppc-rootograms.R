@@ -1,25 +1,23 @@
 #' PPC rootograms
 #'
-#' Rootograms allow for diagnosing problems in count data models
-#' such as overdispersion or excess zeros. They consist of a histogram
-#' of \code{y} with the expected counts based on \code{yrep} overlaid
-#' as a line along with uncertainty intervals. The histogram
-#' style may be adjusted to focus on different aspects of the data.
-#' The y-axis represents the square roots of the counts to
-#' approximately adjust for scale differences and thus ease
-#' comparison between observed and expected counts.
-#' For a detailed introduction to rootograms see Kleiber and Zeileis (2016).
+#' Rootograms allow for diagnosing problems in count data models such as
+#' overdispersion or excess zeros. They consist of a histogram of \code{y} with
+#' the expected counts based on \code{yrep} overlaid as a line along with
+#' uncertainty intervals. The histogram style may be adjusted to focus on
+#' different aspects of the data. The y-axis represents the square roots of the
+#' counts to approximately adjust for scale differences and thus ease comparison
+#' between observed and expected counts. For a detailed introduction to
+#' rootograms see Kleiber and Zeileis (2016).
 #'
 #' @name PPC-rootograms
 #' @family PPCs
 #'
 #' @template args-y-yrep
-#' @param style Rootogram style. Either
-#'   \code{"standing"} (basic histogram of observed counts),
-#'   \code{"hanging"} (histogram of the expected counts hanging
-#'   from the curve representing the expected counts),
-#'    or \code{"suspended"} (histogram of the differences between
-#'    expected and observed counts).
+#' @param style Rootogram style. Either \code{"standing"} (basic histogram of
+#'   observed counts), \code{"hanging"} (histogram of the expected counts
+#'   hanging from the curve representing the expected counts), or
+#'   \code{"suspended"} (histogram of the differences between expected and
+#'   observed counts).
 #' @param ... Currently unused.
 #' @param prob The probability mass to include in the uncertainty interval
 #'   around the square roots of the expected counts. Defaults to \code{0.9}.
@@ -33,7 +31,7 @@
 #'
 #' @references
 #' Kleiber, C. & Zeileis, A. (2016). Visualizing count data regressions
-#' using rootograms. https://arxiv.org/pdf/1605.01311.pdf
+#' using rootograms. \url{https://arxiv.org/abs/1605.01311}.
 #'
 #' @examples
 #' y <- rpois(100, 20)
