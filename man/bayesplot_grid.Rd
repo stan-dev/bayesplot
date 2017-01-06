@@ -4,8 +4,9 @@
 \alias{bayesplot_grid}
 \title{Arrange plots in a grid}
 \usage{
-bayesplot_grid(..., plots = list(), grid_args = list(),
-  titles = character(), xlim = NULL, ylim = NULL, legends = TRUE)
+bayesplot_grid(..., plots = list(), xlim = NULL, ylim = NULL,
+  grid_args = list(), titles = character(), subtitles = character(),
+  legends = TRUE)
 }
 \arguments{
 \item{...}{One or more ggplot objects.}
@@ -13,15 +14,16 @@ bayesplot_grid(..., plots = list(), grid_args = list(),
 \item{plots}{A list of ggplot objects. Can be used as an alternative to
 specifying plot objects via \code{...}.}
 
+\item{xlim, ylim}{Optionally, numeric vectors of length 2 specifying lower and
+upper limits for the axes that will be shared across all plots.}
+
 \item{grid_args}{An optional named list of arguments to pass to
 \code{\link[gridExtra]{arrangeGrob}} (\code{nrow}, \code{ncol},
 \code{widths}, etc.).}
 
-\item{titles}{An optional character vector of plot titles. If specified,
-\code{titles} must must have length equal to the number of plots speficied.}
-
-\item{xlim, ylim}{Optionally, numeric vectors of length 2 specifying lower and
-upper limits for the axes that will be shared across all plots.}
+\item{titles, subtitles}{Optional character vectors of plot titles and
+subtitles. If specified, \code{titles} and \code{subtitles} must must have
+length equal to the number of plots speficied.}
 
 \item{legends}{If any of the plots have legends should they be displayed?
 Defaults to \code{TRUE}.}
@@ -67,7 +69,11 @@ ppc2 <- ppc_dens_overlay(y, yrep2)
 bayesplot_grid(ppc1, ppc2)
 
 # make sure the plots use the same limits for the axes
-bayesplot_grid(ppc1, ppc2, xlim = c(-5, 60), ylim = c(0, 0.15))
+bayesplot_grid(ppc1, ppc2, xlim = c(-5, 60), ylim = c(0, 0.2))
+
+# remove the legends and add text
+bayesplot_grid(ppc1, ppc2, xlim = c(-5, 60), ylim = c(0, 0.2),
+               legends = FALSE, subtitles = rep("Predicted MPG", 2))
 }
 
 }

@@ -1,15 +1,25 @@
-# bayesplot 1.0.0.9000
+# bayesplot 1.1.0.9000
 
 (GitHub issue/PR numbers in parentheses)
 
 #### Fixes
-* Images in vignettes should now render properly. Thanks to TJ Mahr. (#51)
+* Avoid error in some cases when `divergences` specified in call to `mcmc_trace`
+but there are not actually any divergent transitions.
+
+
+# bayesplot 1.1.0
+
+(GitHub issue/PR numbers in parentheses)
+
+#### Fixes
+* Images in vignettes should now render properly using `png` device. Thanks to
+TJ Mahr. (#51)
 * `xaxis_title(FALSE)` and `yaxis_title(FALSE)` now set axis titles to `NULL` 
 rather than changing theme elements to `element_blank()`. This makes it easier
 to add axis titles to plots that don’t have them by default. Thanks to Bill
 Harris. (#53)
 
-#### Features
+#### New Features
 * Introduce `ppc_error_hist_grouped` for plotting predictive errors
 by level of a grouping variable. (#40)
 * Introduce `mcmc_recover_intervals` for comparing MCMC estimates to "true"
@@ -21,6 +31,7 @@ trace plot. (#42)
 axis limits. (#59)
 * The `stat` argument for all `ppc_stat_*` functions now accepts a function
 instead of only the name of a function. (#31)
+
 
 # bayesplot 1.0.0
 

@@ -10,8 +10,9 @@
 #' @param grid_args An optional named list of arguments to pass to
 #'   \code{\link[gridExtra]{arrangeGrob}} (\code{nrow}, \code{ncol},
 #'   \code{widths}, etc.).
-#' @param titles An optional character vector of plot titles. If specified,
-#'   \code{titles} must must have length equal to the number of plots speficied.
+#' @param titles,subtitles Optional character vectors of plot titles and
+#'   subtitles. If specified, \code{titles} and \code{subtitles} must must have
+#'   length equal to the number of plots speficied.
 #' @param xlim,ylim Optionally, numeric vectors of length 2 specifying lower and
 #'   upper limits for the axes that will be shared across all plots.
 #' @param legends If any of the plots have legends should they be displayed?
@@ -53,16 +54,21 @@
 #' bayesplot_grid(ppc1, ppc2)
 #'
 #' # make sure the plots use the same limits for the axes
-#' bayesplot_grid(ppc1, ppc2, xlim = c(-5, 60), ylim = c(0, 0.15))
+#' bayesplot_grid(ppc1, ppc2, xlim = c(-5, 60), ylim = c(0, 0.2))
+#'
+#' # remove the legends and add text
+#' bayesplot_grid(ppc1, ppc2, xlim = c(-5, 60), ylim = c(0, 0.2),
+#'                legends = FALSE, subtitles = rep("Predicted MPG", 2))
 #' }
 #'
 bayesplot_grid <-
   function(...,
            plots = list(),
-           grid_args = list(),
-           titles = character(),
            xlim = NULL,
            ylim = NULL,
+           grid_args = list(),
+           titles = character(),
+           subtitles = character(),
            legends = TRUE) {
 
     suggested_package("gridExtra")
@@ -84,6 +90,11 @@ bayesplot_grid <-
       stopifnot(is.character(titles), length(titles) == length(plots))
       plots <- lapply(seq_along(plots), function(j)
         plots[[j]] + ggtitle(titles[j]))
+    }
+    if (length(subtitles)) {
+      stopifnot(is.character(subtitles), length(subtitles) == length(plots))
+      plots <- lapply(seq_along(plots), function(j)
+        plots[[j]] + labs(subtitle = subtitles[j]))
     }
     if (!legends)
       plots <- lapply(plots, function(p)

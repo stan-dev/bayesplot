@@ -4,8 +4,10 @@ context("MCMC: nuts")
 
 ITER <- 1000
 CHAINS <- 3
-fit <- stan_glm(mpg ~ wt + am, data = mtcars,
-                iter = ITER, chains = CHAINS, refresh = 0)
+capture.output(
+  fit <- stan_glm(mpg ~ wt + am, data = mtcars,
+                  iter = ITER, chains = CHAINS, refresh = 0)
+)
 np <- nuts_params(fit)
 lp <- log_posterior(fit)
 

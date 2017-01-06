@@ -1,8 +1,8 @@
 Package: bayesplot
 Type: Package
 Title: Plotting for Bayesian Models
-Version: 1.0.0.9000
-Date: 2016-12-10
+Version: 1.1.0.9000
+Date: 2016-12-21
 Authors@R: c(person("Jonah", "Gabry", role = c("aut", "cre"), email = "jsg2201@columbia.edu"),
              person("Paul-Christian", "Buerkner", role = "ctb"))
 Maintainer: Jonah Gabry <jsg2201@columbia.edu>
@@ -27,8 +27,8 @@ Suggests:
     gridExtra (>= 2.2.1),
     knitr (>= 1.14),
     rmarkdown (>= 1.0.0),
-    rstan (>= 2.12.1),
-    rstanarm (>= 2.12.1),
+    rstan (>= 2.13.2),
+    rstanarm (>= 2.13.1),
     rstantools (>= 1.0.0),
     shinystan (>= 2.2.1),
     testthat

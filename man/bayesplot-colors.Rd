@@ -97,11 +97,11 @@ color_scheme_view()
 y <- example_y_data()
 yrep <- example_yrep_draws()
 ppc_stat(y, yrep, stat = "mean") + legend_none()
-
+\donttest{
 color_scheme_set("mix-teal-pink")
 ppc_stat(y, yrep, stat = "sd") + legend_none()
 mcmc_areas(x, regex_pars = "beta")
-
+}
 ###########################
 ### custom color scheme ###
 ###########################

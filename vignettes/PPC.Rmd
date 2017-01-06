@@ -221,17 +221,32 @@ ppc_stat(y, yrep_nb, stat = "max", binwidth = 100) +
   coord_cartesian(xlim = c(-1, 5000))
 ```
 
-### Scatterplots
+### Other PPCs and PPCs by group
 
-Write this section.
+There are many additional PPCs available, including plots of predictive 
+intervals, distributions of predictive errors, and more. For links to the
+documentation for all of the various PPC plots see `help("PPC-overview")`. The
+`available_ppc` function can also be used to list the names of all PPC plotting
+functions:
 
-### Distributions of predictive errors
+```{r, available_ppc}
+available_ppc()
+```
 
-Write this section.
+Many of the available PPCs can also be carried out within levels of a grouping 
+variable. Any function for PPCs by group will have a name ending in `_grouped`
+and will accept an additional argument `group`. For example, `ppc_stat_grouped`
+is the same as `ppc_stat` except that the test statistics are computed within
+levels of the grouping variable and a separate plot is made for each level:
 
-### Checks for time series data
+```{r ppc_stat_grouped, message=FALSE}
+ppc_stat_grouped(y, yrep_nb, group = roaches$treatment, stat = "prop_zero")
+```
 
-Write this section.
+The full list of currently available `_grouped` functions is:
+```{r, available_ppc-grouped}
+available_ppc(pattern = "_grouped")
+```
 
 
 ## Providing an interface to bayesplot PPCs from another package

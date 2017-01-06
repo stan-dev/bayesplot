@@ -23,6 +23,8 @@ test_that("bayesplot_grid throws correct errors", {
                "objects in '...' must be ggplot objects.")
   expect_error(bayesplot_grid(p1, p2, titles = c("plot1")),
                "length(titles) == length(plots) is not TRUE", fixed = TRUE)
+  expect_error(bayesplot_grid(p1, p2, subtitles = c("plot1")),
+               "length(subtitles) == length(plots) is not TRUE", fixed = TRUE)
 })
 
 test_that("bayesplot_grid works", {
@@ -33,6 +35,7 @@ test_that("bayesplot_grid works", {
   expect_silent(
     b <- bayesplot_grid(plots = list(p1, p2),
                         titles = c("plot1", "plot2"),
+                        subtitles = c("plot1_sub", "plot2_sub"),
                         legends = FALSE)
   )
 
@@ -40,5 +43,4 @@ test_that("bayesplot_grid works", {
   expect_s3_class(b, "bayesplot_grid")
   expect_equal(length(a$grobs), 2)
   expect_equal(length(b$grobs), 2)
-  expect_identical(a$layout, b$layout)
 })
