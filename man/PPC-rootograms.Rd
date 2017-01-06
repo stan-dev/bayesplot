@@ -19,17 +19,17 @@ of \code{yrep} should be in the same order as the data points in \code{y}
 for the plots to make sense. See \strong{Details} for additional
 instructions.}
 
-\item{style}{Rootogram style. Either
-\code{"standing"} (basic histogram of observed counts),
-\code{"hanging"} (histogram of the expected counts hanging
-from the curve representing the expected counts),
- or \code{"suspended"} (histogram of the differences between
- expected and observed counts).}
+\item{style}{Rootogram style. Either \code{"standing"} (basic histogram of
+observed counts), \code{"hanging"} (histogram of the expected counts
+hanging from the curve representing the expected counts), or
+\code{"suspended"} (histogram of the differences between expected and
+observed counts).}
 
 \item{...}{Currently unused.}
 
 \item{prob}{The probability mass to include in the uncertainty interval
-around the square roots of the expected counts. Defaults to \code{0.9}.}
+around the square roots of the expected counts. Defaults to \code{0.9}. Set
+\code{prob=0} to remove the uncertainty interval.}
 
 \item{size}{Passed to \code{\link[ggplot2]{geom_line}}.}
 }
@@ -38,15 +38,14 @@ A ggplot object that can be further customized using the
   \pkg{ggplot2} package.
 }
 \description{
-Rootograms allow for diagnosing problems in count data models
-such as overdispersion or excess zeros. They consist of a histogram
-of \code{y} with the expected counts based on \code{yrep} overlaid
-as a line along with uncertainty intervals. The histogram
-style may be adjusted to focus on different aspects of the data.
-The y-axis represents the square roots of the counts to
-approximately adjust for scale differences and thus ease
-comparison between observed and expected counts.
-For a detailed introduction to rootograms see Kleiber and Zeileis (2016).
+Rootograms allow for diagnosing problems in count data models such as
+overdispersion or excess zeros. They consist of a histogram of \code{y} with
+the expected counts based on \code{yrep} overlaid as a line along with
+uncertainty intervals. The histogram style may be adjusted to focus on
+different aspects of the data. The y-axis represents the square roots of the
+counts to approximately adjust for scale differences and thus ease comparison
+between observed and expected counts. For a detailed introduction to
+rootograms see Kleiber and Zeileis (2016).
 }
 \details{
 For rootograms to make sense, \code{y} and \code{yrep} have to
@@ -64,7 +63,7 @@ ppc_rootogram(y, yrep, style = "suspended")
 }
 \references{
 Kleiber, C. & Zeileis, A. (2016). Visualizing count data regressions
-using rootograms. https://arxiv.org/pdf/1605.01311.pdf
+using rootograms. \url{https://arxiv.org/abs/1605.01311}.
 }
 \seealso{
 Other PPCs: \code{\link{PPC-distributions}},

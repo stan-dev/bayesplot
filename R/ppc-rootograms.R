@@ -20,7 +20,8 @@
 #'   observed counts).
 #' @param ... Currently unused.
 #' @param prob The probability mass to include in the uncertainty interval
-#'   around the square roots of the expected counts. Defaults to \code{0.9}.
+#'   around the square roots of the expected counts. Defaults to \code{0.9}. Set
+#'   \code{prob=0} to remove the uncertainty interval.
 #' @param size Passed to \code{\link[ggplot2]{geom_line}}.
 #'
 #' @details For rootograms to make sense, \code{y} and \code{yrep} have to
