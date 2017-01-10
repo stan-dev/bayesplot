@@ -13,11 +13,13 @@
 #' @family PPCs
 #'
 #' @template args-y-yrep
-#' @param style Rootogram style. Either \code{"standing"} (basic histogram of
-#'   observed counts), \code{"hanging"} (histogram of the expected counts
-#'   hanging from the curve representing the expected counts), or
-#'   \code{"suspended"} (histogram of the differences between expected and
-#'   observed counts).
+#' @param style A string specifying the style of rootogram. The options are
+#'   \code{"standing"} (basic histogram of observed counts), \code{"hanging"}
+#'   (histogram of the expected counts hanging from the curve representing the
+#'   expected counts), or \code{"suspended"} (histogram of the differences
+#'   between expected and observed counts). All of these are plotted on the
+#'   square root scale. See Kleiber and Zeileis (2016) for advice on
+#'   interpreting rootograms and selecting among the different styles.
 #' @param ... Currently unused.
 #' @param prob The probability mass to include in the uncertainty interval
 #'   around the square roots of the expected counts. Defaults to \code{0.9}. Set
@@ -31,8 +33,9 @@
 #' @template return-ggplot
 #'
 #' @references
-#' Kleiber, C. & Zeileis, A. (2016). Visualizing count data regressions
-#' using rootograms. \url{https://arxiv.org/abs/1605.01311}.
+#' Kleiber, C. and Zeileis, A. (2016). Visualizing count data regressions using
+#' rootograms. \emph{The American Statistician}. 70(3):296--303.
+#' \url{https://arxiv.org/pdf/1605.01311v1.pdf}.
 #'
 #' @examples
 #' y <- rpois(100, 20)
@@ -49,6 +52,7 @@ NULL
 ppc_rootogram <- function(y, yrep,
                           style = c("standing", "hanging", "suspended"),
                           ..., prob = 0.9, size = 1) {
+  check_ignored_arguments(...)
   style <- match.arg(style)
   y <- validate_y(y)
   yrep <- validate_yrep(yrep, y)
@@ -117,6 +121,6 @@ ppc_rootogram <- function(y, yrep,
     graph <- graph + dont_expand_y_axis()
 
   graph +
-    bayesplot::theme_default() +
+    theme_default() +
     no_legend_spacing()
 }
