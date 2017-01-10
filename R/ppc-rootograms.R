@@ -13,29 +13,42 @@
 #' @family PPCs
 #'
 #' @template args-y-yrep
-#' @param style A string specifying the style of rootogram. The options are
-#'   \code{"standing"} (basic histogram of observed counts), \code{"hanging"}
-#'   (histogram of the expected counts hanging from the curve representing the
-#'   expected counts), or \code{"suspended"} (histogram of the differences
-#'   between expected and observed counts). All of these are plotted on the
-#'   square root scale. See Kleiber and Zeileis (2016) for advice on
-#'   interpreting rootograms and selecting among the different styles.
+#' @param style The rootogram style. The options are \code{"standing"},
+#'   \code{"hanging"}, and \code{"suspended"}. See the \strong{Plot
+#'   Descriptions} section, below, for details on the different styles.
 #' @param ... Currently unused.
 #' @param prob The probability mass to include in the uncertainty interval
 #'   around the square roots of the expected counts. Defaults to \code{0.9}. Set
 #'   \code{prob=0} to remove the uncertainty interval.
 #' @param size Passed to \code{\link[ggplot2]{geom_line}}.
 #'
-#' @details For rootograms to make sense, \code{y} and \code{yrep} have to
-#' represent count data. That is they should only contain natural numbers
-#' (non-negative integers).
+#' @details For rootograms, the observations \code{y} and predictons \code{yrep}
+#'   must be counts. \pkg{bayesplot} will validate that both \code{y} and
+#'   \code{yrep} contain only non-negative integer values (although they need
+#'   not be integers in the sense of \R's \code{\link{integer}} type).
+#'
+#' @section Plot Descriptions:
+#' \describe{
+#' \item{\code{ppc_rootogram}}{}
+#'  \itemize{
+#'   \item \emph{Standing}: basic histogram of observed counts with curve
+#'   showing expected counts.
+#'   \item \emph{Hanging}: observed counts counts hanging from the curve
+#'   representing expected counts.
+#'   \item \emph{Suspended}: histogram of the differences between expected and
+#'   observed counts.
+#'  }
+#' \strong{All of these are plotted on the square root scale}. See Kleiber and
+#' Zeileis (2016) for advice on interpreting rootograms and selecting among the
+#' different styles.
+#' }
 #'
 #' @template return-ggplot
 #'
 #' @references
 #' Kleiber, C. and Zeileis, A. (2016). Visualizing count data regressions using
-#' rootograms. \emph{The American Statistician}. 70(3):296--303.
-#' \url{https://arxiv.org/pdf/1605.01311v1.pdf}.
+#' rootograms. \emph{The American Statistician}. 70(3): 296--303.
+#' \url{https://arxiv.org/abs/1605.01311}.
 #'
 #' @examples
 #' y <- rpois(100, 20)

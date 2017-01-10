@@ -19,11 +19,9 @@ of \code{yrep} should be in the same order as the data points in \code{y}
 for the plots to make sense. See \strong{Details} for additional
 instructions.}
 
-\item{style}{Rootogram style. Either \code{"standing"} (basic histogram of
-observed counts), \code{"hanging"} (histogram of the expected counts
-hanging from the curve representing the expected counts), or
-\code{"suspended"} (histogram of the differences between expected and
-observed counts).}
+\item{style}{The rootogram style. The options are \code{"standing"},
+\code{"hanging"}, and \code{"suspended"}. See the \strong{Plot
+Descriptions} section, below, for details on the different styles.}
 
 \item{...}{Currently unused.}
 
@@ -48,9 +46,27 @@ between observed and expected counts. For a detailed introduction to
 rootograms see Kleiber and Zeileis (2016).
 }
 \details{
-For rootograms to make sense, \code{y} and \code{yrep} have to
-represent count data. That is they should only contain natural numbers
-(non-negative integers).
+For rootograms, the observations \code{y} and predictons \code{yrep}
+  must be counts. \pkg{bayesplot} will validate that both \code{y} and
+  \code{yrep} contain only non-negative integer values (although they need
+  not be integers in the sense of \R's \code{\link{integer}} type).
+}
+\section{Plot Descriptions}{
+
+\describe{
+\item{\code{ppc_rootogram}}{}
+ \itemize{
+  \item \emph{Standing}: basic histogram of observed counts with curve
+  showing expected counts.
+  \item \emph{Hanging}: observed counts counts hanging from the curve
+  representing expected counts.
+  \item \emph{Suspended}: histogram of the differences between expected and
+  observed counts.
+ }
+\strong{All of these are plotted on the square root scale}. See Kleiber and
+Zeileis (2016) for advice on interpreting rootograms and selecting among the
+different styles.
+}
 }
 \examples{
 y <- rpois(100, 20)
@@ -62,8 +78,9 @@ ppc_rootogram(y, yrep, style = "suspended")
 
 }
 \references{
-Kleiber, C. & Zeileis, A. (2016). Visualizing count data regressions
-using rootograms. \url{https://arxiv.org/abs/1605.01311}.
+Kleiber, C. and Zeileis, A. (2016). Visualizing count data regressions using
+rootograms. \emph{The American Statistician}. 70(3): 296--303.
+\url{https://arxiv.org/abs/1605.01311}.
 }
 \seealso{
 Other PPCs: \code{\link{PPC-distributions}},
