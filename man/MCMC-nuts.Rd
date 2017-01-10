@@ -153,8 +153,8 @@ Betancourt, M. and Girolami, M. (2013). Hamiltonian Monte Carlo for
 hierarchical models. \url{https://arxiv.org/abs/1312.0906}
 
 Hoffman, M. D. and Gelman, A. (2014). The No-U-Turn Sampler:
-  adaptively setting path lengths in Hamiltonian Monte Carlo. \emph{Journal of
-  Machine Learning Research}. 15:1593--1623.
+  adaptively setting path lengths in Hamiltonian Monte Carlo. \emph{Journal
+  of Machine Learning Research}. 15:1593--1623.
 
 Stan Development Team. (2016). \emph{Stan Modeling Language Users
 Guide and Reference Manual.} \url{http://mc-stan.org/documentation/}

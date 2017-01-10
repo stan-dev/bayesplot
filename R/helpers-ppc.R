@@ -179,6 +179,19 @@ set_hist_aes <- function(freq = TRUE, ...) {
     aes_(x = ~ value, y = ~ ..density.., ...)
 }
 
+# check if x consists of whole numbers (very close to integers)
+is_whole_number <- function(x, tol = .Machine$double.eps) {
+  if (!is.numeric(x)) {
+    FALSE
+  } else {
+    abs(x - round(x)) < tol
+  }
+}
+
+# check if all values in x are counts (non-negative whole numbers)
+all_counts <- function(x, ...) {
+  all(is_whole_number(x, ...)) && min(x) >= 0
+}
 
 # labels ----------------------------------------------------------------
 create_yrep_ids <- function(ids) paste('italic(y)[rep] (', ids, ")")

@@ -164,6 +164,7 @@ Gelman, A., Carlin, J. B., Stern, H. S., Dunson, D. B., Vehtari,
 \seealso{
 Other PPCs: \code{\link{PPC-errors}},
   \code{\link{PPC-intervals}}, \code{\link{PPC-overview}},
+  \code{\link{PPC-rootograms}},
   \code{\link{PPC-scatterplots}},
   \code{\link{PPC-test-statistics}}
 }
