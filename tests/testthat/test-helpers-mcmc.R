@@ -196,6 +196,15 @@ test_that("apply_transformations works", {
   expect_equal(mat_trans[, "beta[1]"], exp(mat[, "beta[1]"]))
 })
 
+test_that("transformations recycled properly if not a named list", {
+  # if transformations is a single string naming a function
+  x <- prepare_mcmc_array(arr, regex_pars = "beta", transformations = "exp")
+  expect_identical(parameter_names(x), c("exp(beta[1])", "exp(beta[2])"))
+
+  # if transformations is a single function
+  x <- prepare_mcmc_array(arr, pars = c("beta[1]", "sigma"), transformations = exp)
+  expect_identical(parameter_names(x), c("t(beta[1])", "t(sigma)"))
+})
 
 # rhat and neff helpers ---------------------------------------------------
 test_that("factor_rhat works", {
