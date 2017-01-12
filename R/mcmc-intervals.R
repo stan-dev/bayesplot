@@ -76,6 +76,17 @@
 #' p + legend_move("bottom")
 #' p + legend_move("none") # or p + legend_none()
 #'
+#' \donttest{
+#' # apply transformations
+#' mcmc_intervals(
+#'   x,
+#'   pars = c("beta[2]", "sigma"),
+#'   transformations = list("sigma" = "log", "beta[2]" = function(x) x + 3)
+#' )
+#'
+#' # apply same transformation to all selected parameters
+#' mcmc_intervals(x, regex_pars = "beta", transformations = "exp")
+#' }
 #'
 #' \dontrun{
 #' # example using fitted model from rstanarm package

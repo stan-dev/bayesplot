@@ -176,18 +176,18 @@ prepare_mcmc_array <-
     }
     x <- validate_mcmc_x(x)
 
-    parnames <- if (is.matrix(x)) {
-      colnames(x)
-    } else if (is.array(x)) {
-      parameter_names(x)
-    }
-    if (is.null(parnames))
-      stop("No parameter names found.")
-
+    parnames <- parameter_names(x)
     pars <-
       select_parameters(explicit = pars,
                         patterns = regex_pars,
                         complete = parnames)
+
+    # possibly recycle transformations (apply same to all pars)
+    if (is.function(transformations) ||
+        (is.character(transformations) && length(transformations) == 1)) {
+      transformations <- rep(list(transformations), length(pars))
+      transformations <- setNames(transformations, pars)
+    }
 
     if (is.matrix(x)) {
       x <- x[, pars, drop=FALSE]
