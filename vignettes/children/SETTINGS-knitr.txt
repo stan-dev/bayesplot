@@ -9,6 +9,6 @@ knitr::opts_chunk$set(
   out.width = "60%",
   fig.align = "center",
   comment = NA,
-  eval = !params$DONTRUN
+  eval = if (isTRUE(exists("params"))) !params$DONTRUN else FALSE
 )
 ```
