@@ -91,68 +91,109 @@ mcmc_scatter <- function(x,
     theme_default()
 }
 
+#' @rdname MCMC-scatterplots
+#' @export
+mcmc_pairs <- function(x,
+                       pars = character(),
+                       regex_pars = character(),
+                       transformations = list(),
+                       # facet_args = list(),
+                       ...,
+                       condition = NULL) {
+  check_ignored_arguments(...)
+  x <- prepare_mcmc_array(x, pars, regex_pars, transformations)
+  pars <- parameter_names(x)
+  n_param <- length(pars)
+  n_chain <- ncol(x)
+  mid <- floor(n_chain / 2)
+  chain_groups <- list(upper = 1:mid, lower = (mid + 1):n_chain)
+  all_pairs <- expand.grid(pars, pars,
+                           stringsAsFactors = FALSE,
+                           KEEP.OUT.ATTRS = FALSE)
+
+  n_plot <- n_param^2
+  plots <- vector("list", length = n_plot)
+
+  lower_tri <- lower_tri_idx(n_param)
+  j_lookup <- matrix(seq_len(n_plot), nrow = n_param, byrow = TRUE)
+
+  for (j in seq_len(nrow(all_pairs))) {
+    pair <- as.character(all_pairs[j, ])
+    if (identical(pair[1], pair[2])) {
+      plots[[j]] <- mcmc_hist(x, pars = pair[1])
+    } else {
+      idx <- arrayInd(j_lookup[j], .dim = c(n_param, n_param))
+      keep_chains <- if (row_match_found(idx, lower_tri))
+        chain_groups[[2]] else chain_groups[[1]]
+      plots[[j]] <- mcmc_scatter(x[,keep_chains,, drop=FALSE],
+                                 pars = pair, size = ggplot2::rel(.5))
+    }
+  }
+  plots <- lapply(plots, function(x)
+    x + xaxis_title(FALSE) + yaxis_title(FALSE))
+
+  bayesplot_grid(plots = plots)
+}
+
+
+# internal ----------------------------------------------------------------
+
+# Get indices of lower triangular elements
 #
-# #' @rdname MCMC-scatterplots
-# #' @export
-# mcmc_pairs <- function(x,
-#                        pars = character(),
-#                        regex_pars = character(),
-#                        transformations = list(),
-#                        ...,
-#                        size = 1.5,
-#                        alpha = 0.8) {
-#   suggested_package("GGally")
+# @param n number of rows (columns) in the square matrix
+lower_tri_idx <- function(n) {
+  a <- rev(abs(sequence(seq.int(n - 1)) - n) + 1)
+  b <- rep.int(seq.int(n - 1), rev(seq.int(n - 1)))
+  cbind(row = a, col = b)
+}
+
+# Find which (if any) row in x is a match for y
 #
-#   x <- prepare_mcmc_array(x, pars, regex_pars, transformations)
-#   user_pars <- parameter_names(x)
-#   dimnames(x)[[3]] <- rename_pairs_parameters(user_pars)
-#   if (!has_multiple_params(x))
-#     stop("This function requires multiple parameters.")
-#
-#   data <- merge_chains(x)
-#
-#   message("Processing... this may take a little while")
-#   graph <- GGally::ggpairs(
-#     data,
-#     upper = list(),
-#     lower = list(
-#       continuous = GGally::wrap(
-#         "points",
-#         shape = 21,
-#         fill = get_color("d"),
-#         color = get_color("dh"),
-#         alpha = alpha,
-#         size = size
-#       )
-#     ),
-#     diag = list(
-#       continuous = GGally::wrap(
-#         "barDiag",
-#         fill = get_color("l"),
-#         color = get_color("lh"),
-#         size = .25
-#       )
-#     )
-#   )
-#
-#   graph <- reset_pairs_parameters(graph, user_pars)
-#   graph + theme_default()
-# }
-#
-#
-#
-# # internal ----------------------------------------------------------------
-# # Remove special characters in parameter names so ggpairs doesn't complain
-# rename_pairs_parameters <- function(pars) {
-#   stopifnot(is.character(pars))
-#   pars <- gsub("\\[|\\:", "_", pars)
-#   pars <- gsub("\\(|\\)|\\]", "", pars)
-#   gsub(" ", "_", pars)
-# }
-#
-# # Reset axis labels to original parameter names
-# reset_pairs_parameters <- function(ggmatrix, pars) {
-#   ggmatrix$xAxisLabels <- pars
-#   ggmatrix$yAxisLabels <- pars
-#   ggmatrix
-# }
+# @param x a row vector (i.e., a matrix with 1 row)
+# @param y a matrix
+# @return either a row number in y or NA if no match
+row_match_found <- function(x, y) {
+  stopifnot(
+    is.matrix(x),
+    is.matrix(y),
+    nrow(x) == 1
+  )
+  x <- as.data.frame(x)
+  y <- as.data.frame(y)
+  res <- match(
+    do.call(function(...) paste(..., sep=":::"), x),
+    do.call(function(...) paste(..., sep=":::"), y)
+  )
+  isTRUE(!is.na(res) && length(res == 1))
+}
+
+
+
+apply_condition <- function(x, cond, nuts_params) {
+  pars <- parameter_names(x)
+  n_param <- length(pars)
+  n_plot <- n_param^2
+  n_chain <- ncol(x)
+
+  lower_tri <- lower_tri_idx(n_param)
+  j_lookup <- matrix(seq_len(n_plot), nrow = n_param, byrow = TRUE)
+  idx <- arrayInd(j_lookup[j], .dim = c(n_param, n_param))
+
+  is_lower <- row_match_found(idx, lower_tri)
+  if (is.null(cond)) {
+    mid_chain <- floor(n_chain / 2)
+    keep_chains <- if (is_lower)
+      seq_len(mid_chain) else seq(mid_chain + 1, n_chain)
+    return(x[, keep_chains,, drop=FALSE])
+  } else {
+    if (cond == "accept_stat__") {
+
+    } else if (cond == "divergent__") {
+
+    } else if (cond == "energy__") {
+
+    } else if (cond == "lp__") {
+
+    }
+  }
+}
