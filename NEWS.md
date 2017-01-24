@@ -8,8 +8,8 @@ but there are not actually any divergent transitions.
 
 #### New Features
 * Introduce `ppc_rootogram` for use with models for count data. (#28)
-* For `mcmc_*` functions, recyle transformations if `transformations` argument
-is specified as a single function rather than a named list. (#64)
+* For `mcmc_*` functions, transformations are recycled if `transformations` 
+argument is specified as a single function rather than a named list. (#64)
 
 
 # bayesplot 1.1.0
