@@ -12,10 +12,18 @@
 #' @template args-regex_pars
 #' @template args-transformations
 #' @param ... Currently ignored.
-#' @param size,alpha Passed to \code{\link[ggplot2]{geom_point}}.
+#' @param size,alpha Passed to either \code{\link[ggplot2]{geom_point}} or
+#'   \code{\link[ggplot2]{geom_hex}}.
+#' @param binwidth For \code{mcmc_pairs}, an optional scalar value used to
+#'   override the default binwidth used for the histograms along the diagonal of
+#'   the plot matrix. For \code{mcmc_hex}, an optional numeric \emph{vector of
+#'   length two} for specifying the binwidth in both the vertical and horizontal
+#'   directions.
 #'
-#' @return A ggplot object that can be further customized using the
-#'   \pkg{ggplot2} package.
+#' @return \code{mcmc_scatter} and \code{mcmc_hex} return a ggplot object that
+#'   can be further customized using the \pkg{ggplot2} package.
+#'   \code{mcmc_pairs} returns many ggplot objects organized into a grid using
+#'   \code{\link{bayesplot_grid}}.
 #'
 #' @section Plot Descriptions:
 #' \describe{
@@ -66,81 +74,98 @@ mcmc_scatter <- function(x,
                          size = 2.5,
                          alpha = 0.8) {
   check_ignored_arguments(...)
-  x <- prepare_mcmc_array(x, pars, regex_pars, transformations)
-  if (dim(x)[3] != 2)
-    stop(
-      "For 'mcmc_scatter' exactly 2 parameters must be selected. ",
-      "'mcmc_pairs' for more than 2 parameters will be available ",
-      "in a future release."
-    )
-
-  x <- merge_chains(x)
-  parnames <- colnames(x)[1:2]
-  ggplot(
-    data = data.frame(x = c(x[, 1]), y = c(x[, 2])),
-    mapping = aes_(x = ~ x, y = ~ y)
-  ) +
-    geom_point(
-      shape = 21,
-      color = get_color("dh"),
-      fill = get_color("d"),
-      size = size,
-      alpha = alpha
-    ) +
-    labs(x = parnames[1], y = parnames[2]) +
-    theme_default()
+  .mcmc_scatter(
+    x,
+    pars = pars,
+    regex_pars = regex_pars,
+    size = size,
+    alpha = alpha,
+    hex = FALSE,
+    binwidth = NULL
+  )
 }
 
 #' @rdname MCMC-scatterplots
 #' @export
-#' @param np A molten data frame of NUTS sampler parameters, either created by
-#'   \code{\link{nuts_params}} or in the same form as the object returned by
-#'   \code{\link{nuts_params}}.
-#' @param lp A molten data frame of draws of the log-posterior or, more
-#'   commonly, of a quantity equal to the log-posterior up to a constant.
-#'   \code{lp} should either be created via \code{\link{log_posterior}} or be an
-#'   object with the same form as the object returned by
-#'   \code{\link{log_posterior}}.
-#' @param condition There are many options for the \code{condition} argument:
+#'
+mcmc_hex <- function(x,
+                     pars = character(),
+                     regex_pars = character(),
+                     transformations = list(),
+                     ...,
+                     size = 2.5,
+                     alpha = 0.8,
+                     binwidth = NULL) {
+  check_ignored_arguments(...)
+  .mcmc_scatter(
+    x,
+    pars = pars,
+    regex_pars = regex_pars,
+    size = size,
+    alpha = alpha,
+    hex = TRUE,
+    binwidth = binwidth
+  )
+}
+
+#' @rdname MCMC-scatterplots
+#' @export
+#' @param diagonal For \code{mcmc_pairs}, the style to use for the plots along
+#'   the diagonal. Can be \code{"hist"} for histogram or \code{"dens"} for
+#'   density.
+#' @param off_diagonal For \code{mcmc_pairs}, the style to use for the
+#'   off-diagonal plots. Can be \code{"scatter"} for scatterplot or \code{"hex"}
+#'   for a hexagonal heatmap.
+#' @param condition For \code{mcmc_pairs}, this argument is used to specify a
+#'   criteria for determining which iterations (or chains) are shown in the
+#'   plots above the diagonal and which are shown in the plots below the
+#'   diagnoal. There are many options for the \code{condition} argument:
 #' \itemize{
-#'   \item A (possibly abbreviated) character vector of length one can be passed
-#'   among \code{"accept_stat__"}, \code{"stepsize__"}, \code{"treedepth__"},
-#'   \code{"n_leapfrog__"}, \code{"divergent__"}, \code{"energy__"}, or
-#'   \code{"lp__"}, which are the sampler parameters associated with
-#'   \code{\link{NUTS}} (and \code{"lp__"} is the log-posterior up to an
-#'   additive constant). In this case the lower panel will plot realizations
-#'   that are below the median of the indicated variable (or are zero in the
-#'   case of \code{"divergent__"}) and the upper panel will plot realizations
-#'   that are greater than or equal to the median of the indicated variable (or
-#'   are one in the case of \code{"divergent__"}). \strong{The default is}
-#'   \code{"accept_stat__"}.
-#'   \item \code{NULL}, in which case it will plot roughly half of the chains in
-#'   the lower panel and the rest in the upper panel.
+#'   \item \code{NULL} (the default), in which case half of the chains
+#'   (or roughly half if there are an odd number) will be used in the
+#'   plots above the diagonal and the rest in the plots below the diagonal.
 #'   \item An integer vector can be passed to select some subset of the chains,
 #'   of which roughly half will be plotted in the lower panel and the rest in
 #'   the upper panel.
 #'   \item A list of two integer vectors can be passed, each specifying a subset
 #'   of the chains to be plotted in the lower and upper panels respectively.
-#'   \item A single number between zero and one exclusive can be passed, which
+#'   \item A single number between zero and one (exclusive) can be passed, which
 #'   is interpreted as the proportion of realizations (among all chains) to plot
 #'   in the lower panel starting with the first realization in each chain, with
 #'   the complement (from the end of each chain) plotted in the upper panel.
-#'   \item Finally, any logical
-#'   vector whose length is equal to the product of the number of iterations and
-#'   the number of chains can be passed, in which case realizations
-#'   corresponding to FALSE and TRUE will be plotted in the lower and upper
-#'   panel respectively.
+#'   \item Any \code{\link{logical}} vector whose length is equal to the product
+#'   of the number of iterations and the number of chains can be passed, in
+#'   which case realizations corresponding to \code{FALSE} and \code{TRUE} will
+#'   be plotted in the lower and upper panel respectively.
+#'   \item For models fit using NUTS, a (possibly abbreviated) string to select
+#'   among \code{"accept_stat__"}, \code{"stepsize__"}, \code{"treedepth__"},
+#'   \code{"n_leapfrog__"}, \code{"divergent__"}, \code{"energy__"}, or
+#'   \code{"lp__"}. These are the sampler parameters associated with
+#'   \code{\link{NUTS}} (and \code{"lp__"} is the log-posterior up to an
+#'   additive constant). In this case, plots below the diagonal will contain
+#'   realizations below the median of the indicated variable (or are zero in the
+#'   case of \code{"divergent__"}), and plots above the diagonal wil contain
+#'   realizations that are greater than or equal to the median of the indicated
+#'   variable (or are one in the case of \code{"divergent__"}). If
+#'   \code{condition} is one of these NUTS diagnostics then the \code{np}
+#'   argument must also be specified. If \code{condition} is \code{lp__} then
+#'   the \code{lp} argument must also be specified.
 #'  }
+#' @param np For \code{mcmc_pairs}, a molten data frame of NUTS sampler
+#'   parameters, either created by \code{\link{nuts_params}} or in the same form
+#'   as the object returned by \code{\link{nuts_params}}.
+#' @param lp For \code{mcmc_pairs}, a molten data frame of draws of the
+#'   log-posterior or, more commonly, of a quantity equal to the log-posterior
+#'   up to a constant. \code{lp} should either be created via
+#'   \code{\link{log_posterior}} or be an object with the same form as the
+#'   object returned by \code{\link{log_posterior}}.
 #' @param max_td For models fit using NUTS, the maximum treedepth allowed when
 #'   fitting the model. Defaults to \code{10}. Yellow points will be plotted to
 #'   indicate a transition that hit the maximum treedepth rather than terminated
 #'   its evolution normally.
-#' @param binwidth For \code{mcmc_pairs}, an optional numeric value to override
-#'   the default binwidth used for the histograms along the diagonal of the plot
-#'   matrix.
 #'
 #' @details If \code{condition} is not \code{"divergent__"}, red points will be
-#' superimposed onto the smoothed density plots indicating which (if any)
+#' superimposed onto the off-diagonal plots indicating which (if any)
 #' iterations encountered a divergent transition. Otherwise, yellow points
 #' indicate a transition that hit the maximum treedepth rather than terminated
 #' its evolution normally.
@@ -148,13 +173,21 @@ mcmc_scatter <- function(x,
 #' Draws from the warmup phase should always be discarded before calling
 #' \code{mcmc_pairs}.
 #'
-mcmc_pairs <- function(x, np, lp,
+mcmc_pairs <- function(x,
                        pars = character(),
                        regex_pars = character(),
                        transformations = list(),
                        # facet_args = list(),
                        ...,
-                       condition = "accept_stat__", max_td = 10, size = 1, alpha = 0.8, binwidth = NULL) {
+                       diagonal = c("hist", "dens"),
+                       off_diagonal = c("scatter", "hex"),
+                       condition = NULL,
+                       np = NULL,
+                       lp = NULL,
+                       max_td = 10,
+                       size = 1,
+                       alpha = 0.8,
+                       binwidth = NULL) {
   check_ignored_arguments(...)
   x <- prepare_mcmc_array(x, pars, regex_pars, transformations)
   x <- drop_constants_and_duplicates(x)
@@ -163,13 +196,20 @@ mcmc_pairs <- function(x, np, lp,
   n_chain <- ncol(x)
   n_iter <- nrow(x)
 
-  np <- validate_nuts_data_frame(np, lp)
-  divs <- filter_(np, ~ Parameter == "divergent__")$Value
-  divergent__ <- matrix(divs, nrow = n_iter * n_chain, ncol = n_param)
+  plot_diagonal <- getFromNamespace(paste0("mcmc_", match.arg(diagonal)), "bayesplot")
+  plot_off_diagonal <- getFromNamespace(paste0("mcmc_", match.arg(off_diagonal)), "bayesplot")
 
-  gt_max_td <- filter_(np, ~ Parameter == "treedepth__")$Value > max_td
-  max_td_hit <- matrix(gt_max_td, nrow = n_iter * n_chain, ncol = n_param)
+  no_np <- is.null(np)
+  no_lp <- is.null(lp)
 
+  if (!no_np) {
+    np <- validate_nuts_data_frame(np, lp)
+    divs <- filter_(np, ~ Parameter == "divergent__")$Value
+    divergent__ <- matrix(divs, nrow = n_iter * n_chain, ncol = n_param)
+
+    gt_max_td <- filter_(np, ~ Parameter == "treedepth__")$Value > max_td
+    max_td_hit <- matrix(gt_max_td, nrow = n_iter * n_chain, ncol = n_param)
+  }
 
   if (is.list(condition)) {
     if (length(condition) != 2)
@@ -184,12 +224,16 @@ mcmc_pairs <- function(x, np, lp,
     mark <- !condition
 
   } else if (is.character(condition)) {
-
     condition <- match.arg(condition, several.ok = FALSE,
                            choices = c("accept_stat__", "stepsize__",
                                        "treedepth__", "n_leapfrog__",
                                        "divergent__", "energy__", "lp__"))
+    if (no_np && !identical(condition, "lp__"))
+      stop("To use this value of 'condition' the 'np' argument must also be specified.")
+
     if (condition == "lp__") {
+      if (no_lp)
+        stop("To use this value of 'condition' the 'lp' argument must also be specified.")
       mark <- as.matrix(unstack(lp, form = Value ~ Chain))
     } else {
       mark <- filter_(np, ~ Parameter == condition)
@@ -245,7 +289,6 @@ mcmc_pairs <- function(x, np, lp,
   #   colnames(x)[xl] <- paste("log", colnames(x)[xl], sep = "-")
   # }
 
-  mid <- floor(n_chain / 2)
   all_pairs <- expand.grid(pars, pars,
                            stringsAsFactors = FALSE,
                            KEEP.OUT.ATTRS = FALSE)
@@ -259,34 +302,41 @@ mcmc_pairs <- function(x, np, lp,
   for (j in seq_len(nrow(all_pairs))) {
     pair <- as.character(all_pairs[j, ])
     if (identical(pair[1], pair[2])) {
-      plots[[j]] <- mcmc_hist(x, pars = pair[1], binwidth = binwidth)
+      plots[[j]] <- plot_diagonal(x, pars = pair[1], binwidth = binwidth)
     } else {
       x_j <- x[, pair]
       idx <- arrayInd(j_lookup[j], .dim = c(n_param, n_param))
       if (row_match_found(idx, lower_tri)) {
         x_j <- x_j[!mark,, drop=FALSE]
-        divs_j <- divergent__[!mark, 1]
-        max_td_hit_j <- max_td_hit[!mark, 1]
+        if (!no_np) {
+          divs_j <- divergent__[!mark, 1]
+          max_td_hit_j <- max_td_hit[!mark, 1]
+        } else {
+          divs_j <- NULL
+          max_td_hit_j <- NULL
+        }
       } else {
         x_j <- x_j[mark,, drop=FALSE]
-        divs_j <- divergent__[mark, 1]
-        max_td_hit_j <- max_td_hit[mark, 1]
+        if (!no_np) {
+          divs_j <- divergent__[mark, 1]
+          max_td_hit_j <- max_td_hit[mark, 1]
+        } else {
+          divs_j <- NULL
+          max_td_hit_j <- NULL
+        }
       }
 
-
-
-
-      plots[[j]] <- mcmc_scatter(x_j, size = size, alpha = alpha)
+      plots[[j]] <- plot_off_diagonal(x_j, size = size, alpha = alpha)
 
       if (!identical(condition, "divergent__") &&
-          any(divs_j == 1)) {
+          isTRUE(any(divs_j == 1))) {
         divs_j_fac <- factor(as.logical(divs_j), levels = c(FALSE, TRUE), labels = c("NoDiv", "Div"))
         plots[[j]] <- plots[[j]] +
           geom_point(aes_(color = divs_j_fac, fill = divs_j_fac, size = divs_j_fac),
                      shape = 4, size = size, #alpha = alpha,
                      na.rm = TRUE)
       }
-      if (any(max_td_hit_j == 1)) {
+      if (isTRUE(any(max_td_hit_j == 1))) {
         max_td_hit_j_fac <- factor(max_td_hit_j, levels = c(FALSE, TRUE), labels = c("NoHit", "Hit"))
         plots[[j]] <- plots[[j]] +
           geom_point(aes_(color = max_td_hit_j_fac, fill = max_td_hit_j_fac, size = max_td_hit_j_fac),
@@ -294,7 +344,7 @@ mcmc_pairs <- function(x, np, lp,
                      na.rm = TRUE)
       }
 
-      if (any(divs_j == 1) || any(max_td_hit_j == 1)) {
+      if (isTRUE(any(divs_j == 1)) || isTRUE(any(max_td_hit_j == 1))) {
         plots[[j]] <- plots[[j]] +
           scale_color_manual(
             values = setNames(c(NA, "red", NA, "yellow2"),
@@ -316,6 +366,55 @@ mcmc_pairs <- function(x, np, lp,
 
 
 # internal ----------------------------------------------------------------
+.mcmc_scatter <- function(x,
+                         pars = character(),
+                         regex_pars = character(),
+                         transformations = list(),
+                         size = 2.5,
+                         alpha = 0.8,
+                         hex = FALSE,
+                         binwidth = NULL) {
+  x <- prepare_mcmc_array(x, pars, regex_pars, transformations)
+  if (dim(x)[3] != 2)
+    stop(
+      "For 'mcmc_scatter' and 'mcmc_hex' exactly 2 parameters must be selected. ",
+      "'mcmc_pairs' can be used for more than 2 parameters."
+    )
+
+  x <- merge_chains(x)
+  parnames <- colnames(x)[1:2]
+  graph <- ggplot(
+    data = data.frame(x = c(x[, 1]), y = c(x[, 2])),
+    mapping = aes_(x = ~ x, y = ~ y)
+  )
+  if (!hex) {
+    graph <- graph +
+      geom_point(
+        shape = 21,
+        color = get_color("dh"),
+        fill = get_color("d"),
+        size = size,
+        alpha = alpha
+      )
+  } else {
+    graph <- graph +
+      geom_hex(
+        aes_(fill = ~ ..density..),
+        # color = get_color("dh"),
+        # fill = get_color("d"),
+        size = size,
+        alpha = alpha,
+        binwidth = binwidth
+      ) +
+      scale_fill_gradientn(colors = unlist(color_scheme_get()))
+  }
+
+  graph +
+    labs(x = parnames[1], y = parnames[2]) +
+    theme_default()
+}
+
+
 
 # Get indices of lower triangular elements
 #

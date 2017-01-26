@@ -89,8 +89,16 @@
 #' @template reference-nuts
 #' @template reference-stan-manual
 #'
-#' @seealso \code{\link{mcmc_trace}}, which will plot divergences on the
-#'   traceplot if the optional \code{divergences} argument is specified.
+#' @seealso There are several plotting functions in the \pkg{bayesplot}
+#' package that aren't NUTS-specific but take optional extra arguments
+#' if the model was fit using NUTS:
+#' \itemize{
+#' \item \code{\link{mcmc_trace}} will plot divergences on the traceplot if the
+#' optional \code{divergences} argument is specified.
+#' \item \code{\link{mcmc_pairs}} will indicate which (if any) iterations
+#' encountered a divergent transition or hit the maximum treedepth (rather than
+#' terminated its evolution normally).
+#' }
 #'
 #' @examples
 #' \dontrun{
@@ -503,7 +511,9 @@ validate_nuts_data_frame <- function(x, lp) {
       paste(valid_cols, collapse = ", ")
     )
 
-  if (!missing(lp)) {
+  if (missing(lp))
+    lp <- NULL
+  if (!is.null(lp)) {
     if (!is.data.frame(lp))
       stop("lp should be in a data frame.")
 

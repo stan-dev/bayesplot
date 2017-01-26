@@ -160,8 +160,16 @@ Stan Development Team. (2016). \emph{Stan Modeling Language Users
 Guide and Reference Manual.} \url{http://mc-stan.org/documentation/}
 }
 \seealso{
-\code{\link{mcmc_trace}}, which will plot divergences on the
-  traceplot if the optional \code{divergences} argument is specified.
+There are several plotting functions in the \pkg{bayesplot}
+package that aren't NUTS-specific but take optional extra arguments
+if the model was fit using NUTS:
+\itemize{
+\item \code{\link{mcmc_trace}} will plot divergences on the traceplot if the
+optional \code{divergences} argument is specified.
+\item \code{\link{mcmc_pairs}} will indicate which (if any) iterations
+encountered a divergent transition or hit the maximum treedepth (rather than
+terminated its evolution normally).
+}
 
 Other MCMC: \code{\link{MCMC-combos}},
   \code{\link{MCMC-diagnostics}},
