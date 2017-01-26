@@ -2,11 +2,16 @@
 % Please edit documentation in R/mcmc-scatterplots.R
 \name{MCMC-scatterplots}
 \alias{MCMC-scatterplots}
+\alias{mcmc_pairs}
 \alias{mcmc_scatter}
 \title{Scatterplots of MCMC draws}
 \usage{
 mcmc_scatter(x, pars = character(), regex_pars = character(),
   transformations = list(), ..., size = 2.5, alpha = 0.8)
+
+mcmc_pairs(x, np, lp, pars = character(), regex_pars = character(),
+  transformations = list(), ..., condition = "accept_stat__", max_td = 10,
+  size = 1, alpha = 0.8, binwidth = NULL)
 }
 \arguments{
 \item{x}{A 3-D array, matrix, list of matrices, or data frame of MCMC draws.
@@ -38,6 +43,56 @@ that the parameter is transformed (e.g. \code{"t(sigma)"}).}
 \item{...}{Currently ignored.}
 
 \item{size, alpha}{Passed to \code{\link[ggplot2]{geom_point}}.}
+
+\item{np}{A molten data frame of NUTS sampler parameters, either created by
+\code{\link{nuts_params}} or in the same form as the object returned by
+\code{\link{nuts_params}}.}
+
+\item{lp}{A molten data frame of draws of the log-posterior or, more
+commonly, of a quantity equal to the log-posterior up to a constant.
+\code{lp} should either be created via \code{\link{log_posterior}} or be an
+object with the same form as the object returned by
+\code{\link{log_posterior}}.}
+
+\item{condition}{There are many options for the \code{condition} argument:
+\itemize{
+  \item A (possibly abbreviated) character vector of length one can be passed
+  among \code{"accept_stat__"}, \code{"stepsize__"}, \code{"treedepth__"},
+  \code{"n_leapfrog__"}, \code{"divergent__"}, \code{"energy__"}, or
+  \code{"lp__"}, which are the sampler parameters associated with
+  \code{\link{NUTS}} (and \code{"lp__"} is the log-posterior up to an
+  additive constant). In this case the lower panel will plot realizations
+  that are below the median of the indicated variable (or are zero in the
+  case of \code{"divergent__"}) and the upper panel will plot realizations
+  that are greater than or equal to the median of the indicated variable (or
+  are one in the case of \code{"divergent__"}). \strong{The default is}
+  \code{"accept_stat__"}.
+  \item \code{NULL}, in which case it will plot roughly half of the chains in
+  the lower panel and the rest in the upper panel.
+  \item An integer vector can be passed to select some subset of the chains,
+  of which roughly half will be plotted in the lower panel and the rest in
+  the upper panel.
+  \item A list of two integer vectors can be passed, each specifying a subset
+  of the chains to be plotted in the lower and upper panels respectively.
+  \item A single number between zero and one exclusive can be passed, which
+  is interpreted as the proportion of realizations (among all chains) to plot
+  in the lower panel starting with the first realization in each chain, with
+  the complement (from the end of each chain) plotted in the upper panel.
+  \item Finally, any logical
+  vector whose length is equal to the product of the number of iterations and
+  the number of chains can be passed, in which case realizations
+  corresponding to FALSE and TRUE will be plotted in the lower and upper
+  panel respectively.
+ }}
+
+\item{max_td}{For models fit using NUTS, the maximum treedepth allowed when
+fitting the model. Defaults to \code{10}. Yellow points will be plotted to
+indicate a transition that hit the maximum treedepth rather than terminated
+its evolution normally.}
+
+\item{binwidth}{For \code{mcmc_pairs}, an optional numeric value to override
+the default binwidth used for the histograms along the diagonal of the plot
+matrix.}
 }
 \value{
 A ggplot object that can be further customized using the
@@ -46,6 +101,16 @@ A ggplot object that can be further customized using the
 \description{
 Scatterplots of MCMC draws. See the \strong{Plot Descriptions} section,
 below, for details.
+}
+\details{
+If \code{condition} is not \code{"divergent__"}, red points will be
+superimposed onto the smoothed density plots indicating which (if any)
+iterations encountered a divergent transition. Otherwise, yellow points
+indicate a transition that hit the maximum treedepth rather than terminated
+its evolution normally.
+
+Draws from the warmup phase should always be discarded before calling
+\code{mcmc_pairs}.
 }
 \section{Plot Descriptions}{
 
