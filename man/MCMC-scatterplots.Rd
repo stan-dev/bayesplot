@@ -11,21 +11,21 @@ mcmc_scatter(x, pars = character(), regex_pars = character(),
   transformations = list(), ..., size = 2.5, alpha = 0.8)
 
 mcmc_hex(x, pars = character(), regex_pars = character(),
-  transformations = list(), ..., size = 2.5, alpha = 0.8,
-  binwidth = NULL)
+  transformations = list(), ..., binwidth = NULL)
 
 mcmc_pairs(x, pars = character(), regex_pars = character(),
-  transformations = list(), ..., diagonal = c("hist", "dens"),
-  off_diagonal = c("scatter", "hex"), condition = NULL, np = NULL,
-  lp = NULL, max_td = 10, size = 1, alpha = 0.8, binwidth = NULL)
+  transformations = list(), ..., condition = NULL, np = NULL, lp = NULL,
+  max_td = 10, diagonal = c("hist", "dens"), off_diagonal = c("scatter",
+  "hex"), diagonal_args = list(), off_diagonal_args = list())
 }
 \arguments{
 \item{x}{A 3-D array, matrix, list of matrices, or data frame of MCMC draws.
 The \link{MCMC-overview} page provides details on how to specify each these
 allowed inputs.}
 
-\item{pars}{An optional character vector of parameter names. (\strong{Note}:
-for \code{mcmc_scatter} only two parameters can be selected.)}
+\item{pars}{An optional character vector of parameter names. For
+\code{mcmc_scatter} and \code{mcmc_hex} only two parameters can be
+selected. To plot more than two parameters use \code{mcmc_pairs}.}
 
 \item{regex_pars}{An optional \link[=grep]{regular expression} to use for
 parameter selection. Can be specified instead of \code{pars} or in addition
@@ -48,22 +48,12 @@ that the parameter is transformed (e.g. \code{"t(sigma)"}).}
 
 \item{...}{Currently ignored.}
 
-\item{size, alpha}{Passed to either \code{\link[ggplot2]{geom_point}} or
-\code{\link[ggplot2]{geom_hex}}.}
+\item{size, alpha}{For \code{mcmc_scatter}, passed to
+\code{\link[ggplot2]{geom_point}} to control the appearance of the points.}
 
-\item{binwidth}{For \code{mcmc_pairs}, an optional scalar value used to
-override the default binwidth used for the histograms along the diagonal of
-the plot matrix. For \code{mcmc_hex}, an optional numeric \emph{vector of
-length two} for specifying the binwidth in both the vertical and horizontal
-directions.}
-
-\item{diagonal}{For \code{mcmc_pairs}, the style to use for the plots along
-the diagonal. Can be \code{"hist"} for histogram or \code{"dens"} for
-density.}
-
-\item{off_diagonal}{For \code{mcmc_pairs}, the style to use for the
-off-diagonal plots. Can be \code{"scatter"} for scatterplot or \code{"hex"}
-for a hexagonal heatmap.}
+\item{binwidth}{For \code{mcmc_hex}, an optional numeric vector of
+\emph{length two} passed to \code{\link[ggplot2]{geom_hex}} to override the
+default binwidth in both the vertical and horizontal directions.}
 
 \item{condition}{For \code{mcmc_pairs}, this argument is used to specify a
   criteria for determining which iterations (or chains) are shown in the
@@ -85,7 +75,7 @@ for a hexagonal heatmap.}
   \item Any \code{\link{logical}} vector whose length is equal to the product
   of the number of iterations and the number of chains can be passed, in
   which case realizations corresponding to \code{FALSE} and \code{TRUE} will
-  be plotted in the lower and upper panel respectively.
+  be plotted in the lower and upper panels, respectively.
   \item For models fit using NUTS, a (possibly abbreviated) string to select
   among \code{"accept_stat__"}, \code{"stepsize__"}, \code{"treedepth__"},
   \code{"n_leapfrog__"}, \code{"divergent__"}, \code{"energy__"}, or
@@ -103,7 +93,13 @@ for a hexagonal heatmap.}
 
 \item{np}{For \code{mcmc_pairs}, a molten data frame of NUTS sampler
 parameters, either created by \code{\link{nuts_params}} or in the same form
-as the object returned by \code{\link{nuts_params}}.}
+as the object returned by \code{\link{nuts_params}}. If \code{np} is
+specified (and \code{condition} is \emph{not} \code{"divergent__"}), then
+red points will be superimposed onto the off-diagonal plots indicating
+which (if any) iterations encountered a divergent transition. Also, if
+\code{np} is specified then yellow points will be superimposed to indicate
+a transition that hit the maximum treedepth rather than terminated its
+evolution normally.}
 
 \item{lp}{For \code{mcmc_pairs}, a molten data frame of draws of the
 log-posterior or, more commonly, of a quantity equal to the log-posterior
@@ -112,9 +108,20 @@ up to a constant. \code{lp} should either be created via
 object returned by \code{\link{log_posterior}}.}
 
 \item{max_td}{For models fit using NUTS, the maximum treedepth allowed when
-fitting the model. Defaults to \code{10}. Yellow points will be plotted to
-indicate a transition that hit the maximum treedepth rather than terminated
-its evolution normally.}
+fitting the model. Defaults to \code{10}. This is required in order to be
+able to detect which transitions (if any) hit the maximum treedepth.}
+
+\item{diagonal, off_diagonal}{For \code{mcmc_pairs}, the style to use for the
+plots along the diagonal and the off-diagonal plots, respectively.
+\code{diagonal} can be \code{"hist"} for histogram or \code{"dens"} for
+density. \code{off_diagonal} can be \code{"scatter"} for scatterplot or
+\code{"hex"} for a hexagonal heatmap.}
+
+\item{diagonal_args, off_diagonal_args}{Optional named lists of arguments to
+pass to the functions implied by the \code{diagonal} and
+\code{off_diagonal} arguments, respectively. For example, if
+\code{off_diagonal} is \code{"scatter"} then \code{off_diagonal_args} could
+include arguments to \code{mcmc_scatter} like \code{size} and \code{alpha}.}
 }
 \value{
 \code{mcmc_scatter} and \code{mcmc_hex} return a ggplot object that
@@ -126,24 +133,18 @@ its evolution normally.}
 Scatterplots of MCMC draws. See the \strong{Plot Descriptions} section,
 below, for details.
 }
-\details{
-If \code{condition} is not \code{"divergent__"}, red points will be
-superimposed onto the off-diagonal plots indicating which (if any)
-iterations encountered a divergent transition. Otherwise, yellow points
-indicate a transition that hit the maximum treedepth rather than terminated
-its evolution normally.
-
-Draws from the warmup phase should always be discarded before calling
-\code{mcmc_pairs}.
-}
 \section{Plot Descriptions}{
 
 \describe{
   \item{\code{mcmc_scatter}}{
-   Bivariate scatterplot of posterior draws (for two parameters).
+   Bivariate scatterplot of posterior draws.
+  }
+  \item{\code{mcmc_hex}}{
+   Hexagonal heatmap of 2-D bin counts.
   }
   \item{\code{mcmc_pairs}}{
-  Coming soon.
+   Pairs plot, optionally with extra diagonistic information for models fit
+   using \code{\link{NUTS}}.
   }
 }
 }
@@ -171,8 +172,6 @@ p2 + ggplot2::stat_density_2d(color = "black")
 color_scheme_set("pink")
 (p3 <- mcmc_scatter(x, pars = c("alpha", "beta[3]"), alpha = 0.5, size = 3))
 p3 + ggplot2::geom_smooth(method = "lm", se = FALSE, color = "gray20")
-
-
 
 }
 \seealso{

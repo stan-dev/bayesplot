@@ -30,6 +30,7 @@ Suggests:
     rstan (>= 2.13.2),
     rstanarm (>= 2.13.1),
     rstantools (>= 1.0.0),
+    scales,
     shinystan (>= 2.2.1),
     testthat
 RoxygenNote: 5.0.1
