@@ -110,7 +110,7 @@ mcmc_hex <- function(x,
 #' @rdname MCMC-scatterplots
 #' @export
 #' @param condition For \code{mcmc_pairs}, this argument is used to specify a
-#'   criteria for determining which iterations (or chains) are shown in the
+#'   criterion for determining which iterations (or chains) are shown in the
 #'   plots above the diagonal and which are shown in the plots below the
 #'   diagnoal. There are many options for the \code{condition} argument:
 #' \itemize{
@@ -126,8 +126,8 @@ mcmc_hex <- function(x,
 #'   is interpreted as the proportion of realizations (among all chains) to plot
 #'   in the lower panel starting with the first realization in each chain, with
 #'   the complement (from the end of each chain) plotted in the upper panel.
-#'   \item Any \code{\link{logical}} vector whose length is equal to the product
-#'   of the number of iterations and the number of chains can be passed, in
+#'   \item A \code{\link{logical}} vector with length equal to the product
+#'   of the number of iterations and the number of chains, in
 #'   which case realizations corresponding to \code{FALSE} and \code{TRUE} will
 #'   be plotted in the lower and upper panels, respectively.
 #'   \item For models fit using NUTS, a (possibly abbreviated) string to select
@@ -158,19 +158,19 @@ mcmc_hex <- function(x,
 #'   \code{np} is specified then yellow points will be superimposed to indicate
 #'   a transition that hit the maximum treedepth rather than terminated its
 #'   evolution normally.
-#' @param max_td For models fit using NUTS, the maximum treedepth allowed when
-#'   fitting the model. Defaults to \code{10}. This is required in order to be
-#'   able to detect which transitions (if any) hit the maximum treedepth.
-#' @param diagonal,off_diagonal For \code{mcmc_pairs}, the style to use for the
-#'   plots along the diagonal and the off-diagonal plots, respectively.
-#'   \code{diagonal} can be \code{"hist"} for histogram or \code{"dens"} for
-#'   density. \code{off_diagonal} can be \code{"scatter"} for scatterplot or
-#'   \code{"hex"} for a hexagonal heatmap.
-#' @param diagonal_args,off_diagonal_args Optional named lists of arguments to
-#'   pass to the functions implied by the \code{diagonal} and
-#'   \code{off_diagonal} arguments, respectively. For example, if
-#'   \code{off_diagonal} is \code{"scatter"} then \code{off_diagonal_args} could
-#'   include arguments to \code{mcmc_scatter} like \code{size} and \code{alpha}.
+#' @param max_td For \code{mcmc_pairs}, the maximum treedepth allowed when
+#'   fitting the model (if fit using NUTS). Defaults to \code{10}. This value is
+#'   only used to detect which transitions (if any) hit the maximum treedepth.
+#' @param diag_fun,off_diag_fun For \code{mcmc_pairs}, the plotting function to
+#'   use for the plots along the diagonal and for the off-diagonal plots,
+#'   respectively. Currently \code{diag_fun} can be \code{"hist"} for histogram
+#'   or \code{"dens"} for density, and \code{off_diag_fun} can be
+#'   \code{"scatter"} for scatterplot or \code{"hex"} for a hexagonal heatmap.
+#' @param diag_args,off_diag_args Optional named lists of arguments to pass to
+#'   the functions implied by the \code{diag_fun} and \code{off_diag_fun}
+#'   arguments, respectively. For example, if \code{off_diag_fun} is
+#'   \code{"scatter"} then \code{off_diag_args} could include optional arguments
+#'   to \code{mcmc_scatter} like \code{size} and \code{alpha}.
 #'
 mcmc_pairs <- function(x,
                        pars = character(),
@@ -181,10 +181,10 @@ mcmc_pairs <- function(x,
                        np = NULL,
                        lp = NULL,
                        max_td = 10,
-                       diagonal = c("hist", "dens"),
-                       off_diagonal = c("scatter", "hex"),
-                       diagonal_args = list(),
-                       off_diagonal_args = list()) {
+                       diag_fun = c("hist", "dens"),
+                       off_diag_fun = c("scatter", "hex"),
+                       diag_args = list(),
+                       off_diag_args = list()) {
   check_ignored_arguments(...)
   x <- prepare_mcmc_array(x, pars, regex_pars, transformations)
   x <- drop_constants_and_duplicates(x)
@@ -193,11 +193,11 @@ mcmc_pairs <- function(x,
   n_chain <- ncol(x)
   n_iter <- nrow(x)
 
-  stopifnot(is.list(diagonal_args), is.list(off_diagonal_args))
+  stopifnot(is.list(diag_args), is.list(off_diag_args))
   plot_diagonal <-
-    getFromNamespace(paste0("mcmc_", match.arg(diagonal)), "bayesplot")
+    getFromNamespace(paste0("mcmc_", match.arg(diag_fun)), "bayesplot")
   plot_off_diagonal <-
-    getFromNamespace(paste0("mcmc_", match.arg(off_diagonal)), "bayesplot")
+    getFromNamespace(paste0("mcmc_", match.arg(off_diag_fun)), "bayesplot")
 
   no_np <- is.null(np)
   no_lp <- is.null(lp)
@@ -289,8 +289,8 @@ mcmc_pairs <- function(x,
 
     if (identical(pair[1], pair[2])) {
       # Diagonal
-      diagonal_args[["x"]] <- x[, pair[1], drop=FALSE]
-      plots[[j]] <- do.call(plot_diagonal, diagonal_args)
+      diag_args[["x"]] <- x[, pair[1], drop=FALSE]
+      plots[[j]] <- do.call(plot_diagonal, diag_args)
 
     } else {
       # Off-diagonal
@@ -316,8 +316,8 @@ mcmc_pairs <- function(x,
         }
       }
 
-      off_diagonal_args[["x"]] <- x_j
-      plots[[j]] <- do.call(plot_off_diagonal, off_diagonal_args)
+      off_diag_args[["x"]] <- x_j
+      plots[[j]] <- do.call(plot_off_diagonal, off_diag_args)
 
       if (!identical(condition, "divergent__") &&
           isTRUE(any(divs_j == 1))) {
