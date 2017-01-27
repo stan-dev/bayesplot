@@ -274,10 +274,15 @@ mcmc_pairs <- function(x,
   check_ignored_arguments(...)
   x <- prepare_mcmc_array(x, pars, regex_pars, transformations)
   x <- drop_constants_and_duplicates(x)
+  n_iter <- nrow(x)
+  n_chain <- ncol(x)
+  if (n_chain == 1)
+    warning("Only one chain in 'x'. This plot is more useful with multiple chains.")
+
   pars <- parameter_names(x)
   n_param <- length(pars)
-  n_chain <- ncol(x)
-  n_iter <- nrow(x)
+  if (n_param < 2)
+    stop("This plot requires at least two parameters in 'x'.")
 
   stopifnot(is.list(diag_args), is.list(off_diag_args))
   plot_diagonal <- pairs_plotfun(match.arg(diag_fun))
