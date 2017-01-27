@@ -224,8 +224,8 @@ mcmc_hex <- function(x,
 #' # example using rstanarm package
 #' library(rstanarm)
 #'
-#' # for demonstration purposes, intentionally fit a model that will (almost certainly)
-#' # have some divergences
+#' # for demonstration purposes, intentionally fit a model that
+#' # will (almost certainly) have some divergences
 #' fit <- stan_glm(
 #'   mpg ~ ., data = mtcars,
 #'   iter = 1000,

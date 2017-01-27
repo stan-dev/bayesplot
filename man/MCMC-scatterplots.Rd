@@ -223,8 +223,8 @@ mcmc_pairs(x, pars = "alpha", regex_pars = "beta\\\\[[1,4]\\\\]",
 # example using rstanarm package
 library(rstanarm)
 
-# for demonstration purposes, intentionally fit a model that will (almost certainly)
-# have some divergences
+# for demonstration purposes, intentionally fit a model that
+# will (almost certainly) have some divergences
 fit <- stan_glm(
   mpg ~ ., data = mtcars,
   iter = 1000,
