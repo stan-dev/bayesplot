@@ -107,9 +107,9 @@ up to a constant. \code{lp} should either be created via
 \code{\link{log_posterior}} or be an object with the same form as the
 object returned by \code{\link{log_posterior}}.}
 
-\item{max_td}{For models fit using NUTS, the maximum treedepth allowed when
-fitting the model. Defaults to \code{10}. This is required in order to be
-able to detect which transitions (if any) hit the maximum treedepth.}
+\item{max_td}{For \code{mcmc_pairs}, the maximum treedepth allowed when
+fitting the model (if fit using NUTS). Defaults to \code{10}. This value is
+only used to detect which transitions (if any) hit the maximum treedepth.}
 
 \item{diag_fun, off_diag_fun}{For \code{mcmc_pairs}, the plotting function to
 use for the plots along the diagonal and for the off-diagonal plots,

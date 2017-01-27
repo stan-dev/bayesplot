@@ -172,6 +172,8 @@ mcmc_hex <- function(x,
 #'   \code{"scatter"} then \code{off_diag_args} could include optional arguments
 #'   to \code{mcmc_scatter} like \code{size} and \code{alpha}.
 #'
+#' @importFrom utils getFromNamespace unstack
+#'
 mcmc_pairs <- function(x,
                        pars = character(),
                        regex_pars = character(),
