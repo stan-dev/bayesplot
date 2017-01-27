@@ -14,9 +14,10 @@ mcmc_hex(x, pars = character(), regex_pars = character(),
   transformations = list(), ..., binwidth = NULL)
 
 mcmc_pairs(x, pars = character(), regex_pars = character(),
-  transformations = list(), ..., condition = NULL, np = NULL, lp = NULL,
-  max_td = 10, diag_fun = c("hist", "dens"), off_diag_fun = c("scatter",
-  "hex"), diag_args = list(), off_diag_args = list())
+  transformations = list(), ..., diag_fun = c("hist", "dens"),
+  off_diag_fun = c("scatter", "hex"), diag_args = list(),
+  off_diag_args = list(), condition = NULL, np = NULL, lp = NULL,
+  max_treedepth = NULL)
 }
 \arguments{
 \item{x}{A 3-D array, matrix, list of matrices, or data frame of MCMC draws.
@@ -55,24 +56,43 @@ that the parameter is transformed (e.g. \code{"t(sigma)"}).}
 \emph{length two} passed to \code{\link[ggplot2]{geom_hex}} to override the
 default binwidth in both the vertical and horizontal directions.}
 
+\item{diag_fun, off_diag_fun}{For \code{mcmc_pairs}, the plotting function to
+use for the plots along the diagonal and for the off-diagonal plots,
+respectively. Currently \code{diag_fun} can be \code{"hist"} for histogram
+or \code{"dens"} for density, and \code{off_diag_fun} can be
+\code{"scatter"} for scatterplot or \code{"hex"} for a hexagonal heatmap.}
+
+\item{diag_args, off_diag_args}{Optional named lists of arguments to pass to
+the functions implied by the \code{diag_fun} and \code{off_diag_fun}
+arguments, respectively. For example, if \code{off_diag_fun} is
+\code{"scatter"} then \code{off_diag_args} could include optional arguments
+to \code{mcmc_scatter} like \code{size} and \code{alpha}.}
+
 \item{condition}{For \code{mcmc_pairs}, this argument is used to specify a
   criterion for determining which iterations (or chains) are shown in the
   plots above the diagonal and which are shown in the plots below the
-  diagnoal. There are many options for the \code{condition} argument:
+  diagnoal. The histograms (or density plots) along the diagonal are always
+  made using all chains and iterations, but the scatterplots (or hex plots)
+  plots above and below the diagonal show different combinations of
+  chains/iterations depending on the \code{condition} argument.
+  There are many options for \code{condition}:
 \itemize{
   \item \code{NULL} (the default), in which case half of the chains
   (or roughly half if there are an odd number) will be used in the
   plots above the diagonal and the rest in the plots below the diagonal.
-  \item An integer vector can be passed to select some subset of the chains,
-  of which roughly half will be plotted in the lower panel and the rest in
-  the upper panel.
+  \item An integer vector that is used to select some subset of the chains
+  (e.g., \code{c(1,3,4,7)} to select only chains 1, 3, 4, and 7). The
+  behavior is the same as when \code{condition=NULL} except using only the
+  specified subset of chains.
   \item A list of two integer vectors can be passed, each specifying a subset
-  of the chains to be plotted in the lower and upper panels respectively.
-  \item A single number between zero and one (exclusive) can be passed, which
+  of the chains. In this case the chains specified in the first vector
+  are shown in the plots above the diagonal and the chains specified in the
+  second vector are shown in plots below the diagonal.
+  \item A single number between zero and one (exclusive), which
   is interpreted as the proportion of realizations (among all chains) to plot
   in the lower panel starting with the first realization in each chain, with
   the complement (from the end of each chain) plotted in the upper panel.
-  \item A \code{\link{logical}} vector with length equal to the product
+  \item A \link{logical} vector with length equal to the product
   of the number of iterations and the number of chains, in
   which case realizations corresponding to \code{FALSE} and \code{TRUE} will
   be plotted in the lower and upper panels, respectively.
@@ -96,10 +116,10 @@ parameters, either created by \code{\link{nuts_params}} or in the same form
 as the object returned by \code{\link{nuts_params}}. If \code{np} is
 specified (and \code{condition} is \emph{not} \code{"divergent__"}), then
 red points will be superimposed onto the off-diagonal plots indicating
-which (if any) iterations encountered a divergent transition. Also, if
-\code{np} is specified then yellow points will be superimposed to indicate
-a transition that hit the maximum treedepth rather than terminated its
-evolution normally.}
+which (if any) iterations encountered a divergent transition. Also, if both
+\code{np} and \code{max_treedepth} are specified then yellow points will be
+superimposed to indicate a transition that hit the maximum treedepth rather
+than terminated its evolution normally.}
 
 \item{lp}{For \code{mcmc_pairs}, a molten data frame of draws of the
 log-posterior or, more commonly, of a quantity equal to the log-posterior
@@ -107,21 +127,10 @@ up to a constant. \code{lp} should either be created via
 \code{\link{log_posterior}} or be an object with the same form as the
 object returned by \code{\link{log_posterior}}.}
 
-\item{max_td}{For \code{mcmc_pairs}, the maximum treedepth allowed when
-fitting the model (if fit using NUTS). Defaults to \code{10}. This value is
-only used to detect which transitions (if any) hit the maximum treedepth.}
-
-\item{diag_fun, off_diag_fun}{For \code{mcmc_pairs}, the plotting function to
-use for the plots along the diagonal and for the off-diagonal plots,
-respectively. Currently \code{diag_fun} can be \code{"hist"} for histogram
-or \code{"dens"} for density, and \code{off_diag_fun} can be
-\code{"scatter"} for scatterplot or \code{"hex"} for a hexagonal heatmap.}
-
-\item{diag_args, off_diag_args}{Optional named lists of arguments to pass to
-the functions implied by the \code{diag_fun} and \code{off_diag_fun}
-arguments, respectively. For example, if \code{off_diag_fun} is
-\code{"scatter"} then \code{off_diag_args} could include optional arguments
-to \code{mcmc_scatter} like \code{size} and \code{alpha}.}
+\item{max_treedepth}{For \code{mcmc_pairs}, an integer representing the
+maximum treedepth allowed when fitting the model (if fit using NUTS). This
+is only needed for detecting which transitions (if any) hit the maximum
+treedepth.}
 }
 \value{
 \code{mcmc_scatter} and \code{mcmc_hex} return a ggplot object that
@@ -140,11 +149,18 @@ below, for details.
    Bivariate scatterplot of posterior draws.
   }
   \item{\code{mcmc_hex}}{
-   Hexagonal heatmap of 2-D bin counts.
+   Hexagonal heatmap of 2-D bin counts. If \code{x} contains a very large
+   number of posterior draws then this plot may be preferable to a
+   scatterplot which can suffer from overplotting.
   }
   \item{\code{mcmc_pairs}}{
-   Pairs plot, optionally with extra diagonistic information for models fit
-   using \code{\link{NUTS}}.
+   Pairs plot with scatterplots (or hex plots) off the diagonal and
+   histograms (or densities) along the diagonal. The default is to split the
+   chains so that (roughly) half are displayed above the diagonal and half
+   below (all chains are always merged for the plots along the diagonal).
+   Many other possibilities are available by setting the \code{condition}
+   argument. Additionally, extra diagonistic information for models fit using
+   \code{\link{NUTS}} can be added to the pairs plot (see \strong{Examples}).
   }
 }
 }
@@ -172,6 +188,73 @@ p2 + ggplot2::stat_density_2d(color = "black")
 color_scheme_set("pink")
 (p3 <- mcmc_scatter(x, pars = c("alpha", "beta[3]"), alpha = 0.5, size = 3))
 p3 + ggplot2::geom_smooth(method = "lm", se = FALSE, color = "gray20")
+
+\donttest{
+# hexagonal heatmap
+color_scheme_set("brightblue")
+mcmc_hex(x, pars = c("sigma", "alpha"),
+         transformations = list(sigma = "log"))
+}
+\donttest{
+# pairs plots
+# default of condition=NULL implies splitting chains between upper and lower panels
+mcmc_pairs(x, pars = "alpha", regex_pars = "beta\\\\[[1,4]\\\\]")
+
+# change appearance of off-diagonal scatterplots
+mcmc_pairs(x, pars = "alpha", regex_pars = "beta\\\\[[1,4]\\\\]",
+           off_diag_args = list(size = 1, alpha = 0.5))
+
+# change to density plots instead of histograms and hex plots instead of
+# scatterplots
+mcmc_pairs(x, pars = "alpha", regex_pars = "beta\\\\[[1,4]\\\\]",
+           diag_fun = "dens", off_diag_fun = "hex")
+
+# plot chains 1 and 4 together and 2 and 3 together using a list of
+# integers for the 'condition' argument
+mcmc_pairs(x, pars = "alpha", regex_pars = "beta\\\\[[1,4]\\\\]",
+           diag_fun = "dens", off_diag_fun = "hex",
+           condition = list(c(1,4), c(2,3)))
+)
+}
+
+\dontrun{
+# pairs plot with NUTS diagnostic info overlaid,
+# example using rstanarm package
+library(rstanarm)
+
+# for demonstration purposes, intentionally fit a model that will (almost certainly)
+# have some divergences
+fit <- stan_glm(
+  mpg ~ ., data = mtcars,
+  iter = 1000,
+  # this combo of prior and adapt_delta should lead to some divergences
+  prior = hs(),
+  adapt_delta = 0.9
+)
+post <- as.array(fit)
+
+# split the chains according to above/below median accept_stat__ and
+# show approximate location of divergences in pairs plot (red points)
+mcmc_pairs(
+  post,
+  pars = c("wt", "cyl", "sigma"),
+  off_diag_args = list(size = 1, alpha = 0.5),
+  condition = "accept_stat__",
+  np = nuts_params(fit)
+)
+
+# same plot but also show when max treedepth hit (yellow points)
+mcmc_pairs(
+  post,
+  pars = c("wt", "cyl", "sigma"),
+  off_diag_args = list(size = 1, alpha = 0.5),
+  condition = "accept_stat__",
+  np = nuts_params(fit),
+  # this is lower than what was used to fit the model just for
+  # demonstration purposes
+  max_treedepth = 9
+)
+}
 
 }
 \seealso{

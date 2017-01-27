@@ -30,11 +30,18 @@
 #'    Bivariate scatterplot of posterior draws.
 #'   }
 #'   \item{\code{mcmc_hex}}{
-#'    Hexagonal heatmap of 2-D bin counts.
+#'    Hexagonal heatmap of 2-D bin counts. If \code{x} contains a very large
+#'    number of posterior draws then this plot may be preferable to a
+#'    scatterplot which can suffer from overplotting.
 #'   }
 #'   \item{\code{mcmc_pairs}}{
-#'    Pairs plot, optionally with extra diagonistic information for models fit
-#'    using \code{\link{NUTS}}.
+#'    Pairs plot with scatterplots (or hex plots) off the diagonal and
+#'    histograms (or densities) along the diagonal. The default is to split the
+#'    chains so that (roughly) half are displayed above the diagonal and half
+#'    below (all chains are always merged for the plots along the diagonal).
+#'    Many other possibilities are available by setting the \code{condition}
+#'    argument. Additionally, extra diagonistic information for models fit using
+#'    \code{\link{NUTS}} can be added to the pairs plot (see \strong{Examples}).
 #'   }
 #' }
 #'
@@ -55,14 +62,22 @@
 #'
 #' # add contour
 #' color_scheme_set("red")
-#' p2 <- mcmc_scatter(x, pars = c("alpha", "sigma"))
+#' p2 <- mcmc_scatter(x, pars = c("alpha", "sigma"), alpha = 0.5)
 #' p2 + ggplot2::stat_density_2d(color = "black")
 #'
 #' # can also add lines/smooths
 #' color_scheme_set("pink")
-#' (p3 <- mcmc_scatter(x, pars = c("alpha", "beta[3]"), alpha = 0.5, size = 3))
-#' p3 + ggplot2::geom_smooth(method = "lm", se = FALSE, color = "gray20")
+#' (p3 <- mcmc_scatter(x, pars = c("alpha", "beta[3]"), alpha = 0.25, size = 3))
+#' p3 + ggplot2::geom_smooth(method = "lm", se = FALSE, color = "gray20",
+#'                           size = .75, linetype = 2)
 #'
+#' \donttest{
+#' # hexagonal heatmap
+#' color_scheme_set("brightblue")
+#' (p <- mcmc_hex(x, pars = c("sigma", "alpha"), transformations = list(sigma = "log")))
+#' p + plot_bg(fill = "gray95")
+#' p + plot_bg(fill = "gray95") + panel_bg(fill = "gray70")
+#' }
 NULL
 
 #' @rdname MCMC-scatterplots
@@ -79,6 +94,7 @@ mcmc_scatter <- function(x,
     x,
     pars = pars,
     regex_pars = regex_pars,
+    transformations = transformations,
     size = size,
     alpha = alpha,
     hex = FALSE,
@@ -100,6 +116,7 @@ mcmc_hex <- function(x,
     x,
     pars = pars,
     regex_pars = regex_pars,
+    transformations = transformations,
     hex = TRUE,
     binwidth = binwidth,
     size = NULL,
@@ -112,21 +129,28 @@ mcmc_hex <- function(x,
 #' @param condition For \code{mcmc_pairs}, this argument is used to specify a
 #'   criterion for determining which iterations (or chains) are shown in the
 #'   plots above the diagonal and which are shown in the plots below the
-#'   diagnoal. There are many options for the \code{condition} argument:
+#'   diagnoal. The histograms (or density plots) along the diagonal are always
+#'   made using all chains and iterations, but the scatterplots (or hex plots)
+#'   plots above and below the diagonal show different combinations of
+#'   chains/iterations depending on the \code{condition} argument.
+#'   There are many options for \code{condition}:
 #' \itemize{
 #'   \item \code{NULL} (the default), in which case half of the chains
 #'   (or roughly half if there are an odd number) will be used in the
 #'   plots above the diagonal and the rest in the plots below the diagonal.
-#'   \item An integer vector can be passed to select some subset of the chains,
-#'   of which roughly half will be plotted in the lower panel and the rest in
-#'   the upper panel.
+#'   \item An integer vector that is used to select some subset of the chains
+#'   (e.g., \code{c(1,3,4,7)} to select only chains 1, 3, 4, and 7). The
+#'   behavior is the same as when \code{condition=NULL} except using only the
+#'   specified subset of chains.
 #'   \item A list of two integer vectors can be passed, each specifying a subset
-#'   of the chains to be plotted in the lower and upper panels respectively.
-#'   \item A single number between zero and one (exclusive) can be passed, which
+#'   of the chains. In this case the chains specified in the first vector
+#'   are shown in the plots above the diagonal and the chains specified in the
+#'   second vector are shown in plots below the diagonal.
+#'   \item A single number between zero and one (exclusive), which
 #'   is interpreted as the proportion of realizations (among all chains) to plot
 #'   in the lower panel starting with the first realization in each chain, with
 #'   the complement (from the end of each chain) plotted in the upper panel.
-#'   \item A \code{\link{logical}} vector with length equal to the product
+#'   \item A \link{logical} vector with length equal to the product
 #'   of the number of iterations and the number of chains, in
 #'   which case realizations corresponding to \code{FALSE} and \code{TRUE} will
 #'   be plotted in the lower and upper panels, respectively.
@@ -154,13 +178,14 @@ mcmc_hex <- function(x,
 #'   as the object returned by \code{\link{nuts_params}}. If \code{np} is
 #'   specified (and \code{condition} is \emph{not} \code{"divergent__"}), then
 #'   red points will be superimposed onto the off-diagonal plots indicating
-#'   which (if any) iterations encountered a divergent transition. Also, if
-#'   \code{np} is specified then yellow points will be superimposed to indicate
-#'   a transition that hit the maximum treedepth rather than terminated its
-#'   evolution normally.
-#' @param max_td For \code{mcmc_pairs}, the maximum treedepth allowed when
-#'   fitting the model (if fit using NUTS). Defaults to \code{10}. This value is
-#'   only used to detect which transitions (if any) hit the maximum treedepth.
+#'   which (if any) iterations encountered a divergent transition. Also, if both
+#'   \code{np} and \code{max_treedepth} are specified then yellow points will be
+#'   superimposed to indicate a transition that hit the maximum treedepth rather
+#'   than terminated its evolution normally.
+#' @param max_treedepth For \code{mcmc_pairs}, an integer representing the
+#'   maximum treedepth allowed when fitting the model (if fit using NUTS). This
+#'   is only needed for detecting which transitions (if any) hit the maximum
+#'   treedepth.
 #' @param diag_fun,off_diag_fun For \code{mcmc_pairs}, the plotting function to
 #'   use for the plots along the diagonal and for the off-diagonal plots,
 #'   respectively. Currently \code{diag_fun} can be \code{"hist"} for histogram
@@ -172,21 +197,81 @@ mcmc_hex <- function(x,
 #'   \code{"scatter"} then \code{off_diag_args} could include optional arguments
 #'   to \code{mcmc_scatter} like \code{size} and \code{alpha}.
 #'
-#' @importFrom utils getFromNamespace unstack
+#' @examples
+#' \donttest{
+#' # pairs plots
+#' # default of condition=NULL implies splitting chains between upper and lower panels
+#' mcmc_pairs(x, pars = "alpha", regex_pars = "beta\\[[1,4]\\]")
+#'
+#' # change appearance of off-diagonal scatterplots
+#' mcmc_pairs(x, pars = "alpha", regex_pars = "beta\\[[1,4]\\]",
+#'            off_diag_args = list(size = 1, alpha = 0.5))
+#'
+#' # change to density plots instead of histograms and hex plots instead of
+#' # scatterplots
+#' mcmc_pairs(x, pars = "alpha", regex_pars = "beta\\[[1,4]\\]",
+#'            diag_fun = "dens", off_diag_fun = "hex")
+#'
+#' # plot chains 1 and 4 together and 2 and 3 together using a list of
+#' # integers for the 'condition' argument
+#' mcmc_pairs(x, pars = "alpha", regex_pars = "beta\\[[1,4]\\]",
+#'            diag_fun = "dens", off_diag_fun = "hex",
+#'            condition = list(c(1,4), c(2,3)))
+#' )
+#' }
+#'
+#' \dontrun{
+#' # pairs plot with NUTS diagnostic info overlaid,
+#' # example using rstanarm package
+#' library(rstanarm)
+#'
+#' # for demonstration purposes, intentionally fit a model that will (almost certainly)
+#' # have some divergences
+#' fit <- stan_glm(
+#'   mpg ~ ., data = mtcars,
+#'   iter = 1000,
+#'   # this combo of prior and adapt_delta should lead to some divergences
+#'   prior = hs(),
+#'   adapt_delta = 0.9
+#' )
+#' post <- as.array(fit)
+#'
+#' # split the chains according to above/below median accept_stat__ and
+#' # show approximate location of divergences in pairs plot (red points)
+#' mcmc_pairs(
+#'   post,
+#'   pars = c("wt", "cyl", "sigma"),
+#'   off_diag_args = list(size = 1, alpha = 0.5),
+#'   condition = "accept_stat__",
+#'   np = nuts_params(fit)
+#' )
+#'
+#' # same plot but also show when max treedepth hit (yellow points)
+#' mcmc_pairs(
+#'   post,
+#'   pars = c("wt", "cyl", "sigma"),
+#'   off_diag_args = list(size = 1, alpha = 0.5),
+#'   condition = "accept_stat__",
+#'   np = nuts_params(fit),
+#'   # this is lower than what was used to fit the model just for
+#'   # demonstration purposes
+#'   max_treedepth = 9
+#' )
+#' }
 #'
 mcmc_pairs <- function(x,
                        pars = character(),
                        regex_pars = character(),
                        transformations = list(),
                        ...,
-                       condition = NULL,
-                       np = NULL,
-                       lp = NULL,
-                       max_td = 10,
                        diag_fun = c("hist", "dens"),
                        off_diag_fun = c("scatter", "hex"),
                        diag_args = list(),
-                       off_diag_args = list()) {
+                       off_diag_args = list(),
+                       condition = NULL,
+                       np = NULL,
+                       lp = NULL,
+                       max_treedepth = NULL) {
   check_ignored_arguments(...)
   x <- prepare_mcmc_array(x, pars, regex_pars, transformations)
   x <- drop_constants_and_duplicates(x)
@@ -196,20 +281,22 @@ mcmc_pairs <- function(x,
   n_iter <- nrow(x)
 
   stopifnot(is.list(diag_args), is.list(off_diag_args))
-  plot_diagonal <-
-    getFromNamespace(paste0("mcmc_", match.arg(diag_fun)), "bayesplot")
-  plot_off_diagonal <-
-    getFromNamespace(paste0("mcmc_", match.arg(off_diag_fun)), "bayesplot")
+  plot_diagonal <- pairs_plotfun(match.arg(diag_fun))
+  plot_off_diagonal <- pairs_plotfun(match.arg(off_diag_fun))
 
   no_np <- is.null(np)
   no_lp <- is.null(lp)
+  no_max_td <- is.null(max_treedepth)
 
   if (!no_np) {
     np <- validate_nuts_data_frame(np, lp)
     divs <- filter_(np, ~ Parameter == "divergent__")$Value
-    gt_max_td <- filter_(np, ~ Parameter == "treedepth__")$Value > max_td
     divergent__ <- matrix(divs, nrow = n_iter * n_chain, ncol = n_param)[, 1]
-    max_td_hit <- matrix(gt_max_td, nrow = n_iter * n_chain, ncol = n_param)[, 1]
+
+    if (!no_max_td) {
+      gt_max_td <- filter_(np, ~ Parameter == "treedepth__")$Value > max_treedepth
+      max_td_hit <- matrix(gt_max_td, nrow = n_iter * n_chain, ncol = n_param)[, 1]
+    }
   }
 
   if (is.null(condition)) {
@@ -222,8 +309,9 @@ mcmc_pairs <- function(x,
     if (length(condition) != 2)
       stop("If a list, 'condition' must be of length 2.")
     x <- x[, c(condition[[1]], condition[[2]]), , drop = FALSE]
-    k <- length(condition[[1]])
-    mark <- c(rep(TRUE, n_iter * k), rep(FALSE, n_iter * length(condition[[2]])))
+    k1 <- length(condition[[1]])
+    k2 <- length(condition[[2]])
+    mark <- c(rep(TRUE, n_iter * k1), rep(FALSE, n_iter * k2))
 
   } else if (is.logical(condition)) {
     # T/F for each iteration to split into upper and lower
@@ -242,10 +330,10 @@ mcmc_pairs <- function(x,
     if (condition == "lp__") {
       if (no_lp)
         stop("To use this value of 'condition' the 'lp' argument must also be specified.")
-      mark <- as.matrix(unstack(lp, form = Value ~ Chain))
+      mark <- unstack_to_matrix(lp, Value ~ Chain)
     } else {
       mark <- filter_(np, ~ Parameter == condition)
-      mark <- as.matrix(unstack(mark, form = Value ~ Chain))
+      mark <- unstack_to_matrix(mark, Value ~ Chain)
     }
     if (condition == "divergent__") {
       mark <- as.logical(mark)
@@ -274,18 +362,15 @@ mcmc_pairs <- function(x,
 
   }
 
-  x <- merge_chains(x)
-
   all_pairs <- expand.grid(pars, pars,
                            stringsAsFactors = FALSE,
                            KEEP.OUT.ATTRS = FALSE)
-
   n_plot <- nrow(all_pairs)
-  plots <- vector("list", length = n_plot)
-
   lower_tri <- lower_tri_idx(n_param)
   j_lookup <- matrix(seq_len(n_plot), nrow = n_param, byrow = TRUE)
 
+  x <- merge_chains(x)
+  plots <- vector("list", length = n_plot)
   for (j in seq_len(n_plot)) {
     pair <- as.character(all_pairs[j, ])
 
@@ -302,7 +387,7 @@ mcmc_pairs <- function(x,
         x_j <- x_j[!mark,, drop=FALSE]
         if (!no_np) {
           divs_j <- divergent__[!mark]
-          max_td_hit_j <- max_td_hit[!mark]
+          max_td_hit_j <- if (no_max_td) NULL else max_td_hit[!mark]
         } else {
           divs_j <- NULL
           max_td_hit_j <- NULL
@@ -311,7 +396,7 @@ mcmc_pairs <- function(x,
         x_j <- x_j[mark,, drop=FALSE]
         if (!no_np) {
           divs_j <- divergent__[mark]
-          max_td_hit_j <- max_td_hit[mark]
+          max_td_hit_j <- if (no_max_td) NULL else max_td_hit[mark]
         } else {
           divs_j <- NULL
           max_td_hit_j <- NULL
@@ -352,9 +437,9 @@ mcmc_pairs <- function(x,
 
   }
   plots <- lapply(plots, function(x)
-    x + xaxis_title(FALSE) + yaxis_title(FALSE) + legend_none())
+    x + xaxis_title(FALSE) + yaxis_title(FALSE))
 
-  bayesplot_grid(plots = plots)
+  bayesplot_grid(plots = plots, legends = FALSE)
 }
 
 
@@ -407,6 +492,24 @@ mcmc_pairs <- function(x,
   graph +
     labs(x = parnames[1], y = parnames[2]) +
     theme_default()
+}
+
+
+# Get plotting functions from user-specified diag_fun, off_diag_fun arguments
+#
+# @param x User specified diag_fun or off_diag_fun argument to mcmc_pairs
+pairs_plotfun <- function(x) {
+  fun <- paste0("mcmc_", x)
+  utils::getFromNamespace(fun, "bayesplot")
+}
+
+# Unstack molten data frame
+#
+# @param df A data frame (from nuts_params(), log_posterior(), etc)
+# @param .form Same as 'form' arg to utils::unstack
+unstack_to_matrix <- function(df, .form) {
+  x <- utils::unstack(df, form = .form)
+  as.matrix(x)
 }
 
 
