@@ -181,19 +181,21 @@ p + ggplot2::stat_ellipse(level = 0.9, color = "gray20", size = 1)
 
 # add contour
 color_scheme_set("red")
-p2 <- mcmc_scatter(x, pars = c("alpha", "sigma"))
+p2 <- mcmc_scatter(x, pars = c("alpha", "sigma"), alpha = 0.5)
 p2 + ggplot2::stat_density_2d(color = "black")
 
 # can also add lines/smooths
 color_scheme_set("pink")
-(p3 <- mcmc_scatter(x, pars = c("alpha", "beta[3]"), alpha = 0.5, size = 3))
-p3 + ggplot2::geom_smooth(method = "lm", se = FALSE, color = "gray20")
+(p3 <- mcmc_scatter(x, pars = c("alpha", "beta[3]"), alpha = 0.25, size = 3))
+p3 + ggplot2::geom_smooth(method = "lm", se = FALSE, color = "gray20",
+                          size = .75, linetype = 2)
 
 \donttest{
 # hexagonal heatmap
 color_scheme_set("brightblue")
-mcmc_hex(x, pars = c("sigma", "alpha"),
-         transformations = list(sigma = "log"))
+(p <- mcmc_hex(x, pars = c("sigma", "alpha"), transformations = list(sigma = "log")))
+p + plot_bg(fill = "gray95")
+p + plot_bg(fill = "gray95") + panel_bg(fill = "gray70")
 }
 \donttest{
 # pairs plots
@@ -214,7 +216,6 @@ mcmc_pairs(x, pars = "alpha", regex_pars = "beta\\\\[[1,4]\\\\]",
 mcmc_pairs(x, pars = "alpha", regex_pars = "beta\\\\[[1,4]\\\\]",
            diag_fun = "dens", off_diag_fun = "hex",
            condition = list(c(1,4), c(2,3)))
-)
 }
 
 \dontrun{

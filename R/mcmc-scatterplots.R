@@ -217,7 +217,6 @@ mcmc_hex <- function(x,
 #' mcmc_pairs(x, pars = "alpha", regex_pars = "beta\\[[1,4]\\]",
 #'            diag_fun = "dens", off_diag_fun = "hex",
 #'            condition = list(c(1,4), c(2,3)))
-#' )
 #' }
 #'
 #' \dontrun{
