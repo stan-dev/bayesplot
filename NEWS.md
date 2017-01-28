@@ -9,6 +9,7 @@ but there are not actually any divergent transitions.
 #### New features in existing functions
 * For `mcmc_*` functions, transformations are recycled if `transformations` 
 argument is specified as a single function rather than a named list. (#64)
+* New color scheme "darkgray".
 
 #### New functions
 * `mcmc_pairs`, which is essentially a ggplot2+grid implementation of rstan's
