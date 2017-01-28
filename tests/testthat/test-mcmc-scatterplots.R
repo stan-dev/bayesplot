@@ -4,6 +4,16 @@ context("MCMC: scatterplots")
 
 source("data-for-mcmc-tests.R")
 
+# also fit an rstanarm model to use with mcmc_pairs
+capture.output(
+  fit <- stan_glm(mpg ~ wt + am, data = mtcars, iter = 1000, chains = 2, refresh = 0)
+)
+post <- as.array(fit)
+lp <- log_posterior(fit)
+np <- nuts_params(fit)
+divs <- sample(c(0,1), size = 1000, prob = c(0.25, 0.75), replace = TRUE)
+np$Value[np$Parameter=="divergent__"] <- divs # fake divergences
+
 
 test_that("mcmc_scatter returns a ggplot object", {
   expect_gg(mcmc_scatter(arr, pars = c("beta[1]", "beta[2]")))
@@ -43,6 +53,28 @@ test_that("mcmc_pairs returns a bayesplot_grid object", {
   expect_bayesplot_grid(mcmc_pairs(dframe_multiple_chains, regex_pars = "beta"))
 })
 
+test_that("mcmc_pairs works with NUTS info", {
+  expect_bayesplot_grid(mcmc_pairs(post, pars = c("wt", "am", "sigma"), np = np))
+  expect_bayesplot_grid(mcmc_pairs(post, pars = c("wt", "am"),
+                                   condition = "energy__", np = np))
+  expect_bayesplot_grid(mcmc_pairs(post, pars = c("wt", "am"),
+                                   condition = "lp__", lp=lp, np = np,
+                                   max_treedepth = 2))
+
+  p <- mcmc_pairs(
+    post,
+    pars = c("wt", "am"),
+    off_diag_fun = "hex",
+    condition = "lp__",
+    lp = lp,
+    np = np,
+    np_style = list(color = c("firebrick", "dodgerblue"), size = c(2,2)),
+    max_treedepth = with(np, max(Value[Parameter == "treedepth__"]) - 1)
+  )
+  expect_bayesplot_grid(p)
+})
+
+
 test_that("mcmc_pairs throws correct warnings and errors", {
   expect_warning(mcmc_pairs(arr1chain, regex_pars = "beta"),
                  "This plot is more useful with multiple chains")
@@ -67,22 +99,10 @@ test_that("mcmc_pairs throws correct warnings and errors", {
                "the 'np' argument must also be specified")
   expect_error(mcmc_pairs(arr, condition = "lp__"),
                "the 'lp' argument must also be specified")
-})
 
-
-test_that("mcmc_pairs works with NUTS info", {
-  capture.output(
-    fit <- stan_glm(mpg ~ wt + am, data = mtcars, iter = 1000, chains = 2, refresh = 0)
+  expect_error(
+    mcmc_pairs(post, pars = c("wt", "am"), max_treedepth = 2, np = np,
+               np_style = list(color = "green")),
+    "All specified elements of 'np_style' must have length 2"
   )
-  lp <- log_posterior(fit)
-  np <- nuts_params(fit)
-  divs <- sample(c(0,1), size = 1000, prob = c(0.25, 0.75), replace = TRUE)
-  np$Value[np$Parameter=="divergent__"] <- divs # fake divergences
-  post <- as.array(fit)
-  expect_bayesplot_grid(mcmc_pairs(post, pars = c("wt", "am", "sigma"), np = np))
-  expect_bayesplot_grid(mcmc_pairs(post, pars = c("wt", "am"),
-                                   condition = "energy__", np = np))
-  expect_bayesplot_grid(mcmc_pairs(post, pars = c("wt", "am"),
-                                   condition = "lp__", lp=lp, np = np,
-                                   max_treedepth = 2))
 })

@@ -52,17 +52,23 @@
 #'
 #' # scatterplot of alpha vs log(sigma)
 #' color_scheme_set("teal")
-#' p <- mcmc_scatter(x, pars = c("alpha", "sigma"),
-#'                   trans = list(sigma = "log"),
-#'                   alpha = 0.5)
-#' p + ggplot2::labs(caption = "A fascinating caption")
+#' (p <- mcmc_scatter(x, pars = c("alpha", "sigma"),
+#'                   transform = list(sigma = "log")))
+#' p +
+#'   ggplot2::labs(
+#'     title = "Insert your own headline-grabbing title",
+#'     subtitle = "with a provocative subtitle",
+#'     caption = "and a controversial caption",
+#'     x = expression(alpha),
+#'     y = expression(log(sigma))
+#'     )
 #'
 #' # add ellipse
 #' p + ggplot2::stat_ellipse(level = 0.9, color = "gray20", size = 1)
 #'
 #' # add contour
 #' color_scheme_set("red")
-#' p2 <- mcmc_scatter(x, pars = c("alpha", "sigma"), alpha = 0.5)
+#' p2 <- mcmc_scatter(x, pars = c("alpha", "sigma"), size = 3.5, alpha = 0.25)
 #' p2 + ggplot2::stat_density_2d(color = "black")
 #'
 #' # can also add lines/smooths
@@ -177,11 +183,24 @@ mcmc_hex <- function(x,
 #'   parameters, either created by \code{\link{nuts_params}} or in the same form
 #'   as the object returned by \code{\link{nuts_params}}. If \code{np} is
 #'   specified (and \code{condition} is \emph{not} \code{"divergent__"}), then
-#'   red points will be superimposed onto the off-diagonal plots indicating
-#'   which (if any) iterations encountered a divergent transition. Also, if both
-#'   \code{np} and \code{max_treedepth} are specified then yellow points will be
-#'   superimposed to indicate a transition that hit the maximum treedepth rather
-#'   than terminated its evolution normally.
+#'   points (red, by default) will be superimposed onto the off-diagonal plots
+#'   indicating which (if any) iterations encountered a divergent transition.
+#'   Also, if both \code{np} and \code{max_treedepth} are specified then points
+#'   (yellow, by default) will be superimposed to indicate a transition that hit
+#'   the maximum treedepth rather than terminated its evolution normally.
+#' @param np_style A named list of length one, two, or three, which is used to
+#'   specify optional arguments controlling the appearance of superimposed
+#'   points representing NUTS diagnostic warnings (if \code{np} is specified).
+#'   The elements "color", "shape", and "size" can be specified (note: here,
+#'   "size" is interpreted as a scaling factor). Each of the specified elements
+#'   must be a vector of length two (the first element is used for a divergence
+#'   and the second element for a transition hitting max treedepth). As an
+#'   example, the default settings correspond to specifying the following:
+#'
+#'   \code{np_style = list(color = c("red", "yellow2"),
+#'                         shape = c(4,3),
+#'                         size = c(1,1))}
+#'
 #' @param max_treedepth For \code{mcmc_pairs}, an integer representing the
 #'   maximum treedepth allowed when fitting the model (if fit using NUTS). This
 #'   is only needed for detecting which transitions (if any) hit the maximum
@@ -199,11 +218,10 @@ mcmc_hex <- function(x,
 #'
 #' @examples
 #' \donttest{
+#' color_scheme_set("purple")
+#'
 #' # pairs plots
 #' # default of condition=NULL implies splitting chains between upper and lower panels
-#' mcmc_pairs(x, pars = "alpha", regex_pars = "beta\\[[1,4]\\]")
-#'
-#' # change appearance of off-diagonal scatterplots
 #' mcmc_pairs(x, pars = "alpha", regex_pars = "beta\\[[1,4]\\]",
 #'            off_diag_args = list(size = 1, alpha = 0.5))
 #'
@@ -212,11 +230,11 @@ mcmc_hex <- function(x,
 #' mcmc_pairs(x, pars = "alpha", regex_pars = "beta\\[[1,4]\\]",
 #'            diag_fun = "dens", off_diag_fun = "hex")
 #'
-#' # plot chains 1 and 4 together and 2 and 3 together using a list of
-#' # integers for the 'condition' argument
+#' # plot chain 1 separately from chains 2, 3, and 4
+#' color_scheme_set("brightblue")
 #' mcmc_pairs(x, pars = "alpha", regex_pars = "beta\\[[1,4]\\]",
 #'            diag_fun = "dens", off_diag_fun = "hex",
-#'            condition = list(c(1,4), c(2,3)))
+#'            condition = list(1, 2:4))
 #' }
 #'
 #' \dontrun{
@@ -234,27 +252,32 @@ mcmc_hex <- function(x,
 #'   adapt_delta = 0.9
 #' )
 #' post <- as.array(fit)
+#' np <- nuts_params(fit)
 #'
-#' # split the chains according to above/below median accept_stat__ and
-#' # show approximate location of divergences in pairs plot (red points)
+#' # split the draws according to above/below median accept_stat__ and
+#' # show approximate location of divergences (red points)
 #' mcmc_pairs(
 #'   post,
 #'   pars = c("wt", "cyl", "sigma"),
 #'   off_diag_args = list(size = 1, alpha = 0.5),
 #'   condition = "accept_stat__",
-#'   np = nuts_params(fit)
+#'   np = np
 #' )
 #'
-#' # same plot but also show when max treedepth hit (yellow points)
+#' # using median log-posterior as 'condition', hex instead of scatter for
+#' # off-diagonal plots, and also indicating where max treedepth hit
+#' color_scheme_set("darkgray")
 #' mcmc_pairs(
 #'   post,
 #'   pars = c("wt", "cyl", "sigma"),
-#'   off_diag_args = list(size = 1, alpha = 0.5),
-#'   condition = "accept_stat__",
-#'   np = nuts_params(fit),
-#'   # this is lower than what was used to fit the model just for
-#'   # demonstration purposes
-#'   max_treedepth = 9
+#'   off_diag_fun = "hex",
+#'   condition = "lp__",
+#'   lp = log_posterior(fit),
+#'   np = np,
+#'   np_style = list(color = c("firebrick", "dodgerblue"), size = c(2)),
+#'   # for demonstration purposes, set max_treedepth to a value that will
+#'   # result in at least a few warnings points (colored np_colors[2])
+#'   max_treedepth = with(np, max(Value[Parameter == "treedepth__"]) - 1)
 #' )
 #' }
 #'
@@ -268,8 +291,9 @@ mcmc_pairs <- function(x,
                        diag_args = list(),
                        off_diag_args = list(),
                        condition = NULL,
-                       np = NULL,
                        lp = NULL,
+                       np = NULL,
+                       np_style = list(),
                        max_treedepth = NULL) {
   check_ignored_arguments(...)
   x <- prepare_mcmc_array(x, pars, regex_pars, transformations)
@@ -291,6 +315,7 @@ mcmc_pairs <- function(x,
   no_np <- is.null(np)
   no_lp <- is.null(lp)
   no_max_td <- is.null(max_treedepth)
+  np_args <- validate_np_style(np_style)
 
   if (!no_np) {
     np <- validate_nuts_data_frame(np, lp)
@@ -416,24 +441,25 @@ mcmc_pairs <- function(x,
                              labels = c("NoDiv", "Div"))
         plots[[j]] <- plots[[j]] +
           geom_point(aes_(color = divs_j_fac, size = divs_j_fac),
-                     shape = 4, na.rm = TRUE)
+                     shape = np_args$shape[1], na.rm = TRUE)
       }
       if (isTRUE(any(max_td_hit_j == 1))) {
         max_td_hit_j_fac <- factor(max_td_hit_j, levels = c(FALSE, TRUE),
                                    labels = c("NoHit", "Hit"))
         plots[[j]] <- plots[[j]] +
           geom_point(aes_(color = max_td_hit_j_fac, size = max_td_hit_j_fac),
-                     shape = 3, na.rm = TRUE)
+                     shape = np_args$shape[2], na.rm = TRUE)
       }
 
       if (isTRUE(any(divs_j == 1)) || isTRUE(any(max_td_hit_j == 1))) {
         plots[[j]] <- plots[[j]] +
           scale_color_manual(
-            values = setNames(c(NA, "red", NA, "yellow2"),
+            values = setNames(c(NA, np_args$color[1], NA, np_args$color[2]),
                               c("NoDiv", "Div", "NoHit", "Hit"))
           ) +
           scale_size_manual(
-            values = setNames(c(0, 2, 0, 2), c("NoDiv", "Div", "NoHit", "Hit"))
+            values = setNames(c(0, rel(np_args$size[1]), 0, rel(np_args$size[2])),
+                              c("NoDiv", "Div", "NoHit", "Hit"))
           )
       }
 
@@ -505,6 +531,25 @@ mcmc_pairs <- function(x,
 pairs_plotfun <- function(x) {
   fun <- paste0("mcmc_", x)
   utils::getFromNamespace(fun, "bayesplot")
+}
+
+# Validate np_style argument
+# @param style User's np_style argument
+validate_np_style <- function(x = list()) {
+  style <- list(
+    color = x[["color"]] %||% c("red", "yellow2"),
+    shape = x[["shape"]] %||% c(4, 3),
+    size = x[["size"]] %||% c(1, 1)
+  )
+  if (!all(sapply(style, length) == 2))
+    stop("All specified elements of 'np_style' must have length 2.",
+         call. = FALSE)
+  stopifnot(
+    is.numeric(style[["shape"]]) || is.character(style[["shape"]]),
+    is.character(style[["color"]]),
+    is.numeric(style[["size"]])
+  )
+  return(style)
 }
 
 # Unstack molten data frame
