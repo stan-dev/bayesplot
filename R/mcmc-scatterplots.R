@@ -603,8 +603,8 @@ drop_consts <- function(x) {
   if (all(varying))
     return(x)
 
-  message(
-    "The following parameters were dropped because they are constant:\n",
+  warning(
+    "The following parameters were dropped because they are constant: ",
     paste(names(varying)[!varying], collapse = ", ")
   )
   x[, , varying, drop = FALSE]
@@ -614,8 +614,8 @@ drop_dupes <- function(x) {
   if (!any(dupes))
     return(x)
 
-  message(
-    "The following parameters were dropped because they are duplicative:\n",
+  warning(
+    "The following parameters were dropped because they are duplicative: ",
     paste(parameter_names(x)[dupes], collapse = ", ")
   )
   x[, , !dupes, drop = FALSE]

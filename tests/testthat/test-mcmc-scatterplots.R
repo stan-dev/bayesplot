@@ -77,6 +77,8 @@ test_that("mcmc_pairs works with NUTS info", {
   expect_bayesplot_grid(mcmc_pairs(post, pars = c("wt", "am"),
                                    condition = "energy__", np = np))
   expect_bayesplot_grid(mcmc_pairs(post, pars = c("wt", "am"),
+                                   condition = "divergent__", np = np))
+  expect_bayesplot_grid(mcmc_pairs(post, pars = c("wt", "am"),
                                    condition = "lp__", lp=lp, np = np,
                                    max_treedepth = 2))
 
@@ -123,5 +125,18 @@ test_that("mcmc_pairs throws correct warnings and errors", {
     mcmc_pairs(post, pars = c("wt", "am"), max_treedepth = 2, np = np,
                np_style = list(color = "green")),
     "All specified elements of 'np_style' must have length 2"
+  )
+
+  post2 <- post
+  post2[,1:2,"wt"] <- 0
+  expect_warning(
+    mcmc_pairs(post2, pars = c("wt", "am", "sigma")),
+    "parameters were dropped because they are constant: wt"
+  )
+
+  post[,, "sigma"] <- post[,, "am"]
+  expect_warning(
+    mcmc_pairs(post, pars = c("wt", "sigma", "am")),
+    "parameters were dropped because they are duplicative: am"
   )
 })
