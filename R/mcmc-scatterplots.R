@@ -296,141 +296,60 @@ mcmc_pairs <- function(x,
                        np_style = list(),
                        max_treedepth = NULL) {
   check_ignored_arguments(...)
-  x <- prepare_mcmc_array(x, pars, regex_pars, transformations)
-  x <- drop_constants_and_duplicates(x)
-  n_iter <- nrow(x)
-  n_chain <- ncol(x)
-  if (n_chain == 1)
-    warning("Only one chain in 'x'. This plot is more useful with multiple chains.")
-
-  pars <- parameter_names(x)
-  n_param <- length(pars)
-  if (n_param < 2)
-    stop("This plot requires at least two parameters in 'x'.")
 
   stopifnot(is.list(diag_args), is.list(off_diag_args))
   plot_diagonal <- pairs_plotfun(match.arg(diag_fun))
   plot_off_diagonal <- pairs_plotfun(match.arg(off_diag_fun))
 
+  x <- prepare_mcmc_array(x, pars, regex_pars, transformations)
+  x <- drop_constants_and_duplicates(x)
+  n_iter <- nrow(x)
+  n_chain <- ncol(x)
+  pars <- parameter_names(x)
+  n_param <- length(pars)
+  if (n_chain == 1)
+    warning("Only one chain in 'x'. This plot is more useful with multiple chains.")
+  if (n_param < 2)
+    stop("This plot requires at least two parameters in 'x'.")
+
   no_np <- is.null(np)
   no_lp <- is.null(lp)
   no_max_td <- is.null(max_treedepth)
   np_args <- validate_np_style(np_style)
-
   if (!no_np) {
     np <- validate_nuts_data_frame(np, lp)
     divs <- filter_(np, ~ Parameter == "divergent__")$Value
     divergent__ <- matrix(divs, nrow = n_iter * n_chain, ncol = n_param)[, 1]
-
     if (!no_max_td) {
       gt_max_td <- filter_(np, ~ Parameter == "treedepth__")$Value > max_treedepth
-      max_td_hit <- matrix(gt_max_td, nrow = n_iter * n_chain, ncol = n_param)[, 1]
+      max_td_hit__ <- matrix(gt_max_td, nrow = n_iter * n_chain, ncol = n_param)[, 1]
     }
   }
-
-  if (is.null(condition)) {
-
-    k <- ncol(x) %/% 2
-    mark <- c(rep(FALSE, n_iter * k), rep(TRUE, n_iter * (n_chain - k)))
-
-  } else if (is.numeric(condition)) {
-
-    if (all(condition == as.integer(condition))) {
-      # Integer vector
-      x <- x[, condition, , drop = FALSE]
-      k <- ncol(x) %/% 2
-      n_chain <- length(condition)
-      mark <- c(rep(FALSE, n_iter * k), rep(TRUE, n_iter * (n_chain - k)))
-    } else if (condition > 0 && condition < 1) {
-      # Proportion
-      mark <- rep(1:n_iter > (condition * n_iter), times = n_chain)
-
-    } else {
-      stop("If numeric, 'condition' must be an integer (vector) ",
-           "or a number between 0 and 1 (exclusive).")
-    }
-
-  } else if (is.list(condition)) {
-    # List of integer vectors
-    if (length(condition) != 2)
-      stop("If a list, 'condition' must be of length 2.")
-    x <- x[, c(condition[[1]], condition[[2]]), , drop = FALSE]
-    k1 <- length(condition[[1]])
-    k2 <- length(condition[[2]])
-    mark <- c(rep(TRUE, n_iter * k1), rep(FALSE, n_iter * k2))
-
-  } else if (is.logical(condition)) {
-    # T/F for each iteration to split into upper and lower
-    stopifnot(length(condition) == (n_iter * n_chain))
-    mark <- !condition
-
-  } else if (is.character(condition)) {
-    # NUTS sampler param or lp__
-    condition <- match.arg(condition, several.ok = FALSE,
-                           choices = c("accept_stat__", "stepsize__",
-                                       "treedepth__", "n_leapfrog__",
-                                       "divergent__", "energy__", "lp__"))
-    if (no_np && !identical(condition, "lp__"))
-      stop("To use this value of 'condition' the 'np' argument must also be specified.")
-
-    if (condition == "lp__") {
-      if (no_lp)
-        stop("To use this value of 'condition' the 'lp' argument must also be specified.")
-      mark <- unstack_to_matrix(lp, Value ~ Chain)
-    } else {
-      mark <- filter_(np, ~ Parameter == condition)
-      mark <- unstack_to_matrix(mark, Value ~ Chain)
-    }
-    if (condition == "divergent__") {
-      mark <- as.logical(mark)
-    } else {
-      mark <- c(mark) >= median(mark)
-    }
-    if (length(unique(mark)) == 1)
-      stop(condition, " is constant so it cannot be used as a condition.")
-  }
+  tmp <- handle_condition(x, condition, np, lp)
+  x <- merge_chains(tmp[["x"]])
+  mark <- tmp[["mark"]]
 
   all_pairs <- expand.grid(pars, pars,
                            stringsAsFactors = FALSE,
                            KEEP.OUT.ATTRS = FALSE)
-  n_plot <- nrow(all_pairs)
-  lower_tri <- lower_tri_idx(n_param)
-  j_lookup <- matrix(seq_len(n_plot), nrow = n_param, byrow = TRUE)
+  plots <- vector("list", length = nrow(all_pairs))
+  for (j in seq_len(nrow(all_pairs))) {
+    pair <- as.character(all_pairs[j,])
 
-  x <- merge_chains(x)
-  plots <- vector("list", length = n_plot)
-  for (j in seq_len(n_plot)) {
-    pair <- as.character(all_pairs[j, ])
-
-    if (identical(pair[1], pair[2])) {
-      # Diagonal
-      diag_args[["x"]] <- x[, pair[1], drop=FALSE]
+    if (identical(pair[1], pair[2])) { # Diagonal
+      diag_args[["x"]] <- x[, pair[1], drop = FALSE]
       plots[[j]] <- do.call(plot_diagonal, diag_args)
+    } else { # Off-diagonal
+      # use mark if above diagonal and !mark if below the diagonal
+      mark2 <- if (is_lower_tri(j, n_param)) !mark else mark
+      x_j <- x[mark2, pair, drop = FALSE]
 
-    } else {
-      # Off-diagonal
-      x_j <- x[, pair]
-      idx <- arrayInd(j_lookup[j], .dim = c(n_param, n_param))
-      if (row_match_found(idx, lower_tri)) { # below diagonal
-        x_j <- x_j[!mark,, drop=FALSE]
-        if (!no_np) {
-          divs_j <- divergent__[!mark]
-          max_td_hit_j <- if (no_max_td) NULL else max_td_hit[!mark]
-        } else {
-          divs_j <- NULL
-          max_td_hit_j <- NULL
-        }
-      } else { # above diagonal
-        x_j <- x_j[mark,, drop=FALSE]
-        if (!no_np) {
-          divs_j <- divergent__[mark]
-          max_td_hit_j <- if (no_max_td) NULL else max_td_hit[mark]
-        } else {
-          divs_j <- NULL
-          max_td_hit_j <- NULL
-        }
+      if (!no_np) {
+        divs_j <- divergent__[mark2]
+        max_td_hit_j <- if (no_max_td) NULL else max_td_hit__[mark2]
+      } else {
+        divs_j <- max_td_hit_j <- NULL
       }
-
       off_diag_args[["x"]] <- x_j
       plots[[j]] <- do.call(plot_off_diagonal, off_diag_args)
 
@@ -439,32 +358,28 @@ mcmc_pairs <- function(x,
         divs_j_fac <- factor(as.logical(divs_j), levels = c(FALSE, TRUE),
                              labels = c("NoDiv", "Div"))
         plots[[j]] <- plots[[j]] +
-          geom_point(aes_(color = divs_j_fac, size = divs_j_fac),
-                     shape = np_args$shape[1], na.rm = TRUE)
+          geom_point(
+            aes_(color = divs_j_fac, size = divs_j_fac),
+            shape = np_args$shape[1],
+            na.rm = TRUE
+          )
       }
       if (isTRUE(any(max_td_hit_j == 1))) {
         max_td_hit_j_fac <- factor(max_td_hit_j, levels = c(FALSE, TRUE),
                                    labels = c("NoHit", "Hit"))
         plots[[j]] <- plots[[j]] +
-          geom_point(aes_(color = max_td_hit_j_fac, size = max_td_hit_j_fac),
-                     shape = np_args$shape[2], na.rm = TRUE)
-      }
-
-      if (isTRUE(any(divs_j == 1)) || isTRUE(any(max_td_hit_j == 1))) {
-        plots[[j]] <- plots[[j]] +
-          scale_color_manual(
-            values = setNames(c(NA, np_args$color[1], NA, np_args$color[2]),
-                              c("NoDiv", "Div", "NoHit", "Hit"))
-          ) +
-          scale_size_manual(
-            values = setNames(c(0, rel(np_args$size[1]), 0, rel(np_args$size[2])),
-                              c("NoDiv", "Div", "NoHit", "Hit"))
+          geom_point(
+            aes_(color = max_td_hit_j_fac, size = max_td_hit_j_fac),
+            shape = np_args$shape[2],
+            na.rm = TRUE
           )
       }
-
+      if (isTRUE(any(divs_j == 1)) ||
+          isTRUE(any(max_td_hit_j == 1)))
+        plots[[j]] <- format_nuts_points(plots[[j]], np_args)
     }
-
   }
+
   plots <- lapply(plots, function(x)
     x + xaxis_title(FALSE) + yaxis_title(FALSE))
 
@@ -533,7 +448,7 @@ pairs_plotfun <- function(x) {
 }
 
 # Validate np_style argument
-# @param style User's np_style argument
+# @param x User's np_style argument
 validate_np_style <- function(x = list()) {
   style <- list(
     color = x[["color"]] %||% c("red", "yellow2"),
@@ -560,8 +475,29 @@ unstack_to_matrix <- function(df, .form) {
   as.matrix(x)
 }
 
+# Check if off-diagonal plot is above or below the diagonal
+#
+# @param j integer (index)
+# @param n Number of parameters (number of plots = n^2)
+# @return TRUE if below the diagonal FALSE if above the diagonal
+is_lower_tri <- function(j, n) {
+  idx <- array_idx_j(j, n)
+  lower_tri <- lower_tri_idx(n)
+  row_match_found(idx, lower_tri)
+}
 
-# Get indices of lower triangular elements
+# Get array indices of the jth element in the plot matrix
+#
+# @param j integer (index)
+# @param n number of parameters (number of plots = n^2)
+# @return rwo vector (1-row matrix) containing the array indices of the jth
+#   element in the plot matrix
+array_idx_j <- function(j, n) {
+  jj <- matrix(seq_len(n^2), nrow = n, byrow = TRUE)[j]
+  arrayInd(jj, .dim = c(n, n))
+}
+
+# Get indices of lower triangular elements of a square matrix
 #
 # @param n number of rows (columns) in the square matrix
 lower_tri_idx <- function(n) {
@@ -570,24 +506,20 @@ lower_tri_idx <- function(n) {
   cbind(row = a, col = b)
 }
 
-# Find which (if any) row in x is a match for y
+# Find which (if any) row in y is a match for x
 #
 # @param x a row vector (i.e., a matrix with 1 row)
 # @param y a matrix
 # @return either a row number in y or NA if no match
 row_match_found <- function(x, y) {
-  stopifnot(
-    is.matrix(x),
-    is.matrix(y),
-    nrow(x) == 1
-  )
+  stopifnot(is.matrix(x), is.matrix(y), nrow(x) == 1)
   x <- as.data.frame(x)
   y <- as.data.frame(y)
   res <- match(
     do.call(function(...) paste(..., sep=":::"), x),
     do.call(function(...) paste(..., sep=":::"), y)
   )
-  isTRUE(!is.na(res) && length(res == 1))
+  isTRUE(!is.na(res) && length(res) == 1)
 }
 
 
@@ -620,3 +552,91 @@ drop_dupes <- function(x) {
   x[, , !dupes, drop = FALSE]
 }
 
+# Handle user's specified condition
+#
+# @param x 3-D mcmc array
+# @param condition,np,lp user-specified arguments
+# @return A named list containing 'x' (x, possibly modified) and 'mark' (logical
+#   or interger vector for eventually splitting x)
+handle_condition <- function(x, condition=NULL, np=NULL, lp=NULL) {
+  n_iter <- nrow(x)
+  n_chain <- ncol(x)
+  no_np <- is.null(np)
+  no_lp <- is.null(lp)
+
+  if (is.null(condition)) {
+    k <- ncol(x) %/% 2
+    mark <- c(rep(FALSE, n_iter * k), rep(TRUE, n_iter * (n_chain - k)))
+  } else if (is.numeric(condition)) {
+    if (all(condition == as.integer(condition))) {
+      # Integer vector
+      x <- x[, condition, , drop = FALSE]
+      k <- ncol(x) %/% 2
+      n_chain <- length(condition)
+      mark <- c(rep(FALSE, n_iter * k), rep(TRUE, n_iter * (n_chain - k)))
+    } else if (condition > 0 && condition < 1) {
+      # Proportion
+      mark <- rep(1:n_iter > (condition * n_iter), times = n_chain)
+    } else {
+      stop("If numeric, 'condition' must be an integer (vector) ",
+           "or a number between 0 and 1 (exclusive).")
+    }
+  } else if (is.list(condition)) {
+    # List of integer vectors
+    if (length(condition) != 2)
+      stop("If a list, 'condition' must be of length 2.")
+    x <- x[, c(condition[[1]], condition[[2]]), , drop = FALSE]
+    k1 <- length(condition[[1]])
+    k2 <- length(condition[[2]])
+    mark <- c(rep(TRUE, n_iter * k1), rep(FALSE, n_iter * k2))
+  } else if (is.logical(condition)) {
+    # T/F for each iteration to split into upper and lower
+    stopifnot(length(condition) == (n_iter * n_chain))
+    mark <- !condition
+  } else if (is.character(condition)) {
+    # NUTS sampler param or lp__
+    condition <- match.arg(condition, several.ok = FALSE,
+                           choices = c("accept_stat__", "stepsize__",
+                                       "treedepth__", "n_leapfrog__",
+                                       "divergent__", "energy__", "lp__"))
+    if (no_np && !identical(condition, "lp__"))
+      stop("To use this value of 'condition' the 'np' argument must also be specified.")
+
+    if (condition == "lp__") {
+      if (no_lp)
+        stop("To use this value of 'condition' the 'lp' argument must also be specified.")
+      mark <- unstack_to_matrix(lp, Value ~ Chain)
+    } else {
+      mark <- filter_(np, ~ Parameter == condition)
+      mark <- unstack_to_matrix(mark, Value ~ Chain)
+    }
+    if (condition == "divergent__") {
+      mark <- as.logical(mark)
+    } else {
+      mark <- c(mark) >= median(mark)
+    }
+    if (length(unique(mark)) == 1)
+      stop(condition, " is constant so it cannot be used as a condition.")
+  }
+
+  list(x = x, mark = mark)
+}
+
+
+# Apply scale_color_manual and scale_size_manual if plotting divergences and
+# hitting max_treedepth
+#
+# @param graph ggplot object
+# @param np_args list of style arguments
+# @return graph, updated
+format_nuts_points <- function(graph, np_args) {
+  graph +
+    scale_color_manual(
+      values = setNames(c(NA, np_args$color[1], NA, np_args$color[2]),
+                        c("NoDiv", "Div", "NoHit", "Hit"))
+    ) +
+    scale_size_manual(
+      values = setNames(c(0, rel(np_args$size[1]), 0, rel(np_args$size[2])),
+                        c("NoDiv", "Div", "NoHit", "Hit"))
+    )
+}
