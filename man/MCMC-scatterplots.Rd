@@ -273,7 +273,7 @@ mcmc_pairs(
   condition = "lp__",
   lp = log_posterior(fit),
   np = np,
-  np_style = list(color = c("firebrick", "dodgerblue"), size = c(2)),
+  np_style = list(color = c("firebrick", "dodgerblue"), size = c(1,2)),
   # for demonstration purposes, set max_treedepth to a value that will
   # result in at least a few warnings points (colored np_colors[2])
   max_treedepth = with(np, max(Value[Parameter == "treedepth__"]) - 1)
