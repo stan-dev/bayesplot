@@ -333,6 +333,23 @@ mcmc_pairs <- function(x,
     k <- ncol(x) %/% 2
     mark <- c(rep(FALSE, n_iter * k), rep(TRUE, n_iter * (n_chain - k)))
 
+  } else if (is.numeric(condition)) {
+
+    if (all(condition == as.integer(condition))) {
+      # Integer vector
+      x <- x[, condition, , drop = FALSE]
+      k <- ncol(x) %/% 2
+      n_chain <- length(condition)
+      mark <- c(rep(FALSE, n_iter * k), rep(TRUE, n_iter * (n_chain - k)))
+    } else if (condition > 0 && condition < 1) {
+      # Proportion
+      mark <- rep(1:n_iter > (condition * n_iter), times = n_chain)
+
+    } else {
+      stop("If numeric, 'condition' must be an integer (vector) ",
+           "or a number between 0 and 1 (exclusive).")
+    }
+
   } else if (is.list(condition)) {
     # List of integer vectors
     if (length(condition) != 2)
@@ -371,24 +388,6 @@ mcmc_pairs <- function(x,
     }
     if (length(unique(mark)) == 1)
       stop(condition, " is constant so it cannot be used as a condition.")
-
-  } else {
-    # Numeric
-
-    if (all(condition == as.integer(condition))) {
-      # Integer vector
-      x <- x[, condition, , drop = FALSE]
-      k <- ncol(x) %/% 2
-      mark <- c(rep(FALSE, n_iter * k), rep(TRUE, n_iter * (n_chain - k)))
-    } else if (condition > 0 && condition < 1) {
-      # Proportion
-      mark <- rep(1:n_iter > (condition * n_iter), times = n_chain)
-
-    } else {
-      stop("If numeric, 'condition' must be an integer (vector) ",
-           "or a number between 0 and 1 (exclusive).")
-    }
-
   }
 
   all_pairs <- expand.grid(pars, pars,
