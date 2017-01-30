@@ -125,7 +125,8 @@ ppc_stat <-
 #' @export
 #' @rdname PPC-test-statistics
 #' @template args-group
-#' @param group2 Optionally, a second grouping variable.
+#' @param group2 Optionally, a second grouping variable. Specified the same way
+#'   as \code{group}.
 #'
 ppc_stat_grouped <-
   function(y,
@@ -199,6 +200,7 @@ ppc_stat_freqpoly_grouped <-
   function(y,
            yrep,
            group,
+           group2,
            stat = "mean",
            ...,
            binwidth = NULL,
@@ -208,11 +210,16 @@ ppc_stat_freqpoly_grouped <-
     y <- validate_y(y)
     yrep <- validate_yrep(yrep, y)
     group <- validate_group(group, y)
-    plot_data <- ppc_group_data(y, yrep, group, stat = match.fun(stat))
+    two_groups <- !missing(group2)
+    if (two_groups) {
+      group2 <- validate_group(group2, y)
+      plot_data <- ppc_2groups_data(y, yrep, group, group2, stat = match.fun(stat))
+    } else {
+      plot_data <- ppc_group_data(y, yrep, group, stat = match.fun(stat))
+    }
     is_y <- plot_data$variable == "y"
 
-    ggplot(plot_data[!is_y, , drop = FALSE],
-           set_hist_aes(freq)) +
+    graph <- ggplot(plot_data[!is_y, , drop = FALSE], set_hist_aes(freq)) +
       geom_freqpoly(
         aes_(color = "yrep"),
         size = .5,
@@ -224,8 +231,16 @@ ppc_stat_freqpoly_grouped <-
         mapping = aes_(xintercept = ~ value, color = "y"),
         show.legend = FALSE,
         size = 1
-      ) +
-      facet_wrap("group", scales = "free") +
+      )
+
+    if (two_groups) {
+      graph <- graph +
+        facet_grid(group ~ group2, scales = "free") +
+        force_axes_in_facets()
+    } else {
+      graph <- graph + facet_wrap("group", scales = "free")
+    }
+    graph +
       scale_color_manual(
         name = stat_legend_title(stat, deparse(substitute(stat))),
         values = setNames(get_color(c("m", "dh")), c("yrep", "y")),
@@ -234,7 +249,7 @@ ppc_stat_freqpoly_grouped <-
       dont_expand_y_axis(c(0.005, 0)) +
       theme_default() +
       xaxis_title(FALSE) +
-      yaxis_text(FALSE) +
+      yaxis_text(ifelse(two_groups, TRUE, FALSE)) +
       yaxis_ticks(FALSE) +
       yaxis_title(FALSE)
   }
