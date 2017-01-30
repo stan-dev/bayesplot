@@ -10,8 +10,8 @@
 \usage{
 ppc_stat(y, yrep, stat = "mean", ..., binwidth = NULL, freq = TRUE)
 
-ppc_stat_grouped(y, yrep, group, stat = "mean", ..., binwidth = NULL,
-  freq = TRUE)
+ppc_stat_grouped(y, yrep, group, group2, stat = "mean", ...,
+  binwidth = NULL, freq = TRUE)
 
 ppc_stat_freqpoly_grouped(y, yrep, group, stat = "mean", ...,
   binwidth = NULL, freq = TRUE)
@@ -50,6 +50,8 @@ function.)}
 \item{group}{A grouping variable (a vector or factor) the same length as
 \code{y}. Each value in \code{group} is interpreted as the group level
 pertaining to the corresponding value of \code{y}.}
+
+\item{group2}{Optionally, a second grouping variable.}
 
 \item{size, alpha}{Arguments passed to \code{\link[ggplot2]{geom_point}} to
 control the appearance of scatterplot points.}

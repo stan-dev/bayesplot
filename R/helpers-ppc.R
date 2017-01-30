@@ -171,6 +171,26 @@ ppc_group_data <- function(y, yrep, group, stat = NULL) {
   dplyr::summarise_(molten_d, value = ~stat(value))
 }
 
+# same as above but for two groups
+ppc_2groups_data <- function(y, yrep, group, group2, stat = NULL) {
+  d <- data.frame(
+    group = factor(group),
+    group2 = factor(group2),
+    y = y,
+    yrep = t(yrep)
+  )
+  colnames(d) <- gsub(".", "_", colnames(d), fixed = TRUE)
+  molten_d <- reshape2::melt(d, id.vars = c("group", "group2"))
+  molten_d <- dplyr::group_by_(molten_d, .dots = list(~group, ~group2, ~variable))
+  if (is.null(stat))
+    return(molten_d)
+
+  if (!is.function(stat))
+    stat <- match.fun(stat)
+
+  dplyr::summarise_(molten_d, value = ~stat(value))
+}
+
 # set mapping depending on freq argument
 set_hist_aes <- function(freq = TRUE, ...) {
   if (freq)

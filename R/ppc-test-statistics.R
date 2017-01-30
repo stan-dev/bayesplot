@@ -125,11 +125,13 @@ ppc_stat <-
 #' @export
 #' @rdname PPC-test-statistics
 #' @template args-group
+#' @param group2 Optionally, a second grouping variable.
 #'
 ppc_stat_grouped <-
   function(y,
            yrep,
            group,
+           group2,
            stat = "mean",
            ...,
            binwidth = NULL,
@@ -139,11 +141,16 @@ ppc_stat_grouped <-
     y <- validate_y(y)
     yrep <- validate_yrep(yrep, y)
     group <- validate_group(group, y)
-    plot_data <- ppc_group_data(y, yrep, group, stat = match.fun(stat))
+    two_groups <- !missing(group2)
+    if (two_groups) {
+      group2 <- validate_group(group2, y)
+      plot_data <- ppc_2groups_data(y, yrep, group, group2, stat = match.fun(stat))
+    } else {
+      plot_data <- ppc_group_data(y, yrep, group, stat = match.fun(stat))
+    }
     is_y <- plot_data$variable == "y"
 
-    ggplot(plot_data[!is_y, , drop = FALSE],
-           set_hist_aes(freq)) +
+    graph <- ggplot(plot_data[!is_y, , drop = FALSE], set_hist_aes(freq)) +
       geom_histogram(
         aes_(fill = "yrep"),
         color = get_color("lh"),
@@ -155,8 +162,17 @@ ppc_stat_grouped <-
         data = plot_data[is_y, , drop = FALSE],
         mapping = aes_(xintercept = ~ value, color = "y"),
         size = 1.5
-      ) +
-      facet_wrap("group", scales = "free") +
+      )
+
+    if (two_groups) {
+      graph <- graph +
+        facet_grid(group ~ group2, scales = "free") +
+        force_axes_in_facets()
+    } else {
+      graph <- graph + facet_wrap("group", scales = "free")
+    }
+
+    graph +
       scale_fill_manual(values = get_color("l"), labels = Tyrep_label()) +
       scale_color_manual(values = get_color("dh"), labels = Ty_label()) +
       guides(
@@ -170,7 +186,7 @@ ppc_stat_grouped <-
       theme_default() +
       no_legend_spacing() +
       xaxis_title(FALSE) +
-      yaxis_text(FALSE) +
+      yaxis_text(ifelse(two_groups, TRUE, FALSE)) +
       yaxis_ticks(FALSE) +
       yaxis_title(FALSE)
   }
