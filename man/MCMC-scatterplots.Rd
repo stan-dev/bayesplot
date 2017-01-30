@@ -152,8 +152,8 @@ treedepth.}
   \code{\link{bayesplot_grid}}.
 }
 \description{
-Scatterplots of MCMC draws. See the \strong{Plot Descriptions} section,
-below, for details.
+Scatterplots (and other similar plots) of MCMC draws. See the \strong{Plot
+Descriptions} section, below, for details.
 }
 \section{Plot Descriptions}{
 
@@ -212,7 +212,7 @@ p3 + ggplot2::geom_smooth(method = "lm", se = FALSE, color = "gray20",
 \donttest{
 # hexagonal heatmap
 color_scheme_set("brightblue")
-(p <- mcmc_hex(x, pars = c("sigma", "alpha"), transformations = list(sigma = "log")))
+(p <- mcmc_hex(x, pars = c("sigma", "alpha"), transform = list(sigma = "log")))
 p + plot_bg(fill = "gray95")
 p + plot_bg(fill = "gray95") + panel_bg(fill = "gray70")
 }
