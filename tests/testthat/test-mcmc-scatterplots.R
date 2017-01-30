@@ -53,6 +53,25 @@ test_that("mcmc_pairs returns a bayesplot_grid object", {
   expect_bayesplot_grid(mcmc_pairs(dframe_multiple_chains, regex_pars = "beta"))
 })
 
+test_that("no mcmc_pairs non-NUTS 'condition's fail", {
+  expect_bayesplot_grid(
+    mcmc_pairs(arr, pars = "sigma", regex_pars = "beta",
+               condition = list(1, 2:4))
+    )
+  expect_bayesplot_grid(
+    mcmc_pairs(arr, pars = "sigma", regex_pars = "beta",
+               condition = rep(c(T,F), length.out = prod(dim(arr)[1:2])))
+    )
+  expect_bayesplot_grid(
+    mcmc_pairs(arr, pars = "sigma", regex_pars = "beta",
+               condition = 1/3)
+  )
+  expect_bayesplot_grid(
+    mcmc_pairs(arr, pars = "sigma", regex_pars = "beta",
+               condition = c(1,3))
+  )
+})
+
 test_that("mcmc_pairs works with NUTS info", {
   expect_bayesplot_grid(mcmc_pairs(post, pars = c("wt", "am", "sigma"), np = np))
   expect_bayesplot_grid(mcmc_pairs(post, pars = c("wt", "am"),
