@@ -51,8 +51,8 @@ function.)}
 \code{y}. Each value in \code{group} is interpreted as the group level
 pertaining to the corresponding value of \code{y}.}
 
-\item{group2}{Optionally, a second grouping variable. Specified the same way
-as \code{group}.}
+\item{group2}{Optionally, a second grouping variable. \code{group2} can only
+be specified if \code{group} is also specified.}
 
 \item{size, alpha}{Arguments passed to \code{\link[ggplot2]{geom_point}} to
 control the appearance of scatterplot points.}

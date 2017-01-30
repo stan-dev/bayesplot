@@ -125,8 +125,8 @@ ppc_stat <-
 #' @export
 #' @rdname PPC-test-statistics
 #' @template args-group
-#' @param group2 Optionally, a second grouping variable. Specified the same way
-#'   as \code{group}.
+#' @param group2 Optionally, a second grouping variable. \code{group2} can only
+#'   be specified if \code{group} is also specified.
 #'
 ppc_stat_grouped <-
   function(y,
