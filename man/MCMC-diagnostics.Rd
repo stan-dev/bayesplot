@@ -8,7 +8,7 @@
 \alias{mcmc_neff_hist}
 \alias{mcmc_rhat}
 \alias{mcmc_rhat_hist}
-\title{Autocorrelation, Rhat, and effective sample size}
+\title{General MCMC diagnostics}
 \usage{
 mcmc_rhat(rhat, ..., size = NULL)
 
@@ -63,7 +63,8 @@ A ggplot object that can be further customized using the
 \description{
 Plots of Rhat statistics, ratios of effective sample size to total sample
 size, and autocorrelation of MCMC draws. See the \strong{Plot Descriptions}
-section, below, for details.
+section, below, for details. For models fit using the No-U-Turn-Sampler, see
+also \link{MCMC-nuts} for additional MCMC diagnostic plots.
 }
 \section{Plot Descriptions}{
 
@@ -162,14 +163,20 @@ mcmc_acf(as.array(fit2), pars = c("wt", "cyl"), lags = 10)
 
 }
 \references{
+Stan Development Team. (2016). \emph{Stan Modeling Language Users
+Guide and Reference Manual.} \url{http://mc-stan.org/documentation/}
+
 Gelman, A. and Rubin, D. B. (1992). Inference from iterative
 simulation using multiple sequences. \emph{Statistical Science}. 7(4),
 457--472.
-
-Stan Development Team. (2016). \emph{Stan Modeling Language Users
-Guide and Reference Manual.} \url{http://mc-stan.org/documentation/}
 }
 \seealso{
+\itemize{
+\item The \emph{Visual MCMC Diagnostics} vignette.
+\item \link{MCMC-nuts} for additional MCMC diagnostic plots for models fit
+  using the No-U-Turn-Sampler.
+}
+
 Other MCMC: \code{\link{MCMC-combos}},
   \code{\link{MCMC-distributions}},
   \code{\link{MCMC-intervals}}, \code{\link{MCMC-nuts}},

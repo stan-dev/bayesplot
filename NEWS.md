@@ -3,8 +3,9 @@
 (GitHub issue/PR numbers in parentheses)
 
 #### Fixes
-* Avoid error in some cases when `divergences` is specified in call to `mcmc_trace`
-but there are not actually any divergent transitions.
+* Avoid error in some cases when `divergences` is specified in call to
+`mcmc_trace` but there are not actually any divergent transitions.
+* The `merge_chains` argument to `mcmc_nuts_energy` now defaults to `FALSE`.
 
 #### New features in existing functions
 * For `mcmc_*` functions, transformations are recycled if `transformations` 

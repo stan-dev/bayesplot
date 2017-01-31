@@ -73,9 +73,9 @@ to \code{mcmc_scatter} like \code{size} and \code{alpha}.}
   plots above the diagonal and which are shown in the plots below the
   diagnoal. The histograms (or density plots) along the diagonal are always
   made using all chains and iterations, but the scatterplots (or hex plots)
-  plots above and below the diagonal show different combinations of
-  chains/iterations depending on the \code{condition} argument.
-  There are many options for \code{condition}:
+  above and below the diagonal show different combinations of
+  chains/iterations depending on the \code{condition} argument. There are
+  many options for \code{condition}:
 \itemize{
   \item \code{NULL} (the default), in which case half of the chains
   (or roughly half if there are an odd number) will be used in the
