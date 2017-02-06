@@ -69,6 +69,8 @@
 #' mcmc_recover_intervals(draws, true, batch = 1:4)
 #' # same but in a different order
 #' mcmc_recover_intervals(draws, true, batch = c(1, 3, 4, 2))
+#' # present as bias by centering with true values
+#' mcmc_recover_intervals(sweep(draws, 2, true), rep(0, ncol(draws))) + hline_0()
 #' }
 #'
 NULL
