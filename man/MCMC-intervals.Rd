@@ -2,8 +2,8 @@
 % Please edit documentation in R/mcmc-intervals.R
 \name{MCMC-intervals}
 \alias{MCMC-intervals}
-\alias{mcmc_areas}
 \alias{mcmc_intervals}
+\alias{mcmc_areas}
 \title{Plot interval estimates from MCMC draws}
 \usage{
 mcmc_intervals(x, pars = character(), regex_pars = character(),
@@ -90,6 +90,7 @@ Plot central (quantile-based) interval estimates from MCMC draws. See the
   }
 }
 }
+
 \examples{
 # some parameter draws to use for demonstration
 x <- example_mcmc_draws(params = 6)
@@ -163,4 +164,3 @@ Other MCMC: \code{\link{MCMC-combos}},
   \code{\link{MCMC-scatterplots}},
   \code{\link{MCMC-traces}}
 }
-

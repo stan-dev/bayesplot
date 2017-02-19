@@ -64,6 +64,7 @@ available plots.
   }
 }
 }
+
 \examples{
 \dontrun{
 library(rstanarm)
@@ -101,4 +102,3 @@ Other MCMC: \code{\link{MCMC-combos}},
   \code{\link{MCMC-scatterplots}},
   \code{\link{MCMC-traces}}
 }
-

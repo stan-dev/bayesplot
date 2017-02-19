@@ -3,18 +3,18 @@
 \name{bayesplot-extractors}
 \alias{bayesplot-extractors}
 \alias{log_posterior}
+\alias{nuts_params}
+\alias{rhat}
+\alias{neff_ratio}
 \alias{log_posterior.stanfit}
 \alias{log_posterior.stanreg}
-\alias{neff_ratio}
-\alias{neff_ratio.stanfit}
-\alias{neff_ratio.stanreg}
-\alias{nuts_params}
-\alias{nuts_params.list}
 \alias{nuts_params.stanfit}
 \alias{nuts_params.stanreg}
-\alias{rhat}
+\alias{nuts_params.list}
 \alias{rhat.stanfit}
 \alias{rhat.stanreg}
+\alias{neff_ratio.stanfit}
+\alias{neff_ratio.stanreg}
 \title{Extract quantities needed for plotting from model objects}
 \usage{
 log_posterior(object, ...)
@@ -102,4 +102,3 @@ tail(lp)
 \seealso{
 \code{\link{MCMC-nuts}}, \code{\link{MCMC-diagnostics}}
 }
-

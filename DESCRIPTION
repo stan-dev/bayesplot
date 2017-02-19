@@ -32,5 +32,5 @@ Suggests:
     rstantools (>= 1.0.0),
     shinystan (>= 2.2.1),
     testthat
-RoxygenNote: 5.0.1
+RoxygenNote: 6.0.1
 VignetteBuilder: knitr

@@ -2,10 +2,10 @@
 % Please edit documentation in R/mcmc-distributions.R
 \name{MCMC-distributions}
 \alias{MCMC-distributions}
-\alias{mcmc_dens}
-\alias{mcmc_dens_overlay}
 \alias{mcmc_hist}
+\alias{mcmc_dens}
 \alias{mcmc_hist_by_chain}
+\alias{mcmc_dens_overlay}
 \alias{mcmc_violin}
 \title{Histograms and kernel density plots of MCMC draws}
 \usage{
@@ -102,6 +102,7 @@ Various types of histograms and kernel density plots of MCMC draws. See the
   }
 }
 }
+
 \examples{
 # some parameter draws to use for demonstration
 x <- example_mcmc_draws()
@@ -163,4 +164,3 @@ Other MCMC: \code{\link{MCMC-combos}},
   \code{\link{MCMC-scatterplots}},
   \code{\link{MCMC-traces}}
 }
-
