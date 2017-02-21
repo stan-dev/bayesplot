@@ -57,8 +57,7 @@ A ggplot object that can be further customized using the
 }
 \description{
 Medians and central interval estimates of \code{yrep} with \code{y} overlaid.
-See the \strong{Plot Descriptions} section, below. This functionality  will
-greatly expand in future releases of the package.
+See the \strong{Plot Descriptions} section, below.
 }
 \section{Plot Descriptions}{
 

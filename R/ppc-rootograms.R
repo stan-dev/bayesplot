@@ -24,8 +24,8 @@
 #'
 #' @details For rootograms, the observations \code{y} and predictons \code{yrep}
 #'   must be counts. \pkg{bayesplot} will validate that both \code{y} and
-#'   \code{yrep} contain only non-negative integer values (although they need
-#'   not be integers in the sense of \R's \code{\link{integer}} type).
+#'   \code{yrep} contain only non-negative integer values, although they need
+#'   not be integers in the sense of \R's \code{\link{integer}} type.
 #'
 #' @section Plot Descriptions:
 #' \describe{
