@@ -2,9 +2,13 @@
 % Please edit documentation in R/ppc_bars.R
 \name{ppc_bars}
 \alias{ppc_bars}
+\alias{ppc_bars_grouped}
 \title{Bar plots for discrete outcomes (ordinal, multinomial, count)}
 \usage{
 ppc_bars(y, yrep, ..., prob = 0.9, width = 0.9, size = 1, fatten = 3)
+
+ppc_bars_grouped(y, yrep, group, facet_args = list(), ..., prob = 0.9,
+  width = 0.9, size = 1, fatten = 3)
 }
 \arguments{
 \item{y}{A vector of observations. See \strong{Details}.}
@@ -25,6 +29,13 @@ width.}
 
 \item{size, fatten}{Passed to \code{\link[ggplot2]{geom_pointrange}} to
 control the appearance of the \code{yrep} points and intervals.}
+
+\item{group}{A grouping variable (a vector or factor) the same length as
+\code{y}. Each value in \code{group} is interpreted as the group level
+pertaining to the corresponding value of \code{y}.}
+
+\item{facet_args}{An optional list of  arguments (other than \code{facets})
+passed to \code{\link[ggplot2]{facet_wrap}} to control faceting.}
 }
 \description{
 Bar plots for discrete outcomes (ordinal, multinomial, count). See the

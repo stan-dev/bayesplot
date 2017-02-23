@@ -45,45 +45,137 @@ ppc_bars <-
 
     alpha <- (1 - prob) / 2
     probs <- sort(c(alpha, 0.5, 1 - alpha))
+    yrep_data <- ppc_bars_yrep_data(y, yrep, group = NULL, probs = probs)
+    .ppc_bars(
+      y_data = data.frame(y = y),
+      yrep_data,
+      grouped = FALSE,
+      facet_args = list(),
+      width = width,
+      size = size,
+      fatten = fatten
+    )
+  }
 
-    y_data <- data.frame(y = y)
 
+#' @rdname ppc_bars
+#' @export
+#' @template args-group
+#' @param facet_args An optional list of  arguments (other than \code{facets})
+#'   passed to \code{\link[ggplot2]{facet_wrap}} to control faceting.
+ppc_bars_grouped <-
+  function(y,
+           yrep,
+           group,
+           facet_args = list(),
+           ...,
+           prob = 0.9,
+           width = 0.9,
+           size = 1,
+           fatten = 3) {
+
+    check_ignored_arguments(...)
+    y <- validate_y(y)
+    yrep <- validate_yrep(yrep, y)
+    group <- validate_group(group, y)
+    if (!all_counts(y))
+      stop("ppc_bars expects only non-negative integers in 'y'.")
+    if (!all_counts(yrep))
+      stop("ppc_bars expects only non-negative integers in 'yrep'.")
+
+    alpha <- (1 - prob) / 2
+    probs <- sort(c(alpha, 0.5, 1 - alpha))
+    yrep_data <- ppc_bars_yrep_data(y, yrep, group, probs)
+    .ppc_bars(
+      y_data = data.frame(y, group),
+      yrep_data,
+      grouped = TRUE,
+      facet_args = facet_args,
+      width = width,
+      size = size,
+      fatten = fatten
+    )
+  }
+
+
+
+# internal ----------------------------------------------------------------
+
+#' @importFrom dplyr "%>%" ungroup count_
+ppc_bars_yrep_data <- function(y, yrep, group = NULL, probs) {
+  if (is.null(group)) {
     yrep_tab <- t(apply(yrep, 1, table)) # draws x number of categories
     yrep_intervals <- apply(yrep_tab, 2, quantile, probs = probs)
     yrep_data <- data.frame(
-      x = 1:length(unique(y_data$y)),
+      x = 1:length(unique(y)),
       lo = yrep_intervals[1, ],
       mid = yrep_intervals[2, ],
       hi = yrep_intervals[3, ]
     )
-
-    ggplot() +
-      geom_bar(
-        data = y_data,
-        mapping = aes_(x = ~ y, fill = "y"),
-        color = get_color("lh"),
-        width = width
-      ) +
-      geom_pointrange(
-        data = yrep_data,
-        mapping = aes_(
-          x = ~ x,
-          y = ~ mid,
-          ymin = ~ lo,
-          ymax = ~ hi,
-          color = "yrep"
-        ),
-        size = size,
-        fatten = fatten
-      ) +
-      scale_fill_manual("", values = get_color("l"),
-                        labels = y_label()) +
-      scale_color_manual("", values = get_color("dh"),
-                         labels = yrep_label()) +
-      guides(color = guide_legend(order = 1),
-             fill = guide_legend(order = 2)) +
-      labs(x = y_label(), y = "Count") +
-      dont_expand_y_axis() +
-      theme_default() +
-      theme(legend.spacing.y = unit(-0.25, "cm"))
+    return(yrep_data)
   }
+
+  # FIXME: double check and make sure that levels with zero counts are still plotted
+  yrep_data <-
+    ppc_group_data(y, yrep, group = group, stat = NULL) %>%
+    filter_(~ variable != "y") %>%
+    ungroup() %>%
+    count_(vars = c("group", "value", "variable")) %>%
+    group_by_(.dots = list(~ group, ~ value)) %>%
+    summarise_(
+      lo = ~ quantile(n, probs = probs[1]),
+      mid = ~ median(n),
+      hi = ~ quantile(n, probs = probs[3])
+    )
+
+  colnames(yrep_data)[colnames(yrep_data) == "value"] <- "x"
+  yrep_data
+}
+
+.ppc_bars <- function(y_data,
+                      yrep_data,
+                      facet_args = list(),
+                      grouped = FALSE,
+                      width = 0.9,
+                      size = 1,
+                      fatten = 3) {
+  graph <- ggplot() +
+    geom_bar(
+      data = y_data,
+      mapping = aes_(x = ~ y, fill = "y"),
+      color = get_color("lh"),
+      width = width
+    ) +
+    geom_pointrange(
+      data = yrep_data,
+      mapping = aes_(
+        x = ~ x,
+        y = ~ mid,
+        ymin = ~ lo,
+        ymax = ~ hi,
+        color = "yrep"
+      ),
+      size = size,
+      fatten = fatten
+    ) +
+    scale_fill_manual("", values = get_color("l"),
+                      labels = y_label()) +
+    scale_color_manual("", values = get_color("dh"),
+                       labels = yrep_label()) +
+    guides(color = guide_legend(order = 1),
+           fill = guide_legend(order = 2)) +
+    labs(x = y_label(), y = "Count")
+
+  if (grouped) {
+    facet_args[["facets"]] <- "group"
+    if (is.null(facet_args[["scales"]]))
+      facet_args[["scales"]] <- "free"
+    graph <- graph + do.call("facet_wrap", facet_args)
+  }
+
+  graph +
+    dont_expand_y_axis() +
+    theme_default() +
+    theme(legend.spacing.y = unit(-0.25, "cm"))
+}
+
