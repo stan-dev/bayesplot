@@ -1,6 +1,6 @@
-#' Bar plots for discrete outcomes (ordinal, multinomial, count)
+#' Bar plots for ordinal, categorical and multinomial outcomes
 #'
-#' Bar plots for discrete outcomes (ordinal, multinomial, count). See the
+#' Bar plots for ordinal, categorical, and multinomial outcomes. See the
 #' \strong{Plot Descriptions} section below.
 #'
 #' @export
@@ -11,8 +11,10 @@
 #'   width.
 #' @param size,fatten Passed to \code{\link[ggplot2]{geom_pointrange}} to
 #' control the appearance of the \code{yrep} points and intervals.
+#' @param freq If \code{TRUE} (the default) the y-axis will display counts.
+#'   Setting \code{freq=FALSE} will put proportions on the y-axis.
 #'
-#' @details For \code{ppc_bars}, the observations \code{y} and predictons
+#' @details For \code{ppc_bars}, the observations \code{y} and predictions
 #'   \code{yrep} must be non-negative integers. \pkg{bayesplot} will validate
 #'   that both \code{y} and \code{yrep} contain only non-negative integer
 #'   values, although they need not be integers in the strict sense of \R's
@@ -21,8 +23,12 @@
 #' @section Plot Descriptions:
 #' \describe{
 #' \item{\code{ppc_bars}}{
-#'   Bar plot of a discrete variable \code{y} with \code{yrep} medians and
-#'   uncertainty intervals superimposed on the bars.
+#'   Bar plot of \code{y} with \code{yrep} medians and uncertainty intervals
+#'   superimposed on the bars.
+#' }
+#' \item{\code{ppc_bars_grouped}}{
+#'   Same as \code{ppc_bars} but a separate plot (facet) is generated for each
+#'   level of a grouping variable.
 #' }
 #' }
 #'
@@ -33,7 +39,8 @@ ppc_bars <-
            prob = 0.9,
            width = 0.9,
            size = 1,
-           fatten = 3) {
+           fatten = 3,
+           freq = TRUE) {
 
     check_ignored_arguments(...)
     y <- validate_y(y)
@@ -45,7 +52,7 @@ ppc_bars <-
 
     alpha <- (1 - prob) / 2
     probs <- sort(c(alpha, 0.5, 1 - alpha))
-    yrep_data <- ppc_bars_yrep_data(y, yrep, group = NULL, probs = probs)
+    yrep_data <- ppc_bars_yrep_data(y, yrep, probs = probs, freq = freq, group = NULL)
     .ppc_bars(
       y_data = data.frame(y = y),
       yrep_data,
@@ -53,7 +60,8 @@ ppc_bars <-
       facet_args = list(),
       width = width,
       size = size,
-      fatten = fatten
+      fatten = fatten,
+      freq = freq
     )
   }
 
@@ -72,7 +80,8 @@ ppc_bars_grouped <-
            prob = 0.9,
            width = 0.9,
            size = 1,
-           fatten = 3) {
+           fatten = 3,
+           freq = TRUE) {
 
     check_ignored_arguments(...)
     y <- validate_y(y)
@@ -85,7 +94,7 @@ ppc_bars_grouped <-
 
     alpha <- (1 - prob) / 2
     probs <- sort(c(alpha, 0.5, 1 - alpha))
-    yrep_data <- ppc_bars_yrep_data(y, yrep, group, probs)
+    yrep_data <- ppc_bars_yrep_data(y, yrep, probs, freq = freq, group = group)
     .ppc_bars(
       y_data = data.frame(y, group),
       yrep_data,
@@ -93,7 +102,8 @@ ppc_bars_grouped <-
       facet_args = facet_args,
       width = width,
       size = size,
-      fatten = fatten
+      fatten = fatten,
+      freq = freq
     )
   }
 
@@ -102,22 +112,26 @@ ppc_bars_grouped <-
 # internal ----------------------------------------------------------------
 
 #' @importFrom dplyr "%>%" ungroup count_ arrange_
-ppc_bars_yrep_data <- function(y, yrep, group = NULL, probs) {
+ppc_bars_yrep_data <- function(y, yrep, probs, freq = TRUE, group = NULL) {
   if (is.null(group)) {
     tab <-
       melt_yrep(yrep, label = FALSE) %>%
       count_(vars = c("rep_id", "value")) %>%
+      group_by_(~ rep_id) %>%
+      mutate_(proportion = ~ n / sum(n)) %>%
       ungroup() %>%
-      select_(.dots = list(~ value, ~ n)) %>%
+      select_(.dots = list(~ value, ~ n, ~ proportion)) %>%
       arrange_(~ value) %>%
-      group_by_(~value)
+      group_by_(~ value)
 
+    sel <- ifelse(freq, "n", "proportion")
+    colnames(tab)[colnames(tab) == sel] <- "xxx"
     return(
       data.frame(
         x = unique(tab$value),
-        lo = summarise_(tab, lo = ~ quantile(n, probs = probs[1]))$lo,
-        mid = summarise_(tab, mid = ~ quantile(n, probs = 0.5))$mid,
-        hi = summarise_(tab, hi = ~ quantile(n, probs = probs[3]))$hi
+        lo = summarise_(tab, lo = ~ quantile(xxx, probs = probs[1]))$lo,
+        mid = summarise_(tab, mid = ~ quantile(xxx, probs = 0.5))$mid,
+        hi = summarise_(tab, hi = ~ quantile(xxx, probs = probs[3]))$hi
       )
     )
   }
@@ -128,15 +142,21 @@ ppc_bars_yrep_data <- function(y, yrep, group = NULL, probs) {
     filter_(~ variable != "y") %>%
     ungroup() %>%
     count_(vars = c("group", "value", "variable")) %>%
-    group_by_(.dots = list(~ group, ~ value)) %>%
-    summarise_(
-      lo = ~ quantile(n, probs = probs[1]),
-      mid = ~ median(n),
-      hi = ~ quantile(n, probs = probs[3])
-    )
+    group_by_(.dots = list(~ variable, ~ group)) %>%
+    mutate_(proportion = ~ n / sum(n)) %>%
+    group_by_(.dots = list(~ group, ~ value))
 
-  colnames(yrep_data)[colnames(yrep_data) == "value"] <- "x"
-  return(yrep_data)
+  sel <- ifelse(freq, "n", "proportion")
+  colnames(yrep_data)[colnames(yrep_data) == sel] <- "xxx"
+
+  out <- summarise_(
+    yrep_data,
+    lo = ~ quantile(xxx, probs = probs[1]),
+    mid = ~ median(xxx),
+    hi = ~ quantile(xxx, probs = probs[3])
+  )
+  colnames(out)[colnames(out) == "value"] <- "x"
+  return(out)
 }
 
 .ppc_bars <- function(y_data,
@@ -145,11 +165,17 @@ ppc_bars_yrep_data <- function(y, yrep, group = NULL, probs) {
                       grouped = FALSE,
                       width = 0.9,
                       size = 1,
-                      fatten = 3) {
+                      fatten = 3,
+                      freq = TRUE) {
+
   graph <- ggplot() +
     geom_bar(
       data = y_data,
-      mapping = aes_(x = ~ y, fill = "y"),
+      mapping =
+        if (freq)
+          aes_(x = ~ y, fill = "y")
+        else
+          aes_(x = ~ y, y = ~ ..prop.., fill = "y"),
       color = get_color("lh"),
       width = width
     ) +
@@ -171,7 +197,7 @@ ppc_bars_yrep_data <- function(y, yrep, group = NULL, probs) {
                        labels = yrep_label()) +
     guides(color = guide_legend(order = 1),
            fill = guide_legend(order = 2)) +
-    labs(x = y_label(), y = "Count")
+    labs(x = NULL, y = if (freq) "Count" else "Proportion")
 
   if (grouped) {
     facet_args[["facets"]] <- "group"

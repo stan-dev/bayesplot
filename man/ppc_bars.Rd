@@ -3,12 +3,13 @@
 \name{ppc_bars}
 \alias{ppc_bars}
 \alias{ppc_bars_grouped}
-\title{Bar plots for discrete outcomes (ordinal, multinomial, count)}
+\title{Bar plots for ordinal, categorical and multinomial outcomes}
 \usage{
-ppc_bars(y, yrep, ..., prob = 0.9, width = 0.9, size = 1, fatten = 3)
+ppc_bars(y, yrep, ..., prob = 0.9, width = 0.9, size = 1, fatten = 3,
+  freq = TRUE)
 
 ppc_bars_grouped(y, yrep, group, facet_args = list(), ..., prob = 0.9,
-  width = 0.9, size = 1, fatten = 3)
+  width = 0.9, size = 1, fatten = 3, freq = TRUE)
 }
 \arguments{
 \item{y}{A vector of observations. See \strong{Details}.}
@@ -30,6 +31,9 @@ width.}
 \item{size, fatten}{Passed to \code{\link[ggplot2]{geom_pointrange}} to
 control the appearance of the \code{yrep} points and intervals.}
 
+\item{freq}{If \code{TRUE} (the default) the y-axis will display counts.
+Setting \code{freq=FALSE} will put proportions on the y-axis.}
+
 \item{group}{A grouping variable (a vector or factor) the same length as
 \code{y}. Each value in \code{group} is interpreted as the group level
 pertaining to the corresponding value of \code{y}.}
@@ -38,11 +42,11 @@ pertaining to the corresponding value of \code{y}.}
 passed to \code{\link[ggplot2]{facet_wrap}} to control faceting.}
 }
 \description{
-Bar plots for discrete outcomes (ordinal, multinomial, count). See the
+Bar plots for ordinal, categorical, and multinomial outcomes. See the
 \strong{Plot Descriptions} section below.
 }
 \details{
-For \code{ppc_bars}, the observations \code{y} and predictons
+For \code{ppc_bars}, the observations \code{y} and predictions
   \code{yrep} must be non-negative integers. \pkg{bayesplot} will validate
   that both \code{y} and \code{yrep} contain only non-negative integer
   values, although they need not be integers in the strict sense of \R's
@@ -52,8 +56,12 @@ For \code{ppc_bars}, the observations \code{y} and predictons
 
 \describe{
 \item{\code{ppc_bars}}{
-  Bar plot of a discrete variable \code{y} with \code{yrep} medians and
-  uncertainty intervals superimposed on the bars.
+  Bar plot of \code{y} with \code{yrep} medians and uncertainty intervals
+  superimposed on the bars.
+}
+\item{\code{ppc_bars_grouped}}{
+  Same as \code{ppc_bars} but a separate plot (facet) is generated for each
+  level of a grouping variable.
 }
 }
 }
