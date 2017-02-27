@@ -82,6 +82,7 @@ greatly expand in future releases of the package.
   }
 }
 }
+
 \examples{
 y <- rnorm(50)
 yrep <- matrix(rnorm(5000, 0, 2), ncol = 50)
@@ -148,4 +149,3 @@ Other PPCs: \code{\link{PPC-distributions}},
   \code{\link{PPC-scatterplots}},
   \code{\link{PPC-test-statistics}}
 }
-

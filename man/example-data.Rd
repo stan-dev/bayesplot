@@ -2,11 +2,11 @@
 % Please edit documentation in R/example-data.R
 \name{example-data}
 \alias{example-data}
-\alias{example_group_data}
 \alias{example_mcmc_draws}
-\alias{example_x_data}
-\alias{example_y_data}
 \alias{example_yrep_draws}
+\alias{example_y_data}
+\alias{example_x_data}
+\alias{example_group_data}
 \title{Example draws to use in demonstrations and tests}
 \usage{
 example_mcmc_draws(chains = 4, params = 4)
@@ -97,4 +97,3 @@ dim(yrep) # ncol(yrep) = length(y) = length(x) = length(group)
 
 }
 \keyword{internal}
-

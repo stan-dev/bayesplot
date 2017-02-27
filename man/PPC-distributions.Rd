@@ -2,13 +2,13 @@
 % Please edit documentation in R/ppc-distributions.R
 \name{PPC-distributions}
 \alias{PPC-distributions}
+\alias{ppc_hist}
 \alias{ppc_boxplot}
+\alias{ppc_freqpoly}
+\alias{ppc_freqpoly_grouped}
 \alias{ppc_dens}
 \alias{ppc_dens_overlay}
 \alias{ppc_ecdf_overlay}
-\alias{ppc_freqpoly}
-\alias{ppc_freqpoly_grouped}
-\alias{ppc_hist}
 \alias{ppc_violin_grouped}
 \title{PPC distributions}
 \usage{
@@ -115,6 +115,7 @@ For Binomial data, the plots will typically be most useful if
   }
 }
 }
+
 \examples{
 color_scheme_set("brightblue")
 y <- example_y_data()
@@ -168,4 +169,3 @@ Other PPCs: \code{\link{PPC-errors}},
   \code{\link{PPC-scatterplots}},
   \code{\link{PPC-test-statistics}}
 }
-

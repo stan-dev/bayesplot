@@ -2,25 +2,25 @@
 % Please edit documentation in R/bayesplot-helpers.R
 \name{bayesplot-helpers}
 \alias{bayesplot-helpers}
-\alias{facet_bg}
-\alias{facet_text}
-\alias{grid_lines}
-\alias{hline_0}
+\alias{vline_at}
 \alias{hline_at}
+\alias{vline_0}
+\alias{hline_0}
 \alias{lbub}
 \alias{legend_move}
 \alias{legend_none}
 \alias{legend_text}
-\alias{panel_bg}
-\alias{plot_bg}
-\alias{vline_0}
-\alias{vline_at}
+\alias{xaxis_title}
 \alias{xaxis_text}
 \alias{xaxis_ticks}
-\alias{xaxis_title}
+\alias{yaxis_title}
 \alias{yaxis_text}
 \alias{yaxis_ticks}
-\alias{yaxis_title}
+\alias{facet_text}
+\alias{facet_bg}
+\alias{panel_bg}
+\alias{plot_bg}
+\alias{grid_lines}
 \title{Convenience functions for adding or changing plot details}
 \usage{
 vline_at(v, fun, ..., na.rm = TRUE)
@@ -293,4 +293,3 @@ ppc_dens_overlay(y, yrep[1:30, ]) +
 \code{\link{theme_default}} for the default ggplot theme used by
   \pkg{bayesplot}.
 }
-
