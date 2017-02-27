@@ -181,6 +181,7 @@ ppc_bars_yrep_data <- function(y, yrep, group = NULL, probs) {
   }
 
   graph +
+    scale_x_continuous(breaks = pretty) +
     dont_expand_y_axis() +
     theme_default() +
     theme(legend.spacing.y = unit(-0.25, "cm"))
