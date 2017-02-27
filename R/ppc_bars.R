@@ -101,18 +101,25 @@ ppc_bars_grouped <-
 
 # internal ----------------------------------------------------------------
 
-#' @importFrom dplyr "%>%" ungroup count_
+#' @importFrom dplyr "%>%" ungroup count_ arrange_
 ppc_bars_yrep_data <- function(y, yrep, group = NULL, probs) {
   if (is.null(group)) {
-    yrep_tab <- t(apply(yrep, 1, table)) # draws x number of categories
-    yrep_intervals <- apply(yrep_tab, 2, quantile, probs = probs)
-    yrep_data <- data.frame(
-      x = 1:length(unique(y)),
-      lo = yrep_intervals[1, ],
-      mid = yrep_intervals[2, ],
-      hi = yrep_intervals[3, ]
+    tab <-
+      melt_yrep(yrep, label = FALSE) %>%
+      count_(vars = c("rep_id", "value")) %>%
+      ungroup() %>%
+      select_(.dots = list(~ value, ~ n)) %>%
+      arrange_(~ value) %>%
+      group_by_(~value)
+
+    return(
+      data.frame(
+        x = unique(tab$value),
+        lo = summarise_(tab, lo = ~ quantile(n, probs = probs[1]))$lo,
+        mid = summarise_(tab, mid = ~ quantile(n, probs = 0.5))$mid,
+        hi = summarise_(tab, hi = ~ quantile(n, probs = probs[3]))$hi
+      )
     )
-    return(yrep_data)
   }
 
   # FIXME: double check and make sure that levels with zero counts are still plotted
@@ -129,7 +136,7 @@ ppc_bars_yrep_data <- function(y, yrep, group = NULL, probs) {
     )
 
   colnames(yrep_data)[colnames(yrep_data) == "value"] <- "x"
-  yrep_data
+  return(yrep_data)
 }
 
 .ppc_bars <- function(y_data,
