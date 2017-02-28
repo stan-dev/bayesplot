@@ -371,12 +371,10 @@ ppc_violin_grouped <- function(y, yrep, group, ...,
       draw_quantiles = probs,
       alpha = alpha
     ) +
-    geom_point(
+    geom_violin(
       data = plot_data[is_y,, drop = FALSE],
       aes_(fill = "y", color = "y"),
-      shape = 21,
-      alpha = 0.9,
-      size = size
+      alpha = 0.9
     ) +
     scale_fill_ppc_dist(values = c(NA, get_color("l"))) +
     scale_color_ppc_dist() +
