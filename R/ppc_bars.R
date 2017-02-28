@@ -111,7 +111,7 @@ ppc_bars_grouped <-
 
 # internal ----------------------------------------------------------------
 
-#' @importFrom dplyr "%>%" ungroup count_ arrange_
+#' @importFrom dplyr "%>%" ungroup count_ arrange_ mutate_
 ppc_bars_yrep_data <- function(y, yrep, probs, freq = TRUE, group = NULL) {
   if (is.null(group)) {
     tab <-
@@ -201,8 +201,8 @@ ppc_bars_yrep_data <- function(y, yrep, probs, freq = TRUE, group = NULL) {
 
   if (grouped) {
     facet_args[["facets"]] <- "group"
-    if (is.null(facet_args[["scales"]]))
-      facet_args[["scales"]] <- "free"
+    # if (is.null(facet_args[["scales"]]))
+    #   facet_args[["scales"]] <- "free"
     graph <- graph + do.call("facet_wrap", facet_args)
   }
 
