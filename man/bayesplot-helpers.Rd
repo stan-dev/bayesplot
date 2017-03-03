@@ -21,6 +21,7 @@
 \alias{panel_bg}
 \alias{plot_bg}
 \alias{grid_lines}
+\alias{overlay_function}
 \title{Convenience functions for adding or changing plot details}
 \usage{
 vline_at(v, fun, ..., na.rm = TRUE)
@@ -60,6 +61,8 @@ panel_bg(on = TRUE, ...)
 plot_bg(on = TRUE, ...)
 
 grid_lines(color = "gray50", size = 0.2)
+
+overlay_function(...)
 }
 \arguments{
 \item{v}{Either a numeric vector specifying the value(s) at which to
@@ -80,7 +83,10 @@ vector.}
   to \code{\link[ggplot2]{element_text}}.
 
   For \code{xaxis_ticks} and \code{yaxis_ticks}, \code{...} is passed to
-  \code{\link[ggplot2]{element_line}}.}
+  \code{\link[ggplot2]{element_line}}.
+
+  For \code{overlay_function}, \code{...} is passed to
+  \code{\link[ggplot2]{stat_function}}.}
 
 \item{na.rm}{A logical scalar passed to the appropriate geom (e.g.
 \code{\link[ggplot2]{geom_vline}}). The default is \code{TRUE}.}
@@ -178,12 +184,22 @@ plotting area.
 an existing plot (ggplot object) to add grid lines to the plot background.
 }
 }
+\subsection{Superimpose a function on an existing plot}{
+\itemize{
+\item \code{overlay_function} is a simple wrapper for
+\code{\link[ggplot2]{stat_function}} but with the \code{inherit.aes} argument
+fixed to \code{FALSE}. Fixing \code{inherit.aes=FALSE} will avoid potential
+errors due to the \code{\link[ggplot2]{aes}}thetic mapping used by certain
+\pkg{bayesplot} plotting functions).
+}
+}
 }
 \examples{
 color_scheme_set("gray")
 x <- example_mcmc_draws(chains = 1)
 dim(x)
 colnames(x)
+
 
 ###################################
 ### vertical & horizontal lines ###
@@ -288,6 +304,25 @@ ppc_dens_overlay(y, yrep[1:30, ]) +
  plot_bg(fill = "gray90") +
  panel_bg(color = "black", fill = "gray99", size = 3)
 }
+
+
+###############################################
+### superimpose a function on existing plot ###
+###############################################
+# compare posterior of beta[1] to Gaussian with same posterior mean
+# and sd as beta[1]
+purple_gaussian <-
+  overlay_function(
+    fun = dnorm,
+    args = list(mean(x[,, "beta[1]"]), sd(x[,, "beta[1]"])),
+    color = "purple",
+    size = 2
+  )
+
+color_scheme_set("gray")
+mcmc_hist(x, pars = "beta[1]") + purple_gaussian
+\donttest{mcmc_dens(x, pars = "beta[1]") + purple_gaussian}
+
 }
 \seealso{
 \code{\link{theme_default}} for the default ggplot theme used by
