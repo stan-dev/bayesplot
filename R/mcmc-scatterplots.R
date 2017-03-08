@@ -338,7 +338,9 @@ mcmc_pairs <- function(x,
 
     if (identical(pair[1], pair[2])) { # Diagonal
       diag_args[["x"]] <- x[, pair[1], drop = FALSE]
-      plots[[j]] <- do.call(plot_diagonal, diag_args)
+      plots[[j]] <-
+        do.call(plot_diagonal, diag_args) +
+        theme(axis.line.y = element_blank())
     } else { # Off-diagonal
       # use mark if above diagonal and !mark if below the diagonal
       mark2 <- if (is_lower_tri(j, n_param)) !mark else mark
