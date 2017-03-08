@@ -276,7 +276,7 @@ mcmc_hex <- function(x,
 #'   np = np,
 #'   np_style = list(color = c("firebrick", "dodgerblue"), size = c(1,2)),
 #'   # for demonstration purposes, set max_treedepth to a value that will
-#'   # result in at least a few warnings points (colored np_colors[2])
+#'   # result in at least a few max treedepth warnings
 #'   max_treedepth = with(np, max(Value[Parameter == "treedepth__"]) - 1)
 #' )
 #' }
