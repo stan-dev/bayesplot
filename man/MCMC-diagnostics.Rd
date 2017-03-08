@@ -2,12 +2,12 @@
 % Please edit documentation in R/mcmc-diagnostics.R
 \name{MCMC-diagnostics}
 \alias{MCMC-diagnostics}
-\alias{mcmc_acf}
-\alias{mcmc_acf_bar}
-\alias{mcmc_neff}
-\alias{mcmc_neff_hist}
 \alias{mcmc_rhat}
 \alias{mcmc_rhat_hist}
+\alias{mcmc_neff}
+\alias{mcmc_neff_hist}
+\alias{mcmc_acf}
+\alias{mcmc_acf_bar}
 \title{General MCMC diagnostics}
 \usage{
 mcmc_rhat(rhat, ..., size = NULL)
@@ -98,6 +98,7 @@ autocorrelation function. \code{mcmc_acf} is a line plot whereas
 }
 }
 }
+
 \examples{
 # autocorrelation
 x <- example_mcmc_draws()
@@ -184,4 +185,3 @@ Other MCMC: \code{\link{MCMC-combos}},
   \code{\link{MCMC-scatterplots}},
   \code{\link{MCMC-traces}}
 }
-

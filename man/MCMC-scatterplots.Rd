@@ -2,9 +2,9 @@
 % Please edit documentation in R/mcmc-scatterplots.R
 \name{MCMC-scatterplots}
 \alias{MCMC-scatterplots}
+\alias{mcmc_scatter}
 \alias{mcmc_hex}
 \alias{mcmc_pairs}
-\alias{mcmc_scatter}
 \title{Scatterplots of MCMC draws}
 \usage{
 mcmc_scatter(x, pars = character(), regex_pars = character(),
@@ -37,11 +37,14 @@ before plotting. If \code{transformations} is a function or a single string
 naming a function then that function will be used to transform all
 parameters. To apply transformations to particular parameters, the
 \code{transformations} argument can be a named list with length equal to
-the number of parameters to be transfomred. The name of each list element
-should be a parameter name and the content of each list element should be a
-function (or any item to match as a function via \code{\link{match.fun}},
-e.g. a string naming a function). If a function is specified by its name as
-a string (e.g. \code{"log"}), then it can be used to construct a new
+the number of parameters to be transfomred. Currently only univariate
+transformations of scalar parameters can be specified (multivariate
+transformations will be implemented in a future release). If
+\code{transformations} is a list, the name of each list element should be a
+parameter name and the content of each list element should be a function
+(or any item to match as a function via \code{\link{match.fun}}, e.g. a
+string naming a function). If a function is specified by its name as a
+string (e.g. \code{"log"}), then it can be used to construct a new
 parameter label for the appropriate parameter (e.g. \code{"log(sigma)"}).
 If a function itself is specified (e.g. \code{log} or \code{function(x)
 log(x)}) then \code{"t"} is used in the new parameter label to indicate
@@ -177,6 +180,7 @@ Descriptions} section, below, for details.
   }
 }
 }
+
 \examples{
 # some parameter draws to use for demonstration
 x <- example_mcmc_draws(params = 6)
@@ -275,7 +279,7 @@ mcmc_pairs(
   np = np,
   np_style = list(color = c("firebrick", "dodgerblue"), size = c(1,2)),
   # for demonstration purposes, set max_treedepth to a value that will
-  # result in at least a few warnings points (colored np_colors[2])
+  # result in at least a few max treedepth warnings
   max_treedepth = with(np, max(Value[Parameter == "treedepth__"]) - 1)
 )
 }
@@ -289,4 +293,3 @@ Other MCMC: \code{\link{MCMC-combos}},
   \code{\link{MCMC-overview}}, \code{\link{MCMC-recover}},
   \code{\link{MCMC-traces}}
 }
-

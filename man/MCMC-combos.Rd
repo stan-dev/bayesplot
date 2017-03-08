@@ -84,4 +84,3 @@ Other MCMC: \code{\link{MCMC-diagnostics}},
   \code{\link{MCMC-scatterplots}},
   \code{\link{MCMC-traces}}
 }
-

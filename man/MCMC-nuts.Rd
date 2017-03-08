@@ -5,9 +5,9 @@
 \alias{NUTS}
 \alias{mcmc_nuts_acceptance}
 \alias{mcmc_nuts_divergence}
-\alias{mcmc_nuts_energy}
 \alias{mcmc_nuts_stepsize}
 \alias{mcmc_nuts_treedepth}
+\alias{mcmc_nuts_energy}
 \title{Diagnostic plots for the No-U-Turn-Sampler (NUTS)}
 \usage{
 mcmc_nuts_acceptance(x, lp, chain = NULL, ..., binwidth = NULL)
@@ -98,7 +98,7 @@ For more details see Stan Development Team (2016).
    \item Violin plots of \code{lp__|divergent__=1} and
      \code{lp__|divergent__=0}.
    \item Violin plots of \code{accept_stat__|divergent__=1} and
-     \code{lp__|divergent__=0}.
+     \code{accept_stat__|divergent__=0}.
    }
   }
   \item{\code{mcmc_nuts_stepsize}}{
@@ -124,6 +124,7 @@ For more details see Stan Development Team (2016).
   }
 }
 }
+
 \examples{
 \dontrun{
 library(ggplot2)
@@ -183,4 +184,3 @@ Other MCMC: \code{\link{MCMC-combos}},
   \code{\link{MCMC-scatterplots}},
   \code{\link{MCMC-traces}}
 }
-

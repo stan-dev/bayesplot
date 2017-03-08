@@ -19,6 +19,9 @@
 #'   For \code{xaxis_ticks} and \code{yaxis_ticks}, \code{...} is passed to
 #'   \code{\link[ggplot2]{element_line}}.
 #'
+#'   For \code{overlay_function}, \code{...} is passed to
+#'   \code{\link[ggplot2]{stat_function}}.
+#'
 #' @return
 #' A \pkg{ggplot2} layer or \code{\link[ggplot2]{theme}} object that can be
 #' added to existing ggplot objects, like those created by many of the
@@ -87,6 +90,15 @@
 #' an existing plot (ggplot object) to add grid lines to the plot background.
 #' }
 #' }
+#' \subsection{Superimpose a function on an existing plot}{
+#' \itemize{
+#' \item \code{overlay_function} is a simple wrapper for
+#' \code{\link[ggplot2]{stat_function}} but with the \code{inherit.aes} argument
+#' fixed to \code{FALSE}. Fixing \code{inherit.aes=FALSE} will avoid potential
+#' errors due to the \code{\link[ggplot2]{aes}}thetic mapping used by certain
+#' \pkg{bayesplot} plotting functions).
+#' }
+#' }
 #'
 #' @seealso \code{\link{theme_default}} for the default ggplot theme used by
 #'   \pkg{bayesplot}.
@@ -96,6 +108,7 @@
 #' x <- example_mcmc_draws(chains = 1)
 #' dim(x)
 #' colnames(x)
+#'
 #'
 #' ###################################
 #' ### vertical & horizontal lines ###
@@ -200,6 +213,25 @@
 #'  plot_bg(fill = "gray90") +
 #'  panel_bg(color = "black", fill = "gray99", size = 3)
 #' }
+#'
+#'
+#' ###############################################
+#' ### superimpose a function on existing plot ###
+#' ###############################################
+#' # compare posterior of beta[1] to Gaussian with same posterior mean
+#' # and sd as beta[1]
+#' purple_gaussian <-
+#'   overlay_function(
+#'     fun = dnorm,
+#'     args = list(mean(x[,, "beta[1]"]), sd(x[,, "beta[1]"])),
+#'     color = "purple",
+#'     size = 2
+#'   )
+#'
+#' color_scheme_set("gray")
+#' mcmc_hist(x, pars = "beta[1]") + purple_gaussian
+#' \donttest{mcmc_dens(x, pars = "beta[1]") + purple_gaussian}
+#'
 NULL
 
 
@@ -399,6 +431,18 @@ plot_bg <- function(on = TRUE, ...) {
 #' @param color,size Passed to \code{\link[ggplot2]{element_line}}.
 #'
 grid_lines <- function(color = "gray50", size = 0.2) {
-  theme(panel.grid.major = element_line(color = color, size = size),
-        panel.grid.minor = element_line(color = color, size = size * 0.5))
+  theme(
+    panel.grid.major = element_line(color = color, size = size),
+    panel.grid.minor = element_line(color = color, size = size * 0.5)
+  )
 }
+
+
+
+# overlay functions on an existing plot -----------------------------------
+#' @rdname bayesplot-helpers
+#' @export
+overlay_function <- function(...) {
+  stat_function(..., inherit.aes = FALSE)
+}
+

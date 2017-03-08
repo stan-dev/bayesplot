@@ -62,7 +62,7 @@
 #'    \item Violin plots of \code{lp__|divergent__=1} and
 #'      \code{lp__|divergent__=0}.
 #'    \item Violin plots of \code{accept_stat__|divergent__=1} and
-#'      \code{lp__|divergent__=0}.
+#'      \code{accept_stat__|divergent__=0}.
 #'    }
 #'   }
 #'   \item{\code{mcmc_nuts_stepsize}}{

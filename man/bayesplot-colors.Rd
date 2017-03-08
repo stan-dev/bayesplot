@@ -2,8 +2,8 @@
 % Please edit documentation in R/bayesplot-colors.R
 \name{bayesplot-colors}
 \alias{bayesplot-colors}
-\alias{color_scheme_get}
 \alias{color_scheme_set}
+\alias{color_scheme_get}
 \alias{color_scheme_view}
 \title{Set, get, or view color schemes}
 \usage{
@@ -71,6 +71,7 @@ custom scheme.
   should be in order from lightest to darkest. See the end of the
   \strong{Examples} section for a demonstration.
 }
+
 \examples{
 color_scheme_set("blue")
 color_scheme_get()
@@ -119,4 +120,3 @@ ppc_stat(y, yrep, stat = "var") + legend_none()
 \code{\link{theme_default}} for the default ggplot theme used by
   \pkg{bayesplot}.
 }
-

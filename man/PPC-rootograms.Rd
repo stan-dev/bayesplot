@@ -68,6 +68,7 @@ Zeileis (2016) for advice on interpreting rootograms and selecting among the
 different styles.
 }
 }
+
 \examples{
 y <- rpois(100, 20)
 yrep <- matrix(rpois(10000, 20), ncol = 100)
@@ -89,4 +90,3 @@ Other PPCs: \code{\link{PPC-distributions}},
   \code{\link{PPC-scatterplots}},
   \code{\link{PPC-test-statistics}}
 }
-

@@ -2,12 +2,12 @@
 % Please edit documentation in R/ppc-errors.R
 \name{PPC-errors}
 \alias{PPC-errors}
-\alias{ppc_error_binned}
 \alias{ppc_error_hist}
 \alias{ppc_error_hist_grouped}
 \alias{ppc_error_scatter}
 \alias{ppc_error_scatter_avg}
 \alias{ppc_error_scatter_avg_vs_x}
+\alias{ppc_error_binned}
 \title{PPC errors}
 \usage{
 ppc_error_hist(y, yrep, ..., binwidth = NULL, freq = TRUE)
@@ -116,6 +116,7 @@ section, below.
   }
 }
 }
+
 \examples{
 y <- example_y_data()
 yrep <- example_yrep_draws()
@@ -169,4 +170,3 @@ Other PPCs: \code{\link{PPC-distributions}},
   \code{\link{PPC-scatterplots}},
   \code{\link{PPC-test-statistics}}
 }
-

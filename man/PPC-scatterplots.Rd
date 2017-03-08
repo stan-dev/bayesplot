@@ -66,6 +66,7 @@ For Binomial data, the plots will typically be most useful if
   }
 }
 }
+
 \examples{
 y <- example_y_data()
 yrep <- example_yrep_draws()
@@ -94,4 +95,3 @@ Other PPCs: \code{\link{PPC-distributions}},
   \code{\link{PPC-overview}}, \code{\link{PPC-rootograms}},
   \code{\link{PPC-test-statistics}}
 }
-
