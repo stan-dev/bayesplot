@@ -8,6 +8,8 @@ but there are not actually any divergent transitions.
 
 #### New Features
 * Introduce `ppc_rootogram` for use with models for count data. (#28)
+* Introduce `ppc_bars` and `ppc_bars_grouped` for use with models for 
+ordinal, categorical and multinomial data. (#73)
 * For `mcmc_*` functions, transformations are recycled if `transformations` 
 argument is specified as a single function rather than a named list. (#64)
 

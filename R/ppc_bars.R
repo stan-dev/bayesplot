@@ -5,6 +5,7 @@
 #'
 #' @export
 #' @template args-y-yrep
+#' @param ... Currently unused.
 #' @param prob A value between 0 and 1 indicating the desired probability mass
 #'   to include in the \code{yrep} intervals. The default is 0.9.
 #' @param width Passed to \code{\link[ggplot2]{geom_bar}} to control the bar
@@ -201,14 +202,22 @@ ppc_bars_yrep_data <- function(y, yrep, probs, freq = TRUE, group = NULL) {
 
   if (grouped) {
     facet_args[["facets"]] <- "group"
-    # if (is.null(facet_args[["scales"]]))
-    #   facet_args[["scales"]] <- "free"
     graph <- graph + do.call("facet_wrap", facet_args)
   }
 
-  graph +
+  graph <- graph +
     scale_x_continuous(breaks = pretty) +
-    dont_expand_y_axis() +
+    dont_expand_y_axis()
+
+
+  # add a little space between the max value plotted and the top of the plot
+  if (!grouped || !(isTRUE(facet_args[["scales"]] %in% c("free", "free_y")))) {
+    g <- ggplot_build(graph)
+    y_axis_max <- max(g$data[[1]][["ymax"]], g$data[[2]][["ymax"]])
+    graph <- graph + expand_limits(y = 1.05 * y_axis_max)
+  }
+
+  graph +
     theme_default() +
     theme(legend.spacing.y = unit(-0.25, "cm"))
 }

@@ -22,6 +22,8 @@ of \code{yrep} should be in the same order as the data points in \code{y}
 for the plots to make sense. See \strong{Details} for additional
 instructions.}
 
+\item{...}{Currently unused.}
+
 \item{prob}{A value between 0 and 1 indicating the desired probability mass
 to include in the \code{yrep} intervals. The default is 0.9.}
 
