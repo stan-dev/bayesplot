@@ -220,6 +220,8 @@
 #' ###############################################
 #' # compare posterior of beta[1] to Gaussian with same posterior mean
 #' # and sd as beta[1]
+#' x <- example_mcmc_draws(chains = 4)
+#' dim(x)
 #' purple_gaussian <-
 #'   overlay_function(
 #'     fun = dnorm,
