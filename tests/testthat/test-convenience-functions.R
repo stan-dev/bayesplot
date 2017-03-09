@@ -154,3 +154,15 @@ test_that("yaxis_ticks returns correct theme object", {
     theme(axis.ticks.y = element_line(size = 0.5, color = "red"))
   )
 })
+
+
+# overlay functions -------------------------------------------------------
+test_that("overlay_function returns the correct object", {
+  expect_error(overlay_function(), 'argument "fun" is missing')
+  expect_equal(
+    overlay_function(fun = "dnorm"),
+    stat_function(fun = "dnorm", inherit.aes = FALSE)
+  )
+})
+
+
