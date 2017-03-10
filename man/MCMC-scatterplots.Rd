@@ -5,6 +5,7 @@
 \alias{mcmc_scatter}
 \alias{mcmc_hex}
 \alias{mcmc_pairs}
+\alias{pairs_style_np}
 \title{Scatterplots of MCMC draws}
 \usage{
 mcmc_scatter(x, pars = character(), regex_pars = character(),
@@ -17,7 +18,10 @@ mcmc_pairs(x, pars = character(), regex_pars = character(),
   transformations = list(), ..., diag_fun = c("hist", "dens"),
   off_diag_fun = c("scatter", "hex"), diag_args = list(),
   off_diag_args = list(), condition = NULL, lp = NULL, np = NULL,
-  np_style = list(), max_treedepth = NULL)
+  np_style = pairs_style_np(), max_treedepth = NULL)
+
+pairs_style_np(div_color = "red", div_shape = 4, div_size = 1,
+  td_color = "yellow2", td_shape = 3, td_size = 1)
 }
 \arguments{
 \item{x}{A 3-D array, matrix, list of matrices, or data frame of MCMC draws.
@@ -128,30 +132,35 @@ points (red, by default) will be superimposed onto the off-diagonal plots
 indicating which (if any) iterations encountered a divergent transition.
 Also, if both \code{np} and \code{max_treedepth} are specified then points
 (yellow, by default) will be superimposed to indicate a transition that hit
-the maximum treedepth rather than terminated its evolution normally.}
+the maximum treedepth rather than terminated its evolution normally. The
+colors, shapes, and sizes of the superimposed points can be customized
+using the \code{np_style} argument.}
 
-\item{np_style}{A named list of length one, two, or three, which is used to
-  specify optional arguments controlling the appearance of superimposed
-  points representing NUTS diagnostic warnings (if \code{np} is specified).
-  The elements "color", "shape", and "size" can be specified (note: here,
-  "size" is interpreted as a scaling factor). Each of the specified elements
-  must be a vector of length two (the first element is used for a divergence
-  and the second element for a transition hitting max treedepth). As an
-  example, the default settings correspond to specifying the following:
-
-  \code{np_style = list(color = c("red", "yellow2"),
-                        shape = c(4,3),
-                        size = c(1,1))}}
+\item{np_style}{A call to the \code{pairs_style_np} helper function to
+specify arguments controlling the appearance of superimposed points
+representing NUTS diagnostic parameter warnings (if the \code{np} argument
+is specified). The arguments to \code{pairs_style_np} correspond to setting
+the color, shape, and size of the points indicating divergences and the
+points indicating hitting the maximum treedepth (Note: here "size" is
+interpreted as a scaling factor).}
 
 \item{max_treedepth}{For \code{mcmc_pairs}, an integer representing the
 maximum treedepth allowed when fitting the model (if fit using NUTS). This
 is only needed for detecting which transitions (if any) hit the maximum
 treedepth.}
+
+\item{div_color, div_shape, div_size, td_color, td_shape, td_size}{Color, shape,
+and size specifications (passed to \code{\link[ggplot2]{geom_point}}) for
+points representing divergences (\code{div}) and points indicating hitting
+the maximum treedepth (\code{td}). See the \code{np_style} argument for
+more details. The default values are displayed in the \strong{Usage}
+section above.}
 }
 \value{
 \code{mcmc_scatter} and \code{mcmc_hex} return a ggplot object that
   can be further customized using the \pkg{ggplot2} package.
-  \code{mcmc_pairs} returns many ggplot objects organized into a grid using
+
+  \code{mcmc_pairs} returns many ggplot objects organized into a grid via
   \code{\link{bayesplot_grid}}.
 }
 \description{
@@ -254,15 +263,15 @@ fit <- stan_glm(
   prior = hs(),
   adapt_delta = 0.9
 )
-post <- as.array(fit)
+posterior <- as.array(fit)
 np <- nuts_params(fit)
 
 # split the draws according to above/below median accept_stat__ and
 # show approximate location of divergences (red points)
 mcmc_pairs(
-  post,
+  posterior,
   pars = c("wt", "cyl", "sigma"),
-  off_diag_args = list(size = 1, alpha = 0.5),
+  off_diag_args = list(size = 1, alpha = 1/3),
   condition = "accept_stat__",
   np = np
 )
@@ -277,10 +286,12 @@ mcmc_pairs(
   condition = "lp__",
   lp = log_posterior(fit),
   np = np,
-  np_style = list(color = c("firebrick", "dodgerblue"), size = c(1,2)),
+  np_style = pairs_style_np(div_color = "firebrick",
+                            td_color = "blue",
+                            td_size = 2.5),
   # for demonstration purposes, set max_treedepth to a value that will
   # result in at least a few max treedepth warnings
-  max_treedepth = with(np, max(Value[Parameter == "treedepth__"]) - 1)
+  max_treedepth = with(np, -1 + max(Value[Parameter == "treedepth__"]))
 )
 }
 

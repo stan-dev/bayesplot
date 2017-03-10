@@ -21,7 +21,8 @@
 #'
 #' @return \code{mcmc_scatter} and \code{mcmc_hex} return a ggplot object that
 #'   can be further customized using the \pkg{ggplot2} package.
-#'   \code{mcmc_pairs} returns many ggplot objects organized into a grid using
+#'
+#'   \code{mcmc_pairs} returns many ggplot objects organized into a grid via
 #'   \code{\link{bayesplot_grid}}.
 #'
 #' @section Plot Descriptions:
@@ -187,20 +188,16 @@ mcmc_hex <- function(x,
 #'   indicating which (if any) iterations encountered a divergent transition.
 #'   Also, if both \code{np} and \code{max_treedepth} are specified then points
 #'   (yellow, by default) will be superimposed to indicate a transition that hit
-#'   the maximum treedepth rather than terminated its evolution normally.
-#' @param np_style A named list of length one, two, or three, which is used to
-#'   specify optional arguments controlling the appearance of superimposed
-#'   points representing NUTS diagnostic warnings (if \code{np} is specified).
-#'   The elements "color", "shape", and "size" can be specified (note: here,
-#'   "size" is interpreted as a scaling factor). Each of the specified elements
-#'   must be a vector of length two (the first element is used for a divergence
-#'   and the second element for a transition hitting max treedepth). As an
-#'   example, the default settings correspond to specifying the following:
-#'
-#'   \code{np_style = list(color = c("red", "yellow2"),
-#'                         shape = c(4,3),
-#'                         size = c(1,1))}
-#'
+#'   the maximum treedepth rather than terminated its evolution normally. The
+#'   colors, shapes, and sizes of the superimposed points can be customized
+#'   using the \code{np_style} argument.
+#' @param np_style A call to the \code{pairs_style_np} helper function to
+#'   specify arguments controlling the appearance of superimposed points
+#'   representing NUTS diagnostic parameter warnings (if the \code{np} argument
+#'   is specified). The arguments to \code{pairs_style_np} correspond to setting
+#'   the color, shape, and size of the points indicating divergences and the
+#'   points indicating hitting the maximum treedepth (Note: here "size" is
+#'   interpreted as a scaling factor).
 #' @param max_treedepth For \code{mcmc_pairs}, an integer representing the
 #'   maximum treedepth allowed when fitting the model (if fit using NUTS). This
 #'   is only needed for detecting which transitions (if any) hit the maximum
@@ -251,33 +248,39 @@ mcmc_hex <- function(x,
 #'   prior = hs(),
 #'   adapt_delta = 0.9
 #' )
-#' post <- as.array(fit)
+#' posterior <- as.array(fit)
 #' np <- nuts_params(fit)
 #'
 #' # split the draws according to above/below median accept_stat__ and
 #' # show approximate location of divergences (red points)
 #' mcmc_pairs(
-#'   post,
+#'   posterior,
 #'   pars = c("wt", "cyl", "sigma"),
-#'   off_diag_args = list(size = 1, alpha = 0.5),
+#'   off_diag_args = list(size = 1, alpha = 1/3),
 #'   condition = "accept_stat__",
 #'   np = np
 #' )
 #'
-#' # using median log-posterior as 'condition', hex instead of scatter for
-#' # off-diagonal plots, and also indicating where max treedepth hit
+#' # more customizations:
+#' # - transform sigma to log(sigma)
+#' # - median log-posterior as 'condition'
+#' # - hex instead of scatter for off-diagonal plots
+#' # - show points where max treedepth hit in blue
 #' color_scheme_set("darkgray")
 #' mcmc_pairs(
-#'   post,
+#'   posterior,
 #'   pars = c("wt", "cyl", "sigma"),
+#'   transform = list(sigma = "log"),
 #'   off_diag_fun = "hex",
 #'   condition = "lp__",
 #'   lp = log_posterior(fit),
 #'   np = np,
-#'   np_style = list(color = c("firebrick", "dodgerblue"), size = c(1,2)),
+#'   np_style = pairs_style_np(div_color = "firebrick",
+#'                             td_color = "blue",
+#'                             td_size = 2.5),
 #'   # for demonstration purposes, set max_treedepth to a value that will
 #'   # result in at least a few max treedepth warnings
-#'   max_treedepth = with(np, max(Value[Parameter == "treedepth__"]) - 1)
+#'   max_treedepth = with(np, -1 + max(Value[Parameter == "treedepth__"]))
 #' )
 #' }
 #'
@@ -293,11 +296,15 @@ mcmc_pairs <- function(x,
                        condition = NULL,
                        lp = NULL,
                        np = NULL,
-                       np_style = list(),
+                       np_style = pairs_style_np(),
                        max_treedepth = NULL) {
   check_ignored_arguments(...)
 
-  stopifnot(is.list(diag_args), is.list(off_diag_args))
+  stopifnot(
+    is.list(diag_args),
+    is.list(off_diag_args),
+    inherits(np_style, "pairs_style_np")
+  )
   plot_diagonal <- pairs_plotfun(match.arg(diag_fun))
   plot_off_diagonal <- pairs_plotfun(match.arg(off_diag_fun))
 
@@ -315,7 +322,6 @@ mcmc_pairs <- function(x,
   no_np <- is.null(np)
   no_lp <- is.null(lp)
   no_max_td <- is.null(max_treedepth)
-  np_args <- validate_np_style(np_style)
   if (!no_np) {
     np <- validate_nuts_data_frame(np, lp)
     divs <- filter_(np, ~ Parameter == "divergent__")$Value
@@ -333,15 +339,25 @@ mcmc_pairs <- function(x,
                            stringsAsFactors = FALSE,
                            KEEP.OUT.ATTRS = FALSE)
   plots <- vector("list", length = nrow(all_pairs))
+  use_default_binwidth <- is.null(diag_args[["binwidth"]])
   for (j in seq_len(nrow(all_pairs))) {
     pair <- as.character(all_pairs[j,])
 
-    if (identical(pair[1], pair[2])) { # Diagonal
+    if (identical(pair[1], pair[2])) {
+      # Diagonal
       diag_args[["x"]] <- x[, pair[1], drop = FALSE]
+
+      # silence ggplot2's "Pick better value with `binwidth`" message
+      if (diag_fun == "hist" && use_default_binwidth)
+        diag_args[["binwidth"]] <- diff(range(diag_args[["x"]]))/30
+
       plots[[j]] <-
         do.call(plot_diagonal, diag_args) +
         theme(axis.line.y = element_blank())
-    } else { # Off-diagonal
+
+    } else {
+      # Off-diagonal
+
       # use mark if above diagonal and !mark if below the diagonal
       mark2 <- if (is_lower_tri(j, n_param)) !mark else mark
       x_j <- x[mark2, pair, drop = FALSE]
@@ -357,12 +373,13 @@ mcmc_pairs <- function(x,
 
       if (!identical(condition, "divergent__") &&
           isTRUE(any(divs_j == 1))) {
-        divs_j_fac <- factor(as.logical(divs_j), levels = c(FALSE, TRUE),
+        divs_j_fac <- factor(as.logical(divs_j),
+                             levels = c(FALSE, TRUE),
                              labels = c("NoDiv", "Div"))
         plots[[j]] <- plots[[j]] +
           geom_point(
             aes_(color = divs_j_fac, size = divs_j_fac),
-            shape = np_args$shape[1],
+            shape = np_style$shape[["div"]],
             na.rm = TRUE
           )
       }
@@ -372,13 +389,13 @@ mcmc_pairs <- function(x,
         plots[[j]] <- plots[[j]] +
           geom_point(
             aes_(color = max_td_hit_j_fac, size = max_td_hit_j_fac),
-            shape = np_args$shape[2],
+            shape = np_style$shape[["td"]],
             na.rm = TRUE
           )
       }
       if (isTRUE(any(divs_j == 1)) ||
           isTRUE(any(max_td_hit_j == 1)))
-        plots[[j]] <- format_nuts_points(plots[[j]], np_args)
+        plots[[j]] <- format_nuts_points(plots[[j]], np_style)
     }
   }
 
@@ -387,6 +404,38 @@ mcmc_pairs <- function(x,
 
   bayesplot_grid(plots = plots, legends = FALSE)
 }
+
+
+#' @rdname MCMC-scatterplots
+#' @export
+#' @param div_color,div_shape,div_size,td_color,td_shape,td_size Color, shape,
+#'   and size specifications (passed to \code{\link[ggplot2]{geom_point}}) for
+#'   points representing divergences (\code{div}) and points indicating hitting
+#'   the maximum treedepth (\code{td}). See the \code{np_style} argument for
+#'   more details. The default values are displayed in the \strong{Usage}
+#'   section above.
+pairs_style_np <-
+  function(div_color = "red",
+           div_shape = 4,
+           div_size = 1,
+           td_color = "yellow2",
+           td_shape = 3,
+           td_size = 1) {
+    stopifnot(
+      is.numeric(div_shape) || is.character(div_shape),
+      is.numeric(td_shape) || is.character(td_shape),
+      is.character(div_color),
+      is.character(td_color),
+      is.numeric(div_size),
+      is.numeric(td_size)
+    )
+    style <- list(
+      color = c(div = div_color, td = td_color),
+      shape = c(div = div_shape, td = td_shape),
+      size = c(div = div_size, td = td_size)
+    )
+    structure(style, class = c(class(style), "pairs_style_np"))
+  }
 
 
 # internal ----------------------------------------------------------------
@@ -449,24 +498,6 @@ pairs_plotfun <- function(x) {
   utils::getFromNamespace(fun, "bayesplot")
 }
 
-# Validate np_style argument
-# @param x User's np_style argument
-validate_np_style <- function(x = list()) {
-  style <- list(
-    color = x[["color"]] %||% c("red", "yellow2"),
-    shape = x[["shape"]] %||% c(4, 3),
-    size = x[["size"]] %||% c(1, 1)
-  )
-  if (!all(sapply(style, length) == 2))
-    stop("All specified elements of 'np_style' must have length 2.",
-         call. = FALSE)
-  stopifnot(
-    is.numeric(style[["shape"]]) || is.character(style[["shape"]]),
-    is.character(style[["color"]]),
-    is.numeric(style[["size"]])
-  )
-  return(style)
-}
 
 # Unstack molten data frame
 #
@@ -629,16 +660,16 @@ handle_condition <- function(x, condition=NULL, np=NULL, lp=NULL) {
 # hitting max_treedepth
 #
 # @param graph ggplot object
-# @param np_args list of style arguments
+# @param np_args list of style arguments returned by pairs_style_np()
 # @return graph, updated
 format_nuts_points <- function(graph, np_args) {
   graph +
     scale_color_manual(
-      values = setNames(c(NA, np_args$color[1], NA, np_args$color[2]),
+      values = setNames(c(NA, np_args$color[["div"]], NA, np_args$color[["td"]]),
                         c("NoDiv", "Div", "NoHit", "Hit"))
     ) +
     scale_size_manual(
-      values = setNames(c(0, rel(np_args$size[1]), 0, rel(np_args$size[2])),
+      values = setNames(c(0, rel(np_args$size[["div"]]), 0, rel(np_args$size[["td"]])),
                         c("NoDiv", "Div", "NoHit", "Hit"))
     )
 }

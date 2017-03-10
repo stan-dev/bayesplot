@@ -38,6 +38,8 @@ test_that("mcmc_scatter & mcmc_hex throw error if only 1 parameter", {
 })
 
 
+
+# mcmc_pairs  -------------------------------------------------------------
 test_that("mcmc_pairs returns a bayesplot_grid object", {
   expect_bayesplot_grid(mcmc_pairs(arr, pars = c("(Intercept)", "sigma")))
   expect_bayesplot_grid(mcmc_pairs(arr, pars = "sigma", regex_pars = "beta"))
@@ -89,7 +91,7 @@ test_that("mcmc_pairs works with NUTS info", {
     condition = "lp__",
     lp = lp,
     np = np,
-    np_style = list(color = c("firebrick", "dodgerblue"), size = c(2,2)),
+    np_style = pairs_style_np(div_color = "firebrick", td_color = "dodgerblue", div_size = 2, td_size = 2),
     max_treedepth = with(np, max(Value[Parameter == "treedepth__"]) - 1)
   )
   expect_bayesplot_grid(p)
@@ -124,7 +126,8 @@ test_that("mcmc_pairs throws correct warnings and errors", {
   expect_error(
     mcmc_pairs(post, pars = c("wt", "am"), max_treedepth = 2, np = np,
                np_style = list(color = "green")),
-    "All specified elements of 'np_style' must have length 2"
+    'inherits(np_style, "pairs_style_np") is not TRUE',
+    fixed = TRUE
   )
 
   post2 <- post
@@ -138,5 +141,27 @@ test_that("mcmc_pairs throws correct warnings and errors", {
   expect_warning(
     mcmc_pairs(post, pars = c("wt", "sigma", "am")),
     "parameters were dropped because they are duplicative: am"
+  )
+})
+
+
+test_that("pairs_style_np returns correct structure", {
+  style <- pairs_style_np(div_size = 3, td_color = "gray", td_shape = 1)
+  expect_named(style, c("color", "shape", "size"), ignore.order = TRUE)
+  expect_named(style$color, c("div", "td"))
+  expect_named(style$size, c("div", "td"))
+  expect_named(style$shape, c("div", "td"))
+})
+
+test_that("pairs_style_np throws correct errors", {
+  expect_error(
+    pairs_style_np(div_size = "3"),
+    "is.numeric(div_size) is not TRUE",
+    fixed = TRUE
+  )
+  expect_error(
+    pairs_style_np(td_color = 1),
+    "is.character(td_color) is not TRUE",
+    fixed = TRUE
   )
 })
