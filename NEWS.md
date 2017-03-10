@@ -18,6 +18,7 @@ argument is specified as a single function rather than a named list. (#64)
 * `mcmc_hex`, which is similar to `mcmc_scatter` but using `geom_hex` instead of
 `geom_point`. This can be used to avoid overplotting.
 * `ppc_rootogram` for use with models for count data. (#28)
+* `overlay_function` convenience function.
 
 # bayesplot 1.1.0
 

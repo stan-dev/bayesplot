@@ -220,6 +220,8 @@
 #' ###############################################
 #' # compare posterior of beta[1] to Gaussian with same posterior mean
 #' # and sd as beta[1]
+#' x <- example_mcmc_draws(chains = 4)
+#' dim(x)
 #' purple_gaussian <-
 #'   overlay_function(
 #'     fun = dnorm,
@@ -438,11 +440,9 @@ grid_lines <- function(color = "gray50", size = 0.2) {
 }
 
 
-
 # overlay functions on an existing plot -----------------------------------
 #' @rdname bayesplot-helpers
 #' @export
 overlay_function <- function(...) {
   stat_function(..., inherit.aes = FALSE)
 }
-
