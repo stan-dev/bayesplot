@@ -621,7 +621,6 @@ pairs_plotfun <- function(x) {
   utils::getFromNamespace(fun, "bayesplot")
 }
 
-
 # Unstack molten data frame
 #
 # @param df A data frame (from nuts_params(), log_posterior(), etc)
@@ -775,8 +774,6 @@ handle_condition <- function(x, condition=NULL, np=NULL, lp=NULL) {
 
   list(x = x, mark = mark)
 }
-
-
 
 
 # Apply scale_color_manual and scale_size_manual if plotting divergences and

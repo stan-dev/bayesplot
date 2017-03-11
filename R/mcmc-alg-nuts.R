@@ -27,11 +27,10 @@
 #'   except for \code{mcmc_nuts_energy}, which returns a ggplot object.
 #'
 #' @section Quick Definitions:
-#' For more details see Stan Development Team (2016).
+#' For more details see Stan Development Team (2016) and Betancourt (2017).
 #' \itemize{
 #'   \item \code{accept_stat__}: the average acceptance probabilities of all
-#'   possible samples in the proposed tree (NUTS uses a slice sampling algorithm
-#'   for rejection).
+#'   possible samples in the proposed tree.
 #'   \item \code{divergent__}: the number of leapfrog transitions with diverging
 #'   error. Because NUTS terminates at the first divergence this will be either
 #'   0 or 1 for each iteration.
@@ -41,7 +40,7 @@
 #'   (base 2) of the number of leapfrog steps taken during the Hamiltonian
 #'   simulation.
 #'   \item \code{energy__}: the value of the Hamiltonian (up to an additive
-#'   constant) at each sample.
+#'   constant) at each iteration.
 #' }
 #'
 #' @section Plot Descriptions:
