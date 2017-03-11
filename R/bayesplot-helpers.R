@@ -440,11 +440,9 @@ grid_lines <- function(color = "gray50", size = 0.2) {
 }
 
 
-
 # overlay functions on an existing plot -----------------------------------
 #' @rdname bayesplot-helpers
 #' @export
 overlay_function <- function(...) {
   stat_function(..., inherit.aes = FALSE)
 }
-

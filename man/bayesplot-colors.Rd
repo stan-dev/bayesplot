@@ -30,6 +30,7 @@ color_scheme_view(scheme)
   \itemize{
    \item \code{"blue"}
    \item \code{"brightblue"}
+   \item \code{"darkgray"}
    \item \code{"gray"}
    \item \code{"green"}
    \item \code{"pink"}
