@@ -252,19 +252,7 @@ test_that("pairs_condition throws correct errors", {
 })
 
 test_that("pairs_condition message if multiple args specified", {
-  expect_message(
-    pairs_condition(chains = 2, draws = 0.5, nuts = "lp__"),
-    "because they are superseded by 'chains': ‘draws’, ‘nuts’\n",
-    fixed = TRUE
-  )
-  expect_message(
-    pairs_condition(chains = 2, nuts = "lp__"),
-    "because they are superseded by 'chains': ‘nuts’\n",
-    fixed = TRUE
-  )
-  expect_message(
-    pairs_condition(draws = 0.5, nuts = "lp__"),
-    "because they are superseded by 'draws': ‘nuts’\n",
-    fixed = TRUE
-  )
+  expect_message(pairs_condition(chains = 2, draws = 0.5, nuts = "lp__"), "‘draws’, ‘nuts’")
+  expect_message(pairs_condition(chains = 2, nuts = "lp__"), "‘nuts’")
+  expect_message(pairs_condition(draws = 0.5, nuts = "lp__"),"‘nuts’")
 })
