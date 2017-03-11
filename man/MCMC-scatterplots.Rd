@@ -6,6 +6,7 @@
 \alias{mcmc_hex}
 \alias{mcmc_pairs}
 \alias{pairs_style_np}
+\alias{pairs_condition}
 \title{Scatterplots of MCMC draws}
 \usage{
 mcmc_scatter(x, pars = character(), regex_pars = character(),
@@ -17,11 +18,13 @@ mcmc_hex(x, pars = character(), regex_pars = character(),
 mcmc_pairs(x, pars = character(), regex_pars = character(),
   transformations = list(), ..., diag_fun = c("hist", "dens"),
   off_diag_fun = c("scatter", "hex"), diag_args = list(),
-  off_diag_args = list(), condition = NULL, lp = NULL, np = NULL,
-  np_style = pairs_style_np(), max_treedepth = NULL)
+  off_diag_args = list(), condition = pairs_condition(), lp = NULL,
+  np = NULL, np_style = pairs_style_np(), max_treedepth = NULL)
 
 pairs_style_np(div_color = "red", div_shape = 4, div_size = 1,
   td_color = "yellow2", td_shape = 3, td_size = 1)
+
+pairs_condition(chains = NULL, draws = NULL, nuts = NULL)
 }
 \arguments{
 \item{x}{A 3-D array, matrix, list of matrices, or data frame of MCMC draws.
@@ -75,48 +78,19 @@ arguments, respectively. For example, if \code{off_diag_fun} is
 \code{"scatter"} then \code{off_diag_args} could include optional arguments
 to \code{mcmc_scatter} like \code{size} and \code{alpha}.}
 
-\item{condition}{For \code{mcmc_pairs}, this argument is used to specify a
-  criterion for determining which iterations (or chains) are shown in the
-  plots above the diagonal and which are shown in the plots below the
-  diagnoal. The histograms (or density plots) along the diagonal are always
-  made using all chains and iterations, but the scatterplots (or hex plots)
-  above and below the diagonal show different combinations of
-  chains/iterations depending on the \code{condition} argument. There are
-  many options for \code{condition}:
-\itemize{
-  \item \code{NULL} (the default), in which case half of the chains
-  (or roughly half if there are an odd number) will be used in the
-  plots above the diagonal and the rest in the plots below the diagonal.
-  \item An integer vector that is used to select some subset of the chains
-  (e.g., \code{c(1,3,4,7)} to select only chains 1, 3, 4, and 7). The
-  behavior is the same as when \code{condition=NULL} except using only the
-  specified subset of chains.
-  \item A list of two integer vectors can be passed, each specifying a subset
-  of the chains. In this case the chains specified in the first vector
-  are shown in the plots above the diagonal and the chains specified in the
-  second vector are shown in plots below the diagonal.
-  \item A single number between zero and one (exclusive), which
-  is interpreted as the proportion of realizations (among all chains) to plot
-  in the lower panel starting with the first realization in each chain, with
-  the complement (from the end of each chain) plotted in the upper panel.
-  \item A \link{logical} vector with length equal to the product
-  of the number of iterations and the number of chains, in
-  which case realizations corresponding to \code{FALSE} and \code{TRUE} will
-  be plotted in the lower and upper panels, respectively.
-  \item For models fit using NUTS, a (possibly abbreviated) string to select
-  among \code{"accept_stat__"}, \code{"stepsize__"}, \code{"treedepth__"},
-  \code{"n_leapfrog__"}, \code{"divergent__"}, \code{"energy__"}, or
-  \code{"lp__"}. These are the sampler parameters associated with
-  \code{\link{NUTS}} (and \code{"lp__"} is the log-posterior up to an
-  additive constant). In this case, plots below the diagonal will contain
-  realizations below the median of the indicated variable (or are zero in the
-  case of \code{"divergent__"}), and plots above the diagonal wil contain
-  realizations that are greater than or equal to the median of the indicated
-  variable (or are one in the case of \code{"divergent__"}). If
-  \code{condition} is one of these NUTS diagnostics then the \code{np}
-  argument must also be specified. If \code{condition} is \code{lp__} then
-  the \code{lp} argument must also be specified.
- }}
+\item{condition}{For \code{mcmc_pairs}, a call to the \code{pairs_condition}
+helper function, which is used to specify a criterion for determining which
+chains (or iterations) are shown in the plots above the diagonal and which
+are shown in the plots below the diagonal. The histograms (or density
+plots) along the diagonal are always made using all chains and iterations,
+but the scatterplots (or hex plots) above and below the diagonal show
+different combinations of chains/iterations depending on \code{condition}.
+The default is a call to \code{pairs_condition} with none of its arguments
+specified. In this case half of the chains (or roughly half if there are an
+odd number) will be used in the plots above the diagonal and the rest in
+the plots below the diagonal. The \code{chains}, \code{draws}, and
+\code{nuts} arguments to \code{pairs_condition}, which are documented
+below, can be used to change this default.}
 
 \item{lp}{For \code{mcmc_pairs}, a molten data frame of draws of the
 log-posterior or, more commonly, of a quantity equal to the log-posterior
@@ -149,12 +123,50 @@ maximum treedepth allowed when fitting the model (if fit using NUTS). This
 is only needed for detecting which transitions (if any) hit the maximum
 treedepth.}
 
-\item{div_color, div_shape, div_size, td_color, td_shape, td_size}{Color, shape,
-and size specifications (passed to \code{\link[ggplot2]{geom_point}}) for
-points representing divergences (\code{div}) and points indicating hitting
-the maximum treedepth (\code{td}). See the \code{np_style} argument for
-more details. The default values are displayed in the \strong{Usage}
-section above.}
+\item{div_color, div_shape, div_size, td_color, td_shape, td_size}{Optional
+rguments to the \code{pairs_style_np} helper function that are eventually
+passed to \code{\link[ggplot2]{geom_point}}. They control the color, shape,
+and size specifications  for points representing divergences (\code{div})
+and points indicating hitting the maximum treedepth (\code{td}). See the
+\code{np_style} argument for more details. The default values are displayed
+in the \strong{Usage} section above.}
+
+\item{chains, draws, nuts}{Optional arguments to the \code{pairs_condition}
+  helper function, which is used to specify the \code{condition} argument for
+  \code{mcmc_pairs}.
+\itemize{
+  \item The \code{chains} argument can be used to select some subset of the
+  chains. If \code{chains} is an integer vector then the behavior is the same
+  as the default except using only the specified subset of chains.
+  Alternatively, \code{chains} can be a list of two integer vectors with the
+  first specifying the chains to be shown in the plots above the diagonal and
+  the second for below the diagonal.
+  \item The \code{draws} argument to \code{pairs_condition} can be used to
+  directly specify which realizations are plotted above and below the
+  diagonal. \code{draws} can be a single proportion, which is interpreted as
+  the proportion of realizations (among all chains) to plot in the lower
+  panel starting with the first realization in each chain, with the
+  complement (from the end of each chain) plotted in the upper panel.
+  Alternatively \code{draws} can be a logical vector with length equal to the
+  product of the number of iterations and the number of chains, in which case
+  realizations corresponding to \code{FALSE} and \code{TRUE} will be plotted
+  in the lower and upper panels, respectively.
+  \item For models fit using NUTS, the \code{nuts} argument to
+  \code{pairs_condition} can be used. It takes a (possibly abbreviated)
+  string to select among \code{"accept_stat__"}, \code{"stepsize__"},
+  \code{"treedepth__"}, \code{"n_leapfrog__"}, \code{"divergent__"},
+  \code{"energy__"}, and \code{"lp__"}. These are the sampler parameters
+  associated with \code{\link{NUTS}} (and \code{"lp__"} is the log-posterior
+  up to an additive constant). In this case, plots below the diagonal will
+  contain realizations that are below the median of the indicated variable
+  (or are zero in the case of \code{"divergent__"}), and plots above the
+  diagonal will contain realizations that are greater than or equal to the
+  median of the indicated variable (or are one in the case of
+  \code{"divergent__"}). If \code{"lp__"} is used then the the \code{lp}
+  argument to \code{mcmc_pairs} must also be specified. For the other NUTS
+  parameters the \code{np} argument to \code{mcmc_pairs} must also be
+  specified.
+ }}
 }
 \value{
 \code{mcmc_scatter} and \code{mcmc_hex} return a ggplot object that
@@ -242,11 +254,11 @@ mcmc_pairs(x, pars = "alpha", regex_pars = "beta\\\\[[1,4]\\\\]",
 mcmc_pairs(x, pars = "alpha", regex_pars = "beta\\\\[[1,4]\\\\]",
            diag_fun = "dens", off_diag_fun = "hex")
 
-# plot chain 1 separately from chains 2, 3, and 4
+# plot chain 1 above diagonal and chains 2, 3, and 4 below
 color_scheme_set("brightblue")
 mcmc_pairs(x, pars = "alpha", regex_pars = "beta\\\\[[1,4]\\\\]",
            diag_fun = "dens", off_diag_fun = "hex",
-           condition = list(1, 2:4))
+           condition = pairs_condition(chains = list(1, 2:4)))
 }
 
 \dontrun{
@@ -272,18 +284,22 @@ mcmc_pairs(
   posterior,
   pars = c("wt", "cyl", "sigma"),
   off_diag_args = list(size = 1, alpha = 1/3),
-  condition = "accept_stat__",
+  condition = pairs_condition(nuts = "accept_stat__"),
   np = np
 )
 
-# using median log-posterior as 'condition', hex instead of scatter for
-# off-diagonal plots, and also indicating where max treedepth hit
+# more customizations:
+# - transform sigma to log(sigma)
+# - median log-posterior as 'condition'
+# - hex instead of scatter for off-diagonal plots
+# - show points where max treedepth hit in blue
 color_scheme_set("darkgray")
 mcmc_pairs(
-  post,
+  posterior,
   pars = c("wt", "cyl", "sigma"),
+  transform = list(sigma = "log"),
   off_diag_fun = "hex",
-  condition = "lp__",
+  condition = pairs_condition(nuts = "lp__"),
   lp = log_posterior(fit),
   np = np,
   np_style = pairs_style_np(div_color = "firebrick",

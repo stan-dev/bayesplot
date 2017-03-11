@@ -58,37 +58,37 @@ test_that("mcmc_pairs returns a bayesplot_grid object", {
 test_that("no mcmc_pairs non-NUTS 'condition's fail", {
   expect_bayesplot_grid(
     mcmc_pairs(arr, pars = "sigma", regex_pars = "beta",
-               condition = list(1, 2:4))
+               condition = pairs_condition(chains = list(1, 2:4)))
     )
   expect_bayesplot_grid(
     mcmc_pairs(arr, pars = "sigma", regex_pars = "beta",
-               condition = rep(c(T,F), length.out = prod(dim(arr)[1:2])))
+               condition = pairs_condition(draws = rep(c(T,F), length.out = prod(dim(arr)[1:2]))))
     )
   expect_bayesplot_grid(
     mcmc_pairs(arr, pars = "sigma", regex_pars = "beta",
-               condition = 1/3)
+               condition = pairs_condition(draws = 1/3))
   )
   expect_bayesplot_grid(
     mcmc_pairs(arr, pars = "sigma", regex_pars = "beta",
-               condition = c(1,3))
+               condition = pairs_condition(chains = c(1,3)))
   )
 })
 
 test_that("mcmc_pairs works with NUTS info", {
   expect_bayesplot_grid(mcmc_pairs(post, pars = c("wt", "am", "sigma"), np = np))
   expect_bayesplot_grid(mcmc_pairs(post, pars = c("wt", "am"),
-                                   condition = "energy__", np = np))
+                                   condition = pairs_condition(nuts="energy__"), np = np))
   expect_bayesplot_grid(mcmc_pairs(post, pars = c("wt", "am"),
-                                   condition = "divergent__", np = np))
+                                   condition = pairs_condition(nuts="divergent__"), np = np))
   expect_bayesplot_grid(mcmc_pairs(post, pars = c("wt", "am"),
-                                   condition = "lp__", lp=lp, np = np,
+                                   condition = pairs_condition(nuts = "lp__"), lp=lp, np = np,
                                    max_treedepth = 2))
 
   p <- mcmc_pairs(
     post,
     pars = c("wt", "am"),
     off_diag_fun = "hex",
-    condition = "lp__",
+    condition = pairs_condition(nuts = "lp__"),
     lp = lp,
     np = np,
     np_style = pairs_style_np(div_color = "firebrick", td_color = "dodgerblue", div_size = 2, td_size = 2),
@@ -103,25 +103,25 @@ test_that("mcmc_pairs throws correct warnings and errors", {
                  "This plot is more useful with multiple chains")
   expect_error(mcmc_pairs(arr, pars = "sigma"),
                "requires at least two parameters")
+
   expect_error(
-    mcmc_pairs(arr, condition = 2.5),
-    "If numeric, 'condition' must be an integer (vector) or a number between 0 and 1",
-    fixed = TRUE
-  )
-  expect_error(
-    mcmc_pairs(arr, condition = TRUE),
+    mcmc_pairs(arr, condition = pairs_condition(draws = c(T, F))),
     "length(condition) == (n_iter * n_chain) is not TRUE",
     fixed = TRUE
   )
   expect_error(
-    mcmc_pairs(arr, condition = list(1)),
-    "If a list, 'condition' must be of length 2",
+    mcmc_pairs(arr, condition = pairs_condition(nuts = "accept_stat__")),
+    "the 'np' argument to 'mcmc_pairs' must also be specified"
+  )
+  expect_error(
+    mcmc_pairs(arr, condition = pairs_condition(nuts = "lp__")),
+    "the 'lp' argument to 'mcmc_pairs' must also be specified"
+  )
+  expect_error(
+    mcmc_pairs(arr, condition = "lp__"),
+    'inherits(condition, "pairs_condition") is not TRUE',
     fixed = TRUE
   )
-  expect_error(mcmc_pairs(arr, condition = "accept_stat__"),
-               "the 'np' argument must also be specified")
-  expect_error(mcmc_pairs(arr, condition = "lp__"),
-               "the 'lp' argument must also be specified")
 
   expect_error(
     mcmc_pairs(post, pars = c("wt", "am"), max_treedepth = 2, np = np,
@@ -145,8 +145,10 @@ test_that("mcmc_pairs throws correct warnings and errors", {
 })
 
 
+# pairs_style_np -------------------------------------------------------
 test_that("pairs_style_np returns correct structure", {
   style <- pairs_style_np(div_size = 3, td_color = "gray", td_shape = 1)
+  expect_s3_class(style, "pairs_style_np")
   expect_named(style, c("color", "shape", "size"), ignore.order = TRUE)
   expect_named(style$color, c("div", "td"))
   expect_named(style$size, c("div", "td"))
@@ -162,6 +164,107 @@ test_that("pairs_style_np throws correct errors", {
   expect_error(
     pairs_style_np(td_color = 1),
     "is.character(td_color) is not TRUE",
+    fixed = TRUE
+  )
+})
+
+
+# pairs_condition ---------------------------------------------------------
+test_that("pairs_condition returns correct structure", {
+  # default
+  cond0 <- pairs_condition()
+  expect_s3_class(cond0, "pairs_condition")
+  expect_identical(unclass(cond0), list())
+
+  # chains
+  cond1 <- pairs_condition(chains = 1:4)
+  expect_s3_class(cond1, "integer")
+  expect_s3_class(cond1, "pairs_condition")
+  expect_identical(unclass(cond1), 1:4)
+
+  cond2 <- pairs_condition(chains = list(1:4, 5:6))
+  expect_s3_class(cond2, "list")
+  expect_s3_class(cond2, "pairs_condition")
+  expect_identical(unclass(cond2), list(upper=1:4, lower=5:6))
+
+  # draws
+  cond3 <- pairs_condition(draws = 0.7)
+  expect_s3_class(cond3, "numeric")
+  expect_s3_class(cond3, "pairs_condition")
+  expect_identical(unclass(cond3), 0.7)
+
+  cond4 <- pairs_condition(draws = c(T, F, T))
+  expect_s3_class(cond4, "logical")
+  expect_s3_class(cond4, "pairs_condition")
+  expect_identical(unclass(cond4), c(T, F, T))
+
+  # nuts
+  cond5 <- pairs_condition(nuts = "lp__")
+  expect_s3_class(cond5, "character")
+  expect_s3_class(cond5, "pairs_condition")
+  expect_identical(unclass(cond5), "lp__")
+})
+
+test_that("pairs_condition throws correct errors", {
+  # chain
+  expect_error(
+    pairs_condition(chains = "abc"),
+    "must be an integer vector or a list of two integer vectors"
+  )
+  expect_error(
+    pairs_condition(chains = list(1:2, 3:4, 5:6)),
+    "length(chains) == 2 is not TRUE",
+    fixed = TRUE
+  )
+  expect_error(
+    pairs_condition(chains = list(1:2, 2:3)),
+    "Each chain can only be specified once"
+  )
+  expect_error(
+    pairs_condition(chains = c(1:3, 2)),
+    "Each chain can only be specified once"
+  )
+
+  # draws
+  expect_error(
+    pairs_condition(draws = "abc"),
+    "must be a single proportion or a logical vector"
+  )
+  expect_error(
+    pairs_condition(draws = 2),
+    "draws > 0 && draws < 1 is not TRUE",
+    fixed = TRUE
+  )
+
+  # nuts
+  expect_error(
+    pairs_condition(nuts = 2),
+    "must be a single string"
+  )
+  expect_error(
+    pairs_condition(nuts = c("lp__", "energy__")),
+    "must be a single string"
+  )
+  expect_error(
+    pairs_condition(nuts = "step_size__"),
+    "stepsize__"
+  )
+})
+
+test_that("pairs_condition message if multiple args specified", {
+  expect_message(
+    pairs_condition(chains = 2, draws = 0.5, nuts = "lp__"),
+    "because they are superseded by 'chains': ‘draws’, ‘nuts’",
+    fixed = TRUE
+  )
+  expect_message(
+    pairs_condition(chains = 2, nuts = "lp__"),
+    "because they are superseded by 'chains': ‘nuts’",
+    fixed = TRUE
+  )
+  expect_message(
+    pairs_condition(draws = 0.5, nuts = "lp__"),
+    "because they are superseded by 'draws': ‘nuts’",
     fixed = TRUE
   )
 })
