@@ -163,13 +163,13 @@ mcmc_hex <- function(x,
 #'   the maximum treedepth rather than terminated its evolution normally. The
 #'   colors, shapes, and sizes of the superimposed points can be customized
 #'   using the \code{np_style} argument.
-#' @param np_style A call to the \code{pairs_style_np} helper function to
-#'   specify arguments controlling the appearance of superimposed points
-#'   representing NUTS diagnostic parameter warnings (if the \code{np} argument
-#'   is specified). The arguments to \code{pairs_style_np} correspond to setting
-#'   the color, shape, and size of the points indicating divergences and the
-#'   points indicating hitting the maximum treedepth (Note: here "size" is
-#'   interpreted as a scaling factor).
+#' @param np_style For \code{mcmc_pairs}, a call to the \code{pairs_style_np}
+#'   helper function to specify arguments controlling the appearance of
+#'   superimposed points representing NUTS diagnostic parameter warnings (if the
+#'   \code{np} argument is specified). The arguments to \code{pairs_style_np}
+#'   correspond to setting the color, shape, and size of the points indicating
+#'   divergences and the points indicating hitting the maximum treedepth (Note:
+#'   here "size" is interpreted as a scaling factor).
 #' @param max_treedepth For \code{mcmc_pairs}, an integer representing the
 #'   maximum treedepth allowed when fitting the model (if fit using NUTS). This
 #'   is only needed for detecting which transitions (if any) hit the maximum
@@ -179,11 +179,12 @@ mcmc_hex <- function(x,
 #'   respectively. Currently \code{diag_fun} can be \code{"hist"} for histogram
 #'   or \code{"dens"} for density, and \code{off_diag_fun} can be
 #'   \code{"scatter"} for scatterplot or \code{"hex"} for a hexagonal heatmap.
-#' @param diag_args,off_diag_args Optional named lists of arguments to pass to
-#'   the functions implied by the \code{diag_fun} and \code{off_diag_fun}
-#'   arguments, respectively. For example, if \code{off_diag_fun} is
-#'   \code{"scatter"} then \code{off_diag_args} could include optional arguments
-#'   to \code{mcmc_scatter} like \code{size} and \code{alpha}.
+#' @param diag_args,off_diag_args For \code{mcmc_pairs}, optional named lists of
+#'   arguments to pass to the functions implied by the \code{diag_fun} and
+#'   \code{off_diag_fun} arguments, respectively. For example, if
+#'   \code{off_diag_fun} is \code{"scatter"} then \code{off_diag_args} could
+#'   include optional arguments to \code{mcmc_scatter} like \code{size} and
+#'   \code{alpha}.
 #'
 #' @examples
 #' \donttest{
