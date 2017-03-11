@@ -456,8 +456,7 @@ pairs_condition <- function(chains = NULL, draws = NULL, nuts = NULL) {
     if (length(nms)) {
       message(
         "The following specified arguments were ignored by 'pairs_condition' ",
-        if (!is.null(why)) paste0("because ", why),
-        ": ",
+        "because ", why, ": ",
         paste(sQuote(nms), collapse = ", ")
       )
     }
