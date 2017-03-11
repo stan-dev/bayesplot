@@ -138,10 +138,11 @@ in the \strong{Usage} section above.}
 \itemize{
   \item The \code{chains} argument can be used to select some subset of the
   chains. If \code{chains} is an integer vector then the behavior is the same
-  as the default except using only the specified subset of chains.
-  Alternatively, \code{chains} can be a list of two integer vectors with the
-  first specifying the chains to be shown in the plots above the diagonal and
-  the second for below the diagonal.
+  as the default (half the chains above the diagonal and half below) except
+  using only the specified subset of chains. Alternatively, \code{chains} can
+  be a list of two integer vectors with the first specifying the chains to be
+  shown in the plots above the diagonal and the second for below the
+  diagonal.
   \item The \code{draws} argument to \code{pairs_condition} can be used to
   directly specify which realizations are plotted above and below the
   diagonal. \code{draws} can be a single proportion, which is interpreted as
@@ -163,7 +164,7 @@ in the \strong{Usage} section above.}
   (or are zero in the case of \code{"divergent__"}), and plots above the
   diagonal will contain realizations that are greater than or equal to the
   median of the indicated variable (or are one in the case of
-  \code{"divergent__"}). If \code{"lp__"} is used then the the \code{lp}
+  \code{"divergent__"}). If \code{"lp__"} is used then the \code{lp}
   argument to \code{mcmc_pairs} must also be specified. For the other NUTS
   parameters the \code{np} argument to \code{mcmc_pairs} must also be
   specified.

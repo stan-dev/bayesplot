@@ -419,10 +419,11 @@ pairs_style_np <-
 #' \itemize{
 #'   \item The \code{chains} argument can be used to select some subset of the
 #'   chains. If \code{chains} is an integer vector then the behavior is the same
-#'   as the default except using only the specified subset of chains.
-#'   Alternatively, \code{chains} can be a list of two integer vectors with the
-#'   first specifying the chains to be shown in the plots above the diagonal and
-#'   the second for below the diagonal.
+#'   as the default (half the chains above the diagonal and half below) except
+#'   using only the specified subset of chains. Alternatively, \code{chains} can
+#'   be a list of two integer vectors with the first specifying the chains to be
+#'   shown in the plots above the diagonal and the second for below the
+#'   diagonal.
 #'   \item The \code{draws} argument to \code{pairs_condition} can be used to
 #'   directly specify which realizations are plotted above and below the
 #'   diagonal. \code{draws} can be a single proportion, which is interpreted as
@@ -444,7 +445,7 @@ pairs_style_np <-
 #'   (or are zero in the case of \code{"divergent__"}), and plots above the
 #'   diagonal will contain realizations that are greater than or equal to the
 #'   median of the indicated variable (or are one in the case of
-#'   \code{"divergent__"}). If \code{"lp__"} is used then the the \code{lp}
+#'   \code{"divergent__"}). If \code{"lp__"} is used then the \code{lp}
 #'   argument to \code{mcmc_pairs} must also be specified. For the other NUTS
 #'   parameters the \code{np} argument to \code{mcmc_pairs} must also be
 #'   specified.
@@ -475,7 +476,9 @@ pairs_condition <- function(chains = NULL, draws = NULL, nuts = NULL) {
       is.null(draws) &&
       is.null(nuts)) {
     # default: half of the chains above diag, half below
+
     cond <- NULL
+    cond_type <- "default"
 
   } else if (!is.null(chains)) {
     # Using 'chains' argument
@@ -493,6 +496,7 @@ pairs_condition <- function(chains = NULL, draws = NULL, nuts = NULL) {
 
       cond <- list(upper = as.integer(chains[[1]]),
                    lower = as.integer(chains[[2]]))
+      cond_type <- "chain_list"
     } else if (is.numeric(chains)) {
       # single vector specifying a subset of chains
       stopifnot(NCOL(chains) == 1, all(chains == as.integer(chains)))
@@ -500,6 +504,7 @@ pairs_condition <- function(chains = NULL, draws = NULL, nuts = NULL) {
         .error_duplicate_chains()
 
       cond <- as.integer(chains)
+      cond_type <- "chain_vector"
     } else {
       stop(
         "The 'chains' argument to 'pairs_condition' must be ",
@@ -516,9 +521,11 @@ pairs_condition <- function(chains = NULL, draws = NULL, nuts = NULL) {
       # proportion of realizations (among all chains) to plot in the lower panel
       stopifnot(draws > 0 && draws < 1)
       cond <- draws
+      cond_type <- "draws_proportion"
     } else if (is.logical(draws)) {
       # T/F for each iteration to split into upper/lower panels
       cond <- draws
+      cond_type <- "draws_selection"
     } else {
       stop(
         "The 'draws' argument to 'pairs_condition' must be ",
@@ -535,13 +542,18 @@ pairs_condition <- function(chains = NULL, draws = NULL, nuts = NULL) {
         call. = FALSE
       )
 
+    cond_type <- "nuts"
     cond <- match.arg(nuts, several.ok = FALSE,
                       choices = c("accept_stat__", "stepsize__",
                                   "treedepth__", "n_leapfrog__",
                                   "divergent__", "energy__", "lp__"))
   }
 
-  structure(cond, class = c(class(cond), "pairs_condition"))
+  structure(
+    cond,
+    class = c(class(cond), "pairs_condition"),
+    type = cond_type # this attribute is used later by handle_condition()
+  )
 }
 
 
@@ -699,7 +711,8 @@ drop_dupes <- function(x) {
 # Handle user's specified condition
 #
 # @param x 3-D mcmc array
-# @param condition,np,lp user-specified arguments
+# @param condition Object returned by pairs_condition
+# @param np,lp User-specified arguments to mcmc_pairs
 # @return A named list containing 'x' (x, possibly modified) and 'mark' (logical
 #   or interger vector for eventually splitting x)
 handle_condition <- function(x, condition=NULL, np=NULL, lp=NULL) {
@@ -708,33 +721,28 @@ handle_condition <- function(x, condition=NULL, np=NULL, lp=NULL) {
   no_np <- is.null(np)
   no_lp <- is.null(lp)
 
-  if (!(length(condition))) {
+  cond_type <- attr(condition, "type")
+
+  if (cond_type == "default") {
     k <- ncol(x) %/% 2
     mark <- c(rep(FALSE, n_iter * k), rep(TRUE, n_iter * (n_chain - k)))
-  } else if (is.numeric(condition)) {
-    if (all(condition == as.integer(condition))) {
-      # Integer vector
-      x <- x[, condition, , drop = FALSE]
-      k <- ncol(x) %/% 2
-      n_chain <- length(condition)
-      mark <- c(rep(FALSE, n_iter * k), rep(TRUE, n_iter * (n_chain - k)))
-    } else {
-      # Proportion
-      stopifnot(condition > 0 && condition < 1)
-      mark <- rep(1:n_iter > (condition * n_iter), times = n_chain)
-    }
-  } else if (is.list(condition)) {
-    # List of integer vectors
-    stopifnot(length(condition) == 2)
+  } else if (cond_type == "chain_vector") {
+    x <- x[, condition, , drop = FALSE]
+    k <- ncol(x) %/% 2
+    n_chain <- length(condition)
+    mark <- c(rep(FALSE, n_iter * k), rep(TRUE, n_iter * (n_chain - k)))
+  } else if (cond_type == "chain_list") {
     x <- x[, c(condition[[1]], condition[[2]]), , drop = FALSE]
     k1 <- length(condition[[1]])
     k2 <- length(condition[[2]])
     mark <- c(rep(TRUE, n_iter * k1), rep(FALSE, n_iter * k2))
-  } else if (is.logical(condition)) {
+  } else if (cond_type == "draws_proportion") {
+    mark <- rep(1:n_iter > (condition * n_iter), times = n_chain)
+  } else if (cond_type == "draws_selection") {
     # T/F for each iteration to split into upper and lower
     stopifnot(length(condition) == (n_iter * n_chain))
     mark <- !condition
-  } else if (is.character(condition)) {
+  } else if (cond_type == "nuts") {
     # NUTS sampler param or lp__
     if (no_np && condition != "lp__")
       stop(
