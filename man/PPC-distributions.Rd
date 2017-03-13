@@ -29,7 +29,8 @@ ppc_dens_overlay(y, yrep, ..., trim = FALSE, size = 0.25, alpha = 0.7)
 ppc_ecdf_overlay(y, yrep, ..., pad = TRUE, size = 0.25, alpha = 0.7)
 
 ppc_violin_grouped(y, yrep, group, ..., probs = c(0.1, 0.5, 0.9), size = 1,
-  alpha = 1)
+  alpha = 1, y_draw = c("violin", "points", "both"), y_size = 1,
+  y_alpha = 1, y_jitter = 0.1)
 }
 \arguments{
 \item{y}{A vector of observations. See \strong{Details}.}
@@ -57,8 +58,7 @@ function.)}
 Unlike for \code{geom_boxplot}, the default is \code{notch=TRUE}.}
 
 \item{size, alpha}{Passed to the appropriate geom to control the appearance of
-the \code{yrep} distributions. For \code{ppc_violin_grouped} only,
-\code{size} controls the size of the \code{y} points.}
+the \code{yrep} distributions.}
 
 \item{group}{A grouping variable (a vector or factor) the same length as
 \code{y}. Each value in \code{group} is interpreted as the group level
@@ -71,6 +71,18 @@ pertaining to the corresponding value of \code{y}.}
 \item{probs}{A numeric vector passed to \code{\link[ggplot2]{geom_violin}}'s
 \code{draw_quantiles} argument to specify at which quantiles to draw
 horizontal lines. Set to \code{NULL} to remove the lines.}
+
+\item{y_draw}{For \code{ppc_violin_grouped}, a string specifying how to draw
+\code{y}: \code{"violin"} (default), \code{"points"} (jittered points), or
+\code{"both"}.}
+
+\item{y_jitter, y_size, y_alpha}{For \code{ppc_violin_grouped}, if
+\code{y_draw} is \code{"points"} or \code{"both"} then \code{y_size},
+\code{y_alpha}, and \code{y_jitter} are passed to to the \code{size},
+\code{alpha}, and \code{width} arguments of
+\code{\link[ggplot2]{geom_jitter}} to control the appearance of \code{y}
+points. The default of \code{y_jitter=NULL} will let \pkg{ggplot2}
+determine the amount of jitter.}
 }
 \value{
 A ggplot object that can be further customized using the
@@ -109,9 +121,9 @@ For Binomial data, the plots will typically be most useful if
   }
   \item{\code{ppc_violin_grouped}}{
    The density estimate of \code{yrep} within each level of a grouping
-   variable is plotted as a violin with horizontal lines at
-   notable quantiles. The points in \code{y} corresponding to
-   each grouping level are then overlaid on top of the violins.
+   variable is plotted as a violin with horizontal lines at notable
+   quantiles. \code{y} is overlaid on the plot either as a violin, points, or
+   both, depending on the \code{y_draw} argument.
   }
 }
 }
@@ -154,6 +166,11 @@ color_scheme_set("gray")
 ppc_violin_grouped(y, yrep, group, size = 1.5)
 \donttest{
 ppc_violin_grouped(y, yrep, group, alpha = 0)
+
+# change how y is drawn
+ppc_violin_grouped(y, yrep, group, alpha = 0, y_draw = "points", y_size = 1.5)
+ppc_violin_grouped(y, yrep, group, alpha = 0, y_draw = "both",
+                   y_size = 1.5, y_alpha = 0.5, y_jitter = 0.33)
 }
 
 }

@@ -43,7 +43,7 @@ before plotting. If \code{transformations} is a function or a single string
 naming a function then that function will be used to transform all
 parameters. To apply transformations to particular parameters, the
 \code{transformations} argument can be a named list with length equal to
-the number of parameters to be transfomred. Currently only univariate
+the number of parameters to be transformed. Currently only univariate
 transformations of scalar parameters can be specified (multivariate
 transformations will be implemented in a future release). If
 \code{transformations} is a list, the name of each list element should be a
@@ -57,8 +57,7 @@ log(x)}) then \code{"t"} is used in the new parameter label to indicate
 that the parameter is transformed (e.g. \code{"t(sigma)"}).}
 
 \item{facet_args}{Arguments (other than \code{facets}) passed to
-\code{\link[ggplot2]{facet_wrap}} (if \code{by_chain} is \code{FALSE}) or
-\code{\link[ggplot2]{facet_grid}} (if \code{by_chain} is \code{TRUE}) to
+\code{\link[ggplot2]{facet_wrap}} or \code{\link[ggplot2]{facet_grid}} to
 control faceting.}
 
 \item{...}{Currently ignored.}
