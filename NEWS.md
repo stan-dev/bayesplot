@@ -9,7 +9,10 @@
 
 #### New features in existing functions
 * For `mcmc_*` functions, transformations are recycled if `transformations` 
-argument is specified as a single function rather than a named list. (#64)
+argument is specified as a single function rather than a named list. Thanks to
+ @tklebel. (#64)
+* For `ppc_violin_grouped` there is now the option of showing `y` as a violin, 
+points, or both. Thanks to @silberzwiebel. (#74)
 * New color scheme `"darkgray"`.
 
 #### New functions
@@ -17,8 +20,10 @@ argument is specified as a single function rather than a named list. (#64)
 `pairs.stanfit` method. (#67)
 * `mcmc_hex`, which is similar to `mcmc_scatter` but using `geom_hex` instead of
 `geom_point`. This can be used to avoid overplotting.
-* `ppc_rootogram` for use with models for count data. (#28)
+* `ppc_rootogram` for use with models for count data. Thanks to @paul-buerkner.
+(#28)
 * `overlay_function` convenience function.
+
 
 # bayesplot 1.1.0
 
