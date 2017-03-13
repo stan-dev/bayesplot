@@ -70,7 +70,7 @@ For \code{ppc_bars}, the observations \code{y} and predictions
 
 \examples{
 f <- function(N) {
-  sample(1:4, size = N, replace = T, prob = c(0.25, 0.4, 0.1, 0.25))
+  sample(1:4, size = N, replace = TRUE, prob = c(0.25, 0.4, 0.1, 0.25))
 }
 y <- f(100)
 yrep <- t(replicate(500, f(100)))
