@@ -88,6 +88,10 @@
 #' ppc_violin_grouped(y, yrep, group, size = 1.5)
 #' \donttest{
 #' ppc_violin_grouped(y, yrep, group, alpha = 0)
+#' 
+#' # examples to show non-default options of ppc_violin_grouped() for y-drawing 
+#' ppc_violin_grouped(y, yrep, group, alpha = 0, ydraw = "point", size = 2, yalpha = 0.5, jitter = 0.2)
+#' ppc_violin_grouped(y, yrep, group, alpha = 0, ydraw = "both", size = 2, yalpha = 0.5, jitter = 0.2)
 #' }
 #'
 NULL
@@ -349,9 +353,20 @@ ppc_ecdf_overlay <- function(y, yrep, ...,
 #' @param probs A numeric vector passed to \code{\link[ggplot2]{geom_violin}}'s
 #'   \code{draw_quantiles} argument to specify at which quantiles to draw
 #'   horizontal lines. Set to \code{NULL} to remove the lines.
+#' @param ydraw a character vector specifying how to draw y. Takes one of the 
+#'   following three options: "violin" (draw y as \code{\link[ggplot]{geom_violin}}, too), 
+#'   "point" (draw y as horizontally jittered points, i.e. as \code{\link[ggplot2]{geom_jitter}}) or 
+#'   "both" (draw y as both \code{\link[ggplot2]{geom_violin}} and \code{\link[ggplot2]{geom_jitter}}).
+#'   Defaults to "violin".
+#' @param jitter the amount of horizontal jitter if y is drawn as \code{\link[ggplot2]{geom_jitter}} (i.e., if ydraw is set to "point" or "both").
+#'   Default is NULL, implying \code{\link[ggplot2]{geom_jitter}}'s default.
+#' @param yalpha the transparency of the jittered y points. Only used if ydraw is set to "point" or "both". Default is 0.1
 #'
 ppc_violin_grouped <- function(y, yrep, group, ...,
-                               probs = c(0.1, 0.5, 0.9),
+															 probs = c(0.1, 0.5, 0.9),
+                               ydraw = "violin",
+															 jitter = NULL,
+															 yalpha = 0.1,
                                size = 1,
                                alpha = 1) {
   check_ignored_arguments(...)
@@ -362,26 +377,43 @@ ppc_violin_grouped <- function(y, yrep, group, ...,
   plot_data <- ppc_group_data(y, yrep, group, stat = NULL)
   is_y <- plot_data$variable == "y"
 
-  ggplot(
+  p <- ggplot(
     plot_data[!is_y,, drop = FALSE],
     aes_(x = ~ group, y = ~ value)
-  ) +
-    geom_violin(
+  ) + geom_violin(
       aes_(fill = "yrep", color = "yrep"),
       draw_quantiles = probs,
       alpha = alpha
-    ) +
+    )
+  
+  if(ydraw == "violin" | ydraw == "both"){
+  	p <- p +
     geom_violin(
       data = plot_data[is_y,, drop = FALSE],
       aes_(fill = "y", color = "y"),
       alpha = 0.9
-    ) +
-    scale_fill_ppc_dist(values = c(NA, get_color("l"))) +
-    scale_color_ppc_dist() +
-    labs(x = "Group", y = yrep_label()) +
-    theme_default() +
-    yaxis_title(FALSE) +
-    xaxis_title(FALSE)
+    )
+  } # no else here to allow option "both" going into both if-bodies
+  if (ydraw == "point" | ydraw == "both"){
+  	p <- p +
+    geom_jitter(
+      data = plot_data[is_y,, drop = FALSE],
+      aes_(fill = "y", color = "y"),
+      shape = 21,
+      alpha = yalpha,
+      size = size,
+      height = 0.0, 
+      width = jitter
+    ) 
+  }
+  
+	p +
+  scale_fill_ppc_dist(values = c(NA, get_color("l"))) +
+  scale_color_ppc_dist() +
+  labs(x = "Group", y = yrep_label()) +
+  theme_default() +
+  yaxis_title(FALSE) +
+  xaxis_title(FALSE)
 }
 
 
