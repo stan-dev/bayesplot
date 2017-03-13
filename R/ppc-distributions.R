@@ -354,7 +354,7 @@ ppc_ecdf_overlay <- function(y, yrep, ...,
 #'   \code{draw_quantiles} argument to specify at which quantiles to draw
 #'   horizontal lines. Set to \code{NULL} to remove the lines.
 #' @param ydraw a character vector specifying how to draw y. Takes one of the 
-#'   following three options: "violin" (draw y as \code{\link[ggplot]{geom_violin}}, too), 
+#'   following three options: "violin" (draw y as \code{\link[ggplot2]{geom_violin}}, too), 
 #'   "point" (draw y as horizontally jittered points, i.e. as \code{\link[ggplot2]{geom_jitter}}) or 
 #'   "both" (draw y as both \code{\link[ggplot2]{geom_violin}} and \code{\link[ggplot2]{geom_jitter}}).
 #'   Defaults to "violin".
