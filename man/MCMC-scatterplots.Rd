@@ -178,28 +178,34 @@ in the \strong{Usage} section above.}
   \code{\link{bayesplot_grid}}.
 }
 \description{
-Scatterplots (and other similar plots) of MCMC draws. See the \strong{Plot
-Descriptions} section, below, for details.
+Scatterplots, hexagonal heatmaps, and pairs plots from MCMC draws. See the
+\strong{Plot Descriptions} section, below, for details.
 }
 \section{Plot Descriptions}{
 
 \describe{
   \item{\code{mcmc_scatter}}{
-   Bivariate scatterplot of posterior draws.
+   Bivariate scatterplot of posterior draws. If using a very large number of
+   posterior draws then \code{mcmc_hex} may be preferable to avoid
+   overplotting.
   }
   \item{\code{mcmc_hex}}{
-   Hexagonal heatmap of 2-D bin counts. If \code{x} contains a very large
-   number of posterior draws then this plot may be preferable to a
-   scatterplot which can suffer from overplotting.
+   Hexagonal heatmap of 2-D bin counts. This plot is useful in cases where
+   the posterior sample size is large enough that \code{mcmc_scatter} suffers
+   from overplotting.
   }
   \item{\code{mcmc_pairs}}{
-   Pairs plot with scatterplots (or hex plots) off the diagonal and
-   histograms (or densities) along the diagonal. The default is to split the
-   chains so that (roughly) half are displayed above the diagonal and half
-   below (all chains are always merged for the plots along the diagonal).
-   Many other possibilities are available by setting the \code{condition}
-   argument. Additionally, extra diagonistic information for models fit using
-   \code{\link{NUTS}} can be added to the pairs plot (see \strong{Examples}).
+   A square plot matrix with univariate marginal distributions along the
+   diagonal (as histograms or kernel density plots) and bivariate
+   distributions off the diagonal (as scatterplots or hex heatmaps).
+
+   For the off-diagonal plots, the default is to split the chains so that
+   (roughly) half are displayed above the diagonal and half are below (all
+   chains are always merged together for the plots along the diagonal). Other
+   possibilities are available by setting the \code{condition} argument.
+   Additionally, extra diagonistic information for models fit using
+   \code{\link{NUTS}} can be added to the pairs plot using the \code{lp},
+   \code{np}, and \code{np_style} arguments.
   }
 }
 }
