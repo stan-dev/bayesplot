@@ -33,6 +33,19 @@
 #' }
 #' }
 #'
+#' @examples
+#' f <- function(N) {
+#'   sample(1:4, size = N, replace = T, prob = c(0.25, 0.4, 0.1, 0.25))
+#' }
+#' y <- f(100)
+#' yrep <- t(replicate(500, f(100)))
+#' dim(yrep)
+#'
+#' ppc_bars(y, yrep)
+#'
+#' group <- gl(2, 50, length = 100, labels = c("GroupA", "GroupB"))
+#' ppc_bars_grouped(y, yrep, group, prob = 0.5, freq = FALSE)
+#'
 ppc_bars <-
   function(y,
            yrep,
