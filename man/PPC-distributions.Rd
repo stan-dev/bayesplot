@@ -72,8 +72,8 @@ pertaining to the corresponding value of \code{y}.}
 \code{draw_quantiles} argument to specify at which quantiles to draw
 horizontal lines. Set to \code{NULL} to remove the lines.}
 
-\item{ydraw}{a character vector to specify how to draw y. Takes one of the 
-following three options: "violin" (draw y as \code{\link[ggplot]{geom_violin}}, too), 
+\item{ydraw}{a character vector specifying how to draw y. Takes one of the 
+following three options: "violin" (draw y as \code{\link[ggplot2]{geom_violin}}, too), 
 "point" (draw y as horizontally jittered points, i.e. as \code{\link[ggplot2]{geom_jitter}}) or 
 "both" (draw y as both \code{\link[ggplot2]{geom_violin}} and \code{\link[ggplot2]{geom_jitter}}).
 Defaults to "violin".}
@@ -81,7 +81,7 @@ Defaults to "violin".}
 \item{jitter}{the amount of horizontal jitter if y is drawn as \code{\link[ggplot2]{geom_jitter}} (i.e., if ydraw is set to "point" or "both").
 Default is NULL, implying \code{\link[ggplot2]{geom_jitter}}'s default.}
 
-\item{yalpha}{the transparency of the jittered y points. Only used if ydraw is set to "point" or "both".}
+\item{yalpha}{the transparency of the jittered y points. Only used if ydraw is set to "point" or "both". Default is 0.1}
 }
 \value{
 A ggplot object that can be further customized using the
