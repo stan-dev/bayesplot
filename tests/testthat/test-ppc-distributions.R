@@ -46,6 +46,7 @@ test_that("ppc_violin_grouped returns a ggplot object", {
   expect_gg(ppc_violin_grouped(y, yrep, group))
   expect_gg(ppc_violin_grouped(y, yrep, as.numeric(group)))
   expect_gg(ppc_violin_grouped(y, yrep, as.integer(group)))
+  expect_gg(ppc_violin_grouped(y, yrep, group, y_draw = "both", y_jitter = 0.3))
 
   expect_error(ppc_violin_grouped(y2, yrep2, group2),
                "'group' must have more than one unique value")
