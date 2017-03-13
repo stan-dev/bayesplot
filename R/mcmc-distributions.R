@@ -11,8 +11,7 @@
 #' @template args-regex_pars
 #' @template args-transformations
 #' @param facet_args Arguments (other than \code{facets}) passed to
-#'   \code{\link[ggplot2]{facet_wrap}} (if \code{by_chain} is \code{FALSE}) or
-#'   \code{\link[ggplot2]{facet_grid}} (if \code{by_chain} is \code{TRUE}) to
+#'   \code{\link[ggplot2]{facet_wrap}} or \code{\link[ggplot2]{facet_grid}} to
 #'   control faceting.
 #' @param ... Currently ignored.
 #'
