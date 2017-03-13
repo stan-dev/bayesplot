@@ -37,6 +37,9 @@ test_that("available_ppc works", {
     sort(grep("_grouped$", getNamespaceExports("bayesplot"), value = TRUE))
   )
 
+  c <- available_ppc("grouped", invert = TRUE)
+  expect_false(any(grepl("grouped", c)))
+
   expect_length(available_ppc(pattern = "99999"), 0)
 })
 
@@ -46,4 +49,7 @@ test_that("print.bayesplot_function_list works", {
 
   expect_output(print(available_ppc("ribbon")), "(matching pattern 'ribbon')")
   expect_output(print(available_mcmc("trace")), "trace_highlight")
+
+  expect_output(print(available_ppc("grouped", invert = TRUE)),
+                "excluding pattern 'grouped'")
 })

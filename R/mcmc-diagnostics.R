@@ -1,8 +1,9 @@
-#' Autocorrelation, Rhat, and effective sample size
+#' General MCMC diagnostics
 #'
 #' Plots of Rhat statistics, ratios of effective sample size to total sample
 #' size, and autocorrelation of MCMC draws. See the \strong{Plot Descriptions}
-#' section, below, for details.
+#' section, below, for details. For models fit using the No-U-Turn-Sampler, see
+#' also \link{MCMC-nuts} for additional MCMC diagnostic plots.
 #'
 #' @name MCMC-diagnostics
 #' @family MCMC
@@ -46,12 +47,18 @@
 #' }
 #'}
 #'
+#' @template reference-stan-manual
 #' @references
 #' Gelman, A. and Rubin, D. B. (1992). Inference from iterative
 #' simulation using multiple sequences. \emph{Statistical Science}. 7(4),
 #' 457--472.
 #'
-#' @template reference-stan-manual
+#' @seealso
+#' \itemize{
+#' \item The \emph{Visual MCMC Diagnostics} vignette.
+#' \item \link{MCMC-nuts} for additional MCMC diagnostic plots for models fit
+#'   using the No-U-Turn-Sampler.
+#' }
 #'
 #' @examples
 #' # autocorrelation

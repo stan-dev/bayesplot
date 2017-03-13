@@ -1,5 +1,8 @@
 #' Diagnostic plots for the No-U-Turn-Sampler (NUTS)
 #'
+#' Diagnostic plots for the No-U-Turn-Sampler (NUTS), the default MCMC algorithm
+#' used by Stan. See the \strong{Plot Descriptions} section, below.
+#'
 #' @name MCMC-nuts
 #' @aliases NUTS
 #' @family MCMC
@@ -23,12 +26,11 @@
 #'   \code{\link[gridExtra]{arrangeGrob}}) created from several ggplot objects,
 #'   except for \code{mcmc_nuts_energy}, which returns a ggplot object.
 #'
-#' @section Quick definitions:
-#' For more details see Stan Development Team (2016).
+#' @section Quick Definitions:
+#' For more details see Stan Development Team (2016) and Betancourt (2017).
 #' \itemize{
 #'   \item \code{accept_stat__}: the average acceptance probabilities of all
-#'   possible samples in the proposed tree (NUTS uses a slice sampling algorithm
-#'   for rejection).
+#'   possible samples in the proposed tree.
 #'   \item \code{divergent__}: the number of leapfrog transitions with diverging
 #'   error. Because NUTS terminates at the first divergence this will be either
 #'   0 or 1 for each iteration.
@@ -38,7 +40,7 @@
 #'   (base 2) of the number of leapfrog steps taken during the Hamiltonian
 #'   simulation.
 #'   \item \code{energy__}: the value of the Hamiltonian (up to an additive
-#'   constant) at each sample.
+#'   constant) at each iteration.
 #' }
 #'
 #' @section Plot Descriptions:
@@ -89,8 +91,20 @@
 #' @template reference-nuts
 #' @template reference-stan-manual
 #'
-#' @seealso \code{\link{mcmc_trace}}, which will plot divergences on the
-#'   traceplot if the optional \code{divergences} argument is specified.
+#' @seealso
+#' \itemize{
+#' \item The \emph{Visual MCMC Diagnostics} vignette.
+#' \item Several other plotting functions in the \pkg{bayesplot}
+#' package that aren't NUTS-specific but take optional extra arguments
+#' if the model was fit using NUTS:
+#' \itemize{
+#'  \item \code{\link{mcmc_trace}} will plot divergences on the traceplot if the
+#'  optional \code{divergences} argument is specified.
+#'  \item \code{\link{mcmc_pairs}} will indicate which (if any) iterations
+#'  encountered a divergent transition or hit the maximum treedepth (rather than
+#'  terminated its evolution normally).
+#'  }
+#' }
 #'
 #' @examples
 #' \dontrun{
@@ -106,11 +120,11 @@
 #'
 #' color_scheme_set("red")
 #' mcmc_nuts_energy(np)
-#' mcmc_nuts_energy(np, binwidth = .25, alpha = .8)
-#' (energy_plot <- mcmc_nuts_energy(np, merge_chains = FALSE))
-#' energy_plot +
+#' mcmc_nuts_energy(np, merge_chains = TRUE, binwidth = .15)
+#' mcmc_nuts_energy(np) +
 #'  facet_wrap(~ Chain, nrow = 1) +
-#'  coord_fixed(ratio = 150)
+#'  coord_fixed(ratio = 150) +
+#'  ggtitle("NUTS Energy Diagnostic")
 #' }
 #'
 NULL
@@ -411,14 +425,15 @@ mcmc_nuts_treedepth <- function(x, lp, chain = NULL, ...) {
 #' @param alpha For \code{mcmc_nuts_energy} only, the transparency (alpha) level
 #'   in [0,1] used for the overlaid histogram.
 #' @param merge_chains For \code{mcmc_nuts_energy} only, should all chains be
-#'   merged or displayed separately?
+#'   merged or displayed separately? The default is \code{FALSE}, i.e., to show
+#'   the chains separately.
 #'
 mcmc_nuts_energy <-
   function(x,
            ...,
            binwidth = NULL,
            alpha = 0.5,
-           merge_chains = TRUE) {
+           merge_chains = FALSE) {
     check_ignored_arguments(...)
 
     x <- validate_nuts_data_frame(x)
@@ -503,7 +518,9 @@ validate_nuts_data_frame <- function(x, lp) {
       paste(valid_cols, collapse = ", ")
     )
 
-  if (!missing(lp)) {
+  if (missing(lp))
+    lp <- NULL
+  if (!is.null(lp)) {
     if (!is.data.frame(lp))
       stop("lp should be in a data frame.")
 

@@ -21,6 +21,7 @@
 #'   \itemize{
 #'    \item \code{"blue"}
 #'    \item \code{"brightblue"}
+#'    \item \code{"darkgray"}
 #'    \item \code{"gray"}
 #'    \item \code{"green"}
 #'    \item \code{"pink"}
@@ -153,9 +154,9 @@ color_scheme_view <- function(scheme) {
   if (missing(scheme) || length(scheme) == 1)
     return(.view_scheme(scheme))
 
-  gridExtra::grid.arrange(
-    grobs = lapply(scheme, .view_scheme),
-    ncol = length(scheme)
+  bayesplot_grid(
+    plots = lapply(scheme, .view_scheme),
+    grid_args = list(ncol = length(scheme))
   )
 }
 
@@ -191,7 +192,6 @@ color_scheme_view <- function(scheme) {
     theme_void() +
     legend_none() +
     xaxis_text(
-      size = rel(1.1),
       face = "bold",
       margin = margin(t = -3, b = 10),
       angle = 0,
@@ -320,8 +320,10 @@ master_color_list <- list(
     list("#d1e1ec", "#b3cde0", "#6497b1", "#005b96", "#03396c", "#011f4b"),
   brightblue =
     list("#cce5ff", "#99cbff", "#4ca5ff", "#198bff", "#0065cc", "#004c99"),
+  darkgray =
+    list("#bfbfbf", "#999999", "#737373", "#505050", "#383838", "#0d0d0d"),
   gray =
-    list("#DFDFDF", "#bfbfbf", "#999999", "#737373", "#505050", "#383838"), # "#0d0d0d"),
+    list("#DFDFDF", "#bfbfbf", "#999999", "#737373", "#505050", "#383838"),
   green =
     list("#d9f2e6", "#9fdfbf", "#66cc99", "#40bf80", "#2d8659", "#194d33"),
   pink =

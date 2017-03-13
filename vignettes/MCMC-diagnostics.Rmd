@@ -306,14 +306,14 @@ compare_cp_ncp(
 
 ## Diagnostics for the No-U-Turn Sampler
 
-The No-U-Turn Sampler (NUTS, Hoffman and Gelman, 2014) is the variant of
-Hamiltonian Monte Carlo (HMC) used by [Stan](http://mc-stan.org/) and the various R
-packages that depend on Stan for fitting Bayesian models.
+The No-U-Turn Sampler (NUTS, Hoffman and Gelman, 2014) is the variant of 
+Hamiltonian Monte Carlo (HMC) used by [Stan](http://mc-stan.org/) and the
+various R packages that depend on Stan for fitting Bayesian models.
 
-The **bayesplot** package has special functions for visualizing some of the
-unique diagnostics permitted by HMC, and NUTS in particular. See Betancourt and
-Girolami (2013), Betancourt (2016), and Stan Development Team (2016) for more
-details on the concepts.
+The **bayesplot** package has special functions for visualizing some of the 
+unique diagnostics permitted by HMC, and NUTS in particular. See Betancourt 
+(2017), Betancourt and Girolami (2013), and Stan Development Team (2016) for
+more details on the concepts.
 
 The special **bayesplot** functions for NUTS diagnostics are
 
@@ -412,12 +412,12 @@ mcmc_nuts_divergence(nuts_params(fit2b), log_posterior(fit2b))
 
 ### Energy and Bayesian fraction of missing information
 
-The `mcmc_nuts_energy` function creates plots similar to those presented in
-Betancourt (2016). While `mcmcm_nuts_divergence` can identify light tails and
-incomplete exploration of the target distribution, the `mcmc_nuts_energy`
+The `mcmc_nuts_energy` function creates plots similar to those presented in 
+Betancourt (2017). While `mcmcm_nuts_divergence` can identify light tails
+and incomplete exploration of the target distribution, the `mcmc_nuts_energy` 
 function can identify overly heavy tails that are also challenging for sampling.
 Informally, the energy diagnostic for HMC (and the related energy-based Bayesian
-fraction of missing information) quantify the heaviness of the tails of the
+fraction of missing information) quantify the heaviness of the tails of the 
 posterior distribution.
 
 The plot created by `mcmc_nuts_energy` shows overlaid histograms of the 
@@ -431,7 +431,7 @@ To keep the chains separate add `merge_chains=FALSE`:
 mcmc_nuts_energy(np1, merge_chains = FALSE, binwidth = 1)
 ```
 
-The two histograms ideally look the same (Betancourt, 2016), which is only the
+The two histograms ideally look the same (Betancourt, 2017), which is only the
 case for the non-centered parameterization (bottom panel):
 
 ```{r, mcmc_nuts_energy-3, message=FALSE}
@@ -454,16 +454,18 @@ compare_cp_ncp(
 )
 ```
 
-See Betancourt (2016) for more on this particular example as well as the general
+See Betancourt (2017) for more on this particular example as well as the general
 theory behind the energy plots.
 
 ## References
 
 In future versions of the **bayesplot** package this vignette will be expanded
 to provide examples of interpreting all of the NUTS diagnostic plots. For
-now see `help("MCMC-nuts", package = "bayesplot")` and the references below.
+now see `help("NUTS", package = "bayesplot")` and the references below.
 
 -----
+Betancourt, M. (2017). A conceptual introduction to Hamiltonian Monte Carlo.
+https://arxiv.org/abs/1701.02434
 
 Betancourt, M. (2016). Diagnosing suboptimal cotangent disintegrations in
 Hamiltonian Monte Carlo. https://arxiv.org/abs/1604.00695
@@ -471,9 +473,9 @@ Hamiltonian Monte Carlo. https://arxiv.org/abs/1604.00695
 Betancourt, M. and Girolami, M. (2013). Hamiltonian Monte Carlo for hierarchical
 models. https://arxiv.org/abs/1312.0906
 
-Gabry, J., and Goodrich, B. (2016). rstanarm: Bayesian Applied Regression
-Modeling via Stan. R package version 2.11.1.
-http://mc-stan.org/interfaces/rstanarm.html
+Gabry, J., and Goodrich, B. (2017). rstanarm: Bayesian Applied Regression
+Modeling via Stan. R package version 2.14.1.
+http://mc-stan.org/interfaces/rstanarm.html, https://CRAN.R-project.org/package=rstanarm
 
 Gelman, A. and Rubin, D. B. (1992). Inference from iterative simulation using
 multiple sequences. *Statistical Science*. 7(4): 457--472.

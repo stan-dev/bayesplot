@@ -44,7 +44,7 @@ formats:
     Times series of parameter draws.
   }
   \item{\strong{\link[=MCMC-scatterplots]{Scatterplots}}}{
-    Various scatterplots of parameter draws.
+    Scatterplots, heatmaps, and pairs plots of parameter draws.
   }
   \item{\strong{\link[=MCMC-combos]{Combinations}}}{
     Combination plots (e.g. traceplot + histogram).
