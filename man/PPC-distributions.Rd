@@ -28,8 +28,8 @@ ppc_dens_overlay(y, yrep, ..., trim = FALSE, size = 0.25, alpha = 0.7)
 
 ppc_ecdf_overlay(y, yrep, ..., pad = TRUE, size = 0.25, alpha = 0.7)
 
-ppc_violin_grouped(y, yrep, group, ..., probs = c(0.1, 0.5, 0.9), size = 1,
-  alpha = 1)
+ppc_violin_grouped(y, yrep, group, ..., probs = c(0.1, 0.5, 0.9),
+  ydraw = "violin", jitter = NULL, yalpha = 0.1, size = 1, alpha = 1)
 }
 \arguments{
 \item{y}{A vector of observations. See \strong{Details}.}
@@ -71,6 +71,17 @@ pertaining to the corresponding value of \code{y}.}
 \item{probs}{A numeric vector passed to \code{\link[ggplot2]{geom_violin}}'s
 \code{draw_quantiles} argument to specify at which quantiles to draw
 horizontal lines. Set to \code{NULL} to remove the lines.}
+
+\item{ydraw}{a character vector specifying how to draw y. Takes one of the 
+following three options: "violin" (draw y as \code{\link[ggplot2]{geom_violin}}, too), 
+"point" (draw y as horizontally jittered points, i.e. as \code{\link[ggplot2]{geom_jitter}}) or 
+"both" (draw y as both \code{\link[ggplot2]{geom_violin}} and \code{\link[ggplot2]{geom_jitter}}).
+Defaults to "violin".}
+
+\item{jitter}{the amount of horizontal jitter if y is drawn as \code{\link[ggplot2]{geom_jitter}} (i.e., if ydraw is set to "point" or "both").
+Default is NULL, implying \code{\link[ggplot2]{geom_jitter}}'s default.}
+
+\item{yalpha}{the transparency of the jittered y points. Only used if ydraw is set to "point" or "both". Default is 0.1}
 }
 \value{
 A ggplot object that can be further customized using the
@@ -154,6 +165,10 @@ color_scheme_set("gray")
 ppc_violin_grouped(y, yrep, group, size = 1.5)
 \donttest{
 ppc_violin_grouped(y, yrep, group, alpha = 0)
+
+# examples to show non-default options of ppc_violin_grouped() for y-drawing 
+ppc_violin_grouped(y, yrep, group, alpha = 0, ydraw = "point", size = 2, yalpha = 0.5, jitter = 0.2)
+ppc_violin_grouped(y, yrep, group, alpha = 0, ydraw = "both", size = 2, yalpha = 0.5, jitter = 0.2)
 }
 
 }
