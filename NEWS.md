@@ -22,6 +22,8 @@ points, or both. Thanks to @silberzwiebel. (#74)
 `geom_point`. This can be used to avoid overplotting.
 * `ppc_rootogram` for use with models for count data. Thanks to @paul-buerkner.
 (#28)
+* `ppc_bars`, `ppc_bars_grouped` for use with models for ordinal, categorical 
+ and multinomial data. Thanks to @silberzwiebel. (#73)
 * `overlay_function` convenience function.
 
 
