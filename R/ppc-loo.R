@@ -4,7 +4,8 @@
 #' @family PPCs
 #' @template args-y-yrep
 #' @param ... Currently unused.
-#' @param lw A matrix of log weights with the same dimensions as \code{yrep}.
+#' @param lw A matrix of (smoothed) log weights with the same dimensions as
+#'   \code{yrep}.
 #' @param size,alpha Passed to \code{\link[ggplot2]{geom_point}} to control the
 #'   appearance of the points.
 #'
@@ -13,12 +14,15 @@
 #' \item{\code{ppc_loo_pit}}{
 #'  The calibration of marginal predictions can be checked with probability
 #'  integral transformation (PIT) checks. LOO improves the check by avoiding the
-#'  double use of data. See the section on marginal predictive checks in BDA3 p.
-#'  152-153. The LOO probability integral transformation (PIT) predictive check
-#'  is a quantile-quantile plot comparing the LOO PITs to the standard uniform
-#'  distribution.
+#'  double use of data. See the section on marginal predictive checks in Gelman
+#'  et al. (2013, p. 152--153). The LOO probability integral transformation
+#'  (PIT) predictive check is a quantile-quantile plot comparing the LOO PITs to
+#'  the standard uniform distribution.
 #' }
 #' }
+#'
+#' @template reference-bda
+#' @template reference-loo
 #'
 #' @examples
 #' color_scheme_set("red")
@@ -32,7 +36,7 @@
 #'                    + (1 + floor | county), data = radon)
 #' y <- radon$log_radon
 #' yrep <- posterior_predict(fit)
-#' psis <- loo::psislw(-log_lik(fit))
+#' psis <- psislw(-log_lik(fit))
 #' ppc_loo_pit(y, yrep, lw = psis$lw_smooth)
 #' }
 #'

@@ -34,10 +34,10 @@ LOO predictive checks
 \item{\code{ppc_loo_pit}}{
  The calibration of marginal predictions can be checked with probability
  integral transformation (PIT) checks. LOO improves the check by avoiding the
- double use of data. See the section on marginal predictive checks in BDA3 p.
- 152-153. The LOO probability integral transformation (PIT) predictive check
- is a quantile-quantile plot comparing the LOO PITs to the standard uniform
- distribution.
+ double use of data. See the section on marginal predictive checks in Gelman
+ et al. (2013, p. 152--153). The LOO probability integral transformation
+ (PIT) predictive check is a quantile-quantile plot comparing the LOO PITs to
+ the standard uniform distribution.
 }
 }
 }
@@ -58,6 +58,17 @@ psis <- loo::psislw(-log_lik(fit))
 ppc_loo_pit(y, yrep, lw = psis$lw_smooth)
 }
 
+}
+\references{
+Gelman, A., Carlin, J. B., Stern, H. S., Dunson, D. B., Vehtari,
+  A., and Rubin, D. B. (2013). \emph{Bayesian Data Analysis.} Chapman & Hall/CRC
+  Press, London, third edition.
+
+Vehtari, A., Gelman, A., and Gabry, J. (2016a). Practical
+  Bayesian model evaluation using leave-one-out cross-validation and WAIC.
+  \emph{Statistics and Computing}. Advance online publication.
+  doi:10.1007/s11222-016-9696-4. arXiv preprint:
+  \url{http://arxiv.org/abs/1507.04544/}
 }
 \seealso{
 Other PPCs: \code{\link{PPC-discrete}},

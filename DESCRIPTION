@@ -26,6 +26,7 @@ Suggests:
     arm,
     gridExtra (>= 2.2.1),
     knitr (>= 1.14),
+    loo (>= 1.0.0),
     rmarkdown (>= 1.0.0),
     rstan (>= 2.13.2),
     rstanarm (>= 2.13.1),
