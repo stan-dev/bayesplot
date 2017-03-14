@@ -126,6 +126,6 @@ Gelman, A., Carlin, J. B., Stern, H. S., Dunson, D. B., Vehtari,
 Other PPCs: \code{\link{PPC-discrete}},
   \code{\link{PPC-distributions}},
   \code{\link{PPC-errors}}, \code{\link{PPC-intervals}},
-  \code{\link{PPC-overview}},
+  \code{\link{PPC-loo}}, \code{\link{PPC-overview}},
   \code{\link{PPC-scatterplots}}
 }

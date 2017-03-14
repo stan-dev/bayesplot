@@ -305,7 +305,7 @@ label_x <- function(x) {
         ) +
         geom_line(
           mapping = aes_(color = "yrep"),
-          size = size,
+          size = size/2,
           color = get_color("lh")
         ) +
         geom_line(data = y_data,
