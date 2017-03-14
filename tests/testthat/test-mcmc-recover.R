@@ -6,7 +6,7 @@ alpha <- 1; beta <- c(-.5, .5); sigma <- 2
 X <- matrix(rnorm(200), 100, 2)
 y <- rnorm(100, mean = c(alpha + X %*% beta), sd = sigma)
 capture.output(
-  fit <- stan_glm(y ~ X)
+  fit <- stan_glm(y ~ ., data = data.frame(y, X))
 )
 draws <- as.matrix(fit)
 true <- c(alpha, beta, sigma)

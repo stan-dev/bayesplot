@@ -156,9 +156,10 @@ ppc_bars_grouped <-
 
 #' @rdname PPC-discrete
 #' @export
-#' @param style The rootogram style. The options are \code{"standing"},
-#'   \code{"hanging"}, and \code{"suspended"}. See the \strong{Plot
-#'   Descriptions} section, below, for details on the different styles.
+#' @param style For \code{ppc_rootogram}, a string specifying the rootogram
+#'   style. The options are \code{"standing"}, \code{"hanging"}, and
+#'   \code{"suspended"}. See the \strong{Plot Descriptions} section, below, for
+#'   details on the different styles.
 #'
 #' @references
 #' Kleiber, C. and Zeileis, A. (2016). Visualizing count data regressions using

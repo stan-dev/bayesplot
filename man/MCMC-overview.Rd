@@ -52,6 +52,10 @@ formats:
   \item{\strong{\link[=MCMC-nuts]{NUTS diagnostics}}}{
     Diagnostic plots for the No-U-Turn Sampler.
   }
+  \item{\strong{\link[=MCMC-recover]{Comparisons to "true" values}}}{
+    Plots comparing MCMC estimates to "true" parameter values (e.g.,
+    values used to simulate data).
+  }
 }
 }
 

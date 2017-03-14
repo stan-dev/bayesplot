@@ -54,9 +54,10 @@ pertaining to the corresponding value of \code{y}.}
 \item{facet_args}{An optional list of  arguments (other than \code{facets})
 passed to \code{\link[ggplot2]{facet_wrap}} to control faceting.}
 
-\item{style}{The rootogram style. The options are \code{"standing"},
-\code{"hanging"}, and \code{"suspended"}. See the \strong{Plot
-Descriptions} section, below, for details on the different styles.}
+\item{style}{For \code{ppc_rootogram}, a string specifying the rootogram
+style. The options are \code{"standing"}, \code{"hanging"}, and
+\code{"suspended"}. See the \strong{Plot Descriptions} section, below, for
+details on the different styles.}
 }
 \description{
 This page documents the PPC functions that can only be used if \code{y} and
