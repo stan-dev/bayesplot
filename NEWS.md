@@ -9,8 +9,7 @@
 
 #### New features in existing functions
 * For `mcmc_*` functions, transformations are recycled if `transformations` 
-argument is specified as a single function rather than a named list. Thanks to
- @tklebel. (#64)
+argument is specified as a single function rather than a named list. Thanks to @tklebel. (#64)
 * For `ppc_violin_grouped` there is now the option of showing `y` as a violin, 
 points, or both. Thanks to @silberzwiebel. (#74)
 * New color scheme `"darkgray"`.
@@ -20,11 +19,13 @@ points, or both. Thanks to @silberzwiebel. (#74)
 `pairs.stanfit` method. (#67)
 * `mcmc_hex`, which is similar to `mcmc_scatter` but using `geom_hex` instead of
 `geom_point`. This can be used to avoid overplotting.
-* `ppc_rootogram` for use with models for count data. Thanks to @paul-buerkner.
+* `overlay_function` convenience function. Example usage: add a Gaussian (or any
+distribution) density curve to a plot made with `mcmc_hist`.
+* New PPC category __Discrete__ with functions: 
+    - `ppc_rootogram` for use with models for count data. Thanks to @paul-buerkner.
 (#28)
-* `ppc_bars`, `ppc_bars_grouped` for use with models for ordinal, categorical 
+    - `ppc_bars`, `ppc_bars_grouped` for use with models for ordinal, categorical 
  and multinomial data. Thanks to @silberzwiebel. (#73)
-* `overlay_function` convenience function.
 
 
 # bayesplot 1.1.0
