@@ -123,8 +123,9 @@ Gelman, A., Carlin, J. B., Stern, H. S., Dunson, D. B., Vehtari,
   Press, London, third edition. (Ch. 6)
 }
 \seealso{
-Other PPCs: \code{\link{PPC-distributions}},
+Other PPCs: \code{\link{PPC-discrete}},
+  \code{\link{PPC-distributions}},
   \code{\link{PPC-errors}}, \code{\link{PPC-intervals}},
-  \code{\link{PPC-overview}}, \code{\link{PPC-rootograms}},
+  \code{\link{PPC-overview}},
   \code{\link{PPC-scatterplots}}
 }

@@ -1,24 +1,32 @@
-#' Bar plots for ordinal, categorical and multinomial outcomes
+#' PPCs for discrete outcomes
 #'
-#' Bar plots for ordinal, categorical, and multinomial outcomes. See the
-#' \strong{Plot Descriptions} section below.
+#' This page documents the PPC functions that can only be used if \code{y} and
+#' \code{yrep} are discrete. Currently these include rootograms for count
+#' outcomes and bar plots for ordinal, categorical, and multinomial outcomes.
+#' See the \strong{Plot Descriptions} section below.
 #'
-#' @export
+#' @name PPC-discrete
+#' @family PPCs
+#'
 #' @template args-y-yrep
 #' @param ... Currently unused.
 #' @param prob A value between 0 and 1 indicating the desired probability mass
-#'   to include in the \code{yrep} intervals. The default is 0.9.
-#' @param width Passed to \code{\link[ggplot2]{geom_bar}} to control the bar
-#'   width.
-#' @param size,fatten Passed to \code{\link[ggplot2]{geom_pointrange}} to
-#' control the appearance of the \code{yrep} points and intervals.
-#' @param freq If \code{TRUE} (the default) the y-axis will display counts.
-#'   Setting \code{freq=FALSE} will put proportions on the y-axis.
+#'   to include in the \code{yrep} intervals. Set \code{prob=0} to
+#'   remove the intervals. For \code{ppc_rootogram} these are intervals
+#'   of the \emph{square roots} of the expected counts.
+#' @param width For \code{ppc_bars} and \code{ppc_bars_grouped},
+#' passed to \code{\link[ggplot2]{geom_bar}} to control the bar width.
+#' @param size,fatten For \code{ppc_bars} and \code{ppc_bars_grouped},
+#'   \code{size} and \code{fatten} are passed to
+#'   \code{\link[ggplot2]{geom_pointrange}} to control the appearance of the
+#'   \code{yrep} points and intervals. For \code{ppc_rootogram} \code{size} is
+#'   passed to \code{\link[ggplot2]{geom_line}}.
+#' @param freq For \code{ppc_bars} and \code{ppc_bars_grouped}, if \code{TRUE}
+#'   (the default) the y-axis will display counts. Setting \code{freq=FALSE}
+#'   will put proportions on the y-axis.
 #'
-#' @details For \code{ppc_bars}, the observations \code{y} and predictions
-#'   \code{yrep} must be non-negative integers. \pkg{bayesplot} will validate
-#'   that both \code{y} and \code{yrep} contain only non-negative integer
-#'   values, although they need not be integers in the strict sense of \R's
+#' @details For all of these plots \code{y} and \code{yrep} must be non-negative
+#'   integers, although they need not be integers in the strict sense of \R's
 #'   \code{\link{integer}} type.
 #'
 #' @section Plot Descriptions:
@@ -31,21 +39,45 @@
 #'   Same as \code{ppc_bars} but a separate plot (facet) is generated for each
 #'   level of a grouping variable.
 #' }
+#' \item{\code{ppc_rootogram}}{
+#'   Rootograms allow for diagnosing problems in count data models such as
+#'   overdispersion or excess zeros. They consist of a histogram of \code{y}
+#'   with the expected counts based on \code{yrep} overlaid as a line along with
+#'   uncertainty intervals. The y-axis represents the square roots of the counts
+#'   to approximately adjust for scale differences and thus ease comparison
+#'   between observed and expected counts. Using the \code{style} argument, the
+#'   histogram style can be adjusted to focus on different aspects of the data:
+#'   \itemize{
+#'    \item \emph{Standing}: basic histogram of observed counts with curve
+#'    showing expected counts.
+#'    \item \emph{Hanging}: observed counts counts hanging from the curve
+#'    representing expected counts.
+#'   \item \emph{Suspended}: histogram of the differences between expected and
+#'    observed counts.
+#'   }
+#'   \strong{All of these are plotted on the square root scale}. See Kleiber and
+#'   Zeileis (2016) for advice on interpreting rootograms and selecting among
+#'   the different styles.
+#' }
 #' }
 #'
 #' @examples
+#' # bar plots
 #' f <- function(N) {
 #'   sample(1:4, size = N, replace = TRUE, prob = c(0.25, 0.4, 0.1, 0.25))
 #' }
 #' y <- f(100)
 #' yrep <- t(replicate(500, f(100)))
 #' dim(yrep)
+#' group <- gl(2, 50, length = 100, labels = c("GroupA", "GroupB"))
 #'
 #' ppc_bars(y, yrep)
-#'
-#' group <- gl(2, 50, length = 100, labels = c("GroupA", "GroupB"))
 #' ppc_bars_grouped(y, yrep, group, prob = 0.5, freq = FALSE)
 #'
+NULL
+
+#' @rdname PPC-discrete
+#' @export
 ppc_bars <-
   function(y,
            yrep,
@@ -80,7 +112,7 @@ ppc_bars <-
   }
 
 
-#' @rdname ppc_bars
+#' @rdname PPC-discrete
 #' @export
 #' @template args-group
 #' @param facet_args An optional list of  arguments (other than \code{facets})
@@ -120,6 +152,118 @@ ppc_bars_grouped <-
       freq = freq
     )
   }
+
+
+#' @rdname PPC-discrete
+#' @export
+#' @param style The rootogram style. The options are \code{"standing"},
+#'   \code{"hanging"}, and \code{"suspended"}. See the \strong{Plot
+#'   Descriptions} section, below, for details on the different styles.
+#'
+#' @references
+#' Kleiber, C. and Zeileis, A. (2016). Visualizing count data regressions using
+#' rootograms. \emph{The American Statistician}. 70(3): 296--303.
+#' \url{https://arxiv.org/abs/1605.01311}.
+#'
+#' @examples
+#' # rootograms for counts
+#' y <- rpois(100, 20)
+#' yrep <- matrix(rpois(10000, 20), ncol = 100)
+#'
+#' ppc_rootogram(y, yrep)
+#' ppc_rootogram(y, yrep, style = "hanging", prob = 0.8)
+#' ppc_rootogram(y, yrep, style = "suspended")
+#'
+ppc_rootogram <- function(y,
+                          yrep,
+                          style = c("standing", "hanging", "suspended"),
+                          ...,
+                          prob = 0.9,
+                          size = 1) {
+  check_ignored_arguments(...)
+  style <- match.arg(style)
+  y <- validate_y(y)
+  yrep <- validate_yrep(yrep, y)
+  if (!all_counts(y))
+    stop("ppc_rootogram expects counts as inputs to 'y'.")
+  if (!all_counts(yrep))
+    stop("ppc_rootogram expects counts as inputs to 'yrep'.")
+
+  alpha <- (1 - prob) / 2
+  probs <- c(alpha, 1 - alpha)
+  ymax <- max(y, yrep)
+  xpos <- 0L:ymax
+
+  # prepare a table for yrep
+  tyrep <- as.list(rep(NA, nrow(yrep)))
+  for (i in seq_along(tyrep)) {
+    tyrep[[i]] <- table(yrep[i,])
+    matches <- match(xpos, rownames(tyrep[[i]]))
+    tyrep[[i]] <- as.numeric(tyrep[[i]][matches])
+  }
+  tyrep <- do.call(rbind, tyrep)
+  tyrep[is.na(tyrep)] <- 0
+  tyexp <- sqrt(colMeans(tyrep))
+  tyquantile <- sqrt(t(apply(tyrep, 2, quantile, probs = probs)))
+  colnames(tyquantile) <- c("tylower", "tyupper")
+
+  # prepare a table for y
+  ty <- table(y)
+  ty <- sqrt(as.numeric(ty[match(xpos, rownames(ty))]))
+  if (style == "suspended") {
+    ty <- tyexp - ty
+  }
+  ty[is.na(ty)] <- 0
+  ypos <- ty / 2
+  if (style == "hanging")
+    ypos <- tyexp - ypos
+
+  data <- data.frame(xpos, ypos, ty, tyexp, tyquantile)
+  graph <- ggplot(data) +
+    aes_(
+      ymin = ~ tylower,
+      ymax = ~ tyupper,
+      height = ~ ty
+    ) +
+    geom_tile(
+      aes_(
+        x = ~ xpos,
+        y = ~ ypos,
+        fill = "Observed"
+      ),
+      color = get_color("lh"),
+      size = 0.25,
+      width = 1
+    )
+
+  if (style != "standing")
+    graph <- graph + hline_0(size = 0.4)
+
+  graph <- graph +
+    geom_smooth(
+      aes_(
+        x = ~ xpos,
+        y = ~ tyexp,
+        color = "Expected"
+      ),
+      fill = get_color("d"),
+      size = size,
+      stat = "identity"
+    ) +
+    scale_fill_manual("", values = get_color("l")) +
+    scale_color_manual("", values = get_color("dh")) +
+    labs(x = expression(italic(y)),
+         y = expression(sqrt(Count)))
+
+  if (style == "standing")
+    graph <- graph + dont_expand_y_axis()
+
+  graph +
+    theme_default() +
+    no_legend_spacing()
+}
+
+
 
 
 
