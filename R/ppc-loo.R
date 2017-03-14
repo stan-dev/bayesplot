@@ -21,6 +21,7 @@
 #' }
 #' }
 #'
+#' @templateVar bdaRef (p. 152--153)
 #' @template reference-bda
 #' @template reference-loo
 #'

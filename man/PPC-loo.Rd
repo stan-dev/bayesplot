@@ -18,7 +18,8 @@ of \code{yrep} should be in the same order as the data points in \code{y}
 for the plots to make sense. See \strong{Details} for additional
 instructions.}
 
-\item{lw}{A matrix of log weights with the same dimensions as \code{yrep}.}
+\item{lw}{A matrix of (smoothed) log weights with the same dimensions as
+\code{yrep}.}
 
 \item{...}{Currently unused.}
 
@@ -54,7 +55,7 @@ fit <- stan_lmer(log_radon ~ floor + log_uranium + floor:log_uranium
                    + (1 + floor | county), data = radon)
 y <- radon$log_radon
 yrep <- posterior_predict(fit)
-psis <- loo::psislw(-log_lik(fit))
+psis <- psislw(-log_lik(fit))
 ppc_loo_pit(y, yrep, lw = psis$lw_smooth)
 }
 
@@ -62,7 +63,7 @@ ppc_loo_pit(y, yrep, lw = psis$lw_smooth)
 \references{
 Gelman, A., Carlin, J. B., Stern, H. S., Dunson, D. B., Vehtari,
   A., and Rubin, D. B. (2013). \emph{Bayesian Data Analysis.} Chapman & Hall/CRC
-  Press, London, third edition.
+  Press, London, third edition. (p. 152--153)
 
 Vehtari, A., Gelman, A., and Gabry, J. (2016a). Practical
   Bayesian model evaluation using leave-one-out cross-validation and WAIC.
