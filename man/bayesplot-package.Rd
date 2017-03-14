@@ -2,8 +2,8 @@
 % Please edit documentation in R/bayesplot-package.R
 \docType{package}
 \name{bayesplot-package}
-\alias{bayesplot}
 \alias{bayesplot-package}
+\alias{bayesplot}
 \title{Plots for Bayesian Models}
 \description{
 \if{html}{
@@ -62,6 +62,7 @@ The plotting functions in \pkg{bayesplot} are organized into several modules:
 }
 }
 }
+
 \examples{
 # A few quick examples (all of the functions have many examples
 # on their individual help pages)
@@ -103,4 +104,3 @@ ppc_hist(y, yrep[1:8, ])
 
 \code{\link[ggplot2]{ggsave}} in \pkg{ggplot2} for saving plots.
 }
-

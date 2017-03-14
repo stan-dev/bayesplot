@@ -43,13 +43,17 @@
 #'     Times series of parameter draws.
 #'   }
 #'   \item{\strong{\link[=MCMC-scatterplots]{Scatterplots}}}{
-#'     Various scatterplots of parameter draws.
+#'     Scatterplots, heatmaps, and pairs plots of parameter draws.
 #'   }
 #'   \item{\strong{\link[=MCMC-combos]{Combinations}}}{
 #'     Combination plots (e.g. traceplot + histogram).
 #'   }
 #'   \item{\strong{\link[=MCMC-nuts]{NUTS diagnostics}}}{
 #'     Diagnostic plots for the No-U-Turn Sampler.
+#'   }
+#'   \item{\strong{\link[=MCMC-recover]{Comparisons to "true" values}}}{
+#'     Plots comparing MCMC estimates to "true" parameter values (e.g.,
+#'     values used to simulate data).
 #'   }
 #' }
 #'

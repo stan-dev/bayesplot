@@ -5,9 +5,9 @@
 \alias{NUTS}
 \alias{mcmc_nuts_acceptance}
 \alias{mcmc_nuts_divergence}
-\alias{mcmc_nuts_energy}
 \alias{mcmc_nuts_stepsize}
 \alias{mcmc_nuts_treedepth}
+\alias{mcmc_nuts_energy}
 \title{Diagnostic plots for the No-U-Turn-Sampler (NUTS)}
 \usage{
 mcmc_nuts_acceptance(x, lp, chain = NULL, ..., binwidth = NULL)
@@ -19,7 +19,7 @@ mcmc_nuts_stepsize(x, lp, chain = NULL, ...)
 mcmc_nuts_treedepth(x, lp, chain = NULL, ...)
 
 mcmc_nuts_energy(x, ..., binwidth = NULL, alpha = 0.5,
-  merge_chains = TRUE)
+  merge_chains = FALSE)
 }
 \arguments{
 \item{x}{A molten data frame of NUTS sampler parameters, either created by
@@ -47,7 +47,8 @@ is not used by \code{mcmc_nuts_energy}.}
 in [0,1] used for the overlaid histogram.}
 
 \item{merge_chains}{For \code{mcmc_nuts_energy} only, should all chains be
-merged or displayed separately?}
+merged or displayed separately? The default is \code{FALSE}, i.e., to show
+the chains separately.}
 }
 \value{
 A gtable object (the result of calling
@@ -55,15 +56,15 @@ A gtable object (the result of calling
   except for \code{mcmc_nuts_energy}, which returns a ggplot object.
 }
 \description{
-Diagnostic plots for the No-U-Turn-Sampler (NUTS)
+Diagnostic plots for the No-U-Turn-Sampler (NUTS), the default MCMC algorithm
+used by Stan. See the \strong{Plot Descriptions} section, below.
 }
-\section{Quick definitions}{
+\section{Quick Definitions}{
 
-For more details see Stan Development Team (2016).
+For more details see Stan Development Team (2016) and Betancourt (2017).
 \itemize{
   \item \code{accept_stat__}: the average acceptance probabilities of all
-  possible samples in the proposed tree (NUTS uses a slice sampling algorithm
-  for rejection).
+  possible samples in the proposed tree.
   \item \code{divergent__}: the number of leapfrog transitions with diverging
   error. Because NUTS terminates at the first divergence this will be either
   0 or 1 for each iteration.
@@ -73,7 +74,7 @@ For more details see Stan Development Team (2016).
   (base 2) of the number of leapfrog steps taken during the Hamiltonian
   simulation.
   \item \code{energy__}: the value of the Hamiltonian (up to an additive
-  constant) at each sample.
+  constant) at each iteration.
 }
 }
 
@@ -96,7 +97,7 @@ For more details see Stan Development Team (2016).
    \item Violin plots of \code{lp__|divergent__=1} and
      \code{lp__|divergent__=0}.
    \item Violin plots of \code{accept_stat__|divergent__=1} and
-     \code{lp__|divergent__=0}.
+     \code{accept_stat__|divergent__=0}.
    }
   }
   \item{\code{mcmc_nuts_stepsize}}{
@@ -122,6 +123,7 @@ For more details see Stan Development Team (2016).
   }
 }
 }
+
 \examples{
 \dontrun{
 library(ggplot2)
@@ -136,18 +138,17 @@ mcmc_nuts_acceptance(np, lp, chain = 2)
 
 color_scheme_set("red")
 mcmc_nuts_energy(np)
-mcmc_nuts_energy(np, binwidth = .25, alpha = .8)
-(energy_plot <- mcmc_nuts_energy(np, merge_chains = FALSE))
-energy_plot +
+mcmc_nuts_energy(np, merge_chains = TRUE, binwidth = .15)
+mcmc_nuts_energy(np) +
  facet_wrap(~ Chain, nrow = 1) +
- coord_fixed(ratio = 150)
+ coord_fixed(ratio = 150) +
+ ggtitle("NUTS Energy Diagnostic")
 }
 
 }
 \references{
-Betancourt, M. (2016). Diagnosing suboptimal cotangent
-  disintegrations in Hamiltonian Monte Carlo.
-  \url{https://arxiv.org/abs/1604.00695}
+Betancourt, M. (2017). A conceptual introduction to Hamiltonian Monte Carlo.
+  \url{https://arxiv.org/abs/1701.02434}
 
 Betancourt, M. and Girolami, M. (2013). Hamiltonian Monte Carlo for
 hierarchical models. \url{https://arxiv.org/abs/1312.0906}
@@ -160,8 +161,19 @@ Stan Development Team. (2016). \emph{Stan Modeling Language Users
 Guide and Reference Manual.} \url{http://mc-stan.org/documentation/}
 }
 \seealso{
-\code{\link{mcmc_trace}}, which will plot divergences on the
-  traceplot if the optional \code{divergences} argument is specified.
+\itemize{
+\item The \emph{Visual MCMC Diagnostics} vignette.
+\item Several other plotting functions in the \pkg{bayesplot}
+package that aren't NUTS-specific but take optional extra arguments
+if the model was fit using NUTS:
+\itemize{
+ \item \code{\link{mcmc_trace}} will plot divergences on the traceplot if the
+ optional \code{divergences} argument is specified.
+ \item \code{\link{mcmc_pairs}} will indicate which (if any) iterations
+ encountered a divergent transition or hit the maximum treedepth (rather than
+ terminated its evolution normally).
+ }
+}
 
 Other MCMC: \code{\link{MCMC-combos}},
   \code{\link{MCMC-diagnostics}},
@@ -171,4 +183,3 @@ Other MCMC: \code{\link{MCMC-combos}},
   \code{\link{MCMC-scatterplots}},
   \code{\link{MCMC-traces}}
 }
-

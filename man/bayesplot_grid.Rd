@@ -77,4 +77,3 @@ bayesplot_grid(ppc1, ppc2, xlim = c(-5, 60), ylim = c(0, 0.2),
 }
 
 }
-

@@ -251,7 +251,7 @@ mcmc_trace_highlight <-
       scale_color_manual("Chain", values = chain_colors(n_chain))
 
     if (!is.null(divergences)) {
-      div_rug <- divergence_rug(divergences, n_iter)
+      div_rug <- divergence_rug(divergences, n_iter, n_chain)
       if (!is.null(div_rug))
         graph <- graph +
           div_rug +
@@ -299,11 +299,16 @@ chain_colors <- function(n) {
 # @param divergences User's 'divergences' argument, if specified
 # @param n_iter Number of iterations in the trace plot (to check against number
 #   of iterations provided in 'divergences')
+# @param n_chain Number of chains in the trace plot (to check against number
+#   of chains provided in 'divergences')
 # @param color,size Passed to geom_rug.
-divergence_rug <- function(divergences, n_iter, color = "red", size = 1/4) {
+divergence_rug <- function(divergences, n_iter, n_chain, color = "red", size = 1/4) {
   if (is.data.frame(divergences)) {
     divergences <- validate_nuts_data_frame(divergences)
-    stopifnot(length(unique(divergences$Iteration)) == n_iter)
+    stopifnot(
+      length(unique(divergences$Iteration)) == n_iter,
+      length(unique(divergences$Chain)) == n_chain
+    )
     div_info <-
       filter_(divergences, ~ Parameter == "divergent__") %>%
       group_by_(~ Iteration) %>%

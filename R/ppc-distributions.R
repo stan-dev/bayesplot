@@ -13,8 +13,7 @@
 #' @template args-hist-freq
 #' @template args-dens
 #' @param size,alpha Passed to the appropriate geom to control the appearance of
-#'   the \code{yrep} distributions. For \code{ppc_violin_grouped} only,
-#'   \code{size} controls the size of the \code{y} points.
+#'   the \code{yrep} distributions.
 #' @param ... Currently unused.
 #'
 #' @template details-binomial
@@ -41,9 +40,9 @@
 #'   }
 #'   \item{\code{ppc_violin_grouped}}{
 #'    The density estimate of \code{yrep} within each level of a grouping
-#'    variable is plotted as a violin with horizontal lines at
-#'    notable quantiles. The points in \code{y} corresponding to
-#'    each grouping level are then overlaid on top of the violins.
+#'    variable is plotted as a violin with horizontal lines at notable
+#'    quantiles. \code{y} is overlaid on the plot either as a violin, points, or
+#'    both, depending on the \code{y_draw} argument.
 #'   }
 #' }
 #'
@@ -88,6 +87,11 @@
 #' ppc_violin_grouped(y, yrep, group, size = 1.5)
 #' \donttest{
 #' ppc_violin_grouped(y, yrep, group, alpha = 0)
+#'
+#' # change how y is drawn
+#' ppc_violin_grouped(y, yrep, group, alpha = 0, y_draw = "points", y_size = 1.5)
+#' ppc_violin_grouped(y, yrep, group, alpha = 0, y_draw = "both",
+#'                    y_size = 1.5, y_alpha = 0.5, y_jitter = 0.33)
 #' }
 #'
 NULL
@@ -349,35 +353,71 @@ ppc_ecdf_overlay <- function(y, yrep, ...,
 #' @param probs A numeric vector passed to \code{\link[ggplot2]{geom_violin}}'s
 #'   \code{draw_quantiles} argument to specify at which quantiles to draw
 #'   horizontal lines. Set to \code{NULL} to remove the lines.
+#' @param y_draw For \code{ppc_violin_grouped}, a string specifying how to draw
+#'   \code{y}: \code{"violin"} (default), \code{"points"} (jittered points), or
+#'   \code{"both"}.
+#' @param y_jitter,y_size,y_alpha For \code{ppc_violin_grouped}, if
+#'   \code{y_draw} is \code{"points"} or \code{"both"} then \code{y_size},
+#'   \code{y_alpha}, and \code{y_jitter} are passed to to the \code{size},
+#'   \code{alpha}, and \code{width} arguments of
+#'   \code{\link[ggplot2]{geom_jitter}} to control the appearance of \code{y}
+#'   points. The default of \code{y_jitter=NULL} will let \pkg{ggplot2}
+#'   determine the amount of jitter.
 #'
-ppc_violin_grouped <- function(y, yrep, group, ...,
+ppc_violin_grouped <- function(y,
+                               yrep,
+                               group,
+                               ...,
                                probs = c(0.1, 0.5, 0.9),
                                size = 1,
-                               alpha = 1) {
+                               alpha = 1,
+                               y_draw = c("violin", "points", "both"),
+                               y_size = 1,
+                               y_alpha = 1,
+                               y_jitter = 0.1) {
   check_ignored_arguments(...)
 
   y <- validate_y(y)
   yrep <- validate_yrep(yrep, y)
   group <- validate_group(group, y)
+
   plot_data <- ppc_group_data(y, yrep, group, stat = NULL)
   is_y <- plot_data$variable == "y"
 
-  ggplot(
-    plot_data[!is_y,, drop = FALSE],
-    aes_(x = ~ group, y = ~ value)
-  ) +
+  p <- ggplot(plot_data[!is_y, , drop = FALSE],
+              aes_(x = ~ group, y = ~ value)) +
     geom_violin(
       aes_(fill = "yrep", color = "yrep"),
       draw_quantiles = probs,
-      alpha = alpha
-    ) +
-    geom_point(
-      data = plot_data[is_y,, drop = FALSE],
-      aes_(fill = "y", color = "y"),
-      shape = 21,
-      alpha = 0.9,
+      alpha = alpha,
       size = size
-    ) +
+    )
+
+  y_draw <- match.arg(y_draw)
+  if (y_draw %in% c("violin", "both")) {
+    p <- p +
+      geom_violin(
+        data = plot_data[is_y, , drop = FALSE],
+        aes_(fill = "y", color = "y"),
+        show.legend = FALSE,
+        alpha = 0
+      )
+  }
+  if (y_draw %in% c("points", "both")) {
+    p <- p +
+      geom_jitter(
+        data = plot_data[is_y, , drop = FALSE],
+        aes_(fill = "y", color = "y"),
+        shape = 21,
+        alpha = y_alpha,
+        size = y_size,
+        width = y_jitter,
+        height = 0,
+        show.legend = FALSE
+      )
+  }
+
+  p +
     scale_fill_ppc_dist(values = c(NA, get_color("l"))) +
     scale_color_ppc_dist() +
     labs(x = "Group", y = yrep_label()) +

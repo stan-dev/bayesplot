@@ -3,9 +3,9 @@
 \name{PPC-test-statistics}
 \alias{PPC-test-statistics}
 \alias{ppc_stat}
-\alias{ppc_stat_2d}
-\alias{ppc_stat_freqpoly_grouped}
 \alias{ppc_stat_grouped}
+\alias{ppc_stat_freqpoly_grouped}
+\alias{ppc_stat_2d}
 \title{PPC test statistics}
 \usage{
 ppc_stat(y, yrep, stat = "mean", ..., binwidth = NULL, freq = TRUE)
@@ -91,6 +91,7 @@ For Binomial data, the plots will typically be most useful if
   }
 }
 }
+
 \examples{
 y <- example_y_data()
 yrep <- example_yrep_draws()
@@ -122,9 +123,9 @@ Gelman, A., Carlin, J. B., Stern, H. S., Dunson, D. B., Vehtari,
   Press, London, third edition. (Ch. 6)
 }
 \seealso{
-Other PPCs: \code{\link{PPC-distributions}},
+Other PPCs: \code{\link{PPC-discrete}},
+  \code{\link{PPC-distributions}},
   \code{\link{PPC-errors}}, \code{\link{PPC-intervals}},
-  \code{\link{PPC-overview}}, \code{\link{PPC-rootograms}},
+  \code{\link{PPC-overview}},
   \code{\link{PPC-scatterplots}}
 }
-

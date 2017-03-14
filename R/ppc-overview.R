@@ -57,9 +57,9 @@
 #'
 #' \describe{
 #'   \item{\strong{\link[=PPC-distributions]{Distributions}}}{
-#'     Histograms and density plots comparing the empirical distribution of the
-#'     observed data \code{y} to the distributions of individual replicated
-#'     datasets (rows) in \code{yrep}.
+#'     Histograms, kernel density estimates, boxplots, and other plots comparing
+#'     the empirical distribution of the observed data \code{y} to the
+#'     distributions of individual replicated datasets (rows) in \code{yrep}.
 #'   }
 #'   \item{\strong{\link[=PPC-test-statistics]{Test statistics}}}{
 #'     The distribution of a test statistic, or a pair of test statistics, over
@@ -77,9 +77,15 @@
 #'     error plots are also available.
 #'   }
 #'   \item{\strong{\link[=PPC-scatterplots]{Scatterplots}}}{
-#'     Scatterplots of the observed data \code{y} vs. individual replicated
-#'     datasets (rows) in \code{yrep}, or vs. the average value of the
-#'     distributions of each data point (columns) in \code{yrep}.
+#'     Scatterplots (and similar visualizations) of the observed data \code{y}
+#'     vs. individual replicated datasets (rows) in \code{yrep}, or vs. the
+#'     average value of the distributions of each data point (columns) in
+#'     \code{yrep}.
+#'   }
+#'   \item{\strong{\link[=PPC-discrete]{Plots for discrete outcomes}}}{
+#'     PPC functions that can only be used if \code{y} and \code{yrep} are
+#'     discrete. For example, rootograms for count outcomes and bar
+#'     plots for ordinal, categorical, and multinomial outcomes.
 #'   }
 #' }
 #'
@@ -89,7 +95,8 @@
 #' provides the S3 generic \code{\link{pp_check}}. Authors of \R packages for
 #' Bayesian inference are encouraged to define \code{pp_check} methods for the
 #' fitted model objects created by their packages. See the package vignettes for
-#' more details and an example.
+#' more details and a simple example, and see the \pkg{rstanarm} and \pkg{brms}
+#' packages for full examples of \code{pp_check} methods.
 #'
 #' @templateVar bdaRef (Ch. 6)
 #' @template reference-bda

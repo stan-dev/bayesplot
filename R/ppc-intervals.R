@@ -1,8 +1,7 @@
 #' PPC intervals
 #'
 #' Medians and central interval estimates of \code{yrep} with \code{y} overlaid.
-#' See the \strong{Plot Descriptions} section, below. This functionality  will
-#' greatly expand in future releases of the package.
+#' See the \strong{Plot Descriptions} section, below.
 #'
 #' @name PPC-intervals
 #' @family PPCs

@@ -57,4 +57,3 @@ mcmc_dens_overlay(x) + ggplot2::theme_gray()
 \code{\link{bayesplot-colors}} to set or view the color scheme used
   for plotting.
 }
-
