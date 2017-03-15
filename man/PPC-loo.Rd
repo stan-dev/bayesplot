@@ -5,7 +5,8 @@
 \alias{ppc_loo_pit}
 \title{LOO predictive checks}
 \usage{
-ppc_loo_pit(y, yrep, lw, ..., size = 2, alpha = 0.5)
+ppc_loo_pit(y, yrep, lw, compare = c("uniform", "normal"), ..., size = 2,
+  alpha = 0.5)
 }
 \arguments{
 \item{y}{A vector of observations. See \strong{Details}.}
@@ -20,6 +21,11 @@ instructions.}
 
 \item{lw}{A matrix of (smoothed) log weights with the same dimensions as
 \code{yrep}.}
+
+\item{compare}{For \code{ppc_loo_pit}, if \code{"uniform"} (the default) the
+Q-Q plot compares the computed PIT values to the standard uniform
+distribution. If \code{compare="normal"}, the Q-Q plot compares
+standardized PIT values to the standard normal distribution.}
 
 \item{...}{Currently unused.}
 
@@ -36,9 +42,12 @@ LOO predictive checks
  The calibration of marginal predictions can be checked with probability
  integral transformation (PIT) checks. LOO improves the check by avoiding the
  double use of data. See the section on marginal predictive checks in Gelman
- et al. (2013, p. 152--153). The LOO probability integral transformation
- (PIT) predictive check is a quantile-quantile plot comparing the LOO PITs to
- the standard uniform distribution.
+ et al. (2013, p. 152--153). The default LOO probability integral
+ transformation (PIT) predictive check is a quantile-quantile (Q-Q) plot
+ comparing the LOO PITs to the standard uniform distribution. Alternatively,
+ setting the \code{compare} argument to \code{"normal"} will produce a Q-Q
+ plot comparing standardized PIT values may to the standard normal
+ distribution.
 }
 }
 }
@@ -57,6 +66,7 @@ y <- radon$log_radon
 yrep <- posterior_predict(fit)
 psis <- psislw(-log_lik(fit))
 ppc_loo_pit(y, yrep, lw = psis$lw_smooth)
+ppc_loo_pit(y, yrep, lw = psis$lw_smooth, compare = "normal")
 }
 
 }

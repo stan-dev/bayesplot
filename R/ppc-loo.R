@@ -15,9 +15,12 @@
 #'  The calibration of marginal predictions can be checked with probability
 #'  integral transformation (PIT) checks. LOO improves the check by avoiding the
 #'  double use of data. See the section on marginal predictive checks in Gelman
-#'  et al. (2013, p. 152--153). The LOO probability integral transformation
-#'  (PIT) predictive check is a quantile-quantile plot comparing the LOO PITs to
-#'  the standard uniform distribution.
+#'  et al. (2013, p. 152--153). The default LOO probability integral
+#'  transformation (PIT) predictive check is a quantile-quantile (Q-Q) plot
+#'  comparing the LOO PITs to the standard uniform distribution. Alternatively,
+#'  setting the \code{compare} argument to \code{"normal"} will produce a Q-Q
+#'  plot comparing standardized PIT values may to the standard normal
+#'  distribution.
 #' }
 #' }
 #'
@@ -39,40 +42,65 @@
 #' yrep <- posterior_predict(fit)
 #' psis <- psislw(-log_lik(fit))
 #' ppc_loo_pit(y, yrep, lw = psis$lw_smooth)
+#' ppc_loo_pit(y, yrep, lw = psis$lw_smooth, compare = "normal")
 #' }
 #'
 NULL
 
 #' @rdname PPC-loo
 #' @export
-ppc_loo_pit <- function(y, yrep, lw, ..., size = 2, alpha = 0.5) {
-  y <- validate_y(y)
-  yrep <- validate_yrep(yrep, y)
-  stopifnot(identical(dim(yrep), dim(lw)))
-  pit <- vapply(seq_len(ncol(yrep)), function(j) {
-    sel <- yrep[, j] <= y[j]
-    exp(log_sum_exp(lw[sel, j]))
-  }, FUN.VALUE = 1)
+#' @param compare For \code{ppc_loo_pit}, if \code{"uniform"} (the default) the
+#'   Q-Q plot compares the computed PIT values to the standard uniform
+#'   distribution. If \code{compare="normal"}, the Q-Q plot compares
+#'   standardized PIT values to the standard normal distribution.
+#'
+ppc_loo_pit <-
+  function(y,
+           yrep,
+           lw,
+           compare = c("uniform", "normal"),
+           ...,
+           size = 2,
+           alpha = 0.5) {
+    y <- validate_y(y)
+    yrep <- validate_yrep(yrep, y)
+    stopifnot(identical(dim(yrep), dim(lw)))
+    compare <- match.arg(compare)
+    pit <- vapply(seq_len(ncol(yrep)), function(j) {
+      sel <- yrep[, j] <= y[j]
+      exp(log_sum_exp(lw[sel, j]))
+    }, FUN.VALUE = 1)
 
-  ggplot() +
-    geom_point(
-      aes_(sample = pit),
-      stat = "qq",
-      distribution = stats::qunif,
-      color = get_color("m"),
-      size = size,
-      alpha = alpha
-    ) +
-    geom_abline(
-      slope = 1,
-      intercept = 0,
-      linetype = 2,
-      color = "black"
-    ) +
-    coord_cartesian(xlim = c(0, 1), ylim = c(0, 1)) +
-    labs(y = "LOO-PIT", x = "Uniform") +
-    theme_default()
-}
+    if (compare == "uniform") {
+      comparison_dist <- stats::qunif
+      x_lab <- "Uniform"
+      y_lab <- "LOO-PIT"
+    } else {
+      pit <- as.vector(scale(pit))
+      comparison_dist <- stats::qnorm
+      x_lab <- "Normal"
+      y_lab <- "LOO-PIT (standardized)"
+    }
+
+    ggplot() +
+      geom_point(
+        aes_(sample = pit),
+        stat = "qq",
+        distribution = comparison_dist,
+        color = get_color("m"),
+        size = size,
+        alpha = alpha
+      ) +
+      geom_abline(
+        slope = 1,
+        intercept = 0,
+        linetype = 2,
+        color = "black"
+      ) +
+      coord_cartesian(xlim = c(0, 1), ylim = c(0, 1)) +
+      labs(y = y_lab, x = x_lab) +
+      theme_default()
+  }
 
 
 
