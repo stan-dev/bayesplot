@@ -50,7 +50,7 @@ NULL
 #' @rdname PPC-loo
 #' @export
 #' @param compare For \code{ppc_loo_pit}, a string that can be either
-#'   \copde{"uniform"} or \code{"normal"}. If \code{"uniform"} (the default) the
+#'   \code{"uniform"} or \code{"normal"}. If \code{"uniform"} (the default) the
 #'   Q-Q plot compares computed PIT values to the standard uniform distribution.
 #'   If \code{compare="normal"}, the Q-Q plot compares standardized PIT values
 #'   to the standard normal distribution.
@@ -99,9 +99,13 @@ ppc_loo_pit <-
         color = "black"
       )
 
-    g <- ggplot_build(graph)
-    xylim <- g$layout$panel_ranges[[1]]
-    xylim <- range(xylim$y.range, xylim$x.range)
+    if (compare == "uniform") {
+      xylim <- c(0, 1)
+    } else {
+      g <- ggplot_build(graph)
+      xylim <- g$layout$panel_ranges[[1]]
+      xylim <- range(xylim$y.range, xylim$x.range)
+    }
 
     graph +
       coord_fixed(xlim = xylim, ylim = xylim) +

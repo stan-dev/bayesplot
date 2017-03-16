@@ -23,7 +23,7 @@ instructions.}
 \code{yrep}.}
 
 \item{compare}{For \code{ppc_loo_pit}, a string that can be either
-\copde{"uniform"} or \code{"normal"}. If \code{"uniform"} (the default) the
+\code{"uniform"} or \code{"normal"}. If \code{"uniform"} (the default) the
 Q-Q plot compares computed PIT values to the standard uniform distribution.
 If \code{compare="normal"}, the Q-Q plot compares standardized PIT values
 to the standard normal distribution.}
