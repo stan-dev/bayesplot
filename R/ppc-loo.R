@@ -83,7 +83,7 @@ ppc_loo_pit <-
       y_lab <- "LOO-PIT (standardized)"
     }
 
-    ggplot() +
+    graph <- ggplot() +
       geom_point(
         aes_(sample = pit),
         stat = "qq",
@@ -97,8 +97,14 @@ ppc_loo_pit <-
         intercept = 0,
         linetype = 2,
         color = "black"
-      ) +
-      coord_cartesian(xlim = c(0, 1), ylim = c(0, 1)) +
+      )
+
+    g <- ggplot_build(graph)
+    xylim <- g$layout$panel_ranges[[1]]
+    xylim <- range(xylim$y.range, xylim$x.range)
+
+    graph +
+      coord_fixed(xlim = xylim, ylim = xylim) +
       labs(y = y_lab, x = x_lab) +
       theme_default()
   }
