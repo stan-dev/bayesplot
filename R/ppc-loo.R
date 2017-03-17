@@ -67,27 +67,25 @@ ppc_loo_pit <-
     yrep <- validate_yrep(yrep, y)
     stopifnot(identical(dim(yrep), dim(lw)))
     compare <- match.arg(compare)
-    pit <- vapply(seq_len(ncol(yrep)), function(j) {
-      sel <- yrep[, j] <= y[j]
-      exp(log_sum_exp(lw[sel, j]))
-    }, FUN.VALUE = 1)
+    pits <- pit(y, yrep, lw)
 
     if (compare == "uniform") {
-      comparison_dist <- stats::qunif
+      theoretical <- stats::qunif
       x_lab <- "Uniform"
       y_lab <- "LOO-PIT"
     } else {
-      pit <- as.vector(scale(pit))
-      comparison_dist <- stats::qnorm
+      pits <- as.vector(scale(pits))
+      theoretical <- stats::qnorm
       x_lab <- "Normal"
       y_lab <- "LOO-PIT (standardized)"
     }
+    pits <- data.frame(pit = pits)
 
-    graph <- ggplot() +
+    graph <- ggplot(pits) +
       geom_point(
-        aes_(sample = pit),
+        aes_(sample = ~ pit),
         stat = "qq",
-        distribution = comparison_dist,
+        distribution = theoretical,
         color = get_color("m"),
         size = size,
         alpha = alpha
@@ -114,7 +112,6 @@ ppc_loo_pit <-
   }
 
 
-
 # #' @rdname PPC-loo
 # #' @export
 # ppc_loo_intervals <- function(y, yrep, lw, ...) {
@@ -134,53 +131,91 @@ ppc_loo_pit <-
 # }
 
 # internal ----------------------------------------------------------------
-log_sum_exp <- function(x) {
-  m <- suppressWarnings(max(x))
-  m + log(sum(exp(x - m)))
+pit <- function(y, yrep, lw) {
+  vapply(seq_len(ncol(yrep)), function(j) {
+    sel <- yrep[, j] <= y[j]
+    exp_log_sum_exp(lw[sel, j])
+  }, FUN.VALUE = 1)
+}
+exp_log_sum_exp <- function(x) {
+  m <- max(x, na.rm = TRUE)
+  exp(m + log(sum(exp(x - m))))
 }
 
 
+# #' @rdname PPC-loo
 # #' @export
-# loo_pareto_k <- function(k, ..., label_points = FALSE, size = 2.5, alpha = 0.8) {
-#   k_inf <- !is.finite(k)
-#   if (any(k_inf)) {
-#     warning(signif(100 * mean(k_inf), 2),
-#             "% of Pareto k estimates are Inf/NA/NaN and not plotted.")
+# #' @param k A vector of estimates of the shape parameter \eqn{k} of the
+# #'   generalized Pareto distribution.
+# #' @param label_points Should observation numbers corresponding to any values of
+# #'   \code{k} greater than 0.5 be displayed in the plot? Defaults to
+# #'   \code{FALSE}.
+# # loo_pareto_k <-
+# #   function(y, k,
+# #            ...,
+# #            label_points = FALSE,
+# #            size = 2.5,
+#            alpha = 0.8) {
+#
+#     k_inf <- !is.finite(k)
+#     if (any(k_inf)) {
+#       warning(signif(100 * mean(k_inf), 2),
+#               "% of Pareto k estimates are Inf/NA/NaN and not plotted.")
+#     }
+#
+#     klabs <- c("good", "ok")
+#
+#     plot_data <- data.frame(
+#       k = as.vector(k),
+#       # idx = seq_along(k),
+#       y = as.vector(y),
+#       kcolor = cut(
+#         k,
+#         breaks = c(-Inf, 0.5, 0.7, 1, Inf),
+#         labels = c("good", "ok", "bad", "very bad")
+#       )
+#     )
+#     ggplot(plot_data, aes_(
+#       x = ~ y,
+#       y = ~ k,
+#       color = ~ k,
+#       fill = ~ k
+#     )) +
+#       .shaded_rect(ymin = -Inf,
+#                    ymax = 0.5,
+#                    fill = "gray30") +
+#       .shaded_rect(ymin = 0.5,
+#                    ymax = 0.7,
+#                    fill = "gray50") +
+#       .shaded_rect(ymin = 0.7,
+#                    ymax = 1,
+#                    fill = "gray70") +
+#       .shaded_rect(ymin = 1,
+#                    ymax = Inf,
+#                    fill = "gray90") +
+#       hline_at(c(0.5, 0.7, 1),
+#                color = "darkgray",
+#                size = 0.25) +
+#       geom_point(shape = 21,
+#                  size = size,
+#                  alpha = alpha) +
+#       scale_y_continuous(breaks = c(0, 0.5, 0.7, 1)) +
+#       scale_color_gradient2(low = get_color("lh"), high = get_color("dh")) +
+#       scale_fill_gradient2(low = get_color("l"), high = get_color("d")) +
+#       labs(x = "Data point",
+#            y = expression(paste("Shape parameter ", italic(k)))) +
+#       theme_default()
 #   }
 #
-#
-#   klabs <- c("good", "ok")
-#
-#
-#   plot_data <- data.frame(
-#     k = as.vector(k),
-#     idx = seq_along(k),
-#     kcolor = cut(k, breaks = c(-Inf, 0.5, 0.7, 1, Inf),
-#                  labels = c("good", "ok", "bad", "very bad"))
-#   )
-#   ggplot(plot_data, aes_(x = ~ idx, y = ~ k, color = ~ k, fill = ~ k)) +
-#     .shaded_rect(ymin = -Inf, ymax = 0.5, fill = "gray30") +
-#     .shaded_rect(ymin = 0.5, ymax = 0.7, fill = "gray50") +
-#     .shaded_rect(ymin = 0.7, ymax = 1, fill = "gray70") +
-#     .shaded_rect(ymin = 1, ymax = Inf, fill = "gray90") +
-#     hline_at(c(0.5, 0.7, 1), color = "darkgray", size = 0.25) +
-#     geom_point(
-#       shape = 21,
-#       size = size,
-#       alpha = alpha
-#     ) +
-#     scale_y_continuous(breaks = c(0, 0.5, 0.7, 1)) +
-#     scale_color_gradient2(low = get_color("lh"), high = get_color("dh")) +
-#     scale_fill_gradient2(low = get_color("l"), high = get_color("d")) +
-#     labs(
-#       x = "Data point",
-#       y = expression(paste("Shape parameter ", italic(k)))
-#     ) +
-#     theme_default()
-# }
-
 # .shaded_rect <- function(ymin, ymax, fill = "black", ...) {
-#   annotate("rect", xmin = -Inf, xmax = Inf, ymin = ymin, ymax = ymax,
-#            fill = fill, ...)
+#   annotate(
+#     "rect",
+#     xmin = -Inf,
+#     xmax = Inf,
+#     ymin = ymin,
+#     ymax = ymax,
+#     fill = fill,
+#     ...
+#   )
 # }
-
+#
