@@ -6,9 +6,10 @@
 #'
 #' @name bayesplot-helpers
 #'
-#' @param ... For the various \code{vline_} and \code{hline_} functions,
-#'   \code{...} is passed to \code{\link[ggplot2]{geom_vline}} or
-#'   \code{\link[ggplot2]{geom_hline}} to control the appearance of the line(s).
+#' @param ... For the various \code{vline_}, \code{hline_}, and \code{abline_}
+#'   functions, \code{...} is passed to \code{\link[ggplot2]{geom_vline}},
+#'   \code{\link[ggplot2]{geom_hline}}, and \code{\link[ggplot2]{geom_abline}},
+#'   respectively, to control the appearance of the line(s).
 #'
 #'   For functions ending in \code{_bg}, \code{...} is passed to
 #'   \code{\link[ggplot2]{element_rect}}.
@@ -28,7 +29,7 @@
 #' \pkg{bayesplot} plotting functions. See the \strong{Details} section.
 #'
 #' @details
-#' \subsection{Add vertical or horizontal lines to plots at specified values}{
+#' \subsection{Add vertical, horizontal, and diagonal lines to plots}{
 #' \itemize{
 #' \item \code{vline_at} and \code{hline_at} return an object created by either
 #' \code{geom_vline} or \code{geom_hline} that can be added to a ggplot object
@@ -39,6 +40,9 @@
 #'
 #' \item \code{vline_0} and \code{hline_0} are wrappers for \code{vline_at} and
 #' \code{hline_at} with \code{v = 0} and \code{fun} missing.
+#'
+#' \item \code{abline_01} is a wrapper for \code{geom_abline} with the intercept
+#' set to 0 and the slope set to 1.
 #'
 #' \item \code{lbub} returns a \emph{function} that takes a single argument
 #' \code{x} and returns the lower and upper bounds (\code{lb}, \code{ub}) of the
@@ -152,6 +156,7 @@
 #'               size = 2 * c(1,.5,1), alpha = 0.75)
 #' p2 + vline_at(b1, lbub(0.8, med = FALSE), color = "gray20",
 #'               size = 2, alpha = 0.75)
+#'
 #'
 #' ##########################
 #' ### format axis titles ###
@@ -277,6 +282,16 @@ hline_0 <- function(..., na.rm = TRUE) {
   geom_hline(yintercept = 0,
              na.rm = na.rm,
              ...)
+}
+
+#' @rdname bayesplot-helpers
+#' @export
+#'
+abline_01 <- function(..., na.rm = TRUE) {
+  geom_abline(intercept = 0,
+              slope = 1,
+              na.rm = na.rm,
+              ...)
 }
 
 
