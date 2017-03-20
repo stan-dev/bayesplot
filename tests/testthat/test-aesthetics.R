@@ -31,6 +31,17 @@ test_that("color_scheme_get with i argument works", {
   b <- color_scheme_get("purple", i = c(2, 4, 5))
   expect_equal(length(b), 3)
   expect_named(b, c("light_highlight", "mid_highlight", "dark"))
+
+  expect_error(
+    color_scheme_get(i = 1:7),
+    "all(i %in% seq_along(scheme)) is not TRUE",
+    fixed = TRUE
+  )
+  expect_error(
+    color_scheme_get(i = c(1, 3, 3)),
+    "length(unique(i)) == length(i) is not TRUE",
+    fixed = TRUE
+  )
 })
 
 test_that("setting mixed scheme works", {
