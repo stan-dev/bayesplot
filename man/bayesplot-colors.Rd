@@ -43,7 +43,11 @@ color_scheme_view(scheme)
    etc.). The order of \code{x} and \code{y} matters, i.e., the color schemes
    "mix-blue-red" and "mix-red-blue" are not identical. There is no gaurantee
    that every possible mixed scheme will look good with every possible plot.
-  }}
+  }
+
+  If you have suggestions for additional color schemes please
+  \href{https://github.com/stan-dev/bayesplot/issues}{suggest
+  them!}}
 }
 \value{
 \code{color_scheme_set} has the side effect of setting the color
