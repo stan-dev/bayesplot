@@ -31,8 +31,8 @@ test_that("ppc_ribbon_grouped returns ggplot object", {
 test_that(".ppc_intervals_data returns correct structure", {
   d <- .ppc_intervals_data(y, yrep, x = 1:length(y))
   d_group <- .ppc_intervals_data(y, yrep, x, group)
-  expect_identical(colnames(d), c("x", "is_y", "median", "lower", "upper"))
-  expect_identical(colnames(d_group), c("x", "group", "is_y", "median", "lower", "upper"))
+  expect_named(d, c("x", "is_y", "lo", "mid", "hi"))
+  expect_named(d_group, c("x", "group", "is_y","lo", "mid", "hi"))
 
   expect_error(.ppc_intervals_data(y, yrep, x = 1:length(y), prob = 0), "prob")
   expect_error(.ppc_intervals_data(y, yrep, x = 1:length(y), prob = 1.01), "prob")

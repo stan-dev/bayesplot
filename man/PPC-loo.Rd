@@ -3,10 +3,18 @@
 \name{PPC-loo}
 \alias{PPC-loo}
 \alias{ppc_loo_pit}
+\alias{ppc_loo_intervals}
+\alias{ppc_loo_ribbon}
 \title{LOO predictive checks}
 \usage{
-ppc_loo_pit(y, yrep, lw, compare = c("uniform", "normal"), ..., size = 2,
-  alpha = 0.5)
+ppc_loo_pit(y, yrep, lw, pit, compare = c("uniform", "normal"), ...,
+  size = 2, alpha = 0.5)
+
+ppc_loo_intervals(y, yrep, lw, intervals, ..., prob = 0.9, size = 1,
+  fatten = 3)
+
+ppc_loo_ribbon(y, yrep, lw, intervals, ..., prob = 0.9, alpha = 0.33,
+  size = 0.25)
 }
 \arguments{
 \item{y}{A vector of observations. See \strong{Details}.}
@@ -22,6 +30,11 @@ instructions.}
 \item{lw}{A matrix of (smoothed) log weights with the same dimensions as
 \code{yrep}.}
 
+\item{pit}{For \code{ppc_loo_pit}, optionally a vector of precomputed PIT
+values that can be specified instead of \code{y}, \code{yrep}, and
+\code{lw} (these are all ignored if \code{pit} is specified). If not
+specified the PIT values are computed internally before plotting.}
+
 \item{compare}{For \code{ppc_loo_pit}, a string that can be either
 \code{"uniform"} or \code{"normal"}. If \code{"uniform"} (the default) the
 Q-Q plot compares computed PIT values to the standard uniform distribution.
@@ -30,8 +43,23 @@ to the standard normal distribution.}
 
 \item{...}{Currently unused.}
 
-\item{size, alpha}{Passed to \code{\link[ggplot2]{geom_point}} to control the
-appearance of the points.}
+\item{alpha, size, fatten}{Arguments passed to code geoms to control plot
+aesthetics. For \code{ppc_loo_pit}, \code{size} and \code{alpha} are passed
+to \code{\link[ggplot2]{geom_point}}. For \code{ppc_loo_intervals},
+\code{size} and \code{fatten} are passed to
+\code{\link[ggplot2]{geom_pointrange}}. For \code{ppc_loo_ribbon},
+\code{alpha} and \code{size} are passed to
+\code{\link[ggplot2]{geom_ribbon}}.}
+
+\item{intervals}{For \code{ppc_loo_intervals} and \code{ppc_loo_ribbon},
+optionally a matrix of precomputed intervals with  that can be specified
+instead of \code{yrep} and \code{lw} (these are both ignored if
+\code{intervals} is specified). If not specified the intervals are computed
+internally before plotting. If specified, \code{intervals} must be a matrix
+with number of rows equal to the number of data points and three columns in
+the following order: the first for the lower bound of the interval, the
+second for median (50\%), and the third for the interval upper bound
+(column names are ignored).}
 }
 \description{
 LOO predictive checks
@@ -54,7 +82,7 @@ LOO predictive checks
 }
 
 \examples{
-color_scheme_set("red")
+color_scheme_set("orange")
 
 \dontrun{
 library(rstanarm)

@@ -13,10 +13,10 @@ ppc_intervals(y, yrep, x, ..., prob = 0.9, size = 1, fatten = 3)
 ppc_intervals_grouped(y, yrep, x, group, facet_args = list(), ...,
   prob = 0.9, size = 1, fatten = 3)
 
-ppc_ribbon(y, yrep, x, ..., prob = 0.9, alpha = 0.33, size = 1)
+ppc_ribbon(y, yrep, x, ..., prob = 0.9, alpha = 0.33, size = 0.25)
 
 ppc_ribbon_grouped(y, yrep, x, group, facet_args = list(), ..., prob = 0.9,
-  alpha = 0.33, size = 1)
+  alpha = 0.33, size = 0.25)
 }
 \arguments{
 \item{y}{A vector of observations. See \strong{Details}.}

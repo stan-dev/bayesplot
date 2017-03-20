@@ -6,8 +6,15 @@
 #' @param ... Currently unused.
 #' @param lw A matrix of (smoothed) log weights with the same dimensions as
 #'   \code{yrep}.
-#' @param size,alpha Passed to \code{\link[ggplot2]{geom_point}} to control the
-#'   appearance of the points.
+#' @param alpha,size,fatten Arguments passed to code geoms to control plot
+#'   aesthetics. For \code{ppc_loo_pit}, \code{size} and \code{alpha} are passed
+#'   to \code{\link[ggplot2]{geom_point}}. For \code{ppc_loo_intervals},
+#'   \code{size} and \code{fatten} are passed to
+#'   \code{\link[ggplot2]{geom_pointrange}}. For \code{ppc_loo_ribbon},
+#'   \code{alpha} and \code{size} are passed to
+#'   \code{\link[ggplot2]{geom_ribbon}}.
+#'
+#' @template return-ggplot
 #'
 #' @section Plot Descriptions:
 #' \describe{
@@ -29,7 +36,7 @@
 #' @template reference-loo
 #'
 #' @examples
-#' color_scheme_set("red")
+#' color_scheme_set("orange")
 #'
 #' \dontrun{
 #' library(rstanarm)
@@ -49,6 +56,10 @@ NULL
 
 #' @rdname PPC-loo
 #' @export
+#' @param pit For \code{ppc_loo_pit}, optionally a vector of precomputed PIT
+#'   values that can be specified instead of \code{y}, \code{yrep}, and
+#'   \code{lw} (these are all ignored if \code{pit} is specified). If not
+#'   specified the PIT values are computed internally before plotting.
 #' @param compare For \code{ppc_loo_pit}, a string that can be either
 #'   \code{"uniform"} or \code{"normal"}. If \code{"uniform"} (the default) the
 #'   Q-Q plot compares computed PIT values to the standard uniform distribution.
@@ -59,31 +70,38 @@ ppc_loo_pit <-
   function(y,
            yrep,
            lw,
+           pit,
            compare = c("uniform", "normal"),
            ...,
            size = 2,
-           alpha = 0.5) {
-    y <- validate_y(y)
-    yrep <- validate_yrep(yrep, y)
-    stopifnot(identical(dim(yrep), dim(lw)))
+           alpha = 1) {
+    check_ignored_arguments(...)
     compare <- match.arg(compare)
-    pits <- pit(y, yrep, lw)
+    if (!missing(pit)) {
+      stopifnot(is.numeric(pit), is_vector_or_1Darray(pit))
+      .ignore_y_yrep_lw(y, yrep, lw)
+    } else {
+      suggested_package("rstantools")
+      y <- validate_y(y)
+      yrep <- validate_yrep(yrep, y)
+      stopifnot(identical(dim(yrep), dim(lw)))
+      pit <- rstantools::loo_pit(object = yrep, y = y, lw = lw)
+    }
 
     if (compare == "uniform") {
       theoretical <- stats::qunif
       x_lab <- "Uniform"
       y_lab <- "LOO-PIT"
     } else {
-      pits <- as.vector(scale(pits))
+      pit <- as.vector(scale(pit))
       theoretical <- stats::qnorm
       x_lab <- "Normal"
       y_lab <- "LOO-PIT (standardized)"
     }
-    pits <- data.frame(pit = pits)
 
-    graph <- ggplot(pits) +
+    graph <- ggplot(data.frame(p = pit)) +
       geom_point(
-        aes_(sample = ~ pit),
+        aes_(sample = ~ p),
         stat = "qq",
         distribution = theoretical,
         color = get_color("m"),
@@ -112,35 +130,123 @@ ppc_loo_pit <-
   }
 
 
-# #' @rdname PPC-loo
-# #' @export
-# ppc_loo_intervals <- function(y, yrep, lw, ...) {
-#   y <- validate_y(y)
-#   yrep <- validate_yrep(yrep, y)
-#   stopifnot(identical(dim(yrep), dim(lw)))
-#
-# }
 
-# #' @rdname PPC-loo
-# #' @export
-# ppc_loo_ribbon <- function(y, yrep, lw, ...) {
-#   y <- validate_y(y)
-#   yrep <- validate_yrep(yrep, y)
-#   stopifnot(identical(dim(yrep), dim(lw)))
-#
-# }
+
+#' @rdname PPC-loo
+#' @export
+#' @param intervals For \code{ppc_loo_intervals} and \code{ppc_loo_ribbon},
+#'   optionally a matrix of precomputed intervals with  that can be specified
+#'   instead of \code{yrep} and \code{lw} (these are both ignored if
+#'   \code{intervals} is specified). If not specified the intervals are computed
+#'   internally before plotting. If specified, \code{intervals} must be a matrix
+#'   with number of rows equal to the number of data points and three columns in
+#'   the following order: the first for the lower bound of the interval, the
+#'   second for median (50\%), and the third for the interval upper bound
+#'   (column names are ignored).
+#'
+ppc_loo_intervals <-
+  function(y,
+           yrep,
+           lw,
+           intervals,
+           ...,
+           prob = 0.9,
+           size = 1,
+           fatten = 3) {
+    check_ignored_arguments(...)
+    y <- validate_y(y)
+    if (!missing(intervals)) {
+      stopifnot(is.matrix(intervals), ncol(intervals) == 3)
+      .ignore_y_yrep_lw(yrep = yrep, lw = lw) # dont ignore y
+    } else {
+      suggested_package("loo")
+      yrep <- validate_yrep(yrep, y)
+      stopifnot(identical(dim(yrep), dim(lw)))
+      alpha <- (1 - prob) / 2
+      intervals <- t(loo::loo_expectation(
+        x = yrep,
+        lw = lw,
+        type = "quantile",
+        probs = sort(c(alpha, 0.5, 1 - alpha))
+      ))
+    }
+    .ppc_intervals(
+      data = .loo_intervals_data(y, intervals),
+      grouped = FALSE,
+      style = "intervals",
+      size = size,
+      fatten = fatten,
+      x_lab = "Data point (index)"
+    )
+  }
+
+#' @rdname PPC-loo
+#' @export
+ppc_loo_ribbon <-
+  function(y,
+           yrep,
+           lw,
+           intervals,
+           ...,
+           prob = 0.9,
+           alpha = 0.33,
+           size = 0.25) {
+    check_ignored_arguments(...)
+    y <- validate_y(y)
+    if (!missing(intervals)) {
+      stopifnot(is.matrix(intervals), ncol(intervals) == 3)
+      .ignore_y_yrep_lw(yrep = yrep, lw = lw) # dont ignore y
+    } else {
+      suggested_package("loo")
+      yrep <- validate_yrep(yrep, y)
+      stopifnot(identical(dim(yrep), dim(lw)))
+      alpha <- (1 - prob) / 2
+      intervals <- t(loo::loo_expectation(
+        x = yrep,
+        lw = lw,
+        type = "quantile",
+        probs = sort(c(alpha, 0.5, 1 - alpha))
+      ))
+    }
+    .ppc_intervals(
+      data = .loo_intervals_data(y, intervals),
+      grouped = FALSE,
+      style = "ribbon",
+      size = size,
+      alpha = alpha,
+      x_lab = "Data point (index)"
+    )
+  }
+
+
+
 
 # internal ----------------------------------------------------------------
-pit <- function(y, yrep, lw) {
-  vapply(seq_len(ncol(yrep)), function(j) {
-    sel <- yrep[, j] <= y[j]
-    exp_log_sum_exp(lw[sel, j])
-  }, FUN.VALUE = 1)
+.loo_intervals_data <- function(y, intervals) {
+  colnames(intervals) <- c("lo", "mid", "hi")
+  stopifnot(length(y) == nrow(intervals))
+  x <- seq_along(y)
+  dplyr::bind_rows(
+    data.frame(x, is_y = TRUE, lo = y, mid = y, hi = y),
+    data.frame(x, is_y = FALSE, intervals)
+  )
 }
-exp_log_sum_exp <- function(x) {
-  m <- max(x, na.rm = TRUE)
-  exp(m + log(sum(exp(x - m))))
+.ignore_y_yrep_lw <- function(y, yrep, lw) {
+  specified <- .which_specified(y, yrep, lw)
+  if (length(specified))
+    warning(
+      "Ignoring ", paste(sQuote(specified), collapse = ","), " because ",
+      sQuote("pit"), " was specified.",
+      call. = FALSE
+    )
 }
+.which_specified <- function(.y, .yrep, .lw) {
+  w <- c(y = !missing(.y), yrep = !missing(.yrep), lw = !missing(.lw))
+  names(w)[w]
+}
+
+
+
 
 
 # #' @rdname PPC-loo
