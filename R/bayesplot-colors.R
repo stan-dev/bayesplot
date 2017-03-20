@@ -44,7 +44,8 @@
 #'   \code{color_scheme_get} returns a \code{list} of the hexadecimal color
 #'   values (without changing the current scheme). If the \code{scheme} argument
 #'   is not specified the returned values correspond to the current color
-#'   scheme.
+#'   scheme. If the optional argument \code{i} is specified then the returned
+#'   list only contains \code{length(i)} elements.
 #'
 #'   \code{color_scheme_view} returns a ggplot object if only a single scheme is
 #'   specified and a gtable object if multiple schemes names are specified.
@@ -60,8 +61,10 @@
 #'
 #' @examples
 #' color_scheme_set("blue")
-#' color_scheme_get()
 #' color_scheme_view()
+#'
+#' color_scheme_get()
+#' color_scheme_get(i = c(3, 5)) # 3rd and 5th colors only
 #'
 #' color_scheme_get("brightblue")
 #' color_scheme_view("brightblue")
@@ -120,7 +123,12 @@ color_scheme_set <- function(scheme = "blue") {
 
 #' @rdname bayesplot-colors
 #' @export
-color_scheme_get <- function(scheme) {
+#' @param i For \code{color_scheme_get}, a subset of of the integers from
+#'   \code{1} (lightest) to \code{6} (darkest) indicating which of the colors
+#'   in the scheme to return. If \code{i} is not specified then all six colors
+#'   in the scheme are included.
+#'
+color_scheme_get <- function(scheme, i) {
   if (!missing(scheme)) {
     scheme <- scheme_from_string(scheme)
   } else {
@@ -130,7 +138,14 @@ color_scheme_get <- function(scheme) {
     attr(scheme, "scheme_name") <- attr(x, "scheme_name")
   }
   class(scheme) <- c("bayesplot_scheme", "list")
-  scheme
+  if (missing(i))
+    return(scheme)
+
+  stopifnot(
+    all(i %in% seq_along(scheme)),
+    length(unique(i)) == length(i)
+  )
+  scheme[i]
 }
 
 #' @export

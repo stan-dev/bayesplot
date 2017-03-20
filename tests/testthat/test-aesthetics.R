@@ -23,6 +23,16 @@ test_that("getting and setting the color scheme works", {
   expect_equivalent(color_scheme_get("teal"), prepare_colors("teal"))
 })
 
+test_that("color_scheme_get with i argument works", {
+  a <- color_scheme_get("green", i = 1)
+  expect_equal(length(a), 1)
+  expect_named(a, "light")
+
+  b <- color_scheme_get("purple", i = c(2, 4, 5))
+  expect_equal(length(b), 3)
+  expect_named(b, c("light_highlight", "mid_highlight", "dark"))
+})
+
 test_that("setting mixed scheme works", {
   color_scheme_set("mix-gray-blue")
   expect_equivalent(color_scheme_get(), mixed_scheme("gray", "blue"))
