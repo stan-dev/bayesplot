@@ -8,12 +8,11 @@
 [![codecov](https://codecov.io/gh/stan-dev/bayesplot/branch/master/graph/badge.svg)](https://codecov.io/gh/stan-dev/bayesplot)
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/bayesplot?color=blue)](http://cran.r-project.org/web/packages/bayesplot)
 
-An R package providing a library of plotting functions for use after fitting 
-Bayesian models (typically with MCMC). The idea is not only to provide
-convenient functionality for users, but also a common set of functions that can
-be easily used by developers working on a variety of packages for Bayesian
-modeling, particularly (but not necessarily) those powered by 
-[**RStan**](https://github.com/stan-dev/rstan).
+**bayesplot** is an R package providing an extensive library of plotting functions for use 
+after fitting Bayesian models (typically with MCMC). Currently **bayesplot** offers a variety 
+of plots of posterior draws, visual MCMC diagnostics, as well as graphical posterior 
+predictive checking. Additional functionality (e.g. for forecasting/out-of-sample prediction 
+and other inference-related tasks) will be added in future releases.
 
 The plots created by **bayesplot** are ggplot objects, which means that after 
 a plot is created it can be further customized using the various functions for 
@@ -36,7 +35,11 @@ if (!require("devtools"))
 
 devtools::install_github("stan-dev/bayesplot", dependencies = TRUE, build_vignettes = TRUE)
 ```
-If you are not using the [RStudio IDE](https://www.rstudio.com/) and you get an error related to "pandoc" you will either need to remove the argument `build_vignettes=TRUE` (to avoid building the vignettes) or install [pandoc](http://pandoc.org/) (e.g., `brew install pandoc`) and probably also pandoc-citeproc (e.g., `brew install pandoc-citeproc`). If you have the `rmarkdown` R package installed then you can check if you have pandoc by running the following in R:
+If you are not using the [RStudio IDE](https://www.rstudio.com/) and you get an error related to 
+"pandoc" you will either need to remove the argument `build_vignettes=TRUE` (to avoid building 
+the vignettes) or install [pandoc](http://pandoc.org/) (e.g., `brew install pandoc`) and probably 
+also pandoc-citeproc (e.g., `brew install pandoc-citeproc`). If you have the `rmarkdown` R package 
+installed then you can check if you have pandoc by running the following in R:
 ```r
 rmarkdown::pandoc_available()
 ```
