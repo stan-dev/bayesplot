@@ -54,7 +54,8 @@ rmarkdown::pandoc_available()
 
 
 ### Examples
-Some quick examples using MCMC draws obtained from the [__rstanarm__](https://github.com/stan-dev/rstanarm) and [__rstan__](https://github.com/stan-dev/rstan) packages.
+Some quick examples using MCMC draws obtained from the [__rstanarm__](https://github.com/stan-dev/rstanarm) 
+and [__rstan__](https://github.com/stan-dev/rstan) packages.
 
 ```r
 library("bayesplot")
@@ -70,13 +71,17 @@ mcmc_areas(posterior,
            pars = c("cyl", "drat", "am", "wt"), 
            prob = 0.8) + plot_title
 ```
-<img src=https://github.com/stan-dev/bayesplot/blob/master/images/mcmc_areas-rstanarm.png width=50% />
+
+<img src=https://github.com/stan-dev/bayesplot/blob/master/images/mcmc_areas-rstanarm.png width=50%/>
+
 ```r
 color_scheme_set("red")
 ppc_dens_overlay(y = fit$y, 
                  yrep = posterior_predict(fit, draws = 50))
 ```
-<img src=https://github.com/stan-dev/bayesplot/blob/master/images/ppc_dens_overlay-rstanarm.png width=50% />
+
+<img src=https://github.com/stan-dev/bayesplot/blob/master/images/ppc_dens_overlay-rstanarm.png width=50%/>
+
 ```r
 # also works nicely with piping
 library("dplyr")
@@ -88,7 +93,9 @@ fit %>%
                    stat = "median")
 
 ```
-<img src=https://github.com/stan-dev/bayesplot/blob/master/images/ppc_stat_grouped-rstanarm.png width=50% />
+
+<img src=https://github.com/stan-dev/bayesplot/blob/master/images/ppc_stat_grouped-rstanarm.png width=50%/>
+
 ```r
 # with rstan demo model
 library("rstan")
@@ -100,13 +107,17 @@ p <- mcmc_trace(posterior2,  pars = c("mu", "tau"), n_warmup = 300,
                 facet_args = list(nrow = 2, labeller = label_parsed))
 p + facet_text(size = 15)
 ```
+
 <img src=https://github.com/stan-dev/bayesplot/blob/master/images/mcmc_trace-rstan.png width=50% />
+
 ```r
 color_scheme_set("red")
 np <- nuts_params(fit2)
 mcmc_nuts_energy(np, merge_chains = FALSE) + ggtitle("NUTS Energy Diagnostic")
 ```
+
 <img src=https://github.com/stan-dev/bayesplot/blob/master/images/mcmc_nuts_energy-rstan.png width=50% />
+
 ```r
 # another example with rstanarm
 color_scheme_set("purple")
@@ -127,4 +138,5 @@ ppc_intervals(
   panel_bg(fill = "gray95", color = NA) +
   grid_lines(color = "white")
 ```
+
 <img src=https://github.com/stan-dev/bayesplot/blob/master/images/ppc_intervals-rstanarm.png width=55% />
