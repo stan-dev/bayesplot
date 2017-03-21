@@ -42,6 +42,9 @@ test_that("color_scheme_get with i argument works", {
     "length(unique(i)) == length(i) is not TRUE",
     fixed = TRUE
   )
+
+  # if is character it should behave the same as internal 'get_color'
+  expect_identical(color_scheme_get(i = c("l", "dh")), get_color(c("l", "dh")))
 })
 
 test_that("setting mixed scheme works", {

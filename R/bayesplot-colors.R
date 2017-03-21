@@ -123,10 +123,10 @@ color_scheme_set <- function(scheme = "blue") {
 
 #' @rdname bayesplot-colors
 #' @export
-#' @param i For \code{color_scheme_get}, a subset of of the integers from
-#'   \code{1} (lightest) to \code{6} (darkest) indicating which of the colors
-#'   in the scheme to return. If \code{i} is not specified then all six colors
-#'   in the scheme are included.
+#' @param i For \code{color_scheme_get}, a subset of the integers from \code{1}
+#'   (lightest) to \code{6} (darkest) indicating which of the colors in the
+#'   scheme to return. If \code{i} is not specified then all six colors in the
+#'   scheme are included.
 #'
 color_scheme_get <- function(scheme, i) {
   if (!missing(scheme)) {
@@ -138,8 +138,11 @@ color_scheme_get <- function(scheme, i) {
     attr(scheme, "scheme_name") <- attr(x, "scheme_name")
   }
   class(scheme) <- c("bayesplot_scheme", "list")
-  if (missing(i))
+  if (missing(i)) {
     return(scheme)
+  } else if (is.character(i)) {
+    return(get_color(i))
+  }
 
   stopifnot(
     all(i %in% seq_along(scheme)),
