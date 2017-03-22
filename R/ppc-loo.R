@@ -1,11 +1,16 @@
 #' LOO predictive checks
 #'
+#' Leave-One-Out (LOO) predictive checks. See the \strong{Plot Descriptions}
+#' section below for details.
+#'
 #' @name PPC-loo
 #' @family PPCs
 #' @template args-y-yrep
 #' @param ... Currently unused.
 #' @param lw A matrix of (smoothed) log weights with the same dimensions as
-#'   \code{yrep}.
+#'   \code{yrep}. See the \code{\link[loo]{psislw}} function in the \pkg{loo}
+#'   package, which returns smoothed weights that can be used to specify
+#'   \code{lw}.
 #' @param alpha,size,fatten Arguments passed to code geoms to control plot
 #'   aesthetics. For \code{ppc_loo_pit}, \code{size} and \code{alpha} are passed
 #'   to \code{\link[ggplot2]{geom_point}}. For \code{ppc_loo_intervals},
@@ -19,7 +24,7 @@
 #' @section Plot Descriptions:
 #' \describe{
 #' \item{\code{ppc_loo_pit}}{
-#'  The calibration of marginal predictions can be checked with probability
+#'  The calibration of marginal predictions can be assessed using probability
 #'  integral transformation (PIT) checks. LOO improves the check by avoiding the
 #'  double use of data. See the section on marginal predictive checks in Gelman
 #'  et al. (2013, p. 152--153). The default LOO probability integral
@@ -28,6 +33,10 @@
 #'  setting the \code{compare} argument to \code{"normal"} will produce a Q-Q
 #'  plot comparing standardized PIT values may to the standard normal
 #'  distribution.
+#' }
+#' \item{\code{ppc_loo_intervals, ppc_loo_ribbon}}{
+#'  Same \code{\link{ppc_loo_intervals}} and \code{\link{ppc_loo_ribbon}} but
+#'  the intervals are for the LOO predictive distribution.
 #' }
 #' }
 #'

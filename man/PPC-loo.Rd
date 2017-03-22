@@ -8,7 +8,7 @@
 \title{LOO predictive checks}
 \usage{
 ppc_loo_pit(y, yrep, lw, pit, compare = c("uniform", "normal"), ...,
-  size = 2, alpha = 0.5)
+  size = 2, alpha = 1)
 
 ppc_loo_intervals(y, yrep, lw, intervals, ..., prob = 0.9, size = 1,
   fatten = 3)
@@ -28,7 +28,9 @@ for the plots to make sense. See \strong{Details} for additional
 instructions.}
 
 \item{lw}{A matrix of (smoothed) log weights with the same dimensions as
-\code{yrep}.}
+\code{yrep}. See the \code{\link[loo]{psislw}} function in the \pkg{loo}
+package, which returns smoothed weights that can be used to specify
+\code{lw}.}
 
 \item{pit}{For \code{ppc_loo_pit}, optionally a vector of precomputed PIT
 values that can be specified instead of \code{y}, \code{yrep}, and
@@ -61,14 +63,19 @@ the following order: the first for the lower bound of the interval, the
 second for median (50\%), and the third for the interval upper bound
 (column names are ignored).}
 }
+\value{
+A ggplot object that can be further customized using the
+  \pkg{ggplot2} package.
+}
 \description{
-LOO predictive checks
+Leave-One-Out (LOO) predictive checks. See the \strong{Plot Descriptions}
+section below for details.
 }
 \section{Plot Descriptions}{
 
 \describe{
 \item{\code{ppc_loo_pit}}{
- The calibration of marginal predictions can be checked with probability
+ The calibration of marginal predictions can be assessed using probability
  integral transformation (PIT) checks. LOO improves the check by avoiding the
  double use of data. See the section on marginal predictive checks in Gelman
  et al. (2013, p. 152--153). The default LOO probability integral
@@ -77,6 +84,10 @@ LOO predictive checks
  setting the \code{compare} argument to \code{"normal"} will produce a Q-Q
  plot comparing standardized PIT values may to the standard normal
  distribution.
+}
+\item{\code{ppc_loo_intervals, ppc_loo_ribbon}}{
+ Same \code{\link{ppc_loo_intervals}} and \code{\link{ppc_loo_ribbon}} but
+ the intervals are for the LOO predictive distribution.
 }
 }
 }
@@ -104,7 +115,7 @@ Gelman, A., Carlin, J. B., Stern, H. S., Dunson, D. B., Vehtari,
   A., and Rubin, D. B. (2013). \emph{Bayesian Data Analysis.} Chapman & Hall/CRC
   Press, London, third edition. (p. 152--153)
 
-Vehtari, A., Gelman, A., and Gabry, J. (2016a). Practical
+Vehtari, A., Gelman, A., and Gabry, J. (2016). Practical
   Bayesian model evaluation using leave-one-out cross-validation and WAIC.
   \emph{Statistics and Computing}. Advance online publication.
   doi:10.1007/s11222-016-9696-4. arXiv preprint:
