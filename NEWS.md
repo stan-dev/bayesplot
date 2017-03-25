@@ -12,9 +12,11 @@
 argument is specified as a single function rather than a named list. Thanks to @tklebel. (#64)
 * For `ppc_violin_grouped` there is now the option of showing `y` as a violin, 
 points, or both. Thanks to @silberzwiebel. (#74)
-* New color scheme `"darkgray"`.
 * `color_scheme_get` now has an optional argument `i` for selecting only a 
 subset of the colors.
+* New color schemes: `"darkgray"`, `"viridis"`, `"viridisA"`, `"viridisB"`,` 
+"viridisC"`. The viridis schemes are particularly good for trace plots as the 
+colors are very distinct from each other.
 
 #### New functions
 * `mcmc_pairs`, which is essentially a ggplot2+grid implementation of rstan's

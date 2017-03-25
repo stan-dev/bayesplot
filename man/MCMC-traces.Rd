@@ -111,10 +111,17 @@ dim(x)
 dimnames(x)
 
 # traceplots of the betas
-color_scheme_set("brightblue")
+color_scheme_set("viridis")
+mcmc_trace(x, regex_pars = "beta")
+\donttest{
+color_scheme_set("viridisA")
 mcmc_trace(x, regex_pars = "beta")
 
-# can use a mixed color scheme to better differentiate the chains
+color_scheme_set("viridisC")
+mcmc_trace(x, regex_pars = "beta")
+}
+
+# mix color schemes
 color_scheme_set("mix-blue-red")
 mcmc_trace(x, regex_pars = "beta")
 
@@ -123,8 +130,11 @@ mcmc_trace(x, pars = c("alpha", "sigma")) +
  ggplot2::scale_color_discrete()
 
 # zoom in on a window of iterations, increase line size,
-# add tick marks, and move legend to the top
-mcmc_trace(x, window = c(100, 130), size = 1) + legend_move("top")
+# add tick marks, move legend to the top, add gray background
+color_scheme_set("viridisA")
+mcmc_trace(x[,, 1:4], window = c(100, 130), size = 1) +
+  panel_bg(fill = "gray90", color = NA) +
+  legend_move("top")
 
 \dontrun{
 # parse facet label text

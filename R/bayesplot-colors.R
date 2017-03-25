@@ -19,16 +19,15 @@
 #'
 #'   Currently, the available preset color schemes are:
 #'   \itemize{
-#'    \item \code{"blue"}
-#'    \item \code{"brightblue"}
-#'    \item \code{"darkgray"}
-#'    \item \code{"gray"}
+#'    \item \code{"blue"}, \code{"brightblue"}
+#'    \item \code{"gray"}, \code{"darkgray"}
 #'    \item \code{"green"}
 #'    \item \code{"pink"}
 #'    \item \code{"purple"}
 #'    \item \code{"red"}
 #'    \item \code{"teal"}
 #'    \item \code{"yellow"}
+#'    \item \code{"viridis"}, \code{"viridisA"}, \code{"viridisB"}, \code{"viridisC"}
 #'    \item \code{"mix-x-y"}, replacing \code{x} and \code{y} with any two of
 #'    the scheme names listed above (e.g. "mix-teal-pink", "mix-blue-red",
 #'    etc.). The order of \code{x} and \code{y} matters, i.e., the color schemes
@@ -71,6 +70,7 @@
 #'
 #' # compare multiple schemes
 #' color_scheme_view(c("pink", "gray", "teal"))
+#' color_scheme_view(c("viridis", "viridisA", "viridisB", "viridisC"))
 #'
 #' color_scheme_set("pink")
 #' x <- example_mcmc_draws()
@@ -353,7 +353,15 @@ master_color_list <- list(
   teal =
     list("#bcdcdc", "#99c7c7", "#7cb9b9", "#50a2a2", "#278f8f", "#007C7C"),
   yellow =
-    list("#fbf3da", "#f8e8b5", "#f5dc90", "#dbc376", "#aa975c", "#7a6c42")
+    list("#fbf3da", "#f8e8b5", "#f5dc90", "#dbc376", "#aa975c", "#7a6c42"),
+  viridis =
+    list("#FDE725FF", "#7AD151FF", "#22A884FF", "#2A788EFF", "#414487FF", "#440154FF"),
+  viridisA =
+    list("#FCFDBFFF", "#FE9F6DFF", "#DE4968FF", "#8C2981FF", "#3B0F70FF", "#000004FF"),
+  viridisB =
+    list("#FCFFA4FF", "#FCA50AFF", "#DD513AFF", "#932667FF", "#420A68FF", "#000004FF"),
+  viridisC =
+    list("#F0F921FF", "#FCA636FF", "#E16462FF", "#B12A90FF", "#6A00A8FF", "#0D0887FF")
 )
 
 # instantiate aesthetics --------------------------------------------------

@@ -28,16 +28,15 @@ color_scheme_view(scheme)
 
   Currently, the available preset color schemes are:
   \itemize{
-   \item \code{"blue"}
-   \item \code{"brightblue"}
-   \item \code{"darkgray"}
-   \item \code{"gray"}
+   \item \code{"blue"}, \code{"brightblue"}
+   \item \code{"gray"}, \code{"darkgray"}
    \item \code{"green"}
    \item \code{"pink"}
    \item \code{"purple"}
    \item \code{"red"}
    \item \code{"teal"}
    \item \code{"yellow"}
+   \item \code{"viridis"}, \code{"viridisA"}, \code{"viridisB"}, \code{"viridisC"}
    \item \code{"mix-x-y"}, replacing \code{x} and \code{y} with any two of
    the scheme names listed above (e.g. "mix-teal-pink", "mix-blue-red",
    etc.). The order of \code{x} and \code{y} matters, i.e., the color schemes
@@ -45,10 +44,10 @@ color_scheme_view(scheme)
    that every possible mixed scheme will look good with every possible plot.
   }}
 
-\item{i}{For \code{color_scheme_get}, a subset of of the integers from
-\code{1} (lightest) to \code{6} (darkest) indicating which of the colors
-in the scheme to return. If \code{i} is not specified then all six colors
-in the scheme are included.}
+\item{i}{For \code{color_scheme_get}, a subset of the integers from \code{1}
+(lightest) to \code{6} (darkest) indicating which of the colors in the
+scheme to return. If \code{i} is not specified then all six colors in the
+scheme are included.}
 }
 \value{
 \code{color_scheme_set} has the side effect of setting the color
@@ -90,6 +89,7 @@ color_scheme_view("brightblue")
 
 # compare multiple schemes
 color_scheme_view(c("pink", "gray", "teal"))
+color_scheme_view(c("viridis", "viridisA", "viridisB", "viridisC"))
 
 color_scheme_set("pink")
 x <- example_mcmc_draws()

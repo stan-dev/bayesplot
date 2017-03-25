@@ -32,6 +32,7 @@ Suggests:
     rstantools (>= 1.0.0),
     scales,
     shinystan (>= 2.2.1),
-    testthat
+    testthat,
+    viridis
 RoxygenNote: 6.0.1
 VignetteBuilder: knitr
