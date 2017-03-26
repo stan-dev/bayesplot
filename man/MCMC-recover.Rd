@@ -3,11 +3,16 @@
 \name{MCMC-recover}
 \alias{MCMC-recover}
 \alias{mcmc_recover_intervals}
+\alias{mcmc_recover_scatter}
 \title{Compare MCMC estimates to "true" parameter values}
 \usage{
 mcmc_recover_intervals(x, true, batch = rep(1, length(true)),
   facet_args = list(), ..., prob = 0.5, prob_outer = 0.9,
-  point_est = c("median", "mean", "none"))
+  point_est = c("median", "mean", "none"), size = 4, alpha = 1)
+
+mcmc_recover_scatter(x, true, batch = rep(1, length(true)),
+  facet_args = list(), ..., point_est = c("median", "mean"), size = 3,
+  alpha = 1)
 }
 \arguments{
 \item{x}{A 3-D array, matrix, list of matrices, or data frame of MCMC draws.
@@ -42,6 +47,9 @@ default is \code{0.9} (90\% interval).}
 
 \item{point_est}{The point estimate to show. Either \code{"median"} (the
 default), \code{"mean"}, or \code{"none"}.}
+
+\item{size, alpha}{Passed to \code{\link[ggplot2]{geom_point}} to control the
+appearance of plotted points.}
 }
 \value{
 A ggplot object that can be further customized using the
@@ -68,30 +76,34 @@ available plots.
 \examples{
 \dontrun{
 library(rstanarm)
-alpha <- 1; beta <- c(-.5, .5); sigma <- 2
-X <- matrix(rnorm(200), 100, 2)
+alpha <- 1; beta <- rnorm(10, 0, 3); sigma <- 2
+X <- matrix(rnorm(1000), 100, 10)
 y <- rnorm(100, mean = c(alpha + X \%*\% beta), sd = sigma)
-fit <- stan_glm(y ~ X)
+fit <- stan_glm(y ~ ., data = data.frame(y, X))
 draws <- as.matrix(fit)
 print(colnames(draws))
 true <- c(alpha, beta, sigma)
 mcmc_recover_intervals(draws, true)
 
 # put the coefficients on X into the same batch
-mcmc_recover_intervals(draws, true, batch = c(1, 2, 2, 1))
+mcmc_recover_intervals(draws, true, batch = c(1, rep(2, 10), 1))
 # equivalent
 mcmc_recover_intervals(draws, true, batch = grepl("X", colnames(draws)))
-# same but stacked vertically
+# same but facets stacked vertically
 mcmc_recover_intervals(draws, true,
                        batch = grepl("X", colnames(draws)),
-                       facet_args = list(ncol = 1))
+                       facet_args = list(ncol = 1),
+                       size = 3)
 
 # each parameter in its own facet
-mcmc_recover_intervals(draws, true, batch = 1:4)
+mcmc_recover_intervals(draws, true, batch = 1:ncol(draws))
 # same but in a different order
-mcmc_recover_intervals(draws, true, batch = c(1, 3, 4, 2))
+mcmc_recover_intervals(draws, true, batch = c(1, 3, 4, 2, 5:12))
 # present as bias by centering with true values
 mcmc_recover_intervals(sweep(draws, 2, true), rep(0, ncol(draws))) + hline_0()
+
+# scatterplot of posterior means vs true values
+mcmc_recover_scatter(draws, true, point_est = "mean")
 }
 
 }
