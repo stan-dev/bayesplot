@@ -189,13 +189,15 @@ mcmc_recover_intervals <-
       xaxis_title(FALSE) +
       yaxis_title(FALSE)
 
-    if (!all_separate)
-      return(graph + xaxis_text(face = "bold") + facet_text(FALSE))
+    if (all_separate)
+      return(
+        graph +
+          theme(axis.line.x = element_blank()) +
+          xaxis_ticks(FALSE) +
+          xaxis_text(FALSE)
+      )
 
-    graph +
-      theme(axis.line.x = element_blank()) +
-      xaxis_ticks(FALSE) +
-      xaxis_text(FALSE)
+    graph + xaxis_text(face = "bold") + facet_text(FALSE)
   }
 
 
@@ -264,8 +266,8 @@ mcmc_recover_scatter <-
       graph <- graph + coord_fixed(x = xylim, y = xylim)
     }
 
-    if (!all_separate)
-      return(graph + facet_text(FALSE))
+    if (all_separate)
+      return(graph)
 
-    graph
+    graph + facet_text(FALSE)
   }
