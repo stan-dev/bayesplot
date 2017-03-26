@@ -35,8 +35,8 @@
 #'  distribution.
 #' }
 #' \item{\code{ppc_loo_intervals, ppc_loo_ribbon}}{
-#'  Same \code{\link{ppc_loo_intervals}} and \code{\link{ppc_loo_ribbon}} but
-#'  the intervals are for the LOO predictive distribution.
+#'  Same \code{\link{ppc_intervals}} and \code{\link{ppc_ribbon}} but the
+#'  intervals are for the LOO predictive distribution.
 #' }
 #' }
 #'

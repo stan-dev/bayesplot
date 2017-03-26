@@ -10,7 +10,8 @@
 ppc_loo_pit(y, yrep, lw, pit, compare = c("uniform", "normal"), ...,
   size = 2, alpha = 1)
 
-ppc_loo_intervals(y, yrep, lw, ..., prob = 0.9, size = 1, fatten = 3)
+ppc_loo_intervals(y, yrep, lw, intervals, ..., prob = 0.9, size = 1,
+  fatten = 3)
 
 ppc_loo_ribbon(y, yrep, lw, intervals, ..., prob = 0.9, alpha = 0.33,
   size = 0.25)
@@ -85,8 +86,8 @@ section below for details.
  distribution.
 }
 \item{\code{ppc_loo_intervals, ppc_loo_ribbon}}{
- Same \code{\link{ppc_loo_intervals}} and \code{\link{ppc_loo_ribbon}} but
- the intervals are for the LOO predictive distribution.
+ Same \code{\link{ppc_intervals}} and \code{\link{ppc_ribbon}} but the
+ intervals are for the LOO predictive distribution.
 }
 }
 }
