@@ -25,6 +25,8 @@ colors are very distinct from each other.
 `geom_point`. This can be used to avoid overplotting.
 * `overlay_function` convenience function. Example usage: add a Gaussian (or any
 distribution) density curve to a plot made with `mcmc_hist`.
+* `mcmc_recover_scatter`, which is similar to `mcmc_recover_intervals` but plots
+estimated vs "true" values as a scatterplot.
 * New PPC category __Discrete__ with functions: 
     - `ppc_rootogram` for use with models for count data. Thanks to @paul-buerkner.
 (#28)
