@@ -10,8 +10,7 @@
 ppc_loo_pit(y, yrep, lw, pit, compare = c("uniform", "normal"), ...,
   size = 2, alpha = 1)
 
-ppc_loo_intervals(y, yrep, lw, intervals, ..., prob = 0.9, size = 1,
-  fatten = 3)
+ppc_loo_intervals(y, yrep, lw, ..., prob = 0.9, size = 1, fatten = 3)
 
 ppc_loo_ribbon(y, yrep, lw, intervals, ..., prob = 0.9, alpha = 0.33,
   size = 0.25)
@@ -54,14 +53,14 @@ to \code{\link[ggplot2]{geom_point}}. For \code{ppc_loo_intervals},
 \code{\link[ggplot2]{geom_ribbon}}.}
 
 \item{intervals}{For \code{ppc_loo_intervals} and \code{ppc_loo_ribbon},
-optionally a matrix of precomputed intervals with  that can be specified
-instead of \code{yrep} and \code{lw} (these are both ignored if
-\code{intervals} is specified). If not specified the intervals are computed
-internally before plotting. If specified, \code{intervals} must be a matrix
-with number of rows equal to the number of data points and three columns in
-the following order: the first for the lower bound of the interval, the
-second for median (50\%), and the third for the interval upper bound
-(column names are ignored).}
+optionally a matrix of precomputed LOO predictive intervals intervals with
+that can be specified instead of \code{yrep} and \code{lw} (these are both
+ignored if \code{intervals} is specified). If not specified the intervals
+are computed internally before plotting. If specified, \code{intervals}
+must be a matrix with number of rows equal to the number of data points and
+three columns in the following order: the first for the lower bound of the
+interval, the second for median (50\%), and the third for the interval
+upper bound (column names are ignored).}
 }
 \value{
 A ggplot object that can be further customized using the

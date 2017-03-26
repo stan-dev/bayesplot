@@ -144,14 +144,14 @@ ppc_loo_pit <-
 #' @rdname PPC-loo
 #' @export
 #' @param intervals For \code{ppc_loo_intervals} and \code{ppc_loo_ribbon},
-#'   optionally a matrix of precomputed intervals with  that can be specified
-#'   instead of \code{yrep} and \code{lw} (these are both ignored if
-#'   \code{intervals} is specified). If not specified the intervals are computed
-#'   internally before plotting. If specified, \code{intervals} must be a matrix
-#'   with number of rows equal to the number of data points and three columns in
-#'   the following order: the first for the lower bound of the interval, the
-#'   second for median (50\%), and the third for the interval upper bound
-#'   (column names are ignored).
+#'   optionally a matrix of precomputed LOO predictive intervals intervals with
+#'   that can be specified instead of \code{yrep} and \code{lw} (these are both
+#'   ignored if \code{intervals} is specified). If not specified the intervals
+#'   are computed internally before plotting. If specified, \code{intervals}
+#'   must be a matrix with number of rows equal to the number of data points and
+#'   three columns in the following order: the first for the lower bound of the
+#'   interval, the second for median (50\%), and the third for the interval
+#'   upper bound (column names are ignored).
 #'
 ppc_loo_intervals <-
   function(y,
