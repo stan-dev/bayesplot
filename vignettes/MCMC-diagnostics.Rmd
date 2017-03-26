@@ -443,7 +443,7 @@ compare_cp_ncp(
 
 The difference between the parameterizations is even more apparent if we force 
 the stepsize to a smaller value and help the chains explore more of the 
-posterior
+posterior:
 
 ```{r, mcmc_nuts_energy-4, message=FALSE}
 np1b <- nuts_params(fit1b)
@@ -459,11 +459,6 @@ theory behind the energy plots.
 
 ## References
 
-In future versions of the **bayesplot** package this vignette will be expanded
-to provide examples of interpreting all of the NUTS diagnostic plots. For
-now see `help("NUTS", package = "bayesplot")` and the references below.
-
------
 Betancourt, M. (2017). A conceptual introduction to Hamiltonian Monte Carlo.
 https://arxiv.org/abs/1701.02434
 
