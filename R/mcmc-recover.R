@@ -44,6 +44,9 @@
 #'    Central intervals and point estimates computed from MCMC draws, with
 #'    "true" values plotted using a different shape.
 #'   }
+#'   \item{\code{mcmc_recover_scatter}}{
+#'    Scatterplot of posterior means or medians against "true" values.
+#'   }
 #' }
 #'
 #' @examples
