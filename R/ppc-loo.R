@@ -143,6 +143,8 @@ ppc_loo_pit <-
 
 #' @rdname PPC-loo
 #' @export
+#' @param prob A value between 0 and 1 indicating the desired probability mass
+#'   to include in the intervals. The default is 0.9.
 #' @param intervals For \code{ppc_loo_intervals} and \code{ppc_loo_ribbon},
 #'   optionally a matrix of precomputed LOO predictive intervals intervals with
 #'   that can be specified instead of \code{yrep} and \code{lw} (these are both
@@ -172,7 +174,7 @@ ppc_loo_intervals <-
       yrep <- validate_yrep(yrep, y)
       stopifnot(identical(dim(yrep), dim(lw)))
       alpha <- (1 - prob) / 2
-      intervals <- t(loo::loo_expectation(
+      intervals <- t(loo::E_loo(
         x = yrep,
         lw = lw,
         type = "quantile",
@@ -210,7 +212,7 @@ ppc_loo_ribbon <-
       yrep <- validate_yrep(yrep, y)
       stopifnot(identical(dim(yrep), dim(lw)))
       alpha <- (1 - prob) / 2
-      intervals <- t(loo::loo_expectation(
+      intervals <- t(loo::E_loo(
         x = yrep,
         lw = lw,
         type = "quantile",

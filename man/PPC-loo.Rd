@@ -62,6 +62,9 @@ must be a matrix with number of rows equal to the number of data points and
 three columns in the following order: the first for the lower bound of the
 interval, the second for median (50\%), and the third for the interval
 upper bound (column names are ignored).}
+
+\item{prob}{A value between 0 and 1 indicating the desired probability mass
+to include in the intervals. The default is 0.9.}
 }
 \value{
 A ggplot object that can be further customized using the
