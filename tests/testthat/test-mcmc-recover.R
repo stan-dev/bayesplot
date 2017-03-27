@@ -58,3 +58,15 @@ test_that("mcmc_recover_intervals works when point_est = 'none'", {
   expect_gg(a)
   expect_equal(a$data$Point, rep(NA, ncol(draws)))
 })
+
+
+test_that("mcmc_recover_scatter returns a ggplot object", {
+  expect_gg(mcmc_recover_scatter(draws, true))
+  expect_gg(mcmc_recover_scatter(draws, true, batch = 1:4,
+                                 point_est = "mean"))
+  expect_gg(mcmc_recover_scatter(draws, true, batch = c(1, 2, 2, 1),
+                                 point_est = "mean"))
+  expect_gg(mcmc_recover_scatter(draws, true, batch = grepl("X", colnames(draws))))
+  expect_gg(mcmc_recover_scatter(draws, true, batch = grepl("X", colnames(draws)),
+                                 facet_args = list(ncol = 1)))
+})

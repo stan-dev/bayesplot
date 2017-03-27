@@ -33,6 +33,8 @@
 #'   default is \code{0.9} (90\% interval).
 #' @param point_est The point estimate to show. Either \code{"median"} (the
 #'   default), \code{"mean"}, or \code{"none"}.
+#' @param size,alpha Passed to \code{\link[ggplot2]{geom_point}} to control the
+#'   appearance of plotted points.
 #'
 #' @template return-ggplot
 #'
@@ -42,35 +44,42 @@
 #'    Central intervals and point estimates computed from MCMC draws, with
 #'    "true" values plotted using a different shape.
 #'   }
+#'   \item{\code{mcmc_recover_scatter}}{
+#'    Scatterplot of posterior means or medians against "true" values.
+#'   }
 #' }
 #'
 #' @examples
 #' \dontrun{
 #' library(rstanarm)
-#' alpha <- 1; beta <- c(-.5, .5); sigma <- 2
-#' X <- matrix(rnorm(200), 100, 2)
+#' alpha <- 1; beta <- rnorm(10, 0, 3); sigma <- 2
+#' X <- matrix(rnorm(1000), 100, 10)
 #' y <- rnorm(100, mean = c(alpha + X %*% beta), sd = sigma)
-#' fit <- stan_glm(y ~ X)
+#' fit <- stan_glm(y ~ ., data = data.frame(y, X))
 #' draws <- as.matrix(fit)
 #' print(colnames(draws))
 #' true <- c(alpha, beta, sigma)
 #' mcmc_recover_intervals(draws, true)
 #'
 #' # put the coefficients on X into the same batch
-#' mcmc_recover_intervals(draws, true, batch = c(1, 2, 2, 1))
+#' mcmc_recover_intervals(draws, true, batch = c(1, rep(2, 10), 1))
 #' # equivalent
 #' mcmc_recover_intervals(draws, true, batch = grepl("X", colnames(draws)))
-#' # same but stacked vertically
+#' # same but facets stacked vertically
 #' mcmc_recover_intervals(draws, true,
 #'                        batch = grepl("X", colnames(draws)),
-#'                        facet_args = list(ncol = 1))
+#'                        facet_args = list(ncol = 1),
+#'                        size = 3)
 #'
 #' # each parameter in its own facet
-#' mcmc_recover_intervals(draws, true, batch = 1:4)
+#' mcmc_recover_intervals(draws, true, batch = 1:ncol(draws))
 #' # same but in a different order
-#' mcmc_recover_intervals(draws, true, batch = c(1, 3, 4, 2))
+#' mcmc_recover_intervals(draws, true, batch = c(1, 3, 4, 2, 5:12))
 #' # present as bias by centering with true values
 #' mcmc_recover_intervals(sweep(draws, 2, true), rep(0, ncol(draws))) + hline_0()
+#'
+#' # scatterplot of posterior means vs true values
+#' mcmc_recover_scatter(draws, true, point_est = "mean")
 #' }
 #'
 NULL
@@ -85,7 +94,9 @@ mcmc_recover_intervals <-
            ...,
            prob = 0.5,
            prob_outer = 0.9,
-           point_est = c("median", "mean", "none")) {
+           point_est = c("median", "mean", "none"),
+           size = 4,
+           alpha = 1) {
 
     check_ignored_arguments(...)
     x <- merge_chains(prepare_mcmc_array(x))
@@ -111,11 +122,17 @@ mcmc_recover_intervals <-
 
     plot_data <- data.frame(
       Parameter = rownames(intervals),
-      Batch = if (!all_separate) batch else rownames(intervals),
       True = true,
       Point = apply(x, 2, point_est %||% function(x) NA),
       intervals
     )
+    if (!all_separate) {
+      plot_data$Batch <- factor(batch, levels = unique(batch))
+    } else {
+      plot_data$Batch <-
+        factor(rownames(intervals),
+               levels = rownames(intervals)[as.integer(as.factor(batch))])
+    }
     facet_args[["facets"]] <- ~ Batch
     if (is.null(facet_args[["strip.position"]]))
       facet_args[["strip.position"]] <- "top"
@@ -139,17 +156,18 @@ mcmc_recover_intervals <-
 
     if (!is.null(point_est))
       graph <- graph +
-        geom_point(
-          aes_(y = ~ Point, shape = "Estimated",
-               color = "Estimated", fill = "Estimated"),
-          size = 4
-        )
+      geom_point(
+        aes_(y = ~ Point, shape = "Estimated",
+             color = "Estimated", fill = "Estimated"),
+        size = size
+      )
 
     graph <- graph +
       geom_point(
         aes_(y = ~ True, shape = "True",
              color = "True", fill = "True"),
-        size = 4
+        size = size,
+        alpha = alpha
       ) +
       scale_color_manual(
         name = "",
@@ -171,11 +189,85 @@ mcmc_recover_intervals <-
       xaxis_title(FALSE) +
       yaxis_title(FALSE)
 
-    if (!all_separate)
-      return(graph + xaxis_text(face = "bold") + facet_text(FALSE))
+    if (all_separate)
+      return(
+        graph +
+          theme(axis.line.x = element_blank()) +
+          xaxis_ticks(FALSE) +
+          xaxis_text(FALSE)
+      )
 
-    graph +
-      theme(axis.line.x = element_blank()) +
-      xaxis_ticks(FALSE) +
-      xaxis_text(FALSE)
+    graph + xaxis_text(face = "bold") + facet_text(FALSE)
+  }
+
+
+#' @rdname MCMC-recover
+#' @export
+mcmc_recover_scatter <-
+  function(x,
+           true,
+           batch = rep(1, length(true)),
+           facet_args = list(),
+           ...,
+           point_est = c("median", "mean"),
+           size = 3,
+           alpha = 1) {
+
+    check_ignored_arguments(...)
+    x <- merge_chains(prepare_mcmc_array(x))
+
+    stopifnot(
+      is.numeric(true),
+      ncol(x) == length(true),
+      length(batch) == length(true)
+    )
+    all_separate <- length(unique(batch)) == length(true)
+    point_est <- match.arg(point_est)
+    plot_data <- data.frame(
+      Parameter = colnames(x),
+      Point = apply(x, 2, point_est),
+      True = true
+    )
+    if (!all_separate) {
+      plot_data$Batch <- factor(batch, levels = unique(batch))
+    } else {
+      plot_data$Batch <-
+        factor(colnames(x), levels = colnames(x)[as.integer(as.factor(batch))])
+    }
+
+    facet_args[["facets"]] <- ~ Batch
+    if (is.null(facet_args[["strip.position"]]))
+      facet_args[["strip.position"]] <- "top"
+    if (is.null(facet_args[["scales"]]))
+      facet_args[["scales"]] <- "free"
+
+    graph <- ggplot(plot_data, aes_(x = ~ True, y = ~ Point)) +
+      geom_abline(
+        slope = 1,
+        intercept = 0,
+        linetype = 2,
+        color = "black"
+      ) +
+      geom_point(
+        shape = 21,
+        color = get_color("mh"),
+        fill = get_color("m"),
+        size = size,
+        alpha = alpha
+      ) +
+      do.call("facet_wrap", facet_args) +
+      labs(y = "Estimated", x = "True") +
+      theme_default()
+
+    if (length(unique(batch)) == 1) {
+      g <- ggplot_build(graph)
+      xylim <- g$layout$panel_ranges[[1]]
+      xylim <- range(xylim$y.range, xylim$x.range)
+      graph <- graph + coord_fixed(x = xylim, y = xylim)
+    }
+
+    if (all_separate)
+      return(graph)
+
+    graph + facet_text(FALSE)
   }
