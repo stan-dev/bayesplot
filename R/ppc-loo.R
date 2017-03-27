@@ -173,12 +173,12 @@ ppc_loo_intervals <-
       suggested_package("loo")
       yrep <- validate_yrep(yrep, y)
       stopifnot(identical(dim(yrep), dim(lw)))
-      alpha <- (1 - prob) / 2
+      a <- (1 - prob) / 2
       intervals <- t(loo::E_loo(
         x = yrep,
         lw = lw,
         type = "quantile",
-        probs = sort(c(alpha, 0.5, 1 - alpha))
+        probs = sort(c(a, 0.5, 1 - a))
       ))
     }
     .ppc_intervals(
@@ -211,12 +211,12 @@ ppc_loo_ribbon <-
       suggested_package("loo")
       yrep <- validate_yrep(yrep, y)
       stopifnot(identical(dim(yrep), dim(lw)))
-      alpha <- (1 - prob) / 2
+      a <- (1 - prob) / 2
       intervals <- t(loo::E_loo(
         x = yrep,
         lw = lw,
         type = "quantile",
-        probs = sort(c(alpha, 0.5, 1 - alpha))
+        probs = sort(c(a, 0.5, 1 - a))
       ))
     }
     .ppc_intervals(
