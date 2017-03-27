@@ -9,7 +9,7 @@
 \usage{
 color_scheme_set(scheme = "blue")
 
-color_scheme_get(scheme)
+color_scheme_get(scheme, i)
 
 color_scheme_view(scheme)
 }
@@ -28,26 +28,26 @@ color_scheme_view(scheme)
 
   Currently, the available preset color schemes are:
   \itemize{
-   \item \code{"blue"}
-   \item \code{"brightblue"}
-   \item \code{"darkgray"}
-   \item \code{"gray"}
+   \item \code{"blue"}, \code{"brightblue"}
+   \item \code{"gray"}, \code{"darkgray"}
    \item \code{"green"}
    \item \code{"pink"}
    \item \code{"purple"}
    \item \code{"red"}
    \item \code{"teal"}
    \item \code{"yellow"}
+   \item \code{"viridis"}, \code{"viridisA"}, \code{"viridisB"}, \code{"viridisC"}
    \item \code{"mix-x-y"}, replacing \code{x} and \code{y} with any two of
    the scheme names listed above (e.g. "mix-teal-pink", "mix-blue-red",
    etc.). The order of \code{x} and \code{y} matters, i.e., the color schemes
    "mix-blue-red" and "mix-red-blue" are not identical. There is no gaurantee
    that every possible mixed scheme will look good with every possible plot.
-  }
+  }}
 
-  If you have suggestions for additional color schemes please
-  \href{https://github.com/stan-dev/bayesplot/issues}{suggest
-  them!}}
+\item{i}{For \code{color_scheme_get}, a subset of the integers from \code{1}
+(lightest) to \code{6} (darkest) indicating which of the colors in the
+scheme to return. If \code{i} is not specified then all six colors in the
+scheme are included.}
 }
 \value{
 \code{color_scheme_set} has the side effect of setting the color
@@ -58,7 +58,8 @@ color_scheme_view(scheme)
   \code{color_scheme_get} returns a \code{list} of the hexadecimal color
   values (without changing the current scheme). If the \code{scheme} argument
   is not specified the returned values correspond to the current color
-  scheme.
+  scheme. If the optional argument \code{i} is specified then the returned
+  list only contains \code{length(i)} elements.
 
   \code{color_scheme_view} returns a ggplot object if only a single scheme is
   specified and a gtable object if multiple schemes names are specified.
@@ -78,14 +79,17 @@ custom scheme.
 
 \examples{
 color_scheme_set("blue")
-color_scheme_get()
 color_scheme_view()
+
+color_scheme_get()
+color_scheme_get(i = c(3, 5)) # 3rd and 5th colors only
 
 color_scheme_get("brightblue")
 color_scheme_view("brightblue")
 
 # compare multiple schemes
 color_scheme_view(c("pink", "gray", "teal"))
+color_scheme_view(c("viridis", "viridisA", "viridisB", "viridisC"))
 
 color_scheme_set("pink")
 x <- example_mcmc_draws()

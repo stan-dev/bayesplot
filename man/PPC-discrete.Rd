@@ -59,6 +59,10 @@ style. The options are \code{"standing"}, \code{"hanging"}, and
 \code{"suspended"}. See the \strong{Plot Descriptions} section, below, for
 details on the different styles.}
 }
+\value{
+A ggplot object that can be further customized using the
+  \pkg{ggplot2} package.
+}
 \description{
 This page documents the PPC functions that can only be used if \code{y} and
 \code{yrep} are discrete. Currently these include rootograms for count

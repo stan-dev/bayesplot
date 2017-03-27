@@ -25,6 +25,9 @@
 #'   (the default) the y-axis will display counts. Setting \code{freq=FALSE}
 #'   will put proportions on the y-axis.
 #'
+#'
+#' @template return-ggplot
+#'
 #' @details For all of these plots \code{y} and \code{yrep} must be non-negative
 #'   integers, although they need not be integers in the strict sense of \R's
 #'   \code{\link{integer}} type.
