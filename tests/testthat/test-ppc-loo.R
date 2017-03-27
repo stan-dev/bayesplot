@@ -15,7 +15,7 @@ y <- fit$y
 yrep <- posterior_predict(fit)
 
 suppressWarnings(
-  lw <- psislw(-log_lik(fit))$lw_smooth
+  lw <- psislw(-log_lik(fit), cores = 2)$lw_smooth
 )
 suppressWarnings(
   pits <- rstantools::loo_pit(yrep, y, lw)

@@ -56,7 +56,7 @@
 #'                    + (1 + floor | county), data = radon)
 #' y <- radon$log_radon
 #' yrep <- posterior_predict(fit)
-#' psis <- psislw(-log_lik(fit))
+#' psis <- psislw(-log_lik(fit), cores = 2)
 #' ppc_loo_pit(y, yrep, lw = psis$lw_smooth)
 #' ppc_loo_pit(y, yrep, lw = psis$lw_smooth, compare = "normal")
 #' }
