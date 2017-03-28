@@ -3,16 +3,30 @@ library(ggplot2)
 context("Convenience functions (for ggplot objects)")
 
 
-# vline_ and hline_ -------------------------------------------------------
+# abline_01, vline_ and hline_ ------------------------------------------
+test_that("abline_01 returns the correct object", {
+  expect_equal(
+    abline_01(color = "green", linetype = 2),
+    geom_abline(intercept = 0, slope = 1, color = "green", linetype = 2, na.rm = TRUE)
+  )
+})
 test_that("vline_* and hline_* return correct objects", {
-  expect_equal(vline_0(color = "red"),
-               geom_vline(xintercept = 0, color = "red", na.rm = TRUE))
-  expect_equal(hline_0(size = 2, linetype = 3),
-               geom_hline(yintercept = 0, size = 2, linetype = 3, na.rm = TRUE))
-  expect_equal(vline_at(c(3,4), na.rm = FALSE),
-               geom_vline(xintercept = c(3,4)))
-  expect_equal(hline_at(c(3,4), na.rm = FALSE),
-               geom_hline(yintercept = c(3,4)))
+  expect_equal(
+    vline_0(color = "red"),
+    geom_vline(xintercept = 0, color = "red", na.rm = TRUE)
+  )
+  expect_equal(
+    hline_0(size = 2, linetype = 3),
+    geom_hline(yintercept = 0, size = 2, linetype = 3, na.rm = TRUE)
+  )
+  expect_equal(
+    vline_at(c(3,4), na.rm = FALSE),
+    geom_vline(xintercept = c(3,4))
+  )
+  expect_equal(
+    hline_at(c(3,4), na.rm = FALSE),
+    geom_hline(yintercept = c(3,4))
+  )
 })
 test_that("vline_at with 'fun' works", {
   x <- example_mcmc_draws(chains = 1)

@@ -166,7 +166,8 @@ Gelman, A., Carlin, J. B., Stern, H. S., Dunson, D. B., Vehtari,
 \seealso{
 Other PPCs: \code{\link{PPC-discrete}},
   \code{\link{PPC-distributions}},
-  \code{\link{PPC-intervals}}, \code{\link{PPC-overview}},
+  \code{\link{PPC-intervals}}, \code{\link{PPC-loo}},
+  \code{\link{PPC-overview}},
   \code{\link{PPC-scatterplots}},
   \code{\link{PPC-test-statistics}}
 }

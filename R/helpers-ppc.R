@@ -47,7 +47,7 @@ validate_yrep <- function(yrep, y) {
   if (ncol(yrep) != length(y))
     stop("ncol(yrep) must be equal to length(y).")
 
-  unname(yrep)
+  unclass(unname(yrep))
 }
 
 

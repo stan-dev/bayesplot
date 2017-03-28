@@ -35,6 +35,10 @@
 #'    that every possible mixed scheme will look good with every possible plot.
 #'   }
 #'
+#'   If you have suggestions for additional color schemes please
+#'   \href{https://github.com/stan-dev/bayesplot/issues}{suggest
+#'   them!}
+#'
 #' @return \code{color_scheme_set} has the side effect of setting the color
 #'   scheme used for plotting. It also returns
 #'   (\code{\link[=invisible]{invisibly}}) a list of the hexidecimal color
@@ -344,6 +348,8 @@ master_color_list <- list(
     list("#DFDFDF", "#bfbfbf", "#999999", "#737373", "#505050", "#383838"),
   green =
     list("#d9f2e6", "#9fdfbf", "#66cc99", "#40bf80", "#2d8659", "#194d33"),
+  orange =
+    list("#fecba2", "#feb174", "#fe8a2f", "#e47115", "#b15810", "#7f3f0c"),
   pink =
     list("#dcbccc", "#c799b0", "#b97c9b", "#a25079", "#8f275b", "#7c003e"),
   purple =

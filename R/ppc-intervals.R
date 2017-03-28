@@ -172,7 +172,7 @@ ppc_ribbon <- function(y,
                        ...,
                        prob = 0.9,
                        alpha = 0.33,
-                       size = 1) {
+                       size = 0.25) {
   check_ignored_arguments(...)
 
   y <- validate_y(y)
@@ -203,7 +203,7 @@ ppc_ribbon_grouped <-
            ...,
            prob = 0.9,
            alpha = 0.33,
-           size = 1) {
+           size = 0.25) {
     check_ignored_arguments(...)
 
     y <- validate_y(y)
@@ -255,13 +255,13 @@ label_x <- function(x) {
     }
     grouped_d <- dplyr::group_by_(molten_d, .dots = dots)
     alpha <- (1 - prob) / 2
-    probs <- c(alpha, 1 - alpha)
-    plot_data <- dplyr::summarise_(
+    probs <- sort(c(alpha, 0.5, 1 - alpha))
+    dplyr::summarise_(
       .data = grouped_d,
       .dots = list(
-        median = ~ median(value),
-        lower = ~ quantile(value, prob = probs[1]),
-        upper = ~ quantile(value, prob = probs[2])
+        lo = ~ quantile(value, prob = probs[1]),
+        mid = ~ quantile(value, prob = probs[2]),
+        hi = ~ quantile(value, prob = probs[3])
       )
     )
   }
@@ -280,41 +280,38 @@ label_x <- function(x) {
            grouped = FALSE,
            style = c("intervals", "ribbon"),
            x_lab = NULL) {
+
+    style <- match.arg(style)
     data[["is_y"]] <- as.logical(data[["is_y"]])
     yrep_data <- dplyr::filter_(data, ~ !is_y)
     y_data <- dplyr::filter_(data, ~ is_y)
-    style <- match.arg(style)
 
     graph <- ggplot(
       data = yrep_data,
       mapping = aes_(
         x = ~ x,
-        y = ~ median,
-        ymin = ~ lower,
-        ymax = ~ upper
+        y = ~ mid,
+        ymin = ~ lo,
+        ymax = ~ hi
       )
     )
 
     if (style == "ribbon") {
       graph <- graph +
         geom_ribbon(
-          mapping = aes_(color = "yrep"),
-          fill = get_color("l"),
+          aes_(color = "yrep", fill = "yrep"),
           alpha = alpha,
           size = size
         ) +
+        geom_blank(aes_(fill = "y")) +
         geom_line(
-          mapping = aes_(color = "yrep"),
-          size = size,
-          color = get_color("lh")
+          aes_(color = "yrep"),
+          size = size/2
         ) +
-        geom_line(data = y_data,
-                  mapping = aes_(color = "y"),
-                  size = 0.5) +
-        scale_color_manual(
-          name = "",
-          values = setNames(get_color(c("lh", "dh")), c("yrep", "y")),
-          labels = c(yrep = yrep_label(), y = y_label())
+        geom_line(
+          aes_(color = "y"),
+          data = y_data,
+          size = 0.5
         )
     } else {
       graph <- graph +
@@ -329,18 +326,21 @@ label_x <- function(x) {
           mapping = aes_(color = "y", fill = "y"),
           shape = 21,
           size = 1.5
-        ) +
-        scale_color_manual(
-          name = "",
-          values = setNames(get_color(c("lh", "dh")), c("yrep", "y")),
-          labels = c(yrep = yrep_label(), y = y_label())
-        ) +
-        scale_fill_manual(
-          name = "",
-          values = setNames(get_color(c("l", "d")), c("yrep", "y")),
-          labels = c(yrep = yrep_label(), y = y_label())
         )
     }
+    graph <- graph +
+      scale_color_manual(
+        name = "",
+        values = setNames(get_color(c("lh", "dh")), c("yrep", "y")),
+        labels = c(yrep = yrep_label(), y = y_label())
+      ) +
+      scale_fill_manual(
+        name = "",
+        values = c(yrep = get_color("l"),
+                   y = if (style == "ribbon") NA else get_color("d")),
+        labels = c(yrep = yrep_label(), y = y_label())
+      )
+
 
     if (grouped) {
       facet_args[["facets"]] <- "group"

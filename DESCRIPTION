@@ -15,7 +15,8 @@ License: GPL (>= 3)
 LazyData: TRUE
 URL: http://mc-stan.org/, https://groups.google.com/forum/#!forum/stan-users
 BugReports: https://github.com/stan-dev/bayesplot/issues/
-Depends: R (>= 3.1.0)
+Depends:
+    R (>= 3.1.0)
 Imports:
     dplyr (>= 0.4.3),
     ggplot2 (>= 2.2.1),
@@ -26,10 +27,11 @@ Suggests:
     arm,
     gridExtra (>= 2.2.1),
     knitr (>= 1.14),
+    loo (>= 1.1.0),
     rmarkdown (>= 1.0.0),
     rstan (>= 2.13.2),
     rstanarm (>= 2.13.1),
-    rstantools (>= 1.0.0),
+    rstantools (>= 1.2.0),
     scales,
     shinystan (>= 2.2.1),
     testthat,
