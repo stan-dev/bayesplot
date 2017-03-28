@@ -1,9 +1,7 @@
-language: R
-R:
- - release
- - devel
-
-sudo: false
+language: r
+r:
+  - release
+  - devel
 cache: packages
 
 r_github_packages:
