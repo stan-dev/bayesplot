@@ -263,7 +263,7 @@ mcmc_recover_scatter <-
       g <- ggplot_build(graph)
       xylim <- g$layout$panel_ranges[[1]]
       xylim <- range(xylim$y.range, xylim$x.range)
-      graph <- graph + coord_fixed(x = xylim, y = xylim)
+      graph <- graph + coord_fixed(xlim = xylim, ylim = xylim)
     }
 
     if (all_separate)
