@@ -100,7 +100,6 @@ section below for details.
 }
 
 \examples{
-color_scheme_set("orange")
 
 \dontrun{
 library(rstanarm)
@@ -114,6 +113,7 @@ yrep <- posterior_predict(fit)
 psis <- psislw(-log_lik(fit), cores = 2)
 
 # marginal predictive check using LOO probability integral transform
+color_scheme_set("orange")
 ppc_loo_pit(y, yrep, lw = psis$lw_smooth)
 ppc_loo_pit(y, yrep, lw = psis$lw_smooth, compare = "normal")
 
