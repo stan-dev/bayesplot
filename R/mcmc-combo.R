@@ -96,9 +96,9 @@ mcmc_combo <-
     if (!is.null(gg_theme))
       plots <- lapply(plots, function(x) x + gg_theme)
 
-    arranged <-
-      gridExtra::arrangeGrob(grobs = plots,
-                             ncol = length(combo),
-                             widths = widths)
-    as_bayesplot_grid(arranged)
+    bayesplot_grid(
+      plots = plots,
+      grid_args = list(ncol = length(combo),
+                       widths = widths)
+    )
   }
