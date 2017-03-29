@@ -87,6 +87,10 @@
 #'     discrete. For example, rootograms for count outcomes and bar
 #'     plots for ordinal, categorical, and multinomial outcomes.
 #'   }
+#'   \item{\strong{\link[=PPC-loo]{LOO predictive checks}}}{
+#'     PPC functions for predictive checks based on (approximate) leave-one-out
+#'     (LOO) cross-validation.
+#'   }
 #' }
 #'
 #' @section Providing an interface for posterior predictive checking from another package:

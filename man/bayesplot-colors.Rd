@@ -36,17 +36,19 @@ color_scheme_view(scheme)
    \item \code{"red"}
    \item \code{"teal"}
    \item \code{"yellow"}
-   \item \code{"viridis"}, \code{"viridisA"}, \code{"viridisB"}, \code{"viridisC"}
+   \item \href{https://CRAN.R-project.org/package=viridis}{\code{"viridis"}},
+     \code{"viridisA"}, \code{"viridisB"}, \code{"viridisC"}
    \item \code{"mix-x-y"}, replacing \code{x} and \code{y} with any two of
-   the scheme names listed above (e.g. "mix-teal-pink", "mix-blue-red",
-   etc.). The order of \code{x} and \code{y} matters, i.e., the color schemes
-   "mix-blue-red" and "mix-red-blue" are not identical. There is no gaurantee
-   that every possible mixed scheme will look good with every possible plot.
+     the scheme names listed above (e.g. "mix-teal-pink", "mix-blue-red",
+     etc.). The order of \code{x} and \code{y} matters, i.e., the color
+     schemes "mix-blue-red" and "mix-red-blue" are not identical. There is no
+     gaurantee that every possible mixed scheme will look good with every
+     possible plot.
   }
 
-  If you have suggestions for additional color schemes please
-  \href{https://github.com/stan-dev/bayesplot/issues}{suggest
-  them!}}
+  If you have a suggestion for a new color scheme please let us know via the
+  \pkg{bayesplot} \href{https://github.com/stan-dev/bayesplot/issues}{issue
+  tracker}.}
 
 \item{i}{For \code{color_scheme_get}, a subset of the integers from \code{1}
 (lightest) to \code{6} (darkest) indicating which of the colors in the

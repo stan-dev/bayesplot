@@ -27,12 +27,11 @@
 #'  The calibration of marginal predictions can be assessed using probability
 #'  integral transformation (PIT) checks. LOO improves the check by avoiding the
 #'  double use of data. See the section on marginal predictive checks in Gelman
-#'  et al. (2013, p. 152--153). The default LOO probability integral
-#'  transformation (PIT) predictive check is a quantile-quantile (Q-Q) plot
-#'  comparing the LOO PITs to the standard uniform distribution. Alternatively,
-#'  setting the \code{compare} argument to \code{"normal"} will produce a Q-Q
-#'  plot comparing standardized PIT values may to the standard normal
-#'  distribution.
+#'  et al. (2013, p. 152--153). The default LOO PIT predictive check is a
+#'  quantile-quantile (Q-Q) plot comparing the LOO PITs to the standard uniform
+#'  distribution. Alternatively, setting the \code{compare} argument to
+#'  \code{"normal"} will produce a Q-Q plot comparing standardized PIT values
+#'  to the standard normal distribution.
 #' }
 #' \item{\code{ppc_loo_intervals, ppc_loo_ribbon}}{
 #'  Same \code{\link{ppc_intervals}} and \code{\link{ppc_ribbon}} but the

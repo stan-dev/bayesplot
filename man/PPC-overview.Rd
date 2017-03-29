@@ -88,6 +88,10 @@ organized into several categories, each with its own documentation:
     discrete. For example, rootograms for count outcomes and bar
     plots for ordinal, categorical, and multinomial outcomes.
   }
+  \item{\strong{\link[=PPC-loo]{LOO predictive checks}}}{
+    PPC functions for predictive checks based on (approximate) leave-one-out
+    (LOO) cross-validation.
+  }
 }
 }
 
