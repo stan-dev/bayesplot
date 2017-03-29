@@ -2,7 +2,7 @@ Package: bayesplot
 Type: Package
 Title: Plotting for Bayesian Models
 Version: 1.2.0
-Date: 2016-03-28
+Date: 2017-03-29
 Authors@R: c(person("Jonah", "Gabry", role = c("aut", "cre"), email = "jsg2201@columbia.edu"),
              person("Paul-Christian", "Buerkner", role = "ctb"))
 Maintainer: Jonah Gabry <jsg2201@columbia.edu>
@@ -30,7 +30,7 @@ Suggests:
     loo (>= 1.1.0),
     rmarkdown (>= 1.0.0),
     rstan (>= 2.13.2),
-    rstanarm (>= 2.13.1),
+    rstanarm (>= 2.14.1),
     rstantools (>= 1.2.0),
     scales,
     shinystan (>= 2.2.1),

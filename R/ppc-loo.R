@@ -34,7 +34,7 @@
 #'  to the standard normal distribution.
 #' }
 #' \item{\code{ppc_loo_intervals, ppc_loo_ribbon}}{
-#'  Same \code{\link{ppc_intervals}} and \code{\link{ppc_ribbon}} but the
+#'  Similar to \code{\link{ppc_intervals}} and \code{\link{ppc_ribbon}} but the
 #'  intervals are for the LOO predictive distribution.
 #' }
 #' }
@@ -44,7 +44,6 @@
 #' @template reference-loo
 #'
 #' @examples
-#' color_scheme_set("orange")
 #'
 #' \dontrun{
 #' library(rstanarm)
@@ -52,12 +51,24 @@
 #'
 #' head(radon)
 #' fit <- stan_lmer(log_radon ~ floor + log_uranium + floor:log_uranium
-#'                    + (1 + floor | county), data = radon)
+#'                    + (1 + floor | county), data = radon, cores = 2)
 #' y <- radon$log_radon
 #' yrep <- posterior_predict(fit)
 #' psis <- psislw(-log_lik(fit), cores = 2)
+#'
+#' # marginal predictive check using LOO probability integral transform
+#' color_scheme_set("orange")
 #' ppc_loo_pit(y, yrep, lw = psis$lw_smooth)
 #' ppc_loo_pit(y, yrep, lw = psis$lw_smooth, compare = "normal")
+#'
+#' # loo predictive intervals vs observations
+#' sel <- 800:900
+#' ppc_loo_intervals(y[sel], yrep[, sel], psis$lw_smooth[, sel],
+#'                   prob = 0.9, size = 0.5)
+#'
+#' color_scheme_set("gray")
+#' ppc_loo_intervals(y[sel], yrep[, sel], psis$lw_smooth[, sel],
+#'                   order = "median", prob = 0.8, size = 0.5)
 #' }
 #'
 NULL
@@ -153,6 +164,10 @@ ppc_loo_pit <-
 #'   three columns in the following order: the first for the lower bound of the
 #'   interval, the second for median (50\%), and the third for the interval
 #'   upper bound (column names are ignored).
+#' @param order For \code{ppc_loo_intervals} A string indicating how to arrange
+#'   the plotted intervals. The default (\code{"index"}) is to plot them in the
+#'   order of the observations. The alternative (\code{"median"}) arranges them
+#'   by median value from smallest (left) to largest (right).
 #'
 ppc_loo_intervals <-
   function(y,
@@ -162,9 +177,11 @@ ppc_loo_intervals <-
            ...,
            prob = 0.9,
            size = 1,
-           fatten = 3) {
+           fatten = 3,
+           order = c("index", "median")) {
     check_ignored_arguments(...)
     y <- validate_y(y)
+    order_by_median <- match.arg(order) == "median"
     if (!missing(intervals)) {
       stopifnot(is.matrix(intervals), ncol(intervals) == 3)
       .ignore_y_yrep_lw(yrep = yrep, lw = lw) # dont ignore y
@@ -180,14 +197,26 @@ ppc_loo_intervals <-
         probs = sort(c(a, 0.5, 1 - a))
       ))
     }
-    .ppc_intervals(
-      data = .loo_intervals_data(y, intervals),
+
+    x <- seq_along(y)
+    if (order_by_median)
+      x <- reorder(x, intervals[, 2])
+
+    graph <- .ppc_intervals(
+      data = .loo_intervals_data(y, x, intervals),
       grouped = FALSE,
       style = "intervals",
       size = size,
       fatten = fatten,
       x_lab = "Data point (index)"
     )
+    if (!order_by_median)
+      return(graph)
+
+    graph +
+      xlab("Ordered by median") +
+      xaxis_text(FALSE) +
+      xaxis_ticks(FALSE)
   }
 
 #' @rdname PPC-loo
@@ -219,7 +248,7 @@ ppc_loo_ribbon <-
       ))
     }
     .ppc_intervals(
-      data = .loo_intervals_data(y, intervals),
+      data = .loo_intervals_data(y, x = seq_along(y), intervals),
       grouped = FALSE,
       style = "ribbon",
       size = size,
@@ -232,15 +261,15 @@ ppc_loo_ribbon <-
 
 
 # internal ----------------------------------------------------------------
-.loo_intervals_data <- function(y, intervals) {
+.loo_intervals_data <- function(y, x, intervals) {
   colnames(intervals) <- c("lo", "mid", "hi")
-  stopifnot(length(y) == nrow(intervals))
-  x <- seq_along(y)
+  stopifnot(length(y) == nrow(intervals), length(x) == length(y))
   dplyr::bind_rows(
     data.frame(x, is_y = TRUE, lo = y, mid = y, hi = y),
     data.frame(x, is_y = FALSE, intervals)
   )
 }
+
 .ignore_y_yrep_lw <- function(y, yrep, lw) {
   specified <- .which_specified(y, yrep, lw)
   if (length(specified))

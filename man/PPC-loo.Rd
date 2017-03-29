@@ -11,7 +11,7 @@ ppc_loo_pit(y, yrep, lw, pit, compare = c("uniform", "normal"), ...,
   size = 2, alpha = 1)
 
 ppc_loo_intervals(y, yrep, lw, intervals, ..., prob = 0.9, size = 1,
-  fatten = 3)
+  fatten = 3, order = c("index", "median"))
 
 ppc_loo_ribbon(y, yrep, lw, intervals, ..., prob = 0.9, alpha = 0.33,
   size = 0.25)
@@ -65,6 +65,11 @@ upper bound (column names are ignored).}
 
 \item{prob}{A value between 0 and 1 indicating the desired probability mass
 to include in the intervals. The default is 0.9.}
+
+\item{order}{For \code{ppc_loo_intervals} A string indicating how to arrange
+the plotted intervals. The default (\code{"index"}) is to plot them in the
+order of the observations. The alternative (\code{"median"}) arranges them
+by median value from smallest (left) to largest (right).}
 }
 \value{
 A ggplot object that can be further customized using the
@@ -88,7 +93,7 @@ section below for details.
  to the standard normal distribution.
 }
 \item{\code{ppc_loo_intervals, ppc_loo_ribbon}}{
- Same \code{\link{ppc_intervals}} and \code{\link{ppc_ribbon}} but the
+ Similar to \code{\link{ppc_intervals}} and \code{\link{ppc_ribbon}} but the
  intervals are for the LOO predictive distribution.
 }
 }
@@ -103,12 +108,23 @@ library(loo)
 
 head(radon)
 fit <- stan_lmer(log_radon ~ floor + log_uranium + floor:log_uranium
-                   + (1 + floor | county), data = radon)
+                   + (1 + floor | county), data = radon, cores = 2)
 y <- radon$log_radon
 yrep <- posterior_predict(fit)
 psis <- psislw(-log_lik(fit), cores = 2)
+
+# marginal predictive check using LOO probability integral transform
 ppc_loo_pit(y, yrep, lw = psis$lw_smooth)
 ppc_loo_pit(y, yrep, lw = psis$lw_smooth, compare = "normal")
+
+# loo predictive intervals vs observations
+sel <- 800:900
+ppc_loo_intervals(y[sel], yrep[, sel], psis$lw_smooth[, sel],
+                  prob = 0.9, size = 0.5)
+
+color_scheme_set("gray")
+ppc_loo_intervals(y[sel], yrep[, sel], psis$lw_smooth[, sel],
+                  order = "median", prob = 0.8, size = 0.5)
 }
 
 }
