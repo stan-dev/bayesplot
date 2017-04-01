@@ -56,12 +56,6 @@ appearance of plotted points.}
 
 \item{binwidth}{An optional value used as the \code{binwidth} argument to
 \code{\link[ggplot2]{geom_histogram}} to override the default binwidth.}
-
-\item{freq}{For histograms, \code{freq=TRUE} (the default) puts count on the
-y-axis. Setting \code{freq=FALSE} puts density on the y-axis. (For many
-plots the y-axis text is off by default. To view the count or density
-labels on the y-axis see the \code{\link{yaxis_text}} convenience
-function.)}
 }
 \value{
 A ggplot object that can be further customized using the
@@ -83,7 +77,7 @@ available plots.
    "true" values plotted using a different shape.
   }
   \item{\code{mcmc_recover_scatter}}{
-   Scatterplot of posterior means or medians against "true" values.
+   Scatterplot of posterior means (or medians) against "true" values.
   }
   \item{\code{mcmc_recover_hist}}{
    Histograms of the draws for each parameter with the "true" value overlaid
@@ -102,6 +96,7 @@ fit <- stan_glm(y ~ ., data = data.frame(y, X))
 draws <- as.matrix(fit)
 print(colnames(draws))
 true <- c(alpha, beta, sigma)
+
 mcmc_recover_intervals(draws, true)
 
 # put the coefficients on X into the same batch
@@ -121,10 +116,13 @@ mcmc_recover_intervals(draws, true, batch = c(1, 3, 4, 2, 5:12))
 # present as bias by centering with true values
 mcmc_recover_intervals(sweep(draws, 2, true), rep(0, ncol(draws))) + hline_0()
 
+
 # scatterplot of posterior means vs true values
 mcmc_recover_scatter(draws, true, point_est = "mean")
 
+
 # histograms of parameter draws with true value added as vertical line
+color_scheme_set("brightblue")
 mcmc_recover_hist(draws[, 1:4], true[1:4])
 }
 
