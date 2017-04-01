@@ -366,10 +366,10 @@ color_scheme_set("red")
 mcmc_nuts_divergence(np1, lp1)
 ```
 
-In the top panel we see the distribution of the log-posterior when there was no
-divergence vs the distribution when there was a divergence. Divergences often
-indicate that some part of the posterior isn't being explored and we will see
-that `lp|Divergence` has lighter tails than `lp|No divergence`.
+In the top panel we see the distribution of the log-posterior when there was no 
+divergence vs the distribution when there was a divergence. Divergences often 
+indicate that some part of the posterior isn't being explored and 
+`lp|Divergence` will have lighter tails than `lp|No divergence`.
 
 The bottom panel shows the same thing but instead of the log-posterior the NUTS 
 acceptance statistic is shown.
@@ -417,7 +417,7 @@ Betancourt (2017). While `mcmcm_nuts_divergence` can identify light tails
 and incomplete exploration of the target distribution, the `mcmc_nuts_energy` 
 function can identify overly heavy tails that are also challenging for sampling.
 Informally, the energy diagnostic for HMC (and the related energy-based Bayesian
-fraction of missing information) quantify the heaviness of the tails of the 
+fraction of missing information) quantifies the heaviness of the tails of the 
 posterior distribution.
 
 The plot created by `mcmc_nuts_energy` shows overlaid histograms of the 
