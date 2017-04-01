@@ -70,3 +70,10 @@ test_that("mcmc_recover_scatter returns a ggplot object", {
   expect_gg(mcmc_recover_scatter(draws, true, batch = grepl("X", colnames(draws)),
                                  facet_args = list(ncol = 1)))
 })
+
+
+test_that("mcmc_recover_hist returns a ggplot object", {
+  expect_gg(mcmc_recover_hist(draws, true))
+  expect_gg(mcmc_recover_hist(draws, true, binwidth = .1,
+                              facet_args = list(nrow = 1)))
+})
