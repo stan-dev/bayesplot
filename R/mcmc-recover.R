@@ -45,7 +45,11 @@
 #'    "true" values plotted using a different shape.
 #'   }
 #'   \item{\code{mcmc_recover_scatter}}{
-#'    Scatterplot of posterior means or medians against "true" values.
+#'    Scatterplot of posterior means (or medians) against "true" values.
+#'   }
+#'   \item{\code{mcmc_recover_hist}}{
+#'    Histograms of the draws for each parameter with the "true" value overlaid
+#'    as a vertical line.
 #'   }
 #' }
 #'
@@ -59,6 +63,7 @@
 #' draws <- as.matrix(fit)
 #' print(colnames(draws))
 #' true <- c(alpha, beta, sigma)
+#'
 #' mcmc_recover_intervals(draws, true)
 #'
 #' # put the coefficients on X into the same batch
@@ -78,8 +83,14 @@
 #' # present as bias by centering with true values
 #' mcmc_recover_intervals(sweep(draws, 2, true), rep(0, ncol(draws))) + hline_0()
 #'
+#'
 #' # scatterplot of posterior means vs true values
 #' mcmc_recover_scatter(draws, true, point_est = "mean")
+#'
+#'
+#' # histograms of parameter draws with true value added as vertical line
+#' color_scheme_set("brightblue")
+#' mcmc_recover_hist(draws[, 1:4], true[1:4])
 #' }
 #'
 NULL
@@ -197,7 +208,9 @@ mcmc_recover_intervals <-
           xaxis_text(FALSE)
       )
 
-    graph + xaxis_text(face = "bold") + facet_text(FALSE)
+    graph +
+      xaxis_text(face = "bold") +
+      facet_text(FALSE)
   }
 
 
@@ -270,4 +283,57 @@ mcmc_recover_scatter <-
       return(graph)
 
     graph + facet_text(FALSE)
+  }
+
+
+#' @rdname MCMC-recover
+#' @export
+#' @template args-hist
+mcmc_recover_hist <-
+  function(x,
+           true,
+           facet_args = list(),
+           ...,
+           binwidth = NULL) {
+
+    check_ignored_arguments(...)
+    x <- merge_chains(prepare_mcmc_array(x))
+
+    stopifnot(
+      is.numeric(true),
+      ncol(x) == length(true)
+    )
+
+    vline_data <- data.frame(Parameter = colnames(x), True = true)
+    hist_data <- reshape2::melt(x)[, -1]
+    colnames(hist_data) <- c("Parameter", "Value")
+
+    facet_args[["facets"]] <- ~ Parameter
+    if (is.null(facet_args[["scales"]]))
+      facet_args[["scales"]] <- "free"
+
+    ggplot() +
+      geom_histogram(
+        aes_(x = ~ Value, fill = "Estimated"),
+        data = hist_data,
+        color = get_color("lh"),
+        size = .25,
+        binwidth = binwidth
+      ) +
+      geom_vline(
+        aes_(xintercept = ~ True, color = "True"),
+        data = vline_data,
+        size = 1.5
+      ) +
+      do.call("facet_wrap", facet_args) +
+      scale_fill_manual("", values = get_color("l")) +
+      scale_color_manual("", values = get_color("dh")) +
+      guides(color = guide_legend(), fill = guide_legend(order = 1)) +
+      dont_expand_y_axis() +
+      theme_default() +
+      theme(legend.spacing.y = unit(-0.25, "cm")) +
+      xaxis_title(FALSE) +
+      yaxis_text(FALSE) +
+      yaxis_ticks(FALSE) +
+      yaxis_title(FALSE)
   }

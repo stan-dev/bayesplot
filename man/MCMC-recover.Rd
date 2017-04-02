@@ -4,6 +4,7 @@
 \alias{MCMC-recover}
 \alias{mcmc_recover_intervals}
 \alias{mcmc_recover_scatter}
+\alias{mcmc_recover_hist}
 \title{Compare MCMC estimates to "true" parameter values}
 \usage{
 mcmc_recover_intervals(x, true, batch = rep(1, length(true)),
@@ -13,6 +14,8 @@ mcmc_recover_intervals(x, true, batch = rep(1, length(true)),
 mcmc_recover_scatter(x, true, batch = rep(1, length(true)),
   facet_args = list(), ..., point_est = c("median", "mean"), size = 3,
   alpha = 1)
+
+mcmc_recover_hist(x, true, facet_args = list(), ..., binwidth = NULL)
 }
 \arguments{
 \item{x}{A 3-D array, matrix, list of matrices, or data frame of MCMC draws.
@@ -50,6 +53,9 @@ default), \code{"mean"}, or \code{"none"}.}
 
 \item{size, alpha}{Passed to \code{\link[ggplot2]{geom_point}} to control the
 appearance of plotted points.}
+
+\item{binwidth}{An optional value used as the \code{binwidth} argument to
+\code{\link[ggplot2]{geom_histogram}} to override the default binwidth.}
 }
 \value{
 A ggplot object that can be further customized using the
@@ -71,7 +77,11 @@ available plots.
    "true" values plotted using a different shape.
   }
   \item{\code{mcmc_recover_scatter}}{
-   Scatterplot of posterior means or medians against "true" values.
+   Scatterplot of posterior means (or medians) against "true" values.
+  }
+  \item{\code{mcmc_recover_hist}}{
+   Histograms of the draws for each parameter with the "true" value overlaid
+   as a vertical line.
   }
 }
 }
@@ -86,6 +96,7 @@ fit <- stan_glm(y ~ ., data = data.frame(y, X))
 draws <- as.matrix(fit)
 print(colnames(draws))
 true <- c(alpha, beta, sigma)
+
 mcmc_recover_intervals(draws, true)
 
 # put the coefficients on X into the same batch
@@ -105,8 +116,14 @@ mcmc_recover_intervals(draws, true, batch = c(1, 3, 4, 2, 5:12))
 # present as bias by centering with true values
 mcmc_recover_intervals(sweep(draws, 2, true), rep(0, ncol(draws))) + hline_0()
 
+
 # scatterplot of posterior means vs true values
 mcmc_recover_scatter(draws, true, point_est = "mean")
+
+
+# histograms of parameter draws with true value added as vertical line
+color_scheme_set("brightblue")
+mcmc_recover_hist(draws[, 1:4], true[1:4])
 }
 
 }
