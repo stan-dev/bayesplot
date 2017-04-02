@@ -32,9 +32,9 @@ test_that("ppc_loo_pit returns ggplot object", {
 
 test_that("ppc_loo_pit works when pit specified instead of y,yrep,lw", {
   expect_gg(ppc_loo_pit(pit = pits))
-  expect_warning(
+  expect_message(
     ppc_loo_pit(y = y, yrep = yrep, lw = lw, pit = pits),
-    "Ignoring 'y','yrep','lw' because 'pit' was specified"
+    "'pit' specified so ignoring 'y','yrep','lw' if specified"
   )
 })
 
@@ -46,6 +46,16 @@ test_that("ppc_loo_intervals returns ggplot object", {
 })
 test_that("ppc_loo_ribbon returns ggplot object", {
   expect_gg(ppc_loo_ribbon(y, yrep, lw, prob = 0.7, alpha = 0.1))
+})
+
+test_that("ppc_loo_intervals/ribbon work when 'intervals' specified", {
+  intervals <- t(apply(yrep, 2, quantile, probs = c(0.1, 0.5, 0.9)))
+  expect_gg(ppc_loo_intervals(y, intervals = intervals))
+  expect_gg(ppc_loo_ribbon(y, intervals = intervals))
+  expect_message(ppc_loo_intervals(y, yrep, lw, intervals = intervals),
+                 "'intervals' specified so ignoring 'yrep' and 'lw' if specified")
+  expect_message(ppc_loo_ribbon(y, intervals = intervals),
+                 "'intervals' specified so ignoring 'yrep' and 'lw' if specified")
 })
 
 

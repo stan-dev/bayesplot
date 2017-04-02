@@ -98,7 +98,7 @@ ppc_loo_pit <-
     compare <- match.arg(compare)
     if (!missing(pit)) {
       stopifnot(is.numeric(pit), is_vector_or_1Darray(pit))
-      .ignore_y_yrep_lw(y, yrep, lw)
+      message("'pit' specified so ignoring 'y','yrep','lw' if specified.")
     } else {
       suggested_package("rstantools")
       y <- validate_y(y)
@@ -184,7 +184,7 @@ ppc_loo_intervals <-
     order_by_median <- match.arg(order) == "median"
     if (!missing(intervals)) {
       stopifnot(is.matrix(intervals), ncol(intervals) == 3)
-      .ignore_y_yrep_lw(yrep = yrep, lw = lw) # dont ignore y
+      message("'intervals' specified so ignoring 'yrep' and 'lw' if specified.")
     } else {
       suggested_package("loo")
       yrep <- validate_yrep(yrep, y)
@@ -234,7 +234,7 @@ ppc_loo_ribbon <-
     y <- validate_y(y)
     if (!missing(intervals)) {
       stopifnot(is.matrix(intervals), ncol(intervals) == 3)
-      .ignore_y_yrep_lw(yrep = yrep, lw = lw) # dont ignore y
+      message("'intervals' specified so ignoring 'yrep' and 'lw' if specified.")
     } else {
       suggested_package("loo")
       yrep <- validate_yrep(yrep, y)
@@ -259,7 +259,6 @@ ppc_loo_ribbon <-
 
 
 
-
 # internal ----------------------------------------------------------------
 .loo_intervals_data <- function(y, x, intervals) {
   colnames(intervals) <- c("lo", "mid", "hi")
@@ -268,19 +267,5 @@ ppc_loo_ribbon <-
     data.frame(x, is_y = TRUE, lo = y, mid = y, hi = y),
     data.frame(x, is_y = FALSE, intervals)
   )
-}
-
-.ignore_y_yrep_lw <- function(y, yrep, lw) {
-  specified <- .which_specified(y, yrep, lw)
-  if (length(specified))
-    warning(
-      "Ignoring ", paste(sQuote(specified), collapse = ","), " because ",
-      sQuote("pit"), " was specified.",
-      call. = FALSE
-    )
-}
-.which_specified <- function(.y, .yrep, .lw) {
-  w <- c(y = !missing(.y), yrep = !missing(.yrep), lw = !missing(.lw))
-  names(w)[w]
 }
 
