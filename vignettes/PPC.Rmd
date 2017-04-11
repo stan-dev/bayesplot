@@ -9,8 +9,8 @@ vignette: >
   %\VignetteIndexEntry{Graphical posterior predictive checks}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
-params: 
-  DONTRUN: !r grepl("^sparc", R.version$platform)
+params:
+  EVAL: !r identical(Sys.getenv("NOT_CRAN"), "true")
 ---
 
 ```{r, child="children/SETTINGS-knitr.txt"}

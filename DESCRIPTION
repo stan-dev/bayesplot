@@ -29,7 +29,7 @@ Suggests:
     knitr (>= 1.14),
     loo (>= 1.1.0),
     rmarkdown (>= 1.0.0),
-    rstan (>= 2.13.2),
+    rstan (>= 2.14.1),
     rstanarm (>= 2.14.1),
     rstantools (>= 1.2.0),
     scales,
