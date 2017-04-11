@@ -49,7 +49,8 @@ print(fit)
 ```{r stan_glm, echo=FALSE, results='hide'}
 suppressPackageStartupMessages(library("rstanarm"))
 fit <- stan_glm(
-  mpg ~ ., data = mtcars, 
+  mpg ~ ., 
+  data = mtcars, 
   chains = 4, 
   iter = 2000,
   seed = 1111
@@ -140,9 +141,16 @@ color_scheme_set("gray")
 mcmc_scatter(posterior, pars = c("(Intercept)", "wt"), size = 1.5, alpha = 0.5)
 ```
 
-In addition to `mcmc_scatter`, an `mcmc_pairs` functions for creating pairs
-plots with more than two parameters will be available in one of the next
-releases of the package.
+The `mcmc_hex` function creates a similar plot but using hexagonal binning, which can be useful to avoid overplotting:
+
+```{r, mcmc_hex}
+mcmc_hex(posterior, pars = c("(Intercept)", "wt"))
+```
+
+In addition to `mcmc_scatter` and `mcmc_hex`, as of __bayesplot__ version 1.2.0
+an `mcmc_pairs` function for creating pairs plots with more than two parameters
+is available. Examples will eventually be included in this vignette. For now
+see `help("mcmc_pairs")`.
 
 ### Traceplots 
 
@@ -167,8 +175,17 @@ means the traceplots will be stacked in a single column rather than placed side
 by side, and `strip.position="left"` moves the facet labels to the y-axis
 (instead of above each facet).
 
-The `mcmc_trace_highlight` uses points instead of lines and reduces the opacity
-of all but a single chain (which is specified using the `highlight` argument).
+The [`"viridis"` color scheme](https://CRAN.R-project.org/package=viridis) is
+also useful for traceplots because it is comprised of very distinct colors:
+
+```{r, viridis-scheme}
+color_scheme_set("viridis")
+mcmc_trace(posterior, pars = "(Intercept)")
+```
+
+The `mcmc_trace_highlight` function uses points instead of lines and reduces the
+opacity of all but a single chain (which is specified using the `highlight`
+argument).
 
 ```{r, mcmc_trace_highlight}
 mcmc_trace_highlight(posterior, pars = "sigma", highlight = 3)
