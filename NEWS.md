@@ -1,4 +1,4 @@
-# bayesplot 1.1.0.9000
+# bayesplot 1.2.0
 
 (GitHub issue/PR numbers in parentheses)
 
