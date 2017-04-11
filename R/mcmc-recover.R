@@ -331,7 +331,7 @@ mcmc_recover_hist <-
       guides(color = guide_legend(), fill = guide_legend(order = 1)) +
       dont_expand_y_axis() +
       theme_default() +
-      theme(legend.spacing.y = unit(-0.25, "cm")) +
+      reduce_legend_spacing(0.25) +
       xaxis_title(FALSE) +
       yaxis_text(FALSE) +
       yaxis_ticks(FALSE) +
