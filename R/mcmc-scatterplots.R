@@ -483,7 +483,7 @@ pairs_condition <- function(chains = NULL, draws = NULL, nuts = NULL) {
       is.null(nuts)) {
     # default: half of the chains above diag, half below
 
-    cond <- NULL
+    cond <- list()
     cond_type <- "default"
 
   } else if (!is.null(chains)) {
