@@ -119,7 +119,7 @@ dim(yrep_nb)
 ```
 
 For each of the `yrep` matrices, every row is a draw from the posterior 
-predictive distribution, i.e. a vector with `r ncol(yrep_poisson)` elements, one
+predictive distribution, i.e. a vector with one element 
 for each of the data points in `y`.
 
 ### Histograms and density estimates
