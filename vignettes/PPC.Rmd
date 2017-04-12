@@ -190,8 +190,8 @@ ppc_stat(y, yrep_poisson, stat = "prop_zero")
 ```
 
 In the plot the dark line is at the value $T(y)$, i.e. the value of the test
-statistic computed from the observed $y$, in this case `prop_zero(y)` ( roughly
-`r round(prop_zero(y), 2)`). It's hard to see because almost all the datasets in
+statistic computed from the observed $y$, in this case `prop_zero(y)`. 
+It's hard to see because almost all the datasets in
 `yrep` have no zeros, but the lighter bar is actually a histogram of the the
 proportion of zeros in each of the replicated datasets.
 
