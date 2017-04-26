@@ -39,23 +39,23 @@ from the _posterior predictive distribution_ The posterior predictive
 distribution is the distribution of the outcome variable implied by a model 
 after using the observed data $y$ (a vector of $N$ outcome values) to update our
 beliefs about unknown model parameters $\theta$. The posterior predictive
-distribution for observation $\tilde{y}$ can be written as
-$$p(\tilde{y} \,|\, y) = \int
-p(\tilde{y} \,|\, \theta) \, p(\theta \,|\, y) \, d\theta.$$
+distribution for observation $\widetilde{y}$ can be written as
+$$p(\widetilde{y} \,|\, y) = \int
+p(\widetilde{y} \,|\, \theta) \, p(\theta \,|\, y) \, d\theta.$$
 Typically we will also condition on $X$ (a matrix of predictor variables).
 
 For each draw (simulation) $s = 1, \ldots, S$ of the parameters from the 
 posterior distribution, $\theta^{(s)} \sim p(\theta \,|\, y)$, we draw an entire
-vector of $N$ outcomes $\tilde{y}^{(s)}$ from the posterior predictive distribution
+vector of $N$ outcomes $\widetilde{y}^{(s)}$ from the posterior predictive distribution
 by simulating from the data model conditional on parameters $\theta^{(s)}$.
-The result is an $S \times N$ matrix of draws $\tilde{y}$.
+The result is an $S \times N$ matrix of draws $\widetilde{y}$.
 
 When simulating from the posterior predictive distribution we can use either the
 same values of the predictors $X$ that we used when fitting the model or new 
 observations of those predictors. When we use the same values of $X$ we denote 
 the resulting simulations by $y^{rep}$, as they can be thought of as 
 replications of the outcome $y$ rather than predictions for future observations 
-($\tilde{y}$ using predictors $\tilde{X}$). This corresponds to the notation 
+($\widetilde{y}$ using predictors $\widetilde{X}$). This corresponds to the notation 
 from Gelman et. al. (2013) and is the notation used throughout the package 
 documentation.
 
