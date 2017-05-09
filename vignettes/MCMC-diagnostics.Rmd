@@ -184,7 +184,7 @@ using too few MCMC iterations. This should lead to some high $\hat{R}$ values.
 fit1_50iter <- sampling(schools_mod1, data = schools_dat, chains = 2, iter = 50)
 ```
 
- **bayesplot** also provides a generic `rhat` extractor function,
+**bayesplot** also provides a generic `rhat` extractor function,
 currently with methods defined for models fit using the **rstan** and
 **rstanarm** packages. But regardless of how you fit your model, all
 **bayesplot** needs is a vector of $\hat{R}$ values.

@@ -133,9 +133,9 @@ Gelman, A., Carlin, J. B., Stern, H. S., Dunson, D. B., Vehtari,
   A., and Rubin, D. B. (2013). \emph{Bayesian Data Analysis.} Chapman & Hall/CRC
   Press, London, third edition. (p. 152--153)
 
-Vehtari, A., Gelman, A., and Gabry, J. (2016). Practical
+Vehtari, A., Gelman, A., and Gabry, J. (2017). Practical
   Bayesian model evaluation using leave-one-out cross-validation and WAIC.
-  \emph{Statistics and Computing}. Advance online publication.
+  \emph{Statistics and Computing}. 27(5), 1413--1432.
   doi:10.1007/s11222-016-9696-4. arXiv preprint:
   \url{http://arxiv.org/abs/1507.04544/}
 }
