@@ -2,7 +2,7 @@
 title: "Plotting MCMC draws using the bayesplot package"
 author: "Jonah Gabry"
 date: "`r Sys.Date()`"
-output: 
+output:
   rmarkdown::html_vignette:
     toc: true
 vignette: >
@@ -16,20 +16,20 @@ params:
 ```{r, child="children/SETTINGS-knitr.txt"}
 ```
 
-This vignette focuses on plotting parameter estimates from MCMC draws. MCMC 
+This vignette focuses on plotting parameter estimates from MCMC draws. MCMC
 diagnostic plots are covered in the separate vignette
-[Visual MCMC diagnostics using the bayesplot package](MCMC-diagnostics.html), 
-and graphical posterior predictive checks are covered in 
+[Visual MCMC diagnostics using the bayesplot package](MCMC-diagnostics.html),
+and graphical posterior predictive checks are covered in
 [Graphical posterior predictive checks using the bayesplot package](PPC.html).
 
 ## Plots for MCMC draws
 
-The **bayesplot** package provides various plotting functions for visualizing 
-Markov chain Monte Carlo (MCMC) draws from the posterior distribution of the 
+The **bayesplot** package provides various plotting functions for visualizing
+Markov chain Monte Carlo (MCMC) draws from the posterior distribution of the
 parameters of a Bayesian model.
 
-In this vignette we'll use draws obtained using the `stan_glm` function in the 
-**rstanarm** package (Gabry and Goodrich, 2016), but MCMC draws from using 
+In this vignette we'll use draws obtained using the `stan_glm` function in the
+**rstanarm** package (Gabry and Goodrich, 2016), but MCMC draws from using
 any package can be used with the functions in the **bayesplot** package. See,
 for example, **brms** (which, like **rstanarm**, calls the **rstan** package
 internally to use [Stan](http://mc-stan.org/)'s MCMC sampler).
@@ -38,8 +38,8 @@ internally to use [Stan](http://mc-stan.org/)'s MCMC sampler).
 library("rstanarm")
 fit <- stan_glm(
   mpg ~ ., # ~ . includes all other variables in dataset
-  data = mtcars, 
-  chains = 4, 
+  data = mtcars,
+  chains = 4,
   iter = 2000,
   seed = 1111
 )
@@ -49,22 +49,22 @@ print(fit)
 ```{r stan_glm, echo=FALSE, results='hide'}
 suppressPackageStartupMessages(library("rstanarm"))
 fit <- stan_glm(
-  mpg ~ ., 
-  data = mtcars, 
-  chains = 4, 
+  mpg ~ .,
+  data = mtcars,
+  chains = 4,
   iter = 2000,
   seed = 1111
 )
 ```
 
-```{r, print-fit, echo=FALSE}
+```{r print-fit, echo=FALSE}
 print(fit)
 ```
 
 To use the posterior draws with the functions in the **bayesplot** package
-we'll extract them from the fitted model object: 
+we'll extract them from the fitted model object:
 
-```{r, get-draws}
+```{r get-draws}
 posterior <- as.array(fit)
 dim(posterior)
 dimnames(posterior)
@@ -81,9 +81,9 @@ color_scheme_set("red")
 mcmc_intervals(posterior, pars = c("cyl", "drat", "am", "sigma"))
 ```
 
-The default is to show 50% intervals (the thick lines) and 90% intervals 
+The default is to show 50% intervals (the thick lines) and 90% intervals
 (the thinner outer lines). These defaults can be changed using the `prob`
-and `prob_outer` arguments, respectively. The points in the above plot 
+and `prob_outer` arguments, respectively. The points in the above plot
 are posterior medians. The `point_est` argument can be used to select posterior
 means instead or to omit the point estimates.
 
@@ -92,7 +92,7 @@ density curves we can use the `mcmc_areas` function:
 
 ```{r, mcmc_areas}
 mcmc_areas(
-  posterior, 
+  posterior,
   pars = c("cyl", "drat", "am", "sigma"),
   prob = 0.8, # 80% intervals
   prob_outer = 0.99, # 99%
@@ -104,7 +104,7 @@ mcmc_areas(
 ### Histograms and density estimates
 
 Histograms or kernel density estimates of posterior distributions of the various
-model parameters can be visualized using the functions described on the 
+model parameters can be visualized using the functions described on the
 `MCMC-distributions` page in the **bayesplot** documentation.
 
 #### Histograms
@@ -125,7 +125,7 @@ mcmc_hist_by_chain(posterior, pars = c("wt", "am"))
 mcmc_dens_overlay(posterior, pars = c("wt", "am"))
 ```
 
-The `mcmc_violin` function also plots the density estimates of 
+The `mcmc_violin` function also plots the density estimates of
 each chain as violins with horizontal lines at user-specified quantiles:
 
 ```{r, mcmc_violin}
@@ -152,7 +152,7 @@ an `mcmc_pairs` function for creating pairs plots with more than two parameters
 is available. Examples will eventually be included in this vignette. For now
 see `help("mcmc_pairs")`.
 
-### Traceplots 
+### Traceplots
 
 The `mcmc_trace` function creates standard traceplots:
 
@@ -161,12 +161,12 @@ color_scheme_set("blue")
 mcmc_trace(posterior, pars = c("wt", "sigma"))
 ```
 
-If it's hard to see the difference between the chains we can 
+If it's hard to see the difference between the chains we can
 change to a mixed color scheme, for example:
 
 ```{r, change-scheme}
 color_scheme_set("mix-blue-red")
-mcmc_trace(posterior, pars = c("wt", "sigma"), 
+mcmc_trace(posterior, pars = c("wt", "sigma"),
            facet_args = list(ncol = 1, strip.position = "left"))
 ```
 The code above also illustrates the use of the `facet_args` argument, which is a
@@ -193,8 +193,8 @@ mcmc_trace_highlight(posterior, pars = "sigma", highlight = 3)
 
 ## References
 
-Gabry, J., and Goodrich, B. (2017). rstanarm: Bayesian Applied Regression 
-Modeling via Stan. R package version 2.14.1. 
+Gabry, J., and Goodrich, B. (2017). rstanarm: Bayesian Applied Regression
+Modeling via Stan. R package version 2.14.1.
 http://mc-stan.org/interfaces/rstanarm.html, https://CRAN.R-project.org/package=rstanarm
 
 Gelman, A., Carlin, J. B., Stern, H. S., Dunson, D. B., Vehtari, A., and

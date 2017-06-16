@@ -8,3 +8,5 @@ LICENSE
 ^revdep$
 man-roxygen/*
 images/*
+^docs$
+^_pkgdown\.yml$
