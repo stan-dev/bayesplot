@@ -1,4 +1,3 @@
-
 template:
   params:
     bootswatch: cosmo
@@ -28,7 +27,7 @@ navbar:
    - icon: fa-twitter
      href: https://twitter.com/mcmc_stan
    - icon: fa-github
-     href: https://github.com/stan-dev/rstanarm
+     href: https://github.com/stan-dev/bayesplot
 
 articles:
   - title: "Getting Started"

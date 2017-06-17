@@ -2,12 +2,15 @@
 [![codecov](https://codecov.io/gh/stan-dev/bayesplot/branch/master/graph/badge.svg)](https://codecov.io/gh/stan-dev/bayesplot)
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/bayesplot?color=blue)](http://cran.r-project.org/web/packages/bayesplot)
 
+<br>
+
 <div style="text-align:center">
 <a href="http://mc-stan.org">
 <img src="https://raw.githubusercontent.com/stan-dev/logos/master/logo.png" width=200 alt="Stan Logo"/>
 </a>
 </div>
 
+<br>
 
 **bayesplot** is an R package providing an extensive library of plotting functions for use
 after fitting Bayesian models (typically with MCMC). Currently **bayesplot** offers a variety
@@ -24,19 +27,19 @@ also a common set of functions that can be easily used by developers working on 
 packages for Bayesian modeling, particularly (but not necessarily) those powered by
 [**rstan**](https://github.com/stan-dev/rstan).
 
-<br><br>
+<br>
 
 ## Installation
 
 Install from **CRAN**:
 
-```{r eval=FALSE}
+```r
 install.packages("bayesplot")
 ```
 
 Install latest development version from **GitHub** (requires [devtools](https://github.com/hadley/devtools) package):
 
-```{r eval=FALSE}
+```r
 if (!require("devtools"))
   install.packages("devtools")
 
@@ -49,17 +52,17 @@ the vignettes) or install [pandoc](http://pandoc.org/) (e.g., `brew install pand
 also pandoc-citeproc (e.g., `brew install pandoc-citeproc`). If you have the `rmarkdown` R package
 installed then you can check if you have pandoc by running the following in R:
 
-```{r eval=FALSE}
+```r
 rmarkdown::pandoc_available()
 ```
 
-<br><br>
+<br>
 
 ## Examples
 Some quick examples using MCMC draws obtained from the [__rstanarm__](https://github.com/stan-dev/rstanarm)
 and [__rstan__](https://github.com/stan-dev/rstan) packages.
 
-```{r eval=FALSE}
+```r
 library("bayesplot")
 library("rstanarm")
 library("ggplot2")
@@ -75,20 +78,24 @@ mcmc_areas(posterior,
 ```
 
 <div style="text-align:center">
+<a href="https://raw.githubusercontent.com/stan-dev/bayesplot/master/images/mcmc_areas-rstanarm.png">
 <img src=https://raw.githubusercontent.com/stan-dev/bayesplot/master/images/mcmc_areas-rstanarm.png width=50%/>
+</a>
 </div>
 
-```{r eval=FALSE}
+```r
 color_scheme_set("red")
 ppc_dens_overlay(y = fit$y,
                  yrep = posterior_predict(fit, draws = 50))
 ```
 
 <div style="text-align:center">
+<a href="https://raw.githubusercontent.com/stan-dev/bayesplot/master/images/ppc_dens_overlay-rstanarm.png">
 <img src=https://raw.githubusercontent.com/stan-dev/bayesplot/master/images/ppc_dens_overlay-rstanarm.png width=50%/>
+</a>
 </div>
 
-```{r eval=FALSE}
+```r
 # also works nicely with piping
 library("dplyr")
 color_scheme_set("brightblue")
@@ -101,10 +108,12 @@ fit %>%
 ```
 
 <div style="text-align:center">
+<a href="https://raw.githubusercontent.com/stan-dev/bayesplot/master/images/ppc_stat_grouped-rstanarm.png">
 <img src=https://raw.githubusercontent.com/stan-dev/bayesplot/master/images/ppc_stat_grouped-rstanarm.png width=50%/>
+</a>
 </div>
 
-```{r eval=FALSE}
+```r
 # with rstan demo model
 library("rstan")
 fit2 <- stan_demo("eight_schools", warmup = 300, iter = 700)
@@ -117,20 +126,24 @@ p + facet_text(size = 15)
 ```
 
 <div style="text-align:center">
+<a href="https://raw.githubusercontent.com/stan-dev/bayesplot/master/images/mcmc_trace-rstan.png">
 <img src=https://raw.githubusercontent.com/stan-dev/bayesplot/master/images/mcmc_trace-rstan.png width=50% />
+</a>
 </div>
 
-```{r eval=FALSE}
+```r
 color_scheme_set("red")
 np <- nuts_params(fit2)
 mcmc_nuts_energy(np, merge_chains = FALSE) + ggtitle("NUTS Energy Diagnostic")
 ```
 
 <div style="text-align:center">
+<a href="https://raw.githubusercontent.com/stan-dev/bayesplot/master/images/mcmc_nuts_energy-rstan.png">
 <img src=https://raw.githubusercontent.com/stan-dev/bayesplot/master/images/mcmc_nuts_energy-rstan.png width=50% />
+</a>
 </div>
 
-```{r eval=FALSE}
+```r
 # another example with rstanarm
 color_scheme_set("purple")
 
@@ -152,5 +165,7 @@ ppc_intervals(
 ```
 
 <div style="text-align:center">
+<a href="https://raw.githubusercontent.com/stan-dev/bayesplot/master/images/ppc_intervals-rstanarm.png">
 <img src=https://raw.githubusercontent.com/stan-dev/bayesplot/master/images/ppc_intervals-rstanarm.png width=55% />
+</a>
 </div>

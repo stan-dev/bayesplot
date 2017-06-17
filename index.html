@@ -15,7 +15,7 @@
 <![endif]-->
 </head>
 <body>
-    <div class="container template-vignette">
+    <div class="container template-home">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
@@ -70,7 +70,7 @@
   </a>
 </li>
 <li>
-  <a href="https://github.com/stan-dev/rstanarm">
+  <a href="https://github.com/stan-dev/bayesplot">
     <span class="fa fa-github"></span>
      
   </a>
@@ -85,20 +85,19 @@
 
       
       </header><div class="row">
-  <div class="col-md-9">
+  <div class="contents col-md-9">
     
 
-    
-    
-<div class="contents">
-
+<p><br></p>
 <div style="text-align:center">
-<p><a href="http://mc-stan.org"> <img src="https://raw.githubusercontent.com/stan-dev/logos/master/logo.png" width="200" alt="Stan Logo"></a></p>
+<a href="http://mc-stan.org">
+<img src="https://raw.githubusercontent.com/stan-dev/logos/master/logo.png" width="200" alt="Stan Logo"></a>
 </div>
+<p><br></p>
 <p><strong>bayesplot</strong> is an R package providing an extensive library of plotting functions for use after fitting Bayesian models (typically with MCMC). Currently <strong>bayesplot</strong> offers a variety of plots of posterior draws, visual MCMC diagnostics, as well as graphical posterior predictive checking. Additional functionality (e.g. for forecasting/out-of-sample prediction and other inference-related tasks) will be added in future releases.</p>
 <p>The plots created by <strong>bayesplot</strong> are ggplot objects, which means that after a plot is created it can be further customized using the various functions for modifying ggplot objects provided by the <strong>ggplot2</strong> package.</p>
 <p>The idea behind <strong>bayesplot</strong> is not only to provide convenient functionality for users, but also a common set of functions that can be easily used by developers working on a variety of packages for Bayesian modeling, particularly (but not necessarily) those powered by <a href="https://github.com/stan-dev/rstan"><strong>rstan</strong></a>.</p>
-<p><br><br></p>
+<p><br></p>
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
@@ -111,7 +110,7 @@
 devtools::<span class="kw">install_github</span>(<span class="st">"stan-dev/bayesplot"</span>, <span class="dt">dependencies =</span> <span class="ot">TRUE</span>, <span class="dt">build_vignettes =</span> <span class="ot">TRUE</span>)</code></pre></div>
 <p>If you are not using the <a href="https://www.rstudio.com/">RStudio IDE</a> and you get an error related to “pandoc” you will either need to remove the argument <code>build_vignettes=TRUE</code> (to avoid building the vignettes) or install <a href="http://pandoc.org/">pandoc</a> (e.g., <code>brew install pandoc</code>) and probably also pandoc-citeproc (e.g., <code>brew install pandoc-citeproc</code>). If you have the <code>rmarkdown</code> R package installed then you can check if you have pandoc by running the following in R:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">rmarkdown::<span class="kw">pandoc_available</span>()</code></pre></div>
-<p><br><br></p>
+<p><br></p>
 </div>
 <div id="examples" class="section level2">
 <h2 class="hasAnchor">
@@ -130,13 +129,15 @@ plot_title &lt;-<span class="st"> </span><span class="kw">ggtitle</span>(<span c
            <span class="dt">pars =</span> <span class="kw">c</span>(<span class="st">"cyl"</span>, <span class="st">"drat"</span>, <span class="st">"am"</span>, <span class="st">"wt"</span>),
            <span class="dt">prob =</span> <span class="fl">0.8</span>) +<span class="st"> </span>plot_title</code></pre></div>
 <div style="text-align:center">
-<p><img src="https://raw.githubusercontent.com/stan-dev/bayesplot/master/images/mcmc_areas-rstanarm.png" width="50%/"></p>
+<a href="https://raw.githubusercontent.com/stan-dev/bayesplot/master/images/mcmc_areas-rstanarm.png">
+<img src="https://raw.githubusercontent.com/stan-dev/bayesplot/master/images/mcmc_areas-rstanarm.png" width="50%/"></a>
 </div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="reference/bayesplot-colors.html">color_scheme_set</a></span>(<span class="st">"red"</span>)
 <span class="kw"><a href="reference/PPC-distributions.html">ppc_dens_overlay</a></span>(<span class="dt">y =</span> fit$y,
                  <span class="dt">yrep =</span> <span class="kw">posterior_predict</span>(fit, <span class="dt">draws =</span> <span class="dv">50</span>))</code></pre></div>
 <div style="text-align:center">
-<p><img src="https://raw.githubusercontent.com/stan-dev/bayesplot/master/images/ppc_dens_overlay-rstanarm.png" width="50%/"></p>
+<a href="https://raw.githubusercontent.com/stan-dev/bayesplot/master/images/ppc_dens_overlay-rstanarm.png">
+<img src="https://raw.githubusercontent.com/stan-dev/bayesplot/master/images/ppc_dens_overlay-rstanarm.png" width="50%/"></a>
 </div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># also works nicely with piping</span>
 <span class="kw">library</span>(<span class="st">"dplyr"</span>)
@@ -147,7 +148,8 @@ fit %&gt;%
                    <span class="dt">group =</span> mtcars$carb,
                    <span class="dt">stat =</span> <span class="st">"median"</span>)</code></pre></div>
 <div style="text-align:center">
-<p><img src="https://raw.githubusercontent.com/stan-dev/bayesplot/master/images/ppc_stat_grouped-rstanarm.png" width="50%/"></p>
+<a href="https://raw.githubusercontent.com/stan-dev/bayesplot/master/images/ppc_stat_grouped-rstanarm.png">
+<img src="https://raw.githubusercontent.com/stan-dev/bayesplot/master/images/ppc_stat_grouped-rstanarm.png" width="50%/"></a>
 </div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># with rstan demo model</span>
 <span class="kw">library</span>(<span class="st">"rstan"</span>)
@@ -159,13 +161,15 @@ p &lt;-<span class="st"> </span><span class="kw"><a href="reference/MCMC-traces.
                 <span class="dt">facet_args =</span> <span class="kw">list</span>(<span class="dt">nrow =</span> <span class="dv">2</span>, <span class="dt">labeller =</span> label_parsed))
 p +<span class="st"> </span><span class="kw"><a href="reference/bayesplot-helpers.html">facet_text</a></span>(<span class="dt">size =</span> <span class="dv">15</span>)</code></pre></div>
 <div style="text-align:center">
-<p><img src="https://raw.githubusercontent.com/stan-dev/bayesplot/master/images/mcmc_trace-rstan.png" width="50%"></p>
+<a href="https://raw.githubusercontent.com/stan-dev/bayesplot/master/images/mcmc_trace-rstan.png">
+<img src="https://raw.githubusercontent.com/stan-dev/bayesplot/master/images/mcmc_trace-rstan.png" width="50%"></a>
 </div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="reference/bayesplot-colors.html">color_scheme_set</a></span>(<span class="st">"red"</span>)
 np &lt;-<span class="st"> </span><span class="kw"><a href="reference/bayesplot-extractors.html">nuts_params</a></span>(fit2)
 <span class="kw"><a href="reference/MCMC-nuts.html">mcmc_nuts_energy</a></span>(np, <span class="dt">merge_chains =</span> <span class="ot">FALSE</span>) +<span class="st"> </span><span class="kw">ggtitle</span>(<span class="st">"NUTS Energy Diagnostic"</span>)</code></pre></div>
 <div style="text-align:center">
-<p><img src="https://raw.githubusercontent.com/stan-dev/bayesplot/master/images/mcmc_nuts_energy-rstan.png" width="50%"></p>
+<a href="https://raw.githubusercontent.com/stan-dev/bayesplot/master/images/mcmc_nuts_energy-rstan.png">
+<img src="https://raw.githubusercontent.com/stan-dev/bayesplot/master/images/mcmc_nuts_energy-rstan.png" width="50%"></a>
 </div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># another example with rstanarm</span>
 <span class="kw"><a href="reference/bayesplot-colors.html">color_scheme_set</a></span>(<span class="st">"purple"</span>)
@@ -186,15 +190,15 @@ fit &lt;-<span class="st"> </span><span class="kw">stan_glmer</span>(mpg ~<span 
 <span class="st">  </span><span class="kw"><a href="reference/bayesplot-helpers.html">panel_bg</a></span>(<span class="dt">fill =</span> <span class="st">"gray95"</span>, <span class="dt">color =</span> <span class="ot">NA</span>) +
 <span class="st">  </span><span class="kw"><a href="reference/bayesplot-helpers.html">grid_lines</a></span>(<span class="dt">color =</span> <span class="st">"white"</span>)</code></pre></div>
 <div style="text-align:center">
-<p><img src="https://raw.githubusercontent.com/stan-dev/bayesplot/master/images/ppc_intervals-rstanarm.png" width="55%"></p>
+<a href="https://raw.githubusercontent.com/stan-dev/bayesplot/master/images/ppc_intervals-rstanarm.png">
+<img src="https://raw.githubusercontent.com/stan-dev/bayesplot/master/images/ppc_intervals-rstanarm.png" width="55%"></a>
 </div>
 </div>
-</div>
+
   </div>
 
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2 class="hasAnchor">
-<a href="#sidebar" class="anchor"></a>Links</h2>
+  <div class="col-md-3" id="sidebar">
+    <h2>Links</h2>
 <ul class="list-unstyled">
 <li>Download from CRAN at <br><a href="https://cran.r-project.org/package=bayesplot">https://​cran.r-project.org/​package=bayesplot</a>
 </li>
@@ -219,7 +223,6 @@ fit &lt;-<span class="st"> </span><span class="kw">stan_glmer</span>(mpg ~<span 
 <li><a href="http://cran.r-project.org/web/packages/bayesplot"><img src="http://www.r-pkg.org/badges/version/bayesplot?color=blue" alt="CRAN_Status_Badge"></a></li>
 </ul>
 </div>
-
 </div>
 
 
