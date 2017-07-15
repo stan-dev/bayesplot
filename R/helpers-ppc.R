@@ -7,18 +7,21 @@ is_vector_or_1Darray <- function(x) {
 
 # Validate y
 #
-# Checks that y is numeric, doesn't have any NAs, and is either a vector or 1-D
-# array.
+# Checks that y is numeric, doesn't have any NAs, and is either a vector, 1-D
+# array, or univariate time series object of class \code{ts}.
 #
 # @param y The y object from the user.
 # @return Either throws an error or returns a numeric vector.
 #
 validate_y <- function(y) {
   stopifnot(is.numeric(y))
-  if (!is_vector_or_1Darray(y))
-    stop("'y' must be a vector or 1D array.")
 
-  y <- as.vector(y)
+  if (!(inherits(y, "ts") && is.null(dim(y)))) {
+    if (!is_vector_or_1Darray(y))
+      stop("'y' must be a vector or 1D array.")
+    y <- as.vector(y)
+  }
+
   if (anyNA(y))
     stop("NAs not allowed in 'y'.")
 
@@ -82,8 +85,11 @@ validate_group <- function(group, y) {
 # @return Either throws an error or returns a numeric vector.
 #
 validate_x <- function(x, y, unique_x = FALSE) {
-  if (missing(x))
-    return(1:length(y))
+  if (missing(x)) {
+    if (inherits(y, "ts") && is.null(dim(y))) {
+      return(time(y))
+    } else return(1:length(y))
+  }
 
   stopifnot(is.numeric(x))
   if (!is_vector_or_1Darray(x))
