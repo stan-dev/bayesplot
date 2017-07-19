@@ -87,7 +87,7 @@ validate_group <- function(group, y) {
 validate_x <- function(x, y, unique_x = FALSE) {
   if (missing(x)) {
     if (inherits(y, "ts") && is.null(dim(y))) {
-      return(time(y))
+      return(stats::time(y))
     } else return(1:length(y))
   }
 
