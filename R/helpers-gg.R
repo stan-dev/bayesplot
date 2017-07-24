@@ -12,7 +12,7 @@ dont_expand_axes <- function() {
   coord_cartesian(expand = FALSE)
 }
 force_axes_in_facets <- function() {
-  thm <- theme_default()
+  thm <- ggplot2::theme_get()
   annotate("segment",
            x = c(-Inf, -Inf), xend = c(Inf,-Inf),
            y = c(-Inf,-Inf), yend = c(-Inf, Inf),

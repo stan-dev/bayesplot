@@ -173,7 +173,6 @@ mcmc_rhat <- function(rhat, ..., size = NULL) {
     scale_color_diagnostic("rhat") +
     scale_x_continuous(breaks = brks, expand = c(0, .01)) +
     scale_y_discrete(expand = c(.025,0)) +
-    theme_default() +
     yaxis_title(FALSE) +
     yaxis_text(FALSE) +
     yaxis_ticks(FALSE)
@@ -203,7 +202,6 @@ mcmc_rhat_hist <- function(rhat, ..., binwidth = NULL) {
     scale_fill_diagnostic("rhat") +
     labs(x = expression(hat(R)), y = NULL) +
     dont_expand_y_axis(c(0.005, 0)) +
-    theme_default() +
     yaxis_title(FALSE) +
     yaxis_text(FALSE) +
     yaxis_ticks(FALSE)
@@ -247,7 +245,6 @@ mcmc_neff <- function(ratio, ..., size = NULL) {
     scale_x_continuous(breaks = c(0.1, seq(0, 1, .25)),
                        limits = c(0, 1), expand = c(0,.01)) +
     scale_y_discrete(expand = c(.025,0)) +
-    theme_default() +
     yaxis_text(FALSE) +
     yaxis_title(FALSE) +
     yaxis_ticks(FALSE)
@@ -277,7 +274,6 @@ mcmc_neff_hist <- function(ratio, ..., binwidth = NULL) {
     scale_fill_diagnostic("neff") +
     labs(x = expression(N[eff]/N), y = NULL) +
     dont_expand_y_axis(c(0.005, 0)) +
-    theme_default() +
     yaxis_title(FALSE) +
     yaxis_text(FALSE) +
     yaxis_ticks(FALSE)
@@ -545,8 +541,7 @@ validate_neff_ratio <- function(ratio) {
         expand = c(0, 0)
       ) +
       labs(x = "Lag", y = "Autocorrelation") +
-      force_axes_in_facets() +
-      theme_default()
+      force_axes_in_facets()
   }
 
 # Prepare data for autocorr plot

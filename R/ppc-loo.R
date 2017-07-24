@@ -144,8 +144,7 @@ ppc_loo_pit <-
 
     graph +
       coord_fixed(xlim = xylim, ylim = xylim) +
-      labs(y = y_lab, x = x_lab) +
-      theme_default()
+      labs(y = y_lab, x = x_lab)
   }
 
 

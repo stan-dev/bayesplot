@@ -115,7 +115,6 @@ ppc_hist <- function(y, yrep, ...,
     facet_wrap_parsed("rep_id") +
     force_axes_in_facets() +
     dont_expand_y_axis() +
-    theme_default() +
     space_legend_keys() +
     yaxis_text(FALSE) +
     yaxis_title(FALSE) +
@@ -151,7 +150,6 @@ ppc_boxplot <- function(y, yrep, ..., notch = TRUE, size = 0.5, alpha = 1) {
     ) +
     scale_fill_ppc_dist() +
     scale_color_ppc_dist() +
-    theme_default() +
     yaxis_title(FALSE) +
     xaxis_ticks(FALSE) +
     xaxis_text(FALSE) +
@@ -182,7 +180,6 @@ ppc_freqpoly <- function(y, yrep, ...,
     facet_wrap_parsed("rep_id") +
     force_axes_in_facets() +
     dont_expand_y_axis() +
-    theme_default() +
     space_legend_keys() +
     yaxis_text(FALSE) +
     yaxis_title(FALSE) +
@@ -228,7 +225,6 @@ ppc_freqpoly_grouped <-
       scale_color_ppc_dist() +
       dont_expand_y_axis(c(0.005, 0)) +
       force_axes_in_facets() +
-      theme_default() +
       space_legend_keys() +
       xaxis_title(FALSE) +
       yaxis_text(FALSE) +
@@ -263,7 +259,6 @@ ppc_dens <- function(y, yrep, ...,
     facet_wrap_parsed("rep_id") +
     force_axes_in_facets() +
     dont_expand_y_axis() +
-    theme_default() +
     space_legend_keys() +
     yaxis_text(FALSE) +
     yaxis_title(FALSE) +
@@ -304,7 +299,6 @@ ppc_dens_overlay <- function(y, yrep, ...,
     scale_color_ppc_dist() +
     xlab(y_label()) +
     dont_expand_axes() +
-    theme_default() +
     yaxis_title(FALSE) +
     xaxis_title(FALSE) +
     yaxis_text(FALSE) +
@@ -342,7 +336,6 @@ ppc_ecdf_overlay <- function(y, yrep, ...,
     scale_color_ppc_dist() +
     xlab(y_label()) +
     scale_y_continuous(breaks = c(0, 0.5, 1)) +
-    theme_default() +
     yaxis_title(FALSE) +
     xaxis_title(FALSE) +
     yaxis_ticks(FALSE)
@@ -421,7 +414,6 @@ ppc_violin_grouped <- function(y,
     scale_fill_ppc_dist(values = c(NA, get_color("l"))) +
     scale_color_ppc_dist() +
     labs(x = "Group", y = yrep_label()) +
-    theme_default() +
     yaxis_title(FALSE) +
     xaxis_title(FALSE)
 }

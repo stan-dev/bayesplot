@@ -184,7 +184,6 @@ mcmc_nuts_acceptance <-
     hists <- hists +
       dont_expand_y_axis(c(0.005, 0)) +
       facet_wrap(~ Parameter, scales = "free") +
-      theme_default() +
       yaxis_text(FALSE) +
       yaxis_title(FALSE) +
       yaxis_ticks(FALSE) +
@@ -198,8 +197,7 @@ mcmc_nuts_acceptance <-
         fill = get_color(ifelse(overlay_chain, "l", "m")),
         color = get_color(ifelse(overlay_chain, "lh", "mh"))
       ) +
-      labs(x = "accept_stat__", y = "lp__") +
-      theme_default()
+      labs(x = "accept_stat__", y = "lp__")
 
     if (overlay_chain) {
       hists <- hists +
@@ -258,7 +256,6 @@ mcmc_nuts_divergence <- function(x, lp, chain = NULL, ...) {
   violin_lp <- ggplot(violin_lp_data, aes_(x = ~ Value, y = ~ lp)) +
     geom_violin(fill = get_color("l"), color = get_color("lh")) +
     ylab("lp__") +
-    theme_default() +
     xaxis_title(FALSE)
 
   violin_accept_stat_data <- data.frame(divergent, as = accept_stat$Value)
@@ -266,7 +263,6 @@ mcmc_nuts_divergence <- function(x, lp, chain = NULL, ...) {
     geom_violin(fill = get_color("l"), color = get_color("lh")) +
     ylab("accept_stat__") +
     scale_y_continuous(limits = c(NA, 1.05)) +
-    theme_default() +
     xaxis_title(FALSE)
 
   div_count_label <- paste(table(divergent$Value)[[2]], "divergences")
@@ -316,7 +312,6 @@ mcmc_nuts_stepsize <- function(x, lp, chain = NULL, ...) {
     geom_violin(fill = get_color("l"), color = get_color("lh")) +
     ylab("lp__") +
     stepsize_labels +
-    theme_default() +
     xaxis_title(FALSE)
 
   violin_accept_stat_data <-
@@ -327,7 +322,6 @@ mcmc_nuts_stepsize <- function(x, lp, chain = NULL, ...) {
     ylab("accept_stat__") +
     scale_y_continuous(limits = c(NA, 1.05)) +
     stepsize_labels +
-    theme_default() +
     xaxis_title(FALSE)
 
   if (!is.null(chain)) {
@@ -364,7 +358,6 @@ mcmc_nuts_treedepth <- function(x, lp, chain = NULL, ...) {
       binwidth = 1
     ) +
     xlab("treedepth__") +
-    theme_default() +
     yaxis_text(FALSE) +
     yaxis_title(FALSE) +
     yaxis_ticks(FALSE)
@@ -373,16 +366,14 @@ mcmc_nuts_treedepth <- function(x, lp, chain = NULL, ...) {
   violin_lp <-
     ggplot(violin_lp_data, aes_(x = ~ factor(Value), y = ~ lp)) +
     geom_violin(fill = get_color("l"), color = get_color("lh")) +
-    labs(x = "treedepth__", y = "lp__") +
-    theme_default()
+    labs(x = "treedepth__", y = "lp__")
 
   violin_accept_stat_data <- data.frame(treedepth, as = accept_stat$Value)
   violin_accept_stat <-
     ggplot(violin_accept_stat_data, aes_(x = ~ factor(Value), y = ~ as)) +
     geom_violin(fill = get_color("l"), color = get_color("lh")) +
     labs(x = "treedepth__", y = "accept_stat__") +
-    scale_y_continuous(breaks = c(0, 0.5, 1)) +
-    theme_default()
+    scale_y_continuous(breaks = c(0, 0.5, 1))
 
   if (overlay_chain) {
     hist_td <- hist_td +
@@ -479,7 +470,6 @@ mcmc_nuts_energy <-
       dont_expand_y_axis(c(0.005, 0)) +
       scale_x_continuous(expand = c(0.2, 0)) +
       labs(y = NULL, x = expression(E - bar(E))) +
-      theme_default() +
       space_legend_keys() +
       theme(legend.text = element_text(size = rel(1.1))) +
       yaxis_text(FALSE) +

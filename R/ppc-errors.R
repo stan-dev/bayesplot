@@ -148,7 +148,6 @@ ppc_error_hist <-
       xlab(expression(italic(y) - italic(y)[rep])) +
       dont_expand_y_axis() +
       force_axes_in_facets() +
-      theme_default() +
       yaxis_title(FALSE) +
       yaxis_text(FALSE) +
       yaxis_ticks(FALSE) +
@@ -186,7 +185,6 @@ ppc_error_hist_grouped <-
       xlab(expression(italic(y) - italic(y)[rep])) +
       dont_expand_y_axis(c(0.005, 0)) +
       force_axes_in_facets() +
-      theme_default() +
       yaxis_text(FALSE) +
       yaxis_ticks(FALSE) +
       yaxis_title(FALSE) +
@@ -218,8 +216,7 @@ ppc_error_scatter <-
           size = size,
           alpha = alpha,
           abline = FALSE
-        ) +
-          theme_default()
+        )
       )
     }
 
@@ -242,7 +239,6 @@ ppc_error_scatter <-
         # labeller = label_bquote(italic(y) - italic(y)[rep](.(rep_id)))
       ) +
       force_axes_in_facets() +
-      theme_default() +
       facet_text(FALSE) +
       facet_bg(FALSE)
   }
@@ -275,8 +271,7 @@ ppc_error_scatter_avg <-
       alpha = alpha,
       size = size,
       abline = FALSE
-    ) +
-      theme_default()
+    )
   }
 
 #' @rdname PPC-errors
@@ -304,8 +299,7 @@ ppc_error_scatter_avg_vs_x <-
       alpha = alpha,
       size = size,
       abline = FALSE
-    ) +
-      theme_default()
+    )
   }
 
 
@@ -392,7 +386,6 @@ ppc_error_binned <- function(y, yrep, ..., size = 1, alpha = 0.25) {
 
   graph +
     force_axes_in_facets() +
-    theme_default() +
     facet_text(FALSE) +
     facet_bg(FALSE)
 }
