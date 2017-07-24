@@ -10,13 +10,15 @@
 \title{Histograms and kernel density plots of MCMC draws}
 \usage{
 mcmc_hist(x, pars = character(), regex_pars = character(),
-  transformations = list(), facet_args = list(), ..., binwidth = NULL)
+  transformations = list(), facet_args = list(), ..., binwidth = NULL,
+  freq = TRUE)
 
 mcmc_dens(x, pars = character(), regex_pars = character(),
   transformations = list(), facet_args = list(), ..., trim = FALSE)
 
 mcmc_hist_by_chain(x, pars = character(), regex_pars = character(),
-  transformations = list(), facet_args = list(), ..., binwidth = NULL)
+  transformations = list(), facet_args = list(), ..., binwidth = NULL,
+  freq = TRUE)
 
 mcmc_dens_overlay(x, pars = character(), regex_pars = character(),
   transformations = list(), facet_args = list(), ..., trim = FALSE)
@@ -64,6 +66,12 @@ control faceting.}
 
 \item{binwidth}{An optional value used as the \code{binwidth} argument to
 \code{\link[ggplot2]{geom_histogram}} to override the default binwidth.}
+
+\item{freq}{For histograms, \code{freq=TRUE} (the default) puts count on the
+y-axis. Setting \code{freq=FALSE} puts density on the y-axis. (For many
+plots the y-axis text is off by default. To view the count or density
+labels on the y-axis see the \code{\link{yaxis_text}} convenience
+function.)}
 
 \item{trim}{A logical scalar passed to \code{\link[ggplot2]{geom_density}}.}
 

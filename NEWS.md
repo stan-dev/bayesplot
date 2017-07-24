@@ -1,3 +1,8 @@
+# bayesplot 1.2.0.9999
+
+* `mcmc_hist` and `mcmc_hist_by_chain` now take a `freq` argument that defaults
+to `TRUE` (behavior is like `freq` argument to R's `hist` function).
+
 # bayesplot 1.2.0
 
 (GitHub issue/PR numbers in parentheses)

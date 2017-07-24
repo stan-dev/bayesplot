@@ -82,6 +82,7 @@ validate_group <- function(group, y) {
 # same length as y.
 #
 # @param x,y The user's x vector and the y object returned by validate_y.
+# @param unique_x T/F indicating whether to require all unique values in x.
 # @return Either throws an error or returns a numeric vector.
 #
 validate_x <- function(x, y, unique_x = FALSE) {
