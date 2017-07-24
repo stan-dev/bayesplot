@@ -1,7 +1,12 @@
 # bayesplot 1.2.0.9999
 
+* `bayesplot::theme_default` is now set as the default ggplot2 plotting theme
+when **bayesplot** is loaded, which makes changing the default theme using
+`ggplot2::theme_set` possible. Thanks to @gavinsimpson. (#87)
 * `mcmc_hist` and `mcmc_hist_by_chain` now take a `freq` argument that defaults
 to `TRUE` (behavior is like `freq` argument to R's `hist` function).
+* Using a `ts` object for `y` in PPC plots no longer results in an error. Thanks
+to @helske. (#94)
 
 # bayesplot 1.2.0
 

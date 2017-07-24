@@ -114,7 +114,6 @@ ppc_stat <-
         )
       ) +
       dont_expand_y_axis() +
-      theme_default() +
       no_legend_spacing() +
       xaxis_title(FALSE) +
       yaxis_text(FALSE) +
@@ -167,7 +166,6 @@ ppc_stat_grouped <-
         )
       ) +
       dont_expand_y_axis() +
-      theme_default() +
       no_legend_spacing() +
       xaxis_title(FALSE) +
       yaxis_text(FALSE) +
@@ -216,7 +214,6 @@ ppc_stat_freqpoly_grouped <-
         labels = c(yrep = Tyrep_label(), y = Ty_label())
       ) +
       dont_expand_y_axis(c(0.005, 0)) +
-      theme_default() +
       xaxis_title(FALSE) +
       yaxis_text(FALSE) +
       yaxis_ticks(FALSE) +
@@ -287,8 +284,7 @@ ppc_stat_2d <- function(y, yrep, stat = c("mean", "sd"), ...,
       values = setNames(get_color(c("dh", "lh")), c("y", "yrep")),
       labels = c(y = Ty_label(), yrep = Tyrep_label())
     ) +
-    labs(x = stat_labs[1], y = stat_labs[2]) +
-    theme_default()
+    labs(x = stat_labs[1], y = stat_labs[2])
 }
 
 

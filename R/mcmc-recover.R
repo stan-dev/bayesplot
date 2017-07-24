@@ -195,7 +195,6 @@ mcmc_recover_intervals <-
       ) +
       do.call("facet_wrap", facet_args) +
       labs(y = "Value", x = "Parameter", subtitle = plot_caption) +
-      theme_default() +
       theme(plot.caption = element_text(hjust = 0)) +
       xaxis_title(FALSE) +
       yaxis_title(FALSE)
@@ -269,8 +268,7 @@ mcmc_recover_scatter <-
         alpha = alpha
       ) +
       do.call("facet_wrap", facet_args) +
-      labs(y = "Estimated", x = "True") +
-      theme_default()
+      labs(y = "Estimated", x = "True")
 
     if (length(unique(batch)) == 1) {
       g <- ggplot_build(graph)
@@ -330,7 +328,6 @@ mcmc_recover_hist <-
       scale_color_manual("", values = get_color("dh")) +
       guides(color = guide_legend(), fill = guide_legend(order = 1)) +
       dont_expand_y_axis() +
-      theme_default() +
       reduce_legend_spacing(0.25) +
       xaxis_title(FALSE) +
       yaxis_text(FALSE) +

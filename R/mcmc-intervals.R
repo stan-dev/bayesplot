@@ -409,7 +409,6 @@ mcmc_areas <- function(x,
       limits = c(0.5, n_param + 1)
     ) +
     xlim(x_lim) +
-    theme_default() +
     legend_move(ifelse(color_by_rhat, "top", "none")) +
     yaxis_text(face = "bold") +
     yaxis_title(FALSE) +
