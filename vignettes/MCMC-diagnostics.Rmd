@@ -426,18 +426,15 @@ distribution $\pi_{\Delta E}$,
 ```{r, mcmc_nuts_energy-1, message=FALSE}
 mcmc_nuts_energy(np1)
 ```
-To keep the chains separate add `merge_chains=FALSE`:
-```{r, mcmc_nuts_energy-2}
-mcmc_nuts_energy(np1, merge_chains = FALSE, binwidth = 1)
-```
 
 The two histograms ideally look the same (Betancourt, 2017), which is only the
-case for the non-centered parameterization (bottom panel):
+case for the non-centered parameterization (right):
 
-```{r, mcmc_nuts_energy-3, message=FALSE}
+```{r, mcmc_nuts_energy-3, message=FALSE, fig.width=7}
 compare_cp_ncp(
   mcmc_nuts_energy(np1, binwidth = 1/2),
-  mcmc_nuts_energy(np2, binwidth = 1/2)
+  mcmc_nuts_energy(np2, binwidth = 1/2), 
+  ncol = 2
 )
 ```
 
@@ -445,12 +442,13 @@ The difference between the parameterizations is even more apparent if we force
 the stepsize to a smaller value and help the chains explore more of the 
 posterior:
 
-```{r, mcmc_nuts_energy-4, message=FALSE}
+```{r, mcmc_nuts_energy-4, message=FALSE,  fig.width=7}
 np1b <- nuts_params(fit1b)
 np2b <- nuts_params(fit2b)
 compare_cp_ncp(
   mcmc_nuts_energy(np1b), 
-  mcmc_nuts_energy(np2b)
+  mcmc_nuts_energy(np2b), 
+  ncol = 2
 )
 ```
 
