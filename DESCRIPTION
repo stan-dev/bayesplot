@@ -13,7 +13,7 @@ Description: Plotting functions for posterior analysis, model checking,
     modeling, particularly (but not exclusively) packages interfacing with Stan.
 License: GPL (>= 3)
 LazyData: TRUE
-URL: http://mc-stan.org/, https://groups.google.com/forum/#!forum/stan-users
+URL: http://mc-stan.org/, http://discourse.mc-stan.org
 BugReports: https://github.com/stan-dev/bayesplot/issues/
 Depends:
     R (>= 3.1.0)
