@@ -52,6 +52,11 @@ installed then you can check if you have pandoc by running the following in R:
 rmarkdown::pandoc_available()
 ```
 
+### Getting help
+
+* [Ask a question at The Stan Forums](http://discourse.mc-stan.org)
+* [File an issue on GitHub](https://github.com/stan-dev/bayesplot/issues)
+
 
 ### Examples
 Some quick examples using MCMC draws obtained from the [__rstanarm__](https://github.com/stan-dev/rstanarm) 
