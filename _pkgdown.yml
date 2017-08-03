@@ -12,15 +12,15 @@ navbar:
     - text: "Other Packages"
       menu:
         - text: "rstan"
-          href: http://mc-stan.org/users/interfaces/rstan.html
+          href: http://mc-stan.org/rstan
         - text: "rstanarm"
-          href: http://mc-stan.org/users/interfaces/rstanarm.html
+          href: http://mc-stan.org/rstanarm
         - text: "shinystan"
-          href: http://mc-stan.org/users/interfaces/shinystan.html
+          href: http://mc-stan.org/shinystan
         - text: "loo"
-          href: http://mc-stan.org/users/interfaces/loo.html
+          href: http://mc-stan.org/loo
         - text: "rstantools"
-          href: http://mc-stan.org/users/interfaces/rstantools.html
+          href: http://mc-stan.org/rstantools
     - text: "Stan"
       href: http://mc-stan.org
   right:
@@ -32,7 +32,7 @@ navbar:
 articles:
   - title: "Getting Started"
     desc: >
-      The documents below provide an introduction visualizing MCMC draws/diagnostics and performing posterior predictive checks
+      The documents below provide an introduction visualizing MCMC draws/diagnostics and performing posterior predictive checks.
     contents:
       - MCMC
       - MCMCdiagnostics

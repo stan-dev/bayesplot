@@ -42,19 +42,19 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="http://mc-stan.org/users/interfaces/rstan.html">rstan</a>
+      <a href="http://mc-stan.org/rstan">rstan</a>
     </li>
     <li>
-      <a href="http://mc-stan.org/users/interfaces/rstanarm.html">rstanarm</a>
+      <a href="http://mc-stan.org/rstanarm">rstanarm</a>
     </li>
     <li>
-      <a href="http://mc-stan.org/users/interfaces/shinystan.html">shinystan</a>
+      <a href="http://mc-stan.org/shinystan">shinystan</a>
     </li>
     <li>
-      <a href="http://mc-stan.org/users/interfaces/loo.html">loo</a>
+      <a href="http://mc-stan.org/loo">loo</a>
     </li>
     <li>
-      <a href="http://mc-stan.org/users/interfaces/rstantools.html">rstantools</a>
+      <a href="http://mc-stan.org/rstantools">rstantools</a>
     </li>
   </ul>
 </li>
@@ -90,7 +90,7 @@
       <h1>Plotting MCMC draws using the bayesplot package</h1>
                         <h4 class="author">Jonah Gabry</h4>
             
-            <h4 class="date">2017-06-17</h4>
+            <h4 class="date">2017-08-03</h4>
           </div>
 
     
@@ -111,6 +111,7 @@ fit &lt;-<span class="st"> </span><span class="kw">stan_glm</span>(
   <span class="dt">seed =</span> <span class="dv">1111</span>
 )
 <span class="kw">print</span>(fit)</code></pre></div>
+<pre><code>trying deprecated constructor; please alert package maintainer</code></pre>
 <pre><code>stan_glm
  family:   gaussian [identity]
  formula:  mpg ~ .
@@ -119,18 +120,18 @@ fit &lt;-<span class="st"> </span><span class="kw">stan_glm</span>(
 
 Estimates:
             Median MAD_SD
-(Intercept) 12.2   18.2  
+(Intercept) 12.8   18.8  
 cyl         -0.1    1.1  
 disp         0.0    0.0  
 hp           0.0    0.0  
 drat         0.8    1.7  
-wt          -3.6    2.0  
+wt          -3.6    1.9  
 qsec         0.8    0.7  
 vs           0.3    2.2  
-am           2.5    2.1  
-gear         0.7    1.6  
-carb        -0.3    0.9  
-sigma        2.8    0.4  
+am           2.4    2.1  
+gear         0.7    1.5  
+carb        -0.2    0.8  
+sigma        2.7    0.4  
 
 Sample avg. posterior predictive 
 distribution of y (X = xbar):
