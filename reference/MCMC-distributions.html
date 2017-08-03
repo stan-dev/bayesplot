@@ -99,6 +99,12 @@
      
   </a>
 </li>
+<li>
+  <a href="http://discourse.mc-stan.org/">
+    <span class="fa fa-users"></span>
+     
+  </a>
+</li>
       </ul>
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
@@ -119,13 +125,15 @@
     
 
     <pre class="usage"><span class='fu'>mcmc_hist</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'>character</span>(), <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='fu'>character</span>(),
-  <span class='kw'>transformations</span> <span class='kw'>=</span> <span class='fu'>list</span>(), <span class='kw'>facet_args</span> <span class='kw'>=</span> <span class='fu'>list</span>(), <span class='no'>...</span>, <span class='kw'>binwidth</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+  <span class='kw'>transformations</span> <span class='kw'>=</span> <span class='fu'>list</span>(), <span class='kw'>facet_args</span> <span class='kw'>=</span> <span class='fu'>list</span>(), <span class='no'>...</span>, <span class='kw'>binwidth</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>freq</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
 <span class='fu'>mcmc_dens</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'>character</span>(), <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='fu'>character</span>(),
   <span class='kw'>transformations</span> <span class='kw'>=</span> <span class='fu'>list</span>(), <span class='kw'>facet_args</span> <span class='kw'>=</span> <span class='fu'>list</span>(), <span class='no'>...</span>, <span class='kw'>trim</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
 <span class='fu'>mcmc_hist_by_chain</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'>character</span>(), <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='fu'>character</span>(),
-  <span class='kw'>transformations</span> <span class='kw'>=</span> <span class='fu'>list</span>(), <span class='kw'>facet_args</span> <span class='kw'>=</span> <span class='fu'>list</span>(), <span class='no'>...</span>, <span class='kw'>binwidth</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+  <span class='kw'>transformations</span> <span class='kw'>=</span> <span class='fu'>list</span>(), <span class='kw'>facet_args</span> <span class='kw'>=</span> <span class='fu'>list</span>(), <span class='no'>...</span>, <span class='kw'>binwidth</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>freq</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
 <span class='fu'>mcmc_dens_overlay</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'>character</span>(), <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='fu'>character</span>(),
   <span class='kw'>transformations</span> <span class='kw'>=</span> <span class='fu'>list</span>(), <span class='kw'>facet_args</span> <span class='kw'>=</span> <span class='fu'>list</span>(), <span class='no'>...</span>, <span class='kw'>trim</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
@@ -189,6 +197,14 @@ control faceting.</p></td>
       <th>binwidth</th>
       <td><p>An optional value used as the <code>binwidth</code> argument to
 <code><a href='http://www.rdocumentation.org/packages/ggplot2/topics/geom_histogram'>geom_histogram</a></code> to override the default binwidth.</p></td>
+    </tr>
+    <tr>
+      <th>freq</th>
+      <td><p>For histograms, <code>freq=TRUE</code> (the default) puts count on the
+y-axis. Setting <code>freq=FALSE</code> puts density on the y-axis. (For many
+plots the y-axis text is off by default. To view the count or density
+labels on the y-axis see the <code><a href='bayesplot-helpers.html'>yaxis_text</a></code> convenience
+function.)</p></td>
     </tr>
     <tr>
       <th>trim</th>

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Default plotting theme — theme_default • bayesplot</title>
+<title>Default bayesplot plotting theme — theme_default • bayesplot</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -99,6 +99,12 @@
      
   </a>
 </li>
+<li>
+  <a href="http://discourse.mc-stan.org/">
+    <span class="fa fa-users"></span>
+     
+  </a>
+</li>
       </ul>
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
@@ -110,16 +116,15 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Default plotting theme</h1>
+    <h1>Default bayesplot plotting theme</h1>
     </div>
 
     
     <p>The <code>theme_default</code> function returns the default ggplot
-theme used by the <span class="pkg">bayesplot</span> plotting functions. Many of the
-individual plotting functions also make small alterations to the default
-theme using the convenience functions documented at <a href='bayesplot-helpers.html'>bayesplot-helpers</a>.
-To use a different theme simply add that theme to the ggplot objects created
-by the <span class="pkg">bayesplot</span> plotting functions (see <strong>Examples</strong>, below).</p>
+theme used by the <span class="pkg">bayesplot</span> plotting functions.
+After loading the <span class="pkg">bayesplot</span> package, this theme will be the default for
+<em>all</em> graphs made with <span class="pkg">ggplot2</span>. See the <strong>Details</strong> section,
+below.</p>
     
 
     <pre class="usage"><span class='fu'>theme_default</span>(<span class='kw'>base_size</span> <span class='kw'>=</span> <span class='fu'>getOption</span>(<span class='st'>"bayesplot.base_size"</span>, <span class='fl'>12</span>),
@@ -141,6 +146,15 @@ by the <span class="pkg">bayesplot</span> plotting functions (see <strong>Exampl
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A ggplot <a href='http://www.rdocumentation.org/packages/ggplot2/topics/theme'>theme</a> object.</p>
+    
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>After loading <span class="pkg">bayesplot</span>, if you subsequently change the
+default <span class="pkg">ggplot2</span> theme (i.e., by calling
+<code><a href='http://www.rdocumentation.org/packages/ggplot2/topics/theme_get'>theme_set</a></code> or loading a different package that changes
+the theme) then <span class="pkg">bayesplot</span> will use that theme instead. To change back
+to the default <span class="pkg">bayesplot</span> theme use <code>bayesplot::theme_default()</code> as
+the argument to <code><a href='http://www.rdocumentation.org/packages/ggplot2/topics/theme_get'>theme_set</a></code>.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
@@ -185,7 +199,11 @@ by the <span class="pkg">bayesplot</span> plotting functions (see <strong>Exampl
         <span class='kw'>bayesplot.base_family</span> <span class='kw'>=</span> <span class='st'>"serif"</span>)
 <span class='fu'><a href='MCMC-intervals.html'>mcmc_areas</a></span>(<span class='no'>x</span>, <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='st'>"beta"</span>)</div><img src='theme_default-14.png' alt='' width='540' height='400' /><div class='input'>
 <span class='co'># use one of the themes included in ggplot2</span>
-<span class='fu'><a href='MCMC-distributions.html'>mcmc_dens_overlay</a></span>(<span class='no'>x</span>) + <span class='kw'>ggplot2</span><span class='kw'>::</span><span class='fu'>theme_gray</span>()</div><img src='theme_default-16.png' alt='' width='540' height='400' /><div class='input'>
+<span class='kw'>ggplot2</span><span class='kw'>::</span><span class='fu'>theme_set</span>(<span class='kw'>ggplot2</span><span class='kw'>::</span><span class='fu'>theme_gray</span>())
+<span class='fu'><a href='MCMC-distributions.html'>mcmc_dens_overlay</a></span>(<span class='no'>x</span>)</div><img src='theme_default-16.png' alt='' width='540' height='400' /><div class='input'>
+<span class='co'># change back to bayesplot default theme</span>
+<span class='kw'>ggplot2</span><span class='kw'>::</span><span class='fu'>theme_set</span>(<span class='kw'>bayesplot</span><span class='kw'>::</span><span class='fu'>theme_default</span>())
+<span class='fu'><a href='MCMC-distributions.html'>mcmc_dens_overlay</a></span>(<span class='no'>x</span>)</div><img src='theme_default-18.png' alt='' width='540' height='400' /><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -194,6 +212,8 @@ by the <span class="pkg">bayesplot</span> plotting functions (see <strong>Exampl
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
+
+      <li><a href="#details">Details</a></li>
 
       <li><a href="#see-also">See also</a></li>
       

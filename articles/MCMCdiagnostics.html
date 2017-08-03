@@ -75,6 +75,12 @@
      
   </a>
 </li>
+<li>
+  <a href="http://discourse.mc-stan.org/">
+    <span class="fa fa-users"></span>
+     
+  </a>
+</li>
       </ul>
 </div>
 <!--/.nav-collapse -->
@@ -114,7 +120,7 @@
 <p>A Markov chain generates draws from the target distribution only after it has converged to equilibrium. Unfortunately, this is only guaranteed in the limit in theory. In practice, diagnostics must be applied to monitor whether the Markov chain(s) have converged. The <strong>bayesplot</strong> package provides various plotting functions for visualizing Markov chain Monte Carlo (MCMC) diagnostics after fitting a Bayesian model. MCMC draws from any package can be used with <strong>bayesplot</strong>, although there are a few diagnostic plots that are specifically intended to be used for <a href="http://mc-stan.org/">Stan</a> models.</p>
 <p>To demonstrate, in this vignette we’ll use the eight schools example discussed in Rubin (1981), Gelman et al (2013), and the <a href="https://github.com/stan-dev/rstan/wiki/RStan-Getting-Started#how-to-use-rstan">RStan Getting Started</a> wiki. This is a simple hierarchical meta-analysis model with data consisting of point estimates <code>y</code> and standard errors <code>sigma</code> from analyses of test prep programs in <code>J=8</code> schools:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">schools_dat &lt;-<span class="st"> </span><span class="kw">list</span>(
-  <span class="dt">J =</span> <span class="dv">8</span>,
+  <span class="dt">J =</span> <span class="dv">8</span>, 
   <span class="dt">y =</span> <span class="kw">c</span>(<span class="dv">28</span>,  <span class="dv">8</span>, -<span class="dv">3</span>,  <span class="dv">7</span>, -<span class="dv">1</span>,  <span class="dv">1</span>, <span class="dv">18</span>, <span class="dv">12</span>),
   <span class="dt">sigma =</span> <span class="kw">c</span>(<span class="dv">15</span>, <span class="dv">10</span>, <span class="dv">16</span>, <span class="dv">11</span>,  <span class="dv">9</span>, <span class="dv">11</span>, <span class="dv">10</span>, <span class="dv">18</span>)
 )</code></pre></div>
@@ -176,9 +182,9 @@ model {
 schools_mod2 &lt;-<span class="st"> </span><span class="kw">stan_model</span>(<span class="st">"schools_mod2.stan"</span>)</code></pre></div>
 <p>We then fit the model by calling Stan’s MCMC algorithm using the <code>sampling</code> function,</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fit1 &lt;-<span class="st"> </span><span class="kw">sampling</span>(schools_mod1, <span class="dt">data =</span> schools_dat)</code></pre></div>
-<pre><code>Warning: There were 91 divergent transitions after warmup. Increasing adapt_delta above 0.8 may help. See
+<pre><code>Warning: There were 129 divergent transitions after warmup. Increasing adapt_delta above 0.8 may help. See
 http://mc-stan.org/misc/warnings.html#divergent-transitions-after-warmup</code></pre>
-<pre><code>Warning: There were 2 chains where the estimated Bayesian Fraction of Missing Information was low. See
+<pre><code>Warning: There were 3 chains where the estimated Bayesian Fraction of Missing Information was low. See
 http://mc-stan.org/misc/warnings.html#bfmi-low</code></pre>
 <pre><code>Warning: Examine the pairs() plot to diagnose sampling problems</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fit2 &lt;-<span class="st"> </span><span class="kw">sampling</span>(schools_mod2, <span class="dt">data =</span> schools_dat)</code></pre></div>
@@ -196,14 +202,17 @@ posterior2 &lt;-<span class="st"> </span><span class="kw">as.array</span>(fit2)<
 <p>The <strong>bayesplot</strong> package provides the functions <code>mcmc_rhat</code> and <code>mcmc_rhat_hist</code> for visualizing <span class="math inline">\(\hat{R}\)</span> estimates.</p>
 <p>First we’ll quickly fit one of the models above again, this time intentionally using too few MCMC iterations. This should lead to some high <span class="math inline">\(\hat{R}\)</span> values.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fit1_50iter &lt;-<span class="st"> </span><span class="kw">sampling</span>(schools_mod1, <span class="dt">data =</span> schools_dat, <span class="dt">chains =</span> <span class="dv">2</span>, <span class="dt">iter =</span> <span class="dv">50</span>)</code></pre></div>
+<pre><code>Warning: There were 1 chains where the estimated Bayesian Fraction of Missing Information was low. See
+http://mc-stan.org/misc/warnings.html#bfmi-low</code></pre>
+<pre><code>Warning: Examine the pairs() plot to diagnose sampling problems</code></pre>
 <p><strong>bayesplot</strong> also provides a generic <code>rhat</code> extractor function, currently with methods defined for models fit using the <strong>rstan</strong> and <strong>rstanarm</strong> packages. But regardless of how you fit your model, all <strong>bayesplot</strong> needs is a vector of <span class="math inline">\(\hat{R}\)</span> values.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">"bayesplot"</span>)
 rhats &lt;-<span class="st"> </span><span class="kw"><a href="../reference/bayesplot-extractors.html">rhat</a></span>(fit1_50iter)
 <span class="kw">print</span>(rhats)</code></pre></div>
 <pre><code>       mu       tau  theta[1]  theta[2]  theta[3]  theta[4]  theta[5] 
-1.0684217 1.1907054 1.0281526 0.9761337 1.1138877 0.9819148 1.1320469 
+1.1092113 1.0968461 0.9801085 1.1305239 0.9625666 1.0678317 1.0377301 
  theta[6]  theta[7]  theta[8]      lp__ 
-0.9635716 1.0004063 1.0802207 1.3188507 </code></pre>
+1.0453038 1.0259854 1.0634415 1.2332017 </code></pre>
 <p>We can visualize the <span class="math inline">\(\hat{R}\)</span> values with the <code>mcmc_rhat</code> function:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/bayesplot-colors.html">color_scheme_set</a></span>(<span class="st">"brightblue"</span>) <span class="co"># see help("color_scheme_set")</span>
 <span class="kw"><a href="../reference/MCMC-diagnostics.html">mcmc_rhat</a></span>(rhats)</code></pre></div>
@@ -226,20 +235,20 @@ rhats &lt;-<span class="st"> </span><span class="kw"><a href="../reference/bayes
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ratios1 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/bayesplot-extractors.html">neff_ratio</a></span>(fit1)
 <span class="kw">print</span>(ratios1)</code></pre></div>
 <pre><code>        mu        tau   theta[1]   theta[2]   theta[3]   theta[4] 
-0.15780280 0.06546110 0.28401677 0.24644801 0.22509232 0.27231973 
+0.16718950 0.07163102 0.22370928 0.27066556 0.27211697 0.29812107 
   theta[5]   theta[6]   theta[7]   theta[8]       lp__ 
-0.17531215 0.18241604 0.17123331 0.34180194 0.01774724 </code></pre>
+0.21044621 0.26657108 0.23297207 0.36143687 0.04009868 </code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/MCMC-diagnostics.html">mcmc_neff</a></span>(ratios1)</code></pre></div>
 <p><img src="MCMCdiagnostics_files/figure-html/print-neff-ratios-1.png" width="60%" style="display: block; margin: auto;"></p>
 <p>In the plot, the points representing the values of <span class="math inline">\(n_{eff}/N\)</span> are colored based on whether they are less than <span class="math inline">\(0.1\)</span>, between <span class="math inline">\(0.1\)</span> and <span class="math inline">\(0.5\)</span>, or greater than <span class="math inline">\(0.5\)</span>. These particular values are arbitrary in that they have no particular theoretical meaning, but a useful heuristic is to worry about any <span class="math inline">\(n_{eff}/N\)</span> less than <span class="math inline">\(0.1\)</span>.</p>
 <p>One important thing to keep in mind is that these ratios will depend not only on the model being fit but also on the particular MCMC algorithm used. One reason why we have such high ratios of <span class="math inline">\(n_{eff}\)</span> to <span class="math inline">\(N\)</span> is that the No-U-Turn sampler used by <strong>rstan</strong> generally produces draws from the posterior distribution with much lower autocorrelations compared to draws obtained using other MCMC algorithms (e.g., Gibbs).</p>
 <p>Even for models fit using <strong>rstan</strong> the parameterization can make a big difference. Here are the <span class="math inline">\(n_{eff}/N\)</span> plots for <code>fit1</code> and <code>fit2</code> side by side.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># A function we'll use several times to plot comparisons of the centered</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># A function we'll use several times to plot comparisons of the centered </span>
 <span class="co"># parameterization (cp) and the non-centered parameterization (ncp). See</span>
 <span class="co"># help("bayesplot_grid") for details on the bayesplot_grid function used here.</span>
 compare_cp_ncp &lt;-<span class="st"> </span>function(cp_plot, ncp_plot, <span class="dt">ncol =</span> <span class="dv">1</span>) {
   txt &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">"Centered parameterization"</span>, <span class="st">"Non-centered parameterization"</span>)
-  <span class="kw"><a href="../reference/bayesplot_grid.html">bayesplot_grid</a></span>(cp_plot, ncp_plot, <span class="dt">subtitles =</span> txt,
+  <span class="kw"><a href="../reference/bayesplot_grid.html">bayesplot_grid</a></span>(cp_plot, ncp_plot, <span class="dt">subtitles =</span> txt, 
                  <span class="dt">grid_args =</span> <span class="kw">list</span>(<span class="dt">ncol =</span> ncol))
 }
 
@@ -256,7 +265,7 @@ neff2 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/bayes
 <p>Here we can again see a difference when comparing the two parameterizations of the same model. For model 1, <span class="math inline">\(\theta_1\)</span> is the primitive parameter for school 1, whereas for the non-centered parameterization in model 2 the primitive parameter is <span class="math inline">\(\eta_1\)</span> (and <span class="math inline">\(\theta_1\)</span> is later constructed from <span class="math inline">\(\eta_1\)</span>, <span class="math inline">\(\mu\)</span>, and <span class="math inline">\(\tau\)</span>):</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">compare_cp_ncp</span>(
   <span class="kw"><a href="../reference/MCMC-diagnostics.html">mcmc_acf</a></span>(posterior1, <span class="dt">pars =</span> <span class="st">"theta[1]"</span>, <span class="dt">lags =</span> <span class="dv">10</span>),
-  <span class="kw"><a href="../reference/MCMC-diagnostics.html">mcmc_acf</a></span>(posterior2, <span class="dt">pars =</span> <span class="st">"eta[1]"</span>, <span class="dt">lags =</span> <span class="dv">10</span>),
+  <span class="kw"><a href="../reference/MCMC-diagnostics.html">mcmc_acf</a></span>(posterior2, <span class="dt">pars =</span> <span class="st">"eta[1]"</span>, <span class="dt">lags =</span> <span class="dv">10</span>), 
   <span class="dt">ncol =</span> <span class="dv">2</span>
 )</code></pre></div>
 <p><img src="MCMCdiagnostics_files/figure-html/mcmc_acf-1.png" width="60%" style="display: block; margin: auto;"></p>
@@ -281,21 +290,21 @@ neff2 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/bayes
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lp1 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/bayesplot-extractors.html">log_posterior</a></span>(fit1)
 <span class="kw">head</span>(lp1)</code></pre></div>
 <pre><code>  Iteration     Value Chain
-1         1 -21.83229     1
-2         2 -26.21371     1
-3         3 -15.78487     1
-4         4 -17.96700     1
-5         5 -18.78881     1
-6         6 -21.12023     1</code></pre>
+1         1 -18.85227     1
+2         2 -19.62051     1
+3         3 -18.93054     1
+4         4 -21.29628     1
+5         5 -20.52643     1
+6         6 -18.88621     1</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">np1 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/bayesplot-extractors.html">nuts_params</a></span>(fit1)
 <span class="kw">head</span>(np1)</code></pre></div>
 <pre><code>  Iteration     Parameter     Value Chain
-1         1 accept_stat__ 0.9961024     1
-2         2 accept_stat__ 0.9242086     1
-3         3 accept_stat__ 0.8336954     1
-4         4 accept_stat__ 0.9643873     1
-5         5 accept_stat__ 0.9333785     1
-6         6 accept_stat__ 0.9660069     1</code></pre>
+1         1 accept_stat__ 0.9589936     1
+2         2 accept_stat__ 0.8663607     1
+3         3 accept_stat__ 0.9985280     1
+4         4 accept_stat__ 0.8490949     1
+5         5 accept_stat__ 1.0000000     1
+6         6 accept_stat__ 1.0000000     1</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># for the second model</span>
 lp2 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/bayesplot-extractors.html">log_posterior</a></span>(fit2)
 np2 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/bayesplot-extractors.html">nuts_params</a></span>(fit2)</code></pre></div>
@@ -305,7 +314,7 @@ np2 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/bayespl
 <p>When running the Stan models at the beginning of this vignette there were warnings about divergent transitions. For an explanation of these warnings see <a href="http://mc-stan.org/misc/warnings.html#divergent-transitions-after-warmup">Divergent transitions after warmup</a>.</p>
 <p>The <code>divergences</code> argument to the <code>mcmc_trace</code> function can be used to add a rug plot (in red) of the divergences to a trace plot of parameter draws. Typically we can see that at least one of the chains is getting stuck wherever there is a cluster of many red marks:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/bayesplot-colors.html">color_scheme_set</a></span>(<span class="st">"mix-brightblue-gray"</span>)
-<span class="kw"><a href="../reference/MCMC-traces.html">mcmc_trace</a></span>(posterior1, <span class="dt">pars =</span> <span class="st">"tau"</span>, <span class="dt">divergences =</span> np1) +
+<span class="kw"><a href="../reference/MCMC-traces.html">mcmc_trace</a></span>(posterior1, <span class="dt">pars =</span> <span class="st">"tau"</span>, <span class="dt">divergences =</span> np1) +<span class="st"> </span>
 <span class="st">  </span><span class="kw">xlab</span>(<span class="st">"Post-warmup Iteration"</span>)</code></pre></div>
 <p><img src="MCMCdiagnostics_files/figure-html/mcmc_trace-1.png" width="60%" style="display: block; margin: auto;"></p>
 <p>To look deeper at the information conveyed by the divergences we can use the <code>mcmc_nuts_divergence</code> function:</p>
@@ -323,11 +332,9 @@ np2 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/bayespl
 <p>but we have far fewer of them to worry about. If there are only a few divergences we can often get rid of them by increasing the target acceptance rate (<code>adapt_delta</code>), which has the effect of lowering the stepsize used by the sampler and allowing the Markov chains to explore more complicated curvature in the target distribution.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fit1b &lt;-<span class="st"> </span><span class="kw">sampling</span>(schools_mod1, <span class="dt">data =</span> schools_dat,
                   <span class="dt">control =</span> <span class="kw">list</span>(<span class="dt">adapt_delta =</span> <span class="fl">0.99</span>))</code></pre></div>
-<pre><code>Warning: There were 7 divergent transitions after warmup. Increasing adapt_delta above 0.99 may help. See
+<pre><code>Warning: There were 8 divergent transitions after warmup. Increasing adapt_delta above 0.99 may help. See
 http://mc-stan.org/misc/warnings.html#divergent-transitions-after-warmup</code></pre>
-<pre><code>Warning: There were 194 transitions after warmup that exceeded the maximum treedepth. Increase max_treedepth above 10. See
-http://mc-stan.org/misc/warnings.html#maximum-treedepth-exceeded</code></pre>
-<pre><code>Warning: There were 3 chains where the estimated Bayesian Fraction of Missing Information was low. See
+<pre><code>Warning: There were 4 chains where the estimated Bayesian Fraction of Missing Information was low. See
 http://mc-stan.org/misc/warnings.html#bfmi-low</code></pre>
 <pre><code>Warning: Examine the pairs() plot to diagnose sampling problems</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fit2b &lt;-<span class="st"> </span><span class="kw">sampling</span>(schools_mod2, <span class="dt">data =</span> schools_dat,
@@ -344,21 +351,21 @@ http://mc-stan.org/misc/warnings.html#bfmi-low</code></pre>
 <p>The <code>mcmc_nuts_energy</code> function creates plots similar to those presented in Betancourt (2017). While <code>mcmcm_nuts_divergence</code> can identify light tails and incomplete exploration of the target distribution, the <code>mcmc_nuts_energy</code> function can identify overly heavy tails that are also challenging for sampling. Informally, the energy diagnostic for HMC (and the related energy-based Bayesian fraction of missing information) quantifies the heaviness of the tails of the posterior distribution.</p>
 <p>The plot created by <code>mcmc_nuts_energy</code> shows overlaid histograms of the (centered) marginal energy distribution <span class="math inline">\(\pi_E\)</span> and the first-differenced distribution <span class="math inline">\(\pi_{\Delta E}\)</span>,</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/MCMC-nuts.html">mcmc_nuts_energy</a></span>(np1)</code></pre></div>
-<p><img src="MCMCdiagnostics_files/figure-html/mcmc_nuts_energy-1-1.png" width="60%" style="display: block; margin: auto;"> To keep the chains separate add <code>merge_chains=FALSE</code>:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/MCMC-nuts.html">mcmc_nuts_energy</a></span>(np1, <span class="dt">merge_chains =</span> <span class="ot">FALSE</span>, <span class="dt">binwidth =</span> <span class="dv">1</span>)</code></pre></div>
-<p><img src="MCMCdiagnostics_files/figure-html/mcmc_nuts_energy-2-1.png" width="60%" style="display: block; margin: auto;"></p>
-<p>The two histograms ideally look the same (Betancourt, 2017), which is only the case for the non-centered parameterization (bottom panel):</p>
+<p><img src="MCMCdiagnostics_files/figure-html/mcmc_nuts_energy-1-1.png" width="60%" style="display: block; margin: auto;"></p>
+<p>The two histograms ideally look the same (Betancourt, 2017), which is only the case for the non-centered parameterization (right):</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">compare_cp_ncp</span>(
   <span class="kw"><a href="../reference/MCMC-nuts.html">mcmc_nuts_energy</a></span>(np1, <span class="dt">binwidth =</span> <span class="dv">1</span>/<span class="dv">2</span>),
-  <span class="kw"><a href="../reference/MCMC-nuts.html">mcmc_nuts_energy</a></span>(np2, <span class="dt">binwidth =</span> <span class="dv">1</span>/<span class="dv">2</span>)
+  <span class="kw"><a href="../reference/MCMC-nuts.html">mcmc_nuts_energy</a></span>(np2, <span class="dt">binwidth =</span> <span class="dv">1</span>/<span class="dv">2</span>), 
+  <span class="dt">ncol =</span> <span class="dv">2</span>
 )</code></pre></div>
 <p><img src="MCMCdiagnostics_files/figure-html/mcmc_nuts_energy-3-1.png" width="60%" style="display: block; margin: auto;"></p>
 <p>The difference between the parameterizations is even more apparent if we force the stepsize to a smaller value and help the chains explore more of the posterior:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">np1b &lt;-<span class="st"> </span><span class="kw"><a href="../reference/bayesplot-extractors.html">nuts_params</a></span>(fit1b)
 np2b &lt;-<span class="st"> </span><span class="kw"><a href="../reference/bayesplot-extractors.html">nuts_params</a></span>(fit2b)
 <span class="kw">compare_cp_ncp</span>(
-  <span class="kw"><a href="../reference/MCMC-nuts.html">mcmc_nuts_energy</a></span>(np1b),
-  <span class="kw"><a href="../reference/MCMC-nuts.html">mcmc_nuts_energy</a></span>(np2b)
+  <span class="kw"><a href="../reference/MCMC-nuts.html">mcmc_nuts_energy</a></span>(np1b), 
+  <span class="kw"><a href="../reference/MCMC-nuts.html">mcmc_nuts_energy</a></span>(np2b), 
+  <span class="dt">ncol =</span> <span class="dv">2</span>
 )</code></pre></div>
 <p><img src="MCMCdiagnostics_files/figure-html/mcmc_nuts_energy-4-1.png" width="60%" style="display: block; margin: auto;"></p>
 <p>See Betancourt (2017) for more on this particular example as well as the general theory behind the energy plots.</p>
