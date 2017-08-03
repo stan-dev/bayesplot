@@ -350,7 +350,6 @@ label_x <- function(x) {
         do.call("facet_wrap", facet_args)
     }
     graph +
-      labs(y = NULL, x = x_lab %||% expression(italic(x))) +
-      theme_default()
+      labs(y = NULL, x = x_lab %||% expression(italic(x)))
   }
 

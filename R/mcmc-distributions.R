@@ -95,6 +95,7 @@ NULL
 #' @rdname MCMC-distributions
 #' @export
 #' @template args-hist
+#' @template args-hist-freq
 #'
 mcmc_hist <- function(x,
                       pars = character(),
@@ -102,7 +103,8 @@ mcmc_hist <- function(x,
                       transformations = list(),
                       facet_args = list(),
                       ...,
-                      binwidth = NULL) {
+                      binwidth = NULL,
+                      freq = TRUE) {
   check_ignored_arguments(...)
   .mcmc_hist(
     x,
@@ -112,6 +114,7 @@ mcmc_hist <- function(x,
     facet_args = facet_args,
     binwidth = binwidth,
     by_chain = FALSE,
+    freq = freq,
     ...
   )
 }
@@ -147,7 +150,8 @@ mcmc_hist_by_chain <- function(x,
                                transformations = list(),
                                facet_args = list(),
                                ...,
-                               binwidth = NULL) {
+                               binwidth = NULL,
+                               freq = TRUE) {
   check_ignored_arguments(...)
   .mcmc_hist(
     x,
@@ -157,6 +161,7 @@ mcmc_hist_by_chain <- function(x,
     facet_args = facet_args,
     binwidth = binwidth,
     by_chain = TRUE,
+    freq = freq,
     ...
   )
 }
@@ -216,13 +221,14 @@ mcmc_violin <- function(x,
                       facet_args = list(),
                       binwidth = NULL,
                       by_chain = FALSE,
+                      freq = TRUE,
                       ...) {
   x <- prepare_mcmc_array(x, pars, regex_pars, transformations)
   if (by_chain && !has_multiple_chains(x))
     STOP_need_multiple_chains()
 
-  data <- reshape2::melt(x, value.name = "Value")
-  graph <- ggplot(data, aes_(x = ~ Value, y = ~..density..)) +
+  data <- reshape2::melt(x, value.name = "value")
+  graph <- ggplot(data, set_hist_aes(freq)) +
     geom_histogram(
       fill = get_color("mid"),
       color = get_color("mid_highlight"),
@@ -244,7 +250,6 @@ mcmc_violin <- function(x,
   }
   graph +
     dont_expand_y_axis(c(0.005, 0)) +
-    theme_default() +
     yaxis_text(FALSE) +
     yaxis_title(FALSE) +
     yaxis_ticks(FALSE) +
@@ -313,7 +318,6 @@ mcmc_violin <- function(x,
   graph +
     do.call("facet_wrap", facet_args) +
     dont_expand_y_axis(c(0.005, 0)) +
-    theme_default() +
     yaxis_text(FALSE) +
     yaxis_title(FALSE) +
     yaxis_ticks(FALSE) +

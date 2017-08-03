@@ -2,7 +2,7 @@
 % Please edit documentation in R/bayesplot-ggplot-themes.R
 \name{theme_default}
 \alias{theme_default}
-\title{Default plotting theme}
+\title{Default bayesplot plotting theme}
 \usage{
 theme_default(base_size = getOption("bayesplot.base_size", 12),
   base_family = getOption("bayesplot.base_family", "serif"))
@@ -19,11 +19,18 @@ A ggplot \link[ggplot2]{theme} object.
 }
 \description{
 The \code{\link{theme_default}} function returns the default ggplot
-\link{theme} used by the \pkg{bayesplot} plotting functions. Many of the
-individual plotting functions also make small alterations to the default
-theme using the convenience functions documented at \link{bayesplot-helpers}.
-To use a different theme simply add that theme to the ggplot objects created
-by the \pkg{bayesplot} plotting functions (see \strong{Examples}, below).
+\link{theme} used by the \pkg{bayesplot} plotting functions.
+After loading the \pkg{bayesplot} package, this theme will be the default for
+\emph{all} graphs made with \pkg{ggplot2}. See the \strong{Details} section,
+below.
+}
+\details{
+After loading \pkg{bayesplot}, if you subsequently change the
+default \pkg{ggplot2} theme (i.e., by calling
+\code{\link[ggplot2]{theme_set}} or loading a different package that changes
+the theme) then \pkg{bayesplot} will use that theme instead. To change back
+to the default \pkg{bayesplot} theme use \code{bayesplot::theme_default()} as
+the argument to \code{\link[ggplot2]{theme_set}}.
 }
 \examples{
 thm <- theme_default()
@@ -46,7 +53,12 @@ options(bayesplot.base_size = 12,
 mcmc_areas(x, regex_pars = "beta")
 
 # use one of the themes included in ggplot2
-mcmc_dens_overlay(x) + ggplot2::theme_gray()
+ggplot2::theme_set(ggplot2::theme_gray())
+mcmc_dens_overlay(x)
+
+# change back to bayesplot default theme
+ggplot2::theme_set(bayesplot::theme_default())
+mcmc_dens_overlay(x)
 
 }
 \seealso{

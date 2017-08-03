@@ -58,7 +58,7 @@ The plotting functions in \pkg{bayesplot} are organized into several modules:
  To ask a question about \pkg{bayesplot} on the Stan-users
  forum please visit
 
- \url{https://groups.google.com/forum/#!forum/stan-users/}.
+ \url{http://discourse.mc-stan.org}.
 }
 }
 }
