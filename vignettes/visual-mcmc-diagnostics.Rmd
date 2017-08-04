@@ -381,17 +381,17 @@ particular Markov chain on the plot for all chains combined:
 mcmc_nuts_divergence(np1, lp1, chain = 4)
 ```
 
-For the non-centered parameterization we also had warnings about divergences
+For the non-centered parameterization we may get a few warnings about
+divergences but if we do we'll have far fewer of them to worry about.
 
 ```{r, mcmc_nuts_divergence-2}
 mcmc_nuts_divergence(np2, lp2)
 ```
 
-but we have far fewer of them to worry about. If there are only a few 
-divergences we can often get rid of them by increasing the target acceptance 
-rate (`adapt_delta`), which has the effect of lowering the stepsize used by the 
-sampler and allowing the Markov chains to explore more complicated curvature in
-the target distribution.
+If there are only a few divergences we can often get rid of them by increasing
+the target acceptance rate (`adapt_delta`), which has the effect of lowering the
+stepsize used by the sampler and allowing the Markov chains to explore more
+complicated curvature in the target distribution.
 
 ```{r, fit-adapt-delta, results='hide',message=FALSE}
 fit1b <- sampling(schools_mod1, data = schools_dat,
@@ -467,8 +467,8 @@ Betancourt, M. and Girolami, M. (2013). Hamiltonian Monte Carlo for hierarchical
 models. https://arxiv.org/abs/1312.0906
 
 Gabry, J., and Goodrich, B. (2017). rstanarm: Bayesian Applied Regression
-Modeling via Stan. R package version 2.14.1.
-http://mc-stan.org/interfaces/rstanarm.html, https://CRAN.R-project.org/package=rstanarm
+Modeling via Stan. R package version 2.15.3.
+http://mc-stan.org/users/interfaces/rstanarm.html, https://CRAN.R-project.org/package=rstanarm
 
 Gelman, A. and Rubin, D. B. (1992). Inference from iterative simulation using
 multiple sequences. *Statistical Science*. 7(4): 457--472.
@@ -482,5 +482,8 @@ Hoffman, M. D. and Gelman, A. (2014). The No-U-Turn Sampler: adaptively setting 
 Rubin, D. B. (1981). Estimation in Parallel Randomized Experiments. *Journal of
 Educational and Behavioral Statistics*. 6:377–401.
 
-Stan Development Team. (2016). *Stan Modeling Language Users
-Guide and Reference Manual*. http://mc-stan.org/documentation/
+Stan Development Team. (2017). *Stan Modeling Language Users
+Guide and Reference Manual*. http://mc-stan.org/users/documentation/
+
+Stan Development Team. (2017). RStan: the R interface to Stan. R package version 2.16.2.
+http://mc-stan.org/users/interfaces/rstan.html, https://CRAN.R-project.org/package=rstanarm
