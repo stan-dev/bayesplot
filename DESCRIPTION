@@ -15,6 +15,7 @@ License: GPL (>= 3)
 LazyData: TRUE
 URL: http://mc-stan.org/, http://discourse.mc-stan.org
 BugReports: https://github.com/stan-dev/bayesplot/issues/
+SystemRequirements:	pandoc
 Depends:
     R (>= 3.1.0)
 Imports:
