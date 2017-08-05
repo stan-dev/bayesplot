@@ -250,8 +250,7 @@ mcmc_areas <- function(x,
         y = ~ y,
         group = ~ name,
         color = if (!color_by_rhat) NULL else ~ rhat
-      ),
-      lineend = "round"
+      )
     )
     if (!color_by_rhat)
       dens_args$color <- get_color("d")
@@ -357,8 +356,8 @@ mcmc_areas <- function(x,
         y = ~ y,
         yend = ~ y
       ),
-      colour = get_color("m"),
-      lineend = "round")
+      colour = get_color("m")
+    )
 
     # inner interval
     segment_args <- list(
@@ -370,7 +369,6 @@ mcmc_areas <- function(x,
         color = if (!color_by_rhat) NULL else ~ rhat
       ),
       size = 2,
-      lineend = "round",
       show.legend = FALSE
     )
     if (!color_by_rhat)
