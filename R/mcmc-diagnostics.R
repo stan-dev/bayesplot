@@ -72,10 +72,8 @@
 #' color_scheme_set("pink")
 #' (p <- mcmc_acf_bar(x, pars = c("alpha", "beta[1]")))
 #'
-#' # add tick marks on y axis and horiztonal dashed line at 0.5
-#' p +
-#'  yaxis_ticks() +
-#'  hline_at(0.5, linetype = 2, size = 0.15, color = "gray")
+#' # add horiztonal dashed line at 0.5
+#' p + hline_at(0.5, linetype = 2, size = 0.15, color = "gray")
 #' }
 #'
 #' # fake rhat values to use for demonstration
@@ -106,11 +104,11 @@
 #' rhats <- rhat(fit)
 #' ratios <- neff_ratio(fit)
 #' mcmc_rhat(rhats)
-#' mcmc_neff(ratios)
+#' mcmc_neff(ratios, size = 3)
 #'
 #' # there's a small enough number of parameters in the
 #' # model that we can display their names on the y-axis
-#' mcmc_neff(ratios) + yaxis_text()
+#' mcmc_neff(ratios) + yaxis_text(hjust = 1)
 #'
 #' # can also look at autocorrelation
 #' draws <- as.array(fit)
@@ -242,9 +240,12 @@ mcmc_neff <- function(ratio, ..., size = NULL) {
     labs(y = NULL, x = expression(N[eff]/N)) +
     scale_fill_diagnostic("neff") +
     scale_color_diagnostic("neff") +
-    scale_x_continuous(breaks = c(0.1, seq(0, 1, .25)),
-                       limits = c(0, 1), expand = c(0,.01)) +
-    scale_y_discrete(expand = c(.025,0)) +
+    scale_x_continuous(
+      breaks = c(0, 0.1, 0.25, 0.5, 0.75, 1),
+      labels = c("0", "0.1", "0.25", "0.5", "0.75", "1"),
+      limits = c(0, 1.05),
+      expand = c(0, 0)
+    ) +
     yaxis_text(FALSE) +
     yaxis_title(FALSE) +
     yaxis_ticks(FALSE)

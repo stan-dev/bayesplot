@@ -2,7 +2,7 @@ Package: bayesplot
 Type: Package
 Title: Plotting for Bayesian Models
 Version: 1.3.0
-Date: 2017-08-01
+Date: 2017-08-05
 Authors@R: c(person("Jonah", "Gabry", role = c("aut", "cre"), email = "jsg2201@columbia.edu"),
              person("Paul-Christian", "Buerkner", role = "ctb"))
 Maintainer: Jonah Gabry <jsg2201@columbia.edu>
@@ -10,7 +10,7 @@ Description: Plotting functions for posterior analysis, model checking,
     and MCMC diagnostics. The package is designed not only to provide convenient
     functionality for users, but also a common set of functions that can be
     easily used by developers working on a variety of R packages for Bayesian
-    modeling, particularly (but not exclusively) packages interfacing with Stan.
+    modeling, particularly (but not exclusively) packages interfacing with 'Stan'.
 License: GPL (>= 3)
 LazyData: TRUE
 URL: http://mc-stan.org/, http://discourse.mc-stan.org
