@@ -1,3 +1,63 @@
+# Prepare 3-D array for MCMC plots
+#
+# @param x,pars,regex_pars,transformations Users's arguments to one of the
+#   mcmc_* functions.
+# @return A 3-D (Iterations x Chains x Parameters) array.
+#
+prepare_mcmc_array <-
+  function(x,
+           pars = character(),
+           regex_pars = character(),
+           transformations = list()) {
+
+    if (is_df_with_chain(x)) {
+      x <- df_with_chain2array(x)
+    } else if (is_chain_list(x)) {
+      x <- chain_list2array(x)
+    }
+    x <- validate_mcmc_x(x)
+
+    parnames <- parameter_names(x)
+    pars <-
+      select_parameters(explicit = pars,
+                        patterns = regex_pars,
+                        complete = parnames)
+
+    # possibly recycle transformations (apply same to all pars)
+    if (is.function(transformations) ||
+        (is.character(transformations) && length(transformations) == 1)) {
+      transformations <- rep(list(transformations), length(pars))
+      transformations <- setNames(transformations, pars)
+    }
+
+    if (is.matrix(x)) {
+      x <- x[, pars, drop=FALSE]
+      if (length(transformations))
+        x <- apply_transformations(x, transformations)
+      x <- array(x, dim = c(nrow(x), 1, ncol(x)))
+    } else {
+      x <- x[, , pars, drop = FALSE]
+      if (length(transformations))
+        x <- apply_transformations(x, transformations)
+    }
+
+    pars <- rename_transformed_pars(pars, transformations)
+    set_mcmc_dimnames(x, pars)
+  }
+
+# Convert 3-D array to matrix with chains merged
+#
+# @param x A 3-D array (iter x chain x param)
+# @return A matrix with one column per parameter
+#
+merge_chains <- function(x) {
+  xdim <- dim(x)
+  mat <- array(x, dim = c(prod(xdim[1:2]), xdim[3]))
+  colnames(mat) <- parameter_names(x)
+  mat
+}
+
+
 # Check if an object is a data.frame with a chain index column
 #
 # @param x object to check
@@ -156,64 +216,6 @@ STOP_need_multiple_chains <- function(call. = FALSE) {
   stop("This function requires multiple chains.", call. = call.)
 }
 
-
-# Prepare 3-D array for MCMC plots
-#
-# @param x User's 'x' input to one of the mcmc_* functions.
-# @return A 3-D (Iterations x Chains x Parameters) array.
-#
-prepare_mcmc_array <-
-  function(x,
-           pars = character(),
-           regex_pars = character(),
-           transformations = list()) {
-
-    if (is_df_with_chain(x)) {
-      x <- df_with_chain2array(x)
-    } else if (is_chain_list(x)) {
-      x <- chain_list2array(x)
-    }
-    x <- validate_mcmc_x(x)
-
-    parnames <- parameter_names(x)
-    pars <-
-      select_parameters(explicit = pars,
-                        patterns = regex_pars,
-                        complete = parnames)
-
-    # possibly recycle transformations (apply same to all pars)
-    if (is.function(transformations) ||
-        (is.character(transformations) && length(transformations) == 1)) {
-      transformations <- rep(list(transformations), length(pars))
-      transformations <- setNames(transformations, pars)
-    }
-
-    if (is.matrix(x)) {
-      x <- x[, pars, drop=FALSE]
-      if (length(transformations))
-        x <- apply_transformations(x, transformations)
-      x <- array(x, dim = c(nrow(x), 1, ncol(x)))
-    } else {
-      x <- x[, , pars, drop = FALSE]
-      if (length(transformations))
-        x <- apply_transformations(x, transformations)
-    }
-
-    pars <- rename_transformed_pars(pars, transformations)
-    set_mcmc_dimnames(x, pars)
-  }
-
-# Convert 3-D array to matrix with chains merged
-#
-# @param x A 3-D array (iter x chain x param)
-# @return A matrix with one column per parameter
-#
-merge_chains <- function(x) {
-  xdim <- dim(x)
-  mat <- array(x, dim = c(prod(xdim[1:2]), xdim[3]))
-  colnames(mat) <- parameter_names(x)
-  mat
-}
 
 # Perform some checks on user's 'x' input for MCMC plots
 #

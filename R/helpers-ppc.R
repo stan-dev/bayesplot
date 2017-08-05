@@ -89,7 +89,9 @@ validate_x <- function(x, y, unique_x = FALSE) {
   if (missing(x)) {
     if (inherits(y, "ts") && is.null(dim(y))) {
       return(stats::time(y))
-    } else return(1:length(y))
+    } else {
+      return(1:length(y))
+    }
   }
 
   stopifnot(is.numeric(x))
@@ -154,7 +156,7 @@ melt_and_stack <- function(y, yrep, label = TRUE) {
 
 # Prepare data for use in PPCs by group
 #
-# @param y,yrep,group Validated y, yrep, and group objects from the user.
+# @param y,yrep,group Validated y, yrep, and group objects.
 # @param stat Either NULL or a string naming a function.
 # @value If \code{stat} is NULL, a molten data frame grouped by group and
 #   variable. If \code{stat} specifies a function then a summary table created
@@ -176,14 +178,6 @@ ppc_group_data <- function(y, yrep, group, stat = NULL) {
     stat <- match.fun(stat)
 
   dplyr::summarise_(molten_d, value = ~stat(value))
-}
-
-# set mapping depending on freq argument
-set_hist_aes <- function(freq = TRUE, ...) {
-  if (freq)
-    aes_(x = ~ value, ...)
-  else
-    aes_(x = ~ value, y = ~ ..density.., ...)
 }
 
 # check if x consists of whole numbers (very close to integers)

@@ -174,7 +174,6 @@ plot.bayesplot_scheme <- function(x, ...) {
 #' @rdname bayesplot-colors
 #' @export
 color_scheme_view <- function(scheme) {
-  suggested_package("gridExtra")
   if (missing(scheme) || length(scheme) == 1)
     return(.view_scheme(scheme))
 
