@@ -73,7 +73,7 @@ package we'll use an example of comparing Poisson and Negative binomial
 regression models from the
 [**rstanarm**](https://CRAN.R-project.org/package=rstanarm) package
 vignette [_stan_glm: GLMs for Count
-Data_](https://CRAN.R-project.org/package=rstanarm/vignettes/count.html) (Gabry and Goodrich, 2016).
+Data_](https://CRAN.R-project.org/package=rstanarm/vignettes/count.html) (Gabry and Goodrich, 2017).
 
 > We want to make inferences about the efficacy of a certain pest management system at reducing the number of roaches in urban apartments. [...] 
 The regression predictors for the model are the pre-treatment number of roaches `roach1`, the treatment indicator `treatment`, and a variable `senior` indicating whether the apartment is in a building restricted to elderly residents. Because the number of days for which the roach traps were used is not the same for all apartments in the sample, we include it as an exposure [...]. 
