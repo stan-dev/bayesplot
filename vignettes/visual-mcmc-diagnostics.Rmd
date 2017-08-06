@@ -192,7 +192,6 @@ But regardless of how you fit your model, all **bayesplot** needs is a vector of
 $\hat{R}$ values.
 
 ```{r print-rhats}
-library("bayesplot")
 rhats <- rhat(fit_cp_100iter)
 print(rhats)
 ```
@@ -328,13 +327,12 @@ available_mcmc(pattern = "_nuts_")
 ```
 
 The **bayesplot** package also provides generic functions `log_posterior` and 
-`nuts_params` for extracting the required information for the plots from fitted
+`nuts_params` for extracting the required information for the plots from fitted 
 model objects. Currently methods are provided for models fit using the **rstan**
-and **rstanarm** packages, although it is not difficult to define additional
-methods for the objects returned by other R packages.
-
-For the Stan models we fit above we can use the `log_posterior` and
-`nuts_params` methods for stanfit objects:
+and **rstanarm** packages, although it is not difficult to define additional 
+methods for the objects returned by other R packages. For the Stan models we fit
+above we can use the `log_posterior` and `nuts_params` methods for stanfit
+objects:
 
 ```{r, extract-nuts-info}
 lp_cp <- log_posterior(fit_cp)
@@ -354,9 +352,9 @@ there were warnings about divergent transitions.
 For an explanation of these warnings see [Divergent transitions after warmup](http://mc-stan.org/misc/warnings.html#divergent-transitions-after-warmup).
 
 The `divergences` argument to the `mcmc_trace` function can be used to add a rug
-plot (in red) of the divergences to a trace plot of parameter draws.
-Typically we can see that at least one of the chains is getting stuck wherever 
-there is a cluster of many red marks:
+plot (in red) of the divergences to a trace plot of parameter draws. Typically
+we can see that at least one of the chains is getting stuck wherever there is a
+cluster of many red marks:
 
 ```{r, mcmc_trace}
 color_scheme_set("mix-brightblue-gray")
@@ -406,9 +404,8 @@ fit_ncp_2 <- sampling(schools_mod_ncp, data = schools_dat,
                       control = list(adapt_delta = 0.99))
 ```
 
-For the first model and this particular data, increasing
-`adapt_delta` will not solve the problem and a reparameterization 
-is required. 
+For the first model and this particular data, increasing `adapt_delta` will not
+solve the problem and a reparameterization is required.
 
 
 ```{r, mcmc_nuts_divergence-3}
@@ -482,7 +479,9 @@ Gelman, A., Carlin, J. B., Stern, H. S., Dunson, D. B., Vehtari, A., and Rubin,
 D. B. (2013). *Bayesian Data Analysis*. Chapman & Hall/CRC Press, London, third
 edition.
 
-Hoffman, M. D. and Gelman, A. (2014). The No-U-Turn Sampler: adaptively setting path lengths in Hamiltonian Monte Carlo. *Journal of Machine Learning Research*. 15:1593--1623.
+Hoffman, M. D. and Gelman, A. (2014). The No-U-Turn Sampler: adaptively setting
+path lengths in Hamiltonian Monte Carlo. *Journal of Machine Learning Research*.
+15:1593--1623.
 
 Rubin, D. B. (1981). Estimation in Parallel Randomized Experiments. *Journal of
 Educational and Behavioral Statistics*. 6:377–401.

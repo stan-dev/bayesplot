@@ -311,7 +311,7 @@ mcmc_areas <- function(x,
         yend = ~ maxy,
         color = if (!color_by_rhat) NULL else ~ rhat
       ),
-      size = 1.25
+      size = 1
     )
     if (!color_by_rhat)
       segment_args$color <- get_color("m")

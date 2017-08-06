@@ -15,6 +15,10 @@ params:
 
 ```{r, child="children/SETTINGS-knitr.txt"}
 ```
+```{r, pkgs, include=FALSE}
+library("ggplot2")
+library("rstanarm")
+```
 
 This vignette focuses on graphical posterior predictive checks (PPC). Plots of parameter estimates
 from MCMC draws are covered in the separate vignette
@@ -22,23 +26,34 @@ from MCMC draws are covered in the separate vignette
 and MCMC diagnostics are covered in 
 [Visual MCMC diagnostics using the bayesplot package](MCMC-diagnostics.html).
 
+In addition to **bayesplot** we'll load the following packages: 
+
+* __ggplot2__ for customizing the ggplot objects created by **bayesplot**
+* __rstanarm__ for fitting the example models used throughout the vignette
+
+```{r, eval=FALSE}
+library("bayesplot")
+library("ggplot2")
+library("rstanarm")      
+```
+
 ## Overview
 
-The __bayesplot__ package provides various plotting functions for 
+The **bayesplot** package provides various plotting functions for 
 _graphical posterior predictive checking_, that is, creating graphical displays
 comparing observed data to simulated data from the posterior predictive
 distribution.
 
-The idea behind posterior predictive checking is simple: if a model is a
-good fit then we should be able to use it to generate data that looks a lot like
-the data we observed.
+The idea behind posterior predictive checking is simple: if a model is a good
+fit then we should be able to use it to generate data that looks a lot like the
+data we observed.
 
 #### Posterior predictive distribution
 To generate the data used for posterior predictive checks (PPCs) we simulate 
 from the _posterior predictive distribution_ The posterior predictive 
 distribution is the distribution of the outcome variable implied by a model 
 after using the observed data $y$ (a vector of $N$ outcome values) to update our
-beliefs about unknown model parameters $\theta$. The posterior predictive
+beliefs about unknown model parameters $\theta$. The posterior predictive 
 distribution for observation $\widetilde{y}$ can be written as
 $$p(\widetilde{y} \,|\, y) = \int
 p(\widetilde{y} \,|\, \theta) \, p(\theta \,|\, y) \, d\theta.$$
@@ -46,51 +61,64 @@ Typically we will also condition on $X$ (a matrix of predictor variables).
 
 For each draw (simulation) $s = 1, \ldots, S$ of the parameters from the 
 posterior distribution, $\theta^{(s)} \sim p(\theta \,|\, y)$, we draw an entire
-vector of $N$ outcomes $\widetilde{y}^{(s)}$ from the posterior predictive distribution
-by simulating from the data model conditional on parameters $\theta^{(s)}$.
-The result is an $S \times N$ matrix of draws $\widetilde{y}$.
+vector of $N$ outcomes $\widetilde{y}^{(s)}$ from the posterior predictive
+distribution by simulating from the data model conditional on parameters
+$\theta^{(s)}$. The result is an $S \times N$ matrix of draws $\widetilde{y}$.
 
 When simulating from the posterior predictive distribution we can use either the
 same values of the predictors $X$ that we used when fitting the model or new 
 observations of those predictors. When we use the same values of $X$ we denote 
 the resulting simulations by $y^{rep}$, as they can be thought of as 
 replications of the outcome $y$ rather than predictions for future observations 
-($\widetilde{y}$ using predictors $\widetilde{X}$). This corresponds to the notation 
-from Gelman et. al. (2013) and is the notation used throughout the package 
-documentation.
+($\widetilde{y}$ using predictors $\widetilde{X}$). This corresponds to the
+notation from Gelman et. al. (2013) and is the notation used throughout the
+package documentation.
 
 
 ## Graphical posterior predictive checks
 
 Using the replicated datasets drawn from the posterior predictive
-distribution, the functions in the __bayesplot__ package create various
+distribution, the functions in the **bayesplot** package create various
 graphical displays comparing the observed data $y$ to the replications.
-The names of the __bayesplot__ plotting functions for posterior predictive
+The names of the **bayesplot** plotting functions for posterior predictive
 checking all have the prefix `ppc_`. 
 
-To demonstrate some of the various PPCs that can be created with the __bayesplot__ 
-package we'll use an example of comparing Poisson and Negative binomial
-regression models from the
-[**rstanarm**](https://CRAN.R-project.org/package=rstanarm) package
-vignette [_stan_glm: GLMs for Count
-Data_](https://CRAN.R-project.org/package=rstanarm/vignettes/count.html) (Gabry and Goodrich, 2017).
+To demonstrate some of the various PPCs that can be created with the
+**bayesplot** package we'll use an example of comparing Poisson and Negative
+binomial regression models from the
+[**rstanarm**](https://CRAN.R-project.org/package=rstanarm) 
+package vignette 
+[_stan_glm: GLMs for Count Data_](https://CRAN.R-project.org/package=rstanarm/vignettes/count.html) 
+(Gabry and Goodrich, 2017).
 
-> We want to make inferences about the efficacy of a certain pest management system at reducing the number of roaches in urban apartments. [...] 
-The regression predictors for the model are the pre-treatment number of roaches `roach1`, the treatment indicator `treatment`, and a variable `senior` indicating whether the apartment is in a building restricted to elderly residents. Because the number of days for which the roach traps were used is not the same for all apartments in the sample, we include it as an exposure [...]. 
+> We want to make inferences about the efficacy of a certain pest management system at reducing the number of roaches in urban apartments. [...] The regression predictors for the model are the pre-treatment number of roaches `roach1`, the treatment indicator `treatment`, and a variable `senior` indicating whether the apartment is in a building restricted to elderly residents. Because the number of days for which the roach traps were used is not the same for all apartments in the sample, we include it as an exposure [...]. 
 
 First we fit a Poisson regression model with outcome variable `y` representing 
 the roach count in each apartment at the end of the experiment.
 
-```{r, roaches-model, results="hide", message=FALSE,warning=FALSE}
-library("rstanarm")
+```{r, roaches-data}
 head(roaches) # see help("rstanarm-datasets")
-
 roaches$roach1 <- roaches$roach1 / 100 # pre-treatment number of roaches (in 100s)
-fit_poisson <- stan_glm(y ~ roach1 + treatment + senior,
-                        offset = log(exposure2),
-                        family = poisson(link = "log"),
-                        data = roaches,
-                        seed = 1111)
+```
+
+```{r, eval=FALSE}
+fit_poisson <- stan_glm(
+  y ~ roach1 + treatment + senior,
+  offset = log(exposure2),
+  family = poisson(link = "log"),
+  data = roaches,
+  seed = 1111
+  )
+```
+
+```{r, roaches-model, include=FALSE}
+fit_poisson <- stan_glm(
+  y ~ roach1 + treatment + senior,
+  offset = log(exposure2),
+  family = poisson(link = "log"),
+  data = roaches,
+  seed = 1111
+  )
 ```
 
 ```{r, print}
@@ -99,7 +127,10 @@ print(fit_poisson)
 
 We'll also fit the negative binomial model that we'll compare to the poisson:
 
-```{r, roaches-model-2, results="hide", message=FALSE,warning=FALSE}
+```{r, eval=FALSE}
+fit_nb <- update(fit_poisson, family = "neg_binomial_2")
+```
+```{r, roaches-model-2, include=FALSE}
 fit_nb <- update(fit_poisson, family = "neg_binomial_2")
 ```
 
@@ -107,7 +138,7 @@ fit_nb <- update(fit_poisson, family = "neg_binomial_2")
 print(fit_nb)
 ```
 
-In order to use the PPC functions from the __bayesplot__ package we need
+In order to use the PPC functions from the **bayesplot** package we need
 a matrix of draws from the posterior predictive distribution. Since we fit 
 the models using __rstanarm__ we can use its `posterior_predict` function:
 
@@ -128,9 +159,6 @@ The first PPC we'll look at is a comparison of the distribution of `y` and the
 distributions of some of the simulated datasets (rows) in the `yrep` matrix.
 
 ```{r ppc_dens_overlay}
-library("ggplot2")
-library("bayesplot")
-
 color_scheme_set("brightblue") # see help("bayesplot-colors")
 
 y <- roaches$y
@@ -245,17 +273,17 @@ available_ppc(pattern = "_grouped")
 
 ## Providing an interface to bayesplot PPCs from another package
 
-The __bayesplot__ package provides the S3 generic function `pp_check`. Authors of
+The **bayesplot** package provides the S3 generic function `pp_check`. Authors of
 R packages for Bayesian inference are encouraged to define methods for the
 fitted model objects created by their packages. This will hopefully be
 convenient for both users and developers and contribute to the use of the same
 naming conventions across many of the R packages for Bayesian data analysis.
 
-To provide an interface to __bayesplot__ from your package, you can very 
+To provide an interface to **bayesplot** from your package, you can very 
 easily define a `pp_check` method (or multiple `pp_check` methods) for the
 fitted model objects created by your package. All a `pp_check` method needs to
 do is provide the `y` vector and `yrep` matrix arguments to the various plotting
-functions included in __bayesplot__.
+functions included in **bayesplot**.
 
 ### Defining a `pp_check` method
 
@@ -263,20 +291,23 @@ Here is an example for how to define a simple `pp_check` method in a package
 that creates fitted model objects of class `"foo"`. We will define a method
 `pp_check.foo` that extracts the data `y` and the draws from the posterior
 predictive distribution `yrep` from an object of class `"foo"` and then calls 
-one of the plotting functions from __bayesplot__.
+one of the plotting functions from **bayesplot**.
 
 Suppose that objects of class `"foo"` are lists with named components, two of 
 which are `y` and `yrep`. Here's a simple method `pp_check.foo` that offers the
 user the option of two different plots:
 
 ```{r, pp_check.foo}
-pp_check.foo <- function(object, ..., type = c("multiple", "overlaid")) {
+# @param object An object of class "foo".
+# @param type The type of plot.
+# @param ... Optional arguments passed to the bayesplot plotting function.
+pp_check.foo <- function(object, type = c("multiple", "overlaid"), ...) {
   y <- object[["y"]]
   yrep <- object[["yrep"]]
   switch(
     match.arg(type),
-    multiple = ppc_hist(y, yrep[1:min(8, nrow(yrep)),, drop = FALSE]),
-    overlaid = ppc_dens_overlay(y, yrep)
+    multiple = ppc_hist(y, yrep[1:min(5, nrow(yrep)),, drop = FALSE], ...),
+    overlaid = ppc_dens_overlay(y, yrep, ...)
   )
 }
 ```
@@ -289,23 +320,25 @@ x <- list(y = rnorm(50), yrep = matrix(rnorm(5000), nrow = 100, ncol = 50))
 class(x) <- "foo"
 ```
 ```{r, pp_check-1, eval=FALSE}
-pp_check(x)
+color_scheme_set("purple")
+pp_check(x, type = "multiple", binwidth = 0.25)
 ```
 ```{r, print-1, echo=FALSE}
-gg <- pp_check(x)
+color_scheme_set("purple")
+gg <- pp_check(x, type = "multiple", binwidth = 0.25)
 suppressMessages(print(gg))
 ```
 ```{r, pp_check-2}
+color_scheme_set("darkgray")
 pp_check(x, type = "overlaid")
 ```
 
 ### Examples of `pp_check` methods in other packages
 
-Several packages currently (or will soon) use this approach to provide an 
-interface to **bayesplot**'s graphical posterior predictive checks. See, for 
-example, the `pp_check` methods in the
-[**rstanarm**](https://github.com/stan-dev/rstanarm) 
-and [**brms**](https://github.com/paul-buerkner/brms) packages.
+Several packages currently use this approach to provide an interface to
+**bayesplot**'s graphical posterior predictive checks. See, for example, the
+`pp_check` methods in the [**rstanarm**](https://CRAN.R-project.org/package=rstanarm) 
+and [**brms**](https://CRAN.R-project.org/package=brms) packages.
 
 ## References
 

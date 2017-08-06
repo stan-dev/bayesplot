@@ -15,12 +15,27 @@ params:
 
 ```{r, child="children/SETTINGS-knitr.txt"}
 ```
+```{r, pkgs, include=FALSE}
+library("ggplot2")
+library("rstanarm")
+```
 
 This vignette focuses on plotting parameter estimates from MCMC draws. MCMC 
 diagnostic plots are covered in the separate vignette
 [Visual MCMC diagnostics using the bayesplot package](MCMC-diagnostics.html), 
 and graphical posterior predictive checks are covered in 
 [Graphical posterior predictive checks using the bayesplot package](PPC.html).
+
+In addition to __bayesplot__ we'll load the following packages: 
+
+* __ggplot2__ for customizing the ggplot objects created by __bayesplot__
+* __rstanarm__ for fitting the example models used throughout the vignette
+
+```{r, eval=FALSE}
+library("bayesplot")
+library("ggplot2")
+library("rstanarm")      
+```
 
 ## Plots for MCMC draws
 
@@ -31,30 +46,22 @@ parameters of a Bayesian model.
 In this vignette we'll use draws obtained using the `stan_glm` function in the 
 **rstanarm** package (Gabry and Goodrich, 2017), but MCMC draws from using 
 any package can be used with the functions in the **bayesplot** package. See,
-for example, **brms** (which, like **rstanarm**, calls the **rstan** package
-internally to use [Stan](http://mc-stan.org/)'s MCMC sampler).
+for example, **brms**, which, like **rstanarm**, calls the **rstan** package
+internally to use [Stan](http://mc-stan.org/)'s MCMC sampler.
 
-```{r, eval=FALSE, results='hide'}
-library("rstanarm")
-fit <- stan_glm(
-  mpg ~ ., # ~ . includes all other variables in dataset
-  data = mtcars, 
-  chains = 4, 
-  iter = 2000,
-  seed = 1111
-)
+```{r, mtcars}
+head(mtcars) # see help("mtcars")
+```
+
+```{r, eval=FALSE}
+fit <- stan_glm(mpg ~ .,  # '.' means includes all variables
+                data = mtcars, 
+                seed = 1111)
 print(fit)
 ```
 
-```{r stan_glm, echo=FALSE, results='hide'}
-suppressPackageStartupMessages(library("rstanarm"))
-fit <- stan_glm(
-  mpg ~ ., 
-  data = mtcars, 
-  chains = 4, 
-  iter = 2000,
-  seed = 1111
-)
+```{r stan_glm, include=FALSE}
+fit <- stan_glm(mpg ~ ., data = mtcars, seed = 1111)
 ```
 
 ```{r, print-fit, echo=FALSE}
@@ -76,7 +83,6 @@ Posterior intervals for the parameters can be plotted using the `mcmc_intervals`
 function.
 
 ```{r, mcmc_intervals}
-library("bayesplot")
 color_scheme_set("red")
 mcmc_intervals(posterior, pars = c("cyl", "drat", "am", "sigma"))
 ```
@@ -113,23 +119,23 @@ The `mcmc_hist` and `mcmc_dens` functions plot posterior distributions (combinin
 
 ```{r, mcmc_hist, message=FALSE}
 color_scheme_set("green")
-mcmc_hist(posterior, pars = c("wt", "am"))
-mcmc_dens(posterior, pars = c("wt", "am"))
+mcmc_hist(posterior, pars = c("wt", "sigma"))
+mcmc_dens(posterior, pars = c("wt", "sigma"))
 ```
 
-To view the four Markov chain separately we can use  `mcmc_hist_by_chain`, `mcmc_dens_overlay`:
+To view the four Markov chain separately we can use  `mcmc_hist_by_chain`, `mcmc_dens_overlay`, and `mcmc_violin`:
 
 ```{r, mcmc_hist_by_chain, message=FALSE}
 color_scheme_set("brightblue")
-mcmc_hist_by_chain(posterior, pars = c("wt", "am"))
-mcmc_dens_overlay(posterior, pars = c("wt", "am"))
+mcmc_hist_by_chain(posterior, pars = c("wt", "sigma"))
+mcmc_dens_overlay(posterior, pars = c("wt", "sigma"))
 ```
 
-The `mcmc_violin` function also plots the density estimates of 
-each chain as violins with horizontal lines at user-specified quantiles:
+The `mcmc_violin` function plots the density estimates of each chain as violins
+with horizontal lines at user-specified quantiles:
 
 ```{r, mcmc_violin}
-mcmc_violin(posterior, pars = c("wt", "am"), probs = c(0.1, 0.5, 0.9))
+mcmc_violin(posterior, pars = c("wt", "sigma"), probs = c(0.1, 0.5, 0.9))
 ```
 
 ### Scatterplots
@@ -138,7 +144,8 @@ The `mcmc_scatter` function creates a scatterplot with two parameters:
 
 ```{r, mcmc_scatter}
 color_scheme_set("gray")
-mcmc_scatter(posterior, pars = c("(Intercept)", "wt"), size = 1.5, alpha = 0.5)
+mcmc_scatter(posterior, pars = c("(Intercept)", "wt"), 
+             size = 1.5, alpha = 0.5)
 ```
 
 The `mcmc_hex` function creates a similar plot but using hexagonal binning, which can be useful to avoid overplotting:
