@@ -132,6 +132,7 @@ model {
   y ~ normal(theta, sigma);
 }
 ```
+
 The centered and non-centered are two parameterizations of the same statistical 
 model, but they have very different practical implications for MCMC. Using the 
 __bayesplot__ diagnostic plots, we'll see that, for this data, the NCP is 
@@ -157,9 +158,9 @@ posterior_cp <- as.array(fit_cp)
 posterior_ncp <- as.array(fit_ncp)
 ```
 
-For now ignore any warnings about divergent transitions after warmup. We will
-come back to those later in the vignette in the [Diagnostics for the No-U-Turn
-Sampler](#diagnostics-for-the no-u-turn-sampler) section.
+For now ignore any warnings issued by the sampler. We will come back to them
+later in the [Diagnostics for the No-U-Turn Sampler](#diagnostics-for-the
+no-u-turn-sampler) section.
 
 
 ### Rhat: potential scale reduction statistic
@@ -181,23 +182,24 @@ First we'll quickly fit one of the models above again, this time intentionally
 using too few MCMC iterations. This should lead to some high $\hat{R}$ values.
 
 ```{r, results='hide'}
-fit_cp_50iter <- sampling(schools_mod_cp, data = schools_dat, chains = 2, iter = 50)
+fit_cp_100iter <- sampling(schools_mod_cp, data = schools_dat, 
+                           chains = 2, iter = 100)
 ```
 
-**bayesplot** also provides a generic `rhat` extractor function,
-currently with methods defined for models fit using the **rstan** and
-**rstanarm** packages. But regardless of how you fit your model, all
-**bayesplot** needs is a vector of $\hat{R}$ values.
+**bayesplot** provides a generic `rhat` extractor function, currently with
+methods defined for models fit using the **rstan** and **rstanarm** packages.
+But regardless of how you fit your model, all **bayesplot** needs is a vector of
+$\hat{R}$ values.
 
 ```{r print-rhats}
 library("bayesplot")
-rhats <- rhat(fit_cp_50iter)
+rhats <- rhat(fit_cp_100iter)
 print(rhats)
 ```
 
 We can visualize the $\hat{R}$ values with the `mcmc_rhat` function:
 
-```{r mcmc_rhat}
+```{r mcmc_rhat-1}
 color_scheme_set("brightblue") # see help("color_scheme_set")
 mcmc_rhat(rhats)
 ```
@@ -206,21 +208,21 @@ In the plot, the points representing the $\hat{R}$ values are colored based on
 whether they are less than $1.05$, between $1.05$ and $1.1$, or greater than
 $1.1$.
 
-We can see the names of the parameters with the concerning $\hat{R}$ values by
-turning on the $y$-axis text using the `yaxis_text` convenience function:
+The axis $y$-axis text is off by default for this plot because it's only 
+possible to see the labels clearly for models with very few parameters. We can
+see the names of the parameters with the concerning $\hat{R}$ values using the
+`yaxis_text` convenience function (which passes arguments like `hjust` to
+`ggplot2::element_text`):
 
 ```{r, mcmc_rhat-2}
-mcmc_rhat(rhats) + yaxis_text()
+mcmc_rhat(rhats) + yaxis_text(hjust = 1)
 ```
-
-The axis $y$-axis text is off by default for this plot because it's only
-possible to see the labels clearly for models with very few parameters.
 
 If we look at the same model fit using longer Markov chains we should see all
 $\hat{R} < 1.1$, and all points in the plot the same (light) color:
 
-```{r, results='hide'}
-mcmc_rhat(rhat = rhat(fit_cp)) + yaxis_text()
+```{r, mcmc_rhat-3}
+mcmc_rhat(rhat = rhat(fit_cp)) + yaxis_text(hjust = 0)
 ```
 
 We can see the same information shown by `mcmc_rhat` but in histogram form using
@@ -239,12 +241,13 @@ larger the ratio of $n_{eff}$ to $N$ the better.
 The **bayesplot** package provides a generic `neff_ratio` extractor function,
 currently with methods defined for models fit using the **rstan** and
 **rstanarm** packages. But regardless of how you fit your model, all
-**bayesplot** needs is a vector of $n_{eff}/N$ values. The `mcmc_neff` and `mcmc_neff_hist` can then be used to plot the ratios.
+**bayesplot** needs is a vector of $n_{eff}/N$ values. The `mcmc_neff` and 
+`mcmc_neff_hist` can then be used to plot the ratios.
 
 ```{r print-neff-ratios}
 ratios_cp <- neff_ratio(fit_cp)
 print(ratios_cp)
-mcmc_neff(ratios_cp)
+mcmc_neff(ratios_cp, size = 2)
 ```
 
 In the plot, the points representing the values of $n_{eff}/N$ are colored based
@@ -261,13 +264,14 @@ much lower autocorrelations compared to draws obtained using other MCMC
 algorithms (e.g., Gibbs).
 
 Even for models fit using **rstan** the parameterization can make a big
-difference. Here are the $n_{eff}/N$ plots for `fit_cp` and `fit_ncp` side by side.
+difference. Here are the $n_{eff}/N$ plots for `fit_cp` and `fit_ncp` 
+side by side.
 
-```{r mcmc_neff-compare, fig.width=7}
+```{r mcmc_neff-compare}
 # A function we'll use several times to plot comparisons of the centered 
 # parameterization (cp) and the non-centered parameterization (ncp). See
 # help("bayesplot_grid") for details on the bayesplot_grid function used here.
-compare_cp_ncp <- function(cp_plot, ncp_plot, ncol = 1) {
+compare_cp_ncp <- function(cp_plot, ncp_plot, ncol = 2) {
   bayesplot_grid(
     cp_plot, ncp_plot, 
     grid_args = list(ncol = ncol),
@@ -278,7 +282,7 @@ compare_cp_ncp <- function(cp_plot, ncp_plot, ncol = 1) {
 
 neff_cp <- neff_ratio(fit_cp, pars = c("theta", "mu", "tau"))
 neff_ncp <- neff_ratio(fit_ncp, pars = c("theta", "mu", "tau"))
-compare_cp_ncp(mcmc_neff(neff_cp), mcmc_neff(neff_ncp))
+compare_cp_ncp(mcmc_neff(neff_cp), mcmc_neff(neff_ncp), ncol = 1)
 ```
 
 Because of the difference in parameterization, the effective sample sizes are 
@@ -295,14 +299,13 @@ user-specified number of lags.
 Here we can again see a difference when comparing the two parameterizations of 
 the same model. For model 1, $\theta_1$ is the primitive parameter for school 1,
 whereas for the non-centered parameterization in model 2 the primitive parameter
-is $\eta_1$ (and $\theta_1$ is later constructed from $\eta_1$, $\mu$, and 
-$\tau$):
+is $\eta_1$ (and $\theta_1$ is later constructed from $\eta_1$, $\mu$, 
+and $\tau$):
 
 ```{r mcmc_acf}
 compare_cp_ncp(
   mcmc_acf(posterior_cp, pars = "theta[1]", lags = 10),
-  mcmc_acf(posterior_ncp, pars = "eta[1]", lags = 10), 
-  ncol = 2
+  mcmc_acf(posterior_ncp, pars = "eta[1]", lags = 10)
 )
 ```
 
@@ -358,7 +361,7 @@ there is a cluster of many red marks:
 ```{r, mcmc_trace}
 color_scheme_set("mix-brightblue-gray")
 mcmc_trace(posterior_cp, pars = "tau", divergences = np_cp) + 
-  xlab("Post-warmup Iteration")
+  xlab("Post-warmup iteration")
 ```
 
 To look deeper at the information conveyed by the divergences we can use the 
@@ -436,8 +439,7 @@ case for the non-centered parameterization (right):
 ```{r, mcmc_nuts_energy-3, message=FALSE, fig.width=8}
 compare_cp_ncp(
   mcmc_nuts_energy(np_cp, binwidth = 1/2),
-  mcmc_nuts_energy(np_ncp, binwidth = 1/2), 
-  ncol = 2
+  mcmc_nuts_energy(np_ncp, binwidth = 1/2)
 )
 ```
 
@@ -448,10 +450,10 @@ posterior:
 ```{r, mcmc_nuts_energy-4, message=FALSE,  fig.width=8}
 np_cp_2 <- nuts_params(fit_cp_2)
 np_ncp_2 <- nuts_params(fit_ncp_2)
+
 compare_cp_ncp(
   mcmc_nuts_energy(np_cp_2), 
-  mcmc_nuts_energy(np_ncp_2), 
-  ncol = 2
+  mcmc_nuts_energy(np_ncp_2)
 )
 ```
 

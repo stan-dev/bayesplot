@@ -147,10 +147,10 @@ The `mcmc_hex` function creates a similar plot but using hexagonal binning, whic
 mcmc_hex(posterior, pars = c("(Intercept)", "wt"))
 ```
 
-In addition to `mcmc_scatter` and `mcmc_hex`, as of __bayesplot__ version 1.2.0
-an `mcmc_pairs` function for creating pairs plots with more than two parameters
-is available. Examples will eventually be included in this vignette. For now
-see `help("mcmc_pairs")`.
+<br>
+In addition to `mcmc_scatter` and `mcmc_hex`, __bayesplot__ now provides
+an `mcmc_pairs` function for creating pairs plots with more than two parameters.
+See the examples at `help("mcmc_pairs")`.
 
 ### Traceplots 
 
