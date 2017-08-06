@@ -45,6 +45,19 @@ prepare_mcmc_array <-
     set_mcmc_dimnames(x, pars)
   }
 
+# Set dimnames of 3-D array
+# @param x 3-D array
+# @param parnames Character vector of parameter names
+set_mcmc_dimnames <- function(x, parnames) {
+  stopifnot(is_3d_array(x))
+  dimnames(x) <- list(
+    Iteration = seq_len(nrow(x)),
+    Chain = seq_len(ncol(x)),
+    Parameter = parnames
+  )
+  structure(x, class = c(class(x), "mcmc_array"))
+}
+
 # Convert 3-D array to matrix with chains merged
 #
 # @param x A 3-D array (iter x chain x param)
@@ -161,16 +174,6 @@ chain_list2array <- function(x) {
   set_mcmc_dimnames(out, param_names)
 }
 
-# Set dimnames of 3-D array
-set_mcmc_dimnames <- function(x, parnames) {
-  stopifnot(is_3d_array(x))
-  structure(x,
-            dimnames = list(
-              Iteration = seq_len(nrow(x)),
-              Chain = seq_len(ncol(x)),
-              Parameter = parnames
-            ))
-}
 
 # Get parameter names from a 3-D array
 parameter_names <- function(x) UseMethod("parameter_names")
@@ -303,3 +306,25 @@ rename_transformed_pars <- function(pars, transformations) {
   }
   return(pars)
 }
+
+
+num_chains <- function(x, ...) UseMethod("num_chains")
+num_iters <- function(x, ...) UseMethod("num_iters")
+num_params <- function(x, ...) UseMethod("num_params")
+
+num_params.mcmc_array <- function(x, ...) dim(x)[3]
+num_chains.mcmc_array <- function(x, ...) dim(x)[2]
+num_iters.mcmc_array <- function(x, ...) dim(x)[1]
+num_params.data.frame <- function(x, ...) {
+  stopifnot("Parameter" %in% colnames(x))
+  length(unique(x$Parameter))
+}
+num_chains.data.frame <- function(x, ...) {
+  stopifnot("Chain" %in% colnames(x))
+  length(unique(x$Chain))
+}
+num_iters.data.frame <- function(x, ...) {
+  stopifnot("Iteration" %in% colnames(x))
+  length(unique(x$Iteration))
+}
+

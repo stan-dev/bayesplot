@@ -491,11 +491,10 @@ validate_neff_ratio <- function(ratio) {
            size = NULL) {
 
     style <- match.arg(style)
-    plot_data <- acf_data(
-      x = prepare_mcmc_array(x, pars, regex_pars),
-      lags = lags
-    )
-    if (dim(x)[2] > 1) { # multiple chains
+    x <- prepare_mcmc_array(x, pars, regex_pars)
+    plot_data <- acf_data(x = x, lags = lags)
+
+    if (num_chains(x) > 1) {
       facet_args$facets <- "Chain ~ Parameter"
       facet_fun <- "facet_grid"
     } else { # 1 chain
@@ -550,10 +549,9 @@ validate_neff_ratio <- function(ratio) {
 # @param lags user's 'lags' argument
 acf_data <- function(x, lags) {
   stopifnot(is_mcmc_array(x))
-  dims <- dim(x)
-  n_iter <- dims[1]
-  n_chain <- dims[2]
-  n_param <- dims[3]
+  n_iter <- num_iters(x)
+  n_chain <- num_chains(x)
+  n_param <- num_params(x)
   n_lags <- lags + 1
   if (n_lags >= n_iter)
     stop("Too few iterations for lags=", lags, ".",

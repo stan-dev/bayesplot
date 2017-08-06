@@ -226,7 +226,7 @@ p +
     caption = "and a controversial caption",
     x = expression(alpha),
     y = expression(log(sigma))
-    )
+   )
 
 # add ellipse
 p + ggplot2::stat_ellipse(level = 0.9, color = "gray20", size = 1)
@@ -234,7 +234,7 @@ p + ggplot2::stat_ellipse(level = 0.9, color = "gray20", size = 1)
 # add contour
 color_scheme_set("red")
 p2 <- mcmc_scatter(x, pars = c("alpha", "sigma"), size = 3.5, alpha = 0.25)
-p2 + ggplot2::stat_density_2d(color = "black")
+p2 + ggplot2::stat_density_2d(color = "black", size = .5)
 
 # can also add lines/smooths
 color_scheme_set("pink")
@@ -312,7 +312,7 @@ mcmc_pairs(
   np = np,
   np_style = pairs_style_np(div_color = "firebrick",
                             td_color = "blue",
-                            td_size = 2.5),
+                            td_size = 2),
   # for demonstration purposes, set max_treedepth to a value that will
   # result in at least a few max treedepth warnings
   max_treedepth = with(np, -1 + max(Value[Parameter == "treedepth__"]))

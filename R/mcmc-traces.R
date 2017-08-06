@@ -215,8 +215,9 @@ mcmc_trace_highlight <-
 
   data <- reshape2::melt(x, value.name = "Value")
   data$Chain <- factor(data$Chain)
-  n_chain <- length(unique(data$Chain))
-  n_iter <- length(unique(data$Iteration))
+  n_chain <- num_chains(data)
+  n_iter <- num_iters(data)
+  n_param <- num_params(data)
 
   geom_args <- list()
   geom_args$size <- size %||% ifelse(style == "line", 1/3, 1)
@@ -275,16 +276,21 @@ mcmc_trace_highlight <-
     }
   }
 
-  facet_args$facets <- ~ Parameter
-  if (is.null(facet_args$scales))
-    facet_args$scales <- "free"
+
+  if (n_param == 1) {
+    graph <- graph + ylab(levels(data$Parameter))
+  } else {
+    facet_args$facets <- ~ Parameter
+    if (is.null(facet_args$scales))
+      facet_args$scales <- "free"
+    graph <- graph + do.call("facet_wrap", facet_args)
+  }
 
   graph +
-    do.call("facet_wrap", facet_args) +
     scale_x_continuous(breaks = pretty) +
-    legend_move(ifelse(nlevels(data$Chain) > 1, "right", "none")) +
+    legend_move(ifelse(n_chain > 1, "right", "none")) +
     xaxis_title(FALSE) +
-    yaxis_title(FALSE)
+    yaxis_title(on = n_param == 1)
 }
 
 chain_colors <- function(n) {
@@ -315,8 +321,8 @@ divergence_rug <- function(divergences, n_iter, n_chain, color = "red", size = 1
   if (is.data.frame(divergences)) {
     divergences <- validate_nuts_data_frame(divergences)
     stopifnot(
-      length(unique(divergences$Iteration)) == n_iter,
-      length(unique(divergences$Chain)) == n_chain
+      num_iters(divergences) == n_iter,
+      num_chains(divergences) == n_chain
     )
     div_info <-
       filter_(divergences, ~ Parameter == "divergent__") %>%

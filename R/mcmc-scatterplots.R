@@ -68,7 +68,7 @@
 #'     caption = "and a controversial caption",
 #'     x = expression(alpha),
 #'     y = expression(log(sigma))
-#'     )
+#'    )
 #'
 #' # add ellipse
 #' p + ggplot2::stat_ellipse(level = 0.9, color = "gray20", size = 1)
@@ -76,7 +76,7 @@
 #' # add contour
 #' color_scheme_set("red")
 #' p2 <- mcmc_scatter(x, pars = c("alpha", "sigma"), size = 3.5, alpha = 0.25)
-#' p2 + ggplot2::stat_density_2d(color = "black")
+#' p2 + ggplot2::stat_density_2d(color = "black", size = .5)
 #'
 #' # can also add lines/smooths
 #' color_scheme_set("pink")
@@ -256,7 +256,7 @@ mcmc_hex <- function(x,
 #'   np = np,
 #'   np_style = pairs_style_np(div_color = "firebrick",
 #'                             td_color = "blue",
-#'                             td_size = 2.5),
+#'                             td_size = 2),
 #'   # for demonstration purposes, set max_treedepth to a value that will
 #'   # result in at least a few max treedepth warnings
 #'   max_treedepth = with(np, -1 + max(Value[Parameter == "treedepth__"]))
@@ -290,10 +290,12 @@ mcmc_pairs <- function(x,
 
   x <- prepare_mcmc_array(x, pars, regex_pars, transformations)
   x <- drop_constants_and_duplicates(x)
-  n_iter <- nrow(x)
-  n_chain <- ncol(x)
+
+  n_iter <- num_iters(x)
+  n_chain <- num_chains(x)
+  n_param <- num_params(x)
   pars <- parameter_names(x)
-  n_param <- length(pars)
+
   if (n_chain == 1)
     warning("Only one chain in 'x'. This plot is more useful with multiple chains.")
   if (n_param < 2)
@@ -333,7 +335,9 @@ mcmc_pairs <- function(x,
 
       plots[[j]] <-
         do.call(plot_diagonal, diag_args) +
-        theme(axis.line.y = element_blank())
+        labs(subtitle = pair[1]) +
+        theme(axis.line.y = element_blank(),
+              plot.subtitle = element_text(hjust = 0.5))
 
     } else {
       # Off-diagonal
@@ -574,7 +578,7 @@ pairs_condition <- function(chains = NULL, draws = NULL, nuts = NULL) {
                          alpha = 0.8,
                          binwidth = NULL) {
   x <- prepare_mcmc_array(x, pars, regex_pars, transformations)
-  if (dim(x)[3] != 2)
+  if (num_params(x) != 2)
     stop(
       "For 'mcmc_scatter' and 'mcmc_hex' exactly 2 parameters must be selected. ",
       "'mcmc_pairs' can be used for more than 2 parameters."
@@ -685,8 +689,10 @@ row_match_found <- function(x, y) {
 # Drop any constant or duplicate variables
 # @param x 3-D array
 drop_constants_and_duplicates <- function(x) {
-  x1 <- drop_consts(x)
-  drop_dupes(x1)
+  x2 <- drop_consts(x)
+  x2 <- drop_dupes(x2)
+  class(x2) <- c(class(x2), "mcmc_array")
+  x2
 }
 drop_consts <- function(x) {
   varying <- apply(x, 3, FUN = function(y) length(unique(c(y))) > 1)
@@ -719,8 +725,8 @@ drop_dupes <- function(x) {
 # @return A named list containing 'x' (x, possibly modified) and 'mark' (logical
 #   or interger vector for eventually splitting x)
 handle_condition <- function(x, condition=NULL, np=NULL, lp=NULL) {
-  n_iter <- nrow(x)
-  n_chain <- ncol(x)
+  n_iter <- num_iters(x)
+  n_chain <- num_chains(x)
   no_np <- is.null(np)
   no_lp <- is.null(lp)
 
