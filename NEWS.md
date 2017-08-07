@@ -1,5 +1,7 @@
 # bayesplot 1.3.0
 
+(GitHub issue/PR numbers in parentheses)
+
 * `bayesplot::theme_default` is now set as the default ggplot2 plotting theme
 when **bayesplot** is loaded, which makes changing the default theme using
 `ggplot2::theme_set` possible. Thanks to @gavinsimpson. (#87)

@@ -1,7 +1,7 @@
 #' Plot interval estimates from MCMC draws
 #'
-#' Plot central (quantile-based) interval estimates from MCMC draws. See the
-#' \strong{Plot Descriptions} section, below, for details.
+#' Plot central (quantile-based) posterior interval estimates from MCMC draws.
+#' See the \strong{Plot Descriptions} section, below, for details.
 #'
 #' @name MCMC-intervals
 #' @family MCMC
