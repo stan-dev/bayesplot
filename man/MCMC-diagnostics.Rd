@@ -111,10 +111,8 @@ mcmc_acf(x, pars = c("alpha", "beta[1]"))
 color_scheme_set("pink")
 (p <- mcmc_acf_bar(x, pars = c("alpha", "beta[1]")))
 
-# add tick marks on y axis and horiztonal dashed line at 0.5
-p +
- yaxis_ticks() +
- hline_at(0.5, linetype = 2, size = 0.15, color = "gray")
+# add horiztonal dashed line at 0.5
+p + hline_at(0.5, linetype = 2, size = 0.15, color = "gray")
 }
 
 # fake rhat values to use for demonstration
@@ -145,11 +143,11 @@ fit <- stan_glm(mpg ~ ., data = mtcars, iter = 50)
 rhats <- rhat(fit)
 ratios <- neff_ratio(fit)
 mcmc_rhat(rhats)
-mcmc_neff(ratios)
+mcmc_neff(ratios, size = 3)
 
 # there's a small enough number of parameters in the
 # model that we can display their names on the y-axis
-mcmc_neff(ratios) + yaxis_text()
+mcmc_neff(ratios) + yaxis_text(hjust = 1)
 
 # can also look at autocorrelation
 draws <- as.array(fit)

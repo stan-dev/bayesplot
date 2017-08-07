@@ -1,4 +1,6 @@
 # ggplot2 convenience functions for internal use --------------------------
+
+
 facet_wrap_parsed <- function(...) {
   facet_wrap(..., labeller = label_parsed)
 }
@@ -27,4 +29,13 @@ reduce_legend_spacing <- function(cm) {
 }
 space_legend_keys <- function(relative_size = 2, color = "white") {
   theme(legend.key = element_rect(size = rel(relative_size), color = color))
+}
+
+
+# set aesthetic mapping for histograms depending on freq argument
+set_hist_aes <- function(freq = TRUE, ...) {
+  if (freq)
+    aes_(x = ~ value, ...)
+  else
+    aes_(x = ~ value, y = ~ ..density.., ...)
 }
