@@ -19,7 +19,7 @@
 #'   \code{\link[ggplot2]{geom_ribbon}}. For interval plots \code{size} and
 #'   \code{fatten} are passed to \code{\link[ggplot2]{geom_pointrange}}.
 #'
-#' @template return-ggplot
+#' @template return-ggplot-or-data
 #'
 #' @templateVar bdaRef (Ch. 6)
 #' @template reference-bda
@@ -73,6 +73,9 @@
 #'  xaxis_ticks(FALSE) +
 #'  panel_bg(fill = "gray20")
 #'
+#' ppc_data <- ppc_intervals_data(y, yrep, x = year, prob = 0.5)
+#' ppc_group_data <- ppc_intervals_data(y, yrep, x = year, group, prob = 0.5)
+#'
 #' \dontrun{
 #' library("rstanarm")
 #' fit <- stan_glmer(mpg ~ wt + (1|cyl), data = mtcars)
@@ -110,7 +113,8 @@ ppc_intervals <- function(y,
                           size = 1,
                           fatten = 3) {
   check_ignored_arguments(...)
-  data <- .ppc_intervals_data(
+
+  data <- ppc_intervals_data(
       y = y,
       yrep = yrep,
       x = x,
@@ -149,7 +153,7 @@ ppc_intervals_grouped <- function(y,
     facet_args[["scales"]] <- "free"
   }
 
-  data <- .ppc_intervals_data(
+  data <- ppc_intervals_data(
     y = y,
     yrep = yrep,
     x = x,
@@ -168,6 +172,7 @@ ppc_intervals_grouped <- function(y,
   )
 }
 
+
 #' @rdname PPC-intervals
 #' @export
 ppc_ribbon <- function(y,
@@ -178,7 +183,8 @@ ppc_ribbon <- function(y,
                        alpha = 0.33,
                        size = 0.25) {
   check_ignored_arguments(...)
-  data <- .ppc_intervals_data(
+
+  data <- ppc_intervals_data(
     y = y,
     yrep = yrep,
     x = x,
@@ -196,25 +202,25 @@ ppc_ribbon <- function(y,
   )
 }
 
+
 #' @export
 #' @rdname PPC-intervals
-ppc_ribbon_grouped <-
-  function(y,
-           yrep,
-           x = NULL,
-           group,
-           facet_args = list(),
-           ...,
-           prob = 0.9,
-           alpha = 0.33,
-           size = 0.25) {
+ppc_ribbon_grouped <- function(y,
+                               yrep,
+                               x = NULL,
+                               group,
+                               facet_args = list(),
+                               ...,
+                               prob = 0.9,
+                               alpha = 0.33,
+                               size = 0.25) {
   check_ignored_arguments(...)
 
   if (is.null(facet_args[["scales"]])) {
     facet_args[["scales"]] <- "free"
   }
 
-  data <- .ppc_intervals_data(
+  data <- ppc_intervals_data(
     y = y,
     yrep = yrep,
     x = x,
@@ -232,6 +238,21 @@ ppc_ribbon_grouped <-
     x_lab = label_x(x)
   )
 }
+
+
+#' @rdname PPC-intervals
+#' @export
+ppc_intervals_data <- function(y, yrep, x = NULL, group = NULL, prob = 0.9, ...) {
+  check_ignored_arguments(...)
+  .ppc_intervals_data(y = y, yrep = yrep, x = x, group = group, prob = prob)
+}
+
+
+#' @rdname PPC-intervals
+#' @export
+ppc_ribbon_data <- ppc_intervals_data
+
+
 
 
 # internal ----------------------------------------------------------------
@@ -274,9 +295,6 @@ label_x <- function(x) {
   val_col <- quo(value)
   dplyr::ungroup(dplyr::summarise(
     grouped_d,
-    # lo_prob = probs[1],
-    # mid_prob = probs[2],
-    # hi_prob = probs[3],
     lo = quantile(!! val_col, prob = probs[1]),
     mid = quantile(!! val_col, prob = probs[2]),
     hi = quantile(!! val_col, prob = probs[3])
