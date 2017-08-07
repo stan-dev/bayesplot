@@ -4,7 +4,7 @@
 #' @name bayesplot-package
 #' @aliases bayesplot
 #'
-#' @import ggplot2 stats
+#' @import ggplot2 stats rlang
 #'
 #' @description
 #' \if{html}{
