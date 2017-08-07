@@ -1,9 +1,12 @@
 # Check if an object is a vector (but not list) or a 1-D array
 is_vector_or_1Darray <- function(x) {
-  if (is.vector(x) && !is.list(x))
+  if (is.vector(x) && !is.list(x)) {
     return(TRUE)
+  }
+
   isTRUE(is.array(x) && length(dim(x)) == 1)
 }
+
 
 # Validate y
 #
@@ -17,13 +20,15 @@ validate_y <- function(y) {
   stopifnot(is.numeric(y))
 
   if (!(inherits(y, "ts") && is.null(dim(y)))) {
-    if (!is_vector_or_1Darray(y))
+    if (!is_vector_or_1Darray(y)) {
       stop("'y' must be a vector or 1D array.")
+    }
     y <- as.vector(y)
   }
 
-  if (anyNA(y))
+  if (anyNA(y)) {
     stop("NAs not allowed in 'y'.")
+  }
 
   unname(y)
 }
@@ -40,15 +45,21 @@ validate_y <- function(y) {
 validate_yrep <- function(yrep, y) {
   stopifnot(is.matrix(yrep), is.numeric(yrep))
   if (is.integer(yrep)) {
-    if (nrow(yrep) == 1)
+    if (nrow(yrep) == 1) {
       yrep[1, ] <- as.numeric(yrep[1,, drop = FALSE])
-    else
+    }
+    else {
       yrep <- apply(yrep, 2, as.numeric)
+    }
   }
-  if (anyNA(yrep))
+
+  if (anyNA(yrep)) {
     stop("NAs not allowed in 'yrep'.")
-  if (ncol(yrep) != length(y))
+  }
+
+  if (ncol(yrep) != length(y)) {
     stop("ncol(yrep) must be equal to length(y).")
+  }
 
   unclass(unname(yrep))
 }
@@ -64,17 +75,26 @@ validate_yrep <- function(yrep, y) {
 #
 validate_group <- function(group, y) {
   stopifnot(is.vector(group) || is.factor(group))
-  if (!is.factor(group))
+
+  if (!is.factor(group)) {
     group <- as.factor(group)
-  if (anyNA(group))
+  }
+
+  if (anyNA(group)) {
     stop("NAs not allowed in 'group'.")
-  if (length(group) != length(y))
+  }
+
+  if (length(group) != length(y)) {
     stop("length(group) must be equal to length(y).")
-  if (length(unique(group)) == 1)
+  }
+
+  if (length(unique(group)) == 1) {
     stop("'group' must have more than one unique value.")
+  }
 
   unname(group)
 }
+
 
 # Validate x
 #
@@ -84,25 +104,33 @@ validate_group <- function(group, y) {
 # @param x,y The user's x vector and the y object returned by validate_y.
 # @param unique_x T/F indicating whether to require all unique values in x.
 # @return Either throws an error or returns a numeric vector.
-#
-validate_x <- function(x, y, unique_x = FALSE) {
-  if (missing(x)) {
+validate_x <- function(x = NULL, y, unique_x = FALSE) {
+  if (is.null(x)) {
     if (inherits(y, "ts") && is.null(dim(y))) {
-      return(stats::time(y))
-    } else return(1:length(y))
+      x <- stats::time(y)
+    } else {
+      x <- seq_along(y)
+    }
   }
 
   stopifnot(is.numeric(x))
-  if (!is_vector_or_1Darray(x))
+
+  if (!is_vector_or_1Darray(x)) {
     stop("'x' must be a vector or 1D array.")
+  }
 
   x <- as.vector(x)
-  if (length(x) != length(y))
+  if (length(x) != length(y)) {
     stop("length(x) must be equal to length(y).")
-  if (anyNA(x))
+  }
+
+  if (anyNA(x)) {
     stop("NAs not allowed in 'x'.")
-  if (unique_x)
+  }
+
+  if (unique_x) {
     stopifnot(identical(length(x), length(unique(x))))
+  }
 
   unname(x)
 }
@@ -129,6 +157,7 @@ melt_yrep <- function(yrep, label = TRUE) {
   out
 }
 
+
 # Stack y below melted yrep data
 #
 # @param y Validated y input.
@@ -152,6 +181,7 @@ melt_and_stack <- function(y, yrep, label = TRUE) {
   })
 }
 
+
 # Prepare data for use in PPCs by group
 #
 # @param y,yrep,group Validated y, yrep, and group objects from the user.
@@ -169,21 +199,24 @@ ppc_group_data <- function(y, yrep, group, stat = NULL) {
   colnames(d) <- gsub(".", "_", colnames(d), fixed = TRUE)
   molten_d <- reshape2::melt(d, id.vars = "group")
   molten_d <- dplyr::group_by_(molten_d, .dots = list(~group, ~variable))
-  if (is.null(stat))
+  if (is.null(stat)) {
     return(molten_d)
+  }
 
-  if (!is.function(stat))
+  if (!is.function(stat)) {
     stat <- match.fun(stat)
+  }
 
   dplyr::summarise_(molten_d, value = ~stat(value))
 }
 
 # set mapping depending on freq argument
 set_hist_aes <- function(freq = TRUE, ...) {
-  if (freq)
+  if (freq) {
     aes_(x = ~ value, ...)
-  else
+  } else {
     aes_(x = ~ value, y = ~ ..density.., ...)
+  }
 }
 
 # check if x consists of whole numbers (very close to integers)
