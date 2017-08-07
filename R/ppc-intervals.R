@@ -283,16 +283,16 @@ label_x <- function(x) {
   if (grouped) {
     group <- validate_group(group, y)
     molten_reps$group <- group[molten_reps$y_id]
-    group_vars <- quos(y_id, y_obs, group, x)
+    group_vars <- quos(!!! syms(c("y_id", "y_obs", "group", "x")))
   } else {
-    group_vars <- quos(y_id, y_obs, x)
+    group_vars <- quos(!!! syms(c("y_id", "y_obs", "x")))
   }
 
   grouped_d <- dplyr::group_by(molten_reps, !!! group_vars)
   alpha <- (1 - prob) / 2
   probs <- sort(c(alpha, 0.5, 1 - alpha))
 
-  val_col <- quo(value)
+  val_col <- quo(!! sym("value"))
   dplyr::ungroup(dplyr::summarise(
     grouped_d,
     lo = quantile(!! val_col, prob = probs[1]),
