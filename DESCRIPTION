@@ -23,7 +23,8 @@ Imports:
     ggplot2 (>= 2.2.1),
     reshape2,
     stats,
-    utils
+    utils,
+    rlang
 Suggests:
     arm,
     gridExtra (>= 2.2.1),

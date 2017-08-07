@@ -1,7 +1,7 @@
 library(bayesplot)
 context("PPC: intervals & ribbon")
 
-source("data-for-ppc-tests.R")
+source(test_path("data-for-ppc-tests.R"))
 
 test_that("ppc_intervals returns ggplot object", {
   expect_gg(ppc_intervals(y, yrep))
@@ -31,8 +31,8 @@ test_that("ppc_ribbon_grouped returns ggplot object", {
 test_that(".ppc_intervals_data returns correct structure", {
   d <- .ppc_intervals_data(y, yrep, x = 1:length(y))
   d_group <- .ppc_intervals_data(y, yrep, x, group)
-  expect_named(d, c("x", "is_y", "lo", "mid", "hi"))
-  expect_named(d_group, c("x", "group", "is_y","lo", "mid", "hi"))
+  expect_named(d, c("y_id", "y_obs", "x", "lo", "mid", "hi"))
+  expect_named(d_group, c("y_id", "y_obs", "group", "x", "lo", "mid", "hi"))
 
   expect_error(.ppc_intervals_data(y, yrep, x = 1:length(y), prob = 0), "prob")
   expect_error(.ppc_intervals_data(y, yrep, x = 1:length(y), prob = 1.01), "prob")
