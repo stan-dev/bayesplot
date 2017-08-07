@@ -52,8 +52,12 @@
 #'   \item{\strong{\link[=MCMC-combos]{Combinations}}}{
 #'     Combination plots (e.g. traceplot + histogram).
 #'   }
+#'   \item{\strong{\link[=MCMC-diagnostics]{General MCMC diagnostics}}}{
+#'     MCMC diagnostic plots including Rhat, effective sample size,
+#'     autocorrelation.
+#'   }
 #'   \item{\strong{\link[=MCMC-nuts]{NUTS diagnostics}}}{
-#'     Diagnostic plots for the No-U-Turn Sampler.
+#'     Special diagnostic plots for the No-U-Turn Sampler.
 #'   }
 #'   \item{\strong{\link[=MCMC-recover]{Comparisons to "true" values}}}{
 #'     Plots comparing MCMC estimates to "true" parameter values (e.g.,
