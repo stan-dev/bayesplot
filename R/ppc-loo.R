@@ -172,16 +172,17 @@ ppc_loo_intervals <-
   function(y,
            yrep,
            lw,
-           intervals,
+           intervals = NULL,
            ...,
            prob = 0.9,
            size = 1,
            fatten = 3,
            order = c("index", "median")) {
+
     check_ignored_arguments(...)
     y <- validate_y(y)
     order_by_median <- match.arg(order) == "median"
-    if (!missing(intervals)) {
+    if (!is.null(intervals)) {
       stopifnot(is.matrix(intervals), ncol(intervals) == 3)
       message("'intervals' specified so ignoring 'yrep' and 'lw' if specified.")
     } else {
@@ -198,8 +199,9 @@ ppc_loo_intervals <-
     }
 
     x <- seq_along(y)
-    if (order_by_median)
+    if (order_by_median) {
       x <- reorder(x, intervals[, 2])
+    }
 
     graph <- .ppc_intervals(
       data = .loo_intervals_data(y, x, intervals),
@@ -209,8 +211,10 @@ ppc_loo_intervals <-
       fatten = fatten,
       x_lab = "Data point (index)"
     )
-    if (!order_by_median)
+
+    if (!order_by_median) {
       return(graph)
+    }
 
     graph +
       xlab("Ordered by median") +
@@ -224,14 +228,14 @@ ppc_loo_ribbon <-
   function(y,
            yrep,
            lw,
-           intervals,
+           intervals = NULL,
            ...,
            prob = 0.9,
            alpha = 0.33,
            size = 0.25) {
     check_ignored_arguments(...)
     y <- validate_y(y)
-    if (!missing(intervals)) {
+    if (!is.null(intervals)) {
       stopifnot(is.matrix(intervals), ncol(intervals) == 3)
       message("'intervals' specified so ignoring 'yrep' and 'lw' if specified.")
     } else {
@@ -260,11 +264,14 @@ ppc_loo_ribbon <-
 
 # internal ----------------------------------------------------------------
 .loo_intervals_data <- function(y, x, intervals) {
-  colnames(intervals) <- c("lo", "mid", "hi")
   stopifnot(length(y) == nrow(intervals), length(x) == length(y))
-  dplyr::bind_rows(
-    data.frame(x, is_y = TRUE, lo = y, mid = y, hi = y),
-    data.frame(x, is_y = FALSE, intervals)
-  )
+
+  data.frame(
+    y_id = seq_along(y),
+    y_obs = y,
+    x = x,
+    lo = intervals[, 1],
+    mid = intervals[, 2],
+    hi = intervals[, 3])
 }
 

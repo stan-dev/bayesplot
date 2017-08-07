@@ -44,6 +44,7 @@ test_that("ppc_loo_intervals returns ggplot object", {
   expect_s3_class(g$data$x, "factor")
   expect_equal(nlevels(g$data$x), length(g$data$x))
 })
+
 test_that("ppc_loo_ribbon returns ggplot object", {
   expect_gg(ppc_loo_ribbon(y, yrep, lw, prob = 0.7, alpha = 0.1))
 })
