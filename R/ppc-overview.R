@@ -39,7 +39,7 @@
 #' \eqn{X} we denote the resulting simulations by \eqn{y^{rep}}{yrep} as they
 #' can be thought of as \emph{replications} of the outcome \eqn{y} rather than
 #' predictions for future observations. This corresponds to the notation from
-#' Gelman et. al. (2013) and is the notation used throughtout the documentation
+#' Gelman et. al. (2013) and is the notation used throughout the documentation
 #' for this package.
 #' }
 #' \subsection{Graphical posterior predictive checking}{

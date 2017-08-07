@@ -33,7 +33,7 @@
 #'      the scheme names listed above (e.g. "mix-teal-pink", "mix-blue-red",
 #'      etc.). The order of \code{x} and \code{y} matters, i.e., the color
 #'      schemes "mix-blue-red" and "mix-red-blue" are not identical. There is no
-#'      gaurantee that every possible mixed scheme will look good with every
+#'      guarantee that every possible mixed scheme will look good with every
 #'      possible plot.
 #'   }
 #'

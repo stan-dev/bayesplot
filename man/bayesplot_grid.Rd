@@ -23,7 +23,7 @@ upper limits for the axes that will be shared across all plots.}
 
 \item{titles, subtitles}{Optional character vectors of plot titles and
 subtitles. If specified, \code{titles} and \code{subtitles} must must have
-length equal to the number of plots speficied.}
+length equal to the number of plots specified.}
 
 \item{legends}{If any of the plots have legends should they be displayed?
 Defaults to \code{TRUE}.}

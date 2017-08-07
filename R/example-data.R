@@ -52,7 +52,7 @@ NULL
 
 #' @rdname example-data
 #' @export
-#' @param chains An interger between 1 and 4 indicating the desired number of
+#' @param chains An integer between 1 and 4 indicating the desired number of
 #'   chains.
 #' @param params An integer between 1 and 6 indicating the desired number of
 #'   parameters.

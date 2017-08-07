@@ -163,9 +163,9 @@ Guide and Reference Manual.} \url{http://mc-stan.org/documentation/}
 \seealso{
 \itemize{
 \item The \emph{Visual MCMC Diagnostics} vignette.
-\item Several other plotting functions in the \pkg{bayesplot}
-package that aren't NUTS-specific but take optional extra arguments
-if the model was fit using NUTS:
+\item Several other plotting functions in the \pkg{bayesplot} package that
+are not NUTS-specific but take optional extra arguments if the model was fit
+using NUTS:
 \itemize{
  \item \code{\link{mcmc_trace}} will plot divergences on the traceplot if the
  optional \code{divergences} argument is specified.

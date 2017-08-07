@@ -46,7 +46,7 @@
 #'    (roughly) half are displayed above the diagonal and half are below (all
 #'    chains are always merged together for the plots along the diagonal). Other
 #'    possibilities are available by setting the \code{condition} argument.
-#'    Additionally, extra diagonistic information for models fit using
+#'    Additionally, extra diagnostic information for models fit using
 #'    \code{\link{NUTS}} can be added to the pairs plot using the \code{lp},
 #'    \code{np}, and \code{np_style} arguments.
 #'   }
@@ -392,7 +392,7 @@ mcmc_pairs <- function(x,
 #' @rdname MCMC-scatterplots
 #' @export
 #' @param div_color,div_shape,div_size,td_color,td_shape,td_size Optional
-#'   rguments to the \code{pairs_style_np} helper function that are eventually
+#'   arguments to the \code{pairs_style_np} helper function that are eventually
 #'   passed to \code{\link[ggplot2]{geom_point}}. They control the color, shape,
 #'   and size specifications  for points representing divergences (\code{div})
 #'   and points indicating hitting the maximum treedepth (\code{td}). See the
