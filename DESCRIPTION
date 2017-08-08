@@ -19,11 +19,12 @@ SystemRequirements:	pandoc
 Depends:
     R (>= 3.1.0)
 Imports:
-    dplyr (>= 0.4.3),
+    dplyr (>= 0.7.1),
     ggplot2 (>= 2.2.1),
     reshape2,
     stats,
-    utils
+    utils,
+    rlang
 Suggests:
     arm,
     gridExtra (>= 2.2.1),

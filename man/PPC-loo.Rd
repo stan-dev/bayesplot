@@ -10,11 +10,11 @@
 ppc_loo_pit(y, yrep, lw, pit, compare = c("uniform", "normal"), ...,
   size = 2, alpha = 1)
 
-ppc_loo_intervals(y, yrep, lw, intervals, ..., prob = 0.9, size = 1,
-  fatten = 3, order = c("index", "median"))
+ppc_loo_intervals(y, yrep, lw, intervals = NULL, ..., prob = 0.9,
+  size = 1, fatten = 3, order = c("index", "median"))
 
-ppc_loo_ribbon(y, yrep, lw, intervals, ..., prob = 0.9, alpha = 0.33,
-  size = 0.25)
+ppc_loo_ribbon(y, yrep, lw, intervals = NULL, ..., prob = 0.9,
+  alpha = 0.33, size = 0.25)
 }
 \arguments{
 \item{y}{A vector of observations. See \strong{Details}.}
