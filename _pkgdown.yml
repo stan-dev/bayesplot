@@ -36,8 +36,55 @@ navbar:
 articles:
   - title: "Getting Started"
     desc: >
-      The documents below provide an introduction to visualizing MCMC draws and diagnostics and performing graphical posterior predictive checks using the **bayesplot** package.
+      The documents below provide an introduction to visualizing MCMC draws and
+      diagnostics and performing graphical posterior predictive checks using the **bayesplot** package.
     contents:
       - plotting-mcmc-draws
       - visual-mcmc-diagnostics
       - graphical-ppcs
+
+reference:
+  - title: "PPC"
+    desc: >
+      Functions for carrying out a wide variety of graphical model checks
+      based on comparing observed data to draws from the posterior
+      predictive distribution.
+    contents:
+      - starts_with("ppc")
+      - pp_check
+  - title: "MCMC"
+    desc: >
+      Functions for creating plots of MCMC draws of model parameters and
+      general MCMC diagnostics.
+    contents:
+      - MCMC-diagnostics
+      - MCMC-distributions
+      - MCMC-intervals
+      - MCMC-recover
+      - MCMC-scatterplots
+      - MCMC-traces
+      - MCMC-combos
+  - title: "HMC/NUTS diagnostics"
+    desc: >
+      Functions for plotting diagnostics specific to Hamiltonian Monte Carlo
+      and the No-U-Turn Sampler.
+    contents:
+      - MCMC-nuts
+  - title: "Aesthetics"
+    desc: >
+      Functions for setting color schemes, customizing various plot features,
+      and arranging multiple plots.
+    contents:
+      - bayesplot-colors
+      - bayesplot_grid
+      - theme_default
+      - bayesplot-helpers
+  - title: "Miscellaneous"
+    desc: >
+      Functions for extracting various quantities needed for plotting
+      from model objects, generating data for examples, and listing
+      available plotting functions.
+    contents:
+      - bayesplot-extractors
+      - example-data
+      - available_ppc

@@ -270,23 +270,23 @@ of the chains that will be more visible than the others in the plot.</p></td>
 #&gt; </div><div class='input'>
 <span class='co'># traceplots of the betas</span>
 <span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"viridis"</span>)
-<span class='fu'>mcmc_trace</span>(<span class='no'>x</span>, <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='st'>"beta"</span>)</div><div class='img'><img src='MCMC-traces-31.png' alt='' width='700' height='432.632880098887' /></div><div class='input'><span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"viridisA"</span>)
-<span class='fu'>mcmc_trace</span>(<span class='no'>x</span>, <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='st'>"beta"</span>)</div><div class='img'><img src='MCMC-traces-32.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+<span class='fu'>mcmc_trace</span>(<span class='no'>x</span>, <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='st'>"beta"</span>)</div><div class='img'><img src='MCMC-traces-49.png' alt='' width='700' height='432.632880098887' /></div><div class='input'><span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"viridisA"</span>)
+<span class='fu'>mcmc_trace</span>(<span class='no'>x</span>, <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='st'>"beta"</span>)</div><div class='img'><img src='MCMC-traces-50.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
 <span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"viridisC"</span>)
-<span class='fu'>mcmc_trace</span>(<span class='no'>x</span>, <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='st'>"beta"</span>)</div><div class='img'><img src='MCMC-traces-33.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+<span class='fu'>mcmc_trace</span>(<span class='no'>x</span>, <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='st'>"beta"</span>)</div><div class='img'><img src='MCMC-traces-51.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
 <span class='co'># mix color schemes</span>
 <span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"mix-blue-red"</span>)
-<span class='fu'>mcmc_trace</span>(<span class='no'>x</span>, <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='st'>"beta"</span>)</div><div class='img'><img src='MCMC-traces-34.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+<span class='fu'>mcmc_trace</span>(<span class='no'>x</span>, <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='st'>"beta"</span>)</div><div class='img'><img src='MCMC-traces-52.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
 <span class='co'># use traditional ggplot discrete color scale</span>
 <span class='fu'>mcmc_trace</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"alpha"</span>, <span class='st'>"sigma"</span>)) +
  <span class='kw pkg'>ggplot2</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/scale_hue'>scale_color_discrete</a></span>()</div><div class='output co'>#&gt; <span class='message'>Scale for 'colour' is already present. Adding another scale for 'colour',</span>
-#&gt; <span class='message'>which will replace the existing scale.</span></div><div class='img'><img src='MCMC-traces-35.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+#&gt; <span class='message'>which will replace the existing scale.</span></div><div class='img'><img src='MCMC-traces-53.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
 <span class='co'># zoom in on a window of iterations, increase line size,</span>
 <span class='co'># add tick marks, move legend to the top, add gray background</span>
 <span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"viridisA"</span>)
 <span class='fu'>mcmc_trace</span>(<span class='no'>x</span>[,, <span class='fl'>1</span>:<span class='fl'>4</span>], <span class='kw'>window</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>100</span>, <span class='fl'>130</span>), <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>1</span>) +
   <span class='fu'><a href='bayesplot-helpers.html'>panel_bg</a></span>(<span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>"gray90"</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='fl'>NA</span>) +
-  <span class='fu'><a href='bayesplot-helpers.html'>legend_move</a></span>(<span class='st'>"top"</span>)</div><div class='img'><img src='MCMC-traces-36.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+  <span class='fu'><a href='bayesplot-helpers.html'>legend_move</a></span>(<span class='st'>"top"</span>)</div><div class='img'><img src='MCMC-traces-54.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
 </div><span class='co'># NOT RUN {</span>
 <span class='co'># parse facet label text</span>
 <span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"purple"</span>)
