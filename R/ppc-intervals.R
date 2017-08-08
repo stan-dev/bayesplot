@@ -295,6 +295,7 @@ label_x <- function(x) {
   val_col <- sym("value")
   dplyr::ungroup(dplyr::summarise(
     grouped_d,
+    prob = prob,
     lo = quantile(!! val_col, prob = probs[1]),
     mid = quantile(!! val_col, prob = probs[2]),
     hi = quantile(!! val_col, prob = probs[3])

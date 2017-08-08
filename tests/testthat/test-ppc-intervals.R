@@ -28,13 +28,36 @@ test_that("ppc_ribbon_grouped returns ggplot object", {
   expect_gg(ppc_ribbon_grouped(y, yrep, x, group, facet_args = list(scales = "fixed")))
 })
 
-test_that(".ppc_intervals_data returns correct structure", {
-  d <- .ppc_intervals_data(y, yrep, x = 1:length(y))
-  d_group <- .ppc_intervals_data(y, yrep, x, group)
-  expect_named(d, c("y_id", "y_obs", "x", "lo", "mid", "hi"))
-  expect_named(d_group, c("y_id", "y_obs", "group", "x", "lo", "mid", "hi"))
+test_that("ppc_intervals_data returns correct structure", {
+  d <- ppc_intervals_data(y, yrep, x = 1:length(y), prob = .9)
+  d_group <- ppc_intervals_data(y, yrep, x, group)
+  expect_named(d, c("y_id", "y_obs", "x",
+                    "prob", "lo", "mid", "hi"))
+  expect_named(d_group, c("y_id", "y_obs", "group", "x",
+                          "prob", "lo", "mid", "hi"))
 
-  expect_error(.ppc_intervals_data(y, yrep, x = 1:length(y), prob = 0), "prob")
-  expect_error(.ppc_intervals_data(y, yrep, x = 1:length(y), prob = 1.01), "prob")
+  expect_error(ppc_intervals_data(y, yrep, x = 1:length(y), prob = 0), "prob")
+  expect_error(ppc_intervals_data(y, yrep, x = 1:length(y), prob = 1.01), "prob")
+})
+
+test_that("ppc_intervals_data does math correctly", {
+  d <- ppc_intervals_data(y, yrep, prob = .9)
+  qs <- unname(quantile(yrep[, 1], c(.05, .5, .95)))
+  expect_equal(d$lo[1], qs[1])
+  expect_equal(d$mid[1], qs[2])
+  expect_equal(d$hi[1], qs[3])
+
+  # Testing groups and known quantiles
+  y <- rep(10, 4)
+  group <- c("a", "a", "b", "b")
+  yrep_g1 <- matrix(rep((0:20), 2), ncol = 2)
+  yrep_g2 <- yrep_g1 - 10
+  yrep <- cbind(yrep_g1, yrep_g2)
+
+  d <- ppc_intervals_data(y, yrep, group = group, prob = .9)
+  expect_equal(unique(d$prob), .9)
+  expect_equal(d$lo,  c( 1,  1, -9, -9))
+  expect_equal(d$mid, c(10, 10,  0,  0))
+  expect_equal(d$hi,  c(19, 19,  9,  9))
 })
 
