@@ -20,7 +20,7 @@ example_x_data()
 example_group_data()
 }
 \arguments{
-\item{chains}{An interger between 1 and 4 indicating the desired number of
+\item{chains}{An integer between 1 and 4 indicating the desired number of
 chains.}
 
 \item{params}{An integer between 1 and 6 indicating the desired number of

@@ -12,7 +12,7 @@
 #'   \code{widths}, etc.).
 #' @param titles,subtitles Optional character vectors of plot titles and
 #'   subtitles. If specified, \code{titles} and \code{subtitles} must must have
-#'   length equal to the number of plots speficied.
+#'   length equal to the number of plots specified.
 #' @param xlim,ylim Optionally, numeric vectors of length 2 specifying lower and
 #'   upper limits for the axes that will be shared across all plots.
 #' @param legends If any of the plots have legends should they be displayed?

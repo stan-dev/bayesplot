@@ -125,7 +125,7 @@ is only needed for detecting which transitions (if any) hit the maximum
 treedepth.}
 
 \item{div_color, div_shape, div_size, td_color, td_shape, td_size}{Optional
-rguments to the \code{pairs_style_np} helper function that are eventually
+arguments to the \code{pairs_style_np} helper function that are eventually
 passed to \code{\link[ggplot2]{geom_point}}. They control the color, shape,
 and size specifications  for points representing divergences (\code{div})
 and points indicating hitting the maximum treedepth (\code{td}). See the
@@ -203,7 +203,7 @@ Scatterplots, hexagonal heatmaps, and pairs plots from MCMC draws. See the
    (roughly) half are displayed above the diagonal and half are below (all
    chains are always merged together for the plots along the diagonal). Other
    possibilities are available by setting the \code{condition} argument.
-   Additionally, extra diagonistic information for models fit using
+   Additionally, extra diagnostic information for models fit using
    \code{\link{NUTS}} can be added to the pairs plot using the \code{lp},
    \code{np}, and \code{np_style} arguments.
   }
@@ -226,7 +226,7 @@ p +
     caption = "and a controversial caption",
     x = expression(alpha),
     y = expression(log(sigma))
-    )
+   )
 
 # add ellipse
 p + ggplot2::stat_ellipse(level = 0.9, color = "gray20", size = 1)
@@ -234,7 +234,7 @@ p + ggplot2::stat_ellipse(level = 0.9, color = "gray20", size = 1)
 # add contour
 color_scheme_set("red")
 p2 <- mcmc_scatter(x, pars = c("alpha", "sigma"), size = 3.5, alpha = 0.25)
-p2 + ggplot2::stat_density_2d(color = "black")
+p2 + ggplot2::stat_density_2d(color = "black", size = .5)
 
 # can also add lines/smooths
 color_scheme_set("pink")
@@ -312,7 +312,7 @@ mcmc_pairs(
   np = np,
   np_style = pairs_style_np(div_color = "firebrick",
                             td_color = "blue",
-                            td_size = 2.5),
+                            td_size = 2),
   # for demonstration purposes, set max_treedepth to a value that will
   # result in at least a few max treedepth warnings
   max_treedepth = with(np, -1 + max(Value[Parameter == "treedepth__"]))

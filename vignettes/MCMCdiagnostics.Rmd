@@ -76,8 +76,8 @@ y_j &\sim {\rm Normal}(\theta_j, \sigma_j), \quad j = 1,\dots,J \\
 $$
 with the normal distribution parameterized by the mean and standard deviation, 
 not the variance or precision. In Stan code:
-```{stan, stancode1, output.var = "schools_mod1"}
-// Saved in 'schools_mod1.stan'
+```{stan, stancode1, output.var = "schools_mod_cp"}
+// Saved in 'schools_mod_cp.stan'
 data {
   int<lower=0> J;
   vector[J] y;
@@ -109,8 +109,8 @@ $$
 \end{align*}
 $$
 The Stan code for this model is:
-```{stan, stancode2, output.var = "schools_mod2"}
-// Saved in 'schools_mod2.stan'
+```{stan, stancode2, output.var = "schools_mod_ncp"}
+// Saved in 'schools_mod_ncp.stan'
 data {
   int<lower=0> J;
   vector[J] y;
@@ -132,6 +132,7 @@ model {
   y ~ normal(theta, sigma);
 }
 ```
+
 The centered and non-centered are two parameterizations of the same statistical 
 model, but they have very different practical implications for MCMC. Using the 
 __bayesplot__ diagnostic plots, we'll see that, for this data, the NCP is 
@@ -140,26 +141,26 @@ required in order to properly explore the posterior distribution.
 To fit both models we first translate the Stan code to C++ and compile it using 
 the `stan_model` function.
 ```{r, compile-models, eval=FALSE}
-schools_mod1 <- stan_model("schools_mod1.stan")
-schools_mod2 <- stan_model("schools_mod2.stan")
+schools_mod_cp <- stan_model("schools_mod_cp.stan")
+schools_mod_ncp <- stan_model("schools_mod_ncp.stan")
 ```
 We then fit the model by calling Stan's MCMC algorithm using the `sampling` 
 function,
 ```{r, fit-models-hidden, results='hide', message=FALSE}
-fit1 <- sampling(schools_mod1, data = schools_dat)
-fit2 <- sampling(schools_mod2, data = schools_dat)
+fit_cp <- sampling(schools_mod_cp, data = schools_dat)
+fit_ncp <- sampling(schools_mod_ncp, data = schools_dat)
 ```
 and extract a `iterations x chains x parameters` array of posterior draws with 
 `as.array`,
 ```{r, extract-draws}
 # Extract posterior draws for later use
-posterior1 <- as.array(fit1)
-posterior2 <- as.array(fit2)
+posterior_cp <- as.array(fit_cp)
+posterior_ncp <- as.array(fit_ncp)
 ```
 
-For now ignore any warnings about divergent transitions after warmup. We will
-come back to those later in the vignette in the [Diagnostics for the No-U-Turn
-Sampler](#diagnostics-for-the no-u-turn-sampler) section.
+For now ignore any warnings issued by the sampler. We will come back to them
+later in the [Diagnostics for the No-U-Turn Sampler](#diagnostics-for-the
+no-u-turn-sampler) section.
 
 
 ### Rhat: potential scale reduction statistic
@@ -181,23 +182,23 @@ First we'll quickly fit one of the models above again, this time intentionally
 using too few MCMC iterations. This should lead to some high $\hat{R}$ values.
 
 ```{r, results='hide'}
-fit1_50iter <- sampling(schools_mod1, data = schools_dat, chains = 2, iter = 50)
+fit_cp_100iter <- sampling(schools_mod_cp, data = schools_dat, 
+                           chains = 2, iter = 100)
 ```
 
-**bayesplot** also provides a generic `rhat` extractor function,
-currently with methods defined for models fit using the **rstan** and
-**rstanarm** packages. But regardless of how you fit your model, all
-**bayesplot** needs is a vector of $\hat{R}$ values.
+**bayesplot** provides a generic `rhat` extractor function, currently with
+methods defined for models fit using the **rstan** and **rstanarm** packages.
+But regardless of how you fit your model, all **bayesplot** needs is a vector of
+$\hat{R}$ values.
 
 ```{r print-rhats}
-library("bayesplot")
-rhats <- rhat(fit1_50iter)
+rhats <- rhat(fit_cp_100iter)
 print(rhats)
 ```
 
 We can visualize the $\hat{R}$ values with the `mcmc_rhat` function:
 
-```{r mcmc_rhat}
+```{r mcmc_rhat-1}
 color_scheme_set("brightblue") # see help("color_scheme_set")
 mcmc_rhat(rhats)
 ```
@@ -206,21 +207,21 @@ In the plot, the points representing the $\hat{R}$ values are colored based on
 whether they are less than $1.05$, between $1.05$ and $1.1$, or greater than
 $1.1$.
 
-We can see the names of the parameters with the concerning $\hat{R}$ values by
-turning on the $y$-axis text using the `yaxis_text` convenience function:
+The axis $y$-axis text is off by default for this plot because it's only 
+possible to see the labels clearly for models with very few parameters. We can
+see the names of the parameters with the concerning $\hat{R}$ values using the
+`yaxis_text` convenience function (which passes arguments like `hjust` to
+`ggplot2::element_text`):
 
 ```{r, mcmc_rhat-2}
-mcmc_rhat(rhats) + yaxis_text()
+mcmc_rhat(rhats) + yaxis_text(hjust = 1)
 ```
-
-The axis $y$-axis text is off by default for this plot because it's only
-possible to see the labels clearly for models with very few parameters.
 
 If we look at the same model fit using longer Markov chains we should see all
 $\hat{R} < 1.1$, and all points in the plot the same (light) color:
 
-```{r, results='hide'}
-mcmc_rhat(rhat = rhat(fit1)) + yaxis_text()
+```{r, mcmc_rhat-3}
+mcmc_rhat(rhat = rhat(fit_cp)) + yaxis_text(hjust = 0)
 ```
 
 We can see the same information shown by `mcmc_rhat` but in histogram form using
@@ -239,12 +240,13 @@ larger the ratio of $n_{eff}$ to $N$ the better.
 The **bayesplot** package provides a generic `neff_ratio` extractor function,
 currently with methods defined for models fit using the **rstan** and
 **rstanarm** packages. But regardless of how you fit your model, all
-**bayesplot** needs is a vector of $n_{eff}/N$ values. The `mcmc_neff` and `mcmc_neff_hist` can then be used to plot the ratios.
+**bayesplot** needs is a vector of $n_{eff}/N$ values. The `mcmc_neff` and 
+`mcmc_neff_hist` can then be used to plot the ratios.
 
 ```{r print-neff-ratios}
-ratios1 <- neff_ratio(fit1)
-print(ratios1)
-mcmc_neff(ratios1)
+ratios_cp <- neff_ratio(fit_cp)
+print(ratios_cp)
+mcmc_neff(ratios_cp, size = 2)
 ```
 
 In the plot, the points representing the values of $n_{eff}/N$ are colored based
@@ -261,21 +263,25 @@ much lower autocorrelations compared to draws obtained using other MCMC
 algorithms (e.g., Gibbs).
 
 Even for models fit using **rstan** the parameterization can make a big
-difference. Here are the $n_{eff}/N$ plots for `fit1` and `fit2` side by side.
+difference. Here are the $n_{eff}/N$ plots for `fit_cp` and `fit_ncp` 
+side by side.
 
 ```{r mcmc_neff-compare}
 # A function we'll use several times to plot comparisons of the centered 
 # parameterization (cp) and the non-centered parameterization (ncp). See
 # help("bayesplot_grid") for details on the bayesplot_grid function used here.
-compare_cp_ncp <- function(cp_plot, ncp_plot, ncol = 1) {
-  txt <- c("Centered parameterization", "Non-centered parameterization")
-  bayesplot_grid(cp_plot, ncp_plot, subtitles = txt, 
-                 grid_args = list(ncol = ncol))
+compare_cp_ncp <- function(cp_plot, ncp_plot, ncol = 2) {
+  bayesplot_grid(
+    cp_plot, ncp_plot, 
+    grid_args = list(ncol = ncol),
+    subtitles = c("Centered parameterization", 
+                  "Non-centered parameterization")
+  )
 }
 
-neff1 <- neff_ratio(fit1, pars = c("theta", "mu", "tau"))
-neff2 <- neff_ratio(fit2, pars = c("theta", "mu", "tau"))
-compare_cp_ncp(mcmc_neff(neff1), mcmc_neff(neff2))
+neff_cp <- neff_ratio(fit_cp, pars = c("theta", "mu", "tau"))
+neff_ncp <- neff_ratio(fit_ncp, pars = c("theta", "mu", "tau"))
+compare_cp_ncp(mcmc_neff(neff_cp), mcmc_neff(neff_ncp), ncol = 1)
 ```
 
 Because of the difference in parameterization, the effective sample sizes are 
@@ -292,14 +298,13 @@ user-specified number of lags.
 Here we can again see a difference when comparing the two parameterizations of 
 the same model. For model 1, $\theta_1$ is the primitive parameter for school 1,
 whereas for the non-centered parameterization in model 2 the primitive parameter
-is $\eta_1$ (and $\theta_1$ is later constructed from $\eta_1$, $\mu$, and 
-$\tau$):
+is $\eta_1$ (and $\theta_1$ is later constructed from $\eta_1$, $\mu$, 
+and $\tau$):
 
 ```{r mcmc_acf}
 compare_cp_ncp(
-  mcmc_acf(posterior1, pars = "theta[1]", lags = 10),
-  mcmc_acf(posterior2, pars = "eta[1]", lags = 10), 
-  ncol = 2
+  mcmc_acf(posterior_cp, pars = "theta[1]", lags = 10),
+  mcmc_acf(posterior_ncp, pars = "eta[1]", lags = 10)
 )
 ```
 
@@ -322,23 +327,22 @@ available_mcmc(pattern = "_nuts_")
 ```
 
 The **bayesplot** package also provides generic functions `log_posterior` and 
-`nuts_params` for extracting the required information for the plots from fitted
+`nuts_params` for extracting the required information for the plots from fitted 
 model objects. Currently methods are provided for models fit using the **rstan**
-and **rstanarm** packages, although it is not difficult to define additional
-methods for the objects returned by other R packages.
-
-For the Stan models we fit above we can use the `log_posterior` and
-`nuts_params` methods for stanfit objects:
+and **rstanarm** packages, although it is not difficult to define additional 
+methods for the objects returned by other R packages. For the Stan models we fit
+above we can use the `log_posterior` and `nuts_params` methods for stanfit
+objects:
 
 ```{r, extract-nuts-info}
-lp1 <- log_posterior(fit1)
-head(lp1)
-np1 <- nuts_params(fit1)
-head(np1)
+lp_cp <- log_posterior(fit_cp)
+head(lp_cp)
+np_cp <- nuts_params(fit_cp)
+head(np_cp)
 
 # for the second model
-lp2 <- log_posterior(fit2)
-np2 <- nuts_params(fit2)
+lp_ncp <- log_posterior(fit_ncp)
+np_ncp <- nuts_params(fit_ncp)
 ```
 
 ### Divergent transitions
@@ -348,14 +352,14 @@ there were warnings about divergent transitions.
 For an explanation of these warnings see [Divergent transitions after warmup](http://mc-stan.org/misc/warnings.html#divergent-transitions-after-warmup).
 
 The `divergences` argument to the `mcmc_trace` function can be used to add a rug
-plot (in red) of the divergences to a trace plot of parameter draws.
-Typically we can see that at least one of the chains is getting stuck wherever 
-there is a cluster of many red marks:
+plot (in red) of the divergences to a trace plot of parameter draws. Typically
+we can see that at least one of the chains is getting stuck wherever there is a
+cluster of many red marks:
 
 ```{r, mcmc_trace}
 color_scheme_set("mix-brightblue-gray")
-mcmc_trace(posterior1, pars = "tau", divergences = np1) + 
-  xlab("Post-warmup Iteration")
+mcmc_trace(posterior_cp, pars = "tau", divergences = np_cp) + 
+  xlab("Post-warmup iteration")
 ```
 
 To look deeper at the information conveyed by the divergences we can use the 
@@ -363,13 +367,13 @@ To look deeper at the information conveyed by the divergences we can use the
 
 ```{r, mcmc_nuts_divergence}
 color_scheme_set("red")
-mcmc_nuts_divergence(np1, lp1)
+mcmc_nuts_divergence(np_cp, lp_cp)
 ```
 
 In the top panel we see the distribution of the log-posterior when there was no 
 divergence vs the distribution when there was a divergence. Divergences often 
-indicate that some part of the posterior isn't being explored and 
-`lp|Divergence` will have lighter tails than `lp|No divergence`.
+indicate that some part of the posterior isn't being explored and the plot 
+confirms that `lp|Divergence` indeed has lighter tails than `lp|No divergence`.
 
 The bottom panel shows the same thing but instead of the log-posterior the NUTS 
 acceptance statistic is shown.
@@ -378,36 +382,35 @@ Specifying the optional `chain` argument will overlay the plot just for a
 particular Markov chain on the plot for all chains combined:
 
 ```{r, mcmc_nuts_divergence-chain}
-mcmc_nuts_divergence(np1, lp1, chain = 4)
+mcmc_nuts_divergence(np_cp, lp_cp, chain = 4)
 ```
 
-For the non-centered parameterization we also had warnings about divergences
+For the non-centered parameterization we may get a few warnings about
+divergences but if we do we'll have far fewer of them to worry about.
 
 ```{r, mcmc_nuts_divergence-2}
-mcmc_nuts_divergence(np2, lp2)
+mcmc_nuts_divergence(np_ncp, lp_ncp)
 ```
 
-but we have far fewer of them to worry about. If there are only a few 
-divergences we can often get rid of them by increasing the target acceptance 
-rate (`adapt_delta`), which has the effect of lowering the stepsize used by the 
-sampler and allowing the Markov chains to explore more complicated curvature in
-the target distribution.
+If there are only a few divergences we can often get rid of them by increasing
+the target acceptance rate (`adapt_delta`), which has the effect of lowering the
+stepsize used by the sampler and allowing the Markov chains to explore more
+complicated curvature in the target distribution.
 
-```{r, fit-adapt-delta, results='hide',message=FALSE}
-fit1b <- sampling(schools_mod1, data = schools_dat,
-                  control = list(adapt_delta = 0.99))
-fit2b <- sampling(schools_mod2, data = schools_dat,
-                  control = list(adapt_delta = 0.99))
+```{r, fit-adapt-delta, results='hide', message=FALSE}
+fit_cp_2 <- sampling(schools_mod_cp, data = schools_dat,
+                     control = list(adapt_delta = 0.99))
+fit_ncp_2 <- sampling(schools_mod_ncp, data = schools_dat,
+                      control = list(adapt_delta = 0.99))
 ```
 
-For the first model and this particular data, increasing
-`adapt_delta` will not solve the problem and a reparameterization 
-is required. 
+For the first model and this particular data, increasing `adapt_delta` will not
+solve the problem and a reparameterization is required.
 
 
 ```{r, mcmc_nuts_divergence-3}
-mcmc_nuts_divergence(nuts_params(fit1b), log_posterior(fit1b))
-mcmc_nuts_divergence(nuts_params(fit2b), log_posterior(fit2b))
+mcmc_nuts_divergence(nuts_params(fit_cp_2), log_posterior(fit_cp_2))
+mcmc_nuts_divergence(nuts_params(fit_ncp_2), log_posterior(fit_ncp_2))
 ```
 
 ### Energy and Bayesian fraction of missing information
@@ -424,17 +427,16 @@ The plot created by `mcmc_nuts_energy` shows overlaid histograms of the
 (centered) marginal energy distribution $\pi_E$ and the first-differenced 
 distribution $\pi_{\Delta E}$,
 ```{r, mcmc_nuts_energy-1, message=FALSE}
-mcmc_nuts_energy(np1)
+mcmc_nuts_energy(np_cp)
 ```
 
 The two histograms ideally look the same (Betancourt, 2017), which is only the
 case for the non-centered parameterization (right):
 
-```{r, mcmc_nuts_energy-3, message=FALSE, fig.width=7}
+```{r, mcmc_nuts_energy-3, message=FALSE, fig.width=8}
 compare_cp_ncp(
-  mcmc_nuts_energy(np1, binwidth = 1/2),
-  mcmc_nuts_energy(np2, binwidth = 1/2), 
-  ncol = 2
+  mcmc_nuts_energy(np_cp, binwidth = 1/2),
+  mcmc_nuts_energy(np_ncp, binwidth = 1/2)
 )
 ```
 
@@ -442,13 +444,13 @@ The difference between the parameterizations is even more apparent if we force
 the stepsize to a smaller value and help the chains explore more of the 
 posterior:
 
-```{r, mcmc_nuts_energy-4, message=FALSE,  fig.width=7}
-np1b <- nuts_params(fit1b)
-np2b <- nuts_params(fit2b)
+```{r, mcmc_nuts_energy-4, message=FALSE,  fig.width=8}
+np_cp_2 <- nuts_params(fit_cp_2)
+np_ncp_2 <- nuts_params(fit_ncp_2)
+
 compare_cp_ncp(
-  mcmc_nuts_energy(np1b), 
-  mcmc_nuts_energy(np2b), 
-  ncol = 2
+  mcmc_nuts_energy(np_cp_2), 
+  mcmc_nuts_energy(np_ncp_2)
 )
 ```
 
@@ -467,8 +469,8 @@ Betancourt, M. and Girolami, M. (2013). Hamiltonian Monte Carlo for hierarchical
 models. https://arxiv.org/abs/1312.0906
 
 Gabry, J., and Goodrich, B. (2017). rstanarm: Bayesian Applied Regression
-Modeling via Stan. R package version 2.14.1.
-http://mc-stan.org/interfaces/rstanarm.html, https://CRAN.R-project.org/package=rstanarm
+Modeling via Stan. R package version 2.15.3.
+http://mc-stan.org/users/interfaces/rstanarm.html, https://CRAN.R-project.org/package=rstanarm
 
 Gelman, A. and Rubin, D. B. (1992). Inference from iterative simulation using
 multiple sequences. *Statistical Science*. 7(4): 457--472.
@@ -477,10 +479,15 @@ Gelman, A., Carlin, J. B., Stern, H. S., Dunson, D. B., Vehtari, A., and Rubin,
 D. B. (2013). *Bayesian Data Analysis*. Chapman & Hall/CRC Press, London, third
 edition.
 
-Hoffman, M. D. and Gelman, A. (2014). The No-U-Turn Sampler: adaptively setting path lengths in Hamiltonian Monte Carlo. *Journal of Machine Learning Research*. 15:1593--1623.
+Hoffman, M. D. and Gelman, A. (2014). The No-U-Turn Sampler: adaptively setting
+path lengths in Hamiltonian Monte Carlo. *Journal of Machine Learning Research*.
+15:1593--1623.
 
 Rubin, D. B. (1981). Estimation in Parallel Randomized Experiments. *Journal of
 Educational and Behavioral Statistics*. 6:377–401.
 
-Stan Development Team. (2016). *Stan Modeling Language Users
-Guide and Reference Manual*. http://mc-stan.org/documentation/
+Stan Development Team. (2017). *Stan Modeling Language Users
+Guide and Reference Manual*. http://mc-stan.org/users/documentation/
+
+Stan Development Team. (2017). RStan: the R interface to Stan. R package version 2.16.2.
+http://mc-stan.org/users/interfaces/rstan.html, https://CRAN.R-project.org/package=rstanarm

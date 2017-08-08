@@ -28,6 +28,10 @@ formats:
  contains the chain number (an integer) corresponding to each row in
  the data frame.
 }
+\strong{Note}: typically the user should \emph{not} include warmup iterations
+in the object passed to \pkg{bayesplot} plotting functions, although for
+certain plots (e.g. traceplots) it can occasionally be useful to include the
+warmup iterations for diagnostic purposes.
 }
 \section{MCMC plotting functions}{
 
@@ -49,8 +53,12 @@ formats:
   \item{\strong{\link[=MCMC-combos]{Combinations}}}{
     Combination plots (e.g. traceplot + histogram).
   }
+  \item{\strong{\link[=MCMC-diagnostics]{General MCMC diagnostics}}}{
+    MCMC diagnostic plots including Rhat, effective sample size,
+    autocorrelation.
+  }
   \item{\strong{\link[=MCMC-nuts]{NUTS diagnostics}}}{
-    Diagnostic plots for the No-U-Turn Sampler.
+    Special diagnostic plots for the No-U-Turn Sampler.
   }
   \item{\strong{\link[=MCMC-recover]{Comparisons to "true" values}}}{
     Plots comparing MCMC estimates to "true" parameter values (e.g.,

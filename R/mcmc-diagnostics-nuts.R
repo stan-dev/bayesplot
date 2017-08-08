@@ -94,9 +94,9 @@
 #' @seealso
 #' \itemize{
 #' \item The \emph{Visual MCMC Diagnostics} vignette.
-#' \item Several other plotting functions in the \pkg{bayesplot}
-#' package that aren't NUTS-specific but take optional extra arguments
-#' if the model was fit using NUTS:
+#' \item Several other plotting functions in the \pkg{bayesplot} package that
+#' are not NUTS-specific but take optional extra arguments if the model was fit
+#' using NUTS:
 #' \itemize{
 #'  \item \code{\link{mcmc_trace}} will plot divergences on the traceplot if the
 #'  optional \code{divergences} argument is specified.
@@ -145,7 +145,7 @@ mcmc_nuts_acceptance <-
 
     x <- validate_nuts_data_frame(x, lp)
     n_chain <- length(unique(lp$Chain))
-    chain <- validate_enough_chains(chain, n_chain)
+    chain <- validate_enough_chains(chain, num_chains(x))
     overlay_chain <- !is.null(chain)
 
     accept_stat <- filter_(x, ~ Parameter == "accept_stat__")
@@ -243,8 +243,7 @@ mcmc_nuts_divergence <- function(x, lp, chain = NULL, ...) {
   check_ignored_arguments(...)
 
   x <- validate_nuts_data_frame(x, lp)
-  n_chain <- length(unique(lp$Chain))
-  chain <- validate_enough_chains(chain, n_chain)
+  chain <- validate_enough_chains(chain, num_chains(x))
   overlay_chain <- !is.null(chain)
 
   accept_stat <- filter_(x, ~ Parameter == "accept_stat__")
@@ -292,8 +291,7 @@ mcmc_nuts_stepsize <- function(x, lp, chain = NULL, ...) {
   check_ignored_arguments(...)
 
   x <- validate_nuts_data_frame(x, lp)
-  n_chain <- length(unique(lp$Chain))
-  chain <- validate_enough_chains(chain, n_chain)
+  chain <- validate_enough_chains(chain, num_chains(x))
   overlay_chain <- !is.null(chain)
 
   stepsize <- filter_(x, ~ Parameter == "stepsize__")
@@ -342,8 +340,7 @@ mcmc_nuts_treedepth <- function(x, lp, chain = NULL, ...) {
   check_ignored_arguments(...)
 
   x <- validate_nuts_data_frame(x, lp)
-  n_chain <- length(unique(lp$Chain))
-  chain <- validate_enough_chains(chain, n_chain)
+  chain <- validate_enough_chains(chain, num_chains(x))
   overlay_chain <- !is.null(chain)
 
   treedepth <- filter_(x, ~ Parameter == "treedepth__")
@@ -521,8 +518,8 @@ validate_nuts_data_frame <- function(x, lp) {
         paste(valid_lp_cols, collapse = ", ")
       )
 
-    n_chain <- length(unique(x$Chain))
-    n_lp_chain <- length(unique(lp$Chain))
+    n_chain <- num_chains(x)
+    n_lp_chain <- num_chains(lp)
     if (n_chain != n_lp_chain)
       stop(
         "Number of chains for NUTS parameters is ", n_chain,

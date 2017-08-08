@@ -13,7 +13,7 @@
 #'   relative column widths. For example, if the plot has two columns, then
 #'   \code{widths = c(2, 1)} will allocate more space for the first column by a
 #'   factor of 2 (as would \code{widths = c(.3, .15)}, etc.). The default,
-#'   \code{NULL}, allocates the same horiztonal space for each column.
+#'   \code{NULL}, allocates the same horizontal space for each column.
 #' @param gg_theme Unlike most of the other \pkg{bayesplot} functions,
 #'   \code{mcmc_combo} returns a gtable object rather than a ggplot object, and
 #'   so theme objects can't be added directly to the returned plot object. The

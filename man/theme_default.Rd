@@ -33,23 +33,20 @@ to the default \pkg{bayesplot} theme use \code{bayesplot::theme_default()} as
 the argument to \code{\link[ggplot2]{theme_set}}.
 }
 \examples{
-thm <- theme_default()
-class(thm)
-names(thm)
+class(theme_default())
 
 # plot using the default theme
+ggplot2::theme_set(theme_default())
 x <- example_mcmc_draws()
 mcmc_hist(x)
 
 # change the default font size and family
-options(bayesplot.base_size = 10,
-        bayesplot.base_family = "sans")
+ggplot2::theme_set(theme_default(base_size = 8, base_family = "sans"))
 mcmc_hist(x)
 mcmc_areas(x, regex_pars = "beta")
 
 # change back
-options(bayesplot.base_size = 12,
-        bayesplot.base_family = "serif")
+ggplot2::theme_set(theme_default())
 mcmc_areas(x, regex_pars = "beta")
 
 # use one of the themes included in ggplot2

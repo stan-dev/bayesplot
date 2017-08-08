@@ -1,7 +1,7 @@
 #' Plot interval estimates from MCMC draws
 #'
-#' Plot central (quantile-based) interval estimates from MCMC draws. See the
-#' \strong{Plot Descriptions} section, below, for details.
+#' Plot central (quantile-based) posterior interval estimates from MCMC draws.
+#' See the \strong{Plot Descriptions} section, below, for details.
 #'
 #' @name MCMC-intervals
 #' @family MCMC
@@ -250,8 +250,7 @@ mcmc_areas <- function(x,
         y = ~ y,
         group = ~ name,
         color = if (!color_by_rhat) NULL else ~ rhat
-      ),
-      lineend = "round"
+      )
     )
     if (!color_by_rhat)
       dens_args$color <- get_color("d")
@@ -312,7 +311,7 @@ mcmc_areas <- function(x,
         yend = ~ maxy,
         color = if (!color_by_rhat) NULL else ~ rhat
       ),
-      size = 1.25
+      size = 1
     )
     if (!color_by_rhat)
       segment_args$color <- get_color("m")
@@ -357,8 +356,8 @@ mcmc_areas <- function(x,
         y = ~ y,
         yend = ~ y
       ),
-      colour = get_color("m"),
-      lineend = "round")
+      colour = get_color("m")
+    )
 
     # inner interval
     segment_args <- list(
@@ -370,7 +369,6 @@ mcmc_areas <- function(x,
         color = if (!color_by_rhat) NULL else ~ rhat
       ),
       size = 2,
-      lineend = "round",
       show.legend = FALSE
     )
     if (!color_by_rhat)

@@ -1,4 +1,12 @@
+# bayesplot 1.3.0.9000
+
+(GitHub issue/PR numbers in parentheses)
+
+* insert news for next release here
+
 # bayesplot 1.3.0
+
+(GitHub issue/PR numbers in parentheses)
 
 * `bayesplot::theme_default` is now set as the default ggplot2 plotting theme
 when **bayesplot** is loaded, which makes changing the default theme using
@@ -7,6 +15,8 @@ when **bayesplot** is loaded, which makes changing the default theme using
 to `TRUE` (behavior is like `freq` argument to R's `hist` function).
 * Using a `ts` object for `y` in PPC plots no longer results in an error. Thanks
 to @helske. (#94)
+* `mcmc_intervals` doesn't use round lineends anymore as they slightly 
+exaggerate the width of the intervals. Thanks to @tjmahr. (#96)
 
 # bayesplot 1.2.0
 

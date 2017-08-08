@@ -76,10 +76,10 @@ test_that("mcmc_trace 'divergences' argument works", {
                "length(divergences) == n_iter is not TRUE",
                fixed = TRUE)
   expect_error(mcmc_trace(draws[,1:2,], pars = "sigma", divergences = divs),
-               "length(unique(divergences$Chain)) == n_chain is not TRUE",
+               "num_chains(divergences) == n_chain is not TRUE",
                fixed = TRUE)
   expect_error(mcmc_trace(draws, pars = "sigma", divergences = divs[1:10, ]),
-               "length(unique(divergences$Iteration)) == n_iter is not TRUE",
+               "num_iters(divergences) == n_iter is not TRUE",
                fixed = TRUE)
   expect_message(mcmc_trace(draws, pars = "sigma", divergences = rep(0, nrow(draws))),
                  "No divergences to plot.")
