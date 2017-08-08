@@ -161,11 +161,11 @@ regression modeling.</p>
  If you'd like to request a new feature or if you've noticed a bug that needs
  to be fixed please let us know at the <span class="pkg">bayesplot</span> issue tracker on
  GitHub:
-    <a href = 'https://github.com/stan-dev/bayesplot/issues/'>https://github.com/stan-dev/bayesplot/issues/</a>.</p></li>
+    <a href='https://github.com/stan-dev/bayesplot/issues/'>https://github.com/stan-dev/bayesplot/issues/</a>.</p></li>
 <li><p><strong>General questions and help</strong>:
  To ask a question about <span class="pkg">bayesplot</span> on the Stan-users
  forum please visit
-    <a href = 'http://discourse.mc-stan.org'>http://discourse.mc-stan.org</a>.</p></li>
+    <a href='http://discourse.mc-stan.org'>http://discourse.mc-stan.org</a>.</p></li>
 </ul>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
@@ -183,23 +183,21 @@ regression modeling.</p>
 
 <span class='co'># MCMC plots</span>
 <span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='example-data.html'>example_mcmc_draws</a></span>(<span class='kw'>params</span> <span class='kw'>=</span> <span class='fl'>5</span>)
-<span class='fu'><a href='MCMC-intervals.html'>mcmc_intervals</a></span>(<span class='no'>x</span>, <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.5</span>)</div><img src='bayesplot-package-2.png' alt='' width='540' height='400' /><div class='input'><span class='fu'><a href='MCMC-intervals.html'>mcmc_intervals</a></span>(<span class='no'>x</span>, <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='st'>"beta"</span>)</div><img src='bayesplot-package-4.png' alt='' width='540' height='400' /><div class='input'>
+<span class='fu'><a href='MCMC-intervals.html'>mcmc_intervals</a></span>(<span class='no'>x</span>, <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.5</span>)</div><div class='img'><img src='bayesplot-package-1.png' alt='' width='700' height='432.632880098887' /></div><div class='input'><span class='fu'><a href='MCMC-intervals.html'>mcmc_intervals</a></span>(<span class='no'>x</span>, <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='st'>"beta"</span>)</div><div class='img'><img src='bayesplot-package-2.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
 <span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"purple"</span>)
-<span class='fu'><a href='MCMC-intervals.html'>mcmc_areas</a></span>(<span class='no'>x</span>, <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='st'>"beta"</span>, <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.8</span>)</div><img src='bayesplot-package-6.png' alt='' width='540' height='400' /><div class='input'>
+<span class='fu'><a href='MCMC-intervals.html'>mcmc_areas</a></span>(<span class='no'>x</span>, <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='st'>"beta"</span>, <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.8</span>)</div><div class='img'><img src='bayesplot-package-3.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
 <span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"mix-blue-red"</span>)
 <span class='fu'><a href='MCMC-traces.html'>mcmc_trace</a></span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"alpha"</span>, <span class='st'>"sigma"</span>),
-           <span class='kw'>facet_args</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>nrow</span> <span class='kw'>=</span> <span class='fl'>2</span>))</div><img src='bayesplot-package-8.png' alt='' width='540' height='400' /><div class='input'>
+           <span class='kw'>facet_args</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>nrow</span> <span class='kw'>=</span> <span class='fl'>2</span>))</div><div class='img'><img src='bayesplot-package-4.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
 <span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"brightblue"</span>)
 <span class='fu'><a href='MCMC-scatterplots.html'>mcmc_scatter</a></span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"beta[1]"</span>, <span class='st'>"sigma"</span>),
-             <span class='kw'>transformations</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>sigma</span> <span class='kw'>=</span> <span class='st'>"log"</span>))</div><img src='bayesplot-package-10.png' alt='' width='540' height='400' /><div class='input'>
+             <span class='kw'>transformations</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>sigma</span> <span class='kw'>=</span> <span class='st'>"log"</span>))</div><div class='img'><img src='bayesplot-package-5.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
 
 <span class='co'># Graphical PPCs</span>
 <span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='example-data.html'>example_y_data</a></span>()
 <span class='no'>yrep</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='example-data.html'>example_yrep_draws</a></span>()
-<span class='fu'><a href='PPC-distributions.html'>ppc_dens_overlay</a></span>(<span class='no'>y</span>, <span class='no'>yrep</span>[<span class='fl'>1</span>:<span class='fl'>50</span>, ])</div><img src='bayesplot-package-12.png' alt='' width='540' height='400' /><div class='input'>
-<span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"pink"</span>)
-<span class='fu'><a href='PPC-test-statistics.html'>ppc_stat</a></span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='kw'>stat</span> <span class='kw'>=</span> <span class='st'>"median"</span>) + <span class='fu'><a href='bayesplot-helpers.html'>grid_lines</a></span>()</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><img src='bayesplot-package-15.png' alt='' width='540' height='400' /><div class='input'><span class='fu'><a href='PPC-distributions.html'>ppc_hist</a></span>(<span class='no'>y</span>, <span class='no'>yrep</span>[<span class='fl'>1</span>:<span class='fl'>8</span>, ])</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><img src='bayesplot-package-18.png' alt='' width='540' height='400' /><div class='input'>
-
+<span class='fu'><a href='PPC-distributions.html'>ppc_dens_overlay</a></span>(<span class='no'>y</span>, <span class='no'>yrep</span>[<span class='fl'>1</span>:<span class='fl'>50</span>, ])</div><div class='img'><img src='bayesplot-package-6.png' alt='' width='700' height='432.632880098887' /></div><div class='input'><span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"pink"</span>)
+<span class='fu'><a href='PPC-test-statistics.html'>ppc_stat</a></span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='kw'>stat</span> <span class='kw'>=</span> <span class='st'>"median"</span>) + <span class='fu'><a href='bayesplot-helpers.html'>grid_lines</a></span>()</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='bayesplot-package-7.png' alt='' width='700' height='432.632880098887' /></div><div class='input'><span class='fu'><a href='PPC-distributions.html'>ppc_hist</a></span>(<span class='no'>y</span>, <span class='no'>yrep</span>[<span class='fl'>1</span>:<span class='fl'>8</span>, ])</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='bayesplot-package-8.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

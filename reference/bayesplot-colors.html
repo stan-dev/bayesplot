@@ -153,18 +153,18 @@ custom scheme.</p>
 <li><p><code>"red"</code></p></li>
 <li><p><code>"teal"</code></p></li>
 <li><p><code>"yellow"</code></p></li>
-<li><p><a href = 'https://CRAN.R-project.org/package=viridis'><code>"viridis"</code></a>,
+<li><p><a href='https://CRAN.R-project.org/package=viridis'><code>"viridis"</code></a>,
      <code>"viridisA"</code>, <code>"viridisB"</code>, <code>"viridisC"</code></p></li>
 <li><p><code>"mix-x-y"</code>, replacing <code>x</code> and <code>y</code> with any two of
      the scheme names listed above (e.g. "mix-teal-pink", "mix-blue-red",
      etc.). The order of <code>x</code> and <code>y</code> matters, i.e., the color
      schemes "mix-blue-red" and "mix-red-blue" are not identical. There is no
-     gaurantee that every possible mixed scheme will look good with every
+     guarantee that every possible mixed scheme will look good with every
      possible plot.</p></li>
 </ul>
 
 <p>If you have a suggestion for a new color scheme please let us know via the
-  <span class="pkg">bayesplot</span> <a href = 'https://github.com/stan-dev/bayesplot/issues'>issue
+  <span class="pkg">bayesplot</span> <a href='https://github.com/stan-dev/bayesplot/issues'>issue
   tracker</a>.</p></td>
     </tr>
     <tr>
@@ -207,7 +207,7 @@ scheme are included.</p></td>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'>color_scheme_set</span>(<span class='st'>"blue"</span>)
-<span class='fu'>color_scheme_view</span>()</div><img src='bayesplot-colors-2.png' alt='' width='540' height='400' /><div class='input'>
+<span class='fu'>color_scheme_view</span>()</div><div class='img'><img src='bayesplot-colors-1.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
 <span class='fu'>color_scheme_get</span>()</div><div class='output co'>#&gt;      blue
 #&gt; 1 #d1e1ec
 #&gt; 2 #b3cde0
@@ -226,30 +226,28 @@ scheme are included.</p></td>
 #&gt; 3    #4ca5ff
 #&gt; 4    #198bff
 #&gt; 5    #0065cc
-#&gt; 6    #004c99</div><div class='input'><span class='fu'>color_scheme_view</span>(<span class='st'>"brightblue"</span>)</div><img src='bayesplot-colors-10.png' alt='' width='540' height='400' /><div class='input'>
+#&gt; 6    #004c99</div><div class='input'><span class='fu'>color_scheme_view</span>(<span class='st'>"brightblue"</span>)</div><div class='img'><img src='bayesplot-colors-2.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
 <span class='co'># compare multiple schemes</span>
-<span class='fu'>color_scheme_view</span>(<span class='fu'>c</span>(<span class='st'>"pink"</span>, <span class='st'>"gray"</span>, <span class='st'>"teal"</span>))</div><img src='bayesplot-colors-12.png' alt='' width='540' height='400' /><div class='input'><span class='fu'>color_scheme_view</span>(<span class='fu'>c</span>(<span class='st'>"viridis"</span>, <span class='st'>"viridisA"</span>, <span class='st'>"viridisB"</span>, <span class='st'>"viridisC"</span>))</div><img src='bayesplot-colors-14.png' alt='' width='540' height='400' /><div class='input'>
+<span class='fu'>color_scheme_view</span>(<span class='fu'>c</span>(<span class='st'>"pink"</span>, <span class='st'>"gray"</span>, <span class='st'>"teal"</span>))</div><div class='img'><img src='bayesplot-colors-3.png' alt='' width='700' height='432.632880098887' /></div><div class='input'><span class='fu'>color_scheme_view</span>(<span class='fu'>c</span>(<span class='st'>"viridis"</span>, <span class='st'>"viridisA"</span>, <span class='st'>"viridisB"</span>, <span class='st'>"viridisC"</span>))</div><div class='img'><img src='bayesplot-colors-4.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
 <span class='fu'>color_scheme_set</span>(<span class='st'>"pink"</span>)
 <span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='example-data.html'>example_mcmc_draws</a></span>()
-<span class='fu'><a href='MCMC-intervals.html'>mcmc_intervals</a></span>(<span class='no'>x</span>)</div><img src='bayesplot-colors-16.png' alt='' width='540' height='400' /><div class='input'>
+<span class='fu'><a href='MCMC-intervals.html'>mcmc_intervals</a></span>(<span class='no'>x</span>)</div><div class='img'><img src='bayesplot-colors-5.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
 <span class='fu'>color_scheme_set</span>(<span class='st'>"teal"</span>)
-<span class='fu'>color_scheme_view</span>()</div><img src='bayesplot-colors-18.png' alt='' width='540' height='400' /><div class='input'><span class='fu'><a href='MCMC-intervals.html'>mcmc_intervals</a></span>(<span class='no'>x</span>)</div><img src='bayesplot-colors-20.png' alt='' width='540' height='400' /><div class='input'>
+<span class='fu'>color_scheme_view</span>()</div><div class='img'><img src='bayesplot-colors-6.png' alt='' width='700' height='432.632880098887' /></div><div class='input'><span class='fu'><a href='MCMC-intervals.html'>mcmc_intervals</a></span>(<span class='no'>x</span>)</div><div class='img'><img src='bayesplot-colors-7.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
 <span class='fu'>color_scheme_set</span>(<span class='st'>"red"</span>)
-<span class='fu'><a href='MCMC-intervals.html'>mcmc_areas</a></span>(<span class='no'>x</span>, <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='st'>"beta"</span>)</div><img src='bayesplot-colors-22.png' alt='' width='540' height='400' /><div class='input'>
+<span class='fu'><a href='MCMC-intervals.html'>mcmc_areas</a></span>(<span class='no'>x</span>, <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='st'>"beta"</span>)</div><div class='img'><img src='bayesplot-colors-8.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
 <span class='fu'>color_scheme_set</span>(<span class='st'>"purple"</span>)
-<span class='fu'>color_scheme_view</span>()</div><img src='bayesplot-colors-24.png' alt='' width='540' height='400' /><div class='input'><span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='example-data.html'>example_y_data</a></span>()
+<span class='fu'>color_scheme_view</span>()</div><div class='img'><img src='bayesplot-colors-9.png' alt='' width='700' height='432.632880098887' /></div><div class='input'><span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='example-data.html'>example_y_data</a></span>()
 <span class='no'>yrep</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='example-data.html'>example_yrep_draws</a></span>()
-<span class='fu'><a href='PPC-test-statistics.html'>ppc_stat</a></span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='kw'>stat</span> <span class='kw'>=</span> <span class='st'>"mean"</span>) + <span class='fu'><a href='bayesplot-helpers.html'>legend_none</a></span>()</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><img src='bayesplot-colors-27.png' alt='' width='540' height='400' /><div class='input'>
-<span class='fu'>color_scheme_set</span>(<span class='st'>"mix-teal-pink"</span>)
-<span class='fu'><a href='PPC-test-statistics.html'>ppc_stat</a></span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='kw'>stat</span> <span class='kw'>=</span> <span class='st'>"sd"</span>) + <span class='fu'><a href='bayesplot-helpers.html'>legend_none</a></span>()</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><img src='bayesplot-colors-30.png' alt='' width='540' height='400' /><div class='input'><span class='fu'><a href='MCMC-intervals.html'>mcmc_areas</a></span>(<span class='no'>x</span>, <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='st'>"beta"</span>)</div><img src='bayesplot-colors-32.png' alt='' width='540' height='400' /><div class='input'>
-<span class='co'>###########################</span>
+<span class='fu'><a href='PPC-test-statistics.html'>ppc_stat</a></span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='kw'>stat</span> <span class='kw'>=</span> <span class='st'>"mean"</span>) + <span class='fu'><a href='bayesplot-helpers.html'>legend_none</a></span>()</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='bayesplot-colors-10.png' alt='' width='700' height='432.632880098887' /></div><div class='input'><span class='fu'>color_scheme_set</span>(<span class='st'>"mix-teal-pink"</span>)
+<span class='fu'><a href='PPC-test-statistics.html'>ppc_stat</a></span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='kw'>stat</span> <span class='kw'>=</span> <span class='st'>"sd"</span>) + <span class='fu'><a href='bayesplot-helpers.html'>legend_none</a></span>()</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='bayesplot-colors-11.png' alt='' width='700' height='432.632880098887' /></div><div class='input'><span class='fu'><a href='MCMC-intervals.html'>mcmc_areas</a></span>(<span class='no'>x</span>, <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='st'>"beta"</span>)</div><div class='img'><img src='bayesplot-colors-12.png' alt='' width='700' height='432.632880098887' /></div><div class='input'><span class='co'>###########################</span>
 <span class='co'>### custom color scheme ###</span>
 <span class='co'>###########################</span>
 <span class='no'>orange_scheme</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='st'>"#ffebcc"</span>, <span class='st'>"#ffcc80"</span>,
                    <span class='st'>"#ffad33"</span>, <span class='st'>"#e68a00"</span>,
                    <span class='st'>"#995c00"</span>, <span class='st'>"#663d00"</span>)
 <span class='fu'>color_scheme_set</span>(<span class='no'>orange_scheme</span>)
-<span class='fu'><a href='MCMC-intervals.html'>mcmc_areas</a></span>(<span class='no'>x</span>, <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='st'>"alpha"</span>)</div><img src='bayesplot-colors-34.png' alt='' width='540' height='400' /><div class='input'><span class='fu'><a href='MCMC-distributions.html'>mcmc_dens_overlay</a></span>(<span class='no'>x</span>)</div><img src='bayesplot-colors-36.png' alt='' width='540' height='400' /><div class='input'><span class='fu'><a href='PPC-test-statistics.html'>ppc_stat</a></span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='kw'>stat</span> <span class='kw'>=</span> <span class='st'>"var"</span>) + <span class='fu'><a href='bayesplot-helpers.html'>legend_none</a></span>()</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><img src='bayesplot-colors-39.png' alt='' width='540' height='400' /><div class='input'>
+<span class='fu'><a href='MCMC-intervals.html'>mcmc_areas</a></span>(<span class='no'>x</span>, <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='st'>"alpha"</span>)</div><div class='img'><img src='bayesplot-colors-13.png' alt='' width='700' height='432.632880098887' /></div><div class='input'><span class='fu'><a href='MCMC-distributions.html'>mcmc_dens_overlay</a></span>(<span class='no'>x</span>)</div><div class='img'><img src='bayesplot-colors-14.png' alt='' width='700' height='432.632880098887' /></div><div class='input'><span class='fu'><a href='PPC-test-statistics.html'>ppc_stat</a></span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='kw'>stat</span> <span class='kw'>=</span> <span class='st'>"var"</span>) + <span class='fu'><a href='bayesplot-helpers.html'>legend_none</a></span>()</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='bayesplot-colors-15.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

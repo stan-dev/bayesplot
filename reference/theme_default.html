@@ -153,7 +153,7 @@ below.</p>
 default <span class="pkg">ggplot2</span> theme (i.e., by calling
 <code><a href='http://www.rdocumentation.org/packages/ggplot2/topics/theme_get'>theme_set</a></code> or loading a different package that changes
 the theme) then <span class="pkg">bayesplot</span> will use that theme instead. To change back
-to the default <span class="pkg">bayesplot</span> theme use <code>bayesplot::theme_default()</code> as
+to the default <span class="pkg">bayesplot</span> theme use <code><a href='http://www.rdocumentation.org/packages/bayesplot/topics/theme_default'>bayesplot::theme_default()</a></code> as
 the argument to <code><a href='http://www.rdocumentation.org/packages/ggplot2/topics/theme_get'>theme_set</a></code>.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
@@ -166,44 +166,23 @@ the argument to <code><a href='http://www.rdocumentation.org/packages/ggplot2/to
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>thm</span> <span class='kw'>&lt;-</span> <span class='fu'>theme_default</span>()
-<span class='fu'>class</span>(<span class='no'>thm</span>)</div><div class='output co'>#&gt; [1] "theme" "gg"   </div><div class='input'><span class='fu'>names</span>(<span class='no'>thm</span>)</div><div class='output co'>#&gt;  [1] "line"                  "rect"                  "text"                 
-#&gt;  [4] "axis.title.x"          "axis.title.x.top"      "axis.title.y"         
-#&gt;  [7] "axis.title.y.right"    "axis.text"             "axis.text.x"          
-#&gt; [10] "axis.text.x.top"       "axis.text.y"           "axis.text.y.right"    
-#&gt; [13] "axis.ticks"            "axis.ticks.length"     "axis.line"            
-#&gt; [16] "axis.line.x"           "axis.line.y"           "legend.background"    
-#&gt; [19] "legend.margin"         "legend.spacing"        "legend.spacing.x"     
-#&gt; [22] "legend.spacing.y"      "legend.key"            "legend.key.size"      
-#&gt; [25] "legend.key.height"     "legend.key.width"      "legend.text"          
-#&gt; [28] "legend.text.align"     "legend.title"          "legend.title.align"   
-#&gt; [31] "legend.position"       "legend.direction"      "legend.justification" 
-#&gt; [34] "legend.box"            "legend.box.margin"     "legend.box.background"
-#&gt; [37] "legend.box.spacing"    "panel.background"      "panel.border"         
-#&gt; [40] "panel.spacing"         "panel.spacing.x"       "panel.spacing.y"      
-#&gt; [43] "panel.grid.major"      "panel.grid.minor"      "panel.ontop"          
-#&gt; [46] "plot.background"       "plot.title"            "plot.subtitle"        
-#&gt; [49] "plot.caption"          "plot.margin"           "strip.background"     
-#&gt; [52] "strip.placement"       "strip.text"            "strip.text.x"         
-#&gt; [55] "strip.text.y"          "strip.switch.pad.grid" "strip.switch.pad.wrap"
-#&gt; [58] "panel.grid"           </div><div class='input'>
+    <pre class="examples"><div class='input'><span class='fu'>class</span>(<span class='fu'>theme_default</span>())</div><div class='output co'>#&gt; [1] "theme" "gg"   </div><div class='input'>
 <span class='co'># plot using the default theme</span>
+<span class='kw pkg'>ggplot2</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/theme_get'>theme_set</a></span>(<span class='fu'>theme_default</span>())
 <span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='example-data.html'>example_mcmc_draws</a></span>()
-<span class='fu'><a href='MCMC-distributions.html'>mcmc_hist</a></span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><img src='theme_default-7.png' alt='' width='540' height='400' /><div class='input'>
+<span class='fu'><a href='MCMC-distributions.html'>mcmc_hist</a></span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='theme_default-1.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
 <span class='co'># change the default font size and family</span>
-<span class='fu'>options</span>(<span class='kw'>bayesplot.base_size</span> <span class='kw'>=</span> <span class='fl'>10</span>,
-        <span class='kw'>bayesplot.base_family</span> <span class='kw'>=</span> <span class='st'>"sans"</span>)
-<span class='fu'><a href='MCMC-distributions.html'>mcmc_hist</a></span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><img src='theme_default-10.png' alt='' width='540' height='400' /><div class='input'><span class='fu'><a href='MCMC-intervals.html'>mcmc_areas</a></span>(<span class='no'>x</span>, <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='st'>"beta"</span>)</div><img src='theme_default-12.png' alt='' width='540' height='400' /><div class='input'>
+<span class='kw pkg'>ggplot2</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/theme_get'>theme_set</a></span>(<span class='fu'>theme_default</span>(<span class='kw'>base_size</span> <span class='kw'>=</span> <span class='fl'>8</span>, <span class='kw'>base_family</span> <span class='kw'>=</span> <span class='st'>"sans"</span>))
+<span class='fu'><a href='MCMC-distributions.html'>mcmc_hist</a></span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='theme_default-2.png' alt='' width='700' height='432.632880098887' /></div><div class='input'><span class='fu'><a href='MCMC-intervals.html'>mcmc_areas</a></span>(<span class='no'>x</span>, <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='st'>"beta"</span>)</div><div class='img'><img src='theme_default-3.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
 <span class='co'># change back</span>
-<span class='fu'>options</span>(<span class='kw'>bayesplot.base_size</span> <span class='kw'>=</span> <span class='fl'>12</span>,
-        <span class='kw'>bayesplot.base_family</span> <span class='kw'>=</span> <span class='st'>"serif"</span>)
-<span class='fu'><a href='MCMC-intervals.html'>mcmc_areas</a></span>(<span class='no'>x</span>, <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='st'>"beta"</span>)</div><img src='theme_default-14.png' alt='' width='540' height='400' /><div class='input'>
+<span class='kw pkg'>ggplot2</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/theme_get'>theme_set</a></span>(<span class='fu'>theme_default</span>())
+<span class='fu'><a href='MCMC-intervals.html'>mcmc_areas</a></span>(<span class='no'>x</span>, <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='st'>"beta"</span>)</div><div class='img'><img src='theme_default-4.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
 <span class='co'># use one of the themes included in ggplot2</span>
-<span class='kw'>ggplot2</span><span class='kw'>::</span><span class='fu'>theme_set</span>(<span class='kw'>ggplot2</span><span class='kw'>::</span><span class='fu'>theme_gray</span>())
-<span class='fu'><a href='MCMC-distributions.html'>mcmc_dens_overlay</a></span>(<span class='no'>x</span>)</div><img src='theme_default-16.png' alt='' width='540' height='400' /><div class='input'>
+<span class='kw pkg'>ggplot2</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/theme_get'>theme_set</a></span>(<span class='kw pkg'>ggplot2</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/ggtheme'>theme_gray</a></span>())
+<span class='fu'><a href='MCMC-distributions.html'>mcmc_dens_overlay</a></span>(<span class='no'>x</span>)</div><div class='img'><img src='theme_default-5.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
 <span class='co'># change back to bayesplot default theme</span>
-<span class='kw'>ggplot2</span><span class='kw'>::</span><span class='fu'>theme_set</span>(<span class='kw'>bayesplot</span><span class='kw'>::</span><span class='fu'>theme_default</span>())
-<span class='fu'><a href='MCMC-distributions.html'>mcmc_dens_overlay</a></span>(<span class='no'>x</span>)</div><img src='theme_default-18.png' alt='' width='540' height='400' /><div class='input'>
+<span class='kw pkg'>ggplot2</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/theme_get'>theme_set</a></span>(<span class='kw pkg'>bayesplot</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/bayesplot/topics/theme_default'>theme_default</a></span>())
+<span class='fu'><a href='MCMC-distributions.html'>mcmc_dens_overlay</a></span>(<span class='no'>x</span>)</div><div class='img'><img src='theme_default-6.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

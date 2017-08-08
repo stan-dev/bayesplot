@@ -141,7 +141,10 @@ formats:</p><ul>
  one column per parameter plus an additional column <code>"Chain"</code> that
  contains the chain number (an integer) corresponding to each row in
  the data frame.</p></li>
-</ul>
+</ul><p><strong>Note</strong>: typically the user should <em>not</em> include warmup iterations
+in the object passed to <span class="pkg">bayesplot</span> plotting functions, although for
+certain plots (e.g. traceplots) it can occasionally be useful to include the
+warmup iterations for diagnostic purposes.</p>
     
 
         
@@ -155,7 +158,9 @@ formats:</p><ul>
   <dt><strong><a href='MCMC-traces.html'>Traceplots</a></strong></dt><dd><p>Times series of parameter draws.</p></dd>
   <dt><strong><a href='MCMC-scatterplots.html'>Scatterplots</a></strong></dt><dd><p>Scatterplots, heatmaps, and pairs plots of parameter draws.</p></dd>
   <dt><strong><a href='MCMC-combos.html'>Combinations</a></strong></dt><dd><p>Combination plots (e.g. traceplot + histogram).</p></dd>
-  <dt><strong><a href='MCMC-nuts.html'>NUTS diagnostics</a></strong></dt><dd><p>Diagnostic plots for the No-U-Turn Sampler.</p></dd>
+  <dt><strong><a href='MCMC-diagnostics.html'>General MCMC diagnostics</a></strong></dt><dd><p>MCMC diagnostic plots including Rhat, effective sample size,
+    autocorrelation.</p></dd>
+  <dt><strong><a href='MCMC-nuts.html'>NUTS diagnostics</a></strong></dt><dd><p>Special diagnostic plots for the No-U-Turn Sampler.</p></dd>
   <dt><strong><a href='MCMC-recover.html'>Comparisons to "true" values</a></strong></dt><dd><p>Plots comparing MCMC estimates to "true" parameter values (e.g.,
     values used to simulate data).</p></dd>
 </dl>

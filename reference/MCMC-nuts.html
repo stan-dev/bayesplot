@@ -245,22 +245,22 @@ the chains separately.</p></td>
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <p>Betancourt, M. (2017). A conceptual introduction to Hamiltonian Monte Carlo.
-  <a href = 'https://arxiv.org/abs/1701.02434'>https://arxiv.org/abs/1701.02434</a></p>
+  <a href='https://arxiv.org/abs/1701.02434'>https://arxiv.org/abs/1701.02434</a></p>
 <p>Betancourt, M. and Girolami, M. (2013). Hamiltonian Monte Carlo for
-hierarchical models. <a href = 'https://arxiv.org/abs/1312.0906'>https://arxiv.org/abs/1312.0906</a></p>
+hierarchical models. <a href='https://arxiv.org/abs/1312.0906'>https://arxiv.org/abs/1312.0906</a></p>
 <p>Hoffman, M. D. and Gelman, A. (2014). The No-U-Turn Sampler:
   adaptively setting path lengths in Hamiltonian Monte Carlo. <em>Journal
   of Machine Learning Research</em>. 15:1593--1623.</p>
 <p>Stan Development Team. (2016). <em>Stan Modeling Language Users
-Guide and Reference Manual.</em> <a href = 'http://mc-stan.org/documentation/'>http://mc-stan.org/documentation/</a></p>
+Guide and Reference Manual.</em> <a href='http://mc-stan.org/documentation/'>http://mc-stan.org/documentation/</a></p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <ul>
 <li><p>The <em>Visual MCMC Diagnostics</em> vignette.</p></li>
-<li><p>Several other plotting functions in the <span class="pkg">bayesplot</span>
-package that aren't NUTS-specific but take optional extra arguments
-if the model was fit using NUTS:</p><ul>
+<li><p>Several other plotting functions in the <span class="pkg">bayesplot</span> package that
+are not NUTS-specific but take optional extra arguments if the model was fit
+using NUTS:</p><ul>
 <li><p><code><a href='MCMC-traces.html'>mcmc_trace</a></code> will plot divergences on the traceplot if the
  optional <code>divergences</code> argument is specified.</p></li>
 <li><p><code><a href='MCMC-scatterplots.html'>mcmc_pairs</a></code> will indicate which (if any) iterations
@@ -278,25 +278,26 @@ if the model was fit using NUTS:</p><ul>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>not_run</span>({
-  <span class='fu'>library</span>(<span class='no'>ggplot2</span>)
-  <span class='fu'>library</span>(<span class='no'>rstanarm</span>)
-  <span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'>stan_glm</span>(<span class='no'>mpg</span> ~ <span class='no'>wt</span> + <span class='no'>am</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>mtcars</span>, <span class='kw'>iter</span> <span class='kw'>=</span> <span class='fl'>1000</span>)
-  <span class='no'>np</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='bayesplot-extractors.html'>nuts_params</a></span>(<span class='no'>fit</span>)
-  <span class='no'>lp</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='bayesplot-extractors.html'>log_posterior</a></span>(<span class='no'>fit</span>)
+    <pre class="examples"><span class='co'># NOT RUN {</span>
+<span class='fu'>library</span>(<span class='no'>ggplot2</span>)
+<span class='fu'>library</span>(<span class='no'>rstanarm</span>)
+<span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/rstanarm/topics/stan_glm'>stan_glm</a></span>(<span class='no'>mpg</span> ~ <span class='no'>wt</span> + <span class='no'>am</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>mtcars</span>, <span class='kw'>iter</span> <span class='kw'>=</span> <span class='fl'>1000</span>)
+<span class='no'>np</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='bayesplot-extractors.html'>nuts_params</a></span>(<span class='no'>fit</span>)
+<span class='no'>lp</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='bayesplot-extractors.html'>log_posterior</a></span>(<span class='no'>fit</span>)
 
-  <span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"brightblue"</span>)
-  <span class='fu'>mcmc_nuts_acceptance</span>(<span class='no'>np</span>, <span class='no'>lp</span>)
-  <span class='fu'>mcmc_nuts_acceptance</span>(<span class='no'>np</span>, <span class='no'>lp</span>, <span class='kw'>chain</span> <span class='kw'>=</span> <span class='fl'>2</span>)
+<span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"brightblue"</span>)
+<span class='fu'>mcmc_nuts_acceptance</span>(<span class='no'>np</span>, <span class='no'>lp</span>)
+<span class='fu'>mcmc_nuts_acceptance</span>(<span class='no'>np</span>, <span class='no'>lp</span>, <span class='kw'>chain</span> <span class='kw'>=</span> <span class='fl'>2</span>)
 
-  <span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"red"</span>)
-  <span class='fu'>mcmc_nuts_energy</span>(<span class='no'>np</span>)
-  <span class='fu'>mcmc_nuts_energy</span>(<span class='no'>np</span>, <span class='kw'>merge_chains</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>binwidth</span> <span class='kw'>=</span> <span class='fl'>.15</span>)
-  <span class='fu'>mcmc_nuts_energy</span>(<span class='no'>np</span>) +
-   <span class='fu'>facet_wrap</span>(~ <span class='no'>Chain</span>, <span class='kw'>nrow</span> <span class='kw'>=</span> <span class='fl'>1</span>) +
-   <span class='fu'>coord_fixed</span>(<span class='kw'>ratio</span> <span class='kw'>=</span> <span class='fl'>150</span>) +
-   <span class='fu'>ggtitle</span>(<span class='st'>"NUTS Energy Diagnostic"</span>)
-})</div></pre>
+<span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"red"</span>)
+<span class='fu'>mcmc_nuts_energy</span>(<span class='no'>np</span>)
+<span class='fu'>mcmc_nuts_energy</span>(<span class='no'>np</span>, <span class='kw'>merge_chains</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>binwidth</span> <span class='kw'>=</span> <span class='fl'>.15</span>)
+<span class='fu'>mcmc_nuts_energy</span>(<span class='no'>np</span>) +
+ <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/facet_wrap'>facet_wrap</a></span>(~ <span class='no'>Chain</span>, <span class='kw'>nrow</span> <span class='kw'>=</span> <span class='fl'>1</span>) +
+ <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/coord_fixed'>coord_fixed</a></span>(<span class='kw'>ratio</span> <span class='kw'>=</span> <span class='fl'>150</span>) +
+ <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/labs'>ggtitle</a></span>(<span class='st'>"NUTS Energy Diagnostic"</span>)
+<span class='co'># }</span><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

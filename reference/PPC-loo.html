@@ -242,7 +242,7 @@ by median value from smallest (left) to largest (right).</p></td>
   Bayesian model evaluation using leave-one-out cross-validation and WAIC.
   <em>Statistics and Computing</em>. 27(5), 1413--1432.
   doi:10.1007/s11222-016-9696-4. arXiv preprint:
-  <a href = 'http://arxiv.org/abs/1507.04544/'>http://arxiv.org/abs/1507.04544/</a></p>
+  <a href='http://arxiv.org/abs/1507.04544/'>http://arxiv.org/abs/1507.04544/</a></p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
@@ -256,31 +256,32 @@ by median value from smallest (left) to largest (right).</p></td>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='fu'>not_run</span>({
-  <span class='fu'>library</span>(<span class='no'>rstanarm</span>)
-  <span class='fu'>library</span>(<span class='no'>loo</span>)
+</div><span class='co'># NOT RUN {</span>
+<span class='fu'>library</span>(<span class='no'>rstanarm</span>)
+<span class='fu'>library</span>(<span class='no'>loo</span>)
 
-  <span class='fu'>head</span>(<span class='no'>radon</span>)
-  <span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'>stan_lmer</span>(<span class='no'>log_radon</span> ~ <span class='no'>floor</span> + <span class='no'>log_uranium</span> + <span class='no'>floor</span>:<span class='no'>log_uranium</span>
-                     + (<span class='fl'>1</span> + <span class='no'>floor</span> <span class='kw'>|</span> <span class='no'>county</span>), <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>radon</span>, <span class='kw'>cores</span> <span class='kw'>=</span> <span class='fl'>2</span>)
-  <span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='no'>radon</span>$<span class='no'>log_radon</span>
-  <span class='no'>yrep</span> <span class='kw'>&lt;-</span> <span class='fu'>posterior_predict</span>(<span class='no'>fit</span>)
-  <span class='no'>psis</span> <span class='kw'>&lt;-</span> <span class='fu'>psislw</span>(-<span class='fu'>log_lik</span>(<span class='no'>fit</span>), <span class='kw'>cores</span> <span class='kw'>=</span> <span class='fl'>2</span>)
+<span class='fu'>head</span>(<span class='no'>radon</span>)
+<span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/rstanarm/topics/stan_glmer'>stan_lmer</a></span>(<span class='no'>log_radon</span> ~ <span class='no'>floor</span> + <span class='no'>log_uranium</span> + <span class='no'>floor</span>:<span class='no'>log_uranium</span>
+                   + (<span class='fl'>1</span> + <span class='no'>floor</span> <span class='kw'>|</span> <span class='no'>county</span>), <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>radon</span>, <span class='kw'>cores</span> <span class='kw'>=</span> <span class='fl'>2</span>)
+<span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='no'>radon</span>$<span class='no'>log_radon</span>
+<span class='no'>yrep</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/rstanarm/topics/posterior_predict.stanreg'>posterior_predict</a></span>(<span class='no'>fit</span>)
+<span class='no'>psis</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/loo/topics/psislw'>psislw</a></span>(-<span class='fu'><a href='http://www.rdocumentation.org/packages/rstanarm/topics/log_lik.stanreg'>log_lik</a></span>(<span class='no'>fit</span>), <span class='kw'>cores</span> <span class='kw'>=</span> <span class='fl'>2</span>)
 
-  <span class='co'># marginal predictive check using LOO probability integral transform</span>
-  <span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"orange"</span>)
-  <span class='fu'>ppc_loo_pit</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='kw'>lw</span> <span class='kw'>=</span> <span class='no'>psis</span>$<span class='no'>lw_smooth</span>)
-  <span class='fu'>ppc_loo_pit</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='kw'>lw</span> <span class='kw'>=</span> <span class='no'>psis</span>$<span class='no'>lw_smooth</span>, <span class='kw'>compare</span> <span class='kw'>=</span> <span class='st'>"normal"</span>)
+<span class='co'># marginal predictive check using LOO probability integral transform</span>
+<span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"orange"</span>)
+<span class='fu'>ppc_loo_pit</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='kw'>lw</span> <span class='kw'>=</span> <span class='no'>psis</span>$<span class='no'>lw_smooth</span>)
+<span class='fu'>ppc_loo_pit</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='kw'>lw</span> <span class='kw'>=</span> <span class='no'>psis</span>$<span class='no'>lw_smooth</span>, <span class='kw'>compare</span> <span class='kw'>=</span> <span class='st'>"normal"</span>)
 
-  <span class='co'># loo predictive intervals vs observations</span>
-  <span class='no'>sel</span> <span class='kw'>&lt;-</span> <span class='fl'>800</span>:<span class='fl'>900</span>
-  <span class='fu'>ppc_loo_intervals</span>(<span class='no'>y</span>[<span class='no'>sel</span>], <span class='no'>yrep</span>[, <span class='no'>sel</span>], <span class='no'>psis</span>$<span class='no'>lw_smooth</span>[, <span class='no'>sel</span>],
-                    <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.9</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>0.5</span>)
+<span class='co'># loo predictive intervals vs observations</span>
+<span class='no'>sel</span> <span class='kw'>&lt;-</span> <span class='fl'>800</span>:<span class='fl'>900</span>
+<span class='fu'>ppc_loo_intervals</span>(<span class='no'>y</span>[<span class='no'>sel</span>], <span class='no'>yrep</span>[, <span class='no'>sel</span>], <span class='no'>psis</span>$<span class='no'>lw_smooth</span>[, <span class='no'>sel</span>],
+                  <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.9</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>0.5</span>)
 
-  <span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"gray"</span>)
-  <span class='fu'>ppc_loo_intervals</span>(<span class='no'>y</span>[<span class='no'>sel</span>], <span class='no'>yrep</span>[, <span class='no'>sel</span>], <span class='no'>psis</span>$<span class='no'>lw_smooth</span>[, <span class='no'>sel</span>],
-                    <span class='kw'>order</span> <span class='kw'>=</span> <span class='st'>"median"</span>, <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.8</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>0.5</span>)
-})</div></pre>
+<span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"gray"</span>)
+<span class='fu'>ppc_loo_intervals</span>(<span class='no'>y</span>[<span class='no'>sel</span>], <span class='no'>yrep</span>[, <span class='no'>sel</span>], <span class='no'>psis</span>$<span class='no'>lw_smooth</span>[, <span class='no'>sel</span>],
+                  <span class='kw'>order</span> <span class='kw'>=</span> <span class='st'>"median"</span>, <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.8</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>0.5</span>)
+<span class='co'># }</span><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

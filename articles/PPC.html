@@ -96,13 +96,24 @@
       <h1>Graphical posterior predictive checks using the bayesplot package</h1>
                         <h4 class="author">Jonah Gabry</h4>
             
-            <h4 class="date">2017-08-03</h4>
+            <h4 class="date">2017-08-08</h4>
           </div>
 
     
     
 <div class="contents">
-<p>This vignette focuses on graphical posterior predictive checks (PPC). Plots of parameter estimates from MCMC draws are covered in the separate vignette <a href="MCMC.html">Plotting MCMC draws using the bayesplot package</a>, and MCMC diagnostics are covered in <a href="MCMC-diagnostics.html">Visual MCMC diagnostics using the bayesplot package</a>.</p>
+<p>This vignette focuses on graphical posterior predictive checks (PPC). Plots of parameter estimates from MCMC draws and visual MCMC diagnostics are covered in separate vignettes.</p>
+<p>In addition to <strong>bayesplot</strong> we’ll load the following packages:</p>
+<ul>
+<li>
+<strong>ggplot2</strong> for customizing the ggplot objects created by <strong>bayesplot</strong>
+</li>
+<li>
+<strong>rstanarm</strong> for fitting the example models used throughout the vignette</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">"bayesplot"</span>)
+<span class="kw">library</span>(<span class="st">"ggplot2"</span>)
+<span class="kw">library</span>(<span class="st">"rstanarm"</span>)      </code></pre></div>
 <div id="overview" class="section level2">
 <h2 class="hasAnchor">
 <a href="#overview" class="anchor"></a>Overview</h2>
@@ -121,20 +132,27 @@ p(\widetilde{y} \,|\, \theta) \, p(\theta \,|\, y) \, d\theta.\]</span> Typicall
 <h2 class="hasAnchor">
 <a href="#graphical-posterior-predictive-checks" class="anchor"></a>Graphical posterior predictive checks</h2>
 <p>Using the replicated datasets drawn from the posterior predictive distribution, the functions in the <strong>bayesplot</strong> package create various graphical displays comparing the observed data <span class="math inline">\(y\)</span> to the replications. The names of the <strong>bayesplot</strong> plotting functions for posterior predictive checking all have the prefix <code>ppc_</code>.</p>
-<p>To demonstrate some of the various PPCs that can be created with the <strong>bayesplot</strong> package we’ll use an example of comparing Poisson and Negative binomial regression models from the <a href="https://CRAN.R-project.org/package=rstanarm"><strong>rstanarm</strong></a> package vignette <a href="https://CRAN.R-project.org/package=rstanarm/vignettes/count.html"><em>stan_glm: GLMs for Count Data</em></a> (Gabry and Goodrich, 2016).</p>
+<p>To demonstrate some of the various PPCs that can be created with the <strong>bayesplot</strong> package we’ll use an example of comparing Poisson and Negative binomial regression models from the <a href="https://CRAN.R-project.org/package=rstanarm"><strong>rstanarm</strong></a> package vignette <a href="https://CRAN.R-project.org/package=rstanarm/vignettes/count.html"><em>stan_glm: GLMs for Count Data</em></a> (Gabry and Goodrich, 2017).</p>
 <blockquote>
 <p>We want to make inferences about the efficacy of a certain pest management system at reducing the number of roaches in urban apartments. […] The regression predictors for the model are the pre-treatment number of roaches <code>roach1</code>, the treatment indicator <code>treatment</code>, and a variable <code>senior</code> indicating whether the apartment is in a building restricted to elderly residents. Because the number of days for which the roach traps were used is not the same for all apartments in the sample, we include it as an exposure […].</p>
 </blockquote>
 <p>First we fit a Poisson regression model with outcome variable <code>y</code> representing the roach count in each apartment at the end of the experiment.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">"rstanarm"</span>)
-<span class="kw">head</span>(roaches) <span class="co"># see help("rstanarm-datasets")</span>
-
-roaches$roach1 &lt;-<span class="st"> </span>roaches$roach1 /<span class="st"> </span><span class="dv">100</span> <span class="co"># pre-treatment number of roaches (in 100s)</span>
-fit_poisson &lt;-<span class="st"> </span><span class="kw">stan_glm</span>(y ~<span class="st"> </span>roach1 +<span class="st"> </span>treatment +<span class="st"> </span>senior,
-                        <span class="dt">offset =</span> <span class="kw">log</span>(exposure2),
-                        <span class="dt">family =</span> <span class="kw">poisson</span>(<span class="dt">link =</span> <span class="st">"log"</span>),
-                        <span class="dt">data =</span> roaches,
-                        <span class="dt">seed =</span> <span class="dv">1111</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(roaches) <span class="co"># see help("rstanarm-datasets")</span></code></pre></div>
+<pre><code>    y roach1 treatment senior exposure2
+1 153 308.00         1      0  0.800000
+2 127 331.25         1      0  0.600000
+3   7   1.67         1      0  1.000000
+4   7   3.00         1      0  1.000000
+5   0   2.00         1      0  1.142857
+6   0   0.00         1      0  1.000000</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">roaches$roach1 &lt;-<span class="st"> </span>roaches$roach1 /<span class="st"> </span><span class="dv">100</span> <span class="co"># pre-treatment number of roaches (in 100s)</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fit_poisson &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/rstanarm/topics/stan_glm">stan_glm</a></span>(
+  y ~<span class="st"> </span>roach1 +<span class="st"> </span>treatment +<span class="st"> </span>senior,
+  <span class="dt">offset =</span> <span class="kw">log</span>(exposure2),
+  <span class="dt">family =</span> <span class="kw">poisson</span>(<span class="dt">link =</span> <span class="st">"log"</span>),
+  <span class="dt">data =</span> roaches,
+  <span class="dt">seed =</span> <span class="dv">1111</span>
+  )</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">print</span>(fit_poisson)</code></pre></div>
 <pre><code>stan_glm
  family:   poisson [log]
@@ -181,8 +199,8 @@ mean_PPD 49.7   30.0
 ------
 For info on the priors used see help('prior_summary.stanreg').</code></pre>
 <p>In order to use the PPC functions from the <strong>bayesplot</strong> package we need a matrix of draws from the posterior predictive distribution. Since we fit the models using <strong>rstanarm</strong> we can use its <code>posterior_predict</code> function:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">yrep_poisson &lt;-<span class="st"> </span><span class="kw">posterior_predict</span>(fit_poisson, <span class="dt">draws =</span> <span class="dv">500</span>)
-yrep_nb &lt;-<span class="st"> </span><span class="kw">posterior_predict</span>(fit_nb, <span class="dt">draws =</span> <span class="dv">500</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">yrep_poisson &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/rstanarm/topics/posterior_predict.stanreg">posterior_predict</a></span>(fit_poisson, <span class="dt">draws =</span> <span class="dv">500</span>)
+yrep_nb &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/rstanarm/topics/posterior_predict.stanreg">posterior_predict</a></span>(fit_nb, <span class="dt">draws =</span> <span class="dv">500</span>)
 <span class="kw">dim</span>(yrep_poisson)</code></pre></div>
 <pre><code>[1] 500 262</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">dim</span>(yrep_nb)</code></pre></div>
@@ -192,10 +210,7 @@ yrep_nb &lt;-<span class="st"> </span><span class="kw">posterior_predict</span>(
 <h3 class="hasAnchor">
 <a href="#histograms-and-density-estimates" class="anchor"></a>Histograms and density estimates</h3>
 <p>The first PPC we’ll look at is a comparison of the distribution of <code>y</code> and the distributions of some of the simulated datasets (rows) in the <code>yrep</code> matrix.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">"ggplot2"</span>)
-<span class="kw">library</span>(<span class="st">"bayesplot"</span>)
-
-<span class="kw"><a href="../reference/bayesplot-colors.html">color_scheme_set</a></span>(<span class="st">"brightblue"</span>) <span class="co"># see help("bayesplot-colors")</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/bayesplot-colors.html">color_scheme_set</a></span>(<span class="st">"brightblue"</span>) <span class="co"># see help("bayesplot-colors")</span>
 
 y &lt;-<span class="st"> </span>roaches$y
 <span class="kw"><a href="../reference/PPC-distributions.html">ppc_dens_overlay</a></span>(y, yrep_poisson[<span class="dv">1</span>:<span class="dv">50</span>, ])</code></pre></div>
@@ -209,7 +224,7 @@ y &lt;-<span class="st"> </span>roaches$y
 <p><img src="PPC_files/figure-html/ppc_hist-nb-1.png" width="60%" style="display: block; margin: auto;"></p>
 <p>The negative binomial model does better handling the number of zeros in the data, but it occasionally predicts values that are way too large, which is why the x-axes extend to such high values in the plot and make it difficult to read. To see the predictions for the smaller values more clearly we can zoom in:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/PPC-distributions.html">ppc_hist</a></span>(y, yrep_nb[<span class="dv">1</span>:<span class="dv">5</span>, ], <span class="dt">binwidth =</span> <span class="dv">20</span>) +<span class="st"> </span>
-<span class="st">  </span><span class="kw">coord_cartesian</span>(<span class="dt">xlim =</span> <span class="kw">c</span>(-<span class="dv">1</span>, <span class="dv">500</span>))</code></pre></div>
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/coord_cartesian">coord_cartesian</a></span>(<span class="dt">xlim =</span> <span class="kw">c</span>(-<span class="dv">1</span>, <span class="dv">500</span>))</code></pre></div>
 <p><img src="PPC_files/figure-html/ppc_hist-nb-2-1.png" width="60%" style="display: block; margin: auto;"></p>
 </div>
 <div id="distributions-of-test-statistics" class="section level3">
@@ -234,7 +249,7 @@ y &lt;-<span class="st"> </span>roaches$y
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/PPC-test-statistics.html">ppc_stat</a></span>(y, yrep_nb, <span class="dt">stat =</span> <span class="st">"max"</span>)</code></pre></div>
 <p><img src="PPC_files/figure-html/ppc_stat-max-2.png" width="60%" style="display: block; margin: auto;"></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/PPC-test-statistics.html">ppc_stat</a></span>(y, yrep_nb, <span class="dt">stat =</span> <span class="st">"max"</span>, <span class="dt">binwidth =</span> <span class="dv">100</span>) +<span class="st"> </span>
-<span class="st">  </span><span class="kw">coord_cartesian</span>(<span class="dt">xlim =</span> <span class="kw">c</span>(-<span class="dv">1</span>, <span class="dv">5000</span>))</code></pre></div>
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/coord_cartesian">coord_cartesian</a></span>(<span class="dt">xlim =</span> <span class="kw">c</span>(-<span class="dv">1</span>, <span class="dv">5000</span>))</code></pre></div>
 <p><img src="PPC_files/figure-html/ppc_stat-max-3.png" width="60%" style="display: block; margin: auto;"></p>
 </div>
 <div id="other-ppcs-and-ppcs-by-group" class="section level3">
@@ -259,11 +274,13 @@ y &lt;-<span class="st"> </span>roaches$y
   ppc_freqpoly_grouped
   ppc_hist
   ppc_intervals
+  ppc_intervals_data
   ppc_intervals_grouped
   ppc_loo_intervals
   ppc_loo_pit
   ppc_loo_ribbon
   ppc_ribbon
+  ppc_ribbon_data
   ppc_ribbon_grouped
   ppc_rootogram
   ppc_scatter
@@ -302,36 +319,41 @@ y &lt;-<span class="st"> </span>roaches$y
 <a href="#defining-a-pp_check-method" class="anchor"></a>Defining a <code>pp_check</code> method</h3>
 <p>Here is an example for how to define a simple <code>pp_check</code> method in a package that creates fitted model objects of class <code>"foo"</code>. We will define a method <code>pp_check.foo</code> that extracts the data <code>y</code> and the draws from the posterior predictive distribution <code>yrep</code> from an object of class <code>"foo"</code> and then calls one of the plotting functions from <strong>bayesplot</strong>.</p>
 <p>Suppose that objects of class <code>"foo"</code> are lists with named components, two of which are <code>y</code> and <code>yrep</code>. Here’s a simple method <code>pp_check.foo</code> that offers the user the option of two different plots:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pp_check.foo &lt;-<span class="st"> </span>function(object, ..., <span class="dt">type =</span> <span class="kw">c</span>(<span class="st">"multiple"</span>, <span class="st">"overlaid"</span>)) {
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># @param object An object of class "foo".</span>
+<span class="co"># @param type The type of plot.</span>
+<span class="co"># @param ... Optional arguments passed to the bayesplot plotting function.</span>
+pp_check.foo &lt;-<span class="st"> </span>function(object, <span class="dt">type =</span> <span class="kw">c</span>(<span class="st">"multiple"</span>, <span class="st">"overlaid"</span>), ...) {
   y &lt;-<span class="st"> </span>object[[<span class="st">"y"</span>]]
   yrep &lt;-<span class="st"> </span>object[[<span class="st">"yrep"</span>]]
   switch(
     <span class="kw">match.arg</span>(type),
-    <span class="dt">multiple =</span> <span class="kw"><a href="../reference/PPC-distributions.html">ppc_hist</a></span>(y, yrep[<span class="dv">1</span>:<span class="kw">min</span>(<span class="dv">8</span>, <span class="kw">nrow</span>(yrep)),, <span class="dt">drop =</span> <span class="ot">FALSE</span>]),
-    <span class="dt">overlaid =</span> <span class="kw"><a href="../reference/PPC-distributions.html">ppc_dens_overlay</a></span>(y, yrep)
+    <span class="dt">multiple =</span> <span class="kw"><a href="../reference/PPC-distributions.html">ppc_hist</a></span>(y, yrep[<span class="dv">1</span>:<span class="kw">min</span>(<span class="dv">5</span>, <span class="kw">nrow</span>(yrep)),, <span class="dt">drop =</span> <span class="ot">FALSE</span>], ...),
+    <span class="dt">overlaid =</span> <span class="kw"><a href="../reference/PPC-distributions.html">ppc_dens_overlay</a></span>(y, yrep, ...)
   )
 }</code></pre></div>
 <p>To try out <code>pp_check.foo</code> we can just make a list with <code>y</code> and <code>yrep</code> components and give it class <code>foo</code>:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">y =</span> <span class="kw">rnorm</span>(<span class="dv">50</span>), <span class="dt">yrep =</span> <span class="kw">matrix</span>(<span class="kw">rnorm</span>(<span class="dv">5000</span>), <span class="dt">nrow =</span> <span class="dv">100</span>, <span class="dt">ncol =</span> <span class="dv">50</span>))
 <span class="kw">class</span>(x) &lt;-<span class="st"> "foo"</span></code></pre></div>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/pp_check.html">pp_check</a></span>(x)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/bayesplot-colors.html">color_scheme_set</a></span>(<span class="st">"purple"</span>)
+<span class="kw"><a href="../reference/pp_check.html">pp_check</a></span>(x, <span class="dt">type =</span> <span class="st">"multiple"</span>, <span class="dt">binwidth =</span> <span class="fl">0.25</span>)</code></pre></div>
 <p><img src="PPC_files/figure-html/print-1-1.png" width="60%" style="display: block; margin: auto;"></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/pp_check.html">pp_check</a></span>(x, <span class="dt">type =</span> <span class="st">"overlaid"</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/bayesplot-colors.html">color_scheme_set</a></span>(<span class="st">"darkgray"</span>)
+<span class="kw"><a href="../reference/pp_check.html">pp_check</a></span>(x, <span class="dt">type =</span> <span class="st">"overlaid"</span>)</code></pre></div>
 <p><img src="PPC_files/figure-html/pp_check-2-1.png" width="60%" style="display: block; margin: auto;"></p>
 </div>
 <div id="examples-of-pp_check-methods-in-other-packages" class="section level3">
 <h3 class="hasAnchor">
 <a href="#examples-of-pp_check-methods-in-other-packages" class="anchor"></a>Examples of <code>pp_check</code> methods in other packages</h3>
-<p>Several packages currently (or will soon) use this approach to provide an interface to <strong>bayesplot</strong>’s graphical posterior predictive checks. See, for example, the <code>pp_check</code> methods in the <a href="https://github.com/stan-dev/rstanarm"><strong>rstanarm</strong></a> and <a href="https://github.com/paul-buerkner/brms"><strong>brms</strong></a> packages.</p>
+<p>Several packages currently use this approach to provide an interface to <strong>bayesplot</strong>’s graphical posterior predictive checks. See, for example, the <code>pp_check</code> methods in the <a href="https://CRAN.R-project.org/package=rstanarm"><strong>rstanarm</strong></a> and <a href="https://CRAN.R-project.org/package=brms"><strong>brms</strong></a> packages.</p>
 </div>
 </div>
 <div id="references" class="section level2">
 <h2 class="hasAnchor">
 <a href="#references" class="anchor"></a>References</h2>
-<p>Buerkner, P. (2018). brms: Bayesian Regression Models using Stan. R package version 1.4.0. <a href="https://CRAN.R-project.org/package=brms" class="uri">https://CRAN.R-project.org/package=brms</a></p>
-<p>Gabry, J., and Goodrich, B. (2017). rstanarm: Bayesian Applied Regression Modeling via Stan. R package version 2.14.1. <a href="http://mc-stan.org/interfaces/rstanarm.html" class="uri">http://mc-stan.org/interfaces/rstanarm.html</a>, <a href="https://CRAN.R-project.org/package=rstanarm" class="uri">https://CRAN.R-project.org/package=rstanarm</a></p>
+<p>Buerkner, P. (2017). brms: Bayesian Regression Models using Stan. R package version 1.7.0. <a href="https://CRAN.R-project.org/package=brms" class="uri">https://CRAN.R-project.org/package=brms</a></p>
+<p>Gabry, J., and Goodrich, B. (2017). rstanarm: Bayesian Applied Regression Modeling via Stan. R package version 2.15.3. <a href="http://mc-stan.org/users/interfaces/rstanarm.html" class="uri">http://mc-stan.org/users/interfaces/rstanarm.html</a>, <a href="https://CRAN.R-project.org/package=rstanarm" class="uri">https://CRAN.R-project.org/package=rstanarm</a></p>
 <p>Gelman, A., Carlin, J. B., Stern, H. S., Dunson, D. B., Vehtari, A., and Rubin, D. B. (2013). <em>Bayesian Data Analysis</em>. Chapman &amp; Hall/CRC Press, London, third edition.</p>
-<p>Stan Development Team. (2016). <em>Stan Modeling Language Users Guide and Reference Manual</em>. <a href="http://mc-stan.org/documentation/" class="uri">http://mc-stan.org/documentation/</a></p>
+<p>Stan Development Team. (2017). <em>Stan Modeling Language Users Guide and Reference Manual</em>. <a href="http://mc-stan.org/documentation/" class="uri">http://mc-stan.org/documentation/</a></p>
 </div>
 </div>
   </div>

@@ -113,7 +113,7 @@
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">if (!<span class="kw">require</span>(<span class="st">"devtools"</span>))
   <span class="kw">install.packages</span>(<span class="st">"devtools"</span>)
 
-devtools::<span class="kw">install_github</span>(<span class="st">"stan-dev/bayesplot"</span>, <span class="dt">dependencies =</span> <span class="ot">TRUE</span>, <span class="dt">build_vignettes =</span> <span class="ot">TRUE</span>)</code></pre></div>
+devtools::<span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/install_github">install_github</a></span>(<span class="st">"stan-dev/bayesplot"</span>, <span class="dt">dependencies =</span> <span class="ot">TRUE</span>, <span class="dt">build_vignettes =</span> <span class="ot">TRUE</span>)</code></pre></div>
 <p>If you are not using the <a href="https://www.rstudio.com/">RStudio IDE</a> and you get an error related to “pandoc” you will either need to remove the argument <code>build_vignettes=TRUE</code> (to avoid building the vignettes) or install <a href="http://pandoc.org/">pandoc</a> (e.g., <code>brew install pandoc</code>) and probably also pandoc-citeproc (e.g., <code>brew install pandoc-citeproc</code>). If you have the <code>rmarkdown</code> R package installed then you can check if you have pandoc by running the following in R:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">rmarkdown::<span class="kw">pandoc_available</span>()</code></pre></div>
 <p><br></p>
@@ -126,10 +126,10 @@ devtools::<span class="kw">install_github</span>(<span class="st">"stan-dev/baye
 <span class="kw">library</span>(<span class="st">"rstanarm"</span>)
 <span class="kw">library</span>(<span class="st">"ggplot2"</span>)
 
-fit &lt;-<span class="st"> </span><span class="kw">stan_glm</span>(mpg ~<span class="st"> </span>., <span class="dt">data =</span> mtcars)
+fit &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/rstanarm/topics/stan_glm">stan_glm</a></span>(mpg ~<span class="st"> </span>., <span class="dt">data =</span> mtcars)
 posterior &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(fit)
 
-plot_title &lt;-<span class="st"> </span><span class="kw">ggtitle</span>(<span class="st">"Posterior distributions"</span>,
+plot_title &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/labs">ggtitle</a></span>(<span class="st">"Posterior distributions"</span>,
                       <span class="st">"with medians and 80% intervals"</span>)
 <span class="kw"><a href="reference/MCMC-intervals.html">mcmc_areas</a></span>(posterior,
            <span class="dt">pars =</span> <span class="kw">c</span>(<span class="st">"cyl"</span>, <span class="st">"drat"</span>, <span class="st">"am"</span>, <span class="st">"wt"</span>),
@@ -140,7 +140,7 @@ plot_title &lt;-<span class="st"> </span><span class="kw">ggtitle</span>(<span c
 </div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="reference/bayesplot-colors.html">color_scheme_set</a></span>(<span class="st">"red"</span>)
 <span class="kw"><a href="reference/PPC-distributions.html">ppc_dens_overlay</a></span>(<span class="dt">y =</span> fit$y,
-                 <span class="dt">yrep =</span> <span class="kw">posterior_predict</span>(fit, <span class="dt">draws =</span> <span class="dv">50</span>))</code></pre></div>
+                 <span class="dt">yrep =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/rstanarm/topics/posterior_predict.stanreg">posterior_predict</a></span>(fit, <span class="dt">draws =</span> <span class="dv">50</span>))</code></pre></div>
 <div style="text-align:center">
 <a href="https://raw.githubusercontent.com/stan-dev/bayesplot/master/images/ppc_dens_overlay-rstanarm.png">
 <img src="https://raw.githubusercontent.com/stan-dev/bayesplot/master/images/ppc_dens_overlay-rstanarm.png" width="50%/"></a>
@@ -149,7 +149,7 @@ plot_title &lt;-<span class="st"> </span><span class="kw">ggtitle</span>(<span c
 <span class="kw">library</span>(<span class="st">"dplyr"</span>)
 <span class="kw"><a href="reference/bayesplot-colors.html">color_scheme_set</a></span>(<span class="st">"brightblue"</span>)
 fit %&gt;%
-<span class="st">  </span><span class="kw">posterior_predict</span>(<span class="dt">draws =</span> <span class="dv">500</span>) %&gt;%
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/rstanarm/topics/posterior_predict.stanreg">posterior_predict</a></span>(<span class="dt">draws =</span> <span class="dv">500</span>) %&gt;%
 <span class="st">  </span><span class="kw"><a href="reference/PPC-test-statistics.html">ppc_stat_grouped</a></span>(<span class="dt">y =</span> mtcars$mpg,
                    <span class="dt">group =</span> mtcars$carb,
                    <span class="dt">stat =</span> <span class="st">"median"</span>)</code></pre></div>
@@ -159,8 +159,8 @@ fit %&gt;%
 </div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># with rstan demo model</span>
 <span class="kw">library</span>(<span class="st">"rstan"</span>)
-fit2 &lt;-<span class="st"> </span><span class="kw">stan_demo</span>(<span class="st">"eight_schools"</span>, <span class="dt">warmup =</span> <span class="dv">300</span>, <span class="dt">iter =</span> <span class="dv">700</span>)
-posterior2 &lt;-<span class="st"> </span><span class="kw">extract</span>(fit2, <span class="dt">inc_warmup =</span> <span class="ot">TRUE</span>, <span class="dt">permuted =</span> <span class="ot">FALSE</span>)
+fit2 &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/rstan/topics/stan_demo">stan_demo</a></span>(<span class="st">"eight_schools"</span>, <span class="dt">warmup =</span> <span class="dv">300</span>, <span class="dt">iter =</span> <span class="dv">700</span>)
+posterior2 &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/rstan/topics/stanfit-method-extract">extract</a></span>(fit2, <span class="dt">inc_warmup =</span> <span class="ot">TRUE</span>, <span class="dt">permuted =</span> <span class="ot">FALSE</span>)
 
 <span class="kw"><a href="reference/bayesplot-colors.html">color_scheme_set</a></span>(<span class="st">"mix-blue-pink"</span>)
 p &lt;-<span class="st"> </span><span class="kw"><a href="reference/MCMC-traces.html">mcmc_trace</a></span>(posterior2,  <span class="dt">pars =</span> <span class="kw">c</span>(<span class="st">"mu"</span>, <span class="st">"tau"</span>), <span class="dt">n_warmup =</span> <span class="dv">300</span>,
@@ -172,7 +172,7 @@ p +<span class="st"> </span><span class="kw"><a href="reference/bayesplot-helper
 </div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="reference/bayesplot-colors.html">color_scheme_set</a></span>(<span class="st">"red"</span>)
 np &lt;-<span class="st"> </span><span class="kw"><a href="reference/bayesplot-extractors.html">nuts_params</a></span>(fit2)
-<span class="kw"><a href="reference/MCMC-nuts.html">mcmc_nuts_energy</a></span>(np, <span class="dt">merge_chains =</span> <span class="ot">FALSE</span>) +<span class="st"> </span><span class="kw">ggtitle</span>(<span class="st">"NUTS Energy Diagnostic"</span>)</code></pre></div>
+<span class="kw"><a href="reference/MCMC-nuts.html">mcmc_nuts_energy</a></span>(np, <span class="dt">merge_chains =</span> <span class="ot">FALSE</span>) +<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/labs">ggtitle</a></span>(<span class="st">"NUTS Energy Diagnostic"</span>)</code></pre></div>
 <div style="text-align:center">
 <a href="https://raw.githubusercontent.com/stan-dev/bayesplot/master/images/mcmc_nuts_energy-rstan.png">
 <img src="https://raw.githubusercontent.com/stan-dev/bayesplot/master/images/mcmc_nuts_energy-rstan.png" width="50%"></a>
@@ -180,14 +180,14 @@ np &lt;-<span class="st"> </span><span class="kw"><a href="reference/bayesplot-e
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># another example with rstanarm</span>
 <span class="kw"><a href="reference/bayesplot-colors.html">color_scheme_set</a></span>(<span class="st">"purple"</span>)
 
-fit &lt;-<span class="st"> </span><span class="kw">stan_glmer</span>(mpg ~<span class="st"> </span>wt +<span class="st"> </span>(<span class="dv">1</span>|cyl), <span class="dt">data =</span> mtcars)
+fit &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/rstanarm/topics/stan_glmer">stan_glmer</a></span>(mpg ~<span class="st"> </span>wt +<span class="st"> </span>(<span class="dv">1</span>|cyl), <span class="dt">data =</span> mtcars)
 <span class="kw"><a href="reference/PPC-intervals.html">ppc_intervals</a></span>(
   <span class="dt">y =</span> mtcars$mpg,
-  <span class="dt">yrep =</span> <span class="kw">posterior_predict</span>(fit),
+  <span class="dt">yrep =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/rstanarm/topics/posterior_predict.stanreg">posterior_predict</a></span>(fit),
   <span class="dt">x =</span> mtcars$wt,
   <span class="dt">prob =</span> <span class="fl">0.5</span>
 ) +
-<span class="st">  </span><span class="kw">labs</span>(
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/labs">labs</a></span>(
     <span class="dt">x =</span> <span class="st">"Weight (1000 lbs)"</span>,
     <span class="dt">y =</span> <span class="st">"MPG"</span>,
     <span class="dt">title =</span> <span class="st">"50% posterior predictive intervals </span><span class="ch">\n</span><span class="st">vs observed miles per gallon"</span>,

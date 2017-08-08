@@ -255,35 +255,34 @@ section, below.</p>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='example-data.html'>example_y_data</a></span>()
 <span class='no'>yrep</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='example-data.html'>example_yrep_draws</a></span>()
-<span class='fu'>ppc_error_hist</span>(<span class='no'>y</span>, <span class='no'>yrep</span>[<span class='fl'>1</span>:<span class='fl'>3</span>, ])</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><img src='PPC-errors-3.png' alt='' width='540' height='400' /><div class='input'>
+<span class='fu'>ppc_error_hist</span>(<span class='no'>y</span>, <span class='no'>yrep</span>[<span class='fl'>1</span>:<span class='fl'>3</span>, ])</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='PPC-errors-1.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
 <span class='co'># errors within groups</span>
 <span class='no'>group</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='example-data.html'>example_group_data</a></span>()
-(<span class='no'>p1</span> <span class='kw'>&lt;-</span> <span class='fu'>ppc_error_hist_grouped</span>(<span class='no'>y</span>, <span class='no'>yrep</span>[<span class='fl'>1</span>:<span class='fl'>3</span>, ], <span class='no'>group</span>))</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><img src='PPC-errors-6.png' alt='' width='540' height='400' /><div class='input'><span class='no'>p1</span> + <span class='fu'><a href='bayesplot-helpers.html'>yaxis_text</a></span>() <span class='co'># defaults to showing counts on y-axis</span></div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><img src='PPC-errors-9.png' alt='' width='540' height='400' /><div class='input'>
-<span class='fu'>table</span>(<span class='no'>group</span>) <span class='co'># more obs in GroupB, can set freq=FALSE to show density on y-axis</span></div><div class='output co'>#&gt; group
+(<span class='no'>p1</span> <span class='kw'>&lt;-</span> <span class='fu'>ppc_error_hist_grouped</span>(<span class='no'>y</span>, <span class='no'>yrep</span>[<span class='fl'>1</span>:<span class='fl'>3</span>, ], <span class='no'>group</span>))</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='PPC-errors-2.png' alt='' width='700' height='432.632880098887' /></div><div class='input'><span class='no'>p1</span> + <span class='fu'><a href='bayesplot-helpers.html'>yaxis_text</a></span>() <span class='co'># defaults to showing counts on y-axis</span></div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='PPC-errors-3.png' alt='' width='700' height='432.632880098887' /></div><div class='input'><span class='fu'>table</span>(<span class='no'>group</span>) <span class='co'># more obs in GroupB, can set freq=FALSE to show density on y-axis</span></div><div class='output co'>#&gt; group
 #&gt; GroupA GroupB 
-#&gt;     93    341 </div><div class='input'>(<span class='no'>p2</span> <span class='kw'>&lt;-</span> <span class='fu'>ppc_error_hist_grouped</span>(<span class='no'>y</span>, <span class='no'>yrep</span>[<span class='fl'>1</span>:<span class='fl'>3</span>, ], <span class='no'>group</span>, <span class='kw'>freq</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>))</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><img src='PPC-errors-14.png' alt='' width='540' height='400' /><div class='input'><span class='no'>p2</span> + <span class='fu'><a href='bayesplot-helpers.html'>yaxis_text</a></span>()</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><img src='PPC-errors-17.png' alt='' width='540' height='400' /><div class='input'>
-
+#&gt;     93    341 </div><div class='input'>(<span class='no'>p2</span> <span class='kw'>&lt;-</span> <span class='fu'>ppc_error_hist_grouped</span>(<span class='no'>y</span>, <span class='no'>yrep</span>[<span class='fl'>1</span>:<span class='fl'>3</span>, ], <span class='no'>group</span>, <span class='kw'>freq</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>))</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='PPC-errors-4.png' alt='' width='700' height='432.632880098887' /></div><div class='input'><span class='no'>p2</span> + <span class='fu'><a href='bayesplot-helpers.html'>yaxis_text</a></span>()</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='PPC-errors-5.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
 <span class='co'># scatterplots</span>
-<span class='fu'>ppc_error_scatter</span>(<span class='no'>y</span>, <span class='no'>yrep</span>[<span class='fl'>10</span>:<span class='fl'>14</span>, ])</div><img src='PPC-errors-19.png' alt='' width='540' height='400' /><div class='input'><span class='fu'>ppc_error_scatter_avg</span>(<span class='no'>y</span>, <span class='no'>yrep</span>)</div><img src='PPC-errors-21.png' alt='' width='540' height='400' /><div class='input'>
+<span class='fu'>ppc_error_scatter</span>(<span class='no'>y</span>, <span class='no'>yrep</span>[<span class='fl'>10</span>:<span class='fl'>14</span>, ])</div><div class='img'><img src='PPC-errors-6.png' alt='' width='700' height='432.632880098887' /></div><div class='input'><span class='fu'>ppc_error_scatter_avg</span>(<span class='no'>y</span>, <span class='no'>yrep</span>)</div><div class='img'><img src='PPC-errors-7.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
 <span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='example-data.html'>example_x_data</a></span>()
-<span class='fu'>ppc_error_scatter_avg_vs_x</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='no'>x</span>)</div><img src='PPC-errors-23.png' alt='' width='540' height='400' /><div class='input'>
-<span class='co'># ppc_error_binned with binomial model from rstanarm</span>
-<span class='fu'>not_run</span>({
-  <span class='fu'>library</span>(<span class='no'>rstanarm</span>)
-  <span class='fu'>example</span>(<span class='st'>"example_model"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"rstanarm"</span>)
-  <span class='fu'>formula</span>(<span class='no'>example_model</span>)
+<span class='fu'>ppc_error_scatter_avg_vs_x</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='no'>x</span>)</div><div class='img'><img src='PPC-errors-8.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+# ppc_error_binned with binomial model from rstanarm
+</div><span class='co'># NOT RUN {</span>
+<span class='fu'>library</span>(<span class='no'>rstanarm</span>)
+<span class='fu'>example</span>(<span class='st'>"example_model"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"rstanarm"</span>)
+<span class='fu'>formula</span>(<span class='no'>example_model</span>)
 
-  <span class='co'># get observed proportion of "successes"</span>
-  <span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='no'>example_model</span>$<span class='no'>y</span>  <span class='co'># matrix of "success" and "failure" counts</span>
-  <span class='no'>trials</span> <span class='kw'>&lt;-</span> <span class='fu'>rowSums</span>(<span class='no'>y</span>)
-  <span class='no'>y_prop</span> <span class='kw'>&lt;-</span> <span class='no'>y</span>[, <span class='fl'>1</span>] / <span class='no'>trials</span>  <span class='co'># proportions</span>
+<span class='co'># get observed proportion of "successes"</span>
+<span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='no'>example_model</span>$<span class='no'>y</span>  <span class='co'># matrix of "success" and "failure" counts</span>
+<span class='no'>trials</span> <span class='kw'>&lt;-</span> <span class='fu'>rowSums</span>(<span class='no'>y</span>)
+<span class='no'>y_prop</span> <span class='kw'>&lt;-</span> <span class='no'>y</span>[, <span class='fl'>1</span>] / <span class='no'>trials</span>  <span class='co'># proportions</span>
 
-  <span class='co'># get predicted success proportions</span>
-  <span class='no'>yrep</span> <span class='kw'>&lt;-</span> <span class='fu'>posterior_predict</span>(<span class='no'>example_model</span>)
-  <span class='no'>yrep_prop</span> <span class='kw'>&lt;-</span> <span class='fu'>sweep</span>(<span class='no'>yrep</span>, <span class='fl'>2</span>, <span class='no'>trials</span>, <span class='st'>"/"</span>)
+<span class='co'># get predicted success proportions</span>
+<span class='no'>yrep</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/rstanarm/topics/posterior_predict.stanreg'>posterior_predict</a></span>(<span class='no'>example_model</span>)
+<span class='no'>yrep_prop</span> <span class='kw'>&lt;-</span> <span class='fu'>sweep</span>(<span class='no'>yrep</span>, <span class='fl'>2</span>, <span class='no'>trials</span>, <span class='st'>"/"</span>)
 
-  <span class='fu'>ppc_error_binned</span>(<span class='no'>y_prop</span>, <span class='no'>yrep_prop</span>[<span class='fl'>1</span>:<span class='fl'>6</span>, ])
-})</div></pre>
+<span class='fu'>ppc_error_binned</span>(<span class='no'>y_prop</span>, <span class='no'>yrep_prop</span>[<span class='fl'>1</span>:<span class='fl'>6</span>, ])
+<span class='co'># }</span><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

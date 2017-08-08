@@ -121,15 +121,26 @@
     </div>
 
     <div class="contents">
+    <div id="bayesplot-1-3-0-9000" class="section level1">
+<h1 class="hasAnchor">
+<a href="#bayesplot-1-3-0-9000" class="anchor"></a>bayesplot 1.3.0.9000</h1>
+<p>(GitHub issue/PR numbers in parentheses)</p>
+<ul>
+<li>insert news for next release here</li>
+</ul>
+</div>
     <div id="bayesplot-1-3-0" class="section level1">
 <h1 class="hasAnchor">
 <a href="#bayesplot-1-3-0" class="anchor"></a>bayesplot 1.3.0</h1>
+<p>(GitHub issue/PR numbers in parentheses)</p>
 <ul>
 <li>
-<code>bayesplot::theme_default</code> is now set as the default ggplot2 plotting theme when <strong>bayesplot</strong> is loaded, which makes changing the default theme using <code>ggplot2::theme_set</code> possible. Thanks to @gavinsimpson. (#87)</li>
+<code><a href="http://www.rdocumentation.org/packages/bayesplot/topics/theme_default">bayesplot::theme_default</a></code> is now set as the default ggplot2 plotting theme when <strong>bayesplot</strong> is loaded, which makes changing the default theme using <code><a href="http://www.rdocumentation.org/packages/ggplot2/topics/theme_get">ggplot2::theme_set</a></code> possible. Thanks to @gavinsimpson. (#87)</li>
 <li>
 <code>mcmc_hist</code> and <code>mcmc_hist_by_chain</code> now take a <code>freq</code> argument that defaults to <code>TRUE</code> (behavior is like <code>freq</code> argument to R’s <code>hist</code> function).</li>
 <li>Using a <code>ts</code> object for <code>y</code> in PPC plots no longer results in an error. Thanks to @helske. (#94)</li>
+<li>
+<code>mcmc_intervals</code> doesn’t use round lineends anymore as they slightly exaggerate the width of the intervals. Thanks to @tjmahr. (#96)</li>
 </ul>
 </div>
     <div id="bayesplot-1-2-0" class="section level1">
@@ -236,6 +247,7 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#bayesplot-1-3-0-9000">1.3.0.9000</a></li>
         <li><a href="#bayesplot-1-3-0">1.3.0</a></li>
         <li><a href="#bayesplot-1-2-0">1.2.0</a></li>
         <li><a href="#bayesplot-1-1-0">1.1.0</a></li>
