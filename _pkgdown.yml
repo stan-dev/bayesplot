@@ -9,6 +9,8 @@ navbar:
       href: articles/index.html
     - text: "Functions"
       href: reference/index.html
+    - text: "News"
+      href: news/index.html
     - text: "Other Packages"
       menu:
         - text: "rstan"
@@ -36,6 +38,6 @@ articles:
     desc: >
       The documents below provide an introduction to visualizing MCMC draws and diagnostics and performing graphical posterior predictive checks using the **bayesplot** package.
     contents:
-      - MCMC
-      - MCMCdiagnostics
-      - PPC
+      - plotting-mcmc-draws
+      - visual-mcmc-diagnostics
+      - graphical-ppcs

@@ -57,6 +57,9 @@
 <li>
   <a href="../reference/index.html">Functions</a>
 </li>
+<li>
+  <a href="../news/index.html">News</a>
+</li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
     Other Packages
@@ -170,19 +173,19 @@ the argument to <code><a href='http://www.rdocumentation.org/packages/ggplot2/to
 <span class='co'># plot using the default theme</span>
 <span class='kw pkg'>ggplot2</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/theme_get'>theme_set</a></span>(<span class='fu'>theme_default</span>())
 <span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='example-data.html'>example_mcmc_draws</a></span>()
-<span class='fu'><a href='MCMC-distributions.html'>mcmc_hist</a></span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='theme_default-7.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+<span class='fu'><a href='MCMC-distributions.html'>mcmc_hist</a></span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='theme_default-25.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
 <span class='co'># change the default font size and family</span>
 <span class='kw pkg'>ggplot2</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/theme_get'>theme_set</a></span>(<span class='fu'>theme_default</span>(<span class='kw'>base_size</span> <span class='kw'>=</span> <span class='fl'>8</span>, <span class='kw'>base_family</span> <span class='kw'>=</span> <span class='st'>"sans"</span>))
-<span class='fu'><a href='MCMC-distributions.html'>mcmc_hist</a></span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='theme_default-8.png' alt='' width='700' height='432.632880098887' /></div><div class='input'><span class='fu'><a href='MCMC-intervals.html'>mcmc_areas</a></span>(<span class='no'>x</span>, <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='st'>"beta"</span>)</div><div class='img'><img src='theme_default-9.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+<span class='fu'><a href='MCMC-distributions.html'>mcmc_hist</a></span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='theme_default-26.png' alt='' width='700' height='432.632880098887' /></div><div class='input'><span class='fu'><a href='MCMC-intervals.html'>mcmc_areas</a></span>(<span class='no'>x</span>, <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='st'>"beta"</span>)</div><div class='img'><img src='theme_default-27.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
 <span class='co'># change back</span>
 <span class='kw pkg'>ggplot2</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/theme_get'>theme_set</a></span>(<span class='fu'>theme_default</span>())
-<span class='fu'><a href='MCMC-intervals.html'>mcmc_areas</a></span>(<span class='no'>x</span>, <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='st'>"beta"</span>)</div><div class='img'><img src='theme_default-10.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+<span class='fu'><a href='MCMC-intervals.html'>mcmc_areas</a></span>(<span class='no'>x</span>, <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='st'>"beta"</span>)</div><div class='img'><img src='theme_default-28.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
 <span class='co'># use one of the themes included in ggplot2</span>
 <span class='kw pkg'>ggplot2</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/theme_get'>theme_set</a></span>(<span class='kw pkg'>ggplot2</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/ggtheme'>theme_gray</a></span>())
-<span class='fu'><a href='MCMC-distributions.html'>mcmc_dens_overlay</a></span>(<span class='no'>x</span>)</div><div class='img'><img src='theme_default-11.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+<span class='fu'><a href='MCMC-distributions.html'>mcmc_dens_overlay</a></span>(<span class='no'>x</span>)</div><div class='img'><img src='theme_default-29.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
 <span class='co'># change back to bayesplot default theme</span>
 <span class='kw pkg'>ggplot2</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/theme_get'>theme_set</a></span>(<span class='kw pkg'>bayesplot</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/bayesplot/topics/theme_default'>theme_default</a></span>())
-<span class='fu'><a href='MCMC-distributions.html'>mcmc_dens_overlay</a></span>(<span class='no'>x</span>)</div><div class='img'><img src='theme_default-12.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+<span class='fu'><a href='MCMC-distributions.html'>mcmc_dens_overlay</a></span>(<span class='no'>x</span>)</div><div class='img'><img src='theme_default-30.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
