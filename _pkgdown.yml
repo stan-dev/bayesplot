@@ -34,7 +34,7 @@ navbar:
 articles:
   - title: "Getting Started"
     desc: >
-      The documents below provide an introduction visualizing MCMC draws/diagnostics and performing posterior predictive checks.
+      The documents below provide an introduction to visualizing MCMC draws and diagnostics and performing graphical posterior predictive checks using the **bayesplot** package.
     contents:
       - MCMC
       - MCMCdiagnostics

@@ -22,11 +22,9 @@ library("ggplot2")
 library("rstan")
 ```
 
-This vignette focuses on MCMC diagnostic plots. Plots of parameter estimates
-from MCMC draws are covered in the separate vignette
-[Plotting MCMC draws using the bayesplot package](MCMC.html), 
-and graphical posterior predictive checks are covered in 
-[Graphical posterior predictive checks using the bayesplot package](PPC.html).
+This vignette focuses on MCMC diagnostic plots. Plots of parameter estimates 
+from MCMC draws and graphical posterior predictive checks are covered in 
+separate vignettes.
 
 In addition to __bayesplot__ we'll load the following packages: 
 

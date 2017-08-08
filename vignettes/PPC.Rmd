@@ -20,11 +20,9 @@ library("ggplot2")
 library("rstanarm")
 ```
 
-This vignette focuses on graphical posterior predictive checks (PPC). Plots of parameter estimates
-from MCMC draws are covered in the separate vignette
-[Plotting MCMC draws using the bayesplot package](MCMC.html), 
-and MCMC diagnostics are covered in 
-[Visual MCMC diagnostics using the bayesplot package](MCMC-diagnostics.html).
+This vignette focuses on graphical posterior predictive checks (PPC). Plots of
+parameter estimates from MCMC draws and visual MCMC diagnostics are covered in 
+separate vignettes.
 
 In addition to **bayesplot** we'll load the following packages: 
 
