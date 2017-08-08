@@ -117,7 +117,7 @@ p + facet_text(size = 15)
 ```r
 color_scheme_set("red")
 np <- nuts_params(fit2)
-mcmc_nuts_energy(np, merge_chains = FALSE) + ggtitle("NUTS Energy Diagnostic")
+mcmc_nuts_energy(np) + ggtitle("NUTS Energy Diagnostic")
 ```
 
 <img src=https://github.com/stan-dev/bayesplot/blob/master/images/mcmc_nuts_energy-rstan.png width=50% />
