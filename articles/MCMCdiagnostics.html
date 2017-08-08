@@ -182,16 +182,12 @@ model {
 schools_mod_ncp &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/rstan/topics/stan_model">stan_model</a></span>(<span class="st">"schools_mod_ncp.stan"</span>)</code></pre></div>
 <p>We then fit the model by calling Stan’s MCMC algorithm using the <code>sampling</code> function,</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fit_cp &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/rstan/topics/stanmodel-method-sampling">sampling</a></span>(schools_mod_cp, <span class="dt">data =</span> schools_dat)</code></pre></div>
-<pre><code>Warning: There were 51 divergent transitions after warmup. Increasing adapt_delta above 0.8 may help. See
+<pre><code>Warning: There were 92 divergent transitions after warmup. Increasing adapt_delta above 0.8 may help. See
 http://mc-stan.org/misc/warnings.html#divergent-transitions-after-warmup</code></pre>
-<pre><code>Warning: There were 1 chains where the estimated Bayesian Fraction of Missing Information was low. See
+<pre><code>Warning: There were 2 chains where the estimated Bayesian Fraction of Missing Information was low. See
 http://mc-stan.org/misc/warnings.html#bfmi-low</code></pre>
 <pre><code>Warning: Examine the pairs() plot to diagnose sampling problems</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fit_ncp &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/rstan/topics/stanmodel-method-sampling">sampling</a></span>(schools_mod_ncp, <span class="dt">data =</span> schools_dat)</code></pre></div>
-<pre><code>Warning: There were 1 divergent transitions after warmup. Increasing adapt_delta above 0.8 may help. See
-http://mc-stan.org/misc/warnings.html#divergent-transitions-after-warmup
-
-Warning: Examine the pairs() plot to diagnose sampling problems</code></pre>
 <p>and extract a <code>iterations x chains x parameters</code> array of posterior draws with <code>as.array</code>,</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Extract posterior draws for later use</span>
 posterior_cp &lt;-<span class="st"> </span><span class="kw">as.array</span>(fit_cp)
@@ -207,16 +203,13 @@ posterior_ncp &lt;-<span class="st"> </span><span class="kw">as.array</span>(fit
 <p>First we’ll quickly fit one of the models above again, this time intentionally using too few MCMC iterations. This should lead to some high <span class="math inline">\(\hat{R}\)</span> values.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fit_cp_100iter &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/rstan/topics/stanmodel-method-sampling">sampling</a></span>(schools_mod_cp, <span class="dt">data =</span> schools_dat, 
                            <span class="dt">chains =</span> <span class="dv">2</span>, <span class="dt">iter =</span> <span class="dv">100</span>)</code></pre></div>
-<pre><code>Warning: There were 1 chains where the estimated Bayesian Fraction of Missing Information was low. See
-http://mc-stan.org/misc/warnings.html#bfmi-low</code></pre>
-<pre><code>Warning: Examine the pairs() plot to diagnose sampling problems</code></pre>
 <p><strong>bayesplot</strong> provides a generic <code>rhat</code> extractor function, currently with methods defined for models fit using the <strong>rstan</strong> and <strong>rstanarm</strong> packages. But regardless of how you fit your model, all <strong>bayesplot</strong> needs is a vector of <span class="math inline">\(\hat{R}\)</span> values.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">rhats &lt;-<span class="st"> </span><span class="kw"><a href="../reference/bayesplot-extractors.html">rhat</a></span>(fit_cp_100iter)
 <span class="kw">print</span>(rhats)</code></pre></div>
 <pre><code>       mu       tau  theta[1]  theta[2]  theta[3]  theta[4]  theta[5] 
-1.0359760 1.5563831 1.0900024 1.0059752 1.0421774 0.9986247 1.0363194 
+1.0357980 1.0451581 1.0074029 0.9969781 1.0124616 1.0174967 1.0326428 
  theta[6]  theta[7]  theta[8]      lp__ 
-1.0088526 1.1259689 1.0721625 1.8445875 </code></pre>
+1.0161533 0.9941555 1.0344428 1.0635270 </code></pre>
 <p>We can visualize the <span class="math inline">\(\hat{R}\)</span> values with the <code>mcmc_rhat</code> function:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/bayesplot-colors.html">color_scheme_set</a></span>(<span class="st">"brightblue"</span>) <span class="co"># see help("color_scheme_set")</span>
 <span class="kw"><a href="../reference/MCMC-diagnostics.html">mcmc_rhat</a></span>(rhats)</code></pre></div>
@@ -238,9 +231,9 @@ http://mc-stan.org/misc/warnings.html#bfmi-low</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ratios_cp &lt;-<span class="st"> </span><span class="kw"><a href="../reference/bayesplot-extractors.html">neff_ratio</a></span>(fit_cp)
 <span class="kw">print</span>(ratios_cp)</code></pre></div>
 <pre><code>        mu        tau   theta[1]   theta[2]   theta[3]   theta[4] 
-0.15193716 0.12322587 0.28782392 0.37360291 0.31738430 0.31839236 
+0.17080416 0.09229452 0.31021773 0.31423848 0.24378803 0.35674114 
   theta[5]   theta[6]   theta[7]   theta[8]       lp__ 
-0.20833280 0.25704436 0.28299683 0.31644483 0.05660902 </code></pre>
+0.20766100 0.25642242 0.31760469 0.28635224 0.03288934 </code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/MCMC-diagnostics.html">mcmc_neff</a></span>(ratios_cp, <span class="dt">size =</span> <span class="dv">2</span>)</code></pre></div>
 <p><img src="MCMCdiagnostics_files/figure-html/print-neff-ratios-1.png" width="60%" style="display: block; margin: auto;"></p>
 <p>In the plot, the points representing the values of <span class="math inline">\(n_{eff}/N\)</span> are colored based on whether they are less than <span class="math inline">\(0.1\)</span>, between <span class="math inline">\(0.1\)</span> and <span class="math inline">\(0.5\)</span>, or greater than <span class="math inline">\(0.5\)</span>. These particular values are arbitrary in that they have no particular theoretical meaning, but a useful heuristic is to worry about any <span class="math inline">\(n_{eff}/N\)</span> less than <span class="math inline">\(0.1\)</span>.</p>
@@ -293,22 +286,22 @@ neff_ncp &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ba
 <p>The <strong>bayesplot</strong> package also provides generic functions <code>log_posterior</code> and <code>nuts_params</code> for extracting the required information for the plots from fitted model objects. Currently methods are provided for models fit using the <strong>rstan</strong> and <strong>rstanarm</strong> packages, although it is not difficult to define additional methods for the objects returned by other R packages. For the Stan models we fit above we can use the <code>log_posterior</code> and <code>nuts_params</code> methods for stanfit objects:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lp_cp &lt;-<span class="st"> </span><span class="kw"><a href="../reference/bayesplot-extractors.html">log_posterior</a></span>(fit_cp)
 <span class="kw">head</span>(lp_cp)</code></pre></div>
-<pre><code>  Iteration     Value Chain
-1         1 -19.53851     1
-2         2 -19.55476     1
-3         3 -20.88884     1
-4         4 -21.78219     1
-5         5 -20.81348     1
-6         6 -23.24592     1</code></pre>
+<pre><code>  Iteration      Value Chain
+1         1 -11.104091     1
+2         2 -11.421993     1
+3         3  -9.764657     1
+4         4 -11.944298     1
+5         5  -8.428895     1
+6         6  -8.428895     1</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">np_cp &lt;-<span class="st"> </span><span class="kw"><a href="../reference/bayesplot-extractors.html">nuts_params</a></span>(fit_cp)
 <span class="kw">head</span>(np_cp)</code></pre></div>
 <pre><code>  Iteration     Parameter     Value Chain
-1         1 accept_stat__ 0.8022468     1
-2         2 accept_stat__ 0.2058060     1
-3         3 accept_stat__ 0.9767942     1
-4         4 accept_stat__ 0.9801078     1
-5         5 accept_stat__ 0.9666909     1
-6         6 accept_stat__ 0.9431306     1</code></pre>
+1         1 accept_stat__ 0.7191176     1
+2         2 accept_stat__ 0.5274336     1
+3         3 accept_stat__ 0.8280375     1
+4         4 accept_stat__ 0.8104770     1
+5         5 accept_stat__ 1.0000000     1
+6         6 accept_stat__ 0.3548117     1</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># for the second model</span>
 lp_ncp &lt;-<span class="st"> </span><span class="kw"><a href="../reference/bayesplot-extractors.html">log_posterior</a></span>(fit_ncp)
 np_ncp &lt;-<span class="st"> </span><span class="kw"><a href="../reference/bayesplot-extractors.html">nuts_params</a></span>(fit_ncp)</code></pre></div>
@@ -336,9 +329,9 @@ np_ncp &lt;-<span class="st"> </span><span class="kw"><a href="../reference/baye
 <p>If there are only a few divergences we can often get rid of them by increasing the target acceptance rate (<code>adapt_delta</code>), which has the effect of lowering the stepsize used by the sampler and allowing the Markov chains to explore more complicated curvature in the target distribution.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fit_cp_2 &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/rstan/topics/stanmodel-method-sampling">sampling</a></span>(schools_mod_cp, <span class="dt">data =</span> schools_dat,
                      <span class="dt">control =</span> <span class="kw">list</span>(<span class="dt">adapt_delta =</span> <span class="fl">0.99</span>))</code></pre></div>
-<pre><code>Warning: There were 598 divergent transitions after warmup. Increasing adapt_delta above 0.99 may help. See
+<pre><code>Warning: There were 8 divergent transitions after warmup. Increasing adapt_delta above 0.99 may help. See
 http://mc-stan.org/misc/warnings.html#divergent-transitions-after-warmup</code></pre>
-<pre><code>Warning: There were 3 chains where the estimated Bayesian Fraction of Missing Information was low. See
+<pre><code>Warning: There were 4 chains where the estimated Bayesian Fraction of Missing Information was low. See
 http://mc-stan.org/misc/warnings.html#bfmi-low</code></pre>
 <pre><code>Warning: Examine the pairs() plot to diagnose sampling problems</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fit_ncp_2 &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/rstan/topics/stanmodel-method-sampling">sampling</a></span>(schools_mod_ncp, <span class="dt">data =</span> schools_dat,

@@ -196,7 +196,7 @@ one of the <span class="pkg">bayesplot</span> convenience functions, e.g.
 #&gt; $Parameter
 #&gt; [1] "alpha"   "sigma"   "beta[1]" "beta[2]"
 #&gt; </div><div class='input'>
-<span class='fu'>mcmc_combo</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"alpha"</span>, <span class='st'>"sigma"</span>))</div><div class='img'><img src='MCMC-combos-1.png' alt='' width='700' height='432.632880098887' /></div><div class='input'><span class='fu'>mcmc_combo</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"alpha"</span>, <span class='st'>"sigma"</span>), <span class='kw'>widths</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>1</span>, <span class='fl'>2</span>))</div><div class='img'><img src='MCMC-combos-2.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+<span class='fu'>mcmc_combo</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"alpha"</span>, <span class='st'>"sigma"</span>))</div><div class='img'><img src='MCMC-combos-5.png' alt='' width='700' height='432.632880098887' /></div><div class='input'><span class='fu'>mcmc_combo</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"alpha"</span>, <span class='st'>"sigma"</span>), <span class='kw'>widths</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>1</span>, <span class='fl'>2</span>))</div><div class='img'><img src='MCMC-combos-6.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
 </div><div class='input'><span class='co'># change second plot, show log(sigma) instead of sigma,</span>
 <span class='co'># and remove the legends</span>
 <span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"mix-blue-red"</span>)
@@ -206,7 +206,7 @@ one of the <span class="pkg">bayesplot</span> convenience functions, e.g.
  <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"alpha"</span>, <span class='st'>"sigma"</span>),
  <span class='kw'>transformations</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>sigma</span> <span class='kw'>=</span> <span class='st'>"log"</span>),
  <span class='kw'>gg_theme</span> <span class='kw'>=</span> <span class='fu'><a href='bayesplot-helpers.html'>legend_none</a></span>()
-)</div><div class='img'><img src='MCMC-combos-3.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+)</div><div class='img'><img src='MCMC-combos-7.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
 <span class='co'># same thing but this time also change the entire ggplot theme</span>
 <span class='fu'>mcmc_combo</span>(
  <span class='no'>x</span>,
@@ -214,7 +214,7 @@ one of the <span class="pkg">bayesplot</span> convenience functions, e.g.
  <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"alpha"</span>, <span class='st'>"sigma"</span>),
  <span class='kw'>transformations</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>sigma</span> <span class='kw'>=</span> <span class='st'>"log"</span>),
  <span class='kw'>gg_theme</span> <span class='kw'>=</span> <span class='kw pkg'>ggplot2</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/ggtheme'>theme_gray</a></span>() + <span class='fu'><a href='bayesplot-helpers.html'>legend_none</a></span>()
-)</div><div class='img'><img src='MCMC-combos-4.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+)</div><div class='img'><img src='MCMC-combos-8.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
