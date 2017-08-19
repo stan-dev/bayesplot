@@ -55,7 +55,7 @@ The plotting functions in \pkg{bayesplot} are organized into several modules:
  \url{https://github.com/stan-dev/bayesplot/issues/}.
  }
  \item{\strong{General questions and help}:}{
- To ask a question about \pkg{bayesplot} on the Stan-users
+ To ask a question about \pkg{bayesplot} on the Stan Forums
  forum please visit
 
  \url{http://discourse.mc-stan.org}.
