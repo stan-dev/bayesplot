@@ -120,9 +120,12 @@ mcmc_intervals <- function(x,
                            rhat = numeric()) {
   check_ignored_arguments(...)
   stopifnot(prob_outer >= prob)
-  x <- prepare_mcmc_array(x, pars, regex_pars, transformations)
+
+  data <- mcmc_intervals_data(x, pars, regex_pars, transformations,
+                              prob, prob_outer, point_est, rhat)
+
   .mcmc_intervals(
-    x = merge_chains(x),
+    data,
     prob_inner = prob,
     prob_outer = prob_outer,
     point_est = point_est,
@@ -161,60 +164,99 @@ mcmc_areas <- function(x,
   )
 }
 
+mcmc_intervals_data <- function(x,
+                                pars = character(),
+                                regex_pars = character(),
+                                transformations = list(),
+                                ...,
+                                prob = 0.5,
+                                prob_outer = 0.9,
+                                point_est = c("median", "mean", "none"),
+                                rhat = numeric()) {
 
-# internal ----------------------------------------------------------------
+  stopifnot(prob_outer >= prob)
 
-# @param x A matrix (not a 3-D array) created by merge_chains()
-.mcmc_intervals <- function(x,
-                           prob_inner = 0.5,
-                           prob_outer = 0.95,
-                           point_est = c("median", "mean", "none"),
-                           rhat = numeric(),
-                           show_density = FALSE,
-                           bw = NULL,
-                           adjust = NULL,
-                           kernel = NULL) {
+  x <- prepare_mcmc_array(x, pars, regex_pars, transformations)
+  x <- merge_chains(x)
+
   n_param <- ncol(x)
   parnames <- colnames(x)
 
   probs <- c(0.5 - prob_outer / 2,
-             0.5 - prob_inner / 2,
+             0.5 - prob / 2,
              0.5,
-             0.5 + prob_inner / 2,
+             0.5 + prob / 2,
              0.5 + prob_outer / 2)
 
   quantiles <- t(apply(x, 2, quantile, probs = probs))
-  y <- as.numeric(seq(n_param, 1, by = -1))
-  x_lim <- c(min(quantiles[, 1]), max(quantiles[, 5]))
-  x_range <- diff(x_lim)
-  x_lim[1] <- x_lim[1] - 0.05 * x_range
-  x_lim[2] <- x_lim[2] + 0.05 * x_range
+  y_pos <- as.numeric(seq(n_param, 1, by = -1))
 
-  data <- data.frame(parnames, y, quantiles)
-  colnames(data) <- c("parameter", "y", "ll", "l", "m", "h", "hh")
+  data <- data.frame(parnames, y_pos, quantiles,
+                     row.names = NULL, stringsAsFactors = FALSE)
+  colnames(data) <- c("parameter", "y_pos", "ll", "l", "m", "h", "hh")
   point_est <- match.arg(point_est)
-  no_point_est <- identical(point_est, "none")
-  if (point_est == "mean")
+  data$point_est <- point_est
+
+  if (point_est == "mean") {
     data$m <- unname(colMeans(x))
+  }
 
   color_by_rhat <- isTRUE(length(rhat) > 0)
+
   if (color_by_rhat) {
-    rhat <- factor(factor_rhat(rhat), levels = c("high", "ok", "low"))
-    if (length(rhat) != nrow(data))
+    if (length(rhat) != nrow(data)) {
       stop(
         "'rhat' has length ", length(rhat),
         " but 'x' has ", nrow(data), " parameters.",
         call. = FALSE
       )
-
-    data$rhat <- rhat
+    }
+    data$rhat_val <- rhat
+    data$rhat <- factor(factor_rhat(rhat), levels = c("high", "ok", "low"))
   }
+
+  data
+}
+
+
+mcmc_areas_data <- function() {
+
+}
+
+# internal ----------------------------------------------------------------
+
+# @param x A matrix (not a 3-D array) created by merge_chains()
+.mcmc_intervals <- function(data,
+                            prob_inner = 0.5,
+                            prob_outer = 0.95,
+                            point_est = c("median", "mean", "none"),
+                            rhat = numeric(),
+                            show_density = FALSE,
+                            bw = NULL,
+                            adjust = NULL,
+                            kernel = NULL) {
+
+
+  data
+  no_point_est <- identical(data$point_est, "none")
+
+  color_by_rhat <- rlang::has_name(data, "rhat")
+  no_point_est <- identical(data$point_est, "none")
+
+
+  x_lim <- range(c(data$ll, data$hh))
+  x_range <- diff(x_lim)
+  x_lim[1] <- x_lim[1] - 0.05 * x_range
+  x_lim[2] <- x_lim[2] + 0.05 * x_range
+
+
 
   graph <- ggplot(data)
 
   # faint vertical line at zero if zero is within x_lim
-  if (0 > x_lim[1] && 0 < x_lim[2])
+  if (0 > x_lim[1] && 0 < x_lim[2]) {
     graph <- graph + vline_0(color = "gray90", size = 0.5)
+  }
 
   if (show_density) {
     # density outline
@@ -235,13 +277,15 @@ mcmc_areas <- function(x,
       y_max <- max(d_temp$y)
       y_dens[, i] <- d_temp$y / y_max * 0.8 + y[i]
     }
+
     df_dens <- data.frame(
       x = as.vector(x_dens),
       y = as.vector(y_dens),
       name = rep(parnames, each = n_dens_pts)
     )
-    if (color_by_rhat)
+    if (color_by_rhat) {
       df_dens$rhat <- rep(rhat, each = n_dens_pts)
+    }
 
     dens_args <- list(
       data = df_dens,
@@ -252,8 +296,12 @@ mcmc_areas <- function(x,
         color = if (!color_by_rhat) NULL else ~ rhat
       )
     )
-    if (!color_by_rhat)
+    if (!color_by_rhat) {
       dens_args$color <- get_color("d")
+    }
+
+    graph + g_dens
+
     g_dens <- do.call("geom_line", dens_args)
 
     #shaded interval
@@ -313,8 +361,10 @@ mcmc_areas <- function(x,
       ),
       size = 1
     )
-    if (!color_by_rhat)
+    if (!color_by_rhat) {
       segment_args$color <- get_color("m")
+    }
+
     g_point <- do.call("geom_segment", segment_args)
 
     # bottom line
@@ -327,13 +377,17 @@ mcmc_areas <- function(x,
         color = if (!color_by_rhat) NULL else ~ rhat
       )
     )
-    if (!color_by_rhat)
+    if (!color_by_rhat) {
       bottom_args$color <- get_color("d")
+    }
+
     g_bottom <- do.call("geom_segment", bottom_args)
 
     graph <- graph + g_poly
-    if (!no_point_est)
+    if (!no_point_est) {
       graph <- graph + g_point
+    }
+
     graph <- graph + g_bottom + g_dens
 
     if (color_by_rhat) {
@@ -349,63 +403,57 @@ mcmc_areas <- function(x,
   } else { # No densities
 
     # outer interval
-    graph <-
-      graph + geom_segment(aes_(
-        x = ~ ll,
-        xend = ~ hh,
-        y = ~ y,
-        yend = ~ y
-      ),
-      colour = get_color("m")
-    )
+    graph <- graph +
+      geom_segment(aes_(x = ~ ll, xend = ~ hh,
+                        y = ~ parameter, yend = ~ parameter),
+                   color = get_color("m"))
 
     # inner interval
+
     segment_args <- list(
-      mapping = aes_(
-        x = ~ l,
-        xend = ~ h,
-        y = ~ y,
-        yend = ~ y,
-        color = if (!color_by_rhat) NULL else ~ rhat
-      ),
+      mapping = aes_(x = ~ l, xend = ~ h,
+                     y = ~ parameter, yend = ~ parameter,
+                     color = if (!color_by_rhat) NULL else ~ rhat),
       size = 2,
-      show.legend = FALSE
-    )
-    if (!color_by_rhat)
+      show.legend = FALSE)
+
+    if (!color_by_rhat) {
       segment_args$color <- get_color("d")
+    }
+
     graph <- graph + do.call("geom_segment", segment_args)
 
     # point estimate
     point_args <- list(
-      mapping = aes_(
-        x = ~ m,
-        y = ~ y,
-        color = if (!color_by_rhat) NULL else ~ rhat,
-        fill = if (!color_by_rhat) NULL else ~ rhat
-      ),
+      mapping = aes_(x = ~ m, y = ~ parameter,
+                     color = if (!color_by_rhat) NULL else ~ rhat,
+                     fill = if (!color_by_rhat) NULL else ~ rhat),
       size = 4,
-      shape = 21
-    )
+      shape = 21)
+
     if (!color_by_rhat) {
       point_args$color <- get_color("dh")
       point_args$fill <- get_color("l")
     }
 
-    if (!no_point_est)
+    if (!no_point_est) {
       graph <- graph + do.call("geom_point", point_args)
+    }
 
-    if (color_by_rhat)
+    if (color_by_rhat) {
       graph <- graph +
         scale_color_diagnostic("rhat") +
         scale_fill_diagnostic("rhat")
+    }
+
   }
 
   graph +
-    scale_y_continuous(
-      breaks = y,
-      labels = parnames,
-      limits = c(0.5, n_param + 1)
-    ) +
+    # scale_y_continuous(
+    #   breaks = y,
+    #   labels = parnames,
+    #   limits = c(0.5, n_param + 1)
+    # ) +
     xlim(x_lim) +
     legend_move(ifelse(color_by_rhat, "top", "none")) +
     yaxis_text(face = "bold") +
