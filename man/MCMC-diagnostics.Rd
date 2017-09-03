@@ -180,7 +180,8 @@ simulation using multiple sequences. \emph{Statistical Science}. 7(4),
 Other MCMC: \code{\link{MCMC-combos}},
   \code{\link{MCMC-distributions}},
   \code{\link{MCMC-intervals}}, \code{\link{MCMC-nuts}},
-  \code{\link{MCMC-overview}}, \code{\link{MCMC-recover}},
+  \code{\link{MCMC-overview}}, \code{\link{MCMC-parcoord}},
+  \code{\link{MCMC-recover}},
   \code{\link{MCMC-scatterplots}},
   \code{\link{MCMC-traces}}
 }

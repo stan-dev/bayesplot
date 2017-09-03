@@ -8,7 +8,7 @@
 \usage{
 mcmc_trace(x, pars = character(), regex_pars = character(),
   transformations = list(), facet_args = list(), ..., n_warmup = 0,
-  window = NULL, size = NULL, divergences = NULL)
+  window = NULL, size = NULL, divergences = NULL, div_color = "red")
 
 mcmc_trace_highlight(x, pars = character(), regex_pars = character(),
   transformations = list(), facet_args = list(), ..., n_warmup = 0,
@@ -69,9 +69,11 @@ returned by \code{\link{nuts_params}} (or an object with the same
 structure). If a vector is provided it should be a vector with one element
 per iteration, with each element either \code{0} (no divergence) or
 \code{1} (a divergence in at least one chain). If \code{divergences} is
-specified then red tick marks are added to the bottom of the traceplot
+specified then tick marks are added to the bottom of the traceplot
 indicating within which iterations there was a divergence. See the end of
 the \strong{Examples} section, below.}
+
+\item{div_color}{The color to use for the divergences, if applicable.}
 
 \item{alpha}{For \code{mcmc_trace_highlight}, passed to
 \code{\link[ggplot2]{geom_point}} to control the transparency of the points
@@ -168,6 +170,14 @@ mcmc_trace(
   pars = "sigma",
   divergences = nuts_params(fit) # or nuts_params(fit, pars = "divergent__")
 )
+
+color_scheme_set("viridisC")
+mcmc_trace(
+  posterior,
+  pars = c("wt", "sigma"),
+  divergences = nuts_params(fit),
+  div_color = "black"
+)
 }
 
 }
@@ -176,6 +186,7 @@ Other MCMC: \code{\link{MCMC-combos}},
   \code{\link{MCMC-diagnostics}},
   \code{\link{MCMC-distributions}},
   \code{\link{MCMC-intervals}}, \code{\link{MCMC-nuts}},
-  \code{\link{MCMC-overview}}, \code{\link{MCMC-recover}},
+  \code{\link{MCMC-overview}}, \code{\link{MCMC-parcoord}},
+  \code{\link{MCMC-recover}},
   \code{\link{MCMC-scatterplots}}
 }
