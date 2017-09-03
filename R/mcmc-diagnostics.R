@@ -287,8 +287,7 @@ mcmc_neff_hist <- function(ratio, ..., binwidth = NULL) {
 #' @template args-mcmc-x
 #' @template args-pars
 #' @template args-regex_pars
-#' @param facet_args Arguments (other than \code{facets}) passed to
-#'   \code{\link[ggplot2]{facet_grid}} to control faceting.
+#' @template args-facet_args
 #' @param lags The number of lags to show in the autocorrelation plot.
 #'
 mcmc_acf <-

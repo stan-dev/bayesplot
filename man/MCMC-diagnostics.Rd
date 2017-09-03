@@ -51,8 +51,9 @@ allowed inputs.}
 parameter selection. Can be specified instead of \code{pars} or in addition
 to \code{pars}.}
 
-\item{facet_args}{Arguments (other than \code{facets}) passed to
-\code{\link[ggplot2]{facet_grid}} to control faceting.}
+\item{facet_args}{A named list of arguments (other than \code{facets}) passed
+to \code{\link[ggplot2]{facet_wrap}} or \code{\link[ggplot2]{facet_grid}}
+to control faceting.}
 
 \item{lags}{The number of lags to show in the autocorrelation plot.}
 }

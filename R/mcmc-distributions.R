@@ -10,9 +10,7 @@
 #' @template args-pars
 #' @template args-regex_pars
 #' @template args-transformations
-#' @param facet_args Arguments (other than \code{facets}) passed to
-#'   \code{\link[ggplot2]{facet_wrap}} or \code{\link[ggplot2]{facet_grid}} to
-#'   control faceting.
+#' @template args-facet_args
 #' @param ... Currently ignored.
 #'
 #' @template return-ggplot

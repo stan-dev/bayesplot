@@ -10,6 +10,7 @@
 #' @template args-pars
 #' @template args-regex_pars
 #' @template args-transformations
+#' @template args-facet_args
 #' @param size An optional value to override the default line size (if calling
 #'   \code{mcmc_trace}) or the default point size (if calling
 #'   \code{mcmc_trace_highlight}).
@@ -22,9 +23,6 @@
 #'   iterations \code{1:n_warmup} is shaded gray.
 #' @param window An integer vector of length two specifying the limits of a
 #'   range of iterations to display.
-#' @param facet_args Arguments (other than \code{facets}) passed to
-#'   \code{\link[ggplot2]{facet_wrap}} to control faceting.
-#' @param ... Currently ignored.
 #' @param divergences For models fit using \code{\link{NUTS}} (more generally,
 #'   any \href{http://en.wikipedia.org/wiki/Symplectic_integrator}{symplectic
 #'   integrator}), an optional vector or data frame providing information about

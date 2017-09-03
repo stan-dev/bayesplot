@@ -45,10 +45,9 @@ If a function itself is specified (e.g. \code{log} or \code{function(x)
 log(x)}) then \code{"t"} is used in the new parameter label to indicate
 that the parameter is transformed (e.g. \code{"t(sigma)"}).}
 
-\item{facet_args}{Arguments (other than \code{facets}) passed to
-\code{\link[ggplot2]{facet_wrap}} to control faceting.}
-
-\item{...}{Currently ignored.}
+\item{facet_args}{A named list of arguments (other than \code{facets}) passed
+to \code{\link[ggplot2]{facet_wrap}} or \code{\link[ggplot2]{facet_grid}}
+to control faceting.}
 
 \item{n_warmup}{An integer; the number of warmup iterations included in
 \code{x}. The default is \code{n_warmup = 0}, i.e. to assume no warmup

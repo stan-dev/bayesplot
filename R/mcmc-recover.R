@@ -11,6 +11,7 @@
 #' @family MCMC
 #'
 #' @template args-mcmc-x
+#' @template args-facet_args
 #' @param true A numeric vector of "true" values of the parameters in \code{x}.
 #'   There should be one value in \code{true} for each parameter included in
 #'   \code{x} and the order of the parameters in \code{true} should be the same
@@ -24,8 +25,6 @@
 #'   Changing the default is most useful when parameters are on very different
 #'   scales, in which case \code{batch} can be used to group them into batches
 #'   within which it makes sense to use the same \eqn{y}-axis.
-#' @param facet_args Arguments (other than \code{facets}) passed to
-#'   \code{\link[ggplot2]{facet_wrap}} to control faceting.
 #' @param ... Currently unused.
 #' @param prob The probability mass to include in the inner interval. The
 #'   default is \code{0.5} (50\% interval).

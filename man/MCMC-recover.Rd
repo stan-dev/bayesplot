@@ -37,8 +37,9 @@ Changing the default is most useful when parameters are on very different
 scales, in which case \code{batch} can be used to group them into batches
 within which it makes sense to use the same \eqn{y}-axis.}
 
-\item{facet_args}{Arguments (other than \code{facets}) passed to
-\code{\link[ggplot2]{facet_wrap}} to control faceting.}
+\item{facet_args}{A named list of arguments (other than \code{facets}) passed
+to \code{\link[ggplot2]{facet_wrap}} or \code{\link[ggplot2]{facet_grid}}
+to control faceting.}
 
 \item{...}{Currently unused.}
 
