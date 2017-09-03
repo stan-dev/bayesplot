@@ -109,7 +109,7 @@ group <- example_group_data()
 ppc_stat_grouped(y, yrep, group)
 
 color_scheme_set("mix-red-blue")
-ppc_stat_freqpoly_grouped(y, yrep, group)
+ppc_stat_freqpoly_grouped(y, yrep, group, facet_args = list(nrow = 2))
 
 # use your own function to compute test statistics
 color_scheme_set("brightblue")
