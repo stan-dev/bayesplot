@@ -31,9 +31,10 @@
 #'   structure). If a vector is provided it should be a vector with one element
 #'   per iteration, with each element either \code{0} (no divergence) or
 #'   \code{1} (a divergence in at least one chain). If \code{divergences} is
-#'   specified then red tick marks are added to the bottom of the traceplot
+#'   specified then tick marks are added to the bottom of the traceplot
 #'   indicating within which iterations there was a divergence. See the end of
 #'   the \strong{Examples} section, below.
+#' @param div_color The color to use for the divergences, if applicable.
 #' @template return-ggplot
 #'
 #' @section Plot Descriptions:
@@ -114,6 +115,16 @@
 #'   pars = "sigma",
 #'   divergences = nuts_params(fit) # or nuts_params(fit, pars = "divergent__")
 #' )
+#'
+#' color_scheme_set("viridis")
+#' mcmc_trace(
+#'   posterior,
+#'   pars = c("wt", "sigma"),
+#'   size = 0.8,
+#'   facet_args = list(nrow = 2),
+#'   divergences = nuts_params(fit),
+#'   div_color = "black"
+#' )
 #' }
 #'
 NULL
@@ -130,7 +141,8 @@ mcmc_trace <-
            n_warmup = 0,
            window = NULL,
            size = NULL,
-           divergences = NULL) {
+           divergences = NULL,
+           div_color = "red") {
     check_ignored_arguments(...)
     .mcmc_trace(
       x,
@@ -143,6 +155,7 @@ mcmc_trace <-
       size = size,
       style = "line",
       divergences = divergences,
+      div_color = div_color,
       ...
     )
   }
@@ -195,6 +208,7 @@ mcmc_trace_highlight <-
                        style = c("line", "point"),
                        alpha = 0.2,
                        divergences = NULL,
+                       div_color = "red",
                        ...) {
 
   style <- match.arg(style)
@@ -260,7 +274,7 @@ mcmc_trace_highlight <-
       scale_color_manual("Chain", values = chain_colors(n_chain))
 
     if (!is.null(divergences)) {
-      div_rug <- divergence_rug(divergences, n_iter, n_chain)
+      div_rug <- divergence_rug(divergences, n_iter, n_chain, color = div_color)
       if (!is.null(div_rug))
         graph <- graph +
           div_rug +
