@@ -22,15 +22,17 @@
 #'   representing NUTS diagnostics (in this case divergences) if the \code{np}
 #'   argument is specified.
 #'
+#' @template return-ggplot-or-data
+#'
 #'
 #' @section Plot Descriptions:
 #' \describe{
 #'   \item{\code{mcmc_parcoord}}{
-#'    Parallel coordinates plot of MCMC draws. This can be particularly useful
-#'    if the optional NUTS diagnostic information is provided via the \code{np}
-#'    argument. In that case divergences are highlighted in the plot. This was
-#'    originally suggested by Ari Hartikainen on the Stan Forums and the
-#'    discussion in
+#'    Parallel coordinates plot of MCMC draws. A separate line is plotted for
+#'    each draw. This plot is probably most useful if the optional NUTS
+#'    diagnostic information is provided via the \code{np} argument. In that
+#'    case divergences are highlighted in the plot. This was originally
+#'    suggested by Ari Hartikainen on the Stan Forums and the discussion in
 #'    \href{http://discourse.mc-stan.org/t/concentration-of-divergences/1590/21}{that
 #'    thread} may be helpful for understanding the plot.
 #'   }
@@ -74,32 +76,25 @@ mcmc_parcoord <-
     check_ignored_arguments(...)
     stopifnot(inherits(np_style, "nuts_style"))
 
-    x <- prepare_mcmc_array(x, pars, regex_pars, transformations)
-    param_labels <- parameter_names(x)
-    draws <- reshape2::melt(merge_chains(x), varnames = c("Iteration", "Parameter"))
-    n_iter <- num_iters(draws)
-    n_param <- num_params(draws)
+    data <-
+      mcmc_parcoord_data(
+        x = x,
+        pars = pars,
+        regex_pars = regex_pars,
+        transformations = transformations,
+        np = np
+      )
 
-    if (n_param < 2)
-      stop("This plot requires at least two parameters in 'x'.")
-
-    has_divs <- !is.null(np)
-    if (has_divs) {
-      np <- validate_nuts_data_frame(np)
-      draws$Divergent <-
-        np %>%
-        filter_(~ Parameter == "divergent__") %>%
-        .$Value %>%
-        rep(times = n_param)
-
-      div_draws <- filter_(draws, ~ Divergent == 1)
-      draws <- filter_(draws, ~ Divergent == 0)
-    }
+    # split into divergent and not divergent
+    divg <- sym("Divergent")
+    draws <- dplyr::filter(data, UQ(divg) == 0)
+    div_draws <- dplyr::filter(data, UQ(divg) == 1)
+    has_divs <- nrow(div_draws) > 0
 
     graph <- ggplot(draws, aes_(
       x = ~ Parameter,
-      y = ~ value,
-      group = ~ factor(Iteration)
+      y = ~ Value,
+      group = ~ factor(Draw)
     )) +
       geom_line(
         size = size,
@@ -118,8 +113,50 @@ mcmc_parcoord <-
     }
 
     graph +
-      scale_x_discrete(expand = c(0,0), labels = param_labels) +
+      scale_x_discrete(expand = c(0,0), labels = levels(draws$Parameter)) +
       labs(x = NULL, y = NULL)
+  }
+
+#' @rdname MCMC-parcoord
+#' @export
+#' @importFrom dplyr n right_join mutate group_by ungroup select arrange rename
+mcmc_parcoord_data <-
+  function(x,
+           pars = character(),
+           regex_pars = character(),
+           transformations = list(),
+           np = NULL
+           ) {
+    x <- prepare_mcmc_array(x, pars, regex_pars, transformations)
+    long_d <- reshape2::melt(x, varnames = c("Iteration", "Chain", "Parameter"),
+                             value.name = "Value")
+
+    n_param <- num_params(long_d)
+    if (n_param < 2)
+      stop("'mcmc_parcoord' requires at least two parameters in 'x'.")
+
+    param <- sym("Parameter")
+    value <- sym("Value")
+    if (is.null(np)) {
+      # still include 'Divergent' so returned object always has same columns
+      long_d$Divergent <- 0
+    } else {
+      # join with divergence info (both long_d and np have columns
+      # 'Parameter' and 'Value' so need to be a little careful)
+      np <- validate_nuts_data_frame(np)
+      long_d <- np %>%
+        dplyr::filter(UQ(param) == "divergent__") %>%
+        select(- !!param) %>%
+        rename(Divergent = !!value) %>%
+        right_join(long_d, by = c("Iteration", "Chain"))
+    }
+
+    keep <- syms(c("Draw", "Parameter", "Value", "Divergent"))
+    long_d %>%
+      group_by(!! param) %>%
+      mutate(Draw = 1:n()) %>%
+      ungroup() %>%
+      select(!!! keep)
   }
 
 

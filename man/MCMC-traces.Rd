@@ -49,6 +49,8 @@ that the parameter is transformed (e.g. \code{"t(sigma)"}).}
 to \code{\link[ggplot2]{facet_wrap}} or \code{\link[ggplot2]{facet_grid}}
 to control faceting.}
 
+\item{...}{Currently ignored.}
+
 \item{n_warmup}{An integer; the number of warmup iterations included in
 \code{x}. The default is \code{n_warmup = 0}, i.e. to assume no warmup
 iterations are included. If \code{n_warmup > 0} then the background for

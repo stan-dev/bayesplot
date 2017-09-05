@@ -11,6 +11,7 @@
 #' @template args-regex_pars
 #' @template args-transformations
 #' @template args-facet_args
+#' @param ... Currently ignored.
 #' @param size An optional value to override the default line size (if calling
 #'   \code{mcmc_trace}) or the default point size (if calling
 #'   \code{mcmc_trace_highlight}).
