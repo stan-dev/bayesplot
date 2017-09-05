@@ -35,7 +35,9 @@
 #'   \item{\code{mcmc_hex}}{
 #'    Hexagonal heatmap of 2-D bin counts. This plot is useful in cases where
 #'    the posterior sample size is large enough that \code{mcmc_scatter} suffers
-#'    from overplotting.
+#'    from overplotting. For models fit using \code{\link{NUTS}} the \code{np},
+#'    and \code{np_style} arguments can be used to add additional information in
+#'    the plot (in this case the approximate location of divergences).
 #'   }
 #'   \item{\code{mcmc_pairs}}{
 #'    A square plot matrix with univariate marginal distributions along the
@@ -101,7 +103,9 @@ mcmc_scatter <- function(x,
                          transformations = list(),
                          ...,
                          size = 2.5,
-                         alpha = 0.8) {
+                         alpha = 0.8,
+                         np = NULL,
+                         np_style = pairs_style_np()) {
   check_ignored_arguments(...)
   .mcmc_scatter(
     x,
@@ -111,7 +115,9 @@ mcmc_scatter <- function(x,
     size = size,
     alpha = alpha,
     hex = FALSE,
-    binwidth = NULL
+    binwidth = NULL,
+    np = np,
+    np_style = pairs_style_np()
   )
 }
 
@@ -363,6 +369,7 @@ mcmc_pairs <- function(x,
           geom_point(
             aes_(color = divs_j_fac, size = divs_j_fac),
             shape = np_style$shape[["div"]],
+            alpha = np_style$alpha[["div"]],
             na.rm = TRUE
           )
       }
@@ -373,6 +380,7 @@ mcmc_pairs <- function(x,
           geom_point(
             aes_(color = max_td_hit_j_fac, size = max_td_hit_j_fac),
             shape = np_style$shape[["td"]],
+            alpha = np_style$alpha[["td"]],
             na.rm = TRUE
           )
       }
@@ -391,32 +399,37 @@ mcmc_pairs <- function(x,
 
 #' @rdname MCMC-scatterplots
 #' @export
-#' @param div_color,div_shape,div_size,td_color,td_shape,td_size Optional
-#'   arguments to the \code{pairs_style_np} helper function that are eventually
-#'   passed to \code{\link[ggplot2]{geom_point}}. They control the color, shape,
-#'   and size specifications  for points representing divergences (\code{div})
-#'   and points indicating hitting the maximum treedepth (\code{td}). See the
-#'   \code{np_style} argument for more details. The default values are displayed
-#'   in the \strong{Usage} section above.
+#' @param div_color,div_shape,div_size,div_alpha,td_color,td_shape,td_size,td_alpha
+#'   Optional arguments to the \code{pairs_style_np} helper function that are
+#'   eventually passed to \code{\link[ggplot2]{geom_point}}. They control the
+#'   color, shape, and size specifications  for points representing divergences
+#'   (\code{div}) and points indicating hitting the maximum treedepth
+#'   (\code{td}). See the \code{np_style} argument for more details. The default
+#'   values are displayed in the \strong{Usage} section above.
 pairs_style_np <-
   function(div_color = "red",
            div_shape = 4,
            div_size = 1,
+           div_alpha = 1,
            td_color = "yellow2",
            td_shape = 3,
-           td_size = 1) {
+           td_size = 1,
+           td_alpha = 1) {
     stopifnot(
       is.numeric(div_shape) || is.character(div_shape),
       is.numeric(td_shape) || is.character(td_shape),
       is.character(div_color),
       is.character(td_color),
       is.numeric(div_size),
-      is.numeric(td_size)
+      is.numeric(td_size),
+      is.numeric(div_alpha) && div_alpha >= 0 && div_alpha <= 1,
+      is.numeric(td_alpha) && td_alpha >= 0 && td_alpha <= 1
     )
     style <- list(
       color = c(div = div_color, td = td_color),
       shape = c(div = div_shape, td = td_shape),
-      size = c(div = div_size, td = td_size)
+      size = c(div = div_size, td = td_size),
+      alpha = c(div = div_alpha, td = td_alpha)
     )
     structure(style, class = c(class(style), "pairs_style_np"))
   }
@@ -576,7 +589,9 @@ pairs_condition <- function(chains = NULL, draws = NULL, nuts = NULL) {
                          hex = FALSE,
                          size = 2.5,
                          alpha = 0.8,
-                         binwidth = NULL) {
+                         binwidth = NULL,
+                         np = NULL,
+                         np_style = pairs_style_np()) {
   x <- prepare_mcmc_array(x, pars, regex_pars, transformations)
   if (num_params(x) != 2)
     stop(
@@ -586,10 +601,24 @@ pairs_condition <- function(chains = NULL, draws = NULL, nuts = NULL) {
 
   x <- merge_chains(x)
   parnames <- colnames(x)[1:2]
-  graph <- ggplot(
-    data = data.frame(x = c(x[, 1]), y = c(x[, 2])),
-    mapping = aes_(x = ~ x, y = ~ y)
-  )
+  has_divs <- !is.null(np)
+
+  xydata <- data.frame(x = c(x[, 1]), y = c(x[, 2]))
+  if (has_divs) {
+    if (hex)
+      warning("'np' is currently ignored for hex plots.")
+    style <- np_style
+    np <- validate_nuts_data_frame(np)
+    xydata$Divergent <-
+      np %>%
+      filter_(~ Parameter == "divergent__") %>%
+      .$Value
+    divdata <- xydata %>% filter_(~ Divergent == 1)
+    xydata <- xydata %>% filter_(~ Divergent == 0)
+  }
+
+  graph <- ggplot(data = xydata, aes_(x = ~ x, y = ~ y))
+
   if (!hex) { # scatterplot
     graph <- graph +
       geom_point(
@@ -599,6 +628,16 @@ pairs_condition <- function(chains = NULL, draws = NULL, nuts = NULL) {
         size = size,
         alpha = alpha
       )
+
+    if (has_divs) {
+      graph <- graph +
+        geom_point(
+          data = divdata,
+          color = style$color[["div"]],
+          size = style$size[["div"]],
+          alpha = style$alpha[["div"]]
+        )
+    }
   } else { # hex binning
     suggested_package("scales")
     graph <- graph +

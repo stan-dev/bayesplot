@@ -10,7 +10,8 @@
 \title{Scatterplots of MCMC draws}
 \usage{
 mcmc_scatter(x, pars = character(), regex_pars = character(),
-  transformations = list(), ..., size = 2.5, alpha = 0.8)
+  transformations = list(), ..., size = 2.5, alpha = 0.8, np = NULL,
+  np_style = pairs_style_np())
 
 mcmc_hex(x, pars = character(), regex_pars = character(),
   transformations = list(), ..., binwidth = NULL)
@@ -22,7 +23,8 @@ mcmc_pairs(x, pars = character(), regex_pars = character(),
   np = NULL, np_style = pairs_style_np(), max_treedepth = NULL)
 
 pairs_style_np(div_color = "red", div_shape = 4, div_size = 1,
-  td_color = "yellow2", td_shape = 3, td_size = 1)
+  div_alpha = 1, td_color = "yellow2", td_shape = 3, td_size = 1,
+  td_alpha = 1)
 
 pairs_condition(chains = NULL, draws = NULL, nuts = NULL)
 }
@@ -62,6 +64,26 @@ that the parameter is transformed (e.g. \code{"t(sigma)"}).}
 \item{size, alpha}{For \code{mcmc_scatter}, passed to
 \code{\link[ggplot2]{geom_point}} to control the appearance of the points.}
 
+\item{np}{For \code{mcmc_pairs}, a molten data frame of NUTS sampler
+parameters, either created by \code{\link{nuts_params}} or in the same form
+as the object returned by \code{\link{nuts_params}}. If \code{np} is
+specified (and \code{condition} is \emph{not} \code{"divergent__"}), then
+points (red, by default) will be superimposed onto the off-diagonal plots
+indicating which (if any) iterations encountered a divergent transition.
+Also, if both \code{np} and \code{max_treedepth} are specified then points
+(yellow, by default) will be superimposed to indicate a transition that hit
+the maximum treedepth rather than terminated its evolution normally. The
+colors, shapes, and sizes of the superimposed points can be customized
+using the \code{np_style} argument.}
+
+\item{np_style}{For \code{mcmc_pairs}, a call to the \code{pairs_style_np}
+helper function to specify arguments controlling the appearance of
+superimposed points representing NUTS diagnostic parameter warnings (if the
+\code{np} argument is specified). The arguments to \code{pairs_style_np}
+correspond to setting the color, shape, and size of the points indicating
+divergences and the points indicating hitting the maximum treedepth (Note:
+here "size" is interpreted as a scaling factor).}
+
 \item{binwidth}{For \code{mcmc_hex}, an optional numeric vector of
 \emph{length two} passed to \code{\link[ggplot2]{geom_hex}} to override the
 default binwidth in both the vertical and horizontal directions.}
@@ -99,38 +121,17 @@ up to a constant. \code{lp} should either be created via
 \code{\link{log_posterior}} or be an object with the same form as the
 object returned by \code{\link{log_posterior}}.}
 
-\item{np}{For \code{mcmc_pairs}, a molten data frame of NUTS sampler
-parameters, either created by \code{\link{nuts_params}} or in the same form
-as the object returned by \code{\link{nuts_params}}. If \code{np} is
-specified (and \code{condition} is \emph{not} \code{"divergent__"}), then
-points (red, by default) will be superimposed onto the off-diagonal plots
-indicating which (if any) iterations encountered a divergent transition.
-Also, if both \code{np} and \code{max_treedepth} are specified then points
-(yellow, by default) will be superimposed to indicate a transition that hit
-the maximum treedepth rather than terminated its evolution normally. The
-colors, shapes, and sizes of the superimposed points can be customized
-using the \code{np_style} argument.}
-
-\item{np_style}{For \code{mcmc_pairs}, a call to the \code{pairs_style_np}
-helper function to specify arguments controlling the appearance of
-superimposed points representing NUTS diagnostic parameter warnings (if the
-\code{np} argument is specified). The arguments to \code{pairs_style_np}
-correspond to setting the color, shape, and size of the points indicating
-divergences and the points indicating hitting the maximum treedepth (Note:
-here "size" is interpreted as a scaling factor).}
-
 \item{max_treedepth}{For \code{mcmc_pairs}, an integer representing the
 maximum treedepth allowed when fitting the model (if fit using NUTS). This
 is only needed for detecting which transitions (if any) hit the maximum
 treedepth.}
 
-\item{div_color, div_shape, div_size, td_color, td_shape, td_size}{Optional
-arguments to the \code{pairs_style_np} helper function that are eventually
-passed to \code{\link[ggplot2]{geom_point}}. They control the color, shape,
-and size specifications  for points representing divergences (\code{div})
-and points indicating hitting the maximum treedepth (\code{td}). See the
-\code{np_style} argument for more details. The default values are displayed
-in the \strong{Usage} section above.}
+\item{div_color, div_shape, div_size, div_alpha, td_color, td_shape, td_size, td_alpha}{Optional arguments to the \code{pairs_style_np} helper function that are
+eventually passed to \code{\link[ggplot2]{geom_point}}. They control the
+color, shape, and size specifications  for points representing divergences
+(\code{div}) and points indicating hitting the maximum treedepth
+(\code{td}). See the \code{np_style} argument for more details. The default
+values are displayed in the \strong{Usage} section above.}
 
 \item{chains, draws, nuts}{Optional arguments to the \code{pairs_condition}
   helper function, which is used to specify the \code{condition} argument for
