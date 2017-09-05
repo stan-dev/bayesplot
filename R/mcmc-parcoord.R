@@ -22,10 +22,25 @@
 #'   representing NUTS diagnostics (in this case divergences) if the \code{np}
 #'   argument is specified.
 #'
+#'
+#' @section Plot Descriptions:
+#' \describe{
+#'   \item{\code{mcmc_parcoord}}{
+#'    Parallel coordinates plot of MCMC draws. This can be particularly useful
+#'    if the optional NUTS diagnostic information is provided via the \code{np}
+#'    argument. In that case divergences are highlighted in the plot. This was
+#'    originally suggested by Ari Hartikainen on the Stan Forums and the
+#'    discussion in
+#'    \href{http://discourse.mc-stan.org/t/concentration-of-divergences/1590/21}{that
+#'    thread} may be helpful for understanding the plot.
+#'   }
+#' }
+#'
 #' @examples
 #' color_scheme_set("pink")
-#' x <- example_mcmc_draws()
+#' x <- example_mcmc_draws(params = 5)
 #' mcmc_parcoord(x)
+#' mcmc_parcoord(x, regex_pars = "beta")
 #'
 #' \dontrun{
 #' library(rstan)
@@ -38,7 +53,7 @@
 #' mcmc_parcoord(draws, np = np)
 #'
 #' color_scheme_set("darkgray")
-#' div_style <- parcoord_style_np(div_color = "green", div_size = 0.5, div_alpha = 0.1)
+#' div_style <- parcoord_style_np(div_color = "green", div_size = 0.3, div_alpha = 0.3)
 #' mcmc_parcoord(draws, size = 0.25, alpha = 0.1,
 #'               np = np, np_style = div_style)
 #' }
@@ -53,7 +68,7 @@ mcmc_parcoord <-
            transformations = list(),
            ...,
            size = 0.2,
-           alpha = 0.2,
+           alpha = 0.3,
            np = NULL,
            np_style = parcoord_style_np()) {
     check_ignored_arguments(...)

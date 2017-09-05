@@ -7,7 +7,7 @@
 \title{Parallel coordinates plot of MCMC draws}
 \usage{
 mcmc_parcoord(x, pars = character(), regex_pars = character(),
-  transformations = list(), ..., size = 0.2, alpha = 0.2, np = NULL,
+  transformations = list(), ..., size = 0.2, alpha = 0.3, np = NULL,
   np_style = parcoord_style_np())
 
 parcoord_style_np(div_color = "red", div_size = 0.2, div_alpha = 0.2)
@@ -69,6 +69,21 @@ the \strong{Usage} section above.}
 Parallel coordinates plot of MCMC draws. See the \strong{Plot Descriptions}
 section, below, for details.
 }
+\section{Plot Descriptions}{
+
+\describe{
+  \item{\code{mcmc_parcoord}}{
+   Parallel coordinates plot of MCMC draws. This can be particularly useful
+   if the optional NUTS diagnostic information is provided via the \code{np}
+   argument. In that case divergences are highlighted in the plot. This was
+   originally suggested by Ari Hartikainen on the Stan Forums and the
+   discussion in
+   \href{http://discourse.mc-stan.org/t/concentration-of-divergences/1590/21}{that
+   thread} may be helpful for understanding the plot.
+  }
+}
+}
+
 \examples{
 color_scheme_set("pink")
 x <- example_mcmc_draws()
@@ -85,7 +100,7 @@ mcmc_parcoord(draws)
 mcmc_parcoord(draws, np = np)
 
 color_scheme_set("darkgray")
-div_style <- parcoord_style_np(div_color = "green", div_size = 0.5, div_alpha = 0.1)
+div_style <- parcoord_style_np(div_color = "green", div_size = 0.3, div_alpha = 0.3)
 mcmc_parcoord(draws, size = 0.25, alpha = 0.1,
               np = np, np_style = div_style)
 }
