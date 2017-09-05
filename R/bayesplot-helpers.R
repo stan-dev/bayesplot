@@ -454,6 +454,13 @@ grid_lines <- function(color = "gray50", size = 0.2) {
   )
 }
 
+grid_lines_y <- function(color = "gray50", size = 0.2) {
+  theme(
+    panel.grid.major.y = element_line(color = color, size = size),
+    panel.grid.minor.y = element_line(color = color, size = size * 0.5)
+  )
+}
+
 
 # overlay functions on an existing plot -----------------------------------
 #' @rdname bayesplot-helpers
