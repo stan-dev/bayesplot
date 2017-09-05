@@ -282,7 +282,7 @@ mcmc_pairs <- function(x,
   stopifnot(
     is.list(diag_args),
     is.list(off_diag_args),
-    inherits(np_style, "pairs_style_np"),
+    inherits(np_style, "nuts_style"),
     inherits(condition, "pairs_condition")
   )
   plot_diagonal <- pairs_plotfun(match.arg(diag_fun))
@@ -418,7 +418,7 @@ pairs_style_np <-
       shape = c(div = div_shape, td = td_shape),
       size = c(div = div_size, td = td_size)
     )
-    structure(style, class = c(class(style), "pairs_style_np"))
+    structure(style, class = c(class(style), "nuts_style"))
   }
 
 #' @rdname MCMC-scatterplots
