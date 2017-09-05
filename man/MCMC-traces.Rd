@@ -171,10 +171,12 @@ mcmc_trace(
   divergences = nuts_params(fit) # or nuts_params(fit, pars = "divergent__")
 )
 
-color_scheme_set("viridisC")
+color_scheme_set("viridis")
 mcmc_trace(
   posterior,
   pars = c("wt", "sigma"),
+  size = 0.8,
+  facet_args = list(nrow = 2),
   divergences = nuts_params(fit),
   div_color = "black"
 )

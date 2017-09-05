@@ -3,12 +3,14 @@
 \name{MCMC-parcoord}
 \alias{MCMC-parcoord}
 \alias{mcmc_parcoord}
+\alias{parcoord_style_np}
 \title{Parallel coordinates plot of MCMC draws}
 \usage{
 mcmc_parcoord(x, pars = character(), regex_pars = character(),
-  transformations = list(), ..., size = 0.2, alpha = 0.2,
-  divergences = NULL, div_color = "red", div_size = 0.2,
-  div_alpha = 0.2)
+  transformations = list(), ..., size = 0.2, alpha = 0.2, np = NULL,
+  np_style = parcoord_style_np())
+
+parcoord_style_np(div_color = "red", div_size = 0.2, div_alpha = 0.2)
 }
 \arguments{
 \item{x}{A 3-D array, matrix, list of matrices, or data frame of MCMC draws.
@@ -43,23 +45,25 @@ that the parameter is transformed (e.g. \code{"t(sigma)"}).}
 
 \item{...}{Currently ignored.}
 
-\item{size, alpha, div_size, div_alpha, div_color}{Arguments passed on to
-\code{\link[ggplot2]{geom_line}}. The last three are ignored unless
-\code{divergences} is specified.}
+\item{size, alpha}{Arguments passed on to \code{\link[ggplot2]{geom_line}}.}
 
-\item{divergences}{For models fit using \code{\link{NUTS}} (more generally,
+\item{np}{For models fit using \code{\link{NUTS}} (more generally,
 any \href{http://en.wikipedia.org/wiki/Symplectic_integrator}{symplectic
-integrator}), an optional data frame providing information about divergent
-transitions. The data frame should be the object returned by
-\code{\link{nuts_params}} or one with the same structure. If
-\code{divergences} is specified then \code{div_color}, \code{div_size}, and
-\code{div_alpha} can be specified to customize the appearance of the
-iterations that began with a divergence. See the the \strong{Examples}
-section, below.}
+integrator}), an optional data frame providing NUTS
+diagnostic information. The data frame should be the object returned by
+\code{\link{nuts_params}} or one with the same structure.}
 
-\item{facet_args}{A named list of arguments (other than \code{facets}) passed
-to \code{\link[ggplot2]{facet_wrap}} or \code{\link[ggplot2]{facet_grid}}
-to control faceting.}
+\item{np_style}{A call to the \code{parcoord_style_np} helper function to
+specify arguments controlling the appearance of superimposed lines
+representing NUTS diagnostics (in this case divergences) if the \code{np}
+argument is specified.}
+
+\item{div_color, div_size, div_alpha}{Optional arguments to the
+\code{parcoord_style_np} helper function that are eventually passed to
+\code{\link[ggplot2]{geom_line}} if the \code{np} argument is also
+specified. They control the color, size, and transparency specifications
+for showing divergences in the plot. The default values are displayed in
+the \strong{Usage} section above.}
 }
 \description{
 Parallel coordinates plot of MCMC draws. See the \strong{Plot Descriptions}
@@ -78,18 +82,12 @@ np <- nuts_params(fit)
 
 color_scheme_set("blue")
 mcmc_parcoord(draws)
-mcmc_parcoord(draws, divergences = np)
+mcmc_parcoord(draws, np = np)
 
 color_scheme_set("darkgray")
-mcmc_parcoord(
-  draws,
-  divergences = np,
-  size = 0.25,
-  alpha = 0.1,
-  div_color = "green",
-  div_size = 0.5,
-  div_alpha = 0.1
-)
+div_style <- parcoord_style_np(div_color = "green", div_size = 0.5, div_alpha = 0.1)
+mcmc_parcoord(draws, size = 0.25, alpha = 0.1,
+              np = np, np_style = div_style)
 }
 }
 \seealso{
