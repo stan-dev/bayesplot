@@ -10,13 +10,19 @@ transformations = list()
 interval_width = 1
 
 
-
-mcmc_densridge <- function(x,
+#' @template args-mcmc-x
+#' @template args-pars
+#' @template args-regex_pars
+#' @template args-transformations
+#' @template args-density-controls
+#' @rdname MCMC-distributions
+#' @export
+mcmc_dens_ridge <- function(x,
                            pars = character(),
                            regex_pars = character(),
                            transformations = list(),
                            ...,
-                           prob = 1,
+                           interval_width = 1,
                            bw = NULL,
                            adjust = NULL,
                            kernel = NULL) {
@@ -25,7 +31,7 @@ mcmc_densridge <- function(x,
   data <- mcmc_densridge_data(
     x, by_chain = FALSE, pars = pars, regex_pars = regex_pars,
     transformations = transformations,
-    prob = prob, bw = bw, adjust = adjust, kernel = kernel)
+    interval_width = interval_width, bw = bw, adjust = adjust, kernel = kernel)
 
   ggplot(data) +
     aes_(x = ~ x, height = ~ density, y = ~ Parameter) +
@@ -51,7 +57,7 @@ mcmc_densridge_chains <- function(x,
                                   regex_pars = character(),
                                   transformations = list(),
                                   ...,
-                                  prob = 1,
+                                  interval_width = 1,
                                   bw = NULL,
                                   adjust = NULL,
                                   kernel = NULL) {
@@ -60,7 +66,7 @@ mcmc_densridge_chains <- function(x,
   data <- mcmc_densridge_data(
     x, by_chain = TRUE, pars = pars, regex_pars = regex_pars,
     transformations = transformations,
-    prob = prob, bw = bw, adjust = adjust, kernel = kernel)
+    interval_width = interval_width, bw = bw, adjust = adjust, kernel = kernel)
 
   n_chain <- num_chains(data)
   n_param <- num_params(data)
@@ -97,16 +103,25 @@ mcmc_densridge_chains <- function(x,
 
 
 
-mcmc_densridge_data <- function(x,
-                                by_chain = FALSE,
-                                pars = character(),
-                                regex_pars = character(),
-                                transformations = list(),
-                                ...,
-                                prob = 1,
-                                bw = NULL,
-                                adjust = NULL,
-                                kernel = NULL) {
+mcmc_dens_ridges_data <- function(x,
+                                 pars = character(),
+                                 regex_pars = character(),
+                                 transformations = list(),
+                                 ...,
+                                 interval_width = 1,
+                                 bw = NULL, adjust = NULL, kernel = NULL) {
+
+  .mcmc_dens_ridges_data(x, by_chain = FALSE, pars, regex_pars,
+                         transformations, interval_width, bw, adjust, kernel)
+}
+
+.mcmc_dens_ridges_data <- function(x,
+                                  by_chain = FALSE
+                                  pars = character(),
+                                  regex_pars = character(),
+                                  transformations = list(),
+                                  interval_width = 1,
+                                  bw = NULL, adjust = NULL, kernel = NULL) {
   x_tall <- prepare_mcmc_array(x, pars, regex_pars, transformations)
   data <- reshape2::melt(x_tall, value.name = "Value")
   data$Chain <- factor(data$Chain)

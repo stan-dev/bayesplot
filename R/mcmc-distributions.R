@@ -36,6 +36,18 @@
 #'    The density estimate of each chain is plotted as a violin with
 #'    horizontal lines at notable quantiles.
 #'   }
+#'   \item{\code{mcmc_violin}}{
+#'    The density estimate of each chain is plotted as a violin with
+#'    horizontal lines at notable quantiles.
+#'   }
+#'   \item{\code{mcmc_dens_ridges}}{
+#'    Ridgeline kernel density plots of posterior draws with all chains merged
+#'    plotted.
+#'   }
+#'   \item{\code{mcmc_dens_chain_ridges}}{
+#'    Ridgeline kernel density plots of posterior draws with chains separated
+#'    but overlaid on a single plot.
+#'   }
 #' }
 #'
 #' @examples
@@ -210,6 +222,67 @@ mcmc_violin <- function(x,
     ...
   )
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#' @rdname MCMC-distributions
+#' @template args-density-controls
+#' @param interval_width for density ridgelines, width of the interval to draw.
+#'   Defaults to 1, so that the entire interval is draw. If .90 were used, the
+#'   interval from .05 to .95 would be drawn instead.
+#' @export
+mcmc_dens_ridges <- function(x,
+                             pars = character(),
+                             regex_pars = character(),
+                             transformations = list(),
+                             ...,
+                             interval_width = 1,
+                             bw = NULL, adjust = NULL, kernel = NULL) {
+  check_ignored_arguments(...)
+
+  data <- mcmc_dens_ridges_data(
+    x, pars = pars, regex_pars = regex_pars,
+    transformations = transformations,
+    interval_width = interval_width,
+    bw = bw, adjust = adjust, kernel = kernel)
+
+  ggplot(data) +
+    aes_(x = ~ x, height = ~ density, y = ~ Parameter) +
+    geom_joy(stat = "identity",
+             fill = get_color("light"),
+             color = get_color("mid"),
+             size = 1) +
+    xaxis_title(FALSE) +
+    yaxis_title(FALSE) +
+    yaxis_ticks(size = 1) +
+    grid_lines_y(color = "grey75") +
+    theme(
+      axis.text.y = element_text(
+        hjust = 1,
+        vjust = 0,
+        face = "bold"
+      ))
+}
+
+
+
+
+
+
 
 
 
