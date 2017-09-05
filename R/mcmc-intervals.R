@@ -162,25 +162,27 @@ mcmc_areas <- function(x,
 }
 
 
+
+
 # internal ----------------------------------------------------------------
 
 # @param x A matrix (not a 3-D array) created by merge_chains()
 .mcmc_intervals <- function(x,
-                           prob_inner = 0.5,
-                           prob_outer = 0.95,
-                           point_est = c("median", "mean", "none"),
-                           rhat = numeric(),
-                           show_density = FALSE,
-                           bw = NULL,
-                           adjust = NULL,
-                           kernel = NULL) {
+                            prob_inner = 0.5,
+                            prob_outer = 0.95,
+                            point_est = c("median", "mean", "none"),
+                            rhat = numeric(),
+                            show_density = FALSE,
+                            bw = NULL,
+                            adjust = NULL,
+                            kernel = NULL) {
   n_param <- ncol(x)
   parnames <- colnames(x)
 
   probs <- c(0.5 - prob_outer / 2,
-             0.5 - prob_inner / 2,
-             0.5,
-             0.5 + prob_inner / 2,
+    0.5 - prob_inner / 2,
+    0.5,
+    0.5 + prob_inner / 2,
              0.5 + prob_outer / 2)
 
   quantiles <- t(apply(x, 2, quantile, probs = probs))
@@ -256,7 +258,7 @@ mcmc_areas <- function(x,
       dens_args$color <- get_color("d")
     g_dens <- do.call("geom_line", dens_args)
 
-    #shaded interval
+    # shaded interval
     y_poly <- matrix(0, nrow = n_dens_pts + 2, ncol = n_param)
     x_poly <- matrix(0, nrow = n_dens_pts + 2, ncol = n_param)
     for (i in seq_len(n_param)) {
@@ -342,7 +344,7 @@ mcmc_areas <- function(x,
         scale_color_diagnostic("rhat")
     } else {
       graph <- graph + scale_fill_gradient(low = get_color("l"),
-                                           high = get_color("l"),
+        high = get_color("l"),
                                            guide = "none")
     }
 
@@ -351,13 +353,13 @@ mcmc_areas <- function(x,
     # outer interval
     graph <-
       graph + geom_segment(aes_(
-        x = ~ ll,
-        xend = ~ hh,
-        y = ~ y,
-        yend = ~ y
-      ),
-      colour = get_color("m")
-    )
+          x = ~ ll,
+          xend = ~ hh,
+          y = ~ y,
+          yend = ~ y
+        ),
+        colour = get_color("m")
+      )
 
     # inner interval
     segment_args <- list(
@@ -414,6 +416,72 @@ mcmc_areas <- function(x,
     xaxis_title(FALSE)
 }
 
+#' Compute density for a dataframe column.
+#'
+#' @param df a dataframe of posterior samples
+#' @param group_vars columns to group by. e.g., `c(Parameter, Chain)`
+#' @param value_var column containing posterior samples
+#' @param ... arguments passed onto density calculation
+#' @importFrom tidyr nest unnest
+#' @noRd
+compute_column_density <- function(df, group_vars, value_var, ...) {
+  value_var <- enquo(value_var)
+  group_vars <- enquo(group_vars)
+
+  # Tuck away the subgroups to compute densities on into nested dataframes
+  sub_df <- dplyr::select(df, !!! group_vars, !! value_var)
+  nested <- dplyr::as_tibble(tidyr::nest(sub_df, !! value_var))
+
+  # Only one column should be nested
+  ncols <- unlist(lapply(nested$data, ncol))
+  stopifnot(ncols == 1)
+
+  # Comp
+  nested$data <- lapply(nested$data, unlist)
+  nested$density <- lapply(nested$data, compute_interval_density, ...)
+  nested$data <- NULL
+
+  tidyr::unnest(nested)
+}
+
+
+# Given a vector of values, compute a density dataframe.
+compute_interval_density <- function(x,
+                                     interval_width = 1,
+                                     n = 512,
+                                     bw = NULL,
+                                     adjust = NULL,
+                                     kernel = NULL) {
+  nx <- length(x)
+
+  tail_width <- (1 - interval_width) / 2
+  qs <- quantile(x, probs = c(tail_width, 1 - tail_width))
+
+  args <- c(
+    # can't be null
+    list(
+      x = x,
+      from = min(qs),
+      to = max(qs),
+      n = n
+    ),
+    # might be null
+    bw = bw,
+    adjust = adjust,
+    kernel = kernel)
+
+  dens <- do.call("density", args)
+
+  den_df <- data.frame(
+    interval_width = interval_width,
+    x = dens$x,
+    density = dens$y,
+    scaled =  dens$y / max(dens$y, na.rm = TRUE),
+    count =   dens$y * nx,
+    n = nx
+  )
+}
+
 
 # compute kernel density estimates
 # all arguments are passed to stats::density
@@ -433,3 +501,4 @@ compute_dens_i <- function(x, bw, adjust, kernel, n, from, to) {
   )
   do.call("density", args)
 }
+
