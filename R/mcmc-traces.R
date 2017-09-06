@@ -226,7 +226,7 @@ mcmc_trace_highlight <-
       )
   }
 
-  data <- reshape2::melt(x, value.name = "Value")
+  data <- melt_mcmc(x)
   data$Chain <- factor(data$Chain)
   n_chain <- num_chains(data)
   n_iter <- num_iters(data)

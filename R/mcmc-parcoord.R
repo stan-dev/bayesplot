@@ -1,7 +1,7 @@
 #' Parallel coordinates plot of MCMC draws
 #'
-#' Parallel coordinates plot of MCMC draws. See the \strong{Plot Descriptions}
-#' section, below, for details.
+#' Parallel coordinates plot of MCMC draws (one dimension per parameter). See
+#' the \strong{Plot Descriptions} section, below, for details.
 #'
 #' @name MCMC-parcoord
 #' @family MCMC
@@ -28,15 +28,24 @@
 #' @section Plot Descriptions:
 #' \describe{
 #'   \item{\code{mcmc_parcoord}}{
-#'    Parallel coordinates plot of MCMC draws. A separate line is plotted for
-#'    each draw. This plot is probably most useful if the optional NUTS
+#'    (\href{https://en.wikipedia.org/wiki/Parallel_coordinates}{Parallel
+#'    coordinates plot}) of MCMC draws. There is one dimension per parameter
+#'    along the horizontal axis and each set of connected line segments
+#'    represents a single MCMC draw (i.e., a vector of length equal to the
+#'    number of parameters).
+#'
+#'    The parallel coordinates plot is most useful if the optional HMC/NUTS
 #'    diagnostic information is provided via the \code{np} argument. In that
-#'    case divergences are highlighted in the plot. This was originally
-#'    suggested by Ari Hartikainen on the Stan Forums and the discussion in
-#'    \href{http://discourse.mc-stan.org/t/concentration-of-divergences/1590/21}{that
-#'    thread} may be helpful for understanding the plot.
+#'    case divergences are highlighted in the plot. The appearance of the
+#'    divergences can be customized using the \code{np_style} argument and the
+#'    \code{parcoord_style_np} helper function.
 #'   }
 #' }
+#'
+#' @seealso Ari Hartikainen's post about the parallel coordinates plot on the
+#'   Stan Forums
+#'   (\href{http://discourse.mc-stan.org/t/concentration-of-divergences/1590/21}{link}).
+#'
 #'
 #' @examples
 #' color_scheme_set("pink")
@@ -45,20 +54,30 @@
 #' mcmc_parcoord(x, regex_pars = "beta")
 #'
 #' \dontrun{
+#' # Example using a Stan demo model
 #' library(rstan)
 #' fit <- stan_demo("eight_schools")
-#' draws <- as.array(fit, pars = c("tau", "theta", "lp__"))
+#' draws <- as.array(fit, pars = c("mu", "tau", "theta", "lp__"))
 #' np <- nuts_params(fit)
+#' str(np)
+#' levels(np$Parameter)
 #'
-#' color_scheme_set("blue")
-#' mcmc_parcoord(draws)
+#' color_scheme_set("brightblue")
+#' mcmc_parcoord(draws, alpha = 0.05)
 #' mcmc_parcoord(draws, np = np)
 #'
+#' # customize appearance of divergences
 #' color_scheme_set("darkgray")
-#' div_style <- parcoord_style_np(div_color = "green", div_size = 0.3, div_alpha = 0.3)
+#' div_style <- parcoord_style_np(div_color = "green", div_size = 0.05, div_alpha = 0.4)
 #' mcmc_parcoord(draws, size = 0.25, alpha = 0.1,
 #'               np = np, np_style = div_style)
-#' }
+#'
+#' # mcmc_parcoord_data returns just the data in a conventient form for plotting
+#' d <- mcmc_parcoord_data(x, np = np)
+#' head(d)
+#' tail(d)
+#'}
+#'
 NULL
 
 #' @rdname MCMC-parcoord
@@ -85,11 +104,11 @@ mcmc_parcoord <-
         np = np
       )
 
-    # split into divergent and not divergent
+
     divg <- sym("Divergent")
     draws <- dplyr::filter(data, UQ(divg) == 0)
     div_draws <- dplyr::filter(data, UQ(divg) == 1)
-    has_divs <- nrow(div_draws) > 0
+    has_divs <- isTRUE(nrow(div_draws) > 0)
 
     graph <- ggplot(draws, aes_(
       x = ~ Parameter,
@@ -119,7 +138,7 @@ mcmc_parcoord <-
 
 #' @rdname MCMC-parcoord
 #' @export
-#' @importFrom dplyr n right_join mutate group_by ungroup select arrange rename
+#' @importFrom dplyr n left_join mutate group_by ungroup select arrange rename
 mcmc_parcoord_data <-
   function(x,
            pars = character(),
@@ -128,11 +147,9 @@ mcmc_parcoord_data <-
            np = NULL
            ) {
     x <- prepare_mcmc_array(x, pars, regex_pars, transformations)
-    long_d <- reshape2::melt(x, varnames = c("Iteration", "Chain", "Parameter"),
-                             value.name = "Value")
+    long_d <- melt_mcmc(x)
 
-    n_param <- num_params(long_d)
-    if (n_param < 2)
+    if (num_params(long_d) < 2)
       stop("'mcmc_parcoord' requires at least two parameters in 'x'.")
 
     param <- sym("Parameter")
@@ -143,20 +160,21 @@ mcmc_parcoord_data <-
     } else {
       # join with divergence info (both long_d and np have columns
       # 'Parameter' and 'Value' so need to be a little careful)
-      np <- validate_nuts_data_frame(np)
-      long_d <- np %>%
+      divs <- np %>%
+        validate_nuts_data_frame() %>%
         dplyr::filter(UQ(param) == "divergent__") %>%
         select(- !!param) %>%
-        rename(Divergent = !!value) %>%
-        right_join(long_d, by = c("Iteration", "Chain"))
+        rename("Divergent" = !!value)
+
+      long_d <- left_join(long_d, divs, by = c("Iteration", "Chain"))
     }
 
-    keep <- syms(c("Draw", "Parameter", "Value", "Divergent"))
+    keep_cols <- syms(c("Draw", "Parameter", "Value", "Divergent"))
     long_d %>%
       group_by(!! param) %>%
       mutate(Draw = 1:n()) %>%
       ungroup() %>%
-      select(!!! keep)
+      select(!!! keep_cols)
   }
 
 
