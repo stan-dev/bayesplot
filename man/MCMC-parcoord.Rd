@@ -93,6 +93,12 @@ the \strong{Plot Descriptions} section, below, for details.
    case divergences are highlighted in the plot. The appearance of the
    divergences can be customized using the \code{np_style} argument and the
    \code{parcoord_style_np} helper function.
+
+   When the plotted model parameters are on very different scales the
+   \code{transformations} argument can be useful. For example, to standardize
+   all variables before plotting you could use function \code{(x -
+   mean(x))/sd(x)} when specifying the \code{transformations} argument to
+   \code{mcmc_parcoord}. See the \strong{Examples} section for how to do this.
   }
 }
 }
@@ -121,6 +127,18 @@ color_scheme_set("darkgray")
 div_style <- parcoord_style_np(div_color = "green", div_size = 0.05, div_alpha = 0.4)
 mcmc_parcoord(draws, size = 0.25, alpha = 0.1,
               np = np, np_style = div_style)
+
+# to use a transformation (e.g., to standarde all the variables)
+# specify the 'transformations' argument (though partial argument name
+# matching means we can just use 'trans' or 'transform')
+mcmc_parcoord(
+  draws,
+  transform = function(x) {(x - mean(x)) / sd(x)},
+  size = 0.25,
+  alpha = 0.1,
+  np = np,
+  np_style = div_style
+ )
 
 # mcmc_parcoord_data returns just the data in a conventient form for plotting
 d <- mcmc_parcoord_data(x, np = np)
