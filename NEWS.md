@@ -2,7 +2,20 @@
 
 (GitHub issue/PR numbers in parentheses)
 
-* insert news for next release here
+* New plotting function `mcmc_parcoord` for parallel coordinates plots of MCMC
+draws (optionally including HMC/NUTS diagnostic information). (#108)
+* New functions with names ending with suffix `_data` don't make the plots, they
+just return the data prepared for plotting (more of these to come in future
+releases):
+    - `ppc_intervals_data` (#101)
+    - `ppc_ribbon_data` (#101)
+    - `mcmc_parcoord_data` (#108)
+    
+* `ppc_stat_grouped`, `ppc_stat_freqpoly_grouped` gain a `facet_args` argument 
+for controlling **ggplot2** faceting (many of the `mcmc_` functions already have
+this).
+* The `divergences` argument to `mcmc_trace` has been deprecated in favor of
+`np` (NUTS parameters) to match the other functions that have an `np` argument.
 
 # bayesplot 1.3.0
 
