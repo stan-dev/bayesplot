@@ -182,7 +182,8 @@ one of the <span class="pkg">bayesplot</span> convenience functions, e.g.
     <p>Other MCMC: <code><a href='MCMC-diagnostics.html'>MCMC-diagnostics</a></code>,
   <code><a href='MCMC-distributions.html'>MCMC-distributions</a></code>,
   <code><a href='MCMC-intervals.html'>MCMC-intervals</a></code>, <code><a href='MCMC-nuts.html'>MCMC-nuts</a></code>,
-  <code><a href='MCMC-overview.html'>MCMC-overview</a></code>, <code><a href='MCMC-recover.html'>MCMC-recover</a></code>,
+  <code><a href='MCMC-overview.html'>MCMC-overview</a></code>, <code><a href='MCMC-parcoord.html'>MCMC-parcoord</a></code>,
+  <code><a href='MCMC-recover.html'>MCMC-recover</a></code>,
   <code><a href='MCMC-scatterplots.html'>MCMC-scatterplots</a></code>,
   <code><a href='MCMC-traces.html'>MCMC-traces</a></code></p>
     
@@ -199,7 +200,7 @@ one of the <span class="pkg">bayesplot</span> convenience functions, e.g.
 #&gt; $Parameter
 #&gt; [1] "alpha"   "sigma"   "beta[1]" "beta[2]"
 #&gt; </div><div class='input'>
-<span class='fu'>mcmc_combo</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"alpha"</span>, <span class='st'>"sigma"</span>))</div><div class='img'><img src='MCMC-combos-35.png' alt='' width='700' height='432.632880098887' /></div><div class='input'><span class='fu'>mcmc_combo</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"alpha"</span>, <span class='st'>"sigma"</span>), <span class='kw'>widths</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>1</span>, <span class='fl'>2</span>))</div><div class='img'><img src='MCMC-combos-36.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+<span class='fu'>mcmc_combo</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"alpha"</span>, <span class='st'>"sigma"</span>))</div><div class='img'><img src='MCMC-combos-1.png' alt='' width='700' height='432.632880098887' /></div><div class='input'><span class='fu'>mcmc_combo</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"alpha"</span>, <span class='st'>"sigma"</span>), <span class='kw'>widths</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>1</span>, <span class='fl'>2</span>))</div><div class='img'><img src='MCMC-combos-2.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
 </div><div class='input'><span class='co'># change second plot, show log(sigma) instead of sigma,</span>
 <span class='co'># and remove the legends</span>
 <span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"mix-blue-red"</span>)
@@ -209,7 +210,7 @@ one of the <span class="pkg">bayesplot</span> convenience functions, e.g.
  <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"alpha"</span>, <span class='st'>"sigma"</span>),
  <span class='kw'>transformations</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>sigma</span> <span class='kw'>=</span> <span class='st'>"log"</span>),
  <span class='kw'>gg_theme</span> <span class='kw'>=</span> <span class='fu'><a href='bayesplot-helpers.html'>legend_none</a></span>()
-)</div><div class='img'><img src='MCMC-combos-37.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+)</div><div class='img'><img src='MCMC-combos-3.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
 <span class='co'># same thing but this time also change the entire ggplot theme</span>
 <span class='fu'>mcmc_combo</span>(
  <span class='no'>x</span>,
@@ -217,7 +218,7 @@ one of the <span class="pkg">bayesplot</span> convenience functions, e.g.
  <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"alpha"</span>, <span class='st'>"sigma"</span>),
  <span class='kw'>transformations</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>sigma</span> <span class='kw'>=</span> <span class='st'>"log"</span>),
  <span class='kw'>gg_theme</span> <span class='kw'>=</span> <span class='kw pkg'>ggplot2</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/ggtheme'>theme_gray</a></span>() + <span class='fu'><a href='bayesplot-helpers.html'>legend_none</a></span>()
-)</div><div class='img'><img src='MCMC-combos-38.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+)</div><div class='img'><img src='MCMC-combos-4.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -237,7 +238,7 @@ one of the <span class="pkg">bayesplot</span> convenience functions, e.g.
 
       <footer>
       <div class="copyright">
-  <p>Developed by Jonah Gabry.</p>
+  <p>Developed by Jonah Gabry, Tristan Mahr.</p>
 </div>
 
 <div class="pkgdown">

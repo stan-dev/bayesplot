@@ -124,6 +124,34 @@
     </div>
 
     <div class="contents">
+    <div id="bayesplot-1-4-0" class="section level1">
+<h1 class="hasAnchor">
+<a href="#bayesplot-1-4-0" class="anchor"></a>bayesplot 1.4.0</h1>
+<p>(GitHub issue/PR numbers in parentheses)</p>
+<ul>
+<li>New plotting function <code><a href="../reference/MCMC-parcoord.html">mcmc_parcoord()</a></code> for parallel coordinates plots of MCMC draws (optionally including HMC/NUTS diagnostic information). (#108)</li>
+<li>
+<code>mcmc_scatter</code> gains an <code>np</code> argument for specifying NUTS parameters, which allows highlighting divergences in the plot. (#112)</li>
+<li>New functions with names ending with suffix <code>_data</code> don’t make the plots, they just return the data prepared for plotting (more of these to come in future releases):
+<ul>
+<li>
+<code><a href="../reference/PPC-intervals.html">ppc_intervals_data()</a></code> (#101)</li>
+<li>
+<code><a href="../reference/PPC-intervals.html">ppc_ribbon_data()</a></code> (#101)</li>
+<li>
+<code><a href="../reference/MCMC-parcoord.html">mcmc_parcoord_data()</a></code> (#108)</li>
+<li>
+<code><a href="../reference/MCMC-diagnostics.html">mcmc_rhat_data()</a></code> (#110)</li>
+<li>
+<code><a href="../reference/MCMC-diagnostics.html">mcmc_neff_data()</a></code> (#110)</li>
+</ul>
+</li>
+<li>
+<code><a href="../reference/PPC-test-statistics.html">ppc_stat_grouped()</a></code>, <code><a href="../reference/PPC-test-statistics.html">ppc_stat_freqpoly_grouped()</a></code> gain a <code>facet_args</code> argument for controlling <strong>ggplot2</strong> faceting (many of the <code>mcmc_</code> functions already have this).</li>
+<li>The <code>divergences</code> argument to <code><a href="../reference/MCMC-traces.html">mcmc_trace()</a></code> has been deprecated in favor of <code>np</code> (NUTS parameters) to match the other functions that have an <code>np</code> argument.</li>
+<li>Fixed an issue where duplicated rhat values would break <code><a href="../reference/MCMC-diagnostics.html">mcmc_rhat()</a></code> (#105).</li>
+</ul>
+</div>
     <div id="bayesplot-1-3-0" class="section level1">
 <h1 class="hasAnchor">
 <a href="#bayesplot-1-3-0" class="anchor"></a>bayesplot 1.3.0</h1>
@@ -242,6 +270,7 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#bayesplot-1-4-0">1.4.0</a></li>
         <li><a href="#bayesplot-1-3-0">1.3.0</a></li>
         <li><a href="#bayesplot-1-2-0">1.2.0</a></li>
         <li><a href="#bayesplot-1-1-0">1.1.0</a></li>
@@ -254,7 +283,7 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by Jonah Gabry.</p>
+  <p>Developed by Jonah Gabry, Tristan Mahr.</p>
 </div>
 
 <div class="pkgdown">

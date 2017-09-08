@@ -162,6 +162,7 @@
 #&gt;   mcmc_hist_by_chain
 #&gt;   mcmc_intervals
 #&gt;   mcmc_neff
+#&gt;   mcmc_neff_data
 #&gt;   mcmc_neff_hist
 #&gt;   mcmc_nuts_acceptance
 #&gt;   mcmc_nuts_divergence
@@ -169,10 +170,13 @@
 #&gt;   mcmc_nuts_stepsize
 #&gt;   mcmc_nuts_treedepth
 #&gt;   mcmc_pairs
+#&gt;   mcmc_parcoord
+#&gt;   mcmc_parcoord_data
 #&gt;   mcmc_recover_hist
 #&gt;   mcmc_recover_intervals
 #&gt;   mcmc_recover_scatter
 #&gt;   mcmc_rhat
+#&gt;   mcmc_rhat_data
 #&gt;   mcmc_rhat_hist
 #&gt;   mcmc_scatter
 #&gt;   mcmc_trace
@@ -186,8 +190,10 @@
 #&gt;   mcmc_nuts_treedepth</div><div class='input'><span class='fu'>available_mcmc</span>(<span class='st'>"rhat|neff"</span>)</div><div class='output co'>#&gt; bayesplot MCMC module:
 #&gt; (matching pattern 'rhat|neff') 
 #&gt;   mcmc_neff
+#&gt;   mcmc_neff_data
 #&gt;   mcmc_neff_hist
 #&gt;   mcmc_rhat
+#&gt;   mcmc_rhat_data
 #&gt;   mcmc_rhat_hist</div><div class='input'><span class='fu'>available_ppc</span>(<span class='st'>"grouped"</span>)</div><div class='output co'>#&gt; bayesplot PPC module:
 #&gt; (matching pattern 'grouped') 
 #&gt;   ppc_bars_grouped
@@ -215,10 +221,12 @@
 #&gt;   ppc_group_data
 #&gt;   ppc_hist
 #&gt;   ppc_intervals
+#&gt;   ppc_intervals_data
 #&gt;   ppc_loo_intervals
 #&gt;   ppc_loo_pit
 #&gt;   ppc_loo_ribbon
 #&gt;   ppc_ribbon
+#&gt;   ppc_ribbon_data
 #&gt;   ppc_rootogram
 #&gt;   ppc_scatter
 #&gt;   ppc_scatter_avg
@@ -241,7 +249,7 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by Jonah Gabry.</p>
+  <p>Developed by Jonah Gabry, Tristan Mahr.</p>
 </div>
 
 <div class="pkgdown">

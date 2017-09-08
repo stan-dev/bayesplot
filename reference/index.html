@@ -121,7 +121,7 @@
     <div class="page-header">
       <h1>
         Reference
-        <small>version&nbsp;1.3.0</small>
+        <small>version&nbsp;1.4.0</small>
       </h1>
     </div>
 
@@ -161,7 +161,7 @@
         </tr><tr>
           <!--  -->
           <td>
-            <p><code><a href="PPC-intervals.html">ppc_intervals</a></code> <code><a href="PPC-intervals.html">ppc_intervals_grouped</a></code> <code><a href="PPC-intervals.html">ppc_ribbon</a></code> <code><a href="PPC-intervals.html">ppc_ribbon_grouped</a></code> </p>
+            <p><code><a href="PPC-intervals.html">ppc_intervals</a></code> <code><a href="PPC-intervals.html">ppc_intervals_grouped</a></code> <code><a href="PPC-intervals.html">ppc_ribbon</a></code> <code><a href="PPC-intervals.html">ppc_ribbon_grouped</a></code> <code><a href="PPC-intervals.html">ppc_intervals_data</a></code> <code><a href="PPC-intervals.html">ppc_ribbon_data</a></code> </p>
           </td>
           <td><p>PPC intervals</p></td>
         </tr><tr>
@@ -199,7 +199,7 @@
         <tr>
           <!--  -->
           <td>
-            <p><code><a href="MCMC-diagnostics.html">mcmc_rhat</a></code> <code><a href="MCMC-diagnostics.html">mcmc_rhat_hist</a></code> <code><a href="MCMC-diagnostics.html">mcmc_neff</a></code> <code><a href="MCMC-diagnostics.html">mcmc_neff_hist</a></code> <code><a href="MCMC-diagnostics.html">mcmc_acf</a></code> <code><a href="MCMC-diagnostics.html">mcmc_acf_bar</a></code> </p>
+            <p><code><a href="MCMC-diagnostics.html">mcmc_rhat</a></code> <code><a href="MCMC-diagnostics.html">mcmc_rhat_hist</a></code> <code><a href="MCMC-diagnostics.html">mcmc_rhat_data</a></code> <code><a href="MCMC-diagnostics.html">mcmc_neff</a></code> <code><a href="MCMC-diagnostics.html">mcmc_neff_hist</a></code> <code><a href="MCMC-diagnostics.html">mcmc_neff_data</a></code> <code><a href="MCMC-diagnostics.html">mcmc_acf</a></code> <code><a href="MCMC-diagnostics.html">mcmc_acf_bar</a></code> </p>
           </td>
           <td><p>General MCMC diagnostics</p></td>
         </tr><tr>
@@ -223,13 +223,19 @@
         </tr><tr>
           <!--  -->
           <td>
-            <p><code><a href="MCMC-scatterplots.html">mcmc_scatter</a></code> <code><a href="MCMC-scatterplots.html">mcmc_hex</a></code> <code><a href="MCMC-scatterplots.html">mcmc_pairs</a></code> <code><a href="MCMC-scatterplots.html">pairs_style_np</a></code> <code><a href="MCMC-scatterplots.html">pairs_condition</a></code> </p>
+            <p><code><a href="MCMC-scatterplots.html">mcmc_scatter</a></code> <code><a href="MCMC-scatterplots.html">mcmc_hex</a></code> <code><a href="MCMC-scatterplots.html">mcmc_pairs</a></code> <code><a href="MCMC-scatterplots.html">scatter_style_np</a></code> <code><a href="MCMC-scatterplots.html">pairs_style_np</a></code> <code><a href="MCMC-scatterplots.html">pairs_condition</a></code> </p>
           </td>
           <td><p>Scatterplots of MCMC draws</p></td>
         </tr><tr>
           <!--  -->
           <td>
-            <p><code><a href="MCMC-traces.html">mcmc_trace</a></code> <code><a href="MCMC-traces.html">mcmc_trace_highlight</a></code> </p>
+            <p><code><a href="MCMC-parcoord.html">mcmc_parcoord</a></code> <code><a href="MCMC-parcoord.html">mcmc_parcoord_data</a></code> <code><a href="MCMC-parcoord.html">parcoord_style_np</a></code> </p>
+          </td>
+          <td><p>Parallel coordinates plot of MCMC draws</p></td>
+        </tr><tr>
+          <!--  -->
+          <td>
+            <p><code><a href="MCMC-traces.html">mcmc_trace</a></code> <code><a href="MCMC-traces.html">mcmc_trace_highlight</a></code> <code><a href="MCMC-traces.html">trace_style_np</a></code> </p>
           </td>
           <td><p>Traceplot (time series plot) of MCMC draws</p></td>
         </tr><tr>
@@ -243,7 +249,7 @@
         <tr>
           <th colspan="2">
             <h2 id="section-hmc-nuts-diagnostics" class="hasAnchor"><a href="#section-hmc-nuts-diagnostics" class="anchor"></a>HMC/NUTS diagnostics</h2>
-            <p class="section-desc"><p>Functions for plotting diagnostics specific to Hamiltonian Monte Carlo and the No-U-Turn Sampler.</p></p>
+            <p class="section-desc"><p>Functions for plotting diagnostics specific to Hamiltonian Monte Carlo (HMC) and the No-U-Turn Sampler (NUTS). Some of the general MCMC plotting functions (<code>mcmc_parcoord</code>, <code>mcmc_pairs</code>, <code>mcmc_scatter</code>, <code>mcmc_trace</code>) can also show HMC/NUTS diagnostic information if optional arguments are specified, but the special functions below are <em>only</em> intended for use with HMC/NUTS.</p></p>
           </th>
         </tr>
         <tr>
@@ -330,7 +336,7 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by Jonah Gabry.</p>
+  <p>Developed by Jonah Gabry, Tristan Mahr.</p>
 </div>
 
 <div class="pkgdown">

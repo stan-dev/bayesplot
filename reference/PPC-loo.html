@@ -130,11 +130,11 @@ section below for details.</p>
     <pre class="usage"><span class='fu'>ppc_loo_pit</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='no'>lw</span>, <span class='no'>pit</span>, <span class='kw'>compare</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"uniform"</span>, <span class='st'>"normal"</span>), <span class='no'>...</span>,
   <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>1</span>)
 
-<span class='fu'>ppc_loo_intervals</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='no'>lw</span>, <span class='no'>intervals</span>, <span class='no'>...</span>, <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.9</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>fatten</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>order</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"index"</span>, <span class='st'>"median"</span>))
+<span class='fu'>ppc_loo_intervals</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='no'>lw</span>, <span class='kw'>intervals</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>, <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.9</span>,
+  <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>fatten</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>order</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"index"</span>, <span class='st'>"median"</span>))
 
-<span class='fu'>ppc_loo_ribbon</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='no'>lw</span>, <span class='no'>intervals</span>, <span class='no'>...</span>, <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.9</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.33</span>,
-  <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>0.25</span>)</pre>
+<span class='fu'>ppc_loo_ribbon</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='no'>lw</span>, <span class='kw'>intervals</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>, <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.9</span>,
+  <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.33</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>0.25</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -229,9 +229,11 @@ by median value from smallest (left) to largest (right).</p></td>
  double use of data. See the section on marginal predictive checks in Gelman
  et al. (2013, p. 152--153). The default LOO PIT predictive check is a
  quantile-quantile (Q-Q) plot comparing the LOO PITs to the standard uniform
- distribution. Alternatively, setting the <code>compare</code> argument to
- <code>"normal"</code> will produce a Q-Q plot comparing standardized PIT values
- to the standard normal distribution.</p></dd>
+ distribution. Comparing to a uniform distribution is not good for extreme
+ probabilities close to 0 and 1, so it can be useful to set the
+ <code>compare</code> argument to <code>"normal"</code>, which will produce a Q-Q plot
+ comparing standardized PIT values to the standard normal distribution. This
+ can be helpful to see the calibration better for the extreme values.</p></dd>
 <dt><code>ppc_loo_intervals, ppc_loo_ribbon</code></dt><dd><p>Similar to <code><a href='PPC-intervals.html'>ppc_intervals</a></code> and <code><a href='PPC-intervals.html'>ppc_ribbon</a></code> but the
  intervals are for the LOO predictive distribution.</p></dd>
 </dl>
@@ -307,7 +309,7 @@ by median value from smallest (left) to largest (right).</p></td>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Jonah Gabry.</p>
+  <p>Developed by Jonah Gabry, Tristan Mahr.</p>
 </div>
 
 <div class="pkgdown">

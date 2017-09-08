@@ -186,9 +186,9 @@ be dropped if <code>fun</code> is specified as a string.</p></td>
     <pre class="examples"><div class='input'><span class='co'># default method</span>
 <span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='example-data.html'>example_y_data</a></span>()
 <span class='no'>yrep</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='example-data.html'>example_yrep_draws</a></span>()
-<span class='fu'>pp_check</span>(<span class='no'>y</span>, <span class='no'>yrep</span>[<span class='fl'>1</span>:<span class='fl'>50</span>,], <span class='no'>ppc_dens_overlay</span>)</div><div class='img'><img src='pp_check-33.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+<span class='fu'>pp_check</span>(<span class='no'>y</span>, <span class='no'>yrep</span>[<span class='fl'>1</span>:<span class='fl'>50</span>,], <span class='no'>ppc_dens_overlay</span>)</div><div class='img'><img src='pp_check-1.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
 <span class='no'>g</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='example-data.html'>example_group_data</a></span>()
-<span class='fu'>pp_check</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='kw'>fun</span> <span class='kw'>=</span> <span class='st'>"stat_grouped"</span>, <span class='kw'>group</span> <span class='kw'>=</span> <span class='no'>g</span>, <span class='kw'>stat</span> <span class='kw'>=</span> <span class='st'>"median"</span>)</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='pp_check-34.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+<span class='fu'>pp_check</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='kw'>fun</span> <span class='kw'>=</span> <span class='st'>"stat_grouped"</span>, <span class='kw'>group</span> <span class='kw'>=</span> <span class='no'>g</span>, <span class='kw'>stat</span> <span class='kw'>=</span> <span class='st'>"median"</span>)</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='pp_check-2.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
 <span class='co'># defining a method</span>
 <span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'>list</span>(<span class='kw'>y</span> <span class='kw'>=</span> <span class='fu'>rnorm</span>(<span class='fl'>50</span>), <span class='kw'>yrep</span> <span class='kw'>=</span> <span class='fu'>matrix</span>(<span class='fu'>rnorm</span>(<span class='fl'>5000</span>), <span class='kw'>nrow</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>50</span>))
 <span class='fu'>class</span>(<span class='no'>x</span>) <span class='kw'>&lt;-</span> <span class='st'>"foo"</span>
@@ -199,7 +199,7 @@ be dropped if <code>fun</code> is specified as a string.</p></td>
          <span class='kw'>multiple</span> <span class='kw'>=</span> <span class='fu'><a href='PPC-distributions.html'>ppc_hist</a></span>(<span class='no'>y</span>, <span class='no'>yrep</span>[<span class='fl'>1</span>:<span class='fu'>min</span>(<span class='fl'>8</span>, <span class='fu'>nrow</span>(<span class='no'>yrep</span>)),, <span class='kw'>drop</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>]),
          <span class='kw'>overlaid</span> <span class='kw'>=</span> <span class='fu'><a href='PPC-distributions.html'>ppc_dens_overlay</a></span>(<span class='no'>y</span>, <span class='no'>yrep</span>))
 }
-<span class='fu'>pp_check</span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='pp_check-35.png' alt='' width='700' height='432.632880098887' /></div><div class='input'><span class='fu'>pp_check</span>(<span class='no'>x</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"overlaid"</span>)</div><div class='img'><img src='pp_check-36.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+<span class='fu'>pp_check</span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='pp_check-3.png' alt='' width='700' height='432.632880098887' /></div><div class='input'><span class='fu'>pp_check</span>(<span class='no'>x</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"overlaid"</span>)</div><div class='img'><img src='pp_check-4.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -219,7 +219,7 @@ be dropped if <code>fun</code> is specified as a string.</p></td>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Jonah Gabry.</p>
+  <p>Developed by Jonah Gabry, Tristan Mahr.</p>
 </div>
 
 <div class="pkgdown">

@@ -261,21 +261,25 @@ Guide and Reference Manual.</em> <a href='http://mc-stan.org/documentation/'>htt
 
     <ul>
 <li><p>The <em>Visual MCMC Diagnostics</em> vignette.</p></li>
-<li><p>Several other plotting functions in the <span class="pkg">bayesplot</span> package that
+<li><p>Several other plotting functions in the <span class="pkg">bayesplot</span> package
 are not NUTS-specific but take optional extra arguments if the model was fit
 using NUTS:</p><ul>
-<li><p><code><a href='MCMC-traces.html'>mcmc_trace</a></code> will plot divergences on the traceplot if the
- optional <code>divergences</code> argument is specified.</p></li>
-<li><p><code><a href='MCMC-scatterplots.html'>mcmc_pairs</a></code> will indicate which (if any) iterations
- encountered a divergent transition or hit the maximum treedepth (rather than
- terminated its evolution normally).</p></li>
+<li><p><code><a href='MCMC-traces.html'>mcmc_trace</a></code>: show divergences as tick marks below the
+ trace plot.</p></li>
+<li><p><code><a href='MCMC-parcoord.html'>mcmc_parcoord</a></code>: change the color/size/transparency of
+ lines correspondending to divergences.</p></li>
+<li><p><code><a href='MCMC-scatterplots.html'>mcmc_scatter</a></code>: change the color/size/shape of points
+ corresponding to divergences.</p></li>
+<li><p><code><a href='MCMC-scatterplots.html'>mcmc_pairs</a></code>: change the color/size/shape of points
+ corresponding divergences and/or max treedepth saturation.</p></li>
 </ul></li>
 </ul>
     <p>Other MCMC: <code><a href='MCMC-combos.html'>MCMC-combos</a></code>,
   <code><a href='MCMC-diagnostics.html'>MCMC-diagnostics</a></code>,
   <code><a href='MCMC-distributions.html'>MCMC-distributions</a></code>,
   <code><a href='MCMC-intervals.html'>MCMC-intervals</a></code>,
-  <code><a href='MCMC-overview.html'>MCMC-overview</a></code>, <code><a href='MCMC-recover.html'>MCMC-recover</a></code>,
+  <code><a href='MCMC-overview.html'>MCMC-overview</a></code>, <code><a href='MCMC-parcoord.html'>MCMC-parcoord</a></code>,
+  <code><a href='MCMC-recover.html'>MCMC-recover</a></code>,
   <code><a href='MCMC-scatterplots.html'>MCMC-scatterplots</a></code>,
   <code><a href='MCMC-traces.html'>MCMC-traces</a></code></p>
     
@@ -325,7 +329,7 @@ using NUTS:</p><ul>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Jonah Gabry.</p>
+  <p>Developed by Jonah Gabry, Tristan Mahr.</p>
 </div>
 
 <div class="pkgdown">

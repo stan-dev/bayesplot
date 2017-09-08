@@ -128,7 +128,8 @@
     
 
     <pre class="usage"><span class='fu'>mcmc_scatter</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'>character</span>(), <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='fu'>character</span>(),
-  <span class='kw'>transformations</span> <span class='kw'>=</span> <span class='fu'>list</span>(), <span class='no'>...</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>2.5</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.8</span>)
+  <span class='kw'>transformations</span> <span class='kw'>=</span> <span class='fu'>list</span>(), <span class='no'>...</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>2.5</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.8</span>, <span class='kw'>np</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>np_style</span> <span class='kw'>=</span> <span class='fu'>scatter_style_np</span>())
 
 <span class='fu'>mcmc_hex</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'>character</span>(), <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='fu'>character</span>(),
   <span class='kw'>transformations</span> <span class='kw'>=</span> <span class='fu'>list</span>(), <span class='no'>...</span>, <span class='kw'>binwidth</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
@@ -139,8 +140,12 @@
   <span class='kw'>off_diag_args</span> <span class='kw'>=</span> <span class='fu'>list</span>(), <span class='kw'>condition</span> <span class='kw'>=</span> <span class='fu'>pairs_condition</span>(), <span class='kw'>lp</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>np</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>np_style</span> <span class='kw'>=</span> <span class='fu'>pairs_style_np</span>(), <span class='kw'>max_treedepth</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
 
+<span class='fu'>scatter_style_np</span>(<span class='kw'>div_color</span> <span class='kw'>=</span> <span class='st'>"red"</span>, <span class='kw'>div_shape</span> <span class='kw'>=</span> <span class='fl'>16</span>, <span class='kw'>div_size</span> <span class='kw'>=</span> <span class='fl'>2.5</span>,
+  <span class='kw'>div_alpha</span> <span class='kw'>=</span> <span class='fl'>1</span>)
+
 <span class='fu'>pairs_style_np</span>(<span class='kw'>div_color</span> <span class='kw'>=</span> <span class='st'>"red"</span>, <span class='kw'>div_shape</span> <span class='kw'>=</span> <span class='fl'>4</span>, <span class='kw'>div_size</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>td_color</span> <span class='kw'>=</span> <span class='st'>"yellow2"</span>, <span class='kw'>td_shape</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>td_size</span> <span class='kw'>=</span> <span class='fl'>1</span>)
+  <span class='kw'>div_alpha</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>td_color</span> <span class='kw'>=</span> <span class='st'>"yellow2"</span>, <span class='kw'>td_shape</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>td_size</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>td_alpha</span> <span class='kw'>=</span> <span class='fl'>1</span>)
 
 <span class='fu'>pairs_condition</span>(<span class='kw'>chains</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>draws</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>nuts</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
@@ -195,6 +200,22 @@ that the parameter is transformed (e.g. <code>"t(sigma)"</code>).</p></td>
 <code><a href='http://www.rdocumentation.org/packages/ggplot2/topics/geom_point'>geom_point</a></code> to control the appearance of the points.</p></td>
     </tr>
     <tr>
+      <th>np</th>
+      <td><p>Optionally, a data frame of NUTS sampler parameters, either created
+by <code><a href='bayesplot-extractors.html'>nuts_params</a></code> or in the same form as the object returned by
+<code><a href='bayesplot-extractors.html'>nuts_params</a></code>. The colors, shapes, and sizes of the
+superimposed points can be customized using the <code>np_style</code> argument.</p></td>
+    </tr>
+    <tr>
+      <th>np_style</th>
+      <td><p>If <code>np</code> is specified, <code>np_style</code> can be a call to
+the <code>scatter_style_np</code> helper function (for <code>mcmc_scatter</code>) or
+the <code>pairs_style_np</code> helper function (for <code>mcmc_pars</code>) to specify
+arguments controlling the appearance of superimposed points representing
+NUTS diagnostic information. (Note: for <code>pairs_style_np</code> the
+<code>size</code> arguments are interpreted as scaling factors).</p></td>
+    </tr>
+    <tr>
       <th>binwidth</th>
       <td><p>For <code>mcmc_hex</code>, an optional numeric vector of
 <em>length two</em> passed to <code><a href='http://www.rdocumentation.org/packages/ggplot2/topics/geom_hex'>geom_hex</a></code> to override the
@@ -242,30 +263,6 @@ up to a constant. <code>lp</code> should either be created via
 object returned by <code><a href='bayesplot-extractors.html'>log_posterior</a></code>.</p></td>
     </tr>
     <tr>
-      <th>np</th>
-      <td><p>For <code>mcmc_pairs</code>, a molten data frame of NUTS sampler
-parameters, either created by <code><a href='bayesplot-extractors.html'>nuts_params</a></code> or in the same form
-as the object returned by <code><a href='bayesplot-extractors.html'>nuts_params</a></code>. If <code>np</code> is
-specified (and <code>condition</code> is <em>not</em> <code>"divergent__"</code>), then
-points (red, by default) will be superimposed onto the off-diagonal plots
-indicating which (if any) iterations encountered a divergent transition.
-Also, if both <code>np</code> and <code>max_treedepth</code> are specified then points
-(yellow, by default) will be superimposed to indicate a transition that hit
-the maximum treedepth rather than terminated its evolution normally. The
-colors, shapes, and sizes of the superimposed points can be customized
-using the <code>np_style</code> argument.</p></td>
-    </tr>
-    <tr>
-      <th>np_style</th>
-      <td><p>For <code>mcmc_pairs</code>, a call to the <code>pairs_style_np</code>
-helper function to specify arguments controlling the appearance of
-superimposed points representing NUTS diagnostic parameter warnings (if the
-<code>np</code> argument is specified). The arguments to <code>pairs_style_np</code>
-correspond to setting the color, shape, and size of the points indicating
-divergences and the points indicating hitting the maximum treedepth (Note:
-here "size" is interpreted as a scaling factor).</p></td>
-    </tr>
-    <tr>
       <th>max_treedepth</th>
       <td><p>For <code>mcmc_pairs</code>, an integer representing the
 maximum treedepth allowed when fitting the model (if fit using NUTS). This
@@ -273,14 +270,11 @@ is only needed for detecting which transitions (if any) hit the maximum
 treedepth.</p></td>
     </tr>
     <tr>
-      <th>div_color, div_shape, div_size, td_color, td_shape, td_size</th>
-      <td><p>Optional
-arguments to the <code>pairs_style_np</code> helper function that are eventually
-passed to <code><a href='http://www.rdocumentation.org/packages/ggplot2/topics/geom_point'>geom_point</a></code>. They control the color, shape,
-and size specifications  for points representing divergences (<code>div</code>)
-and points indicating hitting the maximum treedepth (<code>td</code>). See the
-<code>np_style</code> argument for more details. The default values are displayed
-in the <strong>Usage</strong> section above.</p></td>
+      <th>div_color, div_shape, div_size, div_alpha, td_color, td_shape, td_size, td_alpha</th>
+      <td><p>Optional arguments to the <code>scatter_style_np</code> or <code>pairs_style_np</code>
+helper functions that are eventually passed to
+<code><a href='http://www.rdocumentation.org/packages/ggplot2/topics/geom_point'>geom_point</a></code>.The default values are displayed in the
+<strong>Usage</strong> section above.</p></td>
     </tr>
     <tr>
       <th>chains, draws, nuts</th>
@@ -336,7 +330,9 @@ in the <strong>Usage</strong> section above.</p></td>
     <dl class='dl-horizontal'>
   <dt><code>mcmc_scatter</code></dt><dd><p>Bivariate scatterplot of posterior draws. If using a very large number of
    posterior draws then <code>mcmc_hex</code> may be preferable to avoid
-   overplotting.</p></dd>
+   overplotting. For models fit using <code><a href='MCMC-nuts.html'>NUTS</a></code> the <code>np</code>,
+   and <code>np_style</code> arguments can be used to add additional information in
+   the plot (in this case the approximate location of divergences).</p></dd>
   <dt><code>mcmc_hex</code></dt><dd><p>Hexagonal heatmap of 2-D bin counts. This plot is useful in cases where
    the posterior sample size is large enough that <code>mcmc_scatter</code> suffers
    from overplotting.</p></dd>
@@ -347,10 +343,25 @@ in the <strong>Usage</strong> section above.</p></td>
    (roughly) half are displayed above the diagonal and half are below (all
    chains are always merged together for the plots along the diagonal). Other
    possibilities are available by setting the <code>condition</code> argument.
-   Additionally, extra diagnostic information for models fit using
+    Additionally, extra diagnostic information for models fit using
    <code><a href='MCMC-nuts.html'>NUTS</a></code> can be added to the pairs plot using the <code>lp</code>,
-   <code>np</code>, and <code>np_style</code> arguments.</p></dd>
+   <code>np</code>, and <code>np_style</code> arguments. If <code>np</code> is specified (and
+   <code>condition</code> is <em>not</em> <code>"divergent__"</code>), then points (red, by
+   default) will be superimposed onto the off-diagonal plots indicating which
+   (if any) iterations encountered a divergent transition. Also, if both
+   <code>np</code> and <code>max_treedepth</code> are specified then points (yellow, by
+   default) will be superimposed to indicate a transition that hit the
+   maximum treedepth rather than terminated its evolution normally. The
+   <code>np_style</code> argument can be used with the <code>pairs_style_np</code>
+   convenience function to change the appearance of these overlaid points.
+   See the <strong>Examples</strong> section.</p></dd>
 </dl>
+    
+    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
+
+    <p>Gabry, J., Simpson, D., Vehtari, A., Betancourt, M., Gelman, A.
+  (2017). Visualization in Bayesian workflow. arXiv preprint
+  <a href='https://arxiv.org/abs/1709.01449'>arvix:1709.01449</a>.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
@@ -358,12 +369,14 @@ in the <strong>Usage</strong> section above.</p></td>
   <code><a href='MCMC-diagnostics.html'>MCMC-diagnostics</a></code>,
   <code><a href='MCMC-distributions.html'>MCMC-distributions</a></code>,
   <code><a href='MCMC-intervals.html'>MCMC-intervals</a></code>, <code><a href='MCMC-nuts.html'>MCMC-nuts</a></code>,
-  <code><a href='MCMC-overview.html'>MCMC-overview</a></code>, <code><a href='MCMC-recover.html'>MCMC-recover</a></code>,
-  <code><a href='MCMC-traces.html'>MCMC-traces</a></code></p>
+  <code><a href='MCMC-overview.html'>MCMC-overview</a></code>, <code><a href='MCMC-parcoord.html'>MCMC-parcoord</a></code>,
+  <code><a href='MCMC-recover.html'>MCMC-recover</a></code>, <code><a href='MCMC-traces.html'>MCMC-traces</a></code></p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># some parameter draws to use for demonstration</span>
+    <pre class="examples"><div class='input'><span class='fu'>library</span>(<span class='st'>"ggplot2"</span>)</div><div class='output co'>#&gt; <span class='message'>Want to understand how all the pieces fit together? Buy the ggplot2</span>
+#&gt; <span class='message'>book: http://ggplot2.org/book/</span></div><div class='input'>
+<span class='co'># some parameter draws to use for demonstration</span>
 <span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='example-data.html'>example_mcmc_draws</a></span>(<span class='kw'>params</span> <span class='kw'>=</span> <span class='fl'>6</span>)
 <span class='fu'>dimnames</span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; $Iteration
 #&gt; NULL
@@ -377,44 +390,45 @@ in the <strong>Usage</strong> section above.</p></td>
 <span class='co'># scatterplot of alpha vs log(sigma)</span>
 <span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"teal"</span>)
 (<span class='no'>p</span> <span class='kw'>&lt;-</span> <span class='fu'>mcmc_scatter</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"alpha"</span>, <span class='st'>"sigma"</span>),
-                  <span class='kw'>transform</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>sigma</span> <span class='kw'>=</span> <span class='st'>"log"</span>)))</div><div class='img'><img src='MCMC-scatterplots-93.png' alt='' width='700' height='432.632880098887' /></div><div class='input'><span class='no'>p</span> +
-  <span class='kw pkg'>ggplot2</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/labs'>labs</a></span>(
+                  <span class='kw'>transform</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>sigma</span> <span class='kw'>=</span> <span class='st'>"log"</span>)))</div><div class='img'><img src='MCMC-scatterplots-1.png' alt='' width='700' height='432.632880098887' /></div><div class='input'><span class='no'>p</span> +
+  <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/labs'>labs</a></span>(
     <span class='kw'>title</span> <span class='kw'>=</span> <span class='st'>"Insert your own headline-grabbing title"</span>,
     <span class='kw'>subtitle</span> <span class='kw'>=</span> <span class='st'>"with a provocative subtitle"</span>,
     <span class='kw'>caption</span> <span class='kw'>=</span> <span class='st'>"and a controversial caption"</span>,
     <span class='kw'>x</span> <span class='kw'>=</span> <span class='fu'>expression</span>(<span class='no'>alpha</span>),
     <span class='kw'>y</span> <span class='kw'>=</span> <span class='fu'>expression</span>(<span class='fu'>log</span>(<span class='no'>sigma</span>))
-   )</div><div class='img'><img src='MCMC-scatterplots-94.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+   )</div><div class='img'><img src='MCMC-scatterplots-2.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
 <span class='co'># add ellipse</span>
-<span class='no'>p</span> + <span class='kw pkg'>ggplot2</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/stat_ellipse'>stat_ellipse</a></span>(<span class='kw'>level</span> <span class='kw'>=</span> <span class='fl'>0.9</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"gray20"</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>1</span>)</div><div class='img'><img src='MCMC-scatterplots-95.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+<span class='no'>p</span> + <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/stat_ellipse'>stat_ellipse</a></span>(<span class='kw'>level</span> <span class='kw'>=</span> <span class='fl'>0.9</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"gray20"</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>1</span>)</div><div class='img'><img src='MCMC-scatterplots-3.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
 <span class='co'># add contour</span>
 <span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"red"</span>)
 <span class='no'>p2</span> <span class='kw'>&lt;-</span> <span class='fu'>mcmc_scatter</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"alpha"</span>, <span class='st'>"sigma"</span>), <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>3.5</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.25</span>)
-<span class='no'>p2</span> + <span class='kw pkg'>ggplot2</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/geom_density_2d'>stat_density_2d</a></span>(<span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"black"</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>.5</span>)</div><div class='img'><img src='MCMC-scatterplots-96.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+<span class='no'>p2</span> + <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/geom_density_2d'>stat_density_2d</a></span>(<span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"black"</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>.5</span>)</div><div class='img'><img src='MCMC-scatterplots-4.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
 <span class='co'># can also add lines/smooths</span>
 <span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"pink"</span>)
-(<span class='no'>p3</span> <span class='kw'>&lt;-</span> <span class='fu'>mcmc_scatter</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"alpha"</span>, <span class='st'>"beta[3]"</span>), <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.25</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>3</span>))</div><div class='img'><img src='MCMC-scatterplots-97.png' alt='' width='700' height='432.632880098887' /></div><div class='input'><span class='no'>p3</span> + <span class='kw pkg'>ggplot2</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/geom_smooth'>geom_smooth</a></span>(<span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"lm"</span>, <span class='kw'>se</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"gray20"</span>,
-                          <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>.75</span>, <span class='kw'>linetype</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='img'><img src='MCMC-scatterplots-98.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+(<span class='no'>p3</span> <span class='kw'>&lt;-</span> <span class='fu'>mcmc_scatter</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"alpha"</span>, <span class='st'>"beta[3]"</span>), <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.25</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>3</span>))</div><div class='img'><img src='MCMC-scatterplots-5.png' alt='' width='700' height='432.632880098887' /></div><div class='input'><span class='no'>p3</span> + <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/geom_smooth'>geom_smooth</a></span>(<span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"lm"</span>, <span class='kw'>se</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"gray20"</span>,
+                 <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>.75</span>, <span class='kw'>linetype</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='img'><img src='MCMC-scatterplots-6.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
 </div><div class='input'><span class='co'># hexagonal heatmap</span>
 <span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"brightblue"</span>)
-(<span class='no'>p</span> <span class='kw'>&lt;-</span> <span class='fu'>mcmc_hex</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"sigma"</span>, <span class='st'>"alpha"</span>), <span class='kw'>transform</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>sigma</span> <span class='kw'>=</span> <span class='st'>"log"</span>)))</div><div class='img'><img src='MCMC-scatterplots-99.png' alt='' width='700' height='432.632880098887' /></div><div class='input'><span class='no'>p</span> + <span class='fu'><a href='bayesplot-helpers.html'>plot_bg</a></span>(<span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>"gray95"</span>)</div><div class='img'><img src='MCMC-scatterplots-100.png' alt='' width='700' height='432.632880098887' /></div><div class='input'><span class='no'>p</span> + <span class='fu'><a href='bayesplot-helpers.html'>plot_bg</a></span>(<span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>"gray95"</span>) + <span class='fu'><a href='bayesplot-helpers.html'>panel_bg</a></span>(<span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>"gray70"</span>)</div><div class='img'><img src='MCMC-scatterplots-101.png' alt='' width='700' height='432.632880098887' /></div><div class='input'><span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"purple"</span>)
+(<span class='no'>p</span> <span class='kw'>&lt;-</span> <span class='fu'>mcmc_hex</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"sigma"</span>, <span class='st'>"alpha"</span>), <span class='kw'>transform</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>sigma</span> <span class='kw'>=</span> <span class='st'>"log"</span>)))</div><div class='img'><img src='MCMC-scatterplots-7.png' alt='' width='700' height='432.632880098887' /></div><div class='input'><span class='no'>p</span> + <span class='fu'><a href='bayesplot-helpers.html'>plot_bg</a></span>(<span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>"gray95"</span>)</div><div class='img'><img src='MCMC-scatterplots-8.png' alt='' width='700' height='432.632880098887' /></div><div class='input'><span class='no'>p</span> + <span class='fu'><a href='bayesplot-helpers.html'>plot_bg</a></span>(<span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>"gray95"</span>) + <span class='fu'><a href='bayesplot-helpers.html'>panel_bg</a></span>(<span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>"gray70"</span>)</div><div class='img'><img src='MCMC-scatterplots-9.png' alt='' width='700' height='432.632880098887' /></div><div class='input'><span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"purple"</span>)
 
 <span class='co'># pairs plots</span>
 <span class='co'># default of condition=NULL implies splitting chains between upper and lower panels</span>
 <span class='fu'>mcmc_pairs</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='st'>"alpha"</span>, <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='st'>"beta\\[[1,4]\\]"</span>,
-           <span class='kw'>off_diag_args</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.5</span>))</div><div class='img'><img src='MCMC-scatterplots-102.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+           <span class='kw'>off_diag_args</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.5</span>))</div><div class='img'><img src='MCMC-scatterplots-10.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
 <span class='co'># change to density plots instead of histograms and hex plots instead of</span>
 <span class='co'># scatterplots</span>
 <span class='fu'>mcmc_pairs</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='st'>"alpha"</span>, <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='st'>"beta\\[[1,4]\\]"</span>,
-           <span class='kw'>diag_fun</span> <span class='kw'>=</span> <span class='st'>"dens"</span>, <span class='kw'>off_diag_fun</span> <span class='kw'>=</span> <span class='st'>"hex"</span>)</div><div class='img'><img src='MCMC-scatterplots-103.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+           <span class='kw'>diag_fun</span> <span class='kw'>=</span> <span class='st'>"dens"</span>, <span class='kw'>off_diag_fun</span> <span class='kw'>=</span> <span class='st'>"hex"</span>)</div><div class='img'><img src='MCMC-scatterplots-11.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
 <span class='co'># plot chain 1 above diagonal and chains 2, 3, and 4 below</span>
 <span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"brightblue"</span>)
 <span class='fu'>mcmc_pairs</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='st'>"alpha"</span>, <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='st'>"beta\\[[1,4]\\]"</span>,
            <span class='kw'>diag_fun</span> <span class='kw'>=</span> <span class='st'>"dens"</span>, <span class='kw'>off_diag_fun</span> <span class='kw'>=</span> <span class='st'>"hex"</span>,
-           <span class='kw'>condition</span> <span class='kw'>=</span> <span class='fu'>pairs_condition</span>(<span class='kw'>chains</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='fl'>1</span>, <span class='fl'>2</span>:<span class='fl'>4</span>)))</div><div class='img'><img src='MCMC-scatterplots-104.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+           <span class='kw'>condition</span> <span class='kw'>=</span> <span class='fu'>pairs_condition</span>(<span class='kw'>chains</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='fl'>1</span>, <span class='fl'>2</span>:<span class='fl'>4</span>)))</div><div class='img'><img src='MCMC-scatterplots-12.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
 </div><span class='co'># NOT RUN {</span>
-<span class='co'># pairs plot with NUTS diagnostic info overlaid,</span>
-<span class='co'># example using rstanarm package</span>
+<span class='co'>### Adding NUTS diagnostics to scatterplots and pairs plots</span>
+
+<span class='co'># examples using rstanarm package</span>
 <span class='fu'>library</span>(<span class='no'>rstanarm</span>)
 
 <span class='co'># for demonstration purposes, intentionally fit a model that</span>
@@ -429,8 +443,18 @@ in the <strong>Usage</strong> section above.</p></td>
 <span class='no'>posterior</span> <span class='kw'>&lt;-</span> <span class='fu'>as.array</span>(<span class='no'>fit</span>)
 <span class='no'>np</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='bayesplot-extractors.html'>nuts_params</a></span>(<span class='no'>fit</span>)
 
+<span class='co'># mcmc_scatter with divergences highlighted</span>
+<span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"brightblue"</span>)
+<span class='fu'>mcmc_scatter</span>(<span class='no'>posterior</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"wt"</span>, <span class='st'>"sigma"</span>), <span class='kw'>np</span> <span class='kw'>=</span> <span class='no'>np</span>)
+
+<span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"darkgray"</span>)
+<span class='no'>div_style</span> <span class='kw'>&lt;-</span> <span class='fu'>scatter_style_np</span>(<span class='kw'>div_color</span> <span class='kw'>=</span> <span class='st'>"green"</span>, <span class='kw'>div_shape</span> <span class='kw'>=</span> <span class='fl'>4</span>, <span class='kw'>div_size</span> <span class='kw'>=</span> <span class='fl'>4</span>)
+<span class='fu'>mcmc_scatter</span>(<span class='no'>posterior</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"sigma"</span>, <span class='st'>"(Intercept)"</span>),
+             <span class='kw'>np</span> <span class='kw'>=</span> <span class='no'>np</span>, <span class='kw'>np_style</span> <span class='kw'>=</span> <span class='no'>div_style</span>)
+
 <span class='co'># split the draws according to above/below median accept_stat__ and</span>
 <span class='co'># show approximate location of divergences (red points)</span>
+<span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"brightblue"</span>)
 <span class='fu'>mcmc_pairs</span>(
   <span class='no'>posterior</span>,
   <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"wt"</span>, <span class='st'>"cyl"</span>, <span class='st'>"sigma"</span>),
@@ -472,6 +496,8 @@ in the <strong>Usage</strong> section above.</p></td>
 
       <li><a href="#plot-descriptions">Plot Descriptions</a></li>
 
+      <li><a href="#references">References</a></li>
+
       <li><a href="#see-also">See also</a></li>
       
       <li><a href="#examples">Examples</a></li>
@@ -482,7 +508,7 @@ in the <strong>Usage</strong> section above.</p></td>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Jonah Gabry.</p>
+  <p>Developed by Jonah Gabry, Tristan Mahr.</p>
 </div>
 
 <div class="pkgdown">

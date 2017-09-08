@@ -131,11 +131,11 @@ observed value <code>T(y)</code> computed from the data <code>y</code>. See the
 
     <pre class="usage"><span class='fu'>ppc_stat</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='kw'>stat</span> <span class='kw'>=</span> <span class='st'>"mean"</span>, <span class='no'>...</span>, <span class='kw'>binwidth</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>freq</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
-<span class='fu'>ppc_stat_grouped</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='no'>group</span>, <span class='kw'>stat</span> <span class='kw'>=</span> <span class='st'>"mean"</span>, <span class='no'>...</span>, <span class='kw'>binwidth</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>freq</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='fu'>ppc_stat_grouped</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='no'>group</span>, <span class='kw'>stat</span> <span class='kw'>=</span> <span class='st'>"mean"</span>, <span class='no'>...</span>, <span class='kw'>facet_args</span> <span class='kw'>=</span> <span class='fu'>list</span>(),
+  <span class='kw'>binwidth</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>freq</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
 <span class='fu'>ppc_stat_freqpoly_grouped</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='no'>group</span>, <span class='kw'>stat</span> <span class='kw'>=</span> <span class='st'>"mean"</span>, <span class='no'>...</span>,
-  <span class='kw'>binwidth</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>freq</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+  <span class='kw'>facet_args</span> <span class='kw'>=</span> <span class='fu'>list</span>(), <span class='kw'>binwidth</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>freq</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
 <span class='fu'>ppc_stat_2d</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='kw'>stat</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"mean"</span>, <span class='st'>"sd"</span>), <span class='no'>...</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>2.5</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.7</span>)</pre>
     
@@ -187,6 +187,12 @@ function.)</p></td>
       <td><p>A grouping variable (a vector or factor) the same length as
 <code>y</code>. Each value in <code>group</code> is interpreted as the group level
 pertaining to the corresponding value of <code>y</code>.</p></td>
+    </tr>
+    <tr>
+      <th>facet_args</th>
+      <td><p>A named list of arguments (other than <code>facets</code>) passed
+to <code><a href='http://www.rdocumentation.org/packages/ggplot2/topics/facet_wrap'>facet_wrap</a></code> or <code><a href='http://www.rdocumentation.org/packages/ggplot2/topics/facet_grid'>facet_grid</a></code>
+to control faceting.</p></td>
     </tr>
     <tr>
       <th>size, alpha</th>
@@ -241,19 +247,19 @@ control the appearance of scatterplot points.</p></td>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='example-data.html'>example_y_data</a></span>()
 <span class='no'>yrep</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='example-data.html'>example_yrep_draws</a></span>()
-<span class='fu'>ppc_stat</span>(<span class='no'>y</span>, <span class='no'>yrep</span>)</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='PPC-test-statistics-57.png' alt='' width='700' height='432.632880098887' /></div><div class='input'><span class='fu'>ppc_stat</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='kw'>stat</span> <span class='kw'>=</span> <span class='st'>"sd"</span>) + <span class='fu'><a href='bayesplot-helpers.html'>legend_none</a></span>()</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='PPC-test-statistics-58.png' alt='' width='700' height='432.632880098887' /></div><div class='input'><span class='fu'>ppc_stat_2d</span>(<span class='no'>y</span>, <span class='no'>yrep</span>)</div><div class='img'><img src='PPC-test-statistics-59.png' alt='' width='700' height='432.632880098887' /></div><div class='input'><span class='fu'>ppc_stat_2d</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='kw'>stat</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"median"</span>, <span class='st'>"mean"</span>)) + <span class='fu'><a href='bayesplot-helpers.html'>legend_move</a></span>(<span class='st'>"bottom"</span>)</div><div class='img'><img src='PPC-test-statistics-60.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+<span class='fu'>ppc_stat</span>(<span class='no'>y</span>, <span class='no'>yrep</span>)</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='PPC-test-statistics-1.png' alt='' width='700' height='432.632880098887' /></div><div class='input'><span class='fu'>ppc_stat</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='kw'>stat</span> <span class='kw'>=</span> <span class='st'>"sd"</span>) + <span class='fu'><a href='bayesplot-helpers.html'>legend_none</a></span>()</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='PPC-test-statistics-2.png' alt='' width='700' height='432.632880098887' /></div><div class='input'><span class='fu'>ppc_stat_2d</span>(<span class='no'>y</span>, <span class='no'>yrep</span>)</div><div class='img'><img src='PPC-test-statistics-3.png' alt='' width='700' height='432.632880098887' /></div><div class='input'><span class='fu'>ppc_stat_2d</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='kw'>stat</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"median"</span>, <span class='st'>"mean"</span>)) + <span class='fu'><a href='bayesplot-helpers.html'>legend_move</a></span>(<span class='st'>"bottom"</span>)</div><div class='img'><img src='PPC-test-statistics-4.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
 <span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"teal"</span>)
 <span class='no'>group</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='example-data.html'>example_group_data</a></span>()
-<span class='fu'>ppc_stat_grouped</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='no'>group</span>)</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='PPC-test-statistics-61.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+<span class='fu'>ppc_stat_grouped</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='no'>group</span>)</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='PPC-test-statistics-5.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
 <span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"mix-red-blue"</span>)
-<span class='fu'>ppc_stat_freqpoly_grouped</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='no'>group</span>)</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='PPC-test-statistics-62.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+<span class='fu'>ppc_stat_freqpoly_grouped</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='no'>group</span>, <span class='kw'>facet_args</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>nrow</span> <span class='kw'>=</span> <span class='fl'>2</span>))</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='PPC-test-statistics-6.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
 <span class='co'># use your own function to compute test statistics</span>
 <span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"brightblue"</span>)
 <span class='no'>q25</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>y</span>) <span class='fu'>quantile</span>(<span class='no'>y</span>, <span class='fl'>0.25</span>)
-<span class='fu'>ppc_stat</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='kw'>stat</span> <span class='kw'>=</span> <span class='st'>"q25"</span>) <span class='co'># legend includes function name</span></div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='PPC-test-statistics-63.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+<span class='fu'>ppc_stat</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='kw'>stat</span> <span class='kw'>=</span> <span class='st'>"q25"</span>) <span class='co'># legend includes function name</span></div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='PPC-test-statistics-7.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
 <span class='co'># can define the function in the 'stat' argument but then</span>
 <span class='co'># the legend doesn't include a function name</span>
-<span class='fu'>ppc_stat</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='kw'>stat</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>y</span>) <span class='fu'>quantile</span>(<span class='no'>y</span>, <span class='fl'>0.25</span>))</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='PPC-test-statistics-64.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+<span class='fu'>ppc_stat</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='kw'>stat</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>y</span>) <span class='fu'>quantile</span>(<span class='no'>y</span>, <span class='fl'>0.25</span>))</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='PPC-test-statistics-8.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -279,7 +285,7 @@ control the appearance of scatterplot points.</p></td>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Jonah Gabry.</p>
+  <p>Developed by Jonah Gabry, Tristan Mahr.</p>
 </div>
 
 <div class="pkgdown">

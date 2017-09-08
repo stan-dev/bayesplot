@@ -105,14 +105,18 @@
 <p><br></p>
 <p><strong>bayesplot</strong> is an R package providing an extensive library of plotting functions for use after fitting Bayesian models (typically with MCMC). Currently <strong>bayesplot</strong> offers a variety of plots of posterior draws, visual MCMC diagnostics, as well as graphical posterior predictive checking. Additional functionality (e.g. for forecasting/out-of-sample prediction and other inference-related tasks) will be added in future releases.</p>
 <p>The plots created by <strong>bayesplot</strong> are ggplot objects, which means that after a plot is created it can be further customized using the various functions for modifying ggplot objects provided by the <strong>ggplot2</strong> package.</p>
-<p>The idea behind <strong>bayesplot</strong> is not only to provide convenient functionality for users, but also a common set of functions that can be easily used by developers working on a variety of packages for Bayesian modeling, particularly (but not necessarily) those powered by <a href="https://github.com/stan-dev/rstan"><strong>rstan</strong></a>.</p>
+<p>The idea behind <strong>bayesplot</strong> is not only to provide convenient functionality for users, but also a common set of functions that can be easily used by developers working on a variety of packages for Bayesian modeling, particularly (but not necessarily) those powered by <a href="http://mc-stan.org/rstan"><strong>RStan</strong></a>.</p>
 <p><br></p>
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
-<p>Install from <strong>CRAN</strong>:</p>
+<ul>
+<li>Install from CRAN:</li>
+</ul>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">"bayesplot"</span>)</code></pre></div>
-<p>Install latest development version from <strong>GitHub</strong> (requires <a href="https://github.com/hadley/devtools">devtools</a> package):</p>
+<ul>
+<li>Install latest development version from GitHub (requires <a href="https://github.com/hadley/devtools">devtools</a> package):</li>
+</ul>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">if (!<span class="kw">require</span>(<span class="st">"devtools"</span>))
   <span class="kw">install.packages</span>(<span class="st">"devtools"</span>)
 
@@ -124,7 +128,7 @@ devtools::<span class="kw"><a href="http://www.rdocumentation.org/packages/devto
 <div id="examples" class="section level2">
 <h2 class="hasAnchor">
 <a href="#examples" class="anchor"></a>Examples</h2>
-<p>Some quick examples using MCMC draws obtained from the <a href="https://github.com/stan-dev/rstanarm"><strong>rstanarm</strong></a> and <a href="https://github.com/stan-dev/rstan"><strong>rstan</strong></a> packages.</p>
+<p>Some quick examples using MCMC draws obtained from our <a href="http://mc-stan.org/rstanarm"><strong>rstanarm</strong></a> and <a href="http://mc-stan.org/rstan"><strong>rstan</strong></a> packages.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">"bayesplot"</span>)
 <span class="kw">library</span>(<span class="st">"rstanarm"</span>)
 <span class="kw">library</span>(<span class="st">"ggplot2"</span>)
@@ -173,9 +177,21 @@ p +<span class="st"> </span><span class="kw"><a href="reference/bayesplot-helper
 <a href="https://raw.githubusercontent.com/stan-dev/bayesplot/master/images/mcmc_trace-rstan.png">
 <img src="https://raw.githubusercontent.com/stan-dev/bayesplot/master/images/mcmc_trace-rstan.png" width="50%"></a>
 </div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># scatter plot also showing divergences</span>
+<span class="kw"><a href="reference/bayesplot-colors.html">color_scheme_set</a></span>(<span class="st">"darkgray"</span>)
+<span class="kw"><a href="reference/MCMC-scatterplots.html">mcmc_scatter</a></span>(
+  <span class="kw">as.matrix</span>(fit2),
+  <span class="dt">pars =</span> <span class="kw">c</span>(<span class="st">"tau"</span>, <span class="st">"theta[1]"</span>), 
+  <span class="dt">np =</span> <span class="kw"><a href="reference/bayesplot-extractors.html">nuts_params</a></span>(fit2), 
+  <span class="dt">np_style =</span> <span class="kw"><a href="reference/MCMC-scatterplots.html">scatter_style_np</a></span>(<span class="dt">div_color =</span> <span class="st">"green"</span>, <span class="dt">div_alpha =</span> <span class="fl">0.8</span>)
+)</code></pre></div>
+<div style="text-align:center">
+<a href="https://raw.githubusercontent.com/stan-dev/bayesplot/master/images/mcmc_scatter-rstan.png">
+<img src="https://raw.githubusercontent.com/stan-dev/bayesplot/master/images/mcmc_scatter-rstan.png" width="50%"></a>
+</div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="reference/bayesplot-colors.html">color_scheme_set</a></span>(<span class="st">"red"</span>)
 np &lt;-<span class="st"> </span><span class="kw"><a href="reference/bayesplot-extractors.html">nuts_params</a></span>(fit2)
-<span class="kw"><a href="reference/MCMC-nuts.html">mcmc_nuts_energy</a></span>(np, <span class="dt">merge_chains =</span> <span class="ot">FALSE</span>) +<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/labs">ggtitle</a></span>(<span class="st">"NUTS Energy Diagnostic"</span>)</code></pre></div>
+<span class="kw"><a href="reference/MCMC-nuts.html">mcmc_nuts_energy</a></span>(np) +<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/labs">ggtitle</a></span>(<span class="st">"NUTS Energy Diagnostic"</span>)</code></pre></div>
 <div style="text-align:center">
 <a href="https://raw.githubusercontent.com/stan-dev/bayesplot/master/images/mcmc_nuts_energy-rstan.png">
 <img src="https://raw.githubusercontent.com/stan-dev/bayesplot/master/images/mcmc_nuts_energy-rstan.png" width="50%"></a>
@@ -213,16 +229,15 @@ fit &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocument
 </li>
 <li>Report a bug at <br><a href="https://github.com/stan-dev/bayesplot/issues/">https://​github.com/​stan-dev/​bayesplot/​issues/​</a>
 </li>
+<li>Ask a question at <br><a href="http://discourse.mc-stan.org/">http://​discourse.mc-stan.org/​</a>
+</li>
 </ul>
 <h2>License</h2>
 <p>GPL (&gt;= 3)</p>
-<h2>Citation</h2>
-<ul class="list-unstyled">
-<li><a href="authors.html">Citing bayesplot</a></li>
-</ul>
 <h2>Developers</h2>
 <ul class="list-unstyled">
 <li>Jonah Gabry <br><small class="roles"> Author, maintainer </small> </li>
+<li>Tristan Mahr <br><small class="roles"> Author </small> </li>
 <li><a href="authors.html">All authors...</a></li>
 </ul>
 <h2>Dev status</h2>
@@ -236,7 +251,7 @@ fit &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocument
 
 
       <footer><div class="copyright">
-  <p>Developed by Jonah Gabry.</p>
+  <p>Developed by Jonah Gabry, Tristan Mahr.</p>
 </div>
 
 <div class="pkgdown">
