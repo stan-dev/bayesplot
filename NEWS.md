@@ -10,8 +10,8 @@
     - `ppc_intervals_data()` (#101)
     - `ppc_ribbon_data()` (#101)
     - `mcmc_parcoord_data()` (#108)
-    - `mcmc_rhat_data()`
-    - `mcmc_neff_data()`
+    - `mcmc_rhat_data()` (#110)
+    - `mcmc_neff_data()` (#110)
 * `ppc_stat_grouped()`, `ppc_stat_freqpoly_grouped()` gain a `facet_args` 
   argument for controlling **ggplot2** faceting (many of the `mcmc_` functions 
   already have this).
