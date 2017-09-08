@@ -4,6 +4,7 @@ Title: Plotting for Bayesian Models
 Version: 1.3.0.9000
 Date: 2017-08-07
 Authors@R: c(person("Jonah", "Gabry", role = c("aut", "cre"), email = "jsg2201@columbia.edu"),
+             person("Tristan", "Mahr", role = "aut"),
              person("Paul-Christian", "Buerkner", role = "ctb"))
 Maintainer: Jonah Gabry <jsg2201@columbia.edu>
 Description: Plotting functions for posterior analysis, model checking,
@@ -13,7 +14,7 @@ Description: Plotting functions for posterior analysis, model checking,
     modeling, particularly (but not exclusively) packages interfacing with 'Stan'.
 License: GPL (>= 3)
 LazyData: TRUE
-URL: http://mc-stan.org/, http://discourse.mc-stan.org
+URL: http://mc-stan.org/bayesplot
 BugReports: https://github.com/stan-dev/bayesplot/issues/
 SystemRequirements:	pandoc
 Depends:
