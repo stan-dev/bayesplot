@@ -102,6 +102,7 @@
 #' more details and a simple example, and see the \pkg{rstanarm} and \pkg{brms}
 #' packages for full examples of \code{pp_check} methods.
 #'
+#' @template reference-vis-paper
 #' @templateVar bdaRef (Ch. 6)
 #' @template reference-bda
 #'

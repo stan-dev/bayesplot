@@ -65,4 +65,6 @@
 #'   }
 #' }
 #'
+#' @template reference-vis-paper
+#'
 NULL

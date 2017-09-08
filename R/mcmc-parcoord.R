@@ -52,6 +52,7 @@
 #'   Stan Forums
 #'   (\href{http://discourse.mc-stan.org/t/concentration-of-divergences/1590/21}{link}).
 #'
+#' @template reference-vis-paper
 #'
 #' @examples
 #' color_scheme_set("pink")

@@ -147,6 +147,11 @@ tail(d)
 }
 
 }
+\references{
+Gabry, J., Simpson, D., Vehtari, A., Betancourt, M., Gelman, A.
+  (2017). Visualization in Bayesian workflow. arXiv preprint
+  \href{https://arxiv.org/abs/1709.01449}{arvix:1709.01449}.
+}
 \seealso{
 Ari Hartikainen's post about the parallel coordinates plot on the
   Stan Forums
