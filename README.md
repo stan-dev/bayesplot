@@ -130,6 +130,7 @@ mcmc_scatter(
   np_style = scatter_style_np(div_color = "green", div_alpha = 0.8)
 )
 ```
+
 <img src=https://github.com/stan-dev/bayesplot/blob/master/images/mcmc_scatter-rstan.png width=50% />
 
 ```r
