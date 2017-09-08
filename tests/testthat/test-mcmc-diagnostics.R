@@ -1,7 +1,7 @@
 library(bayesplot)
 context("MCMC: diagnostics")
 
-source("data-for-mcmc-tests.R")
+source(test_path("data-for-mcmc-tests.R"))
 
 test_that("rhat and neff plots return a ggplot object", {
   rhat <- runif(100, 1, 1.5)
@@ -39,6 +39,19 @@ test_that("rhat and neff plot functions throw correct errors & warnings", {
   expect_warning(mcmc_neff(c(0.2, NA, 1, NA)), "Dropped 2 NAs")
 })
 
+
+test_that("duplicated rhats and neffs are kept (#105)", {
+  # https://github.com/stan-dev/bayesplot/issues/105
+  rhats <- runif(3, 1, 1.2)
+  rhats <- c(rhats, rhats, rhats)
+  df <- mcmc_rhat_data(rhats)
+  expect_equal(nrow(df), length(rhats))
+
+  ratios <- runif(3, 0, 1)
+  ratios <- c(ratios, ratios, ratios)
+  df <- mcmc_neff_data(ratios)
+  expect_equal(nrow(df), length(ratios))
+})
 
 test_that("mcmc_acf & mcmc_acf_bar return a ggplot object", {
   expect_gg(mcmc_acf(arr, pars = "beta[1]", regex_pars = "x\\:[2,5]"))
