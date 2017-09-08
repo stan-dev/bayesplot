@@ -19,6 +19,17 @@
 #'   \emph{length two} passed to \code{\link[ggplot2]{geom_hex}} to override the
 #'   default binwidth in both the vertical and horizontal directions.
 #'
+#' @param np Optionally, a data frame of NUTS sampler parameters, either created
+#'   by \code{\link{nuts_params}} or in the same form as the object returned by
+#'   \code{\link{nuts_params}}. The colors, shapes, and sizes of the
+#'   superimposed points can be customized using the \code{np_style} argument.
+#' @param np_style If \code{np} is specified, \code{np_style} can be a call to
+#'   the \code{scatter_style_np} helper function (for \code{mcmc_scatter}) or
+#'   the \code{pairs_style_np} helper function (for \code{mcmc_pars}) to specify
+#'   arguments controlling the appearance of superimposed points representing
+#'   NUTS diagnostic information. (Note: for \code{pairs_style_np} the
+#'   \code{size} arguments are interpreted as scaling factors).
+#'
 #' @return \code{mcmc_scatter} and \code{mcmc_hex} return a ggplot object that
 #'   can be further customized using the \pkg{ggplot2} package.
 #'
@@ -30,14 +41,14 @@
 #'   \item{\code{mcmc_scatter}}{
 #'    Bivariate scatterplot of posterior draws. If using a very large number of
 #'    posterior draws then \code{mcmc_hex} may be preferable to avoid
-#'    overplotting.
+#'    overplotting. For models fit using \code{\link{NUTS}} the \code{np},
+#'    and \code{np_style} arguments can be used to add additional information in
+#'    the plot (in this case the approximate location of divergences).
 #'   }
 #'   \item{\code{mcmc_hex}}{
 #'    Hexagonal heatmap of 2-D bin counts. This plot is useful in cases where
 #'    the posterior sample size is large enough that \code{mcmc_scatter} suffers
-#'    from overplotting. For models fit using \code{\link{NUTS}} the \code{np},
-#'    and \code{np_style} arguments can be used to add additional information in
-#'    the plot (in this case the approximate location of divergences).
+#'    from overplotting.
 #'   }
 #'   \item{\code{mcmc_pairs}}{
 #'    A square plot matrix with univariate marginal distributions along the
@@ -48,9 +59,19 @@
 #'    (roughly) half are displayed above the diagonal and half are below (all
 #'    chains are always merged together for the plots along the diagonal). Other
 #'    possibilities are available by setting the \code{condition} argument.
+#'
 #'    Additionally, extra diagnostic information for models fit using
 #'    \code{\link{NUTS}} can be added to the pairs plot using the \code{lp},
-#'    \code{np}, and \code{np_style} arguments.
+#'    \code{np}, and \code{np_style} arguments. If \code{np} is specified (and
+#'    \code{condition} is \emph{not} \code{"divergent__"}), then points (red, by
+#'    default) will be superimposed onto the off-diagonal plots indicating which
+#'    (if any) iterations encountered a divergent transition. Also, if both
+#'    \code{np} and \code{max_treedepth} are specified then points (yellow, by
+#'    default) will be superimposed to indicate a transition that hit the
+#'    maximum treedepth rather than terminated its evolution normally. The
+#'    \code{np_style} argument can be used with the \code{pairs_style_np}
+#'    convenience function to change the appearance of these overlaid points.
+#'    See the \strong{Examples} section.
 #'   }
 #' }
 #'
@@ -107,7 +128,7 @@ mcmc_scatter <- function(x,
                          size = 2.5,
                          alpha = 0.8,
                          np = NULL,
-                         np_style = pairs_style_np()) {
+                         np_style = scatter_style_np()) {
   check_ignored_arguments(...)
   .mcmc_scatter(
     x,
@@ -119,7 +140,7 @@ mcmc_scatter <- function(x,
     hex = FALSE,
     binwidth = NULL,
     np = np,
-    np_style = pairs_style_np()
+    np_style = np_style
   )
 }
 
@@ -166,24 +187,6 @@ mcmc_hex <- function(x,
 #'   up to a constant. \code{lp} should either be created via
 #'   \code{\link{log_posterior}} or be an object with the same form as the
 #'   object returned by \code{\link{log_posterior}}.
-#' @param np For \code{mcmc_pairs}, a molten data frame of NUTS sampler
-#'   parameters, either created by \code{\link{nuts_params}} or in the same form
-#'   as the object returned by \code{\link{nuts_params}}. If \code{np} is
-#'   specified (and \code{condition} is \emph{not} \code{"divergent__"}), then
-#'   points (red, by default) will be superimposed onto the off-diagonal plots
-#'   indicating which (if any) iterations encountered a divergent transition.
-#'   Also, if both \code{np} and \code{max_treedepth} are specified then points
-#'   (yellow, by default) will be superimposed to indicate a transition that hit
-#'   the maximum treedepth rather than terminated its evolution normally. The
-#'   colors, shapes, and sizes of the superimposed points can be customized
-#'   using the \code{np_style} argument.
-#' @param np_style For \code{mcmc_pairs}, a call to the \code{pairs_style_np}
-#'   helper function to specify arguments controlling the appearance of
-#'   superimposed points representing NUTS diagnostic parameter warnings (if the
-#'   \code{np} argument is specified). The arguments to \code{pairs_style_np}
-#'   correspond to setting the color, shape, and size of the points indicating
-#'   divergences and the points indicating hitting the maximum treedepth (Note:
-#'   here "size" is interpreted as a scaling factor).
 #' @param max_treedepth For \code{mcmc_pairs}, an integer representing the
 #'   maximum treedepth allowed when fitting the model (if fit using NUTS). This
 #'   is only needed for detecting which transitions (if any) hit the maximum
@@ -222,8 +225,9 @@ mcmc_hex <- function(x,
 #' }
 #'
 #' \dontrun{
-#' # pairs plot with NUTS diagnostic info overlaid,
-#' # example using rstanarm package
+#' ### Adding NUTS diagnostics to scatterplots and pairs plots
+#'
+#' # examples using rstanarm package
 #' library(rstanarm)
 #'
 #' # for demonstration purposes, intentionally fit a model that
@@ -238,8 +242,18 @@ mcmc_hex <- function(x,
 #' posterior <- as.array(fit)
 #' np <- nuts_params(fit)
 #'
+#' # mcmc_scatter with divergences highlighted
+#' color_scheme_set("brightblue")
+#' mcmc_scatter(posterior, pars = c("wt", "sigma"), np = np)
+#'
+#' color_scheme_set("darkgray")
+#' div_style <- scatter_style_np(div_color = "green", div_shape = 4, div_size = 4)
+#' mcmc_scatter(posterior, pars = c("sigma", "(Intercept)"),
+#'              np = np, np_style = div_style)
+#'
 #' # split the draws according to above/below median accept_stat__ and
 #' # show approximate location of divergences (red points)
+#' color_scheme_set("brightblue")
 #' mcmc_pairs(
 #'   posterior,
 #'   pars = c("wt", "cyl", "sigma"),
@@ -313,11 +327,13 @@ mcmc_pairs <- function(x,
   no_lp <- is.null(lp)
   no_max_td <- is.null(max_treedepth)
   if (!no_np) {
+    param <- sym("Parameter")
+    val <- sym("Value")
     np <- validate_nuts_data_frame(np, lp)
-    divs <- filter_(np, ~ Parameter == "divergent__")$Value
+    divs <- dplyr::filter(np, UQ(param) == "divergent__") %>% pull(UQ(val))
     divergent__ <- matrix(divs, nrow = n_iter * n_chain, ncol = n_param)[, 1]
     if (!no_max_td) {
-      gt_max_td <- filter_(np, ~ Parameter == "treedepth__")$Value > max_treedepth
+      gt_max_td <- (dplyr::filter(np, UQ(param) == "treedepth__") %>% pull(UQ(val))) > max_treedepth
       max_td_hit__ <- matrix(gt_max_td, nrow = n_iter * n_chain, ncol = n_param)[, 1]
     }
   }
@@ -402,12 +418,32 @@ mcmc_pairs <- function(x,
 #' @rdname MCMC-scatterplots
 #' @export
 #' @param div_color,div_shape,div_size,div_alpha,td_color,td_shape,td_size,td_alpha
-#'   Optional arguments to the \code{pairs_style_np} helper function that are
-#'   eventually passed to \code{\link[ggplot2]{geom_point}}. They control the
-#'   color, shape, and size specifications  for points representing divergences
-#'   (\code{div}) and points indicating hitting the maximum treedepth
-#'   (\code{td}). See the \code{np_style} argument for more details. The default
-#'   values are displayed in the \strong{Usage} section above.
+#'   Optional arguments to the \code{scatter_style_np} or \code{pairs_style_np}
+#'   helper functions that are eventually passed to
+#'   \code{\link[ggplot2]{geom_point}}.The default values are displayed in the
+#'   \strong{Usage} section above.
+scatter_style_np <-
+  function(div_color = "red",
+           div_shape = 16,
+           div_size = 2.5,
+           div_alpha = 1) {
+    stopifnot(
+      is.numeric(div_shape) || is.character(div_shape),
+      is.character(div_color),
+      is.numeric(div_size),
+      is.numeric(div_alpha) && div_alpha >= 0 && div_alpha <= 1
+    )
+    style <- list(
+      color = c(div = div_color),
+      shape = c(div = div_shape),
+      size = c(div = div_size),
+      alpha = c(div = div_alpha)
+    )
+    structure(style, class = c(class(style), "nuts_style"))
+  }
+
+#' @rdname MCMC-scatterplots
+#' @export
 pairs_style_np <-
   function(div_color = "red",
            div_shape = 4,
@@ -435,6 +471,7 @@ pairs_style_np <-
     )
     structure(style, class = c(class(style), "nuts_style"))
   }
+
 
 #' @rdname MCMC-scatterplots
 #' @export
@@ -584,22 +621,24 @@ pairs_condition <- function(chains = NULL, draws = NULL, nuts = NULL) {
 
 
 # internal ----------------------------------------------------------------
+#' @importFrom dplyr pull
 .mcmc_scatter <- function(x,
-                         pars = character(),
-                         regex_pars = character(),
-                         transformations = list(),
-                         hex = FALSE,
-                         size = 2.5,
-                         alpha = 0.8,
-                         binwidth = NULL,
-                         np = NULL,
-                         np_style = pairs_style_np()) {
+                          pars = character(),
+                          regex_pars = character(),
+                          transformations = list(),
+                          hex = FALSE,
+                          size = 2.5,
+                          alpha = 0.8,
+                          binwidth = NULL,
+                          np = NULL,
+                          np_style = scatter_style_np()) {
   x <- prepare_mcmc_array(x, pars, regex_pars, transformations)
-  if (num_params(x) != 2)
+  if (num_params(x) != 2) {
     stop(
       "For 'mcmc_scatter' and 'mcmc_hex' exactly 2 parameters must be selected. ",
       "'mcmc_pairs' can be used for more than 2 parameters."
     )
+  }
 
   x <- merge_chains(x)
   parnames <- colnames(x)[1:2]
@@ -607,16 +646,21 @@ pairs_condition <- function(chains = NULL, draws = NULL, nuts = NULL) {
 
   xydata <- data.frame(x = c(x[, 1]), y = c(x[, 2]))
   if (has_divs) {
-    if (hex)
+    if (hex) {
       warning("'np' is currently ignored for hex plots.")
-    style <- np_style
+    }
+    stopifnot(inherits(np_style, "nuts_style"))
     np <- validate_nuts_data_frame(np)
+    param <- sym("Parameter")
+    val <- sym("Value")
+    divg <- sym("Divergent")
     xydata$Divergent <-
       np %>%
-      filter_(~ Parameter == "divergent__") %>%
-      .$Value
-    divdata <- xydata %>% filter_(~ Divergent == 1)
-    xydata <- xydata %>% filter_(~ Divergent == 0)
+      dplyr::filter(UQ(param) == "divergent__") %>%
+      pull(UQ(val))
+
+    divdata <- dplyr::filter(xydata, UQ(divg) == 1)
+    xydata <- dplyr::filter(xydata, UQ(divg) == 0)
   }
 
   graph <- ggplot(data = xydata, aes_(x = ~ x, y = ~ y))
@@ -635,9 +679,10 @@ pairs_condition <- function(chains = NULL, draws = NULL, nuts = NULL) {
       graph <- graph +
         geom_point(
           data = divdata,
-          color = style$color[["div"]],
-          size = style$size[["div"]],
-          alpha = style$alpha[["div"]]
+          color = np_style$color[["div"]],
+          size = np_style$size[["div"]],
+          alpha = np_style$alpha[["div"]],
+          shape = np_style$shape[["div"]]
         )
     }
   } else { # hex binning
@@ -811,7 +856,8 @@ handle_condition <- function(x, condition=NULL, np=NULL, lp=NULL) {
       mark <- unstack_to_matrix(lp, Value ~ Chain)
 
     } else {
-      mark <- filter_(np, ~ Parameter == condition)
+      param <- sym("Parameter")
+      mark <- dplyr::filter(np, UQ(param) == condition)
       mark <- unstack_to_matrix(mark, Value ~ Chain)
     }
     if (condition == "divergent__") {
