@@ -4,8 +4,10 @@
 \alias{MCMC-diagnostics}
 \alias{mcmc_rhat}
 \alias{mcmc_rhat_hist}
+\alias{mcmc_rhat_data}
 \alias{mcmc_neff}
 \alias{mcmc_neff_hist}
+\alias{mcmc_neff_data}
 \alias{mcmc_acf}
 \alias{mcmc_acf_bar}
 \title{General MCMC diagnostics}
@@ -14,9 +16,13 @@ mcmc_rhat(rhat, ..., size = NULL)
 
 mcmc_rhat_hist(rhat, ..., binwidth = NULL)
 
+mcmc_rhat_data(rhat, ...)
+
 mcmc_neff(ratio, ..., size = NULL)
 
 mcmc_neff_hist(ratio, ..., binwidth = NULL)
+
+mcmc_neff_data(ratio, ...)
 
 mcmc_acf(x, pars = character(), regex_pars = character(),
   facet_args = list(), ..., lags = 20, size = NULL)
@@ -59,7 +65,8 @@ to control faceting.}
 }
 \value{
 A ggplot object that can be further customized using the
-  \pkg{ggplot2} package.
+  \pkg{ggplot2} package. The \code{_data} functions return the data that
+  would have be drawn by the plotting function.
 }
 \description{
 Plots of Rhat statistics, ratios of effective sample size to total sample
