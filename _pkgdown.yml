@@ -62,12 +62,16 @@ reference:
       - MCMC-intervals
       - MCMC-recover
       - MCMC-scatterplots
+      - MCMC-parcoord
       - MCMC-traces
       - MCMC-combos
   - title: "HMC/NUTS diagnostics"
     desc: >
-      Functions for plotting diagnostics specific to Hamiltonian Monte Carlo
-      and the No-U-Turn Sampler.
+      Functions for plotting diagnostics specific to Hamiltonian Monte Carlo (HMC)
+      and the No-U-Turn Sampler (NUTS). Some of the general MCMC plotting functions
+      (`mcmc_parcoord`, `mcmc_pairs`, `mcmc_scatter`, `mcmc_trace`) can also 
+      show HMC/NUTS diagnostic information if optional arguments are specified,
+      but the special functions below are _only_ intended for use with HMC/NUTS.
     contents:
       - MCMC-nuts
   - title: "Aesthetics"
