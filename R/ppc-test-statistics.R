@@ -9,6 +9,7 @@
 #' @family PPCs
 #'
 #' @template args-y-yrep
+#' @template args-facet_args
 #' @param stat A single function or a string naming a function, except for
 #'   \code{ppc_stat_2d} which requires a vector of exactly two functions or
 #'   function names. In all cases the function(s) should take a vector input and
@@ -57,7 +58,7 @@
 #' ppc_stat_grouped(y, yrep, group)
 #'
 #' color_scheme_set("mix-red-blue")
-#' ppc_stat_freqpoly_grouped(y, yrep, group)
+#' ppc_stat_freqpoly_grouped(y, yrep, group, facet_args = list(nrow = 2))
 #'
 #' # use your own function to compute test statistics
 #' color_scheme_set("brightblue")
@@ -131,6 +132,7 @@ ppc_stat_grouped <-
            group,
            stat = "mean",
            ...,
+           facet_args = list(),
            binwidth = NULL,
            freq = TRUE) {
     check_ignored_arguments(...)
@@ -140,6 +142,10 @@ ppc_stat_grouped <-
     group <- validate_group(group, y)
     plot_data <- ppc_group_data(y, yrep, group, stat = match.fun(stat))
     is_y <- plot_data$variable == "y"
+
+    facet_args[["facets"]] <- ~ group
+    if (is.null(facet_args[["scales"]]))
+      facet_args[["scales"]] <- "free"
 
     ggplot(plot_data[!is_y, , drop = FALSE],
            set_hist_aes(freq)) +
@@ -155,7 +161,7 @@ ppc_stat_grouped <-
         mapping = aes_(xintercept = ~ value, color = "y"),
         size = 1.5
       ) +
-      facet_wrap("group", scales = "free") +
+      do.call("facet_wrap", facet_args) +
       scale_fill_manual(values = get_color("l"), labels = Tyrep_label()) +
       scale_color_manual(values = get_color("dh"), labels = Ty_label()) +
       guides(
@@ -183,6 +189,7 @@ ppc_stat_freqpoly_grouped <-
            group,
            stat = "mean",
            ...,
+           facet_args = list(),
            binwidth = NULL,
            freq = TRUE) {
     check_ignored_arguments(...)
@@ -192,6 +199,10 @@ ppc_stat_freqpoly_grouped <-
     group <- validate_group(group, y)
     plot_data <- ppc_group_data(y, yrep, group, stat = match.fun(stat))
     is_y <- plot_data$variable == "y"
+
+    facet_args[["facets"]] <- ~ group
+    if (is.null(facet_args[["scales"]]))
+      facet_args[["scales"]] <- "free"
 
     ggplot(plot_data[!is_y, , drop = FALSE],
            set_hist_aes(freq)) +
@@ -207,7 +218,7 @@ ppc_stat_freqpoly_grouped <-
         show.legend = FALSE,
         size = 1
       ) +
-      facet_wrap("group", scales = "free") +
+      do.call("facet_wrap", facet_args) +
       scale_color_manual(
         name = stat_legend_title(stat, deparse(substitute(stat))),
         values = setNames(get_color(c("m", "dh")), c("yrep", "y")),

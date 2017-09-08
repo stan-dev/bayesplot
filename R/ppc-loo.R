@@ -29,9 +29,11 @@
 #'  double use of data. See the section on marginal predictive checks in Gelman
 #'  et al. (2013, p. 152--153). The default LOO PIT predictive check is a
 #'  quantile-quantile (Q-Q) plot comparing the LOO PITs to the standard uniform
-#'  distribution. Alternatively, setting the \code{compare} argument to
-#'  \code{"normal"} will produce a Q-Q plot comparing standardized PIT values
-#'  to the standard normal distribution.
+#'  distribution. Comparing to a uniform distribution is not good for extreme
+#'  probabilities close to 0 and 1, so it can be useful to set the
+#'  \code{compare} argument to \code{"normal"}, which will produce a Q-Q plot
+#'  comparing standardized PIT values to the standard normal distribution. This
+#'  can be helpful to see the calibration better for the extreme values.
 #' }
 #' \item{\code{ppc_loo_intervals, ppc_loo_ribbon}}{
 #'  Similar to \code{\link{ppc_intervals}} and \code{\link{ppc_ribbon}} but the
@@ -172,16 +174,17 @@ ppc_loo_intervals <-
   function(y,
            yrep,
            lw,
-           intervals,
+           intervals = NULL,
            ...,
            prob = 0.9,
            size = 1,
            fatten = 3,
            order = c("index", "median")) {
+
     check_ignored_arguments(...)
     y <- validate_y(y)
     order_by_median <- match.arg(order) == "median"
-    if (!missing(intervals)) {
+    if (!is.null(intervals)) {
       stopifnot(is.matrix(intervals), ncol(intervals) == 3)
       message("'intervals' specified so ignoring 'yrep' and 'lw' if specified.")
     } else {
@@ -198,8 +201,9 @@ ppc_loo_intervals <-
     }
 
     x <- seq_along(y)
-    if (order_by_median)
+    if (order_by_median) {
       x <- reorder(x, intervals[, 2])
+    }
 
     graph <- .ppc_intervals(
       data = .loo_intervals_data(y, x, intervals),
@@ -209,8 +213,10 @@ ppc_loo_intervals <-
       fatten = fatten,
       x_lab = "Data point (index)"
     )
-    if (!order_by_median)
+
+    if (!order_by_median) {
       return(graph)
+    }
 
     graph +
       xlab("Ordered by median") +
@@ -224,14 +230,14 @@ ppc_loo_ribbon <-
   function(y,
            yrep,
            lw,
-           intervals,
+           intervals = NULL,
            ...,
            prob = 0.9,
            alpha = 0.33,
            size = 0.25) {
     check_ignored_arguments(...)
     y <- validate_y(y)
-    if (!missing(intervals)) {
+    if (!is.null(intervals)) {
       stopifnot(is.matrix(intervals), ncol(intervals) == 3)
       message("'intervals' specified so ignoring 'yrep' and 'lw' if specified.")
     } else {
@@ -260,11 +266,14 @@ ppc_loo_ribbon <-
 
 # internal ----------------------------------------------------------------
 .loo_intervals_data <- function(y, x, intervals) {
-  colnames(intervals) <- c("lo", "mid", "hi")
   stopifnot(length(y) == nrow(intervals), length(x) == length(y))
-  dplyr::bind_rows(
-    data.frame(x, is_y = TRUE, lo = y, mid = y, hi = y),
-    data.frame(x, is_y = FALSE, intervals)
-  )
+
+  data.frame(
+    y_id = seq_along(y),
+    y_obs = y,
+    x = x,
+    lo = intervals[, 1],
+    mid = intervals[, 2],
+    hi = intervals[, 3])
 }
 

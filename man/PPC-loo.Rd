@@ -10,11 +10,11 @@
 ppc_loo_pit(y, yrep, lw, pit, compare = c("uniform", "normal"), ...,
   size = 2, alpha = 1)
 
-ppc_loo_intervals(y, yrep, lw, intervals, ..., prob = 0.9, size = 1,
-  fatten = 3, order = c("index", "median"))
+ppc_loo_intervals(y, yrep, lw, intervals = NULL, ..., prob = 0.9,
+  size = 1, fatten = 3, order = c("index", "median"))
 
-ppc_loo_ribbon(y, yrep, lw, intervals, ..., prob = 0.9, alpha = 0.33,
-  size = 0.25)
+ppc_loo_ribbon(y, yrep, lw, intervals = NULL, ..., prob = 0.9,
+  alpha = 0.33, size = 0.25)
 }
 \arguments{
 \item{y}{A vector of observations. See \strong{Details}.}
@@ -88,9 +88,11 @@ section below for details.
  double use of data. See the section on marginal predictive checks in Gelman
  et al. (2013, p. 152--153). The default LOO PIT predictive check is a
  quantile-quantile (Q-Q) plot comparing the LOO PITs to the standard uniform
- distribution. Alternatively, setting the \code{compare} argument to
- \code{"normal"} will produce a Q-Q plot comparing standardized PIT values
- to the standard normal distribution.
+ distribution. Comparing to a uniform distribution is not good for extreme
+ probabilities close to 0 and 1, so it can be useful to set the
+ \code{compare} argument to \code{"normal"}, which will produce a Q-Q plot
+ comparing standardized PIT values to the standard normal distribution. This
+ can be helpful to see the calibration better for the extreme values.
 }
 \item{\code{ppc_loo_intervals, ppc_loo_ribbon}}{
  Similar to \code{\link{ppc_intervals}} and \code{\link{ppc_ribbon}} but the

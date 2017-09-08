@@ -6,17 +6,24 @@
 \alias{ppc_intervals_grouped}
 \alias{ppc_ribbon}
 \alias{ppc_ribbon_grouped}
+\alias{ppc_intervals_data}
+\alias{ppc_ribbon_data}
 \title{PPC intervals}
 \usage{
-ppc_intervals(y, yrep, x, ..., prob = 0.9, size = 1, fatten = 3)
+ppc_intervals(y, yrep, x = NULL, ..., prob = 0.9, size = 1, fatten = 3)
 
-ppc_intervals_grouped(y, yrep, x, group, facet_args = list(), ...,
+ppc_intervals_grouped(y, yrep, x = NULL, group, facet_args = list(), ...,
   prob = 0.9, size = 1, fatten = 3)
 
-ppc_ribbon(y, yrep, x, ..., prob = 0.9, alpha = 0.33, size = 0.25)
+ppc_ribbon(y, yrep, x = NULL, ..., prob = 0.9, alpha = 0.33,
+  size = 0.25)
 
-ppc_ribbon_grouped(y, yrep, x, group, facet_args = list(), ..., prob = 0.9,
-  alpha = 0.33, size = 0.25)
+ppc_ribbon_grouped(y, yrep, x = NULL, group, facet_args = list(), ...,
+  prob = 0.9, alpha = 0.33, size = 0.25)
+
+ppc_intervals_data(y, yrep, x = NULL, group = NULL, prob = 0.9, ...)
+
+ppc_ribbon_data(y, yrep, x = NULL, group = NULL, prob = 0.9, ...)
 }
 \arguments{
 \item{y}{A vector of observations. See \strong{Details}.}
@@ -32,7 +39,7 @@ instructions.}
 \item{x}{A numeric vector the same length as \code{y} to use as the x-axis
 variable. For example, \code{x} could be a predictor variable from a
 regression model, a time variable for time-series models, etc. If \code{x}
-is missing then \code{1:length(y)} is used for the x-axis.}
+is missing or NULL, then \code{1:length(y)} is used for the x-axis.}
 
 \item{...}{Currently unused.}
 
@@ -53,7 +60,8 @@ passed to \code{\link[ggplot2]{facet_wrap}} to control faceting.}
 }
 \value{
 A ggplot object that can be further customized using the
-  \pkg{ggplot2} package.
+  \pkg{ggplot2} package. The \code{_data} functions return the data that
+  would have be drawn by the plotting function.
 }
 \description{
 Medians and central interval estimates of \code{yrep} with \code{y} overlaid.
@@ -109,6 +117,9 @@ ppc_ribbon_grouped(
  xaxis_text(FALSE) +
  xaxis_ticks(FALSE) +
  panel_bg(fill = "gray20")
+
+ppc_data <- ppc_intervals_data(y, yrep, x = year, prob = 0.5)
+ppc_group_data <- ppc_intervals_data(y, yrep, x = year, group, prob = 0.5)
 
 \dontrun{
 library("rstanarm")
