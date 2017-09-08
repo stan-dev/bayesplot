@@ -351,14 +351,14 @@ When running the Stan models at the beginning of this vignette
 there were warnings about divergent transitions.
 For an explanation of these warnings see [Divergent transitions after warmup](http://mc-stan.org/misc/warnings.html#divergent-transitions-after-warmup).
 
-The `divergences` argument to the `mcmc_trace` function can be used to add a rug
-plot (in red) of the divergences to a trace plot of parameter draws. Typically
+The `np` argument to the `mcmc_trace` function can be used to add a rug
+plot of the divergences to a trace plot of parameter draws. Typically
 we can see that at least one of the chains is getting stuck wherever there is a
 cluster of many red marks:
 
 ```{r, mcmc_trace}
 color_scheme_set("mix-brightblue-gray")
-mcmc_trace(posterior_cp, pars = "tau", divergences = np_cp) + 
+mcmc_trace(posterior_cp, pars = "tau", np = np_cp) + 
   xlab("Post-warmup iteration")
 ```
 
@@ -407,11 +407,28 @@ fit_ncp_2 <- sampling(schools_mod_ncp, data = schools_dat,
 For the first model and this particular data, increasing `adapt_delta` will not
 solve the problem and a reparameterization is required.
 
-
 ```{r, mcmc_nuts_divergence-3}
 mcmc_nuts_divergence(nuts_params(fit_cp_2), log_posterior(fit_cp_2))
 mcmc_nuts_divergence(nuts_params(fit_ncp_2), log_posterior(fit_ncp_2))
 ```
+
+For another perspective on the divergences we can create a parallel 
+coordinates plot using the `mcmc_parcoord` function. This function 
+works in general without including information about the divergences, but if  
+the optional `np` argument is used to pass NUTS parameter information 
+then divergences will be colored in the plot (by default in red). 
+
+```{r, mcmc_parcoord-1}
+color_scheme_set("darkgray")
+mcmc_parcoord(posterior_cp, np = np_cp)
+```
+
+In the plot above we can see the for the centered parameterization the divergences
+occur when $\tau$, the hierarchical standard deviation, goes to zero and
+the values of the $\theta$s are essentially fixed. 
+
+The `mcmc_pairs` function can also be used to look at the divergences. Examples
+are provided at `help("mcmc_pairs")`.
 
 ### Energy and Bayesian fraction of missing information
 
@@ -471,6 +488,10 @@ models. https://arxiv.org/abs/1312.0906
 Gabry, J., and Goodrich, B. (2017). rstanarm: Bayesian Applied Regression
 Modeling via Stan. R package version 2.15.3.
 http://mc-stan.org/users/interfaces/rstanarm.html, https://CRAN.R-project.org/package=rstanarm
+
+Gabry, J., Simpson, D., Vehtari, A., Betancourt, M., Gelman, A. (2017).
+Visualization in Bayesian workflow. arXiv preprint 
+https://arxiv.org/abs/1709.01449
 
 Gelman, A. and Rubin, D. B. (1992). Inference from iterative simulation using
 multiple sequences. *Statistical Science*. 7(4): 457--472.

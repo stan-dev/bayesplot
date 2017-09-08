@@ -25,9 +25,14 @@ developers working on a variety of packages for Bayesian modeling, particularly
 (but not necessarily) those powered by
 [**RStan**](https://github.com/stan-dev/rstan).
 
+### Resources
+
+* [mc-stan.org/bayesplot](http://mc-stan.org/bayesplot) (online documentation, vignettes)
+* [Ask a question at The Stan Forums](http://discourse.mc-stan.org)
+* [File an issue on GitHub](https://github.com/stan-dev/bayesplot/issues) (bug reports, feature requests)
+
 
 ### Installation
-
 
 * Install from CRAN:
 
@@ -58,6 +63,7 @@ rmarkdown::pandoc_available()
 
 
 ### Examples
+
 Some quick examples using MCMC draws obtained from the [__rstanarm__](https://github.com/stan-dev/rstanarm) 
 and [__rstan__](https://github.com/stan-dev/rstan) packages.
 
@@ -144,9 +150,3 @@ ppc_intervals(
 ```
 
 <img src=https://github.com/stan-dev/bayesplot/blob/master/images/ppc_intervals-rstanarm.png width=55% />
-
-
-### Getting help
-
-* [Ask a question at The Stan Forums](http://discourse.mc-stan.org)
-* [File an issue on GitHub](https://github.com/stan-dev/bayesplot/issues)

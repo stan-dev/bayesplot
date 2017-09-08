@@ -302,8 +302,7 @@ mcmc_recover_hist <-
     )
 
     vline_data <- data.frame(Parameter = colnames(x), True = true)
-    hist_data <- reshape2::melt(x)[, -1]
-    colnames(hist_data) <- c("Parameter", "Value")
+    hist_data <- melt_mcmc(x)[, -1]
 
     facet_args[["facets"]] <- ~ Parameter
     if (is.null(facet_args[["scales"]]))

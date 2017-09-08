@@ -11,9 +11,10 @@
 #' @template args-regex_pars
 #' @template args-transformations
 #' @template args-facet_args
-#' @param size An optional value to override the default line size (if calling
-#'   \code{mcmc_trace}) or the default point size (if calling
-#'   \code{mcmc_trace_highlight}).
+#' @param ... Currently ignored.
+#' @param size An optional value to override the default line size
+#'   (\code{mcmc_trace}) or the default point size
+#'   (\code{mcmc_trace_highlight}).
 #' @param alpha For \code{mcmc_trace_highlight}, passed to
 #'   \code{\link[ggplot2]{geom_point}} to control the transparency of the points
 #'   for the chains not highlighted.
@@ -23,25 +24,26 @@
 #'   iterations \code{1:n_warmup} is shaded gray.
 #' @param window An integer vector of length two specifying the limits of a
 #'   range of iterations to display.
-#' @param divergences For models fit using \code{\link{NUTS}} (more generally,
-#'   any \href{http://en.wikipedia.org/wiki/Symplectic_integrator}{symplectic
-#'   integrator}), an optional vector or data frame providing information about
-#'   divergent transitions. If a data frame is provided it should be an object
-#'   returned by \code{\link{nuts_params}} (or an object with the same
-#'   structure). If a vector is provided it should be a vector with one element
-#'   per iteration, with each element either \code{0} (no divergence) or
-#'   \code{1} (a divergence in at least one chain). If \code{divergences} is
-#'   specified then red tick marks are added to the bottom of the traceplot
-#'   indicating within which iterations there was a divergence. See the end of
-#'   the \strong{Examples} section, below.
+#' @param np For models fit using \code{\link{NUTS}} (more generally, any
+#'   \href{http://en.wikipedia.org/wiki/Symplectic_integrator}{symplectic
+#'   integrator}), an optional data frame providing NUTS diagnostic
+#'   information. The data frame should be the object returned by
+#'   \code{\link{nuts_params}} or one with the same structure. If \code{np} is
+#'   specified then tick marks are added to the bottom of the traceplot
+#'   indicating within which iterations there was a divergence (if there were any).
+#'   See the end of the \strong{Examples} section, below.
+#' @param np_style A call to the \code{trace_style_np} helper function to
+#'   specify arguments controlling the appearance of tick marks representing
+#'   divergences (if the \code{np} argument is specified).
+#' @param divergences Deprecated. Use the \code{np} argument instead.
+#'
 #' @template return-ggplot
 #'
 #' @section Plot Descriptions:
 #' \describe{
 #'   \item{\code{mcmc_trace}}{
-#'    Standard traceplots of MCMC draws. For models fit using \code{\link{NUTS}}
-#'    the \code{divergences} argument can be used to also show divergences on
-#'    the traceplot.
+#'    Standard traceplots of MCMC draws. For models fit using \code{\link{NUTS}},
+#'    the \code{np} argument can be used to also show divergences on the traceplot.
 #'   }
 #'   \item{\code{mcmc_trace_highlight}}{
 #'    Traces are plotted using points rather than lines and the opacity of all
@@ -98,7 +100,7 @@
 #' color_scheme_set("brightblue")
 #' mcmc_trace_highlight(x, pars = "sigma", highlight = 2, size = 2)
 #'
-#' # for models fit using NUTS divergences can be displayed in the traceplot
+#' # for models fit using HMC/NUTS divergences can be displayed in the traceplot
 #' library("rstanarm")
 #' fit <- stan_glm(mpg ~ ., data = mtcars,
 #'   # next line to keep example fast and also ensure we get some divergences
@@ -109,10 +111,26 @@
 #' posterior <- as.array(fit)
 #'
 #' # for stanfit and stanreg objects use nuts_params() to get the divergences
+#' mcmc_trace(posterior, pars = "sigma", np = nuts_params(fit))
+#'
+#' color_scheme_set("viridis")
 #' mcmc_trace(
 #'   posterior,
-#'   pars = "sigma",
-#'   divergences = nuts_params(fit) # or nuts_params(fit, pars = "divergent__")
+#'   pars = c("wt", "sigma"),
+#'   size = 0.5,
+#'   facet_args = list(nrow = 2),
+#'   np = nuts_params(fit),
+#'   np_style = trace_style_np(div_color = "black", div_size = 0.5)
+#' )
+#'
+#' color_scheme_set("viridis")
+#' mcmc_trace(
+#'   posterior,
+#'   pars = c("wt", "sigma"),
+#'   size = 0.8,
+#'   facet_args = list(nrow = 2),
+#'   divergences = nuts_params(fit),
+#'   div_color = "black"
 #' )
 #' }
 #'
@@ -130,7 +148,28 @@ mcmc_trace <-
            n_warmup = 0,
            window = NULL,
            size = NULL,
+           np = NULL,
+           np_style = trace_style_np(),
            divergences = NULL) {
+
+    # deprecate 'divergences' arg in favor of 'np' (for consistency across functions)
+    if (!is.null(divergences)) {
+      warning(
+        "The 'divergences' argument is deprecated ",
+        "and will be removed in a future release. ",
+        "Use the 'np' argument instead."
+      )
+
+      if (is.null(np)) {
+        np <- divergences
+      } else {
+        stop(
+          "'np' and 'divergences' can't both be specified. ",
+          "Use only 'np' (the 'divergences' argument is deprecated)."
+        )
+      }
+    }
+
     check_ignored_arguments(...)
     .mcmc_trace(
       x,
@@ -142,7 +181,8 @@ mcmc_trace <-
       window = window,
       size = size,
       style = "line",
-      divergences = divergences,
+      np = np,
+      np_style = np_style,
       ...
     )
   }
@@ -181,21 +221,48 @@ mcmc_trace_highlight <-
   }
 
 
+#' @rdname MCMC-traces
+#' @export
+#' @param div_color,div_size,div_alpha Optional arguments to the
+#'   \code{trace_style_np} helper function that are eventually passed to
+#'   \code{\link[ggplot2]{geom_rug}} if the \code{np} argument is also
+#'   specified. They control the color, size, and transparency specifications
+#'   for showing divergences in the plot. The default values are displayed in
+#'   the \strong{Usage} section above.
+trace_style_np <-
+  function(div_color = "red",
+           div_size = 0.25,
+           div_alpha = 1) {
+    stopifnot(
+      is.character(div_color),
+      is.numeric(div_size),
+      is.numeric(div_alpha) && div_alpha >= 0 && div_alpha <= 1
+    )
+    style <- list(
+      color = c(div = div_color),
+      size = c(div = div_size),
+      alpha = c(div = div_alpha)
+    )
+    structure(style, class = c(class(style), "nuts_style"))
+  }
+
+
 # internal -----------------------------------------------------------------
 #' @importFrom dplyr %>% filter_ group_by_ summarise_ select_
 .mcmc_trace <- function(x,
-                       pars = character(),
-                       regex_pars = character(),
-                       transformations = list(),
-                       n_warmup = 0,
-                       window = NULL,
-                       size = NULL,
-                       facet_args = list(),
-                       highlight = NULL,
-                       style = c("line", "point"),
-                       alpha = 0.2,
-                       divergences = NULL,
-                       ...) {
+                        pars = character(),
+                        regex_pars = character(),
+                        transformations = list(),
+                        n_warmup = 0,
+                        window = NULL,
+                        size = NULL,
+                        facet_args = list(),
+                        highlight = NULL,
+                        style = c("line", "point"),
+                        alpha = 0.2,
+                        np = NULL,
+                        np_style = trace_style_np(),
+                        ...) {
 
   style <- match.arg(style)
   x <- prepare_mcmc_array(x, pars, regex_pars, transformations)
@@ -211,7 +278,7 @@ mcmc_trace_highlight <-
       )
   }
 
-  data <- reshape2::melt(x, value.name = "Value")
+  data <- melt_mcmc(x)
   data$Chain <- factor(data$Chain)
   n_chain <- num_chains(data)
   n_iter <- num_iters(data)
@@ -259,8 +326,8 @@ mcmc_trace_highlight <-
     graph <- graph +
       scale_color_manual("Chain", values = chain_colors(n_chain))
 
-    if (!is.null(divergences)) {
-      div_rug <- divergence_rug(divergences, n_iter, n_chain)
+    if (!is.null(np)) {
+      div_rug <- divergence_rug(np, np_style, n_iter, n_chain)
       if (!is.null(div_rug))
         graph <- graph +
           div_rug +
@@ -291,6 +358,7 @@ mcmc_trace_highlight <-
     yaxis_title(on = n_param == 1)
 }
 
+
 chain_colors <- function(n) {
   all_clrs <- unlist(color_scheme_get())
   clrs <- switch(
@@ -309,25 +377,38 @@ chain_colors <- function(n) {
 
 # Add divergences to traceplot using geom_rug
 #
-# @param divergences User's 'divergences' argument, if specified
+# @param np User's 'np' argument, if specified.
+# @param np_style User's 'np_style' argument, if specified.
 # @param n_iter Number of iterations in the trace plot (to check against number
-#   of iterations provided in 'divergences')
+#   of iterations provided in 'np').
 # @param n_chain Number of chains in the trace plot (to check against number
-#   of chains provided in 'divergences')
-# @param color,size Passed to geom_rug.
-divergence_rug <- function(divergences, n_iter, n_chain, color = "red", size = 1/4) {
-  if (is.data.frame(divergences)) {
-    divergences <- validate_nuts_data_frame(divergences)
-    stopifnot(
-      num_iters(divergences) == n_iter,
-      num_chains(divergences) == n_chain
-    )
-    div_info <-
-      filter_(divergences, ~ Parameter == "divergent__") %>%
-      group_by_(~ Iteration) %>%
-      summarise_(Divergent = ~ ifelse(sum(Value) > 0, Iteration, NA)) %>%
-      select_(~ Divergent)
+#   of chains provided in 'np').
+# @return Object returned by geom_rug.
+#
+#' @importFrom dplyr summarise group_by select
+divergence_rug <- function(np, np_style, n_iter, n_chain) {
+  if (is.data.frame(np)) {
+    np <- validate_nuts_data_frame(np)
+    stopifnot(num_iters(np) == n_iter, num_chains(np) == n_chain)
+
+    iter <- sym("Iteration")
+    val <- sym("Value")
+    param <- sym("Parameter")
+    divg <- sym("Divergent")
+
+    div_info <- np %>%
+      dplyr::filter(UQ(param) == "divergent__") %>%
+      group_by(!! iter) %>%
+      summarise(
+        Divergent = ifelse(sum(!! val) > 0, !! iter, NA)
+      ) %>%
+      select(!! divg)
+
   } else {
+    # not using a data frame is deprecated but maintain backwards
+    # compatibility for now
+
+    divergences <- np
     stopifnot(
       is_vector_or_1Darray(divergences),
       length(divergences) == n_iter,
@@ -336,6 +417,7 @@ divergence_rug <- function(divergences, n_iter, n_chain, color = "red", size = 1
     divergences <- ifelse(divergences == 1, seq_along(divergences), NA)
     div_info <- data.frame(Divergent = divergences)
   }
+
   if (all(is.na(div_info$Divergent))) {
     message("No divergences to plot.")
     return(NULL)
@@ -347,7 +429,8 @@ divergence_rug <- function(divergences, n_iter, n_chain, color = "red", size = 1
     na.rm = TRUE,
     inherit.aes = FALSE,
     sides = "b",
-    color = color,
-    size = size
+    color = np_style$color[["div"]],
+    size = np_style$size[["div"]],
+    alpha = np_style$alpha[["div"]]
   )
 }

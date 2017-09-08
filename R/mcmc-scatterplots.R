@@ -55,6 +55,8 @@
 #' }
 #'
 #' @examples
+#' library("ggplot2")
+#'
 #' # some parameter draws to use for demonstration
 #' x <- example_mcmc_draws(params = 6)
 #' dimnames(x)
@@ -64,7 +66,7 @@
 #' (p <- mcmc_scatter(x, pars = c("alpha", "sigma"),
 #'                   transform = list(sigma = "log")))
 #' p +
-#'   ggplot2::labs(
+#'   labs(
 #'     title = "Insert your own headline-grabbing title",
 #'     subtitle = "with a provocative subtitle",
 #'     caption = "and a controversial caption",
@@ -73,18 +75,18 @@
 #'    )
 #'
 #' # add ellipse
-#' p + ggplot2::stat_ellipse(level = 0.9, color = "gray20", size = 1)
+#' p + stat_ellipse(level = 0.9, color = "gray20", size = 1)
 #'
 #' # add contour
 #' color_scheme_set("red")
 #' p2 <- mcmc_scatter(x, pars = c("alpha", "sigma"), size = 3.5, alpha = 0.25)
-#' p2 + ggplot2::stat_density_2d(color = "black", size = .5)
+#' p2 + stat_density_2d(color = "black", size = .5)
 #'
 #' # can also add lines/smooths
 #' color_scheme_set("pink")
 #' (p3 <- mcmc_scatter(x, pars = c("alpha", "beta[3]"), alpha = 0.25, size = 3))
-#' p3 + ggplot2::geom_smooth(method = "lm", se = FALSE, color = "gray20",
-#'                           size = .75, linetype = 2)
+#' p3 + geom_smooth(method = "lm", se = FALSE, color = "gray20",
+#'                  size = .75, linetype = 2)
 #'
 #' \donttest{
 #' # hexagonal heatmap
@@ -288,7 +290,7 @@ mcmc_pairs <- function(x,
   stopifnot(
     is.list(diag_args),
     is.list(off_diag_args),
-    inherits(np_style, "pairs_style_np"),
+    inherits(np_style, "nuts_style"),
     inherits(condition, "pairs_condition")
   )
   plot_diagonal <- pairs_plotfun(match.arg(diag_fun))
@@ -431,7 +433,7 @@ pairs_style_np <-
       size = c(div = div_size, td = td_size),
       alpha = c(div = div_alpha, td = td_alpha)
     )
-    structure(style, class = c(class(style), "pairs_style_np"))
+    structure(style, class = c(class(style), "nuts_style"))
   }
 
 #' @rdname MCMC-scatterplots

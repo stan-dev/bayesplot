@@ -4,15 +4,19 @@
 \alias{MCMC-traces}
 \alias{mcmc_trace}
 \alias{mcmc_trace_highlight}
+\alias{trace_style_np}
 \title{Traceplot (time series plot) of MCMC draws}
 \usage{
 mcmc_trace(x, pars = character(), regex_pars = character(),
   transformations = list(), facet_args = list(), ..., n_warmup = 0,
-  window = NULL, size = NULL, divergences = NULL)
+  window = NULL, size = NULL, np = NULL, np_style = trace_style_np(),
+  divergences = NULL)
 
 mcmc_trace_highlight(x, pars = character(), regex_pars = character(),
   transformations = list(), facet_args = list(), ..., n_warmup = 0,
   window = NULL, size = NULL, alpha = 0.2, highlight = 1)
+
+trace_style_np(div_color = "red", div_size = 0.25, div_alpha = 1)
 }
 \arguments{
 \item{x}{A 3-D array, matrix, list of matrices, or data frame of MCMC draws.
@@ -49,6 +53,8 @@ that the parameter is transformed (e.g. \code{"t(sigma)"}).}
 to \code{\link[ggplot2]{facet_wrap}} or \code{\link[ggplot2]{facet_grid}}
 to control faceting.}
 
+\item{...}{Currently ignored.}
+
 \item{n_warmup}{An integer; the number of warmup iterations included in
 \code{x}. The default is \code{n_warmup = 0}, i.e. to assume no warmup
 iterations are included. If \code{n_warmup > 0} then the background for
@@ -57,21 +63,24 @@ iterations \code{1:n_warmup} is shaded gray.}
 \item{window}{An integer vector of length two specifying the limits of a
 range of iterations to display.}
 
-\item{size}{An optional value to override the default line size (if calling
-\code{mcmc_trace}) or the default point size (if calling
-\code{mcmc_trace_highlight}).}
+\item{size}{An optional value to override the default line size
+(\code{mcmc_trace}) or the default point size
+(\code{mcmc_trace_highlight}).}
 
-\item{divergences}{For models fit using \code{\link{NUTS}} (more generally,
-any \href{http://en.wikipedia.org/wiki/Symplectic_integrator}{symplectic
-integrator}), an optional vector or data frame providing information about
-divergent transitions. If a data frame is provided it should be an object
-returned by \code{\link{nuts_params}} (or an object with the same
-structure). If a vector is provided it should be a vector with one element
-per iteration, with each element either \code{0} (no divergence) or
-\code{1} (a divergence in at least one chain). If \code{divergences} is
-specified then red tick marks are added to the bottom of the traceplot
-indicating within which iterations there was a divergence. See the end of
-the \strong{Examples} section, below.}
+\item{np}{For models fit using \code{\link{NUTS}} (more generally, any
+\href{http://en.wikipedia.org/wiki/Symplectic_integrator}{symplectic
+integrator}), an optional data frame providing NUTS diagnostic
+information. The data frame should be the object returned by
+\code{\link{nuts_params}} or one with the same structure. If \code{np} is
+specified then tick marks are added to the bottom of the traceplot
+indicating within which iterations there was a divergence (if there were any).
+See the end of the \strong{Examples} section, below.}
+
+\item{np_style}{A call to the \code{trace_style_np} helper function to
+specify arguments controlling the appearance of tick marks representing
+divergences (if the \code{np} argument is specified).}
+
+\item{divergences}{Deprecated. Use the \code{np} argument instead.}
 
 \item{alpha}{For \code{mcmc_trace_highlight}, passed to
 \code{\link[ggplot2]{geom_point}} to control the transparency of the points
@@ -79,6 +88,13 @@ for the chains not highlighted.}
 
 \item{highlight}{For \code{mcmc_trace_highlight}, an integer specifying one
 of the chains that will be more visible than the others in the plot.}
+
+\item{div_color, div_size, div_alpha}{Optional arguments to the
+\code{trace_style_np} helper function that are eventually passed to
+\code{\link[ggplot2]{geom_rug}} if the \code{np} argument is also
+specified. They control the color, size, and transparency specifications
+for showing divergences in the plot. The default values are displayed in
+the \strong{Usage} section above.}
 }
 \value{
 A ggplot object that can be further customized using the
@@ -92,9 +108,8 @@ for details.
 
 \describe{
   \item{\code{mcmc_trace}}{
-   Standard traceplots of MCMC draws. For models fit using \code{\link{NUTS}}
-   the \code{divergences} argument can be used to also show divergences on
-   the traceplot.
+   Standard traceplots of MCMC draws. For models fit using \code{\link{NUTS}},
+   the \code{np} argument can be used to also show divergences on the traceplot.
   }
   \item{\code{mcmc_trace_highlight}}{
    Traces are plotted using points rather than lines and the opacity of all
@@ -152,7 +167,7 @@ mcmc_trace(x, n_warmup = 100)
 color_scheme_set("brightblue")
 mcmc_trace_highlight(x, pars = "sigma", highlight = 2, size = 2)
 
-# for models fit using NUTS divergences can be displayed in the traceplot
+# for models fit using HMC/NUTS divergences can be displayed in the traceplot
 library("rstanarm")
 fit <- stan_glm(mpg ~ ., data = mtcars,
   # next line to keep example fast and also ensure we get some divergences
@@ -163,10 +178,26 @@ fit <- stan_glm(mpg ~ ., data = mtcars,
 posterior <- as.array(fit)
 
 # for stanfit and stanreg objects use nuts_params() to get the divergences
+mcmc_trace(posterior, pars = "sigma", np = nuts_params(fit))
+
+color_scheme_set("viridis")
 mcmc_trace(
   posterior,
-  pars = "sigma",
-  divergences = nuts_params(fit) # or nuts_params(fit, pars = "divergent__")
+  pars = c("wt", "sigma"),
+  size = 0.5,
+  facet_args = list(nrow = 2),
+  np = nuts_params(fit),
+  np_style = trace_style_np(div_color = "black", div_size = 0.5)
+)
+
+color_scheme_set("viridis")
+mcmc_trace(
+  posterior,
+  pars = c("wt", "sigma"),
+  size = 0.8,
+  facet_args = list(nrow = 2),
+  divergences = nuts_params(fit),
+  div_color = "black"
 )
 }
 
@@ -176,6 +207,7 @@ Other MCMC: \code{\link{MCMC-combos}},
   \code{\link{MCMC-diagnostics}},
   \code{\link{MCMC-distributions}},
   \code{\link{MCMC-intervals}}, \code{\link{MCMC-nuts}},
-  \code{\link{MCMC-overview}}, \code{\link{MCMC-recover}},
+  \code{\link{MCMC-overview}}, \code{\link{MCMC-parcoord}},
+  \code{\link{MCMC-recover}},
   \code{\link{MCMC-scatterplots}}
 }

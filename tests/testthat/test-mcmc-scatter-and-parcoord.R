@@ -1,8 +1,8 @@
 library(bayesplot)
 suppressPackageStartupMessages(library(rstanarm))
-context("MCMC: scatterplots")
+context("MCMC: scatter and parallel coordinates plots")
 
-source("data-for-mcmc-tests.R")
+source(test_path("data-for-mcmc-tests.R"))
 
 # also fit an rstanarm model to use with mcmc_pairs
 capture.output(
@@ -126,7 +126,7 @@ test_that("mcmc_pairs throws correct warnings and errors", {
   expect_error(
     mcmc_pairs(post, pars = c("wt", "am"), max_treedepth = 2, np = np,
                np_style = list(color = "green")),
-    'inherits(np_style, "pairs_style_np") is not TRUE',
+    'inherits(np_style, "nuts_style") is not TRUE',
     fixed = TRUE
   )
 
@@ -148,7 +148,7 @@ test_that("mcmc_pairs throws correct warnings and errors", {
 # pairs_style_np -------------------------------------------------------
 test_that("pairs_style_np returns correct structure", {
   style <- pairs_style_np(div_size = 3, td_color = "gray", td_shape = 1)
-  expect_s3_class(style, "pairs_style_np")
+  expect_s3_class(style, "nuts_style")
   expect_named(style, c("color", "shape", "size"), ignore.order = TRUE)
   expect_named(style$color, c("div", "td"))
   expect_named(style$size, c("div", "td"))
@@ -272,6 +272,58 @@ test_that("pairs_condition message if multiple args specified", {
   expect_message(
     pairs_condition(draws = 0.5, nuts = "lp__"),
     "because they are superseded by 'draws': 'nuts'",
+    fixed = TRUE
+  )
+})
+
+
+
+# mcmc_parcoord -----------------------------------------------------------
+test_that("mcmc_parcoord returns a ggplot object", {
+  expect_gg(mcmc_parcoord(arr, pars = c("(Intercept)", "sigma")))
+  expect_gg(mcmc_parcoord(arr, pars = "sigma", regex_pars = "beta"))
+
+  # with nuts info
+  expect_gg(mcmc_parcoord(post, pars = c("wt", "am", "sigma"), np = np))
+})
+
+test_that("mcmc_parcoord throws correct warnings and errors", {
+  expect_error(mcmc_parcoord(arr, pars = "sigma"),
+               "requires at least two parameters")
+
+  expect_error(
+    mcmc_parcoord(post, np = np[, -1]),
+    "NUTS parameter data frame must have columns: Iteration, Parameter, Value, Chain",
+    fixed = TRUE
+  )
+
+  expect_error(
+    mcmc_parcoord(post, np = np, np_style = list(div_color = "green")),
+    'inherits(np_style, "nuts_style") is not TRUE',
+    fixed = TRUE
+  )
+})
+
+
+# parcoord_style_np -------------------------------------------------------
+test_that("parcoord_style_np returns correct structure", {
+  style <- parcoord_style_np()
+  expect_s3_class(style, "nuts_style")
+  expect_named(style, c("color", "alpha", "size"), ignore.order = TRUE)
+  expect_named(style$color, c("div"))
+  expect_named(style$size, c("div"))
+  expect_named(style$alpha, c("div"))
+})
+
+test_that("parcoord_style_np throws correct errors", {
+  expect_error(
+    parcoord_style_np(div_size = "3"),
+    "is.numeric(div_size) is not TRUE",
+    fixed = TRUE
+  )
+  expect_error(
+    parcoord_style_np(td_color = 1),
+    "unused argument (td_color = 1)",
     fixed = TRUE
   )
 })

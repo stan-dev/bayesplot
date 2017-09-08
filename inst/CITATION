@@ -1,8 +1,0 @@
-year <- sub("-.*", "", meta$Date)
-note <- sprintf("R package version %s", meta$Version)
-
-bibentry(bibtype = "Misc",
-         header = "To cite the bayesplot R package:",
-         title = "bayesplot: Plotting for {Bayesian} models",
-         author = meta$Maintainer, year = year, note = note,
-         url = "http://mc-stan.org/")
