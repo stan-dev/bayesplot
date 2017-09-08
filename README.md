@@ -121,6 +121,18 @@ p + facet_text(size = 15)
 <img src=https://github.com/stan-dev/bayesplot/blob/master/images/mcmc_trace-rstan.png width=50% />
 
 ```r
+# scatter plot also showing divergences
+color_scheme_set("darkgray")
+mcmc_scatter(
+  as.matrix(fit2),
+  pars = c("tau", "theta[1]"), 
+  np = nuts_params(fit2), 
+  np_style = scatter_style_np(div_color = "green", div_alpha = 0.8)
+)
+```
+<img src=https://github.com/stan-dev/bayesplot/blob/master/images/mcmc_scatter-rstan.png width=50% />
+
+```r
 color_scheme_set("red")
 np <- nuts_params(fit2)
 mcmc_nuts_energy(np) + ggtitle("NUTS Energy Diagnostic")

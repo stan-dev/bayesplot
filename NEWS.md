@@ -12,7 +12,7 @@ releases):
     - `mcmc_parcoord_data` (#108)
     
 * `mcmc_scatter` gains an `np` argument for specifying NUTS parameters, which
-allows highlighting divergences in the plot. (#111)
+allows highlighting divergences in the plot. (#112)
 * `ppc_stat_grouped`, `ppc_stat_freqpoly_grouped` gain a `facet_args` argument 
 for controlling **ggplot2** faceting (many of the `mcmc_` functions already have
 this).
