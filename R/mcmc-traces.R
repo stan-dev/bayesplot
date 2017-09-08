@@ -122,6 +122,16 @@
 #'   np = nuts_params(fit),
 #'   np_style = trace_style_np(div_color = "black", div_size = 0.5)
 #' )
+#'
+#' color_scheme_set("viridis")
+#' mcmc_trace(
+#'   posterior,
+#'   pars = c("wt", "sigma"),
+#'   size = 0.8,
+#'   facet_args = list(nrow = 2),
+#'   divergences = nuts_params(fit),
+#'   div_color = "black"
+#' )
 #' }
 #'
 NULL
@@ -268,7 +278,7 @@ trace_style_np <-
       )
   }
 
-  data <- reshape2::melt(x, value.name = "Value")
+  data <- melt_mcmc(x)
   data$Chain <- factor(data$Chain)
   n_chain <- num_chains(data)
   n_iter <- num_iters(data)

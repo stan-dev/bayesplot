@@ -211,6 +211,8 @@ Scatterplots, hexagonal heatmaps, and pairs plots from MCMC draws. See the
 }
 
 \examples{
+library("ggplot2")
+
 # some parameter draws to use for demonstration
 x <- example_mcmc_draws(params = 6)
 dimnames(x)
@@ -220,7 +222,7 @@ color_scheme_set("teal")
 (p <- mcmc_scatter(x, pars = c("alpha", "sigma"),
                   transform = list(sigma = "log")))
 p +
-  ggplot2::labs(
+  labs(
     title = "Insert your own headline-grabbing title",
     subtitle = "with a provocative subtitle",
     caption = "and a controversial caption",
@@ -229,18 +231,18 @@ p +
    )
 
 # add ellipse
-p + ggplot2::stat_ellipse(level = 0.9, color = "gray20", size = 1)
+p + stat_ellipse(level = 0.9, color = "gray20", size = 1)
 
 # add contour
 color_scheme_set("red")
 p2 <- mcmc_scatter(x, pars = c("alpha", "sigma"), size = 3.5, alpha = 0.25)
-p2 + ggplot2::stat_density_2d(color = "black", size = .5)
+p2 + stat_density_2d(color = "black", size = .5)
 
 # can also add lines/smooths
 color_scheme_set("pink")
 (p3 <- mcmc_scatter(x, pars = c("alpha", "beta[3]"), alpha = 0.25, size = 3))
-p3 + ggplot2::geom_smooth(method = "lm", se = FALSE, color = "gray20",
-                          size = .75, linetype = 2)
+p3 + geom_smooth(method = "lm", se = FALSE, color = "gray20",
+                 size = .75, linetype = 2)
 
 \donttest{
 # hexagonal heatmap
@@ -325,6 +327,6 @@ Other MCMC: \code{\link{MCMC-combos}},
   \code{\link{MCMC-diagnostics}},
   \code{\link{MCMC-distributions}},
   \code{\link{MCMC-intervals}}, \code{\link{MCMC-nuts}},
-  \code{\link{MCMC-overview}}, \code{\link{MCMC-recover}},
-  \code{\link{MCMC-traces}}
+  \code{\link{MCMC-overview}}, \code{\link{MCMC-parcoord}},
+  \code{\link{MCMC-recover}}, \code{\link{MCMC-traces}}
 }

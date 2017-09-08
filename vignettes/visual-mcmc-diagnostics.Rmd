@@ -412,6 +412,21 @@ mcmc_nuts_divergence(nuts_params(fit_cp_2), log_posterior(fit_cp_2))
 mcmc_nuts_divergence(nuts_params(fit_ncp_2), log_posterior(fit_ncp_2))
 ```
 
+For another perspective on the divergences we can create a parallel 
+coordinates plot using the `mcmc_parcoord` function. This function 
+works in general without including information about the divergences, but if  
+the optional `np` argument is used to pass NUTS parameter information 
+then divergences will be colored in the plot (by default in red). 
+
+```{r, mcmc_parcoord-1}
+color_scheme_set("darkgray")
+mcmc_parcoord(posterior_cp, np = np_cp)
+```
+
+In the plot above we can see the for the centered parameterization the divergences
+occur when $\tau$, the hierarchical standard deviation, goes to zero and
+the values of the $\theta$s are essentially fixed. 
+
 The `mcmc_pairs` function can also be used to look at the divergences. Examples
 are provided at `help("mcmc_pairs")`.
 

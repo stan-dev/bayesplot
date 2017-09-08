@@ -189,6 +189,16 @@ mcmc_trace(
   np = nuts_params(fit),
   np_style = trace_style_np(div_color = "black", div_size = 0.5)
 )
+
+color_scheme_set("viridis")
+mcmc_trace(
+  posterior,
+  pars = c("wt", "sigma"),
+  size = 0.8,
+  facet_args = list(nrow = 2),
+  divergences = nuts_params(fit),
+  div_color = "black"
+)
 }
 
 }
@@ -197,6 +207,7 @@ Other MCMC: \code{\link{MCMC-combos}},
   \code{\link{MCMC-diagnostics}},
   \code{\link{MCMC-distributions}},
   \code{\link{MCMC-intervals}}, \code{\link{MCMC-nuts}},
-  \code{\link{MCMC-overview}}, \code{\link{MCMC-recover}},
+  \code{\link{MCMC-overview}}, \code{\link{MCMC-parcoord}},
+  \code{\link{MCMC-recover}},
   \code{\link{MCMC-scatterplots}}
 }
