@@ -3,9 +3,8 @@
 \name{MCMC-diagnostics}
 \alias{MCMC-diagnostics}
 \alias{mcmc_rhat}
-\alias{mcmc_rhat_data}
 \alias{mcmc_rhat_hist}
-\alias{mcmc_neff_data}
+\alias{mcmc_rhat_data}
 \alias{mcmc_neff}
 \alias{mcmc_neff_hist}
 \alias{mcmc_neff_data}
@@ -15,11 +14,9 @@
 \usage{
 mcmc_rhat(rhat, ..., size = NULL)
 
-mcmc_rhat_data(rhat, ...)
-
 mcmc_rhat_hist(rhat, ..., binwidth = NULL)
 
-mcmc_neff_data(ratio, ...)
+mcmc_rhat_data(rhat, ...)
 
 mcmc_neff(ratio, ..., size = NULL)
 

@@ -173,15 +173,6 @@ mcmc_rhat <- function(rhat, ..., size = NULL) {
 
 #' @rdname MCMC-diagnostics
 #' @export
-mcmc_rhat_data <- function(rhat, ...) {
-  check_ignored_arguments(...)
-  diagnostic_data_frame(
-    x = validate_rhat(rhat),
-    diagnostic = "rhat")
-}
-
-#' @rdname MCMC-diagnostics
-#' @export
 mcmc_rhat_hist <- function(rhat, ..., binwidth = NULL) {
   check_ignored_arguments(...)
   data <- mcmc_rhat_data(rhat)
@@ -205,17 +196,17 @@ mcmc_rhat_hist <- function(rhat, ..., binwidth = NULL) {
     yaxis_ticks(FALSE)
 }
 
-
-# effective sample size ---------------------------------------------------
-
 #' @rdname MCMC-diagnostics
 #' @export
-mcmc_neff_data <- function(ratio, ...) {
+mcmc_rhat_data <- function(rhat, ...) {
   check_ignored_arguments(...)
   diagnostic_data_frame(
-    x = validate_neff_ratio(ratio),
-    diagnostic = "neff")
+    x = validate_rhat(rhat),
+    diagnostic = "rhat")
 }
+
+
+# effective sample size ---------------------------------------------------
 
 #' @rdname MCMC-diagnostics
 #' @export
