@@ -23,14 +23,13 @@ The idea behind **bayesplot** is not only to provide convenient functionality
 for users, but also a common set of functions that can be easily used by
 developers working on a variety of packages for Bayesian modeling, particularly
 (but not necessarily) those powered by
-[**RStan**](https://github.com/stan-dev/rstan).
+[**RStan**](http://mc-stan.org/rstan).
 
 ### Resources
 
 * [mc-stan.org/bayesplot](http://mc-stan.org/bayesplot) (online documentation, vignettes)
-* [Ask a question at The Stan Forums](http://discourse.mc-stan.org)
-* [File an issue on GitHub](https://github.com/stan-dev/bayesplot/issues) (bug reports, feature requests)
-
+* [Ask a question](http://discourse.mc-stan.org) (Stan Forums on Discourse)
+* [Open an issue](https://github.com/stan-dev/bayesplot/issues) (GitHub issues for bug reports, feature requests)
 
 ### Installation
 
