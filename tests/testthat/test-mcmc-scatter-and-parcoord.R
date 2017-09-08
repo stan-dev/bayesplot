@@ -37,6 +37,15 @@ test_that("mcmc_scatter & mcmc_hex throw error if only 1 parameter", {
   expect_error(mcmc_hex(chainlist1), "exactly 2 parameters")
 })
 
+test_that("mcmc_scatter accepts NUTS info", {
+  expect_gg(mcmc_scatter(post, pars = c("wt", "sigma"), np = np))
+
+  div_style <- scatter_style_np(div_color = "orange", div_size = 2,
+                                div_shape = 3, div_alpha = 0.5)
+  g <- mcmc_scatter(post, pars = c("wt", "sigma"), np = np, np_style = div_style)
+  expect_gg(g)
+  expect_named(g$data, c("x", "y", "Divergent"))
+})
 
 
 # mcmc_pairs  -------------------------------------------------------------
@@ -149,10 +158,11 @@ test_that("mcmc_pairs throws correct warnings and errors", {
 test_that("pairs_style_np returns correct structure", {
   style <- pairs_style_np(div_size = 3, td_color = "gray", td_shape = 1)
   expect_s3_class(style, "nuts_style")
-  expect_named(style, c("color", "shape", "size"), ignore.order = TRUE)
+  expect_named(style, c("color", "shape", "size", "alpha"), ignore.order = TRUE)
   expect_named(style$color, c("div", "td"))
   expect_named(style$size, c("div", "td"))
   expect_named(style$shape, c("div", "td"))
+  expect_named(style$alpha, c("div", "td"))
 })
 
 test_that("pairs_style_np throws correct errors", {

@@ -4,6 +4,8 @@
 
 * New plotting function `mcmc_parcoord()` for parallel coordinates plots of 
   MCMC draws (optionally including HMC/NUTS diagnostic information). (#108)
+* `mcmc_scatter` gains an `np` argument for specifying NUTS parameters, which
+  allows highlighting divergences in the plot. (#112)
 * New functions with names ending with suffix `_data` don't make the plots, 
   they just return the data prepared for plotting (more of these to come in 
   future releases):
