@@ -427,8 +427,21 @@ In the plot above we can see the for the centered parameterization the divergenc
 occur when $\tau$, the hierarchical standard deviation, goes to zero and
 the values of the $\theta$s are essentially fixed. 
 
-The `mcmc_pairs` function can also be used to look at the divergences. Examples
-are provided at `help("mcmc_pairs")`.
+Using the `mcmc_scatter` function (with optional argument `np`) we can 
+look at a bivariate plot of `tau` and one of the `theta` parameters.
+
+```{r, mcmc_scatter-1}
+mcmc_scatter(
+  posterior_cp, 
+  pars = c("theta[1]", "tau"), 
+  transform = list(tau = "log"), # actually show log(tau)
+  np = np_cp
+)
+```
+
+Finally, the `mcmc_pairs` function can be used also be used to look at the
+divergences (as well as other HMC/NUTS diagnostics). Examples are provided at
+`help("mcmc_pairs")`.
 
 ### Energy and Bayesian fraction of missing information
 
@@ -444,6 +457,7 @@ The plot created by `mcmc_nuts_energy` shows overlaid histograms of the
 (centered) marginal energy distribution $\pi_E$ and the first-differenced 
 distribution $\pi_{\Delta E}$,
 ```{r, mcmc_nuts_energy-1, message=FALSE}
+color_scheme_set("red")
 mcmc_nuts_energy(np_cp)
 ```
 

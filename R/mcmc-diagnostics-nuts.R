@@ -102,8 +102,10 @@
 #'  trace plot.
 #'  \item \code{\link{mcmc_parcoord}}: change the color/size/transparency of
 #'  lines correspondending to divergences.
-#'  \item \code{\link{mcmc_pairs}} change the color/size/shape of points
-#'  indicating divergences and/or max treedepth saturation.
+#'  \item \code{\link{mcmc_scatter}}: change the color/size/shape of points
+#'  corresponding to divergences.
+#'  \item \code{\link{mcmc_pairs}}: change the color/size/shape of points
+#'  corresponding divergences and/or max treedepth saturation.
 #'  }
 #' }
 #'

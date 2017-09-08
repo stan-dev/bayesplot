@@ -75,6 +75,8 @@
 #'   }
 #' }
 #'
+#' @template reference-vis-paper
+#'
 #' @examples
 #' library("ggplot2")
 #'
