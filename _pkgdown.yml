@@ -28,18 +28,21 @@ navbar:
   right:
    - icon: fa-twitter
      href: https://twitter.com/mcmc_stan
-   - text: "github"
-     icon: fa-github fa-lg
+   - icon: fa-github
      href: https://github.com/stan-dev/bayesplot
-   - text: "forum"
-     icon: fa-users
+   - icon: fa-users
      href: http://discourse.mc-stan.org/
+
+home:
+  links:
+  - text: Ask a question
+    href: http://discourse.mc-stan.org/
 
 articles:
   - title: "Getting Started"
     desc: >
       These vignettes provide an introduction to visualizing MCMC draws and
-      diagnostics and performing graphical posterior predictive checks using 
+      diagnostics and performing graphical posterior predictive checks using
       the **bayesplot** package.
     contents:
       - plotting-mcmc-draws
@@ -72,7 +75,7 @@ reference:
     desc: >
       Functions for plotting diagnostics specific to Hamiltonian Monte Carlo (HMC)
       and the No-U-Turn Sampler (NUTS). Some of the general MCMC plotting functions
-      (`mcmc_parcoord`, `mcmc_pairs`, `mcmc_scatter`, `mcmc_trace`) can also 
+      (`mcmc_parcoord`, `mcmc_pairs`, `mcmc_scatter`, `mcmc_trace`) can also
       show HMC/NUTS diagnostic information if optional arguments are specified,
       but the special functions below are _only_ intended for use with HMC/NUTS.
     contents:
@@ -95,3 +98,4 @@ reference:
       - bayesplot-extractors
       - example-data
       - available_ppc
+

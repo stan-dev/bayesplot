@@ -148,8 +148,8 @@ mcmc_scatter(
 ```
 
 <div style="text-align:center">
-<a href="https://github.com/stan-dev/bayesplot/blob/master/images/mcmc_scatter-rstan.png">
-<img src=https://github.com/stan-dev/bayesplot/blob/master/images/mcmc_scatter-rstan.png width=50% />
+<a href="https://raw.githubusercontent.com/stan-dev/bayesplot/master/images/mcmc_scatter-rstan.png">
+<img src=https://raw.githubusercontent.com/stan-dev/bayesplot/master/images/mcmc_scatter-rstan.png width=50% />
 </a>
 </div>
 
