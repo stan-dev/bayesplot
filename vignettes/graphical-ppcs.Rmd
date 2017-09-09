@@ -5,6 +5,7 @@ date: "`r Sys.Date()`"
 output: 
   rmarkdown::html_vignette:
     toc: true
+    toc_depth: 3
 vignette: >
   %\VignetteIndexEntry{Graphical posterior predictive checks}
   %\VignetteEngine{knitr::rmarkdown}
@@ -18,41 +19,30 @@ library("ggplot2")
 library("rstanarm")
 ```
 
+## Introduction
+
 This vignette focuses on graphical posterior predictive checks (PPC). Plots of parameter estimates
 from MCMC draws are covered in the separate vignette
-[Plotting MCMC draws using the bayesplot package](MCMC.html), 
-and MCMC diagnostics are covered in 
-[Visual MCMC diagnostics using the bayesplot package](MCMC-diagnostics.html).
+[_Plotting MCMC draws_](http://mc-stan.org/bayesplot/articles/plotting-mcmc-draws.html),
+and MCMC diagnostics are covered in the
+[_Visual MCMC diagnostics_](http://mc-stan.org/bayesplot/articles/visual-mcmc-diagnostics.html)
+vignette.
 
-In addition to **bayesplot** we'll load the following packages: 
-
-* __ggplot2__ for customizing the ggplot objects created by **bayesplot**
-* __rstanarm__ for fitting the example models used throughout the vignette
-
-```{r, eval=FALSE}
-library("bayesplot")
-library("ggplot2")
-library("rstanarm")      
-```
-
-## Overview
+### Graphical posterior predictive checks
 
 The **bayesplot** package provides various plotting functions for 
 _graphical posterior predictive checking_, that is, creating graphical displays
 comparing observed data to simulated data from the posterior predictive
 distribution.
 
-The idea behind posterior predictive checking is simple: if a model is a good
-fit then we should be able to use it to generate data that looks a lot like the
-data we observed.
-
-#### Posterior predictive distribution
-To generate the data used for posterior predictive checks (PPCs) we simulate 
-from the _posterior predictive distribution_ The posterior predictive 
-distribution is the distribution of the outcome variable implied by a model 
-after using the observed data $y$ (a vector of $N$ outcome values) to update our
-beliefs about unknown model parameters $\theta$. The posterior predictive 
-distribution for observation $\widetilde{y}$ can be written as
+The idea behind posterior predictive checking is simple: if a model is a good 
+fit then we should be able to use it to generate data that looks a lot like the 
+data we observed. To generate the data used for posterior predictive checks
+(PPCs) we simulate from the _posterior predictive distribution_. This is the
+distribution of the outcome variable implied by a model after using the observed
+data $y$ (a vector of $N$ outcome values) to update our beliefs about unknown
+model parameters $\theta$. The posterior predictive distribution for observation
+$\widetilde{y}$ can be written as
 $$p(\widetilde{y} \,|\, y) = \int
 p(\widetilde{y} \,|\, \theta) \, p(\theta \,|\, y) \, d\theta.$$
 Typically we will also condition on $X$ (a matrix of predictor variables).
@@ -72,14 +62,27 @@ replications of the outcome $y$ rather than predictions for future observations
 notation from Gelman et. al. (2013) and is the notation used throughout the
 package documentation.
 
-
-## Graphical posterior predictive checks
-
 Using the replicated datasets drawn from the posterior predictive
 distribution, the functions in the **bayesplot** package create various
 graphical displays comparing the observed data $y$ to the replications.
 The names of the **bayesplot** plotting functions for posterior predictive
 checking all have the prefix `ppc_`. 
+
+### Setup
+
+In addition to **bayesplot** we'll load the following packages: 
+
+* __ggplot2__, in case we want to customize the ggplot objects created by __bayesplot__
+* __rstanarm__, for fitting the example models used throughout the vignette
+
+```{r, eval=FALSE}
+library("bayesplot")
+library("ggplot2")
+library("rstanarm")      
+```
+
+
+### Example models 
 
 To demonstrate some of the various PPCs that can be created with the
 **bayesplot** package we'll use an example of comparing Poisson and Negative
@@ -105,8 +108,9 @@ fit_poisson <- stan_glm(
   offset = log(exposure2),
   family = poisson(link = "log"),
   data = roaches,
-  seed = 1111
-  )
+  seed = 1111,
+  QR = TRUE
+)
 ```
 
 ```{r, roaches-model, include=FALSE}
@@ -137,29 +141,42 @@ print(fit_nb)
 ```
 
 In order to use the PPC functions from the **bayesplot** package we need
-a matrix of draws from the posterior predictive distribution. Since we fit 
-the models using __rstanarm__ we can use its `posterior_predict` function:
+a vector of outcome values `y`,
 
-```{r, posterior_predict}
+```{r, y}
+y <- roaches$y
+```
+
+and matrix `yrep` of draws from the posterior predictive distribution,
+```{r, yrep}
 yrep_poisson <- posterior_predict(fit_poisson, draws = 500)
 yrep_nb <- posterior_predict(fit_nb, draws = 500)
 dim(yrep_poisson)
 dim(yrep_nb)
 ```
 
-For each of the `yrep` matrices, every row is a draw from the posterior 
-predictive distribution, i.e. a vector with one element 
-for each of the data points in `y`.
+Each row of the matrix is a draw from the posterior predictive distribution,
+i.e. a vector with one element for each of the data points in `y`.
 
-### Histograms and density estimates
+Since we fit the models using __rstanarm__ we used its special 
+`posterior_predict` function, but if we were using a model fit with the 
+__rstan__ package we could create `yrep` in the `generated quantities` block of 
+the Stan program or by doing simulations in R after fitting the model. Draws
+from the posterior predictive distribution can be used with **bayesplot** 
+regardless of whether or not the model was fit using an interface to Stan. 
+**bayesplot** just requires a `yrep` matrix that has `number_of_draws` rows and
+`number_of_observations` columns.
+
+
+## Histograms and density estimates
+
+#### ppc_dens_overlay
 
 The first PPC we'll look at is a comparison of the distribution of `y` and the
 distributions of some of the simulated datasets (rows) in the `yrep` matrix.
 
 ```{r ppc_dens_overlay}
-color_scheme_set("brightblue") # see help("bayesplot-colors")
-
-y <- roaches$y
+color_scheme_set("brightblue")
 ppc_dens_overlay(y, yrep_poisson[1:50, ])
 ```
 
@@ -170,8 +187,10 @@ the rows in `yrep`). This plot makes it easy to see that this model fails to
 account for large proportion of zeros in `y`. That is, the model predicts fewer
 zeros than were actually observed.
 
-We could see the same thing by looking at separate histograms of `y` and some 
-of the `yrep` datasets using the `ppc_hist` function:
+#### ppc_hist
+
+We could see the same thing from a different perspective by looking at separate
+histograms of `y` and some of the `yrep` datasets using the `ppc_hist` function:
 
 ```{r ppc_hist, message=FALSE}
 ppc_hist(y, yrep_poisson[1:5, ])
@@ -194,12 +213,14 @@ ppc_hist(y, yrep_nb[1:5, ], binwidth = 20) +
 ```
 
 
-### Distributions of test statistics
+## Distributions of test statistics
 
-Another way to see that the Poisson model predicts too few zeros is to use the 
-`ppc_stat` function to look at the distribution of the proportion of zeros over 
-the replicated datasets from the posterior predictive distribution in `yrep` and
-compare to the proportion of observed zeros in `y`.
+Another way to see that the Poisson model predicts too few zeros is to look at
+the distribution of the proportion of zeros over the replicated datasets from
+the posterior predictive distribution in `yrep` and compare to the proportion of
+observed zeros in `y`.
+
+#### ppc_stat 
 
 First we define a function that takes a vector as input and returns the
 proportion of zeros:
@@ -241,7 +262,7 @@ ppc_stat(y, yrep_nb, stat = "max", binwidth = 100) +
   coord_cartesian(xlim = c(-1, 5000))
 ```
 
-### Other PPCs and PPCs by group
+## Other PPCs and PPCs by group
 
 There are many additional PPCs available, including plots of predictive 
 intervals, distributions of predictive errors, and more. For links to the
@@ -255,9 +276,13 @@ available_ppc()
 
 Many of the available PPCs can also be carried out within levels of a grouping 
 variable. Any function for PPCs by group will have a name ending in `_grouped`
-and will accept an additional argument `group`. For example, `ppc_stat_grouped`
-is the same as `ppc_stat` except that the test statistics are computed within
-levels of the grouping variable and a separate plot is made for each level:
+and will accept an additional argument `group`. 
+
+#### ppc_stat_grouped
+
+For example, `ppc_stat_grouped` is the same as `ppc_stat` except that the test
+statistics are computed within levels of the grouping variable and a separate
+plot is made for each level:
 
 ```{r ppc_stat_grouped, message=FALSE}
 ppc_stat_grouped(y, yrep_nb, group = roaches$treatment, stat = "prop_zero")
@@ -345,7 +370,7 @@ version 1.7.0. https://CRAN.R-project.org/package=brms
 
 Gabry, J., and Goodrich, B. (2017). rstanarm: Bayesian Applied Regression 
 Modeling via Stan. R package version 2.15.3. 
-http://mc-stan.org/users/interfaces/rstanarm.html, https://CRAN.R-project.org/package=rstanarm
+http://mc-stan.org/rstanarm, https://CRAN.R-project.org/package=rstanarm
 
 Gabry, J., Simpson, D., Vehtari, A., Betancourt, M., Gelman, A. (2017).
 Visualization in Bayesian workflow. arXiv preprint 
@@ -356,4 +381,4 @@ D. B. (2013). *Bayesian Data Analysis*. Chapman & Hall/CRC Press, London, third
 edition.
 
 Stan Development Team. (2017). *Stan Modeling Language Users
-Guide and Reference Manual*. http://mc-stan.org/documentation/
+Guide and Reference Manual*. http://mc-stan.org/users/documentation/
