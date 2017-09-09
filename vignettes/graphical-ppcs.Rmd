@@ -238,9 +238,9 @@ ppc_stat(y, yrep_poisson, stat = "prop_zero")
 
 In the plot the dark line is at the value $T(y)$, i.e. the value of the test
 statistic computed from the observed $y$, in this case `prop_zero(y)`. 
-It's hard to see because almost all the datasets in
-`yrep` have no zeros, but the lighter bar is actually a histogram of the the
-proportion of zeros in each of the replicated datasets.
+It's hard to see because almost all the datasets in `yrep` have no zeros, but
+the lighter bar is actually a histogram of the proportion of zeros in each of
+the replicated datasets.
 
 Here's the same plot for the negative binomial model:
 
@@ -323,15 +323,20 @@ user the option of two different plots:
 ```{r, pp_check.foo}
 # @param object An object of class "foo".
 # @param type The type of plot.
-# @param ... Optional arguments passed to the bayesplot plotting function.
+# @param ... Optional arguments passed on to the bayesplot plotting function.
 pp_check.foo <- function(object, type = c("multiple", "overlaid"), ...) {
+  type <- match.arg(type)
   y <- object[["y"]]
   yrep <- object[["yrep"]]
-  switch(
-    match.arg(type),
-    multiple = ppc_hist(y, yrep[1:min(5, nrow(yrep)),, drop = FALSE], ...),
-    overlaid = ppc_dens_overlay(y, yrep, ...)
-  )
+  stopifnot(nrow(yrep) >= 50)
+  samp <- sample(nrow(yrep), size = ifelse(type == "overlaid", 50, 5))
+  yrep <- yrep[samp, ]
+  
+  if (type == "overlaid") {
+    ppc_dens_overlay(y, yrep, ...) 
+  } else {
+    ppc_hist(y, yrep, ...)
+  }
 }
 ```
 
@@ -339,17 +344,12 @@ To try out `pp_check.foo` we can just make a list with `y` and `yrep` components
 and give it class `foo`:
 
 ```{r, foo-object}
-x <- list(y = rnorm(50), yrep = matrix(rnorm(5000), nrow = 100, ncol = 50))
+x <- list(y = rnorm(200), yrep = matrix(rnorm(1e5), nrow = 500, ncol = 200))
 class(x) <- "foo"
 ```
-```{r, pp_check-1, eval=FALSE}
+```{r, pp_check-1, message=FALSE}
 color_scheme_set("purple")
-pp_check(x, type = "multiple", binwidth = 0.25)
-```
-```{r, print-1, echo=FALSE}
-color_scheme_set("purple")
-gg <- pp_check(x, type = "multiple", binwidth = 0.25)
-suppressMessages(print(gg))
+pp_check(x, type = "multiple", binwidth = 0.3)
 ```
 ```{r, pp_check-2}
 color_scheme_set("darkgray")
