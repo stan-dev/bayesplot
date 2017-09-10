@@ -266,7 +266,7 @@ useful when MCMC diagnostic information is included. This is discussed in the
 [_Visual MCMC diagnostics_](http://mc-stan.org/bayesplot/articles/visual-mcmc-diagnostics.html)
 vignette.
 
-## Traceplots 
+## Trace plots 
 
 Trace plots are time series plots of Markov chains. In this vignette 
 we show the standard trace plots that **bayesplot** can make. For models
@@ -279,6 +279,8 @@ to trace plots.
 
 * `help("MCMC-traces")` 
 * [mc-stan.org/bayesplot/reference/MCMC-distributions](http://mc-stan.org/bayesplot/reference/MCMC-traces.html)
+
+-------
 
 #### mcmc_trace
 
