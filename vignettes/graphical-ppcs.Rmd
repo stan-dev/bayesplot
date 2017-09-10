@@ -28,7 +28,7 @@ and MCMC diagnostics are covered in the
 [_Visual MCMC diagnostics_](http://mc-stan.org/bayesplot/articles/visual-mcmc-diagnostics.html)
 vignette.
 
-### Graphical posterior predictive checks
+### Graphical posterior predictive checks (PPCs)
 
 The **bayesplot** package provides various plotting functions for 
 _graphical posterior predictive checking_, that is, creating graphical displays
@@ -59,7 +59,7 @@ observations of those predictors. When we use the same values of $X$ we denote
 the resulting simulations by $y^{rep}$, as they can be thought of as 
 replications of the outcome $y$ rather than predictions for future observations 
 ($\widetilde{y}$ using predictors $\widetilde{X}$). This corresponds to the
-notation from Gelman et. al. (2013) and is the notation used throughout the
+notation from Gelman et al. (2013) and is the notation used throughout the
 package documentation.
 
 Using the replicated datasets drawn from the posterior predictive
@@ -86,10 +86,8 @@ library("rstanarm")
 
 To demonstrate some of the various PPCs that can be created with the
 **bayesplot** package we'll use an example of comparing Poisson and Negative
-binomial regression models from the
-[**rstanarm**](https://CRAN.R-project.org/package=rstanarm) 
-package vignette 
-[_stan_glm: GLMs for Count Data_](https://CRAN.R-project.org/package=rstanarm/vignettes/count.html) 
+binomial regression models from one of the
+**rstanarm** [package vignettes](http://mc-stan.org/rstanarm/articles/count.html) 
 (Gabry and Goodrich, 2017).
 
 > We want to make inferences about the efficacy of a certain pest management system at reducing the number of roaches in urban apartments. [...] The regression predictors for the model are the pre-treatment number of roaches `roach1`, the treatment indicator `treatment`, and a variable `senior` indicating whether the apartment is in a building restricted to elderly residents. Because the number of days for which the roach traps were used is not the same for all apartments in the sample, we include it as an exposure [...]. 
@@ -99,55 +97,42 @@ the roach count in each apartment at the end of the experiment.
 
 ```{r, roaches-data}
 head(roaches) # see help("rstanarm-datasets")
-roaches$roach1 <- roaches$roach1 / 100 # pre-treatment number of roaches (in 100s)
+roaches$roach100 <- roaches$roach1 / 100 # pre-treatment number of roaches (in 100s)
 ```
 
-```{r, eval=FALSE}
+```{r, roaches-model, results='hide', warning=FALSE, message=FALSE}
 fit_poisson <- stan_glm(
-  y ~ roach1 + treatment + senior,
-  offset = log(exposure2),
-  family = poisson(link = "log"),
-  data = roaches,
-  seed = 1111,
-  QR = TRUE
-)
-```
-
-```{r, roaches-model, include=FALSE}
-fit_poisson <- stan_glm(
-  y ~ roach1 + treatment + senior,
+  y ~ roach100 + treatment + senior,
   offset = log(exposure2),
   family = poisson(link = "log"),
   data = roaches,
   seed = 1111
-  )
+)
 ```
 
 ```{r, print}
 print(fit_poisson)
 ```
 
-We'll also fit the negative binomial model that we'll compare to the poisson:
+We'll also fit the negative binomial model that we'll compare to the Poisson:
 
-```{r, eval=FALSE}
+```{r, results='hide', warning=FALSE, message=FALSE}
 fit_nb <- update(fit_poisson, family = "neg_binomial_2")
 ```
-```{r, roaches-model-2, include=FALSE}
-fit_nb <- update(fit_poisson, family = "neg_binomial_2")
-```
+
 
 ```{r, print-2}
 print(fit_nb)
 ```
 
 In order to use the PPC functions from the **bayesplot** package we need
-a vector of outcome values `y`,
+a vector `y` of outcome values,
 
 ```{r, y}
 y <- roaches$y
 ```
 
-and matrix `yrep` of draws from the posterior predictive distribution,
+and a matrix `yrep` of draws from the posterior predictive distribution,
 ```{r, yrep}
 yrep_poisson <- posterior_predict(fit_poisson, draws = 500)
 yrep_nb <- posterior_predict(fit_nb, draws = 500)
@@ -181,11 +166,11 @@ ppc_dens_overlay(y, yrep_poisson[1:50, ])
 ```
 
 In the plot above, the dark line is the distribution of the observed outcomes 
-`y` and each of the 50 lighter lines is the kernel density estimate of one of
+`y` and each of the 50 lighter lines is the kernel density estimate of one of 
 the replications of `y` from the posterior predictive distribution (i.e., one of
-the rows in `yrep`). This plot makes it easy to see that this model fails to
-account for large proportion of zeros in `y`. That is, the model predicts fewer
-zeros than were actually observed.
+the rows in `yrep`). This plot makes it easy to see that this model fails to 
+account for the large proportion of zeros in `y`. That is, the model predicts
+fewer zeros than were actually observed.
 
 #### ppc_hist
 
@@ -230,17 +215,20 @@ prop_zero <- function(x) mean(x == 0)
 prop_zero(y) # check proportion of zeros in y
 ```
 
-Then we can use this function as the `stat` argument to `ppc_stat`:
+The `stat` argument to `ppc_stat` accepts a function or the name of a function 
+for computing a test statistic from a vector of data. In our case we can specify
+`stat = "prop_zero"` since we've already defined the `prop_zero` function, but
+we also could have used `stat = function(x) mean(x == 0)`.
 
 ```{r ppc_stat, message=FALSE}
-ppc_stat(y, yrep_poisson, stat = "prop_zero")
+ppc_stat(y, yrep_poisson, stat = "prop_zero", binwidth = 0.005)
 ```
 
-In the plot the dark line is at the value $T(y)$, i.e. the value of the test
-statistic computed from the observed $y$, in this case `prop_zero(y)`. 
-It's hard to see because almost all the datasets in `yrep` have no zeros, but
-the lighter bar is actually a histogram of the proportion of zeros in each of
-the replicated datasets.
+The dark line is at the value $T(y)$, i.e. the value of the test statistic
+computed from the observed $y$, in this case `prop_zero(y)`. The lighter area on
+the left is actually a histogram of the proportion of zeros in in the `yrep`
+simulations, but it can be hard to see because almost none of the simulated
+datasets in `yrep` have any zeros.
 
 Here's the same plot for the negative binomial model:
 
@@ -252,7 +240,7 @@ Again we see that the negative binomial model does a much better job
 predicting the proportion of observed zeros than the Poisson.
 
 However, if we look instead at the distribution of the maximum value in the 
-replications then we can see that the Poisson model makes more realistic 
+replications, we can see that the Poisson model makes more realistic 
 predictions than the negative binomial:
 
 ```{r ppc_stat-max, message=FALSE}
@@ -266,9 +254,11 @@ ppc_stat(y, yrep_nb, stat = "max", binwidth = 100) +
 
 There are many additional PPCs available, including plots of predictive 
 intervals, distributions of predictive errors, and more. For links to the
-documentation for all of the various PPC plots see `help("PPC-overview")`. The
-`available_ppc` function can also be used to list the names of all PPC plotting
-functions:
+documentation for all of the various PPC plots see `help("PPC-overview")`
+from R or the [online documentation](http://mc-stan.org/bayesplot/reference/index.html#section-ppc) on the Stan website. 
+
+The `available_ppc` function can also be used to list the names of all PPC
+plotting functions:
 
 ```{r, available_ppc}
 available_ppc()
@@ -276,22 +266,23 @@ available_ppc()
 
 Many of the available PPCs can also be carried out within levels of a grouping 
 variable. Any function for PPCs by group will have a name ending in `_grouped`
-and will accept an additional argument `group`. 
+and will accept an additional argument `group`. The full list of currently 
+available `_grouped` functions is:
+
+```{r, available_ppc-grouped}
+available_ppc(pattern = "_grouped")
+```
 
 #### ppc_stat_grouped
 
 For example, `ppc_stat_grouped` is the same as `ppc_stat` except that the test
-statistics are computed within levels of the grouping variable and a separate
+statistic is computed within levels of the grouping variable and a separate
 plot is made for each level:
 
 ```{r ppc_stat_grouped, message=FALSE}
 ppc_stat_grouped(y, yrep_nb, group = roaches$treatment, stat = "prop_zero")
 ```
 
-The full list of currently available `_grouped` functions is:
-```{r, available_ppc-grouped}
-available_ppc(pattern = "_grouped")
-```
 
 
 ## Providing an interface to bayesplot PPCs from another package

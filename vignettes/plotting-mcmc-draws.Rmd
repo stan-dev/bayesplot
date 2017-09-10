@@ -268,12 +268,12 @@ vignette.
 
 ## Traceplots 
 
-Traceplots are time series plots of Markov chains. In this vignette 
-we show the standard traceplots that **bayesplot** can make. For models
+Trace plots are time series plots of Markov chains. In this vignette 
+we show the standard trace plots that **bayesplot** can make. For models
 fit using any Stan interface (or Hamiltonian Monte Carlo in general), the 
 [_Visual MCMC diagnostics_](http://mc-stan.org/bayesplot/articles/visual-mcmc-diagnostics.html)
 vignette provides an example of also adding information about divergences
-to traceplots.
+to trace plots.
 
 **Documentation:**
 
@@ -282,7 +282,7 @@ to traceplots.
 
 #### mcmc_trace
 
-The `mcmc_trace` function creates standard traceplots:
+The `mcmc_trace` function creates standard trace plots:
 
 ```{r, mcmc_trace}
 color_scheme_set("blue")
@@ -300,12 +300,12 @@ mcmc_trace(posterior, pars = c("wt", "sigma"),
 
 The code above also illustrates the use of the `facet_args` argument, which is a
 list of parameters passed to `facet_wrap` in __ggplot2__. Specifying `ncol=1`
-means the traceplots will be stacked in a single column rather than placed side
+means the trace plots will be stacked in a single column rather than placed side
 by side, and `strip.position="left"` moves the facet labels to the y-axis
 (instead of above each facet).
 
 The [`"viridis"` color scheme](https://CRAN.R-project.org/package=viridis) is
-also useful for traceplots because it is comprised of very distinct colors:
+also useful for trace plots because it is comprised of very distinct colors:
 
 ```{r, viridis-scheme}
 color_scheme_set("viridis")

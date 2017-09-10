@@ -45,7 +45,7 @@ library("rstan")
 ### Example model
 
 In this vignette we'll use the eight schools example discussed
-in  Rubin (1981), Gelman et al (2013), and the 
+in  Rubin (1981), Gelman et al. (2013), and the 
 [RStan Getting Started](https://github.com/stan-dev/rstan/wiki/RStan-Getting-Started#how-to-use-rstan)
 wiki. This is a simple hierarchical meta-analysis model with data consisting of 
 point estimates `y` and standard errors `sigma` from analyses of test prep 
@@ -94,7 +94,7 @@ This parameterization of the model is referred to as the centered
 parameterization (CP). We'll also fit the same statistical model but using the 
 so-called non-centered parameterization (NCP), which replaces the vector 
 $\theta$ with a vector $\eta$ of a priori _i.i.d._ standard normal parameters 
-and then contructs $\theta$ deterministically from $\eta$ by scaling by $\tau$ 
+and then constructs $\theta$ deterministically from $\eta$ by scaling by $\tau$ 
 and shifting by $\mu$:
 $$
 \begin{align*}
@@ -431,7 +431,7 @@ mcmc_nuts_divergence(np_ncp, lp_ncp)
 
 If there are only a few divergences we can often get rid of them by increasing
 the target acceptance rate (`adapt_delta`), which has the effect of lowering the
-stepsize used by the sampler and allowing the Markov chains to explore more
+step size used by the sampler and allowing the Markov chains to explore more
 complicated curvature in the target distribution.
 
 ```{r, fit-adapt-delta, results='hide', message=FALSE}
@@ -518,7 +518,7 @@ compare_cp_ncp(
 ```
 
 The difference between the parameterizations is even more apparent if we force 
-the stepsize to a smaller value and help the chains explore more of the 
+the step size to a smaller value and help the chains explore more of the 
 posterior:
 
 ```{r, mcmc_nuts_energy-4, message=FALSE,  fig.width=8}
