@@ -1,7 +1,7 @@
-#' Traceplot (time series plot) of MCMC draws
+#' Trace plot (time series plot) of MCMC draws
 #'
-#' Traceplot of MCMC draws. See the \strong{Plot Descriptions} section, below,
-#' for details.
+#' Trace plot (or traceplot) of MCMC draws. See the \strong{Plot Descriptions}
+#' section, below, for details.
 #'
 #' @name MCMC-traces
 #' @family MCMC
@@ -29,7 +29,7 @@
 #'   integrator}), an optional data frame providing NUTS diagnostic
 #'   information. The data frame should be the object returned by
 #'   \code{\link{nuts_params}} or one with the same structure. If \code{np} is
-#'   specified then tick marks are added to the bottom of the traceplot
+#'   specified then tick marks are added to the bottom of the trace plot
 #'   indicating within which iterations there was a divergence (if there were any).
 #'   See the end of the \strong{Examples} section, below.
 #' @param np_style A call to the \code{trace_style_np} helper function to
@@ -42,8 +42,8 @@
 #' @section Plot Descriptions:
 #' \describe{
 #'   \item{\code{mcmc_trace}}{
-#'    Standard traceplots of MCMC draws. For models fit using \code{\link{NUTS}},
-#'    the \code{np} argument can be used to also show divergences on the traceplot.
+#'    Standard trace plots of MCMC draws. For models fit using \code{\link{NUTS}},
+#'    the \code{np} argument can be used to also show divergences on the trace plot.
 #'   }
 #'   \item{\code{mcmc_trace_highlight}}{
 #'    Traces are plotted using points rather than lines and the opacity of all
@@ -57,7 +57,7 @@
 #' dim(x)
 #' dimnames(x)
 #'
-#' # traceplots of the betas
+#' # trace plots of the betas
 #' color_scheme_set("viridis")
 #' mcmc_trace(x, regex_pars = "beta")
 #' \donttest{
@@ -100,14 +100,14 @@
 #' color_scheme_set("brightblue")
 #' mcmc_trace_highlight(x, pars = "sigma", highlight = 2, size = 2)
 #'
-#' # for models fit using HMC/NUTS divergences can be displayed in the traceplot
+#' # for models fit using HMC/NUTS divergences can be displayed in the trace plot
 #' library("rstanarm")
 #' fit <- stan_glm(mpg ~ ., data = mtcars,
 #'   # next line to keep example fast and also ensure we get some divergences
 #'                 prior = hs(), iter = 400, adapt_delta = 0.8)
 #'
 #' # extract draws using as.array (instead of as.matrix) to keep
-#' # chains separate for traceplot
+#' # chains separate for trace plot
 #' posterior <- as.array(fit)
 #'
 #' # for stanfit and stanreg objects use nuts_params() to get the divergences
@@ -375,7 +375,7 @@ chain_colors <- function(n) {
 }
 
 
-# Add divergences to traceplot using geom_rug
+# Add divergences to trace plot using geom_rug
 #
 # @param np User's 'np' argument, if specified.
 # @param np_style User's 'np_style' argument, if specified.
