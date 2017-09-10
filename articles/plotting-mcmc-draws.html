@@ -99,27 +99,34 @@
       <h1>Plotting MCMC draws using the bayesplot package</h1>
                         <h4 class="author">Jonah Gabry</h4>
             
-            <h4 class="date">2017-09-08</h4>
+            <h4 class="date">2017-09-09</h4>
           </div>
 
     
     
 <div class="contents">
-<p>This vignette focuses on plotting parameter estimates from MCMC draws. MCMC diagnostic plots and graphical posterior predictive checks are covered in separate vignettes.</p>
+<div id="introduction" class="section level2">
+<h2 class="hasAnchor">
+<a href="#introduction" class="anchor"></a>Introduction</h2>
+<p>This vignette focuses on plotting parameter estimates from MCMC draws. MCMC diagnostic plots are covered in the separate vignette <a href="http://mc-stan.org/bayesplot/articles/visual-mcmc-diagnostics.html"><em>Visual MCMC diagnostics</em></a>, and graphical posterior predictive model checking is covered in the vignette <a href="http://mc-stan.org/bayesplot/articles/graphical-ppcs.html"><em>Graphical posterior predictive checks</em></a>.</p>
+<div id="setup" class="section level3">
+<h3 class="hasAnchor">
+<a href="#setup" class="anchor"></a>Setup</h3>
 <p>In addition to <strong>bayesplot</strong> we’ll load the following packages:</p>
 <ul>
 <li>
-<strong>ggplot2</strong> for customizing the ggplot objects created by <strong>bayesplot</strong>
+<strong>ggplot2</strong>, in case we want to customize the ggplot objects created by <strong>bayesplot</strong>
 </li>
 <li>
-<strong>rstanarm</strong> for fitting the example models used throughout the vignette</li>
+<strong>rstanarm</strong>, for fitting the example models used throughout the vignette</li>
 </ul>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">"bayesplot"</span>)
 <span class="kw">library</span>(<span class="st">"ggplot2"</span>)
 <span class="kw">library</span>(<span class="st">"rstanarm"</span>)      </code></pre></div>
-<div id="plots-for-mcmc-draws" class="section level2">
-<h2 class="hasAnchor">
-<a href="#plots-for-mcmc-draws" class="anchor"></a>Plots for MCMC draws</h2>
+</div>
+<div id="example-model" class="section level3">
+<h3 class="hasAnchor">
+<a href="#example-model" class="anchor"></a>Example model</h3>
 <p>The <strong>bayesplot</strong> package provides various plotting functions for visualizing Markov chain Monte Carlo (MCMC) draws from the posterior distribution of the parameters of a Bayesian model.</p>
 <p>In this vignette we’ll use draws obtained using the <code>stan_glm</code> function in the <strong>rstanarm</strong> package (Gabry and Goodrich, 2017), but MCMC draws from using any package can be used with the functions in the <strong>bayesplot</strong> package. See, for example, <strong>brms</strong>, which, like <strong>rstanarm</strong>, calls the <strong>rstan</strong> package internally to use <a href="http://mc-stan.org/">Stan</a>’s MCMC sampler.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(mtcars) <span class="co"># see help("mtcars")</span></code></pre></div>
@@ -130,9 +137,9 @@ Datsun 710        22.8   4  108  93 3.85 2.320 18.61  1  1    4    1
 Hornet 4 Drive    21.4   6  258 110 3.08 3.215 19.44  1  0    3    1
 Hornet Sportabout 18.7   8  360 175 3.15 3.440 17.02  0  0    3    2
 Valiant           18.1   6  225 105 2.76 3.460 20.22  1  0    3    1</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fit &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/rstanarm/topics/stan_glm">stan_glm</a></span>(mpg ~<span class="st"> </span>.,  <span class="co"># '.' means includes all variables</span>
-                <span class="dt">data =</span> mtcars, 
-                <span class="dt">seed =</span> <span class="dv">1111</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># linear regression model using stan_glm</span>
+<span class="co"># using '~ .' to include all variables</span>
+fit &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/rstanarm/topics/stan_glm">stan_glm</a></span>(mpg ~<span class="st"> </span>., <span class="dt">data =</span> mtcars, <span class="dt">seed =</span> <span class="dv">1111</span>)
 <span class="kw">print</span>(fit)</code></pre></div>
 <pre><code>stan_glm
  family:   gaussian [identity]
@@ -142,17 +149,17 @@ Valiant           18.1   6  225 105 2.76 3.460 20.22  1  0    3    1</code></pre
 
 Estimates:
             Median MAD_SD
-(Intercept) 12.8   18.8  
+(Intercept) 12.2   19.9  
 cyl         -0.1    1.1  
 disp         0.0    0.0  
 hp           0.0    0.0  
 drat         0.8    1.7  
-wt          -3.6    1.9  
-qsec         0.8    0.7  
-vs           0.3    2.2  
-am           2.4    2.1  
+wt          -3.7    2.0  
+qsec         0.8    0.8  
+vs           0.3    2.1  
+am           2.5    2.0  
 gear         0.7    1.5  
-carb        -0.2    0.8  
+carb        -0.2    0.9  
 sigma        2.7    0.4  
 
 Sample avg. posterior predictive 
@@ -177,17 +184,30 @@ $parameters
  [1] "(Intercept)" "cyl"         "disp"        "hp"          "drat"       
  [6] "wt"          "qsec"        "vs"          "am"          "gear"       
 [11] "carb"        "sigma"      </code></pre>
-<div id="interval-estimates" class="section level3">
-<h3 class="hasAnchor">
-<a href="#interval-estimates" class="anchor"></a>Interval estimates</h3>
-<p>Posterior intervals for the parameters can be plotted using the <code>mcmc_intervals</code> function.</p>
+<p>We’ve used <code>as.array</code> above (as opposed to <code>as.matrix</code>) because it keeps the Markov chains separate (<code>stan_glm</code> runs four chains by default). Most of the plots don’t actually need the chains to be separate, but for a few of the plots we make in this vignette we’ll want to show the chains individually.</p>
+</div>
+</div>
+<div id="posterior-uncertainty-intervals" class="section level2">
+<h2 class="hasAnchor">
+<a href="#posterior-uncertainty-intervals" class="anchor"></a>Posterior uncertainty intervals</h2>
+<p>For models fit using MCMC we can compute posterior uncertainty intervals (sometimes called “credible intervals”) in various ways. <strong>bayesplot</strong> currently provides plots of central intervals based on quantiles, although additional options may be provided in future releases (e.g., HDIs, which can be useful in particular cases).</p>
+<p><strong>Documentation:</strong></p>
+<ul>
+<li><code>help("MCMC-intervals")</code></li>
+<li><a href="http://mc-stan.org/bayesplot/reference/MCMC-intervals.html">mc-stan.org/bayesplot/reference/MCMC-intervals</a></li>
+</ul>
+<hr>
+<div id="mcmc_intervals-mcmc_areas" class="section level4">
+<h4 class="hasAnchor">
+<a href="#mcmc_intervals-mcmc_areas" class="anchor"></a>mcmc_intervals, mcmc_areas</h4>
+<p>Central posterior uncertainty intervals can be plotted using the <code>mcmc_intervals</code> function.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/bayesplot-colors.html">color_scheme_set</a></span>(<span class="st">"red"</span>)
 <span class="kw"><a href="../reference/MCMC-intervals.html">mcmc_intervals</a></span>(posterior, <span class="dt">pars =</span> <span class="kw">c</span>(<span class="st">"cyl"</span>, <span class="st">"drat"</span>, <span class="st">"am"</span>, <span class="st">"sigma"</span>))</code></pre></div>
 <p><img src="plotting-mcmc-draws_files/figure-html/mcmc_intervals-1.png" width="60%" style="display: block; margin: auto;"></p>
-<p>The default is to show 50% intervals (the thick lines) and 90% intervals (the thinner outer lines). These defaults can be changed using the <code>prob</code> and <code>prob_outer</code> arguments, respectively. The points in the above plot are posterior medians. The <code>point_est</code> argument can be used to select posterior means instead or to omit the point estimates.</p>
-<p>To show the uncertainty intervals as shaded areas under the estimated posterior density curves we can use the <code>mcmc_areas</code> function:</p>
+<p>The default is to show 50% intervals (the thick segments) and 90% intervals (the thinner outer lines). These defaults can be changed using the <code>prob</code> and <code>prob_outer</code> arguments, respectively. The points in the above plot are posterior medians. The <code>point_est</code> argument can be used to select posterior means instead or to omit the point estimates.</p>
+<p>To show the uncertainty intervals as shaded areas under the estimated posterior density curves we can use the <code>mcmc_areas</code> function.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/MCMC-intervals.html">mcmc_areas</a></span>(
-  posterior, 
+  posterior,
   <span class="dt">pars =</span> <span class="kw">c</span>(<span class="st">"cyl"</span>, <span class="st">"drat"</span>, <span class="st">"am"</span>, <span class="st">"sigma"</span>),
   <span class="dt">prob =</span> <span class="fl">0.8</span>, <span class="co"># 80% intervals</span>
   <span class="dt">prob_outer =</span> <span class="fl">0.99</span>, <span class="co"># 99%</span>
@@ -195,59 +215,131 @@ $parameters
 )</code></pre></div>
 <p><img src="plotting-mcmc-draws_files/figure-html/mcmc_areas-1.png" width="60%" style="display: block; margin: auto;"></p>
 </div>
-<div id="histograms-and-density-estimates" class="section level3">
-<h3 class="hasAnchor">
-<a href="#histograms-and-density-estimates" class="anchor"></a>Histograms and density estimates</h3>
-<p>Histograms or kernel density estimates of posterior distributions of the various model parameters can be visualized using the functions described on the <code>MCMC-distributions</code> page in the <strong>bayesplot</strong> documentation.</p>
-<div id="histograms" class="section level4">
+</div>
+<div id="univariate-marginal-posterior-distributions" class="section level2">
+<h2 class="hasAnchor">
+<a href="#univariate-marginal-posterior-distributions" class="anchor"></a>Univariate marginal posterior distributions</h2>
+<p><strong>bayesplot</strong> provides functions for looking at histograms or kernel density estimates of marginal posterior distributions, either with all Markov chains combined or with the chains separate.</p>
+<p><strong>Documentation:</strong></p>
+<ul>
+<li><code>help("MCMC-distributions")</code></li>
+<li><a href="http://mc-stan.org/bayesplot/reference/MCMC-distributions.html">mc-stan.org/bayesplot/reference/MCMC-distributions</a></li>
+</ul>
+<hr>
+<div id="mcmc_hist" class="section level4">
 <h4 class="hasAnchor">
-<a href="#histograms" class="anchor"></a>Histograms</h4>
-<p>The <code>mcmc_hist</code> and <code>mcmc_dens</code> functions plot posterior distributions (combining all chains):</p>
+<a href="#mcmc_hist" class="anchor"></a>mcmc_hist</h4>
+<p>The <code>mcmc_hist</code> function plots marginal posterior distributions (combining all chains):</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/bayesplot-colors.html">color_scheme_set</a></span>(<span class="st">"green"</span>)
 <span class="kw"><a href="../reference/MCMC-distributions.html">mcmc_hist</a></span>(posterior, <span class="dt">pars =</span> <span class="kw">c</span>(<span class="st">"wt"</span>, <span class="st">"sigma"</span>))</code></pre></div>
 <p><img src="plotting-mcmc-draws_files/figure-html/mcmc_hist-1.png" width="60%" style="display: block; margin: auto;"></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/MCMC-distributions.html">mcmc_dens</a></span>(posterior, <span class="dt">pars =</span> <span class="kw">c</span>(<span class="st">"wt"</span>, <span class="st">"sigma"</span>))</code></pre></div>
-<p><img src="plotting-mcmc-draws_files/figure-html/mcmc_hist-2.png" width="60%" style="display: block; margin: auto;"></p>
-<p>To view the four Markov chain separately we can use <code>mcmc_hist_by_chain</code>, <code>mcmc_dens_overlay</code>, and <code>mcmc_violin</code>:</p>
+<p>If we want to plot <code>log(sigma)</code> rather than <code>sigma</code> we can either transform the draws in advance or use the <code>transformations</code> argument.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/bayesplot-colors.html">color_scheme_set</a></span>(<span class="st">"blue"</span>)
+<span class="kw"><a href="../reference/MCMC-distributions.html">mcmc_hist</a></span>(posterior, <span class="dt">pars =</span> <span class="kw">c</span>(<span class="st">"wt"</span>, <span class="st">"sigma"</span>),
+          <span class="dt">transformations =</span> <span class="kw">list</span>(<span class="st">"sigma"</span> =<span class="st"> "log"</span>))</code></pre></div>
+<p><img src="plotting-mcmc-draws_files/figure-html/mcmc_hist-transform-1.png" width="60%" style="display: block; margin: auto;"></p>
+<p>Most of the other functions for plotting MCMC draws also have a <code>transformations</code> argument.</p>
+</div>
+<div id="mcmc_hist_by_chain" class="section level4">
+<h4 class="hasAnchor">
+<a href="#mcmc_hist_by_chain" class="anchor"></a>mcmc_hist_by_chain</h4>
+<p>To view separate histograms of each of the four Markov chains we can use <code>mcmc_hist_by_chain</code>, which plots each chain in a separate facet in the plot.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/bayesplot-colors.html">color_scheme_set</a></span>(<span class="st">"brightblue"</span>)
 <span class="kw"><a href="../reference/MCMC-distributions.html">mcmc_hist_by_chain</a></span>(posterior, <span class="dt">pars =</span> <span class="kw">c</span>(<span class="st">"wt"</span>, <span class="st">"sigma"</span>))</code></pre></div>
 <p><img src="plotting-mcmc-draws_files/figure-html/mcmc_hist_by_chain-1.png" width="60%" style="display: block; margin: auto;"></p>
+</div>
+<div id="mcmc_dens" class="section level4">
+<h4 class="hasAnchor">
+<a href="#mcmc_dens" class="anchor"></a>mcmc_dens</h4>
+<p>The <code>mcmc_dens</code> function is similar to <code>mcmc_hist</code> but plots kernel density estimates instead of histograms.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/bayesplot-colors.html">color_scheme_set</a></span>(<span class="st">"purple"</span>)
+<span class="kw"><a href="../reference/MCMC-distributions.html">mcmc_dens</a></span>(posterior, <span class="dt">pars =</span> <span class="kw">c</span>(<span class="st">"wt"</span>, <span class="st">"sigma"</span>))</code></pre></div>
+<p><img src="plotting-mcmc-draws_files/figure-html/mcmc_dens-1.png" width="60%" style="display: block; margin: auto;"></p>
+</div>
+<div id="mcmc_dens_overlay" class="section level4">
+<h4 class="hasAnchor">
+<a href="#mcmc_dens_overlay" class="anchor"></a>mcmc_dens_overlay</h4>
+<p>Like <code>mcmc_hist_by_chain</code>, the <code>mcmc_dens_overlay</code> function separates the Markov chains. But instead of plotting each chain individually, the density estimates are overlaid.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/MCMC-distributions.html">mcmc_dens_overlay</a></span>(posterior, <span class="dt">pars =</span> <span class="kw">c</span>(<span class="st">"wt"</span>, <span class="st">"sigma"</span>))</code></pre></div>
-<p><img src="plotting-mcmc-draws_files/figure-html/mcmc_hist_by_chain-2.png" width="60%" style="display: block; margin: auto;"></p>
-<p>The <code>mcmc_violin</code> function plots the density estimates of each chain as violins with horizontal lines at user-specified quantiles:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/MCMC-distributions.html">mcmc_violin</a></span>(posterior, <span class="dt">pars =</span> <span class="kw">c</span>(<span class="st">"wt"</span>, <span class="st">"sigma"</span>), <span class="dt">probs =</span> <span class="kw">c</span>(<span class="fl">0.1</span>, <span class="fl">0.5</span>, <span class="fl">0.9</span>))</code></pre></div>
+<p><img src="plotting-mcmc-draws_files/figure-html/mcmc_dens_overlay-1.png" width="60%" style="display: block; margin: auto;"></p>
+</div>
+<div id="mcmc_violin" class="section level4">
+<h4 class="hasAnchor">
+<a href="#mcmc_violin" class="anchor"></a>mcmc_violin</h4>
+<p>The <code>mcmc_violin</code> function plots the density estimates of each chain as violins and draws horizontal line segments at user-specified quantiles.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/bayesplot-colors.html">color_scheme_set</a></span>(<span class="st">"teal"</span>)
+<span class="kw"><a href="../reference/MCMC-distributions.html">mcmc_violin</a></span>(posterior, <span class="dt">pars =</span> <span class="kw">c</span>(<span class="st">"wt"</span>, <span class="st">"sigma"</span>), <span class="dt">probs =</span> <span class="kw">c</span>(<span class="fl">0.1</span>, <span class="fl">0.5</span>, <span class="fl">0.9</span>))</code></pre></div>
 <p><img src="plotting-mcmc-draws_files/figure-html/mcmc_violin-1.png" width="60%" style="display: block; margin: auto;"></p>
 </div>
 </div>
-<div id="scatterplots" class="section level3">
-<h3 class="hasAnchor">
-<a href="#scatterplots" class="anchor"></a>Scatterplots</h3>
-<p>The <code>mcmc_scatter</code> function creates a scatterplot with two parameters:</p>
+<div id="bivariate-plots" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bivariate-plots" class="anchor"></a>Bivariate plots</h2>
+<p>Various functions are available for plotting bivariate marginal posterior distributions. Some of these functions also take optional arguments for adding MCMC diagnostic information to the plots. That additional functionality is discussed in the separate <a href="http://mc-stan.org/bayesplot/articles/visual-mcmc-diagnostics.html"><em>Visual MCMC diagnostics</em></a> vignette.</p>
+<p><strong>Documentation:</strong></p>
+<ul>
+<li><code>help("MCMC-scatterplots")</code></li>
+<li><a href="http://mc-stan.org/bayesplot/reference/MCMC-scatterplots.html">mc-stan.org/bayesplot/reference/MCMC-distributions</a></li>
+</ul>
+<hr>
+<div id="mcmc_scatter" class="section level4">
+<h4 class="hasAnchor">
+<a href="#mcmc_scatter" class="anchor"></a>mcmc_scatter</h4>
+<p>The <code>mcmc_scatter</code> function creates a simple scatterplot of two parameters.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/bayesplot-colors.html">color_scheme_set</a></span>(<span class="st">"gray"</span>)
-<span class="kw"><a href="../reference/MCMC-scatterplots.html">mcmc_scatter</a></span>(posterior, <span class="dt">pars =</span> <span class="kw">c</span>(<span class="st">"(Intercept)"</span>, <span class="st">"wt"</span>), 
+<span class="kw"><a href="../reference/MCMC-scatterplots.html">mcmc_scatter</a></span>(posterior, <span class="dt">pars =</span> <span class="kw">c</span>(<span class="st">"(Intercept)"</span>, <span class="st">"wt"</span>),
              <span class="dt">size =</span> <span class="fl">1.5</span>, <span class="dt">alpha =</span> <span class="fl">0.5</span>)</code></pre></div>
 <p><img src="plotting-mcmc-draws_files/figure-html/mcmc_scatter-1.png" width="60%" style="display: block; margin: auto;"></p>
-<p>The <code>mcmc_hex</code> function creates a similar plot but using hexagonal binning, which can be useful to avoid overplotting:</p>
+</div>
+<div id="mcmc_hex" class="section level4">
+<h4 class="hasAnchor">
+<a href="#mcmc_hex" class="anchor"></a>mcmc_hex</h4>
+<p>The <code>mcmc_hex</code> function creates a similar plot but using hexagonal binning, which can be useful to avoid overplotting.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/MCMC-scatterplots.html">mcmc_hex</a></span>(posterior, <span class="dt">pars =</span> <span class="kw">c</span>(<span class="st">"(Intercept)"</span>, <span class="st">"wt"</span>))</code></pre></div>
 <p><img src="plotting-mcmc-draws_files/figure-html/mcmc_hex-1.png" width="60%" style="display: block; margin: auto;"></p>
-<p><br> In addition to <code>mcmc_scatter</code> and <code>mcmc_hex</code>, <strong>bayesplot</strong> now provides an <code>mcmc_pairs</code> function for creating pairs plots with more than two parameters. See the examples at <code>help("mcmc_pairs")</code>.</p>
 </div>
-<div id="traceplots" class="section level3">
-<h3 class="hasAnchor">
-<a href="#traceplots" class="anchor"></a>Traceplots</h3>
-<p>The <code>mcmc_trace</code> function creates standard traceplots:</p>
+<div id="mcmc_pairs" class="section level4">
+<h4 class="hasAnchor">
+<a href="#mcmc_pairs" class="anchor"></a>mcmc_pairs</h4>
+<p>In addition to <code>mcmc_scatter</code> and <code>mcmc_hex</code>, <strong>bayesplot</strong> now provides an <code>mcmc_pairs</code> function for creating pairs plots with more than two parameters.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/bayesplot-colors.html">color_scheme_set</a></span>(<span class="st">"pink"</span>)
+<span class="kw"><a href="../reference/MCMC-scatterplots.html">mcmc_pairs</a></span>(posterior, <span class="dt">pars =</span> <span class="kw">c</span>(<span class="st">"(Intercept)"</span>, <span class="st">"wt"</span>, <span class="st">"sigma"</span>),
+           <span class="dt">off_diag_args =</span> <span class="kw">list</span>(<span class="dt">size =</span> <span class="fl">1.5</span>))</code></pre></div>
+<p><img src="plotting-mcmc-draws_files/figure-html/mcmc_pairs-1.png" width="60%" style="display: block; margin: auto;"></p>
+<p>The univariate marginal posteriors are shown along the diagonal as histograms, but this can be changed to densities by setting <code>diag_fun="dens"</code>. Bivariate plots are displayed above and below the diagonal as scatterplots, but it is also possible to use hex plots by setting <code>off_diag_fun="hex"</code>. By default, <code>mcmc_pairs</code> shows some of the Markov chains (half, if an even number of chains) above the diagonal and the others below. There are many more options for controlling how the draws should be split between the plots above and below the diagonal (see the documentation for the <code>condition</code> argument), but they are more useful when MCMC diagnostic information is included. This is discussed in the <a href="http://mc-stan.org/bayesplot/articles/visual-mcmc-diagnostics.html"><em>Visual MCMC diagnostics</em></a> vignette.</p>
+</div>
+</div>
+<div id="trace-plots" class="section level2">
+<h2 class="hasAnchor">
+<a href="#trace-plots" class="anchor"></a>Trace plots</h2>
+<p>Trace plots are time series plots of Markov chains. In this vignette we show the standard trace plots that <strong>bayesplot</strong> can make. For models fit using any Stan interface (or Hamiltonian Monte Carlo in general), the <a href="http://mc-stan.org/bayesplot/articles/visual-mcmc-diagnostics.html"><em>Visual MCMC diagnostics</em></a> vignette provides an example of also adding information about divergences to trace plots.</p>
+<p><strong>Documentation:</strong></p>
+<ul>
+<li><code>help("MCMC-traces")</code></li>
+<li><a href="http://mc-stan.org/bayesplot/reference/MCMC-traces.html">mc-stan.org/bayesplot/reference/MCMC-distributions</a></li>
+</ul>
+<hr>
+<div id="mcmc_trace" class="section level4">
+<h4 class="hasAnchor">
+<a href="#mcmc_trace" class="anchor"></a>mcmc_trace</h4>
+<p>The <code>mcmc_trace</code> function creates standard trace plots:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/bayesplot-colors.html">color_scheme_set</a></span>(<span class="st">"blue"</span>)
 <span class="kw"><a href="../reference/MCMC-traces.html">mcmc_trace</a></span>(posterior, <span class="dt">pars =</span> <span class="kw">c</span>(<span class="st">"wt"</span>, <span class="st">"sigma"</span>))</code></pre></div>
 <p><img src="plotting-mcmc-draws_files/figure-html/mcmc_trace-1.png" width="60%" style="display: block; margin: auto;"></p>
 <p>If it’s hard to see the difference between the chains we can change to a mixed color scheme, for example:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/bayesplot-colors.html">color_scheme_set</a></span>(<span class="st">"mix-blue-red"</span>)
-<span class="kw"><a href="../reference/MCMC-traces.html">mcmc_trace</a></span>(posterior, <span class="dt">pars =</span> <span class="kw">c</span>(<span class="st">"wt"</span>, <span class="st">"sigma"</span>), 
+<span class="kw"><a href="../reference/MCMC-traces.html">mcmc_trace</a></span>(posterior, <span class="dt">pars =</span> <span class="kw">c</span>(<span class="st">"wt"</span>, <span class="st">"sigma"</span>),
            <span class="dt">facet_args =</span> <span class="kw">list</span>(<span class="dt">ncol =</span> <span class="dv">1</span>, <span class="dt">strip.position =</span> <span class="st">"left"</span>))</code></pre></div>
-<p><img src="plotting-mcmc-draws_files/figure-html/change-scheme-1.png" width="60%" style="display: block; margin: auto;"> The code above also illustrates the use of the <code>facet_args</code> argument, which is a list of parameters passed to <code>facet_wrap</code> in <strong>ggplot2</strong>. Specifying <code>ncol=1</code> means the traceplots will be stacked in a single column rather than placed side by side, and <code>strip.position="left"</code> moves the facet labels to the y-axis (instead of above each facet).</p>
-<p>The <a href="https://CRAN.R-project.org/package=viridis"><code>"viridis"</code> color scheme</a> is also useful for traceplots because it is comprised of very distinct colors:</p>
+<p><img src="plotting-mcmc-draws_files/figure-html/change-scheme-1.png" width="60%" style="display: block; margin: auto;"></p>
+<p>The code above also illustrates the use of the <code>facet_args</code> argument, which is a list of parameters passed to <code>facet_wrap</code> in <strong>ggplot2</strong>. Specifying <code>ncol=1</code> means the trace plots will be stacked in a single column rather than placed side by side, and <code>strip.position="left"</code> moves the facet labels to the y-axis (instead of above each facet).</p>
+<p>The <a href="https://CRAN.R-project.org/package=viridis"><code>"viridis"</code> color scheme</a> is also useful for trace plots because it is comprised of very distinct colors:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/bayesplot-colors.html">color_scheme_set</a></span>(<span class="st">"viridis"</span>)
 <span class="kw"><a href="../reference/MCMC-traces.html">mcmc_trace</a></span>(posterior, <span class="dt">pars =</span> <span class="st">"(Intercept)"</span>)</code></pre></div>
 <p><img src="plotting-mcmc-draws_files/figure-html/viridis-scheme-1.png" width="60%" style="display: block; margin: auto;"></p>
+</div>
+<div id="mcmc_trace_highlight" class="section level4">
+<h4 class="hasAnchor">
+<a href="#mcmc_trace_highlight" class="anchor"></a>mcmc_trace_highlight</h4>
 <p>The <code>mcmc_trace_highlight</code> function uses points instead of lines and reduces the opacity of all but a single chain (which is specified using the <code>highlight</code> argument).</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/MCMC-traces.html">mcmc_trace_highlight</a></span>(posterior, <span class="dt">pars =</span> <span class="st">"sigma"</span>, <span class="dt">highlight =</span> <span class="dv">3</span>)</code></pre></div>
 <p><img src="plotting-mcmc-draws_files/figure-html/mcmc_trace_highlight-1.png" width="60%" style="display: block; margin: auto;"></p>
@@ -256,10 +348,10 @@ $parameters
 <div id="references" class="section level2">
 <h2 class="hasAnchor">
 <a href="#references" class="anchor"></a>References</h2>
-<p>Gabry, J., and Goodrich, B. (2017). rstanarm: Bayesian Applied Regression Modeling via Stan. R package version 2.15.3. <a href="http://mc-stan.org/interfaces/rstanarm.html" class="uri">http://mc-stan.org/interfaces/rstanarm.html</a>, <a href="https://CRAN.R-project.org/package=rstanarm" class="uri">https://CRAN.R-project.org/package=rstanarm</a></p>
+<p>Gabry, J., and Goodrich, B. (2017). rstanarm: Bayesian Applied Regression Modeling via Stan. R package version 2.15.3. <a href="http://mc-stan.org/rstanarm" class="uri">http://mc-stan.org/rstanarm</a>, <a href="https://CRAN.R-project.org/package=rstanarm" class="uri">https://CRAN.R-project.org/package=rstanarm</a></p>
 <p>Gabry, J., Simpson, D., Vehtari, A., Betancourt, M., Gelman, A. (2017). Visualization in Bayesian workflow. arXiv preprint <a href="https://arxiv.org/abs/1709.01449" class="uri">https://arxiv.org/abs/1709.01449</a></p>
 <p>Gelman, A., Carlin, J. B., Stern, H. S., Dunson, D. B., Vehtari, A., and Rubin, D. B. (2013). <em>Bayesian Data Analysis</em>. Chapman &amp; Hall/CRC Press, London, third edition.</p>
-<p>Stan Development Team. (2017). <em>Stan Modeling Language Users Guide and Reference Manual</em>. <a href="http://mc-stan.org/documentation/" class="uri">http://mc-stan.org/documentation/</a></p>
+<p>Stan Development Team. (2017). <em>Stan Modeling Language Users Guide and Reference Manual</em>. <a href="http://mc-stan.org/users/documentation/" class="uri">http://mc-stan.org/users/documentation/</a></p>
 </div>
 </div>
   </div>
@@ -269,7 +361,11 @@ $parameters
       <h2 class="hasAnchor">
 <a href="#tocnav" class="anchor"></a>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
-<li><a href="#plots-for-mcmc-draws">Plots for MCMC draws</a></li>
+<li><a href="#introduction">Introduction</a></li>
+      <li><a href="#posterior-uncertainty-intervals">Posterior uncertainty intervals</a></li>
+      <li><a href="#univariate-marginal-posterior-distributions">Univariate marginal posterior distributions</a></li>
+      <li><a href="#bivariate-plots">Bivariate plots</a></li>
+      <li><a href="#trace-plots">Trace plots</a></li>
       <li><a href="#references">References</a></li>
       </ul>
 </div>

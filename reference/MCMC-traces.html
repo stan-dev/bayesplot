@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Traceplot (time series plot) of MCMC draws — MCMC-traces • bayesplot</title>
+<title>Trace plot (time series plot) of MCMC draws — MCMC-traces • bayesplot</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -119,12 +119,12 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Traceplot (time series plot) of MCMC draws</h1>
+    <h1>Trace plot (time series plot) of MCMC draws</h1>
     </div>
 
     
-    <p>Traceplot of MCMC draws. See the <strong>Plot Descriptions</strong> section, below,
-for details.</p>
+    <p>Trace plot (or traceplot) of MCMC draws. See the <strong>Plot Descriptions</strong>
+section, below, for details.</p>
     
 
     <pre class="usage"><span class='fu'>mcmc_trace</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'>character</span>(), <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='fu'>character</span>(),
@@ -214,7 +214,7 @@ range of iterations to display.</p></td>
 integrator</a>), an optional data frame providing NUTS diagnostic
 information. The data frame should be the object returned by
 <code><a href='bayesplot-extractors.html'>nuts_params</a></code> or one with the same structure. If <code>np</code> is
-specified then tick marks are added to the bottom of the traceplot
+specified then tick marks are added to the bottom of the trace plot
 indicating within which iterations there was a divergence (if there were any).
 See the end of the <strong>Examples</strong> section, below.</p></td>
     </tr>
@@ -259,8 +259,8 @@ the <strong>Usage</strong> section above.</p></td>
 
     
     <dl class='dl-horizontal'>
-  <dt><code>mcmc_trace</code></dt><dd><p>Standard traceplots of MCMC draws. For models fit using <code><a href='MCMC-nuts.html'>NUTS</a></code>,
-   the <code>np</code> argument can be used to also show divergences on the traceplot.</p></dd>
+  <dt><code>mcmc_trace</code></dt><dd><p>Standard trace plots of MCMC draws. For models fit using <code><a href='MCMC-nuts.html'>NUTS</a></code>,
+   the <code>np</code> argument can be used to also show divergences on the trace plot.</p></dd>
   <dt><code>mcmc_trace_highlight</code></dt><dd><p>Traces are plotted using points rather than lines and the opacity of all
    chains but one (specified by the <code>highlight</code> argument) is reduced.</p></dd>
 </dl>
@@ -288,7 +288,7 @@ the <strong>Usage</strong> section above.</p></td>
 #&gt; $Parameter
 #&gt; [1] "alpha"   "sigma"   "beta[1]" "beta[2]" "beta[3]" "beta[4]"
 #&gt; </div><div class='input'>
-<span class='co'># traceplots of the betas</span>
+<span class='co'># trace plots of the betas</span>
 <span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"viridis"</span>)
 <span class='fu'>mcmc_trace</span>(<span class='no'>x</span>, <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='st'>"beta"</span>)</div><div class='img'><img src='MCMC-traces-1.png' alt='' width='700' height='432.632880098887' /></div><div class='input'><span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"viridisA"</span>)
 <span class='fu'>mcmc_trace</span>(<span class='no'>x</span>, <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='st'>"beta"</span>)</div><div class='img'><img src='MCMC-traces-2.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
@@ -324,14 +324,14 @@ the <strong>Usage</strong> section above.</p></td>
 <span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"brightblue"</span>)
 <span class='fu'>mcmc_trace_highlight</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='st'>"sigma"</span>, <span class='kw'>highlight</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>2</span>)
 
-<span class='co'># for models fit using HMC/NUTS divergences can be displayed in the traceplot</span>
+<span class='co'># for models fit using HMC/NUTS divergences can be displayed in the trace plot</span>
 <span class='fu'>library</span>(<span class='st'>"rstanarm"</span>)
 <span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/rstanarm/topics/stan_glm'>stan_glm</a></span>(<span class='no'>mpg</span> ~ <span class='no'>.</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>mtcars</span>,
   <span class='co'># next line to keep example fast and also ensure we get some divergences</span>
                 <span class='kw'>prior</span> <span class='kw'>=</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/rstanarm/topics/priors'>hs</a></span>(), <span class='kw'>iter</span> <span class='kw'>=</span> <span class='fl'>400</span>, <span class='kw'>adapt_delta</span> <span class='kw'>=</span> <span class='fl'>0.8</span>)
 
 <span class='co'># extract draws using as.array (instead of as.matrix) to keep</span>
-<span class='co'># chains separate for traceplot</span>
+<span class='co'># chains separate for trace plot</span>
 <span class='no'>posterior</span> <span class='kw'>&lt;-</span> <span class='fu'>as.array</span>(<span class='no'>fit</span>)
 
 <span class='co'># for stanfit and stanreg objects use nuts_params() to get the divergences</span>
