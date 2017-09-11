@@ -171,7 +171,7 @@ rhat.stanfit <- function(object, pars = NULL, ...) {
     rstan::summary(object, ...)
   }
 
-  s$summary[, "Rhat"]
+  validate_rhat(s$summary[, "Rhat"])
 }
 
 #' @rdname bayesplot-extractors
@@ -182,8 +182,10 @@ rhat.stanfit <- function(object, pars = NULL, ...) {
 rhat.stanreg <- function(object, pars = NULL, regex_pars = NULL, ...) {
   suggested_package("rstanarm")
   r <- summary(object, pars = pars, regex_pars = regex_pars, ...)[, "Rhat"]
-  if (!is.null(pars) || !is.null(regex_pars))
+  r <- validate_rhat(r)
+  if (!is.null(pars) || !is.null(regex_pars)) {
     return(r)
+  }
 
   r[!names(r) %in% c("mean_PPD", "log-posterior")]
 }
@@ -201,7 +203,8 @@ neff_ratio.stanfit <- function(object, pars = NULL, ...) {
     rstan::summary(object, ...)
   }
   tss <- nrow(as.matrix(object, pars = "lp__"))
-  s$summary[, "n_eff"] / tss
+  ratio <- s$summary[, "n_eff"] / tss
+  validate_neff_ratio(ratio)
 }
 
 #' @rdname bayesplot-extractors
@@ -214,8 +217,11 @@ neff_ratio.stanreg <- function(object, pars = NULL, regex_pars = NULL, ...) {
   ess <- s[, "n_eff"]
   tss <- attr(s, "posterior_sample_size")
   ratio <- ess / tss
-  if (!is.null(pars) || !is.null(regex_pars))
+  ratio <- validate_neff_ratio(ratio)
+
+  if (!is.null(pars) || !is.null(regex_pars)) {
     return(ratio)
+  }
 
   ratio[!names(ratio) %in% c("mean_PPD", "log-posterior")]
 }

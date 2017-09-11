@@ -579,54 +579,58 @@ acf_data <- function(x, lags) {
 
 ## interal [classes / objects] ------------------------------------------------
 
-# Constructor
 new_rhat <- function(x) {
   # Convert a 1-d arrays to a vectors
   if (is.array(x) && length(dim(x)) == 1) {
     x <- as.vector(x)
   }
+  validate_rhat(as_rhat(x))
+}
 
-  # Validation
+validate_rhat <- function(x) {
   stopifnot(is.numeric(x), !is.list(x), !is.array(x))
   if (any(x < 0, na.rm = TRUE)) {
     stop("All 'rhat' values must be positive.", call. = FALSE)
   }
-
-  as_rhat(x)
+  x
 }
 
-# Class assigner
 as_rhat <- function(x) {
   structure(x, class = c("rhat", "numeric"), names = names(x))
 }
 
-# Indexing method -- needed so that sort, etc. don't strip names
+#' Indexing method -- needed so that sort, etc. don't strip names.
+#' @export
+#' @keywords internal
+#' @noRd
 `[.rhat` <- function (x, i, j, drop = TRUE, ...) {
   as_rhat(NextMethod())
 }
 
-# Constructor
 new_neff_ratio <- function(x) {
   # Convert a 1-d arrays to a vectors
   if (is.array(x) && length(dim(x)) == 1) {
     x <- as.vector(x)
   }
+  as_neff_ratio(validate_neff_ratio(x))
+}
 
-  # Validation
+validate_neff_ratio <- function(x) {
   stopifnot(is.numeric(x), !is.list(x), !is.array(x))
   if (any(x < 0 | x > 1, na.rm = TRUE)) {
     stop("All neff ratios must be between 0 and 1.", call. = FALSE)
   }
-
-  as_neff_ratio(x)
+  x
 }
 
-# Class assigner
 as_neff_ratio <- function(x) {
   structure(x, class = c("neff_ratio", "numeric"), names = names(x))
 }
 
-# Indexing method -- needed so that sort, etc. don't strip names
+#' Indexing method -- needed so that sort, etc. don't strip names.
+#' @export
+#' @keywords internal
+#' @noRd
 `[.neff_ratio` <- function (x, i, j, drop = TRUE, ...) {
   as_neff_ratio(NextMethod())
 }
