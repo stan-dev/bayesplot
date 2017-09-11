@@ -208,20 +208,20 @@ test_that("transformations recycled properly if not a named list", {
 
 # rhat and neff helpers ---------------------------------------------------
 test_that("factor_rhat works", {
-  rhats <- c(low = 0.99, low = 1, low = 1.01,
-             ok = 1.06, ok = 1.09, ok = 1.1,
-             high = 1.2, high = 1.7)
+  rhats <- new_rhat(c(low = 0.99, low = 1, low = 1.01,
+                      ok = 1.06, ok = 1.09, ok = 1.1,
+                      high = 1.2, high = 1.7))
 
-  r <- factor_rhat(unname(rhats))
+  r <- diagnostic_factor(unname(rhats))
   expect_equivalent(r, as.factor(names(rhats)))
   expect_identical(levels(r), c("low", "ok", "high"))
 })
 test_that("factor_neff works", {
-  ratios <- c(low = 0.05, low = 0.01,
-             ok = 0.2, ok = 0.49,
-             high = 0.51, high = 0.99, high = 1)
+  ratios <- new_neff_ratio(c(low = 0.05, low = 0.01,
+                             ok = 0.2, ok = 0.49,
+                             high = 0.51, high = 0.99, high = 1))
 
-  r <- factor_neff(unname(ratios))
+  r <- diagnostic_factor(unname(ratios))
   expect_equivalent(r, as.factor(names(ratios)))
   expect_identical(levels(r), c("low", "ok", "high"))
 })

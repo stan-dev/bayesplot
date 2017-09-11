@@ -199,14 +199,16 @@ mcmc_areas <- function(x,
 
   color_by_rhat <- isTRUE(length(rhat) > 0)
   if (color_by_rhat) {
-    rhat <- factor(factor_rhat(rhat), levels = c("high", "ok", "low"))
-    if (length(rhat) != nrow(data))
-      stop(
-        "'rhat' has length ", length(rhat),
-        " but 'x' has ", nrow(data), " parameters.",
-        call. = FALSE
-      )
+    rhat <- drop_NAs_and_warn(new_rhat(rhat))
+    rhat <- rhat %>%
+      diagnostic_factor() %>%
+      factor(levels = c("high", "ok", "low"))
 
+    if (length(rhat) != nrow(data)) {
+      stop("'rhat' has length ", length(rhat),
+           " but 'x' has ", nrow(data), " parameters.",
+           call. = FALSE)
+    }
     data$rhat <- rhat
   }
 

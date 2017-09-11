@@ -25,8 +25,8 @@ test_that("rhat and neff plots return a ggplot object", {
 
 test_that("rhat and neff plot functions throw correct errors & warnings", {
   # need vector or 1D array
-  expect_error(mcmc_rhat_hist(cbind(1:2)), "vector_or_1Darray")
-  expect_error(mcmc_neff_hist(list(1,2)), "vector_or_1Darray")
+  expect_error(mcmc_rhat_hist(cbind(1:2)), "is.array")
+  expect_error(mcmc_neff_hist(list(1,2)), "is.numeric")
 
   # need positive rhat values
   expect_error(mcmc_rhat(c(-1, 1, 1)), "must be positive")

@@ -200,9 +200,8 @@ mcmc_rhat_hist <- function(rhat, ..., binwidth = NULL) {
 #' @export
 mcmc_rhat_data <- function(rhat, ...) {
   check_ignored_arguments(...)
-  diagnostic_data_frame(
-    x = validate_rhat(rhat),
-    diagnostic = "rhat")
+  rhat <- drop_NAs_and_warn(new_rhat(rhat))
+  diagnostic_data_frame(rhat)
 }
 
 
@@ -275,12 +274,13 @@ mcmc_neff_hist <- function(ratio, ..., binwidth = NULL) {
 #' @export
 mcmc_neff_data <- function(ratio, ...) {
   check_ignored_arguments(...)
-  diagnostic_data_frame(
-    x = validate_neff_ratio(ratio),
-    diagnostic = "neff")
+  ratio <- drop_NAs_and_warn(new_neff_ratio(ratio))
+  diagnostic_data_frame(ratio)
 }
 
+
 # autocorrelation ---------------------------------------------------------
+
 #' @rdname MCMC-diagnostics
 #' @export
 #' @template args-mcmc-x
@@ -328,33 +328,51 @@ mcmc_acf_bar <-
     )
   }
 
+
+
+
 # internal ----------------------------------------------------------------
-diagnostic_points <- function(size = NULL) {
-  args <- list(shape = 21, na.rm = TRUE)
-  do.call("geom_point", c(args, size = size))
+
+
+#' Convert numeric vector of diagnostic values to a factor
+#'
+#' @param x A numeric vector
+#' @param breaks A numeric vector of length two. The resulting factor variable
+#'   will have three levels ('low', 'ok', and 'high') corresponding to (x <=
+#'   breaks[1], breaks[1] < x <= breaks[2], x > breaks[2]).
+#' @return A factor the same length as x with three levels.
+#' @noRd
+diagnostic_factor <- function(x, breaks, ...) {
+  UseMethod("diagnostic_factor")
 }
 
-# @param x The object returned by validate_rhat or validate_neff_ratio
-diagnostic_data_frame <- function(x, diagnostic = c("rhat", "neff")) {
+diagnostic_factor.rhat <- function(x, breaks = c(1.05, 1.1)) {
+  cut(x, breaks = c(-Inf, breaks, Inf),
+      labels = c("low", "ok", "high"),
+      ordered_result = FALSE)
+}
+
+diagnostic_factor.neff_ratio <- function(x, breaks = c(0.1, 0.5)) {
+  cut(x, breaks = c(-Inf, breaks, Inf),
+      labels = c("low", "ok", "high"),
+      ordered_result = FALSE)
+}
+
+diagnostic_data_frame <- function(x) {
   x <- auto_name(sort(x))
   stopifnot(!anyDuplicated(names(x)))
+  diagnostic <- class(x)[1]
 
-  diagnostic <- match.arg(diagnostic)
-  fun <- match.fun(paste0("factor_", diagnostic))
   d <- dplyr::data_frame(
     diagnostic = diagnostic,
     parameter = factor(seq_along(x), labels = names(x)),
-    value = x,
-    rating = factor(fun(x), levels = c("high", "ok", "low"))
-  )
+    value = as.numeric(x),
+    rating = diagnostic_factor(x))
 
   labels <- diagnostic_color_labels[[diagnostic]]
   d$description <- as.character(labels[d$rating])
-
-  rownames(d) <- NULL
   d
 }
-
 
 auto_name <- function(xs) {
   if (is.null(names(xs))) {
@@ -369,29 +387,11 @@ zero_pad_int <- function(xs) {
   sprintf(formatter, xs)
 }
 
-
-#' Convert numeric vector of Rhat values to a factor
-#'
-#' @param x A numeric vector
-#' @param breaks A numeric vector of length two. The resulting factor variable
-#'   will have three levels ('low', 'ok', and 'high') corresponding to (x <=
-#'   breaks[1], breaks[1] < x <= breaks[2], x > breaks[2]).
-#' @return A factor the same length as x with three levels.
-#' @noRd
-factor_rhat <- function(x, breaks = c(1.05, 1.1)) {
-  stopifnot(is.numeric(x),
-            isTRUE(all(x > 0)),
-            length(breaks) == 2)
-  cut(x,
-      breaks = c(-Inf, breaks, Inf),
-      labels = c("low", "ok", "high"),
-      ordered_result = FALSE)
+diagnostic_points <- function(size = NULL) {
+  args <- list(shape = 21, na.rm = TRUE)
+  do.call("geom_point", c(args, size = size))
 }
 
-# factor neff ratio
-factor_neff <- function(ratio, breaks = c(0.1, 0.5)) {
-  factor_rhat(ratio, breaks = breaks)
-}
 
 # Functions wrapping around scale_color_manual and scale_fill_manual, used to
 # color the intervals by rhat value
@@ -405,12 +405,12 @@ scale_fill_diagnostic <- function(diagnostic = c("rhat", "neff")) {
   diagnostic_color_scale(d, aesthetic = "fill")
 }
 
-diagnostic_color_scale <- function(diagnostic = c("rhat", "neff"),
+diagnostic_color_scale <- function(diagnostic = c("rhat", "neff_ratio"),
                                    aesthetic = c("color", "fill")) {
   diagnostic <- match.arg(diagnostic)
   aesthetic <- match.arg(aesthetic)
   color_levels <- c("light", "mid", "dark")
-  if (diagnostic == "neff") {
+  if (diagnostic == "neff_ratio") {
     color_levels <- rev(color_levels)
   }
   if (aesthetic == "color") {
@@ -436,7 +436,7 @@ diagnostic_color_labels <- list(
     ok   = expression(hat(R) <= 1.10),
     low  = expression(hat(R) <= 1.05)
   ),
-  neff = c(
+  neff_ratio = c(
     high = expression(N[eff] / N > 0.5),
     ok   = expression(N[eff] / N <= 0.5),
     low  = expression(N[eff] / N <= 0.1)
@@ -461,40 +461,18 @@ set_rhat_breaks <- function(rhat) {
   br
 }
 
-
-
 # drop NAs from a vector and issue warning
 drop_NAs_and_warn <- function(x) {
   is_NA <- is.na(x)
   if (anyNA(x)) {
     warning(
       "Dropped ", sum(is_NA), " NAs from '",
-      deparse(substitute(x)), "'."
+      deparse(substitute(x)), "'.",
+      call. = FALSE
     )
   }
   x[!is_NA]
 }
-
-# either throws error or returns an rhat vector (dropping NAs)
-validate_rhat <- function(rhat) {
-  stopifnot(is_vector_or_1Darray(rhat))
-  if (any(rhat < 0, na.rm = TRUE)) {
-    stop("All 'rhat' values must be positive.")
-  }
-  rhat <- setNames(as.vector(rhat), names(rhat))
-  drop_NAs_and_warn(rhat)
-}
-
-# either throws error or returns as.vector(ratio)
-validate_neff_ratio <- function(ratio) {
-  stopifnot(is_vector_or_1Darray(ratio))
-  if (any(ratio < 0 | ratio > 1, na.rm = TRUE)) {
-    stop("All elements of 'ratio' must be between 0 and 1.")
-  }
-  ratio <- setNames(as.vector(ratio), names(ratio))
-  drop_NAs_and_warn(ratio)
-}
-
 
 # autocorr plot (either bar or line)
 # @param size passed to geom_line if style="line"
@@ -594,5 +572,62 @@ acf_data <- function(x, lags) {
     Lag = rep(seq(0, lags), times = n_chain * n_param),
     AC = do.call("c", ac_list)
   )
+}
+
+
+
+
+## interal [classes / objects] ------------------------------------------------
+
+# Constructor
+new_rhat <- function(x) {
+  # Convert a 1-d arrays to a vectors
+  if (is.array(x) && length(dim(x)) == 1) {
+    x <- as.vector(x)
+  }
+
+  # Validation
+  stopifnot(is.numeric(x), !is.list(x), !is.array(x))
+  if (any(x < 0, na.rm = TRUE)) {
+    stop("All 'rhat' values must be positive.", call. = FALSE)
+  }
+
+  as_rhat(x)
+}
+
+# Class assigner
+as_rhat <- function(x) {
+  structure(x, class = c("rhat", "numeric"), names = names(x))
+}
+
+# Indexing method -- needed so that sort, etc. don't strip names
+`[.rhat` <- function (x, i, j, drop = TRUE, ...) {
+  as_rhat(NextMethod())
+}
+
+# Constructor
+new_neff_ratio <- function(x) {
+  # Convert a 1-d arrays to a vectors
+  if (is.array(x) && length(dim(x)) == 1) {
+    x <- as.vector(x)
+  }
+
+  # Validation
+  stopifnot(is.numeric(x), !is.list(x), !is.array(x))
+  if (any(x < 0 | x > 1, na.rm = TRUE)) {
+    stop("All neff ratios must be between 0 and 1.", call. = FALSE)
+  }
+
+  as_neff_ratio(x)
+}
+
+# Class assigner
+as_neff_ratio <- function(x) {
+  structure(x, class = c("neff_ratio", "numeric"), names = names(x))
+}
+
+# Indexing method -- needed so that sort, etc. don't strip names
+`[.neff_ratio` <- function (x, i, j, drop = TRUE, ...) {
+  as_neff_ratio(NextMethod())
 }
 
