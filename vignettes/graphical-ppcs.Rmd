@@ -153,6 +153,8 @@ regardless of whether or not the model was fit using an interface to Stan.
 `number_of_observations` columns.
 
 
+<br>
+
 ## Histograms and density estimates
 
 #### ppc_dens_overlay
@@ -197,6 +199,8 @@ ppc_hist(y, yrep_nb[1:5, ], binwidth = 20) +
   coord_cartesian(xlim = c(-1, 500))
 ```
 
+
+<br>
 
 ## Distributions of test statistics
 
@@ -250,6 +254,9 @@ ppc_stat(y, yrep_nb, stat = "max", binwidth = 100) +
   coord_cartesian(xlim = c(-1, 5000))
 ```
 
+
+<br>
+
 ## Other PPCs and PPCs by group
 
 There are many additional PPCs available, including plots of predictive
@@ -284,6 +291,7 @@ ppc_stat_grouped(y, yrep_nb, group = roaches$treatment, stat = "prop_zero")
 ```
 
 
+<br>
 
 ## Providing an interface to bayesplot PPCs from another package
 
@@ -353,6 +361,9 @@ Several packages currently use this approach to provide an interface to
 **bayesplot**'s graphical posterior predictive checks. See, for example, the
 `pp_check` methods in the [**rstanarm**](https://CRAN.R-project.org/package=rstanarm)
 and [**brms**](https://CRAN.R-project.org/package=brms) packages.
+
+
+<br>
 
 ## References
 

@@ -87,6 +87,8 @@ plots don't actually need the chains to be separate, but for a few of the
 plots we make in this vignette we'll want to show the chains individually.
 
 
+<br>
+
 ## Posterior uncertainty intervals
 
 For models fit using MCMC we can compute posterior uncertainty intervals
@@ -131,6 +133,8 @@ mcmc_areas(
 )
 ```
 
+
+<br>
 
 ## Univariate marginal posterior distributions
 
@@ -209,6 +213,10 @@ color_scheme_set("teal")
 mcmc_violin(posterior, pars = c("wt", "sigma"), probs = c(0.1, 0.5, 0.9))
 ```
 
+
+
+<br>
+
 ## Bivariate plots
 
 Various functions are available for plotting bivariate marginal posterior
@@ -265,6 +273,9 @@ diagonal (see the documentation for the `condition` argument), but they are more
 useful when MCMC diagnostic information is included. This is discussed in the
 [_Visual MCMC diagnostics_](http://mc-stan.org/bayesplot/articles/visual-mcmc-diagnostics.html)
 vignette.
+
+
+<br>
 
 ## Trace plots
 
@@ -324,6 +335,8 @@ argument).
 mcmc_trace_highlight(posterior, pars = "sigma", highlight = 3)
 ```
 
+
+<br>
 
 ## References
 
