@@ -99,7 +99,7 @@
       <h1>Plotting MCMC draws using the bayesplot package</h1>
                         <h4 class="author">Jonah Gabry</h4>
             
-            <h4 class="date">2017-09-09</h4>
+            <h4 class="date">2017-09-12</h4>
           </div>
 
     
@@ -185,6 +185,7 @@ $parameters
  [6] "wt"          "qsec"        "vs"          "am"          "gear"       
 [11] "carb"        "sigma"      </code></pre>
 <p>We’ve used <code>as.array</code> above (as opposed to <code>as.matrix</code>) because it keeps the Markov chains separate (<code>stan_glm</code> runs four chains by default). Most of the plots don’t actually need the chains to be separate, but for a few of the plots we make in this vignette we’ll want to show the chains individually.</p>
+<p><br></p>
 </div>
 </div>
 <div id="posterior-uncertainty-intervals" class="section level2">
@@ -214,6 +215,7 @@ $parameters
   <span class="dt">point_est =</span> <span class="st">"mean"</span>
 )</code></pre></div>
 <p><img src="plotting-mcmc-draws_files/figure-html/mcmc_areas-1.png" width="60%" style="display: block; margin: auto;"></p>
+<p><br></p>
 </div>
 </div>
 <div id="univariate-marginal-posterior-distributions" class="section level2">
@@ -270,6 +272,7 @@ $parameters
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/bayesplot-colors.html">color_scheme_set</a></span>(<span class="st">"teal"</span>)
 <span class="kw"><a href="../reference/MCMC-distributions.html">mcmc_violin</a></span>(posterior, <span class="dt">pars =</span> <span class="kw">c</span>(<span class="st">"wt"</span>, <span class="st">"sigma"</span>), <span class="dt">probs =</span> <span class="kw">c</span>(<span class="fl">0.1</span>, <span class="fl">0.5</span>, <span class="fl">0.9</span>))</code></pre></div>
 <p><img src="plotting-mcmc-draws_files/figure-html/mcmc_violin-1.png" width="60%" style="display: block; margin: auto;"></p>
+<p><br></p>
 </div>
 </div>
 <div id="bivariate-plots" class="section level2">
@@ -307,6 +310,7 @@ $parameters
            <span class="dt">off_diag_args =</span> <span class="kw">list</span>(<span class="dt">size =</span> <span class="fl">1.5</span>))</code></pre></div>
 <p><img src="plotting-mcmc-draws_files/figure-html/mcmc_pairs-1.png" width="60%" style="display: block; margin: auto;"></p>
 <p>The univariate marginal posteriors are shown along the diagonal as histograms, but this can be changed to densities by setting <code>diag_fun="dens"</code>. Bivariate plots are displayed above and below the diagonal as scatterplots, but it is also possible to use hex plots by setting <code>off_diag_fun="hex"</code>. By default, <code>mcmc_pairs</code> shows some of the Markov chains (half, if an even number of chains) above the diagonal and the others below. There are many more options for controlling how the draws should be split between the plots above and below the diagonal (see the documentation for the <code>condition</code> argument), but they are more useful when MCMC diagnostic information is included. This is discussed in the <a href="http://mc-stan.org/bayesplot/articles/visual-mcmc-diagnostics.html"><em>Visual MCMC diagnostics</em></a> vignette.</p>
+<p><br></p>
 </div>
 </div>
 <div id="trace-plots" class="section level2">
@@ -343,6 +347,7 @@ $parameters
 <p>The <code>mcmc_trace_highlight</code> function uses points instead of lines and reduces the opacity of all but a single chain (which is specified using the <code>highlight</code> argument).</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/MCMC-traces.html">mcmc_trace_highlight</a></span>(posterior, <span class="dt">pars =</span> <span class="st">"sigma"</span>, <span class="dt">highlight =</span> <span class="dv">3</span>)</code></pre></div>
 <p><img src="plotting-mcmc-draws_files/figure-html/mcmc_trace_highlight-1.png" width="60%" style="display: block; margin: auto;"></p>
+<p><br></p>
 </div>
 </div>
 <div id="references" class="section level2">

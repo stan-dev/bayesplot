@@ -99,7 +99,7 @@
       <h1>Graphical posterior predictive checks using the bayesplot package</h1>
                         <h4 class="author">Jonah Gabry</h4>
             
-            <h4 class="date">2017-09-09</h4>
+            <h4 class="date">2017-09-12</h4>
           </div>
 
     
@@ -214,6 +214,7 @@ yrep_nb &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocu
 <pre><code>[1] 500 262</code></pre>
 <p>Each row of the matrix is a draw from the posterior predictive distribution, i.e. a vector with one element for each of the data points in <code>y</code>.</p>
 <p>Since we fit the models using <strong>rstanarm</strong> we used its special <code>posterior_predict</code> function, but if we were using a model fit with the <strong>rstan</strong> package we could create <code>yrep</code> in the <code>generated quantities</code> block of the Stan program or by doing simulations in R after fitting the model. Draws from the posterior predictive distribution can be used with <strong>bayesplot</strong> regardless of whether or not the model was fit using an interface to Stan. <strong>bayesplot</strong> just requires a <code>yrep</code> matrix that has <code>number_of_draws</code> rows and <code>number_of_observations</code> columns.</p>
+<p><br></p>
 </div>
 </div>
 <div id="histograms-and-density-estimates" class="section level2">
@@ -241,6 +242,7 @@ yrep_nb &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocu
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/PPC-distributions.html">ppc_hist</a></span>(y, yrep_nb[<span class="dv">1</span>:<span class="dv">5</span>, ], <span class="dt">binwidth =</span> <span class="dv">20</span>) +
 <span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/coord_cartesian">coord_cartesian</a></span>(<span class="dt">xlim =</span> <span class="kw">c</span>(-<span class="dv">1</span>, <span class="dv">500</span>))</code></pre></div>
 <p><img src="graphical-ppcs_files/figure-html/ppc_hist-nb-2-1.png" width="60%" style="display: block; margin: auto;"></p>
+<p><br></p>
 </div>
 </div>
 <div id="distributions-of-test-statistics" class="section level2">
@@ -270,6 +272,7 @@ yrep_nb &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocu
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/PPC-test-statistics.html">ppc_stat</a></span>(y, yrep_nb, <span class="dt">stat =</span> <span class="st">"max"</span>, <span class="dt">binwidth =</span> <span class="dv">100</span>) +
 <span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/coord_cartesian">coord_cartesian</a></span>(<span class="dt">xlim =</span> <span class="kw">c</span>(-<span class="dv">1</span>, <span class="dv">5000</span>))</code></pre></div>
 <p><img src="graphical-ppcs_files/figure-html/ppc_stat-max-3.png" width="60%" style="display: block; margin: auto;"></p>
+<p><br></p>
 </div>
 </div>
 <div id="other-ppcs-and-ppcs-by-group" class="section level2">
@@ -331,6 +334,7 @@ yrep_nb &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocu
 <p>For example, <code>ppc_stat_grouped</code> is the same as <code>ppc_stat</code> except that the test statistic is computed within levels of the grouping variable and a separate plot is made for each level:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/PPC-test-statistics.html">ppc_stat_grouped</a></span>(y, yrep_nb, <span class="dt">group =</span> roaches$treatment, <span class="dt">stat =</span> <span class="st">"prop_zero"</span>)</code></pre></div>
 <p><img src="graphical-ppcs_files/figure-html/ppc_stat_grouped-1.png" width="60%" style="display: block; margin: auto;"></p>
+<p><br></p>
 </div>
 </div>
 <div id="providing-an-interface-to-bayesplot-ppcs-from-another-package" class="section level2">
@@ -374,6 +378,7 @@ pp_check.foo &lt;-<span class="st"> </span>function(object, <span class="dt">typ
 <h3 class="hasAnchor">
 <a href="#examples-of-pp_check-methods-in-other-packages" class="anchor"></a>Examples of <code>pp_check</code> methods in other packages</h3>
 <p>Several packages currently use this approach to provide an interface to <strong>bayesplot</strong>’s graphical posterior predictive checks. See, for example, the <code>pp_check</code> methods in the <a href="https://CRAN.R-project.org/package=rstanarm"><strong>rstanarm</strong></a> and <a href="https://CRAN.R-project.org/package=brms"><strong>brms</strong></a> packages.</p>
+<p><br></p>
 </div>
 </div>
 <div id="references" class="section level2">
