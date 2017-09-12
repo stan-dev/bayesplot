@@ -157,6 +157,7 @@ later in the [Diagnostics for the No-U-Turn Sampler](#diagnostics-for-the
 no-u-turn-sampler) section.
 
 
+<br>
 
 ## General MCMC diagnostics
 
@@ -329,6 +330,7 @@ compare_cp_ncp(
 ```
 
 
+<br>
 
 ## Diagnostics for the No-U-Turn Sampler
 
@@ -534,6 +536,8 @@ compare_cp_ncp(
 See Betancourt (2017) for more on this particular example as well as the general
 theory behind the energy plots.
 
+
+<br>
 
 ## References
 
