@@ -1,3 +1,10 @@
+# bayesplot 1.4.0.9000
+
+(GitHub issue/PR numbers in parentheses)
+
+* Add news for next release here 
+
+
 # bayesplot 1.4.0
 
 (GitHub issue/PR numbers in parentheses)
