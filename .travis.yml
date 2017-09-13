@@ -1,7 +1,9 @@
 language: r
+
 r:
   - release
   - devel
+
 cache: packages
 
 after_success:
