@@ -2,7 +2,7 @@ library(bayesplot)
 suppressPackageStartupMessages(library(rstanarm))
 context("MCMC: scatter and parallel coordinates plots")
 
-source(test_path("data-for-mcmc-tests.R"))
+source("data-for-mcmc-tests.R")
 
 # also fit an rstanarm model to use with mcmc_pairs
 capture.output(
