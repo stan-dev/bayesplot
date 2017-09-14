@@ -1,7 +1,7 @@
 library(bayesplot)
 context("MCMC: traces")
 
-source(test_path("data-for-mcmc-tests.R"))
+source("data-for-mcmc-tests.R")
 
 test_that("mcmc_trace returns a ggplot object", {
   expect_gg(mcmc_trace(arr, pars = "beta[1]", regex_pars = "x\\:"))
