@@ -1,7 +1,7 @@
 library(bayesplot)
 context("PPC: predictive errors")
 
-source("data-for-ppc-tests.R")
+source(test_path("data-for-ppc-tests.R"))
 
 test_that("ppc_error_hist and ppc_error_scatter return ggplot object", {
   expect_gg(ppc_error_hist(y, yrep[1:5, ]))
@@ -40,7 +40,7 @@ test_that("ppc_error_scatter_avg_vs_x returns ggplot2 object", {
 })
 
 test_that("ppc_error_binned returns ggplot object", {
-  load("data-for-binomial.rda")
+  load(test_path("data-for-binomial.rda"))
   expect_gg(ppc_error_binned(y, Ey))
   expect_gg(ppc_error_binned(y[1:5], Ey[, 1:5]))
   expect_gg(ppc_error_binned(rep(y, 2), cbind(Ey, Ey)))

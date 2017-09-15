@@ -5,6 +5,7 @@ r:
 cache: packages
 
 r_github_packages:
+  - hadley/testthat
   - jimhester/covr
 
 after_success:

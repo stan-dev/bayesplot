@@ -40,7 +40,7 @@ test_that("ppc_bars errors if y/yrep not natural numbers", {
 
 # rootograms -----------------------------------------------------------
 rm(list = ls())
-source("data-for-ppc-tests.R")
+source(test_path("data-for-ppc-tests.R"))
 
 yrep3 <- matrix(yrep2, nrow = 5, ncol = ncol(yrep2), byrow = TRUE)
 

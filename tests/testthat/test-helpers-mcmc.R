@@ -1,7 +1,7 @@
 library(bayesplot)
 context("MCMC: misc. functions")
 
-source("data-for-mcmc-tests.R")
+source(test_path("data-for-mcmc-tests.R"))
 
 
 # validate_mcmc_x ----------------------------------------------------------
