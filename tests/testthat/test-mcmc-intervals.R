@@ -1,7 +1,7 @@
 library(bayesplot)
 context("MCMC: intervals")
 
-source("data-for-mcmc-tests.R")
+source(test_path("data-for-mcmc-tests.R"))
 
 test_that("mcmc_intervals/areas errors if prob > prob_outer", {
   expect_error(mcmc_intervals(arr, prob = 0.8, prob_outer = 0.5),

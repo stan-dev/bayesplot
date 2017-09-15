@@ -1,7 +1,7 @@
 library(bayesplot)
 context("MCMC: diagnostics")
 
-source("data-for-mcmc-tests.R")
+source(test_path("data-for-mcmc-tests.R"))
 
 test_that("rhat and neff plots return a ggplot object", {
   rhat <- runif(100, 1, 1.5)
