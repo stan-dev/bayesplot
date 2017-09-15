@@ -124,15 +124,71 @@ mcmc_intervals <- function(x,
   data <- mcmc_intervals_data(x, pars, regex_pars, transformations,
                               prob, prob_outer, point_est, rhat)
 
-  .mcmc_intervals(
-    data,
-    prob_inner = prob,
-    prob_outer = prob_outer,
-    point_est = point_est,
-    show_density = FALSE,
-    rhat = rhat
-  )
+  no_point_est <- identical(data$point_est, "none")
+  color_by_rhat <- rlang::has_name(data, "rhat_rating")
+
+  x_lim <- range(c(data$ll, data$hh))
+  x_range <- diff(x_lim)
+  x_lim[1] <- x_lim[1] - 0.05 * x_range
+  x_lim[2] <- x_lim[2] + 0.05 * x_range
+
+  # faint vertical line at zero if zero is within x_lim
+  vertical_line <- if (0 > x_lim[1] && 0 < x_lim[2]) {
+    vline_0(color = "gray90", size = 0.5)
+  } else {
+    geom_blank()
+  }
+
+  # prep inner interval
+  segment_args <- list(
+    mapping = aes_(x = ~ l, xend = ~ h,
+                   y = ~ parameter, yend = ~ parameter),
+    size = 2, show.legend = FALSE)
+
+  if (color_by_rhat) {
+    segment_args$mapping <- segment_args$mapping %>%
+      modify_aes_(color = ~ rhat_rating)
+  } else {
+    segment_args$color <- get_color("dark")
+  }
+
+  # prep point estimate
+  point_args <- list(
+    mapping = aes_(x = ~ m, y = ~ parameter),
+    size = 4,
+    shape = 21)
+
+  if (color_by_rhat) {
+    point_args$mapping <- point_args$mapping %>%
+      modify_aes_(color = ~ rhat_rating, fill = ~ rhat_rating)
+  } else {
+    point_args$color <- get_color("dark_highlight")
+    point_args$fill <- get_color("light")
+  }
+
+  # Do something or add an invisible layer
+  point_func <- if (no_point_est) geom_point else geom_ignore
+  scale_color <- if (color_by_rhat) scale_color_diagnostic("rhat") else NULL
+  scale_fill <- if (color_by_rhat) scale_fill_diagnostic("rhat") else NULL
+
+  ggplot(data) +
+    vertical_line +
+    # outer interval
+    geom_segment(aes_(x = ~ ll, xend = ~ hh,
+                      y = ~ parameter, yend = ~ parameter),
+                 color = get_color("mid")) +
+    do.call(geom_segment, segment_args) +
+    do.call(point_func, point_args) +
+    scale_color +
+    scale_fill +
+    xlim(x_lim) +
+    legend_move(ifelse(color_by_rhat, "top", "none")) +
+    yaxis_text(face = "bold") +
+    yaxis_title(FALSE) +
+    yaxis_ticks(size = 1) +
+    xaxis_title(FALSE)
 }
+
 
 #' @rdname MCMC-intervals
 #' @export
@@ -173,7 +229,7 @@ mcmc_intervals_data <- function(x,
                                 prob_outer = 0.9,
                                 point_est = c("median", "mean", "none"),
                                 rhat = numeric()) {
-
+  check_ignored_arguments(...)
   stopifnot(prob_outer >= prob)
 
   x <- prepare_mcmc_array(x, pars, regex_pars, transformations)
@@ -189,11 +245,10 @@ mcmc_intervals_data <- function(x,
              0.5 + prob_outer / 2)
 
   quantiles <- t(apply(x, 2, quantile, probs = probs))
-  y_pos <- as.numeric(seq(n_param, 1, by = -1))
 
-  data <- data.frame(parnames, y_pos, quantiles,
-                     row.names = NULL, stringsAsFactors = FALSE)
-  colnames(data) <- c("parameter", "y_pos", "ll", "l", "m", "h", "hh")
+  data <- dplyr::data_frame(parnames) %>%
+    dplyr::bind_cols(dplyr::as_data_frame(quantiles)) %>%
+    rlang::set_names(c("parameter", "ll", "l", "m", "h", "hh"))
   point_est <- match.arg(point_est)
   data$point_est <- point_est
 
@@ -204,17 +259,24 @@ mcmc_intervals_data <- function(x,
   color_by_rhat <- isTRUE(length(rhat) > 0)
 
   if (color_by_rhat) {
-    rhat <- drop_NAs_and_warn(new_rhat(rhat))
-    rhat <- rhat %>%
-      diagnostic_factor() %>%
-      factor(levels = c("high", "ok", "low"))
-
     if (length(rhat) != nrow(data)) {
       stop("'rhat' has length ", length(rhat),
            " but 'x' has ", nrow(data), " parameters.",
            call. = FALSE)
     }
-    data$rhat <- rhat
+    ## todo check if NAs need to be dropped here
+    rhat <- new_rhat(rhat)
+    rhat <- setNames(rhat, data$parameter)
+
+    rhat_tbl <- rhat %>%
+      mcmc_rhat_data() %>%
+      select(parameter,
+             rhat_value = .data$value,
+             rhat_rating = .data$rating,
+             rhat_description = .data$description) %>%
+      mutate(parameter = as.character(.data$parameter))
+
+    data <- dplyr::inner_join(data, rhat_tbl, by = "parameter")
   }
 
   data
@@ -238,28 +300,12 @@ mcmc_areas_data <- function() {
                             adjust = NULL,
                             kernel = NULL) {
 
-
-  data
-  no_point_est <- identical(data$point_est, "none")
-
-  color_by_rhat <- rlang::has_name(data, "rhat")
-  no_point_est <- identical(data$point_est, "none")
-
-
-  x_lim <- range(c(data$ll, data$hh))
-  x_range <- diff(x_lim)
-  x_lim[1] <- x_lim[1] - 0.05 * x_range
-  x_lim[2] <- x_lim[2] + 0.05 * x_range
+  rhat <- runif(6, 1.0, 1.7)
+  data <- mcmc_intervals_data(x, rhat = rhat)
 
 
 
-  graph <- ggplot(data)
-
-  # faint vertical line at zero if zero is within x_lim
-  if (0 > x_lim[1] && 0 < x_lim[2]) {
-    graph <- graph + vline_0(color = "gray90", size = 0.5)
-  }
-
+  show_density <- FALSE
   if (show_density) {
     # density outline
     n_dens_pts <- 512
@@ -402,66 +448,86 @@ mcmc_areas_data <- function() {
                                            guide = "none")
     }
 
-  } else { # No densities
-
-    # outer interval
-    graph <- graph +
-      geom_segment(aes_(x = ~ ll, xend = ~ hh,
-                        y = ~ parameter, yend = ~ parameter),
-                   color = get_color("m"))
-
-    # inner interval
-
-    segment_args <- list(
-      mapping = aes_(x = ~ l, xend = ~ h,
-                     y = ~ parameter, yend = ~ parameter,
-                     color = if (!color_by_rhat) NULL else ~ rhat),
-      size = 2,
-      show.legend = FALSE)
-
-    if (!color_by_rhat) {
-      segment_args$color <- get_color("d")
-    }
-
-    graph <- graph + do.call("geom_segment", segment_args)
-
-    # point estimate
-    point_args <- list(
-      mapping = aes_(x = ~ m, y = ~ parameter,
-                     color = if (!color_by_rhat) NULL else ~ rhat,
-                     fill = if (!color_by_rhat) NULL else ~ rhat),
-      size = 4,
-      shape = 21)
-
-    if (!color_by_rhat) {
-      point_args$color <- get_color("dh")
-      point_args$fill <- get_color("l")
-    }
-
-    if (!no_point_est) {
-      graph <- graph + do.call("geom_point", point_args)
-    }
-
-    if (color_by_rhat) {
-      graph <- graph +
-        scale_color_diagnostic("rhat") +
-        scale_fill_diagnostic("rhat")
-    }
-
   }
 
-  graph +
-    # scale_y_continuous(
-    #   breaks = y,
-    #   labels = parnames,
-    #   limits = c(0.5, n_param + 1)
-    # ) +
-    xlim(x_lim) +
-    legend_move(ifelse(color_by_rhat, "top", "none")) +
-    yaxis_text(face = "bold") +
-    yaxis_title(FALSE) +
-    yaxis_ticks(size = 1) +
-    xaxis_title(FALSE)
+  graph
+}
+
+
+#' Add new aesthetic mappings to a list of aesthetic mappings
+#'
+#' @param mapping a list of `uneval` aesthetic mappings (created by `aes_()`)
+#' @param ... additional mappings to add, e.g., `color = ~ parameter`
+#' @return the updated list
+#' @noRd
+modify_aes_ <- function(mapping, ...) {
+  modifyList(mapping, aes_(...))
+}
+
+
+#' Compute density for a dataframe column.
+#'
+#' @param df a dataframe of posterior samples
+#' @param group_vars columns to group by. e.g., `c(Parameter, Chain)`
+#' @param value_var column containing posterior samples
+#' @param ... arguments passed onto density calculation
+#' @importFrom tidyr nest unnest
+#' @noRd
+compute_column_density <- function(df, group_vars, value_var, ...) {
+  value_var <- enquo(value_var)
+  group_vars <- enquo(group_vars)
+
+  # Tuck away the subgroups to compute densities on into nested dataframes
+  sub_df <- dplyr::select(df, !!! group_vars, !! value_var)
+  nested <- dplyr::as_tibble(tidyr::nest(sub_df, !! value_var))
+
+  # Only one column should be nested
+  ncols <- unlist(lapply(nested$data, ncol))
+  stopifnot(ncols == 1)
+
+  # Comp
+  nested$data <- lapply(nested$data, unlist)
+  nested$density <- lapply(nested$data, compute_interval_density, ...)
+  nested$data <- NULL
+
+  tidyr::unnest(nested)
+}
+
+
+# Given a vector of values, compute a density dataframe.
+compute_interval_density <- function(x,
+                                     interval_width = 1,
+                                     n = 512,
+                                     bw = NULL,
+                                     adjust = NULL,
+                                     kernel = NULL) {
+  nx <- length(x)
+  tail_width <- (1 - interval_width) / 2
+  qs <- quantile(x, probs = c(tail_width, 1 - tail_width))
+
+  args <- c(
+    # can't be null
+    list(
+      x = x,
+      from = min(qs),
+      to = max(qs),
+      n = n
+    ),
+    # might be null
+    bw = bw,
+    adjust = adjust,
+    kernel = kernel)
+
+  dens <- do.call("density", args)
+
+  den_df <- data.frame(
+    interval_width = interval_width,
+    x = dens$x,
+    density = dens$y,
+    scaled =  dens$y / max(dens$y, na.rm = TRUE),
+    count =   dens$y * nx,
+    n = nx
+  )
 }
 
 
@@ -483,3 +549,6 @@ compute_dens_i <- function(x, bw, adjust, kernel, n, from, to) {
   )
   do.call("density", args)
 }
+
+# A geom that ignores any input arguments
+geom_ignore <- function(...) geom_blank()
