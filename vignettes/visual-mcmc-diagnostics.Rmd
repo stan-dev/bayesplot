@@ -5,13 +5,11 @@ date: "`r Sys.Date()`"
 output: 
   rmarkdown::html_vignette:
     toc: true
-    toc_depth: 4
+    toc_depth: 3
 vignette: >
   %\VignetteIndexEntry{Visual MCMC diagnostics}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
-params:
-  EVAL: !r identical(Sys.getenv("NOT_CRAN"), "true")
 ---
 
 ```{r, child="children/SETTINGS-knitr.txt"}
@@ -22,16 +20,21 @@ library("ggplot2")
 library("rstan")
 ```
 
+## Introduction
+
 This vignette focuses on MCMC diagnostic plots. Plots of parameter estimates
 from MCMC draws are covered in the separate vignette
-[Plotting MCMC draws using the bayesplot package](MCMC.html), 
-and graphical posterior predictive checks are covered in 
-[Graphical posterior predictive checks using the bayesplot package](PPC.html).
+[_Plotting MCMC draws_](http://mc-stan.org/bayesplot/articles/plotting-mcmc-draws.html), 
+and graphical posterior predictive model checking is covered in the
+[_Graphical posterior predictive checks_](http://mc-stan.org/bayesplot/articles/graphical-ppcs.html)
+vignette.
+
+### Setup
 
 In addition to __bayesplot__ we'll load the following packages: 
 
-* __ggplot2__ for customizing the ggplot objects created by __bayesplot__
-* __rstan__ for fitting the example models used throughout the vignette
+* __ggplot2__, in case we want to customize the ggplot objects created by __bayesplot__
+* __rstan__, for fitting the example models used throughout the vignette
 
 ```{r, eval=FALSE}
 library("bayesplot")
@@ -39,19 +42,10 @@ library("ggplot2")
 library("rstan")      
 ```
 
-## General MCMC diagnostics
+### Example model
 
-A Markov chain generates draws from the target distribution only after it has 
-converged to equilibrium. Unfortunately, this is only guaranteed in the limit in
-theory. In practice, diagnostics must be applied to monitor whether the Markov
-chain(s) have converged. The __bayesplot__ package provides various plotting
-functions for visualizing Markov chain Monte Carlo (MCMC) diagnostics after
-fitting a Bayesian model. MCMC draws from any package can be used with
-__bayesplot__, although there are a few diagnostic plots that are specifically
-intended to be used for [Stan](http://mc-stan.org/) models.
-
-To demonstrate, in this vignette we'll use the eight schools example discussed
-in  Rubin (1981), Gelman et al (2013), and the 
+In this vignette we'll use the eight schools example discussed
+in  Rubin (1981), Gelman et al. (2013), and the 
 [RStan Getting Started](https://github.com/stan-dev/rstan/wiki/RStan-Getting-Started#how-to-use-rstan)
 wiki. This is a simple hierarchical meta-analysis model with data consisting of 
 point estimates `y` and standard errors `sigma` from analyses of test prep 
@@ -100,7 +94,7 @@ This parameterization of the model is referred to as the centered
 parameterization (CP). We'll also fit the same statistical model but using the 
 so-called non-centered parameterization (NCP), which replaces the vector 
 $\theta$ with a vector $\eta$ of a priori _i.i.d._ standard normal parameters 
-and then contructs $\theta$ deterministically from $\eta$ by scaling by $\tau$ 
+and then constructs $\theta$ deterministically from $\eta$ by scaling by $\tau$ 
 and shifting by $\mu$:
 $$
 \begin{align*}
@@ -163,6 +157,27 @@ later in the [Diagnostics for the No-U-Turn Sampler](#diagnostics-for-the
 no-u-turn-sampler) section.
 
 
+<br>
+
+## General MCMC diagnostics
+
+A Markov chain generates draws from the target distribution only after it has 
+converged to equilibrium. Unfortunately, this is only guaranteed in the limit in
+theory. In practice, diagnostics must be applied to monitor whether the Markov 
+chain(s) have converged. The __bayesplot__ package provides various plotting 
+functions for visualizing Markov chain Monte Carlo (MCMC) diagnostics after 
+fitting a Bayesian model. MCMC draws from any package can be used, although
+there are a few diagnostic plots that we will see later in this vignette that
+are specifically intended to be used for [Stan](http://mc-stan.org/) models (or
+models fit using the same algorithms as Stan).
+
+**Documentation:**
+
+* `help("MCMC-diagnostics")` 
+* [mc-stan.org/bayesplot/reference/MCMC-diagnostics](http://mc-stan.org/bayesplot/reference/MCMC-diagnostics.html)
+
+------
+
 ### Rhat: potential scale reduction statistic
 
 > One way to monitor whether a chain has converged to the equilibrium distribution
@@ -196,6 +211,7 @@ rhats <- rhat(fit_cp_100iter)
 print(rhats)
 ```
 
+#### mcmc_rhat, mcmc_rhat_hist
 We can visualize the $\hat{R}$ values with the `mcmc_rhat` function:
 
 ```{r mcmc_rhat-1}
@@ -243,6 +259,8 @@ currently with methods defined for models fit using the **rstan** and
 **bayesplot** needs is a vector of $n_{eff}/N$ values. The `mcmc_neff` and 
 `mcmc_neff_hist` can then be used to plot the ratios.
 
+#### mcmc_neff, mcmc_neff_hist
+
 ```{r print-neff-ratios}
 ratios_cp <- neff_ratio(fit_cp)
 print(ratios_cp)
@@ -287,6 +305,7 @@ compare_cp_ncp(mcmc_neff(neff_cp), mcmc_neff(neff_ncp), ncol = 1)
 Because of the difference in parameterization, the effective sample sizes are 
 much better for the second model, the non-centered parameterization.
 
+
 ### Autocorrelation
 
 As mentioned above, $n_{eff}/N$ decreases as autocorrelation becomes more 
@@ -294,6 +313,8 @@ extreme. We can visualize the autocorrelation using the `mcmc_acf` (line plot)
 or `mcmc_acf_bar` (bar plot) functions. For the selected parameters, these 
 functions show the autocorrelation for each Markov chain separately up to a 
 user-specified number of lags.
+
+#### `mcmc_acf`, `mcmc_acf_bar`
 
 Here we can again see a difference when comparing the two parameterizations of 
 the same model. For model 1, $\theta_1$ is the primitive parameter for school 1,
@@ -309,22 +330,36 @@ compare_cp_ncp(
 ```
 
 
+<br>
+
 ## Diagnostics for the No-U-Turn Sampler
 
 The No-U-Turn Sampler (NUTS, Hoffman and Gelman, 2014) is the variant of 
 Hamiltonian Monte Carlo (HMC) used by [Stan](http://mc-stan.org/) and the
 various R packages that depend on Stan for fitting Bayesian models.
-
 The **bayesplot** package has special functions for visualizing some of the 
 unique diagnostics permitted by HMC, and NUTS in particular. See Betancourt 
-(2017), Betancourt and Girolami (2013), and Stan Development Team (2016) for
+(2017), Betancourt and Girolami (2013), and Stan Development Team (2017) for
 more details on the concepts.
+
+**Documentation:**
+
+* `help("MCMC-nuts")` 
+* [mc-stan.org/bayesplot/reference/MCMC-nuts](http://mc-stan.org/bayesplot/reference/MCMC-nuts.html)
+
+------
+
 
 The special **bayesplot** functions for NUTS diagnostics are
 
 ```{r, available_mcmc-nuts}
 available_mcmc(pattern = "_nuts_")
 ```
+
+and some of the functions demonstrated in the 
+[_Plotting MCMC draws_](http://mc-stan.org/bayesplot/articles/plotting-mcmc-draws.html)
+vignette also take optional arguments that can be used to display 
+HMC/NUTS diagnostic information.
 
 The **bayesplot** package also provides generic functions `log_posterior` and 
 `nuts_params` for extracting the required information for the plots from fitted 
@@ -351,16 +386,20 @@ When running the Stan models at the beginning of this vignette
 there were warnings about divergent transitions.
 For an explanation of these warnings see [Divergent transitions after warmup](http://mc-stan.org/misc/warnings.html#divergent-transitions-after-warmup).
 
-The `divergences` argument to the `mcmc_trace` function can be used to add a rug
-plot (in red) of the divergences to a trace plot of parameter draws. Typically
+#### mcmc_trace
+
+The `np` argument to the `mcmc_trace` function can be used to add a rug
+plot of the divergences to a trace plot of parameter draws. Typically
 we can see that at least one of the chains is getting stuck wherever there is a
 cluster of many red marks:
 
 ```{r, mcmc_trace}
 color_scheme_set("mix-brightblue-gray")
-mcmc_trace(posterior_cp, pars = "tau", divergences = np_cp) + 
+mcmc_trace(posterior_cp, pars = "tau", np = np_cp) + 
   xlab("Post-warmup iteration")
 ```
+
+#### mcmc_nuts_divergence
 
 To look deeper at the information conveyed by the divergences we can use the 
 `mcmc_nuts_divergence` function:
@@ -394,7 +433,7 @@ mcmc_nuts_divergence(np_ncp, lp_ncp)
 
 If there are only a few divergences we can often get rid of them by increasing
 the target acceptance rate (`adapt_delta`), which has the effect of lowering the
-stepsize used by the sampler and allowing the Markov chains to explore more
+step size used by the sampler and allowing the Markov chains to explore more
 complicated curvature in the target distribution.
 
 ```{r, fit-adapt-delta, results='hide', message=FALSE}
@@ -407,11 +446,48 @@ fit_ncp_2 <- sampling(schools_mod_ncp, data = schools_dat,
 For the first model and this particular data, increasing `adapt_delta` will not
 solve the problem and a reparameterization is required.
 
-
 ```{r, mcmc_nuts_divergence-3}
 mcmc_nuts_divergence(nuts_params(fit_cp_2), log_posterior(fit_cp_2))
 mcmc_nuts_divergence(nuts_params(fit_ncp_2), log_posterior(fit_ncp_2))
 ```
+
+#### mcmc_parcoord
+
+For another perspective on the divergences we can create a parallel 
+coordinates plot using the `mcmc_parcoord` function. This function 
+works in general without including information about the divergences, but if  
+the optional `np` argument is used to pass NUTS parameter information 
+then divergences will be colored in the plot (by default in red). 
+
+```{r, mcmc_parcoord-1}
+color_scheme_set("darkgray")
+mcmc_parcoord(posterior_cp, np = np_cp)
+```
+
+In the plot above we can see the for the centered parameterization the divergences
+occur when $\tau$, the hierarchical standard deviation, goes to zero and
+the values of the $\theta$s are essentially fixed. 
+
+#### mcmc_scatter
+
+Using the `mcmc_scatter` function (with optional argument `np`) we can 
+look at a bivariate plot of `tau` and one of the `theta` parameters.
+
+```{r, mcmc_scatter-1}
+mcmc_scatter(
+  posterior_cp, 
+  pars = c("theta[1]", "tau"), 
+  transform = list(tau = "log"), # actually show log(tau)
+  np = np_cp
+)
+```
+
+#### mcmc_pairs
+
+Finally, the `mcmc_pairs` function can be used also be used to look at the
+divergences (as well as other HMC/NUTS diagnostics). Examples are provided at
+`help("mcmc_pairs")`.
+
 
 ### Energy and Bayesian fraction of missing information
 
@@ -423,10 +499,13 @@ Informally, the energy diagnostic for HMC (and the related energy-based Bayesian
 fraction of missing information) quantifies the heaviness of the tails of the 
 posterior distribution.
 
+#### mcmc_nuts_energy
+
 The plot created by `mcmc_nuts_energy` shows overlaid histograms of the 
 (centered) marginal energy distribution $\pi_E$ and the first-differenced 
 distribution $\pi_{\Delta E}$,
 ```{r, mcmc_nuts_energy-1, message=FALSE}
+color_scheme_set("red")
 mcmc_nuts_energy(np_cp)
 ```
 
@@ -441,7 +520,7 @@ compare_cp_ncp(
 ```
 
 The difference between the parameterizations is even more apparent if we force 
-the stepsize to a smaller value and help the chains explore more of the 
+the step size to a smaller value and help the chains explore more of the 
 posterior:
 
 ```{r, mcmc_nuts_energy-4, message=FALSE,  fig.width=8}
@@ -457,6 +536,9 @@ compare_cp_ncp(
 See Betancourt (2017) for more on this particular example as well as the general
 theory behind the energy plots.
 
+
+<br>
+
 ## References
 
 Betancourt, M. (2017). A conceptual introduction to Hamiltonian Monte Carlo.
@@ -470,7 +552,11 @@ models. https://arxiv.org/abs/1312.0906
 
 Gabry, J., and Goodrich, B. (2017). rstanarm: Bayesian Applied Regression
 Modeling via Stan. R package version 2.15.3.
-http://mc-stan.org/users/interfaces/rstanarm.html, https://CRAN.R-project.org/package=rstanarm
+http://mc-stan.org/rstanarm, https://CRAN.R-project.org/package=rstanarm
+
+Gabry, J., Simpson, D., Vehtari, A., Betancourt, M., Gelman, A. (2017).
+Visualization in Bayesian workflow. arXiv preprint 
+https://arxiv.org/abs/1709.01449
 
 Gelman, A. and Rubin, D. B. (1992). Inference from iterative simulation using
 multiple sequences. *Statistical Science*. 7(4): 457--472.
@@ -484,10 +570,10 @@ path lengths in Hamiltonian Monte Carlo. *Journal of Machine Learning Research*.
 15:1593--1623.
 
 Rubin, D. B. (1981). Estimation in Parallel Randomized Experiments. *Journal of
-Educational and Behavioral Statistics*. 6:377–401.
+Educational and Behavioral Statistics*. 6:377--401.
 
 Stan Development Team. (2017). *Stan Modeling Language Users
 Guide and Reference Manual*. http://mc-stan.org/users/documentation/
 
 Stan Development Team. (2017). RStan: the R interface to Stan. R package version 2.16.2.
-http://mc-stan.org/users/interfaces/rstan.html, https://CRAN.R-project.org/package=rstanarm
+http://mc-stan.org/rstan, https://CRAN.R-project.org/package=rstan

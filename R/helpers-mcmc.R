@@ -45,6 +45,39 @@ prepare_mcmc_array <-
     set_mcmc_dimnames(x, pars)
   }
 
+
+# Melt a 3-D array or matrix of MCMC draws
+#
+# @param x An mcmc_array (from prepare_mcmc_array).
+# @param varnames,value.name,... Passed to reshape2::melt (array method).
+# @return A molten data frame.
+#
+melt_mcmc <- function(x, ...) UseMethod("melt_mcmc")
+melt_mcmc.mcmc_array <-
+  function(x,
+           varnames = c("Iteration", "Chain", "Parameter"),
+           value.name = "Value",
+           ...) {
+
+    stopifnot(is_mcmc_array(x))
+    reshape2::melt(data = x,
+                   varnames = varnames,
+                   value.name = value.name,
+                   ...)
+  }
+
+# If all chains are already merged
+melt_mcmc.matrix <-
+  function(x,
+           varnames = c("Draw", "Parameter"),
+           value.name = "Value",
+           ...) {
+    reshape2::melt(data = x,
+                   varnames = varnames,
+                   value.name = value.name,
+                   ...)
+  }
+
 # Set dimnames of 3-D array
 # @param x 3-D array
 # @param parnames Character vector of parameter names
@@ -324,7 +357,13 @@ num_chains.data.frame <- function(x, ...) {
   length(unique(x$Chain))
 }
 num_iters.data.frame <- function(x, ...) {
-  stopifnot("Iteration" %in% colnames(x))
-  length(unique(x$Iteration))
+  cols <- colnames(x)
+  stopifnot("Iteration" %in% cols || "Draws" %in% cols)
+  if ("Iteration" %in% cols) {
+    n <- length(unique(x$Iteration))
+  } else {
+    n <- length(unique(x$Draw))
+  }
+  return(n)
 }
 

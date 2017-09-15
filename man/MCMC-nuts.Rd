@@ -163,15 +163,18 @@ Guide and Reference Manual.} \url{http://mc-stan.org/documentation/}
 \seealso{
 \itemize{
 \item The \emph{Visual MCMC Diagnostics} vignette.
-\item Several other plotting functions in the \pkg{bayesplot} package that
+\item Several other plotting functions in the \pkg{bayesplot} package
 are not NUTS-specific but take optional extra arguments if the model was fit
 using NUTS:
 \itemize{
- \item \code{\link{mcmc_trace}} will plot divergences on the traceplot if the
- optional \code{divergences} argument is specified.
- \item \code{\link{mcmc_pairs}} will indicate which (if any) iterations
- encountered a divergent transition or hit the maximum treedepth (rather than
- terminated its evolution normally).
+ \item \code{\link{mcmc_trace}}: show divergences as tick marks below the
+ trace plot.
+ \item \code{\link{mcmc_parcoord}}: change the color/size/transparency of
+ lines correspondending to divergences.
+ \item \code{\link{mcmc_scatter}}: change the color/size/shape of points
+ corresponding to divergences.
+ \item \code{\link{mcmc_pairs}}: change the color/size/shape of points
+ corresponding divergences and/or max treedepth saturation.
  }
 }
 
@@ -179,7 +182,8 @@ Other MCMC: \code{\link{MCMC-combos}},
   \code{\link{MCMC-diagnostics}},
   \code{\link{MCMC-distributions}},
   \code{\link{MCMC-intervals}},
-  \code{\link{MCMC-overview}}, \code{\link{MCMC-recover}},
+  \code{\link{MCMC-overview}}, \code{\link{MCMC-parcoord}},
+  \code{\link{MCMC-recover}},
   \code{\link{MCMC-scatterplots}},
   \code{\link{MCMC-traces}}
 }
