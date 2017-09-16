@@ -133,11 +133,15 @@ mcmc_intervals <- function(x,
   x_lim[2] <- x_lim[2] + 0.05 * x_range
 
   # faint vertical line at zero if zero is within x_lim
-  vertical_line <- if (0 > x_lim[1] && 0 < x_lim[2]) {
+  layer_vertical_line <- if (0 > x_lim[1] && 0 < x_lim[2]) {
     vline_0(color = "gray90", size = 0.5)
   } else {
     geom_blank()
   }
+
+  layer_outer_interval <- geom_segment(
+    aes_(x = ~ ll, xend = ~ hh, y = ~ parameter, yend = ~ parameter),
+    color = get_color("mid"))
 
   # prep inner interval
   segment_args <- list(
@@ -152,6 +156,8 @@ mcmc_intervals <- function(x,
     segment_args$color <- get_color("dark")
   }
 
+  layer_inner_interval <- do.call(geom_segment, segment_args)
+
   # prep point estimate
   point_args <- list(
     mapping = aes_(x = ~ m, y = ~ parameter),
@@ -165,22 +171,21 @@ mcmc_intervals <- function(x,
     point_args$color <- get_color("dark_highlight")
     point_args$fill <- get_color("light")
   }
+  point_func <- if (!no_point_est) geom_point else geom_ignore
+  layer_maybe_points <- do.call(point_func, point_args)
 
   # Do something or add an invisible layer
-  point_func <- if (no_point_est) geom_point else geom_ignore
   scale_color <- if (color_by_rhat) scale_color_diagnostic("rhat") else NULL
   scale_fill <- if (color_by_rhat) scale_fill_diagnostic("rhat") else NULL
 
   ggplot(data) +
-    vertical_line +
-    # outer interval
-    geom_segment(aes_(x = ~ ll, xend = ~ hh,
-                      y = ~ parameter, yend = ~ parameter),
-                 color = get_color("mid")) +
-    do.call(geom_segment, segment_args) +
-    do.call(point_func, point_args) +
+    layer_vertical_line +
+    layer_outer_interval +
+    layer_inner_interval +
+    layer_maybe_points +
     scale_color +
     scale_fill +
+    scale_y_discrete(limits = rev(data$parameter)) +
     xlim(x_lim) +
     legend_move(ifelse(color_by_rhat, "top", "none")) +
     yaxis_text(face = "bold") +
@@ -300,12 +305,13 @@ mcmc_areas_data <- function() {
                             adjust = NULL,
                             kernel = NULL) {
 
+
   rhat <- runif(6, 1.0, 1.7)
   data <- mcmc_intervals_data(x, rhat = rhat)
 
 
 
-  show_density <- FALSE
+  show_density <- TRUE
   if (show_density) {
     # density outline
     n_dens_pts <- 512
