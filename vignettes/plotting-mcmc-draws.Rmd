@@ -228,7 +228,7 @@ vignette.
 **Documentation:**
 
 * `help("MCMC-scatterplots")`
-* [mc-stan.org/bayesplot/reference/MCMC-distributions](http://mc-stan.org/bayesplot/reference/MCMC-scatterplots.html)
+* [mc-stan.org/bayesplot/reference/MCMC-scatterplots](http://mc-stan.org/bayesplot/reference/MCMC-scatterplots.html)
 
 ------
 
@@ -275,6 +275,7 @@ useful when MCMC diagnostic information is included. This is discussed in the
 vignette.
 
 
+
 <br>
 
 ## Trace plots
@@ -289,7 +290,7 @@ to trace plots.
 **Documentation:**
 
 * `help("MCMC-traces")`
-* [mc-stan.org/bayesplot/reference/MCMC-distributions](http://mc-stan.org/bayesplot/reference/MCMC-traces.html)
+* [mc-stan.org/bayesplot/reference/MCMC-traces](http://mc-stan.org/bayesplot/reference/MCMC-traces.html)
 
 -------
 
