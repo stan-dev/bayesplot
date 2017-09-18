@@ -139,53 +139,48 @@ mcmc_intervals <- function(x,
     geom_blank()
   }
 
-  layer_outer_interval <- geom_segment(
-    aes_(x = ~ ll, xend = ~ hh, y = ~ parameter, yend = ~ parameter),
-    color = get_color("mid"))
-
-  # prep inner interval
-  segment_args <- list(
-    mapping = aes_(x = ~ l, xend = ~ h,
-                   y = ~ parameter, yend = ~ parameter),
-    size = 2, show.legend = FALSE)
-
-  if (color_by_rhat) {
-    segment_args$mapping <- segment_args$mapping %>%
-      modify_aes_(color = ~ rhat_rating)
-  } else {
-    segment_args$color <- get_color("dark")
-  }
-
-  layer_inner_interval <- do.call(geom_segment, segment_args)
-
-  # prep point estimate
-  point_args <- list(
+  args_outer <- list(
+    mapping = aes_(x = ~ ll, xend = ~ hh, y = ~ parameter, yend = ~ parameter),
+    color = get_color("mid")
+  )
+  args_inner <- list(
+    mapping = aes_(x = ~ l, xend = ~ h, y = ~ parameter, yend = ~ parameter),
+    size = 2,
+    show.legend = FALSE
+    )
+  args_point <- list(
     mapping = aes_(x = ~ m, y = ~ parameter),
     size = 4,
     shape = 21)
 
   if (color_by_rhat) {
-    point_args$mapping <- point_args$mapping %>%
+    args_inner$mapping <- args_inner$mapping %>%
+      modify_aes_(color = ~ rhat_rating)
+    args_point$mapping <- args_point$mapping %>%
       modify_aes_(color = ~ rhat_rating, fill = ~ rhat_rating)
   } else {
-    point_args$color <- get_color("dark_highlight")
-    point_args$fill <- get_color("light")
+    args_inner$color <- get_color("dark")
+    args_point$color <- get_color("dark_highlight")
+    args_point$fill <- get_color("light")
   }
-  point_func <- if (!no_point_est) geom_point else geom_ignore
-  layer_maybe_points <- do.call(point_func, point_args)
+
+  layer_outer <- do.call(geom_segment, args_outer)
+  layer_inner <- do.call(geom_segment, args_inner)
 
   # Do something or add an invisible layer
+  point_func <- if (!no_point_est) geom_point else geom_ignore
+  layer_maybe_points <- do.call(point_func, args_point)
   scale_color <- if (color_by_rhat) scale_color_diagnostic("rhat") else NULL
   scale_fill <- if (color_by_rhat) scale_fill_diagnostic("rhat") else NULL
 
   ggplot(data) +
     layer_vertical_line +
-    layer_outer_interval +
-    layer_inner_interval +
+    layer_outer +
+    layer_inner +
     layer_maybe_points +
     scale_color +
     scale_fill +
-    scale_y_discrete(limits = rev(data$parameter)) +
+    scale_y_discrete(limits = unique(rev(data$parameter))) +
     xlim(x_lim) +
     legend_move(ifelse(color_by_rhat, "top", "none")) +
     yaxis_text(face = "bold") +
@@ -211,18 +206,101 @@ mcmc_areas <- function(x,
                        kernel = NULL) {
   check_ignored_arguments(...)
   stopifnot(prob_outer >= prob)
-  x <- prepare_mcmc_array(x, pars, regex_pars, transformations)
-  .mcmc_intervals(
-    x = merge_chains(x),
-    prob_inner = prob,
-    prob_outer = prob_outer,
-    point_est = point_est,
-    rhat = rhat,
-    show_density = TRUE,
-    bw = bw,
-    adjust = adjust,
-    kernel = kernel
+  data <- mcmc_areas_data(x, pars, regex_pars, transformations,
+                          prob = prob, prob_outer = prob_outer,
+                          point_est = point_est, rhat = rhat,
+                          bw = bw, adjust = adjust, kernel = kernel)
+  datas <- split(data, data$interval)
+  color_by_rhat <- rlang::has_name(data, "rhat_rating")
+
+  # faint vertical line at zero if zero is within x_lim
+  x_lim <- range(datas$outer$x)
+  x_range <- diff(x_lim)
+  x_lim[1] <- x_lim[1] - 0.05 * x_range
+  x_lim[2] <- x_lim[2] + 0.05 * x_range
+
+  layer_vertical_line <- if (0 > x_lim[1] && 0 < x_lim[2]) {
+    vline_0(color = "gray90", size = 0.5)
+  } else {
+    geom_blank()
+  }
+
+  groups <- if (color_by_rhat) {
+    rlang::syms(c("parameter", "rhat_rating"))
+  } else {
+    rlang::syms(c("parameter"))
+  }
+
+  datas$bottom <- datas$outer %>%
+    group_by(!!! groups) %>%
+    summarise(ll = min(.data$x), hh = max(.data$x)) %>%
+    ungroup()
+
+  args_bottom <- list(
+    mapping = aes_(x = ~ ll, xend = ~ hh, yend = ~ parameter),
+    data = datas$bottom
   )
+  args_inner <- list(
+    mapping = aes_(height = ~ density),
+    data = datas$inner
+  )
+  args_point <- list(
+    # Use group to draw a vertical line for each x value. This creates a
+    # fill using the color scale
+    mapping = aes_(height = ~ density),
+    data = datas$point
+  )
+  args_outer <- list(
+    mapping = aes_(height = ~ density),
+    fill = NA
+  )
+
+  if (color_by_rhat) {
+    args_bottom$mapping <- args_bottom$mapping %>%
+      modify_aes_(color = ~ rhat_rating)
+    args_inner$mapping <- args_inner$mapping %>%
+      modify_aes_(color = ~ rhat_rating,
+                  fill = ~ rhat_rating)
+    args_point$mapping <- args_point$mapping %>%
+      modify_aes_(color = ~ rhat_rating)
+    args_outer$mapping <- args_outer$mapping %>%
+      modify_aes_(color = ~ rhat_rating)
+    # dc <- diagnostic_colors("rhat", "color")[["values"]]
+
+  } else {
+    args_bottom$color <- get_color("dark")
+    args_inner$color <- get_color("dark")
+    args_inner$fill <- get_color("light")
+    args_outer$color <- get_color("dark")
+    args_point$fill <- get_color("mid_highlight")
+    args_point$color <- NA
+  }
+
+  layer_bottom <- do.call(geom_segment, args_bottom)
+  layer_inner <- do.call(geom_area_ridges, args_inner)
+  layer_point <- do.call(geom_area_ridges2, args_point)
+  layer_outer <- do.call(geom_area_ridges, args_outer)
+
+  # Do something or add an invisible layer
+  scale_color <- if (color_by_rhat) scale_color_diagnostic("rhat") else NULL
+  scale_fill <- if (color_by_rhat) scale_fill_diagnostic("rhat") else NULL
+
+  ggplot(datas$outer) +
+    aes_(x = ~ x, y = ~ parameter) +
+    layer_vertical_line +
+    layer_inner +
+    layer_point +
+    layer_outer +
+    layer_bottom +
+    scale_color +
+    scale_fill +
+    scale_y_discrete(limits = unique(rev(data$parameter))) +
+    xlim(x_lim) +
+    legend_move(ifelse(color_by_rhat, "top", "none")) +
+    yaxis_text(face = "bold") +
+    yaxis_title(FALSE) +
+    yaxis_ticks(size = 1) +
+    xaxis_title(FALSE)
 }
 
 mcmc_intervals_data <- function(x,
@@ -287,9 +365,85 @@ mcmc_intervals_data <- function(x,
   data
 }
 
+# Don't import `filter`: otherwise, you get a warning when using
+# `devtools::load_all(".")` because stats also a `filter` function
 
-mcmc_areas_data <- function() {
+#' @importFrom dplyr inner_join one_of top_n
+mcmc_areas_data <- function(x,
+                            pars = character(),
+                            regex_pars = character(),
+                            transformations = list(),
+                            ...,
+                            prob = 0.5,
+                            prob_outer = 1,
+                            point_est = c("median", "mean", "none"),
+                            rhat = numeric(),
+                            bw = NULL,
+                            adjust = NULL,
+                            kernel = NULL) {
+  probs <- sort(c(prob, prob_outer))
+  intervals <- mcmc_intervals_data(x, pars, regex_pars, transformations,
+                                   prob = probs[1],  prob_outer = probs[2],
+                                   point_est = point_est, rhat = rhat)
 
+  x <- prepare_mcmc_array(x, pars, regex_pars, transformations)
+  x <- merge_chains(x)
+
+  data_long <- melt_mcmc(x) %>%
+    dplyr::as_tibble() %>%
+    rlang::set_names(tolower)
+
+  # Compute the density intervals
+  data_inner <- data_long %>%
+    compute_column_density(parameter, value, interval_width = probs[1]) %>%
+    mutate(interval = "inner",
+           parameter = as.character(.data$parameter))
+
+  data_outer <- data_long %>%
+    compute_column_density(parameter, value, interval_width = probs[2]) %>%
+    mutate(interval = "outer",
+           parameter = as.character(.data$parameter))
+
+  # Point estimates will be intervals that take up .5% of the x-axis
+  x_lim <- range(data_outer$x)
+  x_range <- diff(x_lim)
+  x_lim[1] <- x_lim[1] - 0.05 * x_range
+  x_lim[2] <- x_lim[2] + 0.05 * x_range
+  point_width <- .005 * diff(x_lim)
+
+  # Find the density values closest to the point estimate
+  point_ests <- intervals %>%
+    select(one_of("parameter", "m"))
+
+  point_centers <- data_inner %>%
+    inner_join(point_ests, by = "parameter") %>%
+    group_by(.data$parameter) %>%
+    mutate(diff = abs(.data$m - .data$x)) %>%
+    dplyr::top_n(1, -.data$diff) %>%
+    select(one_of("parameter", "x", "m")) %>%
+    rename(center = .data$x) %>%
+    ungroup()
+
+  # Keep density values that are within .5% of the x-axis of the point estimate
+  points <- point_centers %>%
+    left_join(data_inner, by = "parameter") %>%
+    group_by(.data$parameter) %>%
+    dplyr::filter(abs(.data$center - .data$x) <= point_width) %>%
+    mutate(interval_width = 0,
+           interval = "point") %>%
+    select(-.data$center, .data$m) %>%
+    ungroup()
+
+  data <- dplyr::bind_rows(data_inner, data_outer, points) %>%
+    select(one_of("parameter", "interval", "interval_width", "x", "density"))
+
+  if (rlang::has_name(intervals, "rhat_value")) {
+    rhat_info <- intervals %>%
+      select(one_of("parameter", "rhat_value",
+                    "rhat_rating", "rhat_description"))
+    data <- inner_join(data, rhat_info, by = "parameter")
+  }
+  data
 }
 
 # internal ----------------------------------------------------------------
@@ -305,160 +459,27 @@ mcmc_areas_data <- function() {
                             adjust = NULL,
                             kernel = NULL) {
 
+  rhat <- runif(3, 1.0, 1.7)
 
-  rhat <- runif(6, 1.0, 1.7)
-  data <- mcmc_intervals_data(x, rhat = rhat)
+  x <- example_mcmc_draws(params = 6)
+  pars <- c("beta[1]", "beta[2]", "beta[3]")
+  regex_pars <- character(0)
+  transformations <- list()
+  prob = 0.5
+  prob_outer = .95
+  point_est = c("median", "mean", "none")
 
 
-
-  show_density <- TRUE
-  if (show_density) {
-    # density outline
-    n_dens_pts <- 512
-    y_dens <- matrix(0, nrow = n_dens_pts, ncol = n_param)
-    x_dens <- matrix(0, nrow = n_dens_pts, ncol = n_param)
-    for (i in seq_len(n_param)) {
-      d_temp <- compute_dens_i(
-        x = x[, i],
-        from = quantiles[i, 1],
-        to = quantiles[i, 5],
-        n = n_dens_pts,
-        bw = bw,
-        adjust = adjust,
-        kernel = kernel
-      )
-      x_dens[, i] <- d_temp$x
-      y_max <- max(d_temp$y)
-      y_dens[, i] <- d_temp$y / y_max * 0.8 + y[i]
-    }
-
-    df_dens <- data.frame(
-      x = as.vector(x_dens),
-      y = as.vector(y_dens),
-      name = rep(parnames, each = n_dens_pts)
-    )
-    if (color_by_rhat) {
-      df_dens$rhat <- rep(rhat, each = n_dens_pts)
-    }
-
-    dens_args <- list(
-      data = df_dens,
-      mapping = aes_(
-        x = ~ x,
-        y = ~ y,
-        group = ~ name,
-        color = if (!color_by_rhat) NULL else ~ rhat
-      )
-    )
-    if (!color_by_rhat) {
-      dens_args$color <- get_color("d")
-    }
-
-    graph + g_dens
-
-    g_dens <- do.call("geom_line", dens_args)
-
-    #shaded interval
-    y_poly <- matrix(0, nrow = n_dens_pts + 2, ncol = n_param)
-    x_poly <- matrix(0, nrow = n_dens_pts + 2, ncol = n_param)
-    for (i in seq_len(n_param)) {
-      d_temp <- compute_dens_i(
-        x = x[, i],
-        from = quantiles[i, 2],
-        to = quantiles[i, 4],
-        n = n_dens_pts,
-        bw = bw,
-        adjust = adjust,
-        kernel = kernel
-      )
-      x_poly[, i] <-
-        c(d_temp$x[1], as.vector(d_temp$x), d_temp$x[n_dens_pts])
-      y_max <- max(d_temp$y)
-      y_poly[, i] <-
-        as.vector(c(0, as.vector(d_temp$y) / y_max * 0.8, 0) + y[i])
-    }
-    df_poly <-
-      data.frame(
-        x = as.vector(x_poly),
-        y = as.vector(y_poly),
-        name = rep(parnames, each = n_dens_pts + 2)
-      )
-    if (color_by_rhat)
-      df_poly$rhat <- rep(rhat, each = n_dens_pts + 2)
-    g_poly <-
-      geom_polygon(data = df_poly, aes_(
-        x = ~ x,
-        y = ~ y,
-        group = ~ name,
-        fill = if (color_by_rhat) ~ rhat else ~ y
-      ))
-
-    # point estimate
-    df_dens$parameter <- df_dens$name
-    pt_data <- dplyr::summarise_(
-      # find y value at which to stop vertical pt est segment
-      dplyr::group_by_(
-        dplyr::left_join(df_dens, data[, c("parameter", "m")],
-                         by = "parameter"),
-        .dots = list(~ parameter)
-      ),
-      .dots = list(maxy = ~ y[which.min(abs(x - m))])
-    )
-    segment_args <- list(
-      data = dplyr::left_join(data, pt_data, by = "parameter"),
-      mapping = aes_(
-        x = ~ m,
-        xend = ~ m,
-        y = ~ y,
-        yend = ~ maxy,
-        color = if (!color_by_rhat) NULL else ~ rhat
-      ),
-      size = 1
-    )
-    if (!color_by_rhat) {
-      segment_args$color <- get_color("m")
-    }
-
-    g_point <- do.call("geom_segment", segment_args)
-
-    # bottom line
-    bottom_args <- list(
-      mapping = aes_(
-        x = ~ ll,
-        xend = ~ hh,
-        y = ~ y,
-        yend = ~ y,
-        color = if (!color_by_rhat) NULL else ~ rhat
-      )
-    )
-    if (!color_by_rhat) {
-      bottom_args$color <- get_color("d")
-    }
-
-    g_bottom <- do.call("geom_segment", bottom_args)
-
-    graph <- graph + g_poly
-    if (!no_point_est) {
-      graph <- graph + g_point
-    }
-
-    graph <- graph + g_bottom + g_dens
-
-    if (color_by_rhat) {
-      graph <- graph +
-        scale_fill_diagnostic("rhat") +
-        scale_color_diagnostic("rhat")
-    } else {
-      graph <- graph + scale_fill_gradient(low = get_color("l"),
-                                           high = get_color("l"),
-                                           guide = "none")
-    }
-
-  }
-
-  graph
 }
 
+
+geom_area_ridges <- function(...) {
+  ggridges::geom_density_ridges(..., stat = "identity", scale = 1)
+}
+
+geom_area_ridges2 <- function(...) {
+  ggridges::geom_density_ridges2(..., stat = "identity", scale = 1)
+}
 
 #' Add new aesthetic mappings to a list of aesthetic mappings
 #'
@@ -501,38 +522,25 @@ compute_column_density <- function(df, group_vars, value_var, ...) {
 
 
 # Given a vector of values, compute a density dataframe.
-compute_interval_density <- function(x,
-                                     interval_width = 1,
-                                     n = 512,
-                                     bw = NULL,
-                                     adjust = NULL,
-                                     kernel = NULL) {
+compute_interval_density <- function(x, interval_width = 1, n = 1024,
+                                     bw = NULL, adjust = NULL, kernel = NULL) {
   nx <- length(x)
   tail_width <- (1 - interval_width) / 2
   qs <- quantile(x, probs = c(tail_width, 1 - tail_width))
 
   args <- c(
     # can't be null
-    list(
-      x = x,
-      from = min(qs),
-      to = max(qs),
-      n = n
-    ),
+    list(x = x, from = min(qs), to = max(qs), n = n),
     # might be null
-    bw = bw,
-    adjust = adjust,
-    kernel = kernel)
+    bw = bw, adjust = adjust, kernel = kernel)
 
   dens <- do.call("density", args)
 
-  den_df <- data.frame(
+  data.frame(
     interval_width = interval_width,
     x = dens$x,
     density = dens$y,
-    scaled =  dens$y / max(dens$y, na.rm = TRUE),
-    count =   dens$y * nx,
-    n = nx
+    scaled_density =  dens$y / max(dens$y, na.rm = TRUE)
   )
 }
 
