@@ -10,11 +10,11 @@
 \usage{
 ppc_stat(y, yrep, stat = "mean", ..., binwidth = NULL, freq = TRUE)
 
-ppc_stat_grouped(y, yrep, group, stat = "mean", ..., binwidth = NULL,
-  freq = TRUE)
+ppc_stat_grouped(y, yrep, group, stat = "mean", ..., facet_args = list(),
+  binwidth = NULL, freq = TRUE)
 
 ppc_stat_freqpoly_grouped(y, yrep, group, stat = "mean", ...,
-  binwidth = NULL, freq = TRUE)
+  facet_args = list(), binwidth = NULL, freq = TRUE)
 
 ppc_stat_2d(y, yrep, stat = c("mean", "sd"), ..., size = 2.5, alpha = 0.7)
 }
@@ -50,6 +50,10 @@ function.)}
 \item{group}{A grouping variable (a vector or factor) the same length as
 \code{y}. Each value in \code{group} is interpreted as the group level
 pertaining to the corresponding value of \code{y}.}
+
+\item{facet_args}{A named list of arguments (other than \code{facets}) passed
+to \code{\link[ggplot2]{facet_wrap}} or \code{\link[ggplot2]{facet_grid}}
+to control faceting.}
 
 \item{size, alpha}{Arguments passed to \code{\link[ggplot2]{geom_point}} to
 control the appearance of scatterplot points.}
@@ -105,7 +109,7 @@ group <- example_group_data()
 ppc_stat_grouped(y, yrep, group)
 
 color_scheme_set("mix-red-blue")
-ppc_stat_freqpoly_grouped(y, yrep, group)
+ppc_stat_freqpoly_grouped(y, yrep, group, facet_args = list(nrow = 2))
 
 # use your own function to compute test statistics
 color_scheme_set("brightblue")

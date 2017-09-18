@@ -4,8 +4,10 @@
 \alias{MCMC-diagnostics}
 \alias{mcmc_rhat}
 \alias{mcmc_rhat_hist}
+\alias{mcmc_rhat_data}
 \alias{mcmc_neff}
 \alias{mcmc_neff_hist}
+\alias{mcmc_neff_data}
 \alias{mcmc_acf}
 \alias{mcmc_acf_bar}
 \title{General MCMC diagnostics}
@@ -14,9 +16,13 @@ mcmc_rhat(rhat, ..., size = NULL)
 
 mcmc_rhat_hist(rhat, ..., binwidth = NULL)
 
+mcmc_rhat_data(rhat, ...)
+
 mcmc_neff(ratio, ..., size = NULL)
 
 mcmc_neff_hist(ratio, ..., binwidth = NULL)
+
+mcmc_neff_data(ratio, ...)
 
 mcmc_acf(x, pars = character(), regex_pars = character(),
   facet_args = list(), ..., lags = 20, size = NULL)
@@ -51,14 +57,16 @@ allowed inputs.}
 parameter selection. Can be specified instead of \code{pars} or in addition
 to \code{pars}.}
 
-\item{facet_args}{Arguments (other than \code{facets}) passed to
-\code{\link[ggplot2]{facet_grid}} to control faceting.}
+\item{facet_args}{A named list of arguments (other than \code{facets}) passed
+to \code{\link[ggplot2]{facet_wrap}} or \code{\link[ggplot2]{facet_grid}}
+to control faceting.}
 
 \item{lags}{The number of lags to show in the autocorrelation plot.}
 }
 \value{
 A ggplot object that can be further customized using the
-  \pkg{ggplot2} package.
+  \pkg{ggplot2} package. The \code{_data} functions return the data that
+  would have be drawn by the plotting function.
 }
 \description{
 Plots of Rhat statistics, ratios of effective sample size to total sample
@@ -179,7 +187,8 @@ simulation using multiple sequences. \emph{Statistical Science}. 7(4),
 Other MCMC: \code{\link{MCMC-combos}},
   \code{\link{MCMC-distributions}},
   \code{\link{MCMC-intervals}}, \code{\link{MCMC-nuts}},
-  \code{\link{MCMC-overview}}, \code{\link{MCMC-recover}},
+  \code{\link{MCMC-overview}}, \code{\link{MCMC-parcoord}},
+  \code{\link{MCMC-recover}},
   \code{\link{MCMC-scatterplots}},
   \code{\link{MCMC-traces}}
 }

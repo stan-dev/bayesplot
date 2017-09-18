@@ -10,9 +10,7 @@
 #' @template args-pars
 #' @template args-regex_pars
 #' @template args-transformations
-#' @param facet_args Arguments (other than \code{facets}) passed to
-#'   \code{\link[ggplot2]{facet_wrap}} or \code{\link[ggplot2]{facet_grid}} to
-#'   control faceting.
+#' @template args-facet_args
 #' @param ... Currently ignored.
 #'
 #' @template return-ggplot
@@ -227,7 +225,7 @@ mcmc_violin <- function(x,
   if (by_chain && !has_multiple_chains(x))
     STOP_need_multiple_chains()
 
-  data <- reshape2::melt(x, value.name = "value")
+  data <- melt_mcmc(x, value.name = "value")
   n_param <- num_params(data)
 
   graph <- ggplot(data, set_hist_aes(freq)) +
@@ -276,7 +274,7 @@ mcmc_violin <- function(x,
                        trim = FALSE,
                        ...) {
   x <- prepare_mcmc_array(x, pars, regex_pars, transformations)
-  data <- reshape2::melt(x, value.name = "Value")
+  data <- melt_mcmc(x)
   data$Chain <- factor(data$Chain)
   n_param <- num_params(data)
 

@@ -107,6 +107,10 @@ packages for full examples of \code{pp_check} methods.
 }
 
 \references{
+Gabry, J., Simpson, D., Vehtari, A., Betancourt, M., Gelman, A.
+  (2017). Visualization in Bayesian workflow. arXiv preprint
+  \href{https://arxiv.org/abs/1709.01449}{arvix:1709.01449}.
+
 Gelman, A., Carlin, J. B., Stern, H. S., Dunson, D. B., Vehtari,
   A., and Rubin, D. B. (2013). \emph{Bayesian Data Analysis.} Chapman & Hall/CRC
   Press, London, third edition. (Ch. 6)

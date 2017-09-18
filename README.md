@@ -23,11 +23,15 @@ The idea behind **bayesplot** is not only to provide convenient functionality
 for users, but also a common set of functions that can be easily used by
 developers working on a variety of packages for Bayesian modeling, particularly
 (but not necessarily) those powered by
-[**RStan**](https://github.com/stan-dev/rstan).
+[**RStan**](http://mc-stan.org/rstan).
 
+### Resources
+
+* [mc-stan.org/bayesplot](http://mc-stan.org/bayesplot) (online documentation, vignettes)
+* [Ask a question](http://discourse.mc-stan.org) (Stan Forums on Discourse)
+* [Open an issue](https://github.com/stan-dev/bayesplot/issues) (GitHub issues for bug reports, feature requests)
 
 ### Installation
-
 
 * Install from CRAN:
 
@@ -58,6 +62,7 @@ rmarkdown::pandoc_available()
 
 
 ### Examples
+
 Some quick examples using MCMC draws obtained from the [__rstanarm__](https://github.com/stan-dev/rstanarm) 
 and [__rstan__](https://github.com/stan-dev/rstan) packages.
 
@@ -115,6 +120,19 @@ p + facet_text(size = 15)
 <img src=https://github.com/stan-dev/bayesplot/blob/master/images/mcmc_trace-rstan.png width=50% />
 
 ```r
+# scatter plot also showing divergences
+color_scheme_set("darkgray")
+mcmc_scatter(
+  as.matrix(fit2),
+  pars = c("tau", "theta[1]"), 
+  np = nuts_params(fit2), 
+  np_style = scatter_style_np(div_color = "green", div_alpha = 0.8)
+)
+```
+
+<img src=https://github.com/stan-dev/bayesplot/blob/master/images/mcmc_scatter-rstan.png width=50% />
+
+```r
 color_scheme_set("red")
 np <- nuts_params(fit2)
 mcmc_nuts_energy(np) + ggtitle("NUTS Energy Diagnostic")
@@ -144,9 +162,3 @@ ppc_intervals(
 ```
 
 <img src=https://github.com/stan-dev/bayesplot/blob/master/images/ppc_intervals-rstanarm.png width=55% />
-
-
-### Getting help
-
-* [Ask a question at The Stan Forums](http://discourse.mc-stan.org)
-* [File an issue on GitHub](https://github.com/stan-dev/bayesplot/issues)
