@@ -248,7 +248,8 @@ mcmc_areas <- function(x,
     # Use group to draw a vertical line for each x value. This creates a
     # fill using the color scale
     mapping = aes_(height = ~ density),
-    data = datas$point
+    data = datas$point,
+    color = NA
   )
   args_outer <- list(
     mapping = aes_(height = ~ density),
@@ -261,19 +262,17 @@ mcmc_areas <- function(x,
     args_inner$mapping <- args_inner$mapping %>%
       modify_aes_(color = ~ rhat_rating,
                   fill = ~ rhat_rating)
-    args_point$mapping <- args_point$mapping %>%
-      modify_aes_(color = ~ rhat_rating)
     args_outer$mapping <- args_outer$mapping %>%
       modify_aes_(color = ~ rhat_rating)
-    # dc <- diagnostic_colors("rhat", "color")[["values"]]
-
+    # Manually color the rhat fills with the highlight colors
+    dc <- diagnostic_colors("rhat", "color")[["values"]]
+    args_point$fill <- dc[datas$point$rhat_rating]
   } else {
     args_bottom$color <- get_color("dark")
     args_inner$color <- get_color("dark")
     args_inner$fill <- get_color("light")
-    args_outer$color <- get_color("dark")
     args_point$fill <- get_color("mid_highlight")
-    args_point$color <- NA
+    args_outer$color <- get_color("dark")
   }
 
   layer_bottom <- do.call(geom_segment, args_bottom)
