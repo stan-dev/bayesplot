@@ -16,7 +16,7 @@ License: GPL (>= 3)
 LazyData: TRUE
 URL: http://mc-stan.org/bayesplot
 BugReports: https://github.com/stan-dev/bayesplot/issues/
-SystemRequirements:	pandoc
+SystemRequirements: pandoc
 Depends:
     R (>= 3.1.0)
 Imports:
@@ -25,7 +25,9 @@ Imports:
     reshape2,
     stats,
     utils,
-    rlang
+    rlang,
+    tidyr,
+    ggridges
 Suggests:
     arm,
     gridExtra (>= 2.2.1),
