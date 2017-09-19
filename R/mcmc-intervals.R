@@ -119,17 +119,13 @@ mcmc_intervals <- function(x,
                            point_est = c("median", "mean", "none"),
                            rhat = numeric()) {
   check_ignored_arguments(...)
-  stopifnot(prob_outer >= prob)
 
   data <- mcmc_intervals_data(x, pars, regex_pars, transformations,
                               prob = prob, prob_outer = prob_outer,
                               point_est = point_est, rhat  = rhat)
 
   color_by_rhat <- rlang::has_name(data, "rhat_rating")
-
-  # Use a dummy empty dataframe if no point estimate
   no_point_est <- all(data$point_est == "none")
-  data_point <- if (no_point_est) dplyr::filter(data, FALSE) else data
 
   x_lim <- range(c(data$ll, data$hh))
   x_range <- diff(x_lim)
@@ -171,9 +167,11 @@ mcmc_intervals <- function(x,
     args_point$fill <- get_color("light")
   }
 
+  point_func <- if (no_point_est) geom_ignore else geom_point
+
   layer_outer <- do.call(geom_segment, args_outer)
   layer_inner <- do.call(geom_segment, args_inner)
-  layer_point <- do.call(geom_point, args_point)
+  layer_point <- do.call(point_func, args_point)
 
   # Do something or add an invisible layer
   if (color_by_rhat) {
@@ -216,7 +214,6 @@ mcmc_areas <- function(x,
                        adjust = NULL,
                        kernel = NULL) {
   check_ignored_arguments(...)
-  stopifnot(prob_outer >= prob)
   data <- mcmc_areas_data(x, pars, regex_pars, transformations,
                           prob = prob, prob_outer = prob_outer,
                           point_est = point_est, rhat = rhat,
@@ -284,7 +281,7 @@ mcmc_areas <- function(x,
     args_outer$mapping <- args_outer$mapping %>%
       modify_aes_(color = ~ rhat_rating)
     # rhat fill color scale uses light/mid/dark colors. The point estimate needs
-    # to be drawn with highlighted color scale, so wemanually set the color for
+    # to be drawn with highlighted color scale, so we manually set the color for
     # the rhat fills.
     dc <- diagnostic_colors("rhat", "color")[["values"]]
     args_point$fill <- dc[datas$point$rhat_rating]
@@ -338,30 +335,39 @@ mcmc_intervals_data <- function(x,
                                 point_est = c("median", "mean", "none"),
                                 rhat = numeric()) {
   check_ignored_arguments(...)
-  stopifnot(prob_outer >= prob)
+  both_probs <- sort(c(prob, prob_outer))
+  prob <- both_probs[1]
+  prob_outer <- both_probs[2]
 
   x <- prepare_mcmc_array(x, pars, regex_pars, transformations)
   x <- merge_chains(x)
 
-  n_param <- ncol(x)
-  parnames <- colnames(x)
+  data_long <- melt_mcmc(x) %>%
+    dplyr::as_tibble() %>%
+    rlang::set_names(tolower)
 
   probs <- c(0.5 - prob_outer / 2,
              0.5 - prob / 2,
-             0.5,
              0.5 + prob / 2,
              0.5 + prob_outer / 2)
 
-  quantiles <- t(apply(x, 2, quantile, probs = probs))
-
-  data <- dplyr::data_frame(parnames) %>%
-    dplyr::bind_cols(dplyr::as_data_frame(quantiles)) %>%
-    rlang::set_names(c("parameter", "ll", "l", "m", "h", "hh"))
   point_est <- match.arg(point_est)
-  data$point_est <- point_est
+  m_func <- if (point_est == "mean") mean else median
 
-  if (point_est == "mean") {
-    data$m <- unname(colMeans(x))
+  data <- data_long %>%
+    group_by(.data$parameter) %>%
+    summarise(
+      outer_width = prob_outer,
+      inner_width = prob,
+      point_est = point_est,
+      ll = quantile(.data$value, probs[1]),
+      l  = quantile(.data$value, probs[2]),
+      m  = m_func(.data$value),
+      h  = quantile(.data$value, probs[3]),
+      hh = quantile(.data$value, probs[4]))
+
+  if (point_est == "none") {
+    data$m <- NULL
   }
 
   color_by_rhat <- isTRUE(length(rhat) > 0)
@@ -372,17 +378,16 @@ mcmc_intervals_data <- function(x,
            " but 'x' has ", nrow(data), " parameters.",
            call. = FALSE)
     }
-    ## todo check if NAs need to be dropped here
+
     rhat <- new_rhat(rhat)
     rhat <- setNames(rhat, data$parameter)
 
     rhat_tbl <- rhat %>%
       mcmc_rhat_data() %>%
-      select(parameter,
+      select(one_of("parameter"),
              rhat_value = .data$value,
              rhat_rating = .data$rating,
-             rhat_description = .data$description) %>%
-      mutate(parameter = as.character(.data$parameter))
+             rhat_description = .data$description)
 
     data <- dplyr::inner_join(data, rhat_tbl, by = "parameter")
   }
@@ -392,7 +397,7 @@ mcmc_intervals_data <- function(x,
 
 
 # Don't import `filter`: otherwise, you get a warning when using
-# `devtools::load_all(".")` because stats also a `filter` function
+# `devtools::load_all(".")` because stats also has a `filter` function
 
 #' @importFrom dplyr inner_join one_of top_n
 mcmc_areas_data <- function(x,
@@ -408,9 +413,18 @@ mcmc_areas_data <- function(x,
                             adjust = NULL,
                             kernel = NULL) {
   probs <- sort(c(prob, prob_outer))
+
+  # First compute normal intervals so we know the width of the data, point
+  # estimates, and have prepared rhat values.
+
+  # Compute intervals with a median (for now) if no point estimate. It will be
+  # cleaner to ignore results later than to have two branching code paths.
+  point_est <- match.arg(point_est)
+  temp_point_est <- if (point_est == "none") "median" else point_est
+
   intervals <- mcmc_intervals_data(x, pars, regex_pars, transformations,
                                    prob = probs[1],  prob_outer = probs[2],
-                                   point_est = point_est, rhat = rhat)
+                                   point_est = temp_point_est, rhat = rhat)
 
   x <- prepare_mcmc_array(x, pars, regex_pars, transformations)
   x <- merge_chains(x)
@@ -422,20 +436,18 @@ mcmc_areas_data <- function(x,
   # Compute the density intervals
   data_inner <- data_long %>%
     compute_column_density(parameter, value, interval_width = probs[1]) %>%
-    mutate(interval = "inner",
-           parameter = as.character(.data$parameter))
+    mutate(interval = "inner")
 
   data_outer <- data_long %>%
     compute_column_density(parameter, value, interval_width = probs[2]) %>%
-    mutate(interval = "outer",
-           parameter = as.character(.data$parameter))
+    mutate(interval = "outer")
 
-  # Point estimates will be intervals that take up .5% of the x-axis
+  # Point estimates will be intervals that take up .8% of the x-axis
   x_lim <- range(data_outer$x)
   x_range <- diff(x_lim)
   x_lim[1] <- x_lim[1] - 0.05 * x_range
   x_lim[2] <- x_lim[2] + 0.05 * x_range
-  point_width <- .005 * diff(x_lim)
+  half_point_width <- .004 * diff(x_lim)
 
   # Find the density values closest to the point estimate
   point_ests <- intervals %>%
@@ -450,11 +462,11 @@ mcmc_areas_data <- function(x,
     rename(center = .data$x) %>%
     ungroup()
 
-  # Keep density values that are within .5% of the x-axis of the point estimate
+  # Keep density values that are within +/- .4% of x-axis of the point estimate
   points <- point_centers %>%
     left_join(data_inner, by = "parameter") %>%
     group_by(.data$parameter) %>%
-    dplyr::filter(abs(.data$center - .data$x) <= point_width) %>%
+    dplyr::filter(abs(.data$center - .data$x) <= half_point_width) %>%
     mutate(interval_width = 0,
            interval = "point") %>%
     select(-.data$center, .data$m) %>%
@@ -476,6 +488,8 @@ mcmc_areas_data <- function(x,
   }
   data
 }
+
+
 
 # internal ----------------------------------------------------------------
 
