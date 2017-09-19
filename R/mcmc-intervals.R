@@ -379,13 +379,14 @@ mcmc_intervals_data <- function(x,
   color_by_rhat <- isTRUE(length(rhat) > 0)
 
   if (color_by_rhat) {
+    rhat <- drop_NAs_and_warn(new_rhat(rhat))
+
     if (length(rhat) != nrow(data)) {
       stop("'rhat' has length ", length(rhat),
            " but 'x' has ", nrow(data), " parameters.",
            call. = FALSE)
     }
 
-    rhat <- new_rhat(rhat)
     rhat <- setNames(rhat, data$parameter)
 
     rhat_tbl <- rhat %>%
@@ -393,7 +394,8 @@ mcmc_intervals_data <- function(x,
       select(one_of("parameter"),
              rhat_value = .data$value,
              rhat_rating = .data$rating,
-             rhat_description = .data$description)
+             rhat_description = .data$description) %>%
+    mutate(parameter = factor(.data$parameter, levels(data$parameter)))
 
     data <- dplyr::inner_join(data, rhat_tbl, by = "parameter")
   }
