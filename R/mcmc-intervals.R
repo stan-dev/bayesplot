@@ -122,10 +122,14 @@ mcmc_intervals <- function(x,
   stopifnot(prob_outer >= prob)
 
   data <- mcmc_intervals_data(x, pars, regex_pars, transformations,
-                              prob, prob_outer, point_est, rhat)
+                              prob = prob, prob_outer = prob_outer,
+                              point_est = point_est, rhat  = rhat)
 
-  no_point_est <- identical(data$point_est, "none")
   color_by_rhat <- rlang::has_name(data, "rhat_rating")
+
+  # Use a dummy empty dataframe if no point estimate
+  no_point_est <- all(data$point_est == "none")
+  data_point <- if (no_point_est) dplyr::filter(data, FALSE) else data
 
   x_lim <- range(c(data$ll, data$hh))
   x_range <- diff(x_lim)
@@ -136,7 +140,7 @@ mcmc_intervals <- function(x,
   layer_vertical_line <- if (0 > x_lim[1] && 0 < x_lim[2]) {
     vline_0(color = "gray90", size = 0.5)
   } else {
-    geom_blank()
+    geom_ignore()
   }
 
   args_outer <- list(
@@ -147,17 +151,20 @@ mcmc_intervals <- function(x,
     mapping = aes_(x = ~ l, xend = ~ h, y = ~ parameter, yend = ~ parameter),
     size = 2,
     show.legend = FALSE
-    )
+  )
   args_point <- list(
     mapping = aes_(x = ~ m, y = ~ parameter),
+    data = data,
     size = 4,
-    shape = 21)
+    shape = 21
+  )
 
   if (color_by_rhat) {
     args_inner$mapping <- args_inner$mapping %>%
       modify_aes_(color = ~ rhat_rating)
     args_point$mapping <- args_point$mapping %>%
-      modify_aes_(color = ~ rhat_rating, fill = ~ rhat_rating)
+      modify_aes_(color = ~ rhat_rating,
+                  fill = ~ rhat_rating)
   } else {
     args_inner$color <- get_color("dark")
     args_point$color <- get_color("dark_highlight")
@@ -166,18 +173,22 @@ mcmc_intervals <- function(x,
 
   layer_outer <- do.call(geom_segment, args_outer)
   layer_inner <- do.call(geom_segment, args_inner)
+  layer_point <- do.call(geom_point, args_point)
 
   # Do something or add an invisible layer
-  point_func <- if (!no_point_est) geom_point else geom_ignore
-  layer_maybe_points <- do.call(point_func, args_point)
-  scale_color <- if (color_by_rhat) scale_color_diagnostic("rhat") else NULL
-  scale_fill <- if (color_by_rhat) scale_fill_diagnostic("rhat") else NULL
+  if (color_by_rhat) {
+    scale_color <- scale_color_diagnostic("rhat")
+    scale_fill <- scale_fill_diagnostic("rhat")
+  } else {
+    scale_color <- geom_ignore()
+    scale_fill <- geom_ignore()
+  }
 
   ggplot(data) +
     layer_vertical_line +
     layer_outer +
     layer_inner +
-    layer_maybe_points +
+    layer_point +
     scale_color +
     scale_fill +
     scale_y_discrete(limits = unique(rev(data$parameter))) +
@@ -211,6 +222,15 @@ mcmc_areas <- function(x,
                           point_est = point_est, rhat = rhat,
                           bw = bw, adjust = adjust, kernel = kernel)
   datas <- split(data, data$interval)
+
+  # Use a dummy empty dataframe if no point estimate
+  no_point_est <- !rlang::has_name(datas, "point")
+  datas$point <- if (no_point_est) {
+    dplyr::filter(datas$inner, FALSE)
+  } else {
+    datas$point
+  }
+
   color_by_rhat <- rlang::has_name(data, "rhat_rating")
 
   # faint vertical line at zero if zero is within x_lim
@@ -222,9 +242,11 @@ mcmc_areas <- function(x,
   layer_vertical_line <- if (0 > x_lim[1] && 0 < x_lim[2]) {
     vline_0(color = "gray90", size = 0.5)
   } else {
-    geom_blank()
+    geom_ignore()
   }
 
+  # Need to include rhat rating as a grouping variable if coloring by rhat so
+  # that datas$bottom has an rhat_rating column that can map to color aesthetic
   groups <- if (color_by_rhat) {
     rlang::syms(c("parameter", "rhat_rating"))
   } else {
@@ -245,11 +267,8 @@ mcmc_areas <- function(x,
     data = datas$inner
   )
   args_point <- list(
-    # Use group to draw a vertical line for each x value. This creates a
-    # fill using the color scale
     mapping = aes_(height = ~ density),
-    data = datas$point,
-    color = NA
+    data = datas$point
   )
   args_outer <- list(
     mapping = aes_(height = ~ density),
@@ -264,7 +283,9 @@ mcmc_areas <- function(x,
                   fill = ~ rhat_rating)
     args_outer$mapping <- args_outer$mapping %>%
       modify_aes_(color = ~ rhat_rating)
-    # Manually color the rhat fills with the highlight colors
+    # rhat fill color scale uses light/mid/dark colors. The point estimate needs
+    # to be drawn with highlighted color scale, so wemanually set the color for
+    # the rhat fills.
     dc <- diagnostic_colors("rhat", "color")[["values"]]
     args_point$fill <- dc[datas$point$rhat_rating]
   } else {
@@ -277,12 +298,17 @@ mcmc_areas <- function(x,
 
   layer_bottom <- do.call(geom_segment, args_bottom)
   layer_inner <- do.call(geom_area_ridges, args_inner)
-  layer_point <- do.call(geom_area_ridges2, args_point)
+  layer_point <- do.call(geom_area_ridges, args_point)
   layer_outer <- do.call(geom_area_ridges, args_outer)
 
   # Do something or add an invisible layer
-  scale_color <- if (color_by_rhat) scale_color_diagnostic("rhat") else NULL
-  scale_fill <- if (color_by_rhat) scale_fill_diagnostic("rhat") else NULL
+  if (color_by_rhat) {
+    scale_color <- scale_color_diagnostic("rhat")
+    scale_fill <- scale_fill_diagnostic("rhat")
+  } else {
+    scale_color <- geom_ignore()
+    scale_fill <- geom_ignore()
+  }
 
   ggplot(datas$outer) +
     aes_(x = ~ x, y = ~ parameter) +
@@ -364,6 +390,7 @@ mcmc_intervals_data <- function(x,
   data
 }
 
+
 # Don't import `filter`: otherwise, you get a warning when using
 # `devtools::load_all(".")` because stats also a `filter` function
 
@@ -433,6 +460,11 @@ mcmc_areas_data <- function(x,
     select(-.data$center, .data$m) %>%
     ungroup()
 
+  # Ignore points calculcation if no point estimate was requested
+  if (point_est == "none") {
+    points <- dplyr::filter(points, FALSE)
+  }
+
   data <- dplyr::bind_rows(data_inner, data_outer, points) %>%
     select(one_of("parameter", "interval", "interval_width", "x", "density"))
 
@@ -446,50 +478,6 @@ mcmc_areas_data <- function(x,
 }
 
 # internal ----------------------------------------------------------------
-
-# @param x A matrix (not a 3-D array) created by merge_chains()
-.mcmc_intervals <- function(data,
-                            prob_inner = 0.5,
-                            prob_outer = 0.95,
-                            point_est = c("median", "mean", "none"),
-                            rhat = numeric(),
-                            show_density = FALSE,
-                            bw = NULL,
-                            adjust = NULL,
-                            kernel = NULL) {
-
-  rhat <- runif(3, 1.0, 1.7)
-
-  x <- example_mcmc_draws(params = 6)
-  pars <- c("beta[1]", "beta[2]", "beta[3]")
-  regex_pars <- character(0)
-  transformations <- list()
-  prob = 0.5
-  prob_outer = .95
-  point_est = c("median", "mean", "none")
-
-
-}
-
-
-geom_area_ridges <- function(...) {
-  ggridges::geom_density_ridges(..., stat = "identity", scale = 1)
-}
-
-geom_area_ridges2 <- function(...) {
-  ggridges::geom_density_ridges2(..., stat = "identity", scale = 1)
-}
-
-#' Add new aesthetic mappings to a list of aesthetic mappings
-#'
-#' @param mapping a list of `uneval` aesthetic mappings (created by `aes_()`)
-#' @param ... additional mappings to add, e.g., `color = ~ parameter`
-#' @return the updated list
-#' @noRd
-modify_aes_ <- function(mapping, ...) {
-  modifyList(mapping, aes_(...))
-}
-
 
 #' Compute density for a dataframe column.
 #'
@@ -562,6 +550,3 @@ compute_dens_i <- function(x, bw, adjust, kernel, n, from, to) {
   )
   do.call("density", args)
 }
-
-# A geom that ignores any input arguments
-geom_ignore <- function(...) geom_blank()
