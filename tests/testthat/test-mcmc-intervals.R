@@ -17,6 +17,12 @@ test_that("mcmc_intervals_data computes quantiles", {
   expect_equal(d$outer_width, .5)
   expect_equal(d$inner_width, .3)
   expect_equal(d$point_est, "median")
+
+  d2 <- mcmc_areas_data(arr, pars = "beta[1]", prob = .3, prob_outer = .5)
+  sets <- split(d2, d2$interval)
+
+  expect_equal(range(sets$inner$x), c(d$l, d$h))
+  expect_equal(range(sets$outer$x), c(d$ll, d$hh))
 })
 
 test_that("mcmc_intervals_data computes point estimates", {
