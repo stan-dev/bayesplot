@@ -269,7 +269,8 @@ mcmc_areas <- function(x,
   )
   args_point <- list(
     mapping = aes_(height = ~ density),
-    data = datas$point
+    data = datas$point,
+    color = NA
   )
   args_outer <- list(
     mapping = aes_(height = ~ density),
