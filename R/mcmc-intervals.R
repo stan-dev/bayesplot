@@ -28,7 +28,7 @@
 #'   \code{\link[stats]{density}} to override default kernel density estimation
 #'   parameters.
 #'
-#' @template return-ggplot
+#' @template return-ggplot-or-data
 #'
 #' @section Plot Descriptions:
 #' \describe{
@@ -70,6 +70,10 @@
 #' color_scheme_set("blue")
 #' fake_rhat_values <- c(1, 1.07, 1.3, 1.01, 1.15, 1.005)
 #' mcmc_intervals(x, rhat = fake_rhat_values)
+#'
+#' mcmc_intervals_data(x)
+#' mcmc_intervals_data(x, rhat = fake_rhat_values)
+#' mcmc_areas_data(x, pars = "alpha")
 #'
 #' color_scheme_set("gray")
 #' p <- mcmc_areas(x, pars = c("alpha", "beta[4]"), rhat = c(1, 1.1))
@@ -325,6 +329,8 @@ mcmc_areas <- function(x,
     xaxis_title(FALSE)
 }
 
+#' @rdname MCMC-intervals
+#' @export
 mcmc_intervals_data <- function(x,
                                 pars = character(),
                                 regex_pars = character(),
@@ -400,6 +406,8 @@ mcmc_intervals_data <- function(x,
 # `devtools::load_all(".")` because stats also has a `filter` function
 
 #' @importFrom dplyr inner_join one_of top_n
+#' @rdname MCMC-intervals
+#' @export
 mcmc_areas_data <- function(x,
                             pars = character(),
                             regex_pars = character(),
