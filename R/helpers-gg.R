@@ -44,7 +44,7 @@ geom_area_ridges2 <- function(...) {
 #' @return the updated list
 #' @noRd
 modify_aes_ <- function(mapping, ...) {
-  modifyList(mapping, aes_(...))
+  utils::modifyList(mapping, aes_(...))
 }
 
 

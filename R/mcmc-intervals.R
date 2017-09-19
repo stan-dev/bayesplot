@@ -445,11 +445,13 @@ mcmc_areas_data <- function(x,
 
   # Compute the density intervals
   data_inner <- data_long %>%
-    compute_column_density(parameter, value, interval_width = probs[1]) %>%
+    compute_column_density(.data$parameter, .data$value,
+                           interval_width = probs[1]) %>%
     mutate(interval = "inner")
 
   data_outer <- data_long %>%
-    compute_column_density(parameter, value, interval_width = probs[2]) %>%
+    compute_column_density(.data$parameter, .data$value,
+                           interval_width = probs[2]) %>%
     mutate(interval = "outer")
 
   # Point estimates will be intervals that take up .8% of the x-axis
