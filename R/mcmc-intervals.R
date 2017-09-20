@@ -518,19 +518,25 @@ compute_column_density <- function(df, group_vars, value_var, ...) {
   value_var <- enquo(value_var)
   group_vars <- enquo(group_vars)
 
+  # Convert the vector of bare column names to a list of symbols
+  group_cols <- df %>%
+    dplyr::select(!!! group_vars) %>%
+    names() %>%
+    syms()
+
   # Tuck away the subgroups to compute densities on into nested dataframes
-  sub_df <- dplyr::select(df, !!! group_vars, !! value_var)
+  sub_df <- dplyr::select(df, !!! group_cols, !! value_var)
 
   group_df <- df %>%
-    dplyr::select(!!! group_vars, !! value_var) %>%
-    group_by(!!! group_vars)
+    dplyr::select(!!! group_cols, !! value_var) %>%
+    group_by(!!! group_cols)
 
   by_group <- group_df %>%
     split(dplyr::group_indices(group_df)) %>%
     lapply(pull, !! value_var)
 
   nested <- df %>%
-    dplyr::distinct(!!! group_vars) %>%
+    dplyr::distinct(!!! group_cols) %>%
     mutate(data = by_group)
 
   # Only one column should be nested
