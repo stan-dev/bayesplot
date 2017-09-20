@@ -321,7 +321,8 @@ mcmc_areas <- function(x,
     layer_bottom +
     scale_color +
     scale_fill +
-    scale_y_discrete(limits = unique(rev(data$parameter))) +
+    scale_y_discrete(limits = unique(rev(data$parameter)),
+                     expand = c(0.05, .6)) +
     xlim(x_lim) +
     legend_move(ifelse(color_by_rhat, "top", "none")) +
     yaxis_text(face = "bold") +
