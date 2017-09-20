@@ -539,10 +539,6 @@ compute_column_density <- function(df, group_vars, value_var, ...) {
     dplyr::distinct(!!! group_cols) %>%
     mutate(data = by_group)
 
-  # Only one column should be nested
-  ncols <- unlist(lapply(nested$data, ncol))
-  stopifnot(ncols == 1)
-
   nested$density <- lapply(nested$data, compute_interval_density, ...)
   nested$data <- NULL
 
