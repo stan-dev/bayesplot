@@ -26,7 +26,6 @@ Imports:
     stats,
     utils,
     rlang,
-    tidyr,
     ggridges
 Suggests:
     arm,

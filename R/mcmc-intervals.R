@@ -513,7 +513,6 @@ mcmc_areas_data <- function(x,
 #' @param group_vars columns to group by. e.g., `c(Parameter, Chain)`
 #' @param value_var column containing posterior samples
 #' @param ... arguments passed onto density calculation
-#' @importFrom tidyr nest unnest
 #' @noRd
 compute_column_density <- function(df, group_vars, value_var, ...) {
   value_var <- enquo(value_var)
@@ -521,18 +520,37 @@ compute_column_density <- function(df, group_vars, value_var, ...) {
 
   # Tuck away the subgroups to compute densities on into nested dataframes
   sub_df <- dplyr::select(df, !!! group_vars, !! value_var)
-  nested <- dplyr::as_tibble(tidyr::nest(sub_df, !! value_var))
+
+  group_df <- df %>%
+    dplyr::select(!!! group_vars, !! value_var) %>%
+    group_by(!!! group_vars)
+
+  by_group <- group_df %>%
+    split(dplyr::group_indices(group_df)) %>%
+    lapply(pull, !! value_var)
+
+  nested <- df %>%
+    dplyr::distinct(!!! group_vars) %>%
+    mutate(data = by_group)
 
   # Only one column should be nested
   ncols <- unlist(lapply(nested$data, ncol))
   stopifnot(ncols == 1)
 
-  # Comp
-  nested$data <- lapply(nested$data, unlist)
   nested$density <- lapply(nested$data, compute_interval_density, ...)
   nested$data <- NULL
 
-  tidyr::unnest(nested)
+  # Manually unnest the data
+  reconstructed <- as.list(seq_len(nrow(nested)))
+  for (df_i in seq_along(nested$density)) {
+    row <- nested[df_i, ]
+    parent <- row %>% select(-.data$density)
+    groups <- rep(list(parent), nrow(row$density[[1]])) %>% dplyr::bind_rows()
+
+    reconstructed[[df_i]] <- dplyr::bind_cols(groups, row$density[[1]])
+  }
+
+  dplyr::bind_rows(reconstructed)
 }
 
 
