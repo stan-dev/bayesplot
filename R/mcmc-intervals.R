@@ -557,7 +557,6 @@ compute_column_density <- function(df, group_vars, value_var, ...) {
 # Given a vector of values, compute a density dataframe.
 compute_interval_density <- function(x, interval_width = 1, n = 1024,
                                      bw = NULL, adjust = NULL, kernel = NULL) {
-  nx <- length(x)
   tail_width <- (1 - interval_width) / 2
   qs <- quantile(x, probs = c(tail_width, 1 - tail_width))
 
@@ -567,7 +566,7 @@ compute_interval_density <- function(x, interval_width = 1, n = 1024,
     # might be null
     bw = bw, adjust = adjust, kernel = kernel)
 
-  dens <- do.call("density", args)
+  dens <- do.call(stats::density, args)
 
   data.frame(
     interval_width = interval_width,
@@ -575,24 +574,4 @@ compute_interval_density <- function(x, interval_width = 1, n = 1024,
     density = dens$y,
     scaled_density =  dens$y / max(dens$y, na.rm = TRUE)
   )
-}
-
-
-# compute kernel density estimates
-# all arguments are passed to stats::density
-compute_dens_i <- function(x, bw, adjust, kernel, n, from, to) {
-  args <- c(
-    # can't be null
-    list(
-      x = x,
-      from = from,
-      to = to,
-      n = n
-    ),
-    # might be null
-    bw = bw,
-    adjust = adjust,
-    kernel = kernel
-  )
-  do.call("density", args)
 }

@@ -97,3 +97,28 @@ test_that("mcmc_intervals/areas with rhat", {
   expect_identical(rhat_map5$colour, as.name("rhat_rating"))
 })
 
+test_that("mcmc_areas_data computes density", {
+  areas_data <- mcmc_areas_data(arr, point_est = "none")
+  areas_data <- areas_data[areas_data$interval_width == 1, ]
+  by_parameter <- split(areas_data, areas_data$parameter)
+
+  # Manually compute the same
+  raw_values <- melt_mcmc(merge_chains(prepare_mcmc_array(arr)))
+  raw_values <- split(raw_values, interaction(raw_values$Parameter))
+
+  do_dens <- function(df, interval_width, n) {
+    x <- df$Value
+    tail_width <- (1 - interval_width) / 2
+    qs <- quantile(x, probs = c(tail_width, 1 - tail_width))
+    dens <- density(x = x, from = min(qs), to = max(qs), n = n)
+    data.frame(Parameter = unique(df$Parameter), x = dens$x, y = dens$y)
+  }
+
+  densities <- lapply(raw_values, do_dens, 1, 1024)
+
+  for (name in names(by_parameter)) {
+    expect_equivalent(by_parameter[[name]][["density"]],
+                      densities[[name]][["y"]])
+  }
+
+})
