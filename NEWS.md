@@ -2,8 +2,14 @@
 
 (GitHub issue/PR numbers in parentheses)
 
-* Add news for next release here 
-
+* `mcmc_intervals()` and `mcmc_areas()` have been rewritten. (#103)
+  - They now use a discrete _y_-axis. Previously, they used a continuous 
+    scale with numeric breaks relabelled with parameter names; this design  
+    caused some unexpected behavior when customizing these plots.
+  - `mcmc_areas()` now uses geoms from the ggridges package to draw 
+    density curves.
+* Add `mcmc_intervals_data()` and `mcmc_areas_data()` that return data plotted 
+  by `mcmc_intervals()` and `mcmc_areas()`. (Advances #97)
 
 # bayesplot 1.4.0
 
