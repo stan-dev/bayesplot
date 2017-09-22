@@ -121,6 +121,10 @@
 #' mcmc_nuts_acceptance(np, lp)
 #' mcmc_nuts_acceptance(np, lp, chain = 2)
 #'
+#' mcmc_nuts_divergence(np, lp)
+#' mcmc_nuts_stepsize(np, lp)
+#' mcmc_nuts_treedepth(np, lp)
+#'
 #' color_scheme_set("red")
 #' mcmc_nuts_energy(np)
 #' mcmc_nuts_energy(np, merge_chains = TRUE, binwidth = .15)
@@ -151,15 +155,15 @@ mcmc_nuts_acceptance <-
     chain <- validate_enough_chains(chain, num_chains(x))
     overlay_chain <- !is.null(chain)
 
-    accept_stat <- filter_(x, ~ Parameter == "accept_stat__")
+    accept_stat <- dplyr::filter(x, .data$Parameter == "accept_stat__")
     data <- suppressWarnings(
       dplyr::bind_rows(accept_stat, data.frame(lp, Parameter = "lp__"))
     )
 
-    grp_par <- group_by_(data, ~ Parameter)
-    stats_par <- summarise_(grp_par,
-                            Mean = ~ mean(Value),
-                            Median = ~ median(Value))
+    grp_par <- group_by(data, .data$Parameter)
+    stats_par <- summarise(grp_par,
+                           Mean = mean(.data$Value),
+                           Median = median(.data$Value))
 
     hists <- ggplot(data, aes_(x = ~ Value, y = ~ ..density..)) +
       geom_histogram(
@@ -249,8 +253,8 @@ mcmc_nuts_divergence <- function(x, lp, chain = NULL, ...) {
   chain <- validate_enough_chains(chain, num_chains(x))
   overlay_chain <- !is.null(chain)
 
-  accept_stat <- filter_(x, ~ Parameter == "accept_stat__")
-  divergent <- filter_(x, ~ Parameter == "divergent__")
+  accept_stat <- dplyr::filter(x, .data$Parameter == "accept_stat__")
+  divergent <- dplyr::filter(x, .data$Parameter == "divergent__")
   divergent$Value <- factor(divergent$Value, levels = c(0, 1),
                             labels = c("No divergence", "Divergence"))
 
@@ -267,7 +271,10 @@ mcmc_nuts_divergence <- function(x, lp, chain = NULL, ...) {
     scale_y_continuous(limits = c(NA, 1.05)) +
     xaxis_title(FALSE)
 
-  div_count_label <- paste(table(divergent$Value)[[2]], "divergences")
+  div_count <- table(divergent$Value)[[2]]
+  div_text <- ngettext(div_count, "divergence", "divergences")
+  div_count_label <- paste(div_count, div_text)
+
   if (!is.null(chain)) {
     violin_lp <- violin_lp +
       chain_violin(violin_lp_data, chain)
@@ -296,16 +303,20 @@ mcmc_nuts_stepsize <- function(x, lp, chain = NULL, ...) {
   chain <- validate_enough_chains(chain, num_chains(x))
   overlay_chain <- !is.null(chain)
 
-  stepsize <- filter_(x, ~ Parameter == "stepsize__")
-  accept_stat <- filter_(x, ~ Parameter == "accept_stat__")
+  stepsize <- dplyr::filter(x, .data$Parameter == "stepsize__")
+  accept_stat <- dplyr::filter(x, .data$Parameter == "accept_stat__")
 
-  stepsize_by_chain <- summarise_(group_by_(stepsize, ~Chain),
-                                  ss = ~first(Value))
-  stepsize_labels <-
-    scale_x_discrete(labels = with(
-      dplyr::arrange_(stepsize_by_chain, ~ ss),
-      paste0(format(round(ss, 3), digits = 3), "\n(chain ", Chain,  ")")
-    ))
+  stepsize_by_chain <- stepsize %>%
+    group_by(.data$Chain) %>%
+    summarise(ss = dplyr::first(.data$Value))
+
+  stepsize_labels_text <- stepsize_by_chain %>%
+    arrange(.data$ss) %>%
+    mutate(value = format(round(.data$ss, 3), digits = 3),
+           label = paste0(.data$value, "\n(chain ", .data$Chain, ")")) %>%
+    pull()
+
+  stepsize_labels <- scale_x_discrete(labels = stepsize_labels_text)
 
   violin_lp_data <- dplyr::left_join(lp, stepsize_by_chain, by = "Chain")
   violin_lp <- ggplot(violin_lp_data, aes_(x = ~as.factor(ss), y = ~Value)) +
@@ -345,8 +356,8 @@ mcmc_nuts_treedepth <- function(x, lp, chain = NULL, ...) {
   chain <- validate_enough_chains(chain, num_chains(x))
   overlay_chain <- !is.null(chain)
 
-  treedepth <- filter_(x, ~ Parameter == "treedepth__")
-  accept_stat <- filter_(x, ~ Parameter == "accept_stat__")
+  treedepth <- dplyr::filter(x, .data$Parameter == "treedepth__")
+  accept_stat <- dplyr::filter(x, .data$Parameter == "accept_stat__")
 
   hist_td <- ggplot(treedepth, aes_(x = ~ Value, y = ~ ..density..)) +
     geom_histogram(
@@ -427,16 +438,15 @@ mcmc_nuts_energy <-
     check_ignored_arguments(...)
 
     x <- validate_nuts_data_frame(x)
-    energy <- dplyr::filter_(x, ~ Parameter == "energy__")
-    dots <- setNames(
-      list(
-        ~ Value - lag(Value),
-        ~ Value - mean(Value),
-        ~ Ediff - mean(Ediff, na.rm = TRUE)
-      ),
-      c("Ediff", "E_centered", "Ediff_centered")
-    )
-    data <- dplyr::mutate_(dplyr::group_by_(energy, ~ Chain), .dots = dots)
+    energy <- dplyr::filter(x, .data$Parameter == "energy__")
+
+    # lag() (stats::lag()) here doesn't work, but dplyr::lag() does
+    data <- energy %>%
+      group_by(.data$Chain) %>%
+      mutate(
+        Ediff = .data$Value - dplyr::lag(.data$Value),
+        E_centered = .data$Value - mean(.data$Value),
+        Ediff_centered = .data$Ediff - mean(.data$Ediff, na.rm = TRUE))
 
     fills <- setNames(get_color(c("l", "m")), c("E_fill", "Ediff_fill"))
     clrs <- setNames(get_color(c("lh", "mh")), c("E_fill", "Ediff_fill"))
@@ -475,8 +485,9 @@ mcmc_nuts_energy <-
       yaxis_title(FALSE) +
       yaxis_ticks(FALSE)
 
-    if (merge_chains)
+    if (merge_chains) {
       return(graph)
+    }
 
     graph +
       facet_wrap(~ Chain) +
@@ -494,8 +505,9 @@ validate_enough_chains <- function(chain = NULL, n_chain) {
   chain
 }
 
-# @param x data frame with nuts params
-# @param lp data frame with lp__
+#' @param x data frame with nuts params
+#' @param lp data frame with lp__
+#' @noRd
 validate_nuts_data_frame <- function(x, lp) {
   if (!is.data.frame(x))
     stop("NUTS parameters should be in a data frame.")
@@ -539,7 +551,7 @@ chain_violin <-
            color = NA,
            alpha = 0.5) {
     geom_violin(
-      data = dplyr::filter_(df, ~ Chain == chain),
+      data = dplyr::filter(df, .data$Chain == chain),
       fill = get_color(fill),
       color = color,
       alpha = alpha

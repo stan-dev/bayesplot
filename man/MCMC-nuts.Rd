@@ -136,6 +136,10 @@ color_scheme_set("brightblue")
 mcmc_nuts_acceptance(np, lp)
 mcmc_nuts_acceptance(np, lp, chain = 2)
 
+mcmc_nuts_divergence(np, lp)
+mcmc_nuts_stepsize(np, lp)
+mcmc_nuts_treedepth(np, lp)
+
 color_scheme_set("red")
 mcmc_nuts_energy(np)
 mcmc_nuts_energy(np, merge_chains = TRUE, binwidth = .15)
