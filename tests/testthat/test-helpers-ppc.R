@@ -1,7 +1,7 @@
 library(bayesplot)
 context("PPC: misc. functions")
 
-source("data-for-ppc-tests.R")
+source(test_path("data-for-ppc-tests.R"))
 
 # melt_yrep ---------------------------------------------------------------
 expect_molten_yrep <- function(yrep) {
@@ -22,7 +22,7 @@ test_that("melt_yrep returns correct structure", {
   expect_molten_yrep(yrep)
   expect_molten_yrep(yrep2)
 
-  load("data-for-binomial.rda")
+  load(test_path("data-for-binomial.rda"))
   expect_molten_yrep(Ey)
   expect_molten_yrep(validate_yrep(yrep, y))
 })

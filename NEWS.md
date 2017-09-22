@@ -1,8 +1,40 @@
-# bayesplot 1.3.0.9000
+# bayesplot 1.4.0.9000
 
 (GitHub issue/PR numbers in parentheses)
 
-* insert news for next release here
+* `mcmc_intervals()` and `mcmc_areas()` have been rewritten. (#103)
+  - They now use a discrete _y_-axis. Previously, they used a continuous 
+    scale with numeric breaks relabelled with parameter names; this design  
+    caused some unexpected behavior when customizing these plots.
+  - `mcmc_areas()` now uses geoms from the ggridges package to draw 
+    density curves.
+* Add `mcmc_intervals_data()` and `mcmc_areas_data()` that return data plotted 
+  by `mcmc_intervals()` and `mcmc_areas()`. (Advances #97)
+
+# bayesplot 1.4.0
+
+(GitHub issue/PR numbers in parentheses)
+
+* New plotting function `mcmc_parcoord()` for parallel coordinates plots of 
+  MCMC draws (optionally including HMC/NUTS diagnostic information). (#108)
+* `mcmc_scatter` gains an `np` argument for specifying NUTS parameters, which
+  allows highlighting divergences in the plot. (#112)
+* New functions with names ending with suffix `_data` don't make the plots, 
+  they just return the data prepared for plotting (more of these to come in 
+  future releases):
+    - `ppc_intervals_data()` (#101)
+    - `ppc_ribbon_data()` (#101)
+    - `mcmc_parcoord_data()` (#108)
+    - `mcmc_rhat_data()` (#110)
+    - `mcmc_neff_data()` (#110)
+* `ppc_stat_grouped()`, `ppc_stat_freqpoly_grouped()` gain a `facet_args` 
+  argument for controlling **ggplot2** faceting (many of the `mcmc_` functions 
+  already have this).
+* The `divergences` argument to `mcmc_trace()` has been deprecated in favor 
+  of `np` (NUTS parameters) to match the other functions that have an `np` 
+  argument.
+* Fixed an issue where duplicated rhat values would break `mcmc_rhat()` (#105).
+
 
 # bayesplot 1.3.0
 

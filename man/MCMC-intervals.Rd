@@ -4,6 +4,8 @@
 \alias{MCMC-intervals}
 \alias{mcmc_intervals}
 \alias{mcmc_areas}
+\alias{mcmc_intervals_data}
+\alias{mcmc_areas_data}
 \title{Plot interval estimates from MCMC draws}
 \usage{
 mcmc_intervals(x, pars = character(), regex_pars = character(),
@@ -11,6 +13,15 @@ mcmc_intervals(x, pars = character(), regex_pars = character(),
   point_est = c("median", "mean", "none"), rhat = numeric())
 
 mcmc_areas(x, pars = character(), regex_pars = character(),
+  transformations = list(), ..., prob = 0.5, prob_outer = 1,
+  point_est = c("median", "mean", "none"), rhat = numeric(), bw = NULL,
+  adjust = NULL, kernel = NULL)
+
+mcmc_intervals_data(x, pars = character(), regex_pars = character(),
+  transformations = list(), ..., prob = 0.5, prob_outer = 0.9,
+  point_est = c("median", "mean", "none"), rhat = numeric())
+
+mcmc_areas_data(x, pars = character(), regex_pars = character(),
   transformations = list(), ..., prob = 0.5, prob_outer = 1,
   point_est = c("median", "mean", "none"), rhat = numeric(), bw = NULL,
   adjust = NULL, kernel = NULL)
@@ -71,7 +82,8 @@ parameters.}
 }
 \value{
 A ggplot object that can be further customized using the
-  \pkg{ggplot2} package.
+  \pkg{ggplot2} package. The \code{_data} functions return the data that
+  would have be drawn by the plotting function.
 }
 \description{
 Plot central (quantile-based) posterior interval estimates from MCMC draws.
@@ -120,6 +132,10 @@ color_scheme_set("blue")
 fake_rhat_values <- c(1, 1.07, 1.3, 1.01, 1.15, 1.005)
 mcmc_intervals(x, rhat = fake_rhat_values)
 
+mcmc_intervals_data(x)
+mcmc_intervals_data(x, rhat = fake_rhat_values)
+mcmc_areas_data(x, pars = "alpha")
+
 color_scheme_set("gray")
 p <- mcmc_areas(x, pars = c("alpha", "beta[4]"), rhat = c(1, 1.1))
 p + legend_move("bottom")
@@ -160,7 +176,7 @@ Other MCMC: \code{\link{MCMC-combos}},
   \code{\link{MCMC-diagnostics}},
   \code{\link{MCMC-distributions}},
   \code{\link{MCMC-nuts}}, \code{\link{MCMC-overview}},
-  \code{\link{MCMC-recover}},
+  \code{\link{MCMC-parcoord}}, \code{\link{MCMC-recover}},
   \code{\link{MCMC-scatterplots}},
   \code{\link{MCMC-traces}}
 }

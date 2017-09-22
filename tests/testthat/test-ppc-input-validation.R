@@ -1,7 +1,7 @@
 library(bayesplot)
 context("PPC: input validation")
 
-source("data-for-ppc-tests.R")
+source(test_path("data-for-ppc-tests.R"))
 
 # validating y ------------------------------------------------------------
 test_that("validate_y works", {

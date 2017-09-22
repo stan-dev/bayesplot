@@ -63,9 +63,9 @@ If a function itself is specified (e.g. \code{log} or \code{function(x)
 log(x)}) then \code{"t"} is used in the new parameter label to indicate
 that the parameter is transformed (e.g. \code{"t(sigma)"}).}
 
-\item{facet_args}{Arguments (other than \code{facets}) passed to
-\code{\link[ggplot2]{facet_wrap}} or \code{\link[ggplot2]{facet_grid}} to
-control faceting.}
+\item{facet_args}{A named list of arguments (other than \code{facets}) passed
+to \code{\link[ggplot2]{facet_wrap}} or \code{\link[ggplot2]{facet_grid}}
+to control faceting.}
 
 \item{...}{Currently ignored.}
 
@@ -187,7 +187,8 @@ mcmc_violin(x) + panel_bg(color = "gray20", size = 2, fill = "gray30")
 Other MCMC: \code{\link{MCMC-combos}},
   \code{\link{MCMC-diagnostics}},
   \code{\link{MCMC-intervals}}, \code{\link{MCMC-nuts}},
-  \code{\link{MCMC-overview}}, \code{\link{MCMC-recover}},
+  \code{\link{MCMC-overview}}, \code{\link{MCMC-parcoord}},
+  \code{\link{MCMC-recover}},
   \code{\link{MCMC-scatterplots}},
   \code{\link{MCMC-traces}}
 }
