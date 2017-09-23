@@ -248,7 +248,6 @@ trace_style_np <-
 
 
 # internal -----------------------------------------------------------------
-#' @importFrom dplyr %>% group_by_ summarise_ select_
 .mcmc_trace <- function(x,
                         pars = character(),
                         regex_pars = character(),
