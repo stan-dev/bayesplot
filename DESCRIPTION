@@ -41,3 +41,4 @@ Suggests:
     testthat
 RoxygenNote: 6.0.1
 VignetteBuilder: knitr
+Encoding: UTF-8

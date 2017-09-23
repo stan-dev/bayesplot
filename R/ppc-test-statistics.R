@@ -302,12 +302,12 @@ ppc_stat_2d <- function(y, yrep, stat = c("mean", "sd"), ...,
 
 # internal ----------------------------------------------------------------
 
-# Make legend title for ppc_stat,ppc_stat_grouped,ppc_stat_freqpoly_grouped
-#
-# @param stat The user's 'stat' argument.
-# @param stat_txt deparse(substitute()) applied to users 'stat' argument
-# @return Either throws an error or returns a legend title (possibly NULL)
-#
+#' Make legend title for ppc_stat,ppc_stat_grouped,ppc_stat_freqpoly_grouped
+#'
+#' @param stat The user's 'stat' argument.
+#' @param stat_txt deparse(substitute()) applied to users 'stat' argument
+#' @return Either throws an error or returns a legend title (possibly NULL)
+#' @noRd
 stat_legend_title <- function(stat, stat_txt) {
   stopifnot(is.character(stat) || is.function(stat))
   if (is.character(stat)) {

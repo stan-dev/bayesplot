@@ -5,6 +5,7 @@
 #' @aliases bayesplot
 #'
 #' @import ggplot2 stats rlang
+#' @importFrom dplyr %>%
 #'
 #' @description
 #' \if{html}{

@@ -109,6 +109,8 @@ For all of these plots \code{y} and \code{yrep} must be non-negative
 }
 
 \examples{
+set.seed(9222017)
+
 # bar plots
 f <- function(N) {
   sample(1:4, size = N, replace = TRUE, prob = c(0.25, 0.4, 0.1, 0.25))
