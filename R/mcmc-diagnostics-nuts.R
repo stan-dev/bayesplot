@@ -209,7 +209,7 @@ mcmc_nuts_acceptance <-
     if (overlay_chain) {
       hists <- hists +
         geom_histogram(
-          data = filter_(data, ~ Chain == chain),
+          data = dplyr::filter(data, .data$Chain == chain),
           fill = get_color("d"),
           color = NA,
           alpha = 0.5,
@@ -388,7 +388,7 @@ mcmc_nuts_treedepth <- function(x, lp, chain = NULL, ...) {
   if (overlay_chain) {
     hist_td <- hist_td +
       geom_histogram(
-        data = filter_(treedepth, ~Chain == chain),
+        data = dplyr::filter(treedepth, .data$Chain == chain),
         fill = get_color("d"),
         color = NA,
         alpha = 0.5,

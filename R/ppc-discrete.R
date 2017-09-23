@@ -65,6 +65,8 @@
 #' }
 #'
 #' @examples
+#' set.seed(9222017)
+#'
 #' # bar plots
 #' f <- function(N) {
 #'   sample(1:4, size = N, replace = TRUE, prob = c(0.25, 0.4, 0.1, 0.25))
@@ -279,52 +281,44 @@ ppc_rootogram <- function(y,
 
 # internal ----------------------------------------------------------------
 
-#' @importFrom dplyr "%>%" ungroup count_ arrange_ mutate_
+#' @importFrom dplyr "%>%" ungroup count arrange mutate
 ppc_bars_yrep_data <- function(y, yrep, probs, freq = TRUE, group = NULL) {
-  if (is.null(group)) {
-    tab <-
-      melt_yrep(yrep, label = FALSE) %>%
-      count_(vars = c("rep_id", "value")) %>%
-      group_by_(~ rep_id) %>%
-      mutate_(proportion = ~ n / sum(n)) %>%
-      ungroup() %>%
-      select_(.dots = list(~ value, ~ n, ~ proportion)) %>%
-      arrange_(~ value) %>%
-      group_by_(~ value)
+  # Prepare for final summary
+  sel <- ifelse(freq, "n", "proportion")
+  lo  = function(x) quantile(x, probs[1])
+  mid = function(x) quantile(x, probs[2])
+  hi  = function(x) quantile(x, probs[3])
+  fs <- dplyr::funs(lo, mid, hi)
 
-    sel <- ifelse(freq, "n", "proportion")
-    colnames(tab)[colnames(tab) == sel] <- "xxx"
-    return(
-      data.frame(
-        x = unique(tab$value),
-        lo = summarise_(tab, lo = ~ quantile(xxx, probs = probs[1]))$lo,
-        mid = summarise_(tab, mid = ~ quantile(xxx, probs = 0.5))$mid,
-        hi = summarise_(tab, hi = ~ quantile(xxx, probs = probs[3]))$hi
-      )
-    )
+  # Set a dummy group for ungrouped data
+  if (is.null(group)) {
+    was_null_group <- TRUE
+    group <- 1
+  } else{
+    was_null_group <- FALSE
   }
 
   # FIXME: double check and make sure that levels with zero counts are still plotted
-  yrep_data <-
-    ppc_group_data(y, yrep, group = group, stat = NULL) %>%
-    filter_(~ variable != "y") %>%
+  yrep_data <- ppc_group_data(y, yrep, group = group, stat = NULL) %>%
+    dplyr::filter(.data$variable != "y") %>%
     ungroup() %>%
-    count_(vars = c("group", "value", "variable")) %>%
-    group_by_(.dots = list(~ variable, ~ group)) %>%
-    mutate_(proportion = ~ n / sum(n)) %>%
-    group_by_(.dots = list(~ group, ~ value))
+    count(.data$group, .data$value, .data$variable) %>%
+    group_by(.data$variable, .data$group) %>%
+    mutate(proportion = .data$n / sum(.data$n)) %>%
+    ungroup() %>%
+    group_by(.data$group, .data$value)
 
-  sel <- ifelse(freq, "n", "proportion")
-  colnames(yrep_data)[colnames(yrep_data) == sel] <- "xxx"
+  summary_stats <- yrep_data %>%
+    dplyr::summarise_at(sel, fs) %>%
+    ungroup()
 
-  out <- summarise_(
-    yrep_data,
-    lo = ~ quantile(xxx, probs = probs[1]),
-    mid = ~ median(xxx),
-    hi = ~ quantile(xxx, probs = probs[3])
-  )
-  colnames(out)[colnames(out) == "value"] <- "x"
-  return(out)
+  # Drop dummy group
+  if (was_null_group) {
+    summary_stats$group <- NULL
+  }
+
+  summary_stats %>%
+    rename(x = .data$value)
 }
 
 .ppc_bars <- function(y_data,
