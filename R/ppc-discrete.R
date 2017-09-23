@@ -285,9 +285,9 @@ ppc_rootogram <- function(y,
 ppc_bars_yrep_data <- function(y, yrep, probs, freq = TRUE, group = NULL) {
   # Prepare for final summary
   sel <- ifelse(freq, "n", "proportion")
-  lo  = function(x) quantile(x, probs[1])
-  mid = function(x) quantile(x, probs[2])
-  hi  = function(x) quantile(x, probs[3])
+  lo  <- function(x) quantile(x, probs[1])
+  mid <- function(x) quantile(x, probs[2])
+  hi  <- function(x) quantile(x, probs[3])
   fs <- dplyr::funs(lo, mid, hi)
 
   # Set a dummy group for ungrouped data
