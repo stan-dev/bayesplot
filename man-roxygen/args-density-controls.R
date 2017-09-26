@@ -1,3 +1,3 @@
-#' @param bw,adjust,kernel Optional arguments passed to
+#' @param bw,adjust,kernel,n_dens Optional arguments passed to
 #'   \code{\link[stats]{density}} to override default kernel density estimation
-#'   parameters.
+#'   parameters. \code{n_dens} defaults to 1024.
