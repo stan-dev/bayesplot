@@ -76,7 +76,7 @@ the intervals/areas and point estimates in the resulting plot are colored
 based on \eqn{\hat{R}}{Rhat} value. See \code{\link{rhat}} for methods for
 extracting \eqn{\hat{R}}{Rhat} estimates.}
 
-\item{bw, adjust, kernel}{For \code{mcmc_areas}, optional arguments passed to
+\item{bw, adjust, kernel}{Optional arguments passed to
 \code{\link[stats]{density}} to override default kernel density estimation
 parameters.}
 }

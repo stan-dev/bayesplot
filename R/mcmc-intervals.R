@@ -24,9 +24,7 @@
 #'   the intervals/areas and point estimates in the resulting plot are colored
 #'   based on \eqn{\hat{R}}{Rhat} value. See \code{\link{rhat}} for methods for
 #'   extracting \eqn{\hat{R}}{Rhat} estimates.
-#' @param bw,adjust,kernel For \code{mcmc_areas}, optional arguments passed to
-#'   \code{\link[stats]{density}} to override default kernel density estimation
-#'   parameters.
+#' @template args-density-controls
 #'
 #' @template return-ggplot-or-data
 #'
