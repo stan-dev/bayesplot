@@ -647,6 +647,8 @@ compute_column_density <- function(df, group_vars, value_var, ...) {
 # Given a vector of values, compute a density dataframe.
 compute_interval_density <- function(x, interval_width = 1, n_dens = 1024,
                                      bw = NULL, adjust = NULL, kernel = NULL) {
+  n_dens <- n_dens %||% 1024
+
   tail_width <- (1 - interval_width) / 2
   qs <- quantile(x, probs = c(tail_width, 1 - tail_width))
 

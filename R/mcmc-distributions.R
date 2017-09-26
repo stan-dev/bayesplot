@@ -196,6 +196,47 @@ mcmc_dens_overlay <- function(x,
 }
 
 #' @rdname MCMC-distributions
+#' @template args-density-controls
+#' @export
+mcmc_dens_chains <- function(x,
+                             pars = character(),
+                             regex_pars = character(),
+                             transformations = list(),
+                             ...,
+                             bw = NULL, adjust = NULL, kernel = NULL,
+                             n_dens = NULL) {
+  check_ignored_arguments(...)
+
+  chains <- x %>%
+    prepare_mcmc_array(pars = pars, regex_pars = regex_pars,
+                       transformations = transformations) %>%
+    melt_mcmc() %>%
+    compute_column_density(c(Parameter, Chain), Value,
+                           interval_width = 1,
+                           bw = bw, adjust = adjust, kernel = kernel,
+                           n_dens = n_dens) %>%
+    rlang::set_names(tolower)
+
+  # An empty data-frame to train legend colors
+  line_training <- chains %>% dplyr::filter(FALSE)
+
+  ggplot(chains) +
+    aes_(x = ~ x, y = ~ parameter, color = ~ factor(chain)) +
+    geom_line(data = line_training) +
+    ggridges::geom_density_ridges(aes_(height = ~ density),
+                        stat = "identity", fill = NA, show.legend = FALSE) +
+    labs(color = "Chain") +
+    scale_y_discrete(limits = unique(rev(chains$parameter)),
+                     expand = c(0.05, .6)) +
+    scale_color_manual(values = chain_colors(length(unique(chains$chain)))) +
+    yaxis_title(FALSE) +
+    xaxis_title(FALSE) +
+    grid_lines_y(color = "gray90") +
+    theme(axis.text.y = element_text(hjust = 1, vjust = 0, face = "bold"))
+
+}
+
+#' @rdname MCMC-distributions
 #' @inheritParams ppc_violin_grouped
 #' @export
 mcmc_violin <- function(x,

@@ -6,8 +6,8 @@
 \alias{mcmc_dens}
 \alias{mcmc_hist_by_chain}
 \alias{mcmc_dens_overlay}
+\alias{mcmc_dens_chains}
 \alias{mcmc_violin}
-\alias{mcmc_dens_ridge}
 \title{Histograms and kernel density plots of MCMC draws}
 \usage{
 mcmc_hist(x, pars = character(), regex_pars = character(),
@@ -24,13 +24,13 @@ mcmc_hist_by_chain(x, pars = character(), regex_pars = character(),
 mcmc_dens_overlay(x, pars = character(), regex_pars = character(),
   transformations = list(), facet_args = list(), ..., trim = FALSE)
 
+mcmc_dens_chains(x, pars = character(), regex_pars = character(),
+  transformations = list(), ..., bw = NULL, adjust = NULL,
+  kernel = NULL, n_dens = NULL)
+
 mcmc_violin(x, pars = character(), regex_pars = character(),
   transformations = list(), facet_args = list(), ..., probs = c(0.1, 0.5,
   0.9))
-
-mcmc_dens_ridge(x, pars = character(), regex_pars = character(),
-  transformations = list(), ..., prob = 1, bw = NULL, adjust = NULL,
-  kernel = NULL)
 }
 \arguments{
 \item{x}{A 3-D array, matrix, list of matrices, or data frame of MCMC draws.
@@ -80,12 +80,13 @@ function.)}
 
 \item{trim}{A logical scalar passed to \code{\link[ggplot2]{geom_density}}.}
 
+\item{bw, adjust, kernel, n_dens}{Optional arguments passed to
+\code{\link[stats]{density}} to override default kernel density estimation
+parameters. \code{n_dens} defaults to 1024.}
+
 \item{probs}{A numeric vector passed to \code{\link[ggplot2]{geom_violin}}'s
 \code{draw_quantiles} argument to specify at which quantiles to draw
 horizontal lines. Set to \code{NULL} to remove the lines.}
-
-\item{bw, adjust, kernel}{Arguments used to control `density()`. Defaults to
-\code{NULL}, so that the default `density()` options are used.}
 }
 \value{
 A ggplot object that can be further customized using the
@@ -119,10 +120,6 @@ Various types of histograms and kernel density plots of MCMC draws. See the
    The density estimate of each chain is plotted as a violin with
    horizontal lines at notable quantiles.
   }
-  \item{\code{mcmc_dens_ridges}}{
-   Ridgeline kernel density plots of posterior draws with all chains merged
-   plotted.
-  }
   \item{\code{mcmc_dens_chain_ridges}}{
    Ridgeline kernel density plots of posterior draws with chains separated
    but overlaid on a single plot.
@@ -131,6 +128,7 @@ Various types of histograms and kernel density plots of MCMC draws. See the
 }
 
 \examples{
+set.seed(9262017)
 # some parameter draws to use for demonstration
 x <- example_mcmc_draws()
 dim(x)
@@ -192,3 +190,4 @@ Other MCMC: \code{\link{MCMC-combos}},
   \code{\link{MCMC-scatterplots}},
   \code{\link{MCMC-traces}}
 }
+\concept{MCMC}
