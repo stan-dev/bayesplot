@@ -8,14 +8,14 @@ is_vector_or_1Darray <- function(x) {
 }
 
 
-# Validate y
-#
-# Checks that y is numeric, doesn't have any NAs, and is either a vector, 1-D
-# array, or univariate time series object of class \code{ts}.
-#
-# @param y The y object from the user.
-# @return Either throws an error or returns a numeric vector.
-#
+#' Validate y
+#'
+#' Checks that y is numeric, doesn't have any NAs, and is either a vector, 1-D
+#' array, or univariate time series object of class \code{ts}.
+#'
+#' @param y The y object from the user.
+#' @return Either throws an error or returns a numeric vector.
+#' @noRd
 validate_y <- function(y) {
   stopifnot(is.numeric(y))
 
@@ -34,14 +34,14 @@ validate_y <- function(y) {
 }
 
 
-# Validate yrep
-#
-# Checks that yrep is a numeric matrix, doesn't have any NAs, and has the
-# correct number of columns (equal to the length of y).
-#
-# @param yrep,y The user's yrep object and the y object returned by validate_y.
-# @return Either throws an error or returns a numeric matrix.
-#
+#' Validate yrep
+#'
+#' Checks that yrep is a numeric matrix, doesn't have any NAs, and has the
+#' correct number of columns (equal to the length of y).
+#'
+#' @param yrep,y The user's yrep object and the y object returned by validate_y.
+#' @return Either throws an error or returns a numeric matrix.
+#' @noRd
 validate_yrep <- function(yrep, y) {
   stopifnot(is.matrix(yrep), is.numeric(yrep))
   if (is.integer(yrep)) {
@@ -65,14 +65,14 @@ validate_yrep <- function(yrep, y) {
 }
 
 
-# Validate group
-#
-# Checks that grouping variable has same length as y and is either a vector or
-# factor variable.
-#
-# @param group,y The user's group object and the y object returned by validate_y.
-# @return Either throws an error or returns \code{group} (coerced to a factor).
-#
+#' Validate group
+#'
+#' Checks that grouping variable has same length as y and is either a vector or
+#' factor variable.
+#'
+#' @param group,y The user's group object and the y object returned by validate_y.
+#' @return Either throws an error or returns \code{group} (coerced to a factor).
+#' @noRd
 validate_group <- function(group, y) {
   stopifnot(is.vector(group) || is.factor(group))
 
@@ -96,14 +96,15 @@ validate_group <- function(group, y) {
 }
 
 
-# Validate x
-#
-# Checks that x is a numeric vector, doesn't have any NAs, and has the
-# same length as y.
-#
-# @param x,y The user's x vector and the y object returned by validate_y.
-# @param unique_x T/F indicating whether to require all unique values in x.
-# @return Either throws an error or returns a numeric vector.
+#' Validate x
+#'
+#' Checks that x is a numeric vector, doesn't have any NAs, and has the
+#' same length as y.
+#'
+#' @param x,y The user's x vector and the y object returned by validate_y.
+#' @param unique_x T/F indicating whether to require all unique values in x.
+#' @return Either throws an error or returns a numeric vector.
+#' @noRd
 validate_x <- function(x = NULL, y, unique_x = FALSE) {
   if (is.null(x)) {
     if (inherits(y, "ts") && is.null(dim(y))) {
@@ -136,17 +137,17 @@ validate_x <- function(x = NULL, y, unique_x = FALSE) {
 }
 
 
-# Convert yrep matrix into a molten data frame
-#
-# @param yrep A matrix, already validated using validate_yrep().
-# @return A data frame with three columns:
-# \itemize{
-#  \item 'value': the numeric values.
-#  \item 'y_id': integer indicating from which yrep column each values comes.
-#  \item 'rep_id': factor with S levels, where S is nrow(yrep), i.e. the number
-#   of simulations included in yrep.
-# }
-#
+#' Convert yrep matrix into a molten data frame
+#'
+#' @param yrep A matrix, already validated using validate_yrep().
+#' @return A data frame with three columns:
+#' \itemize{
+#'  \item 'value': the numeric values.
+#'  \item 'y_id': integer indicating from which yrep column each values comes.
+#'  \item 'rep_id': factor with S levels, where S is nrow(yrep), i.e. the number
+#'   of simulations included in yrep.
+#' }
+#' @noRd
 melt_yrep <- function(yrep, label = TRUE) {
   out <- reshape2::melt(
     data = yrep,
@@ -158,14 +159,14 @@ melt_yrep <- function(yrep, label = TRUE) {
 }
 
 
-# Stack y below melted yrep data
-#
-# @param y Validated y input.
-# @param yrep Validated yrep input.
-# @return A data frame with the all the columns as the one returned by
-#   melt_yrep(), plus a column "is_y" indicating whether the values pertain
-#   to y (or yrep).
-#
+#' Stack y below melted yrep data
+#'
+#' @param y Validated y input.
+#' @param yrep Validated yrep input.
+#' @return A data frame with the all the columns as the one returned by
+#'   melt_yrep(), plus a column "is_y" indicating whether the values pertain
+#'   to y (or yrep).
+#' @noRd
 melt_and_stack <- function(y, yrep, label = TRUE) {
   molten_yrep <- melt_yrep(yrep, label = label)
   yobs_lab <- if (label) "italic(y)" else "y"
@@ -182,14 +183,20 @@ melt_and_stack <- function(y, yrep, label = TRUE) {
 }
 
 
-# Prepare data for use in PPCs by group
-#
-# @param y,yrep,group Validated y, yrep, and group objects.
-# @param stat Either NULL or a string naming a function.
-# @value If \code{stat} is NULL, a molten data frame grouped by group and
-#   variable. If \code{stat} specifies a function then a summary table created
-#   by dplyr::summarise.
-#
+#' Prepare data for use in PPCs by group
+#'
+#' @param y,yrep,group Validated y, yrep, and group objects.
+#' @param stat Either NULL or a string naming a function.
+#' @return If \code{stat} is NULL, a molten data frame grouped by group and
+#'   variable. If \code{stat} specifies a function then a summary table created
+#'   by dplyr::summarise.
+#' @noRd
+#' @examples
+#' y <- example_y_data()
+#' yrep <- example_yrep_draws()
+#' group <- example_group_data()
+#' ppc_group_data(y, yrep, group)
+#' ppc_group_data(y, yrep, group, median)
 ppc_group_data <- function(y, yrep, group, stat = NULL) {
   d <- data.frame(
     group = factor(group),
@@ -198,16 +205,20 @@ ppc_group_data <- function(y, yrep, group, stat = NULL) {
   )
   colnames(d) <- gsub(".", "_", colnames(d), fixed = TRUE)
   molten_d <- reshape2::melt(d, id.vars = "group")
-  molten_d <- dplyr::group_by_(molten_d, .dots = list(~group, ~variable))
+  molten_d <- dplyr::group_by(molten_d, .data$group, .data$variable)
+
+  # Default to identity function.
+  dplyr_fun <- dplyr::summarise
   if (is.null(stat)) {
-    return(molten_d)
+    stat <- function(x) x
+    dplyr_fun <- dplyr::mutate
   }
 
-  if (!is.function(stat)) {
-    stat <- match.fun(stat)
-  }
+  stat <- match.fun(stat)
+  dplyr_fun(molten_d, value = stat(.data$value))
 
-  dplyr::summarise_(molten_d, value = ~stat(value))
+  # todo: does this result need to be ungrouped. If mutating path, it has two
+  # grouping vars. It summarising path, it has one grouping var.
 }
 
 # check if x consists of whole numbers (very close to integers)
