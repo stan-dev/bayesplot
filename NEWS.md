@@ -2,12 +2,19 @@
 
 (GitHub issue/PR numbers in parentheses)
 
+* New package documentation website: http://mc-stan.org/bayesplot/
+* Two new plots that visualize posterior density using [ridgelines][ggridges]. 
+  These work well when parameters have similar _x_-_y_ scales, as in 
+  hierarchical models. Both functions have a `_data()` function to return 
+  the data plotted by each function. (#104)
+    - `mcmc_dens_chains()` draws the kernel density of each sampling chain.
+    - `mcmc_areas_ridges()` draws the kernel density combined across chains.
 * `mcmc_intervals()` and `mcmc_areas()` have been rewritten. (#103)
-  - They now use a discrete _y_-axis. Previously, they used a continuous 
-    scale with numeric breaks relabelled with parameter names; this design  
-    caused some unexpected behavior when customizing these plots.
-  - `mcmc_areas()` now uses geoms from the ggridges package to draw 
-    density curves.
+    - They now use a discrete _y_-axis. Previously, they used a continuous 
+      scale with numeric breaks relabelled with parameter names; this design  
+      caused some unexpected behavior when customizing these plots.
+    - `mcmc_areas()` now uses geoms from the ggridges package to draw 
+      density curves.
 * Add `mcmc_intervals_data()` and `mcmc_areas_data()` that return data plotted 
   by `mcmc_intervals()` and `mcmc_areas()`. (Advances #97)
 
@@ -120,3 +127,9 @@ axis limits. (#59)
 # bayesplot 1.0.0
 
 * Initial CRAN release
+
+
+
+
+[ggridges]: https://cran.r-project.org/web/packages/ggridges/index.html 
+            "ggridges package"
