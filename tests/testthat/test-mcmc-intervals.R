@@ -120,5 +120,18 @@ test_that("mcmc_areas_data computes density", {
     expect_equivalent(by_parameter[[name]][["density"]],
                       densities[[name]][["y"]])
   }
+})
+
+test_that("compute_column_density can use density options (#118)", {
+  # n_dens affects the number of rows in the return data-frame
+  areas_data <- mcmc_areas_data(arr, point_est = "none", n_dens = 100)
+  pars <- length(unique(areas_data$parameter))
+  intervals <- length(unique(areas_data$interval))
+  expect_equal(nrow(areas_data), 100 * intervals * pars)
+
+  # If these raise errors, they are being evaluated
+  expect_error(mcmc_areas_data(arr, bw = stop()))
+  expect_error(mcmc_areas_data(arr, adjust = stop()))
+  expect_error(mcmc_areas_data(arr, kernel = stop()))
 
 })
