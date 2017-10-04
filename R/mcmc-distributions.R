@@ -214,9 +214,11 @@ mcmc_dens_chains <- function(x, pars = character(), regex_pars = character(),
                                 adjust = adjust, kernel = kernel,
                                 n_dens = n_dens)
 
+  n_chains <- length(unique(data$chain))
+  if (n_chains == 1) STOP_need_multiple_chains()
+
   # An empty data-frame to train legend colors
   line_training <- dplyr::slice(data, 0)
-  n_chains <- length(unique(data$chain))
 
   if (color_chains) {
     scale_color <- scale_color_manual(values = chain_colors(n_chains))
@@ -254,6 +256,7 @@ mcmc_dens_chains_data <- function(x, pars = character(),
                                   bw = NULL, adjust = NULL, kernel = NULL,
                                   n_dens = NULL) {
   check_ignored_arguments(...)
+
   x %>%
     prepare_mcmc_array(pars = pars, regex_pars = regex_pars,
                        transformations = transformations) %>%
@@ -372,7 +375,7 @@ mcmc_violin <- function(x,
     if (!has_multiple_chains(x)) {
       STOP_need_multiple_chains()
     } else {
-      n_chain <- num_chains(data)
+      n_chains <- num_chains(data)
     }
   }
 

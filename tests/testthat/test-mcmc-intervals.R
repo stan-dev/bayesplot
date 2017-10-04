@@ -65,6 +65,18 @@ test_that("mcmc_areas returns a ggplot object", {
   expect_gg(mcmc_areas(dframe1))
 })
 
+test_that("mcmc_areas_ridges returns a ggplot object", {
+  expect_gg(mcmc_areas_ridges(arr, pars = "beta[2]", regex_pars = "x\\:"))
+  expect_gg(mcmc_areas_ridges(arr1chain, regex_pars = c("beta", "x\\:")))
+  expect_gg(mcmc_areas_ridges(mat))
+  expect_gg(mcmc_areas_ridges(dframe))
+  expect_gg(mcmc_areas_ridges(dframe_multiple_chains))
+
+  expect_gg(mcmc_areas_ridges(arr1))
+  expect_gg(mcmc_areas_ridges(mat1))
+  expect_gg(mcmc_areas_ridges(dframe1))
+})
+
 test_that("mcmc_intervals/areas with rhat", {
   r <- runif(ncol(mat), 0.9, 1.3)
   rbad <- c(NA, r[-1])
@@ -133,5 +145,4 @@ test_that("compute_column_density can use density options (#118)", {
   expect_error(mcmc_areas_data(arr, bw = stop()))
   expect_error(mcmc_areas_data(arr, adjust = stop()))
   expect_error(mcmc_areas_data(arr, kernel = stop()))
-
 })
