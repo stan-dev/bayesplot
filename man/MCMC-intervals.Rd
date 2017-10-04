@@ -7,6 +7,7 @@
 \alias{mcmc_areas_ridges}
 \alias{mcmc_intervals_data}
 \alias{mcmc_areas_data}
+\alias{mcmc_areas_ridges_data}
 \title{Plot interval estimates from MCMC draws}
 \usage{
 mcmc_intervals(x, pars = character(), regex_pars = character(),
@@ -29,6 +30,10 @@ mcmc_intervals_data(x, pars = character(), regex_pars = character(),
 mcmc_areas_data(x, pars = character(), regex_pars = character(),
   transformations = list(), ..., prob = 0.5, prob_outer = 1,
   point_est = c("median", "mean", "none"), rhat = numeric(), bw = NULL,
+  adjust = NULL, kernel = NULL, n_dens = NULL)
+
+mcmc_areas_ridges_data(x, pars = character(), regex_pars = character(),
+  transformations = list(), ..., prob_outer = 1, prob = 1, bw = NULL,
   adjust = NULL, kernel = NULL, n_dens = NULL)
 }
 \arguments{

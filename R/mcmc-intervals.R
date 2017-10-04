@@ -357,15 +357,11 @@ mcmc_areas_ridges <- function(x,
                              bw = NULL, adjust = NULL, kernel = NULL,
                              n_dens = NULL) {
   check_ignored_arguments(...)
-  prob <- prob %||% prob_outer
-
-  data <- mcmc_areas_data(x, pars = pars, regex_pars = regex_pars,
-                          transformations = transformations,
-                          prob = prob,
-                          prob_outer = prob_outer,
-                          bw = bw, adjust = adjust, kernel = kernel,
-                          n_dens = n_dens,
-                          point_est = "none")
+  data <- mcmc_areas_ridges_data(x, pars = pars, regex_pars = regex_pars,
+                                 transformations = transformations,
+                                 prob = prob, prob_outer = prob_outer,
+                                 bw = bw, adjust = adjust, kernel = kernel,
+                                 n_dens = n_dens)
   datas <- split(data, data$interval)
 
   # faint vertical line at zero if zero is within x_lim
@@ -590,6 +586,27 @@ mcmc_areas_data <- function(x,
   }
   data
 }
+
+
+#' @rdname MCMC-intervals
+#' @export
+mcmc_areas_ridges_data <- function(x,
+                                   pars = character(),
+                                   regex_pars = character(),
+                                   transformations = list(),
+                                   ...,
+                                   prob_outer = 1,
+                                   prob = 1,
+                                   bw = NULL, adjust = NULL, kernel = NULL,
+                                   n_dens = NULL) {
+  check_ignored_arguments(...)
+  mcmc_areas_data(x, pars = pars, regex_pars = regex_pars,
+                  transformations = transformations,
+                  prob = prob, prob_outer = prob_outer, point_est = "none",
+                  bw = bw, adjust = adjust, kernel = kernel, n_dens = n_dens)
+
+}
+
 
 
 
