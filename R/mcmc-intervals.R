@@ -401,15 +401,15 @@ mcmc_areas_ridges <- function(x,
   ggplot(datas$outer) +
     aes_(x = ~ x, y = ~ parameter) +
     layer_vertical_line +
-    layer_inner +
     layer_outer +
+    layer_inner +
     scale_y_discrete(limits = unique(rev(data$parameter)),
                      expand = c(0.05, .6)) +
     xlim(x_lim) +
     yaxis_title(FALSE) +
     xaxis_title(FALSE) +
     grid_lines_y(color = "gray90") +
-    theme(axis.text.y = element_text(hjust = 1, vjust = 0, face = "bold"))
+    theme(axis.text.y = element_text(hjust = 1, vjust = 0))
 }
 
 
