@@ -7,6 +7,7 @@
 \alias{mcmc_hist_by_chain}
 \alias{mcmc_dens_overlay}
 \alias{mcmc_dens_chains}
+\alias{mcmc_dens_chains_data}
 \alias{mcmc_violin}
 \title{Histograms and kernel density plots of MCMC draws}
 \usage{
@@ -22,9 +23,14 @@ mcmc_hist_by_chain(x, pars = character(), regex_pars = character(),
   freq = TRUE)
 
 mcmc_dens_overlay(x, pars = character(), regex_pars = character(),
-  transformations = list(), facet_args = list(), ..., trim = FALSE)
+  transformations = list(), facet_args = list(), color_chains = TRUE, ...,
+  trim = FALSE)
 
 mcmc_dens_chains(x, pars = character(), regex_pars = character(),
+  transformations = list(), color_chains = TRUE, ..., bw = NULL,
+  adjust = NULL, kernel = NULL, n_dens = NULL)
+
+mcmc_dens_chains_data(x, pars = character(), regex_pars = character(),
   transformations = list(), ..., bw = NULL, adjust = NULL,
   kernel = NULL, n_dens = NULL)
 
@@ -80,6 +86,8 @@ function.)}
 
 \item{trim}{A logical scalar passed to \code{\link[ggplot2]{geom_density}}.}
 
+\item{color_chains}{option for whether to separately color chains.}
+
 \item{bw, adjust, kernel, n_dens}{Optional arguments passed to
 \code{\link[stats]{density}} to override default kernel density estimation
 parameters. \code{n_dens} defaults to 1024.}
@@ -116,13 +124,11 @@ Various types of histograms and kernel density plots of MCMC draws. See the
    The density estimate of each chain is plotted as a violin with
    horizontal lines at notable quantiles.
   }
-  \item{\code{mcmc_violin}}{
-   The density estimate of each chain is plotted as a violin with
-   horizontal lines at notable quantiles.
-  }
-  \item{\code{mcmc_dens_chain_ridges}}{
+  \item{\code{mcmc_dens_chains}}{
    Ridgeline kernel density plots of posterior draws with chains separated
-   but overlaid on a single plot.
+   but overlaid on a single plot. In \code{mcmc_dens_overlay} parameters
+   appear in separate facets; in \code{mcmc_dens_chains} they appear in the
+   same panel and can overlap vertically.
   }
 }
 }
@@ -163,6 +169,7 @@ mcmc_hist(x, transformations = list(sigma = log))
 color_scheme_set("pink")
 mcmc_hist_by_chain(x, regex_pars = "beta")
 }
+
 #################
 ### Densities ###
 #################
@@ -175,6 +182,8 @@ color_scheme_set("mix-teal-pink")
 mcmc_dens_overlay(x, pars = c("sigma", "beta[2]"),
                   facet_args = list(nrow = 2)) +
                   facet_text(size = 14)
+x2 <- example_mcmc_draws(params = 6)
+mcmc_dens_chains(x2, pars = c("beta[1]", "beta[2]", "beta[3]"))
 }
 # separate chains as violin plots
 color_scheme_set("green")
