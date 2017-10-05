@@ -604,7 +604,6 @@ mcmc_areas_ridges_data <- function(x,
                   transformations = transformations,
                   prob = prob, prob_outer = prob_outer, point_est = "none",
                   bw = bw, adjust = adjust, kernel = kernel, n_dens = n_dens)
-
 }
 
 

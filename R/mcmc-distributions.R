@@ -194,7 +194,7 @@ mcmc_dens_overlay <- function(x,
     by_chain = TRUE,
     color_chains = color_chains,
     trim = trim,
-    # ...
+    ...
   )
 }
 

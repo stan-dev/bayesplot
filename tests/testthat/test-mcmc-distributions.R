@@ -62,7 +62,7 @@ test_that("mcmc_dens_chains returns a ggplot object", {
   expect_gg(p2)
 })
 
-test_that("mcmc_dens_chains/mcmc_dens_overlay colors chains", {
+test_that("mcmc_dens_chains/mcmc_dens_overlay color chains", {
   p1 <- mcmc_dens_chains(arr, pars = "beta[1]", regex_pars = "x\\:",
                          color_chains = FALSE)
   p2 <- mcmc_dens_overlay(arr, pars = "beta[1]", regex_pars = "x\\:",
