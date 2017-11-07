@@ -13,10 +13,11 @@
 #' @param ... Currently unused.
 #' @param prob The probability mass to include in the inner interval (for
 #'   \code{mcmc_intervals}) or in the shaded region (for \code{mcmc_areas}). The
-#'   default is \code{0.5} (50\% interval).
+#'   default is \code{0.5} (50\% interval) and \code{1} for
+#'   \code{mcmc_areas_ridges}.
 #' @param prob_outer The probability mass to include in the outer interval. The
-#'   default is \code{0.9} for \code{mcmc_intervals} (90\% interval)
-#'   and \code{1} for \code{mcmc_areas}.
+#'   default is \code{0.9} for \code{mcmc_intervals} (90\% interval) and
+#'   \code{1} for \code{mcmc_areas} and for \code{mcmc_areas_ridges}.
 #' @param point_est The point estimate to show. Either \code{"median"} (the
 #'   default), \code{"mean"}, or \code{"none"}.
 #' @param rhat An optional numeric vector of \eqn{\hat{R}}{Rhat} estimates, with
@@ -24,9 +25,7 @@
 #'   the intervals/areas and point estimates in the resulting plot are colored
 #'   based on \eqn{\hat{R}}{Rhat} value. See \code{\link{rhat}} for methods for
 #'   extracting \eqn{\hat{R}}{Rhat} estimates.
-#' @param bw,adjust,kernel For \code{mcmc_areas}, optional arguments passed to
-#'   \code{\link[stats]{density}} to override default kernel density estimation
-#'   parameters.
+#' @template args-density-controls
 #'
 #' @template return-ggplot-or-data
 #'
@@ -40,9 +39,15 @@
 #'    Density plots computed from posterior draws with all chains merged,
 #'    with uncertainty intervals shown as shaded areas under the curves.
 #'   }
+#'   \item{\code{mcmc_areas_ridges}}{
+#'    Density plot, as in \code{mcmc_areas}, but drawn with overlapping
+#'    ridgelines. This plot provides a compact display of (hierarchically)
+#'    related distributions.
+#'   }
 #' }
 #'
 #' @examples
+#' set.seed(9262017)
 #' # some parameter draws to use for demonstration
 #' x <- example_mcmc_draws(params = 6)
 #' dim(x)
@@ -108,6 +113,13 @@
 #'            rhat = rhat(fit, regex_pars = "cyl"))
 #' }
 #'
+#' \dontrun{
+#' # Example of hierarchically related parameters
+#' # plotted with ridgelines
+#' m <- shinystan::eight_schools@posterior_sample
+#' mcmc_areas_ridges(m, pars = "mu", regex_pars = "theta") +
+#'  ggplot2::ggtitle("Treatment effect on eight schools (Rubin, 1981)")
+#' }
 #'
 NULL
 
@@ -216,12 +228,14 @@ mcmc_areas <- function(x,
                        rhat = numeric(),
                        bw = NULL,
                        adjust = NULL,
-                       kernel = NULL) {
+                       kernel = NULL,
+                       n_dens = NULL) {
   check_ignored_arguments(...)
   data <- mcmc_areas_data(x, pars, regex_pars, transformations,
                           prob = prob, prob_outer = prob_outer,
                           point_est = point_est, rhat = rhat,
-                          bw = bw, adjust = adjust, kernel = kernel)
+                          bw = bw, adjust = adjust, kernel = kernel,
+                          n_dens = n_dens)
   datas <- split(data, data$interval)
 
   # Use a dummy empty dataframe if no point estimate
@@ -333,6 +347,71 @@ mcmc_areas <- function(x,
 
 #' @rdname MCMC-intervals
 #' @export
+mcmc_areas_ridges <- function(x,
+                             pars = character(),
+                             regex_pars = character(),
+                             transformations = list(),
+                             ...,
+                             prob_outer = 1,
+                             prob = 1,
+                             bw = NULL, adjust = NULL, kernel = NULL,
+                             n_dens = NULL) {
+  check_ignored_arguments(...)
+  data <- mcmc_areas_ridges_data(x, pars = pars, regex_pars = regex_pars,
+                                 transformations = transformations,
+                                 prob = prob, prob_outer = prob_outer,
+                                 bw = bw, adjust = adjust, kernel = kernel,
+                                 n_dens = n_dens)
+  datas <- split(data, data$interval)
+
+  # faint vertical line at zero if zero is within x_lim
+  x_lim <- range(datas$outer$x)
+  x_range <- diff(x_lim)
+  x_lim[1] <- x_lim[1] - 0.05 * x_range
+  x_lim[2] <- x_lim[2] + 0.05 * x_range
+
+  layer_vertical_line <- if (0 > x_lim[1] && 0 < x_lim[2]) {
+    vline_0(color = "gray90", size = 0.5)
+  } else {
+    geom_ignore()
+  }
+
+  args_inner <- list(
+    mapping = aes_(height = ~ density),
+    data = datas$inner,
+    fill = get_color("light"),
+    color = get_color("dark"),
+    stat = "identity"
+  )
+
+  args_outer <- list(
+    mapping = aes_(height = ~ density),
+    color = get_color("dark"),
+    fill = NA,
+    stat = "identity"
+  )
+
+  layer_inner <- do.call(ggridges::geom_density_ridges, args_inner)
+  layer_outer <- do.call(ggridges::geom_density_ridges, args_outer)
+
+  ggplot(datas$outer) +
+    aes_(x = ~ x, y = ~ parameter) +
+    layer_vertical_line +
+    layer_outer +
+    layer_inner +
+    scale_y_discrete(limits = unique(rev(data$parameter)),
+                     expand = c(0.05, .6)) +
+    xlim(x_lim) +
+    yaxis_title(FALSE) +
+    xaxis_title(FALSE) +
+    grid_lines_y(color = "gray90") +
+    theme(axis.text.y = element_text(hjust = 1, vjust = 0))
+}
+
+
+
+#' @rdname MCMC-intervals
+#' @export
 mcmc_intervals_data <- function(x,
                                 pars = character(),
                                 regex_pars = character(),
@@ -397,7 +476,7 @@ mcmc_intervals_data <- function(x,
              rhat_value = .data$value,
              rhat_rating = .data$rating,
              rhat_description = .data$description) %>%
-    mutate(parameter = factor(.data$parameter, levels(data$parameter)))
+      mutate(parameter = factor(.data$parameter, levels(data$parameter)))
 
     data <- dplyr::inner_join(data, rhat_tbl, by = "parameter")
   }
@@ -423,7 +502,8 @@ mcmc_areas_data <- function(x,
                             rhat = numeric(),
                             bw = NULL,
                             adjust = NULL,
-                            kernel = NULL) {
+                            kernel = NULL,
+                            n_dens = NULL) {
   probs <- sort(c(prob, prob_outer))
 
   # First compute normal intervals so we know the width of the data, point
@@ -448,12 +528,16 @@ mcmc_areas_data <- function(x,
   # Compute the density intervals
   data_inner <- data_long %>%
     compute_column_density(.data$parameter, .data$value,
-                           interval_width = probs[1]) %>%
+                           interval_width = probs[1],
+                           bw = bw, adjust = adjust, kernel = kernel,
+                           n_dens = n_dens) %>%
     mutate(interval = "inner")
 
   data_outer <- data_long %>%
     compute_column_density(.data$parameter, .data$value,
-                           interval_width = probs[2]) %>%
+                           interval_width = probs[2],
+                           bw = bw, adjust = adjust, kernel = kernel,
+                           n_dens = n_dens) %>%
     mutate(interval = "outer")
 
   # Point estimates will be intervals that take up .8% of the x-axis
@@ -502,6 +586,26 @@ mcmc_areas_data <- function(x,
   }
   data
 }
+
+
+#' @rdname MCMC-intervals
+#' @export
+mcmc_areas_ridges_data <- function(x,
+                                   pars = character(),
+                                   regex_pars = character(),
+                                   transformations = list(),
+                                   ...,
+                                   prob_outer = 1,
+                                   prob = 1,
+                                   bw = NULL, adjust = NULL, kernel = NULL,
+                                   n_dens = NULL) {
+  check_ignored_arguments(...)
+  mcmc_areas_data(x, pars = pars, regex_pars = regex_pars,
+                  transformations = transformations,
+                  prob = prob, prob_outer = prob_outer, point_est = "none",
+                  bw = bw, adjust = adjust, kernel = kernel, n_dens = n_dens)
+}
+
 
 
 
@@ -557,14 +661,16 @@ compute_column_density <- function(df, group_vars, value_var, ...) {
 
 
 # Given a vector of values, compute a density dataframe.
-compute_interval_density <- function(x, interval_width = 1, n = 1024,
+compute_interval_density <- function(x, interval_width = 1, n_dens = 1024,
                                      bw = NULL, adjust = NULL, kernel = NULL) {
+  n_dens <- n_dens %||% 1024
+
   tail_width <- (1 - interval_width) / 2
   qs <- quantile(x, probs = c(tail_width, 1 - tail_width))
 
   args <- c(
     # can't be null
-    list(x = x, from = min(qs), to = max(qs), n = n),
+    list(x = x, from = min(qs), to = max(qs), n = n_dens),
     # might be null
     bw = bw, adjust = adjust, kernel = kernel)
 

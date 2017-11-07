@@ -65,6 +65,18 @@ test_that("mcmc_areas returns a ggplot object", {
   expect_gg(mcmc_areas(dframe1))
 })
 
+test_that("mcmc_areas_ridges returns a ggplot object", {
+  expect_gg(mcmc_areas_ridges(arr, pars = "beta[2]", regex_pars = "x\\:"))
+  expect_gg(mcmc_areas_ridges(arr1chain, regex_pars = c("beta", "x\\:")))
+  expect_gg(mcmc_areas_ridges(mat))
+  expect_gg(mcmc_areas_ridges(dframe))
+  expect_gg(mcmc_areas_ridges(dframe_multiple_chains))
+
+  expect_gg(mcmc_areas_ridges(arr1))
+  expect_gg(mcmc_areas_ridges(mat1))
+  expect_gg(mcmc_areas_ridges(dframe1))
+})
+
 test_that("mcmc_intervals/areas with rhat", {
   r <- runif(ncol(mat), 0.9, 1.3)
   rbad <- c(NA, r[-1])
@@ -120,5 +132,17 @@ test_that("mcmc_areas_data computes density", {
     expect_equivalent(by_parameter[[name]][["density"]],
                       densities[[name]][["y"]])
   }
+})
 
+test_that("compute_column_density can use density options (#118)", {
+  # n_dens affects the number of rows in the return data-frame
+  areas_data <- mcmc_areas_data(arr, point_est = "none", n_dens = 100)
+  pars <- length(unique(areas_data$parameter))
+  intervals <- length(unique(areas_data$interval))
+  expect_equal(nrow(areas_data), 100 * intervals * pars)
+
+  # If these raise errors, they are being evaluated
+  expect_error(mcmc_areas_data(arr, bw = stop()))
+  expect_error(mcmc_areas_data(arr, adjust = stop()))
+  expect_error(mcmc_areas_data(arr, kernel = stop()))
 })
