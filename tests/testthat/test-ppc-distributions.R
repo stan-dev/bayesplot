@@ -29,7 +29,7 @@ test_that("ppc_dens,pp_hist,ppc_freqpoly,ppc_boxplot return ggplot objects", {
   expect_gg(ppc_freqpoly(y2, yrep2))
 
   expect_gg(p <- ppc_hist(y, yrep[1:8, ], binwidth = 3))
-  facet_var <- "rep_id"
+  facet_var <- "rep_label"
   expect_equal(as.character(p$facet$params$facets[1]), facet_var)
 })
 
@@ -51,3 +51,4 @@ test_that("ppc_violin_grouped returns a ggplot object", {
   expect_error(ppc_violin_grouped(y2, yrep2, group2),
                "'group' must have more than one unique value")
 })
+
