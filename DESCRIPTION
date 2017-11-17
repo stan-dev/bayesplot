@@ -38,7 +38,7 @@ Suggests:
     rstantools (>= 1.2.0),
     scales,
     shinystan (>= 2.3.0),
-    testthat
-RoxygenNote: 6.0.1
+    testthat,
+    vdiffr
 VignetteBuilder: knitr
 Encoding: UTF-8
