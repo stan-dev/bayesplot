@@ -146,3 +146,67 @@ test_that("compute_column_density can use density options (#118)", {
   expect_error(mcmc_areas_data(arr, adjust = stop()))
   expect_error(mcmc_areas_data(arr, kernel = stop()))
 })
+
+
+
+
+# Visual tests
+
+test_that("mcmc_intervals renders correctly", {
+  testthat::skip_on_cran()
+
+  p_base <- mcmc_intervals(vdiff_dframe)
+  vdiffr::expect_doppelganger("mcmc intervals (default)", p_base)
+
+  p_outer <- mcmc_intervals(vdiff_dframe, prob_outer = .8)
+  vdiffr::expect_doppelganger("mcmc intervals (outer)", p_outer)
+
+  p_inner <- mcmc_intervals(vdiff_dframe, prob = .1)
+  vdiffr::expect_doppelganger("mcmc intervals (inner)", p_inner)
+
+  rhats <- seq(from = 1, to = 1.15, length = 5)
+  p_rhats <- mcmc_intervals(vdiff_dframe, rhat = rhats)
+  vdiffr::expect_doppelganger("mcmc intervals (rhats)", p_rhats)
+
+  p_no_points <- mcmc_intervals(vdiff_dframe, point_est = "none")
+  vdiffr::expect_doppelganger("mcmc intervals (no points)", p_no_points)
+
+  p_mean_points <- mcmc_intervals(vdiff_dframe, point_est = "mean")
+  vdiffr::expect_doppelganger("mcmc intervals (means)", p_mean_points)
+})
+
+test_that("mcmc_areas renders correctly", {
+  testthat::skip_on_cran()
+
+  p_base <- mcmc_areas(vdiff_dframe)
+  vdiffr::expect_doppelganger("mcmc areas (default)", p_base)
+
+  p_outer <- mcmc_areas(vdiff_dframe, prob_outer = .8)
+  vdiffr::expect_doppelganger("mcmc areas (outer)", p_outer)
+
+  p_inner <- mcmc_areas(vdiff_dframe, prob = .1)
+  vdiffr::expect_doppelganger("mcmc areas (inner)", p_inner)
+
+  rhats <- seq(from = 1, to = 1.15, length = 5)
+  p_rhats <- mcmc_areas(vdiff_dframe, rhat = rhats)
+  vdiffr::expect_doppelganger("mcmc areas (rhats)", p_rhats)
+
+  p_no_points <- mcmc_areas(vdiff_dframe, point_est = "none")
+  vdiffr::expect_doppelganger("mcmc areas (no points)", p_no_points)
+
+  p_mean_points <- mcmc_areas(vdiff_dframe, point_est = "mean")
+  vdiffr::expect_doppelganger("mcmc areas (means)", p_mean_points)
+})
+
+test_that("mcmc_areas_ridges renders correctly", {
+  testthat::skip_on_cran()
+
+  p_base <- mcmc_areas_ridges(vdiff_dframe)
+  vdiffr::expect_doppelganger("mcmc areas ridges (default)", p_base)
+
+  p_inner <- mcmc_areas_ridges(vdiff_dframe, prob = .5)
+  vdiffr::expect_doppelganger("mcmc areas ridges (inner)", p_inner)
+
+  p_outer <- mcmc_areas_ridges(vdiff_dframe, prob = .5, prob_outer = .95)
+  vdiffr::expect_doppelganger("mcmc areas ridges (outer)", p_outer)
+})

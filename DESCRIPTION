@@ -27,7 +27,7 @@ Imports:
     utils,
     rlang,
     ggridges
-Suggests:
+Suggests: 
     arm,
     gridExtra (>= 2.2.1),
     knitr (>= 1.16),
@@ -38,7 +38,8 @@ Suggests:
     rstantools (>= 1.2.0),
     scales,
     shinystan (>= 2.3.0),
-    testthat
+    testthat,
+    vdiffr
 RoxygenNote: 6.0.1
 VignetteBuilder: knitr
 Encoding: UTF-8
