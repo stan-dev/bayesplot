@@ -22,18 +22,32 @@ suppressWarnings(
 )
 
 
-test_that("ppc_loo_pit returns ggplot object", {
-  expect_gg(p1 <- ppc_loo_pit(y, yrep, lw))
-  expect_equal(p1$labels$x, "Uniform")
+test_that("ppc_loo_pit gives deprecation warning but still works", {
+  expect_warning(p1 <- ppc_loo_pit(y, yrep, lw), "deprecated")
+  expect_gg(p1)
+})
 
-  expect_gg(p2 <- ppc_loo_pit(y, yrep, lw, compare = "normal"))
+test_that("ppc_loo_pit_overlay returns ggplot object", {
+  expect_gg(p1 <- ppc_loo_pit_overlay(y, yrep, lw, samples = 25))
+  expect_gg(p2 <- ppc_loo_pit_qq(y, yrep, lw, compare = "normal"))
   expect_equal(p2$labels$x, "Normal")
 })
 
-test_that("ppc_loo_pit works when pit specified instead of y,yrep,lw", {
-  expect_gg(ppc_loo_pit(pit = pits))
+test_that("ppc_loo_pit_qq returns ggplot object", {
+  expect_gg(p1 <- ppc_loo_pit_qq(y, yrep, lw))
+  expect_equal(p1$labels$x, "Uniform")
+})
+
+test_that("ppc_loo_pit functions work when pit specified instead of y,yrep,lw", {
+  expect_gg(ppc_loo_pit_qq(pit = pits))
   expect_message(
-    ppc_loo_pit(y = y, yrep = yrep, lw = lw, pit = pits),
+    ppc_loo_pit_qq(y = y, yrep = yrep, lw = lw, pit = pits),
+    "'pit' specified so ignoring 'y','yrep','lw' if specified"
+  )
+
+  expect_gg(ppc_loo_pit_overlay(pit = pits))
+  expect_message(
+    ppc_loo_pit_overlay(y = y, yrep = yrep, lw = lw, pit = pits),
     "'pit' specified so ignoring 'y','yrep','lw' if specified"
   )
 })
