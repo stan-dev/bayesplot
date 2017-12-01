@@ -67,8 +67,13 @@
 #' library(loo)
 #'
 #' head(radon)
-#' fit <- stan_lmer(log_radon ~ floor + log_uranium + floor:log_uranium
-#'                    + (1 + floor | county), data = radon, cores = 2)
+#' fit <- stan_lmer(
+#'   log_radon ~ floor + log_uranium + floor:log_uranium
+#'                + (1 + floor | county),
+#'   data = radon,
+#'   iter = 1000,
+#'   chains = 2  # ,cores = 2
+#'  )
 #' y <- radon$log_radon
 #' yrep <- posterior_predict(fit)
 #' psis1 <- psislw(-log_lik(fit), cores = 2)
@@ -255,6 +260,9 @@ ppc_loo_pit <-
 
 #' @rdname PPC-loo
 #' @export
+#' @param psis_object If using \pkg{loo} version \code{2.0.0} or greater, an
+#'   object returned by \code{\link[loo]{psis}} (or by \code{\link[loo]{loo}}
+#'   with argument \code{save_psis} set to \code{TRUE}).
 #' @param prob A value between 0 and 1 indicating the desired probability mass
 #'   to include in the intervals. The default is 0.9.
 #' @param intervals For \code{ppc_loo_intervals} and \code{ppc_loo_ribbon},
@@ -275,6 +283,7 @@ ppc_loo_intervals <-
   function(y,
            yrep,
            lw,
+           psis_object,
            intervals = NULL,
            ...,
            prob = 0.9,
@@ -287,18 +296,28 @@ ppc_loo_intervals <-
     order_by_median <- match.arg(order) == "median"
     if (!is.null(intervals)) {
       stopifnot(is.matrix(intervals), ncol(intervals) == 3)
-      message("'intervals' specified so ignoring 'yrep' and 'lw' if specified.")
+      message("'intervals' specified so ignoring 'yrep', 'lw', 'psis_object', if specified.")
     } else {
       suggested_package("loo")
       yrep <- validate_yrep(yrep, y)
-      stopifnot(identical(dim(yrep), dim(lw)))
       a <- (1 - prob) / 2
-      intervals <- t(loo::E_loo(
-        x = yrep,
-        lw = lw,
-        type = "quantile",
-        probs = sort(c(a, 0.5, 1 - a))
-      ))
+      if (utils::packageVersion("loo") >= "2.0.0") {
+        stopifnot(identical(dim(psis_object), dim(yrep)))
+        intervals <- suppressWarnings(t(loo::E_loo(
+          x = yrep,
+          psis_object = psis_object,
+          type = "quantile",
+          probs = sort(c(a, 0.5, 1 - a))
+        )$value))
+      } else {
+        stopifnot(identical(dim(lw), dim(yrep)))
+        intervals <- unclass(t(loo::E_loo(
+          x = yrep,
+          lw = lw,
+          type = "quantile",
+          probs = sort(c(a, 0.5, 1 - a))
+        )))
+      }
     }
 
     x <- seq_along(y)
@@ -331,6 +350,7 @@ ppc_loo_ribbon <-
   function(y,
            yrep,
            lw,
+           psis_object,
            intervals = NULL,
            ...,
            prob = 0.9,
@@ -340,18 +360,28 @@ ppc_loo_ribbon <-
     y <- validate_y(y)
     if (!is.null(intervals)) {
       stopifnot(is.matrix(intervals), ncol(intervals) == 3)
-      message("'intervals' specified so ignoring 'yrep' and 'lw' if specified.")
+      message("'intervals' specified so ignoring 'yrep', 'lw', 'psis_object', if specified.")
     } else {
       suggested_package("loo")
       yrep <- validate_yrep(yrep, y)
-      stopifnot(identical(dim(yrep), dim(lw)))
       a <- (1 - prob) / 2
-      intervals <- t(loo::E_loo(
-        x = yrep,
-        lw = lw,
-        type = "quantile",
-        probs = sort(c(a, 0.5, 1 - a))
-      ))
+      if (utils::packageVersion("loo") >= "2.0.0") {
+        stopifnot(identical(dim(psis_object), dim(yrep)))
+        intervals <- suppressWarnings(t(loo::E_loo(
+          x = yrep,
+          psis_object = psis_object,
+          type = "quantile",
+          probs = sort(c(a, 0.5, 1 - a))
+        )$value))
+      } else {
+        stopifnot(identical(dim(lw), dim(yrep)))
+        intervals <- t(loo::E_loo(
+          x = yrep,
+          lw = lw,
+          type = "quantile",
+          probs = sort(c(a, 0.5, 1 - a))
+        ))
+      }
     }
     .ppc_intervals(
       data = .loo_intervals_data(y, x = seq_along(y), intervals),

@@ -19,10 +19,10 @@ ppc_loo_pit_qq(y, yrep, lw, pit, compare = c("uniform", "normal"), ...,
 ppc_loo_pit(y, yrep, lw, pit, compare = c("uniform", "normal"), ...,
   size = 2, alpha = 1)
 
-ppc_loo_intervals(y, yrep, lw, intervals = NULL, ..., prob = 0.9,
-  size = 1, fatten = 3, order = c("index", "median"))
+ppc_loo_intervals(y, yrep, lw, psis_object, intervals = NULL, ...,
+  prob = 0.9, size = 1, fatten = 3, order = c("index", "median"))
 
-ppc_loo_ribbon(y, yrep, lw, intervals = NULL, ..., prob = 0.9,
+ppc_loo_ribbon(y, yrep, lw, psis_object, intervals = NULL, ..., prob = 0.9,
   alpha = 0.33, size = 0.25)
 }
 \arguments{
@@ -73,6 +73,10 @@ parameters. \code{n_dens} defaults to 1024.}
 Q-Q plot compares computed PIT values to the standard uniform distribution.
 If \code{compare="normal"}, the Q-Q plot compares standardized PIT values
 to the standard normal distribution.}
+
+\item{psis_object}{If using \pkg{loo} version \code{2.0.0} or greater, an
+object returned by \code{\link[loo]{psis}} (or by \code{\link[loo]{loo}}
+with argument \code{save_psis} set to \code{TRUE}).}
 
 \item{intervals}{For \code{ppc_loo_intervals} and \code{ppc_loo_ribbon},
 optionally a matrix of precomputed LOO predictive intervals intervals with
@@ -142,8 +146,13 @@ library(rstanarm)
 library(loo)
 
 head(radon)
-fit <- stan_lmer(log_radon ~ floor + log_uranium + floor:log_uranium
-                   + (1 + floor | county), data = radon, cores = 2)
+fit <- stan_lmer(
+  log_radon ~ floor + log_uranium + floor:log_uranium
+               + (1 + floor | county),
+  data = radon,
+  iter = 1000,
+  chains = 2  # ,cores = 2
+ )
 y <- radon$log_radon
 yrep <- posterior_predict(fit)
 psis1 <- psislw(-log_lik(fit), cores = 2)
