@@ -50,7 +50,7 @@ internally before plotting.}
 \item{samples}{For \code{ppc_loo_pit_overlay}, the number of data sets (each
 the same size as \code{y}) to simulate from the standard uniform
 distribution. The default is 100. The density estimate of each dataset is
-plotted as a thin line in the plot, witht the density estimate of the LOO
+plotted as a thin line in the plot, with the density estimate of the LOO
 PITs overlaid as a thicker dark line.}
 
 \item{...}{Currently unused.}
@@ -168,11 +168,11 @@ ppc_loo_pit_qq(y, yrep, lw = lw, compare = "normal")
 
 # loo predictive intervals vs observations
 sel <- 800:900
-ppc_loo_intervals(y[sel], yrep[, sel], psis$lw_smooth[, sel],
+ppc_loo_intervals(y[sel], yrep[, sel], psis1$lw_smooth[, sel],
                   prob = 0.9, size = 0.5)
 
 color_scheme_set("gray")
-ppc_loo_intervals(y[sel], yrep[, sel], psis$lw_smooth[, sel],
+ppc_loo_intervals(y[sel], yrep[, sel], psis1$lw_smooth[, sel],
                   order = "median", prob = 0.8, size = 0.5)
 }
 

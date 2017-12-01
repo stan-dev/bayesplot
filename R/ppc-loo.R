@@ -89,11 +89,11 @@
 #'
 #' # loo predictive intervals vs observations
 #' sel <- 800:900
-#' ppc_loo_intervals(y[sel], yrep[, sel], psis$lw_smooth[, sel],
+#' ppc_loo_intervals(y[sel], yrep[, sel], psis1$lw_smooth[, sel],
 #'                   prob = 0.9, size = 0.5)
 #'
 #' color_scheme_set("gray")
-#' ppc_loo_intervals(y[sel], yrep[, sel], psis$lw_smooth[, sel],
+#' ppc_loo_intervals(y[sel], yrep[, sel], psis1$lw_smooth[, sel],
 #'                   order = "median", prob = 0.8, size = 0.5)
 #' }
 #'
@@ -109,7 +109,7 @@ NULL
 #' @param samples For \code{ppc_loo_pit_overlay}, the number of data sets (each
 #'   the same size as \code{y}) to simulate from the standard uniform
 #'   distribution. The default is 100. The density estimate of each dataset is
-#'   plotted as a thin line in the plot, witht the density estimate of the LOO
+#'   plotted as a thin line in the plot, with the density estimate of the LOO
 #'   PITs overlaid as a thicker dark line.
 #' @param compare For \code{ppc_loo_pit_qq}, a string that can be either
 #'   \code{"uniform"} or \code{"normal"}. If \code{"uniform"} (the default) the
@@ -117,8 +117,6 @@ NULL
 #'   If \code{compare="normal"}, the Q-Q plot compares standardized PIT values
 #'   to the standard normal distribution.
 #' @template args-density-controls
-#'
-#'
 ppc_loo_pit_overlay <-
   function(y,
            yrep,
@@ -149,7 +147,7 @@ ppc_loo_pit_overlay <-
     graph <-
       ppc_dens_overlay(
         y = pit,
-        yrep= unifs,
+        yrep = unifs,
         size = size,
         alpha = alpha,
         trim = trim,
@@ -158,11 +156,17 @@ ppc_loo_pit_overlay <-
         kernel = kernel,
         n_dens = n_dens
       )
-    graph <- suppressMessages(graph + scale_color_ppc_dist(labels = c("PIT", "Unif")))
+    graph <- suppressMessages(
+      graph + scale_color_ppc_dist(labels = c("PIT", "Unif"))
+    )
+
     g <- ggplot_build(graph)
     xylim <- g$layout$panel_ranges[[1]]
     ymax <- 1.25 * xylim$y.range[2]
-    graph + coord_cartesian(xlim = c(0.1, 0.9), ylim = c(0, ymax))
+
+    graph +
+      scale_x_continuous(breaks = seq(from = .1, .9, by = .2)) +
+      coord_cartesian(xlim = c(0.1, 0.9), ylim = c(0, ymax))
   }
 
 
