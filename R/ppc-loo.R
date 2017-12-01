@@ -165,7 +165,7 @@ ppc_loo_pit_overlay <-
     ymax <- 1.25 * xylim$y.range[2]
 
     graph +
-      scale_x_continuous(breaks = seq(from = .1, .9, by = .2)) +
+      scale_x_continuous(breaks = seq(from = .1, to = .9, by = .2)) +
       coord_cartesian(xlim = c(0.1, 0.9), ylim = c(0, ymax))
   }
 
