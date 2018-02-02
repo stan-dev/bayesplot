@@ -9,6 +9,7 @@ test_that("ppc_intervals returns ggplot object", {
   expect_gg(ppc_intervals(y, yrep, x = seq(1, 2 * length(y), by = 2)))
   expect_gg(ppc_intervals(y2, yrep2))
 })
+
 test_that("ppc_ribbon returns ggplot object", {
   expect_gg(ppc_ribbon(y, yrep, prob = 0.5))
   expect_gg(ppc_ribbon(y, yrep, alpha = 0, size = .5))

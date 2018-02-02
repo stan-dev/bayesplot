@@ -17,7 +17,7 @@
 #' @param ... Currently unused.
 #'
 #' @template details-binomial
-#' @template return-ggplot
+#' @template return-ggplot-or-data
 #'
 #' @section Plot Descriptions:
 #' \describe{
@@ -96,23 +96,41 @@
 #'
 NULL
 
+
+
 #' @rdname PPC-distributions
 #' @export
-ppc_hist <- function(y, yrep, ...,
-                     binwidth = NULL,
-                     freq = TRUE) {
-  check_ignored_arguments(...)
-
+ppc_data <- function(y, yrep, group = NULL) {
   y <- validate_y(y)
   yrep <- validate_yrep(yrep, y)
-  ggplot(
-    melt_and_stack(y, yrep),
-    set_hist_aes(freq, fill = ~ is_y, color = ~ is_y)
-  ) +
+  data <- melt_and_stack(y, yrep)
+
+  if (!is.null(group)) {
+    group <- validate_group(group, y)
+    group_indices <- dplyr::data_frame(group, y_id = seq_along(group))
+    data <- data %>%
+      left_join(group_indices, by = "y_id") %>%
+      select(.data$group, dplyr::everything())
+  }
+
+  data
+}
+
+
+
+#' @rdname PPC-distributions
+#' @export
+ppc_hist <- function(y, yrep, ..., binwidth = NULL, freq = TRUE) {
+  check_ignored_arguments(...)
+  data <- ppc_data(y, yrep)
+  aes_list <- set_hist_aes(freq, fill = ~ is_y_label, color = ~ is_y_label)
+
+  ggplot(data) +
+    aes_list +
     geom_histogram(size = 0.25, binwidth = binwidth) +
     scale_fill_ppc_dist() +
     scale_color_ppc_dist() +
-    facet_wrap_parsed("rep_id") +
+    facet_wrap_parsed("rep_label") +
     force_axes_in_facets() +
     dont_expand_y_axis() +
     space_legend_keys() +
@@ -124,6 +142,8 @@ ppc_hist <- function(y, yrep, ...,
     facet_bg(FALSE)
 }
 
+
+
 #' @rdname PPC-distributions
 #' @export
 #' @param notch A logical scalar passed to \code{\link[ggplot2]{geom_boxplot}}.
@@ -131,23 +151,16 @@ ppc_hist <- function(y, yrep, ...,
 #'
 ppc_boxplot <- function(y, yrep, ..., notch = TRUE, size = 0.5, alpha = 1) {
   check_ignored_arguments(...)
+  data <- ppc_data(y, yrep)
 
-  y <- validate_y(y)
-  yrep <- validate_yrep(yrep, y)
-  ggplot(
-    data = melt_and_stack(y, yrep, label = FALSE),
-    mapping = aes_(
-      x = ~ rep_id,
-      y = ~ value,
-      fill = ~ is_y,
-      color = ~ is_y
-  )) +
+  ggplot(data) +
+    aes_(x = ~ rep_label, y = ~ value,
+         fill = ~ is_y_label, color = ~ is_y_label) +
     geom_boxplot(
       notch = notch,
       size = size,
       alpha = alpha,
-      outlier.alpha = 2/3
-    ) +
+      outlier.alpha = 2 / 3) +
     scale_fill_ppc_dist() +
     scale_color_ppc_dist() +
     yaxis_title(FALSE) +
@@ -155,6 +168,8 @@ ppc_boxplot <- function(y, yrep, ..., notch = TRUE, size = 0.5, alpha = 1) {
     xaxis_text(FALSE) +
     xaxis_title(FALSE)
 }
+
+
 
 #' @rdname PPC-distributions
 #' @export
@@ -164,20 +179,16 @@ ppc_freqpoly <- function(y, yrep, ...,
                          size = 0.25,
                          alpha = 1) {
   check_ignored_arguments(...)
+  data <- ppc_data(y, yrep)
+  aes_list <- set_hist_aes(freq, fill = ~ is_y_label, color = ~ is_y_label)
 
-  y <- validate_y(y)
-  yrep <- validate_yrep(yrep, y)
-  ggplot(melt_and_stack(y, yrep),
-         set_hist_aes(freq, fill = ~ is_y, color = ~ is_y)) +
-    geom_area(
-      stat = "bin",
-      binwidth = binwidth,
-      size = size,
-      alpha = alpha
-    ) +
+  ggplot(data) +
+    aes_list +
+    aes_(x = ~ value, fill = ~ is_y_label, color = ~ is_y_label) +
+    geom_area(stat = "bin", binwidth = binwidth, size = size, alpha = alpha) +
     scale_fill_ppc_dist() +
     scale_color_ppc_dist() +
-    facet_wrap_parsed("rep_id") +
+    facet_wrap_parsed("rep_label") +
     force_axes_in_facets() +
     dont_expand_y_axis() +
     space_legend_keys() +
@@ -193,34 +204,18 @@ ppc_freqpoly <- function(y, yrep, ...,
 #' @export
 #' @template args-group
 #'
-ppc_freqpoly_grouped <-
-  function(y,
-           yrep,
-           group,
-           ...,
-           binwidth = NULL,
-           freq = TRUE,
-           size = 0.25,
-           alpha = 1) {
+ppc_freqpoly_grouped <- function(y, yrep, group, ..., binwidth = NULL,
+                                 freq = TRUE, size = 0.25, alpha = 1) {
     check_ignored_arguments(...)
+    data <- ppc_data(y, yrep, group)
+    aes_list <- set_hist_aes(freq)
 
-    y <- validate_y(y)
-    yrep <- validate_yrep(yrep, y)
-    group <- validate_group(group, y)
-    plot_data <- ppc_group_data(y, yrep, group)
-    is_y <- factor(plot_data$variable == "y",
-                   levels = c(TRUE, FALSE))
-
-    ggplot(plot_data, set_hist_aes(freq)) +
-      geom_area(
-        aes_(color = ~ is_y, fill = ~ is_y),
-        stat = "bin",
-        size = size,
-        alpha = alpha,
-        binwidth = binwidth,
-        na.rm = TRUE
-      ) +
-      facet_grid(variable ~ group, scales = "free") +
+    ggplot(data) +
+      aes_list +
+      geom_area(aes_(color = ~ is_y_label, fill = ~ is_y_label),
+                stat = "bin", size = size, alpha = alpha,
+                binwidth = binwidth, na.rm = TRUE) +
+      facet_grid(rep_label ~ group, scales = "free") +
       scale_fill_ppc_dist() +
       scale_color_ppc_dist() +
       dont_expand_y_axis(c(0.005, 0)) +
@@ -237,26 +232,16 @@ ppc_freqpoly_grouped <-
 
 #' @rdname PPC-distributions
 #' @export
-ppc_dens <- function(y, yrep, ...,
-                     trim = FALSE,
-                     size = 0.5,
-                     alpha = 1) {
+ppc_dens <- function(y, yrep, ..., trim = FALSE, size = 0.5, alpha = 1) {
   check_ignored_arguments(...)
+  data <- ppc_data(y, yrep)
 
-  y <- validate_y(y)
-  yrep <- validate_yrep(yrep, y)
-  ggplot(
-    data = melt_and_stack(y, yrep),
-    mapping = aes_(
-      x = ~ value,
-      fill = ~ is_y,
-      color = ~ is_y
-    )
-  ) +
+  ggplot(data) +
+    aes_(x = ~ value, fill = ~ is_y_label, color = ~ is_y_label) +
     geom_density(size = size, alpha = alpha, trim = trim) +
     scale_fill_ppc_dist() +
     scale_color_ppc_dist() +
-    facet_wrap_parsed("rep_id") +
+    facet_wrap_parsed("rep_label") +
     force_axes_in_facets() +
     dont_expand_y_axis() +
     space_legend_keys() +
@@ -270,17 +255,16 @@ ppc_dens <- function(y, yrep, ...,
 
 #' @rdname PPC-distributions
 #' @export
-ppc_dens_overlay <- function(y, yrep, ...,
-                             trim = FALSE,
-                             size = 0.25,
+ppc_dens_overlay <- function(y, yrep, ..., trim = FALSE, size = 0.25,
                              alpha = 0.7) {
   check_ignored_arguments(...)
+  data <- ppc_data(y, yrep)
 
-  y <- validate_y(y)
-  yrep <- validate_yrep(yrep, y)
-  ggplot(melt_yrep(yrep), aes_(x = ~ value)) +
+  ggplot(data) +
+    aes_(x = ~ value) +
     stat_density(
       aes_(group = ~ rep_id, color = "yrep"),
+      data = function(x) dplyr::filter(x, !.data$is_y),
       geom = "line",
       position = "identity",
       size = size,
@@ -288,8 +272,8 @@ ppc_dens_overlay <- function(y, yrep, ...,
       trim = trim
     ) +
     stat_density(
-      data = data.frame(value = y),
       aes_(color = "y"),
+      data = function(x) dplyr::filter(x, .data$is_y),
       geom = "line",
       position = "identity",
       lineend = "round",
@@ -305,34 +289,36 @@ ppc_dens_overlay <- function(y, yrep, ...,
     yaxis_ticks(FALSE)
 }
 
+
+
+
+
+
 #' @export
 #' @rdname PPC-distributions
 #' @param pad A logical scalar passed to \code{\link[ggplot2]{stat_ecdf}}.
-ppc_ecdf_overlay <- function(y, yrep, ...,
-                             pad = TRUE,
-                             size = 0.25,
+ppc_ecdf_overlay <- function(y, yrep, ..., pad = TRUE, size = 0.25,
                              alpha = 0.7) {
   check_ignored_arguments(...)
+  data <- ppc_data(y, yrep)
 
-  y <- validate_y(y)
-  yrep <- validate_yrep(yrep, y)
-  ggplot(melt_yrep(yrep), aes_(x = ~ value)) +
+  ggplot(data) +
+    aes_(x = ~ value) +
     hline_at(c(0, 0.5, 1), size = c(0.2, 0.1, 0.2),
              linetype = 2, color = get_color("dh")) +
     stat_ecdf(
+      data = function(x) dplyr::filter(x, !.data$is_y),
       mapping = aes_(group = ~ rep_id, color = "yrep"),
       geom = "line",
       size = size,
       alpha = alpha,
-      pad = pad
-    ) +
+      pad = pad) +
     stat_ecdf(
-      data = data.frame(value = y),
+      data = function(x) dplyr::filter(x, .data$is_y),
       mapping = aes_(color = "y"),
-      geom = c("line"),
+      geom = "line",
       size = 1,
-      pad = pad
-    ) +
+      pad = pad) +
     scale_color_ppc_dist() +
     xlab(y_label()) +
     scale_y_continuous(breaks = c(0, 0.5, 1)) +
@@ -357,60 +343,55 @@ ppc_ecdf_overlay <- function(y, yrep, ...,
 #'   points. The default of \code{y_jitter=NULL} will let \pkg{ggplot2}
 #'   determine the amount of jitter.
 #'
-ppc_violin_grouped <- function(y,
-                               yrep,
-                               group,
-                               ...,
-                               probs = c(0.1, 0.5, 0.9),
-                               size = 1,
-                               alpha = 1,
+ppc_violin_grouped <- function(y, yrep, group, ..., probs = c(0.1, 0.5, 0.9),
+                               size = 1, alpha = 1,
                                y_draw = c("violin", "points", "both"),
-                               y_size = 1,
-                               y_alpha = 1,
-                               y_jitter = 0.1) {
+                               y_size = 1, y_alpha = 1, y_jitter = 0.1) {
   check_ignored_arguments(...)
-
-  y <- validate_y(y)
-  yrep <- validate_yrep(yrep, y)
-  group <- validate_group(group, y)
-
-  plot_data <- ppc_group_data(y, yrep, group, stat = NULL)
-  is_y <- plot_data$variable == "y"
-
-  p <- ggplot(plot_data[!is_y, , drop = FALSE],
-              aes_(x = ~ group, y = ~ value)) +
-    geom_violin(
-      aes_(fill = "yrep", color = "yrep"),
-      draw_quantiles = probs,
-      alpha = alpha,
-      size = size
-    )
+  data <- ppc_data(y, yrep, group)
 
   y_draw <- match.arg(y_draw)
-  if (y_draw %in% c("violin", "both")) {
-    p <- p +
-      geom_violin(
-        data = plot_data[is_y, , drop = FALSE],
-        aes_(fill = "y", color = "y"),
-        show.legend = FALSE,
-        alpha = 0
-      )
-  }
-  if (y_draw %in% c("points", "both")) {
-    p <- p +
-      geom_jitter(
-        data = plot_data[is_y, , drop = FALSE],
-        aes_(fill = "y", color = "y"),
-        shape = 21,
-        alpha = y_alpha,
-        size = y_size,
-        width = y_jitter,
-        height = 0,
-        show.legend = FALSE
-      )
-  }
+  y_violin <- y_draw %in% c("violin", "both")
+  y_points <- y_draw %in% c("points", "both")
 
-  p +
+  args_violin_yrep <- list(
+    data = function(x) dplyr::filter(x, !.data$is_y),
+    aes_(fill = "yrep", color = "yrep"),
+    draw_quantiles = probs,
+    alpha = alpha,
+    size = size
+  )
+
+  args_violin_y <- list(
+    data = function(x) dplyr::filter(x, .data$is_y),
+    aes_(fill = "y", color = "y"),
+    show.legend = FALSE,
+    alpha = 0
+  )
+
+  args_jitter_y <- list(
+    data = function(x) dplyr::filter(x, .data$is_y),
+    aes_(fill = "y", color = "y"),
+    shape = 21,
+    alpha = y_alpha,
+    size = y_size,
+    width = y_jitter,
+    height = 0,
+    show.legend = FALSE
+  )
+
+  violin_y_func <- if (y_violin) geom_violin else geom_ignore
+  jitter_y_func <- if (y_points) geom_jitter else geom_ignore
+
+  layer_violin_yrep <- do.call(geom_violin, args_violin_yrep)
+  layer_violin_y <- do.call(violin_y_func, args_violin_y)
+  layer_jitter_y <- do.call(jitter_y_func, args_jitter_y)
+
+  ggplot(data) +
+    aes_(x = ~ group, y = ~ value) +
+    layer_violin_yrep +
+    layer_violin_y +
+    layer_jitter_y +
     scale_fill_ppc_dist(values = c(NA, get_color("l"))) +
     scale_color_ppc_dist() +
     labs(x = "Group", y = yrep_label()) +

@@ -231,11 +231,11 @@ mcmc_areas <- function(x,
                        kernel = NULL,
                        n_dens = NULL) {
   check_ignored_arguments(...)
-  data <- mcmc_areas_data(x, pars, regex_pars, transformations,
-                          prob = prob, prob_outer = prob_outer,
-                          point_est = point_est, rhat = rhat,
-                          bw = bw, adjust = adjust, kernel = kernel,
-                          n_dens = n_dens)
+  data <- mcmc_areas_data(
+    x, pars, regex_pars, transformations,
+    prob = prob, prob_outer = prob_outer,
+    point_est = point_est, rhat = rhat,
+    bw = bw, adjust = adjust, kernel = kernel, n_dens = n_dens)
   datas <- split(data, data$interval)
 
   # Use a dummy empty dataframe if no point estimate

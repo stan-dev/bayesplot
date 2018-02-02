@@ -16,8 +16,9 @@
 #'   geom_ignore()
 #' }
 geom_ignore <- function(...) {
-  geom_blank(mapping = NULL, data = NULL,
-             show.legend = FALSE, inherit.aes = FALSE)
+  geom_blank(
+    mapping = NULL, data = NULL,
+    show.legend = FALSE, inherit.aes = FALSE)
 }
 
 #' Wrappers for ggridges
@@ -29,11 +30,11 @@ geom_ignore <- function(...) {
 #' @importFrom ggridges geom_density_ridges geom_density_ridges2
 #' @noRd
 geom_area_ridges <- function(...) {
-  ggridges::geom_density_ridges(..., stat = "identity", scale = 1)
+  ggridges::geom_density_ridges(..., stat = "identity", scale = .95)
 }
 
 geom_area_ridges2 <- function(...) {
-  ggridges::geom_density_ridges2(..., stat = "identity", scale = 1)
+  ggridges::geom_density_ridges2(..., stat = "identity", scale = .95)
 }
 
 
