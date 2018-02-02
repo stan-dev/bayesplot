@@ -4,7 +4,6 @@ context("MCMC: combo")
 source(test_path("data-for-mcmc-tests.R"))
 
 test_that("mcmc_combo returns a gtable object", {
-  print(mcmc_combo(arr, regex_pars = "beta"))
   expect_gtable(mcmc_combo(arr, regex_pars = "beta"))
   expect_gtable(mcmc_combo(mat, regex_pars = "beta",
                            binwidth = 1/20, combo = c("dens", "hist"),

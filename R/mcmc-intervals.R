@@ -362,7 +362,9 @@ mcmc_areas_ridges <- function(x,
                                  prob = prob, prob_outer = prob_outer,
                                  bw = bw, adjust = adjust, kernel = kernel,
                                  n_dens = n_dens)
-  datas <- split(data, data$interval)
+
+  datas <- data %>%
+    split(data$interval)
 
   # faint vertical line at zero if zero is within x_lim
   x_lim <- range(datas$outer$x)
@@ -376,14 +378,6 @@ mcmc_areas_ridges <- function(x,
     geom_ignore()
   }
 
-  args_inner <- list(
-    mapping = aes_(height = ~ density),
-    data = datas$inner,
-    fill = get_color("light"),
-    color = get_color("dark"),
-    stat = "identity"
-  )
-
   args_outer <- list(
     mapping = aes_(height = ~ density),
     color = get_color("dark"),
@@ -391,16 +385,55 @@ mcmc_areas_ridges <- function(x,
     stat = "identity"
   )
 
-  layer_inner <- do.call(ggridges::geom_density_ridges, args_inner)
   layer_outer <- do.call(ggridges::geom_density_ridges, args_outer)
+
+  # Force ggridges to compute the scaling now
+  test_plot <- ggplot(datas$outer) +
+    aes_(x = ~ x, y = ~ parameter) +
+    layer_outer
+
+  soft_build <- ggplot_build(test_plot)
+  scaler1 <- unique(soft_build$data[[1]][["scale"]])
+  scaler2 <- unique(soft_build$data[[1]][["iscale"]])
+  scale <- scaler1 * scaler2
+
+  # Draw each ridgeline from top the bottom
+  layer_list_inner <- list()
+  par_draw_order <- levels(unique(data$parameter))
+  bg <- theme_get()[["panel.background"]][["fill"]] %||% "white"
+
+  for (par_num in seq_along(unique(data$parameter))) {
+    # Basically, draw the current ridgeline normally, but draw all the ones
+    # under it (which would overlap it vertically) with a blank fill
+    this_par <- par_draw_order[par_num]
+    next_pars <- par_draw_order[par_num < seq_along(par_draw_order)]
+
+    this_par_data <- datas$inner %>%
+      dplyr::filter(.data$parameter == this_par) %>%
+      mutate(color = get_color("dark"), fill = get_color("light"))
+
+    next_par_data <- datas$outer %>%
+      dplyr::filter(.data$parameter %in% next_pars) %>%
+      mutate(color = get_color("dark"), fill = bg)
+
+    args_inner <- list(
+        mapping = aes_(height = ~ density, color = ~ color, fill = ~ fill),
+        data = dplyr::bind_rows(this_par_data, next_par_data),
+        scale = scale,
+        stat = "identity")
+
+    layer_list_inner[[par_num]] <- do.call(ggridges::geom_ridgeline, args_inner)
+  }
 
   ggplot(datas$outer) +
     aes_(x = ~ x, y = ~ parameter) +
     layer_vertical_line +
     layer_outer +
-    layer_inner +
     scale_y_discrete(limits = unique(rev(data$parameter)),
                      expand = c(0.05, .6)) +
+    layer_list_inner +
+    scale_fill_identity() +
+    scale_color_identity() +
     xlim(x_lim) +
     yaxis_title(FALSE) +
     xaxis_title(FALSE) +
