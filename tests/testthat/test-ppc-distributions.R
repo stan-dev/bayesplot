@@ -52,3 +52,18 @@ test_that("ppc_violin_grouped returns a ggplot object", {
                "'group' must have more than one unique value")
 })
 
+
+test_that("ppc_violin_grouped renders correctly", {
+  testthat::skip_on_cran()
+
+  p_base <- ppc_violin_grouped(vdiff_y, vdiff_yrep, vdiff_group)
+  vdiffr::expect_doppelganger("ppc violin grouped (default)", p_base)
+
+  # lock in jitter
+  set.seed(100)
+  p_dots <- ppc_violin_grouped(
+    vdiff_y, vdiff_yrep, vdiff_group, y_draw = "both")
+  vdiffr::expect_doppelganger("ppc violin grouped (with points)", p_dots)
+
+  set.seed(seed = NULL)
+})
