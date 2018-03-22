@@ -204,6 +204,18 @@ mcmc_hex <- function(x,
 #'   \code{off_diag_fun} is \code{"scatter"} then \code{off_diag_args} could
 #'   include optional arguments to \code{mcmc_scatter} like \code{size} and
 #'   \code{alpha}.
+#' @param off_diag_scales For \code{mcmc_pairs} should the axis limits for the
+#'   off-diagonal plots be free to vary or fixed at the same values? The options
+#'   are \code{"free"} (the default) or \code{"fixed"}.
+#' @param label_all_axes For \code{mcmc_pairs}, when \code{FALSE} (the default)
+#'   only the horizontal axes of the diagonal plots are labelled (to avoid
+#'   clutter). If \code{TRUE} then all of the horizontal and vertical axes of
+#'   the off-diagonal plots are also labeled with parameter names.
+#' @param return_plot_list For \code{mcmc_pairs}, if \code{FALSE} (the default)
+#'   the various plots (ggplot objects) are organized into a grid via \code{
+#'   \link{bayesplot_grid}} and returned to the user. If \code{return_plot_list}
+#'   is \code{TRUE}, then a list of the ggplot objects is returned, which allows
+#'   for easier customization of the individual plots.
 #'
 #' @examples
 #' \donttest{
@@ -296,11 +308,14 @@ mcmc_pairs <- function(x,
                        off_diag_fun = c("scatter", "hex"),
                        diag_args = list(),
                        off_diag_args = list(),
+                       off_diag_scales = c("free", "fixed"),
                        condition = pairs_condition(),
                        lp = NULL,
                        np = NULL,
                        np_style = pairs_style_np(),
-                       max_treedepth = NULL) {
+                       max_treedepth = NULL,
+                       label_all_axes = FALSE,
+                       return_plot_list = FALSE) {
   check_ignored_arguments(...)
 
   stopifnot(
@@ -309,6 +324,7 @@ mcmc_pairs <- function(x,
     inherits(np_style, "nuts_style"),
     inherits(condition, "pairs_condition")
   )
+  off_diag_scales <- match.arg(off_diag_scales)
   plot_diagonal <- pairs_plotfun(match.arg(diag_fun))
   plot_off_diagonal <- pairs_plotfun(match.arg(off_diag_fun))
 
@@ -348,6 +364,7 @@ mcmc_pairs <- function(x,
                            KEEP.OUT.ATTRS = FALSE)
   plots <- vector("list", length = nrow(all_pairs))
   use_default_binwidth <- is.null(diag_args[["binwidth"]])
+
   for (j in seq_len(nrow(all_pairs))) {
     pair <- as.character(all_pairs[j,])
 
@@ -361,7 +378,7 @@ mcmc_pairs <- function(x,
 
       plots[[j]] <-
         do.call(plot_diagonal, diag_args) +
-        labs(subtitle = pair[1]) +
+        labs(subtitle = pair[1], x = NULL, y = NULL) +
         theme(axis.line.y = element_blank(),
               plot.subtitle = element_text(hjust = 0.5))
 
@@ -405,15 +422,33 @@ mcmc_pairs <- function(x,
           )
       }
       if (isTRUE(any(divs_j == 1)) ||
-          isTRUE(any(max_td_hit_j == 1)))
+          isTRUE(any(max_td_hit_j == 1))) {
         plots[[j]] <- format_nuts_points(plots[[j]], np_style)
+      }
+      plots[[j]] <- plots[[j]] + legend_none()
+      if (!label_all_axes) {
+        plots[[j]] <- plots[[j]] + xlab(NULL) + ylab(NULL)
+      }
     }
   }
 
-  plots <- lapply(plots, function(x)
-    x + xaxis_title(FALSE) + yaxis_title(FALSE))
+  # plots <- lapply(plots, function(x) {
+  #   x <- x + legend_none()
+  #   if (x$labels)
+  # })
 
-  bayesplot_grid(plots = plots, legends = FALSE)
+  if (off_diag_scales == "fixed") {
+    min_max <- apply(x, 2, range)
+
+    for (i in mark) {
+     plots[[i]] <- plots[[i]] + xlim(range(min_max)) + ylim(range(min_max))
+    }
+  }
+
+  if (return_plot_list) {
+    return(plots)
+  }
+  bayesplot_grid(plots = plots)
 }
 
 

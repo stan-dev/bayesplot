@@ -20,8 +20,10 @@ mcmc_hex(x, pars = character(), regex_pars = character(),
 mcmc_pairs(x, pars = character(), regex_pars = character(),
   transformations = list(), ..., diag_fun = c("hist", "dens"),
   off_diag_fun = c("scatter", "hex"), diag_args = list(),
-  off_diag_args = list(), condition = pairs_condition(), lp = NULL,
-  np = NULL, np_style = pairs_style_np(), max_treedepth = NULL)
+  off_diag_args = list(), off_diag_scales = c("free", "fixed"),
+  condition = pairs_condition(), lp = NULL, np = NULL,
+  np_style = pairs_style_np(), max_treedepth = NULL,
+  label_all_axes = FALSE, return_plot_list = FALSE)
 
 scatter_style_np(div_color = "red", div_shape = 16, div_size = 2.5,
   div_alpha = 1)
@@ -97,6 +99,10 @@ arguments to pass to the functions implied by the \code{diag_fun} and
 include optional arguments to \code{mcmc_scatter} like \code{size} and
 \code{alpha}.}
 
+\item{off_diag_scales}{For \code{mcmc_pairs} should the axis limits for the
+off-diagonal plots be free to vary or fixed at the same values? The options
+are \code{"free"} (the default) or \code{"fixed"}.}
+
 \item{condition}{For \code{mcmc_pairs}, a call to the \code{pairs_condition}
 helper function, which is used to specify a criterion for determining which
 chains (or iterations) are shown in the plots above the diagonal and which
@@ -121,6 +127,17 @@ object returned by \code{\link{log_posterior}}.}
 maximum treedepth allowed when fitting the model (if fit using NUTS). This
 is only needed for detecting which transitions (if any) hit the maximum
 treedepth.}
+
+\item{label_all_axes}{For \code{mcmc_pairs}, when \code{FALSE} (the default)
+only the horizontal axes of the diagonal plots are labelled (to avoid
+clutter). If \code{TRUE} then all of the horizontal and vertical axes of
+the off-diagonal plots are also labeled with parameter names.}
+
+\item{return_plot_list}{For \code{mcmc_pairs}, if \code{FALSE} (the default)
+the various plots (ggplot objects) are organized into a grid via \code{
+\link{bayesplot_grid}} and returned to the user. If \code{return_plot_list}
+is \code{TRUE}, then a list of the ggplot objects is returned, which allows
+for easier customization of the individual plots.}
 
 \item{div_color, div_shape, div_size, div_alpha, td_color, td_shape, td_size, td_alpha}{Optional arguments to the \code{scatter_style_np} or \code{pairs_style_np}
 helper functions that are eventually passed to
