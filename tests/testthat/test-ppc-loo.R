@@ -103,7 +103,7 @@ test_that("ppc_loo_intervals/ribbon work when 'intervals' specified", {
 
 test_that("errors if dimensions of yrep and lw don't match", {
   expect_error(
-    ppc_loo_pit(y, yrep, lw[, 1:5]),
+    ppc_loo_pit_overlay(y, yrep, lw[, 1:5]),
     "identical(dim(yrep), dim(lw)) is not TRUE",
     fixed = TRUE
   )
