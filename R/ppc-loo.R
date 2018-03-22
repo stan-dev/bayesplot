@@ -8,9 +8,10 @@
 #' @template args-y-yrep
 #' @param ... Currently unused.
 #' @param lw A matrix of (smoothed) log weights with the same dimensions as
-#'   \code{yrep}. See the \code{\link[loo]{psislw}} function in the \pkg{loo}
-#'   package, which returns smoothed weights that can be used to specify
-#'   \code{lw}.
+#'   \code{yrep}. If using \pkg{loo < 2.0.0} see the \code{\link[loo]{psislw}}
+#'   function in the \pkg{loo} package, which returns smoothed weights that can
+#'   be used to specify \code{lw}. If using \pkg{loo >= 2.0.0} see the
+#'   \code{psis} function and the associated \code{weights} method.
 #' @param alpha,size,fatten Arguments passed to code geoms to control plot
 #'   aesthetics. For \code{ppc_loo_pit_qq} and \code{ppc_loo_pit_overlay},
 #'   \code{size} and \code{alpha} are passed to
@@ -76,8 +77,14 @@
 #'  )
 #' y <- radon$log_radon
 #' yrep <- posterior_predict(fit)
-#' psis1 <- psislw(-log_lik(fit), cores = 2)
-#' lw <- psis1$lw_smooth
+#'
+#' if (packageVersion("loo") < "2.0.0") {
+#'   psis1 <- psislw(-log_lik(fit), cores = 2)
+#'   lw <- psis1$lw_smooth
+#' } else {
+#'   psis1 <- psis(-log_lik(fit), cores = 2)
+#'   lw <- weights(psis1)
+#' }
 #'
 #' # marginal predictive check using LOO probability integral transform
 #' color_scheme_set("orange")
@@ -116,6 +123,7 @@ NULL
 #'   Q-Q plot compares computed PIT values to the standard uniform distribution.
 #'   If \code{compare="normal"}, the Q-Q plot compares standardized PIT values
 #'   to the standard normal distribution.
+#' @param trim Passed to \code{\link[ggplot2]{stat_density}}.
 #' @template args-density-controls
 ppc_loo_pit_overlay <-
   function(y,
@@ -265,7 +273,7 @@ ppc_loo_pit <-
 #' @rdname PPC-loo
 #' @export
 #' @param psis_object If using \pkg{loo} version \code{2.0.0} or greater, an
-#'   object returned by \code{\link[loo]{psis}} (or by \code{\link[loo]{loo}}
+#'   object returned by the \code{psis} function (or by the \code{loo} function
 #'   with argument \code{save_psis} set to \code{TRUE}).
 #' @param prob A value between 0 and 1 indicating the desired probability mass
 #'   to include in the intervals. The default is 0.9.

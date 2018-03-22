@@ -14,9 +14,16 @@ capture.output(
 y <- fit$y
 yrep <- posterior_predict(fit)
 
-suppressWarnings(
-  lw <- psislw(-log_lik(fit), cores = 2)$lw_smooth
-)
+if (packageVersion("loo") < "2.0.0") {
+  suppressWarnings(
+    lw <- psislw(-log_lik(fit), cores = 2)$lw_smooth
+  )
+} else {
+  suppressWarnings(
+    lw <- weights(psis(-log_lik(fit), cores = 2))
+  )
+}
+
 suppressWarnings(
   pits <- rstantools::loo_pit(yrep, y, lw)
 )

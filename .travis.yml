@@ -7,6 +7,7 @@ cache: packages
 r_github_packages:
   - hadley/testthat
   - jimhester/covr
+  - stan-dev/loo@new-psis
 
 after_success:
   - Rscript -e 'covr::codecov()'
