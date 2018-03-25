@@ -29,14 +29,14 @@
 #'  The calibration of marginal predictions can be assessed using probability
 #'  integral transformation (PIT) checks. LOO improves the check by avoiding the
 #'  double use of data. See the section on marginal predictive checks in Gelman
-#'  et al. (2013, p. 152--153) and section 5 of Gabry et al. (2017) for an
+#'  et al. (2013, p. 152--153) and section 5 of Gabry et al. (2018) for an
 #'  example of using \pkg{bayesplot} for these checks.
 #'
 #'  The LOO PIT values are asymptotically uniform (for continuous data) if the
 #'  model is calibrated. The \code{ppc_loo_pit_overlay} function creates a plot
 #'  comparing the density of the LOO PITs (thick line) to the density estimates
 #'  of many simulated data sets from the standard uniform distribution (thin
-#'  lines). See Gabry et al. (2017) for an example of interpreting the shape of
+#'  lines). See Gabry et al. (2018) for an example of interpreting the shape of
 #'  the miscalibration that can be observed in these plots.
 #'
 #'  The \code{ppc_loo_pit_qq} function provides an alternative visualization of

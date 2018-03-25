@@ -48,10 +48,6 @@
 #'   }
 #' }
 #'
-#' @seealso Ari Hartikainen's post about the parallel coordinates plot on the
-#'   Stan Forums
-#'   (\href{http://discourse.mc-stan.org/t/concentration-of-divergences/1590/21}{link}).
-#'
 #' @template reference-vis-paper
 #'
 #' @examples
