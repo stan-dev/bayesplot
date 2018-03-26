@@ -53,6 +53,10 @@
 #' ppc_ribbon(y, yrep)
 #' ppc_intervals(y, yrep)
 #'
+#' # change x axis to y values (instead of indices) and add x = y line
+#' ppc_intervals(y, yrep, x = y) + abline_01()
+#' 
+#'
 #' color_scheme_set("teal")
 #' year <- 1950:1999
 #' ppc_ribbon(y, yrep, x = year, alpha = 0, size = 0.75) + ggplot2::xlab("Year")
@@ -105,12 +109,7 @@ NULL
 
 #' @rdname PPC-intervals
 #' @export
-ppc_intervals <- function(y,
-                          yrep,
-                          x = NULL,
-                          ...,
-                          prob = 0.9,
-                          size = 1,
+ppc_intervals <- function(y, yrep, x = NULL, ..., prob = 0.9, size = 1,
                           fatten = 3) {
   check_ignored_arguments(...)
 
@@ -260,12 +259,7 @@ label_x <- function(x) {
   if (missing(x)) "Index" else NULL
 }
 
-.ppc_intervals_data <-
-  function(y,
-           yrep,
-           x = NULL,
-           group = NULL,
-           prob = 0.8) {
+.ppc_intervals_data <- function(y, yrep, x = NULL, group = NULL, prob = 0.8) {
   grouped <- !is.null(group)
   stopifnot(prob > 0 && prob < 1)
 
@@ -273,7 +267,7 @@ label_x <- function(x) {
   yrep <- validate_yrep(yrep, y)
   x <- validate_x(x, y)
 
-  long_d <- melt_and_stack(y, yrep, label = FALSE)
+  long_d <- melt_and_stack(y, yrep)
   long_d$x <- x[long_d$y_id]
   long_d$y_obs <- y[long_d$y_id]
 

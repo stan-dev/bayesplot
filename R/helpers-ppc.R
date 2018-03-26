@@ -139,23 +139,22 @@ validate_x <- function(x = NULL, y, unique_x = FALSE) {
 
 #' Convert yrep matrix into a molten data frame
 #'
-#' @param yrep A matrix, already validated using validate_yrep().
-#' @return A data frame with three columns:
-#' \itemize{
-#'  \item 'value': the numeric values.
-#'  \item 'y_id': integer indicating from which yrep column each values comes.
-#'  \item 'rep_id': factor with S levels, where S is nrow(yrep), i.e. the number
-#'   of simulations included in yrep.
-#' }
+#' @param yrep A matrix, already validated using `validate_yrep()`.
+#' @return A data frame with 4 columns:
+#'   1. `y_id`: integer indicating the observation number (`yrep` column).
+#'   1. `rep_id`: integer indicating the simulation number (`yrep` row).
+#'   1. `rep_label`: factor with S levels, where S is `nrow(yrep)`, i.e. the
+#'      number of simulations included in `yrep`.
+#'   1. `value`: the simulation values.
 #' @noRd
-melt_yrep <- function(yrep, label = TRUE) {
-  out <- reshape2::melt(
-    data = yrep,
-    varnames = c("rep_id", "y_id")
-  )
-  id <- if (label) create_yrep_ids(out$rep_id) else out$rep_id
-  out$rep_id <- factor(id, levels = unique(id))
-  out
+#' @md
+melt_yrep <- function(yrep) {
+  out <- yrep %>%
+    reshape2::melt(, varnames = c("rep_id", "y_id")) %>%
+    dplyr::as_data_frame()
+  id <- create_yrep_ids(out$rep_id)
+  out$rep_label <- factor(id, levels = unique(id))
+  out[c("y_id", "rep_id", "rep_label", "value")]
 }
 
 
@@ -164,22 +163,34 @@ melt_yrep <- function(yrep, label = TRUE) {
 #' @param y Validated y input.
 #' @param yrep Validated yrep input.
 #' @return A data frame with the all the columns as the one returned by
-#'   melt_yrep(), plus a column "is_y" indicating whether the values pertain
-#'   to y (or yrep).
+#'   `melt_yrep()`, plus additional columns:
+#'   1. `is_y`: logical indicating whether the values are observations (`TRUE`)
+#'      or simulations (`FALSE`).
+#'   1. `is_y_label`: factor with levels `italic(y)` for observations and
+#'      `italic(y)[rep]` for simulations.
 #' @noRd
-melt_and_stack <- function(y, yrep, label = TRUE) {
-  molten_yrep <- melt_yrep(yrep, label = label)
-  yobs_lab <- if (label) "italic(y)" else "y"
-  levels(molten_yrep$rep_id) <- c(levels(molten_yrep$rep_id), yobs_lab)
-  ydat <- data.frame(
-    rep_id = yobs_lab,
+#' @md
+melt_and_stack <- function(y, yrep) {
+  y_text <- as.character(y_label())
+  yrep_text <- as.character(yrep_label())
+
+  molten_yrep <- melt_yrep(yrep)
+  levels(molten_yrep$rep_label) <- c(levels(molten_yrep$rep_label), y_text)
+
+  ydat <- dplyr::data_frame(
+    rep_label = factor(y_text, levels = levels(molten_yrep$rep_label)),
+    rep_id = NA_integer_,
     y_id = seq_along(y),
-    value = y
-  )
-  within(data = rbind(molten_yrep, ydat), {
-    rep_id <- relevel(rep_id, ref = yobs_lab)
-    is_y <- factor(rep_id == yobs_lab, levels = c(TRUE, FALSE))
-  })
+    value = y)
+
+  data <- dplyr::bind_rows(molten_yrep, ydat) %>%
+    mutate(
+      rep_label = relevel(rep_label, y_text),
+      is_y = is.na(rep_id),
+      is_y_label = ifelse(.data$is_y, y_text, yrep_text) %>%
+        factor(levels = c(y_text, yrep_text)))
+
+  data[c("y_id", "rep_id", "rep_label", "is_y", "is_y_label", "value")]
 }
 
 
