@@ -134,5 +134,5 @@ axis limits. (#59)
 
 
 
-[ggridges]: https://cran.r-project.org/web/packages/ggridges/index.html 
+[ggridges]: https://CRAN.R-project.org/package=ggridges 
             "ggridges package"
