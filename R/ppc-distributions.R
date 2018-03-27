@@ -255,8 +255,16 @@ ppc_dens <- function(y, yrep, ..., trim = FALSE, size = 0.5, alpha = 1) {
 
 #' @rdname PPC-distributions
 #' @export
-ppc_dens_overlay <- function(y, yrep, ..., trim = FALSE, size = 0.25,
-                             alpha = 0.7) {
+#' @template args-density-controls
+ppc_dens_overlay <- function(y, yrep, ...,
+                             size = 0.25,
+                             alpha = 0.7,
+                             trim = FALSE,
+                             bw = "nrd0",
+                             adjust = 1,
+                             kernel = "gaussian",
+                             n_dens = 1024) {
+  
   check_ignored_arguments(...)
   data <- ppc_data(y, yrep)
 
@@ -269,7 +277,11 @@ ppc_dens_overlay <- function(y, yrep, ..., trim = FALSE, size = 0.25,
       position = "identity",
       size = size,
       alpha = alpha,
-      trim = trim
+      trim = trim,
+      bw = bw,
+      adjust = adjust,
+      kernel = kernel,
+      n = n_dens
     ) +
     stat_density(
       aes_(color = "y"),
@@ -278,7 +290,11 @@ ppc_dens_overlay <- function(y, yrep, ..., trim = FALSE, size = 0.25,
       position = "identity",
       lineend = "round",
       size = 1,
-      trim = trim
+      trim = trim,
+      bw = bw,
+      adjust = adjust,
+      kernel = kernel,
+      n = n_dens
     ) +
     scale_color_ppc_dist() +
     xlab(y_label()) +

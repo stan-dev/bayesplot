@@ -14,65 +14,96 @@ capture.output(
 y <- fit$y
 yrep <- posterior_predict(fit)
 
-suppressWarnings(
-  lw <- psislw(-log_lik(fit), cores = 2)$lw_smooth
-)
+if (packageVersion("loo") < "2.0.0") {
+  suppressWarnings(
+    lw <- psislw(-log_lik(fit), cores = 2)$lw_smooth
+  )
+} else {
+  suppressWarnings(
+    lw <- weights(psis(-log_lik(fit), cores = 2))
+  )
+}
+
 suppressWarnings(
   pits <- rstantools::loo_pit(yrep, y, lw)
 )
 
 
-test_that("ppc_loo_pit returns ggplot object", {
-  expect_gg(p1 <- ppc_loo_pit(y, yrep, lw))
-  expect_equal(p1$labels$x, "Uniform")
+test_that("ppc_loo_pit gives deprecation warning but still works", {
+  expect_warning(p1 <- ppc_loo_pit(y, yrep, lw), "deprecated")
+  expect_gg(p1)
+})
 
-  expect_gg(p2 <- ppc_loo_pit(y, yrep, lw, compare = "normal"))
+test_that("ppc_loo_pit_overlay returns ggplot object", {
+  expect_gg(p1 <- ppc_loo_pit_overlay(y, yrep, lw, samples = 25))
+  expect_gg(p2 <- ppc_loo_pit_qq(y, yrep, lw, compare = "normal"))
   expect_equal(p2$labels$x, "Normal")
 })
 
-test_that("ppc_loo_pit works when pit specified instead of y,yrep,lw", {
-  expect_gg(ppc_loo_pit(pit = pits))
+test_that("ppc_loo_pit_qq returns ggplot object", {
+  expect_gg(p1 <- ppc_loo_pit_qq(y, yrep, lw))
+  expect_equal(p1$labels$x, "Uniform")
+})
+
+test_that("ppc_loo_pit functions work when pit specified instead of y,yrep,lw", {
+  expect_gg(ppc_loo_pit_qq(pit = pits))
   expect_message(
-    ppc_loo_pit(y = y, yrep = yrep, lw = lw, pit = pits),
+    ppc_loo_pit_qq(y = y, yrep = yrep, lw = lw, pit = pits),
+    "'pit' specified so ignoring 'y','yrep','lw' if specified"
+  )
+
+  expect_gg(ppc_loo_pit_overlay(pit = pits))
+  expect_message(
+    ppc_loo_pit_overlay(y = y, yrep = yrep, lw = lw, pit = pits),
     "'pit' specified so ignoring 'y','yrep','lw' if specified"
   )
 })
 
+
+if (utils::packageVersion("loo") >= "2.0.0") {
+  suppressWarnings(
+    psis1 <- psis(-log_lik(fit), cores = 2)
+  )
+}
 test_that("ppc_loo_intervals returns ggplot object", {
-  expect_gg(ppc_loo_intervals(y, yrep, lw))
-  expect_gg(g <- ppc_loo_intervals(y, yrep, lw, order = "median"))
+  if (utils::packageVersion("loo") >= "2.0.0") {
+    expect_gg(ppc_loo_intervals(y, yrep, psis_object = psis1))
+    expect_gg(g <- ppc_loo_intervals(y, yrep, psis_object = psis1, order = "median"))
+  } else {
+    expect_gg(ppc_loo_intervals(y, yrep, lw))
+    expect_gg(g <- ppc_loo_intervals(y, yrep, lw, order = "median"))
+  }
   expect_s3_class(g$data$x, "factor")
   expect_equal(nlevels(g$data$x), length(g$data$x))
 })
 
 test_that("ppc_loo_ribbon returns ggplot object", {
-  expect_gg(ppc_loo_ribbon(y, yrep, lw, prob = 0.7, alpha = 0.1))
+  if (utils::packageVersion("loo") >= "2.0.0") {
+    expect_gg(ppc_loo_ribbon(y, yrep, psis_object = psis1, prob = 0.7, alpha = 0.1))
+  } else {
+    expect_gg(ppc_loo_ribbon(y, yrep, lw, prob = 0.7, alpha = 0.1))
+  }
 })
 
 test_that("ppc_loo_intervals/ribbon work when 'intervals' specified", {
   intervals <- t(apply(yrep, 2, quantile, probs = c(0.1, 0.5, 0.9)))
   expect_gg(ppc_loo_intervals(y, intervals = intervals))
   expect_gg(ppc_loo_ribbon(y, intervals = intervals))
-  expect_message(ppc_loo_intervals(y, yrep, lw, intervals = intervals),
-                 "'intervals' specified so ignoring 'yrep' and 'lw' if specified")
   expect_message(ppc_loo_ribbon(y, intervals = intervals),
-                 "'intervals' specified so ignoring 'yrep' and 'lw' if specified")
+                 "'intervals' specified so ignoring 'yrep', 'lw', 'psis_object', if specified")
+  if (utils::packageVersion("loo") >= "2.0.0") {
+    expect_message(ppc_loo_intervals(y, yrep, psis_object = psis1, intervals = intervals),
+                   "'intervals' specified so ignoring 'yrep', 'lw', 'psis_object', if specified")
+  } else {
+    expect_message(ppc_loo_intervals(y, yrep, lw, intervals = intervals),
+                   "'intervals' specified so ignoring 'yrep', 'lw', 'psis_object', if specified")
+  }
 })
 
 
 test_that("errors if dimensions of yrep and lw don't match", {
   expect_error(
-    ppc_loo_pit(y, yrep, lw[, 1:5]),
-    "identical(dim(yrep), dim(lw)) is not TRUE",
-    fixed = TRUE
-  )
-  expect_error(
-    ppc_loo_intervals(y, yrep, lw[, 1:5]),
-    "identical(dim(yrep), dim(lw)) is not TRUE",
-    fixed = TRUE
-  )
-  expect_error(
-    ppc_loo_intervals(y, yrep, lw[, 1]),
+    ppc_loo_pit_overlay(y, yrep, lw[, 1:5]),
     "identical(dim(yrep), dim(lw)) is not TRUE",
     fixed = TRUE
   )

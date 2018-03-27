@@ -53,6 +53,10 @@
 #' ppc_ribbon(y, yrep)
 #' ppc_intervals(y, yrep)
 #'
+#' # change x axis to y values (instead of indices) and add x = y line
+#' ppc_intervals(y, yrep, x = y) + abline_01()
+#' 
+#'
 #' color_scheme_set("teal")
 #' year <- 1950:1999
 #' ppc_ribbon(y, yrep, x = year, alpha = 0, size = 0.75) + ggplot2::xlab("Year")

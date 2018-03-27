@@ -18,6 +18,7 @@
       density curves.
 * Add `mcmc_intervals_data()` and `mcmc_areas_data()` that return data plotted 
   by `mcmc_intervals()` and `mcmc_areas()`. (Advances #97)
+* Add `ppc_loo_pit_overlay` function for a better LOO PIT predictive check. (#123)
 
 
 # bayesplot 1.4.0
@@ -133,5 +134,5 @@ axis limits. (#59)
 
 
 
-[ggridges]: https://cran.r-project.org/web/packages/ggridges/index.html 
+[ggridges]: https://CRAN.R-project.org/package=ggridges 
             "ggridges package"

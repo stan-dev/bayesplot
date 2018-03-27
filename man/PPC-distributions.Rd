@@ -24,7 +24,8 @@ ppc_freqpoly_grouped(y, yrep, group, ..., binwidth = NULL, freq = TRUE,
 
 ppc_dens(y, yrep, ..., trim = FALSE, size = 0.5, alpha = 1)
 
-ppc_dens_overlay(y, yrep, ..., trim = FALSE, size = 0.25, alpha = 0.7)
+ppc_dens_overlay(y, yrep, ..., size = 0.25, alpha = 0.7, trim = FALSE,
+  bw = "nrd0", adjust = 1, kernel = "gaussian", n_dens = 1024)
 
 ppc_ecdf_overlay(y, yrep, ..., pad = TRUE, size = 0.25, alpha = 0.7)
 
@@ -65,6 +66,10 @@ the \code{yrep} distributions.}
 pertaining to the corresponding value of \code{y}.}
 
 \item{trim}{A logical scalar passed to \code{\link[ggplot2]{geom_density}}.}
+
+\item{bw, adjust, kernel, n_dens}{Optional arguments passed to
+\code{\link[stats]{density}} to override default kernel density estimation
+parameters. \code{n_dens} defaults to 1024.}
 
 \item{pad}{A logical scalar passed to \code{\link[ggplot2]{stat_ecdf}}.}
 

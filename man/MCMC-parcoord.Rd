@@ -148,15 +148,12 @@ tail(d)
 
 }
 \references{
-Gabry, J., Simpson, D., Vehtari, A., Betancourt, M., Gelman, A.
-  (2017). Visualization in Bayesian workflow. arXiv preprint
-  \href{https://arxiv.org/abs/1709.01449}{arvix:1709.01449}.
+Gabry, J., Simpson, D., Vehtari, A., Betancourt, M., and Gelman,
+  A. (2018). Visualization in Bayesian workflow. \emph{Journal of the Royal
+  Statistical Society Series A}, accepted for publication. arXiv preprint:
+  \url{http://arxiv.org/abs/1709.01449}.
 }
 \seealso{
-Ari Hartikainen's post about the parallel coordinates plot on the
-  Stan Forums
-  (\href{http://discourse.mc-stan.org/t/concentration-of-divergences/1590/21}{link}).
-
 Other MCMC: \code{\link{MCMC-combos}},
   \code{\link{MCMC-diagnostics}},
   \code{\link{MCMC-distributions}},
