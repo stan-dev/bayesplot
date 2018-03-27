@@ -150,7 +150,7 @@ test_that("compute_column_density can use density options (#118)", {
 
 
 
-# Visual tests
+# Visual tests -----------------------------------------------------------------
 
 test_that("mcmc_intervals renders correctly", {
   testthat::skip_on_cran()

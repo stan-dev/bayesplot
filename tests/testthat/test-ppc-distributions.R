@@ -52,3 +52,113 @@ test_that("ppc_violin_grouped returns a ggplot object", {
                "'group' must have more than one unique value")
 })
 
+
+
+
+# Visual tests -----------------------------------------------------------------
+
+test_that("ppc_hist renders correctly", {
+  testthat::skip_on_cran()
+  # stub
+
+  # expect_gg(ppc_hist(y, yrep[1,, drop = FALSE]))
+  # expect_gg(ppc_hist(y, yrep[1:8, ]))
+  # expect_gg(ppc_hist(y2, yrep2))
+  # expect_gg(p <- ppc_hist(y, yrep[1:8, ], binwidth = 3))
+  # facet_var <- "rep_label"
+  # expect_equal(as.character(p$facet$params$facets[1]), facet_var)
+})
+
+test_that("ppc_freqpoly renders correctly", {
+  testthat::skip_on_cran()
+  # stub
+
+  # expect_gg(ppc_freqpoly(y, yrep[1:8, ], binwidth = 2, size = 2, alpha = 0.1))
+  # expect_gg(ppc_freqpoly(y2, yrep2))
+})
+
+test_that("ppc_boxplot renders correctly", {
+  testthat::skip_on_cran()
+  # stub
+
+  # expect_gg(ppc_boxplot(y, yrep[1,, drop = FALSE]))
+  # expect_gg(ppc_boxplot(y, yrep[1:8, ]))
+  # expect_gg(ppc_boxplot(y2, yrep2, notch = FALSE))
+})
+
+test_that("ppc_freqpoly_grouped renders correctly", {
+  testthat::skip_on_cran()
+  # stub
+
+  # ppc_freqpoly_grouped(vdiff_y, vdiff_yrep[1:3, ], vdiff_group)
+  # ppc_freqpoly_grouped(
+  #   vdiff_y, vdiff_yrep[1:3, ], vdiff_group,
+  #   freq = TRUE, alpha = 0.5)
+  #
+  #
+  # expect_gg(ppc_freqpoly_grouped(y, yrep[1:4, ], group))
+  # expect_gg(ppc_freqpoly_grouped(y, yrep[1:4, ], group,
+  #                                freq = TRUE, alpha = 0.5))
+  #
+  # expect_error(ppc_freqpoly_grouped(y2, yrep2, group2),
+  #              "'group' must have more than one unique value")
+})
+
+
+test_that("ppc_ecdf_overlay renders correctly", {
+  testthat::skip_on_cran()
+
+  p_base <- ppc_ecdf_overlay(vdiff_y2, vdiff_yrep2)
+  vdiffr::expect_doppelganger("ppc ecdf overlay (default)", p_base)
+
+  p_custom <- ppc_ecdf_overlay(vdiff_y2, vdiff_yrep2, size = 2, alpha = .2)
+  vdiffr::expect_doppelganger("ppc ecdf overlay (alpha, size)", p_custom)
+})
+
+test_that("ppc_dens renders correctly", {
+  testthat::skip_on_cran()
+
+  p_base <- ppc_dens(vdiff_y, vdiff_yrep[1:8, ])
+  vdiffr::expect_doppelganger("ppc density (default)", p_base)
+})
+
+test_that("ppc_dens_overlay renders correctly", {
+  testthat::skip_on_cran()
+
+  p_base <- ppc_dens_overlay(vdiff_y, vdiff_yrep)
+  vdiffr::expect_doppelganger("ppc density overlay (default)", p_base)
+
+  p_custom <- ppc_dens_overlay(vdiff_y, vdiff_yrep, size = 1, alpha = 0.2)
+  vdiffr::expect_doppelganger("ppc density overlay (alpha, size)", p_custom)
+})
+
+test_that("ppc_violin_grouped renders correctly", {
+  testthat::skip_on_cran()
+
+  p_base <- ppc_violin_grouped(vdiff_y, vdiff_yrep, vdiff_group)
+  vdiffr::expect_doppelganger("ppc violin grouped (default)", p_base)
+
+  # lock in jitter
+  set.seed(100)
+  p_dots <- ppc_violin_grouped(
+    y = vdiff_y,
+    yrep = vdiff_yrep,
+    group = vdiff_group,
+    y_draw = "both")
+
+  vdiffr::expect_doppelganger("ppc violin grouped (with points)", p_dots)
+
+  p_dots_jitter <- ppc_violin_grouped(
+    y = vdiff_y,
+    yrep = vdiff_yrep,
+    group = vdiff_group,
+    y_draw = "points",
+    y_jitter = 0.01)
+
+  vdiffr::expect_doppelganger(
+    "ppc violin grouped (points, low jitter)",
+    p_dots_jitter)
+
+  set.seed(seed = NULL)
+})
+
