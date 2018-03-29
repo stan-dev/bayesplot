@@ -466,7 +466,9 @@ mcmc_parcoord(posterior_cp, np = np_cp)
 
 In the plot above we can see the for the centered parameterization the divergences
 occur when $\tau$, the hierarchical standard deviation, goes to zero and
-the values of the $\theta$s are essentially fixed. 
+the values of the $\theta$s are essentially fixed. See 
+Gabry et al. (2018) for more another example of the parallel
+coordinates plot.
 
 #### mcmc_scatter
 
@@ -481,6 +483,8 @@ mcmc_scatter(
   np = np_cp
 )
 ```
+
+See Gabry et al. (2018) for further discussion of this example.
 
 #### mcmc_pairs
 
@@ -554,8 +558,8 @@ Gabry, J., and Goodrich, B. (2017). rstanarm: Bayesian Applied Regression
 Modeling via Stan. R package version 2.15.3.
 http://mc-stan.org/rstanarm, https://CRAN.R-project.org/package=rstanarm
 
-Gabry, J., Simpson, D., Vehtari, A., Betancourt, M., Gelman, A. (2017).
-Visualization in Bayesian workflow. arXiv preprint 
+Gabry, J., Simpson, D., Vehtari, A., Betancourt, M., Gelman, A. (2018).
+Visualization in Bayesian workflow. _Journal of the Royal Statistical Society Series A_, accepted for publication. arXiv preprint:
 https://arxiv.org/abs/1709.01449
 
 Gelman, A. and Rubin, D. B. (1992). Inference from iterative simulation using
