@@ -115,10 +115,10 @@
 <img src="https://raw.githubusercontent.com/stan-dev/logos/master/logo.png" width="200" alt="Stan Logo"></a>
 </div>
 <p><br></p>
+<p><a href="http://mc-stan.org/assets/img/bayesplot/mcmc_areas-rstanarm.png"> <img src="http://mc-stan.org/assets/img/bayesplot/mcmc_areas-rstanarm.png" style="width: 15%;"></a> <a href="http://mc-stan.org/assets/img/bayesplot/mcmc_nuts_energy-rstan.png"> <img src="http://mc-stan.org/assets/img/bayesplot/mcmc_nuts_energy-rstan.png" style="width: 15%;"></a> <a href="http://mc-stan.org/assets/img/bayesplot/mcmc_trace-rstan.png"> <img src="http://mc-stan.org/assets/img/bayesplot/mcmc_trace-rstan.png" style="width: 15%;"></a> <a href="http://mc-stan.org/assets/img/bayesplot/ppc_dens_overlay-rstanarm.png"> <img src="http://mc-stan.org/assets/img/bayesplot/ppc_dens_overlay-rstanarm.png" style="width: 15%;"></a> <a href="http://mc-stan.org/assets/img/bayesplot/ppc_intervals-rstanarm.png"> <img src="http://mc-stan.org/assets/img/bayesplot/ppc_intervals-rstanarm.png" style="width: 15%;"></a> <a href="http://mc-stan.org/assets/img/bayesplot/ppc_stat-rstanarm.png"> <img src="http://mc-stan.org/assets/img/bayesplot/ppc_stat-rstanarm.png" style="width: 15%;"></a></p>
 <p><strong>bayesplot</strong> is an R package providing an extensive library of plotting functions for use after fitting Bayesian models (typically with MCMC). Currently <strong>bayesplot</strong> offers a variety of plots of posterior draws, visual MCMC diagnostics, as well as graphical posterior predictive checking. Additional functionality (e.g. for forecasting/out-of-sample prediction and other inference-related tasks) will be added in future releases.</p>
 <p>The plots created by <strong>bayesplot</strong> are ggplot objects, which means that after a plot is created it can be further customized using the various functions for modifying ggplot objects provided by the <strong>ggplot2</strong> package.</p>
 <p>The idea behind <strong>bayesplot</strong> is not only to provide convenient functionality for users, but also a common set of functions that can be easily used by developers working on a variety of packages for Bayesian modeling, particularly (but not necessarily) those powered by <a href="http://mc-stan.org/rstan"><strong>RStan</strong></a>.</p>
-<p><br></p>
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
@@ -129,13 +129,13 @@
 <ul>
 <li>Install latest development version from GitHub (requires <a href="https://github.com/hadley/devtools">devtools</a> package):</li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="cf">if</span> (<span class="op">!</span><span class="kw">require</span>(<span class="st">"devtools"</span>))
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="cf">if</span> (<span class="op">!</span><span class="kw">require</span>(<span class="st">"devtools"</span>)) {
   <span class="kw">install.packages</span>(<span class="st">"devtools"</span>)
-
+}
 devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/install_github">install_github</a></span>(<span class="st">"stan-dev/bayesplot"</span>, <span class="dt">dependencies =</span> <span class="ot">TRUE</span>, <span class="dt">build_vignettes =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<p>You can also set <code>build_vignettes=FALSE</code> for a faster installation from GitHub (the vignettes can always be accessed online anytime at <a href="http://mc-stan.org/bayesplot/articles/">mc-stan.org/bayesplot/articles</a>).</p>
 <p>If you are not using the <a href="https://www.rstudio.com/">RStudio IDE</a> and you get an error related to “pandoc” you will either need to remove the argument <code>build_vignettes=TRUE</code> (to avoid building the vignettes) or install <a href="http://pandoc.org/">pandoc</a> (e.g., <code>brew install pandoc</code>) and probably also pandoc-citeproc (e.g., <code>brew install pandoc-citeproc</code>). If you have the <code>rmarkdown</code> R package installed then you can check if you have pandoc by running the following in R:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">rmarkdown<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/rmarkdown/topics/pandoc_available">pandoc_available</a></span>()</code></pre></div>
-<p><br></p>
 </div>
 <div id="examples" class="section level2">
 <h2 class="hasAnchor">

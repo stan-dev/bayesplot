@@ -12,6 +12,26 @@
 
 <br>
 
+<a href="http://mc-stan.org/assets/img/bayesplot/mcmc_areas-rstanarm.png">
+<img src="http://mc-stan.org/assets/img/bayesplot/mcmc_areas-rstanarm.png" style="width: 15%;"/>
+</a>
+<a href="http://mc-stan.org/assets/img/bayesplot/mcmc_nuts_energy-rstan.png">
+<img src="http://mc-stan.org/assets/img/bayesplot/mcmc_nuts_energy-rstan.png" style="width: 15%;"/>
+</a>
+<a href="http://mc-stan.org/assets/img/bayesplot/mcmc_trace-rstan.png">
+<img src="http://mc-stan.org/assets/img/bayesplot/mcmc_trace-rstan.png" style="width: 15%;"/>
+</a>
+<a href="http://mc-stan.org/assets/img/bayesplot/ppc_dens_overlay-rstanarm.png">
+<img src="http://mc-stan.org/assets/img/bayesplot/ppc_dens_overlay-rstanarm.png" style="width: 15%;"/>
+</a>
+<a href="http://mc-stan.org/assets/img/bayesplot/ppc_intervals-rstanarm.png">
+<img src="http://mc-stan.org/assets/img/bayesplot/ppc_intervals-rstanarm.png" style="width: 15%;"/>
+</a>
+<a href="http://mc-stan.org/assets/img/bayesplot/ppc_stat-rstanarm.png">
+<img src="http://mc-stan.org/assets/img/bayesplot/ppc_stat-rstanarm.png" style="width: 15%;"/>
+</a>
+
+
 **bayesplot** is an R package providing an extensive library of plotting
 functions for use after fitting Bayesian models (typically with MCMC). Currently
 **bayesplot** offers a variety of plots of posterior draws, visual MCMC
@@ -28,7 +48,7 @@ for users, but also a common set of functions that can be easily used by
 developers working on a variety of packages for Bayesian modeling, particularly
 (but not necessarily) those powered by [**RStan**](http://mc-stan.org/rstan).
 
-<br>
+
 
 ## Installation
 
@@ -41,11 +61,14 @@ install.packages("bayesplot")
 * Install latest development version from GitHub (requires [devtools](https://github.com/hadley/devtools) package):
 
 ```r
-if (!require("devtools"))
+if (!require("devtools")) {
   install.packages("devtools")
-
+}
 devtools::install_github("stan-dev/bayesplot", dependencies = TRUE, build_vignettes = TRUE)
 ```
+
+You can also set `build_vignettes=FALSE` for a faster installation from GitHub (the vignettes 
+can always be accessed online anytime at [mc-stan.org/bayesplot/articles](http://mc-stan.org/bayesplot/articles/)).
 
 If you are not using the [RStudio IDE](https://www.rstudio.com/) and you get an
 error related to "pandoc" you will either need to remove the argument
@@ -59,8 +82,6 @@ the following in R:
 rmarkdown::pandoc_available()
 ```
 
-
-<br>
 
 ## Examples
 
