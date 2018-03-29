@@ -26,7 +26,7 @@
 * Added `ppc_loo_pit_overlay()` function for a better LOO PIT predictive check.
   (#123)
 
-
+* Started using __vdiffr__ to add visual unit tests to the existing PPC unit tests. (#137)
 
 
 # bayesplot 1.4.0
