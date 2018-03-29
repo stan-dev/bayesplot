@@ -59,51 +59,51 @@ test_that("ppc_violin_grouped returns a ggplot object", {
 
 test_that("ppc_hist renders correctly", {
   testthat::skip_on_cran()
-  # stub
 
-  # expect_gg(ppc_hist(y, yrep[1,, drop = FALSE]))
-  # expect_gg(ppc_hist(y, yrep[1:8, ]))
-  # expect_gg(ppc_hist(y2, yrep2))
-  # expect_gg(p <- ppc_hist(y, yrep[1:8, ], binwidth = 3))
-  # facet_var <- "rep_label"
-  # expect_equal(as.character(p$facet$params$facets[1]), facet_var)
+  p_base <- ppc_hist(vdiff_y, vdiff_yrep[1:8, ])
+  vdiffr::expect_doppelganger("ppc hist (default)", p_base)
+
+  p_binwidth <- ppc_hist(vdiff_y, vdiff_yrep[1:8, ], binwidth = 3)
+  vdiffr::expect_doppelganger("ppc hist (binwidth)", p_binwidth)
 })
 
 test_that("ppc_freqpoly renders correctly", {
   testthat::skip_on_cran()
-  # stub
 
-  # expect_gg(ppc_freqpoly(y, yrep[1:8, ], binwidth = 2, size = 2, alpha = 0.1))
-  # expect_gg(ppc_freqpoly(y2, yrep2))
-})
+  p_base <- ppc_freqpoly(vdiff_y, vdiff_yrep[1:8, ])
+  vdiffr::expect_doppelganger("ppc freqpoly (default)", p_base)
 
-test_that("ppc_boxplot renders correctly", {
-  testthat::skip_on_cran()
-  # stub
+  p_custom <- ppc_freqpoly(
+    y = vdiff_y,
+    yrep = vdiff_yrep[1:8, ],
+    binwidth = 2,
+    size = 2,
+    alpha = 0.1)
 
-  # expect_gg(ppc_boxplot(y, yrep[1,, drop = FALSE]))
-  # expect_gg(ppc_boxplot(y, yrep[1:8, ]))
-  # expect_gg(ppc_boxplot(y2, yrep2, notch = FALSE))
+  vdiffr::expect_doppelganger(
+    title = "ppc freqpoly (alpha, binwidth, size)",
+    fig = p_custom)
 })
 
 test_that("ppc_freqpoly_grouped renders correctly", {
   testthat::skip_on_cran()
-  # stub
 
-  # ppc_freqpoly_grouped(vdiff_y, vdiff_yrep[1:3, ], vdiff_group)
-  # ppc_freqpoly_grouped(
-  #   vdiff_y, vdiff_yrep[1:3, ], vdiff_group,
-  #   freq = TRUE, alpha = 0.5)
-  #
-  #
-  # expect_gg(ppc_freqpoly_grouped(y, yrep[1:4, ], group))
-  # expect_gg(ppc_freqpoly_grouped(y, yrep[1:4, ], group,
-  #                                freq = TRUE, alpha = 0.5))
-  #
-  # expect_error(ppc_freqpoly_grouped(y2, yrep2, group2),
-  #              "'group' must have more than one unique value")
+  p_base <- ppc_freqpoly_grouped(vdiff_y, vdiff_yrep[1:3, ], vdiff_group)
+  vdiffr::expect_doppelganger("ppc freq poly grouped (default)", p_base)
 })
 
+test_that("ppc_boxplot renders correctly", {
+  testthat::skip_on_cran()
+
+  p_base <- ppc_boxplot(vdiff_y, vdiff_yrep[1:8, ])
+  vdiffr::expect_doppelganger("ppc boxplot (default)", p_base)
+
+  p_no_notch <- ppc_boxplot(vdiff_y, vdiff_yrep[1:8, ], notch = FALSE)
+  vdiffr::expect_doppelganger("ppc boxplot (no notch)", p_no_notch)
+
+  p_custom <- ppc_boxplot(vdiff_y, vdiff_yrep[1:8, ], size = 1.5, alpha = .5)
+  vdiffr::expect_doppelganger("ppc boxplot (alpha, size)", p_custom)
+})
 
 test_that("ppc_ecdf_overlay renders correctly", {
   testthat::skip_on_cran()
@@ -161,4 +161,3 @@ test_that("ppc_violin_grouped renders correctly", {
 
   set.seed(seed = NULL)
 })
-
