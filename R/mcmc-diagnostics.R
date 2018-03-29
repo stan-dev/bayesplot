@@ -409,6 +409,22 @@ diagnostic_color_scale <- function(diagnostic = c("rhat", "neff"),
                                    aesthetic = c("color", "fill")) {
   diagnostic <- match.arg(diagnostic)
   aesthetic <- match.arg(aesthetic)
+  dc <- diagnostic_colors(diagnostic, aesthetic)
+  do.call(
+    match.fun(paste0("scale_", aesthetic, "_manual")),
+    list(
+      name = NULL,
+      drop = FALSE,
+      values = dc$values,
+      labels = dc$color_labels
+    )
+  )
+}
+
+diagnostic_colors <- function(diagnostic = c("rhat", "neff_ratio"),
+                              aesthetic = c("color", "fill")) {
+  diagnostic <- match.arg(diagnostic)
+  aesthetic <- match.arg(aesthetic)
   color_levels <- c("light", "mid", "dark")
   if (diagnostic == "neff") {
     color_levels <- rev(color_levels)
@@ -419,15 +435,11 @@ diagnostic_color_scale <- function(diagnostic = c("rhat", "neff"),
 
   color_labels <- diagnostic_color_labels[[diagnostic]]
 
-  do.call(
-    match.fun(paste0("scale_", aesthetic, "_manual")),
-    list(
-      name = NULL,
-      drop = FALSE,
-      values = setNames(get_color(color_levels), c("low", "ok", "high")),
-      labels = color_labels
-    )
-  )
+  list(diagnostic = diagnostic,
+       aesthetic = aesthetic,
+       color_levels = color_levels,
+       color_labels = color_labels,
+       values = setNames(get_color(color_levels), c("low", "ok", "high")))
 }
 
 diagnostic_color_labels <- list(

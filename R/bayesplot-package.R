@@ -5,6 +5,7 @@
 #' @aliases bayesplot
 #'
 #' @import ggplot2 stats rlang
+#' @importFrom dplyr %>%
 #'
 #' @description
 #' \if{html}{
@@ -44,15 +45,15 @@
 #' @section Resources:
 #' \itemize{
 #'  \item{\strong{Bug reports and feature requests}:}{
-#'  If you'd like to request a new feature or if you've noticed a bug that needs
-#'  to be fixed please let us know at the \pkg{bayesplot} issue tracker on
+#'  If you would like to request a new feature or if you have noticed a bug that
+#'  needs to be fixed please let us know at the \pkg{bayesplot} issue tracker on
 #'  GitHub:
 #'
 #'  \url{https://github.com/stan-dev/bayesplot/issues/}.
 #'  }
 #'  \item{\strong{General questions and help}:}{
 #'  To ask a question about \pkg{bayesplot} on the Stan Forums
-#'  forum please visit
+#'  forum please visit:
 #'
 #'  \url{http://discourse.mc-stan.org}.
 #' }

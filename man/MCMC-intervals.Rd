@@ -4,6 +4,10 @@
 \alias{MCMC-intervals}
 \alias{mcmc_intervals}
 \alias{mcmc_areas}
+\alias{mcmc_areas_ridges}
+\alias{mcmc_intervals_data}
+\alias{mcmc_areas_data}
+\alias{mcmc_areas_ridges_data}
 \title{Plot interval estimates from MCMC draws}
 \usage{
 mcmc_intervals(x, pars = character(), regex_pars = character(),
@@ -13,7 +17,24 @@ mcmc_intervals(x, pars = character(), regex_pars = character(),
 mcmc_areas(x, pars = character(), regex_pars = character(),
   transformations = list(), ..., prob = 0.5, prob_outer = 1,
   point_est = c("median", "mean", "none"), rhat = numeric(), bw = NULL,
-  adjust = NULL, kernel = NULL)
+  adjust = NULL, kernel = NULL, n_dens = NULL)
+
+mcmc_areas_ridges(x, pars = character(), regex_pars = character(),
+  transformations = list(), ..., prob_outer = 1, prob = 1, bw = NULL,
+  adjust = NULL, kernel = NULL, n_dens = NULL)
+
+mcmc_intervals_data(x, pars = character(), regex_pars = character(),
+  transformations = list(), ..., prob = 0.5, prob_outer = 0.9,
+  point_est = c("median", "mean", "none"), rhat = numeric())
+
+mcmc_areas_data(x, pars = character(), regex_pars = character(),
+  transformations = list(), ..., prob = 0.5, prob_outer = 1,
+  point_est = c("median", "mean", "none"), rhat = numeric(), bw = NULL,
+  adjust = NULL, kernel = NULL, n_dens = NULL)
+
+mcmc_areas_ridges_data(x, pars = character(), regex_pars = character(),
+  transformations = list(), ..., prob_outer = 1, prob = 1, bw = NULL,
+  adjust = NULL, kernel = NULL, n_dens = NULL)
 }
 \arguments{
 \item{x}{A 3-D array, matrix, list of matrices, or data frame of MCMC draws.
@@ -50,11 +71,12 @@ that the parameter is transformed (e.g. \code{"t(sigma)"}).}
 
 \item{prob}{The probability mass to include in the inner interval (for
 \code{mcmc_intervals}) or in the shaded region (for \code{mcmc_areas}). The
-default is \code{0.5} (50\% interval).}
+default is \code{0.5} (50\% interval) and \code{1} for
+\code{mcmc_areas_ridges}.}
 
 \item{prob_outer}{The probability mass to include in the outer interval. The
-default is \code{0.9} for \code{mcmc_intervals} (90\% interval)
-and \code{1} for \code{mcmc_areas}.}
+default is \code{0.9} for \code{mcmc_intervals} (90\% interval) and
+\code{1} for \code{mcmc_areas} and for \code{mcmc_areas_ridges}.}
 
 \item{point_est}{The point estimate to show. Either \code{"median"} (the
 default), \code{"mean"}, or \code{"none"}.}
@@ -65,13 +87,14 @@ the intervals/areas and point estimates in the resulting plot are colored
 based on \eqn{\hat{R}}{Rhat} value. See \code{\link{rhat}} for methods for
 extracting \eqn{\hat{R}}{Rhat} estimates.}
 
-\item{bw, adjust, kernel}{For \code{mcmc_areas}, optional arguments passed to
+\item{bw, adjust, kernel, n_dens}{Optional arguments passed to
 \code{\link[stats]{density}} to override default kernel density estimation
-parameters.}
+parameters. \code{n_dens} defaults to 1024.}
 }
 \value{
 A ggplot object that can be further customized using the
-  \pkg{ggplot2} package.
+  \pkg{ggplot2} package. The \code{_data} functions return the data that
+  would have be drawn by the plotting function.
 }
 \description{
 Plot central (quantile-based) posterior interval estimates from MCMC draws.
@@ -88,10 +111,16 @@ See the \strong{Plot Descriptions} section, below, for details.
    Density plots computed from posterior draws with all chains merged,
    with uncertainty intervals shown as shaded areas under the curves.
   }
+  \item{\code{mcmc_areas_ridges}}{
+   Density plot, as in \code{mcmc_areas}, but drawn with overlapping
+   ridgelines. This plot provides a compact display of (hierarchically)
+   related distributions.
+  }
 }
 }
 
 \examples{
+set.seed(9262017)
 # some parameter draws to use for demonstration
 x <- example_mcmc_draws(params = 6)
 dim(x)
@@ -119,6 +148,10 @@ mcmc_areas(
 color_scheme_set("blue")
 fake_rhat_values <- c(1, 1.07, 1.3, 1.01, 1.15, 1.005)
 mcmc_intervals(x, rhat = fake_rhat_values)
+
+mcmc_intervals_data(x)
+mcmc_intervals_data(x, rhat = fake_rhat_values)
+mcmc_areas_data(x, pars = "alpha")
 
 color_scheme_set("gray")
 p <- mcmc_areas(x, pars = c("alpha", "beta[4]"), rhat = c(1, 1.1))
@@ -153,6 +186,13 @@ mcmc_areas(x, regex_pars = "cyl", bw = "SJ",
            rhat = rhat(fit, regex_pars = "cyl"))
 }
 
+\dontrun{
+# Example of hierarchically related parameters
+# plotted with ridgelines
+m <- shinystan::eight_schools@posterior_sample
+mcmc_areas_ridges(m, pars = "mu", regex_pars = "theta") +
+ ggplot2::ggtitle("Treatment effect on eight schools (Rubin, 1981)")
+}
 
 }
 \seealso{

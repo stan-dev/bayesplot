@@ -374,8 +374,8 @@ Gabry, J., and Goodrich, B. (2017). rstanarm: Bayesian Applied Regression
 Modeling via Stan. R package version 2.15.3.
 http://mc-stan.org/rstanarm, https://CRAN.R-project.org/package=rstanarm
 
-Gabry, J., Simpson, D., Vehtari, A., Betancourt, M., Gelman, A. (2017).
-Visualization in Bayesian workflow. arXiv preprint
+Gabry, J., Simpson, D., Vehtari, A., Betancourt, M., Gelman, A. (2018).
+Visualization in Bayesian workflow. _Journal of the Royal Statistical Society Series A_, accepted for publication. arXiv preprint:
 https://arxiv.org/abs/1709.01449
 
 Gelman, A., Carlin, J. B., Stern, H. S., Dunson, D. B., Vehtari, A., and Rubin,

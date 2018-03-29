@@ -46,15 +46,15 @@ forecasting/out-of-sample prediction and other inference-related tasks.
 
 \itemize{
  \item{\strong{Bug reports and feature requests}:}{
- If you'd like to request a new feature or if you've noticed a bug that needs
- to be fixed please let us know at the \pkg{bayesplot} issue tracker on
+ If you would like to request a new feature or if you have noticed a bug that
+ needs to be fixed please let us know at the \pkg{bayesplot} issue tracker on
  GitHub:
 
  \url{https://github.com/stan-dev/bayesplot/issues/}.
  }
  \item{\strong{General questions and help}:}{
  To ask a question about \pkg{bayesplot} on the Stan Forums
- forum please visit
+ forum please visit:
 
  \url{http://discourse.mc-stan.org}.
 }
@@ -94,9 +94,10 @@ ppc_hist(y, yrep[1:8, ])
 
 }
 \references{
-Gabry, J., Simpson, D., Vehtari, A., Betancourt, M., Gelman, A.
-  (2017). Visualization in Bayesian workflow. arXiv preprint
-  \href{https://arxiv.org/abs/1709.01449}{arvix:1709.01449}.
+Gabry, J., Simpson, D., Vehtari, A., Betancourt, M., and Gelman,
+  A. (2018). Visualization in Bayesian workflow. \emph{Journal of the Royal
+  Statistical Society Series A}, accepted for publication. arXiv preprint:
+  \url{http://arxiv.org/abs/1709.01449}.
 }
 \seealso{
 \code{\link{theme_default}} for the default ggplot theme used by

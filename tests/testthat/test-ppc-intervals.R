@@ -9,6 +9,7 @@ test_that("ppc_intervals returns ggplot object", {
   expect_gg(ppc_intervals(y, yrep, x = seq(1, 2 * length(y), by = 2)))
   expect_gg(ppc_intervals(y2, yrep2))
 })
+
 test_that("ppc_ribbon returns ggplot object", {
   expect_gg(ppc_ribbon(y, yrep, prob = 0.5))
   expect_gg(ppc_ribbon(y, yrep, alpha = 0, size = .5))
@@ -24,8 +25,10 @@ group <- gl(5, 1, length = 50, labels = LETTERS[1:5])
 test_that("ppc_intervals_grouped returns ggplot object", {
   expect_gg(ppc_intervals_grouped(y, yrep, x, group))
 })
+
 test_that("ppc_ribbon_grouped returns ggplot object", {
-  expect_gg(ppc_ribbon_grouped(y, yrep, x, group, facet_args = list(scales = "fixed")))
+  expect_gg(
+    ppc_ribbon_grouped(y, yrep, x, group, facet_args = list(scales = "fixed")))
 })
 
 test_that("ppc_intervals_data returns correct structure", {
@@ -36,8 +39,11 @@ test_that("ppc_intervals_data returns correct structure", {
   expect_named(d_group, c("y_id", "y_obs", "group", "x",
                           "prob", "lo", "mid", "hi"))
 
-  expect_error(ppc_intervals_data(y, yrep, x = 1:length(y), prob = 0), "prob")
-  expect_error(ppc_intervals_data(y, yrep, x = 1:length(y), prob = 1.01), "prob")
+  expect_error(
+    ppc_intervals_data(y, yrep, x = 1:length(y), prob = 0), "prob")
+
+  expect_error(
+    ppc_intervals_data(y, yrep, x = 1:length(y), prob = 1.01), "prob")
 })
 
 test_that("ppc_intervals_data does math correctly", {
@@ -61,3 +67,47 @@ test_that("ppc_intervals_data does math correctly", {
   expect_equal(d$hi,  c(19, 19,  9,  9))
 })
 
+
+
+
+# Visual tests -----------------------------------------------------------------
+
+test_that("ppc_intervals renders correctly", {
+  testthat::skip_on_cran()
+
+  p_base <- ppc_intervals(vdiff_y, vdiff_yrep)
+  vdiffr::expect_doppelganger("ppc intervals (default)", p_base)
+
+  p_x <- ppc_intervals(vdiff_y, vdiff_yrep, x = vdiff_y)
+  vdiffr::expect_doppelganger("ppc intervals (x values)", p_x)
+
+  p_50 <- ppc_intervals(vdiff_y, vdiff_yrep, prob = .50)
+  vdiffr::expect_doppelganger("ppc intervals (interval width)", p_50)
+})
+
+test_that("ppc_intervals_grouped renders correctly", {
+  testthat::skip_on_cran()
+
+  p_base <- ppc_intervals_grouped(vdiff_y, vdiff_yrep, group = vdiff_group)
+  vdiffr::expect_doppelganger("ppc intervals grouped (default)", p_base)
+
+  p_x <- ppc_intervals_grouped(
+    y = vdiff_y,
+    yrep = vdiff_yrep,
+    x = vdiff_y,
+    group = vdiff_group)
+  vdiffr::expect_doppelganger("ppc intervals grouped (x values)", p_x)
+})
+
+test_that("ppc_ribbon renders correctly", {
+  testthat::skip_on_cran()
+
+  p_base <- ppc_ribbon(vdiff_y, vdiff_yrep)
+  vdiffr::expect_doppelganger("ppc ribbon (default)", p_base)
+
+  p_x <- ppc_ribbon(vdiff_y, vdiff_yrep, x = vdiff_y)
+  vdiffr::expect_doppelganger("ppc ribbon (x values)", p_x)
+
+  p_50 <- ppc_ribbon(vdiff_y, vdiff_yrep, prob = 0.5)
+  vdiffr::expect_doppelganger("ppc ribbon (interval width)", p_50)
+})

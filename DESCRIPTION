@@ -1,8 +1,8 @@
 Package: bayesplot
 Type: Package
 Title: Plotting for Bayesian Models
-Version: 1.4.0
-Date: 2017-09-09
+Version: 1.5.0
+Date: 2018-03-29
 Authors@R: c(person("Jonah", "Gabry", role = c("aut", "cre"), email = "jsg2201@columbia.edu"),
              person("Tristan", "Mahr", role = "aut"),
              person("Paul-Christian", "Buerkner", role = "ctb"))
@@ -16,7 +16,7 @@ License: GPL (>= 3)
 LazyData: TRUE
 URL: http://mc-stan.org/bayesplot
 BugReports: https://github.com/stan-dev/bayesplot/issues/
-SystemRequirements:	pandoc
+SystemRequirements: pandoc
 Depends:
     R (>= 3.1.0)
 Imports:
@@ -25,7 +25,8 @@ Imports:
     reshape2,
     stats,
     utils,
-    rlang
+    rlang,
+    ggridges
 Suggests:
     arm,
     gridExtra (>= 2.2.1),
@@ -34,9 +35,11 @@ Suggests:
     rmarkdown (>= 1.0.0),
     rstan (>= 2.14.1),
     rstanarm (>= 2.14.1),
-    rstantools (>= 1.2.0),
+    rstantools (>= 1.4.0),
     scales,
     shinystan (>= 2.3.0),
-    testthat
+    testthat,
+    vdiffr
 RoxygenNote: 6.0.1
 VignetteBuilder: knitr
+Encoding: UTF-8
