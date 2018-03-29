@@ -75,7 +75,7 @@ test_that("mcmc_acf & mcmc_acf_bar throw correct errors", {
 
 
 
-# Visual tests
+# Visual tests -----------------------------------------------------------------
 
 test_that("mcmc_rhat renders correctly", {
   testthat::skip_on_cran()
