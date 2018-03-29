@@ -286,7 +286,7 @@ ppc_loo_pit <-
 #'   three columns in the following order: the first for the lower bound of the
 #'   interval, the second for median (50\%), and the third for the interval
 #'   upper bound (column names are ignored).
-#' @param order For \code{ppc_loo_intervals} A string indicating how to arrange
+#' @param order For \code{ppc_loo_intervals}, a string indicating how to arrange
 #'   the plotted intervals. The default (\code{"index"}) is to plot them in the
 #'   order of the observations. The alternative (\code{"median"}) arranges them
 #'   by median value from smallest (left) to largest (right).
