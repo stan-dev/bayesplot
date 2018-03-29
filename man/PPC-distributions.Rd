@@ -2,6 +2,7 @@
 % Please edit documentation in R/ppc-distributions.R
 \name{PPC-distributions}
 \alias{PPC-distributions}
+\alias{ppc_data}
 \alias{ppc_hist}
 \alias{ppc_boxplot}
 \alias{ppc_freqpoly}
@@ -12,6 +13,8 @@
 \alias{ppc_violin_grouped}
 \title{PPC distributions}
 \usage{
+ppc_data(y, yrep, group = NULL)
+
 ppc_hist(y, yrep, ..., binwidth = NULL, freq = TRUE)
 
 ppc_boxplot(y, yrep, ..., notch = TRUE, size = 0.5, alpha = 1)
@@ -44,6 +47,10 @@ of \code{yrep} should be in the same order as the data points in \code{y}
 for the plots to make sense. See \strong{Details} for additional
 instructions.}
 
+\item{group}{A grouping variable (a vector or factor) the same length as
+\code{y}. Each value in \code{group} is interpreted as the group level
+pertaining to the corresponding value of \code{y}.}
+
 \item{...}{Currently unused.}
 
 \item{binwidth}{An optional value used as the \code{binwidth} argument to
@@ -60,10 +67,6 @@ Unlike for \code{geom_boxplot}, the default is \code{notch=TRUE}.}
 
 \item{size, alpha}{Passed to the appropriate geom to control the appearance of
 the \code{yrep} distributions.}
-
-\item{group}{A grouping variable (a vector or factor) the same length as
-\code{y}. Each value in \code{group} is interpreted as the group level
-pertaining to the corresponding value of \code{y}.}
 
 \item{trim}{A logical scalar passed to \code{\link[ggplot2]{geom_density}}.}
 
@@ -91,7 +94,8 @@ determine the amount of jitter.}
 }
 \value{
 A ggplot object that can be further customized using the
-  \pkg{ggplot2} package.
+  \pkg{ggplot2} package. The \code{_data} functions return the data that
+  would have be drawn by the plotting function.
 }
 \description{
 Compare the empirical distribution of the data \code{y} to the distributions

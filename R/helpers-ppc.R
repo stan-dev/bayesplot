@@ -185,8 +185,8 @@ melt_and_stack <- function(y, yrep) {
 
   data <- dplyr::bind_rows(molten_yrep, ydat) %>%
     mutate(
-      rep_label = relevel(rep_label, y_text),
-      is_y = is.na(rep_id),
+      rep_label = relevel(.data$rep_label, y_text),
+      is_y = is.na(.data$rep_id),
       is_y_label = ifelse(.data$is_y, y_text, yrep_text) %>%
         factor(levels = c(y_text, yrep_text)))
 
