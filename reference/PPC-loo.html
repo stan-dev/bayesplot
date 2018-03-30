@@ -18,13 +18,22 @@
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+<meta property="og:title" content="LOO predictive checks — PPC-loo" />
+
+<meta property="og:description" content="Leave-One-Out (LOO) predictive checks. See the Plot Descriptions
+section below for details." />
+
+<meta property="og:image" content="/logo.png" />
+<meta name="twitter:card" content="summary" />
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -32,6 +41,8 @@
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
+
 
 
   </head>
@@ -47,8 +58,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">bayesplot</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">bayesplot</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.5.0</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -109,6 +124,7 @@
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -116,10 +132,11 @@
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>LOO predictive checks</h1>
+    
     </div>
 
     
@@ -127,16 +144,23 @@
 section below for details.</p>
     
 
-    <pre class="usage"><span class='fu'>ppc_loo_pit</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='no'>lw</span>, <span class='no'>pit</span>, <span class='kw'>compare</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"uniform"</span>, <span class='st'>"normal"</span>), <span class='no'>...</span>,
+    <pre class="usage"><span class='fu'>ppc_loo_pit_overlay</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='no'>lw</span>, <span class='no'>pit</span>, <span class='kw'>samples</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='no'>...</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>0.25</span>,
+  <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.7</span>, <span class='kw'>trim</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>bw</span> <span class='kw'>=</span> <span class='st'>"nrd0"</span>, <span class='kw'>adjust</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>kernel</span> <span class='kw'>=</span> <span class='st'>"gaussian"</span>, <span class='kw'>n_dens</span> <span class='kw'>=</span> <span class='fl'>1024</span>)
+
+<span class='fu'>ppc_loo_pit_qq</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='no'>lw</span>, <span class='no'>pit</span>, <span class='kw'>compare</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"uniform"</span>, <span class='st'>"normal"</span>), <span class='no'>...</span>,
   <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>1</span>)
 
-<span class='fu'>ppc_loo_intervals</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='no'>lw</span>, <span class='kw'>intervals</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>, <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.9</span>,
-  <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>fatten</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>order</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"index"</span>, <span class='st'>"median"</span>))
+<span class='fu'>ppc_loo_pit</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='no'>lw</span>, <span class='no'>pit</span>, <span class='kw'>compare</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"uniform"</span>, <span class='st'>"normal"</span>), <span class='no'>...</span>,
+  <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>1</span>)
 
-<span class='fu'>ppc_loo_ribbon</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='no'>lw</span>, <span class='kw'>intervals</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>, <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.9</span>,
+<span class='fu'>ppc_loo_intervals</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='no'>lw</span>, <span class='no'>psis_object</span>, <span class='kw'>intervals</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>,
+  <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.9</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>fatten</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>order</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"index"</span>, <span class='st'>"median"</span>))
+
+<span class='fu'>ppc_loo_ribbon</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='no'>lw</span>, <span class='no'>psis_object</span>, <span class='kw'>intervals</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>, <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.9</span>,
   <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.33</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>0.25</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -156,24 +180,26 @@ instructions.</p></td>
     <tr>
       <th>lw</th>
       <td><p>A matrix of (smoothed) log weights with the same dimensions as
-<code>yrep</code>. See the <code><a href='http://www.rdocumentation.org/packages/loo/topics/psislw'>psislw</a></code> function in the <span class="pkg">loo</span>
-package, which returns smoothed weights that can be used to specify
-<code>lw</code>.</p></td>
+<code>yrep</code>. If using <span class="pkg">loo &lt; 2.0.0</span> see the <code><a href='http://www.rdocumentation.org/packages/loo/topics/psislw'>psislw</a></code>
+function in the <span class="pkg">loo</span> package, which returns smoothed weights that can
+be used to specify <code>lw</code>. If using <span class="pkg">loo &gt;= 2.0.0</span> see the
+<code>psis</code> function and the associated <code>weights</code> method.</p></td>
     </tr>
     <tr>
       <th>pit</th>
-      <td><p>For <code>ppc_loo_pit</code>, optionally a vector of precomputed PIT
-values that can be specified instead of <code>y</code>, <code>yrep</code>, and
-<code>lw</code> (these are all ignored if <code>pit</code> is specified). If not
-specified the PIT values are computed internally before plotting.</p></td>
+      <td><p>For <code>ppc_loo_pit_overlay</code> and <code>ppc_loo_pit_qq</code>,
+optionally a vector of precomputed PIT values that can be specified instead
+of <code>y</code>, <code>yrep</code>, and <code>lw</code> (these are all ignored if
+<code>pit</code> is specified). If not specified the PIT values are computed
+internally before plotting.</p></td>
     </tr>
     <tr>
-      <th>compare</th>
-      <td><p>For <code>ppc_loo_pit</code>, a string that can be either
-<code>"uniform"</code> or <code>"normal"</code>. If <code>"uniform"</code> (the default) the
-Q-Q plot compares computed PIT values to the standard uniform distribution.
-If <code>compare="normal"</code>, the Q-Q plot compares standardized PIT values
-to the standard normal distribution.</p></td>
+      <th>samples</th>
+      <td><p>For <code>ppc_loo_pit_overlay</code>, the number of data sets (each
+the same size as <code>y</code>) to simulate from the standard uniform
+distribution. The default is 100. The density estimate of each dataset is
+plotted as a thin line in the plot, with the density estimate of the LOO
+PITs overlaid as a thicker dark line.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -182,12 +208,37 @@ to the standard normal distribution.</p></td>
     <tr>
       <th>alpha, size, fatten</th>
       <td><p>Arguments passed to code geoms to control plot
-aesthetics. For <code>ppc_loo_pit</code>, <code>size</code> and <code>alpha</code> are passed
-to <code><a href='http://www.rdocumentation.org/packages/ggplot2/topics/geom_point'>geom_point</a></code>. For <code>ppc_loo_intervals</code>,
-<code>size</code> and <code>fatten</code> are passed to
-<code><a href='http://www.rdocumentation.org/packages/ggplot2/topics/geom_linerange'>geom_pointrange</a></code>. For <code>ppc_loo_ribbon</code>,
-<code>alpha</code> and <code>size</code> are passed to
+aesthetics. For <code>ppc_loo_pit_qq</code> and <code>ppc_loo_pit_overlay</code>,
+<code>size</code> and <code>alpha</code> are passed to
+<code><a href='http://www.rdocumentation.org/packages/ggplot2/topics/geom_point'>geom_point</a></code> and <code><a href='http://www.rdocumentation.org/packages/ggplot2/topics/geom_density'>geom_density</a></code>,
+respectively. For <code>ppc_loo_intervals</code>, <code>size</code> and <code>fatten</code>
+are passed to <code><a href='http://www.rdocumentation.org/packages/ggplot2/topics/geom_linerange'>geom_pointrange</a></code>. For
+<code>ppc_loo_ribbon</code>, <code>alpha</code> and <code>size</code> are passed to
 <code><a href='http://www.rdocumentation.org/packages/ggplot2/topics/geom_ribbon'>geom_ribbon</a></code>.</p></td>
+    </tr>
+    <tr>
+      <th>trim</th>
+      <td><p>Passed to <code><a href='http://www.rdocumentation.org/packages/ggplot2/topics/geom_density'>stat_density</a></code>.</p></td>
+    </tr>
+    <tr>
+      <th>bw, adjust, kernel, n_dens</th>
+      <td><p>Optional arguments passed to
+<code><a href='http://www.rdocumentation.org/packages/stats/topics/density'>density</a></code> to override default kernel density estimation
+parameters. <code>n_dens</code> defaults to 1024.</p></td>
+    </tr>
+    <tr>
+      <th>compare</th>
+      <td><p>For <code>ppc_loo_pit_qq</code>, a string that can be either
+<code>"uniform"</code> or <code>"normal"</code>. If <code>"uniform"</code> (the default) the
+Q-Q plot compares computed PIT values to the standard uniform distribution.
+If <code>compare="normal"</code>, the Q-Q plot compares standardized PIT values
+to the standard normal distribution.</p></td>
+    </tr>
+    <tr>
+      <th>psis_object</th>
+      <td><p>If using <span class="pkg">loo</span> version <code>2.0.0</code> or greater, an
+object returned by the <code>psis</code> function (or by the <code>loo</code> function
+with argument <code>save_psis</code> set to <code>TRUE</code>).</p></td>
     </tr>
     <tr>
       <th>intervals</th>
@@ -208,7 +259,7 @@ to include in the intervals. The default is 0.9.</p></td>
     </tr>
     <tr>
       <th>order</th>
-      <td><p>For <code>ppc_loo_intervals</code> A string indicating how to arrange
+      <td><p>For <code>ppc_loo_intervals</code>, a string indicating how to arrange
 the plotted intervals. The default (<code>"index"</code>) is to plot them in the
 order of the observations. The alternative (<code>"median"</code>) arranges them
 by median value from smallest (left) to largest (right).</p></td>
@@ -224,16 +275,27 @@ by median value from smallest (left) to largest (right).</p></td>
 
     
     <dl class='dl-horizontal'>
-<dt><code>ppc_loo_pit</code></dt><dd><p>The calibration of marginal predictions can be assessed using probability
+<dt><code>ppc_loo_pit_qq,ppc_loo_pit_overlay</code></dt><dd><p>The calibration of marginal predictions can be assessed using probability
  integral transformation (PIT) checks. LOO improves the check by avoiding the
  double use of data. See the section on marginal predictive checks in Gelman
- et al. (2013, p. 152--153). The default LOO PIT predictive check is a
- quantile-quantile (Q-Q) plot comparing the LOO PITs to the standard uniform
- distribution. Comparing to a uniform distribution is not good for extreme
- probabilities close to 0 and 1, so it can be useful to set the
- <code>compare</code> argument to <code>"normal"</code>, which will produce a Q-Q plot
- comparing standardized PIT values to the standard normal distribution. This
- can be helpful to see the calibration better for the extreme values.</p></dd>
+ et al. (2013, p. 152--153) and section 5 of Gabry et al. (2018) for an
+ example of using <span class="pkg">bayesplot</span> for these checks.
+    The LOO PIT values are asymptotically uniform (for continuous data) if the
+ model is calibrated. The <code>ppc_loo_pit_overlay</code> function creates a plot
+ comparing the density of the LOO PITs (thick line) to the density estimates
+ of many simulated data sets from the standard uniform distribution (thin
+ lines). See Gabry et al. (2018) for an example of interpreting the shape of
+ the miscalibration that can be observed in these plots.
+    The <code>ppc_loo_pit_qq</code> function provides an alternative visualization of
+ the miscalibration with a quantile-quantile (Q-Q) plot comparing the LOO
+ PITs to the standard uniform distribution. Comparing to the uniform is not
+ good for extreme probabilities close to 0 and 1, so it can sometimes be
+ useful to set the <code>compare</code> argument to <code>"normal"</code>, which will
+ produce a Q-Q plot comparing standardized PIT values to the standard normal
+ distribution that can help see the (mis)calibration better for the extreme
+ values. However, in most cases we have found that the overlaid density plot
+ (<code>ppc_loo_pit_overlay</code>) function will provided a clearer picture of
+ calibration problems that the Q-Q plot.</p></dd>
 <dt><code>ppc_loo_intervals, ppc_loo_ribbon</code></dt><dd><p>Similar to <code><a href='PPC-intervals.html'>ppc_intervals</a></code> and <code><a href='PPC-intervals.html'>ppc_ribbon</a></code> but the
  intervals are for the LOO predictive distribution.</p></dd>
 </dl>
@@ -243,6 +305,10 @@ by median value from smallest (left) to largest (right).</p></td>
     <p>Gelman, A., Carlin, J. B., Stern, H. S., Dunson, D. B., Vehtari,
   A., and Rubin, D. B. (2013). <em>Bayesian Data Analysis.</em> Chapman &amp; Hall/CRC
   Press, London, third edition. (p. 152--153)</p>
+<p>Gabry, J., Simpson, D., Vehtari, A., Betancourt, M., and Gelman,
+  A. (2018). Visualization in Bayesian workflow. <em>Journal of the Royal
+  Statistical Society Series A</em>, accepted for publication. arXiv preprint:
+  <a href='http://arxiv.org/abs/1709.01449'>http://arxiv.org/abs/1709.01449</a>.</p>
 <p>Vehtari, A., Gelman, A., and Gabry, J. (2017). Practical
   Bayesian model evaluation using leave-one-out cross-validation and WAIC.
   <em>Statistics and Computing</em>. 27(5), 1413--1432.
@@ -266,24 +332,39 @@ by median value from smallest (left) to largest (right).</p></td>
 <span class='fu'>library</span>(<span class='no'>loo</span>)
 
 <span class='fu'>head</span>(<span class='no'>radon</span>)
-<span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/rstanarm/topics/stan_glmer'>stan_lmer</a></span>(<span class='no'>log_radon</span> ~ <span class='no'>floor</span> + <span class='no'>log_uranium</span> + <span class='no'>floor</span>:<span class='no'>log_uranium</span>
-                   + (<span class='fl'>1</span> + <span class='no'>floor</span> <span class='kw'>|</span> <span class='no'>county</span>), <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>radon</span>, <span class='kw'>cores</span> <span class='kw'>=</span> <span class='fl'>2</span>)
+<span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/rstanarm/topics/stan_glmer'>stan_lmer</a></span>(
+  <span class='no'>log_radon</span> ~ <span class='no'>floor</span> + <span class='no'>log_uranium</span> + <span class='no'>floor</span>:<span class='no'>log_uranium</span>
+               + (<span class='fl'>1</span> + <span class='no'>floor</span> <span class='kw'>|</span> <span class='no'>county</span>),
+  <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>radon</span>,
+  <span class='kw'>iter</span> <span class='kw'>=</span> <span class='fl'>1000</span>,
+  <span class='kw'>chains</span> <span class='kw'>=</span> <span class='fl'>2</span>  <span class='co'># ,cores = 2</span>
+ )
 <span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='no'>radon</span>$<span class='no'>log_radon</span>
 <span class='no'>yrep</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/rstanarm/topics/posterior_predict.stanreg'>posterior_predict</a></span>(<span class='no'>fit</span>)
-<span class='no'>psis</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/loo/topics/psislw'>psislw</a></span>(-<span class='fu'><a href='http://www.rdocumentation.org/packages/rstanarm/topics/log_lik.stanreg'>log_lik</a></span>(<span class='no'>fit</span>), <span class='kw'>cores</span> <span class='kw'>=</span> <span class='fl'>2</span>)
+
+<span class='kw'>if</span> (<span class='fu'>packageVersion</span>(<span class='st'>"loo"</span>) <span class='kw'>&lt;</span> <span class='st'>"2.0.0"</span>) {
+  <span class='no'>psis1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/loo/topics/psislw'>psislw</a></span>(-<span class='fu'><a href='http://www.rdocumentation.org/packages/rstanarm/topics/log_lik.stanreg'>log_lik</a></span>(<span class='no'>fit</span>), <span class='kw'>cores</span> <span class='kw'>=</span> <span class='fl'>2</span>)
+  <span class='no'>lw</span> <span class='kw'>&lt;-</span> <span class='no'>psis1</span>$<span class='no'>lw_smooth</span>
+} <span class='kw'>else</span> {
+  <span class='no'>psis1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/loo/topics/psis'>psis</a></span>(-<span class='fu'><a href='http://www.rdocumentation.org/packages/rstanarm/topics/log_lik.stanreg'>log_lik</a></span>(<span class='no'>fit</span>), <span class='kw'>cores</span> <span class='kw'>=</span> <span class='fl'>2</span>)
+  <span class='no'>lw</span> <span class='kw'>&lt;-</span> <span class='fu'>weights</span>(<span class='no'>psis1</span>)
+}
 
 <span class='co'># marginal predictive check using LOO probability integral transform</span>
 <span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"orange"</span>)
-<span class='fu'>ppc_loo_pit</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='kw'>lw</span> <span class='kw'>=</span> <span class='no'>psis</span>$<span class='no'>lw_smooth</span>)
-<span class='fu'>ppc_loo_pit</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='kw'>lw</span> <span class='kw'>=</span> <span class='no'>psis</span>$<span class='no'>lw_smooth</span>, <span class='kw'>compare</span> <span class='kw'>=</span> <span class='st'>"normal"</span>)
+<span class='fu'>ppc_loo_pit_overlay</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='kw'>lw</span> <span class='kw'>=</span> <span class='no'>lw</span>, <span class='kw'>adjust</span> <span class='kw'>=</span> <span class='fl'>0.9</span>)
+
+<span class='fu'>ppc_loo_pit_qq</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='kw'>lw</span> <span class='kw'>=</span> <span class='no'>lw</span>)
+<span class='fu'>ppc_loo_pit_qq</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='kw'>lw</span> <span class='kw'>=</span> <span class='no'>lw</span>, <span class='kw'>compare</span> <span class='kw'>=</span> <span class='st'>"normal"</span>)
+
 
 <span class='co'># loo predictive intervals vs observations</span>
 <span class='no'>sel</span> <span class='kw'>&lt;-</span> <span class='fl'>800</span>:<span class='fl'>900</span>
-<span class='fu'>ppc_loo_intervals</span>(<span class='no'>y</span>[<span class='no'>sel</span>], <span class='no'>yrep</span>[, <span class='no'>sel</span>], <span class='no'>psis</span>$<span class='no'>lw_smooth</span>[, <span class='no'>sel</span>],
+<span class='fu'>ppc_loo_intervals</span>(<span class='no'>y</span>[<span class='no'>sel</span>], <span class='no'>yrep</span>[, <span class='no'>sel</span>], <span class='no'>psis1</span>$<span class='no'>lw_smooth</span>[, <span class='no'>sel</span>],
                   <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.9</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>0.5</span>)
 
 <span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"gray"</span>)
-<span class='fu'>ppc_loo_intervals</span>(<span class='no'>y</span>[<span class='no'>sel</span>], <span class='no'>yrep</span>[, <span class='no'>sel</span>], <span class='no'>psis</span>$<span class='no'>lw_smooth</span>[, <span class='no'>sel</span>],
+<span class='fu'>ppc_loo_intervals</span>(<span class='no'>y</span>[<span class='no'>sel</span>], <span class='no'>yrep</span>[, <span class='no'>sel</span>], <span class='no'>psis1</span>$<span class='no'>lw_smooth</span>[, <span class='no'>sel</span>],
                   <span class='kw'>order</span> <span class='kw'>=</span> <span class='st'>"median"</span>, <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.8</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>0.5</span>)
 <span class='co'># }</span><div class='input'>
 </div></pre>
@@ -313,11 +394,14 @@ by median value from smallest (left) to largest (right).</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+

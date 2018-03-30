@@ -18,13 +18,21 @@
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+<meta property="og:title" content="Combination plots — MCMC-combos" />
+
+<meta property="og:description" content="Combination plots" />
+
+<meta property="og:image" content="/logo.png" />
+<meta name="twitter:card" content="summary" />
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -32,6 +40,8 @@
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
+
 
 
   </head>
@@ -47,8 +57,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">bayesplot</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">bayesplot</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.5.0</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -109,6 +123,7 @@
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -116,10 +131,11 @@
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Combination plots</h1>
+    
     </div>
 
     
@@ -129,7 +145,7 @@
     <pre class="usage"><span class='fu'>mcmc_combo</span>(<span class='no'>x</span>, <span class='kw'>combo</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"dens"</span>, <span class='st'>"trace"</span>), <span class='kw'>widths</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>gg_theme</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='no'>...</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -200,7 +216,7 @@ one of the <span class="pkg">bayesplot</span> convenience functions, e.g.
 #&gt; $Parameter
 #&gt; [1] "alpha"   "sigma"   "beta[1]" "beta[2]"
 #&gt; </div><div class='input'>
-<span class='fu'>mcmc_combo</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"alpha"</span>, <span class='st'>"sigma"</span>))</div><div class='img'><img src='MCMC-combos-1.png' alt='' width='700' height='432.632880098887' /></div><div class='input'><span class='fu'>mcmc_combo</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"alpha"</span>, <span class='st'>"sigma"</span>), <span class='kw'>widths</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>1</span>, <span class='fl'>2</span>))</div><div class='img'><img src='MCMC-combos-2.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+<span class='fu'>mcmc_combo</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"alpha"</span>, <span class='st'>"sigma"</span>))</div><div class='img'><img src='MCMC-combos-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>mcmc_combo</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"alpha"</span>, <span class='st'>"sigma"</span>), <span class='kw'>widths</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>1</span>, <span class='fl'>2</span>))</div><div class='img'><img src='MCMC-combos-2.png' alt='' width='700' height='433' /></div><div class='input'>
 </div><div class='input'><span class='co'># change second plot, show log(sigma) instead of sigma,</span>
 <span class='co'># and remove the legends</span>
 <span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"mix-blue-red"</span>)
@@ -210,7 +226,7 @@ one of the <span class="pkg">bayesplot</span> convenience functions, e.g.
  <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"alpha"</span>, <span class='st'>"sigma"</span>),
  <span class='kw'>transformations</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>sigma</span> <span class='kw'>=</span> <span class='st'>"log"</span>),
  <span class='kw'>gg_theme</span> <span class='kw'>=</span> <span class='fu'><a href='bayesplot-helpers.html'>legend_none</a></span>()
-)</div><div class='img'><img src='MCMC-combos-3.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+)</div><div class='img'><img src='MCMC-combos-3.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># same thing but this time also change the entire ggplot theme</span>
 <span class='fu'>mcmc_combo</span>(
  <span class='no'>x</span>,
@@ -218,7 +234,7 @@ one of the <span class="pkg">bayesplot</span> convenience functions, e.g.
  <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"alpha"</span>, <span class='st'>"sigma"</span>),
  <span class='kw'>transformations</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>sigma</span> <span class='kw'>=</span> <span class='st'>"log"</span>),
  <span class='kw'>gg_theme</span> <span class='kw'>=</span> <span class='kw pkg'>ggplot2</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/ggtheme'>theme_gray</a></span>() + <span class='fu'><a href='bayesplot-helpers.html'>legend_none</a></span>()
-)</div><div class='img'><img src='MCMC-combos-4.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+)</div><div class='img'><img src='MCMC-combos-4.png' alt='' width='700' height='433' /></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -242,11 +258,14 @@ one of the <span class="pkg">bayesplot</span> convenience functions, e.g.
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+

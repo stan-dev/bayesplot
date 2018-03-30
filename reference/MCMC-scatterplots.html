@@ -18,13 +18,22 @@
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+<meta property="og:title" content="Scatterplots of MCMC draws — MCMC-scatterplots" />
+
+<meta property="og:description" content="Scatterplots, hexagonal heatmaps, and pairs plots from MCMC draws. See the
+Plot Descriptions section, below, for details." />
+
+<meta property="og:image" content="/logo.png" />
+<meta name="twitter:card" content="summary" />
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -32,6 +41,8 @@
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
+
 
 
   </head>
@@ -47,8 +58,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">bayesplot</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">bayesplot</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.5.0</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -109,6 +124,7 @@
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -116,10 +132,11 @@
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Scatterplots of MCMC draws</h1>
+    
     </div>
 
     
@@ -149,7 +166,7 @@
 
 <span class='fu'>pairs_condition</span>(<span class='kw'>chains</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>draws</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>nuts</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -359,9 +376,10 @@ helper functions that are eventually passed to
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
-    <p>Gabry, J., Simpson, D., Vehtari, A., Betancourt, M., Gelman, A.
-  (2017). Visualization in Bayesian workflow. arXiv preprint
-  <a href='https://arxiv.org/abs/1709.01449'>arvix:1709.01449</a>.</p>
+    <p>Gabry, J., Simpson, D., Vehtari, A., Betancourt, M., and Gelman,
+  A. (2018). Visualization in Bayesian workflow. <em>Journal of the Royal
+  Statistical Society Series A</em>, accepted for publication. arXiv preprint:
+  <a href='http://arxiv.org/abs/1709.01449'>http://arxiv.org/abs/1709.01449</a>.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
@@ -374,8 +392,8 @@ helper functions that are eventually passed to
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>library</span>(<span class='st'>"ggplot2"</span>)</div><div class='output co'>#&gt; <span class='message'>Want to understand how all the pieces fit together? Buy the ggplot2</span>
-#&gt; <span class='message'>book: http://ggplot2.org/book/</span></div><div class='input'>
+    <pre class="examples"><div class='input'><span class='fu'>library</span>(<span class='st'>"ggplot2"</span>)
+
 <span class='co'># some parameter draws to use for demonstration</span>
 <span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='example-data.html'>example_mcmc_draws</a></span>(<span class='kw'>params</span> <span class='kw'>=</span> <span class='fl'>6</span>)
 <span class='fu'>dimnames</span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; $Iteration
@@ -390,41 +408,41 @@ helper functions that are eventually passed to
 <span class='co'># scatterplot of alpha vs log(sigma)</span>
 <span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"teal"</span>)
 (<span class='no'>p</span> <span class='kw'>&lt;-</span> <span class='fu'>mcmc_scatter</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"alpha"</span>, <span class='st'>"sigma"</span>),
-                  <span class='kw'>transform</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>sigma</span> <span class='kw'>=</span> <span class='st'>"log"</span>)))</div><div class='img'><img src='MCMC-scatterplots-1.png' alt='' width='700' height='432.632880098887' /></div><div class='input'><span class='no'>p</span> +
+                  <span class='kw'>transform</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>sigma</span> <span class='kw'>=</span> <span class='st'>"log"</span>)))</div><div class='img'><img src='MCMC-scatterplots-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='no'>p</span> +
   <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/labs'>labs</a></span>(
     <span class='kw'>title</span> <span class='kw'>=</span> <span class='st'>"Insert your own headline-grabbing title"</span>,
     <span class='kw'>subtitle</span> <span class='kw'>=</span> <span class='st'>"with a provocative subtitle"</span>,
     <span class='kw'>caption</span> <span class='kw'>=</span> <span class='st'>"and a controversial caption"</span>,
     <span class='kw'>x</span> <span class='kw'>=</span> <span class='fu'>expression</span>(<span class='no'>alpha</span>),
     <span class='kw'>y</span> <span class='kw'>=</span> <span class='fu'>expression</span>(<span class='fu'>log</span>(<span class='no'>sigma</span>))
-   )</div><div class='img'><img src='MCMC-scatterplots-2.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+   )</div><div class='img'><img src='MCMC-scatterplots-2.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># add ellipse</span>
-<span class='no'>p</span> + <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/stat_ellipse'>stat_ellipse</a></span>(<span class='kw'>level</span> <span class='kw'>=</span> <span class='fl'>0.9</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"gray20"</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>1</span>)</div><div class='img'><img src='MCMC-scatterplots-3.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+<span class='no'>p</span> + <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/stat_ellipse'>stat_ellipse</a></span>(<span class='kw'>level</span> <span class='kw'>=</span> <span class='fl'>0.9</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"gray20"</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>1</span>)</div><div class='img'><img src='MCMC-scatterplots-3.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># add contour</span>
 <span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"red"</span>)
 <span class='no'>p2</span> <span class='kw'>&lt;-</span> <span class='fu'>mcmc_scatter</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"alpha"</span>, <span class='st'>"sigma"</span>), <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>3.5</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.25</span>)
-<span class='no'>p2</span> + <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/geom_density_2d'>stat_density_2d</a></span>(<span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"black"</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>.5</span>)</div><div class='img'><img src='MCMC-scatterplots-4.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+<span class='no'>p2</span> + <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/geom_density_2d'>stat_density_2d</a></span>(<span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"black"</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>.5</span>)</div><div class='img'><img src='MCMC-scatterplots-4.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># can also add lines/smooths</span>
 <span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"pink"</span>)
-(<span class='no'>p3</span> <span class='kw'>&lt;-</span> <span class='fu'>mcmc_scatter</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"alpha"</span>, <span class='st'>"beta[3]"</span>), <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.25</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>3</span>))</div><div class='img'><img src='MCMC-scatterplots-5.png' alt='' width='700' height='432.632880098887' /></div><div class='input'><span class='no'>p3</span> + <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/geom_smooth'>geom_smooth</a></span>(<span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"lm"</span>, <span class='kw'>se</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"gray20"</span>,
-                 <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>.75</span>, <span class='kw'>linetype</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='img'><img src='MCMC-scatterplots-6.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+(<span class='no'>p3</span> <span class='kw'>&lt;-</span> <span class='fu'>mcmc_scatter</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"alpha"</span>, <span class='st'>"beta[3]"</span>), <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.25</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>3</span>))</div><div class='img'><img src='MCMC-scatterplots-5.png' alt='' width='700' height='433' /></div><div class='input'><span class='no'>p3</span> + <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/geom_smooth'>geom_smooth</a></span>(<span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"lm"</span>, <span class='kw'>se</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"gray20"</span>,
+                 <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>.75</span>, <span class='kw'>linetype</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='img'><img src='MCMC-scatterplots-6.png' alt='' width='700' height='433' /></div><div class='input'>
 </div><div class='input'><span class='co'># hexagonal heatmap</span>
 <span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"brightblue"</span>)
-(<span class='no'>p</span> <span class='kw'>&lt;-</span> <span class='fu'>mcmc_hex</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"sigma"</span>, <span class='st'>"alpha"</span>), <span class='kw'>transform</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>sigma</span> <span class='kw'>=</span> <span class='st'>"log"</span>)))</div><div class='img'><img src='MCMC-scatterplots-7.png' alt='' width='700' height='432.632880098887' /></div><div class='input'><span class='no'>p</span> + <span class='fu'><a href='bayesplot-helpers.html'>plot_bg</a></span>(<span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>"gray95"</span>)</div><div class='img'><img src='MCMC-scatterplots-8.png' alt='' width='700' height='432.632880098887' /></div><div class='input'><span class='no'>p</span> + <span class='fu'><a href='bayesplot-helpers.html'>plot_bg</a></span>(<span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>"gray95"</span>) + <span class='fu'><a href='bayesplot-helpers.html'>panel_bg</a></span>(<span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>"gray70"</span>)</div><div class='img'><img src='MCMC-scatterplots-9.png' alt='' width='700' height='432.632880098887' /></div><div class='input'><span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"purple"</span>)
+(<span class='no'>p</span> <span class='kw'>&lt;-</span> <span class='fu'>mcmc_hex</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"sigma"</span>, <span class='st'>"alpha"</span>), <span class='kw'>transform</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>sigma</span> <span class='kw'>=</span> <span class='st'>"log"</span>)))</div><div class='img'><img src='MCMC-scatterplots-7.png' alt='' width='700' height='433' /></div><div class='input'><span class='no'>p</span> + <span class='fu'><a href='bayesplot-helpers.html'>plot_bg</a></span>(<span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>"gray95"</span>)</div><div class='img'><img src='MCMC-scatterplots-8.png' alt='' width='700' height='433' /></div><div class='input'><span class='no'>p</span> + <span class='fu'><a href='bayesplot-helpers.html'>plot_bg</a></span>(<span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>"gray95"</span>) + <span class='fu'><a href='bayesplot-helpers.html'>panel_bg</a></span>(<span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>"gray70"</span>)</div><div class='img'><img src='MCMC-scatterplots-9.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"purple"</span>)
 
 <span class='co'># pairs plots</span>
 <span class='co'># default of condition=NULL implies splitting chains between upper and lower panels</span>
 <span class='fu'>mcmc_pairs</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='st'>"alpha"</span>, <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='st'>"beta\\[[1,4]\\]"</span>,
-           <span class='kw'>off_diag_args</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.5</span>))</div><div class='img'><img src='MCMC-scatterplots-10.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+           <span class='kw'>off_diag_args</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.5</span>))</div><div class='img'><img src='MCMC-scatterplots-10.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># change to density plots instead of histograms and hex plots instead of</span>
 <span class='co'># scatterplots</span>
 <span class='fu'>mcmc_pairs</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='st'>"alpha"</span>, <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='st'>"beta\\[[1,4]\\]"</span>,
-           <span class='kw'>diag_fun</span> <span class='kw'>=</span> <span class='st'>"dens"</span>, <span class='kw'>off_diag_fun</span> <span class='kw'>=</span> <span class='st'>"hex"</span>)</div><div class='img'><img src='MCMC-scatterplots-11.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+           <span class='kw'>diag_fun</span> <span class='kw'>=</span> <span class='st'>"dens"</span>, <span class='kw'>off_diag_fun</span> <span class='kw'>=</span> <span class='st'>"hex"</span>)</div><div class='img'><img src='MCMC-scatterplots-11.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># plot chain 1 above diagonal and chains 2, 3, and 4 below</span>
 <span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"brightblue"</span>)
 <span class='fu'>mcmc_pairs</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='st'>"alpha"</span>, <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='st'>"beta\\[[1,4]\\]"</span>,
            <span class='kw'>diag_fun</span> <span class='kw'>=</span> <span class='st'>"dens"</span>, <span class='kw'>off_diag_fun</span> <span class='kw'>=</span> <span class='st'>"hex"</span>,
-           <span class='kw'>condition</span> <span class='kw'>=</span> <span class='fu'>pairs_condition</span>(<span class='kw'>chains</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='fl'>1</span>, <span class='fl'>2</span>:<span class='fl'>4</span>)))</div><div class='img'><img src='MCMC-scatterplots-12.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+           <span class='kw'>condition</span> <span class='kw'>=</span> <span class='fu'>pairs_condition</span>(<span class='kw'>chains</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='fl'>1</span>, <span class='fl'>2</span>:<span class='fl'>4</span>)))</div><div class='img'><img src='MCMC-scatterplots-12.png' alt='' width='700' height='433' /></div><div class='input'>
 </div><span class='co'># NOT RUN {</span>
 <span class='co'>### Adding NUTS diagnostics to scatterplots and pairs plots</span>
 
@@ -512,11 +530,14 @@ helper functions that are eventually passed to
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+

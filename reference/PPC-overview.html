@@ -18,13 +18,26 @@
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+<meta property="og:title" content="Graphical posterior predictive checking — PPC-overview" />
+
+<meta property="og:description" content="The bayesplot PPC module provides various plotting functions for
+creating graphical displays comparing observed data to simulated data from
+the posterior predictive distribution. See below for a brief discussion of
+the ideas behind posterior predictive checking, a description of the
+structure of this package, and tips on providing an interface to
+bayesplot from another package." />
+
+<meta property="og:image" content="/logo.png" />
+<meta name="twitter:card" content="summary" />
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -32,6 +45,8 @@
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
+
 
 
   </head>
@@ -47,8 +62,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">bayesplot</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">bayesplot</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.5.0</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -109,6 +128,7 @@
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -116,10 +136,11 @@
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Graphical posterior predictive checking</h1>
+    
     </div>
 
     
@@ -136,7 +157,8 @@ structure of this package, and tips on providing an interface to
 
     <p>The idea behind posterior predictive checking is simple: if a model is a good
 fit then we should be able to use it to generate data that looks a lot like
-the data we observed.</p><h3>Posterior predictive distribution</h3>
+the data we observed.</p>
+<h3>Posterior predictive distribution</h3>
     To generate the data used for posterior predictive checks we simulate from
 the <em>posterior predictive distribution</em>. The posterior predictive
 distribution is the distribution of the outcome variable implied by a model
@@ -170,7 +192,8 @@ Chapter 6 of Gelman et. al. (2013).
 
     
     <p>The plotting functions for posterior predictive checking in this package are
-organized into several categories, each with its own documentation:</p><dl class='dl-horizontal'>
+organized into several categories, each with its own documentation:</p>
+<dl class='dl-horizontal'>
   <dt><strong><a href='PPC-distributions.html'>Distributions</a></strong></dt><dd><p>Histograms, kernel density estimates, boxplots, and other plots comparing
     the empirical distribution of the observed data <code>y</code> to the
     distributions of individual replicated datasets (rows) in <code>yrep</code>.</p></dd>
@@ -206,9 +229,10 @@ packages for full examples of <code>pp_check</code> methods.</p>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
-    <p>Gabry, J., Simpson, D., Vehtari, A., Betancourt, M., Gelman, A.
-  (2017). Visualization in Bayesian workflow. arXiv preprint
-  <a href='https://arxiv.org/abs/1709.01449'>arvix:1709.01449</a>.</p>
+    <p>Gabry, J., Simpson, D., Vehtari, A., Betancourt, M., and Gelman,
+  A. (2018). Visualization in Bayesian workflow. <em>Journal of the Royal
+  Statistical Society Series A</em>, accepted for publication. arXiv preprint:
+  <a href='http://arxiv.org/abs/1709.01449'>http://arxiv.org/abs/1709.01449</a>.</p>
 <p>Gelman, A., Carlin, J. B., Stern, H. S., Dunson, D. B., Vehtari,
   A., and Rubin, D. B. (2013). <em>Bayesian Data Analysis.</em> Chapman &amp; Hall/CRC
   Press, London, third edition. (Ch. 6)</p>
@@ -247,11 +271,14 @@ packages for full examples of <code>pp_check</code> methods.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+

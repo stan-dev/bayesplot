@@ -18,13 +18,24 @@
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+<meta property="og:title" content="PPC distributions — PPC-distributions" />
+
+<meta property="og:description" content="Compare the empirical distribution of the data y to the distributions
+of simulated/replicated data yrep from the posterior predictive
+distribution. See the Plot Descriptions section, below,
+for details." />
+
+<meta property="og:image" content="/logo.png" />
+<meta name="twitter:card" content="summary" />
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -32,6 +43,8 @@
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
+
 
 
   </head>
@@ -47,8 +60,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">bayesplot</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">bayesplot</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.5.0</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -109,6 +126,7 @@
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -116,10 +134,11 @@
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>PPC distributions</h1>
+    
     </div>
 
     
@@ -129,7 +148,9 @@ distribution. See the <strong>Plot Descriptions</strong> section, below,
 for details.</p>
     
 
-    <pre class="usage"><span class='fu'>ppc_hist</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='no'>...</span>, <span class='kw'>binwidth</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>freq</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+    <pre class="usage"><span class='fu'>ppc_data</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='kw'>group</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+
+<span class='fu'>ppc_hist</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='no'>...</span>, <span class='kw'>binwidth</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>freq</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
 <span class='fu'>ppc_boxplot</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='no'>...</span>, <span class='kw'>notch</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>1</span>)
 
@@ -141,7 +162,8 @@ for details.</p>
 
 <span class='fu'>ppc_dens</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='no'>...</span>, <span class='kw'>trim</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>1</span>)
 
-<span class='fu'>ppc_dens_overlay</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='no'>...</span>, <span class='kw'>trim</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>0.25</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.7</span>)
+<span class='fu'>ppc_dens_overlay</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='no'>...</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>0.25</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.7</span>, <span class='kw'>trim</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>bw</span> <span class='kw'>=</span> <span class='st'>"nrd0"</span>, <span class='kw'>adjust</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>kernel</span> <span class='kw'>=</span> <span class='st'>"gaussian"</span>, <span class='kw'>n_dens</span> <span class='kw'>=</span> <span class='fl'>1024</span>)
 
 <span class='fu'>ppc_ecdf_overlay</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='no'>...</span>, <span class='kw'>pad</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>0.25</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.7</span>)
 
@@ -149,7 +171,7 @@ for details.</p>
   <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>y_draw</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"violin"</span>, <span class='st'>"points"</span>, <span class='st'>"both"</span>), <span class='kw'>y_size</span> <span class='kw'>=</span> <span class='fl'>1</span>,
   <span class='kw'>y_alpha</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>y_jitter</span> <span class='kw'>=</span> <span class='fl'>0.1</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -165,6 +187,12 @@ predictive distribution, where \(S\) is the size of the posterior sample
 of <code>yrep</code> should be in the same order as the data points in <code>y</code>
 for the plots to make sense. See <strong>Details</strong> for additional
 instructions.</p></td>
+    </tr>
+    <tr>
+      <th>group</th>
+      <td><p>A grouping variable (a vector or factor) the same length as
+<code>y</code>. Each value in <code>group</code> is interpreted as the group level
+pertaining to the corresponding value of <code>y</code>.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -194,14 +222,14 @@ Unlike for <code>geom_boxplot</code>, the default is <code>notch=TRUE</code>.</p
 the <code>yrep</code> distributions.</p></td>
     </tr>
     <tr>
-      <th>group</th>
-      <td><p>A grouping variable (a vector or factor) the same length as
-<code>y</code>. Each value in <code>group</code> is interpreted as the group level
-pertaining to the corresponding value of <code>y</code>.</p></td>
-    </tr>
-    <tr>
       <th>trim</th>
       <td><p>A logical scalar passed to <code><a href='http://www.rdocumentation.org/packages/ggplot2/topics/geom_density'>geom_density</a></code>.</p></td>
+    </tr>
+    <tr>
+      <th>bw, adjust, kernel, n_dens</th>
+      <td><p>Optional arguments passed to
+<code><a href='http://www.rdocumentation.org/packages/stats/topics/density'>density</a></code> to override default kernel density estimation
+parameters. <code>n_dens</code> defaults to 1024.</p></td>
     </tr>
     <tr>
       <th>pad</th>
@@ -234,7 +262,8 @@ determine the amount of jitter.</p></td>
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A ggplot object that can be further customized using the
-  <span class="pkg">ggplot2</span> package.</p>
+  <span class="pkg">ggplot2</span> package. The <code>_data</code> functions return the data that
+  would have be drawn by the plotting function.</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
@@ -282,26 +311,26 @@ determine the amount of jitter.</p></td>
     <pre class="examples"><div class='input'><span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"brightblue"</span>)
 <span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='example-data.html'>example_y_data</a></span>()
 <span class='no'>yrep</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='example-data.html'>example_yrep_draws</a></span>()
-<span class='fu'>dim</span>(<span class='no'>yrep</span>)</div><div class='output co'>#&gt; [1] 500 434</div><div class='input'><span class='fu'>ppc_dens_overlay</span>(<span class='no'>y</span>, <span class='no'>yrep</span>[<span class='fl'>1</span>:<span class='fl'>25</span>, ])</div><div class='img'><img src='PPC-distributions-1.png' alt='' width='700' height='432.632880098887' /></div><div class='input'><span class='fu'>ppc_ecdf_overlay</span>(<span class='no'>y</span>, <span class='no'>yrep</span>[<span class='fu'>sample</span>(<span class='fu'>nrow</span>(<span class='no'>yrep</span>), <span class='fl'>25</span>), ])</div><div class='img'><img src='PPC-distributions-2.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+<span class='fu'>dim</span>(<span class='no'>yrep</span>)</div><div class='output co'>#&gt; [1] 500 434</div><div class='input'><span class='fu'>ppc_dens_overlay</span>(<span class='no'>y</span>, <span class='no'>yrep</span>[<span class='fl'>1</span>:<span class='fl'>25</span>, ])</div><div class='img'><img src='PPC-distributions-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>ppc_ecdf_overlay</span>(<span class='no'>y</span>, <span class='no'>yrep</span>[<span class='fu'>sample</span>(<span class='fu'>nrow</span>(<span class='no'>yrep</span>), <span class='fl'>25</span>), ])</div><div class='img'><img src='PPC-distributions-2.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># for ppc_hist,dens,freqpoly,boxplot definitely use a subset yrep rows so</span>
 <span class='co'># only a few (instead of nrow(yrep)) histograms are plotted</span>
-<span class='fu'>ppc_hist</span>(<span class='no'>y</span>, <span class='no'>yrep</span>[<span class='fl'>1</span>:<span class='fl'>8</span>, ])</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='PPC-distributions-3.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+<span class='fu'>ppc_hist</span>(<span class='no'>y</span>, <span class='no'>yrep</span>[<span class='fl'>1</span>:<span class='fl'>8</span>, ])</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='PPC-distributions-3.png' alt='' width='700' height='433' /></div><div class='input'>
 </div><div class='input'><span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"red"</span>)
-<span class='fu'>ppc_boxplot</span>(<span class='no'>y</span>, <span class='no'>yrep</span>[<span class='fl'>1</span>:<span class='fl'>8</span>, ])</div><div class='img'><img src='PPC-distributions-4.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+<span class='fu'>ppc_boxplot</span>(<span class='no'>y</span>, <span class='no'>yrep</span>[<span class='fl'>1</span>:<span class='fl'>8</span>, ])</div><div class='img'><img src='PPC-distributions-4.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># wizard hat plot</span>
 <span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"blue"</span>)
-<span class='fu'>ppc_dens</span>(<span class='no'>y</span>, <span class='no'>yrep</span>[<span class='fl'>200</span>:<span class='fl'>202</span>, ])</div><div class='img'><img src='PPC-distributions-5.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
-<span class='fu'>ppc_freqpoly</span>(<span class='no'>y</span>, <span class='no'>yrep</span>[<span class='fl'>1</span>:<span class='fl'>3</span>,], <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.1</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>binwidth</span> <span class='kw'>=</span> <span class='fl'>5</span>)</div><div class='img'><img src='PPC-distributions-6.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+<span class='fu'>ppc_dens</span>(<span class='no'>y</span>, <span class='no'>yrep</span>[<span class='fl'>200</span>:<span class='fl'>202</span>, ])</div><div class='img'><img src='PPC-distributions-5.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'>ppc_freqpoly</span>(<span class='no'>y</span>, <span class='no'>yrep</span>[<span class='fl'>1</span>:<span class='fl'>3</span>,], <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.1</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>binwidth</span> <span class='kw'>=</span> <span class='fl'>5</span>)</div><div class='img'><img src='PPC-distributions-6.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># if groups are different sizes then the 'freq' argument can be useful</span>
 <span class='no'>group</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='example-data.html'>example_group_data</a></span>()
-<span class='fu'>ppc_freqpoly_grouped</span>(<span class='no'>y</span>, <span class='no'>yrep</span>[<span class='fl'>1</span>:<span class='fl'>3</span>,], <span class='no'>group</span>) + <span class='fu'><a href='bayesplot-helpers.html'>yaxis_text</a></span>()</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='PPC-distributions-7.png' alt='' width='700' height='432.632880098887' /></div><div class='input'><span class='fu'>ppc_freqpoly_grouped</span>(<span class='no'>y</span>, <span class='no'>yrep</span>[<span class='fl'>1</span>:<span class='fl'>3</span>,], <span class='no'>group</span>, <span class='kw'>freq</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>) + <span class='fu'><a href='bayesplot-helpers.html'>yaxis_text</a></span>()</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='PPC-distributions-8.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+<span class='fu'>ppc_freqpoly_grouped</span>(<span class='no'>y</span>, <span class='no'>yrep</span>[<span class='fl'>1</span>:<span class='fl'>3</span>,], <span class='no'>group</span>) + <span class='fu'><a href='bayesplot-helpers.html'>yaxis_text</a></span>()</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='PPC-distributions-7.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>ppc_freqpoly_grouped</span>(<span class='no'>y</span>, <span class='no'>yrep</span>[<span class='fl'>1</span>:<span class='fl'>3</span>,], <span class='no'>group</span>, <span class='kw'>freq</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>) + <span class='fu'><a href='bayesplot-helpers.html'>yaxis_text</a></span>()</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='PPC-distributions-8.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># don't need to only use small number of rows for ppc_violin_grouped</span>
 <span class='co'># (as it pools yrep draws within groups)</span>
 <span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"gray"</span>)
-<span class='fu'>ppc_violin_grouped</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='no'>group</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>1.5</span>)</div><div class='img'><img src='PPC-distributions-9.png' alt='' width='700' height='432.632880098887' /></div><div class='input'><span class='fu'>ppc_violin_grouped</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='no'>group</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0</span>)</div><div class='img'><img src='PPC-distributions-10.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+<span class='fu'>ppc_violin_grouped</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='no'>group</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>1.5</span>)</div><div class='img'><img src='PPC-distributions-9.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>ppc_violin_grouped</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='no'>group</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0</span>)</div><div class='img'><img src='PPC-distributions-10.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># change how y is drawn</span>
-<span class='fu'>ppc_violin_grouped</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='no'>group</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>y_draw</span> <span class='kw'>=</span> <span class='st'>"points"</span>, <span class='kw'>y_size</span> <span class='kw'>=</span> <span class='fl'>1.5</span>)</div><div class='img'><img src='PPC-distributions-11.png' alt='' width='700' height='432.632880098887' /></div><div class='input'><span class='fu'>ppc_violin_grouped</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='no'>group</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>y_draw</span> <span class='kw'>=</span> <span class='st'>"both"</span>,
-                   <span class='kw'>y_size</span> <span class='kw'>=</span> <span class='fl'>1.5</span>, <span class='kw'>y_alpha</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>y_jitter</span> <span class='kw'>=</span> <span class='fl'>0.33</span>)</div><div class='img'><img src='PPC-distributions-12.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+<span class='fu'>ppc_violin_grouped</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='no'>group</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>y_draw</span> <span class='kw'>=</span> <span class='st'>"points"</span>, <span class='kw'>y_size</span> <span class='kw'>=</span> <span class='fl'>1.5</span>)</div><div class='img'><img src='PPC-distributions-11.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>ppc_violin_grouped</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='no'>group</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>y_draw</span> <span class='kw'>=</span> <span class='st'>"both"</span>,
+                   <span class='kw'>y_size</span> <span class='kw'>=</span> <span class='fl'>1.5</span>, <span class='kw'>y_alpha</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>y_jitter</span> <span class='kw'>=</span> <span class='fl'>0.33</span>)</div><div class='img'><img src='PPC-distributions-12.png' alt='' width='700' height='433' /></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -331,11 +360,14 @@ determine the amount of jitter.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+

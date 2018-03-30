@@ -8,8 +8,12 @@
 <title>Graphical posterior predictive checks using the bayesplot package • bayesplot</title>
 <!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
-<!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script><script src="../pkgdown.js"></script><!-- mathjax --><script src="https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!--[if lt IE 9]>
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
+<script src="../jquery.sticky-kit.min.js"></script><script src="../pkgdown.js"></script><meta property="og:title" content="Graphical posterior predictive checks using the bayesplot package">
+<meta property="og:description" content="">
+<meta property="og:image" content="/logo.png">
+<meta name="twitter:card" content="summary">
+<!-- mathjax --><script src="https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
@@ -24,8 +28,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">bayesplot</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">bayesplot</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.5.0</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
@@ -94,17 +102,19 @@
 
       
       </header><div class="row">
-  <div class="col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1>Graphical posterior predictive checks using the bayesplot package</h1>
                         <h4 class="author">Jonah Gabry</h4>
             
-            <h4 class="date">2017-09-12</h4>
-          </div>
+            <h4 class="date">2018-03-30</h4>
+      
+      
+
+    </div>
 
     
     
-<div class="contents">
 <div id="introduction" class="section level2">
 <h2 class="hasAnchor">
 <a href="#introduction" class="anchor"></a>Introduction</h2>
@@ -150,9 +160,9 @@ p(\widetilde{y} \,|\, \theta) \, p(\theta \,|\, y) \, d\theta.\]</span> Typicall
 4   7   3.00         1      0  1.000000
 5   0   2.00         1      0  1.142857
 6   0   0.00         1      0  1.000000</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">roaches$roach100 &lt;-<span class="st"> </span>roaches$roach1 /<span class="st"> </span><span class="dv">100</span> <span class="co"># pre-treatment number of roaches (in 100s)</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">roaches<span class="op">$</span>roach100 &lt;-<span class="st"> </span>roaches<span class="op">$</span>roach1 <span class="op">/</span><span class="st"> </span><span class="dv">100</span> <span class="co"># pre-treatment number of roaches (in 100s)</span></code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fit_poisson &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/rstanarm/topics/stan_glm">stan_glm</a></span>(
-  y ~<span class="st"> </span>roach100 +<span class="st"> </span>treatment +<span class="st"> </span>senior,
+  y <span class="op">~</span><span class="st"> </span>roach100 <span class="op">+</span><span class="st"> </span>treatment <span class="op">+</span><span class="st"> </span>senior,
   <span class="dt">offset =</span> <span class="kw">log</span>(exposure2),
   <span class="dt">family =</span> <span class="kw">poisson</span>(<span class="dt">link =</span> <span class="st">"log"</span>),
   <span class="dt">data =</span> roaches,
@@ -160,22 +170,20 @@ p(\widetilde{y} \,|\, \theta) \, p(\theta \,|\, y) \, d\theta.\]</span> Typicall
 )</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">print</span>(fit_poisson)</code></pre></div>
 <pre><code>stan_glm
- family:   poisson [log]
- formula:  y ~ roach100 + treatment + senior
- num. obs: 262
+ family:       poisson [log]
+ formula:      y ~ roach100 + treatment + senior
+ observations: 262
+ predictors:   4
 ------
-
-Estimates:
             Median MAD_SD
 (Intercept)  3.1    0.0  
 roach100     0.7    0.0  
 treatment   -0.5    0.0  
 senior      -0.4    0.0  
 
-Sample avg. posterior predictive 
-distribution of y (X = xbar):
+Sample avg. posterior predictive distribution of y:
          Median MAD_SD
-mean_PPD 25.7    0.4  
+mean_PPD 25.6    0.5  
 
 ------
 For info on the priors used see help('prior_summary.stanreg').</code></pre>
@@ -183,28 +191,26 @@ For info on the priors used see help('prior_summary.stanreg').</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fit_nb &lt;-<span class="st"> </span><span class="kw">update</span>(fit_poisson, <span class="dt">family =</span> <span class="st">"neg_binomial_2"</span>)</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">print</span>(fit_nb)</code></pre></div>
 <pre><code>stan_glm
- family:   neg_binomial_2 [log]
- formula:  y ~ roach100 + treatment + senior
- num. obs: 262
+ family:       neg_binomial_2 [log]
+ formula:      y ~ roach100 + treatment + senior
+ observations: 262
+ predictors:   4
 ------
-
-Estimates:
                       Median MAD_SD
 (Intercept)            2.8    0.2  
-roach100               1.3    0.2  
-treatment             -0.8    0.2  
+roach100               1.3    0.3  
+treatment             -0.8    0.3  
 senior                -0.3    0.3  
 reciprocal_dispersion  0.3    0.0  
 
-Sample avg. posterior predictive 
-distribution of y (X = xbar):
+Sample avg. posterior predictive distribution of y:
          Median MAD_SD
-mean_PPD 49.7   30.0  
+mean_PPD 50.8   30.7  
 
 ------
 For info on the priors used see help('prior_summary.stanreg').</code></pre>
 <p>In order to use the PPC functions from the <strong>bayesplot</strong> package we need a vector <code>y</code> of outcome values,</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">y &lt;-<span class="st"> </span>roaches$y</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">y &lt;-<span class="st"> </span>roaches<span class="op">$</span>y</code></pre></div>
 <p>and a matrix <code>yrep</code> of draws from the posterior predictive distribution,</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">yrep_poisson &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/rstanarm/topics/posterior_predict.stanreg">posterior_predict</a></span>(fit_poisson, <span class="dt">draws =</span> <span class="dv">500</span>)
 yrep_nb &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/rstanarm/topics/posterior_predict.stanreg">posterior_predict</a></span>(fit_nb, <span class="dt">draws =</span> <span class="dv">500</span>)
@@ -225,7 +231,7 @@ yrep_nb &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocu
 <a href="#ppc_dens_overlay" class="anchor"></a>ppc_dens_overlay</h4>
 <p>The first PPC we’ll look at is a comparison of the distribution of <code>y</code> and the distributions of some of the simulated datasets (rows) in the <code>yrep</code> matrix.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/bayesplot-colors.html">color_scheme_set</a></span>(<span class="st">"brightblue"</span>)
-<span class="kw"><a href="../reference/PPC-distributions.html">ppc_dens_overlay</a></span>(y, yrep_poisson[<span class="dv">1</span>:<span class="dv">50</span>, ])</code></pre></div>
+<span class="kw"><a href="../reference/PPC-distributions.html">ppc_dens_overlay</a></span>(y, yrep_poisson[<span class="dv">1</span><span class="op">:</span><span class="dv">50</span>, ])</code></pre></div>
 <p><img src="graphical-ppcs_files/figure-html/ppc_dens_overlay-1.png" width="60%" style="display: block; margin: auto;"></p>
 <p>In the plot above, the dark line is the distribution of the observed outcomes <code>y</code> and each of the 50 lighter lines is the kernel density estimate of one of the replications of <code>y</code> from the posterior predictive distribution (i.e., one of the rows in <code>yrep</code>). This plot makes it easy to see that this model fails to account for the large proportion of zeros in <code>y</code>. That is, the model predicts fewer zeros than were actually observed.</p>
 </div>
@@ -233,14 +239,14 @@ yrep_nb &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocu
 <h4 class="hasAnchor">
 <a href="#ppc_hist" class="anchor"></a>ppc_hist</h4>
 <p>We could see the same thing from a different perspective by looking at separate histograms of <code>y</code> and some of the <code>yrep</code> datasets using the <code>ppc_hist</code> function:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/PPC-distributions.html">ppc_hist</a></span>(y, yrep_poisson[<span class="dv">1</span>:<span class="dv">5</span>, ])</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/PPC-distributions.html">ppc_hist</a></span>(y, yrep_poisson[<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>, ])</code></pre></div>
 <p><img src="graphical-ppcs_files/figure-html/ppc_hist-1.png" width="60%" style="display: block; margin: auto;"></p>
 <p>The same plot for the negative binomial model looks much different:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/PPC-distributions.html">ppc_hist</a></span>(y, yrep_nb[<span class="dv">1</span>:<span class="dv">5</span>, ])</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/PPC-distributions.html">ppc_hist</a></span>(y, yrep_nb[<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>, ])</code></pre></div>
 <p><img src="graphical-ppcs_files/figure-html/ppc_hist-nb-1.png" width="60%" style="display: block; margin: auto;"></p>
 <p>The negative binomial model does better handling the number of zeros in the data, but it occasionally predicts values that are way too large, which is why the x-axes extend to such high values in the plot and make it difficult to read. To see the predictions for the smaller values more clearly we can zoom in:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/PPC-distributions.html">ppc_hist</a></span>(y, yrep_nb[<span class="dv">1</span>:<span class="dv">5</span>, ], <span class="dt">binwidth =</span> <span class="dv">20</span>) +
-<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/coord_cartesian">coord_cartesian</a></span>(<span class="dt">xlim =</span> <span class="kw">c</span>(-<span class="dv">1</span>, <span class="dv">500</span>))</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/PPC-distributions.html">ppc_hist</a></span>(y, yrep_nb[<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>, ], <span class="dt">binwidth =</span> <span class="dv">20</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/coord_cartesian">coord_cartesian</a></span>(<span class="dt">xlim =</span> <span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>, <span class="dv">500</span>))</code></pre></div>
 <p><img src="graphical-ppcs_files/figure-html/ppc_hist-nb-2-1.png" width="60%" style="display: block; margin: auto;"></p>
 <p><br></p>
 </div>
@@ -253,7 +259,7 @@ yrep_nb &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocu
 <h4 class="hasAnchor">
 <a href="#ppc_stat" class="anchor"></a>ppc_stat</h4>
 <p>First we define a function that takes a vector as input and returns the proportion of zeros:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">prop_zero &lt;-<span class="st"> </span>function(x) <span class="kw">mean</span>(x ==<span class="st"> </span><span class="dv">0</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">prop_zero &lt;-<span class="st"> </span><span class="cf">function</span>(x) <span class="kw">mean</span>(x <span class="op">==</span><span class="st"> </span><span class="dv">0</span>)
 <span class="kw">prop_zero</span>(y) <span class="co"># check proportion of zeros in y</span></code></pre></div>
 <pre><code>[1] 0.3587786</code></pre>
 <p>The <code>stat</code> argument to <code>ppc_stat</code> accepts a function or the name of a function for computing a test statistic from a vector of data. In our case we can specify <code>stat = "prop_zero"</code> since we’ve already defined the <code>prop_zero</code> function, but we also could have used <code>stat = function(x) mean(x == 0)</code>.</p>
@@ -269,8 +275,8 @@ yrep_nb &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocu
 <p><img src="graphical-ppcs_files/figure-html/ppc_stat-max-1.png" width="60%" style="display: block; margin: auto;"></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/PPC-test-statistics.html">ppc_stat</a></span>(y, yrep_nb, <span class="dt">stat =</span> <span class="st">"max"</span>)</code></pre></div>
 <p><img src="graphical-ppcs_files/figure-html/ppc_stat-max-2.png" width="60%" style="display: block; margin: auto;"></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/PPC-test-statistics.html">ppc_stat</a></span>(y, yrep_nb, <span class="dt">stat =</span> <span class="st">"max"</span>, <span class="dt">binwidth =</span> <span class="dv">100</span>) +
-<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/coord_cartesian">coord_cartesian</a></span>(<span class="dt">xlim =</span> <span class="kw">c</span>(-<span class="dv">1</span>, <span class="dv">5000</span>))</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/PPC-test-statistics.html">ppc_stat</a></span>(y, yrep_nb, <span class="dt">stat =</span> <span class="st">"max"</span>, <span class="dt">binwidth =</span> <span class="dv">100</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/coord_cartesian">coord_cartesian</a></span>(<span class="dt">xlim =</span> <span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>, <span class="dv">5000</span>))</code></pre></div>
 <p><img src="graphical-ppcs_files/figure-html/ppc_stat-max-3.png" width="60%" style="display: block; margin: auto;"></p>
 <p><br></p>
 </div>
@@ -285,6 +291,7 @@ yrep_nb &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocu
   ppc_bars
   ppc_bars_grouped
   ppc_boxplot
+  ppc_data
   ppc_dens
   ppc_dens_overlay
   ppc_ecdf_overlay
@@ -302,6 +309,8 @@ yrep_nb &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocu
   ppc_intervals_grouped
   ppc_loo_intervals
   ppc_loo_pit
+  ppc_loo_pit_overlay
+  ppc_loo_pit_qq
   ppc_loo_ribbon
   ppc_ribbon
   ppc_ribbon_data
@@ -332,7 +341,7 @@ yrep_nb &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocu
 <h4 class="hasAnchor">
 <a href="#ppc_stat_grouped" class="anchor"></a>ppc_stat_grouped</h4>
 <p>For example, <code>ppc_stat_grouped</code> is the same as <code>ppc_stat</code> except that the test statistic is computed within levels of the grouping variable and a separate plot is made for each level:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/PPC-test-statistics.html">ppc_stat_grouped</a></span>(y, yrep_nb, <span class="dt">group =</span> roaches$treatment, <span class="dt">stat =</span> <span class="st">"prop_zero"</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/PPC-test-statistics.html">ppc_stat_grouped</a></span>(y, yrep_nb, <span class="dt">group =</span> roaches<span class="op">$</span>treatment, <span class="dt">stat =</span> <span class="st">"prop_zero"</span>)</code></pre></div>
 <p><img src="graphical-ppcs_files/figure-html/ppc_stat_grouped-1.png" width="60%" style="display: block; margin: auto;"></p>
 <p><br></p>
 </div>
@@ -350,17 +359,17 @@ yrep_nb &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocu
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># @param object An object of class "foo".</span>
 <span class="co"># @param type The type of plot.</span>
 <span class="co"># @param ... Optional arguments passed on to the bayesplot plotting function.</span>
-pp_check.foo &lt;-<span class="st"> </span>function(object, <span class="dt">type =</span> <span class="kw">c</span>(<span class="st">"multiple"</span>, <span class="st">"overlaid"</span>), ...) {
+pp_check.foo &lt;-<span class="st"> </span><span class="cf">function</span>(object, <span class="dt">type =</span> <span class="kw">c</span>(<span class="st">"multiple"</span>, <span class="st">"overlaid"</span>), ...) {
   type &lt;-<span class="st"> </span><span class="kw">match.arg</span>(type)
   y &lt;-<span class="st"> </span>object[[<span class="st">"y"</span>]]
   yrep &lt;-<span class="st"> </span>object[[<span class="st">"yrep"</span>]]
-  <span class="kw">stopifnot</span>(<span class="kw">nrow</span>(yrep) &gt;=<span class="st"> </span><span class="dv">50</span>)
-  samp &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="kw">nrow</span>(yrep), <span class="dt">size =</span> <span class="kw">ifelse</span>(type ==<span class="st"> "overlaid"</span>, <span class="dv">50</span>, <span class="dv">5</span>))
+  <span class="kw">stopifnot</span>(<span class="kw">nrow</span>(yrep) <span class="op">&gt;=</span><span class="st"> </span><span class="dv">50</span>)
+  samp &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="kw">nrow</span>(yrep), <span class="dt">size =</span> <span class="kw">ifelse</span>(type <span class="op">==</span><span class="st"> "overlaid"</span>, <span class="dv">50</span>, <span class="dv">5</span>))
   yrep &lt;-<span class="st"> </span>yrep[samp, ]
 
-  if (type ==<span class="st"> "overlaid"</span>) {
+  <span class="cf">if</span> (type <span class="op">==</span><span class="st"> "overlaid"</span>) {
     <span class="kw"><a href="../reference/PPC-distributions.html">ppc_dens_overlay</a></span>(y, yrep, ...)
-  } else {
+  } <span class="cf">else</span> {
     <span class="kw"><a href="../reference/PPC-distributions.html">ppc_hist</a></span>(y, yrep, ...)
   }
 }</code></pre></div>
@@ -386,10 +395,9 @@ pp_check.foo &lt;-<span class="st"> </span>function(object, <span class="dt">typ
 <a href="#references" class="anchor"></a>References</h2>
 <p>Buerkner, P. (2017). brms: Bayesian Regression Models using Stan. R package version 1.7.0. <a href="https://CRAN.R-project.org/package=brms" class="uri">https://CRAN.R-project.org/package=brms</a></p>
 <p>Gabry, J., and Goodrich, B. (2017). rstanarm: Bayesian Applied Regression Modeling via Stan. R package version 2.15.3. <a href="http://mc-stan.org/rstanarm" class="uri">http://mc-stan.org/rstanarm</a>, <a href="https://CRAN.R-project.org/package=rstanarm" class="uri">https://CRAN.R-project.org/package=rstanarm</a></p>
-<p>Gabry, J., Simpson, D., Vehtari, A., Betancourt, M., Gelman, A. (2017). Visualization in Bayesian workflow. arXiv preprint <a href="https://arxiv.org/abs/1709.01449" class="uri">https://arxiv.org/abs/1709.01449</a></p>
+<p>Gabry, J., Simpson, D., Vehtari, A., Betancourt, M., Gelman, A. (2018). Visualization in Bayesian workflow. <em>Journal of the Royal Statistical Society Series A</em>, accepted for publication. arXiv preprint: <a href="https://arxiv.org/abs/1709.01449" class="uri">https://arxiv.org/abs/1709.01449</a></p>
 <p>Gelman, A., Carlin, J. B., Stern, H. S., Dunson, D. B., Vehtari, A., and Rubin, D. B. (2013). <em>Bayesian Data Analysis</em>. Chapman &amp; Hall/CRC Press, London, third edition.</p>
 <p>Stan Development Team. (2017). <em>Stan Modeling Language Users Guide and Reference Manual</em>. <a href="http://mc-stan.org/users/documentation/" class="uri">http://mc-stan.org/users/documentation/</a></p>
-</div>
 </div>
   </div>
 
@@ -416,11 +424,13 @@ pp_check.foo &lt;-<span class="st"> </span>function(object, <span class="dt">typ
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>
 </div>
+
+  
 
   </body>
 </html>

@@ -18,13 +18,28 @@
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+<meta property="og:title" content="Posterior predictive checks (S3 generic and default method) — pp_check" />
+
+<meta property="og:description" content="S3 generic with simple default method. The intent is to provide a generic so
+authors of other R packages who wish to provide interfaces to the functions
+in bayesplot will be encouraged to include pp_check methods in
+their package, preserving the same naming conventions for posterior
+predictive checking across many R packages for Bayesian inference. This is
+for the convenience of both users and developers. See the Details
+and Examples sections, below, and the package vignettes for examples
+of defining pp_check methods." />
+
+<meta property="og:image" content="/logo.png" />
+<meta name="twitter:card" content="summary" />
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -32,6 +47,8 @@
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
+
 
 
   </head>
@@ -47,8 +64,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">bayesplot</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">bayesplot</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.5.0</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -109,6 +130,7 @@
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -116,10 +138,11 @@
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Posterior predictive checks (S3 generic and default method)</h1>
+    
     </div>
 
     
@@ -138,7 +161,7 @@ of defining <code>pp_check</code> methods.</p>
 <span class='co'># S3 method for default</span>
 <span class='fu'>pp_check</span>(<span class='no'>object</span>, <span class='no'>yrep</span>, <span class='no'>fun</span>, <span class='no'>...</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -186,9 +209,9 @@ be dropped if <code>fun</code> is specified as a string.</p></td>
     <pre class="examples"><div class='input'><span class='co'># default method</span>
 <span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='example-data.html'>example_y_data</a></span>()
 <span class='no'>yrep</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='example-data.html'>example_yrep_draws</a></span>()
-<span class='fu'>pp_check</span>(<span class='no'>y</span>, <span class='no'>yrep</span>[<span class='fl'>1</span>:<span class='fl'>50</span>,], <span class='no'>ppc_dens_overlay</span>)</div><div class='img'><img src='pp_check-1.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+<span class='fu'>pp_check</span>(<span class='no'>y</span>, <span class='no'>yrep</span>[<span class='fl'>1</span>:<span class='fl'>50</span>,], <span class='no'>ppc_dens_overlay</span>)</div><div class='img'><img src='pp_check-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='no'>g</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='example-data.html'>example_group_data</a></span>()
-<span class='fu'>pp_check</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='kw'>fun</span> <span class='kw'>=</span> <span class='st'>"stat_grouped"</span>, <span class='kw'>group</span> <span class='kw'>=</span> <span class='no'>g</span>, <span class='kw'>stat</span> <span class='kw'>=</span> <span class='st'>"median"</span>)</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='pp_check-2.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+<span class='fu'>pp_check</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='kw'>fun</span> <span class='kw'>=</span> <span class='st'>"stat_grouped"</span>, <span class='kw'>group</span> <span class='kw'>=</span> <span class='no'>g</span>, <span class='kw'>stat</span> <span class='kw'>=</span> <span class='st'>"median"</span>)</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='pp_check-2.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># defining a method</span>
 <span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'>list</span>(<span class='kw'>y</span> <span class='kw'>=</span> <span class='fu'>rnorm</span>(<span class='fl'>50</span>), <span class='kw'>yrep</span> <span class='kw'>=</span> <span class='fu'>matrix</span>(<span class='fu'>rnorm</span>(<span class='fl'>5000</span>), <span class='kw'>nrow</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>50</span>))
 <span class='fu'>class</span>(<span class='no'>x</span>) <span class='kw'>&lt;-</span> <span class='st'>"foo"</span>
@@ -199,7 +222,7 @@ be dropped if <code>fun</code> is specified as a string.</p></td>
          <span class='kw'>multiple</span> <span class='kw'>=</span> <span class='fu'><a href='PPC-distributions.html'>ppc_hist</a></span>(<span class='no'>y</span>, <span class='no'>yrep</span>[<span class='fl'>1</span>:<span class='fu'>min</span>(<span class='fl'>8</span>, <span class='fu'>nrow</span>(<span class='no'>yrep</span>)),, <span class='kw'>drop</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>]),
          <span class='kw'>overlaid</span> <span class='kw'>=</span> <span class='fu'><a href='PPC-distributions.html'>ppc_dens_overlay</a></span>(<span class='no'>y</span>, <span class='no'>yrep</span>))
 }
-<span class='fu'>pp_check</span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='pp_check-3.png' alt='' width='700' height='432.632880098887' /></div><div class='input'><span class='fu'>pp_check</span>(<span class='no'>x</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"overlaid"</span>)</div><div class='img'><img src='pp_check-4.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+<span class='fu'>pp_check</span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='pp_check-3.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>pp_check</span>(<span class='no'>x</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"overlaid"</span>)</div><div class='img'><img src='pp_check-4.png' alt='' width='700' height='433' /></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -223,11 +246,14 @@ be dropped if <code>fun</code> is specified as a string.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+

@@ -18,13 +18,22 @@
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+<meta property="og:title" content="Plot interval estimates from MCMC draws — MCMC-intervals" />
+
+<meta property="og:description" content="Plot central (quantile-based) posterior interval estimates from MCMC draws.
+See the Plot Descriptions section, below, for details." />
+
+<meta property="og:image" content="/logo.png" />
+<meta name="twitter:card" content="summary" />
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -32,6 +41,8 @@
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
+
 
 
   </head>
@@ -47,8 +58,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">bayesplot</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">bayesplot</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.5.0</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -109,6 +124,7 @@
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -116,10 +132,11 @@
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Plot interval estimates from MCMC draws</h1>
+    
     </div>
 
     
@@ -134,9 +151,26 @@ See the <strong>Plot Descriptions</strong> section, below, for details.</p>
 <span class='fu'>mcmc_areas</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'>character</span>(), <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='fu'>character</span>(),
   <span class='kw'>transformations</span> <span class='kw'>=</span> <span class='fu'>list</span>(), <span class='no'>...</span>, <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>prob_outer</span> <span class='kw'>=</span> <span class='fl'>1</span>,
   <span class='kw'>point_est</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"median"</span>, <span class='st'>"mean"</span>, <span class='st'>"none"</span>), <span class='kw'>rhat</span> <span class='kw'>=</span> <span class='fu'>numeric</span>(), <span class='kw'>bw</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>adjust</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>kernel</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+  <span class='kw'>adjust</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>kernel</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>n_dens</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+
+<span class='fu'>mcmc_areas_ridges</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'>character</span>(), <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='fu'>character</span>(),
+  <span class='kw'>transformations</span> <span class='kw'>=</span> <span class='fu'>list</span>(), <span class='no'>...</span>, <span class='kw'>prob_outer</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>bw</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>adjust</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>kernel</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>n_dens</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+
+<span class='fu'>mcmc_intervals_data</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'>character</span>(), <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='fu'>character</span>(),
+  <span class='kw'>transformations</span> <span class='kw'>=</span> <span class='fu'>list</span>(), <span class='no'>...</span>, <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>prob_outer</span> <span class='kw'>=</span> <span class='fl'>0.9</span>,
+  <span class='kw'>point_est</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"median"</span>, <span class='st'>"mean"</span>, <span class='st'>"none"</span>), <span class='kw'>rhat</span> <span class='kw'>=</span> <span class='fu'>numeric</span>())
+
+<span class='fu'>mcmc_areas_data</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'>character</span>(), <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='fu'>character</span>(),
+  <span class='kw'>transformations</span> <span class='kw'>=</span> <span class='fu'>list</span>(), <span class='no'>...</span>, <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>prob_outer</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>point_est</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"median"</span>, <span class='st'>"mean"</span>, <span class='st'>"none"</span>), <span class='kw'>rhat</span> <span class='kw'>=</span> <span class='fu'>numeric</span>(), <span class='kw'>bw</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>adjust</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>kernel</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>n_dens</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+
+<span class='fu'>mcmc_areas_ridges_data</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'>character</span>(), <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='fu'>character</span>(),
+  <span class='kw'>transformations</span> <span class='kw'>=</span> <span class='fu'>list</span>(), <span class='no'>...</span>, <span class='kw'>prob_outer</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>bw</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>adjust</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>kernel</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>n_dens</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -185,13 +219,14 @@ that the parameter is transformed (e.g. <code>"t(sigma)"</code>).</p></td>
       <th>prob</th>
       <td><p>The probability mass to include in the inner interval (for
 <code>mcmc_intervals</code>) or in the shaded region (for <code>mcmc_areas</code>). The
-default is <code>0.5</code> (50% interval).</p></td>
+default is <code>0.5</code> (50% interval) and <code>1</code> for
+<code>mcmc_areas_ridges</code>.</p></td>
     </tr>
     <tr>
       <th>prob_outer</th>
       <td><p>The probability mass to include in the outer interval. The
-default is <code>0.9</code> for <code>mcmc_intervals</code> (90% interval)
-and <code>1</code> for <code>mcmc_areas</code>.</p></td>
+default is <code>0.9</code> for <code>mcmc_intervals</code> (90% interval) and
+<code>1</code> for <code>mcmc_areas</code> and for <code>mcmc_areas_ridges</code>.</p></td>
     </tr>
     <tr>
       <th>point_est</th>
@@ -207,17 +242,18 @@ based on \(\hat{R}\) value. See <code><a href='bayesplot-extractors.html'>rhat</
 extracting \(\hat{R}\) estimates.</p></td>
     </tr>
     <tr>
-      <th>bw, adjust, kernel</th>
-      <td><p>For <code>mcmc_areas</code>, optional arguments passed to
+      <th>bw, adjust, kernel, n_dens</th>
+      <td><p>Optional arguments passed to
 <code><a href='http://www.rdocumentation.org/packages/stats/topics/density'>density</a></code> to override default kernel density estimation
-parameters.</p></td>
+parameters. <code>n_dens</code> defaults to 1024.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A ggplot object that can be further customized using the
-  <span class="pkg">ggplot2</span> package.</p>
+  <span class="pkg">ggplot2</span> package. The <code>_data</code> functions return the data that
+  would have be drawn by the plotting function.</p>
     
     <h2 class="hasAnchor" id="plot-descriptions"><a class="anchor" href="#plot-descriptions"></a>Plot Descriptions</h2>
 
@@ -227,6 +263,9 @@ parameters.</p></td>
    chains merged.</p></dd>
   <dt><code>mcmc_areas</code></dt><dd><p>Density plots computed from posterior draws with all chains merged,
    with uncertainty intervals shown as shaded areas under the curves.</p></dd>
+  <dt><code>mcmc_areas_ridges</code></dt><dd><p>Density plot, as in <code>mcmc_areas</code>, but drawn with overlapping
+   ridgelines. This plot provides a compact display of (hierarchically)
+   related distributions.</p></dd>
 </dl>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
@@ -241,7 +280,8 @@ parameters.</p></td>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># some parameter draws to use for demonstration</span>
+    <pre class="examples"><div class='input'><span class='fu'>set.seed</span>(<span class='fl'>9262017</span>)
+<span class='co'># some parameter draws to use for demonstration</span>
 <span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='example-data.html'>example_mcmc_draws</a></span>(<span class='kw'>params</span> <span class='kw'>=</span> <span class='fl'>6</span>)
 <span class='fu'>dim</span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; [1] 250   4   6</div><div class='input'><span class='fu'>dimnames</span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; $Iteration
 #&gt; NULL
@@ -253,11 +293,11 @@ parameters.</p></td>
 #&gt; [1] "alpha"   "sigma"   "beta[1]" "beta[2]" "beta[3]" "beta[4]"
 #&gt; </div><div class='input'>
 <span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"brightblue"</span>)
-<span class='fu'>mcmc_intervals</span>(<span class='no'>x</span>)</div><div class='img'><img src='MCMC-intervals-1.png' alt='' width='700' height='432.632880098887' /></div><div class='input'><span class='fu'>mcmc_intervals</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"beta[1]"</span>, <span class='st'>"beta[2]"</span>))</div><div class='img'><img src='MCMC-intervals-2.png' alt='' width='700' height='432.632880098887' /></div><div class='input'><span class='fu'>mcmc_areas</span>(<span class='no'>x</span>, <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='st'>"beta\\[[1-3]"</span>, <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.8</span>) +
+<span class='fu'>mcmc_intervals</span>(<span class='no'>x</span>)</div><div class='img'><img src='MCMC-intervals-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>mcmc_intervals</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"beta[1]"</span>, <span class='st'>"beta[2]"</span>))</div><div class='img'><img src='MCMC-intervals-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>mcmc_areas</span>(<span class='no'>x</span>, <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='st'>"beta\\[[1-3]"</span>, <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.8</span>) +
  <span class='kw pkg'>ggplot2</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/labs'>labs</a></span>(
    <span class='kw'>title</span> <span class='kw'>=</span> <span class='st'>"Posterior distributions"</span>,
    <span class='kw'>subtitle</span> <span class='kw'>=</span> <span class='st'>"with medians and 80% intervals"</span>
- )</div><div class='img'><img src='MCMC-intervals-3.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+ )</div><div class='img'><img src='MCMC-intervals-3.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"red"</span>)
 <span class='fu'>mcmc_areas</span>(
    <span class='no'>x</span>,
@@ -265,22 +305,44 @@ parameters.</p></td>
    <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>2</span>/<span class='fl'>3</span>,
    <span class='kw'>prob_outer</span> <span class='kw'>=</span> <span class='fl'>0.9</span>,
    <span class='kw'>point_est</span> <span class='kw'>=</span> <span class='st'>"mean"</span>
-)</div><div class='img'><img src='MCMC-intervals-4.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+)</div><div class='img'><img src='MCMC-intervals-4.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># color by rhat value</span>
 <span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"blue"</span>)
 <span class='no'>fake_rhat_values</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='fl'>1</span>, <span class='fl'>1.07</span>, <span class='fl'>1.3</span>, <span class='fl'>1.01</span>, <span class='fl'>1.15</span>, <span class='fl'>1.005</span>)
-<span class='fu'>mcmc_intervals</span>(<span class='no'>x</span>, <span class='kw'>rhat</span> <span class='kw'>=</span> <span class='no'>fake_rhat_values</span>)</div><div class='img'><img src='MCMC-intervals-5.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+<span class='fu'>mcmc_intervals</span>(<span class='no'>x</span>, <span class='kw'>rhat</span> <span class='kw'>=</span> <span class='no'>fake_rhat_values</span>)</div><div class='output co'>#&gt; <span class='error'>Error in new_rhat(rhat): could not find function "new_rhat"</span></div><div class='input'>
+<span class='fu'>mcmc_intervals_data</span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; # A tibble: 6 x 9
+#&gt;   parameter outer_width inner_width point_est      ll       l       m       h
+#&gt;   &lt;fct&gt;           &lt;dbl&gt;       &lt;dbl&gt; &lt;chr&gt;       &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
+#&gt; 1 alpha           0.900       0.500 median    -42.7   -28.7   -18.5   - 7.46 
+#&gt; 2 sigma           0.900       0.500 median     17.1    17.6    18.0    18.4  
+#&gt; 3 beta[1]         0.900       0.500 median    - 0.165   0.136   0.358   0.601
+#&gt; 4 beta[2]         0.900       0.500 median    - 0.722 - 0.578 - 0.469 - 0.362
+#&gt; 5 beta[3]         0.900       0.500 median      0.718   0.858   0.950   1.05 
+#&gt; 6 beta[4]         0.900       0.500 median     24.9    39.1    49.2    59.4  
+#&gt; # ... with 1 more variable: hh &lt;dbl&gt;</div><div class='input'><span class='fu'>mcmc_intervals_data</span>(<span class='no'>x</span>, <span class='kw'>rhat</span> <span class='kw'>=</span> <span class='no'>fake_rhat_values</span>)</div><div class='output co'>#&gt; <span class='error'>Error in new_rhat(rhat): could not find function "new_rhat"</span></div><div class='input'><span class='fu'>mcmc_areas_data</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='st'>"alpha"</span>)</div><div class='output co'>#&gt; # A tibble: 2,091 x 5
+#&gt;    parameter interval interval_width     x density
+#&gt;    &lt;fct&gt;     &lt;chr&gt;             &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;
+#&gt;  1 alpha     inner             0.500 -28.7  0.0221
+#&gt;  2 alpha     inner             0.500 -28.7  0.0221
+#&gt;  3 alpha     inner             0.500 -28.7  0.0221
+#&gt;  4 alpha     inner             0.500 -28.7  0.0221
+#&gt;  5 alpha     inner             0.500 -28.6  0.0221
+#&gt;  6 alpha     inner             0.500 -28.6  0.0221
+#&gt;  7 alpha     inner             0.500 -28.6  0.0221
+#&gt;  8 alpha     inner             0.500 -28.6  0.0222
+#&gt;  9 alpha     inner             0.500 -28.5  0.0222
+#&gt; 10 alpha     inner             0.500 -28.5  0.0222
+#&gt; # ... with 2,081 more rows</div><div class='input'>
 <span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"gray"</span>)
-<span class='no'>p</span> <span class='kw'>&lt;-</span> <span class='fu'>mcmc_areas</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"alpha"</span>, <span class='st'>"beta[4]"</span>), <span class='kw'>rhat</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>1</span>, <span class='fl'>1.1</span>))
-<span class='no'>p</span> + <span class='fu'><a href='bayesplot-helpers.html'>legend_move</a></span>(<span class='st'>"bottom"</span>)</div><div class='img'><img src='MCMC-intervals-6.png' alt='' width='700' height='432.632880098887' /></div><div class='input'><span class='no'>p</span> + <span class='fu'><a href='bayesplot-helpers.html'>legend_move</a></span>(<span class='st'>"none"</span>) <span class='co'># or p + legend_none()</span></div><div class='img'><img src='MCMC-intervals-7.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+<span class='no'>p</span> <span class='kw'>&lt;-</span> <span class='fu'>mcmc_areas</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"alpha"</span>, <span class='st'>"beta[4]"</span>), <span class='kw'>rhat</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>1</span>, <span class='fl'>1.1</span>))</div><div class='output co'>#&gt; <span class='error'>Error in new_rhat(rhat): could not find function "new_rhat"</span></div><div class='input'><span class='no'>p</span> + <span class='fu'><a href='bayesplot-helpers.html'>legend_move</a></span>(<span class='st'>"bottom"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object 'p' not found</span></div><div class='input'><span class='no'>p</span> + <span class='fu'><a href='bayesplot-helpers.html'>legend_move</a></span>(<span class='st'>"none"</span>) <span class='co'># or p + legend_none()</span></div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object 'p' not found</span></div><div class='input'>
 </div><div class='input'><span class='co'># apply transformations</span>
 <span class='fu'>mcmc_intervals</span>(
   <span class='no'>x</span>,
   <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"beta[2]"</span>, <span class='st'>"sigma"</span>),
   <span class='kw'>transformations</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='st'>"sigma"</span> <span class='kw'>=</span> <span class='st'>"log"</span>, <span class='st'>"beta[2]"</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>x</span>) <span class='no'>x</span> + <span class='fl'>3</span>)
-)</div><div class='img'><img src='MCMC-intervals-8.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+)</div><div class='img'><img src='MCMC-intervals-5.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># apply same transformation to all selected parameters</span>
-<span class='fu'>mcmc_intervals</span>(<span class='no'>x</span>, <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='st'>"beta"</span>, <span class='kw'>transformations</span> <span class='kw'>=</span> <span class='st'>"exp"</span>)</div><div class='img'><img src='MCMC-intervals-9.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+<span class='fu'>mcmc_intervals</span>(<span class='no'>x</span>, <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='st'>"beta"</span>, <span class='kw'>transformations</span> <span class='kw'>=</span> <span class='st'>"exp"</span>)</div><div class='img'><img src='MCMC-intervals-6.png' alt='' width='700' height='433' /></div><div class='input'>
 </div><span class='co'># NOT RUN {</span>
 <span class='co'># example using fitted model from rstanarm package</span>
 <span class='fu'>library</span>(<span class='no'>rstanarm</span>)
@@ -296,7 +358,13 @@ parameters.</p></td>
 <span class='fu'>mcmc_areas</span>(<span class='no'>x</span>, <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='st'>"cyl"</span>, <span class='kw'>bw</span> <span class='kw'>=</span> <span class='st'>"SJ"</span>,
            <span class='kw'>rhat</span> <span class='kw'>=</span> <span class='fu'><a href='bayesplot-extractors.html'>rhat</a></span>(<span class='no'>fit</span>, <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='st'>"cyl"</span>))
 <span class='co'># }</span><div class='input'>
-
+</div><span class='co'># NOT RUN {</span>
+<span class='co'># Example of hierarchically related parameters</span>
+<span class='co'># plotted with ridgelines</span>
+<span class='no'>m</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>shinystan</span><span class='kw ns'>::</span><span class='no'><a href='http://www.rdocumentation.org/packages/shinystan/topics/launch_shinystan_demo'>eight_schools</a></span>@<span class='kw'>posterior_sample</span>
+<span class='fu'>mcmc_areas_ridges</span>(<span class='no'>m</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='st'>"mu"</span>, <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='st'>"theta"</span>) +
+ <span class='kw pkg'>ggplot2</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/labs'>ggtitle</a></span>(<span class='st'>"Treatment effect on eight schools (Rubin, 1981)"</span>)
+<span class='co'># }</span><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -322,11 +390,14 @@ parameters.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+
