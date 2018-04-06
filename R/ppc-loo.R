@@ -88,7 +88,7 @@
 #'
 #' # marginal predictive check using LOO probability integral transform
 #' color_scheme_set("orange")
-#' ppc_loo_pit_overlay(y, yrep, lw = lw, adjust = 0.9)
+#' ppc_loo_pit_overlay(y, yrep, lw = lw)
 #'
 #' ppc_loo_pit_qq(y, yrep, lw = lw)
 #' ppc_loo_pit_qq(y, yrep, lw = lw, compare = "normal")
