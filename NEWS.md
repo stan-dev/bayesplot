@@ -2,6 +2,9 @@
 
 (GitHub issue/PR numbers in parentheses)
 
+* The [LOO predictive
+checks](http://mc-stan.org/bayesplot/reference/PPC-loo.html) now require __loo__
+package version >= 2.0.0. (#139)
 
 # bayesplot 1.5.0
 

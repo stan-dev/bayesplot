@@ -310,9 +310,12 @@ ppc_loo_intervals <-
     order_by_median <- match.arg(order) == "median"
     if (!is.null(intervals)) {
       stopifnot(is.matrix(intervals), ncol(intervals) == 3)
-      message("'intervals' specified so ignoring 'yrep', 'psis_object', 'subset', if specified.")
+      message(
+        "'intervals' specified so ignoring ",
+        "'yrep', 'psis_object', 'subset', if specified."
+      )
     } else {
-      suggested_package("loo")
+      suggested_package("loo", min_version = "2.0.0")
       yrep <- validate_yrep(yrep, y)
       if (!is.null(subset)) {
         stopifnot(length(y) >= length(subset))
@@ -371,9 +374,12 @@ ppc_loo_ribbon <-
     y <- validate_y(y)
     if (!is.null(intervals)) {
       stopifnot(is.matrix(intervals), ncol(intervals) == 3)
-      message("'intervals' specified so ignoring 'yrep', 'psis_object', 'subset', if specified.")
+      message(
+        "'intervals' specified so ignoring ",
+        "'yrep', 'psis_object', 'subset', if specified."
+      )
     } else {
-      suggested_package("loo")
+      suggested_package("loo", min_version = "2.0.0")
       yrep <- validate_yrep(yrep, y)
       if (!is.null(subset)) {
         stopifnot(length(y) >= length(subset))
