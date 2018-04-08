@@ -55,7 +55,7 @@
 #'
 #' # change x axis to y values (instead of indices) and add x = y line
 #' ppc_intervals(y, yrep, x = y) + abline_01()
-#' 
+#'
 #'
 #' color_scheme_set("teal")
 #' year <- 1950:1999
@@ -77,8 +77,8 @@
 #'  xaxis_ticks(FALSE) +
 #'  panel_bg(fill = "gray20")
 #'
-#' ppc_data <- ppc_intervals_data(y, yrep, x = year, prob = 0.5)
-#' ppc_group_data <- ppc_intervals_data(y, yrep, x = year, group, prob = 0.5)
+#' ppc_dat <- ppc_intervals_data(y, yrep, x = year, prob = 0.5)
+#' ppc_group_dat <- ppc_intervals_data(y, yrep, x = year, group = group, prob = 0.5)
 #'
 #' \dontrun{
 #' library("rstanarm")
