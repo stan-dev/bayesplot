@@ -61,7 +61,7 @@ passed to \code{\link[ggplot2]{facet_wrap}} to control faceting.}
 \value{
 A ggplot object that can be further customized using the
   \pkg{ggplot2} package. The \code{_data} functions return the data that
-  would have be drawn by the plotting function.
+  would have been drawn by the plotting function.
 }
 \description{
 Medians and central interval estimates of \code{yrep} with \code{y} overlaid.
@@ -122,8 +122,8 @@ ppc_ribbon_grouped(
  xaxis_ticks(FALSE) +
  panel_bg(fill = "gray20")
 
-ppc_data <- ppc_intervals_data(y, yrep, x = year, prob = 0.5)
-ppc_group_data <- ppc_intervals_data(y, yrep, x = year, group, prob = 0.5)
+ppc_dat <- ppc_intervals_data(y, yrep, x = year, prob = 0.5)
+ppc_group_dat <- ppc_intervals_data(y, yrep, x = year, group = group, prob = 0.5)
 
 \dontrun{
 library("rstanarm")
