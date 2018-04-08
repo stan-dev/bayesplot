@@ -5,6 +5,7 @@
 [![Travis-CI Build Status](https://travis-ci.org/stan-dev/bayesplot.svg?branch=master)](https://travis-ci.org/stan-dev/bayesplot)
 [![codecov](https://codecov.io/gh/stan-dev/bayesplot/branch/master/graph/badge.svg)](https://codecov.io/gh/stan-dev/bayesplot)
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/bayesplot?color=blue)](http://cran.r-project.org/web/packages/bayesplot)
+[![Downloads](http://cranlogs.r-pkg.org/badges/bayesplot?color=blue)](http://cran.rstudio.com/package=bayesplot)
 
 **bayesplot** is an R package providing an extensive library of plotting
 functions for use after fitting Bayesian models (typically with MCMC). Currently
