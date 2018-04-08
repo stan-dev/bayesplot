@@ -1,3 +1,8 @@
+# bayesplot 1.5.0.9000
+
+(GitHub issue/PR numbers in parentheses)
+
+
 # bayesplot 1.5.0
 
 (GitHub issue/PR numbers in parentheses)
@@ -10,7 +15,7 @@
     - `mcmc_dens_chains()` draws the kernel density of each sampling chain.
     - `mcmc_areas_ridges()` draws the kernel density combined across chains.
     - Both functions have a `_data()` function to return the data plotted by
-      each function.
+      each function.     
 
 * `mcmc_intervals()` and `mcmc_areas()` have been rewritten. (#103)
     - They now use a discrete *y*-axis. Previously, they used a continuous
@@ -20,8 +25,10 @@
       curves.
 
 * Added `mcmc_intervals_data()` and `mcmc_areas_data()` that return data
-  plotted by `mcmc_intervals()` and `mcmc_areas()`. Similarly, `ppc_data()`
-  returns data plotted `ppc_hist()` and other ppc plot. (Advances #97)
+  plotted by `mcmc_intervals()` and `mcmc_areas()`. (Advances #97)
+  
+* New `ppc_data()` function returns the data plotted by many of the PPC plotting
+  functions. (Advances #97)
 
 * Added `ppc_loo_pit_overlay()` function for a better LOO PIT predictive check.
   (#123)
