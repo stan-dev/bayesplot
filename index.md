@@ -5,10 +5,10 @@
 
 <br>
 
-<div style="text-align:center">
-<a href="http://mc-stan.org">
-<img src="https://raw.githubusercontent.com/stan-dev/logos/master/logo.png" width=200 alt="Stan Logo"/>
-</a>
+<div style="text-align:left">
+<span><a href="http://mc-stan.org">
+<img src="https://raw.githubusercontent.com/stan-dev/logos/master/logo_tm.png" width=100 alt="Stan Logo"/> </a><h2><strong>bayesplot</strong></h2>
+<h4>Plotting Bayesian models</h4></span>
 </div>
 
 <br>
@@ -49,17 +49,23 @@ for users, but also a common set of functions that can be easily used by
 developers working on a variety of packages for Bayesian modeling, particularly
 (but not necessarily) those powered by [**RStan**](http://mc-stan.org/rstan).
 
+## Getting Started
 
+If you are just getting started with **bayesplot** we recommend starting with
+the tutorial [vignettes](http://mc-stan.org/bayesplot/articles/index.html).
+There are also many
+[examples](http://mc-stan.org/bayesplot/reference/index.html) throughout the
+package documentation.
 
 ## Installation
 
-* Install from CRAN:
+Install the latest release from **CRAN**:
 
 ```r
 install.packages("bayesplot")
 ```
 
-* Install latest development version from GitHub (requires [devtools](https://github.com/hadley/devtools) package):
+Install the latest development version from **GitHub**:
 
 ```r
 if (!require("devtools")) {
