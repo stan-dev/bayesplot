@@ -135,9 +135,7 @@
   <span class="kw">install.packages</span>(<span class="st">"devtools"</span>)
 }
 devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/install_github">install_github</a></span>(<span class="st">"stan-dev/bayesplot"</span>, <span class="dt">dependencies =</span> <span class="ot">TRUE</span>, <span class="dt">build_vignettes =</span> <span class="ot">TRUE</span>)</code></pre></div>
-<p>You can also set <code>build_vignettes=FALSE</code> for a faster installation from GitHub (the vignettes can always be accessed online anytime at <a href="http://mc-stan.org/bayesplot/articles/">mc-stan.org/bayesplot/articles</a>).</p>
-<p>If you are not using the <a href="https://www.rstudio.com/">RStudio IDE</a> and you get an error related to “pandoc” you will either need to remove the argument <code>build_vignettes=TRUE</code> (to avoid building the vignettes) or install <a href="http://pandoc.org/">pandoc</a> (e.g., <code>brew install pandoc</code>) and probably also pandoc-citeproc (e.g., <code>brew install pandoc-citeproc</code>). If you have the <code>rmarkdown</code> R package installed then you can check if you have pandoc by running the following in R:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">rmarkdown<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/rmarkdown/topics/pandoc_available">pandoc_available</a></span>()</code></pre></div>
+<p>You can also set <code>build_vignettes=FALSE</code> for a faster installation from GitHub (the vignettes can always be accessed online anytime at <a href="http://mc-stan.org/bayesplot/articles/">mc-stan.org/bayesplot/articles</a>). For issues related to pandoc see the <a href="https://github.com/stan-dev/bayesplot#installation">Readme</a></p>
 </div>
 <div id="examples" class="section level2">
 <h2 class="hasAnchor">
