@@ -137,6 +137,46 @@ test_that("facet_text returns correct theme object", {
   )
 })
 
+
+# facet relabelling -------------------------------------------------------
+test_that("facet_vars returns faceting info", {
+  expect_error(
+    facet_vars(mcmc_hist(example_mcmc_draws(params = 1))),
+    "Facets not found for this plot"
+  )
+
+  p <- mcmc_trace(example_mcmc_draws())
+  facet_info <- facet_vars(p)
+  expect_equal(facet_info[[1]], "Parameter")
+  expect_named(facet_info, "facet_wrap")
+  expect_equal(attr(facet_info, "scales"), "free")
+
+  # change scales
+  p2 <- mcmc_trace(example_mcmc_draws(), facet_args = list(scales = "fixed"))
+  facet_info2 <- facet_vars(p2)
+  expect_equal(attr(facet_info2, "scales"), "fixed")
+
+  # test with plot that uses facet_grid
+  p3 <- ppc_error_hist_grouped(example_y_data(), example_yrep_draws()[1:4, ],
+                               group = example_group_data())
+  facet_info3 <- facet_vars(p3)
+  expect_named(facet_info3, c("facet_grid_rows", "facet_grid_cols"))
+  expect_equal(facet_info3[[1]], "rep_id")
+  expect_equal(facet_info3[[2]], "group")
+  expect_equal(attr(facet_info3, "scales"), "free")
+})
+
+test_that("facet_relabel_gg doesn't error", {
+  x <- example_mcmc_draws(params = 3)
+  p <- mcmc_trace(x, facet_args = list(scales = "free_y"))
+  new_labs <- setNames(c("a", "b", "c"), parameter_names(x))
+  p2 <- facet_relabel_gg(p, labels = new_labs)
+
+  # is facet_vars output on new plot still correct?
+  expect_equal(facet_vars(p2)[[1]], "Parameter")
+  expect_equal(attr(facet_vars(p2), "scales"), "free_y")
+})
+
 # axis titles -------------------------------------------------------------
 test_that("xaxis_title returns correct theme object", {
   expect_identical(xaxis_title(FALSE), xlab(NULL))

@@ -2,7 +2,7 @@
 #'
 #' Convenience functions for adding to (and changing details of) ggplot objects
 #' (many of the objects returned by \pkg{bayesplot} functions). See the
-#' \strong{Examples} section, below.
+#' \strong{Details} and \strong{Examples} sections, below.
 #'
 #' @name bayesplot-helpers
 #'
@@ -23,12 +23,26 @@
 #'   For \code{overlay_function}, \code{...} is passed to
 #'   \code{\link[ggplot2]{stat_function}}.
 #'
+#'   For \code{facet_relabel_gg}, \code{...} is passed to
+#'   \code{\link[ggplot2]{facet_wrap}} or \code{\link[ggplot2]{facet_grid}}.
+#'
 #' @return
-#' A \pkg{ggplot2} layer or \code{\link[ggplot2]{theme}} object that can be
-#' added to existing ggplot objects, like those created by many of the
-#' \pkg{bayesplot} plotting functions. See the \strong{Details} section.
+#' Most of these functions return a \pkg{ggplot2} layer or
+#' \code{\link[ggplot2]{theme}} object that can be added to existing ggplot
+#' objects, like those created by many of the \pkg{bayesplot} plotting
+#' functions.
+#'
+#' However, there are a few exceptions. Functions with names ending in
+#' \code{_gg} (e.g., \code{facet_relabel_gg}) return an entire ggplot object (a
+#' modified version of the ggplot object used as the input to the function). A
+#' few other functions (e.g., \code{facet_vars}) return useful info about the
+#' object passed in as input. See the \strong{Details} section for more
+#' information.
 #'
 #' @details
+#' These subsections provide more details on the individual helper functions.
+#' See the \strong{Examples} section for usage demonstrations.
+#'
 #' \subsection{Add vertical, horizontal, and diagonal lines to plots}{
 #' \itemize{
 #' \item \code{vline_at} and \code{hline_at} return an object created by either
@@ -50,13 +64,33 @@
 #' \code{med} is \code{TRUE}).
 #' }
 #' }
-#' \subsection{Control appearance of facet strips}{
+#'
+#' \subsection{Control appearance of facet strips and change their labels}{
 #' \itemize{
 #' \item \code{facet_text} and \code{facet_bg} return ggplot2 theme objects that
 #' can be added to an existing plot (ggplot object) to format the text and the
 #' background for the facet strips.
+#'
+#' \item \code{facet_relabel_gg} is atypical in that it accepts a ggplot object
+#' as input (so it can detect the variable currently used for faceting) and
+#' returns a modified version of the same ggplot object as its output (with
+#' update facet labels). The \code{...} can be use with \code{facet_relabel_gg}
+#' to manually pass other arguments to \code{facet_wrap} or \code{facet_grid}
+#' other than \code{"facets"} and \code{"scales"} arguments, which are
+#' automatically inferred from the plot object.
+#'
+#' \item \code{facet_vars} takes a ggplot object as input and returns a
+#' character vector indicating the name of the variable(s) \pkg{bayesplot} uses
+#' internally to create facets (if any). If \code{facet_relabel_gg} isn't
+#' flexible enough to relabel the facets how you want then \code{facet_vars}
+#' gives you the info you need to add \code{\link[ggplot2]{facet_wrap}} (or
+#' \code{\link[ggplot2]{facet_grid}}) to the object yourself. The \code{"scales"}
+#' attribute of the \code{facet_vars} result indicates the value \pkg{bayesplot}
+#' used for the \code{scales} argument to \code{facet_wrap} (or
+#' \code{facet_grid}).
 #' }
 #' }
+#'
 #' \subsection{Move legend, remove legend, or style the legend text}{
 #' \itemize{
 #' \item \code{legend_move} and \code{legend_none} return a ggplot2 theme object
@@ -66,6 +100,7 @@
 #' except it controls the legend text.
 #' }
 #' }
+#'
 #' \subsection{Control appearance of \eqn{x}-axis and \eqn{y}-axis features}{
 #' \itemize{
 #' \item \code{xaxis_title} and \code{yaxis_title} return a ggplot2 theme object
@@ -83,6 +118,7 @@
 #' appearance of the axis tick marks.
 #' }
 #' }
+#'
 #' \subsection{Customize plot background}{
 #' \itemize{
 #' \item \code{plot_bg} returns a ggplot2 theme object that can be added to an
@@ -94,6 +130,7 @@
 #' an existing plot (ggplot object) to add grid lines to the plot background.
 #' }
 #' }
+#'
 #' \subsection{Superimpose a function on an existing plot}{
 #' \itemize{
 #' \item \code{overlay_function} is a simple wrapper for
@@ -158,9 +195,9 @@
 #'               size = 2, alpha = 0.75)
 #'
 #'
-#' ##########################
-#' ### format axis titles ###
-#' ##########################
+#' ###################################
+#' ### format axis titles and text ###
+#' ###################################
 #' color_scheme_set("green")
 #' y <- example_y_data()
 #' yrep <- example_yrep_draws()
@@ -172,24 +209,39 @@
 #'  xaxis_title(size = 13, family = "sans") +
 #'  ggplot2::xlab(expression(italic(T(y)) == median(italic(y))))
 #'
+#' # change the style of the xaxis text, for example make it
+#' # bigger and the same color as the colors used in the plot
+#' clrs <- color_scheme_get() # get current color scheme
+#' p3 + xaxis_text(size = 20, color = clrs$mid)
 #'
-#' ################################
-#' ### format axis & facet text ###
-#' ################################
-#' color_scheme_set("gray")
+#' ###########################################
+#' ### format facet text and change labels ###
+#' ###########################################
+#' color_scheme_set("darkgray")
 #' p4 <- mcmc_trace(example_mcmc_draws(), pars = c("alpha", "sigma"))
+#' plot(p4)
 #'
 #' myfacets <-
 #'  facet_bg(fill = "gray30", color = NA) +
 #'  facet_text(face = "bold", color = "skyblue", size = 14)
-#' p4 + myfacets
+#' (p4 <- p4 + myfacets)
+#'
+#' # also change facet labels
+#' new_labs <- c("alpha" = "Owl", "sigma" = "Falcon")
+#' (p4 <- facet_relabel_gg(p4, labels = new_labs))
+#'
+#' # facet_vars returns info about the faceting
+#' facet_vars(p4)
+#'
+#' # relabeling facets in grouped PPC plots
+#'
+#'
 #'
 #' \donttest{
-#' ##########################
-#' ### control tick marks ###
-#' ##########################
+#' ##############################
+#' ### format axis tick marks ###
+#' ##############################
 #' p4 +
-#'  myfacets +
 #'  yaxis_text(FALSE) +
 #'  yaxis_ticks(FALSE) +
 #'  xaxis_ticks(size = 1, color = "skyblue")
@@ -422,6 +474,70 @@ facet_bg <- function(on = TRUE, ...) {
     element_rect(...)
     else
       element_blank())
+}
+
+#' @rdname bayesplot-helpers
+#' @export
+#' @param gg A ggplot object.
+#' @param labels For facet relabelling, \code{labels} can be a named character
+#'   vector where the names are the current labels and the values are the new
+#'   labels to use, or \code{labels} can be a labeller function as described in
+#'   \code{\link[ggplot2]{facet_wrap}}.
+#'
+facet_relabel_gg <- function(gg, labels = NULL, ...) {
+  stopifnot(inherits(gg, "ggplot"), !is.null(labels))
+  if (!inherits(labels, "labeller")) {
+    labels <- ggplot2::as_labeller(labels)
+  }
+  vars <- facet_vars(gg)
+
+  if (length(vars) > 1) {
+    facets <- paste(vars[1], "~", vars[2])
+    gg <-
+      gg + facet_grid(facets,
+                      labeller = labels,
+                      scales = attr(vars, "scales"),
+                      ...)
+  } else {
+    facets <- vars[[1]]
+    gg <-
+      gg + facet_wrap(facets,
+                      labeller = labels,
+                      scales = attr(vars, "scales"),
+                      ...)
+  }
+
+  return(gg)
+}
+
+#' @rdname bayesplot-helpers
+#' @export
+facet_vars <- function(gg) {
+  pars <- gg$facet$params
+
+  if (!is.null(pars[["facets"]])) {
+    out <- c(facet_wrap = names(pars$facets))
+  } else if (!is.null(pars[["rows"]]) &&
+             !is.null(pars[["cols"]])) {
+    out <- c(facet_grid_rows = names(pars$rows),
+             facet_grid_cols = names(pars$cols))
+  } else {
+    stop("Facets not found for this plot.")
+  }
+
+  free <- pars[["free"]]
+  if (free[["x"]] && free[["y"]]) {
+    scales <- "free"
+  } else if (free[["x"]]) {
+    scales <- "free_x"
+  } else if (free[["y"]]) {
+    scales <- "free_y"
+  } else {
+    scales <- "fixed"
+  }
+  attr(out, "scales") <- scales
+
+  return(out)
 }
 
 # plot background ---------------------------------------------------------
