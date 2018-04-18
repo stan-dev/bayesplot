@@ -2,6 +2,10 @@
 
 (GitHub issue/PR numbers in parentheses)
 
+* `mcmc_pairs()` now has an argument `grid_args` to provide a way of passing
+optional arguments to `gridExtra::arrangeGrob()`. This can be used to add a
+title to the plot, for example. (#143)
+
 
 # bayesplot 1.5.0
 

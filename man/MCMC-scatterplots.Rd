@@ -21,7 +21,8 @@ mcmc_pairs(x, pars = character(), regex_pars = character(),
   transformations = list(), ..., diag_fun = c("hist", "dens"),
   off_diag_fun = c("scatter", "hex"), diag_args = list(),
   off_diag_args = list(), condition = pairs_condition(), lp = NULL,
-  np = NULL, np_style = pairs_style_np(), max_treedepth = NULL)
+  np = NULL, np_style = pairs_style_np(), max_treedepth = NULL,
+  grid_args = list())
 
 scatter_style_np(div_color = "red", div_shape = 16, div_size = 2.5,
   div_alpha = 1)
@@ -121,6 +122,12 @@ object returned by \code{\link{log_posterior}}.}
 maximum treedepth allowed when fitting the model (if fit using NUTS). This
 is only needed for detecting which transitions (if any) hit the maximum
 treedepth.}
+
+\item{grid_args}{For \code{mcmc_pairs}, arguments to pass to
+\code{gridExtra::arrangeGrob} via \code{\link{bayesplot_grid}}. For
+example, since \code{mcmc_pairs} returns more than a single ggplot object,
+using \code{\link{ggtitle}} afterwards will not work. But you you can still
+add a title to the plot using \code{grid_args = list(top="My title")}.}
 
 \item{div_color, div_shape, div_size, div_alpha, td_color, td_shape, td_size, td_alpha}{Optional arguments to the \code{scatter_style_np} or \code{pairs_style_np}
 helper functions that are eventually passed to
@@ -305,8 +312,8 @@ div_style <- scatter_style_np(div_color = "green", div_shape = 4, div_size = 4)
 mcmc_scatter(posterior, pars = c("sigma", "(Intercept)"),
              np = np, np_style = div_style)
 
-# split the draws according to above/below median accept_stat__ and
-# show approximate location of divergences (red points)
+# split the draws according to above/below median accept_stat__
+# and show approximate location of divergences (red points)
 color_scheme_set("brightblue")
 mcmc_pairs(
   posterior,
