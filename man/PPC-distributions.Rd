@@ -30,7 +30,8 @@ ppc_dens(y, yrep, ..., trim = FALSE, size = 0.5, alpha = 1)
 ppc_dens_overlay(y, yrep, ..., size = 0.25, alpha = 0.7, trim = FALSE,
   bw = "nrd0", adjust = 1, kernel = "gaussian", n_dens = 1024)
 
-ppc_ecdf_overlay(y, yrep, ..., pad = TRUE, size = 0.25, alpha = 0.7)
+ppc_ecdf_overlay(y, yrep, ..., discrete = FALSE, pad = TRUE, size = 0.25,
+  alpha = 0.7)
 
 ppc_violin_grouped(y, yrep, group, ..., probs = c(0.1, 0.5, 0.9), size = 1,
   alpha = 1, y_draw = c("violin", "points", "both"), y_size = 1,
@@ -73,6 +74,11 @@ the \code{yrep} distributions.}
 \item{bw, adjust, kernel, n_dens}{Optional arguments passed to
 \code{\link[stats]{density}} to override default kernel density estimation
 parameters. \code{n_dens} defaults to 1024.}
+
+\item{discrete}{For \code{ppc_ecdf_overlay}, should the data be treated as
+discrete? The default is \code{FALSE}, in which case \code{geom="line"} is
+passed to \code{\link[ggplot2]{stat_ecdf}}. If \code{discrete} is set to
+\code{TRUE} then \code{geom="step"} is used.}
 
 \item{pad}{A logical scalar passed to \code{\link[ggplot2]{stat_ecdf}}.}
 

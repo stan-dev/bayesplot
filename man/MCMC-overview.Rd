@@ -53,8 +53,8 @@ warmup iterations for diagnostic purposes.
     including with HMC/NUTS diagnostic information.
   }
   \item{\strong{\link[=MCMC-parcoord]{Parallel coordinates plots}}}{
-   Parallel coordinates plot of MCMC draws (one dimension per parameter),
-   optionally including with HMC/NUTS diagnostic information.
+    Parallel coordinates plot of MCMC draws (one dimension per parameter),
+    optionally including with HMC/NUTS diagnostic information.
   }
   \item{\strong{\link[=MCMC-combos]{Combinations}}}{
     Combination plots (e.g. trace plot + histogram).
