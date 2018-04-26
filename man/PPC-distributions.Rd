@@ -132,7 +132,8 @@ For Binomial data, the plots will typically be most useful if
   \item{\code{ppc_dens_overlay, ppc_ecdf_overlay}}{
    Kernel density or empirical CDF estimates of each dataset (row) in
    \code{yrep} are overlaid, with the distribution of \code{y} itself on top
-   (and in a darker shade).
+   (and in a darker shade). When using \code{ppc_ecdf_overlay} with discrete
+   data set the \code{discrete} argument to \code{TRUE} for better results.
   }
   \item{\code{ppc_violin_grouped}}{
    The density estimate of \code{yrep} within each level of a grouping

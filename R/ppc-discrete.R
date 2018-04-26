@@ -1,9 +1,11 @@
 #' PPCs for discrete outcomes
 #'
-#' This page documents the PPC functions that can only be used if \code{y} and
-#' \code{yrep} are discrete. Currently these include rootograms for count
-#' outcomes and bar plots for ordinal, categorical, and multinomial outcomes.
-#' See the \strong{Plot Descriptions} section below.
+#' Many of the \link{PPC} functions in \pkg{bayesplot} can
+#' be used with discrete data. The small subset of these functions that can
+#' \emph{only} be used if \code{y} and \code{yrep} are discrete are documented
+#' on this page. Currently these include rootograms for count outcomes and bar
+#' plots for ordinal, categorical, and multinomial outcomes. See the
+#' \strong{Plot Descriptions} section below.
 #'
 #' @name PPC-discrete
 #' @family PPCs
