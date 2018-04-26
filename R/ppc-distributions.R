@@ -264,7 +264,7 @@ ppc_dens_overlay <- function(y, yrep, ...,
                              adjust = 1,
                              kernel = "gaussian",
                              n_dens = 1024) {
-  
+
   check_ignored_arguments(...)
   data <- ppc_data(y, yrep)
 
@@ -312,36 +312,52 @@ ppc_dens_overlay <- function(y, yrep, ...,
 
 #' @export
 #' @rdname PPC-distributions
+#' @param discrete For \code{ppc_ecdf_overlay}, should the data be treated as
+#'   discrete? The default is \code{FALSE}, in which case \code{geom="line"} is
+#'   passed to \code{\link[ggplot2]{stat_ecdf}}. If \code{discrete} is set to
+#'   \code{TRUE} then \code{geom="step"} is used.
 #' @param pad A logical scalar passed to \code{\link[ggplot2]{stat_ecdf}}.
-ppc_ecdf_overlay <- function(y, yrep, ..., pad = TRUE, size = 0.25,
-                             alpha = 0.7) {
-  check_ignored_arguments(...)
-  data <- ppc_data(y, yrep)
+ppc_ecdf_overlay <-
+  function(y,
+           yrep,
+           ...,
+           discrete = FALSE,
+           pad = TRUE,
+           size = 0.25,
+           alpha = 0.7) {
+    check_ignored_arguments(...)
+    data <- ppc_data(y, yrep)
 
-  ggplot(data) +
-    aes_(x = ~ value) +
-    hline_at(c(0, 0.5, 1), size = c(0.2, 0.1, 0.2),
-             linetype = 2, color = get_color("dh")) +
-    stat_ecdf(
-      data = function(x) dplyr::filter(x, !.data$is_y),
-      mapping = aes_(group = ~ rep_id, color = "yrep"),
-      geom = "line",
-      size = size,
-      alpha = alpha,
-      pad = pad) +
-    stat_ecdf(
-      data = function(x) dplyr::filter(x, .data$is_y),
-      mapping = aes_(color = "y"),
-      geom = "line",
-      size = 1,
-      pad = pad) +
-    scale_color_ppc_dist() +
-    xlab(y_label()) +
-    scale_y_continuous(breaks = c(0, 0.5, 1)) +
-    yaxis_title(FALSE) +
-    xaxis_title(FALSE) +
-    yaxis_ticks(FALSE)
-}
+    ggplot(data) +
+      aes_(x = ~ value) +
+      hline_at(
+        c(0, 0.5, 1),
+        size = c(0.2, 0.1, 0.2),
+        linetype = 2,
+        color = get_color("dh")
+      ) +
+      stat_ecdf(
+        data = function(x) dplyr::filter(x, !.data$is_y),
+        mapping = aes_(group = ~ rep_id, color = "yrep"),
+        geom = if (discrete) "step" else "line",
+        size = size,
+        alpha = alpha,
+        pad = pad
+      ) +
+      stat_ecdf(
+        data = function(x) dplyr::filter(x, .data$is_y),
+        mapping = aes_(color = "y"),
+        geom = if (discrete) "step" else "line",
+        size = 1,
+        pad = pad
+      ) +
+      scale_color_ppc_dist() +
+      xlab(y_label()) +
+      scale_y_continuous(breaks = c(0, 0.5, 1)) +
+      yaxis_title(FALSE) +
+      xaxis_title(FALSE) +
+      yaxis_ticks(FALSE)
+  }
 
 #' @export
 #' @rdname PPC-distributions

@@ -204,6 +204,11 @@ mcmc_hex <- function(x,
 #'   \code{off_diag_fun} is \code{"scatter"} then \code{off_diag_args} could
 #'   include optional arguments to \code{mcmc_scatter} like \code{size} and
 #'   \code{alpha}.
+#' @param grid_args For \code{mcmc_pairs}, arguments to pass to
+#'   \code{gridExtra::arrangeGrob} via \code{\link{bayesplot_grid}}. For
+#'   example, since \code{mcmc_pairs} returns more than a single ggplot object,
+#'   using \code{\link{ggtitle}} afterwards will not work. But you you can still
+#'   add a title to the plot using \code{grid_args = list(top="My title")}.
 #'
 #' @examples
 #' \donttest{
@@ -253,8 +258,8 @@ mcmc_hex <- function(x,
 #' mcmc_scatter(posterior, pars = c("sigma", "(Intercept)"),
 #'              np = np, np_style = div_style)
 #'
-#' # split the draws according to above/below median accept_stat__ and
-#' # show approximate location of divergences (red points)
+#' # split the draws according to above/below median accept_stat__
+#' # and show approximate location of divergences (red points)
 #' color_scheme_set("brightblue")
 #' mcmc_pairs(
 #'   posterior,
@@ -300,7 +305,8 @@ mcmc_pairs <- function(x,
                        lp = NULL,
                        np = NULL,
                        np_style = pairs_style_np(),
-                       max_treedepth = NULL) {
+                       max_treedepth = NULL,
+                       grid_args = list()) {
   check_ignored_arguments(...)
 
   stopifnot(
@@ -413,7 +419,9 @@ mcmc_pairs <- function(x,
   plots <- lapply(plots, function(x)
     x + xaxis_title(FALSE) + yaxis_title(FALSE))
 
-  bayesplot_grid(plots = plots, legends = FALSE)
+  bayesplot_grid(plots = plots,
+                 legends = FALSE,
+                 grid_args = grid_args)
 }
 
 
