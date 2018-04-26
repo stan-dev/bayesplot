@@ -10,6 +10,8 @@ checks](http://mc-stan.org/bayesplot/reference/PPC-loo.html) now require
 optional arguments to `gridExtra::arrangeGrob()`. This can be used to add a
 title to the plot, for example. (#143)
 
+* `ppc_ecdf_overlay()` gains an argument `discrete`, which is `FALSE` by default, but can be used to make the Geom more appropriate for discrete data. (#145)
+
 
 # bayesplot 1.5.0
 
