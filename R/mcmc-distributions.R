@@ -104,6 +104,8 @@ NULL
 #' @export
 #' @template args-hist
 #' @template args-hist-freq
+#' @param breaks Passed to \code{\link[ggplot2]{geom_histogram}} as an
+#'   alternative to binwidth.
 #'
 mcmc_hist <- function(x,
                       pars = character(),
@@ -112,6 +114,7 @@ mcmc_hist <- function(x,
                       facet_args = list(),
                       ...,
                       binwidth = NULL,
+                      breaks = NULL,
                       freq = TRUE) {
   check_ignored_arguments(...)
   .mcmc_hist(
@@ -121,6 +124,7 @@ mcmc_hist <- function(x,
     transformations = transformations,
     facet_args = facet_args,
     binwidth = binwidth,
+    breaks = breaks,
     by_chain = FALSE,
     freq = freq,
     ...
@@ -306,6 +310,7 @@ mcmc_violin <- function(x,
                       transformations = list(),
                       facet_args = list(),
                       binwidth = NULL,
+                      breaks = NULL,
                       by_chain = FALSE,
                       freq = TRUE,
                       ...) {
@@ -322,7 +327,8 @@ mcmc_violin <- function(x,
       color = get_color("mid_highlight"),
       size = .25,
       na.rm = TRUE,
-      binwidth = binwidth
+      binwidth = binwidth,
+      breaks = breaks
     )
 
   if (is.null(facet_args[["scales"]]))

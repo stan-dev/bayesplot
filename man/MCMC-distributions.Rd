@@ -13,7 +13,7 @@
 \usage{
 mcmc_hist(x, pars = character(), regex_pars = character(),
   transformations = list(), facet_args = list(), ..., binwidth = NULL,
-  freq = TRUE)
+  breaks = NULL, freq = TRUE)
 
 mcmc_dens(x, pars = character(), regex_pars = character(),
   transformations = list(), facet_args = list(), ..., trim = FALSE)
@@ -77,6 +77,9 @@ to control faceting.}
 
 \item{binwidth}{An optional value used as the \code{binwidth} argument to
 \code{\link[ggplot2]{geom_histogram}} to override the default binwidth.}
+
+\item{breaks}{Passed to \code{\link[ggplot2]{geom_histogram}} as an
+alternative to binwidth.}
 
 \item{freq}{For histograms, \code{freq=TRUE} (the default) puts count on the
 y-axis. Setting \code{freq=FALSE} puts density on the y-axis. (For many

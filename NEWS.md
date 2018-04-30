@@ -12,6 +12,8 @@ title to the plot, for example. (#143)
 
 * `ppc_ecdf_overlay()` gains an argument `discrete`, which is `FALSE` by default, but can be used to make the Geom more appropriate for discrete data. (#145)
 
+* `mcmc_hist()` gains a `breaks` argument that can be used as an alternative to
+`binwidth`.
 
 # bayesplot 1.5.0
 
