@@ -14,13 +14,13 @@
 \usage{
 mcmc_rhat(rhat, ..., size = NULL)
 
-mcmc_rhat_hist(rhat, ..., binwidth = NULL)
+mcmc_rhat_hist(rhat, ..., binwidth = NULL, breaks = NULL)
 
 mcmc_rhat_data(rhat, ...)
 
 mcmc_neff(ratio, ..., size = NULL)
 
-mcmc_neff_hist(ratio, ..., binwidth = NULL)
+mcmc_neff_hist(ratio, ..., binwidth = NULL, breaks = NULL)
 
 mcmc_neff_data(ratio, ...)
 
@@ -39,8 +39,11 @@ mcmc_acf_bar(x, pars = character(), regex_pars = character(),
 default size (for \code{mcmc_rhat}, \code{mcmc_neff}) or
 \code{\link[ggplot2]{geom_line}}'s default size (for \code{mcmc_acf}).}
 
-\item{binwidth}{An optional value used as the \code{binwidth} argument to
-\code{\link[ggplot2]{geom_histogram}} to override the default binwidth.}
+\item{binwidth}{Passed to \code{\link[ggplot2]{geom_histogram}} to override
+the default binwidth.}
+
+\item{breaks}{Passed to \code{\link[ggplot2]{geom_histogram}} as an
+alternative to \code{binwidth}.}
 
 \item{ratio}{A vector of \emph{ratios} of effective sample size estimates to
 total sample size. See \code{\link{neff_ratio}}.}
