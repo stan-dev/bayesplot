@@ -77,3 +77,48 @@ theme_default <-
         legend.key = element_blank()
       )
   }
+
+bayes_theme_env <- new.env(parent = emptyenv())
+bayes_theme_env$current <- theme_default()
+
+
+#' Get, set, and modify the active bayesplot theme
+#'
+#' @inheritParams ggplot2::theme_set
+#' @export
+#'
+#' @examples
+bayesplot_theme_get <- function() {
+  if (identical(ggplot2::theme_gray(), ggplot2::theme_get())) {
+    bayes_theme_env$current
+  } else {
+    ggplot2::theme_get()
+  }
+}
+
+#' @rdname bayesplot_theme_get
+#' @export
+bayesplot_theme_set <- function(new) {
+  missing <- setdiff(names(ggplot2::theme_gray()), names(new))
+  if (length(missing) > 0) {
+    warning("New theme missing the following elements: ",
+            paste(missing, collapse = ", "), call. = FALSE)
+  }
+
+  old <- bayes_theme_env$current
+  bayes_theme_env$current <- new
+  invisible(old)
+}
+
+#' @rdname bayesplot_theme_get
+#' @export
+bayesplot_theme_update <- function(...) {
+  bayesplot_theme_set(bayesplot_theme_get() + ggplot2::theme(...))
+}
+
+#' @rdname bayesplot_theme_get
+#' @export
+#' @importFrom ggplot2 %+replace%
+bayesplot_theme_replace <- function(...) {
+  bayesplot_theme_set(bayesplot_theme_get() %+replace% ggplot2::theme(...))
+}
