@@ -35,26 +35,25 @@ the argument to \code{\link[ggplot2]{theme_set}}.
 \examples{
 class(theme_default())
 
-# plot using the default theme
-ggplot2::theme_set(theme_default())
+# plot using the default theme automatically
 x <- example_mcmc_draws()
 mcmc_hist(x)
 
-# change the default font size and family
-ggplot2::theme_set(theme_default(base_size = 8, base_family = "sans"))
+# change the default font size and family for bayesplots
+bayesplot_theme_set(theme_default(base_size = 8, base_family = "sans"))
 mcmc_hist(x)
 mcmc_areas(x, regex_pars = "beta")
 
 # change back
-ggplot2::theme_set(theme_default())
+bayesplot_theme_set(theme_default())
 mcmc_areas(x, regex_pars = "beta")
 
 # use one of the themes included in ggplot2
-ggplot2::theme_set(ggplot2::theme_gray())
+bayesplot_theme_set(ggplot2::theme_gray())
 mcmc_dens_overlay(x)
 
-# change back to bayesplot default theme
-ggplot2::theme_set(bayesplot::theme_default())
+# change all ggplots to theme_default()
+ggplot2::theme_set(theme_default())
 mcmc_dens_overlay(x)
 
 }
