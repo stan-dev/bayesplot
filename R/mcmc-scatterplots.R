@@ -673,7 +673,8 @@ pairs_condition <- function(chains = NULL, draws = NULL, nuts = NULL) {
     xydata <- dplyr::filter(xydata, UQ(divg) == 0)
   }
 
-  graph <- ggplot(data = xydata, aes_(x = ~ x, y = ~ y))
+  graph <- ggplot(data = xydata, aes_(x = ~ x, y = ~ y)) +
+    bayesplot_theme_get()
 
   if (!hex) { # scatterplot
     graph <- graph +

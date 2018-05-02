@@ -172,7 +172,8 @@ mcmc_nuts_acceptance <-
         size = .25,
         na.rm = TRUE,
         binwidth = binwidth
-      )
+      ) +
+      bayesplot_theme_get()
 
     if (!overlay_chain) {
       hists <- hists +
@@ -204,7 +205,8 @@ mcmc_nuts_acceptance <-
         fill = get_color(ifelse(overlay_chain, "l", "m")),
         color = get_color(ifelse(overlay_chain, "lh", "mh"))
       ) +
-      labs(x = "accept_stat__", y = "lp__")
+      labs(x = "accept_stat__", y = "lp__") +
+      bayesplot_theme_get()
 
     if (overlay_chain) {
       hists <- hists +
@@ -262,14 +264,16 @@ mcmc_nuts_divergence <- function(x, lp, chain = NULL, ...) {
   violin_lp <- ggplot(violin_lp_data, aes_(x = ~ Value, y = ~ lp)) +
     geom_violin(fill = get_color("l"), color = get_color("lh")) +
     ylab("lp__") +
-    xaxis_title(FALSE)
+    xaxis_title(FALSE) +
+      bayesplot_theme_get()
 
   violin_accept_stat_data <- data.frame(divergent, as = accept_stat$Value)
   violin_accept_stat <- ggplot(violin_accept_stat_data, aes_(x = ~ Value, y = ~ as)) +
     geom_violin(fill = get_color("l"), color = get_color("lh")) +
     ylab("accept_stat__") +
     scale_y_continuous(limits = c(NA, 1.05)) +
-    xaxis_title(FALSE)
+    xaxis_title(FALSE) +
+      bayesplot_theme_get()
 
   div_count <- table(divergent$Value)[[2]]
   div_text <- ngettext(div_count, "divergence", "divergences")
@@ -323,7 +327,8 @@ mcmc_nuts_stepsize <- function(x, lp, chain = NULL, ...) {
     geom_violin(fill = get_color("l"), color = get_color("lh")) +
     ylab("lp__") +
     stepsize_labels +
-    xaxis_title(FALSE)
+    xaxis_title(FALSE) +
+    bayesplot_theme_get()
 
   violin_accept_stat_data <-
     dplyr::left_join(accept_stat, stepsize_by_chain, by = "Chain")
@@ -333,7 +338,8 @@ mcmc_nuts_stepsize <- function(x, lp, chain = NULL, ...) {
     ylab("accept_stat__") +
     scale_y_continuous(limits = c(NA, 1.05)) +
     stepsize_labels +
-    xaxis_title(FALSE)
+    xaxis_title(FALSE) +
+    bayesplot_theme_get()
 
   if (!is.null(chain)) {
     violin_lp <- violin_lp +
@@ -370,20 +376,23 @@ mcmc_nuts_treedepth <- function(x, lp, chain = NULL, ...) {
     xlab("treedepth__") +
     yaxis_text(FALSE) +
     yaxis_title(FALSE) +
-    yaxis_ticks(FALSE)
+    yaxis_ticks(FALSE) +
+    bayesplot_theme_get()
 
   violin_lp_data <- data.frame(treedepth, lp = lp$Value)
   violin_lp <-
     ggplot(violin_lp_data, aes_(x = ~ factor(Value), y = ~ lp)) +
     geom_violin(fill = get_color("l"), color = get_color("lh")) +
-    labs(x = "treedepth__", y = "lp__")
+    labs(x = "treedepth__", y = "lp__") +
+    bayesplot_theme_get()
 
   violin_accept_stat_data <- data.frame(treedepth, as = accept_stat$Value)
   violin_accept_stat <-
     ggplot(violin_accept_stat_data, aes_(x = ~ factor(Value), y = ~ as)) +
     geom_violin(fill = get_color("l"), color = get_color("lh")) +
     labs(x = "treedepth__", y = "accept_stat__") +
-    scale_y_continuous(breaks = c(0, 0.5, 1))
+    scale_y_continuous(breaks = c(0, 0.5, 1)) +
+    bayesplot_theme_get()
 
   if (overlay_chain) {
     hist_td <- hist_td +
@@ -479,7 +488,8 @@ mcmc_nuts_energy <-
       dont_expand_y_axis(c(0.005, 0)) +
       scale_x_continuous(expand = c(0.2, 0)) +
       labs(y = NULL, x = expression(E - bar(E))) +
-      space_legend_keys() +
+      space_legend_keys()  +
+      bayesplot_theme_get() +
       theme(legend.text = element_text(size = rel(1.1))) +
       yaxis_text(FALSE) +
       yaxis_title(FALSE) +

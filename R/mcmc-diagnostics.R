@@ -145,7 +145,8 @@ mcmc_rhat <- function(rhat, ..., size = NULL) {
       mapping = aes_(
         yend = ~ parameter,
         xend = ifelse(min(data$value) < 1, 1, -Inf)),
-      na.rm = TRUE)
+      na.rm = TRUE) +
+      bayesplot_theme_get()
 
   if (min(data$value) < 1) {
     graph <- graph +
@@ -193,7 +194,8 @@ mcmc_rhat_hist <- function(rhat, ..., binwidth = NULL) {
     dont_expand_y_axis(c(0.005, 0)) +
     yaxis_title(FALSE) +
     yaxis_text(FALSE) +
-    yaxis_ticks(FALSE)
+    yaxis_ticks(FALSE) +
+    bayesplot_theme_get()
 }
 
 #' @rdname MCMC-diagnostics
@@ -242,7 +244,8 @@ mcmc_neff <- function(ratio, ..., size = NULL) {
       expand = c(0, 0)) +
     yaxis_text(FALSE) +
     yaxis_title(FALSE) +
-    yaxis_ticks(FALSE)
+    yaxis_ticks(FALSE) +
+    bayesplot_theme_get()
 }
 
 #' @rdname MCMC-diagnostics
@@ -267,7 +270,8 @@ mcmc_neff_hist <- function(ratio, ..., binwidth = NULL) {
     dont_expand_y_axis(c(0.005, 0)) +
     yaxis_title(FALSE) +
     yaxis_text(FALSE) +
-    yaxis_ticks(FALSE)
+    yaxis_ticks(FALSE) +
+    bayesplot_theme_get()
 }
 
 #' @rdname MCMC-diagnostics
@@ -509,7 +513,8 @@ drop_NAs_and_warn <- function(x) {
       facet_fun <- "facet_wrap"
     }
 
-    graph <- ggplot(plot_data, aes_(x = ~ Lag, y = ~ AC))
+    graph <- ggplot(plot_data, aes_(x = ~ Lag, y = ~ AC))  +
+      bayesplot_theme_get()
     if (style == "bar") {
       graph <- graph +
         geom_bar(

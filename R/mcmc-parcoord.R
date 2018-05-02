@@ -134,7 +134,8 @@ mcmc_parcoord <-
         size = size,
         alpha = alpha,
         color = get_color("dh")
-      )
+      ) +
+      bayesplot_theme_get()
 
     if (has_divs) {
       graph <- graph +

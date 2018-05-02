@@ -94,7 +94,7 @@
 #' ppc_violin_grouped(y, yrep, group, alpha = 0, y_draw = "both",
 #'                    y_size = 1.5, y_alpha = 0.5, y_jitter = 0.33)
 #' }
-#'
+
 NULL
 
 
@@ -140,7 +140,8 @@ ppc_hist <- function(y, yrep, ..., binwidth = NULL, freq = TRUE) {
     yaxis_ticks(FALSE) +
     xaxis_title(FALSE) +
     facet_text(FALSE) +
-    facet_bg(FALSE)
+    facet_bg(FALSE) +
+    bayesplot_theme_get()
 }
 
 
@@ -167,7 +168,8 @@ ppc_boxplot <- function(y, yrep, ..., notch = TRUE, size = 0.5, alpha = 1) {
     yaxis_title(FALSE) +
     xaxis_ticks(FALSE) +
     xaxis_text(FALSE) +
-    xaxis_title(FALSE)
+    xaxis_title(FALSE) +
+    bayesplot_theme_get()
 }
 
 
@@ -198,7 +200,8 @@ ppc_freqpoly <- function(y, yrep, ...,
     yaxis_ticks(FALSE) +
     xaxis_title(FALSE) +
     facet_text(FALSE) +
-    facet_bg(FALSE)
+    facet_bg(FALSE) +
+    bayesplot_theme_get()
 }
 
 #' @rdname PPC-distributions
@@ -227,7 +230,8 @@ ppc_freqpoly_grouped <- function(y, yrep, group, ..., binwidth = NULL,
       yaxis_ticks(FALSE) +
       yaxis_title(FALSE) +
       facet_bg(FALSE) +
-      theme(strip.text.y = element_blank())
+      theme(strip.text.y = element_blank()) +
+      bayesplot_theme_get()
   }
 
 
@@ -251,7 +255,8 @@ ppc_dens <- function(y, yrep, ..., trim = FALSE, size = 0.5, alpha = 1) {
     yaxis_ticks(FALSE) +
     xaxis_title(FALSE) +
     facet_text(FALSE) +
-    facet_bg(FALSE)
+    facet_bg(FALSE) +
+    bayesplot_theme_get()
 }
 
 #' @rdname PPC-distributions
@@ -303,7 +308,8 @@ ppc_dens_overlay <- function(y, yrep, ...,
     yaxis_title(FALSE) +
     xaxis_title(FALSE) +
     yaxis_text(FALSE) +
-    yaxis_ticks(FALSE)
+    yaxis_ticks(FALSE) +
+    bayesplot_theme_get()
 }
 
 
@@ -357,7 +363,8 @@ ppc_ecdf_overlay <-
       scale_y_continuous(breaks = c(0, 0.5, 1)) +
       yaxis_title(FALSE) +
       xaxis_title(FALSE) +
-      yaxis_ticks(FALSE)
+      yaxis_ticks(FALSE) +
+    bayesplot_theme_get()
   }
 
 #' @export
@@ -429,7 +436,8 @@ ppc_violin_grouped <- function(y, yrep, group, ..., probs = c(0.1, 0.5, 0.9),
     scale_color_ppc_dist() +
     labs(x = "Group", y = yrep_label()) +
     yaxis_title(FALSE) +
-    xaxis_title(FALSE)
+    xaxis_title(FALSE) +
+    bayesplot_theme_get()
 }
 
 

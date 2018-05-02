@@ -152,7 +152,8 @@ ppc_error_hist <-
       yaxis_text(FALSE) +
       yaxis_ticks(FALSE) +
       facet_text(FALSE) +
-      facet_bg(FALSE)
+      facet_bg(FALSE) +
+      bayesplot_theme_get()
   }
 
 
@@ -189,7 +190,8 @@ ppc_error_hist_grouped <-
       yaxis_ticks(FALSE) +
       yaxis_title(FALSE) +
       facet_bg(FALSE) +
-      theme(strip.text.y = element_blank())
+      theme(strip.text.y = element_blank()) +
+      bayesplot_theme_get()
   }
 
 
@@ -375,7 +377,8 @@ ppc_error_binned <- function(y, yrep, ..., size = 1, alpha = 0.25) {
     labs(
       x = "Predicted proportion",
       y = "Average Errors \n (with 2SE bounds)"
-    )
+    ) +
+    bayesplot_theme_get()
 
   if (n > 1)
     graph <- graph +

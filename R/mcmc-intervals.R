@@ -211,7 +211,8 @@ mcmc_intervals <- function(x,
     yaxis_text(face = "bold") +
     yaxis_title(FALSE) +
     yaxis_ticks(size = 1) +
-    xaxis_title(FALSE)
+    xaxis_title(FALSE) +
+    bayesplot_theme_get()
 }
 
 
@@ -342,7 +343,8 @@ mcmc_areas <- function(x,
     yaxis_text(face = "bold") +
     yaxis_title(FALSE) +
     yaxis_ticks(size = 1) +
-    xaxis_title(FALSE)
+    xaxis_title(FALSE) +
+    bayesplot_theme_get()
 }
 
 #' @rdname MCMC-intervals
@@ -437,6 +439,7 @@ mcmc_areas_ridges <- function(x,
     xlim(x_lim) +
     yaxis_title(FALSE) +
     xaxis_title(FALSE) +
+    bayesplot_theme_get() +
     grid_lines_y(color = "gray90") +
     theme(axis.text.y = element_text(hjust = 1, vjust = 0))
 }
