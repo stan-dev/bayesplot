@@ -9,7 +9,7 @@
 \usage{
 bayesplot_theme_get()
 
-bayesplot_theme_set(new)
+bayesplot_theme_set(new = theme_default())
 
 bayesplot_theme_update(...)
 

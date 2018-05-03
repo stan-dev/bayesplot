@@ -133,7 +133,7 @@ bayesplot_theme_get <- function() {
 
 #' @rdname bayesplot_theme_get
 #' @export
-bayesplot_theme_set <- function(new) {
+bayesplot_theme_set <- function(new = theme_default()) {
   missing <- setdiff(names(ggplot2::theme_gray()), names(new))
   if (length(missing) > 0) {
     warning("New theme missing the following elements: ",
