@@ -2,9 +2,6 @@
 #'
 #' The \code{\link{theme_default}} function returns the default ggplot
 #' \link{theme} used by the \pkg{bayesplot} plotting functions.
-#' After loading the \pkg{bayesplot} package, this theme will be the default for
-#' \emph{all} graphs made with \pkg{ggplot2}. See the \strong{Details} section,
-#' below.
 #'
 #' @export
 #' @param base_size,base_family Base font size and family (passed to
@@ -12,7 +9,6 @@
 #'   \code{"bayesplot.base_size"} and \code{"bayesplot.base_family"} via
 #'   \code{\link{options}} to change the defaults, which are \code{12} and
 #'   \code{"serif"}, respectively.
-#'
 #' @return A ggplot \link[ggplot2]{theme} object.
 #'
 #' @details After loading \pkg{bayesplot}, if you subsequently change the

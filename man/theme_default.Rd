@@ -20,9 +20,6 @@ A ggplot \link[ggplot2]{theme} object.
 \description{
 The \code{\link{theme_default}} function returns the default ggplot
 \link{theme} used by the \pkg{bayesplot} plotting functions.
-After loading the \pkg{bayesplot} package, this theme will be the default for
-\emph{all} graphs made with \pkg{ggplot2}. See the \strong{Details} section,
-below.
 }
 \details{
 After loading \pkg{bayesplot}, if you subsequently change the
