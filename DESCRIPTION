@@ -38,7 +38,7 @@ Suggests:
     rstantools (>= 1.5.0),
     scales,
     shinystan (>= 2.3.0),
-    testthat,
+    testthat (>= 2.0.0),
     vdiffr
 RoxygenNote: 6.0.1
 VignetteBuilder: knitr
