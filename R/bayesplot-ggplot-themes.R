@@ -75,7 +75,7 @@ theme_default <-
 
 bayes_theme_env <- new.env(parent = emptyenv())
 bayes_theme_env$current <- theme_default()
-
+bayes_theme_env$gg_current <- ggplot2::theme_grey()
 
 #' Get, set, and modify the active bayesplot theme
 #'
@@ -122,11 +122,13 @@ bayes_theme_env$current <- theme_default()
 #' theme_set(theme_dark())
 #' mcmc_dens_overlay(x)
 bayesplot_theme_get <- function() {
-  if (identical(ggplot2::theme_gray(), ggplot2::theme_get())) {
-    bayes_theme_env$current
+  if (!identical(bayes_theme_env$gg_current, ggplot2::theme_get())) {
+    bayes_theme_env$gg_current <- ggplot2::theme_get()
+    thm <- bayes_theme_env$gg_current
   } else {
-    ggplot2::theme_get()
+    thm <- bayes_theme_env$current
   }
+   thm
 }
 
 #' @rdname bayesplot_theme_get
@@ -140,6 +142,7 @@ bayesplot_theme_set <- function(new) {
 
   old <- bayes_theme_env$current
   bayes_theme_env$current <- new
+  bayes_theme_env$gg_current <- ggplot2::theme_get()
   invisible(old)
 }
 
