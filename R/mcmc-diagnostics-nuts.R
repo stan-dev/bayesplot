@@ -373,11 +373,11 @@ mcmc_nuts_treedepth <- function(x, lp, chain = NULL, ...) {
       na.rm = TRUE,
       binwidth = 1
     ) +
-    xlab("treedepth__") +
+    xlab("treedepth__")  +
+    bayesplot_theme_get() +
     yaxis_text(FALSE) +
     yaxis_title(FALSE) +
-    yaxis_ticks(FALSE) +
-    bayesplot_theme_get()
+    yaxis_ticks(FALSE)
 
   violin_lp_data <- data.frame(treedepth, lp = lp$Value)
   violin_lp <-
@@ -488,8 +488,8 @@ mcmc_nuts_energy <-
       dont_expand_y_axis(c(0.005, 0)) +
       scale_x_continuous(expand = c(0.2, 0)) +
       labs(y = NULL, x = expression(E - bar(E))) +
-      space_legend_keys()  +
       bayesplot_theme_get() +
+      space_legend_keys()  +
       theme(legend.text = element_text(size = rel(1.1))) +
       yaxis_text(FALSE) +
       yaxis_title(FALSE) +

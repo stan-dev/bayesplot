@@ -192,10 +192,10 @@ mcmc_rhat_hist <- function(rhat, ..., binwidth = NULL) {
     scale_fill_diagnostic("rhat") +
     labs(x = expression(hat(R)), y = NULL) +
     dont_expand_y_axis(c(0.005, 0)) +
+    bayesplot_theme_get() +
     yaxis_title(FALSE) +
     yaxis_text(FALSE) +
-    yaxis_ticks(FALSE) +
-    bayesplot_theme_get()
+    yaxis_ticks(FALSE)
 }
 
 #' @rdname MCMC-diagnostics
@@ -241,11 +241,11 @@ mcmc_neff <- function(ratio, ..., size = NULL) {
       breaks = c(0, 0.1, 0.25, 0.5, 0.75, 1),
       labels = c("0", "0.1", "0.25", "0.5", "0.75", "1"),
       limits = c(0, 1.05),
-      expand = c(0, 0)) +
+      expand = c(0, 0))  +
+    bayesplot_theme_get() +
     yaxis_text(FALSE) +
     yaxis_title(FALSE) +
-    yaxis_ticks(FALSE) +
-    bayesplot_theme_get()
+    yaxis_ticks(FALSE)
 }
 
 #' @rdname MCMC-diagnostics

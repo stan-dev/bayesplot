@@ -145,6 +145,7 @@ ppc_error_hist <-
         size = 0.25,
         binwidth = binwidth
       ) +
+      bayesplot_theme_get() +
       xlab(expression(italic(y) - italic(y)[rep])) +
       dont_expand_y_axis() +
       force_axes_in_facets() +
@@ -152,8 +153,7 @@ ppc_error_hist <-
       yaxis_text(FALSE) +
       yaxis_ticks(FALSE) +
       facet_text(FALSE) +
-      facet_bg(FALSE) +
-      bayesplot_theme_get()
+      facet_bg(FALSE)
   }
 
 
@@ -183,6 +183,7 @@ ppc_error_hist_grouped <-
         binwidth = binwidth
       ) +
       facet_grid(rep_id ~ group, scales = "free") +
+      bayesplot_theme_get() +
       xlab(expression(italic(y) - italic(y)[rep])) +
       dont_expand_y_axis(c(0.005, 0)) +
       force_axes_in_facets() +
@@ -190,8 +191,7 @@ ppc_error_hist_grouped <-
       yaxis_ticks(FALSE) +
       yaxis_title(FALSE) +
       facet_bg(FALSE) +
-      theme(strip.text.y = element_blank()) +
-      bayesplot_theme_get()
+      theme(strip.text.y = element_blank())
   }
 
 

@@ -207,12 +207,12 @@ mcmc_intervals <- function(x,
     scale_fill +
     scale_y_discrete(limits = unique(rev(data$parameter))) +
     xlim(x_lim) +
+    bayesplot_theme_get() +
     legend_move(ifelse(color_by_rhat, "top", "none")) +
     yaxis_text(face = "bold") +
     yaxis_title(FALSE) +
     yaxis_ticks(size = 1) +
-    xaxis_title(FALSE) +
-    bayesplot_theme_get()
+    xaxis_title(FALSE)
 }
 
 
@@ -339,12 +339,12 @@ mcmc_areas <- function(x,
     scale_y_discrete(limits = unique(rev(data$parameter)),
                      expand = c(0.05, .6)) +
     xlim(x_lim) +
+    bayesplot_theme_get() +
     legend_move(ifelse(color_by_rhat, "top", "none")) +
     yaxis_text(face = "bold") +
     yaxis_title(FALSE) +
     yaxis_ticks(size = 1) +
-    xaxis_title(FALSE) +
-    bayesplot_theme_get()
+    xaxis_title(FALSE)
 }
 
 #' @rdname MCMC-intervals

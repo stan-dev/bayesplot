@@ -114,13 +114,13 @@ ppc_stat <-
           title = stat_legend_title(stat, deparse(substitute(stat)))
         )
       ) +
+      bayesplot_theme_get() +
       dont_expand_y_axis() +
       no_legend_spacing() +
       xaxis_title(FALSE) +
       yaxis_text(FALSE) +
       yaxis_ticks(FALSE) +
-      yaxis_title(FALSE) +
-      bayesplot_theme_get()
+      yaxis_title(FALSE)
   }
 
 #' @export
@@ -172,13 +172,13 @@ ppc_stat_grouped <-
           title = stat_legend_title(stat, deparse(substitute(stat)))
         )
       ) +
+      bayesplot_theme_get() +
       dont_expand_y_axis() +
       no_legend_spacing() +
       xaxis_title(FALSE) +
       yaxis_text(FALSE) +
       yaxis_ticks(FALSE) +
-      yaxis_title(FALSE) +
-      bayesplot_theme_get()
+      yaxis_title(FALSE)
   }
 
 
@@ -299,7 +299,7 @@ ppc_stat_2d <- function(y, yrep, stat = c("mean", "sd"), ...,
       labels = c(y = Ty_label(), yrep = Tyrep_label())
     ) +
     labs(x = stat_labs[1], y = stat_labs[2]) +
-      bayesplot_theme_get()
+    bayesplot_theme_get()
 }
 
 

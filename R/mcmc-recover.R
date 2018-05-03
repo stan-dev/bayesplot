@@ -328,10 +328,10 @@ mcmc_recover_hist <-
       scale_color_manual("", values = get_color("dh")) +
       guides(color = guide_legend(), fill = guide_legend(order = 1)) +
       dont_expand_y_axis() +
+      bayesplot_theme_get() +
       reduce_legend_spacing(0.25) +
       xaxis_title(FALSE) +
       yaxis_text(FALSE) +
       yaxis_ticks(FALSE) +
-      yaxis_title(FALSE) +
-      bayesplot_theme_get()
+      yaxis_title(FALSE)
   }
