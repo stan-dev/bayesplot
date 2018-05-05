@@ -73,33 +73,39 @@ theme_default <-
       )
   }
 
-bayes_theme_env <- new.env(parent = emptyenv())
-bayes_theme_env$current <- theme_default()
-bayes_theme_env$gg_current <- ggplot2::theme_grey()
 
 #' Get, set, and modify the active bayesplot theme
 #'
-#' These functions are the \pkg{bayesplot} equivalent to
-#' \code{\link[ggplot2]{theme_set}} and friends. They set, get, and update the
-#' active theme but only apply them to \code{bayesplots}. The current/active
-#' theme is automatically applied to every \code{bayesplot} you draw. Use
-#' \code{bayesplot_theme_get} to get the current \pkg{bayesplot} theme, and
-#' \code{bayesplot_theme_set} to change it. \code{bayesplot_theme_update} and
-#' \code{bayesplot_theme_replace} are shorthands for changing individual
-#' elements.
+#' @description These functions are the \pkg{bayesplot} equivalent to
+#'   \pkg{ggplot2}'s \code{\link[ggplot2]{theme_set}} and friends. They set,
+#'   get, and update the active theme but only apply them to \code{bayesplots}.
+#'   The current/active theme is automatically applied to every \code{bayesplot}
+#'   you draw.
+#'
+#'   Use \code{bayesplot_theme_get} to get the current \pkg{bayesplot} theme,
+#'   and \code{bayesplot_theme_set} to change it. \code{bayesplot_theme_update}
+#'   and \code{bayesplot_theme_replace} are shorthands for changing individual
+#'   elements.
 #'
 #' @details \code{bayesplot_theme_set} and friends only apply to
-#' \code{bayesplots}. Setting a theme other than the \pkg{ggplot2} default
-#' (\code{\link[ggplot2]{theme_grey}}) will override any \pkg{bayesplot} themes.
+#'   \code{bayesplots}. However, \code{ggplot2::theme_set} can also be used to
+#'   change the \pkg{bayesplot} theme. Currently, setting a theme with
+#'   \code{ggplot2::theme_set} (other than the \pkg{ggplot2} default
+#'   \code{\link[ggplot2]{theme_grey}}) will override the \pkg{bayesplot} theme.
 #'
-#' @inheritParams ggplot2::theme_set
 #' @export
+#' @param new The new theme (list of theme elements) to use. This is analogous
+#'   to the \code{new} argument to \code{\link[ggplot2]{theme_set}}.
+#' @param ... A named list of theme settings.
+#'
+#' @template seealso-helpers
+#' @template seealso-colors
 #'
 #' @examples
-#'
 #' library(ggplot2)
 #'
-#' # plot using the default theme automatically
+#' # plot using the current value of bayesplot_theme_get()
+#' # (the default is bayesplot::theme_default())
 #' x <- example_mcmc_draws()
 #' mcmc_hist(x)
 #'
@@ -115,18 +121,19 @@ bayes_theme_env$gg_current <- ggplot2::theme_grey()
 #' mcmc_areas(x, regex_pars = "beta")
 #'
 #' # change back to the default
-#' bayesplot_theme_set(theme_default())
+#' bayesplot_theme_set() # same as bayesplot_theme_set(theme_default())
 #' mcmc_areas(x, regex_pars = "beta")
 #'
 #' # change theme for all ggplots
 #' theme_set(theme_dark())
 #' mcmc_dens_overlay(x)
+#'
 bayesplot_theme_get <- function() {
-  if (!identical(bayes_theme_env$gg_current, ggplot2::theme_get())) {
-    bayes_theme_env$gg_current <- ggplot2::theme_get()
-    thm <- bayes_theme_env$gg_current
+  if (!identical(.bayesplot_theme_env$gg_current, ggplot2::theme_get())) {
+    .bayesplot_theme_env$gg_current <- ggplot2::theme_get()
+    thm <- .bayesplot_theme_env$gg_current
   } else {
-    thm <- bayes_theme_env$current
+    thm <- .bayesplot_theme_env$current
   }
    thm
 }
@@ -135,14 +142,14 @@ bayesplot_theme_get <- function() {
 #' @export
 bayesplot_theme_set <- function(new = theme_default()) {
   missing <- setdiff(names(ggplot2::theme_gray()), names(new))
-  if (length(missing) > 0) {
+  if (length(missing)) {
     warning("New theme missing the following elements: ",
             paste(missing, collapse = ", "), call. = FALSE)
   }
 
-  old <- bayes_theme_env$current
-  bayes_theme_env$current <- new
-  bayes_theme_env$gg_current <- ggplot2::theme_get()
+  old <- .bayesplot_theme_env$current
+  .bayesplot_theme_env$current <- new
+  .bayesplot_theme_env$gg_current <- ggplot2::theme_get()
   invisible(old)
 }
 
@@ -158,3 +165,12 @@ bayesplot_theme_update <- function(...) {
 bayesplot_theme_replace <- function(...) {
   bayesplot_theme_set(bayesplot_theme_get() %+replace% ggplot2::theme(...))
 }
+
+
+
+# internal ----------------------------------------------------------------
+
+.bayesplot_theme_env <- new.env(parent = emptyenv())
+.bayesplot_theme_env$current <- theme_default()
+.bayesplot_theme_env$gg_current <- ggplot2::theme_grey()
+

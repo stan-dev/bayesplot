@@ -16,30 +16,35 @@ bayesplot_theme_update(...)
 bayesplot_theme_replace(...)
 }
 \arguments{
-\item{new}{new theme (a list of theme elements)}
+\item{new}{The new theme (list of theme elements) to use. This is analogous
+to the \code{new} argument to \code{\link[ggplot2]{theme_set}}.}
 
-\item{...}{named list of theme settings}
+\item{...}{A named list of theme settings.}
 }
 \description{
 These functions are the \pkg{bayesplot} equivalent to
-\code{\link[ggplot2]{theme_set}} and friends. They set, get, and update the
-active theme but only apply them to \code{bayesplots}. The current/active
-theme is automatically applied to every \code{bayesplot} you draw. Use
-\code{bayesplot_theme_get} to get the current \pkg{bayesplot} theme, and
-\code{bayesplot_theme_set} to change it. \code{bayesplot_theme_update} and
-\code{bayesplot_theme_replace} are shorthands for changing individual
-elements.
+  \pkg{ggplot2}'s \code{\link[ggplot2]{theme_set}} and friends. They set,
+  get, and update the active theme but only apply them to \code{bayesplots}.
+  The current/active theme is automatically applied to every \code{bayesplot}
+  you draw.
+
+  Use \code{bayesplot_theme_get} to get the current \pkg{bayesplot} theme,
+  and \code{bayesplot_theme_set} to change it. \code{bayesplot_theme_update}
+  and \code{bayesplot_theme_replace} are shorthands for changing individual
+  elements.
 }
 \details{
 \code{bayesplot_theme_set} and friends only apply to
-\code{bayesplots}. Setting a theme other than the \pkg{ggplot2} default
-(\code{\link[ggplot2]{theme_grey}}) will override any \pkg{bayesplot} themes.
+  \code{bayesplots}. However, \code{ggplot2::theme_set} can also be used to
+  change the \pkg{bayesplot} theme. Currently, setting a theme with
+  \code{ggplot2::theme_set} (other than the \pkg{ggplot2} default
+  \code{\link[ggplot2]{theme_grey}}) will override the \pkg{bayesplot} theme.
 }
 \examples{
-
 library(ggplot2)
 
-# plot using the default theme automatically
+# plot using the current value of bayesplot_theme_get()
+# (the default is bayesplot::theme_default())
 x <- example_mcmc_draws()
 mcmc_hist(x)
 
@@ -55,10 +60,19 @@ mcmc_hist(x)
 mcmc_areas(x, regex_pars = "beta")
 
 # change back to the default
-bayesplot_theme_set(theme_default())
+bayesplot_theme_set() # same as bayesplot_theme_set(theme_default())
 mcmc_areas(x, regex_pars = "beta")
 
 # change theme for all ggplots
 theme_set(theme_dark())
 mcmc_dens_overlay(x)
+
+}
+\seealso{
+\link{bayesplot-helpers} for a variety of convenience functions,
+  many of which provide shortcuts for tweaking theme elements after creating
+  a plot.
+
+\code{\link{bayesplot-colors}} to set or view the color scheme used
+  for plotting.
 }
