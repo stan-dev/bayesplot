@@ -44,6 +44,7 @@ library("rstan")
 
 ### Example model
 
+Before we delve into the actual plotting we need to fit a model to have something to work with.
 In this vignette we'll use the eight schools example discussed
 in  Rubin (1981), Gelman et al. (2013), and the 
 [RStan Getting Started](https://github.com/stan-dev/rstan/wiki/RStan-Getting-Started#how-to-use-rstan)
@@ -141,6 +142,7 @@ schools_mod_ncp <- stan_model("schools_mod_ncp.stan")
 We then fit the model by calling Stan's MCMC algorithm using the `sampling` 
 function,
 ```{r, fit-models-hidden, results='hide', message=FALSE}
+set.seed(2018051701)
 fit_cp <- sampling(schools_mod_cp, data = schools_dat)
 fit_ncp <- sampling(schools_mod_ncp, data = schools_dat)
 ```
@@ -197,12 +199,13 @@ First we'll quickly fit one of the models above again, this time intentionally
 using too few MCMC iterations. This should lead to some high $\hat{R}$ values.
 
 ```{r, results='hide'}
+set.seed(2018051702)
 fit_cp_100iter <- sampling(schools_mod_cp, data = schools_dat, 
                            chains = 2, iter = 100)
 ```
 
 **bayesplot** provides a generic `rhat` extractor function, currently with
-methods defined for models fit using the **rstan** and **rstanarm** packages.
+methods defined for models fit using the **rstan**, **rstanarm** and **brms** packages.
 But regardless of how you fit your model, all **bayesplot** needs is a vector of
 $\hat{R}$ values.
 
@@ -250,12 +253,13 @@ the `mcmc_rhat_hist` function. See the **Examples** section in
 The effective sample size is an estimate of the number of independent draws from
 the posterior distribution of the estimand of interest. Because the draws within
 a Markov chain are _not_ independent if there is autocorrelation, the effective 
-sample size, $n_{eff}$, will be smaller than the total sample size, $N$. The 
+sample size, $n_{eff}$, is usually smaller than the total sample size, $N$ 
+(although it may be larger in some cases). The 
 larger the ratio of $n_{eff}$ to $N$ the better.
 
 The **bayesplot** package provides a generic `neff_ratio` extractor function,
-currently with methods defined for models fit using the **rstan** and
-**rstanarm** packages. But regardless of how you fit your model, all
+currently with methods defined for models fit using the **rstan**,
+**rstanarm** and **brms** packages. But regardless of how you fit your model, all
 **bayesplot** needs is a vector of $n_{eff}/N$ values. The `mcmc_neff` and 
 `mcmc_neff_hist` can then be used to plot the ratios.
 
@@ -312,7 +316,8 @@ As mentioned above, $n_{eff}/N$ decreases as autocorrelation becomes more
 extreme. We can visualize the autocorrelation using the `mcmc_acf` (line plot) 
 or `mcmc_acf_bar` (bar plot) functions. For the selected parameters, these 
 functions show the autocorrelation for each Markov chain separately up to a 
-user-specified number of lags.
+user-specified number of lags. Autocorrelation is bad (it means samples are 
+not independent) and you want it to drop quickly to zero with increasing lag.
 
 #### `mcmc_acf`, `mcmc_acf_bar`
 
@@ -356,15 +361,14 @@ The special **bayesplot** functions for NUTS diagnostics are
 available_mcmc(pattern = "_nuts_")
 ```
 
-and some of the functions demonstrated in the 
-[_Plotting MCMC draws_](http://mc-stan.org/bayesplot/articles/plotting-mcmc-draws.html)
-vignette also take optional arguments that can be used to display 
-HMC/NUTS diagnostic information.
 
-The **bayesplot** package also provides generic functions `log_posterior` and 
-`nuts_params` for extracting the required information for the plots from fitted 
-model objects. Currently methods are provided for models fit using the **rstan**
-and **rstanarm** packages, although it is not difficult to define additional 
+Those functions require more information than simply the posterior samples,
+in particular the log of the posterior density for each sample and some NUTS-specific
+diagnostic values may be needed. 
+The **bayesplot** package provides generic functions `log_posterior` and 
+`nuts_params` for extracting this information from fitted 
+model objects. Currently methods are provided for models fit using the **rstan**,
+ **rstanarm** and **brms** packages, although it is not difficult to define additional 
 methods for the objects returned by other R packages. For the Stan models we fit
 above we can use the `log_posterior` and `nuts_params` methods for stanfit
 objects:
@@ -380,18 +384,108 @@ lp_ncp <- log_posterior(fit_ncp)
 np_ncp <- nuts_params(fit_ncp)
 ```
 
+*Note:* some of the functions demonstrated in the 
+[_Plotting MCMC draws_](http://mc-stan.org/bayesplot/articles/plotting-mcmc-draws.html)
+vignette also take optional arguments that can be used to display 
+HMC/NUTS diagnostic information.
+
+
 ### Divergent transitions
 
 When running the Stan models at the beginning of this vignette
 there were warnings about divergent transitions.
 For an explanation of these warnings see [Divergent transitions after warmup](http://mc-stan.org/misc/warnings.html#divergent-transitions-after-warmup).
+Here we'll look at diagnosing the source of divergences through visualisations.
+
+#### mcmc_parcoord
+
+The parallel coordinates plot (`mcmc_parcoord`) is probably the first plot to have look
+at if you have no idea, where the divergences in your model might be coming from. This function 
+works in general without including information about the divergences, but if the optional `np` 
+argument is used to pass NUTS parameter information, 
+then divergences will be colored in the plot (by default in red). 
+
+```{r, mcmc_parcoord-1}
+color_scheme_set("darkgray")
+mcmc_parcoord(posterior_cp, np = np_cp)
+```
+
+The `mcmc_parcoord` plot shows one line per iteration, connecting the parameter values
+at this iteration. This lets you see any global patterns in the divergences. Here,
+you may notice that divergences in the centered parametrization happen 
+exclusively when  `tau`, the hierarchical standard deviation, goes to zero and
+the values of the `theta`s are essentially fixed. This makes `tau` immediately 
+suspect.
+See Gabry et al. (2018) for more another example of the parallel
+coordinates plot.
+
+
+#### mcmc_pairs
+
+The `mcmc_pairs` function can be used also be used to look at multiple parameters at once,
+but unlike `mcmc_parcoord` that works well even with several dozen parameters, `mcmc_pairs`
+is more useful for up to ~8 params. It shows univariate histograms and bivariate scatter plots
+for selected parameters and is especially useful in identifying collinearity between variables
+(which demonstrate as narrow bivariate plots). Let's look how `tau` interacts with other
+variables, using only one of the `theta`s for clarity:
+
+```{r, mcmc_pairs}
+mcmc_pairs(posterior_cp, np = np_cp, pars = c("mu","tau","theta[1]"))
+```
+
+Note that each bivariete plot is present twice - by default each of those contain half of the chains,
+so you also get to see if the chains produced similar results. Here, the interaction of `tau` and 
+`theta[1]` seems most interesting, as it concetrates the divergences into a tight region.
+
+Before we move on, note that further examples are also provided via `help("mcmc_pairs")`.
+
+
+#### mcmc_scatter
+
+Using the `mcmc_scatter` function (with optional argument `np`) we can 
+look at a single bivariate plot to investigate it more closely. So let's look
+at `tau` and `theta[1]` parameters. We will also use the `transform` argument to look at log of
+`tau`.
+
+```{r, mcmc_scatter-1}
+mcmc_scatter(
+  posterior_cp, 
+  pars = c("theta[1]", "tau"), 
+  transform = list(tau = "log"), 
+  np = np_cp
+)
+```
+
+This picture shows a funnel-like shape of the distribution. This one in particular is known as 
+Neal's funnel and we clearly see that NUTS has problems exploring the narrow tip of the funnel. 
+The main problem is that large steps are required to explore the wide arrea efficiently, but those
+steps become too large in the narrow region. The required step size is connected to the value of `tau` -
+large `tau` allows large variation in `theta` (and requires large steps) while small `tau` requires small
+steps in `theta`. The non-centered parametrization avoids this by sampling the
+`eta` parameter which is independent of `tau` and computing `theta` from `eta`,`mu` and `tau` afterwards.
+Let's look at the same plot, but with the `eta` parameter from non-centered parametrization instead of `theta`:
+
+```{r, mcmc_scatter-2}
+mcmc_scatter(
+  posterior_ncp, 
+  pars = c("eta[1]", "tau"), 
+  transform = list(tau = "log"), 
+  np = np_ncp
+)
+```
+
+We can see that the funnel-like shape is replaced by a somewhat Gaussian blob and the divergences go away. Gabry et al. (2018) has some further discussion of this example.
+
 
 #### mcmc_trace
 
+Annother useful diagnostic plot is the trace plot showing the evolution of parameter samples
+over iterations for each chain.
 The `np` argument to the `mcmc_trace` function can be used to add a rug
 plot of the divergences to a trace plot of parameter draws. Typically
 we can see that at least one of the chains is getting stuck wherever there is a
-cluster of many red marks:
+cluster of many red marks. So let's investigate what it tells us about `tau` in the centered 
+parametrization:
 
 ```{r, mcmc_trace}
 color_scheme_set("mix-brightblue-gray")
@@ -399,9 +493,23 @@ mcmc_trace(posterior_cp, pars = "tau", np = np_cp) +
   xlab("Post-warmup iteration")
 ```
 
+First thing to note is that all chains seem to be exploring the same region of parameter 
+values, which is a good sign. But the plot is too crowded to help us 
+diagnose divergences. We may however notice the cluster of divergences after 600th iteration
+and zoom in to investigate, using the `window` parameter:
+
+```{r, mcmc_trace_zoom}
+mcmc_trace(posterior_cp, pars = "tau", np = np_cp, window = c(600,700)) + 
+  xlab("Post-warmup iteration")
+```
+
+What we see here is that chains often get stuck as `tau` approaches zero and spend substantial
+time in the same region of parameter space. This is just another indication that there is 
+problematic geometry at $\tau \simeq 0$ - healthy chains jump up and down frequently.
+
 #### mcmc_nuts_divergence
 
-To look deeper at the information conveyed by the divergences we can use the 
+To understand how the divergences interact with the model globally, we can use the 
 `mcmc_nuts_divergence` function:
 
 ```{r, mcmc_nuts_divergence}
@@ -437,6 +545,7 @@ step size used by the sampler and allowing the Markov chains to explore more
 complicated curvature in the target distribution.
 
 ```{r, fit-adapt-delta, results='hide', message=FALSE}
+set.seed(2018051703)
 fit_cp_2 <- sampling(schools_mod_cp, data = schools_dat,
                      control = list(adapt_delta = 0.99))
 fit_ncp_2 <- sampling(schools_mod_ncp, data = schools_dat,
@@ -450,47 +559,6 @@ solve the problem and a reparameterization is required.
 mcmc_nuts_divergence(nuts_params(fit_cp_2), log_posterior(fit_cp_2))
 mcmc_nuts_divergence(nuts_params(fit_ncp_2), log_posterior(fit_ncp_2))
 ```
-
-#### mcmc_parcoord
-
-For another perspective on the divergences we can create a parallel 
-coordinates plot using the `mcmc_parcoord` function. This function 
-works in general without including information about the divergences, but if  
-the optional `np` argument is used to pass NUTS parameter information 
-then divergences will be colored in the plot (by default in red). 
-
-```{r, mcmc_parcoord-1}
-color_scheme_set("darkgray")
-mcmc_parcoord(posterior_cp, np = np_cp)
-```
-
-In the plot above we can see the for the centered parameterization the divergences
-occur when $\tau$, the hierarchical standard deviation, goes to zero and
-the values of the $\theta$s are essentially fixed. See 
-Gabry et al. (2018) for more another example of the parallel
-coordinates plot.
-
-#### mcmc_scatter
-
-Using the `mcmc_scatter` function (with optional argument `np`) we can 
-look at a bivariate plot of `tau` and one of the `theta` parameters.
-
-```{r, mcmc_scatter-1}
-mcmc_scatter(
-  posterior_cp, 
-  pars = c("theta[1]", "tau"), 
-  transform = list(tau = "log"), # actually show log(tau)
-  np = np_cp
-)
-```
-
-See Gabry et al. (2018) for further discussion of this example.
-
-#### mcmc_pairs
-
-Finally, the `mcmc_pairs` function can be used also be used to look at the
-divergences (as well as other HMC/NUTS diagnostics). Examples are provided at
-`help("mcmc_pairs")`.
 
 
 ### Energy and Bayesian fraction of missing information
