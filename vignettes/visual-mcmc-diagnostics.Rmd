@@ -1,6 +1,6 @@
 ---
 title: "Visual MCMC diagnostics using the bayesplot package"
-author: "Jonah Gabry"
+author: "Jonah Gabry and Martin Modrák"
 date: "`r Sys.Date()`"
 output: 
   rmarkdown::html_vignette:
@@ -45,12 +45,13 @@ library("rstan")
 ### Example model
 
 Before we delve into the actual plotting we need to fit a model to have something to work with.
-In this vignette we'll use the eight schools example discussed
-in  Rubin (1981), Gelman et al. (2013), and the 
+In this vignette we'll use the eight schools example, which is discussed in many 
+places, including Rubin (1981), Gelman et al. (2013), and the 
 [RStan Getting Started](https://github.com/stan-dev/rstan/wiki/RStan-Getting-Started#how-to-use-rstan)
 wiki. This is a simple hierarchical meta-analysis model with data consisting of 
 point estimates `y` and standard errors `sigma` from analyses of test prep 
-programs in `J=8` schools:
+programs in `J=8` schools. Ideally we would have the full data from each of 
+the previous studies, but in this case we only have the these estimates.
 
 ```{r, schools_dat}
 schools_dat <- list(
@@ -292,12 +293,13 @@ side by side.
 # A function we'll use several times to plot comparisons of the centered 
 # parameterization (cp) and the non-centered parameterization (ncp). See
 # help("bayesplot_grid") for details on the bayesplot_grid function used here.
-compare_cp_ncp <- function(cp_plot, ncp_plot, ncol = 2) {
+compare_cp_ncp <- function(cp_plot, ncp_plot, ncol = 2, ...) {
   bayesplot_grid(
     cp_plot, ncp_plot, 
     grid_args = list(ncol = ncol),
     subtitles = c("Centered parameterization", 
-                  "Non-centered parameterization")
+                  "Non-centered parameterization"),
+    ...
   )
 }
 
@@ -384,9 +386,12 @@ lp_ncp <- log_posterior(fit_ncp)
 np_ncp <- nuts_params(fit_ncp)
 ```
 
-*Note:* some of the functions demonstrated in the 
+
+In addition to these functions that are only for HMC/NUTS diagnostic plots, 
+in the **Divergent transitions** section below, we will also demonstrate 
+that some of the functions from the 
 [_Plotting MCMC draws_](http://mc-stan.org/bayesplot/articles/plotting-mcmc-draws.html)
-vignette also take optional arguments that can be used to display 
+vignette also take optional arguments that can be used to display important
 HMC/NUTS diagnostic information.
 
 
@@ -395,117 +400,181 @@ HMC/NUTS diagnostic information.
 When running the Stan models at the beginning of this vignette
 there were warnings about divergent transitions.
 For an explanation of these warnings see [Divergent transitions after warmup](http://mc-stan.org/misc/warnings.html#divergent-transitions-after-warmup).
-Here we'll look at diagnosing the source of divergences through visualisations.
+Here we'll look at diagnosing the source of divergences through visualizations.
 
 #### mcmc_parcoord
 
-The parallel coordinates plot (`mcmc_parcoord`) is probably the first plot to have look
-at if you have no idea, where the divergences in your model might be coming from. This function 
-works in general without including information about the divergences, but if the optional `np` 
-argument is used to pass NUTS parameter information, 
-then divergences will be colored in the plot (by default in red). 
+The parallel coordinates plot (`mcmc_parcoord`) is probably the first plot to
+have look at if you have no idea, where the divergences in your model might be
+coming from. This function works in general without including information about
+the divergences, but if the optional `np` argument is used to pass NUTS
+parameter information, then divergences will be colored in the plot (by default
+in red).
 
 ```{r, mcmc_parcoord-1}
 color_scheme_set("darkgray")
 mcmc_parcoord(posterior_cp, np = np_cp)
 ```
 
-The `mcmc_parcoord` plot shows one line per iteration, connecting the parameter values
-at this iteration. This lets you see any global patterns in the divergences. Here,
-you may notice that divergences in the centered parametrization happen 
-exclusively when  `tau`, the hierarchical standard deviation, goes to zero and
-the values of the `theta`s are essentially fixed. This makes `tau` immediately 
-suspect.
-See Gabry et al. (2018) for more another example of the parallel
-coordinates plot.
+The `mcmc_parcoord` plot shows one line per iteration, connecting the parameter
+values at this iteration. This lets you see any global patterns in the
+divergences. Here, you may notice that divergences in the centered
+parameterization happen exclusively when  `tau`, the hierarchical standard
+deviation, goes to zero and the values of the `theta`s are essentially fixed.
+This makes `tau` immediately suspect. 
+See [Gabry et al. (2018)](https://arxiv.org/abs/1709.01449) for another example
+of the parallel coordinates plot.
 
 
 #### mcmc_pairs
 
-The `mcmc_pairs` function can be used also be used to look at multiple parameters at once,
-but unlike `mcmc_parcoord` that works well even with several dozen parameters, `mcmc_pairs`
-is more useful for up to ~8 params. It shows univariate histograms and bivariate scatter plots
-for selected parameters and is especially useful in identifying collinearity between variables
-(which demonstrate as narrow bivariate plots). Let's look how `tau` interacts with other
-variables, using only one of the `theta`s for clarity:
+The `mcmc_pairs` function can be also be used to look at multiple
+parameters at once, but unlike `mcmc_parcoord` (which works well even when
+including several dozen parameters) `mcmc_pairs` is more useful for up to ~8
+parameters. It shows univariate histograms and bivariate scatter plots for
+selected parameters and is especially useful in identifying collinearity between
+variables (which manifests as narrow bivariate plots) as well the presence of
+multiplicative non-identifiabilities (banana-like shapes). 
+
+Let's look at how `tau` interacts with other variables, using only one of the
+`theta`s to keep the plot readable:
 
 ```{r, mcmc_pairs}
 mcmc_pairs(posterior_cp, np = np_cp, pars = c("mu","tau","theta[1]"))
 ```
 
-Note that each bivariete plot is present twice - by default each of those contain half of the chains,
-so you also get to see if the chains produced similar results. Here, the interaction of `tau` and 
-`theta[1]` seems most interesting, as it concetrates the divergences into a tight region.
+Note that each bivariate plot is present twice -- by default each of those
+contain half of the chains, so you also get to see if the chains produced
+similar results (see the documentation for the `condition` argument for 
+other options). Here, the interaction of `tau` and `theta[1]` seems most
+interesting, as it concentrates the divergences into a tight region.
 
-Before we move on, note that further examples are also provided via `help("mcmc_pairs")`.
+Further examples of pairs plots and instructions for using the various optional
+arguments to `mcmc_pairs` are provided via `help("mcmc_pairs")`.
 
 
 #### mcmc_scatter
 
-Using the `mcmc_scatter` function (with optional argument `np`) we can 
-look at a single bivariate plot to investigate it more closely. So let's look
-at `tau` and `theta[1]` parameters. We will also use the `transform` argument to look at log of
-`tau`.
+Using the `mcmc_scatter` function (with optional argument `np`) we can look at a
+single bivariate plot to investigate it more closely. For hierarchical models, 
+a good place to start is to plot a "local" parameter (`theta[j]`) 
+against a "global" scale parameter on which it depends (`tau`). 
+
+We will also use the `transformations` argument to look at the log of `tau`, as
+this is what Stan is doing under the hood for parameters like `tau` that have a
+lower bound of zero. That is, even though the samples for `tau` returned from
+Stan are all positive, the parameter space that the Markov chains actual explore
+is unconstrained. Transforming `tau` is not strictly necessary for the plot
+(often the plot is still useful without it) but plotting in the unconstrained is
+often even more informative.
+
+First the plot for the centered parameterization:
 
 ```{r, mcmc_scatter-1}
-mcmc_scatter(
+# assign to an object so we can reuse later
+scatter_theta_cp <- mcmc_scatter(
   posterior_cp, 
   pars = c("theta[1]", "tau"), 
-  transform = list(tau = "log"), 
+  transform = list(tau = "log"), # can abbrev. 'transformations'
   np = np_cp
 )
+scatter_theta_cp
 ```
 
-This picture shows a funnel-like shape of the distribution. This one in particular is known as 
-Neal's funnel and we clearly see that NUTS has problems exploring the narrow tip of the funnel. 
-The main problem is that large steps are required to explore the wide arrea efficiently, but those
-steps become too large in the narrow region. The required step size is connected to the value of `tau` -
-large `tau` allows large variation in `theta` (and requires large steps) while small `tau` requires small
-steps in `theta`. The non-centered parametrization avoids this by sampling the
-`eta` parameter which is independent of `tau` and computing `theta` from `eta`,`mu` and `tau` afterwards.
-Let's look at the same plot, but with the `eta` parameter from non-centered parametrization instead of `theta`:
+The shape of this bivariate distribution resembles a funnel (or tornado). 
+This one in particular is essentially the same as an example referred to as 
+Neal's funnel (details in the Stan manual) and it is a clear indication that 
+the Markov chains are struggling to explore the tip of the funnel, which 
+is narrower than the rest of the space. 
+
+The main problem is that large steps are required to explore the less narrow
+regions efficiently, but those steps become too large for navigating the narrow
+region. The required step size is connected to the value of `tau`. When is `tau`
+large it allows for large variation in `theta` (and requires large steps) while
+small `tau` requires small steps in `theta`.
+
+The non-centered parameterization avoids this by sampling the `eta` parameter
+which, unlike `theta`, is _a priori independent_ of `tau`. Then `theta` is
+computed deterministically from the parameters `eta`,`mu` and `tau` afterwards.
+Here's the same plot as above, but with `eta[1]` from non-centered
+parameterization instead of `theta[1]` from the centered parameterization:
 
 ```{r, mcmc_scatter-2}
-mcmc_scatter(
+scatter_eta_ncp <- mcmc_scatter(
   posterior_ncp, 
   pars = c("eta[1]", "tau"), 
   transform = list(tau = "log"), 
   np = np_ncp
 )
+scatter_eta_ncp
 ```
 
-We can see that the funnel-like shape is replaced by a somewhat Gaussian blob and the divergences go away. Gabry et al. (2018) has some further discussion of this example.
+We can see that the funnel/tornado shape is replaced by a somewhat Gaussian
+blob/cloud and the divergences go away. Gabry et al. (2018) has further
+discussion of this example.
+
+Ultimately we only care about `eta` insofar as it enables the Markov chains to
+better explore the posterior, so let's directly examine how much more
+exploration was possible after the reparameterization. For the non-centered
+parameterization we can make the same scatterplot but use the values of
+`theta[1] = mu + eta[1] * tau` instead of `eta[1]`. Below is a side by side
+comparison with scatterplot of `theta[1]` vs `log(tau)` from the centered
+parameterization that we made above. We will also force the plots to have the
+same $y$-axis limits, which will make the more important difference much more
+apparent:
+
+```{r, mcmc_scatter-3}
+scatter_theta_ncp <- mcmc_scatter(
+  posterior_ncp, 
+  pars = c("theta[1]", "tau"), 
+  transform = list(tau = "log"), 
+  np = np_ncp
+)
+
+compare_cp_ncp(scatter_theta_cp, scatter_theta_ncp, ylim = c(-9, 4))
+```
+
+Once we transform the `eta` values into `theta` values we actually see an even
+more pronounced funnel/tornado shape than we have with the centered
+parameterization. But this is precisely what we want! The non-centered
+parameterization allowed us to obtain samples from the funnel distribution
+without having to directly navigate the curvature of the funnel. With the
+centered parameterization the chains never could make it into the neck of funnel
+and we see a clustering of divergences and no samples in the tail of the
+distribution.
+
 
 
 #### mcmc_trace
 
-Annother useful diagnostic plot is the trace plot showing the evolution of parameter samples
-over iterations for each chain.
-The `np` argument to the `mcmc_trace` function can be used to add a rug
-plot of the divergences to a trace plot of parameter draws. Typically
-we can see that at least one of the chains is getting stuck wherever there is a
-cluster of many red marks. So let's investigate what it tells us about `tau` in the centered 
-parametrization:
+Another useful diagnostic plot is the trace plot, which is a time series plot
+of the Markov chains. That is, a trace plot shows the evolution of parameter
+vector over the iterations of one or many Markov chains. The `np` argument to
+the `mcmc_trace` function can be used to add a rug plot of the divergences to a
+trace plot of parameter draws. Typically we can see that at least one of the
+chains is getting stuck wherever there is a cluster of many red marks.
 
+Here is the trace plot for the `tau` parameter from the centered parameterization:
 ```{r, mcmc_trace}
 color_scheme_set("mix-brightblue-gray")
 mcmc_trace(posterior_cp, pars = "tau", np = np_cp) + 
   xlab("Post-warmup iteration")
 ```
 
-First thing to note is that all chains seem to be exploring the same region of parameter 
-values, which is a good sign. But the plot is too crowded to help us 
-diagnose divergences. We may however notice the cluster of divergences after 600th iteration
-and zoom in to investigate, using the `window` parameter:
+The first thing to note is that all chains seem to be exploring the same region
+of parameter values, which is a good sign. But the plot is too crowded to help
+us diagnose divergences. We may however notice the cluster of divergences after
+600th iteration and zoom in to investigate, using the `window` parameter:
 
 ```{r, mcmc_trace_zoom}
 mcmc_trace(posterior_cp, pars = "tau", np = np_cp, window = c(600,700)) + 
   xlab("Post-warmup iteration")
 ```
 
-What we see here is that chains often get stuck as `tau` approaches zero and spend substantial
-time in the same region of parameter space. This is just another indication that there is 
-problematic geometry at $\tau \simeq 0$ - healthy chains jump up and down frequently.
+What we see here is that chains often get stuck as `tau` approaches zero and
+spend substantial time in the same region of parameter space. This is just
+another indication that there is problematic geometry at $\tau \simeq 0$ -
+healthy chains jump up and down frequently.
 
 #### mcmc_nuts_divergence
 
