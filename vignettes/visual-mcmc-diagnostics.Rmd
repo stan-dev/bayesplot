@@ -143,7 +143,6 @@ schools_mod_ncp <- stan_model("schools_mod_ncp.stan")
 We then fit the model by calling Stan's MCMC algorithm using the `sampling` 
 function,
 ```{r, fit-models-hidden, results='hide', message=FALSE}
-set.seed(2018051701)
 fit_cp <- sampling(schools_mod_cp, data = schools_dat)
 fit_ncp <- sampling(schools_mod_ncp, data = schools_dat)
 ```
