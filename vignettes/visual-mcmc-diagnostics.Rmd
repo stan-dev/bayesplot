@@ -142,7 +142,7 @@ required in order to properly explore the posterior distribution.
 
 To fit both models we first translate the Stan code to C++ and compile it using 
 the `stan_model` function.
-```{r, compile-models, eval=FALSE, cache=TRUE}
+```{r, compile-models, eval=FALSE}
 schools_mod_cp <- stan_model("schools_mod_cp.stan")
 schools_mod_ncp <- stan_model("schools_mod_ncp.stan")
 ```
