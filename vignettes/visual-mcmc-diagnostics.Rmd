@@ -16,6 +16,7 @@ vignette: >
 ```
 
 ```{r, pkgs, include=FALSE}
+library("bayesplot")
 library("ggplot2")
 library("rstan")
 ```
@@ -32,7 +33,7 @@ and graphical posterior predictive model checking is covered in the
 vignette.
 
 Note that most of these plots can also be browsed interactively using the 
-ShinyStan package.
+[ShinyStan](http://mc-stan.org/shinystan/) package.
 
 ### Setup
 
@@ -148,8 +149,8 @@ schools_mod_ncp <- stan_model("schools_mod_ncp.stan")
 We then fit the model by calling Stan's MCMC algorithm using the `sampling` 
 function,
 ```{r, fit-models-hidden, results='hide', message=FALSE}
-fit_cp <- sampling(schools_mod_cp, data = schools_dat, seed = 80321405423)
-fit_ncp <- sampling(schools_mod_ncp, data = schools_dat, seed = 45772143245)
+fit_cp <- sampling(schools_mod_cp, data = schools_dat, seed = 803214054)
+fit_ncp <- sampling(schools_mod_ncp, data = schools_dat, seed = 457721432)
 ```
 and extract a `iterations x chains x parameters` array of posterior draws with 
 `as.array`,
@@ -218,17 +219,15 @@ np_ncp <- nuts_params(fit_ncp)
 ```
 
 
-In addition to these functions that are only for HMC/NUTS diagnostic plots, 
-in the **Divergent transitions** section below, we will also demonstrate 
-that some of the functions from the 
+Note that some of the functions from the 
 [_Plotting MCMC draws_](http://mc-stan.org/bayesplot/articles/plotting-mcmc-draws.html)
 vignette also take optional arguments that can be used to display important
-HMC/NUTS diagnostic information.
+HMC/NUTS diagnostic information, as we'll se below.
 
 
 ### Divergent transitions
 
-When running the Stan models at the beginning of this vignette
+When running the Stan models above,
 there were warnings about divergent transitions.
 Here we'll look at diagnosing the source of divergences through visualizations.
 
@@ -263,7 +262,7 @@ parameters at once, but unlike `mcmc_parcoord` (which works well even when
 including several dozen parameters) `mcmc_pairs` is more useful for up to ~8
 parameters. It shows univariate histograms and bivariate scatter plots for
 selected parameters and is especially useful in identifying collinearity between
-variables (which manifests as narrow bivariate plots) as well the presence of
+variables (which manifests as narrow bivariate plots) as well as the presence of
 multiplicative non-identifiabilities (banana-like shapes). 
 
 Let's look at how `tau` interacts with other variables, using only one of the
@@ -354,6 +353,20 @@ same $y$-axis limits, which will make the more important difference much more
 apparent:
 
 ```{r, mcmc_scatter-3}
+# A function we'll use several times to plot comparisons of the centered 
+# parameterization (cp) and the non-centered parameterization (ncp). See
+# help("bayesplot_grid") for details on the bayesplot_grid function used here.
+compare_cp_ncp <- function(cp_plot, ncp_plot, ncol = 2, ...) {
+  bayesplot_grid(
+    cp_plot, ncp_plot, 
+    grid_args = list(ncol = ncol),
+    subtitles = c("Centered parameterization", 
+                  "Non-centered parameterization"),
+    ...
+  )
+}
+
+
 scatter_theta_ncp <- mcmc_scatter(
   posterior_ncp, 
   pars = c("theta[1]", "tau"), 
@@ -394,10 +407,10 @@ mcmc_trace(posterior_cp, pars = "tau", np = np_cp) +
 The first thing to note is that all chains seem to be exploring the same region
 of parameter values, which is a good sign. But the plot is too crowded to help
 us diagnose divergences. We may however notice the cluster of divergences around
-100th iteration and zoom in to investigate, using the `window` parameter:
+950th iteration and zoom in to investigate, using the `window` parameter:
 
 ```{r, mcmc_trace_zoom}
-mcmc_trace(posterior_cp, pars = "tau", np = np_cp, window = c(50,150)) + 
+mcmc_trace(posterior_cp, pars = "tau", np = np_cp, window = c(900,1000)) + 
   xlab("Post-warmup iteration")
 ```
 
@@ -445,7 +458,7 @@ complicated curvature in the target distribution.
 
 ```{r, fit-adapt-delta, results='hide', message=FALSE}
 fit_cp_2 <- sampling(schools_mod_cp, data = schools_dat,
-                     control = list(adapt_delta = 0.99), seed = 978245244321)
+                     control = list(adapt_delta = 0.99), seed = 978245244)
 fit_ncp_2 <- sampling(schools_mod_ncp, data = schools_dat,
                       control = list(adapt_delta = 0.99), seed = 843256842)
 ```
@@ -507,10 +520,11 @@ See Betancourt (2017) for more on this particular example as well as the general
 theory behind the energy plots.
 
 <br>
+
 ## General MCMC diagnostics
 
 A Markov chain generates draws from the target distribution only after it has 
-converged to equilibrium. Unfortunately, this is only guaranteed in the limit in
+converged to an equilibrium. Unfortunately, this is only guaranteed in the limit in
 theory. In practice, diagnostics must be applied to monitor whether the Markov 
 chain(s) have converged. The __bayesplot__ package provides various plotting 
 functions for visualizing Markov chain Monte Carlo (MCMC) diagnostics after 
@@ -546,7 +560,7 @@ using too few MCMC iterations. This should lead to some high $\hat{R}$ values.
 
 ```{r, results='hide'}
 fit_cp_100iter <- sampling(schools_mod_cp, data = schools_dat, 
-                           chains = 2, iter = 100, seed = 4512789655)
+                           chains = 2, iter = 100, seed = 671254821)
 ```
 
 **bayesplot** provides a generic `rhat` extractor function, currently with
@@ -634,19 +648,6 @@ difference. Here are the $n_{eff}/N$ plots for `fit_cp` and `fit_ncp`
 side by side.
 
 ```{r mcmc_neff-compare}
-# A function we'll use several times to plot comparisons of the centered 
-# parameterization (cp) and the non-centered parameterization (ncp). See
-# help("bayesplot_grid") for details on the bayesplot_grid function used here.
-compare_cp_ncp <- function(cp_plot, ncp_plot, ncol = 2, ...) {
-  bayesplot_grid(
-    cp_plot, ncp_plot, 
-    grid_args = list(ncol = ncol),
-    subtitles = c("Centered parameterization", 
-                  "Non-centered parameterization"),
-    ...
-  )
-}
-
 neff_cp <- neff_ratio(fit_cp, pars = c("theta", "mu", "tau"))
 neff_ncp <- neff_ratio(fit_ncp, pars = c("theta", "mu", "tau"))
 compare_cp_ncp(mcmc_neff(neff_cp), mcmc_neff(neff_ncp), ncol = 1)
