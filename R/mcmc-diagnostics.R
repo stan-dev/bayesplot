@@ -629,8 +629,8 @@ new_neff_ratio <- function(x) {
 
 validate_neff_ratio <- function(x) {
   stopifnot(is.numeric(x), !is.list(x), !is.array(x))
-  if (any(x < 0 | x > 1, na.rm = TRUE)) {
-    stop("All neff ratios must be between 0 and 1.", call. = FALSE)
+  if (any(x < 0, na.rm = TRUE)) {
+    stop("All neff ratios must be positive.", call. = FALSE)
   }
   x
 }
