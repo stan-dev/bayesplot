@@ -19,6 +19,7 @@ vignette: >
 library("bayesplot")
 library("ggplot2")
 library("rstan")
+library("dplyr") #Used only for consistency checks
 ```
 
 ## Introduction
@@ -218,6 +219,19 @@ lp_ncp <- log_posterior(fit_ncp)
 np_ncp <- nuts_params(fit_ncp)
 ```
 
+```{r echo=FALSE, warning=FALSE}
+# On rare ocasions, the fits may not be illustrative. Currently the seed is fixed, but if something in Stan changes and the fixed seeds produce unexpected results (which sould be rare), we want to know.
+n_divergent_cp <- np_cp %>% filter(Parameter == "divergent__" & Value == 1) %>% nrow()
+n_divergent_ncp <- np_ncp %>% filter(Parameter == "divergent__" & Value == 1) %>% nrow()
+
+if(n_divergent_cp < 10 || n_divergent_cp > 2000) {
+  stop("Unexpected number of divergences in the CP model. Change seed?")
+}
+if(n_divergent_ncp > 0) {
+  stop("Divergences in the NCP model. Fix a bug / change seed?")
+}
+
+```
 
 Note that some of the functions from the 
 [_Plotting MCMC draws_](http://mc-stan.org/bayesplot/articles/plotting-mcmc-draws.html)
@@ -409,6 +423,16 @@ of parameter values, which is a good sign. But the plot is too crowded to help
 us diagnose divergences. We may however notice the cluster of divergences around
 950th iteration and zoom in to investigate, using the `window` parameter:
 
+```{r echo=FALSE}
+#A check that the chosen window still relevant
+n_divergent_in_window <- np_cp %>% filter(Parameter == "divergent__" & Value == 1 & Iteration > 900 & Iteration < 1000) %>% nrow()
+
+if(n_divergent_in_window < 10) {
+  stop("Too few divergences in the selected window for traceplot zoom. Change the window or the random seed.")
+}
+```
+
+
 ```{r, mcmc_trace_zoom}
 mcmc_trace(posterior_cp, pars = "tau", np = np_cp, window = c(900,1000)) + 
   xlab("Post-warmup iteration")
@@ -461,6 +485,20 @@ fit_cp_2 <- sampling(schools_mod_cp, data = schools_dat,
                      control = list(adapt_delta = 0.99), seed = 978245244)
 fit_ncp_2 <- sampling(schools_mod_ncp, data = schools_dat,
                       control = list(adapt_delta = 0.99), seed = 843256842)
+```
+
+```{r echo=FALSE, warning=FALSE}
+# On rare ocasions, the fits may not be illustrative. Currently the seed is fixed, but if something in Stan changes and the fixed seeds produce unexpected results (which sould be rare), we want to know.
+n_divergent_cp_2 <- fit_cp_2 %>% nuts_params() %>% filter(Parameter == "divergent__" & Value == 1) %>% nrow()
+n_divergent_ncp_2 <- fit_ncp_2 %>% nuts_params() %>% filter(Parameter == "divergent__" & Value == 1) %>% nrow()
+
+if(n_divergent_cp_2 <= 0) {
+  stop("No divergences in CP with increased adapt.delta. Change seed?")
+}
+if(n_divergent_ncp_2 > 0) {
+  stop("Divergences in the NCP model. Fix a bug / change seed?")
+}
+
 ```
 
 For the first model and this particular data, increasing `adapt_delta` will not
@@ -575,6 +613,14 @@ print(rhats)
 
 #### mcmc_rhat, mcmc_rhat_hist
 We can visualize the $\hat{R}$ values with the `mcmc_rhat` function:
+
+```{r echo=FALSE}
+#Check that the fit we got is a sensible example
+if(all(rhats < 1.3)) {
+  stop("All rhats for the short chain run are low. Change seed?")
+}
+```
+
 
 ```{r mcmc_rhat-1}
 color_scheme_set("brightblue") # see help("color_scheme_set")
