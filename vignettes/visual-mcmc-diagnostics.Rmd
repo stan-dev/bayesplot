@@ -428,6 +428,8 @@ us diagnose divergences. We may however notice the cluster of divergences around
 n_divergent_in_window <- np_cp %>% filter(Parameter == "divergent__" & Value == 1 & Iteration > 900 & Iteration < 1000) %>% nrow()
 
 if(n_divergent_in_window < 10) {
+  cat("Divergences happened at: ")
+   np_cp %>% filter(Parameter == "divergent__" & Value == 1) %>% select(Iteration) %>% get("Iteration", .) %>% print()
   stop("Too few divergences in the selected window for traceplot zoom. Change the window or the random seed.")
 }
 ```
