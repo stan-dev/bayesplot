@@ -420,26 +420,24 @@ mcmc_trace(posterior_cp, pars = "tau", np = np_cp) +
 
 The first thing to note is that all chains seem to be exploring the same region
 of parameter values, which is a good sign. But the plot is too crowded to help
-us diagnose divergences. We may however notice the cluster of divergences around
-950th iteration and zoom in to investigate, using the `window` parameter:
+us diagnose divergences. We may however zoom in to investigate, using the `window` parameter:
 
 ```{r echo=FALSE}
 #A check that the chosen window still relevant
-n_divergent_in_window <- np_cp %>% filter(Parameter == "divergent__" & Value == 1 & Iteration > 900 & Iteration < 1000) %>% nrow()
+n_divergent_in_window <- np_cp %>% filter(Parameter == "divergent__" & Value == 1 & Iteration >= 80 & Iteration <= 230) %>% nrow()
 
 if(n_divergent_in_window < 10) {
-  divergences <- np_cp %>% filter(Parameter == "divergent__" & Value == 1) %>% select(Iteration) %>% get("Iteration", .) %>% paste(collapse = ",")
+  divergences <- np_cp %>% filter(Parameter == "divergent__" & Value == 1) %>% select(Iteration) %>% get("Iteration", .) %>% sort() %>% paste(collapse = ",")
   stop(paste("Too few divergences in the selected window for traceplot zoom. Change the window or the random seed.\nDivergences happened at: ", divergences))
 }
 ```
 
-
 ```{r, mcmc_trace_zoom}
-mcmc_trace(posterior_cp, pars = "tau", np = np_cp, window = c(900,1000)) + 
+mcmc_trace(posterior_cp, pars = "tau", np = np_cp, window = c(80,230)) + 
   xlab("Post-warmup iteration")
 ```
 
-What we see here is that chains often get stuck as `tau` approaches zero and
+What we see here is that chains can get stuck as `tau` approaches zero and
 spend substantial time in the same region of parameter space. This is just
 another indication that there is problematic geometry at $\tau \simeq 0$ -
 healthy chains jump up and down frequently.
