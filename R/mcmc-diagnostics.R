@@ -216,7 +216,7 @@ mcmc_neff <- function(ratio, ..., size = NULL) {
   check_ignored_arguments(...)
   data <- mcmc_neff_data(ratio)
 
-  max_ratio <- max(ratio)
+  max_ratio <- max(ratio, na.rm = TRUE)
   if(max_ratio < 1.25) {
     additional_breaks <- numeric(0)
   } else if(max_ratio < 1.5) {
