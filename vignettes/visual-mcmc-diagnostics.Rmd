@@ -20,6 +20,7 @@ library("bayesplot")
 library("ggplot2")
 library("rstan")
 library("dplyr") #Used only for consistency checks
+rstan_options(auto_write = TRUE) #Helpful throughout development
 ```
 
 ## Introduction
@@ -148,10 +149,10 @@ schools_mod_cp <- stan_model("schools_mod_cp.stan")
 schools_mod_ncp <- stan_model("schools_mod_ncp.stan")
 ```
 We then fit the model by calling Stan's MCMC algorithm using the `sampling` 
-function,
+function (the increased `adapt_delta` param is to make the sampler a bit more "careful" and avoid false positive divergences),
 ```{r, fit-models-hidden, results='hide', message=FALSE}
-fit_cp <- sampling(schools_mod_cp, data = schools_dat, seed = 803214054)
-fit_ncp <- sampling(schools_mod_ncp, data = schools_dat, seed = 457721433)
+fit_cp <- sampling(schools_mod_cp, data = schools_dat, seed = 803214054, control = list(adapt_delta = 0.95))
+fit_ncp <- sampling(schools_mod_ncp, data = schools_dat, seed = 457721433, control = list(adapt_delta = 0.95))
 ```
 and extract a `iterations x chains x parameters` array of posterior draws with 
 `as.array`,
@@ -197,8 +198,8 @@ available_mcmc(pattern = "_nuts_")
 ```
 
 
-Those functions require more information than simply the posterior samples, in
-particular the log of the posterior density for each sample and some
+Those functions require more information than simply the posterior draws, in
+particular the log of the posterior density for each draw and some
 NUTS-specific diagnostic values may be needed. The **bayesplot** package
 provides generic functions `log_posterior` and `nuts_params` for extracting this
 information from fitted model objects. Currently methods are provided for models
@@ -266,7 +267,7 @@ The `mcmc_parcoord` plot shows one line per iteration, connecting the parameter
 values at this iteration. This lets you see any global patterns in the
 divergences. Here, you may notice that divergences in the centered
 parameterization happen exclusively when  `tau`, the hierarchical standard
-deviation, goes to zero and the values of the `theta`s are essentially fixed.
+deviation, goes near zero and the values of the `theta`s are essentially fixed.
 This makes `tau` immediately suspect. 
 See [Gabry et al. (2018)](https://arxiv.org/abs/1709.01449) for another example
 of the parallel coordinates plot.
@@ -308,7 +309,7 @@ against a "global" scale parameter on which it depends (`tau`).
 
 We will also use the `transformations` argument to look at the log of `tau`, as
 this is what Stan is doing under the hood for parameters like `tau` that have a
-lower bound of zero. That is, even though the samples for `tau` returned from
+lower bound of zero. That is, even though the draws for `tau` returned from
 Stan are all positive, the parameter space that the Markov chains actual explore
 is unconstrained. Transforming `tau` is not strictly necessary for the plot
 (often the plot is still useful without it) but plotting in the unconstrained is
@@ -341,7 +342,7 @@ small `tau` requires small steps in `theta`.
 
 The non-centered parameterization avoids this by sampling the `eta` parameter
 which, unlike `theta`, is _a priori independent_ of `tau`. Then `theta` is
-computed deterministically from the parameters `eta`,`mu` and `tau` afterwards.
+computed deterministically from the parameters `eta`, `mu` and `tau` afterwards.
 Here's the same plot as above, but with `eta[1]` from non-centered
 parameterization instead of `theta[1]` from the centered parameterization:
 
@@ -397,10 +398,10 @@ compare_cp_ncp(scatter_theta_cp, scatter_theta_ncp, ylim = c(-9, 4))
 Once we transform the `eta` values into `theta` values we actually see an even
 more pronounced funnel/tornado shape than we have with the centered
 parameterization. But this is precisely what we want! The non-centered
-parameterization allowed us to obtain samples from the funnel distribution
+parameterization allowed us to obtain draws from the funnel distribution
 without having to directly navigate the curvature of the funnel. With the
 centered parameterization the chains never could make it into the neck of funnel
-and we see a clustering of divergences and no samples in the tail of the
+and we see a clustering of divergences and no draws in the tail of the
 distribution.
 
 
@@ -428,7 +429,7 @@ us diagnose divergences. We may however zoom in to investigate, using the
 
 ```{r echo=FALSE}
 #A check that the chosen window still relevant
-n_divergent_in_window <- np_cp %>% filter(Parameter == "divergent__" & Value == 1 & Iteration >= 80 & Iteration <= 230) %>% nrow()
+n_divergent_in_window <- np_cp %>% filter(Parameter == "divergent__" & Value == 1 & Iteration >= 400 & Iteration <= 550) %>% nrow()
 
 if(n_divergent_in_window < 10) {
   divergences <- np_cp %>% filter(Parameter == "divergent__" & Value == 1) %>% select(Iteration) %>% get("Iteration", .) %>% sort() %>% paste(collapse = ",")
@@ -437,7 +438,7 @@ if(n_divergent_in_window < 10) {
 ```
 
 ```{r, mcmc_trace_zoom}
-mcmc_trace(posterior_cp, pars = "tau", np = np_cp, window = c(80,230)) + 
+mcmc_trace(posterior_cp, pars = "tau", np = np_cp, window = c(400,550)) + 
   xlab("Post-warmup iteration")
 ```
 
@@ -479,15 +480,15 @@ mcmc_nuts_divergence(np_ncp, lp_ncp)
 ```
 
 If there are only a few divergences we can often get rid of them by increasing
-the target acceptance rate (`adapt_delta`), which has the effect of lowering the
+the target acceptance rate (`adapt_delta`, the upper limit is 1), which has the effect of lowering the
 step size used by the sampler and allowing the Markov chains to explore more
 complicated curvature in the target distribution.
 
 ```{r, fit-adapt-delta, results='hide', message=FALSE}
 fit_cp_2 <- sampling(schools_mod_cp, data = schools_dat,
-                     control = list(adapt_delta = 0.99), seed = 978245244)
+                     control = list(adapt_delta = 0.999), seed = 978245244)
 fit_ncp_2 <- sampling(schools_mod_ncp, data = schools_dat,
-                      control = list(adapt_delta = 0.99), seed = 843256842)
+                      control = list(adapt_delta = 0.999), seed = 843256842)
 ```
 
 ```{r echo=FALSE, warning=FALSE}
@@ -583,15 +584,14 @@ models fit using the same algorithms as Stan).
 
 ### Rhat: potential scale reduction statistic
 
-> One way to monitor whether a chain has converged to the equilibrium distribution
+One way to monitor whether a chain has converged to the equilibrium distribution
 is to compare its behavior to other randomly initialized chains. This is the
-motivation for the Gelman and Rubin (1992) potential scale reduction statistic,
-$\hat{R}$. The $\hat{R}$ statistic measures the ratio of the average variance of
-samples within each chain to the variance of the pooled samples across chains;
+motivation for the potential scale reduction statistic, split-$\hat{R}$. 
+The split-$\hat{R}$ statistic measures the ratio of the average variance of
+draws within each chain to the variance of the pooled draws across chains;
 if all chains are at equilibrium, these will be the same and $\hat{R}$ will be
 one. If the chains have not converged to a common distribution, the $\hat{R}$
-statistic will be greater than one. 
-(Stan Development Team, 2016).
+statistic will be greater than one (see Gelman et al. 2013, Stan Development Team 2018). 
 
 The **bayesplot** package provides the functions `mcmc_rhat` and
 `mcmc_rhat_hist` for visualizing $\hat{R}$ estimates.
@@ -665,7 +665,7 @@ the posterior distribution of the estimand of interest. Because the draws within
 a Markov chain are _not_ independent if there is autocorrelation, the effective 
 sample size, $n_{eff}$, is usually smaller than the total sample size, $N$ 
 (although it may be larger in some cases). The larger the ratio of $n_{eff}$ to
-$N$ the better.
+$N$ the better (see Gelman et al. 2013, Stan Development Team 2018 for more details) .
 
 The **bayesplot** package provides a generic `neff_ratio` extractor function,
 currently with methods defined for models fit using the **rstan**,
@@ -714,7 +714,7 @@ As mentioned above, $n_{eff}/N$ decreases as autocorrelation becomes more
 extreme. We can visualize the autocorrelation using the `mcmc_acf` (line plot) 
 or `mcmc_acf_bar` (bar plot) functions. For the selected parameters, these 
 functions show the autocorrelation for each Markov chain separately up to a 
-user-specified number of lags. Autocorrelation is bad (it means samples are 
+user-specified number of lags. Autocorrelation is bad (it means draws are 
 not independent) and you want it to drop quickly to zero with increasing lag.
 
 #### `mcmc_acf`, `mcmc_acf_bar`
