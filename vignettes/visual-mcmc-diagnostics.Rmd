@@ -670,8 +670,9 @@ sample size, $n_{eff}$, is usually smaller than the total sample size, $N$
 (although it may be larger in some cases[^1]). The larger the ratio of $n_{eff}$ to
 $N$ the better (see Gelman et al. 2013, Stan Development Team 2018 for more details) .
 
-[^1]: $n_{eff} > N$` means that the mean value of the parameter computed from Stan draws 
-approaches the true mean faster then independent samples from the true posterior 
+[^1]: $n_{eff} > N$` indicates that the mean estimate of the parameter computed from Stan 
+draws approaches the true mean faster than the mean estimate computed from independent 
+samples from the true posterior 
 (the estimate from Stan has smaller variance). This is possible when the draws are 
 anticorrelated - draws above the mean tend to be well matched with draws below the mean.
 Other functions computed from draws (quantiles, posterior intervals, tail probabilities)
