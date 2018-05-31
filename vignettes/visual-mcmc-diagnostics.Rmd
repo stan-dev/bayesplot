@@ -365,9 +365,9 @@ better explore the posterior, so let's directly examine how much more
 exploration was possible after the reparameterization. For the non-centered
 parameterization we can make the same scatterplot but use the values of
 `theta[1] = mu + eta[1] * tau` instead of `eta[1]`. Below is a side by side
-comparison with scatterplot of `theta[1]` vs `log(tau)` from the centered
+comparison with the scatterplot of `theta[1]` vs `log(tau)` from the centered
 parameterization that we made above. We will also force the plots to have the
-same $y$-axis limits, which will make the more important difference much more
+same $y$-axis limits, which will make the most important difference much more
 apparent:
 
 ```{r, mcmc_scatter-3}
