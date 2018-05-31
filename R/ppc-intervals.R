@@ -13,7 +13,9 @@
 #'   is missing or NULL, then \code{1:length(y)} is used for the x-axis.
 #' @param ... Currently unused.
 #' @param prob A value between 0 and 1 indicating the desired probability mass
-#'   to include in the \code{yrep} intervals. The default is 0.9.
+#'   to include in the inner \code{yrep} intervals. The default is 0.9.
+#' @param prob_outer The probability mass to include in the outer \code{yrep}
+#'   interval. The default is 1.0.
 #' @param alpha,size,fatten Arguments passed to geoms. For ribbon plots
 #'   \code{alpha} and \code{size} are passed to
 #'   \code{\link[ggplot2]{geom_ribbon}}. For interval plots \code{size} and
@@ -109,8 +111,8 @@ NULL
 
 #' @rdname PPC-intervals
 #' @export
-ppc_intervals <- function(y, yrep, x = NULL, ..., prob = 0.9, size = 1,
-                          fatten = 3) {
+ppc_intervals <- function(y, yrep, x = NULL, ..., prob = 0.9, prob_outer = 1.0,
+                          size = 1, fatten = 3) {
   check_ignored_arguments(...)
 
   data <- ppc_intervals_data(
@@ -118,7 +120,8 @@ ppc_intervals <- function(y, yrep, x = NULL, ..., prob = 0.9, size = 1,
       yrep = yrep,
       x = x,
       group = NULL,
-      prob = prob
+      prob = prob,
+      prob_outer = prob_outer
   )
 
   .ppc_intervals(
@@ -144,6 +147,7 @@ ppc_intervals_grouped <- function(y,
                                   facet_args = list(),
                                   ...,
                                   prob = 0.9,
+                                  prob_outer = 1.0,
                                   size = 1,
                                   fatten = 3) {
   check_ignored_arguments(...)
@@ -157,7 +161,8 @@ ppc_intervals_grouped <- function(y,
     yrep = yrep,
     x = x,
     group = group,
-    prob = prob
+    prob = prob,
+    prob_outer = prob_outer
   )
 
   .ppc_intervals(
@@ -179,6 +184,7 @@ ppc_ribbon <- function(y,
                        x = NULL,
                        ...,
                        prob = 0.9,
+                       prob_outer = 1.0,
                        alpha = 0.33,
                        size = 0.25) {
   check_ignored_arguments(...)
@@ -211,6 +217,7 @@ ppc_ribbon_grouped <- function(y,
                                facet_args = list(),
                                ...,
                                prob = 0.9,
+                               prob_outer = 1.0,
                                alpha = 0.33,
                                size = 0.25) {
   check_ignored_arguments(...)
@@ -224,7 +231,8 @@ ppc_ribbon_grouped <- function(y,
     yrep = yrep,
     x = x,
     group = group,
-    prob = prob
+    prob = prob,
+    prob_outer = prob_outer
   )
 
   .ppc_intervals(
@@ -241,9 +249,11 @@ ppc_ribbon_grouped <- function(y,
 
 #' @rdname PPC-intervals
 #' @export
-ppc_intervals_data <- function(y, yrep, x = NULL, group = NULL, prob = 0.9, ...) {
+ppc_intervals_data <- function(y, yrep, x = NULL, group = NULL,
+                               prob = 0.9, prob_outer = 1.0, ...) {
   check_ignored_arguments(...)
-  .ppc_intervals_data(y = y, yrep = yrep, x = x, group = group, prob = prob)
+  .ppc_intervals_data(y = y, yrep = yrep, x = x, group = group,
+                      prob = prob, prob_outer = prob_outer)
 }
 
 
@@ -259,9 +269,14 @@ label_x <- function(x) {
   if (missing(x)) "Index" else NULL
 }
 
-.ppc_intervals_data <- function(y, yrep, x = NULL, group = NULL, prob = 0.8) {
+.ppc_intervals_data <- function(y, yrep, x = NULL, group = NULL,
+                                prob = 0.8, prob_outer = 1.0) {
   grouped <- !is.null(group)
   stopifnot(prob > 0 && prob < 1)
+  stopifnot(prob_outer > 0 && prob_outer <= 1)
+  probs <- sort(c(prob, prob_outer))
+  prob <- probs[1]
+  prob_outer <- probs[2]
 
   y <- validate_y(y)
   yrep <- validate_yrep(yrep, y)
@@ -283,16 +298,18 @@ label_x <- function(x) {
   }
 
   grouped_d <- dplyr::group_by(molten_reps, !!! group_vars)
-  alpha <- (1 - prob) / 2
+  alpha <- (1 - probs) / 2
   probs <- sort(c(alpha, 0.5, 1 - alpha))
 
   val_col <- sym("value")
   dplyr::ungroup(dplyr::summarise(
     grouped_d,
     prob = prob,
-    lo = quantile(!! val_col, prob = probs[1]),
-    mid = quantile(!! val_col, prob = probs[2]),
-    hi = quantile(!! val_col, prob = probs[3])
+    ll = quantile(!! val_col, prob = probs[1]),
+    lo = quantile(!! val_col, prob = probs[2]),
+    mid = quantile(!! val_col, prob = probs[3]),
+    hi = quantile(!! val_col, prob = probs[4]),
+    hh = quantile(!! val_col, prob = probs[5])
   ))
 }
 
@@ -326,6 +343,11 @@ label_x <- function(x) {
   if (style == "ribbon") {
     graph <- graph +
       geom_ribbon(
+        aes_(color = "yrep", fill = "yrep", ymin = ~ ll, ymax = ~ hh),
+        alpha = alpha,
+        size = size
+      ) +
+      geom_ribbon(
         aes_(color = "yrep", fill = "yrep"),
         alpha = alpha,
         size = size
@@ -341,6 +363,13 @@ label_x <- function(x) {
       )
   } else {
     graph <- graph +
+      geom_pointrange(
+        mapping = aes_(color = "yrep", fill = "yrep", ymin = ~ ll, ymax = ~ hh),
+        shape = 21,
+        alpha = alpha,
+        size = size,
+        fatten = fatten
+      ) +
       geom_pointrange(
         mapping = aes_(color = "yrep", fill = "yrep"),
         shape = 21,
