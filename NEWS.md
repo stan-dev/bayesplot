@@ -3,21 +3,21 @@
 (GitHub issue/PR numbers in parentheses)
 
 * The [Visual MCMC Diagnostics vignette](http://mc-stan.org/bayesplot/articles/visual-mcmc-diagnostics.html) 
-has been reorganized and has a lot of useful new content  
-thanks to Martin Modrák. (#144, #153)
+has been reorganized and has a lot of useful new content thanks to Martin Modrák. (#144, #153)
 
-* The [LOO predictive
-checks](http://mc-stan.org/bayesplot/reference/PPC-loo.html) now require 
-**loo** version `>= 2.0.0`. (#139)
+* The [LOO predictive checks](http://mc-stan.org/bayesplot/reference/PPC-loo.html) 
+now require **loo** version `>= 2.0.0`. (#139)
 
-* `mcmc_pairs()` now has an argument `grid_args` to provide a way of passing
-optional arguments to `gridExtra::arrangeGrob()`. This can be used to add a
-title to the plot, for example. (#143)
+* [`mcmc_pairs()`](http://mc-stan.org/bayesplot/reference/MCMC-scatterplots.html) 
+now has an argument `grid_args` to provide a way of passing optional arguments to 
+`gridExtra::arrangeGrob()`. This can be used to add a title to the plot, for example. (#143)
 
-* `ppc_ecdf_overlay()` gains an argument `discrete`, which is `FALSE` by default, but can be used to make the Geom more appropriate for discrete data. (#145)
+* [`ppc_ecdf_overlay()`](http://mc-stan.org/bayesplot/reference/PPC-distributions.html) 
+gains an argument `discrete`, which is `FALSE` by default, but can be used to make the 
+Geom more appropriate for discrete data. (#145)
 
-* `mcmc_hist()` gains a `breaks` argument that can be used as an alternative to
-`binwidth`.
+* [`mcmc_hist()`](http://mc-stan.org/bayesplot/reference/MCMC-distributions.html) 
+gains a `breaks` argument that can be used as an alternative to `binwidth`.
 
 # bayesplot 1.5.0
 
