@@ -36,6 +36,10 @@
 #'   specify arguments controlling the appearance of tick marks representing
 #'   divergences (if the \code{np} argument is specified).
 #' @param divergences Deprecated. Use the \code{np} argument instead.
+#' @param iter1 An integer; the iteration number of the first included draw
+#'   (default 0). This can be used to make it more obvious that the warmup
+#'   iterations have been discarded from the traceplot. It cannot be specified
+#'   if \code{n_warmup} is also set to a positive value.
 #'
 #' @template return-ggplot
 #'
@@ -150,7 +154,8 @@ mcmc_trace <-
            size = NULL,
            np = NULL,
            np_style = trace_style_np(),
-           divergences = NULL) {
+           divergences = NULL,
+           iter1 = 0) {
 
     # deprecate 'divergences' arg in favor of 'np' (for consistency across functions)
     if (!is.null(divergences)) {
@@ -183,6 +188,7 @@ mcmc_trace <-
       style = "line",
       np = np,
       np_style = np_style,
+      iter1 = iter1,
       ...
     )
   }
@@ -261,10 +267,24 @@ trace_style_np <-
                         alpha = 0.2,
                         np = NULL,
                         np_style = trace_style_np(),
+                        iter1 = 0,
                         ...) {
 
   style <- match.arg(style)
   x <- prepare_mcmc_array(x, pars, regex_pars, transformations)
+
+  if (iter1 < 0) {
+    iter1 <- 0
+    warning(
+      "Ignored negative 'iter1'."
+    )
+  }
+
+  if (n_warmup > 0 && iter1 > 0) {
+    stop(
+      "'n_warmup' and 'iter1' can't both be specified."
+    )
+  }
 
   if (!is.null(highlight)) {
     if (!has_multiple_chains(x))
@@ -287,10 +307,10 @@ trace_style_np <-
   geom_args$size <- size %||% ifelse(style == "line", 1/3, 1)
 
   if (is.null(highlight)) {
-    mapping <- aes_(x = ~ Iteration, y = ~ Value, color = ~ Chain)
+    mapping <- aes_(x = ~ Iteration + iter1, y = ~ Value, color = ~ Chain)
   } else {
     stopifnot(length(highlight) == 1)
-    mapping <- aes_(x = ~ Iteration,
+    mapping <- aes_(x = ~ Iteration + iter1,
                     y = ~ Value,
                     alpha = ~ Chain == highlight,
                     color = ~ Chain == highlight)
