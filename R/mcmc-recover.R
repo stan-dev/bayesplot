@@ -291,7 +291,8 @@ mcmc_recover_hist <-
            true,
            facet_args = list(),
            ...,
-           binwidth = NULL) {
+           binwidth = NULL,
+           breaks = NULL) {
 
     check_ignored_arguments(...)
     x <- merge_chains(prepare_mcmc_array(x))
@@ -314,7 +315,8 @@ mcmc_recover_hist <-
         data = hist_data,
         color = get_color("lh"),
         size = .25,
-        binwidth = binwidth
+        binwidth = binwidth,
+        breaks = breaks
       ) +
       geom_vline(
         aes_(xintercept = ~ True, color = "True"),

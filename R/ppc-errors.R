@@ -121,6 +121,7 @@ ppc_error_hist <-
            yrep,
            ...,
            binwidth = NULL,
+           breaks = NULL,
            freq = TRUE) {
     check_ignored_arguments(...)
 
@@ -143,7 +144,8 @@ ppc_error_hist <-
         fill = get_color("l"),
         color = get_color("lh"),
         size = 0.25,
-        binwidth = binwidth
+        binwidth = binwidth,
+        breaks = breaks
       ) +
       xlab(expression(italic(y) - italic(y)[rep])) +
       dont_expand_y_axis() +
@@ -166,6 +168,7 @@ ppc_error_hist_grouped <-
            group,
            ...,
            binwidth = NULL,
+           breaks = NULL,
            freq = TRUE) {
     check_ignored_arguments(...)
 
@@ -179,7 +182,8 @@ ppc_error_hist_grouped <-
         fill = get_color("l"),
         color = get_color("lh"),
         size = 0.25,
-        binwidth = binwidth
+        binwidth = binwidth,
+        breaks = breaks
       ) +
       facet_grid(rep_id ~ group, scales = "free") +
       xlab(expression(italic(y) - italic(y)[rep])) +

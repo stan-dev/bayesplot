@@ -15,7 +15,7 @@
 \usage{
 ppc_data(y, yrep, group = NULL)
 
-ppc_hist(y, yrep, ..., binwidth = NULL, freq = TRUE)
+ppc_hist(y, yrep, ..., binwidth = NULL, breaks = NULL, freq = TRUE)
 
 ppc_boxplot(y, yrep, ..., notch = TRUE, size = 0.5, alpha = 1)
 
@@ -54,8 +54,11 @@ pertaining to the corresponding value of \code{y}.}
 
 \item{...}{Currently unused.}
 
-\item{binwidth}{An optional value used as the \code{binwidth} argument to
-\code{\link[ggplot2]{geom_histogram}} to override the default binwidth.}
+\item{binwidth}{Passed to \code{\link[ggplot2]{geom_histogram}} to override
+the default binwidth.}
+
+\item{breaks}{Passed to \code{\link[ggplot2]{geom_histogram}} as an
+alternative to \code{binwidth}.}
 
 \item{freq}{For histograms, \code{freq=TRUE} (the default) puts count on the
 y-axis. Setting \code{freq=FALSE} puts density on the y-axis. (For many

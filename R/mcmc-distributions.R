@@ -104,8 +104,6 @@ NULL
 #' @export
 #' @template args-hist
 #' @template args-hist-freq
-#' @param breaks Passed to \code{\link[ggplot2]{geom_histogram}} as an
-#'   alternative to binwidth.
 #'
 mcmc_hist <- function(x,
                       pars = character(),
