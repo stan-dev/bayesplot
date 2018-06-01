@@ -5,7 +5,8 @@ Version: 1.5.0.9000
 Date: 2018-03-29
 Authors@R: c(person("Jonah", "Gabry", role = c("aut", "cre"), email = "jsg2201@columbia.edu"),
              person("Tristan", "Mahr", role = "aut"),
-             person("Paul-Christian", "Buerkner", role = "ctb"))
+             person("Paul-Christian", "Bürkner", role = "ctb"),
+             person("Martin", "Modrák", role = "ctb"))
 Maintainer: Jonah Gabry <jsg2201@columbia.edu>
 Description: Plotting functions for posterior analysis, model checking,
     and MCMC diagnostics. The package is designed not only to provide convenient

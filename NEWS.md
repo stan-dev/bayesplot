@@ -2,6 +2,10 @@
 
 (GitHub issue/PR numbers in parentheses)
 
+* The [Visual MCMC Diagnostics vignette](http://mc-stan.org/bayesplot/articles/visual-mcmc-diagnostics.html) 
+has been reorganized and has a lot of useful new content  
+thanks to Martin Modrák. (#144, #153)
+
 * The [LOO predictive
 checks](http://mc-stan.org/bayesplot/reference/PPC-loo.html) now require 
 **loo** version `>= 2.0.0`. (#139)
