@@ -121,6 +121,7 @@ ppc_error_hist <-
            yrep,
            ...,
            binwidth = NULL,
+           breaks = NULL,
            freq = TRUE) {
     check_ignored_arguments(...)
 
@@ -143,7 +144,8 @@ ppc_error_hist <-
         fill = get_color("l"),
         color = get_color("lh"),
         size = 0.25,
-        binwidth = binwidth
+        binwidth = binwidth,
+        breaks = breaks
       ) +
       bayesplot_theme_get() +
       xlab(expression(italic(y) - italic(y)[rep])) +
@@ -167,6 +169,7 @@ ppc_error_hist_grouped <-
            group,
            ...,
            binwidth = NULL,
+           breaks = NULL,
            freq = TRUE) {
     check_ignored_arguments(...)
 
@@ -180,7 +183,8 @@ ppc_error_hist_grouped <-
         fill = get_color("l"),
         color = get_color("lh"),
         size = 0.25,
-        binwidth = binwidth
+        binwidth = binwidth,
+        breaks = breaks
       ) +
       facet_grid(rep_id ~ group, scales = "free") +
       bayesplot_theme_get() +

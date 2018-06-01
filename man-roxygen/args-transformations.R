@@ -15,3 +15,7 @@
 #'   If a function itself is specified (e.g. \code{log} or \code{function(x)
 #'   log(x)}) then \code{"t"} is used in the new parameter label to indicate
 #'   that the parameter is transformed (e.g. \code{"t(sigma)"}).
+#'
+#'   Note: due to partial argument matching \code{transformations} can be
+#'   abbreviated for convenience in interactive use (e.g., \code{transform},
+#'   \code{trans}, etc.).

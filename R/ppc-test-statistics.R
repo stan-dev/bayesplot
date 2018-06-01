@@ -82,6 +82,7 @@ ppc_stat <-
            stat = "mean",
            ...,
            binwidth = NULL,
+           breaks = NULL,
            freq = TRUE) {
     check_ignored_arguments(...)
 
@@ -98,7 +99,8 @@ ppc_stat <-
         color = get_color("lh"),
         size = .25,
         na.rm = TRUE,
-        binwidth = binwidth
+        binwidth = binwidth,
+        breaks = breaks
       ) +
       geom_vline(
         data = data.frame(Ty = T_y),
@@ -135,6 +137,7 @@ ppc_stat_grouped <-
            ...,
            facet_args = list(),
            binwidth = NULL,
+           breaks = NULL,
            freq = TRUE) {
     check_ignored_arguments(...)
 
@@ -155,7 +158,8 @@ ppc_stat_grouped <-
         color = get_color("lh"),
         size = .25,
         na.rm = TRUE,
-        binwidth = binwidth
+        binwidth = binwidth,
+        breaks = breaks
       ) +
       geom_vline(
         data = plot_data[is_y, , drop = FALSE],
