@@ -156,6 +156,10 @@ Gabry, J., Simpson, D., Vehtari, A., Betancourt, M., and Gelman,
   A. (2018). Visualization in Bayesian workflow. \emph{Journal of the Royal
   Statistical Society Series A}, accepted for publication. arXiv preprint:
   \url{http://arxiv.org/abs/1709.01449}.
+
+Hartikainen, A. (2017, Aug 23). Concentration of divergences
+[Msg 21]. Message posted to The Stan Forums:
+\url{http://discourse.mc-stan.org/t/concentration-of-divergences/1590/21}.
 }
 \seealso{
 Other MCMC: \code{\link{MCMC-combos}},
