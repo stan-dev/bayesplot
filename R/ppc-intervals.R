@@ -304,11 +304,12 @@ label_x <- function(x) {
   val_col <- sym("value")
   dplyr::ungroup(dplyr::summarise(
     grouped_d,
-    prob = prob,
+    outer_width = prob_outer,
+    inner_width = prob,
     ll = quantile(!! val_col, prob = probs[1]),
-    lo = quantile(!! val_col, prob = probs[2]),
-    mid = quantile(!! val_col, prob = probs[3]),
-    hi = quantile(!! val_col, prob = probs[4]),
+    l  = quantile(!! val_col, prob = probs[2]),
+    m  = quantile(!! val_col, prob = probs[3]),
+    h  = quantile(!! val_col, prob = probs[4]),
     hh = quantile(!! val_col, prob = probs[5])
   ))
 }
@@ -334,9 +335,9 @@ label_x <- function(x) {
     data = data,
     mapping = aes_(
       x = ~ x,
-      y = ~ mid,
-      ymin = ~ lo,
-      ymax = ~ hi
+      y = ~ m,
+      ymin = ~ l,
+      ymax = ~ h
     )
   )
 
