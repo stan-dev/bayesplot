@@ -13,9 +13,9 @@
 #'   is missing or NULL, then \code{1:length(y)} is used for the x-axis.
 #' @param ... Currently unused.
 #' @param prob A value between 0 and 1 indicating the desired probability mass
-#'   to include in the inner \code{yrep} intervals. The default is 0.9.
+#'   to include in the inner \code{yrep} intervals. The default is 0.5.
 #' @param prob_outer The probability mass to include in the outer \code{yrep}
-#'   interval. The default is 1.0.
+#'   interval. The default is 0.9.
 #' @param alpha,size,fatten Arguments passed to geoms. For ribbon plots
 #'   \code{alpha} and \code{size} are passed to
 #'   \code{\link[ggplot2]{geom_ribbon}}. For interval plots \code{size} and
@@ -111,7 +111,7 @@ NULL
 
 #' @rdname PPC-intervals
 #' @export
-ppc_intervals <- function(y, yrep, x = NULL, ..., prob = 0.9, prob_outer = 1.0,
+ppc_intervals <- function(y, yrep, x = NULL, ..., prob = 0.5, prob_outer = 0.9,
                           size = 1, fatten = 3) {
   check_ignored_arguments(...)
 
@@ -146,8 +146,8 @@ ppc_intervals_grouped <- function(y,
                                   group,
                                   facet_args = list(),
                                   ...,
-                                  prob = 0.9,
-                                  prob_outer = 1.0,
+                                  prob = 0.5,
+                                  prob_outer = 0.9,
                                   size = 1,
                                   fatten = 3) {
   check_ignored_arguments(...)
@@ -183,8 +183,8 @@ ppc_ribbon <- function(y,
                        yrep,
                        x = NULL,
                        ...,
-                       prob = 0.9,
-                       prob_outer = 1.0,
+                       prob = 0.5,
+                       prob_outer = 0.9,
                        alpha = 0.33,
                        size = 0.25) {
   check_ignored_arguments(...)
@@ -216,8 +216,8 @@ ppc_ribbon_grouped <- function(y,
                                group,
                                facet_args = list(),
                                ...,
-                               prob = 0.9,
-                               prob_outer = 1.0,
+                               prob = 0.5,
+                               prob_outer = 0.9,
                                alpha = 0.33,
                                size = 0.25) {
   check_ignored_arguments(...)
@@ -250,7 +250,7 @@ ppc_ribbon_grouped <- function(y,
 #' @rdname PPC-intervals
 #' @export
 ppc_intervals_data <- function(y, yrep, x = NULL, group = NULL,
-                               prob = 0.9, prob_outer = 1.0, ...) {
+                               prob = 0.5, prob_outer = 0.9, ...) {
   check_ignored_arguments(...)
   .ppc_intervals_data(y = y, yrep = yrep, x = x, group = group,
                       prob = prob, prob_outer = prob_outer)
@@ -270,7 +270,7 @@ label_x <- function(x) {
 }
 
 .ppc_intervals_data <- function(y, yrep, x = NULL, group = NULL,
-                                prob = 0.8, prob_outer = 1.0) {
+                                prob = 0.5, prob_outer = 0.9) {
   grouped <- !is.null(group)
   stopifnot(prob > 0 && prob < 1)
   stopifnot(prob_outer > 0 && prob_outer <= 1)
