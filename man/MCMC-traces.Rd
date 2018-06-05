@@ -10,7 +10,7 @@
 mcmc_trace(x, pars = character(), regex_pars = character(),
   transformations = list(), facet_args = list(), ..., n_warmup = 0,
   window = NULL, size = NULL, np = NULL, np_style = trace_style_np(),
-  divergences = NULL)
+  divergences = NULL, iter1 = 0)
 
 mcmc_trace_highlight(x, pars = character(), regex_pars = character(),
   transformations = list(), facet_args = list(), ..., n_warmup = 0,
@@ -81,6 +81,11 @@ specify arguments controlling the appearance of tick marks representing
 divergences (if the \code{np} argument is specified).}
 
 \item{divergences}{Deprecated. Use the \code{np} argument instead.}
+
+\item{iter1}{An integer; the iteration number of the first included draw
+(default 0). This can be used to make it more obvious that the warmup
+iterations have been discarded from the traceplot. It cannot be specified
+if \code{n_warmup} is also set to a positive value.}
 
 \item{alpha}{For \code{mcmc_trace_highlight}, passed to
 \code{\link[ggplot2]{geom_point}} to control the transparency of the points
