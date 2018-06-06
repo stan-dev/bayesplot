@@ -139,7 +139,8 @@ NULL
 
 #' @rdname MCMC-nuts
 #' @export
-#' @template args-hist
+#' @param binwidth An optional value passed to
+#'   \code{\link[ggplot2]{geom_histogram}} to override the default binwidth.
 #'
 mcmc_nuts_acceptance <-
   function(x,

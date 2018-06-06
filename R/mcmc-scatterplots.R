@@ -204,11 +204,11 @@ mcmc_hex <- function(x,
 #'   \code{off_diag_fun} is \code{"scatter"} then \code{off_diag_args} could
 #'   include optional arguments to \code{mcmc_scatter} like \code{size} and
 #'   \code{alpha}.
-#' @param grid_args For \code{mcmc_pairs}, arguments to pass to
-#'   \code{gridExtra::arrangeGrob} via \code{\link{bayesplot_grid}}. For
-#'   example, since \code{mcmc_pairs} returns more than a single ggplot object,
-#'   using \code{\link{ggtitle}} afterwards will not work. But you you can still
-#'   add a title to the plot using \code{grid_args = list(top="My title")}.
+#' @param grid_args,save_gg_objects For \code{mcmc_pairs}, arguments to pass to
+#'   \code{\link{bayesplot_grid}}. For example, since \code{mcmc_pairs} returns
+#'   more than a single ggplot object, using \code{\link{ggtitle}} afterwards
+#'   will not work. But you you can still add a title to the plot using
+#'   \code{grid_args = list(top="My title")}.
 #'
 #' @examples
 #' \donttest{
@@ -306,7 +306,8 @@ mcmc_pairs <- function(x,
                        np = NULL,
                        np_style = pairs_style_np(),
                        max_treedepth = NULL,
-                       grid_args = list()) {
+                       grid_args = list(),
+                       save_gg_objects = TRUE) {
   check_ignored_arguments(...)
 
   stopifnot(
@@ -326,10 +327,12 @@ mcmc_pairs <- function(x,
   n_param <- num_params(x)
   pars <- parameter_names(x)
 
-  if (n_chain == 1)
+  if (n_chain == 1) {
     warning("Only one chain in 'x'. This plot is more useful with multiple chains.")
-  if (n_param < 2)
+  }
+  if (n_param < 2) {
     stop("This plot requires at least two parameters in 'x'.")
+  }
 
   no_np <- is.null(np)
   no_lp <- is.null(lp)
@@ -421,7 +424,8 @@ mcmc_pairs <- function(x,
 
   bayesplot_grid(plots = plots,
                  legends = FALSE,
-                 grid_args = grid_args)
+                 grid_args = grid_args,
+                 save_gg_objects = save_gg_objects)
 }
 
 
