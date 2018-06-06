@@ -173,7 +173,7 @@ mcmc_rhat <- function(rhat, ..., size = NULL) {
 
 #' @rdname MCMC-diagnostics
 #' @export
-mcmc_rhat_hist <- function(rhat, ..., binwidth = NULL) {
+mcmc_rhat_hist <- function(rhat, ..., binwidth = NULL, breaks = NULL) {
   check_ignored_arguments(...)
   data <- mcmc_rhat_data(rhat)
 
@@ -186,7 +186,9 @@ mcmc_rhat_hist <- function(rhat, ..., binwidth = NULL) {
     geom_histogram(
       size = .25,
       na.rm = TRUE,
-      binwidth = binwidth) +
+      binwidth = binwidth,
+      breaks = breaks
+    ) +
     scale_color_diagnostic("rhat") +
     scale_fill_diagnostic("rhat") +
     labs(x = expression(hat(R)), y = NULL) +
@@ -216,6 +218,17 @@ mcmc_neff <- function(ratio, ..., size = NULL) {
   check_ignored_arguments(...)
   data <- mcmc_neff_data(ratio)
 
+  max_ratio <- max(ratio, na.rm = TRUE)
+  if(max_ratio < 1.25) {
+    additional_breaks <- numeric(0)
+  } else if(max_ratio < 1.5) {
+    additional_breaks <- 1.25
+    additional_labels <- "1.25"
+  } else {
+    additional_breaks <- seq(1.5, max_ratio, by = 0.5)
+  }
+  breaks <- c(0, 0.1, 0.25, 0.5, 0.75, 1, additional_breaks)
+
   ggplot(
     data,
     mapping = aes_(
@@ -236,9 +249,9 @@ mcmc_neff <- function(ratio, ..., size = NULL) {
     scale_fill_diagnostic("neff") +
     scale_color_diagnostic("neff") +
     scale_x_continuous(
-      breaks = c(0, 0.1, 0.25, 0.5, 0.75, 1),
-      labels = c("0", "0.1", "0.25", "0.5", "0.75", "1"),
-      limits = c(0, 1.05),
+      breaks = breaks,
+      labels = as.character(breaks), #as.character truncates trailing zeroes, while ggplot default does not
+      limits = c(0, max(1, max_ratio) + 0.05),
       expand = c(0, 0)) +
     yaxis_text(FALSE) +
     yaxis_title(FALSE) +
@@ -247,7 +260,7 @@ mcmc_neff <- function(ratio, ..., size = NULL) {
 
 #' @rdname MCMC-diagnostics
 #' @export
-mcmc_neff_hist <- function(ratio, ..., binwidth = NULL) {
+mcmc_neff_hist <- function(ratio, ..., binwidth = NULL, breaks = NULL) {
   check_ignored_arguments(...)
   data <- mcmc_neff_data(ratio)
 
@@ -260,7 +273,8 @@ mcmc_neff_hist <- function(ratio, ..., binwidth = NULL) {
     geom_histogram(
       size = .25,
       na.rm = TRUE,
-      binwidth = binwidth) +
+      binwidth = binwidth,
+      breaks = breaks) +
     scale_color_diagnostic("neff") +
     scale_fill_diagnostic("neff") +
     labs(x = expression(N[eff]/N), y = NULL) +
@@ -629,8 +643,8 @@ new_neff_ratio <- function(x) {
 
 validate_neff_ratio <- function(x) {
   stopifnot(is.numeric(x), !is.list(x), !is.array(x))
-  if (any(x < 0 | x > 1, na.rm = TRUE)) {
-    stop("All neff ratios must be between 0 and 1.", call. = FALSE)
+  if (any(x < 0, na.rm = TRUE)) {
+    stop("All neff ratios must be positive.", call. = FALSE)
   }
   x
 }

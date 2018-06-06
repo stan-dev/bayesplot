@@ -121,27 +121,37 @@ ppc_data <- function(y, yrep, group = NULL) {
 
 #' @rdname PPC-distributions
 #' @export
-ppc_hist <- function(y, yrep, ..., binwidth = NULL, freq = TRUE) {
-  check_ignored_arguments(...)
-  data <- ppc_data(y, yrep)
-  aes_list <- set_hist_aes(freq, fill = ~ is_y_label, color = ~ is_y_label)
+ppc_hist <-
+  function(y,
+           yrep,
+           ...,
+           binwidth = NULL,
+           breaks = NULL,
+           freq = TRUE) {
+    check_ignored_arguments(...)
+    data <- ppc_data(y, yrep)
+    aes_list <- set_hist_aes(freq, fill = ~ is_y_label, color = ~ is_y_label)
 
-  ggplot(data) +
-    aes_list +
-    geom_histogram(size = 0.25, binwidth = binwidth) +
-    scale_fill_ppc_dist() +
-    scale_color_ppc_dist() +
-    facet_wrap_parsed("rep_label") +
-    force_axes_in_facets() +
-    dont_expand_y_axis() +
-    space_legend_keys() +
-    yaxis_text(FALSE) +
-    yaxis_title(FALSE) +
-    yaxis_ticks(FALSE) +
-    xaxis_title(FALSE) +
-    facet_text(FALSE) +
-    facet_bg(FALSE)
-}
+    ggplot(data) +
+      aes_list +
+      geom_histogram(
+        size = 0.25,
+        binwidth = binwidth,
+        breaks = breaks
+      ) +
+      scale_fill_ppc_dist() +
+      scale_color_ppc_dist() +
+      facet_wrap_parsed("rep_label") +
+      force_axes_in_facets() +
+      dont_expand_y_axis() +
+      space_legend_keys() +
+      yaxis_text(FALSE) +
+      yaxis_title(FALSE) +
+      yaxis_ticks(FALSE) +
+      xaxis_title(FALSE) +
+      facet_text(FALSE) +
+      facet_bg(FALSE)
+  }
 
 
 

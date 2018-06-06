@@ -22,7 +22,7 @@ mcmc_pairs(x, pars = character(), regex_pars = character(),
   off_diag_fun = c("scatter", "hex"), diag_args = list(),
   off_diag_args = list(), condition = pairs_condition(), lp = NULL,
   np = NULL, np_style = pairs_style_np(), max_treedepth = NULL,
-  grid_args = list())
+  grid_args = list(), save_gg_objects = TRUE)
 
 scatter_style_np(div_color = "red", div_shape = 16, div_size = 2.5,
   div_alpha = 1)
@@ -47,22 +47,26 @@ parameter selection. Can be specified instead of \code{pars} or in addition
 to \code{pars}.}
 
 \item{transformations}{Optionally, transformations to apply to parameters
-before plotting. If \code{transformations} is a function or a single string
-naming a function then that function will be used to transform all
-parameters. To apply transformations to particular parameters, the
-\code{transformations} argument can be a named list with length equal to
-the number of parameters to be transformed. Currently only univariate
-transformations of scalar parameters can be specified (multivariate
-transformations will be implemented in a future release). If
-\code{transformations} is a list, the name of each list element should be a
-parameter name and the content of each list element should be a function
-(or any item to match as a function via \code{\link{match.fun}}, e.g. a
-string naming a function). If a function is specified by its name as a
-string (e.g. \code{"log"}), then it can be used to construct a new
-parameter label for the appropriate parameter (e.g. \code{"log(sigma)"}).
-If a function itself is specified (e.g. \code{log} or \code{function(x)
-log(x)}) then \code{"t"} is used in the new parameter label to indicate
-that the parameter is transformed (e.g. \code{"t(sigma)"}).}
+  before plotting. If \code{transformations} is a function or a single string
+  naming a function then that function will be used to transform all
+  parameters. To apply transformations to particular parameters, the
+  \code{transformations} argument can be a named list with length equal to
+  the number of parameters to be transformed. Currently only univariate
+  transformations of scalar parameters can be specified (multivariate
+  transformations will be implemented in a future release). If
+  \code{transformations} is a list, the name of each list element should be a
+  parameter name and the content of each list element should be a function
+  (or any item to match as a function via \code{\link{match.fun}}, e.g. a
+  string naming a function). If a function is specified by its name as a
+  string (e.g. \code{"log"}), then it can be used to construct a new
+  parameter label for the appropriate parameter (e.g. \code{"log(sigma)"}).
+  If a function itself is specified (e.g. \code{log} or \code{function(x)
+  log(x)}) then \code{"t"} is used in the new parameter label to indicate
+  that the parameter is transformed (e.g. \code{"t(sigma)"}).
+
+  Note: due to partial argument matching \code{transformations} can be
+  abbreviated for convenience in interactive use (e.g., \code{transform},
+  \code{trans}, etc.).}
 
 \item{...}{Currently ignored.}
 
@@ -123,11 +127,11 @@ maximum treedepth allowed when fitting the model (if fit using NUTS). This
 is only needed for detecting which transitions (if any) hit the maximum
 treedepth.}
 
-\item{grid_args}{For \code{mcmc_pairs}, arguments to pass to
-\code{gridExtra::arrangeGrob} via \code{\link{bayesplot_grid}}. For
-example, since \code{mcmc_pairs} returns more than a single ggplot object,
-using \code{\link{ggtitle}} afterwards will not work. But you you can still
-add a title to the plot using \code{grid_args = list(top="My title")}.}
+\item{grid_args, save_gg_objects}{For \code{mcmc_pairs}, arguments to pass to
+\code{\link{bayesplot_grid}}. For example, since \code{mcmc_pairs} returns
+more than a single ggplot object, using \code{\link{ggtitle}} afterwards
+will not work. But you you can still add a title to the plot using
+\code{grid_args = list(top="My title")}.}
 
 \item{div_color, div_shape, div_size, div_alpha, td_color, td_shape, td_size, td_alpha}{Optional arguments to the \code{scatter_style_np} or \code{pairs_style_np}
 helper functions that are eventually passed to

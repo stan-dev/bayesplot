@@ -17,6 +17,11 @@
 #'   upper limits for the axes that will be shared across all plots.
 #' @param legends If any of the plots have legends should they be displayed?
 #'   Defaults to \code{TRUE}.
+#' @param save_gg_objects If \code{TRUE}, the default, then the ggplot objects
+#'   specified in \code{...} or via the \code{plots} argument are saved in a
+#'   list in the \code{"bayesplots"} component of the returned object.
+#'   Setting this to \code{FALSE} will make the returned object smaller but
+#'   these individual plot objects will not be available.
 #'
 #' @return An object of class "bayesplot_grid" (essentially a gtable object from
 #'   \code{\link[gridExtra]{arrangeGrob}}), which has a \code{plot} method.
@@ -69,7 +74,8 @@ bayesplot_grid <-
            grid_args = list(),
            titles = character(),
            subtitles = character(),
-           legends = TRUE) {
+           legends = TRUE,
+           save_gg_objects = TRUE) {
 
     suggested_package("gridExtra")
     dots <- list(...)
@@ -108,6 +114,9 @@ bayesplot_grid <-
 
     grid_args$grobs <- plots
     g <- do.call(gridExtra::arrangeGrob, args = grid_args)
+    if (save_gg_objects) {
+      g$bayesplots <- plots
+    }
     as_bayesplot_grid(g)
   }
 
@@ -115,6 +124,10 @@ bayesplot_grid <-
 # internal ----------------------------------------------------------------
 as_bayesplot_grid <- function(x) {
   structure(x, class = unique(c("bayesplot_grid", class(x))))
+}
+
+is_bayesplot_grid <- function(x) {
+  inherits(x, "bayesplot_grid")
 }
 
 all_ggplot <- function(x) {
