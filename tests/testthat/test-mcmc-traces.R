@@ -38,6 +38,9 @@ test_that("mcmc_trace options work", {
   expect_gg(g2 <- mcmc_trace(arr, regex_pars = "beta", n_warmup = 10))
   ll <- g2$labels
   expect_true(all(c("xmin", "xmax", "ymin", "ymax") %in% names(ll)))
+
+  expect_warning(mcmc_trace(arr, iter1 = -1))
+  expect_error(mcmc_trace(arr, n_warmup = 50, iter1 = 20))
 })
 
 
