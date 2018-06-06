@@ -18,6 +18,12 @@ now has an argument `grid_args` to provide a way of passing optional arguments t
 gains an argument `discrete`, which is `FALSE` by default, but can be used to make the 
 Geom more appropriate for discrete data. (#145)
 
+* [PPC intervals plots](http://mc-stan.org/bayesplot/reference/PPC-intervals.html)
+now draw both an outer and an inner probability interval, which can be
+controlled through the new argument `prob_outer` and the already existing
+`prob`. The default value of the outer interval has been changed from 1.0 to
+0.9, consistently with what is produced by `mcmc_intervals()` and similar.
+(#154, @mcol)
 
 # bayesplot 1.5.0
 
