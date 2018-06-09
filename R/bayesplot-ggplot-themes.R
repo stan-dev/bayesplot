@@ -133,6 +133,7 @@ theme_default <-
 #'
 bayesplot_theme_get <- function() {
   if (!identical(.bayesplot_theme_env$gg_current, ggplot2::theme_get())) {
+    .bayesplot_theme_env$current <- ggplot2::theme_get()
     .bayesplot_theme_env$gg_current <- ggplot2::theme_get()
     thm <- .bayesplot_theme_env$gg_current
   } else {
