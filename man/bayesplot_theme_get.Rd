@@ -21,6 +21,12 @@ to the \code{new} argument to \code{\link[ggplot2]{theme_set}}.}
 
 \item{...}{A named list of theme settings.}
 }
+\value{
+\code{bayesplot_theme_get} returns the current theme. The other three
+  functions (set, update, replace) invisibly return the \emph{previous} theme
+  so it can be saved and easily restored later. This is the same behavior as
+  the \pkg{ggplot2} versions of these functions.
+}
 \description{
 These functions are the \pkg{bayesplot} equivalent to
   \pkg{ggplot2}'s \code{\link[ggplot2]{theme_set}} and friends. They set,
@@ -48,27 +54,39 @@ library(ggplot2)
 x <- example_mcmc_draws()
 mcmc_hist(x)
 
-# change the bayesplot theme and save the old theme
+# change the bayesplot theme to theme_minimal and save the old theme
 old <- bayesplot_theme_set(theme_minimal())
 mcmc_hist(x)
-mcmc_areas(x, regex_pars = "beta")
+
+# change back to the previous theme
 bayesplot_theme_set(old)
+mcmc_hist(x)
 
 # change the default font size and family for bayesplots
-bayesplot_theme_update(text = element_text(size = 16))
+bayesplot_theme_update(text = element_text(size = 16, family = "sans"))
 mcmc_hist(x)
-mcmc_areas(x, regex_pars = "beta")
 
 # change back to the default
 bayesplot_theme_set() # same as bayesplot_theme_set(theme_default())
-mcmc_areas(x, regex_pars = "beta")
+mcmc_hist(x)
 
-# change theme for all ggplots
-theme_set(theme_dark())
-mcmc_dens_overlay(x)
+# updating theme elements
+color_scheme_set("brightblue")
+bayesplot_theme_set(theme_dark())
+mcmc_hist(x)
+
+bayesplot_theme_update(panel.background = element_rect(fill = "black"))
+mcmc_hist(x)
+
+# to get the same plot without updating the theme we could also have
+# used the bayeplot convenience function panel_bg()
+bayesplot_theme_set(theme_dark())
+mcmc_hist(x) + panel_bg(fill = "black")
 
 }
 \seealso{
+\code{\link{theme_default}} for the default \pkg{bayesplot} theme.
+
 \link{bayesplot-helpers} for a variety of convenience functions,
   many of which provide shortcuts for tweaking theme elements after creating
   a plot.

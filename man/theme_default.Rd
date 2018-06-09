@@ -19,20 +19,14 @@ A ggplot \link[ggplot2]{theme} object.
 }
 \description{
 The \code{\link{theme_default}} function returns the default ggplot
-\link{theme} used by the \pkg{bayesplot} plotting functions.
-}
-\details{
-After loading \pkg{bayesplot}, if you subsequently change the
-default \pkg{ggplot2} theme (i.e., by calling
-\code{\link[ggplot2]{theme_set}} or loading a different package that changes
-the theme) then \pkg{bayesplot} will use that theme instead. To change back
-to the default \pkg{bayesplot} theme use \code{bayesplot::theme_default()} as
-the argument to \code{\link[ggplot2]{theme_set}}.
+\link{theme} used by the \pkg{bayesplot} plotting functions. See
+\code{\link{bayesplot_theme_set}} for details on setting and updating the
+plotting theme.
 }
 \examples{
 class(theme_default())
 
-# plot using the default theme automatically
+bayesplot_theme_set() # defaults to setting theme_default()
 x <- example_mcmc_draws()
 mcmc_hist(x)
 
@@ -42,16 +36,8 @@ mcmc_hist(x)
 mcmc_areas(x, regex_pars = "beta")
 
 # change back
-bayesplot_theme_set(theme_default())
+bayesplot_theme_set()
 mcmc_areas(x, regex_pars = "beta")
-
-# use one of the themes included in ggplot2
-bayesplot_theme_set(ggplot2::theme_gray())
-mcmc_dens_overlay(x)
-
-# change all ggplots to theme_default()
-ggplot2::theme_set(theme_default())
-mcmc_dens_overlay(x)
 
 }
 \seealso{

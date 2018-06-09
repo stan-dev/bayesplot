@@ -1,7 +1,9 @@
 #' Default bayesplot plotting theme
 #'
 #' The \code{\link{theme_default}} function returns the default ggplot
-#' \link{theme} used by the \pkg{bayesplot} plotting functions.
+#' \link{theme} used by the \pkg{bayesplot} plotting functions. See
+#' \code{\link{bayesplot_theme_set}} for details on setting and updating the
+#' plotting theme.
 #'
 #' @export
 #' @param base_size,base_family Base font size and family (passed to
@@ -11,20 +13,13 @@
 #'   \code{"serif"}, respectively.
 #' @return A ggplot \link[ggplot2]{theme} object.
 #'
-#' @details After loading \pkg{bayesplot}, if you subsequently change the
-#' default \pkg{ggplot2} theme (i.e., by calling
-#' \code{\link[ggplot2]{theme_set}} or loading a different package that changes
-#' the theme) then \pkg{bayesplot} will use that theme instead. To change back
-#' to the default \pkg{bayesplot} theme use \code{bayesplot::theme_default()} as
-#' the argument to \code{\link[ggplot2]{theme_set}}.
-#'
 #' @template seealso-helpers
 #' @template seealso-colors
 #'
 #' @examples
 #' class(theme_default())
 #'
-#' # plot using the default theme automatically
+#' bayesplot_theme_set() # defaults to setting theme_default()
 #' x <- example_mcmc_draws()
 #' mcmc_hist(x)
 #'
@@ -34,16 +29,8 @@
 #' mcmc_areas(x, regex_pars = "beta")
 #'
 #' # change back
-#' bayesplot_theme_set(theme_default())
+#' bayesplot_theme_set()
 #' mcmc_areas(x, regex_pars = "beta")
-#'
-#' # use one of the themes included in ggplot2
-#' bayesplot_theme_set(ggplot2::theme_gray())
-#' mcmc_dens_overlay(x)
-#'
-#' # change all ggplots to theme_default()
-#' ggplot2::theme_set(theme_default())
-#' mcmc_dens_overlay(x)
 #'
 theme_default <-
   function(base_size = getOption("bayesplot.base_size", 12),
@@ -98,6 +85,12 @@ theme_default <-
 #'   to the \code{new} argument to \code{\link[ggplot2]{theme_set}}.
 #' @param ... A named list of theme settings.
 #'
+#' @return \code{bayesplot_theme_get} returns the current theme. The other three
+#'   functions (set, update, replace) invisibly return the \emph{previous} theme
+#'   so it can be saved and easily restored later. This is the same behavior as
+#'   the \pkg{ggplot2} versions of these functions.
+#'
+#' @seealso \code{\link{theme_default}} for the default \pkg{bayesplot} theme.
 #' @template seealso-helpers
 #' @template seealso-colors
 #'
@@ -109,24 +102,34 @@ theme_default <-
 #' x <- example_mcmc_draws()
 #' mcmc_hist(x)
 #'
-#' # change the bayesplot theme and save the old theme
+#' # change the bayesplot theme to theme_minimal and save the old theme
 #' old <- bayesplot_theme_set(theme_minimal())
 #' mcmc_hist(x)
-#' mcmc_areas(x, regex_pars = "beta")
+#'
+#' # change back to the previous theme
 #' bayesplot_theme_set(old)
+#' mcmc_hist(x)
 #'
 #' # change the default font size and family for bayesplots
-#' bayesplot_theme_update(text = element_text(size = 16))
+#' bayesplot_theme_update(text = element_text(size = 16, family = "sans"))
 #' mcmc_hist(x)
-#' mcmc_areas(x, regex_pars = "beta")
 #'
 #' # change back to the default
 #' bayesplot_theme_set() # same as bayesplot_theme_set(theme_default())
-#' mcmc_areas(x, regex_pars = "beta")
+#' mcmc_hist(x)
 #'
-#' # change theme for all ggplots
-#' theme_set(theme_dark())
-#' mcmc_dens_overlay(x)
+#' # updating theme elements
+#' color_scheme_set("brightblue")
+#' bayesplot_theme_set(theme_dark())
+#' mcmc_hist(x)
+#'
+#' bayesplot_theme_update(panel.background = element_rect(fill = "black"))
+#' mcmc_hist(x)
+#'
+#' # to get the same plot without updating the theme we could also have
+#' # used the bayeplot convenience function panel_bg()
+#' bayesplot_theme_set(theme_dark())
+#' mcmc_hist(x) + panel_bg(fill = "black")
 #'
 bayesplot_theme_get <- function() {
   if (!identical(.bayesplot_theme_env$gg_current, ggplot2::theme_get())) {
