@@ -207,6 +207,7 @@ mcmc_intervals <- function(x,
     scale_fill +
     scale_y_discrete(limits = unique(rev(data$parameter))) +
     xlim(x_lim) +
+    bayesplot_theme_get() +
     legend_move(ifelse(color_by_rhat, "top", "none")) +
     yaxis_text(face = "bold") +
     yaxis_title(FALSE) +
@@ -338,6 +339,7 @@ mcmc_areas <- function(x,
     scale_y_discrete(limits = unique(rev(data$parameter)),
                      expand = c(0.05, .6)) +
     xlim(x_lim) +
+    bayesplot_theme_get() +
     legend_move(ifelse(color_by_rhat, "top", "none")) +
     yaxis_text(face = "bold") +
     yaxis_title(FALSE) +
@@ -437,6 +439,7 @@ mcmc_areas_ridges <- function(x,
     xlim(x_lim) +
     yaxis_title(FALSE) +
     xaxis_title(FALSE) +
+    bayesplot_theme_get() +
     grid_lines_y(color = "gray90") +
     theme(axis.text.y = element_text(hjust = 1, vjust = 0))
 }

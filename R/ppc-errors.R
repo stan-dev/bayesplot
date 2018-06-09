@@ -147,6 +147,7 @@ ppc_error_hist <-
         binwidth = binwidth,
         breaks = breaks
       ) +
+      bayesplot_theme_get() +
       xlab(expression(italic(y) - italic(y)[rep])) +
       dont_expand_y_axis() +
       force_axes_in_facets() +
@@ -186,6 +187,7 @@ ppc_error_hist_grouped <-
         breaks = breaks
       ) +
       facet_grid(rep_id ~ group, scales = "free") +
+      bayesplot_theme_get() +
       xlab(expression(italic(y) - italic(y)[rep])) +
       dont_expand_y_axis(c(0.005, 0)) +
       force_axes_in_facets() +
@@ -379,7 +381,8 @@ ppc_error_binned <- function(y, yrep, ..., size = 1, alpha = 0.25) {
     labs(
       x = "Predicted proportion",
       y = "Average Errors \n (with 2SE bounds)"
-    )
+    ) +
+    bayesplot_theme_get()
 
   if (n > 1)
     graph <- graph +

@@ -94,7 +94,6 @@
 #' ppc_violin_grouped(y, yrep, group, alpha = 0, y_draw = "both",
 #'                    y_size = 1.5, y_alpha = 0.5, y_jitter = 0.33)
 #' }
-#'
 NULL
 
 
@@ -121,37 +120,29 @@ ppc_data <- function(y, yrep, group = NULL) {
 
 #' @rdname PPC-distributions
 #' @export
-ppc_hist <-
-  function(y,
-           yrep,
-           ...,
-           binwidth = NULL,
-           breaks = NULL,
-           freq = TRUE) {
-    check_ignored_arguments(...)
-    data <- ppc_data(y, yrep)
-    aes_list <- set_hist_aes(freq, fill = ~ is_y_label, color = ~ is_y_label)
-
-    ggplot(data) +
-      aes_list +
-      geom_histogram(
-        size = 0.25,
-        binwidth = binwidth,
-        breaks = breaks
-      ) +
-      scale_fill_ppc_dist() +
-      scale_color_ppc_dist() +
-      facet_wrap_parsed("rep_label") +
-      force_axes_in_facets() +
-      dont_expand_y_axis() +
-      space_legend_keys() +
-      yaxis_text(FALSE) +
-      yaxis_title(FALSE) +
-      yaxis_ticks(FALSE) +
-      xaxis_title(FALSE) +
-      facet_text(FALSE) +
-      facet_bg(FALSE)
-  }
+ppc_hist <- function(y, yrep, ..., binwidth = NULL, breaks = NULL, 
+                     freq = TRUE) {
+  check_ignored_arguments(...)
+  data <- ppc_data(y, yrep)
+  aes_list <- set_hist_aes(freq, fill = ~ is_y_label, color = ~ is_y_label)
+    
+  ggplot(data) +
+    aes_list +
+    geom_histogram(size = 0.25, binwidth = binwidth, breaks = breaks) +
+    scale_fill_ppc_dist() +
+    scale_color_ppc_dist() +
+    facet_wrap_parsed("rep_label") +
+    force_axes_in_facets() +
+    dont_expand_y_axis() +
+    bayesplot_theme_get() +
+    space_legend_keys() +
+    yaxis_text(FALSE) +
+    yaxis_title(FALSE) +
+    yaxis_ticks(FALSE) +
+    xaxis_title(FALSE) +
+    facet_text(FALSE) +
+    facet_bg(FALSE)
+}
 
 
 
@@ -174,6 +165,7 @@ ppc_boxplot <- function(y, yrep, ..., notch = TRUE, size = 0.5, alpha = 1) {
       outlier.alpha = 2 / 3) +
     scale_fill_ppc_dist() +
     scale_color_ppc_dist() +
+    bayesplot_theme_get() +
     yaxis_title(FALSE) +
     xaxis_ticks(FALSE) +
     xaxis_text(FALSE) +
@@ -200,6 +192,7 @@ ppc_freqpoly <- function(y, yrep, ...,
     scale_fill_ppc_dist() +
     scale_color_ppc_dist() +
     facet_wrap_parsed("rep_label") +
+    bayesplot_theme_get() +
     force_axes_in_facets() +
     dont_expand_y_axis() +
     space_legend_keys() +
@@ -230,6 +223,7 @@ ppc_freqpoly_grouped <- function(y, yrep, group, ..., binwidth = NULL,
       scale_fill_ppc_dist() +
       scale_color_ppc_dist() +
       dont_expand_y_axis(c(0.005, 0)) +
+      bayesplot_theme_get() +
       force_axes_in_facets() +
       space_legend_keys() +
       xaxis_title(FALSE) +
@@ -252,6 +246,7 @@ ppc_dens <- function(y, yrep, ..., trim = FALSE, size = 0.5, alpha = 1) {
     geom_density(size = size, alpha = alpha, trim = trim) +
     scale_fill_ppc_dist() +
     scale_color_ppc_dist() +
+    bayesplot_theme_get() +
     facet_wrap_parsed("rep_label") +
     force_axes_in_facets() +
     dont_expand_y_axis() +
@@ -308,6 +303,7 @@ ppc_dens_overlay <- function(y, yrep, ...,
       n = n_dens
     ) +
     scale_color_ppc_dist() +
+    bayesplot_theme_get() +
     xlab(y_label()) +
     dont_expand_axes() +
     yaxis_title(FALSE) +
@@ -367,7 +363,8 @@ ppc_ecdf_overlay <-
       scale_y_continuous(breaks = c(0, 0.5, 1)) +
       yaxis_title(FALSE) +
       xaxis_title(FALSE) +
-      yaxis_ticks(FALSE)
+      yaxis_ticks(FALSE) +
+    bayesplot_theme_get()
   }
 
 #' @export
@@ -439,7 +436,8 @@ ppc_violin_grouped <- function(y, yrep, group, ..., probs = c(0.1, 0.5, 0.9),
     scale_color_ppc_dist() +
     labs(x = "Group", y = yrep_label()) +
     yaxis_title(FALSE) +
-    xaxis_title(FALSE)
+    xaxis_title(FALSE) +
+    bayesplot_theme_get()
 }
 
 

@@ -145,7 +145,8 @@ mcmc_rhat <- function(rhat, ..., size = NULL) {
       mapping = aes_(
         yend = ~ parameter,
         xend = ifelse(min(data$value) < 1, 1, -Inf)),
-      na.rm = TRUE)
+      na.rm = TRUE) +
+      bayesplot_theme_get()
 
   if (min(data$value) < 1) {
     graph <- graph +
@@ -193,6 +194,7 @@ mcmc_rhat_hist <- function(rhat, ..., binwidth = NULL, breaks = NULL) {
     scale_fill_diagnostic("rhat") +
     labs(x = expression(hat(R)), y = NULL) +
     dont_expand_y_axis(c(0.005, 0)) +
+    bayesplot_theme_get() +
     yaxis_title(FALSE) +
     yaxis_text(FALSE) +
     yaxis_ticks(FALSE)
@@ -219,9 +221,9 @@ mcmc_neff <- function(ratio, ..., size = NULL) {
   data <- mcmc_neff_data(ratio)
 
   max_ratio <- max(ratio, na.rm = TRUE)
-  if(max_ratio < 1.25) {
+  if (max_ratio < 1.25) {
     additional_breaks <- numeric(0)
-  } else if(max_ratio < 1.5) {
+  } else if (max_ratio < 1.5) {
     additional_breaks <- 1.25
     additional_labels <- "1.25"
   } else {
@@ -250,9 +252,11 @@ mcmc_neff <- function(ratio, ..., size = NULL) {
     scale_color_diagnostic("neff") +
     scale_x_continuous(
       breaks = breaks,
-      labels = as.character(breaks), #as.character truncates trailing zeroes, while ggplot default does not
+      # as.character truncates trailing zeroes, while ggplot default does not
+      labels = as.character(breaks),
       limits = c(0, max(1, max_ratio) + 0.05),
       expand = c(0, 0)) +
+    bayesplot_theme_get() +
     yaxis_text(FALSE) +
     yaxis_title(FALSE) +
     yaxis_ticks(FALSE)
@@ -281,7 +285,8 @@ mcmc_neff_hist <- function(ratio, ..., binwidth = NULL, breaks = NULL) {
     dont_expand_y_axis(c(0.005, 0)) +
     yaxis_title(FALSE) +
     yaxis_text(FALSE) +
-    yaxis_ticks(FALSE)
+    yaxis_ticks(FALSE) +
+    bayesplot_theme_get()
 }
 
 #' @rdname MCMC-diagnostics
@@ -523,7 +528,8 @@ drop_NAs_and_warn <- function(x) {
       facet_fun <- "facet_wrap"
     }
 
-    graph <- ggplot(plot_data, aes_(x = ~ Lag, y = ~ AC))
+    graph <- ggplot(plot_data, aes_(x = ~ Lag, y = ~ AC))  +
+      bayesplot_theme_get()
     if (style == "bar") {
       graph <- graph +
         geom_bar(

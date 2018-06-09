@@ -162,7 +162,8 @@ mcmc_recover_intervals <-
         size = 2,
         lineend = "round",
         show.legend = FALSE
-      )
+      ) +
+      bayesplot_theme_get()
 
     if (!is.null(point_est))
       graph <- graph +
@@ -267,7 +268,8 @@ mcmc_recover_scatter <-
         alpha = alpha
       ) +
       do.call("facet_wrap", facet_args) +
-      labs(y = "Estimated", x = "True")
+      labs(y = "Estimated", x = "True") +
+      bayesplot_theme_get()
 
     if (length(unique(batch)) == 1) {
       g <- ggplot_build(graph)
@@ -328,6 +330,7 @@ mcmc_recover_hist <-
       scale_color_manual("", values = get_color("dh")) +
       guides(color = guide_legend(), fill = guide_legend(order = 1)) +
       dont_expand_y_axis() +
+      bayesplot_theme_get() +
       reduce_legend_spacing(0.25) +
       xaxis_title(FALSE) +
       yaxis_text(FALSE) +
