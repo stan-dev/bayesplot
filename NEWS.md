@@ -27,6 +27,9 @@ now has an argument `grid_args` to provide a way of passing optional arguments t
 gains an argument `discrete`, which is `FALSE` by default, but can be used to make the 
 Geom more appropriate for discrete data. (#145)
 
+* [`mcmc_trace()`](http://mc-stan.org/bayesplot/reference/MCMC-traces.html)
+gains an argument `iter1` which can be used to label the traceplot starting from
+the first iteration after warmup. Thanks to Marco Colombo. (@mcol, #155)
 
 # bayesplot 1.5.0
 

@@ -22,6 +22,10 @@
 #'   \code{x}. The default is \code{n_warmup = 0}, i.e. to assume no warmup
 #'   iterations are included. If \code{n_warmup > 0} then the background for
 #'   iterations \code{1:n_warmup} is shaded gray.
+#' @param iter1 An integer; the iteration number of the first included draw
+#'   (default 0). This can be used to make it more obvious that the warmup
+#'   iterations have been discarded from the traceplot. It cannot be specified
+#'   if \code{n_warmup} is also set to a positive value.
 #' @param window An integer vector of length two specifying the limits of a
 #'   range of iterations to display.
 #' @param np For models fit using \code{\link{NUTS}} (more generally, any
@@ -36,10 +40,6 @@
 #'   specify arguments controlling the appearance of tick marks representing
 #'   divergences (if the \code{np} argument is specified).
 #' @param divergences Deprecated. Use the \code{np} argument instead.
-#' @param iter1 An integer; the iteration number of the first included draw
-#'   (default 0). This can be used to make it more obvious that the warmup
-#'   iterations have been discarded from the traceplot. It cannot be specified
-#'   if \code{n_warmup} is also set to a positive value.
 #'
 #' @template return-ggplot
 #'
@@ -150,12 +150,12 @@ mcmc_trace <-
            facet_args = list(),
            ...,
            n_warmup = 0,
+           iter1 = 0,
            window = NULL,
            size = NULL,
            np = NULL,
            np_style = trace_style_np(),
-           divergences = NULL,
-           iter1 = 0) {
+           divergences = NULL) {
 
     # deprecate 'divergences' arg in favor of 'np' (for consistency across functions)
     if (!is.null(divergences)) {
@@ -274,9 +274,8 @@ trace_style_np <-
   x <- prepare_mcmc_array(x, pars, regex_pars, transformations)
 
   if (iter1 < 0) {
-    iter1 <- 0
-    warning(
-      "Ignored negative 'iter1'."
+    stop(
+      "'iter1' cannot be negative."
     )
   }
 
