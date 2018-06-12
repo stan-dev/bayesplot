@@ -270,7 +270,7 @@ ppc_loo_pit <-
 #'   with argument \code{save_psis} set to \code{TRUE}).
 #' @param prob A value between 0 and 1 indicating the desired probability mass
 #'   to include in the inner interval. The default is 0.5.
-#'  @param prob_outer The probability mass to include in the outer interval.
+#' @param prob_outer The probability mass to include in the outer interval.
 #'   The default is 0.9.
 #' @param intervals For \code{ppc_loo_intervals} and \code{ppc_loo_ribbon},
 #'   optionally a matrix of precomputed LOO predictive intervals

@@ -101,9 +101,10 @@ interval, median (50\%), upper inner interval and upper outer interval
 (column names are ignored).}
 
 \item{prob}{A value between 0 and 1 indicating the desired probability mass
- to include in the inner interval. The default is 0.5.
-@param prob_outer The probability mass to include in the outer interval.
- The default is 0.9.}
+to include in the inner interval. The default is 0.5.}
+
+\item{prob_outer}{The probability mass to include in the outer interval.
+The default is 0.9.}
 
 \item{order}{For \code{ppc_loo_intervals}, a string indicating how to arrange
 the plotted intervals. The default (\code{"index"}) is to plot them in the
