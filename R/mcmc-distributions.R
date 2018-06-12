@@ -243,9 +243,10 @@ mcmc_dens_chains <- function(x, pars = character(), regex_pars = character(),
     scale_y_discrete(limits = unique(rev(data$parameter)),
                      expand = c(0.05, .6)) +
     scale_color +
+    bayesplot_theme_get() +
     yaxis_title(FALSE) +
     xaxis_title(FALSE) +
-    grid_lines_y(color = "gray90")  +
+    grid_lines_y(color = "gray90") +
     theme(axis.text.y = element_text(hjust = 1, vjust = 0))
 }
 
@@ -349,6 +350,7 @@ mcmc_violin <- function(x,
 
   graph +
     dont_expand_y_axis(c(0.005, 0)) +
+    bayesplot_theme_get() +
     yaxis_text(FALSE) +
     yaxis_title(FALSE) +
     yaxis_ticks(FALSE) +
@@ -405,8 +407,8 @@ mcmc_violin <- function(x,
     geom_args[["color"]] <- get_color("mid_highlight")
   }
 
-  graph <- ggplot(data, mapping = do.call("aes_", aes_mapping)) +
-    do.call(geom_fun, geom_args)
+  graph <- ggplot(data, mapping = do.call("aes_", aes_mapping))  +
+      do.call(geom_fun, geom_args)
 
   if (!violin) {
     graph <- graph + dont_expand_x_axis()
@@ -437,6 +439,7 @@ mcmc_violin <- function(x,
 
   graph +
     dont_expand_y_axis(c(0.005, 0)) +
+    bayesplot_theme_get() +
     yaxis_text(FALSE) +
     yaxis_ticks(FALSE) +
     yaxis_title(on = n_param == 1 && violin) +

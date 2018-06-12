@@ -315,7 +315,8 @@ trace_style_np <-
                     alpha = ~ Chain == highlight,
                     color = ~ Chain == highlight)
   }
-  graph <- ggplot(data, mapping)
+  graph <- ggplot(data, mapping) +
+    bayesplot_theme_get()
 
   if (n_warmup > 0) {
     graph <- graph +

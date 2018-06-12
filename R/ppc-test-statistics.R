@@ -116,6 +116,7 @@ ppc_stat <-
           title = stat_legend_title(stat, deparse(substitute(stat)))
         )
       ) +
+      bayesplot_theme_get() +
       dont_expand_y_axis() +
       no_legend_spacing() +
       xaxis_title(FALSE) +
@@ -175,6 +176,7 @@ ppc_stat_grouped <-
           title = stat_legend_title(stat, deparse(substitute(stat)))
         )
       ) +
+      bayesplot_theme_get() +
       dont_expand_y_axis() +
       no_legend_spacing() +
       xaxis_title(FALSE) +
@@ -232,7 +234,8 @@ ppc_stat_freqpoly_grouped <-
       xaxis_title(FALSE) +
       yaxis_text(FALSE) +
       yaxis_ticks(FALSE) +
-      yaxis_title(FALSE)
+      yaxis_title(FALSE) +
+      bayesplot_theme_get()
   }
 
 
@@ -299,7 +302,8 @@ ppc_stat_2d <- function(y, yrep, stat = c("mean", "sd"), ...,
       values = setNames(get_color(c("dh", "lh")), c("y", "yrep")),
       labels = c(y = Ty_label(), yrep = Tyrep_label())
     ) +
-    labs(x = stat_labs[1], y = stat_labs[2])
+    labs(x = stat_labs[1], y = stat_labs[2]) +
+    bayesplot_theme_get()
 }
 
 

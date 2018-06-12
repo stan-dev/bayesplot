@@ -121,14 +121,60 @@ test_that("color_scheme_view returns gtable if length(scheme) >= 1", {
 
 
 
-# ggplot theme ------------------------------------------------------------
+# ggplot themes ------------------------------------------------------------
+
+default <- theme_default()
+minimal <- ggplot2::theme_minimal()
+dark <- ggplot2::theme_dark()
+
 test_that("theme_default creates ggplot theme", {
-  thm1 <- theme_default()
-  expect_type(thm1, "list")
-  expect_s3_class(thm1, "theme")
+  expect_type(default, "list")
+  expect_s3_class(default, "theme")
 
   thm2 <- theme_default(base_size = 13)
   expect_type(thm2, "list")
   expect_s3_class(thm2, "theme")
   expect_equal(thm2[["text"]][["size"]], 13)
+})
+
+test_that("bayesplot_theme_set/get work", {
+  bayesplot_theme_set()
+  expect_identical(bayesplot_theme_get(), default)
+  expect_identical(bayesplot_theme_set(), default)
+
+  old <- bayesplot_theme_set(minimal)
+  expect_identical(old, default)
+  expect_identical(bayesplot_theme_get(), minimal)
+})
+
+test_that("bayesplot_theme_update/replace work", {
+  bayesplot_theme_set(minimal)
+  old <- bayesplot_theme_update(axis.text.x = ggplot2::element_text(color = "red"))
+  expect_identical(old, minimal)
+
+  thm <- bayesplot_theme_get()
+  expect_identical(thm, minimal + xaxis_text(color = "red"))
+  expect_equal(thm$axis.text.x$colour, "red")
+  expect_null(thm$axis.text.x$size)
+
+  bayesplot_theme_update(axis.text.x = ggplot2::element_text(size = 13))
+  thm <- bayesplot_theme_get()
+  expect_equal(thm$axis.text.x$colour, "red")
+  expect_equal(thm$axis.text.x$size, 13)
+
+  old <- bayesplot_theme_replace(axis.text.x = ggplot2::element_text(color = "green"))
+  expect_identical(old, thm)
+  thm <- bayesplot_theme_get()
+  expect_equal(thm$axis.text.x$colour, "green")
+  expect_null(thm$axis.text.x$size)
+})
+
+test_that("ggplot2::theme_set overrides bayesplot theme", {
+  ggplot2::theme_set(dark)
+  bayesplot_theme_set()
+  expect_identical(ggplot2::theme_get(), dark)
+  expect_identical(bayesplot_theme_get(), default)
+
+  ggplot2::theme_set(minimal)
+  expect_identical(bayesplot_theme_get(), minimal)
 })

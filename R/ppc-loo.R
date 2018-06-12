@@ -220,7 +220,8 @@ ppc_loo_pit_qq <-
         intercept = 0,
         linetype = 2,
         color = "black"
-      )
+      ) +
+    bayesplot_theme_get()
 
     if (compare == "uniform") {
       xylim <- c(0, 1)

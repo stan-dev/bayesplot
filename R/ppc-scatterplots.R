@@ -148,7 +148,8 @@ ppc_scatter_avg_grouped <-
         y = y_label(),
         x = yrep_avg_label()
       ) +
-      facet_wrap("group", scales = "free")
+      facet_wrap("group", scales = "free") +
+      bayesplot_theme_get()
   }
 
 
@@ -181,5 +182,6 @@ ppc_scatter_avg_grouped <-
         size = size,
         alpha = alpha
       ) +
-      labs(x = x_lab, y = y_lab)
+      labs(x = x_lab, y = y_lab) +
+      bayesplot_theme_get()
   }

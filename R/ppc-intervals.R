@@ -377,6 +377,7 @@ label_x <- function(x) {
   }
 
   graph +
-    labs(y = NULL, x = x_lab %||% expression(italic(x)))
+    labs(y = NULL, x = x_lab %||% expression(italic(x))) +
+    bayesplot_theme_get()
 }
 

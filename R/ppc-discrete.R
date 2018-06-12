@@ -250,7 +250,8 @@ ppc_rootogram <- function(y,
       color = get_color("lh"),
       size = 0.25,
       width = 1
-    )
+    ) +
+    bayesplot_theme_get()
 
   if (style != "standing")
     graph <- graph + hline_0(size = 0.4)
@@ -361,7 +362,8 @@ ppc_bars_yrep_data <- function(y, yrep, probs, freq = TRUE, group = NULL) {
                        labels = yrep_label()) +
     guides(color = guide_legend(order = 1),
            fill = guide_legend(order = 2)) +
-    labs(x = NULL, y = if (freq) "Count" else "Proportion")
+    labs(x = NULL, y = if (freq) "Count" else "Proportion") +
+    bayesplot_theme_get()
 
   if (grouped) {
     facet_args[["facets"]] <- "group"

@@ -191,7 +191,6 @@ ppc_violin_grouped(y, yrep, group, alpha = 0, y_draw = "points", y_size = 1.5)
 ppc_violin_grouped(y, yrep, group, alpha = 0, y_draw = "both",
                    y_size = 1.5, y_alpha = 0.5, y_jitter = 0.33)
 }
-
 }
 \references{
 Gelman, A., Carlin, J. B., Stern, H. S., Dunson, D. B., Vehtari,
