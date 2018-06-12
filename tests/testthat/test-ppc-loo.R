@@ -72,13 +72,19 @@ test_that("ppc_loo_ribbon returns ggplot object", {
 })
 
 test_that("ppc_loo_intervals/ribbon work when 'intervals' specified", {
-  intervals <- t(apply(yrep, 2, quantile, probs = c(0.1, 0.5, 0.9)))
+  intervals <- t(apply(yrep, 2, quantile, probs = c(0.1, 0.25, 0.5, 0.75, 0.9)))
   expect_gg(ppc_loo_intervals(y, intervals = intervals))
   expect_gg(ppc_loo_ribbon(y, intervals = intervals))
   expect_message(ppc_loo_ribbon(y, intervals = intervals),
                  "'intervals' specified so ignoring 'yrep', 'psis_object', 'subset', if specified")
   expect_message(ppc_loo_intervals(y, yrep, psis_object = psis1, intervals = intervals),
                  "'intervals' specified so ignoring 'yrep', 'psis_object', 'subset', if specified")
+})
+
+test_that("ppc_loo_intervals/ribbon work when 'intervals' has 3 columns", {
+  intervals <- t(apply(yrep, 2, quantile, probs = c(0.1, 0.5, 0.9)))
+  expect_gg(ppc_loo_intervals(y, intervals = intervals))
+  expect_gg(ppc_loo_ribbon(y, intervals = intervals))
 })
 
 test_that("errors if dimensions of yrep and lw don't match", {

@@ -19,10 +19,10 @@ gains an argument `discrete`, which is `FALSE` by default, but can be used to ma
 Geom more appropriate for discrete data. (#145)
 
 * [PPC intervals plots](http://mc-stan.org/bayesplot/reference/PPC-intervals.html)
+and [LOO predictive checks](http://mc-stan.org/bayesplot/reference/PPC-loo.html)
 now draw both an outer and an inner probability interval, which can be
 controlled through the new argument `prob_outer` and the already existing
-`prob`. The default value of the outer interval has been changed from 1.0 to
-0.9, consistently with what is produced by `mcmc_intervals()` and similar.
+`prob`, consistently with what is produced by `mcmc_intervals()` and similar.
 (#154, @mcol)
 
 # bayesplot 1.5.0
