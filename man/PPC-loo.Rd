@@ -100,11 +100,9 @@ five columns in the following order: lower outer interval, lower inner
 interval, median (50\%), upper inner interval and upper outer interval
 (column names are ignored).}
 
-\item{prob}{A value between 0 and 1 indicating the desired probability mass
-to include in the inner interval. The default is 0.5.}
-
-\item{prob_outer}{The probability mass to include in the outer interval.
-The default is 0.9.}
+\item{prob, prob_outer}{Values between 0 and 1 indicating the desired
+probability mass to include in the inner and outer intervals. The defaults
+are \code{prob=0.5} and \code{prob_outer=0.9}.}
 
 \item{order}{For \code{ppc_loo_intervals}, a string indicating how to arrange
 the plotted intervals. The default (\code{"index"}) is to plot them in the
@@ -185,11 +183,11 @@ ppc_loo_pit_qq(y, yrep, lw = lw, compare = "normal")
 
 # loo predictive intervals vs observations
 keep_obs <- 1:50
-ppc_loo_intervals(y, yrep, psis_object = psis1, subset = keep_obs, prob = 0.9)
+ppc_loo_intervals(y, yrep, psis_object = psis1, subset = keep_obs)
 
 color_scheme_set("gray")
 ppc_loo_intervals(y, yrep, psis_object = psis1, subset = keep_obs,
-                  order = "median", prob = 0.9)
+                  order = "median")
 }
 
 }

@@ -22,8 +22,9 @@ Geom more appropriate for discrete data. (#145)
 and [LOO predictive checks](http://mc-stan.org/bayesplot/reference/PPC-loo.html)
 now draw both an outer and an inner probability interval, which can be
 controlled through the new argument `prob_outer` and the already existing
-`prob`, consistently with what is produced by `mcmc_intervals()` and similar.
-(#154, @mcol)
+`prob`. This is consistent with what is produced by `mcmc_intervals()`.
+(#152, #154, @mcol)
+
 
 # bayesplot 1.5.0
 

@@ -46,11 +46,9 @@ is missing or NULL, then \code{1:length(y)} is used for the x-axis.}
 
 \item{...}{Currently unused.}
 
-\item{prob}{A value between 0 and 1 indicating the desired probability mass
-to include in the inner \code{yrep} intervals. The default is 0.5.}
-
-\item{prob_outer}{The probability mass to include in the outer \code{yrep}
-interval. The default is 0.9.}
+\item{prob, prob_outer}{Values between 0 and 1 indicating the desired
+probability mass to include in the inner and outer intervals. The defaults
+are \code{prob=0.5} and \code{prob_outer=0.9}.}
 
 \item{group}{A grouping variable (a vector or factor) the same length as
 \code{y}. Each value in \code{group} is interpreted as the group level

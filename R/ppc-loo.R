@@ -90,11 +90,11 @@
 #'
 #' # loo predictive intervals vs observations
 #' keep_obs <- 1:50
-#' ppc_loo_intervals(y, yrep, psis_object = psis1, subset = keep_obs, prob = 0.9)
+#' ppc_loo_intervals(y, yrep, psis_object = psis1, subset = keep_obs)
 #'
 #' color_scheme_set("gray")
 #' ppc_loo_intervals(y, yrep, psis_object = psis1, subset = keep_obs,
-#'                   order = "median", prob = 0.9)
+#'                   order = "median")
 #' }
 #'
 NULL
@@ -265,13 +265,10 @@ ppc_loo_pit <-
 
 #' @rdname PPC-loo
 #' @export
+#' @template args-prob-prob_outer
 #' @param psis_object If using \pkg{loo} version \code{2.0.0} or greater, an
 #'   object returned by the \code{psis} function (or by the \code{loo} function
 #'   with argument \code{save_psis} set to \code{TRUE}).
-#' @param prob A value between 0 and 1 indicating the desired probability mass
-#'   to include in the inner interval. The default is 0.5.
-#' @param prob_outer The probability mass to include in the outer interval.
-#'   The default is 0.9.
 #' @param intervals For \code{ppc_loo_intervals} and \code{ppc_loo_ribbon},
 #'   optionally a matrix of precomputed LOO predictive intervals
 #'   that can be specified instead of \code{yrep} and \code{lw} (these are both

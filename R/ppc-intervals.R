@@ -7,15 +7,12 @@
 #' @family PPCs
 #'
 #' @template args-y-yrep
+#' @template args-prob-prob_outer
 #' @param x A numeric vector the same length as \code{y} to use as the x-axis
 #'   variable. For example, \code{x} could be a predictor variable from a
 #'   regression model, a time variable for time-series models, etc. If \code{x}
 #'   is missing or NULL, then \code{1:length(y)} is used for the x-axis.
 #' @param ... Currently unused.
-#' @param prob A value between 0 and 1 indicating the desired probability mass
-#'   to include in the inner \code{yrep} intervals. The default is 0.5.
-#' @param prob_outer The probability mass to include in the outer \code{yrep}
-#'   interval. The default is 0.9.
 #' @param alpha,size,fatten Arguments passed to geoms. For ribbon plots
 #'   \code{alpha} and \code{size} are passed to
 #'   \code{\link[ggplot2]{geom_ribbon}}. For interval plots \code{size} and
