@@ -90,11 +90,11 @@
 #'
 #' # loo predictive intervals vs observations
 #' keep_obs <- 1:50
-#' ppc_loo_intervals(y, yrep, psis_object = psis1, subset = keep_obs, prob = 0.9)
+#' ppc_loo_intervals(y, yrep, psis_object = psis1, subset = keep_obs)
 #'
 #' color_scheme_set("gray")
 #' ppc_loo_intervals(y, yrep, psis_object = psis1, subset = keep_obs,
-#'                   order = "median", prob = 0.9)
+#'                   order = "median")
 #' }
 #'
 NULL
@@ -266,20 +266,19 @@ ppc_loo_pit <-
 
 #' @rdname PPC-loo
 #' @export
+#' @template args-prob-prob_outer
 #' @param psis_object If using \pkg{loo} version \code{2.0.0} or greater, an
 #'   object returned by the \code{psis} function (or by the \code{loo} function
 #'   with argument \code{save_psis} set to \code{TRUE}).
-#' @param prob A value between 0 and 1 indicating the desired probability mass
-#'   to include in the intervals. The default is 0.9.
 #' @param intervals For \code{ppc_loo_intervals} and \code{ppc_loo_ribbon},
-#'   optionally a matrix of precomputed LOO predictive intervals intervals with
+#'   optionally a matrix of precomputed LOO predictive intervals
 #'   that can be specified instead of \code{yrep} and \code{lw} (these are both
 #'   ignored if \code{intervals} is specified). If not specified the intervals
 #'   are computed internally before plotting. If specified, \code{intervals}
 #'   must be a matrix with number of rows equal to the number of data points and
-#'   three columns in the following order: the first for the lower bound of the
-#'   interval, the second for median (50\%), and the third for the interval
-#'   upper bound (column names are ignored).
+#'   five columns in the following order: lower outer interval, lower inner
+#'   interval, median (50\%), upper inner interval and upper outer interval
+#'   (column names are ignored).
 #' @param order For \code{ppc_loo_intervals}, a string indicating how to arrange
 #'   the plotted intervals. The default (\code{"index"}) is to plot them in the
 #'   order of the observations. The alternative (\code{"median"}) arranges them
@@ -301,7 +300,8 @@ ppc_loo_intervals <-
            subset = NULL,
            intervals = NULL,
            ...,
-           prob = 0.9,
+           prob = 0.5,
+           prob_outer = 0.9,
            size = 1,
            fatten = 3,
            order = c("index", "median")) {
@@ -310,11 +310,14 @@ ppc_loo_intervals <-
     y <- validate_y(y)
     order_by_median <- match.arg(order) == "median"
     if (!is.null(intervals)) {
-      stopifnot(is.matrix(intervals), ncol(intervals) == 3)
+      stopifnot(is.matrix(intervals), ncol(intervals) %in% c(3, 5))
       message(
         "'intervals' specified so ignoring ",
         "'yrep', 'psis_object', 'subset', if specified."
       )
+      if (ncol(intervals) == 3) {
+          intervals <- cbind(intervals[, 1], intervals, intervals[, 3])
+      }
     } else {
       suggested_package("loo", min_version = "2.0.0")
       yrep <- validate_yrep(yrep, y)
@@ -324,7 +327,8 @@ ppc_loo_intervals <-
         yrep <- yrep[, subset, drop=FALSE]
         psis_object <- .psis_subset(psis_object, subset)
       }
-      a <- (1 - prob) / 2
+      probs <- sort(c(prob, prob_outer))
+      a <- (1 - probs) / 2
       stopifnot(identical(dim(psis_object), dim(yrep)))
       intervals <- suppressWarnings(t(loo::E_loo(
         x = yrep,
@@ -368,17 +372,21 @@ ppc_loo_ribbon <-
            subset = NULL,
            intervals = NULL,
            ...,
-           prob = 0.9,
+           prob = 0.5,
+           prob_outer = 0.9,
            alpha = 0.33,
            size = 0.25) {
     check_ignored_arguments(...)
     y <- validate_y(y)
     if (!is.null(intervals)) {
-      stopifnot(is.matrix(intervals), ncol(intervals) == 3)
+      stopifnot(is.matrix(intervals), ncol(intervals) %in% c(3, 5))
       message(
         "'intervals' specified so ignoring ",
         "'yrep', 'psis_object', 'subset', if specified."
       )
+      if (ncol(intervals) == 3) {
+          intervals <- cbind(intervals[, 1], intervals, intervals[, 3])
+      }
     } else {
       suggested_package("loo", min_version = "2.0.0")
       yrep <- validate_yrep(yrep, y)
@@ -388,7 +396,8 @@ ppc_loo_ribbon <-
         yrep <- yrep[, subset, drop=FALSE]
         psis_object <- .psis_subset(psis_object, subset)
       }
-      a <- (1 - prob) / 2
+      probs <- sort(c(prob, prob_outer))
+      a <- (1 - probs) / 2
       stopifnot(identical(dim(psis_object), dim(yrep)))
       intervals <- suppressWarnings(t(loo::E_loo(
         x = yrep,
@@ -417,9 +426,11 @@ ppc_loo_ribbon <-
     y_id = seq_along(y),
     y_obs = y,
     x = x,
-    lo = intervals[, 1],
-    mid = intervals[, 2],
-    hi = intervals[, 3])
+    ll = intervals[, 1],
+    l  = intervals[, 2],
+    m  = intervals[, 3],
+    h  = intervals[, 4],
+    hh = intervals[, 5])
 }
 
 # subset a psis_object without breaking it
