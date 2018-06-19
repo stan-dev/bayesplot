@@ -20,10 +20,11 @@ ppc_loo_pit(y, yrep, lw, pit, compare = c("uniform", "normal"), ...,
   size = 2, alpha = 1)
 
 ppc_loo_intervals(y, yrep, psis_object, subset = NULL, intervals = NULL,
-  ..., prob = 0.9, size = 1, fatten = 3, order = c("index", "median"))
+  ..., prob = 0.5, prob_outer = 0.9, size = 1, fatten = 3,
+  order = c("index", "median"))
 
 ppc_loo_ribbon(y, yrep, lw, psis_object, subset = NULL, intervals = NULL,
-  ..., prob = 0.9, alpha = 0.33, size = 0.25)
+  ..., prob = 0.5, prob_outer = 0.9, alpha = 0.33, size = 0.25)
 }
 \arguments{
 \item{y}{A vector of observations. See \strong{Details}.}
@@ -90,17 +91,18 @@ for \code{y}, \code{yrep} \emph{and} \code{psis_object}.
 See the \strong{Examples} section for a demonstration.}
 
 \item{intervals}{For \code{ppc_loo_intervals} and \code{ppc_loo_ribbon},
-optionally a matrix of precomputed LOO predictive intervals intervals with
+optionally a matrix of precomputed LOO predictive intervals
 that can be specified instead of \code{yrep} and \code{lw} (these are both
 ignored if \code{intervals} is specified). If not specified the intervals
 are computed internally before plotting. If specified, \code{intervals}
 must be a matrix with number of rows equal to the number of data points and
-three columns in the following order: the first for the lower bound of the
-interval, the second for median (50\%), and the third for the interval
-upper bound (column names are ignored).}
+five columns in the following order: lower outer interval, lower inner
+interval, median (50\%), upper inner interval and upper outer interval
+(column names are ignored).}
 
-\item{prob}{A value between 0 and 1 indicating the desired probability mass
-to include in the intervals. The default is 0.9.}
+\item{prob, prob_outer}{Values between 0 and 1 indicating the desired
+probability mass to include in the inner and outer intervals. The defaults
+are \code{prob=0.5} and \code{prob_outer=0.9}.}
 
 \item{order}{For \code{ppc_loo_intervals}, a string indicating how to arrange
 the plotted intervals. The default (\code{"index"}) is to plot them in the
@@ -181,11 +183,11 @@ ppc_loo_pit_qq(y, yrep, lw = lw, compare = "normal")
 
 # loo predictive intervals vs observations
 keep_obs <- 1:50
-ppc_loo_intervals(y, yrep, psis_object = psis1, subset = keep_obs, prob = 0.9)
+ppc_loo_intervals(y, yrep, psis_object = psis1, subset = keep_obs)
 
 color_scheme_set("gray")
 ppc_loo_intervals(y, yrep, psis_object = psis1, subset = keep_obs,
-                  order = "median", prob = 0.9)
+                  order = "median")
 }
 
 }

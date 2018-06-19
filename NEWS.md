@@ -27,9 +27,16 @@ now has an argument `grid_args` to provide a way of passing optional arguments t
 gains an argument `discrete`, which is `FALSE` by default, but can be used to make the 
 Geom more appropriate for discrete data. (#145)
 
+* [PPC intervals plots](http://mc-stan.org/bayesplot/reference/PPC-intervals.html)
+and [LOO predictive checks](http://mc-stan.org/bayesplot/reference/PPC-loo.html)
+now draw both an outer and an inner probability interval, which can be
+controlled through the new argument `prob_outer` and the already existing
+`prob`. This is consistent with what is produced by `mcmc_intervals()`.
+(#152, #154, @mcol)
+
 * [`mcmc_trace()`](http://mc-stan.org/bayesplot/reference/MCMC-traces.html)
-gains an argument `iter1` which can be used to label the traceplot starting from
-the first iteration after warmup. Thanks to Marco Colombo. (@mcol, #155)
+gains an argument `iter1` which can be used to label the traceplot starting
+from the first iteration after warmup. (#14, #155, @mcol)
 
 # bayesplot 1.5.0
 
