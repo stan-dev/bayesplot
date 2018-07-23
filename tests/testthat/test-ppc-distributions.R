@@ -30,7 +30,7 @@ test_that("ppc_dens,pp_hist,ppc_freqpoly,ppc_boxplot return ggplot objects", {
 
   expect_gg(p <- ppc_hist(y, yrep[1:8, ], binwidth = 3))
   facet_var <- "rep_label"
-  expect_equal(as.character(p$facet$params$facets[1]), facet_var)
+  expect_equal(as.character(p$facet$params$facets[[1]])[2], facet_var)
 })
 
 test_that("ppc_freqpoly_grouped returns a ggplot object", {

@@ -86,7 +86,7 @@ test_that("mcmc_intervals/areas with rhat", {
 
   expect_gg(g <- mcmc_intervals(arr, rhat = r))
   rhat_map <- g$layers[[3]][["mapping"]]
-  expect_identical(rhat_map$colour, as.name("rhat_rating"))
+  expect_identical(as.character(rhat_map[["colour"]]), c("~", "rhat_rating"))
 
   # areas with rhat.
 
@@ -95,18 +95,18 @@ test_that("mcmc_intervals/areas with rhat", {
   # layer 2 is inner interval.
   expect_gg(g2 <- mcmc_areas(arr, rhat = r))
   rhat_map2 <- g2$layers[[2]][["mapping"]]
-  expect_identical(rhat_map2$fill, as.name("rhat_rating"))
-  expect_identical(rhat_map2$colour, as.name("rhat_rating"))
+  expect_identical(as.character(rhat_map2$fill), c("~", "rhat_rating"))
+  expect_identical(as.character(rhat_map2$colour), c("~", "rhat_rating"))
 
   # layer 3 is point estimate. manually colored. [skip]
 
   # layer 4 is outer interval.
   rhat_map4 <- g2$layers[[4]][["mapping"]]
-  expect_identical(rhat_map4$colour, as.name("rhat_rating"))
+  expect_identical(as.character(rhat_map4$colour), c("~", "rhat_rating"))
 
   # layer 5 is bottom line.
   rhat_map5 <- g2$layers[[5]][["mapping"]]
-  expect_identical(rhat_map5$colour, as.name("rhat_rating"))
+  expect_identical(as.character(rhat_map5$colour), c("~", "rhat_rating"))
 })
 
 test_that("mcmc_areas_data computes density", {
