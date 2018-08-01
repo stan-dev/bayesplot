@@ -2,7 +2,7 @@ Package: bayesplot
 Type: Package
 Title: Plotting for Bayesian Models
 Version: 1.6.0
-Date: 2018-07-27
+Date: 2018-08-01
 Authors@R: c(person("Jonah", "Gabry", role = c("aut", "cre"), email = "jsg2201@columbia.edu"),
              person("Tristan", "Mahr", role = "aut"),
              person("Paul-Christian", "Bürkner", role = "ctb"),
@@ -18,7 +18,7 @@ License: GPL (>= 3)
 LazyData: TRUE
 URL: http://mc-stan.org/bayesplot
 BugReports: https://github.com/stan-dev/bayesplot/issues/
-SystemRequirements: pandoc
+SystemRequirements: pandoc (>= 1.12.3), pandoc-citeproc
 Depends:
     R (>= 3.1.0)
 Imports:
