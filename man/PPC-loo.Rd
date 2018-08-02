@@ -19,11 +19,12 @@ ppc_loo_pit_qq(y, yrep, lw, pit, compare = c("uniform", "normal"), ...,
 ppc_loo_pit(y, yrep, lw, pit, compare = c("uniform", "normal"), ...,
   size = 2, alpha = 1)
 
-ppc_loo_intervals(y, yrep, lw, psis_object, intervals = NULL, ...,
-  prob = 0.9, size = 1, fatten = 3, order = c("index", "median"))
+ppc_loo_intervals(y, yrep, psis_object, subset = NULL, intervals = NULL,
+  ..., prob = 0.5, prob_outer = 0.9, size = 1, fatten = 3,
+  order = c("index", "median"))
 
-ppc_loo_ribbon(y, yrep, lw, psis_object, intervals = NULL, ..., prob = 0.9,
-  alpha = 0.33, size = 0.25)
+ppc_loo_ribbon(y, yrep, lw, psis_object, subset = NULL, intervals = NULL,
+  ..., prob = 0.5, prob_outer = 0.9, alpha = 0.33, size = 0.25)
 }
 \arguments{
 \item{y}{A vector of observations. See \strong{Details}.}
@@ -37,10 +38,8 @@ for the plots to make sense. See \strong{Details} for additional
 instructions.}
 
 \item{lw}{A matrix of (smoothed) log weights with the same dimensions as
-\code{yrep}. If using \pkg{loo < 2.0.0} see the \code{\link[loo]{psislw}}
-function in the \pkg{loo} package, which returns smoothed weights that can
-be used to specify \code{lw}. If using \pkg{loo >= 2.0.0} see the
-\code{psis} function and the associated \code{weights} method.}
+\code{yrep}. See \code{\link[loo]{psis}} and the associated \code{weights}
+method and the \strong{Examples} section, below.}
 
 \item{pit}{For \code{ppc_loo_pit_overlay} and \code{ppc_loo_pit_qq},
 optionally a vector of precomputed PIT values that can be specified instead
@@ -81,18 +80,29 @@ to the standard normal distribution.}
 object returned by the \code{psis} function (or by the \code{loo} function
 with argument \code{save_psis} set to \code{TRUE}).}
 
+\item{subset}{For \code{ppc_loo_intervals} and \code{ppc_loo_ribbon}, an
+optional integer vector indicating which observations in \code{y} (and
+\code{yrep}) to include. Dropping observations from \code{y} and
+\code{yrep} manually before passing them to the plotting function will not
+work because the dimensions will not match up with the dimensions of
+\code{psis_object}, but if all of \code{y} and \code{yrep} are passed along
+with \code{subset} then \pkg{bayesplot} can do the subsetting internally
+for \code{y}, \code{yrep} \emph{and} \code{psis_object}.
+See the \strong{Examples} section for a demonstration.}
+
 \item{intervals}{For \code{ppc_loo_intervals} and \code{ppc_loo_ribbon},
-optionally a matrix of precomputed LOO predictive intervals intervals with
+optionally a matrix of precomputed LOO predictive intervals
 that can be specified instead of \code{yrep} and \code{lw} (these are both
 ignored if \code{intervals} is specified). If not specified the intervals
 are computed internally before plotting. If specified, \code{intervals}
 must be a matrix with number of rows equal to the number of data points and
-three columns in the following order: the first for the lower bound of the
-interval, the second for median (50\%), and the third for the interval
-upper bound (column names are ignored).}
+five columns in the following order: lower outer interval, lower inner
+interval, median (50\%), upper inner interval and upper outer interval
+(column names are ignored).}
 
-\item{prob}{A value between 0 and 1 indicating the desired probability mass
-to include in the intervals. The default is 0.9.}
+\item{prob, prob_outer}{Values between 0 and 1 indicating the desired
+probability mass to include in the inner and outer intervals. The defaults
+are \code{prob=0.5} and \code{prob_outer=0.9}.}
 
 \item{order}{For \code{ppc_loo_intervals}, a string indicating how to arrange
 the plotted intervals. The default (\code{"index"}) is to plot them in the
@@ -159,30 +169,25 @@ fit <- stan_lmer(
 y <- radon$log_radon
 yrep <- posterior_predict(fit)
 
-if (packageVersion("loo") < "2.0.0") {
-  psis1 <- psislw(-log_lik(fit), cores = 2)
-  lw <- psis1$lw_smooth
-} else {
-  psis1 <- psis(-log_lik(fit), cores = 2)
-  lw <- weights(psis1)
-}
+loo1 <- loo(fit, save_psis = TRUE, cores = 2)
+psis1 <- loo1$psis_object
+lw <- weights(psis1)
 
 # marginal predictive check using LOO probability integral transform
 color_scheme_set("orange")
-ppc_loo_pit_overlay(y, yrep, lw = lw, adjust = 0.9)
+ppc_loo_pit_overlay(y, yrep, lw = lw)
 
 ppc_loo_pit_qq(y, yrep, lw = lw)
 ppc_loo_pit_qq(y, yrep, lw = lw, compare = "normal")
 
 
 # loo predictive intervals vs observations
-sel <- 800:900
-ppc_loo_intervals(y[sel], yrep[, sel], psis1$lw_smooth[, sel],
-                  prob = 0.9, size = 0.5)
+keep_obs <- 1:50
+ppc_loo_intervals(y, yrep, psis_object = psis1, subset = keep_obs)
 
 color_scheme_set("gray")
-ppc_loo_intervals(y[sel], yrep[, sel], psis1$lw_smooth[, sel],
-                  order = "median", prob = 0.8, size = 0.5)
+ppc_loo_intervals(y, yrep, psis_object = psis1, subset = keep_obs,
+                  order = "median")
 }
 
 }

@@ -1,11 +1,13 @@
 ---
 title: "Plotting MCMC draws using the bayesplot package"
 author: "Jonah Gabry"
-date: "`r Sys.Date()`"
+date: "Latest version: `r Sys.Date()`"
 output:
   rmarkdown::html_vignette:
     toc: true
     toc_depth: 3
+params:
+  EVAL: !r TRUE
 vignette: >
   %\VignetteIndexEntry{Plotting MCMC draws}
   %\VignetteEngine{knitr::rmarkdown}

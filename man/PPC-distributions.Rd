@@ -15,7 +15,7 @@
 \usage{
 ppc_data(y, yrep, group = NULL)
 
-ppc_hist(y, yrep, ..., binwidth = NULL, freq = TRUE)
+ppc_hist(y, yrep, ..., binwidth = NULL, breaks = NULL, freq = TRUE)
 
 ppc_boxplot(y, yrep, ..., notch = TRUE, size = 0.5, alpha = 1)
 
@@ -30,7 +30,8 @@ ppc_dens(y, yrep, ..., trim = FALSE, size = 0.5, alpha = 1)
 ppc_dens_overlay(y, yrep, ..., size = 0.25, alpha = 0.7, trim = FALSE,
   bw = "nrd0", adjust = 1, kernel = "gaussian", n_dens = 1024)
 
-ppc_ecdf_overlay(y, yrep, ..., pad = TRUE, size = 0.25, alpha = 0.7)
+ppc_ecdf_overlay(y, yrep, ..., discrete = FALSE, pad = TRUE, size = 0.25,
+  alpha = 0.7)
 
 ppc_violin_grouped(y, yrep, group, ..., probs = c(0.1, 0.5, 0.9), size = 1,
   alpha = 1, y_draw = c("violin", "points", "both"), y_size = 1,
@@ -53,8 +54,11 @@ pertaining to the corresponding value of \code{y}.}
 
 \item{...}{Currently unused.}
 
-\item{binwidth}{An optional value used as the \code{binwidth} argument to
-\code{\link[ggplot2]{geom_histogram}} to override the default binwidth.}
+\item{binwidth}{Passed to \code{\link[ggplot2]{geom_histogram}} to override
+the default binwidth.}
+
+\item{breaks}{Passed to \code{\link[ggplot2]{geom_histogram}} as an
+alternative to \code{binwidth}.}
 
 \item{freq}{For histograms, \code{freq=TRUE} (the default) puts count on the
 y-axis. Setting \code{freq=FALSE} puts density on the y-axis. (For many
@@ -73,6 +77,11 @@ the \code{yrep} distributions.}
 \item{bw, adjust, kernel, n_dens}{Optional arguments passed to
 \code{\link[stats]{density}} to override default kernel density estimation
 parameters. \code{n_dens} defaults to 1024.}
+
+\item{discrete}{For \code{ppc_ecdf_overlay}, should the data be treated as
+discrete? The default is \code{FALSE}, in which case \code{geom="line"} is
+passed to \code{\link[ggplot2]{stat_ecdf}}. If \code{discrete} is set to
+\code{TRUE} then \code{geom="step"} is used.}
 
 \item{pad}{A logical scalar passed to \code{\link[ggplot2]{stat_ecdf}}.}
 
@@ -95,7 +104,7 @@ determine the amount of jitter.}
 \value{
 A ggplot object that can be further customized using the
   \pkg{ggplot2} package. The \code{_data} functions return the data that
-  would have be drawn by the plotting function.
+  would have been drawn by the plotting function.
 }
 \description{
 Compare the empirical distribution of the data \code{y} to the distributions
@@ -126,7 +135,8 @@ For Binomial data, the plots will typically be most useful if
   \item{\code{ppc_dens_overlay, ppc_ecdf_overlay}}{
    Kernel density or empirical CDF estimates of each dataset (row) in
    \code{yrep} are overlaid, with the distribution of \code{y} itself on top
-   (and in a darker shade).
+   (and in a darker shade). When using \code{ppc_ecdf_overlay} with discrete
+   data set the \code{discrete} argument to \code{TRUE} for better results.
   }
   \item{\code{ppc_violin_grouped}}{
    The density estimate of \code{yrep} within each level of a grouping
@@ -181,7 +191,6 @@ ppc_violin_grouped(y, yrep, group, alpha = 0, y_draw = "points", y_size = 1.5)
 ppc_violin_grouped(y, yrep, group, alpha = 0, y_draw = "both",
                    y_size = 1.5, y_alpha = 0.5, y_jitter = 0.33)
 }
-
 }
 \references{
 Gelman, A., Carlin, J. B., Stern, H. S., Dunson, D. B., Vehtari,

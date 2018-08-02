@@ -8,10 +8,8 @@
 #' @template args-y-yrep
 #' @param ... Currently unused.
 #' @param lw A matrix of (smoothed) log weights with the same dimensions as
-#'   \code{yrep}. If using \pkg{loo < 2.0.0} see the \code{\link[loo]{psislw}}
-#'   function in the \pkg{loo} package, which returns smoothed weights that can
-#'   be used to specify \code{lw}. If using \pkg{loo >= 2.0.0} see the
-#'   \code{psis} function and the associated \code{weights} method.
+#'   \code{yrep}. See \code{\link[loo]{psis}} and the associated \code{weights}
+#'   method and the \strong{Examples} section, below.
 #' @param alpha,size,fatten Arguments passed to code geoms to control plot
 #'   aesthetics. For \code{ppc_loo_pit_qq} and \code{ppc_loo_pit_overlay},
 #'   \code{size} and \code{alpha} are passed to
@@ -78,30 +76,25 @@
 #' y <- radon$log_radon
 #' yrep <- posterior_predict(fit)
 #'
-#' if (packageVersion("loo") < "2.0.0") {
-#'   psis1 <- psislw(-log_lik(fit), cores = 2)
-#'   lw <- psis1$lw_smooth
-#' } else {
-#'   psis1 <- psis(-log_lik(fit), cores = 2)
-#'   lw <- weights(psis1)
-#' }
+#' loo1 <- loo(fit, save_psis = TRUE, cores = 2)
+#' psis1 <- loo1$psis_object
+#' lw <- weights(psis1)
 #'
 #' # marginal predictive check using LOO probability integral transform
 #' color_scheme_set("orange")
-#' ppc_loo_pit_overlay(y, yrep, lw = lw, adjust = 0.9)
+#' ppc_loo_pit_overlay(y, yrep, lw = lw)
 #'
 #' ppc_loo_pit_qq(y, yrep, lw = lw)
 #' ppc_loo_pit_qq(y, yrep, lw = lw, compare = "normal")
 #'
 #'
 #' # loo predictive intervals vs observations
-#' sel <- 800:900
-#' ppc_loo_intervals(y[sel], yrep[, sel], psis1$lw_smooth[, sel],
-#'                   prob = 0.9, size = 0.5)
+#' keep_obs <- 1:50
+#' ppc_loo_intervals(y, yrep, psis_object = psis1, subset = keep_obs)
 #'
 #' color_scheme_set("gray")
-#' ppc_loo_intervals(y[sel], yrep[, sel], psis1$lw_smooth[, sel],
-#'                   order = "median", prob = 0.8, size = 0.5)
+#' ppc_loo_intervals(y, yrep, psis_object = psis1, subset = keep_obs,
+#'                   order = "median")
 #' }
 #'
 NULL
@@ -227,7 +220,8 @@ ppc_loo_pit_qq <-
         intercept = 0,
         linetype = 2,
         color = "black"
-      )
+      ) +
+    bayesplot_theme_get()
 
     if (compare == "uniform") {
       xylim <- c(0, 1)
@@ -272,33 +266,42 @@ ppc_loo_pit <-
 
 #' @rdname PPC-loo
 #' @export
+#' @template args-prob-prob_outer
 #' @param psis_object If using \pkg{loo} version \code{2.0.0} or greater, an
 #'   object returned by the \code{psis} function (or by the \code{loo} function
 #'   with argument \code{save_psis} set to \code{TRUE}).
-#' @param prob A value between 0 and 1 indicating the desired probability mass
-#'   to include in the intervals. The default is 0.9.
 #' @param intervals For \code{ppc_loo_intervals} and \code{ppc_loo_ribbon},
-#'   optionally a matrix of precomputed LOO predictive intervals intervals with
+#'   optionally a matrix of precomputed LOO predictive intervals
 #'   that can be specified instead of \code{yrep} and \code{lw} (these are both
 #'   ignored if \code{intervals} is specified). If not specified the intervals
 #'   are computed internally before plotting. If specified, \code{intervals}
 #'   must be a matrix with number of rows equal to the number of data points and
-#'   three columns in the following order: the first for the lower bound of the
-#'   interval, the second for median (50\%), and the third for the interval
-#'   upper bound (column names are ignored).
+#'   five columns in the following order: lower outer interval, lower inner
+#'   interval, median (50\%), upper inner interval and upper outer interval
+#'   (column names are ignored).
 #' @param order For \code{ppc_loo_intervals}, a string indicating how to arrange
 #'   the plotted intervals. The default (\code{"index"}) is to plot them in the
 #'   order of the observations. The alternative (\code{"median"}) arranges them
 #'   by median value from smallest (left) to largest (right).
+#' @param subset For \code{ppc_loo_intervals} and \code{ppc_loo_ribbon}, an
+#'   optional integer vector indicating which observations in \code{y} (and
+#'   \code{yrep}) to include. Dropping observations from \code{y} and
+#'   \code{yrep} manually before passing them to the plotting function will not
+#'   work because the dimensions will not match up with the dimensions of
+#'   \code{psis_object}, but if all of \code{y} and \code{yrep} are passed along
+#'   with \code{subset} then \pkg{bayesplot} can do the subsetting internally
+#'   for \code{y}, \code{yrep} \emph{and} \code{psis_object}.
+#'   See the \strong{Examples} section for a demonstration.
 #'
 ppc_loo_intervals <-
   function(y,
            yrep,
-           lw,
            psis_object,
+           subset = NULL,
            intervals = NULL,
            ...,
-           prob = 0.9,
+           prob = 0.5,
+           prob_outer = 0.9,
            size = 1,
            fatten = 3,
            order = c("index", "median")) {
@@ -307,29 +310,32 @@ ppc_loo_intervals <-
     y <- validate_y(y)
     order_by_median <- match.arg(order) == "median"
     if (!is.null(intervals)) {
-      stopifnot(is.matrix(intervals), ncol(intervals) == 3)
-      message("'intervals' specified so ignoring 'yrep', 'lw', 'psis_object', if specified.")
-    } else {
-      suggested_package("loo")
-      yrep <- validate_yrep(yrep, y)
-      a <- (1 - prob) / 2
-      if (utils::packageVersion("loo") >= "2.0.0") {
-        stopifnot(identical(dim(psis_object), dim(yrep)))
-        intervals <- suppressWarnings(t(loo::E_loo(
-          x = yrep,
-          psis_object = psis_object,
-          type = "quantile",
-          probs = sort(c(a, 0.5, 1 - a))
-        )$value))
-      } else {
-        stopifnot(identical(dim(lw), dim(yrep)))
-        intervals <- unclass(t(loo::E_loo(
-          x = yrep,
-          lw = lw,
-          type = "quantile",
-          probs = sort(c(a, 0.5, 1 - a))
-        )))
+      stopifnot(is.matrix(intervals), ncol(intervals) %in% c(3, 5))
+      message(
+        "'intervals' specified so ignoring ",
+        "'yrep', 'psis_object', 'subset', if specified."
+      )
+      if (ncol(intervals) == 3) {
+          intervals <- cbind(intervals[, 1], intervals, intervals[, 3])
       }
+    } else {
+      suggested_package("loo", min_version = "2.0.0")
+      yrep <- validate_yrep(yrep, y)
+      if (!is.null(subset)) {
+        stopifnot(length(y) >= length(subset))
+        y <- y[subset]
+        yrep <- yrep[, subset, drop=FALSE]
+        psis_object <- .psis_subset(psis_object, subset)
+      }
+      probs <- sort(c(prob, prob_outer))
+      a <- (1 - probs) / 2
+      stopifnot(identical(dim(psis_object), dim(yrep)))
+      intervals <- suppressWarnings(t(loo::E_loo(
+        x = yrep,
+        psis_object = psis_object,
+        type = "quantile",
+        probs = sort(c(a, 0.5, 1 - a))
+      )$value))
     }
 
     x <- seq_along(y)
@@ -363,37 +369,42 @@ ppc_loo_ribbon <-
            yrep,
            lw,
            psis_object,
+           subset = NULL,
            intervals = NULL,
            ...,
-           prob = 0.9,
+           prob = 0.5,
+           prob_outer = 0.9,
            alpha = 0.33,
            size = 0.25) {
     check_ignored_arguments(...)
     y <- validate_y(y)
     if (!is.null(intervals)) {
-      stopifnot(is.matrix(intervals), ncol(intervals) == 3)
-      message("'intervals' specified so ignoring 'yrep', 'lw', 'psis_object', if specified.")
-    } else {
-      suggested_package("loo")
-      yrep <- validate_yrep(yrep, y)
-      a <- (1 - prob) / 2
-      if (utils::packageVersion("loo") >= "2.0.0") {
-        stopifnot(identical(dim(psis_object), dim(yrep)))
-        intervals <- suppressWarnings(t(loo::E_loo(
-          x = yrep,
-          psis_object = psis_object,
-          type = "quantile",
-          probs = sort(c(a, 0.5, 1 - a))
-        )$value))
-      } else {
-        stopifnot(identical(dim(lw), dim(yrep)))
-        intervals <- t(loo::E_loo(
-          x = yrep,
-          lw = lw,
-          type = "quantile",
-          probs = sort(c(a, 0.5, 1 - a))
-        ))
+      stopifnot(is.matrix(intervals), ncol(intervals) %in% c(3, 5))
+      message(
+        "'intervals' specified so ignoring ",
+        "'yrep', 'psis_object', 'subset', if specified."
+      )
+      if (ncol(intervals) == 3) {
+          intervals <- cbind(intervals[, 1], intervals, intervals[, 3])
       }
+    } else {
+      suggested_package("loo", min_version = "2.0.0")
+      yrep <- validate_yrep(yrep, y)
+      if (!is.null(subset)) {
+        stopifnot(length(y) >= length(subset))
+        y <- y[subset]
+        yrep <- yrep[, subset, drop=FALSE]
+        psis_object <- .psis_subset(psis_object, subset)
+      }
+      probs <- sort(c(prob, prob_outer))
+      a <- (1 - probs) / 2
+      stopifnot(identical(dim(psis_object), dim(yrep)))
+      intervals <- suppressWarnings(t(loo::E_loo(
+        x = yrep,
+        psis_object = psis_object,
+        type = "quantile",
+        probs = sort(c(a, 0.5, 1 - a))
+      )$value))
     }
     .ppc_intervals(
       data = .loo_intervals_data(y, x = seq_along(y), intervals),
@@ -415,8 +426,27 @@ ppc_loo_ribbon <-
     y_id = seq_along(y),
     y_obs = y,
     x = x,
-    lo = intervals[, 1],
-    mid = intervals[, 2],
-    hi = intervals[, 3])
+    ll = intervals[, 1],
+    l  = intervals[, 2],
+    m  = intervals[, 3],
+    h  = intervals[, 4],
+    hh = intervals[, 5])
+}
+
+# subset a psis_object without breaking it
+.psis_subset <- function(psis_object, subset) {
+  stopifnot(all(subset == as.integer(subset)))
+  if (length(subset) > dim(psis_object)[2]) {
+    stop("'subset' has too many elements.", call. = FALSE)
+  }
+  psis_object$log_weights <- psis_object$log_weights[, subset, drop=FALSE]
+  psis_object$diagnostics$pareto_k <- psis_object$diagnostics$pareto_k[subset]
+  psis_object$diagnostics$n_eff <- psis_object$diagnostics$n_eff[subset]
+
+  attr(psis_object, "dims") <- c(dim(psis_object)[1], length(subset))
+  attr(psis_object, "norm_const_log") <- attr(psis_object, "norm_const_log")[subset]
+  attr(psis_object, "tail_len") <- attr(psis_object, "tail_len")[subset]
+  attr(psis_object, "r_eff") <- attr(psis_object, "r_eff")[subset]
+  return(psis_object)
 }
 

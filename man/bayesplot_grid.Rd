@@ -6,7 +6,7 @@
 \usage{
 bayesplot_grid(..., plots = list(), xlim = NULL, ylim = NULL,
   grid_args = list(), titles = character(), subtitles = character(),
-  legends = TRUE)
+  legends = TRUE, save_gg_objects = TRUE)
 }
 \arguments{
 \item{...}{One or more ggplot objects.}
@@ -27,6 +27,12 @@ length equal to the number of plots specified.}
 
 \item{legends}{If any of the plots have legends should they be displayed?
 Defaults to \code{TRUE}.}
+
+\item{save_gg_objects}{If \code{TRUE}, the default, then the ggplot objects
+specified in \code{...} or via the \code{plots} argument are saved in a
+list in the \code{"bayesplots"} component of the returned object.
+Setting this to \code{FALSE} will make the returned object smaller but
+these individual plot objects will not be available.}
 }
 \value{
 An object of class "bayesplot_grid" (essentially a gtable object from

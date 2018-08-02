@@ -49,6 +49,9 @@
 #' }
 #'
 #' @template reference-vis-paper
+#' @references Hartikainen, A. (2017, Aug 23). Concentration of divergences
+#' [Msg 21]. Message posted to The Stan Forums:
+#' \url{http://discourse.mc-stan.org/t/concentration-of-divergences/1590/21}.
 #'
 #' @examples
 #' color_scheme_set("pink")
@@ -134,7 +137,8 @@ mcmc_parcoord <-
         size = size,
         alpha = alpha,
         color = get_color("dh")
-      )
+      ) +
+      bayesplot_theme_get()
 
     if (has_divs) {
       graph <- graph +

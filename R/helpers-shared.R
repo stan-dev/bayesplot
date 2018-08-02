@@ -1,25 +1,41 @@
-# Check for suggested package (requireNamespace)
-#
-# @param pkg Package name as a string
-#
-suggested_package <- function(pkgs) {
-  for (pkg in pkgs) {
-    if (!requireNamespace(pkg, quietly = TRUE))
+#' Check for suggested package (requireNamespace) and throw error if necessary
+#'
+#' @noRd
+#' @param pkg Package name as a string.
+#' @param min_version Optionally, a minimum version number as a string.
+#' @return TRUE, invisibly, if no error is thrown.
+#'
+suggested_package <- function(pkg, min_version = NULL) {
+  stopifnot(length(pkg) == 1, is.character(pkg))
+  if (!requireNamespace(pkg, quietly = TRUE)) {
+    stop(
+      "Please install the ",
+      pkg, " package to use this function.",
+      call. = FALSE
+    )
+  }
+  if (!is.null(min_version)) {
+    stopifnot(is.character(min_version))
+    if (utils::packageVersion(pkg) < package_version(min_version)) {
       stop(
-        "Please install the ", pkg, " package to use this function.",
+        "Version >=", min_version, " of the ",
+        pkg, " package is required to use this function.",
         call. = FALSE
       )
+    }
   }
+  invisible(TRUE)
 }
 
-# Explicit and/or regex parameter selection
-#
-# @param explicit Character vector of selected parameter names.
-# @param patterns Character vector of regular expressions.
-# @param complete Character vector of all possible parameter names.
-# @return Characeter vector of combined explicit and matched (via regex)
-#   parameter names, unless an error is thrown.
-#
+#' Explicit and/or regex parameter selection
+#'
+#' @noRd
+#' @param explicit Character vector of selected parameter names.
+#' @param patterns Character vector of regular expressions.
+#' @param complete Character vector of all possible parameter names.
+#' @return Characeter vector of combined explicit and matched (via regex)
+#'   parameter names, unless an error is thrown.
+#'
 select_parameters <-
   function(explicit = character(),
            patterns = character(),

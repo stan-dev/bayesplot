@@ -32,7 +32,7 @@ test_that("rhat and neff plot functions throw correct errors & warnings", {
   expect_error(mcmc_rhat(c(-1, 1, 1)), "must be positive")
 
   # need ratios between 0 and 1
-  expect_error(mcmc_neff(c(-1, 0.5, 0.7)), "must be between 0 and 1")
+  expect_error(mcmc_neff(c(-1, 0.5, 0.7)), "must be positive")
 
   # drop NAs and warn
   expect_warning(mcmc_rhat(c(1, 1, NA)), "Dropped 1 NAs")

@@ -45,10 +45,16 @@ warmup iterations for diagnostic purposes.
     Uncertainty intervals computed from parameter draws.
   }
   \item{\strong{\link[=MCMC-traces]{Trace plots}}}{
-    Times series of parameter draws.
+    Times series of parameter draws, optionally including with HMC/NUTS
+    diagnostic information.
   }
   \item{\strong{\link[=MCMC-scatterplots]{Scatterplots}}}{
-    Scatterplots, heatmaps, and pairs plots of parameter draws.
+    Scatterplots, heatmaps, and pairs plots of parameter draws, optionally
+    including with HMC/NUTS diagnostic information.
+  }
+  \item{\strong{\link[=MCMC-parcoord]{Parallel coordinates plots}}}{
+    Parallel coordinates plot of MCMC draws (one dimension per parameter),
+    optionally including with HMC/NUTS diagnostic information.
   }
   \item{\strong{\link[=MCMC-combos]{Combinations}}}{
     Combination plots (e.g. trace plot + histogram).
