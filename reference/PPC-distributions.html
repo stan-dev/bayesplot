@@ -21,10 +21,15 @@
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
+
+
+
 <meta property="og:title" content="PPC distributions — PPC-distributions" />
 
 <meta property="og:description" content="Compare the empirical distribution of the data y to the distributions
@@ -36,6 +41,7 @@ for details." />
 <meta name="twitter:card" content="summary" />
 
 
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -43,8 +49,6 @@ for details." />
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
-
-
 
 
   </head>
@@ -62,7 +66,7 @@ for details." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bayesplot</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.5.0</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.6.0</span>
       </span>
     </div>
 
@@ -95,6 +99,9 @@ for details." />
     </li>
     <li>
       <a href="http://mc-stan.org/loo">loo</a>
+    </li>
+    <li>
+      <a href="http://mc-stan.org/projpred">projpred</a>
     </li>
     <li>
       <a href="http://mc-stan.org/rstantools">rstantools</a>
@@ -139,18 +146,21 @@ for details." />
     <div class="page-header">
     <h1>PPC distributions</h1>
     
+    <div class="hidden name"><code>PPC-distributions.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p>Compare the empirical distribution of the data <code>y</code> to the distributions
 of simulated/replicated data <code>yrep</code> from the posterior predictive
 distribution. See the <strong>Plot Descriptions</strong> section, below,
 for details.</p>
     
+    </div>
 
     <pre class="usage"><span class='fu'>ppc_data</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='kw'>group</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
 
-<span class='fu'>ppc_hist</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='no'>...</span>, <span class='kw'>binwidth</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>freq</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='fu'>ppc_hist</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='no'>...</span>, <span class='kw'>binwidth</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>breaks</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>freq</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
 <span class='fu'>ppc_boxplot</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='no'>...</span>, <span class='kw'>notch</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>1</span>)
 
@@ -165,7 +175,8 @@ for details.</p>
 <span class='fu'>ppc_dens_overlay</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='no'>...</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>0.25</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.7</span>, <span class='kw'>trim</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>bw</span> <span class='kw'>=</span> <span class='st'>"nrd0"</span>, <span class='kw'>adjust</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>kernel</span> <span class='kw'>=</span> <span class='st'>"gaussian"</span>, <span class='kw'>n_dens</span> <span class='kw'>=</span> <span class='fl'>1024</span>)
 
-<span class='fu'>ppc_ecdf_overlay</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='no'>...</span>, <span class='kw'>pad</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>0.25</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.7</span>)
+<span class='fu'>ppc_ecdf_overlay</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='no'>...</span>, <span class='kw'>discrete</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>pad</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>0.25</span>,
+  <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.7</span>)
 
 <span class='fu'>ppc_violin_grouped</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='no'>group</span>, <span class='no'>...</span>, <span class='kw'>probs</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>0.1</span>, <span class='fl'>0.5</span>, <span class='fl'>0.9</span>), <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>1</span>,
   <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>y_draw</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"violin"</span>, <span class='st'>"points"</span>, <span class='st'>"both"</span>), <span class='kw'>y_size</span> <span class='kw'>=</span> <span class='fl'>1</span>,
@@ -200,8 +211,13 @@ pertaining to the corresponding value of <code>y</code>.</p></td>
     </tr>
     <tr>
       <th>binwidth</th>
-      <td><p>An optional value used as the <code>binwidth</code> argument to
-<code><a href='http://www.rdocumentation.org/packages/ggplot2/topics/geom_histogram'>geom_histogram</a></code> to override the default binwidth.</p></td>
+      <td><p>Passed to <code><a href='http://www.rdocumentation.org/packages/ggplot2/topics/geom_histogram'>geom_histogram</a></code> to override
+the default binwidth.</p></td>
+    </tr>
+    <tr>
+      <th>breaks</th>
+      <td><p>Passed to <code><a href='http://www.rdocumentation.org/packages/ggplot2/topics/geom_histogram'>geom_histogram</a></code> as an
+alternative to <code>binwidth</code>.</p></td>
     </tr>
     <tr>
       <th>freq</th>
@@ -230,6 +246,13 @@ the <code>yrep</code> distributions.</p></td>
       <td><p>Optional arguments passed to
 <code><a href='http://www.rdocumentation.org/packages/stats/topics/density'>density</a></code> to override default kernel density estimation
 parameters. <code>n_dens</code> defaults to 1024.</p></td>
+    </tr>
+    <tr>
+      <th>discrete</th>
+      <td><p>For <code>ppc_ecdf_overlay</code>, should the data be treated as
+discrete? The default is <code>FALSE</code>, in which case <code>geom="line"</code> is
+passed to <code><a href='http://www.rdocumentation.org/packages/ggplot2/topics/stat_ecdf'>stat_ecdf</a></code>. If <code>discrete</code> is set to
+<code>TRUE</code> then <code>geom="step"</code> is used.</p></td>
     </tr>
     <tr>
       <th>pad</th>
@@ -263,7 +286,7 @@ determine the amount of jitter.</p></td>
 
     <p>A ggplot object that can be further customized using the
   <span class="pkg">ggplot2</span> package. The <code>_data</code> functions return the data that
-  would have be drawn by the plotting function.</p>
+  would have been drawn by the plotting function.</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
@@ -285,7 +308,8 @@ determine the amount of jitter.</p></td>
    <strong>Examples</strong> section.</p></dd>
   <dt><code>ppc_dens_overlay, ppc_ecdf_overlay</code></dt><dd><p>Kernel density or empirical CDF estimates of each dataset (row) in
    <code>yrep</code> are overlaid, with the distribution of <code>y</code> itself on top
-   (and in a darker shade).</p></dd>
+   (and in a darker shade). When using <code>ppc_ecdf_overlay</code> with discrete
+   data set the <code>discrete</code> argument to <code>TRUE</code> for better results.</p></dd>
   <dt><code>ppc_violin_grouped</code></dt><dd><p>The density estimate of <code>yrep</code> within each level of a grouping
    variable is plotted as a violin with horizontal lines at notable
    quantiles. <code>y</code> is overlaid on the plot either as a violin, points, or
@@ -300,11 +324,11 @@ determine the amount of jitter.</p></td>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p>Other PPCs: <code><a href='PPC-discrete.html'>PPC-discrete</a></code>,
+    <div class='dont-index'><p>Other PPCs: <code><a href='PPC-discrete.html'>PPC-discrete</a></code>,
   <code><a href='PPC-errors.html'>PPC-errors</a></code>, <code><a href='PPC-intervals.html'>PPC-intervals</a></code>,
   <code><a href='PPC-loo.html'>PPC-loo</a></code>, <code><a href='PPC-overview.html'>PPC-overview</a></code>,
   <code><a href='PPC-scatterplots.html'>PPC-scatterplots</a></code>,
-  <code><a href='PPC-test-statistics.html'>PPC-test-statistics</a></code></p>
+  <code><a href='PPC-test-statistics.html'>PPC-test-statistics</a></code></p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -330,8 +354,7 @@ determine the amount of jitter.</p></td>
 <span class='fu'>ppc_violin_grouped</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='no'>group</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>1.5</span>)</div><div class='img'><img src='PPC-distributions-9.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>ppc_violin_grouped</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='no'>group</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0</span>)</div><div class='img'><img src='PPC-distributions-10.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># change how y is drawn</span>
 <span class='fu'>ppc_violin_grouped</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='no'>group</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>y_draw</span> <span class='kw'>=</span> <span class='st'>"points"</span>, <span class='kw'>y_size</span> <span class='kw'>=</span> <span class='fl'>1.5</span>)</div><div class='img'><img src='PPC-distributions-11.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>ppc_violin_grouped</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='no'>group</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>y_draw</span> <span class='kw'>=</span> <span class='st'>"both"</span>,
-                   <span class='kw'>y_size</span> <span class='kw'>=</span> <span class='fl'>1.5</span>, <span class='kw'>y_alpha</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>y_jitter</span> <span class='kw'>=</span> <span class='fl'>0.33</span>)</div><div class='img'><img src='PPC-distributions-12.png' alt='' width='700' height='433' /></div><div class='input'>
-</div></pre>
+                   <span class='kw'>y_size</span> <span class='kw'>=</span> <span class='fl'>1.5</span>, <span class='kw'>y_alpha</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>y_jitter</span> <span class='kw'>=</span> <span class='fl'>0.33</span>)</div><div class='img'><img src='PPC-distributions-12.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

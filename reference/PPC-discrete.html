@@ -21,19 +21,27 @@
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
+
+
+
 <meta property="og:title" content="PPCs for discrete outcomes — PPC-discrete" />
 
-<meta property="og:description" content="This page documents the PPC functions that can only be used if y and
-yrep are discrete. Currently these include rootograms for count
-outcomes and bar plots for ordinal, categorical, and multinomial outcomes.
-See the Plot Descriptions section below." />
+<meta property="og:description" content="Many of the PPC functions in bayesplot can
+be used with discrete data. The small subset of these functions that can
+only be used if y and yrep are discrete are documented
+on this page. Currently these include rootograms for count outcomes and bar
+plots for ordinal, categorical, and multinomial outcomes. See the
+Plot Descriptions section below." />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
+
 
 
 <!-- mathjax -->
@@ -43,8 +51,6 @@ See the Plot Descriptions section below." />
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
-
-
 
 
   </head>
@@ -62,7 +68,7 @@ See the Plot Descriptions section below." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bayesplot</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.5.0</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.6.0</span>
       </span>
     </div>
 
@@ -95,6 +101,9 @@ See the Plot Descriptions section below." />
     </li>
     <li>
       <a href="http://mc-stan.org/loo">loo</a>
+    </li>
+    <li>
+      <a href="http://mc-stan.org/projpred">projpred</a>
     </li>
     <li>
       <a href="http://mc-stan.org/rstantools">rstantools</a>
@@ -139,14 +148,19 @@ See the Plot Descriptions section below." />
     <div class="page-header">
     <h1>PPCs for discrete outcomes</h1>
     
+    <div class="hidden name"><code>PPC-discrete.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
-    <p>This page documents the PPC functions that can only be used if <code>y</code> and
-<code>yrep</code> are discrete. Currently these include rootograms for count
-outcomes and bar plots for ordinal, categorical, and multinomial outcomes.
-See the <strong>Plot Descriptions</strong> section below.</p>
+    <p>Many of the <a href='PPC-overview.html'>PPC</a> functions in <span class="pkg">bayesplot</span> can
+be used with discrete data. The small subset of these functions that can
+<em>only</em> be used if <code>y</code> and <code>yrep</code> are discrete are documented
+on this page. Currently these include rootograms for count outcomes and bar
+plots for ordinal, categorical, and multinomial outcomes. See the
+<strong>Plot Descriptions</strong> section below.</p>
     
+    </div>
 
     <pre class="usage"><span class='fu'>ppc_bars</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='no'>...</span>, <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.9</span>, <span class='kw'>width</span> <span class='kw'>=</span> <span class='fl'>0.9</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>fatten</span> <span class='kw'>=</span> <span class='fl'>3</span>,
   <span class='kw'>freq</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
@@ -271,11 +285,11 @@ rootograms. <em>The American Statistician</em>. 70(3): 296--303.
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p>Other PPCs: <code><a href='PPC-distributions.html'>PPC-distributions</a></code>,
+    <div class='dont-index'><p>Other PPCs: <code><a href='PPC-distributions.html'>PPC-distributions</a></code>,
   <code><a href='PPC-errors.html'>PPC-errors</a></code>, <code><a href='PPC-intervals.html'>PPC-intervals</a></code>,
   <code><a href='PPC-loo.html'>PPC-loo</a></code>, <code><a href='PPC-overview.html'>PPC-overview</a></code>,
   <code><a href='PPC-scatterplots.html'>PPC-scatterplots</a></code>,
-  <code><a href='PPC-test-statistics.html'>PPC-test-statistics</a></code></p>
+  <code><a href='PPC-test-statistics.html'>PPC-test-statistics</a></code></p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>

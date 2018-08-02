@@ -8,8 +8,8 @@
 <title>Plotting MCMC draws using the bayesplot package • bayesplot</title>
 <!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script><script src="../pkgdown.js"></script><meta property="og:title" content="Plotting MCMC draws using the bayesplot package">
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
+<script src="../pkgdown.js"></script><meta property="og:title" content="Plotting MCMC draws using the bayesplot package">
 <meta property="og:description" content="">
 <meta property="og:image" content="/logo.png">
 <meta name="twitter:card" content="summary">
@@ -19,7 +19,7 @@
 <![endif]-->
 </head>
 <body>
-    <div class="container template-vignette">
+    <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
@@ -30,7 +30,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bayesplot</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.5.0</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.6.0</span>
       </span>
     </div>
 
@@ -63,6 +63,9 @@
     </li>
     <li>
       <a href="http://mc-stan.org/loo">loo</a>
+    </li>
+    <li>
+      <a href="http://mc-stan.org/projpred">projpred</a>
     </li>
     <li>
       <a href="http://mc-stan.org/rstantools">rstantools</a>
@@ -107,9 +110,10 @@
       <h1>Plotting MCMC draws using the bayesplot package</h1>
                         <h4 class="author">Jonah Gabry</h4>
             
-            <h4 class="date">2018-03-30</h4>
+            <h4 class="date">Latest version: 2018-08-02</h4>
       
       
+      <div class="hidden name"><code>plotting-mcmc-draws.Rmd</code></div>
 
     </div>
 
@@ -169,14 +173,18 @@ vs           0.3    2.1
 am           2.5    2.1  
 gear         0.6    1.6  
 carb        -0.2    0.9  
-sigma        2.7    0.4  
+
+Auxiliary parameter(s):
+      Median MAD_SD
+sigma 2.7    0.4   
 
 Sample avg. posterior predictive distribution of y:
          Median MAD_SD
 mean_PPD 20.1    0.7  
 
 ------
-For info on the priors used see help('prior_summary.stanreg').</code></pre>
+* For help interpreting the printed output see ?print.stanreg
+* For info on the priors used see ?prior_summary.stanreg</code></pre>
 <p>To use the posterior draws with the functions in the <strong>bayesplot</strong> package we’ll extract them from the fitted model object:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">posterior &lt;-<span class="st"> </span><span class="kw">as.array</span>(fit)
 <span class="kw">dim</span>(posterior)</code></pre></div>
@@ -354,6 +362,7 @@ $parameters
 <a href="#mcmc_trace_highlight" class="anchor"></a>mcmc_trace_highlight</h4>
 <p>The <code>mcmc_trace_highlight</code> function uses points instead of lines and reduces the opacity of all but a single chain (which is specified using the <code>highlight</code> argument).</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/MCMC-traces.html">mcmc_trace_highlight</a></span>(posterior, <span class="dt">pars =</span> <span class="st">"sigma"</span>, <span class="dt">highlight =</span> <span class="dv">3</span>)</code></pre></div>
+<pre><code>Warning: Using alpha for a discrete variable is not advised.</code></pre>
 <p><img src="plotting-mcmc-draws_files/figure-html/mcmc_trace_highlight-1.png" width="60%" style="display: block; margin: auto;"></p>
 <p><br></p>
 </div>

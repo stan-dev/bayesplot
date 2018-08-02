@@ -21,14 +21,20 @@
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
+
+
+
 <meta property="og:title" content="Changelog" />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
+
 
 
 <!-- mathjax -->
@@ -38,8 +44,6 @@
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
-
-
 
 
   </head>
@@ -57,7 +61,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bayesplot</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.5.0</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.6.0</span>
       </span>
     </div>
 
@@ -90,6 +94,9 @@
     </li>
     <li>
       <a href="http://mc-stan.org/loo">loo</a>
+    </li>
+    <li>
+      <a href="http://mc-stan.org/projpred">projpred</a>
     </li>
     <li>
       <a href="http://mc-stan.org/rstantools">rstantools</a>
@@ -136,6 +143,28 @@
       
     </div>
 
+    <div id="bayesplot-1-6-0" class="section level1">
+<h1 class="page-header">
+<a href="#bayesplot-1-6-0" class="anchor"></a>bayesplot 1.6.0<small> 2018-08-02 </small>
+</h1>
+<p>(GitHub issue/PR numbers in parentheses)</p>
+<ul>
+<li>Loading <strong>bayesplot</strong> no longer overrides the ggplot theme! Rather, it sets a theme specific for <strong>bayesplot</strong>. Some packages using <strong>bayesplot</strong> may still override the default <strong>ggplot</strong> theme (e.g., <strong>rstanarm</strong> does but only until next release), but simply loading <strong>bayesplot</strong> itself will not. There are new functions for controlling the ggplot theme for <strong>bayesplot</strong> that work like their <strong>ggplot2</strong> counterparts but only affect plots made using <strong>bayesplot</strong>. Thanks to Malcolm Barrett. (#117, #149).
+<ul>
+<li><code><a href="../reference/bayesplot_theme_get.html">bayesplot_theme_set()</a></code></li>
+<li><code><a href="../reference/bayesplot_theme_get.html">bayesplot_theme_get()</a></code></li>
+<li><code><a href="../reference/bayesplot_theme_get.html">bayesplot_theme_update()</a></code></li>
+<li><code><a href="../reference/bayesplot_theme_get.html">bayesplot_theme_replace()</a></code></li>
+</ul>
+</li>
+<li><p>The <a href="http://mc-stan.org/bayesplot/articles/visual-mcmc-diagnostics.html">Visual MCMC Diagnostics vignette</a> has been reorganized and has a lot of useful new content thanks to Martin Modrák. (#144, #153)</p></li>
+<li><p>The <a href="http://mc-stan.org/bayesplot/reference/PPC-loo.html">LOO predictive checks</a> now require <strong>loo</strong> version <code>&gt;= 2.0.0</code>. (#139)</p></li>
+<li><p>Histogram plots gain a <code>breaks</code> argument that can be used as an alternative to <code>binwidth</code>. (#148)</p></li>
+<li><p><a href="http://mc-stan.org/bayesplot/reference/MCMC-scatterplots.html"><code><a href="../reference/MCMC-scatterplots.html">mcmc_pairs()</a></code></a> now has an argument <code>grid_args</code> to provide a way of passing optional arguments to <code><a href="http://www.rdocumentation.org/packages/gridExtra/topics/arrangeGrob">gridExtra::arrangeGrob()</a></code>. This can be used to add a title to the plot, for example. (#143)</p></li>
+<li><p><a href="http://mc-stan.org/bayesplot/reference/PPC-distributions.html"><code><a href="../reference/PPC-distributions.html">ppc_ecdf_overlay()</a></code></a> gains an argument <code>discrete</code>, which is <code>FALSE</code> by default, but can be used to make the Geom more appropriate for discrete data. (#145)</p></li>
+<li><p><a href="http://mc-stan.org/bayesplot/reference/PPC-intervals.html">PPC intervals plots</a> and <a href="http://mc-stan.org/bayesplot/reference/PPC-loo.html">LOO predictive checks</a> now draw both an outer and an inner probability interval, which can be controlled through the new argument <code>prob_outer</code> and the already existing <code>prob</code>. This is consistent with what is produced by <code><a href="../reference/MCMC-intervals.html">mcmc_intervals()</a></code>. (#152, #154, <a href='http://github.com/mcol'>@mcol</a>)</p></li>
+</ul>
+</div>
     <div id="bayesplot-1-5-0" class="section level1">
 <h1 class="page-header">
 <a href="#bayesplot-1-5-0" class="anchor"></a>bayesplot 1.5.0<small> 2018-03-30 </small>
@@ -161,7 +190,8 @@ caused some unexpected behavior when customizing these plots.</li>
 <code><a href="../reference/MCMC-intervals.html">mcmc_areas()</a></code> now uses geoms from the ggridges package to draw density curves.</li>
 </ul>
 </li>
-<li><p>Added <code><a href="../reference/MCMC-intervals.html">mcmc_intervals_data()</a></code> and <code><a href="../reference/MCMC-intervals.html">mcmc_areas_data()</a></code> that return data plotted by <code><a href="../reference/MCMC-intervals.html">mcmc_intervals()</a></code> and <code><a href="../reference/MCMC-intervals.html">mcmc_areas()</a></code>. Similarly, <code><a href="../reference/PPC-distributions.html">ppc_data()</a></code> returns data plotted <code><a href="../reference/PPC-distributions.html">ppc_hist()</a></code> and other ppc plot. (Advances #97)</p></li>
+<li><p>Added <code><a href="../reference/MCMC-intervals.html">mcmc_intervals_data()</a></code> and <code><a href="../reference/MCMC-intervals.html">mcmc_areas_data()</a></code> that return data plotted by <code><a href="../reference/MCMC-intervals.html">mcmc_intervals()</a></code> and <code><a href="../reference/MCMC-intervals.html">mcmc_areas()</a></code>. (Advances #97)</p></li>
+<li><p>New <code><a href="../reference/PPC-distributions.html">ppc_data()</a></code> function returns the data plotted by many of the PPC plotting functions. (Advances #97)</p></li>
 <li><p>Added <code><a href="../reference/PPC-loo.html">ppc_loo_pit_overlay()</a></code> function for a better LOO PIT predictive check. (#123)</p></li>
 <li><p>Started using <strong>vdiffr</strong> to add visual unit tests to the existing PPC unit tests. (#137)</p></li>
 </ul>
@@ -301,6 +331,7 @@ caused some unexpected behavior when customizing these plots.</li>
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#bayesplot-1-6-0">1.6.0</a></li>
         <li><a href="#bayesplot-1-5-0">1.5.0</a></li>
         <li><a href="#bayesplot-1-4-0">1.4.0</a></li>
         <li><a href="#bayesplot-1-3-0">1.3.0</a></li>
