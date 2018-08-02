@@ -2,10 +2,13 @@
 
 (GitHub issue/PR numbers in parentheses)
 
-* Loading **bayesplot** no longer overrides the ggplot theme! There are new
+* Loading **bayesplot** no longer overrides the ggplot theme! Rather, it sets a
+theme specific for **bayesplot**. Some packages using **bayesplot** may still
+override the default **ggplot** theme  (e.g., **rstanarm** does but only until
+next release), but simply loading **bayesplot** itself will not.  There are new
 functions for controlling the ggplot theme for **bayesplot** that work like
 their **ggplot2** counterparts but only affect plots made using **bayesplot**.
-Thanks to Malcolm Barrett. (#117, #149)
+Thanks to Malcolm Barrett. (#117, #149).    
     - `bayesplot_theme_set()` 
     - `bayesplot_theme_get()` 
     - `bayesplot_theme_update()`
