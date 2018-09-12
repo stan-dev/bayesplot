@@ -4,45 +4,57 @@
 
 Items for next release go here
 
+* [`mcmc_trace()`](http://mc-stan.org/bayesplot/reference/MCMC-traces.html)
+  gains an argument `iter1` which can be used to label the traceplot starting
+  from the first iteration after warmup. (#14, #155, @mcol)
+
 
 # bayesplot 1.6.0
 
 (GitHub issue/PR numbers in parentheses)
 
-* Loading **bayesplot** no longer overrides the ggplot theme! Rather, it sets a
-theme specific for **bayesplot**. Some packages using **bayesplot** may still
-override the default **ggplot** theme  (e.g., **rstanarm** does but only until
-next release), but simply loading **bayesplot** itself will not.  There are new
-functions for controlling the ggplot theme for **bayesplot** that work like
-their **ggplot2** counterparts but only affect plots made using **bayesplot**.
-Thanks to Malcolm Barrett. (#117, #149).    
-    - `bayesplot_theme_set()` 
-    - `bayesplot_theme_get()` 
+* Loading **bayesplot** no longer overrides the ggplot theme! Rather, it sets
+  a theme specific for **bayesplot**. Some packages using **bayesplot** may
+  still override the default **ggplot** theme (e.g., **rstanarm** does but
+  only until next release), but simply loading **bayesplot** itself will not.
+  There are new functions for controlling the ggplot theme for **bayesplot**
+  that work like their **ggplot2** counterparts but only affect plots made
+  using **bayesplot**. Thanks to Malcolm Barrett. (#117, #149).
+    - `bayesplot_theme_set()`
+    - `bayesplot_theme_get()`
     - `bayesplot_theme_update()`
     - `bayesplot_theme_replace()`
 
-* The [Visual MCMC Diagnostics vignette](http://mc-stan.org/bayesplot/articles/visual-mcmc-diagnostics.html) 
-has been reorganized and has a lot of useful new content thanks to Martin Modrák. (#144, #153)
+* The [Visual MCMC Diagnostics
+  vignette](http://mc-stan.org/bayesplot/articles/visual-mcmc-diagnostics.html)
+  has been reorganized and has a lot of useful new content thanks to Martin
+  Modrák. (#144, #153)
 
-* The [LOO predictive checks](http://mc-stan.org/bayesplot/reference/PPC-loo.html) 
-now require **loo** version `>= 2.0.0`. (#139)
+* The [LOO predictive
+  checks](http://mc-stan.org/bayesplot/reference/PPC-loo.html) now require
+  **loo** version `>= 2.0.0`. (#139)
 
-* Histogram plots gain a `breaks` argument that can be used as an alternative to `binwidth`. (#148)
+* Histogram plots gain a `breaks` argument that can be used as an alternative
+  to `binwidth`. (#148)
 
-* [`mcmc_pairs()`](http://mc-stan.org/bayesplot/reference/MCMC-scatterplots.html) 
-now has an argument `grid_args` to provide a way of passing optional arguments to 
-`gridExtra::arrangeGrob()`. This can be used to add a title to the plot, for example. (#143)
+* [`mcmc_pairs()`](http://mc-stan.org/bayesplot/reference/MCMC-scatterplots.html)
+  now has an argument `grid_args` to provide a way of passing optional
+  arguments to `gridExtra::arrangeGrob()`. This can be used to add a title to
+  the plot, for example. (#143)
 
-* [`ppc_ecdf_overlay()`](http://mc-stan.org/bayesplot/reference/PPC-distributions.html) 
-gains an argument `discrete`, which is `FALSE` by default, but can be used to make the 
-Geom more appropriate for discrete data. (#145)
+* [`ppc_ecdf_overlay()`](http://mc-stan.org/bayesplot/reference/PPC-distributions.html)
+  gains an argument `discrete`, which is `FALSE` by default, but can be used
+  to make the Geom more appropriate for discrete data. (#145)
 
-* [PPC intervals plots](http://mc-stan.org/bayesplot/reference/PPC-intervals.html)
-and [LOO predictive checks](http://mc-stan.org/bayesplot/reference/PPC-loo.html)
-now draw both an outer and an inner probability interval, which can be
-controlled through the new argument `prob_outer` and the already existing
-`prob`. This is consistent with what is produced by `mcmc_intervals()`.
-(#152, #154, @mcol)
+* [PPC intervals 
+  plots](http://mc-stan.org/bayesplot/reference/PPC-intervals.html) and [LOO
+  predictive checks](http://mc-stan.org/bayesplot/reference/PPC-loo.html) now
+  draw both an outer and an inner probability interval, which can be
+  controlled through the new argument `prob_outer` and the already existing
+  `prob`. This is consistent with what is produced by `mcmc_intervals()`.
+  (#152, #154, @mcol)
+
+
 
 
 # bayesplot 1.5.0
@@ -75,7 +87,10 @@ controlled through the new argument `prob_outer` and the already existing
 * Added `ppc_loo_pit_overlay()` function for a better LOO PIT predictive check.
   (#123)
 
-* Started using __vdiffr__ to add visual unit tests to the existing PPC unit tests. (#137)
+* Started using **vdiffr** to add visual unit tests to the existing PPC unit
+  tests. (#137)
+
+
 
 
 # bayesplot 1.4.0

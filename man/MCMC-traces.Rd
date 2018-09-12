@@ -9,8 +9,8 @@
 \usage{
 mcmc_trace(x, pars = character(), regex_pars = character(),
   transformations = list(), facet_args = list(), ..., n_warmup = 0,
-  window = NULL, size = NULL, np = NULL, np_style = trace_style_np(),
-  divergences = NULL)
+  iter1 = 0, window = NULL, size = NULL, np = NULL,
+  np_style = trace_style_np(), divergences = NULL)
 
 mcmc_trace_highlight(x, pars = character(), regex_pars = character(),
   transformations = list(), facet_args = list(), ..., n_warmup = 0,
@@ -63,6 +63,11 @@ to control faceting.}
 \code{x}. The default is \code{n_warmup = 0}, i.e. to assume no warmup
 iterations are included. If \code{n_warmup > 0} then the background for
 iterations \code{1:n_warmup} is shaded gray.}
+
+\item{iter1}{An integer; the iteration number of the first included draw
+(default 0). This can be used to make it more obvious that the warmup
+iterations have been discarded from the traceplot. It cannot be specified
+if \code{n_warmup} is also set to a positive value.}
 
 \item{window}{An integer vector of length two specifying the limits of a
 range of iterations to display.}
