@@ -13,7 +13,7 @@
 * MCMC parameter names are now *always* converted to factors prior to
   plotting. We use factors so that the order of parameters in a plot matches
   the order of the parameters in the original MCMC data. This change fixes a
-  case where factor-conversion failed. (#162, @wwiecek)
+  case where factor-conversion failed. (#162, #165, @wwiecek)
 
 
 # bayesplot 1.6.0
