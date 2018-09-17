@@ -4,6 +4,27 @@ context("MCMC: misc. functions")
 source(test_path("data-for-mcmc-tests.R"))
 
 
+
+# melt_mcmc ----------------------------------------------------------------
+test_that("melt_mcmc does not convert integer parameter names to integers #162", {
+  mat2 <- mat[, 1:2]
+  colnames(mat2) <- c("1", "2")
+  long_mat <- melt_mcmc(mat2)
+  expect_s3_class(long_mat$Parameter, "factor")
+
+  arr2 <- arr[, , 1:2]
+  dimnames(arr2)[[3]] <- c("1", "2")
+  long_arr <- melt_mcmc(prepare_mcmc_array(arr2))
+  expect_s3_class(long_arr$Parameter, "factor")
+
+  dframe2 <- dframe[, 1:2]
+  colnames(dframe2) <- c("1", "2")
+  long_df <- melt_mcmc(as.matrix(dframe2))
+  expect_s3_class(long_df$Parameter, "factor")
+})
+
+
+
 # validate_mcmc_x ----------------------------------------------------------
 test_that("validate_mcmc_x works", {
   expect_identical(validate_mcmc_x(mat), mat)
@@ -24,6 +45,7 @@ test_that("validate_mcmc_x works", {
   expect_error(validate_mcmc_x(mat), "NAs not allowed")
   expect_error(validate_mcmc_x(arr), "NAs not allowed")
 })
+
 
 
 # 3-D array helpers --------------------------------------------------------
@@ -74,6 +96,8 @@ test_that("has_multiple_params works", {
   arr2 <- arr2[, , 3, drop = FALSE]
   expect_false(has_multiple_params(arr2))
 })
+
+
 
 # data frame with ‘chain’ variable ----------------------------------------
 test_that("is_df_with_chain works", {
@@ -205,6 +229,8 @@ test_that("transformations recycled properly if not a named list", {
   x <- prepare_mcmc_array(arr, pars = c("beta[1]", "sigma"), transformations = exp)
   expect_identical(parameter_names(x), c("t(beta[1])", "t(sigma)"))
 })
+
+
 
 # rhat and neff helpers ---------------------------------------------------
 test_that("diagnostic_factor.rhat works", {
