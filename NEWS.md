@@ -15,6 +15,12 @@
   the order of the parameters in the original MCMC data. This change fixes a
   case where factor-conversion failed. (#162, #165, @wwiecek)
 
+* The examples in
+  [`?ppc_loo_pit_overlay()`](http://mc-stan.org/bayesplot/reference/PPC-loo.html)
+  now work as expected. (#166, #167)
+
+
+
 
 # bayesplot 1.6.0
 
