@@ -1,12 +1,19 @@
+<!-- See http://style.tidyverse.org/news.html for advice on writing news -->
+
 # bayesplot 1.6.0.9000
 
 (GitHub issue/PR numbers in parentheses)
 
-Items for next release go here
+<!-- Items for next release go here* -->
 
 * [`mcmc_trace()`](http://mc-stan.org/bayesplot/reference/MCMC-traces.html)
   gains an argument `iter1` which can be used to label the traceplot starting
   from the first iteration after warmup. (#14, #155, @mcol)
+
+* MCMC parameter names are now *always* converted to factors prior to
+  plotting. We use factors so that the order of parameters in a plot matches
+  the order of the parameters in the original MCMC data. This change fixes a
+  case where factor-conversion failed. (#162, #165, @wwiecek)
 
 
 # bayesplot 1.6.0
