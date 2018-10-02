@@ -118,123 +118,114 @@ NULL
 #'   to the standard normal distribution.
 #' @param trim Passed to \code{\link[ggplot2]{stat_density}}.
 #' @template args-density-controls
-ppc_loo_pit_overlay <-
-  function(y,
-           yrep,
-           lw,
-           pit,
-           samples = 100,
-           ...,
-           size = 0.25,
-           alpha = 0.7,
-           trim = FALSE,
-           bw = "nrd0",
-           adjust = 1,
-           kernel = "gaussian",
-           n_dens = 1024) {
-    check_ignored_arguments(...)
-    if (!missing(pit)) {
-      stopifnot(is.numeric(pit), is_vector_or_1Darray(pit))
-      message("'pit' specified so ignoring 'y','yrep','lw' if specified.")
-    } else {
-      suggested_package("rstantools")
-      y <- validate_y(y)
-      yrep <- validate_yrep(yrep, y)
-      stopifnot(identical(dim(yrep), dim(lw)))
-      pit <- rstantools::loo_pit(object = yrep, y = y, lw = lw)
-    }
-
-    unifs <- matrix(runif(length(pit) * samples), nrow = samples)
-    graph <-
-      ppc_dens_overlay(
-        y = pit,
-        yrep = unifs,
-        size = size,
-        alpha = alpha,
-        trim = trim,
-        bw = bw,
-        adjust = adjust,
-        kernel = kernel,
-        n_dens = n_dens
-      )
-    graph <- suppressMessages(
-      graph + scale_color_ppc_dist(labels = c("PIT", "Unif"))
-    )
-
-    g <- ggplot_build(graph)
-    xylim <- g$layout$panel_ranges[[1]]
-    ymax <- 1.25 * xylim$y.range[2]
-
-    graph +
-      scale_x_continuous(breaks = seq(from = .1, to = .9, by = .2)) +
-      coord_cartesian(xlim = c(0.1, 0.9), ylim = c(0, ymax))
+ppc_loo_pit_overlay <- function(y, yrep, lw, pit, samples = 100, ...,
+                                size = 0.25, alpha = 0.7, trim = FALSE,
+                                bw = "nrd0", adjust = 1, kernel = "gaussian",
+                                n_dens = 1024) {
+  check_ignored_arguments(...)
+  if (!missing(pit)) {
+    stopifnot(is.numeric(pit), is_vector_or_1Darray(pit))
+    message("'pit' specified so ignoring 'y','yrep','lw' if specified.")
+  } else {
+    suggested_package("rstantools")
+    y <- validate_y(y)
+    yrep <- validate_yrep(yrep, y)
+    stopifnot(identical(dim(yrep), dim(lw)))
+    pit <- rstantools::loo_pit(object = yrep, y = y, lw = lw)
   }
+
+  unifs <- matrix(runif(length(pit) * samples), nrow = samples)
+
+  data <- ppc_data(pit, unifs)
+
+  ggplot(data) +
+    aes_(x = ~ value) +
+    stat_density(
+      aes_(group = ~ rep_id, color = "yrep"),
+      data = function(x) dplyr::filter(x, !.data$is_y),
+      geom = "line",
+      position = "identity",
+      size = size,
+      alpha = alpha,
+      trim = trim,
+      bw = bw,
+      adjust = adjust,
+      kernel = kernel,
+      n = n_dens,
+      na.rm = TRUE) +
+    stat_density(
+      aes_(color = "y"),
+      data = function(x) dplyr::filter(x, .data$is_y),
+      geom = "line",
+      position = "identity",
+      lineend = "round",
+      size = 1,
+      trim = trim,
+      bw = bw,
+      adjust = adjust,
+      kernel = kernel,
+      n = n_dens,
+      na.rm = TRUE) +
+    scale_color_ppc_dist(labels = c("PIT", "Unif")) +
+    scale_x_continuous(
+      limits = c(.1, .9),
+      expand = expand_scale(0, 0),
+      breaks = seq(from = .1, to = .9, by = .2)) +
+    scale_y_continuous(
+      limits = c(0, NA),
+      expand = expand_scale(mult = c(0, .25))) +
+    bayesplot_theme_get() +
+    yaxis_title(FALSE) +
+    xaxis_title(FALSE) +
+    yaxis_text(FALSE) +
+    yaxis_ticks(FALSE)
+}
 
 
 #' @rdname PPC-loo
 #' @export
-ppc_loo_pit_qq <-
-  function(y,
-           yrep,
-           lw,
-           pit,
-           compare = c("uniform", "normal"),
-           ...,
-           size = 2,
-           alpha = 1) {
-    check_ignored_arguments(...)
-    compare <- match.arg(compare)
-    if (!missing(pit)) {
-      stopifnot(is.numeric(pit), is_vector_or_1Darray(pit))
-      message("'pit' specified so ignoring 'y','yrep','lw' if specified.")
-    } else {
-      suggested_package("rstantools")
-      y <- validate_y(y)
-      yrep <- validate_yrep(yrep, y)
-      stopifnot(identical(dim(yrep), dim(lw)))
-      pit <- rstantools::loo_pit(object = yrep, y = y, lw = lw)
-    }
-
-    if (compare == "uniform") {
-      theoretical <- stats::qunif
-      x_lab <- "Uniform"
-      y_lab <- "LOO-PIT"
-    } else {
-      pit <- as.vector(scale(pit))
-      theoretical <- stats::qnorm
-      x_lab <- "Normal"
-      y_lab <- "LOO-PIT (standardized)"
-    }
-
-    graph <- ggplot(data.frame(p = pit)) +
-      geom_point(
-        aes_(sample = ~ p),
-        stat = "qq",
-        distribution = theoretical,
-        color = get_color("m"),
-        size = size,
-        alpha = alpha
-      ) +
-      geom_abline(
-        slope = 1,
-        intercept = 0,
-        linetype = 2,
-        color = "black"
-      ) +
-    bayesplot_theme_get()
-
-    if (compare == "uniform") {
-      xylim <- c(0, 1)
-    } else {
-      g <- ggplot_build(graph)
-      xylim <- g$layout$panel_ranges[[1]]
-      xylim <- range(xylim$y.range, xylim$x.range)
-    }
-
-    graph +
-      coord_fixed(xlim = xylim, ylim = xylim) +
-      labs(y = y_lab, x = x_lab)
+ppc_loo_pit_qq <- function(y, yrep, lw, pit, compare = c("uniform", "normal"),
+                           ..., size = 2, alpha = 1) {
+  check_ignored_arguments(...)
+  compare <- match.arg(compare)
+  if (!missing(pit)) {
+    stopifnot(is.numeric(pit), is_vector_or_1Darray(pit))
+    message("'pit' specified so ignoring 'y','yrep','lw' if specified.")
+  } else {
+    suggested_package("rstantools")
+    y <- validate_y(y)
+    yrep <- validate_yrep(yrep, y)
+    stopifnot(identical(dim(yrep), dim(lw)))
+    pit <- rstantools::loo_pit(object = yrep, y = y, lw = lw)
   }
+
+  if (compare == "uniform") {
+    theoretical <- stats::qunif
+    x_lab <- "Uniform"
+    y_lab <- "LOO-PIT"
+  } else {
+    pit <- as.vector(scale(pit))
+    theoretical <- stats::qnorm
+    x_lab <- "Normal"
+    y_lab <- "LOO-PIT (standardized)"
+  }
+
+  ggplot(data.frame(p = pit)) +
+    geom_qq(
+      aes_(sample = ~ p),
+      distribution = theoretical,
+      color = get_color("m"),
+      size = size,
+      alpha = alpha) +
+    geom_qq_line(
+      aes_(sample = ~ p),
+      linetype = 2,
+      distribution = theoretical,
+      color = "black",
+      fullrange = FALSE) +
+    bayesplot_theme_get() +
+    labs(x = x_lab, y = y_lab)
+}
 
 
 #' @rdname PPC-loo
