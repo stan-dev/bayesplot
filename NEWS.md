@@ -29,6 +29,9 @@
 * `mcmc_areas_ridges()` draws the vertical line at *x* = 0 over the curves so 
   that it is always visible.
 
+* `mcmc_intervals()` and `mcmc_areas()` raise a warning if `prob_outer` is ever 
+  less than `prob`. It sorts these two values into the correct order. (#138)
+
 * MCMC parameter names are now *always* converted to factors prior to
   plotting. We use factors so that the order of parameters in a plot matches
   the order of the parameters in the original MCMC data. This change fixes a
