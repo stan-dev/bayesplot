@@ -458,9 +458,9 @@ mcmc_intervals_data <- function(x,
                                 point_est = c("median", "mean", "none"),
                                 rhat = numeric()) {
   check_ignored_arguments(...)
-  both_probs <- sort(c(prob, prob_outer))
-  prob <- both_probs[1]
-  prob_outer <- both_probs[2]
+  probs <- check_interval_widths(prob, prob_outer)
+  prob <- probs[1]
+  prob_outer <- probs[2]
 
   x <- prepare_mcmc_array(x, pars, regex_pars, transformations)
   x <- merge_chains(x)
@@ -540,7 +540,7 @@ mcmc_areas_data <- function(x,
                             adjust = NULL,
                             kernel = NULL,
                             n_dens = NULL) {
-  probs <- sort(c(prob, prob_outer))
+  probs <- check_interval_widths(prob, prob_outer)
 
   # First compute normal intervals so we know the width of the data, point
   # estimates, and have prepared rhat values.
@@ -718,4 +718,16 @@ compute_interval_density <- function(x, interval_width = 1, n_dens = 1024,
     density = dens$y,
     scaled_density =  dens$y / max(dens$y, na.rm = TRUE)
   )
+}
+
+check_interval_widths <- function(prob, prob_outer) {
+  if (prob_outer < prob) {
+    x <- sprintf(
+      "`prob_outer` (%s) is less than `prob` (%s)\n... %s",
+      prob_outer,
+      prob,
+      "Swapping the values of `prob_outer` and `prob`")
+    warning(x, call. = FALSE)
+  }
+  sort(c(prob, prob_outer))
 }

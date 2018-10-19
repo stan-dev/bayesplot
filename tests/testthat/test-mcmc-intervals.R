@@ -152,6 +152,14 @@ test_that("compute_column_density can use density options (#118)", {
 })
 
 
+test_that("inconsistent probabilities raise warning (#138)", {
+  expect_warning(
+    mcmc_intervals_data(arr, prob = .9, prob_outer = .8),
+    "`prob_outer` .* is less than `prob`"
+  )
+})
+
+
 
 
 # Visual tests -----------------------------------------------------------------
