@@ -25,6 +25,9 @@
 * `mcmc_areas()` correctly plots density curves where the point estimate 
   does not include the highest point of the density curve. 
   (#168, #169, @jtimonen)
+  
+* `mcmc_areas_ridges()` draws the vertical line at *x* = 0 over the curves so 
+  that it is always visible.
 
 * MCMC parameter names are now *always* converted to factors prior to
   plotting. We use factors so that the order of parameters in a plot matches
