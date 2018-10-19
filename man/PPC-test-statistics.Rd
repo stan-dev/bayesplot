@@ -11,13 +11,14 @@
 ppc_stat(y, yrep, stat = "mean", ..., binwidth = NULL, breaks = NULL,
   freq = TRUE)
 
-ppc_stat_grouped(y, yrep, group, stat = "mean", ..., facet_args = list(),
-  binwidth = NULL, breaks = NULL, freq = TRUE)
+ppc_stat_grouped(y, yrep, group, stat = "mean", ...,
+  facet_args = list(), binwidth = NULL, breaks = NULL, freq = TRUE)
 
 ppc_stat_freqpoly_grouped(y, yrep, group, stat = "mean", ...,
   facet_args = list(), binwidth = NULL, freq = TRUE)
 
-ppc_stat_2d(y, yrep, stat = c("mean", "sd"), ..., size = 2.5, alpha = 0.7)
+ppc_stat_2d(y, yrep, stat = c("mean", "sd"), ..., size = 2.5,
+  alpha = 0.7)
 }
 \arguments{
 \item{y}{A vector of observations. See \strong{Details}.}
@@ -137,3 +138,4 @@ Other PPCs: \code{\link{PPC-discrete}},
   \code{\link{PPC-loo}}, \code{\link{PPC-overview}},
   \code{\link{PPC-scatterplots}}
 }
+\concept{PPCs}

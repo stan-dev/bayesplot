@@ -18,6 +18,12 @@
 #' @param prob_outer The probability mass to include in the outer interval. The
 #'   default is \code{0.9} for \code{mcmc_intervals} (90\% interval) and
 #'   \code{1} for \code{mcmc_areas} and for \code{mcmc_areas_ridges}.
+#' @param area_method How to constrain the areas in \code{mcmc_areas}. The
+#'   default is \code{"equal area"}, setting the density curves to have the same
+#'   area. With \code{"equal height"}, the curves are scaled so that the highest
+#'   points across the curves are the same height. The method \code{"scaled
+#'   height"} tries a compromise between to the two: the heights from
+#'   \code{"equal height"} are scaled using \code{height*sqrt(height)}
 #' @param point_est The point estimate to show. Either \code{"median"} (the
 #'   default), \code{"mean"}, or \code{"none"}.
 #' @param rhat An optional numeric vector of \eqn{\hat{R}}{Rhat} estimates, with
@@ -76,6 +82,7 @@
 #' fake_rhat_values <- c(1, 1.07, 1.3, 1.01, 1.15, 1.005)
 #' mcmc_intervals(x, rhat = fake_rhat_values)
 #'
+#' # get the dataframe that is used in the plotting functions
 #' mcmc_intervals_data(x)
 #' mcmc_intervals_data(x, rhat = fake_rhat_values)
 #' mcmc_areas_data(x, pars = "alpha")
@@ -84,6 +91,27 @@
 #' p <- mcmc_areas(x, pars = c("alpha", "beta[4]"), rhat = c(1, 1.1))
 #' p + legend_move("bottom")
 #' p + legend_move("none") # or p + legend_none()
+#'
+#' # Different area calculations
+#' b3 <- c("beta[1]", "beta[2]", "beta[3]")
+#'
+#' mcmc_areas(x, pars = b3, area_method = "equal area") +
+#'   ggplot2::labs(
+#'     title = "Curves have same area",
+#'     subtitle =
+#'       "A wide, uncertain interval is spread thin when areas are equal")
+#'
+#' mcmc_areas(x, pars = b3, area_method = "equal height") +
+#'   ggplot2::labs(
+#'     title = "Curves have same maximum height",
+#'     subtitle =
+#'       "Local curvature is clearer but more uncertain curves use more area")
+#'
+#' mcmc_areas(x, pars = b3, area_method = "scaled height") +
+#'   ggplot2::labs(
+#'     title = "Same maximum heights but heights scaled by square-root",
+#'     subtitle =
+#'       "Compromise: Local curvature is accentuated and less area is used")
 #'
 #' \donttest{
 #' # apply transformations
@@ -223,6 +251,7 @@ mcmc_areas <- function(x,
                        regex_pars = character(),
                        transformations = list(),
                        ...,
+                       area_method = c("equal area", "equal height", "scaled height"),
                        prob = 0.5,
                        prob_outer = 1,
                        point_est = c("median", "mean", "none"),
@@ -232,6 +261,8 @@ mcmc_areas <- function(x,
                        kernel = NULL,
                        n_dens = NULL) {
   check_ignored_arguments(...)
+  area_method <- match.arg(area_method)
+
   data <- mcmc_areas_data(
     x, pars, regex_pars, transformations,
     prob = prob, prob_outer = prob_outer,
@@ -269,6 +300,14 @@ mcmc_areas <- function(x,
     rlang::syms(c("parameter"))
   }
 
+  if (area_method == "equal height") {
+    dens_col = ~ scaled_density
+  } else if (area_method == "scaled height") {
+    dens_col = ~ scaled_density * sqrt(scaled_density)
+  } else {
+    dens_col = ~ plotting_density
+  }
+
   datas$bottom <- datas$outer %>%
     group_by(!!! groups) %>%
     summarise(ll = min(.data$x), hh = max(.data$x)) %>%
@@ -279,16 +318,16 @@ mcmc_areas <- function(x,
     data = datas$bottom
   )
   args_inner <- list(
-    mapping = aes_(height = ~ density),
+    mapping = aes_(height = dens_col, scale = ~ .9),
     data = datas$inner
   )
   args_point <- list(
-    mapping = aes_(height = ~ density),
+    mapping = aes_(height = dens_col, scale = ~ .9),
     data = datas$point,
     color = NA
   )
   args_outer <- list(
-    mapping = aes_(height = ~ density),
+    mapping = aes_(height = dens_col, scale = ~ .9),
     fill = NA
   )
 
@@ -314,9 +353,15 @@ mcmc_areas <- function(x,
   }
 
   layer_bottom <- do.call(geom_segment, args_bottom)
-  layer_inner <- do.call(geom_area_ridges, args_inner)
-  layer_point <- do.call(geom_area_ridges, args_point)
-  layer_outer <- do.call(geom_area_ridges, args_outer)
+  layer_inner <- do.call(ggridges::geom_ridgeline, args_inner)
+  layer_outer <- do.call(ggridges::geom_ridgeline, args_outer)
+
+  point_geom <- if (no_point_est) {
+    geom_ignore
+  } else {
+    ggridges::geom_ridgeline
+  }
+  layer_point <- do.call(point_geom, args_point)
 
   # Do something or add an invisible layer
   if (color_by_rhat) {
@@ -336,8 +381,9 @@ mcmc_areas <- function(x,
     layer_bottom +
     scale_color +
     scale_fill +
-    scale_y_discrete(limits = unique(rev(data$parameter)),
-                     expand = c(0.05, .6)) +
+    scale_y_discrete(
+      limits = unique(rev(data$parameter)),
+      expand = expand_scale(mult = c(.1, .4))) +
     xlim(x_lim) +
     bayesplot_theme_get() +
     legend_move(ifelse(color_by_rhat, "top", "none")) +
@@ -402,7 +448,7 @@ mcmc_areas_ridges <- function(x,
   # Draw each ridgeline from top the bottom
   layer_list_inner <- list()
   par_draw_order <- levels(unique(data$parameter))
-  bg <- theme_get()[["panel.background"]][["fill"]] %||% "white"
+  bg <- bayesplot_theme_get()[["panel.background"]][["fill"]] %||% "white"
 
   for (par_num in seq_along(unique(data$parameter))) {
     # Basically, draw the current ridgeline normally, but draw all the ones
@@ -429,11 +475,11 @@ mcmc_areas_ridges <- function(x,
 
   ggplot(datas$outer) +
     aes_(x = ~ x, y = ~ parameter) +
-    layer_vertical_line +
     layer_outer +
     scale_y_discrete(limits = unique(rev(data$parameter)),
                      expand = c(0.05, .6)) +
     layer_list_inner +
+    layer_vertical_line +
     scale_fill_identity() +
     scale_color_identity() +
     xlim(x_lim) +
@@ -563,17 +609,25 @@ mcmc_areas_data <- function(x,
 
   # Compute the density intervals
   data_inner <- data_long %>%
-    compute_column_density(.data$parameter, .data$value,
-                           interval_width = probs[1],
-                           bw = bw, adjust = adjust, kernel = kernel,
-                           n_dens = n_dens) %>%
+    compute_column_density(
+      group_vars = .data$parameter,
+      value_var = .data$value,
+      interval_width = probs[1],
+      bw = bw,
+      adjust = adjust,
+      kernel = kernel,
+      n_dens = n_dens) %>%
     mutate(interval = "inner")
 
   data_outer <- data_long %>%
-    compute_column_density(.data$parameter, .data$value,
-                           interval_width = probs[2],
-                           bw = bw, adjust = adjust, kernel = kernel,
-                           n_dens = n_dens) %>%
+    compute_column_density(
+      group_vars = .data$parameter,
+      value_var = .data$value,
+      interval_width = probs[2],
+      bw = bw,
+      adjust = adjust,
+      kernel = kernel,
+      n_dens = n_dens) %>%
     mutate(interval = "outer")
 
   # Point estimates will be intervals that take up .8% of the x-axis
@@ -601,8 +655,9 @@ mcmc_areas_data <- function(x,
     left_join(data_inner, by = "parameter") %>%
     group_by(.data$parameter) %>%
     dplyr::filter(abs(.data$center - .data$x) <= half_point_width) %>%
-    mutate(interval_width = 0,
-           interval = "point") %>%
+    mutate(
+      interval_width = 0,
+      interval = "point") %>%
     select(-.data$center, .data$m) %>%
     ungroup()
 
@@ -612,7 +667,10 @@ mcmc_areas_data <- function(x,
   }
 
   data <- dplyr::bind_rows(data_inner, data_outer, points) %>%
-    select(one_of("parameter", "interval", "interval_width", "x", "density"))
+    select(one_of("parameter", "interval", "interval_width",
+                  "x", "density", "scaled_density")) %>%
+    # Density scaled so the highest in entire dataframe has height 1
+    mutate(plotting_density = .data$density / max(.data$density))
 
   if (rlang::has_name(intervals, "rhat_value")) {
     rhat_info <- intervals %>%

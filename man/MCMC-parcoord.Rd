@@ -8,8 +8,8 @@
 \title{Parallel coordinates plot of MCMC draws}
 \usage{
 mcmc_parcoord(x, pars = character(), regex_pars = character(),
-  transformations = list(), ..., size = 0.2, alpha = 0.3, np = NULL,
-  np_style = parcoord_style_np())
+  transformations = list(), ..., size = 0.2, alpha = 0.3,
+  np = NULL, np_style = parcoord_style_np())
 
 mcmc_parcoord_data(x, pars = character(), regex_pars = character(),
   transformations = list(), np = NULL)
@@ -170,3 +170,4 @@ Other MCMC: \code{\link{MCMC-combos}},
   \code{\link{MCMC-scatterplots}},
   \code{\link{MCMC-traces}}
 }
+\concept{MCMC}

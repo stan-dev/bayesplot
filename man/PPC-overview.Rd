@@ -123,3 +123,4 @@ Other PPCs: \code{\link{PPC-discrete}},
   \code{\link{PPC-loo}}, \code{\link{PPC-scatterplots}},
   \code{\link{PPC-test-statistics}}
 }
+\concept{PPCs}
