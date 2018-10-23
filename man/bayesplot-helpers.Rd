@@ -341,12 +341,15 @@ new_labs <- c("alpha" = "Owl", "sigma" = "Falcon")
 facet_vars(p4)
 
 # relabeling facets in grouped PPC plots
+pgroup <- ppc_scatter_avg_grouped(example_y_data(), example_yrep_draws(), example_group_data())
+pgroup <- facet_relabel_gg(pgroup, labels = c("GroupA" = "apples", "GroupB" = "oranges"))
+
 
 
 \donttest{
-##########################
-### control tick marks ###
-##########################
+##############################
+### format axis tick marks ###
+##############################
 p4 +
  yaxis_text(FALSE) +
  yaxis_ticks(FALSE) +
