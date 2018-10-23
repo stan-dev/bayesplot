@@ -41,7 +41,7 @@
   [`?ppc_loo_pit_overlay()`](http://mc-stan.org/bayesplot/reference/PPC-loo.html)
   now work as expected. (#166, #167)
 
-
+* New convenience functions `facet_relabel_gg()` and `facet_vars` which provide info about and allow changing the labels used for faceted plots. (advances #75, @silberzwiebel)
 
 
 # bayesplot 1.6.0
