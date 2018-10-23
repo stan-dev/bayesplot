@@ -11,8 +11,8 @@
 \title{Scatterplots of MCMC draws}
 \usage{
 mcmc_scatter(x, pars = character(), regex_pars = character(),
-  transformations = list(), ..., size = 2.5, alpha = 0.8,
-  np = NULL, np_style = scatter_style_np())
+  transformations = list(), ..., size = 2.5, alpha = 0.8, np = NULL,
+  np_style = scatter_style_np())
 
 mcmc_hex(x, pars = character(), regex_pars = character(),
   transformations = list(), ..., binwidth = NULL)
@@ -365,4 +365,3 @@ Other MCMC: \code{\link{MCMC-combos}},
   \code{\link{MCMC-overview}}, \code{\link{MCMC-parcoord}},
   \code{\link{MCMC-recover}}, \code{\link{MCMC-traces}}
 }
-\concept{MCMC}

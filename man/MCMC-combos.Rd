@@ -5,8 +5,8 @@
 \alias{mcmc_combo}
 \title{Combination plots}
 \usage{
-mcmc_combo(x, combo = c("dens", "trace"), widths = NULL,
-  gg_theme = NULL, ...)
+mcmc_combo(x, combo = c("dens", "trace"), widths = NULL, gg_theme = NULL,
+  ...)
 }
 \arguments{
 \item{x}{A 3-D array, matrix, list of matrices, or data frame of MCMC draws.
@@ -85,4 +85,3 @@ Other MCMC: \code{\link{MCMC-diagnostics}},
   \code{\link{MCMC-scatterplots}},
   \code{\link{MCMC-traces}}
 }
-\concept{MCMC}

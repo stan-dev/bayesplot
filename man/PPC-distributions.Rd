@@ -27,16 +27,15 @@ ppc_freqpoly_grouped(y, yrep, group, ..., binwidth = NULL, freq = TRUE,
 
 ppc_dens(y, yrep, ..., trim = FALSE, size = 0.5, alpha = 1)
 
-ppc_dens_overlay(y, yrep, ..., size = 0.25, alpha = 0.7,
-  trim = FALSE, bw = "nrd0", adjust = 1, kernel = "gaussian",
-  n_dens = 1024)
+ppc_dens_overlay(y, yrep, ..., size = 0.25, alpha = 0.7, trim = FALSE,
+  bw = "nrd0", adjust = 1, kernel = "gaussian", n_dens = 1024)
 
-ppc_ecdf_overlay(y, yrep, ..., discrete = FALSE, pad = TRUE,
-  size = 0.25, alpha = 0.7)
+ppc_ecdf_overlay(y, yrep, ..., discrete = FALSE, pad = TRUE, size = 0.25,
+  alpha = 0.7)
 
-ppc_violin_grouped(y, yrep, group, ..., probs = c(0.1, 0.5, 0.9),
-  size = 1, alpha = 1, y_draw = c("violin", "points", "both"),
-  y_size = 1, y_alpha = 1, y_jitter = 0.1)
+ppc_violin_grouped(y, yrep, group, ..., probs = c(0.1, 0.5, 0.9), size = 1,
+  alpha = 1, y_draw = c("violin", "points", "both"), y_size = 1,
+  y_alpha = 1, y_jitter = 0.1)
 }
 \arguments{
 \item{y}{A vector of observations. See \strong{Details}.}
@@ -205,4 +204,3 @@ Other PPCs: \code{\link{PPC-discrete}},
   \code{\link{PPC-scatterplots}},
   \code{\link{PPC-test-statistics}}
 }
-\concept{PPCs}

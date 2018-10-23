@@ -17,12 +17,12 @@ mcmc_intervals(x, pars = character(), regex_pars = character(),
 mcmc_areas(x, pars = character(), regex_pars = character(),
   transformations = list(), ..., area_method = c("equal area",
   "equal height", "scaled height"), prob = 0.5, prob_outer = 1,
-  point_est = c("median", "mean", "none"), rhat = numeric(),
-  bw = NULL, adjust = NULL, kernel = NULL, n_dens = NULL)
+  point_est = c("median", "mean", "none"), rhat = numeric(), bw = NULL,
+  adjust = NULL, kernel = NULL, n_dens = NULL)
 
 mcmc_areas_ridges(x, pars = character(), regex_pars = character(),
-  transformations = list(), ..., prob_outer = 1, prob = 1,
-  bw = NULL, adjust = NULL, kernel = NULL, n_dens = NULL)
+  transformations = list(), ..., prob_outer = 1, prob = 1, bw = NULL,
+  adjust = NULL, kernel = NULL, n_dens = NULL)
 
 mcmc_intervals_data(x, pars = character(), regex_pars = character(),
   transformations = list(), ..., prob = 0.5, prob_outer = 0.9,
@@ -30,12 +30,12 @@ mcmc_intervals_data(x, pars = character(), regex_pars = character(),
 
 mcmc_areas_data(x, pars = character(), regex_pars = character(),
   transformations = list(), ..., prob = 0.5, prob_outer = 1,
-  point_est = c("median", "mean", "none"), rhat = numeric(),
-  bw = NULL, adjust = NULL, kernel = NULL, n_dens = NULL)
+  point_est = c("median", "mean", "none"), rhat = numeric(), bw = NULL,
+  adjust = NULL, kernel = NULL, n_dens = NULL)
 
 mcmc_areas_ridges_data(x, pars = character(), regex_pars = character(),
-  transformations = list(), ..., prob_outer = 1, prob = 1,
-  bw = NULL, adjust = NULL, kernel = NULL, n_dens = NULL)
+  transformations = list(), ..., prob_outer = 1, prob = 1, bw = NULL,
+  adjust = NULL, kernel = NULL, n_dens = NULL)
 }
 \arguments{
 \item{x}{A 3-D array, matrix, list of matrices, or data frame of MCMC draws.
@@ -238,4 +238,3 @@ Other MCMC: \code{\link{MCMC-combos}},
   \code{\link{MCMC-scatterplots}},
   \code{\link{MCMC-traces}}
 }
-\concept{MCMC}

@@ -13,8 +13,8 @@
 ppc_intervals(y, yrep, x = NULL, ..., prob = 0.5, prob_outer = 0.9,
   size = 1, fatten = 3)
 
-ppc_intervals_grouped(y, yrep, x = NULL, group, facet_args = list(),
-  ..., prob = 0.5, prob_outer = 0.9, size = 1, fatten = 3)
+ppc_intervals_grouped(y, yrep, x = NULL, group, facet_args = list(), ...,
+  prob = 0.5, prob_outer = 0.9, size = 1, fatten = 3)
 
 ppc_ribbon(y, yrep, x = NULL, ..., prob = 0.5, prob_outer = 0.9,
   alpha = 0.33, size = 0.25)
@@ -168,4 +168,3 @@ Other PPCs: \code{\link{PPC-discrete}},
   \code{\link{PPC-scatterplots}},
   \code{\link{PPC-test-statistics}}
 }
-\concept{PPCs}

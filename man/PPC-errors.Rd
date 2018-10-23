@@ -10,11 +10,10 @@
 \alias{ppc_error_binned}
 \title{PPC errors}
 \usage{
-ppc_error_hist(y, yrep, ..., binwidth = NULL, breaks = NULL,
-  freq = TRUE)
+ppc_error_hist(y, yrep, ..., binwidth = NULL, breaks = NULL, freq = TRUE)
 
-ppc_error_hist_grouped(y, yrep, group, ..., binwidth = NULL,
-  breaks = NULL, freq = TRUE)
+ppc_error_hist_grouped(y, yrep, group, ..., binwidth = NULL, breaks = NULL,
+  freq = TRUE)
 
 ppc_error_scatter(y, yrep, ..., size = 2.5, alpha = 0.8)
 
@@ -176,4 +175,3 @@ Other PPCs: \code{\link{PPC-discrete}},
   \code{\link{PPC-scatterplots}},
   \code{\link{PPC-test-statistics}}
 }
-\concept{PPCs}

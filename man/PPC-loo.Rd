@@ -19,13 +19,12 @@ ppc_loo_pit_qq(y, yrep, lw, pit, compare = c("uniform", "normal"), ...,
 ppc_loo_pit(y, yrep, lw, pit, compare = c("uniform", "normal"), ...,
   size = 2, alpha = 1)
 
-ppc_loo_intervals(y, yrep, psis_object, subset = NULL,
-  intervals = NULL, ..., prob = 0.5, prob_outer = 0.9, size = 1,
-  fatten = 3, order = c("index", "median"))
+ppc_loo_intervals(y, yrep, psis_object, subset = NULL, intervals = NULL,
+  ..., prob = 0.5, prob_outer = 0.9, size = 1, fatten = 3,
+  order = c("index", "median"))
 
-ppc_loo_ribbon(y, yrep, lw, psis_object, subset = NULL,
-  intervals = NULL, ..., prob = 0.5, prob_outer = 0.9,
-  alpha = 0.33, size = 0.25)
+ppc_loo_ribbon(y, yrep, lw, psis_object, subset = NULL, intervals = NULL,
+  ..., prob = 0.5, prob_outer = 0.9, alpha = 0.33, size = 0.25)
 }
 \arguments{
 \item{y}{A vector of observations. See \strong{Details}.}
@@ -216,4 +215,3 @@ Other PPCs: \code{\link{PPC-discrete}},
   \code{\link{PPC-scatterplots}},
   \code{\link{PPC-test-statistics}}
 }
-\concept{PPCs}
