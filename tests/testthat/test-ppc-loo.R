@@ -13,17 +13,10 @@ capture.output(
 )
 y <- fit$y
 yrep <- posterior_predict(fit)
-
-if (packageVersion("loo") < "2.0.0") {
-  suppressWarnings(
-    lw <- psislw(-log_lik(fit), cores = 2)$lw_smooth
-  )
-} else {
-  suppressWarnings(
-    lw <- weights(psis(-log_lik(fit), cores = 2))
-  )
-}
-
+suppressWarnings(
+  psis1 <- psis(-log_lik(fit), cores = 2)
+)
+lw <- weights(psis1)
 suppressWarnings(
   pits <- rstantools::loo_pit(yrep, y, lw)
 )
@@ -60,51 +53,53 @@ test_that("ppc_loo_pit functions work when pit specified instead of y,yrep,lw", 
 })
 
 
-if (utils::packageVersion("loo") >= "2.0.0") {
-  suppressWarnings(
-    psis1 <- psis(-log_lik(fit), cores = 2)
-  )
-}
+
 test_that("ppc_loo_intervals returns ggplot object", {
-  if (utils::packageVersion("loo") >= "2.0.0") {
-    expect_gg(ppc_loo_intervals(y, yrep, psis_object = psis1))
-    expect_gg(g <- ppc_loo_intervals(y, yrep, psis_object = psis1, order = "median"))
-  } else {
-    expect_gg(ppc_loo_intervals(y, yrep, lw))
-    expect_gg(g <- ppc_loo_intervals(y, yrep, lw, order = "median"))
-  }
+  expect_gg(ppc_loo_intervals(y, yrep, psis_object = psis1))
+  expect_gg(g <- ppc_loo_intervals(y, yrep, psis_object = psis1, order = "median"))
   expect_s3_class(g$data$x, "factor")
   expect_equal(nlevels(g$data$x), length(g$data$x))
+
+  # subset argument
+  expect_gg(g <- ppc_loo_intervals(y, yrep, psis_object = psis1, subset = 1:25))
+  expect_equal(nrow(g$data), 25)
 })
 
 test_that("ppc_loo_ribbon returns ggplot object", {
-  if (utils::packageVersion("loo") >= "2.0.0") {
-    expect_gg(ppc_loo_ribbon(y, yrep, psis_object = psis1, prob = 0.7, alpha = 0.1))
-  } else {
-    expect_gg(ppc_loo_ribbon(y, yrep, lw, prob = 0.7, alpha = 0.1))
-  }
+  expect_gg(ppc_loo_ribbon(y, yrep, psis_object = psis1, prob = 0.7, alpha = 0.1))
+  expect_gg(g <- ppc_loo_ribbon(y, yrep, psis_object = psis1, subset = 1:25))
+  expect_equal(nrow(g$data), 25)
 })
 
 test_that("ppc_loo_intervals/ribbon work when 'intervals' specified", {
-  intervals <- t(apply(yrep, 2, quantile, probs = c(0.1, 0.5, 0.9)))
+  intervals <- t(apply(yrep, 2, quantile, probs = c(0.1, 0.25, 0.5, 0.75, 0.9)))
   expect_gg(ppc_loo_intervals(y, intervals = intervals))
   expect_gg(ppc_loo_ribbon(y, intervals = intervals))
   expect_message(ppc_loo_ribbon(y, intervals = intervals),
-                 "'intervals' specified so ignoring 'yrep', 'lw', 'psis_object', if specified")
-  if (utils::packageVersion("loo") >= "2.0.0") {
-    expect_message(ppc_loo_intervals(y, yrep, psis_object = psis1, intervals = intervals),
-                   "'intervals' specified so ignoring 'yrep', 'lw', 'psis_object', if specified")
-  } else {
-    expect_message(ppc_loo_intervals(y, yrep, lw, intervals = intervals),
-                   "'intervals' specified so ignoring 'yrep', 'lw', 'psis_object', if specified")
-  }
+                 "'intervals' specified so ignoring 'yrep', 'psis_object', 'subset', if specified")
+  expect_message(ppc_loo_intervals(y, yrep, psis_object = psis1, intervals = intervals),
+                 "'intervals' specified so ignoring 'yrep', 'psis_object', 'subset', if specified")
 })
 
+test_that("ppc_loo_intervals/ribbon work when 'intervals' has 3 columns", {
+  intervals <- t(apply(yrep, 2, quantile, probs = c(0.1, 0.5, 0.9)))
+  expect_gg(ppc_loo_intervals(y, intervals = intervals))
+  expect_gg(ppc_loo_ribbon(y, intervals = intervals))
+})
 
 test_that("errors if dimensions of yrep and lw don't match", {
   expect_error(
     ppc_loo_pit_overlay(y, yrep, lw[, 1:5]),
     "identical(dim(yrep), dim(lw)) is not TRUE",
+    fixed = TRUE
+  )
+})
+
+test_that("error if subset is bigger than num obs", {
+  expect_error(.psis_subset(psis1, 1:1000), "too many elements")
+  expect_error(
+    ppc_loo_intervals(y, yrep, psis_object = psis1, subset = 1:1000),
+    "length(y) >= length(subset) is not TRUE",
     fixed = TRUE
   )
 })

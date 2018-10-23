@@ -145,7 +145,8 @@ mcmc_rhat <- function(rhat, ..., size = NULL) {
       mapping = aes_(
         yend = ~ parameter,
         xend = ifelse(min(data$value) < 1, 1, -Inf)),
-      na.rm = TRUE)
+      na.rm = TRUE) +
+      bayesplot_theme_get()
 
   if (min(data$value) < 1) {
     graph <- graph +
@@ -173,7 +174,7 @@ mcmc_rhat <- function(rhat, ..., size = NULL) {
 
 #' @rdname MCMC-diagnostics
 #' @export
-mcmc_rhat_hist <- function(rhat, ..., binwidth = NULL) {
+mcmc_rhat_hist <- function(rhat, ..., binwidth = NULL, breaks = NULL) {
   check_ignored_arguments(...)
   data <- mcmc_rhat_data(rhat)
 
@@ -186,11 +187,14 @@ mcmc_rhat_hist <- function(rhat, ..., binwidth = NULL) {
     geom_histogram(
       size = .25,
       na.rm = TRUE,
-      binwidth = binwidth) +
+      binwidth = binwidth,
+      breaks = breaks
+    ) +
     scale_color_diagnostic("rhat") +
     scale_fill_diagnostic("rhat") +
     labs(x = expression(hat(R)), y = NULL) +
     dont_expand_y_axis(c(0.005, 0)) +
+    bayesplot_theme_get() +
     yaxis_title(FALSE) +
     yaxis_text(FALSE) +
     yaxis_ticks(FALSE)
@@ -216,6 +220,17 @@ mcmc_neff <- function(ratio, ..., size = NULL) {
   check_ignored_arguments(...)
   data <- mcmc_neff_data(ratio)
 
+  max_ratio <- max(ratio, na.rm = TRUE)
+  if (max_ratio < 1.25) {
+    additional_breaks <- numeric(0)
+  } else if (max_ratio < 1.5) {
+    additional_breaks <- 1.25
+    additional_labels <- "1.25"
+  } else {
+    additional_breaks <- seq(1.5, max_ratio, by = 0.5)
+  }
+  breaks <- c(0, 0.1, 0.25, 0.5, 0.75, 1, additional_breaks)
+
   ggplot(
     data,
     mapping = aes_(
@@ -236,10 +251,12 @@ mcmc_neff <- function(ratio, ..., size = NULL) {
     scale_fill_diagnostic("neff") +
     scale_color_diagnostic("neff") +
     scale_x_continuous(
-      breaks = c(0, 0.1, 0.25, 0.5, 0.75, 1),
-      labels = c("0", "0.1", "0.25", "0.5", "0.75", "1"),
-      limits = c(0, 1.05),
+      breaks = breaks,
+      # as.character truncates trailing zeroes, while ggplot default does not
+      labels = as.character(breaks),
+      limits = c(0, max(1, max_ratio) + 0.05),
       expand = c(0, 0)) +
+    bayesplot_theme_get() +
     yaxis_text(FALSE) +
     yaxis_title(FALSE) +
     yaxis_ticks(FALSE)
@@ -247,7 +264,7 @@ mcmc_neff <- function(ratio, ..., size = NULL) {
 
 #' @rdname MCMC-diagnostics
 #' @export
-mcmc_neff_hist <- function(ratio, ..., binwidth = NULL) {
+mcmc_neff_hist <- function(ratio, ..., binwidth = NULL, breaks = NULL) {
   check_ignored_arguments(...)
   data <- mcmc_neff_data(ratio)
 
@@ -260,14 +277,16 @@ mcmc_neff_hist <- function(ratio, ..., binwidth = NULL) {
     geom_histogram(
       size = .25,
       na.rm = TRUE,
-      binwidth = binwidth) +
+      binwidth = binwidth,
+      breaks = breaks) +
     scale_color_diagnostic("neff") +
     scale_fill_diagnostic("neff") +
     labs(x = expression(N[eff]/N), y = NULL) +
     dont_expand_y_axis(c(0.005, 0)) +
     yaxis_title(FALSE) +
     yaxis_text(FALSE) +
-    yaxis_ticks(FALSE)
+    yaxis_ticks(FALSE) +
+    bayesplot_theme_get()
 }
 
 #' @rdname MCMC-diagnostics
@@ -509,7 +528,8 @@ drop_NAs_and_warn <- function(x) {
       facet_fun <- "facet_wrap"
     }
 
-    graph <- ggplot(plot_data, aes_(x = ~ Lag, y = ~ AC))
+    graph <- ggplot(plot_data, aes_(x = ~ Lag, y = ~ AC))  +
+      bayesplot_theme_get()
     if (style == "bar") {
       graph <- graph +
         geom_bar(
@@ -629,8 +649,8 @@ new_neff_ratio <- function(x) {
 
 validate_neff_ratio <- function(x) {
   stopifnot(is.numeric(x), !is.list(x), !is.array(x))
-  if (any(x < 0 | x > 1, na.rm = TRUE)) {
-    stop("All neff ratios must be between 0 and 1.", call. = FALSE)
+  if (any(x < 0, na.rm = TRUE)) {
+    stop("All neff ratios must be positive.", call. = FALSE)
   }
   x
 }

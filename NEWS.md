@@ -1,6 +1,95 @@
-# bayesplot 1.5.0.9000
+<!-- See http://style.tidyverse.org/news.html for advice on writing news -->
+
+# bayesplot 1.6.0.9000
 
 (GitHub issue/PR numbers in parentheses)
+
+<!-- Items for next release go here* -->
+
+* [`mcmc_trace()`](http://mc-stan.org/bayesplot/reference/MCMC-traces.html)
+  gains an argument `iter1` which can be used to label the traceplot starting
+  from the first iteration after warmup. (#14, #155, @mcol)
+
+* [`mcmc_areas()`](http://mc-stan.org/bayesplot/reference/MCMC-intervals.html)
+  gains an argument `area_method` which controls how to draw the density 
+  curves. The default `"equal area"` constrains the heights so that the curves 
+  have the same area. As a result, a narrow interval will appear as a spike 
+  of density, while a wide, uncertain interval is spread thin over the _x_ axis.
+  Alternatively `"equal height"` will set the maximum height on each curve to 
+  the same value. This works well when the intervals are about the same width. 
+  Otherwise, that wide, uncertain interval will dominate the visual space 
+  compared to a narrow, less uncertain interval. A compromise between the two is 
+  `"scaled height"` which scales the curves from `"equal height"` using 
+  `height * sqrt(height)`. (#163, #169)
+  
+* `mcmc_areas()` correctly plots density curves where the point estimate 
+  does not include the highest point of the density curve. 
+  (#168, #169, @jtimonen)
+  
+* `mcmc_areas_ridges()` draws the vertical line at *x* = 0 over the curves so 
+  that it is always visible.
+
+* `mcmc_intervals()` and `mcmc_areas()` raise a warning if `prob_outer` is ever 
+  less than `prob`. It sorts these two values into the correct order. (#138)
+
+* MCMC parameter names are now *always* converted to factors prior to
+  plotting. We use factors so that the order of parameters in a plot matches
+  the order of the parameters in the original MCMC data. This change fixes a
+  case where factor-conversion failed. (#162, #165, @wwiecek)
+
+* The examples in
+  [`?ppc_loo_pit_overlay()`](http://mc-stan.org/bayesplot/reference/PPC-loo.html)
+  now work as expected. (#166, #167)
+
+
+
+
+# bayesplot 1.6.0
+
+(GitHub issue/PR numbers in parentheses)
+
+* Loading **bayesplot** no longer overrides the ggplot theme! Rather, it sets
+  a theme specific for **bayesplot**. Some packages using **bayesplot** may
+  still override the default **ggplot** theme (e.g., **rstanarm** does but
+  only until next release), but simply loading **bayesplot** itself will not.
+  There are new functions for controlling the ggplot theme for **bayesplot**
+  that work like their **ggplot2** counterparts but only affect plots made
+  using **bayesplot**. Thanks to Malcolm Barrett. (#117, #149).
+    - `bayesplot_theme_set()`
+    - `bayesplot_theme_get()`
+    - `bayesplot_theme_update()`
+    - `bayesplot_theme_replace()`
+
+* The [Visual MCMC Diagnostics
+  vignette](http://mc-stan.org/bayesplot/articles/visual-mcmc-diagnostics.html)
+  has been reorganized and has a lot of useful new content thanks to Martin
+  Modrák. (#144, #153)
+
+* The [LOO predictive
+  checks](http://mc-stan.org/bayesplot/reference/PPC-loo.html) now require
+  **loo** version `>= 2.0.0`. (#139)
+
+* Histogram plots gain a `breaks` argument that can be used as an alternative
+  to `binwidth`. (#148)
+
+* [`mcmc_pairs()`](http://mc-stan.org/bayesplot/reference/MCMC-scatterplots.html)
+  now has an argument `grid_args` to provide a way of passing optional
+  arguments to `gridExtra::arrangeGrob()`. This can be used to add a title to
+  the plot, for example. (#143)
+
+* [`ppc_ecdf_overlay()`](http://mc-stan.org/bayesplot/reference/PPC-distributions.html)
+  gains an argument `discrete`, which is `FALSE` by default, but can be used
+  to make the Geom more appropriate for discrete data. (#145)
+
+* [PPC intervals 
+  plots](http://mc-stan.org/bayesplot/reference/PPC-intervals.html) and [LOO
+  predictive checks](http://mc-stan.org/bayesplot/reference/PPC-loo.html) now
+  draw both an outer and an inner probability interval, which can be
+  controlled through the new argument `prob_outer` and the already existing
+  `prob`. This is consistent with what is produced by `mcmc_intervals()`.
+  (#152, #154, @mcol)
+
+
 
 
 # bayesplot 1.5.0
@@ -33,7 +122,10 @@
 * Added `ppc_loo_pit_overlay()` function for a better LOO PIT predictive check.
   (#123)
 
-* Started using __vdiffr__ to add visual unit tests to the existing PPC unit tests. (#137)
+* Started using **vdiffr** to add visual unit tests to the existing PPC unit
+  tests. (#137)
+
+
 
 
 # bayesplot 1.4.0

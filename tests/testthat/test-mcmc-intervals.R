@@ -85,8 +85,10 @@ test_that("mcmc_intervals/areas with rhat", {
   expect_error(expect_warning(mcmc_intervals(arr, rhat = rbad)))
 
   expect_gg(g <- mcmc_intervals(arr, rhat = r))
-  rhat_map <- g$layers[[3]][["mapping"]]
-  expect_identical(rhat_map$colour, as.name("rhat_rating"))
+  if (utils::packageVersion("ggplot2") >= "3.0.0") {
+    rhat_map <- g$layers[[3]][["mapping"]]
+    expect_identical(as.character(rhat_map[["colour"]]), c("~", "rhat_rating"))
+  }
 
   # areas with rhat.
 
@@ -94,19 +96,21 @@ test_that("mcmc_intervals/areas with rhat", {
 
   # layer 2 is inner interval.
   expect_gg(g2 <- mcmc_areas(arr, rhat = r))
-  rhat_map2 <- g2$layers[[2]][["mapping"]]
-  expect_identical(rhat_map2$fill, as.name("rhat_rating"))
-  expect_identical(rhat_map2$colour, as.name("rhat_rating"))
+  if (utils::packageVersion("ggplot2") >= "3.0.0") {
+    rhat_map2 <- g2$layers[[2]][["mapping"]]
+    expect_identical(as.character(rhat_map2$fill), c("~", "rhat_rating"))
+    expect_identical(as.character(rhat_map2$colour), c("~", "rhat_rating"))
+    # layer 3 is point estimate. manually colored. [skip]
 
-  # layer 3 is point estimate. manually colored. [skip]
+    # layer 4 is outer interval.
+    rhat_map4 <- g2$layers[[4]][["mapping"]]
+    expect_identical(as.character(rhat_map4$colour), c("~", "rhat_rating"))
 
-  # layer 4 is outer interval.
-  rhat_map4 <- g2$layers[[4]][["mapping"]]
-  expect_identical(rhat_map4$colour, as.name("rhat_rating"))
+    # layer 5 is bottom line.
 
-  # layer 5 is bottom line.
-  rhat_map5 <- g2$layers[[5]][["mapping"]]
-  expect_identical(rhat_map5$colour, as.name("rhat_rating"))
+    rhat_map5 <- g2$layers[[5]][["mapping"]]
+    expect_identical(as.character(rhat_map5$colour), c("~", "rhat_rating"))
+  }
 })
 
 test_that("mcmc_areas_data computes density", {
@@ -148,6 +152,14 @@ test_that("compute_column_density can use density options (#118)", {
 })
 
 
+test_that("inconsistent probabilities raise warning (#138)", {
+  expect_warning(
+    mcmc_intervals_data(arr, prob = .9, prob_outer = .8),
+    "`prob_outer` .* is less than `prob`"
+  )
+})
+
+
 
 
 # Visual tests -----------------------------------------------------------------
@@ -180,6 +192,12 @@ test_that("mcmc_areas renders correctly", {
 
   p_base <- mcmc_areas(vdiff_dframe)
   vdiffr::expect_doppelganger("mcmc areas (default)", p_base)
+
+  p_equal_height <- mcmc_areas(vdiff_dframe, area_method = "equal height")
+  vdiffr::expect_doppelganger("mcmc areas (equal height)", p_equal_height)
+
+  p_scaled_height <- mcmc_areas(vdiff_dframe, area_method = "scaled height")
+  vdiffr::expect_doppelganger("mcmc areas (scaled height)", p_scaled_height)
 
   p_outer <- mcmc_areas(vdiff_dframe, prob_outer = .8)
   vdiffr::expect_doppelganger("mcmc areas (outer)", p_outer)

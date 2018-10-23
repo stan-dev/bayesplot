@@ -1,9 +1,11 @@
 #' PPCs for discrete outcomes
 #'
-#' This page documents the PPC functions that can only be used if \code{y} and
-#' \code{yrep} are discrete. Currently these include rootograms for count
-#' outcomes and bar plots for ordinal, categorical, and multinomial outcomes.
-#' See the \strong{Plot Descriptions} section below.
+#' Many of the \link{PPC} functions in \pkg{bayesplot} can
+#' be used with discrete data. The small subset of these functions that can
+#' \emph{only} be used if \code{y} and \code{yrep} are discrete are documented
+#' on this page. Currently these include rootograms for count outcomes and bar
+#' plots for ordinal, categorical, and multinomial outcomes. See the
+#' \strong{Plot Descriptions} section below.
 #'
 #' @name PPC-discrete
 #' @family PPCs
@@ -248,7 +250,8 @@ ppc_rootogram <- function(y,
       color = get_color("lh"),
       size = 0.25,
       width = 1
-    )
+    ) +
+    bayesplot_theme_get()
 
   if (style != "standing")
     graph <- graph + hline_0(size = 0.4)
@@ -359,7 +362,8 @@ ppc_bars_yrep_data <- function(y, yrep, probs, freq = TRUE, group = NULL) {
                        labels = yrep_label()) +
     guides(color = guide_legend(order = 1),
            fill = guide_legend(order = 2)) +
-    labs(x = NULL, y = if (freq) "Count" else "Proportion")
+    labs(x = NULL, y = if (freq) "Count" else "Proportion") +
+    bayesplot_theme_get()
 
   if (grouped) {
     facet_args[["facets"]] <- "group"

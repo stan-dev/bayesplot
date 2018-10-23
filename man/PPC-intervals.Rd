@@ -10,20 +10,23 @@
 \alias{ppc_ribbon_data}
 \title{PPC intervals}
 \usage{
-ppc_intervals(y, yrep, x = NULL, ..., prob = 0.9, size = 1, fatten = 3)
+ppc_intervals(y, yrep, x = NULL, ..., prob = 0.5, prob_outer = 0.9,
+  size = 1, fatten = 3)
 
 ppc_intervals_grouped(y, yrep, x = NULL, group, facet_args = list(), ...,
-  prob = 0.9, size = 1, fatten = 3)
+  prob = 0.5, prob_outer = 0.9, size = 1, fatten = 3)
 
-ppc_ribbon(y, yrep, x = NULL, ..., prob = 0.9, alpha = 0.33,
-  size = 0.25)
+ppc_ribbon(y, yrep, x = NULL, ..., prob = 0.5, prob_outer = 0.9,
+  alpha = 0.33, size = 0.25)
 
 ppc_ribbon_grouped(y, yrep, x = NULL, group, facet_args = list(), ...,
-  prob = 0.9, alpha = 0.33, size = 0.25)
+  prob = 0.5, prob_outer = 0.9, alpha = 0.33, size = 0.25)
 
-ppc_intervals_data(y, yrep, x = NULL, group = NULL, prob = 0.9, ...)
+ppc_intervals_data(y, yrep, x = NULL, group = NULL, prob = 0.5,
+  prob_outer = 0.9, ...)
 
-ppc_ribbon_data(y, yrep, x = NULL, group = NULL, prob = 0.9, ...)
+ppc_ribbon_data(y, yrep, x = NULL, group = NULL, prob = 0.5,
+  prob_outer = 0.9, ...)
 }
 \arguments{
 \item{y}{A vector of observations. See \strong{Details}.}
@@ -43,8 +46,9 @@ is missing or NULL, then \code{1:length(y)} is used for the x-axis.}
 
 \item{...}{Currently unused.}
 
-\item{prob}{A value between 0 and 1 indicating the desired probability mass
-to include in the \code{yrep} intervals. The default is 0.9.}
+\item{prob, prob_outer}{Values between 0 and 1 indicating the desired
+probability mass to include in the inner and outer intervals. The defaults
+are \code{prob=0.5} and \code{prob_outer=0.9}.}
 
 \item{group}{A grouping variable (a vector or factor) the same length as
 \code{y}. Each value in \code{group} is interpreted as the group level
