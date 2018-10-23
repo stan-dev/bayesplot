@@ -12,8 +12,8 @@ mcmc_recover_intervals(x, true, batch = rep(1, length(true)),
   point_est = c("median", "mean", "none"), size = 4, alpha = 1)
 
 mcmc_recover_scatter(x, true, batch = rep(1, length(true)),
-  facet_args = list(), ..., point_est = c("median", "mean"), size = 3,
-  alpha = 1)
+  facet_args = list(), ..., point_est = c("median", "mean"),
+  size = 3, alpha = 1)
 
 mcmc_recover_hist(x, true, facet_args = list(), ..., binwidth = NULL,
   breaks = NULL)
@@ -141,3 +141,4 @@ Other MCMC: \code{\link{MCMC-combos}},
   \code{\link{MCMC-scatterplots}},
   \code{\link{MCMC-traces}}
 }
+\concept{MCMC}

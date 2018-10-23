@@ -10,6 +10,28 @@
   gains an argument `iter1` which can be used to label the traceplot starting
   from the first iteration after warmup. (#14, #155, @mcol)
 
+* [`mcmc_areas()`](http://mc-stan.org/bayesplot/reference/MCMC-intervals.html)
+  gains an argument `area_method` which controls how to draw the density 
+  curves. The default `"equal area"` constrains the heights so that the curves 
+  have the same area. As a result, a narrow interval will appear as a spike 
+  of density, while a wide, uncertain interval is spread thin over the _x_ axis.
+  Alternatively `"equal height"` will set the maximum height on each curve to 
+  the same value. This works well when the intervals are about the same width. 
+  Otherwise, that wide, uncertain interval will dominate the visual space 
+  compared to a narrow, less uncertain interval. A compromise between the two is 
+  `"scaled height"` which scales the curves from `"equal height"` using 
+  `height * sqrt(height)`. (#163, #169)
+  
+* `mcmc_areas()` correctly plots density curves where the point estimate 
+  does not include the highest point of the density curve. 
+  (#168, #169, @jtimonen)
+  
+* `mcmc_areas_ridges()` draws the vertical line at *x* = 0 over the curves so 
+  that it is always visible.
+
+* `mcmc_intervals()` and `mcmc_areas()` raise a warning if `prob_outer` is ever 
+  less than `prob`. It sorts these two values into the correct order. (#138)
+
 * MCMC parameter names are now *always* converted to factors prior to
   plotting. We use factors so that the order of parameters in a plot matches
   the order of the parameters in the original MCMC data. This change fixes a

@@ -42,6 +42,6 @@ Suggests:
     shinystan (>= 2.3.0),
     testthat (>= 2.0.0),
     vdiffr
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.0
 VignetteBuilder: knitr
 Encoding: UTF-8

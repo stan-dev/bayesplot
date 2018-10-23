@@ -220,3 +220,4 @@ Other MCMC: \code{\link{MCMC-combos}},
   \code{\link{MCMC-recover}},
   \code{\link{MCMC-scatterplots}}
 }
+\concept{MCMC}

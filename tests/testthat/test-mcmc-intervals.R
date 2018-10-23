@@ -152,6 +152,14 @@ test_that("compute_column_density can use density options (#118)", {
 })
 
 
+test_that("inconsistent probabilities raise warning (#138)", {
+  expect_warning(
+    mcmc_intervals_data(arr, prob = .9, prob_outer = .8),
+    "`prob_outer` .* is less than `prob`"
+  )
+})
+
+
 
 
 # Visual tests -----------------------------------------------------------------
@@ -184,6 +192,12 @@ test_that("mcmc_areas renders correctly", {
 
   p_base <- mcmc_areas(vdiff_dframe)
   vdiffr::expect_doppelganger("mcmc areas (default)", p_base)
+
+  p_equal_height <- mcmc_areas(vdiff_dframe, area_method = "equal height")
+  vdiffr::expect_doppelganger("mcmc areas (equal height)", p_equal_height)
+
+  p_scaled_height <- mcmc_areas(vdiff_dframe, area_method = "scaled height")
+  vdiffr::expect_doppelganger("mcmc areas (scaled height)", p_scaled_height)
 
   p_outer <- mcmc_areas(vdiff_dframe, prob_outer = .8)
   vdiffr::expect_doppelganger("mcmc areas (outer)", p_outer)

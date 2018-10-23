@@ -15,13 +15,14 @@ mcmc_intervals(x, pars = character(), regex_pars = character(),
   point_est = c("median", "mean", "none"), rhat = numeric())
 
 mcmc_areas(x, pars = character(), regex_pars = character(),
-  transformations = list(), ..., prob = 0.5, prob_outer = 1,
-  point_est = c("median", "mean", "none"), rhat = numeric(), bw = NULL,
-  adjust = NULL, kernel = NULL, n_dens = NULL)
+  transformations = list(), ..., area_method = c("equal area",
+  "equal height", "scaled height"), prob = 0.5, prob_outer = 1,
+  point_est = c("median", "mean", "none"), rhat = numeric(),
+  bw = NULL, adjust = NULL, kernel = NULL, n_dens = NULL)
 
 mcmc_areas_ridges(x, pars = character(), regex_pars = character(),
-  transformations = list(), ..., prob_outer = 1, prob = 1, bw = NULL,
-  adjust = NULL, kernel = NULL, n_dens = NULL)
+  transformations = list(), ..., prob_outer = 1, prob = 1,
+  bw = NULL, adjust = NULL, kernel = NULL, n_dens = NULL)
 
 mcmc_intervals_data(x, pars = character(), regex_pars = character(),
   transformations = list(), ..., prob = 0.5, prob_outer = 0.9,
@@ -29,12 +30,12 @@ mcmc_intervals_data(x, pars = character(), regex_pars = character(),
 
 mcmc_areas_data(x, pars = character(), regex_pars = character(),
   transformations = list(), ..., prob = 0.5, prob_outer = 1,
-  point_est = c("median", "mean", "none"), rhat = numeric(), bw = NULL,
-  adjust = NULL, kernel = NULL, n_dens = NULL)
+  point_est = c("median", "mean", "none"), rhat = numeric(),
+  bw = NULL, adjust = NULL, kernel = NULL, n_dens = NULL)
 
 mcmc_areas_ridges_data(x, pars = character(), regex_pars = character(),
-  transformations = list(), ..., prob_outer = 1, prob = 1, bw = NULL,
-  adjust = NULL, kernel = NULL, n_dens = NULL)
+  transformations = list(), ..., prob_outer = 1, prob = 1,
+  bw = NULL, adjust = NULL, kernel = NULL, n_dens = NULL)
 }
 \arguments{
 \item{x}{A 3-D array, matrix, list of matrices, or data frame of MCMC draws.
@@ -90,6 +91,13 @@ one element per parameter included in \code{x}. If \code{rhat} is provided,
 the intervals/areas and point estimates in the resulting plot are colored
 based on \eqn{\hat{R}}{Rhat} value. See \code{\link{rhat}} for methods for
 extracting \eqn{\hat{R}}{Rhat} estimates.}
+
+\item{area_method}{How to constrain the areas in \code{mcmc_areas}. The
+default is \code{"equal area"}, setting the density curves to have the same
+area. With \code{"equal height"}, the curves are scaled so that the highest
+points across the curves are the same height. The method \code{"scaled
+height"} tries a compromise between to the two: the heights from
+\code{"equal height"} are scaled using \code{height*sqrt(height)}}
 
 \item{bw, adjust, kernel, n_dens}{Optional arguments passed to
 \code{\link[stats]{density}} to override default kernel density estimation
@@ -153,6 +161,7 @@ color_scheme_set("blue")
 fake_rhat_values <- c(1, 1.07, 1.3, 1.01, 1.15, 1.005)
 mcmc_intervals(x, rhat = fake_rhat_values)
 
+# get the dataframe that is used in the plotting functions
 mcmc_intervals_data(x)
 mcmc_intervals_data(x, rhat = fake_rhat_values)
 mcmc_areas_data(x, pars = "alpha")
@@ -161,6 +170,27 @@ color_scheme_set("gray")
 p <- mcmc_areas(x, pars = c("alpha", "beta[4]"), rhat = c(1, 1.1))
 p + legend_move("bottom")
 p + legend_move("none") # or p + legend_none()
+
+# Different area calculations
+b3 <- c("beta[1]", "beta[2]", "beta[3]")
+
+mcmc_areas(x, pars = b3, area_method = "equal area") +
+  ggplot2::labs(
+    title = "Curves have same area",
+    subtitle =
+      "A wide, uncertain interval is spread thin when areas are equal")
+
+mcmc_areas(x, pars = b3, area_method = "equal height") +
+  ggplot2::labs(
+    title = "Curves have same maximum height",
+    subtitle =
+      "Local curvature is clearer but more uncertain curves use more area")
+
+mcmc_areas(x, pars = b3, area_method = "scaled height") +
+  ggplot2::labs(
+    title = "Same maximum heights but heights scaled by square-root",
+    subtitle =
+      "Compromise: Local curvature is accentuated and less area is used")
 
 \donttest{
 # apply transformations
@@ -208,3 +238,4 @@ Other MCMC: \code{\link{MCMC-combos}},
   \code{\link{MCMC-scatterplots}},
   \code{\link{MCMC-traces}}
 }
+\concept{MCMC}
