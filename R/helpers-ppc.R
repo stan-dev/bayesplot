@@ -243,9 +243,12 @@ is_whole_number <- function(x, tol = .Machine$double.eps) {
   }
 }
 
-# check if all values in x are counts (non-negative whole numbers)
+# check if all values in x are whole numbers or counts (non-negative whole numbers)
+all_whole_number <- function(x, ...) {
+  all(is_whole_number(x, ...))
+}
 all_counts <- function(x, ...) {
-  all(is_whole_number(x, ...)) && min(x) >= 0
+  all_whole_number(x, ...) && min(x) >= 0
 }
 
 # labels ----------------------------------------------------------------

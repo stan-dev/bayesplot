@@ -103,10 +103,10 @@ ppc_bars <-
     check_ignored_arguments(...)
     y <- validate_y(y)
     yrep <- validate_yrep(yrep, y)
-    if (!all_counts(y))
-      stop("ppc_bars expects only non-negative integers in 'y'.")
-    if (!all_counts(yrep))
-      stop("ppc_bars expects only non-negative integers in 'yrep'.")
+    if (!all_whole_number(y))
+      stop("ppc_bars expects 'y' to be discrete.")
+    if (!all_whole_number(yrep))
+      stop("ppc_bars expects 'yrep' to be discrete.")
 
     alpha <- (1 - prob) / 2
     probs <- sort(c(alpha, 0.5, 1 - alpha))
@@ -145,10 +145,10 @@ ppc_bars_grouped <-
     y <- validate_y(y)
     yrep <- validate_yrep(yrep, y)
     group <- validate_group(group, y)
-    if (!all_counts(y))
-      stop("ppc_bars expects only non-negative integers in 'y'.")
-    if (!all_counts(yrep))
-      stop("ppc_bars expects only non-negative integers in 'yrep'.")
+    if (!all_whole_number(y))
+      stop("ppc_bars_grouped expects 'y' to be discrete.")
+    if (!all_whole_number(yrep))
+      stop("ppc_bars_grouped expects 'yrep' to be discrete.")
 
     alpha <- (1 - prob) / 2
     probs <- sort(c(alpha, 0.5, 1 - alpha))

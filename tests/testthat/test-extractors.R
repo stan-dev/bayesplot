@@ -79,6 +79,7 @@ test_that("neff_ratio.stanreg returns correct structure", {
 test_that("rhat.stanfit returns correct structure", {
   r <- rhat(fit$stanfit)
   expect_named(r)
+  r <- r[!names(r) %in% "mean_PPD"]
   expect_equal(r, summary(fit)[, "Rhat"])
 
   r2 <- rhat(fit$stanfit, pars = c("wt", "sigma"))
@@ -91,6 +92,7 @@ test_that("neff_ratio.stanreg returns correct structure", {
 
   ratio <- neff_ratio(fit$stanfit)
   expect_named(ratio)
+  ratio <- ratio[!names(ratio) %in% "mean_PPD"]
   ans <- summary(fit)[, "n_eff"] / denom
   expect_equal(ratio, ans, tol = 0.001)
 
