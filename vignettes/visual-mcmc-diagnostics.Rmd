@@ -271,7 +271,7 @@ divergences. Here, you may notice that divergences in the centered
 parameterization happen exclusively when  `tau`, the hierarchical standard
 deviation, goes near zero and the values of the `theta`s are essentially fixed.
 This makes `tau` immediately suspect. 
-See [Gabry et al. (2018)](https://arxiv.org/abs/1709.01449) for another example
+See [Gabry et al. (2019)](#gabry2019) for another example
 of the parallel coordinates plot.
 
 
@@ -359,8 +359,8 @@ scatter_eta_ncp
 ```
 
 We can see that the funnel/tornado shape is replaced by a somewhat Gaussian
-blob/cloud and the divergences go away. Gabry et al. (2018) has further
-discussion of this example.
+blob/cloud and the divergences go away. [Gabry et al. (2019)](#gabry2019) 
+has further discussion of this example.
 
 Ultimately we only care about `eta` insofar as it enables the Markov chains to
 better explore the posterior, so let's directly examine how much more
@@ -768,10 +768,11 @@ Gabry, J., and Goodrich, B. (2018). rstanarm: Bayesian Applied Regression
 Modeling via Stan. R package version 2.17.4.
 http://mc-stan.org/rstanarm
 
-Gabry, J., Simpson, D., Vehtari, A., Betancourt, M., Gelman, A. (2018).
-Visualization in Bayesian workflow. 
-_Journal of the Royal Statistical Society Series A_, accepted for publication. 
-arXiv preprint: https://arxiv.org/abs/1709.01449
+Gabry, J. , Simpson, D. , Vehtari, A. , Betancourt, M. and Gelman, A. (2019), 
+Visualization in Bayesian workflow. _J. R. Stat. Soc. A_, 182: 389-402. 
+\doi:10.1111/rssa.12378. ([journal](https://rss.onlinelibrary.wiley.com/doi/full/10.1111/rssa.12378), 
+[arXiv preprint](https://arxiv.org/abs/1709.01449))
+<a id="gabry2019"></a>
 
 Gelman, A. and Rubin, D. B. (1992). Inference from iterative simulation using
 multiple sequences. *Statistical Science*. 7(4): 457--472.

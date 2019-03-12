@@ -11,8 +11,8 @@
 \title{Scatterplots of MCMC draws}
 \usage{
 mcmc_scatter(x, pars = character(), regex_pars = character(),
-  transformations = list(), ..., size = 2.5, alpha = 0.8, np = NULL,
-  np_style = scatter_style_np())
+  transformations = list(), ..., size = 2.5, alpha = 0.8,
+  np = NULL, np_style = scatter_style_np())
 
 mcmc_hex(x, pars = character(), regex_pars = character(),
   transformations = list(), ..., binwidth = NULL)
@@ -352,10 +352,11 @@ mcmc_pairs(
 
 }
 \references{
-Gabry, J., Simpson, D., Vehtari, A., Betancourt, M., and Gelman,
-  A. (2018). Visualization in Bayesian workflow. \emph{Journal of the Royal
-  Statistical Society Series A}, accepted for publication. arXiv preprint:
-  \url{http://arxiv.org/abs/1709.01449}.
+Gabry, J. , Simpson, D. , Vehtari, A. , Betancourt, M. and
+  Gelman, A. (2019), Visualization in Bayesian workflow. \emph{J. R. Stat.
+  Soc. A}, 182: 389-402. doi:10.1111/rssa.12378,
+  (\href{https://rss.onlinelibrary.wiley.com/doi/full/10.1111/rssa.12378}{journal},
+  \href{https://arxiv.org/abs/1709.01449}{arXiv preprint})
 }
 \seealso{
 Other MCMC: \code{\link{MCMC-combos}},
@@ -365,3 +366,4 @@ Other MCMC: \code{\link{MCMC-combos}},
   \code{\link{MCMC-overview}}, \code{\link{MCMC-parcoord}},
   \code{\link{MCMC-recover}}, \code{\link{MCMC-traces}}
 }
+\concept{MCMC}

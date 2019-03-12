@@ -19,12 +19,13 @@ ppc_loo_pit_qq(y, yrep, lw, pit, compare = c("uniform", "normal"), ...,
 ppc_loo_pit(y, yrep, lw, pit, compare = c("uniform", "normal"), ...,
   size = 2, alpha = 1)
 
-ppc_loo_intervals(y, yrep, psis_object, subset = NULL, intervals = NULL,
-  ..., prob = 0.5, prob_outer = 0.9, size = 1, fatten = 3,
-  order = c("index", "median"))
+ppc_loo_intervals(y, yrep, psis_object, subset = NULL,
+  intervals = NULL, ..., prob = 0.5, prob_outer = 0.9, size = 1,
+  fatten = 3, order = c("index", "median"))
 
-ppc_loo_ribbon(y, yrep, lw, psis_object, subset = NULL, intervals = NULL,
-  ..., prob = 0.5, prob_outer = 0.9, alpha = 0.33, size = 0.25)
+ppc_loo_ribbon(y, yrep, lw, psis_object, subset = NULL,
+  intervals = NULL, ..., prob = 0.5, prob_outer = 0.9,
+  alpha = 0.33, size = 0.25)
 }
 \arguments{
 \item{y}{A vector of observations. See \strong{Details}.}
@@ -124,7 +125,7 @@ section below for details.
  The calibration of marginal predictions can be assessed using probability
  integral transformation (PIT) checks. LOO improves the check by avoiding the
  double use of data. See the section on marginal predictive checks in Gelman
- et al. (2013, p. 152--153) and section 5 of Gabry et al. (2018) for an
+ et al. (2013, p. 152--153) and section 5 of Gabry et al. (2019) for an
  example of using \pkg{bayesplot} for these checks.
 
  The LOO PIT values are asymptotically uniform (for continuous data) if the
@@ -196,10 +197,11 @@ Gelman, A., Carlin, J. B., Stern, H. S., Dunson, D. B., Vehtari,
   A., and Rubin, D. B. (2013). \emph{Bayesian Data Analysis.} Chapman & Hall/CRC
   Press, London, third edition. (p. 152--153)
 
-Gabry, J., Simpson, D., Vehtari, A., Betancourt, M., and Gelman,
-  A. (2018). Visualization in Bayesian workflow. \emph{Journal of the Royal
-  Statistical Society Series A}, accepted for publication. arXiv preprint:
-  \url{http://arxiv.org/abs/1709.01449}.
+Gabry, J. , Simpson, D. , Vehtari, A. , Betancourt, M. and
+  Gelman, A. (2019), Visualization in Bayesian workflow. \emph{J. R. Stat.
+  Soc. A}, 182: 389-402. doi:10.1111/rssa.12378,
+  (\href{https://rss.onlinelibrary.wiley.com/doi/full/10.1111/rssa.12378}{journal},
+  \href{https://arxiv.org/abs/1709.01449}{arXiv preprint})
 
 Vehtari, A., Gelman, A., and Gabry, J. (2017). Practical
   Bayesian model evaluation using leave-one-out cross-validation and WAIC.
@@ -215,3 +217,4 @@ Other PPCs: \code{\link{PPC-discrete}},
   \code{\link{PPC-scatterplots}},
   \code{\link{PPC-test-statistics}}
 }
+\concept{PPCs}

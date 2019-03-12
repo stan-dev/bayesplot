@@ -27,7 +27,7 @@
 #'  The calibration of marginal predictions can be assessed using probability
 #'  integral transformation (PIT) checks. LOO improves the check by avoiding the
 #'  double use of data. See the section on marginal predictive checks in Gelman
-#'  et al. (2013, p. 152--153) and section 5 of Gabry et al. (2018) for an
+#'  et al. (2013, p. 152--153) and section 5 of Gabry et al. (2019) for an
 #'  example of using \pkg{bayesplot} for these checks.
 #'
 #'  The LOO PIT values are asymptotically uniform (for continuous data) if the

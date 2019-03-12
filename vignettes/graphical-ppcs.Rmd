@@ -35,7 +35,7 @@ vignette.
 The **bayesplot** package provides various plotting functions for 
 _graphical posterior predictive checking_, that is, creating graphical displays
 comparing observed data to simulated data from the posterior predictive
-distribution.
+distribution ([Gabry et al, 2019](#gabry2019)). 
 
 The idea behind posterior predictive checking is simple: if a model is a good 
 fit then we should be able to use it to generate data that looks a lot like the 
@@ -176,6 +176,9 @@ the rows in `yrep`). This plot makes it easy to see that this model fails to
 account for the large proportion of zeros in `y`. That is, the model predicts
 fewer zeros than were actually observed.
 
+See Figure 6 in [Gabry et al. (2019)](#gabry2019) for another example of using
+`ppc_stat_grouped`.
+
 #### ppc_hist
 
 We could see the same thing from a different perspective by looking at separate
@@ -256,6 +259,8 @@ ppc_stat(y, yrep_nb, stat = "max", binwidth = 100) +
   coord_cartesian(xlim = c(-1, 5000))
 ```
 
+See Figure 7 in [Gabry et al. (2019)](#gabry2019) for another example of using
+`ppc_stat_grouped`.
 
 <br>
 
@@ -292,6 +297,8 @@ plot is made for each level:
 ppc_stat_grouped(y, yrep_nb, group = roaches$treatment, stat = "prop_zero")
 ```
 
+See Figure 8 in [Gabry et al. (2019)](#gabry2019) for another example of using
+`ppc_stat_grouped`.
 
 <br>
 
@@ -376,9 +383,11 @@ Gabry, J., and Goodrich, B. (2017). rstanarm: Bayesian Applied Regression
 Modeling via Stan. R package version 2.15.3. 
 http://mc-stan.org/rstanarm, https://CRAN.R-project.org/package=rstanarm
 
-Gabry, J., Simpson, D., Vehtari, A., Betancourt, M., Gelman, A. (2018).
-Visualization in Bayesian workflow. _Journal of the Royal Statistical Society Series A_, accepted for publication. arXiv preprint:
-https://arxiv.org/abs/1709.01449
+Gabry, J. , Simpson, D. , Vehtari, A. , Betancourt, M. and Gelman, A. (2019), 
+Visualization in Bayesian workflow. _J. R. Stat. Soc. A_, 182: 389-402. 
+\doi:10.1111/rssa.12378. ([journal](https://rss.onlinelibrary.wiley.com/doi/full/10.1111/rssa.12378), 
+[arXiv preprint](https://arxiv.org/abs/1709.01449))
+<a id="gabry2019"></a>
 
 Gelman, A., Carlin, J. B., Stern, H. S., Dunson, D. B., Vehtari, A., and Rubin, 
 D. B. (2013). *Bayesian Data Analysis*. Chapman & Hall/CRC Press, London, third 

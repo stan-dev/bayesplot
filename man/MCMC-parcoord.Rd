@@ -8,8 +8,8 @@
 \title{Parallel coordinates plot of MCMC draws}
 \usage{
 mcmc_parcoord(x, pars = character(), regex_pars = character(),
-  transformations = list(), ..., size = 0.2, alpha = 0.3, np = NULL,
-  np_style = parcoord_style_np())
+  transformations = list(), ..., size = 0.2, alpha = 0.3,
+  np = NULL, np_style = parcoord_style_np())
 
 mcmc_parcoord_data(x, pars = character(), regex_pars = character(),
   transformations = list(), np = NULL)
@@ -152,10 +152,11 @@ tail(d)
 
 }
 \references{
-Gabry, J., Simpson, D., Vehtari, A., Betancourt, M., and Gelman,
-  A. (2018). Visualization in Bayesian workflow. \emph{Journal of the Royal
-  Statistical Society Series A}, accepted for publication. arXiv preprint:
-  \url{http://arxiv.org/abs/1709.01449}.
+Gabry, J. , Simpson, D. , Vehtari, A. , Betancourt, M. and
+  Gelman, A. (2019), Visualization in Bayesian workflow. \emph{J. R. Stat.
+  Soc. A}, 182: 389-402. doi:10.1111/rssa.12378,
+  (\href{https://rss.onlinelibrary.wiley.com/doi/full/10.1111/rssa.12378}{journal},
+  \href{https://arxiv.org/abs/1709.01449}{arXiv preprint})
 
 Hartikainen, A. (2017, Aug 23). Concentration of divergences
 [Msg 21]. Message posted to The Stan Forums:
@@ -170,3 +171,4 @@ Other MCMC: \code{\link{MCMC-combos}},
   \code{\link{MCMC-scatterplots}},
   \code{\link{MCMC-traces}}
 }
+\concept{MCMC}

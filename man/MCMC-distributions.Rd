@@ -12,19 +12,19 @@
 \title{Histograms and kernel density plots of MCMC draws}
 \usage{
 mcmc_hist(x, pars = character(), regex_pars = character(),
-  transformations = list(), facet_args = list(), ..., binwidth = NULL,
-  breaks = NULL, freq = TRUE)
+  transformations = list(), facet_args = list(), ...,
+  binwidth = NULL, breaks = NULL, freq = TRUE)
 
 mcmc_dens(x, pars = character(), regex_pars = character(),
   transformations = list(), facet_args = list(), ..., trim = FALSE)
 
 mcmc_hist_by_chain(x, pars = character(), regex_pars = character(),
-  transformations = list(), facet_args = list(), ..., binwidth = NULL,
-  freq = TRUE)
+  transformations = list(), facet_args = list(), ...,
+  binwidth = NULL, freq = TRUE)
 
 mcmc_dens_overlay(x, pars = character(), regex_pars = character(),
-  transformations = list(), facet_args = list(), color_chains = TRUE, ...,
-  trim = FALSE)
+  transformations = list(), facet_args = list(), color_chains = TRUE,
+  ..., trim = FALSE)
 
 mcmc_dens_chains(x, pars = character(), regex_pars = character(),
   transformations = list(), color_chains = TRUE, ..., bw = NULL,
@@ -35,8 +35,8 @@ mcmc_dens_chains_data(x, pars = character(), regex_pars = character(),
   kernel = NULL, n_dens = NULL)
 
 mcmc_violin(x, pars = character(), regex_pars = character(),
-  transformations = list(), facet_args = list(), ..., probs = c(0.1, 0.5,
-  0.9))
+  transformations = list(), facet_args = list(), ..., probs = c(0.1,
+  0.5, 0.9))
 }
 \arguments{
 \item{x}{A 3-D array, matrix, list of matrices, or data frame of MCMC draws.
@@ -206,3 +206,4 @@ Other MCMC: \code{\link{MCMC-combos}},
   \code{\link{MCMC-scatterplots}},
   \code{\link{MCMC-traces}}
 }
+\concept{MCMC}
