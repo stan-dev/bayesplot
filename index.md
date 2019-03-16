@@ -1,35 +1,35 @@
 [![Travis-CI Build Status](https://travis-ci.org/stan-dev/bayesplot.svg?branch=master)](https://travis-ci.org/stan-dev/bayesplot)
 [![codecov](https://codecov.io/gh/stan-dev/bayesplot/branch/master/graph/badge.svg)](https://codecov.io/gh/stan-dev/bayesplot)
-[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/bayesplot?color=blue)](http://cran.r-project.org/web/packages/bayesplot)
-[![Downloads](http://cranlogs.r-pkg.org/badges/bayesplot?color=blue)](http://cran.rstudio.com/package=bayesplot)
+[![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/bayesplot?color=blue)](https://cran.r-project.org/web/packages/bayesplot)
+[![Downloads](https://cranlogs.r-pkg.org/badges/bayesplot?color=blue)](https://cran.rstudio.com/package=bayesplot)
 
 <br>
 
 <div style="text-align:left">
-<span><a href="http://mc-stan.org">
+<span><a href="https://mc-stan.org">
 <img src="https://raw.githubusercontent.com/stan-dev/logos/master/logo_tm.png" width=100 alt="Stan Logo"/> </a><h2><strong>bayesplot</strong></h2>
 <h4>Plotting Bayesian models</h4></span>
 </div>
 
 <br>
 
-<a href="http://mc-stan.org/assets/img/bayesplot/mcmc_areas-rstanarm.png">
-<img src="http://mc-stan.org/assets/img/bayesplot/mcmc_areas-rstanarm.png" style="width: 15%;"/>
+<a href="https://mc-stan.org/assets/img/bayesplot/mcmc_areas-rstanarm.png">
+<img src="https://mc-stan.org/assets/img/bayesplot/mcmc_areas-rstanarm.png" style="width: 15%;"/>
 </a>
-<a href="http://mc-stan.org/assets/img/bayesplot/mcmc_nuts_energy-rstan.png">
-<img src="http://mc-stan.org/assets/img/bayesplot/mcmc_nuts_energy-rstan.png" style="width: 15%;"/>
+<a href="https://mc-stan.org/assets/img/bayesplot/mcmc_nuts_energy-rstan.png">
+<img src="https://mc-stan.org/assets/img/bayesplot/mcmc_nuts_energy-rstan.png" style="width: 15%;"/>
 </a>
-<a href="http://mc-stan.org/assets/img/bayesplot/mcmc_trace-rstan.png">
-<img src="http://mc-stan.org/assets/img/bayesplot/mcmc_trace-rstan.png" style="width: 15%;"/>
+<a href="https://mc-stan.org/assets/img/bayesplot/mcmc_trace-rstan.png">
+<img src="https://mc-stan.org/assets/img/bayesplot/mcmc_trace-rstan.png" style="width: 15%;"/>
 </a>
-<a href="http://mc-stan.org/assets/img/bayesplot/ppc_dens_overlay-rstanarm.png">
-<img src="http://mc-stan.org/assets/img/bayesplot/ppc_dens_overlay-rstanarm.png" style="width: 15%;"/>
+<a href="https://mc-stan.org/assets/img/bayesplot/ppc_dens_overlay-rstanarm.png">
+<img src="https://mc-stan.org/assets/img/bayesplot/ppc_dens_overlay-rstanarm.png" style="width: 15%;"/>
 </a>
-<a href="http://mc-stan.org/assets/img/bayesplot/ppc_intervals-rstanarm.png">
-<img src="http://mc-stan.org/assets/img/bayesplot/ppc_intervals-rstanarm.png" style="width: 15%;"/>
+<a href="https://mc-stan.org/assets/img/bayesplot/ppc_intervals-rstanarm.png">
+<img src="https://mc-stan.org/assets/img/bayesplot/ppc_intervals-rstanarm.png" style="width: 15%;"/>
 </a>
-<a href="http://mc-stan.org/assets/img/bayesplot/ppc_stat-rstanarm.png">
-<img src="http://mc-stan.org/assets/img/bayesplot/ppc_stat-rstanarm.png" style="width: 15%;"/>
+<a href="https://mc-stan.org/assets/img/bayesplot/ppc_stat-rstanarm.png">
+<img src="https://mc-stan.org/assets/img/bayesplot/ppc_stat-rstanarm.png" style="width: 15%;"/>
 </a>
 
 
@@ -47,14 +47,14 @@ modifying ggplot objects provided by the **ggplot2** package.
 The idea behind **bayesplot** is not only to provide convenient functionality
 for users, but also a common set of functions that can be easily used by
 developers working on a variety of packages for Bayesian modeling, particularly
-(but not necessarily) those powered by [**RStan**](http://mc-stan.org/rstan).
+(but not necessarily) those powered by [**RStan**](https://mc-stan.org/rstan).
 
 ## Getting Started
 
 If you are just getting started with **bayesplot** we recommend starting with
-the tutorial [vignettes](http://mc-stan.org/bayesplot/articles/index.html).
+the tutorial [vignettes](https://mc-stan.org/bayesplot/articles/index.html).
 There are also many
-[examples](http://mc-stan.org/bayesplot/reference/index.html) throughout the
+[examples](https://mc-stan.org/bayesplot/reference/index.html) throughout the
 package documentation.
 
 ## Installation
@@ -75,14 +75,14 @@ devtools::install_github("stan-dev/bayesplot", dependencies = TRUE, build_vignet
 ```
 
 You can also set `build_vignettes=FALSE` for a faster installation from GitHub (the vignettes 
-can always be accessed online anytime at [mc-stan.org/bayesplot/articles](http://mc-stan.org/bayesplot/articles/)).
+can always be accessed online anytime at [mc-stan.org/bayesplot/articles](https://mc-stan.org/bayesplot/articles/)).
 For issues related to pandoc see the [Readme](https://github.com/stan-dev/bayesplot#installation)
 
 
 ## Examples
 
-Some quick examples using MCMC draws obtained from our [__rstanarm__](http://mc-stan.org/rstanarm)
-and [__rstan__](http://mc-stan.org/rstan) packages.
+Some quick examples using MCMC draws obtained from our [__rstanarm__](https://mc-stan.org/rstanarm)
+and [__rstan__](https://mc-stan.org/rstan) packages.
 
 ```r
 library("bayesplot")
