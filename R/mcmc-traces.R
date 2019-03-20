@@ -271,106 +271,96 @@ trace_style_np <-
                         ...) {
 
   style <- match.arg(style)
-  x <- prepare_mcmc_array(x, pars, regex_pars, transformations)
+  data <- mcmc_trace_data(
+    x, pars = pars, regex_pars = regex_pars, transformations = transformations,
+    highlight = highlight, n_warmup = n_warmup, iter1 = iter1, window = window,
+    np = np, np_style = np_style
+  )
+  n_iter <- unique(data$n_iterations)
+  n_chain <- unique(data$n_chains)
+  n_param <- unique(data$n_parameters)
 
-  if (iter1 < 0) {
-    stop(
-      "'iter1' cannot be negative."
-    )
-  }
-
-  if (n_warmup > 0 && iter1 > 0) {
-    stop(
-      "'n_warmup' and 'iter1' can't both be specified."
-    )
-  }
+  mapping <- aes_(
+    x = ~ iteration,
+    y = ~ value,
+    color = ~ chain
+  )
 
   if (!is.null(highlight)) {
-    if (!has_multiple_chains(x))
-      STOP_need_multiple_chains()
-
-    if (!highlight %in% seq_len(ncol(x)))
-      stop(
-        "'highlight' is ", highlight,
-        ", but 'x' contains ", ncol(x), " chains."
-      )
+    mapping <- modify_aes_(
+      mapping,
+      alpha = ~ highlight,
+      color = ~ highlight
+    )
   }
 
-  data <- melt_mcmc(x)
-  data$Chain <- factor(data$Chain)
-  n_chain <- num_chains(data)
-  n_iter <- num_iters(data)
-  n_param <- num_params(data)
+  layer_warmup <- if (n_warmup > 0) {
+    layer_warmup <- annotate(
+      "rect", xmin = -Inf, xmax = n_warmup, ymin = -Inf, ymax = Inf, size = 1,
+      color = "gray88", fill = "gray88", alpha = 0.5)
+  } else {
+    NULL
+  }
 
   geom_args <- list()
   geom_args$size <- size %||% ifelse(style == "line", 1/3, 1)
+  layer_draws <- do.call(paste0("geom_", style), geom_args)
 
-  if (is.null(highlight)) {
-    mapping <- aes_(x = ~ Iteration + iter1, y = ~ Value, color = ~ Chain)
-  } else {
-    stopifnot(length(highlight) == 1)
-    mapping <- aes_(x = ~ Iteration + iter1,
-                    y = ~ Value,
-                    alpha = ~ Chain == highlight,
-                    color = ~ Chain == highlight)
-  }
-  graph <- ggplot(data, mapping) +
-    bayesplot_theme_get()
-
-  if (n_warmup > 0) {
-    graph <- graph +
-      annotate("rect",
-               xmin = -Inf, xmax = n_warmup,
-               ymin = -Inf, ymax = Inf,
-               size = 1,
-               color = "gray88",
-               fill = "gray88",
-               alpha = 0.5)
-  }
-
-  if (!is.null(window)) {
+  coord_window <- if (!is.null(window)) {
     stopifnot(length(window) == 2)
-    graph <- graph + coord_cartesian(xlim = window)
+    coord_cartesian(xlim = window)
+  } else {
+    NULL
   }
 
-  graph <- graph + do.call(paste0("geom_", style), geom_args)
+  scale_alpha <- NULL
+  scale_color <- NULL
+  div_rug <- NULL
+  div_guides <- NULL
 
   if (!is.null(highlight)) {
-    graph <- graph +
-      scale_alpha_discrete(range = c(alpha, 1), guide = "none") +
-      scale_color_manual("",
-                         values = get_color(c("lh", "d")),
-                         labels = c("Other chains", paste("Chain", highlight)))
+    ## scale_alpha_discrete() warns on default
+    scale_alpha <- scale_alpha_ordinal(range = c(alpha, 1), guide = "none")
+    scale_color <- scale_color_manual(
+      "",
+      values = get_color(c("lh", "d")),
+      labels = c("Other chains", paste("Chain", highlight)))
+
   } else {
-    graph <- graph +
-      scale_color_manual("Chain", values = chain_colors(n_chain))
+    scale_color <- scale_color_manual("Chain", values = chain_colors(n_chain))
 
     if (!is.null(np)) {
       div_rug <- divergence_rug(np, np_style, n_iter, n_chain)
       if (!is.null(div_rug))
-        graph <- graph +
-          div_rug +
-          guides(
-            color = guide_legend(order = 1),
-            linetype = guide_legend(order = 2,
-                                    title = NULL,
-                                    keywidth = rel(1/2),
-                                    override.aes = list(size = rel(1/2)))
-          )
+        div_guides <- guides(
+          color = guide_legend(order = 1),
+          linetype = guide_legend(
+            order = 2, title = NULL, keywidth = rel(1/2),
+            override.aes = list(size = rel(1/2)))
+        )
     }
   }
 
 
+  facet_call <- NULL
   if (n_param == 1) {
-    graph <- graph + ylab(levels(data$Parameter))
+    facet_call <- ylab(levels(data$parameter))
   } else {
-    facet_args$facets <- ~ Parameter
-    if (is.null(facet_args$scales))
-      facet_args$scales <- "free"
-    graph <- graph + do.call("facet_wrap", facet_args)
+    facet_args$facets <- ~ parameter
+    facet_args$scales <- facet_args$scales %||% "free"
+    facet_call <- do.call("facet_wrap", facet_args)
   }
 
-  graph +
+  ggplot(data, mapping) +
+    bayesplot_theme_get() +
+    layer_warmup +
+    layer_draws +
+    coord_window +
+    scale_alpha +
+    scale_color +
+    div_rug +
+    div_guides +
+    facet_call +
     scale_x_continuous(breaks = pretty) +
     legend_move(ifelse(n_chain > 1, "right", "none")) +
     xaxis_title(FALSE) +
@@ -393,6 +383,67 @@ chain_colors <- function(n) {
   unname(rev(clrs))
 }
 
+
+mcmc_trace_data <- function(x,
+                            pars = character(),
+                            regex_pars = character(),
+                            transformations = list(),
+                            facet_args = list(),
+                            ...,
+                            highlight = NULL,
+                            n_warmup = 0,
+                            iter1 = 0,
+                            window = NULL,
+                            size = NULL,
+                            np = NULL,
+                            np_style = trace_style_np()) {
+
+  check_ignored_arguments(...)
+
+  x <- prepare_mcmc_array(x, pars, regex_pars, transformations)
+
+  if (iter1 < 0) {
+    stop("'iter1' cannot be negative.")
+  }
+
+  if (n_warmup > 0 && iter1 > 0) {
+    stop("'n_warmup' and 'iter1' can't both be specified.")
+  }
+
+  if (!is.null(highlight)) {
+    stopifnot(length(highlight) == 1)
+
+    if (!has_multiple_chains(x)){
+      STOP_need_multiple_chains()
+    }
+
+    if (!highlight %in% seq_len(ncol(x)))
+      stop(
+        "'highlight' is ", highlight,
+        ", but 'x' contains ", ncol(x), " chains."
+      )
+  }
+
+  ## @todo: filter to just window?
+
+  data <- melt_mcmc(x)
+  data$Chain <- factor(data$Chain)
+  data$n_chains <- num_chains(data)
+  data$n_iterations <- num_iters(data)
+  data$n_parameters <- num_chains(data)
+  data <- rlang::set_names(data, tolower)
+
+  data$highlight <- if (!is.null(highlight)) {
+    data$chain == highlight
+  } else {
+    FALSE
+  }
+
+  data$warmup <- data$iteration <= n_warmup
+  data$iteration <- data$iteration + iter1
+
+  tibble::as_tibble(data)
+}
 
 # Add divergences to trace plot using geom_rug
 #
