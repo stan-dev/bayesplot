@@ -28,7 +28,8 @@ Imports:
     stats,
     utils,
     rlang,
-    ggridges
+    ggridges,
+    tibble
 Suggests: 
     arm,
     gridExtra (>= 2.2.1),
