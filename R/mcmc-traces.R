@@ -433,6 +433,11 @@ mcmc_trace_data <- function(x,
   data$n_parameters <- num_chains(data)
   data <- rlang::set_names(data, tolower)
 
+  data <- data %>%
+    group_by(.data$parameter) %>%
+    mutate(value_rank = dplyr::row_number(.data$value)) %>%
+    ungroup()
+
   data$highlight <- if (!is.null(highlight)) {
     data$chain == highlight
   } else {
