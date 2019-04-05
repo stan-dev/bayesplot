@@ -40,6 +40,12 @@
 * The examples in
   [`?ppc_loo_pit_overlay()`](http://mc-stan.org/bayesplot/reference/PPC-loo.html)
   now work as expected. (#166, #167)
+  
+* Added `"viridisD"` as an alternative name for `"viridis"` to the supported 
+  colors.
+
+* Added `"viridisE"` (the [cividis](https://github.com/marcosci/cividis) 
+  version of viridis) to the supported colors. 
 
 
 
