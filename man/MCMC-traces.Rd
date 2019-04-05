@@ -5,6 +5,7 @@
 \alias{mcmc_trace}
 \alias{mcmc_trace_highlight}
 \alias{trace_style_np}
+\alias{mcmc_rank_overlay}
 \title{Trace plot (time series plot) of MCMC draws}
 \usage{
 mcmc_trace(x, pars = character(), regex_pars = character(),
@@ -17,6 +18,9 @@ mcmc_trace_highlight(x, pars = character(), regex_pars = character(),
   window = NULL, size = NULL, alpha = 0.2, highlight = 1)
 
 trace_style_np(div_color = "red", div_size = 0.25, div_alpha = 1)
+
+mcmc_rank_overlay(x, pars = character(), regex_pars = character(),
+  transformations = list(), n_bins = 20)
 }
 \arguments{
 \item{x}{A 3-D array, matrix, list of matrices, or data frame of MCMC draws.
@@ -104,6 +108,9 @@ of the chains that will be more visible than the others in the plot.}
 specified. They control the color, size, and transparency specifications
 for showing divergences in the plot. The default values are displayed in
 the \strong{Usage} section above.}
+
+\item{n_bins}{number of bins to use for the histogram of rank-normalized MCMC
+samples.}
 }
 \value{
 A ggplot object that can be further customized using the
@@ -123,6 +130,12 @@ section, below, for details.
   \item{\code{mcmc_trace_highlight}}{
    Traces are plotted using points rather than lines and the opacity of all
    chains but one (specified by the \code{highlight} argument) is reduced.
+  }
+  \item{\code{mcmc_rank_overlay}}{
+   Whereas tradition trace plots visualize how the chains mix over the course
+   of sampling, rank-normalized histograms visualize how the values from the
+   chains mix together in terms of ranking. An ideal plot would show the
+   lines mixing or overlapping in a uniform distribution.
   }
 }
 }
@@ -158,6 +171,11 @@ color_scheme_set("viridisA")
 mcmc_trace(x[,, 1:4], window = c(100, 130), size = 1) +
   panel_bg(fill = "gray90", color = NA) +
   legend_move("top")
+
+# Rank-normalized histogram plots. Instead of showing how chains mix over
+# time, look at how the ranking of MCMC samples mixed between chains.
+color_scheme_set("viridisE")
+mcmc_rank_overlay(x, "alpha")
 
 \dontrun{
 # parse facet label text

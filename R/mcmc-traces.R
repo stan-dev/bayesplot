@@ -53,6 +53,12 @@
 #'    Traces are plotted using points rather than lines and the opacity of all
 #'    chains but one (specified by the \code{highlight} argument) is reduced.
 #'   }
+#'   \item{\code{mcmc_rank_overlay}}{
+#'    Whereas tradition trace plots visualize how the chains mix over the course
+#'    of sampling, rank-normalized histograms visualize how the values from the
+#'    chains mix together in terms of ranking. An ideal plot would show the
+#'    lines mixing or overlapping in a uniform distribution.
+#'   }
 #' }
 #'
 #' @examples
@@ -86,6 +92,11 @@
 #' mcmc_trace(x[,, 1:4], window = c(100, 130), size = 1) +
 #'   panel_bg(fill = "gray90", color = NA) +
 #'   legend_move("top")
+#'
+#' # Rank-normalized histogram plots. Instead of showing how chains mix over
+#' # time, look at how the ranking of MCMC samples mixed between chains.
+#' color_scheme_set("viridisE")
+#' mcmc_rank_overlay(x, "alpha")
 #'
 #' \dontrun{
 #' # parse facet label text
@@ -236,9 +247,9 @@ mcmc_trace_highlight <-
 #'   for showing divergences in the plot. The default values are displayed in
 #'   the \strong{Usage} section above.
 trace_style_np <-
-function(div_color = "red",
-         div_size = 0.25,
-         div_alpha = 1) {
+  function(div_color = "red",
+           div_size = 0.25,
+           div_alpha = 1) {
   stopifnot(
     is.character(div_color),
     is.numeric(div_size),
@@ -250,6 +261,59 @@ function(div_color = "red",
     alpha = c(div = div_alpha)
   )
   structure(style, class = c(class(style), "nuts_style"))
+}
+
+
+#' @rdname MCMC-traces
+#' @export
+#' @param n_bins number of bins to use for the histogram of rank-normalized MCMC
+#'   samples.
+mcmc_rank_overlay <- function(
+  x,
+  pars = character(),
+  regex_pars = character(),
+  transformations = list(),
+  n_bins = 20) {
+
+  data <- mcmc_trace_data(
+    x, pars = pars, regex_pars = regex_pars, transformations = transformations
+  )
+
+  n_chain <- unique(data$n_chains)
+
+  # We have to bin and count the data ourselves because
+  # ggplot2::stat_bin(geom = "step") does not draw the final bin.
+  histobins <- data %>%
+    dplyr::distinct(.data$value_rank) %>%
+    mutate(cut = cut(.data$value_rank, n_bins)) %>%
+    group_by(.data$cut) %>%
+    mutate(bin_start = min(.data$value_rank)) %>%
+    ungroup() %>%
+    select(-.data$cut)
+
+  d_bin_counts <- data %>%
+    left_join(histobins, by = "value_rank") %>%
+    count(.data$parameter, .data$chain, .data$bin_start)
+
+  # Duplicate the final bin, setting the left edge to the greatest x value, so
+  # that the entire x-axis is used,
+  right_edge <- max(data$value_rank)
+
+  d_bin_counts <- d_bin_counts %>%
+    dplyr::filter(.data$bin_start == max(.data$bin_start)) %>%
+    mutate(bin_start = right_edge) %>%
+    dplyr::bind_rows(d_bin_counts)
+
+  scale_color <- scale_color_manual("Chain", values = chain_colors(n_chain))
+
+  ggplot(d_bin_counts) +
+    aes_(x = ~ bin_start, y =  ~ n, color = ~ chain) +
+    geom_step() +
+    facet_wrap("parameter") +
+    scale_color +
+    ylim(c(0, NA)) +
+    bayesplot_theme_get() +
+    labs(x = "Rank", y = NULL)
 }
 
 
