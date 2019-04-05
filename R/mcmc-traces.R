@@ -157,41 +157,41 @@ mcmc_trace <-
            np_style = trace_style_np(),
            divergences = NULL) {
 
-    # deprecate 'divergences' arg in favor of 'np' (for consistency across functions)
-    if (!is.null(divergences)) {
-      warning(
-        "The 'divergences' argument is deprecated ",
-        "and will be removed in a future release. ",
-        "Use the 'np' argument instead."
-      )
-
-      if (is.null(np)) {
-        np <- divergences
-      } else {
-        stop(
-          "'np' and 'divergences' can't both be specified. ",
-          "Use only 'np' (the 'divergences' argument is deprecated)."
-        )
-      }
-    }
-
-    check_ignored_arguments(...)
-    .mcmc_trace(
-      x,
-      pars = pars,
-      regex_pars = regex_pars,
-      transformations = transformations,
-      facet_args = facet_args,
-      n_warmup = n_warmup,
-      window = window,
-      size = size,
-      style = "line",
-      np = np,
-      np_style = np_style,
-      iter1 = iter1,
-      ...
+  # deprecate 'divergences' arg in favor of 'np' (for consistency across functions)
+  if (!is.null(divergences)) {
+    warning(
+      "The 'divergences' argument is deprecated ",
+      "and will be removed in a future release. ",
+      "Use the 'np' argument instead."
     )
+
+    if (is.null(np)) {
+      np <- divergences
+    } else {
+      stop(
+        "'np' and 'divergences' can't both be specified. ",
+        "Use only 'np' (the 'divergences' argument is deprecated)."
+      )
+    }
   }
+
+  check_ignored_arguments(...)
+  .mcmc_trace(
+    x,
+    pars = pars,
+    regex_pars = regex_pars,
+    transformations = transformations,
+    facet_args = facet_args,
+    n_warmup = n_warmup,
+    window = window,
+    size = size,
+    style = "line",
+    np = np,
+    np_style = np_style,
+    iter1 = iter1,
+    ...
+  )
+}
 
 #' @rdname MCMC-traces
 #' @export
@@ -209,22 +209,22 @@ mcmc_trace_highlight <-
            size = NULL,
            alpha = 0.2,
            highlight = 1) {
-    check_ignored_arguments(...)
-    .mcmc_trace(
-      x,
-      pars = pars,
-      regex_pars = regex_pars,
-      transformations = transformations,
-      facet_args = facet_args,
-      n_warmup = n_warmup,
-      window = window,
-      size = size,
-      alpha = alpha,
-      highlight = highlight,
-      style = "point",
-      ...
-    )
-  }
+  check_ignored_arguments(...)
+  .mcmc_trace(
+    x,
+    pars = pars,
+    regex_pars = regex_pars,
+    transformations = transformations,
+    facet_args = facet_args,
+    n_warmup = n_warmup,
+    window = window,
+    size = size,
+    alpha = alpha,
+    highlight = highlight,
+    style = "point",
+    ...
+  )
+}
 
 
 #' @rdname MCMC-traces
@@ -236,21 +236,21 @@ mcmc_trace_highlight <-
 #'   for showing divergences in the plot. The default values are displayed in
 #'   the \strong{Usage} section above.
 trace_style_np <-
-  function(div_color = "red",
-           div_size = 0.25,
-           div_alpha = 1) {
-    stopifnot(
-      is.character(div_color),
-      is.numeric(div_size),
-      is.numeric(div_alpha) && div_alpha >= 0 && div_alpha <= 1
-    )
-    style <- list(
-      color = c(div = div_color),
-      size = c(div = div_size),
-      alpha = c(div = div_alpha)
-    )
-    structure(style, class = c(class(style), "nuts_style"))
-  }
+function(div_color = "red",
+         div_size = 0.25,
+         div_alpha = 1) {
+  stopifnot(
+    is.character(div_color),
+    is.numeric(div_size),
+    is.numeric(div_alpha) && div_alpha >= 0 && div_alpha <= 1
+  )
+  style <- list(
+    color = c(div = div_color),
+    size = c(div = div_size),
+    alpha = c(div = div_alpha)
+  )
+  structure(style, class = c(class(style), "nuts_style"))
+}
 
 
 # internal -----------------------------------------------------------------
