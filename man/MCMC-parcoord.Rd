@@ -8,8 +8,8 @@
 \title{Parallel coordinates plot of MCMC draws}
 \usage{
 mcmc_parcoord(x, pars = character(), regex_pars = character(),
-  transformations = list(), ..., size = 0.2, alpha = 0.3, np = NULL,
-  np_style = parcoord_style_np())
+  transformations = list(), ..., size = 0.2, alpha = 0.3,
+  np = NULL, np_style = parcoord_style_np())
 
 mcmc_parcoord_data(x, pars = character(), regex_pars = character(),
   transformations = list(), np = NULL)
@@ -30,22 +30,26 @@ parameter selection. Can be specified instead of \code{pars} or in addition
 to \code{pars}.}
 
 \item{transformations}{Optionally, transformations to apply to parameters
-before plotting. If \code{transformations} is a function or a single string
-naming a function then that function will be used to transform all
-parameters. To apply transformations to particular parameters, the
-\code{transformations} argument can be a named list with length equal to
-the number of parameters to be transformed. Currently only univariate
-transformations of scalar parameters can be specified (multivariate
-transformations will be implemented in a future release). If
-\code{transformations} is a list, the name of each list element should be a
-parameter name and the content of each list element should be a function
-(or any item to match as a function via \code{\link{match.fun}}, e.g. a
-string naming a function). If a function is specified by its name as a
-string (e.g. \code{"log"}), then it can be used to construct a new
-parameter label for the appropriate parameter (e.g. \code{"log(sigma)"}).
-If a function itself is specified (e.g. \code{log} or \code{function(x)
-log(x)}) then \code{"t"} is used in the new parameter label to indicate
-that the parameter is transformed (e.g. \code{"t(sigma)"}).}
+  before plotting. If \code{transformations} is a function or a single string
+  naming a function then that function will be used to transform all
+  parameters. To apply transformations to particular parameters, the
+  \code{transformations} argument can be a named list with length equal to
+  the number of parameters to be transformed. Currently only univariate
+  transformations of scalar parameters can be specified (multivariate
+  transformations will be implemented in a future release). If
+  \code{transformations} is a list, the name of each list element should be a
+  parameter name and the content of each list element should be a function
+  (or any item to match as a function via \code{\link{match.fun}}, e.g. a
+  string naming a function). If a function is specified by its name as a
+  string (e.g. \code{"log"}), then it can be used to construct a new
+  parameter label for the appropriate parameter (e.g. \code{"log(sigma)"}).
+  If a function itself is specified (e.g. \code{log} or \code{function(x)
+  log(x)}) then \code{"t"} is used in the new parameter label to indicate
+  that the parameter is transformed (e.g. \code{"t(sigma)"}).
+
+  Note: due to partial argument matching \code{transformations} can be
+  abbreviated for convenience in interactive use (e.g., \code{transform},
+  \code{trans}, etc.).}
 
 \item{...}{Currently ignored.}
 
@@ -72,7 +76,7 @@ the \strong{Usage} section above.}
 \value{
 A ggplot object that can be further customized using the
   \pkg{ggplot2} package. The \code{_data} functions return the data that
-  would have be drawn by the plotting function.
+  would have been drawn by the plotting function.
 }
 \description{
 Parallel coordinates plot of MCMC draws (one dimension per parameter). See
@@ -148,15 +152,17 @@ tail(d)
 
 }
 \references{
-Gabry, J., Simpson, D., Vehtari, A., Betancourt, M., Gelman, A.
-  (2017). Visualization in Bayesian workflow. arXiv preprint
-  \href{https://arxiv.org/abs/1709.01449}{arvix:1709.01449}.
+Gabry, J. , Simpson, D. , Vehtari, A. , Betancourt, M. and
+  Gelman, A. (2019), Visualization in Bayesian workflow. \emph{J. R. Stat.
+  Soc. A}, 182: 389-402. doi:10.1111/rssa.12378,
+  (\href{https://rss.onlinelibrary.wiley.com/doi/full/10.1111/rssa.12378}{journal},
+  \href{https://arxiv.org/abs/1709.01449}{arXiv preprint})
+
+Hartikainen, A. (2017, Aug 23). Concentration of divergences
+[Msg 21]. Message posted to The Stan Forums:
+\url{http://discourse.mc-stan.org/t/concentration-of-divergences/1590/21}.
 }
 \seealso{
-Ari Hartikainen's post about the parallel coordinates plot on the
-  Stan Forums
-  (\href{http://discourse.mc-stan.org/t/concentration-of-divergences/1590/21}{link}).
-
 Other MCMC: \code{\link{MCMC-combos}},
   \code{\link{MCMC-diagnostics}},
   \code{\link{MCMC-distributions}},
@@ -165,3 +171,4 @@ Other MCMC: \code{\link{MCMC-combos}},
   \code{\link{MCMC-scatterplots}},
   \code{\link{MCMC-traces}}
 }
+\concept{MCMC}

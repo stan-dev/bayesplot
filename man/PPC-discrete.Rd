@@ -7,14 +7,14 @@
 \alias{ppc_rootogram}
 \title{PPCs for discrete outcomes}
 \usage{
-ppc_bars(y, yrep, ..., prob = 0.9, width = 0.9, size = 1, fatten = 3,
-  freq = TRUE)
+ppc_bars(y, yrep, ..., prob = 0.9, width = 0.9, size = 1,
+  fatten = 3, freq = TRUE)
 
 ppc_bars_grouped(y, yrep, group, facet_args = list(), ..., prob = 0.9,
   width = 0.9, size = 1, fatten = 3, freq = TRUE)
 
-ppc_rootogram(y, yrep, style = c("standing", "hanging", "suspended"), ...,
-  prob = 0.9, size = 1)
+ppc_rootogram(y, yrep, style = c("standing", "hanging", "suspended"),
+  ..., prob = 0.9, size = 1)
 }
 \arguments{
 \item{y}{A vector of observations. See \strong{Details}.}
@@ -64,10 +64,12 @@ A ggplot object that can be further customized using the
   \pkg{ggplot2} package.
 }
 \description{
-This page documents the PPC functions that can only be used if \code{y} and
-\code{yrep} are discrete. Currently these include rootograms for count
-outcomes and bar plots for ordinal, categorical, and multinomial outcomes.
-See the \strong{Plot Descriptions} section below.
+Many of the \link{PPC} functions in \pkg{bayesplot} can
+be used with discrete data. The small subset of these functions that can
+\emph{only} be used if \code{y} and \code{yrep} are discrete are documented
+on this page. Currently these include rootograms for count outcomes and bar
+plots for ordinal, categorical, and multinomial outcomes. See the
+\strong{Plot Descriptions} section below.
 }
 \details{
 For all of these plots \code{y} and \code{yrep} must be non-negative
@@ -152,3 +154,4 @@ Other PPCs: \code{\link{PPC-distributions}},
   \code{\link{PPC-scatterplots}},
   \code{\link{PPC-test-statistics}}
 }
+\concept{PPCs}

@@ -150,7 +150,7 @@ validate_x <- function(x = NULL, y, unique_x = FALSE) {
 #' @md
 melt_yrep <- function(yrep) {
   out <- yrep %>%
-    reshape2::melt(, varnames = c("rep_id", "y_id")) %>%
+    reshape2::melt(varnames = c("rep_id", "y_id")) %>%
     dplyr::as_data_frame()
   id <- create_yrep_ids(out$rep_id)
   out$rep_label <- factor(id, levels = unique(id))
@@ -175,6 +175,8 @@ melt_and_stack <- function(y, yrep) {
   yrep_text <- as.character(yrep_label())
 
   molten_yrep <- melt_yrep(yrep)
+
+  # Add a level in the labels for the observed y values
   levels(molten_yrep$rep_label) <- c(levels(molten_yrep$rep_label), y_text)
 
   ydat <- dplyr::data_frame(
@@ -185,8 +187,8 @@ melt_and_stack <- function(y, yrep) {
 
   data <- dplyr::bind_rows(molten_yrep, ydat) %>%
     mutate(
-      rep_label = relevel(rep_label, y_text),
-      is_y = is.na(rep_id),
+      rep_label = relevel(.data$rep_label, y_text),
+      is_y = is.na(.data$rep_id),
       is_y_label = ifelse(.data$is_y, y_text, yrep_text) %>%
         factor(levels = c(y_text, yrep_text)))
 

@@ -36,7 +36,8 @@
 #'   \item{\code{ppc_dens_overlay, ppc_ecdf_overlay}}{
 #'    Kernel density or empirical CDF estimates of each dataset (row) in
 #'    \code{yrep} are overlaid, with the distribution of \code{y} itself on top
-#'    (and in a darker shade).
+#'    (and in a darker shade). When using \code{ppc_ecdf_overlay} with discrete
+#'    data set the \code{discrete} argument to \code{TRUE} for better results.
 #'   }
 #'   \item{\code{ppc_violin_grouped}}{
 #'    The density estimate of \code{yrep} within each level of a grouping
@@ -93,7 +94,6 @@
 #' ppc_violin_grouped(y, yrep, group, alpha = 0, y_draw = "both",
 #'                    y_size = 1.5, y_alpha = 0.5, y_jitter = 0.33)
 #' }
-#'
 NULL
 
 
@@ -120,19 +120,21 @@ ppc_data <- function(y, yrep, group = NULL) {
 
 #' @rdname PPC-distributions
 #' @export
-ppc_hist <- function(y, yrep, ..., binwidth = NULL, freq = TRUE) {
+ppc_hist <- function(y, yrep, ..., binwidth = NULL, breaks = NULL, 
+                     freq = TRUE) {
   check_ignored_arguments(...)
   data <- ppc_data(y, yrep)
   aes_list <- set_hist_aes(freq, fill = ~ is_y_label, color = ~ is_y_label)
-
+    
   ggplot(data) +
     aes_list +
-    geom_histogram(size = 0.25, binwidth = binwidth) +
+    geom_histogram(size = 0.25, binwidth = binwidth, breaks = breaks) +
     scale_fill_ppc_dist() +
     scale_color_ppc_dist() +
     facet_wrap_parsed("rep_label") +
     force_axes_in_facets() +
     dont_expand_y_axis() +
+    bayesplot_theme_get() +
     space_legend_keys() +
     yaxis_text(FALSE) +
     yaxis_title(FALSE) +
@@ -163,6 +165,7 @@ ppc_boxplot <- function(y, yrep, ..., notch = TRUE, size = 0.5, alpha = 1) {
       outlier.alpha = 2 / 3) +
     scale_fill_ppc_dist() +
     scale_color_ppc_dist() +
+    bayesplot_theme_get() +
     yaxis_title(FALSE) +
     xaxis_ticks(FALSE) +
     xaxis_text(FALSE) +
@@ -189,6 +192,7 @@ ppc_freqpoly <- function(y, yrep, ...,
     scale_fill_ppc_dist() +
     scale_color_ppc_dist() +
     facet_wrap_parsed("rep_label") +
+    bayesplot_theme_get() +
     force_axes_in_facets() +
     dont_expand_y_axis() +
     space_legend_keys() +
@@ -219,6 +223,7 @@ ppc_freqpoly_grouped <- function(y, yrep, group, ..., binwidth = NULL,
       scale_fill_ppc_dist() +
       scale_color_ppc_dist() +
       dont_expand_y_axis(c(0.005, 0)) +
+      bayesplot_theme_get() +
       force_axes_in_facets() +
       space_legend_keys() +
       xaxis_title(FALSE) +
@@ -241,6 +246,7 @@ ppc_dens <- function(y, yrep, ..., trim = FALSE, size = 0.5, alpha = 1) {
     geom_density(size = size, alpha = alpha, trim = trim) +
     scale_fill_ppc_dist() +
     scale_color_ppc_dist() +
+    bayesplot_theme_get() +
     facet_wrap_parsed("rep_label") +
     force_axes_in_facets() +
     dont_expand_y_axis() +
@@ -255,8 +261,16 @@ ppc_dens <- function(y, yrep, ..., trim = FALSE, size = 0.5, alpha = 1) {
 
 #' @rdname PPC-distributions
 #' @export
-ppc_dens_overlay <- function(y, yrep, ..., trim = FALSE, size = 0.25,
-                             alpha = 0.7) {
+#' @template args-density-controls
+ppc_dens_overlay <- function(y, yrep, ...,
+                             size = 0.25,
+                             alpha = 0.7,
+                             trim = FALSE,
+                             bw = "nrd0",
+                             adjust = 1,
+                             kernel = "gaussian",
+                             n_dens = 1024) {
+
   check_ignored_arguments(...)
   data <- ppc_data(y, yrep)
 
@@ -269,7 +283,11 @@ ppc_dens_overlay <- function(y, yrep, ..., trim = FALSE, size = 0.25,
       position = "identity",
       size = size,
       alpha = alpha,
-      trim = trim
+      trim = trim,
+      bw = bw,
+      adjust = adjust,
+      kernel = kernel,
+      n = n_dens
     ) +
     stat_density(
       aes_(color = "y"),
@@ -278,9 +296,14 @@ ppc_dens_overlay <- function(y, yrep, ..., trim = FALSE, size = 0.25,
       position = "identity",
       lineend = "round",
       size = 1,
-      trim = trim
+      trim = trim,
+      bw = bw,
+      adjust = adjust,
+      kernel = kernel,
+      n = n_dens
     ) +
     scale_color_ppc_dist() +
+    bayesplot_theme_get() +
     xlab(y_label()) +
     dont_expand_axes() +
     yaxis_title(FALSE) +
@@ -296,36 +319,53 @@ ppc_dens_overlay <- function(y, yrep, ..., trim = FALSE, size = 0.25,
 
 #' @export
 #' @rdname PPC-distributions
+#' @param discrete For \code{ppc_ecdf_overlay}, should the data be treated as
+#'   discrete? The default is \code{FALSE}, in which case \code{geom="line"} is
+#'   passed to \code{\link[ggplot2]{stat_ecdf}}. If \code{discrete} is set to
+#'   \code{TRUE} then \code{geom="step"} is used.
 #' @param pad A logical scalar passed to \code{\link[ggplot2]{stat_ecdf}}.
-ppc_ecdf_overlay <- function(y, yrep, ..., pad = TRUE, size = 0.25,
-                             alpha = 0.7) {
-  check_ignored_arguments(...)
-  data <- ppc_data(y, yrep)
+ppc_ecdf_overlay <-
+  function(y,
+           yrep,
+           ...,
+           discrete = FALSE,
+           pad = TRUE,
+           size = 0.25,
+           alpha = 0.7) {
+    check_ignored_arguments(...)
+    data <- ppc_data(y, yrep)
 
-  ggplot(data) +
-    aes_(x = ~ value) +
-    hline_at(c(0, 0.5, 1), size = c(0.2, 0.1, 0.2),
-             linetype = 2, color = get_color("dh")) +
-    stat_ecdf(
-      data = function(x) dplyr::filter(x, !.data$is_y),
-      mapping = aes_(group = ~ rep_id, color = "yrep"),
-      geom = "line",
-      size = size,
-      alpha = alpha,
-      pad = pad) +
-    stat_ecdf(
-      data = function(x) dplyr::filter(x, .data$is_y),
-      mapping = aes_(color = "y"),
-      geom = "line",
-      size = 1,
-      pad = pad) +
-    scale_color_ppc_dist() +
-    xlab(y_label()) +
-    scale_y_continuous(breaks = c(0, 0.5, 1)) +
-    yaxis_title(FALSE) +
-    xaxis_title(FALSE) +
-    yaxis_ticks(FALSE)
-}
+    ggplot(data) +
+      aes_(x = ~ value) +
+      hline_at(
+        c(0, 0.5, 1),
+        size = c(0.2, 0.1, 0.2),
+        linetype = 2,
+        color = get_color("dh")
+      ) +
+      stat_ecdf(
+        data = function(x) dplyr::filter(x, !.data$is_y),
+        mapping = aes_(group = ~ rep_id, color = "yrep"),
+        geom = if (discrete) "step" else "line",
+        size = size,
+        alpha = alpha,
+        pad = pad
+      ) +
+      stat_ecdf(
+        data = function(x) dplyr::filter(x, .data$is_y),
+        mapping = aes_(color = "y"),
+        geom = if (discrete) "step" else "line",
+        size = 1,
+        pad = pad
+      ) +
+      scale_color_ppc_dist() +
+      xlab(y_label()) +
+      scale_y_continuous(breaks = c(0, 0.5, 1)) +
+      yaxis_title(FALSE) +
+      xaxis_title(FALSE) +
+      yaxis_ticks(FALSE) +
+    bayesplot_theme_get()
+  }
 
 #' @export
 #' @rdname PPC-distributions
@@ -396,7 +436,8 @@ ppc_violin_grouped <- function(y, yrep, group, ..., probs = c(0.1, 0.5, 0.9),
     scale_color_ppc_dist() +
     labs(x = "Group", y = yrep_label()) +
     yaxis_title(FALSE) +
-    xaxis_title(FALSE)
+    xaxis_title(FALSE) +
+    bayesplot_theme_get()
 }
 
 

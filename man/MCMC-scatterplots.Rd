@@ -11,8 +11,8 @@
 \title{Scatterplots of MCMC draws}
 \usage{
 mcmc_scatter(x, pars = character(), regex_pars = character(),
-  transformations = list(), ..., size = 2.5, alpha = 0.8, np = NULL,
-  np_style = scatter_style_np())
+  transformations = list(), ..., size = 2.5, alpha = 0.8,
+  np = NULL, np_style = scatter_style_np())
 
 mcmc_hex(x, pars = character(), regex_pars = character(),
   transformations = list(), ..., binwidth = NULL)
@@ -21,7 +21,8 @@ mcmc_pairs(x, pars = character(), regex_pars = character(),
   transformations = list(), ..., diag_fun = c("hist", "dens"),
   off_diag_fun = c("scatter", "hex"), diag_args = list(),
   off_diag_args = list(), condition = pairs_condition(), lp = NULL,
-  np = NULL, np_style = pairs_style_np(), max_treedepth = NULL)
+  np = NULL, np_style = pairs_style_np(), max_treedepth = NULL,
+  grid_args = list(), save_gg_objects = TRUE)
 
 scatter_style_np(div_color = "red", div_shape = 16, div_size = 2.5,
   div_alpha = 1)
@@ -46,22 +47,26 @@ parameter selection. Can be specified instead of \code{pars} or in addition
 to \code{pars}.}
 
 \item{transformations}{Optionally, transformations to apply to parameters
-before plotting. If \code{transformations} is a function or a single string
-naming a function then that function will be used to transform all
-parameters. To apply transformations to particular parameters, the
-\code{transformations} argument can be a named list with length equal to
-the number of parameters to be transformed. Currently only univariate
-transformations of scalar parameters can be specified (multivariate
-transformations will be implemented in a future release). If
-\code{transformations} is a list, the name of each list element should be a
-parameter name and the content of each list element should be a function
-(or any item to match as a function via \code{\link{match.fun}}, e.g. a
-string naming a function). If a function is specified by its name as a
-string (e.g. \code{"log"}), then it can be used to construct a new
-parameter label for the appropriate parameter (e.g. \code{"log(sigma)"}).
-If a function itself is specified (e.g. \code{log} or \code{function(x)
-log(x)}) then \code{"t"} is used in the new parameter label to indicate
-that the parameter is transformed (e.g. \code{"t(sigma)"}).}
+  before plotting. If \code{transformations} is a function or a single string
+  naming a function then that function will be used to transform all
+  parameters. To apply transformations to particular parameters, the
+  \code{transformations} argument can be a named list with length equal to
+  the number of parameters to be transformed. Currently only univariate
+  transformations of scalar parameters can be specified (multivariate
+  transformations will be implemented in a future release). If
+  \code{transformations} is a list, the name of each list element should be a
+  parameter name and the content of each list element should be a function
+  (or any item to match as a function via \code{\link{match.fun}}, e.g. a
+  string naming a function). If a function is specified by its name as a
+  string (e.g. \code{"log"}), then it can be used to construct a new
+  parameter label for the appropriate parameter (e.g. \code{"log(sigma)"}).
+  If a function itself is specified (e.g. \code{log} or \code{function(x)
+  log(x)}) then \code{"t"} is used in the new parameter label to indicate
+  that the parameter is transformed (e.g. \code{"t(sigma)"}).
+
+  Note: due to partial argument matching \code{transformations} can be
+  abbreviated for convenience in interactive use (e.g., \code{transform},
+  \code{trans}, etc.).}
 
 \item{...}{Currently ignored.}
 
@@ -121,6 +126,12 @@ object returned by \code{\link{log_posterior}}.}
 maximum treedepth allowed when fitting the model (if fit using NUTS). This
 is only needed for detecting which transitions (if any) hit the maximum
 treedepth.}
+
+\item{grid_args, save_gg_objects}{For \code{mcmc_pairs}, arguments to pass to
+\code{\link{bayesplot_grid}}. For example, since \code{mcmc_pairs} returns
+more than a single ggplot object, using \code{\link{ggtitle}} afterwards
+will not work. But you you can still add a title to the plot using
+\code{grid_args = list(top="My title")}.}
 
 \item{div_color, div_shape, div_size, div_alpha, td_color, td_shape, td_size, td_alpha}{Optional arguments to the \code{scatter_style_np} or \code{pairs_style_np}
 helper functions that are eventually passed to
@@ -305,8 +316,8 @@ div_style <- scatter_style_np(div_color = "green", div_shape = 4, div_size = 4)
 mcmc_scatter(posterior, pars = c("sigma", "(Intercept)"),
              np = np, np_style = div_style)
 
-# split the draws according to above/below median accept_stat__ and
-# show approximate location of divergences (red points)
+# split the draws according to above/below median accept_stat__
+# and show approximate location of divergences (red points)
 color_scheme_set("brightblue")
 mcmc_pairs(
   posterior,
@@ -341,9 +352,11 @@ mcmc_pairs(
 
 }
 \references{
-Gabry, J., Simpson, D., Vehtari, A., Betancourt, M., Gelman, A.
-  (2017). Visualization in Bayesian workflow. arXiv preprint
-  \href{https://arxiv.org/abs/1709.01449}{arvix:1709.01449}.
+Gabry, J. , Simpson, D. , Vehtari, A. , Betancourt, M. and
+  Gelman, A. (2019), Visualization in Bayesian workflow. \emph{J. R. Stat.
+  Soc. A}, 182: 389-402. doi:10.1111/rssa.12378,
+  (\href{https://rss.onlinelibrary.wiley.com/doi/full/10.1111/rssa.12378}{journal},
+  \href{https://arxiv.org/abs/1709.01449}{arXiv preprint})
 }
 \seealso{
 Other MCMC: \code{\link{MCMC-combos}},
@@ -353,3 +366,4 @@ Other MCMC: \code{\link{MCMC-combos}},
   \code{\link{MCMC-overview}}, \code{\link{MCMC-parcoord}},
   \code{\link{MCMC-recover}}, \code{\link{MCMC-traces}}
 }
+\concept{MCMC}

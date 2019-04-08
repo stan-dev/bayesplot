@@ -40,7 +40,7 @@ is not used by \code{mcmc_nuts_energy}.}
 
 \item{...}{Currently ignored.}
 
-\item{binwidth}{An optional value used as the \code{binwidth} argument to
+\item{binwidth}{An optional value passed to
 \code{\link[ggplot2]{geom_histogram}} to override the default binwidth.}
 
 \item{alpha}{For \code{mcmc_nuts_energy} only, the transparency (alpha) level
@@ -191,3 +191,4 @@ Other MCMC: \code{\link{MCMC-combos}},
   \code{\link{MCMC-scatterplots}},
   \code{\link{MCMC-traces}}
 }
+\concept{MCMC}

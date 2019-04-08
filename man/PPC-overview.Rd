@@ -107,9 +107,11 @@ packages for full examples of \code{pp_check} methods.
 }
 
 \references{
-Gabry, J., Simpson, D., Vehtari, A., Betancourt, M., Gelman, A.
-  (2017). Visualization in Bayesian workflow. arXiv preprint
-  \href{https://arxiv.org/abs/1709.01449}{arvix:1709.01449}.
+Gabry, J. , Simpson, D. , Vehtari, A. , Betancourt, M. and
+  Gelman, A. (2019), Visualization in Bayesian workflow. \emph{J. R. Stat.
+  Soc. A}, 182: 389-402. doi:10.1111/rssa.12378,
+  (\href{https://rss.onlinelibrary.wiley.com/doi/full/10.1111/rssa.12378}{journal},
+  \href{https://arxiv.org/abs/1709.01449}{arXiv preprint})
 
 Gelman, A., Carlin, J. B., Stern, H. S., Dunson, D. B., Vehtari,
   A., and Rubin, D. B. (2013). \emph{Bayesian Data Analysis.} Chapman & Hall/CRC
@@ -122,3 +124,4 @@ Other PPCs: \code{\link{PPC-discrete}},
   \code{\link{PPC-loo}}, \code{\link{PPC-scatterplots}},
   \code{\link{PPC-test-statistics}}
 }
+\concept{PPCs}

@@ -45,10 +45,16 @@ warmup iterations for diagnostic purposes.
     Uncertainty intervals computed from parameter draws.
   }
   \item{\strong{\link[=MCMC-traces]{Trace plots}}}{
-    Times series of parameter draws.
+    Times series of parameter draws, optionally including with HMC/NUTS
+    diagnostic information.
   }
   \item{\strong{\link[=MCMC-scatterplots]{Scatterplots}}}{
-    Scatterplots, heatmaps, and pairs plots of parameter draws.
+    Scatterplots, heatmaps, and pairs plots of parameter draws, optionally
+    including with HMC/NUTS diagnostic information.
+  }
+  \item{\strong{\link[=MCMC-parcoord]{Parallel coordinates plots}}}{
+    Parallel coordinates plot of MCMC draws (one dimension per parameter),
+    optionally including with HMC/NUTS diagnostic information.
   }
   \item{\strong{\link[=MCMC-combos]{Combinations}}}{
     Combination plots (e.g. trace plot + histogram).
@@ -68,9 +74,11 @@ warmup iterations for diagnostic purposes.
 }
 
 \references{
-Gabry, J., Simpson, D., Vehtari, A., Betancourt, M., Gelman, A.
-  (2017). Visualization in Bayesian workflow. arXiv preprint
-  \href{https://arxiv.org/abs/1709.01449}{arvix:1709.01449}.
+Gabry, J. , Simpson, D. , Vehtari, A. , Betancourt, M. and
+  Gelman, A. (2019), Visualization in Bayesian workflow. \emph{J. R. Stat.
+  Soc. A}, 182: 389-402. doi:10.1111/rssa.12378,
+  (\href{https://rss.onlinelibrary.wiley.com/doi/full/10.1111/rssa.12378}{journal},
+  \href{https://arxiv.org/abs/1709.01449}{arXiv preprint})
 }
 \seealso{
 Other MCMC: \code{\link{MCMC-combos}},
@@ -81,3 +89,4 @@ Other MCMC: \code{\link{MCMC-combos}},
   \code{\link{MCMC-scatterplots}},
   \code{\link{MCMC-traces}}
 }
+\concept{MCMC}

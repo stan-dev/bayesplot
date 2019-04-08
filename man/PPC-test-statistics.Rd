@@ -8,15 +8,17 @@
 \alias{ppc_stat_2d}
 \title{PPC test statistics}
 \usage{
-ppc_stat(y, yrep, stat = "mean", ..., binwidth = NULL, freq = TRUE)
+ppc_stat(y, yrep, stat = "mean", ..., binwidth = NULL, breaks = NULL,
+  freq = TRUE)
 
-ppc_stat_grouped(y, yrep, group, stat = "mean", ..., facet_args = list(),
-  binwidth = NULL, freq = TRUE)
+ppc_stat_grouped(y, yrep, group, stat = "mean", ...,
+  facet_args = list(), binwidth = NULL, breaks = NULL, freq = TRUE)
 
 ppc_stat_freqpoly_grouped(y, yrep, group, stat = "mean", ...,
   facet_args = list(), binwidth = NULL, freq = TRUE)
 
-ppc_stat_2d(y, yrep, stat = c("mean", "sd"), ..., size = 2.5, alpha = 0.7)
+ppc_stat_2d(y, yrep, stat = c("mean", "sd"), ..., size = 2.5,
+  alpha = 0.7)
 }
 \arguments{
 \item{y}{A vector of observations. See \strong{Details}.}
@@ -38,8 +40,11 @@ functions) then generic naming is used in the legend.}
 
 \item{...}{Currently unused.}
 
-\item{binwidth}{An optional value used as the \code{binwidth} argument to
-\code{\link[ggplot2]{geom_histogram}} to override the default binwidth.}
+\item{binwidth}{Passed to \code{\link[ggplot2]{geom_histogram}} to override
+the default binwidth.}
+
+\item{breaks}{Passed to \code{\link[ggplot2]{geom_histogram}} as an
+alternative to \code{binwidth}.}
 
 \item{freq}{For histograms, \code{freq=TRUE} (the default) puts count on the
 y-axis. Setting \code{freq=FALSE} puts density on the y-axis. (For many
@@ -133,3 +138,4 @@ Other PPCs: \code{\link{PPC-discrete}},
   \code{\link{PPC-loo}}, \code{\link{PPC-overview}},
   \code{\link{PPC-scatterplots}}
 }
+\concept{PPCs}

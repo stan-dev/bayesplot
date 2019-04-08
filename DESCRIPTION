@@ -1,11 +1,13 @@
 Package: bayesplot
 Type: Package
 Title: Plotting for Bayesian Models
-Version: 1.4.0.9000
-Date: 2017-09-09
+Version: 1.6.0.9000
+Date: 2018-08-01
 Authors@R: c(person("Jonah", "Gabry", role = c("aut", "cre"), email = "jsg2201@columbia.edu"),
              person("Tristan", "Mahr", role = "aut"),
-             person("Paul-Christian", "Buerkner", role = "ctb"))
+             person("Paul-Christian", "Bürkner", role = "ctb"),
+             person("Martin", "Modrák", role = "ctb"), 
+             person("Malcolm", "Barrett", role = "ctb"))
 Maintainer: Jonah Gabry <jsg2201@columbia.edu>
 Description: Plotting functions for posterior analysis, model checking,
     and MCMC diagnostics. The package is designed not only to provide convenient
@@ -16,7 +18,7 @@ License: GPL (>= 3)
 LazyData: TRUE
 URL: http://mc-stan.org/bayesplot
 BugReports: https://github.com/stan-dev/bayesplot/issues/
-SystemRequirements: pandoc
+SystemRequirements: pandoc (>= 1.12.3), pandoc-citeproc
 Depends:
     R (>= 3.1.0)
 Imports:
@@ -31,15 +33,15 @@ Suggests:
     arm,
     gridExtra (>= 2.2.1),
     knitr (>= 1.16),
-    loo (>= 1.1.0),
+    loo (>= 2.0.0),
     rmarkdown (>= 1.0.0),
-    rstan (>= 2.14.1),
-    rstanarm (>= 2.14.1),
-    rstantools (>= 1.2.0),
+    rstan (>= 2.17.1),
+    rstanarm (>= 2.17.4),
+    rstantools (>= 1.5.0),
     scales,
     shinystan (>= 2.3.0),
-    testthat,
+    testthat (>= 2.0.0),
     vdiffr
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.1
 VignetteBuilder: knitr
 Encoding: UTF-8

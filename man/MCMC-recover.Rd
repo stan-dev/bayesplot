@@ -12,10 +12,11 @@ mcmc_recover_intervals(x, true, batch = rep(1, length(true)),
   point_est = c("median", "mean", "none"), size = 4, alpha = 1)
 
 mcmc_recover_scatter(x, true, batch = rep(1, length(true)),
-  facet_args = list(), ..., point_est = c("median", "mean"), size = 3,
-  alpha = 1)
+  facet_args = list(), ..., point_est = c("median", "mean"),
+  size = 3, alpha = 1)
 
-mcmc_recover_hist(x, true, facet_args = list(), ..., binwidth = NULL)
+mcmc_recover_hist(x, true, facet_args = list(), ..., binwidth = NULL,
+  breaks = NULL)
 }
 \arguments{
 \item{x}{A 3-D array, matrix, list of matrices, or data frame of MCMC draws.
@@ -55,8 +56,11 @@ default), \code{"mean"}, or \code{"none"}.}
 \item{size, alpha}{Passed to \code{\link[ggplot2]{geom_point}} to control the
 appearance of plotted points.}
 
-\item{binwidth}{An optional value used as the \code{binwidth} argument to
-\code{\link[ggplot2]{geom_histogram}} to override the default binwidth.}
+\item{binwidth}{Passed to \code{\link[ggplot2]{geom_histogram}} to override
+the default binwidth.}
+
+\item{breaks}{Passed to \code{\link[ggplot2]{geom_histogram}} as an
+alternative to \code{binwidth}.}
 }
 \value{
 A ggplot object that can be further customized using the
@@ -137,3 +141,4 @@ Other MCMC: \code{\link{MCMC-combos}},
   \code{\link{MCMC-scatterplots}},
   \code{\link{MCMC-traces}}
 }
+\concept{MCMC}

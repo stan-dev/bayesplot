@@ -1,12 +1,11 @@
-<a href="http://mc-stan.org">
-<img src="https://raw.githubusercontent.com/stan-dev/logos/master/logo.png" width=200 alt="Stan Logo"/>
-</a>
+[<img src="https://raw.githubusercontent.com/stan-dev/logos/master/logo_tm.png" width=100 alt="Stan Logo"/>](http://mc-stan.org)
 
 # bayesplot
 
 [![Travis-CI Build Status](https://travis-ci.org/stan-dev/bayesplot.svg?branch=master)](https://travis-ci.org/stan-dev/bayesplot)
 [![codecov](https://codecov.io/gh/stan-dev/bayesplot/branch/master/graph/badge.svg)](https://codecov.io/gh/stan-dev/bayesplot)
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/bayesplot?color=blue)](http://cran.r-project.org/web/packages/bayesplot)
+[![Downloads](http://cranlogs.r-pkg.org/badges/bayesplot?color=blue)](http://cran.rstudio.com/package=bayesplot)
 
 **bayesplot** is an R package providing an extensive library of plotting
 functions for use after fitting Bayesian models (typically with MCMC). Currently
@@ -42,11 +41,14 @@ install.packages("bayesplot")
 * Install latest development version from GitHub (requires [devtools](https://github.com/hadley/devtools) package):
 
 ```r
-if (!require("devtools"))
+if (!require("devtools")) {
   install.packages("devtools")
-
+}
 devtools::install_github("stan-dev/bayesplot", dependencies = TRUE, build_vignettes = TRUE)
 ```
+
+You can also set `build_vignettes=FALSE` for a faster installation from GitHub (the vignettes 
+can always be accessed online anytime at [mc-stan.org/bayesplot/articles](http://mc-stan.org/bayesplot/articles/)).
 
 If you are not using the [RStudio IDE](https://www.rstudio.com/) and you get an
 error related to "pandoc" you will either need to remove the argument

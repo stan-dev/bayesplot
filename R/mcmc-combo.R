@@ -93,6 +93,8 @@ mcmc_combo <-
     }
 
     plots <- lapply(plotfuns, function(f) suppressWarnings(do.call(f, args)))
+    plots <- lapply(plots, function(x) x + bayesplot_theme_get())
+
     if (!is.null(gg_theme))
       plots <- lapply(plots, function(x) x + gg_theme)
 
