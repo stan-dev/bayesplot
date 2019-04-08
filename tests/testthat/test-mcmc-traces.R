@@ -83,3 +83,78 @@ test_that("mcmc_trace 'np' argument works", {
   expect_message(mcmc_trace(draws, pars = "sigma", np = divs),
                  "No divergences to plot.")
 })
+
+
+
+
+# Visual tests -----------------------------------------------------------------
+
+test_that("mcmc_trace renders correctly", {
+  testthat::skip_on_cran()
+
+  p_base <- mcmc_trace(vdiff_dframe_chains, pars = c("V1", "V2"))
+  p_one_param <- mcmc_trace(vdiff_dframe_chains, pars = "V1")
+
+  p_warmup <- mcmc_trace(
+    vdiff_dframe_chains, pars = c("V1", "V2"),
+    n_warmup = 200
+  )
+
+  p_iter1 <- mcmc_trace(
+    vdiff_dframe_chains, pars = c("V1", "V2"), iter1 = 200
+  )
+
+  vdiffr::expect_doppelganger("mcmc trace (default)", p_base)
+  vdiffr::expect_doppelganger("mcmc trace (one parameter)", p_one_param)
+  vdiffr::expect_doppelganger("mcmc trace (warmup window)", p_warmup)
+  vdiffr::expect_doppelganger("mcmc trace (iter1 offset)", p_iter1)
+})
+
+test_that("mcmc_trace_highlight renders correctly", {
+  testthat::skip_on_cran()
+
+  p_base <- mcmc_trace_highlight(
+    vdiff_dframe_chains,
+    pars = "V1",
+    highlight = 1
+  )
+
+  p_2 <- mcmc_trace_highlight(
+    vdiff_dframe_chains,
+    pars = "V1",
+    highlight = 2
+  )
+
+  p_alpha <- mcmc_trace_highlight(
+    vdiff_dframe_chains,
+    pars = "V1",
+    highlight = 1,
+    alpha = .1
+  )
+
+  vdiffr::expect_doppelganger("mcmc trace highlight (default)", p_base)
+  vdiffr::expect_doppelganger("mcmc trace highlight (other chain)", p_2)
+  vdiffr::expect_doppelganger("mcmc trace highlight (alpha)", p_alpha)
+})
+
+test_that("mcmc_trace with 'np' renders correctly", {
+  testthat::skip_on_cran()
+
+  p_base <- mcmc_trace(
+    vdiff_dframe_chains,
+    pars = "V1",
+    np = vdiff_dframe_chains_divergences
+  )
+
+  new_style <- trace_style_np(div_color = "black")
+
+  p_np_style <- mcmc_trace(
+    vdiff_dframe_chains,
+    pars = "V1",
+    np = vdiff_dframe_chains_divergences,
+    np_style = new_style
+  )
+
+  vdiffr::expect_doppelganger("mcmc trace divergences (default)", p_base)
+  vdiffr::expect_doppelganger("mcmc trace divergences (custom)",  p_np_style)
+})
