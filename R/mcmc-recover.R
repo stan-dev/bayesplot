@@ -225,64 +225,72 @@ mcmc_recover_scatter <-
            size = 3,
            alpha = 1) {
 
-    check_ignored_arguments(...)
-    x <- merge_chains(prepare_mcmc_array(x))
+  check_ignored_arguments(...)
+  x <- merge_chains(prepare_mcmc_array(x))
 
-    stopifnot(
-      is.numeric(true),
-      ncol(x) == length(true),
-      length(batch) == length(true)
-    )
-    all_separate <- length(unique(batch)) == length(true)
-    point_est <- match.arg(point_est)
-    plot_data <- data.frame(
-      Parameter = colnames(x),
-      Point = apply(x, 2, point_est),
-      True = true
-    )
-    if (!all_separate) {
-      plot_data$Batch <- factor(batch, levels = unique(batch))
-    } else {
-      plot_data$Batch <-
-        factor(colnames(x), levels = colnames(x)[as.integer(as.factor(batch))])
-    }
+  stopifnot(
+    is.numeric(true),
+    ncol(x) == length(true),
+    length(batch) == length(true)
+  )
 
-    facet_args[["facets"]] <- ~ Batch
-    if (is.null(facet_args[["strip.position"]]))
-      facet_args[["strip.position"]] <- "top"
-    if (is.null(facet_args[["scales"]]))
-      facet_args[["scales"]] <- "free"
+  one_true_per_batch <- length(unique(batch)) == length(true)
+  one_batch <- length(unique(batch)) == 1
 
-    graph <- ggplot(plot_data, aes_(x = ~ True, y = ~ Point)) +
-      geom_abline(
-        slope = 1,
-        intercept = 0,
-        linetype = 2,
-        color = "black"
-      ) +
-      geom_point(
-        shape = 21,
-        color = get_color("mh"),
-        fill = get_color("m"),
-        size = size,
-        alpha = alpha
-      ) +
-      do.call("facet_wrap", facet_args) +
-      labs(y = "Estimated", x = "True") +
-      bayesplot_theme_get()
+  point_est <- match.arg(point_est)
+  plot_data <- data.frame(
+    Parameter = colnames(x),
+    Point = apply(x, 2, point_est),
+    True = true
+  )
 
-    if (length(unique(batch)) == 1) {
-      g <- ggplot_build(graph)
-      xylim <- g$layout$panel_ranges[[1]]
-      xylim <- range(xylim$y.range, xylim$x.range)
-      graph <- graph + coord_fixed(xlim = xylim, ylim = xylim)
-    }
-
-    if (all_separate)
-      return(graph)
-
-    graph + facet_text(FALSE)
+  if (!one_true_per_batch) {
+    plot_data$Batch <- factor(batch, levels = unique(batch))
+  } else {
+    plot_data$Batch <-
+      factor(colnames(x), levels = colnames(x)[as.integer(as.factor(batch))])
   }
+
+  facet_args[["facets"]] <- "Batch"
+  facet_args[["strip.position"]] <- facet_args[["strip.position"]] %||% "top"
+  facet_args[["scales"]] <- facet_args[["scales"]] %||% "free"
+
+  # To ensure that the x and y scales have the same range, find the min and max
+  # value on each coordinate. plot them invisibly with geom_blank() later on.
+  corners <- plot_data %>%
+    group_by(.data$Batch) %>%
+    summarise(
+      min = min(pmin(.data$Point, .data$True)),
+      max = max(pmax(.data$Point, .data$True))
+    )
+
+  graph <-
+    ggplot(plot_data, aes_(x = ~ True, y = ~ Point)) +
+    geom_abline(
+      slope = 1,
+      intercept = 0,
+      linetype = 2,
+      color = "black"
+    ) +
+    geom_point(
+      shape = 21,
+      color = get_color("mh"),
+      fill = get_color("m"),
+      size = size,
+      alpha = alpha
+    ) +
+    geom_blank(aes(x = min, y = min), data = corners) +
+    geom_blank(aes(x = max, y = max), data = corners) +
+    do.call("facet_wrap", facet_args) +
+    labs(x = "True", y = "Estimated") +
+    bayesplot_theme_get()
+
+  if (one_batch) {
+    graph <- graph + facet_text(FALSE)
+  }
+
+  graph
+}
 
 
 #' @rdname MCMC-recover
