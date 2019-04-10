@@ -382,7 +382,7 @@ diagnostic_data_frame <- function(x) {
   stopifnot(!anyDuplicated(names(x)))
   diagnostic <- class(x)[1]
 
-  d <- dplyr::data_frame(
+  d <- tibble::tibble(
     diagnostic = diagnostic,
     parameter = factor(seq_along(x), labels = names(x)),
     value = as.numeric(x),

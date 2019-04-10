@@ -107,7 +107,7 @@ ppc_data <- function(y, yrep, group = NULL) {
 
   if (!is.null(group)) {
     group <- validate_group(group, y)
-    group_indices <- dplyr::data_frame(group, y_id = seq_along(group))
+    group_indices <- tibble::tibble(group, y_id = seq_along(group))
     data <- data %>%
       left_join(group_indices, by = "y_id") %>%
       select(.data$group, dplyr::everything())
@@ -120,12 +120,12 @@ ppc_data <- function(y, yrep, group = NULL) {
 
 #' @rdname PPC-distributions
 #' @export
-ppc_hist <- function(y, yrep, ..., binwidth = NULL, breaks = NULL, 
+ppc_hist <- function(y, yrep, ..., binwidth = NULL, breaks = NULL,
                      freq = TRUE) {
   check_ignored_arguments(...)
   data <- ppc_data(y, yrep)
   aes_list <- set_hist_aes(freq, fill = ~ is_y_label, color = ~ is_y_label)
-    
+
   ggplot(data) +
     aes_list +
     geom_histogram(size = 0.25, binwidth = binwidth, breaks = breaks) +
