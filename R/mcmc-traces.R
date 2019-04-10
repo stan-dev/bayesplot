@@ -1,11 +1,11 @@
 #' Trace plot (time series plot) of MCMC draws
 #'
-#' Trace plot (or traceplot) of MCMC draws. See the \strong{Plot Descriptions}
+#' Trace plot (or traceplot) of MCMC draws. See the **Plot Descriptions**
 #' section, below, for details.
 #'
 #' @name MCMC-traces
 #' @family MCMC
-#'
+#' @md
 #' @template args-mcmc-x
 #' @template args-pars
 #' @template args-regex_pars
@@ -13,47 +13,47 @@
 #' @template args-facet_args
 #' @param ... Currently ignored.
 #' @param size An optional value to override the default line size
-#'   (\code{mcmc_trace}) or the default point size
-#'   (\code{mcmc_trace_highlight}).
-#' @param alpha For \code{mcmc_trace_highlight}, passed to
-#'   \code{\link[ggplot2]{geom_point}} to control the transparency of the points
+#'   (`mcmc_trace()`) or the default point size
+#'   (`mcmc_trace_highlight()`).
+#' @param alpha For `mcmc_trace_highlight()`, passed to
+#'   [ggplot2::geom_point()] to control the transparency of the points
 #'   for the chains not highlighted.
 #' @param n_warmup An integer; the number of warmup iterations included in
-#'   \code{x}. The default is \code{n_warmup = 0}, i.e. to assume no warmup
-#'   iterations are included. If \code{n_warmup > 0} then the background for
-#'   iterations \code{1:n_warmup} is shaded gray.
+#'   `x`. The default is `n_warmup = 0`, i.e. to assume no warmup
+#'   iterations are included. If `n_warmup > 0` then the background for
+#'   iterations `1:n_warmup` is shaded gray.
 #' @param iter1 An integer; the iteration number of the first included draw
 #'   (default 0). This can be used to make it more obvious that the warmup
 #'   iterations have been discarded from the traceplot. It cannot be specified
-#'   if \code{n_warmup} is also set to a positive value.
+#'   if `n_warmup` is also set to a positive value.
 #' @param window An integer vector of length two specifying the limits of a
 #'   range of iterations to display.
-#' @param np For models fit using \code{\link{NUTS}} (more generally, any
-#'   \href{http://en.wikipedia.org/wiki/Symplectic_integrator}{symplectic
-#'   integrator}), an optional data frame providing NUTS diagnostic
-#'   information. The data frame should be the object returned by
-#'   \code{\link{nuts_params}} or one with the same structure. If \code{np} is
-#'   specified then tick marks are added to the bottom of the trace plot
-#'   indicating within which iterations there was a divergence (if there were any).
-#'   See the end of the \strong{Examples} section, below.
-#' @param np_style A call to the \code{trace_style_np} helper function to
+#' @param np For models fit using [`NUTS`] (more generally, any [symplectic
+#'   integrator](http://en.wikipedia.org/wiki/Symplectic_integrator)), an
+#'   optional data frame providing NUTS diagnostic information. The data frame
+#'   should be the object returned by [`nuts_params`] or one with the
+#'   same structure. If `np` is specified then tick marks are added to the
+#'   bottom of the trace plot indicating within which iterations there was a
+#'   divergence (if there were any). See the end of the **Examples**
+#'   section, below.
+#' @param np_style A call to the `trace_style_np()` helper function to
 #'   specify arguments controlling the appearance of tick marks representing
-#'   divergences (if the \code{np} argument is specified).
-#' @param divergences Deprecated. Use the \code{np} argument instead.
+#'   divergences (if the `np` argument is specified).
+#' @param divergences Deprecated. Use the `np` argument instead.
 #'
 #' @template return-ggplot
 #'
 #' @section Plot Descriptions:
 #' \describe{
-#'   \item{\code{mcmc_trace}}{
-#'    Standard trace plots of MCMC draws. For models fit using \code{\link{NUTS}},
-#'    the \code{np} argument can be used to also show divergences on the trace plot.
+#'   \item{`mcmc_trace()`}{
+#'    Standard trace plots of MCMC draws. For models fit using [`NUTS`],
+#'    the `np` argument can be used to also show divergences on the trace plot.
 #'   }
-#'   \item{\code{mcmc_trace_highlight}}{
+#'   \item{`mcmc_trace_highlight()`}{
 #'    Traces are plotted using points rather than lines and the opacity of all
-#'    chains but one (specified by the \code{highlight} argument) is reduced.
+#'    chains but one (specified by the `highlight` argument) is reduced.
 #'   }
-#'   \item{\code{mcmc_rank_overlay}}{
+#'   \item{`mcmc_rank_overlay()`}{
 #'    Whereas tradition trace plots visualize how the chains mix over the course
 #'    of sampling, rank-normalized histograms visualize how the values from the
 #'    chains mix together in terms of ranking. An ideal plot would show the
@@ -205,9 +205,10 @@ mcmc_trace <-
 }
 
 #' @rdname MCMC-traces
-#' @export
-#' @param highlight For \code{mcmc_trace_highlight}, an integer specifying one
+#' @param highlight For `mcmc_trace_highlight()`, an integer specifying one
 #'   of the chains that will be more visible than the others in the plot.
+#' @export
+#' @md
 mcmc_trace_highlight <-
   function(x,
            pars = character(),
@@ -239,13 +240,14 @@ mcmc_trace_highlight <-
 
 
 #' @rdname MCMC-traces
-#' @export
 #' @param div_color,div_size,div_alpha Optional arguments to the
-#'   \code{trace_style_np} helper function that are eventually passed to
-#'   \code{\link[ggplot2]{geom_rug}} if the \code{np} argument is also
-#'   specified. They control the color, size, and transparency specifications
+#'   `trace_style_np()` helper function that are eventually passed to
+#'   [ggplot2::geom_rug()] if the `np` argument is also
+#'   specified. These control the color, size, and transparency specifications
 #'   for showing divergences in the plot. The default values are displayed in
-#'   the \strong{Usage} section above.
+#'   the **Usage** section above.
+#' @export
+#' @md
 trace_style_np <-
   function(div_color = "red",
            div_size = 0.25,
@@ -265,9 +267,9 @@ trace_style_np <-
 
 
 #' @rdname MCMC-traces
-#' @export
 #' @param n_bins number of bins to use for the histogram of rank-normalized MCMC
 #'   samples.
+#' @export
 mcmc_rank_overlay <- function(
   x,
   pars = character(),
@@ -514,17 +516,16 @@ mcmc_trace_data <- function(x,
   tibble::as_tibble(data)
 }
 
-# Add divergences to trace plot using geom_rug
-#
-# @param np User's 'np' argument, if specified.
-# @param np_style User's 'np_style' argument, if specified.
-# @param n_iter Number of iterations in the trace plot (to check against number
-#   of iterations provided in 'np').
-# @param n_chain Number of chains in the trace plot (to check against number
-#   of chains provided in 'np').
-# @return Object returned by geom_rug.
-#
-#' @importFrom dplyr summarise group_by select
+#' Add divergences to trace plot using geom_rug
+#'
+#' @param np User's 'np' argument, if specified.
+#' @param np_style User's 'np_style' argument, if specified.
+#' @param n_iter Number of iterations in the trace plot (to check against number
+#'   of iterations provided in 'np').
+#' @param n_chain Number of chains in the trace plot (to check against number
+#'   of chains provided in 'np').
+#' @return Object returned by geom_rug.
+#' @noRd
 divergence_rug <- function(np, np_style, n_iter, n_chain) {
   if (is.data.frame(np)) {
     np <- validate_nuts_data_frame(np)
