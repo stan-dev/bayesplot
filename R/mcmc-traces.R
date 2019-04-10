@@ -494,7 +494,7 @@ mcmc_trace_data <- function(x,
   data$Chain <- factor(data$Chain)
   data$n_chains <- num_chains(data)
   data$n_iterations <- num_iters(data)
-  data$n_parameters <- num_chains(data)
+  data$n_parameters <- num_params(data)
   data <- rlang::set_names(data, tolower)
 
   data <- data %>%
