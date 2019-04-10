@@ -361,7 +361,8 @@ mcmc_rank_overlay <- function(
   layer_warmup <- if (n_warmup > 0) {
     layer_warmup <- annotate(
       "rect", xmin = -Inf, xmax = n_warmup, ymin = -Inf, ymax = Inf, size = 1,
-      color = "gray88", fill = "gray88", alpha = 0.5)
+      color = "gray88", fill = "gray88", alpha = 0.5
+    )
   } else {
     NULL
   }
@@ -389,22 +390,21 @@ mcmc_rank_overlay <- function(
       "",
       values = get_color(c("lh", "d")),
       labels = c("Other chains", paste("Chain", highlight)))
-
   } else {
     scale_color <- scale_color_manual("Chain", values = chain_colors(n_chain))
 
     if (!is.null(np)) {
       div_rug <- divergence_rug(np, np_style, n_iter, n_chain)
-      if (!is.null(div_rug))
+      if (!is.null(div_rug)) {
         div_guides <- guides(
           color = guide_legend(order = 1),
           linetype = guide_legend(
             order = 2, title = NULL, keywidth = rel(1/2),
             override.aes = list(size = rel(1/2)))
         )
+      }
     }
   }
-
 
   facet_call <- NULL
   if (n_param == 1) {
