@@ -4,10 +4,8 @@ context("Extractors")
 
 ITER <- 1000
 CHAINS <- 3
-capture.output(
-  fit <- stan_glm(mpg ~ wt + am, data = mtcars,
+fit <- stan_glm(mpg ~ wt + am, data = mtcars,
                   iter = ITER, chains = CHAINS, refresh = 0)
-)
 
 x <- list(cbind(a = 1:3, b = rnorm(3)), cbind(a = 1:3, b = rnorm(3)))
 

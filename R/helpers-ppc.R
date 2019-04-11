@@ -234,7 +234,8 @@ ppc_group_data <- function(y, yrep, group, stat = NULL) {
   # grouping vars. It summarising path, it has one grouping var.
 }
 
-# check if x consists of whole numbers (very close to integers)
+# Check if x consists of whole numbers (very close to integers)
+# Implementation here follows example ?integer
 is_whole_number <- function(x, tol = .Machine$double.eps) {
   if (!is.numeric(x)) {
     FALSE
@@ -243,9 +244,13 @@ is_whole_number <- function(x, tol = .Machine$double.eps) {
   }
 }
 
-# check if all values in x are counts (non-negative whole numbers)
+# Check if all values in x are whole numbers or counts (non-negative whole
+# numbers)
+all_whole_number <- function(x, ...) {
+  all(is_whole_number(x, ...))
+}
 all_counts <- function(x, ...) {
-  all(is_whole_number(x, ...)) && min(x) >= 0
+  all_whole_number(x, ...) && min(x) >= 0
 }
 
 # labels ----------------------------------------------------------------

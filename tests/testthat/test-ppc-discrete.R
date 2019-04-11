@@ -30,11 +30,21 @@ test_that("freq argument to ppc_bars works", {
   expect_true(all(y_prop < 1) && all(y_prop > 0))
 })
 
-test_that("ppc_bars errors if y/yrep not natural numbers", {
+test_that("ppc_bars works with negative integers", {
+  y <- round(rnorm(100, -10, 1))
+  yrep <- round(matrix(rnorm(100 * 500, -10, 1), 500, 100))
+  expect_gg(ppc_bars(y, yrep))
+})
+
+test_that("ppc_bars(_grouped) errors if y/yrep not discrete", {
   expect_error(ppc_bars(y + 0.5, yrep),
-               "ppc_bars expects only non-negative integers in 'y'")
+               "ppc_bars expects 'y' to be discrete")
   expect_error(ppc_bars(y, yrep + 0.5),
-               "ppc_bars expects only non-negative integers in 'yrep'")
+               "ppc_bars expects 'yrep' to be discrete")
+  expect_error(ppc_bars_grouped(y + 0.5, yrep, group = esoph$agegp),
+               "ppc_bars_grouped expects 'y' to be discrete")
+  expect_error(ppc_bars_grouped(y, yrep + 0.5, group = esoph$agegp),
+               "ppc_bars_grouped expects 'yrep' to be discrete")
 })
 
 

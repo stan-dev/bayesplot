@@ -30,9 +30,10 @@
 #'
 #' @template return-ggplot
 #'
-#' @details For all of these plots \code{y} and \code{yrep} must be non-negative
-#'   integers, although they need not be integers in the strict sense of \R's
-#'   \code{\link{integer}} type.
+#' @details For all of these plots \code{y} and \code{yrep} must be
+#'   integers, although they need not be integers in the strict sense
+#'   of \R's \code{\link{integer}} type. For rootogram plots \code{y}
+#'   and \code{yrep} must also be non-negative.
 #'
 #' @section Plot Descriptions:
 #' \describe{
@@ -100,28 +101,37 @@ ppc_bars <-
            fatten = 3,
            freq = TRUE) {
 
-    check_ignored_arguments(...)
-    y <- validate_y(y)
-    yrep <- validate_yrep(yrep, y)
-    if (!all_counts(y))
-      stop("ppc_bars expects only non-negative integers in 'y'.")
-    if (!all_counts(yrep))
-      stop("ppc_bars expects only non-negative integers in 'yrep'.")
-
-    alpha <- (1 - prob) / 2
-    probs <- sort(c(alpha, 0.5, 1 - alpha))
-    yrep_data <- ppc_bars_yrep_data(y, yrep, probs = probs, freq = freq, group = NULL)
-    .ppc_bars(
-      y_data = data.frame(y = y),
-      yrep_data,
-      grouped = FALSE,
-      facet_args = list(),
-      width = width,
-      size = size,
-      fatten = fatten,
-      freq = freq
-    )
+  check_ignored_arguments(...)
+  y <- validate_y(y)
+  yrep <- validate_yrep(yrep, y)
+  if (!all_whole_number(y)) {
+    stop("ppc_bars expects 'y' to be discrete.")
   }
+  if (!all_whole_number(yrep)) {
+    stop("ppc_bars expects 'yrep' to be discrete.")
+  }
+
+  alpha <- (1 - prob) / 2
+  probs <- sort(c(alpha, 0.5, 1 - alpha))
+  yrep_data <- ppc_bars_yrep_data(
+    y,
+    yrep,
+    probs = probs,
+    freq = freq,
+    group = NULL
+  )
+
+  .ppc_bars(
+    y_data = data.frame(y = y),
+    yrep_data,
+    grouped = FALSE,
+    facet_args = list(),
+    width = width,
+    size = size,
+    fatten = fatten,
+    freq = freq
+  )
+}
 
 
 #' @rdname PPC-discrete
@@ -141,29 +151,31 @@ ppc_bars_grouped <-
            fatten = 3,
            freq = TRUE) {
 
-    check_ignored_arguments(...)
-    y <- validate_y(y)
-    yrep <- validate_yrep(yrep, y)
-    group <- validate_group(group, y)
-    if (!all_counts(y))
-      stop("ppc_bars expects only non-negative integers in 'y'.")
-    if (!all_counts(yrep))
-      stop("ppc_bars expects only non-negative integers in 'yrep'.")
-
-    alpha <- (1 - prob) / 2
-    probs <- sort(c(alpha, 0.5, 1 - alpha))
-    yrep_data <- ppc_bars_yrep_data(y, yrep, probs, freq = freq, group = group)
-    .ppc_bars(
-      y_data = data.frame(y, group),
-      yrep_data,
-      grouped = TRUE,
-      facet_args = facet_args,
-      width = width,
-      size = size,
-      fatten = fatten,
-      freq = freq
-    )
+  check_ignored_arguments(...)
+  y <- validate_y(y)
+  yrep <- validate_yrep(yrep, y)
+  group <- validate_group(group, y)
+  if (!all_whole_number(y)) {
+    stop("ppc_bars_grouped expects 'y' to be discrete.")
   }
+  if (!all_whole_number(yrep)) {
+    stop("ppc_bars_grouped expects 'yrep' to be discrete.")
+  }
+
+  alpha <- (1 - prob) / 2
+  probs <- sort(c(alpha, 0.5, 1 - alpha))
+  yrep_data <- ppc_bars_yrep_data(y, yrep, probs, freq = freq, group = group)
+  .ppc_bars(
+    y_data = data.frame(y, group),
+    yrep_data,
+    grouped = TRUE,
+    facet_args = facet_args,
+    width = width,
+    size = size,
+    fatten = fatten,
+    freq = freq
+  )
+}
 
 
 #' @rdname PPC-discrete
