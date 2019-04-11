@@ -58,6 +58,7 @@ reference:
       based on comparing observed data to draws from the posterior
       predictive distribution.
     contents:
+      - PPC-overview
       - starts_with("ppc")
       - pp_check
   - title: "MCMC"
@@ -65,6 +66,7 @@ reference:
       Functions for creating plots of MCMC draws of model parameters and
       general MCMC diagnostics.
     contents:
+      - MCMC-overview
       - MCMC-diagnostics
       - MCMC-distributions
       - MCMC-intervals
@@ -88,8 +90,9 @@ reference:
       and arranging multiple plots.
     contents:
       - bayesplot-colors
-      - bayesplot_grid
       - theme_default
+      - bayesplot_theme_get
+      - bayesplot_grid
       - bayesplot-helpers
   - title: "Miscellaneous"
     desc: >
