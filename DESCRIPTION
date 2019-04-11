@@ -30,7 +30,6 @@ Imports:
     rlang,
     ggridges
 Suggests: 
-    arm,
     gridExtra (>= 2.2.1),
     knitr (>= 1.16),
     loo (>= 2.0.0),
