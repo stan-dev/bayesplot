@@ -319,31 +319,25 @@ ppc_error_binned <- function(y, yrep, ..., size = 1, alpha = 0.25) {
   yrep <- validate_yrep(yrep, y)
   errors <- compute_errors(y, yrep)
 
-  ny <- length(y)
-  if (ny >= 100) {
-    nbins <- floor(sqrt(ny))
-  } else if (ny > 10 && ny < 100) {
+  N <- length(y)
+  if (N >= 100) {
+    nbins <- floor(sqrt(N))
+  } else if (N > 10 && N < 100) {
     nbins <- 10
   } else {
-    # if (ny <= 10)
-    nbins <- floor(ny / 2)
+    # if (N <= 10)
+    nbins <- floor(N / 2)
   }
 
-  n <- nrow(yrep)
-  binned <- .binner(
-    rep_id = 1,
-    ey = yrep[1, ],
-    r = errors[1, ],
-    nbins = nbins
-  )
-  if (n > 1) {
-    for (i in 2:nrow(errors))
-      binned <- rbind(binned, .binner(
-        rep_id = i,
-        ey = yrep[i,],
-        r = errors[i,],
-        nbins
-      ))
+  S <- nrow(yrep)
+  binned <- bin_errors(rep_id = 1, ey = yrep[1, ], r = errors[1, ],
+                       nbins = nbins)
+  if (S > 1) {
+    for (i in 2:nrow(errors)) {
+      binned_i <- bin_errors(rep_id = i, ey = yrep[i,], r = errors[i,],
+                             nbins = nbins)
+      binned <- rbind(binned, binned_i)
+    }
   }
 
   mixed_scheme <- is_mixed_scheme(color_scheme_get())
@@ -384,12 +378,13 @@ ppc_error_binned <- function(y, yrep, ..., size = 1, alpha = 0.25) {
     ) +
     bayesplot_theme_get()
 
-  if (n > 1)
+  if (S > 1) {
     graph <- graph +
       facet_wrap(
         facets = ~rep_id
         # labeller = label_bquote(italic(y)[rep](.(rep_id)))
       )
+  }
 
   graph +
     force_axes_in_facets() +
@@ -419,14 +414,48 @@ grouped_error_data <- function(y, yrep, group) {
 }
 
 
-.binner <- function(rep_id, ey, r, nbins) {
-  binned_errors <- arm::binned.resids(ey, r, nbins)$binned
-  binned_errors <- binned_errors[, c("xbar", "ybar", "2se")]
-  if (length(dim(binned_errors)) < 2)
-    binned_errors <- t(binned_errors)
-  colnames(binned_errors) <- c("xbar", "ybar", "se2")
-  data.frame(
-    rep_id = as.integer(rep_id), #create_yrep_ids(rep_id),
-    binned_errors
-  )
+bin_errors <- function(rep_id, ey, r, nbins) {
+  N <- length(ey)
+  break_ids <- floor(N * (1:(nbins - 1)) / nbins)
+  if (any(break_ids == 0)) {
+    nbins <- 1
+  }
+  if (nbins == 1) {
+    breaks <- c(-Inf, sum(range(ey)) / 2, Inf)
+  } else {
+    ey_sort <- sort(ey)
+    breaks <- -Inf
+    for (i in 1:(nbins - 1)) {
+      break_i <- break_ids[i]
+      ey_range <- ey_sort[c(break_i, break_i + 1)]
+      if (diff(ey_range) == 0) {
+        if (ey_range[1] == min(ey)) {
+          ey_range[1] <- -Inf
+        } else {
+          ey_range[1] <- max(ey[ey < ey_range[1]])
+        }
+      }
+      breaks <- c(breaks, sum(ey_range) / 2)
+    }
+    breaks <- unique(c(breaks, Inf))
+  }
+
+  nbins <- length(breaks) - 1
+  ey_binned <- as.numeric(cut(ey, breaks))
+
+  out <- matrix(NA, nrow = nbins, ncol = 3)
+  for (i in 1:nbins) {
+    mark <- which(ey_binned == i)
+    ey_bar <- mean(ey[mark])
+    r_bar <- mean(r[mark])
+    s <- if (length(r[mark]) > 1) sd(r[mark]) else 0
+    out[i, ] <- c(ey_bar, r_bar, 2 * s / sqrt(length(mark)))
+  }
+  out <- as.data.frame(out)
+  colnames(out) <- c("xbar", "ybar", "se2")
+  out$rep_id <- as.integer(rep_id)
+  return(out)
 }
+
+
+
