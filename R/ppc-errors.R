@@ -312,7 +312,6 @@ ppc_error_scatter_avg_vs_x <-
 #' @rdname PPC-errors
 #' @export
 ppc_error_binned <- function(y, yrep, ..., size = 1, alpha = 0.25) {
-  suggested_package("arm")
   check_ignored_arguments(...)
 
   y <- validate_y(y)
