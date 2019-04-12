@@ -448,7 +448,7 @@ binned_error_data <- function(y, yrep) {
 
   errors <- compute_errors(y, yrep)
   binned_df <- bin_errors(rep_id = 1, ey = yrep[1, ], r = errors[1, ], nbins = nbins)
-  if (nrow(yrep) > 1) {
+  if (nrow(errors) > 1) {
     for (s in 2:nrow(errors)) {
       binned_s <- bin_errors(rep_id = s, ey = yrep[s,], r = errors[s,], nbins = nbins)
       binned_df <- rbind(binned_df, binned_s)
