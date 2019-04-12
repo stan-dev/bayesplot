@@ -316,28 +316,7 @@ ppc_error_binned <- function(y, yrep, ..., size = 1, alpha = 0.25) {
 
   y <- validate_y(y)
   yrep <- validate_yrep(yrep, y)
-  errors <- compute_errors(y, yrep)
-
-  N <- length(y)
-  if (N >= 100) {
-    nbins <- floor(sqrt(N))
-  } else if (N > 10 && N < 100) {
-    nbins <- 10
-  } else {
-    # if (N <= 10)
-    nbins <- floor(N / 2)
-  }
-
-  S <- nrow(yrep)
-  binned <- bin_errors(rep_id = 1, ey = yrep[1, ], r = errors[1, ],
-                       nbins = nbins)
-  if (S > 1) {
-    for (i in 2:nrow(errors)) {
-      binned_i <- bin_errors(rep_id = i, ey = yrep[i,], r = errors[i,],
-                             nbins = nbins)
-      binned <- rbind(binned, binned_i)
-    }
-  }
+  binned <- binned_error_data(y, yrep)
 
   mixed_scheme <- is_mixed_scheme(color_scheme_get())
   point_fill <- get_color(ifelse(mixed_scheme, "m", "d"))
@@ -377,7 +356,7 @@ ppc_error_binned <- function(y, yrep, ..., size = 1, alpha = 0.25) {
     ) +
     bayesplot_theme_get()
 
-  if (S > 1) {
+  if (nrow(yrep) > 1) {
     graph <- graph +
       facet_wrap(
         facets = ~rep_id
@@ -411,7 +390,6 @@ grouped_error_data <- function(y, yrep, group) {
   dat$y_id <- NULL
   dat
 }
-
 
 bin_errors <- function(rep_id, ey, r, nbins) {
   N <- length(ey)
@@ -457,4 +435,25 @@ bin_errors <- function(rep_id, ey, r, nbins) {
 }
 
 
+binned_error_data <- function(y, yrep) {
+  N <- length(y)
+  if (N >= 100) {
+    nbins <- floor(sqrt(N))
+  } else if (N > 10 && N < 100) {
+    nbins <- 10
+  } else {
+    # if (N <= 10)
+    nbins <- floor(N / 2)
+  }
+
+  errors <- compute_errors(y, yrep)
+  binned_df <- bin_errors(rep_id = 1, ey = yrep[1, ], r = errors[1, ], nbins = nbins)
+  if (nrow(yrep) > 1) {
+    for (s in 2:nrow(errors)) {
+      binned_s <- bin_errors(rep_id = s, ey = yrep[s,], r = errors[s,], nbins = nbins)
+      binned_df <- rbind(binned_df, binned_s)
+    }
+  }
+  return(binned_df)
+}
 
