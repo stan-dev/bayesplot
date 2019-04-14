@@ -42,9 +42,11 @@ allowed inputs.}
 \code{mcmc_scatter} and \code{mcmc_hex} only two parameters can be
 selected. To plot more than two parameters use \code{mcmc_pairs}.}
 
-\item{regex_pars}{An optional \link[=grep]{regular expression} to use for
-parameter selection. Can be specified instead of \code{pars} or in addition
-to \code{pars}.}
+\item{regex_pars}{An optional \link[base:grep]{regular expression} to use for
+parameter selection. Can be specified instead of \code{pars} or in addition to
+\code{pars}. When using \code{pars} for tidy parameter selection, the \code{regex_pars}
+argument is ignored since \link[tidyselect:select_helpers]{select helpers}
+perform a similar function.}
 
 \item{transformations}{Optionally, transformations to apply to parameters
   before plotting. If \code{transformations} is a function or a single string

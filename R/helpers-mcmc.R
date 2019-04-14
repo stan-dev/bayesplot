@@ -1,9 +1,16 @@
-# Prepare 3-D array for MCMC plots
-#
-# @param x,pars,regex_pars,transformations Users's arguments to one of the
-#   mcmc_* functions.
-# @return A 3-D (Iterations x Chains x Parameters) array.
-#
+# re-export vars for tidy parameter selection
+#' @importFrom dplyr vars
+#' @export
+dplyr::vars
+
+
+#' Prepare 3-D array for MCMC plots
+#'
+#' @noRd
+#' @param x,pars,regex_pars,transformations Users's arguments to one of the
+#'   mcmc_* functions.
+#' @return A 3-D (Iterations x Chains x Parameters) array.
+#'
 prepare_mcmc_array <- function(x,
                                pars = character(),
                                regex_pars = character(),
@@ -16,10 +23,17 @@ prepare_mcmc_array <- function(x,
   x <- validate_mcmc_x(x)
 
   parnames <- parameter_names(x)
-  pars <- select_parameters(
-    explicit = pars,
-    patterns = regex_pars,
-    complete = parnames)
+  if (rlang::is_quosures(pars)) {
+    helpers <- tidyselect::vars_select_helpers
+    pars <- lapply(pars, rlang::env_bury, !!! helpers)
+    pars <- tidyselect::vars_select(parnames, !!! pars)
+  } else {
+    pars <- select_parameters(
+      explicit = pars,
+      patterns = regex_pars,
+      complete = parnames
+    )
+  }
 
   # possibly recycle transformations (apply same to all pars)
   if (is.function(transformations) ||
@@ -46,12 +60,63 @@ prepare_mcmc_array <- function(x,
 }
 
 
-# Melt a 3-D array or matrix of MCMC draws
-#
-# @param x An mcmc_array (from prepare_mcmc_array).
-# @param varnames,value.name,... Passed to reshape2::melt (array method).
-# @return A molten data frame.
-#
+#' Explicit and/or regex parameter selection
+#'
+#' @noRd
+#' @param explicit Character vector of selected parameter names.
+#' @param patterns Character vector of regular expressions.
+#' @param complete Character vector of all possible parameter names.
+#' @return Character vector of combined explicit and matched (via regex)
+#'   parameter names, unless an error is thrown.
+#'
+select_parameters <-
+  function(explicit = character(),
+           patterns = character(),
+           complete = character()) {
+
+    stopifnot(is.character(explicit),
+              is.character(patterns),
+              is.character(complete))
+
+    if (!length(explicit) && !length(patterns)) {
+      return(complete)
+    }
+
+    if (length(explicit)) {
+      if (!all(explicit %in% complete)) {
+        not_found <- which(!explicit %in% complete)
+        stop(
+          "Some 'pars' don't match parameter names: ",
+          paste(explicit[not_found], collapse = ", "),
+          call. = FALSE
+        )
+      }
+    }
+
+    if (!length(patterns)) {
+      return(unique(explicit))
+    } else {
+      regex_pars <-
+        unlist(lapply(seq_along(patterns), function(j) {
+          grep(patterns[j], complete, value = TRUE)
+        }))
+
+      if (!length(regex_pars)) {
+        stop("No matches for 'regex_pars'.", call. = FALSE)
+      }
+    }
+
+    unique(c(explicit, regex_pars))
+  }
+
+
+#' Melt a 3-D array or matrix of MCMC draws
+#'
+#' @noRd
+#' @param x An mcmc_array (from prepare_mcmc_array).
+#' @param varnames,value.name,... Passed to reshape2::melt (array method).
+#' @return A molten data frame.
+#'
 melt_mcmc <- function(x, ...) UseMethod("melt_mcmc")
 melt_mcmc.mcmc_array <- function(x,
                                  varnames =
@@ -88,9 +153,11 @@ melt_mcmc.matrix <- function(x,
   long
 }
 
-# Set dimnames of 3-D array
-# @param x 3-D array
-# @param parnames Character vector of parameter names
+#' Set dimnames of 3-D array
+#' @noRd
+#' @param x 3-D array
+#' @param parnames Character vector of parameter names
+#' @return x with a modified dimnames.
 set_mcmc_dimnames <- function(x, parnames) {
   stopifnot(is_3d_array(x))
   dimnames(x) <- list(
@@ -101,11 +168,12 @@ set_mcmc_dimnames <- function(x, parnames) {
   structure(x, class = c(class(x), "mcmc_array"))
 }
 
-# Convert 3-D array to matrix with chains merged
-#
-# @param x A 3-D array (iter x chain x param)
-# @return A matrix with one column per parameter
-#
+#' Convert 3-D array to matrix with chains merged
+#'
+#' @noRd
+#' @param x A 3-D array (iter x chain x param)
+#' @return A matrix with one column per parameter
+#'
 merge_chains <- function(x) {
   xdim <- dim(x)
   mat <- array(x, dim = c(prod(xdim[1:2]), xdim[3]))
@@ -114,10 +182,11 @@ merge_chains <- function(x) {
 }
 
 
-# Check if an object is a data.frame with a chain index column
-#
-# @param x object to check
-# @return TRUE or FALSE
+#' Check if an object is a data.frame with a chain index column
+#'
+#' @noRd
+#' @param x object to check
+#' @return TRUE or FALSE
 is_df_with_chain <- function(x) {
   is.data.frame(x) && any(tolower(colnames(x)) %in% "chain")
 }
@@ -152,10 +221,10 @@ df_with_chain2array <- function(x) {
 }
 
 
-# Check if an object is a list but not a data.frame
-#
-# @param x object to check
-# @return TRUE or FALSE
+#' Check if an object is a list but not a data.frame
+#' @noRd
+#' @param x object to check
+#' @return TRUE or FALSE
 is_chain_list <- function(x) {
   !is.data.frame(x) && is.list(x)
 }
@@ -276,10 +345,10 @@ STOP_need_multiple_chains <- function(call. = FALSE) {
 }
 
 
-# Perform some checks on user's 'x' input for MCMC plots
-#
-# @param x User's 'x' input to one of the mcmc_* functions.
-# @return x, unless an error is thrown.
+#' Perform some checks on user's 'x' input for MCMC plots
+#' @noRd
+#' @param x User's 'x' input to one of the mcmc_* functions.
+#' @return x, unless an error is thrown.
 validate_mcmc_x <- function(x) {
   stopifnot(!is_df_with_chain(x), !is_chain_list(x))
   if (is.data.frame(x)) {
@@ -318,13 +387,14 @@ validate_transformations <-
   }
 
 
-# Apply transformations to matrix or 3-D array of parameter draws
-#
-# @param x A matrix or 3-D array of draws
-# @param transformation User's 'transformations' argument to one of the mcmc_*
-#   functions.
-# @return x, with tranformations having been applied to some parameters.
-#
+#' Apply transformations to matrix or 3-D array of parameter draws
+#'
+#' @noRd
+#' @param x A matrix or 3-D array of draws
+#' @param transformation User's 'transformations' argument to one of the mcmc_*
+#'   functions.
+#' @return x, with tranformations having been applied to some parameters.
+#'
 apply_transformations <- function(x, transformations = list(), ...) {
   UseMethod("apply_transformations")
 }

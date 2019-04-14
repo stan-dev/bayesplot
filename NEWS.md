@@ -6,6 +6,8 @@
 
 <!-- Items for next release go here* -->
 
+* `pars` argument to all MCMC plots now supports tidy variable selection. FIXME!! (add more details and PR number)
+
 * [`mcmc_trace()`](http://mc-stan.org/bayesplot/reference/MCMC-traces.html)
   gains an argument `iter1` which can be used to label the traceplot starting
   from the first iteration after warmup. (#14, #155, @mcol)

@@ -43,12 +43,17 @@ The \link{MCMC-overview} page provides details on how to specify each these
 allowed inputs.}
 
 \item{pars}{An optional character vector of parameter names. If neither
-\code{pars} nor \code{regex_pars} is specified then the default is to use
-\emph{all} parameters.}
+\code{pars} nor \code{regex_pars} is specified then the default is to use \emph{all}
+parameters. As of version \code{1.7.0}, \strong{bayesplot} also supports 'tidy'
+parameter selection by specifying \code{pars = vars(...)}, where \code{...} is
+specified the same way as in \link[dplyr:select]{dplyr::select} and similar
+functions.}
 
-\item{regex_pars}{An optional \link[=grep]{regular expression} to use for
-parameter selection. Can be specified instead of \code{pars} or in addition
-to \code{pars}.}
+\item{regex_pars}{An optional \link[base:grep]{regular expression} to use for
+parameter selection. Can be specified instead of \code{pars} or in addition to
+\code{pars}. When using \code{pars} for tidy parameter selection, the \code{regex_pars}
+argument is ignored since \link[tidyselect:select_helpers]{select helpers}
+perform a similar function.}
 
 \item{transformations}{Optionally, transformations to apply to parameters
   before plotting. If \code{transformations} is a function or a single string

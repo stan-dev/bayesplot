@@ -28,6 +28,7 @@ Imports:
     stats,
     utils,
     rlang,
+    tidyselect,
     ggridges
 Suggests: 
     arm,

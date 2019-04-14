@@ -72,9 +72,10 @@ plots for ordinal, categorical, and multinomial outcomes. See the
 \strong{Plot Descriptions} section below.
 }
 \details{
-For all of these plots \code{y} and \code{yrep} must be non-negative
-  integers, although they need not be integers in the strict sense of \R's
-  \code{\link{integer}} type.
+For all of these plots \code{y} and \code{yrep} must be
+  integers, although they need not be integers in the strict sense
+  of \R's \code{\link{integer}} type. For rootogram plots \code{y}
+  and \code{yrep} must also be non-negative.
 }
 \section{Plot Descriptions}{
 
