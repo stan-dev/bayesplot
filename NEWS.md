@@ -6,6 +6,10 @@
 
 <!-- Items for next release go here* -->
 
+* New PPC function `ppc_hist_by_obs()` which compares individual `y` values to
+  corresponding _columns_ of `yrep` (i.e., it shows predictive distributions for
+  individual observations rather than entire datasets).
+
 * [`mcmc_trace()`](http://mc-stan.org/bayesplot/reference/MCMC-traces.html)
   gains an argument `iter1` which can be used to label the traceplot starting
   from the first iteration after warmup. (#14, #155, @mcol)

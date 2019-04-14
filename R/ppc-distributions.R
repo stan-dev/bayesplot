@@ -45,6 +45,17 @@
 #'    quantiles. \code{y} is overlaid on the plot either as a violin, points, or
 #'    both, depending on the \code{y_draw} argument.
 #'   }
+#'   \item{\code{ppc_hist_by_obs}}{
+#'    This plot is different than the others in that it groups \code{yrep}
+#'    by column (observation) rather than by row (simulation).
+#'    A separate histogram is plotted for each \emph{column} of \code{yrep} and
+#'    a vertical line is added to each histogram indicating the corresponding
+#'    observed value of \code{y}. Unless the dataset is very small, for this
+#'    plot \code{yrep} should contain only a small number of columns and
+#'    \code{y} should contain the subset of \code{y} values corresponding to
+#'    the included columns of \code{yrep}. See the end of the \strong{Examples}
+#'    section.
+#'   }
 #' }
 #'
 #' @templateVar bdaRef (Ch. 6)
@@ -94,6 +105,13 @@
 #' ppc_violin_grouped(y, yrep, group, alpha = 0, y_draw = "both",
 #'                    y_size = 1.5, y_alpha = 0.5, y_jitter = 0.33)
 #' }
+#'
+#'
+#' # ppc_hist_by_obs compares individual y values to their predictive distributions
+#' # (columns of yrep)
+#' obs <- c(10, 15, 22)
+#' ppc_hist_by_obs(y[obs], yrep[, obs], facet_args = list(ncol = 1))
+#'
 NULL
 
 
@@ -120,12 +138,12 @@ ppc_data <- function(y, yrep, group = NULL) {
 
 #' @rdname PPC-distributions
 #' @export
-ppc_hist <- function(y, yrep, ..., binwidth = NULL, breaks = NULL, 
+ppc_hist <- function(y, yrep, ..., binwidth = NULL, breaks = NULL,
                      freq = TRUE) {
   check_ignored_arguments(...)
   data <- ppc_data(y, yrep)
   aes_list <- set_hist_aes(freq, fill = ~ is_y_label, color = ~ is_y_label)
-    
+
   ggplot(data) +
     aes_list +
     geom_histogram(size = 0.25, binwidth = binwidth, breaks = breaks) +
@@ -136,6 +154,51 @@ ppc_hist <- function(y, yrep, ..., binwidth = NULL, breaks = NULL,
     dont_expand_y_axis() +
     bayesplot_theme_get() +
     space_legend_keys() +
+    yaxis_text(FALSE) +
+    yaxis_title(FALSE) +
+    yaxis_ticks(FALSE) +
+    xaxis_title(FALSE) +
+    facet_text(FALSE) +
+    facet_bg(FALSE)
+}
+
+#' @rdname PPC-distributions
+#' @export
+#' @template args-facet_args
+ppc_hist_by_obs <- function(y, yrep, ..., binwidth = NULL, freq = TRUE,
+                            facet_args = list()) {
+  check_ignored_arguments(...)
+  data <- ppc_data(y, yrep)
+  yrep_data <- data %>% dplyr::filter(!.data$is_y)
+  y_data <- data %>% dplyr::filter(.data$is_y)
+
+  facet_args[["facets"]] <- ~ y_id
+  if (is.null(facet_args[["scales"]]))
+    facet_args[["scales"]] <- "free"
+
+  ggplot(yrep_data, set_hist_aes(freq)) +
+    geom_histogram(
+      aes_(fill = "yrep"),
+      color = get_color("lh"),
+      size = 0.25,
+      binwidth = binwidth
+    ) +
+    geom_vline(
+      aes_(xintercept = ~ value, color = "y"),
+      data = y_data,
+      size = 1.5
+    ) +
+    scale_fill_manual(values = get_color("l"), labels = yrep_label()) +
+    scale_color_manual(values = get_color("dh"), labels = y_label()) +
+    guides(
+      color = guide_legend(title = NULL),
+      fill = guide_legend(title = NULL, order = 1)
+    ) +
+    do.call("facet_wrap", facet_args) +
+    bayesplot_theme_get() +
+    force_axes_in_facets() +
+    dont_expand_y_axis() +
+    no_legend_spacing() +
     yaxis_text(FALSE) +
     yaxis_title(FALSE) +
     yaxis_ticks(FALSE) +

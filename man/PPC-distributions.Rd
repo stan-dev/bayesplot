@@ -4,6 +4,7 @@
 \alias{PPC-distributions}
 \alias{ppc_data}
 \alias{ppc_hist}
+\alias{ppc_hist_by_obs}
 \alias{ppc_boxplot}
 \alias{ppc_freqpoly}
 \alias{ppc_freqpoly_grouped}
@@ -16,6 +17,9 @@
 ppc_data(y, yrep, group = NULL)
 
 ppc_hist(y, yrep, ..., binwidth = NULL, breaks = NULL, freq = TRUE)
+
+ppc_hist_by_obs(y, yrep, ..., binwidth = NULL, freq = TRUE,
+  facet_args = list())
 
 ppc_boxplot(y, yrep, ..., notch = TRUE, size = 0.5, alpha = 1)
 
@@ -66,6 +70,10 @@ y-axis. Setting \code{freq=FALSE} puts density on the y-axis. (For many
 plots the y-axis text is off by default. To view the count or density
 labels on the y-axis see the \code{\link{yaxis_text}} convenience
 function.)}
+
+\item{facet_args}{A named list of arguments (other than \code{facets}) passed
+to \code{\link[ggplot2]{facet_wrap}} or \code{\link[ggplot2]{facet_grid}}
+to control faceting.}
 
 \item{notch}{A logical scalar passed to \code{\link[ggplot2]{geom_boxplot}}.
 Unlike for \code{geom_boxplot}, the default is \code{notch=TRUE}.}
@@ -145,6 +153,17 @@ For Binomial data, the plots will typically be most useful if
    quantiles. \code{y} is overlaid on the plot either as a violin, points, or
    both, depending on the \code{y_draw} argument.
   }
+  \item{\code{ppc_hist_by_obs}}{
+   This plot is different than the others in that it groups \code{yrep}
+   by column (observation) rather than by row (simulation).
+   A separate histogram is plotted for each \emph{column} of \code{yrep} and
+   a vertical line is added to each histogram indicating the corresponding
+   observed value of \code{y}. Unless the dataset is very small, for this
+   plot \code{yrep} should contain only a small number of columns and
+   \code{y} should contain the subset of \code{y} values corresponding to
+   the included columns of \code{yrep}. See the end of the \strong{Examples}
+   section.
+  }
 }
 }
 
@@ -192,6 +211,13 @@ ppc_violin_grouped(y, yrep, group, alpha = 0, y_draw = "points", y_size = 1.5)
 ppc_violin_grouped(y, yrep, group, alpha = 0, y_draw = "both",
                    y_size = 1.5, y_alpha = 0.5, y_jitter = 0.33)
 }
+
+
+# ppc_hist_by_obs compares individual y values to their predictive distributions
+# (columns of yrep)
+obs <- c(10, 15, 22)
+ppc_hist_by_obs(y[obs], yrep[, obs], facet_args = list(ncol = 1))
+
 }
 \references{
 Gelman, A., Carlin, J. B., Stern, H. S., Dunson, D. B., Vehtari,

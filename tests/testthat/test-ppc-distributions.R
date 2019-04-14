@@ -55,6 +55,13 @@ test_that("ppc_violin_grouped returns a ggplot object", {
 })
 
 
+test_that("ppc_hist_by_obs returns a ggplot object", {
+  expect_gg(ppc_hist_by_obs(y[1:3], yrep[, 1:3], binwidth = 1))
+  expect_error(ppc_hist_by_obs(y[1:3], yrep[, 1:4]),
+               "ncol(yrep) must be equal to length(y)", fixed = TRUE)
+})
+
+
 
 
 # Visual tests -----------------------------------------------------------------
