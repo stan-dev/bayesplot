@@ -1,9 +1,3 @@
-# re-export vars for tidy parameter selection
-#' @importFrom dplyr vars
-#' @export
-dplyr::vars
-
-
 #' Prepare 3-D array for MCMC plots
 #'
 #' @noRd
@@ -22,17 +16,13 @@ prepare_mcmc_array <- function(x,
   }
   x <- validate_mcmc_x(x)
 
-  parnames <- parameter_names(x)
-  if (rlang::is_quosures(pars)) {
-    helpers <- tidyselect::vars_select_helpers
-    pars <- lapply(pars, rlang::env_bury, !!! helpers)
-    pars <- tidyselect::vars_select(parnames, !!! pars)
+  if (is_quosures(pars)) {
+    pars <- tidyselect_parameters(complete_pars = parameter_names(x),
+                                  pars_list = pars)
   } else {
-    pars <- select_parameters(
-      explicit = pars,
-      patterns = regex_pars,
-      complete = parnames
-    )
+    pars <- select_parameters(complete_pars = parameter_names(x),
+                              explicit = pars,
+                              patterns = regex_pars)
   }
 
   # possibly recycle transformations (apply same to all pars)
@@ -65,26 +55,26 @@ prepare_mcmc_array <- function(x,
 #' @noRd
 #' @param explicit Character vector of selected parameter names.
 #' @param patterns Character vector of regular expressions.
-#' @param complete Character vector of all possible parameter names.
+#' @param complete_pars Character vector of all possible parameter names.
 #' @return Character vector of combined explicit and matched (via regex)
 #'   parameter names, unless an error is thrown.
 #'
 select_parameters <-
   function(explicit = character(),
            patterns = character(),
-           complete = character()) {
+           complete_pars = character()) {
 
     stopifnot(is.character(explicit),
               is.character(patterns),
-              is.character(complete))
+              is.character(complete_pars))
 
     if (!length(explicit) && !length(patterns)) {
-      return(complete)
+      return(complete_pars)
     }
 
     if (length(explicit)) {
-      if (!all(explicit %in% complete)) {
-        not_found <- which(!explicit %in% complete)
+      if (!all(explicit %in% complete_pars)) {
+        not_found <- which(!explicit %in% complete_pars)
         stop(
           "Some 'pars' don't match parameter names: ",
           paste(explicit[not_found], collapse = ", "),
@@ -98,7 +88,7 @@ select_parameters <-
     } else {
       regex_pars <-
         unlist(lapply(seq_along(patterns), function(j) {
-          grep(patterns[j], complete, value = TRUE)
+          grep(patterns[j], complete_pars, value = TRUE)
         }))
 
       if (!length(regex_pars)) {

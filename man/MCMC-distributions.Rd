@@ -48,7 +48,8 @@ allowed inputs.}
 parameters. As of version \code{1.7.0}, \strong{bayesplot} also supports 'tidy'
 parameter selection by specifying \code{pars = vars(...)}, where \code{...} is
 specified the same way as in \link[dplyr:select]{dplyr::select} and similar
-functions.}
+functions. Examples of using \code{pars} in this way can be found on
+the \link[=tidy-params]{Tidy parameter selection} page.}
 
 \item{regex_pars}{An optional \link[base:grep]{regular expression} to use for
 parameter selection. Can be specified instead of \code{pars} or in addition to
