@@ -22,7 +22,7 @@ ppc_error_scatter_avg(y, yrep, ..., size = 2.5, alpha = 0.8)
 
 ppc_error_scatter_avg_vs_x(y, yrep, x, ..., size = 2.5, alpha = 0.8)
 
-ppc_error_binned(y, yrep, ..., size = 1, alpha = 0.25)
+ppc_error_binned(y, yrep, ..., bins = NULL, size = 1, alpha = 0.25)
 }
 \arguments{
 \item{y}{A vector of observations. See \strong{Details}.}
@@ -60,6 +60,8 @@ the outline and opacity of the shaded region indicating the 2-SE bounds.}
 
 \item{x}{A numeric vector the same length as \code{y} to use as the x-axis
 variable.}
+
+\item{bins}{For \code{ppc_error_binned}, the number of bins to use (approximately).}
 }
 \value{
 A ggplot object that can be further customized using the
