@@ -165,14 +165,16 @@ df_with_chain2array <- function(x) {
 }
 
 
-# Check if an object is a list but not a data.frame
+# Check if an object is a list (but not a data.frame) that contains
+# all 2-D objects
 #
 # @param x object to check
 # @return TRUE or FALSE
 is_chain_list <- function(x) {
   check1 <- !is.data.frame(x) && is.list(x)
   dims <- sapply(x, function(chain) length(dim(chain)))
-  isTRUE(all(dims == 2))
+  check2 <- isTRUE(all(dims == 2)) # all elements of list should be matrices/2-D arrays
+  check1 && check2
 }
 
 validate_chain_list <- function(x) {
