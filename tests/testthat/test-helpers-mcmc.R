@@ -232,6 +232,7 @@ test_that("prepare_mcmc_array processes non-array input types correctly", {
   fit <- stan_glm(mpg ~ wt, data = mtcars, chains = 2, iter = 500, refresh = 0)
   a4 <- prepare_mcmc_array(fit)
   expect_s3_class(a4, "mcmc_array")
+  expect_equal(a4, prepare_mcmc_array(as.array(fit)))
   expect_equal(dim(a4), c(250, 2, 3))
   expect_equal(parameter_names(a4), c("(Intercept)", "wt", "sigma"))
 
