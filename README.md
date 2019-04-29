@@ -44,11 +44,11 @@ install.packages("bayesplot")
 if (!require("devtools")) {
   install.packages("devtools")
 }
-devtools::install_github("stan-dev/bayesplot", dependencies = TRUE, build_vignettes = TRUE)
+devtools::install_github("stan-dev/bayesplot", dependencies = TRUE, build_vignettes = FALSE)
 ```
 
-You can also set `build_vignettes=FALSE` for a faster installation from GitHub (the vignettes 
-can always be accessed online anytime at [mc-stan.org/bayesplot/articles](http://mc-stan.org/bayesplot/articles/)).
+This installation won't include the vignettes (they take some time to build), but all of the vignettes are 
+available online at [mc-stan.org/bayesplot/articles](http://mc-stan.org/bayesplot/articles/)).
 
 If you are not using the [RStudio IDE](https://www.rstudio.com/) and you get an
 error related to "pandoc" you will either need to remove the argument
