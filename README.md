@@ -48,25 +48,13 @@ devtools::install_github("stan-dev/bayesplot", dependencies = TRUE, build_vignet
 ```
 
 This installation won't include the vignettes (they take some time to build), but all of the vignettes are 
-available online at [mc-stan.org/bayesplot/articles](http://mc-stan.org/bayesplot/articles/)).
-
-If you are not using the [RStudio IDE](https://www.rstudio.com/) and you get an
-error related to "pandoc" you will either need to remove the argument
-`build_vignettes=TRUE` (to avoid building the vignettes) or install
-[pandoc](http://pandoc.org/) (e.g., `brew install pandoc`) and probably also
-pandoc-citeproc (e.g., `brew install pandoc-citeproc`). If you have the
-`rmarkdown` R package installed then you can check if you have pandoc by running
-the following in R:
-
-```r
-rmarkdown::pandoc_available()
-```
+available online at [mc-stan.org/bayesplot/articles](https://mc-stan.org/bayesplot/articles/).
 
 
 ### Examples
 
-Some quick examples using MCMC draws obtained from the [__rstanarm__](https://github.com/stan-dev/rstanarm) 
-and [__rstan__](https://github.com/stan-dev/rstan) packages.
+Some quick examples using MCMC draws obtained from the [__rstanarm__](https://mc-stan.org/rstanarm) 
+and [__rstan__](https://mc-stan.org/rstann) packages.
 
 ```r
 library("bayesplot")
