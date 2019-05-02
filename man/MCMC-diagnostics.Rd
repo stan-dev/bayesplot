@@ -50,7 +50,9 @@ total sample size. See \code{\link{neff_ratio}}.}
 
 \item{x}{A 3-D array, matrix, list of matrices, or data frame of MCMC draws.
 The \link{MCMC-overview} page provides details on how to specify each these
-allowed inputs.}
+allowed inputs. It is also possible to use an object with an
+\code{as.array} method that returns the same kind of 3-D array described on
+the \link{MCMC-overview} page.}
 
 \item{pars}{An optional character vector of parameter names. If neither
 \code{pars} nor \code{regex_pars} is specified then the default is to use

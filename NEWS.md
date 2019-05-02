@@ -6,6 +6,9 @@
 
 <!-- Items for next release go here* -->
 
+* MCMC plots now also accept objects with an `as.array` method as 
+  input. (#175, #184)
+
 * [`mcmc_trace()`](http://mc-stan.org/bayesplot/reference/MCMC-traces.html)
   gains an argument `iter1` which can be used to label the traceplot starting
   from the first iteration after warmup. (#14, #155, @mcol)
