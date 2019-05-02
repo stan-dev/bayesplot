@@ -45,3 +45,38 @@ test_that("ppc_error_binned returns ggplot object", {
   expect_gg(ppc_error_binned(y[1:5], Ey[, 1:5]))
   expect_gg(ppc_error_binned(rep(y, 2), cbind(Ey, Ey)))
 })
+
+
+# Visual tests -----------------------------------------------------------------
+
+test_that("ppc_error_binned returns ggplot object", {
+  testthat::skip_on_cran()
+
+  rbeta2 <- function(n, mu, phi) {
+    a <- mu * phi
+    b <- (1 - mu) * phi
+    rbeta(n, a, b)
+  }
+
+  set.seed(100)
+  y <- rbeta(50, shape1 = 1, shape2 = 10)
+
+  four_draws <- structure(
+    c(-2.118, -2.061, -2.069, -2.011, 7.604, 9.720, 9.7186, 10.1888),
+    .Dim = c(4L, 2L),
+    .Dimnames = list(
+      iterations = NULL,
+      parameters = c("(Intercept)", "(phi)")
+    )
+  )
+
+  y_rep <- t(apply(four_draws, 1, function(x) rbeta2(50, plogis(x[1]), x[2])))
+
+  p_base <- ppc_error_binned(y, y_rep)
+
+  vdiffr::expect_doppelganger(
+    title = "ppc error binned (default)",
+    fig = p_base
+  )
+
+})
