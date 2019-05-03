@@ -18,9 +18,9 @@ formats:
  corresponds to a Markov chain. All of the matrices should have the same
  number of iterations (rows) and parameters (columns), and parameters should
  have the same names and be in the same order.
- \item \strong{matrix}: A \code{\link{matrix}} with one column per parameter.
- If using matrix there should only be a single Markov chain or all chains
- should already be merged (stacked).
+ \item \strong{matrix (2-D array)}: A \code{\link{matrix}} with one column
+ per parameter. If using matrix there should only be a single Markov chain or
+ all chains should already be merged (stacked).
  \item \strong{data frame}: There are two types of \link[=data.frame]{data
  frames} allowed. Either a data frame with one column per parameter (if only
  a single chain or all chains have already been merged), or a data frame with

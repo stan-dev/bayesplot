@@ -178,3 +178,5 @@ test_that("ggplot2::theme_set overrides bayesplot theme", {
   ggplot2::theme_set(minimal)
   expect_identical(bayesplot_theme_get(), minimal)
 })
+
+bayesplot_theme_set(bayesplot::theme_default())
