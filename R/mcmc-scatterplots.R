@@ -316,8 +316,11 @@ mcmc_pairs <- function(x,
     inherits(np_style, "nuts_style"),
     inherits(condition, "pairs_condition")
   )
-  plot_diagonal <- pairs_plotfun(match.arg(diag_fun))
-  plot_off_diagonal <- pairs_plotfun(match.arg(off_diag_fun))
+
+  diag_fun <- match.arg(diag_fun)
+  off_diag_fun <- match.arg(off_diag_fun)
+  plot_diagonal <- pairs_plotfun(diag_fun)
+  plot_off_diagonal <- pairs_plotfun(off_diag_fun)
 
   x <- prepare_mcmc_array(x, pars, regex_pars, transformations)
   x <- drop_constants_and_duplicates(x)
