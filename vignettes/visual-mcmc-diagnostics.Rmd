@@ -31,13 +31,13 @@ This vignette focuses on MCMC diagnostic plots, in particular on diagnosing
 divergent transitions and on the `n_eff` and `Rhat` statistics that help you
 determine that the chains have mixed well. Plots of parameter estimates
 from MCMC draws are covered in the separate vignette
-[_Plotting MCMC draws_](http://mc-stan.org/bayesplot/articles/plotting-mcmc-draws.html), 
+[_Plotting MCMC draws_](https://mc-stan.org/bayesplot/articles/plotting-mcmc-draws.html), 
 and graphical posterior predictive model checking is covered in the
-[_Graphical posterior predictive checks_](http://mc-stan.org/bayesplot/articles/graphical-ppcs.html)
+[_Graphical posterior predictive checks_](https://mc-stan.org/bayesplot/articles/graphical-ppcs.html)
 vignette.
 
 Note that most of these plots can also be browsed interactively using the 
-[shinystan](http://mc-stan.org/shinystan/) package.
+[shinystan](https://mc-stan.org/shinystan/) package.
 
 ### Setup
 
@@ -168,7 +168,7 @@ You may have noticed the warnings about divergent transitions for the centered
 parametrization fit. Those are serious business and in most cases indicate that
 something is wrong with the model and the results should not be trusted. 
 For an explanation of these warnings see 
-[Divergent transitions after warmup](http://mc-stan.org/misc/warnings.html#divergent-transitions-after-warmup).
+[Divergent transitions after warmup](https://mc-stan.org/misc/warnings.html#divergent-transitions-after-warmup).
 We'll have a look at diagnosing the source of the divergences first and then
 dive into some diagnostics that should be checked even if there are no warnigns
 from the sampler.
@@ -178,7 +178,7 @@ from the sampler.
 ## Diagnostics for the No-U-Turn Sampler
 
 The No-U-Turn Sampler (NUTS, Hoffman and Gelman, 2014) is the variant of 
-Hamiltonian Monte Carlo (HMC) used by [Stan](http://mc-stan.org/) and the
+Hamiltonian Monte Carlo (HMC) used by [Stan](https://mc-stan.org/) and the
 various R packages that depend on Stan for fitting Bayesian models.
 The **bayesplot** package has special functions for visualizing some of the 
 unique diagnostics permitted by HMC, and NUTS in particular. See Betancourt 
@@ -188,7 +188,7 @@ more details on the concepts.
 **Documentation:**
 
 * `help("MCMC-nuts")` 
-* [mc-stan.org/bayesplot/reference/MCMC-nuts](http://mc-stan.org/bayesplot/reference/MCMC-nuts.html)
+* [mc-stan.org/bayesplot/reference/MCMC-nuts](https://mc-stan.org/bayesplot/reference/MCMC-nuts.html)
 
 ------
 
@@ -239,7 +239,7 @@ if(n_divergent_ncp > 0) {
 
 In addition to the NUTS-specific plotting functions, some of the general 
 MCMC plotting functions demonstrated in the 
-[_Plotting MCMC draws_](http://mc-stan.org/bayesplot/articles/plotting-mcmc-draws.html)
+[_Plotting MCMC draws_](https://mc-stan.org/bayesplot/articles/plotting-mcmc-draws.html)
 vignette also take optional arguments that can be used to display important
 HMC/NUTS diagnostic information. We'll see examples of this in the next
 section on divergenent transitions.
@@ -574,13 +574,13 @@ chain(s) have converged. The __bayesplot__ package provides various plotting
 functions for visualizing Markov chain Monte Carlo (MCMC) diagnostics after 
 fitting a Bayesian model. MCMC draws from any package can be used, although
 there are a few diagnostic plots that we will see later in this vignette that
-are specifically intended to be used for [Stan](http://mc-stan.org/) models (or
+are specifically intended to be used for [Stan](https://mc-stan.org/) models (or
 models fit using the same algorithms as Stan).
 
 **Documentation:**
 
 * `help("MCMC-diagnostics")` 
-* [mc-stan.org/bayesplot/reference/MCMC-diagnostics](http://mc-stan.org/bayesplot/reference/MCMC-diagnostics.html)
+* [mc-stan.org/bayesplot/reference/MCMC-diagnostics](https://mc-stan.org/bayesplot/reference/MCMC-diagnostics.html)
 
 ------
 
@@ -766,7 +766,7 @@ models. https://arxiv.org/abs/1312.0906
 
 Gabry, J., and Goodrich, B. (2018). rstanarm: Bayesian Applied Regression
 Modeling via Stan. R package version 2.17.4.
-http://mc-stan.org/rstanarm
+https://mc-stan.org/rstanarm
 
 Gabry, J. , Simpson, D. , Vehtari, A. , Betancourt, M. and Gelman, A. (2019), 
 Visualization in Bayesian workflow. _J. R. Stat. Soc. A_, 182: 389-402. 
@@ -789,7 +789,7 @@ Rubin, D. B. (1981). Estimation in Parallel Randomized Experiments. *Journal of
 Educational and Behavioral Statistics*. 6:377--401.
 
 Stan Development Team. (2018). *Stan Modeling Language Users
-Guide and Reference Manual*. http://mc-stan.org/users/documentation/
+Guide and Reference Manual*. https://mc-stan.org/users/documentation/
 
 Stan Development Team. (2018). RStan: the R interface to Stan. R package version 2.17.3.
-http://mc-stan.org/rstan
+https://mc-stan.org/rstan

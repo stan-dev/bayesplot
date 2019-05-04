@@ -25,9 +25,9 @@ library("rstanarm")
 
 This vignette focuses on graphical posterior predictive checks (PPC). Plots of parameter estimates
 from MCMC draws are covered in the separate vignette
-[_Plotting MCMC draws_](http://mc-stan.org/bayesplot/articles/plotting-mcmc-draws.html),
+[_Plotting MCMC draws_](https://mc-stan.org/bayesplot/articles/plotting-mcmc-draws.html),
 and MCMC diagnostics are covered in the
-[_Visual MCMC diagnostics_](http://mc-stan.org/bayesplot/articles/visual-mcmc-diagnostics.html)
+[_Visual MCMC diagnostics_](https://mc-stan.org/bayesplot/articles/visual-mcmc-diagnostics.html)
 vignette.
 
 ### Graphical posterior predictive checks (PPCs)
@@ -89,7 +89,7 @@ library("rstanarm")
 To demonstrate some of the various PPCs that can be created with the
 **bayesplot** package we'll use an example of comparing Poisson and Negative
 binomial regression models from one of the
-**rstanarm** [package vignettes](http://mc-stan.org/rstanarm/articles/count.html) 
+**rstanarm** [package vignettes](https://mc-stan.org/rstanarm/articles/count.html) 
 (Gabry and Goodrich, 2017).
 
 > We want to make inferences about the efficacy of a certain pest management system at reducing the number of roaches in urban apartments. [...] The regression predictors for the model are the pre-treatment number of roaches `roach1`, the treatment indicator `treatment`, and a variable `senior` indicating whether the apartment is in a building restricted to elderly residents. Because the number of days for which the roach traps were used is not the same for all apartments in the sample, we include it as an exposure [...]. 
@@ -269,7 +269,7 @@ See Figure 7 in [Gabry et al. (2019)](#gabry2019) for another example of using
 There are many additional PPCs available, including plots of predictive 
 intervals, distributions of predictive errors, and more. For links to the
 documentation for all of the various PPC plots see `help("PPC-overview")`
-from R or the [online documentation](http://mc-stan.org/bayesplot/reference/index.html#section-ppc) on the Stan website. 
+from R or the [online documentation](https://mc-stan.org/bayesplot/reference/index.html#section-ppc) on the Stan website. 
 
 The `available_ppc` function can also be used to list the names of all PPC
 plotting functions:
@@ -381,7 +381,7 @@ version 1.7.0. https://CRAN.R-project.org/package=brms
 
 Gabry, J., and Goodrich, B. (2017). rstanarm: Bayesian Applied Regression 
 Modeling via Stan. R package version 2.15.3. 
-http://mc-stan.org/rstanarm, https://CRAN.R-project.org/package=rstanarm
+https://mc-stan.org/rstanarm, https://CRAN.R-project.org/package=rstanarm
 
 Gabry, J. , Simpson, D. , Vehtari, A. , Betancourt, M. and Gelman, A. (2019), 
 Visualization in Bayesian workflow. _J. R. Stat. Soc. A_, 182: 389-402. 
@@ -394,4 +394,4 @@ D. B. (2013). *Bayesian Data Analysis*. Chapman & Hall/CRC Press, London, third
 edition.
 
 Stan Development Team. (2017). *Stan Modeling Language Users
-Guide and Reference Manual*. http://mc-stan.org/users/documentation/
+Guide and Reference Manual*. https://mc-stan.org/users/documentation/
