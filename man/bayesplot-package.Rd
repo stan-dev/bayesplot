@@ -56,7 +56,7 @@ forecasting/out-of-sample prediction and other inference-related tasks.
  To ask a question about \pkg{bayesplot} on the Stan Forums
  forum please visit:
 
- \url{http://discourse.mc-stan.org}.
+ \url{https://discourse.mc-stan.org}.
 }
 }
 }

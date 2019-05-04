@@ -58,7 +58,7 @@ to \code{pars}.}
 \item{size, alpha}{Arguments passed on to \code{\link[ggplot2]{geom_line}}.}
 
 \item{np}{For models fit using \code{\link{NUTS}} (more generally,
-any \href{http://en.wikipedia.org/wiki/Symplectic_integrator}{symplectic
+any \href{https://en.wikipedia.org/wiki/Symplectic_integrator}{symplectic
 integrator}), an optional data frame providing NUTS
 diagnostic information. The data frame should be the object returned by
 \code{\link{nuts_params}} or one with the same structure.}
@@ -162,7 +162,7 @@ Gabry, J. , Simpson, D. , Vehtari, A. , Betancourt, M. and
 
 Hartikainen, A. (2017, Aug 23). Concentration of divergences
 [Msg 21]. Message posted to The Stan Forums:
-\url{http://discourse.mc-stan.org/t/concentration-of-divergences/1590/21}.
+\url{https://discourse.mc-stan.org/t/concentration-of-divergences/1590/21}.
 }
 \seealso{
 Other MCMC: \code{\link{MCMC-combos}},

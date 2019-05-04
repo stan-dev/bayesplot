@@ -161,8 +161,8 @@ Hoffman, M. D. and Gelman, A. (2014). The No-U-Turn Sampler:
   adaptively setting path lengths in Hamiltonian Monte Carlo. \emph{Journal
   of Machine Learning Research}. 15:1593--1623.
 
-Stan Development Team. (2016). \emph{Stan Modeling Language Users
-Guide and Reference Manual.} \url{http://mc-stan.org/documentation/}
+Stan Development Team. \emph{Stan Modeling Language Users
+Guide and Reference Manual.} \url{https://mc-stan.org/users/documentation/}
 }
 \seealso{
 \itemize{

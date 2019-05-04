@@ -1,2 +1,2 @@
-#' @references Stan Development Team. (2016). \emph{Stan Modeling Language Users
-#' Guide and Reference Manual.} \url{http://mc-stan.org/documentation/}
+#' @references Stan Development Team. \emph{Stan Modeling Language Users
+#' Guide and Reference Manual.} \url{https://mc-stan.org/users/documentation/}

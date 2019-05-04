@@ -679,7 +679,7 @@ samples from the true posterior
 anticorrelated - draws above the mean tend to be well matched with draws below the mean.
 Other functions computed from draws (quantiles, posterior intervals, tail probabilities)
 may not necessarily approach the true posterior faster. Google "antithetic sampling" or 
-visit [the relevant forum thread](http://discourse.mc-stan.org/t/n-eff-bda3-vs-stan/2608/19)
+visit [the relevant forum thread](https://discourse.mc-stan.org/t/n-eff-bda3-vs-stan/2608/19)
 for some further explanation.
 
 The **bayesplot** package provides a generic `neff_ratio` extractor function,

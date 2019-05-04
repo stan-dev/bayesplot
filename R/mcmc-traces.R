@@ -29,7 +29,7 @@
 #' @param window An integer vector of length two specifying the limits of a
 #'   range of iterations to display.
 #' @param np For models fit using \code{\link{NUTS}} (more generally, any
-#'   \href{http://en.wikipedia.org/wiki/Symplectic_integrator}{symplectic
+#'   \href{https://en.wikipedia.org/wiki/Symplectic_integrator}{symplectic
 #'   integrator}), an optional data frame providing NUTS diagnostic
 #'   information. The data frame should be the object returned by
 #'   \code{\link{nuts_params}} or one with the same structure. If \code{np} is
