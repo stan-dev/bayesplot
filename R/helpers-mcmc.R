@@ -28,7 +28,7 @@ prepare_mcmc_array <- function(x,
     stop("NAs not allowed in 'x'.")
   }
 
-  if (is_quosures(pars)) {
+  if (rlang::is_quosures(pars)) {
     pars <- tidyselect_parameters(complete_pars = parameter_names(x),
                                   pars_list = pars)
   } else {

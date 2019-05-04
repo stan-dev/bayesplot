@@ -242,6 +242,34 @@ test_that("prepare_mcmc_array processes non-array input types correctly", {
 })
 
 
+test_that("prepare_mcmc_array tidy parameter selection is same as traditional selection", {
+  pars_all <- c(
+    "(Intercept)", "beta[1]", "beta[2]", "sigma",
+    "b[(Intercept) x:1]", "b[(Intercept) x:2]", "b[(Intercept) x:3]",
+    "b[(Intercept) x:4]", "b[(Intercept) x:5]", "b[(Intercept) x:6]"
+  )
+
+  pars_char_1 <- c("(Intercept)", "beta[1]", "beta[2]", "sigma")
+  pars_tidy_1a <- vars(`(Intercept)`, `beta[1]`, `beta[2]`, sigma)
+  pars_tidy_1b <- vars(`(Intercept)`, contains("beta"), sigma)
+  expect_identical(prepare_mcmc_array(arr, pars = pars_tidy_1a),
+                   prepare_mcmc_array(arr, pars = pars_char_1))
+  expect_identical(prepare_mcmc_array(arr, pars = pars_tidy_1b),
+                   prepare_mcmc_array(arr, pars = pars_char_1))
+
+  pars_char_2 <- grep("Intercept", pars_all, value = TRUE)
+  pars_tidy_2a <- vars(contains("Intercept"))
+  pars_tidy_2b <- vars(`(Intercept)`, starts_with("b["))
+  pars_tidy_2c <- vars(`(Intercept)`, matches("b\\["))
+  expect_identical(prepare_mcmc_array(arr, pars = pars_tidy_2a),
+                   prepare_mcmc_array(arr, pars = pars_char_2))
+  expect_identical(prepare_mcmc_array(arr, pars = pars_tidy_2b),
+                   prepare_mcmc_array(arr, pars = pars_char_2))
+  expect_identical(prepare_mcmc_array(arr, pars = pars_tidy_2c),
+                   prepare_mcmc_array(arr, pars = pars_char_2))
+})
+
+
 # rhat and neff helpers ---------------------------------------------------
 test_that("diagnostic_factor.rhat works", {
   rhats <- new_rhat(c(low = 0.99, low = 1, low = 1.01,
