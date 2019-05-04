@@ -11,8 +11,8 @@ variable selection (in the style of the \strong{dplyr} package). The
 purpose.
 
 When using \code{pars} for tidy parameter selection, the \code{regex_pars} argument
-is ignored because \strong{bayesplot} supports using \link[tidyselect:select_helpers]{tidyselect helper functions} (e.g., \code{starts_with()}) for the same
-purpose.
+is ignored because \strong{bayesplot} supports using \link[tidyselect:select_helpers]{tidyselect helper functions} (\code{starts_with()}, \code{contains()}, etc.)
+for the same purpose.
 }
 \examples{
 
