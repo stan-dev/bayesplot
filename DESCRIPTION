@@ -28,10 +28,10 @@ Imports:
     stats,
     utils,
     rlang (>= 0.3.0),
-    ggridges,
-    hexbin
+    ggridges
 Suggests: 
     gridExtra (>= 2.2.1),
+    hexbin,
     knitr (>= 1.16),
     loo (>= 2.0.0),
     rmarkdown (>= 1.0.0),

@@ -25,16 +25,15 @@ test_that("mcmc_scatter returns a ggplot object", {
 })
 
 test_that("mcmc_hex returns a ggplot object", {
+  skip_if_not_installed("hexbin")
   expect_gg(mcmc_hex(arr, pars = c("beta[1]", "beta[2]")))
   expect_gg(mcmc_hex(arr1chain, regex_pars = "beta", binwidth = c(.5,.5)))
 })
 
-test_that("mcmc_scatter & mcmc_hex throw error if only 1 parameter", {
+test_that("mcmc_scatter throws error if only 1 parameter", {
   expect_error(mcmc_scatter(arr, pars = "sigma"), "exactly 2 parameters")
   expect_error(mcmc_scatter(arr1), "exactly 2 parameters")
   expect_error(mcmc_scatter(mat1), "exactly 2 parameters")
-  expect_error(mcmc_hex(dframe1), "exactly 2 parameters")
-  expect_error(mcmc_hex(chainlist1), "exactly 2 parameters")
 })
 
 test_that("mcmc_scatter accepts NUTS info", {

@@ -155,6 +155,8 @@ mcmc_hex <- function(x,
                      transformations = list(),
                      ...,
                      binwidth = NULL) {
+  suggested_package("scales")
+  suggested_package("hexbin")
   check_ignored_arguments(...)
   .mcmc_scatter(
     x,
@@ -704,7 +706,6 @@ pairs_condition <- function(chains = NULL, draws = NULL, nuts = NULL) {
         )
     }
   } else { # hex binning
-    suggested_package("scales")
     graph <- graph +
       geom_hex(
         aes_(fill = ~ scales::rescale(..density..)),
