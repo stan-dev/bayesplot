@@ -112,11 +112,13 @@
 #'                  size = .75, linetype = 2)
 #'
 #' \donttest{
-#' # hexagonal heatmap
-#' color_scheme_set("brightblue")
-#' (p <- mcmc_hex(x, pars = c("sigma", "alpha"), transform = list(sigma = "log")))
-#' p + plot_bg(fill = "gray95")
-#' p + plot_bg(fill = "gray95") + panel_bg(fill = "gray70")
+#' if (requireNamespace("hexbin", quietly = TRUE)) {
+#'  # hexagonal heatmap
+#'  color_scheme_set("brightblue")
+#'  (p <- mcmc_hex(x, pars = c("sigma", "alpha"), transform = list(sigma = "log")))
+#'  p + plot_bg(fill = "gray95")
+#'  p + plot_bg(fill = "gray95") + panel_bg(fill = "gray70")
+#' }
 #' }
 NULL
 
