@@ -13,8 +13,20 @@ prepare_mcmc_array <- function(x,
     x <- df_with_chain2array(x)
   } else if (is_chain_list(x)) {
     x <- chain_list2array(x)
+  } else if (is.data.frame(x)) {
+    # data frame without Chain column
+    x <- as.matrix(x)
+  } else if (!is.array(x)) {
+    x <- as.array(x)
   }
-  x <- validate_mcmc_x(x)
+
+  stopifnot(is.matrix(x) || is.array(x))
+  if (is.array(x) && !(length(dim(x)) %in% c(2,3))) {
+    stop("Arrays should have 2 or 3 dimensions. See help('MCMC-overview').")
+  }
+  if (anyNA(x)) {
+    stop("NAs not allowed in 'x'.")
+  }
 
   if (is_quosures(pars)) {
     pars <- tidyselect_parameters(complete_pars = parameter_names(x),
@@ -211,21 +223,19 @@ df_with_chain2array <- function(x) {
 }
 
 
-#' Check if an object is a list but not a data.frame
+#' Check if an object is a list (but not a data.frame) that contains
+#' all 2-D objects
 #' @noRd
 #' @param x object to check
 #' @return TRUE or FALSE
 is_chain_list <- function(x) {
-  !is.data.frame(x) && is.list(x)
+  check1 <- !is.data.frame(x) && is.list(x)
+  dims <- sapply(x, function(chain) length(dim(chain)))
+  check2 <- isTRUE(all(dims == 2)) # all elements of list should be matrices/2-D arrays
+  check1 && check2
 }
 
 validate_chain_list <- function(x) {
-  stopifnot(is_chain_list(x))
-  dims <- sapply(x, function(chain) length(dim(chain)))
-  if (!isTRUE(all(dims == 2))) {
-    stop("If 'x' is a list then all elements must be matrices.")
-  }
-
   n_chain <- length(x)
   for (i in seq_len(n_chain)) {
     nms <- colnames(as.matrix(x[[i]]))
@@ -335,25 +345,6 @@ STOP_need_multiple_chains <- function(call. = FALSE) {
 }
 
 
-#' Perform some checks on user's 'x' input for MCMC plots
-#' @noRd
-#' @param x User's 'x' input to one of the mcmc_* functions.
-#' @return x, unless an error is thrown.
-validate_mcmc_x <- function(x) {
-  stopifnot(!is_df_with_chain(x), !is_chain_list(x))
-  if (is.data.frame(x)) {
-    x <- as.matrix(x)
-  }
-
-  stopifnot(is.matrix(x) || is.array(x))
-  if (anyNA(x)) {
-    stop("NAs not allowed in 'x'.")
-  }
-
-  x
-}
-
-
 # Validate that transformations match parameter names
 validate_transformations <-
   function(transformations = list(),
@@ -457,4 +448,3 @@ num_iters.data.frame <- function(x, ...) {
 
   n
 }
-

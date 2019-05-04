@@ -311,46 +311,19 @@ ppc_error_scatter_avg_vs_x <-
 
 #' @rdname PPC-errors
 #' @export
-ppc_error_binned <- function(y, yrep, ..., size = 1, alpha = 0.25) {
-  suggested_package("arm")
+#' @param bins For \code{ppc_error_binned}, the number of bins to use (approximately).
+ppc_error_binned <- function(y, yrep, ..., bins = NULL, size = 1, alpha = 0.25) {
   check_ignored_arguments(...)
 
   y <- validate_y(y)
   yrep <- validate_yrep(yrep, y)
-  errors <- compute_errors(y, yrep)
-
-  ny <- length(y)
-  if (ny >= 100) {
-    nbins <- floor(sqrt(ny))
-  } else if (ny > 10 && ny < 100) {
-    nbins <- 10
-  } else {
-    # if (ny <= 10)
-    nbins <- floor(ny / 2)
-  }
-
-  n <- nrow(yrep)
-  binned <- .binner(
-    rep_id = 1,
-    ey = yrep[1, ],
-    r = errors[1, ],
-    nbins = nbins
-  )
-  if (n > 1) {
-    for (i in 2:nrow(errors))
-      binned <- rbind(binned, .binner(
-        rep_id = i,
-        ey = yrep[i,],
-        r = errors[i,],
-        nbins
-      ))
-  }
+  binned <- binned_error_data(y, yrep, bins = bins)
 
   mixed_scheme <- is_mixed_scheme(color_scheme_get())
   point_fill <- get_color(ifelse(mixed_scheme, "m", "d"))
   point_color <- get_color(ifelse(mixed_scheme, "mh", "dh"))
   graph <-
-    ggplot(binned, aes_(x = ~ xbar)) +
+    ggplot(binned, aes_(x = ~ ey_bar)) +
     geom_hline(
       yintercept = 0,
       linetype = 2,
@@ -373,7 +346,7 @@ ppc_error_binned <- function(y, yrep, ..., size = 1, alpha = 0.25) {
       size = size
     ) +
     geom_point(
-      mapping = aes_(y = ~ ybar),
+      mapping = aes_(y = ~ err_bar),
       shape = 21,
       fill = point_fill,
       color = point_color
@@ -384,12 +357,13 @@ ppc_error_binned <- function(y, yrep, ..., size = 1, alpha = 0.25) {
     ) +
     bayesplot_theme_get()
 
-  if (n > 1)
+  if (nrow(yrep) > 1) {
     graph <- graph +
       facet_wrap(
         facets = ~rep_id
         # labeller = label_bquote(italic(y)[rep](.(rep_id)))
       )
+  }
 
   graph +
     force_axes_in_facets() +
@@ -415,18 +389,77 @@ grouped_error_data <- function(y, yrep, group) {
   }
   dat <- dplyr::bind_rows(errs)
   dat$y_id <- NULL
-  dat
+  return(dat)
 }
 
+binned_error_data <- function(y, yrep, bins = NULL) {
+  if (is.null(bins)) {
+    bins <- n_bins(length(y))
+  }
 
-.binner <- function(rep_id, ey, r, nbins) {
-  binned_errors <- arm::binned.resids(ey, r, nbins)$binned
-  binned_errors <- binned_errors[, c("xbar", "ybar", "2se")]
-  if (length(dim(binned_errors)) < 2)
-    binned_errors <- t(binned_errors)
-  colnames(binned_errors) <- c("xbar", "ybar", "se2")
-  data.frame(
-    rep_id = as.integer(rep_id), #create_yrep_ids(rep_id),
-    binned_errors
-  )
+  errors <- compute_errors(y, yrep)
+  binned_errs <- list()
+  for (s in 1:nrow(errors)) {
+    binned_errs[[s]] <- bin_errors(ey = yrep[s,], r = errors[s,], bins = bins,
+                                   rep_id = s)
+  }
+  dat <- dplyr::bind_rows(binned_errs)
+  return(dat)
 }
+
+# calculate number of bins binned_error_data()
+# @parmam N Number of data points, length(y)
+n_bins <- function(N) {
+  if (N <= 10) {
+    return(floor(N / 2))
+  } else if (N > 10 && N < 100) {
+    return(10)
+  } else { # N >= 100
+    return(floor(sqrt(N)))
+  }
+}
+
+bin_errors <- function(ey, r, bins, rep_id = NULL) {
+  N <- length(ey)
+  break_ids <- floor(N * (1:(bins - 1)) / bins)
+  if (any(break_ids == 0)) {
+    bins <- 1
+  }
+  if (bins == 1) {
+    breaks <- c(-Inf, sum(range(ey)) / 2, Inf)
+  } else {
+    ey_sort <- sort(ey)
+    breaks <- -Inf
+    for (i in 1:(bins - 1)) {
+      break_i <- break_ids[i]
+      ey_range <- ey_sort[c(break_i, break_i + 1)]
+      if (diff(ey_range) == 0) {
+        if (ey_range[1] == min(ey)) {
+          ey_range[1] <- -Inf
+        } else {
+          ey_range[1] <- max(ey[ey < ey_range[1]])
+        }
+      }
+      breaks <- c(breaks, sum(ey_range) / 2)
+    }
+    breaks <- unique(c(breaks, Inf))
+  }
+
+  ey_binned <- as.numeric(cut(ey, breaks))
+  bins <- length(breaks) - 1
+  out <- matrix(NA, nrow = bins, ncol = 4)
+  colnames(out) <- c("ey_bar", "err_bar", "se2", "bin")
+  for (i in 1:bins) {
+    mark <- which(ey_binned == i)
+    ey_bar <- mean(ey[mark])
+    r_bar <- mean(r[mark])
+    s <- if (length(r[mark]) > 1) sd(r[mark]) else 0
+    out[i, ] <- c(ey_bar, r_bar, 2 * s / sqrt(length(mark)), i)
+  }
+  out <- as.data.frame(out)
+  if (!is.null(rep_id)) {
+    out$rep_id <- as.integer(rep_id)
+  }
+  return(out)
+}
+

@@ -6,32 +6,35 @@
 
 <!-- Items for next release go here* -->
 
-* `pars` argument to all MCMC plots now supports tidy variable selection. FIXME!! (add more details and PR number)
+* The `pars` argument to all MCMC plots now supports tidy variable selection. FIXME!! (add more details and PR number)
+
+* MCMC plots now also accept objects with an `as.array` method as
+  input. (#175, #184)
 
 * [`mcmc_trace()`](http://mc-stan.org/bayesplot/reference/MCMC-traces.html)
   gains an argument `iter1` which can be used to label the traceplot starting
   from the first iteration after warmup. (#14, #155, @mcol)
 
 * [`mcmc_areas()`](http://mc-stan.org/bayesplot/reference/MCMC-intervals.html)
-  gains an argument `area_method` which controls how to draw the density 
-  curves. The default `"equal area"` constrains the heights so that the curves 
-  have the same area. As a result, a narrow interval will appear as a spike 
+  gains an argument `area_method` which controls how to draw the density
+  curves. The default `"equal area"` constrains the heights so that the curves
+  have the same area. As a result, a narrow interval will appear as a spike
   of density, while a wide, uncertain interval is spread thin over the _x_ axis.
-  Alternatively `"equal height"` will set the maximum height on each curve to 
-  the same value. This works well when the intervals are about the same width. 
-  Otherwise, that wide, uncertain interval will dominate the visual space 
-  compared to a narrow, less uncertain interval. A compromise between the two is 
-  `"scaled height"` which scales the curves from `"equal height"` using 
+  Alternatively `"equal height"` will set the maximum height on each curve to
+  the same value. This works well when the intervals are about the same width.
+  Otherwise, that wide, uncertain interval will dominate the visual space
+  compared to a narrow, less uncertain interval. A compromise between the two is
+  `"scaled height"` which scales the curves from `"equal height"` using
   `height * sqrt(height)`. (#163, #169)
-  
-* `mcmc_areas()` correctly plots density curves where the point estimate 
-  does not include the highest point of the density curve. 
+
+* `mcmc_areas()` correctly plots density curves where the point estimate
+  does not include the highest point of the density curve.
   (#168, #169, @jtimonen)
-  
-* `mcmc_areas_ridges()` draws the vertical line at *x* = 0 over the curves so 
+
+* `mcmc_areas_ridges()` draws the vertical line at *x* = 0 over the curves so
   that it is always visible.
 
-* `mcmc_intervals()` and `mcmc_areas()` raise a warning if `prob_outer` is ever 
+* `mcmc_intervals()` and `mcmc_areas()` raise a warning if `prob_outer` is ever
   less than `prob`. It sorts these two values into the correct order. (#138)
 
 * MCMC parameter names are now *always* converted to factors prior to
@@ -83,7 +86,7 @@
   gains an argument `discrete`, which is `FALSE` by default, but can be used
   to make the Geom more appropriate for discrete data. (#145)
 
-* [PPC intervals 
+* [PPC intervals
   plots](http://mc-stan.org/bayesplot/reference/PPC-intervals.html) and [LOO
   predictive checks](http://mc-stan.org/bayesplot/reference/PPC-loo.html) now
   draw both an outer and an inner probability interval, which can be
@@ -117,7 +120,7 @@
 
 * Added `mcmc_intervals_data()` and `mcmc_areas_data()` that return data
   plotted by `mcmc_intervals()` and `mcmc_areas()`. (Advances #97)
-  
+
 * New `ppc_data()` function returns the data plotted by many of the PPC plotting
   functions. (Advances #97)
 
@@ -134,29 +137,29 @@
 
 (GitHub issue/PR numbers in parentheses)
 
-* New plotting function `mcmc_parcoord()` for parallel coordinates plots of 
+* New plotting function `mcmc_parcoord()` for parallel coordinates plots of
   MCMC draws (optionally including HMC/NUTS diagnostic information). (#108)
-  
+
 * `mcmc_scatter` gains an `np` argument for specifying NUTS parameters, which
   allows highlighting divergences in the plot. (#112)
-  
-* New functions with names ending with suffix `_data` don't make the plots, 
-  they just return the data prepared for plotting (more of these to come in 
+
+* New functions with names ending with suffix `_data` don't make the plots,
+  they just return the data prepared for plotting (more of these to come in
   future releases):
     - `ppc_intervals_data()` (#101)
     - `ppc_ribbon_data()` (#101)
     - `mcmc_parcoord_data()` (#108)
     - `mcmc_rhat_data()` (#110)
     - `mcmc_neff_data()` (#110)
-    
-* `ppc_stat_grouped()`, `ppc_stat_freqpoly_grouped()` gain a `facet_args` 
-  argument for controlling **ggplot2** faceting (many of the `mcmc_` functions 
+
+* `ppc_stat_grouped()`, `ppc_stat_freqpoly_grouped()` gain a `facet_args`
+  argument for controlling **ggplot2** faceting (many of the `mcmc_` functions
   already have this).
-  
-* The `divergences` argument to `mcmc_trace()` has been deprecated in favor 
-  of `np` (NUTS parameters) to match the other functions that have an `np` 
+
+* The `divergences` argument to `mcmc_trace()` has been deprecated in favor
+  of `np` (NUTS parameters) to match the other functions that have an `np`
   argument.
-  
+
 * Fixed an issue where duplicated rhat values would break `mcmc_rhat()` (#105).
 
 
@@ -285,5 +288,5 @@ Initial CRAN release
 
 
 
-[ggridges]: https://CRAN.R-project.org/package=ggridges 
+[ggridges]: https://CRAN.R-project.org/package=ggridges
             "ggridges package"

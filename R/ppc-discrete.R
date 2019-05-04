@@ -303,7 +303,7 @@ ppc_bars_yrep_data <- function(y, yrep, probs, freq = TRUE, group = NULL) {
   lo  <- function(x) quantile(x, probs[1])
   mid <- function(x) quantile(x, probs[2])
   hi  <- function(x) quantile(x, probs[3])
-  fs <- dplyr::funs(lo, mid, hi)
+  fs <- list(lo = lo, mid = mid, hi = hi)
 
   # Set a dummy group for ungrouped data
   if (is.null(group)) {
