@@ -128,7 +128,7 @@ For more details see Stan Development Team (2016) and Betancourt (2017).
 \dontrun{
 library(ggplot2)
 library(rstanarm)
-fit <- stan_glm(mpg ~ wt + am, data = mtcars, iter = 1000)
+fit <- stan_glm(mpg ~ wt + am, data = mtcars, iter = 1000, refresh = 0)
 np <- nuts_params(fit)
 lp <- log_posterior(fit)
 
