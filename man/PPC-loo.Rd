@@ -116,12 +116,13 @@ A ggplot object that can be further customized using the
 }
 \description{
 Leave-One-Out (LOO) predictive checks. See the \strong{Plot Descriptions}
-section below for details.
+section, below, and \href{https://github.com/jgabry/bayes-vis-paper}{Gabry et
+al. (2019)} for details.
 }
 \section{Plot Descriptions}{
 
 \describe{
-\item{\code{ppc_loo_pit_qq,ppc_loo_pit_overlay}}{
+\item{\code{ppc_loo_pit_overlay, ppc_loo_pit_qq}}{
  The calibration of marginal predictions can be assessed using probability
  integral transformation (PIT) checks. LOO improves the check by avoiding the
  double use of data. See the section on marginal predictive checks in Gelman
@@ -132,7 +133,7 @@ section below for details.
  model is calibrated. The \code{ppc_loo_pit_overlay} function creates a plot
  comparing the density of the LOO PITs (thick line) to the density estimates
  of many simulated data sets from the standard uniform distribution (thin
- lines). See Gabry et al. (2018) for an example of interpreting the shape of
+ lines). See Gabry et al. (2019) for an example of interpreting the shape of
  the miscalibration that can be observed in these plots.
 
  The \code{ppc_loo_pit_qq} function provides an alternative visualization of
@@ -200,8 +201,9 @@ Gelman, A., Carlin, J. B., Stern, H. S., Dunson, D. B., Vehtari,
 Gabry, J. , Simpson, D. , Vehtari, A. , Betancourt, M. and
   Gelman, A. (2019), Visualization in Bayesian workflow. \emph{J. R. Stat.
   Soc. A}, 182: 389-402. doi:10.1111/rssa.12378,
-  (\href{https://rss.onlinelibrary.wiley.com/doi/full/10.1111/rssa.12378}{journal},
-  \href{https://arxiv.org/abs/1709.01449}{arXiv preprint})
+  (\href{https://rss.onlinelibrary.wiley.com/doi/full/10.1111/rssa.12378}{journal version},
+  \href{https://arxiv.org/abs/1709.01449}{arXiv preprint},
+  \href{https://github.com/jgabry/bayes-vis-paper}{code on GitHub})
 
 Vehtari, A., Gelman, A., and Gabry, J. (2017). Practical
   Bayesian model evaluation using leave-one-out cross-validation and WAIC.

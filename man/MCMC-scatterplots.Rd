@@ -198,6 +198,9 @@ Scatterplots, hexagonal heatmaps, and pairs plots from MCMC draws. See the
    overplotting. For models fit using \code{\link{NUTS}} the \code{np},
    and \code{np_style} arguments can be used to add additional information in
    the plot (in this case the approximate location of divergences).
+   For an example of why the scatter plot with divergences is a useful
+   diagnostic tool see \href{https://github.com/jgabry/bayes-vis-paper}{Gabry
+   et al. (2019)}.
   }
   \item{\code{mcmc_hex}}{
    Hexagonal heatmap of 2-D bin counts. This plot is useful in cases where
@@ -357,8 +360,9 @@ mcmc_pairs(
 Gabry, J. , Simpson, D. , Vehtari, A. , Betancourt, M. and
   Gelman, A. (2019), Visualization in Bayesian workflow. \emph{J. R. Stat.
   Soc. A}, 182: 389-402. doi:10.1111/rssa.12378,
-  (\href{https://rss.onlinelibrary.wiley.com/doi/full/10.1111/rssa.12378}{journal},
-  \href{https://arxiv.org/abs/1709.01449}{arXiv preprint})
+  (\href{https://rss.onlinelibrary.wiley.com/doi/full/10.1111/rssa.12378}{journal version},
+  \href{https://arxiv.org/abs/1709.01449}{arXiv preprint},
+  \href{https://github.com/jgabry/bayes-vis-paper}{code on GitHub})
 }
 \seealso{
 Other MCMC: \code{\link{MCMC-combos}},

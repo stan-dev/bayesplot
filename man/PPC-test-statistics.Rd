@@ -71,7 +71,8 @@ A ggplot object that can be further customized using the
 The distribution of a test statistic \code{T(yrep)}, or a pair of test
 statistics, over the simulated datasets in \code{yrep}, compared to the
 observed value \code{T(y)} computed from the data \code{y}. See the
-\strong{Plot Descriptions} and \strong{Details} sections, below.
+\strong{Plot Descriptions} and \strong{Details} sections, below, as
+well as \href{https://github.com/jgabry/bayes-vis-paper}{Gabry et al. (2019)}.
 }
 \details{
 For Binomial data, the plots will typically be most useful if
@@ -85,13 +86,15 @@ For Binomial data, the plots will typically be most useful if
    A histogram of the distribution of a test statistic computed by applying
    \code{stat} to each dataset (row) in \code{yrep}. The value of the
    statistic in the observed data, \code{stat(y)}, is overlaid as a vertical
-   line.
+   line. More details on \code{ppc_stat} can be found in Gabry et al.
+   (2019).
   }
   \item{\code{ppc_stat_grouped,ppc_stat_freqpoly_grouped}}{
    The same as \code{ppc_stat}, but a separate plot is generated for each
    level of a grouping variable. In the case of
    \code{ppc_stat_freqpoly_grouped} the plots are frequency polygons rather
-   than histograms.
+   than histograms. More details on \code{ppc_stat_grouped} can be found in
+   Gabry et al. (2019).
   }
   \item{\code{ppc_stat_2d}}{
    A scatterplot showing the joint distribution of two test statistics
@@ -127,6 +130,13 @@ ppc_stat(y, yrep, stat = function(y) quantile(y, 0.25))
 
 }
 \references{
+Gabry, J. , Simpson, D. , Vehtari, A. , Betancourt, M. and
+  Gelman, A. (2019), Visualization in Bayesian workflow. \emph{J. R. Stat.
+  Soc. A}, 182: 389-402. doi:10.1111/rssa.12378,
+  (\href{https://rss.onlinelibrary.wiley.com/doi/full/10.1111/rssa.12378}{journal version},
+  \href{https://arxiv.org/abs/1709.01449}{arXiv preprint},
+  \href{https://github.com/jgabry/bayes-vis-paper}{code on GitHub})
+
 Gelman, A., Carlin, J. B., Stern, H. S., Dunson, D. B., Vehtari,
   A., and Rubin, D. B. (2013). \emph{Bayesian Data Analysis.} Chapman & Hall/CRC
   Press, London, third edition. (Ch. 6)

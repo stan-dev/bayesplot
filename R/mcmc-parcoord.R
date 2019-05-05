@@ -1,7 +1,9 @@
 #' Parallel coordinates plot of MCMC draws
 #'
 #' Parallel coordinates plot of MCMC draws (one dimension per parameter). See
-#' the \strong{Plot Descriptions} section, below, for details.
+#' the \strong{Plot Descriptions} section below for details, and see
+#' \href{https://github.com/jgabry/bayes-vis-paper}{Gabry et al. (2019)}
+#' for more background and a real example.
 #'
 #' @name MCMC-parcoord
 #' @family MCMC
@@ -38,7 +40,8 @@
 #'    diagnostic information is provided via the \code{np} argument. In that
 #'    case divergences are highlighted in the plot. The appearance of the
 #'    divergences can be customized using the \code{np_style} argument and the
-#'    \code{parcoord_style_np} helper function.
+#'    \code{parcoord_style_np} helper function. This version of the plot is the
+#'    same as the parallel coordinates plot described in Gabry et al. (2019).
 #'
 #'    When the plotted model parameters are on very different scales the
 #'    \code{transformations} argument can be useful. For example, to standardize

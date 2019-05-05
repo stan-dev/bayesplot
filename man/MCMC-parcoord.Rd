@@ -82,7 +82,9 @@ A ggplot object that can be further customized using the
 }
 \description{
 Parallel coordinates plot of MCMC draws (one dimension per parameter). See
-the \strong{Plot Descriptions} section, below, for details.
+the \strong{Plot Descriptions} section below for details, and see
+\href{https://github.com/jgabry/bayes-vis-paper}{Gabry et al. (2019)}
+for more background and a real example.
 }
 \section{Plot Descriptions}{
 
@@ -98,7 +100,8 @@ the \strong{Plot Descriptions} section, below, for details.
    diagnostic information is provided via the \code{np} argument. In that
    case divergences are highlighted in the plot. The appearance of the
    divergences can be customized using the \code{np_style} argument and the
-   \code{parcoord_style_np} helper function.
+   \code{parcoord_style_np} helper function. This version of the plot is the
+   same as the parallel coordinates plot described in Gabry et al. (2019).
 
    When the plotted model parameters are on very different scales the
    \code{transformations} argument can be useful. For example, to standardize
@@ -157,8 +160,9 @@ tail(d)
 Gabry, J. , Simpson, D. , Vehtari, A. , Betancourt, M. and
   Gelman, A. (2019), Visualization in Bayesian workflow. \emph{J. R. Stat.
   Soc. A}, 182: 389-402. doi:10.1111/rssa.12378,
-  (\href{https://rss.onlinelibrary.wiley.com/doi/full/10.1111/rssa.12378}{journal},
-  \href{https://arxiv.org/abs/1709.01449}{arXiv preprint})
+  (\href{https://rss.onlinelibrary.wiley.com/doi/full/10.1111/rssa.12378}{journal version},
+  \href{https://arxiv.org/abs/1709.01449}{arXiv preprint},
+  \href{https://github.com/jgabry/bayes-vis-paper}{code on GitHub})
 
 Hartikainen, A. (2017, Aug 23). Concentration of divergences
 [Msg 21]. Message posted to The Stan Forums:

@@ -44,6 +44,9 @@
 #'    overplotting. For models fit using \code{\link{NUTS}} the \code{np},
 #'    and \code{np_style} arguments can be used to add additional information in
 #'    the plot (in this case the approximate location of divergences).
+#'    For an example of why the scatter plot with divergences is a useful
+#'    diagnostic tool see \href{https://github.com/jgabry/bayes-vis-paper}{Gabry
+#'    et al. (2019)}.
 #'   }
 #'   \item{\code{mcmc_hex}}{
 #'    Hexagonal heatmap of 2-D bin counts. This plot is useful in cases where
