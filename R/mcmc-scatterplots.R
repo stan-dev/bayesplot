@@ -241,7 +241,7 @@ mcmc_hex <- function(x,
 #' # will (almost certainly) have some divergences
 #' fit <- stan_glm(
 #'   mpg ~ ., data = mtcars,
-#'   iter = 1000,
+#'   iter = 1000, refresh = 0,
 #'   # this combo of prior and adapt_delta should lead to some divergences
 #'   prior = hs(),
 #'   adapt_delta = 0.9

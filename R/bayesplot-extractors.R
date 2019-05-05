@@ -36,7 +36,7 @@
 #' @examples
 #' \dontrun{
 #' library(rstanarm)
-#' fit <- stan_glm(mpg ~ wt, data = mtcars)
+#' fit <- stan_glm(mpg ~ wt, data = mtcars, refresh = 0)
 #'
 #' np <- nuts_params(fit)
 #' head(np)

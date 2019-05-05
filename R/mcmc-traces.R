@@ -106,7 +106,7 @@
 #'
 #' # for models fit using HMC/NUTS divergences can be displayed in the trace plot
 #' library("rstanarm")
-#' fit <- stan_glm(mpg ~ ., data = mtcars,
+#' fit <- stan_glm(mpg ~ ., data = mtcars, refresh = 0,
 #'   # next line to keep example fast and also ensure we get some divergences
 #'                 prior = hs(), iter = 400, adapt_delta = 0.8)
 #'
