@@ -39,6 +39,7 @@ test_that("calc_v (internal function) works", {
   expect_identical(calc_v(a, median), 2.5)
   expect_equal(calc_v(c(a, NA), mean), NA_real_)
   expect_identical(calc_v(c(a, NA), min, list(na.rm = TRUE)), 1L)
+  expect_error(calc_v(fun = "mean"), "'v' can't be missing")
 })
 
 # lbub --------------------------------------------------------------------
