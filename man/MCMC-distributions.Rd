@@ -49,7 +49,7 @@ the \link{MCMC-overview} page.}
 \code{pars} nor \code{regex_pars} is specified then the default is to use \emph{all}
 parameters. As of version \code{1.7.0}, \strong{bayesplot} also supports 'tidy'
 parameter selection by specifying \code{pars = vars(...)}, where \code{...} is
-specified the same way as in \link[dplyr:select(...)]{dplyr::select} and
+specified the same way as in \link[dplyr:select]{dplyr::select(...)} and
 similar functions. Examples of using \code{pars} in this way can be found on the
 \link[=tidy-params]{Tidy parameter selection} page.}
 
