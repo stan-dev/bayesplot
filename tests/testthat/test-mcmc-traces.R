@@ -29,6 +29,10 @@ test_that("mcmc_trace_highlight throws error if 1 chain but multiple chains requ
   expect_error(mcmc_trace_highlight(arr1chain, highlight = 1), "requires multiple chains")
 })
 
+test_that("mcmc_trace_highlight throws error if highlight > number of chains", {
+  expect_error(mcmc_trace_highlight(arr, pars = "sigma", highlight = 7), "'highlight' is 7")
+})
+
 # options -----------------------------------------------------------------
 test_that("mcmc_trace options work", {
   expect_gg(g1 <- mcmc_trace(arr, regex_pars = "beta", window = c(5, 10)))
@@ -46,41 +50,44 @@ test_that("mcmc_trace options work", {
 
 # displaying divergences in traceplot -------------------------------------
 test_that("mcmc_trace 'np' argument works", {
+  skip_if_not_installed("rstanarm")
   suppressPackageStartupMessages(library(rstanarm))
-  suppressWarnings(capture.output(
-    fit <- stan_glm(mpg ~ ., data = mtcars, iter = 200, refresh = 0,
-                    prior = hs(), adapt_delta = 0.7)
-  ))
+  fit <- stan_glm(mpg ~ wt + am, data = mtcars, iter = 1000, chains = 2, refresh = 0)
   draws <- as.array(fit)
 
   # divergences via nuts_params
-  divs <- nuts_params(fit, pars = "divergent__")
-  g <- mcmc_trace(draws, pars = "sigma", np = divs)
+  divs1 <- ensure_divergences(nuts_params(fit, pars = "divergent__"))
+  g <- mcmc_trace(draws, pars = "sigma", np = divs1)
   expect_gg(g)
   l2_data <- g$layers[[2]]$data
   expect_equal(names(l2_data), "Divergent")
 
   # divergences as vector via 'divergences' arg should throw deprecation warning
-  divs2 <- sample(c(0,1), nrow(draws), replace = TRUE)
+  divs2 <- rep_len(c(0,1), length.out = nrow(draws))
   expect_warning(
     g2 <- mcmc_trace(draws, pars = "sigma", divergences = divs2),
     regexp = "deprecated"
   )
   expect_gg(g2)
 
+  expect_error(
+    mcmc_trace(draws, pars = "sigma", np = divs1, divergences = divs2),
+    "can't both be specified"
+  )
+
   # check errors & messages
   expect_error(mcmc_trace(draws, pars = "sigma", np = 1),
                "length(divergences) == n_iter is not TRUE",
                fixed = TRUE)
-  expect_error(mcmc_trace(draws[,1:2,], pars = "sigma", np = divs),
+  expect_error(mcmc_trace(draws[,1,], pars = "sigma", np = divs1),
                "num_chains(np) == n_chain is not TRUE",
                fixed = TRUE)
-  expect_error(mcmc_trace(draws, pars = "sigma", np = divs[1:10, ]),
+  expect_error(mcmc_trace(draws, pars = "sigma", np = divs1[1:10, ]),
                "num_iters(np) == n_iter is not TRUE",
                fixed = TRUE)
 
-  divs$Value[divs$Parameter == "divergent__"] <- 0
-  expect_message(mcmc_trace(draws, pars = "sigma", np = divs),
+  divs1$Value[divs1$Parameter == "divergent__"] <- 0
+  expect_message(mcmc_trace(draws, pars = "sigma", np = divs1),
                  "No divergences to plot.")
 })
 

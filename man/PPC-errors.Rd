@@ -116,7 +116,7 @@ section, below.
   }
   \item{\code{ppc_error_binned}}{
    Intended for use with binomial data. A separate binned error plot (similar
-   to \code{\link[arm]{binnedplot}}) is generated for each dataset (row) in
+   to \code{arm::binnedplot}) is generated for each dataset (row) in
    \code{yrep}. For this plot \code{y} and \code{yrep} should contain
    proportions rather than counts, and \code{yrep} should have only a small
    number of rows.

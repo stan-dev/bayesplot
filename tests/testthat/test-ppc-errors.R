@@ -46,6 +46,18 @@ test_that("ppc_error_binned returns ggplot object", {
   expect_gg(ppc_error_binned(rep(y, 2), cbind(Ey, Ey)))
 })
 
+test_that("bin_errors works for edge cases", {
+  ans <-
+    data.frame(
+      ey_bar = c(1, NaN),
+      err_bar = c(0, NaN),
+      se2 = c(0, NaN),
+      bin = c(1, 2)
+    )
+  val <- bin_errors(rep(1, 10), rep(0, 10), bins = 1)
+  expect_equal(ans, val)
+})
+
 
 # Visual tests -----------------------------------------------------------------
 

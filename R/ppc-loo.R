@@ -1,7 +1,8 @@
 #' LOO predictive checks
 #'
 #' Leave-One-Out (LOO) predictive checks. See the \strong{Plot Descriptions}
-#' section below for details.
+#' section, below, and \href{https://github.com/jgabry/bayes-vis-paper}{Gabry et
+#' al. (2019)} for details.
 #'
 #' @name PPC-loo
 #' @family PPCs
@@ -23,7 +24,7 @@
 #'
 #' @section Plot Descriptions:
 #' \describe{
-#' \item{\code{ppc_loo_pit_qq,ppc_loo_pit_overlay}}{
+#' \item{\code{ppc_loo_pit_overlay, ppc_loo_pit_qq}}{
 #'  The calibration of marginal predictions can be assessed using probability
 #'  integral transformation (PIT) checks. LOO improves the check by avoiding the
 #'  double use of data. See the section on marginal predictive checks in Gelman
@@ -34,7 +35,7 @@
 #'  model is calibrated. The \code{ppc_loo_pit_overlay} function creates a plot
 #'  comparing the density of the LOO PITs (thick line) to the density estimates
 #'  of many simulated data sets from the standard uniform distribution (thin
-#'  lines). See Gabry et al. (2018) for an example of interpreting the shape of
+#'  lines). See Gabry et al. (2019) for an example of interpreting the shape of
 #'  the miscalibration that can be observed in these plots.
 #'
 #'  The \code{ppc_loo_pit_qq} function provides an alternative visualization of

@@ -158,7 +158,7 @@ library(rstanarm)
 
 # intentionally use small 'iter' so there are some
 # problems with rhat and neff for demonstration
-fit <- stan_glm(mpg ~ ., data = mtcars, iter = 50)
+fit <- stan_glm(mpg ~ ., data = mtcars, iter = 50, refresh = 0)
 rhats <- rhat(fit)
 ratios <- neff_ratio(fit)
 mcmc_rhat(rhats)
@@ -181,8 +181,8 @@ mcmc_acf(as.array(fit2), pars = c("wt", "cyl"), lags = 10)
 
 }
 \references{
-Stan Development Team. (2016). \emph{Stan Modeling Language Users
-Guide and Reference Manual.} \url{http://mc-stan.org/documentation/}
+Stan Development Team. \emph{Stan Modeling Language Users
+Guide and Reference Manual.} \url{https://mc-stan.org/users/documentation/}
 
 Gelman, A. and Rubin, D. B. (1992). Inference from iterative
 simulation using multiple sequences. \emph{Statistical Science}. 7(4),

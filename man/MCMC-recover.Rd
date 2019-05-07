@@ -99,7 +99,7 @@ library(rstanarm)
 alpha <- 1; beta <- rnorm(10, 0, 3); sigma <- 2
 X <- matrix(rnorm(1000), 100, 10)
 y <- rnorm(100, mean = c(alpha + X \%*\% beta), sd = sigma)
-fit <- stan_glm(y ~ ., data = data.frame(y, X))
+fit <- stan_glm(y ~ ., data = data.frame(y, X), refresh = 0)
 draws <- as.matrix(fit)
 print(colnames(draws))
 true <- c(alpha, beta, sigma)
