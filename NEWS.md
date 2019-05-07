@@ -7,7 +7,7 @@
 <!-- Items for next release go here* -->
 
 * The `pars` argument to all MCMC plots now supports tidy variable selection.
-  See `help("tidy-params", package="bayesplot")` for details and examples. (#161, #183)
+  See `help("tidy-params", package="bayesplot")` for details and examples. (#161, #183, #188)
 
 * MCMC plots now also accept objects with an `as.array` method as
   input. (#175, #184)
