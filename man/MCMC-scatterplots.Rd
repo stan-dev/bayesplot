@@ -40,9 +40,13 @@ allowed inputs. It is also possible to use an object with an
 \code{as.array} method that returns the same kind of 3-D array described on
 the \link{MCMC-overview} page.}
 
-\item{pars}{An optional character vector of parameter names. For
-\code{mcmc_scatter} and \code{mcmc_hex} only two parameters can be
-selected. To plot more than two parameters use \code{mcmc_pairs}.}
+\item{pars}{An optional character vector of parameter names. If neither
+\code{pars} nor \code{regex_pars} is specified then the default is to use \emph{all}
+parameters. As of version \code{1.7.0}, \strong{bayesplot} also supports 'tidy'
+parameter selection by specifying \code{pars = vars(...)}, where \code{...} is
+specified the same way as in \link[dplyr:select(...)]{dplyr::select} and
+similar functions. Examples of using \code{pars} in this way can be found on the
+\link[=tidy-params]{Tidy parameter selection} page.}
 
 \item{regex_pars}{An optional \link[base:grep]{regular expression} to use for
 parameter selection. Can be specified instead of \code{pars} or in addition to

@@ -7,9 +7,7 @@
 #' @family MCMC
 #'
 #' @template args-mcmc-x
-#' @param pars An optional character vector of parameter names. For
-#'   \code{mcmc_scatter} and \code{mcmc_hex} only two parameters can be
-#'   selected. To plot more than two parameters use \code{mcmc_pairs}.
+#' @template args-pars
 #' @template args-regex_pars
 #' @template args-transformations
 #' @param ... Currently ignored.
