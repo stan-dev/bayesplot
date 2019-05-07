@@ -131,7 +131,8 @@
 #' fit <- stan_glm(
 #'  mpg ~ 0 + wt + factor(cyl),
 #'  data = mtcars,
-#'  iter = 500
+#'  iter = 500,
+#'  refresh = 0
 #' )
 #' x <- as.matrix(fit)
 #'

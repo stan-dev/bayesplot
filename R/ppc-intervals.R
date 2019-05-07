@@ -81,7 +81,7 @@
 #'
 #' \dontrun{
 #' library("rstanarm")
-#' fit <- stan_glmer(mpg ~ wt + (1|cyl), data = mtcars)
+#' fit <- stan_glmer(mpg ~ wt + (1|cyl), data = mtcars, refresh = 0)
 #' yrep <- posterior_predict(fit)
 #'
 #' color_scheme_set("purple")

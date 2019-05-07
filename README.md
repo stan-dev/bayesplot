@@ -1,11 +1,11 @@
-[<img src="https://raw.githubusercontent.com/stan-dev/logos/master/logo_tm.png" width=100 alt="Stan Logo"/>](http://mc-stan.org)
+[<img src="https://raw.githubusercontent.com/stan-dev/logos/master/logo_tm.png" width=100 alt="Stan Logo"/>](https://mc-stan.org)
 
 # bayesplot
 
 [![Travis-CI Build Status](https://travis-ci.org/stan-dev/bayesplot.svg?branch=master)](https://travis-ci.org/stan-dev/bayesplot)
 [![codecov](https://codecov.io/gh/stan-dev/bayesplot/branch/master/graph/badge.svg)](https://codecov.io/gh/stan-dev/bayesplot)
-[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/bayesplot?color=blue)](http://cran.r-project.org/web/packages/bayesplot)
-[![Downloads](http://cranlogs.r-pkg.org/badges/bayesplot?color=blue)](http://cran.rstudio.com/package=bayesplot)
+[![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/bayesplot?color=blue)](https://cran.r-project.org/web/packages/bayesplot)
+[![Downloads](https://cranlogs.r-pkg.org/badges/bayesplot?color=blue)](https://cran.rstudio.com/package=bayesplot)
 
 **bayesplot** is an R package providing an extensive library of plotting
 functions for use after fitting Bayesian models (typically with MCMC). Currently
@@ -22,12 +22,12 @@ The idea behind **bayesplot** is not only to provide convenient functionality
 for users, but also a common set of functions that can be easily used by
 developers working on a variety of packages for Bayesian modeling, particularly
 (but not necessarily) those powered by
-[**RStan**](http://mc-stan.org/rstan).
+[**RStan**](https://mc-stan.org/rstan).
 
 ### Resources
 
-* [mc-stan.org/bayesplot](http://mc-stan.org/bayesplot) (online documentation, vignettes)
-* [Ask a question](http://discourse.mc-stan.org) (Stan Forums on Discourse)
+* [mc-stan.org/bayesplot](https://mc-stan.org/bayesplot) (online documentation, vignettes)
+* [Ask a question](https://discourse.mc-stan.org) (Stan Forums on Discourse)
 * [Open an issue](https://github.com/stan-dev/bayesplot/issues) (GitHub issues for bug reports, feature requests)
 
 ### Installation

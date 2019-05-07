@@ -85,7 +85,7 @@ range of iterations to display.}
 (\code{mcmc_trace_highlight}).}
 
 \item{np}{For models fit using \code{\link{NUTS}} (more generally, any
-\href{http://en.wikipedia.org/wiki/Symplectic_integrator}{symplectic
+\href{https://en.wikipedia.org/wiki/Symplectic_integrator}{symplectic
 integrator}), an optional data frame providing NUTS diagnostic
 information. The data frame should be the object returned by
 \code{\link{nuts_params}} or one with the same structure. If \code{np} is
@@ -186,7 +186,7 @@ mcmc_trace_highlight(x, pars = "sigma", highlight = 2, size = 2)
 
 # for models fit using HMC/NUTS divergences can be displayed in the trace plot
 library("rstanarm")
-fit <- stan_glm(mpg ~ ., data = mtcars,
+fit <- stan_glm(mpg ~ ., data = mtcars, refresh = 0,
   # next line to keep example fast and also ensure we get some divergences
                 prior = hs(), iter = 400, adapt_delta = 0.8)
 

@@ -5,9 +5,7 @@ context("MCMC: recover")
 alpha <- 1; beta <- c(-.5, .5); sigma <- 2
 X <- matrix(rnorm(200), 100, 2)
 y <- rnorm(100, mean = c(alpha + X %*% beta), sd = sigma)
-capture.output(
-  fit <- stan_glm(y ~ ., data = data.frame(y, X))
-)
+fit <- stan_glm(y ~ ., data = data.frame(y, X), refresh = 0, iter = 500, chains = 2)
 draws <- as.matrix(fit)
 true <- c(alpha, beta, sigma)
 
