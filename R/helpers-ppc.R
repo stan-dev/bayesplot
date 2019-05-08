@@ -57,8 +57,10 @@ validate_yrep <- function(yrep, y) {
     stop("NAs not allowed in 'yrep'.")
   }
 
-  if (ncol(yrep) != length(y)) {
-    stop("ncol(yrep) must be equal to length(y).")
+  if (!missing(y)) {
+    if (ncol(yrep) != length(y)) {
+      stop("ncol(yrep) must be equal to length(y).")
+    }
   }
 
   unclass(unname(yrep))
