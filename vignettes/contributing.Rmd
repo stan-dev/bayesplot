@@ -1,0 +1,95 @@
+---
+title: "Contributing a new plotting function to bayesplot"
+author: "Jonah Gabry and Tristan Mahr"
+date: "`r Sys.Date()`"
+output: 
+  rmarkdown::html_vignette:
+    toc: true
+    toc_depth: 3
+params:
+  EVAL: !r identical(Sys.getenv("NOT_CRAN"), "true")
+vignette: >
+  %\VignetteIndexEntry{Contributing a new plotting function}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+
+```{r, child="children/SETTINGS-knitr.txt"}
+```
+
+This vignette goes over the process of contributing a new plotting function
+to the **bayesplot** package. 
+
+## Adding a new MCMC plot
+
+Before developing a new plotting function we'll first go over the source code
+for one of the existing MCMC plot functions. Here is the code for
+the `mcmc_hist()` function:
+
+```{r, mcmc_hist-source}
+print(mcmc_hist)
+```
+
+In this case `mcmc_hist` is just feeding its inputs into an internal `.mcmc_hist`
+function. This is because there are multiple functions that produce histograms 
+of MCMC draws: the `mcmc_hist_by_chain` also calls the same `.mcmc_hist` 
+internal function but sets the argument `by_chain=TRUE`. 
+
+Here is the source code for the internal `.mcmc_hist` function: 
+
+```{r, mcmc_hist-internal-source}
+print(bayesplot:::.mcmc_hist)
+```
+
+
+### Preparing the MCMC draws for plotting 
+
+The first thing that happens is a call to `prepare_mcmc_array`, which takes
+the MCMC draws (`x`), the arguments for selecting parameters (`pars`, `regex_pars`) and any tranformations to be applied to the draws (`transformations`). The result
+of the line
+
+```{r,eval=FALSE}
+prepare_mcmc_array(x, pars, regex_pars, transformations)
+```
+
+is a 3-D array (iters x chains x parameters) that contains only the 
+(possibly transformed) draws of the selected parameters. For example:
+
+```{r}
+posterior <- example_mcmc_draws()
+str(posterior)
+
+x <- bayesplot:::prepare_mcmc_array(
+  posterior, 
+  pars = c("alpha", "sigma"),
+  transformations = list("sigma" = "log")
+)
+str(x)
+```
+
+Next, this 3-D array is reshaped using the internal `melt_mcmc` function 
+into a data frame amenable to plotting with ggplot2. The result is a data 
+frame with columns for the iteration (`integer`), chain (`integer`), parameter
+name (`factor`), and the parameter value (`numeric`):
+
+```{r}
+data <- bayesplot:::melt_mcmc.mcmc_array(x, value.name = "value")
+str(data)
+```
+
+### Using the bayesplot color schemes
+
+### Setting the ggplot theme
+
+
+## Adding a new PPC plot
+
+### Validating the `y` and `yrep` arguments
+
+### Preparing the data for plotting
+
+### Using the bayesplot color schemes
+
+### Setting the ggplot theme
+
