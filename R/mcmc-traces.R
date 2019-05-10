@@ -41,7 +41,7 @@
 #'   divergences (if the `np` argument is specified).
 #' @param divergences Deprecated. Use the `np` argument instead.
 #'
-#' @template return-ggplot
+#' @template return-ggplot-or-data
 #'
 #' @section Plot Descriptions:
 #' \describe{
@@ -211,18 +211,17 @@ mcmc_trace <-
 #'   of the chains that will be more visible than the others in the plot.
 #' @export
 #' @md
-mcmc_trace_highlight <-
-  function(x,
-           pars = character(),
-           regex_pars = character(),
-           transformations = list(),
-           facet_args = list(),
-           ...,
-           n_warmup = 0,
-           window = NULL,
-           size = NULL,
-           alpha = 0.2,
-           highlight = 1) {
+mcmc_trace_highlight <- function(x,
+                                 pars = character(),
+                                 regex_pars = character(),
+                                 transformations = list(),
+                                 facet_args = list(),
+                                 ...,
+                                 n_warmup = 0,
+                                 window = NULL,
+                                 size = NULL,
+                                 alpha = 0.2,
+                                 highlight = 1) {
   check_ignored_arguments(...)
   .mcmc_trace(
     x,
@@ -250,20 +249,19 @@ mcmc_trace_highlight <-
 #'   the **Usage** section above.
 #' @export
 #' @md
-trace_style_np <-
-  function(div_color = "red",
-           div_size = 0.25,
-           div_alpha = 1) {
+trace_style_np <- function(div_color = "red", div_size = 0.25, div_alpha = 1) {
   stopifnot(
     is.character(div_color),
     is.numeric(div_size),
     is.numeric(div_alpha) && div_alpha >= 0 && div_alpha <= 1
   )
+
   style <- list(
     color = c(div = div_color),
     size = c(div = div_size),
     alpha = c(div = div_alpha)
   )
+
   structure(style, class = c(class(style), "nuts_style"))
 }
 
@@ -324,11 +322,11 @@ mcmc_rank_overlay <- function(x,
 #' @rdname MCMC-traces
 #' @export
 mcmc_rank_hist <- function(x,
-                      pars = character(),
-                      regex_pars = character(),
-                      transformations = list(),
-                      facet_args = list(),
-                      n_bins = 20) {
+                           pars = character(),
+                           regex_pars = character(),
+                           transformations = list(),
+                           facet_args = list(),
+                           n_bins = 20) {
   data <- mcmc_trace_data(
     x,
     pars = pars,
@@ -344,18 +342,19 @@ mcmc_rank_hist <- function(x,
   # x axis range in each facet
   data_boundaries <- data %>%
     dplyr::distinct(.data$chain, .data$parameter)
+
   data_boundaries <- dplyr::bind_rows(
     mutate(data_boundaries, value_rank = min(data$value_rank)),
     mutate(data_boundaries, value_rank = max(data$value_rank))
   )
-  right_edge <- max(data_boundaries$value_rank)
 
-  # If there is one parameter, put the chains in one row.
-  # Otherwise, use a grid.
+  right_edge <- max(data_boundaries$value_rank)
 
   facet_args[["scales"]] <- facet_args[["scales"]] %||% "fixed"
   facet_args[["facets"]] <- facet_args[["facets"]] %||% (parameter ~ chain)
 
+  # If there is one parameter, put the chains in one row.
+  # Otherwise, use a grid.
   if (n_param > 1) {
     facet_f <- facet_grid
   } else {
@@ -402,7 +401,6 @@ mcmc_rank_hist <- function(x,
                         np_style = trace_style_np(),
                         iter1 = 0,
                         ...) {
-
   style <- match.arg(style)
   data <- mcmc_trace_data(
     x, pars = pars, regex_pars = regex_pars, transformations = transformations,
@@ -516,7 +514,8 @@ chain_colors <- function(n) {
   unname(rev(clrs))
 }
 
-
+#' @rdname MCMC-traces
+#' @export
 mcmc_trace_data <- function(x,
                             pars = character(),
                             regex_pars = character(),
@@ -530,7 +529,6 @@ mcmc_trace_data <- function(x,
                             size = NULL,
                             np = NULL,
                             np_style = trace_style_np()) {
-
   check_ignored_arguments(...)
 
   x <- prepare_mcmc_array(x, pars, regex_pars, transformations)

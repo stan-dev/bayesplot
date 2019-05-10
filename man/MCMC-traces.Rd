@@ -7,6 +7,7 @@
 \alias{trace_style_np}
 \alias{mcmc_rank_overlay}
 \alias{mcmc_rank_hist}
+\alias{mcmc_trace_data}
 \title{Trace plot (time series plot) of MCMC draws}
 \usage{
 mcmc_trace(x, pars = character(), regex_pars = character(),
@@ -25,6 +26,11 @@ mcmc_rank_overlay(x, pars = character(), regex_pars = character(),
 
 mcmc_rank_hist(x, pars = character(), regex_pars = character(),
   transformations = list(), facet_args = list(), n_bins = 20)
+
+mcmc_trace_data(x, pars = character(), regex_pars = character(),
+  transformations = list(), facet_args = list(), ...,
+  highlight = NULL, n_warmup = 0, iter1 = 0, window = NULL,
+  size = NULL, np = NULL, np_style = trace_style_np())
 }
 \arguments{
 \item{x}{A 3-D array, matrix, list of matrices, or data frame of MCMC draws.
@@ -119,7 +125,8 @@ samples. Defaults to 20.}
 }
 \value{
 A ggplot object that can be further customized using the
-  \pkg{ggplot2} package.
+  \pkg{ggplot2} package. The \code{_data} functions return the data that
+  would have been drawn by the plotting function.
 }
 \description{
 Trace plot (or traceplot) of MCMC draws. See the \strong{Plot Descriptions}
