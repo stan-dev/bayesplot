@@ -11,7 +11,9 @@ mcmc_combo(x, combo = c("dens", "trace"), widths = NULL,
 \arguments{
 \item{x}{A 3-D array, matrix, list of matrices, or data frame of MCMC draws.
 The \link{MCMC-overview} page provides details on how to specify each these
-allowed inputs.}
+allowed inputs. It is also possible to use an object with an
+\code{as.array} method that returns the same kind of 3-D array described on
+the \link{MCMC-overview} page.}
 
 \item{combo}{A character vector with at least two elements. Each element of
 \code{combo} corresponds to a column in the resulting graphic and should be

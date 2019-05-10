@@ -6,11 +6,14 @@
 
 <!-- Items for next release go here* -->
 
-* [`mcmc_trace()`](http://mc-stan.org/bayesplot/reference/MCMC-traces.html)
+* MCMC plots now also accept objects with an `as.array` method as 
+  input (e.g., stanfit objects). (#175, #184)
+
+* [`mcmc_trace()`](https://mc-stan.org/bayesplot/reference/MCMC-traces.html)
   gains an argument `iter1` which can be used to label the traceplot starting
   from the first iteration after warmup. (#14, #155, @mcol)
 
-* [`mcmc_areas()`](http://mc-stan.org/bayesplot/reference/MCMC-intervals.html)
+* [`mcmc_areas()`](https://mc-stan.org/bayesplot/reference/MCMC-intervals.html)
   gains an argument `area_method` which controls how to draw the density 
   curves. The default `"equal area"` constrains the heights so that the curves 
   have the same area. As a result, a narrow interval will appear as a spike 
@@ -38,7 +41,7 @@
   case where factor-conversion failed. (#162, #165, @wwiecek)
 
 * The examples in
-  [`?ppc_loo_pit_overlay()`](http://mc-stan.org/bayesplot/reference/PPC-loo.html)
+  [`?ppc_loo_pit_overlay()`](https://mc-stan.org/bayesplot/reference/PPC-loo.html)
   now work as expected. (#166, #167)
   
 * Added `"viridisD"` as an alternative name for `"viridis"` to the supported 
@@ -47,7 +50,7 @@
 * Added `"viridisE"` (the [cividis](https://github.com/marcosci/cividis) 
   version of viridis) to the supported colors. 
 
-
+* `ppc_bars()` and `ppc_bars_grouped()` now allow negative integers as input. (#172)
 
 
 # bayesplot 1.6.0
@@ -67,29 +70,29 @@
     - `bayesplot_theme_replace()`
 
 * The [Visual MCMC Diagnostics
-  vignette](http://mc-stan.org/bayesplot/articles/visual-mcmc-diagnostics.html)
+  vignette](https://mc-stan.org/bayesplot/articles/visual-mcmc-diagnostics.html)
   has been reorganized and has a lot of useful new content thanks to Martin
   Modrák. (#144, #153)
 
 * The [LOO predictive
-  checks](http://mc-stan.org/bayesplot/reference/PPC-loo.html) now require
+  checks](https://mc-stan.org/bayesplot/reference/PPC-loo.html) now require
   **loo** version `>= 2.0.0`. (#139)
 
 * Histogram plots gain a `breaks` argument that can be used as an alternative
   to `binwidth`. (#148)
 
-* [`mcmc_pairs()`](http://mc-stan.org/bayesplot/reference/MCMC-scatterplots.html)
+* [`mcmc_pairs()`](https://mc-stan.org/bayesplot/reference/MCMC-scatterplots.html)
   now has an argument `grid_args` to provide a way of passing optional
   arguments to `gridExtra::arrangeGrob()`. This can be used to add a title to
   the plot, for example. (#143)
 
-* [`ppc_ecdf_overlay()`](http://mc-stan.org/bayesplot/reference/PPC-distributions.html)
+* [`ppc_ecdf_overlay()`](https://mc-stan.org/bayesplot/reference/PPC-distributions.html)
   gains an argument `discrete`, which is `FALSE` by default, but can be used
   to make the Geom more appropriate for discrete data. (#145)
 
 * [PPC intervals 
-  plots](http://mc-stan.org/bayesplot/reference/PPC-intervals.html) and [LOO
-  predictive checks](http://mc-stan.org/bayesplot/reference/PPC-loo.html) now
+  plots](https://mc-stan.org/bayesplot/reference/PPC-intervals.html) and [LOO
+  predictive checks](https://mc-stan.org/bayesplot/reference/PPC-loo.html) now
   draw both an outer and an inner probability interval, which can be
   controlled through the new argument `prob_outer` and the already existing
   `prob`. This is consistent with what is produced by `mcmc_intervals()`.
@@ -102,7 +105,7 @@
 
 (GitHub issue/PR numbers in parentheses)
 
-* New package documentation website: <http://mc-stan.org/bayesplot/>
+* New package documentation website: <https://mc-stan.org/bayesplot/>
 
 * Two new plots that visualize posterior density using
   [ridgelines][ggridges]. These work well when parameters have similar

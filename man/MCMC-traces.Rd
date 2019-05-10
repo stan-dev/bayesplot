@@ -29,7 +29,9 @@ mcmc_rank_hist(x, pars = character(), regex_pars = character(),
 \arguments{
 \item{x}{A 3-D array, matrix, list of matrices, or data frame of MCMC draws.
 The \link{MCMC-overview} page provides details on how to specify each these
-allowed inputs.}
+allowed inputs. It is also possible to use an object with an
+\code{as.array} method that returns the same kind of 3-D array described on
+the \link{MCMC-overview} page.}
 
 \item{pars}{An optional character vector of parameter names. If neither
 \code{pars} nor \code{regex_pars} is specified then the default is to use
@@ -84,7 +86,7 @@ range of iterations to display.}
 (\code{mcmc_trace()}) or the default point size
 (\code{mcmc_trace_highlight()}).}
 
-\item{np}{For models fit using \code{\link{NUTS}} (more generally, any \href{http://en.wikipedia.org/wiki/Symplectic_integrator}{symplectic integrator}), an
+\item{np}{For models fit using \code{\link{NUTS}} (more generally, any \href{https://en.wikipedia.org/wiki/Symplectic_integrator}{symplectic integrator}), an
 optional data frame providing NUTS diagnostic information. The data frame
 should be the object returned by \code{\link{nuts_params}} or one with the
 same structure. If \code{np} is specified then tick marks are added to the
@@ -93,6 +95,7 @@ divergence (if there were any). See the end of the \strong{Examples}
 section, below.}
 
 \item{np_style}{A call to the \code{trace_style_np()} helper function to
+
 specify arguments controlling the appearance of tick marks representing
 divergences (if the \code{np} argument is specified).}
 
@@ -204,7 +207,7 @@ mcmc_trace_highlight(x, pars = "sigma", highlight = 2, size = 2)
 
 # for models fit using HMC/NUTS divergences can be displayed in the trace plot
 library("rstanarm")
-fit <- stan_glm(mpg ~ ., data = mtcars,
+fit <- stan_glm(mpg ~ ., data = mtcars, refresh = 0,
   # next line to keep example fast and also ensure we get some divergences
                 prior = hs(), iter = 400, adapt_delta = 0.8)
 

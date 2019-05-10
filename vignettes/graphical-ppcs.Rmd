@@ -19,15 +19,16 @@ vignette: >
 ```{r, pkgs, include=FALSE}
 library("ggplot2")
 library("rstanarm")
+set.seed(840)
 ```
 
 ## Introduction
 
 This vignette focuses on graphical posterior predictive checks (PPC). Plots of parameter estimates
 from MCMC draws are covered in the separate vignette
-[_Plotting MCMC draws_](http://mc-stan.org/bayesplot/articles/plotting-mcmc-draws.html),
+[_Plotting MCMC draws_](https://mc-stan.org/bayesplot/articles/plotting-mcmc-draws.html),
 and MCMC diagnostics are covered in the
-[_Visual MCMC diagnostics_](http://mc-stan.org/bayesplot/articles/visual-mcmc-diagnostics.html)
+[_Visual MCMC diagnostics_](https://mc-stan.org/bayesplot/articles/visual-mcmc-diagnostics.html)
 vignette.
 
 ### Graphical posterior predictive checks (PPCs)
@@ -80,16 +81,15 @@ In addition to **bayesplot** we'll load the following packages:
 ```{r, eval=FALSE}
 library("bayesplot")
 library("ggplot2")
-library("rstanarm")      
+library("rstanarm")
 ```
-
 
 ### Example models 
 
 To demonstrate some of the various PPCs that can be created with the
 **bayesplot** package we'll use an example of comparing Poisson and Negative
 binomial regression models from one of the
-**rstanarm** [package vignettes](http://mc-stan.org/rstanarm/articles/count.html) 
+**rstanarm** [package vignettes](https://mc-stan.org/rstanarm/articles/count.html) 
 (Gabry and Goodrich, 2017).
 
 > We want to make inferences about the efficacy of a certain pest management system at reducing the number of roaches in urban apartments. [...] The regression predictors for the model are the pre-treatment number of roaches `roach1`, the treatment indicator `treatment`, and a variable `senior` indicating whether the apartment is in a building restricted to elderly residents. Because the number of days for which the roach traps were used is not the same for all apartments in the sample, we include it as an exposure [...]. 
@@ -102,30 +102,35 @@ head(roaches) # see help("rstanarm-datasets")
 roaches$roach100 <- roaches$roach1 / 100 # pre-treatment number of roaches (in 100s)
 ```
 
-```{r, roaches-model, results='hide', warning=FALSE, message=FALSE}
+```{r, roaches-model-pois, message=FALSE}
+# using rstanarm's default priors. For details ee the section on default 
+# weakly informative priors at https://mc-stan.org/rstanarm/articles/priors.html
 fit_poisson <- stan_glm(
   y ~ roach100 + treatment + senior,
   offset = log(exposure2),
   family = poisson(link = "log"),
   data = roaches,
-  seed = 1111
+  seed = 1111, 
+  refresh = 0 # suppresses all output as of v2.18.1 of rstan
 )
 ```
 
-```{r, print}
+```{r, print-pois}
 print(fit_poisson)
 ```
 
 We'll also fit the negative binomial model that we'll compare to the Poisson:
 
-```{r, results='hide', warning=FALSE, message=FALSE}
+```{r, roaches-model-nb, message=FALSE}
 fit_nb <- update(fit_poisson, family = "neg_binomial_2")
 ```
 
 
-```{r, print-2}
+```{r, print-nb}
 print(fit_nb)
 ```
+
+### Defining `y` and `yrep` 
 
 In order to use the PPC functions from the **bayesplot** package we need
 a vector `y` of outcome values,
@@ -154,7 +159,6 @@ regardless of whether or not the model was fit using an interface to Stan.
 **bayesplot** just requires a `yrep` matrix that has `number_of_draws` rows and
 `number_of_observations` columns.
 
-
 <br>
 
 ## Histograms and density estimates
@@ -176,8 +180,15 @@ the rows in `yrep`). This plot makes it easy to see that this model fails to
 account for the large proportion of zeros in `y`. That is, the model predicts
 fewer zeros than were actually observed.
 
+To see the discrepancy at the lower values of more clearly we can use the `xlim`
+function from **ggplot2** to restrict the range of the x-axis:
+
+```{r ppc_dens_overlay-2, message=FALSE, warning=FALSE}
+ppc_dens_overlay(y, yrep_poisson[1:50, ]) + xlim(0, 150)
+```
+
 See Figure 6 in [Gabry et al. (2019)](#gabry2019) for another example of using
-`ppc_stat_grouped`.
+`ppc_dens_overlay`.
 
 #### ppc_hist
 
@@ -201,7 +212,7 @@ To see the predictions for the smaller values more clearly we can zoom in:
 
 ```{r ppc_hist-nb-2, message=FALSE}
 ppc_hist(y, yrep_nb[1:5, ], binwidth = 20) + 
-  coord_cartesian(xlim = c(-1, 500))
+  coord_cartesian(xlim = c(-1, 300))
 ```
 
 
@@ -260,7 +271,7 @@ ppc_stat(y, yrep_nb, stat = "max", binwidth = 100) +
 ```
 
 See Figure 7 in [Gabry et al. (2019)](#gabry2019) for another example of using
-`ppc_stat_grouped`.
+`ppc_stat`.
 
 <br>
 
@@ -269,7 +280,7 @@ See Figure 7 in [Gabry et al. (2019)](#gabry2019) for another example of using
 There are many additional PPCs available, including plots of predictive 
 intervals, distributions of predictive errors, and more. For links to the
 documentation for all of the various PPC plots see `help("PPC-overview")`
-from R or the [online documentation](http://mc-stan.org/bayesplot/reference/index.html#section-ppc) on the Stan website. 
+from R or the [online documentation](https://mc-stan.org/bayesplot/reference/index.html#section-ppc) on the Stan website. 
 
 The `available_ppc` function can also be used to list the names of all PPC
 plotting functions:
@@ -381,17 +392,17 @@ version 1.7.0. https://CRAN.R-project.org/package=brms
 
 Gabry, J., and Goodrich, B. (2017). rstanarm: Bayesian Applied Regression 
 Modeling via Stan. R package version 2.15.3. 
-http://mc-stan.org/rstanarm, https://CRAN.R-project.org/package=rstanarm
+https://mc-stan.org/rstanarm, https://CRAN.R-project.org/package=rstanarm
 
 Gabry, J. , Simpson, D. , Vehtari, A. , Betancourt, M. and Gelman, A. (2019), 
 Visualization in Bayesian workflow. _J. R. Stat. Soc. A_, 182: 389-402. 
-\doi:10.1111/rssa.12378. ([journal](https://rss.onlinelibrary.wiley.com/doi/full/10.1111/rssa.12378), 
-[arXiv preprint](https://arxiv.org/abs/1709.01449))
+\doi:10.1111/rssa.12378. ([journal version](https://rss.onlinelibrary.wiley.com/doi/full/10.1111/rssa.12378), 
+[arXiv preprint](https://arxiv.org/abs/1709.01449), 
+[code on GitHub](https://github.com/jgabry/bayes-vis-paper))
 <a id="gabry2019"></a>
 
 Gelman, A., Carlin, J. B., Stern, H. S., Dunson, D. B., Vehtari, A., and Rubin, 
 D. B. (2013). *Bayesian Data Analysis*. Chapman & Hall/CRC Press, London, third 
 edition.
 
-Stan Development Team. (2017). *Stan Modeling Language Users
-Guide and Reference Manual*. http://mc-stan.org/users/documentation/
+Stan Development Team. _Stan Modeling Language Users Guide and Reference Manual_. https://mc-stan.org/users/documentation/

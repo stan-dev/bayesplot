@@ -12,14 +12,28 @@ prepare_mcmc_array <- function(x,
     x <- df_with_chain2array(x)
   } else if (is_chain_list(x)) {
     x <- chain_list2array(x)
+  } else if (is.data.frame(x)) {
+    # data frame without Chain column
+    x <- as.matrix(x)
+  } else {
+    x <- as.array(x)
   }
-  x <- validate_mcmc_x(x)
+
+  stopifnot(is.matrix(x) || is.array(x))
+  if (is.array(x) && !(length(dim(x)) %in% c(2,3))) {
+    stop("Arrays should have 2 or 3 dimensions. See help('MCMC-overview').",
+         call. = FALSE)
+  }
+  if (anyNA(x)) {
+    stop("NAs not allowed in 'x'.", call. = FALSE)
+  }
 
   parnames <- parameter_names(x)
   pars <- select_parameters(
     explicit = pars,
     patterns = regex_pars,
-    complete = parnames)
+    complete = parnames
+  )
 
   # possibly recycle transformations (apply same to all pars)
   if (is.function(transformations) ||
@@ -152,21 +166,22 @@ df_with_chain2array <- function(x) {
 }
 
 
-# Check if an object is a list but not a data.frame
+# Check if an object is a list (but not a data.frame) that contains
+# all 2-D objects
 #
 # @param x object to check
 # @return TRUE or FALSE
 is_chain_list <- function(x) {
-  !is.data.frame(x) && is.list(x)
+  check1 <- !is.data.frame(x) && is.list(x)
+  dims <- try(sapply(x, function(chain) length(dim(chain))), silent=TRUE)
+  if (inherits(dims, "try-error")) {
+    return(FALSE)
+  }
+  check2 <- isTRUE(all(dims == 2)) # all elements of list should be matrices/2-D arrays
+  check1 && check2
 }
 
 validate_chain_list <- function(x) {
-  stopifnot(is_chain_list(x))
-  dims <- sapply(x, function(chain) length(dim(chain)))
-  if (!isTRUE(all(dims == 2))) {
-    stop("If 'x' is a list then all elements must be matrices.")
-  }
-
   n_chain <- length(x)
   for (i in seq_len(n_chain)) {
     nms <- colnames(as.matrix(x[[i]]))
@@ -182,7 +197,8 @@ validate_chain_list <- function(x) {
     n_iter <- sapply(x, nrow)
     same_iters <- length(unique(n_iter)) == 1
     if (!same_iters) {
-      stop("Each chain should have the same number of iterations.")
+      stop("Each chain should have the same number of iterations.",
+           call. = FALSE)
     }
 
     cnames <- sapply(x, colnames)
@@ -193,7 +209,7 @@ validate_chain_list <- function(x) {
     }
     if (!same_params) {
       stop("The parameters for each chain should be in the same order ",
-           "and have the same names.")
+           "and have the same names.", call. = FALSE)
     }
   }
 
@@ -229,10 +245,10 @@ chain_list2array <- function(x) {
 parameter_names <- function(x) UseMethod("parameter_names")
 parameter_names.array <- function(x) {
   stopifnot(is_3d_array(x))
-  dimnames(x)[[3]] %||% stop("No parameter names found.")
+  dimnames(x)[[3]] %||% stop("No parameter names found.", call. = FALSE)
 }
 parameter_names.default <- function(x) {
-  colnames(x) %||% stop("No parameter names found.")
+  colnames(x) %||% stop("No parameter names found.", call. = FALSE)
 }
 
 # Check if an object is a 3-D array
@@ -276,33 +292,14 @@ STOP_need_multiple_chains <- function(call. = FALSE) {
 }
 
 
-# Perform some checks on user's 'x' input for MCMC plots
-#
-# @param x User's 'x' input to one of the mcmc_* functions.
-# @return x, unless an error is thrown.
-validate_mcmc_x <- function(x) {
-  stopifnot(!is_df_with_chain(x), !is_chain_list(x))
-  if (is.data.frame(x)) {
-    x <- as.matrix(x)
-  }
-
-  stopifnot(is.matrix(x) || is.array(x))
-  if (anyNA(x)) {
-    stop("NAs not allowed in 'x'.")
-  }
-
-  x
-}
-
-
 # Validate that transformations match parameter names
 validate_transformations <-
   function(transformations = list(),
            pars = character()) {
     if (is.null(names(transformations))) {
-      stop("'transformations' must be a _named_ list.")
+      stop("'transformations' must be a _named_ list.", call. = FALSE)
     } else if (any(!nzchar(names(transformations)))) {
-      stop("Each element of 'transformations' must have a name.")
+      stop("Each element of 'transformations' must have a name.", call. = FALSE)
     }
 
     transformations <- lapply(transformations, match.fun)
@@ -310,7 +307,8 @@ validate_transformations <-
       not_found <- which(!names(transformations) %in% pars)
       stop(
         "Some names(transformations) don't match parameter names: ",
-        paste(names(transformations)[not_found], collapse = ", ")
+        paste(names(transformations)[not_found], collapse = ", "),
+        call. = FALSE
       )
     }
 

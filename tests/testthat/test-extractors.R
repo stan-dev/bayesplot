@@ -4,10 +4,9 @@ context("Extractors")
 
 ITER <- 1000
 CHAINS <- 3
-capture.output(
-  fit <- stan_glm(mpg ~ wt + am, data = mtcars,
-                  iter = ITER, chains = CHAINS, refresh = 0)
-)
+fit <- stan_glm(mpg ~ wt + am, data = mtcars,
+                iter = ITER, chains = CHAINS,
+                refresh = 0)
 
 x <- list(cbind(a = 1:3, b = rnorm(3)), cbind(a = 1:3, b = rnorm(3)))
 
@@ -70,6 +69,8 @@ test_that("rhat.stanreg returns correct structure", {
 })
 
 test_that("neff_ratio.stanreg returns correct structure", {
+  expect_named(neff_ratio(fit, pars = c("wt", "am")), c("wt", "am"))
+
   ratio <- neff_ratio(fit)
   expect_named(ratio)
   ans <- summary(fit)[1:length(ratio), "n_eff"] / (floor(ITER / 2) * CHAINS)

@@ -131,7 +131,8 @@
 #' fit <- stan_glm(
 #'  mpg ~ 0 + wt + factor(cyl),
 #'  data = mtcars,
-#'  iter = 500
+#'  iter = 500,
+#'  refresh = 0
 #' )
 #' x <- as.matrix(fit)
 #'
@@ -714,7 +715,7 @@ mcmc_areas_ridges_data <- function(x,
 #' @noRd
 compute_column_density <- function(df, group_vars, value_var, ...) {
   value_var <- enquo(value_var)
-  group_vars <- enquo(group_vars)
+  group_vars <- enquos(group_vars)
 
   # Convert the vector of bare column names to a list of symbols
   group_cols <- df %>%

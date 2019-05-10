@@ -33,7 +33,7 @@ suggested_package <- function(pkg, min_version = NULL) {
 #' @param explicit Character vector of selected parameter names.
 #' @param patterns Character vector of regular expressions.
 #' @param complete Character vector of all possible parameter names.
-#' @return Characeter vector of combined explicit and matched (via regex)
+#' @return Character vector of combined explicit and matched (via regex)
 #'   parameter names, unless an error is thrown.
 #'
 select_parameters <-
@@ -45,15 +45,17 @@ select_parameters <-
               is.character(patterns),
               is.character(complete))
 
-    if (!length(explicit) && !length(patterns))
+    if (!length(explicit) && !length(patterns)) {
       return(complete)
+    }
 
     if (length(explicit)) {
       if (!all(explicit %in% complete)) {
         not_found <- which(!explicit %in% complete)
         stop(
           "Some 'pars' don't match parameter names: ",
-          paste(explicit[not_found], collapse = ", ")
+          paste(explicit[not_found], collapse = ", "),
+          call. = FALSE
         )
       }
     }
@@ -65,8 +67,10 @@ select_parameters <-
         unlist(lapply(seq_along(patterns), function(j) {
           grep(patterns[j], complete, value = TRUE)
         }))
-      if (!length(regex_pars))
+
+      if (!length(regex_pars)) {
         stop("No matches for 'regex_pars'.", call. = FALSE)
+      }
     }
 
     unique(c(explicit, regex_pars))

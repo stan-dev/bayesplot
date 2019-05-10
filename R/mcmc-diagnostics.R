@@ -100,7 +100,7 @@
 #'
 #' # intentionally use small 'iter' so there are some
 #' # problems with rhat and neff for demonstration
-#' fit <- stan_glm(mpg ~ ., data = mtcars, iter = 50)
+#' fit <- stan_glm(mpg ~ ., data = mtcars, iter = 50, refresh = 0)
 #' rhats <- rhat(fit)
 #' ratios <- neff_ratio(fit)
 #' mcmc_rhat(rhats)

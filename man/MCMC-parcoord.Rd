@@ -19,7 +19,9 @@ parcoord_style_np(div_color = "red", div_size = 0.2, div_alpha = 0.2)
 \arguments{
 \item{x}{A 3-D array, matrix, list of matrices, or data frame of MCMC draws.
 The \link{MCMC-overview} page provides details on how to specify each these
-allowed inputs.}
+allowed inputs. It is also possible to use an object with an
+\code{as.array} method that returns the same kind of 3-D array described on
+the \link{MCMC-overview} page.}
 
 \item{pars}{An optional character vector of parameter names. If neither
 \code{pars} nor \code{regex_pars} is specified then the default is to use
@@ -56,7 +58,7 @@ to \code{pars}.}
 \item{size, alpha}{Arguments passed on to \code{\link[ggplot2]{geom_line}}.}
 
 \item{np}{For models fit using \code{\link{NUTS}} (more generally,
-any \href{http://en.wikipedia.org/wiki/Symplectic_integrator}{symplectic
+any \href{https://en.wikipedia.org/wiki/Symplectic_integrator}{symplectic
 integrator}), an optional data frame providing NUTS
 diagnostic information. The data frame should be the object returned by
 \code{\link{nuts_params}} or one with the same structure.}
@@ -80,7 +82,9 @@ A ggplot object that can be further customized using the
 }
 \description{
 Parallel coordinates plot of MCMC draws (one dimension per parameter). See
-the \strong{Plot Descriptions} section, below, for details.
+the \strong{Plot Descriptions} section below for details, and see
+\href{https://github.com/jgabry/bayes-vis-paper}{Gabry et al. (2019)}
+for more background and a real example.
 }
 \section{Plot Descriptions}{
 
@@ -96,7 +100,8 @@ the \strong{Plot Descriptions} section, below, for details.
    diagnostic information is provided via the \code{np} argument. In that
    case divergences are highlighted in the plot. The appearance of the
    divergences can be customized using the \code{np_style} argument and the
-   \code{parcoord_style_np} helper function.
+   \code{parcoord_style_np} helper function. This version of the plot is the
+   same as the parallel coordinates plot described in Gabry et al. (2019).
 
    When the plotted model parameters are on very different scales the
    \code{transformations} argument can be useful. For example, to standardize
@@ -155,12 +160,13 @@ tail(d)
 Gabry, J. , Simpson, D. , Vehtari, A. , Betancourt, M. and
   Gelman, A. (2019), Visualization in Bayesian workflow. \emph{J. R. Stat.
   Soc. A}, 182: 389-402. doi:10.1111/rssa.12378,
-  (\href{https://rss.onlinelibrary.wiley.com/doi/full/10.1111/rssa.12378}{journal},
-  \href{https://arxiv.org/abs/1709.01449}{arXiv preprint})
+  (\href{https://rss.onlinelibrary.wiley.com/doi/full/10.1111/rssa.12378}{journal version},
+  \href{https://arxiv.org/abs/1709.01449}{arXiv preprint},
+  \href{https://github.com/jgabry/bayes-vis-paper}{code on GitHub})
 
 Hartikainen, A. (2017, Aug 23). Concentration of divergences
 [Msg 21]. Message posted to The Stan Forums:
-\url{http://discourse.mc-stan.org/t/concentration-of-divergences/1590/21}.
+\url{https://discourse.mc-stan.org/t/concentration-of-divergences/1590/21}.
 }
 \seealso{
 Other MCMC: \code{\link{MCMC-combos}},

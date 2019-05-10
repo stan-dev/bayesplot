@@ -29,7 +29,7 @@
 #' @param window An integer vector of length two specifying the limits of a
 #'   range of iterations to display.
 #' @param np For models fit using [`NUTS`] (more generally, any [symplectic
-#'   integrator](http://en.wikipedia.org/wiki/Symplectic_integrator)), an
+#'   integrator](https://en.wikipedia.org/wiki/Symplectic_integrator)), an
 #'   optional data frame providing NUTS diagnostic information. The data frame
 #'   should be the object returned by [`nuts_params`] or one with the
 #'   same structure. If `np` is specified then tick marks are added to the
@@ -122,7 +122,7 @@
 #'
 #' # for models fit using HMC/NUTS divergences can be displayed in the trace plot
 #' library("rstanarm")
-#' fit <- stan_glm(mpg ~ ., data = mtcars,
+#' fit <- stan_glm(mpg ~ ., data = mtcars, refresh = 0,
 #'   # next line to keep example fast and also ensure we get some divergences
 #'                 prior = hs(), iter = 400, adapt_delta = 0.8)
 #'
@@ -173,21 +173,19 @@ mcmc_trace <-
            np_style = trace_style_np(),
            divergences = NULL) {
 
-  # deprecate 'divergences' arg in favor of 'np' (for consistency across functions)
-  if (!is.null(divergences)) {
-    warning(
-      "The 'divergences' argument is deprecated ",
-      "and will be removed in a future release. ",
-      "Use the 'np' argument instead."
-    )
-
-    if (is.null(np)) {
-      np <- divergences
-    } else {
+    # deprecate 'divergences' arg in favor of 'np' (for consistency across functions)
+    if (!is.null(np) && !is.null(divergences)) {
       stop(
         "'np' and 'divergences' can't both be specified. ",
         "Use only 'np' (the 'divergences' argument is deprecated)."
       )
+    } else if (!is.null(divergences)) {
+      warning(
+        "The 'divergences' argument is deprecated ",
+        "and will be removed in a future release. ",
+        "Use the 'np' argument instead."
+      )
+      np <- divergences
     }
   }
 

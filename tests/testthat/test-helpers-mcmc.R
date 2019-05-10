@@ -24,30 +24,6 @@ test_that("melt_mcmc does not convert integer parameter names to integers #162",
 })
 
 
-
-# validate_mcmc_x ----------------------------------------------------------
-test_that("validate_mcmc_x works", {
-  expect_identical(validate_mcmc_x(mat), mat)
-  expect_identical(validate_mcmc_x(mat1), mat1)
-  expect_identical(validate_mcmc_x(arr), arr)
-  expect_identical(validate_mcmc_x(arr1), arr1)
-  expect_identical(validate_mcmc_x(arr1chain), arr1chain)
-
-  # error if df_with_chain
-  expect_error(validate_mcmc_x(dframe_multiple_chains), "is_df_with_chain")
-
-  # converts regular df to matrix
-  expect_identical(validate_mcmc_x(dframe), as.matrix(dframe))
-
-  # NAs
-  mat[1, 2] <- NA
-  arr[1, 2, 3] <- NA
-  expect_error(validate_mcmc_x(mat), "NAs not allowed")
-  expect_error(validate_mcmc_x(arr), "NAs not allowed")
-})
-
-
-
 # 3-D array helpers --------------------------------------------------------
 test_that("is_mcmc_array works", {
   expect_false(is_mcmc_array(mat))
@@ -153,7 +129,6 @@ test_that("is_chain_list works", {
 })
 
 test_that("validate_chain_list works", {
-  expect_error(validate_chain_list(mat), "is_chain_list")
   expect_identical(validate_chain_list(chainlist), chainlist)
   expect_identical(validate_chain_list(chainlist1), chainlist1)
   expect_identical(validate_chain_list(chainlist1chain), chainlist1chain)
@@ -162,6 +137,10 @@ test_that("validate_chain_list works", {
   colnames(chainlist2[[1]]) <- colnames(chainlist[[1]])
   colnames(chainlist2[[1]])[1] <- "AAA"
   expect_error(validate_chain_list(chainlist2), "parameters for each chain")
+
+  chainlist3 <- chainlist
+  colnames(chainlist3[[1]]) <- c("", colnames(chainlist[[1]])[-1])
+  expect_error(validate_chain_list(chainlist3), "Some parameters are missing names")
 
   chainlist[[1]] <- chainlist[[1]][-1, ]
   expect_error(validate_chain_list(chainlist),
@@ -172,8 +151,6 @@ test_that("chain_list2array works", {
   expect_mcmc_array(chain_list2array(chainlist))
   expect_mcmc_array(chain_list2array(chainlist1))
   expect_mcmc_array(chain_list2array(chainlist1chain))
-
-  expect_error(chain_list2array(dframe), "is_chain_list")
 })
 
 
@@ -230,6 +207,47 @@ test_that("transformations recycled properly if not a named list", {
   expect_identical(parameter_names(x), c("t(beta[1])", "t(sigma)"))
 })
 
+
+# prepare_mcmc_array ------------------------------------------------------
+test_that("prepare_mcmc_array errors if NAs", {
+  arr[1,1,1] <- NA
+  expect_error(prepare_mcmc_array(arr), "NAs not allowed")
+})
+test_that("prepare_mcmc_array processes non-array input types correctly", {
+  # errors are mostly covered by tests of the many internal functions above
+
+  # data frame with no Chain column (treat as 1 chain or merged chains)
+  a1 <- prepare_mcmc_array(dframe)
+  expect_s3_class(a1, "mcmc_array")
+  expect_equal(dim(a1), c(nrow(dframe), 1, ncol(dframe)))
+  expect_equal(parameter_names(a1), colnames(dframe))
+
+  # data frame with Chain column
+  a2 <- prepare_mcmc_array(dframe_multiple_chains)
+  expect_s3_class(a2, "mcmc_array")
+  n_chain <- max(dframe_multiple_chains$chain)
+  expect_equal(dim(a2), c(nrow(dframe) / n_chain, n_chain, ncol(dframe)))
+  expect_equal(parameter_names(a2), colnames(dframe))
+
+  # list of matrices with multiple chains
+  a3 <- prepare_mcmc_array(chainlist)
+  expect_s3_class(a3, "mcmc_array")
+  expect_equal(dim(a3), c(nrow(chainlist[[1]]), length(chainlist), ncol(chainlist[[1]])))
+  expect_equal(parameter_names(a3), colnames(chainlist[[1]]))
+
+  # object with acceptable as.array method
+  suppressPackageStartupMessages(library(rstanarm))
+  fit <- suppressWarnings(stan_glm(mpg ~ wt, data = mtcars, chains = 2, iter = 500, refresh = 0))
+  a4 <- prepare_mcmc_array(fit)
+  expect_s3_class(a4, "mcmc_array")
+  expect_equal(a4, prepare_mcmc_array(as.array(fit)))
+  expect_equal(dim(a4), c(250, 2, 3))
+  expect_equal(parameter_names(a4), c("(Intercept)", "wt", "sigma"))
+
+  # object with unacceptable as.array method
+  fit2 <- lm(mpg ~ wt, data = mtcars)
+  expect_error(prepare_mcmc_array(fit2), "Arrays should have 2 or 3 dimensions.")
+})
 
 
 # rhat and neff helpers ---------------------------------------------------

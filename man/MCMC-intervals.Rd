@@ -40,7 +40,9 @@ mcmc_areas_ridges_data(x, pars = character(), regex_pars = character(),
 \arguments{
 \item{x}{A 3-D array, matrix, list of matrices, or data frame of MCMC draws.
 The \link{MCMC-overview} page provides details on how to specify each these
-allowed inputs.}
+allowed inputs. It is also possible to use an object with an
+\code{as.array} method that returns the same kind of 3-D array described on
+the \link{MCMC-overview} page.}
 
 \item{pars}{An optional character vector of parameter names. If neither
 \code{pars} nor \code{regex_pars} is specified then the default is to use
@@ -210,7 +212,8 @@ library(rstanarm)
 fit <- stan_glm(
  mpg ~ 0 + wt + factor(cyl),
  data = mtcars,
- iter = 500
+ iter = 500,
+ refresh = 0
 )
 x <- as.matrix(fit)
 

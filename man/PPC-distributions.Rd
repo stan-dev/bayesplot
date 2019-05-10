@@ -137,7 +137,8 @@ For Binomial data, the plots will typically be most useful if
    Kernel density or empirical CDF estimates of each dataset (row) in
    \code{yrep} are overlaid, with the distribution of \code{y} itself on top
    (and in a darker shade). When using \code{ppc_ecdf_overlay} with discrete
-   data set the \code{discrete} argument to \code{TRUE} for better results.
+   data, set the \code{discrete} argument to \code{TRUE} for better results.
+   For an example of \code{ppc_dens_overlay} also see Gabry et al. (2019).
   }
   \item{\code{ppc_violin_grouped}}{
    The density estimate of \code{yrep} within each level of a grouping
@@ -194,6 +195,13 @@ ppc_violin_grouped(y, yrep, group, alpha = 0, y_draw = "both",
 }
 }
 \references{
+Gabry, J. , Simpson, D. , Vehtari, A. , Betancourt, M. and
+  Gelman, A. (2019), Visualization in Bayesian workflow. \emph{J. R. Stat.
+  Soc. A}, 182: 389-402. doi:10.1111/rssa.12378,
+  (\href{https://rss.onlinelibrary.wiley.com/doi/full/10.1111/rssa.12378}{journal version},
+  \href{https://arxiv.org/abs/1709.01449}{arXiv preprint},
+  \href{https://github.com/jgabry/bayes-vis-paper}{code on GitHub})
+
 Gelman, A., Carlin, J. B., Stern, H. S., Dunson, D. B., Vehtari,
   A., and Rubin, D. B. (2013). \emph{Bayesian Data Analysis.} Chapman & Hall/CRC
   Press, London, third edition. (Ch. 6)

@@ -75,6 +75,8 @@ test_that("color_scheme_set throws correct errors for custom schemes ", {
                "not found: not_a_color1, not_a_color2")
   expect_error(color_scheme_set(c("red", "blue")),
                "should be a character vector of length 1 or 6")
+  expect_error(prepare_custom_colors(c("red", "blue")),
+               "Custom color schemes must contain exactly 6 colors")
 })
 
 test_that("mixed_scheme internal function doesn't error", {
@@ -178,3 +180,6 @@ test_that("ggplot2::theme_set overrides bayesplot theme", {
   ggplot2::theme_set(minimal)
   expect_identical(bayesplot_theme_get(), minimal)
 })
+
+bayesplot_theme_set(bayesplot::theme_default())
+color_scheme_set()

@@ -50,7 +50,9 @@ total sample size. See \code{\link{neff_ratio}}.}
 
 \item{x}{A 3-D array, matrix, list of matrices, or data frame of MCMC draws.
 The \link{MCMC-overview} page provides details on how to specify each these
-allowed inputs.}
+allowed inputs. It is also possible to use an object with an
+\code{as.array} method that returns the same kind of 3-D array described on
+the \link{MCMC-overview} page.}
 
 \item{pars}{An optional character vector of parameter names. If neither
 \code{pars} nor \code{regex_pars} is specified then the default is to use
@@ -150,7 +152,7 @@ library(rstanarm)
 
 # intentionally use small 'iter' so there are some
 # problems with rhat and neff for demonstration
-fit <- stan_glm(mpg ~ ., data = mtcars, iter = 50)
+fit <- stan_glm(mpg ~ ., data = mtcars, iter = 50, refresh = 0)
 rhats <- rhat(fit)
 ratios <- neff_ratio(fit)
 mcmc_rhat(rhats)
@@ -173,8 +175,8 @@ mcmc_acf(as.array(fit2), pars = c("wt", "cyl"), lags = 10)
 
 }
 \references{
-Stan Development Team. (2016). \emph{Stan Modeling Language Users
-Guide and Reference Manual.} \url{http://mc-stan.org/documentation/}
+Stan Development Team. \emph{Stan Modeling Language Users
+Guide and Reference Manual.} \url{https://mc-stan.org/users/documentation/}
 
 Gelman, A. and Rubin, D. B. (1992). Inference from iterative
 simulation using multiple sequences. \emph{Statistical Science}. 7(4),

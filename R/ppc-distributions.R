@@ -37,7 +37,8 @@
 #'    Kernel density or empirical CDF estimates of each dataset (row) in
 #'    \code{yrep} are overlaid, with the distribution of \code{y} itself on top
 #'    (and in a darker shade). When using \code{ppc_ecdf_overlay} with discrete
-#'    data set the \code{discrete} argument to \code{TRUE} for better results.
+#'    data, set the \code{discrete} argument to \code{TRUE} for better results.
+#'    For an example of \code{ppc_dens_overlay} also see Gabry et al. (2019).
 #'   }
 #'   \item{\code{ppc_violin_grouped}}{
 #'    The density estimate of \code{yrep} within each level of a grouping
@@ -47,6 +48,7 @@
 #'   }
 #' }
 #'
+#' @template reference-vis-paper
 #' @templateVar bdaRef (Ch. 6)
 #' @template reference-bda
 #'

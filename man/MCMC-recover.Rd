@@ -21,7 +21,9 @@ mcmc_recover_hist(x, true, facet_args = list(), ..., binwidth = NULL,
 \arguments{
 \item{x}{A 3-D array, matrix, list of matrices, or data frame of MCMC draws.
 The \link{MCMC-overview} page provides details on how to specify each these
-allowed inputs.}
+allowed inputs. It is also possible to use an object with an
+\code{as.array} method that returns the same kind of 3-D array described on
+the \link{MCMC-overview} page.}
 
 \item{true}{A numeric vector of "true" values of the parameters in \code{x}.
 There should be one value in \code{true} for each parameter included in
@@ -97,7 +99,7 @@ library(rstanarm)
 alpha <- 1; beta <- rnorm(10, 0, 3); sigma <- 2
 X <- matrix(rnorm(1000), 100, 10)
 y <- rnorm(100, mean = c(alpha + X \%*\% beta), sd = sigma)
-fit <- stan_glm(y ~ ., data = data.frame(y, X))
+fit <- stan_glm(y ~ ., data = data.frame(y, X), refresh = 0)
 draws <- as.matrix(fit)
 print(colnames(draws))
 true <- c(alpha, beta, sigma)

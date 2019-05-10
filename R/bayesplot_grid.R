@@ -42,8 +42,8 @@
 #' \dontrun{
 #' library(rstanarm)
 #' mtcars$log_mpg <- log(mtcars$mpg)
-#' fit1 <- stan_glm(mpg ~ wt, data = mtcars)
-#' fit2 <- stan_glm(log_mpg ~ wt, data = mtcars)
+#' fit1 <- stan_glm(mpg ~ wt, data = mtcars, refresh = 0)
+#' fit2 <- stan_glm(log_mpg ~ wt, data = mtcars, refresh = 0)
 #'
 #' y <- mtcars$mpg
 #' yrep1 <- posterior_predict(fit1, draws = 50)

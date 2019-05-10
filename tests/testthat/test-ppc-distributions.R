@@ -136,6 +136,7 @@ test_that("ppc_dens_overlay renders correctly", {
 
 test_that("ppc_violin_grouped renders correctly", {
   testthat::skip_on_cran()
+  testthat::skip_if_not(getRversion() >= "3.6.0")
 
   p_base <- ppc_violin_grouped(vdiff_y, vdiff_yrep, vdiff_group)
   vdiffr::expect_doppelganger("ppc violin grouped (default)", p_base)
