@@ -53,11 +53,15 @@
 #'    Traces are plotted using points rather than lines and the opacity of all
 #'    chains but one (specified by the `highlight` argument) is reduced.
 #'   }
+#'   \item{`mcmc_rank_hist()`}{
+#'    Whereas traditional trace plots visualize how the chains mix over the
+#'    course of sampling, rank-normalized histograms visualize how the values
+#'    from the chains mix together in terms of ranking. An ideal plot would
+#'    show the lines mixing or overlapping in a uniform distribution.
+#'   }
 #'   \item{`mcmc_rank_overlay()`}{
-#'    Whereas tradition trace plots visualize how the chains mix over the course
-#'    of sampling, rank-normalized histograms visualize how the values from the
-#'    chains mix together in terms of ranking. An ideal plot would show the
-#'    lines mixing or overlapping in a uniform distribution.
+#'    Ranks from `mcmc_rank_hist()` are plotted using overlaid lines in a
+#'    single panel.
 #'   }
 #' }
 #'
@@ -96,6 +100,7 @@
 #' # Rank-normalized histogram plots. Instead of showing how chains mix over
 #' # time, look at how the ranking of MCMC samples mixed between chains.
 #' color_scheme_set("viridisE")
+#' mcmc_rank_hist(x, "alpha")
 #' mcmc_rank_overlay(x, "alpha")
 #'
 #' \dontrun{
@@ -268,17 +273,18 @@ trace_style_np <-
 
 #' @rdname MCMC-traces
 #' @param n_bins number of bins to use for the histogram of rank-normalized MCMC
-#'   samples.
+#'   samples. Defaults to 20.
 #' @export
-mcmc_rank_overlay <- function(
-  x,
-  pars = character(),
-  regex_pars = character(),
-  transformations = list(),
-  n_bins = 20) {
-
+mcmc_rank_overlay <- function(x,
+                              pars = character(),
+                              regex_pars = character(),
+                              transformations = list(),
+                              n_bins = 20) {
   data <- mcmc_trace_data(
-    x, pars = pars, regex_pars = regex_pars, transformations = transformations
+    x,
+    pars = pars,
+    regex_pars = regex_pars,
+    transformations = transformations
   )
 
   n_chain <- unique(data$n_chains)
@@ -316,6 +322,71 @@ mcmc_rank_overlay <- function(
     ylim(c(0, NA)) +
     bayesplot_theme_get() +
     labs(x = "Rank", y = NULL)
+}
+
+#' @rdname MCMC-traces
+#' @export
+mcmc_rank_hist <- function(x,
+                      pars = character(),
+                      regex_pars = character(),
+                      transformations = list(),
+                      facet_args = list(),
+                      n_bins = 20) {
+  data <- mcmc_trace_data(
+    x,
+    pars = pars,
+    regex_pars = regex_pars,
+    transformations = transformations
+  )
+
+  n_iter <- unique(data$n_iterations)
+  n_chains <- unique(data$n_chains)
+  n_param <- unique(data$n_parameters)
+
+  # Create a dataframe with chain x parameter x min(rank) x max(rank) to set
+  # x axis range in each facet
+  data_boundaries <- data %>%
+    dplyr::distinct(.data$chain, .data$parameter)
+  data_boundaries <- dplyr::bind_rows(
+    mutate(data_boundaries, value_rank = min(data$value_rank)),
+    mutate(data_boundaries, value_rank = max(data$value_rank))
+  )
+  right_edge <- max(data_boundaries$value_rank)
+
+  # If there is one parameter, put the chains in one row.
+  # Otherwise, use a grid.
+
+  facet_args[["scales"]] <- facet_args[["scales"]] %||% "fixed"
+
+  if (n_param > 1) {
+    facet_f <- facet_grid
+    facet_args[["facets"]] <- parameter ~ chain
+  } else {
+    facet_f <- facet_wrap
+    facet_args[["facets"]] <- parameter ~ chain
+    facet_args[["nrow"]] <- 1
+    labeller <- function(x) label_value(x, multi_line = FALSE)
+    facet_args[["labeller"]] <- labeller
+  }
+
+  facet_call <- do.call(facet_f, facet_args)
+
+  ggplot(data) +
+    aes(x = value_rank) +
+    geom_histogram(
+      color = get_color("mid_highlight"),
+      fill = get_color("mid"),
+      binwidth = right_edge / n_bins,
+      boundary = right_edge,
+      size = .25
+    ) +
+    geom_blank(data = data_boundaries) +
+    facet_call +
+    force_axes_in_facets() +
+    dont_expand_y_axis(c(0.005, 0)) +
+    bayesplot_theme_get() +
+    yaxis_title(FALSE) +
+    labs(x = "Rank")
 }
 
 

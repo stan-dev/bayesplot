@@ -6,6 +6,7 @@
 \alias{mcmc_trace_highlight}
 \alias{trace_style_np}
 \alias{mcmc_rank_overlay}
+\alias{mcmc_rank_hist}
 \title{Trace plot (time series plot) of MCMC draws}
 \usage{
 mcmc_trace(x, pars = character(), regex_pars = character(),
@@ -21,6 +22,9 @@ trace_style_np(div_color = "red", div_size = 0.25, div_alpha = 1)
 
 mcmc_rank_overlay(x, pars = character(), regex_pars = character(),
   transformations = list(), n_bins = 20)
+
+mcmc_rank_hist(x, pars = character(), regex_pars = character(),
+  transformations = list(), facet_args = list(), n_bins = 20)
 }
 \arguments{
 \item{x}{A 3-D array, matrix, list of matrices, or data frame of MCMC draws.
@@ -109,7 +113,7 @@ for showing divergences in the plot. The default values are displayed in
 the \strong{Usage} section above.}
 
 \item{n_bins}{number of bins to use for the histogram of rank-normalized MCMC
-samples.}
+samples. Defaults to 20.}
 }
 \value{
 A ggplot object that can be further customized using the
@@ -130,11 +134,15 @@ the \code{np} argument can be used to also show divergences on the trace plot.
 Traces are plotted using points rather than lines and the opacity of all
 chains but one (specified by the \code{highlight} argument) is reduced.
 }
+\item{\code{mcmc_rank_hist()}}{
+Whereas traditional trace plots visualize how the chains mix over the
+course of sampling, rank-normalized histograms visualize how the values
+from the chains mix together in terms of ranking. An ideal plot would
+show the lines mixing or overlapping in a uniform distribution.
+}
 \item{\code{mcmc_rank_overlay()}}{
-Whereas tradition trace plots visualize how the chains mix over the course
-of sampling, rank-normalized histograms visualize how the values from the
-chains mix together in terms of ranking. An ideal plot would show the
-lines mixing or overlapping in a uniform distribution.
+Ranks from \code{mcmc_rank_hist()} are plotted using overlaid lines in a
+single panel.
 }
 }
 }
@@ -174,6 +182,7 @@ mcmc_trace(x[,, 1:4], window = c(100, 130), size = 1) +
 # Rank-normalized histogram plots. Instead of showing how chains mix over
 # time, look at how the ranking of MCMC samples mixed between chains.
 color_scheme_set("viridisE")
+mcmc_rank_hist(x, "alpha")
 mcmc_rank_overlay(x, "alpha")
 
 \dontrun{
