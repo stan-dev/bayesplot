@@ -357,22 +357,21 @@ mcmc_rank_hist <- function(x,
   # Otherwise, use a grid.
 
   facet_args[["scales"]] <- facet_args[["scales"]] %||% "fixed"
+  facet_args[["facets"]] <- facet_args[["facets"]] %||% (parameter ~ chain)
 
   if (n_param > 1) {
     facet_f <- facet_grid
-    facet_args[["facets"]] <- parameter ~ chain
   } else {
     facet_f <- facet_wrap
-    facet_args[["facets"]] <- parameter ~ chain
-    facet_args[["nrow"]] <- 1
+    facet_args[["nrow"]] <- facet_args[["nrow"]] %||% 1
     labeller <- function(x) label_value(x, multi_line = FALSE)
-    facet_args[["labeller"]] <- labeller
+    facet_args[["labeller"]] <- facet_args[["labeller"]] %||% labeller
   }
 
   facet_call <- do.call(facet_f, facet_args)
 
   ggplot(data) +
-    aes(x = value_rank) +
+    aes_(x = ~ value_rank) +
     geom_histogram(
       color = get_color("mid_highlight"),
       fill = get_color("mid"),
