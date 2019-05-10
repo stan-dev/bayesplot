@@ -173,20 +173,19 @@ mcmc_trace <-
            np_style = trace_style_np(),
            divergences = NULL) {
 
-    # deprecate 'divergences' arg in favor of 'np' (for consistency across functions)
-    if (!is.null(np) && !is.null(divergences)) {
-      stop(
-        "'np' and 'divergences' can't both be specified. ",
-        "Use only 'np' (the 'divergences' argument is deprecated)."
-      )
-    } else if (!is.null(divergences)) {
-      warning(
-        "The 'divergences' argument is deprecated ",
-        "and will be removed in a future release. ",
-        "Use the 'np' argument instead."
-      )
-      np <- divergences
-    }
+  # deprecate 'divergences' arg in favor of 'np' (for consistency across functions)
+  if (!is.null(np) && !is.null(divergences)) {
+    stop(
+      "'np' and 'divergences' can't both be specified. ",
+      "Use only 'np' (the 'divergences' argument is deprecated)."
+    )
+  } else if (!is.null(divergences)) {
+    warning(
+      "The 'divergences' argument is deprecated ",
+      "and will be removed in a future release. ",
+      "Use the 'np' argument instead."
+    )
+    np <- divergences
   }
 
   check_ignored_arguments(...)

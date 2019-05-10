@@ -95,7 +95,6 @@ divergence (if there were any). See the end of the \strong{Examples}
 section, below.}
 
 \item{np_style}{A call to the \code{trace_style_np()} helper function to
-
 specify arguments controlling the appearance of tick marks representing
 divergences (if the \code{np} argument is specified).}
 
