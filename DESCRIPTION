@@ -22,16 +22,16 @@ SystemRequirements: pandoc (>= 1.12.3), pandoc-citeproc
 Depends:
     R (>= 3.1.0)
 Imports:
-    dplyr (>= 0.7.1),
+    dplyr (>= 0.8.0),
     ggplot2 (>= 2.2.1),
     reshape2,
     stats,
     utils,
-    rlang,
+    rlang (>= 0.3.0),
     ggridges,
+    hexbin,
     tibble
 Suggests: 
-    arm,
     gridExtra (>= 2.2.1),
     knitr (>= 1.16),
     loo (>= 2.0.0),
