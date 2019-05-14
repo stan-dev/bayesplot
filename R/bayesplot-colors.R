@@ -227,61 +227,6 @@ plot_scheme <- function(scheme) {
     )
 }
 
-
-# @param scheme A string (length 1) naming a scheme
-scheme_from_string <- function(scheme) {
-  stopifnot(length(scheme) == 1)
-  if (identical(substr(scheme, 1, 4), "mix-")) {
-    to_mix <- unlist(strsplit(scheme, split = "-"))[2:3]
-    x <- setNames(mixed_scheme(to_mix[1], to_mix[2]), scheme_level_names())
-    return(structure(x, mixed = TRUE, scheme_name = scheme))
-  } else if (identical(substr(scheme, 1, 7), "brewer-")) {
-    if (!requireNamespace("RColorBrewer", quietly = TRUE)) {
-      stop("Please install the 'RColorBrewer' package to use a ColorBrewer scheme.",
-           call.=FALSE)
-    }
-    clrs <- RColorBrewer::brewer.pal(n = 6, name = gsub("brewer-", "", scheme))
-    x <- setNames(as.list(clrs), scheme_level_names())
-    return(structure(x, mixed = FALSE, scheme_name = scheme))
-  } else {
-    scheme <- match.arg(scheme, choices = names(master_color_list))
-    x <- prepare_colors(scheme)
-    return(structure(x, mixed = FALSE, scheme_name = scheme))
-  }
-}
-
-# check if object returned by color_scheme_get is a mixed scheme
-# @param x object returned by color_scheme_get
-is_mixed_scheme <- function(x) {
-  stopifnot(is.list(x))
-  isTRUE(attr(x, "mixed"))
-}
-
-#' Access a subset of the scheme colors
-#'
-#' @noRd
-#' @param level A character vector of level names (see `scheme_level_names()`).
-#'   The abbreviations "l", "lh", "m", "mh", "d", and "dh" can also be used
-#'   instead of the full names.
-#' @return A character vector of color values.
-#'
-get_color <- function(levels) {
-  sel <- which(!levels %in% scheme_level_names())
-  if (length(sel))
-    levels[sel] <- sapply(levels[sel], full_level_name)
-  stopifnot(all(levels %in% scheme_level_names()))
-  color_vals <- color_scheme_get()[levels]
-  unlist(color_vals, use.names = FALSE)
-}
-full_level_name <- function(x) {
-  switch(x,
-         l = "light", lh = "light_highlight",
-         m = "mid", mh = "mid_highlight",
-         d = "dark", dh = "dark_highlight"
-         )
-}
-
-
 # Color scheme level names
 scheme_level_names <- function() {
   c("light",
@@ -292,51 +237,35 @@ scheme_level_names <- function() {
     "dark_highlight")
 }
 
-prepare_colors <- function(scheme) {
-  setNames(
-    master_color_list[[scheme]],
-    scheme_level_names()
-  )
-}
-
-prepare_custom_colors <- function(scheme) {
-  if (length(scheme) != 6)
-    stop("Custom color schemes must contain exactly 6 colors.",
-         call. = FALSE)
-
-  not_found <- character(0)
-  for (j in seq_along(scheme)) {
-    clr <- scheme[j]
-    if (!is_hex_color(clr)  && !clr %in% grDevices::colors())
-      not_found <- c(not_found, clr)
+#' Return a color scheme based on `scheme` argument specified as a string
+#'
+#' @noRd
+#' @param scheme A string (length 1) naming a scheme
+scheme_from_string <- function(scheme) {
+  stopifnot(length(scheme) == 1)
+  if (identical(substr(scheme, 1, 4), "mix-")) {
+    # user specified a mixed scheme (e.g., "mix-blue-red")
+    to_mix <- unlist(strsplit(scheme, split = "-"))[2:3]
+    x <- setNames(mixed_scheme(to_mix[1], to_mix[2]), scheme_level_names())
+    return(structure(x, mixed = TRUE, scheme_name = scheme))
+  } else if (identical(substr(scheme, 1, 7), "brewer-")) {
+    # user specified a ColorBrewer scheme (e.g., "brewer-Blues")
+    if (!requireNamespace("RColorBrewer", quietly = TRUE)) {
+      stop("Please install the 'RColorBrewer' package to use a ColorBrewer scheme.",
+           call.=FALSE)
+    }
+    clrs <- RColorBrewer::brewer.pal(n = 6, name = gsub("brewer-", "", scheme))
+    x <- setNames(as.list(clrs), scheme_level_names())
+    return(structure(x, mixed = FALSE, scheme_name = scheme))
+  } else {
+    # check for scheme in master_color_list
+    scheme <- match.arg(scheme, choices = names(master_color_list))
+    x <- setNames(master_color_list[[scheme]], scheme_level_names())
+    return(structure(x, mixed = FALSE, scheme_name = scheme))
   }
-  if (length(not_found))
-    STOP_bad_colors(not_found)
-
-  x <- setNames(as.list(scheme), scheme_level_names())
-  attr(x, "scheme_name") <- "custom"
-  x
 }
 
-is_hex_color <- function(x) {
-  if (!identical(substr(x, 1, 1), "#"))
-    return(FALSE)
-  isTRUE(nchar(x) == 7)
-}
-
-# @param x character vector of bad color names
-STOP_bad_colors <- function(x) {
-  stop(
-    "Each color must specified as either a hexidecimal color value ",
-    "(e.g. '#C79999') or the name of a color (e.g. 'blue'). ",
-    "The following provided colors were not found: ",
-    paste(unlist(x), collapse = ", "),
-    call. = FALSE
-  )
-}
-
-# master color list -------------------------------------------------------
-# create mixed scheme
+# create mixed scheme from two existing schemes
 mixed_scheme <- function(scheme1, scheme2) {
   scheme1 <- color_scheme_get(scheme1)
   scheme2 <- color_scheme_get(scheme2)
@@ -352,6 +281,75 @@ mixed_scheme <- function(scheme1, scheme2) {
   return(scheme)
 }
 
+#' Check if object returned by color_scheme_get() is a mixed scheme
+#' @noRd
+#' @param x object returned by color_scheme_get()
+#' @return T/F
+is_mixed_scheme <- function(x) {
+  stopifnot(is.list(x))
+  isTRUE(attr(x, "mixed"))
+}
+
+#' Access a subset of the current scheme colors
+#' @noRd
+#' @param level A character vector of level names scheme_level_names().
+#'   The abbreviations "l", "lh", "m", "mh", "d", and "dh" can also be used
+#'   instead of the full names.
+#' @return A character vector of color values.
+#'
+get_color <- function(levels) {
+  sel <- which(!levels %in% scheme_level_names())
+  if (length(sel))
+    levels[sel] <- sapply(levels[sel], full_level_name)
+  stopifnot(all(levels %in% scheme_level_names()))
+  color_vals <- color_scheme_get()[levels]
+  unlist(color_vals, use.names = FALSE)
+}
+
+full_level_name <- function(x) {
+  switch(x,
+         l = "light", lh = "light_highlight",
+         m = "mid", mh = "mid_highlight",
+         d = "dark", dh = "dark_highlight"
+         )
+}
+
+# Custom color scheme if 6 colors specified
+prepare_custom_colors <- function(scheme) {
+  if (length(scheme) != 6) {
+    stop("Custom color schemes must contain exactly 6 colors.",
+         call. = FALSE)
+  }
+
+  not_found <- character(0)
+  for (j in seq_along(scheme)) {
+    clr <- scheme[j]
+    if (!is_hex_color(clr)  && !clr %in% grDevices::colors())
+      not_found <- c(not_found, clr)
+  }
+  if (length(not_found)) {
+    stop(
+      "Each color must specified as either a hexidecimal color value ",
+      "(e.g. '#C79999') or the name of a color (e.g. 'blue'). ",
+      "The following provided colors were not found: ",
+      paste(unlist(not_found), collapse = ", "),
+      call. = FALSE
+    )
+  }
+
+  x <- setNames(as.list(scheme), scheme_level_names())
+  attr(x, "scheme_name") <- "custom"
+  x
+}
+
+is_hex_color <- function(x) {
+  if (!identical(substr(x, 1, 1), "#"))
+    return(FALSE)
+  isTRUE(nchar(x) == 7)
+}
+
+
+# master color list -------------------------------------------------------
 master_color_list <- list(
   blue =
     list("#d1e1ec", "#b3cde0", "#6497b1", "#005b96", "#03396c", "#011f4b"),

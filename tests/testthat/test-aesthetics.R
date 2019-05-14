@@ -3,14 +3,22 @@ context("Aesthetics")
 
 
 # color scheme stuff ------------------------------------------------------
+
+prepare_colors_for_test <- function(scheme) {
+  setNames(
+    bayesplot:::master_color_list[[scheme]],
+    bayesplot:::scheme_level_names()
+  )
+}
+
 test_that("getting and setting the color scheme works", {
   color_scheme_set("red")
-  expect_equivalent(color_scheme_get(), prepare_colors("red"))
-  expect_named(prepare_colors("blue"), scheme_level_names())
+  expect_equivalent(color_scheme_get(), prepare_colors_for_test("red"))
+  expect_named(prepare_colors_for_test("blue"), scheme_level_names())
   expect_named(color_scheme_get(), scheme_level_names())
   for (clr in names(master_color_list)) {
     color_scheme_set(clr)
-    expect_equivalent(color_scheme_get(), prepare_colors(clr),
+    expect_equivalent(color_scheme_get(), prepare_colors_for_test(clr),
                       info = clr)
     expect_named(color_scheme_get(), scheme_level_names())
   }
@@ -20,7 +28,7 @@ test_that("getting and setting the color scheme works", {
   expect_gg(plot(color_scheme_get("mix-blue-green")))
 
   color_scheme_set("blue")
-  expect_equivalent(color_scheme_get("teal"), prepare_colors("teal"))
+  expect_equivalent(color_scheme_get("teal"), prepare_colors_for_test("teal"))
 })
 
 test_that("color_scheme_get with i argument works", {
@@ -99,7 +107,7 @@ test_that("get_color returns correct color values", {
   scheme <- color_scheme_set("green")
   levs <- scheme_level_names()
 
-  ans <- unlist(prepare_colors("green")[levs], use.names = FALSE)
+  ans <- unlist(prepare_colors_for_test("green")[levs], use.names = FALSE)
   expect_identical(get_color(levs), ans)
   for (lev in levs)
     expect_identical(get_color(lev), scheme[[lev]], info = lev)
