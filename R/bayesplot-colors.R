@@ -98,13 +98,22 @@
 #' y <- example_y_data()
 #' yrep <- example_yrep_draws()
 #' ppc_stat(y, yrep, stat = "mean") + legend_none()
-#' \donttest{
+#'
+#' ############################
+#' ### Mixing color schemes ###
+#' ############################
 #' color_scheme_set("mix-teal-pink")
 #' ppc_stat(y, yrep, stat = "sd") + legend_none()
 #' mcmc_areas(x, regex_pars = "beta")
-#' }
+#'
 #' ###########################
-#' ### custom color scheme ###
+#' ### ColorBrewer schemes ###
+#' ###########################
+#' color_scheme_set("brewer-Spectral")
+#' mcmc_trace(x, pars = "sigma")
+#'
+#' ###########################
+#' ### Custom color scheme ###
 #' ###########################
 #' orange_scheme <- c("#ffebcc", "#ffcc80",
 #'                    "#ffad33", "#e68a00",
