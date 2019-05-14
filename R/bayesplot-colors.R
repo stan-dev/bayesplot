@@ -172,7 +172,7 @@ print.bayesplot_scheme <- function(x, ...) {
 #' @export
 plot.bayesplot_scheme <- function(x, ...) {
   scheme <- attr(x, "scheme_name") %||% stop("Scheme name not found.")
-  .view_scheme(scheme)
+  plot_scheme(scheme)
 }
 
 
@@ -180,10 +180,10 @@ plot.bayesplot_scheme <- function(x, ...) {
 #' @export
 color_scheme_view <- function(scheme) {
   if (missing(scheme) || length(scheme) == 1)
-    return(.view_scheme(scheme))
+    return(plot_scheme(scheme))
 
   bayesplot_grid(
-    plots = lapply(scheme, .view_scheme),
+    plots = lapply(scheme, plot_scheme),
     grid_args = list(ncol = length(scheme))
   )
 }
@@ -194,7 +194,7 @@ color_scheme_view <- function(scheme) {
 
 # plot color scheme
 # @param scheme A string (length 1) naming a scheme
-.view_scheme <- function(scheme) {
+plot_scheme <- function(scheme) {
   x <- if (missing(scheme))
     color_scheme_get() else color_scheme_get(scheme)
 
