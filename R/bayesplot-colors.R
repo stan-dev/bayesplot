@@ -1,66 +1,70 @@
 #' Set, get, or view color schemes
 #'
 #' Set, get, or view color schemes. Choose from a preset scheme or create a
-#' custom scheme.
+#' custom scheme. See the **Available color schemes** section below for a list
+#' of available scheme names. The **Custom color schemes** section describes how
+#' to specify a custom scheme.
 #'
+#' @md
 #' @name bayesplot-colors
+#' @param scheme For `color_scheme_set()`, either a string naming one of the
+#'   available color schemes or a character vector of _exactly six_ colors
+#'   specifying a custom scheme.
 #'
-#' @param scheme For \code{color_scheme_set}, either a string naming one of the
-#'   available color schemes or a character vector of \emph{exactly six} colors
-#'   specifying a custom scheme (see the \strong{Custom Color Schemes} section,
-#'   below, for more on specifying a custom scheme).
-#'
-#'   For \code{color_scheme_get}, \code{scheme} can be missing (to get the
+#'   For `color_scheme_get()`, `scheme` can be missing (to get the
 #'   current color scheme) or a string naming one of the preset schemes.
 #'
-#'   For \code{color_scheme_view}, \code{scheme} can be missing (to use the
+#'   For `color_scheme_view()`, `scheme` can be missing (to use the
 #'   current color scheme) or a character vector containing a subset of the
 #'   available scheme names.
 #'
-#'   Currently, the available preset color schemes are:
-#'   \itemize{
-#'    \item \code{"blue"}, \code{"brightblue"}
-#'    \item \code{"gray"}, \code{"darkgray"}
-#'    \item \code{"green"}
-#'    \item \code{"pink"}
-#'    \item \code{"purple"}
-#'    \item \code{"red"}
-#'    \item \code{"teal"}
-#'    \item \code{"yellow"}
-#'    \item \href{https://CRAN.R-project.org/package=viridis}{\code{"viridis"}},
-#'      \code{"viridisA"}, \code{"viridisB"}, \code{"viridisC"}
-#'    \item \code{"mix-x-y"}, replacing \code{x} and \code{y} with any two of
-#'      the scheme names listed above (e.g. "mix-teal-pink", "mix-blue-red",
-#'      etc.). The order of \code{x} and \code{y} matters, i.e., the color
-#'      schemes "mix-blue-red" and "mix-red-blue" are not identical. There is no
-#'      guarantee that every possible mixed scheme will look good with every
-#'      possible plot.
-#'   }
+#'   See the **Available color schemes** section below for a list of available
+#'   scheme names. The **Custom color schemes** section describes how to specify
+#'   a custom scheme.
 #'
-#'   If you have a suggestion for a new color scheme please let us know via the
-#'   \pkg{bayesplot} \href{https://github.com/stan-dev/bayesplot/issues}{issue
-#'   tracker}.
+#' @return `color_scheme_set()` has the side effect of setting the color scheme
+#'   used for plotting. It also returns ([invisibly][base::invisible]) a list of
+#'   the hexidecimal color values used in `scheme`.
 #'
-#' @return \code{color_scheme_set} has the side effect of setting the color
-#'   scheme used for plotting. It also returns
-#'   (\code{\link[=invisible]{invisibly}}) a list of the hexidecimal color
-#'   values used in \code{scheme}.
-#'
-#'   \code{color_scheme_get} returns a \code{list} of the hexadecimal color
-#'   values (without changing the current scheme). If the \code{scheme} argument
+#'   `color_scheme_get()` returns a list of the hexadecimal color
+#'   values (without changing the current scheme). If the `scheme` argument
 #'   is not specified the returned values correspond to the current color
-#'   scheme. If the optional argument \code{i} is specified then the returned
-#'   list only contains \code{length(i)} elements.
+#'   scheme. If the optional argument `i` is specified then the returned
+#'   list only contains `length(i)` elements.
 #'
-#'   \code{color_scheme_view} returns a ggplot object if only a single scheme is
+#'   `color_scheme_view()` returns a ggplot object if only a single scheme is
 #'   specified and a gtable object if multiple schemes names are specified.
 #'
-#' @section Custom Color Schemes: A \pkg{bayesplot} color scheme consists of six
+#' @section Available color schemes: Currently, the available preset color
+#'   schemes are:
+#'  * `"blue"`, `"brightblue"`
+#'  * `"gray"`, `"darkgray"`
+#'  * `"green"`
+#'  * `"pink"`
+#'  * `"purple"`
+#'  * `"red"`
+#'  * `"teal"`
+#'  * `"yellow"`
+#'  * [`"viridis"`](https://CRAN.R-project.org/package=viridis), `"viridisA"`,
+#'    `"viridisB"`, `"viridisC"`
+#'  * `"mix-x-y"`, replacing `x` and `y` with any two of
+#'      the scheme names listed above (e.g. "mix-teal-pink", "mix-blue-red",
+#'      etc.). The order of `x` and `y` matters, i.e., the color schemes
+#'      `"mix-blue-red"` and `"mix-red-blue"` are not identical. There is no
+#'      guarantee that every possible mixed scheme will look good with every
+#'      possible plot.
+#'  * `"brewer-x"`, replacing `x` with the name of a palette available from
+#'     [RColorBrewer::brewer.pal()] (e.g., `brewer-PuBuGn`).
+#'
+#'  If you have a suggestion for a new color scheme please let us know via the
+#'  **bayesplot** [issue tracker](https://github.com/stan-dev/bayesplot/issues).
+#'
+#' @section Custom color schemes: A **bayesplot** color scheme consists of six
 #'   colors. To specify a custom color scheme simply pass a character vector
-#'   containing either the names of six \code{\link[grDevices]{colors}} or six
+#'   containing either the names of six [colors][grDevices::colors] or six
 #'   hexidecimal color values (or a mix of names and hex values). The colors
 #'   should be in order from lightest to darkest. See the end of the
-#'   \strong{Examples} section for a demonstration.
+#'   **Examples** section for a demonstration.
 #'
 #' @template seealso-theme
 #'
@@ -128,10 +132,11 @@ color_scheme_set <- function(scheme = "blue") {
 }
 
 #' @rdname bayesplot-colors
+#' @md
 #' @export
-#' @param i For \code{color_scheme_get}, a subset of the integers from \code{1}
-#'   (lightest) to \code{6} (darkest) indicating which of the colors in the
-#'   scheme to return. If \code{i} is not specified then all six colors in the
+#' @param i For `color_scheme_get()`, a subset of the integers from `1`
+#'   (lightest) to `6` (darkest) indicating which of the colors in the
+#'   scheme to return. If `i` is not specified then all six colors in the
 #'   scheme are included.
 #'
 color_scheme_get <- function(scheme, i) {
@@ -229,11 +234,19 @@ scheme_from_string <- function(scheme) {
   if (identical(substr(scheme, 1, 4), "mix-")) {
     to_mix <- unlist(strsplit(scheme, split = "-"))[2:3]
     x <- setNames(mixed_scheme(to_mix[1], to_mix[2]), scheme_level_names())
-    structure(x, mixed = TRUE, scheme_name = scheme)
+    return(structure(x, mixed = TRUE, scheme_name = scheme))
+  } else if (identical(substr(scheme, 1, 7), "brewer-")) {
+    if (!requireNamespace("RColorBrewer", quietly = TRUE)) {
+      stop("Please install the 'RColorBrewer' package to use a ColorBrewer scheme.",
+           call.=FALSE)
+    }
+    clrs <- RColorBrewer::brewer.pal(n = 6, name = gsub("brewer-", "", scheme))
+    x <- setNames(as.list(clrs), scheme_level_names())
+    return(structure(x, mixed = FALSE, scheme_name = scheme))
   } else {
     scheme <- match.arg(scheme, choices = names(master_color_list))
     x <- prepare_colors(scheme)
-    structure(x, mixed = FALSE, scheme_name = scheme)
+    return(structure(x, mixed = FALSE, scheme_name = scheme))
   }
 }
 
@@ -244,13 +257,14 @@ is_mixed_scheme <- function(x) {
   isTRUE(attr(x, "mixed"))
 }
 
-# Access a subset of the scheme colors
-#
-# @param level A character vector of level names (see scheme_level_names()). The
-#   abbreviations "l", "lh", "m", "mh", "d", and "dh" can also be used instead
-#   of the full names.
-# @return A character vector of color values.
-#
+#' Access a subset of the scheme colors
+#'
+#' @noRd
+#' @param level A character vector of level names (see `scheme_level_names()`).
+#'   The abbreviations "l", "lh", "m", "mh", "d", and "dh" can also be used
+#'   instead of the full names.
+#' @return A character vector of color values.
+#'
 get_color <- function(levels) {
   sel <- which(!levels %in% scheme_level_names())
   if (length(sel))

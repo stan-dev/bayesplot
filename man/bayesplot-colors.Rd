@@ -14,73 +14,81 @@ color_scheme_get(scheme, i)
 color_scheme_view(scheme)
 }
 \arguments{
-\item{scheme}{For \code{color_scheme_set}, either a string naming one of the
-  available color schemes or a character vector of \emph{exactly six} colors
-  specifying a custom scheme (see the \strong{Custom Color Schemes} section,
-  below, for more on specifying a custom scheme).
+\item{scheme}{For \code{color_scheme_set()}, either a string naming one of the
+available color schemes or a character vector of \emph{exactly six} colors
+specifying a custom scheme.
 
-  For \code{color_scheme_get}, \code{scheme} can be missing (to get the
-  current color scheme) or a string naming one of the preset schemes.
+For \code{color_scheme_get()}, \code{scheme} can be missing (to get the
+current color scheme) or a string naming one of the preset schemes.
 
-  For \code{color_scheme_view}, \code{scheme} can be missing (to use the
-  current color scheme) or a character vector containing a subset of the
-  available scheme names.
+For \code{color_scheme_view()}, \code{scheme} can be missing (to use the
+current color scheme) or a character vector containing a subset of the
+available scheme names.
 
-  Currently, the available preset color schemes are:
-  \itemize{
-   \item \code{"blue"}, \code{"brightblue"}
-   \item \code{"gray"}, \code{"darkgray"}
-   \item \code{"green"}
-   \item \code{"pink"}
-   \item \code{"purple"}
-   \item \code{"red"}
-   \item \code{"teal"}
-   \item \code{"yellow"}
-   \item \href{https://CRAN.R-project.org/package=viridis}{\code{"viridis"}},
-     \code{"viridisA"}, \code{"viridisB"}, \code{"viridisC"}
-   \item \code{"mix-x-y"}, replacing \code{x} and \code{y} with any two of
-     the scheme names listed above (e.g. "mix-teal-pink", "mix-blue-red",
-     etc.). The order of \code{x} and \code{y} matters, i.e., the color
-     schemes "mix-blue-red" and "mix-red-blue" are not identical. There is no
-     guarantee that every possible mixed scheme will look good with every
-     possible plot.
-  }
+See the \strong{Available color schemes} section below for a list of available
+scheme names. The \strong{Custom color schemes} section describes how to specify
+a custom scheme.}
 
-  If you have a suggestion for a new color scheme please let us know via the
-  \pkg{bayesplot} \href{https://github.com/stan-dev/bayesplot/issues}{issue
-  tracker}.}
-
-\item{i}{For \code{color_scheme_get}, a subset of the integers from \code{1}
+\item{i}{For \code{color_scheme_get()}, a subset of the integers from \code{1}
 (lightest) to \code{6} (darkest) indicating which of the colors in the
 scheme to return. If \code{i} is not specified then all six colors in the
 scheme are included.}
 }
 \value{
-\code{color_scheme_set} has the side effect of setting the color
-  scheme used for plotting. It also returns
-  (\code{\link[=invisible]{invisibly}}) a list of the hexidecimal color
-  values used in \code{scheme}.
+\code{color_scheme_set()} has the side effect of setting the color scheme
+used for plotting. It also returns (\link[base:invisible]{invisibly}) a list of
+the hexidecimal color values used in \code{scheme}.
 
-  \code{color_scheme_get} returns a \code{list} of the hexadecimal color
-  values (without changing the current scheme). If the \code{scheme} argument
-  is not specified the returned values correspond to the current color
-  scheme. If the optional argument \code{i} is specified then the returned
-  list only contains \code{length(i)} elements.
+\code{color_scheme_get()} returns a list of the hexadecimal color
+values (without changing the current scheme). If the \code{scheme} argument
+is not specified the returned values correspond to the current color
+scheme. If the optional argument \code{i} is specified then the returned
+list only contains \code{length(i)} elements.
 
-  \code{color_scheme_view} returns a ggplot object if only a single scheme is
-  specified and a gtable object if multiple schemes names are specified.
+\code{color_scheme_view()} returns a ggplot object if only a single scheme is
+specified and a gtable object if multiple schemes names are specified.
 }
 \description{
 Set, get, or view color schemes. Choose from a preset scheme or create a
-custom scheme.
+custom scheme. See the \strong{Available color schemes} section below for a list
+of available scheme names. The \strong{Custom color schemes} section describes how
+to specify a custom scheme.
 }
-\section{Custom Color Schemes}{
- A \pkg{bayesplot} color scheme consists of six
-  colors. To specify a custom color scheme simply pass a character vector
-  containing either the names of six \code{\link[grDevices]{colors}} or six
-  hexidecimal color values (or a mix of names and hex values). The colors
-  should be in order from lightest to darkest. See the end of the
-  \strong{Examples} section for a demonstration.
+\section{Available color schemes}{
+ Currently, the available preset color
+schemes are:
+\itemize{
+\item \code{"blue"}, \code{"brightblue"}
+\item \code{"gray"}, \code{"darkgray"}
+\item \code{"green"}
+\item \code{"pink"}
+\item \code{"purple"}
+\item \code{"red"}
+\item \code{"teal"}
+\item \code{"yellow"}
+\item \href{https://CRAN.R-project.org/package=viridis}{"viridis"}, \code{"viridisA"},
+\code{"viridisB"}, \code{"viridisC"}
+\item \code{"mix-x-y"}, replacing \code{x} and \code{y} with any two of
+the scheme names listed above (e.g. "mix-teal-pink", "mix-blue-red",
+etc.). The order of \code{x} and \code{y} matters, i.e., the color schemes
+\code{"mix-blue-red"} and \code{"mix-red-blue"} are not identical. There is no
+guarantee that every possible mixed scheme will look good with every
+possible plot.
+\item \code{"brewer-x"}, replacing \code{x} with the name of a palette available from
+\code{\link[RColorBrewer:brewer.pal]{RColorBrewer::brewer.pal()}} (e.g., \code{brewer-PuBuGn}).
+}
+
+If you have a suggestion for a new color scheme please let us know via the
+\strong{bayesplot} \href{https://github.com/stan-dev/bayesplot/issues}{issue tracker}.
+}
+
+\section{Custom color schemes}{
+ A \strong{bayesplot} color scheme consists of six
+colors. To specify a custom color scheme simply pass a character vector
+containing either the names of six \link[grDevices:colors]{colors} or six
+hexidecimal color values (or a mix of names and hex values). The colors
+should be in order from lightest to darkest. See the end of the
+\strong{Examples} section for a demonstration.
 }
 
 \examples{
