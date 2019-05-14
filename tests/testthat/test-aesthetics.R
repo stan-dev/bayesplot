@@ -68,6 +68,15 @@ test_that("setting mixed scheme works", {
                "should be one of")
 })
 
+test_that("setting brewer scheme works", {
+  skip_if_not_installed("RColorBrewer")
+  color_scheme_set("brewer-Blues")
+  expect_equivalent(unlist(color_scheme_get()), RColorBrewer::brewer.pal(6, "Blues"))
+  color_scheme_set("brewer-Spectral")
+  expect_equivalent(unlist(color_scheme_get()), RColorBrewer::brewer.pal(6, "Spectral"))
+  expect_error(color_scheme_set("brewer-FAKE"), "FAKE is not a valid palette")
+})
+
 orange_scheme_bad <-
   orange_scheme_ok <-
   c("not_a_color1",
