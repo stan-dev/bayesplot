@@ -145,13 +145,13 @@ color_scheme_set <- function(scheme = "blue") {
 #' @rdname bayesplot-colors
 #' @md
 #' @export
-#' @param i For `color_scheme_get()`, a subset of the integers from `1`
+#' @param i For `color_scheme_get()`, an optional subset of the integers from `1`
 #'   (lightest) to `6` (darkest) indicating which of the colors in the
 #'   scheme to return. If `i` is not specified then all six colors in the
 #'   scheme are included.
 #'
-color_scheme_get <- function(scheme, i) {
-  if (!missing(scheme)) {
+color_scheme_get <- function(scheme = NULL, i = NULL) {
+  if (!is.null(scheme)) {
     scheme <- scheme_from_string(scheme)
   } else {
     x <- .bayesplot_aesthetics$scheme
@@ -160,7 +160,8 @@ color_scheme_get <- function(scheme, i) {
     attr(scheme, "scheme_name") <- attr(x, "scheme_name")
   }
   class(scheme) <- c("bayesplot_scheme", "list")
-  if (missing(i)) {
+
+  if (is.null(i)) {
     return(scheme)
   } else if (is.character(i)) {
     return(get_color(i))
@@ -179,7 +180,6 @@ color_scheme_view <- function(scheme = NULL) {
   if (is.null(scheme) || length(scheme) == 1){
     return(plot_scheme(scheme))
   }
-
   bayesplot_grid(
     plots = lapply(scheme, plot_scheme),
     grid_args = list(ncol = length(scheme))
@@ -192,6 +192,7 @@ print.bayesplot_scheme <- function(x, ...) {
   colnames(tab) <- attr(x, "scheme_name") %||% "hex_color"
   print(tab, ...)
 }
+
 #' @export
 plot.bayesplot_scheme <- function(x, ...) {
   scheme <- attr(x, "scheme_name") %||% stop("Scheme name not found.")
@@ -339,8 +340,9 @@ prepare_custom_colors <- function(scheme) {
   not_found <- character(0)
   for (j in seq_along(scheme)) {
     clr <- scheme[j]
-    if (!is_hex_color(clr)  && !clr %in% grDevices::colors())
+    if (!is_hex_color(clr)  && !clr %in% grDevices::colors()) {
       not_found <- c(not_found, clr)
+    }
   }
   if (length(not_found)) {
     stop(

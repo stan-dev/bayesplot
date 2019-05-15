@@ -9,7 +9,7 @@
 \usage{
 color_scheme_set(scheme = "blue")
 
-color_scheme_get(scheme, i)
+color_scheme_get(scheme = NULL, i = NULL)
 
 color_scheme_view(scheme = NULL)
 }
@@ -29,7 +29,7 @@ See the \strong{Available color schemes} section below for a list of available
 scheme names. The \strong{Custom color schemes} section describes how to specify
 a custom scheme.}
 
-\item{i}{For \code{color_scheme_get()}, a subset of the integers from \code{1}
+\item{i}{For \code{color_scheme_get()}, an optional subset of the integers from \code{1}
 (lightest) to \code{6} (darkest) indicating which of the colors in the
 scheme to return. If \code{i} is not specified then all six colors in the
 scheme are included.}
@@ -129,10 +129,11 @@ color_scheme_set("mix-teal-pink")
 ppc_stat(y, yrep, stat = "sd") + legend_none()
 mcmc_areas(x, regex_pars = "beta")
 
-###########################
-### ColorBrewer schemes ###
-###########################
+##########################
+### ColorBrewer scheme ###
+##########################
 color_scheme_set("brewer-Spectral")
+color_scheme_view()
 mcmc_trace(x, pars = "sigma")
 
 ###########################
@@ -142,6 +143,7 @@ orange_scheme <- c("#ffebcc", "#ffcc80",
                    "#ffad33", "#e68a00",
                    "#995c00", "#663d00")
 color_scheme_set(orange_scheme)
+color_scheme_view()
 mcmc_areas(x, regex_pars = "alpha")
 mcmc_dens_overlay(x)
 ppc_stat(y, yrep, stat = "var") + legend_none()
