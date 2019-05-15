@@ -463,14 +463,14 @@ diagnostic_colors <- function(diagnostic = c("rhat", "neff_ratio"),
 
 diagnostic_color_labels <- list(
   rhat = c(
-    high = expression(hat(R) > 1.10),
+    low  = expression(hat(R) <= 1.05),
     ok   = expression(hat(R) <= 1.10),
-    low  = expression(hat(R) <= 1.05)
+    high = expression(hat(R) > 1.10)
   ),
   neff_ratio = c(
-    high = expression(N[eff] / N > 0.5),
+    low  = expression(N[eff] / N <= 0.1),
     ok   = expression(N[eff] / N <= 0.5),
-    low  = expression(N[eff] / N <= 0.1)
+    high = expression(N[eff] / N > 0.5)
   )
 )
 
