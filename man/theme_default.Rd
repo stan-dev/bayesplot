@@ -41,10 +41,12 @@ mcmc_areas(x, regex_pars = "beta")
 
 }
 \seealso{
-\link{bayesplot-helpers} for a variety of convenience functions,
-  many of which provide shortcuts for tweaking theme elements after creating
-  a plot.
+\code{\link{bayesplot_theme_set}} to change the ggplot theme.
 
 \code{\link{bayesplot-colors}} to set or view the color scheme used
   for plotting.
+
+\link{bayesplot-helpers} for a variety of convenience functions,
+  many of which provide shortcuts for tweaking theme elements after creating
+  a plot.
 }

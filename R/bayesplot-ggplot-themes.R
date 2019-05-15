@@ -13,8 +13,9 @@
 #'   \code{"serif"}, respectively.
 #' @return A ggplot \link[ggplot2]{theme} object.
 #'
-#' @template seealso-helpers
+#' @seealso \code{\link{bayesplot_theme_set}} to change the ggplot theme.
 #' @template seealso-colors
+#' @template seealso-helpers
 #'
 #' @examples
 #' class(theme_default())
