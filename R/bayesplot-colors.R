@@ -106,10 +106,11 @@
 #' ppc_stat(y, yrep, stat = "sd") + legend_none()
 #' mcmc_areas(x, regex_pars = "beta")
 #'
-#' ###########################
-#' ### ColorBrewer schemes ###
-#' ###########################
+#' ##########################
+#' ### ColorBrewer scheme ###
+#' ##########################
 #' color_scheme_set("brewer-Spectral")
+#' color_scheme_view()
 #' mcmc_trace(x, pars = "sigma")
 #'
 #' ###########################
@@ -119,6 +120,7 @@
 #'                    "#ffad33", "#e68a00",
 #'                    "#995c00", "#663d00")
 #' color_scheme_set(orange_scheme)
+#' color_scheme_view()
 #' mcmc_areas(x, regex_pars = "alpha")
 #' mcmc_dens_overlay(x)
 #' ppc_stat(y, yrep, stat = "var") + legend_none()
@@ -171,20 +173,6 @@ color_scheme_get <- function(scheme, i) {
   scheme[i]
 }
 
-#' @export
-print.bayesplot_scheme <- function(x, ...) {
-  tab <- data.frame(unlist(x, use.names = FALSE),
-                    stringsAsFactors = FALSE)
-  colnames(tab) <- attr(x, "scheme_name") %||% "hex_color"
-  print(tab, ...)
-}
-#' @export
-plot.bayesplot_scheme <- function(x, ...) {
-  scheme <- attr(x, "scheme_name") %||% stop("Scheme name not found.")
-  plot_scheme(scheme)
-}
-
-
 #' @rdname bayesplot-colors
 #' @export
 color_scheme_view <- function(scheme = NULL) {
@@ -198,6 +186,17 @@ color_scheme_view <- function(scheme = NULL) {
   )
 }
 
+#' @export
+print.bayesplot_scheme <- function(x, ...) {
+  tab <- data.frame(unlist(x, use.names = FALSE), stringsAsFactors = FALSE)
+  colnames(tab) <- attr(x, "scheme_name") %||% "hex_color"
+  print(tab, ...)
+}
+#' @export
+plot.bayesplot_scheme <- function(x, ...) {
+  scheme <- attr(x, "scheme_name") %||% stop("Scheme name not found.")
+  plot_scheme(scheme)
+}
 
 
 # internal -----------------------------------------------------------------
@@ -207,25 +206,17 @@ color_scheme_view <- function(scheme = NULL) {
 plot_scheme <- function(scheme = NULL) {
   if (is.null(scheme)) {
     x <- color_scheme_get()
-    x_name <- ""
   } else {
     x <- color_scheme_get(scheme)
-    x_name <- factor(scheme)
   }
 
   color_data <- data.frame(
-    name = x_name,
+    name = factor(attr(x, "scheme_name")),
     group = factor(names(x), levels = rev(names(x))),
     value = rep(1, length(x))
   )
-  ggplot(
-    color_data,
-    aes_(
-      x = ~ name,
-      y = ~ value,
-      fill = ~ group
-    )
-  ) +
+
+  ggplot(color_data, aes_(x = ~ name, y = ~ value, fill = ~ group)) +
     geom_bar(
       width = .5,
       stat = "identity",

@@ -11,7 +11,7 @@ color_scheme_set(scheme = "blue")
 
 color_scheme_get(scheme, i)
 
-color_scheme_view(scheme)
+color_scheme_view(scheme = NULL)
 }
 \arguments{
 \item{scheme}{For \code{color_scheme_set()}, either a string naming one of the

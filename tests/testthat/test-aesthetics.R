@@ -200,3 +200,26 @@ test_that("ggplot2::theme_set overrides bayesplot theme", {
 
 bayesplot_theme_set(bayesplot::theme_default())
 color_scheme_set()
+
+
+
+# Visual tests ------------------------------------------------------------
+
+test_that("color_scheme_view renders correctly", {
+  testthat::skip_on_cran()
+
+  color_scheme_set()
+  p_default <- color_scheme_view()
+  vdiffr::expect_doppelganger("color_scheme_view (default)", p_default)
+
+  p_red <- color_scheme_view("red")
+  vdiffr::expect_doppelganger("color_scheme_view (scheme specified)", p_red)
+
+  p_mix <- color_scheme_view("mix-red-blue")
+  vdiffr::expect_doppelganger("color_scheme_view (mixed scheme)", p_mix)
+
+  p_brewer <- color_scheme_view("brewer-Spectral")
+  vdiffr::expect_doppelganger("color_scheme_view (brewer palette)", p_brewer)
+
+  color_scheme_set()
+})
