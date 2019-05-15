@@ -6,6 +6,12 @@
 
 <!-- Items for next release go here* -->
 
+* [ColorBrewer](http://colorbrewer2.org) palettes are now available as color
+  schemes via
+  [`color_scheme_set()`](https://mc-stan.org/bayesplot/reference/bayesplot-colors.html).
+  For example, `color_scheme_set("brewer-Spectral")` will use the Spectral 
+  palette. (#177, #190)
+
 * MCMC plots now also accept objects with an `as.array` method as 
   input (e.g., stanfit objects). (#175, #184)
 
