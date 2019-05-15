@@ -71,12 +71,12 @@ Install the latest development version from **GitHub**:
 if (!require("devtools")) {
   install.packages("devtools")
 }
-devtools::install_github("stan-dev/bayesplot", dependencies = TRUE, build_vignettes = TRUE)
+devtools::install_github("stan-dev/bayesplot")
 ```
 
-You can also set `build_vignettes=FALSE` for a faster installation from GitHub (the vignettes 
-can always be accessed online anytime at [mc-stan.org/bayesplot/articles](https://mc-stan.org/bayesplot/articles/)).
-For issues related to pandoc see the [Readme](https://github.com/stan-dev/bayesplot#installation)
+Installation from GitHub does not include the vignettes by default because they take some time to build, 
+but the vignettes can always be accessed online anytime at 
+[mc-stan.org/bayesplot/articles](https://mc-stan.org/bayesplot/articles/)).
 
 
 ## Examples
