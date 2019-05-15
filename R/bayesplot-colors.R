@@ -187,9 +187,10 @@ plot.bayesplot_scheme <- function(x, ...) {
 
 #' @rdname bayesplot-colors
 #' @export
-color_scheme_view <- function(scheme) {
-  if (missing(scheme) || length(scheme) == 1)
+color_scheme_view <- function(scheme = NULL) {
+  if (is.null(scheme) || length(scheme) == 1){
     return(plot_scheme(scheme))
+  }
 
   bayesplot_grid(
     plots = lapply(scheme, plot_scheme),
@@ -203,18 +204,24 @@ color_scheme_view <- function(scheme) {
 
 # plot color scheme
 # @param scheme A string (length 1) naming a scheme
-plot_scheme <- function(scheme) {
-  x <- if (missing(scheme))
-    color_scheme_get() else color_scheme_get(scheme)
+plot_scheme <- function(scheme = NULL) {
+  if (is.null(scheme)) {
+    x <- color_scheme_get()
+    x_name <- ""
+  } else {
+    x <- color_scheme_get(scheme)
+    x_name <- factor(scheme)
+  }
 
   color_data <- data.frame(
+    name = x_name,
     group = factor(names(x), levels = rev(names(x))),
     value = rep(1, length(x))
   )
   ggplot(
     color_data,
     aes_(
-      x = if (missing(scheme)) "" else factor(scheme),
+      x = ~ name,
       y = ~ value,
       fill = ~ group
     )
@@ -261,7 +268,7 @@ scheme_from_string <- function(scheme) {
     # user specified a ColorBrewer scheme (e.g., "brewer-Blues")
     if (!requireNamespace("RColorBrewer", quietly = TRUE)) {
       stop("Please install the 'RColorBrewer' package to use a ColorBrewer scheme.",
-           call.=FALSE)
+           call. = FALSE)
     }
     clrs <- RColorBrewer::brewer.pal(n = 6, name = gsub("brewer-", "", scheme))
     x <- setNames(as.list(clrs), scheme_level_names())
@@ -287,7 +294,7 @@ mixed_scheme <- function(scheme1, scheme2) {
     scheme2$dark_highlight
   ))
   attr(scheme, "mixed") <- TRUE
-  return(scheme)
+  scheme
 }
 
 #' Check if object returned by color_scheme_get() is a mixed scheme
@@ -307,20 +314,28 @@ is_mixed_scheme <- function(x) {
 #' @return A character vector of color values.
 #'
 get_color <- function(levels) {
-  sel <- which(!levels %in% scheme_level_names())
-  if (length(sel))
-    levels[sel] <- sapply(levels[sel], full_level_name)
+  levels <- full_level_name(levels)
   stopifnot(all(levels %in% scheme_level_names()))
   color_vals <- color_scheme_get()[levels]
   unlist(color_vals, use.names = FALSE)
 }
 
 full_level_name <- function(x) {
-  switch(x,
-         l = "light", lh = "light_highlight",
-         m = "mid", mh = "mid_highlight",
-         d = "dark", dh = "dark_highlight"
-         )
+  map <- c(
+    l = "light",
+    lh = "light_highlight",
+    m = "mid",
+    mh = "mid_highlight",
+    d = "dark",
+    dh = "dark_highlight",
+    light = "light",
+    light_highlight = "light_highlight",
+    mid = "mid",
+    mid_highlight = "mid_highlight",
+    dark = "dark",
+    dark_highlight = "dark_highlight"
+  )
+  unname(map[x])
 }
 
 # Custom color scheme if 6 colors specified
@@ -352,8 +367,9 @@ prepare_custom_colors <- function(scheme) {
 }
 
 is_hex_color <- function(x) {
-  if (!identical(substr(x, 1, 1), "#"))
+  if (!identical(substr(x, 1, 1), "#")) {
     return(FALSE)
+  }
   isTRUE(nchar(x) == 7)
 }
 
