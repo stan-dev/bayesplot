@@ -77,7 +77,7 @@ range of iterations to display.}
 (\code{mcmc_trace_highlight()}).}
 
 \item{np}{For models fit using \link{NUTS} (more generally, any
-(https://en.wikipedia.org/wiki/Symplectic_integrator)\link{symplectic integrator}),
+\href{https://en.wikipedia.org/wiki/Symplectic_integrator}{symplectic integrator}),
 an optional data frame providing NUTS diagnostic information. The data
 frame should be the object returned by \code{\link[=nuts_params]{nuts_params()}} or one with the same
 structure. If \code{np} is specified then tick marks are added to the bottom of

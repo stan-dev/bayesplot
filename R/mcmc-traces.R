@@ -29,7 +29,7 @@
 #' @param window An integer vector of length two specifying the limits of a
 #'   range of iterations to display.
 #' @param np For models fit using [NUTS] (more generally, any
-#'   (https://en.wikipedia.org/wiki/Symplectic_integrator)[symplectic integrator]),
+#'   [symplectic integrator](https://en.wikipedia.org/wiki/Symplectic_integrator)),
 #'   an optional data frame providing NUTS diagnostic information. The data
 #'   frame should be the object returned by [nuts_params()] or one with the same
 #'   structure. If `np` is specified then tick marks are added to the bottom of
