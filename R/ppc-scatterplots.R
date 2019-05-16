@@ -1,16 +1,16 @@
 #' PPC scatterplots
 #'
 #' Scatterplots of the observed data `y` vs. simulated/replicated data
-#' `yrep` from the posterior predictive distribution. See the \strong{Plot
-#' Descriptions} and **Details** sections, below.
+#' `yrep` from the posterior predictive distribution. See the
+#' **Plot Descriptions** and **Details** sections, below.
 #'
 #' @name PPC-scatterplots
 #' @family PPCs
 #'
 #' @template args-y-yrep
 #' @param ... Currently unused.
-#' @param size,alpha Arguments passed to [ggplot2::geom_point()] to
-#'   control the appearance of the points.
+#' @param size,alpha Arguments passed to [ggplot2::geom_point()] to control the
+#'   appearance of the points.
 #'
 #' @template details-binomial
 #' @template return-ggplot
@@ -20,18 +20,18 @@
 #'
 #' @section Plot Descriptions:
 #' \describe{
-#'   \item{`ppc_scatter`}{
-#'    For each dataset (row) in `yrep` a scatterplot is generated showing
-#'    `y` against that row of `yrep`. For this plot `yrep` should
-#'    only contain a small number of rows.
+#'   \item{`ppc_scatter()`}{
+#'    For each dataset (row) in `yrep` a scatterplot is generated showing `y`
+#'    against that row of `yrep`. For this plot `yrep` should only contain a
+#'    small number of rows.
 #'   }
-#'   \item{`ppc_scatter_avg`}{
+#'   \item{`ppc_scatter_avg()`}{
 #'    A scatterplot of `y` against the average values of `yrep`, i.e.,
 #'    the points `(mean(yrep[, n]), y[n])`, where each `yrep[, n]` is
 #'    a vector of length equal to the number of posterior draws.
 #'   }
-#'   \item{`ppc_scatter_avg_grouped`}{
-#'    The same as `ppc_scatter_avg`, but a separate plot is generated for
+#'   \item{`ppc_scatter_avg_grouped()`}{
+#'    The same as `ppc_scatter_avg()`, but a separate plot is generated for
 #'    each level of a grouping variable.
 #'   }
 #' }

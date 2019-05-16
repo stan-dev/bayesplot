@@ -11,12 +11,11 @@
 #' @param x A numeric vector the same length as `y` to use as the x-axis
 #'   variable. For example, `x` could be a predictor variable from a
 #'   regression model, a time variable for time-series models, etc. If `x`
-#'   is missing or NULL, then `1:length(y)` is used for the x-axis.
+#'   is missing or `NULL`, then `1:length(y)` is used for the x-axis.
 #' @param ... Currently unused.
-#' @param alpha,size,fatten Arguments passed to geoms. For ribbon plots
-#'   `alpha` and `size` are passed to
-#'   [ggplot2::geom_ribbon()]. For interval plots `size` and
-#'   `fatten` are passed to [ggplot2::geom_pointrange()].
+#' @param alpha,size,fatten Arguments passed to geoms. For ribbon plots `alpha`
+#'   and `size` are passed to [ggplot2::geom_ribbon()]. For interval plots
+#'   `size` and `fatten` are passed to [ggplot2::geom_pointrange()].
 #'
 #' @template return-ggplot-or-data
 #'
@@ -25,11 +24,11 @@
 #'
 #' @section Plot Descriptions:
 #' \describe{
-#'   \item{`ppc_intervals, ppc_ribbon`}{
+#'   \item{`ppc_intervals(), ppc_ribbon()`}{
 #'    `100*prob`\% central intervals for `yrep` at each `x`
-#'    value. `ppc_intervals` plots intervals as vertical bars with points
+#'    value. `ppc_intervals()` plots intervals as vertical bars with points
 #'    indicating `yrep` medians and darker points indicating observed
-#'    `y` values. `ppc_ribbon` plots a ribbon of connected intervals
+#'    `y` values. `ppc_ribbon()` plots a ribbon of connected intervals
 #'    with a line through the median of `yrep` and a darker line connecting
 #'    observed `y` values. In both cases an optional `x` variable can
 #'    also be specified for the x-axis variable.
@@ -38,8 +37,8 @@
 #'    predictions at different values of `x`, one or the other of these
 #'    plots may be easier to read than the other.
 #'   }
-#'   \item{`ppc_intervals_grouped, ppc_ribbon_grouped`}{
-#'    Same as `ppc_intervals` and `ppc_ribbon`, respectively, but a
+#'   \item{`ppc_intervals_grouped(), ppc_ribbon_grouped()`}{
+#'    Same as `ppc_intervals()` and `ppc_ribbon()`, respectively, but a
 #'    separate plot (facet) is generated for each level of a grouping variable.
 #'   }
 #' }

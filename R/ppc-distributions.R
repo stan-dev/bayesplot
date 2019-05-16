@@ -21,26 +21,26 @@
 #'
 #' @section Plot Descriptions:
 #' \describe{
-#'   \item{`ppc_hist, ppc_freqpoly, ppc_dens, ppc_boxplot`}{
+#'   \item{`ppc_hist(), ppc_freqpoly(), ppc_dens(), ppc_boxplot()`}{
 #'    A separate histogram, shaded frequency polygon, smoothed kernel density
 #'    estimate, or box and whiskers plot is displayed for `y` and each
 #'    dataset (row) in `yrep`. For these plots `yrep` should therefore
 #'    contain only a small number of rows. See the **Examples** section.
 #'   }
-#'   \item{`ppc_freqpoly_grouped`}{
+#'   \item{`ppc_freqpoly_grouped()`}{
 #'    A separate frequency polygon is plotted for each level of a grouping
 #'    variable for `y` and each dataset (row) in `yrep`. For this plot
 #'    `yrep` should therefore contain only a small number of rows. See the
 #'    **Examples** section.
 #'   }
-#'   \item{`ppc_dens_overlay, ppc_ecdf_overlay`}{
+#'   \item{`ppc_dens_overlay(), ppc_ecdf_overlay()`}{
 #'    Kernel density or empirical CDF estimates of each dataset (row) in
 #'    `yrep` are overlaid, with the distribution of `y` itself on top
-#'    (and in a darker shade). When using `ppc_ecdf_overlay` with discrete
+#'    (and in a darker shade). When using `ppc_ecdf_overlay()` with discrete
 #'    data, set the `discrete` argument to `TRUE` for better results.
-#'    For an example of `ppc_dens_overlay` also see Gabry et al. (2019).
+#'    For an example of `ppc_dens_overlay()` also see Gabry et al. (2019).
 #'   }
-#'   \item{`ppc_violin_grouped`}{
+#'   \item{`ppc_violin_grouped()`}{
 #'    The density estimate of `yrep` within each level of a grouping
 #'    variable is plotted as a violin with horizontal lines at notable
 #'    quantiles. `y` is overlaid on the plot either as a violin, points, or
@@ -151,7 +151,7 @@ ppc_hist <- function(y, yrep, ..., binwidth = NULL, breaks = NULL,
 #' @rdname PPC-distributions
 #' @export
 #' @param notch A logical scalar passed to [ggplot2::geom_boxplot()].
-#'   Unlike for `geom_boxplot`, the default is `notch=TRUE`.
+#'   Unlike for `geom_boxplot()`, the default is `notch=TRUE`.
 #'
 ppc_boxplot <- function(y, yrep, ..., notch = TRUE, size = 0.5, alpha = 1) {
   check_ignored_arguments(...)
@@ -321,7 +321,7 @@ ppc_dens_overlay <- function(y, yrep, ...,
 
 #' @export
 #' @rdname PPC-distributions
-#' @param discrete For `ppc_ecdf_overlay`, should the data be treated as
+#' @param discrete For `ppc_ecdf_overlay()`, should the data be treated as
 #'   discrete? The default is `FALSE`, in which case `geom="line"` is
 #'   passed to [ggplot2::stat_ecdf()]. If `discrete` is set to
 #'   `TRUE` then `geom="step"` is used.
@@ -374,16 +374,13 @@ ppc_ecdf_overlay <-
 #' @param probs A numeric vector passed to [ggplot2::geom_violin()]'s
 #'   `draw_quantiles` argument to specify at which quantiles to draw
 #'   horizontal lines. Set to `NULL` to remove the lines.
-#' @param y_draw For `ppc_violin_grouped`, a string specifying how to draw
-#'   `y`: `"violin"` (default), `"points"` (jittered points), or
-#'   `"both"`.
-#' @param y_jitter,y_size,y_alpha For `ppc_violin_grouped`, if
-#'   `y_draw` is `"points"` or `"both"` then `y_size`,
-#'   `y_alpha`, and `y_jitter` are passed to to the `size`,
-#'   `alpha`, and `width` arguments of
-#'   [ggplot2::geom_jitter()] to control the appearance of `y`
-#'   points. The default of `y_jitter=NULL` will let **ggplot2**
-#'   determine the amount of jitter.
+#' @param y_draw For `ppc_violin_grouped()`, a string specifying how to draw
+#'   `y`: `"violin"` (default), `"points"` (jittered points), or `"both"`.
+#' @param y_jitter,y_size,y_alpha For `ppc_violin_grouped()`, if `y_draw` is
+#'   `"points"` or `"both"` then `y_size`, `y_alpha`, and `y_jitter` are passed
+#'   to to the `size`, `alpha`, and `width` arguments of [ggplot2::geom_jitter()]
+#'   to control the appearance of `y` points. The default of `y_jitter=NULL`
+#'   will let **ggplot2** determine the amount of jitter.
 #'
 ppc_violin_grouped <- function(y, yrep, group, ..., probs = c(0.1, 0.5, 0.9),
                                size = 1, alpha = 1,

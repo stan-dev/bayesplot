@@ -1,6 +1,6 @@
 #' PPC errors
 #'
-#' Various plots of predictive errors `y` - `yrep`. See the
+#' Various plots of predictive errors `y - yrep`. See the
 #' **Details** and **Plot Descriptions** sections, below.
 #'
 #' @name PPC-errors
@@ -9,9 +9,9 @@
 #' @template args-y-yrep
 #' @param ... Currently unused.
 #' @param size,alpha For scatterplots, arguments passed to
-#'   [ggplot2::geom_point()] to control the appearance of the
-#'   points. For the binned error plot, arguments controlling the size of
-#'   the outline and opacity of the shaded region indicating the 2-SE bounds.
+#'   [ggplot2::geom_point()] to control the appearance of the points. For the
+#'   binned error plot, arguments controlling the size of the outline and
+#'   opacity of the shaded region indicating the 2-SE bounds.
 #'
 #' @details
 #' All of these functions (aside from the `*_scatter_avg` functions)
@@ -19,48 +19,46 @@
 #' it is usually a good idea for `yrep` to contain only a small number of
 #' draws (rows). See **Examples**, below.
 #'
-#' For binomial and Bernoulli data the `ppc_error_binned` function can be
-#' used to generate binned error plots. Bernoulli data can be input as a vector
-#' of 0s and 1s, whereas for binomial data `y` and `yrep` should
-#' contain "success" proportions (not counts). See the **Examples**
-#' section, below.
+#' For binomial and Bernoulli data the `ppc_error_binned()` function can be used
+#' to generate binned error plots. Bernoulli data can be input as a vector of 0s
+#' and 1s, whereas for binomial data `y` and `yrep` should contain "success"
+#' proportions (not counts). See the **Examples** section, below.
 #'
 #' @section Plot descriptions:
 #' \describe{
-#'   \item{`ppc_error_hist`}{
+#'   \item{`ppc_error_hist()`}{
 #'    A separate histogram is plotted for the predictive errors computed from
 #'    `y` and each dataset (row) in `yrep`. For this plot `yrep`
 #'    should have only a small number of rows.
 #'   }
-#'   \item{`ppc_error_hist_grouped`}{
-#'    Like `ppc_error_hist`, except errors are computed within levels of a
+#'   \item{`ppc_error_hist_grouped()`}{
+#'    Like `ppc_error_hist()`, except errors are computed within levels of a
 #'    grouping variable. The number of histograms is therefore equal to the
 #'    product of the number of rows in `yrep` and the number of groups
 #'    (unique values of `group`).
 #'   }
-#'   \item{`ppc_error_scatter`}{
+#'   \item{`ppc_error_scatter()`}{
 #'    A separate scatterplot is displayed for `y` vs. the predictive errors
 #'    computed from `y` and each dataset (row) in `yrep`. For this
 #'    plot `yrep` should have only a small number of rows.
 #'   }
-#'   \item{`ppc_error_scatter_avg`}{
+#'   \item{`ppc_error_scatter_avg()`}{
 #'    A single scatterplot of `y` vs. the average of the errors computed
 #'    from `y` and each dataset (row) in `yrep`. For each individual
 #'    data point `y[n]` the average error is the average of the
 #'    errors for `y[n]` computed over the the draws from the posterior
 #'    predictive distribution.
 #'   }
-#'   \item{`ppc_error_scatter_avg_vs_x`}{
-#'    Same as `ppc_error_scatter_avg`, except the average is plotted on the
+#'   \item{`ppc_error_scatter_avg_vs_x()`}{
+#'    Same as `ppc_error_scatter_avg()`, except the average is plotted on the
 #'    \eqn{y}-axis and a a predictor variable `x` is plotted on the
 #'    \eqn{x}-axis.
 #'   }
-#'   \item{`ppc_error_binned`}{
+#'   \item{`ppc_error_binned()`}{
 #'    Intended for use with binomial data. A separate binned error plot (similar
-#'    to `arm::binnedplot`) is generated for each dataset (row) in
-#'    `yrep`. For this plot `y` and `yrep` should contain
-#'    proportions rather than counts, and `yrep` should have only a small
-#'    number of rows.
+#'    to `arm::binnedplot()`) is generated for each dataset (row) in `yrep`. For
+#'    this plot `y` and `yrep` should contain proportions rather than counts,
+#'    and `yrep` should have only a small number of rows.
 #'   }
 #' }
 #'
@@ -311,7 +309,7 @@ ppc_error_scatter_avg_vs_x <-
 
 #' @rdname PPC-errors
 #' @export
-#' @param bins For `ppc_error_binned`, the number of bins to use (approximately).
+#' @param bins For `ppc_error_binned()`, the number of bins to use (approximately).
 ppc_error_binned <- function(y, yrep, ..., bins = NULL, size = 1, alpha = 0.25) {
   check_ignored_arguments(...)
 

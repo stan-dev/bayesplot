@@ -1,10 +1,10 @@
 #' PPC test statistics
 #'
-#' The distribution of a test statistic `T(yrep)`, or a pair of test
+#' The distribution of a (test) statistic `T(yrep)`, or a pair of (test)
 #' statistics, over the simulated datasets in `yrep`, compared to the
 #' observed value `T(y)` computed from the data `y`. See the
 #' **Plot Descriptions** and **Details** sections, below, as
-#' well as \href{https://github.com/jgabry/bayes-vis-paper}{Gabry et al. (2019)}.
+#' well as [Gabry et al. (2019)](https://github.com/jgabry/bayes-vis-paper).
 #'
 #' @name PPC-test-statistics
 #' @family PPCs
@@ -12,9 +12,9 @@
 #' @template args-y-yrep
 #' @template args-facet_args
 #' @param stat A single function or a string naming a function, except for
-#'   `ppc_stat_2d` which requires a vector of exactly two functions or
+#'   `ppc_stat_2d()` which requires a vector of exactly two functions or
 #'   function names. In all cases the function(s) should take a vector input and
-#'   return a scalar test statistic. If specified as a string (or strings) then
+#'   return a scalar statistic. If specified as a string (or strings) then
 #'   the legend will display function names. If specified as a function (or
 #'   functions) then generic naming is used in the legend.
 #' @param ... Currently unused.
@@ -28,21 +28,20 @@
 #'
 #' @section Plot Descriptions:
 #' \describe{
-#'   \item{`ppc_stat`}{
+#'   \item{`ppc_stat()`}{
 #'    A histogram of the distribution of a test statistic computed by applying
-#'    `stat` to each dataset (row) in `yrep`. The value of the
-#'    statistic in the observed data, `stat(y)`, is overlaid as a vertical
-#'    line. More details on `ppc_stat` can be found in Gabry et al.
-#'    (2019).
+#'    `stat` to each dataset (row) in `yrep`. The value of the statistic in the
+#'    observed data, `stat(y)`, is overlaid as a vertical line. More details on
+#'    `ppc_stat()` can be found in Gabry et al. (2019).
 #'   }
-#'   \item{`ppc_stat_grouped,ppc_stat_freqpoly_grouped`}{
-#'    The same as `ppc_stat`, but a separate plot is generated for each
+#'   \item{`ppc_stat_grouped()`,`ppc_stat_freqpoly_grouped()`}{
+#'    The same as `ppc_stat()`, but a separate plot is generated for each
 #'    level of a grouping variable. In the case of
-#'    `ppc_stat_freqpoly_grouped` the plots are frequency polygons rather
-#'    than histograms. More details on `ppc_stat_grouped` can be found in
+#'    `ppc_stat_freqpoly_grouped()` the plots are frequency polygons rather
+#'    than histograms. More details on `ppc_stat_grouped()` can be found in
 #'    Gabry et al. (2019).
 #'   }
-#'   \item{`ppc_stat_2d`}{
+#'   \item{`ppc_stat_2d()`}{
 #'    A scatterplot showing the joint distribution of two test statistics
 #'    computed over the datasets (rows) in `yrep`. The value of the
 #'    statistics in the observed data is overlaid as large point.
@@ -245,8 +244,8 @@ ppc_stat_freqpoly_grouped <-
 
 #' @rdname PPC-test-statistics
 #' @export
-#' @param size,alpha Arguments passed to [ggplot2::geom_point()] to
-#'   control the appearance of scatterplot points.
+#' @param size,alpha Arguments passed to [ggplot2::geom_point()] to control the
+#'   appearance of scatterplot points.
 ppc_stat_2d <- function(y, yrep, stat = c("mean", "sd"), ...,
                         size = 2.5, alpha = 0.7) {
   check_ignored_arguments(...)
@@ -316,9 +315,9 @@ ppc_stat_2d <- function(y, yrep, stat = c("mean", "sd"), ...,
 
 #' Make legend title for ppc_stat,ppc_stat_grouped,ppc_stat_freqpoly_grouped
 #'
-#' @param stat The user's 'stat' argument.
-#' @param stat_txt deparse(substitute()) applied to users 'stat' argument
-#' @return Either throws an error or returns a legend title (possibly NULL)
+#' @param stat The user's `stat` argument.
+#' @param stat_txt `deparse(substitute())` applied to users `stat` argument.
+#' @return Either throws an error or returns a legend title (possibly `NULL`).
 #' @noRd
 stat_legend_title <- function(stat, stat_txt) {
   stopifnot(is.character(stat) || is.function(stat))

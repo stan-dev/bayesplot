@@ -24,8 +24,9 @@
 #' after using the observed data \eqn{y} (a vector of outcome values), and
 #' typically predictors \eqn{X}, to update our beliefs about the unknown
 #' parameters \eqn{\theta} in the model. For each draw of the parameters
-#' \eqn{\theta} from the posterior distribution \eqn{p(\theta \,|\, y,
-#' X)}{p(\theta | y, X)} we generate an entire vector of outcomes. The result is
+#' \eqn{\theta} from the posterior distribution
+#' \eqn{p(\theta \,|\, y, X)}{p(\theta | y, X)}
+#' we generate an entire vector of outcomes. The result is
 #' an \eqn{S \times N}{S x N} matrix of simulations, where \eqn{S} is the the
 #' size of the posterior sample (number of draws from the posterior
 #' distribution) and \eqn{N} is the number of data points in \eqn{y}. That is,
@@ -54,53 +55,39 @@
 #'
 #' The plotting functions for posterior predictive checking in this package are
 #' organized into several categories, each with its own documentation:
-#'
-#' \describe{
-#'   \item{\strong{\link[=PPC-distributions]{Distributions}}}{
-#'     Histograms, kernel density estimates, boxplots, and other plots comparing
-#'     the empirical distribution of the observed data `y` to the
-#'     distributions of individual replicated datasets (rows) in `yrep`.
-#'   }
-#'   \item{\strong{\link[=PPC-test-statistics]{Test statistics}}}{
-#'     The distribution of a test statistic, or a pair of test statistics, over
-#'     the replicated datasets (rows) in `yrep` compared to value of the
-#'     statistic(s) computed from `y`.
-#'   }
-#'   \item{\strong{\link[=PPC-intervals]{Intervals}}}{
-#'     Interval estimates of `yrep` with `y` overlaid. The x-axis
-#'     variable can be optionally specified by the user (e.g. to plot against
-#'     against a predictor variable or over time).
-#'   }
-#'   \item{\strong{\link[=PPC-errors]{Predictive errors}}}{
-#'     Plots of predictive errors (`y - yrep`) computed from `y` and
-#'     replicated datasets (rows) in `yrep`. For binomial models binned
-#'     error plots are also available.
-#'   }
-#'   \item{\strong{\link[=PPC-scatterplots]{Scatterplots}}}{
-#'     Scatterplots (and similar visualizations) of the observed data `y`
-#'     vs. individual replicated datasets (rows) in `yrep`, or vs. the
-#'     average value of the distributions of each data point (columns) in
-#'     `yrep`.
-#'   }
-#'   \item{\strong{\link[=PPC-discrete]{Plots for discrete outcomes}}}{
-#'     PPC functions that can only be used if `y` and `yrep` are
-#'     discrete. For example, rootograms for count outcomes and bar
-#'     plots for ordinal, categorical, and multinomial outcomes.
-#'   }
-#'   \item{\strong{\link[=PPC-loo]{LOO predictive checks}}}{
-#'     PPC functions for predictive checks based on (approximate) leave-one-out
-#'     (LOO) cross-validation.
-#'   }
+#' * [__Distributions__][PPC-distributions]: Histograms, kernel density
+#'   estimates, boxplots, and other plots comparing the empirical distribution
+#'   of the observed data `y` to the distributions of individual replicated
+#'   datasets (rows) in `yrep`.
+#' * [__Statistics__][PPC-test-statistics]: The distribution of a statistic, or a
+#'   pair of statistics, over the replicated datasets (rows) in `yrep` compared
+#'   to value of the statistic(s) computed from `y`.
+#' * [__Intervals__][PPC-intervals]: Interval estimates of `yrep` with `y`
+#'   overlaid. The x-axis variable can be optionally specified by the user
+#'   (e.g. to plot against against a predictor variable or over time).
+#' * [__Predictive errors__][PPC-errors]: Plots of predictive errors
+#'   (`y - yrep`) computed from `y` and replicated datasets (rows) in `yrep`.
+#'   For binomial models binned error plots are also available.
+#' * [__Scatterplots__][PPC-scatterplots]: Scatterplots (and similar
+#'   visualizations) of the observed data `y` vs. individual replicated datasets
+#'   (rows) in `yrep`, or vs. the average value of the distributions of each data
+#'   point (columns) in `yrep`.
+#' * [__Plots for discrete outcomes__][PPC-discrete]: PPC functions that can
+#'   only be used if `y` and `yrep` are discrete. For example, rootograms for
+#'   count outcomes and bar plots for ordinal, categorical, and
+#'   multinomial outcomes.
+#' * [__LOO predictive checks__][PPC-loo]: PPC functions for predictive checks
+#'   based on (approximate) leave-one-out (LOO) cross-validation.
 #' }
 #'
 #' @section Providing an interface for posterior predictive checking from another package:
 #'
 #' In addition to the various plotting functions, the **bayesplot** package
 #' provides the S3 generic [pp_check()]. Authors of \R packages for
-#' Bayesian inference are encouraged to define `pp_check` methods for the
+#' Bayesian inference are encouraged to define `pp_check()` methods for the
 #' fitted model objects created by their packages. See the package vignettes for
-#' more details and a simple example, and see the **rstanarm** and \pkg{brms}
-#' packages for full examples of `pp_check` methods.
+#' more details and a simple example, and see the **rstanarm** and **brms**
+#' packages for full examples of `pp_check()` methods.
 #'
 #' @template reference-vis-paper
 #' @templateVar bdaRef (Ch. 6)
