@@ -1,4 +1,4 @@
-#' Default bayesplot plotting theme
+#' Default **bayesplot** plotting theme
 #'
 #' The [theme_default()] function returns the default ggplot
 #' [theme][ggplot2::theme] used by the **bayesplot** plotting functions. See
@@ -7,8 +7,8 @@
 #' @export
 #' @param base_size,base_family Base font size and family (passed to
 #'   [ggplot2::theme_bw()]). It is possible to set `"bayesplot.base_size"` and
-#'   `"bayesplot.base_family"` via [options()] to change the defaults, which are
-#'   `12` and `"serif"`, respectively.
+#'   `"bayesplot.base_family"` via [options()] to change the defaults, w
+#'   hich are `12` and `"serif"`, respectively.
 #' @return A ggplot [theme][ggplot2::theme] object.
 #'
 #' @seealso [bayesplot_theme_set()] to change the ggplot theme.
@@ -60,22 +60,22 @@ theme_default <-
   }
 
 
-#' Get, set, and modify the active bayesplot theme
+#' Get, set, and modify the active **bayesplot** theme
 #'
 #' @description These functions are the **bayesplot** equivalent to
 #'   **ggplot2**'s [ggplot2::theme_set()] and friends. They set, get, and update
 #'   the active theme but only apply them to `bayesplots`. The current/active
 #'   theme is automatically applied to every `bayesplot` you draw.
 #'
-#'   Use `bayesplot_theme_get()` to get the current **bayesplot** theme, and
-#'   `bayesplot_theme_set()` to change it. `bayesplot_theme_update()` and
+#'   Use `bayesplot_theme_get()` to get the current **bayesplot** theme and
+#'   `bayesplot_theme_set()` to set a new theme. `bayesplot_theme_update()` and
 #'   `bayesplot_theme_replace()` are shorthands for changing individual elements.
 #'
-#' @details `bayesplot_theme_set()` and friends only apply to
-#'   `bayesplots`. However, [ggplot2::theme_set()] can also be used to
-#'   change the **bayesplot** theme. Currently, setting a theme with
-#'   `ggplot2::theme_set()` (other than the **ggplot2** default
-#'   [ggplot2::theme_grey()]) will override the **bayesplot** theme.
+#' @details `bayesplot_theme_set()` and friends only apply to `bayesplots`.
+#'   However, [ggplot2::theme_set()] can also be used to change the
+#'   **bayesplot** theme. Currently, setting a theme with `ggplot2::theme_set()`
+#'   (other than the **ggplot2** default [ggplot2::theme_grey()]) will override
+#'   the **bayesplot** theme.
 #'
 #' @export
 #' @param new The new theme (list of theme elements) to use. This is analogous

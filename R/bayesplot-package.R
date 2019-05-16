@@ -1,4 +1,4 @@
-#' Plots for Bayesian Models
+#' **bayesplot**: Plotting for Bayesian Models
 #'
 #' @docType package
 #' @name bayesplot-package
@@ -19,10 +19,10 @@
 #' only to provide convenient functionality for users, but also a common set of
 #' functions that can be easily used by developers working on a variety of
 #' packages for Bayesian modeling, particularly (but not necessarily) packages
-#' powered by [rstan][rstan::rstan-package]. Examples of packages that will soon
-#' (or already are) using **bayesplot** are **rstan** itself, as well as the
-#' **rstan**-dependent **rstanarm** and **brms** packages for applied regression
-#' modeling.
+#' powered by [**rstan**][rstan::rstan-package] (the \R interface to Stan).
+#' Examples of packages that will soon (or already are) using **bayesplot** are
+#' **rstan** itself, as well as the **rstan**-dependent **rstanarm** and
+#' **brms** packages for applied regression modeling.
 #'
 #' @section Plotting functionality:
 #'  \if{html}{
@@ -42,6 +42,8 @@
 #' forecasting/out-of-sample prediction and other inference-related tasks.
 #'
 #' @section Resources:
+#' * __Online documentation and vignettes__: Visit the __bayesplot__ website at
+#'   <https://mc-stan.org/bayesplot>
 #' * __Bug reports and feature requests__: If you would like to request a new
 #'   feature or if you have noticed a bug that needs to be fixed please let us
 #'   know at the **bayesplot** issue tracker at

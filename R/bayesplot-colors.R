@@ -1,4 +1,4 @@
-#' Set, get, or view color schemes
+#' Set, get, or view **bayesplot** color schemes
 #'
 #' Set, get, or view color schemes. Choose from a preset scheme or create a
 #' custom scheme. See the **Available color schemes** section below for a list

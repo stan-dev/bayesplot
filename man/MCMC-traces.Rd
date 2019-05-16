@@ -47,8 +47,10 @@ parameter name and the content of each list element should be a function
 string naming a function). If a function is specified by its name as a
 string (e.g. \code{"log"}), then it can be used to construct a new
 parameter label for the appropriate parameter (e.g. \code{"log(sigma)"}).
-If a function itself is specified (e.g. \code{log} or \code{function(x) log(x)}) then \code{"t"} is used in the new parameter label to indicate
-that the parameter is transformed (e.g. \code{"t(sigma)"}).
+If a function itself is specified
+(e.g. \code{log} or \code{function(x) log(x)})
+then \code{"t"} is used in the new parameter label to indicate that the
+parameter is transformed (e.g. \code{"t(sigma)"}).
 
 Note: due to partial argument matching \code{transformations} can be
 abbreviated for convenience in interactive use (e.g., \code{transform}).}

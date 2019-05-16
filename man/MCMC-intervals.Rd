@@ -66,8 +66,10 @@ parameter name and the content of each list element should be a function
 string naming a function). If a function is specified by its name as a
 string (e.g. \code{"log"}), then it can be used to construct a new
 parameter label for the appropriate parameter (e.g. \code{"log(sigma)"}).
-If a function itself is specified (e.g. \code{log} or \code{function(x) log(x)}) then \code{"t"} is used in the new parameter label to indicate
-that the parameter is transformed (e.g. \code{"t(sigma)"}).
+If a function itself is specified
+(e.g. \code{log} or \code{function(x) log(x)})
+then \code{"t"} is used in the new parameter label to indicate that the
+parameter is transformed (e.g. \code{"t(sigma)"}).
 
 Note: due to partial argument matching \code{transformations} can be
 abbreviated for convenience in interactive use (e.g., \code{transform}).}
@@ -76,8 +78,7 @@ abbreviated for convenience in interactive use (e.g., \code{transform}).}
 
 \item{prob}{The probability mass to include in the inner interval (for
 \code{mcmc_intervals()}) or in the shaded region (for \code{mcmc_areas()}). The
-default is \code{0.5} (50\% interval) and \code{1} for
-\code{mcmc_areas_ridges}.}
+default is \code{0.5} (50\% interval) and \code{1} for \code{mcmc_areas_ridges()}.}
 
 \item{prob_outer}{The probability mass to include in the outer interval. The
 default is \code{0.9} for \code{mcmc_intervals()} (90\% interval) and

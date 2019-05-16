@@ -5,7 +5,7 @@
 \alias{color_scheme_set}
 \alias{color_scheme_get}
 \alias{color_scheme_view}
-\title{Set, get, or view color schemes}
+\title{Set, get, or view \strong{bayesplot} color schemes}
 \usage{
 color_scheme_set(scheme = "blue")
 

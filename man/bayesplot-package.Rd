@@ -4,7 +4,7 @@
 \name{bayesplot-package}
 \alias{bayesplot-package}
 \alias{bayesplot}
-\title{Plots for Bayesian Models}
+\title{\strong{bayesplot}: Plotting for Bayesian Models}
 \description{
 \if{html}{
    \figure{stanlogo.png}{options: width="50px" alt="mc-stan.org"}
@@ -17,10 +17,10 @@ not exclusively, via Markov chain Monte Carlo). The package is designed not
 only to provide convenient functionality for users, but also a common set of
 functions that can be easily used by developers working on a variety of
 packages for Bayesian modeling, particularly (but not necessarily) packages
-powered by \link[rstan:rstan-package]{rstan}. Examples of packages that will soon
-(or already are) using \strong{bayesplot} are \strong{rstan} itself, as well as the
-\strong{rstan}-dependent \strong{rstanarm} and \strong{brms} packages for applied regression
-modeling.
+powered by \link[rstan:rstan-package]{rstan} (the \R interface to Stan).
+Examples of packages that will soon (or already are) using \strong{bayesplot} are
+\strong{rstan} itself, as well as the \strong{rstan}-dependent \strong{rstanarm} and
+\strong{brms} packages for applied regression modeling.
 }
 \section{Plotting functionality}{
 
@@ -46,6 +46,8 @@ forecasting/out-of-sample prediction and other inference-related tasks.
 \section{Resources}{
 
 \itemize{
+\item \strong{Online documentation and vignettes}: Visit the \strong{bayesplot} website at
+\url{https://mc-stan.org/bayesplot}
 \item \strong{Bug reports and feature requests}: If you would like to request a new
 feature or if you have noticed a bug that needs to be fixed please let us
 know at the \strong{bayesplot} issue tracker at

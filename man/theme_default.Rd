@@ -2,7 +2,7 @@
 % Please edit documentation in R/bayesplot-ggplot-themes.R
 \name{theme_default}
 \alias{theme_default}
-\title{Default bayesplot plotting theme}
+\title{Default \strong{bayesplot} plotting theme}
 \usage{
 theme_default(base_size = getOption("bayesplot.base_size", 12),
   base_family = getOption("bayesplot.base_family", "serif"))
@@ -10,8 +10,8 @@ theme_default(base_size = getOption("bayesplot.base_size", 12),
 \arguments{
 \item{base_size, base_family}{Base font size and family (passed to
 \code{\link[ggplot2:theme_bw]{ggplot2::theme_bw()}}). It is possible to set \code{"bayesplot.base_size"} and
-\code{"bayesplot.base_family"} via \code{\link[=options]{options()}} to change the defaults, which are
-\code{12} and \code{"serif"}, respectively.}
+\code{"bayesplot.base_family"} via \code{\link[=options]{options()}} to change the defaults, w
+hich are \code{12} and \code{"serif"}, respectively.}
 }
 \value{
 A ggplot \link[ggplot2:theme]{theme} object.

@@ -12,9 +12,10 @@
 #'   string naming a function). If a function is specified by its name as a
 #'   string (e.g. `"log"`), then it can be used to construct a new
 #'   parameter label for the appropriate parameter (e.g. `"log(sigma)"`).
-#'   If a function itself is specified (e.g. `log` or `function(x)
-#'   log(x)`) then `"t"` is used in the new parameter label to indicate
-#'   that the parameter is transformed (e.g. `"t(sigma)"`).
+#'   If a function itself is specified
+#'   (e.g. `log` or `function(x) log(x)`)
+#'   then `"t"` is used in the new parameter label to indicate that the
+#'   parameter is transformed (e.g. `"t(sigma)"`).
 #'
 #'   Note: due to partial argument matching `transformations` can be
 #'   abbreviated for convenience in interactive use (e.g., `transform`).
