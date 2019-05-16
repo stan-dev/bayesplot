@@ -31,7 +31,7 @@
 #' @details
 #' \subsection{Add vertical, horizontal, and diagonal lines to plots}{
 #' * `vline_at()` and `hline_at()` return an object created by either
-#'   [ggplot2::geom_vline()] or [ggplot::geom_hline()] that can be added to a
+#'   [ggplot2::geom_vline()] or [ggplot2::geom_hline()] that can be added to a
 #'   ggplot object to draw a vertical or horizontal line (at one or several
 #'   values). If `fun` is missing then the lines are drawn at the values in `v`.
 #'   If `fun` is specified then the lines are drawn at the values returned by `fun(v)`.

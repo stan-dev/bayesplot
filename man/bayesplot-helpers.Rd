@@ -128,7 +128,7 @@ Convenience functions for adding to (and changing details of) ggplot objects
 \subsection{Add vertical, horizontal, and diagonal lines to plots}{
 \itemize{
 \item \code{vline_at()} and \code{hline_at()} return an object created by either
-\code{\link[ggplot2:geom_vline]{ggplot2::geom_vline()}} or \code{\link[ggplot:geom_hline]{ggplot::geom_hline()}} that can be added to a
+\code{\link[ggplot2:geom_vline]{ggplot2::geom_vline()}} or \code{\link[ggplot2:geom_hline]{ggplot2::geom_hline()}} that can be added to a
 ggplot object to draw a vertical or horizontal line (at one or several
 values). If \code{fun} is missing then the lines are drawn at the values in \code{v}.
 If \code{fun} is specified then the lines are drawn at the values returned by \code{fun(v)}.
