@@ -1,6 +1,6 @@
 #' Trace plot (time series plot) of MCMC draws
 #'
-#' Trace plot (or traceplot) of MCMC draws. See the \strong{Plot Descriptions}
+#' Trace plot (or traceplot) of MCMC draws. See the **Plot Descriptions**
 #' section, below, for details.
 #'
 #' @name MCMC-traces
@@ -35,7 +35,7 @@
 #'   [nuts_params()] or one with the same structure. If `np` is
 #'   specified then tick marks are added to the bottom of the trace plot
 #'   indicating within which iterations there was a divergence (if there were any).
-#'   See the end of the \strong{Examples} section, below.
+#'   See the end of the **Examples** section, below.
 #' @param np_style A call to the `trace_style_np` helper function to
 #'   specify arguments controlling the appearance of tick marks representing
 #'   divergences (if the `np` argument is specified).

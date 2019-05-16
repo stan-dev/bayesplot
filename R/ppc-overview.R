@@ -5,12 +5,12 @@
 #' @family PPCs
 #'
 #' @description
-#' The \pkg{bayesplot} PPC module provides various plotting functions for
+#' The **bayesplot** PPC module provides various plotting functions for
 #' creating graphical displays comparing observed data to simulated data from
 #' the posterior predictive distribution. See below for a brief discussion of
 #' the ideas behind posterior predictive checking, a description of the
 #' structure of this package, and tips on providing an interface to
-#' \pkg{bayesplot} from another package.
+#' **bayesplot** from another package.
 #'
 #' @details
 #' The idea behind posterior predictive checking is simple: if a model is a good
@@ -44,7 +44,7 @@
 #' }
 #' \subsection{Graphical posterior predictive checking}{
 #' Using the datasets \eqn{y^{rep}}{yrep} drawn from the posterior predictive
-#' distribution, the functions in the \pkg{bayesplot} package produce various
+#' distribution, the functions in the **bayesplot** package produce various
 #' graphical displays comparing the observed data \eqn{y} to the replications.
 #' For a more thorough discussion of posterior predictive checking see
 #' Chapter 6 of Gelman et. al. (2013).
@@ -95,11 +95,11 @@
 #'
 #' @section Providing an interface for posterior predictive checking from another package:
 #'
-#' In addition to the various plotting functions, the \pkg{bayesplot} package
+#' In addition to the various plotting functions, the **bayesplot** package
 #' provides the S3 generic [pp_check()]. Authors of \R packages for
 #' Bayesian inference are encouraged to define `pp_check` methods for the
 #' fitted model objects created by their packages. See the package vignettes for
-#' more details and a simple example, and see the \pkg{rstanarm} and \pkg{brms}
+#' more details and a simple example, and see the **rstanarm** and \pkg{brms}
 #' packages for full examples of `pp_check` methods.
 #'
 #' @template reference-vis-paper

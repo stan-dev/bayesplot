@@ -3,7 +3,7 @@
 #' The distribution of a test statistic `T(yrep)`, or a pair of test
 #' statistics, over the simulated datasets in `yrep`, compared to the
 #' observed value `T(y)` computed from the data `y`. See the
-#' \strong{Plot Descriptions} and \strong{Details} sections, below, as
+#' **Plot Descriptions** and **Details** sections, below, as
 #' well as \href{https://github.com/jgabry/bayes-vis-paper}{Gabry et al. (2019)}.
 #'
 #' @name PPC-test-statistics

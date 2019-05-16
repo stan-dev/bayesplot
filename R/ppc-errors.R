@@ -1,7 +1,7 @@
 #' PPC errors
 #'
 #' Various plots of predictive errors `y` - `yrep`. See the
-#' \strong{Details} and \strong{Plot Descriptions} sections, below.
+#' **Details** and **Plot Descriptions** sections, below.
 #'
 #' @name PPC-errors
 #' @family PPCs
@@ -17,12 +17,12 @@
 #' All of these functions (aside from the `*_scatter_avg` functions)
 #' compute and plot predictive errors for each row of the matrix `yrep`, so
 #' it is usually a good idea for `yrep` to contain only a small number of
-#' draws (rows). See \strong{Examples}, below.
+#' draws (rows). See **Examples**, below.
 #'
 #' For binomial and Bernoulli data the `ppc_error_binned` function can be
 #' used to generate binned error plots. Bernoulli data can be input as a vector
 #' of 0s and 1s, whereas for binomial data `y` and `yrep` should
-#' contain "success" proportions (not counts). See the \strong{Examples}
+#' contain "success" proportions (not counts). See the **Examples**
 #' section, below.
 #'
 #' @section Plot descriptions:

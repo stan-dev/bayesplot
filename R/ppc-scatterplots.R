@@ -2,7 +2,7 @@
 #'
 #' Scatterplots of the observed data `y` vs. simulated/replicated data
 #' `yrep` from the posterior predictive distribution. See the \strong{Plot
-#' Descriptions} and \strong{Details} sections, below.
+#' Descriptions} and **Details** sections, below.
 #'
 #' @name PPC-scatterplots
 #' @family PPCs

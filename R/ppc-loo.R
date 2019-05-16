@@ -1,6 +1,6 @@
 #' LOO predictive checks
 #'
-#' Leave-One-Out (LOO) predictive checks. See the \strong{Plot Descriptions}
+#' Leave-One-Out (LOO) predictive checks. See the **Plot Descriptions**
 #' section, below, and \href{https://github.com/jgabry/bayes-vis-paper}{Gabry et
 #' al. (2019)} for details.
 #'
@@ -10,7 +10,7 @@
 #' @param ... Currently unused.
 #' @param lw A matrix of (smoothed) log weights with the same dimensions as
 #'   `yrep`. See [loo::psis()] and the associated `weights`
-#'   method and the \strong{Examples} section, below.
+#'   method and the **Examples** section, below.
 #' @param alpha,size,fatten Arguments passed to code geoms to control plot
 #'   aesthetics. For `ppc_loo_pit_qq` and `ppc_loo_pit_overlay`,
 #'   `size` and `alpha` are passed to
@@ -29,7 +29,7 @@
 #'  integral transformation (PIT) checks. LOO improves the check by avoiding the
 #'  double use of data. See the section on marginal predictive checks in Gelman
 #'  et al. (2013, p. 152--153) and section 5 of Gabry et al. (2019) for an
-#'  example of using \pkg{bayesplot} for these checks.
+#'  example of using **bayesplot** for these checks.
 #'
 #'  The LOO PIT values are asymptotically uniform (for continuous data) if the
 #'  model is calibrated. The `ppc_loo_pit_overlay` function creates a plot
@@ -281,9 +281,9 @@ ppc_loo_pit <-
 #'   `yrep` manually before passing them to the plotting function will not
 #'   work because the dimensions will not match up with the dimensions of
 #'   `psis_object`, but if all of `y` and `yrep` are passed along
-#'   with `subset` then \pkg{bayesplot} can do the subsetting internally
+#'   with `subset` then **bayesplot** can do the subsetting internally
 #'   for `y`, `yrep` *and* `psis_object`.
-#'   See the \strong{Examples} section for a demonstration.
+#'   See the **Examples** section for a demonstration.
 #'
 ppc_loo_intervals <-
   function(y,

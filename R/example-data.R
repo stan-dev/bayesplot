@@ -1,7 +1,7 @@
 #' Example draws to use in demonstrations and tests
 #'
 #' These functions return various objects containing data used in the examples
-#' throughout the \pkg{bayesplot} package documentation.
+#' throughout the **bayesplot** package documentation.
 #'
 #' @name example-data
 #' @keywords internal

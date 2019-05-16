@@ -1,7 +1,7 @@
 #' PPC intervals
 #'
 #' Medians and central interval estimates of `yrep` with `y` overlaid.
-#' See the \strong{Plot Descriptions} section, below.
+#' See the **Plot Descriptions** section, below.
 #'
 #' @name PPC-intervals
 #' @family PPCs

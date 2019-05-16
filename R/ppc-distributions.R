@@ -2,7 +2,7 @@
 #'
 #' Compare the empirical distribution of the data `y` to the distributions
 #' of simulated/replicated data `yrep` from the posterior predictive
-#' distribution. See the \strong{Plot Descriptions} section, below,
+#' distribution. See the **Plot Descriptions** section, below,
 #' for details.
 #'
 #' @name PPC-distributions
@@ -25,13 +25,13 @@
 #'    A separate histogram, shaded frequency polygon, smoothed kernel density
 #'    estimate, or box and whiskers plot is displayed for `y` and each
 #'    dataset (row) in `yrep`. For these plots `yrep` should therefore
-#'    contain only a small number of rows. See the \strong{Examples} section.
+#'    contain only a small number of rows. See the **Examples** section.
 #'   }
 #'   \item{`ppc_freqpoly_grouped`}{
 #'    A separate frequency polygon is plotted for each level of a grouping
 #'    variable for `y` and each dataset (row) in `yrep`. For this plot
 #'    `yrep` should therefore contain only a small number of rows. See the
-#'    \strong{Examples} section.
+#'    **Examples** section.
 #'   }
 #'   \item{`ppc_dens_overlay, ppc_ecdf_overlay`}{
 #'    Kernel density or empirical CDF estimates of each dataset (row) in
@@ -382,7 +382,7 @@ ppc_ecdf_overlay <-
 #'   `y_alpha`, and `y_jitter` are passed to to the `size`,
 #'   `alpha`, and `width` arguments of
 #'   [ggplot2::geom_jitter()] to control the appearance of `y`
-#'   points. The default of `y_jitter=NULL` will let \pkg{ggplot2}
+#'   points. The default of `y_jitter=NULL` will let **ggplot2**
 #'   determine the amount of jitter.
 #'
 ppc_violin_grouped <- function(y, yrep, group, ..., probs = c(0.1, 0.5, 0.9),
