@@ -103,7 +103,7 @@ Gabry, J. , Simpson, D. , Vehtari, A. , Betancourt, M. and
 }
 \seealso{
 \code{\link{theme_default}} for the default ggplot theme used by
-  \pkg{bayesplot}.
+  \pkg{bayesplot} and \code{\link{bayesplot_theme_set}} to change it.
 
 \code{\link{bayesplot-colors}} to set or view the color scheme used
   for plotting.

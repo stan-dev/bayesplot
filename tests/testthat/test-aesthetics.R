@@ -3,14 +3,22 @@ context("Aesthetics")
 
 
 # color scheme stuff ------------------------------------------------------
+
+prepare_colors_for_test <- function(scheme) {
+  setNames(
+    bayesplot:::master_color_list[[scheme]],
+    bayesplot:::scheme_level_names()
+  )
+}
+
 test_that("getting and setting the color scheme works", {
   color_scheme_set("red")
-  expect_equivalent(color_scheme_get(), prepare_colors("red"))
-  expect_named(prepare_colors("blue"), scheme_level_names())
+  expect_equivalent(color_scheme_get(), prepare_colors_for_test("red"))
+  expect_named(prepare_colors_for_test("blue"), scheme_level_names())
   expect_named(color_scheme_get(), scheme_level_names())
   for (clr in names(master_color_list)) {
     color_scheme_set(clr)
-    expect_equivalent(color_scheme_get(), prepare_colors(clr),
+    expect_equivalent(color_scheme_get(), prepare_colors_for_test(clr),
                       info = clr)
     expect_named(color_scheme_get(), scheme_level_names())
   }
@@ -20,7 +28,7 @@ test_that("getting and setting the color scheme works", {
   expect_gg(plot(color_scheme_get("mix-blue-green")))
 
   color_scheme_set("blue")
-  expect_equivalent(color_scheme_get("teal"), prepare_colors("teal"))
+  expect_equivalent(color_scheme_get("teal"), prepare_colors_for_test("teal"))
 })
 
 test_that("color_scheme_get with i argument works", {
@@ -58,6 +66,15 @@ test_that("setting mixed scheme works", {
                "should be one of")
   expect_error(color_scheme_set("mix-greens-red"),
                "should be one of")
+})
+
+test_that("setting brewer scheme works", {
+  skip_if_not_installed("RColorBrewer")
+  color_scheme_set("brewer-Blues")
+  expect_equivalent(unlist(color_scheme_get()), RColorBrewer::brewer.pal(6, "Blues"))
+  color_scheme_set("brewer-Spectral")
+  expect_equivalent(unlist(color_scheme_get()), RColorBrewer::brewer.pal(6, "Spectral"))
+  expect_error(color_scheme_set("brewer-FAKE"), "FAKE is not a valid palette")
 })
 
 orange_scheme_bad <-
@@ -99,7 +116,7 @@ test_that("get_color returns correct color values", {
   scheme <- color_scheme_set("green")
   levs <- scheme_level_names()
 
-  ans <- unlist(prepare_colors("green")[levs], use.names = FALSE)
+  ans <- unlist(prepare_colors_for_test("green")[levs], use.names = FALSE)
   expect_identical(get_color(levs), ans)
   for (lev in levs)
     expect_identical(get_color(lev), scheme[[lev]], info = lev)
@@ -183,3 +200,26 @@ test_that("ggplot2::theme_set overrides bayesplot theme", {
 
 bayesplot_theme_set(bayesplot::theme_default())
 color_scheme_set()
+
+
+
+# Visual tests ------------------------------------------------------------
+
+test_that("color_scheme_view renders correctly", {
+  testthat::skip_on_cran()
+
+  color_scheme_set()
+  p_default <- color_scheme_view()
+  vdiffr::expect_doppelganger("color_scheme_view (default)", p_default)
+
+  p_red <- color_scheme_view("red")
+  vdiffr::expect_doppelganger("color_scheme_view (scheme specified)", p_red)
+
+  p_mix <- color_scheme_view("mix-red-blue")
+  vdiffr::expect_doppelganger("color_scheme_view (mixed scheme)", p_mix)
+
+  p_brewer <- color_scheme_view("brewer-Spectral")
+  vdiffr::expect_doppelganger("color_scheme_view (brewer palette)", p_brewer)
+
+  color_scheme_set()
+})

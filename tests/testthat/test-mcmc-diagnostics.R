@@ -53,6 +53,31 @@ test_that("duplicated rhats and neffs are kept (#105)", {
   expect_equal(nrow(df), length(ratios))
 })
 
+test_that("'description' & 'rating' columns are correct (#176)", {
+  # https://github.com/stan-dev/bayesplot/issues/176
+  rhats <- c(1, 1.07, 1.19, 1.07, 1.3, 1)
+  expected_rhats <- sort(rhats)
+  expected_ratings <- rep(c("low", "ok", "high"), each = 2)
+  expected_descriptions <-
+    rep(c("hat(R) <= 1.05", "hat(R) <= 1.1", "hat(R) > 1.1"), each = 2)
+
+  df <- mcmc_rhat_data(rhats)
+  expect_equal(df$value, expected_rhats)
+  expect_equal(as.character(df$rating), expected_ratings)
+  expect_equal(df$description, expected_descriptions)
+
+  ratios <- c(0.4, 0.05, 0.6)
+  expected_ratios <- sort(ratios)
+  expected_ratings <- c("low", "ok", "high")
+  expected_descriptions <-
+    c("N[eff]/N <= 0.1", "N[eff]/N <= 0.5", "N[eff]/N > 0.5")
+
+  df <- mcmc_neff_data(ratios)
+  expect_equal(df$value, expected_ratios)
+  expect_equal(as.character(df$rating), expected_ratings)
+  expect_equal(df$description, expected_descriptions)
+})
+
 test_that("mcmc_acf & mcmc_acf_bar return a ggplot object", {
   expect_gg(mcmc_acf(arr, pars = "beta[1]", regex_pars = "x\\:[2,5]"))
   expect_gg(mcmc_acf_bar(arr, pars = "beta[1]", regex_pars = "x\\:[2,5]"))

@@ -237,7 +237,7 @@ test_that("prepare_mcmc_array processes non-array input types correctly", {
 
   # object with acceptable as.array method
   suppressPackageStartupMessages(library(rstanarm))
-  fit <- stan_glm(mpg ~ wt, data = mtcars, chains = 2, iter = 500, refresh = 0)
+  fit <- suppressWarnings(stan_glm(mpg ~ wt, data = mtcars, chains = 2, iter = 500, refresh = 0))
   a4 <- prepare_mcmc_array(fit)
   expect_s3_class(a4, "mcmc_array")
   expect_equal(a4, prepare_mcmc_array(as.array(fit)))
