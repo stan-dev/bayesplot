@@ -5,7 +5,6 @@
 #' of available scheme names. The **Custom color schemes** section describes how
 #' to specify a custom scheme.
 #'
-#' @md
 #' @name bayesplot-colors
 #' @param scheme For `color_scheme_set()`, either a string naming one of the
 #'   available color schemes or a character vector of _exactly six_ colors
@@ -289,9 +288,9 @@ mixed_scheme <- function(scheme1, scheme2) {
   scheme
 }
 
-#' Check if object returned by color_scheme_get() is a mixed scheme
+#' Check if object returned by `color_scheme_get()` is a mixed scheme
 #' @noRd
-#' @param x object returned by color_scheme_get()
+#' @param x object returned by `color_scheme_get()`
 #' @return T/F
 is_mixed_scheme <- function(x) {
   stopifnot(is.list(x))
@@ -300,7 +299,7 @@ is_mixed_scheme <- function(x) {
 
 #' Access a subset of the current scheme colors
 #' @noRd
-#' @param level A character vector of level names scheme_level_names().
+#' @param level A character vector of level names in `scheme_level_names()`.
 #'   The abbreviations "l", "lh", "m", "mh", "d", and "dh" can also be used
 #'   instead of the full names.
 #' @return A character vector of color values.

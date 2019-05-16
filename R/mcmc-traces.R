@@ -13,45 +13,45 @@
 #' @template args-facet_args
 #' @param ... Currently ignored.
 #' @param size An optional value to override the default line size
-#'   (\code{mcmc_trace}) or the default point size
-#'   (\code{mcmc_trace_highlight}).
-#' @param alpha For \code{mcmc_trace_highlight}, passed to
-#'   \code{\link[ggplot2]{geom_point}} to control the transparency of the points
+#'   (`mcmc_trace`) or the default point size
+#'   (`mcmc_trace_highlight`).
+#' @param alpha For `mcmc_trace_highlight`, passed to
+#'   [ggplot2::geom_point()] to control the transparency of the points
 #'   for the chains not highlighted.
 #' @param n_warmup An integer; the number of warmup iterations included in
-#'   \code{x}. The default is \code{n_warmup = 0}, i.e. to assume no warmup
-#'   iterations are included. If \code{n_warmup > 0} then the background for
-#'   iterations \code{1:n_warmup} is shaded gray.
+#'   `x`. The default is `n_warmup = 0`, i.e. to assume no warmup
+#'   iterations are included. If `n_warmup > 0` then the background for
+#'   iterations `1:n_warmup` is shaded gray.
 #' @param iter1 An integer; the iteration number of the first included draw
 #'   (default 0). This can be used to make it more obvious that the warmup
 #'   iterations have been discarded from the traceplot. It cannot be specified
-#'   if \code{n_warmup} is also set to a positive value.
+#'   if `n_warmup` is also set to a positive value.
 #' @param window An integer vector of length two specifying the limits of a
 #'   range of iterations to display.
-#' @param np For models fit using \code{\link{NUTS}} (more generally, any
+#' @param np For models fit using [NUTS()] (more generally, any
 #'   \href{https://en.wikipedia.org/wiki/Symplectic_integrator}{symplectic
 #'   integrator}), an optional data frame providing NUTS diagnostic
 #'   information. The data frame should be the object returned by
-#'   \code{\link{nuts_params}} or one with the same structure. If \code{np} is
+#'   [nuts_params()] or one with the same structure. If `np` is
 #'   specified then tick marks are added to the bottom of the trace plot
 #'   indicating within which iterations there was a divergence (if there were any).
 #'   See the end of the \strong{Examples} section, below.
-#' @param np_style A call to the \code{trace_style_np} helper function to
+#' @param np_style A call to the `trace_style_np` helper function to
 #'   specify arguments controlling the appearance of tick marks representing
-#'   divergences (if the \code{np} argument is specified).
-#' @param divergences Deprecated. Use the \code{np} argument instead.
+#'   divergences (if the `np` argument is specified).
+#' @param divergences Deprecated. Use the `np` argument instead.
 #'
 #' @template return-ggplot
 #'
 #' @section Plot Descriptions:
 #' \describe{
-#'   \item{\code{mcmc_trace}}{
-#'    Standard trace plots of MCMC draws. For models fit using \code{\link{NUTS}},
-#'    the \code{np} argument can be used to also show divergences on the trace plot.
+#'   \item{`mcmc_trace`}{
+#'    Standard trace plots of MCMC draws. For models fit using [NUTS()],
+#'    the `np` argument can be used to also show divergences on the trace plot.
 #'   }
-#'   \item{\code{mcmc_trace_highlight}}{
+#'   \item{`mcmc_trace_highlight`}{
 #'    Traces are plotted using points rather than lines and the opacity of all
-#'    chains but one (specified by the \code{highlight} argument) is reduced.
+#'    chains but one (specified by the `highlight` argument) is reduced.
 #'   }
 #' }
 #'
@@ -192,7 +192,7 @@ mcmc_trace <-
 
 #' @rdname MCMC-traces
 #' @export
-#' @param highlight For \code{mcmc_trace_highlight}, an integer specifying one
+#' @param highlight For `mcmc_trace_highlight`, an integer specifying one
 #'   of the chains that will be more visible than the others in the plot.
 mcmc_trace_highlight <-
   function(x,
@@ -227,8 +227,8 @@ mcmc_trace_highlight <-
 #' @rdname MCMC-traces
 #' @export
 #' @param div_color,div_size,div_alpha Optional arguments to the
-#'   \code{trace_style_np} helper function that are eventually passed to
-#'   \code{\link[ggplot2]{geom_rug}} if the \code{np} argument is also
+#'   `trace_style_np` helper function that are eventually passed to
+#'   [ggplot2::geom_rug()] if the `np` argument is also
 #'   specified. They control the color, size, and transparency specifications
 #'   for showing divergences in the plot. The default values are displayed in
 #'   the \strong{Usage} section above.

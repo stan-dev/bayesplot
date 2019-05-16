@@ -1,30 +1,30 @@
 #' Arrange plots in a grid
 #'
-#' The \code{bayesplot_grid} function makes it simple to juxtapose plots using
+#' The `bayesplot_grid` function makes it simple to juxtapose plots using
 #' common \eqn{x} and/or \eqn{y} axes.
 #'
 #' @export
 #' @param ... One or more ggplot objects.
 #' @param plots A list of ggplot objects. Can be used as an alternative to
-#'   specifying plot objects via \code{...}.
+#'   specifying plot objects via `...`.
 #' @param grid_args An optional named list of arguments to pass to
-#'   \code{\link[gridExtra]{arrangeGrob}} (\code{nrow}, \code{ncol},
-#'   \code{widths}, etc.).
+#'   [gridExtra::arrangeGrob()] (`nrow`, `ncol`,
+#'   `widths`, etc.).
 #' @param titles,subtitles Optional character vectors of plot titles and
-#'   subtitles. If specified, \code{titles} and \code{subtitles} must must have
+#'   subtitles. If specified, `titles` and `subtitles` must must have
 #'   length equal to the number of plots specified.
 #' @param xlim,ylim Optionally, numeric vectors of length 2 specifying lower and
 #'   upper limits for the axes that will be shared across all plots.
 #' @param legends If any of the plots have legends should they be displayed?
-#'   Defaults to \code{TRUE}.
-#' @param save_gg_objects If \code{TRUE}, the default, then the ggplot objects
-#'   specified in \code{...} or via the \code{plots} argument are saved in a
-#'   list in the \code{"bayesplots"} component of the returned object.
-#'   Setting this to \code{FALSE} will make the returned object smaller but
+#'   Defaults to `TRUE`.
+#' @param save_gg_objects If `TRUE`, the default, then the ggplot objects
+#'   specified in `...` or via the `plots` argument are saved in a
+#'   list in the `"bayesplots"` component of the returned object.
+#'   Setting this to `FALSE` will make the returned object smaller but
 #'   these individual plot objects will not be available.
 #'
 #' @return An object of class "bayesplot_grid" (essentially a gtable object from
-#'   \code{\link[gridExtra]{arrangeGrob}}), which has a \code{plot} method.
+#'   [gridExtra::arrangeGrob()]), which has a `plot` method.
 #'
 #' @examples
 #' y <- example_y_data()

@@ -1,8 +1,8 @@
 #' PPC test statistics
 #'
-#' The distribution of a test statistic \code{T(yrep)}, or a pair of test
-#' statistics, over the simulated datasets in \code{yrep}, compared to the
-#' observed value \code{T(y)} computed from the data \code{y}. See the
+#' The distribution of a test statistic `T(yrep)`, or a pair of test
+#' statistics, over the simulated datasets in `yrep`, compared to the
+#' observed value `T(y)` computed from the data `y`. See the
 #' \strong{Plot Descriptions} and \strong{Details} sections, below, as
 #' well as \href{https://github.com/jgabry/bayes-vis-paper}{Gabry et al. (2019)}.
 #'
@@ -12,7 +12,7 @@
 #' @template args-y-yrep
 #' @template args-facet_args
 #' @param stat A single function or a string naming a function, except for
-#'   \code{ppc_stat_2d} which requires a vector of exactly two functions or
+#'   `ppc_stat_2d` which requires a vector of exactly two functions or
 #'   function names. In all cases the function(s) should take a vector input and
 #'   return a scalar test statistic. If specified as a string (or strings) then
 #'   the legend will display function names. If specified as a function (or
@@ -28,23 +28,23 @@
 #'
 #' @section Plot Descriptions:
 #' \describe{
-#'   \item{\code{ppc_stat}}{
+#'   \item{`ppc_stat`}{
 #'    A histogram of the distribution of a test statistic computed by applying
-#'    \code{stat} to each dataset (row) in \code{yrep}. The value of the
-#'    statistic in the observed data, \code{stat(y)}, is overlaid as a vertical
-#'    line. More details on \code{ppc_stat} can be found in Gabry et al.
+#'    `stat` to each dataset (row) in `yrep`. The value of the
+#'    statistic in the observed data, `stat(y)`, is overlaid as a vertical
+#'    line. More details on `ppc_stat` can be found in Gabry et al.
 #'    (2019).
 #'   }
-#'   \item{\code{ppc_stat_grouped,ppc_stat_freqpoly_grouped}}{
-#'    The same as \code{ppc_stat}, but a separate plot is generated for each
+#'   \item{`ppc_stat_grouped,ppc_stat_freqpoly_grouped`}{
+#'    The same as `ppc_stat`, but a separate plot is generated for each
 #'    level of a grouping variable. In the case of
-#'    \code{ppc_stat_freqpoly_grouped} the plots are frequency polygons rather
-#'    than histograms. More details on \code{ppc_stat_grouped} can be found in
+#'    `ppc_stat_freqpoly_grouped` the plots are frequency polygons rather
+#'    than histograms. More details on `ppc_stat_grouped` can be found in
 #'    Gabry et al. (2019).
 #'   }
-#'   \item{\code{ppc_stat_2d}}{
+#'   \item{`ppc_stat_2d`}{
 #'    A scatterplot showing the joint distribution of two test statistics
-#'    computed over the datasets (rows) in \code{yrep}. The value of the
+#'    computed over the datasets (rows) in `yrep`. The value of the
 #'    statistics in the observed data is overlaid as large point.
 #'   }
 #' }
@@ -245,7 +245,7 @@ ppc_stat_freqpoly_grouped <-
 
 #' @rdname PPC-test-statistics
 #' @export
-#' @param size,alpha Arguments passed to \code{\link[ggplot2]{geom_point}} to
+#' @param size,alpha Arguments passed to [ggplot2::geom_point()] to
 #'   control the appearance of scatterplot points.
 ppc_stat_2d <- function(y, yrep, stat = c("mean", "sd"), ...,
                         size = 2.5, alpha = 0.7) {

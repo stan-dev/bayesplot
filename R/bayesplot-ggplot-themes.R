@@ -1,19 +1,17 @@
 #' Default bayesplot plotting theme
 #'
-#' The \code{\link{theme_default}} function returns the default ggplot
-#' \link{theme} used by the \pkg{bayesplot} plotting functions. See
-#' \code{\link{bayesplot_theme_set}} for details on setting and updating the
-#' plotting theme.
+#' The [theme_default()] function returns the default ggplot
+#' [theme][ggplot2::theme] used by the **bayesplot** plotting functions. See
+#' [bayesplot_theme_set()] for details on setting and updating the plotting theme.
 #'
 #' @export
 #' @param base_size,base_family Base font size and family (passed to
-#'   \code{\link[ggplot2]{theme_bw}}). It is possible to set
-#'   \code{"bayesplot.base_size"} and \code{"bayesplot.base_family"} via
-#'   \code{\link{options}} to change the defaults, which are \code{12} and
-#'   \code{"serif"}, respectively.
-#' @return A ggplot \link[ggplot2]{theme} object.
+#'   [ggplot2::theme_bw()]). It is possible to set `"bayesplot.base_size"` and
+#'   `"bayesplot.base_family"` via [options()] to change the defaults, which are
+#'   `12` and `"serif"`, respectively.
+#' @return A ggplot [theme][ggplot2::theme] object.
 #'
-#' @seealso \code{\link{bayesplot_theme_set}} to change the ggplot theme.
+#' @seealso [bayesplot_theme_set()] to change the ggplot theme.
 #' @template seealso-colors
 #' @template seealso-helpers
 #'
@@ -64,34 +62,32 @@ theme_default <-
 
 #' Get, set, and modify the active bayesplot theme
 #'
-#' @description These functions are the \pkg{bayesplot} equivalent to
-#'   \pkg{ggplot2}'s \code{\link[ggplot2]{theme_set}} and friends. They set,
-#'   get, and update the active theme but only apply them to \code{bayesplots}.
-#'   The current/active theme is automatically applied to every \code{bayesplot}
-#'   you draw.
+#' @description These functions are the **bayesplot** equivalent to
+#'   **ggplot2**'s [ggplot2::theme_set()] and friends. They set, get, and update
+#'   the active theme but only apply them to `bayesplots`. The current/active
+#'   theme is automatically applied to every `bayesplot` you draw.
 #'
-#'   Use \code{bayesplot_theme_get} to get the current \pkg{bayesplot} theme,
-#'   and \code{bayesplot_theme_set} to change it. \code{bayesplot_theme_update}
-#'   and \code{bayesplot_theme_replace} are shorthands for changing individual
-#'   elements.
+#'   Use `bayesplot_theme_get()` to get the current **bayesplot** theme, and
+#'   `bayesplot_theme_set()` to change it. `bayesplot_theme_update()` and
+#'   `bayesplot_theme_replace()` are shorthands for changing individual elements.
 #'
-#' @details \code{bayesplot_theme_set} and friends only apply to
-#'   \code{bayesplots}. However, \code{ggplot2::theme_set} can also be used to
-#'   change the \pkg{bayesplot} theme. Currently, setting a theme with
-#'   \code{ggplot2::theme_set} (other than the \pkg{ggplot2} default
-#'   \code{\link[ggplot2]{theme_grey}}) will override the \pkg{bayesplot} theme.
+#' @details `bayesplot_theme_set()` and friends only apply to
+#'   `bayesplots`. However, [ggplot2::theme_set()] can also be used to
+#'   change the **bayesplot** theme. Currently, setting a theme with
+#'   `ggplot2::theme_set()` (other than the **ggplot2** default
+#'   [ggplot2::theme_grey()]) will override the **bayesplot** theme.
 #'
 #' @export
 #' @param new The new theme (list of theme elements) to use. This is analogous
-#'   to the \code{new} argument to \code{\link[ggplot2]{theme_set}}.
+#'   to the `new` argument to [ggplot2::theme_set()].
 #' @param ... A named list of theme settings.
 #'
-#' @return \code{bayesplot_theme_get} returns the current theme. The other three
-#'   functions (set, update, replace) invisibly return the \emph{previous} theme
+#' @return `bayesplot_theme_get()` returns the current theme. The other three
+#'   functions (set, update, replace) invisibly return the *previous* theme
 #'   so it can be saved and easily restored later. This is the same behavior as
-#'   the \pkg{ggplot2} versions of these functions.
+#'   the **ggplot2** versions of these functions.
 #'
-#' @seealso \code{\link{theme_default}} for the default \pkg{bayesplot} theme.
+#' @seealso [theme_default()] for the default **bayesplot** theme.
 #' @template seealso-helpers
 #' @template seealso-colors
 #'

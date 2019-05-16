@@ -1,7 +1,7 @@
 #' PPC distributions
 #'
-#' Compare the empirical distribution of the data \code{y} to the distributions
-#' of simulated/replicated data \code{yrep} from the posterior predictive
+#' Compare the empirical distribution of the data `y` to the distributions
+#' of simulated/replicated data `yrep` from the posterior predictive
 #' distribution. See the \strong{Plot Descriptions} section, below,
 #' for details.
 #'
@@ -13,7 +13,7 @@
 #' @template args-hist-freq
 #' @template args-dens
 #' @param size,alpha Passed to the appropriate geom to control the appearance of
-#'   the \code{yrep} distributions.
+#'   the `yrep` distributions.
 #' @param ... Currently unused.
 #'
 #' @template details-binomial
@@ -21,30 +21,30 @@
 #'
 #' @section Plot Descriptions:
 #' \describe{
-#'   \item{\code{ppc_hist, ppc_freqpoly, ppc_dens, ppc_boxplot}}{
+#'   \item{`ppc_hist, ppc_freqpoly, ppc_dens, ppc_boxplot`}{
 #'    A separate histogram, shaded frequency polygon, smoothed kernel density
-#'    estimate, or box and whiskers plot is displayed for \code{y} and each
-#'    dataset (row) in \code{yrep}. For these plots \code{yrep} should therefore
+#'    estimate, or box and whiskers plot is displayed for `y` and each
+#'    dataset (row) in `yrep`. For these plots `yrep` should therefore
 #'    contain only a small number of rows. See the \strong{Examples} section.
 #'   }
-#'   \item{\code{ppc_freqpoly_grouped}}{
+#'   \item{`ppc_freqpoly_grouped`}{
 #'    A separate frequency polygon is plotted for each level of a grouping
-#'    variable for \code{y} and each dataset (row) in \code{yrep}. For this plot
-#'    \code{yrep} should therefore contain only a small number of rows. See the
+#'    variable for `y` and each dataset (row) in `yrep`. For this plot
+#'    `yrep` should therefore contain only a small number of rows. See the
 #'    \strong{Examples} section.
 #'   }
-#'   \item{\code{ppc_dens_overlay, ppc_ecdf_overlay}}{
+#'   \item{`ppc_dens_overlay, ppc_ecdf_overlay`}{
 #'    Kernel density or empirical CDF estimates of each dataset (row) in
-#'    \code{yrep} are overlaid, with the distribution of \code{y} itself on top
-#'    (and in a darker shade). When using \code{ppc_ecdf_overlay} with discrete
-#'    data, set the \code{discrete} argument to \code{TRUE} for better results.
-#'    For an example of \code{ppc_dens_overlay} also see Gabry et al. (2019).
+#'    `yrep` are overlaid, with the distribution of `y` itself on top
+#'    (and in a darker shade). When using `ppc_ecdf_overlay` with discrete
+#'    data, set the `discrete` argument to `TRUE` for better results.
+#'    For an example of `ppc_dens_overlay` also see Gabry et al. (2019).
 #'   }
-#'   \item{\code{ppc_violin_grouped}}{
-#'    The density estimate of \code{yrep} within each level of a grouping
+#'   \item{`ppc_violin_grouped`}{
+#'    The density estimate of `yrep` within each level of a grouping
 #'    variable is plotted as a violin with horizontal lines at notable
-#'    quantiles. \code{y} is overlaid on the plot either as a violin, points, or
-#'    both, depending on the \code{y_draw} argument.
+#'    quantiles. `y` is overlaid on the plot either as a violin, points, or
+#'    both, depending on the `y_draw` argument.
 #'   }
 #' }
 #'
@@ -150,8 +150,8 @@ ppc_hist <- function(y, yrep, ..., binwidth = NULL, breaks = NULL,
 
 #' @rdname PPC-distributions
 #' @export
-#' @param notch A logical scalar passed to \code{\link[ggplot2]{geom_boxplot}}.
-#'   Unlike for \code{geom_boxplot}, the default is \code{notch=TRUE}.
+#' @param notch A logical scalar passed to [ggplot2::geom_boxplot()].
+#'   Unlike for `geom_boxplot`, the default is `notch=TRUE`.
 #'
 ppc_boxplot <- function(y, yrep, ..., notch = TRUE, size = 0.5, alpha = 1) {
   check_ignored_arguments(...)
@@ -321,11 +321,11 @@ ppc_dens_overlay <- function(y, yrep, ...,
 
 #' @export
 #' @rdname PPC-distributions
-#' @param discrete For \code{ppc_ecdf_overlay}, should the data be treated as
-#'   discrete? The default is \code{FALSE}, in which case \code{geom="line"} is
-#'   passed to \code{\link[ggplot2]{stat_ecdf}}. If \code{discrete} is set to
-#'   \code{TRUE} then \code{geom="step"} is used.
-#' @param pad A logical scalar passed to \code{\link[ggplot2]{stat_ecdf}}.
+#' @param discrete For `ppc_ecdf_overlay`, should the data be treated as
+#'   discrete? The default is `FALSE`, in which case `geom="line"` is
+#'   passed to [ggplot2::stat_ecdf()]. If `discrete` is set to
+#'   `TRUE` then `geom="step"` is used.
+#' @param pad A logical scalar passed to [ggplot2::stat_ecdf()].
 ppc_ecdf_overlay <-
   function(y,
            yrep,
@@ -371,18 +371,18 @@ ppc_ecdf_overlay <-
 
 #' @export
 #' @rdname PPC-distributions
-#' @param probs A numeric vector passed to \code{\link[ggplot2]{geom_violin}}'s
-#'   \code{draw_quantiles} argument to specify at which quantiles to draw
-#'   horizontal lines. Set to \code{NULL} to remove the lines.
-#' @param y_draw For \code{ppc_violin_grouped}, a string specifying how to draw
-#'   \code{y}: \code{"violin"} (default), \code{"points"} (jittered points), or
-#'   \code{"both"}.
-#' @param y_jitter,y_size,y_alpha For \code{ppc_violin_grouped}, if
-#'   \code{y_draw} is \code{"points"} or \code{"both"} then \code{y_size},
-#'   \code{y_alpha}, and \code{y_jitter} are passed to to the \code{size},
-#'   \code{alpha}, and \code{width} arguments of
-#'   \code{\link[ggplot2]{geom_jitter}} to control the appearance of \code{y}
-#'   points. The default of \code{y_jitter=NULL} will let \pkg{ggplot2}
+#' @param probs A numeric vector passed to [ggplot2::geom_violin()]'s
+#'   `draw_quantiles` argument to specify at which quantiles to draw
+#'   horizontal lines. Set to `NULL` to remove the lines.
+#' @param y_draw For `ppc_violin_grouped`, a string specifying how to draw
+#'   `y`: `"violin"` (default), `"points"` (jittered points), or
+#'   `"both"`.
+#' @param y_jitter,y_size,y_alpha For `ppc_violin_grouped`, if
+#'   `y_draw` is `"points"` or `"both"` then `y_size`,
+#'   `y_alpha`, and `y_jitter` are passed to to the `size`,
+#'   `alpha`, and `width` arguments of
+#'   [ggplot2::geom_jitter()] to control the appearance of `y`
+#'   points. The default of `y_jitter=NULL` will let \pkg{ggplot2}
 #'   determine the amount of jitter.
 #'
 ppc_violin_grouped <- function(y, yrep, group, ..., probs = c(0.1, 0.5, 0.9),
