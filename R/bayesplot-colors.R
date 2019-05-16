@@ -142,7 +142,6 @@ color_scheme_set <- function(scheme = "blue") {
 }
 
 #' @rdname bayesplot-colors
-#' @md
 #' @export
 #' @param i For `color_scheme_get()`, an optional subset of the integers from `1`
 #'   (lightest) to `6` (darkest) indicating which of the colors in the

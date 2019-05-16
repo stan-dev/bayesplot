@@ -23,8 +23,8 @@
 #'   Setting this to `FALSE` will make the returned object smaller but
 #'   these individual plot objects will not be available.
 #'
-#' @return An object of class "bayesplot_grid" (essentially a gtable object from
-#'   [gridExtra::arrangeGrob()]), which has a `plot` method.
+#' @return An object of class `"bayesplot_grid"` (essentially a gtable object
+#'   from [gridExtra::arrangeGrob()]), which has a `plot` method.
 #'
 #' @examples
 #' y <- example_y_data()

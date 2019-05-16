@@ -23,104 +23,104 @@ mcmc_nuts_energy(x, ..., binwidth = NULL, alpha = 0.5,
 }
 \arguments{
 \item{x}{A molten data frame of NUTS sampler parameters, either created by
-\code{\link{nuts_params}} or in the same form as the object returned by
-\code{\link{nuts_params}}.}
+\code{\link[=nuts_params]{nuts_params()}} or in the same form as the object returned by
+\code{\link[=nuts_params]{nuts_params()}}.}
 
 \item{lp}{A molten data frame of draws of the log-posterior or, more
 commonly, of a quantity equal to the log-posterior up to a constant.
-\code{lp} should either be created via \code{\link{log_posterior}} or be an
+\code{lp} should either be created via \code{\link[=log_posterior]{log_posterior()}} or be an
 object with the same form as the object returned by
-\code{\link{log_posterior}}.}
+\code{\link[=log_posterior]{log_posterior()}}.}
 
 \item{chain}{A positive integer for selecting a particular chain. The default
 (\code{NULL}) is to merge the chains before plotting. If \code{chain = k}
 then the plot for chain \code{k} is overlaid (in a darker shade but with
 transparency) on top of the plot for all chains. The \code{chain} argument
-is not used by \code{mcmc_nuts_energy}.}
+is not used by \code{mcmc_nuts_energy()}.}
 
 \item{...}{Currently ignored.}
 
-\item{binwidth}{An optional value passed to
-\code{\link[ggplot2]{geom_histogram}} to override the default binwidth.}
+\item{binwidth}{An optional value passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}} to
+override the default binwidth.}
 
-\item{alpha}{For \code{mcmc_nuts_energy} only, the transparency (alpha) level
-in [0,1] used for the overlaid histogram.}
+\item{alpha}{For \code{mcmc_nuts_energy()} only, the transparency (alpha) level
+in \code{[0,1]} used for the overlaid histogram.}
 
-\item{merge_chains}{For \code{mcmc_nuts_energy} only, should all chains be
+\item{merge_chains}{For \code{mcmc_nuts_energy()} only, should all chains be
 merged or displayed separately? The default is \code{FALSE}, i.e., to show
 the chains separately.}
 }
 \value{
 A gtable object (the result of calling
-  \code{\link[gridExtra]{arrangeGrob}}) created from several ggplot objects,
-  except for \code{mcmc_nuts_energy}, which returns a ggplot object.
+\code{\link[gridExtra:arrangeGrob]{gridExtra::arrangeGrob()}}) created from several ggplot objects,
+except for \code{mcmc_nuts_energy()}, which returns a ggplot object.
 }
 \description{
 Diagnostic plots for the No-U-Turn-Sampler (NUTS), the default MCMC algorithm
-used by Stan. See the \strong{Plot Descriptions} section, below.
+used by \href{https://mc-stan.org}{Stan}. See the \strong{Plot Descriptions} section, below.
 }
 \section{Quick Definitions}{
 
 For more details see Stan Development Team (2016) and Betancourt (2017).
 \itemize{
-  \item \code{accept_stat__}: the average acceptance probabilities of all
-  possible samples in the proposed tree.
-  \item \code{divergent__}: the number of leapfrog transitions with diverging
-  error. Because NUTS terminates at the first divergence this will be either
-  0 or 1 for each iteration.
-  \item \code{stepsize__}: the step size used by NUTS in its Hamiltonian
-  simulation.
-  \item \code{treedepth__}: the depth of tree used by NUTS, which is the log
-  (base 2) of the number of leapfrog steps taken during the Hamiltonian
-  simulation.
-  \item \code{energy__}: the value of the Hamiltonian (up to an additive
-  constant) at each iteration.
+\item \code{accept_stat__}: the average acceptance probabilities of all
+possible samples in the proposed tree.
+\item \code{divergent__}: the number of leapfrog transitions with diverging
+error. Because NUTS terminates at the first divergence this will be either
+0 or 1 for each iteration.
+\item \code{stepsize__}: the step size used by NUTS in its Hamiltonian
+simulation.
+\item \code{treedepth__}: the depth of tree used by NUTS, which is the log
+(base 2) of the number of leapfrog steps taken during the Hamiltonian
+simulation.
+\item \code{energy__}: the value of the Hamiltonian (up to an additive
+constant) at each iteration.
 }
 }
 
 \section{Plot Descriptions}{
 
 \describe{
-  \item{\code{mcmc_nuts_acceptance}}{
-  Three plots:
-  \itemize{
-   \item Histogram of \code{accept_stat__} with vertical lines indicating the
-   mean (solid line) and median (dashed line).
-   \item Histogram of \code{lp__} with vertical
-   lines indicating the mean (solid line) and median (dashed line).
-   \item Scatterplot of \code{accept_stat__} vs \code{lp__}.
-   }
-  }
-  \item{\code{mcmc_nuts_divergence}}{
-  Two plots:
-  \itemize{
-   \item Violin plots of \code{lp__|divergent__=1} and
-     \code{lp__|divergent__=0}.
-   \item Violin plots of \code{accept_stat__|divergent__=1} and
-     \code{accept_stat__|divergent__=0}.
-   }
-  }
-  \item{\code{mcmc_nuts_stepsize}}{
-  Two plots:
-  \itemize{
-   \item Violin plots of \code{lp__} by chain ordered by
-   \code{stepsize__} value.
-   \item Violin plots of \code{accept_stat__} by chain ordered by
-   \code{stepsize__} value.
-   }
-  }
-  \item{\code{mcmc_nuts_treedepth}}{
-  Three plots:
-  \itemize{
-   \item Violin plots of \code{lp__} by value of \code{treedepth__}.
-   \item Violin plots of \code{accept_stat__} by value of \code{treedepth__}.
-   \item Histogram of \code{treedepth__}.
-   }
-  }
-  \item{\code{mcmc_nuts_energy}}{
-  Overlaid histograms showing \code{energy__} vs the change in
-  \code{energy__}. See Betancourt (2016) for details.
-  }
+\item{\code{mcmc_nuts_acceptance()}}{
+Three plots:
+\itemize{
+\item Histogram of \code{accept_stat__} with vertical lines indicating the
+mean (solid line) and median (dashed line).
+\item Histogram of \code{lp__} with vertical
+lines indicating the mean (solid line) and median (dashed line).
+\item Scatterplot of \code{accept_stat__} vs \code{lp__}.
+}
+}
+
+\item{\code{mcmc_nuts_divergence()}}{
+Two plots:
+\itemize{
+\item Violin plots of \code{lp__|divergent__=1} and \code{lp__|divergent__=0}.
+\item Violin plots of \code{accept_stat__|divergent__=1} and \code{accept_stat__|divergent__=0}.
+}
+}
+
+\item{\code{mcmc_nuts_stepsize()}}{
+Two plots:
+\itemize{
+\item Violin plots of \code{lp__} by chain ordered by \code{stepsize__} value.
+\item Violin plots of \code{accept_stat__} by chain ordered by \code{stepsize__} value.
+}
+}
+
+\item{\code{mcmc_nuts_treedepth()}}{
+Three plots:
+\itemize{
+\item Violin plots of \code{lp__} by value of \code{treedepth__}.
+\item Violin plots of \code{accept_stat__} by value of \code{treedepth__}.
+\item Histogram of \code{treedepth__}.
+}
+}
+
+\item{\code{mcmc_nuts_energy()}}{
+Overlaid histograms showing \code{energy__} vs the change in
+\code{energy__}. See Betancourt (2016) for details.
+}
 }
 }
 
@@ -152,34 +152,35 @@ mcmc_nuts_energy(np) +
 }
 \references{
 Betancourt, M. (2017). A conceptual introduction to Hamiltonian Monte Carlo.
-  \url{https://arxiv.org/abs/1701.02434}
+\url{https://arxiv.org/abs/1701.02434}
 
 Betancourt, M. and Girolami, M. (2013). Hamiltonian Monte Carlo for
 hierarchical models. \url{https://arxiv.org/abs/1312.0906}
 
 Hoffman, M. D. and Gelman, A. (2014). The No-U-Turn Sampler:
-  adaptively setting path lengths in Hamiltonian Monte Carlo. \emph{Journal
-  of Machine Learning Research}. 15:1593--1623.
+adaptively setting path lengths in Hamiltonian Monte Carlo.
+\emph{Journal of Machine Learning Research}. 15:1593--1623.
 
-Stan Development Team. \emph{Stan Modeling Language Users
-Guide and Reference Manual.} \url{https://mc-stan.org/users/documentation/}
+Stan Development Team.
+\emph{Stan Modeling Language Users Guide and Reference Manual.}
+\url{https://mc-stan.org/users/documentation/}
 }
 \seealso{
 \itemize{
-\item The \emph{Visual MCMC Diagnostics} vignette.
-\item Several other plotting functions in the \pkg{bayesplot} package
-are not NUTS-specific but take optional extra arguments if the model was fit
-using NUTS:
+\item The \href{https://mc-stan.org/bayesplot/articles/visual-mcmc-diagnostics.html}{Visual MCMC Diagnostics}
+vignette.
+\item Several other plotting functions are not NUTS-specific but take optional
+extra arguments if the model was fit using NUTS:
 \itemize{
- \item \code{\link{mcmc_trace}}: show divergences as tick marks below the
- trace plot.
- \item \code{\link{mcmc_parcoord}}: change the color/size/transparency of
- lines correspondending to divergences.
- \item \code{\link{mcmc_scatter}}: change the color/size/shape of points
- corresponding to divergences.
- \item \code{\link{mcmc_pairs}}: change the color/size/shape of points
- corresponding divergences and/or max treedepth saturation.
- }
+\item \code{\link[=mcmc_trace]{mcmc_trace()}}: show divergences as tick marks below the
+trace plot.
+\item \code{\link[=mcmc_parcoord]{mcmc_parcoord()}}: change the color/size/transparency of lines
+correspondending to divergences.
+\item \code{\link[=mcmc_scatter]{mcmc_scatter()}}: change the color/size/shape of points
+corresponding to divergences.
+\item \code{\link[=mcmc_pairs]{mcmc_pairs()}}: change the color/size/shape of points
+corresponding divergences and/or max treedepth saturation.
+}
 }
 
 Other MCMC: \code{\link{MCMC-combos}},

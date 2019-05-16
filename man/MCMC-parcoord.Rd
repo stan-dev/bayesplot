@@ -25,90 +25,86 @@ the \link{MCMC-overview} page.}
 
 \item{pars}{An optional character vector of parameter names. If neither
 \code{pars} nor \code{regex_pars} is specified then the default is to use
-\emph{all} parameters.}
+\strong{all} parameters.}
 
-\item{regex_pars}{An optional \link[=grep]{regular expression} to use for
+\item{regex_pars}{An optional \link[base:grep]{regular expression} to use for
 parameter selection. Can be specified instead of \code{pars} or in addition
 to \code{pars}.}
 
 \item{transformations}{Optionally, transformations to apply to parameters
-  before plotting. If \code{transformations} is a function or a single string
-  naming a function then that function will be used to transform all
-  parameters. To apply transformations to particular parameters, the
-  \code{transformations} argument can be a named list with length equal to
-  the number of parameters to be transformed. Currently only univariate
-  transformations of scalar parameters can be specified (multivariate
-  transformations will be implemented in a future release). If
-  \code{transformations} is a list, the name of each list element should be a
-  parameter name and the content of each list element should be a function
-  (or any item to match as a function via \code{\link{match.fun}}, e.g. a
-  string naming a function). If a function is specified by its name as a
-  string (e.g. \code{"log"}), then it can be used to construct a new
-  parameter label for the appropriate parameter (e.g. \code{"log(sigma)"}).
-  If a function itself is specified (e.g. \code{log} or \code{function(x)
-  log(x)}) then \code{"t"} is used in the new parameter label to indicate
-  that the parameter is transformed (e.g. \code{"t(sigma)"}).
+before plotting. If \code{transformations} is a function or a single string
+naming a function then that function will be used to transform all
+parameters. To apply transformations to particular parameters, the
+\code{transformations} argument can be a named list with length equal to
+the number of parameters to be transformed. Currently only univariate
+transformations of scalar parameters can be specified (multivariate
+transformations will be implemented in a future release). If
+\code{transformations} is a list, the name of each list element should be a
+parameter name and the content of each list element should be a function
+(or any item to match as a function via \code{\link[=match.fun]{match.fun()}}, e.g. a
+string naming a function). If a function is specified by its name as a
+string (e.g. \code{"log"}), then it can be used to construct a new
+parameter label for the appropriate parameter (e.g. \code{"log(sigma)"}).
+If a function itself is specified (e.g. \code{log} or \code{function(x) log(x)}) then \code{"t"} is used in the new parameter label to indicate
+that the parameter is transformed (e.g. \code{"t(sigma)"}).
 
-  Note: due to partial argument matching \code{transformations} can be
-  abbreviated for convenience in interactive use (e.g., \code{transform},
-  \code{trans}, etc.).}
+Note: due to partial argument matching \code{transformations} can be
+abbreviated for convenience in interactive use (e.g., \code{transform}).}
 
 \item{...}{Currently ignored.}
 
-\item{size, alpha}{Arguments passed on to \code{\link[ggplot2]{geom_line}}.}
+\item{size, alpha}{Arguments passed on to \code{\link[ggplot2:geom_line]{ggplot2::geom_line()}}.}
 
-\item{np}{For models fit using \code{\link{NUTS}} (more generally,
-any \href{https://en.wikipedia.org/wiki/Symplectic_integrator}{symplectic
-integrator}), an optional data frame providing NUTS
-diagnostic information. The data frame should be the object returned by
-\code{\link{nuts_params}} or one with the same structure.}
+\item{np}{For models fit using \link{NUTS} (more generally,
+any \href{https://en.wikipedia.org/wiki/Symplectic_integrator}{symplectic integrator}),
+an optional data frame providing NUTS diagnostic information. The data
+frame should be the object returned by \code{\link[=nuts_params]{nuts_params()}} or one with the same
+structure.}
 
-\item{np_style}{A call to the \code{parcoord_style_np} helper function to
+\item{np_style}{A call to the \code{parcoord_style_np()} helper function to
 specify arguments controlling the appearance of superimposed lines
 representing NUTS diagnostics (in this case divergences) if the \code{np}
 argument is specified.}
 
 \item{div_color, div_size, div_alpha}{Optional arguments to the
-\code{parcoord_style_np} helper function that are eventually passed to
-\code{\link[ggplot2]{geom_line}} if the \code{np} argument is also
-specified. They control the color, size, and transparency specifications
-for showing divergences in the plot. The default values are displayed in
-the \strong{Usage} section above.}
+\code{parcoord_style_np()} helper function that are eventually passed to
+\code{\link[ggplot2:geom_line]{ggplot2::geom_line()}} if the \code{np} argument is also specified. They control
+the color, size, and transparency specifications for showing divergences in
+the plot. The default values are displayed in the \strong{Usage} section above.}
 }
 \value{
-A ggplot object that can be further customized using the
-  \pkg{ggplot2} package. The \code{_data} functions return the data that
-  would have been drawn by the plotting function.
+A ggplot object that can be further customized using the \strong{ggplot2}
+package. The functions with suffix \code{_data} return the data that would have
+been drawn by the plotting function.
 }
 \description{
-Parallel coordinates plot of MCMC draws (one dimension per parameter). See
-the \strong{Plot Descriptions} section below for details, and see
-\href{https://github.com/jgabry/bayes-vis-paper}{Gabry et al. (2019)}
+Parallel coordinates plot of MCMC draws (one dimension per parameter).
+See the \strong{Plot Descriptions} section below for details,
+and see \href{https://github.com/jgabry/bayes-vis-paper}{Gabry et al. (2019)}
 for more background and a real example.
 }
 \section{Plot Descriptions}{
 
 \describe{
-  \item{\code{mcmc_parcoord}}{
-   (\href{https://en.wikipedia.org/wiki/Parallel_coordinates}{Parallel
-   coordinates plot}) of MCMC draws. There is one dimension per parameter
-   along the horizontal axis and each set of connected line segments
-   represents a single MCMC draw (i.e., a vector of length equal to the
-   number of parameters).
+\item{\code{mcmc_parcoord()}}{
+\href{https://en.wikipedia.org/wiki/Parallel_coordinates}{Parallel coordinates plot}
+of MCMC draws. There is one dimension per parameter along the horizontal
+axis and each set of connected line segments represents a single MCMC draw
+(i.e., a vector of length equal to the number of parameters).
 
-   The parallel coordinates plot is most useful if the optional HMC/NUTS
-   diagnostic information is provided via the \code{np} argument. In that
-   case divergences are highlighted in the plot. The appearance of the
-   divergences can be customized using the \code{np_style} argument and the
-   \code{parcoord_style_np} helper function. This version of the plot is the
-   same as the parallel coordinates plot described in Gabry et al. (2019).
+The parallel coordinates plot is most useful if the optional HMC/NUTS
+diagnostic information is provided via the \code{np} argument. In that
+case divergences are highlighted in the plot. The appearance of the
+divergences can be customized using the \code{np_style} argument and the
+\code{parcoord_style_np} helper function. This version of the plot is the
+same as the parallel coordinates plot described in Gabry et al. (2019).
 
-   When the plotted model parameters are on very different scales the
-   \code{transformations} argument can be useful. For example, to standardize
-   all variables before plotting you could use function \code{(x -
-   mean(x))/sd(x)} when specifying the \code{transformations} argument to
-   \code{mcmc_parcoord}. See the \strong{Examples} section for how to do this.
-  }
+When the plotted model parameters are on very different scales the
+\code{transformations} argument can be useful. For example, to standardize
+all variables before plotting you could use function \code{(x - mean(x))/sd(x)}
+when specifying the \code{transformations} argument to
+\code{mcmc_parcoord}. See the \strong{Examples} section for how to do this.
+}
 }
 }
 
@@ -158,14 +154,14 @@ tail(d)
 }
 \references{
 Gabry, J. , Simpson, D. , Vehtari, A. , Betancourt, M. and
-  Gelman, A. (2019), Visualization in Bayesian workflow. \emph{J. R. Stat.
-  Soc. A}, 182: 389-402. doi:10.1111/rssa.12378,
-  (\href{https://rss.onlinelibrary.wiley.com/doi/full/10.1111/rssa.12378}{journal version},
-  \href{https://arxiv.org/abs/1709.01449}{arXiv preprint},
-  \href{https://github.com/jgabry/bayes-vis-paper}{code on GitHub})
+Gelman, A. (2019), Visualization in Bayesian workflow.
+\emph{J. R. Stat. Soc. A}, 182: 389-402. doi:10.1111/rssa.12378.
+(\href{https://rss.onlinelibrary.wiley.com/doi/full/10.1111/rssa.12378}{journal version},
+\href{https://arxiv.org/abs/1709.01449}{arXiv preprint},
+\href{https://github.com/jgabry/bayes-vis-paper}{code on GitHub})
 
 Hartikainen, A. (2017, Aug 23). Concentration of divergences
-[Msg 21]. Message posted to The Stan Forums:
+(Msg 21). Message posted to The Stan Forums:
 \url{https://discourse.mc-stan.org/t/concentration-of-divergences/1590/21}.
 }
 \seealso{

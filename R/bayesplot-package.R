@@ -49,7 +49,6 @@
 #' * __General questions and help__:
 #'   To ask a question about **bayesplot** on the Stan Forums forum please visit
 #'   <https://discourse.mc-stan.org>.
-#' }
 #'
 #' @template seealso-theme
 #' @template seealso-colors

@@ -5,12 +5,12 @@
 \alias{PPC}
 \title{Graphical posterior predictive checking}
 \description{
-The \pkg{bayesplot} PPC module provides various plotting functions for
+The \strong{bayesplot} PPC module provides various plotting functions for
 creating graphical displays comparing observed data to simulated data from
 the posterior predictive distribution. See below for a brief discussion of
 the ideas behind posterior predictive checking, a description of the
 structure of this package, and tips on providing an interface to
-\pkg{bayesplot} from another package.
+\strong{bayesplot} from another package.
 }
 \details{
 The idea behind posterior predictive checking is simple: if a model is a good
@@ -24,8 +24,9 @@ distribution is the distribution of the outcome variable implied by a model
 after using the observed data \eqn{y} (a vector of outcome values), and
 typically predictors \eqn{X}, to update our beliefs about the unknown
 parameters \eqn{\theta} in the model. For each draw of the parameters
-\eqn{\theta} from the posterior distribution \eqn{p(\theta \,|\, y,
-X)}{p(\theta | y, X)} we generate an entire vector of outcomes. The result is
+\eqn{\theta} from the posterior distribution
+\eqn{p(\theta \,|\, y, X)}{p(\theta | y, X)}
+we generate an entire vector of outcomes. The result is
 an \eqn{S \times N}{S x N} matrix of simulations, where \eqn{S} is the the
 size of the posterior sample (number of draws from the posterior
 distribution) and \eqn{N} is the number of data points in \eqn{y}. That is,
@@ -44,79 +45,65 @@ for this package.
 }
 \subsection{Graphical posterior predictive checking}{
 Using the datasets \eqn{y^{rep}}{yrep} drawn from the posterior predictive
-distribution, the functions in the \pkg{bayesplot} package produce various
+distribution, the functions in the \strong{bayesplot} package produce various
 graphical displays comparing the observed data \eqn{y} to the replications.
 For a more thorough discussion of posterior predictive checking see
 Chapter 6 of Gelman et. al. (2013).
 }
 }
 \section{PPC plotting functions}{
-
-
-The plotting functions for posterior predictive checking in this package are
-organized into several categories, each with its own documentation:
-
-\describe{
-  \item{\strong{\link[=PPC-distributions]{Distributions}}}{
-    Histograms, kernel density estimates, boxplots, and other plots comparing
-    the empirical distribution of the observed data \code{y} to the
-    distributions of individual replicated datasets (rows) in \code{yrep}.
-  }
-  \item{\strong{\link[=PPC-test-statistics]{Test statistics}}}{
-    The distribution of a test statistic, or a pair of test statistics, over
-    the replicated datasets (rows) in \code{yrep} compared to value of the
-    statistic(s) computed from \code{y}.
-  }
-  \item{\strong{\link[=PPC-intervals]{Intervals}}}{
-    Interval estimates of \code{yrep} with \code{y} overlaid. The x-axis
-    variable can be optionally specified by the user (e.g. to plot against
-    against a predictor variable or over time).
-  }
-  \item{\strong{\link[=PPC-errors]{Predictive errors}}}{
-    Plots of predictive errors (\code{y - yrep}) computed from \code{y} and
-    replicated datasets (rows) in \code{yrep}. For binomial models binned
-    error plots are also available.
-  }
-  \item{\strong{\link[=PPC-scatterplots]{Scatterplots}}}{
-    Scatterplots (and similar visualizations) of the observed data \code{y}
-    vs. individual replicated datasets (rows) in \code{yrep}, or vs. the
-    average value of the distributions of each data point (columns) in
-    \code{yrep}.
-  }
-  \item{\strong{\link[=PPC-discrete]{Plots for discrete outcomes}}}{
-    PPC functions that can only be used if \code{y} and \code{yrep} are
-    discrete. For example, rootograms for count outcomes and bar
-    plots for ordinal, categorical, and multinomial outcomes.
-  }
-  \item{\strong{\link[=PPC-loo]{LOO predictive checks}}}{
-    PPC functions for predictive checks based on (approximate) leave-one-out
-    (LOO) cross-validation.
-  }
+ The plotting functions for posterior
+predictive checking in this package are organized into several categories,
+each with its own documentation:
+\itemize{
+\item \link[=PPC-distributions]{Distributions}: Histograms, kernel density
+estimates, boxplots, and other plots comparing the empirical distribution
+of the observed data \code{y} to the distributions of individual replicated
+datasets (rows) in \code{yrep}.
+\item \link[=PPC-test-statistics]{Statistics}: The distribution of a statistic, or a
+pair of statistics, over the replicated datasets (rows) in \code{yrep} compared
+to value of the statistic(s) computed from \code{y}.
+\item \link[=PPC-intervals]{Intervals}: Interval estimates of \code{yrep} with \code{y}
+overlaid. The x-axis variable can be optionally specified by the user
+(e.g. to plot against against a predictor variable or over time).
+\item \link[=PPC-errors]{Predictive errors}: Plots of predictive errors
+(\code{y - yrep}) computed from \code{y} and replicated datasets (rows) in \code{yrep}.
+For binomial models binned error plots are also available.
+\item \link[=PPC-scatterplots]{Scatterplots}: Scatterplots (and similar
+visualizations) of the observed data \code{y} vs. individual replicated datasets
+(rows) in \code{yrep}, or vs. the average value of the distributions of each data
+point (columns) in \code{yrep}.
+\item \link[=PPC-discrete]{Plots for discrete outcomes}: PPC functions that can
+only be used if \code{y} and \code{yrep} are discrete. For example, rootograms for
+count outcomes and bar plots for ordinal, categorical, and
+multinomial outcomes.
+\item \link[=PPC-loo]{LOO predictive checks}: PPC functions for predictive checks
+based on (approximate) leave-one-out (LOO) cross-validation.
 }
 }
 
 \section{Providing an interface for posterior predictive checking from another package}{
 
 
-In addition to the various plotting functions, the \pkg{bayesplot} package
-provides the S3 generic \code{\link{pp_check}}. Authors of \R packages for
-Bayesian inference are encouraged to define \code{pp_check} methods for the
+In addition to the various plotting functions, the \strong{bayesplot} package
+provides the S3 generic \code{\link[=pp_check]{pp_check()}}. Authors of \R packages for
+Bayesian inference are encouraged to define \code{pp_check()} methods for the
 fitted model objects created by their packages. See the package vignettes for
-more details and a simple example, and see the \pkg{rstanarm} and \pkg{brms}
-packages for full examples of \code{pp_check} methods.
+more details and a simple example, and see the \strong{rstanarm} and \strong{brms}
+packages for full examples of \code{pp_check()} methods.
 }
 
 \references{
 Gabry, J. , Simpson, D. , Vehtari, A. , Betancourt, M. and
-  Gelman, A. (2019), Visualization in Bayesian workflow. \emph{J. R. Stat.
-  Soc. A}, 182: 389-402. doi:10.1111/rssa.12378,
-  (\href{https://rss.onlinelibrary.wiley.com/doi/full/10.1111/rssa.12378}{journal version},
-  \href{https://arxiv.org/abs/1709.01449}{arXiv preprint},
-  \href{https://github.com/jgabry/bayes-vis-paper}{code on GitHub})
+Gelman, A. (2019), Visualization in Bayesian workflow.
+\emph{J. R. Stat. Soc. A}, 182: 389-402. doi:10.1111/rssa.12378.
+(\href{https://rss.onlinelibrary.wiley.com/doi/full/10.1111/rssa.12378}{journal version},
+\href{https://arxiv.org/abs/1709.01449}{arXiv preprint},
+\href{https://github.com/jgabry/bayes-vis-paper}{code on GitHub})
 
 Gelman, A., Carlin, J. B., Stern, H. S., Dunson, D. B., Vehtari,
-  A., and Rubin, D. B. (2013). \emph{Bayesian Data Analysis.} Chapman & Hall/CRC
-  Press, London, third edition. (Ch. 6)
+A., and Rubin, D. B. (2013). \emph{Bayesian Data Analysis.} Chapman & Hall/CRC
+Press, London, third edition. (Ch. 6)
 }
 \seealso{
 Other PPCs: \code{\link{PPC-discrete}},

@@ -46,18 +46,22 @@
 #'   the lower and upper bounds (`lb`, `ub`) of the `100*p`\% central interval
 #'   of `x`, as well as the median (if `med=TRUE`).
 #' }
+#'
 #' \subsection{Control appearance of facet strips}{
-#' * `facet_text()` and `facet_bg()` return ggplot2 theme objects that
-#'   can be added to an existing plot (ggplot object) to format the text and the
-#'   background for the facet strips.
+#' * `facet_text()` returns ggplot2 theme objects that can be added to an
+#'    existing plot (ggplot object) to format the text in facet strips.
+#'
+#' * `facet_bg()` can be added to a plot to change the background of the facet strips.
 #' }
+#'
 #' \subsection{Move legend, remove legend, or style the legend text}{
-#' * `legend_move()` and `legend_none()` return a ggplot2 theme object
-#'   that can be added to an existing plot (ggplot object) in order to change the
-#'   position of the legend (`legend_move()`) or remove the legend
-#'   (`legend_none()`). `legend_text()` works much like `facet_text()`,
-#'   except it controls the legend text.
+#' * `legend_move()` and `legend_none()` return a ggplot2 theme object that can
+#'   be added to an existing plot (ggplot object) in order to change the
+#'   position of the legend or remove it.
+#'
+#' * `legend_text()` works much like `facet_text()` but for the legend.
 #' }
+#'
 #' \subsection{Control appearance of \eqn{x}-axis and \eqn{y}-axis features}{
 #' * `xaxis_title()` and `yaxis_title()` return a ggplot2 theme object
 #'   that can be added to an existing plot (ggplot object) in order to toggle or
@@ -73,21 +77,24 @@
 #'   that can be added to an existing plot (ggplot object) to change the
 #'   appearance of the axis tick marks.
 #' }
+#'
 #' \subsection{Customize plot background}{
 #' * `plot_bg()` returns a ggplot2 theme object that can be added to an
-#' existing plot (ggplot object) to format the background of the *entire* plot.
+#'   existing plot (ggplot object) to format the background of the *entire* plot.
+#'
 #' * `panel_bg()` returns a ggplot2 theme object that can be added to an
-#' existing plot (ggplot object) to format the background of the just the
-#' plotting area.
+#'   existing plot (ggplot object) to format the background of the just the
+#'   plotting area.
+#'
 #' * `grid_lines()` returns a ggplot2 theme object that can be added to
-#' an existing plot (ggplot object) to add grid lines to the plot background.
+#'   an existing plot (ggplot object) to add grid lines to the plot background.
 #' }
+#'
 #' \subsection{Superimpose a function on an existing plot}{
-#' * `overlay_function()` is a simple wrapper for
-#'   [ggplot2::stat_function()] but with the `inherit.aes` argument
-#'   fixed to `FALSE`. Fixing `inherit.aes=FALSE` will avoid potential
-#'   errors due to the [ggplot2::aes()]thetic mapping used by certain
-#'   **bayesplot** plotting functions.
+#' * `overlay_function()` is a simple wrapper for [ggplot2::stat_function()] but
+#'   with the `inherit.aes` argument fixed to `FALSE`. Fixing `inherit.aes=FALSE`
+#'   will avoid potential errors due to the [ggplot2::aes()]thetic mapping used by
+#'   certain **bayesplot** plotting functions.
 #' }
 #'
 #' @seealso [theme_default()] for the default ggplot theme used by
@@ -284,7 +291,7 @@ abline_01 <- function(..., na.rm = TRUE) {
 # intervals ---------------------------------------------------------------
 #' @rdname bayesplot-helpers
 #' @export
-#' @param p The probability mass (in `[0,1]``) to include in the interval.
+#' @param p The probability mass (in `[0,1]`) to include in the interval.
 #' @param med Should the median also be included in addition to the lower
 #' and upper bounds of the interval?
 #'

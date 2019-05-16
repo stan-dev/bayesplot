@@ -51,10 +51,9 @@
 #' Chapter 6 of Gelman et. al. (2013).
 #' }
 #'
-#' @section PPC plotting functions:
-#'
-#' The plotting functions for posterior predictive checking in this package are
-#' organized into several categories, each with its own documentation:
+#' @section PPC plotting functions: The plotting functions for posterior
+#'   predictive checking in this package are organized into several categories,
+#'   each with its own documentation:
 #' * [__Distributions__][PPC-distributions]: Histograms, kernel density
 #'   estimates, boxplots, and other plots comparing the empirical distribution
 #'   of the observed data `y` to the distributions of individual replicated
@@ -78,7 +77,6 @@
 #'   multinomial outcomes.
 #' * [__LOO predictive checks__][PPC-loo]: PPC functions for predictive checks
 #'   based on (approximate) leave-one-out (LOO) cross-validation.
-#' }
 #'
 #' @section Providing an interface for posterior predictive checking from another package:
 #'

@@ -19,28 +19,29 @@
 #' @section Plot Descriptions:
 #' \describe{
 #' \item{`mcmc_rhat()`, `mcmc_rhat_hist()`}{
-#' Rhat values as either points or a histogram. Values are colored using
-#' different shades (lighter is better). The chosen thresholds are somewhat
-#' arbitrary, but can be useful guidelines in practice.
-#' * _light_: below 1.05 (good)
-#' * _mid_: between 1.05 and 1.1 (ok)
-#' * _dark_: above 1.1 (too high)
+#'   Rhat values as either points or a histogram. Values are colored using
+#'   different shades (lighter is better). The chosen thresholds are somewhat
+#'   arbitrary, but can be useful guidelines in practice.
+#'   * _light_: below 1.05 (good)
+#'   * _mid_: between 1.05 and 1.1 (ok)
+#'   * _dark_: above 1.1 (too high)
 #' }
+#'
 #' \item{`mcmc_neff()`, `mcmc_neff_hist()`}{
-#' Ratios of effective sample size to total sample size as either points or a
-#' histogram. Values are colored using different shades (lighter is better). The
-#' chosen thresholds are somewhat arbitrary, but can be useful guidelines in
-#' practice.
-#' * _light_: between 0.5 and 1 (high)
-#' * _mid_: between 0.1 and 0.5 (good)
-#' * _dark_: below 0.1 (low)
-#'  }
+#'   Ratios of effective sample size to total sample size as either points or a
+#'   histogram. Values are colored using different shades (lighter is better).
+#'   The chosen thresholds are somewhat arbitrary, but can be useful guidelines
+#'   in practice.
+#'   * _light_: between 0.5 and 1 (high)
+#'   * _mid_: between 0.1 and 0.5 (good)
+#'   * _dark_: below 0.1 (low)
 #' }
+#'
 #' \item{`mcmc_acf()`, `mcmc_acf_bar()`}{
-#' Grid of autocorrelation plots by chain and parameter. The `lags`
-#' argument gives the maximum number of lags at which to calculate the
-#' autocorrelation function. `mcmc_acf()` is a line plot whereas
-#' `mcmc_acf_bar()` is a barplot.
+#'   Grid of autocorrelation plots by chain and parameter. The `lags` argument
+#'   gives the maximum number of lags at which to calculate the autocorrelation
+#'   function. `mcmc_acf()` is a line plot whereas `mcmc_acf_bar()` is a
+#'   barplot.
 #' }
 #'}
 #'

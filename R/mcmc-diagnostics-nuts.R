@@ -51,22 +51,26 @@
 #'     lines indicating the mean (solid line) and median (dashed line).
 #'   * Scatterplot of `accept_stat__` vs `lp__`.
 #'   }
+#'
 #'   \item{`mcmc_nuts_divergence()`}{
 #'   Two plots:
 #'   * Violin plots of `lp__|divergent__=1` and `lp__|divergent__=0`.
 #'   * Violin plots of `accept_stat__|divergent__=1` and `accept_stat__|divergent__=0`.
 #'   }
+#'
 #'   \item{`mcmc_nuts_stepsize()`}{
 #'   Two plots:
 #'   * Violin plots of `lp__` by chain ordered by `stepsize__` value.
 #'   * Violin plots of `accept_stat__` by chain ordered by `stepsize__` value.
 #'   }
+#'
 #'   \item{`mcmc_nuts_treedepth()`}{
 #'   Three plots:
 #'   * Violin plots of `lp__` by value of `treedepth__`.
 #'   * Violin plots of `accept_stat__` by value of `treedepth__`.
 #'   * Histogram of `treedepth__`.
 #'   }
+#'
 #'   \item{`mcmc_nuts_energy()`}{
 #'   Overlaid histograms showing `energy__` vs the change in
 #'   `energy__`. See Betancourt (2016) for details.

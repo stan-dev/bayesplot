@@ -38,10 +38,10 @@ in the same facet in the plot (see the \strong{Examples} section, below).
 The default is to group all parameters together into a single batch.
 Changing the default is most useful when parameters are on very different
 scales, in which case \code{batch} can be used to group them into batches
-within which it makes sense to use the same \eqn{y}-axis.}
+within which it makes sense to use the same y-axis.}
 
 \item{facet_args}{A named list of arguments (other than \code{facets}) passed
-to \code{\link[ggplot2]{facet_wrap}} or \code{\link[ggplot2]{facet_grid}}
+to \code{\link[ggplot2:facet_wrap]{ggplot2::facet_wrap()}} or \code{\link[ggplot2:facet_grid]{ggplot2::facet_grid()}}
 to control faceting.}
 
 \item{...}{Currently unused.}
@@ -55,18 +55,17 @@ default is \code{0.9} (90\% interval).}
 \item{point_est}{The point estimate to show. Either \code{"median"} (the
 default), \code{"mean"}, or \code{"none"}.}
 
-\item{size, alpha}{Passed to \code{\link[ggplot2]{geom_point}} to control the
+\item{size, alpha}{Passed to \code{\link[ggplot2:geom_point]{ggplot2::geom_point()}} to control the
 appearance of plotted points.}
 
-\item{binwidth}{Passed to \code{\link[ggplot2]{geom_histogram}} to override
+\item{binwidth}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}} to override
 the default binwidth.}
 
-\item{breaks}{Passed to \code{\link[ggplot2]{geom_histogram}} as an
+\item{breaks}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}} as an
 alternative to \code{binwidth}.}
 }
 \value{
-A ggplot object that can be further customized using the
-  \pkg{ggplot2} package.
+A ggplot object that can be further customized using the \strong{ggplot2} package.
 }
 \description{
 Plots comparing MCMC estimates to "true" parameter values. Before fitting a
@@ -79,17 +78,17 @@ available plots.
 \section{Plot Descriptions}{
 
 \describe{
-  \item{\code{mcmc_recover_intervals}}{
-   Central intervals and point estimates computed from MCMC draws, with
-   "true" values plotted using a different shape.
-  }
-  \item{\code{mcmc_recover_scatter}}{
-   Scatterplot of posterior means (or medians) against "true" values.
-  }
-  \item{\code{mcmc_recover_hist}}{
-   Histograms of the draws for each parameter with the "true" value overlaid
-   as a vertical line.
-  }
+\item{\code{mcmc_recover_intervals()}}{
+Central intervals and point estimates computed from MCMC draws, with
+"true" values plotted using a different shape.
+}
+\item{\code{mcmc_recover_scatter()}}{
+Scatterplot of posterior means (or medians) against "true" values.
+}
+\item{\code{mcmc_recover_hist()}}{
+Histograms of the draws for each parameter with the "true" value overlaid
+as a vertical line.
+}
 }
 }
 
