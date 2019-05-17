@@ -10,6 +10,8 @@ sbc_hist(ranks, ..., thin = 4, per_bin = 4, worst = 16,
 \arguments{
 \item{ranks}{A list of matrices. See \strong{Details}.}
 
+\item{...}{Currently ignored.}
+
 \item{thin}{An integer indicating the thinning interval to use when plotting
 so that the histograms consist of (close to) independent realizations. Set
 the \code{thin} argument such that the resulting number of draws approximately
@@ -43,12 +45,13 @@ Diagnostics for Simulation Based Calibration
 \details{
 Each element of the list \code{ranks} should be a matrix of rank comparison
 results (encoded as \code{0} or \code{1}) associated with a single draw from the prior
-distribution. The columns of each matrix are model parameters and the rows
-are posterior draws from the model fit to the data generated from the
-corresponding prior draw. An element is \code{0} or \code{1} depending on whether the
-posterior draw is greater or less than the corresponding "true" realization
-(from the prior). The matrices should have column names to correctly label
-the parameters.
+distribution. (These are not actually "ranks" but can be used afterwards to
+reconstruct (thinned) ranks.) The columns of each matrix are model parameters
+and the rows are posterior draws from the model fit to the data generated
+from the corresponding prior draw. An element is \code{0} or \code{1} depending on
+whether the posterior draw is greater or less than the corresponding "true"
+realization (from the prior). The matrices should have column names to
+correctly label the parameters.
 }
 \section{Plot Descriptions}{
 
@@ -86,5 +89,5 @@ Validating Bayesian Inference Algorithms with Simulation-Based Calibration.
 arXiv preprint arXiv:1804.06788. \url{https://arxiv.org/abs/1804.06788}
 }
 \seealso{
-\code{\link[rstan:sbc]{rstan::sbc()}}
+\code{rstan::sbc()}
 }

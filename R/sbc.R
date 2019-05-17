@@ -18,6 +18,7 @@
 #'   worst parameters.
 #' @param prob The size of the interval plotted to show the expected behavior
 #'   under uniformity. The default is `prob=0.99`.
+#' @param ... Currently ignored.
 #' @template args-facet_args
 #'
 #' @details
@@ -46,7 +47,7 @@
 #' Validating Bayesian Inference Algorithms with Simulation-Based Calibration.
 #' arXiv preprint arXiv:1804.06788. \url{https://arxiv.org/abs/1804.06788}
 #'
-#' @seealso [rstan::sbc()]
+#' @seealso `rstan::sbc()`
 #'
 #' @examples
 #' # create some fake inputs to use for sbc_hist()
