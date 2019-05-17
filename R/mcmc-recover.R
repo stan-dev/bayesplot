@@ -4,7 +4,7 @@
 #' model to real data it is useful to simulate data according to the model using
 #' known (fixed) parameter values and to check that these "true" parameter
 #' values are (approximately) recovered by fitting the model to the simulated
-#' data. See the \strong{Plot Descriptions} section, below, for details on the
+#' data. See the **Plot Descriptions** section, below, for details on the
 #' available plots.
 #'
 #' @name MCMC-recover
@@ -12,41 +12,41 @@
 #'
 #' @template args-mcmc-x
 #' @template args-facet_args
-#' @param true A numeric vector of "true" values of the parameters in \code{x}.
-#'   There should be one value in \code{true} for each parameter included in
-#'   \code{x} and the order of the parameters in \code{true} should be the same
-#'   as the order of the parameters in \code{x}.
+#' @param true A numeric vector of "true" values of the parameters in `x`.
+#'   There should be one value in `true` for each parameter included in
+#'   `x` and the order of the parameters in `true` should be the same
+#'   as the order of the parameters in `x`.
 #' @param batch Optionally, a vector-like object (numeric, character, integer,
-#'   factor) used to split the parameters into batches. If \code{batch} is
-#'   specified, it must have the same length as \code{true} and be in the same
-#'   order as \code{true}. Parameters in the same batch will be grouped together
-#'   in the same facet in the plot (see the \strong{Examples} section, below).
+#'   factor) used to split the parameters into batches. If `batch` is
+#'   specified, it must have the same length as `true` and be in the same
+#'   order as `true`. Parameters in the same batch will be grouped together
+#'   in the same facet in the plot (see the **Examples** section, below).
 #'   The default is to group all parameters together into a single batch.
 #'   Changing the default is most useful when parameters are on very different
-#'   scales, in which case \code{batch} can be used to group them into batches
-#'   within which it makes sense to use the same \eqn{y}-axis.
+#'   scales, in which case `batch` can be used to group them into batches
+#'   within which it makes sense to use the same y-axis.
 #' @param ... Currently unused.
 #' @param prob The probability mass to include in the inner interval. The
-#'   default is \code{0.5} (50\% interval).
+#'   default is `0.5` (50\% interval).
 #' @param prob_outer The probability mass to include in the outer interval. The
-#'   default is \code{0.9} (90\% interval).
-#' @param point_est The point estimate to show. Either \code{"median"} (the
-#'   default), \code{"mean"}, or \code{"none"}.
-#' @param size,alpha Passed to \code{\link[ggplot2]{geom_point}} to control the
+#'   default is `0.9` (90\% interval).
+#' @param point_est The point estimate to show. Either `"median"` (the
+#'   default), `"mean"`, or `"none"`.
+#' @param size,alpha Passed to [ggplot2::geom_point()] to control the
 #'   appearance of plotted points.
 #'
 #' @template return-ggplot
 #'
 #' @section Plot Descriptions:
 #' \describe{
-#'   \item{\code{mcmc_recover_intervals}}{
+#'   \item{`mcmc_recover_intervals()`}{
 #'    Central intervals and point estimates computed from MCMC draws, with
 #'    "true" values plotted using a different shape.
 #'   }
-#'   \item{\code{mcmc_recover_scatter}}{
+#'   \item{`mcmc_recover_scatter()`}{
 #'    Scatterplot of posterior means (or medians) against "true" values.
 #'   }
-#'   \item{\code{mcmc_recover_hist}}{
+#'   \item{`mcmc_recover_hist()`}{
 #'    Histograms of the draws for each parameter with the "true" value overlaid
 #'    as a vertical line.
 #'   }

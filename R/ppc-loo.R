@@ -1,57 +1,56 @@
 #' LOO predictive checks
 #'
-#' Leave-One-Out (LOO) predictive checks. See the \strong{Plot Descriptions}
-#' section, below, and \href{https://github.com/jgabry/bayes-vis-paper}{Gabry et
-#' al. (2019)} for details.
+#' Leave-One-Out (LOO) predictive checks. See the **Plot Descriptions** section,
+#' below, and [Gabry et al. (2019)](https://github.com/jgabry/bayes-vis-paper)
+#' for details.
 #'
 #' @name PPC-loo
 #' @family PPCs
 #' @template args-y-yrep
 #' @param ... Currently unused.
 #' @param lw A matrix of (smoothed) log weights with the same dimensions as
-#'   \code{yrep}. See \code{\link[loo]{psis}} and the associated \code{weights}
-#'   method and the \strong{Examples} section, below.
+#'   `yrep`. See [loo::psis()] and the associated `weights()` method as well as
+#'   the **Examples** section, below.
 #' @param alpha,size,fatten Arguments passed to code geoms to control plot
-#'   aesthetics. For \code{ppc_loo_pit_qq} and \code{ppc_loo_pit_overlay},
-#'   \code{size} and \code{alpha} are passed to
-#'   \code{\link[ggplot2]{geom_point}} and \code{\link[ggplot2]{geom_density}},
-#'   respectively. For \code{ppc_loo_intervals}, \code{size} and \code{fatten}
-#'   are passed to \code{\link[ggplot2]{geom_pointrange}}. For
-#'   \code{ppc_loo_ribbon}, \code{alpha} and \code{size} are passed to
-#'   \code{\link[ggplot2]{geom_ribbon}}.
+#'   aesthetics. For `ppc_loo_pit_qq()` and `ppc_loo_pit_overlay()`, `size` and
+#'   `alpha` are passed to [ggplot2::geom_point()] and
+#'   [ggplot2::geom_density()], respectively. For `ppc_loo_intervals()`, `size`
+#'   and `fatten` are passed to [ggplot2::geom_pointrange()]. For
+#'   `ppc_loo_ribbon()`, `alpha` and `size` are passed to
+#'   [ggplot2::geom_ribbon()].
 #'
 #' @template return-ggplot
 #'
 #' @section Plot Descriptions:
 #' \describe{
-#' \item{\code{ppc_loo_pit_overlay, ppc_loo_pit_qq}}{
+#' \item{`ppc_loo_pit_overlay()`, `ppc_loo_pit_qq()`}{
 #'  The calibration of marginal predictions can be assessed using probability
 #'  integral transformation (PIT) checks. LOO improves the check by avoiding the
 #'  double use of data. See the section on marginal predictive checks in Gelman
 #'  et al. (2013, p. 152--153) and section 5 of Gabry et al. (2019) for an
-#'  example of using \pkg{bayesplot} for these checks.
+#'  example of using **bayesplot** for these checks.
 #'
 #'  The LOO PIT values are asymptotically uniform (for continuous data) if the
-#'  model is calibrated. The \code{ppc_loo_pit_overlay} function creates a plot
+#'  model is calibrated. The `ppc_loo_pit_overlay()` function creates a plot
 #'  comparing the density of the LOO PITs (thick line) to the density estimates
 #'  of many simulated data sets from the standard uniform distribution (thin
 #'  lines). See Gabry et al. (2019) for an example of interpreting the shape of
 #'  the miscalibration that can be observed in these plots.
 #'
-#'  The \code{ppc_loo_pit_qq} function provides an alternative visualization of
+#'  The `ppc_loo_pit_qq()` function provides an alternative visualization of
 #'  the miscalibration with a quantile-quantile (Q-Q) plot comparing the LOO
 #'  PITs to the standard uniform distribution. Comparing to the uniform is not
 #'  good for extreme probabilities close to 0 and 1, so it can sometimes be
-#'  useful to set the \code{compare} argument to \code{"normal"}, which will
+#'  useful to set the `compare` argument to `"normal"`, which will
 #'  produce a Q-Q plot comparing standardized PIT values to the standard normal
 #'  distribution that can help see the (mis)calibration better for the extreme
 #'  values. However, in most cases we have found that the overlaid density plot
-#'  (\code{ppc_loo_pit_overlay}) function will provided a clearer picture of
+#'  (`ppc_loo_pit_overlay()`) function will provided a clearer picture of
 #'  calibration problems that the Q-Q plot.
 #' }
-#' \item{\code{ppc_loo_intervals, ppc_loo_ribbon}}{
-#'  Similar to \code{\link{ppc_intervals}} and \code{\link{ppc_ribbon}} but the
-#'  intervals are for the LOO predictive distribution.
+#' \item{`ppc_loo_intervals()`, `ppc_loo_ribbon()`}{
+#'  Similar to [ppc_intervals()] and [ppc_ribbon()] but the intervals are for
+#'  the LOO predictive distribution.
 #' }
 #' }
 #'
@@ -102,22 +101,21 @@ NULL
 
 #' @rdname PPC-loo
 #' @export
-#' @param pit For \code{ppc_loo_pit_overlay} and \code{ppc_loo_pit_qq},
-#'   optionally a vector of precomputed PIT values that can be specified instead
-#'   of \code{y}, \code{yrep}, and \code{lw} (these are all ignored if
-#'   \code{pit} is specified). If not specified the PIT values are computed
-#'   internally before plotting.
-#' @param samples For \code{ppc_loo_pit_overlay}, the number of data sets (each
-#'   the same size as \code{y}) to simulate from the standard uniform
+#' @param pit For `ppc_loo_pit_overlay()` and `ppc_loo_pit_qq()`, optionally a
+#'   vector of precomputed PIT values that can be specified instead of `y`,
+#'   `yrep`, and `lw` (these are all ignored if `pit` is specified). If not
+#'   specified the PIT values are computed internally before plotting.
+#' @param samples For `ppc_loo_pit_overlay()`, the number of data sets (each
+#'   the same size as `y`) to simulate from the standard uniform
 #'   distribution. The default is 100. The density estimate of each dataset is
 #'   plotted as a thin line in the plot, with the density estimate of the LOO
 #'   PITs overlaid as a thicker dark line.
-#' @param compare For \code{ppc_loo_pit_qq}, a string that can be either
-#'   \code{"uniform"} or \code{"normal"}. If \code{"uniform"} (the default) the
-#'   Q-Q plot compares computed PIT values to the standard uniform distribution.
-#'   If \code{compare="normal"}, the Q-Q plot compares standardized PIT values
-#'   to the standard normal distribution.
-#' @param trim Passed to \code{\link[ggplot2]{stat_density}}.
+#' @param compare For `ppc_loo_pit_qq()`, a string that can be either
+#'   `"uniform"` or `"normal"`. If `"uniform"` (the default) the Q-Q plot
+#'   compares computed PIT values to the standard uniform distribution. If
+#'   `compare="normal"`, the Q-Q plot compares standardized PIT values to the
+#'   standard normal distribution.
+#' @param trim Passed to [ggplot2::stat_density()].
 #' @template args-density-controls
 ppc_loo_pit_overlay <- function(y, yrep, lw, pit, samples = 100, ...,
                                 size = 0.25, alpha = 0.7, trim = FALSE,
@@ -259,31 +257,30 @@ ppc_loo_pit <-
 #' @rdname PPC-loo
 #' @export
 #' @template args-prob-prob_outer
-#' @param psis_object If using \pkg{loo} version \code{2.0.0} or greater, an
-#'   object returned by the \code{psis} function (or by the \code{loo} function
-#'   with argument \code{save_psis} set to \code{TRUE}).
-#' @param intervals For \code{ppc_loo_intervals} and \code{ppc_loo_ribbon},
+#' @param psis_object If using **loo** version `2.0.0` or greater, an
+#'   object returned by the `psis()` function (or by the `loo()` function
+#'   with argument `save_psis` set to `TRUE`).
+#' @param intervals For `ppc_loo_intervals()` and `ppc_loo_ribbon()`,
 #'   optionally a matrix of precomputed LOO predictive intervals
-#'   that can be specified instead of \code{yrep} and \code{lw} (these are both
-#'   ignored if \code{intervals} is specified). If not specified the intervals
-#'   are computed internally before plotting. If specified, \code{intervals}
+#'   that can be specified instead of `yrep` and `lw` (these are both
+#'   ignored if `intervals` is specified). If not specified the intervals
+#'   are computed internally before plotting. If specified, `intervals`
 #'   must be a matrix with number of rows equal to the number of data points and
 #'   five columns in the following order: lower outer interval, lower inner
 #'   interval, median (50\%), upper inner interval and upper outer interval
 #'   (column names are ignored).
-#' @param order For \code{ppc_loo_intervals}, a string indicating how to arrange
-#'   the plotted intervals. The default (\code{"index"}) is to plot them in the
-#'   order of the observations. The alternative (\code{"median"}) arranges them
+#' @param order For `ppc_loo_intervals()`, a string indicating how to arrange
+#'   the plotted intervals. The default (`"index"`) is to plot them in the
+#'   order of the observations. The alternative (`"median"`) arranges them
 #'   by median value from smallest (left) to largest (right).
-#' @param subset For \code{ppc_loo_intervals} and \code{ppc_loo_ribbon}, an
-#'   optional integer vector indicating which observations in \code{y} (and
-#'   \code{yrep}) to include. Dropping observations from \code{y} and
-#'   \code{yrep} manually before passing them to the plotting function will not
-#'   work because the dimensions will not match up with the dimensions of
-#'   \code{psis_object}, but if all of \code{y} and \code{yrep} are passed along
-#'   with \code{subset} then \pkg{bayesplot} can do the subsetting internally
-#'   for \code{y}, \code{yrep} \emph{and} \code{psis_object}.
-#'   See the \strong{Examples} section for a demonstration.
+#' @param subset For `ppc_loo_intervals()` and `ppc_loo_ribbon()`, an optional
+#'   integer vector indicating which observations in `y` (and `yrep`) to
+#'   include. Dropping observations from `y` and `yrep` manually before passing
+#'   them to the plotting function will not work because the dimensions will not
+#'   match up with the dimensions of `psis_object`, but if all of `y` and `yrep`
+#'   are passed along with `subset` then **bayesplot** can do the subsetting
+#'   internally for `y`, `yrep` *and* `psis_object`. See the **Examples**
+#'   section for a demonstration.
 #'
 ppc_loo_intervals <-
   function(y,

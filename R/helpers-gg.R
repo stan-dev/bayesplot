@@ -25,7 +25,7 @@ geom_ignore <- function(...) {
 #'
 #' The "area ridges" are for use in `mcmc_areas()`. The scale of 1 and the
 #' identity statistic prevent the ridges from overlapping.
-#' `geom_density_ridges2` draws closed polygons.
+#' `geom_density_ridges2()` draws closed polygons.
 #'
 #' @importFrom ggridges geom_density_ridges geom_density_ridges2
 #' @noRd

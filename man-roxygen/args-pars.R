@@ -5,4 +5,3 @@
 #'   specified the same way as in [dplyr::select(...)][dplyr::select] and
 #'   similar functions. Examples of using `pars` in this way can be found on the
 #'   [Tidy parameter selection][tidy-params] page.
-#' @md

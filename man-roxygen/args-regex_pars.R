@@ -3,4 +3,3 @@
 #'   `pars`. When using `pars` for tidy parameter selection, the `regex_pars`
 #'   argument is ignored since [select helpers][tidyselect::select_helpers]
 #'   perform a similar function.
-#' @md

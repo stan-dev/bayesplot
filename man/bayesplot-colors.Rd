@@ -5,7 +5,7 @@
 \alias{color_scheme_set}
 \alias{color_scheme_get}
 \alias{color_scheme_view}
-\title{Set, get, or view color schemes}
+\title{Set, get, or view \strong{bayesplot} color schemes}
 \usage{
 color_scheme_set(scheme = "blue")
 
@@ -150,6 +150,6 @@ ppc_stat(y, yrep, stat = "var") + legend_none()
 
 }
 \seealso{
-\code{\link{theme_default}} for the default ggplot theme used by
-  \pkg{bayesplot} and \code{\link{bayesplot_theme_set}} to change it.
+\code{\link[=theme_default]{theme_default()}} for the default ggplot theme used by
+\strong{bayesplot} and \code{\link[=bayesplot_theme_set]{bayesplot_theme_set()}} to change it.
 }
