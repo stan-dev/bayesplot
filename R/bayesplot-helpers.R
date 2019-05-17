@@ -1,111 +1,104 @@
 #' Convenience functions for adding or changing plot details
 #'
 #' Convenience functions for adding to (and changing details of) ggplot objects
-#' (many of the objects returned by \pkg{bayesplot} functions). See the
-#' \strong{Examples} section, below.
+#' (many of the objects returned by **bayesplot** functions). See the
+#' **Examples** section, below.
 #'
 #' @name bayesplot-helpers
 #'
-#' @param ... For the various \code{vline_}, \code{hline_}, and \code{abline_}
-#'   functions, \code{...} is passed to \code{\link[ggplot2]{geom_vline}},
-#'   \code{\link[ggplot2]{geom_hline}}, and \code{\link[ggplot2]{geom_abline}},
+#' @param ... For the various `vline_`, `hline_`, and `abline_`
+#'   functions, `...` is passed to [ggplot2::geom_vline()],
+#'   [ggplot2::geom_hline()], and [ggplot2::geom_abline()],
 #'   respectively, to control the appearance of the line(s).
 #'
-#'   For functions ending in \code{_bg}, \code{...} is passed to
-#'   \code{\link[ggplot2]{element_rect}}.
+#'   For functions ending in `_bg`, `...` is passed to
+#'   [ggplot2::element_rect()].
 #'
-#'   For functions ending in \code{_text} or \code{_title}, \code{...} is passed
-#'   to \code{\link[ggplot2]{element_text}}.
+#'   For functions ending in `_text` or `_title`, `...` is passed
+#'   to [ggplot2::element_text()].
 #'
-#'   For \code{xaxis_ticks} and \code{yaxis_ticks}, \code{...} is passed to
-#'   \code{\link[ggplot2]{element_line}}.
+#'   For `xaxis_ticks` and `yaxis_ticks`, `...` is passed to
+#'   [ggplot2::element_line()].
 #'
-#'   For \code{overlay_function}, \code{...} is passed to
-#'   \code{\link[ggplot2]{stat_function}}.
+#'   For `overlay_function`, `...` is passed to
+#'   [ggplot2::stat_function()].
 #'
 #' @return
-#' A \pkg{ggplot2} layer or \code{\link[ggplot2]{theme}} object that can be
+#' A **ggplot2** layer or [ggplot2::theme()] object that can be
 #' added to existing ggplot objects, like those created by many of the
-#' \pkg{bayesplot} plotting functions. See the \strong{Details} section.
+#' **bayesplot** plotting functions. See the **Details** section.
 #'
 #' @details
 #' \subsection{Add vertical, horizontal, and diagonal lines to plots}{
-#' \itemize{
-#' \item \code{vline_at} and \code{hline_at} return an object created by either
-#' \code{geom_vline} or \code{geom_hline} that can be added to a ggplot object
-#' to draw a vertical or horizontal line (at one or several values). If
-#' \code{fun} is missing then the lines are drawn at the values in \code{v}. If
-#' \code{fun} is specified then the lines are drawn at the values returned by
-#' \code{fun(v)}.
+#' * `vline_at()` and `hline_at()` return an object created by either
+#'   [ggplot2::geom_vline()] or [ggplot2::geom_hline()] that can be added to a
+#'   ggplot object to draw a vertical or horizontal line (at one or several
+#'   values). If `fun` is missing then the lines are drawn at the values in `v`.
+#'   If `fun` is specified then the lines are drawn at the values returned by `fun(v)`.
 #'
-#' \item \code{vline_0} and \code{hline_0} are wrappers for \code{vline_at} and
-#' \code{hline_at} with \code{v = 0} and \code{fun} missing.
+#' * `vline_0()` and `hline_0()` are wrappers for `vline_at()` and `hline_at()`
+#'   with `v = 0` and `fun` missing.
 #'
-#' \item \code{abline_01} is a wrapper for \code{geom_abline} with the intercept
-#' set to 0 and the slope set to 1.
+#' * `abline_01()` is a wrapper for [ggplot2::geom_abline()] with the intercept
+#'   set to `0` and the slope set to `1`.
 #'
-#' \item \code{lbub} returns a \emph{function} that takes a single argument
-#' \code{x} and returns the lower and upper bounds (\code{lb}, \code{ub}) of the
-#' \code{100*p}\% central interval of \code{x}, as well as the median (if
-#' \code{med} is \code{TRUE}).
+#' * `lbub()` returns a _function_ that takes a single argument `x` and returns
+#'   the lower and upper bounds (`lb`, `ub`) of the `100*p`\% central interval
+#'   of `x`, as well as the median (if `med=TRUE`).
 #' }
-#' }
+#'
 #' \subsection{Control appearance of facet strips}{
-#' \itemize{
-#' \item \code{facet_text} and \code{facet_bg} return ggplot2 theme objects that
-#' can be added to an existing plot (ggplot object) to format the text and the
-#' background for the facet strips.
+#' * `facet_text()` returns ggplot2 theme objects that can be added to an
+#'    existing plot (ggplot object) to format the text in facet strips.
+#'
+#' * `facet_bg()` can be added to a plot to change the background of the facet strips.
 #' }
-#' }
+#'
 #' \subsection{Move legend, remove legend, or style the legend text}{
-#' \itemize{
-#' \item \code{legend_move} and \code{legend_none} return a ggplot2 theme object
-#' that can be added to an existing plot (ggplot object) in order to change the
-#' position of the legend (\code{legend_move}) or remove the legend
-#' (\code{legend_none}). \code{legend_text} works much like \code{facet_text},
-#' except it controls the legend text.
+#' * `legend_move()` and `legend_none()` return a ggplot2 theme object that can
+#'   be added to an existing plot (ggplot object) in order to change the
+#'   position of the legend or remove it.
+#'
+#' * `legend_text()` works much like `facet_text()` but for the legend.
 #' }
-#' }
+#'
 #' \subsection{Control appearance of \eqn{x}-axis and \eqn{y}-axis features}{
-#' \itemize{
-#' \item \code{xaxis_title} and \code{yaxis_title} return a ggplot2 theme object
-#' that can be added to an existing plot (ggplot object) in order to toggle or
-#' format the titles displayed on the \code{x} or \code{y} axis. (To change
-#' the titles themselves use \code{\link[ggplot2]{labs}}.)
+#' * `xaxis_title()` and `yaxis_title()` return a ggplot2 theme object
+#'   that can be added to an existing plot (ggplot object) in order to toggle or
+#'   format the titles displayed on the `x` or `y` axis. (To change
+#'   the titles themselves use [ggplot2::labs()].)
 #'
-#' \item \code{xaxis_text} and \code{yaxis_text} return a ggplot2 theme object
-#' that can be added to an existing plot (ggplot object) in order to toggle or
-#' format the text displayed on the \code{x} or \code{y} axis (e.g. tick
-#' labels).
+#' * `xaxis_text()` and `yaxis_text()` return a ggplot2 theme object
+#'   that can be added to an existing plot (ggplot object) in order to toggle or
+#'   format the text displayed on the `x` or `y` axis (e.g. tick
+#'   labels).
 #'
-#' \item \code{xaxis_ticks} and \code{yaxis_ticks} return a ggplot2 theme object
-#' that can be added to an existing plot (ggplot object) to change the
-#' appearance of the axis tick marks.
+#' * `xaxis_ticks()` and `yaxis_ticks()` return a ggplot2 theme object
+#'   that can be added to an existing plot (ggplot object) to change the
+#'   appearance of the axis tick marks.
 #' }
-#' }
+#'
 #' \subsection{Customize plot background}{
-#' \itemize{
-#' \item \code{plot_bg} returns a ggplot2 theme object that can be added to an
-#' existing plot (ggplot object) to format the background of the \emph{entire} plot.
-#' \item \code{panel_bg} returns a ggplot2 theme object that can be added to an
-#' existing plot (ggplot object) to format the background of the just the
-#' plotting area.
-#' \item \code{grid_lines} returns a ggplot2 theme object that can be added to
-#' an existing plot (ggplot object) to add grid lines to the plot background.
-#' }
-#' }
-#' \subsection{Superimpose a function on an existing plot}{
-#' \itemize{
-#' \item \code{overlay_function} is a simple wrapper for
-#' \code{\link[ggplot2]{stat_function}} but with the \code{inherit.aes} argument
-#' fixed to \code{FALSE}. Fixing \code{inherit.aes=FALSE} will avoid potential
-#' errors due to the \code{\link[ggplot2]{aes}}thetic mapping used by certain
-#' \pkg{bayesplot} plotting functions).
-#' }
+#' * `plot_bg()` returns a ggplot2 theme object that can be added to an
+#'   existing plot (ggplot object) to format the background of the *entire* plot.
+#'
+#' * `panel_bg()` returns a ggplot2 theme object that can be added to an
+#'   existing plot (ggplot object) to format the background of the just the
+#'   plotting area.
+#'
+#' * `grid_lines()` returns a ggplot2 theme object that can be added to
+#'   an existing plot (ggplot object) to add grid lines to the plot background.
 #' }
 #'
-#' @seealso \code{\link{theme_default}} for the default ggplot theme used by
-#'   \pkg{bayesplot}.
+#' \subsection{Superimpose a function on an existing plot}{
+#' * `overlay_function()` is a simple wrapper for [ggplot2::stat_function()] but
+#'   with the `inherit.aes` argument fixed to `FALSE`. Fixing `inherit.aes=FALSE`
+#'   will avoid potential errors due to the [ggplot2::aes()]thetic mapping used by
+#'   certain **bayesplot** plotting functions.
+#' }
+#'
+#' @seealso [theme_default()] for the default ggplot theme used by
+#'   **bayesplot**.
 #'
 #' @examples
 #' color_scheme_set("gray")
@@ -247,11 +240,11 @@ NULL
 #' @export
 #' @param v Either a numeric vector specifying the value(s) at which to
 #'   draw the vertical or horizontal line(s), or an object of any type to use as
-#'   the first argument to \code{fun}.
+#'   the first argument to `fun`.
 #' @param fun A function, or the name of a function, that returns a numeric
 #'   vector.
 #' @param na.rm A logical scalar passed to the appropriate geom (e.g.
-#'   \code{\link[ggplot2]{geom_vline}}). The default is \code{TRUE}.
+#'   [ggplot2::geom_vline()]). The default is `TRUE`.
 #'
 vline_at <- function(v, fun, ..., na.rm = TRUE) {
   geom_vline(xintercept = calc_v(v, fun),
@@ -298,7 +291,7 @@ abline_01 <- function(..., na.rm = TRUE) {
 # intervals ---------------------------------------------------------------
 #' @rdname bayesplot-helpers
 #' @export
-#' @param p The probability mass (in [0,1]) to include in the interval.
+#' @param p The probability mass (in `[0,1]`) to include in the interval.
 #' @param med Should the median also be included in addition to the lower
 #' and upper bounds of the interval?
 #'
@@ -331,9 +324,9 @@ calc_intervals <- function(x, p, med = TRUE, ...) {
 #' @export
 #' @param position The position of the legend. Either a numeric vector (of
 #'   length 2) giving the relative coordinates (between 0 and 1) for the legend,
-#'   or a string among \code{"right"}, \code{"left"}, \code{"top"},
-#'   \code{"bottom"}. Using \code{position = "none"} is also allowed and is
-#'   equivalent to using \code{legend_none()}.
+#'   or a string among `"right"`, `"left"`, `"top"`,
+#'   `"bottom"`. Using `position = "none"` is also allowed and is
+#'   equivalent to using `legend_none()`.
 #'
 legend_move <- function(position = "right") {
   theme(legend.position = position)
@@ -402,12 +395,11 @@ yaxis_ticks <- function(on = TRUE, ...) {
 # facet stuff -------------------------------------------------------------
 #' @rdname bayesplot-helpers
 #' @export
-#' @param on For functions modifying ggplot \link[ggplot2]{theme} elements, set
-#'   \code{on=FALSE} to set the element to \code{\link[ggplot2]{element_blank}}.
-#'   For example, facet text can be removed by adding
-#'   \code{facet_text(on=FALSE)}, or simply \code{facet_text(FALSE)} to a ggplot
-#'   object. If \code{on=TRUE} (the default), then \code{...} can be used to
-#'   customize the appearance of the theme element.
+#' @param on For functions modifying ggplot [theme][ggplot2::theme] elements,
+#'   set `on=FALSE` to set the element to [ggplot2::element_blank()]. For
+#'   example, facet text can be removed by adding `facet_text(on=FALSE)`, or
+#'   simply `facet_text(FALSE)` to a ggplot object. If `on=TRUE` (the default),
+#'   then `...` can be used to customize the appearance of the theme element.
 #'
 facet_text <- function(on = TRUE, ...) {
   theme(strip.text = if (on)
@@ -445,7 +437,7 @@ plot_bg <- function(on = TRUE, ...) {
 
 #' @rdname bayesplot-helpers
 #' @export
-#' @param color,size Passed to \code{\link[ggplot2]{element_line}}.
+#' @param color,size Passed to [ggplot2::element_line()].
 #'
 grid_lines <- function(color = "gray50", size = 0.2) {
   theme(

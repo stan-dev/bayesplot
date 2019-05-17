@@ -1,7 +1,7 @@
 #' Plot interval estimates from MCMC draws
 #'
 #' Plot central (quantile-based) posterior interval estimates from MCMC draws.
-#' See the \strong{Plot Descriptions} section, below, for details.
+#' See the **Plot Descriptions** section, below, for details.
 #'
 #' @name MCMC-intervals
 #' @family MCMC
@@ -12,41 +12,39 @@
 #' @template args-transformations
 #' @param ... Currently unused.
 #' @param prob The probability mass to include in the inner interval (for
-#'   \code{mcmc_intervals}) or in the shaded region (for \code{mcmc_areas}). The
-#'   default is \code{0.5} (50\% interval) and \code{1} for
-#'   \code{mcmc_areas_ridges}.
+#'   `mcmc_intervals()`) or in the shaded region (for `mcmc_areas()`). The
+#'   default is `0.5` (50\% interval) and `1` for `mcmc_areas_ridges()`.
 #' @param prob_outer The probability mass to include in the outer interval. The
-#'   default is \code{0.9} for \code{mcmc_intervals} (90\% interval) and
-#'   \code{1} for \code{mcmc_areas} and for \code{mcmc_areas_ridges}.
-#' @param area_method How to constrain the areas in \code{mcmc_areas}. The
-#'   default is \code{"equal area"}, setting the density curves to have the same
-#'   area. With \code{"equal height"}, the curves are scaled so that the highest
-#'   points across the curves are the same height. The method \code{"scaled
-#'   height"} tries a compromise between to the two: the heights from
-#'   \code{"equal height"} are scaled using \code{height*sqrt(height)}
-#' @param point_est The point estimate to show. Either \code{"median"} (the
-#'   default), \code{"mean"}, or \code{"none"}.
-#' @param rhat An optional numeric vector of \eqn{\hat{R}}{Rhat} estimates, with
-#'   one element per parameter included in \code{x}. If \code{rhat} is provided,
-#'   the intervals/areas and point estimates in the resulting plot are colored
-#'   based on \eqn{\hat{R}}{Rhat} value. See \code{\link{rhat}} for methods for
-#'   extracting \eqn{\hat{R}}{Rhat} estimates.
+#'   default is `0.9` for `mcmc_intervals()` (90\% interval) and
+#'   `1` for `mcmc_areas()` and for `mcmc_areas_ridges()`.
+#' @param area_method How to constrain the areas in `mcmc_areas()`. The
+#'   default is `"equal area"`, setting the density curves to have the same
+#'   area. With `"equal height"`, the curves are scaled so that the highest
+#'   points across the curves are the same height. The method `"scaled
+#'   height"` tries a compromise between to the two: the heights from
+#'   `"equal height"` are scaled using `height*sqrt(height)`
+#' @param point_est The point estimate to show. Either `"median"` (the
+#'   default), `"mean"`, or `"none"`.
+#' @param rhat An optional numeric vector of R-hat estimates, with one element
+#'   per parameter included in `x`. If `rhat` is provided, the intervals/areas
+#'   and point estimates in the resulting plot are colored based on R-hat value.
+#'   See [rhat()] for methods for extracting R-hat estimates.
 #' @template args-density-controls
 #'
 #' @template return-ggplot-or-data
 #'
 #' @section Plot Descriptions:
 #' \describe{
-#'   \item{\code{mcmc_intervals}}{
+#'   \item{`mcmc_intervals()`}{
 #'    Plots of uncertainty intervals computed from posterior draws with all
 #'    chains merged.
 #'   }
-#'   \item{\code{mcmc_areas}}{
+#'   \item{`mcmc_areas()`}{
 #'    Density plots computed from posterior draws with all chains merged,
 #'    with uncertainty intervals shown as shaded areas under the curves.
 #'   }
-#'   \item{\code{mcmc_areas_ridges}}{
-#'    Density plot, as in \code{mcmc_areas}, but drawn with overlapping
+#'   \item{`mcmc_areas_ridges()`}{
+#'    Density plot, as in `mcmc_areas()`, but drawn with overlapping
 #'    ridgelines. This plot provides a compact display of (hierarchically)
 #'    related distributions.
 #'   }

@@ -1,2 +1,2 @@
-#' @seealso \code{\link{bayesplot-colors}} to set or view the color scheme used
+#' @seealso [bayesplot-colors] to set or view the color scheme used
 #'   for plotting.

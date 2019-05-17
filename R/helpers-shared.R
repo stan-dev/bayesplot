@@ -1,9 +1,9 @@
-#' Check for suggested package (requireNamespace) and throw error if necessary
+#' Check for suggested package with `requireNamespace` and throw error if necessary
 #'
 #' @noRd
 #' @param pkg Package name as a string.
 #' @param min_version Optionally, a minimum version number as a string.
-#' @return TRUE, invisibly, if no error is thrown.
+#' @return `TRUE`, invisibly, if no error is thrown.
 #'
 suggested_package <- function(pkg, min_version = NULL) {
   stopifnot(length(pkg) == 1, is.character(pkg))

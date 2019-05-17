@@ -1,89 +1,81 @@
 #' Diagnostic plots for the No-U-Turn-Sampler (NUTS)
 #'
 #' Diagnostic plots for the No-U-Turn-Sampler (NUTS), the default MCMC algorithm
-#' used by Stan. See the \strong{Plot Descriptions} section, below.
+#' used by [Stan](https://mc-stan.org). See the **Plot Descriptions** section,
+#' below.
 #'
 #' @name MCMC-nuts
 #' @aliases NUTS
 #' @family MCMC
 #'
 #' @param x A molten data frame of NUTS sampler parameters, either created by
-#'   \code{\link{nuts_params}} or in the same form as the object returned by
-#'   \code{\link{nuts_params}}.
+#'   [nuts_params()] or in the same form as the object returned by
+#'   [nuts_params()].
 #' @param lp A molten data frame of draws of the log-posterior or, more
 #'   commonly, of a quantity equal to the log-posterior up to a constant.
-#'   \code{lp} should either be created via \code{\link{log_posterior}} or be an
+#'   `lp` should either be created via [log_posterior()] or be an
 #'   object with the same form as the object returned by
-#'   \code{\link{log_posterior}}.
+#'   [log_posterior()].
 #' @param chain A positive integer for selecting a particular chain. The default
-#'   (\code{NULL}) is to merge the chains before plotting. If \code{chain = k}
-#'   then the plot for chain \code{k} is overlaid (in a darker shade but with
-#'   transparency) on top of the plot for all chains. The \code{chain} argument
-#'   is not used by \code{mcmc_nuts_energy}.
+#'   (`NULL`) is to merge the chains before plotting. If `chain = k`
+#'   then the plot for chain `k` is overlaid (in a darker shade but with
+#'   transparency) on top of the plot for all chains. The `chain` argument
+#'   is not used by `mcmc_nuts_energy()`.
 #' @param ... Currently ignored.
 #'
 #' @return A gtable object (the result of calling
-#'   \code{\link[gridExtra]{arrangeGrob}}) created from several ggplot objects,
-#'   except for \code{mcmc_nuts_energy}, which returns a ggplot object.
+#'   [gridExtra::arrangeGrob()]) created from several ggplot objects,
+#'   except for `mcmc_nuts_energy()`, which returns a ggplot object.
 #'
 #' @section Quick Definitions:
 #' For more details see Stan Development Team (2016) and Betancourt (2017).
-#' \itemize{
-#'   \item \code{accept_stat__}: the average acceptance probabilities of all
+#' * `accept_stat__`: the average acceptance probabilities of all
 #'   possible samples in the proposed tree.
-#'   \item \code{divergent__}: the number of leapfrog transitions with diverging
+#' * `divergent__`: the number of leapfrog transitions with diverging
 #'   error. Because NUTS terminates at the first divergence this will be either
 #'   0 or 1 for each iteration.
-#'   \item \code{stepsize__}: the step size used by NUTS in its Hamiltonian
+#' * `stepsize__`: the step size used by NUTS in its Hamiltonian
 #'   simulation.
-#'   \item \code{treedepth__}: the depth of tree used by NUTS, which is the log
+#' * `treedepth__`: the depth of tree used by NUTS, which is the log
 #'   (base 2) of the number of leapfrog steps taken during the Hamiltonian
 #'   simulation.
-#'   \item \code{energy__}: the value of the Hamiltonian (up to an additive
+#' * `energy__`: the value of the Hamiltonian (up to an additive
 #'   constant) at each iteration.
-#' }
 #'
 #' @section Plot Descriptions:
 #' \describe{
-#'   \item{\code{mcmc_nuts_acceptance}}{
+#'   \item{`mcmc_nuts_acceptance()`}{
 #'   Three plots:
-#'   \itemize{
-#'    \item Histogram of \code{accept_stat__} with vertical lines indicating the
-#'    mean (solid line) and median (dashed line).
-#'    \item Histogram of \code{lp__} with vertical
-#'    lines indicating the mean (solid line) and median (dashed line).
-#'    \item Scatterplot of \code{accept_stat__} vs \code{lp__}.
-#'    }
+#'   * Histogram of `accept_stat__` with vertical lines indicating the
+#'     mean (solid line) and median (dashed line).
+#'   * Histogram of `lp__` with vertical
+#'     lines indicating the mean (solid line) and median (dashed line).
+#'   * Scatterplot of `accept_stat__` vs `lp__`.
 #'   }
-#'   \item{\code{mcmc_nuts_divergence}}{
+#'
+#'   \item{`mcmc_nuts_divergence()`}{
 #'   Two plots:
-#'   \itemize{
-#'    \item Violin plots of \code{lp__|divergent__=1} and
-#'      \code{lp__|divergent__=0}.
-#'    \item Violin plots of \code{accept_stat__|divergent__=1} and
-#'      \code{accept_stat__|divergent__=0}.
-#'    }
+#'   * Violin plots of `lp__|divergent__=1` and `lp__|divergent__=0`.
+#'   * Violin plots of `accept_stat__|divergent__=1` and
+#'     `accept_stat__|divergent__=0`.
 #'   }
-#'   \item{\code{mcmc_nuts_stepsize}}{
+#'
+#'   \item{`mcmc_nuts_stepsize()`}{
 #'   Two plots:
-#'   \itemize{
-#'    \item Violin plots of \code{lp__} by chain ordered by
-#'    \code{stepsize__} value.
-#'    \item Violin plots of \code{accept_stat__} by chain ordered by
-#'    \code{stepsize__} value.
-#'    }
+#'   * Violin plots of `lp__` by chain ordered by `stepsize__` value.
+#'   * Violin plots of `accept_stat__` by chain ordered by `stepsize__` value.
 #'   }
-#'   \item{\code{mcmc_nuts_treedepth}}{
+#'
+#'   \item{`mcmc_nuts_treedepth()`}{
 #'   Three plots:
-#'   \itemize{
-#'    \item Violin plots of \code{lp__} by value of \code{treedepth__}.
-#'    \item Violin plots of \code{accept_stat__} by value of \code{treedepth__}.
-#'    \item Histogram of \code{treedepth__}.
-#'    }
+#'   * Violin plots of `lp__` by value of `treedepth__`.
+#'   * Violin plots of `accept_stat__` by value of `treedepth__`.
+#'   * Histogram of `treedepth__`.
 #'   }
-#'   \item{\code{mcmc_nuts_energy}}{
-#'   Overlaid histograms showing \code{energy__} vs the change in
-#'   \code{energy__}. See Betancourt (2016) for details.
+#'
+#'   \item{`mcmc_nuts_energy()`}{
+#'   Overlaid histograms showing `energy__` vs the change in
+#'   `energy__`. See Betancourt (2016) for details.
 #'   }
 #' }
 #'
@@ -92,22 +84,18 @@
 #' @template reference-stan-manual
 #'
 #' @seealso
-#' \itemize{
-#' \item The \emph{Visual MCMC Diagnostics} vignette.
-#' \item Several other plotting functions in the \pkg{bayesplot} package
-#' are not NUTS-specific but take optional extra arguments if the model was fit
-#' using NUTS:
-#' \itemize{
-#'  \item \code{\link{mcmc_trace}}: show divergences as tick marks below the
-#'  trace plot.
-#'  \item \code{\link{mcmc_parcoord}}: change the color/size/transparency of
-#'  lines correspondending to divergences.
-#'  \item \code{\link{mcmc_scatter}}: change the color/size/shape of points
-#'  corresponding to divergences.
-#'  \item \code{\link{mcmc_pairs}}: change the color/size/shape of points
-#'  corresponding divergences and/or max treedepth saturation.
-#'  }
-#' }
+#' * The [Visual MCMC Diagnostics](https://mc-stan.org/bayesplot/articles/visual-mcmc-diagnostics.html)
+#'   vignette.
+#' * Several other plotting functions are not NUTS-specific but take optional
+#'   extra arguments if the model was fit using NUTS:
+#'   * [mcmc_trace()]: show divergences as tick marks below the
+#'     trace plot.
+#'   * [mcmc_parcoord()]: change the color/size/transparency of lines
+#'     corresponding to divergences.
+#'   * [mcmc_scatter()]: change the color/size/shape of points
+#'     corresponding to divergences.
+#'   * [mcmc_pairs()]: change the color/size/shape of points
+#'     corresponding divergences and/or max treedepth saturation.
 #'
 #' @examples
 #' \dontrun{
@@ -139,8 +127,8 @@ NULL
 
 #' @rdname MCMC-nuts
 #' @export
-#' @param binwidth An optional value passed to
-#'   \code{\link[ggplot2]{geom_histogram}} to override the default binwidth.
+#' @param binwidth An optional value passed to [ggplot2::geom_histogram()] to
+#'   override the default binwidth.
 #'
 mcmc_nuts_acceptance <-
   function(x,
@@ -433,10 +421,10 @@ mcmc_nuts_treedepth <- function(x, lp, chain = NULL, ...) {
 
 #' @rdname MCMC-nuts
 #' @export
-#' @param alpha For \code{mcmc_nuts_energy} only, the transparency (alpha) level
-#'   in [0,1] used for the overlaid histogram.
-#' @param merge_chains For \code{mcmc_nuts_energy} only, should all chains be
-#'   merged or displayed separately? The default is \code{FALSE}, i.e., to show
+#' @param alpha For `mcmc_nuts_energy()` only, the transparency (alpha) level
+#'   in `[0,1]` used for the overlaid histogram.
+#' @param merge_chains For `mcmc_nuts_energy()` only, should all chains be
+#'   merged or displayed separately? The default is `FALSE`, i.e., to show
 #'   the chains separately.
 #'
 mcmc_nuts_energy <-

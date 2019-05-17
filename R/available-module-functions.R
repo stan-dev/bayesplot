@@ -1,12 +1,12 @@
 #' Get or view the names of available plotting functions
 #'
 #' @export
-#' @param pattern,fixed,invert Passed to \code{\link[base]{grep}}.
+#' @param pattern,fixed,invert Passed to [base::grep()].
 #' @return A possibly empty character vector of function names with several
-#'   additional attributes (for use by a custom print method). If \code{pattern}
+#'   additional attributes (for use by a custom print method). If `pattern`
 #'   is missing then the returned object contains the names of all available
-#'   plotting functions in the \link{MCMC} or \link{PPC} module, depending on
-#'   which function is called. If \code{pattern} is specified then a subset of
+#'   plotting functions in the [MCMC] or [PPC] module, depending on
+#'   which function is called. If `pattern` is specified then a subset of
 #'   function names is returned.
 #'
 #' @examples
