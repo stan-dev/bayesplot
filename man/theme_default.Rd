@@ -10,8 +10,8 @@ theme_default(base_size = getOption("bayesplot.base_size", 12),
 \arguments{
 \item{base_size, base_family}{Base font size and family (passed to
 \code{\link[ggplot2:theme_bw]{ggplot2::theme_bw()}}). It is possible to set \code{"bayesplot.base_size"} and
-\code{"bayesplot.base_family"} via \code{\link[=options]{options()}} to change the defaults, w
-hich are \code{12} and \code{"serif"}, respectively.}
+\code{"bayesplot.base_family"} via \code{\link[=options]{options()}} to change the defaults, which are
+\code{12} and \code{"serif"}, respectively.}
 }
 \value{
 A ggplot \link[ggplot2:theme]{theme} object.
@@ -19,7 +19,8 @@ A ggplot \link[ggplot2:theme]{theme} object.
 \description{
 The \code{\link[=theme_default]{theme_default()}} function returns the default ggplot
 \link[ggplot2:theme]{theme} used by the \strong{bayesplot} plotting functions. See
-\code{\link[=bayesplot_theme_set]{bayesplot_theme_set()}} for details on setting and updating the plotting theme.
+\code{\link[=bayesplot_theme_set]{bayesplot_theme_set()}} for details on setting and updating the plotting
+theme.
 }
 \examples{
 class(theme_default())

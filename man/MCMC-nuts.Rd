@@ -57,7 +57,8 @@ except for \code{mcmc_nuts_energy()}, which returns a ggplot object.
 }
 \description{
 Diagnostic plots for the No-U-Turn-Sampler (NUTS), the default MCMC algorithm
-used by \href{https://mc-stan.org}{Stan}. See the \strong{Plot Descriptions} section, below.
+used by \href{https://mc-stan.org}{Stan}. See the \strong{Plot Descriptions} section,
+below.
 }
 \section{Quick Definitions}{
 
@@ -96,7 +97,8 @@ lines indicating the mean (solid line) and median (dashed line).
 Two plots:
 \itemize{
 \item Violin plots of \code{lp__|divergent__=1} and \code{lp__|divergent__=0}.
-\item Violin plots of \code{accept_stat__|divergent__=1} and \code{accept_stat__|divergent__=0}.
+\item Violin plots of \code{accept_stat__|divergent__=1} and
+\code{accept_stat__|divergent__=0}.
 }
 }
 
@@ -175,7 +177,7 @@ extra arguments if the model was fit using NUTS:
 \item \code{\link[=mcmc_trace]{mcmc_trace()}}: show divergences as tick marks below the
 trace plot.
 \item \code{\link[=mcmc_parcoord]{mcmc_parcoord()}}: change the color/size/transparency of lines
-correspondending to divergences.
+corresponding to divergences.
 \item \code{\link[=mcmc_scatter]{mcmc_scatter()}}: change the color/size/shape of points
 corresponding to divergences.
 \item \code{\link[=mcmc_pairs]{mcmc_pairs()}}: change the color/size/shape of points

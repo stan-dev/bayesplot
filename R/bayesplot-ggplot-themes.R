@@ -2,13 +2,14 @@
 #'
 #' The [theme_default()] function returns the default ggplot
 #' [theme][ggplot2::theme] used by the **bayesplot** plotting functions. See
-#' [bayesplot_theme_set()] for details on setting and updating the plotting theme.
+#' [bayesplot_theme_set()] for details on setting and updating the plotting
+#' theme.
 #'
 #' @export
 #' @param base_size,base_family Base font size and family (passed to
 #'   [ggplot2::theme_bw()]). It is possible to set `"bayesplot.base_size"` and
-#'   `"bayesplot.base_family"` via [options()] to change the defaults, w
-#'   hich are `12` and `"serif"`, respectively.
+#'   `"bayesplot.base_family"` via [options()] to change the defaults, which are
+#'   `12` and `"serif"`, respectively.
 #' @return A ggplot [theme][ggplot2::theme] object.
 #'
 #' @seealso [bayesplot_theme_set()] to change the ggplot theme.

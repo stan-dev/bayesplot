@@ -1,7 +1,8 @@
 #' Diagnostic plots for the No-U-Turn-Sampler (NUTS)
 #'
 #' Diagnostic plots for the No-U-Turn-Sampler (NUTS), the default MCMC algorithm
-#' used by [Stan](https://mc-stan.org). See the **Plot Descriptions** section, below.
+#' used by [Stan](https://mc-stan.org). See the **Plot Descriptions** section,
+#' below.
 #'
 #' @name MCMC-nuts
 #' @aliases NUTS
@@ -55,7 +56,8 @@
 #'   \item{`mcmc_nuts_divergence()`}{
 #'   Two plots:
 #'   * Violin plots of `lp__|divergent__=1` and `lp__|divergent__=0`.
-#'   * Violin plots of `accept_stat__|divergent__=1` and `accept_stat__|divergent__=0`.
+#'   * Violin plots of `accept_stat__|divergent__=1` and
+#'     `accept_stat__|divergent__=0`.
 #'   }
 #'
 #'   \item{`mcmc_nuts_stepsize()`}{
@@ -89,7 +91,7 @@
 #'   * [mcmc_trace()]: show divergences as tick marks below the
 #'     trace plot.
 #'   * [mcmc_parcoord()]: change the color/size/transparency of lines
-#'     correspondending to divergences.
+#'     corresponding to divergences.
 #'   * [mcmc_scatter()]: change the color/size/shape of points
 #'     corresponding to divergences.
 #'   * [mcmc_pairs()]: change the color/size/shape of points
