@@ -55,7 +55,7 @@ neff_ratio(object, ...)
 whether to include warmup draws, if applicable.}
 
 \item{pars}{An optional character vector of parameter names. For
-\code{nuts_params} these will be NUTS sampler parameter names rather than
+\code{nuts_params()} these will be NUTS sampler parameter names rather than
 model parameters. If \code{pars} is omitted all parameters are included.}
 
 \item{regex_pars}{An optional \link[base:grep]{regular expression} to use for
@@ -66,19 +66,17 @@ perform a similar function.}
 }
 \value{
 \describe{
-\item{\code{log_posterior}}{
-\code{log_posterior} methods return a molten data frame (see
-\code{\link[reshape2]{melt}}). The data frame should have columns
-\code{"Iteration"} (integer), \code{"Chain"} (integer), and \code{"Value"}
-(numeric). See \strong{Examples}, below.
-}
-\item{\code{nuts_params}}{
-\code{nuts_params} methods return a molten data frame (see
-\code{\link[reshape2]{melt}}). The data frame should have columns
-\code{"Parameter"} (factor), \code{"Iteration"} (integer), \code{"Chain"}
+\item{\code{log_posterior()}}{
+\code{log_posterior()} methods return a molten data frame (see \code{\link[reshape2:melt]{reshape2::melt()}}).
+The data frame should have columns \code{"Iteration"} (integer), \code{"Chain"}
 (integer), and \code{"Value"} (numeric). See \strong{Examples}, below.
 }
-\item{\code{rhat}, \code{neff_ratio}}{
+\item{\code{nuts_params()}}{
+\code{nuts_params()} methods return a molten data frame (see \code{\link[reshape2:melt]{reshape2::melt()}}).
+The data frame should have columns \code{"Parameter"} (factor), \code{"Iteration"}
+(integer), \code{"Chain"} (integer), and \code{"Value"} (numeric). See \strong{Examples}, below.
+}
+\item{\code{rhat()}, \code{neff_ratio()}}{
 Methods return (named) vectors.
 }
 }
@@ -86,7 +84,7 @@ Methods return (named) vectors.
 \description{
 Generics and methods for extracting quantities needed for plotting from
 various types of model objects. Currently methods are only provided for
-stanfit (\pkg{rstan}) and stanreg (\pkg{rstanarm}) objects, but adding new
+stanfit (\strong{rstan}) and stanreg (\strong{stanreg}) objects, but adding new
 methods should be relatively straightforward.
 }
 \examples{
@@ -105,5 +103,5 @@ tail(lp)
 
 }
 \seealso{
-\code{\link{MCMC-nuts}}, \code{\link{MCMC-diagnostics}}
+\link{MCMC-nuts}, \link{MCMC-diagnostics}
 }

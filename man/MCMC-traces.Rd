@@ -40,29 +40,29 @@ argument is ignored since \link[tidyselect:select_helpers]{select helpers}
 perform a similar function.}
 
 \item{transformations}{Optionally, transformations to apply to parameters
-  before plotting. If \code{transformations} is a function or a single string
-  naming a function then that function will be used to transform all
-  parameters. To apply transformations to particular parameters, the
-  \code{transformations} argument can be a named list with length equal to
-  the number of parameters to be transformed. Currently only univariate
-  transformations of scalar parameters can be specified (multivariate
-  transformations will be implemented in a future release). If
-  \code{transformations} is a list, the name of each list element should be a
-  parameter name and the content of each list element should be a function
-  (or any item to match as a function via \code{\link{match.fun}}, e.g. a
-  string naming a function). If a function is specified by its name as a
-  string (e.g. \code{"log"}), then it can be used to construct a new
-  parameter label for the appropriate parameter (e.g. \code{"log(sigma)"}).
-  If a function itself is specified (e.g. \code{log} or \code{function(x)
-  log(x)}) then \code{"t"} is used in the new parameter label to indicate
-  that the parameter is transformed (e.g. \code{"t(sigma)"}).
+before plotting. If \code{transformations} is a function or a single string
+naming a function then that function will be used to transform all
+parameters. To apply transformations to particular parameters, the
+\code{transformations} argument can be a named list with length equal to
+the number of parameters to be transformed. Currently only univariate
+transformations of scalar parameters can be specified (multivariate
+transformations will be implemented in a future release). If
+\code{transformations} is a list, the name of each list element should be a
+parameter name and the content of each list element should be a function
+(or any item to match as a function via \code{\link[=match.fun]{match.fun()}}, e.g. a
+string naming a function). If a function is specified by its name as a
+string (e.g. \code{"log"}), then it can be used to construct a new
+parameter label for the appropriate parameter (e.g. \code{"log(sigma)"}).
+If a function itself is specified
+(e.g. \code{log} or \code{function(x) log(x)})
+then \code{"t"} is used in the new parameter label to indicate that the
+parameter is transformed (e.g. \code{"t(sigma)"}).
 
-  Note: due to partial argument matching \code{transformations} can be
-  abbreviated for convenience in interactive use (e.g., \code{transform},
-  \code{trans}, etc.).}
+Note: due to partial argument matching \code{transformations} can be
+abbreviated for convenience in interactive use (e.g., \code{transform}).}
 
 \item{facet_args}{A named list of arguments (other than \code{facets}) passed
-to \code{\link[ggplot2]{facet_wrap}} or \code{\link[ggplot2]{facet_grid}}
+to \code{\link[ggplot2:facet_wrap]{ggplot2::facet_wrap()}} or \code{\link[ggplot2:facet_grid]{ggplot2::facet_grid()}}
 to control faceting.}
 
 \item{...}{Currently ignored.}
@@ -73,7 +73,7 @@ iterations are included. If \code{n_warmup > 0} then the background for
 iterations \code{1:n_warmup} is shaded gray.}
 
 \item{iter1}{An integer; the iteration number of the first included draw
-(default 0). This can be used to make it more obvious that the warmup
+(default is \code{0}). This can be used to make it more obvious that the warmup
 iterations have been discarded from the traceplot. It cannot be specified
 if \code{n_warmup} is also set to a positive value.}
 
@@ -81,41 +81,38 @@ if \code{n_warmup} is also set to a positive value.}
 range of iterations to display.}
 
 \item{size}{An optional value to override the default line size
-(\code{mcmc_trace}) or the default point size
-(\code{mcmc_trace_highlight}).}
+(\code{mcmc_trace()}) or the default point size
+(\code{mcmc_trace_highlight()}).}
 
-\item{np}{For models fit using \code{\link{NUTS}} (more generally, any
-\href{https://en.wikipedia.org/wiki/Symplectic_integrator}{symplectic
-integrator}), an optional data frame providing NUTS diagnostic
-information. The data frame should be the object returned by
-\code{\link{nuts_params}} or one with the same structure. If \code{np} is
-specified then tick marks are added to the bottom of the trace plot
-indicating within which iterations there was a divergence (if there were any).
-See the end of the \strong{Examples} section, below.}
+\item{np}{For models fit using \link{NUTS} (more generally, any
+\href{https://en.wikipedia.org/wiki/Symplectic_integrator}{symplectic integrator}),
+an optional data frame providing NUTS diagnostic information. The data
+frame should be the object returned by \code{\link[=nuts_params]{nuts_params()}} or one with the same
+structure. If \code{np} is specified then tick marks are added to the bottom of
+the trace plot indicating within which iterations there was a divergence
+(if there were any). See the end of the \strong{Examples} section, below.}
 
-\item{np_style}{A call to the \code{trace_style_np} helper function to
+\item{np_style}{A call to the \code{trace_style_np()} helper function to
 specify arguments controlling the appearance of tick marks representing
 divergences (if the \code{np} argument is specified).}
 
 \item{divergences}{Deprecated. Use the \code{np} argument instead.}
 
-\item{alpha}{For \code{mcmc_trace_highlight}, passed to
-\code{\link[ggplot2]{geom_point}} to control the transparency of the points
+\item{alpha}{For \code{mcmc_trace_highlight()}, passed to
+\code{\link[ggplot2:geom_point]{ggplot2::geom_point()}} to control the transparency of the points
 for the chains not highlighted.}
 
-\item{highlight}{For \code{mcmc_trace_highlight}, an integer specifying one
+\item{highlight}{For \code{mcmc_trace_highlight()}, an integer specifying one
 of the chains that will be more visible than the others in the plot.}
 
 \item{div_color, div_size, div_alpha}{Optional arguments to the
-\code{trace_style_np} helper function that are eventually passed to
-\code{\link[ggplot2]{geom_rug}} if the \code{np} argument is also
-specified. They control the color, size, and transparency specifications
-for showing divergences in the plot. The default values are displayed in
-the \strong{Usage} section above.}
+\code{trace_style_np()} helper function that are eventually passed to
+\code{\link[ggplot2:geom_rug]{ggplot2::geom_rug()}} if the \code{np} argument is also specified. They control
+the color, size, and transparency specifications for showing divergences in
+the plot. The default values are displayed in the \strong{Usage} section above.}
 }
 \value{
-A ggplot object that can be further customized using the
-  \pkg{ggplot2} package.
+A ggplot object that can be further customized using the \strong{ggplot2} package.
 }
 \description{
 Trace plot (or traceplot) of MCMC draws. See the \strong{Plot Descriptions}
@@ -124,14 +121,14 @@ section, below, for details.
 \section{Plot Descriptions}{
 
 \describe{
-  \item{\code{mcmc_trace}}{
-   Standard trace plots of MCMC draws. For models fit using \code{\link{NUTS}},
-   the \code{np} argument can be used to also show divergences on the trace plot.
-  }
-  \item{\code{mcmc_trace_highlight}}{
-   Traces are plotted using points rather than lines and the opacity of all
-   chains but one (specified by the \code{highlight} argument) is reduced.
-  }
+\item{\code{mcmc_trace()}}{
+Standard trace plots of MCMC draws. For models fit using \link{NUTS},
+the \code{np} argument can be used to also show divergences on the trace plot.
+}
+\item{\code{mcmc_trace_highlight()}}{
+Traces are plotted using points rather than lines and the opacity of all
+chains but one (specified by the \code{highlight} argument) is reduced.
+}
 }
 }
 

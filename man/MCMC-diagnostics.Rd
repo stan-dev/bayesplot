@@ -31,22 +31,22 @@ mcmc_acf_bar(x, pars = character(), regex_pars = character(),
   facet_args = list(), ..., lags = 20)
 }
 \arguments{
-\item{rhat}{A vector of \code{\link[=rhat]{Rhat}} estimates.}
+\item{rhat}{A vector of R-hat estimates.}
 
 \item{...}{Currently ignored.}
 
-\item{size}{An optional value to override \code{\link[ggplot2]{geom_point}}'s
-default size (for \code{mcmc_rhat}, \code{mcmc_neff}) or
-\code{\link[ggplot2]{geom_line}}'s default size (for \code{mcmc_acf}).}
+\item{size}{An optional value to override \code{\link[ggplot2:geom_point]{ggplot2::geom_point()}}'s
+default size (for \code{mcmc_rhat()}, \code{mcmc_neff()}) or
+\code{\link[ggplot2:geom_line]{ggplot2::geom_line()}}'s default size (for \code{mcmc_acf()}).}
 
-\item{binwidth}{Passed to \code{\link[ggplot2]{geom_histogram}} to override
+\item{binwidth}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}} to override
 the default binwidth.}
 
-\item{breaks}{Passed to \code{\link[ggplot2]{geom_histogram}} as an
+\item{breaks}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}} as an
 alternative to \code{binwidth}.}
 
 \item{ratio}{A vector of \emph{ratios} of effective sample size estimates to
-total sample size. See \code{\link{neff_ratio}}.}
+total sample size. See \code{\link[=neff_ratio]{neff_ratio()}}.}
 
 \item{x}{A 3-D array, matrix, list of matrices, or data frame of MCMC draws.
 The \link{MCMC-overview} page provides details on how to specify each these
@@ -69,15 +69,15 @@ argument is ignored since \link[tidyselect:select_helpers]{select helpers}
 perform a similar function.}
 
 \item{facet_args}{A named list of arguments (other than \code{facets}) passed
-to \code{\link[ggplot2]{facet_wrap}} or \code{\link[ggplot2]{facet_grid}}
+to \code{\link[ggplot2:facet_wrap]{ggplot2::facet_wrap()}} or \code{\link[ggplot2:facet_grid]{ggplot2::facet_grid()}}
 to control faceting.}
 
 \item{lags}{The number of lags to show in the autocorrelation plot.}
 }
 \value{
-A ggplot object that can be further customized using the
-  \pkg{ggplot2} package. The \code{_data} functions return the data that
-  would have been drawn by the plotting function.
+A ggplot object that can be further customized using the \strong{ggplot2}
+package. The functions with suffix \code{_data} return the data that would have
+been drawn by the plotting function.
 }
 \description{
 Plots of Rhat statistics, ratios of effective sample size to total sample
@@ -88,32 +88,34 @@ also \link{MCMC-nuts} for additional MCMC diagnostic plots.
 \section{Plot Descriptions}{
 
 \describe{
-\item{\code{mcmc_rhat, mcmc_rhat_hist}}{
+\item{\code{mcmc_rhat()}, \code{mcmc_rhat_hist()}}{
 Rhat values as either points or a histogram. Values are colored using
 different shades (lighter is better). The chosen thresholds are somewhat
 arbitrary, but can be useful guidelines in practice.
- \itemize{
-   \item \emph{light}: below 1.05 (good)
-   \item \emph{mid}: between 1.05 and 1.1 (ok)
-   \item \emph{dark}: above 1.1 (too high)
- }
+\itemize{
+\item \emph{light}: below 1.05 (good)
+\item \emph{mid}: between 1.05 and 1.1 (ok)
+\item \emph{dark}: above 1.1 (too high)
 }
-\item{\code{mcmc_neff, mcmc_neff_hist}}{
+}
+
+\item{\code{mcmc_neff()}, \code{mcmc_neff_hist()}}{
 Ratios of effective sample size to total sample size as either points or a
-histogram. Values are colored using different shades (lighter is better). The
-chosen thresholds are somewhat arbitrary, but can be useful guidelines in
-practice.
- \itemize{
-   \item \emph{light}: between 0.5 and 1 (high)
-   \item \emph{mid}: between 0.1 and 0.5 (good)
-   \item \emph{dark}: below 0.1 (low)
- }
+histogram. Values are colored using different shades (lighter is better).
+The chosen thresholds are somewhat arbitrary, but can be useful guidelines
+in practice.
+\itemize{
+\item \emph{light}: between 0.5 and 1 (high)
+\item \emph{mid}: between 0.1 and 0.5 (good)
+\item \emph{dark}: below 0.1 (low)
 }
-\item{\code{mcmc_acf}}{
-Grid of autocorrelation plots by chain and parameter. The \code{lags}
-argument gives the maximum number of lags at which to calculate the
-autocorrelation function. \code{mcmc_acf} is a line plot whereas
-\code{mcmc_acf_bar} is a barplot.
+}
+
+\item{\code{mcmc_acf()}, \code{mcmc_acf_bar()}}{
+Grid of autocorrelation plots by chain and parameter. The \code{lags} argument
+gives the maximum number of lags at which to calculate the autocorrelation
+function. \code{mcmc_acf()} is a line plot whereas \code{mcmc_acf_bar()} is a
+barplot.
 }
 }
 }
@@ -181,8 +183,9 @@ mcmc_acf(as.array(fit2), pars = c("wt", "cyl"), lags = 10)
 
 }
 \references{
-Stan Development Team. \emph{Stan Modeling Language Users
-Guide and Reference Manual.} \url{https://mc-stan.org/users/documentation/}
+Stan Development Team.
+\emph{Stan Modeling Language Users Guide and Reference Manual.}
+\url{https://mc-stan.org/users/documentation/}
 
 Gelman, A. and Rubin, D. B. (1992). Inference from iterative
 simulation using multiple sequences. \emph{Statistical Science}. 7(4),
@@ -190,9 +193,10 @@ simulation using multiple sequences. \emph{Statistical Science}. 7(4),
 }
 \seealso{
 \itemize{
-\item The \emph{Visual MCMC Diagnostics} vignette.
+\item The \href{https://mc-stan.org/bayesplot/articles/visual-mcmc-diagnostics.html}{Visual MCMC Diagnostics}
+vignette.
 \item \link{MCMC-nuts} for additional MCMC diagnostic plots for models fit
-  using the No-U-Turn-Sampler.
+using the No-U-Turn-Sampler.
 }
 
 Other MCMC: \code{\link{MCMC-combos}},
