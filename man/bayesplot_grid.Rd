@@ -18,7 +18,7 @@ specifying plot objects via \code{...}.}
 upper limits for the axes that will be shared across all plots.}
 
 \item{grid_args}{An optional named list of arguments to pass to
-\code{\link[gridExtra]{arrangeGrob}} (\code{nrow}, \code{ncol},
+\code{\link[gridExtra:arrangeGrob]{gridExtra::arrangeGrob()}} (\code{nrow}, \code{ncol},
 \code{widths}, etc.).}
 
 \item{titles, subtitles}{Optional character vectors of plot titles and
@@ -35,8 +35,8 @@ Setting this to \code{FALSE} will make the returned object smaller but
 these individual plot objects will not be available.}
 }
 \value{
-An object of class "bayesplot_grid" (essentially a gtable object from
-  \code{\link[gridExtra]{arrangeGrob}}), which has a \code{plot} method.
+An object of class \code{"bayesplot_grid"} (essentially a gtable object
+from \code{\link[gridExtra:arrangeGrob]{gridExtra::arrangeGrob()}}), which has a \code{plot} method.
 }
 \description{
 The \code{bayesplot_grid} function makes it simple to juxtapose plots using

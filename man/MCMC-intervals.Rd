@@ -46,69 +46,66 @@ the \link{MCMC-overview} page.}
 
 \item{pars}{An optional character vector of parameter names. If neither
 \code{pars} nor \code{regex_pars} is specified then the default is to use
-\emph{all} parameters.}
+\strong{all} parameters.}
 
-\item{regex_pars}{An optional \link[=grep]{regular expression} to use for
+\item{regex_pars}{An optional \link[base:grep]{regular expression} to use for
 parameter selection. Can be specified instead of \code{pars} or in addition
 to \code{pars}.}
 
 \item{transformations}{Optionally, transformations to apply to parameters
-  before plotting. If \code{transformations} is a function or a single string
-  naming a function then that function will be used to transform all
-  parameters. To apply transformations to particular parameters, the
-  \code{transformations} argument can be a named list with length equal to
-  the number of parameters to be transformed. Currently only univariate
-  transformations of scalar parameters can be specified (multivariate
-  transformations will be implemented in a future release). If
-  \code{transformations} is a list, the name of each list element should be a
-  parameter name and the content of each list element should be a function
-  (or any item to match as a function via \code{\link{match.fun}}, e.g. a
-  string naming a function). If a function is specified by its name as a
-  string (e.g. \code{"log"}), then it can be used to construct a new
-  parameter label for the appropriate parameter (e.g. \code{"log(sigma)"}).
-  If a function itself is specified (e.g. \code{log} or \code{function(x)
-  log(x)}) then \code{"t"} is used in the new parameter label to indicate
-  that the parameter is transformed (e.g. \code{"t(sigma)"}).
+before plotting. If \code{transformations} is a function or a single string
+naming a function then that function will be used to transform all
+parameters. To apply transformations to particular parameters, the
+\code{transformations} argument can be a named list with length equal to
+the number of parameters to be transformed. Currently only univariate
+transformations of scalar parameters can be specified (multivariate
+transformations will be implemented in a future release). If
+\code{transformations} is a list, the name of each list element should be a
+parameter name and the content of each list element should be a function
+(or any item to match as a function via \code{\link[=match.fun]{match.fun()}}, e.g. a
+string naming a function). If a function is specified by its name as a
+string (e.g. \code{"log"}), then it can be used to construct a new
+parameter label for the appropriate parameter (e.g. \code{"log(sigma)"}).
+If a function itself is specified
+(e.g. \code{log} or \code{function(x) log(x)})
+then \code{"t"} is used in the new parameter label to indicate that the
+parameter is transformed (e.g. \code{"t(sigma)"}).
 
-  Note: due to partial argument matching \code{transformations} can be
-  abbreviated for convenience in interactive use (e.g., \code{transform},
-  \code{trans}, etc.).}
+Note: due to partial argument matching \code{transformations} can be
+abbreviated for convenience in interactive use (e.g., \code{transform}).}
 
 \item{...}{Currently unused.}
 
 \item{prob}{The probability mass to include in the inner interval (for
-\code{mcmc_intervals}) or in the shaded region (for \code{mcmc_areas}). The
-default is \code{0.5} (50\% interval) and \code{1} for
-\code{mcmc_areas_ridges}.}
+\code{mcmc_intervals()}) or in the shaded region (for \code{mcmc_areas()}). The
+default is \code{0.5} (50\% interval) and \code{1} for \code{mcmc_areas_ridges()}.}
 
 \item{prob_outer}{The probability mass to include in the outer interval. The
-default is \code{0.9} for \code{mcmc_intervals} (90\% interval) and
-\code{1} for \code{mcmc_areas} and for \code{mcmc_areas_ridges}.}
+default is \code{0.9} for \code{mcmc_intervals()} (90\% interval) and
+\code{1} for \code{mcmc_areas()} and for \code{mcmc_areas_ridges()}.}
 
 \item{point_est}{The point estimate to show. Either \code{"median"} (the
 default), \code{"mean"}, or \code{"none"}.}
 
-\item{rhat}{An optional numeric vector of \eqn{\hat{R}}{Rhat} estimates, with
-one element per parameter included in \code{x}. If \code{rhat} is provided,
-the intervals/areas and point estimates in the resulting plot are colored
-based on \eqn{\hat{R}}{Rhat} value. See \code{\link{rhat}} for methods for
-extracting \eqn{\hat{R}}{Rhat} estimates.}
+\item{rhat}{An optional numeric vector of R-hat estimates, with one element
+per parameter included in \code{x}. If \code{rhat} is provided, the intervals/areas
+and point estimates in the resulting plot are colored based on R-hat value.
+See \code{\link[=rhat]{rhat()}} for methods for extracting R-hat estimates.}
 
-\item{area_method}{How to constrain the areas in \code{mcmc_areas}. The
+\item{area_method}{How to constrain the areas in \code{mcmc_areas()}. The
 default is \code{"equal area"}, setting the density curves to have the same
 area. With \code{"equal height"}, the curves are scaled so that the highest
-points across the curves are the same height. The method \code{"scaled
-height"} tries a compromise between to the two: the heights from
+points across the curves are the same height. The method \code{"scaled height"} tries a compromise between to the two: the heights from
 \code{"equal height"} are scaled using \code{height*sqrt(height)}}
 
 \item{bw, adjust, kernel, n_dens}{Optional arguments passed to
-\code{\link[stats]{density}} to override default kernel density estimation
-parameters. \code{n_dens} defaults to 1024.}
+\code{\link[stats:density]{stats::density()}} to override default kernel density estimation
+parameters. \code{n_dens} defaults to \code{1024}.}
 }
 \value{
-A ggplot object that can be further customized using the
-  \pkg{ggplot2} package. The \code{_data} functions return the data that
-  would have been drawn by the plotting function.
+A ggplot object that can be further customized using the \strong{ggplot2}
+package. The functions with suffix \code{_data} return the data that would have
+been drawn by the plotting function.
 }
 \description{
 Plot central (quantile-based) posterior interval estimates from MCMC draws.
@@ -117,19 +114,19 @@ See the \strong{Plot Descriptions} section, below, for details.
 \section{Plot Descriptions}{
 
 \describe{
-  \item{\code{mcmc_intervals}}{
-   Plots of uncertainty intervals computed from posterior draws with all
-   chains merged.
-  }
-  \item{\code{mcmc_areas}}{
-   Density plots computed from posterior draws with all chains merged,
-   with uncertainty intervals shown as shaded areas under the curves.
-  }
-  \item{\code{mcmc_areas_ridges}}{
-   Density plot, as in \code{mcmc_areas}, but drawn with overlapping
-   ridgelines. This plot provides a compact display of (hierarchically)
-   related distributions.
-  }
+\item{\code{mcmc_intervals()}}{
+Plots of uncertainty intervals computed from posterior draws with all
+chains merged.
+}
+\item{\code{mcmc_areas()}}{
+Density plots computed from posterior draws with all chains merged,
+with uncertainty intervals shown as shaded areas under the curves.
+}
+\item{\code{mcmc_areas_ridges()}}{
+Density plot, as in \code{mcmc_areas()}, but drawn with overlapping
+ridgelines. This plot provides a compact display of (hierarchically)
+related distributions.
+}
 }
 }
 

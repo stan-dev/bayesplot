@@ -1,8 +1,8 @@
 #' Parallel coordinates plot of MCMC draws
 #'
-#' Parallel coordinates plot of MCMC draws (one dimension per parameter). See
-#' the \strong{Plot Descriptions} section below for details, and see
-#' \href{https://github.com/jgabry/bayes-vis-paper}{Gabry et al. (2019)}
+#' Parallel coordinates plot of MCMC draws (one dimension per parameter).
+#' See the **Plot Descriptions** section below for details,
+#' and see [Gabry et al. (2019)](https://github.com/jgabry/bayes-vis-paper)
 #' for more background and a real example.
 #'
 #' @name MCMC-parcoord
@@ -13,15 +13,15 @@
 #' @template args-regex_pars
 #' @template args-transformations
 #' @param ... Currently ignored.
-#' @param size,alpha Arguments passed on to \code{\link[ggplot2]{geom_line}}.
-#' @param np For models fit using \code{\link{NUTS}} (more generally,
-#'   any \href{https://en.wikipedia.org/wiki/Symplectic_integrator}{symplectic
-#'   integrator}), an optional data frame providing NUTS
-#'   diagnostic information. The data frame should be the object returned by
-#'   \code{\link{nuts_params}} or one with the same structure.
-#' @param np_style A call to the \code{parcoord_style_np} helper function to
+#' @param size,alpha Arguments passed on to [ggplot2::geom_line()].
+#' @param np For models fit using [NUTS] (more generally,
+#'   any [symplectic integrator](https://en.wikipedia.org/wiki/Symplectic_integrator)),
+#'   an optional data frame providing NUTS diagnostic information. The data
+#'   frame should be the object returned by [nuts_params()] or one with the same
+#'   structure.
+#' @param np_style A call to the `parcoord_style_np()` helper function to
 #'   specify arguments controlling the appearance of superimposed lines
-#'   representing NUTS diagnostics (in this case divergences) if the \code{np}
+#'   representing NUTS diagnostics (in this case divergences) if the `np`
 #'   argument is specified.
 #'
 #' @template return-ggplot-or-data
@@ -29,32 +29,31 @@
 #'
 #' @section Plot Descriptions:
 #' \describe{
-#'   \item{\code{mcmc_parcoord}}{
-#'    (\href{https://en.wikipedia.org/wiki/Parallel_coordinates}{Parallel
-#'    coordinates plot}) of MCMC draws. There is one dimension per parameter
-#'    along the horizontal axis and each set of connected line segments
-#'    represents a single MCMC draw (i.e., a vector of length equal to the
-#'    number of parameters).
+#'   \item{`mcmc_parcoord()`}{
+#'    [Parallel coordinates plot](https://en.wikipedia.org/wiki/Parallel_coordinates)
+#'    of MCMC draws. There is one dimension per parameter along the horizontal
+#'    axis and each set of connected line segments represents a single MCMC draw
+#'    (i.e., a vector of length equal to the number of parameters).
 #'
 #'    The parallel coordinates plot is most useful if the optional HMC/NUTS
-#'    diagnostic information is provided via the \code{np} argument. In that
+#'    diagnostic information is provided via the `np` argument. In that
 #'    case divergences are highlighted in the plot. The appearance of the
-#'    divergences can be customized using the \code{np_style} argument and the
-#'    \code{parcoord_style_np} helper function. This version of the plot is the
+#'    divergences can be customized using the `np_style` argument and the
+#'    `parcoord_style_np` helper function. This version of the plot is the
 #'    same as the parallel coordinates plot described in Gabry et al. (2019).
 #'
 #'    When the plotted model parameters are on very different scales the
-#'    \code{transformations} argument can be useful. For example, to standardize
-#'    all variables before plotting you could use function \code{(x -
-#'    mean(x))/sd(x)} when specifying the \code{transformations} argument to
-#'    \code{mcmc_parcoord}. See the \strong{Examples} section for how to do this.
+#'    `transformations` argument can be useful. For example, to standardize
+#'    all variables before plotting you could use function `(x - mean(x))/sd(x)`
+#'    when specifying the `transformations` argument to
+#'    `mcmc_parcoord`. See the **Examples** section for how to do this.
 #'   }
 #' }
 #'
 #' @template reference-vis-paper
 #' @references Hartikainen, A. (2017, Aug 23). Concentration of divergences
-#' [Msg 21]. Message posted to The Stan Forums:
-#' \url{https://discourse.mc-stan.org/t/concentration-of-divergences/1590/21}.
+#' (Msg 21). Message posted to The Stan Forums:
+#' <https://discourse.mc-stan.org/t/concentration-of-divergences/1590/21>.
 #'
 #' @examples
 #' color_scheme_set("pink")
@@ -203,11 +202,10 @@ mcmc_parcoord_data <-
 #' @rdname MCMC-parcoord
 #' @export
 #' @param div_color,div_size,div_alpha Optional arguments to the
-#'   \code{parcoord_style_np} helper function that are eventually passed to
-#'   \code{\link[ggplot2]{geom_line}} if the \code{np} argument is also
-#'   specified. They control the color, size, and transparency specifications
-#'   for showing divergences in the plot. The default values are displayed in
-#'   the \strong{Usage} section above.
+#'   `parcoord_style_np()` helper function that are eventually passed to
+#'   [ggplot2::geom_line()] if the `np` argument is also specified. They control
+#'   the color, size, and transparency specifications for showing divergences in
+#'   the plot. The default values are displayed in the **Usage** section above.
 parcoord_style_np <-
   function(div_color = "red",
            div_size = 0.2,

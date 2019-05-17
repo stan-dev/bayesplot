@@ -1,6 +1,6 @@
-#' @param binwidth Passed to \code{\link[ggplot2]{geom_histogram}} to override
+#' @param binwidth Passed to [ggplot2::geom_histogram()] to override
 #'   the default binwidth.
 #'
-#' @param breaks Passed to \code{\link[ggplot2]{geom_histogram}} as an
-#'   alternative to \code{binwidth}.
+#' @param breaks Passed to [ggplot2::geom_histogram()] as an
+#'   alternative to `binwidth`.
 #'
