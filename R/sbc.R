@@ -103,7 +103,7 @@ sbc_hist <- function(ranks, ...,
 
   num_bins <- samples_per_prior / per_bin
   if (samples_per_prior %% per_bin != 0) {
-    warning(paste0("per_bin (", per_bin, ") does not evenly divide the",
+    warning(paste0("per_bin (", per_bin, ") does not evenly divide the ",
                    "number of samples per prior (", samples_per_prior ,")."))
   }
 
