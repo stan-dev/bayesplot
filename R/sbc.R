@@ -69,7 +69,8 @@
 #' sbc_hist(ranks)
 #'
 sbc_hist <- function(ranks, ...,
-                     thin = 4, per_bin = 4, worst = 16, prob = 0.99,
+                     thin = 4, per_bin = 4, worst = 16,
+                     prob = 0.99,
                      facet_args = list()) {
   check_ignored_arguments(...)
   stopifnot(is.list(ranks), all(sapply(ranks, is.matrix)))
@@ -131,12 +132,12 @@ sbc_hist <- function(ranks, ...,
       alpha = 1
     ) +
     geom_segment(
-      x = 0,
-      xend = samples_per_prior,
-      y = CI[2],
-      yend = CI[2],
+      x = -offset,
+      xend = samples_per_prior + offset,
+      y = CI[3],
+      yend = CI[3],
       color = "darkgray",
-      alpha = 0.5,
+      alpha = 0.25,
       size = 0.1
     ) +
     geom_histogram(
@@ -146,21 +147,27 @@ sbc_hist <- function(ranks, ...,
       size = .25,
       na.rm = TRUE
     ) +
-    xlab("Rank statistic") +
-    coord_cartesian(
-      # xlim = c(-per_bin, samples_per_prior + per_bin),
-      expand = FALSE
-    )
+    geom_segment(
+      x = -offset,
+      xend = samples_per_prior + offset,
+      y = CI[1],
+      yend = CI[1],
+      color = "darkgray",
+      alpha = 0.1,
+      size = 0.1
+    ) +
+    scale_x_continuous(
+      name = "Rank statistic",
+      breaks = c(0, round(samples_per_prior / 2), samples_per_prior)
+    ) +
+    coord_cartesian(expand = FALSE) # xlim = c(-per_bin, samples_per_prior + per_bin)
 
   facet_args[["facets"]] <- ~ Parameter
   graph +
     do.call("facet_wrap", facet_args) +
     bayesplot_theme_get() +
-    xaxis_text(FALSE) +
     yaxis_text(FALSE) +
-    xaxis_title(TRUE) +
     yaxis_title(FALSE) +
-    xaxis_ticks(FALSE) +
     yaxis_ticks(FALSE)
 }
 
