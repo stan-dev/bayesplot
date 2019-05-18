@@ -67,12 +67,14 @@
 #'
 #' color_scheme_set("purple")
 #' sbc_hist(ranks)
-#'
-#' color_scheme_set("blue")
+#' sbc_hist(ranks, worst = NA) # uses original parameter ordering
 #' sbc_hist(ranks, worst = 3, facet_args = list(labeller = ggplot2::label_parsed))
 #'
-sbc_hist <- function(ranks, ...,
-                     thin = 4, per_bin = 4, worst = 16,
+sbc_hist <- function(ranks,
+                     ...,
+                     thin = 4,
+                     per_bin = 4,
+                     worst = 16,
                      prob = 0.99,
                      facet_args = list()) {
   check_ignored_arguments(...)
@@ -118,7 +120,7 @@ sbc_hist <- function(ranks, ...,
     size = num_prior_draws,
     prob = 1 / num_bins
   )
-  CI <- CI + c(-.5, 0, .5)
+  CI <- CI + c(-0.5, 0, 0.5)
   offset <- 2 * per_bin
   polygon_data <- data.frame(
     x= c(-offset, 0, -offset, thinned_sample_size + offset,
@@ -147,7 +149,7 @@ sbc_hist <- function(ranks, ...,
       bins = num_bins,
       fill = get_color("mid"),
       color = get_color("mid_highlight"),
-      size = .25,
+      size = 0.25,
       na.rm = TRUE
     ) +
     geom_segment(
@@ -163,7 +165,7 @@ sbc_hist <- function(ranks, ...,
       name = "Rank statistic",
       breaks = c(0, round(thinned_sample_size / 2), thinned_sample_size)
     ) +
-    coord_cartesian(expand = FALSE) # xlim = c(-per_bin, thinned_sample_size + per_bin)
+    coord_cartesian(expand = FALSE)
 
   facet_args[["facets"]] <- ~ Parameter
   graph +
@@ -180,7 +182,7 @@ sbc_hist <- function(ranks, ...,
 kl_uniform <- function(v, num_prior_draws, samples_per_prior) {
   # D_{KL}(v || uniform)
   # https://en.wikipedia.org/wiki/Kullback%E2%80%93Leibler_divergence
-  expected_pr <- 1.0/samples_per_prior
+  expected_pr <- 1.0 / samples_per_prior
   observed_pr <- table(v) / num_prior_draws
-  sum(observed_pr * log(observed_pr/expected_pr))
+  sum(observed_pr * log(observed_pr / expected_pr))
 }

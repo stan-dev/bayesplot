@@ -81,6 +81,8 @@ for (n in 1:n_replications) {
 
 color_scheme_set("purple")
 sbc_hist(ranks)
+sbc_hist(ranks, worst = NA) # uses original parameter ordering
+sbc_hist(ranks, worst = 3, facet_args = list(labeller = ggplot2::label_parsed))
 
 }
 \references{
