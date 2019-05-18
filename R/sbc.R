@@ -68,6 +68,9 @@
 #' color_scheme_set("purple")
 #' sbc_hist(ranks)
 #'
+#' color_scheme_set("blue")
+#' sbc_hist(ranks, worst = 3, facet_args = list(labeller = ggplot2::label_parsed))
+#'
 sbc_hist <- function(ranks, ...,
                      thin = 4, per_bin = 4, worst = 16,
                      prob = 0.99,
@@ -82,7 +85,7 @@ sbc_hist <- function(ranks, ...,
 
   num_prior_draws <- length(ranks)
   thinner <- seq(from = 1, to = nrow(ranks[[1]]), by = thin)
-  samples_per_prior <- length(thinner)
+  thinned_sample_size <- length(thinner)
   u <- t(sapply(ranks, FUN = function(r) 1 + colSums(r[thinner, , drop = FALSE])))
   if (ncol(ranks[[1]]) == 1) {
     u <- t(u)
@@ -91,7 +94,7 @@ sbc_hist <- function(ranks, ...,
 
   if (!is.na(worst)) {
     # order starting with worst (least uniform)
-    kl <- apply(u, 2, function(v) kl_uniform(v, num_prior_draws, samples_per_prior))
+    kl <- apply(u, 2, function(v) kl_uniform(v, num_prior_draws, thinned_sample_size))
     filter <- order(-kl)[1:min(worst, ncol(u))]
     u <- u[, filter, drop = FALSE]
   }
@@ -102,10 +105,10 @@ sbc_hist <- function(ranks, ...,
     u = c(u)
   )
 
-  num_bins <- samples_per_prior / per_bin
-  if (samples_per_prior %% per_bin != 0) {
+  num_bins <- thinned_sample_size / per_bin
+  if (thinned_sample_size %% per_bin != 0) {
     warning(paste0("per_bin (", per_bin, ") does not evenly divide the ",
-                   "number of samples per prior (", samples_per_prior ,")."))
+                   "number of samples per prior (", thinned_sample_size ,")."))
   }
 
   # data for polygon showing expected behavior under uniformity
@@ -118,8 +121,8 @@ sbc_hist <- function(ranks, ...,
   CI <- CI + c(-.5, 0, .5)
   offset <- 2 * per_bin
   polygon_data <- data.frame(
-    x= c(-offset, 0, -offset, samples_per_prior + offset,
-         samples_per_prior, samples_per_prior + offset, -offset),
+    x= c(-offset, 0, -offset, thinned_sample_size + offset,
+         thinned_sample_size, thinned_sample_size + offset, -offset),
     y = c(CI[1], CI[2], CI[3], CI[3], CI[2], CI[1], CI[1])
   )
 
@@ -133,12 +136,12 @@ sbc_hist <- function(ranks, ...,
     ) +
     geom_segment(
       x = -offset,
-      xend = samples_per_prior + offset,
+      xend = thinned_sample_size + offset,
       y = CI[3],
       yend = CI[3],
-      color = "darkgray",
-      alpha = 0.25,
-      size = 0.1
+      color = get_color("mid_highlight"),
+      alpha = 0.5,
+      size = 0.2
     ) +
     geom_histogram(
       bins = num_bins,
@@ -149,18 +152,18 @@ sbc_hist <- function(ranks, ...,
     ) +
     geom_segment(
       x = -offset,
-      xend = samples_per_prior + offset,
+      xend = thinned_sample_size + offset,
       y = CI[1],
       yend = CI[1],
-      color = "darkgray",
+      color = get_color("mid_highlight"),
       alpha = 0.1,
-      size = 0.1
+      size = 0.2
     ) +
     scale_x_continuous(
       name = "Rank statistic",
-      breaks = c(0, round(samples_per_prior / 2), samples_per_prior)
+      breaks = c(0, round(thinned_sample_size / 2), thinned_sample_size)
     ) +
-    coord_cartesian(expand = FALSE) # xlim = c(-per_bin, samples_per_prior + per_bin)
+    coord_cartesian(expand = FALSE) # xlim = c(-per_bin, thinned_sample_size + per_bin)
 
   facet_args[["facets"]] <- ~ Parameter
   graph +
