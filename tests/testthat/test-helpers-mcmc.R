@@ -280,6 +280,10 @@ test_that("prepare_mcmc_array tidy parameter selection is same as traditional se
                    prepare_mcmc_array(mat, pars = pars_char_2))
 })
 
+test_that("tidy parameter selection errors if no matches", {
+  expect_error(mcmc_hist(mat, pars = vars(contains("nonsense"))),
+               "No parameters were found matching those names")
+})
 
 # rhat and neff helpers ---------------------------------------------------
 test_that("diagnostic_factor.rhat works", {
