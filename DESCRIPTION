@@ -24,6 +24,7 @@ Depends:
 Imports:
     dplyr (>= 0.8.0),
     ggplot2 (>= 2.2.1),
+    glue, 
     reshape2,
     stats,
     utils,

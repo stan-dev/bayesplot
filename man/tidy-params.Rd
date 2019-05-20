@@ -2,7 +2,33 @@
 % Please edit documentation in R/tidy-params.R
 \name{tidy-params}
 \alias{tidy-params}
+\alias{param_range}
+\alias{param_glue}
 \title{Tidy parameter selection}
+\usage{
+param_range(prefix, range)
+
+param_glue(pattern, ...)
+}
+\arguments{
+\item{prefix, range}{For \code{param_range()}, \code{prefix} is a string naming a
+parameter and \code{range} is an integer vector of elements to select. For
+example, using\preformatted{  param_range("beta", c(1,2,8))
+}
+
+would select parameters named \code{beta[1]}, \code{beta[2]}, and \code{beta[8]}.}
+
+\item{pattern, ..., sort}{For \code{param_glue()}, \code{pattern} is a string containing
+expressions enclosed in braces and \code{...} should contain one character
+vector per expression enclosed in braces. For example,\preformatted{param_glue("beta_{var}[{level}]",
+           var = c("age", "income"),
+           level = c(3,8))
+}
+
+would select parameters with names \code{"beta_age[3]"}, \code{"beta_age[8]"},
+\code{"beta_income[3]"}, and \code{"beta_income[8]"}. See the end of the \strong{Examples}
+section below for demonstrations.}
+}
 \description{
 As of version \code{1.7.0}, \strong{bayesplot} allows the \code{pars} argument
 for \link[bayesplot:MCMC-overview]{MCMC plots} to be used for so-called 'tidy'
@@ -13,6 +39,10 @@ purpose.
 When using \code{pars} for tidy parameter selection, the \code{regex_pars} argument
 is ignored because \strong{bayesplot} supports using \link[tidyselect:select_helpers]{tidyselect helper functions} (\code{starts_with()}, \code{contains()}, etc.)
 for the same purpose.
+
+\strong{bayesplot} also exports additional helper functions \code{param_range()} and
+\code{param_glue()} to help with parameter selection. See the \strong{Examples}
+section.
 }
 \examples{
 
@@ -22,19 +52,17 @@ mcmc_hex(x, pars = vars(alpha, `beta[2]`))
 mcmc_dens(x, pars = vars(sigma, contains("beta")))
 mcmc_hist(x, pars = vars(-contains("beta")))
 
+# using the param_range() helper
+mcmc_hist(x, pars = vars(param_range("beta", c(1, 3, 4))))
+
 \donttest{
 if (requireNamespace("rstanarm", quietly = TRUE)) {
+  color_scheme_set("brightblue")
   fit <- example("example_model", package = "rstanarm", local=TRUE)$value
   posterior <- as.matrix(fit)
   print(colnames(posterior))
 
-  color_scheme_set("brightblue")
-
-  mcmc_hist(posterior, pars = vars(size, period3))
   mcmc_hist(posterior, pars = vars(size, contains("period")))
-  mcmc_hist(posterior, pars = vars(size, contains("period"), -period3),
-            facet_args = list(ncol = 2))
-
   mcmc_intervals(posterior, pars = vars(contains("herd")))
   mcmc_intervals(posterior, pars = vars(contains("herd"), -contains("Sigma")))
 
@@ -44,6 +72,16 @@ if (requireNamespace("rstanarm", quietly = TRUE)) {
 
   color_scheme_set("purple")
   mcmc_areas_ridges(posterior, pars = vars(starts_with("b["), -matches("[7-9]")))
+
+  # using param_glue() helper
+  pattern <- "b[(Intercept) herd:{level}]"
+  mcmc_intervals(posterior, pars = vars(param_glue(pattern, level = c(1, 4, 11))))
+
+  # using param_glue() with dplyr::select before passing to bayesplot
+  library(dplyr)
+  as.data.frame(fit) \%>\%
+    select(param_glue("b[(Intercept) herd:{level}]", level = c(1, 4, 11))) \%>\%
+    mcmc_intervals()
 }
 }
 

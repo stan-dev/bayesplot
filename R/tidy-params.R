@@ -14,6 +14,10 @@
 #'   functions][tidyselect::select_helpers] (`starts_with()`, `contains()`, etc.)
 #'   for the same purpose.
 #'
+#'   **bayesplot** also exports additional helper functions `param_range()` and
+#'   `param_glue()` to help with parameter selection. See the **Examples**
+#'   section.
+#'
 #' @examples
 #'
 #' x <- example_mcmc_draws(params = 6)
@@ -22,19 +26,17 @@
 #' mcmc_dens(x, pars = vars(sigma, contains("beta")))
 #' mcmc_hist(x, pars = vars(-contains("beta")))
 #'
+#' # using the param_range() helper
+#' mcmc_hist(x, pars = vars(param_range("beta", c(1, 3, 4))))
+#'
 #' \donttest{
 #' if (requireNamespace("rstanarm", quietly = TRUE)) {
+#'   color_scheme_set("brightblue")
 #'   fit <- example("example_model", package = "rstanarm", local=TRUE)$value
 #'   posterior <- as.matrix(fit)
 #'   print(colnames(posterior))
 #'
-#'   color_scheme_set("brightblue")
-#'
-#'   mcmc_hist(posterior, pars = vars(size, period3))
 #'   mcmc_hist(posterior, pars = vars(size, contains("period")))
-#'   mcmc_hist(posterior, pars = vars(size, contains("period"), -period3),
-#'             facet_args = list(ncol = 2))
-#'
 #'   mcmc_intervals(posterior, pars = vars(contains("herd")))
 #'   mcmc_intervals(posterior, pars = vars(contains("herd"), -contains("Sigma")))
 #'
@@ -44,6 +46,16 @@
 #'
 #'   color_scheme_set("purple")
 #'   mcmc_areas_ridges(posterior, pars = vars(starts_with("b["), -matches("[7-9]")))
+#'
+#'   # using param_glue() helper
+#'   pattern <- "b[(Intercept) herd:{level}]"
+#'   mcmc_intervals(posterior, pars = vars(param_glue(pattern, level = c(1, 4, 11))))
+#'
+#'   # using param_glue() with dplyr::select before passing to bayesplot
+#'   library(dplyr)
+#'   as.data.frame(fit) %>%
+#'     select(param_glue("b[(Intercept) herd:{level}]", level = c(1, 4, 11))) %>%
+#'     mcmc_intervals()
 #' }
 #' }
 #'
@@ -78,4 +90,41 @@ tidyselect_parameters <- function(complete_pars, pars_list) {
     stop("No parameters were found matching those names.", call. = FALSE)
   }
   return(unname(selected))
+}
+
+#' @rdname tidy-params
+#' @export
+#' @param prefix,range For `param_range()`, `prefix` is a string naming a
+#'   parameter and `range` is an integer vector of elements to select. For
+#'   example, using
+#'
+#'       param_range("beta", c(1,2,8))
+#'
+#'   would select parameters named `beta[1]`, `beta[2]`, and `beta[8]`.
+#'
+param_range <- function(prefix, range) {
+  nms <- paste0(prefix, "[", range, "]")
+  param_matches <- match(nms, tidyselect::peek_vars())
+  param_matches[!is.na(param_matches)]
+}
+
+#' @rdname tidy-params
+#' @export
+#' @param pattern,...,sort For `param_glue()`, `pattern` is a string containing
+#'   expressions enclosed in braces and `...` should contain one character
+#'   vector per expression enclosed in braces. For example,
+#'
+#'     param_glue("beta_{var}[{level}]",
+#'                var = c("age", "income"),
+#'                level = c(3,8))
+#'
+#'   would select parameters with names `"beta_age[3]"`, `"beta_age[8]"`,
+#'   `"beta_income[3]"`, and `"beta_income[8]"`. See the end of the **Examples**
+#'   section below for demonstrations.
+#'
+param_glue <- function(pattern, ...) {
+  dots <- as.list(expand.grid(...))
+  nms <- as.character(glue::glue_data(dots, pattern))
+  param_matches <- match(nms, tidyselect::peek_vars())
+  param_matches[!is.na(param_matches)]
 }
