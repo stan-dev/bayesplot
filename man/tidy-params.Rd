@@ -11,41 +11,44 @@ param_range(prefix, range)
 param_glue(pattern, ...)
 }
 \arguments{
-\item{prefix, range}{For \code{param_range()}, \code{prefix} is a string naming a
-parameter and \code{range} is an integer vector of elements to select. For
-example, using\preformatted{  param_range("beta", c(1,2,8))
+\item{prefix, range}{For \code{param_range()} only, \code{prefix} is a string naming a
+parameter and \code{range} is an integer vector providing the indices of the
+subset of elements to select. For example, using\preformatted{  param_range("beta", c(1,2,8))
 }
 
-would select parameters named \code{beta[1]}, \code{beta[2]}, and \code{beta[8]}.}
+would select parameters named \code{beta[1]}, \code{beta[2]}, and \code{beta[8]}.
+\code{param_range()} is only designed for the case that the indices are integers
+surrounded by brackets.}
 
-\item{pattern, ...}{For \code{param_glue()}, \code{pattern} is a string containing
-expressions enclosed in braces and \code{...} should contain one character
-vector per expression enclosed in braces. For example,\preformatted{param_glue("beta_{var}[{level}]",
+\item{pattern, ...}{For \code{param_glue()} only, \code{pattern} is a string containing
+expressions enclosed in braces and \code{...} should be named arguments
+providing one character vector per expression in braces in \code{patten}.
+It easiest to describe how to use these arguments with an example:\preformatted{param_glue("beta_{var}[{level}]",
            var = c("age", "income"),
            level = c(3,8))
 }
 
-would select parameters with names \code{"beta_age[3]"}, \code{"beta_age[8]"},
-\code{"beta_income[3]"}, and \code{"beta_income[8]"}. See the end of the \strong{Examples}
-section below for demonstrations.}
+would select parameters with names
+\code{"beta_age[3]"}, \code{"beta_income[3]"}, \code{"beta_age[8]"}, \code{"beta_income[8]"}.
+See the \strong{Examples} section below for demonstrations.}
 }
 \description{
 As of version \code{1.7.0}, \strong{bayesplot} allows the \code{pars} argument
 for \link[bayesplot:MCMC-overview]{MCMC plots} to be used for so-called 'tidy'
-variable selection (in the style of the \strong{dplyr} package). The
-\code{\link[dplyr:vars]{vars()}} function is re-exported from \strong{dplyr} for this
-purpose.
+variable selection (in the style of the \strong{dplyr} package).
+The \code{\link[dplyr:vars]{vars()}} function is re-exported from \strong{dplyr}
+for this purpose.
 
 When using \code{pars} for tidy parameter selection, the \code{regex_pars} argument
-is ignored because \strong{bayesplot} supports using \link[tidyselect:select_helpers]{tidyselect helper functions} (\code{starts_with()}, \code{contains()}, etc.)
-for the same purpose.
+is ignored because \strong{bayesplot} supports using
+\link[tidyselect:select_helpers]{tidyselect helper functions}
+(\code{starts_with()}, \code{contains()}, etc.) for the same purpose.
 
-\strong{bayesplot} also exports additional helper functions \code{param_range()} and
-\code{param_glue()} to help with parameter selection. See the \strong{Examples}
-section.
+\strong{bayesplot} also exports additional helper functions
+\code{param_range()} and \code{param_glue()}
+to help with parameter selection. See the \strong{Examples} section.
 }
 \examples{
-
 x <- example_mcmc_draws(params = 6)
 dimnames(x)
 mcmc_hex(x, pars = vars(alpha, `beta[2]`))
@@ -56,34 +59,84 @@ mcmc_hist(x, pars = vars(-contains("beta")))
 mcmc_hist(x, pars = vars(param_range("beta", c(1, 3, 4))))
 
 \donttest{
+############################
+## Example using rstanarm ##
+############################
 if (requireNamespace("rstanarm", quietly = TRUE)) {
-  color_scheme_set("brightblue")
+  # see ?rstanarm::example_model
   fit <- example("example_model", package = "rstanarm", local=TRUE)$value
-  posterior <- as.matrix(fit)
-  print(colnames(posterior))
+  print(fit)
+  posterior <- as.data.frame(fit)
+  str(posterior)
 
+  color_scheme_set("brightblue")
   mcmc_hist(posterior, pars = vars(size, contains("period")))
+
+  # same as previous but using dplyr::select() and piping
+  library(dplyr)
+  posterior \%>\%
+    select(size, contains("period")) \%>\%
+    mcmc_hist()
+
   mcmc_intervals(posterior, pars = vars(contains("herd")))
   mcmc_intervals(posterior, pars = vars(contains("herd"), -contains("Sigma")))
 
   bayesplot_theme_set(ggplot2::theme_dark())
-  color_scheme_set("viridisB")
+  color_scheme_set("viridisC")
   mcmc_areas_ridges(posterior, pars = vars(starts_with("b[")))
 
+  bayesplot_theme_set()
   color_scheme_set("purple")
-  mcmc_areas_ridges(posterior, pars = vars(starts_with("b["), -matches("[7-9]")))
+  not_789 <- vars(starts_with("b["), -matches("[7-9]"))
+  mcmc_intervals(posterior, pars = not_789)
 
-  # using param_glue() helper
-  pattern <- "b[(Intercept) herd:{level}]"
-  mcmc_intervals(posterior, pars = vars(param_glue(pattern, level = c(1, 4, 11))))
+  # using the param_glue() helper
+  just_149 <- vars(param_glue("b[(Intercept) herd:{level}]", level = c(1,4,9)))
+  mcmc_intervals(posterior, pars = just_149)
 
-  # using param_glue() with dplyr::select before passing to bayesplot
-  library(dplyr)
-  as.data.frame(fit) \%>\%
-    select(param_glue("b[(Intercept) herd:{level}]", level = c(1, 4, 11))) \%>\%
+  # same but using param_glue() with dplyr::select()
+  # before passing to bayesplot
+  posterior \%>\%
+    select(param_glue("b[(Intercept) herd:{level}]",
+                      level = c(1, 4, 9))) \%>\%
     mcmc_intervals()
 }
 }
+
+# more examples of param_glue()
+posterior <-
+ structure(list(
+   b_Intercept = rnorm(1000),
+   sd_condition__Intercept = rexp(1000),
+   sigma = rexp(1000),
+   `r_condition[A,Intercept]` = rnorm(1000),
+   `r_condition[B,Intercept]` = rnorm(1000),
+   `r_condition[C,Intercept]` = rnorm(1000),
+   `r_condition[A,Slope]` = rnorm(1000),
+   `r_condition[B,Slope]` = rnorm(1000)
+  ),
+  class = c("tbl_df", "tbl", "data.frame"),
+  row.names = c(NA, -1000L)
+  )
+str(posterior)
+
+posterior \%>\%
+  select(
+    param_glue(
+      "r_condition[{level},Intercept]",
+      level = c("A", "B"))
+  ) \%>\%
+  mcmc_hist()
+
+posterior \%>\%
+   select(
+     param_glue(
+       "r_condition[{level},{type}]",
+        level = c("A", "B"),
+        type = c("Intercept", "Slope"))
+   ) \%>\%
+   mcmc_hist()
+
 
 
 }
