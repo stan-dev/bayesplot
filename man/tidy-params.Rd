@@ -18,7 +18,7 @@ example, using\preformatted{  param_range("beta", c(1,2,8))
 
 would select parameters named \code{beta[1]}, \code{beta[2]}, and \code{beta[8]}.}
 
-\item{pattern, ..., sort}{For \code{param_glue()}, \code{pattern} is a string containing
+\item{pattern, ...}{For \code{param_glue()}, \code{pattern} is a string containing
 expressions enclosed in braces and \code{...} should contain one character
 vector per expression enclosed in braces. For example,\preformatted{param_glue("beta_{var}[{level}]",
            var = c("age", "income"),

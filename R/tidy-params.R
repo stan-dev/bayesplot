@@ -110,7 +110,7 @@ param_range <- function(prefix, range) {
 
 #' @rdname tidy-params
 #' @export
-#' @param pattern,...,sort For `param_glue()`, `pattern` is a string containing
+#' @param pattern,... For `param_glue()`, `pattern` is a string containing
 #'   expressions enclosed in braces and `...` should contain one character
 #'   vector per expression enclosed in braces. For example,
 #'
