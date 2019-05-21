@@ -5,11 +5,8 @@ context("PPC: discrete")
 
 # bar plots ---------------------------------------------------------------
 data("esoph", package = "datasets")
-capture.output(
-  fit <- stan_polr(tobgp ~ agegp, data = esoph, method = "probit",
-                   prior = R2(0.2, "mean"), init_r = 0.1, seed = 12345,
-                   algorithm = "fullrank") # for speed only
-)
+fit <- stan_polr(tobgp ~ agegp, data = esoph, method = "probit", prior = R2(0.2, "mean"),
+                 init_r = 0.1, seed = 12345, chains = 1, iter = 500, refresh = 0)
 y <- as.integer(fit$y)
 yrep_char <- posterior_predict(fit, draws = 10)
 yrep <- sapply(data.frame(yrep_char, stringsAsFactors = TRUE), as.integer)
