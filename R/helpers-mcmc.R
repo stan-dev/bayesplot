@@ -88,11 +88,11 @@ select_parameters <-
     if (length(explicit)) {
       if (!all(explicit %in% complete_pars)) {
         not_found <- which(!explicit %in% complete_pars)
-        stop(
-          "Some 'pars' don't match parameter names: ",
+        abort(paste(
+          "Some 'pars' don't match parameter names:",
           paste(explicit[not_found], collapse = ", "),
           call. = FALSE
-        )
+        ))
       }
     }
 
@@ -105,7 +105,7 @@ select_parameters <-
         }))
 
       if (!length(regex_pars)) {
-        stop("No matches for 'regex_pars'.", call. = FALSE)
+        abort("No matches for 'regex_pars'.")
       }
     }
 
