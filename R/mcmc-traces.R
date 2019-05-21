@@ -428,12 +428,10 @@ mcmc_trace_data <- function(x,
                             pars = character(),
                             regex_pars = character(),
                             transformations = list(),
-                            facet_args = list(),
                             ...,
                             highlight = NULL,
                             n_warmup = 0,
-                            iter1 = 0,
-                            window = NULL) {
+                            iter1 = 0) {
   check_ignored_arguments(...)
 
   x <- prepare_mcmc_array(x, pars, regex_pars, transformations)
@@ -461,7 +459,6 @@ mcmc_trace_data <- function(x,
     }
   }
 
-  ## @todo: filter to just window?
   data <- melt_mcmc(x)
   data$Chain <- factor(data$Chain)
   data$n_chains <- num_chains(data)
@@ -505,8 +502,13 @@ mcmc_trace_data <- function(x,
                         ...) {
   style <- match.arg(style)
   data <- mcmc_trace_data(
-    x, pars = pars, regex_pars = regex_pars, transformations = transformations,
-    highlight = highlight, n_warmup = n_warmup, iter1 = iter1, window = window
+    x,
+    pars = pars,
+    regex_pars = regex_pars,
+    transformations = transformations,
+    highlight = highlight,
+    n_warmup = n_warmup,
+    iter1 = iter1
   )
   n_iter <- unique(data$n_iterations)
   n_chain <- unique(data$n_chains)

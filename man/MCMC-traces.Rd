@@ -29,8 +29,8 @@ mcmc_rank_hist(x, pars = character(), regex_pars = character(),
   ref_line = FALSE)
 
 mcmc_trace_data(x, pars = character(), regex_pars = character(),
-  transformations = list(), facet_args = list(), ...,
-  highlight = NULL, n_warmup = 0, iter1 = 0, window = NULL)
+  transformations = list(), ..., highlight = NULL, n_warmup = 0,
+  iter1 = 0)
 }
 \arguments{
 \item{x}{A 3-D array, matrix, list of matrices, or data frame of MCMC draws.
