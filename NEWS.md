@@ -19,6 +19,9 @@
   `mcmc_rank_overlay()`: Instead of drawing each chain's histogram in a separate
   panel, this plot draws the top edge of the chains' histograms in a single
   panel.
+  
+* Added `mcmc_trace_data()`, which returns the data used for plotting the trace
+  plots and rank histograms. (Advances #97)
 
 * [ColorBrewer](http://colorbrewer2.org) palettes are now available as color
   schemes via
