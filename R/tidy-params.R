@@ -6,7 +6,7 @@
 #'   for [MCMC plots][bayesplot::MCMC-overview] to be used for so-called 'tidy'
 #'   variable selection (in the style of the **dplyr** package).
 #'   The [`vars()`][dplyr::vars] function is re-exported from **dplyr**
-#'   for this purpose.
+#'   for this purpose. See the **Examples** section, below.
 #'
 #'   When using `pars` for tidy parameter selection, the `regex_pars` argument
 #'   is ignored because **bayesplot** supports using
@@ -19,6 +19,7 @@
 #'   * `param_glue()`: for more complicated parameter names with multiple
 #'     indexes (including variable names) inside the brackets
 #'     (e.g., `beta[(Intercept) age_group:3]`).
+#'
 #'   These functions can be used inside of `vars()`, `dplyr::select()`,
 #'   and similar functions just like the
 #'   [tidyselect helper functions][tidyselect::select_helpers].

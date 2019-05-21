@@ -6,9 +6,9 @@
 \alias{param_glue}
 \title{Tidy parameter selection}
 \usage{
-param_range(prefix, range)
+param_range(prefix, range, vars = NULL)
 
-param_glue(pattern, ...)
+param_glue(pattern, ..., vars = NULL)
 }
 \arguments{
 \item{prefix, range}{For \code{param_range()} only, \code{prefix} is a string naming a
@@ -20,6 +20,11 @@ would select parameters named \code{beta[1]}, \code{beta[2]}, and \code{beta[8]}
 \code{param_range()} is only designed for the case that the indices are integers
 surrounded by brackets. If there are no brackets use
 \link[tidyselect:select_helpers]{num_range()}.}
+
+\item{vars}{\code{NULL} or a character vector of parameter names to choose from.
+This is only needed for the atypical use case of calling the function as a
+standalone function outside of \code{vars()}, \code{select()}, etc. Typically this is
+left as \code{NULL} and will be set automatically for the user.}
 
 \item{pattern, ...}{For \code{param_glue()} only, \code{pattern} is a string containing
 expressions enclosed in braces and \code{...} should be named arguments
@@ -52,11 +57,12 @@ indexes are in brackets (e.g. \code{beta[2]}).
 \item \code{param_glue()}: for more complicated parameter names with multiple
 indexes (including variable names) inside the brackets
 (e.g., \code{beta[(Intercept) age_group:3]}).
+}
+
 These functions can be used inside of \code{vars()}, \code{dplyr::select()},
 and similar functions just like the
 \link[tidyselect:select_helpers]{tidyselect helper functions}.
 See the \strong{Examples} section.
-}
 }
 \examples{
 x <- example_mcmc_draws(params = 6)
