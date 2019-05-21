@@ -383,7 +383,7 @@ label_x <- function(x) {
   graph <- graph +
     scale_color_manual(
       name = "",
-      values = setNames(get_color(c("lh", "dh")), c("yrep", "y")),
+      values = set_names(get_color(c("lh", "dh")), c("yrep", "y")),
       labels = c(yrep = yrep_label(), y = y_label())
     ) +
     scale_fill_manual(

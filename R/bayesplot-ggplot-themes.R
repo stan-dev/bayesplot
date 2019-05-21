@@ -145,8 +145,10 @@ bayesplot_theme_get <- function() {
 bayesplot_theme_set <- function(new = theme_default()) {
   missing <- setdiff(names(ggplot2::theme_gray()), names(new))
   if (length(missing)) {
-    warning("New theme missing the following elements: ",
-            paste(missing, collapse = ", "), call. = FALSE)
+    warn(paste(
+      "New theme missing the following elements:",
+      paste(missing, collapse = ", ")
+    ))
   }
 
   old <- .bayesplot_theme_env$current

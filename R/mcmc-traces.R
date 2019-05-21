@@ -158,16 +158,16 @@ mcmc_trace <-
 
     # deprecate 'divergences' arg in favor of 'np' (for consistency across functions)
     if (!is.null(np) && !is.null(divergences)) {
-      stop(
-        "'np' and 'divergences' can't both be specified. ",
+      abort(paste(
+        "'np' and 'divergences' can't both be specified.",
         "Use only 'np' (the 'divergences' argument is deprecated)."
-      )
+      ))
     } else if (!is.null(divergences)) {
-      warning(
-        "The 'divergences' argument is deprecated ",
-        "and will be removed in a future release. ",
+      warn(paste(
+        "The 'divergences' argument is deprecated",
+        "and will be removed in a future release.",
         "Use the 'np' argument instead."
-      )
+      ))
       np <- divergences
     }
 
@@ -269,26 +269,24 @@ trace_style_np <-
   x <- prepare_mcmc_array(x, pars, regex_pars, transformations)
 
   if (iter1 < 0) {
-    stop(
-      "'iter1' cannot be negative."
-    )
+    abort("'iter1' cannot be negative.")
   }
 
   if (n_warmup > 0 && iter1 > 0) {
-    stop(
-      "'n_warmup' and 'iter1' can't both be specified."
-    )
+    abort("'n_warmup' and 'iter1' can't both be specified.")
   }
 
   if (!is.null(highlight)) {
-    if (!has_multiple_chains(x))
+    if (!has_multiple_chains(x)) {
       STOP_need_multiple_chains()
+    }
 
-    if (!highlight %in% seq_len(ncol(x)))
-      stop(
+    if (!highlight %in% seq_len(ncol(x))) {
+      abort(paste0(
         "'highlight' is ", highlight,
         ", but 'x' contains ", ncol(x), " chains."
-      )
+      ))
+    }
   }
 
   data <- melt_mcmc(x)
@@ -434,7 +432,7 @@ divergence_rug <- function(np, np_style, n_iter, n_chain) {
   }
 
   if (all(is.na(div_info$Divergent))) {
-    message("No divergences to plot.")
+    inform("No divergences to plot.")
     return(NULL)
   }
 

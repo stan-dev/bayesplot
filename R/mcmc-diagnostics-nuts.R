@@ -446,8 +446,8 @@ mcmc_nuts_energy <-
         E_centered = .data$Value - mean(.data$Value),
         Ediff_centered = .data$Ediff - mean(.data$Ediff, na.rm = TRUE))
 
-    fills <- setNames(get_color(c("l", "m")), c("E_fill", "Ediff_fill"))
-    clrs <- setNames(get_color(c("lh", "mh")), c("E_fill", "Ediff_fill"))
+    fills <- set_names(get_color(c("l", "m")), c("E_fill", "Ediff_fill"))
+    clrs <- set_names(get_color(c("lh", "mh")), c("E_fill", "Ediff_fill"))
     aes_labs <- c(expression(pi[E]), expression(pi[paste(Delta, E)]))
 
     graph <- ggplot(data, aes_(y = ~ ..density..)) +
@@ -498,8 +498,9 @@ mcmc_nuts_energy <-
 validate_enough_chains <- function(chain = NULL, n_chain) {
   if (!is.null(chain)) {
     stopifnot(chain >= 1)
-    if (!isTRUE(n_chain >= chain))
-      stop("'chain' is ", chain, " but only ", n_chain, " chains found.")
+    if (!isTRUE(n_chain >= chain)) {
+      abort(paste("'chain' is", chain, "but only", n_chain, "chains found."))
+    }
   }
   chain
 }
@@ -508,36 +509,42 @@ validate_enough_chains <- function(chain = NULL, n_chain) {
 #' @param lp data frame with lp__
 #' @noRd
 validate_nuts_data_frame <- function(x, lp) {
-  if (!is.data.frame(x))
-    stop("NUTS parameters should be in a data frame.")
+  if (!is.data.frame(x)) {
+    abort("NUTS parameters should be in a data frame.")
+  }
 
   valid_cols <- c("Iteration", "Parameter", "Value", "Chain")
-  if (!identical(colnames(x), valid_cols))
-    stop(
-      "NUTS parameter data frame must have columns: ",
+  if (!identical(colnames(x), valid_cols)) {
+    abort(paste(
+      "NUTS parameter data frame must have columns:",
       paste(valid_cols, collapse = ", ")
-    )
+    ))
+  }
 
-  if (missing(lp))
+  if (missing(lp)) {
     lp <- NULL
+  }
   if (!is.null(lp)) {
-    if (!is.data.frame(lp))
-      stop("lp should be in a data frame.")
+    if (!is.data.frame(lp)) {
+      abort("lp should be in a data frame.")
+    }
 
     valid_lp_cols <- c("Iteration", "Value", "Chain")
-    if (!identical(colnames(lp), valid_lp_cols))
-      stop(
-        "lp data frame must have columns: ",
+    if (!identical(colnames(lp), valid_lp_cols)) {
+      abort(paste(
+        "lp data frame must have columns:",
         paste(valid_lp_cols, collapse = ", ")
-      )
+      ))
+    }
 
     n_chain <- num_chains(x)
     n_lp_chain <- num_chains(lp)
-    if (n_chain != n_lp_chain)
-      stop(
-        "Number of chains for NUTS parameters is ", n_chain,
-        " but number of chains for lp is ", n_lp_chain, "."
-      )
+    if (n_chain != n_lp_chain) {
+      abort(paste(
+        "Number of chains for NUTS parameters is", n_chain,
+        "but number of chains for lp is", n_lp_chain
+      ))
+    }
   }
 
   x

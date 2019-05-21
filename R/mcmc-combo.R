@@ -71,14 +71,17 @@ mcmc_combo <-
            ...) {
     suggested_package("gridExtra")
 
-    if (length(combo) < 2)
-      stop("'combo' should have at least two elements.")
+    if (length(combo) < 2) {
+      abort("'combo' should have at least two elements.")
+    }
 
     plotfuns <- paste0("mcmc_", combo)
     not_found <- setdiff(plotfuns, available_mcmc())
     if (length(not_found)) {
-      stop("The following functions were not found: ",
-           paste(not_found, collapse = ", "))
+      abort(paste(
+        "The following functions were not found:",
+        paste(not_found, collapse = ", ")
+      ))
     }
     plotfuns <-
       lapply(plotfuns, function(x)
@@ -100,7 +103,6 @@ mcmc_combo <-
 
     bayesplot_grid(
       plots = plots,
-      grid_args = list(ncol = length(combo),
-                       widths = widths)
+      grid_args = list(ncol = length(combo), widths = widths)
     )
   }

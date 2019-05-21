@@ -455,7 +455,7 @@ diagnostic_colors <- function(diagnostic = c("rhat", "neff_ratio"),
        aesthetic = aesthetic,
        color_levels = color_levels,
        color_labels = color_labels,
-       values = setNames(get_color(color_levels), c("low", "ok", "high")))
+       values = set_names(get_color(color_levels), c("low", "ok", "high")))
 }
 
 diagnostic_color_labels <- list(
@@ -493,11 +493,10 @@ set_rhat_breaks <- function(rhat) {
 drop_NAs_and_warn <- function(x) {
   is_NA <- is.na(x)
   if (anyNA(x)) {
-    warning(
+    warn(paste0(
       "Dropped ", sum(is_NA), " NAs from '",
-      deparse(substitute(x)), "'.",
-      call. = FALSE
-    )
+      deparse(substitute(x)), "'."
+    ))
   }
   x[!is_NA]
 }
@@ -577,9 +576,9 @@ acf_data <- function(x, lags) {
   n_chain <- num_chains(x)
   n_param <- num_params(x)
   n_lags <- lags + 1
-  if (n_lags >= n_iter)
-    stop("Too few iterations for lags=", lags, ".",
-         call. = FALSE)
+  if (n_lags >= n_iter) {
+    abort(paste0("Too few iterations for lags=", lags, "."))
+  }
 
   data <- reshape2::melt(x, value.name = "Value")
   data$Chain <- factor(data$Chain)
@@ -619,7 +618,7 @@ new_rhat <- function(x) {
 validate_rhat <- function(x) {
   stopifnot(is.numeric(x), !is.list(x), !is.array(x))
   if (any(x < 0, na.rm = TRUE)) {
-    stop("All 'rhat' values must be positive.", call. = FALSE)
+    abort("All 'rhat' values must be positive.")
   }
   x
 }
@@ -647,7 +646,7 @@ new_neff_ratio <- function(x) {
 validate_neff_ratio <- function(x) {
   stopifnot(is.numeric(x), !is.list(x), !is.array(x))
   if (any(x < 0, na.rm = TRUE)) {
-    stop("All neff ratios must be positive.", call. = FALSE)
+    abort("All neff ratios must be positive.")
   }
   x
 }
