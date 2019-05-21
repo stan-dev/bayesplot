@@ -75,9 +75,10 @@ the color, size, and transparency specifications for showing divergences in
 the plot. The default values are displayed in the \strong{Usage} section above.}
 }
 \value{
-A ggplot object that can be further customized using the \strong{ggplot2}
-package. The functions with suffix \code{_data} return the data that would have
-been drawn by the plotting function.
+The plotting functions return a ggplot object that can be further
+customized using the \strong{ggplot2} package. The functions with suffix
+\code{_data()} return the data that would have been drawn by the plotting
+function.
 }
 \description{
 Parallel coordinates plot of MCMC draws (one dimension per parameter).

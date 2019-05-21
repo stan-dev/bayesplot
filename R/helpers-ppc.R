@@ -151,7 +151,7 @@ validate_x <- function(x = NULL, y, unique_x = FALSE) {
 melt_yrep <- function(yrep) {
   out <- yrep %>%
     reshape2::melt(varnames = c("rep_id", "y_id")) %>%
-    dplyr::as_data_frame()
+    tibble::as_tibble()
   id <- create_yrep_ids(out$rep_id)
   out$rep_label <- factor(id, levels = unique(id))
   out[c("y_id", "rep_id", "rep_label", "value")]
@@ -178,7 +178,7 @@ melt_and_stack <- function(y, yrep) {
   # Add a level in the labels for the observed y values
   levels(molten_yrep$rep_label) <- c(levels(molten_yrep$rep_label), y_text)
 
-  ydat <- dplyr::data_frame(
+  ydat <- tibble::tibble(
     rep_label = factor(y_text, levels = levels(molten_yrep$rep_label)),
     rep_id = NA_integer_,
     y_id = seq_along(y),

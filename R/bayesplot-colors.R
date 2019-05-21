@@ -45,7 +45,7 @@
 #'  * `"teal"`
 #'  * `"yellow"`
 #'  * [`"viridis"`](https://CRAN.R-project.org/package=viridis), `"viridisA"`,
-#'    `"viridisB"`, `"viridisC"`
+#'    `"viridisB"`, `"viridisC"`, `"viridisD"`, `"viridisE"`
 #'  * `"mix-x-y"`, replacing `x` and `y` with any two of
 #'      the scheme names listed above (e.g. "mix-teal-pink", "mix-blue-red",
 #'      etc.). The order of `x` and `y` matters, i.e., the color schemes
@@ -395,7 +395,12 @@ master_color_list <- list(
   viridisB =
     list("#FCFFA4FF", "#FCA50AFF", "#DD513AFF", "#932667FF", "#420A68FF", "#000004FF"),
   viridisC =
-    list("#F0F921FF", "#FCA636FF", "#E16462FF", "#B12A90FF", "#6A00A8FF", "#0D0887FF")
+    list("#F0F921FF", "#FCA636FF", "#E16462FF", "#B12A90FF", "#6A00A8FF", "#0D0887FF"),
+  # popular form of viridis is viridis option D
+  viridisD =
+    list("#FDE725FF", "#7AD151FF", "#22A884FF", "#2A788EFF", "#414487FF", "#440154FF"),
+  viridisE =
+    list("#FFEA46FF", "#CBBA69FF", "#958F78FF", "#666970FF", "#31446BFF", "#00204DFF")
 )
 
 # instantiate aesthetics --------------------------------------------------

@@ -5,7 +5,10 @@
 \alias{mcmc_trace}
 \alias{mcmc_trace_highlight}
 \alias{trace_style_np}
-\title{Trace plot (time series plot) of MCMC draws}
+\alias{mcmc_rank_overlay}
+\alias{mcmc_rank_hist}
+\alias{mcmc_trace_data}
+\title{Trace plots of MCMC draws}
 \usage{
 mcmc_trace(x, pars = character(), regex_pars = character(),
   transformations = list(), facet_args = list(), ..., n_warmup = 0,
@@ -17,6 +20,17 @@ mcmc_trace_highlight(x, pars = character(), regex_pars = character(),
   window = NULL, size = NULL, alpha = 0.2, highlight = 1)
 
 trace_style_np(div_color = "red", div_size = 0.25, div_alpha = 1)
+
+mcmc_rank_overlay(x, pars = character(), regex_pars = character(),
+  transformations = list(), ..., n_bins = 20, ref_line = FALSE)
+
+mcmc_rank_hist(x, pars = character(), regex_pars = character(),
+  transformations = list(), facet_args = list(), ..., n_bins = 20,
+  ref_line = FALSE)
+
+mcmc_trace_data(x, pars = character(), regex_pars = character(),
+  transformations = list(), ..., highlight = NULL, n_warmup = 0,
+  iter1 = 0)
 }
 \arguments{
 \item{x}{A 3-D array, matrix, list of matrices, or data frame of MCMC draws.
@@ -75,8 +89,7 @@ if \code{n_warmup} is also set to a positive value.}
 range of iterations to display.}
 
 \item{size}{An optional value to override the default line size
-(\code{mcmc_trace()}) or the default point size
-(\code{mcmc_trace_highlight()}).}
+for \code{mcmc_trace()} or the default point size for \code{mcmc_trace_highlight()}.}
 
 \item{np}{For models fit using \link{NUTS} (more generally, any
 \href{https://en.wikipedia.org/wiki/Symplectic_integrator}{symplectic integrator}),
@@ -104,9 +117,21 @@ of the chains that will be more visible than the others in the plot.}
 \code{\link[ggplot2:geom_rug]{ggplot2::geom_rug()}} if the \code{np} argument is also specified. They control
 the color, size, and transparency specifications for showing divergences in
 the plot. The default values are displayed in the \strong{Usage} section above.}
+
+\item{n_bins}{For the rank plots, the number of bins to use for the histogram
+of rank-normalized MCMC samples. Defaults to \code{20}.}
+
+\item{ref_line}{For the rank plots, whether to draw a horizontal line at the
+average number of ranks per bin. Defaults to \code{FALSE}.}
 }
 \value{
-A ggplot object that can be further customized using the \strong{ggplot2} package.
+The plotting functions return a ggplot object that can be further
+customized using the \strong{ggplot2} package. The functions with suffix
+\code{_data()} return the data that would have been drawn by the plotting
+function.
+
+\code{mcmc_trace_data()} returns the data for the trace \emph{and} rank plots
+in the same data frame.
 }
 \description{
 Trace plot (or traceplot) of MCMC draws. See the \strong{Plot Descriptions}
@@ -122,6 +147,17 @@ the \code{np} argument can be used to also show divergences on the trace plot.
 \item{\code{mcmc_trace_highlight()}}{
 Traces are plotted using points rather than lines and the opacity of all
 chains but one (specified by the \code{highlight} argument) is reduced.
+}
+\item{\code{mcmc_rank_hist()}}{
+Whereas traditional trace plots visualize how the chains mix over the
+course of sampling, rank-normalized histograms visualize how the values
+from the chains mix together in terms of ranking. An ideal plot would
+show the rankings mixing or overlapping in a uniform distribution.
+See Vehtari et al. (2019) for details.
+}
+\item{\code{mcmc_rank_overlay()}}{
+Ranks from \code{mcmc_rank_hist()} are plotted using overlaid lines in a
+single panel.
 }
 }
 }
@@ -157,6 +193,13 @@ color_scheme_set("viridisA")
 mcmc_trace(x[,, 1:4], window = c(100, 130), size = 1) +
   panel_bg(fill = "gray90", color = NA) +
   legend_move("top")
+
+# Rank-normalized histogram plots. Instead of showing how chains mix over
+# time, look at how the ranking of MCMC samples mixed between chains.
+color_scheme_set("viridisE")
+mcmc_rank_hist(x, "alpha")
+mcmc_rank_hist(x, pars = c("alpha", "sigma"), ref_line = TRUE)
+mcmc_rank_overlay(x, "alpha")
 
 \dontrun{
 # parse facet label text
@@ -198,7 +241,6 @@ mcmc_trace(
   np_style = trace_style_np(div_color = "black", div_size = 0.5)
 )
 
-color_scheme_set("viridis")
 mcmc_trace(
   posterior,
   pars = c("wt", "sigma"),
@@ -209,6 +251,11 @@ mcmc_trace(
 )
 }
 
+}
+\references{
+Vehtari, A., Gelman, A., Simpson, D., Carpenter, B., Bürkner, P.
+(2019). Rank-normalization, folding, and localization: An improved \emph{R}-hat
+for assessing convergence of MCMC. \href{https://arxiv.org/abs/1903.08008}{arXiv preprint}.
 }
 \seealso{
 Other MCMC: \code{\link{MCMC-combos}},

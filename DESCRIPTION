@@ -29,6 +29,7 @@ Imports:
     utils,
     rlang (>= 0.3.0),
     ggridges,
+    tibble,
     hexbin
 Suggests: 
     gridExtra (>= 2.2.1),

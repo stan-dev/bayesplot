@@ -5,7 +5,7 @@
 #' @aliases bayesplot
 #'
 #' @import ggplot2 stats rlang
-#' @importFrom dplyr %>%
+#' @importFrom dplyr %>% summarise group_by select
 #'
 #' @description
 #' \if{html}{

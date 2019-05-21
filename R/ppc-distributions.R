@@ -109,7 +109,7 @@ ppc_data <- function(y, yrep, group = NULL) {
 
   if (!is.null(group)) {
     group <- validate_group(group, y)
-    group_indices <- dplyr::data_frame(group, y_id = seq_along(group))
+    group_indices <- tibble::tibble(group, y_id = seq_along(group))
     data <- data %>%
       left_join(group_indices, by = "y_id") %>%
       select(.data$group, dplyr::everything())
