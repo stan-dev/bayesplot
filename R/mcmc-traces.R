@@ -1,4 +1,4 @@
-#' Trace plots (time series plot) of MCMC draws
+#' Trace plots of MCMC draws
 #'
 #' Trace plot (or traceplot) of MCMC draws. See the **Plot Descriptions**
 #' section, below, for details.
@@ -12,8 +12,7 @@
 #' @template args-facet_args
 #' @param ... Currently ignored.
 #' @param size An optional value to override the default line size
-#'   (`mcmc_trace()`) or the default point size
-#'   (`mcmc_trace_highlight()`).
+#'   for `mcmc_trace()` or the default point size for `mcmc_trace_highlight()`.
 #' @param alpha For `mcmc_trace_highlight()`, passed to
 #'   [ggplot2::geom_point()] to control the transparency of the points
 #'   for the chains not highlighted.
@@ -27,10 +26,10 @@
 #'   if `n_warmup` is also set to a positive value.
 #' @param window An integer vector of length two specifying the limits of a
 #'   range of iterations to display.
-#' @param np For models fit using [NUTS] (more generally, any [symplectic
-#'   integrator](https://en.wikipedia.org/wiki/Symplectic_integrator)), an
-#'   optional data frame providing NUTS diagnostic information. The data frame
-#'   should be the object returned by [nuts_params()] or one with the same
+#' @param np For models fit using [NUTS] (more generally, any
+#'   [symplectic integrator](https://en.wikipedia.org/wiki/Symplectic_integrator)),
+#'   an optional data frame providing NUTS diagnostic information. The data
+#'   frame should be the object returned by [nuts_params()] or one with the same
 #'   structure. If `np` is specified then tick marks are added to the bottom of
 #'   the trace plot indicating within which iterations there was a divergence
 #'   (if there were any). See the end of the **Examples** section, below.
@@ -40,6 +39,8 @@
 #' @param divergences Deprecated. Use the `np` argument instead.
 #'
 #' @template return-ggplot-or-data
+#' @return `mcmc_trace_data()` returns the data for the trace *and* rank plots
+#'   in the same data frame.
 #'
 #' @section Plot Descriptions:
 #' \describe{
@@ -208,10 +209,9 @@ mcmc_trace <-
 }
 
 #' @rdname MCMC-traces
+#' @export
 #' @param highlight For `mcmc_trace_highlight()`, an integer specifying one
 #'   of the chains that will be more visible than the others in the plot.
-#' @export
-#' @md
 mcmc_trace_highlight <- function(x,
                                  pars = character(),
                                  regex_pars = character(),
@@ -242,13 +242,13 @@ mcmc_trace_highlight <- function(x,
 
 
 #' @rdname MCMC-traces
+#' @export
 #' @param div_color,div_size,div_alpha Optional arguments to the
 #'   `trace_style_np()` helper function that are eventually passed to
 #'   [ggplot2::geom_rug()] if the `np` argument is also specified. They control
 #'   the color, size, and transparency specifications for showing divergences in
 #'   the plot. The default values are displayed in the **Usage** section above.
-#' @export
-#' @md
+#'
 trace_style_np <- function(div_color = "red", div_size = 0.25, div_alpha = 1) {
   stopifnot(
     is.character(div_color),
@@ -466,10 +466,12 @@ mcmc_trace_data <- function(x,
   data$n_parameters <- num_params(data)
   data <- rlang::set_names(data, tolower)
 
+  first_cols <- syms(c("parameter", "value", "value_rank"))
   data <- data %>%
     group_by(.data$parameter) %>%
     mutate(value_rank = dplyr::row_number(.data$value)) %>%
-    ungroup()
+    ungroup() %>%
+    select(!!! first_cols, dplyr::everything())
 
   data$highlight <- if (!is.null(highlight)) {
     data$chain == highlight
@@ -478,8 +480,7 @@ mcmc_trace_data <- function(x,
   }
 
   data$warmup <- data$iteration <= n_warmup
-  data$iteration <- data$iteration + iter1
-
+  data$iteration <- data$iteration + as.integer(iter1)
   tibble::as_tibble(data)
 }
 
