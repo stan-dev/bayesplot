@@ -11,11 +11,13 @@ prepare_mcmc_array <- function(x,
   if (is_df_with_chain(x)) {
     x <- df_with_chain2array(x)
   } else if (is_chain_list(x)) {
+    # this will apply to mcmc.list and similar objects
     x <- chain_list2array(x)
   } else if (is.data.frame(x)) {
     # data frame without Chain column
     x <- as.matrix(x)
   } else {
+    # try object's as.array method
     x <- as.array(x)
   }
 

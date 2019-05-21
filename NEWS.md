@@ -50,7 +50,8 @@
   [`?ppc_loo_pit_overlay()`](https://mc-stan.org/bayesplot/reference/PPC-loo.html)
   now work as expected. (#166, #167)
 
-* `ppc_bars()` and `ppc_bars_grouped()` now allow negative integers as input. (#172)
+* `ppc_bars()` and `ppc_bars_grouped()` now allow negative integers as input.
+  (#172, @jeffpollock9)
 
 
 # bayesplot 1.6.0
