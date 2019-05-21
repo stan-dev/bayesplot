@@ -422,6 +422,74 @@ mcmc_rank_hist <- function(x,
 }
 
 
+#' @rdname MCMC-traces
+#' @export
+mcmc_trace_data <- function(x,
+                            pars = character(),
+                            regex_pars = character(),
+                            transformations = list(),
+                            facet_args = list(),
+                            ...,
+                            highlight = NULL,
+                            n_warmup = 0,
+                            iter1 = 0,
+                            window = NULL,
+                            size = NULL,
+                            np = NULL,
+                            np_style = trace_style_np()) {
+  check_ignored_arguments(...)
+
+  x <- prepare_mcmc_array(x, pars, regex_pars, transformations)
+
+  if (iter1 < 0) {
+    abort("'iter1' cannot be negative.")
+  }
+
+  if (n_warmup > 0 && iter1 > 0) {
+    abort("'n_warmup' and 'iter1' can't both be specified.")
+  }
+
+  if (!is.null(highlight)) {
+    stopifnot(length(highlight) == 1)
+
+    if (!has_multiple_chains(x)){
+      STOP_need_multiple_chains()
+    }
+
+    if (!highlight %in% seq_len(ncol(x))) {
+      abort(paste0(
+        "'highlight' is ", highlight,
+        ", but 'x' contains ", ncol(x), " chains."
+      ))
+    }
+  }
+
+  ## @todo: filter to just window?
+  data <- melt_mcmc(x)
+  data$Chain <- factor(data$Chain)
+  data$n_chains <- num_chains(data)
+  data$n_iterations <- num_iters(data)
+  data$n_parameters <- num_params(data)
+  data <- rlang::set_names(data, tolower)
+
+  data <- data %>%
+    group_by(.data$parameter) %>%
+    mutate(value_rank = dplyr::row_number(.data$value)) %>%
+    ungroup()
+
+  data$highlight <- if (!is.null(highlight)) {
+    data$chain == highlight
+  } else {
+    FALSE
+  }
+
+  data$warmup <- data$iteration <= n_warmup
+  data$iteration <- data$iteration + iter1
+
+  tibble::as_tibble(data)
+}
+
+
 # internal -----------------------------------------------------------------
 .mcmc_trace <- function(x,
                         pars = character(),
@@ -549,73 +617,6 @@ chain_colors <- function(n) {
     rep_len(all_clrs, n)
   )
   unname(rev(clrs))
-}
-
-#' @rdname MCMC-traces
-#' @export
-mcmc_trace_data <- function(x,
-                            pars = character(),
-                            regex_pars = character(),
-                            transformations = list(),
-                            facet_args = list(),
-                            ...,
-                            highlight = NULL,
-                            n_warmup = 0,
-                            iter1 = 0,
-                            window = NULL,
-                            size = NULL,
-                            np = NULL,
-                            np_style = trace_style_np()) {
-  check_ignored_arguments(...)
-
-  x <- prepare_mcmc_array(x, pars, regex_pars, transformations)
-
-  if (iter1 < 0) {
-    abort("'iter1' cannot be negative.")
-  }
-
-  if (n_warmup > 0 && iter1 > 0) {
-    abort("'n_warmup' and 'iter1' can't both be specified.")
-  }
-
-  if (!is.null(highlight)) {
-    stopifnot(length(highlight) == 1)
-
-    if (!has_multiple_chains(x)){
-      STOP_need_multiple_chains()
-    }
-
-    if (!highlight %in% seq_len(ncol(x))) {
-      abort(paste0(
-        "'highlight' is ", highlight,
-        ", but 'x' contains ", ncol(x), " chains."
-      ))
-    }
-  }
-
-  ## @todo: filter to just window?
-  data <- melt_mcmc(x)
-  data$Chain <- factor(data$Chain)
-  data$n_chains <- num_chains(data)
-  data$n_iterations <- num_iters(data)
-  data$n_parameters <- num_params(data)
-  data <- rlang::set_names(data, tolower)
-
-  data <- data %>%
-    group_by(.data$parameter) %>%
-    mutate(value_rank = dplyr::row_number(.data$value)) %>%
-    ungroup()
-
-  data$highlight <- if (!is.null(highlight)) {
-    data$chain == highlight
-  } else {
-    FALSE
-  }
-
-  data$warmup <- data$iteration <= n_warmup
-  data$iteration <- data$iteration + iter1
-
-  tibble::as_tibble(data)
 }
 
 
