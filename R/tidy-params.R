@@ -11,11 +11,18 @@
 #'   When using `pars` for tidy parameter selection, the `regex_pars` argument
 #'   is ignored because **bayesplot** supports using
 #'   [tidyselect helper functions][tidyselect::select_helpers]
-#'   (`starts_with()`, `contains()`, etc.) for the same purpose.
-#'
-#'   **bayesplot** also exports additional helper functions
-#'   `param_range()` and `param_glue()`
-#'   to help with parameter selection. See the **Examples** section.
+#'   (`starts_with()`, `contains()`, `num_range()`, etc.) for the same purpose.
+#'   **bayesplot** also exports some additional helper functions
+#'   to help with parameter selection:
+#'   * `param_range()`: like [tidyselect::num_range()] but used when parameter
+#'     indexes are in brackets (e.g. `beta[2]`).
+#'   * `param_glue()`: for more complicated parameter names with multiple
+#'     indexes (including variable names) inside the brackets
+#'     (e.g., `beta[(Intercept) age_group:3]`).
+#'   These functions can be used inside of `vars()`, `dplyr::select()`,
+#'   and similar functions just like the
+#'   [tidyselect helper functions][tidyselect::select_helpers].
+#'   See the **Examples** section.
 #'
 #' @examples
 #' x <- example_mcmc_draws(params = 6)
@@ -28,9 +35,9 @@
 #' mcmc_hist(x, pars = vars(param_range("beta", c(1, 3, 4))))
 #'
 #' \donttest{
-#' ############################
-#' ## Example using rstanarm ##
-#' ############################
+#' #############################
+#' ## Examples using rstanarm ##
+#' #############################
 #' if (requireNamespace("rstanarm", quietly = TRUE)) {
 #'   # see ?rstanarm::example_model
 #'   fit <- example("example_model", package = "rstanarm", local=TRUE)$value
@@ -42,7 +49,7 @@
 #'   mcmc_hist(posterior, pars = vars(size, contains("period")))
 #'
 #'   # same as previous but using dplyr::select() and piping
-#'   library(dplyr)
+#'   library("dplyr")
 #'   posterior %>%
 #'     select(size, contains("period")) %>%
 #'     mcmc_hist()
@@ -81,19 +88,27 @@ dplyr::vars
 
 #' @rdname tidy-params
 #' @export
+#' @param vars `NULL` or a character vector of parameter names to choose from.
+#'   This is only needed for the atypical use case of calling the function as a
+#'   standalone function outside of `vars()`, `select()`, etc. Typically this is
+#'   left as `NULL` and will be set automatically for the user.
 #' @param prefix,range For `param_range()` only, `prefix` is a string naming a
-#'   parameter and `range` is an integer vector providing the indices of the
+#'   parameter and `range` is an integer vector providing the indices of a
 #'   subset of elements to select. For example, using
 #'
 #'       param_range("beta", c(1,2,8))
 #'
 #'   would select parameters named `beta[1]`, `beta[2]`, and `beta[8]`.
 #'   `param_range()` is only designed for the case that the indices are integers
-#'   surrounded by brackets.
+#'   surrounded by brackets. If there are no brackets use
+#'   [num_range()][tidyselect::select_helpers].
 #'
-param_range <- function(prefix, range) {
+param_range <- function(prefix, range, vars = NULL) {
+  if (!is.null(vars) && !is.character(vars)) {
+    abort("'vars' must be NULL or a character vector.")
+  }
   nms <- paste0(prefix, "[", range, "]")
-  param_matches <- match(nms, tidyselect::peek_vars())
+  param_matches <- match(nms, vars %||% tidyselect::peek_vars())
   param_matches[!is.na(param_matches)]
 }
 
@@ -113,7 +128,11 @@ param_range <- function(prefix, range) {
 #'   See the **Examples** section below for demonstrations.
 #'
 #' @examples
-#' # more examples of param_glue()
+#' \dontrun{
+#' ###################################
+#' ## More examples of param_glue() ##
+#' ###################################
+#' library(dplyr)
 #' posterior <-
 #'  structure(list(
 #'    b_Intercept = rnorm(1000),
@@ -130,6 +149,7 @@ param_range <- function(prefix, range) {
 #'   )
 #' str(posterior)
 #'
+#' # using one expression in braces
 #' posterior %>%
 #'   select(
 #'     param_glue(
@@ -138,6 +158,7 @@ param_range <- function(prefix, range) {
 #'   ) %>%
 #'   mcmc_hist()
 #'
+#' # using multiple expressions in braces
 #' posterior %>%
 #'    select(
 #'      param_glue(
@@ -146,13 +167,15 @@ param_range <- function(prefix, range) {
 #'         type = c("Intercept", "Slope"))
 #'    ) %>%
 #'    mcmc_hist()
+#'}
 #'
-#'
-#'
-param_glue <- function(pattern, ...) {
+param_glue <- function(pattern, ..., vars = NULL) {
+  if (!is.null(vars) && !is.character(vars)) {
+    abort("'vars' must be NULL or a character vector.")
+  }
   dots <- as.list(expand.grid(...))
   nms <- as.character(glue::glue_data(dots, pattern))
-  param_matches <- match(nms, tidyselect::peek_vars())
+  param_matches <- match(nms, vars %||% tidyselect::peek_vars())
   param_matches[!is.na(param_matches)]
 }
 

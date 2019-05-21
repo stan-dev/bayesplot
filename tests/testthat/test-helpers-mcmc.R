@@ -280,9 +280,14 @@ test_that("prepare_mcmc_array tidy parameter selection is same as traditional se
                    prepare_mcmc_array(mat, pars = pars_char_2))
 })
 
-test_that("tidy parameter selection errors if no matches", {
+test_that("tidy parameter selection throws correct errors", {
   expect_error(mcmc_hist(mat, pars = vars(contains("nonsense"))),
                "No parameters were found matching those names")
+
+  expect_error(param_range("alpha", 1:3, vars = list("a", "b", "c")),
+               "'vars' must be NULL or a character vector.")
+  expect_error(param_glue("alpha[{lev}]", lev = 1:3, vars = 1:3,
+               "'vars' must be NULL or a character vector."))
 })
 
 # rhat and neff helpers ---------------------------------------------------

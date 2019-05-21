@@ -12,13 +12,14 @@ param_glue(pattern, ...)
 }
 \arguments{
 \item{prefix, range}{For \code{param_range()} only, \code{prefix} is a string naming a
-parameter and \code{range} is an integer vector providing the indices of the
+parameter and \code{range} is an integer vector providing the indices of a
 subset of elements to select. For example, using\preformatted{  param_range("beta", c(1,2,8))
 }
 
 would select parameters named \code{beta[1]}, \code{beta[2]}, and \code{beta[8]}.
 \code{param_range()} is only designed for the case that the indices are integers
-surrounded by brackets.}
+surrounded by brackets. If there are no brackets use
+\link[tidyselect:select_helpers]{num_range()}.}
 
 \item{pattern, ...}{For \code{param_glue()} only, \code{pattern} is a string containing
 expressions enclosed in braces and \code{...} should be named arguments
@@ -42,11 +43,20 @@ for this purpose.
 When using \code{pars} for tidy parameter selection, the \code{regex_pars} argument
 is ignored because \strong{bayesplot} supports using
 \link[tidyselect:select_helpers]{tidyselect helper functions}
-(\code{starts_with()}, \code{contains()}, etc.) for the same purpose.
-
-\strong{bayesplot} also exports additional helper functions
-\code{param_range()} and \code{param_glue()}
-to help with parameter selection. See the \strong{Examples} section.
+(\code{starts_with()}, \code{contains()}, \code{num_range()}, etc.) for the same purpose.
+\strong{bayesplot} also exports some additional helper functions
+to help with parameter selection:
+\itemize{
+\item \code{param_range()}: like \code{\link[tidyselect:num_range]{tidyselect::num_range()}} but used when parameter
+indexes are in brackets (e.g. \code{beta[2]}).
+\item \code{param_glue()}: for more complicated parameter names with multiple
+indexes (including variable names) inside the brackets
+(e.g., \code{beta[(Intercept) age_group:3]}).
+These functions can be used inside of \code{vars()}, \code{dplyr::select()},
+and similar functions just like the
+\link[tidyselect:select_helpers]{tidyselect helper functions}.
+See the \strong{Examples} section.
+}
 }
 \examples{
 x <- example_mcmc_draws(params = 6)
@@ -59,9 +69,9 @@ mcmc_hist(x, pars = vars(-contains("beta")))
 mcmc_hist(x, pars = vars(param_range("beta", c(1, 3, 4))))
 
 \donttest{
-############################
-## Example using rstanarm ##
-############################
+#############################
+## Examples using rstanarm ##
+#############################
 if (requireNamespace("rstanarm", quietly = TRUE)) {
   # see ?rstanarm::example_model
   fit <- example("example_model", package = "rstanarm", local=TRUE)$value
@@ -73,7 +83,7 @@ if (requireNamespace("rstanarm", quietly = TRUE)) {
   mcmc_hist(posterior, pars = vars(size, contains("period")))
 
   # same as previous but using dplyr::select() and piping
-  library(dplyr)
+  library("dplyr")
   posterior \%>\%
     select(size, contains("period")) \%>\%
     mcmc_hist()
@@ -103,7 +113,11 @@ if (requireNamespace("rstanarm", quietly = TRUE)) {
 }
 }
 
-# more examples of param_glue()
+\dontrun{
+###################################
+## More examples of param_glue() ##
+###################################
+library(dplyr)
 posterior <-
  structure(list(
    b_Intercept = rnorm(1000),
@@ -120,6 +134,7 @@ posterior <-
   )
 str(posterior)
 
+# using one expression in braces
 posterior \%>\%
   select(
     param_glue(
@@ -128,6 +143,7 @@ posterior \%>\%
   ) \%>\%
   mcmc_hist()
 
+# using multiple expressions in braces
 posterior \%>\%
    select(
      param_glue(
@@ -136,7 +152,6 @@ posterior \%>\%
         type = c("Intercept", "Slope"))
    ) \%>\%
    mcmc_hist()
-
-
+}
 
 }
