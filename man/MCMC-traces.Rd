@@ -8,7 +8,7 @@
 \alias{mcmc_rank_overlay}
 \alias{mcmc_rank_hist}
 \alias{mcmc_trace_data}
-\title{Trace plots (time series plot) of MCMC draws}
+\title{Trace plots of MCMC draws}
 \usage{
 mcmc_trace(x, pars = character(), regex_pars = character(),
   transformations = list(), facet_args = list(), ..., n_warmup = 0,
@@ -89,12 +89,12 @@ if \code{n_warmup} is also set to a positive value.}
 range of iterations to display.}
 
 \item{size}{An optional value to override the default line size
-(\code{mcmc_trace()}) or the default point size
-(\code{mcmc_trace_highlight()}).}
+for \code{mcmc_trace()} or the default point size for \code{mcmc_trace_highlight()}.}
 
-\item{np}{For models fit using \link{NUTS} (more generally, any \href{https://en.wikipedia.org/wiki/Symplectic_integrator}{symplectic integrator}), an
-optional data frame providing NUTS diagnostic information. The data frame
-should be the object returned by \code{\link[=nuts_params]{nuts_params()}} or one with the same
+\item{np}{For models fit using \link{NUTS} (more generally, any
+\href{https://en.wikipedia.org/wiki/Symplectic_integrator}{symplectic integrator}),
+an optional data frame providing NUTS diagnostic information. The data
+frame should be the object returned by \code{\link[=nuts_params]{nuts_params()}} or one with the same
 structure. If \code{np} is specified then tick marks are added to the bottom of
 the trace plot indicating within which iterations there was a divergence
 (if there were any). See the end of the \strong{Examples} section, below.}
@@ -125,9 +125,13 @@ of rank-normalized MCMC samples. Defaults to \code{20}.}
 average number of ranks per bin. Defaults to \code{FALSE}.}
 }
 \value{
-A ggplot object that can be further customized using the \strong{ggplot2}
-package. The functions with suffix \code{_data} return the data that would have
-been drawn by the plotting function.
+The plotting functions return a ggplot object that can be further
+customized using the \strong{ggplot2} package. The functions with suffix
+\code{_data()} return the data that would have been drawn by the plotting
+function.
+
+\code{mcmc_trace_data()} returns the data for the trace \emph{and} rank plots
+in the same data frame.
 }
 \description{
 Trace plot (or traceplot) of MCMC draws. See the \strong{Plot Descriptions}

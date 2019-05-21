@@ -69,9 +69,10 @@ to control faceting.}
 \item{lags}{The number of lags to show in the autocorrelation plot.}
 }
 \value{
-A ggplot object that can be further customized using the \strong{ggplot2}
-package. The functions with suffix \code{_data} return the data that would have
-been drawn by the plotting function.
+The plotting functions return a ggplot object that can be further
+customized using the \strong{ggplot2} package. The functions with suffix
+\code{_data()} return the data that would have been drawn by the plotting
+function.
 }
 \description{
 Plots of Rhat statistics, ratios of effective sample size to total sample

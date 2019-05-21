@@ -61,9 +61,10 @@ and \code{size} are passed to \code{\link[ggplot2:geom_ribbon]{ggplot2::geom_rib
 \code{size} and \code{fatten} are passed to \code{\link[ggplot2:geom_pointrange]{ggplot2::geom_pointrange()}}.}
 }
 \value{
-A ggplot object that can be further customized using the \strong{ggplot2}
-package. The functions with suffix \code{_data} return the data that would have
-been drawn by the plotting function.
+The plotting functions return a ggplot object that can be further
+customized using the \strong{ggplot2} package. The functions with suffix
+\code{_data()} return the data that would have been drawn by the plotting
+function.
 }
 \description{
 Medians and central interval estimates of \code{yrep} with \code{y} overlaid.

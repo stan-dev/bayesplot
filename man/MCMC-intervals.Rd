@@ -103,9 +103,10 @@ points across the curves are the same height. The method \code{"scaled height"} 
 parameters. \code{n_dens} defaults to \code{1024}.}
 }
 \value{
-A ggplot object that can be further customized using the \strong{ggplot2}
-package. The functions with suffix \code{_data} return the data that would have
-been drawn by the plotting function.
+The plotting functions return a ggplot object that can be further
+customized using the \strong{ggplot2} package. The functions with suffix
+\code{_data()} return the data that would have been drawn by the plotting
+function.
 }
 \description{
 Plot central (quantile-based) posterior interval estimates from MCMC draws.
