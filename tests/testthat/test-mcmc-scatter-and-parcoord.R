@@ -5,15 +5,10 @@ context("MCMC: scatter, hex, and parallel coordinates plots")
 source(test_path("data-for-mcmc-tests.R"))
 
 # also fit an rstanarm model to use with mcmc_pairs
-capture.output(
-  fit <- stan_glm(mpg ~ wt + am, data = mtcars, iter = 1000, chains = 2, refresh = 0)
-)
+fit <- stan_glm(mpg ~ wt + am, data = mtcars, iter = 1000, chains = 2, refresh = 0)
 post <- as.array(fit)
 lp <- log_posterior(fit)
-np <- nuts_params(fit)
-divs <- sample(c(0,1), size = 1000, prob = c(0.25, 0.75), replace = TRUE)
-np$Value[np$Parameter=="divergent__"] <- divs # fake divergences
-
+np <- ensure_divergences(nuts_params(fit))
 
 
 # mcmc_scatter/hex --------------------------------------------------------
@@ -61,7 +56,9 @@ test_that("mcmc_hex throws error if number of parameters is not 2", {
 
 # mcmc_pairs  -------------------------------------------------------------
 test_that("mcmc_pairs returns a bayesplot_grid object", {
-  expect_bayesplot_grid(mcmc_pairs(arr, pars = c("(Intercept)", "sigma")))
+  g <- mcmc_pairs(arr, pars = c("(Intercept)", "sigma"))
+  expect_bayesplot_grid(g)
+  expect_equal(print(g), plot(g))
   expect_bayesplot_grid(mcmc_pairs(arr, pars = "sigma", regex_pars = "beta"))
   expect_bayesplot_grid(mcmc_pairs(arr, regex_pars = "x:[1-3]",
                                    transformations = "exp",

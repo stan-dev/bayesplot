@@ -1,5 +1,6 @@
-# Prepare input objects
+set.seed(8420)
 
+# Prepare input objects
 arr <- array(rnorm(4000), dim = c(100, 4, 10))
 arr1chain <- arr[, 1, , drop = FALSE]
 mat <- matrix(rnorm(1000), nrow = 100, ncol = 10)
@@ -24,6 +25,8 @@ chainlist1 <- list(chainlist[[1]][, 1, drop=FALSE],
 dframe_multiple_chains <- dframe
 dframe_multiple_chains$chain <- rep(1:4, 25)
 
+
+# for vdiffr visual tests
 set.seed(11172017)
 vdiff_dframe <- as.data.frame(matrix(rnorm(1000), nrow = 100, ncol = 5))
 vdiff_dframe_chains <- as.data.frame(

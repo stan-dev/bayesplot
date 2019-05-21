@@ -24,16 +24,18 @@ Depends:
 Imports:
     dplyr (>= 0.8.0),
     ggplot2 (>= 2.2.1),
+    ggridges,
     reshape2,
-    stats,
-    utils,
     rlang (>= 0.3.0),
-    ggridges
+    stats,
+    tibble,
+    utils
 Suggests: 
     gridExtra (>= 2.2.1),
     hexbin,
     knitr (>= 1.16),
     loo (>= 2.0.0),
+    RColorBrewer,
     rmarkdown (>= 1.0.0),
     rstan (>= 2.17.1),
     rstanarm (>= 2.17.4),
@@ -45,3 +47,4 @@ Suggests:
 RoxygenNote: 6.1.1
 VignetteBuilder: knitr
 Encoding: UTF-8
+Roxygen: list(markdown = TRUE)

@@ -138,6 +138,10 @@ test_that("validate_chain_list works", {
   colnames(chainlist2[[1]])[1] <- "AAA"
   expect_error(validate_chain_list(chainlist2), "parameters for each chain")
 
+  chainlist3 <- chainlist
+  colnames(chainlist3[[1]]) <- c("", colnames(chainlist[[1]])[-1])
+  expect_error(validate_chain_list(chainlist3), "Some parameters are missing names")
+
   chainlist[[1]] <- chainlist[[1]][-1, ]
   expect_error(validate_chain_list(chainlist),
                "Each chain should have the same number of iterations")
@@ -205,6 +209,10 @@ test_that("transformations recycled properly if not a named list", {
 
 
 # prepare_mcmc_array ------------------------------------------------------
+test_that("prepare_mcmc_array errors if NAs", {
+  arr[1,1,1] <- NA
+  expect_error(prepare_mcmc_array(arr), "NAs not allowed")
+})
 test_that("prepare_mcmc_array processes non-array input types correctly", {
   # errors are mostly covered by tests of the many internal functions above
 
@@ -229,7 +237,7 @@ test_that("prepare_mcmc_array processes non-array input types correctly", {
 
   # object with acceptable as.array method
   suppressPackageStartupMessages(library(rstanarm))
-  fit <- stan_glm(mpg ~ wt, data = mtcars, chains = 2, iter = 500, refresh = 0)
+  fit <- suppressWarnings(stan_glm(mpg ~ wt, data = mtcars, chains = 2, iter = 500, refresh = 0))
   a4 <- prepare_mcmc_array(fit)
   expect_s3_class(a4, "mcmc_array")
   expect_equal(a4, prepare_mcmc_array(as.array(fit)))

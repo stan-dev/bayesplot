@@ -1,22 +1,21 @@
 #' PPC intervals
 #'
-#' Medians and central interval estimates of \code{yrep} with \code{y} overlaid.
-#' See the \strong{Plot Descriptions} section, below.
+#' Medians and central interval estimates of `yrep` with `y` overlaid.
+#' See the **Plot Descriptions** section, below.
 #'
 #' @name PPC-intervals
 #' @family PPCs
 #'
 #' @template args-y-yrep
 #' @template args-prob-prob_outer
-#' @param x A numeric vector the same length as \code{y} to use as the x-axis
-#'   variable. For example, \code{x} could be a predictor variable from a
-#'   regression model, a time variable for time-series models, etc. If \code{x}
-#'   is missing or NULL, then \code{1:length(y)} is used for the x-axis.
+#' @param x A numeric vector the same length as `y` to use as the x-axis
+#'   variable. For example, `x` could be a predictor variable from a
+#'   regression model, a time variable for time-series models, etc. If `x`
+#'   is missing or `NULL`, then `1:length(y)` is used for the x-axis.
 #' @param ... Currently unused.
-#' @param alpha,size,fatten Arguments passed to geoms. For ribbon plots
-#'   \code{alpha} and \code{size} are passed to
-#'   \code{\link[ggplot2]{geom_ribbon}}. For interval plots \code{size} and
-#'   \code{fatten} are passed to \code{\link[ggplot2]{geom_pointrange}}.
+#' @param alpha,size,fatten Arguments passed to geoms. For ribbon plots `alpha`
+#'   and `size` are passed to [ggplot2::geom_ribbon()]. For interval plots
+#'   `size` and `fatten` are passed to [ggplot2::geom_pointrange()].
 #'
 #' @template return-ggplot-or-data
 #'
@@ -25,21 +24,21 @@
 #'
 #' @section Plot Descriptions:
 #' \describe{
-#'   \item{\code{ppc_intervals, ppc_ribbon}}{
-#'    \code{100*prob}\% central intervals for \code{yrep} at each \code{x}
-#'    value. \code{ppc_intervals} plots intervals as vertical bars with points
-#'    indicating \code{yrep} medians and darker points indicating observed
-#'    \code{y} values. \code{ppc_ribbon} plots a ribbon of connected intervals
-#'    with a line through the median of \code{yrep} and a darker line connecting
-#'    observed \code{y} values. In both cases an optional \code{x} variable can
+#'   \item{`ppc_intervals(), ppc_ribbon()`}{
+#'    `100*prob`\% central intervals for `yrep` at each `x`
+#'    value. `ppc_intervals()` plots intervals as vertical bars with points
+#'    indicating `yrep` medians and darker points indicating observed
+#'    `y` values. `ppc_ribbon()` plots a ribbon of connected intervals
+#'    with a line through the median of `yrep` and a darker line connecting
+#'    observed `y` values. In both cases an optional `x` variable can
 #'    also be specified for the x-axis variable.
 #'
 #'    Depending on the number of observations and the variability in the
-#'    predictions at different values of \code{x}, one or the other of these
+#'    predictions at different values of `x`, one or the other of these
 #'    plots may be easier to read than the other.
 #'   }
-#'   \item{\code{ppc_intervals_grouped, ppc_ribbon_grouped}}{
-#'    Same as \code{ppc_intervals} and \code{ppc_ribbon}, respectively, but a
+#'   \item{`ppc_intervals_grouped(), ppc_ribbon_grouped()`}{
+#'    Same as `ppc_intervals()` and `ppc_ribbon()`, respectively, but a
 #'    separate plot (facet) is generated for each level of a grouping variable.
 #'   }
 #' }
@@ -81,7 +80,7 @@
 #'
 #' \dontrun{
 #' library("rstanarm")
-#' fit <- stan_glmer(mpg ~ wt + (1|cyl), data = mtcars)
+#' fit <- stan_glmer(mpg ~ wt + (1|cyl), data = mtcars, refresh = 0)
 #' yrep <- posterior_predict(fit)
 #'
 #' color_scheme_set("purple")
@@ -134,8 +133,8 @@ ppc_intervals <- function(y, yrep, x = NULL, ..., prob = 0.5, prob_outer = 0.9,
 #' @rdname PPC-intervals
 #' @export
 #' @template args-group
-#' @param facet_args An optional list of  arguments (other than \code{facets})
-#'   passed to \code{\link[ggplot2]{facet_wrap}} to control faceting.
+#' @param facet_args An optional list of  arguments (other than `facets`)
+#'   passed to [ggplot2::facet_wrap()] to control faceting.
 #'
 ppc_intervals_grouped <- function(y,
                                   yrep,
@@ -384,7 +383,7 @@ label_x <- function(x) {
   graph <- graph +
     scale_color_manual(
       name = "",
-      values = setNames(get_color(c("lh", "dh")), c("yrep", "y")),
+      values = set_names(get_color(c("lh", "dh")), c("yrep", "y")),
       labels = c(yrep = yrep_label(), y = y_label())
     ) +
     scale_fill_manual(

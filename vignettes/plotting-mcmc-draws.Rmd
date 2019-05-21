@@ -351,8 +351,10 @@ https://mc-stan.org/rstanarm, https://CRAN.R-project.org/package=rstanarm
 
 Gabry, J. , Simpson, D. , Vehtari, A. , Betancourt, M. and Gelman, A. (2019), 
 Visualization in Bayesian workflow. _J. R. Stat. Soc. A_, 182: 389-402. 
-\doi:10.1111/rssa.12378. ([journal](https://rss.onlinelibrary.wiley.com/doi/full/10.1111/rssa.12378), 
-[arXiv preprint](https://arxiv.org/abs/1709.01449))
+\doi:10.1111/rssa.12378. ([journal version](https://rss.onlinelibrary.wiley.com/doi/full/10.1111/rssa.12378), 
+[arXiv preprint](https://arxiv.org/abs/1709.01449), 
+[code on GitHub](https://github.com/jgabry/bayes-vis-paper))
+<a id="gabry2019"></a>
 
 Gelman, A., Carlin, J. B., Stern, H. S., Dunson, D. B., Vehtari, A., and
 Rubin, D. B. (2013). *Bayesian Data Analysis*. Chapman & Hall/CRC Press, London,

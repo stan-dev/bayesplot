@@ -7,10 +7,9 @@ options(useFancyQuotes = FALSE)
 
 ITER <- 1000
 CHAINS <- 3
-capture.output(
-  fit <- stan_glm(mpg ~ wt + am, data = mtcars,
-                  iter = ITER, chains = CHAINS, refresh = 0)
-)
+fit <- stan_glm(mpg ~ wt + am, data = mtcars,
+                iter = ITER, chains = CHAINS,
+                refresh = 0)
 y <- fit$y
 yrep <- posterior_predict(fit)
 suppressWarnings(

@@ -25,7 +25,7 @@ geom_ignore <- function(...) {
 #'
 #' The "area ridges" are for use in `mcmc_areas()`. The scale of 1 and the
 #' identity statistic prevent the ridges from overlapping.
-#' `geom_density_ridges2` draws closed polygons.
+#' `geom_density_ridges2()` draws closed polygons.
 #'
 #' @importFrom ggridges geom_density_ridges geom_density_ridges2
 #' @noRd
@@ -64,12 +64,26 @@ dont_expand_axes <- function() {
 }
 force_axes_in_facets <- function() {
   thm <- bayesplot_theme_get()
-  annotate("segment",
-           x = c(-Inf, -Inf), xend = c(Inf,-Inf),
-           y = c(-Inf,-Inf), yend = c(-Inf, Inf),
-           color = thm$axis.line$colour %||% "black",
-           size = thm$axis.line$size %||% 0.5)
+  annotate(
+    "segment",
+    x = c(-Inf, -Inf), xend = c(Inf,-Inf),
+    y = c(-Inf,-Inf), yend = c(-Inf, Inf),
+    color = thm$axis.line$colour %||% thm$line$colour %||% "black",
+    size = thm$axis.line$size %||% thm$line$size %||% 0.5
+  )
 }
+
+force_x_axis_in_facets <- function() {
+  thm <- bayesplot_theme_get()
+  annotate(
+    "segment",
+    x = -Inf, xend = Inf,
+    y = -Inf, yend = -Inf,
+    color = thm$axis.line$colour %||% thm$line$colour %||% "black",
+    size = thm$axis.line$size %||% thm$line$size %||% 0.5
+  )
+}
+
 no_legend_spacing <- function() {
   theme(legend.spacing.y = unit(0, "cm"))
 }

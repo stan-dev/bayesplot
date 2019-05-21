@@ -29,24 +29,23 @@ ppc_error_binned(y, yrep, ..., bins = NULL, size = 1, alpha = 0.25)
 
 \item{yrep}{An \eqn{S} by \eqn{N} matrix of draws from the posterior
 predictive distribution, where \eqn{S} is the size of the posterior sample
-(or subset of the posterior sample used to generate \code{yrep}) and
-\eqn{N} is the number of observations (the length of \code{y}). The columns
-of \code{yrep} should be in the same order as the data points in \code{y}
-for the plots to make sense. See \strong{Details} for additional
-instructions.}
+(or subset of the posterior sample used to generate \code{yrep}) and \eqn{N} is
+the number of observations (the length of \code{y}). The columns of \code{yrep}
+should be in the same order as the data points in \code{y} for the plots to make
+sense. See \strong{Details} for additional instructions.}
 
 \item{...}{Currently unused.}
 
-\item{binwidth}{Passed to \code{\link[ggplot2]{geom_histogram}} to override
+\item{binwidth}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}} to override
 the default binwidth.}
 
-\item{breaks}{Passed to \code{\link[ggplot2]{geom_histogram}} as an
+\item{breaks}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}} as an
 alternative to \code{binwidth}.}
 
 \item{freq}{For histograms, \code{freq=TRUE} (the default) puts count on the
 y-axis. Setting \code{freq=FALSE} puts density on the y-axis. (For many
 plots the y-axis text is off by default. To view the count or density
-labels on the y-axis see the \code{\link{yaxis_text}} convenience
+labels on the y-axis see the \code{\link[=yaxis_text]{yaxis_text()}} convenience
 function.)}
 
 \item{group}{A grouping variable (a vector or factor) the same length as
@@ -54,21 +53,20 @@ function.)}
 pertaining to the corresponding value of \code{y}.}
 
 \item{size, alpha}{For scatterplots, arguments passed to
-\code{\link[ggplot2]{geom_point}} to control the appearance of the
-points. For the binned error plot, arguments controlling the size of
-the outline and opacity of the shaded region indicating the 2-SE bounds.}
+\code{\link[ggplot2:geom_point]{ggplot2::geom_point()}} to control the appearance of the points. For the
+binned error plot, arguments controlling the size of the outline and
+opacity of the shaded region indicating the 2-SE bounds.}
 
 \item{x}{A numeric vector the same length as \code{y} to use as the x-axis
 variable.}
 
-\item{bins}{For \code{ppc_error_binned}, the number of bins to use (approximately).}
+\item{bins}{For \code{ppc_error_binned()}, the number of bins to use (approximately).}
 }
 \value{
-A ggplot object that can be further customized using the
-  \pkg{ggplot2} package.
+A ggplot object that can be further customized using the \strong{ggplot2} package.
 }
 \description{
-Various plots of predictive errors \code{y} - \code{yrep}. See the
+Various plots of predictive errors \code{y - yrep}. See the
 \strong{Details} and \strong{Plot Descriptions} sections, below.
 }
 \details{
@@ -77,50 +75,48 @@ compute and plot predictive errors for each row of the matrix \code{yrep}, so
 it is usually a good idea for \code{yrep} to contain only a small number of
 draws (rows). See \strong{Examples}, below.
 
-For binomial and Bernoulli data the \code{ppc_error_binned} function can be
-used to generate binned error plots. Bernoulli data can be input as a vector
-of 0s and 1s, whereas for binomial data \code{y} and \code{yrep} should
-contain "success" proportions (not counts). See the \strong{Examples}
-section, below.
+For binomial and Bernoulli data the \code{ppc_error_binned()} function can be used
+to generate binned error plots. Bernoulli data can be input as a vector of 0s
+and 1s, whereas for binomial data \code{y} and \code{yrep} should contain "success"
+proportions (not counts). See the \strong{Examples} section, below.
 }
 \section{Plot descriptions}{
 
 \describe{
-  \item{\code{ppc_error_hist}}{
-   A separate histogram is plotted for the predictive errors computed from
-   \code{y} and each dataset (row) in \code{yrep}. For this plot \code{yrep}
-   should have only a small number of rows.
-  }
-  \item{\code{ppc_error_hist_grouped}}{
-   Like \code{ppc_error_hist}, except errors are computed within levels of a
-   grouping variable. The number of histograms is therefore equal to the
-   product of the number of rows in \code{yrep} and the number of groups
-   (unique values of \code{group}).
-  }
-  \item{\code{ppc_error_scatter}}{
-   A separate scatterplot is displayed for \code{y} vs. the predictive errors
-   computed from \code{y} and each dataset (row) in \code{yrep}. For this
-   plot \code{yrep} should have only a small number of rows.
-  }
-  \item{\code{ppc_error_scatter_avg}}{
-   A single scatterplot of \code{y} vs. the average of the errors computed
-   from \code{y} and each dataset (row) in \code{yrep}. For each individual
-   data point \code{y[n]} the average error is the average of the
-   errors for \code{y[n]} computed over the the draws from the posterior
-   predictive distribution.
-  }
-  \item{\code{ppc_error_scatter_avg_vs_x}}{
-   Same as \code{ppc_error_scatter_avg}, except the average is plotted on the
-   \eqn{y}-axis and a a predictor variable \code{x} is plotted on the
-   \eqn{x}-axis.
-  }
-  \item{\code{ppc_error_binned}}{
-   Intended for use with binomial data. A separate binned error plot (similar
-   to \code{arm::binnedplot}) is generated for each dataset (row) in
-   \code{yrep}. For this plot \code{y} and \code{yrep} should contain
-   proportions rather than counts, and \code{yrep} should have only a small
-   number of rows.
-  }
+\item{\code{ppc_error_hist()}}{
+A separate histogram is plotted for the predictive errors computed from
+\code{y} and each dataset (row) in \code{yrep}. For this plot \code{yrep}
+should have only a small number of rows.
+}
+\item{\code{ppc_error_hist_grouped()}}{
+Like \code{ppc_error_hist()}, except errors are computed within levels of a
+grouping variable. The number of histograms is therefore equal to the
+product of the number of rows in \code{yrep} and the number of groups
+(unique values of \code{group}).
+}
+\item{\code{ppc_error_scatter()}}{
+A separate scatterplot is displayed for \code{y} vs. the predictive errors
+computed from \code{y} and each dataset (row) in \code{yrep}. For this
+plot \code{yrep} should have only a small number of rows.
+}
+\item{\code{ppc_error_scatter_avg()}}{
+A single scatterplot of \code{y} vs. the average of the errors computed
+from \code{y} and each dataset (row) in \code{yrep}. For each individual
+data point \code{y[n]} the average error is the average of the
+errors for \code{y[n]} computed over the the draws from the posterior
+predictive distribution.
+}
+\item{\code{ppc_error_scatter_avg_vs_x()}}{
+Same as \code{ppc_error_scatter_avg()}, except the average is plotted on the
+\eqn{y}-axis and a a predictor variable \code{x} is plotted on the
+\eqn{x}-axis.
+}
+\item{\code{ppc_error_binned()}}{
+Intended for use with binomial data. A separate binned error plot (similar
+to \code{arm::binnedplot()}) is generated for each dataset (row) in \code{yrep}. For
+this plot \code{y} and \code{yrep} should contain proportions rather than counts,
+and \code{yrep} should have only a small number of rows.
+}
 }
 }
 
@@ -167,8 +163,8 @@ ppc_error_binned(y_prop, yrep_prop[1:6, ])
 }
 \references{
 Gelman, A., Carlin, J. B., Stern, H. S., Dunson, D. B., Vehtari,
-  A., and Rubin, D. B. (2013). \emph{Bayesian Data Analysis.} Chapman & Hall/CRC
-  Press, London, third edition. (Ch. 6)
+A., and Rubin, D. B. (2013). \emph{Bayesian Data Analysis.} Chapman & Hall/CRC
+Press, London, third edition. (Ch. 6)
 }
 \seealso{
 Other PPCs: \code{\link{PPC-discrete}},

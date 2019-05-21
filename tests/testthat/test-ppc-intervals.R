@@ -27,8 +27,8 @@ test_that("ppc_intervals_grouped returns ggplot object", {
 })
 
 test_that("ppc_ribbon_grouped returns ggplot object", {
-  expect_gg(
-    ppc_ribbon_grouped(y, yrep, x, group, facet_args = list(scales = "fixed")))
+  expect_gg(ppc_ribbon_grouped(y, yrep, x, group))
+  expect_gg(ppc_ribbon_grouped(y, yrep, x, group, facet_args = list(scales = "fixed")))
 })
 
 test_that("ppc_intervals_data returns correct structure", {

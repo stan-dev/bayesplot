@@ -153,8 +153,8 @@ schools_mod_ncp <- stan_model("schools_mod_ncp.stan")
 We then fit the model by calling Stan's MCMC algorithm using the `sampling` 
 function (the increased `adapt_delta` param is to make the sampler a bit more "careful" and avoid false positive divergences),
 ```{r, fit-models-hidden, results='hide', message=FALSE}
-fit_cp <- sampling(schools_mod_cp, data = schools_dat, seed = 803214054, control = list(adapt_delta = 0.95))
-fit_ncp <- sampling(schools_mod_ncp, data = schools_dat, seed = 457721433, control = list(adapt_delta = 0.95))
+fit_cp <- sampling(schools_mod_cp, data = schools_dat, seed = 803214053, control = list(adapt_delta = 0.9))
+fit_ncp <- sampling(schools_mod_ncp, data = schools_dat, seed = 457721433, control = list(adapt_delta = 0.9))
 ```
 and extract a `iterations x chains x parameters` array of posterior draws with 
 `as.array`,
@@ -289,7 +289,8 @@ Let's look at how `tau` interacts with other variables, using only one of the
 `theta`s to keep the plot readable:
 
 ```{r, mcmc_pairs}
-mcmc_pairs(posterior_cp, np = np_cp, pars = c("mu","tau","theta[1]"))
+mcmc_pairs(posterior_cp, np = np_cp, pars = c("mu","tau","theta[1]"), 
+           off_diag_args = list(size = 0.75))
 ```
 
 Note that each bivariate plot is present twice -- by default each of those
@@ -325,7 +326,8 @@ scatter_theta_cp <- mcmc_scatter(
   posterior_cp, 
   pars = c("theta[1]", "tau"), 
   transform = list(tau = "log"), # can abbrev. 'transformations'
-  np = np_cp
+  np = np_cp, 
+  size = 1
 )
 scatter_theta_cp
 ```
@@ -353,7 +355,8 @@ scatter_eta_ncp <- mcmc_scatter(
   posterior_ncp, 
   pars = c("eta[1]", "tau"), 
   transform = list(tau = "log"), 
-  np = np_ncp
+  np = np_ncp, 
+  size = 1
 )
 scatter_eta_ncp
 ```
@@ -391,10 +394,11 @@ scatter_theta_ncp <- mcmc_scatter(
   posterior_ncp, 
   pars = c("theta[1]", "tau"), 
   transform = list(tau = "log"), 
-  np = np_ncp
+  np = np_ncp, 
+  size = 1
 )
 
-compare_cp_ncp(scatter_theta_cp, scatter_theta_ncp, ylim = c(-9, 4))
+compare_cp_ncp(scatter_theta_cp, scatter_theta_ncp, ylim = c(-8, 4))
 ```
 
 Once we transform the `eta` values into `theta` values we actually see an even
@@ -427,11 +431,11 @@ mcmc_trace(posterior_cp, pars = "tau", np = np_cp) +
 The first thing to note is that all chains seem to be exploring the same region
 of parameter values, which is a good sign. But the plot is too crowded to help
 us diagnose divergences. We may however zoom in to investigate, using the
-`window` parameter:
+`window` argument:
 
 ```{r echo=FALSE}
 #A check that the chosen window still relevant
-n_divergent_in_window <- np_cp %>% filter(Parameter == "divergent__" & Value == 1 & Iteration >= 350 & Iteration <= 500) %>% nrow()
+n_divergent_in_window <- np_cp %>% filter(Parameter == "divergent__" & Value == 1 & Iteration >= 50 & Iteration <= 200) %>% nrow()
 
 if(n_divergent_in_window < 6) {
   divergences <- np_cp %>% filter(Parameter == "divergent__" & Value == 1) %>% select(Iteration) %>% get("Iteration", .) %>% sort() %>% paste(collapse = ",")
@@ -440,7 +444,7 @@ if(n_divergent_in_window < 6) {
 ```
 
 ```{r, mcmc_trace_zoom}
-mcmc_trace(posterior_cp, pars = "tau", np = np_cp, window = c(400,550)) + 
+mcmc_trace(posterior_cp, pars = "tau", np = np_cp, window = c(50,200)) + 
   xlab("Post-warmup iteration")
 ```
 
@@ -672,7 +676,7 @@ sample size, $n_{eff}$, is usually smaller than the total sample size, $N$
 (although it may be larger in some cases[^1]). The larger the ratio of $n_{eff}$ to
 $N$ the better (see Gelman et al. 2013, Stan Development Team 2018 for more details) .
 
-[^1]: $n_{eff} > N$` indicates that the mean estimate of the parameter computed from Stan 
+[^1]: $n_{eff} > N$ indicates that the mean estimate of the parameter computed from Stan 
 draws approaches the true mean faster than the mean estimate computed from independent 
 samples from the true posterior 
 (the estimate from Stan has smaller variance). This is possible when the draws are 
@@ -770,8 +774,9 @@ https://mc-stan.org/rstanarm
 
 Gabry, J. , Simpson, D. , Vehtari, A. , Betancourt, M. and Gelman, A. (2019), 
 Visualization in Bayesian workflow. _J. R. Stat. Soc. A_, 182: 389-402. 
-\doi:10.1111/rssa.12378. ([journal](https://rss.onlinelibrary.wiley.com/doi/full/10.1111/rssa.12378), 
-[arXiv preprint](https://arxiv.org/abs/1709.01449))
+\doi:10.1111/rssa.12378. ([journal version](https://rss.onlinelibrary.wiley.com/doi/full/10.1111/rssa.12378), 
+[arXiv preprint](https://arxiv.org/abs/1709.01449), 
+[code on GitHub](https://github.com/jgabry/bayes-vis-paper))
 <a id="gabry2019"></a>
 
 Gelman, A. and Rubin, D. B. (1992). Inference from iterative simulation using
@@ -788,8 +793,8 @@ path lengths in Hamiltonian Monte Carlo. *Journal of Machine Learning Research*.
 Rubin, D. B. (1981). Estimation in Parallel Randomized Experiments. *Journal of
 Educational and Behavioral Statistics*. 6:377--401.
 
-Stan Development Team. (2018). *Stan Modeling Language Users
-Guide and Reference Manual*. https://mc-stan.org/users/documentation/
+Stan Development Team. _Stan Modeling Language Users
+Guide and Reference Manual_. https://mc-stan.org/users/documentation/
 
 Stan Development Team. (2018). RStan: the R interface to Stan. R package version 2.17.3.
 https://mc-stan.org/rstan
