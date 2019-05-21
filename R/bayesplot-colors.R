@@ -45,7 +45,7 @@
 #'  * `"teal"`
 #'  * `"yellow"`
 #'  * [`"viridis"`](https://CRAN.R-project.org/package=viridis), `"viridisA"`,
-#'    `"viridisB"`, `"viridisC"`
+#'    `"viridisB"`, `"viridisC"`, `"viridisD"`, `"viridisE"`
 #'  * `"mix-x-y"`, replacing `x` and `y` with any two of
 #'      the scheme names listed above (e.g. "mix-teal-pink", "mix-blue-red",
 #'      etc.). The order of `x` and `y` matters, i.e., the color schemes
