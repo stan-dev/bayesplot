@@ -22,10 +22,11 @@ mcmc_trace_highlight(x, pars = character(), regex_pars = character(),
 trace_style_np(div_color = "red", div_size = 0.25, div_alpha = 1)
 
 mcmc_rank_overlay(x, pars = character(), regex_pars = character(),
-  transformations = list(), n_bins = 20)
+  transformations = list(), n_bins = 20, ref_line = FALSE)
 
 mcmc_rank_hist(x, pars = character(), regex_pars = character(),
-  transformations = list(), facet_args = list(), n_bins = 20)
+  transformations = list(), facet_args = list(), n_bins = 20,
+  ref_line = FALSE)
 
 mcmc_trace_data(x, pars = character(), regex_pars = character(),
   transformations = list(), facet_args = list(), ...,
@@ -120,6 +121,9 @@ the plot. The default values are displayed in the \strong{Usage} section above.}
 
 \item{n_bins}{number of bins to use for the histogram of rank-normalized MCMC
 samples. Defaults to 20.}
+
+\item{ref_line}{whether to draw a horizontal line at the average number of
+ranks per bin. Defaults to \code{FALSE}.}
 }
 \value{
 A ggplot object that can be further customized using the \strong{ggplot2}
@@ -145,7 +149,7 @@ chains but one (specified by the \code{highlight} argument) is reduced.
 Whereas traditional trace plots visualize how the chains mix over the
 course of sampling, rank-normalized histograms visualize how the values
 from the chains mix together in terms of ranking. An ideal plot would
-show the lines mixing or overlapping in a uniform distribution.
+show the rankings mixing or overlapping in a uniform distribution.
 }
 \item{\code{mcmc_rank_overlay()}}{
 Ranks from \code{mcmc_rank_hist()} are plotted using overlaid lines in a
@@ -243,6 +247,11 @@ mcmc_trace(
 )
 }
 
+}
+\references{
+Vehtari, A., Gelman, A., Simpson, D., Carpenter, B., Bürkner, P.
+(2019). Rank-normalization, folding, and localization: An improved \emph{R}-hat
+for assessing convergence of MCMC. \href{https://arxiv.org/abs/1903.08008}{arXiv preprint}.
 }
 \seealso{
 Other MCMC: \code{\link{MCMC-combos}},

@@ -56,7 +56,7 @@
 #'    Whereas traditional trace plots visualize how the chains mix over the
 #'    course of sampling, rank-normalized histograms visualize how the values
 #'    from the chains mix together in terms of ranking. An ideal plot would
-#'    show the lines mixing or overlapping in a uniform distribution.
+#'    show the rankings mixing or overlapping in a uniform distribution.
 #'   }
 #'   \item{`mcmc_rank_overlay()`}{
 #'    Ranks from `mcmc_rank_hist()` are plotted using overlaid lines in a
@@ -64,6 +64,7 @@
 #'   }
 #' }
 #'
+#' @template reference-improved-rhat
 #' @examples
 #' # some parameter draws to use for demonstration
 #' x <- example_mcmc_draws(chains = 4, params = 6)
@@ -267,12 +268,15 @@ trace_style_np <- function(div_color = "red", div_size = 0.25, div_alpha = 1) {
 #' @rdname MCMC-traces
 #' @param n_bins number of bins to use for the histogram of rank-normalized MCMC
 #'   samples. Defaults to 20.
+#' @param ref_line whether to draw a horizontal line at the average number of
+#'   ranks per bin. Defaults to `FALSE`.
 #' @export
 mcmc_rank_overlay <- function(x,
                               pars = character(),
                               regex_pars = character(),
                               transformations = list(),
-                              n_bins = 20) {
+                              n_bins = 20,
+                              ref_line = FALSE) {
   data <- mcmc_trace_data(
     x,
     pars = pars,
@@ -307,13 +311,26 @@ mcmc_rank_overlay <- function(x,
 
   scale_color <- scale_color_manual("Chain", values = chain_colors(n_chain))
 
+  layer_ref_line <- if (ref_line) {
+    geom_hline(
+      yintercept = (right_edge / n_bins) / n_chains,
+      color = get_color("dark_highlight"),
+      size = 1,
+      linetype = "dashed"
+    )
+  } else {
+    NULL
+  }
+
   ggplot(d_bin_counts) +
     aes_(x = ~ bin_start, y =  ~ n, color = ~ chain) +
     geom_step() +
+    layer_ref_line +
     facet_wrap("parameter") +
     scale_color +
     ylim(c(0, NA)) +
     bayesplot_theme_get() +
+    force_x_axis_in_facets() +
     labs(x = "Rank", y = NULL)
 }
 
@@ -324,7 +341,8 @@ mcmc_rank_hist <- function(x,
                            regex_pars = character(),
                            transformations = list(),
                            facet_args = list(),
-                           n_bins = 20) {
+                           n_bins = 20,
+                           ref_line = FALSE) {
   data <- mcmc_trace_data(
     x,
     pars = pars,
@@ -362,6 +380,17 @@ mcmc_rank_hist <- function(x,
     facet_args[["labeller"]] <- facet_args[["labeller"]] %||% labeller
   }
 
+  layer_ref_line <- if (ref_line) {
+    geom_hline(
+      yintercept = (right_edge / n_bins) / n_chains,
+      color = get_color("dark_highlight"),
+      size = .5,
+      linetype = "dashed"
+    )
+  } else {
+    NULL
+  }
+
   facet_call <- do.call(facet_f, facet_args)
 
   ggplot(data) +
@@ -373,12 +402,18 @@ mcmc_rank_hist <- function(x,
       boundary = right_edge,
       size = .25
     ) +
+    layer_ref_line +
     geom_blank(data = data_boundaries) +
     facet_call +
-    force_axes_in_facets() +
+    force_x_axis_in_facets() +
     dont_expand_y_axis(c(0.005, 0)) +
     bayesplot_theme_get() +
-    yaxis_title(FALSE) +
+    theme(
+      axis.line.y = element_blank(),
+      axis.title.y = element_blank(),
+      axis.text.y = element_blank(),
+      axis.ticks = element_blank()
+    ) +
     labs(x = "Rank")
 }
 
