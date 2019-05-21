@@ -14,16 +14,18 @@
 #'   (`starts_with()`, `contains()`, `num_range()`, etc.) for the same purpose.
 #'   **bayesplot** also exports some additional helper functions
 #'   to help with parameter selection:
-#'   * `param_range()`: like [tidyselect::num_range()] but used when parameter
-#'     indexes are in brackets (e.g. `beta[2]`).
+#'   * `param_range()`: like [`num_range()`][tidyselect::num_range] but used
+#'     when parameter indexes are in brackets (e.g. `beta[2]`).
 #'   * `param_glue()`: for more complicated parameter names with multiple
 #'     indexes (including variable names) inside the brackets
 #'     (e.g., `beta[(Intercept) age_group:3]`).
 #'
 #'   These functions can be used inside of `vars()`, `dplyr::select()`,
-#'   and similar functions just like the
+#'   and similar functions, just like the
 #'   [tidyselect helper functions][tidyselect::select_helpers].
 #'   See the **Examples** section.
+#'
+#' @seealso [glue::glue()]
 #'
 #' @examples
 #' x <- example_mcmc_draws(params = 6)
@@ -117,8 +119,8 @@ param_range <- function(prefix, range, vars = NULL) {
 #' @export
 #' @param pattern,... For `param_glue()` only, `pattern` is a string containing
 #'   expressions enclosed in braces and `...` should be named arguments
-#'   providing one character vector per expression in braces in `patten`.
-#'   It easiest to describe how to use these arguments with an example:
+#'   providing one character vector per expression in braces in `patten`. It is
+#'   easiest to describe how to use these arguments with an example:
 #'
 #'     param_glue("beta_{var}[{level}]",
 #'                var = c("age", "income"),
@@ -199,7 +201,7 @@ tidyselect_parameters <- function(complete_pars, pars_list) {
   pars_list <- lapply(pars_list, rlang::env_bury, !!! helpers)
   selected <- tidyselect::vars_select(.vars = complete_pars, !!! pars_list)
   if (!length(selected)) {
-    stop("No parameters were found matching those names.", call. = FALSE)
+    abort("No parameters were found matching those names.")
   }
   return(unname(selected))
 }

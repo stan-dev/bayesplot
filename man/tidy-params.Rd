@@ -28,8 +28,8 @@ left as \code{NULL} and will be set automatically for the user.}
 
 \item{pattern, ...}{For \code{param_glue()} only, \code{pattern} is a string containing
 expressions enclosed in braces and \code{...} should be named arguments
-providing one character vector per expression in braces in \code{patten}.
-It easiest to describe how to use these arguments with an example:\preformatted{param_glue("beta_{var}[{level}]",
+providing one character vector per expression in braces in \code{patten}. It is
+easiest to describe how to use these arguments with an example:\preformatted{param_glue("beta_{var}[{level}]",
            var = c("age", "income"),
            level = c(3,8))
 }
@@ -43,7 +43,7 @@ As of version \code{1.7.0}, \strong{bayesplot} allows the \code{pars} argument
 for \link[bayesplot:MCMC-overview]{MCMC plots} to be used for so-called 'tidy'
 variable selection (in the style of the \strong{dplyr} package).
 The \code{\link[dplyr:vars]{vars()}} function is re-exported from \strong{dplyr}
-for this purpose.
+for this purpose. See the \strong{Examples} section, below.
 
 When using \code{pars} for tidy parameter selection, the \code{regex_pars} argument
 is ignored because \strong{bayesplot} supports using
@@ -52,15 +52,15 @@ is ignored because \strong{bayesplot} supports using
 \strong{bayesplot} also exports some additional helper functions
 to help with parameter selection:
 \itemize{
-\item \code{param_range()}: like \code{\link[tidyselect:num_range]{tidyselect::num_range()}} but used when parameter
-indexes are in brackets (e.g. \code{beta[2]}).
+\item \code{param_range()}: like \code{\link[tidyselect:num_range]{num_range()}} but used
+when parameter indexes are in brackets (e.g. \code{beta[2]}).
 \item \code{param_glue()}: for more complicated parameter names with multiple
 indexes (including variable names) inside the brackets
 (e.g., \code{beta[(Intercept) age_group:3]}).
 }
 
 These functions can be used inside of \code{vars()}, \code{dplyr::select()},
-and similar functions just like the
+and similar functions, just like the
 \link[tidyselect:select_helpers]{tidyselect helper functions}.
 See the \strong{Examples} section.
 }
@@ -160,4 +160,7 @@ posterior \%>\%
    mcmc_hist()
 }
 
+}
+\seealso{
+\code{\link[glue:glue]{glue::glue()}}
 }
