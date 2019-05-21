@@ -8,25 +8,19 @@
 suggested_package <- function(pkg, min_version = NULL) {
   stopifnot(length(pkg) == 1, is.character(pkg))
   if (!requireNamespace(pkg, quietly = TRUE)) {
-    stop(
-      "Please install the ",
-      pkg, " package to use this function.",
-      call. = FALSE
-    )
+    abort(paste("Please install the", pkg, "package to use this function."))
   }
   if (!is.null(min_version)) {
     stopifnot(is.character(min_version))
     if (utils::packageVersion(pkg) < package_version(min_version)) {
-      stop(
-        "Version >=", min_version, " of the ",
-        pkg, " package is required to use this function.",
-        call. = FALSE
-      )
+      abort(paste(
+        "Version >= ", min_version, "of the",
+        pkg, "package is required to use this function."
+      ))
     }
   }
   invisible(TRUE)
 }
-
 
 # Return x if not NULL, otherwise y
 `%||%` <- function(x, y) if (!is.null(x)) x else y
@@ -38,11 +32,10 @@ check_ignored_arguments <- function(..., ok_args = character()) {
     unrecognized <- if (!length(ok_args))
       names(dots) else setdiff(names(dots), ok_args)
     if (length(unrecognized)) {
-      warning(
-        "The following arguments were unrecognized and ignored: ",
-        paste(unrecognized, collapse = ", "),
-        call. = FALSE
-      )
+      warn(paste(
+        "The following arguments were unrecognized and ignored:",
+        paste(unrecognized, collapse = ", ")
+      ))
     }
   }
 }

@@ -86,8 +86,7 @@ log_posterior.stanfit <- function(object, inc_warmup = FALSE, ...) {
                                 inc_warmup = inc_warmup,
                                 ...)
   lp <- lapply(lp, as.array)
-  lp <- setNames(reshape2::melt(lp),
-                 c("Iteration", "Value", "Chain"))
+  lp <- set_names(reshape2::melt(lp), c("Iteration", "Value", "Chain"))
   validate_df_classes(lp, c("integer", "numeric", "integer"))
 }
 
@@ -96,9 +95,7 @@ log_posterior.stanfit <- function(object, inc_warmup = FALSE, ...) {
 #' @method log_posterior stanreg
 #'
 log_posterior.stanreg <- function(object, inc_warmup = FALSE, ...) {
-  log_posterior.stanfit(object$stanfit,
-                        inc_warmup = inc_warmup,
-                        ...)
+  log_posterior.stanfit(object$stanfit, inc_warmup = inc_warmup, ...)
 }
 
 
@@ -136,24 +133,27 @@ nuts_params.stanreg <-
 #' @export
 #' @method nuts_params list
 nuts_params.list <- function(object, pars = NULL, ...) {
-  if (!all(sapply(object, is.matrix)))
-    stop("All list elements should be matrices.")
+  if (!all(sapply(object, is.matrix))) {
+    abort("All list elements should be matrices.")
+  }
 
   dd <- lapply(object, dim)
-  if (length(unique(dd)) != 1)
-    stop("All matrices in the list must have the same dimensions.")
+  if (length(unique(dd)) != 1) {
+    abort("All matrices in the list must have the same dimensions.")
+  }
 
   nms <- lapply(object, colnames)
-  if (length(unique(nms)) != 1)
-    stop("All matrices in the list must have the same column names.")
+  if (length(unique(nms)) != 1) {
+    abort("All matrices in the list must have the same column names.")
+  }
 
-  if (length(pars))
-    object <- lapply(object, function(x)
-      x[, pars, drop = FALSE])
+  if (length(pars)) {
+    object <- lapply(object, function(x) x[, pars, drop = FALSE])
+  }
 
-  object <- setNames(reshape2::melt(object),
-                     c("Iteration", "Parameter", "Value", "Chain"))
-  validate_df_classes(object, c("integer", "factor", "numeric", "integer"))
+  out <- reshape2::melt(object)
+  out <- set_names(out, c("Iteration", "Parameter", "Value", "Chain"))
+  validate_df_classes(out, c("integer", "factor", "numeric", "integer"))
 }
 
 
@@ -220,7 +220,6 @@ neff_ratio.stanreg <- function(object, pars = NULL, regex_pars = NULL, ...) {
   if (!is.null(pars) || !is.null(regex_pars)) {
     return(ratio)
   }
-
   ratio[!names(ratio) %in% c("mean_PPD", "log-posterior")]
 }
 
@@ -240,9 +239,9 @@ validate_df_classes <- function(x, classes = character()) {
     ncol(x) == length(classes)
   )
   for (j in 1:ncol(x)) {
-    if (!inherits(x[, j], classes[j]))
-      stop(colnames(x)[j], " does not have class ", classes[j],
-           call. = FALSE)
+    if (!inherits(x[, j], classes[j])) {
+      abort(paste0(colnames(x)[j], " does not have class ", classes[j]))
+    }
   }
-  return(x)
+  x
 }

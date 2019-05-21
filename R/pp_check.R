@@ -60,8 +60,9 @@ pp_check <- function(object, ...) {
 #'   be dropped if `fun` is specified as a string.
 #'
 pp_check.default <- function(object, yrep, fun, ...) {
-  if (is.character(fun) && substr(fun, 1, 4) != "ppc_")
+  if (is.character(fun) && substr(fun, 1, 4) != "ppc_") {
     fun <- paste0("ppc_", fun)
+  }
  .ppcfun <- match.fun(fun)
  .ppcfun(y = object, yrep = yrep, ...)
 }

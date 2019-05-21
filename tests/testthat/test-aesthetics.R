@@ -29,6 +29,9 @@ test_that("getting and setting the color scheme works", {
 
   color_scheme_set("blue")
   expect_equivalent(color_scheme_get("teal"), prepare_colors_for_test("teal"))
+
+  # error if not character
+  expect_error(color_scheme_set(7), "'scheme' should be a character vector of length 1 or 6")
 })
 
 test_that("color_scheme_get with i argument works", {
@@ -62,10 +65,8 @@ test_that("setting mixed scheme works", {
   color_scheme_set("mix-blue-gray")
   expect_equivalent(color_scheme_get(), mixed_scheme("blue", "gray"))
 
-  expect_error(color_scheme_set("mix-green-reds"),
-               "should be one of")
-  expect_error(color_scheme_set("mix-greens-red"),
-               "should be one of")
+  expect_error(color_scheme_set("mix-green-reds"), "should be one of")
+  expect_error(color_scheme_set("mix-greens-red"), "should be one of")
 })
 
 test_that("setting brewer scheme works", {
