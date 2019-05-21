@@ -176,16 +176,16 @@ mcmc_trace <-
   # deprecate 'divergences' arg in favor of 'np'
   # (for consistency across functions)
   if (!is.null(np) && !is.null(divergences)) {
-    stop(
+    abort(paste0(
       "'np' and 'divergences' can't both be specified. ",
       "Use only 'np' (the 'divergences' argument is deprecated)."
-    )
+    ))
   } else if (!is.null(divergences)) {
-    warning(
+    warn(paste0(
       "The 'divergences' argument is deprecated ",
       "and will be removed in a future release. ",
       "Use the 'np' argument instead."
-    )
+    ))
     np <- divergences
   }
 
@@ -567,11 +567,11 @@ mcmc_trace_data <- function(x,
   x <- prepare_mcmc_array(x, pars, regex_pars, transformations)
 
   if (iter1 < 0) {
-    stop("'iter1' cannot be negative.")
+    abort("'iter1' cannot be negative.")
   }
 
   if (n_warmup > 0 && iter1 > 0) {
-    stop("'n_warmup' and 'iter1' can't both be specified.")
+    abort("'n_warmup' and 'iter1' can't both be specified.")
   }
 
   if (!is.null(highlight)) {
@@ -581,11 +581,12 @@ mcmc_trace_data <- function(x,
       STOP_need_multiple_chains()
     }
 
-    if (!highlight %in% seq_len(ncol(x)))
-      stop(
+    if (!highlight %in% seq_len(ncol(x))) {
+      abort(paste0(
         "'highlight' is ", highlight,
         ", but 'x' contains ", ncol(x), " chains."
-      )
+      ))
+    }
   }
 
   ## @todo: filter to just window?
