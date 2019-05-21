@@ -13,20 +13,21 @@
 ppc_intervals(y, yrep, x = NULL, ..., prob = 0.5, prob_outer = 0.9,
   size = 1, fatten = 3)
 
-ppc_intervals_grouped(y, yrep, x = NULL, group, facet_args = list(),
-  ..., prob = 0.5, prob_outer = 0.9, size = 1, fatten = 3)
+ppc_intervals_grouped(y, yrep, x = NULL, group, ...,
+  facet_args = list(), prob = 0.5, prob_outer = 0.9, size = 1,
+  fatten = 3)
 
 ppc_ribbon(y, yrep, x = NULL, ..., prob = 0.5, prob_outer = 0.9,
   alpha = 0.33, size = 0.25)
 
-ppc_ribbon_grouped(y, yrep, x = NULL, group, facet_args = list(), ...,
+ppc_ribbon_grouped(y, yrep, x = NULL, group, ..., facet_args = list(),
   prob = 0.5, prob_outer = 0.9, alpha = 0.33, size = 0.25)
 
-ppc_intervals_data(y, yrep, x = NULL, group = NULL, prob = 0.5,
-  prob_outer = 0.9, ...)
+ppc_intervals_data(y, yrep, x = NULL, group = NULL, ..., prob = 0.5,
+  prob_outer = 0.9)
 
-ppc_ribbon_data(y, yrep, x = NULL, group = NULL, prob = 0.5,
-  prob_outer = 0.9, ...)
+ppc_ribbon_data(y, yrep, x = NULL, group = NULL, ..., prob = 0.5,
+  prob_outer = 0.9)
 }
 \arguments{
 \item{y}{A vector of observations. See \strong{Details}.}

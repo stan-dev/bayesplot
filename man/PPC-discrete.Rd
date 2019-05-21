@@ -10,7 +10,7 @@
 ppc_bars(y, yrep, ..., prob = 0.9, width = 0.9, size = 1,
   fatten = 3, freq = TRUE)
 
-ppc_bars_grouped(y, yrep, group, facet_args = list(), ..., prob = 0.9,
+ppc_bars_grouped(y, yrep, group, ..., facet_args = list(), prob = 0.9,
   width = 0.9, size = 1, fatten = 3, freq = TRUE)
 
 ppc_rootogram(y, yrep, style = c("standing", "hanging", "suspended"),

@@ -506,7 +506,7 @@ validate_enough_chains <- function(chain = NULL, n_chain) {
 }
 
 #' @param x data frame with nuts params
-#' @param lp data frame with lp__
+#' @param lp data frame with `lp__`
 #' @noRd
 validate_nuts_data_frame <- function(x, lp) {
   if (!is.data.frame(x)) {

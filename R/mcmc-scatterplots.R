@@ -721,7 +721,9 @@ pairs_condition <- function(chains = NULL, draws = NULL, nuts = NULL) {
 
 # internal for mcmc_pairs -------------------------------------------------
 
-#' Get plotting functions from user-specified `diag_fun`, `off_diag_fun` arguments
+#' Get plotting functions from user-specified
+#' `diag_fun` and `off_diag_fun` arguments
+#'
 #' @noRd
 #' @param x User specified `diag_fun` or `off_diag_fun` argument to `mcmc_pairs()`
 pairs_plotfun <- function(x) {
@@ -733,7 +735,7 @@ pairs_plotfun <- function(x) {
 #'
 #' @noRd
 #' @param df A data frame (from `nuts_params()`, `log_posterior()`, etc)
-#' @param .form Same as 'form' arg to `utils::unstack()`
+#' @param .form Same as `form` arg to `utils::unstack()`
 unstack_to_matrix <- function(df, .form) {
   x <- utils::unstack(df, form = .form)
   as.matrix(x)

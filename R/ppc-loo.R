@@ -117,11 +117,21 @@ NULL
 #'   standard normal distribution.
 #' @param trim Passed to [ggplot2::stat_density()].
 #' @template args-density-controls
-ppc_loo_pit_overlay <- function(y, yrep, lw, pit, samples = 100, ...,
-                                size = 0.25, alpha = 0.7, trim = FALSE,
-                                bw = "nrd0", adjust = 1, kernel = "gaussian",
+ppc_loo_pit_overlay <- function(y,
+                                yrep,
+                                lw,
+                                pit,
+                                samples = 100,
+                                ...,
+                                size = 0.25,
+                                alpha = 0.7,
+                                trim = FALSE,
+                                bw = "nrd0",
+                                adjust = 1,
+                                kernel = "gaussian",
                                 n_dens = 1024) {
   check_ignored_arguments(...)
+
   if (!missing(pit)) {
     stopifnot(is.numeric(pit), is_vector_or_1Darray(pit))
     inform("'pit' specified so ignoring 'y','yrep','lw' if specified.")
@@ -183,9 +193,16 @@ ppc_loo_pit_overlay <- function(y, yrep, lw, pit, samples = 100, ...,
 
 #' @rdname PPC-loo
 #' @export
-ppc_loo_pit_qq <- function(y, yrep, lw, pit, compare = c("uniform", "normal"),
-                           ..., size = 2, alpha = 1) {
+ppc_loo_pit_qq <- function(y,
+                           yrep,
+                           lw,
+                           pit,
+                           compare = c("uniform", "normal"),
+                           ...,
+                           size = 2,
+                           alpha = 1) {
   check_ignored_arguments(...)
+
   compare <- match.arg(compare)
   if (!missing(pit)) {
     stopifnot(is.numeric(pit), is_vector_or_1Darray(pit))

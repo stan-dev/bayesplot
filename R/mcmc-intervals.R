@@ -691,7 +691,8 @@ mcmc_areas_ridges_data <- function(x,
                                    ...,
                                    prob_outer = 1,
                                    prob = 1,
-                                   bw = NULL, adjust = NULL, kernel = NULL,
+                                   bw = NULL,
+                                   adjust = NULL, kernel = NULL,
                                    n_dens = NULL) {
   check_ignored_arguments(...)
   mcmc_areas_data(x, pars = pars, regex_pars = regex_pars,

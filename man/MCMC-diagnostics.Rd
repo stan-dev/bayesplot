@@ -24,11 +24,11 @@ mcmc_neff_hist(ratio, ..., binwidth = NULL, breaks = NULL)
 
 mcmc_neff_data(ratio, ...)
 
-mcmc_acf(x, pars = character(), regex_pars = character(),
-  facet_args = list(), ..., lags = 20, size = NULL)
+mcmc_acf(x, pars = character(), regex_pars = character(), ...,
+  facet_args = list(), lags = 20, size = NULL)
 
-mcmc_acf_bar(x, pars = character(), regex_pars = character(),
-  facet_args = list(), ..., lags = 20)
+mcmc_acf_bar(x, pars = character(), regex_pars = character(), ...,
+  facet_args = list(), lags = 20)
 }
 \arguments{
 \item{rhat}{A vector of R-hat estimates.}

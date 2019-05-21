@@ -140,17 +140,13 @@ ppc_intervals_grouped <- function(y,
                                   yrep,
                                   x = NULL,
                                   group,
-                                  facet_args = list(),
                                   ...,
+                                  facet_args = list(),
                                   prob = 0.5,
                                   prob_outer = 0.9,
                                   size = 1,
                                   fatten = 3) {
   check_ignored_arguments(...)
-
-  if (is.null(facet_args[["scales"]])) {
-    facet_args[["scales"]] <- "free"
-  }
 
   data <- ppc_intervals_data(
     y = y,
@@ -160,6 +156,8 @@ ppc_intervals_grouped <- function(y,
     prob = prob,
     prob_outer = prob_outer
   )
+
+  facet_args[["scales"]] <- facet_args[["scales"]] %||% "free"
 
   .ppc_intervals(
     data = data,
@@ -210,17 +208,13 @@ ppc_ribbon_grouped <- function(y,
                                yrep,
                                x = NULL,
                                group,
-                               facet_args = list(),
                                ...,
+                               facet_args = list(),
                                prob = 0.5,
                                prob_outer = 0.9,
                                alpha = 0.33,
                                size = 0.25) {
   check_ignored_arguments(...)
-
-  if (is.null(facet_args[["scales"]])) {
-    facet_args[["scales"]] <- "free"
-  }
 
   data <- ppc_intervals_data(
     y = y,
@@ -230,6 +224,8 @@ ppc_ribbon_grouped <- function(y,
     prob = prob,
     prob_outer = prob_outer
   )
+
+  facet_args[["scales"]] <- facet_args[["scales"]] %||% "free"
 
   .ppc_intervals(
     data = data,
@@ -246,7 +242,7 @@ ppc_ribbon_grouped <- function(y,
 #' @rdname PPC-intervals
 #' @export
 ppc_intervals_data <- function(y, yrep, x = NULL, group = NULL,
-                               prob = 0.5, prob_outer = 0.9, ...) {
+                               ..., prob = 0.5, prob_outer = 0.9) {
   check_ignored_arguments(...)
   .ppc_intervals_data(y = y, yrep = yrep, x = x, group = group,
                       prob = prob, prob_outer = prob_outer)
@@ -396,9 +392,7 @@ label_x <- function(x) {
 
   if (grouped) {
     facet_args[["facets"]] <- "group"
-    if (is.null(facet_args[["scales"]])) {
-      facet_args[["scales"]] <- "free"
-    }
+    facet_args[["scales"]] <- facet_args[["scales"]] %||% "free"
     graph <- graph + do.call("facet_wrap", facet_args)
   }
 

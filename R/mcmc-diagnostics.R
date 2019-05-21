@@ -308,8 +308,8 @@ mcmc_acf <-
   function(x,
            pars = character(),
            regex_pars = character(),
-           facet_args = list(),
            ...,
+           facet_args = list(),
            lags = 20,
            size = NULL) {
     check_ignored_arguments(...)
@@ -330,8 +330,8 @@ mcmc_acf_bar <-
   function(x,
            pars = character(),
            regex_pars = character(),
-           facet_args = list(),
            ...,
+           facet_args = list(),
            lags = 20) {
     check_ignored_arguments(...)
     .mcmc_acf(

@@ -66,9 +66,9 @@ NULL
 mcmc_combo <-
   function(x,
            combo = c("dens", "trace"),
+           ...,
            widths = NULL,
-           gg_theme = NULL,
-           ...) {
+           gg_theme = NULL) {
     suggested_package("gridExtra")
 
     if (length(combo) < 2) {

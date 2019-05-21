@@ -5,8 +5,8 @@
 \alias{mcmc_combo}
 \title{Combination plots}
 \usage{
-mcmc_combo(x, combo = c("dens", "trace"), widths = NULL,
-  gg_theme = NULL, ...)
+mcmc_combo(x, combo = c("dens", "trace"), ..., widths = NULL,
+  gg_theme = NULL)
 }
 \arguments{
 \item{x}{A 3-D array, matrix, list of matrices, or data frame of MCMC draws.
@@ -19,6 +19,8 @@ the \link{MCMC-overview} page.}
 \code{combo} corresponds to a column in the resulting graphic and should be the
 name of one of the available \link[=MCMC-overview]{MCMC} functions (omitting the
 \code{mcmc_} prefix).}
+
+\item{...}{Arguments passed to the plotting functions named in \code{combo}.}
 
 \item{widths}{A numeric vector the same length as \code{combo} specifying
 relative column widths. For example, if the plot has two columns, then
@@ -35,8 +37,6 @@ plots \emph{before} combining them into the gtable object that is returned.
 This can be a theme object created by a call to \code{\link[ggplot2:theme]{ggplot2::theme()}} or
 one of the \strong{bayesplot}convenience functions, e.g.
 \code{\link[=legend_none]{legend_none()}} (see the \strong{Examples} section, below).}
-
-\item{...}{Arguments passed to the plotting functions named in \code{combo}.}
 }
 \value{
 A gtable object (the result of calling

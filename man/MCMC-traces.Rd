@@ -11,12 +11,12 @@
 \title{Trace plots of MCMC draws}
 \usage{
 mcmc_trace(x, pars = character(), regex_pars = character(),
-  transformations = list(), facet_args = list(), ..., n_warmup = 0,
+  transformations = list(), ..., facet_args = list(), n_warmup = 0,
   iter1 = 0, window = NULL, size = NULL, np = NULL,
   np_style = trace_style_np(), divergences = NULL)
 
 mcmc_trace_highlight(x, pars = character(), regex_pars = character(),
-  transformations = list(), facet_args = list(), ..., n_warmup = 0,
+  transformations = list(), ..., facet_args = list(), n_warmup = 0,
   window = NULL, size = NULL, alpha = 0.2, highlight = 1)
 
 trace_style_np(div_color = "red", div_size = 0.25, div_alpha = 1)
@@ -25,7 +25,7 @@ mcmc_rank_overlay(x, pars = character(), regex_pars = character(),
   transformations = list(), ..., n_bins = 20, ref_line = FALSE)
 
 mcmc_rank_hist(x, pars = character(), regex_pars = character(),
-  transformations = list(), facet_args = list(), ..., n_bins = 20,
+  transformations = list(), ..., facet_args = list(), n_bins = 20,
   ref_line = FALSE)
 
 mcmc_trace_data(x, pars = character(), regex_pars = character(),
@@ -69,11 +69,11 @@ parameter is transformed (e.g. \code{"t(sigma)"}).
 Note: due to partial argument matching \code{transformations} can be
 abbreviated for convenience in interactive use (e.g., \code{transform}).}
 
+\item{...}{Currently ignored.}
+
 \item{facet_args}{A named list of arguments (other than \code{facets}) passed
 to \code{\link[ggplot2:facet_wrap]{ggplot2::facet_wrap()}} or \code{\link[ggplot2:facet_grid]{ggplot2::facet_grid()}}
 to control faceting.}
-
-\item{...}{Currently ignored.}
 
 \item{n_warmup}{An integer; the number of warmup iterations included in
 \code{x}. The default is \code{n_warmup = 0}, i.e. to assume no warmup

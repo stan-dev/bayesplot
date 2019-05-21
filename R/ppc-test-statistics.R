@@ -246,8 +246,13 @@ ppc_stat_freqpoly_grouped <-
 #' @export
 #' @param size,alpha Arguments passed to [ggplot2::geom_point()] to control the
 #'   appearance of scatterplot points.
-ppc_stat_2d <- function(y, yrep, stat = c("mean", "sd"), ...,
-                        size = 2.5, alpha = 0.7) {
+ppc_stat_2d <- function(y,
+                        yrep,
+                        stat = c("mean", "sd"),
+                        ...,
+                        size = 2.5,
+                        alpha = 0.7) {
+
   check_ignored_arguments(...)
 
   y <- validate_y(y)

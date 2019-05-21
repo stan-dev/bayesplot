@@ -100,8 +100,8 @@ mcmc_recover_intervals <-
   function(x,
            true,
            batch = rep(1, length(true)),
-           facet_args = list(),
            ...,
+           facet_args = list(),
            prob = 0.5,
            prob_outer = 0.9,
            point_est = c("median", "mean", "none"),
@@ -121,8 +121,9 @@ mcmc_recover_intervals <-
     )
     all_separate <- length(unique(batch)) == length(true)
     point_est <- match.arg(point_est)
-    if (point_est == "none")
+    if (point_est == "none") {
       point_est <- NULL
+    }
 
     alpha1 <- (1 - prob) / 2
     alpha2 <- (1 - prob_outer) / 2
@@ -143,11 +144,9 @@ mcmc_recover_intervals <-
         factor(rownames(intervals),
                levels = rownames(intervals)[as.integer(as.factor(batch))])
     }
-    facet_args[["facets"]] <- ~ Batch
-    if (is.null(facet_args[["strip.position"]]))
-      facet_args[["strip.position"]] <- "top"
-    if (is.null(facet_args[["scales"]]))
-      facet_args[["scales"]] <- "free"
+    facet_args[["facets"]] <- "Batch"
+    facet_args[["strip.position"]] <- facet_args[["strip.position"]] %||% "top"
+    facet_args[["scales"]] <- facet_args[["scales"]] %||% "free"
 
     plot_caption <- paste0("Showing ", round(prob * 100, 1), "% and ",
                            round(prob_outer * 100, 1), "% intervals")
@@ -165,13 +164,14 @@ mcmc_recover_intervals <-
       ) +
       bayesplot_theme_get()
 
-    if (!is.null(point_est))
+    if (!is.null(point_est)) {
       graph <- graph +
       geom_point(
         aes_(y = ~ Point, shape = "Estimated",
              color = "Estimated", fill = "Estimated"),
         size = size
       )
+    }
 
     graph <- graph +
       geom_point(
@@ -199,13 +199,14 @@ mcmc_recover_intervals <-
       xaxis_title(FALSE) +
       yaxis_title(FALSE)
 
-    if (all_separate)
+    if (all_separate) {
       return(
         graph +
           theme(axis.line.x = element_blank()) +
           xaxis_ticks(FALSE) +
           xaxis_text(FALSE)
       )
+    }
 
     graph +
       xaxis_text(face = "bold") +
@@ -219,8 +220,8 @@ mcmc_recover_scatter <-
   function(x,
            true,
            batch = rep(1, length(true)),
-           facet_args = list(),
            ...,
+           facet_args = list(),
            point_est = c("median", "mean"),
            size = 3,
            alpha = 1) {
@@ -299,8 +300,8 @@ mcmc_recover_scatter <-
 mcmc_recover_hist <-
   function(x,
            true,
-           facet_args = list(),
            ...,
+           facet_args = list(),
            binwidth = NULL,
            breaks = NULL) {
 
@@ -315,9 +316,8 @@ mcmc_recover_hist <-
     vline_data <- data.frame(Parameter = colnames(x), True = true)
     hist_data <- melt_mcmc(x)[, -1]
 
-    facet_args[["facets"]] <- ~ Parameter
-    if (is.null(facet_args[["scales"]]))
-      facet_args[["scales"]] <- "free"
+    facet_args[["facets"]] <- "Parameter"
+    facet_args[["scales"]] <- facet_args[["scales"]] %||% "free"
 
     ggplot() +
       geom_histogram(

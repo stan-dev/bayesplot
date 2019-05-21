@@ -12,22 +12,22 @@
 \title{Histograms and kernel density plots of MCMC draws}
 \usage{
 mcmc_hist(x, pars = character(), regex_pars = character(),
-  transformations = list(), facet_args = list(), ...,
+  transformations = list(), ..., facet_args = list(),
   binwidth = NULL, breaks = NULL, freq = TRUE)
 
 mcmc_dens(x, pars = character(), regex_pars = character(),
-  transformations = list(), facet_args = list(), ..., trim = FALSE)
+  transformations = list(), ..., facet_args = list(), trim = FALSE)
 
 mcmc_hist_by_chain(x, pars = character(), regex_pars = character(),
-  transformations = list(), facet_args = list(), ...,
+  transformations = list(), ..., facet_args = list(),
   binwidth = NULL, freq = TRUE)
 
 mcmc_dens_overlay(x, pars = character(), regex_pars = character(),
-  transformations = list(), facet_args = list(), color_chains = TRUE,
-  ..., trim = FALSE)
+  transformations = list(), ..., facet_args = list(),
+  color_chains = TRUE, trim = FALSE)
 
 mcmc_dens_chains(x, pars = character(), regex_pars = character(),
-  transformations = list(), color_chains = TRUE, ..., bw = NULL,
+  transformations = list(), ..., color_chains = TRUE, bw = NULL,
   adjust = NULL, kernel = NULL, n_dens = NULL)
 
 mcmc_dens_chains_data(x, pars = character(), regex_pars = character(),
@@ -35,7 +35,7 @@ mcmc_dens_chains_data(x, pars = character(), regex_pars = character(),
   kernel = NULL, n_dens = NULL)
 
 mcmc_violin(x, pars = character(), regex_pars = character(),
-  transformations = list(), facet_args = list(), ..., probs = c(0.1,
+  transformations = list(), ..., facet_args = list(), probs = c(0.1,
   0.5, 0.9))
 }
 \arguments{
@@ -75,11 +75,11 @@ parameter is transformed (e.g. \code{"t(sigma)"}).
 Note: due to partial argument matching \code{transformations} can be
 abbreviated for convenience in interactive use (e.g., \code{transform}).}
 
+\item{...}{Currently ignored.}
+
 \item{facet_args}{A named list of arguments (other than \code{facets}) passed
 to \code{\link[ggplot2:facet_wrap]{ggplot2::facet_wrap()}} or \code{\link[ggplot2:facet_grid]{ggplot2::facet_grid()}}
 to control faceting.}
-
-\item{...}{Currently ignored.}
 
 \item{binwidth}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}} to override
 the default binwidth.}

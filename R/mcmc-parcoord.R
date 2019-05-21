@@ -80,7 +80,7 @@
 #' mcmc_parcoord(draws, size = 0.25, alpha = 0.1,
 #'               np = np, np_style = div_style)
 #'
-#' # to use a transformation (e.g., to standarde all the variables)
+#' # to use a transformation (e.g., standardizing all the variables can be helpful)
 #' # specify the 'transformations' argument (though partial argument name
 #' # matching means we can just use 'trans' or 'transform')
 #' mcmc_parcoord(

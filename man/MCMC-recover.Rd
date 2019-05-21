@@ -7,15 +7,15 @@
 \alias{mcmc_recover_hist}
 \title{Compare MCMC estimates to "true" parameter values}
 \usage{
-mcmc_recover_intervals(x, true, batch = rep(1, length(true)),
-  facet_args = list(), ..., prob = 0.5, prob_outer = 0.9,
+mcmc_recover_intervals(x, true, batch = rep(1, length(true)), ...,
+  facet_args = list(), prob = 0.5, prob_outer = 0.9,
   point_est = c("median", "mean", "none"), size = 4, alpha = 1)
 
-mcmc_recover_scatter(x, true, batch = rep(1, length(true)),
-  facet_args = list(), ..., point_est = c("median", "mean"),
-  size = 3, alpha = 1)
+mcmc_recover_scatter(x, true, batch = rep(1, length(true)), ...,
+  facet_args = list(), point_est = c("median", "mean"), size = 3,
+  alpha = 1)
 
-mcmc_recover_hist(x, true, facet_args = list(), ..., binwidth = NULL,
+mcmc_recover_hist(x, true, ..., facet_args = list(), binwidth = NULL,
   breaks = NULL)
 }
 \arguments{
@@ -40,11 +40,11 @@ Changing the default is most useful when parameters are on very different
 scales, in which case \code{batch} can be used to group them into batches
 within which it makes sense to use the same y-axis.}
 
+\item{...}{Currently unused.}
+
 \item{facet_args}{A named list of arguments (other than \code{facets}) passed
 to \code{\link[ggplot2:facet_wrap]{ggplot2::facet_wrap()}} or \code{\link[ggplot2:facet_grid]{ggplot2::facet_grid()}}
 to control faceting.}
-
-\item{...}{Currently unused.}
 
 \item{prob}{The probability mass to include in the inner interval. The
 default is \code{0.5} (50\% interval).}
