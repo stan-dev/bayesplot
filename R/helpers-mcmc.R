@@ -21,11 +21,10 @@ prepare_mcmc_array <- function(x,
 
   stopifnot(is.matrix(x) || is.array(x))
   if (is.array(x) && !(length(dim(x)) %in% c(2,3))) {
-    stop("Arrays should have 2 or 3 dimensions. See help('MCMC-overview').",
-         call. = FALSE)
+    abort("Arrays should have 2 or 3 dimensions. See help('MCMC-overview').")
   }
   if (anyNA(x)) {
-    stop("NAs not allowed in 'x'.", call. = FALSE)
+    abort("NAs not allowed in 'x'.")
   }
 
   parnames <- parameter_names(x)
@@ -39,7 +38,7 @@ prepare_mcmc_array <- function(x,
   if (is.function(transformations) ||
       (is.character(transformations) && length(transformations) == 1)) {
     transformations <- rep(list(transformations), length(pars))
-    transformations <- setNames(transformations, pars)
+    transformations <- set_names(transformations, pars)
   }
 
   if (is.matrix(x)) {
@@ -186,19 +185,17 @@ validate_chain_list <- function(x) {
   for (i in seq_len(n_chain)) {
     nms <- colnames(as.matrix(x[[i]]))
     if (is.null(nms) || !all(nzchar(nms))) {
-      stop(
-        "Some parameters are missing names. ",
-        "Check the column names for the matrices in your list of chains.",
-        call. = FALSE
-      )
+      abort(paste(
+        "Some parameters are missing names.",
+        "Check the column names for the matrices in your list of chains."
+      ))
     }
   }
   if (n_chain > 1) {
     n_iter <- sapply(x, nrow)
     same_iters <- length(unique(n_iter)) == 1
     if (!same_iters) {
-      stop("Each chain should have the same number of iterations.",
-           call. = FALSE)
+      abort("Each chain should have the same number of iterations.")
     }
 
     cnames <- sapply(x, colnames)
@@ -208,8 +205,10 @@ validate_chain_list <- function(x) {
       same_params <- length(unique(cnames)) == 1
     }
     if (!same_params) {
-      stop("The parameters for each chain should be in the same order ",
-           "and have the same names.", call. = FALSE)
+      abort(paste(
+        "The parameters for each chain should be in the same order",
+        "and have the same names."
+      ))
     }
   }
 
@@ -245,10 +244,10 @@ chain_list2array <- function(x) {
 parameter_names <- function(x) UseMethod("parameter_names")
 parameter_names.array <- function(x) {
   stopifnot(is_3d_array(x))
-  dimnames(x)[[3]] %||% stop("No parameter names found.", call. = FALSE)
+  dimnames(x)[[3]] %||% abort("No parameter names found.")
 }
 parameter_names.default <- function(x) {
-  colnames(x) %||% stop("No parameter names found.", call. = FALSE)
+  colnames(x) %||% abort("No parameter names found.")
 }
 
 # Check if an object is a 3-D array
@@ -288,7 +287,7 @@ has_multiple_params <- function(x) {
 }
 
 STOP_need_multiple_chains <- function(call. = FALSE) {
-  stop("This function requires multiple chains.", call. = call.)
+  abort("This function requires multiple chains.")
 }
 
 
@@ -297,19 +296,18 @@ validate_transformations <-
   function(transformations = list(),
            pars = character()) {
     if (is.null(names(transformations))) {
-      stop("'transformations' must be a _named_ list.", call. = FALSE)
+      abort("'transformations' must be a _named_ list.")
     } else if (any(!nzchar(names(transformations)))) {
-      stop("Each element of 'transformations' must have a name.", call. = FALSE)
+      abort("Each element of 'transformations' must have a name.")
     }
 
     transformations <- lapply(transformations, match.fun)
     if (!all(names(transformations) %in% pars)) {
       not_found <- which(!names(transformations) %in% pars)
-      stop(
-        "Some names(transformations) don't match parameter names: ",
-        paste(names(transformations)[not_found], collapse = ", "),
-        call. = FALSE
-      )
+      abort(paste(
+        "Some names(transformations) don't match parameter names:",
+        paste(names(transformations)[not_found], collapse = ", ")
+      ))
     }
 
     transformations

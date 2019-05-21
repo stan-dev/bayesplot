@@ -124,7 +124,7 @@ ppc_loo_pit_overlay <- function(y, yrep, lw, pit, samples = 100, ...,
   check_ignored_arguments(...)
   if (!missing(pit)) {
     stopifnot(is.numeric(pit), is_vector_or_1Darray(pit))
-    message("'pit' specified so ignoring 'y','yrep','lw' if specified.")
+    inform("'pit' specified so ignoring 'y','yrep','lw' if specified.")
   } else {
     suggested_package("rstantools")
     y <- validate_y(y)
@@ -189,7 +189,7 @@ ppc_loo_pit_qq <- function(y, yrep, lw, pit, compare = c("uniform", "normal"),
   compare <- match.arg(compare)
   if (!missing(pit)) {
     stopifnot(is.numeric(pit), is_vector_or_1Darray(pit))
-    message("'pit' specified so ignoring 'y','yrep','lw' if specified.")
+    inform("'pit' specified so ignoring 'y','yrep','lw' if specified.")
   } else {
     suggested_package("rstantools")
     y <- validate_y(y)
@@ -300,12 +300,12 @@ ppc_loo_intervals <-
     order_by_median <- match.arg(order) == "median"
     if (!is.null(intervals)) {
       stopifnot(is.matrix(intervals), ncol(intervals) %in% c(3, 5))
-      message(
-        "'intervals' specified so ignoring ",
+      inform(paste(
+        "'intervals' specified so ignoring",
         "'yrep', 'psis_object', 'subset', if specified."
-      )
+      ))
       if (ncol(intervals) == 3) {
-          intervals <- cbind(intervals[, 1], intervals, intervals[, 3])
+        intervals <- cbind(intervals[, 1], intervals, intervals[, 3])
       }
     } else {
       suggested_package("loo", min_version = "2.0.0")
@@ -369,10 +369,10 @@ ppc_loo_ribbon <-
     y <- validate_y(y)
     if (!is.null(intervals)) {
       stopifnot(is.matrix(intervals), ncol(intervals) %in% c(3, 5))
-      message(
-        "'intervals' specified so ignoring ",
+      inform(paste(
+        "'intervals' specified so ignoring",
         "'yrep', 'psis_object', 'subset', if specified."
-      )
+      ))
       if (ncol(intervals) == 3) {
           intervals <- cbind(intervals[, 1], intervals, intervals[, 3])
       }
@@ -426,7 +426,7 @@ ppc_loo_ribbon <-
 .psis_subset <- function(psis_object, subset) {
   stopifnot(all(subset == as.integer(subset)))
   if (length(subset) > dim(psis_object)[2]) {
-    stop("'subset' has too many elements.", call. = FALSE)
+    abort("'subset' has too many elements.")
   }
   psis_object$log_weights <- psis_object$log_weights[, subset, drop=FALSE]
   psis_object$diagnostics$pareto_k <- psis_object$diagnostics$pareto_k[subset]

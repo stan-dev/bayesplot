@@ -80,16 +80,16 @@ bayesplot_grid <-
     suggested_package("gridExtra")
     dots <- list(...)
     if (length(dots) && length(plots)) {
-      stop("Arguments '...' and 'plots' can't both be specified.")
+      abort("Arguments '...' and 'plots' can't both be specified.")
     } else if (length(plots)) {
       if (!is.list(plots) || !all_ggplot(plots))
-        stop("'plots' must be a list of ggplot objects.")
+        abort("'plots' must be a list of ggplot objects.")
     } else if (length(dots)) {
       if (!all_ggplot(dots))
-        stop("All objects in '...' must be ggplot objects.")
+        abort("All objects in '...' must be ggplot objects.")
       plots <- dots
     } else {
-      stop("No plots specified.")
+      abort("No plots specified.")
     }
 
     if (length(titles)) {

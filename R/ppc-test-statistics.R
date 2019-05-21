@@ -230,7 +230,7 @@ ppc_stat_freqpoly_grouped <-
       do.call("facet_wrap", facet_args) +
       scale_color_manual(
         name = stat_legend_title(stat, deparse(substitute(stat))),
-        values = setNames(get_color(c("m", "dh")), c("yrep", "y")),
+        values = set_names(get_color(c("m", "dh")), c("yrep", "y")),
         labels = c(yrep = Tyrep_label(), y = Ty_label())
       ) +
       dont_expand_y_axis(c(0.005, 0)) +
@@ -252,8 +252,9 @@ ppc_stat_2d <- function(y, yrep, stat = c("mean", "sd"), ...,
 
   y <- validate_y(y)
   yrep <- validate_yrep(yrep, y)
-  if (length(stat) != 2)
-    stop("For ppc_stat_2d the 'stat' argument must have length 2.")
+  if (length(stat) != 2) {
+    abort("For ppc_stat_2d the 'stat' argument must have length 2.")
+  }
 
   if (is.character(stat)) {
     lgnd_title <- bquote(italic(T) == (list(.(stat[1]), .(stat[2]))))
@@ -297,12 +298,12 @@ ppc_stat_2d <- function(y, yrep, stat = c("mean", "sd"), ...,
     ) +
     scale_fill_manual(
       name = lgnd_title,
-      values = setNames(get_color(c("d", "l")), c("y", "yrep")),
+      values = set_names(get_color(c("d", "l")), c("y", "yrep")),
       labels = c(y = Ty_label(), yrep = Tyrep_label())
     ) +
     scale_color_manual(
       name = lgnd_title,
-      values = setNames(get_color(c("dh", "lh")), c("y", "yrep")),
+      values = set_names(get_color(c("dh", "lh")), c("y", "yrep")),
       labels = c(y = Ty_label(), yrep = Tyrep_label())
     ) +
     labs(x = stat_labs[1], y = stat_labs[2]) +

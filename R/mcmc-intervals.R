@@ -544,12 +544,13 @@ mcmc_intervals_data <- function(x,
     rhat <- drop_NAs_and_warn(new_rhat(rhat))
 
     if (length(rhat) != nrow(data)) {
-      stop("'rhat' has length ", length(rhat),
-           " but 'x' has ", nrow(data), " parameters.",
-           call. = FALSE)
+      abort(paste(
+        "'rhat' has length", length(rhat),
+        "but 'x' has", nrow(data), "parameters."
+      ))
     }
 
-    rhat <- setNames(rhat, data$parameter)
+    rhat <- set_names(rhat, data$parameter)
 
     rhat_tbl <- rhat %>%
       mcmc_rhat_data() %>%
@@ -783,8 +784,9 @@ check_interval_widths <- function(prob, prob_outer) {
       "`prob_outer` (%s) is less than `prob` (%s)\n... %s",
       prob_outer,
       prob,
-      "Swapping the values of `prob_outer` and `prob`")
-    warning(x, call. = FALSE)
+      "Swapping the values of `prob_outer` and `prob`"
+    )
+    warn(x)
   }
   sort(c(prob, prob_outer))
 }
