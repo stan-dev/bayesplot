@@ -22,10 +22,10 @@ mcmc_trace_highlight(x, pars = character(), regex_pars = character(),
 trace_style_np(div_color = "red", div_size = 0.25, div_alpha = 1)
 
 mcmc_rank_overlay(x, pars = character(), regex_pars = character(),
-  transformations = list(), n_bins = 20, ref_line = FALSE)
+  transformations = list(), ..., n_bins = 20, ref_line = FALSE)
 
 mcmc_rank_hist(x, pars = character(), regex_pars = character(),
-  transformations = list(), facet_args = list(), n_bins = 20,
+  transformations = list(), facet_args = list(), ..., n_bins = 20,
   ref_line = FALSE)
 
 mcmc_trace_data(x, pars = character(), regex_pars = character(),
@@ -119,11 +119,11 @@ of the chains that will be more visible than the others in the plot.}
 the color, size, and transparency specifications for showing divergences in
 the plot. The default values are displayed in the \strong{Usage} section above.}
 
-\item{n_bins}{number of bins to use for the histogram of rank-normalized MCMC
-samples. Defaults to 20.}
+\item{n_bins}{For the rank plots, the number of bins to use for the histogram
+of rank-normalized MCMC samples. Defaults to \code{20}.}
 
-\item{ref_line}{whether to draw a horizontal line at the average number of
-ranks per bin. Defaults to \code{FALSE}.}
+\item{ref_line}{For the rank plots, whether to draw a horizontal line at the
+average number of ranks per bin. Defaults to \code{FALSE}.}
 }
 \value{
 A ggplot object that can be further customized using the \strong{ggplot2}
@@ -150,6 +150,7 @@ Whereas traditional trace plots visualize how the chains mix over the
 course of sampling, rank-normalized histograms visualize how the values
 from the chains mix together in terms of ranking. An ideal plot would
 show the rankings mixing or overlapping in a uniform distribution.
+See Vehtari et al. (2019) for details.
 }
 \item{\code{mcmc_rank_overlay()}}{
 Ranks from \code{mcmc_rank_hist()} are plotted using overlaid lines in a
@@ -194,6 +195,7 @@ mcmc_trace(x[,, 1:4], window = c(100, 130), size = 1) +
 # time, look at how the ranking of MCMC samples mixed between chains.
 color_scheme_set("viridisE")
 mcmc_rank_hist(x, "alpha")
+mcmc_rank_hist(x, pars = c("alpha", "sigma"), ref_line = TRUE)
 mcmc_rank_overlay(x, "alpha")
 
 \dontrun{
@@ -236,7 +238,6 @@ mcmc_trace(
   np_style = trace_style_np(div_color = "black", div_size = 0.5)
 )
 
-color_scheme_set("viridis")
 mcmc_trace(
   posterior,
   pars = c("wt", "sigma"),

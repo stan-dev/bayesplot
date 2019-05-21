@@ -101,6 +101,7 @@
 #' # time, look at how the ranking of MCMC samples mixed between chains.
 #' color_scheme_set("viridisE")
 #' mcmc_rank_hist(x, "alpha")
+#' mcmc_rank_hist(x, pars = c("alpha", "sigma"), ref_line = TRUE)
 #' mcmc_rank_overlay(x, "alpha")
 #'
 #' \dontrun{
