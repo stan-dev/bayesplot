@@ -250,7 +250,10 @@ The `mcmc_hex` function creates a similar plot but using hexagonal binning,
 which can be useful to avoid overplotting.
 
 ```{r, mcmc_hex}
-mcmc_hex(posterior, pars = c("(Intercept)", "wt"))
+# requires hexbin package
+if (requireNamespace("hexbin", quietly = TRUE)) {
+  mcmc_hex(posterior, pars = c("(Intercept)", "wt"))
+}
 ```
 
 #### mcmc_pairs

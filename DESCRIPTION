@@ -24,15 +24,15 @@ Depends:
 Imports:
     dplyr (>= 0.8.0),
     ggplot2 (>= 2.2.1),
-    reshape2,
-    stats,
-    utils,
-    rlang (>= 0.3.0),
     ggridges,
+    reshape2,
+    rlang (>= 0.3.0),
+    stats,
     tibble,
-    hexbin
+    utils
 Suggests: 
     gridExtra (>= 2.2.1),
+    hexbin,
     knitr (>= 1.16),
     loo (>= 2.0.0),
     RColorBrewer,

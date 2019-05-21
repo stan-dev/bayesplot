@@ -1,6 +1,6 @@
 library(bayesplot)
 suppressPackageStartupMessages(library(rstanarm))
-context("MCMC: scatter and parallel coordinates plots")
+context("MCMC: scatter, hex, and parallel coordinates plots")
 
 source(test_path("data-for-mcmc-tests.R"))
 
@@ -10,6 +10,8 @@ post <- as.array(fit)
 lp <- log_posterior(fit)
 np <- ensure_divergences(nuts_params(fit))
 
+
+# mcmc_scatter/hex --------------------------------------------------------
 test_that("mcmc_scatter returns a ggplot object", {
   expect_gg(mcmc_scatter(arr, pars = c("beta[1]", "beta[2]")))
   expect_gg(mcmc_scatter(arr1chain, regex_pars = "beta", size = 3, alpha = 0.5))
@@ -19,17 +21,11 @@ test_that("mcmc_scatter returns a ggplot object", {
                          pars = c("sigma", "(Intercept)")))
 })
 
-test_that("mcmc_hex returns a ggplot object", {
-  expect_gg(mcmc_hex(arr, pars = c("beta[1]", "beta[2]")))
-  expect_gg(mcmc_hex(arr1chain, regex_pars = "beta", binwidth = c(.5,.5)))
-})
-
-test_that("mcmc_scatter & mcmc_hex throw error if only 1 parameter", {
+test_that("mcmc_scatter throws error if number of parameters is not 2", {
+  expect_error(mcmc_scatter(arr, pars = c("sigma", "beta[1]", "beta[2]")), "exactly 2 parameters")
   expect_error(mcmc_scatter(arr, pars = "sigma"), "exactly 2 parameters")
   expect_error(mcmc_scatter(arr1), "exactly 2 parameters")
   expect_error(mcmc_scatter(mat1), "exactly 2 parameters")
-  expect_error(mcmc_hex(dframe1), "exactly 2 parameters")
-  expect_error(mcmc_hex(chainlist1), "exactly 2 parameters")
 })
 
 test_that("mcmc_scatter accepts NUTS info", {
@@ -41,6 +37,21 @@ test_that("mcmc_scatter accepts NUTS info", {
   expect_gg(g)
   expect_named(g$data, c("x", "y", "Divergent"))
 })
+
+test_that("mcmc_hex returns a ggplot object", {
+  skip_if_not_installed("hexbin")
+  expect_gg(mcmc_hex(arr, pars = c("beta[1]", "beta[2]")))
+  expect_gg(mcmc_hex(arr1chain, regex_pars = "beta", binwidth = c(.5,.5)))
+})
+
+test_that("mcmc_hex throws error if number of parameters is not 2", {
+  skip_if_not_installed("hexbin")
+  expect_error(mcmc_hex(arr, pars = c("sigma", "beta[1]", "beta[2]")), "exactly 2 parameters")
+  expect_error(mcmc_hex(arr, pars = "sigma"), "exactly 2 parameters")
+  expect_error(mcmc_hex(arr1), "exactly 2 parameters")
+  expect_error(mcmc_hex(mat1), "exactly 2 parameters")
+})
+
 
 
 # mcmc_pairs  -------------------------------------------------------------
