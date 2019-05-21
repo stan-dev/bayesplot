@@ -21,13 +21,13 @@ validate_y <- function(y) {
 
   if (!(inherits(y, "ts") && is.null(dim(y)))) {
     if (!is_vector_or_1Darray(y)) {
-      stop("'y' must be a vector or 1D array.")
+      abort("'y' must be a vector or 1D array.")
     }
     y <- as.vector(y)
   }
 
   if (anyNA(y)) {
-    stop("NAs not allowed in 'y'.")
+    abort("NAs not allowed in 'y'.")
   }
 
   unname(y)
@@ -54,11 +54,11 @@ validate_yrep <- function(yrep, y) {
   }
 
   if (anyNA(yrep)) {
-    stop("NAs not allowed in 'yrep'.")
+    abort("NAs not allowed in 'yrep'.")
   }
 
   if (ncol(yrep) != length(y)) {
-    stop("ncol(yrep) must be equal to length(y).")
+    abort("ncol(yrep) must be equal to length(y).")
   }
 
   unclass(unname(yrep))
@@ -81,15 +81,15 @@ validate_group <- function(group, y) {
   }
 
   if (anyNA(group)) {
-    stop("NAs not allowed in 'group'.")
+    abort("NAs not allowed in 'group'.")
   }
 
   if (length(group) != length(y)) {
-    stop("length(group) must be equal to length(y).")
+    abort("length(group) must be equal to length(y).")
   }
 
   if (length(unique(group)) == 1) {
-    stop("'group' must have more than one unique value.")
+    abort("'group' must have more than one unique value.")
   }
 
   unname(group)
@@ -118,16 +118,16 @@ validate_x <- function(x = NULL, y, unique_x = FALSE) {
   stopifnot(is.numeric(x))
 
   if (!is_vector_or_1Darray(x)) {
-    stop("'x' must be a vector or 1D array.")
+    abort("'x' must be a vector or 1D array.")
   }
 
   x <- as.vector(x)
   if (length(x) != length(y)) {
-    stop("length(x) must be equal to length(y).")
+    abort("length(x) must be equal to length(y).")
   }
 
   if (anyNA(x)) {
-    stop("NAs not allowed in 'x'.")
+    abort("NAs not allowed in 'x'.")
   }
 
   if (unique_x) {

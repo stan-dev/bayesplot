@@ -302,7 +302,7 @@ lbub <- function(p, med = TRUE) {
 # internal
 calc_v <- function(v, fun, fun_args, ...) {
   if (missing(v))
-    stop("'v' can't be missing.", call. = FALSE)
+    abort("'v' can't be missing.")
   if (missing(fun))
     return(v)
   f <- match.fun(fun)

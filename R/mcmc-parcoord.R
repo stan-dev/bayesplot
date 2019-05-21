@@ -170,8 +170,9 @@ mcmc_parcoord_data <-
     x <- prepare_mcmc_array(x, pars, regex_pars, transformations)
     long_d <- melt_mcmc(x)
 
-    if (num_params(long_d) < 2)
-      stop("'mcmc_parcoord' requires at least two parameters in 'x'.")
+    if (num_params(long_d) < 2) {
+      abort("'mcmc_parcoord' requires at least two parameters in 'x'.")
+    }
 
     param <- sym("Parameter")
     value <- sym("Value")

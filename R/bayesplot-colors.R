@@ -129,13 +129,16 @@ NULL
 #' @rdname bayesplot-colors
 #' @export
 color_scheme_set <- function(scheme = "blue") {
-  stopifnot(is.character(scheme))
+  if (!is.character(scheme)) {
+    abort("'scheme' should be a character vector of length 1 or 6.")
+  }
+
   if (length(scheme) == 1) {
     x <- scheme_from_string(scheme)
   } else if (length(scheme) == 6) {
     x <- prepare_custom_colors(scheme)
   } else {
-    stop("'scheme' should be a character vector of length 1 or 6.")
+    abort("'scheme' should be a character vector of length 1 or 6.")
   }
   .bayesplot_aesthetics[["scheme"]] <- x
   invisible(x)
@@ -193,7 +196,7 @@ print.bayesplot_scheme <- function(x, ...) {
 
 #' @export
 plot.bayesplot_scheme <- function(x, ...) {
-  scheme <- attr(x, "scheme_name") %||% stop("Scheme name not found.")
+  scheme <- attr(x, "scheme_name") %||% abort("Scheme name not found.")
   plot_scheme(scheme)
 }
 
@@ -248,25 +251,23 @@ scheme_level_names <- function() {
 #' @noRd
 #' @param scheme A string (length 1) naming a scheme
 scheme_from_string <- function(scheme) {
-  stopifnot(length(scheme) == 1)
   if (identical(substr(scheme, 1, 4), "mix-")) {
     # user specified a mixed scheme (e.g., "mix-blue-red")
     to_mix <- unlist(strsplit(scheme, split = "-"))[2:3]
-    x <- setNames(mixed_scheme(to_mix[1], to_mix[2]), scheme_level_names())
+    x <- set_names(mixed_scheme(to_mix[1], to_mix[2]), scheme_level_names())
     return(structure(x, mixed = TRUE, scheme_name = scheme))
   } else if (identical(substr(scheme, 1, 7), "brewer-")) {
     # user specified a ColorBrewer scheme (e.g., "brewer-Blues")
     if (!requireNamespace("RColorBrewer", quietly = TRUE)) {
-      stop("Please install the 'RColorBrewer' package to use a ColorBrewer scheme.",
-           call. = FALSE)
+      abort("Please install the 'RColorBrewer' package to use a ColorBrewer scheme.")
     }
     clrs <- RColorBrewer::brewer.pal(n = 6, name = gsub("brewer-", "", scheme))
-    x <- setNames(as.list(clrs), scheme_level_names())
+    x <- set_names(as.list(clrs), scheme_level_names())
     return(structure(x, mixed = FALSE, scheme_name = scheme))
   } else {
     # check for scheme in master_color_list
     scheme <- match.arg(scheme, choices = names(master_color_list))
-    x <- setNames(master_color_list[[scheme]], scheme_level_names())
+    x <- set_names(master_color_list[[scheme]], scheme_level_names())
     return(structure(x, mixed = FALSE, scheme_name = scheme))
   }
 }
@@ -331,8 +332,7 @@ full_level_name <- function(x) {
 # Custom color scheme if 6 colors specified
 prepare_custom_colors <- function(scheme) {
   if (length(scheme) != 6) {
-    stop("Custom color schemes must contain exactly 6 colors.",
-         call. = FALSE)
+    abort("Custom color schemes must contain exactly 6 colors.")
   }
 
   not_found <- character(0)
@@ -343,16 +343,15 @@ prepare_custom_colors <- function(scheme) {
     }
   }
   if (length(not_found)) {
-    stop(
+    abort(paste(
       "Each color must specified as either a hexidecimal color value ",
       "(e.g. '#C79999') or the name of a color (e.g. 'blue'). ",
-      "The following provided colors were not found: ",
-      paste(unlist(not_found), collapse = ", "),
-      call. = FALSE
-    )
+      "The following provided colors were not found:",
+      paste(unlist(not_found), collapse = ", ")
+    ))
   }
 
-  x <- setNames(as.list(scheme), scheme_level_names())
+  x <- set_names(as.list(scheme), scheme_level_names())
   attr(x, "scheme_name") <- "custom"
   x
 }

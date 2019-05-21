@@ -333,10 +333,10 @@ mcmc_pairs <- function(x,
   pars <- parameter_names(x)
 
   if (n_chain == 1) {
-    warning("Only one chain in 'x'. This plot is more useful with multiple chains.")
+    warn("Only one chain in 'x'. This plot is more useful with multiple chains.")
   }
   if (n_param < 2) {
-    stop("This plot requires at least two parameters in 'x'.")
+    abort("This plot requires at least two parameters in 'x'.")
   }
 
   no_np <- is.null(np)
@@ -537,19 +537,15 @@ pairs_condition <- function(chains = NULL, draws = NULL, nuts = NULL) {
     dots <- list(...)
     nms <- names(dots)[!sapply(dots, is.null)]
     if (length(nms)) {
-      message(
+      inform(paste0(
         "The following specified arguments were ignored by 'pairs_condition' ",
         "because ", why, ": ",
         paste(sQuote(nms), collapse = ", ")
-      )
+      ))
     }
   }
   .error_duplicate_chains <- function() {
-    stop(
-      "Each chain can only be specified once in the 'chains' argument ",
-      "to 'pairs_condition'.",
-      call. = FALSE
-    )
+    abort("Each chain can only be specified once in the 'chains' argument to 'pairs_condition'.")
   }
 
 
@@ -587,11 +583,10 @@ pairs_condition <- function(chains = NULL, draws = NULL, nuts = NULL) {
       cond <- as.integer(chains)
       cond_type <- "chain_vector"
     } else {
-      stop(
-        "The 'chains' argument to 'pairs_condition' must be ",
-        "an integer vector or a list of two integer vectors.",
-        call. = FALSE
-      )
+      abort(paste(
+        "The 'chains' argument to 'pairs_condition' must be",
+        "an integer vector or a list of two integer vectors."
+      ))
     }
 
   } else if (!is.null(draws)) {
@@ -608,20 +603,16 @@ pairs_condition <- function(chains = NULL, draws = NULL, nuts = NULL) {
       cond <- draws
       cond_type <- "draws_selection"
     } else {
-      stop(
-        "The 'draws' argument to 'pairs_condition' must be ",
-        "a single proportion or a logical vector.",
-        call. = FALSE
-      )
+      abort(paste(
+        "The 'draws' argument to 'pairs_condition' must be",
+        "a single proportion or a logical vector."
+      ))
     }
   } else {
     # Using 'nuts' argument
-    if (!is.character(nuts) || length(nuts) > 1)
-      stop(
-        "The 'nuts' argument to 'pairs_condition' must be ",
-        "a single string.",
-        call. = FALSE
-      )
+    if (!is.character(nuts) || length(nuts) > 1) {
+      abort("The 'nuts' argument to 'pairs_condition' must be a single string.")
+    }
 
     cond_type <- "nuts"
     cond <- match.arg(nuts, several.ok = FALSE,
@@ -653,10 +644,10 @@ pairs_condition <- function(chains = NULL, draws = NULL, nuts = NULL) {
                           np_style = scatter_style_np()) {
   x <- prepare_mcmc_array(x, pars, regex_pars, transformations)
   if (num_params(x) != 2) {
-    stop(
-      "For 'mcmc_scatter' and 'mcmc_hex' exactly 2 parameters must be selected. ",
+    abort(paste(
+      "For 'mcmc_scatter' and 'mcmc_hex' exactly 2 parameters must be selected.",
       "'mcmc_pairs' can be used for more than 2 parameters."
-    )
+    ))
   }
 
   x <- merge_chains(x)
@@ -666,7 +657,7 @@ pairs_condition <- function(chains = NULL, draws = NULL, nuts = NULL) {
   xydata <- data.frame(x = c(x[, 1]), y = c(x[, 2]))
   if (has_divs) {
     if (hex) {
-      warning("'np' is currently ignored for hex plots.")
+      warn("'np' is currently ignored for hex plots.")
     }
     stopifnot(inherits(np_style, "nuts_style"))
     np <- validate_nuts_data_frame(np)
@@ -809,10 +800,10 @@ drop_consts <- function(x) {
   if (all(varying))
     return(x)
 
-  warning(
-    "The following parameters were dropped because they are constant: ",
+  warn(paste(
+    "The following parameters were dropped because they are constant:",
     paste(names(varying)[!varying], collapse = ", ")
-  )
+  ))
   x[, , varying, drop = FALSE]
 }
 drop_dupes <- function(x) {
@@ -820,10 +811,10 @@ drop_dupes <- function(x) {
   if (!any(dupes))
     return(x)
 
-  warning(
-    "The following parameters were dropped because they are duplicative: ",
+  warn(paste(
+    "The following parameters were dropped because they are duplicative:",
     paste(parameter_names(x)[dupes], collapse = ", ")
-  )
+  ))
   x[, , !dupes, drop = FALSE]
 }
 
@@ -864,19 +855,17 @@ handle_condition <- function(x, condition=NULL, np=NULL, lp=NULL) {
   } else if (cond_type == "nuts") {
     # NUTS sampler param or lp__
     if (no_np && condition != "lp__")
-      stop(
-        "To use this value of 'condition' the 'np' argument ",
-        "to 'mcmc_pairs' must also be specified.",
-        call. = FALSE
-      )
+      abort(paste(
+        "To use this value of 'condition' the 'np' argument",
+        "to 'mcmc_pairs' must also be specified."
+      ))
 
     if (condition == "lp__") {
       if (no_lp)
-        stop(
-          "If 'condition' is 'lp__' then the 'lp' argument ",
-          "to 'mcmc_pairs' must also be specified.",
-          call. = FALSE
-        )
+        abort(paste(
+          "If 'condition' is 'lp__' then the 'lp' argument",
+          "to 'mcmc_pairs' must also be specified."
+        ))
       mark <- unstack_to_matrix(lp, Value ~ Chain)
 
     } else {
@@ -890,7 +879,7 @@ handle_condition <- function(x, condition=NULL, np=NULL, lp=NULL) {
       mark <- c(mark) >= median(mark)
     }
     if (length(unique(mark)) == 1)
-      stop(condition, " is constant so it cannot be used as a condition.")
+      abort(paste(condition, "is constant so it cannot be used as a condition."))
   }
 
   list(x = x, mark = mark)
@@ -907,11 +896,11 @@ handle_condition <- function(x, condition=NULL, np=NULL, lp=NULL) {
 format_nuts_points <- function(graph, np_args) {
   graph +
     scale_color_manual(
-      values = setNames(c(NA, np_args$color[["div"]], NA, np_args$color[["td"]]),
-                        c("NoDiv", "Div", "NoHit", "Hit"))
+      values = set_names(c(NA, np_args$color[["div"]], NA, np_args$color[["td"]]),
+                         c("NoDiv", "Div", "NoHit", "Hit"))
     ) +
     scale_size_manual(
-      values = setNames(c(0, rel(np_args$size[["div"]]), 0, rel(np_args$size[["td"]])),
-                        c("NoDiv", "Div", "NoHit", "Hit"))
+      values = set_names(c(0, rel(np_args$size[["div"]]), 0, rel(np_args$size[["td"]])),
+                         c("NoDiv", "Div", "NoHit", "Hit"))
     )
 }

@@ -103,10 +103,10 @@ ppc_bars <-
   y <- validate_y(y)
   yrep <- validate_yrep(yrep, y)
   if (!all_whole_number(y)) {
-    stop("ppc_bars expects 'y' to be discrete.")
+    abort("ppc_bars expects 'y' to be discrete.")
   }
   if (!all_whole_number(yrep)) {
-    stop("ppc_bars expects 'yrep' to be discrete.")
+    abort("ppc_bars expects 'yrep' to be discrete.")
   }
 
   alpha <- (1 - prob) / 2
@@ -154,10 +154,10 @@ ppc_bars_grouped <-
   yrep <- validate_yrep(yrep, y)
   group <- validate_group(group, y)
   if (!all_whole_number(y)) {
-    stop("ppc_bars_grouped expects 'y' to be discrete.")
+    abort("ppc_bars_grouped expects 'y' to be discrete.")
   }
   if (!all_whole_number(yrep)) {
-    stop("ppc_bars_grouped expects 'yrep' to be discrete.")
+    abort("ppc_bars_grouped expects 'yrep' to be discrete.")
   }
 
   alpha <- (1 - prob) / 2
@@ -211,10 +211,12 @@ ppc_rootogram <- function(y,
   style <- match.arg(style)
   y <- validate_y(y)
   yrep <- validate_yrep(yrep, y)
-  if (!all_counts(y))
-    stop("ppc_rootogram expects counts as inputs to 'y'.")
-  if (!all_counts(yrep))
-    stop("ppc_rootogram expects counts as inputs to 'yrep'.")
+  if (!all_counts(y)) {
+    abort("ppc_rootogram expects counts as inputs to 'y'.")
+  }
+  if (!all_counts(yrep)) {
+    abort("ppc_rootogram expects counts as inputs to 'yrep'.")
+  }
 
   alpha <- (1 - prob) / 2
   probs <- c(alpha, 1 - alpha)

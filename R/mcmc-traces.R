@@ -660,7 +660,7 @@ divergence_rug <- function(np, np_style, n_iter, n_chain) {
   }
 
   if (all(is.na(div_info$Divergent))) {
-    message("No divergences to plot.")
+    inform("No divergences to plot.")
     return(NULL)
   }
 
