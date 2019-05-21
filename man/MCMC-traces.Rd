@@ -8,7 +8,7 @@
 \alias{mcmc_rank_overlay}
 \alias{mcmc_rank_hist}
 \alias{mcmc_trace_data}
-\title{Trace plot (time series plot) of MCMC draws}
+\title{Trace plots (time series plot) of MCMC draws}
 \usage{
 mcmc_trace(x, pars = character(), regex_pars = character(),
   transformations = list(), facet_args = list(), ..., n_warmup = 0,
@@ -30,8 +30,7 @@ mcmc_rank_hist(x, pars = character(), regex_pars = character(),
 
 mcmc_trace_data(x, pars = character(), regex_pars = character(),
   transformations = list(), facet_args = list(), ...,
-  highlight = NULL, n_warmup = 0, iter1 = 0, window = NULL,
-  size = NULL, np = NULL, np_style = trace_style_np())
+  highlight = NULL, n_warmup = 0, iter1 = 0, window = NULL)
 }
 \arguments{
 \item{x}{A 3-D array, matrix, list of matrices, or data frame of MCMC draws.

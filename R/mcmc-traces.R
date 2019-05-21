@@ -1,4 +1,4 @@
-#' Trace plot (time series plot) of MCMC draws
+#' Trace plots (time series plot) of MCMC draws
 #'
 #' Trace plot (or traceplot) of MCMC draws. See the **Plot Descriptions**
 #' section, below, for details.
@@ -433,10 +433,7 @@ mcmc_trace_data <- function(x,
                             highlight = NULL,
                             n_warmup = 0,
                             iter1 = 0,
-                            window = NULL,
-                            size = NULL,
-                            np = NULL,
-                            np_style = trace_style_np()) {
+                            window = NULL) {
   check_ignored_arguments(...)
 
   x <- prepare_mcmc_array(x, pars, regex_pars, transformations)
@@ -509,8 +506,7 @@ mcmc_trace_data <- function(x,
   style <- match.arg(style)
   data <- mcmc_trace_data(
     x, pars = pars, regex_pars = regex_pars, transformations = transformations,
-    highlight = highlight, n_warmup = n_warmup, iter1 = iter1, window = window,
-    np = np, np_style = np_style
+    highlight = highlight, n_warmup = n_warmup, iter1 = iter1, window = window
   )
   n_iter <- unique(data$n_iterations)
   n_chain <- unique(data$n_chains)
