@@ -1,64 +1,61 @@
 #' General MCMC diagnostics
 #'
 #' Plots of Rhat statistics, ratios of effective sample size to total sample
-#' size, and autocorrelation of MCMC draws. See the \strong{Plot Descriptions}
+#' size, and autocorrelation of MCMC draws. See the **Plot Descriptions**
 #' section, below, for details. For models fit using the No-U-Turn-Sampler, see
-#' also \link{MCMC-nuts} for additional MCMC diagnostic plots.
+#' also [MCMC-nuts] for additional MCMC diagnostic plots.
 #'
 #' @name MCMC-diagnostics
 #' @family MCMC
 #'
 #' @template args-hist
-#' @param size An optional value to override \code{\link[ggplot2]{geom_point}}'s
-#'   default size (for \code{mcmc_rhat}, \code{mcmc_neff}) or
-#'   \code{\link[ggplot2]{geom_line}}'s default size (for \code{mcmc_acf}).
+#' @param size An optional value to override [ggplot2::geom_point()]'s
+#'   default size (for `mcmc_rhat()`, `mcmc_neff()`) or
+#'   [ggplot2::geom_line()]'s default size (for `mcmc_acf()`).
 #' @param ... Currently ignored.
 #'
 #' @template return-ggplot-or-data
 #'
 #' @section Plot Descriptions:
 #' \describe{
-#' \item{\code{mcmc_rhat, mcmc_rhat_hist}}{
-#' Rhat values as either points or a histogram. Values are colored using
-#' different shades (lighter is better). The chosen thresholds are somewhat
-#' arbitrary, but can be useful guidelines in practice.
-#'  \itemize{
-#'    \item \emph{light}: below 1.05 (good)
-#'    \item \emph{mid}: between 1.05 and 1.1 (ok)
-#'    \item \emph{dark}: above 1.1 (too high)
-#'  }
+#' \item{`mcmc_rhat()`, `mcmc_rhat_hist()`}{
+#'   Rhat values as either points or a histogram. Values are colored using
+#'   different shades (lighter is better). The chosen thresholds are somewhat
+#'   arbitrary, but can be useful guidelines in practice.
+#'   * _light_: below 1.05 (good)
+#'   * _mid_: between 1.05 and 1.1 (ok)
+#'   * _dark_: above 1.1 (too high)
 #' }
-#' \item{\code{mcmc_neff, mcmc_neff_hist}}{
-#' Ratios of effective sample size to total sample size as either points or a
-#' histogram. Values are colored using different shades (lighter is better). The
-#' chosen thresholds are somewhat arbitrary, but can be useful guidelines in
-#' practice.
-#'  \itemize{
-#'    \item \emph{light}: between 0.5 and 1 (high)
-#'    \item \emph{mid}: between 0.1 and 0.5 (good)
-#'    \item \emph{dark}: below 0.1 (low)
-#'  }
+#'
+#' \item{`mcmc_neff()`, `mcmc_neff_hist()`}{
+#'   Ratios of effective sample size to total sample size as either points or a
+#'   histogram. Values are colored using different shades (lighter is better).
+#'   The chosen thresholds are somewhat arbitrary, but can be useful guidelines
+#'   in practice.
+#'   * _light_: between 0.5 and 1 (high)
+#'   * _mid_: between 0.1 and 0.5 (good)
+#'   * _dark_: below 0.1 (low)
 #' }
-#' \item{\code{mcmc_acf}}{
-#' Grid of autocorrelation plots by chain and parameter. The \code{lags}
-#' argument gives the maximum number of lags at which to calculate the
-#' autocorrelation function. \code{mcmc_acf} is a line plot whereas
-#' \code{mcmc_acf_bar} is a barplot.
+#'
+#' \item{`mcmc_acf()`, `mcmc_acf_bar()`}{
+#'   Grid of autocorrelation plots by chain and parameter. The `lags` argument
+#'   gives the maximum number of lags at which to calculate the autocorrelation
+#'   function. `mcmc_acf()` is a line plot whereas `mcmc_acf_bar()` is a
+#'   barplot.
 #' }
 #'}
 #'
 #' @template reference-stan-manual
 #' @references
 #' Gelman, A. and Rubin, D. B. (1992). Inference from iterative
-#' simulation using multiple sequences. \emph{Statistical Science}. 7(4),
+#' simulation using multiple sequences. *Statistical Science*. 7(4),
 #' 457--472.
 #'
 #' @seealso
-#' \itemize{
-#' \item The \emph{Visual MCMC Diagnostics} vignette.
-#' \item \link{MCMC-nuts} for additional MCMC diagnostic plots for models fit
+#' * The [Visual MCMC Diagnostics](https://mc-stan.org/bayesplot/articles/visual-mcmc-diagnostics.html)
+#'   vignette.
+#' * [MCMC-nuts] for additional MCMC diagnostic plots for models fit
 #'   using the No-U-Turn-Sampler.
-#' }
 #'
 #' @examples
 #' # autocorrelation
@@ -128,7 +125,7 @@ NULL
 
 #' @rdname MCMC-diagnostics
 #' @export
-#' @param rhat A vector of \code{\link[=rhat]{Rhat}} estimates.
+#' @param rhat A vector of R-hat estimates.
 #'
 mcmc_rhat <- function(rhat, ..., size = NULL) {
   check_ignored_arguments(...)
@@ -213,8 +210,8 @@ mcmc_rhat_data <- function(rhat, ...) {
 
 #' @rdname MCMC-diagnostics
 #' @export
-#' @param ratio A vector of \emph{ratios} of effective sample size estimates to
-#'   total sample size. See \code{\link{neff_ratio}}.
+#' @param ratio A vector of *ratios* of effective sample size estimates to
+#'   total sample size. See [neff_ratio()].
 #'
 mcmc_neff <- function(ratio, ..., size = NULL) {
   check_ignored_arguments(...)
@@ -355,11 +352,11 @@ mcmc_acf_bar <-
 
 #' Convert numeric vector of diagnostic values to a factor
 #'
-#' @param x A numeric vector
+#' @param x A numeric vector.
 #' @param breaks A numeric vector of length two. The resulting factor variable
-#'   will have three levels ('low', 'ok', and 'high') corresponding to (x <=
-#'   breaks[1], breaks[1] < x <= breaks[2], x > breaks[2]).
-#' @return A factor the same length as x with three levels.
+#'   will have three levels ('low', 'ok', and 'high') corresponding to (
+#'   `x <= breaks[1]`, `breaks[1] < x <= breaks[2]`, `x > breaks[2]`).
+#' @return A factor the same length as `x` with three levels.
 #' @noRd
 diagnostic_factor <- function(x, breaks, ...) {
   UseMethod("diagnostic_factor")
@@ -412,7 +409,7 @@ diagnostic_points <- function(size = NULL) {
 }
 
 
-# Functions wrapping around scale_color_manual and scale_fill_manual, used to
+# Functions wrapping around scale_color_manual() and scale_fill_manual(), used to
 # color the intervals by rhat value
 scale_color_diagnostic <- function(diagnostic = c("rhat", "neff")) {
   d <- match.arg(diagnostic)
@@ -463,14 +460,14 @@ diagnostic_colors <- function(diagnostic = c("rhat", "neff_ratio"),
 
 diagnostic_color_labels <- list(
   rhat = c(
-    high = expression(hat(R) > 1.10),
+    low  = expression(hat(R) <= 1.05),
     ok   = expression(hat(R) <= 1.10),
-    low  = expression(hat(R) <= 1.05)
+    high = expression(hat(R) > 1.10)
   ),
   neff_ratio = c(
-    high = expression(N[eff] / N > 0.5),
+    low  = expression(N[eff] / N <= 0.1),
     ok   = expression(N[eff] / N <= 0.5),
-    low  = expression(N[eff] / N <= 0.1)
+    high = expression(N[eff] / N > 0.5)
   )
 )
 
@@ -505,8 +502,8 @@ drop_NAs_and_warn <- function(x) {
   x[!is_NA]
 }
 
-# autocorr plot (either bar or line)
-# @param size passed to geom_line if style="line"
+# Autocorrelation plot (either bar or line)
+# @param size passed to geom_line() if style="line"
 .mcmc_acf <-
   function(x,
            pars = character(),

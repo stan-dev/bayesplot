@@ -1,66 +1,69 @@
-#' Set, get, or view color schemes
+#' Set, get, or view **bayesplot** color schemes
 #'
 #' Set, get, or view color schemes. Choose from a preset scheme or create a
-#' custom scheme.
+#' custom scheme. See the **Available color schemes** section below for a list
+#' of available scheme names. The **Custom color schemes** section describes how
+#' to specify a custom scheme.
 #'
 #' @name bayesplot-colors
+#' @param scheme For `color_scheme_set()`, either a string naming one of the
+#'   available color schemes or a character vector of _exactly six_ colors
+#'   specifying a custom scheme.
 #'
-#' @param scheme For \code{color_scheme_set}, either a string naming one of the
-#'   available color schemes or a character vector of \emph{exactly six} colors
-#'   specifying a custom scheme (see the \strong{Custom Color Schemes} section,
-#'   below, for more on specifying a custom scheme).
-#'
-#'   For \code{color_scheme_get}, \code{scheme} can be missing (to get the
+#'   For `color_scheme_get()`, `scheme` can be missing (to get the
 #'   current color scheme) or a string naming one of the preset schemes.
 #'
-#'   For \code{color_scheme_view}, \code{scheme} can be missing (to use the
+#'   For `color_scheme_view()`, `scheme` can be missing (to use the
 #'   current color scheme) or a character vector containing a subset of the
 #'   available scheme names.
 #'
-#'   Currently, the available preset color schemes are:
-#'   \itemize{
-#'    \item \code{"blue"}, \code{"brightblue"}
-#'    \item \code{"gray"}, \code{"darkgray"}
-#'    \item \code{"green"}
-#'    \item \code{"pink"}
-#'    \item \code{"purple"}
-#'    \item \code{"red"}
-#'    \item \code{"teal"}
-#'    \item \code{"yellow"}
-#'    \item \href{https://CRAN.R-project.org/package=viridis}{\code{"viridis"}},
-#'      \code{"viridisA"}, \code{"viridisB"}, \code{"viridisC"}
-#'    \item \code{"mix-x-y"}, replacing \code{x} and \code{y} with any two of
-#'      the scheme names listed above (e.g. "mix-teal-pink", "mix-blue-red",
-#'      etc.). The order of \code{x} and \code{y} matters, i.e., the color
-#'      schemes "mix-blue-red" and "mix-red-blue" are not identical. There is no
-#'      guarantee that every possible mixed scheme will look good with every
-#'      possible plot.
-#'   }
+#'   See the **Available color schemes** section below for a list of available
+#'   scheme names. The **Custom color schemes** section describes how to specify
+#'   a custom scheme.
 #'
-#'   If you have a suggestion for a new color scheme please let us know via the
-#'   \pkg{bayesplot} \href{https://github.com/stan-dev/bayesplot/issues}{issue
-#'   tracker}.
+#' @return `color_scheme_set()` has the side effect of setting the color scheme
+#'   used for plotting. It also returns ([invisibly][base::invisible]) a list of
+#'   the hexidecimal color values used in `scheme`.
 #'
-#' @return \code{color_scheme_set} has the side effect of setting the color
-#'   scheme used for plotting. It also returns
-#'   (\code{\link[=invisible]{invisibly}}) a list of the hexidecimal color
-#'   values used in \code{scheme}.
-#'
-#'   \code{color_scheme_get} returns a \code{list} of the hexadecimal color
-#'   values (without changing the current scheme). If the \code{scheme} argument
+#'   `color_scheme_get()` returns a list of the hexadecimal color
+#'   values (without changing the current scheme). If the `scheme` argument
 #'   is not specified the returned values correspond to the current color
-#'   scheme. If the optional argument \code{i} is specified then the returned
-#'   list only contains \code{length(i)} elements.
+#'   scheme. If the optional argument `i` is specified then the returned
+#'   list only contains `length(i)` elements.
 #'
-#'   \code{color_scheme_view} returns a ggplot object if only a single scheme is
+#'   `color_scheme_view()` returns a ggplot object if only a single scheme is
 #'   specified and a gtable object if multiple schemes names are specified.
 #'
-#' @section Custom Color Schemes: A \pkg{bayesplot} color scheme consists of six
+#' @section Available color schemes: Currently, the available preset color
+#'   schemes are:
+#'  * `"blue"`, `"brightblue"`
+#'  * `"gray"`, `"darkgray"`
+#'  * `"green"`
+#'  * `"pink"`
+#'  * `"purple"`
+#'  * `"red"`
+#'  * `"teal"`
+#'  * `"yellow"`
+#'  * [`"viridis"`](https://CRAN.R-project.org/package=viridis), `"viridisA"`,
+#'    `"viridisB"`, `"viridisC"`
+#'  * `"mix-x-y"`, replacing `x` and `y` with any two of
+#'      the scheme names listed above (e.g. "mix-teal-pink", "mix-blue-red",
+#'      etc.). The order of `x` and `y` matters, i.e., the color schemes
+#'      `"mix-blue-red"` and `"mix-red-blue"` are not identical. There is no
+#'      guarantee that every possible mixed scheme will look good with every
+#'      possible plot.
+#'  * `"brewer-x"`, replacing `x` with the name of a palette available from
+#'     [RColorBrewer::brewer.pal()] (e.g., `brewer-PuBuGn`).
+#'
+#'  If you have a suggestion for a new color scheme please let us know via the
+#'  **bayesplot** [issue tracker](https://github.com/stan-dev/bayesplot/issues).
+#'
+#' @section Custom color schemes: A **bayesplot** color scheme consists of six
 #'   colors. To specify a custom color scheme simply pass a character vector
-#'   containing either the names of six \code{\link[grDevices]{colors}} or six
+#'   containing either the names of six [colors][grDevices::colors] or six
 #'   hexidecimal color values (or a mix of names and hex values). The colors
 #'   should be in order from lightest to darkest. See the end of the
-#'   \strong{Examples} section for a demonstration.
+#'   **Examples** section for a demonstration.
 #'
 #' @template seealso-theme
 #'
@@ -94,18 +97,29 @@
 #' y <- example_y_data()
 #' yrep <- example_yrep_draws()
 #' ppc_stat(y, yrep, stat = "mean") + legend_none()
-#' \donttest{
+#'
+#' ############################
+#' ### Mixing color schemes ###
+#' ############################
 #' color_scheme_set("mix-teal-pink")
 #' ppc_stat(y, yrep, stat = "sd") + legend_none()
 #' mcmc_areas(x, regex_pars = "beta")
-#' }
+#'
+#' ##########################
+#' ### ColorBrewer scheme ###
+#' ##########################
+#' color_scheme_set("brewer-Spectral")
+#' color_scheme_view()
+#' mcmc_trace(x, pars = "sigma")
+#'
 #' ###########################
-#' ### custom color scheme ###
+#' ### Custom color scheme ###
 #' ###########################
 #' orange_scheme <- c("#ffebcc", "#ffcc80",
 #'                    "#ffad33", "#e68a00",
 #'                    "#995c00", "#663d00")
 #' color_scheme_set(orange_scheme)
+#' color_scheme_view()
 #' mcmc_areas(x, regex_pars = "alpha")
 #' mcmc_dens_overlay(x)
 #' ppc_stat(y, yrep, stat = "var") + legend_none()
@@ -129,13 +143,13 @@ color_scheme_set <- function(scheme = "blue") {
 
 #' @rdname bayesplot-colors
 #' @export
-#' @param i For \code{color_scheme_get}, a subset of the integers from \code{1}
-#'   (lightest) to \code{6} (darkest) indicating which of the colors in the
-#'   scheme to return. If \code{i} is not specified then all six colors in the
+#' @param i For `color_scheme_get()`, an optional subset of the integers from `1`
+#'   (lightest) to `6` (darkest) indicating which of the colors in the
+#'   scheme to return. If `i` is not specified then all six colors in the
 #'   scheme are included.
 #'
-color_scheme_get <- function(scheme, i) {
-  if (!missing(scheme)) {
+color_scheme_get <- function(scheme = NULL, i = NULL) {
+  if (!is.null(scheme)) {
     scheme <- scheme_from_string(scheme)
   } else {
     x <- .bayesplot_aesthetics$scheme
@@ -144,7 +158,8 @@ color_scheme_get <- function(scheme, i) {
     attr(scheme, "scheme_name") <- attr(x, "scheme_name")
   }
   class(scheme) <- c("bayesplot_scheme", "list")
-  if (missing(i)) {
+
+  if (is.null(i)) {
     return(scheme)
   } else if (is.character(i)) {
     return(get_color(i))
@@ -157,54 +172,50 @@ color_scheme_get <- function(scheme, i) {
   scheme[i]
 }
 
-#' @export
-print.bayesplot_scheme <- function(x, ...) {
-  tab <- data.frame(unlist(x, use.names = FALSE),
-                    stringsAsFactors = FALSE)
-  colnames(tab) <- attr(x, "scheme_name") %||% "hex_color"
-  print(tab, ...)
-}
-#' @export
-plot.bayesplot_scheme <- function(x, ...) {
-  scheme <- attr(x, "scheme_name") %||% stop("Scheme name not found.")
-  .view_scheme(scheme)
-}
-
-
 #' @rdname bayesplot-colors
 #' @export
-color_scheme_view <- function(scheme) {
-  if (missing(scheme) || length(scheme) == 1)
-    return(.view_scheme(scheme))
-
+color_scheme_view <- function(scheme = NULL) {
+  if (is.null(scheme) || length(scheme) == 1){
+    return(plot_scheme(scheme))
+  }
   bayesplot_grid(
-    plots = lapply(scheme, .view_scheme),
+    plots = lapply(scheme, plot_scheme),
     grid_args = list(ncol = length(scheme))
   )
 }
 
+#' @export
+print.bayesplot_scheme <- function(x, ...) {
+  tab <- data.frame(unlist(x, use.names = FALSE), stringsAsFactors = FALSE)
+  colnames(tab) <- attr(x, "scheme_name") %||% "hex_color"
+  print(tab, ...)
+}
+
+#' @export
+plot.bayesplot_scheme <- function(x, ...) {
+  scheme <- attr(x, "scheme_name") %||% stop("Scheme name not found.")
+  plot_scheme(scheme)
+}
 
 
 # internal -----------------------------------------------------------------
 
 # plot color scheme
 # @param scheme A string (length 1) naming a scheme
-.view_scheme <- function(scheme) {
-  x <- if (missing(scheme))
-    color_scheme_get() else color_scheme_get(scheme)
+plot_scheme <- function(scheme = NULL) {
+  if (is.null(scheme)) {
+    x <- color_scheme_get()
+  } else {
+    x <- color_scheme_get(scheme)
+  }
 
   color_data <- data.frame(
+    name = factor(attr(x, "scheme_name")),
     group = factor(names(x), levels = rev(names(x))),
     value = rep(1, length(x))
   )
-  ggplot(
-    color_data,
-    aes_(
-      x = if (missing(scheme)) "" else factor(scheme),
-      y = ~ value,
-      fill = ~ group
-    )
-  ) +
+
+  ggplot(color_data, aes_(x = ~ name, y = ~ value, fill = ~ group)) +
     geom_bar(
       width = .5,
       stat = "identity",
@@ -222,52 +233,6 @@ color_scheme_view <- function(scheme) {
     )
 }
 
-
-# @param scheme A string (length 1) naming a scheme
-scheme_from_string <- function(scheme) {
-  stopifnot(length(scheme) == 1)
-  if (identical(substr(scheme, 1, 4), "mix-")) {
-    to_mix <- unlist(strsplit(scheme, split = "-"))[2:3]
-    x <- setNames(mixed_scheme(to_mix[1], to_mix[2]), scheme_level_names())
-    structure(x, mixed = TRUE, scheme_name = scheme)
-  } else {
-    scheme <- match.arg(scheme, choices = names(master_color_list))
-    x <- prepare_colors(scheme)
-    structure(x, mixed = FALSE, scheme_name = scheme)
-  }
-}
-
-# check if object returned by color_scheme_get is a mixed scheme
-# @param x object returned by color_scheme_get
-is_mixed_scheme <- function(x) {
-  stopifnot(is.list(x))
-  isTRUE(attr(x, "mixed"))
-}
-
-# Access a subset of the scheme colors
-#
-# @param level A character vector of level names (see scheme_level_names()). The
-#   abbreviations "l", "lh", "m", "mh", "d", and "dh" can also be used instead
-#   of the full names.
-# @return A character vector of color values.
-#
-get_color <- function(levels) {
-  sel <- which(!levels %in% scheme_level_names())
-  if (length(sel))
-    levels[sel] <- sapply(levels[sel], full_level_name)
-  stopifnot(all(levels %in% scheme_level_names()))
-  color_vals <- color_scheme_get()[levels]
-  unlist(color_vals, use.names = FALSE)
-}
-full_level_name <- function(x) {
-  switch(x,
-         l = "light", lh = "light_highlight",
-         m = "mid", mh = "mid_highlight",
-         d = "dark", dh = "dark_highlight"
-         )
-}
-
-
 # Color scheme level names
 scheme_level_names <- function() {
   c("light",
@@ -278,51 +243,35 @@ scheme_level_names <- function() {
     "dark_highlight")
 }
 
-prepare_colors <- function(scheme) {
-  setNames(
-    master_color_list[[scheme]],
-    scheme_level_names()
-  )
-}
-
-prepare_custom_colors <- function(scheme) {
-  if (length(scheme) != 6)
-    stop("Custom color schemes must contain exactly 6 colors.",
-         call. = FALSE)
-
-  not_found <- character(0)
-  for (j in seq_along(scheme)) {
-    clr <- scheme[j]
-    if (!is_hex_color(clr)  && !clr %in% grDevices::colors())
-      not_found <- c(not_found, clr)
+#' Return a color scheme based on `scheme` argument specified as a string
+#'
+#' @noRd
+#' @param scheme A string (length 1) naming a scheme
+scheme_from_string <- function(scheme) {
+  stopifnot(length(scheme) == 1)
+  if (identical(substr(scheme, 1, 4), "mix-")) {
+    # user specified a mixed scheme (e.g., "mix-blue-red")
+    to_mix <- unlist(strsplit(scheme, split = "-"))[2:3]
+    x <- setNames(mixed_scheme(to_mix[1], to_mix[2]), scheme_level_names())
+    return(structure(x, mixed = TRUE, scheme_name = scheme))
+  } else if (identical(substr(scheme, 1, 7), "brewer-")) {
+    # user specified a ColorBrewer scheme (e.g., "brewer-Blues")
+    if (!requireNamespace("RColorBrewer", quietly = TRUE)) {
+      stop("Please install the 'RColorBrewer' package to use a ColorBrewer scheme.",
+           call. = FALSE)
+    }
+    clrs <- RColorBrewer::brewer.pal(n = 6, name = gsub("brewer-", "", scheme))
+    x <- setNames(as.list(clrs), scheme_level_names())
+    return(structure(x, mixed = FALSE, scheme_name = scheme))
+  } else {
+    # check for scheme in master_color_list
+    scheme <- match.arg(scheme, choices = names(master_color_list))
+    x <- setNames(master_color_list[[scheme]], scheme_level_names())
+    return(structure(x, mixed = FALSE, scheme_name = scheme))
   }
-  if (length(not_found))
-    STOP_bad_colors(not_found)
-
-  x <- setNames(as.list(scheme), scheme_level_names())
-  attr(x, "scheme_name") <- "custom"
-  x
 }
 
-is_hex_color <- function(x) {
-  if (!identical(substr(x, 1, 1), "#"))
-    return(FALSE)
-  isTRUE(nchar(x) == 7)
-}
-
-# @param x character vector of bad color names
-STOP_bad_colors <- function(x) {
-  stop(
-    "Each color must specified as either a hexidecimal color value ",
-    "(e.g. '#C79999') or the name of a color (e.g. 'blue'). ",
-    "The following provided colors were not found: ",
-    paste(unlist(x), collapse = ", "),
-    call. = FALSE
-  )
-}
-
-# master color list -------------------------------------------------------
-# create mixed scheme
+# create mixed scheme from two existing schemes
 mixed_scheme <- function(scheme1, scheme2) {
   scheme1 <- color_scheme_get(scheme1)
   scheme2 <- color_scheme_get(scheme2)
@@ -335,9 +284,88 @@ mixed_scheme <- function(scheme1, scheme2) {
     scheme2$dark_highlight
   ))
   attr(scheme, "mixed") <- TRUE
-  return(scheme)
+  scheme
 }
 
+#' Check if object returned by `color_scheme_get()` is a mixed scheme
+#' @noRd
+#' @param x object returned by `color_scheme_get()`
+#' @return T/F
+is_mixed_scheme <- function(x) {
+  stopifnot(is.list(x))
+  isTRUE(attr(x, "mixed"))
+}
+
+#' Access a subset of the current scheme colors
+#' @noRd
+#' @param level A character vector of level names in `scheme_level_names()`.
+#'   The abbreviations "l", "lh", "m", "mh", "d", and "dh" can also be used
+#'   instead of the full names.
+#' @return A character vector of color values.
+#'
+get_color <- function(levels) {
+  levels <- full_level_name(levels)
+  stopifnot(all(levels %in% scheme_level_names()))
+  color_vals <- color_scheme_get()[levels]
+  unlist(color_vals, use.names = FALSE)
+}
+
+full_level_name <- function(x) {
+  map <- c(
+    l = "light",
+    lh = "light_highlight",
+    m = "mid",
+    mh = "mid_highlight",
+    d = "dark",
+    dh = "dark_highlight",
+    light = "light",
+    light_highlight = "light_highlight",
+    mid = "mid",
+    mid_highlight = "mid_highlight",
+    dark = "dark",
+    dark_highlight = "dark_highlight"
+  )
+  unname(map[x])
+}
+
+# Custom color scheme if 6 colors specified
+prepare_custom_colors <- function(scheme) {
+  if (length(scheme) != 6) {
+    stop("Custom color schemes must contain exactly 6 colors.",
+         call. = FALSE)
+  }
+
+  not_found <- character(0)
+  for (j in seq_along(scheme)) {
+    clr <- scheme[j]
+    if (!is_hex_color(clr)  && !clr %in% grDevices::colors()) {
+      not_found <- c(not_found, clr)
+    }
+  }
+  if (length(not_found)) {
+    stop(
+      "Each color must specified as either a hexidecimal color value ",
+      "(e.g. '#C79999') or the name of a color (e.g. 'blue'). ",
+      "The following provided colors were not found: ",
+      paste(unlist(not_found), collapse = ", "),
+      call. = FALSE
+    )
+  }
+
+  x <- setNames(as.list(scheme), scheme_level_names())
+  attr(x, "scheme_name") <- "custom"
+  x
+}
+
+is_hex_color <- function(x) {
+  if (!identical(substr(x, 1, 1), "#")) {
+    return(FALSE)
+  }
+  isTRUE(nchar(x) == 7)
+}
+
+
+# master color list -------------------------------------------------------
 master_color_list <- list(
   blue =
     list("#d1e1ec", "#b3cde0", "#6497b1", "#005b96", "#03396c", "#011f4b"),

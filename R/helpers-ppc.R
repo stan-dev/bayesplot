@@ -10,10 +10,10 @@ is_vector_or_1Darray <- function(x) {
 
 #' Validate y
 #'
-#' Checks that y is numeric, doesn't have any NAs, and is either a vector, 1-D
-#' array, or univariate time series object of class \code{ts}.
+#' Checks that `y` is numeric, doesn't have any NAs, and is either a vector, 1-D
+#' array, or univariate time series object of class `ts`.
 #'
-#' @param y The y object from the user.
+#' @param y The `y` object from the user.
 #' @return Either throws an error or returns a numeric vector.
 #' @noRd
 validate_y <- function(y) {
@@ -36,10 +36,10 @@ validate_y <- function(y) {
 
 #' Validate yrep
 #'
-#' Checks that yrep is a numeric matrix, doesn't have any NAs, and has the
-#' correct number of columns (equal to the length of y).
+#' Checks that `yrep` is a numeric matrix, doesn't have any NAs, and has the
+#' correct number of columns (equal to the length of `y`).
 #'
-#' @param yrep,y The user's yrep object and the y object returned by validate_y.
+#' @param yrep,y The user's `yrep` object and the `y` object returned by `validate_y()`.
 #' @return Either throws an error or returns a numeric matrix.
 #' @noRd
 validate_yrep <- function(yrep, y) {
@@ -67,11 +67,11 @@ validate_yrep <- function(yrep, y) {
 
 #' Validate group
 #'
-#' Checks that grouping variable has same length as y and is either a vector or
+#' Checks that grouping variable has same length as `y` and is either a vector or
 #' factor variable.
 #'
-#' @param group,y The user's group object and the y object returned by validate_y.
-#' @return Either throws an error or returns \code{group} (coerced to a factor).
+#' @param group,y The user's `group` object and the `y` object returned by `validate_y()`.
+#' @return Either throws an error or returns `group` (coerced to a factor).
 #' @noRd
 validate_group <- function(group, y) {
   stopifnot(is.vector(group) || is.factor(group))
@@ -101,8 +101,9 @@ validate_group <- function(group, y) {
 #' Checks that x is a numeric vector, doesn't have any NAs, and has the
 #' same length as y.
 #'
-#' @param x,y The user's x vector and the y object returned by validate_y.
-#' @param unique_x T/F indicating whether to require all unique values in x.
+#' @param x,y The user's `x` vector and the `y` object returned by `validate_y()`.
+#' @param unique_x `TRUE` or `FALSE` indicating whether to require all unique
+#'   values in `x`.
 #' @return Either throws an error or returns a numeric vector.
 #' @noRd
 validate_x <- function(x = NULL, y, unique_x = FALSE) {
@@ -147,7 +148,6 @@ validate_x <- function(x = NULL, y, unique_x = FALSE) {
 #'      number of simulations included in `yrep`.
 #'   1. `value`: the simulation values.
 #' @noRd
-#' @md
 melt_yrep <- function(yrep) {
   out <- yrep %>%
     reshape2::melt(varnames = c("rep_id", "y_id")) %>%
@@ -169,7 +169,6 @@ melt_yrep <- function(yrep) {
 #'   1. `is_y_label`: factor with levels `italic(y)` for observations and
 #'      `italic(y)[rep]` for simulations.
 #' @noRd
-#' @md
 melt_and_stack <- function(y, yrep) {
   y_text <- as.character(y_label())
   yrep_text <- as.character(yrep_label())
@@ -198,12 +197,13 @@ melt_and_stack <- function(y, yrep) {
 
 #' Prepare data for use in PPCs by group
 #'
-#' @param y,yrep,group Validated y, yrep, and group objects.
-#' @param stat Either NULL or a string naming a function.
-#' @return If \code{stat} is NULL, a molten data frame grouped by group and
-#'   variable. If \code{stat} specifies a function then a summary table created
-#'   by dplyr::summarise.
+#' @param y,yrep,group Validated `y`, `yrep`, and `group` objects.
+#' @param stat Either `NULL` or a string naming a function.
+#' @return If `stat` is `NULL`, a molten data frame grouped by group and
+#'   variable. If `stat` specifies a function then a summary table created
+#'   by `dplyr::summarise()`.
 #' @noRd
+#'
 #' @examples
 #' y <- example_y_data()
 #' yrep <- example_yrep_draws()

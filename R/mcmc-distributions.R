@@ -1,7 +1,7 @@
 #' Histograms and kernel density plots of MCMC draws
 #'
 #' Various types of histograms and kernel density plots of MCMC draws. See the
-#' \strong{Plot Descriptions} section, below, for details.
+#' **Plot Descriptions** section, below, for details.
 #'
 #' @name MCMC-distributions
 #' @family MCMC
@@ -17,27 +17,27 @@
 #'
 #' @section Plot Descriptions:
 #' \describe{
-#'   \item{\code{mcmc_hist}}{
+#'   \item{`mcmc_hist()`}{
 #'    Histograms of posterior draws with all chains merged.
 #'   }
-#'   \item{\code{mcmc_dens}}{
+#'   \item{`mcmc_dens()`}{
 #'    Kernel density plots of posterior draws with all chains merged.
 #'   }
-#'   \item{\code{mcmc_hist_by_chain}}{
+#'   \item{`mcmc_hist_by_chain()`}{
 #'    Histograms of posterior draws with chains separated via faceting.
 #'   }
-#'   \item{\code{mcmc_dens_overlay}}{
+#'   \item{`mcmc_dens_overlay()`}{
 #'    Kernel density plots of posterior draws with chains separated but
 #'    overlaid on a single plot.
 #'   }
-#'   \item{\code{mcmc_violin}}{
+#'   \item{`mcmc_violin()`}{
 #'    The density estimate of each chain is plotted as a violin with
 #'    horizontal lines at notable quantiles.
 #'   }
-#'   \item{\code{mcmc_dens_chains}}{
+#'   \item{`mcmc_dens_chains()`}{
 #'    Ridgeline kernel density plots of posterior draws with chains separated
-#'    but overlaid on a single plot. In \code{mcmc_dens_overlay} parameters
-#'    appear in separate facets; in \code{mcmc_dens_chains} they appear in the
+#'    but overlaid on a single plot. In `mcmc_dens_overlay()` parameters
+#'    appear in separate facets; in `mcmc_dens_chains()` they appear in the
 #'    same panel and can overlap vertically.
 #'   }
 #' }
@@ -202,7 +202,7 @@ mcmc_dens_overlay <- function(x,
 
 #' @rdname MCMC-distributions
 #' @template args-density-controls
-#' @param color_chains option for whether to separately color chains.
+#' @param color_chains Option for whether to separately color chains.
 #' @export
 mcmc_dens_chains <- function(x, pars = character(), regex_pars = character(),
                              transformations = list(),
