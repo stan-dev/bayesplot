@@ -5,7 +5,6 @@
 #'
 #' @name MCMC-traces
 #' @family MCMC
-#' @md
 #' @template args-mcmc-x
 #' @template args-pars
 #' @template args-regex_pars
@@ -57,6 +56,7 @@
 #'    course of sampling, rank-normalized histograms visualize how the values
 #'    from the chains mix together in terms of ranking. An ideal plot would
 #'    show the rankings mixing or overlapping in a uniform distribution.
+#'    See Vehtari et al. (2019) for details.
 #'   }
 #'   \item{`mcmc_rank_overlay()`}{
 #'    Ranks from `mcmc_rank_hist()` are plotted using overlaid lines in a
@@ -143,7 +143,6 @@
 #'   np_style = trace_style_np(div_color = "black", div_size = 0.5)
 #' )
 #'
-#' color_scheme_set("viridis")
 #' mcmc_trace(
 #'   posterior,
 #'   pars = c("wt", "sigma"),
@@ -266,17 +265,19 @@ trace_style_np <- function(div_color = "red", div_size = 0.25, div_alpha = 1) {
 }
 
 #' @rdname MCMC-traces
-#' @param n_bins number of bins to use for the histogram of rank-normalized MCMC
-#'   samples. Defaults to 20.
-#' @param ref_line whether to draw a horizontal line at the average number of
-#'   ranks per bin. Defaults to `FALSE`.
+#' @param n_bins For the rank plots, the number of bins to use for the histogram
+#'   of rank-normalized MCMC samples. Defaults to `20`.
+#' @param ref_line For the rank plots, whether to draw a horizontal line at the
+#'   average number of ranks per bin. Defaults to `FALSE`.
 #' @export
 mcmc_rank_overlay <- function(x,
                               pars = character(),
                               regex_pars = character(),
                               transformations = list(),
+                              ...,
                               n_bins = 20,
                               ref_line = FALSE) {
+  check_ignored_arguments(...)
   data <- mcmc_trace_data(
     x,
     pars = pars,
@@ -284,7 +285,7 @@ mcmc_rank_overlay <- function(x,
     transformations = transformations
   )
 
-  n_chain <- unique(data$n_chains)
+  n_chains <- unique(data$n_chains)
 
   # We have to bin and count the data ourselves because
   # ggplot2::stat_bin(geom = "step") does not draw the final bin.
@@ -309,7 +310,7 @@ mcmc_rank_overlay <- function(x,
     mutate(bin_start = right_edge) %>%
     dplyr::bind_rows(d_bin_counts)
 
-  scale_color <- scale_color_manual("Chain", values = chain_colors(n_chain))
+  scale_color <- scale_color_manual("Chain", values = chain_colors(n_chains))
 
   layer_ref_line <- if (ref_line) {
     geom_hline(
@@ -341,8 +342,10 @@ mcmc_rank_hist <- function(x,
                            regex_pars = character(),
                            transformations = list(),
                            facet_args = list(),
+                           ...,
                            n_bins = 20,
                            ref_line = FALSE) {
+  check_ignored_arguments(...)
   data <- mcmc_trace_data(
     x,
     pars = pars,
