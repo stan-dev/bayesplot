@@ -67,7 +67,7 @@ schemes are:
 \item \code{"teal"}
 \item \code{"yellow"}
 \item \href{https://CRAN.R-project.org/package=viridis}{"viridis"}, \code{"viridisA"},
-\code{"viridisB"}, \code{"viridisC"}
+\code{"viridisB"}, \code{"viridisC"}, \code{"viridisD"}, \code{"viridisE"}
 \item \code{"mix-x-y"}, replacing \code{x} and \code{y} with any two of
 the scheme names listed above (e.g. "mix-teal-pink", "mix-blue-red",
 etc.). The order of \code{x} and \code{y} matters, i.e., the color schemes

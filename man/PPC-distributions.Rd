@@ -99,9 +99,10 @@ to control the appearance of \code{y} points. The default of \code{y_jitter=NULL
 will let \strong{ggplot2} determine the amount of jitter.}
 }
 \value{
-A ggplot object that can be further customized using the \strong{ggplot2}
-package. The functions with suffix \code{_data} return the data that would have
-been drawn by the plotting function.
+The plotting functions return a ggplot object that can be further
+customized using the \strong{ggplot2} package. The functions with suffix
+\code{_data()} return the data that would have been drawn by the plotting
+function.
 }
 \description{
 Compare the empirical distribution of the data \code{y} to the distributions

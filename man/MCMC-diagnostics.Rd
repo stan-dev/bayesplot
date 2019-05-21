@@ -51,7 +51,7 @@ total sample size. See \code{\link[=neff_ratio]{neff_ratio()}}.}
 \item{x}{A 3-D array, matrix, list of matrices, or data frame of MCMC draws.
 The \link{MCMC-overview} page provides details on how to specify each these
 allowed inputs. It is also possible to use an object with an
-\code{as.array} method that returns the same kind of 3-D array described on
+\code{as.array()} method that returns the same kind of 3-D array described on
 the \link{MCMC-overview} page.}
 
 \item{pars}{An optional character vector of parameter names. If neither
@@ -75,9 +75,10 @@ to control faceting.}
 \item{lags}{The number of lags to show in the autocorrelation plot.}
 }
 \value{
-A ggplot object that can be further customized using the \strong{ggplot2}
-package. The functions with suffix \code{_data} return the data that would have
-been drawn by the plotting function.
+The plotting functions return a ggplot object that can be further
+customized using the \strong{ggplot2} package. The functions with suffix
+\code{_data()} return the data that would have been drawn by the plotting
+function.
 }
 \description{
 Plots of Rhat statistics, ratios of effective sample size to total sample

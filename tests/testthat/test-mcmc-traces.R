@@ -117,6 +117,65 @@ test_that("mcmc_trace renders correctly", {
   vdiffr::expect_doppelganger("mcmc trace (iter1 offset)", p_iter1)
 })
 
+test_that("mcmc_rank_overlay renders correctly", {
+  testthat::skip_on_cran()
+
+  p_base <- mcmc_rank_overlay(vdiff_dframe_chains, pars = c("V1", "V2"))
+  p_base_ref <- mcmc_rank_overlay(
+    vdiff_dframe_chains,
+    pars = c("V1", "V2"),
+    ref_line = TRUE
+  )
+  p_one_param <- mcmc_rank_overlay(vdiff_dframe_chains, pars = "V1")
+  p_one_param_wide_bins <- mcmc_rank_overlay(
+    vdiff_dframe_chains,
+    pars = "V1",
+    n_bins = 4
+  )
+
+  vdiffr::expect_doppelganger("mcmc rank overlay (default)", p_base)
+  vdiffr::expect_doppelganger(
+    "mcmc rank overlay (reference line)",
+    p_base_ref
+  )
+  vdiffr::expect_doppelganger("mcmc rank overlay (one parameter)", p_one_param)
+  vdiffr::expect_doppelganger(
+    "mcmc rank overlay (wide bins)",
+    p_one_param_wide_bins
+  )
+})
+
+test_that("mcmc_rank_hist renders correctly", {
+  testthat::skip_on_cran()
+
+  p_base <- mcmc_rank_hist(vdiff_dframe_chains, pars = c("V1", "V2"))
+  p_base_ref <- mcmc_rank_hist(
+    vdiff_dframe_chains,
+    pars = c("V1", "V2"),
+    ref_line = TRUE
+  )
+  p_one_param <- mcmc_rank_hist(vdiff_dframe_chains, pars = "V1")
+  p_one_param_wide_bins <- mcmc_rank_hist(
+    vdiff_dframe_chains,
+    pars = "V1",
+    n_bins = 4
+  )
+
+  vdiffr::expect_doppelganger("mcmc rank histogram (default)", p_base)
+  vdiffr::expect_doppelganger(
+    "mcmc rank histogram (reference line)",
+    p_base_ref
+  )
+  vdiffr::expect_doppelganger(
+    "mcmc rank histogram (one parameter)",
+    p_one_param
+  )
+  vdiffr::expect_doppelganger(
+    "mcmc rank histogram (wide bins)",
+    p_one_param_wide_bins
+  )
+})
+
 test_that("mcmc_trace_highlight renders correctly", {
   testthat::skip_on_cran()
 

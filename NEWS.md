@@ -9,6 +9,23 @@
 * The `pars` argument of all MCMC plotting functions now supports tidy variable selection.
   See `help("tidy-params", package="bayesplot")` for details and examples. (#161, #183, #188)
 
+* Two new plots have been added for inspecting the distribution of ranks.
+  Rank-normalized histograms were introduced by the Stan team's [new paper on 
+  MCMC diagnostics](https://arxiv.org/abs/1903.08008). (#178, #179)
+
+  `mcmc_rank_hist()`: A traditional traceplot (`mcmc_trace()`) visualizes how
+  sampled values the MCMC chains mix over the course of sampling. A
+  rank-normalized histogram (`mcmc_rank_hist()`) visualizes how the *ranks* of
+  values from the chains mix together. An ideal plot would show the ranks mixing
+  or overlapping in a uniform distribution. 
+  
+  `mcmc_rank_overlay()`: Instead of drawing each chain's histogram in a separate
+  panel, this plot draws the top edge of the chains' histograms in a single
+  panel.
+  
+* Added `mcmc_trace_data()`, which returns the data used for plotting the trace
+  plots and rank histograms. (Advances #97)
+
 * [ColorBrewer](http://colorbrewer2.org) palettes are now available as color
   schemes via
   [`color_scheme_set()`](https://mc-stan.org/bayesplot/reference/bayesplot-colors.html).
@@ -52,8 +69,15 @@
 * The examples in
   [`?ppc_loo_pit_overlay()`](https://mc-stan.org/bayesplot/reference/PPC-loo.html)
   now work as expected. (#166, #167)
+  
+* Added `"viridisD"` as an alternative name for `"viridis"` to the supported 
+  colors.
 
-* `ppc_bars()` and `ppc_bars_grouped()` now allow negative integers as input. (#172)
+* Added `"viridisE"` (the [cividis](https://github.com/marcosci/cividis) 
+  version of viridis) to the supported colors. 
+
+* `ppc_bars()` and `ppc_bars_grouped()` now allow negative integers as input.
+  (#172, @jeffpollock9)
 
 
 # bayesplot 1.6.0

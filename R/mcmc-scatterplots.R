@@ -112,11 +112,13 @@
 #'                  size = .75, linetype = 2)
 #'
 #' \donttest{
-#' # hexagonal heatmap
-#' color_scheme_set("brightblue")
-#' (p <- mcmc_hex(x, pars = c("sigma", "alpha"), transform = list(sigma = "log")))
-#' p + plot_bg(fill = "gray95")
-#' p + plot_bg(fill = "gray95") + panel_bg(fill = "gray70")
+#' if (requireNamespace("hexbin", quietly = TRUE)) {
+#'  # hexagonal heatmap
+#'  color_scheme_set("brightblue")
+#'  (p <- mcmc_hex(x, pars = c("sigma", "alpha"), transform = list(sigma = "log")))
+#'  p + plot_bg(fill = "gray95")
+#'  p + plot_bg(fill = "gray95") + panel_bg(fill = "gray70")
+#' }
 #' }
 NULL
 
@@ -155,6 +157,8 @@ mcmc_hex <- function(x,
                      transformations = list(),
                      ...,
                      binwidth = NULL) {
+  suggested_package("scales")
+  suggested_package("hexbin")
   check_ignored_arguments(...)
   .mcmc_scatter(
     x,
@@ -695,7 +699,6 @@ pairs_condition <- function(chains = NULL, draws = NULL, nuts = NULL) {
         )
     }
   } else { # hex binning
-    suggested_package("scales")
     graph <- graph +
       geom_hex(
         aes_(fill = ~ scales::rescale(..density..)),
