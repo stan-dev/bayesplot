@@ -85,9 +85,10 @@ test_that("mcmc_intervals/areas with rhat", {
   expect_error(expect_warning(mcmc_intervals(arr, rhat = rbad)))
 
   expect_gg(g <- mcmc_intervals(arr, rhat = r))
+
   if (utils::packageVersion("ggplot2") >= "3.0.0") {
     rhat_map <- g$layers[[3]][["mapping"]]
-    expect_identical(as.character(rhat_map[["colour"]]), c("~", "rhat_rating"))
+    expect_identical(rlang::as_name(rhat_map[["colour"]]), "rhat_rating")
   }
 
   # areas with rhat.
@@ -98,18 +99,18 @@ test_that("mcmc_intervals/areas with rhat", {
   expect_gg(g2 <- mcmc_areas(arr, rhat = r))
   if (utils::packageVersion("ggplot2") >= "3.0.0") {
     rhat_map2 <- g2$layers[[2]][["mapping"]]
-    expect_identical(as.character(rhat_map2$fill), c("~", "rhat_rating"))
-    expect_identical(as.character(rhat_map2$colour), c("~", "rhat_rating"))
+    expect_identical(rlang::as_name(rhat_map2$fill), "rhat_rating")
+    expect_identical(rlang::as_name(rhat_map2$colour), "rhat_rating")
+
     # layer 3 is point estimate. manually colored. [skip]
 
     # layer 4 is outer interval.
     rhat_map4 <- g2$layers[[4]][["mapping"]]
-    expect_identical(as.character(rhat_map4$colour), c("~", "rhat_rating"))
+    expect_identical(rlang::as_name(rhat_map4$colour), "rhat_rating")
 
     # layer 5 is bottom line.
-
     rhat_map5 <- g2$layers[[5]][["mapping"]]
-    expect_identical(as.character(rhat_map5$colour), c("~", "rhat_rating"))
+    expect_identical(rlang::as_name(rhat_map5$colour), "rhat_rating")
   }
 })
 

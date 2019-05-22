@@ -165,7 +165,7 @@ mcmc_intervals <- function(x,
 
   data <- mcmc_intervals_data(x, pars, regex_pars, transformations,
                               prob = prob, prob_outer = prob_outer,
-                              point_est = point_est, rhat  = rhat)
+                              point_est = point_est, rhat = rhat)
 
   color_by_rhat <- rlang::has_name(data, "rhat_rating")
   no_point_est <- all(data$point_est == "none")

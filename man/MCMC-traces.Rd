@@ -150,7 +150,7 @@ chains but one (specified by the \code{highlight} argument) is reduced.
 }
 \item{\code{mcmc_rank_hist()}}{
 Whereas traditional trace plots visualize how the chains mix over the
-course of sampling, rank-normalized histograms visualize how the values
+course of sampling, rank histograms visualize how the values
 from the chains mix together in terms of ranking. An ideal plot would
 show the rankings mixing or overlapping in a uniform distribution.
 See Vehtari et al. (2019) for details.
