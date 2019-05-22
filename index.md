@@ -34,15 +34,15 @@
 
 
 **bayesplot** is an R package providing an extensive library of plotting
-functions for use after fitting Bayesian models (typically with MCMC). Currently
-**bayesplot** offers a variety of plots of posterior draws, visual MCMC
-diagnostics, as well as graphical posterior predictive checking. Additional
-functionality (e.g. for forecasting/out-of-sample prediction and other
-inference-related tasks) will be added in future releases.
-
+functions for use after fitting Bayesian models (typically with MCMC). 
 The plots created by **bayesplot** are ggplot objects, which means that after 
-a plot is created it can be further customized using the various functions for 
-modifying ggplot objects provided by the **ggplot2** package.
+a plot is created it can be further customized using various functions from
+the **ggplot2** package. 
+
+Currently **bayesplot** offers a variety of plots of posterior draws, 
+visual MCMC diagnostics, and graphical posterior (or prior) predictive checking. 
+Additional functionality (e.g. for forecasting/out-of-sample prediction and other
+inference-related tasks) will be added in future releases.
 
 The idea behind **bayesplot** is not only to provide convenient functionality
 for users, but also a common set of functions that can be easily used by
