@@ -75,10 +75,10 @@
 #'   overlaid. The x-axis variable can be optionally specified by the user
 #'   (e.g. to plot against against a predictor variable or over time).
 #' * [__Predictive errors__][PPC-errors]: Plots of predictive errors
-#'   (`y - yrep`) computed from `y` and eachc of the simulated datasets (rows)
+#'   (`y - yrep`) computed from `y` and each of the simulated datasets (rows)
 #'   in `yrep`. For binomial models binned error plots are also available.
 #' * [__Scatterplots__][PPC-scatterplots]: Scatterplots (and similar
-#'   visualizations) of the data `y` vs. individual simuluted datasets
+#'   visualizations) of the data `y` vs. individual simulated datasets
 #'   (rows) in `yrep`, or vs. the average value of the distributions of each
 #'   data point (columns) in `yrep`.
 #' * [__Plots for discrete outcomes__][PPC-discrete]: PPC functions that can

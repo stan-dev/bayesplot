@@ -28,14 +28,14 @@ relative column widths. For example, if the plot has two columns, then
 factor of 2 (as would \code{widths = c(.3, .15)}, etc.). The default,
 \code{NULL}, allocates the same horizontal space for each column.}
 
-\item{gg_theme}{Unlike most of the other \strong{bayesplot}functions,
+\item{gg_theme}{Unlike most of the other \strong{bayesplot} functions,
 \code{mcmc_combo} returns a gtable object rather than a ggplot object, and
 so theme objects can't be added directly to the returned plot object. The
 \code{gg_theme} argument helps get around this problem by accepting a
 \strong{ggplot2} \link[ggplot2:theme]{theme} object that is added to each of the
 plots \emph{before} combining them into the gtable object that is returned.
 This can be a theme object created by a call to \code{\link[ggplot2:theme]{ggplot2::theme()}} or
-one of the \strong{bayesplot}convenience functions, e.g.
+one of the \strong{bayesplot} convenience functions, e.g.
 \code{\link[=legend_none]{legend_none()}} (see the \strong{Examples} section, below).}
 }
 \value{

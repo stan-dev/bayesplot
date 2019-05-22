@@ -170,7 +170,7 @@ something is wrong with the model and the results should not be trusted.
 For an explanation of these warnings see 
 [Divergent transitions after warmup](https://mc-stan.org/misc/warnings.html#divergent-transitions-after-warmup).
 We'll have a look at diagnosing the source of the divergences first and then
-dive into some diagnostics that should be checked even if there are no warnigns
+dive into some diagnostics that should be checked even if there are no warnings
 from the sampler.
 
 <br>
@@ -242,7 +242,7 @@ MCMC plotting functions demonstrated in the
 [_Plotting MCMC draws_](https://mc-stan.org/bayesplot/articles/plotting-mcmc-draws.html)
 vignette also take optional arguments that can be used to display important
 HMC/NUTS diagnostic information. We'll see examples of this in the next
-section on divergenent transitions.
+section on divergent transitions.
 
 
 ### Divergent transitions
@@ -603,7 +603,7 @@ The **bayesplot** package provides the functions `mcmc_rhat` and
 `mcmc_rhat_hist` for visualizing $\hat{R}$ estimates.
 
 First we'll quickly fit one of the models above again, this time intentionally
-using too few MCMC iterations and allowing more dispered initial values. 
+using too few MCMC iterations and allowing more dispersed initial values. 
 This should lead to some high $\hat{R}$ values.
 
 ```{r, results='hide'}

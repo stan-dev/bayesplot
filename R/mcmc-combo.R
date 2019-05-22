@@ -14,14 +14,14 @@
 #'   `widths = c(2, 1)` will allocate more space for the first column by a
 #'   factor of 2 (as would `widths = c(.3, .15)`, etc.). The default,
 #'   `NULL`, allocates the same horizontal space for each column.
-#' @param gg_theme Unlike most of the other **bayesplot**functions,
+#' @param gg_theme Unlike most of the other **bayesplot** functions,
 #'   `mcmc_combo` returns a gtable object rather than a ggplot object, and
 #'   so theme objects can't be added directly to the returned plot object. The
 #'   `gg_theme` argument helps get around this problem by accepting a
 #'   **ggplot2** [theme][ggplot2::theme] object that is added to each of the
 #'   plots *before* combining them into the gtable object that is returned.
 #'   This can be a theme object created by a call to [ggplot2::theme()] or
-#'   one of the **bayesplot**convenience functions, e.g.
+#'   one of the **bayesplot** convenience functions, e.g.
 #'   [legend_none()] (see the **Examples** section, below).
 #'
 #' @return A gtable object (the result of calling

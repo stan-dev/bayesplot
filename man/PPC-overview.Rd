@@ -77,10 +77,10 @@ compared to value of the statistic(s) computed from \code{y}.
 overlaid. The x-axis variable can be optionally specified by the user
 (e.g. to plot against against a predictor variable or over time).
 \item \link[=PPC-errors]{Predictive errors}: Plots of predictive errors
-(\code{y - yrep}) computed from \code{y} and eachc of the simulated datasets (rows)
+(\code{y - yrep}) computed from \code{y} and each of the simulated datasets (rows)
 in \code{yrep}. For binomial models binned error plots are also available.
 \item \link[=PPC-scatterplots]{Scatterplots}: Scatterplots (and similar
-visualizations) of the data \code{y} vs. individual simuluted datasets
+visualizations) of the data \code{y} vs. individual simulated datasets
 (rows) in \code{yrep}, or vs. the average value of the distributions of each
 data point (columns) in \code{yrep}.
 \item \link[=PPC-discrete]{Plots for discrete outcomes}: PPC functions that can

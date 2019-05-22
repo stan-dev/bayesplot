@@ -37,7 +37,7 @@ scheme are included.}
 \value{
 \code{color_scheme_set()} has the side effect of setting the color scheme
 used for plotting. It also returns (\link[base:invisible]{invisibly}) a list of
-the hexidecimal color values used in \code{scheme}.
+the hexadecimal color values used in \code{scheme}.
 
 \code{color_scheme_get()} returns a list of the hexadecimal color
 values (without changing the current scheme). If the \code{scheme} argument
@@ -86,7 +86,7 @@ If you have a suggestion for a new color scheme please let us know via the
  A \strong{bayesplot} color scheme consists of six
 colors. To specify a custom color scheme simply pass a character vector
 containing either the names of six \link[grDevices:colors]{colors} or six
-hexidecimal color values (or a mix of names and hex values). The colors
+hexadecimal color values (or a mix of names and hex values). The colors
 should be in order from lightest to darkest. See the end of the
 \strong{Examples} section for a demonstration.
 }

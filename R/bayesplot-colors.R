@@ -23,7 +23,7 @@
 #'
 #' @return `color_scheme_set()` has the side effect of setting the color scheme
 #'   used for plotting. It also returns ([invisibly][base::invisible]) a list of
-#'   the hexidecimal color values used in `scheme`.
+#'   the hexadecimal color values used in `scheme`.
 #'
 #'   `color_scheme_get()` returns a list of the hexadecimal color
 #'   values (without changing the current scheme). If the `scheme` argument
@@ -61,7 +61,7 @@
 #' @section Custom color schemes: A **bayesplot** color scheme consists of six
 #'   colors. To specify a custom color scheme simply pass a character vector
 #'   containing either the names of six [colors][grDevices::colors] or six
-#'   hexidecimal color values (or a mix of names and hex values). The colors
+#'   hexadecimal color values (or a mix of names and hex values). The colors
 #'   should be in order from lightest to darkest. See the end of the
 #'   **Examples** section for a demonstration.
 #'
@@ -344,7 +344,7 @@ prepare_custom_colors <- function(scheme) {
   }
   if (length(not_found)) {
     abort(paste(
-      "Each color must specified as either a hexidecimal color value ",
+      "Each color must specified as either a hexadecimal color value ",
       "(e.g. '#C79999') or the name of a color (e.g. 'blue'). ",
       "The following provided colors were not found:",
       paste(unlist(not_found), collapse = ", ")
