@@ -54,7 +54,7 @@
 #'   }
 #'   \item{`mcmc_rank_hist()`}{
 #'    Whereas traditional trace plots visualize how the chains mix over the
-#'    course of sampling, rank-normalized histograms visualize how the values
+#'    course of sampling, rank histograms visualize how the values
 #'    from the chains mix together in terms of ranking. An ideal plot would
 #'    show the rankings mixing or overlapping in a uniform distribution.
 #'    See Vehtari et al. (2019) for details.
@@ -469,7 +469,9 @@ mcmc_trace_data <- function(x,
   first_cols <- syms(c("parameter", "value", "value_rank"))
   data <- data %>%
     group_by(.data$parameter) %>%
-    mutate(value_rank = dplyr::row_number(.data$value)) %>%
+    mutate(
+      value_rank = rank(.data$value, ties.method = "average")
+    ) %>%
     ungroup() %>%
     select(!!! first_cols, dplyr::everything())
 
