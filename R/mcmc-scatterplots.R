@@ -1,56 +1,56 @@
 #' Scatterplots of MCMC draws
 #'
 #' Scatterplots, hexagonal heatmaps, and pairs plots from MCMC draws. See the
-#' \strong{Plot Descriptions} section, below, for details.
+#' **Plot Descriptions** section, below, for details.
 #'
 #' @name MCMC-scatterplots
 #' @family MCMC
 #'
 #' @template args-mcmc-x
-#' @param pars An optional character vector of parameter names. For
-#'   \code{mcmc_scatter} and \code{mcmc_hex} only two parameters can be
-#'   selected. To plot more than two parameters use \code{mcmc_pairs}.
+#' @template args-pars
 #' @template args-regex_pars
 #' @template args-transformations
 #' @param ... Currently ignored.
-#' @param size,alpha For \code{mcmc_scatter}, passed to
-#'   \code{\link[ggplot2]{geom_point}} to control the appearance of the points.
-#' @param binwidth For \code{mcmc_hex}, an optional numeric vector of
-#'   \emph{length two} passed to \code{\link[ggplot2]{geom_hex}} to override the
+#' @param size,alpha For `mcmc_scatter()`, passed to
+#'   [ggplot2::geom_point()] to control the appearance of the points.
+#' @param binwidth For `mcmc_hex()`, an optional numeric vector of
+#'   *length two* passed to [ggplot2::geom_hex()] to override the
 #'   default binwidth in both the vertical and horizontal directions.
 #'
 #' @param np Optionally, a data frame of NUTS sampler parameters, either created
-#'   by \code{\link{nuts_params}} or in the same form as the object returned by
-#'   \code{\link{nuts_params}}. The colors, shapes, and sizes of the
-#'   superimposed points can be customized using the \code{np_style} argument.
-#' @param np_style If \code{np} is specified, \code{np_style} can be a call to
-#'   the \code{scatter_style_np} helper function (for \code{mcmc_scatter}) or
-#'   the \code{pairs_style_np} helper function (for \code{mcmc_pars}) to specify
+#'   by [nuts_params()] or in the same form as the object returned by
+#'   [nuts_params()]. The colors, shapes, and sizes of the
+#'   superimposed points can be customized using the `np_style` argument.
+#' @param np_style If `np` is specified, `np_style` can be a call to
+#'   the `scatter_style_np()` helper function (for `mcmc_scatter()`) or
+#'   the `pairs_style_np()` helper function (for `mcmc_pairs()`) to specify
 #'   arguments controlling the appearance of superimposed points representing
-#'   NUTS diagnostic information. (Note: for \code{pairs_style_np} the
-#'   \code{size} arguments are interpreted as scaling factors).
+#'   NUTS diagnostic information. (Note: for `pairs_style_np()` the
+#'   `size` arguments are interpreted as scaling factors).
 #'
-#' @return \code{mcmc_scatter} and \code{mcmc_hex} return a ggplot object that
-#'   can be further customized using the \pkg{ggplot2} package.
+#' @return `mcmc_scatter()` and `mcmc_hex()` return a ggplot object that
+#'   can be further customized using the **ggplot2** package.
 #'
-#'   \code{mcmc_pairs} returns many ggplot objects organized into a grid via
-#'   \code{\link{bayesplot_grid}}.
+#'   `mcmc_pairs()` returns many ggplot objects organized into a grid via
+#'   [bayesplot_grid()].
 #'
 #' @section Plot Descriptions:
 #' \describe{
-#'   \item{\code{mcmc_scatter}}{
+#'   \item{`mcmc_scatter()`}{
 #'    Bivariate scatterplot of posterior draws. If using a very large number of
-#'    posterior draws then \code{mcmc_hex} may be preferable to avoid
-#'    overplotting. For models fit using \code{\link{NUTS}} the \code{np},
-#'    and \code{np_style} arguments can be used to add additional information in
+#'    posterior draws then `mcmc_hex()` may be preferable to avoid
+#'    overplotting. For models fit using [NUTS] the `np`,
+#'    and `np_style` arguments can be used to add additional information in
 #'    the plot (in this case the approximate location of divergences).
+#'    For more on why the scatter plot with divergences is a useful
+#'    diagnostic tool see [Gabry et al. (2019)](https://github.com/jgabry/bayes-vis-paper).
 #'   }
-#'   \item{\code{mcmc_hex}}{
+#'   \item{`mcmc_hex()`}{
 #'    Hexagonal heatmap of 2-D bin counts. This plot is useful in cases where
-#'    the posterior sample size is large enough that \code{mcmc_scatter} suffers
+#'    the posterior sample size is large enough that `mcmc_scatter()` suffers
 #'    from overplotting.
 #'   }
-#'   \item{\code{mcmc_pairs}}{
+#'   \item{`mcmc_pairs()`}{
 #'    A square plot matrix with univariate marginal distributions along the
 #'    diagonal (as histograms or kernel density plots) and bivariate
 #'    distributions off the diagonal (as scatterplots or hex heatmaps).
@@ -58,20 +58,20 @@
 #'    For the off-diagonal plots, the default is to split the chains so that
 #'    (roughly) half are displayed above the diagonal and half are below (all
 #'    chains are always merged together for the plots along the diagonal). Other
-#'    possibilities are available by setting the \code{condition} argument.
+#'    possibilities are available by setting the `condition` argument.
 #'
 #'    Additionally, extra diagnostic information for models fit using
-#'    \code{\link{NUTS}} can be added to the pairs plot using the \code{lp},
-#'    \code{np}, and \code{np_style} arguments. If \code{np} is specified (and
-#'    \code{condition} is \emph{not} \code{"divergent__"}), then points (red, by
+#'    [NUTS] can be added to the pairs plot using the `lp`,
+#'    `np`, and `np_style` arguments. If `np` is specified (and
+#'    `condition` is *not* `"divergent__"`), then points (red, by
 #'    default) will be superimposed onto the off-diagonal plots indicating which
 #'    (if any) iterations encountered a divergent transition. Also, if both
-#'    \code{np} and \code{max_treedepth} are specified then points (yellow, by
+#'    `np` and `max_treedepth` are specified then points (yellow, by
 #'    default) will be superimposed to indicate a transition that hit the
 #'    maximum treedepth rather than terminated its evolution normally. The
-#'    \code{np_style} argument can be used with the \code{pairs_style_np}
+#'    `np_style` argument can be used with the `pairs_style_np()`
 #'    convenience function to change the appearance of these overlaid points.
-#'    See the \strong{Examples} section.
+#'    See the **Examples** section.
 #'   }
 #' }
 #'
@@ -112,11 +112,13 @@
 #'                  size = .75, linetype = 2)
 #'
 #' \donttest{
-#' # hexagonal heatmap
-#' color_scheme_set("brightblue")
-#' (p <- mcmc_hex(x, pars = c("sigma", "alpha"), transform = list(sigma = "log")))
-#' p + plot_bg(fill = "gray95")
-#' p + plot_bg(fill = "gray95") + panel_bg(fill = "gray70")
+#' if (requireNamespace("hexbin", quietly = TRUE)) {
+#'  # hexagonal heatmap
+#'  color_scheme_set("brightblue")
+#'  (p <- mcmc_hex(x, pars = c("sigma", "alpha"), transform = list(sigma = "log")))
+#'  p + plot_bg(fill = "gray95")
+#'  p + plot_bg(fill = "gray95") + panel_bg(fill = "gray70")
+#' }
 #' }
 NULL
 
@@ -155,6 +157,8 @@ mcmc_hex <- function(x,
                      transformations = list(),
                      ...,
                      binwidth = NULL) {
+  suggested_package("scales")
+  suggested_package("hexbin")
   check_ignored_arguments(...)
   .mcmc_scatter(
     x,
@@ -170,45 +174,45 @@ mcmc_hex <- function(x,
 
 #' @rdname MCMC-scatterplots
 #' @export
-#' @param condition For \code{mcmc_pairs}, a call to the \code{pairs_condition}
+#' @param condition For `mcmc_pairs()`, a call to the `pairs_condition()`
 #'   helper function, which is used to specify a criterion for determining which
 #'   chains (or iterations) are shown in the plots above the diagonal and which
 #'   are shown in the plots below the diagonal. The histograms (or density
 #'   plots) along the diagonal are always made using all chains and iterations,
 #'   but the scatterplots (or hex plots) above and below the diagonal show
-#'   different combinations of chains/iterations depending on \code{condition}.
-#'   The default is a call to \code{pairs_condition} with none of its arguments
+#'   different combinations of chains/iterations depending on `condition`.
+#'   The default is a call to `pairs_condition()` with none of its arguments
 #'   specified. In this case half of the chains (or roughly half if there are an
 #'   odd number) will be used in the plots above the diagonal and the rest in
-#'   the plots below the diagonal. The \code{chains}, \code{draws}, and
-#'   \code{nuts} arguments to \code{pairs_condition}, which are documented
+#'   the plots below the diagonal. The `chains`, `draws`, and
+#'   `nuts` arguments to `pairs_condition()`, which are documented
 #'   below, can be used to change this default.
 #'
-#' @param lp For \code{mcmc_pairs}, a molten data frame of draws of the
+#' @param lp For `mcmc_pairs()`, a molten data frame of draws of the
 #'   log-posterior or, more commonly, of a quantity equal to the log-posterior
-#'   up to a constant. \code{lp} should either be created via
-#'   \code{\link{log_posterior}} or be an object with the same form as the
-#'   object returned by \code{\link{log_posterior}}.
-#' @param max_treedepth For \code{mcmc_pairs}, an integer representing the
+#'   up to a constant. `lp` should either be created via
+#'   [log_posterior()] or be an object with the same form as the
+#'   object returned by [log_posterior()].
+#' @param max_treedepth For `mcmc_pairs()`, an integer representing the
 #'   maximum treedepth allowed when fitting the model (if fit using NUTS). This
 #'   is only needed for detecting which transitions (if any) hit the maximum
 #'   treedepth.
-#' @param diag_fun,off_diag_fun For \code{mcmc_pairs}, the plotting function to
+#' @param diag_fun,off_diag_fun For `mcmc_pairs()`, the plotting function to
 #'   use for the plots along the diagonal and for the off-diagonal plots,
-#'   respectively. Currently \code{diag_fun} can be \code{"hist"} for histogram
-#'   or \code{"dens"} for density, and \code{off_diag_fun} can be
-#'   \code{"scatter"} for scatterplot or \code{"hex"} for a hexagonal heatmap.
-#' @param diag_args,off_diag_args For \code{mcmc_pairs}, optional named lists of
-#'   arguments to pass to the functions implied by the \code{diag_fun} and
-#'   \code{off_diag_fun} arguments, respectively. For example, if
-#'   \code{off_diag_fun} is \code{"scatter"} then \code{off_diag_args} could
-#'   include optional arguments to \code{mcmc_scatter} like \code{size} and
-#'   \code{alpha}.
-#' @param grid_args,save_gg_objects For \code{mcmc_pairs}, arguments to pass to
-#'   \code{\link{bayesplot_grid}}. For example, since \code{mcmc_pairs} returns
-#'   more than a single ggplot object, using \code{\link{ggtitle}} afterwards
+#'   respectively. Currently `diag_fun` can be `"hist"` for histogram
+#'   or `"dens"` for density, and `off_diag_fun` can be
+#'   `"scatter"` for scatterplot or `"hex"` for a hexagonal heatmap.
+#' @param diag_args,off_diag_args For `mcmc_pairs()`, optional named lists of
+#'   arguments to pass to the functions implied by the `diag_fun` and
+#'   `off_diag_fun` arguments, respectively. For example, if
+#'   `off_diag_fun` is `"scatter"` then `off_diag_args` could
+#'   include optional arguments to `mcmc_scatter()` like `size` and
+#'   `alpha`.
+#' @param grid_args,save_gg_objects For `mcmc_pairs()`, arguments to pass to
+#'   [bayesplot_grid()]. For example, since `mcmc_pairs()` returns
+#'   more than a single ggplot object, using [ggtitle()] afterwards
 #'   will not work. But you you can still add a title to the plot using
-#'   \code{grid_args = list(top="My title")}.
+#'   `grid_args = list(top="My title")`.
 #'
 #' @examples
 #' \donttest{
@@ -241,7 +245,7 @@ mcmc_hex <- function(x,
 #' # will (almost certainly) have some divergences
 #' fit <- stan_glm(
 #'   mpg ~ ., data = mtcars,
-#'   iter = 1000,
+#'   iter = 1000, refresh = 0,
 #'   # this combo of prior and adapt_delta should lead to some divergences
 #'   prior = hs(),
 #'   adapt_delta = 0.9
@@ -316,8 +320,11 @@ mcmc_pairs <- function(x,
     inherits(np_style, "nuts_style"),
     inherits(condition, "pairs_condition")
   )
-  plot_diagonal <- pairs_plotfun(match.arg(diag_fun))
-  plot_off_diagonal <- pairs_plotfun(match.arg(off_diag_fun))
+
+  diag_fun <- match.arg(diag_fun)
+  off_diag_fun <- match.arg(off_diag_fun)
+  plot_diagonal <- pairs_plotfun(diag_fun)
+  plot_off_diagonal <- pairs_plotfun(off_diag_fun)
 
   x <- prepare_mcmc_array(x, pars, regex_pars, transformations)
   x <- drop_constants_and_duplicates(x)
@@ -328,10 +335,10 @@ mcmc_pairs <- function(x,
   pars <- parameter_names(x)
 
   if (n_chain == 1) {
-    warning("Only one chain in 'x'. This plot is more useful with multiple chains.")
+    warn("Only one chain in 'x'. This plot is more useful with multiple chains.")
   }
   if (n_param < 2) {
-    stop("This plot requires at least two parameters in 'x'.")
+    abort("This plot requires at least two parameters in 'x'.")
   }
 
   no_np <- is.null(np)
@@ -432,10 +439,10 @@ mcmc_pairs <- function(x,
 #' @rdname MCMC-scatterplots
 #' @export
 #' @param div_color,div_shape,div_size,div_alpha,td_color,td_shape,td_size,td_alpha
-#'   Optional arguments to the \code{scatter_style_np} or \code{pairs_style_np}
+#'   Optional arguments to the `scatter_style_np()` or `pairs_style_np()`
 #'   helper functions that are eventually passed to
-#'   \code{\link[ggplot2]{geom_point}}.The default values are displayed in the
-#'   \strong{Usage} section above.
+#'   [ggplot2::geom_point()].The default values are displayed in the
+#'   **Usage** section above.
 scatter_style_np <-
   function(div_color = "red",
            div_shape = 16,
@@ -489,41 +496,41 @@ pairs_style_np <-
 
 #' @rdname MCMC-scatterplots
 #' @export
-#' @param chains,draws,nuts Optional arguments to the \code{pairs_condition}
-#'   helper function, which is used to specify the \code{condition} argument for
-#'   \code{mcmc_pairs}.
+#' @param chains,draws,nuts Optional arguments to the `pairs_condition()`
+#'   helper function, which is used to specify the `condition` argument for
+#'   `mcmc_pairs()`.
 #' \itemize{
-#'   \item The \code{chains} argument can be used to select some subset of the
-#'   chains. If \code{chains} is an integer vector then the behavior is the same
+#'   \item The `chains` argument can be used to select some subset of the
+#'   chains. If `chains` is an integer vector then the behavior is the same
 #'   as the default (half the chains above the diagonal and half below) except
-#'   using only the specified subset of chains. Alternatively, \code{chains} can
+#'   using only the specified subset of chains. Alternatively, `chains` can
 #'   be a list of two integer vectors with the first specifying the chains to be
 #'   shown in the plots above the diagonal and the second for below the
 #'   diagonal.
-#'   \item The \code{draws} argument to \code{pairs_condition} can be used to
+#'   \item The `draws` argument to `pairs_condition()` can be used to
 #'   directly specify which realizations are plotted above and below the
-#'   diagonal. \code{draws} can be a single proportion, which is interpreted as
+#'   diagonal. `draws` can be a single proportion, which is interpreted as
 #'   the proportion of realizations (among all chains) to plot in the lower
 #'   panel starting with the first realization in each chain, with the
 #'   complement (from the end of each chain) plotted in the upper panel.
-#'   Alternatively \code{draws} can be a logical vector with length equal to the
+#'   Alternatively `draws` can be a logical vector with length equal to the
 #'   product of the number of iterations and the number of chains, in which case
-#'   realizations corresponding to \code{FALSE} and \code{TRUE} will be plotted
+#'   realizations corresponding to `FALSE` and `TRUE` will be plotted
 #'   in the lower and upper panels, respectively.
-#'   \item For models fit using NUTS, the \code{nuts} argument to
-#'   \code{pairs_condition} can be used. It takes a (possibly abbreviated)
-#'   string to select among \code{"accept_stat__"}, \code{"stepsize__"},
-#'   \code{"treedepth__"}, \code{"n_leapfrog__"}, \code{"divergent__"},
-#'   \code{"energy__"}, and \code{"lp__"}. These are the sampler parameters
-#'   associated with \code{\link{NUTS}} (and \code{"lp__"} is the log-posterior
+#'   \item For models fit using NUTS, the `nuts` argument to
+#'   `pairs_condition()` can be used. It takes a (possibly abbreviated)
+#'   string to select among `"accept_stat__"`, `"stepsize__"`,
+#'   `"treedepth__"`, `"n_leapfrog__"`, `"divergent__"`,
+#'   `"energy__"`, and `"lp__"`. These are the sampler parameters
+#'   associated with [NUTS()] (and `"lp__"` is the log-posterior
 #'   up to an additive constant). In this case, plots below the diagonal will
 #'   contain realizations that are below the median of the indicated variable
-#'   (or are zero in the case of \code{"divergent__"}), and plots above the
+#'   (or are zero in the case of `"divergent__"`), and plots above the
 #'   diagonal will contain realizations that are greater than or equal to the
 #'   median of the indicated variable (or are one in the case of
-#'   \code{"divergent__"}). If \code{"lp__"} is used then the \code{lp}
-#'   argument to \code{mcmc_pairs} must also be specified. For the other NUTS
-#'   parameters the \code{np} argument to \code{mcmc_pairs} must also be
+#'   `"divergent__"`). If `"lp__"` is used then the `lp`
+#'   argument to `mcmc_pairs` must also be specified. For the other NUTS
+#'   parameters the `np` argument to `mcmc_pairs()` must also be
 #'   specified.
 #'  }
 #'
@@ -532,19 +539,15 @@ pairs_condition <- function(chains = NULL, draws = NULL, nuts = NULL) {
     dots <- list(...)
     nms <- names(dots)[!sapply(dots, is.null)]
     if (length(nms)) {
-      message(
+      inform(paste0(
         "The following specified arguments were ignored by 'pairs_condition' ",
         "because ", why, ": ",
         paste(sQuote(nms), collapse = ", ")
-      )
+      ))
     }
   }
   .error_duplicate_chains <- function() {
-    stop(
-      "Each chain can only be specified once in the 'chains' argument ",
-      "to 'pairs_condition'.",
-      call. = FALSE
-    )
+    abort("Each chain can only be specified once in the 'chains' argument to 'pairs_condition'.")
   }
 
 
@@ -582,11 +585,10 @@ pairs_condition <- function(chains = NULL, draws = NULL, nuts = NULL) {
       cond <- as.integer(chains)
       cond_type <- "chain_vector"
     } else {
-      stop(
-        "The 'chains' argument to 'pairs_condition' must be ",
-        "an integer vector or a list of two integer vectors.",
-        call. = FALSE
-      )
+      abort(paste(
+        "The 'chains' argument to 'pairs_condition' must be",
+        "an integer vector or a list of two integer vectors."
+      ))
     }
 
   } else if (!is.null(draws)) {
@@ -603,20 +605,16 @@ pairs_condition <- function(chains = NULL, draws = NULL, nuts = NULL) {
       cond <- draws
       cond_type <- "draws_selection"
     } else {
-      stop(
-        "The 'draws' argument to 'pairs_condition' must be ",
-        "a single proportion or a logical vector.",
-        call. = FALSE
-      )
+      abort(paste(
+        "The 'draws' argument to 'pairs_condition' must be",
+        "a single proportion or a logical vector."
+      ))
     }
   } else {
     # Using 'nuts' argument
-    if (!is.character(nuts) || length(nuts) > 1)
-      stop(
-        "The 'nuts' argument to 'pairs_condition' must be ",
-        "a single string.",
-        call. = FALSE
-      )
+    if (!is.character(nuts) || length(nuts) > 1) {
+      abort("The 'nuts' argument to 'pairs_condition' must be a single string.")
+    }
 
     cond_type <- "nuts"
     cond <- match.arg(nuts, several.ok = FALSE,
@@ -648,10 +646,10 @@ pairs_condition <- function(chains = NULL, draws = NULL, nuts = NULL) {
                           np_style = scatter_style_np()) {
   x <- prepare_mcmc_array(x, pars, regex_pars, transformations)
   if (num_params(x) != 2) {
-    stop(
-      "For 'mcmc_scatter' and 'mcmc_hex' exactly 2 parameters must be selected. ",
+    abort(paste(
+      "For 'mcmc_scatter' and 'mcmc_hex' exactly 2 parameters must be selected.",
       "'mcmc_pairs' can be used for more than 2 parameters."
-    )
+    ))
   }
 
   x <- merge_chains(x)
@@ -661,7 +659,7 @@ pairs_condition <- function(chains = NULL, draws = NULL, nuts = NULL) {
   xydata <- data.frame(x = c(x[, 1]), y = c(x[, 2]))
   if (has_divs) {
     if (hex) {
-      warning("'np' is currently ignored for hex plots.")
+      warn("'np' is currently ignored for hex plots.")
     }
     stopifnot(inherits(np_style, "nuts_style"))
     np <- validate_nuts_data_frame(np)
@@ -701,7 +699,6 @@ pairs_condition <- function(chains = NULL, draws = NULL, nuts = NULL) {
         )
     }
   } else { # hex binning
-    suggested_package("scales")
     graph <- graph +
       geom_hex(
         aes_(fill = ~ scales::rescale(..density..)),
@@ -722,59 +719,64 @@ pairs_condition <- function(chains = NULL, draws = NULL, nuts = NULL) {
 
 # internal for mcmc_pairs -------------------------------------------------
 
-# Get plotting functions from user-specified diag_fun, off_diag_fun arguments
-#
-# @param x User specified diag_fun or off_diag_fun argument to mcmc_pairs
+#' Get plotting functions from user-specified
+#' `diag_fun` and `off_diag_fun` arguments
+#'
+#' @noRd
+#' @param x User specified `diag_fun` or `off_diag_fun` argument to `mcmc_pairs()`
 pairs_plotfun <- function(x) {
   fun <- paste0("mcmc_", x)
   utils::getFromNamespace(fun, "bayesplot")
 }
 
-# Unstack molten data frame
-#
-# @param df A data frame (from nuts_params(), log_posterior(), etc)
-# @param .form Same as 'form' arg to utils::unstack
+#' Unstack molten data frame
+#'
+#' @noRd
+#' @param df A data frame (from `nuts_params()`, `log_posterior()`, etc)
+#' @param .form Same as `form` arg to `utils::unstack()`
 unstack_to_matrix <- function(df, .form) {
   x <- utils::unstack(df, form = .form)
   as.matrix(x)
 }
 
-# Check if off-diagonal plot is above or below the diagonal
-#
-# @param j integer (index)
-# @param n Number of parameters (number of plots = n^2)
-# @return TRUE if below the diagonal FALSE if above the diagonal
+#' Check if off-diagonal plot is above or below the diagonal
+#'
+#' @noRd
+#' @param j integer (index)
+#' @param n Number of parameters (number of plots = `n^2`)
+#' @return `TRUE` if below the diagonal, `FALSE` if above the diagonal
 is_lower_tri <- function(j, n) {
   idx <- array_idx_j(j, n)
   lower_tri <- lower_tri_idx(n)
   row_match_found(idx, lower_tri)
 }
 
-# Get array indices of the jth element in the plot matrix
-#
-# @param j integer (index)
-# @param n number of parameters (number of plots = n^2)
-# @return rwo vector (1-row matrix) containing the array indices of the jth
-#   element in the plot matrix
+#' Get array indices of the jth element in the plot matrix
+#'
+#' @noRd
+#' @param j integer (index)
+#' @param n number of parameters (number of plots = n^2)
+#' @return rwo vector (1-row matrix) containing the array indices of the jth
+#'   element in the plot matrix
 array_idx_j <- function(j, n) {
   jj <- matrix(seq_len(n^2), nrow = n, byrow = TRUE)[j]
   arrayInd(jj, .dim = c(n, n))
 }
 
-# Get indices of lower triangular elements of a square matrix
-#
-# @param n number of rows (columns) in the square matrix
+#' Get indices of lower triangular elements of a square matrix
+#' @noRd
+#' @param n number of rows (columns) in the square matrix
 lower_tri_idx <- function(n) {
   a <- rev(abs(sequence(seq.int(n - 1)) - n) + 1)
   b <- rep.int(seq.int(n - 1), rev(seq.int(n - 1)))
   cbind(row = a, col = b)
 }
 
-# Find which (if any) row in y is a match for x
-#
-# @param x a row vector (i.e., a matrix with 1 row)
-# @param y a matrix
-# @return either a row number in y or NA if no match
+#' Find which (if any) row in y is a match for x
+#' @noRd
+#' @param x a row vector (i.e., a matrix with 1 row)
+#' @param y a matrix
+#' @return either a row number in `y` or `NA` if no match
 row_match_found <- function(x, y) {
   stopifnot(is.matrix(x), is.matrix(y), nrow(x) == 1)
   x <- as.data.frame(x)
@@ -787,8 +789,9 @@ row_match_found <- function(x, y) {
 }
 
 
-# Drop any constant or duplicate variables
-# @param x 3-D array
+#' Drop any constant or duplicate variables
+#' @noRd
+#' @param x 3-D array
 drop_constants_and_duplicates <- function(x) {
   x2 <- drop_consts(x)
   x2 <- drop_dupes(x2)
@@ -800,10 +803,10 @@ drop_consts <- function(x) {
   if (all(varying))
     return(x)
 
-  warning(
-    "The following parameters were dropped because they are constant: ",
+  warn(paste(
+    "The following parameters were dropped because they are constant:",
     paste(names(varying)[!varying], collapse = ", ")
-  )
+  ))
   x[, , varying, drop = FALSE]
 }
 drop_dupes <- function(x) {
@@ -811,20 +814,20 @@ drop_dupes <- function(x) {
   if (!any(dupes))
     return(x)
 
-  warning(
-    "The following parameters were dropped because they are duplicative: ",
+  warn(paste(
+    "The following parameters were dropped because they are duplicative:",
     paste(parameter_names(x)[dupes], collapse = ", ")
-  )
+  ))
   x[, , !dupes, drop = FALSE]
 }
 
-# Handle user's specified condition
-#
-# @param x 3-D mcmc array
-# @param condition Object returned by pairs_condition
-# @param np,lp User-specified arguments to mcmc_pairs
-# @return A named list containing 'x' (x, possibly modified) and 'mark' (logical
-#   or interger vector for eventually splitting x)
+#' Handle user's specified `condition`
+#' @noRd
+#' @param x 3-D mcmc array.
+#' @param condition Object returned by `pairs_condition()`.
+#' @param np,lp User-specified arguments to `mcmc_pairs()`.
+#' @return A named list containing `"x"` (`x`, possibly modified) and `"mark"`
+#'   (logical or interger vector for eventually splitting `x`).
 handle_condition <- function(x, condition=NULL, np=NULL, lp=NULL) {
   n_iter <- num_iters(x)
   n_chain <- num_chains(x)
@@ -855,19 +858,17 @@ handle_condition <- function(x, condition=NULL, np=NULL, lp=NULL) {
   } else if (cond_type == "nuts") {
     # NUTS sampler param or lp__
     if (no_np && condition != "lp__")
-      stop(
-        "To use this value of 'condition' the 'np' argument ",
-        "to 'mcmc_pairs' must also be specified.",
-        call. = FALSE
-      )
+      abort(paste(
+        "To use this value of 'condition' the 'np' argument",
+        "to 'mcmc_pairs' must also be specified."
+      ))
 
     if (condition == "lp__") {
       if (no_lp)
-        stop(
-          "If 'condition' is 'lp__' then the 'lp' argument ",
-          "to 'mcmc_pairs' must also be specified.",
-          call. = FALSE
-        )
+        abort(paste(
+          "If 'condition' is 'lp__' then the 'lp' argument",
+          "to 'mcmc_pairs' must also be specified."
+        ))
       mark <- unstack_to_matrix(lp, Value ~ Chain)
 
     } else {
@@ -881,27 +882,28 @@ handle_condition <- function(x, condition=NULL, np=NULL, lp=NULL) {
       mark <- c(mark) >= median(mark)
     }
     if (length(unique(mark)) == 1)
-      stop(condition, " is constant so it cannot be used as a condition.")
+      abort(paste(condition, "is constant so it cannot be used as a condition."))
   }
 
   list(x = x, mark = mark)
 }
 
 
-# Apply scale_color_manual and scale_size_manual if plotting divergences and
-# hitting max_treedepth
-#
-# @param graph ggplot object
-# @param np_args list of style arguments returned by pairs_style_np()
-# @return graph, updated
+#' Apply scale_color_manual and scale_size_manual if plotting divergences and
+#' hitting max_treedepth
+#'
+#' @noRd
+#' @param graph ggplot object
+#' @param np_args list of style arguments returned by `pairs_style_np()`
+#' @return `graph`, updated
 format_nuts_points <- function(graph, np_args) {
   graph +
     scale_color_manual(
-      values = setNames(c(NA, np_args$color[["div"]], NA, np_args$color[["td"]]),
-                        c("NoDiv", "Div", "NoHit", "Hit"))
+      values = set_names(c(NA, np_args$color[["div"]], NA, np_args$color[["td"]]),
+                         c("NoDiv", "Div", "NoHit", "Hit"))
     ) +
     scale_size_manual(
-      values = setNames(c(0, rel(np_args$size[["div"]]), 0, rel(np_args$size[["td"]])),
-                        c("NoDiv", "Div", "NoHit", "Hit"))
+      values = set_names(c(0, rel(np_args$size[["div"]]), 0, rel(np_args$size[["td"]])),
+                         c("NoDiv", "Div", "NoHit", "Hit"))
     )
 }

@@ -39,6 +39,11 @@ test_that("ppc_stat_2d returns ggplot object", {
   expect_gg(ppc_stat_2d(y2, yrep2))
 })
 
+test_that("ppc_stat_2d erros if more than 2 stats", {
+  expect_error(ppc_stat_2d(y, yrep, stat = c("mean", "sd", "var")),
+               "argument must have length 2")
+})
+
 test_that("ppc_stat_grouped returns ggplot object", {
   expect_gg(ppc_stat_grouped(y, yrep, group))
   expect_gg(ppc_stat_grouped(y, yrep, as.numeric(group), stat = function(z) var(z)))

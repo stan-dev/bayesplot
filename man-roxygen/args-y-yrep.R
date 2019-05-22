@@ -1,8 +1,7 @@
-#' @param y A vector of observations. See \strong{Details}.
+#' @param y A vector of observations. See **Details**.
 #' @param yrep An \eqn{S} by \eqn{N} matrix of draws from the posterior
 #'   predictive distribution, where \eqn{S} is the size of the posterior sample
-#'   (or subset of the posterior sample used to generate \code{yrep}) and
-#'   \eqn{N} is the number of observations (the length of \code{y}). The columns
-#'   of \code{yrep} should be in the same order as the data points in \code{y}
-#'   for the plots to make sense. See \strong{Details} for additional
-#'   instructions.
+#'   (or subset of the posterior sample used to generate `yrep`) and \eqn{N} is
+#'   the number of observations (the length of `y`). The columns of `yrep`
+#'   should be in the same order as the data points in `y` for the plots to make
+#'   sense. See **Details** for additional instructions.

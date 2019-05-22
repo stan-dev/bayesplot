@@ -5,9 +5,7 @@ context("MCMC: recover")
 alpha <- 1; beta <- c(-.5, .5); sigma <- 2
 X <- matrix(rnorm(200), 100, 2)
 y <- rnorm(100, mean = c(alpha + X %*% beta), sd = sigma)
-capture.output(
-  fit <- stan_glm(y ~ ., data = data.frame(y, X))
-)
+fit <- stan_glm(y ~ ., data = data.frame(y, X), refresh = 0, iter = 750, chains = 2, seed = 8420)
 draws <- as.matrix(fit)
 true <- c(alpha, beta, sigma)
 
@@ -61,14 +59,41 @@ test_that("mcmc_recover_intervals works when point_est = 'none'", {
 
 
 test_that("mcmc_recover_scatter returns a ggplot object", {
-  expect_gg(mcmc_recover_scatter(draws, true))
-  expect_gg(mcmc_recover_scatter(draws, true, batch = 1:4,
-                                 point_est = "mean"))
-  expect_gg(mcmc_recover_scatter(draws, true, batch = c(1, 2, 2, 1),
-                                 point_est = "mean"))
-  expect_gg(mcmc_recover_scatter(draws, true, batch = grepl("X", colnames(draws))))
-  expect_gg(mcmc_recover_scatter(draws, true, batch = grepl("X", colnames(draws)),
-                                 facet_args = list(ncol = 1)))
+  expect_gg(
+    mcmc_recover_scatter(draws, true)
+  )
+  expect_gg(
+    mcmc_recover_scatter(
+      draws,
+      true,
+      batch = 1:4,
+      point_est = "mean",
+      facet_args = list(scales = "fixed")
+    )
+  )
+  expect_gg(
+    mcmc_recover_scatter(
+      draws,
+      true,
+      batch = c(1, 2, 2, 1),
+      point_est = "mean"
+    )
+  )
+  expect_gg(
+    mcmc_recover_scatter(
+      draws,
+      true,
+      batch = grepl("X", colnames(draws))
+    )
+  )
+  expect_gg(
+    mcmc_recover_scatter(
+      draws,
+      true,
+      batch = grepl("X", colnames(draws)),
+      facet_args = list(ncol = 1)
+    )
+  )
 })
 
 

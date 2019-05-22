@@ -10,10 +10,10 @@ is_vector_or_1Darray <- function(x) {
 
 #' Validate y
 #'
-#' Checks that y is numeric, doesn't have any NAs, and is either a vector, 1-D
-#' array, or univariate time series object of class \code{ts}.
+#' Checks that `y` is numeric, doesn't have any NAs, and is either a vector, 1-D
+#' array, or univariate time series object of class `ts`.
 #'
-#' @param y The y object from the user.
+#' @param y The `y` object from the user.
 #' @return Either throws an error or returns a numeric vector.
 #' @noRd
 validate_y <- function(y) {
@@ -21,13 +21,13 @@ validate_y <- function(y) {
 
   if (!(inherits(y, "ts") && is.null(dim(y)))) {
     if (!is_vector_or_1Darray(y)) {
-      stop("'y' must be a vector or 1D array.")
+      abort("'y' must be a vector or 1D array.")
     }
     y <- as.vector(y)
   }
 
   if (anyNA(y)) {
-    stop("NAs not allowed in 'y'.")
+    abort("NAs not allowed in 'y'.")
   }
 
   unname(y)
@@ -36,10 +36,10 @@ validate_y <- function(y) {
 
 #' Validate yrep
 #'
-#' Checks that yrep is a numeric matrix, doesn't have any NAs, and has the
-#' correct number of columns (equal to the length of y).
+#' Checks that `yrep` is a numeric matrix, doesn't have any NAs, and has the
+#' correct number of columns (equal to the length of `y`).
 #'
-#' @param yrep,y The user's yrep object and the y object returned by validate_y.
+#' @param yrep,y The user's `yrep` object and the `y` object returned by `validate_y()`.
 #' @return Either throws an error or returns a numeric matrix.
 #' @noRd
 validate_yrep <- function(yrep, y) {
@@ -54,11 +54,11 @@ validate_yrep <- function(yrep, y) {
   }
 
   if (anyNA(yrep)) {
-    stop("NAs not allowed in 'yrep'.")
+    abort("NAs not allowed in 'yrep'.")
   }
 
   if (ncol(yrep) != length(y)) {
-    stop("ncol(yrep) must be equal to length(y).")
+    abort("ncol(yrep) must be equal to length(y).")
   }
 
   unclass(unname(yrep))
@@ -67,11 +67,11 @@ validate_yrep <- function(yrep, y) {
 
 #' Validate group
 #'
-#' Checks that grouping variable has same length as y and is either a vector or
+#' Checks that grouping variable has same length as `y` and is either a vector or
 #' factor variable.
 #'
-#' @param group,y The user's group object and the y object returned by validate_y.
-#' @return Either throws an error or returns \code{group} (coerced to a factor).
+#' @param group,y The user's `group` object and the `y` object returned by `validate_y()`.
+#' @return Either throws an error or returns `group` (coerced to a factor).
 #' @noRd
 validate_group <- function(group, y) {
   stopifnot(is.vector(group) || is.factor(group))
@@ -81,15 +81,15 @@ validate_group <- function(group, y) {
   }
 
   if (anyNA(group)) {
-    stop("NAs not allowed in 'group'.")
+    abort("NAs not allowed in 'group'.")
   }
 
   if (length(group) != length(y)) {
-    stop("length(group) must be equal to length(y).")
+    abort("length(group) must be equal to length(y).")
   }
 
   if (length(unique(group)) == 1) {
-    stop("'group' must have more than one unique value.")
+    abort("'group' must have more than one unique value.")
   }
 
   unname(group)
@@ -101,8 +101,9 @@ validate_group <- function(group, y) {
 #' Checks that x is a numeric vector, doesn't have any NAs, and has the
 #' same length as y.
 #'
-#' @param x,y The user's x vector and the y object returned by validate_y.
-#' @param unique_x T/F indicating whether to require all unique values in x.
+#' @param x,y The user's `x` vector and the `y` object returned by `validate_y()`.
+#' @param unique_x `TRUE` or `FALSE` indicating whether to require all unique
+#'   values in `x`.
 #' @return Either throws an error or returns a numeric vector.
 #' @noRd
 validate_x <- function(x = NULL, y, unique_x = FALSE) {
@@ -117,16 +118,16 @@ validate_x <- function(x = NULL, y, unique_x = FALSE) {
   stopifnot(is.numeric(x))
 
   if (!is_vector_or_1Darray(x)) {
-    stop("'x' must be a vector or 1D array.")
+    abort("'x' must be a vector or 1D array.")
   }
 
   x <- as.vector(x)
   if (length(x) != length(y)) {
-    stop("length(x) must be equal to length(y).")
+    abort("length(x) must be equal to length(y).")
   }
 
   if (anyNA(x)) {
-    stop("NAs not allowed in 'x'.")
+    abort("NAs not allowed in 'x'.")
   }
 
   if (unique_x) {
@@ -147,11 +148,10 @@ validate_x <- function(x = NULL, y, unique_x = FALSE) {
 #'      number of simulations included in `yrep`.
 #'   1. `value`: the simulation values.
 #' @noRd
-#' @md
 melt_yrep <- function(yrep) {
   out <- yrep %>%
     reshape2::melt(varnames = c("rep_id", "y_id")) %>%
-    dplyr::as_data_frame()
+    tibble::as_tibble()
   id <- create_yrep_ids(out$rep_id)
   out$rep_label <- factor(id, levels = unique(id))
   out[c("y_id", "rep_id", "rep_label", "value")]
@@ -169,7 +169,6 @@ melt_yrep <- function(yrep) {
 #'   1. `is_y_label`: factor with levels `italic(y)` for observations and
 #'      `italic(y)[rep]` for simulations.
 #' @noRd
-#' @md
 melt_and_stack <- function(y, yrep) {
   y_text <- as.character(y_label())
   yrep_text <- as.character(yrep_label())
@@ -179,7 +178,7 @@ melt_and_stack <- function(y, yrep) {
   # Add a level in the labels for the observed y values
   levels(molten_yrep$rep_label) <- c(levels(molten_yrep$rep_label), y_text)
 
-  ydat <- dplyr::data_frame(
+  ydat <- tibble::tibble(
     rep_label = factor(y_text, levels = levels(molten_yrep$rep_label)),
     rep_id = NA_integer_,
     y_id = seq_along(y),
@@ -198,12 +197,13 @@ melt_and_stack <- function(y, yrep) {
 
 #' Prepare data for use in PPCs by group
 #'
-#' @param y,yrep,group Validated y, yrep, and group objects.
-#' @param stat Either NULL or a string naming a function.
-#' @return If \code{stat} is NULL, a molten data frame grouped by group and
-#'   variable. If \code{stat} specifies a function then a summary table created
-#'   by dplyr::summarise.
+#' @param y,yrep,group Validated `y`, `yrep`, and `group` objects.
+#' @param stat Either `NULL` or a string naming a function.
+#' @return If `stat` is `NULL`, a molten data frame grouped by group and
+#'   variable. If `stat` specifies a function then a summary table created
+#'   by `dplyr::summarise()`.
 #' @noRd
+#'
 #' @examples
 #' y <- example_y_data()
 #' yrep <- example_yrep_draws()
@@ -234,7 +234,8 @@ ppc_group_data <- function(y, yrep, group, stat = NULL) {
   # grouping vars. It summarising path, it has one grouping var.
 }
 
-# check if x consists of whole numbers (very close to integers)
+# Check if x consists of whole numbers (very close to integers)
+# Implementation here follows example ?integer
 is_whole_number <- function(x, tol = .Machine$double.eps) {
   if (!is.numeric(x)) {
     FALSE
@@ -243,9 +244,13 @@ is_whole_number <- function(x, tol = .Machine$double.eps) {
   }
 }
 
-# check if all values in x are counts (non-negative whole numbers)
+# Check if all values in x are whole numbers or counts (non-negative whole
+# numbers)
+all_whole_number <- function(x, ...) {
+  all(is_whole_number(x, ...))
+}
 all_counts <- function(x, ...) {
-  all(is_whole_number(x, ...)) && min(x) >= 0
+  all_whole_number(x, ...) && min(x) >= 0
 }
 
 # labels ----------------------------------------------------------------

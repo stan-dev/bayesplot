@@ -1,86 +1,167 @@
-# Prepare 3-D array for MCMC plots
-#
-# @param x,pars,regex_pars,transformations Users's arguments to one of the
-#   mcmc_* functions.
-# @return A 3-D (Iterations x Chains x Parameters) array.
-#
-prepare_mcmc_array <-
-  function(x,
-           pars = character(),
-           regex_pars = character(),
-           transformations = list()) {
+#' Prepare 3-D array for MCMC plots
+#'
+#' @noRd
+#' @param x,pars,regex_pars,transformations Users's arguments to one of the
+#'   mcmc_* functions.
+#' @return A 3-D (Iterations x Chains x Parameters) array.
+#'
+prepare_mcmc_array <- function(x,
+                               pars = character(),
+                               regex_pars = character(),
+                               transformations = list()) {
+  if (is_df_with_chain(x)) {
+    x <- df_with_chain2array(x)
+  } else if (is_chain_list(x)) {
+    # this will apply to mcmc.list and similar objects
+    x <- chain_list2array(x)
+  } else if (is.data.frame(x)) {
+    # data frame without Chain column
+    x <- as.matrix(x)
+  } else {
+    # try object's as.array method
+    x <- as.array(x)
+  }
 
-    if (is_df_with_chain(x)) {
-      x <- df_with_chain2array(x)
-    } else if (is_chain_list(x)) {
-      x <- chain_list2array(x)
+  stopifnot(is.matrix(x) || is.array(x))
+  if (is.array(x) && !(length(dim(x)) %in% c(2,3))) {
+    abort("Arrays should have 2 or 3 dimensions. See help('MCMC-overview').")
+  }
+  if (anyNA(x)) {
+    abort("NAs not allowed in 'x'.")
+  }
+
+  if (rlang::is_quosures(pars)) {
+    pars <- tidyselect_parameters(complete_pars = parameter_names(x),
+                                  pars_list = pars)
+  } else {
+    pars <- select_parameters(complete_pars = parameter_names(x),
+                              explicit = pars,
+                              patterns = regex_pars)
+  }
+
+  # possibly recycle transformations (apply same to all pars)
+  if (is.function(transformations) ||
+      (is.character(transformations) && length(transformations) == 1)) {
+    transformations <- rep(list(transformations), length(pars))
+    transformations <- set_names(transformations, pars)
+  }
+
+  if (is.matrix(x)) {
+    x <- x[, pars, drop=FALSE]
+    if (length(transformations)) {
+      x <- apply_transformations(x, transformations)
     }
-    x <- validate_mcmc_x(x)
+    x <- array(x, dim = c(nrow(x), 1, ncol(x)))
+  } else {
+    x <- x[, , pars, drop = FALSE]
+    if (length(transformations)) {
+      x <- apply_transformations(x, transformations)
+    }
+  }
 
-    parnames <- parameter_names(x)
-    pars <-
-      select_parameters(explicit = pars,
-                        patterns = regex_pars,
-                        complete = parnames)
+  pars <- rename_transformed_pars(pars, transformations)
+  set_mcmc_dimnames(x, pars)
+}
 
-    # possibly recycle transformations (apply same to all pars)
-    if (is.function(transformations) ||
-        (is.character(transformations) && length(transformations) == 1)) {
-      transformations <- rep(list(transformations), length(pars))
-      transformations <- setNames(transformations, pars)
+
+#' Explicit and/or regex parameter selection
+#'
+#' @noRd
+#' @param explicit Character vector of selected parameter names.
+#' @param patterns Character vector of regular expressions.
+#' @param complete_pars Character vector of all possible parameter names.
+#' @return Character vector of combined explicit and matched (via regex)
+#'   parameter names, unless an error is thrown.
+#'
+select_parameters <-
+  function(explicit = character(),
+           patterns = character(),
+           complete_pars = character()) {
+
+    stopifnot(is.character(explicit),
+              is.character(patterns),
+              is.character(complete_pars))
+
+    if (!length(explicit) && !length(patterns)) {
+      return(complete_pars)
     }
 
-    if (is.matrix(x)) {
-      x <- x[, pars, drop=FALSE]
-      if (length(transformations))
-        x <- apply_transformations(x, transformations)
-      x <- array(x, dim = c(nrow(x), 1, ncol(x)))
+    if (length(explicit)) {
+      if (!all(explicit %in% complete_pars)) {
+        not_found <- which(!explicit %in% complete_pars)
+        abort(paste(
+          "Some 'pars' don't match parameter names:",
+          paste(explicit[not_found], collapse = ", "),
+          call. = FALSE
+        ))
+      }
+    }
+
+    if (!length(patterns)) {
+      return(unique(explicit))
     } else {
-      x <- x[, , pars, drop = FALSE]
-      if (length(transformations))
-        x <- apply_transformations(x, transformations)
+      regex_pars <-
+        unlist(lapply(seq_along(patterns), function(j) {
+          grep(patterns[j], complete_pars, value = TRUE)
+        }))
+
+      if (!length(regex_pars)) {
+        abort("No matches for 'regex_pars'.")
+      }
     }
 
-    pars <- rename_transformed_pars(pars, transformations)
-    set_mcmc_dimnames(x, pars)
+    unique(c(explicit, regex_pars))
   }
 
 
-# Melt a 3-D array or matrix of MCMC draws
-#
-# @param x An mcmc_array (from prepare_mcmc_array).
-# @param varnames,value.name,... Passed to reshape2::melt (array method).
-# @return A molten data frame.
-#
+#' Melt a 3-D array or matrix of MCMC draws
+#'
+#' @noRd
+#' @param x An mcmc_array (from prepare_mcmc_array).
+#' @param varnames,value.name,... Passed to reshape2::melt (array method).
+#' @return A molten data frame.
+#'
 melt_mcmc <- function(x, ...) UseMethod("melt_mcmc")
-melt_mcmc.mcmc_array <-
-  function(x,
-           varnames = c("Iteration", "Chain", "Parameter"),
-           value.name = "Value",
-           ...) {
+melt_mcmc.mcmc_array <- function(x,
+                                 varnames =
+                                   c("Iteration", "Chain", "Parameter"),
+                                 value.name = "Value",
+                                 as.is = TRUE,
+                                 ...) {
+  stopifnot(is_mcmc_array(x))
 
-    stopifnot(is_mcmc_array(x))
-    reshape2::melt(data = x,
-                   varnames = varnames,
-                   value.name = value.name,
-                   ...)
-  }
+  long <- reshape2::melt(
+    data = x,
+    varnames = varnames,
+    value.name = value.name,
+    as.is = FALSE,
+    ...)
+
+  long$Parameter <- factor(long$Parameter)
+  long
+}
 
 # If all chains are already merged
-melt_mcmc.matrix <-
-  function(x,
-           varnames = c("Draw", "Parameter"),
-           value.name = "Value",
-           ...) {
-    reshape2::melt(data = x,
-                   varnames = varnames,
-                   value.name = value.name,
-                   ...)
-  }
+melt_mcmc.matrix <- function(x,
+                             varnames = c("Draw", "Parameter"),
+                             value.name = "Value",
+                             ...) {
+  long <- reshape2::melt(
+    data = x,
+    varnames = varnames,
+    value.name = value.name,
+    as.is = FALSE,
+    ...)
 
-# Set dimnames of 3-D array
-# @param x 3-D array
-# @param parnames Character vector of parameter names
+  long$Parameter <- factor(long$Parameter)
+  long
+}
+
+#' Set dimnames of 3-D array
+#' @noRd
+#' @param x 3-D array
+#' @param parnames Character vector of parameter names
+#' @return x with a modified dimnames.
 set_mcmc_dimnames <- function(x, parnames) {
   stopifnot(is_3d_array(x))
   dimnames(x) <- list(
@@ -91,11 +172,12 @@ set_mcmc_dimnames <- function(x, parnames) {
   structure(x, class = c(class(x), "mcmc_array"))
 }
 
-# Convert 3-D array to matrix with chains merged
-#
-# @param x A 3-D array (iter x chain x param)
-# @return A matrix with one column per parameter
-#
+#' Convert 3-D array to matrix with chains merged
+#'
+#' @noRd
+#' @param x A 3-D array (iter x chain x param)
+#' @return A matrix with one column per parameter
+#'
 merge_chains <- function(x) {
   xdim <- dim(x)
   mat <- array(x, dim = c(prod(xdim[1:2]), xdim[3]))
@@ -104,10 +186,11 @@ merge_chains <- function(x) {
 }
 
 
-# Check if an object is a data.frame with a chain index column
-#
-# @param x object to check
-# @return TRUE or FALSE
+#' Check if an object is a data.frame with a chain index column
+#'
+#' @noRd
+#' @param x object to check
+#' @return TRUE or FALSE
 is_df_with_chain <- function(x) {
   is.data.frame(x) && any(tolower(colnames(x)) %in% "chain")
 }
@@ -115,8 +198,9 @@ is_df_with_chain <- function(x) {
 validate_df_with_chain <- function(x) {
   stopifnot(is_df_with_chain(x))
   if (!is.null(x$chain)) {
-    if (is.null(x$Chain))
+    if (is.null(x$Chain)) {
       x$Chain <- x$chain
+    }
     x$chain <- NULL
   }
   x$Chain <- as.integer(x$Chain)
@@ -133,42 +217,46 @@ df_with_chain2array <- function(x) {
   parnames <- colnames(a)
   a <- as.matrix(a)
   x <- array(NA, dim = c(ceiling(nrow(a) / n_chain), n_chain, ncol(a)))
-  for (j in seq_len(n_chain))
+  for (j in seq_len(n_chain)) {
     x[, j, ] <- a[chain == j,, drop=FALSE]
+  }
 
   set_mcmc_dimnames(x, parnames)
 }
 
 
-# Check if an object is a list but not a data.frame
-#
-# @param x object to check
-# @return TRUE or FALSE
+#' Check if an object is a list (but not a data.frame) that contains
+#' all 2-D objects
+#' @noRd
+#' @param x object to check
+#' @return TRUE or FALSE
 is_chain_list <- function(x) {
-  !is.data.frame(x) && is.list(x)
+  check1 <- !is.data.frame(x) && is.list(x)
+  dims <- try(sapply(x, function(chain) length(dim(chain))), silent=TRUE)
+  if (inherits(dims, "try-error")) {
+    return(FALSE)
+  }
+  check2 <- isTRUE(all(dims == 2)) # all elements of list should be matrices/2-D arrays
+  check1 && check2
 }
 
 validate_chain_list <- function(x) {
-  stopifnot(is_chain_list(x))
-  dims <- sapply(x, function(chain) length(dim(chain)))
-  if (!isTRUE(all(dims == 2)))
-    stop("If 'x' is a list then all elements must be matrices.")
-
   n_chain <- length(x)
   for (i in seq_len(n_chain)) {
     nms <- colnames(as.matrix(x[[i]]))
-    if (is.null(nms) || !all(nzchar(nms)))
-      stop(
-        "Some parameters are missing names. ",
-        "Check the column names for the matrices in your list of chains.",
-        call. = FALSE
-      )
+    if (is.null(nms) || !all(nzchar(nms))) {
+      abort(paste(
+        "Some parameters are missing names.",
+        "Check the column names for the matrices in your list of chains."
+      ))
+    }
   }
   if (n_chain > 1) {
     n_iter <- sapply(x, nrow)
     same_iters <- length(unique(n_iter)) == 1
-    if (!same_iters)
-      stop("Each chain should have the same number of iterations.")
+    if (!same_iters) {
+      abort("Each chain should have the same number of iterations.")
+    }
 
     cnames <- sapply(x, colnames)
     if (is.array(cnames)) {
@@ -176,9 +264,12 @@ validate_chain_list <- function(x) {
     } else {
       same_params <- length(unique(cnames)) == 1
     }
-    if (!same_params)
-      stop("The parameters for each chain should be in the same order ",
-           "and have the same names.")
+    if (!same_params) {
+      abort(paste(
+        "The parameters for each chain should be in the same order",
+        "and have the same names."
+      ))
+    }
   }
 
   x
@@ -201,8 +292,9 @@ chain_list2array <- function(x) {
   param_names <- unique(param_names)
   n_param <- length(param_names)
   out <- array(NA, dim = c(n_iter, n_chain, n_param))
-  for (i in seq_len(n_chain))
+  for (i in seq_len(n_chain)) {
     out[, i,] <- x[[i]]
+  }
 
   set_mcmc_dimnames(out, param_names)
 }
@@ -212,27 +304,33 @@ chain_list2array <- function(x) {
 parameter_names <- function(x) UseMethod("parameter_names")
 parameter_names.array <- function(x) {
   stopifnot(is_3d_array(x))
-  dimnames(x)[[3]] %||% stop("No parameter names found.")
+  dimnames(x)[[3]] %||% abort("No parameter names found.")
 }
 parameter_names.default <- function(x) {
-  colnames(x) %||% stop("No parameter names found.")
+  colnames(x) %||% abort("No parameter names found.")
 }
 
 # Check if an object is a 3-D array
 is_3d_array <- function(x) {
-  if (!is.array(x))
+  if (!is.array(x)) {
     return(FALSE)
-  if (length(dim(x)) != 3)
+  }
+
+  if (length(dim(x)) != 3) {
     return(FALSE)
+  }
 
   TRUE
 }
 # Check if an object is a 3-D array AND has correct dimension names
 is_mcmc_array <- function(x) {
-  if (!is_3d_array(x))
+  if (!is_3d_array(x)) {
     return(FALSE)
-  if (!identical(names(dimnames(x)), c("Iteration", "Chain", "Parameter")))
+  }
+
+  if (!identical(names(dimnames(x)), c("Iteration", "Chain", "Parameter"))) {
     return(FALSE)
+  }
 
   TRUE
 }
@@ -249,25 +347,7 @@ has_multiple_params <- function(x) {
 }
 
 STOP_need_multiple_chains <- function(call. = FALSE) {
-  stop("This function requires multiple chains.", call. = call.)
-}
-
-
-# Perform some checks on user's 'x' input for MCMC plots
-#
-# @param x User's 'x' input to one of the mcmc_* functions.
-# @return x, unless an error is thrown.
-#
-validate_mcmc_x <- function(x) {
-  stopifnot(!is_df_with_chain(x), !is_chain_list(x))
-  if (is.data.frame(x))
-    x <- as.matrix(x)
-
-  stopifnot(is.matrix(x) || is.array(x))
-  if (anyNA(x))
-    stop("NAs not allowed in 'x'.")
-
-  x
+  abort("This function requires multiple chains.")
 }
 
 
@@ -276,49 +356,53 @@ validate_transformations <-
   function(transformations = list(),
            pars = character()) {
     if (is.null(names(transformations))) {
-      stop("'transformations' must be a _named_ list.")
+      abort("'transformations' must be a _named_ list.")
     } else if (any(!nzchar(names(transformations)))) {
-      stop("Each element of 'transformations' must have a name.")
+      abort("Each element of 'transformations' must have a name.")
     }
 
     transformations <- lapply(transformations, match.fun)
     if (!all(names(transformations) %in% pars)) {
       not_found <- which(!names(transformations) %in% pars)
-      stop(
-        "Some names(transformations) don't match parameter names: ",
+      abort(paste(
+        "Some names(transformations) don't match parameter names:",
         paste(names(transformations)[not_found], collapse = ", ")
-      )
+      ))
     }
-    return(transformations)
+
+    transformations
   }
 
 
-# Apply transformations to matrix or 3-D array of parameter draws
-#
-# @param x A matrix or 3-D array of draws
-# @param transformation User's 'transformations' argument to one of the mcmc_*
-#   functions.
-# @return x, with tranformations having been applied to some parameters.
-#
+#' Apply transformations to matrix or 3-D array of parameter draws
+#'
+#' @noRd
+#' @param x A matrix or 3-D array of draws
+#' @param transformation User's 'transformations' argument to one of the mcmc_*
+#'   functions.
+#' @return x, with tranformations having been applied to some parameters.
+#'
 apply_transformations <- function(x, transformations = list(), ...) {
   UseMethod("apply_transformations")
 }
 apply_transformations.matrix <- function(x, transformations = list()) {
   pars <- colnames(x)
   x_transforms <- validate_transformations(transformations, pars)
-  for (p in names(x_transforms))
+  for (p in names(x_transforms)) {
     x[, p] <- x_transforms[[p]](x[, p])
+  }
 
-  return(x)
+  x
 }
 apply_transformations.array <- function(x, transformations = list()) {
   stopifnot(length(dim(x)) == 3)
   pars <- dimnames(x)[[3]]
   x_transforms <- validate_transformations(transformations, pars)
-  for (p in names(x_transforms))
+  for (p in names(x_transforms)) {
     x[, , p] <- x_transforms[[p]](x[, , p])
+  }
 
-  return(x)
+  x
 }
 
 rename_transformed_pars <- function(pars, transformations) {
@@ -326,18 +410,20 @@ rename_transformed_pars <- function(pars, transformations) {
   has_names <- sapply(transformations, is.character)
   if (any(has_names)) {
     nms <- names(which(has_names))
-    for (nm in nms)
+    for (nm in nms) {
       pars[which(pars == nm)] <-
         paste0(
           transformations[[nm]], "(",
           pars[which(pars == nm)], ")"
         )
+    }
   }
   if (any(!has_names)) {
     nms <- names(which(!has_names))
     pars[pars %in% nms] <- paste0("t(", pars[pars %in% nms], ")")
   }
-  return(pars)
+
+  pars
 }
 
 
@@ -359,11 +445,12 @@ num_chains.data.frame <- function(x, ...) {
 num_iters.data.frame <- function(x, ...) {
   cols <- colnames(x)
   stopifnot("Iteration" %in% cols || "Draws" %in% cols)
+
   if ("Iteration" %in% cols) {
     n <- length(unique(x$Iteration))
   } else {
     n <- length(unique(x$Draw))
   }
-  return(n)
-}
 
+  n
+}

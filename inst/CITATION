@@ -1,0 +1,29 @@
+year <- sub("-.*", "", meta$Date)
+note <- sprintf("R package version %s", meta$Version)
+
+bibentry(bibtype = "Misc",
+         title = "bayesplot: Plotting for Bayesian Models",
+         author = c(person("Jonah", "Gabry"),
+                    person("Tristan", "Mahr")
+                    ),
+         year = year,
+         note = note,
+         url = c("mc-stan.org/bayesplot"),
+         header = "To cite the bayesplot R package:"
+)
+
+bibentry(bibtype = "Article",
+         title = "Visualization in Bayesian workflow",
+         author = c(person("Jonah", "Gabry"),
+                    person("Daniel", "Simpson"),
+                    person("Aki", "Vehtari"),
+                    person("Michael", "Betancourt"),
+                    person("Andrew", "Gelman")),
+         year = "2019",
+         journal = "J. R. Stat. Soc. A",
+         volume = 182,
+         issue = 2,
+         pages = "389-402",
+         doi = "10.1111/rssa.12378",
+         header = "To cite the 'Visualization in Bayesian workflow' paper:"
+)

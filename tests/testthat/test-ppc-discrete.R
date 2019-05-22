@@ -5,11 +5,8 @@ context("PPC: discrete")
 
 # bar plots ---------------------------------------------------------------
 data("esoph", package = "datasets")
-capture.output(
-  fit <- stan_polr(tobgp ~ agegp, data = esoph, method = "probit",
-                   prior = R2(0.2, "mean"), init_r = 0.1, seed = 12345,
-                   algorithm = "fullrank") # for speed only
-)
+fit <- stan_polr(tobgp ~ agegp, data = esoph, method = "probit", prior = R2(0.2, "mean"),
+                 init_r = 0.1, seed = 12345, chains = 1, iter = 500, refresh = 0)
 y <- as.integer(fit$y)
 yrep_char <- posterior_predict(fit, draws = 10)
 yrep <- sapply(data.frame(yrep_char, stringsAsFactors = TRUE), as.integer)
@@ -30,11 +27,21 @@ test_that("freq argument to ppc_bars works", {
   expect_true(all(y_prop < 1) && all(y_prop > 0))
 })
 
-test_that("ppc_bars errors if y/yrep not natural numbers", {
+test_that("ppc_bars works with negative integers", {
+  y <- round(rnorm(100, -10, 1))
+  yrep <- round(matrix(rnorm(100 * 500, -10, 1), 500, 100))
+  expect_gg(ppc_bars(y, yrep))
+})
+
+test_that("ppc_bars(_grouped) errors if y/yrep not discrete", {
   expect_error(ppc_bars(y + 0.5, yrep),
-               "ppc_bars expects only non-negative integers in 'y'")
+               "ppc_bars expects 'y' to be discrete")
   expect_error(ppc_bars(y, yrep + 0.5),
-               "ppc_bars expects only non-negative integers in 'yrep'")
+               "ppc_bars expects 'yrep' to be discrete")
+  expect_error(ppc_bars_grouped(y + 0.5, yrep, group = esoph$agegp),
+               "ppc_bars_grouped expects 'y' to be discrete")
+  expect_error(ppc_bars_grouped(y, yrep + 0.5, group = esoph$agegp),
+               "ppc_bars_grouped expects 'yrep' to be discrete")
 })
 
 

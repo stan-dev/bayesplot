@@ -4,10 +4,9 @@ context("MCMC: nuts")
 
 ITER <- 1000
 CHAINS <- 3
-capture.output(
-  fit <- stan_glm(mpg ~ wt + am, data = mtcars,
-                  iter = ITER, chains = CHAINS, refresh = 0)
-)
+fit <- stan_glm(mpg ~ wt + am, data = mtcars,
+                iter = ITER, chains = CHAINS,
+                refresh = 0)
 np <- nuts_params(fit)
 lp <- log_posterior(fit)
 
@@ -21,6 +20,7 @@ test_that("all mcmc_nuts_* (except energy) return gtable objects", {
   expect_gtable(mcmc_nuts_stepsize(np, lp))
   expect_gtable(mcmc_nuts_stepsize(np, lp, chain = CHAINS))
 
+  np <- ensure_divergences(np)
   expect_gtable(mcmc_nuts_divergence(np, lp))
   expect_gtable(mcmc_nuts_divergence(np, lp, chain = CHAINS))
 })

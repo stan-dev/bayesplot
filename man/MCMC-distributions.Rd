@@ -12,22 +12,22 @@
 \title{Histograms and kernel density plots of MCMC draws}
 \usage{
 mcmc_hist(x, pars = character(), regex_pars = character(),
-  transformations = list(), facet_args = list(), ..., binwidth = NULL,
-  breaks = NULL, freq = TRUE)
+  transformations = list(), ..., facet_args = list(),
+  binwidth = NULL, breaks = NULL, freq = TRUE)
 
 mcmc_dens(x, pars = character(), regex_pars = character(),
-  transformations = list(), facet_args = list(), ..., trim = FALSE)
+  transformations = list(), ..., facet_args = list(), trim = FALSE)
 
 mcmc_hist_by_chain(x, pars = character(), regex_pars = character(),
-  transformations = list(), facet_args = list(), ..., binwidth = NULL,
-  freq = TRUE)
+  transformations = list(), ..., facet_args = list(),
+  binwidth = NULL, freq = TRUE)
 
 mcmc_dens_overlay(x, pars = character(), regex_pars = character(),
-  transformations = list(), facet_args = list(), color_chains = TRUE, ...,
-  trim = FALSE)
+  transformations = list(), ..., facet_args = list(),
+  color_chains = TRUE, trim = FALSE)
 
 mcmc_dens_chains(x, pars = character(), regex_pars = character(),
-  transformations = list(), color_chains = TRUE, ..., bw = NULL,
+  transformations = list(), ..., color_chains = TRUE, bw = NULL,
   adjust = NULL, kernel = NULL, n_dens = NULL)
 
 mcmc_dens_chains_data(x, pars = character(), regex_pars = character(),
@@ -35,77 +35,84 @@ mcmc_dens_chains_data(x, pars = character(), regex_pars = character(),
   kernel = NULL, n_dens = NULL)
 
 mcmc_violin(x, pars = character(), regex_pars = character(),
-  transformations = list(), facet_args = list(), ..., probs = c(0.1, 0.5,
-  0.9))
+  transformations = list(), ..., facet_args = list(), probs = c(0.1,
+  0.5, 0.9))
 }
 \arguments{
 \item{x}{A 3-D array, matrix, list of matrices, or data frame of MCMC draws.
 The \link{MCMC-overview} page provides details on how to specify each these
-allowed inputs.}
+allowed inputs. It is also possible to use an object with an
+\code{as.array()} method that returns the same kind of 3-D array described on
+the \link{MCMC-overview} page.}
 
 \item{pars}{An optional character vector of parameter names. If neither
-\code{pars} nor \code{regex_pars} is specified then the default is to use
-\emph{all} parameters.}
+\code{pars} nor \code{regex_pars} is specified then the default is to use \emph{all}
+parameters. As of version \code{1.7.0}, \strong{bayesplot} also supports 'tidy'
+parameter selection by specifying \code{pars = vars(...)}, where \code{...} is
+specified the same way as in \link[dplyr:select]{dplyr::select(...)} and
+similar functions. Examples of using \code{pars} in this way can be found on the
+\link[=tidy-params]{Tidy parameter selection} page.}
 
-\item{regex_pars}{An optional \link[=grep]{regular expression} to use for
-parameter selection. Can be specified instead of \code{pars} or in addition
-to \code{pars}.}
+\item{regex_pars}{An optional \link[base:grep]{regular expression} to use for
+parameter selection. Can be specified instead of \code{pars} or in addition to
+\code{pars}. When using \code{pars} for tidy parameter selection, the \code{regex_pars}
+argument is ignored since \link[tidyselect:select_helpers]{select helpers}
+perform a similar function.}
 
 \item{transformations}{Optionally, transformations to apply to parameters
-  before plotting. If \code{transformations} is a function or a single string
-  naming a function then that function will be used to transform all
-  parameters. To apply transformations to particular parameters, the
-  \code{transformations} argument can be a named list with length equal to
-  the number of parameters to be transformed. Currently only univariate
-  transformations of scalar parameters can be specified (multivariate
-  transformations will be implemented in a future release). If
-  \code{transformations} is a list, the name of each list element should be a
-  parameter name and the content of each list element should be a function
-  (or any item to match as a function via \code{\link{match.fun}}, e.g. a
-  string naming a function). If a function is specified by its name as a
-  string (e.g. \code{"log"}), then it can be used to construct a new
-  parameter label for the appropriate parameter (e.g. \code{"log(sigma)"}).
-  If a function itself is specified (e.g. \code{log} or \code{function(x)
-  log(x)}) then \code{"t"} is used in the new parameter label to indicate
-  that the parameter is transformed (e.g. \code{"t(sigma)"}).
+before plotting. If \code{transformations} is a function or a single string
+naming a function then that function will be used to transform all
+parameters. To apply transformations to particular parameters, the
+\code{transformations} argument can be a named list with length equal to
+the number of parameters to be transformed. Currently only univariate
+transformations of scalar parameters can be specified (multivariate
+transformations will be implemented in a future release). If
+\code{transformations} is a list, the name of each list element should be a
+parameter name and the content of each list element should be a function
+(or any item to match as a function via \code{\link[=match.fun]{match.fun()}}, e.g. a
+string naming a function). If a function is specified by its name as a
+string (e.g. \code{"log"}), then it can be used to construct a new
+parameter label for the appropriate parameter (e.g. \code{"log(sigma)"}).
+If a function itself is specified
+(e.g. \code{log} or \code{function(x) log(x)})
+then \code{"t"} is used in the new parameter label to indicate that the
+parameter is transformed (e.g. \code{"t(sigma)"}).
 
-  Note: due to partial argument matching \code{transformations} can be
-  abbreviated for convenience in interactive use (e.g., \code{transform},
-  \code{trans}, etc.).}
-
-\item{facet_args}{A named list of arguments (other than \code{facets}) passed
-to \code{\link[ggplot2]{facet_wrap}} or \code{\link[ggplot2]{facet_grid}}
-to control faceting.}
+Note: due to partial argument matching \code{transformations} can be
+abbreviated for convenience in interactive use (e.g., \code{transform}).}
 
 \item{...}{Currently ignored.}
 
-\item{binwidth}{Passed to \code{\link[ggplot2]{geom_histogram}} to override
+\item{facet_args}{A named list of arguments (other than \code{facets}) passed
+to \code{\link[ggplot2:facet_wrap]{ggplot2::facet_wrap()}} or \code{\link[ggplot2:facet_grid]{ggplot2::facet_grid()}}
+to control faceting.}
+
+\item{binwidth}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}} to override
 the default binwidth.}
 
-\item{breaks}{Passed to \code{\link[ggplot2]{geom_histogram}} as an
+\item{breaks}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}} as an
 alternative to \code{binwidth}.}
 
 \item{freq}{For histograms, \code{freq=TRUE} (the default) puts count on the
 y-axis. Setting \code{freq=FALSE} puts density on the y-axis. (For many
 plots the y-axis text is off by default. To view the count or density
-labels on the y-axis see the \code{\link{yaxis_text}} convenience
+labels on the y-axis see the \code{\link[=yaxis_text]{yaxis_text()}} convenience
 function.)}
 
-\item{trim}{A logical scalar passed to \code{\link[ggplot2]{geom_density}}.}
+\item{trim}{A logical scalar passed to \code{\link[ggplot2:geom_density]{ggplot2::geom_density()}}.}
 
-\item{color_chains}{option for whether to separately color chains.}
+\item{color_chains}{Option for whether to separately color chains.}
 
 \item{bw, adjust, kernel, n_dens}{Optional arguments passed to
-\code{\link[stats]{density}} to override default kernel density estimation
-parameters. \code{n_dens} defaults to 1024.}
+\code{\link[stats:density]{stats::density()}} to override default kernel density estimation
+parameters. \code{n_dens} defaults to \code{1024}.}
 
-\item{probs}{A numeric vector passed to \code{\link[ggplot2]{geom_violin}}'s
+\item{probs}{A numeric vector passed to \code{\link[ggplot2:geom_violin]{ggplot2::geom_violin()}}'s
 \code{draw_quantiles} argument to specify at which quantiles to draw
 horizontal lines. Set to \code{NULL} to remove the lines.}
 }
 \value{
-A ggplot object that can be further customized using the
-  \pkg{ggplot2} package.
+A ggplot object that can be further customized using the \strong{ggplot2} package.
 }
 \description{
 Various types of histograms and kernel density plots of MCMC draws. See the
@@ -114,29 +121,29 @@ Various types of histograms and kernel density plots of MCMC draws. See the
 \section{Plot Descriptions}{
 
 \describe{
-  \item{\code{mcmc_hist}}{
-   Histograms of posterior draws with all chains merged.
-  }
-  \item{\code{mcmc_dens}}{
-   Kernel density plots of posterior draws with all chains merged.
-  }
-  \item{\code{mcmc_hist_by_chain}}{
-   Histograms of posterior draws with chains separated via faceting.
-  }
-  \item{\code{mcmc_dens_overlay}}{
-   Kernel density plots of posterior draws with chains separated but
-   overlaid on a single plot.
-  }
-  \item{\code{mcmc_violin}}{
-   The density estimate of each chain is plotted as a violin with
-   horizontal lines at notable quantiles.
-  }
-  \item{\code{mcmc_dens_chains}}{
-   Ridgeline kernel density plots of posterior draws with chains separated
-   but overlaid on a single plot. In \code{mcmc_dens_overlay} parameters
-   appear in separate facets; in \code{mcmc_dens_chains} they appear in the
-   same panel and can overlap vertically.
-  }
+\item{\code{mcmc_hist()}}{
+Histograms of posterior draws with all chains merged.
+}
+\item{\code{mcmc_dens()}}{
+Kernel density plots of posterior draws with all chains merged.
+}
+\item{\code{mcmc_hist_by_chain()}}{
+Histograms of posterior draws with chains separated via faceting.
+}
+\item{\code{mcmc_dens_overlay()}}{
+Kernel density plots of posterior draws with chains separated but
+overlaid on a single plot.
+}
+\item{\code{mcmc_violin()}}{
+The density estimate of each chain is plotted as a violin with
+horizontal lines at notable quantiles.
+}
+\item{\code{mcmc_dens_chains()}}{
+Ridgeline kernel density plots of posterior draws with chains separated
+but overlaid on a single plot. In \code{mcmc_dens_overlay()} parameters
+appear in separate facets; in \code{mcmc_dens_chains()} they appear in the
+same panel and can overlap vertically.
+}
 }
 }
 
@@ -206,3 +213,4 @@ Other MCMC: \code{\link{MCMC-combos}},
   \code{\link{MCMC-scatterplots}},
   \code{\link{MCMC-traces}}
 }
+\concept{MCMC}
