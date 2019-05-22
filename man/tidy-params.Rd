@@ -35,22 +35,26 @@ easiest to describe how to use these arguments with an example:\preformatted{par
 }
 
 would select parameters with names
-\code{"beta_age[3]"}, \code{"beta_income[3]"}, \code{"beta_age[8]"}, \code{"beta_income[8]"}.
-See the \strong{Examples} section below for demonstrations.}
+\code{"beta_age[3]"}, \code{"beta_income[3]"}, \code{"beta_age[8]"}, \code{"beta_income[8]"}.}
 }
 \description{
-As of version \code{1.7.0}, \strong{bayesplot} allows the \code{pars} argument
-for \link[bayesplot:MCMC-overview]{MCMC plots} to be used for so-called 'tidy'
-variable selection (in the style of the \strong{dplyr} package).
-The \code{\link[dplyr:vars]{vars()}} function is re-exported from \strong{dplyr}
-for this purpose. See the \strong{Examples} section, below.
+Parameter selection in the style of \strong{dplyr} and other tidyverse packages.
+}
+\details{
+As of version \code{1.7.0}, \strong{bayesplot} allows the \code{pars} argument for \link[bayesplot:MCMC-overview]{MCMC plots} to use "tidy" variable selection (in the
+style of the \strong{dplyr} package). The \code{\link[dplyr:vars]{vars()}} function is
+re-exported from \strong{dplyr} for this purpose.
 
-When using \code{pars} for tidy parameter selection, the \code{regex_pars} argument
-is ignored because \strong{bayesplot} supports using
-\link[tidyselect:select_helpers]{tidyselect helper functions}
-(\code{starts_with()}, \code{contains()}, \code{num_range()}, etc.) for the same purpose.
-\strong{bayesplot} also exports some additional helper functions
-to help with parameter selection:
+Features of tidy selection includes direct selection (\code{vars(alpha, sigma)}),
+everything-but selection (\code{vars(-alpha)}), ranged selection
+(\code{vars(`beta[1]`:`beta[3]`)}), support for selection functions
+(\code{vars(starts_with("beta"))}), and combinations of these features. See the
+\strong{Examples} section, below.
+
+When using \code{pars} for tidy parameter selection, the \code{regex_pars} argument is
+ignored because \strong{bayesplot} supports using \link[tidyselect:select_helpers]{tidyselect helper functions} (\code{starts_with()}, \code{contains()},
+\code{num_range()}, etc.) for the same purpose. \strong{bayesplot} also exports some
+additional helper functions to help with parameter selection:
 \itemize{
 \item \code{param_range()}: like \code{\link[tidyselect:num_range]{num_range()}} but used
 when parameter indexes are in brackets (e.g. \code{beta[2]}).
@@ -62,8 +66,35 @@ indexes (including variable names) inside the brackets
 These functions can be used inside of \code{vars()}, \code{dplyr::select()},
 and similar functions, just like the
 \link[tidyselect:select_helpers]{tidyselect helper functions}.
-See the \strong{Examples} section.
 }
+\section{Extra Advice}{
+
+
+Parameter names in \code{vars()} are not quoted. When the names contain special
+characters like brackets, they should be wrapped in backticks, as in
+\code{vars(`beta[1]`)}. If working from a character vector of parameter names
+(e.g., \code{p = c("alpha", "beta")}), pass the vector directly
+(\code{mcmc_hist(x, pars = p)}) or use a helper function
+(\code{mcmc_hist(x, pars = vars(one_of(p))}).
+
+To exclude a range of variables, wrap the sequence in parentheses and then
+negate it. For example, (\code{vars(-(`beta[1]`:`beta[3]`))}) would exclude
+\code{beta[1]}, \code{beta[2]}, and \code{beta[3]}.
+
+\code{vars()} is a helper function. It holds onto the names and expressions used
+to select columns. When selecting variables inside a \strong{bayesplot}
+function, use \code{vars(...)}: \code{mcmc_hist(data, pars = vars(alpha))}. When
+using \code{select()} to prepare a dataframe for a \strong{bayesplot} function, do
+not use \code{vars()}: \code{data \%>\% select(alpha) \%>\% mcmc_hist()}.
+
+Internally, tidy selection works by converting names and expressions
+into position numbers. As a result, integers will select parameters;
+\code{vars(1, 3)} selects the first and third ones. We do not endorse this
+approach because positions might change as variables are added and
+removed from models. To select a parameter that happens to be called \code{1},
+use backticks to escape it: \code{vars(`1`)}.
+}
+
 \examples{
 x <- example_mcmc_draws(params = 6)
 dimnames(x)
@@ -118,34 +149,27 @@ if (requireNamespace("rstanarm", quietly = TRUE)) {
     mcmc_intervals()
 }
 }
-
 \dontrun{
 ###################################
 ## More examples of param_glue() ##
 ###################################
 library(dplyr)
-posterior <-
- structure(list(
-   b_Intercept = rnorm(1000),
-   sd_condition__Intercept = rexp(1000),
-   sigma = rexp(1000),
-   `r_condition[A,Intercept]` = rnorm(1000),
-   `r_condition[B,Intercept]` = rnorm(1000),
-   `r_condition[C,Intercept]` = rnorm(1000),
-   `r_condition[A,Slope]` = rnorm(1000),
-   `r_condition[B,Slope]` = rnorm(1000)
-  ),
-  class = c("tbl_df", "tbl", "data.frame"),
-  row.names = c(NA, -1000L)
-  )
-str(posterior)
+posterior <- tibble(
+  b_Intercept = rnorm(1000),
+  sd_condition__Intercept = rexp(1000),
+  sigma = rexp(1000),
+  `r_condition[A,Intercept]` = rnorm(1000),
+  `r_condition[B,Intercept]` = rnorm(1000),
+  `r_condition[C,Intercept]` = rnorm(1000),
+  `r_condition[A,Slope]` = rnorm(1000),
+  `r_condition[B,Slope]` = rnorm(1000)
+)
+posterior
 
 # using one expression in braces
 posterior \%>\%
   select(
-    param_glue(
-      "r_condition[{level},Intercept]",
-      level = c("A", "B"))
+    param_glue("r_condition[{level},Intercept]", level = c("A", "B"))
   ) \%>\%
   mcmc_hist()
 
@@ -159,7 +183,6 @@ posterior \%>\%
    ) \%>\%
    mcmc_hist()
 }
-
 }
 \seealso{
 \code{\link[glue:glue]{glue::glue()}}
