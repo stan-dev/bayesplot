@@ -35,7 +35,7 @@
 <meta property="og:description" content="Medians and central interval estimates of yrep with y overlaid.
 See the Plot Descriptions section, below." />
 
-<meta property="og:image" content="/logo.png" />
+<meta property="og:image" content="https://mc-stan.org/bayesplot/logo.png" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -66,7 +66,7 @@ See the Plot Descriptions section, below." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bayesplot</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.6.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.7.0</span>
       </span>
     </div>
 
@@ -159,20 +159,21 @@ See the <strong>Plot Descriptions</strong> section, below.</p>
     <pre class="usage"><span class='fu'>ppc_intervals</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>, <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>prob_outer</span> <span class='kw'>=</span> <span class='fl'>0.9</span>,
   <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>fatten</span> <span class='kw'>=</span> <span class='fl'>3</span>)
 
-<span class='fu'>ppc_intervals_grouped</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>group</span>, <span class='kw'>facet_args</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(), <span class='no'>...</span>,
-  <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>prob_outer</span> <span class='kw'>=</span> <span class='fl'>0.9</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>fatten</span> <span class='kw'>=</span> <span class='fl'>3</span>)
+<span class='fu'>ppc_intervals_grouped</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>group</span>, <span class='no'>...</span>,
+  <span class='kw'>facet_args</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(), <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>prob_outer</span> <span class='kw'>=</span> <span class='fl'>0.9</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>fatten</span> <span class='kw'>=</span> <span class='fl'>3</span>)
 
 <span class='fu'>ppc_ribbon</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>, <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>prob_outer</span> <span class='kw'>=</span> <span class='fl'>0.9</span>,
   <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.33</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>0.25</span>)
 
-<span class='fu'>ppc_ribbon_grouped</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>group</span>, <span class='kw'>facet_args</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(), <span class='no'>...</span>,
+<span class='fu'>ppc_ribbon_grouped</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>group</span>, <span class='no'>...</span>, <span class='kw'>facet_args</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(),
   <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>prob_outer</span> <span class='kw'>=</span> <span class='fl'>0.9</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.33</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>0.25</span>)
 
-<span class='fu'>ppc_intervals_data</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>group</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.5</span>,
-  <span class='kw'>prob_outer</span> <span class='kw'>=</span> <span class='fl'>0.9</span>, <span class='no'>...</span>)
+<span class='fu'>ppc_intervals_data</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>group</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>, <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.5</span>,
+  <span class='kw'>prob_outer</span> <span class='kw'>=</span> <span class='fl'>0.9</span>)
 
-<span class='fu'>ppc_ribbon_data</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>group</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.5</span>,
-  <span class='kw'>prob_outer</span> <span class='kw'>=</span> <span class='fl'>0.9</span>, <span class='no'>...</span>)</pre>
+<span class='fu'>ppc_ribbon_data</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>group</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>, <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.5</span>,
+  <span class='kw'>prob_outer</span> <span class='kw'>=</span> <span class='fl'>0.9</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -185,18 +186,17 @@ See the <strong>Plot Descriptions</strong> section, below.</p>
       <th>yrep</th>
       <td><p>An \(S\) by \(N\) matrix of draws from the posterior
 predictive distribution, where \(S\) is the size of the posterior sample
-(or subset of the posterior sample used to generate <code>yrep</code>) and
-\(N\) is the number of observations (the length of <code>y</code>). The columns
-of <code>yrep</code> should be in the same order as the data points in <code>y</code>
-for the plots to make sense. See <strong>Details</strong> for additional
-instructions.</p></td>
+(or subset of the posterior sample used to generate <code>yrep</code>) and \(N\) is
+the number of observations (the length of <code>y</code>). The columns of <code>yrep</code>
+should be in the same order as the data points in <code>y</code> for the plots to make
+sense. See <strong>Details</strong> for additional instructions.</p></td>
     </tr>
     <tr>
       <th>x</th>
       <td><p>A numeric vector the same length as <code>y</code> to use as the x-axis
 variable. For example, <code>x</code> could be a predictor variable from a
 regression model, a time variable for time-series models, etc. If <code>x</code>
-is missing or NULL, then <code>1:length(y)</code> is used for the x-axis.</p></td>
+is missing or <code>NULL</code>, then <code>1:length(y)</code> is used for the x-axis.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -217,46 +217,46 @@ pertaining to the corresponding value of <code>y</code>.</p></td>
     <tr>
       <th>facet_args</th>
       <td><p>An optional list of  arguments (other than <code>facets</code>)
-passed to <code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/facet_wrap'>facet_wrap</a></code> to control faceting.</p></td>
+passed to <code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/facet_wrap'>ggplot2::facet_wrap()</a></code> to control faceting.</p></td>
     </tr>
     <tr>
       <th>alpha, size, fatten</th>
-      <td><p>Arguments passed to geoms. For ribbon plots
-<code>alpha</code> and <code>size</code> are passed to
-<code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_ribbon'>geom_ribbon</a></code>. For interval plots <code>size</code> and
-<code>fatten</code> are passed to <code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_linerange'>geom_pointrange</a></code>.</p></td>
+      <td><p>Arguments passed to geoms. For ribbon plots <code>alpha</code>
+and <code>size</code> are passed to <code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_ribbon'>ggplot2::geom_ribbon()</a></code>. For interval plots
+<code>size</code> and <code>fatten</code> are passed to <code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_linerange'>ggplot2::geom_pointrange()</a></code>.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A ggplot object that can be further customized using the
-  <span class="pkg">ggplot2</span> package. The <code>_data</code> functions return the data that
-  would have been drawn by the plotting function.</p>
+    <p>The plotting functions return a ggplot object that can be further
+customized using the <strong>ggplot2</strong> package. The functions with suffix
+<code>_data()</code> return the data that would have been drawn by the plotting
+function.</p>
     
     <h2 class="hasAnchor" id="plot-descriptions"><a class="anchor" href="#plot-descriptions"></a>Plot Descriptions</h2>
 
     
     <dl class='dl-horizontal'>
-  <dt><code>ppc_intervals, ppc_ribbon</code></dt><dd><p><code>100*prob</code>% central intervals for <code>yrep</code> at each <code>x</code>
-   value. <code>ppc_intervals</code> plots intervals as vertical bars with points
-   indicating <code>yrep</code> medians and darker points indicating observed
-   <code>y</code> values. <code>ppc_ribbon</code> plots a ribbon of connected intervals
-   with a line through the median of <code>yrep</code> and a darker line connecting
-   observed <code>y</code> values. In both cases an optional <code>x</code> variable can
-   also be specified for the x-axis variable.
+<dt><code>ppc_intervals(), ppc_ribbon()</code></dt><dd><p><code>100*prob</code>% central intervals for <code>yrep</code> at each <code>x</code>
+value. <code>ppc_intervals()</code> plots intervals as vertical bars with points
+indicating <code>yrep</code> medians and darker points indicating observed
+<code>y</code> values. <code>ppc_ribbon()</code> plots a ribbon of connected intervals
+with a line through the median of <code>yrep</code> and a darker line connecting
+observed <code>y</code> values. In both cases an optional <code>x</code> variable can
+also be specified for the x-axis variable.
     Depending on the number of observations and the variability in the
-   predictions at different values of <code>x</code>, one or the other of these
-   plots may be easier to read than the other.</p></dd>
-  <dt><code>ppc_intervals_grouped, ppc_ribbon_grouped</code></dt><dd><p>Same as <code>ppc_intervals</code> and <code>ppc_ribbon</code>, respectively, but a
-   separate plot (facet) is generated for each level of a grouping variable.</p></dd>
+predictions at different values of <code>x</code>, one or the other of these
+plots may be easier to read than the other.</p></dd>
+<dt><code>ppc_intervals_grouped(), ppc_ribbon_grouped()</code></dt><dd><p>Same as <code>ppc_intervals()</code> and <code>ppc_ribbon()</code>, respectively, but a
+separate plot (facet) is generated for each level of a grouping variable.</p></dd>
 </dl>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <p>Gelman, A., Carlin, J. B., Stern, H. S., Dunson, D. B., Vehtari,
-  A., and Rubin, D. B. (2013). <em>Bayesian Data Analysis.</em> Chapman &amp; Hall/CRC
-  Press, London, third edition. (Ch. 6)</p>
+A., and Rubin, D. B. (2013). <em>Bayesian Data Analysis.</em> Chapman &amp; Hall/CRC
+Press, London, third edition. (Ch. 6)</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
@@ -295,19 +295,16 @@ passed to <code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/
  <span class='fu'><a href='bayesplot-helpers.html'>xaxis_ticks</a></span>(<span class='fl'>FALSE</span>) +
  <span class='fu'><a href='bayesplot-helpers.html'>panel_bg</a></span>(<span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>"gray20"</span>)</div><div class='img'><img src='PPC-intervals-6.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='no'>ppc_dat</span> <span class='kw'>&lt;-</span> <span class='fu'>ppc_intervals_data</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>year</span>, <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.5</span>)
-<span class='no'>ppc_group_dat</span> <span class='kw'>&lt;-</span> <span class='fu'>ppc_intervals_data</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>year</span>, <span class='kw'>group</span> <span class='kw'>=</span> <span class='no'>group</span>, <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.5</span>)</div><span class='co'># NOT RUN {</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='st'>"rstanarm"</span>)
-<span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/rstanarm/topics/stan_glmer'>stan_glmer</a></span>(<span class='no'>mpg</span> ~ <span class='no'>wt</span> + (<span class='fl'>1</span><span class='kw'>|</span><span class='no'>cyl</span>), <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>mtcars</span>)
-<span class='no'>yrep</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/rstanarm/topics/posterior_predict.stanreg'>posterior_predict</a></span>(<span class='no'>fit</span>)
+<span class='no'>ppc_group_dat</span> <span class='kw'>&lt;-</span> <span class='fu'>ppc_intervals_data</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>year</span>, <span class='kw'>group</span> <span class='kw'>=</span> <span class='no'>group</span>, <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.5</span>)</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='st'>"rstanarm"</span>)
+<span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/rstanarm/topics/stan_glmer'>stan_glmer</a></span>(<span class='no'>mpg</span> ~ <span class='no'>wt</span> + (<span class='fl'>1</span><span class='kw'>|</span><span class='no'>cyl</span>), <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>mtcars</span>, <span class='kw'>refresh</span> <span class='kw'>=</span> <span class='fl'>0</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: There were 1 divergent transitions after warmup. Increasing adapt_delta above 0.95 may help. See</span>
+#&gt; <span class='warning'>http://mc-stan.org/misc/warnings.html#divergent-transitions-after-warmup</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Examine the pairs() plot to diagnose sampling problems</span></div><div class='input'><span class='no'>yrep</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/rstanarm/topics/posterior_predict.stanreg'>posterior_predict</a></span>(<span class='no'>fit</span>)
 
 <span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"purple"</span>)
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/with'>with</a></span>(<span class='no'>mtcars</span>, <span class='fu'>ppc_intervals</span>(<span class='no'>mpg</span>, <span class='no'>yrep</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>wt</span>, <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.5</span>)) +
  <span class='fu'><a href='bayesplot-helpers.html'>panel_bg</a></span>(<span class='kw'>fill</span><span class='kw'>=</span><span class='st'>"gray90"</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='fl'>NA</span>) +
- <span class='fu'><a href='bayesplot-helpers.html'>grid_lines</a></span>(<span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"white"</span>)
-
+ <span class='fu'><a href='bayesplot-helpers.html'>grid_lines</a></span>(<span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"white"</span>)</div><div class='img'><img src='PPC-intervals-7.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='fu'>ppc_intervals_grouped</span>(<span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>mtcars</span>$<span class='no'>mpg</span>, <span class='no'>yrep</span>, <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.8</span>,
-                      <span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>mtcars</span>$<span class='no'>wt</span>, <span class='kw'>group</span> <span class='kw'>=</span> <span class='no'>mtcars</span>$<span class='no'>cyl</span>)
-
+                      <span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>mtcars</span>$<span class='no'>wt</span>, <span class='kw'>group</span> <span class='kw'>=</span> <span class='no'>mtcars</span>$<span class='no'>cyl</span>)</div><div class='img'><img src='PPC-intervals-8.png' alt='' width='700' height='433' /></div><div class='input'>
 
 <span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"gray"</span>)
 <span class='fu'>ppc_intervals</span>(<span class='no'>mtcars</span>$<span class='no'>mpg</span>, <span class='no'>yrep</span>, <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.5</span>) +
@@ -315,9 +312,8 @@ passed to <code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/
    <span class='kw'>labels</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/colnames'>rownames</a></span>(<span class='no'>mtcars</span>),
    <span class='kw'>breaks</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/nrow'>nrow</a></span>(<span class='no'>mtcars</span>)
  ) +
- <span class='fu'><a href='bayesplot-helpers.html'>xaxis_text</a></span>(<span class='kw'>angle</span> <span class='kw'>=</span> -<span class='fl'>70</span>, <span class='kw'>vjust</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>hjust</span> <span class='kw'>=</span> <span class='fl'>0</span>)
-
-<span class='co'># }</span><div class='input'>
+ <span class='fu'><a href='bayesplot-helpers.html'>xaxis_text</a></span>(<span class='kw'>angle</span> <span class='kw'>=</span> -<span class='fl'>70</span>, <span class='kw'>vjust</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>hjust</span> <span class='kw'>=</span> <span class='fl'>0</span>)</div><div class='img'><img src='PPC-intervals-9.png' alt='' width='700' height='433' /></div><div class='input'>
+</div><div class='input'>
 
 </div></pre>
   </div>

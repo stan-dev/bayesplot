@@ -35,7 +35,7 @@
 <meta property="og:description" content="Various plots of predictive errors y - yrep. See the
 Details and Plot Descriptions sections, below." />
 
-<meta property="og:image" content="/logo.png" />
+<meta property="og:image" content="https://mc-stan.org/bayesplot/logo.png" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -66,7 +66,7 @@ Details and Plot Descriptions sections, below." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bayesplot</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.6.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.7.0</span>
       </span>
     </div>
 
@@ -151,15 +151,16 @@ Details and Plot Descriptions sections, below." />
 
     <div class="ref-description">
     
-    <p>Various plots of predictive errors <code>y</code> - <code>yrep</code>. See the
+    <p>Various plots of predictive errors <code>y - yrep</code>. See the
 <strong>Details</strong> and <strong>Plot Descriptions</strong> sections, below.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>ppc_error_hist</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='no'>...</span>, <span class='kw'>binwidth</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>breaks</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>freq</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-
-<span class='fu'>ppc_error_hist_grouped</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='no'>group</span>, <span class='no'>...</span>, <span class='kw'>binwidth</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>breaks</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+    <pre class="usage"><span class='fu'>ppc_error_hist</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='no'>...</span>, <span class='kw'>binwidth</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>breaks</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>freq</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+
+<span class='fu'>ppc_error_hist_grouped</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='no'>group</span>, <span class='no'>...</span>, <span class='kw'>binwidth</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>breaks</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>freq</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
 <span class='fu'>ppc_error_scatter</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='no'>...</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>2.5</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.8</span>)
 
@@ -167,7 +168,7 @@ Details and Plot Descriptions sections, below." />
 
 <span class='fu'>ppc_error_scatter_avg_vs_x</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='no'>x</span>, <span class='no'>...</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>2.5</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.8</span>)
 
-<span class='fu'>ppc_error_binned</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='no'>...</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.25</span>)</pre>
+<span class='fu'>ppc_error_binned</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='no'>...</span>, <span class='kw'>bins</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.25</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -180,11 +181,10 @@ Details and Plot Descriptions sections, below." />
       <th>yrep</th>
       <td><p>An \(S\) by \(N\) matrix of draws from the posterior
 predictive distribution, where \(S\) is the size of the posterior sample
-(or subset of the posterior sample used to generate <code>yrep</code>) and
-\(N\) is the number of observations (the length of <code>y</code>). The columns
-of <code>yrep</code> should be in the same order as the data points in <code>y</code>
-for the plots to make sense. See <strong>Details</strong> for additional
-instructions.</p></td>
+(or subset of the posterior sample used to generate <code>yrep</code>) and \(N\) is
+the number of observations (the length of <code>y</code>). The columns of <code>yrep</code>
+should be in the same order as the data points in <code>y</code> for the plots to make
+sense. See <strong>Details</strong> for additional instructions.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -192,12 +192,12 @@ instructions.</p></td>
     </tr>
     <tr>
       <th>binwidth</th>
-      <td><p>Passed to <code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_histogram'>geom_histogram</a></code> to override
+      <td><p>Passed to <code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_histogram'>ggplot2::geom_histogram()</a></code> to override
 the default binwidth.</p></td>
     </tr>
     <tr>
       <th>breaks</th>
-      <td><p>Passed to <code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_histogram'>geom_histogram</a></code> as an
+      <td><p>Passed to <code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_histogram'>ggplot2::geom_histogram()</a></code> as an
 alternative to <code>binwidth</code>.</p></td>
     </tr>
     <tr>
@@ -205,7 +205,7 @@ alternative to <code>binwidth</code>.</p></td>
       <td><p>For histograms, <code>freq=TRUE</code> (the default) puts count on the
 y-axis. Setting <code>freq=FALSE</code> puts density on the y-axis. (For many
 plots the y-axis text is off by default. To view the count or density
-labels on the y-axis see the <code><a href='bayesplot-helpers.html'>yaxis_text</a></code> convenience
+labels on the y-axis see the <code><a href='bayesplot-helpers.html'>yaxis_text()</a></code> convenience
 function.)</p></td>
     </tr>
     <tr>
@@ -217,21 +217,24 @@ pertaining to the corresponding value of <code>y</code>.</p></td>
     <tr>
       <th>size, alpha</th>
       <td><p>For scatterplots, arguments passed to
-<code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_point'>geom_point</a></code> to control the appearance of the
-points. For the binned error plot, arguments controlling the size of
-the outline and opacity of the shaded region indicating the 2-SE bounds.</p></td>
+<code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_point'>ggplot2::geom_point()</a></code> to control the appearance of the points. For the
+binned error plot, arguments controlling the size of the outline and
+opacity of the shaded region indicating the 2-SE bounds.</p></td>
     </tr>
     <tr>
       <th>x</th>
       <td><p>A numeric vector the same length as <code>y</code> to use as the x-axis
 variable.</p></td>
     </tr>
+    <tr>
+      <th>bins</th>
+      <td><p>For <code>ppc_error_binned()</code>, the number of bins to use (approximately).</p></td>
+    </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A ggplot object that can be further customized using the
-  <span class="pkg">ggplot2</span> package.</p>
+    <p>A ggplot object that can be further customized using the <strong>ggplot2</strong> package.</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
@@ -239,46 +242,44 @@ variable.</p></td>
 compute and plot predictive errors for each row of the matrix <code>yrep</code>, so
 it is usually a good idea for <code>yrep</code> to contain only a small number of
 draws (rows). See <strong>Examples</strong>, below.</p>
-<p>For binomial and Bernoulli data the <code>ppc_error_binned</code> function can be
-used to generate binned error plots. Bernoulli data can be input as a vector
-of 0s and 1s, whereas for binomial data <code>y</code> and <code>yrep</code> should
-contain "success" proportions (not counts). See the <strong>Examples</strong>
-section, below.</p>
+<p>For binomial and Bernoulli data the <code>ppc_error_binned()</code> function can be used
+to generate binned error plots. Bernoulli data can be input as a vector of 0s
+and 1s, whereas for binomial data <code>y</code> and <code>yrep</code> should contain "success"
+proportions (not counts). See the <strong>Examples</strong> section, below.</p>
     
     <h2 class="hasAnchor" id="plot-descriptions"><a class="anchor" href="#plot-descriptions"></a>Plot descriptions</h2>
 
     
     <dl class='dl-horizontal'>
-  <dt><code>ppc_error_hist</code></dt><dd><p>A separate histogram is plotted for the predictive errors computed from
-   <code>y</code> and each dataset (row) in <code>yrep</code>. For this plot <code>yrep</code>
-   should have only a small number of rows.</p></dd>
-  <dt><code>ppc_error_hist_grouped</code></dt><dd><p>Like <code>ppc_error_hist</code>, except errors are computed within levels of a
-   grouping variable. The number of histograms is therefore equal to the
-   product of the number of rows in <code>yrep</code> and the number of groups
-   (unique values of <code>group</code>).</p></dd>
-  <dt><code>ppc_error_scatter</code></dt><dd><p>A separate scatterplot is displayed for <code>y</code> vs. the predictive errors
-   computed from <code>y</code> and each dataset (row) in <code>yrep</code>. For this
-   plot <code>yrep</code> should have only a small number of rows.</p></dd>
-  <dt><code>ppc_error_scatter_avg</code></dt><dd><p>A single scatterplot of <code>y</code> vs. the average of the errors computed
-   from <code>y</code> and each dataset (row) in <code>yrep</code>. For each individual
-   data point <code>y[n]</code> the average error is the average of the
-   errors for <code>y[n]</code> computed over the the draws from the posterior
-   predictive distribution.</p></dd>
-  <dt><code>ppc_error_scatter_avg_vs_x</code></dt><dd><p>Same as <code>ppc_error_scatter_avg</code>, except the average is plotted on the
-   \(y\)-axis and a a predictor variable <code>x</code> is plotted on the
-   \(x\)-axis.</p></dd>
-  <dt><code>ppc_error_binned</code></dt><dd><p>Intended for use with binomial data. A separate binned error plot (similar
-   to <code><a href='https://www.rdocumentation.org/packages/arm/topics/binnedplot'>binnedplot</a></code>) is generated for each dataset (row) in
-   <code>yrep</code>. For this plot <code>y</code> and <code>yrep</code> should contain
-   proportions rather than counts, and <code>yrep</code> should have only a small
-   number of rows.</p></dd>
+<dt><code>ppc_error_hist()</code></dt><dd><p>A separate histogram is plotted for the predictive errors computed from
+<code>y</code> and each dataset (row) in <code>yrep</code>. For this plot <code>yrep</code>
+should have only a small number of rows.</p></dd>
+<dt><code>ppc_error_hist_grouped()</code></dt><dd><p>Like <code>ppc_error_hist()</code>, except errors are computed within levels of a
+grouping variable. The number of histograms is therefore equal to the
+product of the number of rows in <code>yrep</code> and the number of groups
+(unique values of <code>group</code>).</p></dd>
+<dt><code>ppc_error_scatter()</code></dt><dd><p>A separate scatterplot is displayed for <code>y</code> vs. the predictive errors
+computed from <code>y</code> and each dataset (row) in <code>yrep</code>. For this
+plot <code>yrep</code> should have only a small number of rows.</p></dd>
+<dt><code>ppc_error_scatter_avg()</code></dt><dd><p>A single scatterplot of <code>y</code> vs. the average of the errors computed
+from <code>y</code> and each dataset (row) in <code>yrep</code>. For each individual
+data point <code>y[n]</code> the average error is the average of the
+errors for <code>y[n]</code> computed over the the draws from the posterior
+predictive distribution.</p></dd>
+<dt><code>ppc_error_scatter_avg_vs_x()</code></dt><dd><p>Same as <code>ppc_error_scatter_avg()</code>, except the average is plotted on the
+\(y\)-axis and a a predictor variable <code>x</code> is plotted on the
+\(x\)-axis.</p></dd>
+<dt><code>ppc_error_binned()</code></dt><dd><p>Intended for use with binomial data. A separate binned error plot (similar
+to <code><a href='https://www.rdocumentation.org/packages/arm/topics/binnedplot'>arm::binnedplot()</a></code>) is generated for each dataset (row) in <code>yrep</code>. For
+this plot <code>y</code> and <code>yrep</code> should contain proportions rather than counts,
+and <code>yrep</code> should have only a small number of rows.</p></dd>
 </dl>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <p>Gelman, A., Carlin, J. B., Stern, H. S., Dunson, D. B., Vehtari,
-  A., and Rubin, D. B. (2013). <em>Bayesian Data Analysis.</em> Chapman &amp; Hall/CRC
-  Press, London, third edition. (Ch. 6)</p>
+A., and Rubin, D. B. (2013). <em>Bayesian Data Analysis.</em> Chapman &amp; Hall/CRC
+Press, London, third edition. (Ch. 6)</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
@@ -304,11 +305,36 @@ section, below.</p>
 <span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='example-data.html'>example_x_data</a></span>()
 <span class='fu'>ppc_error_scatter_avg_vs_x</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='no'>x</span>)</div><div class='img'><img src='PPC-errors-8.png' alt='' width='700' height='433' /></div><div class='input'>
 # ppc_error_binned with binomial model from rstanarm
-</div><span class='co'># NOT RUN {</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>rstanarm</span>)
-<span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/example'>example</a></span>(<span class='st'>"example_model"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"rstanarm"</span>)
-<span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/formula'>formula</a></span>(<span class='no'>example_model</span>)
-
+</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>rstanarm</span>)
+<span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/example'>example</a></span>(<span class='st'>"example_model"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"rstanarm"</span>)</div><div class='output co'>#&gt; 
+#&gt; exmpl_&gt; example_model &lt;- 
+#&gt; exmpl_+   stan_glmer(cbind(incidence, size - incidence) ~ size + period + (1|herd),
+#&gt; exmpl_+              data = lme4::cbpp, family = binomial, QR = TRUE,
+#&gt; exmpl_+              # this next line is only to keep the example small in size!
+#&gt; exmpl_+              chains = 2, cores = 1, seed = 12345, iter = 500, refresh = 0)</div><div class='output co'>#&gt; <span class='warning'>Warning: Bulk Effective Samples Size (ESS) is too low, indicating posterior means and medians may be unreliable.</span>
+#&gt; <span class='warning'>Running the chains for more iterations may help. See</span>
+#&gt; <span class='warning'>http://mc-stan.org/misc/warnings.html#bulk-ess</span></div><div class='output co'>#&gt; 
+#&gt; exmpl_&gt; example_model
+#&gt; stan_glmer
+#&gt;  family:       binomial [logit]
+#&gt;  formula:      cbind(incidence, size - incidence) ~ size + period + (1 | herd)
+#&gt;  observations: 56
+#&gt; ------
+#&gt;             Median MAD_SD
+#&gt; (Intercept) -1.5    0.6  
+#&gt; size         0.0    0.0  
+#&gt; period2     -1.0    0.3  
+#&gt; period3     -1.1    0.3  
+#&gt; period4     -1.6    0.4  
+#&gt; 
+#&gt; Error terms:
+#&gt;  Groups Name        Std.Dev.
+#&gt;  herd   (Intercept) 0.76    
+#&gt; Num. levels: herd 15 
+#&gt; 
+#&gt; ------
+#&gt; * For help interpreting the printed output see ?print.stanreg
+#&gt; * For info on the priors used see ?prior_summary.stanreg</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/formula'>formula</a></span>(<span class='no'>example_model</span>)</div><div class='output co'>#&gt; cbind(incidence, size - incidence) ~ size + period + (1 | herd)</div><div class='input'>
 <span class='co'># get observed proportion of "successes"</span>
 <span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='no'>example_model</span>$<span class='no'>y</span>  <span class='co'># matrix of "success" and "failure" counts</span>
 <span class='no'>trials</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/colSums'>rowSums</a></span>(<span class='no'>y</span>)
@@ -318,8 +344,7 @@ section, below.</p>
 <span class='no'>yrep</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/rstanarm/topics/posterior_predict.stanreg'>posterior_predict</a></span>(<span class='no'>example_model</span>)
 <span class='no'>yrep_prop</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/sweep'>sweep</a></span>(<span class='no'>yrep</span>, <span class='fl'>2</span>, <span class='no'>trials</span>, <span class='st'>"/"</span>)
 
-<span class='fu'>ppc_error_binned</span>(<span class='no'>y_prop</span>, <span class='no'>yrep_prop</span>[<span class='fl'>1</span>:<span class='fl'>6</span>, ])
-<span class='co'># }</span><div class='input'>
+<span class='fu'>ppc_error_binned</span>(<span class='no'>y_prop</span>, <span class='no'>yrep_prop</span>[<span class='fl'>1</span>:<span class='fl'>6</span>, ])</div><div class='img'><img src='PPC-errors-9.png' alt='' width='700' height='433' /></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

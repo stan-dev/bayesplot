@@ -35,7 +35,7 @@
 <meta property="og:description" content="Scatterplots, hexagonal heatmaps, and pairs plots from MCMC draws. See the
 Plot Descriptions section, below, for details." />
 
-<meta property="og:image" content="/logo.png" />
+<meta property="og:image" content="https://mc-stan.org/bayesplot/logo.png" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -66,7 +66,7 @@ Plot Descriptions section, below, for details." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bayesplot</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.6.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.7.0</span>
       </span>
     </div>
 
@@ -157,8 +157,8 @@ Plot Descriptions section, below, for details." />
     </div>
 
     <pre class="usage"><span class='fu'>mcmc_scatter</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>character</a></span>(), <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>character</a></span>(),
-  <span class='kw'>transformations</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(), <span class='no'>...</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>2.5</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.8</span>, <span class='kw'>np</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>np_style</span> <span class='kw'>=</span> <span class='fu'>scatter_style_np</span>())
+  <span class='kw'>transformations</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(), <span class='no'>...</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>2.5</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.8</span>,
+  <span class='kw'>np</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>np_style</span> <span class='kw'>=</span> <span class='fu'>scatter_style_np</span>())
 
 <span class='fu'>mcmc_hex</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>character</a></span>(), <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>character</a></span>(),
   <span class='kw'>transformations</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(), <span class='no'>...</span>, <span class='kw'>binwidth</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
@@ -186,42 +186,50 @@ Plot Descriptions section, below, for details." />
       <th>x</th>
       <td><p>A 3-D array, matrix, list of matrices, or data frame of MCMC draws.
 The <a href='MCMC-overview.html'>MCMC-overview</a> page provides details on how to specify each these
-allowed inputs.</p></td>
+allowed inputs. It is also possible to use an object with an
+<code><a href='https://www.rdocumentation.org/packages/base/topics/array'>as.array()</a></code> method that returns the same kind of 3-D array described on
+the <a href='MCMC-overview.html'>MCMC-overview</a> page.</p></td>
     </tr>
     <tr>
       <th>pars</th>
-      <td><p>An optional character vector of parameter names. For
-<code>mcmc_scatter</code> and <code>mcmc_hex</code> only two parameters can be
-selected. To plot more than two parameters use <code>mcmc_pairs</code>.</p></td>
+      <td><p>An optional character vector of parameter names. If neither
+<code>pars</code> nor <code>regex_pars</code> is specified then the default is to use <em>all</em>
+parameters. As of version <code>1.7.0</code>, <strong>bayesplot</strong> also supports 'tidy'
+parameter selection by specifying <code>pars = vars(...)</code>, where <code>...</code> is
+specified the same way as in <a href='https://dplyr.tidyverse.org/reference/select.html'>dplyr::select(...)</a> and
+similar functions. Examples of using <code>pars</code> in this way can be found on the
+<a href='tidy-params.html'>Tidy parameter selection</a> page.</p></td>
     </tr>
     <tr>
       <th>regex_pars</th>
       <td><p>An optional <a href='https://www.rdocumentation.org/packages/base/topics/grep'>regular expression</a> to use for
-parameter selection. Can be specified instead of <code>pars</code> or in addition
-to <code>pars</code>.</p></td>
+parameter selection. Can be specified instead of <code>pars</code> or in addition to
+<code>pars</code>. When using <code>pars</code> for tidy parameter selection, the <code>regex_pars</code>
+argument is ignored since <a href='https://www.rdocumentation.org/packages/tidyselect/topics/select_helpers'>select helpers</a>
+perform a similar function.</p></td>
     </tr>
     <tr>
       <th>transformations</th>
       <td><p>Optionally, transformations to apply to parameters
-  before plotting. If <code>transformations</code> is a function or a single string
-  naming a function then that function will be used to transform all
-  parameters. To apply transformations to particular parameters, the
-  <code>transformations</code> argument can be a named list with length equal to
-  the number of parameters to be transformed. Currently only univariate
-  transformations of scalar parameters can be specified (multivariate
-  transformations will be implemented in a future release). If
-  <code>transformations</code> is a list, the name of each list element should be a
-  parameter name and the content of each list element should be a function
-  (or any item to match as a function via <code><a href='https://www.rdocumentation.org/packages/base/topics/match.fun'>match.fun</a></code>, e.g. a
-  string naming a function). If a function is specified by its name as a
-  string (e.g. <code>"log"</code>), then it can be used to construct a new
-  parameter label for the appropriate parameter (e.g. <code>"log(sigma)"</code>).
-  If a function itself is specified (e.g. <code>log</code> or <code>function(x)
-  log(x)</code>) then <code>"t"</code> is used in the new parameter label to indicate
-  that the parameter is transformed (e.g. <code>"t(sigma)"</code>).</p>
+before plotting. If <code>transformations</code> is a function or a single string
+naming a function then that function will be used to transform all
+parameters. To apply transformations to particular parameters, the
+<code>transformations</code> argument can be a named list with length equal to
+the number of parameters to be transformed. Currently only univariate
+transformations of scalar parameters can be specified (multivariate
+transformations will be implemented in a future release). If
+<code>transformations</code> is a list, the name of each list element should be a
+parameter name and the content of each list element should be a function
+(or any item to match as a function via <code><a href='https://www.rdocumentation.org/packages/base/topics/match.fun'>match.fun()</a></code>, e.g. a
+string naming a function). If a function is specified by its name as a
+string (e.g. <code>"log"</code>), then it can be used to construct a new
+parameter label for the appropriate parameter (e.g. <code>"log(sigma)"</code>).
+If a function itself is specified
+(e.g. <code>log</code> or <code>function(x) log(x)</code>)
+then <code>"t"</code> is used in the new parameter label to indicate that the
+parameter is transformed (e.g. <code>"t(sigma)"</code>).</p>
 <p>Note: due to partial argument matching <code>transformations</code> can be
-  abbreviated for convenience in interactive use (e.g., <code>transform</code>,
-  <code>trans</code>, etc.).</p></td>
+abbreviated for convenience in interactive use (e.g., <code>transform</code>).</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -229,34 +237,34 @@ to <code>pars</code>.</p></td>
     </tr>
     <tr>
       <th>size, alpha</th>
-      <td><p>For <code>mcmc_scatter</code>, passed to
-<code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_point'>geom_point</a></code> to control the appearance of the points.</p></td>
+      <td><p>For <code>mcmc_scatter()</code>, passed to
+<code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_point'>ggplot2::geom_point()</a></code> to control the appearance of the points.</p></td>
     </tr>
     <tr>
       <th>np</th>
       <td><p>Optionally, a data frame of NUTS sampler parameters, either created
-by <code><a href='bayesplot-extractors.html'>nuts_params</a></code> or in the same form as the object returned by
-<code><a href='bayesplot-extractors.html'>nuts_params</a></code>. The colors, shapes, and sizes of the
+by <code><a href='bayesplot-extractors.html'>nuts_params()</a></code> or in the same form as the object returned by
+<code><a href='bayesplot-extractors.html'>nuts_params()</a></code>. The colors, shapes, and sizes of the
 superimposed points can be customized using the <code>np_style</code> argument.</p></td>
     </tr>
     <tr>
       <th>np_style</th>
       <td><p>If <code>np</code> is specified, <code>np_style</code> can be a call to
-the <code>scatter_style_np</code> helper function (for <code>mcmc_scatter</code>) or
-the <code>pairs_style_np</code> helper function (for <code>mcmc_pars</code>) to specify
+the <code>scatter_style_np()</code> helper function (for <code>mcmc_scatter()</code>) or
+the <code>pairs_style_np()</code> helper function (for <code>mcmc_pairs()</code>) to specify
 arguments controlling the appearance of superimposed points representing
-NUTS diagnostic information. (Note: for <code>pairs_style_np</code> the
+NUTS diagnostic information. (Note: for <code>pairs_style_np()</code> the
 <code>size</code> arguments are interpreted as scaling factors).</p></td>
     </tr>
     <tr>
       <th>binwidth</th>
-      <td><p>For <code>mcmc_hex</code>, an optional numeric vector of
-<em>length two</em> passed to <code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_hex'>geom_hex</a></code> to override the
+      <td><p>For <code>mcmc_hex()</code>, an optional numeric vector of
+<em>length two</em> passed to <code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_hex'>ggplot2::geom_hex()</a></code> to override the
 default binwidth in both the vertical and horizontal directions.</p></td>
     </tr>
     <tr>
       <th>diag_fun, off_diag_fun</th>
-      <td><p>For <code>mcmc_pairs</code>, the plotting function to
+      <td><p>For <code>mcmc_pairs()</code>, the plotting function to
 use for the plots along the diagonal and for the off-diagonal plots,
 respectively. Currently <code>diag_fun</code> can be <code>"hist"</code> for histogram
 or <code>"dens"</code> for density, and <code>off_diag_fun</code> can be
@@ -264,146 +272,150 @@ or <code>"dens"</code> for density, and <code>off_diag_fun</code> can be
     </tr>
     <tr>
       <th>diag_args, off_diag_args</th>
-      <td><p>For <code>mcmc_pairs</code>, optional named lists of
+      <td><p>For <code>mcmc_pairs()</code>, optional named lists of
 arguments to pass to the functions implied by the <code>diag_fun</code> and
 <code>off_diag_fun</code> arguments, respectively. For example, if
 <code>off_diag_fun</code> is <code>"scatter"</code> then <code>off_diag_args</code> could
-include optional arguments to <code>mcmc_scatter</code> like <code>size</code> and
+include optional arguments to <code>mcmc_scatter()</code> like <code>size</code> and
 <code>alpha</code>.</p></td>
     </tr>
     <tr>
       <th>condition</th>
-      <td><p>For <code>mcmc_pairs</code>, a call to the <code>pairs_condition</code>
+      <td><p>For <code>mcmc_pairs()</code>, a call to the <code>pairs_condition()</code>
 helper function, which is used to specify a criterion for determining which
 chains (or iterations) are shown in the plots above the diagonal and which
 are shown in the plots below the diagonal. The histograms (or density
 plots) along the diagonal are always made using all chains and iterations,
 but the scatterplots (or hex plots) above and below the diagonal show
 different combinations of chains/iterations depending on <code>condition</code>.
-The default is a call to <code>pairs_condition</code> with none of its arguments
+The default is a call to <code>pairs_condition()</code> with none of its arguments
 specified. In this case half of the chains (or roughly half if there are an
 odd number) will be used in the plots above the diagonal and the rest in
 the plots below the diagonal. The <code>chains</code>, <code>draws</code>, and
-<code>nuts</code> arguments to <code>pairs_condition</code>, which are documented
+<code>nuts</code> arguments to <code>pairs_condition()</code>, which are documented
 below, can be used to change this default.</p></td>
     </tr>
     <tr>
       <th>lp</th>
-      <td><p>For <code>mcmc_pairs</code>, a molten data frame of draws of the
+      <td><p>For <code>mcmc_pairs()</code>, a molten data frame of draws of the
 log-posterior or, more commonly, of a quantity equal to the log-posterior
 up to a constant. <code>lp</code> should either be created via
-<code><a href='bayesplot-extractors.html'>log_posterior</a></code> or be an object with the same form as the
-object returned by <code><a href='bayesplot-extractors.html'>log_posterior</a></code>.</p></td>
+<code><a href='bayesplot-extractors.html'>log_posterior()</a></code> or be an object with the same form as the
+object returned by <code><a href='bayesplot-extractors.html'>log_posterior()</a></code>.</p></td>
     </tr>
     <tr>
       <th>max_treedepth</th>
-      <td><p>For <code>mcmc_pairs</code>, an integer representing the
+      <td><p>For <code>mcmc_pairs()</code>, an integer representing the
 maximum treedepth allowed when fitting the model (if fit using NUTS). This
 is only needed for detecting which transitions (if any) hit the maximum
 treedepth.</p></td>
     </tr>
     <tr>
       <th>grid_args, save_gg_objects</th>
-      <td><p>For <code>mcmc_pairs</code>, arguments to pass to
-<code><a href='bayesplot_grid.html'>bayesplot_grid</a></code>. For example, since <code>mcmc_pairs</code> returns
-more than a single ggplot object, using <code>ggtitle</code> afterwards
+      <td><p>For <code>mcmc_pairs()</code>, arguments to pass to
+<code><a href='bayesplot_grid.html'>bayesplot_grid()</a></code>. For example, since <code>mcmc_pairs()</code> returns
+more than a single ggplot object, using <code>ggtitle()</code> afterwards
 will not work. But you you can still add a title to the plot using
 <code>grid_args = list(top="My title")</code>.</p></td>
     </tr>
     <tr>
       <th>div_color, div_shape, div_size, div_alpha, td_color, td_shape, td_size, td_alpha</th>
-      <td><p>Optional arguments to the <code>scatter_style_np</code> or <code>pairs_style_np</code>
+      <td><p>Optional arguments to the <code>scatter_style_np()</code> or <code>pairs_style_np()</code>
 helper functions that are eventually passed to
-<code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_point'>geom_point</a></code>.The default values are displayed in the
+<code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_point'>ggplot2::geom_point()</a></code>.The default values are displayed in the
 <strong>Usage</strong> section above.</p></td>
     </tr>
     <tr>
       <th>chains, draws, nuts</th>
-      <td><p>Optional arguments to the <code>pairs_condition</code>
-  helper function, which is used to specify the <code>condition</code> argument for
-  <code>mcmc_pairs</code>.</p><ul>
+      <td><p>Optional arguments to the <code>pairs_condition()</code>
+helper function, which is used to specify the <code>condition</code> argument for
+<code>mcmc_pairs()</code>.</p><ul>
 <li><p>The <code>chains</code> argument can be used to select some subset of the
-  chains. If <code>chains</code> is an integer vector then the behavior is the same
-  as the default (half the chains above the diagonal and half below) except
-  using only the specified subset of chains. Alternatively, <code>chains</code> can
-  be a list of two integer vectors with the first specifying the chains to be
-  shown in the plots above the diagonal and the second for below the
-  diagonal.</p></li>
-<li><p>The <code>draws</code> argument to <code>pairs_condition</code> can be used to
-  directly specify which realizations are plotted above and below the
-  diagonal. <code>draws</code> can be a single proportion, which is interpreted as
-  the proportion of realizations (among all chains) to plot in the lower
-  panel starting with the first realization in each chain, with the
-  complement (from the end of each chain) plotted in the upper panel.
-  Alternatively <code>draws</code> can be a logical vector with length equal to the
-  product of the number of iterations and the number of chains, in which case
-  realizations corresponding to <code>FALSE</code> and <code>TRUE</code> will be plotted
-  in the lower and upper panels, respectively.</p></li>
+chains. If <code>chains</code> is an integer vector then the behavior is the same
+as the default (half the chains above the diagonal and half below) except
+using only the specified subset of chains. Alternatively, <code>chains</code> can
+be a list of two integer vectors with the first specifying the chains to be
+shown in the plots above the diagonal and the second for below the
+diagonal.</p></li>
+<li><p>The <code>draws</code> argument to <code>pairs_condition()</code> can be used to
+directly specify which realizations are plotted above and below the
+diagonal. <code>draws</code> can be a single proportion, which is interpreted as
+the proportion of realizations (among all chains) to plot in the lower
+panel starting with the first realization in each chain, with the
+complement (from the end of each chain) plotted in the upper panel.
+Alternatively <code>draws</code> can be a logical vector with length equal to the
+product of the number of iterations and the number of chains, in which case
+realizations corresponding to <code>FALSE</code> and <code>TRUE</code> will be plotted
+in the lower and upper panels, respectively.</p></li>
 <li><p>For models fit using NUTS, the <code>nuts</code> argument to
-  <code>pairs_condition</code> can be used. It takes a (possibly abbreviated)
-  string to select among <code>"accept_stat__"</code>, <code>"stepsize__"</code>,
-  <code>"treedepth__"</code>, <code>"n_leapfrog__"</code>, <code>"divergent__"</code>,
-  <code>"energy__"</code>, and <code>"lp__"</code>. These are the sampler parameters
-  associated with <code><a href='MCMC-nuts.html'>NUTS</a></code> (and <code>"lp__"</code> is the log-posterior
-  up to an additive constant). In this case, plots below the diagonal will
-  contain realizations that are below the median of the indicated variable
-  (or are zero in the case of <code>"divergent__"</code>), and plots above the
-  diagonal will contain realizations that are greater than or equal to the
-  median of the indicated variable (or are one in the case of
-  <code>"divergent__"</code>). If <code>"lp__"</code> is used then the <code>lp</code>
-  argument to <code>mcmc_pairs</code> must also be specified. For the other NUTS
-  parameters the <code>np</code> argument to <code>mcmc_pairs</code> must also be
-  specified.</p></li>
+<code>pairs_condition()</code> can be used. It takes a (possibly abbreviated)
+string to select among <code>"accept_stat__"</code>, <code>"stepsize__"</code>,
+<code>"treedepth__"</code>, <code>"n_leapfrog__"</code>, <code>"divergent__"</code>,
+<code>"energy__"</code>, and <code>"lp__"</code>. These are the sampler parameters
+associated with <code><a href='MCMC-nuts.html'>NUTS()</a></code> (and <code>"lp__"</code> is the log-posterior
+up to an additive constant). In this case, plots below the diagonal will
+contain realizations that are below the median of the indicated variable
+(or are zero in the case of <code>"divergent__"</code>), and plots above the
+diagonal will contain realizations that are greater than or equal to the
+median of the indicated variable (or are one in the case of
+<code>"divergent__"</code>). If <code>"lp__"</code> is used then the <code>lp</code>
+argument to <code>mcmc_pairs</code> must also be specified. For the other NUTS
+parameters the <code>np</code> argument to <code>mcmc_pairs()</code> must also be
+specified.</p></li>
 </ul></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>mcmc_scatter</code> and <code>mcmc_hex</code> return a ggplot object that
-  can be further customized using the <span class="pkg">ggplot2</span> package.</p>
-<p><code>mcmc_pairs</code> returns many ggplot objects organized into a grid via
-  <code><a href='bayesplot_grid.html'>bayesplot_grid</a></code>.</p>
+    <p><code>mcmc_scatter()</code> and <code>mcmc_hex()</code> return a ggplot object that
+can be further customized using the <strong>ggplot2</strong> package.</p>
+<p><code>mcmc_pairs()</code> returns many ggplot objects organized into a grid via
+<code><a href='bayesplot_grid.html'>bayesplot_grid()</a></code>.</p>
     
     <h2 class="hasAnchor" id="plot-descriptions"><a class="anchor" href="#plot-descriptions"></a>Plot Descriptions</h2>
 
     
     <dl class='dl-horizontal'>
-  <dt><code>mcmc_scatter</code></dt><dd><p>Bivariate scatterplot of posterior draws. If using a very large number of
-   posterior draws then <code>mcmc_hex</code> may be preferable to avoid
-   overplotting. For models fit using <code><a href='MCMC-nuts.html'>NUTS</a></code> the <code>np</code>,
-   and <code>np_style</code> arguments can be used to add additional information in
-   the plot (in this case the approximate location of divergences).</p></dd>
-  <dt><code>mcmc_hex</code></dt><dd><p>Hexagonal heatmap of 2-D bin counts. This plot is useful in cases where
-   the posterior sample size is large enough that <code>mcmc_scatter</code> suffers
-   from overplotting.</p></dd>
-  <dt><code>mcmc_pairs</code></dt><dd><p>A square plot matrix with univariate marginal distributions along the
-   diagonal (as histograms or kernel density plots) and bivariate
-   distributions off the diagonal (as scatterplots or hex heatmaps).
+<dt><code>mcmc_scatter()</code></dt><dd><p>Bivariate scatterplot of posterior draws. If using a very large number of
+posterior draws then <code>mcmc_hex()</code> may be preferable to avoid
+overplotting. For models fit using <a href='MCMC-nuts.html'>NUTS</a> the <code>np</code>,
+and <code>np_style</code> arguments can be used to add additional information in
+the plot (in this case the approximate location of divergences).
+For more on why the scatter plot with divergences is a useful
+diagnostic tool see <a href='https://github.com/jgabry/bayes-vis-paper'>Gabry et al. (2019)</a>.</p></dd>
+<dt><code>mcmc_hex()</code></dt><dd><p>Hexagonal heatmap of 2-D bin counts. This plot is useful in cases where
+the posterior sample size is large enough that <code>mcmc_scatter()</code> suffers
+from overplotting.</p></dd>
+<dt><code>mcmc_pairs()</code></dt><dd><p>A square plot matrix with univariate marginal distributions along the
+diagonal (as histograms or kernel density plots) and bivariate
+distributions off the diagonal (as scatterplots or hex heatmaps).
     For the off-diagonal plots, the default is to split the chains so that
-   (roughly) half are displayed above the diagonal and half are below (all
-   chains are always merged together for the plots along the diagonal). Other
-   possibilities are available by setting the <code>condition</code> argument.
+(roughly) half are displayed above the diagonal and half are below (all
+chains are always merged together for the plots along the diagonal). Other
+possibilities are available by setting the <code>condition</code> argument.
     Additionally, extra diagnostic information for models fit using
-   <code><a href='MCMC-nuts.html'>NUTS</a></code> can be added to the pairs plot using the <code>lp</code>,
-   <code>np</code>, and <code>np_style</code> arguments. If <code>np</code> is specified (and
-   <code>condition</code> is <em>not</em> <code>"divergent__"</code>), then points (red, by
-   default) will be superimposed onto the off-diagonal plots indicating which
-   (if any) iterations encountered a divergent transition. Also, if both
-   <code>np</code> and <code>max_treedepth</code> are specified then points (yellow, by
-   default) will be superimposed to indicate a transition that hit the
-   maximum treedepth rather than terminated its evolution normally. The
-   <code>np_style</code> argument can be used with the <code>pairs_style_np</code>
-   convenience function to change the appearance of these overlaid points.
-   See the <strong>Examples</strong> section.</p></dd>
+<a href='MCMC-nuts.html'>NUTS</a> can be added to the pairs plot using the <code>lp</code>,
+<code>np</code>, and <code>np_style</code> arguments. If <code>np</code> is specified (and
+<code>condition</code> is <em>not</em> <code>"divergent__"</code>), then points (red, by
+default) will be superimposed onto the off-diagonal plots indicating which
+(if any) iterations encountered a divergent transition. Also, if both
+<code>np</code> and <code>max_treedepth</code> are specified then points (yellow, by
+default) will be superimposed to indicate a transition that hit the
+maximum treedepth rather than terminated its evolution normally. The
+<code>np_style</code> argument can be used with the <code>pairs_style_np()</code>
+convenience function to change the appearance of these overlaid points.
+See the <strong>Examples</strong> section.</p></dd>
 </dl>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
-    <p>Gabry, J., Simpson, D., Vehtari, A., Betancourt, M., and Gelman,
-  A. (2018). Visualization in Bayesian workflow. <em>Journal of the Royal
-  Statistical Society Series A</em>, accepted for publication. arXiv preprint:
-  <a href='http://arxiv.org/abs/1709.01449'>http://arxiv.org/abs/1709.01449</a>.</p>
+    <p>Gabry, J. , Simpson, D. , Vehtari, A. , Betancourt, M. and
+Gelman, A. (2019), Visualization in Bayesian workflow.
+<em>J. R. Stat. Soc. A</em>, 182: 389-402. doi:10.1111/rssa.12378.
+(<a href='https://rss.onlinelibrary.wiley.com/doi/full/10.1111/rssa.12378'>journal version</a>,
+<a href='https://arxiv.org/abs/1709.01449'>arXiv preprint</a>,
+<a href='https://github.com/jgabry/bayes-vis-paper'>code on GitHub</a>)</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
@@ -450,25 +462,28 @@ helper functions that are eventually passed to
 <span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"pink"</span>)
 (<span class='no'>p3</span> <span class='kw'>&lt;-</span> <span class='fu'>mcmc_scatter</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"alpha"</span>, <span class='st'>"beta[3]"</span>), <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.25</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>3</span>))</div><div class='img'><img src='MCMC-scatterplots-5.png' alt='' width='700' height='433' /></div><div class='input'><span class='no'>p3</span> + <span class='fu'><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_smooth'>geom_smooth</a></span>(<span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"lm"</span>, <span class='kw'>se</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"gray20"</span>,
                  <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>.75</span>, <span class='kw'>linetype</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='img'><img src='MCMC-scatterplots-6.png' alt='' width='700' height='433' /></div><div class='input'>
-</div><div class='input'><span class='co'># hexagonal heatmap</span>
-<span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"brightblue"</span>)
-(<span class='no'>p</span> <span class='kw'>&lt;-</span> <span class='fu'>mcmc_hex</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"sigma"</span>, <span class='st'>"alpha"</span>), <span class='kw'>transform</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>sigma</span> <span class='kw'>=</span> <span class='st'>"log"</span>)))</div><div class='img'><img src='MCMC-scatterplots-7.png' alt='' width='700' height='433' /></div><div class='input'><span class='no'>p</span> + <span class='fu'><a href='bayesplot-helpers.html'>plot_bg</a></span>(<span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>"gray95"</span>)</div><div class='img'><img src='MCMC-scatterplots-8.png' alt='' width='700' height='433' /></div><div class='input'><span class='no'>p</span> + <span class='fu'><a href='bayesplot-helpers.html'>plot_bg</a></span>(<span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>"gray95"</span>) + <span class='fu'><a href='bayesplot-helpers.html'>panel_bg</a></span>(<span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>"gray70"</span>)</div><div class='img'><img src='MCMC-scatterplots-9.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"purple"</span>)
+</div><div class='input'><span class='kw'>if</span> (<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/ns-load'>requireNamespace</a></span>(<span class='st'>"hexbin"</span>, <span class='kw'>quietly</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)) {
+ <span class='co'># hexagonal heatmap</span>
+ <span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"brightblue"</span>)
+ (<span class='no'>p</span> <span class='kw'>&lt;-</span> <span class='fu'>mcmc_hex</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"sigma"</span>, <span class='st'>"alpha"</span>), <span class='kw'>transform</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>sigma</span> <span class='kw'>=</span> <span class='st'>"log"</span>)))
+ <span class='no'>p</span> + <span class='fu'><a href='bayesplot-helpers.html'>plot_bg</a></span>(<span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>"gray95"</span>)
+ <span class='no'>p</span> + <span class='fu'><a href='bayesplot-helpers.html'>plot_bg</a></span>(<span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>"gray95"</span>) + <span class='fu'><a href='bayesplot-helpers.html'>panel_bg</a></span>(<span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>"gray70"</span>)
+}</div><div class='img'><img src='MCMC-scatterplots-7.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"purple"</span>)
 
 <span class='co'># pairs plots</span>
 <span class='co'># default of condition=NULL implies splitting chains between upper and lower panels</span>
 <span class='fu'>mcmc_pairs</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='st'>"alpha"</span>, <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='st'>"beta\\[[1,4]\\]"</span>,
-           <span class='kw'>off_diag_args</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.5</span>))</div><div class='img'><img src='MCMC-scatterplots-10.png' alt='' width='700' height='433' /></div><div class='input'>
+           <span class='kw'>off_diag_args</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.5</span>))</div><div class='img'><img src='MCMC-scatterplots-8.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># change to density plots instead of histograms and hex plots instead of</span>
 <span class='co'># scatterplots</span>
 <span class='fu'>mcmc_pairs</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='st'>"alpha"</span>, <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='st'>"beta\\[[1,4]\\]"</span>,
-           <span class='kw'>diag_fun</span> <span class='kw'>=</span> <span class='st'>"dens"</span>, <span class='kw'>off_diag_fun</span> <span class='kw'>=</span> <span class='st'>"hex"</span>)</div><div class='img'><img src='MCMC-scatterplots-11.png' alt='' width='700' height='433' /></div><div class='input'>
+           <span class='kw'>diag_fun</span> <span class='kw'>=</span> <span class='st'>"dens"</span>, <span class='kw'>off_diag_fun</span> <span class='kw'>=</span> <span class='st'>"hex"</span>)</div><div class='img'><img src='MCMC-scatterplots-9.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># plot chain 1 above diagonal and chains 2, 3, and 4 below</span>
 <span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"brightblue"</span>)
 <span class='fu'>mcmc_pairs</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='st'>"alpha"</span>, <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='st'>"beta\\[[1,4]\\]"</span>,
            <span class='kw'>diag_fun</span> <span class='kw'>=</span> <span class='st'>"dens"</span>, <span class='kw'>off_diag_fun</span> <span class='kw'>=</span> <span class='st'>"hex"</span>,
-           <span class='kw'>condition</span> <span class='kw'>=</span> <span class='fu'>pairs_condition</span>(<span class='kw'>chains</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='fl'>1</span>, <span class='fl'>2</span>:<span class='fl'>4</span>)))</div><div class='img'><img src='MCMC-scatterplots-12.png' alt='' width='700' height='433' /></div><div class='input'>
-</div><span class='co'># NOT RUN {</span>
-<span class='co'>### Adding NUTS diagnostics to scatterplots and pairs plots</span>
+           <span class='kw'>condition</span> <span class='kw'>=</span> <span class='fu'>pairs_condition</span>(<span class='kw'>chains</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='fl'>1</span>, <span class='fl'>2</span>:<span class='fl'>4</span>)))</div><div class='img'><img src='MCMC-scatterplots-10.png' alt='' width='700' height='433' /></div><div class='input'>
+</div><div class='input'><span class='co'>### Adding NUTS diagnostics to scatterplots and pairs plots</span>
 
 <span class='co'># examples using rstanarm package</span>
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>rstanarm</span>)
@@ -477,23 +492,23 @@ helper functions that are eventually passed to
 <span class='co'># will (almost certainly) have some divergences</span>
 <span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/rstanarm/topics/stan_glm'>stan_glm</a></span>(
   <span class='no'>mpg</span> ~ <span class='no'>.</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>mtcars</span>,
-  <span class='kw'>iter</span> <span class='kw'>=</span> <span class='fl'>1000</span>,
+  <span class='kw'>iter</span> <span class='kw'>=</span> <span class='fl'>1000</span>, <span class='kw'>refresh</span> <span class='kw'>=</span> <span class='fl'>0</span>,
   <span class='co'># this combo of prior and adapt_delta should lead to some divergences</span>
   <span class='kw'>prior</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/rstanarm/topics/priors'>hs</a></span>(),
   <span class='kw'>adapt_delta</span> <span class='kw'>=</span> <span class='fl'>0.9</span>
-)
-<span class='no'>posterior</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/array'>as.array</a></span>(<span class='no'>fit</span>)
+)</div><div class='output co'>#&gt; <span class='warning'>Warning: There were 56 divergent transitions after warmup. Increasing adapt_delta above 0.9 may help. See</span>
+#&gt; <span class='warning'>http://mc-stan.org/misc/warnings.html#divergent-transitions-after-warmup</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Examine the pairs() plot to diagnose sampling problems</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Bulk Effective Samples Size (ESS) is too low, indicating posterior means and medians may be unreliable.</span>
+#&gt; <span class='warning'>Running the chains for more iterations may help. See</span>
+#&gt; <span class='warning'>http://mc-stan.org/misc/warnings.html#bulk-ess</span></div><div class='input'><span class='no'>posterior</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/array'>as.array</a></span>(<span class='no'>fit</span>)
 <span class='no'>np</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='bayesplot-extractors.html'>nuts_params</a></span>(<span class='no'>fit</span>)
 
 <span class='co'># mcmc_scatter with divergences highlighted</span>
 <span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"brightblue"</span>)
-<span class='fu'>mcmc_scatter</span>(<span class='no'>posterior</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"wt"</span>, <span class='st'>"sigma"</span>), <span class='kw'>np</span> <span class='kw'>=</span> <span class='no'>np</span>)
-
+<span class='fu'>mcmc_scatter</span>(<span class='no'>posterior</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"wt"</span>, <span class='st'>"sigma"</span>), <span class='kw'>np</span> <span class='kw'>=</span> <span class='no'>np</span>)</div><div class='img'><img src='MCMC-scatterplots-11.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"darkgray"</span>)
 <span class='no'>div_style</span> <span class='kw'>&lt;-</span> <span class='fu'>scatter_style_np</span>(<span class='kw'>div_color</span> <span class='kw'>=</span> <span class='st'>"green"</span>, <span class='kw'>div_shape</span> <span class='kw'>=</span> <span class='fl'>4</span>, <span class='kw'>div_size</span> <span class='kw'>=</span> <span class='fl'>4</span>)
 <span class='fu'>mcmc_scatter</span>(<span class='no'>posterior</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"sigma"</span>, <span class='st'>"(Intercept)"</span>),
-             <span class='kw'>np</span> <span class='kw'>=</span> <span class='no'>np</span>, <span class='kw'>np_style</span> <span class='kw'>=</span> <span class='no'>div_style</span>)
-
+             <span class='kw'>np</span> <span class='kw'>=</span> <span class='no'>np</span>, <span class='kw'>np_style</span> <span class='kw'>=</span> <span class='no'>div_style</span>)</div><div class='img'><img src='MCMC-scatterplots-12.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># split the draws according to above/below median accept_stat__</span>
 <span class='co'># and show approximate location of divergences (red points)</span>
 <span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"brightblue"</span>)
@@ -503,8 +518,7 @@ helper functions that are eventually passed to
   <span class='kw'>off_diag_args</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>1</span>/<span class='fl'>3</span>),
   <span class='kw'>condition</span> <span class='kw'>=</span> <span class='fu'>pairs_condition</span>(<span class='kw'>nuts</span> <span class='kw'>=</span> <span class='st'>"accept_stat__"</span>),
   <span class='kw'>np</span> <span class='kw'>=</span> <span class='no'>np</span>
-)
-
+)</div><div class='img'><img src='MCMC-scatterplots-13.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># more customizations:</span>
 <span class='co'># - transform sigma to log(sigma)</span>
 <span class='co'># - median log-posterior as 'condition'</span>
@@ -525,8 +539,7 @@ helper functions that are eventually passed to
   <span class='co'># for demonstration purposes, set max_treedepth to a value that will</span>
   <span class='co'># result in at least a few max treedepth warnings</span>
   <span class='kw'>max_treedepth</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/with'>with</a></span>(<span class='no'>np</span>, -<span class='fl'>1</span> + <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Extremes'>max</a></span>(<span class='no'>Value</span>[<span class='no'>Parameter</span> <span class='kw'>==</span> <span class='st'>"treedepth__"</span>]))
-)
-<span class='co'># }</span><div class='input'>
+)</div><div class='img'><img src='MCMC-scatterplots-14.png' alt='' width='700' height='433' /></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

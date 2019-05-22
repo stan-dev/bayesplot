@@ -35,7 +35,7 @@
 <meta property="og:description" content="Various types of histograms and kernel density plots of MCMC draws. See the
 Plot Descriptions section, below, for details." />
 
-<meta property="og:image" content="/logo.png" />
+<meta property="og:image" content="https://mc-stan.org/bayesplot/logo.png" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -66,7 +66,7 @@ Plot Descriptions section, below, for details." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bayesplot</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.6.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.7.0</span>
       </span>
     </div>
 
@@ -157,22 +157,22 @@ Plot Descriptions section, below, for details." />
     </div>
 
     <pre class="usage"><span class='fu'>mcmc_hist</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>character</a></span>(), <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>character</a></span>(),
-  <span class='kw'>transformations</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(), <span class='kw'>facet_args</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(), <span class='no'>...</span>, <span class='kw'>binwidth</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>breaks</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>freq</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+  <span class='kw'>transformations</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(), <span class='no'>...</span>, <span class='kw'>facet_args</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(),
+  <span class='kw'>binwidth</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>breaks</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>freq</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
 <span class='fu'>mcmc_dens</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>character</a></span>(), <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>character</a></span>(),
-  <span class='kw'>transformations</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(), <span class='kw'>facet_args</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(), <span class='no'>...</span>, <span class='kw'>trim</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+  <span class='kw'>transformations</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(), <span class='no'>...</span>, <span class='kw'>facet_args</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(), <span class='kw'>trim</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
 <span class='fu'>mcmc_hist_by_chain</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>character</a></span>(), <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>character</a></span>(),
-  <span class='kw'>transformations</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(), <span class='kw'>facet_args</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(), <span class='no'>...</span>, <span class='kw'>binwidth</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>freq</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+  <span class='kw'>transformations</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(), <span class='no'>...</span>, <span class='kw'>facet_args</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(),
+  <span class='kw'>binwidth</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>freq</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
 <span class='fu'>mcmc_dens_overlay</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>character</a></span>(), <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>character</a></span>(),
-  <span class='kw'>transformations</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(), <span class='kw'>facet_args</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(), <span class='kw'>color_chains</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>,
-  <span class='kw'>trim</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+  <span class='kw'>transformations</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(), <span class='no'>...</span>, <span class='kw'>facet_args</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(),
+  <span class='kw'>color_chains</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>trim</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
 <span class='fu'>mcmc_dens_chains</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>character</a></span>(), <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>character</a></span>(),
-  <span class='kw'>transformations</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(), <span class='kw'>color_chains</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>, <span class='kw'>bw</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>transformations</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(), <span class='no'>...</span>, <span class='kw'>color_chains</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>bw</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>adjust</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>kernel</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>n_dens</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
 
 <span class='fu'>mcmc_dens_chains_data</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>character</a></span>(), <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>character</a></span>(),
@@ -180,8 +180,8 @@ Plot Descriptions section, below, for details." />
   <span class='kw'>kernel</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>n_dens</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
 
 <span class='fu'>mcmc_violin</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>character</a></span>(), <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>character</a></span>(),
-  <span class='kw'>transformations</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(), <span class='kw'>facet_args</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(), <span class='no'>...</span>, <span class='kw'>probs</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>0.1</span>, <span class='fl'>0.5</span>,
-  <span class='fl'>0.9</span>))</pre>
+  <span class='kw'>transformations</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(), <span class='no'>...</span>, <span class='kw'>facet_args</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(), <span class='kw'>probs</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>0.1</span>,
+  <span class='fl'>0.5</span>, <span class='fl'>0.9</span>))</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -190,61 +190,69 @@ Plot Descriptions section, below, for details." />
       <th>x</th>
       <td><p>A 3-D array, matrix, list of matrices, or data frame of MCMC draws.
 The <a href='MCMC-overview.html'>MCMC-overview</a> page provides details on how to specify each these
-allowed inputs.</p></td>
+allowed inputs. It is also possible to use an object with an
+<code><a href='https://www.rdocumentation.org/packages/base/topics/array'>as.array()</a></code> method that returns the same kind of 3-D array described on
+the <a href='MCMC-overview.html'>MCMC-overview</a> page.</p></td>
     </tr>
     <tr>
       <th>pars</th>
       <td><p>An optional character vector of parameter names. If neither
-<code>pars</code> nor <code>regex_pars</code> is specified then the default is to use
-<em>all</em> parameters.</p></td>
+<code>pars</code> nor <code>regex_pars</code> is specified then the default is to use <em>all</em>
+parameters. As of version <code>1.7.0</code>, <strong>bayesplot</strong> also supports 'tidy'
+parameter selection by specifying <code>pars = vars(...)</code>, where <code>...</code> is
+specified the same way as in <a href='https://dplyr.tidyverse.org/reference/select.html'>dplyr::select(...)</a> and
+similar functions. Examples of using <code>pars</code> in this way can be found on the
+<a href='tidy-params.html'>Tidy parameter selection</a> page.</p></td>
     </tr>
     <tr>
       <th>regex_pars</th>
       <td><p>An optional <a href='https://www.rdocumentation.org/packages/base/topics/grep'>regular expression</a> to use for
-parameter selection. Can be specified instead of <code>pars</code> or in addition
-to <code>pars</code>.</p></td>
+parameter selection. Can be specified instead of <code>pars</code> or in addition to
+<code>pars</code>. When using <code>pars</code> for tidy parameter selection, the <code>regex_pars</code>
+argument is ignored since <a href='https://www.rdocumentation.org/packages/tidyselect/topics/select_helpers'>select helpers</a>
+perform a similar function.</p></td>
     </tr>
     <tr>
       <th>transformations</th>
       <td><p>Optionally, transformations to apply to parameters
-  before plotting. If <code>transformations</code> is a function or a single string
-  naming a function then that function will be used to transform all
-  parameters. To apply transformations to particular parameters, the
-  <code>transformations</code> argument can be a named list with length equal to
-  the number of parameters to be transformed. Currently only univariate
-  transformations of scalar parameters can be specified (multivariate
-  transformations will be implemented in a future release). If
-  <code>transformations</code> is a list, the name of each list element should be a
-  parameter name and the content of each list element should be a function
-  (or any item to match as a function via <code><a href='https://www.rdocumentation.org/packages/base/topics/match.fun'>match.fun</a></code>, e.g. a
-  string naming a function). If a function is specified by its name as a
-  string (e.g. <code>"log"</code>), then it can be used to construct a new
-  parameter label for the appropriate parameter (e.g. <code>"log(sigma)"</code>).
-  If a function itself is specified (e.g. <code>log</code> or <code>function(x)
-  log(x)</code>) then <code>"t"</code> is used in the new parameter label to indicate
-  that the parameter is transformed (e.g. <code>"t(sigma)"</code>).</p>
+before plotting. If <code>transformations</code> is a function or a single string
+naming a function then that function will be used to transform all
+parameters. To apply transformations to particular parameters, the
+<code>transformations</code> argument can be a named list with length equal to
+the number of parameters to be transformed. Currently only univariate
+transformations of scalar parameters can be specified (multivariate
+transformations will be implemented in a future release). If
+<code>transformations</code> is a list, the name of each list element should be a
+parameter name and the content of each list element should be a function
+(or any item to match as a function via <code><a href='https://www.rdocumentation.org/packages/base/topics/match.fun'>match.fun()</a></code>, e.g. a
+string naming a function). If a function is specified by its name as a
+string (e.g. <code>"log"</code>), then it can be used to construct a new
+parameter label for the appropriate parameter (e.g. <code>"log(sigma)"</code>).
+If a function itself is specified
+(e.g. <code>log</code> or <code>function(x) log(x)</code>)
+then <code>"t"</code> is used in the new parameter label to indicate that the
+parameter is transformed (e.g. <code>"t(sigma)"</code>).</p>
 <p>Note: due to partial argument matching <code>transformations</code> can be
-  abbreviated for convenience in interactive use (e.g., <code>transform</code>,
-  <code>trans</code>, etc.).</p></td>
-    </tr>
-    <tr>
-      <th>facet_args</th>
-      <td><p>A named list of arguments (other than <code>facets</code>) passed
-to <code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/facet_wrap'>facet_wrap</a></code> or <code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/facet_grid'>facet_grid</a></code>
-to control faceting.</p></td>
+abbreviated for convenience in interactive use (e.g., <code>transform</code>).</p></td>
     </tr>
     <tr>
       <th>...</th>
       <td><p>Currently ignored.</p></td>
     </tr>
     <tr>
+      <th>facet_args</th>
+      <td><p>A named list of arguments (other than <code>facets</code>) passed
+to <code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/facet_wrap'>ggplot2::facet_wrap()</a></code> or <code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/facet_grid'>ggplot2::facet_grid()</a></code>
+to control faceting.</p></td>
+    </tr>
+    <tr>
       <th>binwidth</th>
-      <td><p>Passed to <code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_histogram'>geom_histogram</a></code> to override
+      <td><p>Passed to <code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_histogram'>ggplot2::geom_histogram()</a></code> to override
 the default binwidth.</p></td>
     </tr>
     <tr>
       <th>breaks</th>
-      <td><p>Passed to <code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_histogram'>geom_histogram</a></code> as an
+      <td><p>Passed to <code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_histogram'>ggplot2::geom_histogram()</a></code> as an
 alternative to <code>binwidth</code>.</p></td>
     </tr>
     <tr>
@@ -252,26 +260,26 @@ alternative to <code>binwidth</code>.</p></td>
       <td><p>For histograms, <code>freq=TRUE</code> (the default) puts count on the
 y-axis. Setting <code>freq=FALSE</code> puts density on the y-axis. (For many
 plots the y-axis text is off by default. To view the count or density
-labels on the y-axis see the <code><a href='bayesplot-helpers.html'>yaxis_text</a></code> convenience
+labels on the y-axis see the <code><a href='bayesplot-helpers.html'>yaxis_text()</a></code> convenience
 function.)</p></td>
     </tr>
     <tr>
       <th>trim</th>
-      <td><p>A logical scalar passed to <code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_density'>geom_density</a></code>.</p></td>
+      <td><p>A logical scalar passed to <code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_density'>ggplot2::geom_density()</a></code>.</p></td>
     </tr>
     <tr>
       <th>color_chains</th>
-      <td><p>option for whether to separately color chains.</p></td>
+      <td><p>Option for whether to separately color chains.</p></td>
     </tr>
     <tr>
       <th>bw, adjust, kernel, n_dens</th>
       <td><p>Optional arguments passed to
-<code><a href='https://www.rdocumentation.org/packages/stats/topics/density'>density</a></code> to override default kernel density estimation
-parameters. <code>n_dens</code> defaults to 1024.</p></td>
+<code><a href='https://www.rdocumentation.org/packages/stats/topics/density'>stats::density()</a></code> to override default kernel density estimation
+parameters. <code>n_dens</code> defaults to <code>1024</code>.</p></td>
     </tr>
     <tr>
       <th>probs</th>
-      <td><p>A numeric vector passed to <code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_violin'>geom_violin</a></code>'s
+      <td><p>A numeric vector passed to <code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_violin'>ggplot2::geom_violin()</a></code>'s
 <code>draw_quantiles</code> argument to specify at which quantiles to draw
 horizontal lines. Set to <code>NULL</code> to remove the lines.</p></td>
     </tr>
@@ -279,24 +287,23 @@ horizontal lines. Set to <code>NULL</code> to remove the lines.</p></td>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A ggplot object that can be further customized using the
-  <span class="pkg">ggplot2</span> package.</p>
+    <p>A ggplot object that can be further customized using the <strong>ggplot2</strong> package.</p>
     
     <h2 class="hasAnchor" id="plot-descriptions"><a class="anchor" href="#plot-descriptions"></a>Plot Descriptions</h2>
 
     
     <dl class='dl-horizontal'>
-  <dt><code>mcmc_hist</code></dt><dd><p>Histograms of posterior draws with all chains merged.</p></dd>
-  <dt><code>mcmc_dens</code></dt><dd><p>Kernel density plots of posterior draws with all chains merged.</p></dd>
-  <dt><code>mcmc_hist_by_chain</code></dt><dd><p>Histograms of posterior draws with chains separated via faceting.</p></dd>
-  <dt><code>mcmc_dens_overlay</code></dt><dd><p>Kernel density plots of posterior draws with chains separated but
-   overlaid on a single plot.</p></dd>
-  <dt><code>mcmc_violin</code></dt><dd><p>The density estimate of each chain is plotted as a violin with
-   horizontal lines at notable quantiles.</p></dd>
-  <dt><code>mcmc_dens_chains</code></dt><dd><p>Ridgeline kernel density plots of posterior draws with chains separated
-   but overlaid on a single plot. In <code>mcmc_dens_overlay</code> parameters
-   appear in separate facets; in <code>mcmc_dens_chains</code> they appear in the
-   same panel and can overlap vertically.</p></dd>
+<dt><code>mcmc_hist()</code></dt><dd><p>Histograms of posterior draws with all chains merged.</p></dd>
+<dt><code>mcmc_dens()</code></dt><dd><p>Kernel density plots of posterior draws with all chains merged.</p></dd>
+<dt><code>mcmc_hist_by_chain()</code></dt><dd><p>Histograms of posterior draws with chains separated via faceting.</p></dd>
+<dt><code>mcmc_dens_overlay()</code></dt><dd><p>Kernel density plots of posterior draws with chains separated but
+overlaid on a single plot.</p></dd>
+<dt><code>mcmc_violin()</code></dt><dd><p>The density estimate of each chain is plotted as a violin with
+horizontal lines at notable quantiles.</p></dd>
+<dt><code>mcmc_dens_chains()</code></dt><dd><p>Ridgeline kernel density plots of posterior draws with chains separated
+but overlaid on a single plot. In <code>mcmc_dens_overlay()</code> parameters
+appear in separate facets; in <code>mcmc_dens_chains()</code> they appear in the
+same panel and can overlap vertically.</p></dd>
 </dl>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>

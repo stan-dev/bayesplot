@@ -52,10 +52,15 @@ developers working on a variety of packages for Bayesian modeling, particularly
 ## Getting Started
 
 If you are just getting started with **bayesplot** we recommend starting with
-the tutorial [vignettes](https://mc-stan.org/bayesplot/articles/index.html).
-There are also many
-[examples](https://mc-stan.org/bayesplot/reference/index.html) throughout the
-package documentation.
+the tutorial [vignettes](https://mc-stan.org/bayesplot/articles/index.html), 
+the examples throughout the package [documentation](https://mc-stan.org/bayesplot/reference/index.html), 
+and the paper _Visualization in Bayesian workflow_:
+
+* Gabry et al. (2019). Visualization in Bayesian workflow. 
+_J. R. Stat. Soc. A_, 182: 389-402. doi:10.1111/rssa.12378. 
+([journal version](https://rss.onlinelibrary.wiley.com/doi/full/10.1111/rssa.12378),
+[arXiv preprint](https://arxiv.org/abs/1709.01449),
+[code on GitHub](https://github.com/jgabry/bayes-vis-paper))
 
 ## Installation
 

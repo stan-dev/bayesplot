@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Posterior predictive checks (S3 generic and default method) — pp_check • bayesplot</title>
+<title>Posterior (or prior) predictive checks (S3 generic and default method) — pp_check • bayesplot</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,18 +30,18 @@
 
 
 
-<meta property="og:title" content="Posterior predictive checks (S3 generic and default method) — pp_check" />
+<meta property="og:title" content="Posterior (or prior) predictive checks (S3 generic and default method) — pp_check" />
 
 <meta property="og:description" content="S3 generic with simple default method. The intent is to provide a generic so
 authors of other R packages who wish to provide interfaces to the functions
-in bayesplot will be encouraged to include pp_check methods in
-their package, preserving the same naming conventions for posterior
+in bayesplot will be encouraged to include pp_check() methods in their
+package, preserving the same naming conventions for posterior (and prior)
 predictive checking across many R packages for Bayesian inference. This is
-for the convenience of both users and developers. See the Details
-and Examples sections, below, and the package vignettes for examples
-of defining pp_check methods." />
+for the convenience of both users and developers. See the Details and
+Examples sections, below, and the package vignettes for examples of
+defining pp_check() methods." />
 
-<meta property="og:image" content="/logo.png" />
+<meta property="og:image" content="https://mc-stan.org/bayesplot/logo.png" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -72,7 +72,7 @@ of defining pp_check methods." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bayesplot</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.6.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.7.0</span>
       </span>
     </div>
 
@@ -150,7 +150,7 @@ of defining pp_check methods." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Posterior predictive checks (S3 generic and default method)</h1>
+    <h1>Posterior (or prior) predictive checks (S3 generic and default method)</h1>
     
     <div class="hidden name"><code>pp_check.Rd</code></div>
     </div>
@@ -159,12 +159,12 @@ of defining pp_check methods." />
     
     <p>S3 generic with simple default method. The intent is to provide a generic so
 authors of other <span style="R">R</span> packages who wish to provide interfaces to the functions
-in <span class="pkg">bayesplot</span> will be encouraged to include <code>pp_check</code> methods in
-their package, preserving the same naming conventions for posterior
+in <strong>bayesplot</strong> will be encouraged to include <code>pp_check()</code> methods in their
+package, preserving the same naming conventions for posterior (and prior)
 predictive checking across many <span style="R">R</span> packages for Bayesian inference. This is
-for the convenience of both users and developers. See the <strong>Details</strong>
-and <strong>Examples</strong> sections, below, and the package vignettes for examples
-of defining <code>pp_check</code> methods.</p>
+for the convenience of both users and developers. See the <strong>Details</strong> and
+<strong>Examples</strong> sections, below, and the package vignettes for examples of
+defining <code>pp_check()</code> methods.</p>
     
     </div>
 
@@ -188,33 +188,31 @@ default method, these are additional arguments to pass to <code>fun</code>.</p><
     </tr>
     <tr>
       <th>yrep</th>
-      <td><p>For the default method, a <code>yrep</code> matrix passed to
-<code>fun</code>.</p></td>
+      <td><p>For the default method, a <code>yrep</code> matrix passed to <code>fun</code>.</p></td>
     </tr>
     <tr>
       <th>fun</th>
       <td><p>For the default method, the plotting function to call. Can be any
-of the <a href='PPC-overview.html'>PPC functions</a>. The <code>"ppc_"</code> prefix can optionally
-be dropped if <code>fun</code> is specified as a string.</p></td>
+of the <a href='PPC-overview.html'>PPC</a> functions. The <code>"ppc_"</code> prefix can optionally be dropped if
+<code>fun</code> is specified as a string.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>The exact form of the value returned by <code>pp_check</code> may vary by
-  the class of <code>object</code>, but for consistency we encourage authors of
-  methods to return the ggplot object created by one of <span class="pkg">bayesplot</span>'s
-  plotting functions. The default method returns the object returned by
-  <code>fun</code>.</p>
+    <p>The exact form of the value returned by <code>pp_check()</code> may vary by
+the class of <code>object</code>, but for consistency we encourage authors of
+methods to return the ggplot object created by one of <strong>bayesplot</strong>'s
+plotting functions. The default method returns the object returned by <code>fun</code>.</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>A package that creates fitted model objects of class <code>"foo"</code>
-  can include a method <code>pp_check.foo</code> that prepares the appropriate
-  inputs (<code>y</code>, <code>yrep</code>, etc.) for the <span class="pkg">bayesplot</span> functions. The
-  <code>pp_check.foo</code> method may, for example, let the user choose between
-  various plots, calling the functions from <span class="pkg">bayesplot</span> internally as
-  needed. See <strong>Examples</strong>, below, and the package vignettes.</p>
+can include a method <code>pp_check.foo()</code> that prepares the appropriate
+inputs (<code>y</code>, <code>yrep</code>, etc.) for the <strong>bayesplot</strong> functions. The
+<code>pp_check.foo()</code> method may, for example, let the user choose between
+various plots, calling the functions from <strong>bayesplot</strong> internally as
+needed. See <strong>Examples</strong>, below, and the package vignettes.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>

@@ -35,7 +35,7 @@
 <meta property="og:description" content="The bayesplot_grid function makes it simple to juxtapose plots using
 common \(x\) and/or \(y\) axes." />
 
-<meta property="og:image" content="/logo.png" />
+<meta property="og:image" content="https://mc-stan.org/bayesplot/logo.png" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -66,7 +66,7 @@ common \(x\) and/or \(y\) axes." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bayesplot</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.6.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.7.0</span>
       </span>
     </div>
 
@@ -180,7 +180,7 @@ upper limits for the axes that will be shared across all plots.</p></td>
     <tr>
       <th>grid_args</th>
       <td><p>An optional named list of arguments to pass to
-<code><a href='https://www.rdocumentation.org/packages/gridExtra/topics/arrangeGrob'>arrangeGrob</a></code> (<code>nrow</code>, <code>ncol</code>,
+<code><a href='https://www.rdocumentation.org/packages/gridExtra/topics/arrangeGrob'>gridExtra::arrangeGrob()</a></code> (<code>nrow</code>, <code>ncol</code>,
 <code>widths</code>, etc.).</p></td>
     </tr>
     <tr>
@@ -206,8 +206,8 @@ these individual plot objects will not be available.</p></td>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>An object of class "bayesplot_grid" (essentially a gtable object from
-  <code><a href='https://www.rdocumentation.org/packages/gridExtra/topics/arrangeGrob'>arrangeGrob</a></code>), which has a <code>plot</code> method.</p>
+    <p>An object of class <code>"bayesplot_grid"</code> (essentially a gtable object
+from <code><a href='https://www.rdocumentation.org/packages/gridExtra/topics/arrangeGrob'>gridExtra::arrangeGrob()</a></code>), which has a <code>plot</code> method.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -222,11 +222,10 @@ these individual plot objects will not be available.</p></td>
  <span class='kw'>legends</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
  <span class='kw'>grid_args</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>1</span>)
 )</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='bayesplot_grid-1.png' alt='' width='700' height='433' /></div><div class='input'>
-</div><span class='co'># NOT RUN {</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>rstanarm</span>)
+</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>rstanarm</span>)
 <span class='no'>mtcars</span>$<span class='no'>log_mpg</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Log'>log</a></span>(<span class='no'>mtcars</span>$<span class='no'>mpg</span>)
-<span class='no'>fit1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/rstanarm/topics/stan_glm'>stan_glm</a></span>(<span class='no'>mpg</span> ~ <span class='no'>wt</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>mtcars</span>)
-<span class='no'>fit2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/rstanarm/topics/stan_glm'>stan_glm</a></span>(<span class='no'>log_mpg</span> ~ <span class='no'>wt</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>mtcars</span>)
+<span class='no'>fit1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/rstanarm/topics/stan_glm'>stan_glm</a></span>(<span class='no'>mpg</span> ~ <span class='no'>wt</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>mtcars</span>, <span class='kw'>refresh</span> <span class='kw'>=</span> <span class='fl'>0</span>)
+<span class='no'>fit2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/rstanarm/topics/stan_glm'>stan_glm</a></span>(<span class='no'>log_mpg</span> ~ <span class='no'>wt</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>mtcars</span>, <span class='kw'>refresh</span> <span class='kw'>=</span> <span class='fl'>0</span>)
 
 <span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='no'>mtcars</span>$<span class='no'>mpg</span>
 <span class='no'>yrep1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/rstanarm/topics/posterior_predict.stanreg'>posterior_predict</a></span>(<span class='no'>fit1</span>, <span class='kw'>draws</span> <span class='kw'>=</span> <span class='fl'>50</span>)
@@ -234,20 +233,15 @@ these individual plot objects will not be available.</p></td>
 
 <span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"blue"</span>)
 <span class='no'>ppc1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='PPC-distributions.html'>ppc_dens_overlay</a></span>(<span class='no'>y</span>, <span class='no'>yrep1</span>)
-<span class='no'>ppc1</span>
-<span class='no'>ppc1</span> + <span class='fu'><a href='bayesplot-helpers.html'>yaxis_text</a></span>()
-
+<span class='no'>ppc1</span></div><div class='img'><img src='bayesplot_grid-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='no'>ppc1</span> + <span class='fu'><a href='bayesplot-helpers.html'>yaxis_text</a></span>()</div><div class='img'><img src='bayesplot_grid-3.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"red"</span>)
 <span class='no'>ppc2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='PPC-distributions.html'>ppc_dens_overlay</a></span>(<span class='no'>y</span>, <span class='no'>yrep2</span>)
-<span class='fu'>bayesplot_grid</span>(<span class='no'>ppc1</span>, <span class='no'>ppc2</span>)
-
+<span class='fu'>bayesplot_grid</span>(<span class='no'>ppc1</span>, <span class='no'>ppc2</span>)</div><div class='img'><img src='bayesplot_grid-4.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># make sure the plots use the same limits for the axes</span>
-<span class='fu'>bayesplot_grid</span>(<span class='no'>ppc1</span>, <span class='no'>ppc2</span>, <span class='kw'>xlim</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(-<span class='fl'>5</span>, <span class='fl'>60</span>), <span class='kw'>ylim</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>0.2</span>))
-
+<span class='fu'>bayesplot_grid</span>(<span class='no'>ppc1</span>, <span class='no'>ppc2</span>, <span class='kw'>xlim</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(-<span class='fl'>5</span>, <span class='fl'>60</span>), <span class='kw'>ylim</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>0.2</span>))</div><div class='img'><img src='bayesplot_grid-5.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># remove the legends and add text</span>
 <span class='fu'>bayesplot_grid</span>(<span class='no'>ppc1</span>, <span class='no'>ppc2</span>, <span class='kw'>xlim</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(-<span class='fl'>5</span>, <span class='fl'>60</span>), <span class='kw'>ylim</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>0.2</span>),
-               <span class='kw'>legends</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>subtitles</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/rep'>rep</a></span>(<span class='st'>"Predicted MPG"</span>, <span class='fl'>2</span>))
-<span class='co'># }</span><div class='input'>
+               <span class='kw'>legends</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>subtitles</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/rep'>rep</a></span>(<span class='st'>"Predicted MPG"</span>, <span class='fl'>2</span>))</div><div class='img'><img src='bayesplot_grid-6.png' alt='' width='700' height='433' /></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

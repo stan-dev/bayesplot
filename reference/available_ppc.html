@@ -34,7 +34,7 @@
 
 <meta property="og:description" content="Get or view the names of available plotting functions" />
 
-<meta property="og:image" content="/logo.png" />
+<meta property="og:image" content="https://mc-stan.org/bayesplot/logo.png" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -65,7 +65,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bayesplot</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.6.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.7.0</span>
       </span>
     </div>
 
@@ -163,18 +163,18 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>pattern, fixed, invert</th>
-      <td><p>Passed to <code><a href='https://www.rdocumentation.org/packages/base/topics/grep'>grep</a></code>.</p></td>
+      <td><p>Passed to <code><a href='https://www.rdocumentation.org/packages/base/topics/grep'>base::grep()</a></code>.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A possibly empty character vector of function names with several
-  additional attributes (for use by a custom print method). If <code>pattern</code>
-  is missing then the returned object contains the names of all available
-  plotting functions in the <a href='MCMC-overview.html'>MCMC</a> or <a href='PPC-overview.html'>PPC</a> module, depending on
-  which function is called. If <code>pattern</code> is specified then a subset of
-  function names is returned.</p>
+additional attributes (for use by a custom print method). If <code>pattern</code>
+is missing then the returned object contains the names of all available
+plotting functions in the <a href='MCMC-overview.html'>MCMC</a> or <a href='PPC-overview.html'>PPC</a> module, depending on
+which function is called. If <code>pattern</code> is specified then a subset of
+function names is returned.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -206,6 +206,8 @@
 #&gt;   mcmc_pairs
 #&gt;   mcmc_parcoord
 #&gt;   mcmc_parcoord_data
+#&gt;   mcmc_rank_hist
+#&gt;   mcmc_rank_overlay
 #&gt;   mcmc_recover_hist
 #&gt;   mcmc_recover_intervals
 #&gt;   mcmc_recover_scatter
@@ -214,6 +216,7 @@
 #&gt;   mcmc_rhat_hist
 #&gt;   mcmc_scatter
 #&gt;   mcmc_trace
+#&gt;   mcmc_trace_data
 #&gt;   mcmc_trace_highlight
 #&gt;   mcmc_violin</div><div class='input'><span class='fu'>available_mcmc</span>(<span class='st'>"nuts"</span>)</div><div class='output co'>#&gt; bayesplot MCMC module:
 #&gt; (matching pattern 'nuts') 

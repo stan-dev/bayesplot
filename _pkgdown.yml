@@ -1,3 +1,5 @@
+url: https://mc-stan.org/bayesplot
+
 template:
   params:
     bootswatch: cosmo
@@ -39,6 +41,8 @@ home:
   links:
   - text: Ask a question
     href: https://discourse.mc-stan.org/
+  - text: Browse source code
+    href: https://github.com/stan-dev/bayesplot
 
 articles:
   - title: "Getting Started"
@@ -52,10 +56,19 @@ articles:
       - graphical-ppcs
 
 reference:
+  - title: "Aesthetics"
+    desc: >
+      Functions for setting the color scheme and ggplot theme used
+      by **bayesplot**. (Also see the separate **ggplot helpers** section
+      below.)
+    contents:
+      - bayesplot-colors
+      - bayesplot_theme_get
+      - theme_default
   - title: "PPC"
     desc: >
       Functions for carrying out a wide variety of graphical model checks
-      based on comparing observed data to draws from the posterior
+      based on comparing observed data to draws from the posterior (or prior)
       predictive distribution.
     contents:
       - PPC-overview
@@ -79,27 +92,35 @@ reference:
     desc: >
       Functions for plotting diagnostics specific to Hamiltonian Monte Carlo (HMC)
       and the No-U-Turn Sampler (NUTS). Some of the general MCMC plotting functions
-      (`mcmc_parcoord`, `mcmc_pairs`, `mcmc_scatter`, `mcmc_trace`) can also
+      (`mcmc_parcoord()`, `mcmc_pairs()`, `mcmc_scatter()`, `mcmc_trace()`) can also
       show HMC/NUTS diagnostic information if optional arguments are specified,
       but the special functions below are _only_ intended for use with HMC/NUTS.
     contents:
       - MCMC-nuts
-  - title: "Aesthetics"
+  - title: "Tidy parameter selection for MCMC plots"
     desc: >
-      Functions for setting color schemes, customizing various plot features,
-      and arranging multiple plots.
+      Helper functions for tidy parameter selection and examples of using
+      **bayesplot** with [**dplyr**](https://dplyr.tidyverse.org/).
     contents:
-      - bayesplot-colors
-      - theme_default
-      - bayesplot_theme_get
+      - tidy-params
+  - title: "ggplot helpers"
+    desc: >
+      Convenience functions for arranging multiple plots, adding features
+      to plots, and shortcuts for modifying individual ggplot theme elements.
+    contents:
       - bayesplot_grid
       - bayesplot-helpers
-  - title: "Miscellaneous"
+  - title: "Extractors"
     desc: >
-      Functions for extracting various quantities needed for plotting
-      from model objects, generating data for examples, and listing
-      available plotting functions.
+      Functions extracting various quantities needed for plotting from different
+      types of fitted model objects.
     contents:
       - bayesplot-extractors
+  - title: "Miscellaneous"
+    desc: >
+      Functions for generating data for examples and listing available
+      plotting functions.
+    contents:
       - example-data
       - available_ppc
+

@@ -38,27 +38,28 @@ The MCMC plotting functions section, below, provides links to the
 documentation for various categories of MCMC plots. Currently the MCMC
 plotting functions accept posterior draws provided in one of the following
 formats:
-3-D array: An array with dimensions
- [Iteration, Chain, Parameter] in that order.
-list: A list of matrices, where each matrix
- corresponds to a Markov chain. All of the matrices should have the same
- number of iterations (rows) and parameters (columns), and parameters should
- have the same names and be in the same order.
-matrix: A matrix with one column per parameter.
- If using matrix there should only be a single Markov chain or all chains
- should already be merged (stacked).
-data frame: There are two types of data
- frames allowed. Either a data frame with one column per parameter (if only
- a single chain or all chains have already been merged), or a data frame with
- one column per parameter plus an additional column &quot;Chain&quot; that
- contains the chain number (an integer) corresponding to each row in
- the data frame.
-Note: typically the user should not include warmup iterations
+3-D array: An array with dimensions [Iteration, Chain, Parameter]
+in that order.
+list: A list of matrices, where each matrix corresponds to a Markov
+chain. All of the matrices should have the same number of iterations (rows)
+and parameters (columns), and parameters should have the same names and be
+in the same order.
+matrix (2-D array): A matrix with one column per parameter. If using
+matrix there should only be a single Markov chain or all chains should
+already be merged (stacked).
+data frame: There are two types of data frames
+allowed. Either a data frame with one column per parameter (if only a single
+chain or all chains have already been merged), or a data frame with one
+column per parameter plus an additional column &quot;Chain&quot; that contains the
+chain number (an integer) corresponding to each row in the data frame.
+" />
+
+<meta property="og:description" content="Note: typically the user should not include warmup iterations
 in the object passed to bayesplot plotting functions, although for
 certain plots (e.g. trace plots) it can occasionally be useful to include the
 warmup iterations for diagnostic purposes." />
 
-<meta property="og:image" content="/logo.png" />
+<meta property="og:image" content="https://mc-stan.org/bayesplot/logo.png" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -89,7 +90,7 @@ warmup iterations for diagnostic purposes." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bayesplot</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.6.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.7.0</span>
       </span>
     </div>
 
@@ -174,29 +175,30 @@ warmup iterations for diagnostic purposes." />
 
     <div class="ref-description">
     
-    <p>The <span class="pkg">bayesplot</span> MCMC module provides various plotting functions for
+    <p>The <strong>bayesplot</strong> MCMC module provides various plotting functions for
 creating graphical displays of Markov chain Monte Carlo (MCMC) simulations.
 The <strong>MCMC plotting functions</strong> section, below, provides links to the
 documentation for various categories of MCMC plots. Currently the MCMC
 plotting functions accept posterior draws provided in one of the following
 formats:</p><ul>
-<li><p><strong>3-D array</strong>: An <code><a href='https://www.rdocumentation.org/packages/base/topics/array'>array</a></code> with dimensions
- <code>[Iteration, Chain, Parameter]</code> in that order.</p></li>
-<li><p><strong>list</strong>: A <code>list</code> of matrices, where each matrix
- corresponds to a Markov chain. All of the matrices should have the same
- number of iterations (rows) and parameters (columns), and parameters should
- have the same names and be in the same order.</p></li>
-<li><p><strong>matrix</strong>: A <code><a href='https://www.rdocumentation.org/packages/base/topics/matrix'>matrix</a></code> with one column per parameter.
- If using matrix there should only be a single Markov chain or all chains
- should already be merged (stacked).</p></li>
-<li><p><strong>data frame</strong>: There are two types of <a href='https://www.rdocumentation.org/packages/base/topics/data.frame'>data
- frames</a> allowed. Either a data frame with one column per parameter (if only
- a single chain or all chains have already been merged), or a data frame with
- one column per parameter plus an additional column <code>"Chain"</code> that
- contains the chain number (an integer) corresponding to each row in
- the data frame.</p></li>
-</ul><p><strong>Note</strong>: typically the user should <em>not</em> include warmup iterations
-in the object passed to <span class="pkg">bayesplot</span> plotting functions, although for
+<li><p><strong>3-D array</strong>: An array with dimensions <code>[Iteration, Chain, Parameter]</code>
+in that order.</p></li>
+<li><p><strong>list</strong>: A list of matrices, where each matrix corresponds to a Markov
+chain. All of the matrices should have the same number of iterations (rows)
+and parameters (columns), and parameters should have the same names and be
+in the same order.</p></li>
+<li><p><strong>matrix (2-D array)</strong>: A matrix with one column per parameter. If using
+matrix there should only be a single Markov chain or all chains should
+already be merged (stacked).</p></li>
+<li><p><strong>data frame</strong>: There are two types of <a href='https://www.rdocumentation.org/packages/base/topics/data.frame'>data frames</a>
+allowed. Either a data frame with one column per parameter (if only a single
+chain or all chains have already been merged), or a data frame with one
+column per parameter plus an additional column <code>"Chain"</code> that contains the
+chain number (an integer) corresponding to each row in the data frame.</p></li>
+</ul>
+
+    <p><strong>Note</strong>: typically the user should <em>not</em> include warmup iterations
+in the object passed to <strong>bayesplot</strong> plotting functions, although for
 certain plots (e.g. trace plots) it can occasionally be useful to include the
 warmup iterations for diagnostic purposes.</p>
     
@@ -206,30 +208,37 @@ warmup iterations for diagnostic purposes.</p>
     <h2 class="hasAnchor" id="mcmc-plotting-functions"><a class="anchor" href="#mcmc-plotting-functions"></a>MCMC plotting functions</h2>
 
     
-    <dl class='dl-horizontal'>
-  <dt><strong><a href='MCMC-distributions.html'>Posterior distributions</a></strong></dt><dd><p>Histograms and kernel density plots of parameter draws, optionally
-    showing each Markov chain separately.</p></dd>
-  <dt><strong><a href='MCMC-intervals.html'>Uncertainty intervals</a></strong></dt><dd><p>Uncertainty intervals computed from parameter draws.</p></dd>
-  <dt><strong><a href='MCMC-traces.html'>Trace plots</a></strong></dt><dd><p>Times series of parameter draws, optionally including with HMC/NUTS
-    diagnostic information.</p></dd>
-  <dt><strong><a href='MCMC-scatterplots.html'>Scatterplots</a></strong></dt><dd><p>Scatterplots, heatmaps, and pairs plots of parameter draws, optionally
-    including with HMC/NUTS diagnostic information.</p></dd>
-  <dt><strong><a href='MCMC-parcoord.html'>Parallel coordinates plots</a></strong></dt><dd><p>Parallel coordinates plot of MCMC draws (one dimension per parameter),
-    optionally including with HMC/NUTS diagnostic information.</p></dd>
-  <dt><strong><a href='MCMC-combos.html'>Combinations</a></strong></dt><dd><p>Combination plots (e.g. trace plot + histogram).</p></dd>
-  <dt><strong><a href='MCMC-diagnostics.html'>General MCMC diagnostics</a></strong></dt><dd><p>MCMC diagnostic plots including Rhat, effective sample size,
-    autocorrelation.</p></dd>
-  <dt><strong><a href='MCMC-nuts.html'>NUTS diagnostics</a></strong></dt><dd><p>Special diagnostic plots for the No-U-Turn Sampler.</p></dd>
-  <dt><strong><a href='MCMC-recover.html'>Comparisons to "true" values</a></strong></dt><dd><p>Plots comparing MCMC estimates to "true" parameter values (e.g.,
-    values used to simulate data).</p></dd>
-</dl>
+    <ul>
+<li><p><a href='MCMC-distributions.html'>Posterior distributions</a>:
+Histograms and kernel density plots of parameter draws, optionally
+showing each Markov chain separately.</p></li>
+<li><p><a href='MCMC-intervals.html'>Uncertainty intervals</a>: Uncertainty intervals computed
+from parameter draws.</p></li>
+<li><p><a href='MCMC-traces.html'>Trace plots</a>: Times series of parameter draws, optionally
+including with HMC/NUTS diagnostic information.</p></li>
+<li><p><a href='MCMC-scatterplots.html'>Scatterplots</a>: Scatterplots, heatmaps, and pairs
+plots of parameter draws, optionally including with HMC/NUTS diagnostic
+information.</p></li>
+<li><p><a href='MCMC-parcoord.html'>Parallel coordinates plots</a>: Parallel coordinates plot
+of MCMC draws (one dimension per parameter), optionally including with
+HMC/NUTS diagnostic information.</p></li>
+<li><p><a href='MCMC-combos.html'>Combos</a>: Combination plots (e.g. trace plot + histogram).</p></li>
+<li><p><a href='MCMC-diagnostics.html'>General MCMC diagnostics</a>: MCMC diagnostic plots
+including R-hat, effective sample size, autocorrelation.
+<a href='MCMC-nuts.html'>NUTS diagnostics</a>: Special diagnostic plots for
+the No-U-Turn Sampler.</p></li>
+<li><p><a href='MCMC-recover.html'>Comparisons to "true" values</a>: Plots comparing MCMC
+estimates to "true" parameter values (e.g., values used to simulate data).</p></li>
+</ul>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
-    <p>Gabry, J., Simpson, D., Vehtari, A., Betancourt, M., and Gelman,
-  A. (2018). Visualization in Bayesian workflow. <em>Journal of the Royal
-  Statistical Society Series A</em>, accepted for publication. arXiv preprint:
-  <a href='http://arxiv.org/abs/1709.01449'>http://arxiv.org/abs/1709.01449</a>.</p>
+    <p>Gabry, J. , Simpson, D. , Vehtari, A. , Betancourt, M. and
+Gelman, A. (2019), Visualization in Bayesian workflow.
+<em>J. R. Stat. Soc. A</em>, 182: 389-402. doi:10.1111/rssa.12378.
+(<a href='https://rss.onlinelibrary.wiley.com/doi/full/10.1111/rssa.12378'>journal version</a>,
+<a href='https://arxiv.org/abs/1709.01449'>arXiv preprint</a>,
+<a href='https://github.com/jgabry/bayes-vis-paper'>code on GitHub</a>)</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 

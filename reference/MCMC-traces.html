@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Trace plot (time series plot) of MCMC draws — MCMC-traces • bayesplot</title>
+<title>Trace plots of MCMC draws — MCMC-traces • bayesplot</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,12 +30,12 @@
 
 
 
-<meta property="og:title" content="Trace plot (time series plot) of MCMC draws — MCMC-traces" />
+<meta property="og:title" content="Trace plots of MCMC draws — MCMC-traces" />
 
 <meta property="og:description" content="Trace plot (or traceplot) of MCMC draws. See the Plot Descriptions
 section, below, for details." />
 
-<meta property="og:image" content="/logo.png" />
+<meta property="og:image" content="https://mc-stan.org/bayesplot/logo.png" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -66,7 +66,7 @@ section, below, for details." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bayesplot</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.6.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.7.0</span>
       </span>
     </div>
 
@@ -144,7 +144,7 @@ section, below, for details." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Trace plot (time series plot) of MCMC draws</h1>
+    <h1>Trace plots of MCMC draws</h1>
     
     <div class="hidden name"><code>MCMC-traces.Rd</code></div>
     </div>
@@ -157,15 +157,26 @@ section, below, for details.</p>
     </div>
 
     <pre class="usage"><span class='fu'>mcmc_trace</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>character</a></span>(), <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>character</a></span>(),
-  <span class='kw'>transformations</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(), <span class='kw'>facet_args</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(), <span class='no'>...</span>, <span class='kw'>n_warmup</span> <span class='kw'>=</span> <span class='fl'>0</span>,
-  <span class='kw'>window</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>np</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>np_style</span> <span class='kw'>=</span> <span class='fu'>trace_style_np</span>(),
-  <span class='kw'>divergences</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+  <span class='kw'>transformations</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(), <span class='no'>...</span>, <span class='kw'>facet_args</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(), <span class='kw'>n_warmup</span> <span class='kw'>=</span> <span class='fl'>0</span>,
+  <span class='kw'>iter1</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>window</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>np</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>np_style</span> <span class='kw'>=</span> <span class='fu'>trace_style_np</span>(), <span class='kw'>divergences</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
 
 <span class='fu'>mcmc_trace_highlight</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>character</a></span>(), <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>character</a></span>(),
-  <span class='kw'>transformations</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(), <span class='kw'>facet_args</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(), <span class='no'>...</span>, <span class='kw'>n_warmup</span> <span class='kw'>=</span> <span class='fl'>0</span>,
+  <span class='kw'>transformations</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(), <span class='no'>...</span>, <span class='kw'>facet_args</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(), <span class='kw'>n_warmup</span> <span class='kw'>=</span> <span class='fl'>0</span>,
   <span class='kw'>window</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.2</span>, <span class='kw'>highlight</span> <span class='kw'>=</span> <span class='fl'>1</span>)
 
-<span class='fu'>trace_style_np</span>(<span class='kw'>div_color</span> <span class='kw'>=</span> <span class='st'>"red"</span>, <span class='kw'>div_size</span> <span class='kw'>=</span> <span class='fl'>0.25</span>, <span class='kw'>div_alpha</span> <span class='kw'>=</span> <span class='fl'>1</span>)</pre>
+<span class='fu'>trace_style_np</span>(<span class='kw'>div_color</span> <span class='kw'>=</span> <span class='st'>"red"</span>, <span class='kw'>div_size</span> <span class='kw'>=</span> <span class='fl'>0.25</span>, <span class='kw'>div_alpha</span> <span class='kw'>=</span> <span class='fl'>1</span>)
+
+<span class='fu'>mcmc_rank_overlay</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>character</a></span>(), <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>character</a></span>(),
+  <span class='kw'>transformations</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(), <span class='no'>...</span>, <span class='kw'>n_bins</span> <span class='kw'>=</span> <span class='fl'>20</span>, <span class='kw'>ref_line</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+
+<span class='fu'>mcmc_rank_hist</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>character</a></span>(), <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>character</a></span>(),
+  <span class='kw'>transformations</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(), <span class='no'>...</span>, <span class='kw'>facet_args</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(), <span class='kw'>n_bins</span> <span class='kw'>=</span> <span class='fl'>20</span>,
+  <span class='kw'>ref_line</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+
+<span class='fu'>mcmc_trace_data</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>character</a></span>(), <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>character</a></span>(),
+  <span class='kw'>transformations</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(), <span class='no'>...</span>, <span class='kw'>highlight</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>n_warmup</span> <span class='kw'>=</span> <span class='fl'>0</span>,
+  <span class='kw'>iter1</span> <span class='kw'>=</span> <span class='fl'>0</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -174,52 +185,60 @@ section, below, for details.</p>
       <th>x</th>
       <td><p>A 3-D array, matrix, list of matrices, or data frame of MCMC draws.
 The <a href='MCMC-overview.html'>MCMC-overview</a> page provides details on how to specify each these
-allowed inputs.</p></td>
+allowed inputs. It is also possible to use an object with an
+<code><a href='https://www.rdocumentation.org/packages/base/topics/array'>as.array()</a></code> method that returns the same kind of 3-D array described on
+the <a href='MCMC-overview.html'>MCMC-overview</a> page.</p></td>
     </tr>
     <tr>
       <th>pars</th>
       <td><p>An optional character vector of parameter names. If neither
-<code>pars</code> nor <code>regex_pars</code> is specified then the default is to use
-<em>all</em> parameters.</p></td>
+<code>pars</code> nor <code>regex_pars</code> is specified then the default is to use <em>all</em>
+parameters. As of version <code>1.7.0</code>, <strong>bayesplot</strong> also supports 'tidy'
+parameter selection by specifying <code>pars = vars(...)</code>, where <code>...</code> is
+specified the same way as in <a href='https://dplyr.tidyverse.org/reference/select.html'>dplyr::select(...)</a> and
+similar functions. Examples of using <code>pars</code> in this way can be found on the
+<a href='tidy-params.html'>Tidy parameter selection</a> page.</p></td>
     </tr>
     <tr>
       <th>regex_pars</th>
       <td><p>An optional <a href='https://www.rdocumentation.org/packages/base/topics/grep'>regular expression</a> to use for
-parameter selection. Can be specified instead of <code>pars</code> or in addition
-to <code>pars</code>.</p></td>
+parameter selection. Can be specified instead of <code>pars</code> or in addition to
+<code>pars</code>. When using <code>pars</code> for tidy parameter selection, the <code>regex_pars</code>
+argument is ignored since <a href='https://www.rdocumentation.org/packages/tidyselect/topics/select_helpers'>select helpers</a>
+perform a similar function.</p></td>
     </tr>
     <tr>
       <th>transformations</th>
       <td><p>Optionally, transformations to apply to parameters
-  before plotting. If <code>transformations</code> is a function or a single string
-  naming a function then that function will be used to transform all
-  parameters. To apply transformations to particular parameters, the
-  <code>transformations</code> argument can be a named list with length equal to
-  the number of parameters to be transformed. Currently only univariate
-  transformations of scalar parameters can be specified (multivariate
-  transformations will be implemented in a future release). If
-  <code>transformations</code> is a list, the name of each list element should be a
-  parameter name and the content of each list element should be a function
-  (or any item to match as a function via <code><a href='https://www.rdocumentation.org/packages/base/topics/match.fun'>match.fun</a></code>, e.g. a
-  string naming a function). If a function is specified by its name as a
-  string (e.g. <code>"log"</code>), then it can be used to construct a new
-  parameter label for the appropriate parameter (e.g. <code>"log(sigma)"</code>).
-  If a function itself is specified (e.g. <code>log</code> or <code>function(x)
-  log(x)</code>) then <code>"t"</code> is used in the new parameter label to indicate
-  that the parameter is transformed (e.g. <code>"t(sigma)"</code>).</p>
+before plotting. If <code>transformations</code> is a function or a single string
+naming a function then that function will be used to transform all
+parameters. To apply transformations to particular parameters, the
+<code>transformations</code> argument can be a named list with length equal to
+the number of parameters to be transformed. Currently only univariate
+transformations of scalar parameters can be specified (multivariate
+transformations will be implemented in a future release). If
+<code>transformations</code> is a list, the name of each list element should be a
+parameter name and the content of each list element should be a function
+(or any item to match as a function via <code><a href='https://www.rdocumentation.org/packages/base/topics/match.fun'>match.fun()</a></code>, e.g. a
+string naming a function). If a function is specified by its name as a
+string (e.g. <code>"log"</code>), then it can be used to construct a new
+parameter label for the appropriate parameter (e.g. <code>"log(sigma)"</code>).
+If a function itself is specified
+(e.g. <code>log</code> or <code>function(x) log(x)</code>)
+then <code>"t"</code> is used in the new parameter label to indicate that the
+parameter is transformed (e.g. <code>"t(sigma)"</code>).</p>
 <p>Note: due to partial argument matching <code>transformations</code> can be
-  abbreviated for convenience in interactive use (e.g., <code>transform</code>,
-  <code>trans</code>, etc.).</p></td>
-    </tr>
-    <tr>
-      <th>facet_args</th>
-      <td><p>A named list of arguments (other than <code>facets</code>) passed
-to <code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/facet_wrap'>facet_wrap</a></code> or <code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/facet_grid'>facet_grid</a></code>
-to control faceting.</p></td>
+abbreviated for convenience in interactive use (e.g., <code>transform</code>).</p></td>
     </tr>
     <tr>
       <th>...</th>
       <td><p>Currently ignored.</p></td>
+    </tr>
+    <tr>
+      <th>facet_args</th>
+      <td><p>A named list of arguments (other than <code>facets</code>) passed
+to <code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/facet_wrap'>ggplot2::facet_wrap()</a></code> or <code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/facet_grid'>ggplot2::facet_grid()</a></code>
+to control faceting.</p></td>
     </tr>
     <tr>
       <th>n_warmup</th>
@@ -229,6 +248,13 @@ iterations are included. If <code>n_warmup &gt; 0</code> then the background for
 iterations <code>1:n_warmup</code> is shaded gray.</p></td>
     </tr>
     <tr>
+      <th>iter1</th>
+      <td><p>An integer; the iteration number of the first included draw
+(default is <code>0</code>). This can be used to make it more obvious that the warmup
+iterations have been discarded from the traceplot. It cannot be specified
+if <code>n_warmup</code> is also set to a positive value.</p></td>
+    </tr>
+    <tr>
       <th>window</th>
       <td><p>An integer vector of length two specifying the limits of a
 range of iterations to display.</p></td>
@@ -236,23 +262,21 @@ range of iterations to display.</p></td>
     <tr>
       <th>size</th>
       <td><p>An optional value to override the default line size
-(<code>mcmc_trace</code>) or the default point size
-(<code>mcmc_trace_highlight</code>).</p></td>
+for <code>mcmc_trace()</code> or the default point size for <code>mcmc_trace_highlight()</code>.</p></td>
     </tr>
     <tr>
       <th>np</th>
-      <td><p>For models fit using <code><a href='MCMC-nuts.html'>NUTS</a></code> (more generally, any
-<a href='http://en.wikipedia.org/wiki/Symplectic_integrator'>symplectic
-integrator</a>), an optional data frame providing NUTS diagnostic
-information. The data frame should be the object returned by
-<code><a href='bayesplot-extractors.html'>nuts_params</a></code> or one with the same structure. If <code>np</code> is
-specified then tick marks are added to the bottom of the trace plot
-indicating within which iterations there was a divergence (if there were any).
-See the end of the <strong>Examples</strong> section, below.</p></td>
+      <td><p>For models fit using <a href='MCMC-nuts.html'>NUTS</a> (more generally, any
+<a href='https://en.wikipedia.org/wiki/Symplectic_integrator'>symplectic integrator</a>),
+an optional data frame providing NUTS diagnostic information. The data
+frame should be the object returned by <code><a href='bayesplot-extractors.html'>nuts_params()</a></code> or one with the same
+structure. If <code>np</code> is specified then tick marks are added to the bottom of
+the trace plot indicating within which iterations there was a divergence
+(if there were any). See the end of the <strong>Examples</strong> section, below.</p></td>
     </tr>
     <tr>
       <th>np_style</th>
-      <td><p>A call to the <code>trace_style_np</code> helper function to
+      <td><p>A call to the <code>trace_style_np()</code> helper function to
 specify arguments controlling the appearance of tick marks representing
 divergences (if the <code>np</code> argument is specified).</p></td>
     </tr>
@@ -262,40 +286,66 @@ divergences (if the <code>np</code> argument is specified).</p></td>
     </tr>
     <tr>
       <th>alpha</th>
-      <td><p>For <code>mcmc_trace_highlight</code>, passed to
-<code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_point'>geom_point</a></code> to control the transparency of the points
+      <td><p>For <code>mcmc_trace_highlight()</code>, passed to
+<code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_point'>ggplot2::geom_point()</a></code> to control the transparency of the points
 for the chains not highlighted.</p></td>
     </tr>
     <tr>
       <th>highlight</th>
-      <td><p>For <code>mcmc_trace_highlight</code>, an integer specifying one
+      <td><p>For <code>mcmc_trace_highlight()</code>, an integer specifying one
 of the chains that will be more visible than the others in the plot.</p></td>
     </tr>
     <tr>
       <th>div_color, div_size, div_alpha</th>
       <td><p>Optional arguments to the
-<code>trace_style_np</code> helper function that are eventually passed to
-<code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_rug'>geom_rug</a></code> if the <code>np</code> argument is also
-specified. They control the color, size, and transparency specifications
-for showing divergences in the plot. The default values are displayed in
-the <strong>Usage</strong> section above.</p></td>
+<code>trace_style_np()</code> helper function that are eventually passed to
+<code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_rug'>ggplot2::geom_rug()</a></code> if the <code>np</code> argument is also specified. They control
+the color, size, and transparency specifications for showing divergences in
+the plot. The default values are displayed in the <strong>Usage</strong> section above.</p></td>
+    </tr>
+    <tr>
+      <th>n_bins</th>
+      <td><p>For the rank plots, the number of bins to use for the histogram
+of rank-normalized MCMC samples. Defaults to <code>20</code>.</p></td>
+    </tr>
+    <tr>
+      <th>ref_line</th>
+      <td><p>For the rank plots, whether to draw a horizontal line at the
+average number of ranks per bin. Defaults to <code>FALSE</code>.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A ggplot object that can be further customized using the
-  <span class="pkg">ggplot2</span> package.</p>
+    <p>The plotting functions return a ggplot object that can be further
+customized using the <strong>ggplot2</strong> package. The functions with suffix
+<code>_data()</code> return the data that would have been drawn by the plotting
+function.</p>
+<p><code>mcmc_trace_data()</code> returns the data for the trace <em>and</em> rank plots
+in the same data frame.</p>
     
     <h2 class="hasAnchor" id="plot-descriptions"><a class="anchor" href="#plot-descriptions"></a>Plot Descriptions</h2>
 
     
     <dl class='dl-horizontal'>
-  <dt><code>mcmc_trace</code></dt><dd><p>Standard trace plots of MCMC draws. For models fit using <code><a href='MCMC-nuts.html'>NUTS</a></code>,
-   the <code>np</code> argument can be used to also show divergences on the trace plot.</p></dd>
-  <dt><code>mcmc_trace_highlight</code></dt><dd><p>Traces are plotted using points rather than lines and the opacity of all
-   chains but one (specified by the <code>highlight</code> argument) is reduced.</p></dd>
+<dt><code>mcmc_trace()</code></dt><dd><p>Standard trace plots of MCMC draws. For models fit using <a href='MCMC-nuts.html'>NUTS</a>,
+the <code>np</code> argument can be used to also show divergences on the trace plot.</p></dd>
+<dt><code>mcmc_trace_highlight()</code></dt><dd><p>Traces are plotted using points rather than lines and the opacity of all
+chains but one (specified by the <code>highlight</code> argument) is reduced.</p></dd>
+<dt><code>mcmc_rank_hist()</code></dt><dd><p>Whereas traditional trace plots visualize how the chains mix over the
+course of sampling, rank histograms visualize how the values
+from the chains mix together in terms of ranking. An ideal plot would
+show the rankings mixing or overlapping in a uniform distribution.
+See Vehtari et al. (2019) for details.</p></dd>
+<dt><code>mcmc_rank_overlay()</code></dt><dd><p>Ranks from <code>mcmc_rank_hist()</code> are plotted using overlaid lines in a
+single panel.</p></dd>
 </dl>
+    
+    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
+
+    <p>Vehtari, A., Gelman, A., Simpson, D., Carpenter, B., Bürkner, P.
+(2019). Rank-normalization, folding, and localization: An improved <em>R</em>-hat
+for assessing convergence of MCMC. <a href='https://arxiv.org/abs/1903.08008'>arXiv preprint</a>.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
@@ -339,36 +389,39 @@ the <strong>Usage</strong> section above.</p></td>
 <span class='fu'>mcmc_trace</span>(<span class='no'>x</span>[,, <span class='fl'>1</span>:<span class='fl'>4</span>], <span class='kw'>window</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>100</span>, <span class='fl'>130</span>), <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>1</span>) +
   <span class='fu'><a href='bayesplot-helpers.html'>panel_bg</a></span>(<span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>"gray90"</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='fl'>NA</span>) +
   <span class='fu'><a href='bayesplot-helpers.html'>legend_move</a></span>(<span class='st'>"top"</span>)</div><div class='img'><img src='MCMC-traces-6.png' alt='' width='700' height='433' /></div><div class='input'>
-</div><span class='co'># NOT RUN {</span>
-<span class='co'># parse facet label text</span>
+<span class='co'># Rank-normalized histogram plots. Instead of showing how chains mix over</span>
+<span class='co'># time, look at how the ranking of MCMC samples mixed between chains.</span>
+<span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"viridisE"</span>)
+<span class='fu'>mcmc_rank_hist</span>(<span class='no'>x</span>, <span class='st'>"alpha"</span>)</div><div class='img'><img src='MCMC-traces-7.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>mcmc_rank_hist</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"alpha"</span>, <span class='st'>"sigma"</span>), <span class='kw'>ref_line</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='img'><img src='MCMC-traces-8.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>mcmc_rank_overlay</span>(<span class='no'>x</span>, <span class='st'>"alpha"</span>)</div><div class='img'><img src='MCMC-traces-9.png' alt='' width='700' height='433' /></div><div class='input'>
+</div><div class='input'><span class='co'># parse facet label text</span>
 <span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"purple"</span>)
 <span class='no'>p</span> <span class='kw'>&lt;-</span> <span class='fu'>mcmc_trace</span>(
   <span class='no'>x</span>,
   <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='st'>"beta\\[[1,3]\\]"</span>,
   <span class='kw'>facet_args</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>labeller</span> <span class='kw'>=</span> <span class='kw pkg'>ggplot2</span><span class='kw ns'>::</span><span class='no'><a href='https://www.rdocumentation.org/packages/ggplot2/topics/labellers'>label_parsed</a></span>)
 )
-<span class='no'>p</span> + <span class='fu'><a href='bayesplot-helpers.html'>facet_text</a></span>(<span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>15</span>)
-
+<span class='no'>p</span> + <span class='fu'><a href='bayesplot-helpers.html'>facet_text</a></span>(<span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>15</span>)</div><div class='img'><img src='MCMC-traces-10.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># mark first 100 draws as warmup</span>
-<span class='fu'>mcmc_trace</span>(<span class='no'>x</span>, <span class='kw'>n_warmup</span> <span class='kw'>=</span> <span class='fl'>100</span>)
-
+<span class='fu'>mcmc_trace</span>(<span class='no'>x</span>, <span class='kw'>n_warmup</span> <span class='kw'>=</span> <span class='fl'>100</span>)</div><div class='img'><img src='MCMC-traces-11.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># plot as points, highlighting chain 2</span>
 <span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"brightblue"</span>)
-<span class='fu'>mcmc_trace_highlight</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='st'>"sigma"</span>, <span class='kw'>highlight</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>2</span>)
-
+<span class='fu'>mcmc_trace_highlight</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='st'>"sigma"</span>, <span class='kw'>highlight</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='img'><img src='MCMC-traces-12.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># for models fit using HMC/NUTS divergences can be displayed in the trace plot</span>
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='st'>"rstanarm"</span>)
-<span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/rstanarm/topics/stan_glm'>stan_glm</a></span>(<span class='no'>mpg</span> ~ <span class='no'>.</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>mtcars</span>,
+<span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/rstanarm/topics/stan_glm'>stan_glm</a></span>(<span class='no'>mpg</span> ~ <span class='no'>.</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>mtcars</span>, <span class='kw'>refresh</span> <span class='kw'>=</span> <span class='fl'>0</span>,
   <span class='co'># next line to keep example fast and also ensure we get some divergences</span>
-                <span class='kw'>prior</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/rstanarm/topics/priors'>hs</a></span>(), <span class='kw'>iter</span> <span class='kw'>=</span> <span class='fl'>400</span>, <span class='kw'>adapt_delta</span> <span class='kw'>=</span> <span class='fl'>0.8</span>)
-
+                <span class='kw'>prior</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/rstanarm/topics/priors'>hs</a></span>(), <span class='kw'>iter</span> <span class='kw'>=</span> <span class='fl'>400</span>, <span class='kw'>adapt_delta</span> <span class='kw'>=</span> <span class='fl'>0.8</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: There were 23 divergent transitions after warmup. Increasing adapt_delta above 0.8 may help. See</span>
+#&gt; <span class='warning'>http://mc-stan.org/misc/warnings.html#divergent-transitions-after-warmup</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Examine the pairs() plot to diagnose sampling problems</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Bulk Effective Samples Size (ESS) is too low, indicating posterior means and medians may be unreliable.</span>
+#&gt; <span class='warning'>Running the chains for more iterations may help. See</span>
+#&gt; <span class='warning'>http://mc-stan.org/misc/warnings.html#bulk-ess</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Tail Effective Samples Size (ESS) is too low, indicatingposterior variances and tail quantiles may be unreliable.</span>
+#&gt; <span class='warning'>Running the chains for more iterations may help. See</span>
+#&gt; <span class='warning'>http://mc-stan.org/misc/warnings.html#tail-ess</span></div><div class='input'>
 <span class='co'># extract draws using as.array (instead of as.matrix) to keep</span>
 <span class='co'># chains separate for trace plot</span>
 <span class='no'>posterior</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/array'>as.array</a></span>(<span class='no'>fit</span>)
 
 <span class='co'># for stanfit and stanreg objects use nuts_params() to get the divergences</span>
-<span class='fu'>mcmc_trace</span>(<span class='no'>posterior</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='st'>"sigma"</span>, <span class='kw'>np</span> <span class='kw'>=</span> <span class='fu'><a href='bayesplot-extractors.html'>nuts_params</a></span>(<span class='no'>fit</span>))
-
+<span class='fu'>mcmc_trace</span>(<span class='no'>posterior</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='st'>"sigma"</span>, <span class='kw'>np</span> <span class='kw'>=</span> <span class='fu'><a href='bayesplot-extractors.html'>nuts_params</a></span>(<span class='no'>fit</span>))</div><div class='img'><img src='MCMC-traces-13.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"viridis"</span>)
 <span class='fu'>mcmc_trace</span>(
   <span class='no'>posterior</span>,
@@ -377,9 +430,7 @@ the <strong>Usage</strong> section above.</p></td>
   <span class='kw'>facet_args</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>nrow</span> <span class='kw'>=</span> <span class='fl'>2</span>),
   <span class='kw'>np</span> <span class='kw'>=</span> <span class='fu'><a href='bayesplot-extractors.html'>nuts_params</a></span>(<span class='no'>fit</span>),
   <span class='kw'>np_style</span> <span class='kw'>=</span> <span class='fu'>trace_style_np</span>(<span class='kw'>div_color</span> <span class='kw'>=</span> <span class='st'>"black"</span>, <span class='kw'>div_size</span> <span class='kw'>=</span> <span class='fl'>0.5</span>)
-)
-
-<span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"viridis"</span>)
+)</div><div class='img'><img src='MCMC-traces-14.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='fu'>mcmc_trace</span>(
   <span class='no'>posterior</span>,
   <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"wt"</span>, <span class='st'>"sigma"</span>),
@@ -387,8 +438,7 @@ the <strong>Usage</strong> section above.</p></td>
   <span class='kw'>facet_args</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>nrow</span> <span class='kw'>=</span> <span class='fl'>2</span>),
   <span class='kw'>divergences</span> <span class='kw'>=</span> <span class='fu'><a href='bayesplot-extractors.html'>nuts_params</a></span>(<span class='no'>fit</span>),
   <span class='kw'>div_color</span> <span class='kw'>=</span> <span class='st'>"black"</span>
-)
-<span class='co'># }</span><div class='input'>
+)</div><div class='output co'>#&gt; <span class='warning'>Warning: The 'divergences' argument is deprecated and will be removed in a future release. Use the 'np' argument instead.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: The following arguments were unrecognized and ignored: div_color</span></div><div class='img'><img src='MCMC-traces-15.png' alt='' width='700' height='433' /></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -399,6 +449,8 @@ the <strong>Usage</strong> section above.</p></td>
       <li><a href="#value">Value</a></li>
 
       <li><a href="#plot-descriptions">Plot Descriptions</a></li>
+
+      <li><a href="#references">References</a></li>
 
       <li><a href="#see-also">See also</a></li>
       

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Set, get, or view color schemes — bayesplot-colors • bayesplot</title>
+<title>Set, get, or view <strong>bayesplot</strong> color schemes — bayesplot-colors • bayesplot</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,12 +30,14 @@
 
 
 
-<meta property="og:title" content="Set, get, or view color schemes — bayesplot-colors" />
+<meta property="og:title" content="Set, get, or view <strong>bayesplot</strong> color schemes — bayesplot-colors" />
 
 <meta property="og:description" content="Set, get, or view color schemes. Choose from a preset scheme or create a
-custom scheme." />
+custom scheme. See the Available color schemes section below for a list
+of available scheme names. The Custom color schemes section describes how
+to specify a custom scheme." />
 
-<meta property="og:image" content="/logo.png" />
+<meta property="og:image" content="https://mc-stan.org/bayesplot/logo.png" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -66,7 +68,7 @@ custom scheme." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bayesplot</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.6.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.7.0</span>
       </span>
     </div>
 
@@ -144,7 +146,7 @@ custom scheme." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Set, get, or view color schemes</h1>
+    <h1>Set, get, or view <strong>bayesplot</strong> color schemes</h1>
     
     <div class="hidden name"><code>bayesplot-colors.Rd</code></div>
     </div>
@@ -152,56 +154,38 @@ custom scheme." />
     <div class="ref-description">
     
     <p>Set, get, or view color schemes. Choose from a preset scheme or create a
-custom scheme.</p>
+custom scheme. See the <strong>Available color schemes</strong> section below for a list
+of available scheme names. The <strong>Custom color schemes</strong> section describes how
+to specify a custom scheme.</p>
     
     </div>
 
     <pre class="usage"><span class='fu'>color_scheme_set</span>(<span class='kw'>scheme</span> <span class='kw'>=</span> <span class='st'>"blue"</span>)
 
-<span class='fu'>color_scheme_get</span>(<span class='no'>scheme</span>, <span class='no'>i</span>)
+<span class='fu'>color_scheme_get</span>(<span class='kw'>scheme</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>i</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
 
-<span class='fu'>color_scheme_view</span>(<span class='no'>scheme</span>)</pre>
+<span class='fu'>color_scheme_view</span>(<span class='kw'>scheme</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>scheme</th>
-      <td><p>For <code>color_scheme_set</code>, either a string naming one of the
-  available color schemes or a character vector of <em>exactly six</em> colors
-  specifying a custom scheme (see the <strong>Custom Color Schemes</strong> section,
-  below, for more on specifying a custom scheme).</p>
-<p>For <code>color_scheme_get</code>, <code>scheme</code> can be missing (to get the
-  current color scheme) or a string naming one of the preset schemes.</p>
-<p>For <code>color_scheme_view</code>, <code>scheme</code> can be missing (to use the
-  current color scheme) or a character vector containing a subset of the
-  available scheme names.</p>
-<p>Currently, the available preset color schemes are:</p><ul>
-<li><p><code>"blue"</code>, <code>"brightblue"</code></p></li>
-<li><p><code>"gray"</code>, <code>"darkgray"</code></p></li>
-<li><p><code>"green"</code></p></li>
-<li><p><code>"pink"</code></p></li>
-<li><p><code>"purple"</code></p></li>
-<li><p><code>"red"</code></p></li>
-<li><p><code>"teal"</code></p></li>
-<li><p><code>"yellow"</code></p></li>
-<li><p><a href='https://CRAN.R-project.org/package=viridis'><code>"viridis"</code></a>,
-     <code>"viridisA"</code>, <code>"viridisB"</code>, <code>"viridisC"</code></p></li>
-<li><p><code>"mix-x-y"</code>, replacing <code>x</code> and <code>y</code> with any two of
-     the scheme names listed above (e.g. "mix-teal-pink", "mix-blue-red",
-     etc.). The order of <code>x</code> and <code>y</code> matters, i.e., the color
-     schemes "mix-blue-red" and "mix-red-blue" are not identical. There is no
-     guarantee that every possible mixed scheme will look good with every
-     possible plot.</p></li>
-</ul>
-
-<p>If you have a suggestion for a new color scheme please let us know via the
-  <span class="pkg">bayesplot</span> <a href='https://github.com/stan-dev/bayesplot/issues'>issue
-  tracker</a>.</p></td>
+      <td><p>For <code>color_scheme_set()</code>, either a string naming one of the
+available color schemes or a character vector of <em>exactly six</em> colors
+specifying a custom scheme.</p>
+<p>For <code>color_scheme_get()</code>, <code>scheme</code> can be missing (to get the
+current color scheme) or a string naming one of the preset schemes.</p>
+<p>For <code>color_scheme_view()</code>, <code>scheme</code> can be missing (to use the
+current color scheme) or a character vector containing a subset of the
+available scheme names.</p>
+<p>See the <strong>Available color schemes</strong> section below for a list of available
+scheme names. The <strong>Custom color schemes</strong> section describes how to specify
+a custom scheme.</p></td>
     </tr>
     <tr>
       <th>i</th>
-      <td><p>For <code>color_scheme_get</code>, a subset of the integers from <code>1</code>
+      <td><p>For <code>color_scheme_get()</code>, an optional subset of the integers from <code>1</code>
 (lightest) to <code>6</code> (darkest) indicating which of the colors in the
 scheme to return. If <code>i</code> is not specified then all six colors in the
 scheme are included.</p></td>
@@ -210,31 +194,56 @@ scheme are included.</p></td>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>color_scheme_set</code> has the side effect of setting the color
-  scheme used for plotting. It also returns
-  (<code><a href='https://www.rdocumentation.org/packages/base/topics/invisible'>invisibly</a></code>) a list of the hexidecimal color
-  values used in <code>scheme</code>.</p>
-<p><code>color_scheme_get</code> returns a <code>list</code> of the hexadecimal color
-  values (without changing the current scheme). If the <code>scheme</code> argument
-  is not specified the returned values correspond to the current color
-  scheme. If the optional argument <code>i</code> is specified then the returned
-  list only contains <code><a href='https://www.rdocumentation.org/packages/base/topics/length'>length(i)</a></code> elements.</p>
-<p><code>color_scheme_view</code> returns a ggplot object if only a single scheme is
-  specified and a gtable object if multiple schemes names are specified.</p>
+    <p><code>color_scheme_set()</code> has the side effect of setting the color scheme
+used for plotting. It also returns (<a href='https://www.rdocumentation.org/packages/base/topics/invisible'>invisibly</a>) a list of
+the hexadecimal color values used in <code>scheme</code>.</p>
+<p><code>color_scheme_get()</code> returns a list of the hexadecimal color
+values (without changing the current scheme). If the <code>scheme</code> argument
+is not specified the returned values correspond to the current color
+scheme. If the optional argument <code>i</code> is specified then the returned
+list only contains <code><a href='https://www.rdocumentation.org/packages/base/topics/length'>length(i)</a></code> elements.</p>
+<p><code>color_scheme_view()</code> returns a ggplot object if only a single scheme is
+specified and a gtable object if multiple schemes names are specified.</p>
     
-    <h2 class="hasAnchor" id="custom-color-schemes"><a class="anchor" href="#custom-color-schemes"></a>Custom Color Schemes</h2>
+    <h2 class="hasAnchor" id="available-color-schemes"><a class="anchor" href="#available-color-schemes"></a>Available color schemes</h2>
 
-    <p>A <span class="pkg">bayesplot</span> color scheme consists of six
-  colors. To specify a custom color scheme simply pass a character vector
-  containing either the names of six <code><a href='https://www.rdocumentation.org/packages/grDevices/topics/colors'>colors</a></code> or six
-  hexidecimal color values (or a mix of names and hex values). The colors
-  should be in order from lightest to darkest. See the end of the
-  <strong>Examples</strong> section for a demonstration.</p>
+    <p>Currently, the available preset color
+schemes are:</p><ul>
+<li><p><code>"blue"</code>, <code>"brightblue"</code></p></li>
+<li><p><code>"gray"</code>, <code>"darkgray"</code></p></li>
+<li><p><code>"green"</code></p></li>
+<li><p><code>"pink"</code></p></li>
+<li><p><code>"purple"</code></p></li>
+<li><p><code>"red"</code></p></li>
+<li><p><code>"teal"</code></p></li>
+<li><p><code>"yellow"</code></p></li>
+<li><p><a href='https://CRAN.R-project.org/package=viridis'>"viridis"</a>, <code>"viridisA"</code>,
+<code>"viridisB"</code>, <code>"viridisC"</code>, <code>"viridisD"</code>, <code>"viridisE"</code></p></li>
+<li><p><code>"mix-x-y"</code>, replacing <code>x</code> and <code>y</code> with any two of
+the scheme names listed above (e.g. "mix-teal-pink", "mix-blue-red",
+etc.). The order of <code>x</code> and <code>y</code> matters, i.e., the color schemes
+<code>"mix-blue-red"</code> and <code>"mix-red-blue"</code> are not identical. There is no
+guarantee that every possible mixed scheme will look good with every
+possible plot.</p></li>
+<li><p><code>"brewer-x"</code>, replacing <code>x</code> with the name of a palette available from
+<code><a href='https://www.rdocumentation.org/packages/RColorBrewer/topics/ColorBrewer'>RColorBrewer::brewer.pal()</a></code> (e.g., <code>brewer-PuBuGn</code>).</p></li>
+</ul>
+    <p>If you have a suggestion for a new color scheme please let us know via the
+<strong>bayesplot</strong> <a href='https://github.com/stan-dev/bayesplot/issues'>issue tracker</a>.</p>
+    
+    <h2 class="hasAnchor" id="custom-color-schemes"><a class="anchor" href="#custom-color-schemes"></a>Custom color schemes</h2>
+
+    <p>A <strong>bayesplot</strong> color scheme consists of six
+colors. To specify a custom color scheme simply pass a character vector
+containing either the names of six <a href='https://www.rdocumentation.org/packages/grDevices/topics/colors'>colors</a> or six
+hexadecimal color values (or a mix of names and hex values). The colors
+should be in order from lightest to darkest. See the end of the
+<strong>Examples</strong> section for a demonstration.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='theme_default.html'>theme_default</a></code> for the default ggplot theme used by
-  <span class="pkg">bayesplot</span>.</p></div>
+    <div class='dont-index'><p><code><a href='theme_default.html'>theme_default()</a></code> for the default ggplot theme used by
+<strong>bayesplot</strong> and <code><a href='bayesplot_theme_get.html'>bayesplot_theme_set()</a></code> to change it.</p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -271,15 +280,25 @@ scheme are included.</p></td>
 <span class='fu'>color_scheme_set</span>(<span class='st'>"purple"</span>)
 <span class='fu'>color_scheme_view</span>()</div><div class='img'><img src='bayesplot-colors-9.png' alt='' width='700' height='433' /></div><div class='input'><span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='example-data.html'>example_y_data</a></span>()
 <span class='no'>yrep</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='example-data.html'>example_yrep_draws</a></span>()
-<span class='fu'><a href='PPC-test-statistics.html'>ppc_stat</a></span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='kw'>stat</span> <span class='kw'>=</span> <span class='st'>"mean"</span>) + <span class='fu'><a href='bayesplot-helpers.html'>legend_none</a></span>()</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='bayesplot-colors-10.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>color_scheme_set</span>(<span class='st'>"mix-teal-pink"</span>)
-<span class='fu'><a href='PPC-test-statistics.html'>ppc_stat</a></span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='kw'>stat</span> <span class='kw'>=</span> <span class='st'>"sd"</span>) + <span class='fu'><a href='bayesplot-helpers.html'>legend_none</a></span>()</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='bayesplot-colors-11.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='MCMC-intervals.html'>mcmc_areas</a></span>(<span class='no'>x</span>, <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='st'>"beta"</span>)</div><div class='img'><img src='bayesplot-colors-12.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'>###########################</span>
-<span class='co'>### custom color scheme ###</span>
+<span class='fu'><a href='PPC-test-statistics.html'>ppc_stat</a></span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='kw'>stat</span> <span class='kw'>=</span> <span class='st'>"mean"</span>) + <span class='fu'><a href='bayesplot-helpers.html'>legend_none</a></span>()</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='bayesplot-colors-10.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='co'>############################</span>
+<span class='co'>### Mixing color schemes ###</span>
+<span class='co'>############################</span>
+<span class='fu'>color_scheme_set</span>(<span class='st'>"mix-teal-pink"</span>)
+<span class='fu'><a href='PPC-test-statistics.html'>ppc_stat</a></span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='kw'>stat</span> <span class='kw'>=</span> <span class='st'>"sd"</span>) + <span class='fu'><a href='bayesplot-helpers.html'>legend_none</a></span>()</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='bayesplot-colors-11.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='MCMC-intervals.html'>mcmc_areas</a></span>(<span class='no'>x</span>, <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='st'>"beta"</span>)</div><div class='img'><img src='bayesplot-colors-12.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='co'>##########################</span>
+<span class='co'>### ColorBrewer scheme ###</span>
+<span class='co'>##########################</span>
+<span class='fu'>color_scheme_set</span>(<span class='st'>"brewer-Spectral"</span>)
+<span class='fu'>color_scheme_view</span>()</div><div class='img'><img src='bayesplot-colors-13.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='MCMC-traces.html'>mcmc_trace</a></span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='st'>"sigma"</span>)</div><div class='img'><img src='bayesplot-colors-14.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='co'>###########################</span>
+<span class='co'>### Custom color scheme ###</span>
 <span class='co'>###########################</span>
 <span class='no'>orange_scheme</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"#ffebcc"</span>, <span class='st'>"#ffcc80"</span>,
                    <span class='st'>"#ffad33"</span>, <span class='st'>"#e68a00"</span>,
                    <span class='st'>"#995c00"</span>, <span class='st'>"#663d00"</span>)
 <span class='fu'>color_scheme_set</span>(<span class='no'>orange_scheme</span>)
-<span class='fu'><a href='MCMC-intervals.html'>mcmc_areas</a></span>(<span class='no'>x</span>, <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='st'>"alpha"</span>)</div><div class='img'><img src='bayesplot-colors-13.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='MCMC-distributions.html'>mcmc_dens_overlay</a></span>(<span class='no'>x</span>)</div><div class='img'><img src='bayesplot-colors-14.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='PPC-test-statistics.html'>ppc_stat</a></span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='kw'>stat</span> <span class='kw'>=</span> <span class='st'>"var"</span>) + <span class='fu'><a href='bayesplot-helpers.html'>legend_none</a></span>()</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='bayesplot-colors-15.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'>color_scheme_view</span>()</div><div class='img'><img src='bayesplot-colors-15.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='MCMC-intervals.html'>mcmc_areas</a></span>(<span class='no'>x</span>, <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='st'>"alpha"</span>)</div><div class='img'><img src='bayesplot-colors-16.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='MCMC-distributions.html'>mcmc_dens_overlay</a></span>(<span class='no'>x</span>)</div><div class='img'><img src='bayesplot-colors-17.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='PPC-test-statistics.html'>ppc_stat</a></span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='kw'>stat</span> <span class='kw'>=</span> <span class='st'>"var"</span>) + <span class='fu'><a href='bayesplot-helpers.html'>legend_none</a></span>()</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='bayesplot-colors-18.png' alt='' width='700' height='433' /></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -289,7 +308,9 @@ scheme are included.</p></td>
       
       <li><a href="#value">Value</a></li>
 
-      <li><a href="#custom-color-schemes">Custom Color Schemes</a></li>
+      <li><a href="#available-color-schemes">Available color schemes</a></li>
+
+      <li><a href="#custom-color-schemes">Custom color schemes</a></li>
 
       <li><a href="#see-also">See also</a></li>
       

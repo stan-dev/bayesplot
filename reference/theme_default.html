@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Default bayesplot plotting theme — theme_default • bayesplot</title>
+<title>Default <strong>bayesplot</strong> plotting theme — theme_default • bayesplot</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,14 +30,14 @@
 
 
 
-<meta property="og:title" content="Default bayesplot plotting theme — theme_default" />
+<meta property="og:title" content="Default <strong>bayesplot</strong> plotting theme — theme_default" />
 
-<meta property="og:description" content="The theme_default function returns the default ggplot
+<meta property="og:description" content="The theme_default() function returns the default ggplot
 theme used by the bayesplot plotting functions. See
-bayesplot_theme_set for details on setting and updating the
-plotting theme." />
+bayesplot_theme_set() for details on setting and updating the plotting
+theme." />
 
-<meta property="og:image" content="/logo.png" />
+<meta property="og:image" content="https://mc-stan.org/bayesplot/logo.png" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -68,7 +68,7 @@ plotting theme." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bayesplot</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.6.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.7.0</span>
       </span>
     </div>
 
@@ -146,17 +146,17 @@ plotting theme." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Default bayesplot plotting theme</h1>
+    <h1>Default <strong>bayesplot</strong> plotting theme</h1>
     
     <div class="hidden name"><code>theme_default.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>The <code>theme_default</code> function returns the default ggplot
-theme used by the <span class="pkg">bayesplot</span> plotting functions. See
-<code><a href='bayesplot_theme_get.html'>bayesplot_theme_set</a></code> for details on setting and updating the
-plotting theme.</p>
+    <p>The <code>theme_default()</code> function returns the default ggplot
+<a href='https://www.rdocumentation.org/packages/ggplot2/topics/theme'>theme</a> used by the <strong>bayesplot</strong> plotting functions. See
+<code><a href='bayesplot_theme_get.html'>bayesplot_theme_set()</a></code> for details on setting and updating the plotting
+theme.</p>
     
     </div>
 
@@ -169,10 +169,9 @@ plotting theme.</p>
     <tr>
       <th>base_size, base_family</th>
       <td><p>Base font size and family (passed to
-<code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/ggtheme'>theme_bw</a></code>). It is possible to set
-<code>"bayesplot.base_size"</code> and <code>"bayesplot.base_family"</code> via
-<code><a href='https://www.rdocumentation.org/packages/base/topics/options'>options</a></code> to change the defaults, which are <code>12</code> and
-<code>"serif"</code>, respectively.</p></td>
+<code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/ggtheme'>ggplot2::theme_bw()</a></code>). It is possible to set <code>"bayesplot.base_size"</code> and
+<code>"bayesplot.base_family"</code> via <code><a href='https://www.rdocumentation.org/packages/base/topics/options'>options()</a></code> to change the defaults, which are
+<code>12</code> and <code>"serif"</code>, respectively.</p></td>
     </tr>
     </table>
     
@@ -182,11 +181,12 @@ plotting theme.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><a href='bayesplot-helpers.html'>bayesplot-helpers</a> for a variety of convenience functions,
-  many of which provide shortcuts for tweaking theme elements after creating
-  a plot.</p>
-<p><code><a href='bayesplot-colors.html'>bayesplot-colors</a></code> to set or view the color scheme used
-  for plotting.</p></div>
+    <div class='dont-index'><p><code><a href='bayesplot_theme_get.html'>bayesplot_theme_set()</a></code> to change the ggplot theme.</p>
+<p><a href='bayesplot-colors.html'>bayesplot-colors</a> to set or view the color scheme used
+for plotting.</p>
+<p><a href='bayesplot-helpers.html'>bayesplot-helpers</a> for a variety of convenience functions,
+many of which provide shortcuts for tweaking theme elements after creating
+a plot.</p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>

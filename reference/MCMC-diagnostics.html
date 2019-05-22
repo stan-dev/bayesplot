@@ -37,7 +37,7 @@ size, and autocorrelation of MCMC draws. See the Plot Descriptions
 section, below, for details. For models fit using the No-U-Turn-Sampler, see
 also MCMC-nuts for additional MCMC diagnostic plots." />
 
-<meta property="og:image" content="/logo.png" />
+<meta property="og:image" content="https://mc-stan.org/bayesplot/logo.png" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -68,7 +68,7 @@ also MCMC-nuts for additional MCMC diagnostic plots." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bayesplot</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.6.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.7.0</span>
       </span>
     </div>
 
@@ -172,18 +172,18 @@ also <a href='MCMC-nuts.html'>MCMC-nuts</a> for additional MCMC diagnostic plots
 
 <span class='fu'>mcmc_neff_data</span>(<span class='no'>ratio</span>, <span class='no'>...</span>)
 
-<span class='fu'>mcmc_acf</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>character</a></span>(), <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>character</a></span>(),
-  <span class='kw'>facet_args</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(), <span class='no'>...</span>, <span class='kw'>lags</span> <span class='kw'>=</span> <span class='fl'>20</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+<span class='fu'>mcmc_acf</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>character</a></span>(), <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>character</a></span>(), <span class='no'>...</span>,
+  <span class='kw'>facet_args</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(), <span class='kw'>lags</span> <span class='kw'>=</span> <span class='fl'>20</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
 
-<span class='fu'>mcmc_acf_bar</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>character</a></span>(), <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>character</a></span>(),
-  <span class='kw'>facet_args</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(), <span class='no'>...</span>, <span class='kw'>lags</span> <span class='kw'>=</span> <span class='fl'>20</span>)</pre>
+<span class='fu'>mcmc_acf_bar</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>character</a></span>(), <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>character</a></span>(), <span class='no'>...</span>,
+  <span class='kw'>facet_args</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(), <span class='kw'>lags</span> <span class='kw'>=</span> <span class='fl'>20</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>rhat</th>
-      <td><p>A vector of <code><a href='bayesplot-extractors.html'>Rhat</a></code> estimates.</p></td>
+      <td><p>A vector of R-hat estimates.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -191,47 +191,55 @@ also <a href='MCMC-nuts.html'>MCMC-nuts</a> for additional MCMC diagnostic plots
     </tr>
     <tr>
       <th>size</th>
-      <td><p>An optional value to override <code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_point'>geom_point</a></code>'s
-default size (for <code>mcmc_rhat</code>, <code>mcmc_neff</code>) or
-<code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_path'>geom_line</a></code>'s default size (for <code>mcmc_acf</code>).</p></td>
+      <td><p>An optional value to override <code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_point'>ggplot2::geom_point()</a></code>'s
+default size (for <code>mcmc_rhat()</code>, <code>mcmc_neff()</code>) or
+<code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_path'>ggplot2::geom_line()</a></code>'s default size (for <code>mcmc_acf()</code>).</p></td>
     </tr>
     <tr>
       <th>binwidth</th>
-      <td><p>Passed to <code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_histogram'>geom_histogram</a></code> to override
+      <td><p>Passed to <code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_histogram'>ggplot2::geom_histogram()</a></code> to override
 the default binwidth.</p></td>
     </tr>
     <tr>
       <th>breaks</th>
-      <td><p>Passed to <code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_histogram'>geom_histogram</a></code> as an
+      <td><p>Passed to <code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_histogram'>ggplot2::geom_histogram()</a></code> as an
 alternative to <code>binwidth</code>.</p></td>
     </tr>
     <tr>
       <th>ratio</th>
       <td><p>A vector of <em>ratios</em> of effective sample size estimates to
-total sample size. See <code><a href='bayesplot-extractors.html'>neff_ratio</a></code>.</p></td>
+total sample size. See <code><a href='bayesplot-extractors.html'>neff_ratio()</a></code>.</p></td>
     </tr>
     <tr>
       <th>x</th>
       <td><p>A 3-D array, matrix, list of matrices, or data frame of MCMC draws.
 The <a href='MCMC-overview.html'>MCMC-overview</a> page provides details on how to specify each these
-allowed inputs.</p></td>
+allowed inputs. It is also possible to use an object with an
+<code><a href='https://www.rdocumentation.org/packages/base/topics/array'>as.array()</a></code> method that returns the same kind of 3-D array described on
+the <a href='MCMC-overview.html'>MCMC-overview</a> page.</p></td>
     </tr>
     <tr>
       <th>pars</th>
       <td><p>An optional character vector of parameter names. If neither
-<code>pars</code> nor <code>regex_pars</code> is specified then the default is to use
-<em>all</em> parameters.</p></td>
+<code>pars</code> nor <code>regex_pars</code> is specified then the default is to use <em>all</em>
+parameters. As of version <code>1.7.0</code>, <strong>bayesplot</strong> also supports 'tidy'
+parameter selection by specifying <code>pars = vars(...)</code>, where <code>...</code> is
+specified the same way as in <a href='https://dplyr.tidyverse.org/reference/select.html'>dplyr::select(...)</a> and
+similar functions. Examples of using <code>pars</code> in this way can be found on the
+<a href='tidy-params.html'>Tidy parameter selection</a> page.</p></td>
     </tr>
     <tr>
       <th>regex_pars</th>
       <td><p>An optional <a href='https://www.rdocumentation.org/packages/base/topics/grep'>regular expression</a> to use for
-parameter selection. Can be specified instead of <code>pars</code> or in addition
-to <code>pars</code>.</p></td>
+parameter selection. Can be specified instead of <code>pars</code> or in addition to
+<code>pars</code>. When using <code>pars</code> for tidy parameter selection, the <code>regex_pars</code>
+argument is ignored since <a href='https://www.rdocumentation.org/packages/tidyselect/topics/select_helpers'>select helpers</a>
+perform a similar function.</p></td>
     </tr>
     <tr>
       <th>facet_args</th>
       <td><p>A named list of arguments (other than <code>facets</code>) passed
-to <code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/facet_wrap'>facet_wrap</a></code> or <code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/facet_grid'>facet_grid</a></code>
+to <code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/facet_wrap'>ggplot2::facet_wrap()</a></code> or <code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/facet_grid'>ggplot2::facet_grid()</a></code>
 to control faceting.</p></td>
     </tr>
     <tr>
@@ -242,41 +250,43 @@ to control faceting.</p></td>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A ggplot object that can be further customized using the
-  <span class="pkg">ggplot2</span> package. The <code>_data</code> functions return the data that
-  would have been drawn by the plotting function.</p>
+    <p>The plotting functions return a ggplot object that can be further
+customized using the <strong>ggplot2</strong> package. The functions with suffix
+<code>_data()</code> return the data that would have been drawn by the plotting
+function.</p>
     
     <h2 class="hasAnchor" id="plot-descriptions"><a class="anchor" href="#plot-descriptions"></a>Plot Descriptions</h2>
 
     
     <dl class='dl-horizontal'>
-<dt><code>mcmc_rhat, mcmc_rhat_hist</code></dt><dd><p>Rhat values as either points or a histogram. Values are colored using
+<dt><code>mcmc_rhat()</code>, <code>mcmc_rhat_hist()</code></dt><dd><p>Rhat values as either points or a histogram. Values are colored using
 different shades (lighter is better). The chosen thresholds are somewhat
 arbitrary, but can be useful guidelines in practice.
- <ul>
+<ul>
 <li><p><em>light</em>: below 1.05 (good)</p></li>
 <li><p><em>mid</em>: between 1.05 and 1.1 (ok)</p></li>
 <li><p><em>dark</em>: above 1.1 (too high)</p></li>
 </ul></p></dd>
-<dt><code>mcmc_neff, mcmc_neff_hist</code></dt><dd><p>Ratios of effective sample size to total sample size as either points or a
-histogram. Values are colored using different shades (lighter is better). The
-chosen thresholds are somewhat arbitrary, but can be useful guidelines in
-practice.
- <ul>
+    <dt><code>mcmc_neff()</code>, <code>mcmc_neff_hist()</code></dt><dd><p>Ratios of effective sample size to total sample size as either points or a
+histogram. Values are colored using different shades (lighter is better).
+The chosen thresholds are somewhat arbitrary, but can be useful guidelines
+in practice.
+<ul>
 <li><p><em>light</em>: between 0.5 and 1 (high)</p></li>
 <li><p><em>mid</em>: between 0.1 and 0.5 (good)</p></li>
 <li><p><em>dark</em>: below 0.1 (low)</p></li>
 </ul></p></dd>
-<dt><code>mcmc_acf</code></dt><dd><p>Grid of autocorrelation plots by chain and parameter. The <code>lags</code>
-argument gives the maximum number of lags at which to calculate the
-autocorrelation function. <code>mcmc_acf</code> is a line plot whereas
-<code>mcmc_acf_bar</code> is a barplot.</p></dd>
+    <dt><code>mcmc_acf()</code>, <code>mcmc_acf_bar()</code></dt><dd><p>Grid of autocorrelation plots by chain and parameter. The <code>lags</code> argument
+gives the maximum number of lags at which to calculate the autocorrelation
+function. <code>mcmc_acf()</code> is a line plot whereas <code>mcmc_acf_bar()</code> is a
+barplot.</p></dd>
 </dl>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
-    <p>Stan Development Team. (2016). <em>Stan Modeling Language Users
-Guide and Reference Manual.</em> <a href='http://mc-stan.org/documentation/'>http://mc-stan.org/documentation/</a></p>
+    <p>Stan Development Team.
+<em>Stan Modeling Language Users Guide and Reference Manual.</em>
+<a href='https://mc-stan.org/users/documentation/'>https://mc-stan.org/users/documentation/</a></p>
 <p>Gelman, A. and Rubin, D. B. (1992). Inference from iterative
 simulation using multiple sequences. <em>Statistical Science</em>. 7(4),
 457--472.</p>
@@ -284,9 +294,10 @@ simulation using multiple sequences. <em>Statistical Science</em>. 7(4),
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><ul>
-<li><p>The <em>Visual MCMC Diagnostics</em> vignette.</p></li>
+<li><p>The <a href='https://mc-stan.org/bayesplot/articles/visual-mcmc-diagnostics.html'>Visual MCMC Diagnostics</a>
+vignette.</p></li>
 <li><p><a href='MCMC-nuts.html'>MCMC-nuts</a> for additional MCMC diagnostic plots for models fit
-  using the No-U-Turn-Sampler.</p></li>
+using the No-U-Turn-Sampler.</p></li>
 </ul></div>
     <div class='dont-index'><p>Other MCMC: <code><a href='MCMC-combos.html'>MCMC-combos</a></code>,
   <code><a href='MCMC-distributions.html'>MCMC-distributions</a></code>,
@@ -325,32 +336,32 @@ simulation using multiple sequences. <em>Statistical Science</em>. 7(4),
 <span class='co'># fake neff ratio values to use for demonstration</span>
 <span class='no'>ratio</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/Uniform'>runif</a></span>(<span class='fl'>100</span>, <span class='fl'>0</span>, <span class='fl'>1</span>))
 <span class='fu'>mcmc_neff_hist</span>(<span class='no'>ratio</span>)</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='MCMC-diagnostics-9.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>mcmc_neff</span>(<span class='no'>ratio</span>)</div><div class='img'><img src='MCMC-diagnostics-10.png' alt='' width='700' height='433' /></div><div class='input'>
-</div><span class='co'># NOT RUN {</span>
-<span class='co'># Example using rstanarm model (requires rstanarm package)</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>rstanarm</span>)
-
+</div><div class='input'><span class='co'># Example using rstanarm model (requires rstanarm package)</span>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>rstanarm</span>)</div><div class='output co'>#&gt; <span class='message'>Loading required package: Rcpp</span></div><div class='output co'>#&gt; <span class='message'>rstanarm (Version 2.18.9, packaged: )</span></div><div class='output co'>#&gt; <span class='message'>- Do not expect the default priors to remain the same in future rstanarm versions.</span></div><div class='output co'>#&gt; <span class='message'>Thus, R scripts should specify priors explicitly, even if they are just the defaults.</span></div><div class='output co'>#&gt; <span class='message'>- For execution on a local, multicore CPU with excess RAM we recommend calling</span></div><div class='output co'>#&gt; <span class='message'>options(mc.cores = parallel::detectCores())</span></div><div class='output co'>#&gt; <span class='message'>- bayesplot theme set to bayesplot::theme_default()</span></div><div class='output co'>#&gt; <span class='message'>   * Does _not_ affect other ggplot2 plots</span></div><div class='output co'>#&gt; <span class='message'>   * See ?bayesplot_theme_set for details on theme setting</span></div><div class='input'>
 <span class='co'># intentionally use small 'iter' so there are some</span>
 <span class='co'># problems with rhat and neff for demonstration</span>
-<span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/rstanarm/topics/stan_glm'>stan_glm</a></span>(<span class='no'>mpg</span> ~ <span class='no'>.</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>mtcars</span>, <span class='kw'>iter</span> <span class='kw'>=</span> <span class='fl'>50</span>)
-<span class='no'>rhats</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='bayesplot-extractors.html'>rhat</a></span>(<span class='no'>fit</span>)
+<span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/rstanarm/topics/stan_glm'>stan_glm</a></span>(<span class='no'>mpg</span> ~ <span class='no'>.</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>mtcars</span>, <span class='kw'>iter</span> <span class='kw'>=</span> <span class='fl'>50</span>, <span class='kw'>refresh</span> <span class='kw'>=</span> <span class='fl'>0</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: There were 1 chains where the estimated Bayesian Fraction of Missing Information was low. See</span>
+#&gt; <span class='warning'>http://mc-stan.org/misc/warnings.html#bfmi-low</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Examine the pairs() plot to diagnose sampling problems</span></div><div class='output co'>#&gt; <span class='warning'>Warning: The largest R-hat is 2, indicating chains have not mixed.</span>
+#&gt; <span class='warning'>Running the chains for more iterations may help. See</span>
+#&gt; <span class='warning'>http://mc-stan.org/misc/warnings.html#r-hat</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Bulk Effective Samples Size (ESS) is too low, indicating posterior means and medians may be unreliable.</span>
+#&gt; <span class='warning'>Running the chains for more iterations may help. See</span>
+#&gt; <span class='warning'>http://mc-stan.org/misc/warnings.html#bulk-ess</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Tail Effective Samples Size (ESS) is too low, indicatingposterior variances and tail quantiles may be unreliable.</span>
+#&gt; <span class='warning'>Running the chains for more iterations may help. See</span>
+#&gt; <span class='warning'>http://mc-stan.org/misc/warnings.html#tail-ess</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Markov chains did not converge! Do not analyze results!</span></div><div class='input'><span class='no'>rhats</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='bayesplot-extractors.html'>rhat</a></span>(<span class='no'>fit</span>)
 <span class='no'>ratios</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='bayesplot-extractors.html'>neff_ratio</a></span>(<span class='no'>fit</span>)
-<span class='fu'>mcmc_rhat</span>(<span class='no'>rhats</span>)
-<span class='fu'>mcmc_neff</span>(<span class='no'>ratios</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>3</span>)
-
+<span class='fu'>mcmc_rhat</span>(<span class='no'>rhats</span>)</div><div class='img'><img src='MCMC-diagnostics-11.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>mcmc_neff</span>(<span class='no'>ratios</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>3</span>)</div><div class='img'><img src='MCMC-diagnostics-12.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># there's a small enough number of parameters in the</span>
 <span class='co'># model that we can display their names on the y-axis</span>
-<span class='fu'>mcmc_neff</span>(<span class='no'>ratios</span>) + <span class='fu'><a href='bayesplot-helpers.html'>yaxis_text</a></span>(<span class='kw'>hjust</span> <span class='kw'>=</span> <span class='fl'>1</span>)
-
+<span class='fu'>mcmc_neff</span>(<span class='no'>ratios</span>) + <span class='fu'><a href='bayesplot-helpers.html'>yaxis_text</a></span>(<span class='kw'>hjust</span> <span class='kw'>=</span> <span class='fl'>1</span>)</div><div class='img'><img src='MCMC-diagnostics-13.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># can also look at autocorrelation</span>
 <span class='no'>draws</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/array'>as.array</a></span>(<span class='no'>fit</span>)
-<span class='fu'>mcmc_acf</span>(<span class='no'>draws</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"wt"</span>, <span class='st'>"cyl"</span>), <span class='kw'>lags</span> <span class='kw'>=</span> <span class='fl'>10</span>)
-
+<span class='fu'>mcmc_acf</span>(<span class='no'>draws</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"wt"</span>, <span class='st'>"cyl"</span>), <span class='kw'>lags</span> <span class='kw'>=</span> <span class='fl'>10</span>)</div><div class='img'><img src='MCMC-diagnostics-14.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># increase number of iterations and plots look much better</span>
-<span class='no'>fit2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/update'>update</a></span>(<span class='no'>fit</span>, <span class='kw'>iter</span> <span class='kw'>=</span> <span class='fl'>500</span>)
-<span class='fu'>mcmc_rhat</span>(<span class='fu'><a href='bayesplot-extractors.html'>rhat</a></span>(<span class='no'>fit2</span>))
-<span class='fu'>mcmc_neff</span>(<span class='fu'><a href='bayesplot-extractors.html'>neff_ratio</a></span>(<span class='no'>fit2</span>))
-<span class='fu'>mcmc_acf</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/array'>as.array</a></span>(<span class='no'>fit2</span>), <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"wt"</span>, <span class='st'>"cyl"</span>), <span class='kw'>lags</span> <span class='kw'>=</span> <span class='fl'>10</span>)
-<span class='co'># }</span><div class='input'>
+<span class='no'>fit2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/update'>update</a></span>(<span class='no'>fit</span>, <span class='kw'>iter</span> <span class='kw'>=</span> <span class='fl'>500</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Bulk Effective Samples Size (ESS) is too low, indicating posterior means and medians may be unreliable.</span>
+#&gt; <span class='warning'>Running the chains for more iterations may help. See</span>
+#&gt; <span class='warning'>http://mc-stan.org/misc/warnings.html#bulk-ess</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Tail Effective Samples Size (ESS) is too low, indicatingposterior variances and tail quantiles may be unreliable.</span>
+#&gt; <span class='warning'>Running the chains for more iterations may help. See</span>
+#&gt; <span class='warning'>http://mc-stan.org/misc/warnings.html#tail-ess</span></div><div class='input'><span class='fu'>mcmc_rhat</span>(<span class='fu'><a href='bayesplot-extractors.html'>rhat</a></span>(<span class='no'>fit2</span>))</div><div class='img'><img src='MCMC-diagnostics-15.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>mcmc_neff</span>(<span class='fu'><a href='bayesplot-extractors.html'>neff_ratio</a></span>(<span class='no'>fit2</span>))</div><div class='img'><img src='MCMC-diagnostics-16.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>mcmc_acf</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/array'>as.array</a></span>(<span class='no'>fit2</span>), <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"wt"</span>, <span class='st'>"cyl"</span>), <span class='kw'>lags</span> <span class='kw'>=</span> <span class='fl'>10</span>)</div><div class='img'><img src='MCMC-diagnostics-17.png' alt='' width='700' height='433' /></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

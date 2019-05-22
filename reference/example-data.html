@@ -35,7 +35,7 @@
 <meta property="og:description" content="These functions return various objects containing data used in the examples
 throughout the bayesplot package documentation." />
 
-<meta property="og:image" content="/logo.png" />
+<meta property="og:image" content="https://mc-stan.org/bayesplot/logo.png" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -66,7 +66,7 @@ throughout the bayesplot package documentation." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bayesplot</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.6.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.7.0</span>
       </span>
     </div>
 
@@ -152,7 +152,7 @@ throughout the bayesplot package documentation." />
     <div class="ref-description">
     
     <p>These functions return various objects containing data used in the examples
-throughout the <span class="pkg">bayesplot</span> package documentation.</p>
+throughout the <strong>bayesplot</strong> package documentation.</p>
     
     </div>
 
@@ -193,25 +193,25 @@ predictions corresponding to a basic linear regression model with data
 <code>alpha</code> (intercept), <code>beta</code> (coefficient vector), and <code>sigma</code>
 (error sd).</p>
 <dl class='dl-horizontal'>
-<dt><code>example_mcmc_draws</code></dt><dd><p>If <code>chains &gt; 1</code>, a <code>250</code> (iterations) by <code>chains</code> by
- <code>params</code> array or, if <code>chains = 1</code>, a <code>250</code> by <code>params</code>
- matrix of MCMC draws from the posterior distribution of the parameters in
- the linear regression model described above. If <code>params = 1</code> then only
- the draws for <code>alpha</code> are included in the returned object. If
- <code>params &gt;= 2</code> then draws for <code>sigma</code> are also included. And if
- <code>params</code> is between <code>3</code> and the maximum of <code>6</code> then draws
- for regression coefficients <code>beta[k]</code> (<code>k</code> in <code>1:(params-2)</code>)
- are also included.</p></dd>
-<dt><code>example_y_data</code></dt><dd><p>A numeric vector with <code>434</code> observations of the outcome variable in the
- linear regression model.</p></dd>
-<dt><code>example_x_data</code></dt><dd><p>A numeric vector with <code>434</code> observations of one of the predictor
- variables in the linear regression model.</p></dd>
-<dt><code>example_group_data</code></dt><dd><p>A factor variable with <code>434</code> observations of a grouping variable with
- two levels.</p></dd>
-<dt><code>example_yrep_draws</code></dt><dd><p>A <code>500</code> (draws) by <code>434</code> (data points) matrix of draws from the
- posterior predictive distribution. Each row represents a full dataset drawn
- from the posterior predictive distribution of the outcome <code>y</code> after
- fitting the linear regression model mentioned above.</p></dd>
+<dt><code>example_mcmc_draws()</code></dt><dd><p>If <code>chains &gt; 1</code>, a <code>250</code> (iterations) by <code>chains</code> by
+<code>params</code> array or, if <code>chains = 1</code>, a <code>250</code> by <code>params</code>
+matrix of MCMC draws from the posterior distribution of the parameters in
+the linear regression model described above. If <code>params = 1</code> then only
+the draws for <code>alpha</code> are included in the returned object. If
+<code>params &gt;= 2</code> then draws for <code>sigma</code> are also included. And if
+<code>params</code> is between <code>3</code> and the maximum of <code>6</code> then draws
+for regression coefficients <code>beta[k]</code> (<code>k</code> in <code>1:(params-2)</code>)
+are also included.</p></dd>
+<dt><code>example_y_data()</code></dt><dd><p>A numeric vector with <code>434</code> observations of the outcome variable in the
+linear regression model.</p></dd>
+<dt><code>example_x_data()</code></dt><dd><p>A numeric vector with <code>434</code> observations of one of the predictor
+variables in the linear regression model.</p></dd>
+<dt><code>example_group_data()</code></dt><dd><p>A factor variable with <code>434</code> observations of a grouping variable with
+two levels.</p></dd>
+<dt><code>example_yrep_draws()</code></dt><dd><p>A <code>500</code> (draws) by <code>434</code> (data points) matrix of draws from the
+posterior predictive distribution. Each row represents a full dataset drawn
+from the posterior predictive distribution of the outcome <code>y</code> after
+fitting the linear regression model mentioned above.</p></dd>
 </dl>
     
 

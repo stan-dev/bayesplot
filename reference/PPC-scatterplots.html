@@ -33,10 +33,10 @@
 <meta property="og:title" content="PPC scatterplots — PPC-scatterplots" />
 
 <meta property="og:description" content="Scatterplots of the observed data y vs. simulated/replicated data
-yrep from the posterior predictive distribution. See the Plot
-Descriptions and Details sections, below." />
+yrep from the posterior predictive distribution. See the
+Plot Descriptions and Details sections, below." />
 
-<meta property="og:image" content="/logo.png" />
+<meta property="og:image" content="https://mc-stan.org/bayesplot/logo.png" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -67,7 +67,7 @@ Descriptions and Details sections, below." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bayesplot</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.6.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.7.0</span>
       </span>
     </div>
 
@@ -153,8 +153,8 @@ Descriptions and Details sections, below." />
     <div class="ref-description">
     
     <p>Scatterplots of the observed data <code>y</code> vs. simulated/replicated data
-<code>yrep</code> from the posterior predictive distribution. See the <strong>Plot
-Descriptions</strong> and <strong>Details</strong> sections, below.</p>
+<code>yrep</code> from the posterior predictive distribution. See the
+<strong>Plot Descriptions</strong> and <strong>Details</strong> sections, below.</p>
     
     </div>
 
@@ -175,11 +175,10 @@ Descriptions</strong> and <strong>Details</strong> sections, below.</p>
       <th>yrep</th>
       <td><p>An \(S\) by \(N\) matrix of draws from the posterior
 predictive distribution, where \(S\) is the size of the posterior sample
-(or subset of the posterior sample used to generate <code>yrep</code>) and
-\(N\) is the number of observations (the length of <code>y</code>). The columns
-of <code>yrep</code> should be in the same order as the data points in <code>y</code>
-for the plots to make sense. See <strong>Details</strong> for additional
-instructions.</p></td>
+(or subset of the posterior sample used to generate <code>yrep</code>) and \(N\) is
+the number of observations (the length of <code>y</code>). The columns of <code>yrep</code>
+should be in the same order as the data points in <code>y</code> for the plots to make
+sense. See <strong>Details</strong> for additional instructions.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -187,8 +186,8 @@ instructions.</p></td>
     </tr>
     <tr>
       <th>size, alpha</th>
-      <td><p>Arguments passed to <code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_point'>geom_point</a></code> to
-control the appearance of the points.</p></td>
+      <td><p>Arguments passed to <code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_point'>ggplot2::geom_point()</a></code> to control the
+appearance of the points.</p></td>
     </tr>
     <tr>
       <th>group</th>
@@ -200,34 +199,33 @@ pertaining to the corresponding value of <code>y</code>.</p></td>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A ggplot object that can be further customized using the
-  <span class="pkg">ggplot2</span> package.</p>
+    <p>A ggplot object that can be further customized using the <strong>ggplot2</strong> package.</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>For Binomial data, the plots will typically be most useful if
-  <code>y</code> and <code>yrep</code> contain the "success" proportions (not discrete
-  "success" or "failure" counts).</p>
+<code>y</code> and <code>yrep</code> contain the "success" proportions (not discrete
+"success" or "failure" counts).</p>
     
     <h2 class="hasAnchor" id="plot-descriptions"><a class="anchor" href="#plot-descriptions"></a>Plot Descriptions</h2>
 
     
     <dl class='dl-horizontal'>
-  <dt><code>ppc_scatter</code></dt><dd><p>For each dataset (row) in <code>yrep</code> a scatterplot is generated showing
-   <code>y</code> against that row of <code>yrep</code>. For this plot <code>yrep</code> should
-   only contain a small number of rows.</p></dd>
-  <dt><code>ppc_scatter_avg</code></dt><dd><p>A scatterplot of <code>y</code> against the average values of <code>yrep</code>, i.e.,
-   the points <code>(mean(yrep[, n]), y[n])</code>, where each <code>yrep[, n]</code> is
-   a vector of length equal to the number of posterior draws.</p></dd>
-  <dt><code>ppc_scatter_avg_grouped</code></dt><dd><p>The same as <code>ppc_scatter_avg</code>, but a separate plot is generated for
-   each level of a grouping variable.</p></dd>
+<dt><code>ppc_scatter()</code></dt><dd><p>For each dataset (row) in <code>yrep</code> a scatterplot is generated showing <code>y</code>
+against that row of <code>yrep</code>. For this plot <code>yrep</code> should only contain a
+small number of rows.</p></dd>
+<dt><code>ppc_scatter_avg()</code></dt><dd><p>A scatterplot of <code>y</code> against the average values of <code>yrep</code>, i.e.,
+the points <code>(mean(yrep[, n]), y[n])</code>, where each <code>yrep[, n]</code> is
+a vector of length equal to the number of posterior draws.</p></dd>
+<dt><code>ppc_scatter_avg_grouped()</code></dt><dd><p>The same as <code>ppc_scatter_avg()</code>, but a separate plot is generated for
+each level of a grouping variable.</p></dd>
 </dl>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <p>Gelman, A., Carlin, J. B., Stern, H. S., Dunson, D. B., Vehtari,
-  A., and Rubin, D. B. (2013). <em>Bayesian Data Analysis.</em> Chapman &amp; Hall/CRC
-  Press, London, third edition. (Ch. 6)</p>
+A., and Rubin, D. B. (2013). <em>Bayesian Data Analysis.</em> Chapman &amp; Hall/CRC
+Press, London, third edition. (Ch. 6)</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 

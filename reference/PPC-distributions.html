@@ -37,7 +37,7 @@ of simulated/replicated data yrep from the posterior predictive
 distribution. See the Plot Descriptions section, below,
 for details." />
 
-<meta property="og:image" content="/logo.png" />
+<meta property="og:image" content="https://mc-stan.org/bayesplot/logo.png" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -68,7 +68,7 @@ for details." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bayesplot</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.6.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.7.0</span>
       </span>
     </div>
 
@@ -174,15 +174,16 @@ for details.</p>
 
 <span class='fu'>ppc_dens</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='no'>...</span>, <span class='kw'>trim</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>1</span>)
 
-<span class='fu'>ppc_dens_overlay</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='no'>...</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>0.25</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.7</span>, <span class='kw'>trim</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>bw</span> <span class='kw'>=</span> <span class='st'>"nrd0"</span>, <span class='kw'>adjust</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>kernel</span> <span class='kw'>=</span> <span class='st'>"gaussian"</span>, <span class='kw'>n_dens</span> <span class='kw'>=</span> <span class='fl'>1024</span>)
+<span class='fu'>ppc_dens_overlay</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='no'>...</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>0.25</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.7</span>,
+  <span class='kw'>trim</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>bw</span> <span class='kw'>=</span> <span class='st'>"nrd0"</span>, <span class='kw'>adjust</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>kernel</span> <span class='kw'>=</span> <span class='st'>"gaussian"</span>,
+  <span class='kw'>n_dens</span> <span class='kw'>=</span> <span class='fl'>1024</span>)
 
-<span class='fu'>ppc_ecdf_overlay</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='no'>...</span>, <span class='kw'>discrete</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>pad</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>0.25</span>,
-  <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.7</span>)
+<span class='fu'>ppc_ecdf_overlay</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='no'>...</span>, <span class='kw'>discrete</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>pad</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>0.25</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.7</span>)
 
-<span class='fu'>ppc_violin_grouped</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='no'>group</span>, <span class='no'>...</span>, <span class='kw'>probs</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>0.1</span>, <span class='fl'>0.5</span>, <span class='fl'>0.9</span>), <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>y_draw</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"violin"</span>, <span class='st'>"points"</span>, <span class='st'>"both"</span>), <span class='kw'>y_size</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>y_alpha</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>y_jitter</span> <span class='kw'>=</span> <span class='fl'>0.1</span>)</pre>
+<span class='fu'>ppc_violin_grouped</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='no'>group</span>, <span class='no'>...</span>, <span class='kw'>probs</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>0.1</span>, <span class='fl'>0.5</span>, <span class='fl'>0.9</span>),
+  <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>y_draw</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"violin"</span>, <span class='st'>"points"</span>, <span class='st'>"both"</span>),
+  <span class='kw'>y_size</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>y_alpha</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>y_jitter</span> <span class='kw'>=</span> <span class='fl'>0.1</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -195,11 +196,10 @@ for details.</p>
       <th>yrep</th>
       <td><p>An \(S\) by \(N\) matrix of draws from the posterior
 predictive distribution, where \(S\) is the size of the posterior sample
-(or subset of the posterior sample used to generate <code>yrep</code>) and
-\(N\) is the number of observations (the length of <code>y</code>). The columns
-of <code>yrep</code> should be in the same order as the data points in <code>y</code>
-for the plots to make sense. See <strong>Details</strong> for additional
-instructions.</p></td>
+(or subset of the posterior sample used to generate <code>yrep</code>) and \(N\) is
+the number of observations (the length of <code>y</code>). The columns of <code>yrep</code>
+should be in the same order as the data points in <code>y</code> for the plots to make
+sense. See <strong>Details</strong> for additional instructions.</p></td>
     </tr>
     <tr>
       <th>group</th>
@@ -213,12 +213,12 @@ pertaining to the corresponding value of <code>y</code>.</p></td>
     </tr>
     <tr>
       <th>binwidth</th>
-      <td><p>Passed to <code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_histogram'>geom_histogram</a></code> to override
+      <td><p>Passed to <code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_histogram'>ggplot2::geom_histogram()</a></code> to override
 the default binwidth.</p></td>
     </tr>
     <tr>
       <th>breaks</th>
-      <td><p>Passed to <code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_histogram'>geom_histogram</a></code> as an
+      <td><p>Passed to <code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_histogram'>ggplot2::geom_histogram()</a></code> as an
 alternative to <code>binwidth</code>.</p></td>
     </tr>
     <tr>
@@ -226,13 +226,13 @@ alternative to <code>binwidth</code>.</p></td>
       <td><p>For histograms, <code>freq=TRUE</code> (the default) puts count on the
 y-axis. Setting <code>freq=FALSE</code> puts density on the y-axis. (For many
 plots the y-axis text is off by default. To view the count or density
-labels on the y-axis see the <code><a href='bayesplot-helpers.html'>yaxis_text</a></code> convenience
+labels on the y-axis see the <code><a href='bayesplot-helpers.html'>yaxis_text()</a></code> convenience
 function.)</p></td>
     </tr>
     <tr>
       <th>notch</th>
-      <td><p>A logical scalar passed to <code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_boxplot'>geom_boxplot</a></code>.
-Unlike for <code>geom_boxplot</code>, the default is <code>notch=TRUE</code>.</p></td>
+      <td><p>A logical scalar passed to <code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_boxplot'>ggplot2::geom_boxplot()</a></code>.
+Unlike for <code>geom_boxplot()</code>, the default is <code>notch=TRUE</code>.</p></td>
     </tr>
     <tr>
       <th>size, alpha</th>
@@ -241,88 +241,93 @@ the <code>yrep</code> distributions.</p></td>
     </tr>
     <tr>
       <th>trim</th>
-      <td><p>A logical scalar passed to <code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_density'>geom_density</a></code>.</p></td>
+      <td><p>A logical scalar passed to <code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_density'>ggplot2::geom_density()</a></code>.</p></td>
     </tr>
     <tr>
       <th>bw, adjust, kernel, n_dens</th>
       <td><p>Optional arguments passed to
-<code><a href='https://www.rdocumentation.org/packages/stats/topics/density'>density</a></code> to override default kernel density estimation
-parameters. <code>n_dens</code> defaults to 1024.</p></td>
+<code><a href='https://www.rdocumentation.org/packages/stats/topics/density'>stats::density()</a></code> to override default kernel density estimation
+parameters. <code>n_dens</code> defaults to <code>1024</code>.</p></td>
     </tr>
     <tr>
       <th>discrete</th>
-      <td><p>For <code>ppc_ecdf_overlay</code>, should the data be treated as
+      <td><p>For <code>ppc_ecdf_overlay()</code>, should the data be treated as
 discrete? The default is <code>FALSE</code>, in which case <code>geom="line"</code> is
-passed to <code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/stat_ecdf'>stat_ecdf</a></code>. If <code>discrete</code> is set to
+passed to <code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/stat_ecdf'>ggplot2::stat_ecdf()</a></code>. If <code>discrete</code> is set to
 <code>TRUE</code> then <code>geom="step"</code> is used.</p></td>
     </tr>
     <tr>
       <th>pad</th>
-      <td><p>A logical scalar passed to <code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/stat_ecdf'>stat_ecdf</a></code>.</p></td>
+      <td><p>A logical scalar passed to <code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/stat_ecdf'>ggplot2::stat_ecdf()</a></code>.</p></td>
     </tr>
     <tr>
       <th>probs</th>
-      <td><p>A numeric vector passed to <code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_violin'>geom_violin</a></code>'s
+      <td><p>A numeric vector passed to <code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_violin'>ggplot2::geom_violin()</a></code>'s
 <code>draw_quantiles</code> argument to specify at which quantiles to draw
 horizontal lines. Set to <code>NULL</code> to remove the lines.</p></td>
     </tr>
     <tr>
       <th>y_draw</th>
-      <td><p>For <code>ppc_violin_grouped</code>, a string specifying how to draw
-<code>y</code>: <code>"violin"</code> (default), <code>"points"</code> (jittered points), or
-<code>"both"</code>.</p></td>
+      <td><p>For <code>ppc_violin_grouped()</code>, a string specifying how to draw
+<code>y</code>: <code>"violin"</code> (default), <code>"points"</code> (jittered points), or <code>"both"</code>.</p></td>
     </tr>
     <tr>
       <th>y_jitter, y_size, y_alpha</th>
-      <td><p>For <code>ppc_violin_grouped</code>, if
-<code>y_draw</code> is <code>"points"</code> or <code>"both"</code> then <code>y_size</code>,
-<code>y_alpha</code>, and <code>y_jitter</code> are passed to to the <code>size</code>,
-<code>alpha</code>, and <code>width</code> arguments of
-<code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_jitter'>geom_jitter</a></code> to control the appearance of <code>y</code>
-points. The default of <code>y_jitter=NULL</code> will let <span class="pkg">ggplot2</span>
-determine the amount of jitter.</p></td>
+      <td><p>For <code>ppc_violin_grouped()</code>, if <code>y_draw</code> is
+<code>"points"</code> or <code>"both"</code> then <code>y_size</code>, <code>y_alpha</code>, and <code>y_jitter</code> are passed
+to to the <code>size</code>, <code>alpha</code>, and <code>width</code> arguments of <code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_jitter'>ggplot2::geom_jitter()</a></code>
+to control the appearance of <code>y</code> points. The default of <code>y_jitter=NULL</code>
+will let <strong>ggplot2</strong> determine the amount of jitter.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A ggplot object that can be further customized using the
-  <span class="pkg">ggplot2</span> package. The <code>_data</code> functions return the data that
-  would have been drawn by the plotting function.</p>
+    <p>The plotting functions return a ggplot object that can be further
+customized using the <strong>ggplot2</strong> package. The functions with suffix
+<code>_data()</code> return the data that would have been drawn by the plotting
+function.</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>For Binomial data, the plots will typically be most useful if
-  <code>y</code> and <code>yrep</code> contain the "success" proportions (not discrete
-  "success" or "failure" counts).</p>
+<code>y</code> and <code>yrep</code> contain the "success" proportions (not discrete
+"success" or "failure" counts).</p>
     
     <h2 class="hasAnchor" id="plot-descriptions"><a class="anchor" href="#plot-descriptions"></a>Plot Descriptions</h2>
 
     
     <dl class='dl-horizontal'>
-  <dt><code>ppc_hist, ppc_freqpoly, ppc_dens, ppc_boxplot</code></dt><dd><p>A separate histogram, shaded frequency polygon, smoothed kernel density
-   estimate, or box and whiskers plot is displayed for <code>y</code> and each
-   dataset (row) in <code>yrep</code>. For these plots <code>yrep</code> should therefore
-   contain only a small number of rows. See the <strong>Examples</strong> section.</p></dd>
-  <dt><code>ppc_freqpoly_grouped</code></dt><dd><p>A separate frequency polygon is plotted for each level of a grouping
-   variable for <code>y</code> and each dataset (row) in <code>yrep</code>. For this plot
-   <code>yrep</code> should therefore contain only a small number of rows. See the
-   <strong>Examples</strong> section.</p></dd>
-  <dt><code>ppc_dens_overlay, ppc_ecdf_overlay</code></dt><dd><p>Kernel density or empirical CDF estimates of each dataset (row) in
-   <code>yrep</code> are overlaid, with the distribution of <code>y</code> itself on top
-   (and in a darker shade). When using <code>ppc_ecdf_overlay</code> with discrete
-   data set the <code>discrete</code> argument to <code>TRUE</code> for better results.</p></dd>
-  <dt><code>ppc_violin_grouped</code></dt><dd><p>The density estimate of <code>yrep</code> within each level of a grouping
-   variable is plotted as a violin with horizontal lines at notable
-   quantiles. <code>y</code> is overlaid on the plot either as a violin, points, or
-   both, depending on the <code>y_draw</code> argument.</p></dd>
+<dt><code>ppc_hist(), ppc_freqpoly(), ppc_dens(), ppc_boxplot()</code></dt><dd><p>A separate histogram, shaded frequency polygon, smoothed kernel density
+estimate, or box and whiskers plot is displayed for <code>y</code> and each
+dataset (row) in <code>yrep</code>. For these plots <code>yrep</code> should therefore
+contain only a small number of rows. See the <strong>Examples</strong> section.</p></dd>
+<dt><code>ppc_freqpoly_grouped()</code></dt><dd><p>A separate frequency polygon is plotted for each level of a grouping
+variable for <code>y</code> and each dataset (row) in <code>yrep</code>. For this plot
+<code>yrep</code> should therefore contain only a small number of rows. See the
+<strong>Examples</strong> section.</p></dd>
+<dt><code>ppc_dens_overlay(), ppc_ecdf_overlay()</code></dt><dd><p>Kernel density or empirical CDF estimates of each dataset (row) in
+<code>yrep</code> are overlaid, with the distribution of <code>y</code> itself on top
+(and in a darker shade). When using <code>ppc_ecdf_overlay()</code> with discrete
+data, set the <code>discrete</code> argument to <code>TRUE</code> for better results.
+For an example of <code>ppc_dens_overlay()</code> also see Gabry et al. (2019).</p></dd>
+<dt><code>ppc_violin_grouped()</code></dt><dd><p>The density estimate of <code>yrep</code> within each level of a grouping
+variable is plotted as a violin with horizontal lines at notable
+quantiles. <code>y</code> is overlaid on the plot either as a violin, points, or
+both, depending on the <code>y_draw</code> argument.</p></dd>
 </dl>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
-    <p>Gelman, A., Carlin, J. B., Stern, H. S., Dunson, D. B., Vehtari,
-  A., and Rubin, D. B. (2013). <em>Bayesian Data Analysis.</em> Chapman &amp; Hall/CRC
-  Press, London, third edition. (Ch. 6)</p>
+    <p>Gabry, J. , Simpson, D. , Vehtari, A. , Betancourt, M. and
+Gelman, A. (2019), Visualization in Bayesian workflow.
+<em>J. R. Stat. Soc. A</em>, 182: 389-402. doi:10.1111/rssa.12378.
+(<a href='https://rss.onlinelibrary.wiley.com/doi/full/10.1111/rssa.12378'>journal version</a>,
+<a href='https://arxiv.org/abs/1709.01449'>arXiv preprint</a>,
+<a href='https://github.com/jgabry/bayes-vis-paper'>code on GitHub</a>)</p>
+<p>Gelman, A., Carlin, J. B., Stern, H. S., Dunson, D. B., Vehtari,
+A., and Rubin, D. B. (2013). <em>Bayesian Data Analysis.</em> Chapman &amp; Hall/CRC
+Press, London, third edition. (Ch. 6)</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 

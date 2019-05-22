@@ -34,10 +34,10 @@
 
 <meta property="og:description" content="Generics and methods for extracting quantities needed for plotting from
 various types of model objects. Currently methods are only provided for
-stanfit (rstan) and stanreg (rstanarm) objects, but adding new
+stanfit (rstan) and stanreg (stanreg) objects, but adding new
 methods should be relatively straightforward." />
 
-<meta property="og:image" content="/logo.png" />
+<meta property="og:image" content="https://mc-stan.org/bayesplot/logo.png" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -68,7 +68,7 @@ methods should be relatively straightforward." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bayesplot</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.6.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.7.0</span>
       </span>
     </div>
 
@@ -155,7 +155,7 @@ methods should be relatively straightforward." />
     
     <p>Generics and methods for extracting quantities needed for plotting from
 various types of model objects. Currently methods are only provided for
-stanfit (<span class="pkg">rstan</span>) and stanreg (<span class="pkg">rstanarm</span>) objects, but adding new
+stanfit (<strong>rstan</strong>) and stanreg (<strong>stanreg</strong>) objects, but adding new
 methods should be relatively straightforward.</p>
     
     </div>
@@ -175,10 +175,12 @@ methods should be relatively straightforward.</p>
 <span class='fu'>log_posterior</span>(<span class='no'>object</span>, <span class='kw'>inc_warmup</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)
 
 <span class='co'># S3 method for stanfit</span>
-<span class='fu'>nuts_params</span>(<span class='no'>object</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>inc_warmup</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)
+<span class='fu'>nuts_params</span>(<span class='no'>object</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>inc_warmup</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='no'>...</span>)
 
 <span class='co'># S3 method for stanreg</span>
-<span class='fu'>nuts_params</span>(<span class='no'>object</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>inc_warmup</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)
+<span class='fu'>nuts_params</span>(<span class='no'>object</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>inc_warmup</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='no'>...</span>)
 
 <span class='co'># S3 method for list</span>
 <span class='fu'>nuts_params</span>(<span class='no'>object</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)
@@ -193,7 +195,8 @@ methods should be relatively straightforward.</p>
 <span class='fu'>neff_ratio</span>(<span class='no'>object</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)
 
 <span class='co'># S3 method for stanreg</span>
-<span class='fu'>neff_ratio</span>(<span class='no'>object</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
+<span class='fu'>neff_ratio</span>(<span class='no'>object</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -214,14 +217,16 @@ whether to include warmup draws, if applicable.</p></td>
     <tr>
       <th>pars</th>
       <td><p>An optional character vector of parameter names. For
-<code>nuts_params</code> these will be NUTS sampler parameter names rather than
+<code>nuts_params()</code> these will be NUTS sampler parameter names rather than
 model parameters. If <code>pars</code> is omitted all parameters are included.</p></td>
     </tr>
     <tr>
       <th>regex_pars</th>
       <td><p>An optional <a href='https://www.rdocumentation.org/packages/base/topics/grep'>regular expression</a> to use for
-parameter selection. Can be specified instead of <code>pars</code> or in addition
-to <code>pars</code>.</p></td>
+parameter selection. Can be specified instead of <code>pars</code> or in addition to
+<code>pars</code>. When using <code>pars</code> for tidy parameter selection, the <code>regex_pars</code>
+argument is ignored since <a href='https://www.rdocumentation.org/packages/tidyselect/topics/select_helpers'>select helpers</a>
+perform a similar function.</p></td>
     </tr>
     </table>
     
@@ -229,36 +234,53 @@ to <code>pars</code>.</p></td>
 
     
 <dl class='dl-horizontal'>
-<dt><code>log_posterior</code></dt><dd><p><code>log_posterior</code> methods return a molten data frame (see
-<code><a href='https://www.rdocumentation.org/packages/reshape2/topics/melt'>melt</a></code>). The data frame should have columns
-<code>"Iteration"</code> (integer), <code>"Chain"</code> (integer), and <code>"Value"</code>
-(numeric). See <strong>Examples</strong>, below.</p></dd>
-<dt><code>nuts_params</code></dt><dd><p><code>nuts_params</code> methods return a molten data frame (see
-<code><a href='https://www.rdocumentation.org/packages/reshape2/topics/melt'>melt</a></code>). The data frame should have columns
-<code>"Parameter"</code> (factor), <code>"Iteration"</code> (integer), <code>"Chain"</code>
+<dt><code>log_posterior()</code></dt><dd><p><code>log_posterior()</code> methods return a molten data frame (see <code><a href='https://www.rdocumentation.org/packages/reshape2/topics/melt'>reshape2::melt()</a></code>).
+The data frame should have columns <code>"Iteration"</code> (integer), <code>"Chain"</code>
 (integer), and <code>"Value"</code> (numeric). See <strong>Examples</strong>, below.</p></dd>
-<dt><code>rhat</code>, <code>neff_ratio</code></dt><dd><p>Methods return (named) vectors.</p></dd>
+<dt><code>nuts_params()</code></dt><dd><p><code>nuts_params()</code> methods return a molten data frame (see <code><a href='https://www.rdocumentation.org/packages/reshape2/topics/melt'>reshape2::melt()</a></code>).
+The data frame should have columns <code>"Parameter"</code> (factor), <code>"Iteration"</code>
+(integer), <code>"Chain"</code> (integer), and <code>"Value"</code> (numeric). See <strong>Examples</strong>, below.</p></dd>
+<dt><code>rhat()</code>, <code>neff_ratio()</code></dt><dd><p>Methods return (named) vectors.</p></dd>
 </dl>
 
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='MCMC-nuts.html'>MCMC-nuts</a></code>, <code><a href='MCMC-diagnostics.html'>MCMC-diagnostics</a></code></p></div>
+    <div class='dont-index'><p><a href='MCMC-nuts.html'>MCMC-nuts</a>, <a href='MCMC-diagnostics.html'>MCMC-diagnostics</a></p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>rstanarm</span>)
-<span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/rstanarm/topics/stan_glm'>stan_glm</a></span>(<span class='no'>mpg</span> ~ <span class='no'>wt</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>mtcars</span>)
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>rstanarm</span>)
+<span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/rstanarm/topics/stan_glm'>stan_glm</a></span>(<span class='no'>mpg</span> ~ <span class='no'>wt</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>mtcars</span>, <span class='kw'>refresh</span> <span class='kw'>=</span> <span class='fl'>0</span>)
 
 <span class='no'>np</span> <span class='kw'>&lt;-</span> <span class='fu'>nuts_params</span>(<span class='no'>fit</span>)
-<span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/head'>head</a></span>(<span class='no'>np</span>)
-<span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/head'>tail</a></span>(<span class='no'>np</span>)
-
+<span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/head'>head</a></span>(<span class='no'>np</span>)</div><div class='output co'>#&gt;   Iteration     Parameter     Value Chain
+#&gt; 1         1 accept_stat__ 0.7959114     1
+#&gt; 2         2 accept_stat__ 0.9530362     1
+#&gt; 3         3 accept_stat__ 0.9324149     1
+#&gt; 4         4 accept_stat__ 0.9940184     1
+#&gt; 5         5 accept_stat__ 0.9783435     1
+#&gt; 6         6 accept_stat__ 0.9573124     1</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/head'>tail</a></span>(<span class='no'>np</span>)</div><div class='output co'>#&gt;       Iteration Parameter    Value Chain
+#&gt; 23995       995  energy__ 93.36461     4
+#&gt; 23996       996  energy__ 89.54952     4
+#&gt; 23997       997  energy__ 88.68174     4
+#&gt; 23998       998  energy__ 90.49492     4
+#&gt; 23999       999  energy__ 89.65802     4
+#&gt; 24000      1000  energy__ 88.86220     4</div><div class='input'>
 <span class='no'>lp</span> <span class='kw'>&lt;-</span> <span class='fu'>log_posterior</span>(<span class='no'>fit</span>)
-<span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/head'>head</a></span>(<span class='no'>lp</span>)
-<span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/head'>tail</a></span>(<span class='no'>lp</span>)
-<span class='co'># }</span><div class='input'>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/head'>head</a></span>(<span class='no'>lp</span>)</div><div class='output co'>#&gt;   Iteration     Value Chain
+#&gt; 1         1 -88.12764     1
+#&gt; 2         2 -88.74532     1
+#&gt; 3         3 -91.04726     1
+#&gt; 4         4 -90.13570     1
+#&gt; 5         5 -88.06601     1
+#&gt; 6         6 -88.77880     1</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/head'>tail</a></span>(<span class='no'>lp</span>)</div><div class='output co'>#&gt;      Iteration     Value Chain
+#&gt; 3995       995 -87.72254     4
+#&gt; 3996       996 -88.32615     4
+#&gt; 3997       997 -87.69828     4
+#&gt; 3998       998 -88.24352     4
+#&gt; 3999       999 -88.42873     4
+#&gt; 4000      1000 -88.70642     4</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

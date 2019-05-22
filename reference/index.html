@@ -32,7 +32,7 @@
 
 <meta property="og:title" content="Function reference" />
 
-<meta property="og:image" content="/logo.png" />
+<meta property="og:image" content="https://mc-stan.org/bayesplot/logo.png" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -63,7 +63,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bayesplot</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.6.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.7.0</span>
       </span>
     </div>
 
@@ -155,8 +155,34 @@
     <tbody>
       <tr>
         <th colspan="2">
+          <h2 id="section-aesthetics" class="hasAnchor"><a href="#section-aesthetics" class="anchor"></a>Aesthetics</h2>
+          <p class="section-desc"><p>Functions for setting the color scheme and ggplot theme used by <strong>bayesplot</strong>. (Also see the separate <strong>ggplot helpers</strong> section below.)</p></p>
+        </th>
+      </tr>
+      <tr>
+        
+        <td>
+          <p><code><a href="bayesplot-colors.html">color_scheme_set()</a></code> <code><a href="bayesplot-colors.html">color_scheme_get()</a></code> <code><a href="bayesplot-colors.html">color_scheme_view()</a></code> </p>
+        </td>
+        <td><p>Set, get, or view <strong>bayesplot</strong> color schemes</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="bayesplot_theme_get.html">bayesplot_theme_get()</a></code> <code><a href="bayesplot_theme_get.html">bayesplot_theme_set()</a></code> <code><a href="bayesplot_theme_get.html">bayesplot_theme_update()</a></code> <code><a href="bayesplot_theme_get.html">bayesplot_theme_replace()</a></code> </p>
+        </td>
+        <td><p>Get, set, and modify the active <strong>bayesplot</strong> theme</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="theme_default.html">theme_default()</a></code> </p>
+        </td>
+        <td><p>Default <strong>bayesplot</strong> plotting theme</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
           <h2 id="section-ppc" class="hasAnchor"><a href="#section-ppc" class="anchor"></a>PPC</h2>
-          <p class="section-desc"><p>Functions for carrying out a wide variety of graphical model checks based on comparing observed data to draws from the posterior predictive distribution.</p></p>
+          <p class="section-desc"><p>Functions for carrying out a wide variety of graphical model checks based on comparing observed data to draws from the posterior (or prior) predictive distribution.</p></p>
         </th>
       </tr>
       <tr>
@@ -212,7 +238,7 @@
         <td>
           <p><code><a href="pp_check.html">pp_check()</a></code> </p>
         </td>
-        <td><p>Posterior predictive checks (S3 generic and default method)</p></td>
+        <td><p>Posterior (or prior) predictive checks (S3 generic and default method)</p></td>
       </tr>
     </tbody><tbody>
       <tr>
@@ -266,9 +292,9 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="MCMC-traces.html">mcmc_trace()</a></code> <code><a href="MCMC-traces.html">mcmc_trace_highlight()</a></code> <code><a href="MCMC-traces.html">trace_style_np()</a></code> </p>
+          <p><code><a href="MCMC-traces.html">mcmc_trace()</a></code> <code><a href="MCMC-traces.html">mcmc_trace_highlight()</a></code> <code><a href="MCMC-traces.html">trace_style_np()</a></code> <code><a href="MCMC-traces.html">mcmc_rank_overlay()</a></code> <code><a href="MCMC-traces.html">mcmc_rank_hist()</a></code> <code><a href="MCMC-traces.html">mcmc_trace_data()</a></code> </p>
         </td>
-        <td><p>Trace plot (time series plot) of MCMC draws</p></td>
+        <td><p>Trace plots of MCMC draws</p></td>
       </tr><tr>
         
         <td>
@@ -280,7 +306,7 @@
       <tr>
         <th colspan="2">
           <h2 id="section-hmc-nuts-diagnostics" class="hasAnchor"><a href="#section-hmc-nuts-diagnostics" class="anchor"></a>HMC/NUTS diagnostics</h2>
-          <p class="section-desc"><p>Functions for plotting diagnostics specific to Hamiltonian Monte Carlo (HMC) and the No-U-Turn Sampler (NUTS). Some of the general MCMC plotting functions (<code>mcmc_parcoord</code>, <code>mcmc_pairs</code>, <code>mcmc_scatter</code>, <code>mcmc_trace</code>) can also show HMC/NUTS diagnostic information if optional arguments are specified, but the special functions below are <em>only</em> intended for use with HMC/NUTS.</p></p>
+          <p class="section-desc"><p>Functions for plotting diagnostics specific to Hamiltonian Monte Carlo (HMC) and the No-U-Turn Sampler (NUTS). Some of the general MCMC plotting functions (<code><a href="../reference/MCMC-parcoord.html">mcmc_parcoord()</a></code>, <code><a href="../reference/MCMC-scatterplots.html">mcmc_pairs()</a></code>, <code><a href="../reference/MCMC-scatterplots.html">mcmc_scatter()</a></code>, <code><a href="../reference/MCMC-traces.html">mcmc_trace()</a></code>) can also show HMC/NUTS diagnostic information if optional arguments are specified, but the special functions below are <em>only</em> intended for use with HMC/NUTS.</p></p>
         </th>
       </tr>
       <tr>
@@ -293,29 +319,25 @@
     </tbody><tbody>
       <tr>
         <th colspan="2">
-          <h2 id="section-aesthetics" class="hasAnchor"><a href="#section-aesthetics" class="anchor"></a>Aesthetics</h2>
-          <p class="section-desc"><p>Functions for setting color schemes, customizing various plot features, and arranging multiple plots.</p></p>
+          <h2 id="section-tidy-parameter-selection-for-mcmc-plots" class="hasAnchor"><a href="#section-tidy-parameter-selection-for-mcmc-plots" class="anchor"></a>Tidy parameter selection for MCMC plots</h2>
+          <p class="section-desc"><p>Helper functions for tidy parameter selection and examples of using <strong>bayesplot</strong> with <a href="https://dplyr.tidyverse.org/"><strong>dplyr</strong></a>.</p></p>
         </th>
       </tr>
       <tr>
         
         <td>
-          <p><code><a href="bayesplot-colors.html">color_scheme_set()</a></code> <code><a href="bayesplot-colors.html">color_scheme_get()</a></code> <code><a href="bayesplot-colors.html">color_scheme_view()</a></code> </p>
+          <p><code><a href="tidy-params.html">param_range()</a></code> <code><a href="tidy-params.html">param_glue()</a></code> </p>
         </td>
-        <td><p>Set, get, or view color schemes</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="theme_default.html">theme_default()</a></code> </p>
-        </td>
-        <td><p>Default bayesplot plotting theme</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="bayesplot_theme_get.html">bayesplot_theme_get()</a></code> <code><a href="bayesplot_theme_get.html">bayesplot_theme_set()</a></code> <code><a href="bayesplot_theme_get.html">bayesplot_theme_update()</a></code> <code><a href="bayesplot_theme_get.html">bayesplot_theme_replace()</a></code> </p>
-        </td>
-        <td><p>Get, set, and modify the active bayesplot theme</p></td>
-      </tr><tr>
+        <td><p>Tidy parameter selection</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-ggplot-helpers" class="hasAnchor"><a href="#section-ggplot-helpers" class="anchor"></a>ggplot helpers</h2>
+          <p class="section-desc"><p>Convenience functions for arranging multiple plots, adding features to plots, and shortcuts for modifying individual ggplot theme elements.</p></p>
+        </th>
+      </tr>
+      <tr>
         
         <td>
           <p><code><a href="bayesplot_grid.html">bayesplot_grid()</a></code> </p>
@@ -331,8 +353,8 @@
     </tbody><tbody>
       <tr>
         <th colspan="2">
-          <h2 id="section-miscellaneous" class="hasAnchor"><a href="#section-miscellaneous" class="anchor"></a>Miscellaneous</h2>
-          <p class="section-desc"><p>Functions for extracting various quantities needed for plotting from model objects, generating data for examples, and listing available plotting functions.</p></p>
+          <h2 id="section-extractors" class="hasAnchor"><a href="#section-extractors" class="anchor"></a>Extractors</h2>
+          <p class="section-desc"><p>Functions extracting various quantities needed for plotting from different types of fitted model objects.</p></p>
         </th>
       </tr>
       <tr>
@@ -341,7 +363,15 @@
           <p><code><a href="bayesplot-extractors.html">log_posterior()</a></code> <code><a href="bayesplot-extractors.html">nuts_params()</a></code> <code><a href="bayesplot-extractors.html">rhat()</a></code> <code><a href="bayesplot-extractors.html">neff_ratio()</a></code> </p>
         </td>
         <td><p>Extract quantities needed for plotting from model objects</p></td>
-      </tr><tr>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-miscellaneous" class="hasAnchor"><a href="#section-miscellaneous" class="anchor"></a>Miscellaneous</h2>
+          <p class="section-desc"><p>Functions for generating data for examples and listing available plotting functions.</p></p>
+        </th>
+      </tr>
+      <tr>
         
         <td>
           <p><code><a href="example-data.html">example_mcmc_draws()</a></code> <code><a href="example-data.html">example_yrep_draws()</a></code> <code><a href="example-data.html">example_y_data()</a></code> <code><a href="example-data.html">example_x_data()</a></code> <code><a href="example-data.html">example_group_data()</a></code> </p>
@@ -361,10 +391,13 @@
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
+      <li><a href="#section-aesthetics">Aesthetics</a></li>
       <li><a href="#section-ppc">PPC</a></li>
       <li><a href="#section-mcmc">MCMC</a></li>
       <li><a href="#section-hmc-nuts-diagnostics">HMC/NUTS diagnostics</a></li>
-      <li><a href="#section-aesthetics">Aesthetics</a></li>
+      <li><a href="#section-tidy-parameter-selection-for-mcmc-plots">Tidy parameter selection for MCMC plots</a></li>
+      <li><a href="#section-ggplot-helpers">ggplot helpers</a></li>
+      <li><a href="#section-extractors">Extractors</a></li>
       <li><a href="#section-miscellaneous">Miscellaneous</a></li>
     </ul>
   </div>

@@ -39,7 +39,7 @@ on this page. Currently these include rootograms for count outcomes and bar
 plots for ordinal, categorical, and multinomial outcomes. See the
 Plot Descriptions section below." />
 
-<meta property="og:image" content="/logo.png" />
+<meta property="og:image" content="https://mc-stan.org/bayesplot/logo.png" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -70,7 +70,7 @@ Plot Descriptions section below." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bayesplot</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.6.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.7.0</span>
       </span>
     </div>
 
@@ -155,7 +155,7 @@ Plot Descriptions section below." />
 
     <div class="ref-description">
     
-    <p>Many of the <a href='PPC-overview.html'>PPC</a> functions in <span class="pkg">bayesplot</span> can
+    <p>Many of the <a href='PPC-overview.html'>PPC</a> functions in <strong>bayesplot</strong> can
 be used with discrete data. The small subset of these functions that can
 <em>only</em> be used if <code>y</code> and <code>yrep</code> are discrete are documented
 on this page. Currently these include rootograms for count outcomes and bar
@@ -164,14 +164,14 @@ plots for ordinal, categorical, and multinomial outcomes. See the
     
     </div>
 
-    <pre class="usage"><span class='fu'>ppc_bars</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='no'>...</span>, <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.9</span>, <span class='kw'>width</span> <span class='kw'>=</span> <span class='fl'>0.9</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>fatten</span> <span class='kw'>=</span> <span class='fl'>3</span>,
-  <span class='kw'>freq</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+    <pre class="usage"><span class='fu'>ppc_bars</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='no'>...</span>, <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.9</span>, <span class='kw'>width</span> <span class='kw'>=</span> <span class='fl'>0.9</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>fatten</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>freq</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
-<span class='fu'>ppc_bars_grouped</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='no'>group</span>, <span class='kw'>facet_args</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(), <span class='no'>...</span>, <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.9</span>,
+<span class='fu'>ppc_bars_grouped</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='no'>group</span>, <span class='no'>...</span>, <span class='kw'>facet_args</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(), <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.9</span>,
   <span class='kw'>width</span> <span class='kw'>=</span> <span class='fl'>0.9</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>fatten</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>freq</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
-<span class='fu'>ppc_rootogram</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='kw'>style</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"standing"</span>, <span class='st'>"hanging"</span>, <span class='st'>"suspended"</span>), <span class='no'>...</span>,
-  <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.9</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>1</span>)</pre>
+<span class='fu'>ppc_rootogram</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='kw'>style</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"standing"</span>, <span class='st'>"hanging"</span>, <span class='st'>"suspended"</span>),
+  <span class='no'>...</span>, <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.9</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>1</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -184,11 +184,10 @@ plots for ordinal, categorical, and multinomial outcomes. See the
       <th>yrep</th>
       <td><p>An \(S\) by \(N\) matrix of draws from the posterior
 predictive distribution, where \(S\) is the size of the posterior sample
-(or subset of the posterior sample used to generate <code>yrep</code>) and
-\(N\) is the number of observations (the length of <code>y</code>). The columns
-of <code>yrep</code> should be in the same order as the data points in <code>y</code>
-for the plots to make sense. See <strong>Details</strong> for additional
-instructions.</p></td>
+(or subset of the posterior sample used to generate <code>yrep</code>) and \(N\) is
+the number of observations (the length of <code>y</code>). The columns of <code>yrep</code>
+should be in the same order as the data points in <code>y</code> for the plots to make
+sense. See <strong>Details</strong> for additional instructions.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -196,29 +195,28 @@ instructions.</p></td>
     </tr>
     <tr>
       <th>prob</th>
-      <td><p>A value between 0 and 1 indicating the desired probability mass
-to include in the <code>yrep</code> intervals. Set <code>prob=0</code> to
-remove the intervals. For <code>ppc_rootogram</code> these are intervals
-of the <em>square roots</em> of the expected counts.</p></td>
+      <td><p>A value between <code>0</code> and <code>1</code> indicating the desired probability
+mass to include in the <code>yrep</code> intervals. Set <code>prob=0</code> to remove the
+intervals. For <code>ppc_rootogram()</code> these are intervals of the <em>square roots</em>
+of the expected counts.</p></td>
     </tr>
     <tr>
       <th>width</th>
-      <td><p>For <code>ppc_bars</code> and <code>ppc_bars_grouped</code>,
-passed to <code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_bar'>geom_bar</a></code> to control the bar width.</p></td>
+      <td><p>For <code>ppc_bars()</code> and <code>ppc_bars_grouped()</code>, passed to
+<code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_bar'>ggplot2::geom_bar()</a></code> to control the bar width.</p></td>
     </tr>
     <tr>
       <th>size, fatten</th>
-      <td><p>For <code>ppc_bars</code> and <code>ppc_bars_grouped</code>,
-<code>size</code> and <code>fatten</code> are passed to
-<code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_linerange'>geom_pointrange</a></code> to control the appearance of the
-<code>yrep</code> points and intervals. For <code>ppc_rootogram</code> <code>size</code> is
-passed to <code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_path'>geom_line</a></code>.</p></td>
+      <td><p>For <code>ppc_bars()</code> and <code>ppc_bars_grouped()</code>, <code>size</code> and
+<code>fatten</code> are passed to <code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_linerange'>ggplot2::geom_pointrange()</a></code> to control the
+appearance of the <code>yrep</code> points and intervals. For <code>ppc_rootogram()</code> <code>size</code>
+is passed to <code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_path'>ggplot2::geom_line()</a></code>.</p></td>
     </tr>
     <tr>
       <th>freq</th>
-      <td><p>For <code>ppc_bars</code> and <code>ppc_bars_grouped</code>, if <code>TRUE</code>
-(the default) the y-axis will display counts. Setting <code>freq=FALSE</code>
-will put proportions on the y-axis.</p></td>
+      <td><p>For <code>ppc_bars()</code> and <code>ppc_bars_grouped()</code>, if <code>TRUE</code> (the
+default) the y-axis will display counts. Setting <code>freq=FALSE</code> will put
+proportions on the y-axis.</p></td>
     </tr>
     <tr>
       <th>group</th>
@@ -229,7 +227,7 @@ pertaining to the corresponding value of <code>y</code>.</p></td>
     <tr>
       <th>facet_args</th>
       <td><p>An optional list of  arguments (other than <code>facets</code>)
-passed to <code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/facet_wrap'>facet_wrap</a></code> to control faceting.</p></td>
+passed to <code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/facet_wrap'>ggplot2::facet_wrap()</a></code> to control faceting.</p></td>
     </tr>
     <tr>
       <th>style</th>
@@ -242,47 +240,48 @@ details on the different styles.</p></td>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A ggplot object that can be further customized using the
-  <span class="pkg">ggplot2</span> package.</p>
+    <p>A ggplot object that can be further customized using the <strong>ggplot2</strong> package.</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>For all of these plots <code>y</code> and <code>yrep</code> must be non-negative
-  integers, although they need not be integers in the strict sense of <span style="R">R</span>'s
-  <code><a href='https://www.rdocumentation.org/packages/base/topics/integer'>integer</a></code> type.</p>
+    <p>For all of these plots <code>y</code> and <code>yrep</code> must be integers, although
+they need not be integers in the strict sense of <span style="R">R</span>'s
+<a href='https://www.rdocumentation.org/packages/base/topics/integer'>integer</a> type. For rootogram plots <code>y</code> and <code>yrep</code> must also
+be non-negative.</p>
     
     <h2 class="hasAnchor" id="plot-descriptions"><a class="anchor" href="#plot-descriptions"></a>Plot Descriptions</h2>
 
     
     <dl class='dl-horizontal'>
-<dt><code>ppc_bars</code></dt><dd><p>Bar plot of <code>y</code> with <code>yrep</code> medians and uncertainty intervals
-  superimposed on the bars.</p></dd>
-<dt><code>ppc_bars_grouped</code></dt><dd><p>Same as <code>ppc_bars</code> but a separate plot (facet) is generated for each
-  level of a grouping variable.</p></dd>
-<dt><code>ppc_rootogram</code></dt><dd><p>Rootograms allow for diagnosing problems in count data models such as
-  overdispersion or excess zeros. They consist of a histogram of <code>y</code>
-  with the expected counts based on <code>yrep</code> overlaid as a line along with
-  uncertainty intervals. The y-axis represents the square roots of the counts
-  to approximately adjust for scale differences and thus ease comparison
-  between observed and expected counts. Using the <code>style</code> argument, the
-  histogram style can be adjusted to focus on different aspects of the data:
-  <ul>
+<dt><code>ppc_bars()</code></dt><dd><p>Bar plot of <code>y</code> with <code>yrep</code> medians and uncertainty intervals
+superimposed on the bars.</p></dd>
+<dt><code>ppc_bars_grouped()</code></dt><dd><p>Same as <code>ppc_bars()</code> but a separate plot (facet) is generated for each
+level of a grouping variable.</p></dd>
+<dt><code>ppc_rootogram()</code></dt><dd><p>Rootograms allow for diagnosing problems in count data models such as
+overdispersion or excess zeros. They consist of a histogram of <code>y</code> with the
+expected counts based on <code>yrep</code> overlaid as a line along with uncertainty
+intervals. The y-axis represents the square roots of the counts to
+approximately adjust for scale differences and thus ease comparison between
+observed and expected counts. Using the <code>style</code> argument, the histogram
+style can be adjusted to focus on different aspects of the data:
+<ul>
 <li><p><em>Standing</em>: basic histogram of observed counts with curve
-   showing expected counts.</p></li>
+showing expected counts.</p></li>
 <li><p><em>Hanging</em>: observed counts counts hanging from the curve
-   representing expected counts.</p></li>
+representing expected counts.</p></li>
 <li><p><em>Suspended</em>: histogram of the differences between expected and
-   observed counts.</p></li>
+observed counts.</p></li>
 </ul>
-  <strong>All of these are plotted on the square root scale</strong>. See Kleiber and
-  Zeileis (2016) for advice on interpreting rootograms and selecting among
-  the different styles.</p></dd>
+    <strong>All of these are plotted on the square root scale</strong>. See Kleiber and
+Zeileis (2016) for advice on interpreting rootograms and selecting among
+the different styles.</p></dd>
 </dl>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
-    <p>Kleiber, C. and Zeileis, A. (2016). Visualizing count data regressions using
-rootograms. <em>The American Statistician</em>. 70(3): 296--303.
+    <p>Kleiber, C. and Zeileis, A. (2016).
+Visualizing count data regressions using rootograms.
+<em>The American Statistician</em>. 70(3): 296--303.
 <a href='https://arxiv.org/abs/1605.01311'>https://arxiv.org/abs/1605.01311</a>.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>

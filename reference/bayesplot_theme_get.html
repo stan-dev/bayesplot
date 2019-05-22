@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Get, set, and modify the active bayesplot theme — bayesplot_theme_get • bayesplot</title>
+<title>Get, set, and modify the active <strong>bayesplot</strong> theme — bayesplot_theme_get • bayesplot</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,19 +30,17 @@
 
 
 
-<meta property="og:title" content="Get, set, and modify the active bayesplot theme — bayesplot_theme_get" />
+<meta property="og:title" content="Get, set, and modify the active <strong>bayesplot</strong> theme — bayesplot_theme_get" />
 
 <meta property="og:description" content="These functions are the bayesplot equivalent to
-  ggplot2's theme_set and friends. They set,
-  get, and update the active theme but only apply them to bayesplots.
-  The current/active theme is automatically applied to every bayesplot
-  you draw.
-Use bayesplot_theme_get to get the current bayesplot theme,
-  and bayesplot_theme_set to change it. bayesplot_theme_update
-  and bayesplot_theme_replace are shorthands for changing individual
-  elements." />
+ggplot2's ggplot2::theme_set() and friends. They set, get, and update
+the active theme but only apply them to bayesplots. The current/active
+theme is automatically applied to every bayesplot you draw.
+Use bayesplot_theme_get() to get the current bayesplot theme and
+bayesplot_theme_set() to set a new theme. bayesplot_theme_update() and
+bayesplot_theme_replace() are shorthands for changing individual elements." />
 
-<meta property="og:image" content="/logo.png" />
+<meta property="og:image" content="https://mc-stan.org/bayesplot/logo.png" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -73,7 +71,7 @@ Use bayesplot_theme_get to get the current bayesplot theme,
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bayesplot</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.6.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.7.0</span>
       </span>
     </div>
 
@@ -151,22 +149,20 @@ Use bayesplot_theme_get to get the current bayesplot theme,
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Get, set, and modify the active bayesplot theme</h1>
+    <h1>Get, set, and modify the active <strong>bayesplot</strong> theme</h1>
     
     <div class="hidden name"><code>bayesplot_theme_get.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>These functions are the <span class="pkg">bayesplot</span> equivalent to
-  <span class="pkg">ggplot2</span>'s <code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/theme_get'>theme_set</a></code> and friends. They set,
-  get, and update the active theme but only apply them to <code>bayesplots</code>.
-  The current/active theme is automatically applied to every <code>bayesplot</code>
-  you draw.</p>
-<p>Use <code>bayesplot_theme_get</code> to get the current <span class="pkg">bayesplot</span> theme,
-  and <code>bayesplot_theme_set</code> to change it. <code>bayesplot_theme_update</code>
-  and <code>bayesplot_theme_replace</code> are shorthands for changing individual
-  elements.</p>
+    <p>These functions are the <strong>bayesplot</strong> equivalent to
+<strong>ggplot2</strong>'s <code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/theme_get'>ggplot2::theme_set()</a></code> and friends. They set, get, and update
+the active theme but only apply them to <code>bayesplots</code>. The current/active
+theme is automatically applied to every <code>bayesplot</code> you draw.</p>
+<p>Use <code>bayesplot_theme_get()</code> to get the current <strong>bayesplot</strong> theme and
+<code>bayesplot_theme_set()</code> to set a new theme. <code>bayesplot_theme_update()</code> and
+<code>bayesplot_theme_replace()</code> are shorthands for changing individual elements.</p>
     
     </div>
 
@@ -184,7 +180,7 @@ Use bayesplot_theme_get to get the current bayesplot theme,
     <tr>
       <th>new</th>
       <td><p>The new theme (list of theme elements) to use. This is analogous
-to the <code>new</code> argument to <code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/theme_get'>theme_set</a></code>.</p></td>
+to the <code>new</code> argument to <code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/theme_get'>ggplot2::theme_set()</a></code>.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -194,27 +190,27 @@ to the <code>new</code> argument to <code><a href='https://www.rdocumentation.or
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>bayesplot_theme_get</code> returns the current theme. The other three
-  functions (set, update, replace) invisibly return the <em>previous</em> theme
-  so it can be saved and easily restored later. This is the same behavior as
-  the <span class="pkg">ggplot2</span> versions of these functions.</p>
+    <p><code>bayesplot_theme_get()</code> returns the current theme. The other three
+functions (set, update, replace) invisibly return the <em>previous</em> theme
+so it can be saved and easily restored later. This is the same behavior as
+the <strong>ggplot2</strong> versions of these functions.</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p><code>bayesplot_theme_set</code> and friends only apply to
-  <code>bayesplots</code>. However, <code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/theme_get'>ggplot2::theme_set</a></code> can also be used to
-  change the <span class="pkg">bayesplot</span> theme. Currently, setting a theme with
-  <code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/theme_get'>ggplot2::theme_set</a></code> (other than the <span class="pkg">ggplot2</span> default
-  <code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/ggtheme'>theme_grey</a></code>) will override the <span class="pkg">bayesplot</span> theme.</p>
+    <p><code>bayesplot_theme_set()</code> and friends only apply to <code>bayesplots</code>.
+However, <code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/theme_get'>ggplot2::theme_set()</a></code> can also be used to change the
+<strong>bayesplot</strong> theme. Currently, setting a theme with <code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/theme_get'>ggplot2::theme_set()</a></code>
+(other than the <strong>ggplot2</strong> default <code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/ggtheme'>ggplot2::theme_grey()</a></code>) will override
+the <strong>bayesplot</strong> theme.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='theme_default.html'>theme_default</a></code> for the default <span class="pkg">bayesplot</span> theme.</p>
+    <div class='dont-index'><p><code><a href='theme_default.html'>theme_default()</a></code> for the default <strong>bayesplot</strong> theme.</p>
 <p><a href='bayesplot-helpers.html'>bayesplot-helpers</a> for a variety of convenience functions,
-  many of which provide shortcuts for tweaking theme elements after creating
-  a plot.</p>
-<p><code><a href='bayesplot-colors.html'>bayesplot-colors</a></code> to set or view the color scheme used
-  for plotting.</p></div>
+many of which provide shortcuts for tweaking theme elements after creating
+a plot.</p>
+<p><a href='bayesplot-colors.html'>bayesplot-colors</a> to set or view the color scheme used
+for plotting.</p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>

@@ -34,7 +34,7 @@
 
 <meta property="og:description" content="Combination plots" />
 
-<meta property="og:image" content="/logo.png" />
+<meta property="og:image" content="https://mc-stan.org/bayesplot/logo.png" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -65,7 +65,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bayesplot</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.6.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.7.0</span>
       </span>
     </div>
 
@@ -154,8 +154,8 @@
     
     </div>
 
-    <pre class="usage"><span class='fu'>mcmc_combo</span>(<span class='no'>x</span>, <span class='kw'>combo</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"dens"</span>, <span class='st'>"trace"</span>), <span class='kw'>widths</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>gg_theme</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>mcmc_combo</span>(<span class='no'>x</span>, <span class='kw'>combo</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"dens"</span>, <span class='st'>"trace"</span>), <span class='no'>...</span>, <span class='kw'>widths</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>gg_theme</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -164,14 +164,20 @@
       <th>x</th>
       <td><p>A 3-D array, matrix, list of matrices, or data frame of MCMC draws.
 The <a href='MCMC-overview.html'>MCMC-overview</a> page provides details on how to specify each these
-allowed inputs.</p></td>
+allowed inputs. It is also possible to use an object with an
+<code><a href='https://www.rdocumentation.org/packages/base/topics/array'>as.array()</a></code> method that returns the same kind of 3-D array described on
+the <a href='MCMC-overview.html'>MCMC-overview</a> page.</p></td>
     </tr>
     <tr>
       <th>combo</th>
       <td><p>A character vector with at least two elements. Each element of
-<code>combo</code> corresponds to a column in the resulting graphic and should be
-the name of one of the available <a href='MCMC-overview.html'>MCMC</a> functions (omitting the
+<code>combo</code> corresponds to a column in the resulting graphic and should be the
+name of one of the available <a href='MCMC-overview.html'>MCMC</a> functions (omitting the
 <code>mcmc_</code> prefix).</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>Arguments passed to the plotting functions named in <code>combo</code>.</p></td>
     </tr>
     <tr>
       <th>widths</th>
@@ -183,27 +189,23 @@ factor of 2 (as would <code>widths = c(.3, .15)</code>, etc.). The default,
     </tr>
     <tr>
       <th>gg_theme</th>
-      <td><p>Unlike most of the other <span class="pkg">bayesplot</span> functions,
+      <td><p>Unlike most of the other <strong>bayesplot</strong> functions,
 <code>mcmc_combo</code> returns a gtable object rather than a ggplot object, and
 so theme objects can't be added directly to the returned plot object. The
 <code>gg_theme</code> argument helps get around this problem by accepting a
-<span class="pkg">ggplot2</span> <a href='https://www.rdocumentation.org/packages/ggplot2/topics/theme'>theme</a> object that is added to each of the
+<strong>ggplot2</strong> <a href='https://www.rdocumentation.org/packages/ggplot2/topics/theme'>theme</a> object that is added to each of the
 plots <em>before</em> combining them into the gtable object that is returned.
-This can be a theme object created by a call to <code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/theme'>ggplot2::theme</a></code> or
-one of the <span class="pkg">bayesplot</span> convenience functions, e.g.
-<code><a href='bayesplot-helpers.html'>legend_none</a></code> (see the <strong>Examples</strong> section, below).</p></td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td><p>Arguments passed to the plotting functions named in <code>combo</code>.</p></td>
+This can be a theme object created by a call to <code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/theme'>ggplot2::theme()</a></code> or
+one of the <strong>bayesplot</strong> convenience functions, e.g.
+<code><a href='bayesplot-helpers.html'>legend_none()</a></code> (see the <strong>Examples</strong> section, below).</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A gtable object (the result of calling
-  <code><a href='https://www.rdocumentation.org/packages/gridExtra/topics/arrangeGrob'>arrangeGrob</a></code>) with <code><a href='https://www.rdocumentation.org/packages/base/topics/length'>length(combo)</a></code> columns and
-  a row for each parameter.</p>
+<code><a href='https://www.rdocumentation.org/packages/gridExtra/topics/arrangeGrob'>gridExtra::arrangeGrob()</a></code>) with <code><a href='https://www.rdocumentation.org/packages/base/topics/length'>length(combo)</a></code> columns and
+a row for each parameter.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
