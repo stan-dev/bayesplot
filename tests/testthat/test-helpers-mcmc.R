@@ -250,6 +250,46 @@ test_that("prepare_mcmc_array processes non-array input types correctly", {
 })
 
 
+test_that("prepare_mcmc_array tidy parameter selection is same as traditional selection", {
+  pars_all <- c(
+    "(Intercept)", "beta[1]", "beta[2]", "sigma",
+    "b[(Intercept) XX:1]", "b[(Intercept) XX:2]", "b[(Intercept) XX:3]",
+    "b[(Intercept) ZZ:1]", "b[(Intercept) ZZ:2]", "b[(Intercept) ZZ:3]"
+  )
+  colnames(mat) <- pars_all
+
+  # check easier parameters
+  pars_char_1 <- c("(Intercept)", "beta[1]", "beta[2]", "sigma")
+  pars_tidy_1a <- vars(`(Intercept)`, `beta[1]`, `beta[2]`, sigma)
+  pars_tidy_1b <- vars(`(Intercept)`, contains("beta"), sigma)
+  pars_tidy_1c <- vars("(Intercept)", param_range("beta", 1:2), "sigma")
+  expect_identical(prepare_mcmc_array(mat, pars = pars_tidy_1a),
+                   prepare_mcmc_array(mat, pars = pars_char_1))
+  expect_identical(prepare_mcmc_array(mat, pars = pars_tidy_1b),
+                   prepare_mcmc_array(mat, pars = pars_char_1))
+  expect_identical(prepare_mcmc_array(mat, pars = pars_tidy_1c),
+                   prepare_mcmc_array(mat, pars = pars_char_1))
+
+
+  # check multilevel parameters
+  pars_char_2 <- c("b[(Intercept) XX:1]", "b[(Intercept) ZZ:1]",
+                   "b[(Intercept) XX:3]", "b[(Intercept) ZZ:3]")
+  pars_tidy_2a <- vars(param_glue("b[(Intercept) {var}:{lev}]",
+                                  var = c("XX", "ZZ"), lev = c(1, 3)))
+  expect_identical(prepare_mcmc_array(mat, pars = pars_tidy_2a),
+                   prepare_mcmc_array(mat, pars = pars_char_2))
+})
+
+test_that("tidy parameter selection throws correct errors", {
+  expect_error(mcmc_hist(mat, pars = vars(contains("nonsense"))),
+               "No parameters were found matching those names")
+
+  expect_error(param_range("alpha", 1:3, vars = list("a", "b", "c")),
+               "'vars' must be NULL or a character vector.")
+  expect_error(param_glue("alpha[{lev}]", lev = 1:3, vars = 1:3,
+               "'vars' must be NULL or a character vector."))
+})
+
 # rhat and neff helpers ---------------------------------------------------
 test_that("diagnostic_factor.rhat works", {
   rhats <- new_rhat(c(low = 0.99, low = 1, low = 1.01,

@@ -6,6 +6,9 @@
 
 <!-- Items for next release go here* -->
 
+* The `pars` argument of all MCMC plotting functions now supports tidy variable selection.
+  See `help("tidy-params", package="bayesplot")` for details and examples. (#161, #183, #188)
+
 * Two new plots have been added for inspecting the distribution of ranks.
   Rank histograms were introduced by the Stan team's [new paper on 
   MCMC diagnostics](https://arxiv.org/abs/1903.08008). (#178, #179)
@@ -41,21 +44,21 @@
   curves. The default `"equal area"` constrains the heights so that the curves 
   have the same area. As a result, a narrow interval will appear as a spike 
   of density, while a wide, uncertain interval is spread thin over the _x_ axis.
-  Alternatively `"equal height"` will set the maximum height on each curve to 
-  the same value. This works well when the intervals are about the same width. 
-  Otherwise, that wide, uncertain interval will dominate the visual space 
-  compared to a narrow, less uncertain interval. A compromise between the two is 
-  `"scaled height"` which scales the curves from `"equal height"` using 
+  Alternatively `"equal height"` will set the maximum height on each curve to
+  the same value. This works well when the intervals are about the same width.
+  Otherwise, that wide, uncertain interval will dominate the visual space
+  compared to a narrow, less uncertain interval. A compromise between the two is
+  `"scaled height"` which scales the curves from `"equal height"` using
   `height * sqrt(height)`. (#163, #169)
-  
-* `mcmc_areas()` correctly plots density curves where the point estimate 
-  does not include the highest point of the density curve. 
+
+* `mcmc_areas()` correctly plots density curves where the point estimate
+  does not include the highest point of the density curve.
   (#168, #169, @jtimonen)
-  
-* `mcmc_areas_ridges()` draws the vertical line at *x* = 0 over the curves so 
+
+* `mcmc_areas_ridges()` draws the vertical line at *x* = 0 over the curves so
   that it is always visible.
 
-* `mcmc_intervals()` and `mcmc_areas()` raise a warning if `prob_outer` is ever 
+* `mcmc_intervals()` and `mcmc_areas()` raise a warning if `prob_outer` is ever
   less than `prob`. It sorts these two values into the correct order. (#138)
 
 * MCMC parameter names are now *always* converted to factors prior to
@@ -148,7 +151,7 @@
 
 * Added `mcmc_intervals_data()` and `mcmc_areas_data()` that return data
   plotted by `mcmc_intervals()` and `mcmc_areas()`. (Advances #97)
-  
+
 * New `ppc_data()` function returns the data plotted by many of the PPC plotting
   functions. (Advances #97)
 
@@ -165,29 +168,29 @@
 
 (GitHub issue/PR numbers in parentheses)
 
-* New plotting function `mcmc_parcoord()` for parallel coordinates plots of 
+* New plotting function `mcmc_parcoord()` for parallel coordinates plots of
   MCMC draws (optionally including HMC/NUTS diagnostic information). (#108)
-  
+
 * `mcmc_scatter` gains an `np` argument for specifying NUTS parameters, which
   allows highlighting divergences in the plot. (#112)
-  
-* New functions with names ending with suffix `_data` don't make the plots, 
-  they just return the data prepared for plotting (more of these to come in 
+
+* New functions with names ending with suffix `_data` don't make the plots,
+  they just return the data prepared for plotting (more of these to come in
   future releases):
     - `ppc_intervals_data()` (#101)
     - `ppc_ribbon_data()` (#101)
     - `mcmc_parcoord_data()` (#108)
     - `mcmc_rhat_data()` (#110)
     - `mcmc_neff_data()` (#110)
-    
-* `ppc_stat_grouped()`, `ppc_stat_freqpoly_grouped()` gain a `facet_args` 
-  argument for controlling **ggplot2** faceting (many of the `mcmc_` functions 
+
+* `ppc_stat_grouped()`, `ppc_stat_freqpoly_grouped()` gain a `facet_args`
+  argument for controlling **ggplot2** faceting (many of the `mcmc_` functions
   already have this).
-  
-* The `divergences` argument to `mcmc_trace()` has been deprecated in favor 
-  of `np` (NUTS parameters) to match the other functions that have an `np` 
+
+* The `divergences` argument to `mcmc_trace()` has been deprecated in favor
+  of `np` (NUTS parameters) to match the other functions that have an `np`
   argument.
-  
+
 * Fixed an issue where duplicated rhat values would break `mcmc_rhat()` (#105).
 
 
@@ -316,5 +319,5 @@ Initial CRAN release
 
 
 
-[ggridges]: https://CRAN.R-project.org/package=ggridges 
+[ggridges]: https://CRAN.R-project.org/package=ggridges
             "ggridges package"

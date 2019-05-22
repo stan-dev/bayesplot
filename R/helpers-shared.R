@@ -22,55 +22,6 @@ suggested_package <- function(pkg, min_version = NULL) {
   invisible(TRUE)
 }
 
-#' Explicit and/or regex parameter selection
-#'
-#' @noRd
-#' @param explicit Character vector of selected parameter names.
-#' @param patterns Character vector of regular expressions.
-#' @param complete Character vector of all possible parameter names.
-#' @return Character vector of combined explicit and matched (via regex)
-#'   parameter names, unless an error is thrown.
-#'
-select_parameters <-
-  function(explicit = character(),
-           patterns = character(),
-           complete = character()) {
-
-    stopifnot(is.character(explicit),
-              is.character(patterns),
-              is.character(complete))
-
-    if (!length(explicit) && !length(patterns)) {
-      return(complete)
-    }
-
-    if (length(explicit)) {
-      if (!all(explicit %in% complete)) {
-        not_found <- which(!explicit %in% complete)
-        abort(paste(
-          "Some 'pars' don't match parameter names:",
-          paste(explicit[not_found], collapse = ", ")
-        ))
-      }
-    }
-
-    if (!length(patterns)) {
-      return(unique(explicit))
-    } else {
-      regex_pars <-
-        unlist(lapply(seq_along(patterns), function(j) {
-          grep(patterns[j], complete, value = TRUE)
-        }))
-
-      if (!length(regex_pars)) {
-        abort("No matches for 'regex_pars'.")
-      }
-    }
-
-    unique(c(explicit, regex_pars))
-  }
-
-
 # Return x if not NULL, otherwise y
 `%||%` <- function(x, y) if (!is.null(x)) x else y
 
