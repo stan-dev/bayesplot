@@ -1,13 +1,12 @@
 <!-- See http://style.tidyverse.org/news.html for advice on writing news -->
 
-# bayesplot 1.6.0.9000
+# bayesplot 1.7.0
 
 (GitHub issue/PR numbers in parentheses)
 
-<!-- Items for next release go here* -->
-
-* The `pars` argument of all MCMC plotting functions now supports tidy variable selection.
-  See `help("tidy-params", package="bayesplot")` for details and examples. (#161, #183, #188)
+* The `pars` argument of all MCMC plotting functions now supports tidy variable
+  selection. See `help("tidy-params", package="bayesplot")` for details and
+  examples. (#161, #183, #188)
 
 * Two new plots have been added for inspecting the distribution of ranks.
   Rank histograms were introduced by the Stan team's [new paper on 
