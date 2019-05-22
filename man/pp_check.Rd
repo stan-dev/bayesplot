@@ -3,7 +3,7 @@
 \name{pp_check}
 \alias{pp_check}
 \alias{pp_check.default}
-\title{Posterior predictive checks (S3 generic and default method)}
+\title{Posterior (or prior) predictive checks (S3 generic and default method)}
 \usage{
 pp_check(object, ...)
 
@@ -19,8 +19,8 @@ default method, these are additional arguments to pass to \code{fun}.}
 \item{yrep}{For the default method, a \code{yrep} matrix passed to \code{fun}.}
 
 \item{fun}{For the default method, the plotting function to call. Can be any
-of the \link[=PPC]{PPC functions}. The \code{"ppc_"} prefix can optionally
-be dropped if \code{fun} is specified as a string.}
+of the \link{PPC} functions. The \code{"ppc_"} prefix can optionally be dropped if
+\code{fun} is specified as a string.}
 }
 \value{
 The exact form of the value returned by \code{pp_check()} may vary by
@@ -31,12 +31,12 @@ plotting functions. The default method returns the object returned by \code{fun}
 \description{
 S3 generic with simple default method. The intent is to provide a generic so
 authors of other \R packages who wish to provide interfaces to the functions
-in \strong{bayesplot} will be encouraged to include \code{pp_check()} methods in
-their package, preserving the same naming conventions for posterior
+in \strong{bayesplot} will be encouraged to include \code{pp_check()} methods in their
+package, preserving the same naming conventions for posterior (and prior)
 predictive checking across many \R packages for Bayesian inference. This is
-for the convenience of both users and developers. See the \strong{Details}
-and \strong{Examples} sections, below, and the package vignettes for examples
-of defining \code{pp_check()} methods.
+for the convenience of both users and developers. See the \strong{Details} and
+\strong{Examples} sections, below, and the package vignettes for examples of
+defining \code{pp_check()} methods.
 }
 \details{
 A package that creates fitted model objects of class \code{"foo"}

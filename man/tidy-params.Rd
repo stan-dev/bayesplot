@@ -72,10 +72,7 @@ and similar functions, just like the
 
 Parameter names in \code{vars()} are not quoted. When the names contain special
 characters like brackets, they should be wrapped in backticks, as in
-\code{vars(`beta[1]`)}. If working from a character vector of parameter names
-(e.g., \code{p = c("alpha", "beta")}), pass the vector directly
-(\code{mcmc_hist(x, pars = p)}) or use a helper function
-(\code{mcmc_hist(x, pars = vars(one_of(p))}).
+\code{vars(`beta[1]`)}.
 
 To exclude a range of variables, wrap the sequence in parentheses and then
 negate it. For example, (\code{vars(-(`beta[1]`:`beta[3]`))}) would exclude
@@ -92,7 +89,7 @@ into position numbers. As a result, integers will select parameters;
 \code{vars(1, 3)} selects the first and third ones. We do not endorse this
 approach because positions might change as variables are added and
 removed from models. To select a parameter that happens to be called \code{1},
-use backticks to escape it: \code{vars(`1`)}.
+use backticks to escape it \code{vars(`1`)}.
 }
 
 \examples{

@@ -5,11 +5,11 @@
 \alias{PPC}
 \title{Graphical posterior predictive checking}
 \description{
-The \strong{bayesplot} PPC module provides various plotting functions for
-creating graphical displays comparing observed data to simulated data from
-the posterior predictive distribution. See below for a brief discussion of
-the ideas behind posterior predictive checking, a description of the
-structure of this package, and tips on providing an interface to
+The \strong{bayesplot} PPC module provides various plotting functions for creating
+graphical displays comparing observed data to simulated data from the
+posterior (or prior) predictive distribution. See below for a brief
+discussion of the ideas behind posterior predictive checking, a description
+of the structure of this package, and tips on providing an interface to
 \strong{bayesplot} from another package.
 }
 \details{
@@ -50,29 +50,39 @@ graphical displays comparing the observed data \eqn{y} to the replications.
 For a more thorough discussion of posterior predictive checking see
 Chapter 6 of Gelman et. al. (2013).
 }
+\subsection{Prior predictive checking}{
+To use \strong{bayesplot} for \emph{prior} predictive checks you can simply use draws
+from the prior predictive distribution instead of the posterior predictive
+distribution. See Gabry et al. (2019) for more on prior predictive checking
+and when it is reasonable to compare the prior predictive distribution to the
+observed data. If you want to avoid using the observed data for prior
+predictive checks, then the \code{y} argument to the PPC plotting functions can be
+used to provide plausible or implausible \code{y} values that you want to compare
+to the prior predictive realizations.
+}
 }
 \section{PPC plotting functions}{
- The plotting functions for posterior
-predictive checking in this package are organized into several categories,
-each with its own documentation:
+ The plotting functions for prior and
+posterior predictive checking are organized into several categories, each
+with its own documentation:
 \itemize{
 \item \link[=PPC-distributions]{Distributions}: Histograms, kernel density
 estimates, boxplots, and other plots comparing the empirical distribution
-of the observed data \code{y} to the distributions of individual replicated
-datasets (rows) in \code{yrep}.
-\item \link[=PPC-test-statistics]{Statistics}: The distribution of a statistic, or a
-pair of statistics, over the replicated datasets (rows) in \code{yrep} compared
-to value of the statistic(s) computed from \code{y}.
+of data \code{y} to the distributions of individual simulated datasets (rows)
+in \code{yrep}.
+\item \link[=PPC-test-statistics]{Statistics}: The distribution of a statistic,
+or a pair of statistics, over the simulated datasets (rows) in \code{yrep}
+compared to value of the statistic(s) computed from \code{y}.
 \item \link[=PPC-intervals]{Intervals}: Interval estimates of \code{yrep} with \code{y}
 overlaid. The x-axis variable can be optionally specified by the user
 (e.g. to plot against against a predictor variable or over time).
 \item \link[=PPC-errors]{Predictive errors}: Plots of predictive errors
-(\code{y - yrep}) computed from \code{y} and replicated datasets (rows) in \code{yrep}.
-For binomial models binned error plots are also available.
+(\code{y - yrep}) computed from \code{y} and eachc of the simulated datasets (rows)
+in \code{yrep}. For binomial models binned error plots are also available.
 \item \link[=PPC-scatterplots]{Scatterplots}: Scatterplots (and similar
-visualizations) of the observed data \code{y} vs. individual replicated datasets
-(rows) in \code{yrep}, or vs. the average value of the distributions of each data
-point (columns) in \code{yrep}.
+visualizations) of the data \code{y} vs. individual simuluted datasets
+(rows) in \code{yrep}, or vs. the average value of the distributions of each
+data point (columns) in \code{yrep}.
 \item \link[=PPC-discrete]{Plots for discrete outcomes}: PPC functions that can
 only be used if \code{y} and \code{yrep} are discrete. For example, rootograms for
 count outcomes and bar plots for ordinal, categorical, and
@@ -82,7 +92,7 @@ based on (approximate) leave-one-out (LOO) cross-validation.
 }
 }
 
-\section{Providing an interface for posterior predictive checking from another package}{
+\section{Providing an interface for predictive checking from another package}{
 
 
 In addition to the various plotting functions, the \strong{bayesplot} package

@@ -1,13 +1,13 @@
-#' Posterior predictive checks (S3 generic and default method)
+#' Posterior (or prior) predictive checks (S3 generic and default method)
 #'
 #' S3 generic with simple default method. The intent is to provide a generic so
 #' authors of other \R packages who wish to provide interfaces to the functions
-#' in **bayesplot** will be encouraged to include `pp_check()` methods in
-#' their package, preserving the same naming conventions for posterior
+#' in **bayesplot** will be encouraged to include `pp_check()` methods in their
+#' package, preserving the same naming conventions for posterior (and prior)
 #' predictive checking across many \R packages for Bayesian inference. This is
-#' for the convenience of both users and developers. See the **Details**
-#' and **Examples** sections, below, and the package vignettes for examples
-#' of defining `pp_check()` methods.
+#' for the convenience of both users and developers. See the **Details** and
+#' **Examples** sections, below, and the package vignettes for examples of
+#' defining `pp_check()` methods.
 #'
 #' @export
 #' @param object Typically a fitted model object. The default method, however,
@@ -56,8 +56,8 @@ pp_check <- function(object, ...) {
 #' @export
 #' @param yrep For the default method, a `yrep` matrix passed to `fun`.
 #' @param fun For the default method, the plotting function to call. Can be any
-#'   of the \link[=PPC]{PPC functions}. The `"ppc_"` prefix can optionally
-#'   be dropped if `fun` is specified as a string.
+#'   of the [PPC] functions. The `"ppc_"` prefix can optionally be dropped if
+#'   `fun` is specified as a string.
 #'
 pp_check.default <- function(object, yrep, fun, ...) {
   if (is.character(fun) && substr(fun, 1, 4) != "ppc_") {
