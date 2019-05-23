@@ -113,8 +113,13 @@ test_that("ppc_ecdf_overlay renders correctly", {
   p_base <- ppc_ecdf_overlay(vdiff_y2, vdiff_yrep2)
   vdiffr::expect_doppelganger("ppc_ecdf_overlay (default)", p_base)
 
-  p_custom <- ppc_ecdf_overlay(vdiff_y2, vdiff_yrep2, size = 2, alpha = .2)
-  vdiffr::expect_doppelganger("ppc_ecdf_overlay (alpha, size)", p_custom)
+  p_custom <- ppc_ecdf_overlay(
+    vdiff_y2,
+    vdiff_yrep2,
+    discrete = TRUE,
+    size = 2,
+    alpha = .2)
+  vdiffr::expect_doppelganger("ppc_ecdf_overlay (discrete, size, alpha)", p_custom)
 })
 
 test_that("ppc_dens renders correctly", {
