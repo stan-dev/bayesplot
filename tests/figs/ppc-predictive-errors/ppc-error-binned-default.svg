@@ -199,5 +199,5 @@
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8NTc2LjAwfDAuMDA=)'><text x='334.00' y='567.43' style='font-size: 12.00px; font-family: Liberation Serif;' textLength='98.97px' lengthAdjust='spacingAndGlyphs'>Predicted proportion</text></g>
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8NTc2LjAwfDAuMDA=)'><text transform='translate(13.84,321.55) rotate(-90)' style='font-size: 12.00px; font-family: Liberation Serif;' textLength='75.77px' lengthAdjust='spacingAndGlyphs'>Average Errors </text></g>
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8NTc2LjAwfDAuMDA=)'><text transform='translate(26.80,330.16) rotate(-90)' style='font-size: 12.00px; font-family: Liberation Serif;' textLength='93.00px' lengthAdjust='spacingAndGlyphs'> (with 2SE bounds)</text></g>
-<g clip-path='url(#cpMC4wMHw3MjAuMDB8NTc2LjAwfDAuMDA=)'><text x='52.95' y='15.40' style='font-size: 14.40px; font-family: Liberation Serif;' textLength='148.34px' lengthAdjust='spacingAndGlyphs'>ppc error binned (default)</text></g>
+<g clip-path='url(#cpMC4wMHw3MjAuMDB8NTc2LjAwfDAuMDA=)'><text x='52.95' y='15.40' style='font-size: 14.40px; font-family: Liberation Serif;' textLength='155.56px' lengthAdjust='spacingAndGlyphs'>ppc_error_binned (default)</text></g>
 </svg>

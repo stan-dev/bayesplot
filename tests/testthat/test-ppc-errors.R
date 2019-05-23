@@ -61,7 +61,7 @@ test_that("bin_errors works for edge cases", {
 
 # Visual tests -----------------------------------------------------------------
 
-test_that("ppc_error_binned returns ggplot object", {
+test_that("ppc_error_binned renders correctly", {
   testthat::skip_on_cran()
 
   rbeta2 <- function(n, mu, phi) {
@@ -87,7 +87,7 @@ test_that("ppc_error_binned returns ggplot object", {
   p_base <- ppc_error_binned(y, y_rep)
 
   vdiffr::expect_doppelganger(
-    title = "ppc error binned (default)",
+    title = "ppc_error_binned (default)",
     fig = p_base
   )
 

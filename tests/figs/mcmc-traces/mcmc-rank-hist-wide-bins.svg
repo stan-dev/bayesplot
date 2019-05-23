@@ -141,5 +141,5 @@
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8NTc2LjAwfDAuMDA=)'><text x='660.77' y='554.50' style='font-size: 9.60px; fill: #4D4D4D; font-family: Liberation Serif;' textLength='19.19px' lengthAdjust='spacingAndGlyphs'>1500</text></g>
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8NTc2LjAwfDAuMDA=)'><text x='697.15' y='554.50' style='font-size: 9.60px; fill: #4D4D4D; font-family: Liberation Serif;' textLength='19.19px' lengthAdjust='spacingAndGlyphs'>2000</text></g>
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8NTc2LjAwfDAuMDA=)'><text x='348.83' y='567.43' style='font-size: 12.00px; font-family: Liberation Serif;' textLength='25.33px' lengthAdjust='spacingAndGlyphs'>Rank</text></g>
-<g clip-path='url(#cpMC4wMHw3MjAuMDB8NTc2LjAwfDAuMDA=)'><text x='8.97' y='15.40' style='font-size: 14.40px; font-family: Liberation Serif;' textLength='194.28px' lengthAdjust='spacingAndGlyphs'>mcmc rank histogram (wide bins)</text></g>
+<g clip-path='url(#cpMC4wMHw3MjAuMDB8NTc2LjAwfDAuMDA=)'><text x='8.97' y='15.40' style='font-size: 14.40px; font-family: Liberation Serif;' textLength='164.72px' lengthAdjust='spacingAndGlyphs'>mcmc_rank_hist (wide bins)</text></g>
 </svg>
