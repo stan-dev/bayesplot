@@ -246,15 +246,6 @@ mcmc_trace(
   np = nuts_params(fit),
   np_style = trace_style_np(div_color = "black", div_size = 0.5)
 )
-
-mcmc_trace(
-  posterior,
-  pars = c("wt", "sigma"),
-  size = 0.8,
-  facet_args = list(nrow = 2),
-  divergences = nuts_params(fit),
-  div_color = "black"
-)
 }
 
 }
