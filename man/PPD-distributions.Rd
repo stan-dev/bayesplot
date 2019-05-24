@@ -21,10 +21,10 @@ ppd_dens_overlay(ypred, ..., size = 0.25, alpha = 0.7, trim = FALSE,
 ppd_boxplot(ypred, ..., notch = TRUE, size = 0.5, alpha = 1)
 }
 \arguments{
-\item{ypred}{An \eqn{S} by \eqn{N} matrix of draws from the posterior
-predictive distribution, where \eqn{S} is the size of the posterior sample
-(or subset of the posterior sample used to generate \code{ypred}) and
-\eqn{N} is the number of predicted observations.}
+\item{ypred}{An \eqn{S} by \eqn{N} matrix of draws from the posterior (or
+prior) predictive distribution, where \eqn{S} is the size of the posterior
+(or prior) sample (or subset of the posterior sample used to generate
+\code{ypred}) and \eqn{N} is the number of predicted observations.}
 
 \item{group}{A grouping variable (a vector or factor) the same length as
 \code{y}. Each value in \code{group} is interpreted as the group level
@@ -72,7 +72,16 @@ parameters. \code{n_dens} defaults to \code{1024}.}
 Unlike for \code{geom_boxplot()}, the default is \code{notch=TRUE}.}
 }
 \description{
-Plot posterior predictive distributions. See the \strong{Plot Descriptions}
-section, below, for details.
+Plot posterior or prior predictive distributions. Each of these functions
+makes the same plot as its corresponding \code{ppc_} function but without plotting
+observed data \code{y}. The \strong{Plot Descriptions} section at \link{PPC-distributions}
+has details on the individual plots.
+}
+\examples{
+# difference between ppd_dens_overlay and ppc_dens_overlay
+preds <- example_yrep_draws()
+ppd_dens_overlay(ypred = preds[1:50, ])
+ppc_dens_overlay(y = example_y_data(), yrep = preds[1:50, ])
+
 }
 \concept{PPDs}

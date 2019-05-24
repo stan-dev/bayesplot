@@ -1,16 +1,24 @@
 #' PPD distributions
 #'
-#' Plot posterior predictive distributions. See the **Plot Descriptions**
-#' section, below, for details.
+#' Plot posterior or prior predictive distributions. Each of these functions
+#' makes the same plot as its corresponding `ppc_` function but without plotting
+#' observed data `y`. The **Plot Descriptions** section at [PPC-distributions]
+#' has details on the individual plots.
 #'
 #' @name PPD-distributions
 #' @family PPDs
 #'
 #' @inheritParams PPC-distributions
-#' @param ypred An \eqn{S} by \eqn{N} matrix of draws from the posterior
-#'   predictive distribution, where \eqn{S} is the size of the posterior sample
-#'   (or subset of the posterior sample used to generate `ypred`) and
-#'   \eqn{N} is the number of predicted observations.
+#' @param ypred An \eqn{S} by \eqn{N} matrix of draws from the posterior (or
+#'   prior) predictive distribution, where \eqn{S} is the size of the posterior
+#'   (or prior) sample (or subset of the posterior sample used to generate
+#'   `ypred`) and \eqn{N} is the number of predicted observations.
+#'
+#' @examples
+#' # difference between ppd_dens_overlay and ppc_dens_overlay
+#' preds <- example_yrep_draws()
+#' ppd_dens_overlay(ypred = preds[1:50, ])
+#' ppc_dens_overlay(y = example_y_data(), yrep = preds[1:50, ])
 #'
 NULL
 
