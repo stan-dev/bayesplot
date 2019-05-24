@@ -4,7 +4,7 @@
 #' statistics, over the simulated datasets in `yrep`, compared to the
 #' observed value `T(y)` computed from the data `y`. See the
 #' **Plot Descriptions** and **Details** sections, below, as
-#' well as [Gabry et al. (2019)](https://github.com/jgabry/bayes-vis-paper).
+#' well as [Gabry et al. (2019)](https://github.com/jgabry/bayes-vis-paper#readme).
 #'
 #' @name PPC-test-statistics
 #' @family PPCs

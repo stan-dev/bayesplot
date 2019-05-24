@@ -71,7 +71,7 @@ The distribution of a (test) statistic \code{T(yrep)}, or a pair of (test)
 statistics, over the simulated datasets in \code{yrep}, compared to the
 observed value \code{T(y)} computed from the data \code{y}. See the
 \strong{Plot Descriptions} and \strong{Details} sections, below, as
-well as \href{https://github.com/jgabry/bayes-vis-paper}{Gabry et al. (2019)}.
+well as \href{https://github.com/jgabry/bayes-vis-paper#readme}{Gabry et al. (2019)}.
 }
 \details{
 For Binomial data, the plots will typically be most useful if

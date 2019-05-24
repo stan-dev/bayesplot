@@ -1,7 +1,7 @@
 #' LOO predictive checks
 #'
 #' Leave-One-Out (LOO) predictive checks. See the **Plot Descriptions** section,
-#' below, and [Gabry et al. (2019)](https://github.com/jgabry/bayes-vis-paper)
+#' below, and [Gabry et al. (2019)](https://github.com/jgabry/bayes-vis-paper#readme)
 #' for details.
 #'
 #' @name PPC-loo

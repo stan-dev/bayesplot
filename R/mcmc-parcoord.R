@@ -2,7 +2,7 @@
 #'
 #' Parallel coordinates plot of MCMC draws (one dimension per parameter).
 #' See the **Plot Descriptions** section below for details,
-#' and see [Gabry et al. (2019)](https://github.com/jgabry/bayes-vis-paper)
+#' and see [Gabry et al. (2019)](https://github.com/jgabry/bayes-vis-paper#readme)
 #' for more background and a real example.
 #'
 #' @name MCMC-parcoord

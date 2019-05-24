@@ -43,7 +43,7 @@
 #'    and `np_style` arguments can be used to add additional information in
 #'    the plot (in this case the approximate location of divergences).
 #'    For more on why the scatter plot with divergences is a useful
-#'    diagnostic tool see [Gabry et al. (2019)](https://github.com/jgabry/bayes-vis-paper).
+#'    diagnostic tool see [Gabry et al. (2019)](https://github.com/jgabry/bayes-vis-paper#readme).
 #'   }
 #'   \item{`mcmc_hex()`}{
 #'    Hexagonal heatmap of 2-D bin counts. This plot is useful in cases where
