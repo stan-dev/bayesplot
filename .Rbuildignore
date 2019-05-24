@@ -1,3 +1,4 @@
+^CRAN-RELEASE$
 ^.*\.Rproj$
 ^\.Rproj\.user$
 LICENSE
@@ -9,3 +10,4 @@ LICENSE
 man-roxygen/*
 images/*
 book/*
+docs/*

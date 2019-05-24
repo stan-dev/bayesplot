@@ -1,7 +1,7 @@
 #' Histograms and kernel density plots of MCMC draws
 #'
 #' Various types of histograms and kernel density plots of MCMC draws. See the
-#' \strong{Plot Descriptions} section, below, for details.
+#' **Plot Descriptions** section, below, for details.
 #'
 #' @name MCMC-distributions
 #' @family MCMC
@@ -17,27 +17,27 @@
 #'
 #' @section Plot Descriptions:
 #' \describe{
-#'   \item{\code{mcmc_hist}}{
+#'   \item{`mcmc_hist()`}{
 #'    Histograms of posterior draws with all chains merged.
 #'   }
-#'   \item{\code{mcmc_dens}}{
+#'   \item{`mcmc_dens()`}{
 #'    Kernel density plots of posterior draws with all chains merged.
 #'   }
-#'   \item{\code{mcmc_hist_by_chain}}{
+#'   \item{`mcmc_hist_by_chain()`}{
 #'    Histograms of posterior draws with chains separated via faceting.
 #'   }
-#'   \item{\code{mcmc_dens_overlay}}{
+#'   \item{`mcmc_dens_overlay()`}{
 #'    Kernel density plots of posterior draws with chains separated but
 #'    overlaid on a single plot.
 #'   }
-#'   \item{\code{mcmc_violin}}{
+#'   \item{`mcmc_violin()`}{
 #'    The density estimate of each chain is plotted as a violin with
 #'    horizontal lines at notable quantiles.
 #'   }
-#'   \item{\code{mcmc_dens_chains}}{
+#'   \item{`mcmc_dens_chains()`}{
 #'    Ridgeline kernel density plots of posterior draws with chains separated
-#'    but overlaid on a single plot. In \code{mcmc_dens_overlay} parameters
-#'    appear in separate facets; in \code{mcmc_dens_chains} they appear in the
+#'    but overlaid on a single plot. In `mcmc_dens_overlay()` parameters
+#'    appear in separate facets; in `mcmc_dens_chains()` they appear in the
 #'    same panel and can overlap vertically.
 #'   }
 #' }
@@ -109,8 +109,8 @@ mcmc_hist <- function(x,
                       pars = character(),
                       regex_pars = character(),
                       transformations = list(),
-                      facet_args = list(),
                       ...,
+                      facet_args = list(),
                       binwidth = NULL,
                       breaks = NULL,
                       freq = TRUE) {
@@ -135,8 +135,8 @@ mcmc_dens <- function(x,
                       pars = character(),
                       regex_pars = character(),
                       transformations = list(),
-                      facet_args = list(),
                       ...,
+                      facet_args = list(),
                       trim = FALSE) {
   check_ignored_arguments(...)
   .mcmc_dens(
@@ -158,8 +158,8 @@ mcmc_hist_by_chain <- function(x,
                                pars = character(),
                                regex_pars = character(),
                                transformations = list(),
-                               facet_args = list(),
                                ...,
+                               facet_args = list(),
                                binwidth = NULL,
                                freq = TRUE) {
   check_ignored_arguments(...)
@@ -182,9 +182,9 @@ mcmc_dens_overlay <- function(x,
                               pars = character(),
                               regex_pars = character(),
                               transformations = list(),
+                              ...,
                               facet_args = list(),
                               color_chains = TRUE,
-                              ...,
                               trim = FALSE) {
   check_ignored_arguments(...)
   .mcmc_dens(
@@ -202,12 +202,14 @@ mcmc_dens_overlay <- function(x,
 
 #' @rdname MCMC-distributions
 #' @template args-density-controls
-#' @param color_chains option for whether to separately color chains.
+#' @param color_chains Option for whether to separately color chains.
 #' @export
-mcmc_dens_chains <- function(x, pars = character(), regex_pars = character(),
+mcmc_dens_chains <- function(x,
+                             pars = character(),
+                             regex_pars = character(),
                              transformations = list(),
-                             color_chains = TRUE,
                              ...,
+                             color_chains = TRUE,
                              bw = NULL, adjust = NULL, kernel = NULL,
                              n_dens = NULL) {
   check_ignored_arguments(...)
@@ -252,7 +254,8 @@ mcmc_dens_chains <- function(x, pars = character(), regex_pars = character(),
 
 #' @rdname MCMC-distributions
 #' @export
-mcmc_dens_chains_data <- function(x, pars = character(),
+mcmc_dens_chains_data <- function(x,
+                                  pars = character(),
                                   regex_pars = character(),
                                   transformations = list(),
                                   ...,
@@ -280,8 +283,8 @@ mcmc_violin <- function(x,
                         pars = character(),
                         regex_pars = character(),
                         transformations = list(),
-                        facet_args = list(),
                         ...,
+                        facet_args = list(),
                         probs = c(0.1, 0.5, 0.9)) {
   check_ignored_arguments(...)
   .mcmc_dens(
@@ -295,10 +298,6 @@ mcmc_violin <- function(x,
     ...
   )
 }
-
-
-
-
 
 
 
@@ -330,8 +329,7 @@ mcmc_violin <- function(x,
       breaks = breaks
     )
 
-  if (is.null(facet_args[["scales"]]))
-    facet_args[["scales"]] <- "free"
+  facet_args[["scales"]] <- facet_args[["scales"]] %||% "free"
   if (!by_chain) {
     if (n_param > 1) {
       facet_args[["facets"]] <- ~ Parameter
@@ -432,8 +430,7 @@ mcmc_violin <- function(x,
            y = if (violin) levels(data$Parameter) else NULL)
   } else {
     facet_args[["facets"]] <- ~ Parameter
-    if (is.null(facet_args[["scales"]]))
-      facet_args[["scales"]] <- "free"
+    facet_args[["scales"]] <- facet_args[["scales"]] %||% "free"
     graph <- graph + do.call("facet_wrap", facet_args)
   }
 

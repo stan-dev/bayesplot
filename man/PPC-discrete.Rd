@@ -10,7 +10,7 @@
 ppc_bars(y, yrep, ..., prob = 0.9, width = 0.9, size = 1,
   fatten = 3, freq = TRUE)
 
-ppc_bars_grouped(y, yrep, group, facet_args = list(), ..., prob = 0.9,
+ppc_bars_grouped(y, yrep, group, ..., facet_args = list(), prob = 0.9,
   width = 0.9, size = 1, fatten = 3, freq = TRUE)
 
 ppc_rootogram(y, yrep, style = c("standing", "hanging", "suspended"),
@@ -21,38 +21,36 @@ ppc_rootogram(y, yrep, style = c("standing", "hanging", "suspended"),
 
 \item{yrep}{An \eqn{S} by \eqn{N} matrix of draws from the posterior
 predictive distribution, where \eqn{S} is the size of the posterior sample
-(or subset of the posterior sample used to generate \code{yrep}) and
-\eqn{N} is the number of observations (the length of \code{y}). The columns
-of \code{yrep} should be in the same order as the data points in \code{y}
-for the plots to make sense. See \strong{Details} for additional
-instructions.}
+(or subset of the posterior sample used to generate \code{yrep}) and \eqn{N} is
+the number of observations (the length of \code{y}). The columns of \code{yrep}
+should be in the same order as the data points in \code{y} for the plots to make
+sense. See \strong{Details} for additional instructions.}
 
 \item{...}{Currently unused.}
 
-\item{prob}{A value between 0 and 1 indicating the desired probability mass
-to include in the \code{yrep} intervals. Set \code{prob=0} to
-remove the intervals. For \code{ppc_rootogram} these are intervals
-of the \emph{square roots} of the expected counts.}
+\item{prob}{A value between \code{0} and \code{1} indicating the desired probability
+mass to include in the \code{yrep} intervals. Set \code{prob=0} to remove the
+intervals. For \code{ppc_rootogram()} these are intervals of the \emph{square roots}
+of the expected counts.}
 
-\item{width}{For \code{ppc_bars} and \code{ppc_bars_grouped},
-passed to \code{\link[ggplot2]{geom_bar}} to control the bar width.}
+\item{width}{For \code{ppc_bars()} and \code{ppc_bars_grouped()}, passed to
+\code{\link[ggplot2:geom_bar]{ggplot2::geom_bar()}} to control the bar width.}
 
-\item{size, fatten}{For \code{ppc_bars} and \code{ppc_bars_grouped},
-\code{size} and \code{fatten} are passed to
-\code{\link[ggplot2]{geom_pointrange}} to control the appearance of the
-\code{yrep} points and intervals. For \code{ppc_rootogram} \code{size} is
-passed to \code{\link[ggplot2]{geom_line}}.}
+\item{size, fatten}{For \code{ppc_bars()} and \code{ppc_bars_grouped()}, \code{size} and
+\code{fatten} are passed to \code{\link[ggplot2:geom_pointrange]{ggplot2::geom_pointrange()}} to control the
+appearance of the \code{yrep} points and intervals. For \code{ppc_rootogram()} \code{size}
+is passed to \code{\link[ggplot2:geom_line]{ggplot2::geom_line()}}.}
 
-\item{freq}{For \code{ppc_bars} and \code{ppc_bars_grouped}, if \code{TRUE}
-(the default) the y-axis will display counts. Setting \code{freq=FALSE}
-will put proportions on the y-axis.}
+\item{freq}{For \code{ppc_bars()} and \code{ppc_bars_grouped()}, if \code{TRUE} (the
+default) the y-axis will display counts. Setting \code{freq=FALSE} will put
+proportions on the y-axis.}
 
 \item{group}{A grouping variable (a vector or factor) the same length as
 \code{y}. Each value in \code{group} is interpreted as the group level
 pertaining to the corresponding value of \code{y}.}
 
 \item{facet_args}{An optional list of  arguments (other than \code{facets})
-passed to \code{\link[ggplot2]{facet_wrap}} to control faceting.}
+passed to \code{\link[ggplot2:facet_wrap]{ggplot2::facet_wrap()}} to control faceting.}
 
 \item{style}{For \code{ppc_rootogram}, a string specifying the rootogram
 style. The options are \code{"standing"}, \code{"hanging"}, and
@@ -60,11 +58,10 @@ style. The options are \code{"standing"}, \code{"hanging"}, and
 details on the different styles.}
 }
 \value{
-A ggplot object that can be further customized using the
-  \pkg{ggplot2} package.
+A ggplot object that can be further customized using the \strong{ggplot2} package.
 }
 \description{
-Many of the \link{PPC} functions in \pkg{bayesplot} can
+Many of the \link[=PPC-overview]{PPC} functions in \strong{bayesplot} can
 be used with discrete data. The small subset of these functions that can
 \emph{only} be used if \code{y} and \code{yrep} are discrete are documented
 on this page. Currently these include rootograms for count outcomes and bar
@@ -72,40 +69,42 @@ plots for ordinal, categorical, and multinomial outcomes. See the
 \strong{Plot Descriptions} section below.
 }
 \details{
-For all of these plots \code{y} and \code{yrep} must be non-negative
-  integers, although they need not be integers in the strict sense of \R's
-  \code{\link{integer}} type.
+For all of these plots \code{y} and \code{yrep} must be integers, although
+they need not be integers in the strict sense of \R's
+\link[base:integer]{integer} type. For rootogram plots \code{y} and \code{yrep} must also
+be non-negative.
 }
 \section{Plot Descriptions}{
 
 \describe{
-\item{\code{ppc_bars}}{
-  Bar plot of \code{y} with \code{yrep} medians and uncertainty intervals
-  superimposed on the bars.
+\item{\code{ppc_bars()}}{
+Bar plot of \code{y} with \code{yrep} medians and uncertainty intervals
+superimposed on the bars.
 }
-\item{\code{ppc_bars_grouped}}{
-  Same as \code{ppc_bars} but a separate plot (facet) is generated for each
-  level of a grouping variable.
+\item{\code{ppc_bars_grouped()}}{
+Same as \code{ppc_bars()} but a separate plot (facet) is generated for each
+level of a grouping variable.
 }
-\item{\code{ppc_rootogram}}{
-  Rootograms allow for diagnosing problems in count data models such as
-  overdispersion or excess zeros. They consist of a histogram of \code{y}
-  with the expected counts based on \code{yrep} overlaid as a line along with
-  uncertainty intervals. The y-axis represents the square roots of the counts
-  to approximately adjust for scale differences and thus ease comparison
-  between observed and expected counts. Using the \code{style} argument, the
-  histogram style can be adjusted to focus on different aspects of the data:
-  \itemize{
-   \item \emph{Standing}: basic histogram of observed counts with curve
-   showing expected counts.
-   \item \emph{Hanging}: observed counts counts hanging from the curve
-   representing expected counts.
-  \item \emph{Suspended}: histogram of the differences between expected and
-   observed counts.
-  }
-  \strong{All of these are plotted on the square root scale}. See Kleiber and
-  Zeileis (2016) for advice on interpreting rootograms and selecting among
-  the different styles.
+\item{\code{ppc_rootogram()}}{
+Rootograms allow for diagnosing problems in count data models such as
+overdispersion or excess zeros. They consist of a histogram of \code{y} with the
+expected counts based on \code{yrep} overlaid as a line along with uncertainty
+intervals. The y-axis represents the square roots of the counts to
+approximately adjust for scale differences and thus ease comparison between
+observed and expected counts. Using the \code{style} argument, the histogram
+style can be adjusted to focus on different aspects of the data:
+\itemize{
+\item \emph{Standing}: basic histogram of observed counts with curve
+showing expected counts.
+\item \emph{Hanging}: observed counts counts hanging from the curve
+representing expected counts.
+\item \emph{Suspended}: histogram of the differences between expected and
+observed counts.
+}
+
+\strong{All of these are plotted on the square root scale}. See Kleiber and
+Zeileis (2016) for advice on interpreting rootograms and selecting among
+the different styles.
 }
 }
 }
@@ -143,8 +142,9 @@ ppc_rootogram(y, yrep, style = "suspended")
 
 }
 \references{
-Kleiber, C. and Zeileis, A. (2016). Visualizing count data regressions using
-rootograms. \emph{The American Statistician}. 70(3): 296--303.
+Kleiber, C. and Zeileis, A. (2016).
+Visualizing count data regressions using rootograms.
+\emph{The American Statistician}. 70(3): 296--303.
 \url{https://arxiv.org/abs/1605.01311}.
 }
 \seealso{

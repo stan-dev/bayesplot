@@ -1,33 +1,45 @@
-[<img src="https://raw.githubusercontent.com/stan-dev/logos/master/logo_tm.png" width=100 alt="Stan Logo"/>](http://mc-stan.org)
+[<img src="https://raw.githubusercontent.com/stan-dev/logos/master/logo_tm.png" width=100 alt="Stan Logo"/>](https://mc-stan.org)
 
 # bayesplot
 
 [![Travis-CI Build Status](https://travis-ci.org/stan-dev/bayesplot.svg?branch=master)](https://travis-ci.org/stan-dev/bayesplot)
 [![codecov](https://codecov.io/gh/stan-dev/bayesplot/branch/master/graph/badge.svg)](https://codecov.io/gh/stan-dev/bayesplot)
-[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/bayesplot?color=blue)](http://cran.r-project.org/web/packages/bayesplot)
-[![Downloads](http://cranlogs.r-pkg.org/badges/bayesplot?color=blue)](http://cran.rstudio.com/package=bayesplot)
+[![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/bayesplot?color=blue)](https://cran.r-project.org/web/packages/bayesplot)
+[![Downloads](https://cranlogs.r-pkg.org/badges/bayesplot?color=blue)](https://cran.rstudio.com/package=bayesplot)
 
 **bayesplot** is an R package providing an extensive library of plotting
-functions for use after fitting Bayesian models (typically with MCMC). Currently
-**bayesplot** offers a variety of plots of posterior draws, visual MCMC
-diagnostics, as well as graphical posterior predictive checking. Additional
-functionality (e.g. for forecasting/out-of-sample prediction and other
-inference-related tasks) will be added in future releases.
-
+functions for use after fitting Bayesian models (typically with MCMC). 
 The plots created by **bayesplot** are ggplot objects, which means that after 
-a plot is created it can be further customized using the various functions for 
-modifying ggplot objects provided by the **ggplot2** package.
+a plot is created it can be further customized using various functions from
+the **ggplot2** package. 
+
+Currently **bayesplot** offers a variety of plots of posterior draws, 
+visual MCMC diagnostics, and graphical posterior (or prior) predictive checking. 
+Additional functionality (e.g. for forecasting/out-of-sample prediction and other
+inference-related tasks) will be added in future releases.
 
 The idea behind **bayesplot** is not only to provide convenient functionality
 for users, but also a common set of functions that can be easily used by
 developers working on a variety of packages for Bayesian modeling, particularly
-(but not necessarily) those powered by
-[**RStan**](http://mc-stan.org/rstan).
+(but not necessarily) those powered by [**RStan**](https://mc-stan.org/rstan).
+
+### Getting started 
+
+If you are just getting started with **bayesplot** we recommend starting with
+the tutorial [vignettes](https://mc-stan.org/bayesplot/articles/index.html), 
+the examples throughout the package [documentation](https://mc-stan.org/bayesplot/reference/index.html), 
+and the paper _Visualization in Bayesian workflow_:
+
+* Gabry et al. (2019). Visualization in Bayesian workflow. 
+_J. R. Stat. Soc. A_, 182: 389-402. doi:10.1111/rssa.12378. 
+([journal version](https://rss.onlinelibrary.wiley.com/doi/full/10.1111/rssa.12378),
+[arXiv preprint](https://arxiv.org/abs/1709.01449),
+[code on GitHub](https://github.com/jgabry/bayes-vis-paper))
 
 ### Resources
 
-* [mc-stan.org/bayesplot](http://mc-stan.org/bayesplot) (online documentation, vignettes)
-* [Ask a question](http://discourse.mc-stan.org) (Stan Forums on Discourse)
+* [mc-stan.org/bayesplot](https://mc-stan.org/bayesplot) (online documentation, vignettes)
+* [Ask a question](https://discourse.mc-stan.org) (Stan Forums on Discourse)
 * [Open an issue](https://github.com/stan-dev/bayesplot/issues) (GitHub issues for bug reports, feature requests)
 
 ### Installation
@@ -44,29 +56,17 @@ install.packages("bayesplot")
 if (!require("devtools")) {
   install.packages("devtools")
 }
-devtools::install_github("stan-dev/bayesplot", dependencies = TRUE, build_vignettes = TRUE)
+devtools::install_github("stan-dev/bayesplot", dependencies = TRUE, build_vignettes = FALSE)
 ```
 
-You can also set `build_vignettes=FALSE` for a faster installation from GitHub (the vignettes 
-can always be accessed online anytime at [mc-stan.org/bayesplot/articles](http://mc-stan.org/bayesplot/articles/)).
-
-If you are not using the [RStudio IDE](https://www.rstudio.com/) and you get an
-error related to "pandoc" you will either need to remove the argument
-`build_vignettes=TRUE` (to avoid building the vignettes) or install
-[pandoc](http://pandoc.org/) (e.g., `brew install pandoc`) and probably also
-pandoc-citeproc (e.g., `brew install pandoc-citeproc`). If you have the
-`rmarkdown` R package installed then you can check if you have pandoc by running
-the following in R:
-
-```r
-rmarkdown::pandoc_available()
-```
+This installation won't include the vignettes (they take some time to build), but all of the vignettes are 
+available online at [mc-stan.org/bayesplot/articles](https://mc-stan.org/bayesplot/articles/).
 
 
 ### Examples
 
-Some quick examples using MCMC draws obtained from the [__rstanarm__](https://github.com/stan-dev/rstanarm) 
-and [__rstan__](https://github.com/stan-dev/rstan) packages.
+Some quick examples using MCMC draws obtained from the [__rstanarm__](https://mc-stan.org/rstanarm) 
+and [__rstan__](https://mc-stan.org/rstann) packages.
 
 ```r
 library("bayesplot")

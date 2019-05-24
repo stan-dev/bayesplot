@@ -85,9 +85,10 @@ test_that("mcmc_intervals/areas with rhat", {
   expect_error(expect_warning(mcmc_intervals(arr, rhat = rbad)))
 
   expect_gg(g <- mcmc_intervals(arr, rhat = r))
+
   if (utils::packageVersion("ggplot2") >= "3.0.0") {
     rhat_map <- g$layers[[3]][["mapping"]]
-    expect_identical(as.character(rhat_map[["colour"]]), c("~", "rhat_rating"))
+    expect_identical(rlang::as_name(rhat_map[["colour"]]), "rhat_rating")
   }
 
   # areas with rhat.
@@ -98,18 +99,18 @@ test_that("mcmc_intervals/areas with rhat", {
   expect_gg(g2 <- mcmc_areas(arr, rhat = r))
   if (utils::packageVersion("ggplot2") >= "3.0.0") {
     rhat_map2 <- g2$layers[[2]][["mapping"]]
-    expect_identical(as.character(rhat_map2$fill), c("~", "rhat_rating"))
-    expect_identical(as.character(rhat_map2$colour), c("~", "rhat_rating"))
+    expect_identical(rlang::as_name(rhat_map2$fill), "rhat_rating")
+    expect_identical(rlang::as_name(rhat_map2$colour), "rhat_rating")
+
     # layer 3 is point estimate. manually colored. [skip]
 
     # layer 4 is outer interval.
     rhat_map4 <- g2$layers[[4]][["mapping"]]
-    expect_identical(as.character(rhat_map4$colour), c("~", "rhat_rating"))
+    expect_identical(rlang::as_name(rhat_map4$colour), "rhat_rating")
 
     # layer 5 is bottom line.
-
     rhat_map5 <- g2$layers[[5]][["mapping"]]
-    expect_identical(as.character(rhat_map5$colour), c("~", "rhat_rating"))
+    expect_identical(rlang::as_name(rhat_map5$colour), "rhat_rating")
   }
 })
 
@@ -168,63 +169,63 @@ test_that("mcmc_intervals renders correctly", {
   testthat::skip_on_cran()
 
   p_base <- mcmc_intervals(vdiff_dframe)
-  vdiffr::expect_doppelganger("mcmc intervals (default)", p_base)
+  vdiffr::expect_doppelganger("mcmc_intervals (default)", p_base)
 
   p_outer <- mcmc_intervals(vdiff_dframe, prob_outer = .8)
-  vdiffr::expect_doppelganger("mcmc intervals (outer)", p_outer)
+  vdiffr::expect_doppelganger("mcmc_intervals (outer)", p_outer)
 
   p_inner <- mcmc_intervals(vdiff_dframe, prob = .1)
-  vdiffr::expect_doppelganger("mcmc intervals (inner)", p_inner)
+  vdiffr::expect_doppelganger("mcmc_intervals (inner)", p_inner)
 
   rhats <- seq(from = 1, to = 1.15, length = 5)
   p_rhats <- mcmc_intervals(vdiff_dframe, rhat = rhats)
-  vdiffr::expect_doppelganger("mcmc intervals (rhats)", p_rhats)
+  vdiffr::expect_doppelganger("mcmc_intervals (rhats)", p_rhats)
 
   p_no_points <- mcmc_intervals(vdiff_dframe, point_est = "none")
-  vdiffr::expect_doppelganger("mcmc intervals (no points)", p_no_points)
+  vdiffr::expect_doppelganger("mcmc_intervals (no points)", p_no_points)
 
   p_mean_points <- mcmc_intervals(vdiff_dframe, point_est = "mean")
-  vdiffr::expect_doppelganger("mcmc intervals (means)", p_mean_points)
+  vdiffr::expect_doppelganger("mcmc_intervals (means)", p_mean_points)
 })
 
 test_that("mcmc_areas renders correctly", {
   testthat::skip_on_cran()
 
   p_base <- mcmc_areas(vdiff_dframe)
-  vdiffr::expect_doppelganger("mcmc areas (default)", p_base)
+  vdiffr::expect_doppelganger("mcmc_areas (default)", p_base)
 
   p_equal_height <- mcmc_areas(vdiff_dframe, area_method = "equal height")
-  vdiffr::expect_doppelganger("mcmc areas (equal height)", p_equal_height)
+  vdiffr::expect_doppelganger("mcmc_areas (equal height)", p_equal_height)
 
   p_scaled_height <- mcmc_areas(vdiff_dframe, area_method = "scaled height")
-  vdiffr::expect_doppelganger("mcmc areas (scaled height)", p_scaled_height)
+  vdiffr::expect_doppelganger("mcmc_areas (scaled height)", p_scaled_height)
 
   p_outer <- mcmc_areas(vdiff_dframe, prob_outer = .8)
-  vdiffr::expect_doppelganger("mcmc areas (outer)", p_outer)
+  vdiffr::expect_doppelganger("mcmc_areas (outer)", p_outer)
 
   p_inner <- mcmc_areas(vdiff_dframe, prob = .1)
-  vdiffr::expect_doppelganger("mcmc areas (inner)", p_inner)
+  vdiffr::expect_doppelganger("mcmc_areas (inner)", p_inner)
 
   rhats <- seq(from = 1, to = 1.15, length = 5)
   p_rhats <- mcmc_areas(vdiff_dframe, rhat = rhats)
-  vdiffr::expect_doppelganger("mcmc areas (rhats)", p_rhats)
+  vdiffr::expect_doppelganger("mcmc_areas (rhats)", p_rhats)
 
   p_no_points <- mcmc_areas(vdiff_dframe, point_est = "none")
-  vdiffr::expect_doppelganger("mcmc areas (no points)", p_no_points)
+  vdiffr::expect_doppelganger("mcmc_areas (no points)", p_no_points)
 
   p_mean_points <- mcmc_areas(vdiff_dframe, point_est = "mean")
-  vdiffr::expect_doppelganger("mcmc areas (means)", p_mean_points)
+  vdiffr::expect_doppelganger("mcmc_areas (means)", p_mean_points)
 })
 
 test_that("mcmc_areas_ridges renders correctly", {
   testthat::skip_on_cran()
 
   p_base <- mcmc_areas_ridges(vdiff_dframe)
-  vdiffr::expect_doppelganger("mcmc areas ridges (default)", p_base)
+  vdiffr::expect_doppelganger("mcmc_areas_ridges (default)", p_base)
 
   p_inner <- mcmc_areas_ridges(vdiff_dframe, prob = .5)
-  vdiffr::expect_doppelganger("mcmc areas ridges (inner)", p_inner)
+  vdiffr::expect_doppelganger("mcmc_areas_ridges (inner)", p_inner)
 
   p_outer <- mcmc_areas_ridges(vdiff_dframe, prob = .5, prob_outer = .95)
-  vdiffr::expect_doppelganger("mcmc areas ridges (outer)", p_outer)
+  vdiffr::expect_doppelganger("mcmc_areas_ridges (outer)", p_outer)
 })

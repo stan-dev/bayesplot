@@ -5,18 +5,22 @@
 \alias{mcmc_combo}
 \title{Combination plots}
 \usage{
-mcmc_combo(x, combo = c("dens", "trace"), widths = NULL,
-  gg_theme = NULL, ...)
+mcmc_combo(x, combo = c("dens", "trace"), ..., widths = NULL,
+  gg_theme = NULL)
 }
 \arguments{
 \item{x}{A 3-D array, matrix, list of matrices, or data frame of MCMC draws.
 The \link{MCMC-overview} page provides details on how to specify each these
-allowed inputs.}
+allowed inputs. It is also possible to use an object with an
+\code{as.array()} method that returns the same kind of 3-D array described on
+the \link{MCMC-overview} page.}
 
 \item{combo}{A character vector with at least two elements. Each element of
-\code{combo} corresponds to a column in the resulting graphic and should be
-the name of one of the available \link{MCMC} functions (omitting the
+\code{combo} corresponds to a column in the resulting graphic and should be the
+name of one of the available \link[=MCMC-overview]{MCMC} functions (omitting the
 \code{mcmc_} prefix).}
+
+\item{...}{Arguments passed to the plotting functions named in \code{combo}.}
 
 \item{widths}{A numeric vector the same length as \code{combo} specifying
 relative column widths. For example, if the plot has two columns, then
@@ -24,22 +28,20 @@ relative column widths. For example, if the plot has two columns, then
 factor of 2 (as would \code{widths = c(.3, .15)}, etc.). The default,
 \code{NULL}, allocates the same horizontal space for each column.}
 
-\item{gg_theme}{Unlike most of the other \pkg{bayesplot} functions,
+\item{gg_theme}{Unlike most of the other \strong{bayesplot} functions,
 \code{mcmc_combo} returns a gtable object rather than a ggplot object, and
 so theme objects can't be added directly to the returned plot object. The
 \code{gg_theme} argument helps get around this problem by accepting a
-\pkg{ggplot2} \link[ggplot2]{theme} object that is added to each of the
+\strong{ggplot2} \link[ggplot2:theme]{theme} object that is added to each of the
 plots \emph{before} combining them into the gtable object that is returned.
-This can be a theme object created by a call to \code{ggplot2::theme} or
-one of the \pkg{bayesplot} convenience functions, e.g.
-\code{\link{legend_none}} (see the \strong{Examples} section, below).}
-
-\item{...}{Arguments passed to the plotting functions named in \code{combo}.}
+This can be a theme object created by a call to \code{\link[ggplot2:theme]{ggplot2::theme()}} or
+one of the \strong{bayesplot} convenience functions, e.g.
+\code{\link[=legend_none]{legend_none()}} (see the \strong{Examples} section, below).}
 }
 \value{
 A gtable object (the result of calling
-  \code{\link[gridExtra]{arrangeGrob}}) with \code{length(combo)} columns and
-  a row for each parameter.
+\code{\link[gridExtra:arrangeGrob]{gridExtra::arrangeGrob()}}) with \code{length(combo)} columns and
+a row for each parameter.
 }
 \description{
 Combination plots

@@ -27,8 +27,8 @@ test_that("ppc_intervals_grouped returns ggplot object", {
 })
 
 test_that("ppc_ribbon_grouped returns ggplot object", {
-  expect_gg(
-    ppc_ribbon_grouped(y, yrep, x, group, facet_args = list(scales = "fixed")))
+  expect_gg(ppc_ribbon_grouped(y, yrep, x, group))
+  expect_gg(ppc_ribbon_grouped(y, yrep, x, group, facet_args = list(scales = "fixed")))
 })
 
 test_that("ppc_intervals_data returns correct structure", {
@@ -89,38 +89,38 @@ test_that("ppc_intervals renders correctly", {
   testthat::skip_on_cran()
 
   p_base <- ppc_intervals(vdiff_y, vdiff_yrep)
-  vdiffr::expect_doppelganger("ppc intervals (default)", p_base)
+  vdiffr::expect_doppelganger("ppc_intervals (default)", p_base)
 
   p_x <- ppc_intervals(vdiff_y, vdiff_yrep, x = vdiff_y)
-  vdiffr::expect_doppelganger("ppc intervals (x values)", p_x)
+  vdiffr::expect_doppelganger("ppc_intervals (x values)", p_x)
 
   p_50 <- ppc_intervals(vdiff_y, vdiff_yrep, prob = .50)
-  vdiffr::expect_doppelganger("ppc intervals (interval width)", p_50)
+  vdiffr::expect_doppelganger("ppc_intervals (interval width)", p_50)
 })
 
 test_that("ppc_intervals_grouped renders correctly", {
   testthat::skip_on_cran()
 
   p_base <- ppc_intervals_grouped(vdiff_y, vdiff_yrep, group = vdiff_group)
-  vdiffr::expect_doppelganger("ppc intervals grouped (default)", p_base)
+  vdiffr::expect_doppelganger("ppc_intervals_grouped (default)", p_base)
 
   p_x <- ppc_intervals_grouped(
     y = vdiff_y,
     yrep = vdiff_yrep,
     x = vdiff_y,
     group = vdiff_group)
-  vdiffr::expect_doppelganger("ppc intervals grouped (x values)", p_x)
+  vdiffr::expect_doppelganger("ppc_intervals_grouped (x values)", p_x)
 })
 
 test_that("ppc_ribbon renders correctly", {
   testthat::skip_on_cran()
 
   p_base <- ppc_ribbon(vdiff_y, vdiff_yrep)
-  vdiffr::expect_doppelganger("ppc ribbon (default)", p_base)
+  vdiffr::expect_doppelganger("ppc_ribbon (default)", p_base)
 
   p_x <- ppc_ribbon(vdiff_y, vdiff_yrep, x = vdiff_y)
-  vdiffr::expect_doppelganger("ppc ribbon (x values)", p_x)
+  vdiffr::expect_doppelganger("ppc_ribbon (x values)", p_x)
 
   p_50 <- ppc_ribbon(vdiff_y, vdiff_yrep, prob = 0.5)
-  vdiffr::expect_doppelganger("ppc ribbon (interval width)", p_50)
+  vdiffr::expect_doppelganger("ppc_ribbon (interval width)", p_50)
 })

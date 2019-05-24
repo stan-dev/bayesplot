@@ -26,9 +26,9 @@ library("rstanarm")
 
 This vignette focuses on plotting parameter estimates from MCMC draws. MCMC 
 diagnostic plots are covered in the separate vignette
-[_Visual MCMC diagnostics_](http://mc-stan.org/bayesplot/articles/visual-mcmc-diagnostics.html), 
+[_Visual MCMC diagnostics_](https://mc-stan.org/bayesplot/articles/visual-mcmc-diagnostics.html), 
 and graphical posterior predictive model checking is covered in the vignette
-[_Graphical posterior predictive checks_](http://mc-stan.org/bayesplot/articles/graphical-ppcs.html).
+[_Graphical posterior predictive checks_](https://mc-stan.org/bayesplot/articles/graphical-ppcs.html).
 
 ### Setup
 
@@ -53,7 +53,7 @@ In this vignette we'll use draws obtained using the `stan_glm` function in the
 **rstanarm** package (Gabry and Goodrich, 2017), but MCMC draws from using 
 any package can be used with the functions in the **bayesplot** package. See,
 for example, **brms**, which, like **rstanarm**, calls the **rstan** package
-internally to use [Stan](http://mc-stan.org/)'s MCMC sampler.
+internally to use [Stan](https://mc-stan.org/)'s MCMC sampler.
 
 ```{r, mtcars}
 head(mtcars) # see help("mtcars")
@@ -102,7 +102,7 @@ particular cases).
 **Documentation:**
 
 * `help("MCMC-intervals")` 
-* [mc-stan.org/bayesplot/reference/MCMC-intervals](http://mc-stan.org/bayesplot/reference/MCMC-intervals.html)
+* [mc-stan.org/bayesplot/reference/MCMC-intervals](https://mc-stan.org/bayesplot/reference/MCMC-intervals.html)
 
 ------
 
@@ -147,7 +147,7 @@ combined or with the chains separate.
 **Documentation:**
 
 * `help("MCMC-distributions")` 
-* [mc-stan.org/bayesplot/reference/MCMC-distributions](http://mc-stan.org/bayesplot/reference/MCMC-distributions.html)
+* [mc-stan.org/bayesplot/reference/MCMC-distributions](https://mc-stan.org/bayesplot/reference/MCMC-distributions.html)
 
 ------
 
@@ -224,13 +224,13 @@ mcmc_violin(posterior, pars = c("wt", "sigma"), probs = c(0.1, 0.5, 0.9))
 Various functions are available for plotting bivariate marginal posterior 
 distributions. Some of these functions also take optional arguments 
 for adding MCMC diagnostic information to the plots. That additional functionality 
-is discussed in the separate [_Visual MCMC diagnostics_](http://mc-stan.org/bayesplot/articles/visual-mcmc-diagnostics.html)
+is discussed in the separate [_Visual MCMC diagnostics_](https://mc-stan.org/bayesplot/articles/visual-mcmc-diagnostics.html)
 vignette.
 
 **Documentation:**
 
 * `help("MCMC-scatterplots")` 
-* [mc-stan.org/bayesplot/reference/MCMC-scatterplots](http://mc-stan.org/bayesplot/reference/MCMC-scatterplots.html)
+* [mc-stan.org/bayesplot/reference/MCMC-scatterplots](https://mc-stan.org/bayesplot/reference/MCMC-scatterplots.html)
 
 ------
 
@@ -250,7 +250,10 @@ The `mcmc_hex` function creates a similar plot but using hexagonal binning,
 which can be useful to avoid overplotting.
 
 ```{r, mcmc_hex}
-mcmc_hex(posterior, pars = c("(Intercept)", "wt"))
+# requires hexbin package
+if (requireNamespace("hexbin", quietly = TRUE)) {
+  mcmc_hex(posterior, pars = c("(Intercept)", "wt"))
+}
 ```
 
 #### mcmc_pairs
@@ -273,7 +276,7 @@ above the diagonal and the others below. There are many more options for
 controlling how the draws should be split between the plots above and below the
 diagonal (see the documentation for the `condition` argument), but they are more
 useful when MCMC diagnostic information is included. This is discussed in the 
-[_Visual MCMC diagnostics_](http://mc-stan.org/bayesplot/articles/visual-mcmc-diagnostics.html)
+[_Visual MCMC diagnostics_](https://mc-stan.org/bayesplot/articles/visual-mcmc-diagnostics.html)
 vignette.
 
 
@@ -284,14 +287,14 @@ vignette.
 Trace plots are time series plots of Markov chains. In this vignette 
 we show the standard trace plots that **bayesplot** can make. For models
 fit using any Stan interface (or Hamiltonian Monte Carlo in general), the 
-[_Visual MCMC diagnostics_](http://mc-stan.org/bayesplot/articles/visual-mcmc-diagnostics.html)
+[_Visual MCMC diagnostics_](https://mc-stan.org/bayesplot/articles/visual-mcmc-diagnostics.html)
 vignette provides an example of also adding information about divergences
 to trace plots.
 
 **Documentation:**
 
 * `help("MCMC-traces")` 
-* [mc-stan.org/bayesplot/reference/MCMC-traces](http://mc-stan.org/bayesplot/reference/MCMC-traces.html)
+* [mc-stan.org/bayesplot/reference/MCMC-traces](https://mc-stan.org/bayesplot/reference/MCMC-traces.html)
 
 -------
 
@@ -344,16 +347,18 @@ mcmc_trace_highlight(posterior, pars = "sigma", highlight = 3)
 
 Gabry, J., and Goodrich, B. (2017). rstanarm: Bayesian Applied Regression 
 Modeling via Stan. R package version 2.15.3. 
-http://mc-stan.org/rstanarm, https://CRAN.R-project.org/package=rstanarm
+https://mc-stan.org/rstanarm, https://CRAN.R-project.org/package=rstanarm
 
 Gabry, J. , Simpson, D. , Vehtari, A. , Betancourt, M. and Gelman, A. (2019), 
 Visualization in Bayesian workflow. _J. R. Stat. Soc. A_, 182: 389-402. 
-\doi:10.1111/rssa.12378. ([journal](https://rss.onlinelibrary.wiley.com/doi/full/10.1111/rssa.12378), 
-[arXiv preprint](https://arxiv.org/abs/1709.01449))
+\doi:10.1111/rssa.12378. ([journal version](https://rss.onlinelibrary.wiley.com/doi/full/10.1111/rssa.12378), 
+[arXiv preprint](https://arxiv.org/abs/1709.01449), 
+[code on GitHub](https://github.com/jgabry/bayes-vis-paper))
+<a id="gabry2019"></a>
 
 Gelman, A., Carlin, J. B., Stern, H. S., Dunson, D. B., Vehtari, A., and
 Rubin, D. B. (2013). *Bayesian Data Analysis*. Chapman & Hall/CRC Press, London,
 third edition.
 
 Stan Development Team. (2017). *Stan Modeling Language Users
-Guide and Reference Manual*. http://mc-stan.org/users/documentation/
+Guide and Reference Manual*. https://mc-stan.org/users/documentation/

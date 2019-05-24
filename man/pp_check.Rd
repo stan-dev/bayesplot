@@ -3,7 +3,7 @@
 \name{pp_check}
 \alias{pp_check}
 \alias{pp_check.default}
-\title{Posterior predictive checks (S3 generic and default method)}
+\title{Posterior (or prior) predictive checks (S3 generic and default method)}
 \usage{
 pp_check(object, ...)
 
@@ -16,37 +16,35 @@ takes \code{object} to be a \code{y} (outcome) vector.}
 \item{...}{For the generic, arguments passed to individual methods. For the
 default method, these are additional arguments to pass to \code{fun}.}
 
-\item{yrep}{For the default method, a \code{yrep} matrix passed to
-\code{fun}.}
+\item{yrep}{For the default method, a \code{yrep} matrix passed to \code{fun}.}
 
 \item{fun}{For the default method, the plotting function to call. Can be any
-of the \link[=PPC]{PPC functions}. The \code{"ppc_"} prefix can optionally
-be dropped if \code{fun} is specified as a string.}
+of the \link{PPC} functions. The \code{"ppc_"} prefix can optionally be dropped if
+\code{fun} is specified as a string.}
 }
 \value{
-The exact form of the value returned by \code{pp_check} may vary by
-  the class of \code{object}, but for consistency we encourage authors of
-  methods to return the ggplot object created by one of \pkg{bayesplot}'s
-  plotting functions. The default method returns the object returned by
-  \code{fun}.
+The exact form of the value returned by \code{pp_check()} may vary by
+the class of \code{object}, but for consistency we encourage authors of
+methods to return the ggplot object created by one of \strong{bayesplot}'s
+plotting functions. The default method returns the object returned by \code{fun}.
 }
 \description{
 S3 generic with simple default method. The intent is to provide a generic so
 authors of other \R packages who wish to provide interfaces to the functions
-in \pkg{bayesplot} will be encouraged to include \code{pp_check} methods in
-their package, preserving the same naming conventions for posterior
+in \strong{bayesplot} will be encouraged to include \code{pp_check()} methods in their
+package, preserving the same naming conventions for posterior (and prior)
 predictive checking across many \R packages for Bayesian inference. This is
-for the convenience of both users and developers. See the \strong{Details}
-and \strong{Examples} sections, below, and the package vignettes for examples
-of defining \code{pp_check} methods.
+for the convenience of both users and developers. See the \strong{Details} and
+\strong{Examples} sections, below, and the package vignettes for examples of
+defining \code{pp_check()} methods.
 }
 \details{
 A package that creates fitted model objects of class \code{"foo"}
-  can include a method \code{pp_check.foo} that prepares the appropriate
-  inputs (\code{y}, \code{yrep}, etc.) for the \pkg{bayesplot} functions. The
-  \code{pp_check.foo} method may, for example, let the user choose between
-  various plots, calling the functions from \pkg{bayesplot} internally as
-  needed. See \strong{Examples}, below, and the package vignettes.
+can include a method \code{pp_check.foo()} that prepares the appropriate
+inputs (\code{y}, \code{yrep}, etc.) for the \strong{bayesplot} functions. The
+\code{pp_check.foo()} method may, for example, let the user choose between
+various plots, calling the functions from \strong{bayesplot} internally as
+needed. See \strong{Examples}, below, and the package vignettes.
 }
 \examples{
 # default method

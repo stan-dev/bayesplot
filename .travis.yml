@@ -6,6 +6,15 @@ cache: packages
 
 r_github_packages:
   - r-lib/covr
+  - tidyverse/ggplot2
+
+r_build_args: '--no-build-vignettes'
+r_check_args: '--ignore-vignettes'
+
+before_install:
+  - mkdir -p ~/.R
+  - echo "CXX14FLAGS=-O3 -mtune=native -march=native -Wno-unused-variable -Wno-unused-function  -Wno-macro-redefined" >> ~/.R/Makevars
+  - echo "CXX14=g++ -std=c++1y -fPIC" >> ~/.R/Makevars
 
 after_success:
   - Rscript -e 'covr::codecov()'

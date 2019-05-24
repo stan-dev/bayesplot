@@ -2,26 +2,25 @@
 % Please edit documentation in R/bayesplot-ggplot-themes.R
 \name{theme_default}
 \alias{theme_default}
-\title{Default bayesplot plotting theme}
+\title{Default \strong{bayesplot} plotting theme}
 \usage{
 theme_default(base_size = getOption("bayesplot.base_size", 12),
   base_family = getOption("bayesplot.base_family", "serif"))
 }
 \arguments{
 \item{base_size, base_family}{Base font size and family (passed to
-\code{\link[ggplot2]{theme_bw}}). It is possible to set
-\code{"bayesplot.base_size"} and \code{"bayesplot.base_family"} via
-\code{\link{options}} to change the defaults, which are \code{12} and
-\code{"serif"}, respectively.}
+\code{\link[ggplot2:theme_bw]{ggplot2::theme_bw()}}). It is possible to set \code{"bayesplot.base_size"} and
+\code{"bayesplot.base_family"} via \code{\link[=options]{options()}} to change the defaults, which are
+\code{12} and \code{"serif"}, respectively.}
 }
 \value{
-A ggplot \link[ggplot2]{theme} object.
+A ggplot \link[ggplot2:theme]{theme} object.
 }
 \description{
-The \code{\link{theme_default}} function returns the default ggplot
-\link{theme} used by the \pkg{bayesplot} plotting functions. See
-\code{\link{bayesplot_theme_set}} for details on setting and updating the
-plotting theme.
+The \code{\link[=theme_default]{theme_default()}} function returns the default ggplot
+\link[ggplot2:theme]{theme} used by the \strong{bayesplot} plotting functions. See
+\code{\link[=bayesplot_theme_set]{bayesplot_theme_set()}} for details on setting and updating the plotting
+theme.
 }
 \examples{
 class(theme_default())
@@ -41,10 +40,12 @@ mcmc_areas(x, regex_pars = "beta")
 
 }
 \seealso{
-\link{bayesplot-helpers} for a variety of convenience functions,
-  many of which provide shortcuts for tweaking theme elements after creating
-  a plot.
+\code{\link[=bayesplot_theme_set]{bayesplot_theme_set()}} to change the ggplot theme.
 
-\code{\link{bayesplot-colors}} to set or view the color scheme used
-  for plotting.
+\link{bayesplot-colors} to set or view the color scheme used
+for plotting.
+
+\link{bayesplot-helpers} for a variety of convenience functions,
+many of which provide shortcuts for tweaking theme elements after creating
+a plot.
 }

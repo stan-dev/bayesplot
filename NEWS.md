@@ -1,35 +1,70 @@
 <!-- See http://style.tidyverse.org/news.html for advice on writing news -->
 
-# bayesplot 1.6.0.9000
+# bayesplot 1.7.0.9000
 
 (GitHub issue/PR numbers in parentheses)
 
-<!-- Items for next release go here* -->
+<!-- Items for next release go here-->
 
-* [`mcmc_trace()`](http://mc-stan.org/bayesplot/reference/MCMC-traces.html)
+
+# bayesplot 1.7.0
+
+(GitHub issue/PR numbers in parentheses)
+
+* The `pars` argument of all MCMC plotting functions now supports tidy variable
+  selection. See `help("tidy-params", package="bayesplot")` for details and
+  examples. (#161, #183, #188)
+
+* Two new plots have been added for inspecting the distribution of ranks.
+  Rank histograms were introduced by the Stan team's [new paper on 
+  MCMC diagnostics](https://arxiv.org/abs/1903.08008). (#178, #179)
+
+  `mcmc_rank_hist()`: A traditional traceplot (`mcmc_trace()`) visualizes how
+  sampled values the MCMC chains mix over the course of sampling. A rank
+  histogram (`mcmc_rank_hist()`) visualizes how the *ranks* of values from the
+  chains mix together. An ideal plot would show the ranks mixing or overlapping
+  in a uniform distribution.
+  
+  `mcmc_rank_overlay()`: Instead of drawing each chain's histogram in a separate
+  panel, this plot draws the top edge of the chains' histograms in a single
+  panel.
+  
+* Added `mcmc_trace_data()`, which returns the data used for plotting the trace
+  plots and rank histograms. (Advances #97)
+
+* [ColorBrewer](http://colorbrewer2.org) palettes are now available as color
+  schemes via
+  [`color_scheme_set()`](https://mc-stan.org/bayesplot/reference/bayesplot-colors.html).
+  For example, `color_scheme_set("brewer-Spectral")` will use the Spectral 
+  palette. (#177, #190)
+
+* MCMC plots now also accept objects with an `as.array` method as 
+  input (e.g., stanfit objects). (#175, #184)
+
+* [`mcmc_trace()`](https://mc-stan.org/bayesplot/reference/MCMC-traces.html)
   gains an argument `iter1` which can be used to label the traceplot starting
   from the first iteration after warmup. (#14, #155, @mcol)
 
-* [`mcmc_areas()`](http://mc-stan.org/bayesplot/reference/MCMC-intervals.html)
+* [`mcmc_areas()`](https://mc-stan.org/bayesplot/reference/MCMC-intervals.html)
   gains an argument `area_method` which controls how to draw the density 
   curves. The default `"equal area"` constrains the heights so that the curves 
   have the same area. As a result, a narrow interval will appear as a spike 
   of density, while a wide, uncertain interval is spread thin over the _x_ axis.
-  Alternatively `"equal height"` will set the maximum height on each curve to 
-  the same value. This works well when the intervals are about the same width. 
-  Otherwise, that wide, uncertain interval will dominate the visual space 
-  compared to a narrow, less uncertain interval. A compromise between the two is 
-  `"scaled height"` which scales the curves from `"equal height"` using 
+  Alternatively `"equal height"` will set the maximum height on each curve to
+  the same value. This works well when the intervals are about the same width.
+  Otherwise, that wide, uncertain interval will dominate the visual space
+  compared to a narrow, less uncertain interval. A compromise between the two is
+  `"scaled height"` which scales the curves from `"equal height"` using
   `height * sqrt(height)`. (#163, #169)
-  
-* `mcmc_areas()` correctly plots density curves where the point estimate 
-  does not include the highest point of the density curve. 
+
+* `mcmc_areas()` correctly plots density curves where the point estimate
+  does not include the highest point of the density curve.
   (#168, #169, @jtimonen)
-  
-* `mcmc_areas_ridges()` draws the vertical line at *x* = 0 over the curves so 
+
+* `mcmc_areas_ridges()` draws the vertical line at *x* = 0 over the curves so
   that it is always visible.
 
-* `mcmc_intervals()` and `mcmc_areas()` raise a warning if `prob_outer` is ever 
+* `mcmc_intervals()` and `mcmc_areas()` raise a warning if `prob_outer` is ever
   less than `prob`. It sorts these two values into the correct order. (#138)
 
 * MCMC parameter names are now *always* converted to factors prior to
@@ -38,10 +73,17 @@
   case where factor-conversion failed. (#162, #165, @wwiecek)
 
 * The examples in
-  [`?ppc_loo_pit_overlay()`](http://mc-stan.org/bayesplot/reference/PPC-loo.html)
+  [`?ppc_loo_pit_overlay()`](https://mc-stan.org/bayesplot/reference/PPC-loo.html)
   now work as expected. (#166, #167)
+  
+* Added `"viridisD"` as an alternative name for `"viridis"` to the supported 
+  colors.
 
+* Added `"viridisE"` (the [cividis](https://github.com/marcosci/cividis) 
+  version of viridis) to the supported colors. 
 
+* `ppc_bars()` and `ppc_bars_grouped()` now allow negative integers as input.
+  (#172, @jeffpollock9)
 
 
 # bayesplot 1.6.0
@@ -61,29 +103,29 @@
     - `bayesplot_theme_replace()`
 
 * The [Visual MCMC Diagnostics
-  vignette](http://mc-stan.org/bayesplot/articles/visual-mcmc-diagnostics.html)
+  vignette](https://mc-stan.org/bayesplot/articles/visual-mcmc-diagnostics.html)
   has been reorganized and has a lot of useful new content thanks to Martin
   Modrák. (#144, #153)
 
 * The [LOO predictive
-  checks](http://mc-stan.org/bayesplot/reference/PPC-loo.html) now require
+  checks](https://mc-stan.org/bayesplot/reference/PPC-loo.html) now require
   **loo** version `>= 2.0.0`. (#139)
 
 * Histogram plots gain a `breaks` argument that can be used as an alternative
   to `binwidth`. (#148)
 
-* [`mcmc_pairs()`](http://mc-stan.org/bayesplot/reference/MCMC-scatterplots.html)
+* [`mcmc_pairs()`](https://mc-stan.org/bayesplot/reference/MCMC-scatterplots.html)
   now has an argument `grid_args` to provide a way of passing optional
   arguments to `gridExtra::arrangeGrob()`. This can be used to add a title to
   the plot, for example. (#143)
 
-* [`ppc_ecdf_overlay()`](http://mc-stan.org/bayesplot/reference/PPC-distributions.html)
+* [`ppc_ecdf_overlay()`](https://mc-stan.org/bayesplot/reference/PPC-distributions.html)
   gains an argument `discrete`, which is `FALSE` by default, but can be used
   to make the Geom more appropriate for discrete data. (#145)
 
 * [PPC intervals 
-  plots](http://mc-stan.org/bayesplot/reference/PPC-intervals.html) and [LOO
-  predictive checks](http://mc-stan.org/bayesplot/reference/PPC-loo.html) now
+  plots](https://mc-stan.org/bayesplot/reference/PPC-intervals.html) and [LOO
+  predictive checks](https://mc-stan.org/bayesplot/reference/PPC-loo.html) now
   draw both an outer and an inner probability interval, which can be
   controlled through the new argument `prob_outer` and the already existing
   `prob`. This is consistent with what is produced by `mcmc_intervals()`.
@@ -96,7 +138,7 @@
 
 (GitHub issue/PR numbers in parentheses)
 
-* New package documentation website: <http://mc-stan.org/bayesplot/>
+* New package documentation website: <https://mc-stan.org/bayesplot/>
 
 * Two new plots that visualize posterior density using
   [ridgelines][ggridges]. These work well when parameters have similar
@@ -115,7 +157,7 @@
 
 * Added `mcmc_intervals_data()` and `mcmc_areas_data()` that return data
   plotted by `mcmc_intervals()` and `mcmc_areas()`. (Advances #97)
-  
+
 * New `ppc_data()` function returns the data plotted by many of the PPC plotting
   functions. (Advances #97)
 
@@ -132,29 +174,29 @@
 
 (GitHub issue/PR numbers in parentheses)
 
-* New plotting function `mcmc_parcoord()` for parallel coordinates plots of 
+* New plotting function `mcmc_parcoord()` for parallel coordinates plots of
   MCMC draws (optionally including HMC/NUTS diagnostic information). (#108)
-  
+
 * `mcmc_scatter` gains an `np` argument for specifying NUTS parameters, which
   allows highlighting divergences in the plot. (#112)
-  
-* New functions with names ending with suffix `_data` don't make the plots, 
-  they just return the data prepared for plotting (more of these to come in 
+
+* New functions with names ending with suffix `_data` don't make the plots,
+  they just return the data prepared for plotting (more of these to come in
   future releases):
     - `ppc_intervals_data()` (#101)
     - `ppc_ribbon_data()` (#101)
     - `mcmc_parcoord_data()` (#108)
     - `mcmc_rhat_data()` (#110)
     - `mcmc_neff_data()` (#110)
-    
-* `ppc_stat_grouped()`, `ppc_stat_freqpoly_grouped()` gain a `facet_args` 
-  argument for controlling **ggplot2** faceting (many of the `mcmc_` functions 
+
+* `ppc_stat_grouped()`, `ppc_stat_freqpoly_grouped()` gain a `facet_args`
+  argument for controlling **ggplot2** faceting (many of the `mcmc_` functions
   already have this).
-  
-* The `divergences` argument to `mcmc_trace()` has been deprecated in favor 
-  of `np` (NUTS parameters) to match the other functions that have an `np` 
+
+* The `divergences` argument to `mcmc_trace()` has been deprecated in favor
+  of `np` (NUTS parameters) to match the other functions that have an `np`
   argument.
-  
+
 * Fixed an issue where duplicated rhat values would break `mcmc_rhat()` (#105).
 
 
@@ -283,5 +325,5 @@ Initial CRAN release
 
 
 
-[ggridges]: https://CRAN.R-project.org/package=ggridges 
+[ggridges]: https://CRAN.R-project.org/package=ggridges
             "ggridges package"
