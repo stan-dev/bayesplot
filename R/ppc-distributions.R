@@ -117,105 +117,142 @@ ppc_data <- function(y, yrep, group = NULL) {
 
 #' @rdname PPC-distributions
 #' @export
-ppc_hist <- function(y, yrep, ..., binwidth = NULL, breaks = NULL,
-                     freq = TRUE) {
-  check_ignored_arguments(...)
-  data <- ppc_data(y, yrep)
-  aes_list <- set_hist_aes(freq, fill = ~ is_y_label, color = ~ is_y_label)
+ppc_hist <-
+  function(y,
+           yrep,
+           ...,
+           binwidth = NULL,
+           breaks = NULL,
+           freq = TRUE) {
+    check_ignored_arguments(...)
 
-  ggplot(data) +
-    aes_list +
-    geom_histogram(size = 0.25, binwidth = binwidth, breaks = breaks) +
-    scale_fill_ppc_dist() +
-    scale_color_ppc_dist() +
-    facet_wrap_parsed("rep_label") +
-    force_axes_in_facets() +
-    dont_expand_y_axis() +
-    bayesplot_theme_get() +
-    space_legend_keys() +
-    yaxis_text(FALSE) +
-    yaxis_title(FALSE) +
-    yaxis_ticks(FALSE) +
-    xaxis_title(FALSE) +
-    facet_text(FALSE) +
-    facet_bg(FALSE)
-}
-
-
+    ppc_data(y, yrep) %>%
+      ggplot(mapping = set_hist_aes(
+        freq,
+        fill = ~ is_y_label,
+        color = ~ is_y_label
+      )) +
+      geom_histogram(
+        size = 0.25,
+        binwidth = binwidth,
+        breaks = breaks
+      ) +
+      scale_fill_ppc_dist() +
+      scale_color_ppc_dist() +
+      facet_wrap_parsed("rep_label") +
+      force_axes_in_facets() +
+      dont_expand_y_axis() +
+      bayesplot_theme_get() +
+      space_legend_keys() +
+      yaxis_text(FALSE) +
+      yaxis_title(FALSE) +
+      yaxis_ticks(FALSE) +
+      xaxis_title(FALSE) +
+      facet_text(FALSE) +
+      facet_bg(FALSE)
+  }
 
 #' @rdname PPC-distributions
 #' @export
 #' @param notch A logical scalar passed to [ggplot2::geom_boxplot()].
 #'   Unlike for `geom_boxplot()`, the default is `notch=TRUE`.
 #'
-ppc_boxplot <- function(y, yrep, ..., notch = TRUE, size = 0.5, alpha = 1) {
-  check_ignored_arguments(...)
-  data <- ppc_data(y, yrep)
-
-  ggplot(data) +
-    aes_(x = ~ rep_label, y = ~ value,
-         fill = ~ is_y_label, color = ~ is_y_label) +
-    geom_boxplot(
-      notch = notch,
-      size = size,
-      alpha = alpha,
-      outlier.alpha = 2 / 3) +
-    scale_fill_ppc_dist() +
-    scale_color_ppc_dist() +
-    bayesplot_theme_get() +
-    yaxis_title(FALSE) +
-    xaxis_ticks(FALSE) +
-    xaxis_text(FALSE) +
-    xaxis_title(FALSE)
-}
-
+ppc_boxplot <-
+  function(y,
+           yrep,
+           ...,
+           notch = TRUE,
+           size = 0.5,
+           alpha = 1) {
+    check_ignored_arguments(...)
+    ppc_data(y, yrep) %>%
+      ggplot(mapping =
+               aes_(
+                 x = ~ rep_label,
+                 y = ~ value,
+                 fill = ~ is_y_label,
+                 color = ~ is_y_label
+               )) +
+      geom_boxplot(
+        notch = notch,
+        size = size,
+        alpha = alpha,
+        outlier.alpha = 2 / 3
+      ) +
+      scale_fill_ppc_dist() +
+      scale_color_ppc_dist() +
+      bayesplot_theme_get() +
+      yaxis_title(FALSE) +
+      xaxis_ticks(FALSE) +
+      xaxis_text(FALSE) +
+      xaxis_title(FALSE)
+  }
 
 
 #' @rdname PPC-distributions
 #' @export
-ppc_freqpoly <- function(y, yrep, ...,
-                         binwidth = NULL,
-                         freq = TRUE,
-                         size = 0.25,
-                         alpha = 1) {
-  check_ignored_arguments(...)
-  data <- ppc_data(y, yrep)
-  aes_list <- set_hist_aes(freq, fill = ~ is_y_label, color = ~ is_y_label)
+ppc_freqpoly <-
+  function(y,
+           yrep,
+           ...,
+           binwidth = NULL,
+           freq = TRUE,
+           size = 0.25,
+           alpha = 1) {
+    check_ignored_arguments(...)
 
-  ggplot(data) +
-    aes_list +
-    aes_(x = ~ value, fill = ~ is_y_label, color = ~ is_y_label) +
-    geom_area(stat = "bin", binwidth = binwidth, size = size, alpha = alpha) +
-    scale_fill_ppc_dist() +
-    scale_color_ppc_dist() +
-    facet_wrap_parsed("rep_label") +
-    bayesplot_theme_get() +
-    force_axes_in_facets() +
-    dont_expand_y_axis() +
-    space_legend_keys() +
-    yaxis_text(FALSE) +
-    yaxis_title(FALSE) +
-    yaxis_ticks(FALSE) +
-    xaxis_title(FALSE) +
-    facet_text(FALSE) +
-    facet_bg(FALSE)
-}
+    ppc_data(y, yrep) %>%
+      ggplot(mapping = set_hist_aes(
+        freq,
+        fill = ~ is_y_label,
+        color = ~ is_y_label
+      )) +
+      geom_area(
+        stat = "bin",
+        binwidth = binwidth,
+        size = size,
+        alpha = alpha
+      ) +
+      scale_fill_ppc_dist() +
+      scale_color_ppc_dist() +
+      facet_wrap_parsed("rep_label") +
+      bayesplot_theme_get() +
+      force_axes_in_facets() +
+      dont_expand_y_axis() +
+      space_legend_keys() +
+      yaxis_text(FALSE) +
+      yaxis_title(FALSE) +
+      yaxis_ticks(FALSE) +
+      xaxis_title(FALSE) +
+      facet_text(FALSE) +
+      facet_bg(FALSE)
+  }
 
 #' @rdname PPC-distributions
 #' @export
 #' @template args-group
 #'
-ppc_freqpoly_grouped <- function(y, yrep, group, ..., binwidth = NULL,
-                                 freq = TRUE, size = 0.25, alpha = 1) {
+ppc_freqpoly_grouped <-
+  function(y,
+           yrep,
+           group,
+           ...,
+           binwidth = NULL,
+           freq = TRUE,
+           size = 0.25,
+           alpha = 1) {
     check_ignored_arguments(...)
-    data <- ppc_data(y, yrep, group)
-    aes_list <- set_hist_aes(freq)
 
-    ggplot(data) +
-      aes_list +
-      geom_area(aes_(color = ~ is_y_label, fill = ~ is_y_label),
-                stat = "bin", size = size, alpha = alpha,
-                binwidth = binwidth, na.rm = TRUE) +
+    ppc_data(y, yrep, group) %>%
+      ggplot(mapping = set_hist_aes(freq)) +
+      geom_area(
+        mapping = aes_(color = ~ is_y_label, fill = ~ is_y_label),
+        stat = "bin",
+        size = size,
+        alpha = alpha,
+        binwidth = binwidth,
+        na.rm = TRUE
+      ) +
       facet_grid(rep_label ~ group, scales = "free") +
       scale_fill_ppc_dist() +
       scale_color_ppc_dist() +
@@ -234,84 +271,89 @@ ppc_freqpoly_grouped <- function(y, yrep, group, ..., binwidth = NULL,
 
 #' @rdname PPC-distributions
 #' @export
-ppc_dens <- function(y, yrep, ..., trim = FALSE, size = 0.5, alpha = 1) {
-  check_ignored_arguments(...)
-  data <- ppc_data(y, yrep)
-
-  ggplot(data) +
-    aes_(x = ~ value, fill = ~ is_y_label, color = ~ is_y_label) +
-    geom_density(size = size, alpha = alpha, trim = trim) +
-    scale_fill_ppc_dist() +
-    scale_color_ppc_dist() +
-    bayesplot_theme_get() +
-    facet_wrap_parsed("rep_label") +
-    force_axes_in_facets() +
-    dont_expand_y_axis() +
-    space_legend_keys() +
-    yaxis_text(FALSE) +
-    yaxis_title(FALSE) +
-    yaxis_ticks(FALSE) +
-    xaxis_title(FALSE) +
-    facet_text(FALSE) +
-    facet_bg(FALSE)
-}
+ppc_dens <-
+  function(y,
+           yrep,
+           ...,
+           trim = FALSE,
+           size = 0.5,
+           alpha = 1) {
+    check_ignored_arguments(...)
+    ppc_data(y, yrep) %>%
+      ggplot(mapping =
+               aes_(
+                 x = ~ value,
+                 fill = ~ is_y_label,
+                 color = ~ is_y_label
+               )) +
+      geom_density(
+        size = size,
+        alpha = alpha,
+        trim = trim
+      ) +
+      scale_fill_ppc_dist() +
+      scale_color_ppc_dist() +
+      bayesplot_theme_get() +
+      facet_wrap_parsed("rep_label") +
+      force_axes_in_facets() +
+      dont_expand_y_axis() +
+      space_legend_keys() +
+      yaxis_text(FALSE) +
+      yaxis_title(FALSE) +
+      yaxis_ticks(FALSE) +
+      xaxis_title(FALSE) +
+      facet_text(FALSE) +
+      facet_bg(FALSE)
+  }
 
 #' @rdname PPC-distributions
 #' @export
 #' @template args-density-controls
-ppc_dens_overlay <- function(y, yrep, ...,
-                             size = 0.25,
-                             alpha = 0.7,
-                             trim = FALSE,
-                             bw = "nrd0",
-                             adjust = 1,
-                             kernel = "gaussian",
-                             n_dens = 1024) {
+ppc_dens_overlay <-
+  function(y,
+           yrep,
+           ...,
+           size = 0.25,
+           alpha = 0.7,
+           trim = FALSE,
+           bw = "nrd0",
+           adjust = 1,
+           kernel = "gaussian",
+           n_dens = 1024) {
+    check_ignored_arguments(...)
 
-  check_ignored_arguments(...)
-  data <- ppc_data(y, yrep)
-
-  ggplot(data) +
-    aes_(x = ~ value) +
-    stat_density(
-      aes_(group = ~ rep_id, color = "yrep"),
-      data = function(x) dplyr::filter(x, !.data$is_y),
-      geom = "line",
-      position = "identity",
-      size = size,
-      alpha = alpha,
-      trim = trim,
-      bw = bw,
-      adjust = adjust,
-      kernel = kernel,
-      n = n_dens
-    ) +
-    stat_density(
-      aes_(color = "y"),
-      data = function(x) dplyr::filter(x, .data$is_y),
-      geom = "line",
-      position = "identity",
-      lineend = "round",
-      size = 1,
-      trim = trim,
-      bw = bw,
-      adjust = adjust,
-      kernel = kernel,
-      n = n_dens
-    ) +
-    scale_color_ppc_dist() +
-    bayesplot_theme_get() +
-    xlab(y_label()) +
-    dont_expand_axes() +
-    yaxis_title(FALSE) +
-    xaxis_title(FALSE) +
-    yaxis_text(FALSE) +
-    yaxis_ticks(FALSE)
-}
-
-
-
-
+    ppc_data(y, yrep) %>%
+      ggplot(mapping = aes_(x = ~ value)) +
+      overlay_ppd_densities(
+        mapping = aes_(group = ~ rep_id, color = "yrep"),
+        data = function(x) dplyr::filter(x, !.data$is_y),
+        size = size,
+        alpha = alpha,
+        trim = trim,
+        bw = bw,
+        adjust = adjust,
+        kernel = kernel,
+        n = n_dens
+      ) +
+      overlay_ppd_densities(
+        mapping = aes_(color = "y"),
+        data = function(x) dplyr::filter(x, .data$is_y),
+        lineend = "round",
+        size = 1,
+        trim = trim,
+        bw = bw,
+        adjust = adjust,
+        kernel = kernel,
+        n = n_dens
+      ) +
+      scale_color_ppc_dist() +
+      bayesplot_theme_get() +
+      dont_expand_axes() +
+      yaxis_title(FALSE) +
+      xaxis_title(FALSE) +
+      yaxis_text(FALSE) +
+      yaxis_ticks(FALSE)
+  }
 
 
 #' @export
@@ -330,10 +372,9 @@ ppc_ecdf_overlay <-
            size = 0.25,
            alpha = 0.7) {
     check_ignored_arguments(...)
-    data <- ppc_data(y, yrep)
 
-    ggplot(data) +
-      aes_(x = ~ value) +
+    ppc_data(y, yrep) %>%
+    ggplot(mapping = aes_(x = ~ value)) +
       hline_at(
         c(0, 0.5, 1),
         size = c(0.2, 0.1, 0.2),
@@ -356,12 +397,11 @@ ppc_ecdf_overlay <-
         pad = pad
       ) +
       scale_color_ppc_dist() +
-      xlab(y_label()) +
       scale_y_continuous(breaks = c(0, 0.5, 1)) +
+      bayesplot_theme_get() +
       yaxis_title(FALSE) +
       xaxis_title(FALSE) +
-      yaxis_ticks(FALSE) +
-    bayesplot_theme_get()
+      yaxis_ticks(FALSE)
   }
 
 #' @export
@@ -377,62 +417,70 @@ ppc_ecdf_overlay <-
 #'   to control the appearance of `y` points. The default of `y_jitter=NULL`
 #'   will let **ggplot2** determine the amount of jitter.
 #'
-ppc_violin_grouped <- function(y, yrep, group, ..., probs = c(0.1, 0.5, 0.9),
-                               size = 1, alpha = 1,
-                               y_draw = c("violin", "points", "both"),
-                               y_size = 1, y_alpha = 1, y_jitter = 0.1) {
-  check_ignored_arguments(...)
-  data <- ppc_data(y, yrep, group)
+ppc_violin_grouped <-
+  function(y,
+           yrep,
+           group,
+           ...,
+           probs = c(0.1, 0.5, 0.9),
+           size = 1,
+           alpha = 1,
+           y_draw = c("violin", "points", "both"),
+           y_size = 1,
+           y_alpha = 1,
+           y_jitter = 0.1) {
+    check_ignored_arguments(...)
 
-  y_draw <- match.arg(y_draw)
-  y_violin <- y_draw %in% c("violin", "both")
-  y_points <- y_draw %in% c("points", "both")
+    y_draw <- match.arg(y_draw)
+    y_violin <- y_draw %in% c("violin", "both")
+    y_points <- y_draw %in% c("points", "both")
 
-  args_violin_yrep <- list(
-    data = function(x) dplyr::filter(x, !.data$is_y),
-    aes_(fill = "yrep", color = "yrep"),
-    draw_quantiles = probs,
-    alpha = alpha,
-    size = size
-  )
+    args_violin_yrep <- list(
+      data = function(x) dplyr::filter(x,!.data$is_y),
+      aes_(fill = "yrep", color = "yrep"),
+      draw_quantiles = probs,
+      alpha = alpha,
+      size = size
+    )
 
-  args_violin_y <- list(
-    data = function(x) dplyr::filter(x, .data$is_y),
-    aes_(fill = "y", color = "y"),
-    show.legend = FALSE,
-    alpha = 0
-  )
+    args_violin_y <- list(
+      data = function(x) dplyr::filter(x, .data$is_y),
+      aes_(fill = "y", color = "y"),
+      show.legend = FALSE,
+      alpha = 0
+    )
 
-  args_jitter_y <- list(
-    data = function(x) dplyr::filter(x, .data$is_y),
-    aes_(fill = "y", color = "y"),
-    shape = 21,
-    alpha = y_alpha,
-    size = y_size,
-    width = y_jitter,
-    height = 0,
-    show.legend = FALSE
-  )
+    args_jitter_y <- list(
+      data = function(x) dplyr::filter(x, .data$is_y),
+      aes_(fill = "y", color = "y"),
+      shape = 21,
+      alpha = y_alpha,
+      size = y_size,
+      width = y_jitter,
+      height = 0,
+      show.legend = FALSE
+    )
 
-  violin_y_func <- if (y_violin) geom_violin else geom_ignore
-  jitter_y_func <- if (y_points) geom_jitter else geom_ignore
+    violin_y_func <- if (y_violin)
+      geom_violin else geom_ignore
+    jitter_y_func <- if (y_points)
+      geom_jitter else geom_ignore
 
-  layer_violin_yrep <- do.call(geom_violin, args_violin_yrep)
-  layer_violin_y <- do.call(violin_y_func, args_violin_y)
-  layer_jitter_y <- do.call(jitter_y_func, args_jitter_y)
+    layer_violin_yrep <- do.call(geom_violin, args_violin_yrep)
+    layer_violin_y <- do.call(violin_y_func, args_violin_y)
+    layer_jitter_y <- do.call(jitter_y_func, args_jitter_y)
 
-  ggplot(data) +
-    aes_(x = ~ group, y = ~ value) +
-    layer_violin_yrep +
-    layer_violin_y +
-    layer_jitter_y +
-    scale_fill_ppc_dist(values = c(NA, get_color("l"))) +
-    scale_color_ppc_dist() +
-    labs(x = "Group", y = yrep_label()) +
-    yaxis_title(FALSE) +
-    xaxis_title(FALSE) +
-    bayesplot_theme_get()
-}
+    ppc_data(y, yrep, group) %>%
+      ggplot(mapping = aes_(x = ~ group, y = ~ value)) +
+      layer_violin_yrep +
+      layer_violin_y +
+      layer_jitter_y +
+      scale_fill_ppc_dist(values = c(NA, get_color("l"))) +
+      scale_color_ppc_dist() +
+      yaxis_title(FALSE) +
+      xaxis_title(FALSE) +
+      bayesplot_theme_get()
+  }
 
 
 # internal ----------------------------------------------------------------
