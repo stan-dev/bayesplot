@@ -132,7 +132,7 @@ ppc_error_hist <-
     } else {
       errors <- compute_errors(y, yrep)
       graph <-
-        ggplot(melt_yrep(errors), set_hist_aes(freq)) +
+        ggplot(melt_predictions(errors), set_hist_aes(freq)) +
         labs(y = NULL, x = expression(italic(y) - italic(y)[rep])) +
         facet_wrap(facets = ~ rep_id)
     }
@@ -227,7 +227,7 @@ ppc_error_scatter <-
     errors <- compute_errors(y, yrep)
     .ppc_scatter(
       data = dplyr::left_join(
-        melt_yrep(errors),
+        melt_predictions(errors),
         data.frame(y = y, y_id = seq_along(y)),
         by = "y_id"
       ),
@@ -382,7 +382,7 @@ grouped_error_data <- function(y, yrep, group) {
   for (j in seq_along(grps)) {
     g_j <- grps[j]
     err_j <- compute_errors(y[group == g_j], yrep[, group == g_j, drop=FALSE])
-    errs[[j]] <- melt_yrep(err_j)
+    errs[[j]] <- melt_predictions(err_j)
     errs[[j]]$group <- g_j
   }
   dat <- dplyr::bind_rows(errs)

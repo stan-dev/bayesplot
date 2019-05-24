@@ -69,7 +69,7 @@ ppc_scatter <-
     yrep <- validate_predictions(yrep, length(y))
     graph <- .ppc_scatter(
       data = data.frame(
-        melt_yrep(yrep),
+        melt_predictions(yrep),
         y = rep(y, each = nrow(yrep))
       ),
       mapping = aes_(x = ~ value, y = ~ y),

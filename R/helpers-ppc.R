@@ -150,21 +150,22 @@ validate_x <- function(x = NULL, y, unique_x = FALSE) {
 }
 
 
-#' Convert yrep matrix into a molten data frame
+#' Convert matrix of predictions into a molten data frame
 #'
-#' @param yrep A matrix, already validated using `validate_predictions()`.
+#' @param predictions A matrix (`yrep` or `ypred`), already validated using
+#'   `validate_predictions()`.
 #' @return A data frame with 4 columns:
-#'   1. `y_id`: integer indicating the observation number (`yrep` column).
-#'   1. `rep_id`: integer indicating the simulation number (`yrep` row).
-#'   1. `rep_label`: factor with S levels, where S is `nrow(yrep)`, i.e. the
-#'      number of simulations included in `yrep`.
+#'   1. `y_id`: integer indicating the observation number (`predictions` column).
+#'   1. `rep_id`: integer indicating the simulation number (`predictions` row).
+#'   1. `rep_label`: factor with S levels, where S is `nrow(predictions)`, i.e. the
+#'      number of simulations included in `predictions`.
 #'   1. `value`: the simulation values.
 #' @noRd
-melt_yrep <- function(yrep) {
-  out <- yrep %>%
+melt_predictions <- function(predictions) {
+  out <- predictions %>%
     reshape2::melt(varnames = c("rep_id", "y_id")) %>%
     tibble::as_tibble()
-  id <- create_yrep_ids(out$rep_id)
+  id <- create_rep_ids(out$rep_id)
   out$rep_label <- factor(id, levels = unique(id))
   out[c("y_id", "rep_id", "rep_label", "value")]
 }
@@ -172,10 +173,10 @@ melt_yrep <- function(yrep) {
 
 #' Stack y below melted yrep data
 #'
-#' @param y Validated y input.
-#' @param yrep Validated yrep input.
+#' @param y Validated `y` input.
+#' @param yrep Validated `yrep` input.
 #' @return A data frame with the all the columns as the one returned by
-#'   `melt_yrep()`, plus additional columns:
+#'   `melt_predictions()`, plus additional columns:
 #'   1. `is_y`: logical indicating whether the values are observations (`TRUE`)
 #'      or simulations (`FALSE`).
 #'   1. `is_y_label`: factor with levels `italic(y)` for observations and
@@ -185,18 +186,18 @@ melt_and_stack <- function(y, yrep) {
   y_text <- as.character(y_label())
   yrep_text <- as.character(yrep_label())
 
-  molten_yrep <- melt_yrep(yrep)
+  molten_preds <- melt_predictions(yrep)
 
   # Add a level in the labels for the observed y values
-  levels(molten_yrep$rep_label) <- c(levels(molten_yrep$rep_label), y_text)
+  levels(molten_preds$rep_label) <- c(levels(molten_preds$rep_label), y_text)
 
   ydat <- tibble::tibble(
-    rep_label = factor(y_text, levels = levels(molten_yrep$rep_label)),
+    rep_label = factor(y_text, levels = levels(molten_preds$rep_label)),
     rep_id = NA_integer_,
     y_id = seq_along(y),
     value = y)
 
-  data <- dplyr::bind_rows(molten_yrep, ydat) %>%
+  data <- dplyr::bind_rows(molten_preds, ydat) %>%
     mutate(
       rep_label = relevel(.data$rep_label, y_text),
       is_y = is.na(.data$rep_id),
@@ -266,7 +267,7 @@ all_counts <- function(x, ...) {
 }
 
 # labels ----------------------------------------------------------------
-create_yrep_ids <- function(ids) paste('italic(y)[rep] (', ids, ")")
+create_rep_ids <- function(ids) paste('italic(y)[rep] (', ids, ")")
 yrep_label <- function() expression(italic(y)[rep])
 yrep_avg_label <- function() expression(paste("Average ", italic(y)[rep]))
 y_label <- function() expression(italic(y))

@@ -3,12 +3,12 @@ context("PPC: misc. functions")
 
 source(test_path("data-for-ppc-tests.R"))
 
-# melt_yrep ---------------------------------------------------------------
+# melt_predictions ---------------------------------------------------------------
 expect_molten_yrep <- function(yrep) {
   y <- rnorm(ncol(yrep))
   yrep <- validate_predictions(yrep, length(y))
 
-  x <- melt_yrep(yrep)
+  x <- melt_predictions(yrep)
   expect_equal(ncol(x), 4)
   expect_equal(nrow(x), prod(dim(yrep)))
 
@@ -26,7 +26,7 @@ expect_molten_yrep <- function(yrep) {
   expect_type(x$value, "double")
 }
 
-test_that("melt_yrep returns correct structure", {
+test_that("melt_predictions returns correct structure", {
   expect_molten_yrep(yrep)
   expect_molten_yrep(yrep2)
 
@@ -38,7 +38,7 @@ test_that("melt_yrep returns correct structure", {
 
 # melt_and_stack ----------------------------------------------------------
 test_that("melt_and_stack returns correct structure", {
-  molten_yrep <- melt_yrep(yrep)
+  molten_yrep <- melt_predictions(yrep)
   d <- melt_and_stack(y, yrep)
   expect_s3_class(d, "data.frame")
   expect_equal(nrow(d), nrow(molten_yrep) + length(y))
