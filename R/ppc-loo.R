@@ -62,8 +62,8 @@
 #' @examples
 #'
 #' \dontrun{
-#' library(rstanarm)
-#' library(loo)
+#' suppressPackageStartupMessages(library(rstanarm))
+#' suppressPackageStartupMessages(library(loo))
 #'
 #' head(radon)
 #' fit <- stan_lmer(
@@ -71,7 +71,8 @@
 #'                + (1 + floor | county),
 #'   data = radon,
 #'   iter = 1000,
-#'   chains = 2  # ,cores = 2
+#'   chains = 2,  # cores = 2
+#'   refresh = 500
 #'  )
 #' y <- radon$log_radon
 #' yrep <- posterior_predict(fit)

@@ -144,8 +144,8 @@ ppc_error_scatter_avg_vs_x(y, yrep, x)
 
 # ppc_error_binned with binomial model from rstanarm
 \dontrun{
-library(rstanarm)
-example("example_model", package = "rstanarm")
+suppressPackageStartupMessages(library(rstanarm))
+suppressWarnings(example("example_model", package = "rstanarm"))
 formula(example_model)
 
 # get observed proportion of "successes"

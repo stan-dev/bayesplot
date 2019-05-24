@@ -3,6 +3,9 @@ url: https://mc-stan.org/bayesplot
 template:
   params:
     bootswatch: cosmo
+    docsearch:
+      api_key: 28ab84fbf0d3f58232875561b9a208cd
+      index_name: bayesplot
 
 navbar:
   title: "bayesplot"

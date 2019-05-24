@@ -29,6 +29,12 @@
 <script src="../pkgdown.js"></script>
 
 
+<!-- docsearch -->
+<script src="../docsearch.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous" />
+<link href="../docsearch.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
+
 
 <meta property="og:title" content="Parallel coordinates plot of MCMC draws — MCMC-parcoord" />
 
@@ -135,6 +141,12 @@ for more background and a real example." />
   </a>
 </li>
       </ul>
+      
+      <form class="navbar-form navbar-right" role="search">
+        <div class="form-group">
+          <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
+        </div>
+      </form>
       
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
@@ -324,8 +336,8 @@ Gelman, A. (2019), Visualization in Bayesian workflow.
 #&gt; 
 #&gt; SAMPLING FOR MODEL 'eight_schools' NOW (CHAIN 1).
 #&gt; Chain 1: 
-#&gt; Chain 1: Gradient evaluation took 1.5e-05 seconds
-#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.15 seconds.
+#&gt; Chain 1: Gradient evaluation took 1.3e-05 seconds
+#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.13 seconds.
 #&gt; Chain 1: Adjust your expectations accordingly!
 #&gt; Chain 1: 
 #&gt; Chain 1: 
@@ -342,9 +354,9 @@ Gelman, A. (2019), Visualization in Bayesian workflow.
 #&gt; Chain 1: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 #&gt; Chain 1: Iteration: 2000 / 2000 [100%]  (Sampling)
 #&gt; Chain 1: 
-#&gt; Chain 1:  Elapsed Time: 0.078812 seconds (Warm-up)
-#&gt; Chain 1:                0.040104 seconds (Sampling)
-#&gt; Chain 1:                0.118916 seconds (Total)
+#&gt; Chain 1:  Elapsed Time: 0.077337 seconds (Warm-up)
+#&gt; Chain 1:                0.040746 seconds (Sampling)
+#&gt; Chain 1:                0.118083 seconds (Total)
 #&gt; Chain 1: 
 #&gt; 
 #&gt; SAMPLING FOR MODEL 'eight_schools' NOW (CHAIN 2).
@@ -367,15 +379,15 @@ Gelman, A. (2019), Visualization in Bayesian workflow.
 #&gt; Chain 2: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 #&gt; Chain 2: Iteration: 2000 / 2000 [100%]  (Sampling)
 #&gt; Chain 2: 
-#&gt; Chain 2:  Elapsed Time: 0.070061 seconds (Warm-up)
-#&gt; Chain 2:                0.064413 seconds (Sampling)
-#&gt; Chain 2:                0.134474 seconds (Total)
+#&gt; Chain 2:  Elapsed Time: 0.068112 seconds (Warm-up)
+#&gt; Chain 2:                0.069018 seconds (Sampling)
+#&gt; Chain 2:                0.13713 seconds (Total)
 #&gt; Chain 2: 
 #&gt; 
 #&gt; SAMPLING FOR MODEL 'eight_schools' NOW (CHAIN 3).
 #&gt; Chain 3: 
-#&gt; Chain 3: Gradient evaluation took 3e-06 seconds
-#&gt; Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 0.03 seconds.
+#&gt; Chain 3: Gradient evaluation took 4e-06 seconds
+#&gt; Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 0.04 seconds.
 #&gt; Chain 3: Adjust your expectations accordingly!
 #&gt; Chain 3: 
 #&gt; Chain 3: 
@@ -392,15 +404,15 @@ Gelman, A. (2019), Visualization in Bayesian workflow.
 #&gt; Chain 3: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 #&gt; Chain 3: Iteration: 2000 / 2000 [100%]  (Sampling)
 #&gt; Chain 3: 
-#&gt; Chain 3:  Elapsed Time: 0.071593 seconds (Warm-up)
-#&gt; Chain 3:                0.041753 seconds (Sampling)
-#&gt; Chain 3:                0.113346 seconds (Total)
+#&gt; Chain 3:  Elapsed Time: 0.071097 seconds (Warm-up)
+#&gt; Chain 3:                0.039765 seconds (Sampling)
+#&gt; Chain 3:                0.110862 seconds (Total)
 #&gt; Chain 3: 
 #&gt; 
 #&gt; SAMPLING FOR MODEL 'eight_schools' NOW (CHAIN 4).
 #&gt; Chain 4: 
-#&gt; Chain 4: Gradient evaluation took 4e-06 seconds
-#&gt; Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 0.04 seconds.
+#&gt; Chain 4: Gradient evaluation took 5e-06 seconds
+#&gt; Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 0.05 seconds.
 #&gt; Chain 4: Adjust your expectations accordingly!
 #&gt; Chain 4: 
 #&gt; Chain 4: 
@@ -417,9 +429,9 @@ Gelman, A. (2019), Visualization in Bayesian workflow.
 #&gt; Chain 4: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 #&gt; Chain 4: Iteration: 2000 / 2000 [100%]  (Sampling)
 #&gt; Chain 4: 
-#&gt; Chain 4:  Elapsed Time: 0.071549 seconds (Warm-up)
-#&gt; Chain 4:                0.036734 seconds (Sampling)
-#&gt; Chain 4:                0.108283 seconds (Total)
+#&gt; Chain 4:  Elapsed Time: 0.074807 seconds (Warm-up)
+#&gt; Chain 4:                0.037048 seconds (Sampling)
+#&gt; Chain 4:                0.111855 seconds (Total)
 #&gt; Chain 4: </div><div class='output co'>#&gt; <span class='warning'>Warning: There were 76 divergent transitions after warmup. Increasing adapt_delta above 0.8 may help. See</span>
 #&gt; <span class='warning'>http://mc-stan.org/misc/warnings.html#divergent-transitions-after-warmup</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Examine the pairs() plot to diagnose sampling problems</span></div><div class='output co'>#&gt; <span class='warning'>Warning: The largest R-hat is 2, indicating chains have not mixed.</span>
 #&gt; <span class='warning'>Running the chains for more iterations may help. See</span>
@@ -505,6 +517,23 @@ Gelman, A. (2019), Visualization in Bayesian workflow.
    </div>
 
   
+<script src="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.js" integrity="sha256-GKvGqXDznoRYHCwKXGnuchvKSwmx9SRMrZOTh2g4Sb0=" crossorigin="anonymous"></script>
+<script>
+  docsearch({
+    
+    
+    apiKey: '28ab84fbf0d3f58232875561b9a208cd',
+    indexName: 'bayesplot',
+    inputSelector: 'input#search-input.form-control',
+    transformData: function(hits) {
+      return hits.map(function (hit) {
+        hit.url = updateHitURL(hit);
+        return hit;
+      });
+    }
+  });
+</script>
+
 
   </body>
 </html>
