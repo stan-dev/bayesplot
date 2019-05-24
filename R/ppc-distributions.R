@@ -105,20 +105,15 @@ NULL
 #' @export
 ppc_data <- function(y, yrep, group = NULL) {
   y <- validate_y(y)
-  yrep <- validate_yrep(yrep, y)
-  data <- melt_and_stack(y, yrep)
-
+  N <- length(y)
+  yrep <- validate_predictions(yrep, N)
   if (!is.null(group)) {
-    group <- validate_group(group, y)
-    group_indices <- tibble::tibble(group, y_id = seq_along(group))
-    data <- data %>%
-      left_join(group_indices, by = "y_id") %>%
-      select(.data$group, dplyr::everything())
+    group <- validate_group(group, N)
   }
-
-  data
+  .ppd_data(predictions = yrep,
+            observations = y,
+            group = group)
 }
-
 
 
 #' @rdname PPC-distributions

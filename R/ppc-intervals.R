@@ -271,7 +271,7 @@ label_x <- function(x) {
   prob_outer <- probs[2]
 
   y <- validate_y(y)
-  yrep <- validate_yrep(yrep, y)
+  yrep <- validate_predictions(yrep, length(y))
   x <- validate_x(x, y)
 
   long_d <- melt_and_stack(y, yrep)
@@ -282,7 +282,7 @@ label_x <- function(x) {
   molten_reps$is_y <- NULL
 
   if (grouped) {
-    group <- validate_group(group, y)
+    group <- validate_group(group, length(y))
     molten_reps$group <- group[molten_reps$y_id]
     group_vars <- syms(c("y_id", "y_obs", "group", "x"))
   } else {

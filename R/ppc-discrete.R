@@ -101,7 +101,7 @@ ppc_bars <-
 
   check_ignored_arguments(...)
   y <- validate_y(y)
-  yrep <- validate_yrep(yrep, y)
+  yrep <- validate_predictions(yrep, length(y))
   if (!all_whole_number(y)) {
     abort("ppc_bars expects 'y' to be discrete.")
   }
@@ -151,8 +151,8 @@ ppc_bars_grouped <-
 
   check_ignored_arguments(...)
   y <- validate_y(y)
-  yrep <- validate_yrep(yrep, y)
-  group <- validate_group(group, y)
+  yrep <- validate_predictions(yrep, length(y))
+  group <- validate_group(group, length(y))
   if (!all_whole_number(y)) {
     abort("ppc_bars_grouped expects 'y' to be discrete.")
   }
@@ -210,7 +210,7 @@ ppc_rootogram <- function(y,
   check_ignored_arguments(...)
   style <- match.arg(style)
   y <- validate_y(y)
-  yrep <- validate_yrep(yrep, y)
+  yrep <- validate_predictions(yrep, length(y))
   if (!all_counts(y)) {
     abort("ppc_rootogram expects counts as inputs to 'y'.")
   }

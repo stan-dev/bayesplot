@@ -90,7 +90,7 @@ ppc_stat <-
     check_ignored_arguments(...)
 
     y <- validate_y(y)
-    yrep <- validate_yrep(yrep, y)
+    yrep <- validate_predictions(yrep, length(y))
     stat1 <- match.fun(stat)
     T_y <- stat1(y)
     T_yrep <- apply(yrep, 1, stat1)
@@ -145,8 +145,8 @@ ppc_stat_grouped <-
     check_ignored_arguments(...)
 
     y <- validate_y(y)
-    yrep <- validate_yrep(yrep, y)
-    group <- validate_group(group, y)
+    yrep <- validate_predictions(yrep, length(y))
+    group <- validate_group(group, length(y))
     plot_data <- ppc_group_data(y, yrep, group, stat = match.fun(stat))
     is_y <- plot_data$variable == "y"
 
@@ -204,8 +204,8 @@ ppc_stat_freqpoly_grouped <-
     check_ignored_arguments(...)
 
     y <- validate_y(y)
-    yrep <- validate_yrep(yrep, y)
-    group <- validate_group(group, y)
+    yrep <- validate_predictions(yrep, length(y))
+    group <- validate_group(group, length(y))
     plot_data <- ppc_group_data(y, yrep, group, stat = match.fun(stat))
     is_y <- plot_data$variable == "y"
 
@@ -256,7 +256,7 @@ ppc_stat_2d <- function(y,
   check_ignored_arguments(...)
 
   y <- validate_y(y)
-  yrep <- validate_yrep(yrep, y)
+  yrep <- validate_predictions(yrep, length(y))
   if (length(stat) != 2) {
     abort("For ppc_stat_2d the 'stat' argument must have length 2.")
   }

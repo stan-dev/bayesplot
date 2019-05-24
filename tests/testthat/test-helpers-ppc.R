@@ -6,7 +6,7 @@ source(test_path("data-for-ppc-tests.R"))
 # melt_yrep ---------------------------------------------------------------
 expect_molten_yrep <- function(yrep) {
   y <- rnorm(ncol(yrep))
-  yrep <- validate_yrep(yrep, y)
+  yrep <- validate_predictions(yrep, length(y))
 
   x <- melt_yrep(yrep)
   expect_equal(ncol(x), 4)
@@ -32,7 +32,7 @@ test_that("melt_yrep returns correct structure", {
 
   load(test_path("data-for-binomial.rda"))
   expect_molten_yrep(Ey)
-  expect_molten_yrep(validate_yrep(yrep, y))
+  expect_molten_yrep(validate_predictions(yrep, length(y)))
 })
 
 

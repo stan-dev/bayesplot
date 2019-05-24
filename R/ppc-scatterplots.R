@@ -66,7 +66,7 @@ ppc_scatter <-
     check_ignored_arguments(...)
 
     y <- validate_y(y)
-    yrep <- validate_yrep(yrep, y)
+    yrep <- validate_predictions(yrep, length(y))
     graph <- .ppc_scatter(
       data = data.frame(
         melt_yrep(yrep),
@@ -100,7 +100,7 @@ ppc_scatter_avg <-
     check_ignored_arguments(...)
 
     y <- validate_y(y)
-    yrep <- validate_yrep(yrep, y)
+    yrep <- validate_predictions(yrep, length(y))
     if (nrow(yrep) == 1)
       return(ppc_scatter(y, yrep, size = size, alpha = alpha, ...))
 
@@ -128,12 +128,12 @@ ppc_scatter_avg_grouped <-
     check_ignored_arguments(...)
 
     y <- validate_y(y)
-    yrep <- validate_yrep(yrep, y)
+    yrep <- validate_predictions(yrep, length(y))
     ggplot(
       data = data.frame(
         y = y,
         avg_yrep = colMeans(yrep),
-        group = validate_group(group, y)
+        group = validate_group(group, length(y))
       ),
       mapping = aes_(x = ~ avg_yrep, y = ~ y, group = ~ group)
     ) +

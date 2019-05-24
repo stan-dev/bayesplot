@@ -34,49 +34,59 @@ validate_y <- function(y) {
 }
 
 
-#' Validate yrep
+#' Validate predictions (`yrep` or `ypred`)
 #'
-#' Checks that `yrep` is a numeric matrix, doesn't have any NAs, and has the
-#' correct number of columns (equal to the length of `y`).
+#' Checks that `predictions` is a numeric matrix, doesn't have any NAs, and has
+#' the correct number of columns.
 #'
-#' @param yrep,y The user's `yrep` object and the `y` object returned by `validate_y()`.
+#' @param predictions The user's `yrep` or `ypred` object (SxN matrix).
+#' @param `n_obs` The number of observations (columns) that `predictions` should
+#'   have, if applicable.
 #' @return Either throws an error or returns a numeric matrix.
 #' @noRd
-validate_yrep <- function(yrep, y) {
-  stopifnot(is.matrix(yrep), is.numeric(yrep))
-  if (is.integer(yrep)) {
-    if (nrow(yrep) == 1) {
-      yrep[1, ] <- as.numeric(yrep[1,, drop = FALSE])
+validate_predictions <- function(predictions, n_obs = NULL) {
+  # sanity checks
+  stopifnot(is.matrix(predictions), is.numeric(predictions))
+  if (!is.null(n_obs)) {
+    stopifnot(length(n_obs) == 1, n_obs == as.integer(n_obs))
+  }
+
+  if (is.integer(predictions)) {
+    if (nrow(predictions) == 1) {
+      predictions[1, ] <- as.numeric(predictions[1,, drop = FALSE])
     }
     else {
-      yrep <- apply(yrep, 2, as.numeric)
+      predictions <- apply(predictions, 2, as.numeric)
     }
   }
 
-  if (anyNA(yrep)) {
-    abort("NAs not allowed in 'yrep'.")
+  if (anyNA(predictions)) {
+    abort("NAs not allowed in predictions.")
   }
 
-  if (!missing(y)) {
-    if (ncol(yrep) != length(y)) {
-      abort("ncol(yrep) must be equal to length(y).")
-    }
+  if (!is.null(n_obs) && (ncol(predictions) != n_obs)) {
+    abort("ncol(yrep) must be equal to length(y).")
   }
 
-  unclass(unname(yrep))
+  unclass(unname(predictions))
 }
 
 
 #' Validate group
 #'
-#' Checks that grouping variable has same length as `y` and is either a vector or
-#' factor variable.
+#' Checks that grouping variable has correct number of observations and is
+#' either a vector or factor variable.
 #'
-#' @param group,y The user's `group` object and the `y` object returned by `validate_y()`.
+#' @param group The user's `group` argument
+#' @param n_obs The number of observations that `group` should contain (e.g.,
+#'   `length(y)`, `ncol(yrepd)`, etc.). Unlike for `validate_predictions()`,
+#'   this is always required for `validate_group()`.
 #' @return Either throws an error or returns `group` (coerced to a factor).
 #' @noRd
-validate_group <- function(group, y) {
-  stopifnot(is.vector(group) || is.factor(group))
+validate_group <- function(group, n_obs) {
+  # sanity checks
+  stopifnot(is.vector(group) || is.factor(group),
+            length(n_obs) == 1, n_obs == as.integer(n_obs))
 
   if (!is.factor(group)) {
     group <- as.factor(group)
@@ -86,8 +96,8 @@ validate_group <- function(group, y) {
     abort("NAs not allowed in 'group'.")
   }
 
-  if (length(group) != length(y)) {
-    abort("length(group) must be equal to length(y).")
+  if (length(group) != n_obs) {
+    abort("length(group) must be equal to the number of observations.")
   }
 
   if (length(unique(group)) == 1) {
@@ -142,7 +152,7 @@ validate_x <- function(x = NULL, y, unique_x = FALSE) {
 
 #' Convert yrep matrix into a molten data frame
 #'
-#' @param yrep A matrix, already validated using `validate_yrep()`.
+#' @param yrep A matrix, already validated using `validate_predictions()`.
 #' @return A data frame with 4 columns:
 #'   1. `y_id`: integer indicating the observation number (`yrep` column).
 #'   1. `rep_id`: integer indicating the simulation number (`yrep` row).

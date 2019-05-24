@@ -138,7 +138,7 @@ ppc_loo_pit_overlay <- function(y,
   } else {
     suggested_package("rstantools")
     y <- validate_y(y)
-    yrep <- validate_yrep(yrep, y)
+    yrep <- validate_predictions(yrep, length(y))
     stopifnot(identical(dim(yrep), dim(lw)))
     pit <- rstantools::loo_pit(object = yrep, y = y, lw = lw)
   }
@@ -210,7 +210,7 @@ ppc_loo_pit_qq <- function(y,
   } else {
     suggested_package("rstantools")
     y <- validate_y(y)
-    yrep <- validate_yrep(yrep, y)
+    yrep <- validate_predictions(yrep, length(y))
     stopifnot(identical(dim(yrep), dim(lw)))
     pit <- rstantools::loo_pit(object = yrep, y = y, lw = lw)
   }
@@ -326,7 +326,7 @@ ppc_loo_intervals <-
       }
     } else {
       suggested_package("loo", min_version = "2.0.0")
-      yrep <- validate_yrep(yrep, y)
+      yrep <- validate_predictions(yrep, length(y))
       if (!is.null(subset)) {
         stopifnot(length(y) >= length(subset))
         y <- y[subset]
@@ -395,7 +395,7 @@ ppc_loo_ribbon <-
       }
     } else {
       suggested_package("loo", min_version = "2.0.0")
-      yrep <- validate_yrep(yrep, y)
+      yrep <- validate_predictions(yrep, length(y))
       if (!is.null(subset)) {
         stopifnot(length(y) >= length(subset))
         y <- y[subset]

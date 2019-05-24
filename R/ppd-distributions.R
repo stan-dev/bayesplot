@@ -17,17 +17,13 @@ NULL
 #' @rdname PPD-distributions
 #' @export
 ppd_data <- function(ypred, group = NULL) {
-  ypred <- validate_yrep(ypred)
-  data <- melt_yrep(ypred)
-  levels(data$rep_label) <- gsub("rep", "pred", levels(data$rep_label))
+  ypred <- validate_predictions(ypred)
   if (!is.null(group)) {
-    group <- validate_group(group, ypred[1, ])
-    group_indices <- dplyr::data_frame(group, y_id = seq_along(group))
-    data <- data %>%
-      left_join(group_indices, by = "y_id") %>%
-      select(.data$group, dplyr::everything())
+    group <- validate_group(group, n_obs = ncol(ypred))
   }
-  return(data)
+  .ppd_data(predictions = ypred,
+            observations = NULL,
+            group = group)
 }
 
 #' @rdname PPD-distributions
@@ -142,3 +138,30 @@ ppd_boxplot <- function(ypred, ..., notch = TRUE, size = 0.5, alpha = 1) {
     xaxis_text(FALSE) +
     xaxis_title(FALSE)
 }
+
+
+# internal ----------------------------------------------------------------
+
+#' Back end for both `ppd_data()` and `ppc_data()`
+#'
+#' @noRd
+#' @param predictions SxN matrix of predictions (`ypred`, or `yrep`).
+#' @param y User's `y` argument, if applicable.
+#' @param group User's `group` argument.
+#'
+.ppd_data <- function(predictions, y = NULL, group = NULL) {
+  if (!is.null(y)) {
+    data <- melt_and_stack(y, predictions)
+  } else {
+    data <- melt_predictions(predictions)
+    levels(data$rep_label) <- gsub("rep", "pred", levels(data$rep_label))
+  }
+  if (!is.null(group)) {
+    group_indices <- tibble::tibble(group, y_id = seq_along(group))
+    data <- data %>%
+      left_join(group_indices, by = "y_id") %>%
+      select(.data$group, dplyr::everything())
+  }
+  data
+}
+

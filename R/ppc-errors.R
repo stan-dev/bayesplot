@@ -124,7 +124,7 @@ ppc_error_hist <-
     check_ignored_arguments(...)
 
     y <- validate_y(y)
-    yrep <- validate_yrep(yrep, y)
+    yrep <- validate_predictions(yrep, length(y))
 
     if (nrow(yrep) == 1) {
       errors <- data.frame(value = y - as.vector(yrep))
@@ -172,8 +172,8 @@ ppc_error_hist_grouped <-
     check_ignored_arguments(...)
 
     y <- validate_y(y)
-    yrep <- validate_yrep(yrep, y)
-    group <- validate_group(group, y)
+    yrep <- validate_predictions(yrep, length(y))
+    group <- validate_group(group, length(y))
     errors <- grouped_error_data(y, yrep, group)
 
     ggplot(errors, set_hist_aes(freq)) +
@@ -208,7 +208,7 @@ ppc_error_scatter <-
     check_ignored_arguments(...)
 
     y <- validate_y(y)
-    yrep <- validate_yrep(yrep, y)
+    yrep <- validate_predictions(yrep, length(y))
 
     if (nrow(yrep) == 1) {
       return(
@@ -258,7 +258,7 @@ ppc_error_scatter_avg <-
     check_ignored_arguments(...)
 
     y <- validate_y(y)
-    yrep <- validate_yrep(yrep, y)
+    yrep <- validate_predictions(yrep, length(y))
 
     if (nrow(yrep) == 1)
       return(
@@ -293,7 +293,7 @@ ppc_error_scatter_avg_vs_x <-
     check_ignored_arguments(...)
 
     y <- validate_y(y)
-    yrep <- validate_yrep(yrep, y)
+    yrep <- validate_predictions(yrep, length(y))
     x <- validate_x(x, y)
     .ppc_scatter(
       data = data.frame(x, avg_error = y - colMeans(yrep)),
@@ -314,7 +314,7 @@ ppc_error_binned <- function(y, yrep, ..., bins = NULL, size = 1, alpha = 0.25) 
   check_ignored_arguments(...)
 
   y <- validate_y(y)
-  yrep <- validate_yrep(yrep, y)
+  yrep <- validate_predictions(yrep, length(y))
   binned <- binned_error_data(y, yrep, bins = bins)
 
   mixed_scheme <- is_mixed_scheme(color_scheme_get())
