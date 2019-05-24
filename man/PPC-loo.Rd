@@ -111,7 +111,7 @@ A ggplot object that can be further customized using the \strong{ggplot2} packag
 }
 \description{
 Leave-One-Out (LOO) predictive checks. See the \strong{Plot Descriptions} section,
-below, and \href{https://github.com/jgabry/bayes-vis-paper}{Gabry et al. (2019)}
+below, and \href{https://github.com/jgabry/bayes-vis-paper#readme}{Gabry et al. (2019)}
 for details.
 }
 \section{Plot Descriptions}{

@@ -89,7 +89,7 @@ function.
 \description{
 Parallel coordinates plot of MCMC draws (one dimension per parameter).
 See the \strong{Plot Descriptions} section below for details,
-and see \href{https://github.com/jgabry/bayes-vis-paper}{Gabry et al. (2019)}
+and see \href{https://github.com/jgabry/bayes-vis-paper#readme}{Gabry et al. (2019)}
 for more background and a real example.
 }
 \section{Plot Descriptions}{
