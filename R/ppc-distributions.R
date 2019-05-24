@@ -110,9 +110,8 @@ ppc_data <- function(y, yrep, group = NULL) {
   if (!is.null(group)) {
     group <- validate_group(group, N)
   }
-  .ppd_data(predictions = yrep,
-            observations = y,
-            group = group)
+  # see R/helpers-ppc.R
+  .ppd_data(predictions = yrep, y = y, group = group)
 }
 
 

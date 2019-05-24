@@ -1,7 +1,7 @@
 #' PPD distributions
 #'
-#' Plot posterior predictive distributions.
-#' See the \strong{Plot Descriptions} section, below, for details.
+#' Plot posterior predictive distributions. See the **Plot Descriptions**
+#' section, below, for details.
 #'
 #' @name PPD-distributions
 #' @family PPDs
@@ -9,7 +9,7 @@
 #' @inheritParams PPC-distributions
 #' @param ypred An \eqn{S} by \eqn{N} matrix of draws from the posterior
 #'   predictive distribution, where \eqn{S} is the size of the posterior sample
-#'   (or subset of the posterior sample used to generate \code{yrep}) and
+#'   (or subset of the posterior sample used to generate `ypred`) and
 #'   \eqn{N} is the number of predicted observations.
 #'
 NULL
@@ -21,9 +21,7 @@ ppd_data <- function(ypred, group = NULL) {
   if (!is.null(group)) {
     group <- validate_group(group, n_obs = ncol(ypred))
   }
-  .ppd_data(predictions = ypred,
-            observations = NULL,
-            group = group)
+  .ppd_data(predictions = ypred, y = NULL, group = group)
 }
 
 #' @rdname PPD-distributions
@@ -145,7 +143,7 @@ ppd_boxplot <- function(ypred, ..., notch = TRUE, size = 0.5, alpha = 1) {
 #' Back end for both `ppd_data()` and `ppc_data()`
 #'
 #' @noRd
-#' @param predictions SxN matrix of predictions (`ypred`, or `yrep`).
+#' @param predictions SxN matrix of predictions (`ypred` or `yrep`).
 #' @param y User's `y` argument, if applicable.
 #' @param group User's `group` argument.
 #'

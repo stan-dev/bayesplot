@@ -23,7 +23,7 @@ ppd_boxplot(ypred, ..., notch = TRUE, size = 0.5, alpha = 1)
 \arguments{
 \item{ypred}{An \eqn{S} by \eqn{N} matrix of draws from the posterior
 predictive distribution, where \eqn{S} is the size of the posterior sample
-(or subset of the posterior sample used to generate \code{yrep}) and
+(or subset of the posterior sample used to generate \code{ypred}) and
 \eqn{N} is the number of predicted observations.}
 
 \item{group}{A grouping variable (a vector or factor) the same length as
@@ -32,7 +32,7 @@ pertaining to the corresponding value of \code{y}.}
 
 \item{...}{Currently unused.}
 
-\item{trim}{A logical scalar passed to \code{\link[ggplot2]{geom_density}}.}
+\item{trim}{A logical scalar passed to \code{\link[ggplot2:geom_density]{ggplot2::geom_density()}}.}
 
 \item{size}{Passed to the appropriate geom to control the appearance of
 the \code{yrep} distributions.}
@@ -40,39 +40,39 @@ the \code{yrep} distributions.}
 \item{alpha}{Passed to the appropriate geom to control the appearance of
 the \code{yrep} distributions.}
 
-\item{binwidth}{Passed to \code{\link[ggplot2]{geom_histogram}} to override
+\item{binwidth}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}} to override
 the default binwidth.}
 
-\item{breaks}{Passed to \code{\link[ggplot2]{geom_histogram}} as an
+\item{breaks}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}} as an
 alternative to \code{binwidth}.}
 
 \item{freq}{For histograms, \code{freq=TRUE} (the default) puts count on the
 y-axis. Setting \code{freq=FALSE} puts density on the y-axis. (For many
 plots the y-axis text is off by default. To view the count or density
-labels on the y-axis see the \code{\link{yaxis_text}} convenience
+labels on the y-axis see the \code{\link[=yaxis_text]{yaxis_text()}} convenience
 function.)}
 
 \item{bw}{Optional arguments passed to
-\code{\link[stats]{density}} to override default kernel density estimation
-parameters. \code{n_dens} defaults to 1024.}
+\code{\link[stats:density]{stats::density()}} to override default kernel density estimation
+parameters. \code{n_dens} defaults to \code{1024}.}
 
 \item{adjust}{Optional arguments passed to
-\code{\link[stats]{density}} to override default kernel density estimation
-parameters. \code{n_dens} defaults to 1024.}
+\code{\link[stats:density]{stats::density()}} to override default kernel density estimation
+parameters. \code{n_dens} defaults to \code{1024}.}
 
 \item{kernel}{Optional arguments passed to
-\code{\link[stats]{density}} to override default kernel density estimation
-parameters. \code{n_dens} defaults to 1024.}
+\code{\link[stats:density]{stats::density()}} to override default kernel density estimation
+parameters. \code{n_dens} defaults to \code{1024}.}
 
 \item{n_dens}{Optional arguments passed to
-\code{\link[stats]{density}} to override default kernel density estimation
-parameters. \code{n_dens} defaults to 1024.}
+\code{\link[stats:density]{stats::density()}} to override default kernel density estimation
+parameters. \code{n_dens} defaults to \code{1024}.}
 
-\item{notch}{A logical scalar passed to \code{\link[ggplot2]{geom_boxplot}}.
-Unlike for \code{geom_boxplot}, the default is \code{notch=TRUE}.}
+\item{notch}{A logical scalar passed to \code{\link[ggplot2:geom_boxplot]{ggplot2::geom_boxplot()}}.
+Unlike for \code{geom_boxplot()}, the default is \code{notch=TRUE}.}
 }
 \description{
-Plot posterior predictive distributions.
-See the \strong{Plot Descriptions} section, below, for details.
+Plot posterior predictive distributions. See the \strong{Plot Descriptions}
+section, below, for details.
 }
 \concept{PPDs}
