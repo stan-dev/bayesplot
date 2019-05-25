@@ -68,7 +68,10 @@ validate_predictions <- function(predictions, n_obs = NULL) {
     abort("ncol(yrep) must be equal to length(y).")
   }
 
-  unclass(unname(predictions))
+  obs_names <- colnames(predictions)
+  predictions <- unclass(unname(predictions))
+  attr(predictions, "obs_names") <- obs_names
+  predictions
 }
 
 
@@ -162,12 +165,16 @@ validate_x <- function(x = NULL, y, unique_x = FALSE) {
 #'   1. `value`: the simulation values.
 #' @noRd
 melt_predictions <- function(predictions) {
+  obs_names <- attr(predictions, "obs_names")
   out <- predictions %>%
     reshape2::melt(varnames = c("rep_id", "y_id")) %>%
     tibble::as_tibble()
-  id <- create_rep_ids(out$rep_id)
-  out$rep_label <- factor(id, levels = unique(id))
-  out[c("y_id", "rep_id", "rep_label", "value")]
+
+  rep_labels <- create_rep_ids(out$rep_id)
+  y_labels <- obs_names[out$y_id] %||% out$y_id
+  out$rep_label <- factor(rep_labels, levels = unique(rep_labels))
+  out$y_label <- factor(y_labels, levels = unique(y_labels))
+  out[c("y_id", "y_label", "rep_id", "rep_label", "value")]
 }
 
 

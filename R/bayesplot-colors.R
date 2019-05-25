@@ -299,7 +299,7 @@ is_mixed_scheme <- function(x) {
 
 #' Access a subset of the current scheme colors
 #' @noRd
-#' @param level A character vector of level names in `scheme_level_names()`.
+#' @param levels A character vector of level names in `scheme_level_names()`.
 #'   The abbreviations "l", "lh", "m", "mh", "d", and "dh" can also be used
 #'   instead of the full names.
 #' @return A character vector of color values.

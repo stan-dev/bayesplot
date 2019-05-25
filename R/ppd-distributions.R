@@ -143,6 +143,7 @@ ppd_boxplot <-
            size = 0.5,
            alpha = 1) {
     check_ignored_arguments(...)
+
     ypred %>%
       ppd_data() %>%
       ggplot(mapping = aes_(x = ~ rep_label, y = ~ value)) +
