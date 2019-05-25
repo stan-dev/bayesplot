@@ -197,7 +197,7 @@ ppc_freqpoly <-
            ...,
            binwidth = NULL,
            freq = TRUE,
-           size = 0.25,
+           size = 0.5,
            alpha = 1) {
     check_ignored_arguments(...)
 
@@ -239,7 +239,7 @@ ppc_freqpoly_grouped <-
            ...,
            binwidth = NULL,
            freq = TRUE,
-           size = 0.25,
+           size = 0.5,
            alpha = 1) {
     check_ignored_arguments(...)
 

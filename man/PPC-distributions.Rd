@@ -19,11 +19,11 @@ ppc_hist(y, yrep, ..., binwidth = NULL, breaks = NULL, freq = TRUE)
 
 ppc_boxplot(y, yrep, ..., notch = TRUE, size = 0.5, alpha = 1)
 
-ppc_freqpoly(y, yrep, ..., binwidth = NULL, freq = TRUE, size = 0.25,
+ppc_freqpoly(y, yrep, ..., binwidth = NULL, freq = TRUE, size = 0.5,
   alpha = 1)
 
 ppc_freqpoly_grouped(y, yrep, group, ..., binwidth = NULL, freq = TRUE,
-  size = 0.25, alpha = 1)
+  size = 0.5, alpha = 1)
 
 ppc_dens(y, yrep, ..., trim = FALSE, size = 0.5, alpha = 1)
 

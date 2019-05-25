@@ -6,7 +6,10 @@
 \alias{ppd_dens}
 \alias{ppd_hist}
 \alias{ppd_dens_overlay}
+\alias{ppd_ecdf_overlay}
 \alias{ppd_boxplot}
+\alias{ppd_freqpoly}
+\alias{ppd_freqpoly_grouped}
 \title{PPD distributions}
 \usage{
 ppd_data(ypred, group = NULL)
@@ -18,7 +21,16 @@ ppd_hist(ypred, ..., binwidth = NULL, breaks = NULL, freq = TRUE)
 ppd_dens_overlay(ypred, ..., size = 0.25, alpha = 0.7, trim = FALSE,
   bw = "nrd0", adjust = 1, kernel = "gaussian", n_dens = 1024)
 
+ppd_ecdf_overlay(ypred, ..., discrete = FALSE, pad = TRUE,
+  size = 0.25, alpha = 0.7)
+
 ppd_boxplot(ypred, ..., notch = TRUE, size = 0.5, alpha = 1)
+
+ppd_freqpoly(ypred, ..., binwidth = NULL, freq = TRUE, size = 0.5,
+  alpha = 1)
+
+ppd_freqpoly_grouped(ypred, group, ..., binwidth = NULL, freq = TRUE,
+  size = 0.5, alpha = 1)
 }
 \arguments{
 \item{ypred}{An \code{S} by \code{N} matrix of draws from the posterior (or prior)
@@ -67,6 +79,13 @@ parameters. \code{n_dens} defaults to \code{1024}.}
 \item{n_dens}{Optional arguments passed to
 \code{\link[stats:density]{stats::density()}} to override default kernel density estimation
 parameters. \code{n_dens} defaults to \code{1024}.}
+
+\item{discrete}{For \code{ppc_ecdf_overlay()}, should the data be treated as
+discrete? The default is \code{FALSE}, in which case \code{geom="line"} is
+passed to \code{\link[ggplot2:stat_ecdf]{ggplot2::stat_ecdf()}}. If \code{discrete} is set to
+\code{TRUE} then \code{geom="step"} is used.}
+
+\item{pad}{A logical scalar passed to \code{\link[ggplot2:stat_ecdf]{ggplot2::stat_ecdf()}}.}
 
 \item{notch}{A logical scalar passed to \code{\link[ggplot2:geom_boxplot]{ggplot2::geom_boxplot()}}.
 Unlike for \code{geom_boxplot()}, the default is \code{notch=TRUE}.}

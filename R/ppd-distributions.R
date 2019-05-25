@@ -136,6 +136,41 @@ ppd_dens_overlay <-
 
 #' @rdname PPD-distributions
 #' @export
+ppd_ecdf_overlay <-
+  function(ypred,
+           ...,
+           discrete = FALSE,
+           pad = TRUE,
+           size = 0.25,
+           alpha = 0.7) {
+    check_ignored_arguments(...)
+
+    ypred %>%
+      ppd_data() %>%
+      ggplot(mapping = aes_(x = ~ value)) +
+      hline_at(
+        c(0, 0.5, 1),
+        size = c(0.2, 0.1, 0.2),
+        linetype = 2,
+        color = get_color("dh")
+      ) +
+      stat_ecdf(
+        mapping = aes_(group = ~ rep_id),
+        color = get_color("m"),
+        geom = if (discrete) "step" else "line",
+        size = size,
+        alpha = alpha,
+        pad = pad
+      ) +
+      scale_y_continuous(breaks = c(0, 0.5, 1)) +
+      bayesplot_theme_get() +
+      yaxis_title(FALSE) +
+      xaxis_title(FALSE) +
+      yaxis_ticks(FALSE)
+  }
+
+#' @rdname PPD-distributions
+#' @export
 ppd_boxplot <-
   function(ypred,
            ...,
@@ -160,6 +195,80 @@ ppd_boxplot <-
       xaxis_ticks(FALSE) +
       xaxis_text(FALSE) +
       xaxis_title(FALSE)
+  }
+
+#' @rdname PPD-distributions
+#' @export
+ppd_freqpoly <-
+  function(ypred,
+           ...,
+           binwidth = NULL,
+           freq = TRUE,
+           size = 0.5,
+           alpha = 1) {
+    check_ignored_arguments(...)
+    ypred %>%
+      ppd_data() %>%
+      ggplot(mapping = set_hist_aes(freq)) +
+      geom_area(
+        stat = "bin",
+        color = get_color("mh"),
+        fill = get_color("m"),
+        binwidth = binwidth,
+        size = size,
+        alpha = alpha
+      ) +
+      facet_wrap_parsed("rep_label") +
+      bayesplot_theme_get() +
+      force_axes_in_facets() +
+      dont_expand_y_axis() +
+      space_legend_keys() +
+      yaxis_text(FALSE) +
+      yaxis_title(FALSE) +
+      yaxis_ticks(FALSE) +
+      xaxis_title(FALSE) +
+      facet_text(FALSE) +
+      facet_bg(FALSE)
+  }
+
+#' @rdname PPD-distributions
+#' @export
+#' @template args-group
+#'
+ppd_freqpoly_grouped <-
+  function(ypred,
+           group,
+           ...,
+           binwidth = NULL,
+           freq = TRUE,
+           size = 0.5,
+           alpha = 1) {
+    check_ignored_arguments(...)
+    ypred %>%
+      ppd_data(group = group) %>%
+      ggplot(mapping = set_hist_aes(freq)) +
+      geom_area(
+        stat = "bin",
+        color = get_color("m"),
+        fill = get_color("mh"),
+        size = size,
+        alpha = alpha,
+        binwidth = binwidth,
+        na.rm = TRUE
+      ) +
+      facet_grid(rep_label ~ group, scales = "free") +
+      scale_fill_ppc_dist() +
+      scale_color_ppc_dist() +
+      dont_expand_y_axis(c(0.005, 0)) +
+      bayesplot_theme_get() +
+      force_axes_in_facets() +
+      space_legend_keys() +
+      xaxis_title(FALSE) +
+      yaxis_text(FALSE) +
+      yaxis_ticks(FALSE) +
+      yaxis_title(FALSE) +
+      facet_bg(FALSE) +
+      theme(strip.text.y = element_blank())
   }
 
 
