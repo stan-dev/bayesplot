@@ -124,3 +124,18 @@ test_that("ppc_ribbon renders correctly", {
   p_50 <- ppc_ribbon(vdiff_y, vdiff_yrep, prob = 0.5)
   vdiffr::expect_doppelganger("ppc_ribbon (interval width)", p_50)
 })
+
+test_that("ppc_ribbon_grouped renders correctly", {
+  testthat::skip_on_cran()
+
+  p_base <- ppc_ribbon_grouped(vdiff_y, vdiff_yrep, group = vdiff_group)
+  vdiffr::expect_doppelganger("ppc_ribbon_grouped (default)", p_base)
+
+  p_x <- ppc_ribbon_grouped(
+    y = vdiff_y,
+    yrep = vdiff_yrep,
+    x = vdiff_y,
+    group = vdiff_group)
+  vdiffr::expect_doppelganger("ppc_ribbon_grouped (x values)", p_x)
+})
+

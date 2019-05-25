@@ -256,7 +256,7 @@ ppc_ribbon <-
       geom_ribbon(size = 0.05) +
       geom_line(
         mapping = aes_(y = ~ m),
-        color = get_color("d"),
+        color = get_color("m"),
         size = size
       ) +
       geom_blank(aes_(fill = "y")) +
@@ -303,7 +303,7 @@ ppc_ribbon_grouped <-
       geom_ribbon(size = 0.05) +
       geom_line(
         mapping = aes_(y = ~ m),
-        color = get_color("d"),
+        color = get_color("m"),
         size = size
       ) +
       geom_blank(aes_(fill = "y")) +
