@@ -102,3 +102,18 @@ set_hist_aes <- function(freq = TRUE, ...) {
   else
     aes_(x = ~ value, y = ~ ..density.., ...)
 }
+
+scale_color_ppc <- function(name = NULL, values = NULL, labels = NULL) {
+  scale_color_manual(
+    name = name %||% "",
+    values = values %||% get_color(c("dh", "lh")),
+    labels = labels %||% c(y_label(), yrep_label())
+  )
+}
+scale_fill_ppc <- function(name = NULL, values = NULL, labels = NULL) {
+  scale_fill_manual(
+    name = name %||% "",
+    values = values %||% get_color(c("d", "l")),
+    labels = labels %||% c(y_label(), yrep_label())
+  )
+}

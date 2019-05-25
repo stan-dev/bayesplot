@@ -115,4 +115,8 @@ ppd_dens_overlay(ypred = preds[1:50, ])
 ppc_dens_overlay(y = example_y_data(), yrep = preds[1:50, ])
 
 }
+\seealso{
+Other PPDs: \code{\link{PPD-intervals}},
+  \code{\link{PPD-overview}}
+}
 \concept{PPDs}

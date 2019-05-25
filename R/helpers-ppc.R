@@ -1,3 +1,5 @@
+# input validation and type checking ----------------------------------------
+
 # Check if an object is a vector (but not list) or a 1-D array
 is_vector_or_1Darray <- function(x) {
   if (is.vector(x) && !is.list(x)) {
@@ -5,6 +7,25 @@ is_vector_or_1Darray <- function(x) {
   }
 
   isTRUE(is.array(x) && length(dim(x)) == 1)
+}
+
+# Check if x consists of whole numbers (very close to integers)
+# Implementation here follows example ?integer
+is_whole_number <- function(x, tol = .Machine$double.eps) {
+  if (!is.numeric(x)) {
+    FALSE
+  } else {
+    abs(x - round(x)) < tol
+  }
+}
+
+# Check if all values in x are whole numbers or counts (non-negative whole
+# numbers)
+all_whole_number <- function(x, ...) {
+  all(is_whole_number(x, ...))
+}
+all_counts <- function(x, ...) {
+  all_whole_number(x, ...) && min(x) >= 0
 }
 
 
@@ -153,6 +174,10 @@ validate_x <- function(x = NULL, y, unique_x = FALSE) {
 }
 
 
+
+
+# reshaping ---------------------------------------------------
+
 #' Convert matrix of predictions into a molten data frame
 #'
 #' @param predictions A matrix (`yrep` or `ypred`), already validated using
@@ -254,24 +279,6 @@ ppc_group_data <- function(y, yrep, group, stat = NULL) {
   # grouping vars. It summarising path, it has one grouping var.
 }
 
-# Check if x consists of whole numbers (very close to integers)
-# Implementation here follows example ?integer
-is_whole_number <- function(x, tol = .Machine$double.eps) {
-  if (!is.numeric(x)) {
-    FALSE
-  } else {
-    abs(x - round(x)) < tol
-  }
-}
-
-# Check if all values in x are whole numbers or counts (non-negative whole
-# numbers)
-all_whole_number <- function(x, ...) {
-  all(is_whole_number(x, ...))
-}
-all_counts <- function(x, ...) {
-  all_whole_number(x, ...) && min(x) >= 0
-}
 
 # labels ----------------------------------------------------------------
 create_rep_ids <- function(ids) paste('italic(y)[rep] (', ids, ")")
@@ -291,3 +298,5 @@ Tyrep_label <- function() expression(italic(T)(italic(y)[rep]))
 #   if (k == 1) expression(paste(italic(T)[1](italic(y)[rep])))
 #   else expression(paste(italic(T)[2](italic(y)[rep])))
 # }
+
+

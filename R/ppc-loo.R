@@ -175,7 +175,7 @@ ppc_loo_pit_overlay <- function(y,
       kernel = kernel,
       n = n_dens,
       na.rm = TRUE) +
-    scale_color_ppc_dist(labels = c("PIT", "Unif")) +
+    scale_color_ppc(labels = c("PIT", "Unif")) +
     scale_x_continuous(
       limits = c(.1, .9),
       expand = expand_scale(0, 0),

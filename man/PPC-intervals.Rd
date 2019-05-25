@@ -11,11 +11,11 @@
 \title{PPC intervals}
 \usage{
 ppc_intervals(y, yrep, x = NULL, ..., prob = 0.5, prob_outer = 0.9,
-  size = 1, fatten = 3)
+  alpha = 0.33, size = 1, fatten = 2.5)
 
 ppc_intervals_grouped(y, yrep, x = NULL, group, ...,
-  facet_args = list(), prob = 0.5, prob_outer = 0.9, size = 1,
-  fatten = 3)
+  facet_args = list(), prob = 0.5, prob_outer = 0.9, alpha = 0.33,
+  size = 1, fatten = 2.5)
 
 ppc_ribbon(y, yrep, x = NULL, ..., prob = 0.5, prob_outer = 0.9,
   alpha = 0.33, size = 0.25)
@@ -51,16 +51,19 @@ is missing or \code{NULL}, then \code{1:length(y)} is used for the x-axis.}
 probability mass to include in the inner and outer intervals. The defaults
 are \code{prob=0.5} and \code{prob_outer=0.9}.}
 
+\item{alpha, size, fatten}{Arguments passed to geoms. For ribbon plots \code{alpha}
+is passed to \code{\link[ggplot2:geom_ribbon]{ggplot2::geom_ribbon()}} to control the opacity of the outer
+ribbon and \code{size} is passed to \code{\link[ggplot2:geom_line]{ggplot2::geom_line()}} to control the size
+of the line representing the median prediction (\code{size=0} will remove the
+line). For interval plots \code{alpha}, \code{size} and \code{fatten} are passed to
+\code{\link[ggplot2:geom_pointrange]{ggplot2::geom_pointrange()}} (\code{fatten=0} will remove the point estimates).}
+
 \item{group}{A grouping variable (a vector or factor) the same length as
 \code{y}. Each value in \code{group} is interpreted as the group level
 pertaining to the corresponding value of \code{y}.}
 
 \item{facet_args}{An optional list of  arguments (other than \code{facets})
 passed to \code{\link[ggplot2:facet_wrap]{ggplot2::facet_wrap()}} to control faceting.}
-
-\item{alpha, size, fatten}{Arguments passed to geoms. For ribbon plots \code{alpha}
-and \code{size} are passed to \code{\link[ggplot2:geom_ribbon]{ggplot2::geom_ribbon()}}. For interval plots
-\code{size} and \code{fatten} are passed to \code{\link[ggplot2:geom_pointrange]{ggplot2::geom_pointrange()}}.}
 }
 \value{
 The plotting functions return a ggplot object that can be further
@@ -85,8 +88,8 @@ observed \code{y} values. In both cases an optional \code{x} variable can
 also be specified for the x-axis variable.
 
 Depending on the number of observations and the variability in the
-predictions at different values of \code{x}, one or the other of these
-plots may be easier to read than the other.
+predictions at different values of \code{x}, one of these plots may be easier
+to read than the other.
 }
 \item{\code{ppc_intervals_grouped(), ppc_ribbon_grouped()}}{
 Same as \code{ppc_intervals()} and \code{ppc_ribbon()}, respectively, but a
@@ -100,16 +103,15 @@ y <- rnorm(50)
 yrep <- matrix(rnorm(5000, 0, 2), ncol = 50)
 
 color_scheme_set("brightblue")
-ppc_ribbon(y, yrep)
 ppc_intervals(y, yrep)
+ppc_ribbon(y, yrep)
 
-# change x axis to y values (instead of indices) and add x = y line
-ppc_intervals(y, yrep, x = y) + abline_01()
-
+ppc_intervals(y, yrep, size = 1.5, fatten = 0) # remove the yrep point estimates
 
 color_scheme_set("teal")
 year <- 1950:1999
-ppc_ribbon(y, yrep, x = year, alpha = 0, size = 0.75) + ggplot2::xlab("Year")
+ppc_intervals(y, yrep, x = year, fatten = 1) + ggplot2::xlab("Year")
+ppc_ribbon(y, yrep, x = year) + ggplot2::xlab("Year")
 
 color_scheme_set("pink")
 year <- rep(2000:2009, each = 5)
@@ -117,12 +119,8 @@ group <- gl(5, 1, length = 50, labels = LETTERS[1:5])
 ppc_ribbon_grouped(y, yrep, x = year, group) +
   ggplot2::scale_x_continuous(breaks = pretty)
 
-ppc_ribbon_grouped(
- y, yrep, x = year, group,
- facet_args = list(scales = "fixed"),
- alpha = 1,
- size = 2
-) +
+ppc_ribbon_grouped(y, yrep, x = year, group,
+                   facet_args = list(scales = "fixed")) +
  xaxis_text(FALSE) +
  xaxis_ticks(FALSE) +
  panel_bg(fill = "gray20")
@@ -136,12 +134,15 @@ fit <- stan_glmer(mpg ~ wt + (1|cyl), data = mtcars, refresh = 0)
 yrep <- posterior_predict(fit)
 
 color_scheme_set("purple")
-with(mtcars, ppc_intervals(mpg, yrep, x = wt, prob = 0.5)) +
+ppc_intervals(y = mtcars$mpg, yrep = yrep, x = mtcars$wt, prob = 0.8) +
  panel_bg(fill="gray90", color = NA) +
  grid_lines(color = "white")
 
-ppc_intervals_grouped(y = mtcars$mpg, yrep, prob = 0.8,
-                      x = mtcars$wt, group = mtcars$cyl)
+ppc_ribbon(y = mtcars$mpg, yrep = yrep, x = mtcars$wt,
+           prob = 0.6, prob_outer = 0.8)
+
+ppc_ribbon_grouped(y = mtcars$mpg, yrep = yrep, x = mtcars$wt,
+                   group = mtcars$cyl)
 
 
 color_scheme_set("gray")
@@ -150,13 +151,21 @@ ppc_intervals(mtcars$mpg, yrep, prob = 0.5) +
    labels = rownames(mtcars),
    breaks = 1:nrow(mtcars)
  ) +
- xaxis_text(angle = -70, vjust = 1, hjust = 0)
+ xaxis_text(angle = -70, vjust = 1, hjust = 0) +
+ xaxis_title(FALSE)
 
 }
 
 
 }
 \references{
+Gabry, J. , Simpson, D. , Vehtari, A. , Betancourt, M. and
+Gelman, A. (2019), Visualization in Bayesian workflow.
+\emph{J. R. Stat. Soc. A}, 182: 389-402. doi:10.1111/rssa.12378.
+(\href{https://rss.onlinelibrary.wiley.com/doi/full/10.1111/rssa.12378}{journal version},
+\href{https://arxiv.org/abs/1709.01449}{arXiv preprint},
+\href{https://github.com/jgabry/bayes-vis-paper}{code on GitHub})
+
 Gelman, A., Carlin, J. B., Stern, H. S., Dunson, D. B., Vehtari,
 A., and Rubin, D. B. (2013). \emph{Bayesian Data Analysis.} Chapman & Hall/CRC
 Press, London, third edition. (Ch. 6)

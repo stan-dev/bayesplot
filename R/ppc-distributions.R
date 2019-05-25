@@ -137,8 +137,8 @@ ppc_hist <-
         binwidth = binwidth,
         breaks = breaks
       ) +
-      scale_fill_ppc_dist() +
-      scale_color_ppc_dist() +
+      scale_fill_ppc() +
+      scale_color_ppc() +
       facet_wrap_parsed("rep_label") +
       force_axes_in_facets() +
       dont_expand_y_axis() +
@@ -179,8 +179,8 @@ ppc_boxplot <-
         alpha = alpha,
         outlier.alpha = 2 / 3
       ) +
-      scale_fill_ppc_dist() +
-      scale_color_ppc_dist() +
+      scale_fill_ppc() +
+      scale_color_ppc() +
       bayesplot_theme_get() +
       yaxis_title(FALSE) +
       xaxis_ticks(FALSE) +
@@ -213,8 +213,8 @@ ppc_freqpoly <-
         size = size,
         alpha = alpha
       ) +
-      scale_fill_ppc_dist() +
-      scale_color_ppc_dist() +
+      scale_fill_ppc() +
+      scale_color_ppc() +
       facet_wrap_parsed("rep_label") +
       bayesplot_theme_get() +
       force_axes_in_facets() +
@@ -254,8 +254,8 @@ ppc_freqpoly_grouped <-
         na.rm = TRUE
       ) +
       facet_grid(rep_label ~ group, scales = "free") +
-      scale_fill_ppc_dist() +
-      scale_color_ppc_dist() +
+      scale_fill_ppc() +
+      scale_color_ppc() +
       dont_expand_y_axis(c(0.005, 0)) +
       bayesplot_theme_get() +
       force_axes_in_facets() +
@@ -291,8 +291,8 @@ ppc_dens <-
         alpha = alpha,
         trim = trim
       ) +
-      scale_fill_ppc_dist() +
-      scale_color_ppc_dist() +
+      scale_fill_ppc() +
+      scale_color_ppc() +
       bayesplot_theme_get() +
       facet_wrap_parsed("rep_label") +
       force_axes_in_facets() +
@@ -346,7 +346,7 @@ ppc_dens_overlay <-
         kernel = kernel,
         n = n_dens
       ) +
-      scale_color_ppc_dist() +
+      scale_color_ppc() +
       bayesplot_theme_get() +
       dont_expand_axes() +
       yaxis_title(FALSE) +
@@ -396,7 +396,7 @@ ppc_ecdf_overlay <-
         size = 1,
         pad = pad
       ) +
-      scale_color_ppc_dist() +
+      scale_color_ppc() +
       scale_y_continuous(breaks = c(0, 0.5, 1)) +
       bayesplot_theme_get() +
       yaxis_title(FALSE) +
@@ -475,26 +475,9 @@ ppc_violin_grouped <-
       layer_violin_yrep +
       layer_violin_y +
       layer_jitter_y +
-      scale_fill_ppc_dist(values = c(NA, get_color("l"))) +
-      scale_color_ppc_dist() +
+      scale_fill_ppc(values = c(NA, get_color("l"))) +
+      scale_color_ppc() +
       yaxis_title(FALSE) +
       xaxis_title(FALSE) +
       bayesplot_theme_get()
   }
-
-
-# internal ----------------------------------------------------------------
-scale_color_ppc_dist <- function(name = NULL, values = NULL, labels = NULL) {
-  scale_color_manual(
-    name = name %||% "",
-    values = values %||% get_color(c("dh", "lh")),
-    labels = labels %||% c(y_label(), yrep_label())
-  )
-}
-scale_fill_ppc_dist <- function(name = NULL, values = NULL, labels = NULL) {
-  scale_fill_manual(
-    name = name %||% "",
-    values = values %||% get_color(c("d", "l")),
-    labels = labels %||% c(y_label(), yrep_label())
-  )
-}
