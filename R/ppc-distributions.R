@@ -400,8 +400,7 @@ ppc_ecdf_overlay <-
       scale_y_continuous(breaks = c(0, 0.5, 1)) +
       bayesplot_theme_get() +
       yaxis_title(FALSE) +
-      xaxis_title(FALSE) +
-      yaxis_ticks(FALSE)
+      xaxis_title(FALSE)
   }
 
 #' @export

@@ -9,13 +9,13 @@ expect_molten_yrep <- function(yrep) {
   yrep <- validate_predictions(yrep, length(y))
 
   x <- melt_predictions(yrep)
-  expect_equal(ncol(x), 4)
+  expect_equal(ncol(x), 5)
   expect_equal(nrow(x), prod(dim(yrep)))
 
   rep_nums <- rep(seq_len(nrow(yrep)), length(y))
   obs_nums <- sort(rep(seq_len(length(y)), nrow(yrep)))
 
-  expect_identical(colnames(x), c("y_id", "rep_id", "rep_label", "value"))
+  expect_identical(colnames(x), c("y_id", "y_name", "rep_id", "rep_label", "value"))
   expect_equal(x$y_id, obs_nums)
   expect_equal(x$rep_id, rep_nums)
 
