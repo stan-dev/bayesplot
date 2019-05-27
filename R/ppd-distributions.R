@@ -258,7 +258,7 @@ ppd_boxplot <-
     ypred %>%
       ppd_data() %>%
       ggplot(mapping = aes_(
-        x = ~ factor(rep_id),
+        x = ~ rep_label,
         y = ~ value,
         color = "ypred",
         fill = "ypred"
@@ -273,6 +273,7 @@ ppd_boxplot <-
       ) +
       scale_color_ppd() +
       scale_fill_ppd() +
+      scale_x_discrete(labels = function(x) parse(text=x)) +
       bayesplot_theme_get() +
       yaxis_title(FALSE) +
       xaxis_ticks(FALSE) +

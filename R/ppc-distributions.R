@@ -392,6 +392,7 @@ ppc_boxplot <-
         outlier.alpha = 2/3,
         outlier.size = 1
       ) +
+      scale_x_discrete(labels = function(x) parse(text=x)) +
       scale_fill_ppc() +
       scale_color_ppc() +
       bayesplot_theme_get() +
