@@ -295,9 +295,11 @@ ppc_freqpoly <-
            freq = TRUE,
            size = 0.5,
            alpha = 1) {
-    check_ignored_arguments(...)
+    # don't warn about 'group' arg if called internally by ppc_intervals_grouped()
+    dots <- list(...)
+    check_ignored_arguments(..., ok_args = dots[["dont_check"]])
 
-    ppc_data(y, yrep) %>%
+    ppc_data(y, yrep, group = dots[["group"]]) %>%
       ggplot(mapping = set_hist_aes(
         freq,
         fill = ~ is_y_label,
@@ -338,29 +340,15 @@ ppc_freqpoly_grouped <-
            size = 0.5,
            alpha = 1) {
     check_ignored_arguments(...)
-
-    ppc_data(y, yrep, group) %>%
-      ggplot(mapping = set_hist_aes(freq)) +
-      geom_area(
-        mapping = aes_(color = ~ is_y_label, fill = ~ is_y_label),
-        stat = "bin",
-        size = size,
-        alpha = alpha,
-        binwidth = binwidth,
-        na.rm = TRUE
+    call <- match.call(expand.dots = FALSE)
+    g <- eval(ungroup_call(call))
+    g +
+      facet_grid(
+        rep_label ~ group,
+        scales = "free",
+        labeller = label_parsed
       ) +
-      facet_grid(rep_label ~ group, scales = "free") +
-      scale_fill_ppc() +
-      scale_color_ppc() +
-      dont_expand_y_axis(c(0.005, 0)) +
-      bayesplot_theme_get() +
-      force_axes_in_facets() +
-      space_legend_keys() +
-      xaxis_title(FALSE) +
-      yaxis_text(FALSE) +
-      yaxis_ticks(FALSE) +
-      yaxis_title(FALSE) +
-      facet_bg(FALSE) +
+      facet_text() +
       theme(strip.text.y = element_blank())
   }
 
