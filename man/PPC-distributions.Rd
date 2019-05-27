@@ -3,29 +3,17 @@
 \name{PPC-distributions}
 \alias{PPC-distributions}
 \alias{ppc_data}
-\alias{ppc_hist}
-\alias{ppc_boxplot}
-\alias{ppc_freqpoly}
-\alias{ppc_freqpoly_grouped}
-\alias{ppc_dens}
 \alias{ppc_dens_overlay}
 \alias{ppc_ecdf_overlay}
+\alias{ppc_dens}
+\alias{ppc_hist}
+\alias{ppc_freqpoly}
+\alias{ppc_freqpoly_grouped}
+\alias{ppc_boxplot}
 \alias{ppc_violin_grouped}
 \title{PPC distributions}
 \usage{
 ppc_data(y, yrep, group = NULL)
-
-ppc_hist(y, yrep, ..., binwidth = NULL, breaks = NULL, freq = TRUE)
-
-ppc_boxplot(y, yrep, ..., notch = TRUE, size = 0.5, alpha = 1)
-
-ppc_freqpoly(y, yrep, ..., binwidth = NULL, freq = TRUE, size = 0.5,
-  alpha = 1)
-
-ppc_freqpoly_grouped(y, yrep, group, ..., binwidth = NULL, freq = TRUE,
-  size = 0.5, alpha = 1)
-
-ppc_dens(y, yrep, ..., trim = FALSE, size = 0.5, alpha = 1)
 
 ppc_dens_overlay(y, yrep, ..., size = 0.25, alpha = 0.7,
   trim = FALSE, bw = "nrd0", adjust = 1, kernel = "gaussian",
@@ -33,6 +21,18 @@ ppc_dens_overlay(y, yrep, ..., size = 0.25, alpha = 0.7,
 
 ppc_ecdf_overlay(y, yrep, ..., discrete = FALSE, pad = TRUE,
   size = 0.25, alpha = 0.7)
+
+ppc_dens(y, yrep, ..., trim = FALSE, size = 0.5, alpha = 1)
+
+ppc_hist(y, yrep, ..., binwidth = NULL, breaks = NULL, freq = TRUE)
+
+ppc_freqpoly(y, yrep, ..., binwidth = NULL, freq = TRUE, size = 0.5,
+  alpha = 1)
+
+ppc_freqpoly_grouped(y, yrep, group, ..., binwidth = NULL, freq = TRUE,
+  size = 0.5, alpha = 1)
+
+ppc_boxplot(y, yrep, ..., notch = TRUE, size = 0.5, alpha = 1)
 
 ppc_violin_grouped(y, yrep, group, ..., probs = c(0.1, 0.5, 0.9),
   size = 1, alpha = 1, y_draw = c("violin", "points", "both"),
@@ -55,21 +55,6 @@ pertaining to the corresponding value of \code{y}.}
 
 \item{...}{Currently unused.}
 
-\item{binwidth}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}} to override
-the default binwidth.}
-
-\item{breaks}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}} as an
-alternative to \code{binwidth}.}
-
-\item{freq}{For histograms, \code{freq=TRUE} (the default) puts count on the
-y-axis. Setting \code{freq=FALSE} puts density on the y-axis. (For many
-plots the y-axis text is off by default. To view the count or density
-labels on the y-axis see the \code{\link[=yaxis_text]{yaxis_text()}} convenience
-function.)}
-
-\item{notch}{A logical scalar passed to \code{\link[ggplot2:geom_boxplot]{ggplot2::geom_boxplot()}}.
-Unlike for \code{geom_boxplot()}, the default is \code{notch=TRUE}.}
-
 \item{size, alpha}{Passed to the appropriate geom to control the appearance of
 the \code{yrep} distributions.}
 
@@ -85,6 +70,21 @@ passed to \code{\link[ggplot2:stat_ecdf]{ggplot2::stat_ecdf()}}. If \code{discre
 \code{TRUE} then \code{geom="step"} is used.}
 
 \item{pad}{A logical scalar passed to \code{\link[ggplot2:stat_ecdf]{ggplot2::stat_ecdf()}}.}
+
+\item{binwidth}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}} to override
+the default binwidth.}
+
+\item{breaks}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}} as an
+alternative to \code{binwidth}.}
+
+\item{freq}{For histograms, \code{freq=TRUE} (the default) puts count on the
+y-axis. Setting \code{freq=FALSE} puts density on the y-axis. (For many
+plots the y-axis text is off by default. To view the count or density
+labels on the y-axis see the \code{\link[=yaxis_text]{yaxis_text()}} convenience
+function.)}
+
+\item{notch}{A logical scalar passed to \code{\link[ggplot2:geom_boxplot]{ggplot2::geom_boxplot()}}.
+Unlike for \code{geom_boxplot()}, the default is \code{notch=TRUE}.}
 
 \item{probs}{A numeric vector passed to \code{\link[ggplot2:geom_violin]{ggplot2::geom_violin()}}'s
 \code{draw_quantiles} argument to specify at which quantiles to draw

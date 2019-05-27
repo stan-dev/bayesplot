@@ -190,11 +190,17 @@ ppd_freqpoly <-
            freq = TRUE,
            size = 0.5,
            alpha = 1) {
-    # don't warn about 'group' arg if called internally by ppd_freqpoly_grouped()
+
     dots <- list(...)
-    check_ignored_arguments(..., ok_args = dots[["dont_check"]])
+    if (!from_grouped(dots)) {
+      check_ignored_arguments(...)
+      group <- NULL
+    } else {
+      group <- dots[["group"]]
+    }
+
     ypred %>%
-      ppd_data(group = dots[["group"]]) %>%
+      ppd_data(group = group) %>%
       ggplot(mapping = set_hist_aes(
         freq,
         color = "ypred",
@@ -291,7 +297,7 @@ ppd_boxplot <-
 #' @param y User's `y` argument (if applicable), already validated.
 #' @param group User's `group` argument, already validated.
 #' @return A molten data frame of predictions, possible including `y`.
-#'
+#' @importFrom dplyr left_join select everything
 .ppd_data <- function(predictions, y = NULL, group = NULL) {
   if (!is.null(y)) {
     data <- melt_and_stack(y, predictions)
@@ -303,7 +309,7 @@ ppd_boxplot <-
     group_indices <- tibble::tibble(group, y_id = seq_along(group))
     data <- data %>%
       left_join(group_indices, by = "y_id") %>%
-      select(.data$group, dplyr::everything())
+      select(.data$group, everything())
   }
   data
 }
@@ -317,6 +323,7 @@ ppd_boxplot <-
 #'   with different defaults.
 #' @param ... All arguments other than `geom` and `position` to pass to
 #'   `stat_density()`. The defaults will be the same as for `stat_density()`.
+#' @return Object returned by `stat_density()`.
 #' @noRd
 overlay_ppd_densities <-
   function(...,

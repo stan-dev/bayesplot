@@ -295,11 +295,16 @@ ppc_freqpoly <-
            freq = TRUE,
            size = 0.5,
            alpha = 1) {
-    # don't warn about 'group' arg if called internally by ppc_freqpoly_grouped()
-    dots <- list(...)
-    check_ignored_arguments(..., ok_args = dots[["dont_check"]])
 
-    ppc_data(y, yrep, group = dots[["group"]]) %>%
+    dots <- list(...)
+    if (!from_grouped(dots)) {
+      check_ignored_arguments(...)
+      group <- NULL
+    } else {
+      group <- dots[["group"]]
+    }
+
+    ppc_data(y, yrep, group = group) %>%
       ggplot(mapping = set_hist_aes(
         freq,
         fill = ~ is_y_label,
@@ -322,8 +327,7 @@ ppc_freqpoly <-
       yaxis_title(FALSE) +
       yaxis_ticks(FALSE) +
       xaxis_title(FALSE) +
-      facet_text(FALSE) +
-      facet_bg(FALSE)
+      facet_text(FALSE)
   }
 
 #' @rdname PPC-distributions

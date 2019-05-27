@@ -30,10 +30,10 @@ suggested_package <- function(pkg, min_version = NULL) {
 #' @param ... The `...` arguments from the calling function.
 #' @param ok_args A character vector of argument names to ignore.
 #' @return Nothing, but a warning may be thrown.
+#' @noRd
 check_ignored_arguments <- function(..., ok_args = character()) {
   dots <- list(...)
   nms <- names(dots)
-  ok_args <- c(ok_args, "dont_check")
   if (length(dots)) {
     unrecognized <- if (!length(ok_args)) nms else setdiff(nms, ok_args)
     if (length(unrecognized)) {

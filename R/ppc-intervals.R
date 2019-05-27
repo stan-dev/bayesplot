@@ -121,16 +121,20 @@ ppc_intervals <-
            size = 1,
            fatten = 2.5) {
 
-    # don't warn about 'group' arg if called internally by ppc_intervals_grouped()
     dots <- list(...)
-    check_ignored_arguments(..., ok_args = dots[["dont_check"]])
+    if (!from_grouped(dots)) {
+      check_ignored_arguments(...)
+      group <- NULL
+    } else {
+      group <- dots[["group"]]
+    }
 
     data <-
       ppc_intervals_data(
         y = y,
         yrep = yrep,
         x = x,
-        group = dots[["group"]],
+        group = group,
         prob = prob,
         prob_outer = prob_outer
       )
@@ -206,16 +210,20 @@ ppc_ribbon <-
            alpha = 0.33,
            size = 0.25) {
 
-    # don't warn about 'group' arg if called internally by ppc_ribbon_grouped()
     dots <- list(...)
-    check_ignored_arguments(..., ok_args = dots[["dont_check"]])
+    if (!from_grouped(dots)) {
+      check_ignored_arguments(...)
+      group <- NULL
+    } else {
+      group <- dots[["group"]]
+    }
 
     data <-
       ppc_intervals_data(
         y = y,
         yrep = yrep,
         x = x,
-        group = dots[["group"]],
+        group = group,
         prob = prob,
         prob_outer = prob_outer
       )

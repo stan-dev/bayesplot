@@ -1,16 +1,25 @@
 #' Modify a call to a '_grouped' function to the same one without '_grouped'
-#' and prevent a future call to `check_ignored_args()` from warning about
-#' the `group` argument.
 #'
 #' @param call The original call (from `match.call()`).
-#' @return The new unevaluated call.
+#' @return The new unevaluated call, with additional argument
+#'   `called_from_internal=TRUE` which can be detected by the function to be
+#'   called.
 #' @noRd
 ungroup_call <- function(call) {
   fn <- gsub("_grouped", "", rlang::call_name(call))
   call[[1]] <- as.name(fn)
-  call$dont_check <- "group"
+  call$called_from_internal <- TRUE
   call$... <- NULL
   call
+}
+
+#' Check if the `...` to a function were supplied by it's `_grouped` version
+#'
+#' @param dots The `...` arguments already in a list (`list(...)`).
+#' @return `TRUE` or `FALSE`
+#' @noRd
+from_grouped <- function(dots) {
+  isTRUE(dots[["called_from_internal"]]) && !is.null(dots[["group"]])
 }
 
 

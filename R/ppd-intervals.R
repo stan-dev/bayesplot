@@ -64,14 +64,18 @@ ppd_intervals <-
            size = 1,
            fatten = 2.5) {
 
-    # don't warn about 'group' arg if called internally by ppd_intervals_grouped()
     dots <- list(...)
-    check_ignored_arguments(..., ok_args = dots[["dont_check"]])
+    if (!from_grouped(dots)) {
+      check_ignored_arguments(...)
+      group <- NULL
+    } else {
+      group <- dots[["group"]]
+    }
 
     ypred %>%
       ppd_intervals_data(
         x = x,
-        group = dots[["group"]],
+        group = group,
         prob = prob,
         prob_outer = prob_outer
       ) %>%
@@ -133,14 +137,18 @@ ppd_ribbon <-
            alpha = 0.33,
            size = 0.25) {
 
-    # don't warn about 'group' arg if called internally by ppd_ribbon_grouped()
     dots <- list(...)
-    check_ignored_arguments(..., ok_args = dots[["dont_check"]])
+    if (!from_grouped(dots)) {
+      check_ignored_arguments(...)
+      group <- NULL
+    } else {
+      group <- dots[["group"]]
+    }
 
     ypred %>%
       ppd_intervals_data(
         x = x,
-        group = dots[["group"]],
+        group = group,
         prob = prob,
         prob_outer = prob_outer
       ) %>%
@@ -279,6 +287,7 @@ ppd_ribbon_data <- ppd_intervals_data
 #' Aesthetic mapping for interval and ribbon plots
 #'
 #' Always sets at least `x`, `ymin`, `ymax`.
+#'
 #' @param needs_y Whether to include `y = ~m` in the call to `aes_()`. Needed
 #'   for `geom_pointrange()`.
 #' @param ... Aguments to pass to `aes_()` other than `x`,`y`,`ymin`,`ymax`.
@@ -311,11 +320,13 @@ intervals_outer_aes <- function(needs_y = FALSE, ...) {
 
 #' Create the facet layer for grouped interval and ribbon plots
 #' @param facet_args User's `facet_args` argument.
+#' @param scales_default String to use for `scales` argument to `facet_wrap()`
+#'   if not specified by user. Defaults to `"free"`, unlike `facet_wrap()`.
 #' @return Object returned by `facet_wrap()`.
 #' @noRd
-intervals_group_facets <- function(facet_args) {
+intervals_group_facets <- function(facet_args, scales_default = "free") {
   facet_args[["facets"]] <- "group"
-  facet_args[["scales"]] <- facet_args[["scales"]] %||% "free"
+  facet_args[["scales"]] <- facet_args[["scales"]] %||% scales_default
   do.call("facet_wrap", facet_args)
 }
 
