@@ -143,8 +143,7 @@ ppd_dens <-
       yaxis_title(FALSE) +
       yaxis_ticks(FALSE) +
       xaxis_title(FALSE) +
-      facet_text(FALSE) +
-      facet_bg(FALSE)
+      facet_text(FALSE)
   }
 
 #' @rdname PPD-distributions
@@ -194,16 +193,20 @@ ppd_freqpoly <-
     check_ignored_arguments(...)
     ypred %>%
       ppd_data() %>%
-      ggplot(mapping = set_hist_aes(freq)) +
+      ggplot(mapping = set_hist_aes(
+        freq,
+        color = "ypred",
+        fill = "ypred"
+      )) +
       geom_area(
         stat = "bin",
-        color = get_color("mh"),
-        fill = get_color("m"),
         binwidth = binwidth,
         size = size,
         alpha = alpha
       ) +
       facet_wrap_parsed("rep_label") +
+      scale_color_ppd() +
+      scale_fill_ppd() +
       bayesplot_theme_get() +
       force_axes_in_facets() +
       dont_expand_y_axis() +
@@ -211,8 +214,7 @@ ppd_freqpoly <-
       yaxis_title(FALSE) +
       yaxis_ticks(FALSE) +
       xaxis_title(FALSE) +
-      facet_text(FALSE) +
-      facet_bg(FALSE)
+      facet_text(FALSE)
   }
 
 #' @rdname PPD-distributions
@@ -230,25 +232,31 @@ ppd_freqpoly_grouped <-
     check_ignored_arguments(...)
     ypred %>%
       ppd_data(group = group) %>%
-      ggplot(mapping = set_hist_aes(freq)) +
+      ggplot(mapping = set_hist_aes(
+        freq,
+        color = "ypred",
+        fill = "ypred"
+      )) +
       geom_area(
         stat = "bin",
-        color = get_color("mh"),
-        fill = get_color("m"),
         size = size,
         alpha = alpha,
-        binwidth = binwidth,
-        na.rm = TRUE
+        binwidth = binwidth
       ) +
-      facet_grid(rep_label ~ group, scales = "free") +
-      dont_expand_y_axis(c(0.005, 0)) +
+      facet_grid(
+        rep_label ~ group,
+        scales = "free",
+        labeller = label_parsed
+      ) +
+      scale_color_ppd() +
+      scale_fill_ppd() +
       bayesplot_theme_get() +
       force_axes_in_facets() +
+      dont_expand_y_axis(c(0.005, 0)) +
       xaxis_title(FALSE) +
       yaxis_text(FALSE) +
       yaxis_ticks(FALSE) +
       yaxis_title(FALSE) +
-      facet_bg(FALSE) +
       theme(strip.text.y = element_blank())
   }
 
@@ -264,15 +272,22 @@ ppd_boxplot <-
 
     ypred %>%
       ppd_data() %>%
-      ggplot(mapping = aes_(x = ~ rep_label, y = ~ value)) +
+      ggplot(mapping = aes_(
+        x = ~ factor(rep_id),
+        y = ~ value,
+        color = "ypred",
+        fill = "ypred"
+      )) +
       geom_boxplot(
-        fill = get_color("m"),
-        color = get_color("mh"),
         notch = notch,
         size = size,
         alpha = alpha,
-        outlier.color = get_color("lh")
+        outlier.color = get_color("lh"),
+        outlier.alpha = 2/3,
+        outlier.size = 1
       ) +
+      scale_color_ppd() +
+      scale_fill_ppd() +
       bayesplot_theme_get() +
       yaxis_title(FALSE) +
       xaxis_ticks(FALSE) +

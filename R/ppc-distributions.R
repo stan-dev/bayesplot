@@ -389,7 +389,8 @@ ppc_boxplot <-
         notch = notch,
         size = size,
         alpha = alpha,
-        outlier.alpha = 2 / 3
+        outlier.alpha = 2/3,
+        outlier.size = 1
       ) +
       scale_fill_ppc() +
       scale_color_ppc() +
