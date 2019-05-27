@@ -35,71 +35,6 @@ ppd_data <- function(ypred, group = NULL) {
 
 #' @rdname PPD-distributions
 #' @export
-ppd_dens <-
-  function(ypred,
-           ...,
-           trim = FALSE,
-           size = 0.5,
-           alpha = 1) {
-    check_ignored_arguments(...)
-    ypred %>%
-      ppd_data() %>%
-      ggplot(mapping = aes_(x = ~ value, color = "ypred", fill = "ypred")) +
-      geom_density(
-        size = size,
-        alpha = alpha,
-        trim = trim
-      ) +
-      scale_color_ppd() +
-      scale_fill_ppd() +
-      bayesplot_theme_get() +
-      facet_wrap_parsed("rep_label") +
-      force_axes_in_facets() +
-      dont_expand_y_axis() +
-      legend_none() +
-      yaxis_text(FALSE) +
-      yaxis_title(FALSE) +
-      yaxis_ticks(FALSE) +
-      xaxis_title(FALSE) +
-      facet_text(FALSE) +
-      facet_bg(FALSE)
-  }
-
-#' @rdname PPD-distributions
-#' @export
-ppd_hist <-
-  function(ypred,
-           ...,
-           binwidth = NULL,
-           breaks = NULL,
-           freq = TRUE) {
-    check_ignored_arguments(...)
-    ypred %>%
-      ppd_data() %>%
-      ggplot(mapping = set_hist_aes(freq, color = "ypred", fill = "ypred")) +
-      geom_histogram(
-        size = 0.25,
-        binwidth = binwidth,
-        breaks = breaks
-      ) +
-      scale_color_ppd() +
-      scale_fill_ppd() +
-      bayesplot_theme_get() +
-      facet_wrap_parsed("rep_label") +
-      force_axes_in_facets() +
-      dont_expand_y_axis() +
-      legend_none() +
-      yaxis_text(FALSE) +
-      yaxis_title(FALSE) +
-      yaxis_ticks(FALSE) +
-      xaxis_title(FALSE) +
-      facet_text(FALSE) +
-      facet_bg(FALSE)
-  }
-
-
-#' @rdname PPD-distributions
-#' @export
 ppd_dens_overlay <-
   function(ypred,
            ...,
@@ -115,8 +50,7 @@ ppd_dens_overlay <-
       ppd_data() %>%
       ggplot(mapping = aes_(x = ~ value)) +
       overlay_ppd_densities(
-        mapping = aes_(group = ~ rep_id),
-        color = get_color("m"),
+        mapping = aes_(group = ~ rep_id, color = "ypred"),
         size = size,
         alpha = alpha,
         trim = trim,
@@ -124,6 +58,11 @@ ppd_dens_overlay <-
         adjust = adjust,
         kernel = kernel,
         n = n_dens
+      ) +
+      scale_color_ppd(
+        values = get_color("m"),
+        guide = guide_legend( # in case user turns legend back on
+          override.aes = list(size = 2 * size, alpha = 1))
       ) +
       bayesplot_theme_get() +
       dont_expand_axes() +
@@ -155,46 +94,92 @@ ppd_ecdf_overlay <-
         color = get_color("dh")
       ) +
       stat_ecdf(
-        mapping = aes_(group = ~ rep_id),
-        color = get_color("m"),
+        mapping = aes_(group = ~ rep_id, color = "ypred"),
         geom = if (discrete) "step" else "line",
         size = size,
         alpha = alpha,
         pad = pad
       ) +
+      scale_color_ppd(
+        values = get_color("m"),
+        guide = guide_legend( # in case user turns legend back on
+          override.aes = list(size = 2 * size, alpha = 1))
+      ) +
       scale_y_continuous(breaks = c(0, 0.5, 1)) +
       bayesplot_theme_get() +
       yaxis_title(FALSE) +
-      xaxis_title(FALSE) +
-      yaxis_ticks(FALSE)
+      xaxis_title(FALSE)
   }
 
 #' @rdname PPD-distributions
 #' @export
-ppd_boxplot <-
+ppd_dens <-
   function(ypred,
            ...,
-           notch = TRUE,
+           trim = FALSE,
            size = 0.5,
            alpha = 1) {
     check_ignored_arguments(...)
-
     ypred %>%
       ppd_data() %>%
-      ggplot(mapping = aes_(x = ~ rep_label, y = ~ value)) +
-      geom_boxplot(
-        fill = get_color("m"),
-        color = get_color("mh"),
-        notch = notch,
+      ggplot(mapping = aes_(
+        x = ~ value,
+        color = "ypred",
+        fill = "ypred"
+      )) +
+      geom_density(
         size = size,
         alpha = alpha,
-        outlier.color = get_color("lh")
+        trim = trim
       ) +
+      scale_color_ppd() +
+      scale_fill_ppd() +
       bayesplot_theme_get() +
+      facet_wrap_parsed("rep_label") +
+      force_axes_in_facets() +
+      dont_expand_y_axis() +
+      legend_none() +
+      yaxis_text(FALSE) +
       yaxis_title(FALSE) +
-      xaxis_ticks(FALSE) +
-      xaxis_text(FALSE) +
-      xaxis_title(FALSE)
+      yaxis_ticks(FALSE) +
+      xaxis_title(FALSE) +
+      facet_text(FALSE) +
+      facet_bg(FALSE)
+  }
+
+#' @rdname PPD-distributions
+#' @export
+ppd_hist <-
+  function(ypred,
+           ...,
+           binwidth = NULL,
+           breaks = NULL,
+           freq = TRUE) {
+    check_ignored_arguments(...)
+    ypred %>%
+      ppd_data() %>%
+      ggplot(mapping = set_hist_aes(
+        freq,
+        color = "ypred",
+        fill = "ypred"
+      )) +
+      geom_histogram(
+        size = 0.25,
+        binwidth = binwidth,
+        breaks = breaks
+      ) +
+      scale_color_ppd() +
+      scale_fill_ppd() +
+      bayesplot_theme_get() +
+      facet_wrap_parsed("rep_label") +
+      force_axes_in_facets() +
+      dont_expand_y_axis() +
+      legend_none() +
+      yaxis_text(FALSE) +
+      yaxis_title(FALSE) +
+      yaxis_ticks(FALSE) +
+      xaxis_title(FALSE) +
+      facet_text(FALSE)
   }
 
 #' @rdname PPD-distributions
@@ -265,6 +250,34 @@ ppd_freqpoly_grouped <-
       yaxis_title(FALSE) +
       facet_bg(FALSE) +
       theme(strip.text.y = element_blank())
+  }
+
+#' @rdname PPD-distributions
+#' @export
+ppd_boxplot <-
+  function(ypred,
+           ...,
+           notch = TRUE,
+           size = 0.5,
+           alpha = 1) {
+    check_ignored_arguments(...)
+
+    ypred %>%
+      ppd_data() %>%
+      ggplot(mapping = aes_(x = ~ rep_label, y = ~ value)) +
+      geom_boxplot(
+        fill = get_color("m"),
+        color = get_color("mh"),
+        notch = notch,
+        size = size,
+        alpha = alpha,
+        outlier.color = get_color("lh")
+      ) +
+      bayesplot_theme_get() +
+      yaxis_title(FALSE) +
+      xaxis_ticks(FALSE) +
+      xaxis_text(FALSE) +
+      xaxis_title(FALSE)
   }
 
 

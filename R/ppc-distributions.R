@@ -114,6 +114,139 @@ ppc_data <- function(y, yrep, group = NULL) {
   .ppd_data(predictions = yrep, y = y, group = group)
 }
 
+#' @rdname PPC-distributions
+#' @export
+#' @template args-density-controls
+ppc_dens_overlay <-
+  function(y,
+           yrep,
+           ...,
+           size = 0.25,
+           alpha = 0.7,
+           trim = FALSE,
+           bw = "nrd0",
+           adjust = 1,
+           kernel = "gaussian",
+           n_dens = 1024) {
+    check_ignored_arguments(...)
+
+    ppc_data(y, yrep) %>%
+      ggplot(mapping = aes_(x = ~ value)) +
+      overlay_ppd_densities(
+        mapping = aes_(group = ~ rep_id, color = "yrep"),
+        data = function(x) dplyr::filter(x, !.data$is_y),
+        size = size,
+        alpha = alpha,
+        trim = trim,
+        bw = bw,
+        adjust = adjust,
+        kernel = kernel,
+        n = n_dens
+      ) +
+      overlay_ppd_densities(
+        mapping = aes_(color = "y"),
+        data = function(x) dplyr::filter(x, .data$is_y),
+        lineend = "round",
+        size = 1,
+        trim = trim,
+        bw = bw,
+        adjust = adjust,
+        kernel = kernel,
+        n = n_dens
+      ) +
+      scale_color_ppc() +
+      bayesplot_theme_get() +
+      dont_expand_axes() +
+      yaxis_title(FALSE) +
+      xaxis_title(FALSE) +
+      yaxis_text(FALSE) +
+      yaxis_ticks(FALSE)
+  }
+
+#' @export
+#' @rdname PPC-distributions
+#' @param discrete For `ppc_ecdf_overlay()`, should the data be treated as
+#'   discrete? The default is `FALSE`, in which case `geom="line"` is
+#'   passed to [ggplot2::stat_ecdf()]. If `discrete` is set to
+#'   `TRUE` then `geom="step"` is used.
+#' @param pad A logical scalar passed to [ggplot2::stat_ecdf()].
+ppc_ecdf_overlay <-
+  function(y,
+           yrep,
+           ...,
+           discrete = FALSE,
+           pad = TRUE,
+           size = 0.25,
+           alpha = 0.7) {
+    check_ignored_arguments(...)
+
+    ppc_data(y, yrep) %>%
+      ggplot(mapping = aes_(x = ~ value)) +
+      hline_at(
+        c(0, 0.5, 1),
+        size = c(0.2, 0.1, 0.2),
+        linetype = 2,
+        color = get_color("dh")
+      ) +
+      stat_ecdf(
+        data = function(x) dplyr::filter(x, !.data$is_y),
+        mapping = aes_(group = ~ rep_id, color = "yrep"),
+        geom = if (discrete) "step" else "line",
+        size = size,
+        alpha = alpha,
+        pad = pad
+      ) +
+      stat_ecdf(
+        data = function(x) dplyr::filter(x, .data$is_y),
+        mapping = aes_(color = "y"),
+        geom = if (discrete) "step" else "line",
+        size = 1,
+        pad = pad
+      ) +
+      scale_color_ppc() +
+      scale_y_continuous(breaks = c(0, 0.5, 1)) +
+      bayesplot_theme_get() +
+      yaxis_title(FALSE) +
+      xaxis_title(FALSE)
+  }
+
+
+#' @rdname PPC-distributions
+#' @export
+ppc_dens <-
+  function(y,
+           yrep,
+           ...,
+           trim = FALSE,
+           size = 0.5,
+           alpha = 1) {
+    check_ignored_arguments(...)
+    ppc_data(y, yrep) %>%
+      ggplot(mapping = aes_(
+        x = ~ value,
+        fill = ~ is_y_label,
+        color = ~ is_y_label
+      )) +
+      geom_density(
+        size = size,
+        alpha = alpha,
+        trim = trim
+      ) +
+      scale_fill_ppc() +
+      scale_color_ppc() +
+      bayesplot_theme_get() +
+      facet_wrap_parsed("rep_label") +
+      force_axes_in_facets() +
+      dont_expand_y_axis() +
+      space_legend_keys() +
+      yaxis_text(FALSE) +
+      yaxis_title(FALSE) +
+      yaxis_ticks(FALSE) +
+      xaxis_title(FALSE) +
+      facet_text(FALSE) +
+      facet_bg(FALSE)
+  }
+
 
 #' @rdname PPC-distributions
 #' @export
@@ -151,43 +284,6 @@ ppc_hist <-
       facet_text(FALSE) +
       facet_bg(FALSE)
   }
-
-#' @rdname PPC-distributions
-#' @export
-#' @param notch A logical scalar passed to [ggplot2::geom_boxplot()].
-#'   Unlike for `geom_boxplot()`, the default is `notch=TRUE`.
-#'
-ppc_boxplot <-
-  function(y,
-           yrep,
-           ...,
-           notch = TRUE,
-           size = 0.5,
-           alpha = 1) {
-    check_ignored_arguments(...)
-    ppc_data(y, yrep) %>%
-      ggplot(mapping =
-               aes_(
-                 x = ~ rep_label,
-                 y = ~ value,
-                 fill = ~ is_y_label,
-                 color = ~ is_y_label
-               )) +
-      geom_boxplot(
-        notch = notch,
-        size = size,
-        alpha = alpha,
-        outlier.alpha = 2 / 3
-      ) +
-      scale_fill_ppc() +
-      scale_color_ppc() +
-      bayesplot_theme_get() +
-      yaxis_title(FALSE) +
-      xaxis_ticks(FALSE) +
-      xaxis_text(FALSE) +
-      xaxis_title(FALSE)
-  }
-
 
 #' @rdname PPC-distributions
 #' @export
@@ -268,138 +364,39 @@ ppc_freqpoly_grouped <-
       theme(strip.text.y = element_blank())
   }
 
-
 #' @rdname PPC-distributions
 #' @export
-ppc_dens <-
+#' @param notch A logical scalar passed to [ggplot2::geom_boxplot()].
+#'   Unlike for `geom_boxplot()`, the default is `notch=TRUE`.
+#'
+ppc_boxplot <-
   function(y,
            yrep,
            ...,
-           trim = FALSE,
+           notch = TRUE,
            size = 0.5,
            alpha = 1) {
     check_ignored_arguments(...)
     ppc_data(y, yrep) %>%
       ggplot(mapping =
                aes_(
-                 x = ~ value,
+                 x = ~ rep_label,
+                 y = ~ value,
                  fill = ~ is_y_label,
                  color = ~ is_y_label
                )) +
-      geom_density(
+      geom_boxplot(
+        notch = notch,
         size = size,
         alpha = alpha,
-        trim = trim
+        outlier.alpha = 2 / 3
       ) +
       scale_fill_ppc() +
       scale_color_ppc() +
       bayesplot_theme_get() +
-      facet_wrap_parsed("rep_label") +
-      force_axes_in_facets() +
-      dont_expand_y_axis() +
-      space_legend_keys() +
-      yaxis_text(FALSE) +
       yaxis_title(FALSE) +
-      yaxis_ticks(FALSE) +
-      xaxis_title(FALSE) +
-      facet_text(FALSE) +
-      facet_bg(FALSE)
-  }
-
-#' @rdname PPC-distributions
-#' @export
-#' @template args-density-controls
-ppc_dens_overlay <-
-  function(y,
-           yrep,
-           ...,
-           size = 0.25,
-           alpha = 0.7,
-           trim = FALSE,
-           bw = "nrd0",
-           adjust = 1,
-           kernel = "gaussian",
-           n_dens = 1024) {
-    check_ignored_arguments(...)
-
-    ppc_data(y, yrep) %>%
-      ggplot(mapping = aes_(x = ~ value)) +
-      overlay_ppd_densities(
-        mapping = aes_(group = ~ rep_id, color = "yrep"),
-        data = function(x) dplyr::filter(x, !.data$is_y),
-        size = size,
-        alpha = alpha,
-        trim = trim,
-        bw = bw,
-        adjust = adjust,
-        kernel = kernel,
-        n = n_dens
-      ) +
-      overlay_ppd_densities(
-        mapping = aes_(color = "y"),
-        data = function(x) dplyr::filter(x, .data$is_y),
-        lineend = "round",
-        size = 1,
-        trim = trim,
-        bw = bw,
-        adjust = adjust,
-        kernel = kernel,
-        n = n_dens
-      ) +
-      scale_color_ppc() +
-      bayesplot_theme_get() +
-      dont_expand_axes() +
-      yaxis_title(FALSE) +
-      xaxis_title(FALSE) +
-      yaxis_text(FALSE) +
-      yaxis_ticks(FALSE)
-  }
-
-
-#' @export
-#' @rdname PPC-distributions
-#' @param discrete For `ppc_ecdf_overlay()`, should the data be treated as
-#'   discrete? The default is `FALSE`, in which case `geom="line"` is
-#'   passed to [ggplot2::stat_ecdf()]. If `discrete` is set to
-#'   `TRUE` then `geom="step"` is used.
-#' @param pad A logical scalar passed to [ggplot2::stat_ecdf()].
-ppc_ecdf_overlay <-
-  function(y,
-           yrep,
-           ...,
-           discrete = FALSE,
-           pad = TRUE,
-           size = 0.25,
-           alpha = 0.7) {
-    check_ignored_arguments(...)
-
-    ppc_data(y, yrep) %>%
-    ggplot(mapping = aes_(x = ~ value)) +
-      hline_at(
-        c(0, 0.5, 1),
-        size = c(0.2, 0.1, 0.2),
-        linetype = 2,
-        color = get_color("dh")
-      ) +
-      stat_ecdf(
-        data = function(x) dplyr::filter(x, !.data$is_y),
-        mapping = aes_(group = ~ rep_id, color = "yrep"),
-        geom = if (discrete) "step" else "line",
-        size = size,
-        alpha = alpha,
-        pad = pad
-      ) +
-      stat_ecdf(
-        data = function(x) dplyr::filter(x, .data$is_y),
-        mapping = aes_(color = "y"),
-        geom = if (discrete) "step" else "line",
-        size = 1,
-        pad = pad
-      ) +
-      scale_color_ppc() +
-      scale_y_continuous(breaks = c(0, 0.5, 1)) +
-      bayesplot_theme_get() +
-      yaxis_title(FALSE) +
+      xaxis_ticks(FALSE) +
+      xaxis_text(FALSE) +
       xaxis_title(FALSE)
   }
 
