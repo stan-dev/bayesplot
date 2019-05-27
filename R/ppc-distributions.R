@@ -295,7 +295,7 @@ ppc_freqpoly <-
            freq = TRUE,
            size = 0.5,
            alpha = 1) {
-    # don't warn about 'group' arg if called internally by ppc_intervals_grouped()
+    # don't warn about 'group' arg if called internally by ppc_freqpoly_grouped()
     dots <- list(...)
     check_ignored_arguments(..., ok_args = dots[["dont_check"]])
 
