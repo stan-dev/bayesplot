@@ -44,14 +44,14 @@ ppd_dens <-
     check_ignored_arguments(...)
     ypred %>%
       ppd_data() %>%
-      ggplot(mapping = aes_(x = ~ value)) +
+      ggplot(mapping = aes_(x = ~ value, color = "ypred", fill = "ypred")) +
       geom_density(
-        fill = get_color("m"),
-        color = get_color("mh"),
         size = size,
         alpha = alpha,
         trim = trim
       ) +
+      scale_color_ppd() +
+      scale_fill_ppd() +
       bayesplot_theme_get() +
       facet_wrap_parsed("rep_label") +
       force_axes_in_facets() +
@@ -76,14 +76,14 @@ ppd_hist <-
     check_ignored_arguments(...)
     ypred %>%
       ppd_data() %>%
-      ggplot(mapping = set_hist_aes(freq)) +
+      ggplot(mapping = set_hist_aes(freq, color = "ypred", fill = "ypred")) +
       geom_histogram(
-        fill = get_color("m"),
-        color = get_color("mh"),
         size = 0.25,
         binwidth = binwidth,
         breaks = breaks
       ) +
+      scale_color_ppd() +
+      scale_fill_ppd() +
       bayesplot_theme_get() +
       facet_wrap_parsed("rep_label") +
       force_axes_in_facets() +

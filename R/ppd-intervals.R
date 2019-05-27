@@ -116,10 +116,9 @@ ppd_intervals_grouped <-
            size = 1,
            fatten = 2.5) {
     check_ignored_arguments(...)
-
-    ungrouped_call <- call_ungrouped_version(call = match.call())
-    g <- eval(ungrouped_call)
-    g + intervals_facet_layer(facet_args)
+    call <- match.call(expand.dots = FALSE)
+    g <- eval(ungroup_call(call))
+    g + intervals_group_facets(facet_args)
   }
 
 
@@ -177,10 +176,9 @@ ppd_ribbon_grouped <-
            alpha = 0.33,
            size = 0.25) {
     check_ignored_arguments(...)
-
-    ungrouped_call <- call_ungrouped_version(call = match.call())
-    g <- eval(ungrouped_call)
-    g + intervals_facet_layer(facet_args)
+    call <- match.call(expand.dots = FALSE)
+    g <- eval(ungroup_call(call))
+    g + intervals_group_facets(facet_args)
   }
 
 
@@ -315,7 +313,7 @@ intervals_outer_aes <- function(needs_y = FALSE, ...) {
 #' @param facet_args User's `facet_args` argument.
 #' @return Object returned by `facet_wrap()`.
 #' @noRd
-intervals_facet_layer <- function(facet_args) {
+intervals_group_facets <- function(facet_args) {
   facet_args[["facets"]] <- "group"
   facet_args[["scales"]] <- facet_args[["scales"]] %||% "free"
   do.call("facet_wrap", facet_args)

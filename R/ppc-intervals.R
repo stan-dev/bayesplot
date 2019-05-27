@@ -187,9 +187,9 @@ ppc_intervals_grouped <-
            size = 1,
            fatten = 2.5) {
     check_ignored_arguments(...)
-    ungrouped_call <- call_ungrouped_version(call = match.call())
-    g <- eval(ungrouped_call)
-    g + intervals_facet_layer(facet_args)
+    call <- match.call(expand.dots = FALSE)
+    g <- eval(ungroup_call(call))
+    g + intervals_group_facets(facet_args)
   }
 
 
@@ -259,9 +259,9 @@ ppc_ribbon_grouped <-
            alpha = 0.33,
            size = 0.25) {
     check_ignored_arguments(...)
-    ungrouped_call <- call_ungrouped_version(call = match.call())
-    g <- eval(ungrouped_call)
-    g + intervals_facet_layer(facet_args)
+    call <- match.call(expand.dots = FALSE)
+    g <- eval(ungroup_call(call))
+    g + intervals_group_facets(facet_args)
   }
 
 

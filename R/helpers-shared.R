@@ -25,7 +25,11 @@ suggested_package <- function(pkg, min_version = NULL) {
 # Return x if not NULL, otherwise y
 `%||%` <- function(x, y) if (!is.null(x)) x else y
 
-# Check for ignored arguments
+#' Warn about ignored arguments
+#'
+#' @param ... The `...` arguments from the calling function.
+#' @param ok_args A character vector of argument names to ignore.
+#' @return Nothing, but a warning may be thrown.
 check_ignored_arguments <- function(..., ok_args = character()) {
   dots <- list(...)
   nms <- names(dots)

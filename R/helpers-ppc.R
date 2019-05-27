@@ -5,10 +5,11 @@
 #' @param call The original call (from `match.call()`).
 #' @return The new unevaluated call.
 #' @noRd
-call_ungrouped_version <- function(call) {
+ungroup_call <- function(call) {
   fn <- gsub("_grouped", "", rlang::call_name(call))
   call[[1]] <- as.name(fn)
   call$dont_check <- "group"
+  call$... <- NULL
   call
 }
 
