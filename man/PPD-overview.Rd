@@ -21,15 +21,15 @@ its own documentation:
 other plots of multiple simulated datasets (rows) in \code{ypred}. These are the
 same as the plots in \link{PPC-distributions} but without including any
 comparison to \code{y}.
-\item \link{PPD-test-statistics}: The distribution of a statistic, or a pair of
-statistics, over the simulated datasets (rows) in \code{ypred}. These are the
-same as the plots in \link{PPC-test-statistics} but without including any
-comparison to \code{y}.
 \item \link{PPD-intervals}: Interval estimates for each predicted observations
 (columns) in \code{ypred}. The x-axis variable can be optionally specified by
 the user (e.g. to plot against against a predictor variable or over
 time).These are the same as the plots in \link{PPC-intervals} but without
 including any comparison to \code{y}.
+\item \link{PPD-test-statistics}: The distribution of a statistic, or a pair of
+statistics, over the simulated datasets (rows) in \code{ypred}. These are the
+same as the plots in \link{PPC-test-statistics} but without including any
+comparison to \code{y}.
 \item \link{PPD-discrete}: PPD functions that can only be used if \code{ypred} is discrete.
 For example, rootograms for count outcomes and bar plots for ordinal,
 categorical, and multinomial outcomes. These are the same as the plots in

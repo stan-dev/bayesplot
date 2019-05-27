@@ -63,32 +63,39 @@ ppd_intervals <-
            alpha = 0.33,
            size = 1,
            fatten = 2.5) {
-    check_ignored_arguments(...)
+
+    # don't warn about 'group' arg if called internally by ppd_intervals_grouped()
+    dots <- list(...)
+    check_ignored_arguments(..., ok_args = dots[["dont_check"]])
 
     ypred %>%
       ppd_intervals_data(
         x = x,
-        group = NULL,
+        group = dots[["group"]],
         prob = prob,
         prob_outer = prob_outer
       ) %>%
-      ggplot(mapping = intervals_inner_aes(needs_y = TRUE)) +
+      ggplot(mapping = intervals_inner_aes(
+        needs_y = TRUE,
+        color = "ypred",
+        fill = "ypred"
+      )) +
       geom_linerange(
-        mapping = intervals_outer_aes(),
-        color = get_color("mh"),
+        mapping = intervals_outer_aes(color = "ypred"),
         alpha = alpha,
         size = size
       ) +
       geom_pointrange(
-        color = get_color("mh"),
-        fill = get_color("m"),
         shape = 21,
         stroke = 0.5,
         size = size,
         fatten = fatten
       ) +
+      scale_color_ppd() +
+      scale_fill_ppd() +
       intervals_axis_labels(has_x = !is.null(x)) +
-      bayesplot_theme_get()
+      bayesplot_theme_get() +
+      legend_none()
   }
 
 #' @rdname PPD-intervals
@@ -110,31 +117,9 @@ ppd_intervals_grouped <-
            fatten = 2.5) {
     check_ignored_arguments(...)
 
-    ypred %>%
-      ppd_intervals_data(
-        x = x,
-        group = group,
-        prob = prob,
-        prob_outer = prob_outer
-      ) %>%
-      ggplot(mapping = intervals_inner_aes(needs_y = TRUE)) +
-      geom_linerange(
-        mapping = intervals_outer_aes(),
-        color = get_color("mh"),
-        alpha = alpha,
-        size = size
-      ) +
-      geom_pointrange(
-        color = get_color("mh"),
-        fill = get_color("m"),
-        shape = 21,
-        stroke = 0.5,
-        size = size,
-        fatten = fatten
-      ) +
-      intervals_axis_labels(has_x = !is.null(x)) +
-      intervals_facet_layer(facet_args) +
-      bayesplot_theme_get()
+    ungrouped_call <- call_ungrouped_version(call = match.call())
+    g <- eval(ungrouped_call)
+    g + intervals_facet_layer(facet_args)
   }
 
 
@@ -148,32 +133,32 @@ ppd_ribbon <-
            prob_outer = 0.9,
            alpha = 0.33,
            size = 0.25) {
-    check_ignored_arguments(...)
+
+    # don't warn about 'group' arg if called internally by ppd_ribbon_grouped()
+    dots <- list(...)
+    check_ignored_arguments(..., ok_args = dots[["dont_check"]])
 
     ypred %>%
       ppd_intervals_data(
         x = x,
-        group = NULL,
+        group = dots[["group"]],
         prob = prob,
         prob_outer = prob_outer
       ) %>%
-      ggplot(mapping = intervals_inner_aes()) +
+      ggplot(mapping = intervals_inner_aes(color = "ypred", fill = "ypred")) +
       geom_ribbon(
-        mapping = intervals_outer_aes(),
-        fill = get_color("mh"),
+        mapping = intervals_outer_aes(color = "ypred", fill = "ypred"),
         color = NA,
         alpha = alpha
       ) +
-      geom_ribbon(
-        fill = get_color("m"),
-        color = get_color("mh"),
-        size = 0.05
-      ) +
+      geom_ribbon(size = 0.05) +
       geom_line(
         mapping = aes_(y = ~ m),
         color = get_color("d"),
         size = size
       ) +
+      scale_color_ppd() +
+      scale_fill_ppd() +
       intervals_axis_labels(has_x = !is.null(x)) +
       bayesplot_theme_get()
   }
@@ -193,33 +178,9 @@ ppd_ribbon_grouped <-
            size = 0.25) {
     check_ignored_arguments(...)
 
-    ypred %>%
-      ppd_intervals_data(
-        x = x,
-        group = group,
-        prob = prob,
-        prob_outer = prob_outer
-      ) %>%
-      ggplot(mapping = intervals_inner_aes()) +
-      geom_ribbon(
-        mapping = intervals_outer_aes(),
-        fill = get_color("mh"),
-        color = NA,
-        alpha = alpha
-      ) +
-      geom_ribbon(
-        fill = get_color("m"),
-        color = get_color("mh"),
-        size = 0.05
-      ) +
-      geom_line(
-        mapping = aes_(y = ~ m),
-        color = get_color("d"),
-        size = size
-      ) +
-      intervals_axis_labels(has_x = !is.null(x)) +
-      intervals_facet_layer(facet_args) +
-      bayesplot_theme_get()
+    ungrouped_call <- call_ungrouped_version(call = match.call())
+    g <- eval(ungrouped_call)
+    g + intervals_facet_layer(facet_args)
   }
 
 

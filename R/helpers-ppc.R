@@ -1,3 +1,18 @@
+#' Modify a call to a '_grouped' function to the same one without '_grouped'
+#' and prevent a future call to `check_ignored_args()` from warning about
+#' the `group` argument.
+#'
+#' @param call The original call (from `match.call()`).
+#' @return The new unevaluated call.
+#' @noRd
+call_ungrouped_version <- function(call) {
+  fn <- gsub("_grouped", "", rlang::call_name(call))
+  call[[1]] <- as.name(fn)
+  call$dont_check <- "group"
+  call
+}
+
+
 # input validation and type checking ----------------------------------------
 
 # Check if an object is a vector (but not list) or a 1-D array
@@ -294,6 +309,8 @@ yrep_avg_label <- function() expression(paste("Average ", italic(y)[rep]))
 y_label <- function() expression(italic(y))
 Ty_label <- function() expression(italic(T(italic(y))))
 Tyrep_label <- function() expression(italic(T)(italic(y)[rep]))
+
+ypred_label <- function() expression(italic(y)[pred])
 # Ty_label_2d <- function() {
 #   expression(bgroup(
 #     "(", list(italic(T)[1](italic(y)),

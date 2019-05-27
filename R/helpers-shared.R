@@ -28,9 +28,10 @@ suggested_package <- function(pkg, min_version = NULL) {
 # Check for ignored arguments
 check_ignored_arguments <- function(..., ok_args = character()) {
   dots <- list(...)
+  nms <- names(dots)
+  ok_args <- c(ok_args, "dont_check")
   if (length(dots)) {
-    unrecognized <- if (!length(ok_args))
-      names(dots) else setdiff(names(dots), ok_args)
+    unrecognized <- if (!length(ok_args)) nms else setdiff(nms, ok_args)
     if (length(unrecognized)) {
       warn(paste(
         "The following arguments were unrecognized and ignored:",

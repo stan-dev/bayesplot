@@ -2,10 +2,13 @@
 % Please edit documentation in R/available-module-functions.R
 \name{available_ppc}
 \alias{available_ppc}
+\alias{available_ppd}
 \alias{available_mcmc}
 \title{Get or view the names of available plotting functions}
 \usage{
 available_ppc(pattern, fixed = FALSE, invert = FALSE)
+
+available_ppd(pattern, fixed = FALSE, invert = FALSE)
 
 available_mcmc(pattern, fixed = FALSE, invert = FALSE)
 }
@@ -16,7 +19,7 @@ available_mcmc(pattern, fixed = FALSE, invert = FALSE)
 A possibly empty character vector of function names with several
 additional attributes (for use by a custom print method). If \code{pattern}
 is missing then the returned object contains the names of all available
-plotting functions in the \link{MCMC} or \link{PPC} module, depending on
+plotting functions in the \link{MCMC}, \link{PPC}, or \link{PPD} module, depending on
 which function is called. If \code{pattern} is specified then a subset of
 function names is returned.
 }
@@ -27,7 +30,12 @@ Get or view the names of available plotting functions
 available_mcmc()
 available_mcmc("nuts")
 available_mcmc("rhat|neff")
+
+available_ppc()
 available_ppc("grouped")
 available_ppc("grouped", invert = TRUE)
+
+available_ppd()
+available_ppd("grouped")
 
 }

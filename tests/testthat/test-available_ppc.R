@@ -34,7 +34,7 @@ test_that("available_ppc works", {
   expect_s3_class(b, "bayesplot_function_list")
   expect_identical(
     as.character(b),
-    sort(grep("_grouped$", getNamespaceExports("bayesplot"), value = TRUE))
+    sort(grep("^ppc_.*_grouped$", getNamespaceExports("bayesplot"), value = TRUE))
   )
 
   c <- available_ppc("grouped", invert = TRUE)
@@ -44,6 +44,7 @@ test_that("available_ppc works", {
 })
 
 test_that("print.bayesplot_function_list works", {
+  expect_output(print(available_ppd()), "bayesplot PPD module:")
   expect_output(print(available_ppc()), "bayesplot PPC module:")
   expect_output(print(available_mcmc()), "bayesplot MCMC module:")
 

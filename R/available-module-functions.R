@@ -5,7 +5,7 @@
 #' @return A possibly empty character vector of function names with several
 #'   additional attributes (for use by a custom print method). If `pattern`
 #'   is missing then the returned object contains the names of all available
-#'   plotting functions in the [MCMC] or [PPC] module, depending on
+#'   plotting functions in the [MCMC], [PPC], or [PPD] module, depending on
 #'   which function is called. If `pattern` is specified then a subset of
 #'   function names is returned.
 #'
@@ -13,11 +13,25 @@
 #' available_mcmc()
 #' available_mcmc("nuts")
 #' available_mcmc("rhat|neff")
+#'
+#' available_ppc()
 #' available_ppc("grouped")
 #' available_ppc("grouped", invert = TRUE)
 #'
+#' available_ppd()
+#' available_ppd("grouped")
+#'
 available_ppc <- function(pattern, fixed = FALSE, invert = FALSE) {
   .list_module_functions("ppc",
+                         .pattern = pattern,
+                         fixed = fixed,
+                         invert = invert)
+}
+
+#' @rdname available_ppc
+#' @export
+available_ppd <- function(pattern, fixed = FALSE, invert = FALSE) {
+  .list_module_functions("ppd",
                          .pattern = pattern,
                          fixed = fixed,
                          invert = invert)
@@ -48,7 +62,7 @@ print.bayesplot_function_list <- function(x, ...) {
 
 # internal ----------------------------------------------------------------
 .list_module_functions <-
-  function(.module = c("ppc", "mcmc"),
+  function(.module = c("ppc", "ppd", "mcmc"),
            .pattern,
            fixed = FALSE,
            invert = FALSE) {
