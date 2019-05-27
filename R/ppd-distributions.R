@@ -190,9 +190,11 @@ ppd_freqpoly <-
            freq = TRUE,
            size = 0.5,
            alpha = 1) {
-    check_ignored_arguments(...)
+    # don't warn about 'group' arg if called internally by ppd_freqpoly_grouped()
+    dots <- list(...)
+    check_ignored_arguments(..., ok_args = dots[["dont_check"]])
     ypred %>%
-      ppd_data() %>%
+      ppd_data(group = group) %>%
       ggplot(mapping = set_hist_aes(
         freq,
         color = "ypred",
@@ -229,34 +231,17 @@ ppd_freqpoly_grouped <-
            freq = TRUE,
            size = 0.5,
            alpha = 1) {
+
     check_ignored_arguments(...)
-    ypred %>%
-      ppd_data(group = group) %>%
-      ggplot(mapping = set_hist_aes(
-        freq,
-        color = "ypred",
-        fill = "ypred"
-      )) +
-      geom_area(
-        stat = "bin",
-        size = size,
-        alpha = alpha,
-        binwidth = binwidth
-      ) +
+    call <- match.call(expand.dots = FALSE)
+    g <- eval(ungroup_call(call))
+    g +
       facet_grid(
         rep_label ~ group,
         scales = "free",
         labeller = label_parsed
       ) +
-      scale_color_ppd() +
-      scale_fill_ppd() +
-      bayesplot_theme_get() +
-      force_axes_in_facets() +
-      dont_expand_y_axis(c(0.005, 0)) +
-      xaxis_title(FALSE) +
-      yaxis_text(FALSE) +
-      yaxis_ticks(FALSE) +
-      yaxis_title(FALSE) +
+      facet_text() +
       theme(strip.text.y = element_blank())
   }
 
