@@ -10,11 +10,12 @@ fit <- stan_polr(tobgp ~ agegp, data = esoph, method = "probit", prior = R2(0.2,
 y <- as.integer(fit$y)
 yrep_char <- posterior_predict(fit, draws = 10)
 yrep <- sapply(data.frame(yrep_char, stringsAsFactors = TRUE), as.integer)
+grp <- esoph$agegp
 
 test_that("ppc_bars & ppc_bars_grouped return a ggplot object", {
   expect_gg(ppc_bars(y, yrep))
   expect_gg(ppc_bars(y, yrep, prob = 0))
-  expect_gg(ppc_bars_grouped(y, yrep, group = esoph$agegp))
+  expect_gg(ppc_bars_grouped(y, yrep, group = grp))
 })
 
 test_that("freq argument to ppc_bars works", {
@@ -34,14 +35,18 @@ test_that("ppc_bars works with negative integers", {
 })
 
 test_that("ppc_bars(_grouped) errors if y/yrep not discrete", {
-  expect_error(ppc_bars(y + 0.5, yrep),
+  # make continuous
+  y_cont <- y + 0.33
+  yrep_cont <- yrep + 0.33
+
+  expect_error(ppc_bars(y_cont, yrep),
                "ppc_bars expects 'y' to be discrete")
-  expect_error(ppc_bars(y, yrep + 0.5),
+  expect_error(ppc_bars(y, yrep_cont),
                "ppc_bars expects 'yrep' to be discrete")
-  expect_error(ppc_bars_grouped(y + 0.5, yrep, group = esoph$agegp),
-               "ppc_bars_grouped expects 'y' to be discrete")
-  expect_error(ppc_bars_grouped(y, yrep + 0.5, group = esoph$agegp),
-               "ppc_bars_grouped expects 'yrep' to be discrete")
+  expect_error(ppc_bars_grouped(y_cont, yrep, group = grp),
+               "ppc_bars expects 'y' to be discrete")
+  expect_error(ppc_bars_grouped(y, yrep_cont, group = grep),
+               "ppc_bars expects 'yrep' to be discrete")
 })
 
 

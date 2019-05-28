@@ -299,12 +299,10 @@ ppc_freqpoly <-
     dots <- list(...)
     if (!from_grouped(dots)) {
       check_ignored_arguments(...)
-      group <- NULL
-    } else {
-      group <- dots[["group"]]
+      dots$group <- NULL
     }
 
-    ppc_data(y, yrep, group = group) %>%
+    ppc_data(y, yrep, group = dots$group) %>%
       ggplot(mapping = set_hist_aes(
         freq,
         fill = ~ is_y_label,

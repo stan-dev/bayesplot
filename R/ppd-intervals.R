@@ -67,15 +67,13 @@ ppd_intervals <-
     dots <- list(...)
     if (!from_grouped(dots)) {
       check_ignored_arguments(...)
-      group <- NULL
-    } else {
-      group <- dots[["group"]]
+      dots$group <- NULL
     }
 
     ypred %>%
       ppd_intervals_data(
         x = x,
-        group = group,
+        group = dots$group,
         prob = prob,
         prob_outer = prob_outer
       ) %>%
@@ -140,15 +138,13 @@ ppd_ribbon <-
     dots <- list(...)
     if (!from_grouped(dots)) {
       check_ignored_arguments(...)
-      group <- NULL
-    } else {
-      group <- dots[["group"]]
+      dots$group <- NULL
     }
 
     ypred %>%
       ppd_intervals_data(
         x = x,
-        group = group,
+        group = dots$group,
         prob = prob,
         prob_outer = prob_outer
       ) %>%
@@ -240,8 +236,8 @@ ppd_ribbon_data <- ppd_intervals_data
            y = NULL,
            x = NULL,
            group = NULL,
-           prob = 0.5,
-           prob_outer = 0.9) {
+           prob,
+           prob_outer) {
     stopifnot(prob > 0 && prob < 1)
     stopifnot(prob_outer > 0 && prob_outer <= 1)
     probs <- sort(c(prob, prob_outer))
@@ -267,10 +263,11 @@ ppd_ribbon_data <- ppd_intervals_data
     if (has_group) {
       long_d$group <- group[long_d$y_id]
     }
-    group_vars <- syms(c("y_id", if (has_y) "y_obs", if (has_group) "group", "x"))
+    group_by_vars <- syms(c("y_id", if (has_y) "y_obs",
+                         if (has_group) "group", "x"))
 
     long_d %>%
-      group_by(!!!group_vars) %>%
+      group_by(!!!group_by_vars) %>%
       summarise(
         outer_width = prob_outer,
         inner_width = prob,
@@ -344,5 +341,3 @@ intervals_axis_labels <- function(has_x) {
     y = NULL
   )
 }
-
-

@@ -124,9 +124,7 @@ ppc_intervals <-
     dots <- list(...)
     if (!from_grouped(dots)) {
       check_ignored_arguments(...)
-      group <- NULL
-    } else {
-      group <- dots[["group"]]
+      dots$group <- NULL
     }
 
     data <-
@@ -134,7 +132,7 @@ ppc_intervals <-
         y = y,
         yrep = yrep,
         x = x,
-        group = group,
+        group = dots$group,
         prob = prob,
         prob_outer = prob_outer
       )
@@ -213,9 +211,7 @@ ppc_ribbon <-
     dots <- list(...)
     if (!from_grouped(dots)) {
       check_ignored_arguments(...)
-      group <- NULL
-    } else {
-      group <- dots[["group"]]
+      dots$group <- NULL
     }
 
     data <-
@@ -223,7 +219,7 @@ ppc_ribbon <-
         y = y,
         yrep = yrep,
         x = x,
-        group = group,
+        group = dots$group,
         prob = prob,
         prob_outer = prob_outer
       )

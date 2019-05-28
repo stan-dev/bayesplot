@@ -1,28 +1,3 @@
-#' Modify a call to a '_grouped' function to the same one without '_grouped'
-#'
-#' @param call The original call (from `match.call()`).
-#' @return The new unevaluated call, with additional argument
-#'   `called_from_internal=TRUE` which can be detected by the function to be
-#'   called.
-#' @noRd
-ungroup_call <- function(call) {
-  fn <- gsub("_grouped", "", rlang::call_name(call))
-  call[[1]] <- as.name(fn)
-  call$called_from_internal <- TRUE
-  call$... <- NULL
-  call
-}
-
-#' Check if the `...` to a function were supplied by it's `_grouped` version
-#'
-#' @param dots The `...` arguments already in a list (`list(...)`).
-#' @return `TRUE` or `FALSE`
-#' @noRd
-from_grouped <- function(dots) {
-  isTRUE(dots[["called_from_internal"]]) && !is.null(dots[["group"]])
-}
-
-
 # input validation and type checking ----------------------------------------
 
 # Check if an object is a vector (but not list) or a 1-D array
@@ -200,6 +175,33 @@ validate_x <- function(x = NULL, y, unique_x = FALSE) {
   unname(x)
 }
 
+
+# Internals for grouped plots ---------------------------------------------
+
+
+#' Modify a call to a '_grouped' function to the same one without '_grouped'
+#'
+#' @param call The original call (from `match.call()`).
+#' @return The new unevaluated call, with additional argument
+#'   `called_from_internal=TRUE` which can be detected by the function to be
+#'   called so it knows not to warn about the `group` and `facet_args` arguments.
+#' @noRd
+ungroup_call <- function(call) {
+  fn <- gsub("_grouped", "", rlang::call_name(call))
+  call[[1]] <- as.name(fn)
+  call$called_from_internal <- TRUE
+  call$... <- NULL
+  call
+}
+
+#' Check if the `...` to a function were supplied by it's `_grouped` version
+#'
+#' @param dots The `...` arguments already in a list (`list(...)`).
+#' @return `TRUE` or `FALSE`
+#' @noRd
+from_grouped <- function(dots) {
+  isTRUE(dots[["called_from_internal"]]) && !is.null(dots[["group"]])
+}
 
 
 

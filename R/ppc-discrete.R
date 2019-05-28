@@ -130,15 +130,13 @@ ppc_bars <-
     dots <- list(...)
     if (!from_grouped(dots)) {
       check_ignored_arguments(...)
-      group <- NULL
-    } else {
-      group <- dots[["group"]]
+      dots$group <- NULL
     }
 
     data <- ppc_bars_data(
       y = y,
       yrep = yrep,
-      group = group,
+      group = dots$group,
       prob = prob,
       freq = freq
     )
@@ -162,7 +160,7 @@ ppc_bars <-
       bayesplot_theme_get() +
       dont_expand_y_axis()
 
-    if (is.null(group)) {
+    if (is.null(dots$group)) {
       g <- g + expand_limits(y = 1.01 * max(g$data[["h"]]))
     }
 
@@ -288,8 +286,9 @@ ppc_rootogram <- function(y,
     ) +
     bayesplot_theme_get()
 
-  if (style != "standing")
+  if (style != "standing") {
     graph <- graph + hline_0(size = 0.4)
+  }
 
   graph <- graph +
     geom_smooth(
@@ -307,8 +306,9 @@ ppc_rootogram <- function(y,
     labs(x = expression(italic(y)),
          y = expression(sqrt(Count)))
 
-  if (style == "standing")
+  if (style == "standing") {
     graph <- graph + dont_expand_y_axis()
+  }
 
   graph + reduce_legend_spacing(0.25)
 }
@@ -322,7 +322,7 @@ ppc_rootogram <- function(y,
 #' @param y,yrep,group User's already validated `y`, `yrep`, and (if applicable)
 #'   `group` arguments.
 #' @param prob,freq User's `prob` and `freq` arguments.
-#' @importFrom dplyr "%>%" ungroup count arrange mutate summarise_at summarise
+#' @importFrom dplyr "%>%" ungroup count arrange mutate summarise_at left_join rename
 .ppc_bars_data <- function(y, yrep, group = NULL, prob = 0.9, freq = TRUE) {
   alpha <- (1 - prob) / 2
   probs <- sort(c(alpha, 0.5, 1 - alpha))
@@ -350,7 +350,6 @@ ppc_rootogram <- function(y,
     group_by(.data$variable, .data$group) %>%
     mutate(proportion = .data$n / sum(.data$n)) %>%
     ungroup() %>%
-    # mutate(is_y = .data$variable == "y") %>%
     group_by(.data$group, .data$value)
 
   yrep_summary <- data %>%

@@ -194,13 +194,11 @@ ppd_freqpoly <-
     dots <- list(...)
     if (!from_grouped(dots)) {
       check_ignored_arguments(...)
-      group <- NULL
-    } else {
-      group <- dots[["group"]]
+      dots$group <- NULL
     }
 
     ypred %>%
-      ppd_data(group = group) %>%
+      ppd_data(group = dots$group) %>%
       ggplot(mapping = set_hist_aes(
         freq,
         color = "ypred",
