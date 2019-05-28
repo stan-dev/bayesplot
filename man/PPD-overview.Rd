@@ -30,10 +30,6 @@ including any comparison to \code{y}.
 statistics, over the simulated datasets (rows) in \code{ypred}. These are the
 same as the plots in \link{PPC-test-statistics} but without including any
 comparison to \code{y}.
-\item \link{PPD-discrete}: PPD functions that can only be used if \code{ypred} is discrete.
-For example, rootograms for count outcomes and bar plots for ordinal,
-categorical, and multinomial outcomes. These are the same as the plots in
-\link{PPC-discrete} but without including any comparison to \code{y}.
 }
 }
 
@@ -47,6 +43,7 @@ Gelman, A. (2019), Visualization in Bayesian workflow.
 }
 \seealso{
 Other PPDs: \code{\link{PPD-distributions}},
-  \code{\link{PPD-intervals}}
+  \code{\link{PPD-intervals}},
+  \code{\link{PPD-test-statistics}}
 }
 \concept{PPDs}

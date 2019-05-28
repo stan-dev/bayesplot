@@ -4,8 +4,10 @@
 \alias{PPC-test-statistics}
 \alias{ppc_stat}
 \alias{ppc_stat_grouped}
+\alias{ppc_stat_freqpoly}
 \alias{ppc_stat_freqpoly_grouped}
 \alias{ppc_stat_2d}
+\alias{ppc_stat_data}
 \title{PPC test statistics}
 \usage{
 ppc_stat(y, yrep, stat = "mean", ..., binwidth = NULL, breaks = NULL,
@@ -14,11 +16,16 @@ ppc_stat(y, yrep, stat = "mean", ..., binwidth = NULL, breaks = NULL,
 ppc_stat_grouped(y, yrep, group, stat = "mean", ...,
   facet_args = list(), binwidth = NULL, breaks = NULL, freq = TRUE)
 
+ppc_stat_freqpoly(y, yrep, stat = "mean", ..., facet_args = list(),
+  binwidth = NULL, freq = TRUE)
+
 ppc_stat_freqpoly_grouped(y, yrep, group, stat = "mean", ...,
   facet_args = list(), binwidth = NULL, freq = TRUE)
 
 ppc_stat_2d(y, yrep, stat = c("mean", "sd"), ..., size = 2.5,
   alpha = 0.7)
+
+ppc_stat_data(y, yrep, group = NULL, stat = NULL)
 }
 \arguments{
 \item{y}{A vector of observations. See \strong{Details}.}
@@ -64,7 +71,10 @@ to control faceting.}
 appearance of scatterplot points.}
 }
 \value{
-A ggplot object that can be further customized using the \strong{ggplot2} package.
+The plotting functions return a ggplot object that can be further
+customized using the \strong{ggplot2} package. The functions with suffix
+\code{_data()} return the data that would have been drawn by the plotting
+function.
 }
 \description{
 The distribution of a (test) statistic \code{T(yrep)}, or a pair of (test)
@@ -107,15 +117,6 @@ y <- example_y_data()
 yrep <- example_yrep_draws()
 ppc_stat(y, yrep)
 ppc_stat(y, yrep, stat = "sd") + legend_none()
-ppc_stat_2d(y, yrep)
-ppc_stat_2d(y, yrep, stat = c("median", "mean")) + legend_move("bottom")
-
-color_scheme_set("teal")
-group <- example_group_data()
-ppc_stat_grouped(y, yrep, group)
-
-color_scheme_set("mix-red-blue")
-ppc_stat_freqpoly_grouped(y, yrep, group, facet_args = list(nrow = 2))
 
 # use your own function to compute test statistics
 color_scheme_set("brightblue")
@@ -125,6 +126,32 @@ ppc_stat(y, yrep, stat = "q25") # legend includes function name
 # can define the function in the 'stat' argument but then
 # the legend doesn't include a function name
 ppc_stat(y, yrep, stat = function(y) quantile(y, 0.25))
+
+# plots by group
+color_scheme_set("teal")
+group <- example_group_data()
+ppc_stat_grouped(y, yrep, group)
+ppc_stat_grouped(y, yrep, group) + yaxis_text()
+
+# force y-axes to have same scales, allow x axis to vary
+ppc_stat_grouped(y, yrep, group, facet_args = list(scales = "free_x")) + yaxis_text()
+
+# the freqpoly plots use frequency polygons instead of histograms
+ppc_stat_freqpoly(y, yrep, stat = "median")
+ppc_stat_freqpoly_grouped(y, yrep, group, stat = "median", facet_args = list(nrow = 2))
+
+
+# ppc_stat_2d allows 2 statistics and makes a scatterplot
+bayesplot_theme_set(ggplot2::theme_linedraw())
+color_scheme_set("viridisE")
+ppc_stat_2d(y, yrep, stat = c("mean", "sd"))
+
+bayesplot_theme_set(ggplot2::theme_grey())
+color_scheme_set("brewer-Paired")
+ppc_stat_2d(y, yrep, stat = c("median", "mad"))
+
+color_scheme_set()
+bayesplot_theme_set()
 
 }
 \references{

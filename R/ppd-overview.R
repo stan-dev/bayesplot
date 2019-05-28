@@ -31,11 +31,6 @@
 #'   same as the plots in [PPC-test-statistics] but without including any
 #'   comparison to `y`.
 #'
-#' * [PPD-discrete]: PPD functions that can only be used if `ypred` is discrete.
-#'   For example, rootograms for count outcomes and bar plots for ordinal,
-#'   categorical, and multinomial outcomes. These are the same as the plots in
-#'   [PPC-discrete] but without including any comparison to `y`.
-#'
 #' @template reference-vis-paper
 #'
 NULL

@@ -20,7 +20,7 @@
 #' @param ... Currently unused.
 #'
 #' @template details-binomial
-#' @template return-ggplot
+#' @template return-ggplot-or-data
 #'
 #' @template reference-vis-paper
 #' @templateVar bdaRef (Ch. 6)
@@ -53,15 +53,6 @@
 #' yrep <- example_yrep_draws()
 #' ppc_stat(y, yrep)
 #' ppc_stat(y, yrep, stat = "sd") + legend_none()
-#' ppc_stat_2d(y, yrep)
-#' ppc_stat_2d(y, yrep, stat = c("median", "mean")) + legend_move("bottom")
-#'
-#' color_scheme_set("teal")
-#' group <- example_group_data()
-#' ppc_stat_grouped(y, yrep, group)
-#'
-#' color_scheme_set("mix-red-blue")
-#' ppc_stat_freqpoly_grouped(y, yrep, group, facet_args = list(nrow = 2))
 #'
 #' # use your own function to compute test statistics
 #' color_scheme_set("brightblue")
@@ -71,6 +62,32 @@
 #' # can define the function in the 'stat' argument but then
 #' # the legend doesn't include a function name
 #' ppc_stat(y, yrep, stat = function(y) quantile(y, 0.25))
+#'
+#' # plots by group
+#' color_scheme_set("teal")
+#' group <- example_group_data()
+#' ppc_stat_grouped(y, yrep, group)
+#' ppc_stat_grouped(y, yrep, group) + yaxis_text()
+#'
+#' # force y-axes to have same scales, allow x axis to vary
+#' ppc_stat_grouped(y, yrep, group, facet_args = list(scales = "free_x")) + yaxis_text()
+#'
+#' # the freqpoly plots use frequency polygons instead of histograms
+#' ppc_stat_freqpoly(y, yrep, stat = "median")
+#' ppc_stat_freqpoly_grouped(y, yrep, group, stat = "median", facet_args = list(nrow = 2))
+#'
+#'
+#' # ppc_stat_2d allows 2 statistics and makes a scatterplot
+#' bayesplot_theme_set(ggplot2::theme_linedraw())
+#' color_scheme_set("viridisE")
+#' ppc_stat_2d(y, yrep, stat = c("mean", "sd"))
+#'
+#' bayesplot_theme_set(ggplot2::theme_grey())
+#' color_scheme_set("brewer-Paired")
+#' ppc_stat_2d(y, yrep, stat = c("median", "mad"))
+#'
+#' color_scheme_set()
+#' bayesplot_theme_set()
 #'
 NULL
 
@@ -87,16 +104,23 @@ ppc_stat <-
            binwidth = NULL,
            breaks = NULL,
            freq = TRUE) {
-    check_ignored_arguments(...)
+    stopifnot(length(stat) == 1)
+    dots <- list(...)
+    if (!from_grouped(dots)) {
+      check_ignored_arguments(...)
+      dots$group <- NULL
+    }
 
-    y <- validate_y(y)
-    yrep <- validate_predictions(yrep, length(y))
-    stat1 <- match.fun(stat)
-    T_y <- stat1(y)
-    T_yrep <- apply(yrep, 1, stat1)
-
-    ggplot(data.frame(value = T_yrep),
-           set_hist_aes(freq)) +
+    data <- ppc_stat_data(
+      y = y,
+      yrep = yrep,
+      group = dots$group,
+      stat = match.fun(stat)
+    )
+    ggplot(
+      data = dplyr::filter(data, .data$variable != "y"),
+      mapping = set_hist_aes(freq)
+    ) +
       geom_histogram(
         aes_(fill = "yrep"),
         color = get_color("lh"),
@@ -106,12 +130,12 @@ ppc_stat <-
         breaks = breaks
       ) +
       geom_vline(
-        data = data.frame(Ty = T_y),
-        mapping = aes_(xintercept = ~ Ty, color = "y"),
+        data = dplyr::filter(data, .data$variable == "y"),
+        mapping = aes_(xintercept = ~ value, color = "y"),
         size = 1.5
       ) +
-      scale_fill_manual(values = get_color("l"), labels = Tyrep_label()) +
-      scale_color_manual(values = get_color("dh"), labels = Ty_label()) +
+      scale_color_ppc(values = get_color("dh"), labels = Ty_label()) +
+      scale_fill_ppc(values = get_color("l"), labels = Tyrep_label()) +
       guides(
         color = guide_legend(title = NULL),
         fill = guide_legend(
@@ -119,8 +143,8 @@ ppc_stat <-
           title = stat_legend_title(stat, deparse(substitute(stat)))
         )
       ) +
-      bayesplot_theme_get() +
       dont_expand_y_axis() +
+      bayesplot_theme_get() +
       no_legend_spacing() +
       xaxis_title(FALSE) +
       yaxis_text(FALSE) +
@@ -143,51 +167,65 @@ ppc_stat_grouped <-
            breaks = NULL,
            freq = TRUE) {
     check_ignored_arguments(...)
+    call <- match.call(expand.dots = FALSE)
+    g <- eval(ungroup_call(call))
+    g + stat_group_facets(facet_args)
+  }
 
-    y <- validate_y(y)
-    yrep <- validate_predictions(yrep, length(y))
-    group <- validate_group(group, length(y))
-    plot_data <- ppc_group_data(y, yrep, group, stat = match.fun(stat))
-    is_y <- plot_data$variable == "y"
 
-    facet_args[["facets"]] <- ~ group
-    if (is.null(facet_args[["scales"]]))
-      facet_args[["scales"]] <- "free"
+#' @export
+#' @rdname PPC-test-statistics
+#'
+ppc_stat_freqpoly <-
+  function(y,
+           yrep,
+           stat = "mean",
+           ...,
+           facet_args = list(),
+           binwidth = NULL,
+           freq = TRUE) {
+    stopifnot(length(stat) == 1)
+    dots <- list(...)
+    if (!from_grouped(dots)) {
+      check_ignored_arguments(...)
+      dots$group <- NULL
+    }
 
-    ggplot(plot_data[!is_y, , drop = FALSE],
-           set_hist_aes(freq)) +
-      geom_histogram(
-        aes_(fill = "yrep"),
-        color = get_color("lh"),
-        size = .25,
+    data <- ppc_stat_data(
+      y = y,
+      yrep = yrep,
+      group = dots$group,
+      stat = match.fun(stat)
+    )
+
+    ggplot(
+      data = dplyr::filter(data, .data$variable != "y"),
+      mapping = set_hist_aes(freq)
+    ) +
+      geom_freqpoly(
+        aes_(color = "yrep"),
+        size = .5,
         na.rm = TRUE,
-        binwidth = binwidth,
-        breaks = breaks
+        binwidth = binwidth
       ) +
       geom_vline(
-        data = plot_data[is_y, , drop = FALSE],
+        data = dplyr::filter(data, .data$variable == "y"),
         mapping = aes_(xintercept = ~ value, color = "y"),
-        size = 1.5
+        show.legend = FALSE,
+        size = 1
       ) +
-      do.call("facet_wrap", facet_args) +
-      scale_fill_manual(values = get_color("l"), labels = Tyrep_label()) +
-      scale_color_manual(values = get_color("dh"), labels = Ty_label()) +
-      guides(
-        color = guide_legend(title = NULL),
-        fill = guide_legend(
-          order = 1,
-          title = stat_legend_title(stat, deparse(substitute(stat)))
-        )
+      scale_color_ppc(
+        name = stat_legend_title(stat, deparse(substitute(stat))),
+        values = set_names(get_color(c("m", "dh")), c("yrep", "y")),
+        labels = c(yrep = Tyrep_label(), y = Ty_label())
       ) +
+      dont_expand_y_axis(c(0.005, 0)) +
       bayesplot_theme_get() +
-      dont_expand_y_axis() +
-      no_legend_spacing() +
       xaxis_title(FALSE) +
       yaxis_text(FALSE) +
       yaxis_ticks(FALSE) +
       yaxis_title(FALSE)
   }
-
 
 #' @export
 #' @rdname PPC-test-statistics
@@ -202,43 +240,9 @@ ppc_stat_freqpoly_grouped <-
            binwidth = NULL,
            freq = TRUE) {
     check_ignored_arguments(...)
-
-    y <- validate_y(y)
-    yrep <- validate_predictions(yrep, length(y))
-    group <- validate_group(group, length(y))
-    plot_data <- ppc_group_data(y, yrep, group, stat = match.fun(stat))
-    is_y <- plot_data$variable == "y"
-
-    facet_args[["facets"]] <- ~ group
-    if (is.null(facet_args[["scales"]]))
-      facet_args[["scales"]] <- "free"
-
-    ggplot(plot_data[!is_y, , drop = FALSE],
-           set_hist_aes(freq)) +
-      geom_freqpoly(
-        aes_(color = "yrep"),
-        size = .5,
-        na.rm = TRUE,
-        binwidth = binwidth
-      ) +
-      geom_vline(
-        data = plot_data[is_y, , drop = FALSE],
-        mapping = aes_(xintercept = ~ value, color = "y"),
-        show.legend = FALSE,
-        size = 1
-      ) +
-      do.call("facet_wrap", facet_args) +
-      scale_color_manual(
-        name = stat_legend_title(stat, deparse(substitute(stat))),
-        values = set_names(get_color(c("m", "dh")), c("yrep", "y")),
-        labels = c(yrep = Tyrep_label(), y = Ty_label())
-      ) +
-      dont_expand_y_axis(c(0.005, 0)) +
-      xaxis_title(FALSE) +
-      yaxis_text(FALSE) +
-      yaxis_ticks(FALSE) +
-      yaxis_title(FALSE) +
-      bayesplot_theme_get()
+    call <- match.call(expand.dots = FALSE)
+    g <- eval(ungroup_call(call))
+    g + stat_group_facets(facet_args)
   }
 
 
@@ -255,8 +259,6 @@ ppc_stat_2d <- function(y,
 
   check_ignored_arguments(...)
 
-  y <- validate_y(y)
-  yrep <- validate_predictions(yrep, length(y))
   if (length(stat) != 2) {
     abort("For ppc_stat_2d the 'stat' argument must have length 2.")
   }
@@ -269,52 +271,77 @@ ppc_stat_2d <- function(y,
     stat_labs <- expression(italic(T)[1], italic(T)[2])
   }
 
-  stat1 <- match.fun(stat[[1]])
-  stat2 <- match.fun(stat[[2]])
-  T_y1 <- stat1(y)
-  T_y2 <- stat2(y)
-  T_yrep1 <- apply(yrep, 1, stat1)
-  T_yrep2 <- apply(yrep, 1, stat2)
+  data <- ppc_stat_data(
+    y = y,
+    yrep = yrep,
+    group = NULL,
+    stat = c(match.fun(stat[[1]]), match.fun(stat[[2]]))
+  )
+  y_segment_data <- stat_2d_segment_data(data)
+  y_point_data <- data.frame(
+    x = y_segment_data[1, "x"],
+    y = y_segment_data[2, "y"]
+  )
 
-  ggplot(
-    data = data.frame(x = T_yrep1, y = T_yrep2),
-    mapping = aes_(x = ~ x, y = ~ y)
-  ) +
+  ggplot(data) +
     geom_point(
-      aes_(fill = "yrep", color = "yrep"),
+      aes_(
+        x = ~ value,
+        y = ~ value2,
+        fill = "yrep",
+        color = "yrep"
+      ),
       shape = 21,
       size = size,
       alpha = alpha
     ) +
-    annotate(
-      geom = "segment",
-      x = c(T_y1, -Inf), xend = c(T_y1, T_y1),
-      y = c(-Inf, T_y2), yend = c(T_y2, T_y2),
+    geom_segment(
+      data = y_segment_data,
+      aes_(
+        x = ~ x,
+        y = ~ y,
+        xend = ~ xend,
+        yend = ~ yend,
+        color = "y"
+      ),
       linetype = 2,
       size = 0.4,
-      color = get_color("dh")
+      show.legend = FALSE
     ) +
     geom_point(
-      data = data.frame(x = T_y1, y = T_y2),
-      mapping = aes_(x = ~ x, y = ~ y, fill = "y", color = "y"),
+      data = y_point_data,
+      mapping = aes_(
+        x = ~ x,
+        y = ~ y,
+        fill = "y",
+        color = "y"
+      ),
       size = size * 1.5,
       shape = 21,
       stroke = 0.75
     ) +
-    scale_fill_manual(
-      name = lgnd_title,
-      values = set_names(get_color(c("d", "l")), c("y", "yrep")),
-      labels = c(y = Ty_label(), yrep = Tyrep_label())
-    ) +
-    scale_color_manual(
-      name = lgnd_title,
-      values = set_names(get_color(c("dh", "lh")), c("y", "yrep")),
-      labels = c(y = Ty_label(), yrep = Tyrep_label())
-    ) +
+    scale_fill_ppc(lgnd_title, labels = c(Ty_label(), Tyrep_label())) +
+    scale_color_ppc(lgnd_title, labels = c(Ty_label(), Tyrep_label())) +
     labs(x = stat_labs[1], y = stat_labs[2]) +
     bayesplot_theme_get()
 }
 
+
+#' @rdname PPC-test-statistics
+#' @export
+ppc_stat_data <- function(y, yrep, group = NULL, stat = NULL) {
+  y <- validate_y(y)
+  yrep <- validate_predictions(yrep, length(y))
+  if (!is.null(group)) {
+    group <- validate_group(group, length(y))
+  }
+  .ppd_stat_data(
+    predictions = yrep,
+    y = y,
+    group = group,
+    stat = stat
+  )
+}
 
 
 # internal ----------------------------------------------------------------
@@ -337,5 +364,21 @@ stat_legend_title <- function(stat, stat_txt) {
     return(NULL)
 
   bquote(italic(T) == .(lgnd_txt))
+}
+
+
+#' Make data frame for geom_segment() for ppc_stat_2d()
+#' @param data Data frame from `ppc_stat_data()`.
+#' @return Data frame with two rows and four columns (`x`,`xend`,`y`,`yend`).
+#' @noRd
+stat_2d_segment_data <- function(data) {
+  y_data <- dplyr::filter(data, .data$variable == "y")
+  stats <- c(y_data$value[1], y_data$value2[1])
+  data.frame(
+    x = c(stats[1], -Inf),
+    xend = c(stats[1], stats[1]),
+    y = c(-Inf, stats[2]),
+    yend = c(stats[2], stats[2])
+  )
 }
 

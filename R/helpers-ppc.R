@@ -274,46 +274,6 @@ melt_and_stack <- function(y, yrep) {
 }
 
 
-#' Prepare data for use in PPCs by group
-#'
-#' @param y,yrep,group Validated `y`, `yrep`, and `group` objects.
-#' @param stat Either `NULL` or a string naming a function.
-#' @return If `stat` is `NULL`, a molten data frame grouped by group and
-#'   variable. If `stat` specifies a function then a summary table created
-#'   by `dplyr::summarise()`.
-#' @noRd
-#'
-#' @examples
-#' y <- example_y_data()
-#' yrep <- example_yrep_draws()
-#' group <- example_group_data()
-#' ppc_group_data(y, yrep, group)
-#' ppc_group_data(y, yrep, group, median)
-ppc_group_data <- function(y, yrep, group, stat = NULL) {
-  d <- data.frame(
-    group = factor(group),
-    y = y,
-    yrep = t(yrep)
-  )
-  colnames(d) <- gsub(".", "_", colnames(d), fixed = TRUE)
-  molten_d <- reshape2::melt(d, id.vars = "group")
-  molten_d <- dplyr::group_by(molten_d, .data$group, .data$variable)
-
-  # Default to identity function.
-  dplyr_fun <- dplyr::summarise
-  if (is.null(stat)) {
-    stat <- function(x) x
-    dplyr_fun <- dplyr::mutate
-  }
-
-  stat <- match.fun(stat)
-  dplyr_fun(molten_d, value = stat(.data$value))
-
-  # todo: does this result need to be ungrouped. If mutating path, it has two
-  # grouping vars. It summarising path, it has one grouping var.
-}
-
-
 # labels ----------------------------------------------------------------
 create_rep_ids <- function(ids) paste('italic(y)[rep] (', ids, ")")
 yrep_label <- function() expression(italic(y)[rep])
@@ -323,6 +283,8 @@ Ty_label <- function() expression(italic(T(italic(y))))
 Tyrep_label <- function() expression(italic(T)(italic(y)[rep]))
 
 ypred_label <- function() expression(italic(y)[pred])
+Typred_label <- function() expression(italic(T)(italic(y)[pred]))
+
 # Ty_label_2d <- function() {
 #   expression(bgroup(
 #     "(", list(italic(T)[1](italic(y)),

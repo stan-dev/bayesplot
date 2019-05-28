@@ -132,6 +132,7 @@ Gelman, A. (2019), Visualization in Bayesian workflow.
 }
 \seealso{
 Other PPDs: \code{\link{PPD-distributions}},
-  \code{\link{PPD-overview}}
+  \code{\link{PPD-overview}},
+  \code{\link{PPD-test-statistics}}
 }
 \concept{PPDs}

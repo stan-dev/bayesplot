@@ -8,14 +8,20 @@ prop0 <- function(x) mean(x == 0)
 
 test_that("ppc_stat throws errors if function not found", {
   expect_error(ppc_stat(y, yrep, stat = "9999"), "not found")
+  expect_error(ppc_stat_freqpoly(y, yrep, stat = "9999"), "not found")
   expect_error(ppc_stat_grouped(y, yrep, group, stat = "9999"), "not found")
   expect_error(ppc_stat_freqpoly_grouped(y, yrep, group, stat = "9999"), "not found")
 })
 
 test_that("ppc_stat throws errors if 'stat' wrong length", {
-  expect_error(ppc_stat(y, yrep, stat = c("mean", "sd")), "not a function")
-  expect_error(ppc_stat_grouped(y, yrep, group, stat = c("mean", "sd")), "not a function")
-  expect_error(ppc_stat_freqpoly_grouped(y, yrep, group, stat = c(mean, sd)), "not a function")
+  expect_error(ppc_stat(y, yrep, stat = c("mean", "sd")),
+               "length(stat) == 1 is not TRUE", fixed = TRUE)
+  expect_error(ppc_stat_grouped(y, yrep, group, stat = c("mean", "sd")),
+               "length(stat) == 1 is not TRUE", fixed = TRUE)
+  expect_error(ppc_stat_freqpoly(y, yrep, stat = c("mean", "sd")),
+               "length(stat) == 1 is not TRUE", fixed = TRUE)
+  expect_error(ppc_stat_freqpoly_grouped(y, yrep, group, stat = c(mean, sd)),
+               "length(stat) == 1 is not TRUE", fixed = TRUE)
 })
 
 test_that("ppc_stat returns ggplot object", {
@@ -52,6 +58,11 @@ test_that("ppc_stat_grouped returns ggplot object", {
   expect_error(ppc_stat_grouped(y2, yrep2, group2),
                "'group' must have more than one unique value")
 })
+test_that("ppc_stat_freqpoly returns ggplot object", {
+  expect_gg(ppc_stat_freqpoly(y, yrep, stat = "sd", freq = FALSE))
+  expect_gg(ppc_stat_freqpoly(y, yrep, stat = function(x) sd(x), freq = TRUE))
+})
+
 test_that("ppc_stat_freqpoly_grouped returns ggplot object", {
   expect_gg(ppc_stat_freqpoly_grouped(y, yrep, group, stat = "sd", freq = FALSE))
   expect_gg(ppc_stat_freqpoly_grouped(y, yrep, group, stat = function(x) sd(x), freq = TRUE))

@@ -117,6 +117,7 @@ ppc_dens_overlay(y = example_y_data(), yrep = preds[1:50, ])
 }
 \seealso{
 Other PPDs: \code{\link{PPD-intervals}},
-  \code{\link{PPD-overview}}
+  \code{\link{PPD-overview}},
+  \code{\link{PPD-test-statistics}}
 }
 \concept{PPDs}

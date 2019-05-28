@@ -344,7 +344,7 @@ ppc_rootogram <- function(y,
 
   # FIXME: make sure that levels with zero counts are still plotted
   data <-
-    ppc_group_data(y, yrep, group = group, stat = NULL) %>%
+    ppc_stat_data(y, yrep, group = group, stat = NULL) %>%
     ungroup() %>%
     count(.data$group, .data$value, .data$variable) %>%
     group_by(.data$variable, .data$group) %>%
