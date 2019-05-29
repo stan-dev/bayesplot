@@ -191,7 +191,7 @@ ppd_stat_2d <- function(ypred,
 
 #' @rdname PPD-test-statistics
 #' @export
-ppd_stat_data <- function(ypred, group = NULL, stat = NULL) {
+ppd_stat_data <- function(ypred, group = NULL, stat) {
   ypred <- validate_predictions(ypred)
   if (!is.null(group)) {
     group <- validate_group(group, ncol(ypred))

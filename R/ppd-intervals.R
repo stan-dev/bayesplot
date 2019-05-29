@@ -10,10 +10,6 @@
 #'
 #' @template args-ypred
 #' @inheritParams PPC-intervals
-#' @param x A numeric vector with length equal to `ncol(ypred)` to use as the
-#'   x-axis variable. For example, `x` could be a predictor variable from a
-#'   regression model, a time variable for time-series models, etc. If `x` is
-#'   missing or `NULL`, then `1:ncol(ypred)` is used for the x-axis.
 #'
 #' @template return-ggplot-or-data
 #'
@@ -100,12 +96,9 @@ ppd_intervals <-
       legend_none()
   }
 
+
 #' @rdname PPD-intervals
 #' @export
-#' @template args-group
-#' @param facet_args An optional list of  arguments (other than `facets`)
-#'   passed to [ggplot2::facet_wrap()] to control faceting.
-#'
 ppd_intervals_grouped <-
   function(ypred,
            x = NULL,

@@ -33,6 +33,7 @@ ppd_data <- function(ypred, group = NULL) {
   .ppd_data(predictions = ypred, y = NULL, group = group)
 }
 
+
 #' @rdname PPD-distributions
 #' @export
 ppd_dens_overlay <-
@@ -73,6 +74,7 @@ ppd_dens_overlay <-
       yaxis_ticks(FALSE)
   }
 
+
 #' @rdname PPD-distributions
 #' @export
 ppd_ecdf_overlay <-
@@ -111,6 +113,7 @@ ppd_ecdf_overlay <-
       xaxis_title(FALSE)
   }
 
+
 #' @rdname PPD-distributions
 #' @export
 ppd_dens <-
@@ -146,6 +149,7 @@ ppd_dens <-
       facet_text(FALSE)
   }
 
+
 #' @rdname PPD-distributions
 #' @export
 ppd_hist <-
@@ -180,6 +184,7 @@ ppd_hist <-
       xaxis_title(FALSE) +
       facet_text(FALSE)
   }
+
 
 #' @rdname PPD-distributions
 #' @export
@@ -223,10 +228,9 @@ ppd_freqpoly <-
       facet_text(FALSE)
   }
 
+
 #' @rdname PPD-distributions
 #' @export
-#' @template args-group
-#'
 ppd_freqpoly_grouped <-
   function(ypred,
            group,
@@ -248,6 +252,7 @@ ppd_freqpoly_grouped <-
       facet_text() +
       theme(strip.text.y = element_blank())
   }
+
 
 #' @rdname PPD-distributions
 #' @export

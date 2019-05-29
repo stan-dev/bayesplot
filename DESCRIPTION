@@ -32,7 +32,7 @@ Imports:
     reshape2,
     rlang (>= 0.3.0),
     stats,
-    tibble,
+    tibble (>= 2.0.0),
     tidyselect,
     utils
 Suggests: 

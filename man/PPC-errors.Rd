@@ -49,9 +49,8 @@ plots the y-axis text is off by default. To view the count or density
 labels on the y-axis see the \code{\link[=yaxis_text]{yaxis_text()}} convenience
 function.)}
 
-\item{group}{A grouping variable (a vector or factor) the same length as
-\code{y}. Each value in \code{group} is interpreted as the group level
-pertaining to the corresponding value of \code{y}.}
+\item{group}{A grouping variable (vector or factor). Each value in \code{group} is
+interpreted as the group level pertaining to the corresponding observation.}
 
 \item{size, alpha}{For scatterplots, arguments passed to
 \code{\link[ggplot2:geom_point]{ggplot2::geom_point()}} to control the appearance of the points. For the

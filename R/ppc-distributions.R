@@ -9,11 +9,12 @@
 #' @family PPCs
 #'
 #' @template args-y-yrep
+#' @template args-group
 #' @template args-hist
 #' @template args-hist-freq
 #' @template args-dens
 #' @param size,alpha Passed to the appropriate geom to control the appearance of
-#'   the `yrep` distributions.
+#'   the predictive distributions.
 #' @param ... Currently unused.
 #'
 #' @template details-binomial
@@ -100,7 +101,6 @@
 NULL
 
 
-
 #' @rdname PPC-distributions
 #' @export
 ppc_data <- function(y, yrep, group = NULL) {
@@ -113,6 +113,7 @@ ppc_data <- function(y, yrep, group = NULL) {
   # see R/helpers-ppc.R
   .ppd_data(predictions = yrep, y = y, group = group)
 }
+
 
 #' @rdname PPC-distributions
 #' @export
@@ -163,13 +164,16 @@ ppc_dens_overlay <-
       yaxis_ticks(FALSE)
   }
 
-#' @export
+
 #' @rdname PPC-distributions
-#' @param discrete For `ppc_ecdf_overlay()`, should the data be treated as
-#'   discrete? The default is `FALSE`, in which case `geom="line"` is
-#'   passed to [ggplot2::stat_ecdf()]. If `discrete` is set to
-#'   `TRUE` then `geom="step"` is used.
-#' @param pad A logical scalar passed to [ggplot2::stat_ecdf()].
+#' @export
+#' @param discrete For the ecdf plot, should the data be treated as discrete?
+#'   The default is `FALSE`, in which case `geom="line"` is passed to
+#'   [ggplot2::stat_ecdf()]. If `discrete` is set to `TRUE` then `geom="step"`
+#'   is used.
+#' @param pad For the ecdf plot, A logical scalar passed to
+#'   [ggplot2::stat_ecdf()].
+#'
 ppc_ecdf_overlay <-
   function(y,
            yrep,
@@ -285,6 +289,7 @@ ppc_hist <-
       facet_bg(FALSE)
   }
 
+
 #' @rdname PPC-distributions
 #' @export
 ppc_freqpoly <-
@@ -328,10 +333,9 @@ ppc_freqpoly <-
       facet_text(FALSE)
   }
 
+
 #' @rdname PPC-distributions
 #' @export
-#' @template args-group
-#'
 ppc_freqpoly_grouped <-
   function(y,
            yrep,
@@ -354,10 +358,12 @@ ppc_freqpoly_grouped <-
       theme(strip.text.y = element_blank())
   }
 
+
 #' @rdname PPC-distributions
 #' @export
-#' @param notch A logical scalar passed to [ggplot2::geom_boxplot()].
-#'   Unlike for `geom_boxplot()`, the default is `notch=TRUE`.
+#' @param notch For the box plot, a logical scalar passed to
+#'   [ggplot2::geom_boxplot()]. Note: unlike `geom_boxplot()`, the default is
+#'   `notch=TRUE`.
 #'
 ppc_boxplot <-
   function(y,
@@ -392,8 +398,9 @@ ppc_boxplot <-
       xaxis_title(FALSE)
   }
 
-#' @export
+
 #' @rdname PPC-distributions
+#' @export
 #' @param probs A numeric vector passed to [ggplot2::geom_violin()]'s
 #'   `draw_quantiles` argument to specify at which quantiles to draw
 #'   horizontal lines. Set to `NULL` to remove the lines.

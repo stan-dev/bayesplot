@@ -7,18 +7,20 @@
 #' @family PPCs
 #'
 #' @template args-y-yrep
+#' @template args-group
+#' @template args-facet_args
 #' @template args-prob-prob_outer
-#' @param x A numeric vector the same length as `y` to use as the x-axis
+#' @param x A numeric vector to use as the x-axis
 #'   variable. For example, `x` could be a predictor variable from a
 #'   regression model, a time variable for time-series models, etc. If `x`
-#'   is missing or `NULL`, then `1:length(y)` is used for the x-axis.
-#' @param ... Currently unused.
+#'   is missing or `NULL` then the observation index is used for the x-axis.
 #' @param alpha,size,fatten Arguments passed to geoms. For ribbon plots `alpha`
 #'   is passed to [ggplot2::geom_ribbon()] to control the opacity of the outer
 #'   ribbon and `size` is passed to [ggplot2::geom_line()] to control the size
 #'   of the line representing the median prediction (`size=0` will remove the
 #'   line). For interval plots `alpha`, `size` and `fatten` are passed to
 #'   [ggplot2::geom_pointrange()] (`fatten=0` will remove the point estimates).
+#' @param ... Currently unused.
 #'
 #' @template return-ggplot-or-data
 #'
@@ -170,12 +172,9 @@ ppc_intervals <-
       bayesplot_theme_get()
   }
 
+
 #' @rdname PPC-intervals
 #' @export
-#' @template args-group
-#' @param facet_args An optional list of  arguments (other than `facets`)
-#'   passed to [ggplot2::facet_wrap()] to control faceting.
-#'
 ppc_intervals_grouped <-
   function(y,
            yrep,

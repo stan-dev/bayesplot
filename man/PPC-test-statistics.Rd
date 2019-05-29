@@ -25,7 +25,7 @@ ppc_stat_freqpoly_grouped(y, yrep, group, stat = "mean", ...,
 ppc_stat_2d(y, yrep, stat = c("mean", "sd"), ..., size = 2.5,
   alpha = 0.7)
 
-ppc_stat_data(y, yrep, group = NULL, stat = NULL)
+ppc_stat_data(y, yrep, group = NULL, stat)
 }
 \arguments{
 \item{y}{A vector of observations. See \strong{Details}.}
@@ -38,12 +38,12 @@ posterior (or prior) sample used to generate \code{yrep}. The number of columns,
 to make sense. See the \strong{Details} and \strong{Plot Descriptions} sections for
 additional advice specific to particular plots.}
 
-\item{stat}{A single function or a string naming a function, except for
-\code{ppc_stat_2d()} which requires a vector of exactly two functions or
-function names. In all cases the function(s) should take a vector input and
-return a scalar statistic. If specified as a string (or strings) then
-the legend will display function names. If specified as a function (or
-functions) then generic naming is used in the legend.}
+\item{stat}{A single function or a string naming a function, except for the
+2D plot which requires a vector of exactly two names or functions. In all
+cases the function(s) should take a vector input and return a scalar
+statistic. If specified as a string (or strings) then the legend will
+display the function name(s). If specified as a function (or functions)
+then generic naming is used in the legend.}
 
 \item{...}{Currently unused.}
 
@@ -59,16 +59,17 @@ plots the y-axis text is off by default. To view the count or density
 labels on the y-axis see the \code{\link[=yaxis_text]{yaxis_text()}} convenience
 function.)}
 
-\item{group}{A grouping variable (a vector or factor) the same length as
-\code{y}. Each value in \code{group} is interpreted as the group level
-pertaining to the corresponding value of \code{y}.}
+\item{group}{A grouping variable (vector or factor). Each value in \code{group} is
+interpreted as the group level pertaining to the corresponding observation.}
 
 \item{facet_args}{A named list of arguments (other than \code{facets}) passed
 to \code{\link[ggplot2:facet_wrap]{ggplot2::facet_wrap()}} or \code{\link[ggplot2:facet_grid]{ggplot2::facet_grid()}}
-to control faceting.}
+to control faceting. Note: if \code{scales} is not included in \code{facet_args}
+then \strong{bayesplot} may use \code{scales="free"} as the default (depending
+on the plot) instead of the \strong{ggplot2} default of \code{scales="fixed"}.}
 
-\item{size, alpha}{Arguments passed to \code{\link[ggplot2:geom_point]{ggplot2::geom_point()}} to control the
-appearance of scatterplot points.}
+\item{size, alpha}{For the 2D plot only, arguments passed to
+\code{\link[ggplot2:geom_point]{ggplot2::geom_point()}} to control the appearance of scatterplot points.}
 }
 \value{
 The plotting functions return a ggplot object that can be further
@@ -84,28 +85,27 @@ observed value \code{T(y)} computed from the data \code{y}. See the
 well as \href{https://github.com/jgabry/bayes-vis-paper#readme}{Gabry et al. (2019)}.
 }
 \details{
-For Binomial data, the plots will typically be most useful if
-\code{y} and \code{yrep} contain the "success" proportions (not discrete
+For Binomial data, the plots may be more useful if
+the input contains the "success" \emph{proportions} (not discrete
 "success" or "failure" counts).
 }
 \section{Plot Descriptions}{
 
 \describe{
-\item{\code{ppc_stat()}}{
-A histogram of the distribution of a test statistic computed by applying
-\code{stat} to each dataset (row) in \code{yrep}. The value of the statistic in the
-observed data, \code{stat(y)}, is overlaid as a vertical line. More details on
-\code{ppc_stat()} can be found in Gabry et al. (2019).
+\item{\code{ppc_stat()}, \code{ppc_stat_freqpoly()}}{
+A histogram or frequency polygon of the distribution of a statistic
+computed by applying \code{stat} to each dataset (row) in \code{yrep}. The value of
+the statistic in the observed data, \code{stat(y)}, is overlaid as a vertical
+line. More details and example usage of \code{ppc_stat()} can be found in Gabry
+et al. (2019).
 }
 \item{\code{ppc_stat_grouped()},\code{ppc_stat_freqpoly_grouped()}}{
-The same as \code{ppc_stat()}, but a separate plot is generated for each
-level of a grouping variable. In the case of
-\code{ppc_stat_freqpoly_grouped()} the plots are frequency polygons rather
-than histograms. More details on \code{ppc_stat_grouped()} can be found in
-Gabry et al. (2019).
+The same as \code{ppc_stat()} and \code{ppc_stat_freqpoly()}, but a separate plot is
+generated for each level of a grouping variable. More details and example
+usage of \code{ppc_stat_grouped()} can be found in Gabry et al. (2019).
 }
 \item{\code{ppc_stat_2d()}}{
-A scatterplot showing the joint distribution of two test statistics
+A scatterplot showing the joint distribution of two statistics
 computed over the datasets (rows) in \code{yrep}. The value of the
 statistics in the observed data is overlaid as large point.
 }
@@ -118,13 +118,13 @@ yrep <- example_yrep_draws()
 ppc_stat(y, yrep)
 ppc_stat(y, yrep, stat = "sd") + legend_none()
 
-# use your own function to compute test statistics
+# use your own function for the 'stat' argument
 color_scheme_set("brightblue")
 q25 <- function(y) quantile(y, 0.25)
 ppc_stat(y, yrep, stat = "q25") # legend includes function name
 
-# can define the function in the 'stat' argument but then
-# the legend doesn't include a function name
+# can define the function in the 'stat' argument instead of
+# using its name but then the legend doesn't include the function name
 ppc_stat(y, yrep, stat = function(y) quantile(y, 0.25))
 
 # plots by group
@@ -139,7 +139,6 @@ ppc_stat_grouped(y, yrep, group, facet_args = list(scales = "free_x")) + yaxis_t
 # the freqpoly plots use frequency polygons instead of histograms
 ppc_stat_freqpoly(y, yrep, stat = "median")
 ppc_stat_freqpoly_grouped(y, yrep, group, stat = "median", facet_args = list(nrow = 2))
-
 
 # ppc_stat_2d allows 2 statistics and makes a scatterplot
 bayesplot_theme_set(ggplot2::theme_linedraw())

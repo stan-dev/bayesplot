@@ -2,14 +2,12 @@
 % Please edit documentation in R/ppc-discrete.R
 \name{PPC-discrete}
 \alias{PPC-discrete}
-\alias{ppc_bars_data}
 \alias{ppc_bars}
 \alias{ppc_bars_grouped}
 \alias{ppc_rootogram}
+\alias{ppc_bars_data}
 \title{PPCs for discrete outcomes}
 \usage{
-ppc_bars_data(y, yrep, group = NULL, prob = 0.9, freq = TRUE)
-
 ppc_bars(y, yrep, ..., prob = 0.9, width = 0.9, size = 1,
   fatten = 3, freq = TRUE)
 
@@ -18,6 +16,8 @@ ppc_bars_grouped(y, yrep, group, ..., facet_args = list(), prob = 0.9,
 
 ppc_rootogram(y, yrep, style = c("standing", "hanging", "suspended"),
   ..., prob = 0.9, size = 1)
+
+ppc_bars_data(y, yrep, group = NULL, prob = 0.9, freq = TRUE)
 }
 \arguments{
 \item{y}{A vector of observations. See \strong{Details}.}
@@ -30,20 +30,12 @@ posterior (or prior) sample used to generate \code{yrep}. The number of columns,
 to make sense. See the \strong{Details} and \strong{Plot Descriptions} sections for
 additional advice specific to particular plots.}
 
-\item{group}{A grouping variable (a vector or factor) the same length as
-\code{y}. Each value in \code{group} is interpreted as the group level
-pertaining to the corresponding value of \code{y}.}
+\item{...}{Currently unused.}
 
 \item{prob}{A value between \code{0} and \code{1} indicating the desired probability
 mass to include in the \code{yrep} intervals. Set \code{prob=0} to remove the
 intervals. For \code{ppc_rootogram()} these are intervals of the \emph{square roots}
 of the expected counts.}
-
-\item{freq}{For \code{ppc_bars()} and \code{ppc_bars_grouped()}, if \code{TRUE} (the
-default) the y-axis will display counts. Setting \code{freq=FALSE} will put
-proportions on the y-axis.}
-
-\item{...}{Currently unused.}
 
 \item{width}{For \code{ppc_bars()} and \code{ppc_bars_grouped()}, passed to
 \code{\link[ggplot2:geom_bar]{ggplot2::geom_bar()}} to control the bar width.}
@@ -52,6 +44,13 @@ proportions on the y-axis.}
 \code{fatten} are passed to \code{\link[ggplot2:geom_pointrange]{ggplot2::geom_pointrange()}} to control the
 appearance of the \code{yrep} points and intervals. For \code{ppc_rootogram()} \code{size}
 is passed to \code{\link[ggplot2:geom_line]{ggplot2::geom_line()}}.}
+
+\item{freq}{For \code{ppc_bars()} and \code{ppc_bars_grouped()}, if \code{TRUE} (the
+default) the y-axis will display counts. Setting \code{freq=FALSE} will put
+proportions on the y-axis.}
+
+\item{group}{A grouping variable (vector or factor). Each value in \code{group} is
+interpreted as the group level pertaining to the corresponding observation.}
 
 \item{facet_args}{An optional list of  arguments (other than \code{facets})
 passed to \code{\link[ggplot2:facet_wrap]{ggplot2::facet_wrap()}} to control faceting.}

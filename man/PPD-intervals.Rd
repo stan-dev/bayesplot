@@ -35,18 +35,18 @@ predictive distribution. The number of rows, \code{S}, is the size of the
 posterior (or prior) sample used to generate \code{ypred}. The number of
 columns, \code{N}, is the number of predicted observations.}
 
-\item{x}{A numeric vector with length equal to \code{ncol(ypred)} to use as the
-x-axis variable. For example, \code{x} could be a predictor variable from a
-regression model, a time variable for time-series models, etc. If \code{x} is
-missing or \code{NULL}, then \code{1:ncol(ypred)} is used for the x-axis.}
+\item{x}{A numeric vector to use as the x-axis
+variable. For example, \code{x} could be a predictor variable from a
+regression model, a time variable for time-series models, etc. If \code{x}
+is missing or \code{NULL} then the observation index is used for the x-axis.}
 
 \item{...}{Currently unused.}
 
-\item{prob}{Values between 0 and 1 indicating the desired
+\item{prob}{Values between \code{0} and \code{1} indicating the desired
 probability mass to include in the inner and outer intervals. The defaults
 are \code{prob=0.5} and \code{prob_outer=0.9}.}
 
-\item{prob_outer}{Values between 0 and 1 indicating the desired
+\item{prob_outer}{Values between \code{0} and \code{1} indicating the desired
 probability mass to include in the inner and outer intervals. The defaults
 are \code{prob=0.5} and \code{prob_outer=0.9}.}
 
@@ -71,12 +71,14 @@ of the line representing the median prediction (\code{size=0} will remove the
 line). For interval plots \code{alpha}, \code{size} and \code{fatten} are passed to
 \code{\link[ggplot2:geom_pointrange]{ggplot2::geom_pointrange()}} (\code{fatten=0} will remove the point estimates).}
 
-\item{group}{A grouping variable (a vector or factor) the same length as
-\code{y}. Each value in \code{group} is interpreted as the group level
-pertaining to the corresponding value of \code{y}.}
+\item{group}{A grouping variable (vector or factor). Each value in \code{group} is
+interpreted as the group level pertaining to the corresponding observation.}
 
-\item{facet_args}{An optional list of  arguments (other than \code{facets})
-passed to \code{\link[ggplot2:facet_wrap]{ggplot2::facet_wrap()}} to control faceting.}
+\item{facet_args}{A named list of arguments (other than \code{facets}) passed
+to \code{\link[ggplot2:facet_wrap]{ggplot2::facet_wrap()}} or \code{\link[ggplot2:facet_grid]{ggplot2::facet_grid()}}
+to control faceting. Note: if \code{scales} is not included in \code{facet_args}
+then \strong{bayesplot} may use \code{scales="free"} as the default (depending
+on the plot) instead of the \strong{ggplot2} default of \code{scales="fixed"}.}
 }
 \value{
 The plotting functions return a ggplot object that can be further

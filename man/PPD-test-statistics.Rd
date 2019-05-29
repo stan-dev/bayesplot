@@ -25,7 +25,7 @@ ppd_stat_freqpoly_grouped(ypred, group, stat = "mean", ...,
 ppd_stat_2d(ypred, stat = c("mean", "sd"), ..., size = 2.5,
   alpha = 0.7)
 
-ppd_stat_data(ypred, group = NULL, stat = NULL)
+ppd_stat_data(ypred, group = NULL, stat)
 }
 \arguments{
 \item{ypred}{An \code{S} by \code{N} matrix of draws from the posterior (or prior)
@@ -33,12 +33,12 @@ predictive distribution. The number of rows, \code{S}, is the size of the
 posterior (or prior) sample used to generate \code{ypred}. The number of
 columns, \code{N}, is the number of predicted observations.}
 
-\item{stat}{A single function or a string naming a function, except for
-\code{ppc_stat_2d()} which requires a vector of exactly two functions or
-function names. In all cases the function(s) should take a vector input and
-return a scalar statistic. If specified as a string (or strings) then
-the legend will display function names. If specified as a function (or
-functions) then generic naming is used in the legend.}
+\item{stat}{A single function or a string naming a function, except for the
+2D plot which requires a vector of exactly two names or functions. In all
+cases the function(s) should take a vector input and return a scalar
+statistic. If specified as a string (or strings) then the legend will
+display the function name(s). If specified as a function (or functions)
+then generic naming is used in the legend.}
 
 \item{...}{Currently unused.}
 
@@ -56,17 +56,18 @@ function.)}
 
 \item{facet_args}{A named list of arguments (other than \code{facets}) passed
 to \code{\link[ggplot2:facet_wrap]{ggplot2::facet_wrap()}} or \code{\link[ggplot2:facet_grid]{ggplot2::facet_grid()}}
-to control faceting.}
+to control faceting. Note: if \code{scales} is not included in \code{facet_args}
+then \strong{bayesplot} may use \code{scales="free"} as the default (depending
+on the plot) instead of the \strong{ggplot2} default of \code{scales="fixed"}.}
 
-\item{group}{A grouping variable (a vector or factor) the same length as
-\code{y}. Each value in \code{group} is interpreted as the group level
-pertaining to the corresponding value of \code{y}.}
+\item{group}{A grouping variable (vector or factor). Each value in \code{group} is
+interpreted as the group level pertaining to the corresponding observation.}
 
-\item{size}{Arguments passed to \code{\link[ggplot2:geom_point]{ggplot2::geom_point()}} to control the
-appearance of scatterplot points.}
+\item{size}{For the 2D plot only, arguments passed to
+\code{\link[ggplot2:geom_point]{ggplot2::geom_point()}} to control the appearance of scatterplot points.}
 
-\item{alpha}{Arguments passed to \code{\link[ggplot2:geom_point]{ggplot2::geom_point()}} to control the
-appearance of scatterplot points.}
+\item{alpha}{For the 2D plot only, arguments passed to
+\code{\link[ggplot2:geom_point]{ggplot2::geom_point()}} to control the appearance of scatterplot points.}
 }
 \value{
 The plotting functions return a ggplot object that can be further
@@ -83,8 +84,8 @@ Descriptions} section at \link{PPC-test-statistics} has details on the individua
 plots.
 }
 \details{
-For Binomial data, the plots will typically be most useful if
-\code{y} and \code{yrep} contain the "success" proportions (not discrete
+For Binomial data, the plots may be more useful if
+the input contains the "success" \emph{proportions} (not discrete
 "success" or "failure" counts).
 }
 \references{

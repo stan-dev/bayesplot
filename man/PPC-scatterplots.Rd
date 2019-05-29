@@ -29,9 +29,8 @@ additional advice specific to particular plots.}
 \item{size, alpha}{Arguments passed to \code{\link[ggplot2:geom_point]{ggplot2::geom_point()}} to control the
 appearance of the points.}
 
-\item{group}{A grouping variable (a vector or factor) the same length as
-\code{y}. Each value in \code{group} is interpreted as the group level
-pertaining to the corresponding value of \code{y}.}
+\item{group}{A grouping variable (vector or factor). Each value in \code{group} is
+interpreted as the group level pertaining to the corresponding observation.}
 }
 \value{
 A ggplot object that can be further customized using the \strong{ggplot2} package.
@@ -42,8 +41,8 @@ Scatterplots of the observed data \code{y} vs. simulated/replicated data
 \strong{Plot Descriptions} and \strong{Details} sections, below.
 }
 \details{
-For Binomial data, the plots will typically be most useful if
-\code{y} and \code{yrep} contain the "success" proportions (not discrete
+For Binomial data, the plots may be more useful if
+the input contains the "success" \emph{proportions} (not discrete
 "success" or "failure" counts).
 }
 \section{Plot Descriptions}{

@@ -10,13 +10,16 @@
 #' @family PPCs
 #'
 #' @template args-y-yrep
+#' @template args-group
 #' @template args-facet_args
-#' @param stat A single function or a string naming a function, except for
-#'   `ppc_stat_2d()` which requires a vector of exactly two functions or
-#'   function names. In all cases the function(s) should take a vector input and
-#'   return a scalar statistic. If specified as a string (or strings) then
-#'   the legend will display function names. If specified as a function (or
-#'   functions) then generic naming is used in the legend.
+#' @template args-hist
+#' @template args-hist-freq
+#' @param stat A single function or a string naming a function, except for the
+#'   2D plot which requires a vector of exactly two names or functions. In all
+#'   cases the function(s) should take a vector input and return a scalar
+#'   statistic. If specified as a string (or strings) then the legend will
+#'   display the function name(s). If specified as a function (or functions)
+#'   then generic naming is used in the legend.
 #' @param ... Currently unused.
 #'
 #' @template details-binomial
@@ -28,21 +31,20 @@
 #'
 #' @section Plot Descriptions:
 #' \describe{
-#'   \item{`ppc_stat()`}{
-#'    A histogram of the distribution of a test statistic computed by applying
-#'    `stat` to each dataset (row) in `yrep`. The value of the statistic in the
-#'    observed data, `stat(y)`, is overlaid as a vertical line. More details on
-#'    `ppc_stat()` can be found in Gabry et al. (2019).
+#'   \item{`ppc_stat()`, `ppc_stat_freqpoly()`}{
+#'    A histogram or frequency polygon of the distribution of a statistic
+#'    computed by applying `stat` to each dataset (row) in `yrep`. The value of
+#'    the statistic in the observed data, `stat(y)`, is overlaid as a vertical
+#'    line. More details and example usage of `ppc_stat()` can be found in Gabry
+#'    et al. (2019).
 #'   }
 #'   \item{`ppc_stat_grouped()`,`ppc_stat_freqpoly_grouped()`}{
-#'    The same as `ppc_stat()`, but a separate plot is generated for each
-#'    level of a grouping variable. In the case of
-#'    `ppc_stat_freqpoly_grouped()` the plots are frequency polygons rather
-#'    than histograms. More details on `ppc_stat_grouped()` can be found in
-#'    Gabry et al. (2019).
+#'    The same as `ppc_stat()` and `ppc_stat_freqpoly()`, but a separate plot is
+#'    generated for each level of a grouping variable. More details and example
+#'    usage of `ppc_stat_grouped()` can be found in Gabry et al. (2019).
 #'   }
 #'   \item{`ppc_stat_2d()`}{
-#'    A scatterplot showing the joint distribution of two test statistics
+#'    A scatterplot showing the joint distribution of two statistics
 #'    computed over the datasets (rows) in `yrep`. The value of the
 #'    statistics in the observed data is overlaid as large point.
 #'   }
@@ -54,13 +56,13 @@
 #' ppc_stat(y, yrep)
 #' ppc_stat(y, yrep, stat = "sd") + legend_none()
 #'
-#' # use your own function to compute test statistics
+#' # use your own function for the 'stat' argument
 #' color_scheme_set("brightblue")
 #' q25 <- function(y) quantile(y, 0.25)
 #' ppc_stat(y, yrep, stat = "q25") # legend includes function name
 #'
-#' # can define the function in the 'stat' argument but then
-#' # the legend doesn't include a function name
+#' # can define the function in the 'stat' argument instead of
+#' # using its name but then the legend doesn't include the function name
 #' ppc_stat(y, yrep, stat = function(y) quantile(y, 0.25))
 #'
 #' # plots by group
@@ -75,7 +77,6 @@
 #' # the freqpoly plots use frequency polygons instead of histograms
 #' ppc_stat_freqpoly(y, yrep, stat = "median")
 #' ppc_stat_freqpoly_grouped(y, yrep, group, stat = "median", facet_args = list(nrow = 2))
-#'
 #'
 #' # ppc_stat_2d allows 2 statistics and makes a scatterplot
 #' bayesplot_theme_set(ggplot2::theme_linedraw())
@@ -93,9 +94,6 @@ NULL
 
 #' @rdname PPC-test-statistics
 #' @export
-#' @template args-hist
-#' @template args-hist-freq
-#'
 ppc_stat <-
   function(y,
            yrep,
@@ -152,10 +150,9 @@ ppc_stat <-
       yaxis_title(FALSE)
   }
 
-#' @export
+
 #' @rdname PPC-test-statistics
-#' @template args-group
-#'
+#' @export
 ppc_stat_grouped <-
   function(y,
            yrep,
@@ -173,9 +170,8 @@ ppc_stat_grouped <-
   }
 
 
-#' @export
 #' @rdname PPC-test-statistics
-#'
+#' @export
 ppc_stat_freqpoly <-
   function(y,
            yrep,
@@ -227,9 +223,9 @@ ppc_stat_freqpoly <-
       yaxis_title(FALSE)
   }
 
-#' @export
+
 #' @rdname PPC-test-statistics
-#'
+#' @export
 ppc_stat_freqpoly_grouped <-
   function(y,
            yrep,
@@ -248,8 +244,8 @@ ppc_stat_freqpoly_grouped <-
 
 #' @rdname PPC-test-statistics
 #' @export
-#' @param size,alpha Arguments passed to [ggplot2::geom_point()] to control the
-#'   appearance of scatterplot points.
+#' @param size,alpha For the 2D plot only, arguments passed to
+#'   [ggplot2::geom_point()] to control the appearance of scatterplot points.
 ppc_stat_2d <- function(y,
                         yrep,
                         stat = c("mean", "sd"),
@@ -329,7 +325,7 @@ ppc_stat_2d <- function(y,
 
 #' @rdname PPC-test-statistics
 #' @export
-ppc_stat_data <- function(y, yrep, group = NULL, stat = NULL) {
+ppc_stat_data <- function(y, yrep, group = NULL, stat) {
   y <- validate_y(y)
   yrep <- validate_predictions(yrep, length(y))
   if (!is.null(group)) {

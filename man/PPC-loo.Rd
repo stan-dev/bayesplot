@@ -98,7 +98,7 @@ five columns in the following order: lower outer interval, lower inner
 interval, median (50\%), upper inner interval and upper outer interval
 (column names are ignored).}
 
-\item{prob, prob_outer}{Values between 0 and 1 indicating the desired
+\item{prob, prob_outer}{Values between \code{0} and \code{1} indicating the desired
 probability mass to include in the inner and outer intervals. The defaults
 are \code{prob=0.5} and \code{prob_outer=0.9}.}
 

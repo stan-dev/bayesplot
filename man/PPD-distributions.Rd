@@ -38,17 +38,16 @@ predictive distribution. The number of rows, \code{S}, is the size of the
 posterior (or prior) sample used to generate \code{ypred}. The number of
 columns, \code{N}, is the number of predicted observations.}
 
-\item{group}{A grouping variable (a vector or factor) the same length as
-\code{y}. Each value in \code{group} is interpreted as the group level
-pertaining to the corresponding value of \code{y}.}
+\item{group}{A grouping variable (vector or factor). Each value in \code{group} is
+interpreted as the group level pertaining to the corresponding observation.}
 
 \item{...}{Currently unused.}
 
 \item{size}{Passed to the appropriate geom to control the appearance of
-the \code{yrep} distributions.}
+the predictive distributions.}
 
 \item{alpha}{Passed to the appropriate geom to control the appearance of
-the \code{yrep} distributions.}
+the predictive distributions.}
 
 \item{trim}{A logical scalar passed to \code{\link[ggplot2:geom_density]{ggplot2::geom_density()}}.}
 
@@ -68,12 +67,13 @@ parameters. \code{n_dens} defaults to \code{1024}.}
 \code{\link[stats:density]{stats::density()}} to override default kernel density estimation
 parameters. \code{n_dens} defaults to \code{1024}.}
 
-\item{discrete}{For \code{ppc_ecdf_overlay()}, should the data be treated as
-discrete? The default is \code{FALSE}, in which case \code{geom="line"} is
-passed to \code{\link[ggplot2:stat_ecdf]{ggplot2::stat_ecdf()}}. If \code{discrete} is set to
-\code{TRUE} then \code{geom="step"} is used.}
+\item{discrete}{For the ecdf plot, should the data be treated as discrete?
+The default is \code{FALSE}, in which case \code{geom="line"} is passed to
+\code{\link[ggplot2:stat_ecdf]{ggplot2::stat_ecdf()}}. If \code{discrete} is set to \code{TRUE} then \code{geom="step"}
+is used.}
 
-\item{pad}{A logical scalar passed to \code{\link[ggplot2:stat_ecdf]{ggplot2::stat_ecdf()}}.}
+\item{pad}{For the ecdf plot, A logical scalar passed to
+\code{\link[ggplot2:stat_ecdf]{ggplot2::stat_ecdf()}}.}
 
 \item{binwidth}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}} to override
 the default binwidth.}
@@ -87,8 +87,9 @@ plots the y-axis text is off by default. To view the count or density
 labels on the y-axis see the \code{\link[=yaxis_text]{yaxis_text()}} convenience
 function.)}
 
-\item{notch}{A logical scalar passed to \code{\link[ggplot2:geom_boxplot]{ggplot2::geom_boxplot()}}.
-Unlike for \code{geom_boxplot()}, the default is \code{notch=TRUE}.}
+\item{notch}{For the box plot, a logical scalar passed to
+\code{\link[ggplot2:geom_boxplot]{ggplot2::geom_boxplot()}}. Note: unlike \code{geom_boxplot()}, the default is
+\code{notch=TRUE}.}
 }
 \value{
 The plotting functions return a ggplot object that can be further
@@ -103,8 +104,8 @@ but without plotting any observed data \code{y}. The \strong{Plot Descriptions} 
 at \link{PPC-distributions} has details on the individual plots.
 }
 \details{
-For Binomial data, the plots will typically be most useful if
-\code{y} and \code{yrep} contain the "success" proportions (not discrete
+For Binomial data, the plots may be more useful if
+the input contains the "success" \emph{proportions} (not discrete
 "success" or "failure" counts).
 }
 \examples{
