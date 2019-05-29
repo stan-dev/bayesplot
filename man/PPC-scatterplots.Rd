@@ -5,13 +5,21 @@
 \alias{ppc_scatter}
 \alias{ppc_scatter_avg}
 \alias{ppc_scatter_avg_grouped}
+\alias{ppc_scatter_data}
+\alias{ppc_scatter_avg_data}
 \title{PPC scatterplots}
 \usage{
-ppc_scatter(y, yrep, ..., size = 2.5, alpha = 0.8)
+ppc_scatter(y, yrep, ..., facet_args = list(), size = 2.5,
+  alpha = 0.8)
 
 ppc_scatter_avg(y, yrep, ..., size = 2.5, alpha = 0.8)
 
-ppc_scatter_avg_grouped(y, yrep, group, ..., size = 2.5, alpha = 0.8)
+ppc_scatter_avg_grouped(y, yrep, group, ..., facet_args = list(),
+  size = 2.5, alpha = 0.8)
+
+ppc_scatter_data(y, yrep)
+
+ppc_scatter_avg_data(y, yrep, group = NULL)
 }
 \arguments{
 \item{y}{A vector of observations. See \strong{Details}.}
@@ -25,6 +33,12 @@ to make sense. See the \strong{Details} and \strong{Plot Descriptions} sections 
 additional advice specific to particular plots.}
 
 \item{...}{Currently unused.}
+
+\item{facet_args}{A named list of arguments (other than \code{facets}) passed
+to \code{\link[ggplot2:facet_wrap]{ggplot2::facet_wrap()}} or \code{\link[ggplot2:facet_grid]{ggplot2::facet_grid()}}
+to control faceting. Note: if \code{scales} is not included in \code{facet_args}
+then \strong{bayesplot} may use \code{scales="free"} as the default (depending
+on the plot) instead of the \strong{ggplot2} default of \code{scales="fixed"}.}
 
 \item{size, alpha}{Arguments passed to \code{\link[ggplot2:geom_point]{ggplot2::geom_point()}} to control the
 appearance of the points.}
@@ -54,9 +68,11 @@ against that row of \code{yrep}. For this plot \code{yrep} should only contain a
 small number of rows.
 }
 \item{\code{ppc_scatter_avg()}}{
-A scatterplot of \code{y} against the average values of \code{yrep}, i.e.,
-the points \code{(mean(yrep[, n]), y[n])}, where each \code{yrep[, n]} is
-a vector of length equal to the number of posterior draws.
+A single scatterplot of \code{y} against the average values of \code{yrep}, i.e.,
+the points \code{(x,y) = (mean(yrep[, n]), y[n])}, where each \code{yrep[, n]} is
+a vector of length equal to the number of posterior draws. Unlike
+for \code{ppc_scatter()}, for \code{ppc_scatter_avg()} \code{yrep} should contain many
+draws (rows).
 }
 \item{\code{ppc_scatter_avg_grouped()}}{
 The same as \code{ppc_scatter_avg()}, but a separate plot is generated for
@@ -70,6 +86,7 @@ y <- example_y_data()
 yrep <- example_yrep_draws()
 p1 <- ppc_scatter_avg(y, yrep)
 p1
+
 p2 <- ppc_scatter(y, yrep[20:23, ], alpha = 0.5, size = 1.5)
 p2
 
@@ -79,7 +96,10 @@ p1 + lims
 p2 + lims
 
 group <- example_group_data()
-ppc_scatter_avg_grouped(y, yrep, group, alpha = 0.7) + lims
+ppc_scatter_avg_grouped(y, yrep, group)
+
+# let x-axis vary but force y-axis to be the same
+ppc_scatter_avg_grouped(y, yrep, group, facet_args = list(scales = "free_x"))
 
 }
 \references{

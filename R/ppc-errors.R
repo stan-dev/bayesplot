@@ -212,7 +212,7 @@ ppc_error_scatter <-
 
     if (nrow(yrep) == 1) {
       return(
-        .ppc_scatter(
+        .ppc_error_scatter(
           data = data.frame(y = y, x = y - as.vector(yrep)),
           mapping = aes_(x = ~ x, y = ~ y),
           x_lab = expression(italic(y) - italic(y)[rep]),
@@ -225,7 +225,7 @@ ppc_error_scatter <-
     }
 
     errors <- compute_errors(y, yrep)
-    .ppc_scatter(
+    .ppc_error_scatter(
       data = dplyr::left_join(
         melt_predictions(errors),
         data.frame(y = y, y_id = seq_along(y)),
@@ -267,7 +267,7 @@ ppc_error_scatter_avg <-
                           alpha = alpha, ...)
       )
 
-    .ppc_scatter(
+    .ppc_error_scatter(
       data = data.frame(y, avg_error = y - colMeans(yrep)),
       mapping = aes_(x = ~ avg_error, y = ~ y),
       y_lab = y_label(),
@@ -295,7 +295,7 @@ ppc_error_scatter_avg_vs_x <-
     y <- validate_y(y)
     yrep <- validate_predictions(yrep, length(y))
     x <- validate_x(x, y)
-    .ppc_scatter(
+    .ppc_error_scatter(
       data = data.frame(x, avg_error = y - colMeans(yrep)),
       mapping = aes_(x = ~ x, y = ~ avg_error),
       x_lab = expression(italic(x)),
@@ -460,4 +460,37 @@ bin_errors <- function(ey, r, bins, rep_id = NULL) {
   }
   return(out)
 }
+
+
+.ppc_error_scatter <-
+  function(data,
+           mapping,
+           x_lab = "",
+           y_lab = "",
+           color = c("mid", "light"),
+           size = 2.5,
+           alpha = 1,
+           abline = TRUE) {
+    mid <- isTRUE(match.arg(color) == "mid")
+    graph <- ggplot(data, mapping)
+    if (abline) {
+      graph <- graph +
+        geom_abline(
+          intercept = 0,
+          slope = 1,
+          linetype = 2,
+          color = get_color("dh")
+        )
+    }
+    graph +
+      geom_point(
+        shape = 21,
+        fill = get_color(ifelse(mid, "m", "l")),
+        color = get_color(ifelse(mid, "mh", "lh")),
+        size = size,
+        alpha = alpha
+      ) +
+      labs(x = x_lab, y = y_lab) +
+      bayesplot_theme_get()
+  }
 
