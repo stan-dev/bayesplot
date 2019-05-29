@@ -181,17 +181,24 @@ validate_x <- function(x = NULL, y, unique_x = FALSE) {
 
 #' Modify a call to a '_grouped' function to the same one without '_grouped'
 #'
+#' @param fn The new function to call (a string).
 #' @param call The original call (from `match.call()`).
 #' @return The new unevaluated call, with additional argument
 #'   `called_from_internal=TRUE` which can be detected by the function to be
 #'   called so it knows not to warn about the `group` and `facet_args` arguments.
 #' @noRd
-ungroup_call <- function(call) {
-  fn <- gsub("_grouped", "", rlang::call_name(call))
-  call[[1]] <- as.name(fn)
-  call$called_from_internal <- TRUE
-  call$... <- NULL
-  call
+# ungroup_call <- function(call) {
+#   fn <- gsub("_grouped", "", rlang::call_name(call))
+#   call[[1]] <- as.name(fn)
+#   call$called_from_internal <- TRUE
+#   call$... <- NULL
+#   call
+# }
+ungroup_call <- function(fn, call) {
+  args <- rlang::call_args(call)
+  args$called_from_internal <- TRUE
+  args$... <- NULL
+  rlang::call2(.fn = fn, !!!args, .ns = "bayesplot")
 }
 
 #' Check if the `...` to a function were supplied by it's `_grouped` version

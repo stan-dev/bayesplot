@@ -343,7 +343,7 @@ ppc_freqpoly_grouped <-
            alpha = 1) {
     check_ignored_arguments(...)
     call <- match.call(expand.dots = FALSE)
-    g <- eval(ungroup_call(call), parent.frame())
+    g <- eval(ungroup_call("ppc_freqpoly", call), parent.frame())
     g +
       facet_grid(
         rep_label ~ group,

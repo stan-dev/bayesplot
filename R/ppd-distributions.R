@@ -238,7 +238,7 @@ ppd_freqpoly_grouped <-
 
     check_ignored_arguments(...)
     call <- match.call(expand.dots = FALSE)
-    g <- eval(ungroup_call(call), parent.frame())
+    g <- eval(ungroup_call("ppd_freqpoly", call), parent.frame())
     g +
       facet_grid(
         rep_label ~ group,

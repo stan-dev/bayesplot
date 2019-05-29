@@ -190,10 +190,9 @@ ppc_intervals_grouped <-
            fatten = 2.5) {
     check_ignored_arguments(...)
     call <- match.call(expand.dots = FALSE)
-    g <- eval(ungroup_call(call), parent.frame())
+    g <- eval(ungroup_call("ppc_intervals", call), parent.frame())
     g + intervals_group_facets(facet_args)
   }
-
 
 
 #' @rdname PPC-intervals
@@ -264,7 +263,7 @@ ppc_ribbon_grouped <-
            size = 0.25) {
     check_ignored_arguments(...)
     call <- match.call(expand.dots = FALSE)
-    g <- eval(ungroup_call(call), parent.frame())
+    g <- eval(ungroup_call("ppc_ribbon", call), parent.frame())
     g + intervals_group_facets(facet_args)
   }
 
