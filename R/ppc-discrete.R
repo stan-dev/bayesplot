@@ -88,35 +88,6 @@ NULL
 
 #' @rdname PPC-discrete
 #' @export
-ppc_bars_data <-
-  function(y,
-           yrep,
-           group = NULL,
-           prob = 0.9,
-           freq = TRUE) {
-    stopifnot(0 <= prob && prob <= 1, is.logical(freq))
-    y <- validate_y(y)
-    yrep <- validate_predictions(yrep, length(y))
-    if (!all_whole_number(y)) {
-      abort("ppc_bars expects 'y' to be discrete.")
-    }
-    if (!all_whole_number(yrep)) {
-      abort("ppc_bars expects 'yrep' to be discrete.")
-    }
-    if (!is.null(group)) {
-      group <- validate_group(group, length(y))
-    }
-    .ppc_bars_data(
-      y = y,
-      yrep = yrep,
-      group = group,
-      prob = prob,
-      freq = freq
-    )
-  }
-
-#' @rdname PPC-discrete
-#' @export
 ppc_bars <-
   function(y,
            yrep,
@@ -142,23 +113,29 @@ ppc_bars <-
     )
 
     g <-
-      ggplot(data, aes_(x = ~ x)) +
+      ggplot(data) +
       geom_col(
-        mapping = aes_(y = ~ y_obs, fill = "y"),
+        data = dplyr::filter(data, !is.na(.data$y_obs)),
+        mapping = aes_(x = ~ x, y = ~ y_obs, fill = "y"),
         color = get_color("lh"),
         width = width
       ) +
       geom_pointrange(
         mapping = intervals_inner_aes(needs_y = TRUE, color = "yrep"),
         size = size,
-        fatten = fatten
+        fatten = fatten,
+        na.rm = TRUE
       ) +
-      scale_color_ppc(values = get_color("d"), labels = yrep_label()) +
+      scale_color_ppc(
+        values = get_color("d"),
+        labels = yrep_label(),
+        guide = guide_legend(order = 1)
+      ) +
       scale_fill_ppc(values = get_color("l"), labels = y_label()) +
-      labs(x = NULL, y = if (freq) "Count" else "Proportion") +
       scale_x_continuous(breaks = pretty) +
-      bayesplot_theme_get() +
-      dont_expand_y_axis()
+      labs(x = NULL, y = if (freq) "Count" else "Proportion") +
+      dont_expand_y_axis() +
+      bayesplot_theme_get()
 
     if (is.null(dots$group)) {
       g <- g + expand_limits(y = 1.01 * max(g$data[["h"]]))
@@ -186,10 +163,9 @@ ppc_bars_grouped <-
            freq = TRUE) {
   check_ignored_arguments(...)
   call <- match.call(expand.dots = FALSE)
-  g <- eval(ungroup_call(call), parent.frame())
+  g <- eval(ungroup_call("ppc_bars", call), parent.frame())
 
-  fixed_y <- !isTRUE(facet_args[["scales"]] %in% c("free", "free_y"))
-  if (fixed_y) {
+  if (fixed_y(facet_args)) {
     g <- g + expand_limits(y = 1.01 * max(g$data$h))
   }
   g + bars_group_facets(facet_args)
@@ -314,6 +290,36 @@ ppc_rootogram <- function(y,
 }
 
 
+#' @rdname PPC-discrete
+#' @export
+ppc_bars_data <-
+  function(y,
+           yrep,
+           group = NULL,
+           prob = 0.9,
+           freq = TRUE) {
+    stopifnot(0 <= prob && prob <= 1, is.logical(freq))
+    y <- validate_y(y)
+    yrep <- validate_predictions(yrep, length(y))
+    if (!all_whole_number(y)) {
+      abort("ppc_bars expects 'y' to be discrete.")
+    }
+    if (!all_whole_number(yrep)) {
+      abort("ppc_bars expects 'yrep' to be discrete.")
+    }
+    if (!is.null(group)) {
+      group <- validate_group(group, length(y))
+    }
+    .ppc_bars_data(
+      y = y,
+      yrep = yrep,
+      group = group,
+      prob = prob,
+      freq = freq
+    )
+  }
+
+
 # internal ----------------------------------------------------------------
 
 #' Internal function for `ppc_bars_data()`
@@ -370,7 +376,7 @@ ppc_rootogram <- function(y,
 
   cols <- syms(c(if (!was_null_group) "group", "x", "y_obs", "l", "m", "h"))
   yrep_summary %>%
-    full_join(y_summary, by = c("group", "value")) %>%
+    full_join(y_summary, by = c("group", "value")) %>% # full join to keep empty cells
     rename(x = .data$value) %>%
     select(!!!cols)
 }
@@ -388,4 +394,8 @@ bars_group_facets <- function(facet_args, scales_default = "fixed") {
   facet_args[["facets"]] <- "group"
   facet_args[["scales"]] <- facet_args[["scales"]] %||% scales_default
   do.call("facet_wrap", facet_args)
+}
+
+fixed_y <- function(facet_args) {
+  !isTRUE(facet_args[["scales"]] %in% c("free", "free_y"))
 }
