@@ -10,7 +10,7 @@ fit <- stan_polr(tobgp ~ agegp, data = esoph, method = "probit", prior = R2(0.2,
 y <- as.integer(fit$y)
 yrep_char <- posterior_predict(fit, draws = 10)
 yrep <- sapply(data.frame(yrep_char, stringsAsFactors = TRUE), as.integer)
-grp <- esoph$agegp
+grp <- datasets::esoph$agegp
 
 test_that("ppc_bars & ppc_bars_grouped return a ggplot object", {
   expect_gg(ppc_bars(y, yrep))

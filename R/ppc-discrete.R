@@ -186,7 +186,7 @@ ppc_bars_grouped <-
            freq = TRUE) {
   check_ignored_arguments(...)
   call <- match.call(expand.dots = FALSE)
-  g <- eval(ungroup_call(call))
+  g <- eval(ungroup_call(call), parent.frame())
 
   fixed_y <- !isTRUE(facet_args[["scales"]] %in% c("free", "free_y"))
   if (fixed_y) {
@@ -322,7 +322,7 @@ ppc_rootogram <- function(y,
 #' @param y,yrep,group User's already validated `y`, `yrep`, and (if applicable)
 #'   `group` arguments.
 #' @param prob,freq User's `prob` and `freq` arguments.
-#' @importFrom dplyr "%>%" ungroup count arrange mutate summarise_at left_join rename
+#' @importFrom dplyr "%>%" ungroup count arrange mutate summarise_at full_join rename
 .ppc_bars_data <- function(y, yrep, group = NULL, prob = 0.9, freq = TRUE) {
   alpha <- (1 - prob) / 2
   probs <- sort(c(alpha, 0.5, 1 - alpha))
@@ -343,9 +343,13 @@ ppc_rootogram <- function(y,
   }
 
   # FIXME: make sure that levels with zero counts are still plotted
+  tmp_data <- data.frame(
+    group = factor(group),
+    y = y,
+    yrep = t(yrep)
+  )
   data <-
-    ppc_stat_data(y, yrep, group = group, stat = NULL) %>%
-    ungroup() %>%
+    reshape2::melt(tmp_data, id.vars = "group") %>%
     count(.data$group, .data$value, .data$variable) %>%
     group_by(.data$variable, .data$group) %>%
     mutate(proportion = .data$n / sum(.data$n)) %>%
@@ -366,7 +370,7 @@ ppc_rootogram <- function(y,
 
   cols <- syms(c(if (!was_null_group) "group", "x", "y_obs", "l", "m", "h"))
   yrep_summary %>%
-    left_join(y_summary, by = c("group", "value")) %>%
+    full_join(y_summary, by = c("group", "value")) %>%
     rename(x = .data$value) %>%
     select(!!!cols)
 }
@@ -385,4 +389,3 @@ bars_group_facets <- function(facet_args, scales_default = "fixed") {
   facet_args[["scales"]] <- facet_args[["scales"]] %||% scales_default
   do.call("facet_wrap", facet_args)
 }
-

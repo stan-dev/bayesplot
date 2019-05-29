@@ -20,20 +20,20 @@ test_that("ppc_ribbon returns ggplot object", {
 y <- rnorm(50)
 yrep <- matrix(rnorm(500, 0, 2), ncol = 50)
 x <- rep(1:10, each = 5)
-group <- gl(5, 1, length = 50, labels = LETTERS[1:5])
+grp <- gl(5, 1, length = 50, labels = LETTERS[1:5])
 
 test_that("ppc_intervals_grouped returns ggplot object", {
-  expect_gg(ppc_intervals_grouped(y, yrep, x, group))
+  expect_gg(ppc_intervals_grouped(y, yrep, x, grp))
 })
 
 test_that("ppc_ribbon_grouped returns ggplot object", {
-  expect_gg(ppc_ribbon_grouped(y, yrep, x, group))
-  expect_gg(ppc_ribbon_grouped(y, yrep, x, group, facet_args = list(scales = "fixed")))
+  expect_gg(ppc_ribbon_grouped(y, yrep, x, grp))
+  expect_gg(ppc_ribbon_grouped(y, yrep, x, grp, facet_args = list(scales = "fixed")))
 })
 
 test_that("ppc_intervals_data returns correct structure", {
   d <- ppc_intervals_data(y, yrep, x = 1:length(y), prob = .9)
-  d_group <- ppc_intervals_data(y, yrep, x, group)
+  d_group <- ppc_intervals_data(y, yrep, x, grp)
   expect_named(d, c("y_id", "y_obs", "x",
                     "outer_width", "inner_width",
                     "ll", "l", "m", "h", "hh"))

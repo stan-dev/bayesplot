@@ -79,7 +79,7 @@ ppd_stat_grouped <-
            freq = TRUE) {
     check_ignored_arguments(...)
     call <- match.call(expand.dots = FALSE)
-    g <- eval(ungroup_call(call))
+    g <- eval(ungroup_call(call), parent.frame())
     g + stat_group_facets(facet_args)
   }
 
@@ -138,7 +138,7 @@ ppd_stat_freqpoly_grouped <-
            freq = TRUE) {
     check_ignored_arguments(...)
     call <- match.call(expand.dots = FALSE)
-    g <- eval(ungroup_call(call))
+    g <- eval(ungroup_call(call), parent.frame())
     g + stat_group_facets(facet_args)
   }
 
