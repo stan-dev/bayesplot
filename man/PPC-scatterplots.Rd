@@ -48,7 +48,10 @@ if not already a factor. Each value in \code{group} is interpreted as the group
 level pertaining to the corresponding observation.}
 }
 \value{
-A ggplot object that can be further customized using the \strong{ggplot2} package.
+The plotting functions return a ggplot object that can be further
+customized using the \strong{ggplot2} package. The functions with suffix
+\code{_data()} return the data that would have been drawn by the plotting
+function.
 }
 \description{
 Scatterplots of the observed data \code{y} vs. simulated/replicated data
@@ -96,6 +99,8 @@ lims <- ggplot2::lims(x = c(0, 160), y = c(0, 160))
 p1 + lims
 p2 + lims
 
+# for ppc_scatter_avg_grouped the default is to allow the facets
+# to have different x and y axes
 group <- example_group_data()
 ppc_scatter_avg_grouped(y, yrep, group)
 

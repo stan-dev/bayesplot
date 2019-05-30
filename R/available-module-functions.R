@@ -1,7 +1,10 @@
-#' Get or view the names of available plotting functions
+#' Get or view the names of available plotting or data functions
 #'
 #' @export
 #' @param pattern,fixed,invert Passed to [base::grep()].
+#' @param plots_only If `TRUE` (the default) only plotting functions are
+#'   searched for. If `FALSE` then functions that return data for plotting
+#'   (functions ending in `_data()`) are also included.
 #' @return A possibly empty character vector of function names with several
 #'   additional attributes (for use by a custom print method). If `pattern`
 #'   is missing then the returned object contains the names of all available
@@ -21,30 +24,59 @@
 #' available_ppd()
 #' available_ppd("grouped")
 #'
-available_ppc <- function(pattern, fixed = FALSE, invert = FALSE) {
-  .list_module_functions("ppc",
-                         .pattern = pattern,
-                         fixed = fixed,
-                         invert = invert)
-}
+#' # can also see which functions that return data are available
+#' available_ppc(plots_only = FALSE)
+#'
+#' # only show the _data functions
+#' available_ppc("_data", plots_only = FALSE)
+#' available_ppd("_data", plots_only = FALSE)
+#' available_mcmc("_data", plots_only = FALSE)
+#'
+available_ppc <-
+  function(pattern,
+           fixed = FALSE,
+           invert = FALSE,
+           plots_only = TRUE) {
+    .list_module_functions(
+      .module = "ppc",
+      .pattern = pattern,
+      fixed = fixed,
+      invert = invert,
+      plots_only = plots_only
+    )
+  }
 
 #' @rdname available_ppc
 #' @export
-available_ppd <- function(pattern, fixed = FALSE, invert = FALSE) {
-  .list_module_functions("ppd",
-                         .pattern = pattern,
-                         fixed = fixed,
-                         invert = invert)
-}
+available_ppd <-
+  function(pattern,
+           fixed = FALSE,
+           invert = FALSE,
+           plots_only = TRUE) {
+    .list_module_functions(
+      .module = "ppd",
+      .pattern = pattern,
+      fixed = fixed,
+      invert = invert,
+      plots_only = plots_only
+    )
+  }
 
 #' @rdname available_ppc
 #' @export
-available_mcmc <- function(pattern, fixed = FALSE, invert = FALSE) {
-  .list_module_functions("mcmc",
-                         .pattern = pattern,
-                         fixed = fixed,
-                         invert = invert)
-}
+available_mcmc <-
+  function(pattern,
+           fixed = FALSE,
+           invert = FALSE,
+           plots_only = TRUE) {
+    .list_module_functions(
+      .module = "mcmc",
+      .pattern = pattern,
+      fixed = fixed,
+      invert = invert,
+      plots_only = plots_only
+    )
+  }
 
 #' @export
 print.bayesplot_function_list <- function(x, ...) {
@@ -65,7 +97,8 @@ print.bayesplot_function_list <- function(x, ...) {
   function(.module = c("ppc", "ppd", "mcmc"),
            .pattern,
            fixed = FALSE,
-           invert = FALSE) {
+           invert = FALSE,
+           plots_only = TRUE) {
 
     .module <- match.arg(.module)
     if (missing(.pattern)) {
@@ -79,6 +112,17 @@ print.bayesplot_function_list <- function(x, ...) {
     )
     return_funs <- sort(all_funs)
 
+    if (plots_only) {
+      # drop _data() functions
+      return_funs <-
+        grep(
+          pattern = "_data()",
+          x = return_funs,
+          invert = TRUE,
+          value = TRUE
+        )
+    }
+
     if (!is.null(.pattern)) {
       return_funs <- grep(
         pattern = .pattern,
@@ -88,6 +132,7 @@ print.bayesplot_function_list <- function(x, ...) {
         invert = invert
       )
     }
+
     structure(
       return_funs,
       class = c("bayesplot_function_list", "character"),

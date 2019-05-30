@@ -34,20 +34,18 @@ additional advice specific to particular plots.}
 
 \item{prob}{A value between \code{0} and \code{1} indicating the desired probability
 mass to include in the \code{yrep} intervals. Set \code{prob=0} to remove the
-intervals. For \code{ppc_rootogram()} these are intervals of the \emph{square roots}
-of the expected counts.}
+intervals. (Note: for rootograms these are intervals of the \emph{square roots}
+of the expected counts.)}
 
-\item{width}{For \code{ppc_bars()} and \code{ppc_bars_grouped()}, passed to
-\code{\link[ggplot2:geom_bar]{ggplot2::geom_bar()}} to control the bar width.}
+\item{width}{For bar plots only, passed to \code{\link[ggplot2:geom_bar]{ggplot2::geom_bar()}} to control
+the bar width.}
 
-\item{size, fatten}{For \code{ppc_bars()} and \code{ppc_bars_grouped()}, \code{size} and
-\code{fatten} are passed to \code{\link[ggplot2:geom_pointrange]{ggplot2::geom_pointrange()}} to control the
-appearance of the \code{yrep} points and intervals. For \code{ppc_rootogram()} \code{size}
-is passed to \code{\link[ggplot2:geom_line]{ggplot2::geom_line()}}.}
+\item{size, fatten}{For bar plots, \code{size} and \code{fatten} are passed to
+\code{\link[ggplot2:geom_pointrange]{ggplot2::geom_pointrange()}} to control the appearance of the \code{yrep} points
+and intervals. For rootograms \code{size} is passed to \code{\link[ggplot2:geom_line]{ggplot2::geom_line()}}.}
 
-\item{freq}{For \code{ppc_bars()} and \code{ppc_bars_grouped()}, if \code{TRUE} (the
-default) the y-axis will display counts. Setting \code{freq=FALSE} will put
-proportions on the y-axis.}
+\item{freq}{For bar plots only, if \code{TRUE} (the default) the y-axis will
+display counts. Setting \code{freq=FALSE} will put proportions on the y-axis.}
 
 \item{group}{A grouping variable. Will be coerced to \link[base:factor]{factor}
 if not already a factor. Each value in \code{group} is interpreted as the group
@@ -109,9 +107,9 @@ representing expected counts.
 observed counts.
 }
 
-\strong{All of these are plotted on the square root scale}. See Kleiber and
-Zeileis (2016) for advice on interpreting rootograms and selecting among
-the different styles.
+\strong{All of the rootograms are plotted on the square root scale}. See Kleiber
+and Zeileis (2016) for advice on interpreting rootograms and selecting
+among the different styles.
 }
 }
 }
