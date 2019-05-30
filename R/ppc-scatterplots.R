@@ -13,6 +13,8 @@
 #' @param ... Currently unused.
 #' @param size,alpha Arguments passed to [ggplot2::geom_point()] to control the
 #'   appearance of the points.
+#' @param ref_line If `TRUE` (the default) a dashed line with intercept 0 and
+#'   slope 1 is drawn behind the scatter plot.
 #'
 #' @template details-binomial
 #' @template return-ggplot-or-data
@@ -46,6 +48,9 @@
 #' p1 <- ppc_scatter_avg(y, yrep)
 #' p1
 #'
+#' # don't draw line x=y
+#' ppc_scatter_avg(y, yrep, ref_line = FALSE)
+#'
 #' p2 <- ppc_scatter(y, yrep[20:23, ], alpha = 0.5, size = 1.5)
 #' p2
 #'
@@ -72,11 +77,12 @@ ppc_scatter <-
            ...,
            facet_args = list(),
            size = 2.5,
-           alpha = 0.8) {
+           alpha = 0.8,
+           ref_line = TRUE) {
     check_ignored_arguments(...)
 
     data <- ppc_scatter_data(y, yrep)
-    if (dplyr::n_distinct(data$rep_id) == 1) {
+    if (nrow(yrep) == 1) {
       facet_layer <- geom_ignore()
     } else {
       facet_args[["facets"]] <- "rep_label"
@@ -84,7 +90,7 @@ ppc_scatter <-
     }
 
     ggplot(data, scatter_aes(color = "yrep", fill = "yrep")) +
-      abline_01(linetype = 2, color = get_color("dh")) +
+      scatter_ref_line(ref_line) +
       geom_point(
         size = size,
         alpha = alpha,
@@ -111,7 +117,8 @@ ppc_scatter_avg <-
            yrep,
            ...,
            size = 2.5,
-           alpha = 0.8) {
+           alpha = 0.8,
+           ref_line = TRUE) {
     dots <- list(...)
     if (!from_grouped(dots)) {
       check_ignored_arguments(...)
@@ -119,15 +126,14 @@ ppc_scatter_avg <-
     }
 
     data <- ppc_scatter_avg_data(y, yrep, group = dots$group)
-    if (is.null(dots$group) &&
-        dplyr::n_distinct(data$rep_label) == 1) {
+    if (is.null(dots$group) && nrow(yrep) == 1) {
       inform(
         "With only 1 row in 'yrep' ppc_scatter_avg is the same as ppc_scatter."
       )
     }
 
     ggplot(data, scatter_aes(color = "yrep", fill = "yrep")) +
-      abline_01(linetype = 2, color = get_color("dh")) +
+      scatter_ref_line(ref_line) +
       geom_point(
         alpha = alpha,
         size = size,
@@ -151,11 +157,14 @@ ppc_scatter_avg_grouped <-
            ...,
            facet_args = list(),
            size = 2.5,
-           alpha = 0.8) {
+           alpha = 0.8,
+           ref_line = TRUE) {
     check_ignored_arguments(...)
     call <- match.call(expand.dots = FALSE)
     g <- eval(ungroup_call("ppc_scatter_avg", call), parent.frame())
-    g + scatter_avg_group_facets(facet_args)
+    g +
+      scatter_avg_group_facets(facet_args) +
+      force_axes_in_facets()
   }
 
 
@@ -197,6 +206,8 @@ ppc_scatter_avg_data <- function(y, yrep, group = NULL) {
 }
 
 # internal ----------------------------------------------------------------
+yrep_avg_label <- function() expression(paste("Average ", italic(y)[rep]))
+
 scatter_aes <- function(...) {
   aes_(x = ~ value, y = ~ y_obs, ...)
 }
@@ -206,3 +217,14 @@ scatter_avg_group_facets <- function(facet_args) {
   facet_args[["scales"]] <- facet_args[["scales"]] %||% "free"
   do.call("facet_wrap", facet_args)
 }
+
+scatter_ref_line <-
+  function(ref_line,
+           linetype = 2,
+           color = get_color("dh"),
+           ...) {
+    if (!ref_line) {
+      return(geom_ignore())
+    }
+    abline_01(linetype = 2, color = get_color("dh"), ...)
+  }
