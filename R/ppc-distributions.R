@@ -354,6 +354,7 @@ ppc_freqpoly_grouped <-
         scales = "free",
         labeller = label_parsed
       ) +
+      force_axes_in_facets() +
       facet_text() +
       theme(strip.text.y = element_blank())
   }

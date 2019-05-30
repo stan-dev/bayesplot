@@ -167,7 +167,9 @@ ppc_stat_grouped <-
     check_ignored_arguments(...)
     call <- match.call(expand.dots = FALSE)
     g <- eval(ungroup_call("ppc_stat", call), parent.frame())
-    g + stat_group_facets(facet_args)
+    g +
+      stat_group_facets(facet_args) +
+      force_axes_in_facets()
   }
 
 
@@ -239,7 +241,9 @@ ppc_stat_freqpoly_grouped <-
     check_ignored_arguments(...)
     call <- match.call(expand.dots = FALSE)
     g <- eval(ungroup_call("ppc_stat_freqpoly", call), parent.frame())
-    g + stat_group_facets(facet_args)
+    g +
+      stat_group_facets(facet_args) +
+      force_axes_in_facets()
   }
 
 
@@ -378,4 +382,8 @@ stat_2d_segment_data <- function(data) {
     yend = c(stats[2], stats[2])
   )
 }
+
+
+Ty_label <- function() expression(italic(T(italic(y))))
+Tyrep_label <- function() expression(italic(T)(italic(y)[rep]))
 

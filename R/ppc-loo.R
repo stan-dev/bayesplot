@@ -486,6 +486,7 @@ ppc_loo_ribbon <-
 }
 
 # subset a psis_object without breaking it
+# (FIXME: use function from loo package when subset.psis() method becomes available)
 .psis_subset <- function(psis_object, subset) {
   stopifnot(all(subset == as.integer(subset)))
   if (length(subset) > dim(psis_object)[2]) {

@@ -190,7 +190,9 @@ ppc_intervals_grouped <-
     check_ignored_arguments(...)
     call <- match.call(expand.dots = FALSE)
     g <- eval(ungroup_call("ppc_intervals", call), parent.frame())
-    g + intervals_group_facets(facet_args)
+    g +
+      intervals_group_facets(facet_args) +
+      force_axes_in_facets()
   }
 
 
@@ -271,7 +273,9 @@ ppc_ribbon_grouped <-
     check_ignored_arguments(...)
     call <- match.call(expand.dots = FALSE)
     g <- eval(ungroup_call("ppc_ribbon", call), parent.frame())
-    g + intervals_group_facets(facet_args)
+    g +
+      intervals_group_facets(facet_args) +
+      force_axes_in_facets()
   }
 
 

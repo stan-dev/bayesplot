@@ -79,7 +79,9 @@ ppd_stat_grouped <-
     check_ignored_arguments(...)
     call <- match.call(expand.dots = FALSE)
     g <- eval(ungroup_call("ppd_stat", call), parent.frame())
-    g + stat_group_facets(facet_args)
+    g +
+      stat_group_facets(facet_args) +
+      force_axes_in_facets()
   }
 
 
@@ -137,7 +139,9 @@ ppd_stat_freqpoly_grouped <-
     check_ignored_arguments(...)
     call <- match.call(expand.dots = FALSE)
     g <- eval(ungroup_call("ppd_stat_freqpoly", call), parent.frame())
-    g + stat_group_facets(facet_args)
+    g +
+      stat_group_facets(facet_args) +
+      force_axes_in_facets()
   }
 
 
@@ -287,3 +291,4 @@ stat_group_facets <- function(facet_args, scales_default = "free") {
   do.call("facet_wrap", facet_args)
 }
 
+Typred_label <- function() expression(italic(T)(italic(y)[pred]))

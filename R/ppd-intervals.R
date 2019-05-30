@@ -114,7 +114,9 @@ ppd_intervals_grouped <-
     check_ignored_arguments(...)
     call <- match.call(expand.dots = FALSE)
     g <- eval(ungroup_call("ppd_intervals", call), parent.frame())
-    g + intervals_group_facets(facet_args)
+    g +
+      intervals_group_facets(facet_args) +
+      force_axes_in_facets()
   }
 
 
@@ -158,7 +160,8 @@ ppd_ribbon <-
       scale_color_ppd() +
       scale_fill_ppd() +
       intervals_axis_labels(has_x = !is.null(x)) +
-      bayesplot_theme_get()
+      bayesplot_theme_get() +
+      legend_none()
   }
 
 
@@ -177,7 +180,9 @@ ppd_ribbon_grouped <-
     check_ignored_arguments(...)
     call <- match.call(expand.dots = FALSE)
     g <- eval(ungroup_call("ppd_ribbon", call), parent.frame())
-    g + intervals_group_facets(facet_args)
+    g +
+      intervals_group_facets(facet_args) +
+      force_axes_in_facets()
   }
 
 
