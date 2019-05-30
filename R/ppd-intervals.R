@@ -329,7 +329,7 @@ intervals_group_facets <- function(facet_args, scales_default = "free") {
 #' @noRd
 intervals_axis_labels <- function(has_x) {
   labs(
-    x = if (has_x) expression(italic(x)) else "Index",
+    x = if (has_x) expression(italic(x)) else "Data point (index)",
     y = NULL
   )
 }

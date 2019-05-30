@@ -162,8 +162,8 @@ ppc_intervals <-
           color = "y",
           fill = "y"
         ),
-        stroke = 0.5,
         shape = 21,
+        stroke = 0.5,
         size = 1
       ) +
       scale_color_ppc() +
@@ -229,6 +229,13 @@ ppc_ribbon <-
         alpha = alpha,
         size = 0.05
       ) +
+      geom_ribbon(
+        mapping = intervals_outer_aes(),
+        alpha = 1,
+        size = 0.05,
+        fill = NA,
+        color = get_color("m")
+      ) +
       geom_ribbon(size = 0.05) +
       geom_line(
         mapping = aes_(y = ~ m),
@@ -238,7 +245,8 @@ ppc_ribbon <-
       geom_blank(aes_(fill = "y")) +
       geom_line(
         aes_(y = ~ y_obs, color = "y"),
-        size = 0.5
+        size = 0.5,
+        alpha = 0.5
       ) +
       scale_color_ppc() +
       scale_fill_ppc(values = c(NA, get_color("l"))) +
