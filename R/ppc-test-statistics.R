@@ -7,6 +7,7 @@
 #' well as [Gabry et al. (2019)](https://github.com/jgabry/bayes-vis-paper#readme).
 #'
 #' @name PPC-test-statistics
+#' @aliases PPC-statistics
 #' @family PPCs
 #'
 #' @template args-y-yrep

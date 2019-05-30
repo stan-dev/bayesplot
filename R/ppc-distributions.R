@@ -1,9 +1,8 @@
 #' PPC distributions
 #'
-#' Compare the empirical distribution of the data `y` to the distributions
-#' of simulated/replicated data `yrep` from the posterior predictive
-#' distribution. See the **Plot Descriptions** section, below,
-#' for details.
+#' Compare the empirical distribution of the data `y` to the distributions of
+#' simulated/replicated data `yrep` from the posterior predictive distribution.
+#' See the **Plot Descriptions** section, below, for details.
 #'
 #' @name PPC-distributions
 #' @family PPCs
@@ -77,6 +76,7 @@
 #' ppc_dens(y, yrep[200:202, ])
 #' }
 #'
+#' # frequency polygons
 #' ppc_freqpoly(y, yrep[1:3,], alpha = 0.1, size = 1, binwidth = 5)
 #'
 #' # if groups are different sizes then the 'freq' argument can be useful
@@ -131,8 +131,8 @@ ppc_dens_overlay <-
            n_dens = 1024) {
     check_ignored_arguments(...)
 
-    ppc_data(y, yrep) %>%
-      ggplot(mapping = aes_(x = ~ value)) +
+    data <- ppc_data(y, yrep)
+    ggplot(data, mapping = aes_(x = ~ value)) +
       overlay_ppd_densities(
         mapping = aes_(group = ~ rep_id, color = "yrep"),
         data = function(x) dplyr::filter(x, !.data$is_y),
@@ -184,8 +184,8 @@ ppc_ecdf_overlay <-
            alpha = 0.7) {
     check_ignored_arguments(...)
 
-    ppc_data(y, yrep) %>%
-      ggplot(mapping = aes_(x = ~ value)) +
+    data <- ppc_data(y, yrep)
+    ggplot(data, mapping = aes_(x = ~ value)) +
       hline_at(
         c(0, 0.5, 1),
         size = c(0.2, 0.1, 0.2),
@@ -225,12 +225,12 @@ ppc_dens <-
            size = 0.5,
            alpha = 1) {
     check_ignored_arguments(...)
-    ppc_data(y, yrep) %>%
-      ggplot(mapping = aes_(
-        x = ~ value,
-        fill = ~ is_y_label,
-        color = ~ is_y_label
-      )) +
+    data <- ppc_data(y, yrep)
+    ggplot(data, mapping = aes_(
+      x = ~ value,
+      fill = ~ is_y_label,
+      color = ~ is_y_label
+    )) +
       geom_density(
         size = size,
         alpha = alpha,
@@ -263,12 +263,12 @@ ppc_hist <-
            freq = TRUE) {
     check_ignored_arguments(...)
 
-    ppc_data(y, yrep) %>%
-      ggplot(mapping = set_hist_aes(
-        freq,
-        fill = ~ is_y_label,
-        color = ~ is_y_label
-      )) +
+    data <- ppc_data(y, yrep)
+    ggplot(data, mapping = set_hist_aes(
+      freq = freq,
+      fill = ~ is_y_label,
+      color = ~ is_y_label
+    )) +
       geom_histogram(
         size = 0.25,
         binwidth = binwidth,
@@ -307,9 +307,9 @@ ppc_freqpoly <-
       dots$group <- NULL
     }
 
-    ppc_data(y, yrep, group = dots$group) %>%
-      ggplot(mapping = set_hist_aes(
-        freq,
+    data <- ppc_data(y, yrep, group = dots$group)
+    ggplot(data, mapping = set_hist_aes(
+        freq = freq,
         fill = ~ is_y_label,
         color = ~ is_y_label
       )) +
@@ -373,14 +373,14 @@ ppc_boxplot <-
            size = 0.5,
            alpha = 1) {
     check_ignored_arguments(...)
-    ppc_data(y, yrep) %>%
-      ggplot(mapping =
-               aes_(
-                 x = ~ rep_label,
-                 y = ~ value,
-                 fill = ~ is_y_label,
-                 color = ~ is_y_label
-               )) +
+
+    data <- ppc_data(y, yrep)
+    ggplot(data, mapping = aes_(
+      x = ~ rep_label,
+      y = ~ value,
+      fill = ~ is_y_label,
+      color = ~ is_y_label
+    )) +
       geom_boxplot(
         notch = notch,
         size = size,
@@ -465,8 +465,8 @@ ppc_violin_grouped <-
     layer_violin_y <- do.call(violin_y_func, args_violin_y)
     layer_jitter_y <- do.call(jitter_y_func, args_jitter_y)
 
-    ppc_data(y, yrep, group) %>%
-      ggplot(mapping = aes_(x = ~ group, y = ~ value)) +
+    data <- ppc_data(y, yrep, group)
+    ggplot(data, mapping = aes_(x = ~ group, y = ~ value)) +
       layer_violin_yrep +
       layer_violin_y +
       layer_jitter_y +

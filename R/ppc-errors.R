@@ -51,7 +51,7 @@
 #'   }
 #'   \item{`ppc_error_scatter_avg_vs_x()`}{
 #'    Same as `ppc_error_scatter_avg()`, except the average is plotted on the
-#'    \eqn{y}-axis and a a predictor variable `x` is plotted on the
+#'    \eqn{y}-axis and a predictor variable `x` is plotted on the
 #'    \eqn{x}-axis.
 #'   }
 #'   \item{`ppc_error_binned()`}{
@@ -152,8 +152,7 @@ ppc_error_hist <-
       yaxis_title(FALSE) +
       yaxis_text(FALSE) +
       yaxis_ticks(FALSE) +
-      facet_text(FALSE) +
-      facet_bg(FALSE)
+      facet_text(FALSE)
   }
 
 

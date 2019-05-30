@@ -121,7 +121,9 @@ ppc_scatter_avg <-
     data <- ppc_scatter_avg_data(y, yrep, group = dots$group)
     if (is.null(dots$group) &&
         dplyr::n_distinct(data$rep_label) == 1) {
-      inform("With only 1 row in 'yrep' ppc_scatter_avg is the same as ppc_scatter.")
+      inform(
+        "With only 1 row in 'yrep' ppc_scatter_avg is the same as ppc_scatter."
+      )
     }
 
     ggplot(data, scatter_aes(color = "yrep", fill = "yrep")) +

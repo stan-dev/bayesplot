@@ -8,6 +8,7 @@
 #' plots.
 #'
 #' @name PPD-test-statistics
+#' @aliases PPD-statistics
 #' @family PPDs
 #'
 #' @template args-ypred
@@ -17,7 +18,6 @@
 #' @template return-ggplot-or-data
 #'
 #' @template reference-vis-paper
-#'
 #'
 NULL
 
@@ -42,7 +42,6 @@ ppd_stat <-
       group = dots$group,
       stat = match.fun(stat)
     )
-
     ggplot(data, mapping = set_hist_aes(
       freq,
       color = "ypred",
@@ -105,7 +104,6 @@ ppd_stat_freqpoly <-
       group = dots$group,
       stat = match.fun(stat)
     )
-
     ggplot(data, mapping = set_hist_aes(freq)) +
       geom_freqpoly(
         aes_(color = "yrep"),
@@ -169,10 +167,9 @@ ppd_stat_2d <-
       group = NULL,
       stat = c(match.fun(stat[[1]]), match.fun(stat[[2]]))
     )
-
     ggplot(data) +
       geom_point(
-        aes_(
+        mapping = aes_(
           x = ~ value,
           y = ~ value2,
           fill = "yrep",

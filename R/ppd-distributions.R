@@ -47,9 +47,9 @@ ppd_dens_overlay <-
            kernel = "gaussian",
            n_dens = 1024) {
     check_ignored_arguments(...)
-    ypred %>%
-      ppd_data() %>%
-      ggplot(mapping = aes_(x = ~ value)) +
+
+    data <- ppd_data(ypred)
+    ggplot(data, mapping = aes_(x = ~ value)) +
       overlay_ppd_densities(
         mapping = aes_(group = ~ rep_id, color = "ypred"),
         size = size,
@@ -86,9 +86,8 @@ ppd_ecdf_overlay <-
            alpha = 0.7) {
     check_ignored_arguments(...)
 
-    ypred %>%
-      ppd_data() %>%
-      ggplot(mapping = aes_(x = ~ value)) +
+    data <- ppd_data(ypred)
+    ggplot(data, mapping = aes_(x = ~ value)) +
       hline_at(
         c(0, 0.5, 1),
         size = c(0.2, 0.1, 0.2),
@@ -123,13 +122,13 @@ ppd_dens <-
            size = 0.5,
            alpha = 1) {
     check_ignored_arguments(...)
-    ypred %>%
-      ppd_data() %>%
-      ggplot(mapping = aes_(
-        x = ~ value,
-        color = "ypred",
-        fill = "ypred"
-      )) +
+
+    data <- ppd_data(ypred)
+    ggplot(data, mapping = aes_(
+      x = ~ value,
+      color = "ypred",
+      fill = "ypred"
+    )) +
       geom_density(
         size = size,
         alpha = alpha,
@@ -159,13 +158,13 @@ ppd_hist <-
            breaks = NULL,
            freq = TRUE) {
     check_ignored_arguments(...)
-    ypred %>%
-      ppd_data() %>%
-      ggplot(mapping = set_hist_aes(
-        freq,
-        color = "ypred",
-        fill = "ypred"
-      )) +
+
+    data <- ppd_data(ypred)
+    ggplot(data, mapping = set_hist_aes(
+      freq,
+      color = "ypred",
+      fill = "ypred"
+    )) +
       geom_histogram(
         size = 0.25,
         binwidth = binwidth,
@@ -202,13 +201,12 @@ ppd_freqpoly <-
       dots$group <- NULL
     }
 
-    ypred %>%
-      ppd_data(group = dots$group) %>%
-      ggplot(mapping = set_hist_aes(
-        freq,
-        color = "ypred",
-        fill = "ypred"
-      )) +
+    data <- ppd_data(ypred, group = dots$group)
+    ggplot(data, mapping = set_hist_aes(
+      freq,
+      color = "ypred",
+      fill = "ypred"
+    )) +
       geom_area(
         stat = "bin",
         binwidth = binwidth,
@@ -264,14 +262,13 @@ ppd_boxplot <-
            alpha = 1) {
     check_ignored_arguments(...)
 
-    ypred %>%
-      ppd_data() %>%
-      ggplot(mapping = aes_(
-        x = ~ rep_label,
-        y = ~ value,
-        color = "ypred",
-        fill = "ypred"
-      )) +
+    data <- ppd_data(ypred)
+    ggplot(data, mapping = aes_(
+      x = ~ rep_label,
+      y = ~ value,
+      color = "ypred",
+      fill = "ypred"
+    )) +
       geom_boxplot(
         notch = notch,
         size = size,
