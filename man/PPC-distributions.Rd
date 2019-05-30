@@ -108,10 +108,9 @@ customized using the \strong{ggplot2} package. The functions with suffix
 function.
 }
 \description{
-Compare the empirical distribution of the data \code{y} to the distributions
-of simulated/replicated data \code{yrep} from the posterior predictive
-distribution. See the \strong{Plot Descriptions} section, below,
-for details.
+Compare the empirical distribution of the data \code{y} to the distributions of
+simulated/replicated data \code{yrep} from the posterior predictive distribution.
+See the \strong{Plot Descriptions} section, below, for details.
 }
 \details{
 For Binomial data, the plots may be more useful if
@@ -173,6 +172,7 @@ color_scheme_set("blue")
 ppc_dens(y, yrep[200:202, ])
 }
 
+# frequency polygons
 ppc_freqpoly(y, yrep[1:3,], alpha = 0.1, size = 1, binwidth = 5)
 
 # if groups are different sizes then the 'freq' argument can be useful

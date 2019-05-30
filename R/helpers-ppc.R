@@ -283,25 +283,7 @@ melt_and_stack <- function(y, yrep) {
 
 # labels ----------------------------------------------------------------
 create_rep_ids <- function(ids) paste('italic(y)[rep] (', ids, ")")
-yrep_label <- function() expression(italic(y)[rep])
-yrep_avg_label <- function() expression(paste("Average ", italic(y)[rep]))
 y_label <- function() expression(italic(y))
-Ty_label <- function() expression(italic(T(italic(y))))
-Tyrep_label <- function() expression(italic(T)(italic(y)[rep]))
-
+yrep_label <- function() expression(italic(y)[rep])
 ypred_label <- function() expression(italic(y)[pred])
-Typred_label <- function() expression(italic(T)(italic(y)[pred]))
-
-# Ty_label_2d <- function() {
-#   expression(bgroup(
-#     "(", list(italic(T)[1](italic(y)),
-#               italic(T)[2](italic(y))), ")"
-#   ))
-# }
-# Tyrep_label_2d <- function(k) {
-#   stopifnot(k == 1 || k == 2)
-#   if (k == 1) expression(paste(italic(T)[1](italic(y)[rep])))
-#   else expression(paste(italic(T)[2](italic(y)[rep])))
-# }
-
 

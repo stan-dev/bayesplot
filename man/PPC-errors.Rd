@@ -6,23 +6,31 @@
 \alias{ppc_error_hist_grouped}
 \alias{ppc_error_scatter}
 \alias{ppc_error_scatter_avg}
+\alias{ppc_error_scatter_avg_grouped}
 \alias{ppc_error_scatter_avg_vs_x}
 \alias{ppc_error_binned}
+\alias{ppc_error_data}
 \title{PPC errors}
 \usage{
-ppc_error_hist(y, yrep, ..., binwidth = NULL, breaks = NULL,
-  freq = TRUE)
-
-ppc_error_hist_grouped(y, yrep, group, ..., binwidth = NULL,
+ppc_error_hist(y, yrep, ..., facet_args = list(), binwidth = NULL,
   breaks = NULL, freq = TRUE)
 
-ppc_error_scatter(y, yrep, ..., size = 2.5, alpha = 0.8)
+ppc_error_hist_grouped(y, yrep, group, ..., facet_args = list(),
+  binwidth = NULL, breaks = NULL, freq = TRUE)
+
+ppc_error_scatter(y, yrep, ..., facet_args = list(), size = 2.5,
+  alpha = 0.8)
 
 ppc_error_scatter_avg(y, yrep, ..., size = 2.5, alpha = 0.8)
+
+ppc_error_scatter_avg_grouped(y, yrep, group, ..., facet_args = list(),
+  size = 2.5, alpha = 0.8)
 
 ppc_error_scatter_avg_vs_x(y, yrep, x, ..., size = 2.5, alpha = 0.8)
 
 ppc_error_binned(y, yrep, ..., bins = NULL, size = 1, alpha = 0.25)
+
+ppc_error_data(y, yrep, group = NULL)
 }
 \arguments{
 \item{y}{A vector of observations. See \strong{Details}.}
@@ -86,8 +94,8 @@ proportions (not counts). See the \strong{Examples} section, below.
 \describe{
 \item{\code{ppc_error_hist()}}{
 A separate histogram is plotted for the predictive errors computed from
-\code{y} and each dataset (row) in \code{yrep}. For this plot \code{yrep}
-should have only a small number of rows.
+\code{y} and each dataset (row) in \code{yrep}. For this plot \code{yrep} should have
+only a small number of rows.
 }
 \item{\code{ppc_error_hist_grouped()}}{
 Like \code{ppc_error_hist()}, except errors are computed within levels of a
@@ -97,20 +105,18 @@ product of the number of rows in \code{yrep} and the number of groups
 }
 \item{\code{ppc_error_scatter()}}{
 A separate scatterplot is displayed for \code{y} vs. the predictive errors
-computed from \code{y} and each dataset (row) in \code{yrep}. For this
-plot \code{yrep} should have only a small number of rows.
+computed from \code{y} and each dataset (row) in \code{yrep}. For this plot \code{yrep}
+should have only a small number of rows.
 }
 \item{\code{ppc_error_scatter_avg()}}{
-A single scatterplot of \code{y} vs. the average of the errors computed
-from \code{y} and each dataset (row) in \code{yrep}. For each individual
-data point \code{y[n]} the average error is the average of the
-errors for \code{y[n]} computed over the the draws from the posterior
-predictive distribution.
+A single scatterplot of \code{y} vs. the average of the errors computed from
+\code{y} and each dataset (row) in \code{yrep}. For each individual data point
+\code{y[n]} the average error is the average of the errors for \code{y[n]} computed
+over the the draws from the posterior predictive distribution.
 }
 \item{\code{ppc_error_scatter_avg_vs_x()}}{
 Same as \code{ppc_error_scatter_avg()}, except the average is plotted on the
-\eqn{y}-axis and a a predictor variable \code{x} is plotted on the
-\eqn{x}-axis.
+y-axis and a predictor variable \code{x} is plotted on the x-axis.
 }
 \item{\code{ppc_error_binned()}}{
 Intended for use with binomial data. A separate binned error plot (similar

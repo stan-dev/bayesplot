@@ -2,6 +2,7 @@
 % Please edit documentation in R/ppc-test-statistics.R
 \name{PPC-test-statistics}
 \alias{PPC-test-statistics}
+\alias{PPC-statistics}
 \alias{ppc_stat}
 \alias{ppc_stat_grouped}
 \alias{ppc_stat_freqpoly}

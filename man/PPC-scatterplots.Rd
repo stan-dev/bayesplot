@@ -10,12 +10,13 @@
 \title{PPC scatterplots}
 \usage{
 ppc_scatter(y, yrep, ..., facet_args = list(), size = 2.5,
-  alpha = 0.8)
+  alpha = 0.8, ref_line = TRUE)
 
-ppc_scatter_avg(y, yrep, ..., size = 2.5, alpha = 0.8)
+ppc_scatter_avg(y, yrep, ..., size = 2.5, alpha = 0.8,
+  ref_line = TRUE)
 
 ppc_scatter_avg_grouped(y, yrep, group, ..., facet_args = list(),
-  size = 2.5, alpha = 0.8)
+  size = 2.5, alpha = 0.8, ref_line = TRUE)
 
 ppc_scatter_data(y, yrep)
 
@@ -42,6 +43,9 @@ on the plot) instead of the \strong{ggplot2} default of \code{scales="fixed"}.}
 
 \item{size, alpha}{Arguments passed to \code{\link[ggplot2:geom_point]{ggplot2::geom_point()}} to control the
 appearance of the points.}
+
+\item{ref_line}{If \code{TRUE} (the default) a dashed line with intercept 0 and
+slope 1 is drawn behind the scatter plot.}
 
 \item{group}{A grouping variable. Will be coerced to \link[base:factor]{factor}
 if not already a factor. Each value in \code{group} is interpreted as the group
@@ -90,6 +94,9 @@ y <- example_y_data()
 yrep <- example_yrep_draws()
 p1 <- ppc_scatter_avg(y, yrep)
 p1
+
+# don't draw line x=y
+ppc_scatter_avg(y, yrep, ref_line = FALSE)
 
 p2 <- ppc_scatter(y, yrep[20:23, ], alpha = 0.5, size = 1.5)
 p2

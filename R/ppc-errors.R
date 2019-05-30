@@ -28,8 +28,8 @@
 #' \describe{
 #'   \item{`ppc_error_hist()`}{
 #'    A separate histogram is plotted for the predictive errors computed from
-#'    `y` and each dataset (row) in `yrep`. For this plot `yrep`
-#'    should have only a small number of rows.
+#'    `y` and each dataset (row) in `yrep`. For this plot `yrep` should have
+#'    only a small number of rows.
 #'   }
 #'   \item{`ppc_error_hist_grouped()`}{
 #'    Like `ppc_error_hist()`, except errors are computed within levels of a
@@ -39,20 +39,18 @@
 #'   }
 #'   \item{`ppc_error_scatter()`}{
 #'    A separate scatterplot is displayed for `y` vs. the predictive errors
-#'    computed from `y` and each dataset (row) in `yrep`. For this
-#'    plot `yrep` should have only a small number of rows.
+#'    computed from `y` and each dataset (row) in `yrep`. For this plot `yrep`
+#'    should have only a small number of rows.
 #'   }
 #'   \item{`ppc_error_scatter_avg()`}{
-#'    A single scatterplot of `y` vs. the average of the errors computed
-#'    from `y` and each dataset (row) in `yrep`. For each individual
-#'    data point `y[n]` the average error is the average of the
-#'    errors for `y[n]` computed over the the draws from the posterior
-#'    predictive distribution.
+#'    A single scatterplot of `y` vs. the average of the errors computed from
+#'    `y` and each dataset (row) in `yrep`. For each individual data point
+#'    `y[n]` the average error is the average of the errors for `y[n]` computed
+#'    over the the draws from the posterior predictive distribution.
 #'   }
 #'   \item{`ppc_error_scatter_avg_vs_x()`}{
 #'    Same as `ppc_error_scatter_avg()`, except the average is plotted on the
-#'    \eqn{y}-axis and a predictor variable `x` is plotted on the
-#'    \eqn{x}-axis.
+#'    y-axis and a predictor variable `x` is plotted on the x-axis.
 #'   }
 #'   \item{`ppc_error_binned()`}{
 #'    Intended for use with binomial data. A separate binned error plot (similar
@@ -113,31 +111,23 @@ NULL
 #' @export
 #' @template args-hist
 #' @template args-hist-freq
-#'
 ppc_error_hist <-
   function(y,
            yrep,
            ...,
+           facet_args = list(),
            binwidth = NULL,
            breaks = NULL,
            freq = TRUE) {
-    check_ignored_arguments(...)
 
-    y <- validate_y(y)
-    yrep <- validate_predictions(yrep, length(y))
-
-    if (nrow(yrep) == 1) {
-      errors <- data.frame(value = y - as.vector(yrep))
-      graph <- ggplot(errors, set_hist_aes(freq))
-    } else {
-      errors <- compute_errors(y, yrep)
-      graph <-
-        ggplot(melt_predictions(errors), set_hist_aes(freq)) +
-        labs(y = NULL, x = expression(italic(y) - italic(y)[rep])) +
-        facet_wrap(facets = ~ rep_id)
+    dots <- list(...)
+    if (!from_grouped(dots)) {
+      check_ignored_arguments(...)
+      dots$group <- NULL
     }
 
-    graph +
+    data <- ppc_error_data(y, yrep, group = dots$group)
+    ggplot(data, set_hist_aes(freq)) +
       geom_histogram(
         fill = get_color("l"),
         color = get_color("lh"),
@@ -145,9 +135,14 @@ ppc_error_hist <-
         binwidth = binwidth,
         breaks = breaks
       ) +
+      xlab(error_label()) +
       bayesplot_theme_get() +
-      xlab(expression(italic(y) - italic(y)[rep])) +
       dont_expand_y_axis() +
+      error_hist_facets(
+        facet_args,
+        grouped = FALSE,
+        ignore = nrow(yrep) == 1
+      ) +
       force_axes_in_facets() +
       yaxis_title(FALSE) +
       yaxis_text(FALSE) +
@@ -165,33 +160,17 @@ ppc_error_hist_grouped <-
            yrep,
            group,
            ...,
+           facet_args = list(),
            binwidth = NULL,
            breaks = NULL,
            freq = TRUE) {
+
     check_ignored_arguments(...)
-
-    y <- validate_y(y)
-    yrep <- validate_predictions(yrep, length(y))
-    group <- validate_group(group, length(y))
-    errors <- grouped_error_data(y, yrep, group)
-
-    ggplot(errors, set_hist_aes(freq)) +
-      geom_histogram(
-        fill = get_color("l"),
-        color = get_color("lh"),
-        size = 0.25,
-        binwidth = binwidth,
-        breaks = breaks
-      ) +
-      facet_grid(rep_id ~ group, scales = "free") +
-      bayesplot_theme_get() +
-      xlab(expression(italic(y) - italic(y)[rep])) +
-      dont_expand_y_axis(c(0.005, 0)) +
-      force_axes_in_facets() +
-      yaxis_text(FALSE) +
-      yaxis_ticks(FALSE) +
-      yaxis_title(FALSE) +
-      facet_bg(FALSE) +
+    call <- match.call(expand.dots = FALSE)
+    g <- eval(ungroup_call("ppc_error_hist", call), parent.frame())
+    g +
+      error_hist_facets(facet_args, grouped = TRUE) +
+      facet_text() +
       theme(strip.text.y = element_blank())
   }
 
@@ -202,48 +181,23 @@ ppc_error_scatter <-
   function(y,
            yrep,
            ...,
+           facet_args = list(),
            size = 2.5,
            alpha = 0.8) {
     check_ignored_arguments(...)
 
     y <- validate_y(y)
     yrep <- validate_predictions(yrep, length(y))
-
-    if (nrow(yrep) == 1) {
-      return(
-        .ppc_error_scatter(
-          data = data.frame(y = y, x = y - as.vector(yrep)),
-          mapping = aes_(x = ~ x, y = ~ y),
-          x_lab = expression(italic(y) - italic(y)[rep]),
-          y_lab = expression(italic(y)),
-          size = size,
-          alpha = alpha,
-          abline = FALSE
-        )
-      )
-    }
-
     errors <- compute_errors(y, yrep)
-    .ppc_error_scatter(
-      data = dplyr::left_join(
-        melt_predictions(errors),
-        data.frame(y = y, y_id = seq_along(y)),
-        by = "y_id"
-      ),
-      mapping = aes_(x = ~ value, y = ~ y),
-      y_lab = expression(italic(y)),
-      x_lab = expression(italic(y) - italic(y)[rep]),
+    ppc_scatter(
+      y = y,
+      yrep = errors,
+      facet_args = facet_args,
       size = size,
       alpha = alpha,
-      abline = FALSE
+      ref_line = FALSE
     ) +
-      facet_wrap(
-        facets = ~ rep_id
-        # labeller = label_bquote(italic(y) - italic(y)[rep](.(rep_id)))
-      ) +
-      force_axes_in_facets() +
-      facet_text(FALSE) +
-      facet_bg(FALSE)
+      labs(x = error_label(), y = y_label())
   }
 
 #' @rdname PPC-errors
@@ -258,24 +212,45 @@ ppc_error_scatter_avg <-
 
     y <- validate_y(y)
     yrep <- validate_predictions(yrep, length(y))
-
-    if (nrow(yrep) == 1)
-      return(
-        ppc_error_scatter(y, yrep,
-                          size = size,
-                          alpha = alpha, ...)
-      )
-
-    .ppc_error_scatter(
-      data = data.frame(y, avg_error = y - colMeans(yrep)),
-      mapping = aes_(x = ~ avg_error, y = ~ y),
-      y_lab = y_label(),
-      x_lab = "Average predictive error",
-      alpha = alpha,
+    errors <- compute_errors(y, yrep)
+    ppc_scatter_avg(
+      y = y,
+      yrep = errors,
       size = size,
-      abline = FALSE
-    )
+      alpha = alpha,
+      ref_line = FALSE
+    ) +
+      labs(x = error_avg_label(), y = y_label())
   }
+
+
+#' @rdname PPC-errors
+#' @export
+ppc_error_scatter_avg_grouped <-
+  function(y,
+           yrep,
+           group,
+           ...,
+           facet_args = list(),
+           size = 2.5,
+           alpha = 0.8) {
+    check_ignored_arguments(...)
+
+    y <- validate_y(y)
+    yrep <- validate_predictions(yrep, length(y))
+    errors <- compute_errors(y, yrep)
+    ppc_scatter_avg_grouped(
+      y = y,
+      yrep = errors,
+      group = group,
+      size = size,
+      alpha = alpha,
+      facet_args = facet_args,
+      ref_line = FALSE
+    ) +
+      labs(x = error_avg_label(), y = y_label())
+  }
+
 
 #' @rdname PPC-errors
 #' @export
@@ -294,15 +269,16 @@ ppc_error_scatter_avg_vs_x <-
     y <- validate_y(y)
     yrep <- validate_predictions(yrep, length(y))
     x <- validate_x(x, y)
-    .ppc_error_scatter(
-      data = data.frame(x, avg_error = y - colMeans(yrep)),
-      mapping = aes_(x = ~ x, y = ~ avg_error),
-      x_lab = expression(italic(x)),
-      y_lab = "Average predictive error",
-      alpha = alpha,
+    errors <- compute_errors(y, yrep)
+    ppc_scatter_avg(
+      y = x,
+      yrep = errors,
       size = size,
-      abline = FALSE
-    )
+      alpha = alpha,
+      ref_line = FALSE
+    ) +
+      labs(x = error_avg_label(), y = expression(italic(x))) +
+      coord_flip()
   }
 
 
@@ -312,8 +288,6 @@ ppc_error_scatter_avg_vs_x <-
 ppc_error_binned <- function(y, yrep, ..., bins = NULL, size = 1, alpha = 0.25) {
   check_ignored_arguments(...)
 
-  y <- validate_y(y)
-  yrep <- validate_predictions(yrep, length(y))
   binned <- binned_error_data(y, yrep, bins = bins)
 
   mixed_scheme <- is_mixed_scheme(color_scheme_get())
@@ -369,27 +343,84 @@ ppc_error_binned <- function(y, yrep, ..., bins = NULL, size = 1, alpha = 0.25) 
 }
 
 
-# internal ----------------------------------------------------------------
-compute_errors <- function(y, yrep) {
-  errs <- sweep(yrep, MARGIN = 2L, STATS = as.array(y), FUN = "-")
-  as.matrix(-1 * errs)
-}
-
-grouped_error_data <- function(y, yrep, group) {
-  grps <- unique(group)
-  errs <- list()
-  for (j in seq_along(grps)) {
-    g_j <- grps[j]
-    err_j <- compute_errors(y[group == g_j], yrep[, group == g_j, drop=FALSE])
-    errs[[j]] <- melt_predictions(err_j)
-    errs[[j]]$group <- g_j
+#' @rdname PPC-errors
+#' @export
+ppc_error_data <- function(y, yrep, group = NULL) {
+  y <- validate_y(y)
+  yrep <- validate_predictions(yrep, length(y))
+  if (!is.null(group)) {
+    group <- validate_group(group, length(y))
   }
-  dat <- dplyr::bind_rows(errs)
-  dat$y_id <- NULL
-  return(dat)
+  errors <- compute_errors(y, yrep) %>% melt_predictions()
+  errors <- tibble::add_column(errors, y_obs = y[errors$y_id], .before = "rep_id")
+  if (!is.null(group)) {
+    errors <- tibble::add_column(errors, group = group[errors$y_id], .before = "y_id")
+  }
+  errors
 }
 
+
+# internal ----------------------------------------------------------------
+
+#' Compute predictive errors `y` - `yrep`
+#' @noRd
+#' @param y,yrep User's `y` and `yrep` arguments.
+#' @return A matrix with the same dimensions as `yrep`
+compute_errors <- function(y, yrep) {
+  suggested_package("rstantools")
+  rstantools::predictive_error(object = yrep, y = y)
+}
+
+
+#' Create facet layer for PPC error plots
+#'
+#' The default is to use `scales="fixed"` (which I think makes sense for looking
+#' at errors, right?) if not specified in `facet_args`.
+#'
+#' @param User's `facet_args` argument.
+#' @param grouped If `FALSE` then does faceting by `rep_id`, if `TRUE` then both
+#'   `rep_id` and `group`.
+#' @param ignore If `TRUE` then `geom_ignore()` is returned. This is intended to
+#'   allow turning off facets if there is only one plot to make.
+#' @param scales_default What to use for the `scales` argument to `facet_*()` if
+#'   not specified in `facet_args`.
+#' @return Object returned by `facet_wrap()` or `facet_grid()` (unless `ignore=TRUE`).
+#' @noRd
+error_hist_facets <-
+  function(facet_args,
+           grouped = FALSE,
+           ignore = FALSE,
+           scales_default = "fixed") {
+    if (ignore) {
+      return(geom_ignore())
+    }
+
+    if (grouped) {
+      facet_fun <- "facet_grid"
+      facet_args[["facets"]] <- rep_id ~ group
+    } else {
+      facet_fun <- "facet_wrap"
+      facet_args[["facets"]] <- ~ rep_id
+    }
+    facet_args[["scales"]] <- facet_args[["scales"]] %||% scales_default
+
+    do.call(facet_fun, facet_args)
+  }
+
+
+error_label <- function() {
+  expression(italic(y) - italic(y)[rep])
+}
+error_avg_label <- function() {
+  expression(paste("Average ", italic(y) - italic(y)[rep]))
+}
+
+
+# Data for binned errors plots
 binned_error_data <- function(y, yrep, bins = NULL) {
+  y <- validate_y(y)
+  yrep <- validate_predictions(yrep, length(y))
+
   if (is.null(bins)) {
     bins <- n_bins(length(y))
   }
@@ -459,37 +490,4 @@ bin_errors <- function(ey, r, bins, rep_id = NULL) {
   }
   return(out)
 }
-
-
-.ppc_error_scatter <-
-  function(data,
-           mapping,
-           x_lab = "",
-           y_lab = "",
-           color = c("mid", "light"),
-           size = 2.5,
-           alpha = 1,
-           abline = TRUE) {
-    mid <- isTRUE(match.arg(color) == "mid")
-    graph <- ggplot(data, mapping)
-    if (abline) {
-      graph <- graph +
-        geom_abline(
-          intercept = 0,
-          slope = 1,
-          linetype = 2,
-          color = get_color("dh")
-        )
-    }
-    graph +
-      geom_point(
-        shape = 21,
-        fill = get_color(ifelse(mid, "m", "l")),
-        color = get_color(ifelse(mid, "mh", "lh")),
-        size = size,
-        alpha = alpha
-      ) +
-      labs(x = x_lab, y = y_lab) +
-      bayesplot_theme_get()
-  }
 

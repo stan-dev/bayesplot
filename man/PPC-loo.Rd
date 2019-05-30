@@ -20,8 +20,9 @@ ppc_loo_pit(y, yrep, lw, pit, compare = c("uniform", "normal"), ...,
   size = 2, alpha = 1)
 
 ppc_loo_intervals(y, yrep, psis_object, subset = NULL,
-  intervals = NULL, ..., prob = 0.5, prob_outer = 0.9, size = 1,
-  fatten = 3, order = c("index", "median"))
+  intervals = NULL, ..., prob = 0.5, prob_outer = 0.9,
+  alpha = 0.33, size = 1, fatten = 2.5, order = c("index",
+  "median"))
 
 ppc_loo_ribbon(y, yrep, lw, psis_object, subset = NULL,
   intervals = NULL, ..., prob = 0.5, prob_outer = 0.9,
@@ -162,14 +163,15 @@ fit <- stan_lmer(
                + (1 + floor | county),
   data = radon,
   iter = 1000,
-  chains = 2  # ,cores = 2
+  chains = 2,
+  cores = 2
  )
 y <- radon$log_radon
 yrep <- posterior_predict(fit)
 
-loo1 <- loo(fit, save_psis = TRUE, cores = 2)
+loo1 <- loo(fit, save_psis = TRUE, cores = 4)
 psis1 <- loo1$psis_object
-lw <- weights(psis1)
+lw <- weights(psis1) # normalized log weights
 
 # marginal predictive check using LOO probability integral transform
 color_scheme_set("orange")

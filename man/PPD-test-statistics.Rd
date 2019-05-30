@@ -2,6 +2,7 @@
 % Please edit documentation in R/ppd-test-statistics.R
 \name{PPD-test-statistics}
 \alias{PPD-test-statistics}
+\alias{PPD-statistics}
 \alias{ppd_stat}
 \alias{ppd_stat_grouped}
 \alias{ppd_stat_freqpoly}
