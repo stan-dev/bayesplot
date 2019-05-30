@@ -6,6 +6,17 @@
 
 <!-- Items for next release go here-->
 
+* New PPD module (FIXME: add more details)
+
+* `ppc_scatter()` and `ppc_scatter_avg_grouped()` gain an argument `facet_args` 
+  that many other functions already have.
+  
+* All PPC categories now have one or more `_data()` functions that return the 
+  data used for plotting (Advances #97). The new ones in this release are:
+   - `ppc_scatter_data()`
+   - `ppc_scatter_avg_data()`
+   - `ppc_stat_data()` 
+   - `ppc_bars_data()`
 
 # bayesplot 1.7.0
 

@@ -49,8 +49,9 @@ is passed to \code{\link[ggplot2:geom_line]{ggplot2::geom_line()}}.}
 default) the y-axis will display counts. Setting \code{freq=FALSE} will put
 proportions on the y-axis.}
 
-\item{group}{A grouping variable (vector or factor). Each value in \code{group} is
-interpreted as the group level pertaining to the corresponding observation.}
+\item{group}{A grouping variable. Will be coerced to \link[base:factor]{factor}
+if not already a factor. Each value in \code{group} is interpreted as the group
+level pertaining to the corresponding observation.}
 
 \item{facet_args}{An optional list of  arguments (other than \code{facets})
 passed to \code{\link[ggplot2:facet_wrap]{ggplot2::facet_wrap()}} to control faceting.}

@@ -49,8 +49,9 @@ posterior (or prior) sample used to generate \code{yrep}. The number of columns,
 to make sense. See the \strong{Details} and \strong{Plot Descriptions} sections for
 additional advice specific to particular plots.}
 
-\item{group}{A grouping variable (vector or factor). Each value in \code{group} is
-interpreted as the group level pertaining to the corresponding observation.}
+\item{group}{A grouping variable. Will be coerced to \link[base:factor]{factor}
+if not already a factor. Each value in \code{group} is interpreted as the group
+level pertaining to the corresponding observation.}
 
 \item{...}{Currently unused.}
 

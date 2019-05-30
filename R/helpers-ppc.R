@@ -101,9 +101,9 @@ validate_predictions <- function(predictions, n_obs = NULL) {
 #' Validate group
 #'
 #' Checks that grouping variable has correct number of observations and is
-#' either a vector or factor variable.
+#' either a factor variable or vector (which is coerced to factor).
 #'
-#' @param group The user's `group` argument
+#' @param group The user's `group` argument.
 #' @param n_obs The number of observations that `group` should contain (e.g.,
 #'   `length(y)`, `ncol(yrepd)`, etc.). Unlike for `validate_predictions()`,
 #'   this is always required for `validate_group()`.

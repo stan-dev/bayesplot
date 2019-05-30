@@ -14,17 +14,15 @@
 #' @param ... Currently unused.
 #' @param prob A value between `0` and `1` indicating the desired probability
 #'   mass to include in the `yrep` intervals. Set `prob=0` to remove the
-#'   intervals. For `ppc_rootogram()` these are intervals of the *square roots*
-#'   of the expected counts.
-#' @param width For `ppc_bars()` and `ppc_bars_grouped()`, passed to
-#'   [ggplot2::geom_bar()] to control the bar width.
-#' @param size,fatten For `ppc_bars()` and `ppc_bars_grouped()`, `size` and
-#'   `fatten` are passed to [ggplot2::geom_pointrange()] to control the
-#'   appearance of the `yrep` points and intervals. For `ppc_rootogram()` `size`
-#'   is passed to [ggplot2::geom_line()].
-#' @param freq For `ppc_bars()` and `ppc_bars_grouped()`, if `TRUE` (the
-#'   default) the y-axis will display counts. Setting `freq=FALSE` will put
-#'   proportions on the y-axis.
+#'   intervals. (Note: for rootograms these are intervals of the *square roots*
+#'   of the expected counts.)
+#' @param width For bar plots only, passed to [ggplot2::geom_bar()] to control
+#'   the bar width.
+#' @param size,fatten For bar plots, `size` and `fatten` are passed to
+#'   [ggplot2::geom_pointrange()] to control the appearance of the `yrep` points
+#'   and intervals. For rootograms `size` is passed to [ggplot2::geom_line()].
+#' @param freq For bar plots only, if `TRUE` (the default) the y-axis will
+#'   display counts. Setting `freq=FALSE` will put proportions on the y-axis.
 #'
 #' @template return-ggplot-or-data
 #'
@@ -58,9 +56,9 @@
 #'   * _Suspended_: histogram of the differences between expected and
 #'    observed counts.
 #'
-#'   **All of these are plotted on the square root scale**. See Kleiber and
-#'   Zeileis (2016) for advice on interpreting rootograms and selecting among
-#'   the different styles.
+#'   **All of the rootograms are plotted on the square root scale**. See Kleiber
+#'   and Zeileis (2016) for advice on interpreting rootograms and selecting
+#'   among the different styles.
 #' }
 #' }
 #'

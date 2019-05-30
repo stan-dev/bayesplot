@@ -15,7 +15,7 @@
 #'   appearance of the points.
 #'
 #' @template details-binomial
-#' @template return-ggplot
+#' @template return-ggplot-or-data
 #'
 #' @templateVar bdaRef (Ch. 6)
 #' @template reference-bda
@@ -54,6 +54,8 @@
 #' p1 + lims
 #' p2 + lims
 #'
+#' # for ppc_scatter_avg_grouped the default is to allow the facets
+#' # to have different x and y axes
 #' group <- example_group_data()
 #' ppc_scatter_avg_grouped(y, yrep, group)
 #'
@@ -73,33 +75,32 @@ ppc_scatter <-
            alpha = 0.8) {
     check_ignored_arguments(...)
 
-    if (nrow(yrep) == 1) {
+    data <- ppc_scatter_data(y, yrep)
+    if (dplyr::n_distinct(data$rep_id) == 1) {
       facet_layer <- geom_ignore()
     } else {
       facet_args[["facets"]] <- "rep_label"
       facet_layer <- do.call("facet_wrap_parsed", facet_args)
     }
 
-    data <- ppc_scatter_data(y, yrep)
-    ggplot(data, aes_(x = ~ value, y = ~ y_obs)) +
-      geom_abline(
-        intercept = 0,
-        slope = 1,
-        linetype = 2,
-        color = get_color("dh")
-      ) +
+    ggplot(data, scatter_aes(color = "yrep", fill = "yrep")) +
+      abline_01(linetype = 2, color = get_color("dh")) +
       geom_point(
-        color = get_color("mh"),
-        fill = get_color("m"),
-        shape = 21,
         size = size,
-        alpha = alpha
+        alpha = alpha,
+        shape = 21,
+        show.legend = FALSE
       ) +
-      facet_layer +
+      # use ppd color scale since only need one color
+      # (and legend is off so no label modification needed)
+      scale_color_ppd() +
+      scale_fill_ppd() +
       bayesplot_theme_get() +
+      facet_layer +
       labs(x = yrep_label(), y = y_label()) +
       force_axes_in_facets() +
-      facet_text(FALSE)
+      facet_text(FALSE) +
+      legend_none()
   }
 
 
@@ -123,21 +124,18 @@ ppc_scatter_avg <-
       inform("With only 1 row in 'yrep' ppc_scatter_avg is the same as ppc_scatter.")
     }
 
-    ggplot(data, mapping = aes_(
-      x = ~ value,
-      y = ~ y_obs
-    )) +
+    ggplot(data, scatter_aes(color = "yrep", fill = "yrep")) +
+      abline_01(linetype = 2, color = get_color("dh")) +
       geom_point(
-        color = get_color("mh"),
-        fill = get_color("m"),
-        shape = 21,
         alpha = alpha,
-        size = size
+        size = size,
+        shape = 21,
+        show.legend = FALSE
       ) +
-      labs(
-        x = yrep_avg_label(),
-        y = y_label()
-      ) +
+      # ppd instead of ppc (see comment in ppc_scatter)
+      scale_color_ppd() +
+      scale_fill_ppd() +
+      labs(x = yrep_avg_label(), y = y_label()) +
       bayesplot_theme_get()
   }
 
@@ -183,7 +181,7 @@ ppc_scatter_avg_data <- function(y, yrep, group = NULL) {
   }
 
   data <- ppc_scatter_data(y = y, yrep = t(colMeans(yrep)))
-  data$rep_id <- NA
+  data$rep_id <- NA_integer_
   levels(data$rep_label) <- "mean(italic(y)[rep]))"
 
   if (!is.null(group)) {
@@ -196,13 +194,13 @@ ppc_scatter_avg_data <- function(y, yrep, group = NULL) {
   data
 }
 
-
-
 # internal ----------------------------------------------------------------
+scatter_aes <- function(...) {
+  aes_(x = ~ value, y = ~ y_obs, ...)
+}
+
 scatter_avg_group_facets <- function(facet_args) {
   facet_args[["facets"]] <- "group"
   facet_args[["scales"]] <- facet_args[["scales"]] %||% "free"
   do.call("facet_wrap", facet_args)
 }
-
-

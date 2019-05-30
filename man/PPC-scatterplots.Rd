@@ -43,8 +43,9 @@ on the plot) instead of the \strong{ggplot2} default of \code{scales="fixed"}.}
 \item{size, alpha}{Arguments passed to \code{\link[ggplot2:geom_point]{ggplot2::geom_point()}} to control the
 appearance of the points.}
 
-\item{group}{A grouping variable (vector or factor). Each value in \code{group} is
-interpreted as the group level pertaining to the corresponding observation.}
+\item{group}{A grouping variable. Will be coerced to \link[base:factor]{factor}
+if not already a factor. Each value in \code{group} is interpreted as the group
+level pertaining to the corresponding observation.}
 }
 \value{
 A ggplot object that can be further customized using the \strong{ggplot2} package.

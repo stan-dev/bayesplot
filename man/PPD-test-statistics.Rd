@@ -60,8 +60,9 @@ to control faceting. Note: if \code{scales} is not included in \code{facet_args}
 then \strong{bayesplot} may use \code{scales="free"} as the default (depending
 on the plot) instead of the \strong{ggplot2} default of \code{scales="fixed"}.}
 
-\item{group}{A grouping variable (vector or factor). Each value in \code{group} is
-interpreted as the group level pertaining to the corresponding observation.}
+\item{group}{A grouping variable. Will be coerced to \link[base:factor]{factor}
+if not already a factor. Each value in \code{group} is interpreted as the group
+level pertaining to the corresponding observation.}
 
 \item{size}{For the 2D plot only, arguments passed to
 \code{\link[ggplot2:geom_point]{ggplot2::geom_point()}} to control the appearance of scatterplot points.}

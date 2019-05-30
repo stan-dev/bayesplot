@@ -145,48 +145,48 @@ ppd_stat_freqpoly_grouped <-
 
 #' @rdname PPD-test-statistics
 #' @export
-ppd_stat_2d <- function(ypred,
-                        stat = c("mean", "sd"),
-                        ...,
-                        size = 2.5,
-                        alpha = 0.7) {
+ppd_stat_2d <-
+  function(ypred,
+           stat = c("mean", "sd"),
+           ...,
+           size = 2.5,
+           alpha = 0.7) {
+    check_ignored_arguments(...)
+    if (length(stat) != 2) {
+      abort("For ppd_stat_2d the 'stat' argument must have length 2.")
+    }
 
-  check_ignored_arguments(...)
-  if (length(stat) != 2) {
-    abort("For ppd_stat_2d the 'stat' argument must have length 2.")
+    if (is.character(stat)) {
+      lgnd_title <- bquote(italic(T) == (list(.(stat[1]), .(stat[2]))))
+      stat_labs <- stat
+    } else {
+      lgnd_title <- expression(italic(T) == (list(italic(T)[1], italic(T)[2])))
+      stat_labs <- expression(italic(T)[1], italic(T)[2])
+    }
+
+    data <- ppd_stat_data(
+      ypred = ypred,
+      group = NULL,
+      stat = c(match.fun(stat[[1]]), match.fun(stat[[2]]))
+    )
+
+    ggplot(data) +
+      geom_point(
+        aes_(
+          x = ~ value,
+          y = ~ value2,
+          fill = "yrep",
+          color = "yrep"
+        ),
+        shape = 21,
+        size = size,
+        alpha = alpha
+      ) +
+      scale_fill_ppd(lgnd_title, labels = Tyrep_label()) +
+      scale_color_ppd(lgnd_title, labels = Tyrep_label()) +
+      labs(x = stat_labs[1], y = stat_labs[2]) +
+      bayesplot_theme_get()
   }
-
-  if (is.character(stat)) {
-    lgnd_title <- bquote(italic(T) == (list(.(stat[1]), .(stat[2]))))
-    stat_labs <- stat
-  } else {
-    lgnd_title <- expression(italic(T) == (list(italic(T)[1], italic(T)[2])))
-    stat_labs <- expression(italic(T)[1], italic(T)[2])
-  }
-
-  data <- ppd_stat_data(
-    ypred = ypred,
-    group = NULL,
-    stat = c(match.fun(stat[[1]]), match.fun(stat[[2]]))
-  )
-
-  ggplot(data) +
-    geom_point(
-      aes_(
-        x = ~ value,
-        y = ~ value2,
-        fill = "yrep",
-        color = "yrep"
-      ),
-      shape = 21,
-      size = size,
-      alpha = alpha
-    ) +
-    scale_fill_ppd(lgnd_title, labels = Tyrep_label()) +
-    scale_color_ppd(lgnd_title, labels = Tyrep_label()) +
-    labs(x = stat_labs[1], y = stat_labs[2]) +
-    bayesplot_theme_get()
-}
 
 
 #' @rdname PPD-test-statistics

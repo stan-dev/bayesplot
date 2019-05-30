@@ -14,9 +14,8 @@ a plot is created it can be further customized using various functions from
 the **ggplot2** package. 
 
 Currently **bayesplot** offers a variety of plots of posterior draws, 
-visual MCMC diagnostics, and graphical posterior (or prior) predictive checking. 
-Additional functionality (e.g. for forecasting/out-of-sample prediction and other
-inference-related tasks) will be added in future releases.
+visual MCMC diagnostics, graphical posterior (or prior) predictive checking, 
+and general plots of posterior (or prior) predictive distributions.
 
 The idea behind **bayesplot** is not only to provide convenient functionality
 for users, but also a common set of functions that can be easily used by
