@@ -331,11 +331,22 @@ ppc_stat_2d <- function(y,
 #' @rdname PPC-test-statistics
 #' @export
 ppc_stat_data <- function(y, yrep, group = NULL, stat) {
+  if (!(length(stat) %in% 1:2)) {
+    abort("'stat' must have length 1 or 2.")
+  }
+
   y <- validate_y(y)
   yrep <- validate_predictions(yrep, length(y))
   if (!is.null(group)) {
     group <- validate_group(group, length(y))
   }
+
+  if (length(stat) == 1) {
+    stat <- match.fun(stat)
+  } else {
+    stat <- list(match.fun(stat[[1]]), match.fun(stat[[2]]))
+  }
+
   .ppd_stat_data(
     predictions = yrep,
     y = y,

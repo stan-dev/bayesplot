@@ -70,6 +70,7 @@ ppd_stat <-
 #' @export
 ppd_stat_grouped <-
   function(ypred,
+           group,
            stat = "mean",
            ...,
            facet_args = list(),
@@ -193,9 +194,19 @@ ppd_stat_2d <-
 #' @rdname PPD-test-statistics
 #' @export
 ppd_stat_data <- function(ypred, group = NULL, stat) {
+  if (!(length(stat) %in% 1:2)) {
+    abort("'stat' must have length 1 or 2.")
+  }
+
   ypred <- validate_predictions(ypred)
   if (!is.null(group)) {
     group <- validate_group(group, ncol(ypred))
+  }
+
+  if (length(stat) == 1) {
+    stat <- match.fun(stat)
+  } else {
+    stat <- list(match.fun(stat[[1]]), match.fun(stat[[2]]))
   }
 
   .ppd_stat_data(

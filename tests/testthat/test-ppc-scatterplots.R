@@ -15,7 +15,7 @@ test_that("ppc_scatter_avg returns ggplot object", {
 })
 
 test_that("ppc_scatter_avg_data same as ppc_scatter_data if nrow(yrep) = 1", {
-  # really only a few columns are exactly the same
+  # really only a few columns are _exactly_ the same
   cols <- c("y_id", "y_obs", "value")
   d1 <- ppc_scatter_data(y2, yrep2)
   d2 <- ppc_scatter_avg_data(y2, yrep2)

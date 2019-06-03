@@ -6,11 +6,19 @@ source(test_path("data-for-ppc-tests.R"))
 test_that("ppc_dens_overlay returns a ggplot object", {
   expect_gg(ppc_dens_overlay(y, yrep))
   expect_gg(ppc_dens_overlay(y2, yrep2, size = 0.5, alpha = 0.2))
+
+  # ppd versions
+  expect_gg(ppd_dens_overlay(yrep))
+  expect_gg(ppd_dens_overlay(yrep2, size = 0.5, alpha = 0.2))
 })
 
 test_that("ppc_ecdf_overlay returns a ggplot object", {
   expect_gg(ppc_ecdf_overlay(y, yrep, size = 0.5, alpha = 0.2))
   expect_gg(ppc_ecdf_overlay(y2, yrep2))
+
+  # ppd versions
+  expect_gg(ppd_ecdf_overlay(yrep, size = 0.5, alpha = 0.2))
+  expect_gg(ppd_ecdf_overlay(yrep2))
 })
 
 test_that("ppc_dens,pp_hist,ppc_freqpoly,ppc_boxplot return ggplot objects", {
@@ -18,29 +26,48 @@ test_that("ppc_dens,pp_hist,ppc_freqpoly,ppc_boxplot return ggplot objects", {
   expect_gg(ppc_hist(y, yrep[1:8, ]))
   expect_gg(ppc_hist(y2, yrep2))
 
-  expect_gg(ppc_boxplot(y, yrep[1,, drop = FALSE]))
-  expect_gg(ppc_boxplot(y, yrep[1:8, ]))
-  expect_gg(ppc_boxplot(y2, yrep2, notch = FALSE))
-
   expect_gg(ppc_dens(y, yrep[1:8, ]))
   expect_gg(ppc_dens(y2, yrep2))
 
   expect_gg(ppc_freqpoly(y, yrep[1:8, ], binwidth = 2, size = 2, alpha = 0.1))
   expect_gg(ppc_freqpoly(y2, yrep2))
 
+  expect_gg(ppc_boxplot(y, yrep[1,, drop = FALSE]))
+  expect_gg(ppc_boxplot(y, yrep[1:8, ]))
+  expect_gg(ppc_boxplot(y2, yrep2, notch = FALSE))
+
   expect_gg(p <- ppc_hist(y, yrep[1:8, ], binwidth = 3))
   if (utils::packageVersion("ggplot2") >= "3.0.0") {
     facet_var <- "~rep_label"
     expect_equal(as.character(p$facet$params$facets[1]), facet_var)
   }
+
+  # ppd versions
+  expect_gg(ppd_hist(yrep[1,, drop = FALSE]))
+  expect_gg(ppd_hist(yrep[1:8, ]))
+  expect_gg(ppd_hist(yrep2))
+
+  expect_gg(ppc_dens(y, yrep[1:8, ]))
+  expect_gg(ppc_dens(y2, yrep2))
+
+  expect_gg(ppd_freqpoly(yrep[1:8, ], binwidth = 2, size = 2, alpha = 0.1))
+  expect_gg(ppd_freqpoly(yrep2))
+
+  expect_gg(ppd_boxplot(yrep[1,, drop = FALSE]))
+  expect_gg(ppd_boxplot(yrep[1:8, ]))
+  expect_gg(ppd_boxplot(yrep2, notch = FALSE))
 })
 
 test_that("ppc_freqpoly_grouped returns a ggplot object", {
   expect_gg(ppc_freqpoly_grouped(y, yrep[1:4, ], group))
   expect_gg(ppc_freqpoly_grouped(y, yrep[1:4, ], group,
                                  freq = TRUE, alpha = 0.5))
-
   expect_error(ppc_freqpoly_grouped(y2, yrep2, group2),
+               "'group' must have more than one unique value")
+
+  # ppd versions
+  expect_gg(ppd_freqpoly_grouped(yrep[1:4, ], group))
+  expect_error(ppd_freqpoly_grouped(yrep2, group2),
                "'group' must have more than one unique value")
 })
 
@@ -56,7 +83,6 @@ test_that("ppc_violin_grouped returns a ggplot object", {
 
 
 
-
 # Visual tests -----------------------------------------------------------------
 
 test_that("ppc_hist renders correctly", {
@@ -67,6 +93,13 @@ test_that("ppc_hist renders correctly", {
 
   p_binwidth <- ppc_hist(vdiff_y, vdiff_yrep[1:8, ], binwidth = 3)
   vdiffr::expect_doppelganger("ppc_hist (binwidth)", p_binwidth)
+
+  # ppd versions
+  p_base <- ppd_hist(vdiff_yrep[1:8, ])
+  vdiffr::expect_doppelganger("ppd_hist (default)", p_base)
+
+  p_binwidth <- ppd_hist(vdiff_yrep[1:8, ], binwidth = 3)
+  vdiffr::expect_doppelganger("ppd_hist (binwidth)", p_binwidth)
 })
 
 test_that("ppc_freqpoly renders correctly", {
@@ -81,9 +114,21 @@ test_that("ppc_freqpoly renders correctly", {
     binwidth = 2,
     size = 2,
     alpha = 0.1)
-
   vdiffr::expect_doppelganger(
     title = "ppc_freqpoly (alpha, binwidth, size)",
+    fig = p_custom)
+
+  # ppd versions
+  p_base <- ppd_freqpoly(vdiff_yrep[1:8, ])
+  vdiffr::expect_doppelganger("ppd_freqpoly (default)", p_base)
+
+  p_custom <- ppd_freqpoly(
+    ypred = vdiff_yrep[1:8, ],
+    binwidth = 2,
+    size = 2,
+    alpha = 0.1)
+  vdiffr::expect_doppelganger(
+    title = "ppd_freqpoly (alpha, binwidth, size)",
     fig = p_custom)
 })
 
@@ -92,6 +137,10 @@ test_that("ppc_freqpoly_grouped renders correctly", {
 
   p_base <- ppc_freqpoly_grouped(vdiff_y, vdiff_yrep[1:3, ], vdiff_group)
   vdiffr::expect_doppelganger("ppc_freqpoly_grouped (default)", p_base)
+
+  # ppd versions
+  p_base <- ppd_freqpoly_grouped(vdiff_yrep[1:3, ], vdiff_group)
+  vdiffr::expect_doppelganger("ppd_freqpoly_grouped (default)", p_base)
 })
 
 test_that("ppc_boxplot renders correctly", {
@@ -105,6 +154,16 @@ test_that("ppc_boxplot renders correctly", {
 
   p_custom <- ppc_boxplot(vdiff_y, vdiff_yrep[1:8, ], size = 1.5, alpha = .5)
   vdiffr::expect_doppelganger("ppc_boxplot (alpha, size)", p_custom)
+
+  # ppd versions
+  p_base <- ppd_boxplot(vdiff_yrep[1:8, ])
+  vdiffr::expect_doppelganger("ppd_boxplot (default)", p_base)
+
+  p_no_notch <- ppd_boxplot(vdiff_yrep[1:8, ], notch = FALSE)
+  vdiffr::expect_doppelganger("ppd_boxplot (no notch)", p_no_notch)
+
+  p_custom <- ppd_boxplot(vdiff_yrep[1:8, ], size = 1.5, alpha = .5)
+  vdiffr::expect_doppelganger("ppd_boxplot (alpha, size)", p_custom)
 })
 
 test_that("ppc_ecdf_overlay renders correctly", {
@@ -120,6 +179,17 @@ test_that("ppc_ecdf_overlay renders correctly", {
     size = 2,
     alpha = .2)
   vdiffr::expect_doppelganger("ppc_ecdf_overlay (discrete, size, alpha)", p_custom)
+
+  # ppd versions
+  p_base <- ppd_ecdf_overlay(vdiff_yrep2)
+  vdiffr::expect_doppelganger("ppd_ecdf_overlay (default)", p_base)
+
+  p_custom <- ppd_ecdf_overlay(
+    vdiff_yrep2,
+    discrete = TRUE,
+    size = 2,
+    alpha = .2)
+  vdiffr::expect_doppelganger("ppd_ecdf_overlay (discrete, size, alpha)", p_custom)
 })
 
 test_that("ppc_dens renders correctly", {
@@ -127,6 +197,10 @@ test_that("ppc_dens renders correctly", {
 
   p_base <- ppc_dens(vdiff_y, vdiff_yrep[1:8, ])
   vdiffr::expect_doppelganger("ppc_dens (default)", p_base)
+
+  # ppd versions
+  p_base <- ppd_dens(vdiff_yrep[1:8, ])
+  vdiffr::expect_doppelganger("ppd_dens (default)", p_base)
 })
 
 test_that("ppc_dens_overlay renders correctly", {
@@ -137,6 +211,13 @@ test_that("ppc_dens_overlay renders correctly", {
 
   p_custom <- ppc_dens_overlay(vdiff_y, vdiff_yrep, size = 1, alpha = 0.2)
   vdiffr::expect_doppelganger("ppc_dens_overlay (alpha, size)", p_custom)
+
+  # ppd versions
+  p_base <- ppd_dens_overlay(vdiff_yrep)
+  vdiffr::expect_doppelganger("ppd_dens_overlay (default)", p_base)
+
+  p_custom <- ppd_dens_overlay(vdiff_yrep, size = 1, alpha = 0.2)
+  vdiffr::expect_doppelganger("ppd_dens_overlay (alpha, size)", p_custom)
 })
 
 test_that("ppc_violin_grouped renders correctly", {
