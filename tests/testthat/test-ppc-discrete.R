@@ -4,23 +4,27 @@ context("PPC: discrete")
 
 
 # bar plots ---------------------------------------------------------------
-data("esoph", package = "datasets")
-fit <- stan_polr(tobgp ~ agegp, data = esoph, method = "probit", prior = R2(0.2, "mean"),
-                 init_r = 0.1, seed = 12345, chains = 1, iter = 500, refresh = 0)
-y <- as.integer(fit$y)
-yrep_char <- posterior_predict(fit, draws = 10)
-yrep <- sapply(data.frame(yrep_char, stringsAsFactors = TRUE), as.integer)
-grp <- datasets::esoph$agegp
+
+# data("esoph", package = "datasets")
+# fit <- stan_polr(tobgp ~ agegp, data = esoph, method = "probit", prior = R2(0.2, "mean"),
+#                  init_r = 0.1, seed = 12345, chains = 1, iter = 500, refresh = 0)
+# y_ord <- as.integer(fit$y)
+# yrep_char <- posterior_predict(fit, draws = 50)
+# yrep_ord <- sapply(data.frame(yrep_char, stringsAsFactors = TRUE), as.integer)
+# group_ord <- datasets::esoph$agegp
+# save(y_ord, yrep_ord, group_ord, file = testthat::test_path("data-for-ordinal.rda"))
+
+load(testthat::test_path("data-for-ordinal.rda"))
 
 test_that("ppc_bars & ppc_bars_grouped return a ggplot object", {
-  expect_gg(ppc_bars(y, yrep))
-  expect_gg(ppc_bars(y, yrep, prob = 0))
-  expect_gg(ppc_bars_grouped(y, yrep, group = grp))
+  expect_gg(ppc_bars(y_ord, yrep_ord))
+  expect_gg(ppc_bars(y_ord, yrep_ord, prob = 0))
+  expect_gg(ppc_bars_grouped(y_ord, yrep_ord, group = group_ord))
 })
 
 test_that("freq argument to ppc_bars works", {
-  p_freq <- ggplot2::ggplot_build(ppc_bars(y, yrep, freq = TRUE))
-  p_prop <- ggplot2::ggplot_build(ppc_bars(y, yrep, freq = FALSE))
+  p_freq <- ggplot2::ggplot_build(ppc_bars(y_ord, yrep_ord, freq = TRUE))
+  p_prop <- ggplot2::ggplot_build(ppc_bars(y_ord, yrep_ord, freq = FALSE))
 
   y_freq <- p_freq$data[[1]]$y
   y_prop <- p_prop$data[[1]]$y
@@ -36,17 +40,45 @@ test_that("ppc_bars works with negative integers", {
 
 test_that("ppc_bars(_grouped) errors if y/yrep not discrete", {
   # make continuous
-  y_cont <- y + 0.33
-  yrep_cont <- yrep + 0.33
+  y_cont <- y_ord + 0.33
+  yrep_cont <- yrep_ord + 0.33
 
-  expect_error(ppc_bars(y_cont, yrep),
+  expect_error(ppc_bars(y_cont, yrep_ord),
                "ppc_bars expects 'y' to be discrete")
-  expect_error(ppc_bars(y, yrep_cont),
+  expect_error(ppc_bars(y_ord, yrep_cont),
                "ppc_bars expects 'yrep' to be discrete")
-  expect_error(ppc_bars_grouped(y_cont, yrep, group = grp),
+  expect_error(ppc_bars_grouped(y_cont, yrep_ord, group = group_ord),
                "ppc_bars expects 'y' to be discrete")
-  expect_error(ppc_bars_grouped(y, yrep_cont, group = grep),
+  expect_error(ppc_bars_grouped(y_ord, yrep_cont, group = group_ord),
                "ppc_bars expects 'yrep' to be discrete")
+})
+
+
+test_that("ppc_bars_data includes all levels", {
+  y_ord2 <- y_ord
+  y_ord2[y_ord2 == 1] <- 2
+  yrep_ord2 <- yrep_ord
+  yrep_ord2[yrep_ord2 == 2] <- 1
+
+  tab <- as.integer(table(y_ord))
+
+  # y and yrep have save levels
+  d <- ppc_bars_data(y_ord, yrep_ord)
+  expect_equal(d$x, 1:4)
+  expect_equal(d$y_obs, tab)
+
+  # yrep has more unique values than y
+  d2 <- ppc_bars_data(y_ord2, yrep_ord)
+  expect_equal(d2$x, 1:4)
+  expect_equal(d2$y_obs, c(NA, sum(tab[1:2]), tab[3:4]))
+
+  # y has more unique values than yrep
+  d3 <- ppc_bars_data(y_ord, yrep_ord2)
+  expect_equal(d3$x, 1:4)
+  expect_equal(d3$y_obs, tab)
+  expect_equal(d3$l[2], NA_real_)
+  expect_equal(d3$m[2], NA_real_)
+  expect_equal(d3$h[2], NA_real_)
 })
 
 

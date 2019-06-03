@@ -382,7 +382,6 @@ ppc_bars_data <-
     was_null_group <- FALSE
   }
 
-  # FIXME: make sure that levels with zero counts are still plotted
   tmp_data <- data.frame(
     group = factor(group),
     y = y,
@@ -409,9 +408,11 @@ ppc_bars_data <-
     arrange(.data$group, .data$value)
 
   cols <- syms(c(if (!was_null_group) "group", "x", "y_obs", "l", "m", "h"))
-  yrep_summary %>%
-    full_join(y_summary, by = c("group", "value")) %>% # full join to keep empty cells
+
+  # full join to keep empty cells
+  full_join(yrep_summary, y_summary, by = c("group", "value")) %>%
     rename(x = .data$value) %>%
+    arrange(.data$x) %>%
     select(!!!cols)
 }
 
