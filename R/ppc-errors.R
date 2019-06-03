@@ -285,62 +285,61 @@ ppc_error_scatter_avg_vs_x <-
 #' @rdname PPC-errors
 #' @export
 #' @param bins For `ppc_error_binned()`, the number of bins to use (approximately).
-ppc_error_binned <- function(y, yrep, ..., bins = NULL, size = 1, alpha = 0.25) {
-  check_ignored_arguments(...)
+ppc_error_binned <-
+  function(y,
+           yrep,
+           ...,
+           facet_args = list(),
+           bins = NULL,
+           size = 1,
+           alpha = 0.25) {
+    check_ignored_arguments(...)
 
-  binned <- binned_error_data(y, yrep, bins = bins)
+    data <- ppc_error_binnned_data(y, yrep, bins = bins)
+    facet_layer <- if (nrow(yrep) == 1) {
+      geom_ignore()
+    } else {
+      facet_args[["facets"]] <- "rep_id"
+      do.call("facet_wrap", facet_args)
+    }
 
-  mixed_scheme <- is_mixed_scheme(color_scheme_get())
-  point_fill <- get_color(ifelse(mixed_scheme, "m", "d"))
-  point_color <- get_color(ifelse(mixed_scheme, "mh", "dh"))
-  graph <-
-    ggplot(binned, aes_(x = ~ ey_bar)) +
-    geom_hline(
-      yintercept = 0,
-      linetype = 2,
-      color = "black"
-    ) +
-    geom_ribbon(
-      aes_(ymax = ~ se2, ymin = ~ -se2),
-      fill = get_color("l"),
-      color = NA,
-      alpha = alpha
-    ) +
-    geom_path(
-      mapping = aes_(y = ~ se2),
-      color = get_color("l"),
-      size = size
-    ) +
-    geom_path(
-      mapping = aes_(y = ~ -se2),
-      color = get_color("l"),
-      size = size
-    ) +
-    geom_point(
-      mapping = aes_(y = ~ err_bar),
-      shape = 21,
-      fill = point_fill,
-      color = point_color
-    ) +
-    labs(
-      x = "Predicted proportion",
-      y = "Average Errors \n (with 2SE bounds)"
-    ) +
-    bayesplot_theme_get()
+    mixed_scheme <- is_mixed_scheme(color_scheme_get())
+    point_fill <- get_color(ifelse(mixed_scheme, "m", "d"))
+    point_color <- get_color(ifelse(mixed_scheme, "mh", "dh"))
 
-  if (nrow(yrep) > 1) {
-    graph <- graph +
-      facet_wrap(
-        facets = ~rep_id
-        # labeller = label_bquote(italic(y)[rep](.(rep_id)))
-      )
+    ggplot(data, aes_(x = ~ ey_bar)) +
+      hline_0(linetype = 2, color = "black") +
+      geom_ribbon(
+        mapping = aes_(ymax = ~ se2, ymin = ~ -se2),
+        fill = get_color("l"),
+        color = NA,
+        alpha = alpha
+      ) +
+      geom_path(
+        mapping = aes_(y = ~ se2),
+        color = get_color("l"),
+        size = size
+      ) +
+      geom_path(
+        mapping = aes_(y = ~ -se2),
+        color = get_color("l"),
+        size = size
+      ) +
+      geom_point(
+        mapping = aes_(y = ~ err_bar),
+        shape = 21,
+        fill = point_fill,
+        color = point_color
+      ) +
+      labs(
+        x = "Predicted proportion",
+        y = "Average Errors \n (with 2SE bounds)"
+      ) +
+      bayesplot_theme_get() +
+      facet_layer +
+      force_axes_in_facets() +
+      facet_text(FALSE)
   }
-
-  graph +
-    force_axes_in_facets() +
-    facet_text(FALSE) +
-    facet_bg(FALSE)
-}
 
 
 #' @rdname PPC-errors
@@ -417,7 +416,7 @@ error_avg_label <- function() {
 
 
 # Data for binned errors plots
-binned_error_data <- function(y, yrep, bins = NULL) {
+ppc_error_binnned_data <- function(y, yrep, bins = NULL) {
   y <- validate_y(y)
   yrep <- validate_predictions(yrep, length(y))
 
@@ -428,11 +427,17 @@ binned_error_data <- function(y, yrep, bins = NULL) {
   errors <- compute_errors(y, yrep)
   binned_errs <- list()
   for (s in 1:nrow(errors)) {
-    binned_errs[[s]] <- bin_errors(ey = yrep[s,], r = errors[s,], bins = bins,
-                                   rep_id = s)
+    binned_errs[[s]] <-
+      bin_errors(
+        ey = yrep[s, ],
+        r = errors[s, ],
+        bins = bins,
+        rep_id = s
+      )
   }
-  dat <- dplyr::bind_rows(binned_errs)
-  return(dat)
+
+  binned_errs <- dplyr::bind_rows(binned_errs)
+  tibble::as_tibble(binned_errs)
 }
 
 # calculate number of bins binned_error_data()
