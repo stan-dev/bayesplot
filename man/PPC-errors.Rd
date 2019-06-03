@@ -28,7 +28,8 @@ ppc_error_scatter_avg_grouped(y, yrep, group, ..., facet_args = list(),
 
 ppc_error_scatter_avg_vs_x(y, yrep, x, ..., size = 2.5, alpha = 0.8)
 
-ppc_error_binned(y, yrep, ..., bins = NULL, size = 1, alpha = 0.25)
+ppc_error_binned(y, yrep, ..., facet_args = list(), bins = NULL,
+  size = 1, alpha = 0.25)
 
 ppc_error_data(y, yrep, group = NULL)
 }
@@ -149,8 +150,8 @@ ppc_error_scatter_avg(y, yrep)
 x <- example_x_data()
 ppc_error_scatter_avg_vs_x(y, yrep, x)
 
-# ppc_error_binned with binomial model from rstanarm
 \dontrun{
+# binned error plot with binomial model from rstanarm
 library(rstanarm)
 example("example_model", package = "rstanarm")
 formula(example_model)

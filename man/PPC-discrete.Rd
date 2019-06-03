@@ -9,10 +9,10 @@
 \title{PPCs for discrete outcomes}
 \usage{
 ppc_bars(y, yrep, ..., prob = 0.9, width = 0.9, size = 1,
-  fatten = 3, freq = TRUE)
+  fatten = 2.5, freq = TRUE)
 
 ppc_bars_grouped(y, yrep, group, ..., facet_args = list(), prob = 0.9,
-  width = 0.9, size = 1, fatten = 3, freq = TRUE)
+  width = 0.9, size = 1, fatten = 2.5, freq = TRUE)
 
 ppc_rootogram(y, yrep, style = c("standing", "hanging", "suspended"),
   ..., prob = 0.9, size = 1)
@@ -133,6 +133,40 @@ ppc_bars(y, yrep)
 # instead of count on y-axis
 color_scheme_set("mix-blue-pink")
 ppc_bars_grouped(y, yrep, group, prob = 0.5, freq = FALSE)
+
+\dontrun{
+# example for ordinal regression using rstanarm
+library(rstanarm)
+fit <- stan_polr(
+  tobgp ~ agegp,
+  data = esoph,
+  method = "probit",
+  prior = R2(0.2, "mean"),
+  init_r = 0.1,
+  seed = 12345,
+  # cores = 4,
+  refresh = 0
+ )
+
+# coded as character, so convert to integer
+yrep_char <- posterior_predict(fit)
+print(yrep_char[1, 1:4])
+
+yrep_int <- sapply(data.frame(yrep_char, stringsAsFactors = TRUE), as.integer)
+y_int <- as.integer(esoph$tobgp)
+
+ppc_bars(y_int, yrep_int)
+
+ppc_bars_grouped(
+  y = y_int,
+  yrep = yrep_int,
+  group = esoph$agegp,
+  freq=FALSE,
+  prob = 0.5,
+  fatten = 1,
+  size = 1.5
+)
+}
 
 # rootograms for counts
 y <- rpois(100, 20)

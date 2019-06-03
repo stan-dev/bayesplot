@@ -87,8 +87,8 @@
 #' x <- example_x_data()
 #' ppc_error_scatter_avg_vs_x(y, yrep, x)
 #'
-#' # ppc_error_binned with binomial model from rstanarm
 #' \dontrun{
+#' # binned error plot with binomial model from rstanarm
 #' library(rstanarm)
 #' example("example_model", package = "rstanarm")
 #' formula(example_model)

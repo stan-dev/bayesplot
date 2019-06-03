@@ -11,11 +11,12 @@
 * Many functions gain an argument `facet_args` for controlling ggplot2 faceting
   (many other functions have had this argument for a long time). 
   The ones that just now got the argument are:
+   - `ppc_scatter()`
+   - `ppc_scatter_avg_grouped()`
    - `ppc_error_hist()` 
    - `ppc_error_hist_grouped()`
    - `ppc_error_scatter()`
-   - `ppc_scatter()`
-   - `ppc_scatter_avg_grouped()`
+   - `ppc_error_binned()`
    
 * `ppc_scatter()`, `ppc_scatter_avg()`, and `ppc_scatter_avg_grouped()` gain an
   argument `ref_line`, which can be set to `FALSE` to turn off the `x=y` line
