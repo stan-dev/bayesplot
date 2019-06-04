@@ -82,11 +82,12 @@ test_that("ppc_scatter_avg_grouped renders correctly", {
     yrep = vdiff_yrep,
     group = vdiff_group,
     size = 3,
-    alpha = 0.25
+    alpha = 0.25,
+    ref_line = FALSE
   )
 
   vdiffr::expect_doppelganger(
-    title = "ppc_scatter_avg_grouped (size, alpha)",
+    title = "ppc_scatter_avg_grouped (size, alpha, ref_line)",
     fig = p_custom)
 })
 

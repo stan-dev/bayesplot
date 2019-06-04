@@ -67,11 +67,11 @@ ppd_dens_overlay <-
       ) +
       bayesplot_theme_get() +
       dont_expand_axes() +
-      legend_none() +
       yaxis_title(FALSE) +
       xaxis_title(FALSE) +
       yaxis_text(FALSE) +
-      yaxis_ticks(FALSE)
+      yaxis_ticks(FALSE) +
+      legend_none()
   }
 
 
@@ -109,7 +109,8 @@ ppd_ecdf_overlay <-
       scale_y_continuous(breaks = c(0, 0.5, 1)) +
       bayesplot_theme_get() +
       yaxis_title(FALSE) +
-      xaxis_title(FALSE)
+      xaxis_title(FALSE) +
+      legend_none()
   }
 
 
@@ -223,7 +224,8 @@ ppd_freqpoly <-
       yaxis_title(FALSE) +
       yaxis_ticks(FALSE) +
       xaxis_title(FALSE) +
-      facet_text(FALSE)
+      facet_text(FALSE) +
+      legend_none()
   }
 
 
@@ -285,7 +287,8 @@ ppd_boxplot <-
       yaxis_title(FALSE) +
       xaxis_ticks(FALSE) +
       xaxis_text(FALSE) +
-      xaxis_title(FALSE)
+      xaxis_title(FALSE) +
+      legend_none()
   }
 
 

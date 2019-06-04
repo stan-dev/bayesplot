@@ -2,9 +2,8 @@ library(bayesplot)
 suppressPackageStartupMessages(library(rstanarm))
 context("PPC: discrete")
 
-
-# bar plots ---------------------------------------------------------------
-
+source(test_path("data-for-ppc-tests.R"))
+load(test_path("data-for-ordinal.rda"))
 # data("esoph", package = "datasets")
 # fit <- stan_polr(tobgp ~ agegp, data = esoph, method = "probit", prior = R2(0.2, "mean"),
 #                  init_r = 0.1, seed = 12345, chains = 1, iter = 500, refresh = 0)
@@ -14,8 +13,8 @@ context("PPC: discrete")
 # group_ord <- datasets::esoph$agegp
 # save(y_ord, yrep_ord, group_ord, file = testthat::test_path("data-for-ordinal.rda"))
 
-load(testthat::test_path("data-for-ordinal.rda"))
 
+# bar plots ---------------------------------------------------------------
 test_that("ppc_bars & ppc_bars_grouped return a ggplot object", {
   expect_gg(ppc_bars(y_ord, yrep_ord))
   expect_gg(ppc_bars(y_ord, yrep_ord, prob = 0))
@@ -53,7 +52,6 @@ test_that("ppc_bars(_grouped) errors if y/yrep not discrete", {
                "ppc_bars expects 'yrep' to be discrete")
 })
 
-
 test_that("ppc_bars_data includes all levels", {
   y_ord2 <- y_ord
   y_ord2[y_ord2 == 1] <- 2
@@ -83,9 +81,6 @@ test_that("ppc_bars_data includes all levels", {
 
 
 # rootograms -----------------------------------------------------------
-rm(list = ls())
-source(test_path("data-for-ppc-tests.R"))
-
 yrep3 <- matrix(yrep2, nrow = 5, ncol = ncol(yrep2), byrow = TRUE)
 
 test_that("ppc_rootogram returns a ggplot object", {

@@ -12,7 +12,7 @@ below for a brief discussion of the ideas behind posterior predictive
 checking, an overview of the available PPC plots, and tips on providing an
 interface to \strong{bayesplot} from another package.
 
-For plots of posterior (or prior) predictive distributions that don't
+For plots of posterior (or prior) predictive distributions that do \emph{not}
 include observed data see \link{PPD-overview} instead.
 }
 \details{

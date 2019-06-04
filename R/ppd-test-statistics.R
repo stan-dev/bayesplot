@@ -109,7 +109,7 @@ ppd_stat_freqpoly <-
     )
     ggplot(data, mapping = set_hist_aes(freq)) +
       geom_freqpoly(
-        aes_(color = "yrep"),
+        aes_(color = "ypred"),
         size = .5,
         na.rm = TRUE,
         binwidth = binwidth
@@ -177,15 +177,15 @@ ppd_stat_2d <-
         mapping = aes_(
           x = ~ value,
           y = ~ value2,
-          fill = "yrep",
-          color = "yrep"
+          fill = "ypred",
+          color = "ypred"
         ),
         shape = 21,
         size = size,
         alpha = alpha
       ) +
-      scale_fill_ppd(lgnd_title, labels = Tyrep_label()) +
-      scale_color_ppd(lgnd_title, labels = Tyrep_label()) +
+      scale_fill_ppd(lgnd_title, labels = Typred_label()) +
+      scale_color_ppd(lgnd_title, labels = Typred_label()) +
       labs(x = stat_labs[1], y = stat_labs[2]) +
       bayesplot_theme_get()
   }

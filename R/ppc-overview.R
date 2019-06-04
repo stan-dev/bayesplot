@@ -11,7 +11,7 @@
 #'   checking, an overview of the available PPC plots, and tips on providing an
 #'   interface to **bayesplot** from another package.
 #'
-#'   For plots of posterior (or prior) predictive distributions that don't
+#'   For plots of posterior (or prior) predictive distributions that do _not_
 #'   include observed data see [PPD-overview] instead.
 #'
 #' @details The idea behind posterior predictive checking is simple: if a model

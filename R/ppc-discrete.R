@@ -144,8 +144,13 @@ ppc_bars <-
       freq = freq
     )
 
-    g <-
-      ggplot(data) +
+    if (!is.null(dots$group)) {
+      limits <- geom_ignore()
+    } else {
+      limits <- expand_limits(y = 1.05 * max(data[["h"]], na.rm = TRUE))
+    }
+
+    ggplot(data) +
       geom_col(
         data = dplyr::filter(data, !is.na(.data$y_obs)),
         mapping = aes_(x = ~ x, y = ~ y_obs, fill = "y"),
@@ -167,13 +172,9 @@ ppc_bars <-
       scale_x_continuous(breaks = pretty) +
       labs(x = NULL, y = if (freq) "Count" else "Proportion") +
       dont_expand_y_axis() +
-      bayesplot_theme_get()
-
-    if (is.null(dots$group)) {
-      g <- g + expand_limits(y = 1.01 * max(g$data[["h"]]))
-    }
-
-    g + reduce_legend_spacing(0.25)
+      bayesplot_theme_get() +
+      limits +
+      reduce_legend_spacing(0.25)
   }
 
 
@@ -196,9 +197,8 @@ ppc_bars_grouped <-
   check_ignored_arguments(...)
   call <- match.call(expand.dots = FALSE)
   g <- eval(ungroup_call("ppc_bars", call), parent.frame())
-
   if (fixed_y(facet_args)) {
-    g <- g + expand_limits(y = 1.01 * max(g$data$h))
+    g <- g + expand_limits(y = 1.05 * max(g$data[["h"]], na.rm = TRUE))
   }
   g +
     bars_group_facets(facet_args) +

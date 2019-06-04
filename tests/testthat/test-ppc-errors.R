@@ -28,10 +28,14 @@ test_that("ppc_error_scatter_avg returns ggplot2 object", {
 })
 
 test_that("ppc_error_scatter_avg same as ppc_error_scatter if nrow(yrep) = 1", {
-  expect_equal(ppc_error_scatter_avg(y2, yrep2),
-               ppc_error_scatter(y2, yrep2))
-  expect_equal(ppc_error_scatter_avg(y, yrep[1,, drop=FALSE]),
-               ppc_error_scatter(y, yrep[1,, drop = FALSE]))
+  p1 <- ppc_error_scatter_avg(y2, yrep2)
+  p2 <- ppc_error_scatter(y2, yrep2)
+  d1 <- p1$data
+  d2 <- p2$data
+
+  # really only a few columns are _exactly_ the same
+  cols <- c("y_id", "y_obs", "value")
+  expect_equal(d1[, cols], d2[, cols])
 })
 
 test_that("ppc_error_scatter_avg_vs_x returns ggplot2 object", {
