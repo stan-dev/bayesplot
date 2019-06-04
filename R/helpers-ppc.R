@@ -178,22 +178,13 @@ validate_x <- function(x = NULL, y, unique_x = FALSE) {
 
 # Internals for grouped plots ---------------------------------------------
 
-
-#' Modify a call to a '_grouped' function to the same one without '_grouped'
-#'
+#' Modify a call to a `_grouped` function to a call to the ungrouped version
 #' @param fn The new function to call (a string).
-#' @param call The original call (from `match.call()`).
+#' @param call The original call (from `match.call(expand.dots = FALSE)`).
 #' @return The new unevaluated call, with additional argument
 #'   `called_from_internal=TRUE` which can be detected by the function to be
 #'   called so it knows not to warn about the `group` and `facet_args` arguments.
 #' @noRd
-# ungroup_call <- function(call) {
-#   fn <- gsub("_grouped", "", rlang::call_name(call))
-#   call[[1]] <- as.name(fn)
-#   call$called_from_internal <- TRUE
-#   call$... <- NULL
-#   call
-# }
 ungroup_call <- function(fn, call) {
   args <- rlang::call_args(call)
   args$called_from_internal <- TRUE
@@ -201,9 +192,8 @@ ungroup_call <- function(fn, call) {
   rlang::call2(.fn = fn, !!!args, .ns = "bayesplot")
 }
 
-#' Check if the `...` to a function were supplied by it's `_grouped` version
-#'
-#' @param dots The `...` arguments already in a list (`list(...)`).
+#' Check if the `...` to a plotting function was passed from it's `_grouped` version
+#' @param dots The `...` arguments already in a list, i.e., `list(...)`.
 #' @return `TRUE` or `FALSE`
 #' @noRd
 from_grouped <- function(dots) {
@@ -218,12 +208,12 @@ from_grouped <- function(dots) {
 #'
 #' @param predictions A matrix (`yrep` or `ypred`), already validated using
 #'   `validate_predictions()`.
-#' @return A data frame with 4 columns:
-#'   1. `y_id`: integer indicating the observation number (`predictions` column).
-#'   1. `rep_id`: integer indicating the simulation number (`predictions` row).
-#'   1. `rep_label`: factor with S levels, where S is `nrow(predictions)`, i.e. the
-#'      number of simulations included in `predictions`.
-#'   1. `value`: the simulation values.
+#' @return A data frame with columns:
+#'   * `y_id`: integer indicating the observation number (`predictions` column).
+#'   * `rep_id`: integer indicating the simulation number (`predictions` row).
+#'   * `rep_label`: factor with S levels, where S is `nrow(predictions)`, i.e.
+#'     the number of simulations included in `predictions`.
+#'   * `value`: the simulation values.
 #' @noRd
 melt_predictions <- function(predictions) {
   obs_names <- attr(predictions, "obs_names")
@@ -239,15 +229,15 @@ melt_predictions <- function(predictions) {
 }
 
 
-#' Stack y below melted yrep data
+#' Stack `y` below melted `yrep` data
 #'
 #' @param y Validated `y` input.
 #' @param yrep Validated `yrep` input.
 #' @return A data frame with the all the columns as the one returned by
 #'   `melt_predictions()`, plus additional columns:
-#'   1. `is_y`: logical indicating whether the values are observations (`TRUE`)
+#'   * `is_y`: logical indicating whether the values are observations (`TRUE`)
 #'      or simulations (`FALSE`).
-#'   1. `is_y_label`: factor with levels `italic(y)` for observations and
+#'   * `is_y_label`: factor with levels `italic(y)` for observations and
 #'      `italic(y)[rep]` for simulations.
 #' @noRd
 melt_and_stack <- function(y, yrep) {

@@ -203,8 +203,11 @@ plot.bayesplot_scheme <- function(x, ...) {
 
 # internal -----------------------------------------------------------------
 
-# plot color scheme
-# @param scheme A string (length 1) naming a scheme
+#' Plot color scheme
+#' @noRd
+#' @param scheme A string (length 1) naming a scheme. If `NULL` the current
+#'   scheme is used.
+#' @return A ggplot object.
 plot_scheme <- function(scheme = NULL) {
   if (is.null(scheme)) {
     x <- color_scheme_get()
@@ -247,9 +250,8 @@ scheme_level_names <- function() {
 }
 
 #' Return a color scheme based on `scheme` argument specified as a string
-#'
 #' @noRd
-#' @param scheme A string (length 1) naming a scheme
+#' @param scheme A string (length 1) naming a scheme.
 scheme_from_string <- function(scheme) {
   if (identical(substr(scheme, 1, 4), "mix-")) {
     # user specified a mixed scheme (e.g., "mix-blue-red")
@@ -300,7 +302,7 @@ is_mixed_scheme <- function(x) {
 #' Access a subset of the current scheme colors
 #' @noRd
 #' @param levels A character vector of level names in `scheme_level_names()`.
-#'   The abbreviations "l", "lh", "m", "mh", "d", and "dh" can also be used
+#'   The abbreviations `"l", "lh", "m", "mh", "d", "dh"` can also be used
 #'   instead of the full names.
 #' @return A character vector of color values.
 #'

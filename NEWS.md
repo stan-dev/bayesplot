@@ -8,6 +8,14 @@
 
 * New PPD module (FIXME: add more details)
 
+* All PPC categories now have one or more `_data()` functions that return the 
+  data used for plotting (Advances #97). The new ones in this release are:
+   - `ppc_scatter_data()`
+   - `ppc_scatter_avg_data()`
+   - `ppc_stat_data()` 
+   - `ppc_bars_data()`
+   - `ppc_error_data()`
+
 * Many functions gain an argument `facet_args` for controlling ggplot2 faceting
   (many other functions have had this argument for a long time). 
   The ones that just now got the argument are:
@@ -21,14 +29,6 @@
 * `ppc_scatter()`, `ppc_scatter_avg()`, and `ppc_scatter_avg_grouped()` gain an
   argument `ref_line`, which can be set to `FALSE` to turn off the `x=y` line
   drawn behind the scatterplot.
-  
-* All PPC categories now have one or more `_data()` functions that return the 
-  data used for plotting (Advances #97). The new ones in this release are:
-   - `ppc_scatter_data()`
-   - `ppc_scatter_avg_data()`
-   - `ppc_stat_data()` 
-   - `ppc_bars_data()`
-   - `ppc_error_data()`
 
 # bayesplot 1.7.0
 
