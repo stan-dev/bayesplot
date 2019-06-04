@@ -61,6 +61,42 @@ test_that("bin_errors works for edge cases", {
 
 # Visual tests -----------------------------------------------------------------
 
+test_that("ppc_error_hist renders correctly", {
+  testthat::skip_on_cran()
+  p_base <- ppc_error_hist(vdiff_y, vdiff_yrep[1:3, ])
+  vdiffr::expect_doppelganger("ppc_error_hist (default)", p_base)
+})
+
+test_that("ppc_error_hist_grouped renders correctly", {
+  testthat::skip_on_cran()
+  p_base <- ppc_error_hist_grouped(vdiff_y, vdiff_yrep[1:3, ], vdiff_group)
+  vdiffr::expect_doppelganger("ppc_error_hist_grouped (default)", p_base)
+})
+
+test_that("ppc_error_scatter renders correctly", {
+  testthat::skip_on_cran()
+  p_base <- ppc_error_scatter(vdiff_y, vdiff_yrep[1:3, ])
+  vdiffr::expect_doppelganger("ppc_error_scatter (default)", p_base)
+})
+
+test_that("ppc_error_scatter_avg renders correctly", {
+  testthat::skip_on_cran()
+  p_base <- ppc_error_scatter_avg(vdiff_y, vdiff_yrep)
+  vdiffr::expect_doppelganger("ppc_error_scatter_avg (default)", p_base)
+})
+
+test_that("ppc_error_scatter_avg_grouped renders correctly", {
+  testthat::skip_on_cran()
+  p_base <- ppc_error_scatter_avg_grouped(vdiff_y, vdiff_yrep, vdiff_group)
+  vdiffr::expect_doppelganger("ppc_error_scatter_avg_grouped (default)", p_base)
+})
+
+test_that("ppc_error_scatter_avg_vs_x renders correctly", {
+  testthat::skip_on_cran()
+  p_base <- ppc_error_scatter_avg_vs_x(vdiff_y, vdiff_yrep, x = seq_along(vdiff_y))
+  vdiffr::expect_doppelganger("ppc_error_scatter_avg_vs_x (default)", p_base)
+})
+
 test_that("ppc_error_binned renders correctly", {
   testthat::skip_on_cran()
 
@@ -85,10 +121,5 @@ test_that("ppc_error_binned renders correctly", {
   y_rep <- t(apply(four_draws, 1, function(x) rbeta2(50, plogis(x[1]), x[2])))
 
   p_base <- ppc_error_binned(y, y_rep)
-
-  vdiffr::expect_doppelganger(
-    title = "ppc_error_binned (default)",
-    fig = p_base
-  )
-
+  vdiffr::expect_doppelganger("ppc_error_binned (default)", p_base)
 })
