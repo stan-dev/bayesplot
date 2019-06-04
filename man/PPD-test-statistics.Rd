@@ -14,7 +14,7 @@
 ppd_stat(ypred, stat = "mean", ..., binwidth = NULL, breaks = NULL,
   freq = TRUE)
 
-ppd_stat_grouped(ypred, stat = "mean", ..., facet_args = list(),
+ppd_stat_grouped(ypred, group, stat = "mean", ..., facet_args = list(),
   binwidth = NULL, breaks = NULL, freq = TRUE)
 
 ppd_stat_freqpoly(ypred, stat = "mean", ..., facet_args = list(),
@@ -55,15 +55,15 @@ plots the y-axis text is off by default. To view the count or density
 labels on the y-axis see the \code{\link[=yaxis_text]{yaxis_text()}} convenience
 function.)}
 
+\item{group}{A grouping variable. Will be coerced to \link[base:factor]{factor}
+if not already a factor. Each value in \code{group} is interpreted as the group
+level pertaining to the corresponding observation.}
+
 \item{facet_args}{A named list of arguments (other than \code{facets}) passed
 to \code{\link[ggplot2:facet_wrap]{ggplot2::facet_wrap()}} or \code{\link[ggplot2:facet_grid]{ggplot2::facet_grid()}}
 to control faceting. Note: if \code{scales} is not included in \code{facet_args}
 then \strong{bayesplot} may use \code{scales="free"} as the default (depending
 on the plot) instead of the \strong{ggplot2} default of \code{scales="fixed"}.}
-
-\item{group}{A grouping variable. Will be coerced to \link[base:factor]{factor}
-if not already a factor. Each value in \code{group} is interpreted as the group
-level pertaining to the corresponding observation.}
 
 \item{size}{For the 2D plot only, arguments passed to
 \code{\link[ggplot2:geom_point]{ggplot2::geom_point()}} to control the appearance of scatterplot points.}

@@ -7,6 +7,8 @@
 #' @family PPCs
 #'
 #' @template args-y-yrep
+#' @template args-group
+#' @template args-facet_args
 #' @param ... Currently unused.
 #' @param size,alpha For scatterplots, arguments passed to
 #'   [ggplot2::geom_point()] to control the appearance of the points. For the
@@ -153,8 +155,6 @@ ppc_error_hist <-
 
 #' @rdname PPC-errors
 #' @export
-#' @template args-group
-#'
 ppc_error_hist_grouped <-
   function(y,
            yrep,
