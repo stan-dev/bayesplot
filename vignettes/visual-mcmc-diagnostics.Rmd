@@ -277,7 +277,7 @@ of the parallel coordinates plot.
 
 #### mcmc_pairs
 
-The `mcmc_pairs` function can be also be used to look at multiple
+The `mcmc_pairs` function can also be used to look at multiple
 parameters at once, but unlike `mcmc_parcoord` (which works well even when
 including several dozen parameters) `mcmc_pairs` is more useful for up to ~8
 parameters. It shows univariate histograms and bivariate scatter plots for
