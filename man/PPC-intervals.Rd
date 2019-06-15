@@ -11,11 +11,11 @@
 \title{PPC intervals}
 \usage{
 ppc_intervals(y, yrep, x = NULL, ..., prob = 0.5, prob_outer = 0.9,
-  alpha = 0.33, size = 1, fatten = 2.5)
+  alpha = 0.33, size = 1, fatten = 2.5, jitter = NULL)
 
 ppc_intervals_grouped(y, yrep, x = NULL, group, ...,
   facet_args = list(), prob = 0.5, prob_outer = 0.9, alpha = 0.33,
-  size = 1, fatten = 2.5)
+  size = 1, fatten = 2.5, jitter = NULL)
 
 ppc_ribbon(y, yrep, x = NULL, ..., prob = 0.5, prob_outer = 0.9,
   alpha = 0.33, size = 0.25)
@@ -57,6 +57,10 @@ ribbon and \code{size} is passed to \code{\link[ggplot2:geom_line]{ggplot2::geom
 of the line representing the median prediction (\code{size=0} will remove the
 line). For interval plots \code{alpha}, \code{size} and \code{fatten} are passed to
 \code{\link[ggplot2:geom_pointrange]{ggplot2::geom_pointrange()}} (\code{fatten=0} will remove the point estimates).}
+
+\item{jitter}{For intervals plots, either \code{NULL} (the default) or a value to
+pass to the \code{width} argument of \code{\link[ggplot2:position_jitter]{ggplot2::position_jitter()}}. This is most
+useful if values in \code{x} are not unique.}
 
 \item{group}{A grouping variable. Will be coerced to \link[base:factor]{factor}
 if not already a factor. Each value in \code{group} is interpreted as the group
