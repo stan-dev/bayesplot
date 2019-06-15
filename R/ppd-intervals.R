@@ -74,6 +74,10 @@ ppd_intervals <-
       prob = prob,
       prob_outer = prob_outer
     )
+
+    position <-
+      intervals_position(jitter, seed = sample.int(.Machine$integer.max, 1L))
+
     ggplot(data, mapping = intervals_inner_aes(
       needs_y = TRUE,
       color = "ypred",
@@ -81,12 +85,12 @@ ppd_intervals <-
     )) +
       geom_linerange(
         mapping = intervals_outer_aes(color = "ypred"),
-        position = intervals_position(jitter),
+        position = position,
         alpha = alpha,
         size = size
       ) +
       geom_pointrange(
-        position = intervals_position(jitter),
+        position = position,
         shape = 21,
         stroke = 0.5,
         size = size,
@@ -346,10 +350,10 @@ intervals_axis_labels <- function(has_x) {
 #' Determine the `position` argument to geoms for intervals plots
 #' @param jitter User's `jitter` argument.
 #' @noRd
-intervals_position <- function(jitter, ...) {
+intervals_position <- function(jitter, seed = NA, ...) {
   if (is.null(jitter)) {
     "identity"
   } else {
-    position_jitter(width = jitter, ...)
+    position_jitter(width = jitter, seed = seed, ...)
   }
 }
