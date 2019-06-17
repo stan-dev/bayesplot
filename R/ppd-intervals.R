@@ -75,8 +75,8 @@ ppd_intervals <-
       prob_outer = prob_outer
     )
 
-    position <-
-      intervals_position(jitter, seed = sample.int(.Machine$integer.max, 1L))
+    # create object for reproducible jitter
+    position <- intervals_position(jitter)
 
     ggplot(data, mapping = intervals_inner_aes(
       needs_y = TRUE,
@@ -350,10 +350,10 @@ intervals_axis_labels <- function(has_x) {
 #' Determine the `position` argument to geoms for intervals plots
 #' @param jitter User's `jitter` argument.
 #' @noRd
-intervals_position <- function(jitter, seed = NA, ...) {
+intervals_position <- function(jitter, ...) {
   if (is.null(jitter)) {
     "identity"
   } else {
-    position_jitter(width = jitter, seed = seed, ...)
+    position_jitter(width = jitter, ...)
   }
 }

@@ -143,8 +143,8 @@ ppc_intervals <-
         prob_outer = prob_outer
       )
 
-    position <-
-      intervals_position(jitter, seed = sample.int(.Machine$integer.max, 1L))
+    # create object for reproducible jitter
+    position <- intervals_position(jitter)
 
     ggplot(data) +
       intervals_inner_aes(
