@@ -149,7 +149,7 @@ param_range <- function(prefix, range, vars = NULL) {
 #' @export
 #' @param pattern,... For `param_glue()` only, `pattern` is a string containing
 #'   expressions enclosed in braces and `...` should be named arguments
-#'   providing one character vector per expression in braces in `patten`. It is
+#'   providing one character vector per expression in braces in `pattern`. It is
 #'   easiest to describe how to use these arguments with an example:
 #'
 #'     param_glue("beta_{var}[{level}]",
