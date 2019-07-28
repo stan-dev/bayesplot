@@ -780,6 +780,8 @@ compute_interval_density <- function(x, interval_width = 1, n_dens = 1024,
 }
 
 check_interval_widths <- function(prob, prob_outer) {
+  if (prob < 0 || prob > 1 || prob_outer < 0 || prob_outer > 1)
+    abort("`prob` and `prob_outer` must be in [0,1].")
   if (prob_outer < prob) {
     x <- sprintf(
       "`prob_outer` (%s) is less than `prob` (%s)\n... %s",
