@@ -28,7 +28,7 @@ left as \code{NULL} and will be set automatically for the user.}
 
 \item{pattern, ...}{For \code{param_glue()} only, \code{pattern} is a string containing
 expressions enclosed in braces and \code{...} should be named arguments
-providing one character vector per expression in braces in \code{patten}. It is
+providing one character vector per expression in braces in \code{pattern}. It is
 easiest to describe how to use these arguments with an example:\preformatted{param_glue("beta_{var}[{level}]",
            var = c("age", "income"),
            level = c(3,8))

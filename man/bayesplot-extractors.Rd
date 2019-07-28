@@ -84,7 +84,7 @@ Methods return (named) vectors.
 \description{
 Generics and methods for extracting quantities needed for plotting from
 various types of model objects. Currently methods are only provided for
-stanfit (\strong{rstan}) and stanreg (\strong{stanreg}) objects, but adding new
+stanfit (\strong{rstan}) and stanreg (\strong{rstanarm}) objects, but adding new
 methods should be relatively straightforward.
 }
 \examples{

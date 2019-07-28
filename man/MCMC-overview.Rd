@@ -42,12 +42,12 @@ showing each Markov chain separately.
 \item \link[=MCMC-intervals]{Uncertainty intervals}: Uncertainty intervals computed
 from parameter draws.
 \item \link[=MCMC-traces]{Trace plots}: Times series of parameter draws, optionally
-including with HMC/NUTS diagnostic information.
+including HMC/NUTS diagnostic information.
 \item \link[=MCMC-scatterplots]{Scatterplots}: Scatterplots, heatmaps, and pairs
-plots of parameter draws, optionally including with HMC/NUTS diagnostic
+plots of parameter draws, optionally including HMC/NUTS diagnostic
 information.
 \item \link[=MCMC-parcoord]{Parallel coordinates plots}: Parallel coordinates plot
-of MCMC draws (one dimension per parameter), optionally including with
+of MCMC draws (one dimension per parameter), optionally including
 HMC/NUTS diagnostic information.
 \item \link[=MCMC-combos]{Combos}: Combination plots (e.g. trace plot + histogram).
 \item \link[=MCMC-diagnostics]{General MCMC diagnostics}: MCMC diagnostic plots
