@@ -152,6 +152,16 @@ test_that("compute_column_density can use density options (#118)", {
   expect_error(mcmc_areas_data(arr, kernel = stop()))
 })
 
+test_that("probabilities outside of [0,1] cause an error", {
+  expect_error(mcmc_intervals_data(arr, prob = -0.1),
+               "must be in \\[0,1\\]")
+  expect_error(mcmc_intervals_data(arr, prob = 1.1),
+               "must be in \\[0,1\\]")
+  expect_error(mcmc_intervals_data(arr, prob_outer = -0.1),
+               "must be in \\[0,1\\]")
+  expect_error(mcmc_intervals_data(arr, prob_outer = 1.1),
+               "must be in \\[0,1\\]")
+})
 
 test_that("inconsistent probabilities raise warning (#138)", {
   expect_warning(
