@@ -2,7 +2,7 @@
 #'
 #' Generics and methods for extracting quantities needed for plotting from
 #' various types of model objects. Currently methods are only provided for
-#' stanfit (**rstan**) and stanreg (**stanreg**) objects, but adding new
+#' stanfit (**rstan**) and stanreg (**rstanarm**) objects, but adding new
 #' methods should be relatively straightforward.
 #'
 #' @name bayesplot-extractors

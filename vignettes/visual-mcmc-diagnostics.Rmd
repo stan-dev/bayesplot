@@ -222,9 +222,9 @@ np_ncp <- nuts_params(fit_ncp)
 ```
 
 ```{r echo=FALSE, warning=FALSE}
-# On rare ocasions, the fits may not be illustrative. Currently the seed is
+# On rare occasions, the fits may not be illustrative. Currently the seed is
 # fixed, but if something in Stan changes and the fixed seeds produce unexpected
-# results (which sould be rare), we want to know.
+# results (which should be rare), we want to know.
 n_divergent_cp <- np_cp %>% filter(Parameter == "divergent__" & Value == 1) %>% nrow()
 n_divergent_ncp <- np_ncp %>% filter(Parameter == "divergent__" & Value == 1) %>% nrow()
 
@@ -498,7 +498,7 @@ fit_ncp_2 <- sampling(schools_mod_ncp, data = schools_dat,
 ```
 
 ```{r echo=FALSE, warning=FALSE}
-# On rare ocasions, the fits may not be illustrative. Currently the seed is fixed, but if something in Stan changes and the fixed seeds produce unexpected results (which sould be rare), we want to know.
+# On rare occasions, the fits may not be illustrative. Currently the seed is fixed, but if something in Stan changes and the fixed seeds produce unexpected results (which should be rare), we want to know.
 n_divergent_cp_2 <- fit_cp_2 %>% nuts_params() %>% filter(Parameter == "divergent__" & Value == 1) %>% nrow()
 n_divergent_ncp_2 <- fit_ncp_2 %>% nuts_params() %>% filter(Parameter == "divergent__" & Value == 1) %>% nrow()
 
@@ -640,9 +640,9 @@ mcmc_rhat(rhats)
 In the plot, the points representing the $\hat{R}$ values are colored based on
 whether they are less than $1.05$, between $1.05$ and $1.1$, or greater than
 $1.1$. There is no theoretical reason to trichotomize $\hat{R}$ values using
-these cutoffs, so keep in mind that this is just a heuristic 
+these cutoffs, so keep in mind that this is just a heuristic.
 
-The axis $y$-axis text is off by default for this plot because it's only 
+The $y$-axis text is off by default for this plot because it's only
 possible to see the labels clearly for models with very few parameters. We can
 see the names of the parameters with the concerning $\hat{R}$ values using the
 `yaxis_text` convenience function (which passes arguments like `hjust` to
@@ -772,7 +772,7 @@ Gabry, J., and Goodrich, B. (2018). rstanarm: Bayesian Applied Regression
 Modeling via Stan. R package version 2.17.4.
 https://mc-stan.org/rstanarm
 
-Gabry, J. , Simpson, D. , Vehtari, A. , Betancourt, M. and Gelman, A. (2019), 
+Gabry, J., Simpson, D., Vehtari, A., Betancourt, M. and Gelman, A. (2019),
 Visualization in Bayesian workflow. _J. R. Stat. Soc. A_, 182: 389-402. 
 \doi:10.1111/rssa.12378. ([journal version](https://rss.onlinelibrary.wiley.com/doi/full/10.1111/rssa.12378), 
 [arXiv preprint](https://arxiv.org/abs/1709.01449), 

@@ -38,12 +38,12 @@
 #' * [__Uncertainty intervals__][MCMC-intervals]: Uncertainty intervals computed
 #'   from parameter draws.
 #' * [__Trace plots__][MCMC-traces]: Times series of parameter draws, optionally
-#'   including with HMC/NUTS diagnostic information.
+#'   including HMC/NUTS diagnostic information.
 #' * [__Scatterplots__][MCMC-scatterplots]: Scatterplots, heatmaps, and pairs
-#'   plots of parameter draws, optionally including with HMC/NUTS diagnostic
+#'   plots of parameter draws, optionally including HMC/NUTS diagnostic
 #'   information.
 #' * [__Parallel coordinates plots__][MCMC-parcoord]: Parallel coordinates plot
-#'   of MCMC draws (one dimension per parameter), optionally including with
+#'   of MCMC draws (one dimension per parameter), optionally including
 #'   HMC/NUTS diagnostic information.
 #' * [__Combos__][MCMC-combos]: Combination plots (e.g. trace plot + histogram).
 #' * [__General MCMC diagnostics__][MCMC-diagnostics]: MCMC diagnostic plots
