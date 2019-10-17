@@ -1,5 +1,7 @@
 url: https://mc-stan.org/bayesplot
 
+destination: "."
+
 template:
   params:
     bootswatch: cosmo
@@ -20,6 +22,8 @@ navbar:
       menu:
         - text: "rstan"
           href: https://mc-stan.org/rstan
+        - text: "cmdstanr"
+          href: https://mc-stan.org/cmdstanr
         - text: "rstanarm"
           href: https://mc-stan.org/rstanarm
         - text: "shinystan"
