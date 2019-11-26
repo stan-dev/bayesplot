@@ -310,9 +310,9 @@ parameter_names.array <- function(x) {
 parameter_names.default <- function(x) {
   colnames(x) %||% abort("No parameter names found.")
 }
-# parameter_names.matrix <- function(x) {
-#   colnames(x) %||% abort("No parameter names found.")
-# }
+parameter_names.matrix <- function(x) {
+  colnames(x) %||% abort("No parameter names found.")
+}
 
 # Check if an object is a 3-D array
 is_3d_array <- function(x) {
