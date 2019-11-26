@@ -7,16 +7,38 @@
 \alias{mcmc_recover_hist}
 \title{Compare MCMC estimates to "true" parameter values}
 \usage{
-mcmc_recover_intervals(x, true, batch = rep(1, length(true)), ...,
-  facet_args = list(), prob = 0.5, prob_outer = 0.9,
-  point_est = c("median", "mean", "none"), size = 4, alpha = 1)
+mcmc_recover_intervals(
+  x,
+  true,
+  batch = rep(1, length(true)),
+  ...,
+  facet_args = list(),
+  prob = 0.5,
+  prob_outer = 0.9,
+  point_est = c("median", "mean", "none"),
+  size = 4,
+  alpha = 1
+)
 
-mcmc_recover_scatter(x, true, batch = rep(1, length(true)), ...,
-  facet_args = list(), point_est = c("median", "mean"), size = 3,
-  alpha = 1)
+mcmc_recover_scatter(
+  x,
+  true,
+  batch = rep(1, length(true)),
+  ...,
+  facet_args = list(),
+  point_est = c("median", "mean"),
+  size = 3,
+  alpha = 1
+)
 
-mcmc_recover_hist(x, true, ..., facet_args = list(), binwidth = NULL,
-  breaks = NULL)
+mcmc_recover_hist(
+  x,
+  true,
+  ...,
+  facet_args = list(),
+  binwidth = NULL,
+  breaks = NULL
+)
 }
 \arguments{
 \item{x}{A 3-D array, matrix, list of matrices, or data frame of MCMC draws.
@@ -134,12 +156,15 @@ mcmc_recover_hist(draws[, 1:4], true[1:4])
 
 }
 \seealso{
-Other MCMC: \code{\link{MCMC-combos}},
-  \code{\link{MCMC-diagnostics}},
-  \code{\link{MCMC-distributions}},
-  \code{\link{MCMC-intervals}}, \code{\link{MCMC-nuts}},
-  \code{\link{MCMC-overview}}, \code{\link{MCMC-parcoord}},
-  \code{\link{MCMC-scatterplots}},
-  \code{\link{MCMC-traces}}
+Other MCMC: 
+\code{\link{MCMC-combos}},
+\code{\link{MCMC-diagnostics}},
+\code{\link{MCMC-distributions}},
+\code{\link{MCMC-intervals}},
+\code{\link{MCMC-nuts}},
+\code{\link{MCMC-overview}},
+\code{\link{MCMC-parcoord}},
+\code{\link{MCMC-scatterplots}},
+\code{\link{MCMC-traces}}
 }
 \concept{MCMC}

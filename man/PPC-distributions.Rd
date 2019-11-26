@@ -19,24 +19,65 @@ ppc_hist(y, yrep, ..., binwidth = NULL, breaks = NULL, freq = TRUE)
 
 ppc_boxplot(y, yrep, ..., notch = TRUE, size = 0.5, alpha = 1)
 
-ppc_freqpoly(y, yrep, ..., binwidth = NULL, freq = TRUE, size = 0.25,
-  alpha = 1)
+ppc_freqpoly(
+  y,
+  yrep,
+  ...,
+  binwidth = NULL,
+  freq = TRUE,
+  size = 0.25,
+  alpha = 1
+)
 
-ppc_freqpoly_grouped(y, yrep, group, ..., binwidth = NULL, freq = TRUE,
-  size = 0.25, alpha = 1)
+ppc_freqpoly_grouped(
+  y,
+  yrep,
+  group,
+  ...,
+  binwidth = NULL,
+  freq = TRUE,
+  size = 0.25,
+  alpha = 1
+)
 
 ppc_dens(y, yrep, ..., trim = FALSE, size = 0.5, alpha = 1)
 
-ppc_dens_overlay(y, yrep, ..., size = 0.25, alpha = 0.7,
-  trim = FALSE, bw = "nrd0", adjust = 1, kernel = "gaussian",
-  n_dens = 1024)
+ppc_dens_overlay(
+  y,
+  yrep,
+  ...,
+  size = 0.25,
+  alpha = 0.7,
+  trim = FALSE,
+  bw = "nrd0",
+  adjust = 1,
+  kernel = "gaussian",
+  n_dens = 1024
+)
 
-ppc_ecdf_overlay(y, yrep, ..., discrete = FALSE, pad = TRUE,
-  size = 0.25, alpha = 0.7)
+ppc_ecdf_overlay(
+  y,
+  yrep,
+  ...,
+  discrete = FALSE,
+  pad = TRUE,
+  size = 0.25,
+  alpha = 0.7
+)
 
-ppc_violin_grouped(y, yrep, group, ..., probs = c(0.1, 0.5, 0.9),
-  size = 1, alpha = 1, y_draw = c("violin", "points", "both"),
-  y_size = 1, y_alpha = 1, y_jitter = 0.1)
+ppc_violin_grouped(
+  y,
+  yrep,
+  group,
+  ...,
+  probs = c(0.1, 0.5, 0.9),
+  size = 1,
+  alpha = 1,
+  y_draw = c("violin", "points", "both"),
+  y_size = 1,
+  y_alpha = 1,
+  y_jitter = 0.1
+)
 }
 \arguments{
 \item{y}{A vector of observations. See \strong{Details}.}
@@ -101,7 +142,7 @@ will let \strong{ggplot2} determine the amount of jitter.}
 \value{
 The plotting functions return a ggplot object that can be further
 customized using the \strong{ggplot2} package. The functions with suffix
-\code{_data()} return the data that would have been drawn by the plotting
+\verb{_data()} return the data that would have been drawn by the plotting
 function.
 }
 \description{
@@ -118,7 +159,7 @@ For Binomial data, the plots will typically be most useful if
 \section{Plot Descriptions}{
 
 \describe{
-\item{\code{ppc_hist(), ppc_freqpoly(), ppc_dens(), ppc_boxplot()}}{
+\item{\verb{ppc_hist(), ppc_freqpoly(), ppc_dens(), ppc_boxplot()}}{
 A separate histogram, shaded frequency polygon, smoothed kernel density
 estimate, or box and whiskers plot is displayed for \code{y} and each
 dataset (row) in \code{yrep}. For these plots \code{yrep} should therefore
@@ -130,7 +171,7 @@ variable for \code{y} and each dataset (row) in \code{yrep}. For this plot
 \code{yrep} should therefore contain only a small number of rows. See the
 \strong{Examples} section.
 }
-\item{\code{ppc_dens_overlay(), ppc_ecdf_overlay()}}{
+\item{\verb{ppc_dens_overlay(), ppc_ecdf_overlay()}}{
 Kernel density or empirical CDF estimates of each dataset (row) in
 \code{yrep} are overlaid, with the distribution of \code{y} itself on top
 (and in a darker shade). When using \code{ppc_ecdf_overlay()} with discrete
@@ -205,10 +246,13 @@ A., and Rubin, D. B. (2013). \emph{Bayesian Data Analysis.} Chapman & Hall/CRC
 Press, London, third edition. (Ch. 6)
 }
 \seealso{
-Other PPCs: \code{\link{PPC-discrete}},
-  \code{\link{PPC-errors}}, \code{\link{PPC-intervals}},
-  \code{\link{PPC-loo}}, \code{\link{PPC-overview}},
-  \code{\link{PPC-scatterplots}},
-  \code{\link{PPC-test-statistics}}
+Other PPCs: 
+\code{\link{PPC-discrete}},
+\code{\link{PPC-errors}},
+\code{\link{PPC-intervals}},
+\code{\link{PPC-loo}},
+\code{\link{PPC-overview}},
+\code{\link{PPC-scatterplots}},
+\code{\link{PPC-test-statistics}}
 }
 \concept{PPCs}

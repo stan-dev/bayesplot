@@ -55,7 +55,7 @@ small number of rows.
 }
 \item{\code{ppc_scatter_avg()}}{
 A scatterplot of \code{y} against the average values of \code{yrep}, i.e.,
-the points \code{(mean(yrep[, n]), y[n])}, where each \code{yrep[, n]} is
+the points \verb{(mean(yrep[, n]), y[n])}, where each \code{yrep[, n]} is
 a vector of length equal to the number of posterior draws.
 }
 \item{\code{ppc_scatter_avg_grouped()}}{
@@ -88,10 +88,13 @@ A., and Rubin, D. B. (2013). \emph{Bayesian Data Analysis.} Chapman & Hall/CRC
 Press, London, third edition. (Ch. 6)
 }
 \seealso{
-Other PPCs: \code{\link{PPC-discrete}},
-  \code{\link{PPC-distributions}},
-  \code{\link{PPC-errors}}, \code{\link{PPC-intervals}},
-  \code{\link{PPC-loo}}, \code{\link{PPC-overview}},
-  \code{\link{PPC-test-statistics}}
+Other PPCs: 
+\code{\link{PPC-discrete}},
+\code{\link{PPC-distributions}},
+\code{\link{PPC-errors}},
+\code{\link{PPC-intervals}},
+\code{\link{PPC-loo}},
+\code{\link{PPC-overview}},
+\code{\link{PPC-test-statistics}}
 }
 \concept{PPCs}

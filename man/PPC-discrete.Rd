@@ -7,14 +7,38 @@
 \alias{ppc_rootogram}
 \title{PPCs for discrete outcomes}
 \usage{
-ppc_bars(y, yrep, ..., prob = 0.9, width = 0.9, size = 1,
-  fatten = 3, freq = TRUE)
+ppc_bars(
+  y,
+  yrep,
+  ...,
+  prob = 0.9,
+  width = 0.9,
+  size = 1,
+  fatten = 3,
+  freq = TRUE
+)
 
-ppc_bars_grouped(y, yrep, group, ..., facet_args = list(), prob = 0.9,
-  width = 0.9, size = 1, fatten = 3, freq = TRUE)
+ppc_bars_grouped(
+  y,
+  yrep,
+  group,
+  ...,
+  facet_args = list(),
+  prob = 0.9,
+  width = 0.9,
+  size = 1,
+  fatten = 3,
+  freq = TRUE
+)
 
-ppc_rootogram(y, yrep, style = c("standing", "hanging", "suspended"),
-  ..., prob = 0.9, size = 1)
+ppc_rootogram(
+  y,
+  yrep,
+  style = c("standing", "hanging", "suspended"),
+  ...,
+  prob = 0.9,
+  size = 1
+)
 }
 \arguments{
 \item{y}{A vector of observations. See \strong{Details}.}
@@ -148,10 +172,13 @@ Visualizing count data regressions using rootograms.
 \url{https://arxiv.org/abs/1605.01311}.
 }
 \seealso{
-Other PPCs: \code{\link{PPC-distributions}},
-  \code{\link{PPC-errors}}, \code{\link{PPC-intervals}},
-  \code{\link{PPC-loo}}, \code{\link{PPC-overview}},
-  \code{\link{PPC-scatterplots}},
-  \code{\link{PPC-test-statistics}}
+Other PPCs: 
+\code{\link{PPC-distributions}},
+\code{\link{PPC-errors}},
+\code{\link{PPC-intervals}},
+\code{\link{PPC-loo}},
+\code{\link{PPC-overview}},
+\code{\link{PPC-scatterplots}},
+\code{\link{PPC-test-statistics}}
 }
 \concept{PPCs}

@@ -29,11 +29,9 @@ neff_ratio(object, ...)
 
 \method{log_posterior}{stanreg}(object, inc_warmup = FALSE, ...)
 
-\method{nuts_params}{stanfit}(object, pars = NULL, inc_warmup = FALSE,
-  ...)
+\method{nuts_params}{stanfit}(object, pars = NULL, inc_warmup = FALSE, ...)
 
-\method{nuts_params}{stanreg}(object, pars = NULL, inc_warmup = FALSE,
-  ...)
+\method{nuts_params}{stanreg}(object, pars = NULL, inc_warmup = FALSE, ...)
 
 \method{nuts_params}{list}(object, pars = NULL, ...)
 
@@ -43,8 +41,7 @@ neff_ratio(object, ...)
 
 \method{neff_ratio}{stanfit}(object, pars = NULL, ...)
 
-\method{neff_ratio}{stanreg}(object, pars = NULL, regex_pars = NULL,
-  ...)
+\method{neff_ratio}{stanreg}(object, pars = NULL, regex_pars = NULL, ...)
 }
 \arguments{
 \item{object}{The object to use.}

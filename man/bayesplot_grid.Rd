@@ -4,9 +4,17 @@
 \alias{bayesplot_grid}
 \title{Arrange plots in a grid}
 \usage{
-bayesplot_grid(..., plots = list(), xlim = NULL, ylim = NULL,
-  grid_args = list(), titles = character(), subtitles = character(),
-  legends = TRUE, save_gg_objects = TRUE)
+bayesplot_grid(
+  ...,
+  plots = list(),
+  xlim = NULL,
+  ylim = NULL,
+  grid_args = list(),
+  titles = character(),
+  subtitles = character(),
+  legends = TRUE,
+  save_gg_objects = TRUE
+)
 }
 \arguments{
 \item{...}{One or more ggplot objects.}

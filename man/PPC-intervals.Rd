@@ -10,24 +10,73 @@
 \alias{ppc_ribbon_data}
 \title{PPC intervals}
 \usage{
-ppc_intervals(y, yrep, x = NULL, ..., prob = 0.5, prob_outer = 0.9,
-  size = 1, fatten = 3)
+ppc_intervals(
+  y,
+  yrep,
+  x = NULL,
+  ...,
+  prob = 0.5,
+  prob_outer = 0.9,
+  size = 1,
+  fatten = 3
+)
 
-ppc_intervals_grouped(y, yrep, x = NULL, group, ...,
-  facet_args = list(), prob = 0.5, prob_outer = 0.9, size = 1,
-  fatten = 3)
+ppc_intervals_grouped(
+  y,
+  yrep,
+  x = NULL,
+  group,
+  ...,
+  facet_args = list(),
+  prob = 0.5,
+  prob_outer = 0.9,
+  size = 1,
+  fatten = 3
+)
 
-ppc_ribbon(y, yrep, x = NULL, ..., prob = 0.5, prob_outer = 0.9,
-  alpha = 0.33, size = 0.25)
+ppc_ribbon(
+  y,
+  yrep,
+  x = NULL,
+  ...,
+  prob = 0.5,
+  prob_outer = 0.9,
+  alpha = 0.33,
+  size = 0.25
+)
 
-ppc_ribbon_grouped(y, yrep, x = NULL, group, ..., facet_args = list(),
-  prob = 0.5, prob_outer = 0.9, alpha = 0.33, size = 0.25)
+ppc_ribbon_grouped(
+  y,
+  yrep,
+  x = NULL,
+  group,
+  ...,
+  facet_args = list(),
+  prob = 0.5,
+  prob_outer = 0.9,
+  alpha = 0.33,
+  size = 0.25
+)
 
-ppc_intervals_data(y, yrep, x = NULL, group = NULL, ..., prob = 0.5,
-  prob_outer = 0.9)
+ppc_intervals_data(
+  y,
+  yrep,
+  x = NULL,
+  group = NULL,
+  ...,
+  prob = 0.5,
+  prob_outer = 0.9
+)
 
-ppc_ribbon_data(y, yrep, x = NULL, group = NULL, ..., prob = 0.5,
-  prob_outer = 0.9)
+ppc_ribbon_data(
+  y,
+  yrep,
+  x = NULL,
+  group = NULL,
+  ...,
+  prob = 0.5,
+  prob_outer = 0.9
+)
 }
 \arguments{
 \item{y}{A vector of observations. See \strong{Details}.}
@@ -64,7 +113,7 @@ and \code{size} are passed to \code{\link[ggplot2:geom_ribbon]{ggplot2::geom_rib
 \value{
 The plotting functions return a ggplot object that can be further
 customized using the \strong{ggplot2} package. The functions with suffix
-\code{_data()} return the data that would have been drawn by the plotting
+\verb{_data()} return the data that would have been drawn by the plotting
 function.
 }
 \description{
@@ -74,8 +123,8 @@ See the \strong{Plot Descriptions} section, below.
 \section{Plot Descriptions}{
 
 \describe{
-\item{\code{ppc_intervals(), ppc_ribbon()}}{
-\code{100*prob}\% central intervals for \code{yrep} at each \code{x}
+\item{\verb{ppc_intervals(), ppc_ribbon()}}{
+\code{100*prob}\\% central intervals for \code{yrep} at each \code{x}
 value. \code{ppc_intervals()} plots intervals as vertical bars with points
 indicating \code{yrep} medians and darker points indicating observed
 \code{y} values. \code{ppc_ribbon()} plots a ribbon of connected intervals
@@ -87,7 +136,7 @@ Depending on the number of observations and the variability in the
 predictions at different values of \code{x}, one or the other of these
 plots may be easier to read than the other.
 }
-\item{\code{ppc_intervals_grouped(), ppc_ribbon_grouped()}}{
+\item{\verb{ppc_intervals_grouped(), ppc_ribbon_grouped()}}{
 Same as \code{ppc_intervals()} and \code{ppc_ribbon()}, respectively, but a
 separate plot (facet) is generated for each level of a grouping variable.
 }
@@ -161,11 +210,13 @@ A., and Rubin, D. B. (2013). \emph{Bayesian Data Analysis.} Chapman & Hall/CRC
 Press, London, third edition. (Ch. 6)
 }
 \seealso{
-Other PPCs: \code{\link{PPC-discrete}},
-  \code{\link{PPC-distributions}},
-  \code{\link{PPC-errors}}, \code{\link{PPC-loo}},
-  \code{\link{PPC-overview}},
-  \code{\link{PPC-scatterplots}},
-  \code{\link{PPC-test-statistics}}
+Other PPCs: 
+\code{\link{PPC-discrete}},
+\code{\link{PPC-distributions}},
+\code{\link{PPC-errors}},
+\code{\link{PPC-loo}},
+\code{\link{PPC-overview}},
+\code{\link{PPC-scatterplots}},
+\code{\link{PPC-test-statistics}}
 }
 \concept{PPCs}

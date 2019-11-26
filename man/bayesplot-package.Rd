@@ -17,7 +17,7 @@ not exclusively, via Markov chain Monte Carlo). The package is designed not
 only to provide convenient functionality for users, but also a common set of
 functions that can be easily used by developers working on a variety of
 packages for Bayesian modeling, particularly (but not necessarily) packages
-powered by \link[rstan:rstan-package]{rstan} (the \R interface to Stan).
+powered by RStan (the \R interface to Stan).
 Examples of packages that will soon (or already are) using \strong{bayesplot} are
 \strong{rstan} itself, as well as the \strong{rstan}-dependent \strong{rstanarm} and
 \strong{brms} packages for applied regression modeling.

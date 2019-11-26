@@ -284,7 +284,7 @@ ppc_loo_pit <-
 #'   are computed internally before plotting. If specified, `intervals`
 #'   must be a matrix with number of rows equal to the number of data points and
 #'   five columns in the following order: lower outer interval, lower inner
-#'   interval, median (50\%), upper inner interval and upper outer interval
+#'   interval, median (50%), upper inner interval and upper outer interval
 #'   (column names are ignored).
 #' @param order For `ppc_loo_intervals()`, a string indicating how to arrange
 #'   the plotted intervals. The default (`"index"`) is to plot them in the

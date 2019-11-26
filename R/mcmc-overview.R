@@ -11,20 +11,20 @@
 #' documentation for various categories of MCMC plots. Currently the MCMC
 #' plotting functions accept posterior draws provided in one of the following
 #' formats:
-#' * __3-D array__: An array with dimensions `[Iteration, Chain, Parameter]`
-#'   in that order.
+#' * __3-D array__: An array with dimensions `Iteration, Chain, Parameter` in
+#' that order.
 #' * __list__: A list of matrices, where each matrix corresponds to a Markov
-#'   chain. All of the matrices should have the same number of iterations (rows)
-#'   and parameters (columns), and parameters should have the same names and be
-#'   in the same order.
+#' chain. All of the matrices should have the same number of iterations (rows)
+#' and parameters (columns), and parameters should have the same names and be in
+#' the same order.
 #' * __matrix (2-D array)__: A matrix with one column per parameter. If using
-#'   matrix there should only be a single Markov chain or all chains should
-#'   already be merged (stacked).
-#' * __data frame__: There are two types of [data frames][base::data.frame]
-#'   allowed. Either a data frame with one column per parameter (if only a single
-#'   chain or all chains have already been merged), or a data frame with one
-#'   column per parameter plus an additional column `"Chain"` that contains the
-#'   chain number (an integer) corresponding to each row in the data frame.
+#' matrix there should only be a single Markov chain or all chains should
+#' already be merged (stacked).
+#' * __data frame__: There are two types of data frames allowed. Either a data
+#' frame with one column per parameter (if only a single chain or all chains
+#' have already been merged), or a data frame with one column per parameter plus
+#' an additional column `"Chain"` that contains the chain number (an integer)
+#' corresponding to each row in the data frame.
 #'
 #' __Note__: typically the user should *not* include warmup iterations
 #' in the object passed to **bayesplot** plotting functions, although for
@@ -32,25 +32,26 @@
 #' warmup iterations for diagnostic purposes.
 #'
 #' @section MCMC plotting functions:
-#' * [__Posterior distributions__][MCMC-distributions]:
+#'
+#' * [Posterior distributions][MCMC-distributions]:
 #'   Histograms and kernel density plots of parameter draws, optionally
 #'   showing each Markov chain separately.
-#' * [__Uncertainty intervals__][MCMC-intervals]: Uncertainty intervals computed
+#' * [Uncertainty intervals][MCMC-intervals]: Uncertainty intervals computed
 #'   from parameter draws.
-#' * [__Trace plots__][MCMC-traces]: Times series of parameter draws, optionally
+#' * [Trace plots][MCMC-traces]: Times series of parameter draws, optionally
 #'   including HMC/NUTS diagnostic information.
-#' * [__Scatterplots__][MCMC-scatterplots]: Scatterplots, heatmaps, and pairs
+#' * [Scatterplots][MCMC-scatterplots]: Scatterplots, heatmaps, and pairs
 #'   plots of parameter draws, optionally including HMC/NUTS diagnostic
 #'   information.
-#' * [__Parallel coordinates plots__][MCMC-parcoord]: Parallel coordinates plot
+#' * [Parallel coordinates plots][MCMC-parcoord]: Parallel coordinates plot
 #'   of MCMC draws (one dimension per parameter), optionally including
 #'   HMC/NUTS diagnostic information.
-#' * [__Combos__][MCMC-combos]: Combination plots (e.g. trace plot + histogram).
-#' * [__General MCMC diagnostics__][MCMC-diagnostics]: MCMC diagnostic plots
+#' * [Combos][MCMC-combos]: Combination plots (e.g. trace plot + histogram).
+#' * [General MCMC diagnostics][MCMC-diagnostics]: MCMC diagnostic plots
 #'   including R-hat, effective sample size, autocorrelation.
-#'   [__NUTS diagnostics__][MCMC-nuts]: Special diagnostic plots for
+#'   [NUTS diagnostics][MCMC-nuts]: Special diagnostic plots for
 #'     the No-U-Turn Sampler.
-#' * [__Comparisons to "true" values__][MCMC-recover]: Plots comparing MCMC
+#' * [Comparisons to "true" values][MCMC-recover]: Plots comparing MCMC
 #'     estimates to "true" parameter values (e.g., values used to simulate data).
 #'
 #' @template reference-vis-paper

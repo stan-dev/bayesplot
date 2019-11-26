@@ -10,27 +10,69 @@
 \alias{mcmc_trace_data}
 \title{Trace plots of MCMC draws}
 \usage{
-mcmc_trace(x, pars = character(), regex_pars = character(),
-  transformations = list(), ..., facet_args = list(), n_warmup = 0,
-  iter1 = 0, window = NULL, size = NULL, np = NULL,
-  np_style = trace_style_np(), divergences = NULL)
+mcmc_trace(
+  x,
+  pars = character(),
+  regex_pars = character(),
+  transformations = list(),
+  ...,
+  facet_args = list(),
+  n_warmup = 0,
+  iter1 = 0,
+  window = NULL,
+  size = NULL,
+  np = NULL,
+  np_style = trace_style_np(),
+  divergences = NULL
+)
 
-mcmc_trace_highlight(x, pars = character(), regex_pars = character(),
-  transformations = list(), ..., facet_args = list(), n_warmup = 0,
-  window = NULL, size = NULL, alpha = 0.2, highlight = 1)
+mcmc_trace_highlight(
+  x,
+  pars = character(),
+  regex_pars = character(),
+  transformations = list(),
+  ...,
+  facet_args = list(),
+  n_warmup = 0,
+  window = NULL,
+  size = NULL,
+  alpha = 0.2,
+  highlight = 1
+)
 
 trace_style_np(div_color = "red", div_size = 0.25, div_alpha = 1)
 
-mcmc_rank_overlay(x, pars = character(), regex_pars = character(),
-  transformations = list(), ..., n_bins = 20, ref_line = FALSE)
+mcmc_rank_overlay(
+  x,
+  pars = character(),
+  regex_pars = character(),
+  transformations = list(),
+  ...,
+  n_bins = 20,
+  ref_line = FALSE
+)
 
-mcmc_rank_hist(x, pars = character(), regex_pars = character(),
-  transformations = list(), ..., facet_args = list(), n_bins = 20,
-  ref_line = FALSE)
+mcmc_rank_hist(
+  x,
+  pars = character(),
+  regex_pars = character(),
+  transformations = list(),
+  ...,
+  facet_args = list(),
+  n_bins = 20,
+  ref_line = FALSE
+)
 
-mcmc_trace_data(x, pars = character(), regex_pars = character(),
-  transformations = list(), ..., highlight = NULL, n_warmup = 0,
-  iter1 = 0)
+mcmc_trace_data(
+  x,
+  pars = character(),
+  regex_pars = character(),
+  transformations = list(),
+  ...,
+  highlight = NULL,
+  n_warmup = 0,
+  iter1 = 0
+)
 }
 \arguments{
 \item{x}{A 3-D array, matrix, list of matrices, or data frame of MCMC draws.
@@ -41,7 +83,7 @@ the \link{MCMC-overview} page.}
 
 \item{pars}{An optional character vector of parameter names. If neither
 \code{pars} nor \code{regex_pars} is specified then the default is to use \emph{all}
-parameters. As of version \code{1.7.0}, \strong{bayesplot} also supports 'tidy'
+parameters. As of version \verb{1.7.0}, \strong{bayesplot} also supports 'tidy'
 parameter selection by specifying \code{pars = vars(...)}, where \code{...} is
 specified the same way as in \link[dplyr:select]{dplyr::select(...)} and
 similar functions. Examples of using \code{pars} in this way can be found on the
@@ -133,7 +175,7 @@ average number of ranks per bin. Defaults to \code{FALSE}.}
 \value{
 The plotting functions return a ggplot object that can be further
 customized using the \strong{ggplot2} package. The functions with suffix
-\code{_data()} return the data that would have been drawn by the plotting
+\verb{_data()} return the data that would have been drawn by the plotting
 function.
 
 \code{mcmc_trace_data()} returns the data for the trace \emph{and} rank plots
@@ -212,7 +254,7 @@ mcmc_rank_overlay(x, "alpha")
 color_scheme_set("purple")
 p <- mcmc_trace(
   x,
-  regex_pars = "beta\\\\[[1,3]\\\\]",
+  regex_pars = "beta\\[[1,3]\\]",
   facet_args = list(labeller = ggplot2::label_parsed)
 )
 p + facet_text(size = 15)
@@ -255,12 +297,15 @@ Vehtari, A., Gelman, A., Simpson, D., Carpenter, B., Bürkner, P.
 for assessing convergence of MCMC. \href{https://arxiv.org/abs/1903.08008}{arXiv preprint}.
 }
 \seealso{
-Other MCMC: \code{\link{MCMC-combos}},
-  \code{\link{MCMC-diagnostics}},
-  \code{\link{MCMC-distributions}},
-  \code{\link{MCMC-intervals}}, \code{\link{MCMC-nuts}},
-  \code{\link{MCMC-overview}}, \code{\link{MCMC-parcoord}},
-  \code{\link{MCMC-recover}},
-  \code{\link{MCMC-scatterplots}}
+Other MCMC: 
+\code{\link{MCMC-combos}},
+\code{\link{MCMC-diagnostics}},
+\code{\link{MCMC-distributions}},
+\code{\link{MCMC-intervals}},
+\code{\link{MCMC-nuts}},
+\code{\link{MCMC-overview}},
+\code{\link{MCMC-parcoord}},
+\code{\link{MCMC-recover}},
+\code{\link{MCMC-scatterplots}}
 }
 \concept{MCMC}

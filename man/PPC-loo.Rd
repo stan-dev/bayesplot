@@ -9,23 +9,71 @@
 \alias{ppc_loo_ribbon}
 \title{LOO predictive checks}
 \usage{
-ppc_loo_pit_overlay(y, yrep, lw, pit, samples = 100, ..., size = 0.25,
-  alpha = 0.7, trim = FALSE, bw = "nrd0", adjust = 1,
-  kernel = "gaussian", n_dens = 1024)
+ppc_loo_pit_overlay(
+  y,
+  yrep,
+  lw,
+  pit,
+  samples = 100,
+  ...,
+  size = 0.25,
+  alpha = 0.7,
+  trim = FALSE,
+  bw = "nrd0",
+  adjust = 1,
+  kernel = "gaussian",
+  n_dens = 1024
+)
 
-ppc_loo_pit_qq(y, yrep, lw, pit, compare = c("uniform", "normal"), ...,
-  size = 2, alpha = 1)
+ppc_loo_pit_qq(
+  y,
+  yrep,
+  lw,
+  pit,
+  compare = c("uniform", "normal"),
+  ...,
+  size = 2,
+  alpha = 1
+)
 
-ppc_loo_pit(y, yrep, lw, pit, compare = c("uniform", "normal"), ...,
-  size = 2, alpha = 1)
+ppc_loo_pit(
+  y,
+  yrep,
+  lw,
+  pit,
+  compare = c("uniform", "normal"),
+  ...,
+  size = 2,
+  alpha = 1
+)
 
-ppc_loo_intervals(y, yrep, psis_object, subset = NULL,
-  intervals = NULL, ..., prob = 0.5, prob_outer = 0.9, size = 1,
-  fatten = 3, order = c("index", "median"))
+ppc_loo_intervals(
+  y,
+  yrep,
+  psis_object,
+  subset = NULL,
+  intervals = NULL,
+  ...,
+  prob = 0.5,
+  prob_outer = 0.9,
+  size = 1,
+  fatten = 3,
+  order = c("index", "median")
+)
 
-ppc_loo_ribbon(y, yrep, lw, psis_object, subset = NULL,
-  intervals = NULL, ..., prob = 0.5, prob_outer = 0.9,
-  alpha = 0.33, size = 0.25)
+ppc_loo_ribbon(
+  y,
+  yrep,
+  lw,
+  psis_object,
+  subset = NULL,
+  intervals = NULL,
+  ...,
+  prob = 0.5,
+  prob_outer = 0.9,
+  alpha = 0.33,
+  size = 0.25
+)
 }
 \arguments{
 \item{y}{A vector of observations. See \strong{Details}.}
@@ -74,7 +122,7 @@ compares computed PIT values to the standard uniform distribution. If
 \code{compare="normal"}, the Q-Q plot compares standardized PIT values to the
 standard normal distribution.}
 
-\item{psis_object}{If using \strong{loo} version \code{2.0.0} or greater, an
+\item{psis_object}{If using \strong{loo} version \verb{2.0.0} or greater, an
 object returned by the \code{psis()} function (or by the \code{loo()} function
 with argument \code{save_psis} set to \code{TRUE}).}
 
@@ -207,11 +255,13 @@ doi:10.1007/s11222-016-9696-4. arXiv preprint:
 \url{https://arxiv.org/abs/1507.04544/}
 }
 \seealso{
-Other PPCs: \code{\link{PPC-discrete}},
-  \code{\link{PPC-distributions}},
-  \code{\link{PPC-errors}}, \code{\link{PPC-intervals}},
-  \code{\link{PPC-overview}},
-  \code{\link{PPC-scatterplots}},
-  \code{\link{PPC-test-statistics}}
+Other PPCs: 
+\code{\link{PPC-discrete}},
+\code{\link{PPC-distributions}},
+\code{\link{PPC-errors}},
+\code{\link{PPC-intervals}},
+\code{\link{PPC-overview}},
+\code{\link{PPC-scatterplots}},
+\code{\link{PPC-test-statistics}}
 }
 \concept{PPCs}

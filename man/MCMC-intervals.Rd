@@ -10,32 +10,90 @@
 \alias{mcmc_areas_ridges_data}
 \title{Plot interval estimates from MCMC draws}
 \usage{
-mcmc_intervals(x, pars = character(), regex_pars = character(),
-  transformations = list(), ..., prob = 0.5, prob_outer = 0.9,
-  point_est = c("median", "mean", "none"), rhat = numeric())
+mcmc_intervals(
+  x,
+  pars = character(),
+  regex_pars = character(),
+  transformations = list(),
+  ...,
+  prob = 0.5,
+  prob_outer = 0.9,
+  point_est = c("median", "mean", "none"),
+  rhat = numeric()
+)
 
-mcmc_areas(x, pars = character(), regex_pars = character(),
-  transformations = list(), ..., area_method = c("equal area",
-  "equal height", "scaled height"), prob = 0.5, prob_outer = 1,
-  point_est = c("median", "mean", "none"), rhat = numeric(),
-  bw = NULL, adjust = NULL, kernel = NULL, n_dens = NULL)
+mcmc_areas(
+  x,
+  pars = character(),
+  regex_pars = character(),
+  transformations = list(),
+  ...,
+  area_method = c("equal area", "equal height", "scaled height"),
+  prob = 0.5,
+  prob_outer = 1,
+  point_est = c("median", "mean", "none"),
+  rhat = numeric(),
+  bw = NULL,
+  adjust = NULL,
+  kernel = NULL,
+  n_dens = NULL
+)
 
-mcmc_areas_ridges(x, pars = character(), regex_pars = character(),
-  transformations = list(), ..., prob_outer = 1, prob = 1,
-  bw = NULL, adjust = NULL, kernel = NULL, n_dens = NULL)
+mcmc_areas_ridges(
+  x,
+  pars = character(),
+  regex_pars = character(),
+  transformations = list(),
+  ...,
+  prob_outer = 1,
+  prob = 1,
+  bw = NULL,
+  adjust = NULL,
+  kernel = NULL,
+  n_dens = NULL
+)
 
-mcmc_intervals_data(x, pars = character(), regex_pars = character(),
-  transformations = list(), ..., prob = 0.5, prob_outer = 0.9,
-  point_est = c("median", "mean", "none"), rhat = numeric())
+mcmc_intervals_data(
+  x,
+  pars = character(),
+  regex_pars = character(),
+  transformations = list(),
+  ...,
+  prob = 0.5,
+  prob_outer = 0.9,
+  point_est = c("median", "mean", "none"),
+  rhat = numeric()
+)
 
-mcmc_areas_data(x, pars = character(), regex_pars = character(),
-  transformations = list(), ..., prob = 0.5, prob_outer = 1,
-  point_est = c("median", "mean", "none"), rhat = numeric(),
-  bw = NULL, adjust = NULL, kernel = NULL, n_dens = NULL)
+mcmc_areas_data(
+  x,
+  pars = character(),
+  regex_pars = character(),
+  transformations = list(),
+  ...,
+  prob = 0.5,
+  prob_outer = 1,
+  point_est = c("median", "mean", "none"),
+  rhat = numeric(),
+  bw = NULL,
+  adjust = NULL,
+  kernel = NULL,
+  n_dens = NULL
+)
 
-mcmc_areas_ridges_data(x, pars = character(), regex_pars = character(),
-  transformations = list(), ..., prob_outer = 1, prob = 1,
-  bw = NULL, adjust = NULL, kernel = NULL, n_dens = NULL)
+mcmc_areas_ridges_data(
+  x,
+  pars = character(),
+  regex_pars = character(),
+  transformations = list(),
+  ...,
+  prob_outer = 1,
+  prob = 1,
+  bw = NULL,
+  adjust = NULL,
+  kernel = NULL,
+  n_dens = NULL
+)
 }
 \arguments{
 \item{x}{A 3-D array, matrix, list of matrices, or data frame of MCMC draws.
@@ -46,7 +104,7 @@ the \link{MCMC-overview} page.}
 
 \item{pars}{An optional character vector of parameter names. If neither
 \code{pars} nor \code{regex_pars} is specified then the default is to use \emph{all}
-parameters. As of version \code{1.7.0}, \strong{bayesplot} also supports 'tidy'
+parameters. As of version \verb{1.7.0}, \strong{bayesplot} also supports 'tidy'
 parameter selection by specifying \code{pars = vars(...)}, where \code{...} is
 specified the same way as in \link[dplyr:select]{dplyr::select(...)} and
 similar functions. Examples of using \code{pars} in this way can be found on the
@@ -111,7 +169,7 @@ parameters. \code{n_dens} defaults to \code{1024}.}
 \value{
 The plotting functions return a ggplot object that can be further
 customized using the \strong{ggplot2} package. The functions with suffix
-\code{_data()} return the data that would have been drawn by the plotting
+\verb{_data()} return the data that would have been drawn by the plotting
 function.
 }
 \description{
@@ -147,7 +205,7 @@ dimnames(x)
 color_scheme_set("brightblue")
 mcmc_intervals(x)
 mcmc_intervals(x, pars = c("beta[1]", "beta[2]"))
-mcmc_areas(x, regex_pars = "beta\\\\[[1-3]", prob = 0.8) +
+mcmc_areas(x, regex_pars = "beta\\[[1-3]", prob = 0.8) +
  ggplot2::labs(
    title = "Posterior distributions",
    subtitle = "with medians and 80\% intervals"
@@ -237,12 +295,15 @@ mcmc_areas_ridges(m, pars = "mu", regex_pars = "theta") +
 
 }
 \seealso{
-Other MCMC: \code{\link{MCMC-combos}},
-  \code{\link{MCMC-diagnostics}},
-  \code{\link{MCMC-distributions}},
-  \code{\link{MCMC-nuts}}, \code{\link{MCMC-overview}},
-  \code{\link{MCMC-parcoord}}, \code{\link{MCMC-recover}},
-  \code{\link{MCMC-scatterplots}},
-  \code{\link{MCMC-traces}}
+Other MCMC: 
+\code{\link{MCMC-combos}},
+\code{\link{MCMC-diagnostics}},
+\code{\link{MCMC-distributions}},
+\code{\link{MCMC-nuts}},
+\code{\link{MCMC-overview}},
+\code{\link{MCMC-parcoord}},
+\code{\link{MCMC-recover}},
+\code{\link{MCMC-scatterplots}},
+\code{\link{MCMC-traces}}
 }
 \concept{MCMC}

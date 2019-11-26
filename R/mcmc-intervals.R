@@ -13,9 +13,9 @@
 #' @param ... Currently unused.
 #' @param prob The probability mass to include in the inner interval (for
 #'   `mcmc_intervals()`) or in the shaded region (for `mcmc_areas()`). The
-#'   default is `0.5` (50\% interval) and `1` for `mcmc_areas_ridges()`.
+#'   default is `0.5` (50% interval) and `1` for `mcmc_areas_ridges()`.
 #' @param prob_outer The probability mass to include in the outer interval. The
-#'   default is `0.9` for `mcmc_intervals()` (90\% interval) and
+#'   default is `0.9` for `mcmc_intervals()` (90% interval) and
 #'   `1` for `mcmc_areas()` and for `mcmc_areas_ridges()`.
 #' @param area_method How to constrain the areas in `mcmc_areas()`. The
 #'   default is `"equal area"`, setting the density curves to have the same
