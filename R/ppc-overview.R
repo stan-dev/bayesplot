@@ -64,28 +64,28 @@
 #' @section PPC plotting functions: The plotting functions for prior and
 #'   posterior predictive checking are organized into several categories, each
 #'   with its own documentation:
-#' * [__Distributions__][PPC-distributions]: Histograms, kernel density
+#' * [Distributions][PPC-distributions]: Histograms, kernel density
 #'   estimates, boxplots, and other plots comparing the empirical distribution
 #'   of data `y` to the distributions of individual simulated datasets (rows)
 #'   in `yrep`.
-#' * [__Statistics__][PPC-test-statistics]: The distribution of a statistic,
+#' * [Statistics][PPC-test-statistics]: The distribution of a statistic,
 #'   or a pair of statistics, over the simulated datasets (rows) in `yrep`
 #'   compared to value of the statistic(s) computed from `y`.
-#' * [__Intervals__][PPC-intervals]: Interval estimates of `yrep` with `y`
+#' * [Intervals][PPC-intervals]: Interval estimates of `yrep` with `y`
 #'   overlaid. The x-axis variable can be optionally specified by the user
 #'   (e.g. to plot against a predictor variable or over time).
-#' * [__Predictive errors__][PPC-errors]: Plots of predictive errors
+#' * [Predictive errors][PPC-errors]: Plots of predictive errors
 #'   (`y - yrep`) computed from `y` and each of the simulated datasets (rows)
 #'   in `yrep`. For binomial models binned error plots are also available.
-#' * [__Scatterplots__][PPC-scatterplots]: Scatterplots (and similar
+#' * [Scatterplots][PPC-scatterplots]: Scatterplots (and similar
 #'   visualizations) of the data `y` vs. individual simulated datasets
 #'   (rows) in `yrep`, or vs. the average value of the distributions of each
 #'   data point (columns) in `yrep`.
-#' * [__Plots for discrete outcomes__][PPC-discrete]: PPC functions that can
+#' * [Plots for discrete outcomes][PPC-discrete]: PPC functions that can
 #'   only be used if `y` and `yrep` are discrete. For example, rootograms for
 #'   count outcomes and bar plots for ordinal, categorical, and
 #'   multinomial outcomes.
-#' * [__LOO predictive checks__][PPC-loo]: PPC functions for predictive checks
+#' * [LOO predictive checks][PPC-loo]: PPC functions for predictive checks
 #'   based on (approximate) leave-one-out (LOO) cross-validation.
 #'
 #' @section Providing an interface for predictive checking from another package:

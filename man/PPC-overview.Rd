@@ -66,28 +66,28 @@ to the prior predictive realizations.
 posterior predictive checking are organized into several categories, each
 with its own documentation:
 \itemize{
-\item \link[=PPC-distributions]{\strong{Distributions}}: Histograms, kernel density
+\item \link[=PPC-distributions]{Distributions}: Histograms, kernel density
 estimates, boxplots, and other plots comparing the empirical distribution
 of data \code{y} to the distributions of individual simulated datasets (rows)
 in \code{yrep}.
-\item \link[=PPC-test-statistics]{\strong{Statistics}}: The distribution of a statistic,
+\item \link[=PPC-test-statistics]{Statistics}: The distribution of a statistic,
 or a pair of statistics, over the simulated datasets (rows) in \code{yrep}
 compared to value of the statistic(s) computed from \code{y}.
-\item \link[=PPC-intervals]{\strong{Intervals}}: Interval estimates of \code{yrep} with \code{y}
+\item \link[=PPC-intervals]{Intervals}: Interval estimates of \code{yrep} with \code{y}
 overlaid. The x-axis variable can be optionally specified by the user
 (e.g. to plot against a predictor variable or over time).
-\item \link[=PPC-errors]{\strong{Predictive errors}}: Plots of predictive errors
+\item \link[=PPC-errors]{Predictive errors}: Plots of predictive errors
 (\code{y - yrep}) computed from \code{y} and each of the simulated datasets (rows)
 in \code{yrep}. For binomial models binned error plots are also available.
-\item \link[=PPC-scatterplots]{\strong{Scatterplots}}: Scatterplots (and similar
+\item \link[=PPC-scatterplots]{Scatterplots}: Scatterplots (and similar
 visualizations) of the data \code{y} vs. individual simulated datasets
 (rows) in \code{yrep}, or vs. the average value of the distributions of each
 data point (columns) in \code{yrep}.
-\item \link[=PPC-discrete]{\strong{Plots for discrete outcomes}}: PPC functions that can
+\item \link[=PPC-discrete]{Plots for discrete outcomes}: PPC functions that can
 only be used if \code{y} and \code{yrep} are discrete. For example, rootograms for
 count outcomes and bar plots for ordinal, categorical, and
 multinomial outcomes.
-\item \link[=PPC-loo]{\strong{LOO predictive checks}}: PPC functions for predictive checks
+\item \link[=PPC-loo]{LOO predictive checks}: PPC functions for predictive checks
 based on (approximate) leave-one-out (LOO) cross-validation.
 }
 }
