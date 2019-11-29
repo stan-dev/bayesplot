@@ -11,9 +11,9 @@ Items for next release go here
 
 # bayesplot 1.7.1
 
-CRAN requested release to fix error at
+Release requested by CRAN to fix errors at
 https://cran.r-project.org/web/checks/check_results_bayesplot.html due to
-matrices also inheriting from "array" in R 4.0
+matrices also inheriting from "array" in R 4.0.
 
 # bayesplot 1.7.0
 
