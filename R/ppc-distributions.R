@@ -33,7 +33,8 @@
 #'    `yrep` should therefore contain only a small number of rows. See the
 #'    **Examples** section.
 #'   }
-#'   \item{`ppc_dens_overlay(), ppc_ecdf_overlay()`}{
+#'   \item{`ppc_ecdf_overlay(), ppc_dens_overlay(),
+#'          ppc_ecdf_overlay_grouped(), ppc_dens_overlay_grouped()`}{
 #'    Kernel density or empirical CDF estimates of each dataset (row) in
 #'    `yrep` are overlaid, with the distribution of `y` itself on top
 #'    (and in a darker shade). When using `ppc_ecdf_overlay()` with discrete
@@ -58,6 +59,7 @@
 #' yrep <- example_yrep_draws()
 #' dim(yrep)
 #' ppc_dens_overlay(y, yrep[1:25, ])
+#'
 #' \donttest{
 #' # ppc_ecdf_overlay with continuous data (set discrete=TRUE if discrete data)
 #' ppc_ecdf_overlay(y, yrep[sample(nrow(yrep), 25), ])
@@ -84,6 +86,11 @@
 #' \donttest{
 #' ppc_freqpoly_grouped(y, yrep[1:3,], group, freq = FALSE) + yaxis_text()
 #' }
+#'
+#' # density and distribution overlays by group
+#' ppc_dens_overlay_grouped(y, yrep[1:25, ], group = group)
+#'
+#' ppc_ecdf_overlay_grouped(y, yrep[1:25, ], group = group)
 #'
 #' # don't need to only use small number of rows for ppc_violin_grouped
 #' # (as it pools yrep draws within groups)
@@ -265,17 +272,21 @@ ppc_dens <- function(y, yrep, ..., trim = FALSE, size = 0.5, alpha = 1) {
 #' @rdname PPC-distributions
 #' @export
 #' @template args-density-controls
-ppc_dens_overlay <- function(y, yrep, ...,
-                             size = 0.25,
-                             alpha = 0.7,
-                             trim = FALSE,
-                             bw = "nrd0",
-                             adjust = 1,
-                             kernel = "gaussian",
-                             n_dens = 1024) {
-
+ppc_dens_overlay <- function(
+  y,
+  yrep,
+  ...,
+  group = NULL,
+  size = 0.25,
+  alpha = 0.7,
+  trim = FALSE,
+  bw = "nrd0",
+  adjust = 1,
+  kernel = "gaussian",
+  n_dens = 1024
+) {
   check_ignored_arguments(...)
-  data <- ppc_data(y, yrep)
+  data <- ppc_data(y, yrep, group = group)
 
   ggplot(data) +
     aes_(x = ~ value) +
@@ -315,10 +326,41 @@ ppc_dens_overlay <- function(y, yrep, ...,
     yaxis_ticks(FALSE)
 }
 
+#' @rdname PPC-distributions
+#' @export
+#' @template args-density-controls
+ppc_dens_overlay_grouped <- function(
+  y,
+  yrep,
+  group,
+  ...,
+  size = 0.25,
+  alpha = 0.7,
+  trim = FALSE,
+  bw = "nrd0",
+  adjust = 1,
+  kernel = "gaussian",
+  n_dens = 1024
+) {
+  check_ignored_arguments(...)
 
+  p_overlay <- ppc_dens_overlay(
+    y = y,
+    yrep = yrep,
+    ...,
+    group = group,
+    size = size,
+    alpha = alpha,
+    trim = trim,
+    bw = bw,
+    adjust = adjust,
+    kernel = kernel,
+    n_dens = n_dens
+  )
 
-
-
+  p_overlay +
+    facet_wrap("group")
+}
 
 #' @export
 #' @rdname PPC-distributions
@@ -327,48 +369,87 @@ ppc_dens_overlay <- function(y, yrep, ...,
 #'   passed to [ggplot2::stat_ecdf()]. If `discrete` is set to
 #'   `TRUE` then `geom="step"` is used.
 #' @param pad A logical scalar passed to [ggplot2::stat_ecdf()].
-ppc_ecdf_overlay <-
-  function(y,
-           yrep,
-           ...,
-           discrete = FALSE,
-           pad = TRUE,
-           size = 0.25,
-           alpha = 0.7) {
-    check_ignored_arguments(...)
-    data <- ppc_data(y, yrep)
+ppc_ecdf_overlay <- function(
+  y,
+  yrep,
+  ...,
+  group = NULL,
+  discrete = FALSE,
+  pad = TRUE,
+  size = 0.25,
+  alpha = 0.7
+) {
+  check_ignored_arguments(...)
+  data <- ppc_data(y, yrep, group = group)
 
-    ggplot(data) +
-      aes_(x = ~ value) +
-      hline_at(
-        c(0, 0.5, 1),
-        size = c(0.2, 0.1, 0.2),
-        linetype = 2,
-        color = get_color("dh")
-      ) +
-      stat_ecdf(
-        data = function(x) dplyr::filter(x, !.data$is_y),
-        mapping = aes_(group = ~ rep_id, color = "yrep"),
-        geom = if (discrete) "step" else "line",
-        size = size,
-        alpha = alpha,
-        pad = pad
-      ) +
-      stat_ecdf(
-        data = function(x) dplyr::filter(x, .data$is_y),
-        mapping = aes_(color = "y"),
-        geom = if (discrete) "step" else "line",
-        size = 1,
-        pad = pad
-      ) +
-      scale_color_ppc_dist() +
-      xlab(y_label()) +
-      scale_y_continuous(breaks = c(0, 0.5, 1)) +
-      yaxis_title(FALSE) +
-      xaxis_title(FALSE) +
-      yaxis_ticks(FALSE) +
+  ggplot(data) +
+    aes_(x = ~ value) +
+    hline_at(
+      0.5,
+      size = 0.1,
+      linetype = 2,
+      color = get_color("dh")
+    ) +
+    hline_at(
+      c(0, 1),
+      size = 0.2,
+      linetype = 2,
+      color = get_color("dh")
+    ) +
+    stat_ecdf(
+      data = function(x) dplyr::filter(x, !.data$is_y),
+      mapping = aes_(group = ~ rep_id, color = "yrep"),
+      geom = if (discrete) "step" else "line",
+      size = size,
+      alpha = alpha,
+      pad = pad
+    ) +
+    stat_ecdf(
+      data = function(x) dplyr::filter(x, .data$is_y),
+      mapping = aes_(color = "y"),
+      geom = if (discrete) "step" else "line",
+      size = 1,
+      pad = pad
+    ) +
+    scale_color_ppc_dist() +
+    xlab(y_label()) +
+    scale_y_continuous(breaks = c(0, 0.5, 1)) +
+    yaxis_title(FALSE) +
+    xaxis_title(FALSE) +
+    yaxis_ticks(FALSE) +
     bayesplot_theme_get()
-  }
+}
+
+#' @export
+#' @rdname PPC-distributions
+ppc_ecdf_overlay_grouped <- function(
+  y,
+  yrep,
+  group,
+  ...,
+  discrete = FALSE,
+  pad = TRUE,
+  size = 0.25,
+  alpha = 0.7
+) {
+  check_ignored_arguments(...)
+
+  p_overlay <- ppc_ecdf_overlay(
+    y = y,
+    yrep = yrep,
+    group = group,
+    ...,
+    discrete = discrete,
+    pad = pad,
+    size = size,
+    alpha = alpha
+  )
+
+  p_overlay +
+    facet_wrap("group")
+}
+
+
 
 #' @export
 #' @rdname PPC-distributions

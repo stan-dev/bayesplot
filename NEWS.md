@@ -1,13 +1,14 @@
 <!-- See http://style.tidyverse.org/news.html for advice on writing news -->
 
 
-<!-- 
+
 # bayesplot 1.7.1.9000
 
 (GitHub issue/PR numbers in parentheses)
 
-Items for next release go here
--->
+* Added `ppc_dens_overlay_grouped()` and `ppc_ecdf_overlay_grouped()` for 
+  plotting density and cumulative distributions of the posterior predictive 
+  distribution (versus observed data) by group.
 
 # bayesplot 1.7.1
 
