@@ -359,7 +359,8 @@ ppc_dens_overlay_grouped <- function(
   )
 
   p_overlay +
-    facet_wrap("group")
+    facet_wrap("group") +
+    force_axes_in_facets()
 }
 
 #' @export
@@ -446,7 +447,8 @@ ppc_ecdf_overlay_grouped <- function(
   )
 
   p_overlay +
-    facet_wrap("group")
+    facet_wrap("group") +
+    force_axes_in_facets()
 }
 
 
