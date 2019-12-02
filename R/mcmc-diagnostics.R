@@ -10,7 +10,7 @@
 #'
 #' @template args-hist
 #' @param size An optional value to override [ggplot2::geom_point()]'s
-#'   default size (for `mcmc_rhat()`, `mcmc_neff()`, `mcmc_msce()`) or
+#'   default size (for `mcmc_rhat()`, `mcmc_neff()`, `mcmc_mcse()`) or
 #'   [ggplot2::geom_line()]'s default size (for `mcmc_acf()`).
 #' @param ... Currently ignored.
 #'
@@ -37,12 +37,12 @@
 #'   * _dark_: below 0.1 (low)
 #' }
 #'
-#' \item{`mcmc_msce()`, `mcmc_msce_hist()`}{
+#' \item{`mcmc_mcse()`, `mcmc_mcse_hist()`}{
 #'   Ratios of monte carlo standard error to posterior standard deviation
 #'   as either points or a histogram. Values are colored using different shades
 #'   (lighter is better). The chosen thresholds are somewhat arbitrary,
 #'   but can be useful guidelines in practice.
-#'   * _light_: below 0.05 (small msce)
+#'   * _light_: below 0.05 (small mcse)
 #'   * _mid_: between 0.05 and 0.1 (ok)
 #'   * _dark_: above 0.1 (high mcse)
 #' }
@@ -581,7 +581,7 @@ diagnostic_color_labels <- list(
     ok   = expression(N[eff] / N <= 0.5),
     high = expression(N[eff] / N > 0.5)
   ),
-  msce_ratio = c(
+  mcse_ratio = c(
     low  = expression(mcse / sd <= 0.05),
     ok   = expression(mcse / sd <= 0.1),
     high = expression(mcse / sd > 0.1)
