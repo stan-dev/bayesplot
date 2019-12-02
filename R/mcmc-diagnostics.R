@@ -479,7 +479,7 @@ diagnostic_factor.neff_ratio <- function(x, breaks = c(0.1, 0.5)) {
 
 diagnostic_factor.mcse_ratio <- function(x, breaks = c(0.05, 0.1)) {
   cut(x, breaks = c(-Inf, breaks, Inf),
-      labels = c("small mcse", "ok", "high mcse"),
+      labels = c("low", "ok", "high"),
       ordered_result = FALSE)
 }
 
