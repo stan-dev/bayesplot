@@ -8,7 +8,9 @@
 
 * Added `ppc_dens_overlay_grouped()` and `ppc_ecdf_overlay_grouped()` for 
   plotting density and cumulative distributions of the posterior predictive 
-  distribution (versus observed data) by group.
+  distribution (versus observed data) by group. (#212)
+  
+* Fix bug in `color_scheme_view()` minimal theme (#213).
 
 # bayesplot 1.7.1
 
