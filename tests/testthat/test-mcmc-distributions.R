@@ -105,3 +105,14 @@ test_that("mcmc_* throws error if 1 chain but multiple chains required", {
   expect_error(mcmc_violin(dframe), "requires multiple chains")
   expect_error(mcmc_violin(arr1chain), "requires multiple chains")
 })
+
+test_that("mcmc_hist renders correctly", {
+  testthat::skip_on_cran()
+
+  p_base <- mcmc_hist(vdiff_dframe)
+  vdiffr::expect_doppelganger("mcmc_hist (default)", p_base)
+
+  p_freq <- mcmc_hist(vdiff_dframe, freq = TRUE)
+  vdiffr::expect_doppelganger("mcmc_hist (freq)", p_inner)
+})
+
