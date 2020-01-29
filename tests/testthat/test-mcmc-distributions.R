@@ -113,6 +113,6 @@ test_that("mcmc_hist renders correctly", {
   vdiffr::expect_doppelganger("mcmc_hist (default)", p_base)
 
   p_freq <- mcmc_hist(vdiff_dframe, freq = TRUE)
-  vdiffr::expect_doppelganger("mcmc_hist (freq)", p_inner)
+  vdiffr::expect_doppelganger("mcmc_hist (freq)", p_freq)
 })
 
