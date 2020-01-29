@@ -220,17 +220,17 @@ mcmc_hex <- function(x,
 #'
 #' # pairs plots
 #' # default of condition=NULL implies splitting chains between upper and lower panels
-#' mcmc_pairs(x, pars = "alpha", regex_pars = "beta\\\[[1,4]\\\]",
+#' mcmc_pairs(x, pars = "alpha", regex_pars = "beta\\[[1,4]\\]",
 #'            off_diag_args = list(size = 1, alpha = 0.5))
 #'
 #' # change to density plots instead of histograms and hex plots instead of
 #' # scatterplots
-#' mcmc_pairs(x, pars = "alpha", regex_pars = "beta\\\[[1,4]\\\]",
+#' mcmc_pairs(x, pars = "alpha", regex_pars = "beta\\[[1,4]\\]",
 #'            diag_fun = "dens", off_diag_fun = "hex")
 #'
 #' # plot chain 1 above diagonal and chains 2, 3, and 4 below
 #' color_scheme_set("brightblue")
-#' mcmc_pairs(x, pars = "alpha", regex_pars = "beta\\\[[1,4]\\\]",
+#' mcmc_pairs(x, pars = "alpha", regex_pars = "beta\\[[1,4]\\]",
 #'            diag_fun = "dens", off_diag_fun = "hex",
 #'            condition = pairs_condition(chains = list(1, 2:4)))
 #' }
