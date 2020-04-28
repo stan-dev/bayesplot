@@ -298,11 +298,11 @@ label_x <- function(x) {
     grouped_d,
     outer_width = prob_outer,
     inner_width = prob,
-    ll = quantile(!! val_col, prob = probs[1]),
-    l  = quantile(!! val_col, prob = probs[2]),
-    m  = quantile(!! val_col, prob = probs[3]),
-    h  = quantile(!! val_col, prob = probs[4]),
-    hh = quantile(!! val_col, prob = probs[5])
+    ll = quantile(!! val_col, probs = probs[1]),
+    l  = quantile(!! val_col, probs = probs[2]),
+    m  = quantile(!! val_col, probs = probs[3]),
+    h  = quantile(!! val_col, probs = probs[4]),
+    hh = quantile(!! val_col, probs = probs[5])
   ))
 }
 

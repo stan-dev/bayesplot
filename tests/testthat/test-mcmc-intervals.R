@@ -187,7 +187,7 @@ test_that("mcmc_intervals renders correctly", {
   p_inner <- mcmc_intervals(vdiff_dframe, prob = .1)
   vdiffr::expect_doppelganger("mcmc_intervals (inner)", p_inner)
 
-  rhats <- seq(from = 1, to = 1.15, length = 5)
+  rhats <- seq(from = 1, to = 1.15, length.out = 5)
   p_rhats <- mcmc_intervals(vdiff_dframe, rhat = rhats)
   vdiffr::expect_doppelganger("mcmc_intervals (rhats)", p_rhats)
 
@@ -216,7 +216,7 @@ test_that("mcmc_areas renders correctly", {
   p_inner <- mcmc_areas(vdiff_dframe, prob = .1)
   vdiffr::expect_doppelganger("mcmc_areas (inner)", p_inner)
 
-  rhats <- seq(from = 1, to = 1.15, length = 5)
+  rhats <- seq(from = 1, to = 1.15, length.out = 5)
   p_rhats <- mcmc_areas(vdiff_dframe, rhat = rhats)
   vdiffr::expect_doppelganger("mcmc_areas (rhats)", p_rhats)
 
