@@ -528,11 +528,12 @@ mcmc_intervals_data <- function(x,
       outer_width = prob_outer,
       inner_width = prob,
       point_est = point_est,
-      ll = quantile(.data$value, probs[1]),
-      l  = quantile(.data$value, probs[2]),
+      ll = unname(quantile(.data$value, probs[1])),
+      l  = unname(quantile(.data$value, probs[2])),
       m  = m_func(.data$value),
-      h  = quantile(.data$value, probs[3]),
-      hh = quantile(.data$value, probs[4]))
+      h  = unname(quantile(.data$value, probs[3])),
+      hh = unname(quantile(.data$value, probs[4]))
+    )
 
   if (point_est == "none") {
     data$m <- NULL
