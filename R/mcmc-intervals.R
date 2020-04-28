@@ -382,7 +382,7 @@ mcmc_areas <- function(x,
     scale_fill +
     scale_y_discrete(
       limits = unique(rev(data$parameter)),
-      expand = expand_scale(add = c(0, .1), mult = c(.1, .3))) +
+      expand = expansion(add = c(0, .1), mult = c(.1, .3))) +
     xlim(x_lim) +
     bayesplot_theme_get() +
     legend_move(ifelse(color_by_rhat, "top", "none")) +
