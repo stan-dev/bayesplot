@@ -382,7 +382,7 @@ mcmc_areas <- function(x,
     scale_fill +
     scale_y_discrete(
       limits = unique(rev(data$parameter)),
-      expand = expand_scale(add = c(0, .1), mult = c(.1, .3))) +
+      expand = expansion(add = c(0, .1), mult = c(.1, .3))) +
     xlim(x_lim) +
     bayesplot_theme_get() +
     legend_move(ifelse(color_by_rhat, "top", "none")) +
@@ -528,11 +528,12 @@ mcmc_intervals_data <- function(x,
       outer_width = prob_outer,
       inner_width = prob,
       point_est = point_est,
-      ll = quantile(.data$value, probs[1]),
-      l  = quantile(.data$value, probs[2]),
+      ll = unname(quantile(.data$value, probs[1])),
+      l  = unname(quantile(.data$value, probs[2])),
       m  = m_func(.data$value),
-      h  = quantile(.data$value, probs[3]),
-      hh = quantile(.data$value, probs[4]))
+      h  = unname(quantile(.data$value, probs[3])),
+      hh = unname(quantile(.data$value, probs[4]))
+    )
 
   if (point_est == "none") {
     data$m <- NULL

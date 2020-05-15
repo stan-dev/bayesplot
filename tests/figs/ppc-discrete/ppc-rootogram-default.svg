@@ -23,7 +23,9 @@
 <rect x='324.53' y='412.04' width='88.64' height='130.55' style='stroke-width: 0.53; stroke: #B3CDE0; stroke-linecap: square; stroke-linejoin: miter; fill: #D1E1EC;' clip-path='url(#cpMzIuMDJ8NjE3LjA0fDU0Mi41OXwyNC40OQ==)' />
 <rect x='413.17' y='542.59' width='88.64' height='0.00' style='stroke-width: 0.53; stroke: #B3CDE0; stroke-linecap: square; stroke-linejoin: miter; fill: #D1E1EC;' clip-path='url(#cpMzIuMDJ8NjE3LjA0fDU0Mi41OXwyNC40OQ==)' />
 <rect x='501.81' y='412.04' width='88.64' height='130.55' style='stroke-width: 0.53; stroke: #B3CDE0; stroke-linecap: square; stroke-linejoin: miter; fill: #D1E1EC;' clip-path='url(#cpMzIuMDJ8NjE3LjA0fDU0Mi41OXwyNC40OQ==)' />
-<polygon points='102.93,24.49 191.57,26.13 280.21,197.19 368.85,296.62 457.49,380.06 546.13,542.59 546.13,542.59 457.49,542.59 368.85,455.02 280.21,338.25 191.57,150.94 102.93,188.66 ' style='stroke-width: 2.13; stroke: none; fill: #03396C; fill-opacity: 0.40;' clip-path='url(#cpMzIuMDJ8NjE3LjA0fDU0Mi41OXwyNC40OQ==)' />
+<polygon points='102.93,24.49 191.57,26.13 280.21,197.19 368.85,296.62 457.49,380.06 546.13,542.59 546.13,542.59 457.49,542.59 368.85,455.02 280.21,338.25 191.57,150.94 102.93,188.66 ' style='stroke-width: 0.75; stroke: none; fill: #03396C; fill-opacity: 0.40;' clip-path='url(#cpMzIuMDJ8NjE3LjA0fDU0Mi41OXwyNC40OQ==)' />
+<polyline points='102.93,24.49 191.57,26.13 280.21,197.19 368.85,296.62 457.49,380.06 546.13,542.59 ' style='stroke-width: 2.13; stroke: none;' clip-path='url(#cpMzIuMDJ8NjE3LjA0fDU0Mi41OXwyNC40OQ==)' />
+<polyline points='546.13,542.59 457.49,542.59 368.85,455.02 280.21,338.25 191.57,150.94 102.93,188.66 ' style='stroke-width: 2.13; stroke: none;' clip-path='url(#cpMzIuMDJ8NjE3LjA0fDU0Mi41OXwyNC40OQ==)' />
 <polyline points='102.93,103.74 191.57,101.80 280.21,247.77 368.85,362.64 457.49,471.09 546.13,542.59 ' style='stroke-width: 2.13; stroke: #011F4B; stroke-linecap: butt;' clip-path='url(#cpMzIuMDJ8NjE3LjA0fDU0Mi41OXwyNC40OQ==)' />
 <defs>
   <clipPath id='cpMC4wMHw3MjAuMDB8NTc2LjAwfDAuMDA='>
