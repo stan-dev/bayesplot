@@ -60,7 +60,7 @@
 #' color_scheme_set("brightblue")
 #' mcmc_intervals(x)
 #' mcmc_intervals(x, pars = c("beta[1]", "beta[2]"))
-#' mcmc_areas(x, regex_pars = "beta\\\[[1-3]\\\]",  prob = 0.8) +
+#' mcmc_areas(x, regex_pars = "beta\\[[1-3]\\]",  prob = 0.8) +
 #'  ggplot2::labs(
 #'    title = "Posterior distributions",
 #'    subtitle = "with medians and 80% intervals"
