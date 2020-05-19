@@ -2,12 +2,16 @@
 
 
 <!-- 
-# bayesplot 1.7.1.9000
+# bayesplot 1.7.2.9000
 
 (GitHub issue/PR numbers in parentheses)
 
 Items for next release go here
 -->
+
+# bayesplot 1.7.2
+
+Compatibility with dplyr 1.0.0 (#219)
 
 # bayesplot 1.7.1
 
