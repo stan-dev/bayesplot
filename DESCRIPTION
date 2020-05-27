@@ -2,7 +2,7 @@ Package: bayesplot
 Type: Package
 Title: Plotting for Bayesian Models
 Version: 1.7.2
-Date: 2020-05-19
+Date: 2020-05-27
 Authors@R: c(person("Jonah", "Gabry", role = c("aut", "cre"), email = "jsg2201@columbia.edu"),
              person("Tristan", "Mahr", role = "aut"),
              person("Paul-Christian", "Bürkner", role = "ctb"),
