@@ -1,13 +1,11 @@
 <!-- See http://style.tidyverse.org/news.html for advice on writing news -->
 
 
-<!-- 
 # bayesplot 1.7.2.9000
 
 (GitHub issue/PR numbers in parentheses)
 
 Items for next release go here
--->
 
 # bayesplot 1.7.2
 
