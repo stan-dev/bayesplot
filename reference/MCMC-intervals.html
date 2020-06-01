@@ -8,21 +8,36 @@
 
 <title>Plot interval estimates from MCMC draws — MCMC-intervals • bayesplot</title>
 
-<!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
-<!-- Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+<!-- favicons -->
+<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<!-- jquery -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+<!-- Bootstrap -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+<!-- headroom.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -31,18 +46,17 @@
 
 <!-- docsearch -->
 <script src="../docsearch.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.3/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous" />
 <link href="../docsearch.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
 
 
-<meta property="og:title" content="Plot interval estimates from MCMC draws — MCMC-intervals" />
 
+<meta property="og:title" content="Plot interval estimates from MCMC draws — MCMC-intervals" />
 <meta property="og:description" content="Plot central (quantile-based) posterior interval estimates from MCMC draws.
 See the Plot Descriptions section, below, for details." />
-
 <meta property="og:image" content="https://mc-stan.org/bayesplot/logo.png" />
-<meta name="twitter:card" content="summary" />
+
 
 
 
@@ -56,9 +70,10 @@ See the Plot Descriptions section, below, for details." />
 <![endif]-->
 
 
+
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -72,7 +87,7 @@ See the Plot Descriptions section, below, for details." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bayesplot</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.7.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.7.2</span>
       </span>
     </div>
 
@@ -98,6 +113,9 @@ See the Plot Descriptions section, below, for details." />
       <a href="https://mc-stan.org/rstan">rstan</a>
     </li>
     <li>
+      <a href="https://mc-stan.org/cmdstanr">cmdstanr</a>
+    </li>
+    <li>
       <a href="https://mc-stan.org/rstanarm">rstanarm</a>
     </li>
     <li>
@@ -118,7 +136,6 @@ See the Plot Descriptions section, below, for details." />
   <a href="https://mc-stan.org">Stan</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://twitter.com/mcmc_stan">
@@ -140,7 +157,7 @@ See the Plot Descriptions section, below, for details." />
 </li>
       </ul>
       
-      <form class="navbar-form navbar-right" role="search">
+      <form class="navbar-form navbar-right hidden-xs hidden-sm" role="search">
         <div class="form-group">
           <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
         </div>
@@ -151,50 +168,107 @@ See the Plot Descriptions section, below, for details." />
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Plot interval estimates from MCMC draws</h1>
-    
+    <small class="dont-index">Source: <a href='https://github.com/stan-dev/bayesplot/blob/master/R/mcmc-intervals.R'><code>R/mcmc-intervals.R</code></a></small>
     <div class="hidden name"><code>MCMC-intervals.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    
     <p>Plot central (quantile-based) posterior interval estimates from MCMC draws.
 See the <strong>Plot Descriptions</strong> section, below, for details.</p>
-    
     </div>
 
-    <pre class="usage"><span class='fu'>mcmc_intervals</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>character</a></span>(), <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>character</a></span>(),
-  <span class='kw'>transformations</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(), <span class='no'>...</span>, <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>prob_outer</span> <span class='kw'>=</span> <span class='fl'>0.9</span>,
-  <span class='kw'>point_est</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"median"</span>, <span class='st'>"mean"</span>, <span class='st'>"none"</span>), <span class='kw'>rhat</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/numeric'>numeric</a></span>())
+    <pre class="usage"><span class='fu'>mcmc_intervals</span>(
+  <span class='no'>x</span>,
+  <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span>(),
+  <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span>(),
+  <span class='kw'>transformations</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(),
+  <span class='no'>...</span>,
+  <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.5</span>,
+  <span class='kw'>prob_outer</span> <span class='kw'>=</span> <span class='fl'>0.9</span>,
+  <span class='kw'>point_est</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"median"</span>, <span class='st'>"mean"</span>, <span class='st'>"none"</span>),
+  <span class='kw'>rhat</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>numeric</a></span>()
+)
 
-<span class='fu'>mcmc_areas</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>character</a></span>(), <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>character</a></span>(),
-  <span class='kw'>transformations</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(), <span class='no'>...</span>, <span class='kw'>area_method</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"equal area"</span>,
-  <span class='st'>"equal height"</span>, <span class='st'>"scaled height"</span>), <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>prob_outer</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>point_est</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"median"</span>, <span class='st'>"mean"</span>, <span class='st'>"none"</span>), <span class='kw'>rhat</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/numeric'>numeric</a></span>(),
-  <span class='kw'>bw</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>adjust</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>kernel</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>n_dens</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+<span class='fu'>mcmc_areas</span>(
+  <span class='no'>x</span>,
+  <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span>(),
+  <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span>(),
+  <span class='kw'>transformations</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(),
+  <span class='no'>...</span>,
+  <span class='kw'>area_method</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"equal area"</span>, <span class='st'>"equal height"</span>, <span class='st'>"scaled height"</span>),
+  <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.5</span>,
+  <span class='kw'>prob_outer</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>point_est</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"median"</span>, <span class='st'>"mean"</span>, <span class='st'>"none"</span>),
+  <span class='kw'>rhat</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>numeric</a></span>(),
+  <span class='kw'>bw</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>adjust</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>kernel</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>n_dens</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
+)
 
-<span class='fu'>mcmc_areas_ridges</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>character</a></span>(), <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>character</a></span>(),
-  <span class='kw'>transformations</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(), <span class='no'>...</span>, <span class='kw'>prob_outer</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>bw</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>adjust</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>kernel</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>n_dens</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+<span class='fu'>mcmc_areas_ridges</span>(
+  <span class='no'>x</span>,
+  <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span>(),
+  <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span>(),
+  <span class='kw'>transformations</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(),
+  <span class='no'>...</span>,
+  <span class='kw'>prob_outer</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>bw</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>adjust</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>kernel</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>n_dens</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
+)
 
-<span class='fu'>mcmc_intervals_data</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>character</a></span>(), <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>character</a></span>(),
-  <span class='kw'>transformations</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(), <span class='no'>...</span>, <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>prob_outer</span> <span class='kw'>=</span> <span class='fl'>0.9</span>,
-  <span class='kw'>point_est</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"median"</span>, <span class='st'>"mean"</span>, <span class='st'>"none"</span>), <span class='kw'>rhat</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/numeric'>numeric</a></span>())
+<span class='fu'>mcmc_intervals_data</span>(
+  <span class='no'>x</span>,
+  <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span>(),
+  <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span>(),
+  <span class='kw'>transformations</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(),
+  <span class='no'>...</span>,
+  <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.5</span>,
+  <span class='kw'>prob_outer</span> <span class='kw'>=</span> <span class='fl'>0.9</span>,
+  <span class='kw'>point_est</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"median"</span>, <span class='st'>"mean"</span>, <span class='st'>"none"</span>),
+  <span class='kw'>rhat</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>numeric</a></span>()
+)
 
-<span class='fu'>mcmc_areas_data</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>character</a></span>(), <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>character</a></span>(),
-  <span class='kw'>transformations</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(), <span class='no'>...</span>, <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>prob_outer</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>point_est</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"median"</span>, <span class='st'>"mean"</span>, <span class='st'>"none"</span>), <span class='kw'>rhat</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/numeric'>numeric</a></span>(),
-  <span class='kw'>bw</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>adjust</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>kernel</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>n_dens</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+<span class='fu'>mcmc_areas_data</span>(
+  <span class='no'>x</span>,
+  <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span>(),
+  <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span>(),
+  <span class='kw'>transformations</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(),
+  <span class='no'>...</span>,
+  <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.5</span>,
+  <span class='kw'>prob_outer</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>point_est</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"median"</span>, <span class='st'>"mean"</span>, <span class='st'>"none"</span>),
+  <span class='kw'>rhat</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>numeric</a></span>(),
+  <span class='kw'>bw</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>adjust</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>kernel</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>n_dens</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
+)
 
-<span class='fu'>mcmc_areas_ridges_data</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>character</a></span>(), <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>character</a></span>(),
-  <span class='kw'>transformations</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(), <span class='no'>...</span>, <span class='kw'>prob_outer</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>bw</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>adjust</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>kernel</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>n_dens</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
-    
+<span class='fu'>mcmc_areas_ridges_data</span>(
+  <span class='no'>x</span>,
+  <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span>(),
+  <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span>(),
+  <span class='kw'>transformations</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(),
+  <span class='no'>...</span>,
+  <span class='kw'>prob_outer</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>bw</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>adjust</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>kernel</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>n_dens</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
+)</pre>
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -203,7 +277,7 @@ See the <strong>Plot Descriptions</strong> section, below, for details.</p>
       <td><p>A 3-D array, matrix, list of matrices, or data frame of MCMC draws.
 The <a href='MCMC-overview.html'>MCMC-overview</a> page provides details on how to specify each these
 allowed inputs. It is also possible to use an object with an
-<code><a href='https://www.rdocumentation.org/packages/base/topics/array'>as.array()</a></code> method that returns the same kind of 3-D array described on
+<code><a href='https://rdrr.io/r/base/array.html'>as.array()</a></code> method that returns the same kind of 3-D array described on
 the <a href='MCMC-overview.html'>MCMC-overview</a> page.</p></td>
     </tr>
     <tr>
@@ -218,10 +292,10 @@ similar functions. Examples of using <code>pars</code> in this way can be found 
     </tr>
     <tr>
       <th>regex_pars</th>
-      <td><p>An optional <a href='https://www.rdocumentation.org/packages/base/topics/grep'>regular expression</a> to use for
+      <td><p>An optional <a href='https://rdrr.io/r/base/grep.html'>regular expression</a> to use for
 parameter selection. Can be specified instead of <code>pars</code> or in addition to
 <code>pars</code>. When using <code>pars</code> for tidy parameter selection, the <code>regex_pars</code>
-argument is ignored since <a href='https://www.rdocumentation.org/packages/tidyselect/topics/select_helpers'>select helpers</a>
+argument is ignored since <a href='https://tidyselect.r-lib.org/reference/language.html'>select helpers</a>
 perform a similar function.</p></td>
     </tr>
     <tr>
@@ -236,7 +310,7 @@ transformations of scalar parameters can be specified (multivariate
 transformations will be implemented in a future release). If
 <code>transformations</code> is a list, the name of each list element should be a
 parameter name and the content of each list element should be a function
-(or any item to match as a function via <code><a href='https://www.rdocumentation.org/packages/base/topics/match.fun'>match.fun()</a></code>, e.g. a
+(or any item to match as a function via <code><a href='https://rdrr.io/r/base/match.fun.html'>match.fun()</a></code>, e.g. a
 string naming a function). If a function is specified by its name as a
 string (e.g. <code>"log"</code>), then it can be used to construct a new
 parameter label for the appropriate parameter (e.g. <code>"log(sigma)"</code>).
@@ -286,22 +360,22 @@ points across the curves are the same height. The method <code>"scaled height"</
     <tr>
       <th>bw, adjust, kernel, n_dens</th>
       <td><p>Optional arguments passed to
-<code><a href='https://www.rdocumentation.org/packages/stats/topics/density'>stats::density()</a></code> to override default kernel density estimation
+<code><a href='https://rdrr.io/r/stats/density.html'>stats::density()</a></code> to override default kernel density estimation
 parameters. <code>n_dens</code> defaults to <code>1024</code>.</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>The plotting functions return a ggplot object that can be further
 customized using the <strong>ggplot2</strong> package. The functions with suffix
 <code>_data()</code> return the data that would have been drawn by the plotting
 function.</p>
-    
     <h2 class="hasAnchor" id="plot-descriptions"><a class="anchor" href="#plot-descriptions"></a>Plot Descriptions</h2>
 
     
-    <dl class='dl-horizontal'>
+
+<dl'>
 <dt><code>mcmc_intervals()</code></dt><dd><p>Plots of uncertainty intervals computed from posterior draws with all
 chains merged.</p></dd>
 <dt><code>mcmc_areas()</code></dt><dd><p>Density plots computed from posterior draws with all chains merged,
@@ -309,24 +383,27 @@ with uncertainty intervals shown as shaded areas under the curves.</p></dd>
 <dt><code>mcmc_areas_ridges()</code></dt><dd><p>Density plot, as in <code>mcmc_areas()</code>, but drawn with overlapping
 ridgelines. This plot provides a compact display of (hierarchically)
 related distributions.</p></dd>
+
 </dl>
-    
+
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>Other MCMC: <code><a href='MCMC-combos.html'>MCMC-combos</a></code>,
-  <code><a href='MCMC-diagnostics.html'>MCMC-diagnostics</a></code>,
-  <code><a href='MCMC-distributions.html'>MCMC-distributions</a></code>,
-  <code><a href='MCMC-nuts.html'>MCMC-nuts</a></code>, <code><a href='MCMC-overview.html'>MCMC-overview</a></code>,
-  <code><a href='MCMC-parcoord.html'>MCMC-parcoord</a></code>, <code><a href='MCMC-recover.html'>MCMC-recover</a></code>,
-  <code><a href='MCMC-scatterplots.html'>MCMC-scatterplots</a></code>,
-  <code><a href='MCMC-traces.html'>MCMC-traces</a></code></p></div>
-    
+    <div class='dont-index'><p>Other MCMC: 
+<code><a href='MCMC-combos.html'>MCMC-combos</a></code>,
+<code><a href='MCMC-diagnostics.html'>MCMC-diagnostics</a></code>,
+<code><a href='MCMC-distributions.html'>MCMC-distributions</a></code>,
+<code><a href='MCMC-nuts.html'>MCMC-nuts</a></code>,
+<code><a href='MCMC-overview.html'>MCMC-overview</a></code>,
+<code><a href='MCMC-parcoord.html'>MCMC-parcoord</a></code>,
+<code><a href='MCMC-recover.html'>MCMC-recover</a></code>,
+<code><a href='MCMC-scatterplots.html'>MCMC-scatterplots</a></code>,
+<code><a href='MCMC-traces.html'>MCMC-traces</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Random'>set.seed</a></span>(<span class='fl'>9262017</span>)
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span>(<span class='fl'>9262017</span>)
 <span class='co'># some parameter draws to use for demonstration</span>
 <span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='example-data.html'>example_mcmc_draws</a></span>(<span class='kw'>params</span> <span class='kw'>=</span> <span class='fl'>6</span>)
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/dim'>dim</a></span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; [1] 250   4   6</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/dimnames'>dimnames</a></span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; $Iteration
+<span class='fu'><a href='https://rdrr.io/r/base/dim.html'>dim</a></span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; [1] 250   4   6</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/dimnames.html'>dimnames</a></span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; $Iteration
 #&gt; NULL
 #&gt; 
 #&gt; $Chain
@@ -336,125 +413,122 @@ related distributions.</p></dd>
 #&gt; [1] "alpha"   "sigma"   "beta[1]" "beta[2]" "beta[3]" "beta[4]"
 #&gt; </div><div class='input'>
 <span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"brightblue"</span>)
-<span class='fu'>mcmc_intervals</span>(<span class='no'>x</span>)</div><div class='img'><img src='MCMC-intervals-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>mcmc_intervals</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"beta[1]"</span>, <span class='st'>"beta[2]"</span>))</div><div class='img'><img src='MCMC-intervals-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>mcmc_areas</span>(<span class='no'>x</span>, <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='st'>"beta\\[[1-3]"</span>, <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.8</span>) +
- <span class='kw pkg'>ggplot2</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/ggplot2/topics/labs'>labs</a></span>(
+<span class='fu'>mcmc_intervals</span>(<span class='no'>x</span>)</div><div class='img'><img src='MCMC-intervals-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>mcmc_intervals</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"beta[1]"</span>, <span class='st'>"beta[2]"</span>))</div><div class='img'><img src='MCMC-intervals-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>mcmc_areas</span>(<span class='no'>x</span>, <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='st'>"beta\\[[1-3]\\]"</span>,  <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.8</span>) +
+ <span class='kw pkg'>ggplot2</span><span class='kw ns'>::</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span>(
    <span class='kw'>title</span> <span class='kw'>=</span> <span class='st'>"Posterior distributions"</span>,
    <span class='kw'>subtitle</span> <span class='kw'>=</span> <span class='st'>"with medians and 80% intervals"</span>
  )</div><div class='img'><img src='MCMC-intervals-3.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"red"</span>)
 <span class='fu'>mcmc_areas</span>(
    <span class='no'>x</span>,
-   <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"alpha"</span>, <span class='st'>"beta[4]"</span>),
+   <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"alpha"</span>, <span class='st'>"beta[4]"</span>),
    <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>2</span>/<span class='fl'>3</span>,
    <span class='kw'>prob_outer</span> <span class='kw'>=</span> <span class='fl'>0.9</span>,
    <span class='kw'>point_est</span> <span class='kw'>=</span> <span class='st'>"mean"</span>
 )</div><div class='img'><img src='MCMC-intervals-4.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># color by rhat value</span>
 <span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"blue"</span>)
-<span class='no'>fake_rhat_values</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>1.07</span>, <span class='fl'>1.3</span>, <span class='fl'>1.01</span>, <span class='fl'>1.15</span>, <span class='fl'>1.005</span>)
+<span class='no'>fake_rhat_values</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>1.07</span>, <span class='fl'>1.3</span>, <span class='fl'>1.01</span>, <span class='fl'>1.15</span>, <span class='fl'>1.005</span>)
 <span class='fu'>mcmc_intervals</span>(<span class='no'>x</span>, <span class='kw'>rhat</span> <span class='kw'>=</span> <span class='no'>fake_rhat_values</span>)</div><div class='img'><img src='MCMC-intervals-5.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># get the dataframe that is used in the plotting functions</span>
-<span class='fu'>mcmc_intervals_data</span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 6 x 9</span><span>
+<span class='fu'>mcmc_intervals_data</span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 6 x 9</span><span>
 #&gt;   parameter outer_width inner_width point_est      ll       l       m      h
-#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>           </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>       </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>       </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'>1</span><span> alpha             0.9         0.5 median    -</span><span style='color: #BB0000;'>42.7</span><span>   -</span><span style='color: #BB0000;'>28.7</span><span>   -</span><span style='color: #BB0000;'>18.5</span><span>   -</span><span style='color: #BB0000;'>7.46</span><span> 
-#&gt; </span><span style='color: #555555;'>2</span><span> sigma             0.9         0.5 median     17.1    17.6    18.0   18.4  
-#&gt; </span><span style='color: #555555;'>3</span><span> beta[1]           0.9         0.5 median     -</span><span style='color: #BB0000;'>0.165</span><span>   0.136   0.358  0.601
-#&gt; </span><span style='color: #555555;'>4</span><span> beta[2]           0.9         0.5 median     -</span><span style='color: #BB0000;'>0.722</span><span>  -</span><span style='color: #BB0000;'>0.578</span><span>  -</span><span style='color: #BB0000;'>0.469</span><span> -</span><span style='color: #BB0000;'>0.362</span><span>
-#&gt; </span><span style='color: #555555;'>5</span><span> beta[3]           0.9         0.5 median      0.718   0.858   0.950  1.05 
-#&gt; </span><span style='color: #555555;'>6</span><span> beta[4]           0.9         0.5 median     24.9    39.1    49.2   59.4  
-#&gt; </span><span style='color: #555555;'># … with 1 more variable: hh </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span></div><div class='input'><span class='fu'>mcmc_intervals_data</span>(<span class='no'>x</span>, <span class='kw'>rhat</span> <span class='kw'>=</span> <span class='no'>fake_rhat_values</span>)</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 6 x 12</span><span>
+#&gt; </span><span style='color: #BCBCBC;'>*</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;fct&gt;</span><span>           </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>       </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>       </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>   </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>   </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #BCBCBC;'>1</span><span> alpha             0.9         0.5 median    -</span><span style='color: #BB0000;'>42.7</span><span>   -</span><span style='color: #BB0000;'>28.7</span><span>   -</span><span style='color: #BB0000;'>18.5</span><span>   -</span><span style='color: #BB0000;'>7.46</span><span> 
+#&gt; </span><span style='color: #BCBCBC;'>2</span><span> sigma             0.9         0.5 median     17.1    17.6    18.0   18.4  
+#&gt; </span><span style='color: #BCBCBC;'>3</span><span> beta[1]           0.9         0.5 median     -</span><span style='color: #BB0000;'>0.165</span><span>   0.136   0.358  0.601
+#&gt; </span><span style='color: #BCBCBC;'>4</span><span> beta[2]           0.9         0.5 median     -</span><span style='color: #BB0000;'>0.722</span><span>  -</span><span style='color: #BB0000;'>0.578</span><span>  -</span><span style='color: #BB0000;'>0.469</span><span> -</span><span style='color: #BB0000;'>0.362</span><span>
+#&gt; </span><span style='color: #BCBCBC;'>5</span><span> beta[3]           0.9         0.5 median      0.718   0.858   0.950  1.05 
+#&gt; </span><span style='color: #BCBCBC;'>6</span><span> beta[4]           0.9         0.5 median     24.9    39.1    49.2   59.4  
+#&gt; </span><span style='color: #949494;'># … with 1 more variable: hh </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span></div><div class='input'><span class='fu'>mcmc_intervals_data</span>(<span class='no'>x</span>, <span class='kw'>rhat</span> <span class='kw'>=</span> <span class='no'>fake_rhat_values</span>)</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 6 x 12</span><span>
 #&gt;   parameter outer_width inner_width point_est      ll       l       m      h
-#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>           </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>       </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>       </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'>1</span><span> alpha             0.9         0.5 median    -</span><span style='color: #BB0000;'>42.7</span><span>   -</span><span style='color: #BB0000;'>28.7</span><span>   -</span><span style='color: #BB0000;'>18.5</span><span>   -</span><span style='color: #BB0000;'>7.46</span><span> 
-#&gt; </span><span style='color: #555555;'>2</span><span> sigma             0.9         0.5 median     17.1    17.6    18.0   18.4  
-#&gt; </span><span style='color: #555555;'>3</span><span> beta[1]           0.9         0.5 median     -</span><span style='color: #BB0000;'>0.165</span><span>   0.136   0.358  0.601
-#&gt; </span><span style='color: #555555;'>4</span><span> beta[2]           0.9         0.5 median     -</span><span style='color: #BB0000;'>0.722</span><span>  -</span><span style='color: #BB0000;'>0.578</span><span>  -</span><span style='color: #BB0000;'>0.469</span><span> -</span><span style='color: #BB0000;'>0.362</span><span>
-#&gt; </span><span style='color: #555555;'>5</span><span> beta[3]           0.9         0.5 median      0.718   0.858   0.950  1.05 
-#&gt; </span><span style='color: #555555;'>6</span><span> beta[4]           0.9         0.5 median     24.9    39.1    49.2   59.4  
-#&gt; </span><span style='color: #555555;'># … with 4 more variables: hh </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, rhat_value </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, rhat_rating </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span style='color: #555555;'>,
-#&gt; #   rhat_description </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span></div><div class='input'><span class='fu'>mcmc_areas_data</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='st'>"alpha"</span>)</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 2,091 x 7</span><span>
+#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;fct&gt;</span><span>           </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>       </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>       </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>   </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>   </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #BCBCBC;'>1</span><span> alpha             0.9         0.5 median    -</span><span style='color: #BB0000;'>42.7</span><span>   -</span><span style='color: #BB0000;'>28.7</span><span>   -</span><span style='color: #BB0000;'>18.5</span><span>   -</span><span style='color: #BB0000;'>7.46</span><span> 
+#&gt; </span><span style='color: #BCBCBC;'>2</span><span> sigma             0.9         0.5 median     17.1    17.6    18.0   18.4  
+#&gt; </span><span style='color: #BCBCBC;'>3</span><span> beta[1]           0.9         0.5 median     -</span><span style='color: #BB0000;'>0.165</span><span>   0.136   0.358  0.601
+#&gt; </span><span style='color: #BCBCBC;'>4</span><span> beta[2]           0.9         0.5 median     -</span><span style='color: #BB0000;'>0.722</span><span>  -</span><span style='color: #BB0000;'>0.578</span><span>  -</span><span style='color: #BB0000;'>0.469</span><span> -</span><span style='color: #BB0000;'>0.362</span><span>
+#&gt; </span><span style='color: #BCBCBC;'>5</span><span> beta[3]           0.9         0.5 median      0.718   0.858   0.950  1.05 
+#&gt; </span><span style='color: #BCBCBC;'>6</span><span> beta[4]           0.9         0.5 median     24.9    39.1    49.2   59.4  
+#&gt; </span><span style='color: #949494;'># … with 4 more variables: hh </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, rhat_value </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, rhat_rating </span><span style='color: #949494;font-style: italic;'>&lt;fct&gt;</span><span style='color: #949494;'>,</span><span>
+#&gt; </span><span style='color: #949494;'>#   rhat_description </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span></div><div class='input'><span class='fu'>mcmc_areas_data</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='st'>"alpha"</span>)</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 2,091 x 7</span><span>
 #&gt;    parameter interval interval_width     x density scaled_density
-#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>             </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>          </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'> 1</span><span> alpha     inner               0.5 -</span><span style='color: #BB0000;'>28.7</span><span>  0.022</span><span style='text-decoration: underline;'>1</span><span>          0.865
-#&gt; </span><span style='color: #555555;'> 2</span><span> alpha     inner               0.5 -</span><span style='color: #BB0000;'>28.7</span><span>  0.022</span><span style='text-decoration: underline;'>1</span><span>          0.865
-#&gt; </span><span style='color: #555555;'> 3</span><span> alpha     inner               0.5 -</span><span style='color: #BB0000;'>28.7</span><span>  0.022</span><span style='text-decoration: underline;'>1</span><span>          0.866
-#&gt; </span><span style='color: #555555;'> 4</span><span> alpha     inner               0.5 -</span><span style='color: #BB0000;'>28.7</span><span>  0.022</span><span style='text-decoration: underline;'>1</span><span>          0.866
-#&gt; </span><span style='color: #555555;'> 5</span><span> alpha     inner               0.5 -</span><span style='color: #BB0000;'>28.6</span><span>  0.022</span><span style='text-decoration: underline;'>1</span><span>          0.867
-#&gt; </span><span style='color: #555555;'> 6</span><span> alpha     inner               0.5 -</span><span style='color: #BB0000;'>28.6</span><span>  0.022</span><span style='text-decoration: underline;'>1</span><span>          0.867
-#&gt; </span><span style='color: #555555;'> 7</span><span> alpha     inner               0.5 -</span><span style='color: #BB0000;'>28.6</span><span>  0.022</span><span style='text-decoration: underline;'>1</span><span>          0.868
-#&gt; </span><span style='color: #555555;'> 8</span><span> alpha     inner               0.5 -</span><span style='color: #BB0000;'>28.6</span><span>  0.022</span><span style='text-decoration: underline;'>2</span><span>          0.868
-#&gt; </span><span style='color: #555555;'> 9</span><span> alpha     inner               0.5 -</span><span style='color: #BB0000;'>28.5</span><span>  0.022</span><span style='text-decoration: underline;'>2</span><span>          0.869
-#&gt; </span><span style='color: #555555;'>10</span><span> alpha     inner               0.5 -</span><span style='color: #BB0000;'>28.5</span><span>  0.022</span><span style='text-decoration: underline;'>2</span><span>          0.870
-#&gt; </span><span style='color: #555555;'># … with 2,081 more rows, and 1 more variable: plotting_density </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span></div><div class='input'>
+#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;fct&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>             </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>   </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>          </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> alpha     inner               0.5 -</span><span style='color: #BB0000;'>28.7</span><span>  0.022</span><span style='text-decoration: underline;'>1</span><span>          0.865
+#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> alpha     inner               0.5 -</span><span style='color: #BB0000;'>28.7</span><span>  0.022</span><span style='text-decoration: underline;'>1</span><span>          0.865
+#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> alpha     inner               0.5 -</span><span style='color: #BB0000;'>28.7</span><span>  0.022</span><span style='text-decoration: underline;'>1</span><span>          0.866
+#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> alpha     inner               0.5 -</span><span style='color: #BB0000;'>28.7</span><span>  0.022</span><span style='text-decoration: underline;'>1</span><span>          0.866
+#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> alpha     inner               0.5 -</span><span style='color: #BB0000;'>28.6</span><span>  0.022</span><span style='text-decoration: underline;'>1</span><span>          0.867
+#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> alpha     inner               0.5 -</span><span style='color: #BB0000;'>28.6</span><span>  0.022</span><span style='text-decoration: underline;'>1</span><span>          0.867
+#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> alpha     inner               0.5 -</span><span style='color: #BB0000;'>28.6</span><span>  0.022</span><span style='text-decoration: underline;'>1</span><span>          0.868
+#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> alpha     inner               0.5 -</span><span style='color: #BB0000;'>28.6</span><span>  0.022</span><span style='text-decoration: underline;'>2</span><span>          0.868
+#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> alpha     inner               0.5 -</span><span style='color: #BB0000;'>28.5</span><span>  0.022</span><span style='text-decoration: underline;'>2</span><span>          0.869
+#&gt; </span><span style='color: #BCBCBC;'>10</span><span> alpha     inner               0.5 -</span><span style='color: #BB0000;'>28.5</span><span>  0.022</span><span style='text-decoration: underline;'>2</span><span>          0.870
+#&gt; </span><span style='color: #949494;'># … with 2,081 more rows, and 1 more variable: plotting_density </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span></div><div class='input'>
 <span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"gray"</span>)
-<span class='no'>p</span> <span class='kw'>&lt;-</span> <span class='fu'>mcmc_areas</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"alpha"</span>, <span class='st'>"beta[4]"</span>), <span class='kw'>rhat</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>1.1</span>))
+<span class='no'>p</span> <span class='kw'>&lt;-</span> <span class='fu'>mcmc_areas</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"alpha"</span>, <span class='st'>"beta[4]"</span>), <span class='kw'>rhat</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>1.1</span>))
 <span class='no'>p</span> + <span class='fu'><a href='bayesplot-helpers.html'>legend_move</a></span>(<span class='st'>"bottom"</span>)</div><div class='img'><img src='MCMC-intervals-6.png' alt='' width='700' height='433' /></div><div class='input'><span class='no'>p</span> + <span class='fu'><a href='bayesplot-helpers.html'>legend_move</a></span>(<span class='st'>"none"</span>) <span class='co'># or p + legend_none()</span></div><div class='img'><img src='MCMC-intervals-7.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># Different area calculations</span>
-<span class='no'>b3</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"beta[1]"</span>, <span class='st'>"beta[2]"</span>, <span class='st'>"beta[3]"</span>)
+<span class='no'>b3</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"beta[1]"</span>, <span class='st'>"beta[2]"</span>, <span class='st'>"beta[3]"</span>)
 
 <span class='fu'>mcmc_areas</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='no'>b3</span>, <span class='kw'>area_method</span> <span class='kw'>=</span> <span class='st'>"equal area"</span>) +
-  <span class='kw pkg'>ggplot2</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/ggplot2/topics/labs'>labs</a></span>(
+  <span class='kw pkg'>ggplot2</span><span class='kw ns'>::</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span>(
     <span class='kw'>title</span> <span class='kw'>=</span> <span class='st'>"Curves have same area"</span>,
     <span class='kw'>subtitle</span> <span class='kw'>=</span>
       <span class='st'>"A wide, uncertain interval is spread thin when areas are equal"</span>)</div><div class='img'><img src='MCMC-intervals-8.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='fu'>mcmc_areas</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='no'>b3</span>, <span class='kw'>area_method</span> <span class='kw'>=</span> <span class='st'>"equal height"</span>) +
-  <span class='kw pkg'>ggplot2</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/ggplot2/topics/labs'>labs</a></span>(
+  <span class='kw pkg'>ggplot2</span><span class='kw ns'>::</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span>(
     <span class='kw'>title</span> <span class='kw'>=</span> <span class='st'>"Curves have same maximum height"</span>,
     <span class='kw'>subtitle</span> <span class='kw'>=</span>
       <span class='st'>"Local curvature is clearer but more uncertain curves use more area"</span>)</div><div class='img'><img src='MCMC-intervals-9.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='fu'>mcmc_areas</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='no'>b3</span>, <span class='kw'>area_method</span> <span class='kw'>=</span> <span class='st'>"scaled height"</span>) +
-  <span class='kw pkg'>ggplot2</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/ggplot2/topics/labs'>labs</a></span>(
+  <span class='kw pkg'>ggplot2</span><span class='kw ns'>::</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span>(
     <span class='kw'>title</span> <span class='kw'>=</span> <span class='st'>"Same maximum heights but heights scaled by square-root"</span>,
     <span class='kw'>subtitle</span> <span class='kw'>=</span>
       <span class='st'>"Compromise: Local curvature is accentuated and less area is used"</span>)</div><div class='img'><img src='MCMC-intervals-10.png' alt='' width='700' height='433' /></div><div class='input'>
-</div></span><div class='input'><span class='co'># apply transformations</span>
+<span class='co'># \donttest{</span>
+<span class='co'># apply transformations</span>
 <span class='fu'>mcmc_intervals</span>(
   <span class='no'>x</span>,
-  <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"beta[2]"</span>, <span class='st'>"sigma"</span>),
-  <span class='kw'>transformations</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='st'>"sigma"</span> <span class='kw'>=</span> <span class='st'>"log"</span>, <span class='st'>"beta[2]"</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>x</span>) <span class='no'>x</span> + <span class='fl'>3</span>)
+  <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"beta[2]"</span>, <span class='st'>"sigma"</span>),
+  <span class='kw'>transformations</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='st'>"sigma"</span> <span class='kw'>=</span> <span class='st'>"log"</span>, <span class='st'>"beta[2]"</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>x</span>) <span class='no'>x</span> + <span class='fl'>3</span>)
 )</div><div class='img'><img src='MCMC-intervals-11.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># apply same transformation to all selected parameters</span>
-<span class='fu'>mcmc_intervals</span>(<span class='no'>x</span>, <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='st'>"beta"</span>, <span class='kw'>transformations</span> <span class='kw'>=</span> <span class='st'>"exp"</span>)</div><div class='img'><img src='MCMC-intervals-12.png' alt='' width='700' height='433' /></div><div class='input'>
-</div><div class='input'><span class='co'># example using fitted model from rstanarm package</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>rstanarm</span>)
-<span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/rstanarm/topics/stan_glm'>stan_glm</a></span>(
- <span class='no'>mpg</span> ~ <span class='fl'>0</span> + <span class='no'>wt</span> + <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/factor'>factor</a></span>(<span class='no'>cyl</span>),
+<span class='fu'>mcmc_intervals</span>(<span class='no'>x</span>, <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='st'>"beta"</span>, <span class='kw'>transformations</span> <span class='kw'>=</span> <span class='st'>"exp"</span>)</div><div class='img'><img src='MCMC-intervals-12.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># }</span>
+
+<span class='co'># \dontrun{</span>
+<span class='co'># example using fitted model from rstanarm package</span>
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>rstanarm</span>)
+<span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://mc-stan.org/rstanarm/reference/stan_glm.html'>stan_glm</a></span>(
+ <span class='no'>mpg</span> ~ <span class='fl'>0</span> + <span class='no'>wt</span> + <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span>(<span class='no'>cyl</span>),
  <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>mtcars</span>,
  <span class='kw'>iter</span> <span class='kw'>=</span> <span class='fl'>500</span>,
  <span class='kw'>refresh</span> <span class='kw'>=</span> <span class='fl'>0</span>
 )</div><div class='output co'>#&gt; <span class='warning'>Warning: Bulk Effective Samples Size (ESS) is too low, indicating posterior means and medians may be unreliable.</span>
 #&gt; <span class='warning'>Running the chains for more iterations may help. See</span>
-#&gt; <span class='warning'>http://mc-stan.org/misc/warnings.html#bulk-ess</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Tail Effective Samples Size (ESS) is too low, indicatingposterior variances and tail quantiles may be unreliable.</span>
+#&gt; <span class='warning'>http://mc-stan.org/misc/warnings.html#bulk-ess</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Tail Effective Samples Size (ESS) is too low, indicating posterior variances and tail quantiles may be unreliable.</span>
 #&gt; <span class='warning'>Running the chains for more iterations may help. See</span>
-#&gt; <span class='warning'>http://mc-stan.org/misc/warnings.html#tail-ess</span></div><div class='input'><span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/matrix'>as.matrix</a></span>(<span class='no'>fit</span>)
+#&gt; <span class='warning'>http://mc-stan.org/misc/warnings.html#tail-ess</span></div><div class='input'><span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>as.matrix</a></span>(<span class='no'>fit</span>)
 
 <span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"teal"</span>)
 <span class='fu'>mcmc_intervals</span>(<span class='no'>x</span>, <span class='kw'>point_est</span> <span class='kw'>=</span> <span class='st'>"mean"</span>, <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.8</span>, <span class='kw'>prob_outer</span> <span class='kw'>=</span> <span class='fl'>0.95</span>)</div><div class='img'><img src='MCMC-intervals-13.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>mcmc_areas</span>(<span class='no'>x</span>, <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='st'>"cyl"</span>, <span class='kw'>bw</span> <span class='kw'>=</span> <span class='st'>"SJ"</span>,
-           <span class='kw'>rhat</span> <span class='kw'>=</span> <span class='fu'><a href='bayesplot-extractors.html'>rhat</a></span>(<span class='no'>fit</span>, <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='st'>"cyl"</span>))</div><div class='img'><img src='MCMC-intervals-14.png' alt='' width='700' height='433' /></div><div class='input'>
-</div><div class='input'><span class='co'># Example of hierarchically related parameters</span>
+           <span class='kw'>rhat</span> <span class='kw'>=</span> <span class='fu'><a href='bayesplot-extractors.html'>rhat</a></span>(<span class='no'>fit</span>, <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='st'>"cyl"</span>))</div><div class='img'><img src='MCMC-intervals-14.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># }</span>
+
+<span class='co'># \dontrun{</span>
+<span class='co'># Example of hierarchically related parameters</span>
 <span class='co'># plotted with ridgelines</span>
-<span class='no'>m</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>shinystan</span><span class='kw ns'>::</span><span class='no'><a href='https://www.rdocumentation.org/packages/shinystan/topics/launch_shinystan_demo'>eight_schools</a></span>@<span class='kw'>posterior_sample</span>
+<span class='no'>m</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>shinystan</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/pkg/shinystan/man/launch_shinystan_demo.html'>eight_schools</a></span>@<span class='kw'>posterior_sample</span>
 <span class='fu'>mcmc_areas_ridges</span>(<span class='no'>m</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='st'>"mu"</span>, <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='st'>"theta"</span>) +
- <span class='kw pkg'>ggplot2</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/ggplot2/topics/labs'>ggtitle</a></span>(<span class='st'>"Treatment effect on eight schools (Rubin, 1981)"</span>)</div><div class='img'><img src='MCMC-intervals-15.png' alt='' width='700' height='433' /></div><div class='input'>
-</div></pre>
+ <span class='kw pkg'>ggplot2</span><span class='kw ns'>::</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>ggtitle</a></span>(<span class='st'>"Treatment effect on eight schools (Rubin, 1981)"</span>)</div><div class='img'><img src='MCMC-intervals-15.png' alt='' width='700' height='433' /></div><div class='input'># }
+
+</div></span></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#value">Value</a></li>
-
-      <li><a href="#plot-descriptions">Plot Descriptions</a></li>
-
-      <li><a href="#see-also">See also</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
+
 
       <footer>
       <div class="copyright">
@@ -462,8 +536,9 @@ related distributions.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
+
       </footer>
    </div>
 
@@ -486,6 +561,8 @@ related distributions.</p></dd>
 </script>
 
 
+
   </body>
 </html>
+
 

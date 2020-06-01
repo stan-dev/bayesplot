@@ -8,21 +8,36 @@
 
 <title>Graphical posterior predictive checking — PPC-overview • bayesplot</title>
 
-<!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
-<!-- Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+<!-- favicons -->
+<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<!-- jquery -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+<!-- Bootstrap -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+<!-- headroom.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -31,22 +46,21 @@
 
 <!-- docsearch -->
 <script src="../docsearch.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.3/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous" />
 <link href="../docsearch.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
 
 
-<meta property="og:title" content="Graphical posterior predictive checking — PPC-overview" />
 
+<meta property="og:title" content="Graphical posterior predictive checking — PPC-overview" />
 <meta property="og:description" content="The bayesplot PPC module provides various plotting functions for creating
 graphical displays comparing observed data to simulated data from the
 posterior (or prior) predictive distribution. See below for a brief
 discussion of the ideas behind posterior predictive checking, a description
 of the structure of this package, and tips on providing an interface to
 bayesplot from another package." />
-
 <meta property="og:image" content="https://mc-stan.org/bayesplot/logo.png" />
-<meta name="twitter:card" content="summary" />
+
 
 
 
@@ -60,9 +74,10 @@ bayesplot from another package." />
 <![endif]-->
 
 
+
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -76,7 +91,7 @@ bayesplot from another package." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bayesplot</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.7.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.7.2</span>
       </span>
     </div>
 
@@ -102,6 +117,9 @@ bayesplot from another package." />
       <a href="https://mc-stan.org/rstan">rstan</a>
     </li>
     <li>
+      <a href="https://mc-stan.org/cmdstanr">cmdstanr</a>
+    </li>
+    <li>
       <a href="https://mc-stan.org/rstanarm">rstanarm</a>
     </li>
     <li>
@@ -122,7 +140,6 @@ bayesplot from another package." />
   <a href="https://mc-stan.org">Stan</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://twitter.com/mcmc_stan">
@@ -144,7 +161,7 @@ bayesplot from another package." />
 </li>
       </ul>
       
-      <form class="navbar-form navbar-right" role="search">
+      <form class="navbar-form navbar-right hidden-xs hidden-sm" role="search">
         <div class="form-group">
           <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
         </div>
@@ -155,35 +172,35 @@ bayesplot from another package." />
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Graphical posterior predictive checking</h1>
-    
+    <small class="dont-index">Source: <a href='https://github.com/stan-dev/bayesplot/blob/master/R/ppc-overview.R'><code>R/ppc-overview.R</code></a></small>
     <div class="hidden name"><code>PPC-overview.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    
     <p>The <strong>bayesplot</strong> PPC module provides various plotting functions for creating
 graphical displays comparing observed data to simulated data from the
 posterior (or prior) predictive distribution. See below for a brief
 discussion of the ideas behind posterior predictive checking, a description
 of the structure of this package, and tips on providing an interface to
 <strong>bayesplot</strong> from another package.</p>
-    
     </div>
 
-        
+
+
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>The idea behind posterior predictive checking is simple: if a model is a good
 fit then we should be able to use it to generate data that looks a lot like
 the data we observed.</p>
 <h3>Posterior predictive distribution</h3>
-    To generate the data used for posterior predictive checks we simulate from
+<p>To generate the data used for posterior predictive checks we simulate from
 the <em>posterior predictive distribution</em>. The posterior predictive
 distribution is the distribution of the outcome variable implied by a model
 after using the observed data \(y\) (a vector of outcome values), and
@@ -196,32 +213,32 @@ an \(S \times N\) matrix of simulations, where \(S\) is the the
 size of the posterior sample (number of draws from the posterior
 distribution) and \(N\) is the number of data points in \(y\). That is,
 each row of the matrix is an individual "replicated" dataset of \(N\)
-observations.
-    <h3>Notation</h3>
-    When simulating from the posterior predictive distribution we can use either
+observations.</p>
+<h3>Notation</h3>
+<p>When simulating from the posterior predictive distribution we can use either
 the same values of the predictors \(X\) that we used when fitting the model
 or new observations of those predictors. When we use the same values of
 \(X\) we denote the resulting simulations by \(y^{rep}\) as they
 can be thought of as <em>replications</em> of the outcome \(y\) rather than
 predictions for future observations. This corresponds to the notation from
 Gelman et. al. (2013) and is the notation used throughout the documentation
-for this package.
-    <h3>Graphical posterior predictive checking</h3>
-    Using the datasets \(y^{rep}\) drawn from the posterior predictive
+for this package.</p>
+<h3>Graphical posterior predictive checking</h3>
+<p>Using the datasets \(y^{rep}\) drawn from the posterior predictive
 distribution, the functions in the <strong>bayesplot</strong> package produce various
 graphical displays comparing the observed data \(y\) to the replications.
 For a more thorough discussion of posterior predictive checking see
-Chapter 6 of Gelman et. al. (2013).
-    <h3>Prior predictive checking</h3>
-    To use <strong>bayesplot</strong> for <em>prior</em> predictive checks you can simply use draws
+Chapter 6 of Gelman et. al. (2013).</p>
+<h3>Prior predictive checking</h3>
+<p>To use <strong>bayesplot</strong> for <em>prior</em> predictive checks you can simply use draws
 from the prior predictive distribution instead of the posterior predictive
 distribution. See Gabry et al. (2019) for more on prior predictive checking
 and when it is reasonable to compare the prior predictive distribution to the
 observed data. If you want to avoid using the observed data for prior
 predictive checks, then the <code>y</code> argument to the PPC plotting functions can be
 used to provide plausible or implausible <code>y</code> values that you want to compare
-to the prior predictive realizations.
-    
+to the prior predictive realizations.</p>
+
     <h2 class="hasAnchor" id="ppc-plotting-functions"><a class="anchor" href="#ppc-plotting-functions"></a>PPC plotting functions</h2>
 
     <p>The plotting functions for prior and
@@ -236,7 +253,7 @@ or a pair of statistics, over the simulated datasets (rows) in <code>yrep</code>
 compared to value of the statistic(s) computed from <code>y</code>.</p></li>
 <li><p><a href='PPC-intervals.html'>Intervals</a>: Interval estimates of <code>yrep</code> with <code>y</code>
 overlaid. The x-axis variable can be optionally specified by the user
-(e.g. to plot against against a predictor variable or over time).</p></li>
+(e.g. to plot against a predictor variable or over time).</p></li>
 <li><p><a href='PPC-errors.html'>Predictive errors</a>: Plots of predictive errors
 (<code>y - yrep</code>) computed from <code>y</code> and each of the simulated datasets (rows)
 in <code>yrep</code>. For binomial models binned error plots are also available.</p></li>
@@ -251,17 +268,18 @@ multinomial outcomes.</p></li>
 <li><p><a href='PPC-loo.html'>LOO predictive checks</a>: PPC functions for predictive checks
 based on (approximate) leave-one-out (LOO) cross-validation.</p></li>
 </ul>
-    
+
     <h2 class="hasAnchor" id="providing-an-interface-for-predictive-checking-from-another-package"><a class="anchor" href="#providing-an-interface-for-predictive-checking-from-another-package"></a>Providing an interface for predictive checking from another package</h2>
 
     
-    <p>In addition to the various plotting functions, the <strong>bayesplot</strong> package
+
+
+<p>In addition to the various plotting functions, the <strong>bayesplot</strong> package
 provides the S3 generic <code><a href='pp_check.html'>pp_check()</a></code>. Authors of <span style="R">R</span> packages for
 Bayesian inference are encouraged to define <code><a href='pp_check.html'>pp_check()</a></code> methods for the
 fitted model objects created by their packages. See the package vignettes for
 more details and a simple example, and see the <strong>rstanarm</strong> and <strong>brms</strong>
 packages for full examples of <code><a href='pp_check.html'>pp_check()</a></code> methods.</p>
-    
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <p>Gabry, J. , Simpson, D. , Vehtari, A. , Betancourt, M. and
@@ -273,34 +291,25 @@ Gelman, A. (2019), Visualization in Bayesian workflow.
 <p>Gelman, A., Carlin, J. B., Stern, H. S., Dunson, D. B., Vehtari,
 A., and Rubin, D. B. (2013). <em>Bayesian Data Analysis.</em> Chapman &amp; Hall/CRC
 Press, London, third edition. (Ch. 6)</p>
-    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>Other PPCs: <code><a href='PPC-discrete.html'>PPC-discrete</a></code>,
-  <code><a href='PPC-distributions.html'>PPC-distributions</a></code>,
-  <code><a href='PPC-errors.html'>PPC-errors</a></code>, <code><a href='PPC-intervals.html'>PPC-intervals</a></code>,
-  <code><a href='PPC-loo.html'>PPC-loo</a></code>, <code><a href='PPC-scatterplots.html'>PPC-scatterplots</a></code>,
-  <code><a href='PPC-test-statistics.html'>PPC-test-statistics</a></code></p></div>
-    
+    <div class='dont-index'><p>Other PPCs: 
+<code><a href='PPC-discrete.html'>PPC-discrete</a></code>,
+<code><a href='PPC-distributions.html'>PPC-distributions</a></code>,
+<code><a href='PPC-errors.html'>PPC-errors</a></code>,
+<code><a href='PPC-intervals.html'>PPC-intervals</a></code>,
+<code><a href='PPC-loo.html'>PPC-loo</a></code>,
+<code><a href='PPC-scatterplots.html'>PPC-scatterplots</a></code>,
+<code><a href='PPC-test-statistics.html'>PPC-test-statistics</a></code></p></div>
 
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      
-      <li><a href="#details">Details</a></li>
-
-      <li><a href="#ppc-plotting-functions">PPC plotting functions</a></li>
-
-      <li><a href="#providing-an-interface-for-predictive-checking-from-another-package">Providing an interface for predictive checking from another package</a></li>
-
-      <li><a href="#references">References</a></li>
-
-      <li><a href="#see-also">See also</a></li>
-          </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
+
 
       <footer>
       <div class="copyright">
@@ -308,8 +317,9 @@ Press, London, third edition. (Ch. 6)</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
+
       </footer>
    </div>
 
@@ -332,6 +342,8 @@ Press, London, third edition. (Ch. 6)</p>
 </script>
 
 
+
   </body>
 </html>
+
 

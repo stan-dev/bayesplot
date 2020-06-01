@@ -8,21 +8,36 @@
 
 <title>Trace plots of MCMC draws — MCMC-traces • bayesplot</title>
 
-<!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
-<!-- Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+<!-- favicons -->
+<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<!-- jquery -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+<!-- Bootstrap -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+<!-- headroom.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -31,18 +46,17 @@
 
 <!-- docsearch -->
 <script src="../docsearch.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.3/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous" />
 <link href="../docsearch.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
 
 
-<meta property="og:title" content="Trace plots of MCMC draws — MCMC-traces" />
 
+<meta property="og:title" content="Trace plots of MCMC draws — MCMC-traces" />
 <meta property="og:description" content="Trace plot (or traceplot) of MCMC draws. See the Plot Descriptions
 section, below, for details." />
-
 <meta property="og:image" content="https://mc-stan.org/bayesplot/logo.png" />
-<meta name="twitter:card" content="summary" />
+
 
 
 
@@ -56,9 +70,10 @@ section, below, for details." />
 <![endif]-->
 
 
+
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -72,7 +87,7 @@ section, below, for details." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bayesplot</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.7.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.7.2</span>
       </span>
     </div>
 
@@ -98,6 +113,9 @@ section, below, for details." />
       <a href="https://mc-stan.org/rstan">rstan</a>
     </li>
     <li>
+      <a href="https://mc-stan.org/cmdstanr">cmdstanr</a>
+    </li>
+    <li>
       <a href="https://mc-stan.org/rstanarm">rstanarm</a>
     </li>
     <li>
@@ -118,7 +136,6 @@ section, below, for details." />
   <a href="https://mc-stan.org">Stan</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://twitter.com/mcmc_stan">
@@ -140,7 +157,7 @@ section, below, for details." />
 </li>
       </ul>
       
-      <form class="navbar-form navbar-right" role="search">
+      <form class="navbar-form navbar-right hidden-xs hidden-sm" role="search">
         <div class="form-group">
           <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
         </div>
@@ -151,45 +168,86 @@ section, below, for details." />
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Trace plots of MCMC draws</h1>
-    
+    <small class="dont-index">Source: <a href='https://github.com/stan-dev/bayesplot/blob/master/R/mcmc-traces.R'><code>R/mcmc-traces.R</code></a></small>
     <div class="hidden name"><code>MCMC-traces.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    
     <p>Trace plot (or traceplot) of MCMC draws. See the <strong>Plot Descriptions</strong>
 section, below, for details.</p>
-    
     </div>
 
-    <pre class="usage"><span class='fu'>mcmc_trace</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>character</a></span>(), <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>character</a></span>(),
-  <span class='kw'>transformations</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(), <span class='no'>...</span>, <span class='kw'>facet_args</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(), <span class='kw'>n_warmup</span> <span class='kw'>=</span> <span class='fl'>0</span>,
-  <span class='kw'>iter1</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>window</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>np</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>np_style</span> <span class='kw'>=</span> <span class='fu'>trace_style_np</span>(), <span class='kw'>divergences</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+    <pre class="usage"><span class='fu'>mcmc_trace</span>(
+  <span class='no'>x</span>,
+  <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span>(),
+  <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span>(),
+  <span class='kw'>transformations</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(),
+  <span class='no'>...</span>,
+  <span class='kw'>facet_args</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(),
+  <span class='kw'>n_warmup</span> <span class='kw'>=</span> <span class='fl'>0</span>,
+  <span class='kw'>iter1</span> <span class='kw'>=</span> <span class='fl'>0</span>,
+  <span class='kw'>window</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>size</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>np</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>np_style</span> <span class='kw'>=</span> <span class='fu'>trace_style_np</span>(),
+  <span class='kw'>divergences</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
+)
 
-<span class='fu'>mcmc_trace_highlight</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>character</a></span>(), <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>character</a></span>(),
-  <span class='kw'>transformations</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(), <span class='no'>...</span>, <span class='kw'>facet_args</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(), <span class='kw'>n_warmup</span> <span class='kw'>=</span> <span class='fl'>0</span>,
-  <span class='kw'>window</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.2</span>, <span class='kw'>highlight</span> <span class='kw'>=</span> <span class='fl'>1</span>)
+<span class='fu'>mcmc_trace_highlight</span>(
+  <span class='no'>x</span>,
+  <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span>(),
+  <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span>(),
+  <span class='kw'>transformations</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(),
+  <span class='no'>...</span>,
+  <span class='kw'>facet_args</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(),
+  <span class='kw'>n_warmup</span> <span class='kw'>=</span> <span class='fl'>0</span>,
+  <span class='kw'>window</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>size</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.2</span>,
+  <span class='kw'>highlight</span> <span class='kw'>=</span> <span class='fl'>1</span>
+)
 
 <span class='fu'>trace_style_np</span>(<span class='kw'>div_color</span> <span class='kw'>=</span> <span class='st'>"red"</span>, <span class='kw'>div_size</span> <span class='kw'>=</span> <span class='fl'>0.25</span>, <span class='kw'>div_alpha</span> <span class='kw'>=</span> <span class='fl'>1</span>)
 
-<span class='fu'>mcmc_rank_overlay</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>character</a></span>(), <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>character</a></span>(),
-  <span class='kw'>transformations</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(), <span class='no'>...</span>, <span class='kw'>n_bins</span> <span class='kw'>=</span> <span class='fl'>20</span>, <span class='kw'>ref_line</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='fu'>mcmc_rank_overlay</span>(
+  <span class='no'>x</span>,
+  <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span>(),
+  <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span>(),
+  <span class='kw'>transformations</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(),
+  <span class='no'>...</span>,
+  <span class='kw'>n_bins</span> <span class='kw'>=</span> <span class='fl'>20</span>,
+  <span class='kw'>ref_line</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
+)
 
-<span class='fu'>mcmc_rank_hist</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>character</a></span>(), <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>character</a></span>(),
-  <span class='kw'>transformations</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(), <span class='no'>...</span>, <span class='kw'>facet_args</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(), <span class='kw'>n_bins</span> <span class='kw'>=</span> <span class='fl'>20</span>,
-  <span class='kw'>ref_line</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='fu'>mcmc_rank_hist</span>(
+  <span class='no'>x</span>,
+  <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span>(),
+  <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span>(),
+  <span class='kw'>transformations</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(),
+  <span class='no'>...</span>,
+  <span class='kw'>facet_args</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(),
+  <span class='kw'>n_bins</span> <span class='kw'>=</span> <span class='fl'>20</span>,
+  <span class='kw'>ref_line</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
+)
 
-<span class='fu'>mcmc_trace_data</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>character</a></span>(), <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>character</a></span>(),
-  <span class='kw'>transformations</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(), <span class='no'>...</span>, <span class='kw'>highlight</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>n_warmup</span> <span class='kw'>=</span> <span class='fl'>0</span>,
-  <span class='kw'>iter1</span> <span class='kw'>=</span> <span class='fl'>0</span>)</pre>
-    
+<span class='fu'>mcmc_trace_data</span>(
+  <span class='no'>x</span>,
+  <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span>(),
+  <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span>(),
+  <span class='kw'>transformations</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(),
+  <span class='no'>...</span>,
+  <span class='kw'>highlight</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>n_warmup</span> <span class='kw'>=</span> <span class='fl'>0</span>,
+  <span class='kw'>iter1</span> <span class='kw'>=</span> <span class='fl'>0</span>
+)</pre>
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -198,7 +256,7 @@ section, below, for details.</p>
       <td><p>A 3-D array, matrix, list of matrices, or data frame of MCMC draws.
 The <a href='MCMC-overview.html'>MCMC-overview</a> page provides details on how to specify each these
 allowed inputs. It is also possible to use an object with an
-<code><a href='https://www.rdocumentation.org/packages/base/topics/array'>as.array()</a></code> method that returns the same kind of 3-D array described on
+<code><a href='https://rdrr.io/r/base/array.html'>as.array()</a></code> method that returns the same kind of 3-D array described on
 the <a href='MCMC-overview.html'>MCMC-overview</a> page.</p></td>
     </tr>
     <tr>
@@ -213,10 +271,10 @@ similar functions. Examples of using <code>pars</code> in this way can be found 
     </tr>
     <tr>
       <th>regex_pars</th>
-      <td><p>An optional <a href='https://www.rdocumentation.org/packages/base/topics/grep'>regular expression</a> to use for
+      <td><p>An optional <a href='https://rdrr.io/r/base/grep.html'>regular expression</a> to use for
 parameter selection. Can be specified instead of <code>pars</code> or in addition to
 <code>pars</code>. When using <code>pars</code> for tidy parameter selection, the <code>regex_pars</code>
-argument is ignored since <a href='https://www.rdocumentation.org/packages/tidyselect/topics/select_helpers'>select helpers</a>
+argument is ignored since <a href='https://tidyselect.r-lib.org/reference/language.html'>select helpers</a>
 perform a similar function.</p></td>
     </tr>
     <tr>
@@ -231,7 +289,7 @@ transformations of scalar parameters can be specified (multivariate
 transformations will be implemented in a future release). If
 <code>transformations</code> is a list, the name of each list element should be a
 parameter name and the content of each list element should be a function
-(or any item to match as a function via <code><a href='https://www.rdocumentation.org/packages/base/topics/match.fun'>match.fun()</a></code>, e.g. a
+(or any item to match as a function via <code><a href='https://rdrr.io/r/base/match.fun.html'>match.fun()</a></code>, e.g. a
 string naming a function). If a function is specified by its name as a
 string (e.g. <code>"log"</code>), then it can be used to construct a new
 parameter label for the appropriate parameter (e.g. <code>"log(sigma)"</code>).
@@ -249,7 +307,7 @@ abbreviated for convenience in interactive use (e.g., <code>transform</code>).</
     <tr>
       <th>facet_args</th>
       <td><p>A named list of arguments (other than <code>facets</code>) passed
-to <code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/facet_wrap'>ggplot2::facet_wrap()</a></code> or <code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/facet_grid'>ggplot2::facet_grid()</a></code>
+to <code><a href='https://ggplot2.tidyverse.org/reference/facet_wrap.html'>ggplot2::facet_wrap()</a></code> or <code><a href='https://ggplot2.tidyverse.org/reference/facet_grid.html'>ggplot2::facet_grid()</a></code>
 to control faceting.</p></td>
     </tr>
     <tr>
@@ -299,7 +357,7 @@ divergences (if the <code>np</code> argument is specified).</p></td>
     <tr>
       <th>alpha</th>
       <td><p>For <code>mcmc_trace_highlight()</code>, passed to
-<code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_point'>ggplot2::geom_point()</a></code> to control the transparency of the points
+<code><a href='https://ggplot2.tidyverse.org/reference/geom_point.html'>ggplot2::geom_point()</a></code> to control the transparency of the points
 for the chains not highlighted.</p></td>
     </tr>
     <tr>
@@ -311,7 +369,7 @@ of the chains that will be more visible than the others in the plot.</p></td>
       <th>div_color, div_size, div_alpha</th>
       <td><p>Optional arguments to the
 <code>trace_style_np()</code> helper function that are eventually passed to
-<code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_rug'>ggplot2::geom_rug()</a></code> if the <code>np</code> argument is also specified. They control
+<code><a href='https://ggplot2.tidyverse.org/reference/geom_rug.html'>ggplot2::geom_rug()</a></code> if the <code>np</code> argument is also specified. They control
 the color, size, and transparency specifications for showing divergences in
 the plot. The default values are displayed in the <strong>Usage</strong> section above.</p></td>
     </tr>
@@ -326,7 +384,7 @@ of rank-normalized MCMC samples. Defaults to <code>20</code>.</p></td>
 average number of ranks per bin. Defaults to <code>FALSE</code>.</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>The plotting functions return a ggplot object that can be further
@@ -335,11 +393,11 @@ customized using the <strong>ggplot2</strong> package. The functions with suffix
 function.</p>
 <p><code>mcmc_trace_data()</code> returns the data for the trace <em>and</em> rank plots
 in the same data frame.</p>
-    
     <h2 class="hasAnchor" id="plot-descriptions"><a class="anchor" href="#plot-descriptions"></a>Plot Descriptions</h2>
 
     
-    <dl class='dl-horizontal'>
+
+<dl'>
 <dt><code>mcmc_trace()</code></dt><dd><p>Standard trace plots of MCMC draws. For models fit using <a href='MCMC-nuts.html'>NUTS</a>,
 the <code>np</code> argument can be used to also show divergences on the trace plot.</p></dd>
 <dt><code>mcmc_trace_highlight()</code></dt><dd><p>Traces are plotted using points rather than lines and the opacity of all
@@ -351,126 +409,37 @@ show the rankings mixing or overlapping in a uniform distribution.
 See Vehtari et al. (2019) for details.</p></dd>
 <dt><code>mcmc_rank_overlay()</code></dt><dd><p>Ranks from <code>mcmc_rank_hist()</code> are plotted using overlaid lines in a
 single panel.</p></dd>
+
 </dl>
-    
+
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <p>Vehtari, A., Gelman, A., Simpson, D., Carpenter, B., Bürkner, P.
 (2019). Rank-normalization, folding, and localization: An improved <em>R</em>-hat
 for assessing convergence of MCMC. <a href='https://arxiv.org/abs/1903.08008'>arXiv preprint</a>.</p>
-    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>Other MCMC: <code><a href='MCMC-combos.html'>MCMC-combos</a></code>,
-  <code><a href='MCMC-diagnostics.html'>MCMC-diagnostics</a></code>,
-  <code><a href='MCMC-distributions.html'>MCMC-distributions</a></code>,
-  <code><a href='MCMC-intervals.html'>MCMC-intervals</a></code>, <code><a href='MCMC-nuts.html'>MCMC-nuts</a></code>,
-  <code><a href='MCMC-overview.html'>MCMC-overview</a></code>, <code><a href='MCMC-parcoord.html'>MCMC-parcoord</a></code>,
-  <code><a href='MCMC-recover.html'>MCMC-recover</a></code>,
-  <code><a href='MCMC-scatterplots.html'>MCMC-scatterplots</a></code></p></div>
-    
+    <div class='dont-index'><p>Other MCMC: 
+<code><a href='MCMC-combos.html'>MCMC-combos</a></code>,
+<code><a href='MCMC-diagnostics.html'>MCMC-diagnostics</a></code>,
+<code><a href='MCMC-distributions.html'>MCMC-distributions</a></code>,
+<code><a href='MCMC-intervals.html'>MCMC-intervals</a></code>,
+<code><a href='MCMC-nuts.html'>MCMC-nuts</a></code>,
+<code><a href='MCMC-overview.html'>MCMC-overview</a></code>,
+<code><a href='MCMC-parcoord.html'>MCMC-parcoord</a></code>,
+<code><a href='MCMC-recover.html'>MCMC-recover</a></code>,
+<code><a href='MCMC-scatterplots.html'>MCMC-scatterplots</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># some parameter draws to use for demonstration</span>
-<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='example-data.html'>example_mcmc_draws</a></span>(<span class='kw'>chains</span> <span class='kw'>=</span> <span class='fl'>4</span>, <span class='kw'>params</span> <span class='kw'>=</span> <span class='fl'>6</span>)
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/dim'>dim</a></span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; [1] 250   4   6</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/dimnames'>dimnames</a></span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; $Iteration
-#&gt; NULL
-#&gt; 
-#&gt; $Chain
-#&gt; [1] "chain:1" "chain:2" "chain:3" "chain:4"
-#&gt; 
-#&gt; $Parameter
-#&gt; [1] "alpha"   "sigma"   "beta[1]" "beta[2]" "beta[3]" "beta[4]"
-#&gt; </div><div class='input'>
-<span class='co'># trace plots of the betas</span>
-<span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"viridis"</span>)
-<span class='fu'>mcmc_trace</span>(<span class='no'>x</span>, <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='st'>"beta"</span>)</div><div class='img'><img src='MCMC-traces-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"viridisA"</span>)
-<span class='fu'>mcmc_trace</span>(<span class='no'>x</span>, <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='st'>"beta"</span>)</div><div class='img'><img src='MCMC-traces-2.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"viridisC"</span>)
-<span class='fu'>mcmc_trace</span>(<span class='no'>x</span>, <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='st'>"beta"</span>)</div><div class='img'><img src='MCMC-traces-3.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='co'># mix color schemes</span>
-<span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"mix-blue-red"</span>)
-<span class='fu'>mcmc_trace</span>(<span class='no'>x</span>, <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='st'>"beta"</span>)</div><div class='img'><img src='MCMC-traces-4.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='co'># use traditional ggplot discrete color scale</span>
-<span class='fu'>mcmc_trace</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"alpha"</span>, <span class='st'>"sigma"</span>)) +
- <span class='kw pkg'>ggplot2</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/ggplot2/topics/scale_hue'>scale_color_discrete</a></span>()</div><div class='output co'>#&gt; <span class='message'>Scale for 'colour' is already present. Adding another scale for 'colour',</span>
-#&gt; <span class='message'>which will replace the existing scale.</span></div><div class='img'><img src='MCMC-traces-5.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='co'># zoom in on a window of iterations, increase line size,</span>
-<span class='co'># add tick marks, move legend to the top, add gray background</span>
-<span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"viridisA"</span>)
-<span class='fu'>mcmc_trace</span>(<span class='no'>x</span>[,, <span class='fl'>1</span>:<span class='fl'>4</span>], <span class='kw'>window</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>100</span>, <span class='fl'>130</span>), <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>1</span>) +
-  <span class='fu'><a href='bayesplot-helpers.html'>panel_bg</a></span>(<span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>"gray90"</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='fl'>NA</span>) +
-  <span class='fu'><a href='bayesplot-helpers.html'>legend_move</a></span>(<span class='st'>"top"</span>)</div><div class='img'><img src='MCMC-traces-6.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='co'># Rank-normalized histogram plots. Instead of showing how chains mix over</span>
-<span class='co'># time, look at how the ranking of MCMC samples mixed between chains.</span>
-<span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"viridisE"</span>)
-<span class='fu'>mcmc_rank_hist</span>(<span class='no'>x</span>, <span class='st'>"alpha"</span>)</div><div class='img'><img src='MCMC-traces-7.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>mcmc_rank_hist</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"alpha"</span>, <span class='st'>"sigma"</span>), <span class='kw'>ref_line</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='img'><img src='MCMC-traces-8.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>mcmc_rank_overlay</span>(<span class='no'>x</span>, <span class='st'>"alpha"</span>)</div><div class='img'><img src='MCMC-traces-9.png' alt='' width='700' height='433' /></div><div class='input'>
-</div><div class='input'><span class='co'># parse facet label text</span>
-<span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"purple"</span>)
-<span class='no'>p</span> <span class='kw'>&lt;-</span> <span class='fu'>mcmc_trace</span>(
-  <span class='no'>x</span>,
-  <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='st'>"beta\\[[1,3]\\]"</span>,
-  <span class='kw'>facet_args</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>labeller</span> <span class='kw'>=</span> <span class='kw pkg'>ggplot2</span><span class='kw ns'>::</span><span class='no'><a href='https://www.rdocumentation.org/packages/ggplot2/topics/labellers'>label_parsed</a></span>)
-)
-<span class='no'>p</span> + <span class='fu'><a href='bayesplot-helpers.html'>facet_text</a></span>(<span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>15</span>)</div><div class='img'><img src='MCMC-traces-10.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='co'># mark first 100 draws as warmup</span>
-<span class='fu'>mcmc_trace</span>(<span class='no'>x</span>, <span class='kw'>n_warmup</span> <span class='kw'>=</span> <span class='fl'>100</span>)</div><div class='img'><img src='MCMC-traces-11.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='co'># plot as points, highlighting chain 2</span>
-<span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"brightblue"</span>)
-<span class='fu'>mcmc_trace_highlight</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='st'>"sigma"</span>, <span class='kw'>highlight</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='img'><img src='MCMC-traces-12.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='co'># for models fit using HMC/NUTS divergences can be displayed in the trace plot</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='st'>"rstanarm"</span>)
-<span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/rstanarm/topics/stan_glm'>stan_glm</a></span>(<span class='no'>mpg</span> ~ <span class='no'>.</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>mtcars</span>, <span class='kw'>refresh</span> <span class='kw'>=</span> <span class='fl'>0</span>,
-  <span class='co'># next line to keep example fast and also ensure we get some divergences</span>
-                <span class='kw'>prior</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/rstanarm/topics/priors'>hs</a></span>(), <span class='kw'>iter</span> <span class='kw'>=</span> <span class='fl'>400</span>, <span class='kw'>adapt_delta</span> <span class='kw'>=</span> <span class='fl'>0.8</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: There were 23 divergent transitions after warmup. Increasing adapt_delta above 0.8 may help. See</span>
-#&gt; <span class='warning'>http://mc-stan.org/misc/warnings.html#divergent-transitions-after-warmup</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Examine the pairs() plot to diagnose sampling problems</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Bulk Effective Samples Size (ESS) is too low, indicating posterior means and medians may be unreliable.</span>
-#&gt; <span class='warning'>Running the chains for more iterations may help. See</span>
-#&gt; <span class='warning'>http://mc-stan.org/misc/warnings.html#bulk-ess</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Tail Effective Samples Size (ESS) is too low, indicatingposterior variances and tail quantiles may be unreliable.</span>
-#&gt; <span class='warning'>Running the chains for more iterations may help. See</span>
-#&gt; <span class='warning'>http://mc-stan.org/misc/warnings.html#tail-ess</span></div><div class='input'>
-<span class='co'># extract draws using as.array (instead of as.matrix) to keep</span>
-<span class='co'># chains separate for trace plot</span>
-<span class='no'>posterior</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/array'>as.array</a></span>(<span class='no'>fit</span>)
-
-<span class='co'># for stanfit and stanreg objects use nuts_params() to get the divergences</span>
-<span class='fu'>mcmc_trace</span>(<span class='no'>posterior</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='st'>"sigma"</span>, <span class='kw'>np</span> <span class='kw'>=</span> <span class='fu'><a href='bayesplot-extractors.html'>nuts_params</a></span>(<span class='no'>fit</span>))</div><div class='img'><img src='MCMC-traces-13.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"viridis"</span>)
-<span class='fu'>mcmc_trace</span>(
-  <span class='no'>posterior</span>,
-  <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"wt"</span>, <span class='st'>"sigma"</span>),
-  <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>0.5</span>,
-  <span class='kw'>facet_args</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>nrow</span> <span class='kw'>=</span> <span class='fl'>2</span>),
-  <span class='kw'>np</span> <span class='kw'>=</span> <span class='fu'><a href='bayesplot-extractors.html'>nuts_params</a></span>(<span class='no'>fit</span>),
-  <span class='kw'>np_style</span> <span class='kw'>=</span> <span class='fu'>trace_style_np</span>(<span class='kw'>div_color</span> <span class='kw'>=</span> <span class='st'>"black"</span>, <span class='kw'>div_size</span> <span class='kw'>=</span> <span class='fl'>0.5</span>)
-)</div><div class='img'><img src='MCMC-traces-14.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='fu'>mcmc_trace</span>(
-  <span class='no'>posterior</span>,
-  <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"wt"</span>, <span class='st'>"sigma"</span>),
-  <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>0.8</span>,
-  <span class='kw'>facet_args</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>nrow</span> <span class='kw'>=</span> <span class='fl'>2</span>),
-  <span class='kw'>divergences</span> <span class='kw'>=</span> <span class='fu'><a href='bayesplot-extractors.html'>nuts_params</a></span>(<span class='no'>fit</span>),
-  <span class='kw'>div_color</span> <span class='kw'>=</span> <span class='st'>"black"</span>
-)</div><div class='output co'>#&gt; <span class='warning'>Warning: The 'divergences' argument is deprecated and will be removed in a future release. Use the 'np' argument instead.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: The following arguments were unrecognized and ignored: div_color</span></div><div class='img'><img src='MCMC-traces-15.png' alt='' width='700' height='433' /></div><div class='input'>
-</div></pre>
+    <pre class="examples"></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#value">Value</a></li>
-
-      <li><a href="#plot-descriptions">Plot Descriptions</a></li>
-
-      <li><a href="#references">References</a></li>
-
-      <li><a href="#see-also">See also</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
+
 
       <footer>
       <div class="copyright">
@@ -478,8 +447,9 @@ for assessing convergence of MCMC. <a href='https://arxiv.org/abs/1903.08008'>ar
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
+
       </footer>
    </div>
 
@@ -502,6 +472,8 @@ for assessing convergence of MCMC. <a href='https://arxiv.org/abs/1903.08008'>ar
 </script>
 
 
+
   </body>
 </html>
+
 

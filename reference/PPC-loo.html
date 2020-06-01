@@ -8,21 +8,36 @@
 
 <title>LOO predictive checks — PPC-loo • bayesplot</title>
 
-<!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
-<!-- Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+<!-- favicons -->
+<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<!-- jquery -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+<!-- Bootstrap -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+<!-- headroom.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -31,19 +46,18 @@
 
 <!-- docsearch -->
 <script src="../docsearch.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.3/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous" />
 <link href="../docsearch.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
 
 
-<meta property="og:title" content="LOO predictive checks — PPC-loo" />
 
+<meta property="og:title" content="LOO predictive checks — PPC-loo" />
 <meta property="og:description" content="Leave-One-Out (LOO) predictive checks. See the Plot Descriptions section,
 below, and Gabry et al. (2019)
 for details." />
-
 <meta property="og:image" content="https://mc-stan.org/bayesplot/logo.png" />
-<meta name="twitter:card" content="summary" />
+
 
 
 
@@ -57,9 +71,10 @@ for details." />
 <![endif]-->
 
 
+
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -73,7 +88,7 @@ for details." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bayesplot</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.7.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.7.2</span>
       </span>
     </div>
 
@@ -99,6 +114,9 @@ for details." />
       <a href="https://mc-stan.org/rstan">rstan</a>
     </li>
     <li>
+      <a href="https://mc-stan.org/cmdstanr">cmdstanr</a>
+    </li>
+    <li>
       <a href="https://mc-stan.org/rstanarm">rstanarm</a>
     </li>
     <li>
@@ -119,7 +137,6 @@ for details." />
   <a href="https://mc-stan.org">Stan</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://twitter.com/mcmc_stan">
@@ -141,7 +158,7 @@ for details." />
 </li>
       </ul>
       
-      <form class="navbar-form navbar-right" role="search">
+      <form class="navbar-form navbar-right hidden-xs hidden-sm" role="search">
         <div class="form-group">
           <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
         </div>
@@ -152,42 +169,89 @@ for details." />
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>LOO predictive checks</h1>
-    
+    <small class="dont-index">Source: <a href='https://github.com/stan-dev/bayesplot/blob/master/R/ppc-loo.R'><code>R/ppc-loo.R</code></a></small>
     <div class="hidden name"><code>PPC-loo.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    
     <p>Leave-One-Out (LOO) predictive checks. See the <strong>Plot Descriptions</strong> section,
-below, and <a href='https://github.com/jgabry/bayes-vis-paper'>Gabry et al. (2019)</a>
+below, and <a href='https://github.com/jgabry/bayes-vis-paper#readme'>Gabry et al. (2019)</a>
 for details.</p>
-    
     </div>
 
-    <pre class="usage"><span class='fu'>ppc_loo_pit_overlay</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='no'>lw</span>, <span class='no'>pit</span>, <span class='kw'>samples</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='no'>...</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>0.25</span>,
-  <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.7</span>, <span class='kw'>trim</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>bw</span> <span class='kw'>=</span> <span class='st'>"nrd0"</span>, <span class='kw'>adjust</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>kernel</span> <span class='kw'>=</span> <span class='st'>"gaussian"</span>, <span class='kw'>n_dens</span> <span class='kw'>=</span> <span class='fl'>1024</span>)
+    <pre class="usage"><span class='fu'>ppc_loo_pit_overlay</span>(
+  <span class='no'>y</span>,
+  <span class='no'>yrep</span>,
+  <span class='no'>lw</span>,
+  <span class='no'>pit</span>,
+  <span class='kw'>samples</span> <span class='kw'>=</span> <span class='fl'>100</span>,
+  <span class='no'>...</span>,
+  <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>0.25</span>,
+  <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.7</span>,
+  <span class='kw'>trim</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>bw</span> <span class='kw'>=</span> <span class='st'>"nrd0"</span>,
+  <span class='kw'>adjust</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>kernel</span> <span class='kw'>=</span> <span class='st'>"gaussian"</span>,
+  <span class='kw'>n_dens</span> <span class='kw'>=</span> <span class='fl'>1024</span>
+)
 
-<span class='fu'>ppc_loo_pit_qq</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='no'>lw</span>, <span class='no'>pit</span>, <span class='kw'>compare</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"uniform"</span>, <span class='st'>"normal"</span>), <span class='no'>...</span>,
-  <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>1</span>)
+<span class='fu'>ppc_loo_pit_qq</span>(
+  <span class='no'>y</span>,
+  <span class='no'>yrep</span>,
+  <span class='no'>lw</span>,
+  <span class='no'>pit</span>,
+  <span class='kw'>compare</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"uniform"</span>, <span class='st'>"normal"</span>),
+  <span class='no'>...</span>,
+  <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>2</span>,
+  <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>1</span>
+)
 
-<span class='fu'>ppc_loo_pit</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='no'>lw</span>, <span class='no'>pit</span>, <span class='kw'>compare</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"uniform"</span>, <span class='st'>"normal"</span>), <span class='no'>...</span>,
-  <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>1</span>)
+<span class='fu'>ppc_loo_pit</span>(
+  <span class='no'>y</span>,
+  <span class='no'>yrep</span>,
+  <span class='no'>lw</span>,
+  <span class='no'>pit</span>,
+  <span class='kw'>compare</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"uniform"</span>, <span class='st'>"normal"</span>),
+  <span class='no'>...</span>,
+  <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>2</span>,
+  <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>1</span>
+)
 
-<span class='fu'>ppc_loo_intervals</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='no'>psis_object</span>, <span class='kw'>subset</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>intervals</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>, <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>prob_outer</span> <span class='kw'>=</span> <span class='fl'>0.9</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>fatten</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>order</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"index"</span>, <span class='st'>"median"</span>))
+<span class='fu'>ppc_loo_intervals</span>(
+  <span class='no'>y</span>,
+  <span class='no'>yrep</span>,
+  <span class='no'>psis_object</span>,
+  <span class='kw'>subset</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>intervals</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='no'>...</span>,
+  <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.5</span>,
+  <span class='kw'>prob_outer</span> <span class='kw'>=</span> <span class='fl'>0.9</span>,
+  <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>fatten</span> <span class='kw'>=</span> <span class='fl'>3</span>,
+  <span class='kw'>order</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"index"</span>, <span class='st'>"median"</span>)
+)
 
-<span class='fu'>ppc_loo_ribbon</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='no'>lw</span>, <span class='no'>psis_object</span>, <span class='kw'>subset</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>intervals</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>, <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>prob_outer</span> <span class='kw'>=</span> <span class='fl'>0.9</span>,
-  <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.33</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>0.25</span>)</pre>
-    
+<span class='fu'>ppc_loo_ribbon</span>(
+  <span class='no'>y</span>,
+  <span class='no'>yrep</span>,
+  <span class='no'>lw</span>,
+  <span class='no'>psis_object</span>,
+  <span class='kw'>subset</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>intervals</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='no'>...</span>,
+  <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.5</span>,
+  <span class='kw'>prob_outer</span> <span class='kw'>=</span> <span class='fl'>0.9</span>,
+  <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.33</span>,
+  <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>0.25</span>
+)</pre>
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -207,7 +271,7 @@ sense. See <strong>Details</strong> for additional instructions.</p></td>
     <tr>
       <th>lw</th>
       <td><p>A matrix of (smoothed) log weights with the same dimensions as
-<code>yrep</code>. See <code><a href='https://www.rdocumentation.org/packages/loo/topics/psis'>loo::psis()</a></code> and the associated <code><a href='https://www.rdocumentation.org/packages/stats/topics/weights'>weights()</a></code> method as well as
+<code>yrep</code>. See <code><a href='https://mc-stan.org/loo/reference/psis.html'>loo::psis()</a></code> and the associated <code><a href='https://rdrr.io/r/stats/weights.html'>weights()</a></code> method as well as
 the <strong>Examples</strong> section, below.</p></td>
     </tr>
     <tr>
@@ -233,20 +297,20 @@ PITs overlaid as a thicker dark line.</p></td>
       <th>alpha, size, fatten</th>
       <td><p>Arguments passed to code geoms to control plot
 aesthetics. For <code>ppc_loo_pit_qq()</code> and <code>ppc_loo_pit_overlay()</code>, <code>size</code> and
-<code>alpha</code> are passed to <code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_point'>ggplot2::geom_point()</a></code> and
-<code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_density'>ggplot2::geom_density()</a></code>, respectively. For <code>ppc_loo_intervals()</code>, <code>size</code>
-and <code>fatten</code> are passed to <code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_linerange'>ggplot2::geom_pointrange()</a></code>. For
+<code>alpha</code> are passed to <code><a href='https://ggplot2.tidyverse.org/reference/geom_point.html'>ggplot2::geom_point()</a></code> and
+<code><a href='https://ggplot2.tidyverse.org/reference/geom_density.html'>ggplot2::geom_density()</a></code>, respectively. For <code>ppc_loo_intervals()</code>, <code>size</code>
+and <code>fatten</code> are passed to <code><a href='https://ggplot2.tidyverse.org/reference/geom_linerange.html'>ggplot2::geom_pointrange()</a></code>. For
 <code>ppc_loo_ribbon()</code>, <code>alpha</code> and <code>size</code> are passed to
-<code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_ribbon'>ggplot2::geom_ribbon()</a></code>.</p></td>
+<code><a href='https://ggplot2.tidyverse.org/reference/geom_ribbon.html'>ggplot2::geom_ribbon()</a></code>.</p></td>
     </tr>
     <tr>
       <th>trim</th>
-      <td><p>Passed to <code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_density'>ggplot2::stat_density()</a></code>.</p></td>
+      <td><p>Passed to <code><a href='https://ggplot2.tidyverse.org/reference/geom_density.html'>ggplot2::stat_density()</a></code>.</p></td>
     </tr>
     <tr>
       <th>bw, adjust, kernel, n_dens</th>
       <td><p>Optional arguments passed to
-<code><a href='https://www.rdocumentation.org/packages/stats/topics/density'>stats::density()</a></code> to override default kernel density estimation
+<code><a href='https://rdrr.io/r/stats/density.html'>stats::density()</a></code> to override default kernel density estimation
 parameters. <code>n_dens</code> defaults to <code>1024</code>.</p></td>
     </tr>
     <tr>
@@ -300,27 +364,25 @@ order of the observations. The alternative (<code>"median"</code>) arranges them
 by median value from smallest (left) to largest (right).</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A ggplot object that can be further customized using the <strong>ggplot2</strong> package.</p>
-    
     <h2 class="hasAnchor" id="plot-descriptions"><a class="anchor" href="#plot-descriptions"></a>Plot Descriptions</h2>
 
     
-    <dl class='dl-horizontal'>
+
+<dl'>
 <dt><code>ppc_loo_pit_overlay()</code>, <code>ppc_loo_pit_qq()</code></dt><dd><p>The calibration of marginal predictions can be assessed using probability
 integral transformation (PIT) checks. LOO improves the check by avoiding the
 double use of data. See the section on marginal predictive checks in Gelman
 et al. (2013, p. 152--153) and section 5 of Gabry et al. (2019) for an
-example of using <strong>bayesplot</strong> for these checks.
-    The LOO PIT values are asymptotically uniform (for continuous data) if the
+example of using <strong>bayesplot</strong> for these checks.The LOO PIT values are asymptotically uniform (for continuous data) if the
 model is calibrated. The <code>ppc_loo_pit_overlay()</code> function creates a plot
 comparing the density of the LOO PITs (thick line) to the density estimates
 of many simulated data sets from the standard uniform distribution (thin
 lines). See Gabry et al. (2019) for an example of interpreting the shape of
-the miscalibration that can be observed in these plots.
-    The <code>ppc_loo_pit_qq()</code> function provides an alternative visualization of
+the miscalibration that can be observed in these plots.The <code>ppc_loo_pit_qq()</code> function provides an alternative visualization of
 the miscalibration with a quantile-quantile (Q-Q) plot comparing the LOO
 PITs to the standard uniform distribution. Comparing to the uniform is not
 good for extreme probabilities close to 0 and 1, so it can sometimes be
@@ -332,8 +394,9 @@ values. However, in most cases we have found that the overlaid density plot
 calibration problems that the Q-Q plot.</p></dd>
 <dt><code>ppc_loo_intervals()</code>, <code>ppc_loo_ribbon()</code></dt><dd><p>Similar to <code><a href='PPC-intervals.html'>ppc_intervals()</a></code> and <code><a href='PPC-intervals.html'>ppc_ribbon()</a></code> but the intervals are for
 the LOO predictive distribution.</p></dd>
+
 </dl>
-    
+
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <p>Gelman, A., Carlin, J. B., Stern, H. S., Dunson, D. B., Vehtari,
@@ -350,93 +413,74 @@ Bayesian model evaluation using leave-one-out cross-validation and WAIC.
 <em>Statistics and Computing</em>. 27(5), 1413--1432.
 doi:10.1007/s11222-016-9696-4. arXiv preprint:
 <a href='https://arxiv.org/abs/1507.04544/'>https://arxiv.org/abs/1507.04544/</a></p>
-    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>Other PPCs: <code><a href='PPC-discrete.html'>PPC-discrete</a></code>,
-  <code><a href='PPC-distributions.html'>PPC-distributions</a></code>,
-  <code><a href='PPC-errors.html'>PPC-errors</a></code>, <code><a href='PPC-intervals.html'>PPC-intervals</a></code>,
-  <code><a href='PPC-overview.html'>PPC-overview</a></code>,
-  <code><a href='PPC-scatterplots.html'>PPC-scatterplots</a></code>,
-  <code><a href='PPC-test-statistics.html'>PPC-test-statistics</a></code></p></div>
-    
+    <div class='dont-index'><p>Other PPCs: 
+<code><a href='PPC-discrete.html'>PPC-discrete</a></code>,
+<code><a href='PPC-distributions.html'>PPC-distributions</a></code>,
+<code><a href='PPC-errors.html'>PPC-errors</a></code>,
+<code><a href='PPC-intervals.html'>PPC-intervals</a></code>,
+<code><a href='PPC-overview.html'>PPC-overview</a></code>,
+<code><a href='PPC-scatterplots.html'>PPC-scatterplots</a></code>,
+<code><a href='PPC-test-statistics.html'>PPC-test-statistics</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>rstanarm</span>)
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>loo</span>)</div><div class='output co'>#&gt; <span class='message'>This is loo version 2.1.0.9000.</span>
-#&gt; <span class='message'>**NOTE: As of version 2.0.0 loo defaults to 1 core but we recommend using as many as possible. Use the 'cores' argument or set options(mc.cores = NUM_CORES) for an entire session. Visit mc-stan.org/loo/news for details on other changes.</span></div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>Attaching package: ‘loo’</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:rstan’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    loo</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:testthat’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    compare</span></div><div class='input'>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/head'>head</a></span>(<span class='no'>radon</span>)</div><div class='output co'>#&gt;   floor county  log_radon log_uranium
+<span class='co'># \dontrun{</span>
+<span class='fu'><a href='https://rdrr.io/r/base/message.html'>suppressPackageStartupMessages</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>rstanarm</span>))
+<span class='fu'><a href='https://rdrr.io/r/base/message.html'>suppressPackageStartupMessages</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>loo</span>))
+
+<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='no'>radon</span>)</div><div class='output co'>#&gt;   floor county  log_radon log_uranium
 #&gt; 1     1 AITKIN 0.83290912  -0.6890476
 #&gt; 2     0 AITKIN 0.83290912  -0.6890476
 #&gt; 3     0 AITKIN 1.09861229  -0.6890476
 #&gt; 4     0 AITKIN 0.09531018  -0.6890476
 #&gt; 5     0  ANOKA 1.16315081  -0.8473129
-#&gt; 6     0  ANOKA 0.95551145  -0.8473129</div><div class='input'><span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/rstanarm/topics/stan_glmer'>stan_lmer</a></span>(
+#&gt; 6     0  ANOKA 0.95551145  -0.8473129</div><div class='input'><span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://mc-stan.org/rstanarm/reference/stan_glmer.html'>stan_lmer</a></span>(
   <span class='no'>log_radon</span> ~ <span class='no'>floor</span> + <span class='no'>log_uranium</span> + <span class='no'>floor</span>:<span class='no'>log_uranium</span>
                + (<span class='fl'>1</span> + <span class='no'>floor</span> <span class='kw'>|</span> <span class='no'>county</span>),
   <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>radon</span>,
   <span class='kw'>iter</span> <span class='kw'>=</span> <span class='fl'>1000</span>,
-  <span class='kw'>chains</span> <span class='kw'>=</span> <span class='fl'>2</span>  <span class='co'># ,cores = 2</span>
+  <span class='kw'>chains</span> <span class='kw'>=</span> <span class='fl'>2</span>,  <span class='co'># cores = 2</span>
+  <span class='kw'>refresh</span> <span class='kw'>=</span> <span class='fl'>500</span>
  )</div><div class='output co'>#&gt; 
 #&gt; SAMPLING FOR MODEL 'continuous' NOW (CHAIN 1).
 #&gt; Chain 1: 
-#&gt; Chain 1: Gradient evaluation took 0.000463 seconds
-#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 4.63 seconds.
+#&gt; Chain 1: Gradient evaluation took 0.000408 seconds
+#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 4.08 seconds.
 #&gt; Chain 1: Adjust your expectations accordingly!
 #&gt; Chain 1: 
 #&gt; Chain 1: 
 #&gt; Chain 1: Iteration:   1 / 1000 [  0%]  (Warmup)
-#&gt; Chain 1: Iteration: 100 / 1000 [ 10%]  (Warmup)
-#&gt; Chain 1: Iteration: 200 / 1000 [ 20%]  (Warmup)
-#&gt; Chain 1: Iteration: 300 / 1000 [ 30%]  (Warmup)
-#&gt; Chain 1: Iteration: 400 / 1000 [ 40%]  (Warmup)
 #&gt; Chain 1: Iteration: 500 / 1000 [ 50%]  (Warmup)
 #&gt; Chain 1: Iteration: 501 / 1000 [ 50%]  (Sampling)
-#&gt; Chain 1: Iteration: 600 / 1000 [ 60%]  (Sampling)
-#&gt; Chain 1: Iteration: 700 / 1000 [ 70%]  (Sampling)
-#&gt; Chain 1: Iteration: 800 / 1000 [ 80%]  (Sampling)
-#&gt; Chain 1: Iteration: 900 / 1000 [ 90%]  (Sampling)
 #&gt; Chain 1: Iteration: 1000 / 1000 [100%]  (Sampling)
 #&gt; Chain 1: 
-#&gt; Chain 1:  Elapsed Time: 13.9553 seconds (Warm-up)
-#&gt; Chain 1:                3.20297 seconds (Sampling)
-#&gt; Chain 1:                17.1582 seconds (Total)
+#&gt; Chain 1:  Elapsed Time: 12.721 seconds (Warm-up)
+#&gt; Chain 1:                3.25757 seconds (Sampling)
+#&gt; Chain 1:                15.9786 seconds (Total)
 #&gt; Chain 1: 
 #&gt; 
 #&gt; SAMPLING FOR MODEL 'continuous' NOW (CHAIN 2).
 #&gt; Chain 2: 
-#&gt; Chain 2: Gradient evaluation took 0.000219 seconds
-#&gt; Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 2.19 seconds.
+#&gt; Chain 2: Gradient evaluation took 0.000195 seconds
+#&gt; Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 1.95 seconds.
 #&gt; Chain 2: Adjust your expectations accordingly!
 #&gt; Chain 2: 
 #&gt; Chain 2: 
 #&gt; Chain 2: Iteration:   1 / 1000 [  0%]  (Warmup)
-#&gt; Chain 2: Iteration: 100 / 1000 [ 10%]  (Warmup)
-#&gt; Chain 2: Iteration: 200 / 1000 [ 20%]  (Warmup)
-#&gt; Chain 2: Iteration: 300 / 1000 [ 30%]  (Warmup)
-#&gt; Chain 2: Iteration: 400 / 1000 [ 40%]  (Warmup)
 #&gt; Chain 2: Iteration: 500 / 1000 [ 50%]  (Warmup)
 #&gt; Chain 2: Iteration: 501 / 1000 [ 50%]  (Sampling)
-#&gt; Chain 2: Iteration: 600 / 1000 [ 60%]  (Sampling)
-#&gt; Chain 2: Iteration: 700 / 1000 [ 70%]  (Sampling)
-#&gt; Chain 2: Iteration: 800 / 1000 [ 80%]  (Sampling)
-#&gt; Chain 2: Iteration: 900 / 1000 [ 90%]  (Sampling)
 #&gt; Chain 2: Iteration: 1000 / 1000 [100%]  (Sampling)
 #&gt; Chain 2: 
-#&gt; Chain 2:  Elapsed Time: 14.3509 seconds (Warm-up)
-#&gt; Chain 2:                3.45987 seconds (Sampling)
-#&gt; Chain 2:                17.8108 seconds (Total)
+#&gt; Chain 2:  Elapsed Time: 12.5864 seconds (Warm-up)
+#&gt; Chain 2:                3.23027 seconds (Sampling)
+#&gt; Chain 2:                15.8167 seconds (Total)
 #&gt; Chain 2: </div><div class='input'><span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='no'>radon</span>$<span class='no'>log_radon</span>
-<span class='no'>yrep</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/rstanarm/topics/posterior_predict.stanreg'>posterior_predict</a></span>(<span class='no'>fit</span>)
+<span class='no'>yrep</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://mc-stan.org/rstanarm/reference/posterior_predict.stanreg.html'>posterior_predict</a></span>(<span class='no'>fit</span>)
 
-<span class='no'>loo1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/rstanarm/topics/loo.stanreg'>loo</a></span>(<span class='no'>fit</span>, <span class='kw'>save_psis</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>cores</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Found 2 observation(s) with a pareto_k &gt; 0.7. We recommend calling 'loo' again with argument 'k_threshold = 0.7' in order to calculate the ELPD without the assumption that these observations are negligible. This will refit the model 2 times to compute the ELPDs for the problematic observations directly.</span></div><div class='input'><span class='no'>psis1</span> <span class='kw'>&lt;-</span> <span class='no'>loo1</span>$<span class='no'>psis_object</span>
-<span class='no'>lw</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/weights'>weights</a></span>(<span class='no'>psis1</span>)
+<span class='no'>loo1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://mc-stan.org/rstanarm/reference/loo.stanreg.html'>loo</a></span>(<span class='no'>fit</span>, <span class='kw'>save_psis</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>cores</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Found 1 observation(s) with a pareto_k &gt; 0.7. We recommend calling 'loo' again with argument 'k_threshold = 0.7' in order to calculate the ELPD without the assumption that these observations are negligible. This will refit the model 1 times to compute the ELPDs for the problematic observations directly.</span></div><div class='input'><span class='no'>psis1</span> <span class='kw'>&lt;-</span> <span class='no'>loo1</span>$<span class='no'>psis_object</span>
+<span class='no'>lw</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/weights.html'>weights</a></span>(<span class='no'>psis1</span>)
 
 <span class='co'># marginal predictive check using LOO probability integral transform</span>
 <span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"orange"</span>)
@@ -448,27 +492,17 @@ doi:10.1007/s11222-016-9696-4. arXiv preprint:
 <span class='fu'>ppc_loo_intervals</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='kw'>psis_object</span> <span class='kw'>=</span> <span class='no'>psis1</span>, <span class='kw'>subset</span> <span class='kw'>=</span> <span class='no'>keep_obs</span>)</div><div class='img'><img src='PPC-loo-4.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"gray"</span>)
 <span class='fu'>ppc_loo_intervals</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='kw'>psis_object</span> <span class='kw'>=</span> <span class='no'>psis1</span>, <span class='kw'>subset</span> <span class='kw'>=</span> <span class='no'>keep_obs</span>,
-                  <span class='kw'>order</span> <span class='kw'>=</span> <span class='st'>"median"</span>)</div><div class='img'><img src='PPC-loo-5.png' alt='' width='700' height='433' /></div><div class='input'>
+                  <span class='kw'>order</span> <span class='kw'>=</span> <span class='st'>"median"</span>)</div><div class='img'><img src='PPC-loo-5.png' alt='' width='700' height='433' /></div><div class='input'># }
+
 </div></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#value">Value</a></li>
-
-      <li><a href="#plot-descriptions">Plot Descriptions</a></li>
-
-      <li><a href="#references">References</a></li>
-
-      <li><a href="#see-also">See also</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
+
 
       <footer>
       <div class="copyright">
@@ -476,8 +510,9 @@ doi:10.1007/s11222-016-9696-4. arXiv preprint:
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
+
       </footer>
    </div>
 
@@ -500,6 +535,8 @@ doi:10.1007/s11222-016-9696-4. arXiv preprint:
 </script>
 
 
+
   </body>
 </html>
+
 

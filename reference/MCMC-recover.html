@@ -8,21 +8,36 @@
 
 <title>Compare MCMC estimates to "true" parameter values — MCMC-recover • bayesplot</title>
 
-<!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
-<!-- Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+<!-- favicons -->
+<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<!-- jquery -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+<!-- Bootstrap -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+<!-- headroom.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -31,22 +46,21 @@
 
 <!-- docsearch -->
 <script src="../docsearch.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.3/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous" />
 <link href="../docsearch.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
 
 
-<meta property="og:title" content="Compare MCMC estimates to "true" parameter values — MCMC-recover" />
 
+<meta property="og:title" content="Compare MCMC estimates to "true" parameter values — MCMC-recover" />
 <meta property="og:description" content="Plots comparing MCMC estimates to &quot;true&quot; parameter values. Before fitting a
 model to real data it is useful to simulate data according to the model using
 known (fixed) parameter values and to check that these &quot;true&quot; parameter
 values are (approximately) recovered by fitting the model to the simulated
 data. See the Plot Descriptions section, below, for details on the
 available plots." />
-
 <meta property="og:image" content="https://mc-stan.org/bayesplot/logo.png" />
-<meta name="twitter:card" content="summary" />
+
 
 
 
@@ -60,9 +74,10 @@ available plots." />
 <![endif]-->
 
 
+
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -76,7 +91,7 @@ available plots." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bayesplot</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.7.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.7.2</span>
       </span>
     </div>
 
@@ -102,6 +117,9 @@ available plots." />
       <a href="https://mc-stan.org/rstan">rstan</a>
     </li>
     <li>
+      <a href="https://mc-stan.org/cmdstanr">cmdstanr</a>
+    </li>
+    <li>
       <a href="https://mc-stan.org/rstanarm">rstanarm</a>
     </li>
     <li>
@@ -122,7 +140,6 @@ available plots." />
   <a href="https://mc-stan.org">Stan</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://twitter.com/mcmc_stan">
@@ -144,7 +161,7 @@ available plots." />
 </li>
       </ul>
       
-      <form class="navbar-form navbar-right" role="search">
+      <form class="navbar-form navbar-right hidden-xs hidden-sm" role="search">
         <div class="form-group">
           <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
         </div>
@@ -155,38 +172,59 @@ available plots." />
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Compare MCMC estimates to "true" parameter values</h1>
-    
+    <small class="dont-index">Source: <a href='https://github.com/stan-dev/bayesplot/blob/master/R/mcmc-recover.R'><code>R/mcmc-recover.R</code></a></small>
     <div class="hidden name"><code>MCMC-recover.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    
     <p>Plots comparing MCMC estimates to "true" parameter values. Before fitting a
 model to real data it is useful to simulate data according to the model using
 known (fixed) parameter values and to check that these "true" parameter
 values are (approximately) recovered by fitting the model to the simulated
 data. See the <strong>Plot Descriptions</strong> section, below, for details on the
 available plots.</p>
-    
     </div>
 
-    <pre class="usage"><span class='fu'>mcmc_recover_intervals</span>(<span class='no'>x</span>, <span class='no'>true</span>, <span class='kw'>batch</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/rep'>rep</a></span>(<span class='fl'>1</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/length'>length</a></span>(<span class='no'>true</span>)), <span class='no'>...</span>,
-  <span class='kw'>facet_args</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(), <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>prob_outer</span> <span class='kw'>=</span> <span class='fl'>0.9</span>,
-  <span class='kw'>point_est</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"median"</span>, <span class='st'>"mean"</span>, <span class='st'>"none"</span>), <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>4</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>1</span>)
+    <pre class="usage"><span class='fu'>mcmc_recover_intervals</span>(
+  <span class='no'>x</span>,
+  <span class='no'>true</span>,
+  <span class='kw'>batch</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fl'>1</span>, <span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span>(<span class='no'>true</span>)),
+  <span class='no'>...</span>,
+  <span class='kw'>facet_args</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(),
+  <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.5</span>,
+  <span class='kw'>prob_outer</span> <span class='kw'>=</span> <span class='fl'>0.9</span>,
+  <span class='kw'>point_est</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"median"</span>, <span class='st'>"mean"</span>, <span class='st'>"none"</span>),
+  <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>4</span>,
+  <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>1</span>
+)
 
-<span class='fu'>mcmc_recover_scatter</span>(<span class='no'>x</span>, <span class='no'>true</span>, <span class='kw'>batch</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/rep'>rep</a></span>(<span class='fl'>1</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/length'>length</a></span>(<span class='no'>true</span>)), <span class='no'>...</span>,
-  <span class='kw'>facet_args</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(), <span class='kw'>point_est</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"median"</span>, <span class='st'>"mean"</span>), <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>3</span>,
-  <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>1</span>)
+<span class='fu'>mcmc_recover_scatter</span>(
+  <span class='no'>x</span>,
+  <span class='no'>true</span>,
+  <span class='kw'>batch</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fl'>1</span>, <span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span>(<span class='no'>true</span>)),
+  <span class='no'>...</span>,
+  <span class='kw'>facet_args</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(),
+  <span class='kw'>point_est</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"median"</span>, <span class='st'>"mean"</span>),
+  <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>3</span>,
+  <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>1</span>
+)
 
-<span class='fu'>mcmc_recover_hist</span>(<span class='no'>x</span>, <span class='no'>true</span>, <span class='no'>...</span>, <span class='kw'>facet_args</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(), <span class='kw'>binwidth</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>breaks</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
-    
+<span class='fu'>mcmc_recover_hist</span>(
+  <span class='no'>x</span>,
+  <span class='no'>true</span>,
+  <span class='no'>...</span>,
+  <span class='kw'>facet_args</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(),
+  <span class='kw'>binwidth</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>breaks</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
+)</pre>
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -195,7 +233,7 @@ available plots.</p>
       <td><p>A 3-D array, matrix, list of matrices, or data frame of MCMC draws.
 The <a href='MCMC-overview.html'>MCMC-overview</a> page provides details on how to specify each these
 allowed inputs. It is also possible to use an object with an
-<code><a href='https://www.rdocumentation.org/packages/base/topics/array'>as.array()</a></code> method that returns the same kind of 3-D array described on
+<code><a href='https://rdrr.io/r/base/array.html'>as.array()</a></code> method that returns the same kind of 3-D array described on
 the <a href='MCMC-overview.html'>MCMC-overview</a> page.</p></td>
     </tr>
     <tr>
@@ -224,7 +262,7 @@ within which it makes sense to use the same y-axis.</p></td>
     <tr>
       <th>facet_args</th>
       <td><p>A named list of arguments (other than <code>facets</code>) passed
-to <code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/facet_wrap'>ggplot2::facet_wrap()</a></code> or <code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/facet_grid'>ggplot2::facet_grid()</a></code>
+to <code><a href='https://ggplot2.tidyverse.org/reference/facet_wrap.html'>ggplot2::facet_wrap()</a></code> or <code><a href='https://ggplot2.tidyverse.org/reference/facet_grid.html'>ggplot2::facet_grid()</a></code>
 to control faceting.</p></td>
     </tr>
     <tr>
@@ -244,95 +282,91 @@ default), <code>"mean"</code>, or <code>"none"</code>.</p></td>
     </tr>
     <tr>
       <th>size, alpha</th>
-      <td><p>Passed to <code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_point'>ggplot2::geom_point()</a></code> to control the
+      <td><p>Passed to <code><a href='https://ggplot2.tidyverse.org/reference/geom_point.html'>ggplot2::geom_point()</a></code> to control the
 appearance of plotted points.</p></td>
     </tr>
     <tr>
       <th>binwidth</th>
-      <td><p>Passed to <code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_histogram'>ggplot2::geom_histogram()</a></code> to override
+      <td><p>Passed to <code><a href='https://ggplot2.tidyverse.org/reference/geom_histogram.html'>ggplot2::geom_histogram()</a></code> to override
 the default binwidth.</p></td>
     </tr>
     <tr>
       <th>breaks</th>
-      <td><p>Passed to <code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_histogram'>ggplot2::geom_histogram()</a></code> as an
+      <td><p>Passed to <code><a href='https://ggplot2.tidyverse.org/reference/geom_histogram.html'>ggplot2::geom_histogram()</a></code> as an
 alternative to <code>binwidth</code>.</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A ggplot object that can be further customized using the <strong>ggplot2</strong> package.</p>
-    
     <h2 class="hasAnchor" id="plot-descriptions"><a class="anchor" href="#plot-descriptions"></a>Plot Descriptions</h2>
 
     
-    <dl class='dl-horizontal'>
+
+<dl'>
 <dt><code>mcmc_recover_intervals()</code></dt><dd><p>Central intervals and point estimates computed from MCMC draws, with
 "true" values plotted using a different shape.</p></dd>
 <dt><code>mcmc_recover_scatter()</code></dt><dd><p>Scatterplot of posterior means (or medians) against "true" values.</p></dd>
 <dt><code>mcmc_recover_hist()</code></dt><dd><p>Histograms of the draws for each parameter with the "true" value overlaid
 as a vertical line.</p></dd>
+
 </dl>
-    
+
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>Other MCMC: <code><a href='MCMC-combos.html'>MCMC-combos</a></code>,
-  <code><a href='MCMC-diagnostics.html'>MCMC-diagnostics</a></code>,
-  <code><a href='MCMC-distributions.html'>MCMC-distributions</a></code>,
-  <code><a href='MCMC-intervals.html'>MCMC-intervals</a></code>, <code><a href='MCMC-nuts.html'>MCMC-nuts</a></code>,
-  <code><a href='MCMC-overview.html'>MCMC-overview</a></code>, <code><a href='MCMC-parcoord.html'>MCMC-parcoord</a></code>,
-  <code><a href='MCMC-scatterplots.html'>MCMC-scatterplots</a></code>,
-  <code><a href='MCMC-traces.html'>MCMC-traces</a></code></p></div>
-    
+    <div class='dont-index'><p>Other MCMC: 
+<code><a href='MCMC-combos.html'>MCMC-combos</a></code>,
+<code><a href='MCMC-diagnostics.html'>MCMC-diagnostics</a></code>,
+<code><a href='MCMC-distributions.html'>MCMC-distributions</a></code>,
+<code><a href='MCMC-intervals.html'>MCMC-intervals</a></code>,
+<code><a href='MCMC-nuts.html'>MCMC-nuts</a></code>,
+<code><a href='MCMC-overview.html'>MCMC-overview</a></code>,
+<code><a href='MCMC-parcoord.html'>MCMC-parcoord</a></code>,
+<code><a href='MCMC-scatterplots.html'>MCMC-scatterplots</a></code>,
+<code><a href='MCMC-traces.html'>MCMC-traces</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>rstanarm</span>)
-<span class='no'>alpha</span> <span class='kw'>&lt;-</span> <span class='fl'>1</span>; <span class='no'>beta</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/Normal'>rnorm</a></span>(<span class='fl'>10</span>, <span class='fl'>0</span>, <span class='fl'>3</span>); <span class='no'>sigma</span> <span class='kw'>&lt;-</span> <span class='fl'>2</span>
-<span class='no'>X</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/matrix'>matrix</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/Normal'>rnorm</a></span>(<span class='fl'>1000</span>), <span class='fl'>100</span>, <span class='fl'>10</span>)
-<span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/Normal'>rnorm</a></span>(<span class='fl'>100</span>, <span class='kw'>mean</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='no'>alpha</span> + <span class='no'>X</span> <span class='kw'>%*%</span> <span class='no'>beta</span>), <span class='kw'>sd</span> <span class='kw'>=</span> <span class='no'>sigma</span>)
-<span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/rstanarm/topics/stan_glm'>stan_glm</a></span>(<span class='no'>y</span> ~ <span class='no'>.</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/data.frame'>data.frame</a></span>(<span class='no'>y</span>, <span class='no'>X</span>), <span class='kw'>refresh</span> <span class='kw'>=</span> <span class='fl'>0</span>)
-<span class='no'>draws</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/matrix'>as.matrix</a></span>(<span class='no'>fit</span>)
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/colnames'>colnames</a></span>(<span class='no'>draws</span>))</div><div class='output co'>#&gt;  [1] "(Intercept)" "X1"          "X2"          "X3"          "X4"         
+    <pre class="examples"><div class='input'><span class='co'># \dontrun{</span>
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>rstanarm</span>)
+<span class='no'>alpha</span> <span class='kw'>&lt;-</span> <span class='fl'>1</span>; <span class='no'>beta</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='fl'>10</span>, <span class='fl'>0</span>, <span class='fl'>3</span>); <span class='no'>sigma</span> <span class='kw'>&lt;-</span> <span class='fl'>2</span>
+<span class='no'>X</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='fl'>1000</span>), <span class='fl'>100</span>, <span class='fl'>10</span>)
+<span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='fl'>100</span>, <span class='kw'>mean</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='no'>alpha</span> + <span class='no'>X</span> <span class='kw'>%*%</span> <span class='no'>beta</span>), <span class='kw'>sd</span> <span class='kw'>=</span> <span class='no'>sigma</span>)
+<span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://mc-stan.org/rstanarm/reference/stan_glm.html'>stan_glm</a></span>(<span class='no'>y</span> ~ <span class='no'>.</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(<span class='no'>y</span>, <span class='no'>X</span>), <span class='kw'>refresh</span> <span class='kw'>=</span> <span class='fl'>0</span>)
+<span class='no'>draws</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>as.matrix</a></span>(<span class='no'>fit</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span>(<span class='no'>draws</span>))</div><div class='output co'>#&gt;  [1] "(Intercept)" "X1"          "X2"          "X3"          "X4"         
 #&gt;  [6] "X5"          "X6"          "X7"          "X8"          "X9"         
-#&gt; [11] "X10"         "sigma"      </div><div class='input'><span class='no'>true</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='no'>alpha</span>, <span class='no'>beta</span>, <span class='no'>sigma</span>)
+#&gt; [11] "X10"         "sigma"      </div><div class='input'><span class='no'>true</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='no'>alpha</span>, <span class='no'>beta</span>, <span class='no'>sigma</span>)
 
 <span class='fu'>mcmc_recover_intervals</span>(<span class='no'>draws</span>, <span class='no'>true</span>)</div><div class='img'><img src='MCMC-recover-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># put the coefficients on X into the same batch</span>
-<span class='fu'>mcmc_recover_intervals</span>(<span class='no'>draws</span>, <span class='no'>true</span>, <span class='kw'>batch</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>1</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/rep'>rep</a></span>(<span class='fl'>2</span>, <span class='fl'>10</span>), <span class='fl'>1</span>))</div><div class='img'><img src='MCMC-recover-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># equivalent</span>
-<span class='fu'>mcmc_recover_intervals</span>(<span class='no'>draws</span>, <span class='no'>true</span>, <span class='kw'>batch</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/grep'>grepl</a></span>(<span class='st'>"X"</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/colnames'>colnames</a></span>(<span class='no'>draws</span>)))</div><div class='img'><img src='MCMC-recover-3.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># same but facets stacked vertically</span>
+<span class='fu'>mcmc_recover_intervals</span>(<span class='no'>draws</span>, <span class='no'>true</span>, <span class='kw'>batch</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fl'>2</span>, <span class='fl'>10</span>), <span class='fl'>1</span>))</div><div class='img'><img src='MCMC-recover-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># equivalent</span>
+<span class='fu'>mcmc_recover_intervals</span>(<span class='no'>draws</span>, <span class='no'>true</span>, <span class='kw'>batch</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/grep.html'>grepl</a></span>(<span class='st'>"X"</span>, <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span>(<span class='no'>draws</span>)))</div><div class='img'><img src='MCMC-recover-3.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># same but facets stacked vertically</span>
 <span class='fu'>mcmc_recover_intervals</span>(<span class='no'>draws</span>, <span class='no'>true</span>,
-                       <span class='kw'>batch</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/grep'>grepl</a></span>(<span class='st'>"X"</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/colnames'>colnames</a></span>(<span class='no'>draws</span>)),
-                       <span class='kw'>facet_args</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>1</span>),
+                       <span class='kw'>batch</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/grep.html'>grepl</a></span>(<span class='st'>"X"</span>, <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span>(<span class='no'>draws</span>)),
+                       <span class='kw'>facet_args</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>1</span>),
                        <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>3</span>)</div><div class='img'><img src='MCMC-recover-4.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># each parameter in its own facet</span>
-<span class='fu'>mcmc_recover_intervals</span>(<span class='no'>draws</span>, <span class='no'>true</span>, <span class='kw'>batch</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/nrow'>ncol</a></span>(<span class='no'>draws</span>))</div><div class='img'><img src='MCMC-recover-5.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># same but in a different order</span>
-<span class='fu'>mcmc_recover_intervals</span>(<span class='no'>draws</span>, <span class='no'>true</span>, <span class='kw'>batch</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>3</span>, <span class='fl'>4</span>, <span class='fl'>2</span>, <span class='fl'>5</span>:<span class='fl'>12</span>))</div><div class='img'><img src='MCMC-recover-6.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># present as bias by centering with true values</span>
-<span class='fu'>mcmc_recover_intervals</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/sweep'>sweep</a></span>(<span class='no'>draws</span>, <span class='fl'>2</span>, <span class='no'>true</span>), <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/rep'>rep</a></span>(<span class='fl'>0</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/nrow'>ncol</a></span>(<span class='no'>draws</span>))) + <span class='fu'><a href='bayesplot-helpers.html'>hline_0</a></span>()</div><div class='img'><img src='MCMC-recover-7.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'>mcmc_recover_intervals</span>(<span class='no'>draws</span>, <span class='no'>true</span>, <span class='kw'>batch</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>ncol</a></span>(<span class='no'>draws</span>))</div><div class='img'><img src='MCMC-recover-5.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># same but in a different order</span>
+<span class='fu'>mcmc_recover_intervals</span>(<span class='no'>draws</span>, <span class='no'>true</span>, <span class='kw'>batch</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>3</span>, <span class='fl'>4</span>, <span class='fl'>2</span>, <span class='fl'>5</span>:<span class='fl'>12</span>))</div><div class='img'><img src='MCMC-recover-6.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># present as bias by centering with true values</span>
+<span class='fu'>mcmc_recover_intervals</span>(<span class='fu'><a href='https://rdrr.io/r/base/sweep.html'>sweep</a></span>(<span class='no'>draws</span>, <span class='fl'>2</span>, <span class='no'>true</span>), <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fl'>0</span>, <span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>ncol</a></span>(<span class='no'>draws</span>))) + <span class='fu'><a href='bayesplot-helpers.html'>hline_0</a></span>()</div><div class='img'><img src='MCMC-recover-7.png' alt='' width='700' height='433' /></div><div class='input'>
 
 <span class='co'># scatterplot of posterior means vs true values</span>
 <span class='fu'>mcmc_recover_scatter</span>(<span class='no'>draws</span>, <span class='no'>true</span>, <span class='kw'>point_est</span> <span class='kw'>=</span> <span class='st'>"mean"</span>)</div><div class='img'><img src='MCMC-recover-8.png' alt='' width='700' height='433' /></div><div class='input'>
 
 <span class='co'># histograms of parameter draws with true value added as vertical line</span>
 <span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"brightblue"</span>)
-<span class='fu'>mcmc_recover_hist</span>(<span class='no'>draws</span>[, <span class='fl'>1</span>:<span class='fl'>4</span>], <span class='no'>true</span>[<span class='fl'>1</span>:<span class='fl'>4</span>])</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='MCMC-recover-9.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'>mcmc_recover_hist</span>(<span class='no'>draws</span>[, <span class='fl'>1</span>:<span class='fl'>4</span>], <span class='no'>true</span>[<span class='fl'>1</span>:<span class='fl'>4</span>])</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='MCMC-recover-9.png' alt='' width='700' height='433' /></div><div class='input'># }
+
 </div></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#value">Value</a></li>
-
-      <li><a href="#plot-descriptions">Plot Descriptions</a></li>
-
-      <li><a href="#see-also">See also</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
+
 
       <footer>
       <div class="copyright">
@@ -340,8 +374,9 @@ as a vertical line.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
+
       </footer>
    </div>
 
@@ -364,6 +399,8 @@ as a vertical line.</p></dd>
 </script>
 
 
+
   </body>
 </html>
+
 

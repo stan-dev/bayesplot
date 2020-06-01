@@ -8,21 +8,36 @@
 
 <title>PPC intervals — PPC-intervals • bayesplot</title>
 
-<!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
-<!-- Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+<!-- favicons -->
+<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<!-- jquery -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+<!-- Bootstrap -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+<!-- headroom.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -31,18 +46,17 @@
 
 <!-- docsearch -->
 <script src="../docsearch.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.3/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous" />
 <link href="../docsearch.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
 
 
-<meta property="og:title" content="PPC intervals — PPC-intervals" />
 
+<meta property="og:title" content="PPC intervals — PPC-intervals" />
 <meta property="og:description" content="Medians and central interval estimates of yrep with y overlaid.
 See the Plot Descriptions section, below." />
-
 <meta property="og:image" content="https://mc-stan.org/bayesplot/logo.png" />
-<meta name="twitter:card" content="summary" />
+
 
 
 
@@ -56,9 +70,10 @@ See the Plot Descriptions section, below." />
 <![endif]-->
 
 
+
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -72,7 +87,7 @@ See the Plot Descriptions section, below." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bayesplot</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.7.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.7.2</span>
       </span>
     </div>
 
@@ -98,6 +113,9 @@ See the Plot Descriptions section, below." />
       <a href="https://mc-stan.org/rstan">rstan</a>
     </li>
     <li>
+      <a href="https://mc-stan.org/cmdstanr">cmdstanr</a>
+    </li>
+    <li>
       <a href="https://mc-stan.org/rstanarm">rstanarm</a>
     </li>
     <li>
@@ -118,7 +136,6 @@ See the Plot Descriptions section, below." />
   <a href="https://mc-stan.org">Stan</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://twitter.com/mcmc_stan">
@@ -140,7 +157,7 @@ See the Plot Descriptions section, below." />
 </li>
       </ul>
       
-      <form class="navbar-form navbar-right" role="search">
+      <form class="navbar-form navbar-right hidden-xs hidden-sm" role="search">
         <div class="form-group">
           <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
         </div>
@@ -151,42 +168,90 @@ See the Plot Descriptions section, below." />
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>PPC intervals</h1>
-    
+    <small class="dont-index">Source: <a href='https://github.com/stan-dev/bayesplot/blob/master/R/ppc-intervals.R'><code>R/ppc-intervals.R</code></a></small>
     <div class="hidden name"><code>PPC-intervals.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    
     <p>Medians and central interval estimates of <code>yrep</code> with <code>y</code> overlaid.
 See the <strong>Plot Descriptions</strong> section, below.</p>
-    
     </div>
 
-    <pre class="usage"><span class='fu'>ppc_intervals</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>, <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>prob_outer</span> <span class='kw'>=</span> <span class='fl'>0.9</span>,
-  <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>fatten</span> <span class='kw'>=</span> <span class='fl'>3</span>)
+    <pre class="usage"><span class='fu'>ppc_intervals</span>(
+  <span class='no'>y</span>,
+  <span class='no'>yrep</span>,
+  <span class='kw'>x</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='no'>...</span>,
+  <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.5</span>,
+  <span class='kw'>prob_outer</span> <span class='kw'>=</span> <span class='fl'>0.9</span>,
+  <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>fatten</span> <span class='kw'>=</span> <span class='fl'>3</span>
+)
 
-<span class='fu'>ppc_intervals_grouped</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>group</span>, <span class='no'>...</span>,
-  <span class='kw'>facet_args</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(), <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>prob_outer</span> <span class='kw'>=</span> <span class='fl'>0.9</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>fatten</span> <span class='kw'>=</span> <span class='fl'>3</span>)
+<span class='fu'>ppc_intervals_grouped</span>(
+  <span class='no'>y</span>,
+  <span class='no'>yrep</span>,
+  <span class='kw'>x</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='no'>group</span>,
+  <span class='no'>...</span>,
+  <span class='kw'>facet_args</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(),
+  <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.5</span>,
+  <span class='kw'>prob_outer</span> <span class='kw'>=</span> <span class='fl'>0.9</span>,
+  <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>fatten</span> <span class='kw'>=</span> <span class='fl'>3</span>
+)
 
-<span class='fu'>ppc_ribbon</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>, <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>prob_outer</span> <span class='kw'>=</span> <span class='fl'>0.9</span>,
-  <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.33</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>0.25</span>)
+<span class='fu'>ppc_ribbon</span>(
+  <span class='no'>y</span>,
+  <span class='no'>yrep</span>,
+  <span class='kw'>x</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='no'>...</span>,
+  <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.5</span>,
+  <span class='kw'>prob_outer</span> <span class='kw'>=</span> <span class='fl'>0.9</span>,
+  <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.33</span>,
+  <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>0.25</span>
+)
 
-<span class='fu'>ppc_ribbon_grouped</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>group</span>, <span class='no'>...</span>, <span class='kw'>facet_args</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(),
-  <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>prob_outer</span> <span class='kw'>=</span> <span class='fl'>0.9</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.33</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>0.25</span>)
+<span class='fu'>ppc_ribbon_grouped</span>(
+  <span class='no'>y</span>,
+  <span class='no'>yrep</span>,
+  <span class='kw'>x</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='no'>group</span>,
+  <span class='no'>...</span>,
+  <span class='kw'>facet_args</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(),
+  <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.5</span>,
+  <span class='kw'>prob_outer</span> <span class='kw'>=</span> <span class='fl'>0.9</span>,
+  <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.33</span>,
+  <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>0.25</span>
+)
 
-<span class='fu'>ppc_intervals_data</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>group</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>, <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.5</span>,
-  <span class='kw'>prob_outer</span> <span class='kw'>=</span> <span class='fl'>0.9</span>)
+<span class='fu'>ppc_intervals_data</span>(
+  <span class='no'>y</span>,
+  <span class='no'>yrep</span>,
+  <span class='kw'>x</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>group</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='no'>...</span>,
+  <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.5</span>,
+  <span class='kw'>prob_outer</span> <span class='kw'>=</span> <span class='fl'>0.9</span>
+)
 
-<span class='fu'>ppc_ribbon_data</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>group</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>, <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.5</span>,
-  <span class='kw'>prob_outer</span> <span class='kw'>=</span> <span class='fl'>0.9</span>)</pre>
-    
+<span class='fu'>ppc_ribbon_data</span>(
+  <span class='no'>y</span>,
+  <span class='no'>yrep</span>,
+  <span class='kw'>x</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>group</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='no'>...</span>,
+  <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.5</span>,
+  <span class='kw'>prob_outer</span> <span class='kw'>=</span> <span class='fl'>0.9</span>
+)</pre>
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -229,60 +294,60 @@ pertaining to the corresponding value of <code>y</code>.</p></td>
     <tr>
       <th>facet_args</th>
       <td><p>An optional list of  arguments (other than <code>facets</code>)
-passed to <code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/facet_wrap'>ggplot2::facet_wrap()</a></code> to control faceting.</p></td>
+passed to <code><a href='https://ggplot2.tidyverse.org/reference/facet_wrap.html'>ggplot2::facet_wrap()</a></code> to control faceting.</p></td>
     </tr>
     <tr>
       <th>alpha, size, fatten</th>
       <td><p>Arguments passed to geoms. For ribbon plots <code>alpha</code>
-and <code>size</code> are passed to <code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_ribbon'>ggplot2::geom_ribbon()</a></code>. For interval plots
-<code>size</code> and <code>fatten</code> are passed to <code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_linerange'>ggplot2::geom_pointrange()</a></code>.</p></td>
+and <code>size</code> are passed to <code><a href='https://ggplot2.tidyverse.org/reference/geom_ribbon.html'>ggplot2::geom_ribbon()</a></code>. For interval plots
+<code>size</code> and <code>fatten</code> are passed to <code><a href='https://ggplot2.tidyverse.org/reference/geom_linerange.html'>ggplot2::geom_pointrange()</a></code>.</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>The plotting functions return a ggplot object that can be further
 customized using the <strong>ggplot2</strong> package. The functions with suffix
 <code>_data()</code> return the data that would have been drawn by the plotting
 function.</p>
-    
     <h2 class="hasAnchor" id="plot-descriptions"><a class="anchor" href="#plot-descriptions"></a>Plot Descriptions</h2>
 
     
-    <dl class='dl-horizontal'>
-<dt><code>ppc_intervals(), ppc_ribbon()</code></dt><dd><p><code>100*prob</code>% central intervals for <code>yrep</code> at each <code>x</code>
+
+<dl'>
+<dt><code>ppc_intervals(), ppc_ribbon()</code></dt><dd><p><code>100*prob</code>\<!-- % central intervals for \code{yrep} at each \code{x} -->
 value. <code>ppc_intervals()</code> plots intervals as vertical bars with points
 indicating <code>yrep</code> medians and darker points indicating observed
 <code>y</code> values. <code>ppc_ribbon()</code> plots a ribbon of connected intervals
 with a line through the median of <code>yrep</code> and a darker line connecting
 observed <code>y</code> values. In both cases an optional <code>x</code> variable can
-also be specified for the x-axis variable.
-    Depending on the number of observations and the variability in the
+also be specified for the x-axis variable.Depending on the number of observations and the variability in the
 predictions at different values of <code>x</code>, one or the other of these
 plots may be easier to read than the other.</p></dd>
 <dt><code>ppc_intervals_grouped(), ppc_ribbon_grouped()</code></dt><dd><p>Same as <code>ppc_intervals()</code> and <code>ppc_ribbon()</code>, respectively, but a
 separate plot (facet) is generated for each level of a grouping variable.</p></dd>
+
 </dl>
-    
+
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <p>Gelman, A., Carlin, J. B., Stern, H. S., Dunson, D. B., Vehtari,
 A., and Rubin, D. B. (2013). <em>Bayesian Data Analysis.</em> Chapman &amp; Hall/CRC
 Press, London, third edition. (Ch. 6)</p>
-    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>Other PPCs: <code><a href='PPC-discrete.html'>PPC-discrete</a></code>,
-  <code><a href='PPC-distributions.html'>PPC-distributions</a></code>,
-  <code><a href='PPC-errors.html'>PPC-errors</a></code>, <code><a href='PPC-loo.html'>PPC-loo</a></code>,
-  <code><a href='PPC-overview.html'>PPC-overview</a></code>,
-  <code><a href='PPC-scatterplots.html'>PPC-scatterplots</a></code>,
-  <code><a href='PPC-test-statistics.html'>PPC-test-statistics</a></code></p></div>
-    
+    <div class='dont-index'><p>Other PPCs: 
+<code><a href='PPC-discrete.html'>PPC-discrete</a></code>,
+<code><a href='PPC-distributions.html'>PPC-distributions</a></code>,
+<code><a href='PPC-errors.html'>PPC-errors</a></code>,
+<code><a href='PPC-loo.html'>PPC-loo</a></code>,
+<code><a href='PPC-overview.html'>PPC-overview</a></code>,
+<code><a href='PPC-scatterplots.html'>PPC-scatterplots</a></code>,
+<code><a href='PPC-test-statistics.html'>PPC-test-statistics</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/Normal'>rnorm</a></span>(<span class='fl'>50</span>)
-<span class='no'>yrep</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/matrix'>matrix</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/Normal'>rnorm</a></span>(<span class='fl'>5000</span>, <span class='fl'>0</span>, <span class='fl'>2</span>), <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>50</span>)
+    <pre class="examples"><div class='input'><span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='fl'>50</span>)
+<span class='no'>yrep</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='fl'>5000</span>, <span class='fl'>0</span>, <span class='fl'>2</span>), <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>50</span>)
 
 <span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"brightblue"</span>)
 <span class='fu'>ppc_ribbon</span>(<span class='no'>y</span>, <span class='no'>yrep</span>)</div><div class='img'><img src='PPC-intervals-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>ppc_intervals</span>(<span class='no'>y</span>, <span class='no'>yrep</span>)</div><div class='img'><img src='PPC-intervals-2.png' alt='' width='700' height='433' /></div><div class='input'>
@@ -291,15 +356,15 @@ Press, London, third edition. (Ch. 6)</p>
 
 <span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"teal"</span>)
 <span class='no'>year</span> <span class='kw'>&lt;-</span> <span class='fl'>1950</span>:<span class='fl'>1999</span>
-<span class='fu'>ppc_ribbon</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>year</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>0.75</span>) + <span class='kw pkg'>ggplot2</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/ggplot2/topics/labs'>xlab</a></span>(<span class='st'>"Year"</span>)</div><div class='img'><img src='PPC-intervals-4.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'>ppc_ribbon</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>year</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>0.75</span>) + <span class='kw pkg'>ggplot2</span><span class='kw ns'>::</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>xlab</a></span>(<span class='st'>"Year"</span>)</div><div class='img'><img src='PPC-intervals-4.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"pink"</span>)
-<span class='no'>year</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/rep'>rep</a></span>(<span class='fl'>2000</span>:<span class='fl'>2009</span>, <span class='kw'>each</span> <span class='kw'>=</span> <span class='fl'>5</span>)
-<span class='no'>group</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/gl'>gl</a></span>(<span class='fl'>5</span>, <span class='fl'>1</span>, <span class='kw'>length</span> <span class='kw'>=</span> <span class='fl'>50</span>, <span class='kw'>labels</span> <span class='kw'>=</span> <span class='no'>LETTERS</span>[<span class='fl'>1</span>:<span class='fl'>5</span>])
+<span class='no'>year</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fl'>2000</span>:<span class='fl'>2009</span>, <span class='kw'>each</span> <span class='kw'>=</span> <span class='fl'>5</span>)
+<span class='no'>group</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/gl.html'>gl</a></span>(<span class='fl'>5</span>, <span class='fl'>1</span>, <span class='kw'>length</span> <span class='kw'>=</span> <span class='fl'>50</span>, <span class='kw'>labels</span> <span class='kw'>=</span> <span class='no'>LETTERS</span>[<span class='fl'>1</span>:<span class='fl'>5</span>])
 <span class='fu'>ppc_ribbon_grouped</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>year</span>, <span class='no'>group</span>) +
-  <span class='kw pkg'>ggplot2</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/ggplot2/topics/scale_continuous'>scale_x_continuous</a></span>(<span class='kw'>breaks</span> <span class='kw'>=</span> <span class='no'>pretty</span>)</div><div class='img'><img src='PPC-intervals-5.png' alt='' width='700' height='433' /></div><div class='input'>
+  <span class='kw pkg'>ggplot2</span><span class='kw ns'>::</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_continuous.html'>scale_x_continuous</a></span>(<span class='kw'>breaks</span> <span class='kw'>=</span> <span class='no'>pretty</span>)</div><div class='img'><img src='PPC-intervals-5.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='fu'>ppc_ribbon_grouped</span>(
  <span class='no'>y</span>, <span class='no'>yrep</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>year</span>, <span class='no'>group</span>,
- <span class='kw'>facet_args</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>scales</span> <span class='kw'>=</span> <span class='st'>"fixed"</span>),
+ <span class='kw'>facet_args</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>scales</span> <span class='kw'>=</span> <span class='st'>"fixed"</span>),
  <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>1</span>,
  <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>2</span>
 ) +
@@ -307,12 +372,15 @@ Press, London, third edition. (Ch. 6)</p>
  <span class='fu'><a href='bayesplot-helpers.html'>xaxis_ticks</a></span>(<span class='fl'>FALSE</span>) +
  <span class='fu'><a href='bayesplot-helpers.html'>panel_bg</a></span>(<span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>"gray20"</span>)</div><div class='img'><img src='PPC-intervals-6.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='no'>ppc_dat</span> <span class='kw'>&lt;-</span> <span class='fu'>ppc_intervals_data</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>year</span>, <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.5</span>)
-<span class='no'>ppc_group_dat</span> <span class='kw'>&lt;-</span> <span class='fu'>ppc_intervals_data</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>year</span>, <span class='kw'>group</span> <span class='kw'>=</span> <span class='no'>group</span>, <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.5</span>)</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='st'>"rstanarm"</span>)
-<span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/rstanarm/topics/stan_glmer'>stan_glmer</a></span>(<span class='no'>mpg</span> ~ <span class='no'>wt</span> + (<span class='fl'>1</span><span class='kw'>|</span><span class='no'>cyl</span>), <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>mtcars</span>, <span class='kw'>refresh</span> <span class='kw'>=</span> <span class='fl'>0</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: There were 1 divergent transitions after warmup. Increasing adapt_delta above 0.95 may help. See</span>
-#&gt; <span class='warning'>http://mc-stan.org/misc/warnings.html#divergent-transitions-after-warmup</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Examine the pairs() plot to diagnose sampling problems</span></div><div class='input'><span class='no'>yrep</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/rstanarm/topics/posterior_predict.stanreg'>posterior_predict</a></span>(<span class='no'>fit</span>)
+<span class='no'>ppc_group_dat</span> <span class='kw'>&lt;-</span> <span class='fu'>ppc_intervals_data</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>year</span>, <span class='kw'>group</span> <span class='kw'>=</span> <span class='no'>group</span>, <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.5</span>)
+
+<span class='co'># \dontrun{</span>
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='st'>"rstanarm"</span>)
+<span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://mc-stan.org/rstanarm/reference/stan_glmer.html'>stan_glmer</a></span>(<span class='no'>mpg</span> ~ <span class='no'>wt</span> + (<span class='fl'>1</span><span class='kw'>|</span><span class='no'>cyl</span>), <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>mtcars</span>, <span class='kw'>refresh</span> <span class='kw'>=</span> <span class='fl'>0</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: There were 1 divergent transitions after warmup. Increasing adapt_delta above 0.95 may help. See</span>
+#&gt; <span class='warning'>http://mc-stan.org/misc/warnings.html#divergent-transitions-after-warmup</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Examine the pairs() plot to diagnose sampling problems</span></div><div class='input'><span class='no'>yrep</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://mc-stan.org/rstanarm/reference/posterior_predict.stanreg.html'>posterior_predict</a></span>(<span class='no'>fit</span>)
 
 <span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"purple"</span>)
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/with'>with</a></span>(<span class='no'>mtcars</span>, <span class='fu'>ppc_intervals</span>(<span class='no'>mpg</span>, <span class='no'>yrep</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>wt</span>, <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.5</span>)) +
+<span class='fu'><a href='https://rdrr.io/r/base/with.html'>with</a></span>(<span class='no'>mtcars</span>, <span class='fu'>ppc_intervals</span>(<span class='no'>mpg</span>, <span class='no'>yrep</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>wt</span>, <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.5</span>)) +
  <span class='fu'><a href='bayesplot-helpers.html'>panel_bg</a></span>(<span class='kw'>fill</span><span class='kw'>=</span><span class='st'>"gray90"</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='fl'>NA</span>) +
  <span class='fu'><a href='bayesplot-helpers.html'>grid_lines</a></span>(<span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"white"</span>)</div><div class='img'><img src='PPC-intervals-7.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='fu'>ppc_intervals_grouped</span>(<span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>mtcars</span>$<span class='no'>mpg</span>, <span class='no'>yrep</span>, <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.8</span>,
@@ -320,33 +388,23 @@ Press, London, third edition. (Ch. 6)</p>
 
 <span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"gray"</span>)
 <span class='fu'>ppc_intervals</span>(<span class='no'>mtcars</span>$<span class='no'>mpg</span>, <span class='no'>yrep</span>, <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.5</span>) +
- <span class='kw pkg'>ggplot2</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/ggplot2/topics/scale_continuous'>scale_x_continuous</a></span>(
-   <span class='kw'>labels</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/colnames'>rownames</a></span>(<span class='no'>mtcars</span>),
-   <span class='kw'>breaks</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/nrow'>nrow</a></span>(<span class='no'>mtcars</span>)
+ <span class='kw pkg'>ggplot2</span><span class='kw ns'>::</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_continuous.html'>scale_x_continuous</a></span>(
+   <span class='kw'>labels</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>rownames</a></span>(<span class='no'>mtcars</span>),
+   <span class='kw'>breaks</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span>(<span class='no'>mtcars</span>)
  ) +
  <span class='fu'><a href='bayesplot-helpers.html'>xaxis_text</a></span>(<span class='kw'>angle</span> <span class='kw'>=</span> -<span class='fl'>70</span>, <span class='kw'>vjust</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>hjust</span> <span class='kw'>=</span> <span class='fl'>0</span>)</div><div class='img'><img src='PPC-intervals-9.png' alt='' width='700' height='433' /></div><div class='input'>
-</div><div class='input'>
+# }
+
 
 </div></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#value">Value</a></li>
-
-      <li><a href="#plot-descriptions">Plot Descriptions</a></li>
-
-      <li><a href="#references">References</a></li>
-
-      <li><a href="#see-also">See also</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
+
 
       <footer>
       <div class="copyright">
@@ -354,8 +412,9 @@ Press, London, third edition. (Ch. 6)</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
+
       </footer>
    </div>
 
@@ -378,6 +437,8 @@ Press, London, third edition. (Ch. 6)</p>
 </script>
 
 
+
   </body>
 </html>
+
 

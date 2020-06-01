@@ -8,21 +8,36 @@
 
 <title>Tidy parameter selection — tidy-params • bayesplot</title>
 
-<!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
-<!-- Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+<!-- favicons -->
+<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<!-- jquery -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+<!-- Bootstrap -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+<!-- headroom.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -31,17 +46,16 @@
 
 <!-- docsearch -->
 <script src="../docsearch.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.3/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous" />
 <link href="../docsearch.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
 
 
+
 <meta property="og:title" content="Tidy parameter selection — tidy-params" />
-
 <meta property="og:description" content="Parameter selection in the style of dplyr and other tidyverse packages." />
-
 <meta property="og:image" content="https://mc-stan.org/bayesplot/logo.png" />
-<meta name="twitter:card" content="summary" />
+
 
 
 
@@ -55,9 +69,10 @@
 <![endif]-->
 
 
+
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -71,7 +86,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bayesplot</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.7.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.7.2</span>
       </span>
     </div>
 
@@ -97,6 +112,9 @@
       <a href="https://mc-stan.org/rstan">rstan</a>
     </li>
     <li>
+      <a href="https://mc-stan.org/cmdstanr">cmdstanr</a>
+    </li>
+    <li>
       <a href="https://mc-stan.org/rstanarm">rstanarm</a>
     </li>
     <li>
@@ -117,7 +135,6 @@
   <a href="https://mc-stan.org">Stan</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://twitter.com/mcmc_stan">
@@ -139,7 +156,7 @@
 </li>
       </ul>
       
-      <form class="navbar-form navbar-right" role="search">
+      <form class="navbar-form navbar-right hidden-xs hidden-sm" role="search">
         <div class="form-group">
           <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
         </div>
@@ -150,26 +167,25 @@
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Tidy parameter selection</h1>
-    
+    <small class="dont-index">Source: <a href='https://github.com/stan-dev/bayesplot/blob/master/R/tidy-params.R'><code>R/tidy-params.R</code></a></small>
     <div class="hidden name"><code>tidy-params.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    
     <p>Parameter selection in the style of <strong>dplyr</strong> and other tidyverse packages.</p>
-    
     </div>
 
     <pre class="usage"><span class='fu'>param_range</span>(<span class='no'>prefix</span>, <span class='no'>range</span>, <span class='kw'>vars</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
 
 <span class='fu'>param_glue</span>(<span class='no'>pattern</span>, <span class='no'>...</span>, <span class='kw'>vars</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
-    
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -177,13 +193,12 @@
       <th>prefix, range</th>
       <td><p>For <code>param_range()</code> only, <code>prefix</code> is a string naming a
 parameter and <code>range</code> is an integer vector providing the indices of a
-subset of elements to select. For example, using</p><pre>  param_range("beta", c(1,2,8))
-</pre>
+subset of elements to select. For example, using</p><pre>  <span class='fu'>param_range</span>(<span class='st'>"beta"</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>8</span>))</pre>
 
 <p>would select parameters named <code>beta[1]</code>, <code>beta[2]</code>, and <code>beta[8]</code>.
 <code>param_range()</code> is only designed for the case that the indices are integers
 surrounded by brackets. If there are no brackets use
-<a href='https://www.rdocumentation.org/packages/tidyselect/topics/select_helpers'>num_range()</a>.</p></td>
+<a href='https://tidyselect.r-lib.org/reference/language.html'>num_range()</a>.</p></td>
     </tr>
     <tr>
       <th>vars</th>
@@ -196,17 +211,16 @@ left as <code>NULL</code> and will be set automatically for the user.</p></td>
       <th>pattern, ...</th>
       <td><p>For <code>param_glue()</code> only, <code>pattern</code> is a string containing
 expressions enclosed in braces and <code>...</code> should be named arguments
-providing one character vector per expression in braces in <code>patten</code>. It is
-easiest to describe how to use these arguments with an example:</p><pre>param_glue("beta_{var}[{level}]",
-           var = c("age", "income"),
-           level = c(3,8))
-</pre>
+providing one character vector per expression in braces in <code>pattern</code>. It is
+easiest to describe how to use these arguments with an example:</p><pre><span class='fu'>param_glue</span>(<span class='st'>"beta_{var}[{level}]"</span>,
+           <span class='kw'>var</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"age"</span>, <span class='st'>"income"</span>),
+           <span class='kw'>level</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>3</span>,<span class='fl'>8</span>))</pre>
 
 <p>would select parameters with names
 <code>"beta_age[3]"</code>, <code>"beta_income[3]"</code>, <code>"beta_age[8]"</code>, <code>"beta_income[8]"</code>.</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>As of version <code>1.7.0</code>, <strong>bayesplot</strong> allows the <code>pars</code> argument for <a href='MCMC-overview.html'>MCMC plots</a> to use "tidy" variable selection (in the
@@ -218,23 +232,25 @@ everything-but selection (<code><a href='https://dplyr.tidyverse.org/reference/v
 (<code><a href='https://dplyr.tidyverse.org/reference/vars.html'>vars(starts_with("beta"))</a></code>), and combinations of these features. See the
 <strong>Examples</strong> section, below.</p>
 <p>When using <code>pars</code> for tidy parameter selection, the <code>regex_pars</code> argument is
-ignored because <strong>bayesplot</strong> supports using <a href='https://www.rdocumentation.org/packages/tidyselect/topics/select_helpers'>tidyselect helper functions</a> (<code><a href='https://dplyr.tidyverse.org/reference/reexports.html'>starts_with()</a></code>, <code><a href='https://dplyr.tidyverse.org/reference/reexports.html'>contains()</a></code>,
+ignored because <strong>bayesplot</strong> supports using <a href='https://tidyselect.r-lib.org/reference/language.html'>tidyselect helper functions</a> (<code><a href='https://dplyr.tidyverse.org/reference/reexports.html'>starts_with()</a></code>, <code><a href='https://dplyr.tidyverse.org/reference/reexports.html'>contains()</a></code>,
 <code><a href='https://dplyr.tidyverse.org/reference/reexports.html'>num_range()</a></code>, etc.) for the same purpose. <strong>bayesplot</strong> also exports some
 additional helper functions to help with parameter selection:</p><ul>
-<li><p><code>param_range()</code>: like <code><a href='https://www.rdocumentation.org/packages/tidyselect/topics/select_helpers'>num_range()</a></code> but used
+<li><p><code>param_range()</code>: like <code><a href='https://tidyselect.r-lib.org/reference/starts_with.html'>num_range()</a></code> but used
 when parameter indexes are in brackets (e.g. <code>beta[2]</code>).</p></li>
 <li><p><code>param_glue()</code>: for more complicated parameter names with multiple
 indexes (including variable names) inside the brackets
 (e.g., <code>beta[(Intercept) age_group:3]</code>).</p></li>
 </ul>
-    <p>These functions can be used inside of <code><a href='https://dplyr.tidyverse.org/reference/vars.html'>vars()</a></code>, <code><a href='https://dplyr.tidyverse.org/reference/select.html'>dplyr::select()</a></code>,
+
+<p>These functions can be used inside of <code><a href='https://dplyr.tidyverse.org/reference/vars.html'>vars()</a></code>, <code><a href='https://dplyr.tidyverse.org/reference/select.html'>dplyr::select()</a></code>,
 and similar functions, just like the
-<a href='https://www.rdocumentation.org/packages/tidyselect/topics/select_helpers'>tidyselect helper functions</a>.</p>
-    
+<a href='https://tidyselect.r-lib.org/reference/language.html'>tidyselect helper functions</a>.</p>
     <h2 class="hasAnchor" id="extra-advice"><a class="anchor" href="#extra-advice"></a>Extra Advice</h2>
 
     
-    <p>Parameter names in <code><a href='https://dplyr.tidyverse.org/reference/vars.html'>vars()</a></code> are not quoted. When the names contain special
+
+
+<p>Parameter names in <code><a href='https://dplyr.tidyverse.org/reference/vars.html'>vars()</a></code> are not quoted. When the names contain special
 characters like brackets, they should be wrapped in backticks, as in
 <code><a href='https://dplyr.tidyverse.org/reference/vars.html'>vars(`beta[1]`)</a></code>.</p>
 <p>To exclude a range of variables, wrap the sequence in parentheses and then
@@ -251,15 +267,13 @@ into position numbers. As a result, integers will select parameters;
 approach because positions might change as variables are added and
 removed from models. To select a parameter that happens to be called <code>1</code>,
 use backticks to escape it <code><a href='https://dplyr.tidyverse.org/reference/vars.html'>vars(`1`)</a></code>.</p>
-    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='https://www.rdocumentation.org/packages/glue/topics/glue'>glue::glue()</a></code></p></div>
-    
+    <div class='dont-index'><p><code><a href='https://glue.tidyverse.org/reference/glue.html'>glue::glue()</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='example-data.html'>example_mcmc_draws</a></span>(<span class='kw'>params</span> <span class='kw'>=</span> <span class='fl'>6</span>)
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/dimnames'>dimnames</a></span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; $Iteration
+<span class='fu'><a href='https://rdrr.io/r/base/dimnames.html'>dimnames</a></span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; $Iteration
 #&gt; NULL
 #&gt; 
 #&gt; $Chain
@@ -267,24 +281,26 @@ use backticks to escape it <code><a href='https://dplyr.tidyverse.org/reference/
 #&gt; 
 #&gt; $Parameter
 #&gt; [1] "alpha"   "sigma"   "beta[1]" "beta[2]" "beta[3]" "beta[4]"
-#&gt; </div><div class='input'><span class='fu'><a href='MCMC-scatterplots.html'>mcmc_hex</a></span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/vars.html'>vars</a></span>(<span class='no'>alpha</span>, <span class='no'>`beta[2]`</span>))</div><div class='img'><img src='tidy-params-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='MCMC-distributions.html'>mcmc_dens</a></span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/vars.html'>vars</a></span>(<span class='no'>sigma</span>, <span class='fu'>contains</span>(<span class='st'>"beta"</span>)))</div><div class='img'><img src='tidy-params-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='MCMC-distributions.html'>mcmc_hist</a></span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/vars.html'>vars</a></span>(-<span class='fu'>contains</span>(<span class='st'>"beta"</span>)))</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='tidy-params-3.png' alt='' width='700' height='433' /></div><div class='input'>
+#&gt; </div><div class='input'><span class='fu'><a href='MCMC-scatterplots.html'>mcmc_hex</a></span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/vars.html'>vars</a></span>(<span class='no'>alpha</span>, <span class='no'>`beta[2]`</span>))</div><div class='output co'>#&gt; <span class='warning'>Warning: Computation failed in `stat_binhex()`:</span>
+#&gt; <span class='warning'>"hbin" not resolved from current namespace (hexbin)</span></div><div class='img'><img src='tidy-params-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='MCMC-distributions.html'>mcmc_dens</a></span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/vars.html'>vars</a></span>(<span class='no'>sigma</span>, <span class='fu'>contains</span>(<span class='st'>"beta"</span>)))</div><div class='img'><img src='tidy-params-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='MCMC-distributions.html'>mcmc_hist</a></span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/vars.html'>vars</a></span>(-<span class='fu'>contains</span>(<span class='st'>"beta"</span>)))</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='tidy-params-3.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># using the param_range() helper</span>
-<span class='fu'><a href='MCMC-distributions.html'>mcmc_hist</a></span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/vars.html'>vars</a></span>(<span class='fu'>param_range</span>(<span class='st'>"beta"</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>3</span>, <span class='fl'>4</span>))))</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='tidy-params-4.png' alt='' width='700' height='433' /></div><div class='input'>
-</div><div class='input'><span class='co'>#############################</span>
+<span class='fu'><a href='MCMC-distributions.html'>mcmc_hist</a></span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/vars.html'>vars</a></span>(<span class='fu'>param_range</span>(<span class='st'>"beta"</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>3</span>, <span class='fl'>4</span>))))</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='tidy-params-4.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='co'># \donttest{</span>
+<span class='co'>#############################</span>
 <span class='co'>## Examples using rstanarm ##</span>
 <span class='co'>#############################</span>
-<span class='kw'>if</span> (<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/ns-load'>requireNamespace</a></span>(<span class='st'>"rstanarm"</span>, <span class='kw'>quietly</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)) {
+<span class='kw'>if</span> (<span class='fu'><a href='https://rdrr.io/r/base/ns-load.html'>requireNamespace</a></span>(<span class='st'>"rstanarm"</span>, <span class='kw'>quietly</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)) {
   <span class='co'># see ?rstanarm::example_model</span>
-  <span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/example'>example</a></span>(<span class='st'>"example_model"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"rstanarm"</span>, <span class='kw'>local</span><span class='kw'>=</span><span class='fl'>TRUE</span>)$<span class='no'>value</span>
-  <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></span>(<span class='no'>fit</span>)
-  <span class='no'>posterior</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/as.data.frame'>as.data.frame</a></span>(<span class='no'>fit</span>)
-  <span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/str'>str</a></span>(<span class='no'>posterior</span>)
+  <span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/utils/example.html'>example</a></span>(<span class='st'>"example_model"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"rstanarm"</span>, <span class='kw'>local</span><span class='kw'>=</span><span class='fl'>TRUE</span>)$<span class='no'>value</span>
+  <span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='no'>fit</span>)
+  <span class='no'>posterior</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/as.data.frame.html'>as.data.frame</a></span>(<span class='no'>fit</span>)
+  <span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span>(<span class='no'>posterior</span>)
 
   <span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"brightblue"</span>)
   <span class='fu'><a href='MCMC-distributions.html'>mcmc_hist</a></span>(<span class='no'>posterior</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/vars.html'>vars</a></span>(<span class='no'>size</span>, <span class='fu'><a href='https://dplyr.tidyverse.org/reference/reexports.html'>contains</a></span>(<span class='st'>"period"</span>)))
 
   <span class='co'># same as previous but using dplyr::select() and piping</span>
-  <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='st'>"dplyr"</span>)
+  <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='st'>"dplyr"</span>)
   <span class='no'>posterior</span> <span class='kw'>%&gt;%</span>
     <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span>(<span class='no'>size</span>, <span class='fu'><a href='https://dplyr.tidyverse.org/reference/reexports.html'>contains</a></span>(<span class='st'>"period"</span>)) <span class='kw'>%&gt;%</span>
     <span class='fu'><a href='MCMC-distributions.html'>mcmc_hist</a></span>()
@@ -292,7 +308,7 @@ use backticks to escape it <code><a href='https://dplyr.tidyverse.org/reference/
   <span class='fu'><a href='MCMC-intervals.html'>mcmc_intervals</a></span>(<span class='no'>posterior</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/vars.html'>vars</a></span>(<span class='fu'><a href='https://dplyr.tidyverse.org/reference/reexports.html'>contains</a></span>(<span class='st'>"herd"</span>)))
   <span class='fu'><a href='MCMC-intervals.html'>mcmc_intervals</a></span>(<span class='no'>posterior</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/vars.html'>vars</a></span>(<span class='fu'><a href='https://dplyr.tidyverse.org/reference/reexports.html'>contains</a></span>(<span class='st'>"herd"</span>), -<span class='fu'><a href='https://dplyr.tidyverse.org/reference/reexports.html'>contains</a></span>(<span class='st'>"Sigma"</span>)))
 
-  <span class='fu'><a href='bayesplot_theme_get.html'>bayesplot_theme_set</a></span>(<span class='kw pkg'>ggplot2</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/ggplot2/topics/ggtheme'>theme_dark</a></span>())
+  <span class='fu'><a href='bayesplot_theme_get.html'>bayesplot_theme_set</a></span>(<span class='kw pkg'>ggplot2</span><span class='kw ns'>::</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggtheme.html'>theme_dark</a></span>())
   <span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"viridisC"</span>)
   <span class='fu'><a href='MCMC-intervals.html'>mcmc_areas_ridges</a></span>(<span class='no'>posterior</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/vars.html'>vars</a></span>(<span class='fu'><a href='https://dplyr.tidyverse.org/reference/reexports.html'>starts_with</a></span>(<span class='st'>"b["</span>)))
 
@@ -302,23 +318,22 @@ use backticks to escape it <code><a href='https://dplyr.tidyverse.org/reference/
   <span class='fu'><a href='MCMC-intervals.html'>mcmc_intervals</a></span>(<span class='no'>posterior</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='no'>not_789</span>)
 
   <span class='co'># using the param_glue() helper</span>
-  <span class='no'>just_149</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/vars.html'>vars</a></span>(<span class='fu'>param_glue</span>(<span class='st'>"b[(Intercept) herd:{level}]"</span>, <span class='kw'>level</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>4</span>,<span class='fl'>9</span>)))
+  <span class='no'>just_149</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/vars.html'>vars</a></span>(<span class='fu'>param_glue</span>(<span class='st'>"b[(Intercept) herd:{level}]"</span>, <span class='kw'>level</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>4</span>,<span class='fl'>9</span>)))
   <span class='fu'><a href='MCMC-intervals.html'>mcmc_intervals</a></span>(<span class='no'>posterior</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='no'>just_149</span>)
 
   <span class='co'># same but using param_glue() with dplyr::select()</span>
   <span class='co'># before passing to bayesplot</span>
   <span class='no'>posterior</span> <span class='kw'>%&gt;%</span>
     <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span>(<span class='fu'>param_glue</span>(<span class='st'>"b[(Intercept) herd:{level}]"</span>,
-                      <span class='kw'>level</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>4</span>, <span class='fl'>9</span>))) <span class='kw'>%&gt;%</span>
+                      <span class='kw'>level</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>4</span>, <span class='fl'>9</span>))) <span class='kw'>%&gt;%</span>
     <span class='fu'><a href='MCMC-intervals.html'>mcmc_intervals</a></span>()
 }</div><div class='output co'>#&gt; 
 #&gt; exmpl_&gt; example_model &lt;- 
 #&gt; exmpl_+   stan_glmer(cbind(incidence, size - incidence) ~ size + period + (1|herd),
 #&gt; exmpl_+              data = lme4::cbpp, family = binomial, QR = TRUE,
 #&gt; exmpl_+              # this next line is only to keep the example small in size!
-#&gt; exmpl_+              chains = 2, cores = 1, seed = 12345, iter = 500, refresh = 0)</div><div class='output co'>#&gt; <span class='warning'>Warning: Bulk Effective Samples Size (ESS) is too low, indicating posterior means and medians may be unreliable.</span>
-#&gt; <span class='warning'>Running the chains for more iterations may help. See</span>
-#&gt; <span class='warning'>http://mc-stan.org/misc/warnings.html#bulk-ess</span></div><div class='output co'>#&gt; 
+#&gt; exmpl_+              chains = 2, cores = 1, seed = 12345, iter = 1000, refresh = 0)
+#&gt; 
 #&gt; exmpl_&gt; example_model
 #&gt; stan_glmer
 #&gt;  family:       binomial [logit]
@@ -330,11 +345,11 @@ use backticks to escape it <code><a href='https://dplyr.tidyverse.org/reference/
 #&gt; size         0.0    0.0  
 #&gt; period2     -1.0    0.3  
 #&gt; period3     -1.1    0.3  
-#&gt; period4     -1.6    0.4  
+#&gt; period4     -1.6    0.5  
 #&gt; 
 #&gt; Error terms:
 #&gt;  Groups Name        Std.Dev.
-#&gt;  herd   (Intercept) 0.76    
+#&gt;  herd   (Intercept) 0.78    
 #&gt; Num. levels: herd 15 
 #&gt; 
 #&gt; ------
@@ -350,77 +365,77 @@ use backticks to escape it <code><a href='https://dplyr.tidyverse.org/reference/
 #&gt; size         0.0    0.0  
 #&gt; period2     -1.0    0.3  
 #&gt; period3     -1.1    0.3  
-#&gt; period4     -1.6    0.4  
+#&gt; period4     -1.6    0.5  
 #&gt; 
 #&gt; Error terms:
 #&gt;  Groups Name        Std.Dev.
-#&gt;  herd   (Intercept) 0.76    
+#&gt;  herd   (Intercept) 0.78    
 #&gt; Num. levels: herd 15 
 #&gt; 
 #&gt; ------
 #&gt; * For help interpreting the printed output see ?print.stanreg
 #&gt; * For info on the priors used see ?prior_summary.stanreg
-#&gt; 'data.frame':	500 obs. of  21 variables:
-#&gt;  $ (Intercept)                        : num  -1.18 -1.09 -0.43 -2.03 -1.48 ...
-#&gt;  $ size                               : num  -1.90e-02 -1.58e-02 -4.95e-02 1.52e-02 5.28e-05 ...
-#&gt;  $ period2                            : num  -0.774 -0.882 -1.369 -0.647 -1.174 ...
-#&gt;  $ period3                            : num  -1.403 -1.377 -1.558 -0.993 -1.154 ...
-#&gt;  $ period4                            : num  -2.15 -2.02 -2.16 -1.01 -1.35 ...
-#&gt;  $ b[(Intercept) herd:1]              : num  0.354 0.589 0.647 0.391 0.438 ...
-#&gt;  $ b[(Intercept) herd:2]              : num  -0.1974 0.0478 -0.2906 0.0599 0.1538 ...
-#&gt;  $ b[(Intercept) herd:3]              : num  0.777 0.265 -0.139 0.312 0.241 ...
-#&gt;  $ b[(Intercept) herd:4]              : num  -0.193 -1.125 -0.209 0.129 0.459 ...
-#&gt;  $ b[(Intercept) herd:5]              : num  0.39 -0.162 -0.134 0.16 0.203 ...
-#&gt;  $ b[(Intercept) herd:6]              : num  -0.3461 -0.0542 -0.2365 0.0969 0.2203 ...
-#&gt;  $ b[(Intercept) herd:7]              : num  1.355 0.9721 0.2933 0.0976 0.1166 ...
-#&gt;  $ b[(Intercept) herd:8]              : num  0.691 1.058 0.586 0.255 0.431 ...
-#&gt;  $ b[(Intercept) herd:9]              : num  -0.8868 -0.0291 -1.3847 0.3846 0.6979 ...
-#&gt;  $ b[(Intercept) herd:10]             : num  -0.433 -0.366 -0.549 -0.344 -0.649 ...
-#&gt;  $ b[(Intercept) herd:11]             : num  -0.1961 0.3954 0.3539 -0.0534 0.226 ...
-#&gt;  $ b[(Intercept) herd:12]             : num  0.0441 -0.5955 -0.9077 -0.1648 -0.2372 ...
-#&gt;  $ b[(Intercept) herd:13]             : num  -0.548 -1.345 -0.544 -0.449 -0.469 ...
-#&gt;  $ b[(Intercept) herd:14]             : num  1.697 0.905 1.21 0.75 1.284 ...
-#&gt;  $ b[(Intercept) herd:15]             : num  -0.597 -0.412 -0.507 -0.16 -0.253 ...
-#&gt;  $ Sigma[herd:(Intercept),(Intercept)]: num  0.254 0.341 0.385 0.122 0.216 ...</div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>Attaching package: ‘dplyr’</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:testthat’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    matches</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:stats’:</span>
+#&gt; 'data.frame':	1000 obs. of  21 variables:
+#&gt;  $ (Intercept)                        : num  -0.072 -1.608 -1.322 -1.515 -1.407 ...
+#&gt;  $ size                               : num  -0.04895 -0.00155 0.02925 -0.0024 -0.00211 ...
+#&gt;  $ period2                            : num  -1.53 -0.533 -1.098 -1.085 -1.667 ...
+#&gt;  $ period3                            : num  -2.41332 0.00353 -1.55974 -0.4579 -1.22704 ...
+#&gt;  $ period4                            : num  -2.404 -0.965 -2.057 -1.131 -2.022 ...
+#&gt;  $ b[(Intercept) herd:1]              : num  0.7382 0.0205 0.7581 0.2074 1.0541 ...
+#&gt;  $ b[(Intercept) herd:2]              : num  -0.6308 -1.7176 -0.745 -0.0781 -0.8215 ...
+#&gt;  $ b[(Intercept) herd:3]              : num  -0.047 0.4704 -0.483 0.0353 0.9715 ...
+#&gt;  $ b[(Intercept) herd:4]              : num  -0.5145 -0.0603 -0.1461 0.1155 0.2473 ...
+#&gt;  $ b[(Intercept) herd:5]              : num  -0.106 -1.234 -0.135 -0.593 -1.468 ...
+#&gt;  $ b[(Intercept) herd:6]              : num  -0.4687 -1.4925 -0.8815 -0.0803 -0.6751 ...
+#&gt;  $ b[(Intercept) herd:7]              : num  0.383 0.95 0.837 0.785 1.052 ...
+#&gt;  $ b[(Intercept) herd:8]              : num  0.37289 0.89414 -1.02887 0.77938 -0.00905 ...
+#&gt;  $ b[(Intercept) herd:9]              : num  -0.128 -0.946 -0.734 -0.295 -0.948 ...
+#&gt;  $ b[(Intercept) herd:10]             : num  -0.201 -1.795 -0.826 -0.678 -0.185 ...
+#&gt;  $ b[(Intercept) herd:11]             : num  -0.225 -0.761 -0.589 -0.295 -0.143 ...
+#&gt;  $ b[(Intercept) herd:12]             : num  -0.879 -1.336 -0.108 0.148 0.434 ...
+#&gt;  $ b[(Intercept) herd:13]             : num  -1.022 -1.181 -1.357 -0.489 -1.047 ...
+#&gt;  $ b[(Intercept) herd:14]             : num  0.8 1.339 0.608 0.788 1.075 ...
+#&gt;  $ b[(Intercept) herd:15]             : num  -0.932 -0.382 -1.681 -0.359 -1.321 ...
+#&gt;  $ Sigma[herd:(Intercept),(Intercept)]: num  0.297 1.347 1.241 0.238 0.882 ...</div><div class='output co'>#&gt; <span class='message'></span>
+#&gt; <span class='message'>Attaching package: ‘dplyr’</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:stats’:</span>
 #&gt; <span class='message'></span>
 #&gt; <span class='message'>    filter, lag</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:base’:</span>
 #&gt; <span class='message'></span>
-#&gt; <span class='message'>    intersect, setdiff, setequal, union</span></div><div class='img'><img src='tidy-params-5.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'>###################################</span>
+#&gt; <span class='message'>    intersect, setdiff, setequal, union</span></div><div class='img'><img src='tidy-params-5.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># }</span>
+<span class='co'># \dontrun{</span>
+<span class='co'>###################################</span>
 <span class='co'>## More examples of param_glue() ##</span>
 <span class='co'>###################################</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>dplyr</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>dplyr</span>)
 <span class='no'>posterior</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/reexports.html'>tibble</a></span>(
-  <span class='kw'>b_Intercept</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/Normal'>rnorm</a></span>(<span class='fl'>1000</span>),
-  <span class='kw'>sd_condition__Intercept</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/Exponential'>rexp</a></span>(<span class='fl'>1000</span>),
-  <span class='kw'>sigma</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/Exponential'>rexp</a></span>(<span class='fl'>1000</span>),
-  <span class='kw'>`r_condition[A,Intercept]`</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/Normal'>rnorm</a></span>(<span class='fl'>1000</span>),
-  <span class='kw'>`r_condition[B,Intercept]`</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/Normal'>rnorm</a></span>(<span class='fl'>1000</span>),
-  <span class='kw'>`r_condition[C,Intercept]`</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/Normal'>rnorm</a></span>(<span class='fl'>1000</span>),
-  <span class='kw'>`r_condition[A,Slope]`</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/Normal'>rnorm</a></span>(<span class='fl'>1000</span>),
-  <span class='kw'>`r_condition[B,Slope]`</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/Normal'>rnorm</a></span>(<span class='fl'>1000</span>)
+  <span class='kw'>b_Intercept</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='fl'>1000</span>),
+  <span class='kw'>sd_condition__Intercept</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Exponential.html'>rexp</a></span>(<span class='fl'>1000</span>),
+  <span class='kw'>sigma</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Exponential.html'>rexp</a></span>(<span class='fl'>1000</span>),
+  <span class='kw'>`r_condition[A,Intercept]`</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='fl'>1000</span>),
+  <span class='kw'>`r_condition[B,Intercept]`</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='fl'>1000</span>),
+  <span class='kw'>`r_condition[C,Intercept]`</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='fl'>1000</span>),
+  <span class='kw'>`r_condition[A,Slope]`</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='fl'>1000</span>),
+  <span class='kw'>`r_condition[B,Slope]`</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='fl'>1000</span>)
 )
-<span class='no'>posterior</span></div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 1,000 x 8</span><span>
+<span class='no'>posterior</span></div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 1,000 x 8</span><span>
 #&gt;    b_Intercept sd_condition__I…  sigma `r_condition[A,… `r_condition[B,…
-#&gt;          </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>            </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>            </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>            </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'> 1</span><span>      0.080</span><span style='text-decoration: underline;'>6</span><span>           0.079</span><span style='text-decoration: underline;'>7</span><span> 1.42            -</span><span style='color: #BB0000;'>0.076</span><span style='color: #BB0000;text-decoration: underline;'>4</span><span>           0.381 
-#&gt; </span><span style='color: #555555;'> 2</span><span>      0.859            1.10   0.027</span><span style='text-decoration: underline;'>8</span><span>           0.665            0.075</span><span style='text-decoration: underline;'>4</span><span>
-#&gt; </span><span style='color: #555555;'> 3</span><span>      2.95             0.307  4.28            -</span><span style='color: #BB0000;'>1.07</span><span>             1.96  
-#&gt; </span><span style='color: #555555;'> 4</span><span>      1.12             0.341  0.896           -</span><span style='color: #BB0000;'>0.120</span><span>            0.622 
-#&gt; </span><span style='color: #555555;'> 5</span><span>      1.03             1.51   1.26            -</span><span style='color: #BB0000;'>1.05</span><span>            -</span><span style='color: #BB0000;'>0.296</span><span> 
-#&gt; </span><span style='color: #555555;'> 6</span><span>     -</span><span style='color: #BB0000;'>0.231</span><span>            0.615  1.05             0.266           -</span><span style='color: #BB0000;'>1.45</span><span>  
-#&gt; </span><span style='color: #555555;'> 7</span><span>      0.884            0.280  0.451           -</span><span style='color: #BB0000;'>0.347</span><span>            0.281 
-#&gt; </span><span style='color: #555555;'> 8</span><span>      0.139            0.799  0.429           -</span><span style='color: #BB0000;'>0.818</span><span>           -</span><span style='color: #BB0000;'>1.80</span><span>  
-#&gt; </span><span style='color: #555555;'> 9</span><span>      0.269            1.94   1.14             0.225            0.411 
-#&gt; </span><span style='color: #555555;'>10</span><span>      1.07             0.722  4.04             1.39             0.906 
-#&gt; </span><span style='color: #555555;'># … with 990 more rows, and 3 more variables: `r_condition[C,Intercept]` </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>,
-#&gt; #   `r_condition[A,Slope]` </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, `r_condition[B,Slope]` </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span></div><div class='input'>
+#&gt;          </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>            </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>            </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>            </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #BCBCBC;'> 1</span><span>     -</span><span style='color: #BB0000;'>1.44</span><span>             1.51   0.310            -</span><span style='color: #BB0000;'>0.839</span><span>          -</span><span style='color: #BB0000;'>0.907</span><span> 
+#&gt; </span><span style='color: #BCBCBC;'> 2</span><span>     -</span><span style='color: #BB0000;'>1.95</span><span>             0.230  1.12              1.34           -</span><span style='color: #BB0000;'>0.558</span><span> 
+#&gt; </span><span style='color: #BCBCBC;'> 3</span><span>     -</span><span style='color: #BB0000;'>0.570</span><span>            0.198  0.986             0.123          -</span><span style='color: #BB0000;'>1.09</span><span>  
+#&gt; </span><span style='color: #BCBCBC;'> 4</span><span>      1.02             0.562  0.163            -</span><span style='color: #BB0000;'>0.682</span><span>          -</span><span style='color: #BB0000;'>1.09</span><span>  
+#&gt; </span><span style='color: #BCBCBC;'> 5</span><span>     -</span><span style='color: #BB0000;'>0.851</span><span>            0.113  0.199            -</span><span style='color: #BB0000;'>0.769</span><span>           1.25  
+#&gt; </span><span style='color: #BCBCBC;'> 6</span><span>     -</span><span style='color: #BB0000;'>0.983</span><span>            0.049</span><span style='text-decoration: underline;'>3</span><span> 0.073</span><span style='text-decoration: underline;'>9</span><span>           -</span><span style='color: #BB0000;'>0.621</span><span>          -</span><span style='color: #BB0000;'>0.038</span><span style='color: #BB0000;text-decoration: underline;'>7</span><span>
+#&gt; </span><span style='color: #BCBCBC;'> 7</span><span>      0.460            0.944  1.65             -</span><span style='color: #BB0000;'>0.443</span><span>          -</span><span style='color: #BB0000;'>0.291</span><span> 
+#&gt; </span><span style='color: #BCBCBC;'> 8</span><span>     -</span><span style='color: #BB0000;'>0.050</span><span style='color: #BB0000;text-decoration: underline;'>3</span><span>           0.081</span><span style='text-decoration: underline;'>3</span><span> 3.79             -</span><span style='color: #BB0000;'>0.256</span><span>          -</span><span style='color: #BB0000;'>0.908</span><span> 
+#&gt; </span><span style='color: #BCBCBC;'> 9</span><span>      0.617            1.57   0.271            -</span><span style='color: #BB0000;'>0.924</span><span>           0.385 
+#&gt; </span><span style='color: #BCBCBC;'>10</span><span>     -</span><span style='color: #BB0000;'>1.04</span><span>             0.183  0.797            -</span><span style='color: #BB0000;'>2.08</span><span>           -</span><span style='color: #BB0000;'>1.60</span><span>  
+#&gt; </span><span style='color: #949494;'># … with 990 more rows, and 3 more variables: `r_condition[C,Intercept]` </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>,</span><span>
+#&gt; </span><span style='color: #949494;'>#   `r_condition[A,Slope]` </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, `r_condition[B,Slope]` </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span></div><div class='input'>
 <span class='co'># using one expression in braces</span>
 <span class='no'>posterior</span> <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span>(
-    <span class='fu'>param_glue</span>(<span class='st'>"r_condition[{level},Intercept]"</span>, <span class='kw'>level</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"A"</span>, <span class='st'>"B"</span>))
+    <span class='fu'>param_glue</span>(<span class='st'>"r_condition[{level},Intercept]"</span>, <span class='kw'>level</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"A"</span>, <span class='st'>"B"</span>))
   ) <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='MCMC-distributions.html'>mcmc_hist</a></span>()</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='tidy-params-6.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># using multiple expressions in braces</span>
@@ -428,27 +443,19 @@ use backticks to escape it <code><a href='https://dplyr.tidyverse.org/reference/
    <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span>(
      <span class='fu'>param_glue</span>(
        <span class='st'>"r_condition[{level},{type}]"</span>,
-        <span class='kw'>level</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"A"</span>, <span class='st'>"B"</span>),
-        <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"Intercept"</span>, <span class='st'>"Slope"</span>))
+        <span class='kw'>level</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"A"</span>, <span class='st'>"B"</span>),
+        <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"Intercept"</span>, <span class='st'>"Slope"</span>))
    ) <span class='kw'>%&gt;%</span>
-   <span class='fu'><a href='MCMC-distributions.html'>mcmc_hist</a></span>()</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='tidy-params-7.png' alt='' width='700' height='433' /></div></span></pre>
+   <span class='fu'><a href='MCMC-distributions.html'>mcmc_hist</a></span>()</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='tidy-params-7.png' alt='' width='700' height='433' /></div><div class='input'># }
+</div></span></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#details">Details</a></li>
-
-      <li><a href="#extra-advice">Extra Advice</a></li>
-
-      <li><a href="#see-also">See also</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
+
 
       <footer>
       <div class="copyright">
@@ -456,8 +463,9 @@ use backticks to escape it <code><a href='https://dplyr.tidyverse.org/reference/
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
+
       </footer>
    </div>
 
@@ -480,6 +488,8 @@ use backticks to escape it <code><a href='https://dplyr.tidyverse.org/reference/
 </script>
 
 
+
   </body>
 </html>
+
 

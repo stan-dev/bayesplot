@@ -8,21 +8,36 @@
 
 <title>Parallel coordinates plot of MCMC draws — MCMC-parcoord • bayesplot</title>
 
-<!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
-<!-- Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+<!-- favicons -->
+<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<!-- jquery -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+<!-- Bootstrap -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+<!-- headroom.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -31,20 +46,19 @@
 
 <!-- docsearch -->
 <script src="../docsearch.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.3/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous" />
 <link href="../docsearch.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
 
 
-<meta property="og:title" content="Parallel coordinates plot of MCMC draws — MCMC-parcoord" />
 
+<meta property="og:title" content="Parallel coordinates plot of MCMC draws — MCMC-parcoord" />
 <meta property="og:description" content="Parallel coordinates plot of MCMC draws (one dimension per parameter).
 See the Plot Descriptions section below for details,
 and see Gabry et al. (2019)
 for more background and a real example." />
-
 <meta property="og:image" content="https://mc-stan.org/bayesplot/logo.png" />
-<meta name="twitter:card" content="summary" />
+
 
 
 
@@ -58,9 +72,10 @@ for more background and a real example." />
 <![endif]-->
 
 
+
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -74,7 +89,7 @@ for more background and a real example." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bayesplot</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.7.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.7.2</span>
       </span>
     </div>
 
@@ -100,6 +115,9 @@ for more background and a real example." />
       <a href="https://mc-stan.org/rstan">rstan</a>
     </li>
     <li>
+      <a href="https://mc-stan.org/cmdstanr">cmdstanr</a>
+    </li>
+    <li>
       <a href="https://mc-stan.org/rstanarm">rstanarm</a>
     </li>
     <li>
@@ -120,7 +138,6 @@ for more background and a real example." />
   <a href="https://mc-stan.org">Stan</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://twitter.com/mcmc_stan">
@@ -142,7 +159,7 @@ for more background and a real example." />
 </li>
       </ul>
       
-      <form class="navbar-form navbar-right" role="search">
+      <form class="navbar-form navbar-right hidden-xs hidden-sm" role="search">
         <div class="form-group">
           <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
         </div>
@@ -153,34 +170,46 @@ for more background and a real example." />
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Parallel coordinates plot of MCMC draws</h1>
-    
+    <small class="dont-index">Source: <a href='https://github.com/stan-dev/bayesplot/blob/master/R/mcmc-parcoord.R'><code>R/mcmc-parcoord.R</code></a></small>
     <div class="hidden name"><code>MCMC-parcoord.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    
     <p>Parallel coordinates plot of MCMC draws (one dimension per parameter).
 See the <strong>Plot Descriptions</strong> section below for details,
-and see <a href='https://github.com/jgabry/bayes-vis-paper'>Gabry et al. (2019)</a>
+and see <a href='https://github.com/jgabry/bayes-vis-paper#readme'>Gabry et al. (2019)</a>
 for more background and a real example.</p>
-    
     </div>
 
-    <pre class="usage"><span class='fu'>mcmc_parcoord</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>character</a></span>(), <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>character</a></span>(),
-  <span class='kw'>transformations</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(), <span class='no'>...</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>0.2</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.3</span>,
-  <span class='kw'>np</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>np_style</span> <span class='kw'>=</span> <span class='fu'>parcoord_style_np</span>())
+    <pre class="usage"><span class='fu'>mcmc_parcoord</span>(
+  <span class='no'>x</span>,
+  <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span>(),
+  <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span>(),
+  <span class='kw'>transformations</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(),
+  <span class='no'>...</span>,
+  <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>0.2</span>,
+  <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.3</span>,
+  <span class='kw'>np</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>np_style</span> <span class='kw'>=</span> <span class='fu'>parcoord_style_np</span>()
+)
 
-<span class='fu'>mcmc_parcoord_data</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>character</a></span>(), <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>character</a></span>(),
-  <span class='kw'>transformations</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(), <span class='kw'>np</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+<span class='fu'>mcmc_parcoord_data</span>(
+  <span class='no'>x</span>,
+  <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span>(),
+  <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span>(),
+  <span class='kw'>transformations</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(),
+  <span class='kw'>np</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
+)
 
 <span class='fu'>parcoord_style_np</span>(<span class='kw'>div_color</span> <span class='kw'>=</span> <span class='st'>"red"</span>, <span class='kw'>div_size</span> <span class='kw'>=</span> <span class='fl'>0.2</span>, <span class='kw'>div_alpha</span> <span class='kw'>=</span> <span class='fl'>0.2</span>)</pre>
-    
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -189,7 +218,7 @@ for more background and a real example.</p>
       <td><p>A 3-D array, matrix, list of matrices, or data frame of MCMC draws.
 The <a href='MCMC-overview.html'>MCMC-overview</a> page provides details on how to specify each these
 allowed inputs. It is also possible to use an object with an
-<code><a href='https://www.rdocumentation.org/packages/base/topics/array'>as.array()</a></code> method that returns the same kind of 3-D array described on
+<code><a href='https://rdrr.io/r/base/array.html'>as.array()</a></code> method that returns the same kind of 3-D array described on
 the <a href='MCMC-overview.html'>MCMC-overview</a> page.</p></td>
     </tr>
     <tr>
@@ -204,10 +233,10 @@ similar functions. Examples of using <code>pars</code> in this way can be found 
     </tr>
     <tr>
       <th>regex_pars</th>
-      <td><p>An optional <a href='https://www.rdocumentation.org/packages/base/topics/grep'>regular expression</a> to use for
+      <td><p>An optional <a href='https://rdrr.io/r/base/grep.html'>regular expression</a> to use for
 parameter selection. Can be specified instead of <code>pars</code> or in addition to
 <code>pars</code>. When using <code>pars</code> for tidy parameter selection, the <code>regex_pars</code>
-argument is ignored since <a href='https://www.rdocumentation.org/packages/tidyselect/topics/select_helpers'>select helpers</a>
+argument is ignored since <a href='https://tidyselect.r-lib.org/reference/language.html'>select helpers</a>
 perform a similar function.</p></td>
     </tr>
     <tr>
@@ -222,7 +251,7 @@ transformations of scalar parameters can be specified (multivariate
 transformations will be implemented in a future release). If
 <code>transformations</code> is a list, the name of each list element should be a
 parameter name and the content of each list element should be a function
-(or any item to match as a function via <code><a href='https://www.rdocumentation.org/packages/base/topics/match.fun'>match.fun()</a></code>, e.g. a
+(or any item to match as a function via <code><a href='https://rdrr.io/r/base/match.fun.html'>match.fun()</a></code>, e.g. a
 string naming a function). If a function is specified by its name as a
 string (e.g. <code>"log"</code>), then it can be used to construct a new
 parameter label for the appropriate parameter (e.g. <code>"log(sigma)"</code>).
@@ -239,7 +268,7 @@ abbreviated for convenience in interactive use (e.g., <code>transform</code>).</
     </tr>
     <tr>
       <th>size, alpha</th>
-      <td><p>Arguments passed on to <code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_path'>ggplot2::geom_line()</a></code>.</p></td>
+      <td><p>Arguments passed on to <code><a href='https://ggplot2.tidyverse.org/reference/geom_path.html'>ggplot2::geom_line()</a></code>.</p></td>
     </tr>
     <tr>
       <th>np</th>
@@ -260,40 +289,39 @@ argument is specified.</p></td>
       <th>div_color, div_size, div_alpha</th>
       <td><p>Optional arguments to the
 <code>parcoord_style_np()</code> helper function that are eventually passed to
-<code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_path'>ggplot2::geom_line()</a></code> if the <code>np</code> argument is also specified. They control
+<code><a href='https://ggplot2.tidyverse.org/reference/geom_path.html'>ggplot2::geom_line()</a></code> if the <code>np</code> argument is also specified. They control
 the color, size, and transparency specifications for showing divergences in
 the plot. The default values are displayed in the <strong>Usage</strong> section above.</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>The plotting functions return a ggplot object that can be further
 customized using the <strong>ggplot2</strong> package. The functions with suffix
 <code>_data()</code> return the data that would have been drawn by the plotting
 function.</p>
-    
     <h2 class="hasAnchor" id="plot-descriptions"><a class="anchor" href="#plot-descriptions"></a>Plot Descriptions</h2>
 
     
-    <dl class='dl-horizontal'>
+
+<dl'>
 <dt><code>mcmc_parcoord()</code></dt><dd><p><a href='https://en.wikipedia.org/wiki/Parallel_coordinates'>Parallel coordinates plot</a>
 of MCMC draws. There is one dimension per parameter along the horizontal
 axis and each set of connected line segments represents a single MCMC draw
-(i.e., a vector of length equal to the number of parameters).
-    The parallel coordinates plot is most useful if the optional HMC/NUTS
+(i.e., a vector of length equal to the number of parameters).The parallel coordinates plot is most useful if the optional HMC/NUTS
 diagnostic information is provided via the <code>np</code> argument. In that
 case divergences are highlighted in the plot. The appearance of the
 divergences can be customized using the <code>np_style</code> argument and the
 <code>parcoord_style_np</code> helper function. This version of the plot is the
-same as the parallel coordinates plot described in Gabry et al. (2019).
-    When the plotted model parameters are on very different scales the
+same as the parallel coordinates plot described in Gabry et al. (2019).When the plotted model parameters are on very different scales the
 <code>transformations</code> argument can be useful. For example, to standardize
 all variables before plotting you could use function <code>(x - mean(x))/sd(x)</code>
 when specifying the <code>transformations</code> argument to
 <code>mcmc_parcoord</code>. See the <strong>Examples</strong> section for how to do this.</p></dd>
+
 </dl>
-    
+
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <p>Gabry, J. , Simpson, D. , Vehtari, A. , Betancourt, M. and
@@ -305,27 +333,29 @@ Gelman, A. (2019), Visualization in Bayesian workflow.
 <p>Hartikainen, A. (2017, Aug 23). Concentration of divergences
 (Msg 21). Message posted to The Stan Forums:
 <a href='https://discourse.mc-stan.org/t/concentration-of-divergences/1590/21'>https://discourse.mc-stan.org/t/concentration-of-divergences/1590/21</a>.</p>
-    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>Other MCMC: <code><a href='MCMC-combos.html'>MCMC-combos</a></code>,
-  <code><a href='MCMC-diagnostics.html'>MCMC-diagnostics</a></code>,
-  <code><a href='MCMC-distributions.html'>MCMC-distributions</a></code>,
-  <code><a href='MCMC-intervals.html'>MCMC-intervals</a></code>, <code><a href='MCMC-nuts.html'>MCMC-nuts</a></code>,
-  <code><a href='MCMC-overview.html'>MCMC-overview</a></code>, <code><a href='MCMC-recover.html'>MCMC-recover</a></code>,
-  <code><a href='MCMC-scatterplots.html'>MCMC-scatterplots</a></code>,
-  <code><a href='MCMC-traces.html'>MCMC-traces</a></code></p></div>
-    
+    <div class='dont-index'><p>Other MCMC: 
+<code><a href='MCMC-combos.html'>MCMC-combos</a></code>,
+<code><a href='MCMC-diagnostics.html'>MCMC-diagnostics</a></code>,
+<code><a href='MCMC-distributions.html'>MCMC-distributions</a></code>,
+<code><a href='MCMC-intervals.html'>MCMC-intervals</a></code>,
+<code><a href='MCMC-nuts.html'>MCMC-nuts</a></code>,
+<code><a href='MCMC-overview.html'>MCMC-overview</a></code>,
+<code><a href='MCMC-recover.html'>MCMC-recover</a></code>,
+<code><a href='MCMC-scatterplots.html'>MCMC-scatterplots</a></code>,
+<code><a href='MCMC-traces.html'>MCMC-traces</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"pink"</span>)
 <span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='example-data.html'>example_mcmc_draws</a></span>(<span class='kw'>params</span> <span class='kw'>=</span> <span class='fl'>5</span>)
 <span class='fu'>mcmc_parcoord</span>(<span class='no'>x</span>)</div><div class='img'><img src='MCMC-parcoord-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>mcmc_parcoord</span>(<span class='no'>x</span>, <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='st'>"beta"</span>)</div><div class='img'><img src='MCMC-parcoord-2.png' alt='' width='700' height='433' /></div><div class='input'>
-</div><div class='input'><span class='co'># Example using a Stan demo model</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>rstan</span>)</div><div class='output co'>#&gt; <span class='message'>Loading required package: StanHeaders</span></div><div class='output co'>#&gt; <span class='message'>rstan (Version 2.19.1, GitRev: 2e1f913d3ca3)</span></div><div class='output co'>#&gt; <span class='message'>For execution on a local, multicore CPU with excess RAM we recommend calling</span>
+<span class='co'># \dontrun{</span>
+<span class='co'># Example using a Stan demo model</span>
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>rstan</span>)</div><div class='output co'>#&gt; <span class='message'>Loading required package: StanHeaders</span></div><div class='output co'>#&gt; <span class='message'>rstan (Version 2.19.3, GitRev: 2e1f913d3ca3)</span></div><div class='output co'>#&gt; <span class='message'>For execution on a local, multicore CPU with excess RAM we recommend calling</span>
 #&gt; <span class='message'>options(mc.cores = parallel::detectCores()).</span>
 #&gt; <span class='message'>To avoid recompilation of unchanged Stan programs, we recommend calling</span>
-#&gt; <span class='message'>rstan_options(auto_write = TRUE)</span></div><div class='input'><span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/rstan/topics/stan_demo'>stan_demo</a></span>(<span class='st'>"eight_schools"</span>)</div><div class='output co'>#&gt; 
+#&gt; <span class='message'>rstan_options(auto_write = TRUE)</span></div><div class='input'><span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/rstan/man/stan_demo.html'>stan_demo</a></span>(<span class='st'>"eight_schools"</span>)</div><div class='output co'>#&gt; 
 #&gt; &gt; J &lt;- 8
 #&gt; 
 #&gt; &gt; y &lt;- c(28, 8, -3, 7, -1, 1, 18, 12)
@@ -336,8 +366,8 @@ Gelman, A. (2019), Visualization in Bayesian workflow.
 #&gt; 
 #&gt; SAMPLING FOR MODEL 'eight_schools' NOW (CHAIN 1).
 #&gt; Chain 1: 
-#&gt; Chain 1: Gradient evaluation took 1.3e-05 seconds
-#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.13 seconds.
+#&gt; Chain 1: Gradient evaluation took 1.7e-05 seconds
+#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.17 seconds.
 #&gt; Chain 1: Adjust your expectations accordingly!
 #&gt; Chain 1: 
 #&gt; Chain 1: 
@@ -354,9 +384,9 @@ Gelman, A. (2019), Visualization in Bayesian workflow.
 #&gt; Chain 1: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 #&gt; Chain 1: Iteration: 2000 / 2000 [100%]  (Sampling)
 #&gt; Chain 1: 
-#&gt; Chain 1:  Elapsed Time: 0.077337 seconds (Warm-up)
-#&gt; Chain 1:                0.040746 seconds (Sampling)
-#&gt; Chain 1:                0.118083 seconds (Total)
+#&gt; Chain 1:  Elapsed Time: 0.080553 seconds (Warm-up)
+#&gt; Chain 1:                0.046163 seconds (Sampling)
+#&gt; Chain 1:                0.126716 seconds (Total)
 #&gt; Chain 1: 
 #&gt; 
 #&gt; SAMPLING FOR MODEL 'eight_schools' NOW (CHAIN 2).
@@ -379,9 +409,9 @@ Gelman, A. (2019), Visualization in Bayesian workflow.
 #&gt; Chain 2: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 #&gt; Chain 2: Iteration: 2000 / 2000 [100%]  (Sampling)
 #&gt; Chain 2: 
-#&gt; Chain 2:  Elapsed Time: 0.068112 seconds (Warm-up)
-#&gt; Chain 2:                0.069018 seconds (Sampling)
-#&gt; Chain 2:                0.13713 seconds (Total)
+#&gt; Chain 2:  Elapsed Time: 0.083351 seconds (Warm-up)
+#&gt; Chain 2:                0.047065 seconds (Sampling)
+#&gt; Chain 2:                0.130416 seconds (Total)
 #&gt; Chain 2: 
 #&gt; 
 #&gt; SAMPLING FOR MODEL 'eight_schools' NOW (CHAIN 3).
@@ -404,9 +434,9 @@ Gelman, A. (2019), Visualization in Bayesian workflow.
 #&gt; Chain 3: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 #&gt; Chain 3: Iteration: 2000 / 2000 [100%]  (Sampling)
 #&gt; Chain 3: 
-#&gt; Chain 3:  Elapsed Time: 0.071097 seconds (Warm-up)
-#&gt; Chain 3:                0.039765 seconds (Sampling)
-#&gt; Chain 3:                0.110862 seconds (Total)
+#&gt; Chain 3:  Elapsed Time: 0.085587 seconds (Warm-up)
+#&gt; Chain 3:                0.055373 seconds (Sampling)
+#&gt; Chain 3:                0.14096 seconds (Total)
 #&gt; Chain 3: 
 #&gt; 
 #&gt; SAMPLING FOR MODEL 'eight_schools' NOW (CHAIN 4).
@@ -429,23 +459,21 @@ Gelman, A. (2019), Visualization in Bayesian workflow.
 #&gt; Chain 4: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 #&gt; Chain 4: Iteration: 2000 / 2000 [100%]  (Sampling)
 #&gt; Chain 4: 
-#&gt; Chain 4:  Elapsed Time: 0.074807 seconds (Warm-up)
-#&gt; Chain 4:                0.037048 seconds (Sampling)
-#&gt; Chain 4:                0.111855 seconds (Total)
-#&gt; Chain 4: </div><div class='output co'>#&gt; <span class='warning'>Warning: There were 76 divergent transitions after warmup. Increasing adapt_delta above 0.8 may help. See</span>
-#&gt; <span class='warning'>http://mc-stan.org/misc/warnings.html#divergent-transitions-after-warmup</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Examine the pairs() plot to diagnose sampling problems</span></div><div class='output co'>#&gt; <span class='warning'>Warning: The largest R-hat is 2, indicating chains have not mixed.</span>
+#&gt; Chain 4:  Elapsed Time: 0.079298 seconds (Warm-up)
+#&gt; Chain 4:                0.065155 seconds (Sampling)
+#&gt; Chain 4:                0.144453 seconds (Total)
+#&gt; Chain 4: </div><div class='output co'>#&gt; <span class='warning'>Warning: There were 56 divergent transitions after warmup. Increasing adapt_delta above 0.8 may help. See</span>
+#&gt; <span class='warning'>http://mc-stan.org/misc/warnings.html#divergent-transitions-after-warmup</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Examine the pairs() plot to diagnose sampling problems</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Bulk Effective Samples Size (ESS) is too low, indicating posterior means and medians may be unreliable.</span>
 #&gt; <span class='warning'>Running the chains for more iterations may help. See</span>
-#&gt; <span class='warning'>http://mc-stan.org/misc/warnings.html#r-hat</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Bulk Effective Samples Size (ESS) is too low, indicating posterior means and medians may be unreliable.</span>
+#&gt; <span class='warning'>http://mc-stan.org/misc/warnings.html#bulk-ess</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Tail Effective Samples Size (ESS) is too low, indicating posterior variances and tail quantiles may be unreliable.</span>
 #&gt; <span class='warning'>Running the chains for more iterations may help. See</span>
-#&gt; <span class='warning'>http://mc-stan.org/misc/warnings.html#bulk-ess</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Tail Effective Samples Size (ESS) is too low, indicatingposterior variances and tail quantiles may be unreliable.</span>
-#&gt; <span class='warning'>Running the chains for more iterations may help. See</span>
-#&gt; <span class='warning'>http://mc-stan.org/misc/warnings.html#tail-ess</span></div><div class='input'><span class='no'>draws</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/array'>as.array</a></span>(<span class='no'>fit</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"mu"</span>, <span class='st'>"tau"</span>, <span class='st'>"theta"</span>, <span class='st'>"lp__"</span>))
+#&gt; <span class='warning'>http://mc-stan.org/misc/warnings.html#tail-ess</span></div><div class='input'><span class='no'>draws</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/array.html'>as.array</a></span>(<span class='no'>fit</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"mu"</span>, <span class='st'>"tau"</span>, <span class='st'>"theta"</span>, <span class='st'>"lp__"</span>))
 <span class='no'>np</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='bayesplot-extractors.html'>nuts_params</a></span>(<span class='no'>fit</span>)
-<span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/str'>str</a></span>(<span class='no'>np</span>)</div><div class='output co'>#&gt; 'data.frame':	24000 obs. of  4 variables:
+<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span>(<span class='no'>np</span>)</div><div class='output co'>#&gt; 'data.frame':	24000 obs. of  4 variables:
 #&gt;  $ Iteration: int  1 2 3 4 5 6 7 8 9 10 ...
 #&gt;  $ Parameter: Factor w/ 6 levels "accept_stat__",..: 1 1 1 1 1 1 1 1 1 1 ...
-#&gt;  $ Value    : num  0.999 1 0.857 0.983 1 ...
-#&gt;  $ Chain    : int  1 1 1 1 1 1 1 1 1 1 ...</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/levels'>levels</a></span>(<span class='no'>np</span>$<span class='no'>Parameter</span>)</div><div class='output co'>#&gt; [1] "accept_stat__" "stepsize__"    "treedepth__"   "n_leapfrog__" 
+#&gt;  $ Value    : num  0.886 0.999 0.787 0.951 0.943 ...
+#&gt;  $ Chain    : int  1 1 1 1 1 1 1 1 1 1 ...</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/levels.html'>levels</a></span>(<span class='no'>np</span>$<span class='no'>Parameter</span>)</div><div class='output co'>#&gt; [1] "accept_stat__" "stepsize__"    "treedepth__"   "n_leapfrog__" 
 #&gt; [5] "divergent__"   "energy__"     </div><div class='input'>
 <span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"brightblue"</span>)
 <span class='fu'>mcmc_parcoord</span>(<span class='no'>draws</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.05</span>)</div><div class='img'><img src='MCMC-parcoord-3.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>mcmc_parcoord</span>(<span class='no'>draws</span>, <span class='kw'>np</span> <span class='kw'>=</span> <span class='no'>np</span>)</div><div class='img'><img src='MCMC-parcoord-4.png' alt='' width='700' height='433' /></div><div class='input'>
@@ -459,7 +487,7 @@ Gelman, A. (2019), Visualization in Bayesian workflow.
 <span class='co'># matching means we can just use 'trans' or 'transform')</span>
 <span class='fu'>mcmc_parcoord</span>(
   <span class='no'>draws</span>,
-  <span class='kw'>transform</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>x</span>) {(<span class='no'>x</span> - <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/mean'>mean</a></span>(<span class='no'>x</span>)) / <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/sd'>sd</a></span>(<span class='no'>x</span>)},
+  <span class='kw'>transform</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>x</span>) {(<span class='no'>x</span> - <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span>(<span class='no'>x</span>)) / <span class='fu'><a href='https://rdrr.io/r/stats/sd.html'>sd</a></span>(<span class='no'>x</span>)},
   <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>0.25</span>,
   <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.1</span>,
   <span class='kw'>np</span> <span class='kw'>=</span> <span class='no'>np</span>,
@@ -467,43 +495,33 @@ Gelman, A. (2019), Visualization in Bayesian workflow.
  )</div><div class='img'><img src='MCMC-parcoord-6.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># mcmc_parcoord_data returns just the data in a conventient form for plotting</span>
 <span class='no'>d</span> <span class='kw'>&lt;-</span> <span class='fu'>mcmc_parcoord_data</span>(<span class='no'>x</span>, <span class='kw'>np</span> <span class='kw'>=</span> <span class='no'>np</span>)
-<span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/head'>head</a></span>(<span class='no'>d</span>)</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 6 x 4</span><span>
+<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='no'>d</span>)</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 6 x 4</span><span>
 #&gt;    Draw Parameter  Value Divergent
-#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'>1</span><span>     1 alpha     -</span><span style='color: #BB0000;'>14.1</span><span>          0
-#&gt; </span><span style='color: #555555;'>2</span><span>     2 alpha     -</span><span style='color: #BB0000;'>20.0</span><span>          0
-#&gt; </span><span style='color: #555555;'>3</span><span>     3 alpha     -</span><span style='color: #BB0000;'>21.0</span><span>          0
-#&gt; </span><span style='color: #555555;'>4</span><span>     4 alpha     -</span><span style='color: #BB0000;'>36.3</span><span>          0
-#&gt; </span><span style='color: #555555;'>5</span><span>     5 alpha      -</span><span style='color: #BB0000;'>7.58</span><span>         0
-#&gt; </span><span style='color: #555555;'>6</span><span>     6 alpha     -</span><span style='color: #BB0000;'>10.4</span><span>          0</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/head'>tail</a></span>(<span class='no'>d</span>)</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 6 x 4</span><span>
+#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;fct&gt;</span><span>      </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #BCBCBC;'>1</span><span>     1 alpha     -</span><span style='color: #BB0000;'>14.1</span><span>          0
+#&gt; </span><span style='color: #BCBCBC;'>2</span><span>     2 alpha     -</span><span style='color: #BB0000;'>20.0</span><span>          0
+#&gt; </span><span style='color: #BCBCBC;'>3</span><span>     3 alpha     -</span><span style='color: #BB0000;'>21.0</span><span>          0
+#&gt; </span><span style='color: #BCBCBC;'>4</span><span>     4 alpha     -</span><span style='color: #BB0000;'>36.3</span><span>          0
+#&gt; </span><span style='color: #BCBCBC;'>5</span><span>     5 alpha      -</span><span style='color: #BB0000;'>7.58</span><span>         0
+#&gt; </span><span style='color: #BCBCBC;'>6</span><span>     6 alpha     -</span><span style='color: #BB0000;'>10.4</span><span>          0</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>tail</a></span>(<span class='no'>d</span>)</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 6 x 4</span><span>
 #&gt;    Draw Parameter Value Divergent
-#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'>1</span><span>   995 beta[3]   1.04          0
-#&gt; </span><span style='color: #555555;'>2</span><span>   996 beta[3]   1.07          1
-#&gt; </span><span style='color: #555555;'>3</span><span>   997 beta[3]   0.983         0
-#&gt; </span><span style='color: #555555;'>4</span><span>   998 beta[3]   0.821         1
-#&gt; </span><span style='color: #555555;'>5</span><span>   999 beta[3]   0.903         0
-#&gt; </span><span style='color: #555555;'>6</span><span>  </span><span style='text-decoration: underline;'>1</span><span>000 beta[3]   0.858         0</div></span><div class='input'>
-</div></pre>
+#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;fct&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #BCBCBC;'>1</span><span>   995 beta[3]   1.04          0
+#&gt; </span><span style='color: #BCBCBC;'>2</span><span>   996 beta[3]   1.07          0
+#&gt; </span><span style='color: #BCBCBC;'>3</span><span>   997 beta[3]   0.983         0
+#&gt; </span><span style='color: #BCBCBC;'>4</span><span>   998 beta[3]   0.821         0
+#&gt; </span><span style='color: #BCBCBC;'>5</span><span>   999 beta[3]   0.903         0
+#&gt; </span><span style='color: #BCBCBC;'>6</span><span>  </span><span style='text-decoration: underline;'>1</span><span>000 beta[3]   0.858         0</div><div class='input'># }
+
+</div></span></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#value">Value</a></li>
-
-      <li><a href="#plot-descriptions">Plot Descriptions</a></li>
-
-      <li><a href="#references">References</a></li>
-
-      <li><a href="#see-also">See also</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
+
 
       <footer>
       <div class="copyright">
@@ -511,8 +529,9 @@ Gelman, A. (2019), Visualization in Bayesian workflow.
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
+
       </footer>
    </div>
 
@@ -535,6 +554,8 @@ Gelman, A. (2019), Visualization in Bayesian workflow.
 </script>
 
 
+
   </body>
 </html>
+
 

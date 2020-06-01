@@ -8,21 +8,36 @@
 
 <title>Convenience functions for adding or changing plot details — bayesplot-helpers • bayesplot</title>
 
-<!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
-<!-- Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+<!-- favicons -->
+<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<!-- jquery -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+<!-- Bootstrap -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+<!-- headroom.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -31,19 +46,18 @@
 
 <!-- docsearch -->
 <script src="../docsearch.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.3/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous" />
 <link href="../docsearch.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
 
 
-<meta property="og:title" content="Convenience functions for adding or changing plot details — bayesplot-helpers" />
 
+<meta property="og:title" content="Convenience functions for adding or changing plot details — bayesplot-helpers" />
 <meta property="og:description" content="Convenience functions for adding to (and changing details of) ggplot objects
 (many of the objects returned by bayesplot functions). See the
 Examples section, below." />
-
 <meta property="og:image" content="https://mc-stan.org/bayesplot/logo.png" />
-<meta name="twitter:card" content="summary" />
+
 
 
 
@@ -57,9 +71,10 @@ Examples section, below." />
 <![endif]-->
 
 
+
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -73,7 +88,7 @@ Examples section, below." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bayesplot</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.7.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.7.2</span>
       </span>
     </div>
 
@@ -99,6 +114,9 @@ Examples section, below." />
       <a href="https://mc-stan.org/rstan">rstan</a>
     </li>
     <li>
+      <a href="https://mc-stan.org/cmdstanr">cmdstanr</a>
+    </li>
+    <li>
       <a href="https://mc-stan.org/rstanarm">rstanarm</a>
     </li>
     <li>
@@ -119,7 +137,6 @@ Examples section, below." />
   <a href="https://mc-stan.org">Stan</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://twitter.com/mcmc_stan">
@@ -141,7 +158,7 @@ Examples section, below." />
 </li>
       </ul>
       
-      <form class="navbar-form navbar-right" role="search">
+      <form class="navbar-form navbar-right hidden-xs hidden-sm" role="search">
         <div class="form-group">
           <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
         </div>
@@ -152,22 +169,21 @@ Examples section, below." />
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Convenience functions for adding or changing plot details</h1>
-    
+    <small class="dont-index">Source: <a href='https://github.com/stan-dev/bayesplot/blob/master/R/bayesplot-helpers.R'><code>R/bayesplot-helpers.R</code></a></small>
     <div class="hidden name"><code>bayesplot-helpers.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    
     <p>Convenience functions for adding to (and changing details of) ggplot objects
 (many of the objects returned by <strong>bayesplot</strong> functions). See the
 <strong>Examples</strong> section, below.</p>
-    
     </div>
 
     <pre class="usage"><span class='fu'>vline_at</span>(<span class='no'>v</span>, <span class='no'>fun</span>, <span class='no'>...</span>, <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
@@ -211,7 +227,7 @@ Examples section, below." />
 <span class='fu'>grid_lines</span>(<span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"gray50"</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>0.2</span>)
 
 <span class='fu'>overlay_function</span>(<span class='no'>...</span>)</pre>
-    
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -229,22 +245,22 @@ vector.</p></td>
     <tr>
       <th>...</th>
       <td><p>For the various <code>vline_</code>, <code>hline_</code>, and <code>abline_</code>
-functions, <code>...</code> is passed to <code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_abline'>ggplot2::geom_vline()</a></code>,
-<code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_abline'>ggplot2::geom_hline()</a></code>, and <code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_abline'>ggplot2::geom_abline()</a></code>,
+functions, <code>...</code> is passed to <code><a href='https://ggplot2.tidyverse.org/reference/geom_abline.html'>ggplot2::geom_vline()</a></code>,
+<code><a href='https://ggplot2.tidyverse.org/reference/geom_abline.html'>ggplot2::geom_hline()</a></code>, and <code><a href='https://ggplot2.tidyverse.org/reference/geom_abline.html'>ggplot2::geom_abline()</a></code>,
 respectively, to control the appearance of the line(s).</p>
 <p>For functions ending in <code>_bg</code>, <code>...</code> is passed to
-<code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/element'>ggplot2::element_rect()</a></code>.</p>
+<code><a href='https://ggplot2.tidyverse.org/reference/element.html'>ggplot2::element_rect()</a></code>.</p>
 <p>For functions ending in <code>_text</code> or <code>_title</code>, <code>...</code> is passed
-to <code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/element'>ggplot2::element_text()</a></code>.</p>
+to <code><a href='https://ggplot2.tidyverse.org/reference/element.html'>ggplot2::element_text()</a></code>.</p>
 <p>For <code>xaxis_ticks</code> and <code>yaxis_ticks</code>, <code>...</code> is passed to
-<code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/element'>ggplot2::element_line()</a></code>.</p>
+<code><a href='https://ggplot2.tidyverse.org/reference/element.html'>ggplot2::element_line()</a></code>.</p>
 <p>For <code>overlay_function</code>, <code>...</code> is passed to
-<code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/stat_function'>ggplot2::stat_function()</a></code>.</p></td>
+<code><a href='https://ggplot2.tidyverse.org/reference/stat_function.html'>ggplot2::stat_function()</a></code>.</p></td>
     </tr>
     <tr>
       <th>na.rm</th>
       <td><p>A logical scalar passed to the appropriate geom (e.g.
-<code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_abline'>ggplot2::geom_vline()</a></code>). The default is <code>TRUE</code>.</p></td>
+<code><a href='https://ggplot2.tidyverse.org/reference/geom_abline.html'>ggplot2::geom_vline()</a></code>). The default is <code>TRUE</code>.</p></td>
     </tr>
     <tr>
       <th>p</th>
@@ -265,60 +281,70 @@ equivalent to using <code>legend_none()</code>.</p></td>
     </tr>
     <tr>
       <th>on</th>
-      <td><p>For functions modifying ggplot <a href='https://www.rdocumentation.org/packages/ggplot2/topics/theme'>theme</a> elements,
-set <code>on=FALSE</code> to set the element to <code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/element'>ggplot2::element_blank()</a></code>. For
+      <td><p>For functions modifying ggplot <a href='https://ggplot2.tidyverse.org/reference/theme.html'>theme</a> elements,
+set <code>on=FALSE</code> to set the element to <code><a href='https://ggplot2.tidyverse.org/reference/element.html'>ggplot2::element_blank()</a></code>. For
 example, facet text can be removed by adding <code>facet_text(on=FALSE)</code>, or
 simply <code>facet_text(FALSE)</code> to a ggplot object. If <code>on=TRUE</code> (the default),
 then <code>...</code> can be used to customize the appearance of the theme element.</p></td>
     </tr>
     <tr>
       <th>color, size</th>
-      <td><p>Passed to <code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/element'>ggplot2::element_line()</a></code>.</p></td>
+      <td><p>Passed to <code><a href='https://ggplot2.tidyverse.org/reference/element.html'>ggplot2::element_line()</a></code>.</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A <strong>ggplot2</strong> layer or <code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/theme'>ggplot2::theme()</a></code> object that can be
+    <p>A <strong>ggplot2</strong> layer or <code><a href='https://ggplot2.tidyverse.org/reference/theme.html'>ggplot2::theme()</a></code> object that can be
 added to existing ggplot objects, like those created by many of the
 <strong>bayesplot</strong> plotting functions. See the <strong>Details</strong> section.</p>
-    
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <h3>Add vertical, horizontal, and diagonal lines to plots</h3>
-    <ul>
+    
+<h3>Add vertical, horizontal, and diagonal lines to plots</h3>
+
+<ul>
 <li><p><code>vline_at()</code> and <code>hline_at()</code> return an object created by either
-<code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_abline'>ggplot2::geom_vline()</a></code> or <code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_abline'>ggplot2::geom_hline()</a></code> that can be added to a
+<code><a href='https://ggplot2.tidyverse.org/reference/geom_abline.html'>ggplot2::geom_vline()</a></code> or <code><a href='https://ggplot2.tidyverse.org/reference/geom_abline.html'>ggplot2::geom_hline()</a></code> that can be added to a
 ggplot object to draw a vertical or horizontal line (at one or several
 values). If <code>fun</code> is missing then the lines are drawn at the values in <code>v</code>.
 If <code>fun</code> is specified then the lines are drawn at the values returned by <code>fun(v)</code>.</p></li>
 <li><p><code>vline_0()</code> and <code>hline_0()</code> are wrappers for <code>vline_at()</code> and <code>hline_at()</code>
 with <code>v = 0</code> and <code>fun</code> missing.</p></li>
-<li><p><code>abline_01()</code> is a wrapper for <code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_abline'>ggplot2::geom_abline()</a></code> with the intercept
+<li><p><code>abline_01()</code> is a wrapper for <code><a href='https://ggplot2.tidyverse.org/reference/geom_abline.html'>ggplot2::geom_abline()</a></code> with the intercept
 set to <code>0</code> and the slope set to <code>1</code>.</p></li>
 <li><p><code>lbub()</code> returns a <em>function</em> that takes a single argument <code>x</code> and returns
-the lower and upper bounds (<code>lb</code>, <code>ub</code>) of the <code>100*p</code>% central interval
+the lower and upper bounds (<code>lb</code>, <code>ub</code>) of the <code>100*p</code>\<!-- % central interval -->
 of <code>x</code>, as well as the median (if <code>med=TRUE</code>).</p></li>
 </ul>
-    <h3>Control appearance of facet strips</h3>
-    <ul>
+
+
+<h3>Control appearance of facet strips</h3>
+
+<ul>
 <li><p><code>facet_text()</code> returns ggplot2 theme objects that can be added to an
 existing plot (ggplot object) to format the text in facet strips.</p></li>
 <li><p><code>facet_bg()</code> can be added to a plot to change the background of the facet strips.</p></li>
 </ul>
-    <h3>Move legend, remove legend, or style the legend text</h3>
-    <ul>
+
+
+<h3>Move legend, remove legend, or style the legend text</h3>
+
+<ul>
 <li><p><code>legend_move()</code> and <code>legend_none()</code> return a ggplot2 theme object that can
 be added to an existing plot (ggplot object) in order to change the
 position of the legend or remove it.</p></li>
 <li><p><code>legend_text()</code> works much like <code>facet_text()</code> but for the legend.</p></li>
 </ul>
-    <h3>Control appearance of \(x\)-axis and \(y\)-axis features</h3>
-    <ul>
+
+
+<h3>Control appearance of \(x\)-axis and \(y\)-axis features</h3>
+
+<ul>
 <li><p><code>xaxis_title()</code> and <code>yaxis_title()</code> return a ggplot2 theme object
 that can be added to an existing plot (ggplot object) in order to toggle or
 format the titles displayed on the <code>x</code> or <code>y</code> axis. (To change
-the titles themselves use <code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/labs'>ggplot2::labs()</a></code>.)</p></li>
+the titles themselves use <code><a href='https://ggplot2.tidyverse.org/reference/labs.html'>ggplot2::labs()</a></code>.)</p></li>
 <li><p><code>xaxis_text()</code> and <code>yaxis_text()</code> return a ggplot2 theme object
 that can be added to an existing plot (ggplot object) in order to toggle or
 format the text displayed on the <code>x</code> or <code>y</code> axis (e.g. tick
@@ -327,8 +353,11 @@ labels).</p></li>
 that can be added to an existing plot (ggplot object) to change the
 appearance of the axis tick marks.</p></li>
 </ul>
-    <h3>Customize plot background</h3>
-    <ul>
+
+
+<h3>Customize plot background</h3>
+
+<ul>
 <li><p><code>plot_bg()</code> returns a ggplot2 theme object that can be added to an
 existing plot (ggplot object) to format the background of the <em>entire</em> plot.</p></li>
 <li><p><code>panel_bg()</code> returns a ggplot2 theme object that can be added to an
@@ -337,24 +366,27 @@ plotting area.</p></li>
 <li><p><code>grid_lines()</code> returns a ggplot2 theme object that can be added to
 an existing plot (ggplot object) to add grid lines to the plot background.</p></li>
 </ul>
-    <h3>Superimpose a function on an existing plot</h3>
-    <ul>
-<li><p><code>overlay_function()</code> is a simple wrapper for <code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/stat_function'>ggplot2::stat_function()</a></code> but
+
+
+<h3>Superimpose a function on an existing plot</h3>
+
+<ul>
+<li><p><code>overlay_function()</code> is a simple wrapper for <code><a href='https://ggplot2.tidyverse.org/reference/stat_function.html'>ggplot2::stat_function()</a></code> but
 with the <code>inherit.aes</code> argument fixed to <code>FALSE</code>. Fixing <code>inherit.aes=FALSE</code>
-will avoid potential errors due to the <code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/aes'>ggplot2::aes()</a></code>thetic mapping used by
+will avoid potential errors due to the <code><a href='https://ggplot2.tidyverse.org/reference/aes.html'>ggplot2::aes()</a></code>thetic mapping used by
 certain <strong>bayesplot</strong> plotting functions.</p></li>
 </ul>
-    
+
+
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='theme_default.html'>theme_default()</a></code> for the default ggplot theme used by
 <strong>bayesplot</strong>.</p></div>
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"gray"</span>)
 <span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='example-data.html'>example_mcmc_draws</a></span>(<span class='kw'>chains</span> <span class='kw'>=</span> <span class='fl'>1</span>)
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/dim'>dim</a></span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; [1] 250   4</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/colnames'>colnames</a></span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; [1] "alpha"   "sigma"   "beta[1]" "beta[2]"</div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/base/dim.html'>dim</a></span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; [1] 250   4</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; [1] "alpha"   "sigma"   "beta[1]" "beta[2]"</div><div class='input'>
 
 <span class='co'>###################################</span>
 <span class='co'>### vertical &amp; horizontal lines ###</span>
@@ -363,28 +395,30 @@ certain <strong>bayesplot</strong> plotting functions.</p></li>
 <span class='co'># vertical line at zero (with some optional styling)</span>
 <span class='no'>p</span> + <span class='fu'>vline_0</span>()</div><div class='img'><img src='bayesplot-helpers-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='no'>p</span> + <span class='fu'>vline_0</span>(<span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>0.25</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"darkgray"</span>, <span class='kw'>linetype</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='img'><img src='bayesplot-helpers-3.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># vertical line(s) at specified values</span>
-<span class='no'>v</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(-<span class='fl'>0.5</span>, <span class='fl'>0</span>, <span class='fl'>0.5</span>)
+<span class='no'>v</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(-<span class='fl'>0.5</span>, <span class='fl'>0</span>, <span class='fl'>0.5</span>)
 <span class='no'>p</span> + <span class='fu'>vline_at</span>(<span class='no'>v</span>, <span class='kw'>linetype</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>0.25</span>)</div><div class='img'><img src='bayesplot-helpers-4.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='no'>my_lines</span> <span class='kw'>&lt;-</span> <span class='fu'>vline_at</span>(<span class='no'>v</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.25</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>0.75</span> * <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>1</span>),
-                     <span class='kw'>color</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"maroon"</span>, <span class='st'>"skyblue"</span>, <span class='st'>"violet"</span>))
+<span class='no'>my_lines</span> <span class='kw'>&lt;-</span> <span class='fu'>vline_at</span>(<span class='no'>v</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.25</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>0.75</span> * <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>1</span>),
+                     <span class='kw'>color</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"maroon"</span>, <span class='st'>"skyblue"</span>, <span class='st'>"violet"</span>))
 <span class='no'>p</span> + <span class='no'>my_lines</span></div><div class='img'><img src='bayesplot-helpers-5.png' alt='' width='700' height='433' /></div><div class='input'>
-</div><div class='input'><span class='co'># add vertical line(s) at computed values</span>
+<span class='co'># \donttest{</span>
+<span class='co'># add vertical line(s) at computed values</span>
 <span class='co'># (three ways of getting lines at column means)</span>
 <span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"brightblue"</span>)
 <span class='no'>p</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='MCMC-intervals.html'>mcmc_intervals</a></span>(<span class='no'>x</span>, <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='st'>"beta"</span>)
 <span class='no'>p</span> + <span class='fu'>vline_at</span>(<span class='no'>x</span>[, <span class='fl'>3</span>:<span class='fl'>4</span>], <span class='no'>colMeans</span>)</div><div class='img'><img src='bayesplot-helpers-6.png' alt='' width='700' height='433' /></div><div class='input'><span class='no'>p</span> + <span class='fu'>vline_at</span>(<span class='no'>x</span>[, <span class='fl'>3</span>:<span class='fl'>4</span>], <span class='st'>"colMeans"</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"darkgray"</span>,
-             <span class='kw'>lty</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>0.25</span>)</div><div class='img'><img src='bayesplot-helpers-7.png' alt='' width='700' height='433' /></div><div class='input'><span class='no'>p</span> + <span class='fu'>vline_at</span>(<span class='no'>x</span>[, <span class='fl'>3</span>:<span class='fl'>4</span>], <span class='kw'>function</span>(<span class='no'>a</span>) <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/apply'>apply</a></span>(<span class='no'>a</span>, <span class='fl'>2</span>, <span class='no'>mean</span>),
+             <span class='kw'>lty</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>0.25</span>)</div><div class='img'><img src='bayesplot-helpers-7.png' alt='' width='700' height='433' /></div><div class='input'><span class='no'>p</span> + <span class='fu'>vline_at</span>(<span class='no'>x</span>[, <span class='fl'>3</span>:<span class='fl'>4</span>], <span class='kw'>function</span>(<span class='no'>a</span>) <span class='fu'><a href='https://rdrr.io/r/base/apply.html'>apply</a></span>(<span class='no'>a</span>, <span class='fl'>2</span>, <span class='no'>mean</span>),
              <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"orange"</span>,
-             <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.1</span>)</div><div class='img'><img src='bayesplot-helpers-8.png' alt='' width='700' height='433' /></div><div class='input'>
+             <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.1</span>)</div><div class='img'><img src='bayesplot-helpers-8.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># }</span>
+
 <span class='co'># using the lbub function to get interval lower and upper bounds (lb, ub)</span>
 <span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"pink"</span>)
-<span class='no'>parsed</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>ggplot2</span><span class='kw ns'>::</span><span class='no'><a href='https://www.rdocumentation.org/packages/ggplot2/topics/labellers'>label_parsed</a></span>
+<span class='no'>parsed</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>ggplot2</span><span class='kw ns'>::</span><span class='no'><a href='https://ggplot2.tidyverse.org/reference/labellers.html'>label_parsed</a></span>
 <span class='no'>p2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='MCMC-distributions.html'>mcmc_hist</a></span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='st'>"beta[1]"</span>, <span class='kw'>binwidth</span> <span class='kw'>=</span> <span class='fl'>1</span>/<span class='fl'>20</span>,
-                <span class='kw'>facet_args</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>labeller</span> <span class='kw'>=</span> <span class='no'>parsed</span>))
+                <span class='kw'>facet_args</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>labeller</span> <span class='kw'>=</span> <span class='no'>parsed</span>))
 (<span class='no'>p2</span> <span class='kw'>&lt;-</span> <span class='no'>p2</span> + <span class='fu'>facet_text</span>(<span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>16</span>))</div><div class='img'><img src='bayesplot-helpers-9.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='no'>b1</span> <span class='kw'>&lt;-</span> <span class='no'>x</span>[, <span class='st'>"beta[1]"</span>]
 <span class='no'>p2</span> + <span class='fu'>vline_at</span>(<span class='no'>b1</span>, <span class='kw'>fun</span> <span class='kw'>=</span> <span class='fu'>lbub</span>(<span class='fl'>0.8</span>), <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"gray20"</span>,
-              <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>2</span> * <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>.5</span>,<span class='fl'>1</span>), <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.75</span>)</div><div class='img'><img src='bayesplot-helpers-10.png' alt='' width='700' height='433' /></div><div class='input'><span class='no'>p2</span> + <span class='fu'>vline_at</span>(<span class='no'>b1</span>, <span class='fu'>lbub</span>(<span class='fl'>0.8</span>, <span class='kw'>med</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>), <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"gray20"</span>,
+              <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>2</span> * <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>.5</span>,<span class='fl'>1</span>), <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.75</span>)</div><div class='img'><img src='bayesplot-helpers-10.png' alt='' width='700' height='433' /></div><div class='input'><span class='no'>p2</span> + <span class='fu'>vline_at</span>(<span class='no'>b1</span>, <span class='fu'>lbub</span>(<span class='fl'>0.8</span>, <span class='kw'>med</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>), <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"gray20"</span>,
               <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.75</span>)</div><div class='img'><img src='bayesplot-helpers-11.png' alt='' width='700' height='433' /></div><div class='input'>
 
 <span class='co'>##########################</span>
@@ -398,26 +432,28 @@ certain <strong>bayesplot</strong> plotting functions.</p></li>
 <span class='no'>p3</span> +
  <span class='fu'>legend_none</span>() +
  <span class='fu'>xaxis_title</span>(<span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>13</span>, <span class='kw'>family</span> <span class='kw'>=</span> <span class='st'>"sans"</span>) +
- <span class='kw pkg'>ggplot2</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/ggplot2/topics/labs'>xlab</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/expression'>expression</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/grDevices/topics/plotmath'>italic</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/logical'>T</a></span>(<span class='no'>y</span>)) <span class='kw'>==</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/median'>median</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/grDevices/topics/plotmath'>italic</a></span>(<span class='no'>y</span>))))</div><div class='img'><img src='bayesplot-helpers-13.png' alt='' width='700' height='433' /></div><div class='input'>
+ <span class='kw pkg'>ggplot2</span><span class='kw ns'>::</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>xlab</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/expression.html'>expression</a></span>(<span class='fu'><a href='https://rdrr.io/r/grDevices/plotmath.html'>italic</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/logical.html'>T</a></span>(<span class='no'>y</span>)) <span class='kw'>==</span> <span class='fu'><a href='https://rdrr.io/r/stats/median.html'>median</a></span>(<span class='fu'><a href='https://rdrr.io/r/grDevices/plotmath.html'>italic</a></span>(<span class='no'>y</span>))))</div><div class='img'><img src='bayesplot-helpers-13.png' alt='' width='700' height='433' /></div><div class='input'>
 
 <span class='co'>################################</span>
 <span class='co'>### format axis &amp; facet text ###</span>
 <span class='co'>################################</span>
 <span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"gray"</span>)
-<span class='no'>p4</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='MCMC-traces.html'>mcmc_trace</a></span>(<span class='fu'><a href='example-data.html'>example_mcmc_draws</a></span>(), <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"alpha"</span>, <span class='st'>"sigma"</span>))
+<span class='no'>p4</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='MCMC-traces.html'>mcmc_trace</a></span>(<span class='fu'><a href='example-data.html'>example_mcmc_draws</a></span>(), <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"alpha"</span>, <span class='st'>"sigma"</span>))
 
 <span class='no'>myfacets</span> <span class='kw'>&lt;-</span>
  <span class='fu'>facet_bg</span>(<span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>"gray30"</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='fl'>NA</span>) +
  <span class='fu'>facet_text</span>(<span class='kw'>face</span> <span class='kw'>=</span> <span class='st'>"bold"</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"skyblue"</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>14</span>)
 <span class='no'>p4</span> + <span class='no'>myfacets</span></div><div class='img'><img src='bayesplot-helpers-14.png' alt='' width='700' height='433' /></div><div class='input'>
-</div><div class='input'><span class='co'>##########################</span>
+<span class='co'># \donttest{</span>
+<span class='co'>##########################</span>
 <span class='co'>### control tick marks ###</span>
 <span class='co'>##########################</span>
 <span class='no'>p4</span> +
  <span class='no'>myfacets</span> +
  <span class='fu'>yaxis_text</span>(<span class='fl'>FALSE</span>) +
  <span class='fu'>yaxis_ticks</span>(<span class='fl'>FALSE</span>) +
- <span class='fu'>xaxis_ticks</span>(<span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"skyblue"</span>)</div><div class='img'><img src='bayesplot-helpers-15.png' alt='' width='700' height='433' /></div><div class='input'>
+ <span class='fu'>xaxis_ticks</span>(<span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"skyblue"</span>)</div><div class='img'><img src='bayesplot-helpers-15.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># }</span>
+
 <span class='co'>##############################</span>
 <span class='co'>### change plot background ###</span>
 <span class='co'>##############################</span>
@@ -429,12 +465,14 @@ certain <strong>bayesplot</strong> plotting functions.</p></li>
 <span class='fu'><a href='PPC-scatterplots.html'>ppc_scatter_avg</a></span>(<span class='no'>y</span>, <span class='no'>yrep</span>) + <span class='fu'>panel_bg</span>(<span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>"gray90"</span>)</div><div class='img'><img src='bayesplot-helpers-17.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='PPC-scatterplots.html'>ppc_scatter_avg</a></span>(<span class='no'>y</span>, <span class='no'>yrep</span>) + <span class='fu'>plot_bg</span>(<span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>"gray90"</span>)</div><div class='img'><img src='bayesplot-helpers-18.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"yellow"</span>)
 <span class='no'>p5</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='PPC-scatterplots.html'>ppc_scatter_avg</a></span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>1</span>)
-<span class='no'>p5</span> + <span class='fu'>panel_bg</span>(<span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>"gray20"</span>) + <span class='fu'>grid_lines</span>(<span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"white"</span>)</div><div class='img'><img src='bayesplot-helpers-19.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"purple"</span>)
+<span class='no'>p5</span> + <span class='fu'>panel_bg</span>(<span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>"gray20"</span>) + <span class='fu'>grid_lines</span>(<span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"white"</span>)</div><div class='img'><img src='bayesplot-helpers-19.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># \donttest{</span>
+<span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"purple"</span>)
 <span class='fu'><a href='PPC-distributions.html'>ppc_dens_overlay</a></span>(<span class='no'>y</span>, <span class='no'>yrep</span>[<span class='fl'>1</span>:<span class='fl'>30</span>, ]) +
  <span class='fu'>legend_text</span>(<span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>14</span>) +
- <span class='fu'>legend_move</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>0.75</span>, <span class='fl'>0.5</span>)) +
+ <span class='fu'>legend_move</span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.75</span>, <span class='fl'>0.5</span>)) +
  <span class='fu'>plot_bg</span>(<span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>"gray90"</span>) +
- <span class='fu'>panel_bg</span>(<span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"black"</span>, <span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>"gray99"</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>3</span>)</div><div class='img'><img src='bayesplot-helpers-20.png' alt='' width='700' height='433' /></div><div class='input'>
+ <span class='fu'>panel_bg</span>(<span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"black"</span>, <span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>"gray99"</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>3</span>)</div><div class='img'><img src='bayesplot-helpers-20.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># }</span>
+
 
 <span class='co'>###############################################</span>
 <span class='co'>### superimpose a function on existing plot ###</span>
@@ -442,10 +480,10 @@ certain <strong>bayesplot</strong> plotting functions.</p></li>
 <span class='co'># compare posterior of beta[1] to Gaussian with same posterior mean</span>
 <span class='co'># and sd as beta[1]</span>
 <span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='example-data.html'>example_mcmc_draws</a></span>(<span class='kw'>chains</span> <span class='kw'>=</span> <span class='fl'>4</span>)
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/dim'>dim</a></span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; [1] 250   4   4</div><div class='input'><span class='no'>purple_gaussian</span> <span class='kw'>&lt;-</span>
+<span class='fu'><a href='https://rdrr.io/r/base/dim.html'>dim</a></span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; [1] 250   4   4</div><div class='input'><span class='no'>purple_gaussian</span> <span class='kw'>&lt;-</span>
   <span class='fu'>overlay_function</span>(
     <span class='kw'>fun</span> <span class='kw'>=</span> <span class='no'>dnorm</span>,
-    <span class='kw'>args</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/mean'>mean</a></span>(<span class='no'>x</span>[,, <span class='st'>"beta[1]"</span>]), <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/sd'>sd</a></span>(<span class='no'>x</span>[,, <span class='st'>"beta[1]"</span>])),
+    <span class='kw'>args</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span>(<span class='no'>x</span>[,, <span class='st'>"beta[1]"</span>]), <span class='fu'><a href='https://rdrr.io/r/stats/sd.html'>sd</a></span>(<span class='no'>x</span>[,, <span class='st'>"beta[1]"</span>])),
     <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"purple"</span>,
     <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>2</span>
   )
@@ -454,22 +492,13 @@ certain <strong>bayesplot</strong> plotting functions.</p></li>
 <span class='fu'><a href='MCMC-distributions.html'>mcmc_hist</a></span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='st'>"beta[1]"</span>) + <span class='no'>purple_gaussian</span></div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='bayesplot-helpers-21.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='MCMC-distributions.html'>mcmc_dens</a></span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='st'>"beta[1]"</span>) + <span class='no'>purple_gaussian</span></div><div class='img'><img src='bayesplot-helpers-22.png' alt='' width='700' height='433' /></div><div class='input'>
 </div></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#value">Value</a></li>
-
-      <li><a href="#details">Details</a></li>
-
-      <li><a href="#see-also">See also</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
+
 
       <footer>
       <div class="copyright">
@@ -477,8 +506,9 @@ certain <strong>bayesplot</strong> plotting functions.</p></li>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
+
       </footer>
    </div>
 
@@ -501,6 +531,8 @@ certain <strong>bayesplot</strong> plotting functions.</p></li>
 </script>
 
 
+
   </body>
 </html>
+
 

@@ -8,21 +8,36 @@
 
 <title>Diagnostic plots for the No-U-Turn-Sampler (NUTS) — MCMC-nuts • bayesplot</title>
 
-<!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
-<!-- Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+<!-- favicons -->
+<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<!-- jquery -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+<!-- Bootstrap -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+<!-- headroom.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -31,19 +46,18 @@
 
 <!-- docsearch -->
 <script src="../docsearch.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.3/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous" />
 <link href="../docsearch.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
 
 
-<meta property="og:title" content="Diagnostic plots for the No-U-Turn-Sampler (NUTS) — MCMC-nuts" />
 
+<meta property="og:title" content="Diagnostic plots for the No-U-Turn-Sampler (NUTS) — MCMC-nuts" />
 <meta property="og:description" content="Diagnostic plots for the No-U-Turn-Sampler (NUTS), the default MCMC algorithm
 used by Stan. See the Plot Descriptions section,
 below." />
-
 <meta property="og:image" content="https://mc-stan.org/bayesplot/logo.png" />
-<meta name="twitter:card" content="summary" />
+
 
 
 
@@ -57,9 +71,10 @@ below." />
 <![endif]-->
 
 
+
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -73,7 +88,7 @@ below." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bayesplot</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.7.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.7.2</span>
       </span>
     </div>
 
@@ -99,6 +114,9 @@ below." />
       <a href="https://mc-stan.org/rstan">rstan</a>
     </li>
     <li>
+      <a href="https://mc-stan.org/cmdstanr">cmdstanr</a>
+    </li>
+    <li>
       <a href="https://mc-stan.org/rstanarm">rstanarm</a>
     </li>
     <li>
@@ -119,7 +137,6 @@ below." />
   <a href="https://mc-stan.org">Stan</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://twitter.com/mcmc_stan">
@@ -141,7 +158,7 @@ below." />
 </li>
       </ul>
       
-      <form class="navbar-form navbar-right" role="search">
+      <form class="navbar-form navbar-right hidden-xs hidden-sm" role="search">
         <div class="form-group">
           <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
         </div>
@@ -152,22 +169,21 @@ below." />
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Diagnostic plots for the No-U-Turn-Sampler (NUTS)</h1>
-    
+    <small class="dont-index">Source: <a href='https://github.com/stan-dev/bayesplot/blob/master/R/mcmc-diagnostics-nuts.R'><code>R/mcmc-diagnostics-nuts.R</code></a></small>
     <div class="hidden name"><code>MCMC-nuts.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    
     <p>Diagnostic plots for the No-U-Turn-Sampler (NUTS), the default MCMC algorithm
 used by <a href='https://mc-stan.org'>Stan</a>. See the <strong>Plot Descriptions</strong> section,
 below.</p>
-    
     </div>
 
     <pre class="usage"><span class='fu'>mcmc_nuts_acceptance</span>(<span class='no'>x</span>, <span class='no'>lp</span>, <span class='kw'>chain</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>, <span class='kw'>binwidth</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
@@ -178,9 +194,8 @@ below.</p>
 
 <span class='fu'>mcmc_nuts_treedepth</span>(<span class='no'>x</span>, <span class='no'>lp</span>, <span class='kw'>chain</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)
 
-<span class='fu'>mcmc_nuts_energy</span>(<span class='no'>x</span>, <span class='no'>...</span>, <span class='kw'>binwidth</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.5</span>,
-  <span class='kw'>merge_chains</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
-    
+<span class='fu'>mcmc_nuts_energy</span>(<span class='no'>x</span>, <span class='no'>...</span>, <span class='kw'>binwidth</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>merge_chains</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -212,7 +227,7 @@ is not used by <code>mcmc_nuts_energy()</code>.</p></td>
     </tr>
     <tr>
       <th>binwidth</th>
-      <td><p>An optional value passed to <code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_histogram'>ggplot2::geom_histogram()</a></code> to
+      <td><p>An optional value passed to <code><a href='https://ggplot2.tidyverse.org/reference/geom_histogram.html'>ggplot2::geom_histogram()</a></code> to
 override the default binwidth.</p></td>
     </tr>
     <tr>
@@ -227,17 +242,17 @@ merged or displayed separately? The default is <code>FALSE</code>, i.e., to show
 the chains separately.</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A gtable object (the result of calling
-<code><a href='https://www.rdocumentation.org/packages/gridExtra/topics/arrangeGrob'>gridExtra::arrangeGrob()</a></code>) created from several ggplot objects,
+<code><a href='https://rdrr.io/pkg/gridExtra/man/arrangeGrob.html'>gridExtra::arrangeGrob()</a></code>) created from several ggplot objects,
 except for <code>mcmc_nuts_energy()</code>, which returns a ggplot object.</p>
-    
     <h2 class="hasAnchor" id="quick-definitions"><a class="anchor" href="#quick-definitions"></a>Quick Definitions</h2>
 
     
-    <p>For more details see Stan Development Team (2016) and Betancourt (2017).</p><ul>
+
+<p>For more details see Stan Development Team (2016) and Betancourt (2017).</p><ul>
 <li><p><code>accept_stat__</code>: the average acceptance probabilities of all
 possible samples in the proposed tree.</p></li>
 <li><p><code>divergent__</code>: the number of leapfrog transitions with diverging
@@ -251,11 +266,12 @@ simulation.</p></li>
 <li><p><code>energy__</code>: the value of the Hamiltonian (up to an additive
 constant) at each iteration.</p></li>
 </ul>
-    
+
     <h2 class="hasAnchor" id="plot-descriptions"><a class="anchor" href="#plot-descriptions"></a>Plot Descriptions</h2>
 
     
-    <dl class='dl-horizontal'>
+
+<dl'>
 <dt><code>mcmc_nuts_acceptance()</code></dt><dd><p>Three plots:
 <ul>
 <li><p>Histogram of <code>accept_stat__</code> with vertical lines indicating the
@@ -264,27 +280,32 @@ mean (solid line) and median (dashed line).</p></li>
 lines indicating the mean (solid line) and median (dashed line).</p></li>
 <li><p>Scatterplot of <code>accept_stat__</code> vs <code>lp__</code>.</p></li>
 </ul></p></dd>
-    <dt><code>mcmc_nuts_divergence()</code></dt><dd><p>Two plots:
+
+<dt><code>mcmc_nuts_divergence()</code></dt><dd><p>Two plots:
 <ul>
 <li><p>Violin plots of <code>lp__|divergent__=1</code> and <code>lp__|divergent__=0</code>.</p></li>
 <li><p>Violin plots of <code>accept_stat__|divergent__=1</code> and
 <code>accept_stat__|divergent__=0</code>.</p></li>
 </ul></p></dd>
-    <dt><code>mcmc_nuts_stepsize()</code></dt><dd><p>Two plots:
+
+<dt><code>mcmc_nuts_stepsize()</code></dt><dd><p>Two plots:
 <ul>
 <li><p>Violin plots of <code>lp__</code> by chain ordered by <code>stepsize__</code> value.</p></li>
 <li><p>Violin plots of <code>accept_stat__</code> by chain ordered by <code>stepsize__</code> value.</p></li>
 </ul></p></dd>
-    <dt><code>mcmc_nuts_treedepth()</code></dt><dd><p>Three plots:
+
+<dt><code>mcmc_nuts_treedepth()</code></dt><dd><p>Three plots:
 <ul>
 <li><p>Violin plots of <code>lp__</code> by value of <code>treedepth__</code>.</p></li>
 <li><p>Violin plots of <code>accept_stat__</code> by value of <code>treedepth__</code>.</p></li>
 <li><p>Histogram of <code>treedepth__</code>.</p></li>
 </ul></p></dd>
-    <dt><code>mcmc_nuts_energy()</code></dt><dd><p>Overlaid histograms showing <code>energy__</code> vs the change in
+
+<dt><code>mcmc_nuts_energy()</code></dt><dd><p>Overlaid histograms showing <code>energy__</code> vs the change in
 <code>energy__</code>. See Betancourt (2016) for details.</p></dd>
+
 </dl>
-    
+
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <p>Betancourt, M. (2017). A conceptual introduction to Hamiltonian Monte Carlo.
@@ -297,10 +318,10 @@ adaptively setting path lengths in Hamiltonian Monte Carlo.
 <p>Stan Development Team.
 <em>Stan Modeling Language Users Guide and Reference Manual.</em>
 <a href='https://mc-stan.org/users/documentation/'>https://mc-stan.org/users/documentation/</a></p>
-    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><ul>
+    <div class='dont-index'>
+<ul>
 <li><p>The <a href='https://mc-stan.org/bayesplot/articles/visual-mcmc-diagnostics.html'>Visual MCMC Diagnostics</a>
 vignette.</p></li>
 <li><p>Several other plotting functions are not NUTS-specific but take optional
@@ -314,21 +335,24 @@ corresponding to divergences.</p></li>
 <li><p><code><a href='MCMC-scatterplots.html'>mcmc_pairs()</a></code>: change the color/size/shape of points
 corresponding divergences and/or max treedepth saturation.</p></li>
 </ul></li>
-</ul></div>
-    <div class='dont-index'><p>Other MCMC: <code><a href='MCMC-combos.html'>MCMC-combos</a></code>,
-  <code><a href='MCMC-diagnostics.html'>MCMC-diagnostics</a></code>,
-  <code><a href='MCMC-distributions.html'>MCMC-distributions</a></code>,
-  <code><a href='MCMC-intervals.html'>MCMC-intervals</a></code>,
-  <code><a href='MCMC-overview.html'>MCMC-overview</a></code>, <code><a href='MCMC-parcoord.html'>MCMC-parcoord</a></code>,
-  <code><a href='MCMC-recover.html'>MCMC-recover</a></code>,
-  <code><a href='MCMC-scatterplots.html'>MCMC-scatterplots</a></code>,
-  <code><a href='MCMC-traces.html'>MCMC-traces</a></code></p></div>
-    
+</ul>
+
+<p>Other MCMC: 
+<code><a href='MCMC-combos.html'>MCMC-combos</a></code>,
+<code><a href='MCMC-diagnostics.html'>MCMC-diagnostics</a></code>,
+<code><a href='MCMC-distributions.html'>MCMC-distributions</a></code>,
+<code><a href='MCMC-intervals.html'>MCMC-intervals</a></code>,
+<code><a href='MCMC-overview.html'>MCMC-overview</a></code>,
+<code><a href='MCMC-parcoord.html'>MCMC-parcoord</a></code>,
+<code><a href='MCMC-recover.html'>MCMC-recover</a></code>,
+<code><a href='MCMC-scatterplots.html'>MCMC-scatterplots</a></code>,
+<code><a href='MCMC-traces.html'>MCMC-traces</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>ggplot2</span>)
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>rstanarm</span>)
-<span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/rstanarm/topics/stan_glm'>stan_glm</a></span>(<span class='no'>mpg</span> ~ <span class='no'>wt</span> + <span class='no'>am</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>mtcars</span>, <span class='kw'>iter</span> <span class='kw'>=</span> <span class='fl'>1000</span>, <span class='kw'>refresh</span> <span class='kw'>=</span> <span class='fl'>0</span>)
+    <pre class="examples"><div class='input'><span class='co'># \dontrun{</span>
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>ggplot2</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>rstanarm</span>)
+<span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://mc-stan.org/rstanarm/reference/stan_glm.html'>stan_glm</a></span>(<span class='no'>mpg</span> ~ <span class='no'>wt</span> + <span class='no'>am</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>mtcars</span>, <span class='kw'>iter</span> <span class='kw'>=</span> <span class='fl'>1000</span>, <span class='kw'>refresh</span> <span class='kw'>=</span> <span class='fl'>0</span>)
 <span class='no'>np</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='bayesplot-extractors.html'>nuts_params</a></span>(<span class='no'>fit</span>)
 <span class='no'>lp</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='bayesplot-extractors.html'>log_posterior</a></span>(<span class='no'>fit</span>)
 
@@ -337,31 +361,19 @@ corresponding divergences and/or max treedepth saturation.</p></li>
 <span class='fu'>mcmc_nuts_divergence</span>(<span class='no'>np</span>, <span class='no'>lp</span>)</div><div class='img'><img src='MCMC-nuts-3.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>mcmc_nuts_stepsize</span>(<span class='no'>np</span>, <span class='no'>lp</span>)</div><div class='img'><img src='MCMC-nuts-4.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>mcmc_nuts_treedepth</span>(<span class='no'>np</span>, <span class='no'>lp</span>)</div><div class='img'><img src='MCMC-nuts-5.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"red"</span>)
 <span class='fu'>mcmc_nuts_energy</span>(<span class='no'>np</span>)</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='MCMC-nuts-6.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>mcmc_nuts_energy</span>(<span class='no'>np</span>, <span class='kw'>merge_chains</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>binwidth</span> <span class='kw'>=</span> <span class='fl'>.15</span>)</div><div class='img'><img src='MCMC-nuts-7.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>mcmc_nuts_energy</span>(<span class='no'>np</span>) +
- <span class='fu'><a href='https://www.rdocumentation.org/packages/ggplot2/topics/facet_wrap'>facet_wrap</a></span>(~ <span class='no'>Chain</span>, <span class='kw'>nrow</span> <span class='kw'>=</span> <span class='fl'>1</span>) +
- <span class='fu'><a href='https://www.rdocumentation.org/packages/ggplot2/topics/coord_fixed'>coord_fixed</a></span>(<span class='kw'>ratio</span> <span class='kw'>=</span> <span class='fl'>150</span>) +
- <span class='fu'><a href='https://www.rdocumentation.org/packages/ggplot2/topics/labs'>ggtitle</a></span>(<span class='st'>"NUTS Energy Diagnostic"</span>)</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='MCMC-nuts-8.png' alt='' width='700' height='433' /></div><div class='input'>
+ <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/facet_wrap.html'>facet_wrap</a></span>(~ <span class='no'>Chain</span>, <span class='kw'>nrow</span> <span class='kw'>=</span> <span class='fl'>1</span>) +
+ <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/coord_fixed.html'>coord_fixed</a></span>(<span class='kw'>ratio</span> <span class='kw'>=</span> <span class='fl'>150</span>) +
+ <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>ggtitle</a></span>(<span class='st'>"NUTS Energy Diagnostic"</span>)</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='MCMC-nuts-8.png' alt='' width='700' height='433' /></div><div class='input'># }
+
 </div></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#value">Value</a></li>
-
-      <li><a href="#quick-definitions">Quick Definitions</a></li>
-
-      <li><a href="#plot-descriptions">Plot Descriptions</a></li>
-
-      <li><a href="#references">References</a></li>
-
-      <li><a href="#see-also">See also</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
+
 
       <footer>
       <div class="copyright">
@@ -369,8 +381,9 @@ corresponding divergences and/or max treedepth saturation.</p></li>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
+
       </footer>
    </div>
 
@@ -393,6 +406,8 @@ corresponding divergences and/or max treedepth saturation.</p></li>
 </script>
 
 
+
   </body>
 </html>
+
 

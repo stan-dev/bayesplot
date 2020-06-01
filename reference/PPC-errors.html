@@ -8,21 +8,36 @@
 
 <title>PPC errors — PPC-errors • bayesplot</title>
 
-<!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
-<!-- Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+<!-- favicons -->
+<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<!-- jquery -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+<!-- Bootstrap -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+<!-- headroom.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -31,18 +46,17 @@
 
 <!-- docsearch -->
 <script src="../docsearch.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.3/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous" />
 <link href="../docsearch.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
 
 
-<meta property="og:title" content="PPC errors — PPC-errors" />
 
+<meta property="og:title" content="PPC errors — PPC-errors" />
 <meta property="og:description" content="Various plots of predictive errors y - yrep. See the
 Details and Plot Descriptions sections, below." />
-
 <meta property="og:image" content="https://mc-stan.org/bayesplot/logo.png" />
-<meta name="twitter:card" content="summary" />
+
 
 
 
@@ -56,9 +70,10 @@ Details and Plot Descriptions sections, below." />
 <![endif]-->
 
 
+
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -72,7 +87,7 @@ Details and Plot Descriptions sections, below." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bayesplot</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.7.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.7.2</span>
       </span>
     </div>
 
@@ -98,6 +113,9 @@ Details and Plot Descriptions sections, below." />
       <a href="https://mc-stan.org/rstan">rstan</a>
     </li>
     <li>
+      <a href="https://mc-stan.org/cmdstanr">cmdstanr</a>
+    </li>
+    <li>
       <a href="https://mc-stan.org/rstanarm">rstanarm</a>
     </li>
     <li>
@@ -118,7 +136,6 @@ Details and Plot Descriptions sections, below." />
   <a href="https://mc-stan.org">Stan</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://twitter.com/mcmc_stan">
@@ -140,7 +157,7 @@ Details and Plot Descriptions sections, below." />
 </li>
       </ul>
       
-      <form class="navbar-form navbar-right" role="search">
+      <form class="navbar-form navbar-right hidden-xs hidden-sm" role="search">
         <div class="form-group">
           <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
         </div>
@@ -151,28 +168,33 @@ Details and Plot Descriptions sections, below." />
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>PPC errors</h1>
-    
+    <small class="dont-index">Source: <a href='https://github.com/stan-dev/bayesplot/blob/master/R/ppc-errors.R'><code>R/ppc-errors.R</code></a></small>
     <div class="hidden name"><code>PPC-errors.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    
     <p>Various plots of predictive errors <code>y - yrep</code>. See the
 <strong>Details</strong> and <strong>Plot Descriptions</strong> sections, below.</p>
-    
     </div>
 
-    <pre class="usage"><span class='fu'>ppc_error_hist</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='no'>...</span>, <span class='kw'>binwidth</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>breaks</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>freq</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+    <pre class="usage"><span class='fu'>ppc_error_hist</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='no'>...</span>, <span class='kw'>binwidth</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>breaks</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>freq</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
-<span class='fu'>ppc_error_hist_grouped</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='no'>group</span>, <span class='no'>...</span>, <span class='kw'>binwidth</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>breaks</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>freq</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='fu'>ppc_error_hist_grouped</span>(
+  <span class='no'>y</span>,
+  <span class='no'>yrep</span>,
+  <span class='no'>group</span>,
+  <span class='no'>...</span>,
+  <span class='kw'>binwidth</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>breaks</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>freq</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
+)
 
 <span class='fu'>ppc_error_scatter</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='no'>...</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>2.5</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.8</span>)
 
@@ -181,7 +203,7 @@ Details and Plot Descriptions sections, below." />
 <span class='fu'>ppc_error_scatter_avg_vs_x</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='no'>x</span>, <span class='no'>...</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>2.5</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.8</span>)
 
 <span class='fu'>ppc_error_binned</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='no'>...</span>, <span class='kw'>bins</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.25</span>)</pre>
-    
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -204,12 +226,12 @@ sense. See <strong>Details</strong> for additional instructions.</p></td>
     </tr>
     <tr>
       <th>binwidth</th>
-      <td><p>Passed to <code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_histogram'>ggplot2::geom_histogram()</a></code> to override
+      <td><p>Passed to <code><a href='https://ggplot2.tidyverse.org/reference/geom_histogram.html'>ggplot2::geom_histogram()</a></code> to override
 the default binwidth.</p></td>
     </tr>
     <tr>
       <th>breaks</th>
-      <td><p>Passed to <code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_histogram'>ggplot2::geom_histogram()</a></code> as an
+      <td><p>Passed to <code><a href='https://ggplot2.tidyverse.org/reference/geom_histogram.html'>ggplot2::geom_histogram()</a></code> as an
 alternative to <code>binwidth</code>.</p></td>
     </tr>
     <tr>
@@ -229,7 +251,7 @@ pertaining to the corresponding value of <code>y</code>.</p></td>
     <tr>
       <th>size, alpha</th>
       <td><p>For scatterplots, arguments passed to
-<code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_point'>ggplot2::geom_point()</a></code> to control the appearance of the points. For the
+<code><a href='https://ggplot2.tidyverse.org/reference/geom_point.html'>ggplot2::geom_point()</a></code> to control the appearance of the points. For the
 binned error plot, arguments controlling the size of the outline and
 opacity of the shaded region indicating the 2-SE bounds.</p></td>
     </tr>
@@ -243,11 +265,10 @@ variable.</p></td>
       <td><p>For <code>ppc_error_binned()</code>, the number of bins to use (approximately).</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A ggplot object that can be further customized using the <strong>ggplot2</strong> package.</p>
-    
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>All of these functions (aside from the <code>*_scatter_avg</code> functions)
@@ -258,11 +279,11 @@ draws (rows). See <strong>Examples</strong>, below.</p>
 to generate binned error plots. Bernoulli data can be input as a vector of 0s
 and 1s, whereas for binomial data <code>y</code> and <code>yrep</code> should contain "success"
 proportions (not counts). See the <strong>Examples</strong> section, below.</p>
-    
     <h2 class="hasAnchor" id="plot-descriptions"><a class="anchor" href="#plot-descriptions"></a>Plot descriptions</h2>
 
     
-    <dl class='dl-horizontal'>
+
+<dl'>
 <dt><code>ppc_error_hist()</code></dt><dd><p>A separate histogram is plotted for the predictive errors computed from
 <code>y</code> and each dataset (row) in <code>yrep</code>. For this plot <code>yrep</code>
 should have only a small number of rows.</p></dd>
@@ -282,26 +303,27 @@ predictive distribution.</p></dd>
 \(y\)-axis and a a predictor variable <code>x</code> is plotted on the
 \(x\)-axis.</p></dd>
 <dt><code>ppc_error_binned()</code></dt><dd><p>Intended for use with binomial data. A separate binned error plot (similar
-to <code><a href='https://www.rdocumentation.org/packages/arm/topics/binnedplot'>arm::binnedplot()</a></code>) is generated for each dataset (row) in <code>yrep</code>. For
+to <code><a href='https://rdrr.io/pkg/arm/man/binnedplot.html'>arm::binnedplot()</a></code>) is generated for each dataset (row) in <code>yrep</code>. For
 this plot <code>y</code> and <code>yrep</code> should contain proportions rather than counts,
 and <code>yrep</code> should have only a small number of rows.</p></dd>
+
 </dl>
-    
+
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <p>Gelman, A., Carlin, J. B., Stern, H. S., Dunson, D. B., Vehtari,
 A., and Rubin, D. B. (2013). <em>Bayesian Data Analysis.</em> Chapman &amp; Hall/CRC
 Press, London, third edition. (Ch. 6)</p>
-    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>Other PPCs: <code><a href='PPC-discrete.html'>PPC-discrete</a></code>,
-  <code><a href='PPC-distributions.html'>PPC-distributions</a></code>,
-  <code><a href='PPC-intervals.html'>PPC-intervals</a></code>, <code><a href='PPC-loo.html'>PPC-loo</a></code>,
-  <code><a href='PPC-overview.html'>PPC-overview</a></code>,
-  <code><a href='PPC-scatterplots.html'>PPC-scatterplots</a></code>,
-  <code><a href='PPC-test-statistics.html'>PPC-test-statistics</a></code></p></div>
-    
+    <div class='dont-index'><p>Other PPCs: 
+<code><a href='PPC-discrete.html'>PPC-discrete</a></code>,
+<code><a href='PPC-distributions.html'>PPC-distributions</a></code>,
+<code><a href='PPC-intervals.html'>PPC-intervals</a></code>,
+<code><a href='PPC-loo.html'>PPC-loo</a></code>,
+<code><a href='PPC-overview.html'>PPC-overview</a></code>,
+<code><a href='PPC-scatterplots.html'>PPC-scatterplots</a></code>,
+<code><a href='PPC-test-statistics.html'>PPC-test-statistics</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='example-data.html'>example_y_data</a></span>()
@@ -309,23 +331,25 @@ Press, London, third edition. (Ch. 6)</p>
 <span class='fu'>ppc_error_hist</span>(<span class='no'>y</span>, <span class='no'>yrep</span>[<span class='fl'>1</span>:<span class='fl'>3</span>, ])</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='PPC-errors-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># errors within groups</span>
 <span class='no'>group</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='example-data.html'>example_group_data</a></span>()
-(<span class='no'>p1</span> <span class='kw'>&lt;-</span> <span class='fu'>ppc_error_hist_grouped</span>(<span class='no'>y</span>, <span class='no'>yrep</span>[<span class='fl'>1</span>:<span class='fl'>3</span>, ], <span class='no'>group</span>))</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='PPC-errors-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='no'>p1</span> + <span class='fu'><a href='bayesplot-helpers.html'>yaxis_text</a></span>() <span class='co'># defaults to showing counts on y-axis</span></div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='PPC-errors-3.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/table'>table</a></span>(<span class='no'>group</span>) <span class='co'># more obs in GroupB, can set freq=FALSE to show density on y-axis</span></div><div class='output co'>#&gt; group
+(<span class='no'>p1</span> <span class='kw'>&lt;-</span> <span class='fu'>ppc_error_hist_grouped</span>(<span class='no'>y</span>, <span class='no'>yrep</span>[<span class='fl'>1</span>:<span class='fl'>3</span>, ], <span class='no'>group</span>))</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='PPC-errors-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='no'>p1</span> + <span class='fu'><a href='bayesplot-helpers.html'>yaxis_text</a></span>() <span class='co'># defaults to showing counts on y-axis</span></div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='PPC-errors-3.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># \donttest{</span>
+<span class='fu'><a href='https://rdrr.io/r/base/table.html'>table</a></span>(<span class='no'>group</span>) <span class='co'># more obs in GroupB, can set freq=FALSE to show density on y-axis</span></div><div class='output co'>#&gt; group
 #&gt; GroupA GroupB 
-#&gt;     93    341 </div><div class='input'>(<span class='no'>p2</span> <span class='kw'>&lt;-</span> <span class='fu'>ppc_error_hist_grouped</span>(<span class='no'>y</span>, <span class='no'>yrep</span>[<span class='fl'>1</span>:<span class='fl'>3</span>, ], <span class='no'>group</span>, <span class='kw'>freq</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>))</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='PPC-errors-4.png' alt='' width='700' height='433' /></div><div class='input'><span class='no'>p2</span> + <span class='fu'><a href='bayesplot-helpers.html'>yaxis_text</a></span>()</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='PPC-errors-5.png' alt='' width='700' height='433' /></div><div class='input'>
+#&gt;     93    341 </div><div class='input'>(<span class='no'>p2</span> <span class='kw'>&lt;-</span> <span class='fu'>ppc_error_hist_grouped</span>(<span class='no'>y</span>, <span class='no'>yrep</span>[<span class='fl'>1</span>:<span class='fl'>3</span>, ], <span class='no'>group</span>, <span class='kw'>freq</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>))</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='PPC-errors-4.png' alt='' width='700' height='433' /></div><div class='input'><span class='no'>p2</span> + <span class='fu'><a href='bayesplot-helpers.html'>yaxis_text</a></span>()</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='PPC-errors-5.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># }</span>
+
 <span class='co'># scatterplots</span>
 <span class='fu'>ppc_error_scatter</span>(<span class='no'>y</span>, <span class='no'>yrep</span>[<span class='fl'>10</span>:<span class='fl'>14</span>, ])</div><div class='img'><img src='PPC-errors-6.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>ppc_error_scatter_avg</span>(<span class='no'>y</span>, <span class='no'>yrep</span>)</div><div class='img'><img src='PPC-errors-7.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='example-data.html'>example_x_data</a></span>()
 <span class='fu'>ppc_error_scatter_avg_vs_x</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='no'>x</span>)</div><div class='img'><img src='PPC-errors-8.png' alt='' width='700' height='433' /></div><div class='input'>
-# ppc_error_binned with binomial model from rstanarm
-</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>rstanarm</span>)
-<span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/example'>example</a></span>(<span class='st'>"example_model"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"rstanarm"</span>)</div><div class='output co'>#&gt; 
+<span class='co'># ppc_error_binned with binomial model from rstanarm</span>
+<span class='co'># \dontrun{</span>
+<span class='fu'><a href='https://rdrr.io/r/base/message.html'>suppressPackageStartupMessages</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>rstanarm</span>))
+<span class='fu'><a href='https://rdrr.io/r/base/warning.html'>suppressWarnings</a></span>(<span class='fu'><a href='https://rdrr.io/r/utils/example.html'>example</a></span>(<span class='st'>"example_model"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"rstanarm"</span>))</div><div class='output co'>#&gt; 
 #&gt; exmpl_&gt; example_model &lt;- 
 #&gt; exmpl_+   stan_glmer(cbind(incidence, size - incidence) ~ size + period + (1|herd),
 #&gt; exmpl_+              data = lme4::cbpp, family = binomial, QR = TRUE,
 #&gt; exmpl_+              # this next line is only to keep the example small in size!
-#&gt; exmpl_+              chains = 2, cores = 1, seed = 12345, iter = 500, refresh = 0)</div><div class='output co'>#&gt; <span class='warning'>Warning: Bulk Effective Samples Size (ESS) is too low, indicating posterior means and medians may be unreliable.</span>
-#&gt; <span class='warning'>Running the chains for more iterations may help. See</span>
-#&gt; <span class='warning'>http://mc-stan.org/misc/warnings.html#bulk-ess</span></div><div class='output co'>#&gt; 
+#&gt; exmpl_+              chains = 2, cores = 1, seed = 12345, iter = 1000, refresh = 0)
+#&gt; 
 #&gt; exmpl_&gt; example_model
 #&gt; stan_glmer
 #&gt;  family:       binomial [logit]
@@ -337,48 +361,36 @@ Press, London, third edition. (Ch. 6)</p>
 #&gt; size         0.0    0.0  
 #&gt; period2     -1.0    0.3  
 #&gt; period3     -1.1    0.3  
-#&gt; period4     -1.6    0.4  
+#&gt; period4     -1.6    0.5  
 #&gt; 
 #&gt; Error terms:
 #&gt;  Groups Name        Std.Dev.
-#&gt;  herd   (Intercept) 0.76    
+#&gt;  herd   (Intercept) 0.78    
 #&gt; Num. levels: herd 15 
 #&gt; 
 #&gt; ------
 #&gt; * For help interpreting the printed output see ?print.stanreg
-#&gt; * For info on the priors used see ?prior_summary.stanreg</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/formula'>formula</a></span>(<span class='no'>example_model</span>)</div><div class='output co'>#&gt; cbind(incidence, size - incidence) ~ size + period + (1 | herd)</div><div class='input'>
+#&gt; * For info on the priors used see ?prior_summary.stanreg</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/stats/formula.html'>formula</a></span>(<span class='no'>example_model</span>)</div><div class='output co'>#&gt; cbind(incidence, size - incidence) ~ size + period + (1 | herd)</div><div class='input'>
 <span class='co'># get observed proportion of "successes"</span>
 <span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='no'>example_model</span>$<span class='no'>y</span>  <span class='co'># matrix of "success" and "failure" counts</span>
-<span class='no'>trials</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/colSums'>rowSums</a></span>(<span class='no'>y</span>)
+<span class='no'>trials</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/colSums.html'>rowSums</a></span>(<span class='no'>y</span>)
 <span class='no'>y_prop</span> <span class='kw'>&lt;-</span> <span class='no'>y</span>[, <span class='fl'>1</span>] / <span class='no'>trials</span>  <span class='co'># proportions</span>
 
 <span class='co'># get predicted success proportions</span>
-<span class='no'>yrep</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/rstanarm/topics/posterior_predict.stanreg'>posterior_predict</a></span>(<span class='no'>example_model</span>)
-<span class='no'>yrep_prop</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/sweep'>sweep</a></span>(<span class='no'>yrep</span>, <span class='fl'>2</span>, <span class='no'>trials</span>, <span class='st'>"/"</span>)
+<span class='no'>yrep</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://mc-stan.org/rstanarm/reference/posterior_predict.stanreg.html'>posterior_predict</a></span>(<span class='no'>example_model</span>)
+<span class='no'>yrep_prop</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sweep.html'>sweep</a></span>(<span class='no'>yrep</span>, <span class='fl'>2</span>, <span class='no'>trials</span>, <span class='st'>"/"</span>)
 
-<span class='fu'>ppc_error_binned</span>(<span class='no'>y_prop</span>, <span class='no'>yrep_prop</span>[<span class='fl'>1</span>:<span class='fl'>6</span>, ])</div><div class='img'><img src='PPC-errors-9.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'>ppc_error_binned</span>(<span class='no'>y_prop</span>, <span class='no'>yrep_prop</span>[<span class='fl'>1</span>:<span class='fl'>6</span>, ])</div><div class='img'><img src='PPC-errors-9.png' alt='' width='700' height='433' /></div><div class='input'># }
+
 </div></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#value">Value</a></li>
-
-      <li><a href="#details">Details</a></li>
-
-      <li><a href="#plot-descriptions">Plot descriptions</a></li>
-
-      <li><a href="#references">References</a></li>
-
-      <li><a href="#see-also">See also</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
+
 
       <footer>
       <div class="copyright">
@@ -386,8 +398,9 @@ Press, London, third edition. (Ch. 6)</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
+
       </footer>
    </div>
 
@@ -410,6 +423,8 @@ Press, London, third edition. (Ch. 6)</p>
 </script>
 
 
+
   </body>
 </html>
+
 

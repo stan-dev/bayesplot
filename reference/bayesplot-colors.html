@@ -8,21 +8,36 @@
 
 <title>Set, get, or view <strong>bayesplot</strong> color schemes — bayesplot-colors • bayesplot</title>
 
-<!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
-<!-- Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+<!-- favicons -->
+<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<!-- jquery -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+<!-- Bootstrap -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+<!-- headroom.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -31,20 +46,19 @@
 
 <!-- docsearch -->
 <script src="../docsearch.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.3/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous" />
 <link href="../docsearch.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
 
 
-<meta property="og:title" content="Set, get, or view <strong>bayesplot</strong> color schemes — bayesplot-colors" />
 
+<meta property="og:title" content="Set, get, or view <strong>bayesplot</strong> color schemes — bayesplot-colors" />
 <meta property="og:description" content="Set, get, or view color schemes. Choose from a preset scheme or create a
 custom scheme. See the Available color schemes section below for a list
 of available scheme names. The Custom color schemes section describes how
 to specify a custom scheme." />
-
 <meta property="og:image" content="https://mc-stan.org/bayesplot/logo.png" />
-<meta name="twitter:card" content="summary" />
+
 
 
 
@@ -58,9 +72,10 @@ to specify a custom scheme." />
 <![endif]-->
 
 
+
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -74,7 +89,7 @@ to specify a custom scheme." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bayesplot</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.7.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.7.2</span>
       </span>
     </div>
 
@@ -100,6 +115,9 @@ to specify a custom scheme." />
       <a href="https://mc-stan.org/rstan">rstan</a>
     </li>
     <li>
+      <a href="https://mc-stan.org/cmdstanr">cmdstanr</a>
+    </li>
+    <li>
       <a href="https://mc-stan.org/rstanarm">rstanarm</a>
     </li>
     <li>
@@ -120,7 +138,6 @@ to specify a custom scheme." />
   <a href="https://mc-stan.org">Stan</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://twitter.com/mcmc_stan">
@@ -142,7 +159,7 @@ to specify a custom scheme." />
 </li>
       </ul>
       
-      <form class="navbar-form navbar-right" role="search">
+      <form class="navbar-form navbar-right hidden-xs hidden-sm" role="search">
         <div class="form-group">
           <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
         </div>
@@ -153,23 +170,22 @@ to specify a custom scheme." />
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Set, get, or view <strong>bayesplot</strong> color schemes</h1>
-    
+    <small class="dont-index">Source: <a href='https://github.com/stan-dev/bayesplot/blob/master/R/bayesplot-colors.R'><code>R/bayesplot-colors.R</code></a></small>
     <div class="hidden name"><code>bayesplot-colors.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    
     <p>Set, get, or view color schemes. Choose from a preset scheme or create a
 custom scheme. See the <strong>Available color schemes</strong> section below for a list
 of available scheme names. The <strong>Custom color schemes</strong> section describes how
 to specify a custom scheme.</p>
-    
     </div>
 
     <pre class="usage"><span class='fu'>color_scheme_set</span>(<span class='kw'>scheme</span> <span class='kw'>=</span> <span class='st'>"blue"</span>)
@@ -177,7 +193,7 @@ to specify a custom scheme.</p>
 <span class='fu'>color_scheme_get</span>(<span class='kw'>scheme</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>i</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
 
 <span class='fu'>color_scheme_view</span>(<span class='kw'>scheme</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
-    
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -203,20 +219,19 @@ scheme to return. If <code>i</code> is not specified then all six colors in the
 scheme are included.</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p><code>color_scheme_set()</code> has the side effect of setting the color scheme
-used for plotting. It also returns (<a href='https://www.rdocumentation.org/packages/base/topics/invisible'>invisibly</a>) a list of
+used for plotting. It also returns (<a href='https://rdrr.io/r/base/invisible.html'>invisibly</a>) a list of
 the hexadecimal color values used in <code>scheme</code>.</p>
 <p><code>color_scheme_get()</code> returns a list of the hexadecimal color
 values (without changing the current scheme). If the <code>scheme</code> argument
 is not specified the returned values correspond to the current color
 scheme. If the optional argument <code>i</code> is specified then the returned
-list only contains <code><a href='https://www.rdocumentation.org/packages/base/topics/length'>length(i)</a></code> elements.</p>
+list only contains <code><a href='https://rdrr.io/r/base/length.html'>length(i)</a></code> elements.</p>
 <p><code>color_scheme_view()</code> returns a ggplot object if only a single scheme is
 specified and a gtable object if multiple schemes names are specified.</p>
-    
     <h2 class="hasAnchor" id="available-color-schemes"><a class="anchor" href="#available-color-schemes"></a>Available color schemes</h2>
 
     <p>Currently, the available preset color
@@ -229,7 +244,7 @@ schemes are:</p><ul>
 <li><p><code>"red"</code></p></li>
 <li><p><code>"teal"</code></p></li>
 <li><p><code>"yellow"</code></p></li>
-<li><p><a href='https://CRAN.R-project.org/package=viridis'>"viridis"</a>, <code>"viridisA"</code>,
+<li><p><a href='https://CRAN.R-project.org/package=viridis'><code>"viridis"</code></a>, <code>"viridisA"</code>,
 <code>"viridisB"</code>, <code>"viridisC"</code>, <code>"viridisD"</code>, <code>"viridisE"</code></p></li>
 <li><p><code>"mix-x-y"</code>, replacing <code>x</code> and <code>y</code> with any two of
 the scheme names listed above (e.g. "mix-teal-pink", "mix-blue-red",
@@ -238,25 +253,23 @@ etc.). The order of <code>x</code> and <code>y</code> matters, i.e., the color s
 guarantee that every possible mixed scheme will look good with every
 possible plot.</p></li>
 <li><p><code>"brewer-x"</code>, replacing <code>x</code> with the name of a palette available from
-<code><a href='https://www.rdocumentation.org/packages/RColorBrewer/topics/ColorBrewer'>RColorBrewer::brewer.pal()</a></code> (e.g., <code>brewer-PuBuGn</code>).</p></li>
+<code><a href='https://rdrr.io/pkg/RColorBrewer/man/ColorBrewer.html'>RColorBrewer::brewer.pal()</a></code> (e.g., <code>brewer-PuBuGn</code>).</p></li>
 </ul>
-    <p>If you have a suggestion for a new color scheme please let us know via the
+
+<p>If you have a suggestion for a new color scheme please let us know via the
 <strong>bayesplot</strong> <a href='https://github.com/stan-dev/bayesplot/issues'>issue tracker</a>.</p>
-    
     <h2 class="hasAnchor" id="custom-color-schemes"><a class="anchor" href="#custom-color-schemes"></a>Custom color schemes</h2>
 
     <p>A <strong>bayesplot</strong> color scheme consists of six
 colors. To specify a custom color scheme simply pass a character vector
-containing either the names of six <a href='https://www.rdocumentation.org/packages/grDevices/topics/colors'>colors</a> or six
+containing either the names of six <a href='https://rdrr.io/r/grDevices/colors.html'>colors</a> or six
 hexadecimal color values (or a mix of names and hex values). The colors
 should be in order from lightest to darkest. See the end of the
 <strong>Examples</strong> section for a demonstration.</p>
-    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='theme_default.html'>theme_default()</a></code> for the default ggplot theme used by
 <strong>bayesplot</strong> and <code><a href='bayesplot_theme_get.html'>bayesplot_theme_set()</a></code> to change it.</p></div>
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'>color_scheme_set</span>(<span class='st'>"blue"</span>)
@@ -267,7 +280,7 @@ should be in order from lightest to darkest. See the end of the
 #&gt; 3 #6497b1
 #&gt; 4 #005b96
 #&gt; 5 #03396c
-#&gt; 6 #011f4b</div><div class='input'><span class='fu'>color_scheme_get</span>(<span class='kw'>i</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>3</span>, <span class='fl'>5</span>)) <span class='co'># 3rd and 5th colors only</span></div><div class='output co'>#&gt; $mid
+#&gt; 6 #011f4b</div><div class='input'><span class='fu'>color_scheme_get</span>(<span class='kw'>i</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>3</span>, <span class='fl'>5</span>)) <span class='co'># 3rd and 5th colors only</span></div><div class='output co'>#&gt; $mid
 #&gt; [1] "#6497b1"
 #&gt; 
 #&gt; $dark
@@ -281,7 +294,7 @@ should be in order from lightest to darkest. See the end of the
 #&gt; 5    #0065cc
 #&gt; 6    #004c99</div><div class='input'><span class='fu'>color_scheme_view</span>(<span class='st'>"brightblue"</span>)</div><div class='img'><img src='bayesplot-colors-2.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># compare multiple schemes</span>
-<span class='fu'>color_scheme_view</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"pink"</span>, <span class='st'>"gray"</span>, <span class='st'>"teal"</span>))</div><div class='img'><img src='bayesplot-colors-3.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>color_scheme_view</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"viridis"</span>, <span class='st'>"viridisA"</span>, <span class='st'>"viridisB"</span>, <span class='st'>"viridisC"</span>))</div><div class='img'><img src='bayesplot-colors-4.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'>color_scheme_view</span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"pink"</span>, <span class='st'>"gray"</span>, <span class='st'>"teal"</span>))</div><div class='img'><img src='bayesplot-colors-3.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>color_scheme_view</span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"viridis"</span>, <span class='st'>"viridisA"</span>, <span class='st'>"viridisB"</span>, <span class='st'>"viridisC"</span>))</div><div class='img'><img src='bayesplot-colors-4.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='fu'>color_scheme_set</span>(<span class='st'>"pink"</span>)
 <span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='example-data.html'>example_mcmc_draws</a></span>()
 <span class='fu'><a href='MCMC-intervals.html'>mcmc_intervals</a></span>(<span class='no'>x</span>)</div><div class='img'><img src='bayesplot-colors-5.png' alt='' width='700' height='433' /></div><div class='input'>
@@ -306,31 +319,20 @@ should be in order from lightest to darkest. See the end of the
 <span class='co'>###########################</span>
 <span class='co'>### Custom color scheme ###</span>
 <span class='co'>###########################</span>
-<span class='no'>orange_scheme</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"#ffebcc"</span>, <span class='st'>"#ffcc80"</span>,
+<span class='no'>orange_scheme</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"#ffebcc"</span>, <span class='st'>"#ffcc80"</span>,
                    <span class='st'>"#ffad33"</span>, <span class='st'>"#e68a00"</span>,
                    <span class='st'>"#995c00"</span>, <span class='st'>"#663d00"</span>)
 <span class='fu'>color_scheme_set</span>(<span class='no'>orange_scheme</span>)
 <span class='fu'>color_scheme_view</span>()</div><div class='img'><img src='bayesplot-colors-15.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='MCMC-intervals.html'>mcmc_areas</a></span>(<span class='no'>x</span>, <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='st'>"alpha"</span>)</div><div class='img'><img src='bayesplot-colors-16.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='MCMC-distributions.html'>mcmc_dens_overlay</a></span>(<span class='no'>x</span>)</div><div class='img'><img src='bayesplot-colors-17.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='PPC-test-statistics.html'>ppc_stat</a></span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='kw'>stat</span> <span class='kw'>=</span> <span class='st'>"var"</span>) + <span class='fu'><a href='bayesplot-helpers.html'>legend_none</a></span>()</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='bayesplot-colors-18.png' alt='' width='700' height='433' /></div><div class='input'>
 </div></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#value">Value</a></li>
-
-      <li><a href="#available-color-schemes">Available color schemes</a></li>
-
-      <li><a href="#custom-color-schemes">Custom color schemes</a></li>
-
-      <li><a href="#see-also">See also</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
+
 
       <footer>
       <div class="copyright">
@@ -338,8 +340,9 @@ should be in order from lightest to darkest. See the end of the
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
+
       </footer>
    </div>
 
@@ -362,6 +365,8 @@ should be in order from lightest to darkest. See the end of the
 </script>
 
 
+
   </body>
 </html>
+
 
