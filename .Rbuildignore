@@ -13,3 +13,4 @@ images/*
 book/*
 docs/*
 Rplots.pdf
+tests/figs/*
