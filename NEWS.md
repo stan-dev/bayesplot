@@ -1,5 +1,24 @@
 <!-- See http://style.tidyverse.org/news.html for advice on writing news -->
 
+
+<!-- 
+# bayesplot 1.7.2.9000
+
+(GitHub issue/PR numbers in parentheses)
+
+Items for next release go here
+-->
+
+# bayesplot 1.7.2
+
+Compatibility with dplyr 1.0.0 (#219)
+
+# bayesplot 1.7.1
+
+Release requested by CRAN to fix errors at
+https://cran.r-project.org/web/checks/check_results_bayesplot.html due to
+matrices also inheriting from "array" in R 4.0.
+
 # bayesplot 1.7.0
 
 (GitHub issue/PR numbers in parentheses)

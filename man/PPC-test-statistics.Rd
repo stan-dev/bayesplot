@@ -8,17 +8,40 @@
 \alias{ppc_stat_2d}
 \title{PPC test statistics}
 \usage{
-ppc_stat(y, yrep, stat = "mean", ..., binwidth = NULL, breaks = NULL,
-  freq = TRUE)
+ppc_stat(
+  y,
+  yrep,
+  stat = "mean",
+  ...,
+  binwidth = NULL,
+  breaks = NULL,
+  freq = TRUE
+)
 
-ppc_stat_grouped(y, yrep, group, stat = "mean", ...,
-  facet_args = list(), binwidth = NULL, breaks = NULL, freq = TRUE)
+ppc_stat_grouped(
+  y,
+  yrep,
+  group,
+  stat = "mean",
+  ...,
+  facet_args = list(),
+  binwidth = NULL,
+  breaks = NULL,
+  freq = TRUE
+)
 
-ppc_stat_freqpoly_grouped(y, yrep, group, stat = "mean", ...,
-  facet_args = list(), binwidth = NULL, freq = TRUE)
+ppc_stat_freqpoly_grouped(
+  y,
+  yrep,
+  group,
+  stat = "mean",
+  ...,
+  facet_args = list(),
+  binwidth = NULL,
+  freq = TRUE
+)
 
-ppc_stat_2d(y, yrep, stat = c("mean", "sd"), ..., size = 2.5,
-  alpha = 0.7)
+ppc_stat_2d(y, yrep, stat = c("mean", "sd"), ..., size = 2.5, alpha = 0.7)
 }
 \arguments{
 \item{y}{A vector of observations. See \strong{Details}.}
@@ -70,7 +93,7 @@ The distribution of a (test) statistic \code{T(yrep)}, or a pair of (test)
 statistics, over the simulated datasets in \code{yrep}, compared to the
 observed value \code{T(y)} computed from the data \code{y}. See the
 \strong{Plot Descriptions} and \strong{Details} sections, below, as
-well as \href{https://github.com/jgabry/bayes-vis-paper}{Gabry et al. (2019)}.
+well as \href{https://github.com/jgabry/bayes-vis-paper#readme}{Gabry et al. (2019)}.
 }
 \details{
 For Binomial data, the plots will typically be most useful if
@@ -139,10 +162,13 @@ A., and Rubin, D. B. (2013). \emph{Bayesian Data Analysis.} Chapman & Hall/CRC
 Press, London, third edition. (Ch. 6)
 }
 \seealso{
-Other PPCs: \code{\link{PPC-discrete}},
-  \code{\link{PPC-distributions}},
-  \code{\link{PPC-errors}}, \code{\link{PPC-intervals}},
-  \code{\link{PPC-loo}}, \code{\link{PPC-overview}},
-  \code{\link{PPC-scatterplots}}
+Other PPCs: 
+\code{\link{PPC-discrete}},
+\code{\link{PPC-distributions}},
+\code{\link{PPC-errors}},
+\code{\link{PPC-intervals}},
+\code{\link{PPC-loo}},
+\code{\link{PPC-overview}},
+\code{\link{PPC-scatterplots}}
 }
 \concept{PPCs}

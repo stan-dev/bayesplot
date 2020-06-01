@@ -18,8 +18,7 @@ mcmc_nuts_stepsize(x, lp, chain = NULL, ...)
 
 mcmc_nuts_treedepth(x, lp, chain = NULL, ...)
 
-mcmc_nuts_energy(x, ..., binwidth = NULL, alpha = 0.5,
-  merge_chains = FALSE)
+mcmc_nuts_energy(x, ..., binwidth = NULL, alpha = 0.5, merge_chains = FALSE)
 }
 \arguments{
 \item{x}{A molten data frame of NUTS sampler parameters, either created by
@@ -44,7 +43,7 @@ is not used by \code{mcmc_nuts_energy()}.}
 override the default binwidth.}
 
 \item{alpha}{For \code{mcmc_nuts_energy()} only, the transparency (alpha) level
-in \code{[0,1]} used for the overlaid histogram.}
+in \verb{[0,1]} used for the overlaid histogram.}
 
 \item{merge_chains}{For \code{mcmc_nuts_energy()} only, should all chains be
 merged or displayed separately? The default is \code{FALSE}, i.e., to show
@@ -185,13 +184,15 @@ corresponding divergences and/or max treedepth saturation.
 }
 }
 
-Other MCMC: \code{\link{MCMC-combos}},
-  \code{\link{MCMC-diagnostics}},
-  \code{\link{MCMC-distributions}},
-  \code{\link{MCMC-intervals}},
-  \code{\link{MCMC-overview}}, \code{\link{MCMC-parcoord}},
-  \code{\link{MCMC-recover}},
-  \code{\link{MCMC-scatterplots}},
-  \code{\link{MCMC-traces}}
+Other MCMC: 
+\code{\link{MCMC-combos}},
+\code{\link{MCMC-diagnostics}},
+\code{\link{MCMC-distributions}},
+\code{\link{MCMC-intervals}},
+\code{\link{MCMC-overview}},
+\code{\link{MCMC-parcoord}},
+\code{\link{MCMC-recover}},
+\code{\link{MCMC-scatterplots}},
+\code{\link{MCMC-traces}}
 }
 \concept{MCMC}

@@ -8,21 +8,33 @@
 [![Downloads](https://cranlogs.r-pkg.org/badges/bayesplot?color=blue)](https://cran.rstudio.com/package=bayesplot)
 
 **bayesplot** is an R package providing an extensive library of plotting
-functions for use after fitting Bayesian models (typically with MCMC). Currently
-**bayesplot** offers a variety of plots of posterior draws, visual MCMC
-diagnostics, as well as graphical posterior predictive checking. Additional
-functionality (e.g. for forecasting/out-of-sample prediction and other
-inference-related tasks) will be added in future releases.
-
+functions for use after fitting Bayesian models (typically with MCMC). 
 The plots created by **bayesplot** are ggplot objects, which means that after 
-a plot is created it can be further customized using the various functions for 
-modifying ggplot objects provided by the **ggplot2** package.
+a plot is created it can be further customized using various functions from
+the **ggplot2** package. 
+
+Currently **bayesplot** offers a variety of plots of posterior draws, 
+visual MCMC diagnostics, and graphical posterior (or prior) predictive checking. 
+Additional functionality (e.g. for forecasting/out-of-sample prediction and other
+inference-related tasks) will be added in future releases.
 
 The idea behind **bayesplot** is not only to provide convenient functionality
 for users, but also a common set of functions that can be easily used by
 developers working on a variety of packages for Bayesian modeling, particularly
-(but not necessarily) those powered by
-[**RStan**](https://mc-stan.org/rstan).
+(but not necessarily) those powered by [**RStan**](https://mc-stan.org/rstan).
+
+### Getting started 
+
+If you are just getting started with **bayesplot** we recommend starting with
+the tutorial [vignettes](https://mc-stan.org/bayesplot/articles/index.html), 
+the examples throughout the package [documentation](https://mc-stan.org/bayesplot/reference/index.html), 
+and the paper _Visualization in Bayesian workflow_:
+
+* Gabry et al. (2019). Visualization in Bayesian workflow. 
+_J. R. Stat. Soc. A_, 182: 389-402. doi:10.1111/rssa.12378. 
+([journal version](https://rss.onlinelibrary.wiley.com/doi/full/10.1111/rssa.12378),
+[arXiv preprint](https://arxiv.org/abs/1709.01449),
+[code on GitHub](https://github.com/jgabry/bayes-vis-paper))
 
 ### Resources
 

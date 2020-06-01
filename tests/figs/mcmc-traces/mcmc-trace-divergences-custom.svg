@@ -97,5 +97,5 @@
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8NTc2LjAwfDAuMDA=)'><text x='658.47' y='305.19' style='font-size: 13.00px; font-family: Liberation Serif;' textLength='6.50px' lengthAdjust='spacingAndGlyphs'>4</text></g>
 <line x1='635.93' y1='348.10' x2='641.69' y2='348.10' style='stroke-width: 1.07; stroke-linecap: butt;' clip-path='url(#cpMC4wMHw3MjAuMDB8NTc2LjAwfDAuMDA=)' />
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8NTc2LjAwfDAuMDA=)'><text x='648.39' y='352.36' style='font-size: 13.00px; font-family: Liberation Serif;' textLength='59.66px' lengthAdjust='spacingAndGlyphs'>Divergence</text></g>
-<g clip-path='url(#cpMC4wMHw3MjAuMDB8NTc2LjAwfDAuMDA=)'><text x='32.78' y='15.40' style='font-size: 14.40px; font-family: Liberation Serif;' textLength='193.58px' lengthAdjust='spacingAndGlyphs'>mcmc trace divergences (custom)</text></g>
+<g clip-path='url(#cpMC4wMHw3MjAuMDB8NTc2LjAwfDAuMDA=)'><text x='32.78' y='15.40' style='font-size: 14.40px; font-family: Liberation Serif;' textLength='197.19px' lengthAdjust='spacingAndGlyphs'>mcmc_trace divergences (custom)</text></g>
 </svg>

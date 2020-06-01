@@ -29,11 +29,9 @@ neff_ratio(object, ...)
 
 \method{log_posterior}{stanreg}(object, inc_warmup = FALSE, ...)
 
-\method{nuts_params}{stanfit}(object, pars = NULL, inc_warmup = FALSE,
-  ...)
+\method{nuts_params}{stanfit}(object, pars = NULL, inc_warmup = FALSE, ...)
 
-\method{nuts_params}{stanreg}(object, pars = NULL, inc_warmup = FALSE,
-  ...)
+\method{nuts_params}{stanreg}(object, pars = NULL, inc_warmup = FALSE, ...)
 
 \method{nuts_params}{list}(object, pars = NULL, ...)
 
@@ -43,8 +41,7 @@ neff_ratio(object, ...)
 
 \method{neff_ratio}{stanfit}(object, pars = NULL, ...)
 
-\method{neff_ratio}{stanreg}(object, pars = NULL, regex_pars = NULL,
-  ...)
+\method{neff_ratio}{stanreg}(object, pars = NULL, regex_pars = NULL, ...)
 }
 \arguments{
 \item{object}{The object to use.}
@@ -84,7 +81,7 @@ Methods return (named) vectors.
 \description{
 Generics and methods for extracting quantities needed for plotting from
 various types of model objects. Currently methods are only provided for
-stanfit (\strong{rstan}) and stanreg (\strong{stanreg}) objects, but adding new
+stanfit (\strong{rstan}) and stanreg (\strong{rstanarm}) objects, but adding new
 methods should be relatively straightforward.
 }
 \examples{

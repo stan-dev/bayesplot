@@ -12,20 +12,20 @@ documentation for various categories of MCMC plots. Currently the MCMC
 plotting functions accept posterior draws provided in one of the following
 formats:
 \itemize{
-\item \strong{3-D array}: An array with dimensions \code{[Iteration, Chain, Parameter]}
-in that order.
+\item \strong{3-D array}: An array with dimensions \verb{Iteration, Chain, Parameter} in
+that order.
 \item \strong{list}: A list of matrices, where each matrix corresponds to a Markov
 chain. All of the matrices should have the same number of iterations (rows)
-and parameters (columns), and parameters should have the same names and be
-in the same order.
+and parameters (columns), and parameters should have the same names and be in
+the same order.
 \item \strong{matrix (2-D array)}: A matrix with one column per parameter. If using
 matrix there should only be a single Markov chain or all chains should
 already be merged (stacked).
-\item \strong{data frame}: There are two types of \link[base:data.frame]{data frames}
-allowed. Either a data frame with one column per parameter (if only a single
-chain or all chains have already been merged), or a data frame with one
-column per parameter plus an additional column \code{"Chain"} that contains the
-chain number (an integer) corresponding to each row in the data frame.
+\item \strong{data frame}: There are two types of data frames allowed. Either a data
+frame with one column per parameter (if only a single chain or all chains
+have already been merged), or a data frame with one column per parameter plus
+an additional column \code{"Chain"} that contains the chain number (an integer)
+corresponding to each row in the data frame.
 }
 
 \strong{Note}: typically the user should \emph{not} include warmup iterations
@@ -42,12 +42,12 @@ showing each Markov chain separately.
 \item \link[=MCMC-intervals]{Uncertainty intervals}: Uncertainty intervals computed
 from parameter draws.
 \item \link[=MCMC-traces]{Trace plots}: Times series of parameter draws, optionally
-including with HMC/NUTS diagnostic information.
+including HMC/NUTS diagnostic information.
 \item \link[=MCMC-scatterplots]{Scatterplots}: Scatterplots, heatmaps, and pairs
-plots of parameter draws, optionally including with HMC/NUTS diagnostic
+plots of parameter draws, optionally including HMC/NUTS diagnostic
 information.
 \item \link[=MCMC-parcoord]{Parallel coordinates plots}: Parallel coordinates plot
-of MCMC draws (one dimension per parameter), optionally including with
+of MCMC draws (one dimension per parameter), optionally including
 HMC/NUTS diagnostic information.
 \item \link[=MCMC-combos]{Combos}: Combination plots (e.g. trace plot + histogram).
 \item \link[=MCMC-diagnostics]{General MCMC diagnostics}: MCMC diagnostic plots
@@ -68,12 +68,15 @@ Gelman, A. (2019), Visualization in Bayesian workflow.
 \href{https://github.com/jgabry/bayes-vis-paper}{code on GitHub})
 }
 \seealso{
-Other MCMC: \code{\link{MCMC-combos}},
-  \code{\link{MCMC-diagnostics}},
-  \code{\link{MCMC-distributions}},
-  \code{\link{MCMC-intervals}}, \code{\link{MCMC-nuts}},
-  \code{\link{MCMC-parcoord}}, \code{\link{MCMC-recover}},
-  \code{\link{MCMC-scatterplots}},
-  \code{\link{MCMC-traces}}
+Other MCMC: 
+\code{\link{MCMC-combos}},
+\code{\link{MCMC-diagnostics}},
+\code{\link{MCMC-distributions}},
+\code{\link{MCMC-intervals}},
+\code{\link{MCMC-nuts}},
+\code{\link{MCMC-parcoord}},
+\code{\link{MCMC-recover}},
+\code{\link{MCMC-scatterplots}},
+\code{\link{MCMC-traces}}
 }
 \concept{MCMC}

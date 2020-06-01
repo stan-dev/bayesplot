@@ -301,26 +301,30 @@ mcmc_violin <- function(x,
 
 
 
+
 # internal -----------------------------------------------------------------
 .mcmc_hist <- function(x,
-                      pars = character(),
-                      regex_pars = character(),
-                      transformations = list(),
-                      facet_args = list(),
-                      binwidth = NULL,
-                      breaks = NULL,
-                      by_chain = FALSE,
-                      freq = TRUE,
-                      ...) {
+                       pars = character(),
+                       regex_pars = character(),
+                       transformations = list(),
+                       facet_args = list(),
+                       binwidth = NULL,
+                       breaks = NULL,
+                       by_chain = FALSE,
+                       freq = TRUE,
+                       ...) {
   x <- prepare_mcmc_array(x, pars, regex_pars, transformations)
-  if (by_chain && !has_multiple_chains(x))
+
+  if (by_chain && !has_multiple_chains(x)) {
     STOP_need_multiple_chains()
+  }
 
   data <- melt_mcmc(x, value.name = "value")
   n_param <- num_params(data)
 
-  graph <- ggplot(data, set_hist_aes(freq)) +
+  graph <- ggplot(data, aes(x = ~ value)) +
     geom_histogram(
+      set_hist_aes(freq),
       fill = get_color("mid"),
       color = get_color("mid_highlight"),
       size = .25,
@@ -336,15 +340,19 @@ mcmc_violin <- function(x,
       graph <- graph + do.call("facet_wrap", facet_args)
     }
   } else {
-    facet_args[["facets"]] <- if (n_param > 1)
-      "Chain ~ Parameter" else "Chain ~ ."
+    facet_args[["facets"]] <- if (n_param > 1) {
+      "Chain ~ Parameter"
+    } else {
+      "Chain ~ ."
+    }
     graph <- graph +
       do.call("facet_grid", facet_args) +
       force_axes_in_facets()
   }
 
-  if (n_param == 1)
+  if (n_param == 1) {
     graph <- graph + xlab(levels(data$Parameter))
+  }
 
   graph +
     dont_expand_y_axis(c(0.005, 0)) +
@@ -405,8 +413,8 @@ mcmc_violin <- function(x,
     geom_args[["color"]] <- get_color("mid_highlight")
   }
 
-  graph <- ggplot(data, mapping = do.call("aes_", aes_mapping))  +
-      do.call(geom_fun, geom_args)
+  graph <- ggplot(data, mapping = do.call("aes_", aes_mapping)) +
+    do.call(geom_fun, geom_args)
 
   if (!violin) {
     graph <- graph + dont_expand_x_axis()

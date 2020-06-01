@@ -59,6 +59,7 @@
 #' dim(yrep)
 #' ppc_dens_overlay(y, yrep[1:25, ])
 #' \donttest{
+#' # ppc_ecdf_overlay with continuous data (set discrete=TRUE if discrete data)
 #' ppc_ecdf_overlay(y, yrep[sample(nrow(yrep), 25), ])
 #' }
 #'

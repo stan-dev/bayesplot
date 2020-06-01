@@ -66,3 +66,78 @@ test_that("ppc_rootogram errors if y/yrep not counts", {
                "ncol(yrep) must be equal to length(y)", fixed = TRUE)
 })
 
+
+
+# Visual tests ------------------------------------------------------------
+test_that("ppc_bars renders correctly", {
+  testthat::skip_on_cran()
+
+  p_base <- ppc_bars(vdiff_y2, vdiff_yrep2)
+  vdiffr::expect_doppelganger("ppc_bars (default)", p_base)
+
+  p_custom <- ppc_bars(
+    y = vdiff_y2,
+    yrep = vdiff_yrep2,
+    width = 0.5,
+    size = 0.5,
+    fatten = 5
+  )
+
+  vdiffr::expect_doppelganger(
+    title = "ppc_bars (width, size, fatten)",
+    fig = p_custom)
+
+  p_custom_prob <- ppc_bars(
+    y = vdiff_y2,
+    yrep = vdiff_yrep2,
+    prob = 0.33,
+    width = 0.5,
+    size = 0.5,
+    fatten = 5
+  )
+
+  vdiffr::expect_doppelganger(
+    title = "ppc_bars (prob=0.33, width, size, fatten)",
+    fig = p_custom_prob)
+})
+
+test_that("ppc_bars_grouped renders correctly", {
+  testthat::skip_on_cran()
+
+  p_base <- ppc_bars_grouped(vdiff_y2, vdiff_yrep2, vdiff_group2)
+  vdiffr::expect_doppelganger("ppc_bars_grouped (default)", p_base)
+
+  p_custom <- ppc_bars_grouped(
+    y = vdiff_y2,
+    yrep = vdiff_yrep2,
+    group = vdiff_group2,
+    facet_args = list(nrow = 2),
+    prob = 0.5,
+    size = 0.5
+  )
+
+  vdiffr::expect_doppelganger(
+    title = "ppc_bars_grouped (facet_args, prob, size)",
+    fig = p_custom)
+})
+
+test_that("ppc_rootogram renders correctly", {
+  testthat::skip_on_cran()
+
+  p_base <- ppc_rootogram(vdiff_y2, vdiff_yrep2)
+  vdiffr::expect_doppelganger("ppc_rootogram (default)", p_base)
+
+  p_custom_hanging <- ppc_rootogram(
+    y = vdiff_y2,
+    yrep = vdiff_yrep2,
+    prob = 2/3,
+    size = 3,
+    style = "hanging"
+  )
+
+  vdiffr::expect_doppelganger(
+    title = "ppc_rootogram (style='hanging', prob, size)",
+    fig = p_custom_hanging)
+})
+
+

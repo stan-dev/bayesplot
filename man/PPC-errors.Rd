@@ -10,11 +10,17 @@
 \alias{ppc_error_binned}
 \title{PPC errors}
 \usage{
-ppc_error_hist(y, yrep, ..., binwidth = NULL, breaks = NULL,
-  freq = TRUE)
+ppc_error_hist(y, yrep, ..., binwidth = NULL, breaks = NULL, freq = TRUE)
 
-ppc_error_hist_grouped(y, yrep, group, ..., binwidth = NULL,
-  breaks = NULL, freq = TRUE)
+ppc_error_hist_grouped(
+  y,
+  yrep,
+  group,
+  ...,
+  binwidth = NULL,
+  breaks = NULL,
+  freq = TRUE
+)
 
 ppc_error_scatter(y, yrep, ..., size = 2.5, alpha = 0.8)
 
@@ -70,7 +76,7 @@ Various plots of predictive errors \code{y - yrep}. See the
 \strong{Details} and \strong{Plot Descriptions} sections, below.
 }
 \details{
-All of these functions (aside from the \code{*_scatter_avg} functions)
+All of these functions (aside from the \verb{*_scatter_avg} functions)
 compute and plot predictive errors for each row of the matrix \code{yrep}, so
 it is usually a good idea for \code{yrep} to contain only a small number of
 draws (rows). See \strong{Examples}, below.
@@ -167,11 +173,13 @@ A., and Rubin, D. B. (2013). \emph{Bayesian Data Analysis.} Chapman & Hall/CRC
 Press, London, third edition. (Ch. 6)
 }
 \seealso{
-Other PPCs: \code{\link{PPC-discrete}},
-  \code{\link{PPC-distributions}},
-  \code{\link{PPC-intervals}}, \code{\link{PPC-loo}},
-  \code{\link{PPC-overview}},
-  \code{\link{PPC-scatterplots}},
-  \code{\link{PPC-test-statistics}}
+Other PPCs: 
+\code{\link{PPC-discrete}},
+\code{\link{PPC-distributions}},
+\code{\link{PPC-intervals}},
+\code{\link{PPC-loo}},
+\code{\link{PPC-overview}},
+\code{\link{PPC-scatterplots}},
+\code{\link{PPC-test-statistics}}
 }
 \concept{PPCs}

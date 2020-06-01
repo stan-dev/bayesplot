@@ -111,10 +111,10 @@ test_that("mcmc_trace renders correctly", {
     vdiff_dframe_chains, pars = c("V1", "V2"), iter1 = 200
   )
 
-  vdiffr::expect_doppelganger("mcmc trace (default)", p_base)
-  vdiffr::expect_doppelganger("mcmc trace (one parameter)", p_one_param)
-  vdiffr::expect_doppelganger("mcmc trace (warmup window)", p_warmup)
-  vdiffr::expect_doppelganger("mcmc trace (iter1 offset)", p_iter1)
+  vdiffr::expect_doppelganger("mcmc_trace (default)", p_base)
+  vdiffr::expect_doppelganger("mcmc_trace (one parameter)", p_one_param)
+  vdiffr::expect_doppelganger("mcmc_trace (warmup window)", p_warmup)
+  vdiffr::expect_doppelganger("mcmc_trace (iter1 offset)", p_iter1)
 })
 
 test_that("mcmc_rank_overlay renders correctly", {
@@ -133,14 +133,14 @@ test_that("mcmc_rank_overlay renders correctly", {
     n_bins = 4
   )
 
-  vdiffr::expect_doppelganger("mcmc rank overlay (default)", p_base)
+  vdiffr::expect_doppelganger("mcmc_rank_overlay (default)", p_base)
   vdiffr::expect_doppelganger(
-    "mcmc rank overlay (reference line)",
+    "mcmc_rank_overlay (reference line)",
     p_base_ref
   )
-  vdiffr::expect_doppelganger("mcmc rank overlay (one parameter)", p_one_param)
+  vdiffr::expect_doppelganger("mcmc_rank_overlay (one parameter)", p_one_param)
   vdiffr::expect_doppelganger(
-    "mcmc rank overlay (wide bins)",
+    "mcmc_rank_overlay (wide bins)",
     p_one_param_wide_bins
   )
 })
@@ -161,17 +161,17 @@ test_that("mcmc_rank_hist renders correctly", {
     n_bins = 4
   )
 
-  vdiffr::expect_doppelganger("mcmc rank histogram (default)", p_base)
+  vdiffr::expect_doppelganger("mcmc_rank_hist (default)", p_base)
   vdiffr::expect_doppelganger(
-    "mcmc rank histogram (reference line)",
+    "mcmc_rank_hist (reference line)",
     p_base_ref
   )
   vdiffr::expect_doppelganger(
-    "mcmc rank histogram (one parameter)",
+    "mcmc_rank_hist (one parameter)",
     p_one_param
   )
   vdiffr::expect_doppelganger(
-    "mcmc rank histogram (wide bins)",
+    "mcmc_rank_hist (wide bins)",
     p_one_param_wide_bins
   )
 })
@@ -198,9 +198,9 @@ test_that("mcmc_trace_highlight renders correctly", {
     alpha = .1
   )
 
-  vdiffr::expect_doppelganger("mcmc trace highlight (default)", p_base)
-  vdiffr::expect_doppelganger("mcmc trace highlight (other chain)", p_2)
-  vdiffr::expect_doppelganger("mcmc trace highlight (alpha)", p_alpha)
+  vdiffr::expect_doppelganger("mcmc_trace_highlight (default)", p_base)
+  vdiffr::expect_doppelganger("mcmc_trace_highlight (other chain)", p_2)
+  vdiffr::expect_doppelganger("mcmc_trace_highlight (alpha)", p_alpha)
 })
 
 test_that("mcmc_trace with 'np' renders correctly", {
@@ -221,6 +221,6 @@ test_that("mcmc_trace with 'np' renders correctly", {
     np_style = new_style
   )
 
-  vdiffr::expect_doppelganger("mcmc trace divergences (default)", p_base)
-  vdiffr::expect_doppelganger("mcmc trace divergences (custom)",  p_np_style)
+  vdiffr::expect_doppelganger("mcmc_trace divergences (default)", p_base)
+  vdiffr::expect_doppelganger("mcmc_trace divergences (custom)",  p_np_style)
 })

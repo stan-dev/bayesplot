@@ -7,12 +7,25 @@
 \alias{parcoord_style_np}
 \title{Parallel coordinates plot of MCMC draws}
 \usage{
-mcmc_parcoord(x, pars = character(), regex_pars = character(),
-  transformations = list(), ..., size = 0.2, alpha = 0.3,
-  np = NULL, np_style = parcoord_style_np())
+mcmc_parcoord(
+  x,
+  pars = character(),
+  regex_pars = character(),
+  transformations = list(),
+  ...,
+  size = 0.2,
+  alpha = 0.3,
+  np = NULL,
+  np_style = parcoord_style_np()
+)
 
-mcmc_parcoord_data(x, pars = character(), regex_pars = character(),
-  transformations = list(), np = NULL)
+mcmc_parcoord_data(
+  x,
+  pars = character(),
+  regex_pars = character(),
+  transformations = list(),
+  np = NULL
+)
 
 parcoord_style_np(div_color = "red", div_size = 0.2, div_alpha = 0.2)
 }
@@ -25,7 +38,7 @@ the \link{MCMC-overview} page.}
 
 \item{pars}{An optional character vector of parameter names. If neither
 \code{pars} nor \code{regex_pars} is specified then the default is to use \emph{all}
-parameters. As of version \code{1.7.0}, \strong{bayesplot} also supports 'tidy'
+parameters. As of version \verb{1.7.0}, \strong{bayesplot} also supports 'tidy'
 parameter selection by specifying \code{pars = vars(...)}, where \code{...} is
 specified the same way as in \link[dplyr:select]{dplyr::select(...)} and
 similar functions. Examples of using \code{pars} in this way can be found on the
@@ -83,13 +96,13 @@ the plot. The default values are displayed in the \strong{Usage} section above.}
 \value{
 The plotting functions return a ggplot object that can be further
 customized using the \strong{ggplot2} package. The functions with suffix
-\code{_data()} return the data that would have been drawn by the plotting
+\verb{_data()} return the data that would have been drawn by the plotting
 function.
 }
 \description{
 Parallel coordinates plot of MCMC draws (one dimension per parameter).
 See the \strong{Plot Descriptions} section below for details,
-and see \href{https://github.com/jgabry/bayes-vis-paper}{Gabry et al. (2019)}
+and see \href{https://github.com/jgabry/bayes-vis-paper#readme}{Gabry et al. (2019)}
 for more background and a real example.
 }
 \section{Plot Descriptions}{
@@ -174,12 +187,15 @@ Hartikainen, A. (2017, Aug 23). Concentration of divergences
 \url{https://discourse.mc-stan.org/t/concentration-of-divergences/1590/21}.
 }
 \seealso{
-Other MCMC: \code{\link{MCMC-combos}},
-  \code{\link{MCMC-diagnostics}},
-  \code{\link{MCMC-distributions}},
-  \code{\link{MCMC-intervals}}, \code{\link{MCMC-nuts}},
-  \code{\link{MCMC-overview}}, \code{\link{MCMC-recover}},
-  \code{\link{MCMC-scatterplots}},
-  \code{\link{MCMC-traces}}
+Other MCMC: 
+\code{\link{MCMC-combos}},
+\code{\link{MCMC-diagnostics}},
+\code{\link{MCMC-distributions}},
+\code{\link{MCMC-intervals}},
+\code{\link{MCMC-nuts}},
+\code{\link{MCMC-overview}},
+\code{\link{MCMC-recover}},
+\code{\link{MCMC-scatterplots}},
+\code{\link{MCMC-traces}}
 }
 \concept{MCMC}

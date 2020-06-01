@@ -2047,5 +2047,5 @@
 <circle cx='627.38' cy='307.24' r='1.42pt' style='stroke-width: 0.71; stroke: #03396C; fill: #03396C;' clip-path='url(#cpMC4wMHw3MjAuMDB8NTc2LjAwfDAuMDA=)' />
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8NTc2LjAwfDAuMDA=)'><text x='642.00' y='294.22' style='font-size: 13.00px; font-family: Liberation Serif;' textLength='66.05px' lengthAdjust='spacingAndGlyphs'>Other chains</text></g>
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8NTc2LjAwfDAuMDA=)'><text x='642.00' y='311.50' style='font-size: 13.00px; font-family: Liberation Serif;' textLength='40.80px' lengthAdjust='spacingAndGlyphs'>Chain 2</text></g>
-<g clip-path='url(#cpMC4wMHw3MjAuMDB8NTc2LjAwfDAuMDA=)'><text x='32.78' y='15.40' style='font-size: 14.40px; font-family: Liberation Serif;' textLength='199.89px' lengthAdjust='spacingAndGlyphs'>mcmc trace highlight (other chain)</text></g>
+<g clip-path='url(#cpMC4wMHw3MjAuMDB8NTc2LjAwfDAuMDA=)'><text x='32.78' y='15.40' style='font-size: 14.40px; font-family: Liberation Serif;' textLength='207.11px' lengthAdjust='spacingAndGlyphs'>mcmc_trace_highlight (other chain)</text></g>
 </svg>

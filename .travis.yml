@@ -6,10 +6,13 @@ cache: packages
 
 r_github_packages:
   - r-lib/covr
-  - tidyverse/ggplot2
 
 r_build_args: '--no-build-vignettes'
 r_check_args: '--ignore-vignettes'
+warnings_are_errors: true
+
+env:
+- _R_CHECK_FORCE_SUGGESTS_=false NOT_CRAN=true MAKEFLAGS=-j2
 
 before_install:
   - mkdir -p ~/.R
