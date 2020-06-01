@@ -3,9 +3,13 @@
 
 # bayesplot 1.7.2.9000
 
+<!--
 (GitHub issue/PR numbers in parentheses)
+* Items for next release go here
+-->
 
-Items for next release go here
+* Added missing `facet_args` argument to `mcmc_rank_overlay()`. (#221, @hhau)
+
 
 # bayesplot 1.7.2
 
