@@ -1,11 +1,11 @@
-[<img src="https://raw.githubusercontent.com/stan-dev/logos/master/logo_tm.png" width=100 alt="Stan Logo"/>](https://mc-stan.org)
+# bayesplot <img src="man/figures/logo.png" align="right" width="120" />
 
-# bayesplot
-
-[![Travis-CI Build Status](https://travis-ci.org/stan-dev/bayesplot.svg?branch=master)](https://travis-ci.org/stan-dev/bayesplot)
-[![codecov](https://codecov.io/gh/stan-dev/bayesplot/branch/master/graph/badge.svg)](https://codecov.io/gh/stan-dev/bayesplot)
+<!-- badges: start -->
 [![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/bayesplot?color=blue)](https://cran.r-project.org/web/packages/bayesplot)
 [![Downloads](https://cranlogs.r-pkg.org/badges/bayesplot?color=blue)](https://cran.rstudio.com/package=bayesplot)
+[![Travis-CI Build Status](https://travis-ci.org/stan-dev/bayesplot.svg?branch=master)](https://travis-ci.org/stan-dev/bayesplot)
+[![codecov](https://codecov.io/gh/stan-dev/bayesplot/branch/master/graph/badge.svg)](https://codecov.io/gh/stan-dev/bayesplot)
+<!-- badges: end -->
 
 **bayesplot** is an R package providing an extensive library of plotting
 functions for use after fitting Bayesian models (typically with MCMC). 
