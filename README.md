@@ -7,6 +7,8 @@
 [![codecov](https://codecov.io/gh/stan-dev/bayesplot/branch/master/graph/badge.svg)](https://codecov.io/gh/stan-dev/bayesplot)
 <!-- badges: end -->
 
+### Overview
+
 **bayesplot** is an R package providing an extensive library of plotting
 functions for use after fitting Bayesian models (typically with MCMC). 
 The plots created by **bayesplot** are ggplot objects, which means that after 
