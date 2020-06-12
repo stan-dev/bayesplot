@@ -12,6 +12,8 @@ template:
 navbar:
   title: "bayesplot"
   left:
+    - icon: fa-home fa-lg
+      href: index.html
     - text: "Vignettes"
       href: articles/index.html
     - text: "Functions"
@@ -34,6 +36,8 @@ navbar:
           href: https://mc-stan.org/projpred
         - text: "rstantools"
           href: https://mc-stan.org/rstantools
+        - text: "posterior"
+          href: https://mc-stan.org/posterior
     - text: "Stan"
       href: https://mc-stan.org
   right:
