@@ -47,6 +47,7 @@ mcmc_rank_overlay(
   pars = character(),
   regex_pars = character(),
   transformations = list(),
+  facet_args = list(),
   ...,
   n_bins = 20,
   ref_line = FALSE
