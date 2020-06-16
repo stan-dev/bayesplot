@@ -143,9 +143,6 @@ ppc_intervals <-
         prob_outer = prob_outer
       )
 
-    position <-
-      intervals_position(jitter, seed = sample.int(.Machine$integer.max, 1L))
-
     ggplot(data) +
       intervals_inner_aes(
         needs_y = TRUE,
@@ -154,12 +151,12 @@ ppc_intervals <-
       ) +
       geom_linerange(
         mapping = intervals_outer_aes(color = "yrep"),
-        position = position,
+        position = intervals_position(jitter),
         alpha = alpha,
         size = size
       ) +
       geom_pointrange(
-        position = position,
+        position = intervals_position(jitter),
         shape = 21,
         stroke = 0.5,
         size = size,
@@ -171,7 +168,7 @@ ppc_intervals <-
           color = "y",
           fill = "y"
         ),
-        position = position,
+        position = intervals_position(jitter),
         shape = 21,
         stroke = 0.5,
         size = 1
