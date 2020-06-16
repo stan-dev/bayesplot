@@ -197,6 +197,7 @@ is_df_with_chain <- function(x) {
 
 validate_df_with_chain <- function(x) {
   stopifnot(is_df_with_chain(x))
+  x <- as.data.frame(x)
   if (!is.null(x$chain)) {
     if (is.null(x$Chain)) {
       x$Chain <- x$chain
@@ -307,6 +308,9 @@ parameter_names.array <- function(x) {
   dimnames(x)[[3]] %||% abort("No parameter names found.")
 }
 parameter_names.default <- function(x) {
+  colnames(x) %||% abort("No parameter names found.")
+}
+parameter_names.matrix <- function(x) {
   colnames(x) %||% abort("No parameter names found.")
 }
 

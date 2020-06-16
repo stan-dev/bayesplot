@@ -152,6 +152,16 @@ test_that("compute_column_density can use density options (#118)", {
   expect_error(mcmc_areas_data(arr, kernel = stop()))
 })
 
+test_that("probabilities outside of [0,1] cause an error", {
+  expect_error(mcmc_intervals_data(arr, prob = -0.1),
+               "must be in \\[0,1\\]")
+  expect_error(mcmc_intervals_data(arr, prob = 1.1),
+               "must be in \\[0,1\\]")
+  expect_error(mcmc_intervals_data(arr, prob_outer = -0.1),
+               "must be in \\[0,1\\]")
+  expect_error(mcmc_intervals_data(arr, prob_outer = 1.1),
+               "must be in \\[0,1\\]")
+})
 
 test_that("inconsistent probabilities raise warning (#138)", {
   expect_warning(
@@ -177,7 +187,7 @@ test_that("mcmc_intervals renders correctly", {
   p_inner <- mcmc_intervals(vdiff_dframe, prob = .1)
   vdiffr::expect_doppelganger("mcmc_intervals (inner)", p_inner)
 
-  rhats <- seq(from = 1, to = 1.15, length = 5)
+  rhats <- seq(from = 1, to = 1.15, length.out = 5)
   p_rhats <- mcmc_intervals(vdiff_dframe, rhat = rhats)
   vdiffr::expect_doppelganger("mcmc_intervals (rhats)", p_rhats)
 
@@ -206,7 +216,7 @@ test_that("mcmc_areas renders correctly", {
   p_inner <- mcmc_areas(vdiff_dframe, prob = .1)
   vdiffr::expect_doppelganger("mcmc_areas (inner)", p_inner)
 
-  rhats <- seq(from = 1, to = 1.15, length = 5)
+  rhats <- seq(from = 1, to = 1.15, length.out = 5)
   p_rhats <- mcmc_areas(vdiff_dframe, rhat = rhats)
   vdiffr::expect_doppelganger("mcmc_areas (rhats)", p_rhats)
 

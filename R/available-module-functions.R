@@ -33,7 +33,7 @@
 #' available_mcmc("_data", plots_only = FALSE)
 #'
 available_ppc <-
-  function(pattern,
+  function(pattern = NULL,
            fixed = FALSE,
            invert = FALSE,
            plots_only = TRUE) {
@@ -49,7 +49,7 @@ available_ppc <-
 #' @rdname available_ppc
 #' @export
 available_ppd <-
-  function(pattern,
+  function(pattern = NULL,
            fixed = FALSE,
            invert = FALSE,
            plots_only = TRUE) {
@@ -65,7 +65,7 @@ available_ppd <-
 #' @rdname available_ppc
 #' @export
 available_mcmc <-
-  function(pattern,
+  function(pattern = NULL,
            fixed = FALSE,
            invert = FALSE,
            plots_only = TRUE) {
@@ -101,9 +101,6 @@ print.bayesplot_function_list <- function(x, ...) {
            plots_only = TRUE) {
 
     .module <- match.arg(.module)
-    if (missing(.pattern)) {
-      .pattern <- NULL
-    }
 
     all_funs <- grep(
       pattern = paste0("^", .module, "_"),

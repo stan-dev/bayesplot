@@ -106,6 +106,11 @@ test_that("validate_df_with_chain works", {
     factor(dframe_multiple_chains2$Chain, labels = letters[1:4])
   a <- validate_df_with_chain(dframe_multiple_chains2)
   expect_type(a$Chain, "integer")
+
+  # no warning raised when using tibbles (#160)
+  tbl <- tibble::tibble(parameter=rnorm(n=40), Chain=rep(1:4, each=10))
+  a <- validate_df_with_chain(tbl)
+  expect_type(a$Chain, "integer")
 })
 
 test_that("df_with_chain2array works", {

@@ -1,34 +1,51 @@
 <!-- See http://style.tidyverse.org/news.html for advice on writing news -->
 
-# bayesplot 1.7.0.9000
-
-(GitHub issue/PR numbers in parentheses)
-
-<!-- Items for next release go here-->
+# placeholder for news items from PPD branch
 
 * New PPD module (FIXME: add more details)
 
-* All PPC categories now have one or more `_data()` functions that return the 
+* All PPC categories now have one or more `_data()` functions that return the
   data used for plotting (Advances #97). The new ones in this release are:
    - `ppc_scatter_data()`
    - `ppc_scatter_avg_data()`
-   - `ppc_stat_data()` 
+   - `ppc_stat_data()`
    - `ppc_bars_data()`
    - `ppc_error_data()`
 
 * Many functions gain an argument `facet_args` for controlling ggplot2 faceting
-  (many other functions have had this argument for a long time). 
+  (many other functions have had this argument for a long time).
   The ones that just now got the argument are:
    - `ppc_scatter()`
    - `ppc_scatter_avg_grouped()`
-   - `ppc_error_hist()` 
+   - `ppc_error_hist()`
    - `ppc_error_hist_grouped()`
    - `ppc_error_scatter()`
    - `ppc_error_binned()`
-   
+
 * `ppc_scatter()`, `ppc_scatter_avg()`, and `ppc_scatter_avg_grouped()` gain an
   argument `ref_line`, which can be set to `FALSE` to turn off the `x=y` line
   drawn behind the scatterplot.
+
+
+# bayesplot 1.7.2.9000
+
+<!--
+(GitHub issue/PR numbers in parentheses)
+* Items for next release go here
+-->
+
+* Added missing `facet_args` argument to `mcmc_rank_overlay()`. (#221, @hhau)
+
+
+# bayesplot 1.7.2
+
+Compatibility with dplyr 1.0.0 (#219)
+
+# bayesplot 1.7.1
+
+Release requested by CRAN to fix errors at
+https://cran.r-project.org/web/checks/check_results_bayesplot.html due to
+matrices also inheriting from "array" in R 4.0.
 
 # bayesplot 1.7.0
 
@@ -39,7 +56,7 @@
   examples. (#161, #183, #188)
 
 * Two new plots have been added for inspecting the distribution of ranks.
-  Rank histograms were introduced by the Stan team's [new paper on 
+  Rank histograms were introduced by the Stan team's [new paper on
   MCMC diagnostics](https://arxiv.org/abs/1903.08008). (#178, #179)
 
   `mcmc_rank_hist()`: A traditional traceplot (`mcmc_trace()`) visualizes how
@@ -47,21 +64,21 @@
   histogram (`mcmc_rank_hist()`) visualizes how the *ranks* of values from the
   chains mix together. An ideal plot would show the ranks mixing or overlapping
   in a uniform distribution.
-  
+
   `mcmc_rank_overlay()`: Instead of drawing each chain's histogram in a separate
   panel, this plot draws the top edge of the chains' histograms in a single
   panel.
-  
+
 * Added `mcmc_trace_data()`, which returns the data used for plotting the trace
   plots and rank histograms. (Advances #97)
 
 * [ColorBrewer](http://colorbrewer2.org) palettes are now available as color
   schemes via
   [`color_scheme_set()`](https://mc-stan.org/bayesplot/reference/bayesplot-colors.html).
-  For example, `color_scheme_set("brewer-Spectral")` will use the Spectral 
+  For example, `color_scheme_set("brewer-Spectral")` will use the Spectral
   palette. (#177, #190)
 
-* MCMC plots now also accept objects with an `as.array` method as 
+* MCMC plots now also accept objects with an `as.array` method as
   input (e.g., stanfit objects). (#175, #184)
 
 * [`mcmc_trace()`](https://mc-stan.org/bayesplot/reference/MCMC-traces.html)
@@ -69,9 +86,9 @@
   from the first iteration after warmup. (#14, #155, @mcol)
 
 * [`mcmc_areas()`](https://mc-stan.org/bayesplot/reference/MCMC-intervals.html)
-  gains an argument `area_method` which controls how to draw the density 
-  curves. The default `"equal area"` constrains the heights so that the curves 
-  have the same area. As a result, a narrow interval will appear as a spike 
+  gains an argument `area_method` which controls how to draw the density
+  curves. The default `"equal area"` constrains the heights so that the curves
+  have the same area. As a result, a narrow interval will appear as a spike
   of density, while a wide, uncertain interval is spread thin over the _x_ axis.
   Alternatively `"equal height"` will set the maximum height on each curve to
   the same value. This works well when the intervals are about the same width.
@@ -98,12 +115,12 @@
 * The examples in
   [`?ppc_loo_pit_overlay()`](https://mc-stan.org/bayesplot/reference/PPC-loo.html)
   now work as expected. (#166, #167)
-  
-* Added `"viridisD"` as an alternative name for `"viridis"` to the supported 
+
+* Added `"viridisD"` as an alternative name for `"viridis"` to the supported
   colors.
 
-* Added `"viridisE"` (the [cividis](https://github.com/marcosci/cividis) 
-  version of viridis) to the supported colors. 
+* Added `"viridisE"` (the [cividis](https://github.com/marcosci/cividis)
+  version of viridis) to the supported colors.
 
 * `ppc_bars()` and `ppc_bars_grouped()` now allow negative integers as input.
   (#172, @jeffpollock9)
@@ -146,7 +163,7 @@
   gains an argument `discrete`, which is `FALSE` by default, but can be used
   to make the Geom more appropriate for discrete data. (#145)
 
-* [PPC intervals 
+* [PPC intervals
   plots](https://mc-stan.org/bayesplot/reference/PPC-intervals.html) and [LOO
   predictive checks](https://mc-stan.org/bayesplot/reference/PPC-loo.html) now
   draw both an outer and an inner probability interval, which can be

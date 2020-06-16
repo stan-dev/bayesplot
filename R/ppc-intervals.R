@@ -312,4 +312,3 @@ ppc_intervals_data <-
 #' @rdname PPC-intervals
 #' @export
 ppc_ribbon_data <- ppc_intervals_data
-

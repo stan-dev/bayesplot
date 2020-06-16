@@ -5,9 +5,12 @@ LICENSE
 ^\.travis\.yml$
 ^README\.md$
 .gitignore
+.git/*
 ^cran-comments\.md$
 ^revdep$
 man-roxygen/*
 images/*
 book/*
 docs/*
+Rplots.pdf
+tests/figs/*

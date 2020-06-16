@@ -222,9 +222,9 @@ np_ncp <- nuts_params(fit_ncp)
 ```
 
 ```{r echo=FALSE, warning=FALSE}
-# On rare ocasions, the fits may not be illustrative. Currently the seed is
+# On rare occasions, the fits may not be illustrative. Currently the seed is
 # fixed, but if something in Stan changes and the fixed seeds produce unexpected
-# results (which sould be rare), we want to know.
+# results (which should be rare), we want to know.
 n_divergent_cp <- np_cp %>% filter(Parameter == "divergent__" & Value == 1) %>% nrow()
 n_divergent_ncp <- np_ncp %>% filter(Parameter == "divergent__" & Value == 1) %>% nrow()
 
@@ -253,21 +253,27 @@ visualizations.
 
 #### mcmc_parcoord
 
-The parallel coordinates plot (`mcmc_parcoord`) is probably the first plot to
-have look at if you have no idea, where the divergences in your model might be
-coming from. This function works in general without including information about
-the divergences, but if the optional `np` argument is used to pass NUTS
-parameter information, then divergences will be colored in the plot (by default
-in red).
+The `mcmc_parcoord` plot shows one line per iteration, connecting the parameter
+values at this iteration. This lets you see global patterns in the divergences.
+
+This function works in general without including information about the
+divergences, but if the optional `np` argument is used to pass NUTS parameter
+information, then divergences will be colored in the plot (by default in red).
 
 ```{r, mcmc_parcoord-1}
 color_scheme_set("darkgray")
 mcmc_parcoord(posterior_cp, np = np_cp)
 ```
 
-The `mcmc_parcoord` plot shows one line per iteration, connecting the parameter
-values at this iteration. This lets you see any global patterns in the
-divergences. Here, you may notice that divergences in the centered
+
+<!-- ```{r, mcmc_parcoord-1, eval=FALSE} -->
+<!-- # not evaluated to reduce vignette size for CRAN -->
+<!-- # full version available at mc-stan.org/bayesplot/articles -->
+<!-- color_scheme_set("darkgray") -->
+<!-- mcmc_parcoord(posterior_cp, np = np_cp) -->
+<!-- ``` -->
+
+Here, you may notice that divergences in the centered
 parameterization happen exclusively when  `tau`, the hierarchical standard
 deviation, goes near zero and the values of the `theta`s are essentially fixed.
 This makes `tau` immediately suspect. 
@@ -277,7 +283,7 @@ of the parallel coordinates plot.
 
 #### mcmc_pairs
 
-The `mcmc_pairs` function can be also be used to look at multiple
+The `mcmc_pairs` function can also be used to look at multiple
 parameters at once, but unlike `mcmc_parcoord` (which works well even when
 including several dozen parameters) `mcmc_pairs` is more useful for up to ~8
 parameters. It shows univariate histograms and bivariate scatter plots for
@@ -289,9 +295,16 @@ Let's look at how `tau` interacts with other variables, using only one of the
 `theta`s to keep the plot readable:
 
 ```{r, mcmc_pairs}
-mcmc_pairs(posterior_cp, np = np_cp, pars = c("mu","tau","theta[1]"), 
+mcmc_pairs(posterior_cp, np = np_cp, pars = c("mu","tau","theta[1]"),
            off_diag_args = list(size = 0.75))
 ```
+
+<!-- ```{r, mcmc_pairs, eval=FALSE} -->
+<!-- # not evaluated to reduce vignette size for CRAN -->
+<!-- # full version available at mc-stan.org/bayesplot/articles -->
+<!-- mcmc_pairs(posterior_cp, np = np_cp, pars = c("mu","tau","theta[1]"),  -->
+<!--            off_diag_args = list(size = 0.75)) -->
+<!-- ``` -->
 
 Note that each bivariate plot is present twice -- by default each of those
 contain half of the chains, so you also get to see if the chains produced
@@ -498,7 +511,7 @@ fit_ncp_2 <- sampling(schools_mod_ncp, data = schools_dat,
 ```
 
 ```{r echo=FALSE, warning=FALSE}
-# On rare ocasions, the fits may not be illustrative. Currently the seed is fixed, but if something in Stan changes and the fixed seeds produce unexpected results (which sould be rare), we want to know.
+# On rare occasions, the fits may not be illustrative. Currently the seed is fixed, but if something in Stan changes and the fixed seeds produce unexpected results (which should be rare), we want to know.
 n_divergent_cp_2 <- fit_cp_2 %>% nuts_params() %>% filter(Parameter == "divergent__" & Value == 1) %>% nrow()
 n_divergent_ncp_2 <- fit_ncp_2 %>% nuts_params() %>% filter(Parameter == "divergent__" & Value == 1) %>% nrow()
 
@@ -640,9 +653,9 @@ mcmc_rhat(rhats)
 In the plot, the points representing the $\hat{R}$ values are colored based on
 whether they are less than $1.05$, between $1.05$ and $1.1$, or greater than
 $1.1$. There is no theoretical reason to trichotomize $\hat{R}$ values using
-these cutoffs, so keep in mind that this is just a heuristic 
+these cutoffs, so keep in mind that this is just a heuristic.
 
-The axis $y$-axis text is off by default for this plot because it's only 
+The $y$-axis text is off by default for this plot because it's only
 possible to see the labels clearly for models with very few parameters. We can
 see the names of the parameters with the concerning $\hat{R}$ values using the
 `yaxis_text` convenience function (which passes arguments like `hjust` to
@@ -772,7 +785,7 @@ Gabry, J., and Goodrich, B. (2018). rstanarm: Bayesian Applied Regression
 Modeling via Stan. R package version 2.17.4.
 https://mc-stan.org/rstanarm
 
-Gabry, J. , Simpson, D. , Vehtari, A. , Betancourt, M. and Gelman, A. (2019), 
+Gabry, J., Simpson, D., Vehtari, A., Betancourt, M. and Gelman, A. (2019),
 Visualization in Bayesian workflow. _J. R. Stat. Soc. A_, 182: 389-402. 
 \doi:10.1111/rssa.12378. ([journal version](https://rss.onlinelibrary.wiley.com/doi/full/10.1111/rssa.12378), 
 [arXiv preprint](https://arxiv.org/abs/1709.01449), 

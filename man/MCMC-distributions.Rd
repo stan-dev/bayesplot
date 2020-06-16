@@ -11,32 +11,84 @@
 \alias{mcmc_violin}
 \title{Histograms and kernel density plots of MCMC draws}
 \usage{
-mcmc_hist(x, pars = character(), regex_pars = character(),
-  transformations = list(), ..., facet_args = list(),
-  binwidth = NULL, breaks = NULL, freq = TRUE)
+mcmc_hist(
+  x,
+  pars = character(),
+  regex_pars = character(),
+  transformations = list(),
+  ...,
+  facet_args = list(),
+  binwidth = NULL,
+  breaks = NULL,
+  freq = TRUE
+)
 
-mcmc_dens(x, pars = character(), regex_pars = character(),
-  transformations = list(), ..., facet_args = list(), trim = FALSE)
+mcmc_dens(
+  x,
+  pars = character(),
+  regex_pars = character(),
+  transformations = list(),
+  ...,
+  facet_args = list(),
+  trim = FALSE
+)
 
-mcmc_hist_by_chain(x, pars = character(), regex_pars = character(),
-  transformations = list(), ..., facet_args = list(),
-  binwidth = NULL, freq = TRUE)
+mcmc_hist_by_chain(
+  x,
+  pars = character(),
+  regex_pars = character(),
+  transformations = list(),
+  ...,
+  facet_args = list(),
+  binwidth = NULL,
+  freq = TRUE
+)
 
-mcmc_dens_overlay(x, pars = character(), regex_pars = character(),
-  transformations = list(), ..., facet_args = list(),
-  color_chains = TRUE, trim = FALSE)
+mcmc_dens_overlay(
+  x,
+  pars = character(),
+  regex_pars = character(),
+  transformations = list(),
+  ...,
+  facet_args = list(),
+  color_chains = TRUE,
+  trim = FALSE
+)
 
-mcmc_dens_chains(x, pars = character(), regex_pars = character(),
-  transformations = list(), ..., color_chains = TRUE, bw = NULL,
-  adjust = NULL, kernel = NULL, n_dens = NULL)
+mcmc_dens_chains(
+  x,
+  pars = character(),
+  regex_pars = character(),
+  transformations = list(),
+  ...,
+  color_chains = TRUE,
+  bw = NULL,
+  adjust = NULL,
+  kernel = NULL,
+  n_dens = NULL
+)
 
-mcmc_dens_chains_data(x, pars = character(), regex_pars = character(),
-  transformations = list(), ..., bw = NULL, adjust = NULL,
-  kernel = NULL, n_dens = NULL)
+mcmc_dens_chains_data(
+  x,
+  pars = character(),
+  regex_pars = character(),
+  transformations = list(),
+  ...,
+  bw = NULL,
+  adjust = NULL,
+  kernel = NULL,
+  n_dens = NULL
+)
 
-mcmc_violin(x, pars = character(), regex_pars = character(),
-  transformations = list(), ..., facet_args = list(), probs = c(0.1,
-  0.5, 0.9))
+mcmc_violin(
+  x,
+  pars = character(),
+  regex_pars = character(),
+  transformations = list(),
+  ...,
+  facet_args = list(),
+  probs = c(0.1, 0.5, 0.9)
+)
 }
 \arguments{
 \item{x}{A 3-D array, matrix, list of matrices, or data frame of MCMC draws.
@@ -47,7 +99,7 @@ the \link{MCMC-overview} page.}
 
 \item{pars}{An optional character vector of parameter names. If neither
 \code{pars} nor \code{regex_pars} is specified then the default is to use \emph{all}
-parameters. As of version \code{1.7.0}, \strong{bayesplot} also supports 'tidy'
+parameters. As of version \verb{1.7.0}, \strong{bayesplot} also supports 'tidy'
 parameter selection by specifying \code{pars = vars(...)}, where \code{...} is
 specified the same way as in \link[dplyr:select]{dplyr::select(...)} and
 similar functions. Examples of using \code{pars} in this way can be found on the
@@ -207,12 +259,15 @@ mcmc_violin(x) + panel_bg(color = "gray20", size = 2, fill = "gray30")
 
 }
 \seealso{
-Other MCMC: \code{\link{MCMC-combos}},
-  \code{\link{MCMC-diagnostics}},
-  \code{\link{MCMC-intervals}}, \code{\link{MCMC-nuts}},
-  \code{\link{MCMC-overview}}, \code{\link{MCMC-parcoord}},
-  \code{\link{MCMC-recover}},
-  \code{\link{MCMC-scatterplots}},
-  \code{\link{MCMC-traces}}
+Other MCMC: 
+\code{\link{MCMC-combos}},
+\code{\link{MCMC-diagnostics}},
+\code{\link{MCMC-intervals}},
+\code{\link{MCMC-nuts}},
+\code{\link{MCMC-overview}},
+\code{\link{MCMC-parcoord}},
+\code{\link{MCMC-recover}},
+\code{\link{MCMC-scatterplots}},
+\code{\link{MCMC-traces}}
 }
 \concept{MCMC}

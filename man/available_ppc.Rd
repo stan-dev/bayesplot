@@ -6,21 +6,23 @@
 \alias{available_mcmc}
 \title{Get or view the names of available plotting or data functions}
 \usage{
-available_ppc(pattern, fixed = FALSE, invert = FALSE,
-  plots_only = TRUE)
+available_ppc(pattern = NULL, fixed = FALSE, invert = FALSE, plots_only = TRUE)
 
-available_ppd(pattern, fixed = FALSE, invert = FALSE,
-  plots_only = TRUE)
+available_ppd(pattern = NULL, fixed = FALSE, invert = FALSE, plots_only = TRUE)
 
-available_mcmc(pattern, fixed = FALSE, invert = FALSE,
-  plots_only = TRUE)
+available_mcmc(
+  pattern = NULL,
+  fixed = FALSE,
+  invert = FALSE,
+  plots_only = TRUE
+)
 }
 \arguments{
 \item{pattern, fixed, invert}{Passed to \code{\link[base:grep]{base::grep()}}.}
 
 \item{plots_only}{If \code{TRUE} (the default) only plotting functions are
 searched for. If \code{FALSE} then functions that return data for plotting
-(functions ending in \code{_data()}) are also included.}
+(functions ending in \verb{_data()}) are also included.}
 }
 \value{
 A possibly empty character vector of function names with several

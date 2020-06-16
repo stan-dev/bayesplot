@@ -13,9 +13,9 @@
 #' @param ... Currently unused.
 #' @param prob The probability mass to include in the inner interval (for
 #'   `mcmc_intervals()`) or in the shaded region (for `mcmc_areas()`). The
-#'   default is `0.5` (50\% interval) and `1` for `mcmc_areas_ridges()`.
+#'   default is `0.5` (50% interval) and `1` for `mcmc_areas_ridges()`.
 #' @param prob_outer The probability mass to include in the outer interval. The
-#'   default is `0.9` for `mcmc_intervals()` (90\% interval) and
+#'   default is `0.9` for `mcmc_intervals()` (90% interval) and
 #'   `1` for `mcmc_areas()` and for `mcmc_areas_ridges()`.
 #' @param area_method How to constrain the areas in `mcmc_areas()`. The
 #'   default is `"equal area"`, setting the density curves to have the same
@@ -60,7 +60,7 @@
 #' color_scheme_set("brightblue")
 #' mcmc_intervals(x)
 #' mcmc_intervals(x, pars = c("beta[1]", "beta[2]"))
-#' mcmc_areas(x, regex_pars = "beta\\[[1-3]", prob = 0.8) +
+#' mcmc_areas(x, regex_pars = "beta\\[[1-3]\\]",  prob = 0.8) +
 #'  ggplot2::labs(
 #'    title = "Posterior distributions",
 #'    subtitle = "with medians and 80% intervals"
@@ -382,7 +382,7 @@ mcmc_areas <- function(x,
     scale_fill +
     scale_y_discrete(
       limits = unique(rev(data$parameter)),
-      expand = expand_scale(add = c(0, .1), mult = c(.1, .3))) +
+      expand = expansion(add = c(0, .1), mult = c(.1, .3))) +
     xlim(x_lim) +
     bayesplot_theme_get() +
     legend_move(ifelse(color_by_rhat, "top", "none")) +
@@ -528,11 +528,12 @@ mcmc_intervals_data <- function(x,
       outer_width = prob_outer,
       inner_width = prob,
       point_est = point_est,
-      ll = quantile(.data$value, probs[1]),
-      l  = quantile(.data$value, probs[2]),
+      ll = unname(quantile(.data$value, probs[1])),
+      l  = unname(quantile(.data$value, probs[2])),
       m  = m_func(.data$value),
-      h  = quantile(.data$value, probs[3]),
-      hh = quantile(.data$value, probs[4]))
+      h  = unname(quantile(.data$value, probs[3])),
+      hh = unname(quantile(.data$value, probs[4]))
+    )
 
   if (point_est == "none") {
     data$m <- NULL
@@ -780,6 +781,8 @@ compute_interval_density <- function(x, interval_width = 1, n_dens = 1024,
 }
 
 check_interval_widths <- function(prob, prob_outer) {
+  if (prob < 0 || prob > 1 || prob_outer < 0 || prob_outer > 1)
+    abort("`prob` and `prob_outer` must be in [0,1].")
   if (prob_outer < prob) {
     x <- sprintf(
       "`prob_outer` (%s) is less than `prob` (%s)\n... %s",

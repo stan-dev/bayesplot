@@ -8,14 +8,38 @@
 \alias{ppc_bars_data}
 \title{PPCs for discrete outcomes}
 \usage{
-ppc_bars(y, yrep, ..., prob = 0.9, width = 0.9, size = 1,
-  fatten = 2.5, freq = TRUE)
+ppc_bars(
+  y,
+  yrep,
+  ...,
+  prob = 0.9,
+  width = 0.9,
+  size = 1,
+  fatten = 2.5,
+  freq = TRUE
+)
 
-ppc_bars_grouped(y, yrep, group, ..., facet_args = list(), prob = 0.9,
-  width = 0.9, size = 1, fatten = 2.5, freq = TRUE)
+ppc_bars_grouped(
+  y,
+  yrep,
+  group,
+  ...,
+  facet_args = list(),
+  prob = 0.9,
+  width = 0.9,
+  size = 1,
+  fatten = 2.5,
+  freq = TRUE
+)
 
-ppc_rootogram(y, yrep, style = c("standing", "hanging", "suspended"),
-  ..., prob = 0.9, size = 1)
+ppc_rootogram(
+  y,
+  yrep,
+  style = c("standing", "hanging", "suspended"),
+  ...,
+  prob = 0.9,
+  size = 1
+)
 
 ppc_bars_data(y, yrep, group = NULL, prob = 0.9, freq = TRUE)
 }
@@ -62,7 +86,7 @@ details on the different styles.}
 \value{
 The plotting functions return a ggplot object that can be further
 customized using the \strong{ggplot2} package. The functions with suffix
-\code{_data()} return the data that would have been drawn by the plotting
+\verb{_data()} return the data that would have been drawn by the plotting
 function.
 }
 \description{
@@ -187,10 +211,13 @@ Visualizing count data regressions using rootograms.
 \url{https://arxiv.org/abs/1605.01311}.
 }
 \seealso{
-Other PPCs: \code{\link{PPC-distributions}},
-  \code{\link{PPC-errors}}, \code{\link{PPC-intervals}},
-  \code{\link{PPC-loo}}, \code{\link{PPC-overview}},
-  \code{\link{PPC-scatterplots}},
-  \code{\link{PPC-test-statistics}}
+Other PPCs: 
+\code{\link{PPC-distributions}},
+\code{\link{PPC-errors}},
+\code{\link{PPC-intervals}},
+\code{\link{PPC-loo}},
+\code{\link{PPC-overview}},
+\code{\link{PPC-scatterplots}},
+\code{\link{PPC-test-statistics}}
 }
 \concept{PPCs}

@@ -9,14 +9,28 @@
 \alias{ppc_scatter_avg_data}
 \title{PPC scatterplots}
 \usage{
-ppc_scatter(y, yrep, ..., facet_args = list(), size = 2.5,
-  alpha = 0.8, ref_line = TRUE)
+ppc_scatter(
+  y,
+  yrep,
+  ...,
+  facet_args = list(),
+  size = 2.5,
+  alpha = 0.8,
+  ref_line = TRUE
+)
 
-ppc_scatter_avg(y, yrep, ..., size = 2.5, alpha = 0.8,
-  ref_line = TRUE)
+ppc_scatter_avg(y, yrep, ..., size = 2.5, alpha = 0.8, ref_line = TRUE)
 
-ppc_scatter_avg_grouped(y, yrep, group, ..., facet_args = list(),
-  size = 2.5, alpha = 0.8, ref_line = TRUE)
+ppc_scatter_avg_grouped(
+  y,
+  yrep,
+  group,
+  ...,
+  facet_args = list(),
+  size = 2.5,
+  alpha = 0.8,
+  ref_line = TRUE
+)
 
 ppc_scatter_data(y, yrep)
 
@@ -54,7 +68,7 @@ level pertaining to the corresponding observation.}
 \value{
 The plotting functions return a ggplot object that can be further
 customized using the \strong{ggplot2} package. The functions with suffix
-\code{_data()} return the data that would have been drawn by the plotting
+\verb{_data()} return the data that would have been drawn by the plotting
 function.
 }
 \description{
@@ -77,7 +91,7 @@ small number of rows.
 }
 \item{\code{ppc_scatter_avg()}}{
 A single scatterplot of \code{y} against the average values of \code{yrep}, i.e.,
-the points \code{(x,y) = (mean(yrep[, n]), y[n])}, where each \code{yrep[, n]} is
+the points \verb{(x,y) = (mean(yrep[, n]), y[n])}, where each \code{yrep[, n]} is
 a vector of length equal to the number of posterior draws. Unlike
 for \code{ppc_scatter()}, for \code{ppc_scatter_avg()} \code{yrep} should contain many
 draws (rows).
@@ -121,10 +135,13 @@ A., and Rubin, D. B. (2013). \emph{Bayesian Data Analysis.} Chapman & Hall/CRC
 Press, London, third edition. (Ch. 6)
 }
 \seealso{
-Other PPCs: \code{\link{PPC-discrete}},
-  \code{\link{PPC-distributions}},
-  \code{\link{PPC-errors}}, \code{\link{PPC-intervals}},
-  \code{\link{PPC-loo}}, \code{\link{PPC-overview}},
-  \code{\link{PPC-test-statistics}}
+Other PPCs: 
+\code{\link{PPC-discrete}},
+\code{\link{PPC-distributions}},
+\code{\link{PPC-errors}},
+\code{\link{PPC-intervals}},
+\code{\link{PPC-loo}},
+\code{\link{PPC-overview}},
+\code{\link{PPC-test-statistics}}
 }
 \concept{PPCs}

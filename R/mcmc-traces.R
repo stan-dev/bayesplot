@@ -110,7 +110,7 @@
 #' color_scheme_set("purple")
 #' p <- mcmc_trace(
 #'   x,
-#'   regex_pars = "beta\\[[1,3]\\]",
+#'   regex_pars = "beta\\\[[1,3]\\\]",
 #'   facet_args = list(labeller = ggplot2::label_parsed)
 #' )
 #' p + facet_text(size = 15)
@@ -266,6 +266,7 @@ mcmc_rank_overlay <- function(x,
                               pars = character(),
                               regex_pars = character(),
                               transformations = list(),
+                              facet_args = list(),
                               ...,
                               n_bins = 20,
                               ref_line = FALSE) {
@@ -278,6 +279,7 @@ mcmc_rank_overlay <- function(x,
   )
 
   n_chains <- unique(data$n_chains)
+  n_param <- unique(data$n_parameters)
 
   # We have to bin and count the data ourselves because
   # ggplot2::stat_bin(geom = "step") does not draw the final bin.
@@ -314,12 +316,19 @@ mcmc_rank_overlay <- function(x,
   } else {
     NULL
   }
-
+  
+  facet_call <- NULL
+  if (n_param > 1) {
+    facet_args$facets <- ~ parameter
+    facet_args$scales <- facet_args$scales %||% "fixed"
+    facet_call <- do.call("facet_wrap", facet_args)
+  }
+  
   ggplot(d_bin_counts) +
     aes_(x = ~ bin_start, y =  ~ n, color = ~ chain) +
     geom_step() +
     layer_ref_line +
-    facet_wrap("parameter") +
+    facet_call +
     scale_color +
     ylim(c(0, NA)) +
     bayesplot_theme_get() +

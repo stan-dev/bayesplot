@@ -78,7 +78,7 @@
 #'
 #' * [PPC-intervals]: Interval estimates of `yrep` with `y`
 #'   overlaid. The x-axis variable can be optionally specified by the user
-#'   (e.g. to plot against against a predictor variable or over time).
+#'   (e.g. to plot against a predictor variable or over time).
 #'
 #' * [PPC-errors]: Plots of predictive errors (`y - yrep`) computed from `y` and
 #'   each of the simulated datasets (rows) in `yrep`. For binomial models binned

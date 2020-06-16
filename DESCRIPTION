@@ -1,8 +1,8 @@
 Package: bayesplot
 Type: Package
 Title: Plotting for Bayesian Models
-Version: 1.7.0.9000
-Date: 2019-05-22
+Version: 1.7.2.9000
+Date: 2020-05-27
 Authors@R: c(person("Jonah", "Gabry", role = c("aut", "cre"), email = "jsg2201@columbia.edu"),
              person("Tristan", "Mahr", role = "aut"),
              person("Paul-Christian", "Bürkner", role = "ctb"),
@@ -26,7 +26,7 @@ Depends:
     R (>= 3.1.0)
 Imports:
     dplyr (>= 0.8.0),
-    ggplot2 (>= 2.2.1),
+    ggplot2 (>= 3.0.0),
     ggridges,
     glue,
     reshape2,
@@ -49,7 +49,7 @@ Suggests:
     shinystan (>= 2.3.0),
     testthat (>= 2.0.0),
     vdiffr
-RoxygenNote: 6.1.1
+RoxygenNote: 7.1.0
 VignetteBuilder: knitr
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)

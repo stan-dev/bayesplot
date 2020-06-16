@@ -11,20 +11,50 @@
 \alias{ppc_stat_data}
 \title{PPC test statistics}
 \usage{
-ppc_stat(y, yrep, stat = "mean", ..., binwidth = NULL, breaks = NULL,
-  freq = TRUE)
+ppc_stat(
+  y,
+  yrep,
+  stat = "mean",
+  ...,
+  binwidth = NULL,
+  breaks = NULL,
+  freq = TRUE
+)
 
-ppc_stat_grouped(y, yrep, group, stat = "mean", ...,
-  facet_args = list(), binwidth = NULL, breaks = NULL, freq = TRUE)
+ppc_stat_grouped(
+  y,
+  yrep,
+  group,
+  stat = "mean",
+  ...,
+  facet_args = list(),
+  binwidth = NULL,
+  breaks = NULL,
+  freq = TRUE
+)
 
-ppc_stat_freqpoly(y, yrep, stat = "mean", ..., facet_args = list(),
-  binwidth = NULL, freq = TRUE)
+ppc_stat_freqpoly(
+  y,
+  yrep,
+  stat = "mean",
+  ...,
+  facet_args = list(),
+  binwidth = NULL,
+  freq = TRUE
+)
 
-ppc_stat_freqpoly_grouped(y, yrep, group, stat = "mean", ...,
-  facet_args = list(), binwidth = NULL, freq = TRUE)
+ppc_stat_freqpoly_grouped(
+  y,
+  yrep,
+  group,
+  stat = "mean",
+  ...,
+  facet_args = list(),
+  binwidth = NULL,
+  freq = TRUE
+)
 
-ppc_stat_2d(y, yrep, stat = c("mean", "sd"), ..., size = 2.5,
-  alpha = 0.7)
+ppc_stat_2d(y, yrep, stat = c("mean", "sd"), ..., size = 2.5, alpha = 0.7)
 
 ppc_stat_data(y, yrep, group = NULL, stat)
 }
@@ -76,7 +106,7 @@ on the plot) instead of the \strong{ggplot2} default of \code{scales="fixed"}.}
 \value{
 The plotting functions return a ggplot object that can be further
 customized using the \strong{ggplot2} package. The functions with suffix
-\code{_data()} return the data that would have been drawn by the plotting
+\verb{_data()} return the data that would have been drawn by the plotting
 function.
 }
 \description{
@@ -168,10 +198,13 @@ A., and Rubin, D. B. (2013). \emph{Bayesian Data Analysis.} Chapman & Hall/CRC
 Press, London, third edition. (Ch. 6)
 }
 \seealso{
-Other PPCs: \code{\link{PPC-discrete}},
-  \code{\link{PPC-distributions}},
-  \code{\link{PPC-errors}}, \code{\link{PPC-intervals}},
-  \code{\link{PPC-loo}}, \code{\link{PPC-overview}},
-  \code{\link{PPC-scatterplots}}
+Other PPCs: 
+\code{\link{PPC-discrete}},
+\code{\link{PPC-distributions}},
+\code{\link{PPC-errors}},
+\code{\link{PPC-intervals}},
+\code{\link{PPC-loo}},
+\code{\link{PPC-overview}},
+\code{\link{PPC-scatterplots}}
 }
 \concept{PPCs}

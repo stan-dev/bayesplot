@@ -28,8 +28,8 @@ left as \code{NULL} and will be set automatically for the user.}
 
 \item{pattern, ...}{For \code{param_glue()} only, \code{pattern} is a string containing
 expressions enclosed in braces and \code{...} should be named arguments
-providing one character vector per expression in braces in \code{patten}. It is
-easiest to describe how to use these arguments with an example:\preformatted{param_glue("beta_{var}[{level}]",
+providing one character vector per expression in braces in \code{pattern}. It is
+easiest to describe how to use these arguments with an example:\preformatted{param_glue("beta_\{var\}[\{level\}]",
            var = c("age", "income"),
            level = c(3,8))
 }
@@ -41,7 +41,7 @@ would select parameters with names
 Parameter selection in the style of \strong{dplyr} and other tidyverse packages.
 }
 \details{
-As of version \code{1.7.0}, \strong{bayesplot} allows the \code{pars} argument for \link[bayesplot:MCMC-overview]{MCMC plots} to use "tidy" variable selection (in the
+As of version \verb{1.7.0}, \strong{bayesplot} allows the \code{pars} argument for \link[bayesplot:MCMC-overview]{MCMC plots} to use "tidy" variable selection (in the
 style of the \strong{dplyr} package). The \code{\link[dplyr:vars]{vars()}} function is
 re-exported from \strong{dplyr} for this purpose.
 
@@ -60,7 +60,7 @@ additional helper functions to help with parameter selection:
 when parameter indexes are in brackets (e.g. \code{beta[2]}).
 \item \code{param_glue()}: for more complicated parameter names with multiple
 indexes (including variable names) inside the brackets
-(e.g., \code{beta[(Intercept) age_group:3]}).
+(e.g., \verb{beta[(Intercept) age_group:3]}).
 }
 
 These functions can be used inside of \code{vars()}, \code{dplyr::select()},

@@ -166,9 +166,17 @@ transform the draws in advance or use the `transformations` argument.
 
 ```{r, mcmc_hist-transform, message=FALSE}
 color_scheme_set("blue")
-mcmc_hist(posterior, pars = c("wt", "sigma"), 
+mcmc_hist(posterior, pars = c("wt", "sigma"),
           transformations = list("sigma" = "log"))
 ```
+
+<!-- ```{r, mcmc_hist-transform, message=FALSE, eval=FALSE} -->
+<!-- # not evaluated to reduce vignette size for CRAN -->
+<!-- # full version available at mc-stan.org/bayesplot/articles -->
+<!-- color_scheme_set("blue") -->
+<!-- mcmc_hist(posterior, pars = c("wt", "sigma"),  -->
+<!--           transformations = list("sigma" = "log")) -->
+<!-- ``` -->
 
 Most of the other functions for plotting MCMC draws also have a
 `transformations` argument.
@@ -267,6 +275,14 @@ mcmc_pairs(posterior, pars = c("(Intercept)", "wt", "sigma"),
            off_diag_args = list(size = 1.5))
 ```
 
+<!-- ```{r, mcmc_pairs, message=FALSE, eval=FALSE} -->
+<!-- # not evaluated to reduce vignette size for CRAN -->
+<!-- # full version available at mc-stan.org/bayesplot/articles -->
+<!-- color_scheme_set("pink") -->
+<!-- mcmc_pairs(posterior, pars = c("(Intercept)", "wt", "sigma"), -->
+<!--            off_diag_args = list(size = 1.5)) -->
+<!-- ``` -->
+
 The univariate marginal posteriors are shown along the diagonal as histograms, 
 but this can be changed to densities by setting `diag_fun="dens"`. Bivariate
 plots are displayed above and below the diagonal as scatterplots, but it is also
@@ -325,10 +341,17 @@ by side, and `strip.position="left"` moves the facet labels to the y-axis
 The [`"viridis"` color scheme](https://CRAN.R-project.org/package=viridis) is
 also useful for trace plots because it is comprised of very distinct colors:
 
-```{r, viridis-scheme}
+```{r, viridis-scheme, eval=FALSE}
 color_scheme_set("viridis")
 mcmc_trace(posterior, pars = "(Intercept)")
 ```
+
+<!-- ```{r, viridis-scheme, eval=FALSE} -->
+<!-- # not evaluated to reduce vignette size for CRAN -->
+<!-- # full version available at mc-stan.org/bayesplot/articles -->
+<!-- color_scheme_set("viridis") -->
+<!-- mcmc_trace(posterior, pars = "(Intercept)") -->
+<!-- ``` -->
 
 #### mcmc_trace_highlight
 
@@ -349,7 +372,7 @@ Gabry, J., and Goodrich, B. (2017). rstanarm: Bayesian Applied Regression
 Modeling via Stan. R package version 2.15.3. 
 https://mc-stan.org/rstanarm, https://CRAN.R-project.org/package=rstanarm
 
-Gabry, J. , Simpson, D. , Vehtari, A. , Betancourt, M. and Gelman, A. (2019), 
+Gabry, J., Simpson, D., Vehtari, A., Betancourt, M. and Gelman, A. (2019),
 Visualization in Bayesian workflow. _J. R. Stat. Soc. A_, 182: 389-402. 
 \doi:10.1111/rssa.12378. ([journal version](https://rss.onlinelibrary.wiley.com/doi/full/10.1111/rssa.12378), 
 [arXiv preprint](https://arxiv.org/abs/1709.01449), 

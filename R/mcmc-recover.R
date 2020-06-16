@@ -27,9 +27,9 @@
 #'   within which it makes sense to use the same y-axis.
 #' @param ... Currently unused.
 #' @param prob The probability mass to include in the inner interval. The
-#'   default is `0.5` (50\% interval).
+#'   default is `0.5` (50% interval).
 #' @param prob_outer The probability mass to include in the outer interval. The
-#'   default is `0.9` (90\% interval).
+#'   default is `0.9` (90% interval).
 #' @param point_est The point estimate to show. Either `"median"` (the
 #'   default), `"mean"`, or `"none"`.
 #' @param size,alpha Passed to [ggplot2::geom_point()] to control the

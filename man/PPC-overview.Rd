@@ -80,7 +80,7 @@ statistics, over the simulated datasets (rows) in \code{yrep} compared to value 
 the statistic(s) computed from \code{y}.
 \item \link{PPC-intervals}: Interval estimates of \code{yrep} with \code{y}
 overlaid. The x-axis variable can be optionally specified by the user
-(e.g. to plot against against a predictor variable or over time).
+(e.g. to plot against a predictor variable or over time).
 \item \link{PPC-errors}: Plots of predictive errors (\code{y - yrep}) computed from \code{y} and
 each of the simulated datasets (rows) in \code{yrep}. For binomial models binned
 error plots are also available.
@@ -119,10 +119,13 @@ A., and Rubin, D. B. (2013). \emph{Bayesian Data Analysis.} Chapman & Hall/CRC
 Press, London, third edition. (Ch. 6)
 }
 \seealso{
-Other PPCs: \code{\link{PPC-discrete}},
-  \code{\link{PPC-distributions}},
-  \code{\link{PPC-errors}}, \code{\link{PPC-intervals}},
-  \code{\link{PPC-loo}}, \code{\link{PPC-scatterplots}},
-  \code{\link{PPC-test-statistics}}
+Other PPCs: 
+\code{\link{PPC-discrete}},
+\code{\link{PPC-distributions}},
+\code{\link{PPC-errors}},
+\code{\link{PPC-intervals}},
+\code{\link{PPC-loo}},
+\code{\link{PPC-scatterplots}},
+\code{\link{PPC-test-statistics}}
 }
 \concept{PPCs}

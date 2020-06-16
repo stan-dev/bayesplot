@@ -80,10 +80,10 @@ functions, \code{...} is passed to \code{\link[ggplot2:geom_vline]{ggplot2::geom
 \code{\link[ggplot2:geom_hline]{ggplot2::geom_hline()}}, and \code{\link[ggplot2:geom_abline]{ggplot2::geom_abline()}},
 respectively, to control the appearance of the line(s).
 
-For functions ending in \code{_bg}, \code{...} is passed to
+For functions ending in \verb{_bg}, \code{...} is passed to
 \code{\link[ggplot2:element_rect]{ggplot2::element_rect()}}.
 
-For functions ending in \code{_text} or \code{_title}, \code{...} is passed
+For functions ending in \verb{_text} or \verb{_title}, \code{...} is passed
 to \code{\link[ggplot2:element_text]{ggplot2::element_text()}}.
 
 For \code{xaxis_ticks} and \code{yaxis_ticks}, \code{...} is passed to
@@ -95,7 +95,7 @@ For \code{overlay_function}, \code{...} is passed to
 \item{na.rm}{A logical scalar passed to the appropriate geom (e.g.
 \code{\link[ggplot2:geom_vline]{ggplot2::geom_vline()}}). The default is \code{TRUE}.}
 
-\item{p}{The probability mass (in \code{[0,1]}) to include in the interval.}
+\item{p}{The probability mass (in \verb{[0,1]}) to include in the interval.}
 
 \item{med}{Should the median also be included in addition to the lower
 and upper bounds of the interval?}
@@ -137,7 +137,7 @@ with \code{v = 0} and \code{fun} missing.
 \item \code{abline_01()} is a wrapper for \code{\link[ggplot2:geom_abline]{ggplot2::geom_abline()}} with the intercept
 set to \code{0} and the slope set to \code{1}.
 \item \code{lbub()} returns a \emph{function} that takes a single argument \code{x} and returns
-the lower and upper bounds (\code{lb}, \code{ub}) of the \code{100*p}\% central interval
+the lower and upper bounds (\code{lb}, \code{ub}) of the \code{100*p}\\% central interval
 of \code{x}, as well as the median (if \code{med=TRUE}).
 }
 }

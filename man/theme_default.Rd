@@ -4,8 +4,10 @@
 \alias{theme_default}
 \title{Default \strong{bayesplot} plotting theme}
 \usage{
-theme_default(base_size = getOption("bayesplot.base_size", 12),
-  base_family = getOption("bayesplot.base_family", "serif"))
+theme_default(
+  base_size = getOption("bayesplot.base_size", 12),
+  base_family = getOption("bayesplot.base_family", "serif")
+)
 }
 \arguments{
 \item{base_size, base_family}{Base font size and family (passed to

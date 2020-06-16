@@ -10,26 +10,63 @@
 \alias{pairs_condition}
 \title{Scatterplots of MCMC draws}
 \usage{
-mcmc_scatter(x, pars = character(), regex_pars = character(),
-  transformations = list(), ..., size = 2.5, alpha = 0.8,
-  np = NULL, np_style = scatter_style_np())
+mcmc_scatter(
+  x,
+  pars = character(),
+  regex_pars = character(),
+  transformations = list(),
+  ...,
+  size = 2.5,
+  alpha = 0.8,
+  np = NULL,
+  np_style = scatter_style_np()
+)
 
-mcmc_hex(x, pars = character(), regex_pars = character(),
-  transformations = list(), ..., binwidth = NULL)
+mcmc_hex(
+  x,
+  pars = character(),
+  regex_pars = character(),
+  transformations = list(),
+  ...,
+  binwidth = NULL
+)
 
-mcmc_pairs(x, pars = character(), regex_pars = character(),
-  transformations = list(), ..., diag_fun = c("hist", "dens"),
-  off_diag_fun = c("scatter", "hex"), diag_args = list(),
-  off_diag_args = list(), condition = pairs_condition(), lp = NULL,
-  np = NULL, np_style = pairs_style_np(), max_treedepth = NULL,
-  grid_args = list(), save_gg_objects = TRUE)
+mcmc_pairs(
+  x,
+  pars = character(),
+  regex_pars = character(),
+  transformations = list(),
+  ...,
+  diag_fun = c("hist", "dens"),
+  off_diag_fun = c("scatter", "hex"),
+  diag_args = list(),
+  off_diag_args = list(),
+  condition = pairs_condition(),
+  lp = NULL,
+  np = NULL,
+  np_style = pairs_style_np(),
+  max_treedepth = NULL,
+  grid_args = list(),
+  save_gg_objects = TRUE
+)
 
-scatter_style_np(div_color = "red", div_shape = 16, div_size = 2.5,
-  div_alpha = 1)
+scatter_style_np(
+  div_color = "red",
+  div_shape = 16,
+  div_size = 2.5,
+  div_alpha = 1
+)
 
-pairs_style_np(div_color = "red", div_shape = 4, div_size = 1,
-  div_alpha = 1, td_color = "yellow2", td_shape = 3, td_size = 1,
-  td_alpha = 1)
+pairs_style_np(
+  div_color = "red",
+  div_shape = 4,
+  div_size = 1,
+  div_alpha = 1,
+  td_color = "yellow2",
+  td_shape = 3,
+  td_size = 1,
+  td_alpha = 1
+)
 
 pairs_condition(chains = NULL, draws = NULL, nuts = NULL)
 }
@@ -42,7 +79,7 @@ the \link{MCMC-overview} page.}
 
 \item{pars}{An optional character vector of parameter names. If neither
 \code{pars} nor \code{regex_pars} is specified then the default is to use \emph{all}
-parameters. As of version \code{1.7.0}, \strong{bayesplot} also supports 'tidy'
+parameters. As of version \verb{1.7.0}, \strong{bayesplot} also supports 'tidy'
 parameter selection by specifying \code{pars = vars(...)}, where \code{...} is
 specified the same way as in \link[dplyr:select]{dplyr::select(...)} and
 similar functions. Examples of using \code{pars} in this way can be found on the
@@ -372,11 +409,15 @@ Gelman, A. (2019), Visualization in Bayesian workflow.
 \href{https://github.com/jgabry/bayes-vis-paper}{code on GitHub})
 }
 \seealso{
-Other MCMC: \code{\link{MCMC-combos}},
-  \code{\link{MCMC-diagnostics}},
-  \code{\link{MCMC-distributions}},
-  \code{\link{MCMC-intervals}}, \code{\link{MCMC-nuts}},
-  \code{\link{MCMC-overview}}, \code{\link{MCMC-parcoord}},
-  \code{\link{MCMC-recover}}, \code{\link{MCMC-traces}}
+Other MCMC: 
+\code{\link{MCMC-combos}},
+\code{\link{MCMC-diagnostics}},
+\code{\link{MCMC-distributions}},
+\code{\link{MCMC-intervals}},
+\code{\link{MCMC-nuts}},
+\code{\link{MCMC-overview}},
+\code{\link{MCMC-parcoord}},
+\code{\link{MCMC-recover}},
+\code{\link{MCMC-traces}}
 }
 \concept{MCMC}

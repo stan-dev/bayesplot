@@ -24,11 +24,24 @@ mcmc_neff_hist(ratio, ..., binwidth = NULL, breaks = NULL)
 
 mcmc_neff_data(ratio, ...)
 
-mcmc_acf(x, pars = character(), regex_pars = character(), ...,
-  facet_args = list(), lags = 20, size = NULL)
+mcmc_acf(
+  x,
+  pars = character(),
+  regex_pars = character(),
+  ...,
+  facet_args = list(),
+  lags = 20,
+  size = NULL
+)
 
-mcmc_acf_bar(x, pars = character(), regex_pars = character(), ...,
-  facet_args = list(), lags = 20)
+mcmc_acf_bar(
+  x,
+  pars = character(),
+  regex_pars = character(),
+  ...,
+  facet_args = list(),
+  lags = 20
+)
 }
 \arguments{
 \item{rhat}{A vector of R-hat estimates.}
@@ -56,7 +69,7 @@ the \link{MCMC-overview} page.}
 
 \item{pars}{An optional character vector of parameter names. If neither
 \code{pars} nor \code{regex_pars} is specified then the default is to use \emph{all}
-parameters. As of version \code{1.7.0}, \strong{bayesplot} also supports 'tidy'
+parameters. As of version \verb{1.7.0}, \strong{bayesplot} also supports 'tidy'
 parameter selection by specifying \code{pars = vars(...)}, where \code{...} is
 specified the same way as in \link[dplyr:select]{dplyr::select(...)} and
 similar functions. Examples of using \code{pars} in this way can be found on the
@@ -79,7 +92,7 @@ on the plot) instead of the \strong{ggplot2} default of \code{scales="fixed"}.}
 \value{
 The plotting functions return a ggplot object that can be further
 customized using the \strong{ggplot2} package. The functions with suffix
-\code{_data()} return the data that would have been drawn by the plotting
+\verb{_data()} return the data that would have been drawn by the plotting
 function.
 }
 \description{
@@ -202,12 +215,15 @@ vignette.
 using the No-U-Turn-Sampler.
 }
 
-Other MCMC: \code{\link{MCMC-combos}},
-  \code{\link{MCMC-distributions}},
-  \code{\link{MCMC-intervals}}, \code{\link{MCMC-nuts}},
-  \code{\link{MCMC-overview}}, \code{\link{MCMC-parcoord}},
-  \code{\link{MCMC-recover}},
-  \code{\link{MCMC-scatterplots}},
-  \code{\link{MCMC-traces}}
+Other MCMC: 
+\code{\link{MCMC-combos}},
+\code{\link{MCMC-distributions}},
+\code{\link{MCMC-intervals}},
+\code{\link{MCMC-nuts}},
+\code{\link{MCMC-overview}},
+\code{\link{MCMC-parcoord}},
+\code{\link{MCMC-recover}},
+\code{\link{MCMC-scatterplots}},
+\code{\link{MCMC-traces}}
 }
 \concept{MCMC}
