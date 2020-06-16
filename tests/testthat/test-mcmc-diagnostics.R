@@ -105,7 +105,7 @@ test_that("mcmc_acf & mcmc_acf_bar throw correct errors", {
 test_that("mcmc_rhat renders correctly", {
   testthat::skip_on_cran()
 
-  rhats <- seq(from = 1, to = 1.20, length = 10)
+  rhats <- seq(from = 1, to = 1.20, length.out = 10)
 
   p_base <- mcmc_rhat(rhats)
   vdiffr::expect_doppelganger("mcmc_rhat (default)", p_base)
@@ -117,7 +117,7 @@ test_that("mcmc_rhat renders correctly", {
 test_that("mcmc_rhat_hist renders correctly", {
   testthat::skip_on_cran()
 
-  rhats <- seq(from = 1, to = 1.20, length = 10)
+  rhats <- seq(from = 1, to = 1.20, length.out = 10)
 
   p_base <- mcmc_rhat_hist(rhats)
   vdiffr::expect_doppelganger("mcmc_rhat_hist (default)", p_base)
@@ -130,7 +130,7 @@ test_that("mcmc_rhat_hist renders correctly", {
 test_that("mcmc_neff renders correctly", {
   testthat::skip_on_cran()
 
-  neffs <- seq(from = 0, to = 1, length = 20)
+  neffs <- seq(from = 0, to = 1, length.out = 20)
 
   p_base <- mcmc_neff(neffs)
   vdiffr::expect_doppelganger("mcmc_neff (default)", p_base)
@@ -139,7 +139,7 @@ test_that("mcmc_neff renders correctly", {
 test_that("mcmc_neff_hist renders correctly", {
   testthat::skip_on_cran()
 
-  neffs <- seq(from = 0, to = 1, length = 20)
+  neffs <- seq(from = 0, to = 1, length.out = 20)
 
   p_base <- mcmc_neff_hist(neffs)
   vdiffr::expect_doppelganger("mcmc_neff_hist (default)", p_base)

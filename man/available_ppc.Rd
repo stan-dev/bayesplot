@@ -5,9 +5,9 @@
 \alias{available_mcmc}
 \title{Get or view the names of available plotting functions}
 \usage{
-available_ppc(pattern, fixed = FALSE, invert = FALSE)
+available_ppc(pattern = NULL, fixed = FALSE, invert = FALSE)
 
-available_mcmc(pattern, fixed = FALSE, invert = FALSE)
+available_mcmc(pattern = NULL, fixed = FALSE, invert = FALSE)
 }
 \arguments{
 \item{pattern, fixed, invert}{Passed to \code{\link[base:grep]{base::grep()}}.}

@@ -1,16 +1,19 @@
 <!-- See http://style.tidyverse.org/news.html for advice on writing news -->
 
 
+# bayesplot 1.7.2.9000
 
-# bayesplot 1.7.1.9000
-
-(GitHub issue/PR numbers in parentheses)
+* Added missing `facet_args` argument to `mcmc_rank_overlay()`. (#221, @hhau)
 
 * Added `ppc_dens_overlay_grouped()` and `ppc_ecdf_overlay_grouped()` for 
   plotting density and cumulative distributions of the posterior predictive 
   distribution (versus observed data) by group. (#212)
   
 * Fix bug in `color_scheme_view()` minimal theme (#213).
+
+# bayesplot 1.7.2
+
+Compatibility with dplyr 1.0.0 (#219)
 
 # bayesplot 1.7.1
 

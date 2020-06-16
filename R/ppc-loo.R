@@ -178,11 +178,11 @@ ppc_loo_pit_overlay <- function(y,
     scale_color_ppc_dist(labels = c("PIT", "Unif")) +
     scale_x_continuous(
       limits = c(.1, .9),
-      expand = expand_scale(0, 0),
+      expand = expansion(0, 0),
       breaks = seq(from = .1, to = .9, by = .2)) +
     scale_y_continuous(
       limits = c(0, NA),
-      expand = expand_scale(mult = c(0, .25))) +
+      expand = expansion(mult = c(0, .25))) +
     bayesplot_theme_get() +
     yaxis_title(FALSE) +
     xaxis_title(FALSE) +

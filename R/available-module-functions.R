@@ -16,7 +16,7 @@
 #' available_ppc("grouped")
 #' available_ppc("grouped", invert = TRUE)
 #'
-available_ppc <- function(pattern, fixed = FALSE, invert = FALSE) {
+available_ppc <- function(pattern = NULL, fixed = FALSE, invert = FALSE) {
   .list_module_functions("ppc",
                          .pattern = pattern,
                          fixed = fixed,
@@ -25,7 +25,7 @@ available_ppc <- function(pattern, fixed = FALSE, invert = FALSE) {
 
 #' @rdname available_ppc
 #' @export
-available_mcmc <- function(pattern, fixed = FALSE, invert = FALSE) {
+available_mcmc <- function(pattern = NULL, fixed = FALSE, invert = FALSE) {
   .list_module_functions("mcmc",
                          .pattern = pattern,
                          fixed = fixed,
@@ -54,9 +54,6 @@ print.bayesplot_function_list <- function(x, ...) {
            invert = FALSE) {
 
     .module <- match.arg(.module)
-    if (missing(.pattern)) {
-      .pattern <- NULL
-    }
 
     all_funs <- grep(
       pattern = paste0("^", .module, "_"),
