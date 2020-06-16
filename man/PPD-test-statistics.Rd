@@ -11,20 +11,46 @@
 \alias{ppd_stat_data}
 \title{PPD test statistics}
 \usage{
-ppd_stat(ypred, stat = "mean", ..., binwidth = NULL, breaks = NULL,
-  freq = TRUE)
+ppd_stat(
+  ypred,
+  stat = "mean",
+  ...,
+  binwidth = NULL,
+  breaks = NULL,
+  freq = TRUE
+)
 
-ppd_stat_grouped(ypred, group, stat = "mean", ..., facet_args = list(),
-  binwidth = NULL, breaks = NULL, freq = TRUE)
+ppd_stat_grouped(
+  ypred,
+  group,
+  stat = "mean",
+  ...,
+  facet_args = list(),
+  binwidth = NULL,
+  breaks = NULL,
+  freq = TRUE
+)
 
-ppd_stat_freqpoly(ypred, stat = "mean", ..., facet_args = list(),
-  binwidth = NULL, freq = TRUE)
+ppd_stat_freqpoly(
+  ypred,
+  stat = "mean",
+  ...,
+  facet_args = list(),
+  binwidth = NULL,
+  freq = TRUE
+)
 
-ppd_stat_freqpoly_grouped(ypred, group, stat = "mean", ...,
-  facet_args = list(), binwidth = NULL, freq = TRUE)
+ppd_stat_freqpoly_grouped(
+  ypred,
+  group,
+  stat = "mean",
+  ...,
+  facet_args = list(),
+  binwidth = NULL,
+  freq = TRUE
+)
 
-ppd_stat_2d(ypred, stat = c("mean", "sd"), ..., size = 2.5,
-  alpha = 0.7)
+ppd_stat_2d(ypred, stat = c("mean", "sd"), ..., size = 2.5, alpha = 0.7)
 
 ppd_stat_data(ypred, group = NULL, stat)
 }
@@ -74,7 +100,7 @@ on the plot) instead of the \strong{ggplot2} default of \code{scales="fixed"}.}
 \value{
 The plotting functions return a ggplot object that can be further
 customized using the \strong{ggplot2} package. The functions with suffix
-\code{_data()} return the data that would have been drawn by the plotting
+\verb{_data()} return the data that would have been drawn by the plotting
 function.
 }
 \description{
@@ -99,7 +125,9 @@ Gelman, A. (2019), Visualization in Bayesian workflow.
 \href{https://github.com/jgabry/bayes-vis-paper}{code on GitHub})
 }
 \seealso{
-Other PPDs: \code{\link{PPD-distributions}},
-  \code{\link{PPD-intervals}}, \code{\link{PPD-overview}}
+Other PPDs: 
+\code{\link{PPD-distributions}},
+\code{\link{PPD-intervals}},
+\code{\link{PPD-overview}}
 }
 \concept{PPDs}

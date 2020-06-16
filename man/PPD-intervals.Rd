@@ -10,24 +10,69 @@
 \alias{ppd_ribbon_data}
 \title{PPD intervals}
 \usage{
-ppd_intervals(ypred, x = NULL, ..., prob = 0.5, prob_outer = 0.9,
-  alpha = 0.33, size = 1, fatten = 2.5)
+ppd_intervals(
+  ypred,
+  x = NULL,
+  ...,
+  prob = 0.5,
+  prob_outer = 0.9,
+  alpha = 0.33,
+  size = 1,
+  fatten = 2.5
+)
 
-ppd_intervals_grouped(ypred, x = NULL, group, ..., facet_args = list(),
-  prob = 0.5, prob_outer = 0.9, alpha = 0.33, size = 1,
-  fatten = 2.5)
+ppd_intervals_grouped(
+  ypred,
+  x = NULL,
+  group,
+  ...,
+  facet_args = list(),
+  prob = 0.5,
+  prob_outer = 0.9,
+  alpha = 0.33,
+  size = 1,
+  fatten = 2.5
+)
 
-ppd_ribbon(ypred, x = NULL, ..., prob = 0.5, prob_outer = 0.9,
-  alpha = 0.33, size = 0.25)
+ppd_ribbon(
+  ypred,
+  x = NULL,
+  ...,
+  prob = 0.5,
+  prob_outer = 0.9,
+  alpha = 0.33,
+  size = 0.25
+)
 
-ppd_ribbon_grouped(ypred, x = NULL, group, ..., facet_args = list(),
-  prob = 0.5, prob_outer = 0.9, alpha = 0.33, size = 0.25)
+ppd_ribbon_grouped(
+  ypred,
+  x = NULL,
+  group,
+  ...,
+  facet_args = list(),
+  prob = 0.5,
+  prob_outer = 0.9,
+  alpha = 0.33,
+  size = 0.25
+)
 
-ppd_intervals_data(ypred, x = NULL, group = NULL, ..., prob = 0.5,
-  prob_outer = 0.9)
+ppd_intervals_data(
+  ypred,
+  x = NULL,
+  group = NULL,
+  ...,
+  prob = 0.5,
+  prob_outer = 0.9
+)
 
-ppd_ribbon_data(ypred, x = NULL, group = NULL, ..., prob = 0.5,
-  prob_outer = 0.9)
+ppd_ribbon_data(
+  ypred,
+  x = NULL,
+  group = NULL,
+  ...,
+  prob = 0.5,
+  prob_outer = 0.9
+)
 }
 \arguments{
 \item{ypred}{An \code{S} by \code{N} matrix of draws from the posterior (or prior)
@@ -84,7 +129,7 @@ on the plot) instead of the \strong{ggplot2} default of \code{scales="fixed"}.}
 \value{
 The plotting functions return a ggplot object that can be further
 customized using the \strong{ggplot2} package. The functions with suffix
-\code{_data()} return the data that would have been drawn by the plotting
+\verb{_data()} return the data that would have been drawn by the plotting
 function.
 }
 \description{
@@ -134,8 +179,9 @@ Gelman, A. (2019), Visualization in Bayesian workflow.
 \href{https://github.com/jgabry/bayes-vis-paper}{code on GitHub})
 }
 \seealso{
-Other PPDs: \code{\link{PPD-distributions}},
-  \code{\link{PPD-overview}},
-  \code{\link{PPD-test-statistics}}
+Other PPDs: 
+\code{\link{PPD-distributions}},
+\code{\link{PPD-overview}},
+\code{\link{PPD-test-statistics}}
 }
 \concept{PPDs}

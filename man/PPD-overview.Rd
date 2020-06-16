@@ -42,8 +42,9 @@ Gelman, A. (2019), Visualization in Bayesian workflow.
 \href{https://github.com/jgabry/bayes-vis-paper}{code on GitHub})
 }
 \seealso{
-Other PPDs: \code{\link{PPD-distributions}},
-  \code{\link{PPD-intervals}},
-  \code{\link{PPD-test-statistics}}
+Other PPDs: 
+\code{\link{PPD-distributions}},
+\code{\link{PPD-intervals}},
+\code{\link{PPD-test-statistics}}
 }
 \concept{PPDs}

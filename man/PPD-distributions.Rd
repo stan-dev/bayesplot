@@ -14,21 +14,42 @@
 \usage{
 ppd_data(ypred, group = NULL)
 
-ppd_dens_overlay(ypred, ..., size = 0.25, alpha = 0.7, trim = FALSE,
-  bw = "nrd0", adjust = 1, kernel = "gaussian", n_dens = 1024)
+ppd_dens_overlay(
+  ypred,
+  ...,
+  size = 0.25,
+  alpha = 0.7,
+  trim = FALSE,
+  bw = "nrd0",
+  adjust = 1,
+  kernel = "gaussian",
+  n_dens = 1024
+)
 
-ppd_ecdf_overlay(ypred, ..., discrete = FALSE, pad = TRUE,
-  size = 0.25, alpha = 0.7)
+ppd_ecdf_overlay(
+  ypred,
+  ...,
+  discrete = FALSE,
+  pad = TRUE,
+  size = 0.25,
+  alpha = 0.7
+)
 
 ppd_dens(ypred, ..., trim = FALSE, size = 0.5, alpha = 1)
 
 ppd_hist(ypred, ..., binwidth = NULL, breaks = NULL, freq = TRUE)
 
-ppd_freqpoly(ypred, ..., binwidth = NULL, freq = TRUE, size = 0.5,
-  alpha = 1)
+ppd_freqpoly(ypred, ..., binwidth = NULL, freq = TRUE, size = 0.5, alpha = 1)
 
-ppd_freqpoly_grouped(ypred, group, ..., binwidth = NULL, freq = TRUE,
-  size = 0.5, alpha = 1)
+ppd_freqpoly_grouped(
+  ypred,
+  group,
+  ...,
+  binwidth = NULL,
+  freq = TRUE,
+  size = 0.5,
+  alpha = 1
+)
 
 ppd_boxplot(ypred, ..., notch = TRUE, size = 0.5, alpha = 1)
 }
@@ -95,7 +116,7 @@ function.)}
 \value{
 The plotting functions return a ggplot object that can be further
 customized using the \strong{ggplot2} package. The functions with suffix
-\code{_data()} return the data that would have been drawn by the plotting
+\verb{_data()} return the data that would have been drawn by the plotting
 function.
 }
 \description{
@@ -118,8 +139,9 @@ ppc_dens_overlay(y = example_y_data(), yrep = preds[1:50, ])
 
 }
 \seealso{
-Other PPDs: \code{\link{PPD-intervals}},
-  \code{\link{PPD-overview}},
-  \code{\link{PPD-test-statistics}}
+Other PPDs: 
+\code{\link{PPD-intervals}},
+\code{\link{PPD-overview}},
+\code{\link{PPD-test-statistics}}
 }
 \concept{PPDs}

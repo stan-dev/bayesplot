@@ -278,11 +278,11 @@ ppd_ribbon_data <- ppd_intervals_data
       summarise(
         outer_width = prob_outer,
         inner_width = prob,
-        ll = quantile(.data$value, prob = probs[1]),
-        l  = quantile(.data$value, prob = probs[2]),
-        m  = quantile(.data$value, prob = probs[3]),
-        h  = quantile(.data$value, prob = probs[4]),
-        hh = quantile(.data$value, prob = probs[5])
+        ll = unname(quantile(.data$value, probs = probs[1])),
+        l  = unname(quantile(.data$value, probs = probs[2])),
+        m  = unname(quantile(.data$value, probs = probs[3])),
+        h  = unname(quantile(.data$value, probs = probs[4])),
+        hh = unname(quantile(.data$value, probs = probs[5]))
       ) %>%
       ungroup()
   }
