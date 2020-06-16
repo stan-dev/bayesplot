@@ -5,8 +5,8 @@ r:
 sudo: FALSE
 
 cache:
-  # - packages
-  - ccache
+  - packages
+  # - ccache
 
 
 r_github_packages:
@@ -17,20 +17,23 @@ warnings_are_errors: TRUE
 r_build_args: '--no-build-vignettes'
 r_check_args: '--ignore-vignettes'
 
-addons:
-  apt:
-    packages:
-      - libudunits2-dev
-      - libgdal-dev
-      - libproj-dev
+# addons:
+#   apt:
+#     packages:
+#       - libudunits2-dev
+#       - libgdal-dev
+#       - libproj-dev
 
 env:
-- _R_CHECK_FORCE_SUGGESTS_=false NOT_CRAN=true MAKEFLAGS=-j2
+  - _R_CHECK_FORCE_SUGGESTS_=false NOT_CRAN=true MAKEFLAGS=-j2
 
-before_install:
-  - mkdir -p ~/.R
-  - echo "CXX14FLAGS=-O3 -mtune=native -march=native -Wno-unused-variable -Wno-unused-function  -Wno-macro-redefined" >> ~/.R/Makevars
-  - echo "CXX14=g++ -std=c++1y -fPIC" >> ~/.R/Makevars
+# before_install:
+#   - mkdir -p ~/.R
+#   - echo "CXX14FLAGS=-O3 -mtune=native -march=native -Wno-unused-variable -Wno-unused-function  -Wno-macro-redefined" >> ~/.R/Makevars
+#   - echo "CXX14=g++ -std=c++1y -fPIC" >> ~/.R/Makevars
+
+install:
+  - R -e 'devtools::install_deps(dep = c("Depends", "Imports"))'
 
 after_success:
   - Rscript -e 'covr::codecov()'
