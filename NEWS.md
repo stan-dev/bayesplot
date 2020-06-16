@@ -2,15 +2,21 @@
 
 # placeholder for news items from PPD branch
 
-* New PPD module (FIXME: add more details)
+* New PPD module with a lot of new plotting functions with `ppd_` prefix (e.g.,
+`ppd_intervals()`) for plotting posterior and prior predictive distributions
+without comparing to observed data. These plots are essentially the same as the
+corresponding PPC plots (e.g., `ppc_intervals()`) but without showing any
+observed data. See `help("PPD-overview")` for details.
 
 * All PPC categories now have one or more `_data()` functions that return the
-  data used for plotting (Advances #97). The new ones in this release are:
+ data used for plotting (Advances #97). Many already existed, but the new ones in
+ this release are:
+   - `ppc_bars_data()`
+   - `ppc_error_data()`
+   - `ppc_error_binnned_data()`
    - `ppc_scatter_data()`
    - `ppc_scatter_avg_data()`
    - `ppc_stat_data()`
-   - `ppc_bars_data()`
-   - `ppc_error_data()`
 
 * Many functions gain an argument `facet_args` for controlling ggplot2 faceting
   (many other functions have had this argument for a long time).
