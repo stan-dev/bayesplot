@@ -8,7 +8,7 @@
 \alias{mcmc_rank_overlay}
 \alias{mcmc_rank_hist}
 \alias{mcmc_trace_data}
-\title{Trace plots of MCMC draws}
+\title{Trace and rank plots of MCMC draws}
 \usage{
 mcmc_trace(
   x,
@@ -185,7 +185,7 @@ function.
 in the same data frame.
 }
 \description{
-Trace plot (or traceplot) of MCMC draws. See the \strong{Plot Descriptions}
+Trace and rank plots of MCMC draws. See the \strong{Plot Descriptions}
 section, below, for details.
 }
 \section{Plot Descriptions}{

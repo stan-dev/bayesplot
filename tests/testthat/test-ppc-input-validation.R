@@ -25,7 +25,7 @@ test_that("validate_predictions works", {
   expect_equal(validate_predictions(yrep2, length(y2)), yrep2)
 
   colnames(yrep) <- paste0("yrep", 1:ncol(yrep))
-  expect_identical(validate_predictions(yrep, length(y)), unname(yrep))
+  expect_equivalent(validate_predictions(yrep, length(y)), unname(yrep))
 })
 test_that("validate_predictions throws errors", {
   expect_error(validate_predictions(as.matrix(LETTERS), length(y)), "numeric")

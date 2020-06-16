@@ -1,6 +1,6 @@
-#' Trace plots of MCMC draws
+#' Trace and rank plots of MCMC draws
 #'
-#' Trace plot (or traceplot) of MCMC draws. See the **Plot Descriptions**
+#' Trace and rank plots of MCMC draws. See the **Plot Descriptions**
 #' section, below, for details.
 #'
 #' @name MCMC-traces
@@ -316,14 +316,14 @@ mcmc_rank_overlay <- function(x,
   } else {
     NULL
   }
-  
+
   facet_call <- NULL
   if (n_param > 1) {
     facet_args$facets <- ~ parameter
     facet_args$scales <- facet_args$scales %||% "fixed"
     facet_call <- do.call("facet_wrap", facet_args)
   }
-  
+
   ggplot(d_bin_counts) +
     aes_(x = ~ bin_start, y =  ~ n, color = ~ chain) +
     geom_step() +

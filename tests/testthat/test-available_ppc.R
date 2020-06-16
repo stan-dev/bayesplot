@@ -6,12 +6,12 @@ test_that("available_mcmc works", {
   a <- available_mcmc()
   expect_s3_class(a, "bayesplot_function_list")
   expect_s3_class(a, "character")
-  expect_identical(
-    as.character(a),
-    sort(grep("^mcmc_", getNamespaceExports("bayesplot"), value = TRUE))
-  )
 
-  b <- available_mcmc("trace|dens")
+  all_mcmc_plots <- sort(grep("^mcmc_", getNamespaceExports("bayesplot"), value = TRUE))
+  all_mcmc_plots <- grep("_data", all_mcmc_plots, invert = TRUE, value = TRUE)
+  expect_identical(as.character(a), all_mcmc_plots)
+
+  b <- available_mcmc("trace|dens", plots = FALSE)
   expect_s3_class(b, "bayesplot_function_list")
   expect_identical(
     as.character(b),
@@ -25,10 +25,10 @@ test_that("available_ppc works", {
   a <- available_ppc()
   expect_s3_class(a, "bayesplot_function_list")
   expect_s3_class(a, "character")
-  expect_identical(
-    as.character(a),
-    sort(grep("^ppc_", getNamespaceExports("bayesplot"), value = TRUE))
-  )
+
+  all_ppc_plots <- sort(grep("^ppc_", getNamespaceExports("bayesplot"), value = TRUE))
+  all_ppc_plots <- grep("_data", all_ppc_plots, invert = TRUE, value = TRUE)
+  expect_identical(as.character(a), all_ppc_plots)
 
   b <- available_ppc("grouped")
   expect_s3_class(b, "bayesplot_function_list")
@@ -41,6 +41,19 @@ test_that("available_ppc works", {
   expect_false(any(grepl("grouped", c)))
 
   expect_length(available_ppc(pattern = "99999"), 0)
+})
+
+test_that("available_ppd works", {
+  a <- available_ppd()
+  expect_s3_class(a, "bayesplot_function_list")
+  expect_s3_class(a, "character")
+
+  all_ppd_plots <- sort(grep("^ppd_", getNamespaceExports("bayesplot"), value = TRUE))
+  all_ppd_plots <- grep("_data", all_ppd_plots, invert = TRUE, value = TRUE)
+  expect_identical(as.character(a), all_ppd_plots)
+
+  a <- available_ppd(plots_only = FALSE)
+  expect_identical(as.character(a), sort(grep("^ppd_", getNamespaceExports("bayesplot"), value = TRUE)))
 })
 
 test_that("print.bayesplot_function_list works", {

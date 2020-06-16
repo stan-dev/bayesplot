@@ -104,6 +104,6 @@ NULL
 # release reminders (for devtools)
 release_questions <- function() { # nocov start
   c(
-    "Have you reduced the size of the vignettes for CRAN?",
+    "Have you reduced the size of the vignettes for CRAN?"
   )
 } # nocov end

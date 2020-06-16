@@ -74,9 +74,9 @@ test_that("ppc_bars_data includes all levels", {
   d3 <- ppc_bars_data(y_ord, yrep_ord2)
   expect_equal(d3$x, 1:4)
   expect_equal(d3$y_obs, tab)
-  expect_equal(d3$l[2], NA_real_)
-  expect_equal(d3$m[2], NA_real_)
-  expect_equal(d3$h[2], NA_real_)
+  expect_equivalent(d3$l[2], NA_real_)
+  expect_equivalent(d3$m[2], NA_real_)
+  expect_equivalent(d3$h[2], NA_real_)
 })
 
 

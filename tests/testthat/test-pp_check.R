@@ -10,10 +10,6 @@ test_that("default pp_check method works", {
     pp_check(y, yrep[1:50, ], ppc_dens_overlay),
     ppc_dens_overlay(y, yrep[1:50, ])
   )
-  expect_equal(
-    pp_check(y, yrep, fun = "stat_grouped", group = g, stat = "median"),
-    ppc_stat_grouped(y, yrep, group = g, stat = "median")
-  )
 })
 
 test_that("pp_check method can be defined", {
