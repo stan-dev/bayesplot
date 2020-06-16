@@ -41,10 +41,10 @@
 #'
 #' # even reducing size, ppd_intervals is too cluttered when there are many
 #' # observations included (ppd_ribbon is better)
-#' ppd_intervals(ypred, x = x, size = 0.5, fatten = 0.1)
+#' ppd_intervals(ypred, size = 0.5, fatten = 0.1)
+#' ppd_ribbon(ypred)
+#' ppd_ribbon(ypred, size = 0) # remove line showing median prediction
 #'
-#' ppd_ribbon(ypred, x = x)
-#' ppd_ribbon(ypred, x = x, size = 0) # remove line showing median prediction
 #'
 NULL
 
@@ -58,14 +58,14 @@ ppd_intervals <-
            prob_outer = 0.9,
            alpha = 0.33,
            size = 1,
-           fatten = 2.5,
-           jitter = NULL) {
+           fatten = 2.5) {
 
     dots <- list(...)
     if (!from_grouped(dots)) {
       check_ignored_arguments(...)
       dots$group <- NULL
     }
+
 
     data <- ppd_intervals_data(
       ypred = ypred,
@@ -81,12 +81,10 @@ ppd_intervals <-
     )) +
       geom_linerange(
         mapping = intervals_outer_aes(color = "ypred"),
-        position = intervals_position(jitter),
         alpha = alpha,
         size = size
       ) +
       geom_pointrange(
-        position = intervals_position(jitter),
         shape = 21,
         stroke = 0.5,
         size = size,
@@ -112,8 +110,7 @@ ppd_intervals_grouped <-
            prob_outer = 0.9,
            alpha = 0.33,
            size = 1,
-           fatten = 2.5,
-           jitter = NULL) {
+           fatten = 2.5) {
     check_ignored_arguments(...)
     call <- match.call(expand.dots = FALSE)
     g <- eval(ungroup_call("ppd_intervals", call), parent.frame())
@@ -347,16 +344,4 @@ intervals_axis_labels <- function(has_x) {
     x = if (has_x) expression(italic(x)) else "Data point (index)",
     y = NULL
   )
-}
-
-
-#' Determine the `position` argument to geoms for intervals plots
-#' @param jitter User's `jitter` argument.
-#' @noRd
-intervals_position <- function(jitter, ...) {
-  if (is.null(jitter)) {
-    "identity"
-  } else {
-    position_jitter(width = jitter, ...)
-  }
 }

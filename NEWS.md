@@ -15,9 +15,6 @@
    - `ppc_stat_data()` 
    - `ppc_bars_data()`
    - `ppc_error_data()`
-   
-* `ppc_intervals()` and `ppc_intervals_grouped()` gain an argument `jitter` for
-  use when the x-axis values are not unique.
 
 * Many functions gain an argument `facet_args` for controlling ggplot2 faceting
   (many other functions have had this argument for a long time). 

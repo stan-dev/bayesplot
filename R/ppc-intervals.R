@@ -20,9 +20,6 @@
 #'   of the line representing the median prediction (`size=0` will remove the
 #'   line). For interval plots `alpha`, `size` and `fatten` are passed to
 #'   [ggplot2::geom_pointrange()] (`fatten=0` will remove the point estimates).
-#' @param jitter For intervals plots, either `NULL` (the default) or a value to
-#'   pass to the `width` argument of [ggplot2::position_jitter()]. This is most
-#'   useful if values in `x` are not unique.
 #' @param ... Currently unused.
 #'
 #' @template return-ggplot-or-data
@@ -124,8 +121,7 @@ ppc_intervals <-
            prob_outer = 0.9,
            alpha = 0.33,
            size = 1,
-           fatten = 2.5,
-           jitter = NULL) {
+           fatten = 2.5) {
 
     dots <- list(...)
     if (!from_grouped(dots)) {
@@ -151,12 +147,10 @@ ppc_intervals <-
       ) +
       geom_linerange(
         mapping = intervals_outer_aes(color = "yrep"),
-        position = intervals_position(jitter),
         alpha = alpha,
         size = size
       ) +
       geom_pointrange(
-        position = intervals_position(jitter),
         shape = 21,
         stroke = 0.5,
         size = size,
@@ -168,7 +162,6 @@ ppc_intervals <-
           color = "y",
           fill = "y"
         ),
-        position = intervals_position(jitter),
         shape = 21,
         stroke = 0.5,
         size = 1
@@ -193,8 +186,7 @@ ppc_intervals_grouped <-
            prob_outer = 0.9,
            alpha = 0.33,
            size = 1,
-           fatten = 2.5,
-           jitter = NULL) {
+           fatten = 2.5) {
     check_ignored_arguments(...)
     call <- match.call(expand.dots = FALSE)
     g <- eval(ungroup_call("ppc_intervals", call), parent.frame())
