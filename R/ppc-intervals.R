@@ -249,7 +249,7 @@ ppc_ribbon <-
       geom_line(
         aes_(y = ~ y_obs, color = "y"),
         size = 0.5,
-        alpha = 0.5
+        alpha = 0.66
       ) +
       scale_color_ppc() +
       scale_fill_ppc(values = c(NA, get_color("l"))) +

@@ -48,42 +48,6 @@ test_that("melt_and_stack returns correct structure", {
 })
 
 
-# ppc_group_data ----------------------------------------------------------
-
-d <- ppc_group_data(y, yrep, group)
-d_stat <- ppc_group_data(y, yrep, group, stat = "mean")
-
-test_that("ppc_group_data returns correct structure", {
-  expect_identical(colnames(d), c("group", "variable", "value"))
-  expect_s3_class(d, c("grouped_df", "tbl_df", "tbl", "data.frame"))
-
-  expect_identical(colnames(d_stat), colnames(d))
-  expect_s3_class(d, c("grouped_df", "tbl_df", "tbl", "data.frame"))
-
-  nr <- length(unique(d$variable)) * length(unique(group))
-  expect_equal(nrow(d_stat), nr)
-})
-
-test_that("ppc_group_data with stat returns correct values for y", {
-  for (lev in levels(group)) {
-    mean_y_group <- with(d_stat, value[group == lev & variable == "y"])
-    expect_equal(mean_y_group, mean(y[group == lev]),
-                 info = paste("group =", lev))
-  }
-})
-
-test_that("ppc_group_data with stat returns correct values for yrep", {
-  for (lev in levels(group)) {
-    for (j in 1:nrow(yrep)) {
-      var <- paste0("yrep_", j)
-      mean_yrep_group <- with(d_stat, value[group == lev & variable == var])
-      expect_equal(mean_yrep_group, mean(yrep[j, group == lev]),
-                   info = paste("group =", lev, "|", "rep =", j))
-    }
-  }
-})
-
-
 # is_whole_number, all_counts --------------------------------------------
 test_that("is_whole_number works correctly", {
   expect_equal(is_whole_number(c(1L, 2, 3/3, 4/5)),
