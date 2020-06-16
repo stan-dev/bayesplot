@@ -239,17 +239,18 @@ ppc_ribbon <-
       intervals_inner_aes(fill = "yrep", color = "yrep") +
       geom_ribbon(
         mapping = intervals_outer_aes(fill = "yrep", color = "yrep"),
-        alpha = alpha,
-        size = 0.05
+        color = NA,
+        size = 0.2 * size,
+        alpha = alpha
       ) +
       geom_ribbon(
         mapping = intervals_outer_aes(),
-        alpha = 1,
-        size = 0.05,
         fill = NA,
-        color = get_color("m")
+        color = get_color("m"),
+        size = 0.2 * size,
+        alpha = 1
       ) +
-      geom_ribbon(size = 0.05) +
+      geom_ribbon(size = 0.5 * size) +
       geom_line(
         mapping = aes_(y = ~ m),
         color = get_color("m"),

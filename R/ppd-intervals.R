@@ -153,12 +153,19 @@ ppd_ribbon <-
     )
     ggplot(data, mapping = intervals_inner_aes(color = "ypred", fill = "ypred")) +
       geom_ribbon(
-        mapping =
-          intervals_outer_aes(color = "ypred", fill = "ypred"),
+        mapping = intervals_outer_aes(fill = "ypred", color = "ypred"),
         color = NA,
+        size = 0.2 * size,
         alpha = alpha
       ) +
-      geom_ribbon(size = 0.05) +
+      geom_ribbon(
+        mapping = intervals_outer_aes(),
+        fill = NA,
+        color = get_color("mh"),
+        size = 0.2 * size,
+        alpha = 1
+      ) +
+      geom_ribbon(size = 0.5 * size) +
       geom_line(
         mapping = aes_(y = ~ m),
         color = get_color("d"),
