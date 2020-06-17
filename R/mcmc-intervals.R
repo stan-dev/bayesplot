@@ -245,6 +245,8 @@ mcmc_intervals <- function(x,
 
 #' @rdname MCMC-intervals
 #' @export
+#' @param size For `mcmc_areas()` and `mcmc_areas_ridges()`, the size of the
+#'   ridgelines.
 mcmc_areas <- function(x,
                        pars = character(),
                        regex_pars = character(),
@@ -255,6 +257,7 @@ mcmc_areas <- function(x,
                        prob_outer = 1,
                        point_est = c("median", "mean", "none"),
                        rhat = numeric(),
+                       size = NULL,
                        bw = NULL,
                        adjust = NULL,
                        kernel = NULL,
@@ -330,6 +333,12 @@ mcmc_areas <- function(x,
     fill = NA
   )
 
+  if (!is.null(size)) {
+    args_bottom$size <- size
+    args_outer$size <- size
+    args_inner$size <- size
+  }
+
   if (color_by_rhat) {
     args_bottom$mapping <- args_bottom$mapping %>%
       modify_aes_(color = ~ rhat_rating)
@@ -401,6 +410,7 @@ mcmc_areas_ridges <- function(x,
                              ...,
                              prob_outer = 1,
                              prob = 1,
+                             size = NULL,
                              bw = NULL, adjust = NULL, kernel = NULL,
                              n_dens = NULL) {
   check_ignored_arguments(...)
@@ -431,6 +441,9 @@ mcmc_areas_ridges <- function(x,
     fill = NA,
     stat = "identity"
   )
+  if (!is.null(size)) {
+    args_outer$size <- size
+  }
 
   layer_outer <- do.call(ggridges::geom_density_ridges, args_outer)
 

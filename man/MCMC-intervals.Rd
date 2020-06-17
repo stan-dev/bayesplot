@@ -33,6 +33,7 @@ mcmc_areas(
   prob_outer = 1,
   point_est = c("median", "mean", "none"),
   rhat = numeric(),
+  size = NULL,
   bw = NULL,
   adjust = NULL,
   kernel = NULL,
@@ -47,6 +48,7 @@ mcmc_areas_ridges(
   ...,
   prob_outer = 1,
   prob = 1,
+  size = NULL,
   bw = NULL,
   adjust = NULL,
   kernel = NULL,
@@ -161,6 +163,9 @@ default is \code{"equal area"}, setting the density curves to have the same
 area. With \code{"equal height"}, the curves are scaled so that the highest
 points across the curves are the same height. The method \code{"scaled height"} tries a compromise between to the two: the heights from
 \code{"equal height"} are scaled using \code{height*sqrt(height)}}
+
+\item{size}{For \code{mcmc_areas()} and \code{mcmc_areas_ridges()}, the size of the
+ridgelines.}
 
 \item{bw, adjust, kernel, n_dens}{Optional arguments passed to
 \code{\link[stats:density]{stats::density()}} to override default kernel density estimation
