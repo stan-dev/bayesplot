@@ -63,6 +63,7 @@ test_that("bin_errors works for edge cases", {
 
 test_that("ppc_error_binned renders correctly", {
   testthat::skip_on_cran()
+  testthat::skip_if_not_installed("vdiffr")
 
   rbeta2 <- function(n, mu, phi) {
     a <- mu * phi
