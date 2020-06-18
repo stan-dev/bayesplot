@@ -120,6 +120,7 @@ test_that("mcmc_trace renders correctly", {
 
 test_that("mcmc_rank_overlay renders correctly", {
   testthat::skip_on_cran()
+  testthat::skip_if_not_installed("vdiffr")
 
   p_base <- mcmc_rank_overlay(vdiff_dframe_chains, pars = c("V1", "V2"))
   p_base_ref <- mcmc_rank_overlay(
@@ -148,6 +149,7 @@ test_that("mcmc_rank_overlay renders correctly", {
 
 test_that("mcmc_rank_hist renders correctly", {
   testthat::skip_on_cran()
+  testthat::skip_if_not_installed("vdiffr")
 
   p_base <- mcmc_rank_hist(vdiff_dframe_chains, pars = c("V1", "V2"))
   p_base_ref <- mcmc_rank_hist(
@@ -179,6 +181,7 @@ test_that("mcmc_rank_hist renders correctly", {
 
 test_that("mcmc_trace_highlight renders correctly", {
   testthat::skip_on_cran()
+  testthat::skip_if_not_installed("vdiffr")
 
   p_base <- mcmc_trace_highlight(
     vdiff_dframe_chains,
@@ -206,6 +209,7 @@ test_that("mcmc_trace_highlight renders correctly", {
 
 test_that("mcmc_trace with 'np' renders correctly", {
   testthat::skip_on_cran()
+  testthat::skip_if_not_installed("vdiffr")
 
   p_base <- mcmc_trace(
     vdiff_dframe_chains,
