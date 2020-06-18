@@ -448,7 +448,7 @@ us diagnose divergences. We may however zoom in to investigate, using the
 
 ```{r echo=FALSE}
 #A check that the chosen window still relevant
-n_divergent_in_window <- np_cp %>% filter(Parameter == "divergent__" & Value == 1 & Iteration >= 50 & Iteration <= 200) %>% nrow()
+n_divergent_in_window <- np_cp %>% filter(Parameter == "divergent__" & Value == 1 & Iteration >= 700 & Iteration <= 900) %>% nrow()
 
 if(n_divergent_in_window < 6) {
   divergences <- np_cp %>% filter(Parameter == "divergent__" & Value == 1) %>% select(Iteration) %>% get("Iteration", .) %>% sort() %>% paste(collapse = ",")
@@ -457,7 +457,7 @@ if(n_divergent_in_window < 6) {
 ```
 
 ```{r, mcmc_trace_zoom}
-mcmc_trace(posterior_cp, pars = "tau", np = np_cp, window = c(50,200)) + 
+mcmc_trace(posterior_cp, pars = "tau", np = np_cp, window = c(700,900)) + 
   xlab("Post-warmup iteration")
 ```
 
