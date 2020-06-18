@@ -14,3 +14,4 @@ book/*
 docs/*
 Rplots.pdf
 tests/figs/*
+^\.github$
