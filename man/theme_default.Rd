@@ -11,7 +11,7 @@ theme_default(
 }
 \arguments{
 \item{base_size, base_family}{Base font size and family (passed to
-\code{\link[ggplot2:theme_bw]{ggplot2::theme_bw()}}). It is possible to set \code{"bayesplot.base_size"} and
+\code{\link[ggplot2:ggtheme]{ggplot2::theme_bw()}}). It is possible to set \code{"bayesplot.base_size"} and
 \code{"bayesplot.base_family"} via \code{\link[=options]{options()}} to change the defaults, which are
 \code{12} and \code{"serif"}, respectively.}
 }

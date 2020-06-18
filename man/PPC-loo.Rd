@@ -106,11 +106,11 @@ PITs overlaid as a thicker dark line.}
 aesthetics. For \code{ppc_loo_pit_qq()} and \code{ppc_loo_pit_overlay()}, \code{size} and
 \code{alpha} are passed to \code{\link[ggplot2:geom_point]{ggplot2::geom_point()}} and
 \code{\link[ggplot2:geom_density]{ggplot2::geom_density()}}, respectively. For \code{ppc_loo_intervals()}, \code{size}
-and \code{fatten} are passed to \code{\link[ggplot2:geom_pointrange]{ggplot2::geom_pointrange()}}. For
+and \code{fatten} are passed to \code{\link[ggplot2:geom_linerange]{ggplot2::geom_pointrange()}}. For
 \code{ppc_loo_ribbon()}, \code{alpha} and \code{size} are passed to
 \code{\link[ggplot2:geom_ribbon]{ggplot2::geom_ribbon()}}.}
 
-\item{trim}{Passed to \code{\link[ggplot2:stat_density]{ggplot2::stat_density()}}.}
+\item{trim}{Passed to \code{\link[ggplot2:geom_density]{ggplot2::stat_density()}}.}
 
 \item{bw, adjust, kernel, n_dens}{Optional arguments passed to
 \code{\link[stats:density]{stats::density()}} to override default kernel density estimation
