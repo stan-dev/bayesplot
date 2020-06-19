@@ -19,7 +19,7 @@ subset of elements to select. For example, using\preformatted{  param_range("bet
 would select parameters named \code{beta[1]}, \code{beta[2]}, and \code{beta[8]}.
 \code{param_range()} is only designed for the case that the indices are integers
 surrounded by brackets. If there are no brackets use
-\link[tidyselect:select_helpers]{num_range()}.}
+\link[tidyselect:language]{num_range()}.}
 
 \item{vars}{\code{NULL} or a character vector of parameter names to choose from.
 This is only needed for the atypical use case of calling the function as a
@@ -52,11 +52,11 @@ everything-but selection (\code{vars(-alpha)}), ranged selection
 \strong{Examples} section, below.
 
 When using \code{pars} for tidy parameter selection, the \code{regex_pars} argument is
-ignored because \strong{bayesplot} supports using \link[tidyselect:select_helpers]{tidyselect helper functions} (\code{starts_with()}, \code{contains()},
+ignored because \strong{bayesplot} supports using \link[tidyselect:language]{tidyselect helper functions} (\code{starts_with()}, \code{contains()},
 \code{num_range()}, etc.) for the same purpose. \strong{bayesplot} also exports some
 additional helper functions to help with parameter selection:
 \itemize{
-\item \code{param_range()}: like \code{\link[tidyselect:num_range]{num_range()}} but used
+\item \code{param_range()}: like \code{\link[tidyselect:starts_with]{num_range()}} but used
 when parameter indexes are in brackets (e.g. \code{beta[2]}).
 \item \code{param_glue()}: for more complicated parameter names with multiple
 indexes (including variable names) inside the brackets
@@ -65,7 +65,7 @@ indexes (including variable names) inside the brackets
 
 These functions can be used inside of \code{vars()}, \code{dplyr::select()},
 and similar functions, just like the
-\link[tidyselect:select_helpers]{tidyselect helper functions}.
+\link[tidyselect:language]{tidyselect helper functions}.
 }
 \section{Extra Advice}{
 
