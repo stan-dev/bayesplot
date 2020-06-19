@@ -65,8 +65,8 @@ of the expected counts.)}
 the bar width.}
 
 \item{size, fatten}{For bar plots, \code{size} and \code{fatten} are passed to
-\code{\link[ggplot2:geom_pointrange]{ggplot2::geom_pointrange()}} to control the appearance of the \code{yrep} points
-and intervals. For rootograms \code{size} is passed to \code{\link[ggplot2:geom_line]{ggplot2::geom_line()}}.}
+\code{\link[ggplot2:geom_linerange]{ggplot2::geom_pointrange()}} to control the appearance of the \code{yrep} points
+and intervals. For rootograms \code{size} is passed to \code{\link[ggplot2:geom_path]{ggplot2::geom_line()}}.}
 
 \item{freq}{For bar plots only, if \code{TRUE} (the default) the y-axis will
 display counts. Setting \code{freq=FALSE} will put proportions on the y-axis.}

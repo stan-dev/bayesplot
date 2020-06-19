@@ -75,7 +75,7 @@ etc.). The order of \code{x} and \code{y} matters, i.e., the color schemes
 guarantee that every possible mixed scheme will look good with every
 possible plot.
 \item \code{"brewer-x"}, replacing \code{x} with the name of a palette available from
-\code{\link[RColorBrewer:brewer.pal]{RColorBrewer::brewer.pal()}} (e.g., \code{brewer-PuBuGn}).
+\code{\link[RColorBrewer:ColorBrewer]{RColorBrewer::brewer.pal()}} (e.g., \code{brewer-PuBuGn}).
 }
 
 If you have a suggestion for a new color scheme please let us know via the

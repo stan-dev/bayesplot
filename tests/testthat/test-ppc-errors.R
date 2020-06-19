@@ -103,6 +103,7 @@ test_that("ppc_error_scatter_avg_vs_x renders correctly", {
 
 test_that("ppc_error_binned renders correctly", {
   testthat::skip_on_cran()
+  testthat::skip_if_not_installed("vdiffr")
 
   rbeta2 <- function(n, mu, phi) {
     a <- mu * phi
