@@ -180,6 +180,7 @@ test_that("ppc_ribbon renders correctly", {
 
 test_that("ppc_ribbon_grouped renders correctly", {
   testthat::skip_on_cran()
+  testthat::skip_if_not_installed("vdiffr")
 
   p_base <- ppc_ribbon_grouped(vdiff_y, vdiff_yrep, group = vdiff_group)
   vdiffr::expect_doppelganger("ppc_ribbon_grouped (default)", p_base)
