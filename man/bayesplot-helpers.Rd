@@ -90,7 +90,7 @@ For \code{xaxis_ticks} and \code{yaxis_ticks}, \code{...} is passed to
 \code{\link[ggplot2:element]{ggplot2::element_line()}}.
 
 For \code{overlay_function}, \code{...} is passed to
-\code{\link[ggplot2:stat_function]{ggplot2::stat_function()}}.}
+\code{\link[ggplot2:geom_function]{ggplot2::stat_function()}}.}
 
 \item{na.rm}{A logical scalar passed to the appropriate geom (e.g.
 \code{\link[ggplot2:geom_abline]{ggplot2::geom_vline()}}). The default is \code{TRUE}.}
@@ -189,7 +189,7 @@ an existing plot (ggplot object) to add grid lines to the plot background.
 
 \subsection{Superimpose a function on an existing plot}{
 \itemize{
-\item \code{overlay_function()} is a simple wrapper for \code{\link[ggplot2:stat_function]{ggplot2::stat_function()}} but
+\item \code{overlay_function()} is a simple wrapper for \code{\link[ggplot2:geom_function]{ggplot2::stat_function()}} but
 with the \code{inherit.aes} argument fixed to \code{FALSE}. Fixing \code{inherit.aes=FALSE}
 will avoid potential errors due to the \code{\link[ggplot2:aes]{ggplot2::aes()}}thetic mapping used by
 certain \strong{bayesplot} plotting functions.
