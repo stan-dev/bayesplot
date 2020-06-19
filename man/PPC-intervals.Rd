@@ -108,7 +108,7 @@ passed to \code{\link[ggplot2:facet_wrap]{ggplot2::facet_wrap()}} to control fac
 
 \item{alpha, size, fatten}{Arguments passed to geoms. For ribbon plots \code{alpha}
 and \code{size} are passed to \code{\link[ggplot2:geom_ribbon]{ggplot2::geom_ribbon()}}. For interval plots
-\code{size} and \code{fatten} are passed to \code{\link[ggplot2:geom_pointrange]{ggplot2::geom_pointrange()}}.}
+\code{size} and \code{fatten} are passed to \code{\link[ggplot2:geom_linerange]{ggplot2::geom_pointrange()}}.}
 }
 \value{
 The plotting functions return a ggplot object that can be further

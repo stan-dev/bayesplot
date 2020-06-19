@@ -76,24 +76,24 @@ the first argument to \code{fun}.}
 vector.}
 
 \item{...}{For the various \code{vline_}, \code{hline_}, and \code{abline_}
-functions, \code{...} is passed to \code{\link[ggplot2:geom_vline]{ggplot2::geom_vline()}},
-\code{\link[ggplot2:geom_hline]{ggplot2::geom_hline()}}, and \code{\link[ggplot2:geom_abline]{ggplot2::geom_abline()}},
+functions, \code{...} is passed to \code{\link[ggplot2:geom_abline]{ggplot2::geom_vline()}},
+\code{\link[ggplot2:geom_abline]{ggplot2::geom_hline()}}, and \code{\link[ggplot2:geom_abline]{ggplot2::geom_abline()}},
 respectively, to control the appearance of the line(s).
 
 For functions ending in \verb{_bg}, \code{...} is passed to
-\code{\link[ggplot2:element_rect]{ggplot2::element_rect()}}.
+\code{\link[ggplot2:element]{ggplot2::element_rect()}}.
 
 For functions ending in \verb{_text} or \verb{_title}, \code{...} is passed
-to \code{\link[ggplot2:element_text]{ggplot2::element_text()}}.
+to \code{\link[ggplot2:element]{ggplot2::element_text()}}.
 
 For \code{xaxis_ticks} and \code{yaxis_ticks}, \code{...} is passed to
-\code{\link[ggplot2:element_line]{ggplot2::element_line()}}.
+\code{\link[ggplot2:element]{ggplot2::element_line()}}.
 
 For \code{overlay_function}, \code{...} is passed to
 \code{\link[ggplot2:stat_function]{ggplot2::stat_function()}}.}
 
 \item{na.rm}{A logical scalar passed to the appropriate geom (e.g.
-\code{\link[ggplot2:geom_vline]{ggplot2::geom_vline()}}). The default is \code{TRUE}.}
+\code{\link[ggplot2:geom_abline]{ggplot2::geom_vline()}}). The default is \code{TRUE}.}
 
 \item{p}{The probability mass (in \verb{[0,1]}) to include in the interval.}
 
@@ -107,12 +107,12 @@ or a string among \code{"right"}, \code{"left"}, \code{"top"},
 equivalent to using \code{legend_none()}.}
 
 \item{on}{For functions modifying ggplot \link[ggplot2:theme]{theme} elements,
-set \code{on=FALSE} to set the element to \code{\link[ggplot2:element_blank]{ggplot2::element_blank()}}. For
+set \code{on=FALSE} to set the element to \code{\link[ggplot2:element]{ggplot2::element_blank()}}. For
 example, facet text can be removed by adding \code{facet_text(on=FALSE)}, or
 simply \code{facet_text(FALSE)} to a ggplot object. If \code{on=TRUE} (the default),
 then \code{...} can be used to customize the appearance of the theme element.}
 
-\item{color, size}{Passed to \code{\link[ggplot2:element_line]{ggplot2::element_line()}}.}
+\item{color, size}{Passed to \code{\link[ggplot2:element]{ggplot2::element_line()}}.}
 }
 \value{
 A \strong{ggplot2} layer or \code{\link[ggplot2:theme]{ggplot2::theme()}} object that can be
@@ -128,7 +128,7 @@ Convenience functions for adding to (and changing details of) ggplot objects
 \subsection{Add vertical, horizontal, and diagonal lines to plots}{
 \itemize{
 \item \code{vline_at()} and \code{hline_at()} return an object created by either
-\code{\link[ggplot2:geom_vline]{ggplot2::geom_vline()}} or \code{\link[ggplot2:geom_hline]{ggplot2::geom_hline()}} that can be added to a
+\code{\link[ggplot2:geom_abline]{ggplot2::geom_vline()}} or \code{\link[ggplot2:geom_abline]{ggplot2::geom_hline()}} that can be added to a
 ggplot object to draw a vertical or horizontal line (at one or several
 values). If \code{fun} is missing then the lines are drawn at the values in \code{v}.
 If \code{fun} is specified then the lines are drawn at the values returned by \code{fun(v)}.
