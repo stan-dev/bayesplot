@@ -101,7 +101,7 @@ test_that("neff_ratio.stanreg returns correct structure", {
   expect_equal(ratio2, ans2, tol = 0.001)
 })
 
-test_that("cmdstanr method work", {
+test_that("cmdstanr methods work", {
   skip_on_cran()
   skip_if_not_installed("cmdstanr")
 
@@ -115,7 +115,7 @@ test_that("cmdstanr method work", {
   expect_true(all(np$Value[np$Parameter == "divergent__"] == 0))
 
   lp <- log_posterior(fit)
-  expect_named(lp, c("Iteration", "Chain", "Value"))
+  expect_named(lp, c("Chain", "Iteration", "Value"))
   expect_equal(range(np$Chain), c(1, 2))
   expect_equal(range(np$Iteration), c(1, 500))
 
@@ -125,5 +125,5 @@ test_that("cmdstanr method work", {
 
   ratio <- neff_ratio(fit)
   expect_named(ratio, c("alpha", "beta[1]", "beta[2]", "beta[3]"))
-  expect_true(all(ratio < 1) && all(ratio > 0))
+  expect_true(all(ratio > 0))
 })
