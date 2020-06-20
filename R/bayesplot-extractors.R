@@ -220,7 +220,7 @@ rhat.stanreg <- function(object, pars = NULL, regex_pars = NULL, ...) {
 #' @export
 #' @method rhat CmdStanMCMC
 rhat.CmdStanMCMC <- function(object, pars = NULL, ...) {
-  .rhat <- getFromNamespace("rhat", "posterior")
+  .rhat <- utils::getFromNamespace("rhat", "posterior")
   s <- object$summary(pars, rhat = .rhat)[, c("variable", "rhat")]
   r <- setNames(s$rhat, s$variable)
   r <- validate_rhat(r)
