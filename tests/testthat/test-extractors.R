@@ -42,7 +42,7 @@ test_that("all nuts_params methods identical", {
 
 test_that("nuts_params.stanreg returns correct structure", {
   np <- nuts_params(fit)
-  expect_identical(colnames(np), c("Iteration", "Parameter", "Value", "Chain"))
+  expect_identical(colnames(np), c("Chain", "Iteration", "Parameter", "Value"))
 
   np_names <- paste0(c("accept_stat", "stepsize", "treedepth", "n_leapfrog",
                        "divergent", "energy"), "__")
@@ -54,7 +54,7 @@ test_that("nuts_params.stanreg returns correct structure", {
 
 test_that("log_posterior.stanreg returns correct structure", {
   lp <- log_posterior(fit)
-  expect_identical(colnames(lp), c("Iteration", "Value", "Chain"))
+  expect_identical(colnames(lp), c("Chain", "Iteration", "Value"))
   expect_equal(length(unique(lp$Iteration)), floor(ITER / 2))
   expect_equal(length(unique(lp$Chain)), CHAINS)
 })
@@ -99,4 +99,31 @@ test_that("neff_ratio.stanreg returns correct structure", {
   expect_named(ratio2)
   ans2 <- summary(fit, pars = c("wt", "sigma"))[, "n_eff"] / denom
   expect_equal(ratio2, ans2, tol = 0.001)
+})
+
+test_that("cmdstanr method work", {
+  skip_on_cran()
+  skip_if_not_installed("cmdstanr")
+
+  fit <- cmdstanr::cmdstanr_example("logistic", iter_sampling = 500, chains = 2)
+  np <- nuts_params(fit)
+  np_names <- paste0(c("accept_stat", "stepsize", "treedepth", "n_leapfrog",
+                       "divergent", "energy"), "__")
+  expect_identical(levels(np$Parameter), np_names)
+  expect_equal(range(np$Iteration), c(1, 500))
+  expect_equal(range(np$Chain), c(1, 2))
+  expect_true(all(np$Value[np$Parameter == "divergent__"] == 0))
+
+  lp <- log_posterior(fit)
+  expect_named(lp, c("Iteration", "Chain", "Value"))
+  expect_equal(range(np$Chain), c(1, 2))
+  expect_equal(range(np$Iteration), c(1, 500))
+
+  r <- rhat(fit)
+  expect_named(r, c("alpha", "beta[1]", "beta[2]", "beta[3]"))
+  expect_true(all(round(r) == 1))
+
+  ratio <- neff_ratio(fit)
+  expect_named(ratio, c("alpha", "beta[1]", "beta[2]", "beta[3]"))
+  expect_true(all(ratio < 1) && all(ratio > 0))
 })

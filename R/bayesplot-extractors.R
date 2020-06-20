@@ -1,9 +1,9 @@
 #' Extract quantities needed for plotting from model objects
 #'
 #' Generics and methods for extracting quantities needed for plotting from
-#' various types of model objects. Currently methods are only provided for
-#' stanfit (**rstan**) and stanreg (**rstanarm**) objects, but adding new
-#' methods should be relatively straightforward.
+#' various types of model objects. Currently methods are provided for stanfit
+#' (**rstan**), CmdStanMCMC (**cmdstanr**), and stanreg (**rstanarm**) objects,
+#' but adding new methods should be relatively straightforward.
 #'
 #' @name bayesplot-extractors
 #' @param object The object to use.
@@ -87,7 +87,8 @@ log_posterior.stanfit <- function(object, inc_warmup = FALSE, ...) {
                                 ...)
   lp <- lapply(lp, as.array)
   lp <- set_names(reshape2::melt(lp), c("Iteration", "Value", "Chain"))
-  validate_df_classes(lp, c("integer", "numeric", "integer"))
+  validate_df_classes(lp[, c("Chain", "Iteration", "Value")],
+                      c("integer", "integer", "numeric"))
 }
 
 #' @rdname bayesplot-extractors
@@ -98,11 +99,22 @@ log_posterior.stanreg <- function(object, inc_warmup = FALSE, ...) {
   log_posterior.stanfit(object$stanfit, inc_warmup = inc_warmup, ...)
 }
 
+#' @rdname bayesplot-extractors
+#' @export
+#' @method log_posterior CmdStanMCMC
+log_posterior.CmdStanMCMC <- function(object, inc_warmup = FALSE, ...) {
+  lp <- object$draws("lp__", inc_warmup = inc_warmup)
+  lp <- reshape2::melt(lp)
+  lp$variable <- NULL
+  lp <- dplyr::rename_with(lp, capitalize_first)
+  validate_df_classes(lp[, c("Chain", "Iteration", "Value")],
+                      c("integer", "integer", "numeric"))
+}
+
 
 #' @rdname bayesplot-extractors
 #' @export
 #' @method nuts_params stanfit
-#'
 nuts_params.stanfit <-
   function(object,
            pars = NULL,
@@ -153,7 +165,23 @@ nuts_params.list <- function(object, pars = NULL, ...) {
 
   out <- reshape2::melt(object)
   out <- set_names(out, c("Iteration", "Parameter", "Value", "Chain"))
-  validate_df_classes(out, c("integer", "factor", "numeric", "integer"))
+  validate_df_classes(out[, c("Chain", "Iteration", "Parameter", "Value")],
+                      c("integer", "integer", "factor", "numeric"))
+}
+
+#' @rdname bayesplot-extractors
+#' @export
+#' @method nuts_params CmdStanMCMC
+nuts_params.CmdStanMCMC <- function(object, pars = NULL, ...) {
+  arr <- object$sampler_diagnostics()
+  if (!is.null(pars)) {
+    arr <- arr[,, pars]
+  }
+  out <- reshape2::melt(arr)
+  colnames(out)[colnames(out) == "variable"] <- "parameter"
+  out <- dplyr::rename_with(out, capitalize_first)
+  validate_df_classes(out[, c("Chain", "Iteration", "Parameter", "Value")],
+                      c("integer", "integer", "factor", "numeric"))
 }
 
 
@@ -186,6 +214,16 @@ rhat.stanreg <- function(object, pars = NULL, regex_pars = NULL, ...) {
   }
 
   r[!names(r) %in% c("mean_PPD", "log-posterior")]
+}
+
+#' @rdname bayesplot-extractors
+#' @export
+#' @method rhat CmdStanMCMC
+rhat.CmdStanMCMC <- function(object, pars = NULL, ...) {
+  s <- object$summary(pars, rhat = ~ posterior::rhat(.x))[, c("variable", "rhat")]
+  r <- setNames(s$rhat, s$variable)
+  r <- validate_rhat(r)
+  r[!names(r) %in% "lp__"]
 }
 
 
@@ -223,6 +261,18 @@ neff_ratio.stanreg <- function(object, pars = NULL, regex_pars = NULL, ...) {
   ratio[!names(ratio) %in% c("mean_PPD", "log-posterior")]
 }
 
+#' @rdname bayesplot-extractors
+#' @export
+#' @method neff_ratio CmdStanMCMC
+neff_ratio.CmdStanMCMC <- function(object, pars = NULL, ...) {
+  s <- object$summary(pars, "n_eff" = "ess_basic")[, c("variable", "n_eff")]
+  ess <- setNames(s$n_eff, s$variable)
+  tss <- prod(dim(object$draws())[1:2])
+  ratio <- ess / tss
+  ratio <- validate_neff_ratio(ratio)
+  ratio[!names(ratio) %in% "lp__"]
+}
+
 
 # internals ---------------------------------------------------------------
 
@@ -244,4 +294,11 @@ validate_df_classes <- function(x, classes = character()) {
     }
   }
   x
+}
+
+# capitalize first letter in a string only
+capitalize_first <- function(name) {
+  name <- tolower(name) # in case whole string is capitalized
+  substr(name, 1, 1) <- toupper(substr(name, 1, 1))
+  name
 }

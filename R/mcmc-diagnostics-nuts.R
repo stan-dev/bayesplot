@@ -513,8 +513,8 @@ validate_nuts_data_frame <- function(x, lp) {
     abort("NUTS parameters should be in a data frame.")
   }
 
-  valid_cols <- c("Iteration", "Parameter", "Value", "Chain")
-  if (!identical(colnames(x), valid_cols)) {
+  valid_cols <- sort(c("Iteration", "Parameter", "Value", "Chain"))
+  if (!identical(sort(colnames(x)), valid_cols)) {
     abort(paste(
       "NUTS parameter data frame must have columns:",
       paste(valid_cols, collapse = ", ")
@@ -529,8 +529,8 @@ validate_nuts_data_frame <- function(x, lp) {
       abort("lp should be in a data frame.")
     }
 
-    valid_lp_cols <- c("Iteration", "Value", "Chain")
-    if (!identical(colnames(lp), valid_lp_cols)) {
+    valid_lp_cols <- sort(c("Iteration", "Value", "Chain"))
+    if (!identical(sort(colnames(lp)), valid_lp_cols)) {
       abort(paste(
         "lp data frame must have columns:",
         paste(valid_lp_cols, collapse = ", ")
