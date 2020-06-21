@@ -154,9 +154,10 @@ default is \code{0.9} for \code{mcmc_intervals()} (90\% interval) and
 \item{point_est}{The point estimate to show. Either \code{"median"} (the
 default), \code{"mean"}, or \code{"none"}.}
 
-\item{inner_size, outer_size, point_size}{For \code{mcmc_intervals()}, the size of
-the inner interval segments, the outer interval segment, and point
-estimate.}
+\item{inner_size, outer_size}{For \code{mcmc_intervals()}, the size of
+the inner and interval segments, respectively.}
+
+\item{point_size}{For \code{mcmc_intervals()}, the size of point estimate.}
 
 \item{rhat}{An optional numeric vector of R-hat estimates, with one element
 per parameter included in \code{x}. If \code{rhat} is provided, the intervals/areas

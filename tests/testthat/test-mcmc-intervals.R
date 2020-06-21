@@ -197,6 +197,9 @@ test_that("mcmc_intervals renders correctly", {
 
   p_mean_points <- mcmc_intervals(vdiff_dframe, point_est = "mean")
   vdiffr::expect_doppelganger("mcmc_intervals (means)", p_mean_points)
+
+  p_sizes <- mcmc_intervals(vdiff_dframe, point_size = 1, inner_size = 5, outer_size = 4)
+  vdiffr::expect_doppelganger("mcmc_intervals (sizes)", p_sizes)
 })
 
 test_that("mcmc_areas renders correctly", {

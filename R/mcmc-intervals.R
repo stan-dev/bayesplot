@@ -25,9 +25,9 @@
 #'   `"equal height"` are scaled using `height*sqrt(height)`
 #' @param point_est The point estimate to show. Either `"median"` (the
 #'   default), `"mean"`, or `"none"`.
-#' @param inner_size,outer_size,point_size For `mcmc_intervals()`, the size of
-#'   the inner interval segments, the outer interval segment, and point
-#'   estimate.
+#' @param inner_size,outer_size For `mcmc_intervals()`, the size of
+#'   the inner and interval segments, respectively.
+#' @param point_size For `mcmc_intervals()`, the size of point estimate.
 #' @param rhat An optional numeric vector of R-hat estimates, with one element
 #'   per parameter included in `x`. If `rhat` is provided, the intervals/areas
 #'   and point estimates in the resulting plot are colored based on R-hat value.
