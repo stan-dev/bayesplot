@@ -25,6 +25,9 @@
 #'   `"equal height"` are scaled using `height*sqrt(height)`
 #' @param point_est The point estimate to show. Either `"median"` (the
 #'   default), `"mean"`, or `"none"`.
+#' @param inner_size,outer_size,point_size For `mcmc_intervals()`, the size of
+#'   the inner interval segments, the outer interval segment, and point
+#'   estimate.
 #' @param rhat An optional numeric vector of R-hat estimates, with one element
 #'   per parameter included in `x`. If `rhat` is provided, the intervals/areas
 #'   and point estimates in the resulting plot are colored based on R-hat value.
@@ -160,6 +163,9 @@ mcmc_intervals <- function(x,
                            prob = 0.5,
                            prob_outer = 0.9,
                            point_est = c("median", "mean", "none"),
+                           outer_size = 0.5,
+                           inner_size = 2,
+                           point_size = 4,
                            rhat = numeric()) {
   check_ignored_arguments(...)
 
@@ -184,17 +190,18 @@ mcmc_intervals <- function(x,
 
   args_outer <- list(
     mapping = aes_(x = ~ ll, xend = ~ hh, y = ~ parameter, yend = ~ parameter),
-    color = get_color("mid")
+    color = get_color("mid"),
+    size = outer_size
   )
   args_inner <- list(
     mapping = aes_(x = ~ l, xend = ~ h, y = ~ parameter, yend = ~ parameter),
-    size = 2,
+    size = inner_size,
     show.legend = FALSE
   )
   args_point <- list(
     mapping = aes_(x = ~ m, y = ~ parameter),
     data = data,
-    size = 4,
+    size = point_size,
     shape = 21
   )
 
