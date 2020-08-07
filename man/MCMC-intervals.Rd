@@ -205,6 +205,10 @@ related distributions.
 
 \examples{
 set.seed(9262017)
+
+# load ggplot2 to use its functions to modify our plots
+library(ggplot2)
+
 # some parameter draws to use for demonstration
 x <- example_mcmc_draws(params = 6)
 dim(x)
@@ -214,18 +218,30 @@ color_scheme_set("brightblue")
 mcmc_intervals(x)
 mcmc_intervals(x, pars = c("beta[1]", "beta[2]"))
 mcmc_areas(x, regex_pars = "beta\\\\[[1-3]\\\\]",  prob = 0.8) +
- ggplot2::labs(
+ labs(
    title = "Posterior distributions",
    subtitle = "with medians and 80\% intervals"
  )
 
 color_scheme_set("red")
-mcmc_areas(
+p <- mcmc_areas(
    x,
    pars = c("alpha", "beta[4]"),
    prob = 2/3,
    prob_outer = 0.9,
    point_est = "mean"
+)
+plot(p)
+
+# control spacing at top and bottom of plot
+# see ?ggplot2::expansion
+p + scale_y_discrete(
+  limits = c("beta[4]", "alpha"),
+  expand = expansion(add = c(1, 2))
+)
+p + scale_y_discrete(
+  limits = c("beta[4]", "alpha"),
+  expand = expansion(add = c(.1, .3))
 )
 
 # color by rhat value
@@ -247,22 +263,22 @@ p + legend_move("none") # or p + legend_none()
 b3 <- c("beta[1]", "beta[2]", "beta[3]")
 
 mcmc_areas(x, pars = b3, area_method = "equal area") +
-  ggplot2::labs(
+  labs(
     title = "Curves have same area",
-    subtitle =
-      "A wide, uncertain interval is spread thin when areas are equal")
+    subtitle = "A wide, uncertain interval is spread thin when areas are equal"
+   )
 
 mcmc_areas(x, pars = b3, area_method = "equal height") +
-  ggplot2::labs(
+  labs(
     title = "Curves have same maximum height",
-    subtitle =
-      "Local curvature is clearer but more uncertain curves use more area")
+    subtitle = "Local curvature is clearer but more uncertain curves use more area"
+  )
 
 mcmc_areas(x, pars = b3, area_method = "scaled height") +
-  ggplot2::labs(
+  labs(
     title = "Same maximum heights but heights scaled by square-root",
-    subtitle =
-      "Compromise: Local curvature is accentuated and less area is used")
+    subtitle = "Compromise: Local curvature is accentuated and less area is used"
+   )
 
 \donttest{
 # apply transformations
@@ -298,7 +314,7 @@ mcmc_areas(x, regex_pars = "cyl", bw = "SJ",
 # plotted with ridgelines
 m <- shinystan::eight_schools@posterior_sample
 mcmc_areas_ridges(m, pars = "mu", regex_pars = "theta") +
- ggplot2::ggtitle("Treatment effect on eight schools (Rubin, 1981)")
+  ggtitle("Treatment effect on eight schools (Rubin, 1981)")
 }
 
 }
