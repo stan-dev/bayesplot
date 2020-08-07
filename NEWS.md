@@ -8,6 +8,10 @@
 * Items for next release go here
 -->
 
+* CmdStanMCMC objects (from CmdStanR) can now be used with extractor 
+  functions `nuts_params()`, `log_posterior()`, `rhat()`, and 
+  `neff_ratio()`. (#227)
+
 * Added missing `facet_args` argument to `mcmc_rank_overlay()`. (#221, @hhau)
 
 
