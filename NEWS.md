@@ -12,7 +12,6 @@
 * Size of points and interval lines can set in 
   `mcmc_intervals(..., outer_size, inner_size, point_size)`. (#215, #228, #229) 
 * `mcmc_areas()` tries to use less blank vertical blank space. (#218, #230) 
-  `mcmc_intervals(..., outer_size, inner_size, point_size)`. (#215, #228, #229) 
 
 
 # bayesplot 1.7.2
