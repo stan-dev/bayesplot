@@ -87,11 +87,11 @@
 #' # see ?ggplot2::expansion
 #' p + scale_y_discrete(
 #'   limits = c("beta[4]", "alpha"),
-#'   expand = expansion(add = c(1,2))
+#'   expand = expansion(add = c(1, 2))
 #' )
 #' p + scale_y_discrete(
 #'   limits = c("beta[4]", "alpha"),
-#'   expand = expansion(add = c(.1,.3))
+#'   expand = expansion(add = c(.1, .3))
 #' )
 #'
 #' # color by rhat value
@@ -289,7 +289,8 @@ mcmc_areas <- function(x,
     x, pars, regex_pars, transformations,
     prob = prob, prob_outer = prob_outer,
     point_est = point_est, rhat = rhat,
-    bw = bw, adjust = adjust, kernel = kernel, n_dens = n_dens)
+    bw = bw, adjust = adjust, kernel = kernel, n_dens = n_dens
+  )
   datas <- split(data, data$interval)
 
   # Use a dummy empty dataframe if no point estimate
@@ -332,7 +333,11 @@ mcmc_areas <- function(x,
 
   datas$bottom <- datas$outer %>%
     group_by(!!! groups) %>%
-    summarise(ll = min(.data$x), hh = max(.data$x)) %>%
+    summarise(
+      ll = min(.data$x),
+      hh = max(.data$x),
+      .groups = "drop_last"
+    ) %>%
     ungroup()
 
   args_bottom <- list(
@@ -374,9 +379,16 @@ mcmc_areas <- function(x,
     args_outer$color <- get_color("dark")
   }
 
+  # An invisible layer that is 2.5% taller than the plotted one
+  args_outer2 <- args_outer
+  args_outer2$mapping <- args_outer2$mapping %>%
+    modify_aes_(scale = .925)
+  args_outer2$color <- NA
+
   layer_bottom <- do.call(geom_segment, args_bottom)
   layer_inner <- do.call(ggridges::geom_ridgeline, args_inner)
   layer_outer <- do.call(ggridges::geom_ridgeline, args_outer)
+  layer_outer2 <- do.call(ggridges::geom_ridgeline, args_outer2)
 
   point_geom <- if (no_point_est) {
     geom_ignore
@@ -400,13 +412,16 @@ mcmc_areas <- function(x,
     layer_inner +
     layer_point +
     layer_outer +
+    layer_outer2 +
     layer_bottom +
     scale_color +
     scale_fill +
     scale_y_discrete(
       limits = unique(rev(data$parameter)),
-      expand = expansion(add = c(0, .5 + 1/(2 * nlevels(data$parameter))),
-                         mult = c(.1, .1))
+      expand = expansion(
+        add = c(0, .5 + 1/(2 * nlevels(data$parameter))),
+        mult = c(.1, .1)
+      )
     ) +
     xlim(x_lim) +
     bayesplot_theme_get() +

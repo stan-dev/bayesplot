@@ -237,11 +237,11 @@ plot(p)
 # see ?ggplot2::expansion
 p + scale_y_discrete(
   limits = c("beta[4]", "alpha"),
-  expand = expansion(add = c(1,2))
+  expand = expansion(add = c(1, 2))
 )
 p + scale_y_discrete(
   limits = c("beta[4]", "alpha"),
-  expand = expansion(add = c(.1,.3))
+  expand = expansion(add = c(.1, .3))
 )
 
 # color by rhat value
@@ -314,7 +314,7 @@ mcmc_areas(x, regex_pars = "cyl", bw = "SJ",
 # plotted with ridgelines
 m <- shinystan::eight_schools@posterior_sample
 mcmc_areas_ridges(m, pars = "mu", regex_pars = "theta") +
- ggtitle("Treatment effect on eight schools (Rubin, 1981)")
+  ggtitle("Treatment effect on eight schools (Rubin, 1981)")
 }
 
 }
