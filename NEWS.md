@@ -12,10 +12,14 @@
   functions `nuts_params()`, `log_posterior()`, `rhat()`, and 
   `neff_ratio()`. (#227)
 
-* Added missing `facet_args` argument to `mcmc_rank_overlay()`. (#221, @hhau)
 * Size of points and interval lines can set in 
   `mcmc_intervals(..., outer_size, inner_size, point_size)`. (#215, #228, #229) 
+  
+* Size of ridgelines can be set in `mcmc_areas_ridges(..., size)`. (#224)
+  
 * `mcmc_areas()` tries to use less blank vertical blank space. (#218, #230) 
+
+* Added missing `facet_args` argument to `mcmc_rank_overlay()`. (#221, @hhau)
 
 
 # bayesplot 1.7.2
