@@ -58,7 +58,7 @@ test_that("validate_nuts_data_frame throws errors", {
   )
   expect_error(
     validate_nuts_data_frame(data.frame(Iteration = 1, apple = 2)),
-    "NUTS parameter data frame must have columns: Iteration, Parameter, Value, Chain"
+    "NUTS parameter data frame must have columns: Chain, Iteration, Parameter, Value"
   )
   expect_error(
     validate_nuts_data_frame(np, as.matrix(lp)),
@@ -69,7 +69,7 @@ test_that("validate_nuts_data_frame throws errors", {
   colnames(lp2)[3] <- "Chains"
   expect_error(
     validate_nuts_data_frame(np, lp2),
-    "lp data frame must have columns: Iteration, Value, Chain"
+    "lp data frame must have columns: Chain, Iteration, Value"
   )
 
   lp2 <- subset(lp, Chain %in% 1:2)

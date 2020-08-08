@@ -8,7 +8,14 @@
 * Items for next release go here
 -->
 
+* CmdStanMCMC objects (from CmdStanR) can now be used with extractor 
+  functions `nuts_params()`, `log_posterior()`, `rhat()`, and 
+  `neff_ratio()`. (#227)
+
 * Added missing `facet_args` argument to `mcmc_rank_overlay()`. (#221, @hhau)
+* Size of points and interval lines can set in 
+  `mcmc_intervals(..., outer_size, inner_size, point_size)`. (#215, #228, #229) 
+* `mcmc_areas()` tries to use less blank vertical blank space. (#218, #230) 
 
 
 # bayesplot 1.7.2
