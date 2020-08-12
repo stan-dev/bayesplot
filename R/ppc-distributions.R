@@ -43,7 +43,8 @@
 #'   \item{`ppc_km_overlay()`}{
 #'    Empirical CCDF estimates of each dataset (row) in `yrep` are overlaid,
 #'    with the Kaplan-Meier estimate of `y` itself on top (and in a darker
-#'    shade). This is a PPC suitable for right-censored `y`.
+#'    shade). This is a PPC suitable for right-censored `y`. Note that the
+#'    replicated data from `yrep` is assumed to be uncensored.
 #'   }
 #'   \item{`ppc_violin_grouped()`}{
 #'    The density estimate of `yrep` within each level of a grouping
