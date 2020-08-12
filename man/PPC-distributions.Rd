@@ -10,6 +10,7 @@
 \alias{ppc_dens}
 \alias{ppc_dens_overlay}
 \alias{ppc_ecdf_overlay}
+\alias{ppc_km_overlay}
 \alias{ppc_violin_grouped}
 \title{PPC distributions}
 \usage{
@@ -64,6 +65,8 @@ ppc_ecdf_overlay(
   size = 0.25,
   alpha = 0.7
 )
+
+ppc_km_overlay(y, yrep, ..., status_y, size = 0.25, alpha = 0.7)
 
 ppc_violin_grouped(
   y,
@@ -126,6 +129,9 @@ passed to \code{\link[ggplot2:stat_ecdf]{ggplot2::stat_ecdf()}}. If \code{discre
 
 \item{pad}{A logical scalar passed to \code{\link[ggplot2:stat_ecdf]{ggplot2::stat_ecdf()}}.}
 
+\item{status_y}{The status indicator for the observations from \code{y} (1 =
+event, 0 = right censored).}
+
 \item{probs}{A numeric vector passed to \code{\link[ggplot2:geom_violin]{ggplot2::geom_violin()}}'s
 \code{draw_quantiles} argument to specify at which quantiles to draw
 horizontal lines. Set to \code{NULL} to remove the lines.}
@@ -177,6 +183,12 @@ Kernel density or empirical CDF estimates of each dataset (row) in
 (and in a darker shade). When using \code{ppc_ecdf_overlay()} with discrete
 data, set the \code{discrete} argument to \code{TRUE} for better results.
 For an example of \code{ppc_dens_overlay()} also see Gabry et al. (2019).
+}
+\item{\code{ppc_km_overlay()}}{
+Empirical CCDF estimates of each dataset (row) in \code{yrep} are overlaid,
+with the Kaplan-Meier estimate of \code{y} itself on top (and in a darker
+shade). This is a PPC suitable for right-censored \code{y}. Note that the
+replicated data from \code{yrep} is assumed to be uncensored.
 }
 \item{\code{ppc_violin_grouped()}}{
 The density estimate of \code{yrep} within each level of a grouping
