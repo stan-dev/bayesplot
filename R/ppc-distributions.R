@@ -401,6 +401,9 @@ ppc_km_overlay <-
       dplyr::mutate(group = ifelse(is_y, as.numeric(as.character(group)), 1))
 
     # Create 'survfit' object:
+    if(!requireNamespace("survival", quietly = TRUE)){
+      abort("Package 'survival' required.")
+    }
     sf <- survival::survfit(
       survival::Surv(value, group) ~ rep_label,
       data = data
