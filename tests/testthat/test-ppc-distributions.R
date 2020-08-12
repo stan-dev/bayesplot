@@ -14,8 +14,8 @@ test_that("ppc_ecdf_overlay returns a ggplot object", {
 })
 
 test_that("ppc_km_overlay returns a ggplot object", {
-  expect_gg(ppc_km_overlay(y, yrep, status_y, size = 0.5, alpha = 0.2))
-  expect_gg(ppc_km_overlay(y2, yrep2, status_y2))
+  expect_gg(ppc_km_overlay(y, yrep, status_y = status_y, size = 0.5, alpha = 0.2))
+  expect_gg(ppc_km_overlay(y2, yrep2, status_y = status_y2))
 })
 
 test_that("ppc_dens,pp_hist,ppc_freqpoly,ppc_boxplot return ggplot objects", {
@@ -136,13 +136,13 @@ test_that("ppc_km_overlay renders correctly", {
   testthat::skip_on_cran()
   testthat::skip_if_not_installed("vdiffr")
 
-  p_base <- ppc_km_overlay(vdiff_y2, vdiff_yrep2, vdiff_status_y2)
+  p_base <- ppc_km_overlay(vdiff_y2, vdiff_yrep2, status_y = vdiff_status_y2)
   vdiffr::expect_doppelganger("ppc_km_overlay (default)", p_base)
 
   p_custom <- ppc_km_overlay(
     vdiff_y2,
     vdiff_yrep2,
-    vdiff_status_y2,
+    status_y = vdiff_status_y2,
     size = 2,
     alpha = .2)
   vdiffr::expect_doppelganger("ppc_km_overlay (size, alpha)", p_custom)
