@@ -129,8 +129,9 @@ passed to \code{\link[ggplot2:stat_ecdf]{ggplot2::stat_ecdf()}}. If \code{discre
 
 \item{pad}{A logical scalar passed to \code{\link[ggplot2:stat_ecdf]{ggplot2::stat_ecdf()}}.}
 
-\item{status_y}{The status indicator for the observations from \code{y} (1 =
-event, 0 = right censored).}
+\item{status_y}{The status indicator for the observations from \code{y}. This must
+be a numeric vector of the same length as \code{y} with values in \{0, 1\} (0 =
+right censored, 1 = event).}
 
 \item{probs}{A numeric vector passed to \code{\link[ggplot2:geom_violin]{ggplot2::geom_violin()}}'s
 \code{draw_quantiles} argument to specify at which quantiles to draw

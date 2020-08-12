@@ -378,8 +378,9 @@ ppc_ecdf_overlay <-
 
 #' @export
 #' @rdname PPC-distributions
-#' @param status_y The status indicator for the observations from `y` (1 =
-#'   event, 0 = right censored).
+#' @param status_y The status indicator for the observations from `y`. This must
+#'   be a numeric vector of the same length as `y` with values in \{0, 1\} (0 =
+#'   right censored, 1 = event).
 ppc_km_overlay <-
   function(y,
            yrep,
