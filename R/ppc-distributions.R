@@ -40,6 +40,11 @@
 #'    data, set the `discrete` argument to `TRUE` for better results.
 #'    For an example of `ppc_dens_overlay()` also see Gabry et al. (2019).
 #'   }
+#'   \item{`ppc_km_overlay()`}{
+#'    Empirical CCDF estimates of each dataset (row) in `yrep` are overlaid,
+#'    with the Kaplan-Meier estimate of `y` itself on top (and in a darker
+#'    shade). This is a PPC suitable for right-censored data.
+#'   }
 #'   \item{`ppc_violin_grouped()`}{
 #'    The density estimate of `yrep` within each level of a grouping
 #'    variable is plotted as a violin with horizontal lines at notable
