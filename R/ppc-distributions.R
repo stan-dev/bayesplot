@@ -405,7 +405,7 @@ ppc_km_overlay <-
     #     to "1 - ECDF" with ECDF denoting the ordinary empirical cumulative
     #     distribution function.
     data <- data %>%
-      dplyr::mutate(group = ifelse(is_y, as.numeric(as.character(group)), 1))
+      dplyr::mutate(group = ifelse(.data$is_y, as.numeric(as.character(.data$group)), 1))
 
     # Create 'survfit' object:
     if(!requireNamespace("survival", quietly = TRUE)){
