@@ -372,6 +372,79 @@ ppc_ecdf_overlay <-
 
 #' @export
 #' @rdname PPC-distributions
+#' @param status_y The status indicator for the observations from `y` (1 =
+#'   event, 0 = right censored).
+ppc_km_overlay <-
+  function(y,
+           yrep,
+           ...,
+           status_y,
+           size = 0.25,
+           alpha = 0.7) {
+    check_ignored_arguments(...)
+
+    # Checks for 'status_y':
+    stopifnot(is.numeric(status_y))
+    stopifnot(all(status_y %in% c(0, 1)))
+
+    # Create basic PPC dataset:
+    data <- ppc_data(y, yrep, group = status_y)
+
+    # Modify the status indicator:
+    #   * For the observed data ("y"), convert the status indicator back to
+    #     a numeric.
+    #   * For the replicated data ("yrep"), set the status indicator
+    #     to 1 ("event"). This way, the Kaplan-Meier estimator reduces
+    #     to "1 - ECDF" with ECDF denoting the ordinary empirical cumulative
+    #     distribution function.
+    data <- data %>%
+      dplyr::mutate(group = ifelse(is_y, as.numeric(as.character(group)), 1))
+
+    # Create 'survfit' object:
+    sf <- survival::survfit(
+      survival::Surv(value, group) ~ rep_label,
+      data = data
+    )
+
+    # "Fortify" the 'survfit' object:
+    if(!requireNamespace("ggfortify", quietly = TRUE)){
+      abort("Package 'ggfortify' required.")
+    }
+    fsf <- fortify(sf)
+
+    # Add variables specifying color, size, and alpha:
+    fsf$is_y_color <- as.factor(sub("\\[rep\\] \\(.*$", "rep", sub("^italic\\(y\\)", "y", fsf$strata)))
+    fsf$is_y_size <- ifelse(fsf$is_y_color == "yrep", size, 1)
+    fsf$is_y_alpha <- ifelse(fsf$is_y_color == "yrep", alpha, 1)
+
+    # Plot:
+    ggplot(data = fsf,
+           mapping = aes(x = time,
+                         y = surv,
+                         color = is_y_color,
+                         group = strata,
+                         size = is_y_size,
+                         alpha = is_y_alpha)) +
+      geom_step() +
+      scale_size_identity() +
+      scale_alpha_identity() +
+      hline_at(
+        c(0, 0.5, 1),
+        size = c(0.2, 0.1, 0.2),
+        linetype = 2,
+        color = get_color("dh")
+      ) +
+      scale_color_ppc_dist() +
+      xlab(y_label()) +
+      scale_y_continuous(breaks = c(0, 0.5, 1)) +
+      yaxis_title(FALSE) +
+      xaxis_title(FALSE) +
+      yaxis_ticks(FALSE) +
+      bayesplot_theme_get()
+  }
+
+#' @export
+#' @rdname PPC-distributions
 #' @param probs A numeric vector passed to [ggplot2::geom_violin()]'s
 #'   `draw_quantiles` argument to specify at which quantiles to draw
 #'   horizontal lines. Set to `NULL` to remove the lines.
