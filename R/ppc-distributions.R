@@ -429,12 +429,12 @@ ppc_km_overlay <-
 
     # Plot:
     ggplot(data = fsf,
-           mapping = aes(x = time,
-                         y = surv,
-                         color = is_y_color,
-                         group = strata,
-                         size = is_y_size,
-                         alpha = is_y_alpha)) +
+           mapping = aes_(x = ~ time,
+                          y = ~ surv,
+                          color = ~ is_y_color,
+                          group = ~ strata,
+                          size = ~ is_y_size,
+                          alpha = ~ is_y_alpha)) +
       geom_step() +
       scale_size_identity() +
       scale_alpha_identity() +
