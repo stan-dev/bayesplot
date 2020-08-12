@@ -48,7 +48,9 @@ Suggests:
     scales,
     shinystan (>= 2.3.0),
     testthat (>= 2.0.0),
-    vdiffr
+    vdiffr,
+    survival,
+    ggfortify
 RoxygenNote: 7.1.1
 VignetteBuilder: knitr
 Encoding: UTF-8
