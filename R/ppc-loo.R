@@ -147,20 +147,17 @@ ppc_loo_pit_overlay <- function(y,
     yrep <- validate_yrep(yrep, y)
     stopifnot(identical(dim(yrep), dim(lw)))
     pit <- rstantools::loo_pit(object = yrep, y = y, lw = lw)
-    if (bc_kde) {
-      pit <- .bc_pvals(x = pit, bw = bw)
-    }
   }
 
   unifs <- matrix(runif(length(pit) * samples), nrow = samples)
+  
   if (bc_kde) {
+    pit <- .bc_pvals(x = pit, bw = bw)
     unifs <- t(apply(unifs, 1, function(x) .bc_pvals(x, bw = bw)))
   }
-  
-  data <- ppc_data(pit, unifs)
 
   if (bc_kde){
-    data <-  data  %>% 
+    data <- ppc_data(pit, unifs) %>% 
       arrange(rep_id) %>% 
       mutate(xx = rep(seq(0, 1, length.out = length(pit)), 
                       times = samples + 1))
@@ -180,6 +177,8 @@ ppc_loo_pit_overlay <- function(y,
                 na.rm = TRUE)
     
   } else {
+    data <- ppc_data(pit, unifs)
+    
     p <- ggplot(data) +
       aes_(x = ~ value) + 
       stat_density(
@@ -559,7 +558,7 @@ ppc_loo_ribbon <-
   }
   
   # Boundary corrected KDE values
-  bc_vals <- bc_dunif(xs = xs, pvals=valid_pvals, b =bw)
+  bc_vals <- .bc_dunif(xs = xs, pvals=valid_pvals, b =bw)
   
   # Set any negative values to zero and output bc density values
   bc_vals[which(bc_vals < 0)] = 0
