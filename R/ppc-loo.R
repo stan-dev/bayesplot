@@ -151,30 +151,30 @@ ppc_loo_pit_overlay <- function(y,
 
   unifs <- matrix(runif(length(pit) * samples), nrow = samples)
   
-  if (bc_kde) {
+ 
+  if (bc_kde){
     pit <- .bc_pvals(x = pit, bw = bw)
     unifs <- t(apply(unifs, 1, function(x) .bc_pvals(x, bw = bw)))
-  }
-
-  if (bc_kde){
+    
     data <- ppc_data(pit, unifs) %>% 
-      arrange(rep_id) %>% 
+      dplyr::arrange(rep_id) %>% 
       mutate(xx = rep(seq(0, 1, length.out = length(pit)), 
                       times = samples + 1))
     
     p <- ggplot(data) +
-      aes_(x = ~ xx, 
-           y = ~ value) +
-      geom_line(aes_(group = ~rep_id,  color = "yrep"),
-                data = function(x) dplyr::filter(x, !.data$is_y),
-                alpha = alpha,
-                size = size,
-                na.rm = TRUE) +
-      geom_line(aes_(color = "y"),
-                data = function(x) dplyr::filter(x, .data$is_y),
-                size = 1,
-                lineend = "round",
-                na.rm = TRUE)
+      aes_(x = ~ xx, y = ~ value) +
+      geom_line(
+        aes_(group = ~ rep_id,  color = "yrep"),
+        data = function(x) dplyr::filter(x, !.data$is_y),
+        alpha = alpha,
+        size = size,
+        na.rm = TRUE) +
+      geom_line(
+        aes_(color = "y"),
+        data = function(x) dplyr::filter(x, .data$is_y),
+        size = 1,
+        lineend = "round",
+        na.rm = TRUE)
     
   } else {
     data <- ppc_data(pit, unifs)
@@ -182,18 +182,18 @@ ppc_loo_pit_overlay <- function(y,
     p <- ggplot(data) +
       aes_(x = ~ value) + 
       stat_density(
-      aes_(group = ~ rep_id, color = "yrep"),
-      data = function(x) dplyr::filter(x, !.data$is_y),
-      geom = "line",
-      position = "identity",
-      size = size,
-      alpha = alpha,
-      trim = trim,
-      bw = bw,
-      adjust = adjust,
-      kernel = kernel,
-      n = n_dens,
-      na.rm = TRUE) +
+        aes_(group = ~ rep_id, color = "yrep"),
+        data = function(x) dplyr::filter(x, !.data$is_y),
+        geom = "line",
+        position = "identity",
+        size = size,
+        alpha = alpha,
+        trim = trim,
+        bw = bw,
+        adjust = adjust,
+        kernel = kernel,
+        n = n_dens,
+        na.rm = TRUE) +
       stat_density(
         aes_(color = "y"),
         data = function(x) dplyr::filter(x, .data$is_y),
