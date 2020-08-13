@@ -154,6 +154,10 @@ the plotted intervals. The default (\code{"index"}) is to plot them in the
 order of the observations. The alternative (\code{"median"}) arranges them
 by median value from smallest (left) to largest (right).}
 }
+
+\item{bc_kde} {For \code{ppc_loo_pit_overlay()},when set to TRUE function will
+compute \code{boundary corrected} density values using beta kernel estimators.
+Although preferable, the current implementation is slow (default is FALSE)
 \value{
 A ggplot object that can be further customized using the \strong{ggplot2} package.
 }

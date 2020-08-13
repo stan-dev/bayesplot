@@ -83,6 +83,8 @@
 #' # marginal predictive check using LOO probability integral transform
 #' color_scheme_set("orange")
 #' ppc_loo_pit_overlay(y, yrep, lw = lw)
+#' # ppc_loo_pit_overlay(y, yrep, lw = lw, 
+#'                       bc_kde = TRUE) # slower, boundary corrected KDE
 #'
 #' ppc_loo_pit_qq(y, yrep, lw = lw)
 #' ppc_loo_pit_qq(y, yrep, lw = lw, compare = "normal")
@@ -117,6 +119,9 @@ NULL
 #'   standard normal distribution.
 #' @param trim Passed to [ggplot2::stat_density()].
 #' @template args-density-controls
+#' @param bc_kde For `ppc_loo_pit_overlay()`, when set to TRUE function will
+#'    compute `"boundary corrected"` density values using beta kernel estimators.
+#'    Although preferable, the current implementation is slow (default = FALSE).
 ppc_loo_pit_overlay <- function(y,
                                 yrep,
                                 lw,
@@ -129,7 +134,8 @@ ppc_loo_pit_overlay <- function(y,
                                 bw = "nrd0",
                                 adjust = 1,
                                 kernel = "gaussian",
-                                n_dens = 1024) {
+                                n_dens = 1024,
+                                bc_kde = FALSE) {
   check_ignored_arguments(...)
 
   if (!missing(pit)) {
@@ -141,15 +147,42 @@ ppc_loo_pit_overlay <- function(y,
     yrep <- validate_yrep(yrep, y)
     stopifnot(identical(dim(yrep), dim(lw)))
     pit <- rstantools::loo_pit(object = yrep, y = y, lw = lw)
+    if (bc_kde) {
+      pit <- .bc_pvals(x = pit, bw = bw)
+    }
   }
 
   unifs <- matrix(runif(length(pit) * samples), nrow = samples)
-
+  if (bc_kde) {
+    unifs <- t(apply(unifs, 1, function(x) .bc_pvals(x, bw = bw)))
+  }
+  
   data <- ppc_data(pit, unifs)
 
-  ggplot(data) +
-    aes_(x = ~ value) +
-    stat_density(
+  if (bc_kde){
+    data <-  data  %>% 
+      arrange(rep_id) %>% 
+      mutate(xx = rep(seq(0, 1, length.out = length(pit)), 
+                      times = samples + 1))
+    
+    p <- ggplot(data) +
+      aes_(x = ~ xx, 
+           y = ~ value) +
+      geom_line(aes_(group = ~rep_id,  color = "yrep"),
+                data = function(x) dplyr::filter(x, !.data$is_y),
+                alpha = alpha,
+                size = size,
+                na.rm = TRUE) +
+      geom_line(aes_(color = "y"),
+                data = function(x) dplyr::filter(x, .data$is_y),
+                size = 1,
+                lineend = "round"
+                na.rm = TRUE)
+    
+  } else {
+    p <- ggplot(data) +
+      aes_(x = ~ value) + 
+      stat_density(
       aes_(group = ~ rep_id, color = "yrep"),
       data = function(x) dplyr::filter(x, !.data$is_y),
       geom = "line",
@@ -162,32 +195,34 @@ ppc_loo_pit_overlay <- function(y,
       kernel = kernel,
       n = n_dens,
       na.rm = TRUE) +
-    stat_density(
-      aes_(color = "y"),
-      data = function(x) dplyr::filter(x, .data$is_y),
-      geom = "line",
-      position = "identity",
-      lineend = "round",
-      size = 1,
-      trim = trim,
-      bw = bw,
-      adjust = adjust,
-      kernel = kernel,
-      n = n_dens,
-      na.rm = TRUE) +
-    scale_color_ppc_dist(labels = c("PIT", "Unif")) +
-    scale_x_continuous(
-      limits = c(.1, .9),
-      expand = expansion(0, 0),
-      breaks = seq(from = .1, to = .9, by = .2)) +
-    scale_y_continuous(
-      limits = c(0, NA),
-      expand = expansion(mult = c(0, .25))) +
-    bayesplot_theme_get() +
-    yaxis_title(FALSE) +
-    xaxis_title(FALSE) +
-    yaxis_text(FALSE) +
-    yaxis_ticks(FALSE)
+      stat_density(
+        aes_(color = "y"),
+        data = function(x) dplyr::filter(x, .data$is_y),
+        geom = "line",
+        position = "identity",
+        lineend = "round",
+        size = 1,
+        trim = trim,
+        bw = bw,
+        adjust = adjust,
+        kernel = kernel,
+        n = n_dens,
+        na.rm = TRUE)
+  }
+    
+    p + scale_color_ppc_dist(labels = c("PIT", "Unif")) +
+      scale_x_continuous(
+        limits = c(0, 1),
+        expand = expansion(0, 0),
+        breaks = seq(from = .1, to = .9, by = .2)) +
+      scale_y_continuous(
+        limits = c(0, NA),
+        expand = expansion(mult = c(0, .25))) +
+      bayesplot_theme_get() +
+      yaxis_title(FALSE) +
+      xaxis_title(FALSE) +
+      yaxis_text(FALSE) +
+      yaxis_ticks(FALSE)
 }
 
 
@@ -455,4 +490,82 @@ ppc_loo_ribbon <-
   attr(psis_object, "r_eff") <- attr(psis_object, "r_eff")[subset]
   return(psis_object)
 }
+
+## Boundary correction based on code by Yang Hu and Carl Scarrott in evmix package
+
+# Boundary correction KDE helper function
+.bc_dunif <- function(xs, pvals, b, xmax = 1){
+  # Function based on biased-corrected (modified) beta kernel 
+  # Chen, Song Xi. "Beta kernel estimators for density functions." 
+  # Computational Statistics & Data Analysis 31.2 (1999): 131-145.
+  
+  # Re-scaling inputs based on upper_bound given beta kernel is defined [0,1]
+  xs <- xs/xmax
+  pvals <- pvals/xmax
+  b <-  b/xmax # smoothing parameter (i.e. bw)
+  
+  d <- vapply(X = xs, 
+              FUN = .bc_kde_calc, 
+              b = b,
+              pvals = pvals, 
+              FUN.VALUE = 0)
+  
+  return(d/xmax)
+  
+}
+
+# Bias correction function (Chen 1999)
+.rho <- function(x, b) {
+  return(2*b^2 + 2.5 - sqrt(4*b^4 + 6*b^2 + 2.25 - x^2 - x/b))
+}
+
+# Piecewise kernel value estimation (Chen 1999)
+.bc_kde_calc <- function(xs, b,  pvals){
+
+  if ((xs >= 2*b) & (xs <= (1 - 2*b))) {
+    d <- mean(dbeta(pvals, xs/b, (1 - xs)/b))
+  } else if ((xs >= 0) & (xs < 2*b)) {
+    d <- mean(dbeta(pvals, .rho(xs, b), (1 - xs)/b))
+  } else if ((xs > (1 - 2*b)) & (xs <= 1)) {
+    d <- mean(dbeta(pvals, xs/b, .rho(1 - xs, b)))
+  } else {
+    d <- 0
+  }
+  return(d)
+}
+
+# Wrapper function, transforms pvals / PIT vals into bc values
+.bc_pvals <- function(x, bw = "nrd0"){
+  
+  # Set-up
+  xs  <- seq(0, 1, length.out = length(x))
+  d <- xs
+  xmax <- 1 + 1e-9
+  bw <- density(x, bw = bw)$bw # extract bw
+  
+  # get only valid pvals
+  valid_pvals <- x[is.finite(x)]
+  
+  # Some sanity checks
+  if (abs(xmax - max(valid_pvals)) >= 1e-1) {
+    stop("largest PIT value must be below 1")
+  }
+  
+  # Ignore zeros to avoid problems during KDE estimation
+  if (any(valid_pvals == 0)) {
+    warning(paste("Ignored", sum(valid_pvals == 0),
+                  "PIT values == 0, they are invalid for beta KDE method"))
+    valid_pvals = valid_pvals[valid_pvals != 0]
+  }
+  
+  # Boundary corrected KDE values
+  bc_vals <- bc_dunif(xs = xs, pvals=valid_pvals, b =bw)
+  
+  # Set any negative values to zero and output bc density values
+  bc_vals[which(bc_vals < 0)] = 0
+  d[ifelse(!is.na(xs), (xs >= 0) & (xs <= 1), FALSE)] = bc_vals
+  
+  return(d)
+}
+
 
