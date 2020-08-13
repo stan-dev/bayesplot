@@ -176,7 +176,7 @@ ppc_loo_pit_overlay <- function(y,
       geom_line(aes_(color = "y"),
                 data = function(x) dplyr::filter(x, .data$is_y),
                 size = 1,
-                lineend = "round"
+                lineend = "round",
                 na.rm = TRUE)
     
   } else {
