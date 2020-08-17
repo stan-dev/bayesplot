@@ -155,9 +155,11 @@ the plotted intervals. The default (\code{"index"}) is to plot them in the
 order of the observations. The alternative (\code{"median"}) arranges them
 by median value from smallest (left) to largest (right).}
 
-\item{bc_kde}{For \code{ppc_loo_pit_overlay()},when set to TRUE function will
-compute \code{boundary corrected} density values using beta kernel estimators.
-Although preferable, the current implementation is slow (default is FALSE)}
+\item{boundary_correction}{For \code{ppc_loo_pit_overlay()}, when set to \code{TRUE} 
+the function will compute boundary corrected density values using beta kernel estimators.
+As a result, parameters controlling the standard kernel density estimation such as 
+\code{adjust}, \code{kernel}, and \code{n_dens} are ignored. Although we recommend 
+using this option, the current implementation is slow  so it is set to \cod{FALSE} by default.}
 }
 
 \value{
@@ -227,6 +229,8 @@ lw <- weights(psis1)
 # marginal predictive check using LOO probability integral transform
 color_scheme_set("orange")
 ppc_loo_pit_overlay(y, yrep, lw = lw)
+# ppc_loo_pit_overlay(y, yrep, lw = lw, 
+                     boundary_correction = TRUE) # slower, boundary corrected KDE
 
 ppc_loo_pit_qq(y, yrep, lw = lw)
 ppc_loo_pit_qq(y, yrep, lw = lw, compare = "normal")

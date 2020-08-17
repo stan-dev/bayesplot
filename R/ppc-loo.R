@@ -84,7 +84,7 @@
 #' color_scheme_set("orange")
 #' ppc_loo_pit_overlay(y, yrep, lw = lw)
 #' # ppc_loo_pit_overlay(y, yrep, lw = lw, 
-#'                       bc_kde = TRUE) # slower, boundary corrected KDE
+#'                       boundary_correction = TRUE) # slower, boundary corrected KDE
 #'
 #' ppc_loo_pit_qq(y, yrep, lw = lw)
 #' ppc_loo_pit_qq(y, yrep, lw = lw, compare = "normal")
@@ -119,10 +119,11 @@ NULL
 #'   standard normal distribution.
 #' @param trim Passed to [ggplot2::stat_density()].
 #' @template args-density-controls
-#' @param bc_kde For `ppc_loo_pit_overlay()`, when set to `TRUE` the function will
-#'    compute boundary corrected density values using beta kernel estimators.
-#'    Although we recommend using this option, the current implementation is slow 
-#'    so it is set to `FALSE` by default.
+#' @param boundary_correction For `ppc_loo_pit_overlay()`, when set to `TRUE` the function will
+#'    compute boundary corrected density values using beta kernel estimators.  As a result,
+#'    parameters controlling the standard kernel density estimation such as `adjust`, `kernel`
+#'    and `n_dens` are ignored. Although we recommend using this option, 
+#'    the current implementation is slow  so it is set to `FALSE` by default. 
 ppc_loo_pit_overlay <- function(y,
                                 yrep,
                                 lw,
@@ -136,7 +137,7 @@ ppc_loo_pit_overlay <- function(y,
                                 adjust = 1,
                                 kernel = "gaussian",
                                 n_dens = 1024,
-                                bc_kde = FALSE) {
+                                boundary_correction = FALSE) {
   check_ignored_arguments(...)
 
   if (!missing(pit)) {
@@ -149,12 +150,10 @@ ppc_loo_pit_overlay <- function(y,
     stopifnot(identical(dim(yrep), dim(lw)))
     pit <- rstantools::loo_pit(object = yrep, y = y, lw = lw)
   }
-
-  unifs <- matrix(runif(length(pit) * samples), nrow = samples)
-  
  
-  if (bc_kde){
+  if (boundary_correction){
     pit <- .bc_pvals(x = pit, bw = bw)
+    unifs <- matrix(runif(length(pit) * samples), nrow = samples)
     unifs <- t(apply(unifs, 1, function(x) .bc_pvals(x, bw = bw)))
     
     data <- ppc_data(pit, unifs) %>% 
@@ -178,6 +177,7 @@ ppc_loo_pit_overlay <- function(y,
         na.rm = TRUE)
     
   } else {
+    unifs <- matrix(runif(length(pit) * samples), nrow = samples)
     data <- ppc_data(pit, unifs)
     
     p <- ggplot(data) +
@@ -538,8 +538,6 @@ ppc_loo_ribbon <-
 .bc_pvals <- function(x, bw = "nrd0"){
   
   # Set-up
-  xs  <- seq(0, 1, length.out = length(x))
-  d <- xs
   xmax <- 1 + 1e-9
   bw <- density(x, bw = bw)$bw # extract bw
   
@@ -547,8 +545,8 @@ ppc_loo_ribbon <-
   valid_pvals <- x[is.finite(x)]
   
   # Some sanity checks
-  if (abs(xmax - max(valid_pvals)) >= 1e-1) {
-    stop("largest PIT value must be below 1")
+  if (valid_pvals > xmax) {
+    stop(paste("largest PIT value must be below", xmax))
   }
   
   # Ignore zeros to avoid problems during KDE estimation
@@ -557,6 +555,10 @@ ppc_loo_ribbon <-
                   "PIT values == 0, they are invalid for beta KDE method"))
     valid_pvals = valid_pvals[valid_pvals != 0]
   }
+  
+  # Ensure length consistency
+  xs  <- seq(0, 1, length.out = length(valid_pvals))
+  d <- xs
   
   # Boundary corrected KDE values
   bc_vals <- .bc_dunif(xs = xs, pvals=valid_pvals, b =bw)
