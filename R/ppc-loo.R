@@ -158,7 +158,7 @@ ppc_loo_pit_overlay <- function(y,
     unifs <- t(apply(unifs, 1, function(x) .bc_pvals(x, bw = bw)))
     
     data <- ppc_data(pit, unifs) %>% 
-      dplyr::arrange(rep_id) %>% 
+      dplyr::arrange(.data$rep_id) %>% 
       mutate(xx = rep(seq(0, 1, length.out = length(pit)), 
                       times = samples + 1))
     
@@ -567,4 +567,3 @@ ppc_loo_ribbon <-
   
   return(d)
 }
-
