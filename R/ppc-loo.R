@@ -119,9 +119,10 @@ NULL
 #'   standard normal distribution.
 #' @param trim Passed to [ggplot2::stat_density()].
 #' @template args-density-controls
-#' @param bc_kde For `ppc_loo_pit_overlay()`, when set to TRUE function will
-#'    compute `"boundary corrected"` density values using beta kernel estimators.
-#'    Although preferable, the current implementation is slow (default = FALSE).
+#' @param bc_kde For `ppc_loo_pit_overlay()`, when set to `TRUE` the function will
+#'    compute boundary corrected density values using beta kernel estimators.
+#'    Although we recommend using this option, the current implementation is slow 
+#'    so it is set to `FALSE` by default.
 ppc_loo_pit_overlay <- function(y,
                                 yrep,
                                 lw,
@@ -566,5 +567,4 @@ ppc_loo_ribbon <-
   
   return(d)
 }
-
 
