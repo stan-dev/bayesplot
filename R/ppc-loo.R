@@ -563,7 +563,7 @@ ppc_loo_ribbon <-
   
   # Set any negative values to zero and output bc density values
   bc_vals[which(bc_vals < 0)] <- 0
-  d[ifelse(!is.na(xs), (xs >= 0) & (xs <= 1), FALSE)] = bc_vals
+  d[ifelse(!is.na(xs), (xs >= 0) & (xs <= 1), FALSE)] <- bc_vals
   
   return(d)
 }
