@@ -562,7 +562,7 @@ ppc_loo_ribbon <-
   bc_vals <- .bc_dunif(xs = xs, pvals=valid_pvals, b =bw)
   
   # Set any negative values to zero and output bc density values
-  bc_vals[which(bc_vals < 0)] = 0
+  bc_vals[which(bc_vals < 0)] <- 0
   d[ifelse(!is.na(xs), (xs >= 0) & (xs <= 1), FALSE)] = bc_vals
   
   return(d)
