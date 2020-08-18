@@ -23,7 +23,7 @@ ppc_loo_pit_overlay(
   adjust = 1,
   kernel = "gaussian",
   n_dens = 1024,
-  bc_kde = FALSE
+  boundary_correction = FALSE
 )
 
 ppc_loo_pit_qq(
@@ -117,6 +117,12 @@ and \code{fatten} are passed to \code{\link[ggplot2:geom_linerange]{ggplot2::geo
 \code{\link[stats:density]{stats::density()}} to override default kernel density estimation
 parameters. \code{n_dens} defaults to \code{1024}.}
 
+\item{boundary_correction}{For \code{ppc_loo_pit_overlay()}, when set to \code{TRUE} the function will
+compute boundary corrected density values using beta kernel estimators.  As a result,
+parameters controlling the standard kernel density estimation such as \code{adjust}, \code{kernel}
+and \code{n_dens} are ignored. Although we recommend using this option,
+the current implementation is slow  so it is set to \code{FALSE} by default.}
+
 \item{compare}{For \code{ppc_loo_pit_qq()}, a string that can be either
 \code{"uniform"} or \code{"normal"}. If \code{"uniform"} (the default) the Q-Q plot
 compares computed PIT values to the standard uniform distribution. If
@@ -154,14 +160,7 @@ are \code{prob=0.5} and \code{prob_outer=0.9}.}
 the plotted intervals. The default (\code{"index"}) is to plot them in the
 order of the observations. The alternative (\code{"median"}) arranges them
 by median value from smallest (left) to largest (right).}
-
-\item{boundary_correction}{For \code{ppc_loo_pit_overlay()}, when set to \code{TRUE} 
-the function will compute boundary corrected density values using beta kernel estimators.
-As a result, parameters controlling the standard kernel density estimation such as 
-\code{adjust}, \code{kernel}, and \code{n_dens} are ignored. Although we recommend 
-using this option, the current implementation is slow  so it is set to \cod{FALSE} by default.}
 }
-
 \value{
 A ggplot object that can be further customized using the \strong{ggplot2} package.
 }
@@ -230,7 +229,7 @@ lw <- weights(psis1)
 color_scheme_set("orange")
 ppc_loo_pit_overlay(y, yrep, lw = lw)
 # ppc_loo_pit_overlay(y, yrep, lw = lw, 
-                     boundary_correction = TRUE) # slower, boundary corrected KDE
+                      boundary_correction = TRUE) # slower, boundary corrected KDE
 
 ppc_loo_pit_qq(y, yrep, lw = lw)
 ppc_loo_pit_qq(y, yrep, lw = lw, compare = "normal")
