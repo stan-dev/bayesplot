@@ -34,6 +34,7 @@ ppc_loo_pit_data(
   ...,
   pit = NULL,
   samples = 100,
+  bw = "nrd0",
   boundary_correction = FALSE
 )
 
@@ -239,7 +240,7 @@ lw <- weights(psis1)
 # marginal predictive check using LOO probability integral transform
 color_scheme_set("orange")
 ppc_loo_pit_overlay(y, yrep, lw = lw)
-# ppc_loo_pit_overlay(y, yrep, lw = lw,
+# ppc_loo_pit_overlay(y, yrep, lw = lw, 
                       boundary_correction = TRUE) # slower, boundary corrected KDE
 
 ppc_loo_pit_qq(y, yrep, lw = lw)

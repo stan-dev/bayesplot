@@ -241,7 +241,6 @@ ppc_loo_pit_data <-
       data <- ppc_data(pit, unifs)
     } else {
       pit <- .bc_pvals(x = pit, bw = bw)
-      browser()
       unifs <- t(apply(unifs, 1, function(x) .bc_pvals(x, bw = bw)))
 
       data <-
