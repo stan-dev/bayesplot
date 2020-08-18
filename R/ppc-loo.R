@@ -545,7 +545,7 @@ ppc_loo_ribbon <-
   valid_pvals <- x[is.finite(x)]
   
   # Some sanity checks
-  if (valid_pvals > xmax) {
+  if (any(valid_pvals > xmax)) {
     stop(paste("largest PIT value must be below", xmax))
   }
   
