@@ -3,6 +3,7 @@
 \name{PPC-loo}
 \alias{PPC-loo}
 \alias{ppc_loo_pit_overlay}
+\alias{ppc_loo_pit_data}
 \alias{ppc_loo_pit_qq}
 \alias{ppc_loo_pit}
 \alias{ppc_loo_intervals}
@@ -13,9 +14,9 @@ ppc_loo_pit_overlay(
   y,
   yrep,
   lw,
-  pit,
-  samples = 100,
   ...,
+  pit = NULL,
+  samples = 100,
   size = 0.25,
   alpha = 0.7,
   trim = FALSE,
@@ -23,6 +24,16 @@ ppc_loo_pit_overlay(
   adjust = 1,
   kernel = "gaussian",
   n_dens = 1024,
+  boundary_correction = FALSE
+)
+
+ppc_loo_pit_data(
+  y,
+  yrep,
+  lw,
+  ...,
+  pit = NULL,
+  samples = 100,
   boundary_correction = FALSE
 )
 
@@ -90,6 +101,8 @@ sense. See \strong{Details} for additional instructions.}
 \code{yrep}. See \code{\link[loo:psis]{loo::psis()}} and the associated \code{weights()} method as well as
 the \strong{Examples} section, below.}
 
+\item{...}{Currently unused.}
+
 \item{pit}{For \code{ppc_loo_pit_overlay()} and \code{ppc_loo_pit_qq()}, optionally a
 vector of precomputed PIT values that can be specified instead of \code{y},
 \code{yrep}, and \code{lw} (these are all ignored if \code{pit} is specified). If not
@@ -100,8 +113,6 @@ the same size as \code{y}) to simulate from the standard uniform
 distribution. The default is 100. The density estimate of each dataset is
 plotted as a thin line in the plot, with the density estimate of the LOO
 PITs overlaid as a thicker dark line.}
-
-\item{...}{Currently unused.}
 
 \item{alpha, size, fatten}{Arguments passed to code geoms to control plot
 aesthetics. For \code{ppc_loo_pit_qq()} and \code{ppc_loo_pit_overlay()}, \code{size} and
@@ -228,7 +239,7 @@ lw <- weights(psis1)
 # marginal predictive check using LOO probability integral transform
 color_scheme_set("orange")
 ppc_loo_pit_overlay(y, yrep, lw = lw)
-# ppc_loo_pit_overlay(y, yrep, lw = lw, 
+# ppc_loo_pit_overlay(y, yrep, lw = lw,
                       boundary_correction = TRUE) # slower, boundary corrected KDE
 
 ppc_loo_pit_qq(y, yrep, lw = lw)

@@ -127,9 +127,9 @@ NULL
 ppc_loo_pit_overlay <- function(y,
                                 yrep,
                                 lw,
-                                pit,
-                                samples = 100,
                                 ...,
+                                pit = NULL,
+                                samples = 100,
                                 size = 0.25,
                                 alpha = 0.7,
                                 trim = FALSE,
@@ -140,29 +140,20 @@ ppc_loo_pit_overlay <- function(y,
                                 boundary_correction = FALSE) {
   check_ignored_arguments(...)
 
-  if (!missing(pit)) {
-    stopifnot(is.numeric(pit), is_vector_or_1Darray(pit))
-    inform("'pit' specified so ignoring 'y','yrep','lw' if specified.")
-  } else {
-    suggested_package("rstantools")
-    y <- validate_y(y)
-    yrep <- validate_yrep(yrep, y)
-    stopifnot(identical(dim(yrep), dim(lw)))
-    pit <- rstantools::loo_pit(object = yrep, y = y, lw = lw)
-  }
- 
+  data <-
+    ppc_loo_pit_data(
+      y = y,
+      yrep = yrep,
+      lw = lw,
+      pit = pit,
+      samples = samples,
+      bw = bw,
+      boundary_correction = boundary_correction
+    )
+
   if (boundary_correction){
-    pit <- .bc_pvals(x = pit, bw = bw)
-    unifs <- matrix(runif(length(pit) * samples), nrow = samples)
-    unifs <- t(apply(unifs, 1, function(x) .bc_pvals(x, bw = bw)))
-    
-    data <- ppc_data(pit, unifs) %>% 
-      dplyr::arrange(.data$rep_id) %>% 
-      mutate(xx = rep(seq(0, 1, length.out = length(pit)), 
-                      times = samples + 1))
-    
     p <- ggplot(data) +
-      aes_(x = ~ xx, y = ~ value) +
+      aes_(x = ~ x, y = ~ value) +
       geom_line(
         aes_(group = ~ rep_id,  color = "yrep"),
         data = function(x) dplyr::filter(x, !.data$is_y),
@@ -175,13 +166,10 @@ ppc_loo_pit_overlay <- function(y,
         size = 1,
         lineend = "round",
         na.rm = TRUE)
-    
+
   } else {
-    unifs <- matrix(runif(length(pit) * samples), nrow = samples)
-    data <- ppc_data(pit, unifs)
-    
     p <- ggplot(data) +
-      aes_(x = ~ value) + 
+      aes_(x = ~ value) +
       stat_density(
         aes_(group = ~ rep_id, color = "yrep"),
         data = function(x) dplyr::filter(x, !.data$is_y),
@@ -209,8 +197,9 @@ ppc_loo_pit_overlay <- function(y,
         n = n_dens,
         na.rm = TRUE)
   }
-    
-    p + scale_color_ppc_dist(labels = c("PIT", "Unif")) +
+
+    p +
+      scale_color_ppc_dist(labels = c("PIT", "Unif")) +
       scale_x_continuous(
         limits = c(0, 1),
         expand = expansion(0, 0),
@@ -224,6 +213,45 @@ ppc_loo_pit_overlay <- function(y,
       yaxis_text(FALSE) +
       yaxis_ticks(FALSE)
 }
+
+#' @rdname PPC-loo
+#' @export
+ppc_loo_pit_data <-
+  function(y,
+           yrep,
+           lw,
+           ...,
+           pit = NULL,
+           samples = 100,
+           bw = "nrd0",
+           boundary_correction = FALSE) {
+    if (!is.null(pit)) {
+      stopifnot(is.numeric(pit), is_vector_or_1Darray(pit))
+      inform("'pit' specified so ignoring 'y','yrep','lw' if specified.")
+    } else {
+      suggested_package("rstantools")
+      y <- validate_y(y)
+      yrep <- validate_yrep(yrep, y)
+      stopifnot(identical(dim(yrep), dim(lw)))
+      pit <- rstantools::loo_pit(object = yrep, y = y, lw = lw)
+    }
+    unifs <- matrix(runif(length(pit) * samples), nrow = samples)
+
+    if (!boundary_correction) {
+      data <- ppc_data(pit, unifs)
+    } else {
+      pit <- .bc_pvals(x = pit, bw = bw)
+      browser()
+      unifs <- t(apply(unifs, 1, function(x) .bc_pvals(x, bw = bw)))
+
+      data <-
+        ppc_data(pit, unifs) %>%
+        dplyr::arrange(.data$rep_id) %>%
+        mutate(x = rep(seq(0, 1, length.out = length(pit)),
+                        times = samples + 1))
+    }
+    data
+  }
 
 
 #' @rdname PPC-loo
