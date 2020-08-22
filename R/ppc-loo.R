@@ -241,7 +241,6 @@ ppc_loo_pit_data <-
     if (!boundary_correction) {
       data <- ppc_data(pit, unifs)
     } else {
-      suggested_package("rstanarm") # to load Rcpp
       pit <- .bc_pvals(x = pit, bw = bw)
       unifs <- t(apply(unifs, 1, function(x) .bc_pvals(x, bw = bw)))
 
@@ -522,8 +521,46 @@ ppc_loo_ribbon <-
 
 ## Boundary correction based on code by Yang Hu and Carl Scarrott in evmix package
 
-# Custom Rcpp::Eigen boundary correction KDE helper functions
-sourceCpp("bc_dunif.cpp")
+# Boundary correction KDE helper function
+.bc_dunif <- function(xs, pvals, b, xmax = 1){
+  # Function based on biased-corrected (modified) beta kernel 
+  # Chen, Song Xi. "Beta kernel estimators for density functions." 
+  # Computational Statistics & Data Analysis 31.2 (1999): 131-145.
+  
+  # Re-scaling inputs based on upper_bound given beta kernel is defined [0,1]
+  xs <- xs/xmax
+  pvals <- pvals/xmax
+  b <-  b/xmax # smoothing parameter (i.e. bw)
+  
+  d <- vapply(X = xs, 
+              FUN = .bc_kde_calc, 
+              b = b,
+              pvals = pvals, 
+              FUN.VALUE = 0)
+  
+  return(d/xmax)
+  
+}
+
+# Bias correction function (Chen 1999)
+.rho <- function(x, b) {
+  return(2*b^2 + 2.5 - sqrt(4*b^4 + 6*b^2 + 2.25 - x^2 - x/b))
+}
+
+# Piecewise kernel value estimation (Chen 1999)
+.bc_kde_calc <- function(xs, b,  pvals){
+
+  if ((xs >= 2*b) & (xs <= (1 - 2*b))) {
+    d <- mean(dbeta(pvals, xs/b, (1 - xs)/b))
+  } else if ((xs >= 0) & (xs < 2*b)) {
+    d <- mean(dbeta(pvals, .rho(xs, b), (1 - xs)/b))
+  } else if ((xs > (1 - 2*b)) & (xs <= 1)) {
+    d <- mean(dbeta(pvals, xs/b, .rho(1 - xs, b)))
+  } else {
+    d <- 0
+  }
+  return(d)
+}
 
 # Wrapper function, transforms pvals / PIT vals into bc values
 .bc_pvals <- function(x, bw = "nrd0"){
@@ -552,7 +589,7 @@ sourceCpp("bc_dunif.cpp")
   d <- xs
   
   # Boundary corrected KDE values
-  bc_vals <- c(bc_dunif(xs = xs, pvals=valid_pvals, b =bw))
+  bc_vals <- .bc_dunif(xs = xs, pvals=valid_pvals, b =bw)
   
   # Set any negative values to zero and output bc density values
   bc_vals[which(bc_vals < 0)] <- 0
