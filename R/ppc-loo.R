@@ -241,6 +241,7 @@ ppc_loo_pit_data <-
     if (!boundary_correction) {
       data <- ppc_data(pit, unifs)
     } else {
+      suggested_package("rstanarm") # to load Rcpp
       pit <- .bc_pvals(x = pit, bw = bw)
       unifs <- t(apply(unifs, 1, function(x) .bc_pvals(x, bw = bw)))
 
