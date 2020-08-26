@@ -14,7 +14,7 @@
 #' @template args-dens
 #' @param size,alpha Passed to the appropriate geom to control the appearance of
 #'   the `yrep` distributions.
-#' @param ... Currently unused.
+#' @param ... Mainly unused and if used, then only relevant for internal usage.
 #'
 #' @template details-binomial
 #' @template return-ggplot-or-data
@@ -109,13 +109,14 @@ NULL
 
 #' @rdname PPC-distributions
 #' @export
-ppc_data <- function(y, yrep, group = NULL) {
+ppc_data <- function(y, yrep, group = NULL, ...) {
+  check_ignored_arguments(..., ok_args = "check_unq")
   y <- validate_y(y)
   yrep <- validate_yrep(yrep, y)
   data <- melt_and_stack(y, yrep)
 
   if (!is.null(group)) {
-    group <- validate_group(group, y)
+    group <- validate_group(group, y, ...)
     group_indices <- tibble::tibble(group, y_id = seq_along(group))
     data <- data %>%
       left_join(group_indices, by = "y_id") %>%
@@ -395,7 +396,7 @@ ppc_km_overlay <-
     stopifnot(all(status_y %in% c(0, 1)))
 
     # Create basic PPC dataset:
-    data <- ppc_data(y, yrep, group = status_y)
+    data <- ppc_data(y, yrep, group = status_y, check_unq = FALSE)
 
     # Modify the status indicator:
     #   * For the observed data ("y"), convert the status indicator back to
