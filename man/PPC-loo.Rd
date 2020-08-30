@@ -36,7 +36,8 @@ ppc_loo_pit_data(
   pit = NULL,
   samples = 100,
   bw = "nrd0",
-  boundary_correction = FALSE
+  boundary_correction = FALSE,
+  grid_len = 512
 )
 
 ppc_loo_pit_qq(
