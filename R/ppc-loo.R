@@ -151,7 +151,7 @@ ppc_loo_pit_overlay <- function(y,
       pit = pit,
       samples = samples,
       bw = bw,
-      boundary_correction = boundary_correction
+      boundary_correction = boundary_correction,
       grid_len = grid_len
     )
 
@@ -580,7 +580,7 @@ ppc_loo_ribbon <-
 
 .kde_correction <- function(x, 
                             bw,
-                            grid_len = 512){
+                            grid_len){
   # Generate boundary corrected values via a linear convolution using a
   # 1-D Gaussian window filter. This method uses the "reflection trick"
   # to estimate these pvalues and helps speed up the code
@@ -624,7 +624,7 @@ ppc_loo_ribbon <-
 
 # Wrapper function to generate runif reference lines based on
 # .kde_correction()
-.ref_kde_correction <- function(unifs, bw, grid_len=512){
+.ref_kde_correction <- function(unifs, bw, grid_len){
   
   # Allocate memory
   idx <- seq(from = 1, 
