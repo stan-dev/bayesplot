@@ -24,7 +24,8 @@ ppc_loo_pit_overlay(
   adjust = 1,
   kernel = "gaussian",
   n_dens = 1024,
-  boundary_correction = FALSE
+  boundary_correction = FALSE,
+  grid_len = 512
 )
 
 ppc_loo_pit_data(
