@@ -89,10 +89,10 @@ ppc_stat <-
            freq = TRUE) {
     check_ignored_arguments(...)
 
-    y <- validate_y(y)
+    y <- validate_y(y, allow_NA = TRUE)
     yrep <- validate_yrep(yrep, y)
     stat1 <- match.fun(stat)
-    T_y <- stat1(y)
+    T_y <- stat1(y, na.rm = TRUE) # FIXME na.rm only works if stat1() has that argument
     T_yrep <- apply(yrep, 1, stat1)
 
     ggplot(data.frame(value = T_yrep),
@@ -144,7 +144,7 @@ ppc_stat_grouped <-
            freq = TRUE) {
     check_ignored_arguments(...)
 
-    y <- validate_y(y)
+    y <- validate_y(y, allow_NA = TRUE)
     yrep <- validate_yrep(yrep, y)
     group <- validate_group(group, y)
     plot_data <- ppc_group_data(y, yrep, group, stat = match.fun(stat))

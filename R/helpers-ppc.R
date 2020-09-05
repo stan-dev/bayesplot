@@ -14,9 +14,10 @@ is_vector_or_1Darray <- function(x) {
 #' array, or univariate time series object of class `ts`.
 #'
 #' @param y The `y` object from the user.
+#' @param allow_NA Should NA values be allowed or result in an error?
 #' @return Either throws an error or returns a numeric vector.
 #' @noRd
-validate_y <- function(y) {
+validate_y <- function(y, allow_NA = FALSE) {
   stopifnot(is.numeric(y))
 
   if (!(inherits(y, "ts") && is.null(dim(y)))) {
@@ -26,7 +27,7 @@ validate_y <- function(y) {
     y <- as.vector(y)
   }
 
-  if (anyNA(y)) {
+  if (anyNA(y) && !allow_NA) {
     abort("NAs not allowed in 'y'.")
   }
 
@@ -228,7 +229,8 @@ ppc_group_data <- function(y, yrep, group, stat = NULL) {
   }
 
   stat <- match.fun(stat)
-  dplyr_fun(molten_d, value = stat(.data$value))
+  # FIXME: na.rm=TRUE only works if stat() has that argument
+  dplyr_fun(molten_d, value = stat(.data$value, na.rm = TRUE))
 
   # todo: does this result need to be ungrouped. If mutating path, it has two
   # grouping vars. It summarising path, it has one grouping var.
