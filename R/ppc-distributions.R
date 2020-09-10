@@ -390,6 +390,13 @@ ppc_km_overlay <-
            alpha = 0.7) {
     check_ignored_arguments(...)
 
+    if(!requireNamespace("survival", quietly = TRUE)){
+      abort("Package 'survival' required.")
+    }
+    if(!requireNamespace("ggfortify", quietly = TRUE)){
+      abort("Package 'ggfortify' required.")
+    }
+
     # Checks for 'status_y':
     stopifnot(is.numeric(status_y))
     stopifnot(all(status_y %in% c(0, 1)))
@@ -409,19 +416,11 @@ ppc_km_overlay <-
                                    as.numeric(as.character(.data$group)),
                                    1))
 
-    # Create 'survfit' object:
-    if(!requireNamespace("survival", quietly = TRUE)){
-      abort("Package 'survival' required.")
-    }
+    # Create 'survfit' object and 'fortify' it
     sf <- survival::survfit(
       survival::Surv(value, group) ~ rep_label,
       data = data
     )
-
-    # "Fortify" the 'survfit' object:
-    if(!requireNamespace("ggfortify", quietly = TRUE)){
-      abort("Package 'ggfortify' required.")
-    }
     fsf <- fortify(sf)
 
     # Add variables specifying color, size, and alpha:
