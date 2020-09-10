@@ -12,6 +12,7 @@
 #' @template args-transformations
 #' @template args-facet_args
 #' @param ... Currently ignored.
+#' @param alpha Passed to the geom to control the transparency.
 #'
 #' @template return-ggplot
 #'
@@ -113,7 +114,8 @@ mcmc_hist <- function(x,
                       facet_args = list(),
                       binwidth = NULL,
                       breaks = NULL,
-                      freq = TRUE) {
+                      freq = TRUE,
+                      alpha = 1) {
   check_ignored_arguments(...)
   .mcmc_hist(
     x,
@@ -125,6 +127,7 @@ mcmc_hist <- function(x,
     breaks = breaks,
     by_chain = FALSE,
     freq = freq,
+    alpha = alpha,
     ...
   )
 }
@@ -137,7 +140,8 @@ mcmc_dens <- function(x,
                       transformations = list(),
                       ...,
                       facet_args = list(),
-                      trim = FALSE) {
+                      trim = FALSE,
+                      alpha = 1) {
   check_ignored_arguments(...)
   .mcmc_dens(
     x,
@@ -147,6 +151,7 @@ mcmc_dens <- function(x,
     facet_args = facet_args,
     by_chain = FALSE,
     trim = trim,
+    alpha = alpha,
     ...
   )
 }
@@ -161,7 +166,8 @@ mcmc_hist_by_chain <- function(x,
                                ...,
                                facet_args = list(),
                                binwidth = NULL,
-                               freq = TRUE) {
+                               freq = TRUE,
+                               alpha = 1) {
   check_ignored_arguments(...)
   .mcmc_hist(
     x,
@@ -172,6 +178,7 @@ mcmc_hist_by_chain <- function(x,
     binwidth = binwidth,
     by_chain = TRUE,
     freq = freq,
+    alpha = alpha,
     ...
   )
 }
@@ -312,6 +319,7 @@ mcmc_violin <- function(x,
                        breaks = NULL,
                        by_chain = FALSE,
                        freq = TRUE,
+                       alpha = 1,
                        ...) {
   x <- prepare_mcmc_array(x, pars, regex_pars, transformations)
 
@@ -330,7 +338,8 @@ mcmc_violin <- function(x,
       size = .25,
       na.rm = TRUE,
       binwidth = binwidth,
-      breaks = breaks
+      breaks = breaks,
+      alpha = alpha
     )
 
   facet_args[["scales"]] <- facet_args[["scales"]] %||% "free"
@@ -373,6 +382,7 @@ mcmc_violin <- function(x,
                        geom = c("density", "violin"),
                        probs = c(0.1, 0.5, 0.9),
                        trim = FALSE,
+                       alpha = 1,
                        ...) {
   x <- prepare_mcmc_array(x, pars, regex_pars, transformations)
   data <- melt_mcmc(x)
@@ -396,7 +406,7 @@ mcmc_violin <- function(x,
   } else {
     list(x = ~ Value)
   }
-  geom_args <- list(size = 0.5, na.rm = TRUE)
+  geom_args <- list(size = 0.5, na.rm = TRUE, alpha = alpha)
   if (violin) {
     geom_args[["draw_quantiles"]] <- probs
   } else {
