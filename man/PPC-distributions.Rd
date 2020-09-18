@@ -14,7 +14,7 @@
 \alias{ppc_violin_grouped}
 \title{PPC distributions}
 \usage{
-ppc_data(y, yrep, group = NULL, ...)
+ppc_data(y, yrep, group = NULL)
 
 ppc_hist(y, yrep, ..., binwidth = NULL, breaks = NULL, freq = TRUE)
 
@@ -96,7 +96,7 @@ sense. See \strong{Details} for additional instructions.}
 \code{y}. Each value in \code{group} is interpreted as the group level
 pertaining to the corresponding value of \code{y}.}
 
-\item{...}{Mainly unused and if used, then only relevant for internal usage.}
+\item{...}{Currently unused.}
 
 \item{binwidth}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}} to override
 the default binwidth.}
