@@ -428,6 +428,10 @@ ppc_km_overlay <-
     fsf$is_y_size <- ifelse(fsf$is_y_color == "yrep", size, 1)
     fsf$is_y_alpha <- ifelse(fsf$is_y_color == "yrep", alpha, 1)
 
+    # Ensure that the observed data gets plotted last by reordering the
+    # levels of the factor "strata":
+    fsf$strata <- factor(fsf$strata, levels = rev(levels(fsf$strata)))
+
     # Plot:
     ggplot(data = fsf,
            mapping = aes_(x = ~ time,
