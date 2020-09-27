@@ -158,7 +158,7 @@ ppc_loo_pit_overlay <- function(y,
 
   if (boundary_correction){
     # Warning that this function isn't as useful for binary data, note that discrete functionality is still pending
-    if all(y %in% 0:1){
+    if (all(y %in% 0:1)){
       warning("The following LOO-PIT is not recommended for binary data,\n see https://avehtari.github.io/modelselection/diabetes.html#44_calibration_of_predictions \n for plotting function that are better suited for this type of data")
     } else{
       warning("NOTE: Current boundary correction implementation works for continuous valued observations only.")
