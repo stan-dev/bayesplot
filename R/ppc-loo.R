@@ -122,7 +122,8 @@ NULL
 #' @param boundary_correction For `ppc_loo_pit_overlay()`, when set to `TRUE` the function will
 #'    compute boundary corrected density values via convolution and a Gaussian filter.  
 #'    As a result, parameters controlling the standard kernel density estimation 
-#'    such as `adjust`, `kernel` and `n_dens` are ignored. This is set to `FALSE` by default. 
+#'    such as `adjust`, `kernel` and `n_dens` are ignored. NOTE: Current implementation only 
+#'    works for continuous observations. This is set to `FALSE` by default.
 #'@param grid_len For `ppc_loo_pit_overlay()`, when `boundary_correction` is set to `TRUE`
 #'    this parameter specifies the number of points used to generate the estimations. This is
 #'    set to 512 by default.
@@ -156,6 +157,13 @@ ppc_loo_pit_overlay <- function(y,
     )
 
   if (boundary_correction){
+    # Warning that this function isn't as useful for binary data, note that discrete functionality is still pending
+    if all(y %in% 0:1){
+      warning("The following LOO-PIT is not recommended for binary data,\n see https://avehtari.github.io/modelselection/diabetes.html#44_calibration_of_predictions \n for plotting function that are better suited for this type of data")
+    } else{
+      warning("NOTE: Current boundary correction implementation works for continuous valued observations only.")
+    }
+    
     p <- ggplot(data) +
       aes_(x = ~ x, y = ~ value) +
       geom_line(

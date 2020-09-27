@@ -133,8 +133,7 @@ parameters. \code{n_dens} defaults to \code{1024}.}
 
 \item{boundary_correction}{For \code{ppc_loo_pit_overlay()}, when set to \code{TRUE} the function will
 compute boundary corrected density values density values via convolution and a Gaussian filter.  As a result,parameters controlling the standard kernel density estimation such as \code{adjust}, \code{kernel}
-and \code{n_dens} are ignored. Although we recommend using this option,
-the current implementation is slow  so it is set to \code{FALSE} by default.}
+and \code{n_dens} are ignored. NOTE: Current implementation only works for continuous observations. This is set to \code{FALSE} by default.}
 
 \item{grid_len}{For \code{ppc_loo_pit_overlay()}, when \code{boundary_correction} is set to \code{TRUE} this parameter specified the number of points used to generate the estimations. This is set to 512 by default.}
 
