@@ -37,7 +37,7 @@ Imports:
     tidyselect,
     utils
 Suggests: 
-    ggfortify
+    ggfortify,
     gridExtra (>= 2.2.1),
     hexbin,
     knitr (>= 1.16),
