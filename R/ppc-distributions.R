@@ -441,17 +441,17 @@ ppc_km_overlay <-
                           size = ~ is_y_size,
                           alpha = ~ is_y_alpha)) +
       geom_step() +
-      scale_size_identity() +
-      scale_alpha_identity() +
       hline_at(
         c(0, 0.5, 1),
         size = c(0.2, 0.1, 0.2),
         linetype = 2,
         color = get_color("dh")
       ) +
+      scale_size_identity() +
+      scale_alpha_identity() +
       scale_color_ppc_dist() +
-      xlab(y_label()) +
       scale_y_continuous(breaks = c(0, 0.5, 1)) +
+      xlab(y_label()) +
       yaxis_title(FALSE) +
       xaxis_title(FALSE) +
       yaxis_ticks(FALSE) +
