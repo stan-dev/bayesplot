@@ -31,10 +31,16 @@
 #' @examples
 #' color_scheme_set("brightblue")
 #' y <- example_y_data()
+#' # For illustrative purposes, (right-)censor values y > 110:
+#' status_y <- as.numeric(y <= 110)
+#' y <- pmin(y, 110)
+#' # In reality, the replicated data (yrep) would be obtained from a
+#' # model which takes the censoring of y properly into account. Here,
+#' # for illustrative purposes, we simply use example_yrep_draws():
 #' yrep <- example_yrep_draws()
 #' dim(yrep)
 #' \donttest{
-#' ppc_km_overlay(y, yrep[1:25, ])
+#' ppc_km_overlay(y, yrep[1:25, ], status_y = status_y)
 #' }
 NULL
 
