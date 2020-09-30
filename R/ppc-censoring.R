@@ -19,14 +19,16 @@
 #' \describe{
 #'   \item{`ppc_km_overlay()`}{
 #'    Empirical CCDF estimates of each dataset (row) in `yrep` are overlaid,
-#'    with the Kaplan-Meier estimate for `y` itself on top (and in a darker
-#'    shade). This is a PPC suitable for right-censored `y`. Note that the
-#'    replicated data from `yrep` is assumed to be uncensored.
+#'    with the Kaplan-Meier estimate (Kaplan and Meier, 1958) for `y` itself
+#'    on top (and in a darker shade). This is a PPC suitable for
+#'    right-censored `y`. Note that the replicated data from `yrep` is assumed
+#'    to be uncensored.
 #'   }
 #' }
 #'
 #' @templateVar bdaRef (Ch. 6)
 #' @template reference-bda
+#' @template reference-km
 #'
 #' @examples
 #' color_scheme_set("brightblue")
