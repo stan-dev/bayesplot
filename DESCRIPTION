@@ -7,7 +7,8 @@ Authors@R: c(person("Jonah", "Gabry", role = c("aut", "cre"), email = "jsg2201@c
              person("Tristan", "Mahr", role = "aut"),
              person("Paul-Christian", "Bürkner", role = "ctb"),
              person("Martin", "Modrák", role = "ctb"),
-             person("Malcolm", "Barrett", role = "ctb"))
+             person("Malcolm", "Barrett", role = "ctb"), 
+             person("Frank", "Weber", role = "ctb"))
 Maintainer: Jonah Gabry <jsg2201@columbia.edu>
 Description: Plotting functions for posterior analysis, MCMC diagnostics,
     prior and posterior predictive checks, and other visualizations 
@@ -36,6 +37,7 @@ Imports:
     tidyselect,
     utils
 Suggests: 
+    ggfortify,
     gridExtra (>= 2.2.1),
     hexbin,
     knitr (>= 1.16),
@@ -47,6 +49,7 @@ Suggests:
     rstantools (>= 1.5.0),
     scales,
     shinystan (>= 2.3.0),
+    survival,
     testthat (>= 2.0.0),
     vdiffr
 RoxygenNote: 7.1.1
