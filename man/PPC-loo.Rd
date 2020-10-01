@@ -131,11 +131,17 @@ and \code{fatten} are passed to \code{\link[ggplot2:geom_linerange]{ggplot2::geo
 \code{\link[stats:density]{stats::density()}} to override default kernel density estimation
 parameters. \code{n_dens} defaults to \code{1024}.}
 
-\item{boundary_correction}{For \code{ppc_loo_pit_overlay()}, when set to \code{TRUE} the function will
-compute boundary corrected density values density values via convolution and a Gaussian filter.  As a result,parameters controlling the standard kernel density estimation such as \code{adjust}, \code{kernel}
-and \code{n_dens} are ignored. NOTE: Current implementation only works for continuous observations. This is set to \code{FALSE} by default.}
+\item{boundary_correction}{For \code{ppc_loo_pit_overlay()}, when set to \code{TRUE} the
+function will compute boundary corrected density values via convolution and
+a Gaussian filter. As a result, parameters controlling the standard kernel
+density estimation such as \code{adjust}, \code{kernel} and \code{n_dens} are ignored.
+Although we recommend using this option, the default is \code{FALSE} by default
+because the computations required can be slow. NOTE: the current
+implementation is only designed for continuous observations.}
 
-\item{grid_len}{For \code{ppc_loo_pit_overlay()}, when \code{boundary_correction} is set to \code{TRUE} this parameter specified the number of points used to generate the estimations. This is set to 512 by default.}
+\item{grid_len}{For \code{ppc_loo_pit_overlay()}, when \code{boundary_correction} is set
+to \code{TRUE} this \code{grid_len} specifies the number of points used to generate
+the estimates. This is set to 512 by default.}
 
 \item{compare}{For \code{ppc_loo_pit_qq()}, a string that can be either
 \code{"uniform"} or \code{"normal"}. If \code{"uniform"} (the default) the Q-Q plot
@@ -242,7 +248,7 @@ lw <- weights(psis1)
 # marginal predictive check using LOO probability integral transform
 color_scheme_set("orange")
 ppc_loo_pit_overlay(y, yrep, lw = lw)
-# ppc_loo_pit_overlay(y, yrep, lw = lw, 
+# ppc_loo_pit_overlay(y, yrep, lw = lw,
                       boundary_correction = TRUE) # slower, boundary corrected KDE
 
 ppc_loo_pit_qq(y, yrep, lw = lw)

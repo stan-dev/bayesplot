@@ -83,8 +83,7 @@
 #' # marginal predictive check using LOO probability integral transform
 #' color_scheme_set("orange")
 #' ppc_loo_pit_overlay(y, yrep, lw = lw)
-#' # ppc_loo_pit_overlay(y, yrep, lw = lw, 
-#'                       boundary_correction = TRUE) # slower, boundary corrected KDE
+#' ppc_loo_pit_overlay(y, yrep, lw = lw, boundary_correction = TRUE)
 #'
 #' ppc_loo_pit_qq(y, yrep, lw = lw)
 #' ppc_loo_pit_qq(y, yrep, lw = lw, compare = "normal")
@@ -119,14 +118,17 @@ NULL
 #'   standard normal distribution.
 #' @param trim Passed to [ggplot2::stat_density()].
 #' @template args-density-controls
-#' @param boundary_correction For `ppc_loo_pit_overlay()`, when set to `TRUE` the function will
-#'    compute boundary corrected density values via convolution and a Gaussian filter.  
-#'    As a result, parameters controlling the standard kernel density estimation 
-#'    such as `adjust`, `kernel` and `n_dens` are ignored. NOTE: Current implementation only 
-#'    works for continuous observations. This is set to `FALSE` by default.
-#'@param grid_len For `ppc_loo_pit_overlay()`, when `boundary_correction` is set to `TRUE`
-#'    this parameter specifies the number of points used to generate the estimations. This is
-#'    set to 512 by default.
+#' @param boundary_correction For `ppc_loo_pit_overlay()`, when set to `TRUE` the
+#'  function will compute boundary corrected density values via convolution and
+#'  a Gaussian filter. As a result, parameters controlling the standard kernel
+#'  density estimation such as `adjust`, `kernel` and `n_dens` are ignored.
+#'  Although we recommend using this option, the default is `FALSE` by default
+#'  because the computations required can be slow. NOTE: the current
+#'  implementation is only designed for continuous observations.
+#' @param grid_len For `ppc_loo_pit_overlay()`, when `boundary_correction` is set
+#'  to `TRUE` this `grid_len` specifies the number of points used to generate
+#'  the estimates. This is set to 512 by default.
+#'
 ppc_loo_pit_overlay <- function(y,
                                 yrep,
                                 lw,
