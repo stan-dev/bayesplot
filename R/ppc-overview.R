@@ -87,6 +87,9 @@
 #'   multinomial outcomes.
 #' * [LOO predictive checks][PPC-loo]: PPC functions for predictive checks
 #'   based on (approximate) leave-one-out (LOO) cross-validation.
+#' * [Censoring][PPC-censoring]: PPC functions comparing the empirical
+#'   distribution of censored data `y` to the distributions of individual
+#'   simulated datasets (rows) in `yrep`.
 #'
 #' @section Providing an interface for predictive checking from another package:
 #'
