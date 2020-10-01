@@ -89,6 +89,9 @@ count outcomes and bar plots for ordinal, categorical, and
 multinomial outcomes.
 \item \link[=PPC-loo]{LOO predictive checks}: PPC functions for predictive checks
 based on (approximate) leave-one-out (LOO) cross-validation.
+\item \link[=PPC-censoring]{Censored data}: PPC functions comparing the empirical
+distribution of censored data \code{y} to the distributions of individual
+simulated datasets (rows) in \code{yrep}.
 }
 }
 
