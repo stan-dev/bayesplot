@@ -30,10 +30,15 @@ the \code{yrep} distributions.}
 A ggplot object that can be further customized using the \strong{ggplot2} package.
 }
 \description{
-Compare the empirical distribution of censored data \code{y} to the distributions
-of simulated/replicated data \code{yrep} from the posterior predictive
-distribution. See the \strong{Plot Descriptions} section, below,
-for details.
+Compare the empirical distribution of censored data \code{y} to the
+distributions of simulated/replicated data \code{yrep} from the posterior
+predictive distribution. See the \strong{Plot Descriptions} section, below, for
+details.
+
+Although some of the other plots can be used with censored data,
+\code{ppc_km_overlay()} is currently the only plotting function designed
+\emph{specifically} for censored data. We encourage you to suggest or contribute
+additional plots at \href{github.com/stan-dev/bayesplot}{https://github.com/stan-dev/bayesplot}.
 }
 \section{Plot Descriptions}{
 

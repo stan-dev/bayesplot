@@ -1,9 +1,16 @@
 #' PPC censoring
 #'
-#' Compare the empirical distribution of censored data `y` to the distributions
-#' of simulated/replicated data `yrep` from the posterior predictive
-#' distribution. See the **Plot Descriptions** section, below,
-#' for details.
+#' @description Compare the empirical distribution of censored data `y` to the
+#'   distributions of simulated/replicated data `yrep` from the posterior
+#'   predictive distribution. See the **Plot Descriptions** section, below, for
+#'   details.
+#'
+#'   Although some of the other plots can be used with censored data,
+#'   `ppc_km_overlay()` is currently the only plotting function designed
+#'   *specifically* for censored data. We encourage you to suggest or contribute
+#'   additional plots at [https://github.com/stan-dev/bayesplot](github.com/stan-dev/bayesplot).
+#'
+#'
 #'
 #' @name PPC-censoring
 #' @family PPCs
