@@ -158,14 +158,18 @@ ppc_loo_pit_overlay <- function(y,
       grid_len = grid_len
     )
 
-  if (boundary_correction){
-    # Warning that this function isn't as useful for binary data, note that discrete functionality is still pending
-    if (all(y %in% 0:1)){
-      warning("The following LOO-PIT is not recommended for binary data,\n see https://avehtari.github.io/modelselection/diabetes.html#44_calibration_of_predictions \n for plotting function that are better suited for this type of data")
-    } else{
-      warning("NOTE: Current boundary correction implementation works for continuous valued observations only.")
-    }
-    
+  if (all(data$value[data$is_y] %in% 0:1)) {
+    warning(
+      "This plot is not recommended for binary data. ",
+      "For plots that are more suitable see ",
+      "\nhttps://avehtari.github.io/modelselection/diabetes.html#44_calibration_of_predictions",
+      call. = FALSE
+    )
+  }
+
+  if (boundary_correction) {
+    message("NOTE: Current boundary correction implementation works for continuous observations only.")
+
     p <- ggplot(data) +
       aes_(x = ~ x, y = ~ value) +
       geom_line(
