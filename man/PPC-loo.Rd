@@ -285,6 +285,7 @@ doi:10.1007/s11222-016-9696-4. arXiv preprint:
 }
 \seealso{
 Other PPCs: 
+\code{\link{PPC-censoring}},
 \code{\link{PPC-discrete}},
 \code{\link{PPC-distributions}},
 \code{\link{PPC-errors}},
