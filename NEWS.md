@@ -24,8 +24,7 @@
 * `mcmc_areas()` tries to use less blank vertical blank space. (#218, #230) 
 
 * `ppc_loo_pit_overlay()` gains argument `boundary_correction`, which improves
-  the kernel density estimation but is currently quite slow. 
-  (#171, #235, @ecoronado92).
+  the kernel density estimation. (#171, #235, @ecoronado92)
 
 
 # bayesplot 1.7.2

@@ -9,7 +9,7 @@ Authors@R: c(person("Jonah", "Gabry", role = c("aut", "cre"), email = "jsg2201@c
              person("Martin", "Modrák", role = "ctb"),
              person("Malcolm", "Barrett", role = "ctb"), 
              person("Frank", "Weber", role = "ctb"),
-             person("Eduardo", "Coronado", role = "ctb"))
+             person("Eduardo", "Coronado Sroka", role = "ctb"))
 Maintainer: Jonah Gabry <jsg2201@columbia.edu>
 Description: Plotting functions for posterior analysis, MCMC diagnostics,
     prior and posterior predictive checks, and other visualizations 
