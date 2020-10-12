@@ -123,7 +123,7 @@ NULL
 #'    compute boundary corrected density values via convolution and a Gaussian filter.  
 #'    As a result, parameters controlling the standard kernel density estimation 
 #'    such as `adjust`, `kernel` and `n_dens` are ignored. NOTE: Current implementation only 
-#'    works for continuous observations. This is set to `FALSE` by default.
+#'    works for continuous observations. This is set to `TRUE` by default.
 #'@param grid_len For `ppc_loo_pit_overlay()`, when `boundary_correction` is set to `TRUE`
 #'    this parameter specifies the number of points used to generate the estimations. This is
 #'    set to 512 by default.
@@ -140,7 +140,7 @@ ppc_loo_pit_overlay <- function(y,
                                 adjust = 1,
                                 kernel = "gaussian",
                                 n_dens = 1024,
-                                boundary_correction = FALSE,
+                                boundary_correction = TRUE,
                                 grid_len = 512) {
   check_ignored_arguments(...)
 
@@ -236,7 +236,7 @@ ppc_loo_pit_data <-
            pit = NULL,
            samples = 100,
            bw = "nrd0",
-           boundary_correction = FALSE,
+           boundary_correction = TRUE,
            grid_len = 512) {
     if (!is.null(pit)) {
       stopifnot(is.numeric(pit), is_vector_or_1Darray(pit))

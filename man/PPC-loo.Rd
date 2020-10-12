@@ -24,7 +24,7 @@ ppc_loo_pit_overlay(
   adjust = 1,
   kernel = "gaussian",
   n_dens = 1024,
-  boundary_correction = FALSE,
+  boundary_correction = TRUE,
   grid_len = 512
 )
 
@@ -36,7 +36,7 @@ ppc_loo_pit_data(
   pit = NULL,
   samples = 100,
   bw = "nrd0",
-  boundary_correction = FALSE,
+  boundary_correction = TRUE,
   grid_len = 512
 )
 
@@ -133,7 +133,7 @@ parameters. \code{n_dens} defaults to \code{1024}.}
 
 \item{boundary_correction}{For \code{ppc_loo_pit_overlay()}, when set to \code{TRUE} the function will
 compute boundary corrected density values density values via convolution and a Gaussian filter.  As a result,parameters controlling the standard kernel density estimation such as \code{adjust}, \code{kernel}
-and \code{n_dens} are ignored. NOTE: Current implementation only works for continuous observations. This is set to \code{FALSE} by default.}
+and \code{n_dens} are ignored. NOTE: Current implementation only works for continuous observations. This is set to \code{TRUE} by default.}
 
 \item{grid_len}{For \code{ppc_loo_pit_overlay()}, when \code{boundary_correction} is set to \code{TRUE} this parameter specified the number of points used to generate the estimations. This is set to 512 by default.}
 
@@ -241,9 +241,7 @@ lw <- weights(psis1)
 
 # marginal predictive check using LOO probability integral transform
 color_scheme_set("orange")
-ppc_loo_pit_overlay(y, yrep, lw = lw)
-# ppc_loo_pit_overlay(y, yrep, lw = lw, 
-                      boundary_correction = TRUE) # slower, boundary corrected KDE
+ppc_loo_pit_overlay(y, yrep, lw = lw, boundary_correction = TRUE)
 
 ppc_loo_pit_qq(y, yrep, lw = lw)
 ppc_loo_pit_qq(y, yrep, lw = lw, compare = "normal")
