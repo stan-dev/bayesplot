@@ -8,18 +8,23 @@
 * Items for next release go here
 -->
 
+* New plotting function `ppc_km_overlay()` for outcome variables that are   
+  right-censored. Empirical CCDF estimates of `yrep` are compared with the 
+  Kaplan-Meier estimate of `y`. (#233, #234, @fweber144)
+
 * CmdStanMCMC objects (from CmdStanR) can now be used with extractor 
   functions `nuts_params()`, `log_posterior()`, `rhat()`, and 
   `neff_ratio()`. (#227)
 
 * Added missing `facet_args` argument to `mcmc_rank_overlay()`. (#221, @hhau)
+
 * Size of points and interval lines can set in 
   `mcmc_intervals(..., outer_size, inner_size, point_size)`. (#215, #228, #229) 
+  
 * `mcmc_areas()` tries to use less blank vertical blank space. (#218, #230) 
 
 * `ppc_loo_pit_overlay()` gains argument `boundary_correction`, which improves
-  the kernel density estimation but is currently quite slow. 
-  (#171, #235, @ecoronado92).
+  the kernel density estimation. (#171, #235, @ecoronado92)
 
 
 # bayesplot 1.7.2

@@ -137,6 +137,7 @@ and \code{n_dens} are ignored. NOTE: Current implementation only works for conti
 
 \item{grid_len}{For \code{ppc_loo_pit_overlay()}, when \code{boundary_correction} is set to \code{TRUE} this parameter specified the number of points used to generate the estimations. This is set to 512 by default.}
 
+
 \item{compare}{For \code{ppc_loo_pit_qq()}, a string that can be either
 \code{"uniform"} or \code{"normal"}. If \code{"uniform"} (the default) the Q-Q plot
 compares computed PIT values to the standard uniform distribution. If
@@ -241,6 +242,7 @@ lw <- weights(psis1)
 
 # marginal predictive check using LOO probability integral transform
 color_scheme_set("orange")
+
 ppc_loo_pit_overlay(y, yrep, lw = lw, boundary_correction = TRUE)
 
 ppc_loo_pit_qq(y, yrep, lw = lw)
@@ -277,6 +279,7 @@ doi:10.1007/s11222-016-9696-4. arXiv preprint:
 }
 \seealso{
 Other PPCs: 
+\code{\link{PPC-censoring}},
 \code{\link{PPC-discrete}},
 \code{\link{PPC-distributions}},
 \code{\link{PPC-errors}},

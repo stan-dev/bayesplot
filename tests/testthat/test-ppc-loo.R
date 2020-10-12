@@ -33,7 +33,8 @@ test_that("ppc_loo_pit_overlay returns ggplot object", {
 })
 
 test_that("ppc_loo_pit_overlay works with boundary_correction=TRUE", {
-  expect_warning(p1 <- ppc_loo_pit_overlay(y, yrep, lw, boundary_correction = TRUE))
+  expect_message(p1 <- ppc_loo_pit_overlay(y, yrep, lw, boundary_correction = TRUE),
+                 "continuous observations")
   expect_gg(p1)
 })
 
