@@ -118,14 +118,15 @@ NULL
 #'   standard normal distribution.
 #' @param trim Passed to [ggplot2::stat_density()].
 #' @template args-density-controls
-#' @param boundary_correction For `ppc_loo_pit_overlay()`, when set to `TRUE` the function will
-#'    compute boundary corrected density values via convolution and a Gaussian filter.  
-#'    As a result, parameters controlling the standard kernel density estimation 
-#'    such as `adjust`, `kernel` and `n_dens` are ignored. NOTE: Current implementation only 
-#'    works for continuous observations. This is set to `TRUE` by default.
-#'@param grid_len For `ppc_loo_pit_overlay()`, when `boundary_correction` is set to `TRUE`
-#'    this parameter specifies the number of points used to generate the estimations. This is
-#'    set to 512 by default.
+#' @param boundary_correction For `ppc_loo_pit_overlay()`, when set to `TRUE`
+#'   (the default) the function will compute boundary corrected density values
+#'   via convolution and a Gaussian filter. As a result, parameters controlling
+#'   the standard kernel density estimation such as `adjust`, `kernel` and
+#'   `n_dens` are ignored. NOTE: The current implementation only works well for
+#'   continuous observations.
+#'@param grid_len For `ppc_loo_pit_overlay()`, when `boundary_correction` is set
+#'  to `TRUE` this parameter specifies the number of points used to generate the
+#'  estimations. This is set to 512 by default.
 
 ppc_loo_pit_overlay <- function(y,
                                 yrep,
@@ -135,13 +136,13 @@ ppc_loo_pit_overlay <- function(y,
                                 samples = 100,
                                 size = 0.25,
                                 alpha = 0.7,
-                                trim = FALSE,
+                                boundary_correction = TRUE,
+                                grid_len = 512,
                                 bw = "nrd0",
+                                trim = FALSE,
                                 adjust = 1,
                                 kernel = "gaussian",
-                                n_dens = 1024,
-                                boundary_correction = TRUE,
-                                grid_len = 512) {
+                                n_dens = 1024) {
   check_ignored_arguments(...)
 
   data <-
@@ -252,7 +253,7 @@ ppc_loo_pit_data <-
       stopifnot(identical(dim(yrep), dim(lw)))
       pit <- rstantools::loo_pit(object = yrep, y = y, lw = lw)
     }
-    
+
     if (!boundary_correction) {
       unifs <- matrix(runif(length(pit) * samples), nrow = samples)
       data <- ppc_data(pit, unifs)
@@ -260,7 +261,7 @@ ppc_loo_pit_data <-
       unifs <- matrix(runif(grid_len * samples), nrow = samples)
       ref_list <- .ref_kde_correction(unifs, bw = bw, grid_len = grid_len)
       pit_list <- .kde_correction(pit, bw = bw, grid_len = grid_len)
-      
+
       pit <- pit_list$bc_pvals
       unifs <- ref_list$unifs
       xs <- c(pit_list$xs, ref_list$xs)
@@ -540,8 +541,8 @@ ppc_loo_ribbon <-
 }
 
 ## Boundary correction based on code by ArViz development team
-# The main method is a 1-D density estimation for linear data with 
-# convolution with a Gaussian filter. 
+# The main method is a 1-D density estimation for linear data with
+# convolution with a Gaussian filter.
 
 # Based on scipy.signal.gaussian formula
 .gaussian <- function(N, bw){
@@ -549,12 +550,12 @@ ppc_loo_ribbon <-
   sigma = 2 * bw * bw
   w = exp(-n^2 / sigma)
   return(w)
-  
+
 }
 
-.linear_convolution <- function(x, 
-                                bw, 
-                                grid_counts, 
+.linear_convolution <- function(x,
+                                bw,
+                                grid_counts,
                                 grid_breaks,
                                 grid_len){
   # 1-D Gaussian estimation via
@@ -562,35 +563,35 @@ ppc_loo_ribbon <-
   bin_width <-  grid_breaks[2] - grid_breaks[1]
   f <- grid_counts / bin_width / length(x)
   bw <- bw / bin_width
-  
+
   # number of data points to generate for gaussian filter
   gauss_n <- as.integer(bw * 2 *pi)
   if (gauss_n == 0){
     gauss_n = 1
   }
-  
+
   # Generate Gaussian filter vector
   kernel <- .gaussian(gauss_n, bw)
   npad <- as.integer(grid_len / 5)
-  
+
   # Reflection trick (i.e. get first N and last N points to pad vector)
-  f <- c(rev(f[1:(npad)]), 
-         f, 
-         rev(f)[(grid_len - npad):(grid_len - 1)]) 
-  
+  f <- c(rev(f[1:(npad)]),
+         f,
+         rev(f)[(grid_len - npad):(grid_len - 1)])
+
   # Convolution: Gaussian filter + reflection trick (pading) works as an
   # averaging moving window based on a Gaussian density which takes care
   # of the density boundary values near 0 and 1.
-  bc_pvals <- stats::filter(f, 
-                            kernel, 
+  bc_pvals <- stats::filter(f,
+                            kernel,
                             method = 'convolution',
                             sides = 2)[(npad + 1):(npad + grid_len)]
-  
+
   bc_pvals  <-  bc_pvals / (bw * (2 * pi)^0.5)
   return(bc_pvals)
 }
 
-.kde_correction <- function(x, 
+.kde_correction <- function(x,
                             bw,
                             grid_len){
   # Generate boundary corrected values via a linear convolution using a
@@ -601,59 +602,59 @@ ppc_loo_ribbon <-
                   "Non-finite PIT values are invalid for KDE boundary correction method"))
     x <- x[is.finite(x)]
   }
-  
+
   if (grid_len < 100){
     grid_len = 100
   }
-  
+
   # Get relative frequency boundaries and counts for input vector
   bins <- seq(from= min(x), to = max(x), length.out = grid_len + 1)
   hist_obj <- hist(x, breaks = bins, plot = FALSE)
   grid_breaks <- hist_obj$breaks
   grid_counts <- hist_obj$counts
-  
+
   # Compute bandwidth based on use specification
   bw <- density(x, bw = bw)$bw
-  
+
   # 1-D Convolution
   bc_pvals <- .linear_convolution(x, bw, grid_counts, grid_breaks, grid_len)
-  
+
   # Generate vector of x-axis values for plotting based on binned relative freqs
   n_breaks <- length(grid_breaks)
-  xs <-  (grid_breaks[2:n_breaks] + grid_breaks[1:(n_breaks - 1)]) / 2 
-  
+  xs <-  (grid_breaks[2:n_breaks] + grid_breaks[1:(n_breaks - 1)]) / 2
+
   # TODO currently boundary correction generates NAs for values near ends of vector
-  # after convolution . Important to note that # of NAs "varies" so na.omit() 
-  # won't work and will cause size inconsistencies 
+  # after convolution . Important to note that # of NAs "varies" so na.omit()
+  # won't work and will cause size inconsistencies
   # Current fix, use last non-null value at head and tail of vector as padding
   first_nonNA <- head(which(!is.na(bc_pvals)),1)
   last_nonNA <- tail(which(!is.na(bc_pvals)),1)
   bc_pvals[1:first_nonNA] <- bc_pvals[first_nonNA]
   bc_pvals[last_nonNA:length(bc_pvals)] <- bc_pvals[last_nonNA]
-  
+
   return(list(xs = xs, bc_pvals = bc_pvals))
 }
 
 # Wrapper function to generate runif reference lines based on
 # .kde_correction()
 .ref_kde_correction <- function(unifs, bw, grid_len){
-  
+
   # Allocate memory
-  idx <- seq(from = 1, 
-             to = ncol(unifs)*nrow(unifs) + ncol(unifs), 
+  idx <- seq(from = 1,
+             to = ncol(unifs)*nrow(unifs) + ncol(unifs),
              by = ncol(unifs))
   idx <- c(idx, ncol(unifs)*nrow(unifs))
   xs <- rep(0, ncol(unifs)*nrow(unifs))
   bc_mat <- matrix(0, nrow(unifs), ncol(unifs))
-  
+
   # Generate boundary corrected reference values
   for (i in 1:nrow(unifs)){
-    bc_list <- .kde_correction(unifs[i,], 
-                               bw = bw, 
+    bc_list <- .kde_correction(unifs[i,],
+                               bw = bw,
                                grid_len = grid_len)
     bc_mat[i,] <- bc_list$bc_pvals
     xs[idx[i]:(idx[i+1]-1)] <- bc_list$xs
   }
-  
+
   return(list(xs = xs, unifs = bc_mat))
 }
