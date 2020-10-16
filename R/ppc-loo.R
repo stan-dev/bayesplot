@@ -622,10 +622,6 @@ ppc_loo_ribbon <-
   n_breaks <- length(grid_breaks)
   xs <-  (grid_breaks[2:n_breaks] + grid_breaks[1:(n_breaks - 1)]) / 2 
   
-  # TODO currently boundary correction generates NAs for values near ends of vector
-  # after convolution . Important to note that # of NAs "varies" so na.omit() 
-  # won't work and will cause size inconsistencies 
-  # Current fix, use last non-null value at head and tail of vector as padding
   first_nonNA <- head(which(!is.na(bc_pvals)),1)
   last_nonNA <- tail(which(!is.na(bc_pvals)),1)
   bc_pvals[1:first_nonNA] <- bc_pvals[first_nonNA]
