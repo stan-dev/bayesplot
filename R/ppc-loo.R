@@ -120,7 +120,7 @@ NULL
 #' @template args-density-controls
 #' @param boundary_correction For `ppc_loo_pit_overlay()`, when set to `TRUE`
 #'   (the default) the function will compute boundary corrected density values
-#'   via convolution and a Gaussian filter. As a result, parameters controlling
+#'   via convolution and a Gaussian filter (i.e. reflection method). As a result, parameters controlling
 #'   the standard kernel density estimation such as `adjust`, `kernel` and
 #'   `n_dens` are ignored. NOTE: The current implementation only works well for
 #'   continuous observations.
@@ -574,12 +574,12 @@ ppc_loo_ribbon <-
   kernel <- .gaussian(gauss_n, bw)
   npad <- as.integer(grid_len / 5)
 
-  # Reflection trick (i.e. get first N and last N points to pad vector)
+  # Reflection method (i.e. get first N and last N points to pad vector)
   f <- c(rev(f[1:(npad)]),
          f,
          rev(f)[(grid_len - npad):(grid_len - 1)])
 
-  # Convolution: Gaussian filter + reflection trick (pading) works as an
+  # Convolution: Gaussian filter + reflection method (pading) works as an
   # averaging moving window based on a Gaussian density which takes care
   # of the density boundary values near 0 and 1.
   bc_pvals <- stats::filter(f,
@@ -595,7 +595,7 @@ ppc_loo_ribbon <-
                             bw,
                             grid_len){
   # Generate boundary corrected values via a linear convolution using a
-  # 1-D Gaussian window filter. This method uses the "reflection trick"
+  # 1-D Gaussian window filter. This method uses the "reflection method"
   # to estimate these pvalues and helps speed up the code
   if (any(is.infinite(x))){
     warning(paste("Ignored", sum(is.infinite(x)),

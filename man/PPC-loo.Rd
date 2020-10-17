@@ -127,9 +127,9 @@ and \code{fatten} are passed to \code{\link[ggplot2:geom_linerange]{ggplot2::geo
 
 \item{boundary_correction}{For \code{ppc_loo_pit_overlay()}, when set to \code{TRUE}
 (the default) the function will compute boundary corrected density values
-via convolution and a Gaussian filter. As a result, parameters controlling
-the standard kernel density estimation such as \code{adjust}, \code{kernel} and
-\code{n_dens} are ignored. NOTE: The current implementation only works well for
+via convolution and a Gaussian filter (i.e. reflection method). As a result, parameters 
+controlling the standard kernel density estimation such as \code{adjust}, 
+\code{kernel} and\code{n_dens} are ignored. NOTE: The current implementation only works well for
 continuous observations.}
 
 \item{grid_len}{For \code{ppc_loo_pit_overlay()}, when \code{boundary_correction} is set
