@@ -8,6 +8,10 @@
 * Items for next release go here
 -->
 
+* On the y axis, `ppc_loo_pit_qq(..., compare = "normal")` now plots standard
+  normal quantiles calculated from the PIT values (instead of the standardized
+  PIT values). (#240, #243, @fweber144)
+
 * New plotting function `ppc_km_overlay()` for outcome variables that are   
   right-censored. Empirical CCDF estimates of `yrep` are compared with the 
   Kaplan-Meier estimate of `y`. (#233, #234, @fweber144)

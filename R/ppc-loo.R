@@ -42,11 +42,12 @@
 #'  PITs to the standard uniform distribution. Comparing to the uniform is not
 #'  good for extreme probabilities close to 0 and 1, so it can sometimes be
 #'  useful to set the `compare` argument to `"normal"`, which will
-#'  produce a Q-Q plot comparing standardized PIT values to the standard normal
-#'  distribution that can help see the (mis)calibration better for the extreme
-#'  values. However, in most cases we have found that the overlaid density plot
-#'  (`ppc_loo_pit_overlay()`) function will provided a clearer picture of
-#'  calibration problems that the Q-Q plot.
+#'  produce a Q-Q plot comparing standard normal quantiles calculated from the
+#'  PIT values to the theoretical standard normal quantiles. This can help see
+#'  the (mis)calibration better for the extreme values. However, in most cases
+#'  we have found that the overlaid density plot (`ppc_loo_pit_overlay()`)
+#'  function will provide a clearer picture of calibration problems than the
+#'  Q-Q plot.
 #' }
 #' \item{`ppc_loo_intervals()`, `ppc_loo_ribbon()`}{
 #'  Similar to [ppc_intervals()] and [ppc_ribbon()] but the intervals are for
@@ -113,8 +114,9 @@ NULL
 #' @param compare For `ppc_loo_pit_qq()`, a string that can be either
 #'   `"uniform"` or `"normal"`. If `"uniform"` (the default) the Q-Q plot
 #'   compares computed PIT values to the standard uniform distribution. If
-#'   `compare="normal"`, the Q-Q plot compares standardized PIT values to the
-#'   standard normal distribution.
+#'   `compare="normal"`, the Q-Q plot compares standard normal quantiles
+#'   calculated from the PIT values to the theoretical standard normal
+#'   quantiles.
 #' @param trim Passed to [ggplot2::stat_density()].
 #' @template args-density-controls
 ppc_loo_pit_overlay <- function(y,
@@ -220,10 +222,10 @@ ppc_loo_pit_qq <- function(y,
     x_lab <- "Uniform"
     y_lab <- "LOO-PIT"
   } else {
-    pit <- as.vector(scale(pit))
+    pit <- as.vector(stats::qnorm(pit))
     theoretical <- stats::qnorm
     x_lab <- "Normal"
-    y_lab <- "LOO-PIT (standardized)"
+    y_lab <- "LOO-PIT (standard normal quantiles)"
   }
 
   ggplot(data.frame(p = pit)) +
