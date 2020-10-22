@@ -48,9 +48,6 @@ test_that("ppc_stat_grouped returns ggplot object", {
   expect_gg(ppc_stat_grouped(y, yrep, group))
   expect_gg(ppc_stat_grouped(y, yrep, as.numeric(group), stat = function(z) var(z)))
   expect_gg(ppc_stat_grouped(y, yrep, as.integer(group), stat = "sd"))
-
-  expect_error(ppc_stat_grouped(y2, yrep2, group2),
-               "'group' must have more than one unique value")
 })
 test_that("ppc_stat_freqpoly_grouped returns ggplot object", {
   expect_gg(ppc_stat_freqpoly_grouped(y, yrep, group, stat = "sd", freq = FALSE))

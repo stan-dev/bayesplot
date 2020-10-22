@@ -119,8 +119,9 @@ parameters. \code{n_dens} defaults to \code{1024}.}
 \item{compare}{For \code{ppc_loo_pit_qq()}, a string that can be either
 \code{"uniform"} or \code{"normal"}. If \code{"uniform"} (the default) the Q-Q plot
 compares computed PIT values to the standard uniform distribution. If
-\code{compare="normal"}, the Q-Q plot compares standardized PIT values to the
-standard normal distribution.}
+\code{compare="normal"}, the Q-Q plot compares standard normal quantiles
+calculated from the PIT values to the theoretical standard normal
+quantiles.}
 
 \item{psis_object}{If using \strong{loo} version \verb{2.0.0} or greater, an
 object returned by the \code{psis()} function (or by the \code{loo()} function
@@ -184,11 +185,12 @@ the miscalibration with a quantile-quantile (Q-Q) plot comparing the LOO
 PITs to the standard uniform distribution. Comparing to the uniform is not
 good for extreme probabilities close to 0 and 1, so it can sometimes be
 useful to set the \code{compare} argument to \code{"normal"}, which will
-produce a Q-Q plot comparing standardized PIT values to the standard normal
-distribution that can help see the (mis)calibration better for the extreme
-values. However, in most cases we have found that the overlaid density plot
-(\code{ppc_loo_pit_overlay()}) function will provided a clearer picture of
-calibration problems that the Q-Q plot.
+produce a Q-Q plot comparing standard normal quantiles calculated from the
+PIT values to the theoretical standard normal quantiles. This can help see
+the (mis)calibration better for the extreme values. However, in most cases
+we have found that the overlaid density plot (\code{ppc_loo_pit_overlay()})
+function will provide a clearer picture of calibration problems than the
+Q-Q plot.
 }
 \item{\code{ppc_loo_intervals()}, \code{ppc_loo_ribbon()}}{
 Similar to \code{\link[=ppc_intervals]{ppc_intervals()}} and \code{\link[=ppc_ribbon]{ppc_ribbon()}} but the intervals are for
@@ -256,6 +258,7 @@ doi:10.1007/s11222-016-9696-4. arXiv preprint:
 }
 \seealso{
 Other PPCs: 
+\code{\link{PPC-censoring}},
 \code{\link{PPC-discrete}},
 \code{\link{PPC-distributions}},
 \code{\link{PPC-errors}},

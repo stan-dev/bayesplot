@@ -8,6 +8,14 @@
 * Items for next release go here
 -->
 
+* On the y axis, `ppc_loo_pit_qq(..., compare = "normal")` now plots standard
+  normal quantiles calculated from the PIT values (instead of the standardized
+  PIT values). (#240, #243, @fweber144)
+
+* New plotting function `ppc_km_overlay()` for outcome variables that are   
+  right-censored. Empirical CCDF estimates of `yrep` are compared with the 
+  Kaplan-Meier estimate of `y`. (#233, #234, @fweber144)
+
 * CmdStanMCMC objects (from CmdStanR) can now be used with extractor 
   functions `nuts_params()`, `log_posterior()`, `rhat()`, and 
   `neff_ratio()`. (#227)
@@ -15,7 +23,7 @@
 * Size of points and interval lines can set in 
   `mcmc_intervals(..., outer_size, inner_size, point_size)`. (#215, #228, #229) 
   
-* Size of ridgelines can be set in `mcmc_areas_ridges(..., size)`. (#224)
+* Size of ridgelines can be set in `mcmc_areas(..., size)` and `mcmc_areas_ridges(..., size)`. (#224)
   
 * `mcmc_areas()` tries to use less blank vertical blank space. (#218, #230) 
 
