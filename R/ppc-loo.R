@@ -120,14 +120,20 @@ NULL
 #' @template args-density-controls
 #' @param boundary_correction For `ppc_loo_pit_overlay()`, when set to `TRUE`
 #'   (the default) the function will compute boundary corrected density values
-#'   via convolution and a Gaussian filter (i.e. reflection method). As a result, parameters controlling
-#'   the standard kernel density estimation such as `adjust`, `kernel` and
-#'   `n_dens` are ignored. NOTE: The current implementation only works well for
-#'   continuous observations.
-#'@param grid_len For `ppc_loo_pit_overlay()`, when `boundary_correction` is set
-#'  to `TRUE` this parameter specifies the number of points used to generate the
-#'  estimations. This is set to 512 by default.
-
+#'   via convolution and a Gaussian filter, also known as the reflection method
+#'   (Boneva et al., 1971). As a result, parameters controlling the standard
+#'   kernel density estimation such as `adjust`, `kernel` and `n_dens` are
+#'   ignored. NOTE: The current implementation only works well for continuous
+#'   observations.
+#' @param grid_len For `ppc_loo_pit_overlay()`, when `boundary_correction` is
+#'   set to `TRUE` this parameter specifies the number of points used to
+#'   generate the estimations. This is set to 512 by default.
+#'
+#' @references Boneva, L. I., Kendall, D., & Stefanov, I. (1971). Spline
+#'   transformations: Three new diagnostic aids for the statistical
+#'   data-analyst. *J. R. Stat. Soc. B* (Methodological), 33(1), 1-71.
+#'   https://www.jstor.org/stable/2986005.
+#'
 ppc_loo_pit_overlay <- function(y,
                                 yrep,
                                 lw,
@@ -622,8 +628,8 @@ ppc_loo_ribbon <-
   # Generate vector of x-axis values for plotting based on binned relative freqs
   n_breaks <- length(grid_breaks)
 
-  xs <-  (grid_breaks[2:n_breaks] + grid_breaks[1:(n_breaks - 1)]) / 2 
-  
+  xs <-  (grid_breaks[2:n_breaks] + grid_breaks[1:(n_breaks - 1)]) / 2
+
   first_nonNA <- head(which(!is.na(bc_pvals)),1)
   last_nonNA <- tail(which(!is.na(bc_pvals)),1)
   bc_pvals[1:first_nonNA] <- bc_pvals[first_nonNA]

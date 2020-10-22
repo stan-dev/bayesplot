@@ -127,14 +127,15 @@ and \code{fatten} are passed to \code{\link[ggplot2:geom_linerange]{ggplot2::geo
 
 \item{boundary_correction}{For \code{ppc_loo_pit_overlay()}, when set to \code{TRUE}
 (the default) the function will compute boundary corrected density values
-via convolution and a Gaussian filter (i.e. reflection method). As a result, parameters 
-controlling the standard kernel density estimation such as \code{adjust}, 
-\code{kernel} and\code{n_dens} are ignored. NOTE: The current implementation only works well for
-continuous observations.}
+via convolution and a Gaussian filter, also known as the reflection method
+(Boneva et al., 1971). As a result, parameters controlling the standard
+kernel density estimation such as \code{adjust}, \code{kernel} and \code{n_dens} are
+ignored. NOTE: The current implementation only works well for continuous
+observations.}
 
-\item{grid_len}{For \code{ppc_loo_pit_overlay()}, when \code{boundary_correction} is set
-to \code{TRUE} this parameter specifies the number of points used to generate the
-estimations. This is set to 512 by default.}
+\item{grid_len}{For \code{ppc_loo_pit_overlay()}, when \code{boundary_correction} is
+set to \code{TRUE} this parameter specifies the number of points used to
+generate the estimations. This is set to 512 by default.}
 
 \item{bw, adjust, kernel, n_dens}{Optional arguments passed to
 \code{\link[stats:density]{stats::density()}} to override default kernel density estimation
@@ -280,6 +281,11 @@ Bayesian model evaluation using leave-one-out cross-validation and WAIC.
 \emph{Statistics and Computing}. 27(5), 1413--1432.
 doi:10.1007/s11222-016-9696-4. arXiv preprint:
 \url{https://arxiv.org/abs/1507.04544/}
+
+Boneva, L. I., Kendall, D., & Stefanov, I. (1971). Spline
+transformations: Three new diagnostic aids for the statistical
+data-analyst. \emph{J. R. Stat. Soc. B} (Methodological), 33(1), 1-71.
+https://www.jstor.org/stable/2986005.
 }
 \seealso{
 Other PPCs: 
