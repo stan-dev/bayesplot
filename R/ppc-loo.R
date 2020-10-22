@@ -83,7 +83,6 @@
 #' # marginal predictive check using LOO probability integral transform
 #' color_scheme_set("orange")
 #' ppc_loo_pit_overlay(y, yrep, lw = lw)
-#' ppc_loo_pit_overlay(y, yrep, lw = lw, boundary_correction = TRUE)
 #'
 #' ppc_loo_pit_qq(y, yrep, lw = lw)
 #' ppc_loo_pit_qq(y, yrep, lw = lw, compare = "normal")
@@ -188,7 +187,11 @@ ppc_loo_pit_overlay <- function(y,
         data = function(x) dplyr::filter(x, .data$is_y),
         size = 1,
         lineend = "round",
-        na.rm = TRUE)
+        na.rm = TRUE) +
+      scale_x_continuous(
+        limits = c(0, 1),
+        expand = expansion(0, 0)
+      )
 
   } else {
     p <- ggplot(data) +
@@ -218,18 +221,20 @@ ppc_loo_pit_overlay <- function(y,
         adjust = adjust,
         kernel = kernel,
         n = n_dens,
-        na.rm = TRUE)
+        na.rm = TRUE) +
+      scale_x_continuous(
+        limits = c(0.05, 0.95),
+        expand = expansion(0, 0),
+        breaks = seq(from = .1, to = .9, by = .2)
+      )
   }
 
     p +
       scale_color_ppc_dist(labels = c("PIT", "Unif")) +
-      scale_x_continuous(
-        limits = c(0.05, 0.95),
-        expand = expansion(0, 0),
-        breaks = seq(from = .1, to = .9, by = .2)) +
       scale_y_continuous(
         limits = c(0, NA),
-        expand = expansion(mult = c(0, .25))) +
+        expand = expansion(mult = c(0, .25))
+      ) +
       bayesplot_theme_get() +
       yaxis_title(FALSE) +
       xaxis_title(FALSE) +
