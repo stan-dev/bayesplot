@@ -190,7 +190,9 @@ ppc_loo_pit_overlay <- function(y,
         na.rm = TRUE) +
       scale_x_continuous(
         limits = c(0, 1),
-        expand = expansion(0, 0.01)
+        expand = expansion(0, 0.01),
+        breaks = seq(0, 1, by = 0.25),
+        labels = c("0", "0.25", "0.5", "0.75", "1")
       )
 
   } else {
