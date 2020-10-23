@@ -29,6 +29,11 @@
 
 * Added missing `facet_args` argument to `mcmc_rank_overlay()`. (#221, @hhau)
 
+* `ppc_loo_pit_overlay()` now uses a boundary correction for an improved kernel
+  density estimation. The new argument `boundary_correction` defaults to TRUE but
+  can be set to FALSE to recover the old version of the plot. (#171, #235,
+  @ecoronado92)
+
 
 # bayesplot 1.7.2
 

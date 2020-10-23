@@ -30,6 +30,17 @@ test_that("ppc_loo_pit_overlay returns ggplot object", {
   expect_gg(p1 <- ppc_loo_pit_overlay(y, yrep, lw, samples = 25))
 })
 
+test_that("ppc_loo_pit_overlay works with boundary_correction=TRUE", {
+  expect_message(p1 <- ppc_loo_pit_overlay(y, yrep, lw, boundary_correction = TRUE),
+                 "continuous observations")
+  expect_gg(p1)
+})
+
+test_that("ppc_loo_pit_overlay works with boundary_correction=FALSE", {
+  p1 <- ppc_loo_pit_overlay(y, yrep, lw, boundary_correction = FALSE)
+  expect_gg(p1)
+})
+
 test_that("ppc_loo_pit_qq returns ggplot object", {
   expect_gg(p1 <- ppc_loo_pit_qq(y, yrep, lw))
   expect_equal(p1$labels$x, "Uniform")
