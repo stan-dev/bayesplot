@@ -533,7 +533,10 @@ mcmc_areas_ridges <- function(x,
     aes_(x = ~ x, y = ~ parameter) +
     layer_outer +
     scale_y_discrete(limits = unique(rev(data$parameter)),
-                     expand = c(0.05, .6)) +
+                     expand = expansion(
+                       add = c(0, 1 + 1/(2 * nlevels(data$parameter))),
+                       mult = c(.1, .1)
+                     )) +
     layer_list_inner +
     layer_vertical_line +
     scale_fill_identity() +
