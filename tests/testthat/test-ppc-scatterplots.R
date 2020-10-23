@@ -25,9 +25,6 @@ test_that("ppc_scatter_avg_grouped returns a ggplot object", {
   expect_gg(ppc_scatter_avg_grouped(y, yrep, group))
   expect_gg(ppc_scatter_avg_grouped(y, yrep, as.numeric(group)))
   expect_gg(ppc_scatter_avg_grouped(y, yrep, as.integer(group)))
-
-  expect_error(ppc_scatter_avg_grouped(y2, yrep2, group2),
-               "'group' must have more than one unique value")
 })
 
 

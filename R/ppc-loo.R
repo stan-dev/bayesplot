@@ -42,11 +42,12 @@
 #'  PITs to the standard uniform distribution. Comparing to the uniform is not
 #'  good for extreme probabilities close to 0 and 1, so it can sometimes be
 #'  useful to set the `compare` argument to `"normal"`, which will
-#'  produce a Q-Q plot comparing standardized PIT values to the standard normal
-#'  distribution that can help see the (mis)calibration better for the extreme
-#'  values. However, in most cases we have found that the overlaid density plot
-#'  (`ppc_loo_pit_overlay()`) function will provided a clearer picture of
-#'  calibration problems that the Q-Q plot.
+#'  produce a Q-Q plot comparing standard normal quantiles calculated from the
+#'  PIT values to the theoretical standard normal quantiles. This can help see
+#'  the (mis)calibration better for the extreme values. However, in most cases
+#'  we have found that the overlaid density plot (`ppc_loo_pit_overlay()`)
+#'  function will provide a clearer picture of calibration problems than the
+#'  Q-Q plot.
 #' }
 #' \item{`ppc_loo_intervals()`, `ppc_loo_ribbon()`}{
 #'  Similar to [ppc_intervals()] and [ppc_ribbon()] but the intervals are for
@@ -113,82 +114,180 @@ NULL
 #' @param compare For `ppc_loo_pit_qq()`, a string that can be either
 #'   `"uniform"` or `"normal"`. If `"uniform"` (the default) the Q-Q plot
 #'   compares computed PIT values to the standard uniform distribution. If
-#'   `compare="normal"`, the Q-Q plot compares standardized PIT values to the
-#'   standard normal distribution.
+#'   `compare="normal"`, the Q-Q plot compares standard normal quantiles
+#'   calculated from the PIT values to the theoretical standard normal
+#'   quantiles.
 #' @param trim Passed to [ggplot2::stat_density()].
 #' @template args-density-controls
+#' @param boundary_correction For `ppc_loo_pit_overlay()`, when set to `TRUE`
+#'   (the default) the function will compute boundary corrected density values
+#'   via convolution and a Gaussian filter, also known as the reflection method
+#'   (Boneva et al., 1971). As a result, parameters controlling the standard
+#'   kernel density estimation such as `adjust`, `kernel` and `n_dens` are
+#'   ignored. NOTE: The current implementation only works well for continuous
+#'   observations.
+#' @param grid_len For `ppc_loo_pit_overlay()`, when `boundary_correction` is
+#'   set to `TRUE` this parameter specifies the number of points used to
+#'   generate the estimations. This is set to 512 by default.
+#'
+#' @references Boneva, L. I., Kendall, D., & Stefanov, I. (1971). Spline
+#'   transformations: Three new diagnostic aids for the statistical
+#'   data-analyst. *J. R. Stat. Soc. B* (Methodological), 33(1), 1-71.
+#'   https://www.jstor.org/stable/2986005.
+#'
 ppc_loo_pit_overlay <- function(y,
                                 yrep,
                                 lw,
-                                pit,
-                                samples = 100,
                                 ...,
+                                pit = NULL,
+                                samples = 100,
                                 size = 0.25,
                                 alpha = 0.7,
-                                trim = FALSE,
+                                boundary_correction = TRUE,
+                                grid_len = 512,
                                 bw = "nrd0",
+                                trim = FALSE,
                                 adjust = 1,
                                 kernel = "gaussian",
                                 n_dens = 1024) {
   check_ignored_arguments(...)
 
-  if (!missing(pit)) {
-    stopifnot(is.numeric(pit), is_vector_or_1Darray(pit))
-    inform("'pit' specified so ignoring 'y','yrep','lw' if specified.")
-  } else {
-    suggested_package("rstantools")
-    y <- validate_y(y)
-    yrep <- validate_yrep(yrep, y)
-    stopifnot(identical(dim(yrep), dim(lw)))
-    pit <- rstantools::loo_pit(object = yrep, y = y, lw = lw)
+  data <-
+    ppc_loo_pit_data(
+      y = y,
+      yrep = yrep,
+      lw = lw,
+      pit = pit,
+      samples = samples,
+      bw = bw,
+      boundary_correction = boundary_correction,
+      grid_len = grid_len
+    )
+
+  if (all(data$value[data$is_y] %in% 0:1)) {
+    warning(
+      "This plot is not recommended for binary data. ",
+      "For plots that are more suitable see ",
+      "\nhttps://avehtari.github.io/modelselection/diabetes.html#44_calibration_of_predictions",
+      call. = FALSE
+    )
   }
 
-  unifs <- matrix(runif(length(pit) * samples), nrow = samples)
+  if (boundary_correction) {
+    message("NOTE: Current boundary correction implementation works for continuous observations only.")
 
-  data <- ppc_data(pit, unifs)
+    p <- ggplot(data) +
+      aes_(x = ~ x, y = ~ value) +
+      geom_line(
+        aes_(group = ~ rep_id,  color = "yrep"),
+        data = function(x) dplyr::filter(x, !.data$is_y),
+        alpha = alpha,
+        size = size,
+        na.rm = TRUE) +
+      geom_line(
+        aes_(color = "y"),
+        data = function(x) dplyr::filter(x, .data$is_y),
+        size = 1,
+        lineend = "round",
+        na.rm = TRUE) +
+      scale_x_continuous(
+        limits = c(0, 1),
+        expand = expansion(0, 0.01),
+        breaks = seq(0, 1, by = 0.25),
+        labels = c("0", "0.25", "0.5", "0.75", "1")
+      )
 
-  ggplot(data) +
-    aes_(x = ~ value) +
-    stat_density(
-      aes_(group = ~ rep_id, color = "yrep"),
-      data = function(x) dplyr::filter(x, !.data$is_y),
-      geom = "line",
-      position = "identity",
-      size = size,
-      alpha = alpha,
-      trim = trim,
-      bw = bw,
-      adjust = adjust,
-      kernel = kernel,
-      n = n_dens,
-      na.rm = TRUE) +
-    stat_density(
-      aes_(color = "y"),
-      data = function(x) dplyr::filter(x, .data$is_y),
-      geom = "line",
-      position = "identity",
-      lineend = "round",
-      size = 1,
-      trim = trim,
-      bw = bw,
-      adjust = adjust,
-      kernel = kernel,
-      n = n_dens,
-      na.rm = TRUE) +
-    scale_color_ppc_dist(labels = c("PIT", "Unif")) +
-    scale_x_continuous(
-      limits = c(.1, .9),
-      expand = expansion(0, 0),
-      breaks = seq(from = .1, to = .9, by = .2)) +
-    scale_y_continuous(
-      limits = c(0, NA),
-      expand = expansion(mult = c(0, .25))) +
-    bayesplot_theme_get() +
-    yaxis_title(FALSE) +
-    xaxis_title(FALSE) +
-    yaxis_text(FALSE) +
-    yaxis_ticks(FALSE)
+  } else {
+    p <- ggplot(data) +
+      aes_(x = ~ value) +
+      stat_density(
+        aes_(group = ~ rep_id, color = "yrep"),
+        data = function(x) dplyr::filter(x, !.data$is_y),
+        geom = "line",
+        position = "identity",
+        size = size,
+        alpha = alpha,
+        trim = trim,
+        bw = bw,
+        adjust = adjust,
+        kernel = kernel,
+        n = n_dens,
+        na.rm = TRUE) +
+      stat_density(
+        aes_(color = "y"),
+        data = function(x) dplyr::filter(x, .data$is_y),
+        geom = "line",
+        position = "identity",
+        lineend = "round",
+        size = 1,
+        trim = trim,
+        bw = bw,
+        adjust = adjust,
+        kernel = kernel,
+        n = n_dens,
+        na.rm = TRUE) +
+      scale_x_continuous(
+        limits = c(0.05, 0.95),
+        expand = expansion(0, 0),
+        breaks = seq(from = .1, to = .9, by = .2)
+      )
+  }
+
+    p +
+      scale_color_ppc_dist(labels = c("PIT", "Unif")) +
+      scale_y_continuous(
+        limits = c(0, NA),
+        expand = expansion(mult = c(0, .25))
+      ) +
+      bayesplot_theme_get() +
+      yaxis_title(FALSE) +
+      xaxis_title(FALSE) +
+      yaxis_text(FALSE) +
+      yaxis_ticks(FALSE)
 }
+
+#' @rdname PPC-loo
+#' @export
+ppc_loo_pit_data <-
+  function(y,
+           yrep,
+           lw,
+           ...,
+           pit = NULL,
+           samples = 100,
+           bw = "nrd0",
+           boundary_correction = TRUE,
+           grid_len = 512) {
+    if (!is.null(pit)) {
+      stopifnot(is.numeric(pit), is_vector_or_1Darray(pit))
+      inform("'pit' specified so ignoring 'y','yrep','lw' if specified.")
+    } else {
+      suggested_package("rstantools")
+      y <- validate_y(y)
+      yrep <- validate_yrep(yrep, y)
+      stopifnot(identical(dim(yrep), dim(lw)))
+      pit <- rstantools::loo_pit(object = yrep, y = y, lw = lw)
+    }
+
+    if (!boundary_correction) {
+      unifs <- matrix(runif(length(pit) * samples), nrow = samples)
+      data <- ppc_data(pit, unifs)
+    } else {
+      unifs <- matrix(runif(grid_len * samples), nrow = samples)
+      ref_list <- .ref_kde_correction(unifs, bw = bw, grid_len = grid_len)
+      pit_list <- .kde_correction(pit, bw = bw, grid_len = grid_len)
+
+      pit <- pit_list$bc_pvals
+      unifs <- ref_list$unifs
+      xs <- c(pit_list$xs, ref_list$xs)
+
+      data <-
+        ppc_data(pit, unifs) %>%
+        dplyr::arrange(.data$rep_id) %>%
+        mutate(x = xs)
+    }
+    data
+  }
 
 
 #' @rdname PPC-loo
@@ -220,10 +319,10 @@ ppc_loo_pit_qq <- function(y,
     x_lab <- "Uniform"
     y_lab <- "LOO-PIT"
   } else {
-    pit <- as.vector(scale(pit))
+    pit <- as.vector(stats::qnorm(pit))
     theoretical <- stats::qnorm
     x_lab <- "Normal"
-    y_lab <- "LOO-PIT (standardized)"
+    y_lab <- "LOO-PIT (standard normal quantiles)"
   }
 
   ggplot(data.frame(p = pit)) +
@@ -456,3 +555,118 @@ ppc_loo_ribbon <-
   return(psis_object)
 }
 
+## Boundary correction based on code by ArViz development team
+# The main method is a 1-D density estimation for linear data with
+# convolution with a Gaussian filter.
+
+# Based on scipy.signal.gaussian formula
+.gaussian <- function(N, bw){
+  n <- seq(0, N -1) - (N - 1)/2
+  sigma = 2 * bw * bw
+  w = exp(-n^2 / sigma)
+  return(w)
+
+}
+
+.linear_convolution <- function(x,
+                                bw,
+                                grid_counts,
+                                grid_breaks,
+                                grid_len){
+  # 1-D Gaussian estimation via
+  # convolution of a Gaussian filter and the binned relative freqs
+  bin_width <-  grid_breaks[2] - grid_breaks[1]
+  f <- grid_counts / bin_width / length(x)
+  bw <- bw / bin_width
+
+  # number of data points to generate for gaussian filter
+  gauss_n <- as.integer(bw * 2 *pi)
+  if (gauss_n == 0){
+    gauss_n = 1
+  }
+
+  # Generate Gaussian filter vector
+  kernel <- .gaussian(gauss_n, bw)
+  npad <- as.integer(grid_len / 5)
+
+  # Reflection method (i.e. get first N and last N points to pad vector)
+  f <- c(rev(f[1:(npad)]),
+         f,
+         rev(f)[(grid_len - npad):(grid_len - 1)])
+
+  # Convolution: Gaussian filter + reflection method (pading) works as an
+  # averaging moving window based on a Gaussian density which takes care
+  # of the density boundary values near 0 and 1.
+  bc_pvals <- stats::filter(f,
+                            kernel,
+                            method = 'convolution',
+                            sides = 2)[(npad + 1):(npad + grid_len)]
+
+  bc_pvals  <-  bc_pvals / (bw * (2 * pi)^0.5)
+  return(bc_pvals)
+}
+
+.kde_correction <- function(x,
+                            bw,
+                            grid_len){
+  # Generate boundary corrected values via a linear convolution using a
+  # 1-D Gaussian window filter. This method uses the "reflection method"
+  # to estimate these pvalues and helps speed up the code
+  if (any(is.infinite(x))){
+    warning(paste("Ignored", sum(is.infinite(x)),
+                  "Non-finite PIT values are invalid for KDE boundary correction method"))
+    x <- x[is.finite(x)]
+  }
+
+  if (grid_len < 100){
+    grid_len = 100
+  }
+
+  # Get relative frequency boundaries and counts for input vector
+  bins <- seq(from= min(x), to = max(x), length.out = grid_len + 1)
+  hist_obj <- hist(x, breaks = bins, plot = FALSE)
+  grid_breaks <- hist_obj$breaks
+  grid_counts <- hist_obj$counts
+
+  # Compute bandwidth based on use specification
+  bw <- density(x, bw = bw)$bw
+
+  # 1-D Convolution
+  bc_pvals <- .linear_convolution(x, bw, grid_counts, grid_breaks, grid_len)
+
+  # Generate vector of x-axis values for plotting based on binned relative freqs
+  n_breaks <- length(grid_breaks)
+
+  xs <-  (grid_breaks[2:n_breaks] + grid_breaks[1:(n_breaks - 1)]) / 2
+
+  first_nonNA <- head(which(!is.na(bc_pvals)),1)
+  last_nonNA <- tail(which(!is.na(bc_pvals)),1)
+  bc_pvals[1:first_nonNA] <- bc_pvals[first_nonNA]
+  bc_pvals[last_nonNA:length(bc_pvals)] <- bc_pvals[last_nonNA]
+
+  return(list(xs = xs, bc_pvals = bc_pvals))
+}
+
+# Wrapper function to generate runif reference lines based on
+# .kde_correction()
+.ref_kde_correction <- function(unifs, bw, grid_len){
+
+  # Allocate memory
+  idx <- seq(from = 1,
+             to = ncol(unifs)*nrow(unifs) + ncol(unifs),
+             by = ncol(unifs))
+  idx <- c(idx, ncol(unifs)*nrow(unifs))
+  xs <- rep(0, ncol(unifs)*nrow(unifs))
+  bc_mat <- matrix(0, nrow(unifs), ncol(unifs))
+
+  # Generate boundary corrected reference values
+  for (i in 1:nrow(unifs)){
+    bc_list <- .kde_correction(unifs[i,],
+                               bw = bw,
+                               grid_len = grid_len)
+    bc_mat[i,] <- bc_list$bc_pvals
+    xs[idx[i]:(idx[i+1]-1)] <- bc_list$xs
+  }
+
+  return(list(xs = xs, unifs = bc_mat))
+}
