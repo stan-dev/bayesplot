@@ -522,6 +522,10 @@ mcmc_areas_ridges <- function(x,
         scale = scale,
         stat = "identity")
 
+    if (!is.null(size)) {
+      args_inner$size <- size
+    }
+
     layer_list_inner[[par_num]] <- do.call(ggridges::geom_ridgeline, args_inner)
   }
 
