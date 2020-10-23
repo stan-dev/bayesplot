@@ -230,6 +230,9 @@ test_that("mcmc_areas renders correctly", {
 
   p_mean_points <- mcmc_areas(vdiff_dframe, point_est = "mean")
   vdiffr::expect_doppelganger("mcmc_areas (means)", p_mean_points)
+
+  p_size <- mcmc_areas(vdiff_dframe, size = 2)
+  vdiffr::expect_doppelganger("mcmc_areas (size)", p_size)
 })
 
 test_that("mcmc_areas_ridges renders correctly", {
@@ -244,4 +247,7 @@ test_that("mcmc_areas_ridges renders correctly", {
 
   p_outer <- mcmc_areas_ridges(vdiff_dframe, prob = .5, prob_outer = .95)
   vdiffr::expect_doppelganger("mcmc_areas_ridges (outer)", p_outer)
+
+  p_size <- mcmc_areas_ridges(vdiff_dframe, size = 2)
+  vdiffr::expect_doppelganger("mcmc_areas_ridges (size)", p_size)
 })
