@@ -31,6 +31,8 @@
   density estimation. The new argument `boundary_correction` defaults to TRUE but
   can be set to FALSE to recover the old version of the plot. (#171, #235,
   @ecoronado92)
+  
+* `mcmc_hist()` and `mcmc_dens()` gain argument `alpha` for controling transparency. (#244)
 
 
 # bayesplot 1.7.2
