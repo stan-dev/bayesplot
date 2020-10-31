@@ -32,6 +32,7 @@
   can be set to FALSE to recover the old version of the plot. (#171, #235,
   @ecoronado92)
 
+* Fix error in `mcmc_acf()` for some input types. (#244, #245, @hhau)
 
 # bayesplot 1.7.2
 
