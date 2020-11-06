@@ -33,6 +33,30 @@ test_that("mcmc_trace_highlight throws error if highlight > number of chains", {
   expect_error(mcmc_trace_highlight(arr, pars = "sigma", highlight = 7), "'highlight' is 7")
 })
 
+test_that("mcmc_rank_hist returns a ggplot object", {
+  expect_gg(mcmc_rank_hist(arr, pars = "beta[1]", regex_pars = "x\\:"))
+  expect_gg(mcmc_rank_hist(dframe_multiple_chains))
+  expect_gg(mcmc_rank_hist(chainlist))
+})
+
+test_that("mcmc_rank_overlay returns a ggplot object", {
+  expect_gg(mcmc_rank_overlay(arr, pars = "beta[1]", regex_pars = "x\\:"))
+  expect_gg(mcmc_rank_overlay(dframe_multiple_chains))
+  expect_gg(mcmc_rank_overlay(chainlist))
+})
+
+test_that("mcmc_rank_hist errors if there is only 1 chain", {
+  expect_error(mcmc_rank_hist(mat), "requires multiple")
+  expect_error(mcmc_rank_hist(dframe), "requires multiple chains")
+  expect_error(mcmc_rank_hist(arr1chain), "requires multiple chains")
+})
+
+test_that("mcmc_rank_overlay errors if there is only 1 chain", {
+  expect_error(mcmc_rank_overlay(mat), "requires multiple")
+  expect_error(mcmc_rank_overlay(dframe), "requires multiple chains")
+  expect_error(mcmc_rank_overlay(arr1chain), "requires multiple chains")
+})
+
 # options -----------------------------------------------------------------
 test_that("mcmc_trace options work", {
   expect_gg(g1 <- mcmc_trace(arr, regex_pars = "beta", window = c(5, 10)))
@@ -46,6 +70,43 @@ test_that("mcmc_trace options work", {
   expect_error(mcmc_trace(arr, iter1 = -1))
   expect_error(mcmc_trace(arr, n_warmup = 50, iter1 = 20))
 })
+
+test_that("mcmc_rank_hist options work", {
+  expect_gg(mcmc_rank_hist(arr, regex_pars = "beta", ref_interval = TRUE))
+  expect_gg(
+    mcmc_rank_hist(arr, 
+               regex_pars = "beta", 
+               n_bins = 15,
+               ref_line = TRUE,
+               ref_interval = TRUE,
+               interval_args = list(width = 0.8, alpha = 0.1))
+  )
+})
+
+test_that("mcmc_rank_overlay options work", {
+  expect_gg(mcmc_rank_overlay(arr, regex_pars = "beta", ref_interval = TRUE))
+  expect_gg(
+    mcmc_rank_overlay(arr, 
+               regex_pars = "beta", 
+               n_bins = 15,
+               ref_line = TRUE,
+               ref_interval = TRUE,
+               interval_args = list(width = 0.8, alpha = 0.1))
+  )
+})
+
+test_that("mcmc_rank_* interval_args get validated", {
+  expect_error(
+    mcmc_rank_overlay(arr, 
+               regex_pars = "beta", 
+               n_bins = 15,
+               ref_line = TRUE,
+               ref_interval = TRUE,
+               interval_args = list(with = 0.8, alpha = 0.1)), # intended typo
+    "is not TRUE"
+  )
+})
+
 
 
 # displaying divergences in traceplot -------------------------------------
