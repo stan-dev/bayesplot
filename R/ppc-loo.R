@@ -165,11 +165,11 @@ ppc_loo_pit_overlay <- function(y,
       call. = FALSE
     )
   }
+  
+  message(paste("NOTE: The kernel density estimate assumes continuous observations",
+                "and is not optimal for discrete observations."))
 
   if (boundary_correction) {
-    message(paste("NOTE: The kernel density estimate assumes continuous observations",
-                  "and is not optimal for discrete observations."))
-
     p <- ggplot(data) +
       aes_(x = ~ x, y = ~ value) +
       geom_line(
