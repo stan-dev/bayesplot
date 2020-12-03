@@ -61,9 +61,9 @@ of the expected counts.}
 \code{\link[ggplot2:geom_bar]{ggplot2::geom_bar()}} to control the bar width.}
 
 \item{size, fatten}{For \code{ppc_bars()} and \code{ppc_bars_grouped()}, \code{size} and
-\code{fatten} are passed to \code{\link[ggplot2:geom_pointrange]{ggplot2::geom_pointrange()}} to control the
+\code{fatten} are passed to \code{\link[ggplot2:geom_linerange]{ggplot2::geom_pointrange()}} to control the
 appearance of the \code{yrep} points and intervals. For \code{ppc_rootogram()} \code{size}
-is passed to \code{\link[ggplot2:geom_line]{ggplot2::geom_line()}}.}
+is passed to \code{\link[ggplot2:geom_path]{ggplot2::geom_line()}}.}
 
 \item{freq}{For \code{ppc_bars()} and \code{ppc_bars_grouped()}, if \code{TRUE} (the
 default) the y-axis will display counts. Setting \code{freq=FALSE} will put

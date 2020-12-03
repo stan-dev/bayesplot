@@ -17,7 +17,7 @@ bayesplot_theme_replace(...)
 }
 \arguments{
 \item{new}{The new theme (list of theme elements) to use. This is analogous
-to the \code{new} argument to \code{\link[ggplot2:theme_set]{ggplot2::theme_set()}}.}
+to the \code{new} argument to \code{\link[ggplot2:theme_get]{ggplot2::theme_set()}}.}
 
 \item{...}{A named list of theme settings.}
 }
@@ -29,7 +29,7 @@ the \strong{ggplot2} versions of these functions.
 }
 \description{
 These functions are the \strong{bayesplot} equivalent to
-\strong{ggplot2}'s \code{\link[ggplot2:theme_set]{ggplot2::theme_set()}} and friends. They set, get, and update
+\strong{ggplot2}'s \code{\link[ggplot2:theme_get]{ggplot2::theme_set()}} and friends. They set, get, and update
 the active theme but only apply them to \code{bayesplots}. The current/active
 theme is automatically applied to every \code{bayesplot} you draw.
 
@@ -39,9 +39,9 @@ Use \code{bayesplot_theme_get()} to get the current \strong{bayesplot} theme and
 }
 \details{
 \code{bayesplot_theme_set()} and friends only apply to \code{bayesplots}.
-However, \code{\link[ggplot2:theme_set]{ggplot2::theme_set()}} can also be used to change the
+However, \code{\link[ggplot2:theme_get]{ggplot2::theme_set()}} can also be used to change the
 \strong{bayesplot} theme. Currently, setting a theme with \code{ggplot2::theme_set()}
-(other than the \strong{ggplot2} default \code{\link[ggplot2:theme_grey]{ggplot2::theme_grey()}}) will override
+(other than the \strong{ggplot2} default \code{\link[ggplot2:ggtheme]{ggplot2::theme_grey()}}) will override
 the \strong{bayesplot} theme.
 }
 \examples{

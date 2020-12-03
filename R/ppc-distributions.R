@@ -276,7 +276,6 @@ ppc_dens_overlay <- function(
   y,
   yrep,
   ...,
-  group = NULL,
   size = 0.25,
   alpha = 0.7,
   trim = FALSE,
@@ -286,7 +285,7 @@ ppc_dens_overlay <- function(
   n_dens = 1024
 ) {
   check_ignored_arguments(...)
-  data <- ppc_data(y, yrep, group = group)
+  data <- ppc_data(y, yrep)
 
   ggplot(data) +
     aes_(x = ~ value) +
@@ -348,7 +347,6 @@ ppc_dens_overlay_grouped <- function(
     y = y,
     yrep = yrep,
     ...,
-    group = group,
     size = size,
     alpha = alpha,
     trim = trim,
@@ -357,6 +355,11 @@ ppc_dens_overlay_grouped <- function(
     kernel = kernel,
     n_dens = n_dens
   )
+  # Use + list(data) trick to replace the data in the plot. The layer-specific
+  # data in the y and yrep layers should be safe because they are
+  # specified using a function on the main plot data.
+  data <- ppc_data(y, yrep, group = group)
+  p_overlay <- p_overlay + list(data)
 
   p_overlay +
     facet_wrap("group") +
@@ -374,14 +377,13 @@ ppc_ecdf_overlay <- function(
   y,
   yrep,
   ...,
-  group = NULL,
   discrete = FALSE,
   pad = TRUE,
   size = 0.25,
   alpha = 0.7
 ) {
   check_ignored_arguments(...)
-  data <- ppc_data(y, yrep, group = group)
+  data <- ppc_data(y, yrep)
 
   ggplot(data) +
     aes_(x = ~ value) +
@@ -438,13 +440,16 @@ ppc_ecdf_overlay_grouped <- function(
   p_overlay <- ppc_ecdf_overlay(
     y = y,
     yrep = yrep,
-    group = group,
     ...,
     discrete = discrete,
     pad = pad,
     size = size,
     alpha = alpha
   )
+
+  # Use + list(data) trick to replace the data in the plot
+  data <- ppc_data(y, yrep, group = group)
+  p_overlay <- p_overlay + list(data)
 
   p_overlay +
     facet_wrap("group") +
