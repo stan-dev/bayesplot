@@ -177,6 +177,7 @@ test_that("inconsistent probabilities raise warning (#138)", {
 
 test_that("mcmc_intervals renders correctly", {
   testthat::skip_on_cran()
+  testthat::skip_if_not_installed("vdiffr")
 
   p_base <- mcmc_intervals(vdiff_dframe)
   vdiffr::expect_doppelganger("mcmc_intervals (default)", p_base)
@@ -196,10 +197,14 @@ test_that("mcmc_intervals renders correctly", {
 
   p_mean_points <- mcmc_intervals(vdiff_dframe, point_est = "mean")
   vdiffr::expect_doppelganger("mcmc_intervals (means)", p_mean_points)
+
+  p_sizes <- mcmc_intervals(vdiff_dframe, point_size = 1, inner_size = 5, outer_size = 4)
+  vdiffr::expect_doppelganger("mcmc_intervals (sizes)", p_sizes)
 })
 
 test_that("mcmc_areas renders correctly", {
   testthat::skip_on_cran()
+  testthat::skip_if_not_installed("vdiffr")
 
   p_base <- mcmc_areas(vdiff_dframe)
   vdiffr::expect_doppelganger("mcmc_areas (default)", p_base)
@@ -229,6 +234,7 @@ test_that("mcmc_areas renders correctly", {
 
 test_that("mcmc_areas_ridges renders correctly", {
   testthat::skip_on_cran()
+  testthat::skip_if_not_installed("vdiffr")
 
   p_base <- mcmc_areas_ridges(vdiff_dframe)
   vdiffr::expect_doppelganger("mcmc_areas_ridges (default)", p_base)

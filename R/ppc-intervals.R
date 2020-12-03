@@ -25,7 +25,7 @@
 #' @section Plot Descriptions:
 #' \describe{
 #'   \item{`ppc_intervals(), ppc_ribbon()`}{
-#'    `100*prob`\% central intervals for `yrep` at each `x`
+#'    `100*prob`% central intervals for `yrep` at each `x`
 #'    value. `ppc_intervals()` plots intervals as vertical bars with points
 #'    indicating `yrep` medians and darker points indicating observed
 #'    `y` values. `ppc_ribbon()` plots a ribbon of connected intervals

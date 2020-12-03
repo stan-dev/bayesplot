@@ -13,6 +13,11 @@ test_that("ppc_ecdf_overlay returns a ggplot object", {
   expect_gg(ppc_ecdf_overlay(y2, yrep2))
 })
 
+test_that("ppc_km_overlay returns a ggplot object", {
+  expect_gg(ppc_km_overlay(y, yrep, status_y = status_y, size = 0.5, alpha = 0.2))
+  expect_gg(ppc_km_overlay(y2, yrep2, status_y = status_y2))
+})
+
 test_that("ppc_dens,pp_hist,ppc_freqpoly,ppc_boxplot return ggplot objects", {
   expect_gg(ppc_hist(y, yrep[1,, drop = FALSE]))
   expect_gg(ppc_hist(y, yrep[1:8, ]))
@@ -39,9 +44,6 @@ test_that("ppc_freqpoly_grouped returns a ggplot object", {
   expect_gg(ppc_freqpoly_grouped(y, yrep[1:4, ], group))
   expect_gg(ppc_freqpoly_grouped(y, yrep[1:4, ], group,
                                  freq = TRUE, alpha = 0.5))
-
-  expect_error(ppc_freqpoly_grouped(y2, yrep2, group2),
-               "'group' must have more than one unique value")
 })
 
 test_that("ppc_violin_grouped returns a ggplot object", {
@@ -49,9 +51,6 @@ test_that("ppc_violin_grouped returns a ggplot object", {
   expect_gg(ppc_violin_grouped(y, yrep, as.numeric(group)))
   expect_gg(ppc_violin_grouped(y, yrep, as.integer(group)))
   expect_gg(ppc_violin_grouped(y, yrep, group, y_draw = "both", y_jitter = 0.3))
-
-  expect_error(ppc_violin_grouped(y2, yrep2, group2),
-               "'group' must have more than one unique value")
 })
 
 
@@ -61,6 +60,7 @@ test_that("ppc_violin_grouped returns a ggplot object", {
 
 test_that("ppc_hist renders correctly", {
   testthat::skip_on_cran()
+  testthat::skip_if_not_installed("vdiffr")
 
   p_base <- ppc_hist(vdiff_y, vdiff_yrep[1:8, ])
   vdiffr::expect_doppelganger("ppc_hist (default)", p_base)
@@ -71,6 +71,7 @@ test_that("ppc_hist renders correctly", {
 
 test_that("ppc_freqpoly renders correctly", {
   testthat::skip_on_cran()
+  testthat::skip_if_not_installed("vdiffr")
 
   p_base <- ppc_freqpoly(vdiff_y, vdiff_yrep[1:8, ])
   vdiffr::expect_doppelganger("ppc_freqpoly (default)", p_base)
@@ -89,6 +90,7 @@ test_that("ppc_freqpoly renders correctly", {
 
 test_that("ppc_freqpoly_grouped renders correctly", {
   testthat::skip_on_cran()
+  testthat::skip_if_not_installed("vdiffr")
 
   p_base <- ppc_freqpoly_grouped(vdiff_y, vdiff_yrep[1:3, ], vdiff_group)
   vdiffr::expect_doppelganger("ppc_freqpoly_grouped (default)", p_base)
@@ -96,6 +98,7 @@ test_that("ppc_freqpoly_grouped renders correctly", {
 
 test_that("ppc_boxplot renders correctly", {
   testthat::skip_on_cran()
+  testthat::skip_if_not_installed("vdiffr")
 
   p_base <- ppc_boxplot(vdiff_y, vdiff_yrep[1:8, ])
   vdiffr::expect_doppelganger("ppc_boxplot (default)", p_base)
@@ -109,6 +112,7 @@ test_that("ppc_boxplot renders correctly", {
 
 test_that("ppc_ecdf_overlay renders correctly", {
   testthat::skip_on_cran()
+  testthat::skip_if_not_installed("vdiffr")
 
   p_base <- ppc_ecdf_overlay(vdiff_y2, vdiff_yrep2)
   vdiffr::expect_doppelganger("ppc_ecdf_overlay (default)", p_base)
@@ -148,8 +152,25 @@ test_that("ppc_ecdf_overlay_grouped renders correctly", {
   )
 })
 
+test_that("ppc_km_overlay renders correctly", {
+  testthat::skip_on_cran()
+  testthat::skip_if_not_installed("vdiffr")
+
+  p_base <- ppc_km_overlay(vdiff_y2, vdiff_yrep2, status_y = vdiff_status_y2)
+  vdiffr::expect_doppelganger("ppc_km_overlay (default)", p_base)
+
+  p_custom <- ppc_km_overlay(
+    vdiff_y2,
+    vdiff_yrep2,
+    status_y = vdiff_status_y2,
+    size = 2,
+    alpha = .2)
+  vdiffr::expect_doppelganger("ppc_km_overlay (size, alpha)", p_custom)
+})
+
 test_that("ppc_dens renders correctly", {
   testthat::skip_on_cran()
+  testthat::skip_if_not_installed("vdiffr")
 
   p_base <- ppc_dens(vdiff_y, vdiff_yrep[1:8, ])
   vdiffr::expect_doppelganger("ppc_dens (default)", p_base)
@@ -157,6 +178,7 @@ test_that("ppc_dens renders correctly", {
 
 test_that("ppc_dens_overlay renders correctly", {
   testthat::skip_on_cran()
+  testthat::skip_if_not_installed("vdiffr")
 
   p_base <- ppc_dens_overlay(vdiff_y, vdiff_yrep)
   vdiffr::expect_doppelganger("ppc_dens_overlay (default)", p_base)
@@ -188,6 +210,7 @@ test_that("ppc_dens_overlay_grouped renders correctly", {
 test_that("ppc_violin_grouped renders correctly", {
   testthat::skip_on_cran()
   testthat::skip_if_not(getRversion() >= "3.6.0")
+  testthat::skip_if_not_installed("vdiffr")
 
   p_base <- ppc_violin_grouped(vdiff_y, vdiff_yrep, vdiff_group)
   vdiffr::expect_doppelganger("ppc_violin_grouped (default)", p_base)

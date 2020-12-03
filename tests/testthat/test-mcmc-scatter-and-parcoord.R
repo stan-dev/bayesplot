@@ -311,7 +311,7 @@ test_that("mcmc_parcoord throws correct warnings and errors", {
 
   expect_error(
     mcmc_parcoord(post, np = np[, -1]),
-    "NUTS parameter data frame must have columns: Iteration, Parameter, Value, Chain",
+    "NUTS parameter data frame must have columns: Chain, Iteration, Parameter, Value",
     fixed = TRUE
   )
 

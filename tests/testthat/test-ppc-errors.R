@@ -18,8 +18,6 @@ test_that("ppc_error_hist_grouped returns ggplot object", {
   expect_gg(ppc_error_hist_grouped(y, yrep[1:5, ], group))
   expect_gg(ppc_error_hist_grouped(y, yrep[1,, drop = FALSE], group,
                                    freq = FALSE, binwidth = 1))
-  expect_error(ppc_error_hist_grouped(y2, yrep2, group2),
-               "'group' must have more than one unique value")
 })
 
 test_that("ppc_error_scatter_avg returns ggplot2 object", {
@@ -63,6 +61,7 @@ test_that("bin_errors works for edge cases", {
 
 test_that("ppc_error_binned renders correctly", {
   testthat::skip_on_cran()
+  testthat::skip_if_not_installed("vdiffr")
 
   rbeta2 <- function(n, mu, phi) {
     a <- mu * phi
