@@ -241,13 +241,14 @@ test_that("prepare_mcmc_array processes non-array input types correctly", {
   expect_equal(parameter_names(a3), colnames(chainlist[[1]]))
 
   # object with acceptable as.array method
-  suppressPackageStartupMessages(library(rstanarm))
-  fit <- suppressWarnings(stan_glm(mpg ~ wt, data = mtcars, chains = 2, iter = 500, refresh = 0))
-  a4 <- prepare_mcmc_array(fit)
-  expect_s3_class(a4, "mcmc_array")
-  expect_equal(a4, prepare_mcmc_array(as.array(fit)))
-  expect_equal(dim(a4), c(250, 2, 3))
-  expect_equal(parameter_names(a4), c("(Intercept)", "wt", "sigma"))
+  if (requireNamespace("rstanarm", quietly = TRUE)) {
+    fit <- suppressWarnings(rstanarm::stan_glm(mpg ~ wt, data = mtcars, chains = 2, iter = 500, refresh = 0))
+    a4 <- prepare_mcmc_array(fit)
+    expect_s3_class(a4, "mcmc_array")
+    expect_equal(a4, prepare_mcmc_array(as.array(fit)))
+    expect_equal(dim(a4), c(250, 2, 3))
+    expect_equal(parameter_names(a4), c("(Intercept)", "wt", "sigma"))
+  }
 
   # object with unacceptable as.array method
   fit2 <- lm(mpg ~ wt, data = mtcars)

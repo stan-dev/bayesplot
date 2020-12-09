@@ -1,13 +1,13 @@
 library(bayesplot)
-suppressPackageStartupMessages(library(rstanarm))
 context("Extractors")
 
-ITER <- 1000
-CHAINS <- 3
-fit <- stan_glm(mpg ~ wt + am, data = mtcars,
-                iter = ITER, chains = CHAINS,
-                refresh = 0)
-
+if (requireNamespace("rstanarm", quietly = TRUE)) {
+  ITER <- 1000
+  CHAINS <- 3
+  fit <- rstanarm::stan_glm(mpg ~ wt + am, data = mtcars,
+                            iter = ITER, chains = CHAINS,
+                            refresh = 0)
+}
 x <- list(cbind(a = 1:3, b = rnorm(3)), cbind(a = 1:3, b = rnorm(3)))
 
 # nuts_params and log_posterior methods -----------------------------------
@@ -30,6 +30,8 @@ test_that("nuts_params.list parameter selection ok", {
 })
 
 test_that("all nuts_params methods identical", {
+  skip_if_not_installed("rstanarm")
+  skip_if_not_installed("rstan")
   expect_identical(
     nuts_params(fit),
     nuts_params(fit$stanfit)
@@ -41,6 +43,8 @@ test_that("all nuts_params methods identical", {
 })
 
 test_that("nuts_params.stanreg returns correct structure", {
+  skip_if_not_installed("rstanarm")
+
   np <- nuts_params(fit)
   expect_identical(colnames(np), c("Chain", "Iteration", "Parameter", "Value"))
 
@@ -53,6 +57,8 @@ test_that("nuts_params.stanreg returns correct structure", {
 })
 
 test_that("log_posterior.stanreg returns correct structure", {
+  skip_if_not_installed("rstanarm")
+
   lp <- log_posterior(fit)
   expect_identical(colnames(lp), c("Chain", "Iteration", "Value"))
   expect_equal(length(unique(lp$Iteration)), floor(ITER / 2))
@@ -60,6 +66,8 @@ test_that("log_posterior.stanreg returns correct structure", {
 })
 
 test_that("rhat.stanreg returns correct structure", {
+  skip_if_not_installed("rstanarm")
+
   r <- rhat(fit)
   expect_named(r)
   expect_equal(r, summary(fit)[1:length(r), "Rhat"])
@@ -69,6 +77,8 @@ test_that("rhat.stanreg returns correct structure", {
 })
 
 test_that("neff_ratio.stanreg returns correct structure", {
+  skip_if_not_installed("rstanarm")
+
   expect_named(neff_ratio(fit, pars = c("wt", "am")), c("wt", "am"))
 
   ratio <- neff_ratio(fit)
@@ -78,6 +88,8 @@ test_that("neff_ratio.stanreg returns correct structure", {
 })
 
 test_that("rhat.stanfit returns correct structure", {
+  skip_if_not_installed("rstanarm")
+
   r <- rhat(fit$stanfit)
   expect_named(r)
   expect_equal(r, summary(fit)[, "Rhat"])
@@ -88,6 +100,8 @@ test_that("rhat.stanfit returns correct structure", {
 })
 
 test_that("neff_ratio.stanreg returns correct structure", {
+  skip_if_not_installed("rstanarm")
+
   denom <- floor(ITER / 2) * CHAINS
 
   ratio <- neff_ratio(fit$stanfit)
