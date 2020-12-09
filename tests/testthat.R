@@ -9,3 +9,15 @@ test_check("bayesplot")
 # pr$max_fail = 1000
 # devtools::test(reporter = pr)
 
+expect_equivalent <- function(...) {
+  testthat::expect_equivalent(...,
+                              ignore_function_env = TRUE,
+                              ignore_formula_env = TRUE)
+}
+expect_equal <- function(...) {
+  testthat::expect_equal(...,
+                         ignore_function_env = TRUE,
+                         ignore_formula_env = TRUE)
+}
+
+
