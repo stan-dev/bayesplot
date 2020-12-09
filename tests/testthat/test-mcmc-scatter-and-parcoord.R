@@ -4,6 +4,7 @@ context("MCMC: scatter, hex, and parallel coordinates plots")
 source(test_path("data-for-mcmc-tests.R"))
 
 if (requireNamespace("rstanarm", quietly = TRUE)) {
+  suppressPackageStartupMessages(library(rstanarm))
   # also fit an rstanarm model to use with mcmc_pairs
   fit <- stan_glm(mpg ~ wt + am, data = mtcars, iter = 1000, chains = 2, refresh = 0)
   post <- as.array(fit)
