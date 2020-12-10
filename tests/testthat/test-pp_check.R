@@ -6,11 +6,11 @@ test_that("default pp_check method works", {
   yrep <- example_yrep_draws()
   g <- example_group_data()
 
-  expect_equivalent(
+  expect_equal(
     pp_check(y, yrep[1:50, ], ppc_dens_overlay),
     ppc_dens_overlay(y, yrep[1:50, ])
   )
-  expect_equivalent(
+  expect_equal(
     pp_check(y, yrep, fun = "stat_grouped", group = g, stat = "median"),
     ppc_stat_grouped(y, yrep, group = g, stat = "median")
   )

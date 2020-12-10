@@ -15,9 +15,9 @@ test_that("ppc_scatter_avg returns ggplot object", {
 })
 
 test_that("ppc_scatter_avg same as ppc_scatter if nrow(yrep) = 1", {
-  expect_equivalent(ppc_scatter_avg(y2, yrep2),
+  expect_equal(ppc_scatter_avg(y2, yrep2),
                ppc_scatter(y2, yrep2))
-  expect_equivalent(ppc_scatter_avg(y, yrep[1,, drop=FALSE]),
+  expect_equal(ppc_scatter_avg(y, yrep[1,, drop=FALSE]),
                ppc_scatter(y, yrep[1,, drop = FALSE]))
 })
 
