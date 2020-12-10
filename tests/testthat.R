@@ -9,15 +9,11 @@ test_check("bayesplot")
 # pr$max_fail = 1000
 # devtools::test(reporter = pr)
 
-expect_equivalent <- function(...) {
-  testthat::expect_equivalent(...,
-                              ignore_function_env = TRUE,
-                              ignore_formula_env = TRUE)
-}
+# pass check.environment=FALSE to all.equal to avoid issue due to
+# changing behavior of all.equal:
+# https://stat.ethz.ch/pipermail/r-devel/2020-December/080172.html
 expect_equal <- function(...) {
-  testthat::expect_equal(...,
-                         ignore_function_env = TRUE,
-                         ignore_formula_env = TRUE)
+  testthat::expect_equal(..., check.environment=FALSE)
 }
 
 
