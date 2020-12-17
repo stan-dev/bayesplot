@@ -188,5 +188,3 @@ test_that("overlay_function returns the correct object", {
     check.environment = FALSE
   )
 })
-
-
