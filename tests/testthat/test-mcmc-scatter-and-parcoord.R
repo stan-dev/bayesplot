@@ -1,14 +1,16 @@
 library(bayesplot)
-suppressPackageStartupMessages(library(rstanarm))
 context("MCMC: scatter, hex, and parallel coordinates plots")
 
 source(test_path("data-for-mcmc-tests.R"))
 
-# also fit an rstanarm model to use with mcmc_pairs
-fit <- stan_glm(mpg ~ wt + am, data = mtcars, iter = 1000, chains = 2, refresh = 0)
-post <- as.array(fit)
-lp <- log_posterior(fit)
-np <- ensure_divergences(nuts_params(fit))
+if (requireNamespace("rstanarm", quietly = TRUE)) {
+  suppressPackageStartupMessages(library(rstanarm))
+  # also fit an rstanarm model to use with mcmc_pairs
+  fit <- stan_glm(mpg ~ wt + am, data = mtcars, iter = 1000, chains = 2, refresh = 0)
+  post <- as.array(fit)
+  lp <- log_posterior(fit)
+  np <- ensure_divergences(nuts_params(fit))
+}
 
 
 # mcmc_scatter/hex --------------------------------------------------------
@@ -29,6 +31,8 @@ test_that("mcmc_scatter throws error if number of parameters is not 2", {
 })
 
 test_that("mcmc_scatter accepts NUTS info", {
+  skip_if_not_installed("rstanarm")
+
   expect_gg(mcmc_scatter(post, pars = c("wt", "sigma"), np = np))
 
   div_style <- scatter_style_np(div_color = "orange", div_size = 2,
@@ -92,6 +96,7 @@ test_that("no mcmc_pairs non-NUTS 'condition's fail", {
 })
 
 test_that("mcmc_pairs works with NUTS info", {
+  skip_if_not_installed("rstanarm")
   expect_bayesplot_grid(mcmc_pairs(post, pars = c("wt", "am", "sigma"), np = np))
   expect_bayesplot_grid(mcmc_pairs(post, pars = c("wt", "am"),
                                    condition = pairs_condition(nuts="energy__"), np = np))
@@ -116,6 +121,8 @@ test_that("mcmc_pairs works with NUTS info", {
 
 
 test_that("mcmc_pairs throws correct warnings and errors", {
+  skip_if_not_installed("rstanarm")
+
   expect_warning(mcmc_pairs(arr1chain, regex_pars = "beta"),
                  "This plot is more useful with multiple chains")
   expect_error(mcmc_pairs(arr, pars = "sigma"),
@@ -300,12 +307,15 @@ test_that("pairs_condition message if multiple args specified", {
 test_that("mcmc_parcoord returns a ggplot object", {
   expect_gg(mcmc_parcoord(arr, pars = c("(Intercept)", "sigma")))
   expect_gg(mcmc_parcoord(arr, pars = "sigma", regex_pars = "beta"))
+})
 
-  # with nuts info
+test_that("mcmc_parcoord with nuts info returns a ggplot object", {
+  skip_if_not_installed("rstanarm")
   expect_gg(mcmc_parcoord(post, pars = c("wt", "am", "sigma"), np = np))
 })
 
 test_that("mcmc_parcoord throws correct warnings and errors", {
+  skip_if_not_installed("rstanarm")
   expect_error(mcmc_parcoord(arr, pars = "sigma"),
                "requires at least two parameters")
 

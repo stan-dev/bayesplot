@@ -172,7 +172,7 @@ ppc_loo_pit_overlay <- function(y,
       call. = FALSE
     )
   }
-  
+
   message(paste("NOTE: The kernel density estimate assumes continuous observations",
                 "and is not optimal for discrete observations."))
 
@@ -553,7 +553,7 @@ ppc_loo_ribbon <-
   attr(psis_object, "norm_const_log") <- attr(psis_object, "norm_const_log")[subset]
   attr(psis_object, "tail_len") <- attr(psis_object, "tail_len")[subset]
   attr(psis_object, "r_eff") <- attr(psis_object, "r_eff")[subset]
-  return(psis_object)
+  psis_object
 }
 
 ## Boundary correction based on code by ArViz development team
@@ -603,8 +603,7 @@ ppc_loo_ribbon <-
                             method = 'convolution',
                             sides = 2)[(npad + 1):(npad + grid_len)]
 
-  bc_pvals  <-  bc_pvals / (bw * (2 * pi)^0.5)
-  return(bc_pvals)
+  bc_pvals / (bw * (2 * pi)^0.5)
 }
 
 .kde_correction <- function(x,
@@ -625,12 +624,12 @@ ppc_loo_ribbon <-
 
   # Get relative frequency boundaries and counts for input vector
   bins <- seq(from= min(x), to = max(x), length.out = grid_len + 1)
-  hist_obj <- hist(x, breaks = bins, plot = FALSE)
+  hist_obj <- graphics::hist(x, breaks = bins, plot = FALSE)
   grid_breaks <- hist_obj$breaks
   grid_counts <- hist_obj$counts
 
   # Compute bandwidth based on use specification
-  bw <- density(x, bw = bw)$bw
+  bw <- stats::density(x, bw = bw)$bw
 
   # 1-D Convolution
   bc_pvals <- .linear_convolution(x, bw, grid_counts, grid_breaks, grid_len)
@@ -640,12 +639,12 @@ ppc_loo_ribbon <-
 
   xs <-  (grid_breaks[2:n_breaks] + grid_breaks[1:(n_breaks - 1)]) / 2
 
-  first_nonNA <- head(which(!is.na(bc_pvals)),1)
-  last_nonNA <- tail(which(!is.na(bc_pvals)),1)
+  first_nonNA <- utils::head(which(!is.na(bc_pvals)),1)
+  last_nonNA <- utils::tail(which(!is.na(bc_pvals)),1)
   bc_pvals[1:first_nonNA] <- bc_pvals[first_nonNA]
   bc_pvals[last_nonNA:length(bc_pvals)] <- bc_pvals[last_nonNA]
 
-  return(list(xs = xs, bc_pvals = bc_pvals))
+  list(xs = xs, bc_pvals = bc_pvals)
 }
 
 # Wrapper function to generate runif reference lines based on
@@ -669,5 +668,5 @@ ppc_loo_ribbon <-
     xs[idx[i]:(idx[i+1]-1)] <- bc_list$xs
   }
 
-  return(list(xs = xs, unifs = bc_mat))
+  list(xs = xs, unifs = bc_mat)
 }
