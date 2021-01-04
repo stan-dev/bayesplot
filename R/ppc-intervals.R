@@ -362,7 +362,7 @@ label_x <- function(x) {
       )
     } 
 
-    if (y_draw == "line" | y_draw == "line") {
+    if (y_draw == "line" | y_draw == "both") {
       graph <- graph + geom_line(
         aes_(y = ~ y_obs, color = "y"),
         size = 0.5
