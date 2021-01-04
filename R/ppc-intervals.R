@@ -181,7 +181,7 @@ ppc_ribbon <- function(y,
                        prob_outer = 0.9,
                        alpha = 0.33,
                        size = 0.25,
-                       y_is_point = FALSE) {
+                       y_draw = "line") {
   check_ignored_arguments(...)
 
   data <- ppc_intervals_data(
@@ -199,7 +199,7 @@ ppc_ribbon <- function(y,
     grouped = FALSE,
     style = "ribbon",
     x_lab = label_x(x),
-    y_is_point = y_is_point
+    y_draw = y_draw
   )
 }
 
@@ -322,7 +322,7 @@ label_x <- function(x) {
            grouped = FALSE,
            style = c("intervals", "ribbon"),
            x_lab = NULL,
-           y_is_point = FALSE) {
+           y_draw = "line") {
 
   style <- match.arg(style)
 
@@ -354,13 +354,15 @@ label_x <- function(x) {
       ) +
       geom_blank(aes_(fill = "y"))
 
-    if (y_is_point) {
+    if (y_draw == "point" | y_draw == "both") {
       graph <- graph + geom_point(
         mapping = aes_(y = ~ y_obs, color = "y", fill = "y"),
         shape = 21,
         size = 1.5
       )
-    } else {
+    } 
+
+    if (y_draw == "line" | y_draw == "line") {
       graph <- graph + geom_line(
         aes_(y = ~ y_obs, color = "y"),
         size = 0.5
