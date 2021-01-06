@@ -121,8 +121,8 @@ test_that("cmdstanr methods work", {
 
   fit <- cmdstanr::cmdstanr_example("logistic", iter_sampling = 500, chains = 2)
   np <- nuts_params(fit)
-  np_names <- paste0(c("accept_stat", "stepsize", "treedepth", "n_leapfrog",
-                       "divergent", "energy"), "__")
+  np_names <- c("treedepth__", "divergent__", "accept_stat__", "stepsize__",
+                "n_leapfrog__", "energy__")
   expect_identical(levels(np$Parameter), np_names)
   expect_equal(range(np$Iteration), c(1, 500))
   expect_equal(range(np$Chain), c(1, 2))
@@ -134,10 +134,10 @@ test_that("cmdstanr methods work", {
   expect_equal(range(np$Iteration), c(1, 500))
 
   r <- rhat(fit)
-  expect_named(r, c("alpha", "beta[1]", "beta[2]", "beta[3]"))
+  expect_named(head(r, 4), c("alpha", "beta[1]", "beta[2]", "beta[3]"))
   expect_true(all(round(r) == 1))
 
   ratio <- neff_ratio(fit)
-  expect_named(ratio, c("alpha", "beta[1]", "beta[2]", "beta[3]"))
+  expect_named(head(ratio, 4), c("alpha", "beta[1]", "beta[2]", "beta[3]"))
   expect_true(all(ratio > 0))
 })
