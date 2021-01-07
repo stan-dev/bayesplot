@@ -9,7 +9,7 @@
 #'   data, `ppc_km_overlay()` is currently the only plotting function designed
 #'   *specifically* for censored data. We encourage you to suggest or contribute
 #'   additional plots at
-#'   [https://github.com/stan-dev/bayesplot](github.com/stan-dev/bayesplot).
+#'   [github.com/stan-dev/bayesplot](https://github.com/stan-dev/bayesplot).
 #'
 #' @name PPC-censoring
 #' @family PPCs

@@ -39,7 +39,7 @@ Although some of the other \pkg{bayesplot} plots can be used with censored
 data, \code{ppc_km_overlay()} is currently the only plotting function designed
 \emph{specifically} for censored data. We encourage you to suggest or contribute
 additional plots at
-\href{github.com/stan-dev/bayesplot}{https://github.com/stan-dev/bayesplot}.
+\href{https://github.com/stan-dev/bayesplot}{github.com/stan-dev/bayesplot}.
 }
 \section{Plot Descriptions}{
 
