@@ -35,20 +35,21 @@ distributions of simulated/replicated data \code{yrep} from the posterior
 predictive distribution. See the \strong{Plot Descriptions} section, below, for
 details.
 
-Although some of the other plots can be used with censored data,
-\code{ppc_km_overlay()} is currently the only plotting function designed
+Although some of the other \pkg{bayesplot} plots can be used with censored
+data, \code{ppc_km_overlay()} is currently the only plotting function designed
 \emph{specifically} for censored data. We encourage you to suggest or contribute
-additional plots at \href{github.com/stan-dev/bayesplot}{https://github.com/stan-dev/bayesplot}.
+additional plots at
+\href{github.com/stan-dev/bayesplot}{https://github.com/stan-dev/bayesplot}.
 }
 \section{Plot Descriptions}{
 
 \describe{
 \item{\code{ppc_km_overlay()}}{
 Empirical CCDF estimates of each dataset (row) in \code{yrep} are overlaid,
-with the Kaplan-Meier estimate (Kaplan and Meier, 1958) for \code{y} itself
-on top (and in a darker shade). This is a PPC suitable for
-right-censored \code{y}. Note that the replicated data from \code{yrep} is assumed
-to be uncensored.
+with the Kaplan-Meier estimate (Kaplan and Meier, 1958) for \code{y} itself on
+top (and in a darker shade). This is a PPC suitable for right-censored
+\code{y}. Note that the replicated data from \code{yrep} is assumed to be
+uncensored.
 }
 }
 }

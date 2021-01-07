@@ -81,7 +81,7 @@ matrices also inheriting from "array" in R 4.0.
 * Added `mcmc_trace_data()`, which returns the data used for plotting the trace
   plots and rank histograms. (Advances #97)
 
-* [ColorBrewer](http://colorbrewer2.org) palettes are now available as color
+* [ColorBrewer](https://colorbrewer2.org/) palettes are now available as color
   schemes via
   [`color_scheme_set()`](https://mc-stan.org/bayesplot/reference/bayesplot-colors.html).
   For example, `color_scheme_set("brewer-Spectral")` will use the Spectral
