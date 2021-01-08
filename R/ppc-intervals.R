@@ -215,7 +215,8 @@ ppc_ribbon_grouped <- function(y,
                                prob = 0.5,
                                prob_outer = 0.9,
                                alpha = 0.33,
-                               size = 0.25) {
+                               size = 0.25,
+                               y_draw = "line") {
   check_ignored_arguments(...)
 
   data <- ppc_intervals_data(
@@ -236,7 +237,8 @@ ppc_ribbon_grouped <- function(y,
     size = size,
     grouped = TRUE,
     style = "ribbon",
-    x_lab = label_x(x)
+    x_lab = label_x(x),
+    y_draw = y_draw
   )
 }
 
