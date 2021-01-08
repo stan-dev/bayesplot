@@ -10,7 +10,7 @@
 #'
 #' @template args-hist
 #' @param size An optional value to override [ggplot2::geom_point()]'s
-#'   default size (for `mcmc_rhat()`, `mcmc_neff()`) or
+#'   default size (for `mcmc_rhat()`, `mcmc_neff()`, `mcmc_mcse()`) or
 #'   [ggplot2::geom_line()]'s default size (for `mcmc_acf()`).
 #' @param ... Currently ignored.
 #'
@@ -35,6 +35,16 @@
 #'   * _light_: between 0.5 and 1 (high)
 #'   * _mid_: between 0.1 and 0.5 (good)
 #'   * _dark_: below 0.1 (low)
+#' }
+#'
+#' \item{`mcmc_mcse()`, `mcmc_mcse_hist()`}{
+#'   Ratios of monte carlo standard error to posterior standard deviation
+#'   as either points or a histogram. Values are colored using different shades
+#'   (lighter is better). The chosen thresholds are somewhat arbitrary,
+#'   but can be useful guidelines in practice.
+#'   * _light_: below 0.05 (small mcse)
+#'   * _mid_: between 0.05 and 0.1 (ok)
+#'   * _dark_: above 0.1 (high mcse)
 #' }
 #'
 #' \item{`mcmc_acf()`, `mcmc_acf_bar()`}{
@@ -90,6 +100,11 @@
 #' ratio <- c(runif(100, 0, 1))
 #' mcmc_neff_hist(ratio)
 #' mcmc_neff(ratio)
+#'
+#' # fake mcse ratio values to use for demonstration
+#' ratio <- c(runif(100, 0, 1))
+#' mcmc_mcse_hist(ratio)
+#' mcmc_mcse(ratio)
 #'
 #' \dontrun{
 #' # Example using rstanarm model (requires rstanarm package)
@@ -294,6 +309,94 @@ mcmc_neff_data <- function(ratio, ...) {
   diagnostic_data_frame(ratio)
 }
 
+# monte carlo standard error -------------------------------------------
+
+#' @rdname MCMC-diagnostics
+#' @export
+#' @param ratio A vector of *ratios* of monte carlo standard error to
+#'   posterior standard deviation. See [mcse_ratio()].
+#'
+mcmc_mcse <- function(ratio, ..., size = NULL) {
+  check_ignored_arguments(...)
+  data <- mcmc_mcse_data(ratio)
+
+  max_ratio <- max(ratio, na.rm = TRUE)
+  if (max_ratio < 1.25) {
+    additional_breaks <- numeric(0)
+  } else if (max_ratio < 1.5) {
+    additional_breaks <- 1.25
+    additional_labels <- "1.25"
+  } else {
+    additional_breaks <- seq(1.5, max_ratio, by = 0.5)
+  }
+  breaks <- c(0, 0.1, 0.25, 0.5, 0.75, 1, additional_breaks)
+
+  ggplot(
+    data,
+    mapping = aes_(
+      x = ~ value,
+      y = ~ parameter,
+      color = ~ rating,
+      fill = ~ rating)) +
+    geom_segment(
+      aes_(yend = ~ parameter, xend = -Inf),
+      na.rm = TRUE) +
+    diagnostic_points(size) +
+    vline_at(
+      c(0.1, 0.5, 1),
+      color = "gray",
+      linetype = 2,
+      size = 0.25) +
+    labs(y = NULL, x = expression(mcse/sd)) +
+    scale_fill_diagnostic("mcse") +
+    scale_color_diagnostic("mcse") +
+    scale_x_continuous(
+      breaks = breaks,
+      # as.character truncates trailing zeroes, while ggplot default does not
+      labels = as.character(breaks),
+      limits = c(0, max(1, max_ratio) + 0.05),
+      expand = c(0, 0)) +
+    bayesplot_theme_get() +
+    yaxis_text(FALSE) +
+    yaxis_title(FALSE) +
+    yaxis_ticks(FALSE)
+}
+
+#' @rdname MCMC-diagnostics
+#' @export
+mcmc_mcse_hist <- function(ratio, ..., binwidth = NULL, breaks = NULL) {
+  check_ignored_arguments(...)
+  data <- mcmc_mcse_data(ratio)
+
+  ggplot(
+    data,
+    mapping = aes_(
+      x = ~ value,
+      color = ~ rating,
+      fill = ~ rating)) +
+    geom_histogram(
+      size = .25,
+      na.rm = TRUE,
+      binwidth = binwidth,
+      breaks = breaks) +
+    scale_color_diagnostic("mcse") +
+    scale_fill_diagnostic("mcse") +
+    labs(x = expression(mcse/sd), y = NULL) +
+    dont_expand_y_axis(c(0.005, 0)) +
+    yaxis_title(FALSE) +
+    yaxis_text(FALSE) +
+    yaxis_ticks(FALSE) +
+    bayesplot_theme_get()
+}
+
+#' @rdname MCMC-diagnostics
+#' @export
+mcmc_mcse_data <- function(ratio, ...) {
+  check_ignored_arguments(...)
+  ratio <- drop_NAs_and_warn(new_mcse_ratio(ratio))
+  diagnostic_data_frame(ratio)
+}
+
 
 # autocorrelation ---------------------------------------------------------
 
@@ -374,6 +477,12 @@ diagnostic_factor.neff_ratio <- function(x, breaks = c(0.1, 0.5)) {
       ordered_result = FALSE)
 }
 
+diagnostic_factor.mcse_ratio <- function(x, breaks = c(0.05, 0.1)) {
+  cut(x, breaks = c(-Inf, breaks, Inf),
+      labels = c("low", "ok", "high"),
+      ordered_result = FALSE)
+}
+
 diagnostic_data_frame <- function(x) {
   x <- auto_name(sort(x))
   stopifnot(!anyDuplicated(names(x)))
@@ -411,17 +520,17 @@ diagnostic_points <- function(size = NULL) {
 
 # Functions wrapping around scale_color_manual() and scale_fill_manual(), used to
 # color the intervals by rhat value
-scale_color_diagnostic <- function(diagnostic = c("rhat", "neff")) {
+scale_color_diagnostic <- function(diagnostic = c("rhat", "neff", "mcse")) {
   d <- match.arg(diagnostic)
   diagnostic_color_scale(d, aesthetic = "color")
 }
 
-scale_fill_diagnostic <- function(diagnostic = c("rhat", "neff")) {
+scale_fill_diagnostic <- function(diagnostic = c("rhat", "neff", "mcse")) {
   d <- match.arg(diagnostic)
   diagnostic_color_scale(d, aesthetic = "fill")
 }
 
-diagnostic_color_scale <- function(diagnostic = c("rhat", "neff_ratio"),
+diagnostic_color_scale <- function(diagnostic = c("rhat", "neff_ratio", "mcse_ratio"),
                                    aesthetic = c("color", "fill")) {
   diagnostic <- match.arg(diagnostic)
   aesthetic <- match.arg(aesthetic)
@@ -437,13 +546,16 @@ diagnostic_color_scale <- function(diagnostic = c("rhat", "neff_ratio"),
   )
 }
 
-diagnostic_colors <- function(diagnostic = c("rhat", "neff_ratio"),
+diagnostic_colors <- function(diagnostic = c("rhat", "neff_ratio", "mcse_ratio"),
                               aesthetic = c("color", "fill")) {
   diagnostic <- match.arg(diagnostic)
   aesthetic <- match.arg(aesthetic)
   color_levels <- c("light", "mid", "dark")
   if (diagnostic == "neff_ratio") {
     color_levels <- rev(color_levels)
+  }
+  if (diagnostic == "mcse_ratio") {
+    color_levels <- color_levels
   }
   if (aesthetic == "color") {
     color_levels <- paste0(color_levels, "_highlight")
@@ -468,6 +580,11 @@ diagnostic_color_labels <- list(
     low  = expression(N[eff] / N <= 0.1),
     ok   = expression(N[eff] / N <= 0.5),
     high = expression(N[eff] / N > 0.5)
+  ),
+  mcse_ratio = c(
+    low  = expression(mcse / sd <= 0.05),
+    ok   = expression(mcse / sd <= 0.1),
+    high = expression(mcse / sd > 0.1)
   )
 )
 
@@ -662,3 +779,30 @@ as_neff_ratio <- function(x) {
   as_neff_ratio(NextMethod())
 }
 
+new_mcse_ratio <- function(x) {
+  # Convert a 1-d arrays to a vectors
+  if (is.array(x) && length(dim(x)) == 1) {
+    x <- as.vector(x)
+  }
+  as_mcse_ratio(validate_mcse_ratio(x))
+}
+
+validate_mcse_ratio <- function(x) {
+  stopifnot(is.numeric(x), !is.list(x), !is.array(x))
+  if (any(x < 0, na.rm = TRUE)) {
+    abort("All mcse ratios must be positive.")
+  }
+  x
+}
+
+as_mcse_ratio <- function(x) {
+  structure(x, class = c("mcse_ratio", "numeric"), names = names(x))
+}
+
+#' Indexing method -- needed so that sort, etc. don't strip names.
+#' @export
+#' @keywords internal
+#' @noRd
+`[.mcse_ratio` <- function (x, i, j, drop = TRUE, ...) {
+  as_mcse_ratio(NextMethod())
+}
