@@ -3,6 +3,7 @@
 \name{PPC-loo}
 \alias{PPC-loo}
 \alias{ppc_loo_pit_overlay}
+\alias{ppc_loo_pit_data}
 \alias{ppc_loo_pit_qq}
 \alias{ppc_loo_pit}
 \alias{ppc_loo_intervals}
@@ -13,16 +14,30 @@ ppc_loo_pit_overlay(
   y,
   yrep,
   lw,
-  pit,
-  samples = 100,
   ...,
+  pit = NULL,
+  samples = 100,
   size = 0.25,
   alpha = 0.7,
-  trim = FALSE,
+  boundary_correction = TRUE,
+  grid_len = 512,
   bw = "nrd0",
+  trim = FALSE,
   adjust = 1,
   kernel = "gaussian",
   n_dens = 1024
+)
+
+ppc_loo_pit_data(
+  y,
+  yrep,
+  lw,
+  ...,
+  pit = NULL,
+  samples = 100,
+  bw = "nrd0",
+  boundary_correction = TRUE,
+  grid_len = 512
 )
 
 ppc_loo_pit_qq(
@@ -89,6 +104,8 @@ sense. See \strong{Details} for additional instructions.}
 \code{yrep}. See \code{\link[loo:psis]{loo::psis()}} and the associated \code{weights()} method as well as
 the \strong{Examples} section, below.}
 
+\item{...}{Currently unused.}
+
 \item{pit}{For \code{ppc_loo_pit_overlay()} and \code{ppc_loo_pit_qq()}, optionally a
 vector of precomputed PIT values that can be specified instead of \code{y},
 \code{yrep}, and \code{lw} (these are all ignored if \code{pit} is specified). If not
@@ -100,27 +117,38 @@ distribution. The default is 100. The density estimate of each dataset is
 plotted as a thin line in the plot, with the density estimate of the LOO
 PITs overlaid as a thicker dark line.}
 
-\item{...}{Currently unused.}
-
 \item{alpha, size, fatten}{Arguments passed to code geoms to control plot
 aesthetics. For \code{ppc_loo_pit_qq()} and \code{ppc_loo_pit_overlay()}, \code{size} and
 \code{alpha} are passed to \code{\link[ggplot2:geom_point]{ggplot2::geom_point()}} and
 \code{\link[ggplot2:geom_density]{ggplot2::geom_density()}}, respectively. For \code{ppc_loo_intervals()}, \code{size}
-and \code{fatten} are passed to \code{\link[ggplot2:geom_pointrange]{ggplot2::geom_pointrange()}}. For
+and \code{fatten} are passed to \code{\link[ggplot2:geom_linerange]{ggplot2::geom_pointrange()}}. For
 \code{ppc_loo_ribbon()}, \code{alpha} and \code{size} are passed to
 \code{\link[ggplot2:geom_ribbon]{ggplot2::geom_ribbon()}}.}
 
-\item{trim}{Passed to \code{\link[ggplot2:stat_density]{ggplot2::stat_density()}}.}
+\item{boundary_correction}{For \code{ppc_loo_pit_overlay()}, when set to \code{TRUE}
+(the default) the function will compute boundary corrected density values
+via convolution and a Gaussian filter, also known as the reflection method
+(Boneva et al., 1971). As a result, parameters controlling the standard
+kernel density estimation such as \code{adjust}, \code{kernel} and \code{n_dens} are
+ignored. NOTE: The current implementation only works well for continuous
+observations.}
+
+\item{grid_len}{For \code{ppc_loo_pit_overlay()}, when \code{boundary_correction} is
+set to \code{TRUE} this parameter specifies the number of points used to
+generate the estimations. This is set to 512 by default.}
 
 \item{bw, adjust, kernel, n_dens}{Optional arguments passed to
 \code{\link[stats:density]{stats::density()}} to override default kernel density estimation
 parameters. \code{n_dens} defaults to \code{1024}.}
 
+\item{trim}{Passed to \code{\link[ggplot2:geom_density]{ggplot2::stat_density()}}.}
+
 \item{compare}{For \code{ppc_loo_pit_qq()}, a string that can be either
 \code{"uniform"} or \code{"normal"}. If \code{"uniform"} (the default) the Q-Q plot
 compares computed PIT values to the standard uniform distribution. If
-\code{compare="normal"}, the Q-Q plot compares standardized PIT values to the
-standard normal distribution.}
+\code{compare="normal"}, the Q-Q plot compares standard normal quantiles
+calculated from the PIT values to the theoretical standard normal
+quantiles.}
 
 \item{psis_object}{If using \strong{loo} version \verb{2.0.0} or greater, an
 object returned by the \code{psis()} function (or by the \code{loo()} function
@@ -184,11 +212,12 @@ the miscalibration with a quantile-quantile (Q-Q) plot comparing the LOO
 PITs to the standard uniform distribution. Comparing to the uniform is not
 good for extreme probabilities close to 0 and 1, so it can sometimes be
 useful to set the \code{compare} argument to \code{"normal"}, which will
-produce a Q-Q plot comparing standardized PIT values to the standard normal
-distribution that can help see the (mis)calibration better for the extreme
-values. However, in most cases we have found that the overlaid density plot
-(\code{ppc_loo_pit_overlay()}) function will provided a clearer picture of
-calibration problems that the Q-Q plot.
+produce a Q-Q plot comparing standard normal quantiles calculated from the
+PIT values to the theoretical standard normal quantiles. This can help see
+the (mis)calibration better for the extreme values. However, in most cases
+we have found that the overlaid density plot (\code{ppc_loo_pit_overlay()})
+function will provide a clearer picture of calibration problems than the
+Q-Q plot.
 }
 \item{\code{ppc_loo_intervals()}, \code{ppc_loo_ribbon()}}{
 Similar to \code{\link[=ppc_intervals]{ppc_intervals()}} and \code{\link[=ppc_ribbon]{ppc_ribbon()}} but the intervals are for
@@ -253,10 +282,16 @@ Vehtari, A., Gelman, A., and Gabry, J. (2017). Practical
 Bayesian model evaluation using leave-one-out cross-validation and WAIC.
 \emph{Statistics and Computing}. 27(5), 1413--1432.
 doi:10.1007/s11222-016-9696-4. arXiv preprint:
-\url{https://arxiv.org/abs/1507.04544/}
+\url{https://arxiv.org/abs/1507.04544}
+
+Boneva, L. I., Kendall, D., & Stefanov, I. (1971). Spline
+transformations: Three new diagnostic aids for the statistical
+data-analyst. \emph{J. R. Stat. Soc. B} (Methodological), 33(1), 1-71.
+https://www.jstor.org/stable/2986005.
 }
 \seealso{
 Other PPCs: 
+\code{\link{PPC-censoring}},
 \code{\link{PPC-discrete}},
 \code{\link{PPC-distributions}},
 \code{\link{PPC-errors}},

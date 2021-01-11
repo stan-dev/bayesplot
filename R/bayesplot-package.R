@@ -44,7 +44,7 @@
 #'
 #' @section Resources:
 #' * __Online documentation and vignettes__: Visit the __bayesplot__ website at
-#'   <https://mc-stan.org/bayesplot>
+#'   <https://mc-stan.org/bayesplot/>
 #' * __Bug reports and feature requests__: If you would like to request a new
 #'   feature or if you have noticed a bug that needs to be fixed please let us
 #'   know at the **bayesplot** issue tracker at
@@ -98,6 +98,6 @@ NULL
 # release reminders (for devtools)
 release_questions <- function() { # nocov start
   c(
-    "Have you reduced the size of the vignettes for CRAN?",
+    "Have you reduced the size of the vignettes for CRAN?"
   )
 } # nocov end

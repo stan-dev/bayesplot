@@ -1,13 +1,13 @@
 library(bayesplot)
-suppressPackageStartupMessages(library(rstanarm))
 context("Extractors")
 
-ITER <- 1000
-CHAINS <- 3
-fit <- stan_glm(mpg ~ wt + am, data = mtcars,
-                iter = ITER, chains = CHAINS,
-                refresh = 0)
-
+if (requireNamespace("rstanarm", quietly = TRUE)) {
+  ITER <- 1000
+  CHAINS <- 3
+  fit <- rstanarm::stan_glm(mpg ~ wt + am, data = mtcars,
+                            iter = ITER, chains = CHAINS,
+                            refresh = 0)
+}
 x <- list(cbind(a = 1:3, b = rnorm(3)), cbind(a = 1:3, b = rnorm(3)))
 
 # nuts_params and log_posterior methods -----------------------------------
@@ -30,6 +30,8 @@ test_that("nuts_params.list parameter selection ok", {
 })
 
 test_that("all nuts_params methods identical", {
+  skip_if_not_installed("rstanarm")
+  skip_if_not_installed("rstan")
   expect_identical(
     nuts_params(fit),
     nuts_params(fit$stanfit)
@@ -41,8 +43,10 @@ test_that("all nuts_params methods identical", {
 })
 
 test_that("nuts_params.stanreg returns correct structure", {
+  skip_if_not_installed("rstanarm")
+
   np <- nuts_params(fit)
-  expect_identical(colnames(np), c("Iteration", "Parameter", "Value", "Chain"))
+  expect_identical(colnames(np), c("Chain", "Iteration", "Parameter", "Value"))
 
   np_names <- paste0(c("accept_stat", "stepsize", "treedepth", "n_leapfrog",
                        "divergent", "energy"), "__")
@@ -53,13 +57,17 @@ test_that("nuts_params.stanreg returns correct structure", {
 })
 
 test_that("log_posterior.stanreg returns correct structure", {
+  skip_if_not_installed("rstanarm")
+
   lp <- log_posterior(fit)
-  expect_identical(colnames(lp), c("Iteration", "Value", "Chain"))
+  expect_identical(colnames(lp), c("Chain", "Iteration", "Value"))
   expect_equal(length(unique(lp$Iteration)), floor(ITER / 2))
   expect_equal(length(unique(lp$Chain)), CHAINS)
 })
 
 test_that("rhat.stanreg returns correct structure", {
+  skip_if_not_installed("rstanarm")
+
   r <- rhat(fit)
   expect_named(r)
   expect_equal(r, summary(fit)[1:length(r), "Rhat"])
@@ -69,6 +77,8 @@ test_that("rhat.stanreg returns correct structure", {
 })
 
 test_that("neff_ratio.stanreg returns correct structure", {
+  skip_if_not_installed("rstanarm")
+
   expect_named(neff_ratio(fit, pars = c("wt", "am")), c("wt", "am"))
 
   ratio <- neff_ratio(fit)
@@ -78,6 +88,8 @@ test_that("neff_ratio.stanreg returns correct structure", {
 })
 
 test_that("rhat.stanfit returns correct structure", {
+  skip_if_not_installed("rstanarm")
+
   r <- rhat(fit$stanfit)
   expect_named(r)
   expect_equal(r, summary(fit)[, "Rhat"])
@@ -88,6 +100,8 @@ test_that("rhat.stanfit returns correct structure", {
 })
 
 test_that("neff_ratio.stanreg returns correct structure", {
+  skip_if_not_installed("rstanarm")
+
   denom <- floor(ITER / 2) * CHAINS
 
   ratio <- neff_ratio(fit$stanfit)
@@ -99,4 +113,31 @@ test_that("neff_ratio.stanreg returns correct structure", {
   expect_named(ratio2)
   ans2 <- summary(fit, pars = c("wt", "sigma"))[, "n_eff"] / denom
   expect_equal(ratio2, ans2, tol = 0.001)
+})
+
+test_that("cmdstanr methods work", {
+  skip_on_cran()
+  skip_if_not_installed("cmdstanr")
+
+  fit <- cmdstanr::cmdstanr_example("logistic", iter_sampling = 500, chains = 2)
+  np <- nuts_params(fit)
+  np_names <- c("treedepth__", "divergent__", "accept_stat__", "stepsize__",
+                "n_leapfrog__", "energy__")
+  expect_identical(levels(np$Parameter), np_names)
+  expect_equal(range(np$Iteration), c(1, 500))
+  expect_equal(range(np$Chain), c(1, 2))
+  expect_true(all(np$Value[np$Parameter == "divergent__"] == 0))
+
+  lp <- log_posterior(fit)
+  expect_named(lp, c("Chain", "Iteration", "Value"))
+  expect_equal(range(np$Chain), c(1, 2))
+  expect_equal(range(np$Iteration), c(1, 500))
+
+  r <- rhat(fit)
+  expect_named(head(r, 4), c("alpha", "beta[1]", "beta[2]", "beta[3]"))
+  expect_true(all(round(r) == 1))
+
+  ratio <- neff_ratio(fit)
+  expect_named(head(ratio, 4), c("alpha", "beta[1]", "beta[2]", "beta[3]"))
+  expect_true(all(ratio > 0))
 })

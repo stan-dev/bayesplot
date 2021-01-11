@@ -70,7 +70,8 @@ validate_yrep <- function(yrep, y) {
 #' Checks that grouping variable has same length as `y` and is either a vector or
 #' factor variable.
 #'
-#' @param group,y The user's `group` object and the `y` object returned by `validate_y()`.
+#' @param group,y The user's `group` object and the `y` object returned by
+#'   `validate_y()`.
 #' @return Either throws an error or returns `group` (coerced to a factor).
 #' @noRd
 validate_group <- function(group, y) {
@@ -86,10 +87,6 @@ validate_group <- function(group, y) {
 
   if (length(group) != length(y)) {
     abort("length(group) must be equal to length(y).")
-  }
-
-  if (length(unique(group)) == 1) {
-    abort("'group' must have more than one unique value.")
   }
 
   unname(group)

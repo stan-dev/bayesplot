@@ -106,8 +106,13 @@ test_that("mcmc_* throws error if 1 chain but multiple chains required", {
   expect_error(mcmc_violin(arr1chain), "requires multiple chains")
 })
 
+
+
+# Visual tests ------------------------------------------------------------
+
 test_that("mcmc_hist renders correctly", {
   testthat::skip_on_cran()
+  testthat::skip_if_not_installed("vdiffr")
 
   p_base <- mcmc_hist(vdiff_dframe)
   vdiffr::expect_doppelganger("mcmc_hist (default)", p_base)

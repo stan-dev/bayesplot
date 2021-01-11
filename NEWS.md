@@ -1,13 +1,50 @@
 <!-- See http://style.tidyverse.org/news.html for advice on writing news -->
 
 
-<!-- 
-# bayesplot 1.7.2.9000
+# bayesplot 1.8.0
 
+<!--
 (GitHub issue/PR numbers in parentheses)
-
-Items for next release go here
+* Items for next release go here
 -->
+
+### Bug fixes
+
+* `mcmc_areas()` tries to use less vertical blank space. (#218, #230)
+
+* Fix bug in `color_scheme_view()` minimal theme (#213).
+
+* Fix error in `mcmc_acf()` for certain input types. (#244, #245, @hhau)
+
+### New features
+
+* New plotting functions `ppc_dens_overlay_grouped()` and `ppc_ecdf_overlay_grouped()`
+  for plotting density and cumulative distributions of the posterior predictive
+  distribution (versus observed data) by group. (#212)
+
+* New plotting function `ppc_km_overlay()` for outcome variables that are   
+  right-censored. Empirical CCDF estimates of `yrep` are compared with the
+  Kaplan-Meier estimate of `y`. (#233, #234, @fweber144)
+  
+* `ppc_loo_pit_overlay()` now uses a boundary correction for an improved kernel
+  density estimation. The new argument `boundary_correction` defaults to TRUE but
+  can be set to FALSE to recover the old version of the plot. (#171, #235,
+  @ecoronado92)
+
+* CmdStanMCMC objects (from CmdStanR) can now be used with extractor
+  functions `nuts_params()`, `log_posterior()`, `rhat()`, and
+  `neff_ratio()`. (#227)
+  
+* On the y axis, `ppc_loo_pit_qq(..., compare = "normal")` now plots standard
+  normal quantiles calculated from the PIT values (instead of the standardized
+  PIT values). (#240, #243, @fweber144)
+
+* `mcmc_rank_overlay()` gains argument `facet_args`. (#221, @hhau)
+
+* For `mcmc_intervals()` the size` of the points and interval lines can be set with
+  `mcmc_intervals(..., outer_size, inner_size, point_size)`. (#215, #228, #229)
+
+
 
 # bayesplot 1.7.2
 
@@ -43,7 +80,7 @@ matrices also inheriting from "array" in R 4.0.
 * Added `mcmc_trace_data()`, which returns the data used for plotting the trace
   plots and rank histograms. (Advances #97)
 
-* [ColorBrewer](http://colorbrewer2.org) palettes are now available as color
+* [ColorBrewer](https://colorbrewer2.org/) palettes are now available as color
   schemes via
   [`color_scheme_set()`](https://mc-stan.org/bayesplot/reference/bayesplot-colors.html).
   For example, `color_scheme_set("brewer-Spectral")` will use the Spectral

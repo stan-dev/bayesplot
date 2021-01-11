@@ -16,3 +16,4 @@ Rplots.pdf
 tests/figs/*
 ^docs$
 ^_pkgdown\.yml$
+^\.github$

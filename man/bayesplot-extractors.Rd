@@ -8,13 +8,17 @@
 \alias{neff_ratio}
 \alias{log_posterior.stanfit}
 \alias{log_posterior.stanreg}
+\alias{log_posterior.CmdStanMCMC}
 \alias{nuts_params.stanfit}
 \alias{nuts_params.stanreg}
 \alias{nuts_params.list}
+\alias{nuts_params.CmdStanMCMC}
 \alias{rhat.stanfit}
 \alias{rhat.stanreg}
+\alias{rhat.CmdStanMCMC}
 \alias{neff_ratio.stanfit}
 \alias{neff_ratio.stanreg}
+\alias{neff_ratio.CmdStanMCMC}
 \title{Extract quantities needed for plotting from model objects}
 \usage{
 log_posterior(object, ...)
@@ -29,19 +33,27 @@ neff_ratio(object, ...)
 
 \method{log_posterior}{stanreg}(object, inc_warmup = FALSE, ...)
 
+\method{log_posterior}{CmdStanMCMC}(object, inc_warmup = FALSE, ...)
+
 \method{nuts_params}{stanfit}(object, pars = NULL, inc_warmup = FALSE, ...)
 
 \method{nuts_params}{stanreg}(object, pars = NULL, inc_warmup = FALSE, ...)
 
 \method{nuts_params}{list}(object, pars = NULL, ...)
 
+\method{nuts_params}{CmdStanMCMC}(object, pars = NULL, ...)
+
 \method{rhat}{stanfit}(object, pars = NULL, ...)
 
 \method{rhat}{stanreg}(object, pars = NULL, regex_pars = NULL, ...)
 
+\method{rhat}{CmdStanMCMC}(object, pars = NULL, ...)
+
 \method{neff_ratio}{stanfit}(object, pars = NULL, ...)
 
 \method{neff_ratio}{stanreg}(object, pars = NULL, regex_pars = NULL, ...)
+
+\method{neff_ratio}{CmdStanMCMC}(object, pars = NULL, ...)
 }
 \arguments{
 \item{object}{The object to use.}
@@ -58,7 +70,7 @@ model parameters. If \code{pars} is omitted all parameters are included.}
 \item{regex_pars}{An optional \link[base:grep]{regular expression} to use for
 parameter selection. Can be specified instead of \code{pars} or in addition to
 \code{pars}. When using \code{pars} for tidy parameter selection, the \code{regex_pars}
-argument is ignored since \link[tidyselect:select_helpers]{select helpers}
+argument is ignored since \link[tidyselect:language]{select helpers}
 perform a similar function.}
 }
 \value{
@@ -80,9 +92,9 @@ Methods return (named) vectors.
 }
 \description{
 Generics and methods for extracting quantities needed for plotting from
-various types of model objects. Currently methods are only provided for
-stanfit (\strong{rstan}) and stanreg (\strong{rstanarm}) objects, but adding new
-methods should be relatively straightforward.
+various types of model objects. Currently methods are provided for stanfit
+(\strong{rstan}), CmdStanMCMC (\strong{cmdstanr}), and stanreg (\strong{rstanarm}) objects,
+but adding new methods should be relatively straightforward.
 }
 \examples{
 \dontrun{

@@ -9,7 +9,9 @@
 \alias{ppc_freqpoly_grouped}
 \alias{ppc_dens}
 \alias{ppc_dens_overlay}
+\alias{ppc_dens_overlay_grouped}
 \alias{ppc_ecdf_overlay}
+\alias{ppc_ecdf_overlay_grouped}
 \alias{ppc_violin_grouped}
 \title{PPC distributions}
 \usage{
@@ -55,9 +57,34 @@ ppc_dens_overlay(
   n_dens = 1024
 )
 
+ppc_dens_overlay_grouped(
+  y,
+  yrep,
+  group,
+  ...,
+  size = 0.25,
+  alpha = 0.7,
+  trim = FALSE,
+  bw = "nrd0",
+  adjust = 1,
+  kernel = "gaussian",
+  n_dens = 1024
+)
+
 ppc_ecdf_overlay(
   y,
   yrep,
+  ...,
+  discrete = FALSE,
+  pad = TRUE,
+  size = 0.25,
+  alpha = 0.7
+)
+
+ppc_ecdf_overlay_grouped(
+  y,
+  yrep,
+  group,
   ...,
   discrete = FALSE,
   pad = TRUE,
@@ -171,7 +198,7 @@ variable for \code{y} and each dataset (row) in \code{yrep}. For this plot
 \code{yrep} should therefore contain only a small number of rows. See the
 \strong{Examples} section.
 }
-\item{\verb{ppc_dens_overlay(), ppc_ecdf_overlay()}}{
+\item{\verb{ppc_ecdf_overlay(), ppc_dens_overlay(), ppc_ecdf_overlay_grouped(), ppc_dens_overlay_grouped()}}{
 Kernel density or empirical CDF estimates of each dataset (row) in
 \code{yrep} are overlaid, with the distribution of \code{y} itself on top
 (and in a darker shade). When using \code{ppc_ecdf_overlay()} with discrete
@@ -193,6 +220,7 @@ y <- example_y_data()
 yrep <- example_yrep_draws()
 dim(yrep)
 ppc_dens_overlay(y, yrep[1:25, ])
+
 \donttest{
 # ppc_ecdf_overlay with continuous data (set discrete=TRUE if discrete data)
 ppc_ecdf_overlay(y, yrep[sample(nrow(yrep), 25), ])
@@ -219,6 +247,11 @@ ppc_freqpoly_grouped(y, yrep[1:3,], group) + yaxis_text()
 \donttest{
 ppc_freqpoly_grouped(y, yrep[1:3,], group, freq = FALSE) + yaxis_text()
 }
+
+# density and distribution overlays by group
+ppc_dens_overlay_grouped(y, yrep[1:25, ], group = group)
+
+ppc_ecdf_overlay_grouped(y, yrep[1:25, ], group = group)
 
 # don't need to only use small number of rows for ppc_violin_grouped
 # (as it pools yrep draws within groups)
@@ -247,6 +280,7 @@ Press, London, third edition. (Ch. 6)
 }
 \seealso{
 Other PPCs: 
+\code{\link{PPC-censoring}},
 \code{\link{PPC-discrete}},
 \code{\link{PPC-errors}},
 \code{\link{PPC-intervals}},

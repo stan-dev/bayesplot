@@ -47,7 +47,7 @@ similar functions. Examples of using \code{pars} in this way can be found on the
 \item{regex_pars}{An optional \link[base:grep]{regular expression} to use for
 parameter selection. Can be specified instead of \code{pars} or in addition to
 \code{pars}. When using \code{pars} for tidy parameter selection, the \code{regex_pars}
-argument is ignored since \link[tidyselect:select_helpers]{select helpers}
+argument is ignored since \link[tidyselect:language]{select helpers}
 perform a similar function.}
 
 \item{transformations}{Optionally, transformations to apply to parameters
@@ -74,7 +74,7 @@ abbreviated for convenience in interactive use (e.g., \code{transform}).}
 
 \item{...}{Currently ignored.}
 
-\item{size, alpha}{Arguments passed on to \code{\link[ggplot2:geom_line]{ggplot2::geom_line()}}.}
+\item{size, alpha}{Arguments passed on to \code{\link[ggplot2:geom_path]{ggplot2::geom_line()}}.}
 
 \item{np}{For models fit using \link{NUTS} (more generally,
 any \href{https://en.wikipedia.org/wiki/Symplectic_integrator}{symplectic integrator}),
@@ -89,7 +89,7 @@ argument is specified.}
 
 \item{div_color, div_size, div_alpha}{Optional arguments to the
 \code{parcoord_style_np()} helper function that are eventually passed to
-\code{\link[ggplot2:geom_line]{ggplot2::geom_line()}} if the \code{np} argument is also specified. They control
+\code{\link[ggplot2:geom_path]{ggplot2::geom_line()}} if the \code{np} argument is also specified. They control
 the color, size, and transparency specifications for showing divergences in
 the plot. The default values are displayed in the \strong{Usage} section above.}
 }

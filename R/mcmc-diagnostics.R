@@ -580,8 +580,7 @@ acf_data <- function(x, lags) {
     abort(paste0("Too few iterations for lags=", lags, "."))
   }
 
-  data <- reshape2::melt(x, value.name = "Value")
-  data$Chain <- factor(data$Chain)
+  data <- melt_mcmc(x)
   ac_list <- tapply(
     data[["Value"]],
     # INDEX = list(data[["Chain"]], data[["Parameter"]]),

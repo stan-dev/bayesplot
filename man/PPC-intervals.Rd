@@ -108,7 +108,7 @@ passed to \code{\link[ggplot2:facet_wrap]{ggplot2::facet_wrap()}} to control fac
 
 \item{alpha, size, fatten}{Arguments passed to geoms. For ribbon plots \code{alpha}
 and \code{size} are passed to \code{\link[ggplot2:geom_ribbon]{ggplot2::geom_ribbon()}}. For interval plots
-\code{size} and \code{fatten} are passed to \code{\link[ggplot2:geom_pointrange]{ggplot2::geom_pointrange()}}.}
+\code{size} and \code{fatten} are passed to \code{\link[ggplot2:geom_linerange]{ggplot2::geom_pointrange()}}.}
 }
 \value{
 The plotting functions return a ggplot object that can be further
@@ -124,7 +124,7 @@ See the \strong{Plot Descriptions} section, below.
 
 \describe{
 \item{\verb{ppc_intervals(), ppc_ribbon()}}{
-\code{100*prob}\\% central intervals for \code{yrep} at each \code{x}
+\code{100*prob}\% central intervals for \code{yrep} at each \code{x}
 value. \code{ppc_intervals()} plots intervals as vertical bars with points
 indicating \code{yrep} medians and darker points indicating observed
 \code{y} values. \code{ppc_ribbon()} plots a ribbon of connected intervals
@@ -211,6 +211,7 @@ Press, London, third edition. (Ch. 6)
 }
 \seealso{
 Other PPCs: 
+\code{\link{PPC-censoring}},
 \code{\link{PPC-discrete}},
 \code{\link{PPC-distributions}},
 \code{\link{PPC-errors}},
