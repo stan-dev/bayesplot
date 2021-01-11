@@ -54,9 +54,9 @@
 
 <meta property="og:title" content="Extract quantities needed for plotting from model objects — bayesplot-extractors" />
 <meta property="og:description" content="Generics and methods for extracting quantities needed for plotting from
-various types of model objects. Currently methods are only provided for
-stanfit (rstan) and stanreg (rstanarm) objects, but adding new
-methods should be relatively straightforward." />
+various types of model objects. Currently methods are provided for stanfit
+(rstan), CmdStanMCMC (cmdstanr), and stanreg (rstanarm) objects,
+but adding new methods should be relatively straightforward." />
 <meta property="og:image" content="https://mc-stan.org/bayesplot/logo.png" />
 
 
@@ -89,13 +89,19 @@ methods should be relatively straightforward." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bayesplot</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.7.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.8.0</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
+  <a href="../index.html">
+    <span class="fa fa-home fa-lg"></span>
+     
+  </a>
+</li>
+<li>
   <a href="../articles/index.html">Vignettes</a>
 </li>
 <li>
@@ -131,6 +137,9 @@ methods should be relatively straightforward." />
     </li>
     <li>
       <a href="https://mc-stan.org/rstantools">rstantools</a>
+    </li>
+    <li>
+      <a href="https://mc-stan.org/posterior">posterior</a>
     </li>
   </ul>
 </li>
@@ -183,9 +192,9 @@ methods should be relatively straightforward." />
 
     <div class="ref-description">
     <p>Generics and methods for extracting quantities needed for plotting from
-various types of model objects. Currently methods are only provided for
-stanfit (<strong>rstan</strong>) and stanreg (<strong>rstanarm</strong>) objects, but adding new
-methods should be relatively straightforward.</p>
+various types of model objects. Currently methods are provided for stanfit
+(<strong>rstan</strong>), CmdStanMCMC (<strong>cmdstanr</strong>), and stanreg (<strong>rstanarm</strong>) objects,
+but adding new methods should be relatively straightforward.</p>
     </div>
 
     <pre class="usage"><span class='fu'>log_posterior</span>(<span class='no'>object</span>, <span class='no'>...</span>)
@@ -202,6 +211,9 @@ methods should be relatively straightforward.</p>
 <span class='co'># S3 method for stanreg</span>
 <span class='fu'>log_posterior</span>(<span class='no'>object</span>, <span class='kw'>inc_warmup</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)
 
+<span class='co'># S3 method for CmdStanMCMC</span>
+<span class='fu'>log_posterior</span>(<span class='no'>object</span>, <span class='kw'>inc_warmup</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)
+
 <span class='co'># S3 method for stanfit</span>
 <span class='fu'>nuts_params</span>(<span class='no'>object</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>inc_warmup</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)
 
@@ -211,17 +223,26 @@ methods should be relatively straightforward.</p>
 <span class='co'># S3 method for list</span>
 <span class='fu'>nuts_params</span>(<span class='no'>object</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)
 
+<span class='co'># S3 method for CmdStanMCMC</span>
+<span class='fu'>nuts_params</span>(<span class='no'>object</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)
+
 <span class='co'># S3 method for stanfit</span>
 <span class='fu'>rhat</span>(<span class='no'>object</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)
 
 <span class='co'># S3 method for stanreg</span>
 <span class='fu'>rhat</span>(<span class='no'>object</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)
 
+<span class='co'># S3 method for CmdStanMCMC</span>
+<span class='fu'>rhat</span>(<span class='no'>object</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)
+
 <span class='co'># S3 method for stanfit</span>
 <span class='fu'>neff_ratio</span>(<span class='no'>object</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)
 
 <span class='co'># S3 method for stanreg</span>
-<span class='fu'>neff_ratio</span>(<span class='no'>object</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
+<span class='fu'>neff_ratio</span>(<span class='no'>object</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)
+
+<span class='co'># S3 method for CmdStanMCMC</span>
+<span class='fu'>neff_ratio</span>(<span class='no'>object</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -279,33 +300,33 @@ The data frame should have columns <code>"Parameter"</code> (factor), <code>"Ite
 <span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://mc-stan.org/rstanarm/reference/stan_glm.html'>stan_glm</a></span>(<span class='no'>mpg</span> ~ <span class='no'>wt</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>mtcars</span>, <span class='kw'>refresh</span> <span class='kw'>=</span> <span class='fl'>0</span>)
 
 <span class='no'>np</span> <span class='kw'>&lt;-</span> <span class='fu'>nuts_params</span>(<span class='no'>fit</span>)
-<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='no'>np</span>)</div><div class='output co'>#&gt;   Iteration     Parameter     Value Chain
-#&gt; 1         1 accept_stat__ 0.9960943     1
-#&gt; 2         2 accept_stat__ 0.9733417     1
-#&gt; 3         3 accept_stat__ 0.9933179     1
-#&gt; 4         4 accept_stat__ 0.9996686     1
-#&gt; 5         5 accept_stat__ 0.9980110     1
-#&gt; 6         6 accept_stat__ 0.9855715     1</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>tail</a></span>(<span class='no'>np</span>)</div><div class='output co'>#&gt;       Iteration Parameter    Value Chain
-#&gt; 23995       995  energy__ 88.55664     4
-#&gt; 23996       996  energy__ 87.73233     4
-#&gt; 23997       997  energy__ 89.37247     4
-#&gt; 23998       998  energy__ 92.35963     4
-#&gt; 23999       999  energy__ 89.28068     4
-#&gt; 24000      1000  energy__ 89.37567     4</div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='no'>np</span>)</div><div class='output co'>#&gt;   Chain Iteration     Parameter     Value
+#&gt; 1     1         1 accept_stat__ 0.8640696
+#&gt; 2     1         2 accept_stat__ 1.0000000
+#&gt; 3     1         3 accept_stat__ 0.9768917
+#&gt; 4     1         4 accept_stat__ 0.9815619
+#&gt; 5     1         5 accept_stat__ 0.9490071
+#&gt; 6     1         6 accept_stat__ 0.9819955</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>tail</a></span>(<span class='no'>np</span>)</div><div class='output co'>#&gt;       Chain Iteration Parameter    Value
+#&gt; 23995     4       995  energy__ 95.11804
+#&gt; 23996     4       996  energy__ 88.36453
+#&gt; 23997     4       997  energy__ 89.14605
+#&gt; 23998     4       998  energy__ 87.99015
+#&gt; 23999     4       999  energy__ 87.97256
+#&gt; 24000     4      1000  energy__ 88.65101</div><div class='input'>
 <span class='no'>lp</span> <span class='kw'>&lt;-</span> <span class='fu'>log_posterior</span>(<span class='no'>fit</span>)
-<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='no'>lp</span>)</div><div class='output co'>#&gt;   Iteration     Value Chain
-#&gt; 1         1 -87.74968     1
-#&gt; 2         2 -88.33501     1
-#&gt; 3         3 -86.78549     1
-#&gt; 4         4 -86.20463     1
-#&gt; 5         5 -86.02976     1
-#&gt; 6         6 -86.28873     1</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>tail</a></span>(<span class='no'>lp</span>)</div><div class='output co'>#&gt;      Iteration     Value Chain
-#&gt; 3995       995 -86.70917     4
-#&gt; 3996       996 -86.56927     4
-#&gt; 3997       997 -86.58311     4
-#&gt; 3998       998 -87.98419     4
-#&gt; 3999       999 -88.44664     4
-#&gt; 4000      1000 -86.68895     4</div><div class='input'># }
+<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='no'>lp</span>)</div><div class='output co'>#&gt;   Chain Iteration     Value
+#&gt; 1     1         1 -87.48113
+#&gt; 2     1         2 -87.16415
+#&gt; 3     1         3 -87.91129
+#&gt; 4     1         4 -87.20856
+#&gt; 5     1         5 -86.90451
+#&gt; 6     1         6 -88.07130</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>tail</a></span>(<span class='no'>lp</span>)</div><div class='output co'>#&gt;      Chain Iteration     Value
+#&gt; 3995     4       995 -87.21771
+#&gt; 3996     4       996 -87.47607
+#&gt; 3997     4       997 -86.77088
+#&gt; 3998     4       998 -87.35309
+#&gt; 3999     4       999 -87.38357
+#&gt; 4000     4      1000 -86.70691</div><div class='input'># }
 
 </div></pre>
   </div>

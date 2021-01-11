@@ -88,13 +88,19 @@ for details." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bayesplot</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.7.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.8.0</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
+  <a href="../index.html">
+    <span class="fa fa-home fa-lg"></span>
+     
+  </a>
+</li>
+<li>
   <a href="../articles/index.html">Vignettes</a>
 </li>
 <li>
@@ -130,6 +136,9 @@ for details." />
     </li>
     <li>
       <a href="https://mc-stan.org/rstantools">rstantools</a>
+    </li>
+    <li>
+      <a href="https://mc-stan.org/posterior">posterior</a>
     </li>
   </ul>
 </li>
@@ -190,16 +199,30 @@ for details.</p>
   <span class='no'>y</span>,
   <span class='no'>yrep</span>,
   <span class='no'>lw</span>,
-  <span class='no'>pit</span>,
-  <span class='kw'>samples</span> <span class='kw'>=</span> <span class='fl'>100</span>,
   <span class='no'>...</span>,
+  <span class='kw'>pit</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>samples</span> <span class='kw'>=</span> <span class='fl'>100</span>,
   <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>0.25</span>,
   <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.7</span>,
-  <span class='kw'>trim</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>boundary_correction</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>grid_len</span> <span class='kw'>=</span> <span class='fl'>512</span>,
   <span class='kw'>bw</span> <span class='kw'>=</span> <span class='st'>"nrd0"</span>,
+  <span class='kw'>trim</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>adjust</span> <span class='kw'>=</span> <span class='fl'>1</span>,
   <span class='kw'>kernel</span> <span class='kw'>=</span> <span class='st'>"gaussian"</span>,
   <span class='kw'>n_dens</span> <span class='kw'>=</span> <span class='fl'>1024</span>
+)
+
+<span class='fu'>ppc_loo_pit_data</span>(
+  <span class='no'>y</span>,
+  <span class='no'>yrep</span>,
+  <span class='no'>lw</span>,
+  <span class='no'>...</span>,
+  <span class='kw'>pit</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>samples</span> <span class='kw'>=</span> <span class='fl'>100</span>,
+  <span class='kw'>bw</span> <span class='kw'>=</span> <span class='st'>"nrd0"</span>,
+  <span class='kw'>boundary_correction</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>grid_len</span> <span class='kw'>=</span> <span class='fl'>512</span>
 )
 
 <span class='fu'>ppc_loo_pit_qq</span>(
@@ -275,6 +298,10 @@ sense. See <strong>Details</strong> for additional instructions.</p></td>
 the <strong>Examples</strong> section, below.</p></td>
     </tr>
     <tr>
+      <th>...</th>
+      <td><p>Currently unused.</p></td>
+    </tr>
+    <tr>
       <th>pit</th>
       <td><p>For <code>ppc_loo_pit_overlay()</code> and <code>ppc_loo_pit_qq()</code>, optionally a
 vector of precomputed PIT values that can be specified instead of <code>y</code>,
@@ -290,10 +317,6 @@ plotted as a thin line in the plot, with the density estimate of the LOO
 PITs overlaid as a thicker dark line.</p></td>
     </tr>
     <tr>
-      <th>...</th>
-      <td><p>Currently unused.</p></td>
-    </tr>
-    <tr>
       <th>alpha, size, fatten</th>
       <td><p>Arguments passed to code geoms to control plot
 aesthetics. For <code>ppc_loo_pit_qq()</code> and <code>ppc_loo_pit_overlay()</code>, <code>size</code> and
@@ -304,8 +327,20 @@ and <code>fatten</code> are passed to <code><a href='https://ggplot2.tidyverse.o
 <code><a href='https://ggplot2.tidyverse.org/reference/geom_ribbon.html'>ggplot2::geom_ribbon()</a></code>.</p></td>
     </tr>
     <tr>
-      <th>trim</th>
-      <td><p>Passed to <code><a href='https://ggplot2.tidyverse.org/reference/geom_density.html'>ggplot2::stat_density()</a></code>.</p></td>
+      <th>boundary_correction</th>
+      <td><p>For <code>ppc_loo_pit_overlay()</code>, when set to <code>TRUE</code>
+(the default) the function will compute boundary corrected density values
+via convolution and a Gaussian filter, also known as the reflection method
+(Boneva et al., 1971). As a result, parameters controlling the standard
+kernel density estimation such as <code>adjust</code>, <code>kernel</code> and <code>n_dens</code> are
+ignored. NOTE: The current implementation only works well for continuous
+observations.</p></td>
+    </tr>
+    <tr>
+      <th>grid_len</th>
+      <td><p>For <code>ppc_loo_pit_overlay()</code>, when <code>boundary_correction</code> is
+set to <code>TRUE</code> this parameter specifies the number of points used to
+generate the estimations. This is set to 512 by default.</p></td>
     </tr>
     <tr>
       <th>bw, adjust, kernel, n_dens</th>
@@ -314,12 +349,17 @@ and <code>fatten</code> are passed to <code><a href='https://ggplot2.tidyverse.o
 parameters. <code>n_dens</code> defaults to <code>1024</code>.</p></td>
     </tr>
     <tr>
+      <th>trim</th>
+      <td><p>Passed to <code><a href='https://ggplot2.tidyverse.org/reference/geom_density.html'>ggplot2::stat_density()</a></code>.</p></td>
+    </tr>
+    <tr>
       <th>compare</th>
       <td><p>For <code>ppc_loo_pit_qq()</code>, a string that can be either
 <code>"uniform"</code> or <code>"normal"</code>. If <code>"uniform"</code> (the default) the Q-Q plot
 compares computed PIT values to the standard uniform distribution. If
-<code>compare="normal"</code>, the Q-Q plot compares standardized PIT values to the
-standard normal distribution.</p></td>
+<code>compare="normal"</code>, the Q-Q plot compares standard normal quantiles
+calculated from the PIT values to the theoretical standard normal
+quantiles.</p></td>
     </tr>
     <tr>
       <th>psis_object</th>
@@ -387,11 +427,12 @@ the miscalibration with a quantile-quantile (Q-Q) plot comparing the LOO
 PITs to the standard uniform distribution. Comparing to the uniform is not
 good for extreme probabilities close to 0 and 1, so it can sometimes be
 useful to set the <code>compare</code> argument to <code>"normal"</code>, which will
-produce a Q-Q plot comparing standardized PIT values to the standard normal
-distribution that can help see the (mis)calibration better for the extreme
-values. However, in most cases we have found that the overlaid density plot
-(<code>ppc_loo_pit_overlay()</code>) function will provided a clearer picture of
-calibration problems that the Q-Q plot.</p></dd>
+produce a Q-Q plot comparing standard normal quantiles calculated from the
+PIT values to the theoretical standard normal quantiles. This can help see
+the (mis)calibration better for the extreme values. However, in most cases
+we have found that the overlaid density plot (<code>ppc_loo_pit_overlay()</code>)
+function will provide a clearer picture of calibration problems than the
+Q-Q plot.</p></dd>
 <dt><code>ppc_loo_intervals()</code>, <code>ppc_loo_ribbon()</code></dt><dd><p>Similar to <code><a href='PPC-intervals.html'>ppc_intervals()</a></code> and <code><a href='PPC-intervals.html'>ppc_ribbon()</a></code> but the intervals are for
 the LOO predictive distribution.</p></dd>
 
@@ -412,10 +453,15 @@ Gelman, A. (2019), Visualization in Bayesian workflow.
 Bayesian model evaluation using leave-one-out cross-validation and WAIC.
 <em>Statistics and Computing</em>. 27(5), 1413--1432.
 doi:10.1007/s11222-016-9696-4. arXiv preprint:
-<a href='https://arxiv.org/abs/1507.04544/'>https://arxiv.org/abs/1507.04544/</a></p>
+<a href='https://arxiv.org/abs/1507.04544'>https://arxiv.org/abs/1507.04544</a></p>
+<p>Boneva, L. I., Kendall, D., &amp; Stefanov, I. (1971). Spline
+transformations: Three new diagnostic aids for the statistical
+data-analyst. <em>J. R. Stat. Soc. B</em> (Methodological), 33(1), 1-71.
+https://www.jstor.org/stable/2986005.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other PPCs: 
+<code><a href='PPC-censoring.html'>PPC-censoring</a></code>,
 <code><a href='PPC-discrete.html'>PPC-discrete</a></code>,
 <code><a href='PPC-distributions.html'>PPC-distributions</a></code>,
 <code><a href='PPC-errors.html'>PPC-errors</a></code>,
@@ -446,8 +492,8 @@ doi:10.1007/s11222-016-9696-4. arXiv preprint:
  )</div><div class='output co'>#&gt; 
 #&gt; SAMPLING FOR MODEL 'continuous' NOW (CHAIN 1).
 #&gt; Chain 1: 
-#&gt; Chain 1: Gradient evaluation took 0.000408 seconds
-#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 4.08 seconds.
+#&gt; Chain 1: Gradient evaluation took 0.000595 seconds
+#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 5.95 seconds.
 #&gt; Chain 1: Adjust your expectations accordingly!
 #&gt; Chain 1: 
 #&gt; Chain 1: 
@@ -456,15 +502,15 @@ doi:10.1007/s11222-016-9696-4. arXiv preprint:
 #&gt; Chain 1: Iteration: 501 / 1000 [ 50%]  (Sampling)
 #&gt; Chain 1: Iteration: 1000 / 1000 [100%]  (Sampling)
 #&gt; Chain 1: 
-#&gt; Chain 1:  Elapsed Time: 12.721 seconds (Warm-up)
-#&gt; Chain 1:                3.25757 seconds (Sampling)
-#&gt; Chain 1:                15.9786 seconds (Total)
+#&gt; Chain 1:  Elapsed Time: 14.7332 seconds (Warm-up)
+#&gt; Chain 1:                3.38318 seconds (Sampling)
+#&gt; Chain 1:                18.1164 seconds (Total)
 #&gt; Chain 1: 
 #&gt; 
 #&gt; SAMPLING FOR MODEL 'continuous' NOW (CHAIN 2).
 #&gt; Chain 2: 
-#&gt; Chain 2: Gradient evaluation took 0.000195 seconds
-#&gt; Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 1.95 seconds.
+#&gt; Chain 2: Gradient evaluation took 0.000193 seconds
+#&gt; Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 1.93 seconds.
 #&gt; Chain 2: Adjust your expectations accordingly!
 #&gt; Chain 2: 
 #&gt; Chain 2: 
@@ -473,19 +519,22 @@ doi:10.1007/s11222-016-9696-4. arXiv preprint:
 #&gt; Chain 2: Iteration: 501 / 1000 [ 50%]  (Sampling)
 #&gt; Chain 2: Iteration: 1000 / 1000 [100%]  (Sampling)
 #&gt; Chain 2: 
-#&gt; Chain 2:  Elapsed Time: 12.5864 seconds (Warm-up)
-#&gt; Chain 2:                3.23027 seconds (Sampling)
-#&gt; Chain 2:                15.8167 seconds (Total)
-#&gt; Chain 2: </div><div class='input'><span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='no'>radon</span>$<span class='no'>log_radon</span>
+#&gt; Chain 2:  Elapsed Time: 12.655 seconds (Warm-up)
+#&gt; Chain 2:                3.35926 seconds (Sampling)
+#&gt; Chain 2:                16.0142 seconds (Total)
+#&gt; Chain 2: </div><div class='output co'>#&gt; <span class='warning'>Warning: Bulk Effective Samples Size (ESS) is too low, indicating posterior means and medians may be unreliable.</span>
+#&gt; <span class='warning'>Running the chains for more iterations may help. See</span>
+#&gt; <span class='warning'>http://mc-stan.org/misc/warnings.html#bulk-ess</span></div><div class='input'><span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='no'>radon</span>$<span class='no'>log_radon</span>
 <span class='no'>yrep</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://mc-stan.org/rstanarm/reference/posterior_predict.stanreg.html'>posterior_predict</a></span>(<span class='no'>fit</span>)
 
-<span class='no'>loo1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://mc-stan.org/rstanarm/reference/loo.stanreg.html'>loo</a></span>(<span class='no'>fit</span>, <span class='kw'>save_psis</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>cores</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Found 1 observation(s) with a pareto_k &gt; 0.7. We recommend calling 'loo' again with argument 'k_threshold = 0.7' in order to calculate the ELPD without the assumption that these observations are negligible. This will refit the model 1 times to compute the ELPDs for the problematic observations directly.</span></div><div class='input'><span class='no'>psis1</span> <span class='kw'>&lt;-</span> <span class='no'>loo1</span>$<span class='no'>psis_object</span>
+<span class='no'>loo1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://mc-stan.org/rstanarm/reference/loo.stanreg.html'>loo</a></span>(<span class='no'>fit</span>, <span class='kw'>save_psis</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>cores</span> <span class='kw'>=</span> <span class='fl'>2</span>)
+<span class='no'>psis1</span> <span class='kw'>&lt;-</span> <span class='no'>loo1</span>$<span class='no'>psis_object</span>
 <span class='no'>lw</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/weights.html'>weights</a></span>(<span class='no'>psis1</span>)
 
 <span class='co'># marginal predictive check using LOO probability integral transform</span>
 <span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"orange"</span>)
-<span class='fu'>ppc_loo_pit_overlay</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='kw'>lw</span> <span class='kw'>=</span> <span class='no'>lw</span>)</div><div class='img'><img src='PPC-loo-1.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='fu'>ppc_loo_pit_qq</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='kw'>lw</span> <span class='kw'>=</span> <span class='no'>lw</span>)</div><div class='img'><img src='PPC-loo-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>ppc_loo_pit_qq</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='kw'>lw</span> <span class='kw'>=</span> <span class='no'>lw</span>, <span class='kw'>compare</span> <span class='kw'>=</span> <span class='st'>"normal"</span>)</div><div class='img'><img src='PPC-loo-3.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'>ppc_loo_pit_overlay</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='kw'>lw</span> <span class='kw'>=</span> <span class='no'>lw</span>)</div><div class='output co'>#&gt; <span class='message'>NOTE: The kernel density estimate assumes continuous observations and is not optimal for discrete observations.</span></div><div class='img'><img src='PPC-loo-1.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'>ppc_loo_pit_qq</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='kw'>lw</span> <span class='kw'>=</span> <span class='no'>lw</span>)</div><div class='img'><img src='PPC-loo-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>ppc_loo_pit_qq</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='kw'>lw</span> <span class='kw'>=</span> <span class='no'>lw</span>, <span class='kw'>compare</span> <span class='kw'>=</span> <span class='st'>"normal"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 5 rows containing non-finite values (stat_qq).</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 5 rows containing non-finite values (stat_qq_line).</span></div><div class='img'><img src='PPC-loo-3.png' alt='' width='700' height='433' /></div><div class='input'>
 
 <span class='co'># loo predictive intervals vs observations</span>
 <span class='no'>keep_obs</span> <span class='kw'>&lt;-</span> <span class='fl'>1</span>:<span class='fl'>50</span>

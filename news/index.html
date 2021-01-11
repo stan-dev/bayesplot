@@ -85,13 +85,19 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bayesplot</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.7.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.8.0</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
+  <a href="../index.html">
+    <span class="fa fa-home fa-lg"></span>
+     
+  </a>
+</li>
+<li>
   <a href="../articles/index.html">Vignettes</a>
 </li>
 <li>
@@ -127,6 +133,9 @@
     </li>
     <li>
       <a href="https://mc-stan.org/rstantools">rstantools</a>
+    </li>
+    <li>
+      <a href="https://mc-stan.org/posterior">posterior</a>
     </li>
   </ul>
 </li>
@@ -176,6 +185,41 @@
       <small>Source: <a href='https://github.com/stan-dev/bayesplot/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="bayesplot-180" class="section level1">
+<h1 class="page-header" data-toc-text="1.8.0">
+<a href="#bayesplot-180" class="anchor"></a>bayesplot 1.8.0<small> 2021-01-10 </small>
+</h1>
+<!--
+(GitHub issue/PR numbers in parentheses)
+* Items for next release go here
+-->
+<div id="bug-fixes" class="section level3">
+<h3 class="hasAnchor">
+<a href="#bug-fixes" class="anchor"></a>Bug fixes</h3>
+<ul>
+<li><p><code><a href="../reference/MCMC-intervals.html">mcmc_areas()</a></code> tries to use less vertical blank space. (<a href='https://github.com/stan-dev/bayesplot/issues/218'>#218</a>, <a href='https://github.com/stan-dev/bayesplot/issues/230'>#230</a>)</p></li>
+<li><p>Fix bug in <code><a href="../reference/bayesplot-colors.html">color_scheme_view()</a></code> minimal theme (<a href='https://github.com/stan-dev/bayesplot/issues/213'>#213</a>).</p></li>
+<li><p>Fix error in <code><a href="../reference/MCMC-diagnostics.html">mcmc_acf()</a></code> for certain input types. (<a href='https://github.com/stan-dev/bayesplot/issues/244'>#244</a>, <a href='https://github.com/stan-dev/bayesplot/issues/245'>#245</a>, <a href='https://github.com/hhau'>@hhau</a>)</p></li>
+</ul>
+</div>
+<div id="new-features" class="section level3">
+<h3 class="hasAnchor">
+<a href="#new-features" class="anchor"></a>New features</h3>
+<ul>
+<li><p>New plotting functions <code><a href="../reference/PPC-distributions.html">ppc_dens_overlay_grouped()</a></code> and <code><a href="../reference/PPC-distributions.html">ppc_ecdf_overlay_grouped()</a></code> for plotting density and cumulative distributions of the posterior predictive distribution (versus observed data) by group. (<a href='https://github.com/stan-dev/bayesplot/issues/212'>#212</a>)</p></li>
+<li><p>New plotting function <code><a href="../reference/PPC-censoring.html">ppc_km_overlay()</a></code> for outcome variables that are<br>
+right-censored. Empirical CCDF estimates of <code>yrep</code> are compared with the Kaplan-Meier estimate of <code>y</code>. (<a href='https://github.com/stan-dev/bayesplot/issues/233'>#233</a>, <a href='https://github.com/stan-dev/bayesplot/issues/234'>#234</a>, <a href='https://github.com/fweber144'>@fweber144</a>)</p></li>
+<li>
+<p><code><a href="../reference/PPC-loo.html">ppc_loo_pit_overlay()</a></code> now uses a boundary correction for an improved kernel density estimation. The new argument <code>boundary_correction</code> defaults to TRUE but can be set to FALSE to recover the old version of the plot. (<a href='https://github.com/stan-dev/bayesplot/issues/171'>#171</a>, <a href='https://github.com/stan-dev/bayesplot/issues/235'>#235</a>,</p>
+<p>@ecoronado92)</p>
+</li>
+<li><p>CmdStanMCMC objects (from CmdStanR) can now be used with extractor functions <code><a href="../reference/bayesplot-extractors.html">nuts_params()</a></code>, <code><a href="../reference/bayesplot-extractors.html">log_posterior()</a></code>, <code><a href="../reference/bayesplot-extractors.html">rhat()</a></code>, and <code><a href="../reference/bayesplot-extractors.html">neff_ratio()</a></code>. (<a href='https://github.com/stan-dev/bayesplot/issues/227'>#227</a>)</p></li>
+<li><p>On the y axis, <code><a href="../reference/PPC-loo.html">ppc_loo_pit_qq(..., compare = "normal")</a></code> now plots standard normal quantiles calculated from the PIT values (instead of the standardized PIT values). (<a href='https://github.com/stan-dev/bayesplot/issues/240'>#240</a>, <a href='https://github.com/stan-dev/bayesplot/issues/243'>#243</a>, <a href='https://github.com/fweber144'>@fweber144</a>)</p></li>
+<li><p><code><a href="../reference/MCMC-traces.html">mcmc_rank_overlay()</a></code> gains argument <code>facet_args</code>. (<a href='https://github.com/stan-dev/bayesplot/issues/221'>#221</a>, <a href='https://github.com/hhau'>@hhau</a>)</p></li>
+<li><p>For <code><a href="../reference/MCMC-intervals.html">mcmc_intervals()</a></code> the size<code>of the points and interval lines can be set with</code>mcmc_intervals(…, outer_size, inner_size, point_size)`. (<a href='https://github.com/stan-dev/bayesplot/issues/215'>#215</a>, <a href='https://github.com/stan-dev/bayesplot/issues/228'>#228</a>, <a href='https://github.com/stan-dev/bayesplot/issues/229'>#229</a>)</p></li>
+</ul>
+</div>
+</div>
     <div id="bayesplot-172" class="section level1">
 <h1 class="page-header" data-toc-text="1.7.2">
 <a href="#bayesplot-172" class="anchor"></a>bayesplot 1.7.2<small> 2020-05-28 </small>
@@ -201,7 +245,7 @@
 <p><code><a href="../reference/MCMC-traces.html">mcmc_rank_overlay()</a></code>: Instead of drawing each chain’s histogram in a separate panel, this plot draws the top edge of the chains’ histograms in a single panel.</p>
 </li>
 <li><p>Added <code><a href="../reference/MCMC-traces.html">mcmc_trace_data()</a></code>, which returns the data used for plotting the trace plots and rank histograms. (Advances <a href='https://github.com/stan-dev/bayesplot/issues/97'>#97</a>)</p></li>
-<li><p><a href="http://colorbrewer2.org">ColorBrewer</a> palettes are now available as color schemes via <a href="https://mc-stan.org/bayesplot/reference/bayesplot-colors.html"><code><a href="../reference/bayesplot-colors.html">color_scheme_set()</a></code></a>. For example, <code><a href="../reference/bayesplot-colors.html">color_scheme_set("brewer-Spectral")</a></code> will use the Spectral palette. (<a href='https://github.com/stan-dev/bayesplot/issues/177'>#177</a>, <a href='https://github.com/stan-dev/bayesplot/issues/190'>#190</a>)</p></li>
+<li><p><a href="https://colorbrewer2.org/">ColorBrewer</a> palettes are now available as color schemes via <a href="https://mc-stan.org/bayesplot/reference/bayesplot-colors.html"><code><a href="../reference/bayesplot-colors.html">color_scheme_set()</a></code></a>. For example, <code><a href="../reference/bayesplot-colors.html">color_scheme_set("brewer-Spectral")</a></code> will use the Spectral palette. (<a href='https://github.com/stan-dev/bayesplot/issues/177'>#177</a>, <a href='https://github.com/stan-dev/bayesplot/issues/190'>#190</a>)</p></li>
 <li><p>MCMC plots now also accept objects with an <code>as.array</code> method as input (e.g., stanfit objects). (<a href='https://github.com/stan-dev/bayesplot/issues/175'>#175</a>, <a href='https://github.com/stan-dev/bayesplot/issues/184'>#184</a>)</p></li>
 <li><p><a href="https://mc-stan.org/bayesplot/reference/MCMC-traces.html"><code><a href="../reference/MCMC-traces.html">mcmc_trace()</a></code></a> gains an argument <code>iter1</code> which can be used to label the traceplot starting from the first iteration after warmup. (<a href='https://github.com/stan-dev/bayesplot/issues/14'>#14</a>, <a href='https://github.com/stan-dev/bayesplot/issues/155'>#155</a>, <a href='https://github.com/mcol'>@mcol</a>)</p></li>
 <li><p><a href="https://mc-stan.org/bayesplot/reference/MCMC-intervals.html"><code><a href="../reference/MCMC-intervals.html">mcmc_areas()</a></code></a> gains an argument <code>area_method</code> which controls how to draw the density curves. The default <code>"equal area"</code> constrains the heights so that the curves have the same area. As a result, a narrow interval will appear as a spike of density, while a wide, uncertain interval is spread thin over the <em>x</em> axis. Alternatively <code>"equal height"</code> will set the maximum height on each curve to the same value. This works well when the intervals are about the same width. Otherwise, that wide, uncertain interval will dominate the visual space compared to a narrow, less uncertain interval. A compromise between the two is <code>"scaled height"</code> which scales the curves from <code>"equal height"</code> using <code>height * sqrt(height)</code>. (<a href='https://github.com/stan-dev/bayesplot/issues/163'>#163</a>, <a href='https://github.com/stan-dev/bayesplot/issues/169'>#169</a>)</p></li>

@@ -86,13 +86,19 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bayesplot</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.7.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.8.0</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
+  <a href="../index.html">
+    <span class="fa fa-home fa-lg"></span>
+     
+  </a>
+</li>
+<li>
   <a href="../articles/index.html">Vignettes</a>
 </li>
 <li>
@@ -128,6 +134,9 @@
     </li>
     <li>
       <a href="https://mc-stan.org/rstantools">rstantools</a>
+    </li>
+    <li>
+      <a href="https://mc-stan.org/posterior">posterior</a>
     </li>
   </ul>
 </li>
@@ -281,8 +290,7 @@ use backticks to escape it <code><a href='https://dplyr.tidyverse.org/reference/
 #&gt; 
 #&gt; $Parameter
 #&gt; [1] "alpha"   "sigma"   "beta[1]" "beta[2]" "beta[3]" "beta[4]"
-#&gt; </div><div class='input'><span class='fu'><a href='MCMC-scatterplots.html'>mcmc_hex</a></span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/vars.html'>vars</a></span>(<span class='no'>alpha</span>, <span class='no'>`beta[2]`</span>))</div><div class='output co'>#&gt; <span class='warning'>Warning: Computation failed in `stat_binhex()`:</span>
-#&gt; <span class='warning'>"hbin" not resolved from current namespace (hexbin)</span></div><div class='img'><img src='tidy-params-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='MCMC-distributions.html'>mcmc_dens</a></span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/vars.html'>vars</a></span>(<span class='no'>sigma</span>, <span class='fu'>contains</span>(<span class='st'>"beta"</span>)))</div><div class='img'><img src='tidy-params-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='MCMC-distributions.html'>mcmc_hist</a></span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/vars.html'>vars</a></span>(-<span class='fu'>contains</span>(<span class='st'>"beta"</span>)))</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='tidy-params-3.png' alt='' width='700' height='433' /></div><div class='input'>
+#&gt; </div><div class='input'><span class='fu'><a href='MCMC-scatterplots.html'>mcmc_hex</a></span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/vars.html'>vars</a></span>(<span class='no'>alpha</span>, <span class='no'>`beta[2]`</span>))</div><div class='img'><img src='tidy-params-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='MCMC-distributions.html'>mcmc_dens</a></span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/vars.html'>vars</a></span>(<span class='no'>sigma</span>, <span class='fu'>contains</span>(<span class='st'>"beta"</span>)))</div><div class='img'><img src='tidy-params-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='MCMC-distributions.html'>mcmc_hist</a></span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/vars.html'>vars</a></span>(-<span class='fu'>contains</span>(<span class='st'>"beta"</span>)))</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='tidy-params-3.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># using the param_range() helper</span>
 <span class='fu'><a href='MCMC-distributions.html'>mcmc_hist</a></span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/vars.html'>vars</a></span>(<span class='fu'>param_range</span>(<span class='st'>"beta"</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>3</span>, <span class='fl'>4</span>))))</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='tidy-params-4.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># \donttest{</span>
@@ -344,12 +352,12 @@ use backticks to escape it <code><a href='https://dplyr.tidyverse.org/reference/
 #&gt; (Intercept) -1.5    0.6  
 #&gt; size         0.0    0.0  
 #&gt; period2     -1.0    0.3  
-#&gt; period3     -1.1    0.3  
+#&gt; period3     -1.1    0.4  
 #&gt; period4     -1.6    0.5  
 #&gt; 
 #&gt; Error terms:
 #&gt;  Groups Name        Std.Dev.
-#&gt;  herd   (Intercept) 0.78    
+#&gt;  herd   (Intercept) 0.79    
 #&gt; Num. levels: herd 15 
 #&gt; 
 #&gt; ------
@@ -364,39 +372,39 @@ use backticks to escape it <code><a href='https://dplyr.tidyverse.org/reference/
 #&gt; (Intercept) -1.5    0.6  
 #&gt; size         0.0    0.0  
 #&gt; period2     -1.0    0.3  
-#&gt; period3     -1.1    0.3  
+#&gt; period3     -1.1    0.4  
 #&gt; period4     -1.6    0.5  
 #&gt; 
 #&gt; Error terms:
 #&gt;  Groups Name        Std.Dev.
-#&gt;  herd   (Intercept) 0.78    
+#&gt;  herd   (Intercept) 0.79    
 #&gt; Num. levels: herd 15 
 #&gt; 
 #&gt; ------
 #&gt; * For help interpreting the printed output see ?print.stanreg
 #&gt; * For info on the priors used see ?prior_summary.stanreg
 #&gt; 'data.frame':	1000 obs. of  21 variables:
-#&gt;  $ (Intercept)                        : num  -0.072 -1.608 -1.322 -1.515 -1.407 ...
-#&gt;  $ size                               : num  -0.04895 -0.00155 0.02925 -0.0024 -0.00211 ...
-#&gt;  $ period2                            : num  -1.53 -0.533 -1.098 -1.085 -1.667 ...
-#&gt;  $ period3                            : num  -2.41332 0.00353 -1.55974 -0.4579 -1.22704 ...
-#&gt;  $ period4                            : num  -2.404 -0.965 -2.057 -1.131 -2.022 ...
-#&gt;  $ b[(Intercept) herd:1]              : num  0.7382 0.0205 0.7581 0.2074 1.0541 ...
-#&gt;  $ b[(Intercept) herd:2]              : num  -0.6308 -1.7176 -0.745 -0.0781 -0.8215 ...
-#&gt;  $ b[(Intercept) herd:3]              : num  -0.047 0.4704 -0.483 0.0353 0.9715 ...
-#&gt;  $ b[(Intercept) herd:4]              : num  -0.5145 -0.0603 -0.1461 0.1155 0.2473 ...
-#&gt;  $ b[(Intercept) herd:5]              : num  -0.106 -1.234 -0.135 -0.593 -1.468 ...
-#&gt;  $ b[(Intercept) herd:6]              : num  -0.4687 -1.4925 -0.8815 -0.0803 -0.6751 ...
-#&gt;  $ b[(Intercept) herd:7]              : num  0.383 0.95 0.837 0.785 1.052 ...
-#&gt;  $ b[(Intercept) herd:8]              : num  0.37289 0.89414 -1.02887 0.77938 -0.00905 ...
-#&gt;  $ b[(Intercept) herd:9]              : num  -0.128 -0.946 -0.734 -0.295 -0.948 ...
-#&gt;  $ b[(Intercept) herd:10]             : num  -0.201 -1.795 -0.826 -0.678 -0.185 ...
-#&gt;  $ b[(Intercept) herd:11]             : num  -0.225 -0.761 -0.589 -0.295 -0.143 ...
-#&gt;  $ b[(Intercept) herd:12]             : num  -0.879 -1.336 -0.108 0.148 0.434 ...
-#&gt;  $ b[(Intercept) herd:13]             : num  -1.022 -1.181 -1.357 -0.489 -1.047 ...
-#&gt;  $ b[(Intercept) herd:14]             : num  0.8 1.339 0.608 0.788 1.075 ...
-#&gt;  $ b[(Intercept) herd:15]             : num  -0.932 -0.382 -1.681 -0.359 -1.321 ...
-#&gt;  $ Sigma[herd:(Intercept),(Intercept)]: num  0.297 1.347 1.241 0.238 0.882 ...</div><div class='output co'>#&gt; <span class='message'></span>
+#&gt;  $ (Intercept)                        : num  -1.23 -1.83 -1.42 -1.67 -1.72 ...
+#&gt;  $ size                               : num  -0.00155 0.02421 0.00601 0.01445 0.02242 ...
+#&gt;  $ period2                            : num  -0.692 -0.835 -1.607 -0.93 -1.475 ...
+#&gt;  $ period3                            : num  -1.562 -0.762 -1.132 -1.531 -1.076 ...
+#&gt;  $ period4                            : num  -1.27 -1.43 -2.47 -1.24 -1.85 ...
+#&gt;  $ b[(Intercept) herd:1]              : num  0.22 1.367 0.214 1.326 0.554 ...
+#&gt;  $ b[(Intercept) herd:2]              : num  -0.284 -0.639 -0.894 0.309 -0.167 ...
+#&gt;  $ b[(Intercept) herd:3]              : num  0.449 0.122 0.367 0.121 0.143 ...
+#&gt;  $ b[(Intercept) herd:4]              : num  -0.113 0.874 -0.609 0.782 0.325 ...
+#&gt;  $ b[(Intercept) herd:5]              : num  -0.75684 0.00387 -0.06393 -0.51919 0.3108 ...
+#&gt;  $ b[(Intercept) herd:6]              : num  -1.625 0.172 -0.208 -0.77 -0.424 ...
+#&gt;  $ b[(Intercept) herd:7]              : num  1.135 1.102 0.806 0.77 0.636 ...
+#&gt;  $ b[(Intercept) herd:8]              : num  0.1765 -0.0504 0.391 1.0216 0.0622 ...
+#&gt;  $ b[(Intercept) herd:9]              : num  -0.498 -0.142 -0.154 -0.342 0.543 ...
+#&gt;  $ b[(Intercept) herd:10]             : num  -1.151 -0.83 -0.771 -0.691 -0.546 ...
+#&gt;  $ b[(Intercept) herd:11]             : num  -0.2197 -0.5348 0.0396 -0.5771 -0.2001 ...
+#&gt;  $ b[(Intercept) herd:12]             : num  -0.5736 0.3059 -0.2886 0.3454 -0.0195 ...
+#&gt;  $ b[(Intercept) herd:13]             : num  -0.538 -1.327 -0.547 -1.051 -0.245 ...
+#&gt;  $ b[(Intercept) herd:14]             : num  1.542 0.879 1.146 0.557 0.393 ...
+#&gt;  $ b[(Intercept) herd:15]             : num  -0.265 -1.148 -0.325 -1.117 -0.774 ...
+#&gt;  $ Sigma[herd:(Intercept),(Intercept)]: num  0.717 0.711 0.239 0.695 0.248 ...</div><div class='output co'>#&gt; <span class='message'></span>
 #&gt; <span class='message'>Attaching package: ‘dplyr’</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:stats’:</span>
 #&gt; <span class='message'></span>
 #&gt; <span class='message'>    filter, lag</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:base’:</span>
@@ -418,18 +426,18 @@ use backticks to escape it <code><a href='https://dplyr.tidyverse.org/reference/
   <span class='kw'>`r_condition[B,Slope]`</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='fl'>1000</span>)
 )
 <span class='no'>posterior</span></div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 1,000 x 8</span><span>
-#&gt;    b_Intercept sd_condition__I…  sigma `r_condition[A,… `r_condition[B,…
-#&gt;          </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>            </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>            </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>            </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 1</span><span>     -</span><span style='color: #BB0000;'>1.44</span><span>             1.51   0.310            -</span><span style='color: #BB0000;'>0.839</span><span>          -</span><span style='color: #BB0000;'>0.907</span><span> 
-#&gt; </span><span style='color: #BCBCBC;'> 2</span><span>     -</span><span style='color: #BB0000;'>1.95</span><span>             0.230  1.12              1.34           -</span><span style='color: #BB0000;'>0.558</span><span> 
-#&gt; </span><span style='color: #BCBCBC;'> 3</span><span>     -</span><span style='color: #BB0000;'>0.570</span><span>            0.198  0.986             0.123          -</span><span style='color: #BB0000;'>1.09</span><span>  
-#&gt; </span><span style='color: #BCBCBC;'> 4</span><span>      1.02             0.562  0.163            -</span><span style='color: #BB0000;'>0.682</span><span>          -</span><span style='color: #BB0000;'>1.09</span><span>  
-#&gt; </span><span style='color: #BCBCBC;'> 5</span><span>     -</span><span style='color: #BB0000;'>0.851</span><span>            0.113  0.199            -</span><span style='color: #BB0000;'>0.769</span><span>           1.25  
-#&gt; </span><span style='color: #BCBCBC;'> 6</span><span>     -</span><span style='color: #BB0000;'>0.983</span><span>            0.049</span><span style='text-decoration: underline;'>3</span><span> 0.073</span><span style='text-decoration: underline;'>9</span><span>           -</span><span style='color: #BB0000;'>0.621</span><span>          -</span><span style='color: #BB0000;'>0.038</span><span style='color: #BB0000;text-decoration: underline;'>7</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 7</span><span>      0.460            0.944  1.65             -</span><span style='color: #BB0000;'>0.443</span><span>          -</span><span style='color: #BB0000;'>0.291</span><span> 
-#&gt; </span><span style='color: #BCBCBC;'> 8</span><span>     -</span><span style='color: #BB0000;'>0.050</span><span style='color: #BB0000;text-decoration: underline;'>3</span><span>           0.081</span><span style='text-decoration: underline;'>3</span><span> 3.79             -</span><span style='color: #BB0000;'>0.256</span><span>          -</span><span style='color: #BB0000;'>0.908</span><span> 
-#&gt; </span><span style='color: #BCBCBC;'> 9</span><span>      0.617            1.57   0.271            -</span><span style='color: #BB0000;'>0.924</span><span>           0.385 
-#&gt; </span><span style='color: #BCBCBC;'>10</span><span>     -</span><span style='color: #BB0000;'>1.04</span><span>             0.183  0.797            -</span><span style='color: #BB0000;'>2.08</span><span>           -</span><span style='color: #BB0000;'>1.60</span><span>  
+#&gt;    b_Intercept sd_condition__I… sigma `r_condition[A,… `r_condition[B,…
+#&gt;          </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>            </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>            </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>            </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #BCBCBC;'> 1</span><span>      -</span><span style='color: #BB0000;'>1.33</span><span>             3.46  0.614          -</span><span style='color: #BB0000;'>1.67</span><span>             -</span><span style='color: #BB0000;'>1.30</span><span> 
+#&gt; </span><span style='color: #BCBCBC;'> 2</span><span>       1.99             0.885 2.71            0.075</span><span style='text-decoration: underline;'>7</span><span>           -</span><span style='color: #BB0000;'>0.397</span><span>
+#&gt; </span><span style='color: #BCBCBC;'> 3</span><span>       0.566            1.99  1.25           -</span><span style='color: #BB0000;'>1.42</span><span>              0.509
+#&gt; </span><span style='color: #BCBCBC;'> 4</span><span>       0.760            0.427 1.18            0.953            -</span><span style='color: #BB0000;'>0.929</span><span>
+#&gt; </span><span style='color: #BCBCBC;'> 5</span><span>      -</span><span style='color: #BB0000;'>0.164</span><span>            0.383 1.74            1.11             -</span><span style='color: #BB0000;'>0.875</span><span>
+#&gt; </span><span style='color: #BCBCBC;'> 6</span><span>      -</span><span style='color: #BB0000;'>0.326</span><span>            0.861 0.904          -</span><span style='color: #BB0000;'>0.699</span><span>             0.870
+#&gt; </span><span style='color: #BCBCBC;'> 7</span><span>      -</span><span style='color: #BB0000;'>0.442</span><span>            0.635 1.09            1.49             -</span><span style='color: #BB0000;'>1.33</span><span> 
+#&gt; </span><span style='color: #BCBCBC;'> 8</span><span>      -</span><span style='color: #BB0000;'>2.21</span><span>             0.980 1.56            1.09             -</span><span style='color: #BB0000;'>1.47</span><span> 
+#&gt; </span><span style='color: #BCBCBC;'> 9</span><span>      -</span><span style='color: #BB0000;'>1.67</span><span>             0.817 0.799          -</span><span style='color: #BB0000;'>0.156</span><span>            -</span><span style='color: #BB0000;'>0.761</span><span>
+#&gt; </span><span style='color: #BCBCBC;'>10</span><span>      -</span><span style='color: #BB0000;'>0.171</span><span>            2.42  0.854           1.05              1.47 
 #&gt; </span><span style='color: #949494;'># … with 990 more rows, and 3 more variables: `r_condition[C,Intercept]` </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>,</span><span>
 #&gt; </span><span style='color: #949494;'>#   `r_condition[A,Slope]` </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, `r_condition[B,Slope]` </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span></div><div class='input'>
 <span class='co'># using one expression in braces</span>

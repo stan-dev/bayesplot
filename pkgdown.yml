@@ -1,11 +1,11 @@
-pandoc: 2.7.3
+pandoc: 2.11.1.1
 pkgdown: 1.5.1
 pkgdown_sha: ~
 articles:
   graphical-ppcs: graphical-ppcs.html
   plotting-mcmc-draws: plotting-mcmc-draws.html
   visual-mcmc-diagnostics: visual-mcmc-diagnostics.html
-last_built: 2020-06-01T21:32Z
+last_built: 2021-01-11T19:20Z
 urls:
   reference: https://mc-stan.org/bayesplot/reference
   article: https://mc-stan.org/bayesplot/articles

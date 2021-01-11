@@ -40,12 +40,18 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bayesplot</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.7.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.8.0</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
+<li>
+  <a href="../index.html">
+    <span class="fa fa-home fa-lg"></span>
+     
+  </a>
+</li>
 <li>
   <a href="../articles/index.html">Vignettes</a>
 </li>
@@ -82,6 +88,9 @@
     </li>
     <li>
       <a href="https://mc-stan.org/rstantools">rstantools</a>
+    </li>
+    <li>
+      <a href="https://mc-stan.org/posterior">posterior</a>
     </li>
   </ul>
 </li>
@@ -124,13 +133,13 @@
 
       
 
-      </header><div class="row">
+      </header><script src="plotting-mcmc-draws_files/header-attrs-2.3/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Plotting MCMC draws using the bayesplot package</h1>
                         <h4 class="author">Jonah Gabry</h4>
             
-            <h4 class="date">Latest version: 2020-06-01</h4>
+            <h4 class="date">Latest version: 2021-01-11</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/stan-dev/bayesplot/blob/master/vignettes/plotting-mcmc-draws.Rmd"><code>vignettes/plotting-mcmc-draws.Rmd</code></a></small>
       <div class="hidden name"><code>plotting-mcmc-draws.Rmd</code></div>
@@ -182,17 +191,17 @@ Valiant           18.1   6  225 105 2.76 3.460 20.22  1  0    3    1</code></pre
  predictors:   11
 ------
             Median MAD_SD
-(Intercept) 12.1   20.0  
+(Intercept) 12.0   19.3  
 cyl         -0.1    1.1  
 disp         0.0    0.0  
 hp           0.0    0.0  
-drat         0.8    1.7  
+drat         0.8    1.6  
 wt          -3.7    1.9  
 qsec         0.8    0.8  
-vs           0.3    2.3  
-am           2.5    2.2  
-gear         0.7    1.6  
-carb        -0.2    0.8  
+vs           0.3    2.1  
+am           2.6    2.1  
+gear         0.6    1.5  
+carb        -0.2    0.9  
 
 Auxiliary parameter(s):
       Median MAD_SD
@@ -272,7 +281,7 @@ $parameters
 <span class="fu"><a href="../reference/MCMC-distributions.html">mcmc_hist</a></span>(<span class="no">posterior</span>, <span class="kw">pars</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"wt"</span>, <span class="st">"sigma"</span>),
           <span class="kw">transformations</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="st">"sigma"</span> <span class="kw">=</span> <span class="st">"log"</span>))</pre></body></html></div>
 <p><img src="plotting-mcmc-draws_files/figure-html/mcmc_hist-transform-1.png" width="60%" style="display: block; margin: auto;"></p>
-<!-- ```{r, mcmc_hist-transform, message=FALSE, eval=FALSE} -->
+<!-- ```{r mcmc_hist-transform, message=FALSE, eval=FALSE} -->
 <!-- # not evaluated to reduce vignette size for CRAN -->
 <!-- # full version available at mc-stan.org/bayesplot/articles -->
 <!-- color_scheme_set("blue") -->
@@ -351,7 +360,7 @@ $parameters
 <span class="fu"><a href="../reference/MCMC-scatterplots.html">mcmc_pairs</a></span>(<span class="no">posterior</span>, <span class="kw">pars</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"(Intercept)"</span>, <span class="st">"wt"</span>, <span class="st">"sigma"</span>),
            <span class="kw">off_diag_args</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="kw">size</span> <span class="kw">=</span> <span class="fl">1.5</span>))</pre></body></html></div>
 <p><img src="plotting-mcmc-draws_files/figure-html/mcmc_pairs-1.png" width="60%" style="display: block; margin: auto;"></p>
-<!-- ```{r, mcmc_pairs, message=FALSE, eval=FALSE} -->
+<!-- ```{r mcmc_pairs, message=FALSE, eval=FALSE} -->
 <!-- # not evaluated to reduce vignette size for CRAN -->
 <!-- # full version available at mc-stan.org/bayesplot/articles -->
 <!-- color_scheme_set("pink") -->
@@ -388,7 +397,7 @@ $parameters
 <p>The <a href="https://CRAN.R-project.org/package=viridis"><code>"viridis"</code> color scheme</a> is also useful for trace plots because it is comprised of very distinct colors:</p>
 <div class="sourceCode" id="cb23"><html><body><pre class="r"><span class="fu"><a href="../reference/bayesplot-colors.html">color_scheme_set</a></span>(<span class="st">"viridis"</span>)
 <span class="fu"><a href="../reference/MCMC-traces.html">mcmc_trace</a></span>(<span class="no">posterior</span>, <span class="kw">pars</span> <span class="kw">=</span> <span class="st">"(Intercept)"</span>)</pre></body></html></div>
-<!-- ```{r, viridis-scheme, eval=FALSE} -->
+<!-- ```{r viridis-scheme, eval=FALSE} -->
 <!-- # not evaluated to reduce vignette size for CRAN -->
 <!-- # full version available at mc-stan.org/bayesplot/articles -->
 <!-- color_scheme_set("viridis") -->
@@ -407,7 +416,7 @@ $parameters
 <div id="references" class="section level2">
 <h2 class="hasAnchor">
 <a href="#references" class="anchor"></a>References</h2>
-<p>Gabry, J., and Goodrich, B. (2017). rstanarm: Bayesian Applied Regression Modeling via Stan. R package version 2.15.3. <a href="https://mc-stan.org/rstanarm" class="uri">https://mc-stan.org/rstanarm</a>, <a href="https://CRAN.R-project.org/package=rstanarm" class="uri">https://CRAN.R-project.org/package=rstanarm</a></p>
+<p>Gabry, J., and Goodrich, B. (2017). rstanarm: Bayesian Applied Regression Modeling via Stan. R package version 2.15.3. <a href="https://mc-stan.org/rstanarm/" class="uri">https://mc-stan.org/rstanarm/</a>, <a href="https://CRAN.R-project.org/package=rstanarm" class="uri">https://CRAN.R-project.org/package=rstanarm</a></p>
 <p>Gabry, J., Simpson, D., Vehtari, A., Betancourt, M. and Gelman, A. (2019), Visualization in Bayesian workflow. <em>J. R. Stat. Soc. A</em>, 182: 389-402. :10.1111/rssa.12378. (<a href="https://rss.onlinelibrary.wiley.com/doi/full/10.1111/rssa.12378">journal version</a>, <a href="https://arxiv.org/abs/1709.01449">arXiv preprint</a>, <a href="https://github.com/jgabry/bayes-vis-paper">code on GitHub</a>) <a id="gabry2019"></a></p>
 <p>Gelman, A., Carlin, J. B., Stern, H. S., Dunson, D. B., Vehtari, A., and Rubin, D. B. (2013). <em>Bayesian Data Analysis</em>. Chapman &amp; Hall/CRC Press, London, third edition.</p>
 <p>Stan Development Team. (2017). <em>Stan Modeling Language Users Guide and Reference Manual</em>. <a href="https://mc-stan.org/users/documentation/" class="uri">https://mc-stan.org/users/documentation/</a></p>

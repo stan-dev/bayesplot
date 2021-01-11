@@ -47,12 +47,18 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">bayesplot</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.7.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.8.0</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
+<li>
+  <a href="index.html">
+    <span class="fa fa-home fa-lg"></span>
+     
+  </a>
+</li>
 <li>
   <a href="articles/index.html">Vignettes</a>
 </li>
@@ -89,6 +95,9 @@
     </li>
     <li>
       <a href="https://mc-stan.org/rstantools">rstantools</a>
+    </li>
+    <li>
+      <a href="https://mc-stan.org/posterior">posterior</a>
     </li>
   </ul>
 </li>
@@ -144,7 +153,7 @@
 <h4>
 Plotting Bayesian models
 </h4>
-</span>
+<p></p></span>
 </div>
 <p><br></p>
 <p><a href="https://mc-stan.org/assets/img/bayesplot/mcmc_areas-rstanarm.png"> <img src="https://mc-stan.org/assets/img/bayesplot/mcmc_areas-rstanarm.png" style="width: 15%;"></a> <a href="https://mc-stan.org/assets/img/bayesplot/mcmc_nuts_energy-rstan.png"> <img src="https://mc-stan.org/assets/img/bayesplot/mcmc_nuts_energy-rstan.png" style="width: 15%;"></a> <a href="https://mc-stan.org/assets/img/bayesplot/mcmc_trace-rstan.png"> <img src="https://mc-stan.org/assets/img/bayesplot/mcmc_trace-rstan.png" style="width: 15%;"></a> <a href="https://mc-stan.org/assets/img/bayesplot/ppc_dens_overlay-rstanarm.png"> <img src="https://mc-stan.org/assets/img/bayesplot/ppc_dens_overlay-rstanarm.png" style="width: 15%;"></a> <a href="https://mc-stan.org/assets/img/bayesplot/ppc_intervals-rstanarm.png"> <img src="https://mc-stan.org/assets/img/bayesplot/ppc_intervals-rstanarm.png" style="width: 15%;"></a> <a href="https://mc-stan.org/assets/img/bayesplot/ppc_stat-rstanarm.png"> <img src="https://mc-stan.org/assets/img/bayesplot/ppc_stat-rstanarm.png" style="width: 15%;"></a></p>
@@ -168,7 +177,7 @@ Plotting Bayesian models
 <div class="sourceCode" id="cb2"><pre class="r"><span class="kw">if</span> (!<span class="fu"><a href="https://rdrr.io/r/base/library.html">require</a></span>(<span class="st">"devtools"</span>)) {
   <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"devtools"</span>)
 }
-<span class="kw pkg">devtools</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/devtools/man/remote-reexports.html">install_github</a></span>(<span class="st">"stan-dev/bayesplot"</span>)</pre></div>
+<span class="kw pkg">devtools</span><span class="kw ns">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span>(<span class="st">"stan-dev/bayesplot"</span>)</pre></div>
 <p>Installation from GitHub does not include the vignettes by default because they take some time to build, but the vignettes can always be accessed online anytime at <a href="https://mc-stan.org/bayesplot/articles/">mc-stan.org/bayesplot/articles</a>).</p>
 </div>
 <div id="examples" class="section level2">
@@ -188,13 +197,13 @@ Plotting Bayesian models
            <span class="kw">pars</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"cyl"</span>, <span class="st">"drat"</span>, <span class="st">"am"</span>, <span class="st">"wt"</span>),
            <span class="kw">prob</span> <span class="kw">=</span> <span class="fl">0.8</span>) + <span class="no">plot_title</span></pre></div>
 <div style="text-align:center">
-<a href="https://raw.githubusercontent.com/stan-dev/bayesplot/master/images/mcmc_areas-rstanarm.png"> <img src="https://raw.githubusercontent.com/stan-dev/bayesplot/master/images/mcmc_areas-rstanarm.png" width="50%/"></a>
+<p><a href="https://raw.githubusercontent.com/stan-dev/bayesplot/master/images/mcmc_areas-rstanarm.png"> <img src="https://raw.githubusercontent.com/stan-dev/bayesplot/master/images/mcmc_areas-rstanarm.png" width="50%/"></a></p>
 </div>
 <div class="sourceCode" id="cb4"><pre class="r"><span class="fu"><a href="reference/bayesplot-colors.html">color_scheme_set</a></span>(<span class="st">"red"</span>)
 <span class="fu"><a href="reference/PPC-distributions.html">ppc_dens_overlay</a></span>(<span class="kw">y</span> <span class="kw">=</span> <span class="no">fit</span>$<span class="no">y</span>,
                  <span class="kw">yrep</span> <span class="kw">=</span> <span class="fu"><a href="https://mc-stan.org/rstanarm/reference/posterior_predict.stanreg.html">posterior_predict</a></span>(<span class="no">fit</span>, <span class="kw">draws</span> <span class="kw">=</span> <span class="fl">50</span>))</pre></div>
 <div style="text-align:center">
-<a href="https://raw.githubusercontent.com/stan-dev/bayesplot/master/images/ppc_dens_overlay-rstanarm.png"> <img src="https://raw.githubusercontent.com/stan-dev/bayesplot/master/images/ppc_dens_overlay-rstanarm.png" width="50%/"></a>
+<p><a href="https://raw.githubusercontent.com/stan-dev/bayesplot/master/images/ppc_dens_overlay-rstanarm.png"> <img src="https://raw.githubusercontent.com/stan-dev/bayesplot/master/images/ppc_dens_overlay-rstanarm.png" width="50%/"></a></p>
 </div>
 <div class="sourceCode" id="cb5"><pre class="r"><span class="co"># also works nicely with piping</span>
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="st">"dplyr"</span>)
@@ -205,19 +214,19 @@ Plotting Bayesian models
                    <span class="kw">group</span> <span class="kw">=</span> <span class="no">mtcars</span>$<span class="no">carb</span>,
                    <span class="kw">stat</span> <span class="kw">=</span> <span class="st">"median"</span>)</pre></div>
 <div style="text-align:center">
-<a href="https://raw.githubusercontent.com/stan-dev/bayesplot/master/images/ppc_stat_grouped-rstanarm.png"> <img src="https://raw.githubusercontent.com/stan-dev/bayesplot/master/images/ppc_stat_grouped-rstanarm.png" width="50%/"></a>
+<p><a href="https://raw.githubusercontent.com/stan-dev/bayesplot/master/images/ppc_stat_grouped-rstanarm.png"> <img src="https://raw.githubusercontent.com/stan-dev/bayesplot/master/images/ppc_stat_grouped-rstanarm.png" width="50%/"></a></p>
 </div>
 <div class="sourceCode" id="cb6"><pre class="r"><span class="co"># with rstan demo model</span>
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="st">"rstan"</span>)
-<span class="no">fit2</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/rstan/man/stan_demo.html">stan_demo</a></span>(<span class="st">"eight_schools"</span>, <span class="kw">warmup</span> <span class="kw">=</span> <span class="fl">300</span>, <span class="kw">iter</span> <span class="kw">=</span> <span class="fl">700</span>)
-<span class="no">posterior2</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/rstan/man/stanfit-method-extract.html">extract</a></span>(<span class="no">fit2</span>, <span class="kw">inc_warmup</span> <span class="kw">=</span> <span class="fl">TRUE</span>, <span class="kw">permuted</span> <span class="kw">=</span> <span class="fl">FALSE</span>)
+<span class="no">fit2</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://mc-stan.org/rstan/reference/stan_demo.html">stan_demo</a></span>(<span class="st">"eight_schools"</span>, <span class="kw">warmup</span> <span class="kw">=</span> <span class="fl">300</span>, <span class="kw">iter</span> <span class="kw">=</span> <span class="fl">700</span>)
+<span class="no">posterior2</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://mc-stan.org/rstan/reference/stanfit-method-extract.html">extract</a></span>(<span class="no">fit2</span>, <span class="kw">inc_warmup</span> <span class="kw">=</span> <span class="fl">TRUE</span>, <span class="kw">permuted</span> <span class="kw">=</span> <span class="fl">FALSE</span>)
 
 <span class="fu"><a href="reference/bayesplot-colors.html">color_scheme_set</a></span>(<span class="st">"mix-blue-pink"</span>)
 <span class="no">p</span> <span class="kw">&lt;-</span> <span class="fu"><a href="reference/MCMC-traces.html">mcmc_trace</a></span>(<span class="no">posterior2</span>,  <span class="kw">pars</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"mu"</span>, <span class="st">"tau"</span>), <span class="kw">n_warmup</span> <span class="kw">=</span> <span class="fl">300</span>,
                 <span class="kw">facet_args</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="kw">nrow</span> <span class="kw">=</span> <span class="fl">2</span>, <span class="kw">labeller</span> <span class="kw">=</span> <span class="no">label_parsed</span>))
 <span class="no">p</span> + <span class="fu"><a href="reference/bayesplot-helpers.html">facet_text</a></span>(<span class="kw">size</span> <span class="kw">=</span> <span class="fl">15</span>)</pre></div>
 <div style="text-align:center">
-<a href="https://raw.githubusercontent.com/stan-dev/bayesplot/master/images/mcmc_trace-rstan.png"> <img src="https://raw.githubusercontent.com/stan-dev/bayesplot/master/images/mcmc_trace-rstan.png" width="50%"></a>
+<p><a href="https://raw.githubusercontent.com/stan-dev/bayesplot/master/images/mcmc_trace-rstan.png"> <img src="https://raw.githubusercontent.com/stan-dev/bayesplot/master/images/mcmc_trace-rstan.png" width="50%"></a></p>
 </div>
 <div class="sourceCode" id="cb7"><pre class="r"><span class="co"># scatter plot also showing divergences</span>
 <span class="fu"><a href="reference/bayesplot-colors.html">color_scheme_set</a></span>(<span class="st">"darkgray"</span>)
@@ -228,13 +237,13 @@ Plotting Bayesian models
   <span class="kw">np_style</span> <span class="kw">=</span> <span class="fu"><a href="reference/MCMC-scatterplots.html">scatter_style_np</a></span>(<span class="kw">div_color</span> <span class="kw">=</span> <span class="st">"green"</span>, <span class="kw">div_alpha</span> <span class="kw">=</span> <span class="fl">0.8</span>)
 )</pre></div>
 <div style="text-align:center">
-<a href="https://raw.githubusercontent.com/stan-dev/bayesplot/master/images/mcmc_scatter-rstan.png"> <img src="https://raw.githubusercontent.com/stan-dev/bayesplot/master/images/mcmc_scatter-rstan.png" width="50%"></a>
+<p><a href="https://raw.githubusercontent.com/stan-dev/bayesplot/master/images/mcmc_scatter-rstan.png"> <img src="https://raw.githubusercontent.com/stan-dev/bayesplot/master/images/mcmc_scatter-rstan.png" width="50%"></a></p>
 </div>
 <div class="sourceCode" id="cb8"><pre class="r"><span class="fu"><a href="reference/bayesplot-colors.html">color_scheme_set</a></span>(<span class="st">"red"</span>)
 <span class="no">np</span> <span class="kw">&lt;-</span> <span class="fu"><a href="reference/bayesplot-extractors.html">nuts_params</a></span>(<span class="no">fit2</span>)
 <span class="fu"><a href="reference/MCMC-nuts.html">mcmc_nuts_energy</a></span>(<span class="no">np</span>) + <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(<span class="st">"NUTS Energy Diagnostic"</span>)</pre></div>
 <div style="text-align:center">
-<a href="https://raw.githubusercontent.com/stan-dev/bayesplot/master/images/mcmc_nuts_energy-rstan.png"> <img src="https://raw.githubusercontent.com/stan-dev/bayesplot/master/images/mcmc_nuts_energy-rstan.png" width="50%"></a>
+<p><a href="https://raw.githubusercontent.com/stan-dev/bayesplot/master/images/mcmc_nuts_energy-rstan.png"> <img src="https://raw.githubusercontent.com/stan-dev/bayesplot/master/images/mcmc_nuts_energy-rstan.png" width="50%"></a></p>
 </div>
 <div class="sourceCode" id="cb9"><pre class="r"><span class="co"># another example with rstanarm</span>
 <span class="fu"><a href="reference/bayesplot-colors.html">color_scheme_set</a></span>(<span class="st">"purple"</span>)
@@ -255,7 +264,7 @@ Plotting Bayesian models
   <span class="fu"><a href="reference/bayesplot-helpers.html">panel_bg</a></span>(<span class="kw">fill</span> <span class="kw">=</span> <span class="st">"gray95"</span>, <span class="kw">color</span> <span class="kw">=</span> <span class="fl">NA</span>) +
   <span class="fu"><a href="reference/bayesplot-helpers.html">grid_lines</a></span>(<span class="kw">color</span> <span class="kw">=</span> <span class="st">"white"</span>)</pre></div>
 <div style="text-align:center">
-<a href="https://raw.githubusercontent.com/stan-dev/bayesplot/master/images/ppc_intervals-rstanarm.png"> <img src="https://raw.githubusercontent.com/stan-dev/bayesplot/master/images/ppc_intervals-rstanarm.png" width="55%"></a>
+<p><a href="https://raw.githubusercontent.com/stan-dev/bayesplot/master/images/ppc_intervals-rstanarm.png"> <img src="https://raw.githubusercontent.com/stan-dev/bayesplot/master/images/ppc_intervals-rstanarm.png" width="55%"></a></p>
 </div>
 </div>
 
@@ -299,10 +308,10 @@ Plotting Bayesian models
   <div class="dev-status">
 <h2>Dev status</h2>
 <ul class="list-unstyled">
-<li><a href="https://travis-ci.org/stan-dev/bayesplot"><img src="https://travis-ci.org/stan-dev/bayesplot.svg?branch=master" alt="Travis-CI Build Status"></a></li>
-<li><a href="https://codecov.io/gh/stan-dev/bayesplot"><img src="https://codecov.io/gh/stan-dev/bayesplot/branch/master/graph/badge.svg" alt="codecov"></a></li>
 <li><a href="https://cran.r-project.org/web/packages/bayesplot"><img src="https://www.r-pkg.org/badges/version/bayesplot?color=blue" alt="CRAN_Status_Badge"></a></li>
 <li><a href="https://cran.rstudio.com/package=bayesplot"><img src="https://cranlogs.r-pkg.org/badges/bayesplot?color=blue" alt="Downloads"></a></li>
+<li><a href="https://github.com/stan-dev/bayesplot/actions"><img src="https://github.com/stan-dev/bayesplot/workflows/R-CMD-check/badge.svg" alt="R-CMD-check"></a></li>
+<li><a href="https://codecov.io/gh/stan-dev/bayesplot"><img src="https://codecov.io/gh/stan-dev/bayesplot/branch/master/graph/badge.svg" alt="codecov"></a></li>
 </ul>
 </div>
 </div>
