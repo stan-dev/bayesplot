@@ -1,12 +1,11 @@
 <!-- See http://style.tidyverse.org/news.html for advice on writing news -->
 
+# bayesplot 1.8.0.9000
+
+Items for next release go here
+
 
 # bayesplot 1.8.0
-
-<!--
-(GitHub issue/PR numbers in parentheses)
-* Items for next release go here
--->
 
 ### Bug fixes
 
