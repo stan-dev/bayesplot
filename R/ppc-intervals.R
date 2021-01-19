@@ -173,6 +173,8 @@ ppc_intervals_grouped <- function(y,
 
 #' @rdname PPC-intervals
 #' @export
+#' @param y_draw For ribbon plots only, a string specifying how to draw `y. Can
+#'   be `"line"` (the default), `"points"`, or `"both"`.
 ppc_ribbon <- function(y,
                        yrep,
                        x = NULL,
@@ -181,7 +183,7 @@ ppc_ribbon <- function(y,
                        prob_outer = 0.9,
                        alpha = 0.33,
                        size = 0.25,
-                       y_draw = "line") {
+                       y_draw = c("line", "points", "both")) {
   check_ignored_arguments(...)
 
   data <- ppc_intervals_data(
@@ -216,7 +218,7 @@ ppc_ribbon_grouped <- function(y,
                                prob_outer = 0.9,
                                alpha = 0.33,
                                size = 0.25,
-                               y_draw = "line") {
+                               y_draw = c("line", "points", "both")) {
   check_ignored_arguments(...)
 
   data <- ppc_intervals_data(
@@ -324,9 +326,10 @@ label_x <- function(x) {
            grouped = FALSE,
            style = c("intervals", "ribbon"),
            x_lab = NULL,
-           y_draw = "line") {
+           y_draw = c("line", "points", "both")) {
 
   style <- match.arg(style)
+  y_draw <- match.arg(y_draw)
 
   graph <- ggplot(
     data = data,
@@ -356,18 +359,18 @@ label_x <- function(x) {
       ) +
       geom_blank(aes_(fill = "y"))
 
-    if (y_draw == "point" | y_draw == "both") {
+    if (y_draw == "line" || y_draw == "both") {
+      graph <- graph + geom_line(
+        aes_(y = ~ y_obs, color = "y"),
+        size = 0.5
+      )
+    }
+
+    if (y_draw == "points" || y_draw == "both") {
       graph <- graph + geom_point(
         mapping = aes_(y = ~ y_obs, color = "y", fill = "y"),
         shape = 21,
         size = 1.5
-      )
-    } 
-
-    if (y_draw == "line" | y_draw == "both") {
-      graph <- graph + geom_line(
-        aes_(y = ~ y_obs, color = "y"),
-        size = 0.5
       )
     }
   } else {
