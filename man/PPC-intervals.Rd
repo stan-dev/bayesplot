@@ -112,7 +112,8 @@ passed to \code{\link[ggplot2:facet_wrap]{ggplot2::facet_wrap()}} to control fac
 and \code{size} are passed to \code{\link[ggplot2:geom_ribbon]{ggplot2::geom_ribbon()}}. For interval plots
 \code{size} and \code{fatten} are passed to \code{\link[ggplot2:geom_linerange]{ggplot2::geom_pointrange()}}.}
 
-\item{y_draw}{For ribbon plots only, a string specifying how to draw \verb{y. Can be }"line"\verb{(the default),}"points"\verb{, or }"both"`.}
+\item{y_draw}{For ribbon plots only, a string specifying how to draw \code{y}. Can
+be \code{"line"} (the default), \code{"points"}, or \code{"both"}.}
 }
 \value{
 The plotting functions return a ggplot object that can be further

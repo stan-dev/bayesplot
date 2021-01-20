@@ -173,7 +173,7 @@ ppc_intervals_grouped <- function(y,
 
 #' @rdname PPC-intervals
 #' @export
-#' @param y_draw For ribbon plots only, a string specifying how to draw `y. Can
+#' @param y_draw For ribbon plots only, a string specifying how to draw `y`. Can
 #'   be `"line"` (the default), `"points"`, or `"both"`.
 ppc_ribbon <- function(y,
                        yrep,
