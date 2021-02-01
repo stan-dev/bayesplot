@@ -17,7 +17,7 @@
 #' @template args-y-yrep
 #' @param size,alpha Passed to the appropriate geom to control the appearance of
 #'   the `yrep` distributions.
-#' @param ... Currently unused.
+#' @param ... Currently only used internally.
 #'
 #' @template return-ggplot
 #'
@@ -29,6 +29,9 @@
 #'    top (and in a darker shade). This is a PPC suitable for right-censored
 #'    `y`. Note that the replicated data from `yrep` is assumed to be
 #'    uncensored.
+#'   }
+#'   \item{`ppc_km_overlay_grouped()`}{
+#'    The same as `ppc_km_overlay()`, but with separate facets by `group`.
 #'   }
 #' }
 #'
@@ -50,6 +53,11 @@
 #' \donttest{
 #' ppc_km_overlay(y, yrep[1:25, ], status_y = status_y)
 #' }
+#' # With separate facets by group:
+#' group <- example_group_data()
+#' \donttest{
+#' ppc_km_overlay_grouped(y, yrep[1:25, ], group = group, status_y = status_y)
+#' }
 NULL
 
 #' @export
@@ -65,7 +73,8 @@ ppc_km_overlay <- function(
   size = 0.25,
   alpha = 0.7
 ) {
-  check_ignored_arguments(...)
+  check_ignored_arguments(..., ok_args = "add_group")
+  add_group <- list(...)$add_group
 
   if(!requireNamespace("survival", quietly = TRUE)){
     abort("Package 'survival' required.")
@@ -91,11 +100,25 @@ ppc_km_overlay <- function(
                                  as.numeric(as.character(.data$group)),
                                  1))
 
+  sf_form <- survival::Surv(value, group) ~ rep_label
+  if(!is.null(add_group)){
+    data <- dplyr::inner_join(data,
+                              tibble::tibble(y_id = seq_along(y),
+                                             add_group = add_group),
+                              by = "y_id")
+    sf_form <- update(sf_form, . ~ . + add_group)
+  }
   sf <- survival::survfit(
-    survival::Surv(value, group) ~ rep_label,
+    sf_form,
     data = data
   )
+  names(sf$strata) <- sub("add_group=", "add_group:", names(sf$strata)) # Needed to split the strata names in ggfortify:::fortify.survfit() properly.
   fsf <- fortify(sf)
+  if(any(grepl("add_group", levels(fsf$strata)))){
+    strata_split <- strsplit(as.character(fsf$strata), split = ", add_group:")
+    fsf$strata <- as.factor(sapply(strata_split, "[[", 1))
+    fsf$group <- as.factor(sapply(strata_split, "[[", 2))
+  }
 
   fsf$is_y_color <- as.factor(sub("\\[rep\\] \\(.*$", "rep", sub("^italic\\(y\\)", "y", fsf$strata)))
   fsf$is_y_size <- ifelse(fsf$is_y_color == "yrep", size, 1)
@@ -114,8 +137,14 @@ ppc_km_overlay <- function(
                         alpha = ~ is_y_alpha)) +
     geom_step() +
     hline_at(
-      c(0, 0.5, 1),
-      size = c(0.2, 0.1, 0.2),
+      0.5,
+      size = 0.1,
+      linetype = 2,
+      color = get_color("dh")
+    ) +
+    hline_at(
+      c(0, 1),
+      size = 0.2,
       linetype = 2,
       color = get_color("dh")
     ) +
@@ -128,4 +157,33 @@ ppc_km_overlay <- function(
     xaxis_title(FALSE) +
     yaxis_ticks(FALSE) +
     bayesplot_theme_get()
+}
+
+#' @export
+#' @rdname PPC-censoring
+#' @template args-group
+ppc_km_overlay_grouped <- function(
+  y,
+  yrep,
+  group,
+  ...,
+  status_y,
+  size = 0.25,
+  alpha = 0.7
+) {
+  check_ignored_arguments(...)
+
+  p_overlay <- ppc_km_overlay(
+    y = y,
+    yrep = yrep,
+    add_group = group,
+    ...,
+    status_y = status_y,
+    size = size,
+    alpha = alpha
+  )
+
+  p_overlay +
+    facet_wrap("group") +
+    force_axes_in_facets()
 }
