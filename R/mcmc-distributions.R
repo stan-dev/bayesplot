@@ -156,10 +156,10 @@ mcmc_dens <- function(
     facet_args = facet_args,
     by_chain = FALSE,
     trim = trim,
-    bw = NULL,
-    adjust = NULL,
-    kernel = NULL,
-    n_dens = NULL,
+    bw = bw,
+    adjust = adjust,
+    kernel = kernel,
+    n_dens = n_dens,
     ...
   )
 }
@@ -445,7 +445,7 @@ mcmc_violin <- function(
 
   geom <- match.arg(geom)
   violin <- geom == "violin"
-  geom_fun <- if (by_chain) "stat_density" else paste0("geom_", geom)
+  geom_fun <- if (!violin) "stat_density" else "geom_violin"
 
   if (by_chain || violin) {
     if (!has_multiple_chains(x)) {
@@ -519,3 +519,4 @@ mcmc_violin <- function(
     yaxis_title(on = n_param == 1 && violin) +
     xaxis_title(on = n_param == 1)
 }
+
