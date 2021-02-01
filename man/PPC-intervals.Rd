@@ -124,7 +124,7 @@ See the \strong{Plot Descriptions} section, below.
 
 \describe{
 \item{\verb{ppc_intervals(), ppc_ribbon()}}{
-\code{100*prob}\\% central intervals for \code{yrep} at each \code{x}
+\code{100*prob}\% central intervals for \code{yrep} at each \code{x}
 value. \code{ppc_intervals()} plots intervals as vertical bars with points
 indicating \code{yrep} medians and darker points indicating observed
 \code{y} values. \code{ppc_ribbon()} plots a ribbon of connected intervals

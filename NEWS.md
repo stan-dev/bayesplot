@@ -1,38 +1,46 @@
 <!-- See http://style.tidyverse.org/news.html for advice on writing news -->
 
+# bayesplot 1.8.0.9000
 
-# bayesplot 1.7.2.9000
-
-<!--
-(GitHub issue/PR numbers in parentheses)
-* Items for next release go here
--->
-
-* On the y axis, `ppc_loo_pit_qq(..., compare = "normal")` now plots standard
-  normal quantiles calculated from the PIT values (instead of the standardized
-  PIT values). (#240, #243, @fweber144)
-
-* New plotting function `ppc_km_overlay()` for outcome variables that are   
-  right-censored. Empirical CCDF estimates of `yrep` are compared with the 
-  Kaplan-Meier estimate of `y`. (#233, #234, @fweber144)
-
-* CmdStanMCMC objects (from CmdStanR) can now be used with extractor 
-  functions `nuts_params()`, `log_posterior()`, `rhat()`, and 
-  `neff_ratio()`. (#227)
+Items for next release go here
 
 * Size of points and interval lines can set in 
   `mcmc_intervals(..., outer_size, inner_size, point_size)`. (#215, #228, #229) 
-  
-* Size of ridgelines can be set in `mcmc_areas(..., size)` and `mcmc_areas_ridges(..., size)`. (#224)
-  
-* `mcmc_areas()` tries to use less blank vertical blank space. (#218, #230) 
+ 
+# bayesplot 1.8.0
 
-* Added missing `facet_args` argument to `mcmc_rank_overlay()`. (#221, @hhau)
+### Bug fixes
 
+* `mcmc_areas()` tries to use less vertical blank space. (#218, #230)
+
+### New features
+
+* New plotting functions `ppc_dens_overlay_grouped()` and `ppc_ecdf_overlay_grouped()`
+  for plotting density and cumulative distributions of the posterior predictive
+  distribution (versus observed data) by group. (#212)
+
+* New plotting function `ppc_km_overlay()` for outcome variables that are   
+  right-censored. Empirical CCDF estimates of `yrep` are compared with the
+  Kaplan-Meier estimate of `y`. (#233, #234, @fweber144)
+  
 * `ppc_loo_pit_overlay()` now uses a boundary correction for an improved kernel
   density estimation. The new argument `boundary_correction` defaults to TRUE but
   can be set to FALSE to recover the old version of the plot. (#171, #235,
   @ecoronado92)
+
+* CmdStanMCMC objects (from CmdStanR) can now be used with extractor
+  functions `nuts_params()`, `log_posterior()`, `rhat()`, and
+  `neff_ratio()`. (#227)
+  
+* On the y axis, `ppc_loo_pit_qq(..., compare = "normal")` now plots standard
+  normal quantiles calculated from the PIT values (instead of the standardized
+  PIT values). (#240, #243, @fweber144)
+
+* `mcmc_rank_overlay()` gains argument `facet_args`. (#221, @hhau)
+
+* For `mcmc_intervals()` the size` of the points and interval lines can be set with
+  `mcmc_intervals(..., outer_size, inner_size, point_size)`. (#215, #228, #229)
+
 
 
 # bayesplot 1.7.2
@@ -54,7 +62,7 @@ matrices also inheriting from "array" in R 4.0.
   examples. (#161, #183, #188)
 
 * Two new plots have been added for inspecting the distribution of ranks.
-  Rank histograms were introduced by the Stan team's [new paper on 
+  Rank histograms were introduced by the Stan team's [new paper on
   MCMC diagnostics](https://arxiv.org/abs/1903.08008). (#178, #179)
 
   `mcmc_rank_hist()`: A traditional traceplot (`mcmc_trace()`) visualizes how
@@ -62,21 +70,21 @@ matrices also inheriting from "array" in R 4.0.
   histogram (`mcmc_rank_hist()`) visualizes how the *ranks* of values from the
   chains mix together. An ideal plot would show the ranks mixing or overlapping
   in a uniform distribution.
-  
+
   `mcmc_rank_overlay()`: Instead of drawing each chain's histogram in a separate
   panel, this plot draws the top edge of the chains' histograms in a single
   panel.
-  
+
 * Added `mcmc_trace_data()`, which returns the data used for plotting the trace
   plots and rank histograms. (Advances #97)
 
-* [ColorBrewer](http://colorbrewer2.org) palettes are now available as color
+* [ColorBrewer](https://colorbrewer2.org/) palettes are now available as color
   schemes via
   [`color_scheme_set()`](https://mc-stan.org/bayesplot/reference/bayesplot-colors.html).
-  For example, `color_scheme_set("brewer-Spectral")` will use the Spectral 
+  For example, `color_scheme_set("brewer-Spectral")` will use the Spectral
   palette. (#177, #190)
 
-* MCMC plots now also accept objects with an `as.array` method as 
+* MCMC plots now also accept objects with an `as.array` method as
   input (e.g., stanfit objects). (#175, #184)
 
 * [`mcmc_trace()`](https://mc-stan.org/bayesplot/reference/MCMC-traces.html)
@@ -84,9 +92,9 @@ matrices also inheriting from "array" in R 4.0.
   from the first iteration after warmup. (#14, #155, @mcol)
 
 * [`mcmc_areas()`](https://mc-stan.org/bayesplot/reference/MCMC-intervals.html)
-  gains an argument `area_method` which controls how to draw the density 
-  curves. The default `"equal area"` constrains the heights so that the curves 
-  have the same area. As a result, a narrow interval will appear as a spike 
+  gains an argument `area_method` which controls how to draw the density
+  curves. The default `"equal area"` constrains the heights so that the curves
+  have the same area. As a result, a narrow interval will appear as a spike
   of density, while a wide, uncertain interval is spread thin over the _x_ axis.
   Alternatively `"equal height"` will set the maximum height on each curve to
   the same value. This works well when the intervals are about the same width.
@@ -113,12 +121,12 @@ matrices also inheriting from "array" in R 4.0.
 * The examples in
   [`?ppc_loo_pit_overlay()`](https://mc-stan.org/bayesplot/reference/PPC-loo.html)
   now work as expected. (#166, #167)
-  
-* Added `"viridisD"` as an alternative name for `"viridis"` to the supported 
+
+* Added `"viridisD"` as an alternative name for `"viridis"` to the supported
   colors.
 
-* Added `"viridisE"` (the [cividis](https://github.com/marcosci/cividis) 
-  version of viridis) to the supported colors. 
+* Added `"viridisE"` (the [cividis](https://github.com/marcosci/cividis)
+  version of viridis) to the supported colors.
 
 * `ppc_bars()` and `ppc_bars_grouped()` now allow negative integers as input.
   (#172, @jeffpollock9)
@@ -161,7 +169,7 @@ matrices also inheriting from "array" in R 4.0.
   gains an argument `discrete`, which is `FALSE` by default, but can be used
   to make the Geom more appropriate for discrete data. (#145)
 
-* [PPC intervals 
+* [PPC intervals
   plots](https://mc-stan.org/bayesplot/reference/PPC-intervals.html) and [LOO
   predictive checks](https://mc-stan.org/bayesplot/reference/PPC-loo.html) now
   draw both an outer and an inner probability interval, which can be

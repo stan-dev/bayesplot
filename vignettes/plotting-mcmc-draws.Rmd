@@ -16,7 +16,7 @@ vignette: >
 
 ```{r, child="children/SETTINGS-knitr.txt"}
 ```
-```{r, pkgs, include=FALSE}
+```{r pkgs, include=FALSE}
 library("ggplot2")
 library("rstanarm")
 ```
@@ -55,7 +55,7 @@ any package can be used with the functions in the **bayesplot** package. See,
 for example, **brms**, which, like **rstanarm**, calls the **rstan** package
 internally to use [Stan](https://mc-stan.org/)'s MCMC sampler.
 
-```{r, mtcars}
+```{r mtcars}
 head(mtcars) # see help("mtcars")
 ```
 
@@ -70,14 +70,14 @@ print(fit)
 fit <- stan_glm(mpg ~ ., data = mtcars, QR = TRUE, seed = 1111)
 ```
 
-```{r, print-fit, echo=FALSE}
+```{r print-fit, echo=FALSE}
 print(fit)
 ```
 
 To use the posterior draws with the functions in the **bayesplot** package
 we'll extract them from the fitted model object: 
 
-```{r, get-draws}
+```{r get-draws}
 posterior <- as.array(fit)
 dim(posterior)
 dimnames(posterior)
@@ -111,7 +111,7 @@ particular cases).
 Central posterior uncertainty intervals can be plotted using the
 `mcmc_intervals` function.
 
-```{r, mcmc_intervals}
+```{r mcmc_intervals}
 color_scheme_set("red")
 mcmc_intervals(posterior, pars = c("cyl", "drat", "am", "sigma"))
 ```
@@ -125,7 +125,7 @@ means instead or to omit the point estimates.
 To show the uncertainty intervals as shaded areas under the estimated posterior
 density curves we can use the `mcmc_areas` function.
 
-```{r, mcmc_areas}
+```{r mcmc_areas}
 mcmc_areas(
   posterior, 
   pars = c("cyl", "drat", "am", "sigma"),
@@ -156,7 +156,7 @@ combined or with the chains separate.
 The `mcmc_hist` function plots marginal posterior distributions 
 (combining all chains):
 
-```{r, mcmc_hist, message=FALSE}
+```{r mcmc_hist, message=FALSE}
 color_scheme_set("green")
 mcmc_hist(posterior, pars = c("wt", "sigma"))
 ```
@@ -164,13 +164,13 @@ mcmc_hist(posterior, pars = c("wt", "sigma"))
 If we want to plot `log(sigma)` rather than `sigma` we can either 
 transform the draws in advance or use the `transformations` argument.
 
-```{r, mcmc_hist-transform, message=FALSE}
+```{r mcmc_hist-transform, message=FALSE}
 color_scheme_set("blue")
 mcmc_hist(posterior, pars = c("wt", "sigma"),
           transformations = list("sigma" = "log"))
 ```
 
-<!-- ```{r, mcmc_hist-transform, message=FALSE, eval=FALSE} -->
+<!-- ```{r mcmc_hist-transform, message=FALSE, eval=FALSE} -->
 <!-- # not evaluated to reduce vignette size for CRAN -->
 <!-- # full version available at mc-stan.org/bayesplot/articles -->
 <!-- color_scheme_set("blue") -->
@@ -187,7 +187,7 @@ Most of the other functions for plotting MCMC draws also have a
 To view separate histograms of each of the four Markov chains we can use
 `mcmc_hist_by_chain`, which plots each chain in a separate facet in the plot.
 
-```{r, mcmc_hist_by_chain, message=FALSE}
+```{r mcmc_hist_by_chain, message=FALSE}
 color_scheme_set("brightblue")
 mcmc_hist_by_chain(posterior, pars = c("wt", "sigma"))
 ```
@@ -197,7 +197,7 @@ mcmc_hist_by_chain(posterior, pars = c("wt", "sigma"))
 The `mcmc_dens` function is similar to `mcmc_hist` but plots kernel 
 density estimates instead of histograms. 
 
-```{r, mcmc_dens, message=FALSE}
+```{r mcmc_dens, message=FALSE}
 color_scheme_set("purple")
 mcmc_dens(posterior, pars = c("wt", "sigma"))
 ```
@@ -209,7 +209,7 @@ Like `mcmc_hist_by_chain`, the `mcmc_dens_overlay` function separates the Markov
 chains. But instead of plotting each chain individually, the density estimates
 are overlaid.
 
-```{r, mcmc_dens_overlay, message=FALSE}
+```{r mcmc_dens_overlay, message=FALSE}
 mcmc_dens_overlay(posterior, pars = c("wt", "sigma"))
 ```
 
@@ -218,7 +218,7 @@ mcmc_dens_overlay(posterior, pars = c("wt", "sigma"))
 The `mcmc_violin` function plots the density estimates of each chain as violins
 and draws horizontal line segments at user-specified quantiles.
 
-```{r, mcmc_violin}
+```{r mcmc_violin}
 color_scheme_set("teal")
 mcmc_violin(posterior, pars = c("wt", "sigma"), probs = c(0.1, 0.5, 0.9))
 ```
@@ -246,7 +246,7 @@ vignette.
 
 The `mcmc_scatter` function creates a simple scatterplot of two parameters.
 
-```{r, mcmc_scatter}
+```{r mcmc_scatter}
 color_scheme_set("gray")
 mcmc_scatter(posterior, pars = c("(Intercept)", "wt"), 
              size = 1.5, alpha = 0.5)
@@ -257,7 +257,7 @@ mcmc_scatter(posterior, pars = c("(Intercept)", "wt"),
 The `mcmc_hex` function creates a similar plot but using hexagonal binning,
 which can be useful to avoid overplotting.
 
-```{r, mcmc_hex}
+```{r mcmc_hex}
 # requires hexbin package
 if (requireNamespace("hexbin", quietly = TRUE)) {
   mcmc_hex(posterior, pars = c("(Intercept)", "wt"))
@@ -269,13 +269,13 @@ if (requireNamespace("hexbin", quietly = TRUE)) {
 In addition to `mcmc_scatter` and `mcmc_hex`, __bayesplot__ now provides
 an `mcmc_pairs` function for creating pairs plots with more than two parameters.
 
-```{r, mcmc_pairs, message=FALSE}
+```{r mcmc_pairs, message=FALSE}
 color_scheme_set("pink")
 mcmc_pairs(posterior, pars = c("(Intercept)", "wt", "sigma"),
            off_diag_args = list(size = 1.5))
 ```
 
-<!-- ```{r, mcmc_pairs, message=FALSE, eval=FALSE} -->
+<!-- ```{r mcmc_pairs, message=FALSE, eval=FALSE} -->
 <!-- # not evaluated to reduce vignette size for CRAN -->
 <!-- # full version available at mc-stan.org/bayesplot/articles -->
 <!-- color_scheme_set("pink") -->
@@ -318,7 +318,7 @@ to trace plots.
 
 The `mcmc_trace` function creates standard trace plots:
 
-```{r, mcmc_trace}
+```{r mcmc_trace}
 color_scheme_set("blue")
 mcmc_trace(posterior, pars = c("wt", "sigma"))
 ```
@@ -326,7 +326,7 @@ mcmc_trace(posterior, pars = c("wt", "sigma"))
 If it's hard to see the difference between the chains we can 
 change to a mixed color scheme, for example:
 
-```{r, change-scheme}
+```{r change-scheme}
 color_scheme_set("mix-blue-red")
 mcmc_trace(posterior, pars = c("wt", "sigma"), 
            facet_args = list(ncol = 1, strip.position = "left"))
@@ -341,12 +341,12 @@ by side, and `strip.position="left"` moves the facet labels to the y-axis
 The [`"viridis"` color scheme](https://CRAN.R-project.org/package=viridis) is
 also useful for trace plots because it is comprised of very distinct colors:
 
-```{r, viridis-scheme, eval=FALSE}
+```{r viridis-scheme, eval=FALSE}
 color_scheme_set("viridis")
 mcmc_trace(posterior, pars = "(Intercept)")
 ```
 
-<!-- ```{r, viridis-scheme, eval=FALSE} -->
+<!-- ```{r viridis-scheme, eval=FALSE} -->
 <!-- # not evaluated to reduce vignette size for CRAN -->
 <!-- # full version available at mc-stan.org/bayesplot/articles -->
 <!-- color_scheme_set("viridis") -->
@@ -359,7 +359,7 @@ The `mcmc_trace_highlight` function uses points instead of lines and reduces the
 opacity of all but a single chain (which is specified using the `highlight`
 argument).
 
-```{r, mcmc_trace_highlight}
+```{r mcmc_trace_highlight}
 mcmc_trace_highlight(posterior, pars = "sigma", highlight = 3)
 ```
 
@@ -370,7 +370,7 @@ mcmc_trace_highlight(posterior, pars = "sigma", highlight = 3)
 
 Gabry, J., and Goodrich, B. (2017). rstanarm: Bayesian Applied Regression 
 Modeling via Stan. R package version 2.15.3. 
-https://mc-stan.org/rstanarm, https://CRAN.R-project.org/package=rstanarm
+https://mc-stan.org/rstanarm/, https://CRAN.R-project.org/package=rstanarm
 
 Gabry, J., Simpson, D., Vehtari, A., Betancourt, M. and Gelman, A. (2019),
 Visualization in Bayesian workflow. _J. R. Stat. Soc. A_, 182: 389-402. 

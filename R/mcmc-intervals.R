@@ -94,6 +94,19 @@
 #'   expand = expansion(add = c(.1, .3))
 #' )
 #'
+#' # relabel parameters
+#' p + scale_y_discrete(
+#'   labels = c("alpha" = "param label 1",
+#'              "beta[4]" = "param label 2")
+#')
+#'
+#' # relabel parameters and define the order
+#' p + scale_y_discrete(
+#'   labels = c("alpha" = "param label 1",
+#'              "beta[4]" = "param label 2"),
+#'   limits = c("beta[4]", "alpha")
+#' )
+#'
 #' # color by rhat value
 #' color_scheme_set("blue")
 #' fake_rhat_values <- c(1, 1.07, 1.3, 1.01, 1.15, 1.005)

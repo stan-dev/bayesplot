@@ -17,7 +17,7 @@ vignette: >
 ```{r, child="children/SETTINGS-knitr.txt"}
 ```
 
-```{r, pkgs, include=FALSE}
+```{r pkgs, include=FALSE}
 library("bayesplot")
 library("ggplot2")
 library("rstan")
@@ -46,7 +46,7 @@ In addition to __bayesplot__ we'll load the following packages:
 * __ggplot2__, in case we want to customize the ggplot objects created by __bayesplot__
 * __rstan__, for fitting the example models used throughout the vignette
 
-```{r, eval=FALSE}
+```{r setup, eval=FALSE}
 library("bayesplot")
 library("ggplot2")
 library("rstan")      
@@ -63,7 +63,7 @@ point estimates `y` and standard errors `sigma` from analyses of test prep
 programs in `J=8` schools. Ideally we would have the full data from each of 
 the previous studies, but in this case we only have the these estimates.
 
-```{r, schools_dat}
+```{r schools_dat}
 schools_dat <- list(
   J = 8, 
   y = c(28,  8, -3,  7, -1,  1, 18, 12),
@@ -82,7 +82,7 @@ y_j &\sim {\rm Normal}(\theta_j, \sigma_j), \quad j = 1,\dots,J \\
 $$
 with the normal distribution parameterized by the mean and standard deviation, 
 not the variance or precision. In Stan code:
-```{stan, stancode1, output.var = "schools_mod_cp"}
+```{stan stancode1, output.var = "schools_mod_cp"}
 // Saved in 'schools_mod_cp.stan'
 data {
   int<lower=0> J;
@@ -146,19 +146,19 @@ required in order to properly explore the posterior distribution.
 
 To fit both models we first translate the Stan code to C++ and compile it using 
 the `stan_model` function.
-```{r, compile-models, eval=FALSE}
+```{r compile-models, eval=FALSE}
 schools_mod_cp <- stan_model("schools_mod_cp.stan")
 schools_mod_ncp <- stan_model("schools_mod_ncp.stan")
 ```
 We then fit the model by calling Stan's MCMC algorithm using the `sampling` 
 function (the increased `adapt_delta` param is to make the sampler a bit more "careful" and avoid false positive divergences),
-```{r, fit-models-hidden, results='hide', message=FALSE}
+```{r fit-models-hidden, results='hide', message=FALSE}
 fit_cp <- sampling(schools_mod_cp, data = schools_dat, seed = 803214053, control = list(adapt_delta = 0.9))
 fit_ncp <- sampling(schools_mod_ncp, data = schools_dat, seed = 457721433, control = list(adapt_delta = 0.9))
 ```
 and extract a `iterations x chains x parameters` array of posterior draws with 
 `as.array`,
-```{r, extract-draws}
+```{r extract-draws}
 # Extract posterior draws for later use
 posterior_cp <- as.array(fit_cp)
 posterior_ncp <- as.array(fit_ncp)
@@ -195,7 +195,7 @@ more details on the concepts.
 
 The special **bayesplot** functions for NUTS diagnostics are
 
-```{r, available_mcmc-nuts}
+```{r available_mcmc-nuts}
 available_mcmc(pattern = "_nuts_")
 ```
 
@@ -210,7 +210,7 @@ difficult to define additional methods for the objects returned by other R
 packages. For the Stan models we fit above we can use the `log_posterior` and
 `nuts_params` methods for stanfit objects:
 
-```{r, extract-nuts-info}
+```{r extract-nuts-info}
 lp_cp <- log_posterior(fit_cp)
 head(lp_cp)
 np_cp <- nuts_params(fit_cp)
@@ -260,13 +260,13 @@ This function works in general without including information about the
 divergences, but if the optional `np` argument is used to pass NUTS parameter
 information, then divergences will be colored in the plot (by default in red).
 
-```{r, mcmc_parcoord-1}
+```{r mcmc_parcoord-1}
 color_scheme_set("darkgray")
 mcmc_parcoord(posterior_cp, np = np_cp)
 ```
 
 
-<!-- ```{r, mcmc_parcoord-1, eval=FALSE} -->
+<!-- ```{r mcmc_parcoord-1, eval=FALSE} -->
 <!-- # not evaluated to reduce vignette size for CRAN -->
 <!-- # full version available at mc-stan.org/bayesplot/articles -->
 <!-- color_scheme_set("darkgray") -->
@@ -294,12 +294,12 @@ multiplicative non-identifiabilities (banana-like shapes).
 Let's look at how `tau` interacts with other variables, using only one of the
 `theta`s to keep the plot readable:
 
-```{r, mcmc_pairs}
+```{r mcmc_pairs}
 mcmc_pairs(posterior_cp, np = np_cp, pars = c("mu","tau","theta[1]"),
            off_diag_args = list(size = 0.75))
 ```
 
-<!-- ```{r, mcmc_pairs, eval=FALSE} -->
+<!-- ```{r mcmc_pairs, eval=FALSE} -->
 <!-- # not evaluated to reduce vignette size for CRAN -->
 <!-- # full version available at mc-stan.org/bayesplot/articles -->
 <!-- mcmc_pairs(posterior_cp, np = np_cp, pars = c("mu","tau","theta[1]"),  -->
@@ -333,7 +333,7 @@ often even more informative.
 
 First the plot for the centered parameterization:
 
-```{r, mcmc_scatter-1}
+```{r mcmc_scatter-1}
 # assign to an object so we can reuse later
 scatter_theta_cp <- mcmc_scatter(
   posterior_cp, 
@@ -363,7 +363,7 @@ computed deterministically from the parameters `eta`, `mu` and `tau` afterwards.
 Here's the same plot as above, but with `eta[1]` from non-centered
 parameterization instead of `theta[1]` from the centered parameterization:
 
-```{r, mcmc_scatter-2}
+```{r mcmc_scatter-2}
 scatter_eta_ncp <- mcmc_scatter(
   posterior_ncp, 
   pars = c("eta[1]", "tau"), 
@@ -388,7 +388,7 @@ parameterization that we made above. We will also force the plots to have the
 same $y$-axis limits, which will make the most important difference much more
 apparent:
 
-```{r, mcmc_scatter-3}
+```{r mcmc_scatter-3}
 # A function we'll use several times to plot comparisons of the centered 
 # parameterization (cp) and the non-centered parameterization (ncp). See
 # help("bayesplot_grid") for details on the bayesplot_grid function used here.
@@ -435,7 +435,7 @@ trace plot of parameter draws. Typically we can see that at least one of the
 chains is getting stuck wherever there is a cluster of many red marks.
 
 Here is the trace plot for the `tau` parameter from the centered parameterization:
-```{r, mcmc_trace}
+```{r mcmc_trace}
 color_scheme_set("mix-brightblue-gray")
 mcmc_trace(posterior_cp, pars = "tau", np = np_cp) + 
   xlab("Post-warmup iteration")
@@ -448,7 +448,7 @@ us diagnose divergences. We may however zoom in to investigate, using the
 
 ```{r echo=FALSE}
 #A check that the chosen window still relevant
-n_divergent_in_window <- np_cp %>% filter(Parameter == "divergent__" & Value == 1 & Iteration >= 700 & Iteration <= 900) %>% nrow()
+n_divergent_in_window <- np_cp %>% filter(Parameter == "divergent__" & Value == 1 & Iteration >= 300 & Iteration <= 500) %>% nrow()
 
 if(n_divergent_in_window < 6) {
   divergences <- np_cp %>% filter(Parameter == "divergent__" & Value == 1) %>% select(Iteration) %>% get("Iteration", .) %>% sort() %>% paste(collapse = ",")
@@ -456,8 +456,8 @@ if(n_divergent_in_window < 6) {
 }
 ```
 
-```{r, mcmc_trace_zoom}
-mcmc_trace(posterior_cp, pars = "tau", np = np_cp, window = c(700,900)) + 
+```{r mcmc_trace_zoom}
+mcmc_trace(posterior_cp, pars = "tau", np = np_cp, window = c(300,500)) + 
   xlab("Post-warmup iteration")
 ```
 
@@ -471,7 +471,7 @@ healthy chains jump up and down frequently.
 To understand how the divergences interact with the model globally, we can use
 the `mcmc_nuts_divergence` function:
 
-```{r, mcmc_nuts_divergence}
+```{r mcmc_nuts_divergence}
 color_scheme_set("red")
 mcmc_nuts_divergence(np_cp, lp_cp)
 ```
@@ -487,14 +487,14 @@ acceptance statistic is shown.
 Specifying the optional `chain` argument will overlay the plot just for a
 particular Markov chain on the plot for all chains combined:
 
-```{r, mcmc_nuts_divergence-chain}
+```{r mcmc_nuts_divergence-chain}
 mcmc_nuts_divergence(np_cp, lp_cp, chain = 4)
 ```
 
 For the non-centered parameterization we may get a few warnings about
 divergences but if we do we'll have far fewer of them to worry about.
 
-```{r, mcmc_nuts_divergence-2}
+```{r mcmc_nuts_divergence-2}
 mcmc_nuts_divergence(np_ncp, lp_ncp)
 ```
 
@@ -503,7 +503,7 @@ the target acceptance rate (`adapt_delta`, the upper limit is 1), which has the 
 step size used by the sampler and allowing the Markov chains to explore more
 complicated curvature in the target distribution.
 
-```{r, fit-adapt-delta, results='hide', message=FALSE}
+```{r fit-adapt-delta, results='hide', message=FALSE}
 fit_cp_2 <- sampling(schools_mod_cp, data = schools_dat,
                      control = list(adapt_delta = 0.999), seed = 978245244)
 fit_ncp_2 <- sampling(schools_mod_ncp, data = schools_dat,
@@ -527,7 +527,7 @@ if(n_divergent_ncp_2 > 0) {
 For the first model and this particular data, increasing `adapt_delta` will not
 solve the problem and a reparameterization is required.
 
-```{r, mcmc_nuts_divergence-3}
+```{r mcmc_nuts_divergence-3}
 mcmc_nuts_divergence(nuts_params(fit_cp_2), log_posterior(fit_cp_2))
 mcmc_nuts_divergence(nuts_params(fit_ncp_2), log_posterior(fit_ncp_2))
 ```
@@ -548,7 +548,7 @@ posterior distribution.
 The plot created by `mcmc_nuts_energy` shows overlaid histograms of the 
 (centered) marginal energy distribution $\pi_E$ and the first-differenced 
 distribution $\pi_{\Delta E}$,
-```{r, mcmc_nuts_energy-1, message=FALSE}
+```{r mcmc_nuts_energy-1, message=FALSE}
 color_scheme_set("red")
 mcmc_nuts_energy(np_cp)
 ```
@@ -556,7 +556,7 @@ mcmc_nuts_energy(np_cp)
 The two histograms ideally look the same (Betancourt, 2017), which is only the
 case for the non-centered parameterization (right):
 
-```{r, mcmc_nuts_energy-3, message=FALSE, fig.width=8}
+```{r mcmc_nuts_energy-3, message=FALSE, fig.width=8}
 compare_cp_ncp(
   mcmc_nuts_energy(np_cp, binwidth = 1/2),
   mcmc_nuts_energy(np_ncp, binwidth = 1/2)
@@ -567,7 +567,7 @@ The difference between the parameterizations is even more apparent if we force
 the step size to a smaller value and help the chains explore more of the 
 posterior:
 
-```{r, mcmc_nuts_energy-4, message=FALSE,  fig.width=8}
+```{r mcmc_nuts_energy-4, message=FALSE,  fig.width=8}
 np_cp_2 <- nuts_params(fit_cp_2)
 np_ncp_2 <- nuts_params(fit_ncp_2)
 
@@ -619,7 +619,7 @@ First we'll quickly fit one of the models above again, this time intentionally
 using too few MCMC iterations and allowing more dispersed initial values. 
 This should lead to some high $\hat{R}$ values.
 
-```{r, results='hide'}
+```{r fit_cp_bad_rhat, results='hide'}
 fit_cp_bad_rhat <- sampling(schools_mod_cp, data = schools_dat, 
                             iter = 50, init_r = 10, seed = 671254821)
 ```
@@ -661,14 +661,14 @@ see the names of the parameters with the concerning $\hat{R}$ values using the
 `yaxis_text` convenience function (which passes arguments like `hjust` to
 `ggplot2::element_text`):
 
-```{r, mcmc_rhat-2}
+```{r mcmc_rhat-2}
 mcmc_rhat(rhats) + yaxis_text(hjust = 1)
 ```
 
 If we look at the same model fit using longer Markov chains we should see all
 $\hat{R} < 1.1$, and all points in the plot the same (light) color:
 
-```{r, mcmc_rhat-3}
+```{r mcmc_rhat-3}
 mcmc_rhat(rhat = rhat(fit_cp)) + yaxis_text(hjust = 0)
 ```
 
@@ -783,7 +783,7 @@ models. https://arxiv.org/abs/1312.0906
 
 Gabry, J., and Goodrich, B. (2018). rstanarm: Bayesian Applied Regression
 Modeling via Stan. R package version 2.17.4.
-https://mc-stan.org/rstanarm
+https://mc-stan.org/rstanarm/
 
 Gabry, J., Simpson, D., Vehtari, A., Betancourt, M. and Gelman, A. (2019),
 Visualization in Bayesian workflow. _J. R. Stat. Soc. A_, 182: 389-402. 
@@ -810,4 +810,4 @@ Stan Development Team. _Stan Modeling Language Users
 Guide and Reference Manual_. https://mc-stan.org/users/documentation/
 
 Stan Development Team. (2018). RStan: the R interface to Stan. R package version 2.17.3.
-https://mc-stan.org/rstan
+https://mc-stan.org/rstan/
