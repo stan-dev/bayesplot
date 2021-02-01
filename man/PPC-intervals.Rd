@@ -101,7 +101,7 @@ is missing or \code{NULL}, then \code{1:length(y)} is used for the x-axis.}
 probability mass to include in the inner and outer intervals. The defaults
 are \code{prob=0.5} and \code{prob_outer=0.9}.}
 
-\item{group}{A grouping variable (a vector or factor) the same length as
+\item{group}{A grouping variable (a vector or factor) of the same length as
 \code{y}. Each value in \code{group} is interpreted as the group level
 pertaining to the corresponding value of \code{y}.}
 

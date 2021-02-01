@@ -29,7 +29,7 @@ right censored, 1 = event).}
 \item{size, alpha}{Passed to the appropriate geom to control the appearance of
 the \code{yrep} distributions.}
 
-\item{group}{A grouping variable (a vector or factor) the same length as
+\item{group}{A grouping variable (a vector or factor) of the same length as
 \code{y}. Each value in \code{group} is interpreted as the group level
 pertaining to the corresponding value of \code{y}.}
 }

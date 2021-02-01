@@ -69,7 +69,7 @@ is passed to \code{\link[ggplot2:geom_path]{ggplot2::geom_line()}}.}
 default) the y-axis will display counts. Setting \code{freq=FALSE} will put
 proportions on the y-axis.}
 
-\item{group}{A grouping variable (a vector or factor) the same length as
+\item{group}{A grouping variable (a vector or factor) of the same length as
 \code{y}. Each value in \code{group} is interpreted as the group level
 pertaining to the corresponding value of \code{y}.}
 
