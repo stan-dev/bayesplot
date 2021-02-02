@@ -2,7 +2,10 @@
 
 # bayesplot 1.8.0.9000
 
-Items for next release go here
+### New features
+
+* New plotting function `ppc_km_overlay_grouped()`, the grouped variant of
+  `ppc_km_overlay()`. (#260)
 
 
 # bayesplot 1.8.0
