@@ -255,8 +255,8 @@ ppc_stat_2d <- function(y,
 
   check_ignored_arguments(...)
 
-  y <- validate_y(y)
-  yrep <- validate_yrep(yrep, y)
+  if(class(y) != "list") y <- validate_y(y)
+  if(class(y) != "list") yrep <- validate_yrep(yrep, y)
   if (length(stat) != 2) {
     abort("For ppc_stat_2d the 'stat' argument must have length 2.")
   }
@@ -271,12 +271,14 @@ ppc_stat_2d <- function(y,
 
   stat1 <- match.fun(stat[[1]])
   stat2 <- match.fun(stat[[2]])
-  T_y1 <- stat1(y)
-  T_y2 <- stat2(y)
+  if(class(y) != "list") T_y1 <- stat1(y)
+  if(class(y) != "list") T_y2 <- stat2(y)
+  if(class(y) == "list") T_y1 <- unlist(lapply(y, stat1))
+  if(class(y) == "list") T_y2 <- unlist(lapply(y, stat2))
   T_yrep1 <- apply(yrep, 1, stat1)
   T_yrep2 <- apply(yrep, 1, stat2)
 
-  ggplot(
+p1 <-  ggplot(
     data = data.frame(x = T_yrep1, y = T_yrep2),
     mapping = aes_(x = ~ x, y = ~ y)
   ) +
@@ -285,15 +287,7 @@ ppc_stat_2d <- function(y,
       shape = 21,
       size = size,
       alpha = alpha
-    ) +
-    annotate(
-      geom = "segment",
-      x = c(T_y1, -Inf), xend = c(T_y1, T_y1),
-      y = c(-Inf, T_y2), yend = c(T_y2, T_y2),
-      linetype = 2,
-      size = 0.4,
-      color = get_color("dh")
-    ) +
+    )  +
     geom_point(
       data = data.frame(x = T_y1, y = T_y2),
       mapping = aes_(x = ~ x, y = ~ y, fill = "y", color = "y"),
@@ -313,6 +307,20 @@ ppc_stat_2d <- function(y,
     ) +
     labs(x = stat_labs[1], y = stat_labs[2]) +
     bayesplot_theme_get()
+
+if(class(y) != "list") p1 <- p1 +
+               annotate(
+                 geom = "segment",
+                 x = c(T_y1, -Inf), xend = c(T_y1, T_y1),
+                 y = c(-Inf, T_y2), yend = c(T_y2, T_y2),
+                 linetype = 2,
+                 size = 0.4,
+                 color = get_color("dh")
+               )
+
+print(p1)
+
+
 }
 
 
