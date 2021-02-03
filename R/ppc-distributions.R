@@ -104,8 +104,8 @@ NULL
 #' @rdname PPC-distributions
 #' @export
 ppc_data <- function(y, yrep, group = NULL) {
-  y <- validate_y(y)
-  yrep <- validate_yrep(yrep, y)
+  if(class(y) != "list") y <- validate_y(y)
+  if(class(y) != "list") yrep <- validate_yrep(yrep, y)
   data <- melt_and_stack(y, yrep)
 
   if (!is.null(group)) {
@@ -293,7 +293,7 @@ ppc_dens_overlay <- function(y, yrep, ...,
       n = n_dens
     ) +
     stat_density(
-      aes_(color = "y"),
+      aes_(group = ~ rep_label, color = "y"),
       data = function(x) dplyr::filter(x, .data$is_y),
       geom = "line",
       position = "identity",

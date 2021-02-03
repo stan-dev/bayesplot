@@ -171,6 +171,7 @@ melt_yrep <- function(yrep) {
 #' @noRd
 melt_and_stack <- function(y, yrep) {
   y_text <- as.character(y_label())
+  if(class(y) == "list") y_text <- as.character(paste0(y_label(),"[", 1:length(y), "]"))
   yrep_text <- as.character(yrep_label())
 
   molten_yrep <- melt_yrep(yrep)
@@ -178,18 +179,43 @@ melt_and_stack <- function(y, yrep) {
   # Add a level in the labels for the observed y values
   levels(molten_yrep$rep_label) <- c(levels(molten_yrep$rep_label), y_text)
 
-  ydat <- tibble::tibble(
-    rep_label = factor(y_text, levels = levels(molten_yrep$rep_label)),
-    rep_id = NA_integer_,
-    y_id = seq_along(y),
-    value = y)
 
-  data <- dplyr::bind_rows(molten_yrep, ydat) %>%
-    mutate(
-      rep_label = relevel(.data$rep_label, y_text),
-      is_y = is.na(.data$rep_id),
-      is_y_label = ifelse(.data$is_y, y_text, yrep_text) %>%
-        factor(levels = c(y_text, yrep_text)))
+  if(class(y) == "list") {
+    for(i in 1:length(y)) {
+      ydat <- tibble::tibble(
+        rep_label = factor(y_text[i],
+                           levels = levels(molten_yrep$rep_label)),
+        rep_id = NA_integer_,
+        y_id = seq_along(y[[i]]),
+        value = y[[i]])
+      assign(paste0("ydat_", i), ydat)
+    }
+  } else {
+    ydat <- tibble::tibble(
+      rep_label = factor(y_text, levels = levels(molten_yrep$rep_label)),
+      rep_id = NA_integer_,
+      y_id = seq_along(y),
+      value = y)
+  }
+
+  if(class(y) == "list") {
+    data <- dplyr::bind_rows(molten_yrep, get(paste0("ydat_",1)))
+    for(i in 2:length(y)) data <- dplyr::bind_rows(data, get(paste0("ydat_",i)))
+    data <- data %>%
+      mutate(
+        #rep_label = relevel(.data$rep_label, y_text),
+        is_y = is.na(.data$rep_id),
+        is_y_label = ifelse(.data$is_y, y_text, yrep_text) %>%
+         factor(levels = c(y_text, yrep_text)))
+  } else {
+    data <- dplyr::bind_rows(molten_yrep, ydat) %>%
+      mutate(
+        rep_label = relevel(.data$rep_label, y_text),
+        is_y = is.na(.data$rep_id),
+        is_y_label = ifelse(.data$is_y, y_text, yrep_text) %>%
+          factor(levels = c(y_text, yrep_text)))
+    }
+
 
   data[c("y_id", "rep_id", "rep_label", "is_y", "is_y_label", "value")]
 }
