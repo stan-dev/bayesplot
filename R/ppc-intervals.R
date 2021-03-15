@@ -1,46 +1,44 @@
 #' PPC intervals
 #'
-#' Medians and central interval estimates of \code{yrep} with \code{y} overlaid.
-#' See the \strong{Plot Descriptions} section, below.
+#' Medians and central interval estimates of `yrep` with `y` overlaid.
+#' See the **Plot Descriptions** section, below.
 #'
 #' @name PPC-intervals
 #' @family PPCs
 #'
 #' @template args-y-yrep
-#' @param x A numeric vector the same length as \code{y} to use as the x-axis
-#'   variable. For example, \code{x} could be a predictor variable from a
-#'   regression model, a time variable for time-series models, etc. If \code{x}
-#'   is missing then \code{1:length(y)} is used for the x-axis.
+#' @template args-prob-prob_outer
+#' @param x A numeric vector the same length as `y` to use as the x-axis
+#'   variable. For example, `x` could be a predictor variable from a
+#'   regression model, a time variable for time-series models, etc. If `x`
+#'   is missing or `NULL`, then `1:length(y)` is used for the x-axis.
 #' @param ... Currently unused.
-#' @param prob A value between 0 and 1 indicating the desired probability mass
-#'   to include in the \code{yrep} intervals. The default is 0.9.
-#' @param alpha,size,fatten Arguments passed to geoms. For ribbon plots
-#'   \code{alpha} and \code{size} are passed to
-#'   \code{\link[ggplot2]{geom_ribbon}}. For interval plots \code{size} and
-#'   \code{fatten} are passed to \code{\link[ggplot2]{geom_pointrange}}.
+#' @param alpha,size,fatten Arguments passed to geoms. For ribbon plots `alpha`
+#'   and `size` are passed to [ggplot2::geom_ribbon()]. For interval plots
+#'   `size` and `fatten` are passed to [ggplot2::geom_pointrange()].
 #'
-#' @template return-ggplot
+#' @template return-ggplot-or-data
 #'
 #' @templateVar bdaRef (Ch. 6)
 #' @template reference-bda
 #'
 #' @section Plot Descriptions:
 #' \describe{
-#'   \item{\code{ppc_intervals, ppc_ribbon}}{
-#'    \code{100*prob}\% central intervals for \code{yrep} at each \code{x}
-#'    value. \code{ppc_intervals} plots intervals as vertical bars with points
-#'    indicating \code{yrep} medians and darker points indicating observed
-#'    \code{y} values. \code{ppc_ribbon} plots a ribbon of connected intervals
-#'    with a line through the median of \code{yrep} and a darker line connecting
-#'    observed \code{y} values. In both cases an optional \code{x} variable can
+#'   \item{`ppc_intervals(), ppc_ribbon()`}{
+#'    `100*prob`% central intervals for `yrep` at each `x`
+#'    value. `ppc_intervals()` plots intervals as vertical bars with points
+#'    indicating `yrep` medians and darker points indicating observed
+#'    `y` values. `ppc_ribbon()` plots a ribbon of connected intervals
+#'    with a line through the median of `yrep` and a darker line connecting
+#'    observed `y` values. In both cases an optional `x` variable can
 #'    also be specified for the x-axis variable.
 #'
 #'    Depending on the number of observations and the variability in the
-#'    predictions at different values of \code{x}, one or the other of these
+#'    predictions at different values of `x`, one or the other of these
 #'    plots may be easier to read than the other.
 #'   }
-#'   \item{\code{ppc_intervals_grouped, ppc_ribbon_grouped}}{
-#'    Same as \code{ppc_intervals} and \code{ppc_ribbon}, respectively, but a
+#'   \item{`ppc_intervals_grouped(), ppc_ribbon_grouped()`}{
+#'    Same as `ppc_intervals()` and `ppc_ribbon()`, respectively, but a
 #'    separate plot (facet) is generated for each level of a grouping variable.
 #'   }
 #' }
@@ -52,6 +50,10 @@
 #' color_scheme_set("brightblue")
 #' ppc_ribbon(y, yrep)
 #' ppc_intervals(y, yrep)
+#'
+#' # change x axis to y values (instead of indices) and add x = y line
+#' ppc_intervals(y, yrep, x = y) + abline_01()
+#'
 #'
 #' color_scheme_set("teal")
 #' year <- 1950:1999
@@ -73,9 +75,12 @@
 #'  xaxis_ticks(FALSE) +
 #'  panel_bg(fill = "gray20")
 #'
+#' ppc_dat <- ppc_intervals_data(y, yrep, x = year, prob = 0.5)
+#' ppc_group_dat <- ppc_intervals_data(y, yrep, x = year, group = group, prob = 0.5)
+#'
 #' \dontrun{
 #' library("rstanarm")
-#' fit <- stan_glmer(mpg ~ wt + (1|cyl), data = mtcars)
+#' fit <- stan_glmer(mpg ~ wt + (1|cyl), data = mtcars, refresh = 0)
 #' yrep <- posterior_predict(fit)
 #'
 #' color_scheme_set("purple")
@@ -102,23 +107,21 @@ NULL
 
 #' @rdname PPC-intervals
 #' @export
-ppc_intervals <- function(y,
-                          yrep,
-                          x,
-                          ...,
-                          prob = 0.9,
-                          size = 1,
-                          fatten = 3) {
+ppc_intervals <- function(y, yrep, x = NULL, ..., prob = 0.5, prob_outer = 0.9,
+                          size = 1, fatten = 3) {
   check_ignored_arguments(...)
-  y <- validate_y(y)
-  .ppc_intervals(
-    data = .ppc_intervals_data(
+
+  data <- ppc_intervals_data(
       y = y,
-      yrep = validate_yrep(yrep, y),
-      x = validate_x(x, y),
+      yrep = yrep,
+      x = x,
       group = NULL,
-      prob = prob
-    ),
+      prob = prob,
+      prob_outer = prob_outer
+  )
+
+  .ppc_intervals(
+    data = data,
     size = size,
     fatten = fatten,
     grouped = FALSE,
@@ -130,31 +133,34 @@ ppc_intervals <- function(y,
 #' @rdname PPC-intervals
 #' @export
 #' @template args-group
-#' @param facet_args An optional list of  arguments (other than \code{facets})
-#'   passed to \code{\link[ggplot2]{facet_wrap}} to control faceting.
+#' @param facet_args An optional list of  arguments (other than `facets`)
+#'   passed to [ggplot2::facet_wrap()] to control faceting.
 #'
 ppc_intervals_grouped <- function(y,
                                   yrep,
-                                  x,
+                                  x = NULL,
                                   group,
-                                  facet_args = list(),
                                   ...,
-                                  prob = 0.9,
+                                  facet_args = list(),
+                                  prob = 0.5,
+                                  prob_outer = 0.9,
                                   size = 1,
                                   fatten = 3) {
   check_ignored_arguments(...)
-  y <- validate_y(y)
-  if (is.null(facet_args[["scales"]]))
-    facet_args[["scales"]] <- "free"
+
+  data <- ppc_intervals_data(
+    y = y,
+    yrep = yrep,
+    x = x,
+    group = group,
+    prob = prob,
+    prob_outer = prob_outer
+  )
+
+  facet_args[["scales"]] <- facet_args[["scales"]] %||% "free"
 
   .ppc_intervals(
-    data = .ppc_intervals_data(
-      y = y,
-      yrep = validate_yrep(yrep, y),
-      x = validate_x(x, y),
-      group = validate_group(group, y),
-      prob = prob
-    ),
+    data = data,
     facet_args = facet_args,
     size = size,
     fatten = fatten,
@@ -164,68 +170,96 @@ ppc_intervals_grouped <- function(y,
   )
 }
 
+
 #' @rdname PPC-intervals
 #' @export
+#' @param y_draw For ribbon plots only, a string specifying how to draw `y`. Can
+#'   be `"line"` (the default), `"points"`, or `"both"`.
 ppc_ribbon <- function(y,
                        yrep,
-                       x,
+                       x = NULL,
                        ...,
-                       prob = 0.9,
+                       prob = 0.5,
+                       prob_outer = 0.9,
                        alpha = 0.33,
-                       size = 0.25) {
+                       size = 0.25,
+                       y_draw = c("line", "points", "both")) {
   check_ignored_arguments(...)
 
-  y <- validate_y(y)
+  data <- ppc_intervals_data(
+    y = y,
+    yrep = yrep,
+    x = x,
+    group = NULL,
+    prob = prob
+  )
+
   .ppc_intervals(
-    data = .ppc_intervals_data(
-      y = y,
-      yrep = validate_yrep(yrep, y),
-      x = validate_x(x, y),
-      group = NULL,
-      prob = prob
-    ),
+    data = data,
     alpha = alpha,
     size = size,
     grouped = FALSE,
     style = "ribbon",
-    x_lab = label_x(x)
+    x_lab = label_x(x),
+    y_draw = y_draw
   )
 }
 
+
 #' @export
 #' @rdname PPC-intervals
-ppc_ribbon_grouped <-
-  function(y,
-           yrep,
-           x,
-           group,
-           facet_args = list(),
-           ...,
-           prob = 0.9,
-           alpha = 0.33,
-           size = 0.25) {
-    check_ignored_arguments(...)
+ppc_ribbon_grouped <- function(y,
+                               yrep,
+                               x = NULL,
+                               group,
+                               ...,
+                               facet_args = list(),
+                               prob = 0.5,
+                               prob_outer = 0.9,
+                               alpha = 0.33,
+                               size = 0.25,
+                               y_draw = c("line", "points", "both")) {
+  check_ignored_arguments(...)
 
-    y <- validate_y(y)
-    if (is.null(facet_args[["scales"]]))
-      facet_args[["scales"]] <- "free"
+  data <- ppc_intervals_data(
+    y = y,
+    yrep = yrep,
+    x = x,
+    group = group,
+    prob = prob,
+    prob_outer = prob_outer
+  )
 
-    .ppc_intervals(
-      data = .ppc_intervals_data(
-        y = y,
-        yrep = validate_yrep(yrep, y),
-        x = validate_x(x, y),
-        group = validate_group(group, y),
-        prob = prob
-      ),
-      facet_args = facet_args,
-      alpha = alpha,
-      size = size,
-      grouped = TRUE,
-      style = "ribbon",
-      x_lab = label_x(x)
-    )
-  }
+  facet_args[["scales"]] <- facet_args[["scales"]] %||% "free"
+
+  .ppc_intervals(
+    data = data,
+    facet_args = facet_args,
+    alpha = alpha,
+    size = size,
+    grouped = TRUE,
+    style = "ribbon",
+    x_lab = label_x(x),
+    y_draw = y_draw
+  )
+}
+
+
+#' @rdname PPC-intervals
+#' @export
+ppc_intervals_data <- function(y, yrep, x = NULL, group = NULL,
+                               ..., prob = 0.5, prob_outer = 0.9) {
+  check_ignored_arguments(...)
+  .ppc_intervals_data(y = y, yrep = yrep, x = x, group = group,
+                      prob = prob, prob_outer = prob_outer)
+}
+
+
+#' @rdname PPC-intervals
+#' @export
+ppc_ribbon_data <- ppc_intervals_data
+
+
 
 
 # internal ----------------------------------------------------------------
@@ -233,38 +267,50 @@ label_x <- function(x) {
   if (missing(x)) "Index" else NULL
 }
 
-.ppc_intervals_data <-
-  function(y,
-           yrep,
-           x,
-           group = NULL,
-           prob = 0.8) {
-    grouped <- !is.null(group)
-    stopifnot(prob > 0 && prob < 1)
+.ppc_intervals_data <- function(y, yrep, x = NULL, group = NULL,
+                                prob = 0.5, prob_outer = 0.9) {
+  grouped <- !is.null(group)
+  stopifnot(prob > 0 && prob < 1)
+  stopifnot(prob_outer > 0 && prob_outer <= 1)
+  probs <- sort(c(prob, prob_outer))
+  prob <- probs[1]
+  prob_outer <- probs[2]
 
-    molten_d <- dplyr::rename_(.data = melt_and_stack(y, yrep),
-                               .dots = setNames(list(~ y_id), "x"))
-    molten_d <- dplyr::arrange_(.data = molten_d,
-                                .dots = list(~ rep_id, ~ x))
-    molten_d$x <- x
-    if (grouped) {
-      molten_d$group <- group
-      dots <- list(~ x, ~ group, ~ is_y)
-    } else {
-      dots <- list(~ x, ~ is_y)
-    }
-    grouped_d <- dplyr::group_by_(molten_d, .dots = dots)
-    alpha <- (1 - prob) / 2
-    probs <- sort(c(alpha, 0.5, 1 - alpha))
-    dplyr::summarise_(
-      .data = grouped_d,
-      .dots = list(
-        lo = ~ quantile(value, prob = probs[1]),
-        mid = ~ quantile(value, prob = probs[2]),
-        hi = ~ quantile(value, prob = probs[3])
-      )
-    )
+  y <- validate_y(y)
+  yrep <- validate_yrep(yrep, y)
+  x <- validate_x(x, y)
+
+  long_d <- melt_and_stack(y, yrep)
+  long_d$x <- x[long_d$y_id]
+  long_d$y_obs <- y[long_d$y_id]
+
+  molten_reps <- long_d[!as.logical(long_d[["is_y"]]), , drop = FALSE]
+  molten_reps$is_y <- NULL
+
+  if (grouped) {
+    group <- validate_group(group, y)
+    molten_reps$group <- group[molten_reps$y_id]
+    group_vars <- syms(c("y_id", "y_obs", "group", "x"))
+  } else {
+    group_vars <- syms(c("y_id", "y_obs", "x"))
   }
+
+  grouped_d <- dplyr::group_by(molten_reps, !!! group_vars)
+  alpha <- (1 - probs) / 2
+  probs <- sort(c(alpha, 0.5, 1 - alpha))
+
+  val_col <- sym("value")
+  dplyr::ungroup(dplyr::summarise(
+    grouped_d,
+    outer_width = prob_outer,
+    inner_width = prob,
+    ll = unname(quantile(!! val_col, probs = probs[1])),
+    l  = unname(quantile(!! val_col, probs = probs[2])),
+    m  = unname(quantile(!! val_col, probs = probs[3])),
+    h  = unname(quantile(!! val_col, probs = probs[4])),
+    hh = unname(quantile(!! val_col, probs = probs[5]))
+  ))
+}
 
 # Make intervals or ribbon plot
 #
@@ -279,78 +325,98 @@ label_x <- function(x) {
            size = 1,
            grouped = FALSE,
            style = c("intervals", "ribbon"),
-           x_lab = NULL) {
+           x_lab = NULL,
+           y_draw = c("line", "points", "both")) {
 
-    style <- match.arg(style)
-    data[["is_y"]] <- as.logical(data[["is_y"]])
-    yrep_data <- dplyr::filter_(data, ~ !is_y)
-    y_data <- dplyr::filter_(data, ~ is_y)
+  style <- match.arg(style)
+  y_draw <- match.arg(y_draw)
 
-    graph <- ggplot(
-      data = yrep_data,
-      mapping = aes_(
-        x = ~ x,
-        y = ~ mid,
-        ymin = ~ lo,
-        ymax = ~ hi
+  graph <- ggplot(
+    data = data,
+    mapping = aes_(
+      x = ~ x,
+      y = ~ m,
+      ymin = ~ l,
+      ymax = ~ h
+    )
+  )
+
+  if (style == "ribbon") {
+    graph <- graph +
+      geom_ribbon(
+        aes_(color = "yrep", fill = "yrep", ymin = ~ ll, ymax = ~ hh),
+        alpha = alpha,
+        size = size
+      ) +
+      geom_ribbon(
+        aes_(color = "yrep", fill = "yrep"),
+        alpha = alpha,
+        size = size
+      ) +
+      geom_line(
+        aes_(color = "yrep"),
+        size = size/2
+      ) +
+      geom_blank(aes_(fill = "y"))
+
+    if (y_draw == "line" || y_draw == "both") {
+      graph <- graph + geom_line(
+        aes_(y = ~ y_obs, color = "y"),
+        size = 0.5
       )
+    }
+
+    if (y_draw == "points" || y_draw == "both") {
+      graph <- graph + geom_point(
+        mapping = aes_(y = ~ y_obs, color = "y", fill = "y"),
+        shape = 21,
+        size = 1.5
+      )
+    }
+  } else {
+    graph <- graph +
+      geom_pointrange(
+        mapping = aes_(color = "yrep", fill = "yrep", ymin = ~ ll, ymax = ~ hh),
+        shape = 21,
+        alpha = alpha,
+        size = size,
+        fatten = fatten
+      ) +
+      geom_pointrange(
+        mapping = aes_(color = "yrep", fill = "yrep"),
+        shape = 21,
+        size = size,
+        fatten = fatten
+      ) +
+      geom_point(
+        mapping = aes_(y = ~ y_obs, color = "y", fill = "y"),
+        shape = 21,
+        size = 1.5
+      )
+  }
+
+  graph <- graph +
+    scale_color_manual(
+      name = "",
+      values = set_names(get_color(c("lh", "dh")), c("yrep", "y")),
+      labels = c(yrep = yrep_label(), y = y_label())
+    ) +
+    scale_fill_manual(
+      name = "",
+      values = c(yrep = get_color("l"),
+                 y = if (style == "ribbon") NA else get_color("d")),
+      labels = c(yrep = yrep_label(), y = y_label())
     )
 
-    if (style == "ribbon") {
-      graph <- graph +
-        geom_ribbon(
-          aes_(color = "yrep", fill = "yrep"),
-          alpha = alpha,
-          size = size
-        ) +
-        geom_blank(aes_(fill = "y")) +
-        geom_line(
-          aes_(color = "yrep"),
-          size = size/2
-        ) +
-        geom_line(
-          aes_(color = "y"),
-          data = y_data,
-          size = 0.5
-        )
-    } else {
-      graph <- graph +
-        geom_pointrange(
-          mapping = aes_(color = "yrep", fill = "yrep"),
-          shape = 21,
-          size = size,
-          fatten = fatten
-        ) +
-        geom_point(
-          data = y_data,
-          mapping = aes_(color = "y", fill = "y"),
-          shape = 21,
-          size = 1.5
-        )
-    }
-    graph <- graph +
-      scale_color_manual(
-        name = "",
-        values = setNames(get_color(c("lh", "dh")), c("yrep", "y")),
-        labels = c(yrep = yrep_label(), y = y_label())
-      ) +
-      scale_fill_manual(
-        name = "",
-        values = c(yrep = get_color("l"),
-                   y = if (style == "ribbon") NA else get_color("d")),
-        labels = c(yrep = yrep_label(), y = y_label())
-      )
 
-
-    if (grouped) {
-      facet_args[["facets"]] <- "group"
-      if (is.null(facet_args[["scales"]]))
-        facet_args[["scales"]] <- "free"
-      graph <- graph +
-        do.call("facet_wrap", facet_args)
-    }
-    graph +
-      labs(y = NULL, x = x_lab %||% expression(italic(x))) +
-      theme_default()
+  if (grouped) {
+    facet_args[["facets"]] <- "group"
+    facet_args[["scales"]] <- facet_args[["scales"]] %||% "free"
+    graph <- graph + do.call("facet_wrap", facet_args)
   }
+
+  graph +
+    labs(y = NULL, x = x_lab %||% expression(italic(x))) +
+    bayesplot_theme_get()
+}
 

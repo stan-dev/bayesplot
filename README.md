@@ -1,31 +1,50 @@
-<a href="http://mc-stan.org">
-<img src="https://raw.githubusercontent.com/stan-dev/logos/master/logo.png" width=200 alt="Stan Logo"/>
-</a>
+# bayesplot <img src="man/figures/stanlogo.png" align="right" width="120" />
 
-# bayesplot
-
-[![Travis-CI Build Status](https://travis-ci.org/stan-dev/bayesplot.svg?branch=master)](https://travis-ci.org/stan-dev/bayesplot)
+<!-- badges: start -->
+[![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/bayesplot?color=blue)](https://cran.r-project.org/web/packages/bayesplot)
+[![Downloads](https://cranlogs.r-pkg.org/badges/bayesplot?color=blue)](https://cran.rstudio.com/package=bayesplot)
+[![R-CMD-check](https://github.com/stan-dev/bayesplot/workflows/R-CMD-check/badge.svg)](https://github.com/stan-dev/bayesplot/actions)
 [![codecov](https://codecov.io/gh/stan-dev/bayesplot/branch/master/graph/badge.svg)](https://codecov.io/gh/stan-dev/bayesplot)
-[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/bayesplot?color=blue)](http://cran.r-project.org/web/packages/bayesplot)
+<!-- badges: end -->
 
-**bayesplot** is an R package providing an extensive library of plotting functions for use 
-after fitting Bayesian models (typically with MCMC). Currently **bayesplot** offers a variety 
-of plots of posterior draws, visual MCMC diagnostics, as well as graphical posterior 
-predictive checking. Additional functionality (e.g. for forecasting/out-of-sample prediction 
-and other inference-related tasks) will be added in future releases.
+### Overview
 
+**bayesplot** is an R package providing an extensive library of plotting
+functions for use after fitting Bayesian models (typically with MCMC). 
 The plots created by **bayesplot** are ggplot objects, which means that after 
-a plot is created it can be further customized using the various functions for 
-modifying ggplot objects provided by the **ggplot2** package.
+a plot is created it can be further customized using various functions from
+the **ggplot2** package. 
 
-The idea behind **bayesplot** is not only to provide convenient functionality for users, but 
-also a common set of functions that can be easily used by developers working on a variety of 
-packages for Bayesian modeling, particularly (but not necessarily) those powered by 
-[**RStan**](https://github.com/stan-dev/rstan).
+Currently **bayesplot** offers a variety of plots of posterior draws, 
+visual MCMC diagnostics, and graphical posterior (or prior) predictive checking. 
+Additional functionality (e.g. for forecasting/out-of-sample prediction and other
+inference-related tasks) will be added in future releases.
 
+The idea behind **bayesplot** is not only to provide convenient functionality
+for users, but also a common set of functions that can be easily used by
+developers working on a variety of packages for Bayesian modeling, particularly
+(but not necessarily) those powered by [**RStan**](https://mc-stan.org/rstan).
+
+### Getting started 
+
+If you are just getting started with **bayesplot** we recommend starting with
+the tutorial [vignettes](https://mc-stan.org/bayesplot/articles/index.html), 
+the examples throughout the package [documentation](https://mc-stan.org/bayesplot/reference/index.html), 
+and the paper _Visualization in Bayesian workflow_:
+
+* Gabry J, Simpson D, Vehtari A, Betancourt M, Gelman A (2019). Visualization in Bayesian workflow. 
+_J. R. Stat. Soc. A_, 182: 389-402. doi:10.1111/rssa.12378. 
+([journal version](https://rss.onlinelibrary.wiley.com/doi/full/10.1111/rssa.12378),
+[arXiv preprint](https://arxiv.org/abs/1709.01449),
+[code on GitHub](https://github.com/jgabry/bayes-vis-paper))
+
+### Resources
+
+* [mc-stan.org/bayesplot](https://mc-stan.org/bayesplot) (online documentation, vignettes)
+* [Ask a question](https://discourse.mc-stan.org) (Stan Forums on Discourse)
+* [Open an issue](https://github.com/stan-dev/bayesplot/issues) (GitHub issues for bug reports, feature requests)
 
 ### Installation
-
 
 * Install from CRAN:
 
@@ -36,26 +55,20 @@ install.packages("bayesplot")
 * Install latest development version from GitHub (requires [devtools](https://github.com/hadley/devtools) package):
 
 ```r
-if (!require("devtools"))
+if (!require("devtools")) {
   install.packages("devtools")
-
-devtools::install_github("stan-dev/bayesplot", dependencies = TRUE, build_vignettes = TRUE)
+}
+devtools::install_github("stan-dev/bayesplot", dependencies = TRUE, build_vignettes = FALSE)
 ```
 
-If you are not using the [RStudio IDE](https://www.rstudio.com/) and you get an error related to 
-"pandoc" you will either need to remove the argument `build_vignettes=TRUE` (to avoid building 
-the vignettes) or install [pandoc](http://pandoc.org/) (e.g., `brew install pandoc`) and probably 
-also pandoc-citeproc (e.g., `brew install pandoc-citeproc`). If you have the `rmarkdown` R package 
-installed then you can check if you have pandoc by running the following in R:
-
-```r
-rmarkdown::pandoc_available()
-```
+This installation won't include the vignettes (they take some time to build), but all of the vignettes are 
+available online at [mc-stan.org/bayesplot/articles](https://mc-stan.org/bayesplot/articles/).
 
 
 ### Examples
-Some quick examples using MCMC draws obtained from the [__rstanarm__](https://github.com/stan-dev/rstanarm) 
-and [__rstan__](https://github.com/stan-dev/rstan) packages.
+
+Some quick examples using MCMC draws obtained from the [__rstanarm__](https://mc-stan.org/rstanarm) 
+and [__rstan__](https://mc-stan.org/rstann) packages.
 
 ```r
 library("bayesplot")
@@ -111,9 +124,22 @@ p + facet_text(size = 15)
 <img src=https://github.com/stan-dev/bayesplot/blob/master/images/mcmc_trace-rstan.png width=50% />
 
 ```r
+# scatter plot also showing divergences
+color_scheme_set("darkgray")
+mcmc_scatter(
+  as.matrix(fit2),
+  pars = c("tau", "theta[1]"), 
+  np = nuts_params(fit2), 
+  np_style = scatter_style_np(div_color = "green", div_alpha = 0.8)
+)
+```
+
+<img src=https://github.com/stan-dev/bayesplot/blob/master/images/mcmc_scatter-rstan.png width=50% />
+
+```r
 color_scheme_set("red")
 np <- nuts_params(fit2)
-mcmc_nuts_energy(np, merge_chains = FALSE) + ggtitle("NUTS Energy Diagnostic")
+mcmc_nuts_energy(np) + ggtitle("NUTS Energy Diagnostic")
 ```
 
 <img src=https://github.com/stan-dev/bayesplot/blob/master/images/mcmc_nuts_energy-rstan.png width=50% />

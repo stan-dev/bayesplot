@@ -1,20 +1,19 @@
 library(bayesplot)
-suppressPackageStartupMessages(library(rstanarm))
-context("MCMC: scatterplots")
+context("MCMC: scatter, hex, and parallel coordinates plots")
 
-source("data-for-mcmc-tests.R")
+source(test_path("data-for-mcmc-tests.R"))
 
-# also fit an rstanarm model to use with mcmc_pairs
-capture.output(
+if (requireNamespace("rstanarm", quietly = TRUE)) {
+  suppressPackageStartupMessages(library(rstanarm))
+  # also fit an rstanarm model to use with mcmc_pairs
   fit <- stan_glm(mpg ~ wt + am, data = mtcars, iter = 1000, chains = 2, refresh = 0)
-)
-post <- as.array(fit)
-lp <- log_posterior(fit)
-np <- nuts_params(fit)
-divs <- sample(c(0,1), size = 1000, prob = c(0.25, 0.75), replace = TRUE)
-np$Value[np$Parameter=="divergent__"] <- divs # fake divergences
+  post <- as.array(fit)
+  lp <- log_posterior(fit)
+  np <- ensure_divergences(nuts_params(fit))
+}
 
 
+# mcmc_scatter/hex --------------------------------------------------------
 test_that("mcmc_scatter returns a ggplot object", {
   expect_gg(mcmc_scatter(arr, pars = c("beta[1]", "beta[2]")))
   expect_gg(mcmc_scatter(arr1chain, regex_pars = "beta", size = 3, alpha = 0.5))
@@ -24,24 +23,46 @@ test_that("mcmc_scatter returns a ggplot object", {
                          pars = c("sigma", "(Intercept)")))
 })
 
+test_that("mcmc_scatter throws error if number of parameters is not 2", {
+  expect_error(mcmc_scatter(arr, pars = c("sigma", "beta[1]", "beta[2]")), "exactly 2 parameters")
+  expect_error(mcmc_scatter(arr, pars = "sigma"), "exactly 2 parameters")
+  expect_error(mcmc_scatter(arr1), "exactly 2 parameters")
+  expect_error(mcmc_scatter(mat1), "exactly 2 parameters")
+})
+
+test_that("mcmc_scatter accepts NUTS info", {
+  skip_if_not_installed("rstanarm")
+
+  expect_gg(mcmc_scatter(post, pars = c("wt", "sigma"), np = np))
+
+  div_style <- scatter_style_np(div_color = "orange", div_size = 2,
+                                div_shape = 3, div_alpha = 0.5)
+  g <- mcmc_scatter(post, pars = c("wt", "sigma"), np = np, np_style = div_style)
+  expect_gg(g)
+  expect_named(g$data, c("x", "y", "Divergent"))
+})
+
 test_that("mcmc_hex returns a ggplot object", {
+  skip_if_not_installed("hexbin")
   expect_gg(mcmc_hex(arr, pars = c("beta[1]", "beta[2]")))
   expect_gg(mcmc_hex(arr1chain, regex_pars = "beta", binwidth = c(.5,.5)))
 })
 
-test_that("mcmc_scatter & mcmc_hex throw error if only 1 parameter", {
-  expect_error(mcmc_scatter(arr, pars = "sigma"), "exactly 2 parameters")
-  expect_error(mcmc_scatter(arr1), "exactly 2 parameters")
-  expect_error(mcmc_scatter(mat1), "exactly 2 parameters")
-  expect_error(mcmc_hex(dframe1), "exactly 2 parameters")
-  expect_error(mcmc_hex(chainlist1), "exactly 2 parameters")
+test_that("mcmc_hex throws error if number of parameters is not 2", {
+  skip_if_not_installed("hexbin")
+  expect_error(mcmc_hex(arr, pars = c("sigma", "beta[1]", "beta[2]")), "exactly 2 parameters")
+  expect_error(mcmc_hex(arr, pars = "sigma"), "exactly 2 parameters")
+  expect_error(mcmc_hex(arr1), "exactly 2 parameters")
+  expect_error(mcmc_hex(mat1), "exactly 2 parameters")
 })
 
 
 
 # mcmc_pairs  -------------------------------------------------------------
 test_that("mcmc_pairs returns a bayesplot_grid object", {
-  expect_bayesplot_grid(mcmc_pairs(arr, pars = c("(Intercept)", "sigma")))
+  g <- mcmc_pairs(arr, pars = c("(Intercept)", "sigma"))
+  expect_bayesplot_grid(g)
+  expect_equal(print(g), plot(g))
   expect_bayesplot_grid(mcmc_pairs(arr, pars = "sigma", regex_pars = "beta"))
   expect_bayesplot_grid(mcmc_pairs(arr, regex_pars = "x:[1-3]",
                                    transformations = "exp",
@@ -75,6 +96,7 @@ test_that("no mcmc_pairs non-NUTS 'condition's fail", {
 })
 
 test_that("mcmc_pairs works with NUTS info", {
+  skip_if_not_installed("rstanarm")
   expect_bayesplot_grid(mcmc_pairs(post, pars = c("wt", "am", "sigma"), np = np))
   expect_bayesplot_grid(mcmc_pairs(post, pars = c("wt", "am"),
                                    condition = pairs_condition(nuts="energy__"), np = np))
@@ -99,6 +121,8 @@ test_that("mcmc_pairs works with NUTS info", {
 
 
 test_that("mcmc_pairs throws correct warnings and errors", {
+  skip_if_not_installed("rstanarm")
+
   expect_warning(mcmc_pairs(arr1chain, regex_pars = "beta"),
                  "This plot is more useful with multiple chains")
   expect_error(mcmc_pairs(arr, pars = "sigma"),
@@ -126,7 +150,7 @@ test_that("mcmc_pairs throws correct warnings and errors", {
   expect_error(
     mcmc_pairs(post, pars = c("wt", "am"), max_treedepth = 2, np = np,
                np_style = list(color = "green")),
-    'inherits(np_style, "pairs_style_np") is not TRUE',
+    'inherits(np_style, "nuts_style") is not TRUE',
     fixed = TRUE
   )
 
@@ -148,11 +172,12 @@ test_that("mcmc_pairs throws correct warnings and errors", {
 # pairs_style_np -------------------------------------------------------
 test_that("pairs_style_np returns correct structure", {
   style <- pairs_style_np(div_size = 3, td_color = "gray", td_shape = 1)
-  expect_s3_class(style, "pairs_style_np")
-  expect_named(style, c("color", "shape", "size"), ignore.order = TRUE)
+  expect_s3_class(style, "nuts_style")
+  expect_named(style, c("color", "shape", "size", "alpha"), ignore.order = TRUE)
   expect_named(style$color, c("div", "td"))
   expect_named(style$size, c("div", "td"))
   expect_named(style$shape, c("div", "td"))
+  expect_named(style$alpha, c("div", "td"))
 })
 
 test_that("pairs_style_np throws correct errors", {
@@ -272,6 +297,61 @@ test_that("pairs_condition message if multiple args specified", {
   expect_message(
     pairs_condition(draws = 0.5, nuts = "lp__"),
     "because they are superseded by 'draws': 'nuts'",
+    fixed = TRUE
+  )
+})
+
+
+
+# mcmc_parcoord -----------------------------------------------------------
+test_that("mcmc_parcoord returns a ggplot object", {
+  expect_gg(mcmc_parcoord(arr, pars = c("(Intercept)", "sigma")))
+  expect_gg(mcmc_parcoord(arr, pars = "sigma", regex_pars = "beta"))
+})
+
+test_that("mcmc_parcoord with nuts info returns a ggplot object", {
+  skip_if_not_installed("rstanarm")
+  expect_gg(mcmc_parcoord(post, pars = c("wt", "am", "sigma"), np = np))
+})
+
+test_that("mcmc_parcoord throws correct warnings and errors", {
+  skip_if_not_installed("rstanarm")
+  expect_error(mcmc_parcoord(arr, pars = "sigma"),
+               "requires at least two parameters")
+
+  expect_error(
+    mcmc_parcoord(post, np = np[, -1]),
+    "NUTS parameter data frame must have columns: Chain, Iteration, Parameter, Value",
+    fixed = TRUE
+  )
+
+  expect_error(
+    mcmc_parcoord(post, np = np, np_style = list(div_color = "green")),
+    'inherits(np_style, "nuts_style") is not TRUE',
+    fixed = TRUE
+  )
+})
+
+
+# parcoord_style_np -------------------------------------------------------
+test_that("parcoord_style_np returns correct structure", {
+  style <- parcoord_style_np()
+  expect_s3_class(style, "nuts_style")
+  expect_named(style, c("color", "alpha", "size"), ignore.order = TRUE)
+  expect_named(style$color, c("div"))
+  expect_named(style$size, c("div"))
+  expect_named(style$alpha, c("div"))
+})
+
+test_that("parcoord_style_np throws correct errors", {
+  expect_error(
+    parcoord_style_np(div_size = "3"),
+    "is.numeric(div_size) is not TRUE",
+    fixed = TRUE
+  )
+  expect_error(
+    parcoord_style_np(td_color = 1),
+    "unused argument (td_color = 1)",
     fixed = TRUE
   )
 })

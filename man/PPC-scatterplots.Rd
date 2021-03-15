@@ -18,52 +18,50 @@ ppc_scatter_avg_grouped(y, yrep, group, ..., size = 2.5, alpha = 0.8)
 
 \item{yrep}{An \eqn{S} by \eqn{N} matrix of draws from the posterior
 predictive distribution, where \eqn{S} is the size of the posterior sample
-(or subset of the posterior sample used to generate \code{yrep}) and
-\eqn{N} is the number of observations (the length of \code{y}). The columns
-of \code{yrep} should be in the same order as the data points in \code{y}
-for the plots to make sense. See \strong{Details} for additional
-instructions.}
+(or subset of the posterior sample used to generate \code{yrep}) and \eqn{N} is
+the number of observations (the length of \code{y}). The columns of \code{yrep}
+should be in the same order as the data points in \code{y} for the plots to make
+sense. See \strong{Details} for additional instructions.}
 
 \item{...}{Currently unused.}
 
-\item{size, alpha}{Arguments passed to \code{\link[ggplot2]{geom_point}} to
-control the appearance of the points.}
+\item{size, alpha}{Arguments passed to \code{\link[ggplot2:geom_point]{ggplot2::geom_point()}} to control the
+appearance of the points.}
 
 \item{group}{A grouping variable (a vector or factor) the same length as
 \code{y}. Each value in \code{group} is interpreted as the group level
 pertaining to the corresponding value of \code{y}.}
 }
 \value{
-A ggplot object that can be further customized using the
-  \pkg{ggplot2} package.
+A ggplot object that can be further customized using the \strong{ggplot2} package.
 }
 \description{
 Scatterplots of the observed data \code{y} vs. simulated/replicated data
-\code{yrep} from the posterior predictive distribution. See the \strong{Plot
-Descriptions} and \strong{Details} sections, below.
+\code{yrep} from the posterior predictive distribution. See the
+\strong{Plot Descriptions} and \strong{Details} sections, below.
 }
 \details{
 For Binomial data, the plots will typically be most useful if
-  \code{y} and \code{yrep} contain the "success" proportions (not discrete
-  "success" or "failure" counts).
+\code{y} and \code{yrep} contain the "success" proportions (not discrete
+"success" or "failure" counts).
 }
 \section{Plot Descriptions}{
 
 \describe{
-  \item{\code{ppc_scatter}}{
-   For each dataset (row) in \code{yrep} a scatterplot is generated showing
-   \code{y} against that row of \code{yrep}. For this plot \code{yrep} should
-   only contain a small number of rows.
-  }
-  \item{\code{ppc_scatter_avg}}{
-   A scatterplot of \code{y} against the average values of \code{yrep}, i.e.,
-   the points \code{(mean(yrep[, n]), y[n])}, where each \code{yrep[, n]} is
-   a vector of length equal to the number of posterior draws.
-  }
-  \item{\code{ppc_scatter_avg_grouped}}{
-   The same as \code{ppc_scatter_avg}, but a separate plot is generated for
-   each level of a grouping variable.
-  }
+\item{\code{ppc_scatter()}}{
+For each dataset (row) in \code{yrep} a scatterplot is generated showing \code{y}
+against that row of \code{yrep}. For this plot \code{yrep} should only contain a
+small number of rows.
+}
+\item{\code{ppc_scatter_avg()}}{
+A scatterplot of \code{y} against the average values of \code{yrep}, i.e.,
+the points \verb{(mean(yrep[, n]), y[n])}, where each \code{yrep[, n]} is
+a vector of length equal to the number of posterior draws.
+}
+\item{\code{ppc_scatter_avg_grouped()}}{
+The same as \code{ppc_scatter_avg()}, but a separate plot is generated for
+each level of a grouping variable.
+}
 }
 }
 
@@ -86,13 +84,18 @@ ppc_scatter_avg_grouped(y, yrep, group, alpha = 0.7) + lims
 }
 \references{
 Gelman, A., Carlin, J. B., Stern, H. S., Dunson, D. B., Vehtari,
-  A., and Rubin, D. B. (2013). \emph{Bayesian Data Analysis.} Chapman & Hall/CRC
-  Press, London, third edition. (Ch. 6)
+A., and Rubin, D. B. (2013). \emph{Bayesian Data Analysis.} Chapman & Hall/CRC
+Press, London, third edition. (Ch. 6)
 }
 \seealso{
-Other PPCs: \code{\link{PPC-discrete}},
-  \code{\link{PPC-distributions}},
-  \code{\link{PPC-errors}}, \code{\link{PPC-intervals}},
-  \code{\link{PPC-loo}}, \code{\link{PPC-overview}},
-  \code{\link{PPC-test-statistics}}
+Other PPCs: 
+\code{\link{PPC-censoring}},
+\code{\link{PPC-discrete}},
+\code{\link{PPC-distributions}},
+\code{\link{PPC-errors}},
+\code{\link{PPC-intervals}},
+\code{\link{PPC-loo}},
+\code{\link{PPC-overview}},
+\code{\link{PPC-test-statistics}}
 }
+\concept{PPCs}

@@ -1,64 +1,61 @@
 #' General MCMC diagnostics
 #'
 #' Plots of Rhat statistics, ratios of effective sample size to total sample
-#' size, and autocorrelation of MCMC draws. See the \strong{Plot Descriptions}
+#' size, and autocorrelation of MCMC draws. See the **Plot Descriptions**
 #' section, below, for details. For models fit using the No-U-Turn-Sampler, see
-#' also \link{MCMC-nuts} for additional MCMC diagnostic plots.
+#' also [MCMC-nuts] for additional MCMC diagnostic plots.
 #'
 #' @name MCMC-diagnostics
 #' @family MCMC
 #'
 #' @template args-hist
-#' @param size An optional value to override \code{\link[ggplot2]{geom_point}}'s
-#'   default size (for \code{mcmc_rhat}, \code{mcmc_neff}) or
-#'   \code{\link[ggplot2]{geom_line}}'s default size (for \code{mcmc_acf}).
+#' @param size An optional value to override [ggplot2::geom_point()]'s
+#'   default size (for `mcmc_rhat()`, `mcmc_neff()`) or
+#'   [ggplot2::geom_line()]'s default size (for `mcmc_acf()`).
 #' @param ... Currently ignored.
 #'
-#' @template return-ggplot
+#' @template return-ggplot-or-data
 #'
 #' @section Plot Descriptions:
 #' \describe{
-#' \item{\code{mcmc_rhat, mcmc_rhat_hist}}{
-#' Rhat values as either points or a histogram. Values are colored using
-#' different shades (lighter is better). The chosen thresholds are somewhat
-#' arbitrary, but can be useful guidelines in practice.
-#'  \itemize{
-#'    \item \emph{light}: below 1.05 (good)
-#'    \item \emph{mid}: between 1.05 and 1.1 (ok)
-#'    \item \emph{dark}: above 1.1 (too high)
-#'  }
+#' \item{`mcmc_rhat()`, `mcmc_rhat_hist()`}{
+#'   Rhat values as either points or a histogram. Values are colored using
+#'   different shades (lighter is better). The chosen thresholds are somewhat
+#'   arbitrary, but can be useful guidelines in practice.
+#'   * _light_: below 1.05 (good)
+#'   * _mid_: between 1.05 and 1.1 (ok)
+#'   * _dark_: above 1.1 (too high)
 #' }
-#' \item{\code{mcmc_neff, mcmc_neff_hist}}{
-#' Ratios of effective sample size to total sample size as either points or a
-#' histogram. Values are colored using different shades (lighter is better). The
-#' chosen thresholds are somewhat arbitrary, but can be useful guidelines in
-#' practice.
-#'  \itemize{
-#'    \item \emph{light}: between 0.5 and 1 (high)
-#'    \item \emph{mid}: between 0.1 and 0.5 (good)
-#'    \item \emph{dark}: below 0.1 (low)
-#'  }
+#'
+#' \item{`mcmc_neff()`, `mcmc_neff_hist()`}{
+#'   Ratios of effective sample size to total sample size as either points or a
+#'   histogram. Values are colored using different shades (lighter is better).
+#'   The chosen thresholds are somewhat arbitrary, but can be useful guidelines
+#'   in practice.
+#'   * _light_: between 0.5 and 1 (high)
+#'   * _mid_: between 0.1 and 0.5 (good)
+#'   * _dark_: below 0.1 (low)
 #' }
-#' \item{\code{mcmc_acf}}{
-#' Grid of autocorrelation plots by chain and parameter. The \code{lags}
-#' argument gives the maximum number of lags at which to calculate the
-#' autocorrelation function. \code{mcmc_acf} is a line plot whereas
-#' \code{mcmc_acf_bar} is a barplot.
+#'
+#' \item{`mcmc_acf()`, `mcmc_acf_bar()`}{
+#'   Grid of autocorrelation plots by chain and parameter. The `lags` argument
+#'   gives the maximum number of lags at which to calculate the autocorrelation
+#'   function. `mcmc_acf()` is a line plot whereas `mcmc_acf_bar()` is a
+#'   barplot.
 #' }
 #'}
 #'
 #' @template reference-stan-manual
 #' @references
 #' Gelman, A. and Rubin, D. B. (1992). Inference from iterative
-#' simulation using multiple sequences. \emph{Statistical Science}. 7(4),
+#' simulation using multiple sequences. *Statistical Science*. 7(4),
 #' 457--472.
 #'
 #' @seealso
-#' \itemize{
-#' \item The \emph{Visual MCMC Diagnostics} vignette.
-#' \item \link{MCMC-nuts} for additional MCMC diagnostic plots for models fit
+#' * The [Visual MCMC Diagnostics](https://mc-stan.org/bayesplot/articles/visual-mcmc-diagnostics.html)
+#'   vignette.
+#' * [MCMC-nuts] for additional MCMC diagnostic plots for models fit
 #'   using the No-U-Turn-Sampler.
-#' }
 #'
 #' @examples
 #' # autocorrelation
@@ -72,10 +69,8 @@
 #' color_scheme_set("pink")
 #' (p <- mcmc_acf_bar(x, pars = c("alpha", "beta[1]")))
 #'
-#' # add tick marks on y axis and horiztonal dashed line at 0.5
-#' p +
-#'  yaxis_ticks() +
-#'  hline_at(0.5, linetype = 2, size = 0.15, color = "gray")
+#' # add horiztonal dashed line at 0.5
+#' p + hline_at(0.5, linetype = 2, size = 0.15, color = "gray")
 #' }
 #'
 #' # fake rhat values to use for demonstration
@@ -102,15 +97,15 @@
 #'
 #' # intentionally use small 'iter' so there are some
 #' # problems with rhat and neff for demonstration
-#' fit <- stan_glm(mpg ~ ., data = mtcars, iter = 50)
+#' fit <- stan_glm(mpg ~ ., data = mtcars, iter = 50, refresh = 0)
 #' rhats <- rhat(fit)
 #' ratios <- neff_ratio(fit)
 #' mcmc_rhat(rhats)
-#' mcmc_neff(ratios)
+#' mcmc_neff(ratios, size = 3)
 #'
 #' # there's a small enough number of parameters in the
 #' # model that we can display their names on the y-axis
-#' mcmc_neff(ratios) + yaxis_text()
+#' mcmc_neff(ratios) + yaxis_text(hjust = 1)
 #'
 #' # can also look at autocorrelation
 #' draws <- as.array(fit)
@@ -127,53 +122,48 @@ NULL
 
 
 # Rhat --------------------------------------------------------------------
+
 #' @rdname MCMC-diagnostics
 #' @export
-#' @param rhat A vector of \code{\link[=rhat]{Rhat}} estimates.
+#' @param rhat A vector of R-hat estimates.
 #'
 mcmc_rhat <- function(rhat, ..., size = NULL) {
   check_ignored_arguments(...)
-  rhat <- validate_rhat(rhat)
-  plot_data <- diagnostic_data_frame(
-    x = rhat,
-    diagnostic = "rhat"
-  )
+  data <- mcmc_rhat_data(rhat)
+
   graph <- ggplot(
-    data = plot_data,
+    data = data,
     mapping = aes_(
       x = ~ value,
-      y = ~ factor_by_name,
-      color = ~ factor_by_value,
-      fill = ~ factor_by_value
-    )
-  ) +
+      y = ~ parameter,
+      color = ~ rating,
+      fill = ~ rating)) +
     geom_segment(
       mapping = aes_(
-        yend = ~ factor_by_name,
-        xend = ifelse(min(rhat) < 1, 1, -Inf)
-      ),
-      na.rm = TRUE
-    )
+        yend = ~ parameter,
+        xend = ifelse(min(data$value) < 1, 1, -Inf)),
+      na.rm = TRUE) +
+      bayesplot_theme_get()
 
-  if (min(rhat) < 1)
+  if (min(data$value) < 1) {
     graph <- graph +
       vline_at(1, color = "gray", size = 1)
+  }
 
-  brks <- set_rhat_breaks(rhat)
+  brks <- set_rhat_breaks(data$value)
+
   graph +
     diagnostic_points(size) +
     vline_at(
       brks[-1],
       color = "gray",
       linetype = 2,
-      size = 0.25
-    ) +
+      size = 0.25) +
     labs(y = NULL, x = expression(hat(R))) +
     scale_fill_diagnostic("rhat") +
     scale_color_diagnostic("rhat") +
     scale_x_continuous(breaks = brks, expand = c(0, .01)) +
     scale_y_discrete(expand = c(.025,0)) +
-    theme_default() +
     yaxis_title(FALSE) +
     yaxis_text(FALSE) +
     yaxis_ticks(FALSE)
@@ -181,73 +171,89 @@ mcmc_rhat <- function(rhat, ..., size = NULL) {
 
 #' @rdname MCMC-diagnostics
 #' @export
-mcmc_rhat_hist <- function(rhat, ..., binwidth = NULL) {
+mcmc_rhat_hist <- function(rhat, ..., binwidth = NULL, breaks = NULL) {
   check_ignored_arguments(...)
+  data <- mcmc_rhat_data(rhat)
+
   ggplot(
-    data = diagnostic_data_frame(
-      x = validate_rhat(rhat),
-      diagnostic = "rhat"
-    ),
+    data = data,
     mapping = aes_(
       x = ~ value,
-      color = ~ factor_by_value,
-      fill = ~ factor_by_value
-    )
-  ) +
+      color = ~ rating,
+      fill = ~ rating)) +
     geom_histogram(
       size = .25,
       na.rm = TRUE,
-      binwidth = binwidth
+      binwidth = binwidth,
+      breaks = breaks
     ) +
     scale_color_diagnostic("rhat") +
     scale_fill_diagnostic("rhat") +
     labs(x = expression(hat(R)), y = NULL) +
     dont_expand_y_axis(c(0.005, 0)) +
-    theme_default() +
+    bayesplot_theme_get() +
     yaxis_title(FALSE) +
     yaxis_text(FALSE) +
     yaxis_ticks(FALSE)
 }
 
-
-# effective sample size ---------------------------------------------------
 #' @rdname MCMC-diagnostics
 #' @export
-#' @param ratio A vector of \emph{ratios} of effective sample size estimates to
-#'   total sample size. See \code{\link{neff_ratio}}.
+mcmc_rhat_data <- function(rhat, ...) {
+  check_ignored_arguments(...)
+  rhat <- drop_NAs_and_warn(new_rhat(rhat))
+  diagnostic_data_frame(rhat)
+}
+
+
+# effective sample size ---------------------------------------------------
+
+#' @rdname MCMC-diagnostics
+#' @export
+#' @param ratio A vector of *ratios* of effective sample size estimates to
+#'   total sample size. See [neff_ratio()].
 #'
 mcmc_neff <- function(ratio, ..., size = NULL) {
   check_ignored_arguments(...)
+  data <- mcmc_neff_data(ratio)
+
+  max_ratio <- max(ratio, na.rm = TRUE)
+  if (max_ratio < 1.25) {
+    additional_breaks <- numeric(0)
+  } else if (max_ratio < 1.5) {
+    additional_breaks <- 1.25
+    additional_labels <- "1.25"
+  } else {
+    additional_breaks <- seq(1.5, max_ratio, by = 0.5)
+  }
+  breaks <- c(0, 0.1, 0.25, 0.5, 0.75, 1, additional_breaks)
+
   ggplot(
-    data = diagnostic_data_frame(
-      x = validate_neff_ratio(ratio),
-      diagnostic = "neff"
-    ),
+    data,
     mapping = aes_(
       x = ~ value,
-      y = ~ factor_by_name,
-      color = ~ factor_by_value,
-      fill = ~ factor_by_value
-    )
-  ) +
+      y = ~ parameter,
+      color = ~ rating,
+      fill = ~ rating)) +
     geom_segment(
-      aes_(yend = ~factor_by_name, xend = -Inf),
-      na.rm = TRUE
-    ) +
+      aes_(yend = ~ parameter, xend = -Inf),
+      na.rm = TRUE) +
     diagnostic_points(size) +
     vline_at(
       c(0.1, 0.5, 1),
       color = "gray",
       linetype = 2,
-      size = 0.25
-    ) +
+      size = 0.25) +
     labs(y = NULL, x = expression(N[eff]/N)) +
     scale_fill_diagnostic("neff") +
     scale_color_diagnostic("neff") +
-    scale_x_continuous(breaks = c(0.1, seq(0, 1, .25)),
-                       limits = c(0, 1), expand = c(0,.01)) +
-    scale_y_discrete(expand = c(.025,0)) +
-    theme_default() +
+    scale_x_continuous(
+      breaks = breaks,
+      # as.character truncates trailing zeroes, while ggplot default does not
+      labels = as.character(breaks),
+      limits = c(0, max(1, max_ratio) + 0.05),
+      expand = c(0, 0)) +
+    bayesplot_theme_get() +
     yaxis_text(FALSE) +
     yaxis_title(FALSE) +
     yaxis_ticks(FALSE)
@@ -255,51 +261,55 @@ mcmc_neff <- function(ratio, ..., size = NULL) {
 
 #' @rdname MCMC-diagnostics
 #' @export
-mcmc_neff_hist <- function(ratio, ..., binwidth = NULL) {
+mcmc_neff_hist <- function(ratio, ..., binwidth = NULL, breaks = NULL) {
   check_ignored_arguments(...)
+  data <- mcmc_neff_data(ratio)
+
   ggplot(
-    data = diagnostic_data_frame(
-      x = validate_neff_ratio(ratio),
-      diagnostic = "neff"
-    ),
+    data,
     mapping = aes_(
       x = ~ value,
-      color = ~ factor_by_value,
-      fill = ~ factor_by_value
-    )
-  ) +
+      color = ~ rating,
+      fill = ~ rating)) +
     geom_histogram(
       size = .25,
       na.rm = TRUE,
-      binwidth = binwidth
-    ) +
+      binwidth = binwidth,
+      breaks = breaks) +
     scale_color_diagnostic("neff") +
     scale_fill_diagnostic("neff") +
     labs(x = expression(N[eff]/N), y = NULL) +
     dont_expand_y_axis(c(0.005, 0)) +
-    theme_default() +
     yaxis_title(FALSE) +
     yaxis_text(FALSE) +
-    yaxis_ticks(FALSE)
+    yaxis_ticks(FALSE) +
+    bayesplot_theme_get()
+}
+
+#' @rdname MCMC-diagnostics
+#' @export
+mcmc_neff_data <- function(ratio, ...) {
+  check_ignored_arguments(...)
+  ratio <- drop_NAs_and_warn(new_neff_ratio(ratio))
+  diagnostic_data_frame(ratio)
 }
 
 
 # autocorrelation ---------------------------------------------------------
+
 #' @rdname MCMC-diagnostics
 #' @export
 #' @template args-mcmc-x
 #' @template args-pars
 #' @template args-regex_pars
-#' @param facet_args Arguments (other than \code{facets}) passed to
-#'   \code{\link[ggplot2]{facet_grid}} to control faceting.
+#' @template args-facet_args
 #' @param lags The number of lags to show in the autocorrelation plot.
-#'
 mcmc_acf <-
   function(x,
            pars = character(),
            regex_pars = character(),
-           facet_args = list(),
            ...,
+           facet_args = list(),
            lags = 20,
            size = NULL) {
     check_ignored_arguments(...)
@@ -320,8 +330,8 @@ mcmc_acf_bar <-
   function(x,
            pars = character(),
            regex_pars = character(),
-           facet_args = list(),
            ...,
+           facet_args = list(),
            lags = 20) {
     check_ignored_arguments(...)
     .mcmc_acf(
@@ -334,156 +344,165 @@ mcmc_acf_bar <-
     )
   }
 
+
+
+
 # internal ----------------------------------------------------------------
+
+
+#' Convert numeric vector of diagnostic values to a factor
+#'
+#' @param x A numeric vector.
+#' @param breaks A numeric vector of length two. The resulting factor variable
+#'   will have three levels ('low', 'ok', and 'high') corresponding to (
+#'   `x <= breaks[1]`, `breaks[1] < x <= breaks[2]`, `x > breaks[2]`).
+#' @return A factor the same length as `x` with three levels.
+#' @noRd
+diagnostic_factor <- function(x, breaks, ...) {
+  UseMethod("diagnostic_factor")
+}
+
+diagnostic_factor.rhat <- function(x, breaks = c(1.05, 1.1)) {
+  cut(x, breaks = c(-Inf, breaks, Inf),
+      labels = c("low", "ok", "high"),
+      ordered_result = FALSE)
+}
+
+diagnostic_factor.neff_ratio <- function(x, breaks = c(0.1, 0.5)) {
+  cut(x, breaks = c(-Inf, breaks, Inf),
+      labels = c("low", "ok", "high"),
+      ordered_result = FALSE)
+}
+
+diagnostic_data_frame <- function(x) {
+  x <- auto_name(sort(x))
+  stopifnot(!anyDuplicated(names(x)))
+  diagnostic <- class(x)[1]
+
+  d <- tibble::tibble(
+    diagnostic = diagnostic,
+    parameter = factor(seq_along(x), labels = names(x)),
+    value = as.numeric(x),
+    rating = diagnostic_factor(x))
+
+  labels <- diagnostic_color_labels[[diagnostic]]
+  d$description <- as.character(labels[d$rating])
+  d
+}
+
+auto_name <- function(xs) {
+  if (is.null(names(xs))) {
+    names(xs) <- zero_pad_int(seq_along(xs))
+  }
+  xs
+}
+
+# c(1, 2, 10, 20, 100) => c("001", "002", "010", "020", "100")
+zero_pad_int <- function(xs) {
+  formatter <- paste0("%0", max(nchar(xs)), "d")
+  sprintf(formatter, xs)
+}
+
 diagnostic_points <- function(size = NULL) {
   args <- list(shape = 21, na.rm = TRUE)
   do.call("geom_point", c(args, size = size))
 }
 
-# @param x The object returned by validate_rhat or validate_neff_ratio
-diagnostic_data_frame <- function(x, diagnostic = c("rhat", "neff")) {
-  diagnostic <- match.arg(diagnostic)
-  fac <- if (!is.null(names(x))) {
-    factor(x, labels = names(sort(x)))
-  } else {
-    factor(x)
-  }
 
-  fun <- match.fun(paste0("factor_", diagnostic))
-  d <- data.frame(
-    value = x,
-    factor_by_name = fac,
-    factor_by_value = factor(fun(x), levels = c("high", "ok", "low"))
-  )
-  # d$factor_by_value <- factor(d$factor_by_value, levels = c("high", "ok", "low"))
-  rownames(d) <- NULL
-  return(d)
-}
-
-# Convert numeric vector of Rhat values to a factor
-#
-# @param x A numeric vector
-# @param breaks A numeric vector of length two. The resulting factor variable
-#   will have three levels ('low', 'ok', and 'high') corresponding to (x <=
-#   breaks[1], breaks[1] < x <= breaks[2], x > breaks[2]).
-# @return A factor the same length as x with three levels.
-#
-factor_rhat <- function(x, breaks = c(1.05, 1.1)) {
-  stopifnot(is.numeric(x),
-            isTRUE(all(x > 0)),
-            length(breaks) == 2)
-  cut(
-    x,
-    breaks = c(-Inf, breaks, Inf),
-    labels = c("low", "ok", "high"),
-    ordered_result = FALSE
-  )
-}
-
-# factor neff ratio
-factor_neff <- function(ratio, breaks = c(0.1, 0.5)) {
-  factor_rhat(ratio, breaks = breaks)
-}
-
-# Functions wrapping around scale_color_manual and scale_fill_manual, used to
+# Functions wrapping around scale_color_manual() and scale_fill_manual(), used to
 # color the intervals by rhat value
 scale_color_diagnostic <- function(diagnostic = c("rhat", "neff")) {
   d <- match.arg(diagnostic)
   diagnostic_color_scale(d, aesthetic = "color")
 }
+
 scale_fill_diagnostic <- function(diagnostic = c("rhat", "neff")) {
   d <- match.arg(diagnostic)
   diagnostic_color_scale(d, aesthetic = "fill")
 }
 
-diagnostic_color_scale <- function(diagnostic = c("rhat", "neff"),
+diagnostic_color_scale <- function(diagnostic = c("rhat", "neff_ratio"),
                                    aesthetic = c("color", "fill")) {
   diagnostic <- match.arg(diagnostic)
   aesthetic <- match.arg(aesthetic)
-  color_levels <- c("light", "mid", "dark")
-  if (diagnostic == "neff")
-    color_levels <- rev(color_levels)
-  if (aesthetic == "color")
-    color_levels <- paste0(color_levels, "_highlight")
-
-  color_labels <- if (diagnostic == "rhat") {
-    c(
-      expression(hat(R) > 1.10),
-      expression(hat(R) <= 1.10),
-      expression(hat(R) <= 1.05)
-    )
-  } else {
-    c(
-      expression(N[eff]/N > 0.5),
-      expression(N[eff]/N <= 0.5),
-      expression(N[eff]/N <= 0.1)
-    )
-  }
-
+  dc <- diagnostic_colors(diagnostic, aesthetic)
   do.call(
     match.fun(paste0("scale_", aesthetic, "_manual")),
     list(
       name = NULL,
       drop = FALSE,
-      values = setNames(get_color(color_levels), c("low", "ok", "high")),
-      labels = color_labels
+      values = dc$values,
+      labels = dc$color_labels
     )
   )
 }
 
+diagnostic_colors <- function(diagnostic = c("rhat", "neff_ratio"),
+                              aesthetic = c("color", "fill")) {
+  diagnostic <- match.arg(diagnostic)
+  aesthetic <- match.arg(aesthetic)
+  color_levels <- c("light", "mid", "dark")
+  if (diagnostic == "neff_ratio") {
+    color_levels <- rev(color_levels)
+  }
+  if (aesthetic == "color") {
+    color_levels <- paste0(color_levels, "_highlight")
+  }
+
+  color_labels <- diagnostic_color_labels[[diagnostic]]
+
+  list(diagnostic = diagnostic,
+       aesthetic = aesthetic,
+       color_levels = color_levels,
+       color_labels = color_labels,
+       values = set_names(get_color(color_levels), c("low", "ok", "high")))
+}
+
+diagnostic_color_labels <- list(
+  rhat = c(
+    low  = expression(hat(R) <= 1.05),
+    ok   = expression(hat(R) <= 1.10),
+    high = expression(hat(R) > 1.10)
+  ),
+  neff_ratio = c(
+    low  = expression(N[eff] / N <= 0.1),
+    ok   = expression(N[eff] / N <= 0.5),
+    high = expression(N[eff] / N > 0.5)
+  )
+)
+
 # set x-axis breaks based on rhat values
 set_rhat_breaks <- function(rhat) {
   br <- c(1, 1.05)
-  if (any(rhat > 1.05))
+  if (any(rhat > 1.05)) {
     br <- c(br, 1.1)
-  for (k in c(1.5, 2)) {
-    if (any(rhat > k))
-      br <- c(br, k)
   }
-  if (max(rhat) >= max(br) + .1)
+
+  for (k in c(1.5, 2)) {
+    if (any(rhat > k)) {
+      br <- c(br, k)
+    }
+  }
+  if (max(rhat) >= max(br) + .1) {
     br <- c(br, round(max(rhat), 2))
-
-  return(br)
+  }
+  br
 }
-
-
 
 # drop NAs from a vector and issue warning
 drop_NAs_and_warn <- function(x) {
-  if (!anyNA(x))
-    return(x)
-
   is_NA <- is.na(x)
-  warning(
-    "Dropped ", sum(is_NA), " NAs from '",
-    deparse(substitute(x)), "'."
-  )
+  if (anyNA(x)) {
+    warn(paste0(
+      "Dropped ", sum(is_NA), " NAs from '",
+      deparse(substitute(x)), "'."
+    ))
+  }
   x[!is_NA]
 }
 
-# either throws error or returns an rhat vector (dropping NAs)
-validate_rhat <- function(rhat) {
-  stopifnot(is_vector_or_1Darray(rhat))
-  if (any(rhat < 0, na.rm = TRUE))
-    stop("All 'rhat' values must be positive.")
-
-  rhat <- setNames(as.vector(rhat), names(rhat))
-  drop_NAs_and_warn(rhat)
-}
-
-# either throws error or returns as.vector(ratio)
-validate_neff_ratio <- function(ratio) {
-  stopifnot(is_vector_or_1Darray(ratio))
-  if (any(ratio < 0 | ratio > 1, na.rm = TRUE))
-    stop("All elements of 'ratio' must be between 0 and 1.")
-
-  ratio <- setNames(as.vector(ratio), names(ratio))
-  drop_NAs_and_warn(ratio)
-}
-
-
-# autocorr plot (either bar or line)
-# @param size passed to geom_line if style="line"
+# Autocorrelation plot (either bar or line)
+# @param size passed to geom_line() if style="line"
 .mcmc_acf <-
   function(x,
            pars = character(),
@@ -494,11 +513,10 @@ validate_neff_ratio <- function(ratio) {
            size = NULL) {
 
     style <- match.arg(style)
-    plot_data <- acf_data(
-      x = prepare_mcmc_array(x, pars, regex_pars),
-      lags = lags
-    )
-    if (dim(x)[2] > 1) { # multiple chains
+    x <- prepare_mcmc_array(x, pars, regex_pars)
+    plot_data <- acf_data(x = x, lags = lags)
+
+    if (num_chains(x) > 1) {
       facet_args$facets <- "Chain ~ Parameter"
       facet_fun <- "facet_grid"
     } else { # 1 chain
@@ -506,7 +524,8 @@ validate_neff_ratio <- function(ratio) {
       facet_fun <- "facet_wrap"
     }
 
-    graph <- ggplot(plot_data, aes_(x = ~ Lag, y = ~ AC))
+    graph <- ggplot(plot_data, aes_(x = ~ Lag, y = ~ AC))  +
+      bayesplot_theme_get()
     if (style == "bar") {
       graph <- graph +
         geom_bar(
@@ -545,8 +564,7 @@ validate_neff_ratio <- function(ratio) {
         expand = c(0, 0)
       ) +
       labs(x = "Lag", y = "Autocorrelation") +
-      force_axes_in_facets() +
-      theme_default()
+      force_axes_in_facets()
   }
 
 # Prepare data for autocorr plot
@@ -554,17 +572,15 @@ validate_neff_ratio <- function(ratio) {
 # @param lags user's 'lags' argument
 acf_data <- function(x, lags) {
   stopifnot(is_mcmc_array(x))
-  dims <- dim(x)
-  n_iter <- dims[1]
-  n_chain <- dims[2]
-  n_param <- dims[3]
+  n_iter <- num_iters(x)
+  n_chain <- num_chains(x)
+  n_param <- num_params(x)
   n_lags <- lags + 1
-  if (n_lags >= n_iter)
-    stop("Too few iterations for lags=", lags, ".",
-         call. = FALSE)
+  if (n_lags >= n_iter) {
+    abort(paste0("Too few iterations for lags=", lags, "."))
+  }
 
-  data <- reshape2::melt(x, value.name = "Value")
-  data$Chain <- factor(data$Chain)
+  data <- melt_mcmc(x)
   ac_list <- tapply(
     data[["Value"]],
     # INDEX = list(data[["Chain"]], data[["Parameter"]]),
@@ -583,5 +599,66 @@ acf_data <- function(x, lags) {
     Lag = rep(seq(0, lags), times = n_chain * n_param),
     AC = do.call("c", ac_list)
   )
+}
+
+
+
+
+## interal [classes / objects] ------------------------------------------------
+
+new_rhat <- function(x) {
+  # Convert a 1-d arrays to a vectors
+  if (is.array(x) && length(dim(x)) == 1) {
+    x <- as.vector(x)
+  }
+  validate_rhat(as_rhat(x))
+}
+
+validate_rhat <- function(x) {
+  stopifnot(is.numeric(x), !is.list(x), !is.array(x))
+  if (any(x < 0, na.rm = TRUE)) {
+    abort("All 'rhat' values must be positive.")
+  }
+  x
+}
+
+as_rhat <- function(x) {
+  structure(x, class = c("rhat", "numeric"), names = names(x))
+}
+
+#' Indexing method -- needed so that sort, etc. don't strip names.
+#' @export
+#' @keywords internal
+#' @noRd
+`[.rhat` <- function (x, i, j, drop = TRUE, ...) {
+  as_rhat(NextMethod())
+}
+
+new_neff_ratio <- function(x) {
+  # Convert a 1-d arrays to a vectors
+  if (is.array(x) && length(dim(x)) == 1) {
+    x <- as.vector(x)
+  }
+  as_neff_ratio(validate_neff_ratio(x))
+}
+
+validate_neff_ratio <- function(x) {
+  stopifnot(is.numeric(x), !is.list(x), !is.array(x))
+  if (any(x < 0, na.rm = TRUE)) {
+    abort("All neff ratios must be positive.")
+  }
+  x
+}
+
+as_neff_ratio <- function(x) {
+  structure(x, class = c("neff_ratio", "numeric"), names = names(x))
+}
+
+#' Indexing method -- needed so that sort, etc. don't strip names.
+#' @export
+#' @keywords internal
+#' @noRd
+`[.neff_ratio` <- function (x, i, j, drop = TRUE, ...) {
+  as_neff_ratio(NextMethod())
 }
 

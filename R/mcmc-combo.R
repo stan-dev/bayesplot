@@ -4,28 +4,28 @@
 #' @family MCMC
 #'
 #' @template args-mcmc-x
-#' @param ... Arguments passed to the plotting functions named in \code{combo}.
+#' @param ... Arguments passed to the plotting functions named in `combo`.
 #' @param combo A character vector with at least two elements. Each element of
-#'   \code{combo} corresponds to a column in the resulting graphic and should be
-#'   the name of one of the available \link{MCMC} functions (omitting the
-#'   \code{mcmc_} prefix).
-#' @param widths A numeric vector the same length as \code{combo} specifying
+#'   `combo` corresponds to a column in the resulting graphic and should be the
+#'   name of one of the available [MCMC][MCMC-overview] functions (omitting the
+#'   `mcmc_` prefix).
+#' @param widths A numeric vector the same length as `combo` specifying
 #'   relative column widths. For example, if the plot has two columns, then
-#'   \code{widths = c(2, 1)} will allocate more space for the first column by a
-#'   factor of 2 (as would \code{widths = c(.3, .15)}, etc.). The default,
-#'   \code{NULL}, allocates the same horiztonal space for each column.
-#' @param gg_theme Unlike most of the other \pkg{bayesplot} functions,
-#'   \code{mcmc_combo} returns a gtable object rather than a ggplot object, and
+#'   `widths = c(2, 1)` will allocate more space for the first column by a
+#'   factor of 2 (as would `widths = c(.3, .15)`, etc.). The default,
+#'   `NULL`, allocates the same horizontal space for each column.
+#' @param gg_theme Unlike most of the other **bayesplot** functions,
+#'   `mcmc_combo` returns a gtable object rather than a ggplot object, and
 #'   so theme objects can't be added directly to the returned plot object. The
-#'   \code{gg_theme} argument helps get around this problem by accepting a
-#'   \pkg{ggplot2} \link[ggplot2]{theme} object that is added to each of the
-#'   plots \emph{before} combining them into the gtable object that is returned.
-#'   This can be a theme object created by a call to \code{ggplot2::theme} or
-#'   one of the \pkg{bayesplot} convenience functions, e.g.
-#'   \code{\link{legend_none}} (see the \strong{Examples} section, below).
+#'   `gg_theme` argument helps get around this problem by accepting a
+#'   **ggplot2** [theme][ggplot2::theme] object that is added to each of the
+#'   plots *before* combining them into the gtable object that is returned.
+#'   This can be a theme object created by a call to [ggplot2::theme()] or
+#'   one of the **bayesplot** convenience functions, e.g.
+#'   [legend_none()] (see the **Examples** section, below).
 #'
 #' @return A gtable object (the result of calling
-#'   \code{\link[gridExtra]{arrangeGrob}}) with \code{length(combo)} columns and
+#'   [gridExtra::arrangeGrob()]) with `length(combo)` columns and
 #'   a row for each parameter.
 #'
 #' @examples
@@ -66,19 +66,22 @@ NULL
 mcmc_combo <-
   function(x,
            combo = c("dens", "trace"),
+           ...,
            widths = NULL,
-           gg_theme = NULL,
-           ...) {
+           gg_theme = NULL) {
     suggested_package("gridExtra")
 
-    if (length(combo) < 2)
-      stop("'combo' should have at least two elements.")
+    if (length(combo) < 2) {
+      abort("'combo' should have at least two elements.")
+    }
 
     plotfuns <- paste0("mcmc_", combo)
     not_found <- setdiff(plotfuns, available_mcmc())
     if (length(not_found)) {
-      stop("The following functions were not found: ",
-           paste(not_found, collapse = ", "))
+      abort(paste(
+        "The following functions were not found:",
+        paste(not_found, collapse = ", ")
+      ))
     }
     plotfuns <-
       lapply(plotfuns, function(x)
@@ -93,12 +96,13 @@ mcmc_combo <-
     }
 
     plots <- lapply(plotfuns, function(f) suppressWarnings(do.call(f, args)))
+    plots <- lapply(plots, function(x) x + bayesplot_theme_get())
+
     if (!is.null(gg_theme))
       plots <- lapply(plots, function(x) x + gg_theme)
 
     bayesplot_grid(
       plots = plots,
-      grid_args = list(ncol = length(combo),
-                       widths = widths)
+      grid_args = list(ncol = length(combo), widths = widths)
     )
   }

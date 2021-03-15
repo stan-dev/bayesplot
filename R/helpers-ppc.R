@@ -1,158 +1,212 @@
 # Check if an object is a vector (but not list) or a 1-D array
 is_vector_or_1Darray <- function(x) {
-  if (is.vector(x) && !is.list(x))
+  if (is.vector(x) && !is.list(x)) {
     return(TRUE)
+  }
+
   isTRUE(is.array(x) && length(dim(x)) == 1)
 }
 
-# Validate y
-#
-# Checks that y is numeric, doesn't have any NAs, and is either a vector or 1-D
-# array.
-#
-# @param y The y object from the user.
-# @return Either throws an error or returns a numeric vector.
-#
+
+#' Validate y
+#'
+#' Checks that `y` is numeric, doesn't have any NAs, and is either a vector, 1-D
+#' array, or univariate time series object of class `ts`.
+#'
+#' @param y The `y` object from the user.
+#' @return Either throws an error or returns a numeric vector.
+#' @noRd
 validate_y <- function(y) {
   stopifnot(is.numeric(y))
-  if (!is_vector_or_1Darray(y))
-    stop("'y' must be a vector or 1D array.")
 
-  y <- as.vector(y)
-  if (anyNA(y))
-    stop("NAs not allowed in 'y'.")
+  if (!(inherits(y, "ts") && is.null(dim(y)))) {
+    if (!is_vector_or_1Darray(y)) {
+      abort("'y' must be a vector or 1D array.")
+    }
+    y <- as.vector(y)
+  }
+
+  if (anyNA(y)) {
+    abort("NAs not allowed in 'y'.")
+  }
 
   unname(y)
 }
 
 
-# Validate yrep
-#
-# Checks that yrep is a numeric matrix, doesn't have any NAs, and has the
-# correct number of columns (equal to the length of y).
-#
-# @param yrep,y The user's yrep object and the y object returned by validate_y.
-# @return Either throws an error or returns a numeric matrix.
-#
+#' Validate yrep
+#'
+#' Checks that `yrep` is a numeric matrix, doesn't have any NAs, and has the
+#' correct number of columns (equal to the length of `y`).
+#'
+#' @param yrep,y The user's `yrep` object and the `y` object returned by `validate_y()`.
+#' @return Either throws an error or returns a numeric matrix.
+#' @noRd
 validate_yrep <- function(yrep, y) {
   stopifnot(is.matrix(yrep), is.numeric(yrep))
   if (is.integer(yrep)) {
-    if (nrow(yrep) == 1)
+    if (nrow(yrep) == 1) {
       yrep[1, ] <- as.numeric(yrep[1,, drop = FALSE])
-    else
+    }
+    else {
       yrep <- apply(yrep, 2, as.numeric)
+    }
   }
-  if (anyNA(yrep))
-    stop("NAs not allowed in 'yrep'.")
-  if (ncol(yrep) != length(y))
-    stop("ncol(yrep) must be equal to length(y).")
+
+  if (anyNA(yrep)) {
+    abort("NAs not allowed in 'yrep'.")
+  }
+
+  if (ncol(yrep) != length(y)) {
+    abort("ncol(yrep) must be equal to length(y).")
+  }
 
   unclass(unname(yrep))
 }
 
 
-# Validate group
-#
-# Checks that grouping variable has same length as y and is either a vector or
-# factor variable.
-#
-# @param group,y The user's group object and the y object returned by validate_y.
-# @return Either throws an error or returns \code{group} (coerced to a factor).
-#
+#' Validate group
+#'
+#' Checks that grouping variable has same length as `y` and is either a vector or
+#' factor variable.
+#'
+#' @param group,y The user's `group` object and the `y` object returned by
+#'   `validate_y()`.
+#' @return Either throws an error or returns `group` (coerced to a factor).
+#' @noRd
 validate_group <- function(group, y) {
   stopifnot(is.vector(group) || is.factor(group))
-  if (!is.factor(group))
+
+  if (!is.factor(group)) {
     group <- as.factor(group)
-  if (anyNA(group))
-    stop("NAs not allowed in 'group'.")
-  if (length(group) != length(y))
-    stop("length(group) must be equal to length(y).")
-  if (length(unique(group)) == 1)
-    stop("'group' must have more than one unique value.")
+  }
+
+  if (anyNA(group)) {
+    abort("NAs not allowed in 'group'.")
+  }
+
+  if (length(group) != length(y)) {
+    abort("length(group) must be equal to length(y).")
+  }
 
   unname(group)
 }
 
-# Validate x
-#
-# Checks that x is a numeric vector, doesn't have any NAs, and has the
-# same length as y.
-#
-# @param x,y The user's x vector and the y object returned by validate_y.
-# @return Either throws an error or returns a numeric vector.
-#
-validate_x <- function(x, y, unique_x = FALSE) {
-  if (missing(x))
-    return(1:length(y))
+
+#' Validate x
+#'
+#' Checks that x is a numeric vector, doesn't have any NAs, and has the
+#' same length as y.
+#'
+#' @param x,y The user's `x` vector and the `y` object returned by `validate_y()`.
+#' @param unique_x `TRUE` or `FALSE` indicating whether to require all unique
+#'   values in `x`.
+#' @return Either throws an error or returns a numeric vector.
+#' @noRd
+validate_x <- function(x = NULL, y, unique_x = FALSE) {
+  if (is.null(x)) {
+    if (inherits(y, "ts") && is.null(dim(y))) {
+      x <- stats::time(y)
+    } else {
+      x <- seq_along(y)
+    }
+  }
 
   stopifnot(is.numeric(x))
-  if (!is_vector_or_1Darray(x))
-    stop("'x' must be a vector or 1D array.")
+
+  if (!is_vector_or_1Darray(x)) {
+    abort("'x' must be a vector or 1D array.")
+  }
 
   x <- as.vector(x)
-  if (length(x) != length(y))
-    stop("length(x) must be equal to length(y).")
-  if (anyNA(x))
-    stop("NAs not allowed in 'x'.")
-  if (unique_x)
+  if (length(x) != length(y)) {
+    abort("length(x) must be equal to length(y).")
+  }
+
+  if (anyNA(x)) {
+    abort("NAs not allowed in 'x'.")
+  }
+
+  if (unique_x) {
     stopifnot(identical(length(x), length(unique(x))))
+  }
 
   unname(x)
 }
 
 
-# Convert yrep matrix into a molten data frame
-#
-# @param yrep A matrix, already validated using validate_yrep().
-# @return A data frame with three columns:
-# \itemize{
-#  \item 'value': the numeric values.
-#  \item 'y_id': integer indicating from which yrep column each values comes.
-#  \item 'rep_id': factor with S levels, where S is nrow(yrep), i.e. the number
-#   of simulations included in yrep.
-# }
-#
-melt_yrep <- function(yrep, label = TRUE) {
-  out <- reshape2::melt(
-    data = yrep,
-    varnames = c("rep_id", "y_id")
-  )
-  id <- if (label) create_yrep_ids(out$rep_id) else out$rep_id
-  out$rep_id <- factor(id, levels = unique(id))
-  out
+#' Convert yrep matrix into a molten data frame
+#'
+#' @param yrep A matrix, already validated using `validate_yrep()`.
+#' @return A data frame with 4 columns:
+#'   1. `y_id`: integer indicating the observation number (`yrep` column).
+#'   1. `rep_id`: integer indicating the simulation number (`yrep` row).
+#'   1. `rep_label`: factor with S levels, where S is `nrow(yrep)`, i.e. the
+#'      number of simulations included in `yrep`.
+#'   1. `value`: the simulation values.
+#' @noRd
+melt_yrep <- function(yrep) {
+  out <- yrep %>%
+    reshape2::melt(varnames = c("rep_id", "y_id")) %>%
+    tibble::as_tibble()
+  id <- create_yrep_ids(out$rep_id)
+  out$rep_label <- factor(id, levels = unique(id))
+  out[c("y_id", "rep_id", "rep_label", "value")]
 }
 
-# Stack y below melted yrep data
-#
-# @param y Validated y input.
-# @param yrep Validated yrep input.
-# @return A data frame with the all the columns as the one returned by
-#   melt_yrep(), plus a column "is_y" indicating whether the values pertain
-#   to y (or yrep).
-#
-melt_and_stack <- function(y, yrep, label = TRUE) {
-  molten_yrep <- melt_yrep(yrep, label = label)
-  yobs_lab <- if (label) "italic(y)" else "y"
-  levels(molten_yrep$rep_id) <- c(levels(molten_yrep$rep_id), yobs_lab)
-  ydat <- data.frame(
-    rep_id = yobs_lab,
+
+#' Stack y below melted yrep data
+#'
+#' @param y Validated y input.
+#' @param yrep Validated yrep input.
+#' @return A data frame with the all the columns as the one returned by
+#'   `melt_yrep()`, plus additional columns:
+#'   1. `is_y`: logical indicating whether the values are observations (`TRUE`)
+#'      or simulations (`FALSE`).
+#'   1. `is_y_label`: factor with levels `italic(y)` for observations and
+#'      `italic(y)[rep]` for simulations.
+#' @noRd
+melt_and_stack <- function(y, yrep) {
+  y_text <- as.character(y_label())
+  yrep_text <- as.character(yrep_label())
+
+  molten_yrep <- melt_yrep(yrep)
+
+  # Add a level in the labels for the observed y values
+  levels(molten_yrep$rep_label) <- c(levels(molten_yrep$rep_label), y_text)
+
+  ydat <- tibble::tibble(
+    rep_label = factor(y_text, levels = levels(molten_yrep$rep_label)),
+    rep_id = NA_integer_,
     y_id = seq_along(y),
-    value = y
-  )
-  within(data = rbind(molten_yrep, ydat), {
-    rep_id <- relevel(rep_id, ref = yobs_lab)
-    is_y <- factor(rep_id == yobs_lab, levels = c(TRUE, FALSE))
-  })
+    value = y)
+
+  data <- dplyr::bind_rows(molten_yrep, ydat) %>%
+    mutate(
+      rep_label = relevel(.data$rep_label, y_text),
+      is_y = is.na(.data$rep_id),
+      is_y_label = ifelse(.data$is_y, y_text, yrep_text) %>%
+        factor(levels = c(y_text, yrep_text)))
+
+  data[c("y_id", "rep_id", "rep_label", "is_y", "is_y_label", "value")]
 }
 
-# Prepare data for use in PPCs by group
-#
-# @param y,yrep,group Validated y, yrep, and group objects from the user.
-# @param stat Either NULL or a string naming a function.
-# @value If \code{stat} is NULL, a molten data frame grouped by group and
-#   variable. If \code{stat} specifies a function then a summary table created
-#   by dplyr::summarise.
-#
+
+#' Prepare data for use in PPCs by group
+#'
+#' @param y,yrep,group Validated `y`, `yrep`, and `group` objects.
+#' @param stat Either `NULL` or a string naming a function.
+#' @return If `stat` is `NULL`, a molten data frame grouped by group and
+#'   variable. If `stat` specifies a function then a summary table created
+#'   by `dplyr::summarise()`.
+#' @noRd
+#'
+#' @examples
+#' y <- example_y_data()
+#' yrep <- example_yrep_draws()
+#' group <- example_group_data()
+#' ppc_group_data(y, yrep, group)
+#' ppc_group_data(y, yrep, group, median)
 ppc_group_data <- function(y, yrep, group, stat = NULL) {
   d <- data.frame(
     group = factor(group),
@@ -161,25 +215,24 @@ ppc_group_data <- function(y, yrep, group, stat = NULL) {
   )
   colnames(d) <- gsub(".", "_", colnames(d), fixed = TRUE)
   molten_d <- reshape2::melt(d, id.vars = "group")
-  molten_d <- dplyr::group_by_(molten_d, .dots = list(~group, ~variable))
-  if (is.null(stat))
-    return(molten_d)
+  molten_d <- dplyr::group_by(molten_d, .data$group, .data$variable)
 
-  if (!is.function(stat))
-    stat <- match.fun(stat)
+  # Default to identity function.
+  dplyr_fun <- dplyr::summarise
+  if (is.null(stat)) {
+    stat <- function(x) x
+    dplyr_fun <- dplyr::mutate
+  }
 
-  dplyr::summarise_(molten_d, value = ~stat(value))
+  stat <- match.fun(stat)
+  dplyr_fun(molten_d, value = stat(.data$value))
+
+  # todo: does this result need to be ungrouped. If mutating path, it has two
+  # grouping vars. It summarising path, it has one grouping var.
 }
 
-# set mapping depending on freq argument
-set_hist_aes <- function(freq = TRUE, ...) {
-  if (freq)
-    aes_(x = ~ value, ...)
-  else
-    aes_(x = ~ value, y = ~ ..density.., ...)
-}
-
-# check if x consists of whole numbers (very close to integers)
+# Check if x consists of whole numbers (very close to integers)
+# Implementation here follows example ?integer
 is_whole_number <- function(x, tol = .Machine$double.eps) {
   if (!is.numeric(x)) {
     FALSE
@@ -188,9 +241,13 @@ is_whole_number <- function(x, tol = .Machine$double.eps) {
   }
 }
 
-# check if all values in x are counts (non-negative whole numbers)
+# Check if all values in x are whole numbers or counts (non-negative whole
+# numbers)
+all_whole_number <- function(x, ...) {
+  all(is_whole_number(x, ...))
+}
 all_counts <- function(x, ...) {
-  all(is_whole_number(x, ...)) && min(x) >= 0
+  all_whole_number(x, ...) && min(x) >= 0
 }
 
 # labels ----------------------------------------------------------------

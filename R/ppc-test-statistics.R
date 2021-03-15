@@ -1,18 +1,20 @@
 #' PPC test statistics
 #'
-#' The distribution of a test statistic \code{T(yrep)}, or a pair of test
-#' statistics, over the simulated datasets in \code{yrep}, compared to the
-#' observed value \code{T(y)} computed from the data \code{y}. See the
-#' \strong{Plot Descriptions} and \strong{Details} sections, below.
+#' The distribution of a (test) statistic `T(yrep)`, or a pair of (test)
+#' statistics, over the simulated datasets in `yrep`, compared to the
+#' observed value `T(y)` computed from the data `y`. See the
+#' **Plot Descriptions** and **Details** sections, below, as
+#' well as [Gabry et al. (2019)](https://github.com/jgabry/bayes-vis-paper#readme).
 #'
 #' @name PPC-test-statistics
 #' @family PPCs
 #'
 #' @template args-y-yrep
+#' @template args-facet_args
 #' @param stat A single function or a string naming a function, except for
-#'   \code{ppc_stat_2d} which requires a vector of exactly two functions or
+#'   `ppc_stat_2d()` which requires a vector of exactly two functions or
 #'   function names. In all cases the function(s) should take a vector input and
-#'   return a scalar test statistic. If specified as a string (or strings) then
+#'   return a scalar statistic. If specified as a string (or strings) then
 #'   the legend will display function names. If specified as a function (or
 #'   functions) then generic naming is used in the legend.
 #' @param ... Currently unused.
@@ -20,26 +22,28 @@
 #' @template details-binomial
 #' @template return-ggplot
 #'
+#' @template reference-vis-paper
 #' @templateVar bdaRef (Ch. 6)
 #' @template reference-bda
 #'
 #' @section Plot Descriptions:
 #' \describe{
-#'   \item{\code{ppc_stat}}{
+#'   \item{`ppc_stat()`}{
 #'    A histogram of the distribution of a test statistic computed by applying
-#'    \code{stat} to each dataset (row) in \code{yrep}. The value of the
-#'    statistic in the observed data, \code{stat(y)}, is overlaid as a vertical
-#'    line.
+#'    `stat` to each dataset (row) in `yrep`. The value of the statistic in the
+#'    observed data, `stat(y)`, is overlaid as a vertical line. More details on
+#'    `ppc_stat()` can be found in Gabry et al. (2019).
 #'   }
-#'   \item{\code{ppc_stat_grouped,ppc_stat_freqpoly_grouped}}{
-#'    The same as \code{ppc_stat}, but a separate plot is generated for each
+#'   \item{`ppc_stat_grouped()`,`ppc_stat_freqpoly_grouped()`}{
+#'    The same as `ppc_stat()`, but a separate plot is generated for each
 #'    level of a grouping variable. In the case of
-#'    \code{ppc_stat_freqpoly_grouped} the plots are frequency polygons rather
-#'    than histograms.
+#'    `ppc_stat_freqpoly_grouped()` the plots are frequency polygons rather
+#'    than histograms. More details on `ppc_stat_grouped()` can be found in
+#'    Gabry et al. (2019).
 #'   }
-#'   \item{\code{ppc_stat_2d}}{
+#'   \item{`ppc_stat_2d()`}{
 #'    A scatterplot showing the joint distribution of two test statistics
-#'    computed over the datasets (rows) in \code{yrep}. The value of the
+#'    computed over the datasets (rows) in `yrep`. The value of the
 #'    statistics in the observed data is overlaid as large point.
 #'   }
 #' }
@@ -57,7 +61,7 @@
 #' ppc_stat_grouped(y, yrep, group)
 #'
 #' color_scheme_set("mix-red-blue")
-#' ppc_stat_freqpoly_grouped(y, yrep, group)
+#' ppc_stat_freqpoly_grouped(y, yrep, group, facet_args = list(nrow = 2))
 #'
 #' # use your own function to compute test statistics
 #' color_scheme_set("brightblue")
@@ -81,6 +85,7 @@ ppc_stat <-
            stat = "mean",
            ...,
            binwidth = NULL,
+           breaks = NULL,
            freq = TRUE) {
     check_ignored_arguments(...)
 
@@ -97,7 +102,8 @@ ppc_stat <-
         color = get_color("lh"),
         size = .25,
         na.rm = TRUE,
-        binwidth = binwidth
+        binwidth = binwidth,
+        breaks = breaks
       ) +
       geom_vline(
         data = data.frame(Ty = T_y),
@@ -113,8 +119,8 @@ ppc_stat <-
           title = stat_legend_title(stat, deparse(substitute(stat)))
         )
       ) +
+      bayesplot_theme_get() +
       dont_expand_y_axis() +
-      theme_default() +
       no_legend_spacing() +
       xaxis_title(FALSE) +
       yaxis_text(FALSE) +
@@ -132,7 +138,9 @@ ppc_stat_grouped <-
            group,
            stat = "mean",
            ...,
+           facet_args = list(),
            binwidth = NULL,
+           breaks = NULL,
            freq = TRUE) {
     check_ignored_arguments(...)
 
@@ -142,6 +150,10 @@ ppc_stat_grouped <-
     plot_data <- ppc_group_data(y, yrep, group, stat = match.fun(stat))
     is_y <- plot_data$variable == "y"
 
+    facet_args[["facets"]] <- ~ group
+    if (is.null(facet_args[["scales"]]))
+      facet_args[["scales"]] <- "free"
+
     ggplot(plot_data[!is_y, , drop = FALSE],
            set_hist_aes(freq)) +
       geom_histogram(
@@ -149,14 +161,15 @@ ppc_stat_grouped <-
         color = get_color("lh"),
         size = .25,
         na.rm = TRUE,
-        binwidth = binwidth
+        binwidth = binwidth,
+        breaks = breaks
       ) +
       geom_vline(
         data = plot_data[is_y, , drop = FALSE],
         mapping = aes_(xintercept = ~ value, color = "y"),
         size = 1.5
       ) +
-      facet_wrap("group", scales = "free") +
+      do.call("facet_wrap", facet_args) +
       scale_fill_manual(values = get_color("l"), labels = Tyrep_label()) +
       scale_color_manual(values = get_color("dh"), labels = Ty_label()) +
       guides(
@@ -166,8 +179,8 @@ ppc_stat_grouped <-
           title = stat_legend_title(stat, deparse(substitute(stat)))
         )
       ) +
+      bayesplot_theme_get() +
       dont_expand_y_axis() +
-      theme_default() +
       no_legend_spacing() +
       xaxis_title(FALSE) +
       yaxis_text(FALSE) +
@@ -185,6 +198,7 @@ ppc_stat_freqpoly_grouped <-
            group,
            stat = "mean",
            ...,
+           facet_args = list(),
            binwidth = NULL,
            freq = TRUE) {
     check_ignored_arguments(...)
@@ -194,6 +208,10 @@ ppc_stat_freqpoly_grouped <-
     group <- validate_group(group, y)
     plot_data <- ppc_group_data(y, yrep, group, stat = match.fun(stat))
     is_y <- plot_data$variable == "y"
+
+    facet_args[["facets"]] <- ~ group
+    if (is.null(facet_args[["scales"]]))
+      facet_args[["scales"]] <- "free"
 
     ggplot(plot_data[!is_y, , drop = FALSE],
            set_hist_aes(freq)) +
@@ -209,33 +227,39 @@ ppc_stat_freqpoly_grouped <-
         show.legend = FALSE,
         size = 1
       ) +
-      facet_wrap("group", scales = "free") +
+      do.call("facet_wrap", facet_args) +
       scale_color_manual(
         name = stat_legend_title(stat, deparse(substitute(stat))),
-        values = setNames(get_color(c("m", "dh")), c("yrep", "y")),
+        values = set_names(get_color(c("m", "dh")), c("yrep", "y")),
         labels = c(yrep = Tyrep_label(), y = Ty_label())
       ) +
       dont_expand_y_axis(c(0.005, 0)) +
-      theme_default() +
       xaxis_title(FALSE) +
       yaxis_text(FALSE) +
       yaxis_ticks(FALSE) +
-      yaxis_title(FALSE)
+      yaxis_title(FALSE) +
+      bayesplot_theme_get()
   }
 
 
 #' @rdname PPC-test-statistics
 #' @export
-#' @param size,alpha Arguments passed to \code{\link[ggplot2]{geom_point}} to
-#'   control the appearance of scatterplot points.
-ppc_stat_2d <- function(y, yrep, stat = c("mean", "sd"), ...,
-                        size = 2.5, alpha = 0.7) {
+#' @param size,alpha Arguments passed to [ggplot2::geom_point()] to control the
+#'   appearance of scatterplot points.
+ppc_stat_2d <- function(y,
+                        yrep,
+                        stat = c("mean", "sd"),
+                        ...,
+                        size = 2.5,
+                        alpha = 0.7) {
+
   check_ignored_arguments(...)
 
   y <- validate_y(y)
   yrep <- validate_yrep(yrep, y)
-  if (length(stat) != 2)
-    stop("For ppc_stat_2d the 'stat' argument must have length 2.")
+  if (length(stat) != 2) {
+    abort("For ppc_stat_2d the 'stat' argument must have length 2.")
+  }
 
   if (is.character(stat)) {
     lgnd_title <- bquote(italic(T) == (list(.(stat[1]), .(stat[2]))))
@@ -279,28 +303,28 @@ ppc_stat_2d <- function(y, yrep, stat = c("mean", "sd"), ...,
     ) +
     scale_fill_manual(
       name = lgnd_title,
-      values = setNames(get_color(c("d", "l")), c("y", "yrep")),
+      values = set_names(get_color(c("d", "l")), c("y", "yrep")),
       labels = c(y = Ty_label(), yrep = Tyrep_label())
     ) +
     scale_color_manual(
       name = lgnd_title,
-      values = setNames(get_color(c("dh", "lh")), c("y", "yrep")),
+      values = set_names(get_color(c("dh", "lh")), c("y", "yrep")),
       labels = c(y = Ty_label(), yrep = Tyrep_label())
     ) +
     labs(x = stat_labs[1], y = stat_labs[2]) +
-    theme_default()
+    bayesplot_theme_get()
 }
 
 
 
 # internal ----------------------------------------------------------------
 
-# Make legend title for ppc_stat,ppc_stat_grouped,ppc_stat_freqpoly_grouped
-#
-# @param stat The user's 'stat' argument.
-# @param stat_txt deparse(substitute()) applied to users 'stat' argument
-# @return Either throws an error or returns a legend title (possibly NULL)
-#
+#' Make legend title for ppc_stat,ppc_stat_grouped,ppc_stat_freqpoly_grouped
+#'
+#' @param stat The user's `stat` argument.
+#' @param stat_txt `deparse(substitute())` applied to users `stat` argument.
+#' @return Either throws an error or returns a legend title (possibly `NULL`).
+#' @noRd
 stat_legend_title <- function(stat, stat_txt) {
   stopifnot(is.character(stat) || is.function(stat))
   if (is.character(stat)) {

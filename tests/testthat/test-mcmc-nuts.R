@@ -1,17 +1,18 @@
 library(bayesplot)
-suppressPackageStartupMessages(library(rstanarm))
 context("MCMC: nuts")
 
-ITER <- 1000
-CHAINS <- 3
-capture.output(
-  fit <- stan_glm(mpg ~ wt + am, data = mtcars,
-                  iter = ITER, chains = CHAINS, refresh = 0)
-)
-np <- nuts_params(fit)
-lp <- log_posterior(fit)
+if (requireNamespace("rstanarm", quietly = TRUE)) {
+  ITER <- 1000
+  CHAINS <- 3
+  fit <- rstanarm::stan_glm(mpg ~ wt + am, data = mtcars,
+                            iter = ITER, chains = CHAINS,
+                            refresh = 0)
+  np <- nuts_params(fit)
+  lp <- log_posterior(fit)
+}
 
 test_that("all mcmc_nuts_* (except energy) return gtable objects", {
+  skip_if_not_installed("rstanarm")
   expect_gtable(mcmc_nuts_acceptance(np, lp))
   expect_gtable(mcmc_nuts_acceptance(np, lp, chain = CHAINS))
 
@@ -21,10 +22,13 @@ test_that("all mcmc_nuts_* (except energy) return gtable objects", {
   expect_gtable(mcmc_nuts_stepsize(np, lp))
   expect_gtable(mcmc_nuts_stepsize(np, lp, chain = CHAINS))
 
+  np <- ensure_divergences(np)
   expect_gtable(mcmc_nuts_divergence(np, lp))
   expect_gtable(mcmc_nuts_divergence(np, lp, chain = CHAINS))
 })
+
 test_that("all mcmc_nuts_* (except energy) error if chain argument is bad", {
+  skip_if_not_installed("rstanarm")
   funs <- c("acceptance", "divergence", "treedepth", "stepsize")
   for (f in paste0("mcmc_nuts_", funs)) {
     expect_error(do.call(f, list(x=np, lp=lp, chain = CHAINS + 1)),
@@ -37,6 +41,8 @@ test_that("all mcmc_nuts_* (except energy) error if chain argument is bad", {
 })
 
 test_that("mcmc_nuts_energy returns a ggplot object", {
+  skip_if_not_installed("rstanarm")
+
   p <- mcmc_nuts_energy(np)
   expect_gg(p)
   expect_s3_class(p$facet, "FacetWrap")
@@ -46,19 +52,22 @@ test_that("mcmc_nuts_energy returns a ggplot object", {
   expect_gg(p)
   expect_s3_class(p$facet, "FacetNull")
 })
+
 test_that("mcmc_nuts_energy throws correct warnings", {
+  skip_if_not_installed("rstanarm")
   expect_warning(mcmc_nuts_energy(np, chain = 1), "ignored: chain")
 })
 
 
 test_that("validate_nuts_data_frame throws errors", {
+  skip_if_not_installed("rstanarm")
   expect_error(
     validate_nuts_data_frame(list(Iteration = 1, Chain = 1)),
     "NUTS parameters should be in a data frame"
   )
   expect_error(
     validate_nuts_data_frame(data.frame(Iteration = 1, apple = 2)),
-    "NUTS parameter data frame must have columns: Iteration, Parameter, Value, Chain"
+    "NUTS parameter data frame must have columns: Chain, Iteration, Parameter, Value"
   )
   expect_error(
     validate_nuts_data_frame(np, as.matrix(lp)),
@@ -69,7 +78,7 @@ test_that("validate_nuts_data_frame throws errors", {
   colnames(lp2)[3] <- "Chains"
   expect_error(
     validate_nuts_data_frame(np, lp2),
-    "lp data frame must have columns: Iteration, Value, Chain"
+    "lp data frame must have columns: Chain, Iteration, Value"
   )
 
   lp2 <- subset(lp, Chain %in% 1:2)

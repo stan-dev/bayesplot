@@ -4,9 +4,17 @@
 \alias{bayesplot_grid}
 \title{Arrange plots in a grid}
 \usage{
-bayesplot_grid(..., plots = list(), xlim = NULL, ylim = NULL,
-  grid_args = list(), titles = character(), subtitles = character(),
-  legends = TRUE)
+bayesplot_grid(
+  ...,
+  plots = list(),
+  xlim = NULL,
+  ylim = NULL,
+  grid_args = list(),
+  titles = character(),
+  subtitles = character(),
+  legends = TRUE,
+  save_gg_objects = TRUE
+)
 }
 \arguments{
 \item{...}{One or more ggplot objects.}
@@ -18,19 +26,25 @@ specifying plot objects via \code{...}.}
 upper limits for the axes that will be shared across all plots.}
 
 \item{grid_args}{An optional named list of arguments to pass to
-\code{\link[gridExtra]{arrangeGrob}} (\code{nrow}, \code{ncol},
+\code{\link[gridExtra:arrangeGrob]{gridExtra::arrangeGrob()}} (\code{nrow}, \code{ncol},
 \code{widths}, etc.).}
 
 \item{titles, subtitles}{Optional character vectors of plot titles and
 subtitles. If specified, \code{titles} and \code{subtitles} must must have
-length equal to the number of plots speficied.}
+length equal to the number of plots specified.}
 
 \item{legends}{If any of the plots have legends should they be displayed?
 Defaults to \code{TRUE}.}
+
+\item{save_gg_objects}{If \code{TRUE}, the default, then the ggplot objects
+specified in \code{...} or via the \code{plots} argument are saved in a
+list in the \code{"bayesplots"} component of the returned object.
+Setting this to \code{FALSE} will make the returned object smaller but
+these individual plot objects will not be available.}
 }
 \value{
-An object of class "bayesplot_grid" (essentially a gtable object from
-  \code{\link[gridExtra]{arrangeGrob}}), which has a \code{plot} method.
+An object of class \code{"bayesplot_grid"} (essentially a gtable object
+from \code{\link[gridExtra:arrangeGrob]{gridExtra::arrangeGrob()}}), which has a \code{plot} method.
 }
 \description{
 The \code{bayesplot_grid} function makes it simple to juxtapose plots using
@@ -52,8 +66,8 @@ bayesplot_grid(
 \dontrun{
 library(rstanarm)
 mtcars$log_mpg <- log(mtcars$mpg)
-fit1 <- stan_glm(mpg ~ wt, data = mtcars)
-fit2 <- stan_glm(log_mpg ~ wt, data = mtcars)
+fit1 <- stan_glm(mpg ~ wt, data = mtcars, refresh = 0)
+fit2 <- stan_glm(log_mpg ~ wt, data = mtcars, refresh = 0)
 
 y <- mtcars$mpg
 yrep1 <- posterior_predict(fit1, draws = 50)

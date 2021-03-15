@@ -1,42 +1,40 @@
 #' Extract quantities needed for plotting from model objects
 #'
 #' Generics and methods for extracting quantities needed for plotting from
-#' various types of model objects. Currently methods are only provided for
-#' stanfit (\pkg{rstan}) and stanreg (\pkg{rstanarm}) objects, but adding new
-#' methods should be relatively straightforward.
+#' various types of model objects. Currently methods are provided for stanfit
+#' (**rstan**), CmdStanMCMC (**cmdstanr**), and stanreg (**rstanarm**) objects,
+#' but adding new methods should be relatively straightforward.
 #'
 #' @name bayesplot-extractors
 #' @param object The object to use.
 #' @param ... Arguments passed to individual methods.
 #' @param pars An optional character vector of parameter names. For
-#'   \code{nuts_params} these will be NUTS sampler parameter names rather than
-#'   model parameters. If \code{pars} is omitted all parameters are included.
+#'   `nuts_params()` these will be NUTS sampler parameter names rather than
+#'   model parameters. If `pars` is omitted all parameters are included.
 #'
 #' @return
 #' \describe{
-#' \item{\code{log_posterior}}{
-#' \code{log_posterior} methods return a molten data frame (see
-#' \code{\link[reshape2]{melt}}). The data frame should have columns
-#' \code{"Iteration"} (integer), \code{"Chain"} (integer), and \code{"Value"}
-#' (numeric). See \strong{Examples}, below.
+#' \item{`log_posterior()`}{
+#' `log_posterior()` methods return a molten data frame (see [reshape2::melt()]).
+#' The data frame should have columns `"Iteration"` (integer), `"Chain"`
+#' (integer), and `"Value"` (numeric). See **Examples**, below.
 #' }
-#' \item{\code{nuts_params}}{
-#' \code{nuts_params} methods return a molten data frame (see
-#' \code{\link[reshape2]{melt}}). The data frame should have columns
-#' \code{"Parameter"} (factor), \code{"Iteration"} (integer), \code{"Chain"}
-#' (integer), and \code{"Value"} (numeric). See \strong{Examples}, below.
+#' \item{`nuts_params()`}{
+#' `nuts_params()` methods return a molten data frame (see [reshape2::melt()]).
+#' The data frame should have columns `"Parameter"` (factor), `"Iteration"`
+#' (integer), `"Chain"` (integer), and `"Value"` (numeric). See **Examples**, below.
 #' }
-#' \item{\code{rhat}, \code{neff_ratio}}{
+#' \item{`rhat()`, `neff_ratio()`}{
 #' Methods return (named) vectors.
 #' }
 #' }
 #'
-#' @seealso \code{\link{MCMC-nuts}}, \code{\link{MCMC-diagnostics}}
+#' @seealso [MCMC-nuts], [MCMC-diagnostics]
 #'
 #' @examples
 #' \dontrun{
 #' library(rstanarm)
-#' fit <- stan_glm(mpg ~ wt, data = mtcars)
+#' fit <- stan_glm(mpg ~ wt, data = mtcars, refresh = 0)
 #'
 #' np <- nuts_params(fit)
 #' head(np)
@@ -80,7 +78,7 @@ neff_ratio <- function(object, ...) {
 #' @rdname bayesplot-extractors
 #' @export
 #' @method log_posterior stanfit
-#' @param inc_warmup A logical scalar (defaulting to \code{FALSE}) indicating
+#' @param inc_warmup A logical scalar (defaulting to `FALSE`) indicating
 #'   whether to include warmup draws, if applicable.
 #'
 log_posterior.stanfit <- function(object, inc_warmup = FALSE, ...) {
@@ -88,9 +86,9 @@ log_posterior.stanfit <- function(object, inc_warmup = FALSE, ...) {
                                 inc_warmup = inc_warmup,
                                 ...)
   lp <- lapply(lp, as.array)
-  lp <- setNames(reshape2::melt(lp),
-                 c("Iteration", "Value", "Chain"))
-  validate_df_classes(lp, c("integer", "numeric", "integer"))
+  lp <- set_names(reshape2::melt(lp), c("Iteration", "Value", "Chain"))
+  validate_df_classes(lp[, c("Chain", "Iteration", "Value")],
+                      c("integer", "integer", "numeric"))
 }
 
 #' @rdname bayesplot-extractors
@@ -98,16 +96,25 @@ log_posterior.stanfit <- function(object, inc_warmup = FALSE, ...) {
 #' @method log_posterior stanreg
 #'
 log_posterior.stanreg <- function(object, inc_warmup = FALSE, ...) {
-  log_posterior.stanfit(object$stanfit,
-                        inc_warmup = inc_warmup,
-                        ...)
+  log_posterior.stanfit(object$stanfit, inc_warmup = inc_warmup, ...)
+}
+
+#' @rdname bayesplot-extractors
+#' @export
+#' @method log_posterior CmdStanMCMC
+log_posterior.CmdStanMCMC <- function(object, inc_warmup = FALSE, ...) {
+  lp <- object$draws("lp__", inc_warmup = inc_warmup)
+  lp <- reshape2::melt(lp)
+  lp$variable <- NULL
+  lp <- dplyr::rename_with(lp, capitalize_first)
+  validate_df_classes(lp[, c("Chain", "Iteration", "Value")],
+                      c("integer", "integer", "numeric"))
 }
 
 
 #' @rdname bayesplot-extractors
 #' @export
 #' @method nuts_params stanfit
-#'
 nuts_params.stanfit <-
   function(object,
            pars = NULL,
@@ -138,24 +145,43 @@ nuts_params.stanreg <-
 #' @export
 #' @method nuts_params list
 nuts_params.list <- function(object, pars = NULL, ...) {
-  if (!all(sapply(object, is.matrix)))
-    stop("All list elements should be matrices.")
+  if (!all(sapply(object, is.matrix))) {
+    abort("All list elements should be matrices.")
+  }
 
   dd <- lapply(object, dim)
-  if (length(unique(dd)) != 1)
-    stop("All matrices in the list must have the same dimensions.")
+  if (length(unique(dd)) != 1) {
+    abort("All matrices in the list must have the same dimensions.")
+  }
 
   nms <- lapply(object, colnames)
-  if (length(unique(nms)) != 1)
-    stop("All matrices in the list must have the same column names.")
+  if (length(unique(nms)) != 1) {
+    abort("All matrices in the list must have the same column names.")
+  }
 
-  if (length(pars))
-    object <- lapply(object, function(x)
-      x[, pars, drop = FALSE])
+  if (length(pars)) {
+    object <- lapply(object, function(x) x[, pars, drop = FALSE])
+  }
 
-  object <- setNames(reshape2::melt(object),
-                     c("Iteration", "Parameter", "Value", "Chain"))
-  validate_df_classes(object, c("integer", "factor", "numeric", "integer"))
+  out <- reshape2::melt(object)
+  out <- set_names(out, c("Iteration", "Parameter", "Value", "Chain"))
+  validate_df_classes(out[, c("Chain", "Iteration", "Parameter", "Value")],
+                      c("integer", "integer", "factor", "numeric"))
+}
+
+#' @rdname bayesplot-extractors
+#' @export
+#' @method nuts_params CmdStanMCMC
+nuts_params.CmdStanMCMC <- function(object, pars = NULL, ...) {
+  arr <- object$sampler_diagnostics()
+  if (!is.null(pars)) {
+    arr <- arr[,, pars]
+  }
+  out <- reshape2::melt(arr)
+  colnames(out)[colnames(out) == "variable"] <- "parameter"
+  out <- dplyr::rename_with(out, capitalize_first)
+  validate_df_classes(out[, c("Chain", "Iteration", "Parameter", "Value")],
+                      c("integer", "integer", "factor", "numeric"))
 }
 
 
@@ -171,7 +197,7 @@ rhat.stanfit <- function(object, pars = NULL, ...) {
     rstan::summary(object, ...)
   }
 
-  s$summary[, "Rhat"]
+  validate_rhat(s$summary[, "Rhat"])
 }
 
 #' @rdname bayesplot-extractors
@@ -182,10 +208,23 @@ rhat.stanfit <- function(object, pars = NULL, ...) {
 rhat.stanreg <- function(object, pars = NULL, regex_pars = NULL, ...) {
   suggested_package("rstanarm")
   r <- summary(object, pars = pars, regex_pars = regex_pars, ...)[, "Rhat"]
-  if (!is.null(pars) || !is.null(regex_pars))
+  r <- validate_rhat(r)
+  if (!is.null(pars) || !is.null(regex_pars)) {
     return(r)
+  }
 
   r[!names(r) %in% c("mean_PPD", "log-posterior")]
+}
+
+#' @rdname bayesplot-extractors
+#' @export
+#' @method rhat CmdStanMCMC
+rhat.CmdStanMCMC <- function(object, pars = NULL, ...) {
+  .rhat <- utils::getFromNamespace("rhat", "posterior")
+  s <- object$summary(pars, rhat = .rhat)[, c("variable", "rhat")]
+  r <- setNames(s$rhat, s$variable)
+  r <- validate_rhat(r)
+  r[!names(r) %in% "lp__"]
 }
 
 
@@ -201,7 +240,8 @@ neff_ratio.stanfit <- function(object, pars = NULL, ...) {
     rstan::summary(object, ...)
   }
   tss <- nrow(as.matrix(object, pars = "lp__"))
-  jitter_neff(s$summary[, "n_eff"]) / tss
+  ratio <- s$summary[, "n_eff"] / tss
+  validate_neff_ratio(ratio)
 }
 
 #' @rdname bayesplot-extractors
@@ -213,11 +253,25 @@ neff_ratio.stanreg <- function(object, pars = NULL, regex_pars = NULL, ...) {
   s <- summary(object, pars = pars, regex_pars = regex_pars, ...)
   ess <- s[, "n_eff"]
   tss <- attr(s, "posterior_sample_size")
-  ratio <- jitter_neff(ess) / tss
-  if (!is.null(pars) || !is.null(regex_pars))
-    return(ratio)
+  ratio <- ess / tss
+  ratio <- validate_neff_ratio(ratio)
 
+  if (!is.null(pars) || !is.null(regex_pars)) {
+    return(ratio)
+  }
   ratio[!names(ratio) %in% c("mean_PPD", "log-posterior")]
+}
+
+#' @rdname bayesplot-extractors
+#' @export
+#' @method neff_ratio CmdStanMCMC
+neff_ratio.CmdStanMCMC <- function(object, pars = NULL, ...) {
+  s <- object$summary(pars, "n_eff" = "ess_basic")[, c("variable", "n_eff")]
+  ess <- setNames(s$n_eff, s$variable)
+  tss <- prod(dim(object$draws())[1:2])
+  ratio <- ess / tss
+  ratio <- validate_neff_ratio(ratio)
+  ratio[!names(ratio) %in% "lp__"]
 }
 
 
@@ -236,15 +290,16 @@ validate_df_classes <- function(x, classes = character()) {
     ncol(x) == length(classes)
   )
   for (j in 1:ncol(x)) {
-    if (!inherits(x[, j], classes[j]))
-      stop(colnames(x)[j], " does not have class ", classes[j],
-           call. = FALSE)
+    if (!inherits(x[, j], classes[j])) {
+      abort(paste0(colnames(x)[j], " does not have class ", classes[j]))
+    }
   }
-  return(x)
+  x
 }
 
-# for jittering neff estimates so no duplicate values
-jitter_neff <- function(x) {
-  x - abs(rnorm(length(x), sd = 0.0001))
+# capitalize first letter in a string only
+capitalize_first <- function(name) {
+  name <- tolower(name) # in case whole string is capitalized
+  substr(name, 1, 1) <- toupper(substr(name, 1, 1))
+  name
 }
-

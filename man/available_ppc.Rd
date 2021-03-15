@@ -5,20 +5,20 @@
 \alias{available_mcmc}
 \title{Get or view the names of available plotting functions}
 \usage{
-available_ppc(pattern, fixed = FALSE, invert = FALSE)
+available_ppc(pattern = NULL, fixed = FALSE, invert = FALSE)
 
-available_mcmc(pattern, fixed = FALSE, invert = FALSE)
+available_mcmc(pattern = NULL, fixed = FALSE, invert = FALSE)
 }
 \arguments{
-\item{pattern, fixed, invert}{Passed to \code{\link[base]{grep}}.}
+\item{pattern, fixed, invert}{Passed to \code{\link[base:grep]{base::grep()}}.}
 }
 \value{
 A possibly empty character vector of function names with several
-  additional attributes (for use by a custom print method). If \code{pattern}
-  is missing then the returned object contains the names of all available
-  plotting functions in the \link{MCMC} or \link{PPC} module, depending on
-  which function is called. If \code{pattern} is specified then a subset of
-  function names is returned.
+additional attributes (for use by a custom print method). If \code{pattern}
+is missing then the returned object contains the names of all available
+plotting functions in the \link{MCMC} or \link{PPC} module, depending on
+which function is called. If \code{pattern} is specified then a subset of
+function names is returned.
 }
 \description{
 Get or view the names of available plotting functions

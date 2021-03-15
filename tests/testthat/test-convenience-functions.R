@@ -7,31 +7,39 @@ context("Convenience functions (for ggplot objects)")
 test_that("abline_01 returns the correct object", {
   expect_equal(
     abline_01(color = "green", linetype = 2),
-    geom_abline(intercept = 0, slope = 1, color = "green", linetype = 2, na.rm = TRUE)
+    geom_abline(intercept = 0, slope = 1, color = "green", linetype = 2, na.rm = TRUE),
+    check.environment = FALSE
   )
 })
 test_that("vline_* and hline_* return correct objects", {
   expect_equal(
     vline_0(color = "red"),
-    geom_vline(xintercept = 0, color = "red", na.rm = TRUE)
+    geom_vline(xintercept = 0, color = "red", na.rm = TRUE),
+    check.environment = FALSE
   )
   expect_equal(
     hline_0(size = 2, linetype = 3),
-    geom_hline(yintercept = 0, size = 2, linetype = 3, na.rm = TRUE)
+    geom_hline(yintercept = 0, size = 2, linetype = 3, na.rm = TRUE),
+    check.environment = FALSE
   )
   expect_equal(
     vline_at(c(3,4), na.rm = FALSE),
-    geom_vline(xintercept = c(3,4))
+    geom_vline(xintercept = c(3,4)),
+    check.environment = FALSE
   )
   expect_equal(
     hline_at(c(3,4), na.rm = FALSE),
-    geom_hline(yintercept = c(3,4))
+    geom_hline(yintercept = c(3,4)),
+    check.environment = FALSE
   )
 })
 test_that("vline_at with 'fun' works", {
   x <- example_mcmc_draws(chains = 1)
-  expect_equal(vline_at(x, colMeans),
-               geom_vline(xintercept = colMeans(x), na.rm = TRUE))
+  expect_equal(
+    vline_at(x, colMeans),
+    geom_vline(xintercept = colMeans(x), na.rm = TRUE),
+    check.environment = FALSE
+  )
 })
 test_that("calc_v (internal function) works", {
   a <- 1:4
@@ -39,6 +47,7 @@ test_that("calc_v (internal function) works", {
   expect_identical(calc_v(a, median), 2.5)
   expect_equal(calc_v(c(a, NA), mean), NA_real_)
   expect_identical(calc_v(c(a, NA), min, list(na.rm = TRUE)), 1L)
+  expect_error(calc_v(fun = "mean"), "'v' can't be missing")
 })
 
 # lbub --------------------------------------------------------------------
@@ -175,8 +184,7 @@ test_that("overlay_function returns the correct object", {
   expect_error(overlay_function(), 'argument "fun" is missing')
   expect_equal(
     overlay_function(fun = "dnorm"),
-    stat_function(fun = "dnorm", inherit.aes = FALSE)
+    stat_function(fun = "dnorm", inherit.aes = FALSE),
+    check.environment = FALSE
   )
 })
-
-

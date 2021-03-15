@@ -1,16 +1,16 @@
 #' PPC scatterplots
 #'
-#' Scatterplots of the observed data \code{y} vs. simulated/replicated data
-#' \code{yrep} from the posterior predictive distribution. See the \strong{Plot
-#' Descriptions} and \strong{Details} sections, below.
+#' Scatterplots of the observed data `y` vs. simulated/replicated data
+#' `yrep` from the posterior predictive distribution. See the
+#' **Plot Descriptions** and **Details** sections, below.
 #'
 #' @name PPC-scatterplots
 #' @family PPCs
 #'
 #' @template args-y-yrep
 #' @param ... Currently unused.
-#' @param size,alpha Arguments passed to \code{\link[ggplot2]{geom_point}} to
-#'   control the appearance of the points.
+#' @param size,alpha Arguments passed to [ggplot2::geom_point()] to control the
+#'   appearance of the points.
 #'
 #' @template details-binomial
 #' @template return-ggplot
@@ -20,18 +20,18 @@
 #'
 #' @section Plot Descriptions:
 #' \describe{
-#'   \item{\code{ppc_scatter}}{
-#'    For each dataset (row) in \code{yrep} a scatterplot is generated showing
-#'    \code{y} against that row of \code{yrep}. For this plot \code{yrep} should
-#'    only contain a small number of rows.
+#'   \item{`ppc_scatter()`}{
+#'    For each dataset (row) in `yrep` a scatterplot is generated showing `y`
+#'    against that row of `yrep`. For this plot `yrep` should only contain a
+#'    small number of rows.
 #'   }
-#'   \item{\code{ppc_scatter_avg}}{
-#'    A scatterplot of \code{y} against the average values of \code{yrep}, i.e.,
-#'    the points \code{(mean(yrep[, n]), y[n])}, where each \code{yrep[, n]} is
+#'   \item{`ppc_scatter_avg()`}{
+#'    A scatterplot of `y` against the average values of `yrep`, i.e.,
+#'    the points `(mean(yrep[, n]), y[n])`, where each `yrep[, n]` is
 #'    a vector of length equal to the number of posterior draws.
 #'   }
-#'   \item{\code{ppc_scatter_avg_grouped}}{
-#'    The same as \code{ppc_scatter_avg}, but a separate plot is generated for
+#'   \item{`ppc_scatter_avg_grouped()`}{
+#'    The same as `ppc_scatter_avg()`, but a separate plot is generated for
 #'    each level of a grouping variable.
 #'   }
 #' }
@@ -84,7 +84,6 @@ ppc_scatter <-
     graph +
       facet_wrap_parsed("rep_id") +
       force_axes_in_facets() +
-      theme_default() +
       facet_text(FALSE) +
       facet_bg(FALSE)
   }
@@ -112,8 +111,7 @@ ppc_scatter_avg <-
       x_lab = yrep_avg_label(),
       alpha = alpha,
       size = size
-    ) +
-      theme_default()
+    )
   }
 
 #' @export
@@ -151,7 +149,7 @@ ppc_scatter_avg_grouped <-
         x = yrep_avg_label()
       ) +
       facet_wrap("group", scales = "free") +
-      theme_default()
+      bayesplot_theme_get()
   }
 
 
@@ -184,5 +182,6 @@ ppc_scatter_avg_grouped <-
         size = size,
         alpha = alpha
       ) +
-      labs(x = x_lab, y = y_lab)
+      labs(x = x_lab, y = y_lab) +
+      bayesplot_theme_get()
   }

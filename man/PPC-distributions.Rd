@@ -2,91 +2,175 @@
 % Please edit documentation in R/ppc-distributions.R
 \name{PPC-distributions}
 \alias{PPC-distributions}
+\alias{ppc_data}
 \alias{ppc_hist}
 \alias{ppc_boxplot}
 \alias{ppc_freqpoly}
 \alias{ppc_freqpoly_grouped}
 \alias{ppc_dens}
 \alias{ppc_dens_overlay}
+\alias{ppc_dens_overlay_grouped}
 \alias{ppc_ecdf_overlay}
+\alias{ppc_ecdf_overlay_grouped}
 \alias{ppc_violin_grouped}
 \title{PPC distributions}
 \usage{
-ppc_hist(y, yrep, ..., binwidth = NULL, freq = TRUE)
+ppc_data(y, yrep, group = NULL)
+
+ppc_hist(y, yrep, ..., binwidth = NULL, breaks = NULL, freq = TRUE)
 
 ppc_boxplot(y, yrep, ..., notch = TRUE, size = 0.5, alpha = 1)
 
-ppc_freqpoly(y, yrep, ..., binwidth = NULL, freq = TRUE, size = 0.25,
-  alpha = 1)
+ppc_freqpoly(
+  y,
+  yrep,
+  ...,
+  binwidth = NULL,
+  freq = TRUE,
+  size = 0.25,
+  alpha = 1
+)
 
-ppc_freqpoly_grouped(y, yrep, group, ..., binwidth = NULL, freq = TRUE,
-  size = 0.25, alpha = 1)
+ppc_freqpoly_grouped(
+  y,
+  yrep,
+  group,
+  ...,
+  binwidth = NULL,
+  freq = TRUE,
+  size = 0.25,
+  alpha = 1
+)
 
 ppc_dens(y, yrep, ..., trim = FALSE, size = 0.5, alpha = 1)
 
-ppc_dens_overlay(y, yrep, ..., trim = FALSE, size = 0.25, alpha = 0.7)
+ppc_dens_overlay(
+  y,
+  yrep,
+  ...,
+  size = 0.25,
+  alpha = 0.7,
+  trim = FALSE,
+  bw = "nrd0",
+  adjust = 1,
+  kernel = "gaussian",
+  n_dens = 1024
+)
 
-ppc_ecdf_overlay(y, yrep, ..., pad = TRUE, size = 0.25, alpha = 0.7)
+ppc_dens_overlay_grouped(
+  y,
+  yrep,
+  group,
+  ...,
+  size = 0.25,
+  alpha = 0.7,
+  trim = FALSE,
+  bw = "nrd0",
+  adjust = 1,
+  kernel = "gaussian",
+  n_dens = 1024
+)
 
-ppc_violin_grouped(y, yrep, group, ..., probs = c(0.1, 0.5, 0.9), size = 1,
-  alpha = 1, y_draw = c("violin", "points", "both"), y_size = 1,
-  y_alpha = 1, y_jitter = 0.1)
+ppc_ecdf_overlay(
+  y,
+  yrep,
+  ...,
+  discrete = FALSE,
+  pad = TRUE,
+  size = 0.25,
+  alpha = 0.7
+)
+
+ppc_ecdf_overlay_grouped(
+  y,
+  yrep,
+  group,
+  ...,
+  discrete = FALSE,
+  pad = TRUE,
+  size = 0.25,
+  alpha = 0.7
+)
+
+ppc_violin_grouped(
+  y,
+  yrep,
+  group,
+  ...,
+  probs = c(0.1, 0.5, 0.9),
+  size = 1,
+  alpha = 1,
+  y_draw = c("violin", "points", "both"),
+  y_size = 1,
+  y_alpha = 1,
+  y_jitter = 0.1
+)
 }
 \arguments{
 \item{y}{A vector of observations. See \strong{Details}.}
 
 \item{yrep}{An \eqn{S} by \eqn{N} matrix of draws from the posterior
 predictive distribution, where \eqn{S} is the size of the posterior sample
-(or subset of the posterior sample used to generate \code{yrep}) and
-\eqn{N} is the number of observations (the length of \code{y}). The columns
-of \code{yrep} should be in the same order as the data points in \code{y}
-for the plots to make sense. See \strong{Details} for additional
-instructions.}
-
-\item{...}{Currently unused.}
-
-\item{binwidth}{An optional value used as the \code{binwidth} argument to
-\code{\link[ggplot2]{geom_histogram}} to override the default binwidth.}
-
-\item{freq}{For histograms, \code{freq=TRUE} (the default) puts count on the
-y-axis. Setting \code{freq=FALSE} puts density on the y-axis. (For many
-plots the y-axis text is off by default. To view the count or density
-labels on the y-axis see the \code{\link{yaxis_text}} convenience
-function.)}
-
-\item{notch}{A logical scalar passed to \code{\link[ggplot2]{geom_boxplot}}.
-Unlike for \code{geom_boxplot}, the default is \code{notch=TRUE}.}
-
-\item{size, alpha}{Passed to the appropriate geom to control the appearance of
-the \code{yrep} distributions.}
+(or subset of the posterior sample used to generate \code{yrep}) and \eqn{N} is
+the number of observations (the length of \code{y}). The columns of \code{yrep}
+should be in the same order as the data points in \code{y} for the plots to make
+sense. See \strong{Details} for additional instructions.}
 
 \item{group}{A grouping variable (a vector or factor) the same length as
 \code{y}. Each value in \code{group} is interpreted as the group level
 pertaining to the corresponding value of \code{y}.}
 
-\item{trim}{A logical scalar passed to \code{\link[ggplot2]{geom_density}}.}
+\item{...}{Currently unused.}
 
-\item{pad}{A logical scalar passed to \code{\link[ggplot2]{stat_ecdf}}.}
+\item{binwidth}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}} to override
+the default binwidth.}
 
-\item{probs}{A numeric vector passed to \code{\link[ggplot2]{geom_violin}}'s
+\item{breaks}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}} as an
+alternative to \code{binwidth}.}
+
+\item{freq}{For histograms, \code{freq=TRUE} (the default) puts count on the
+y-axis. Setting \code{freq=FALSE} puts density on the y-axis. (For many
+plots the y-axis text is off by default. To view the count or density
+labels on the y-axis see the \code{\link[=yaxis_text]{yaxis_text()}} convenience
+function.)}
+
+\item{notch}{A logical scalar passed to \code{\link[ggplot2:geom_boxplot]{ggplot2::geom_boxplot()}}.
+Unlike for \code{geom_boxplot()}, the default is \code{notch=TRUE}.}
+
+\item{size, alpha}{Passed to the appropriate geom to control the appearance of
+the \code{yrep} distributions.}
+
+\item{trim}{A logical scalar passed to \code{\link[ggplot2:geom_density]{ggplot2::geom_density()}}.}
+
+\item{bw, adjust, kernel, n_dens}{Optional arguments passed to
+\code{\link[stats:density]{stats::density()}} to override default kernel density estimation
+parameters. \code{n_dens} defaults to \code{1024}.}
+
+\item{discrete}{For \code{ppc_ecdf_overlay()}, should the data be treated as
+discrete? The default is \code{FALSE}, in which case \code{geom="line"} is
+passed to \code{\link[ggplot2:stat_ecdf]{ggplot2::stat_ecdf()}}. If \code{discrete} is set to
+\code{TRUE} then \code{geom="step"} is used.}
+
+\item{pad}{A logical scalar passed to \code{\link[ggplot2:stat_ecdf]{ggplot2::stat_ecdf()}}.}
+
+\item{probs}{A numeric vector passed to \code{\link[ggplot2:geom_violin]{ggplot2::geom_violin()}}'s
 \code{draw_quantiles} argument to specify at which quantiles to draw
 horizontal lines. Set to \code{NULL} to remove the lines.}
 
-\item{y_draw}{For \code{ppc_violin_grouped}, a string specifying how to draw
-\code{y}: \code{"violin"} (default), \code{"points"} (jittered points), or
-\code{"both"}.}
+\item{y_draw}{For \code{ppc_violin_grouped()}, a string specifying how to draw
+\code{y}: \code{"violin"} (default), \code{"points"} (jittered points), or \code{"both"}.}
 
-\item{y_jitter, y_size, y_alpha}{For \code{ppc_violin_grouped}, if
-\code{y_draw} is \code{"points"} or \code{"both"} then \code{y_size},
-\code{y_alpha}, and \code{y_jitter} are passed to to the \code{size},
-\code{alpha}, and \code{width} arguments of
-\code{\link[ggplot2]{geom_jitter}} to control the appearance of \code{y}
-points. The default of \code{y_jitter=NULL} will let \pkg{ggplot2}
-determine the amount of jitter.}
+\item{y_jitter, y_size, y_alpha}{For \code{ppc_violin_grouped()}, if \code{y_draw} is
+\code{"points"} or \code{"both"} then \code{y_size}, \code{y_alpha}, and \code{y_jitter} are passed
+to to the \code{size}, \code{alpha}, and \code{width} arguments of \code{\link[ggplot2:geom_jitter]{ggplot2::geom_jitter()}}
+to control the appearance of \code{y} points. The default of \code{y_jitter=NULL}
+will let \strong{ggplot2} determine the amount of jitter.}
 }
 \value{
-A ggplot object that can be further customized using the
-  \pkg{ggplot2} package.
+The plotting functions return a ggplot object that can be further
+customized using the \strong{ggplot2} package. The functions with suffix
+\verb{_data()} return the data that would have been drawn by the plotting
+function.
 }
 \description{
 Compare the empirical distribution of the data \code{y} to the distributions
@@ -96,35 +180,37 @@ for details.
 }
 \details{
 For Binomial data, the plots will typically be most useful if
-  \code{y} and \code{yrep} contain the "success" proportions (not discrete
-  "success" or "failure" counts).
+\code{y} and \code{yrep} contain the "success" proportions (not discrete
+"success" or "failure" counts).
 }
 \section{Plot Descriptions}{
 
 \describe{
-  \item{\code{ppc_hist, ppc_freqpoly, ppc_dens, ppc_boxplot}}{
-   A separate histogram, shaded frequency polygon, smoothed kernel density
-   estimate, or box and whiskers plot is displayed for \code{y} and each
-   dataset (row) in \code{yrep}. For these plots \code{yrep} should therefore
-   contain only a small number of rows. See the \strong{Examples} section.
-  }
-  \item{\code{ppc_freqpoly_grouped}}{
-   A separate frequency polygon is plotted for each level of a grouping
-   variable for \code{y} and each dataset (row) in \code{yrep}. For this plot
-   \code{yrep} should therefore contain only a small number of rows. See the
-   \strong{Examples} section.
-  }
-  \item{\code{ppc_dens_overlay, ppc_ecdf_overlay}}{
-   Kernel density or empirical CDF estimates of each dataset (row) in
-   \code{yrep} are overlaid, with the distribution of \code{y} itself on top
-   (and in a darker shade).
-  }
-  \item{\code{ppc_violin_grouped}}{
-   The density estimate of \code{yrep} within each level of a grouping
-   variable is plotted as a violin with horizontal lines at notable
-   quantiles. \code{y} is overlaid on the plot either as a violin, points, or
-   both, depending on the \code{y_draw} argument.
-  }
+\item{\verb{ppc_hist(), ppc_freqpoly(), ppc_dens(), ppc_boxplot()}}{
+A separate histogram, shaded frequency polygon, smoothed kernel density
+estimate, or box and whiskers plot is displayed for \code{y} and each
+dataset (row) in \code{yrep}. For these plots \code{yrep} should therefore
+contain only a small number of rows. See the \strong{Examples} section.
+}
+\item{\code{ppc_freqpoly_grouped()}}{
+A separate frequency polygon is plotted for each level of a grouping
+variable for \code{y} and each dataset (row) in \code{yrep}. For this plot
+\code{yrep} should therefore contain only a small number of rows. See the
+\strong{Examples} section.
+}
+\item{\verb{ppc_ecdf_overlay(), ppc_dens_overlay(), ppc_ecdf_overlay_grouped(), ppc_dens_overlay_grouped()}}{
+Kernel density or empirical CDF estimates of each dataset (row) in
+\code{yrep} are overlaid, with the distribution of \code{y} itself on top
+(and in a darker shade). When using \code{ppc_ecdf_overlay()} with discrete
+data, set the \code{discrete} argument to \code{TRUE} for better results.
+For an example of \code{ppc_dens_overlay()} also see Gabry et al. (2019).
+}
+\item{\code{ppc_violin_grouped()}}{
+The density estimate of \code{yrep} within each level of a grouping
+variable is plotted as a violin with horizontal lines at notable
+quantiles. \code{y} is overlaid on the plot either as a violin, points, or
+both, depending on the \code{y_draw} argument.
+}
 }
 }
 
@@ -134,7 +220,9 @@ y <- example_y_data()
 yrep <- example_yrep_draws()
 dim(yrep)
 ppc_dens_overlay(y, yrep[1:25, ])
+
 \donttest{
+# ppc_ecdf_overlay with continuous data (set discrete=TRUE if discrete data)
 ppc_ecdf_overlay(y, yrep[sample(nrow(yrep), 25), ])
 }
 
@@ -160,6 +248,11 @@ ppc_freqpoly_grouped(y, yrep[1:3,], group) + yaxis_text()
 ppc_freqpoly_grouped(y, yrep[1:3,], group, freq = FALSE) + yaxis_text()
 }
 
+# density and distribution overlays by group
+ppc_dens_overlay_grouped(y, yrep[1:25, ], group = group)
+
+ppc_ecdf_overlay_grouped(y, yrep[1:25, ], group = group)
+
 # don't need to only use small number of rows for ppc_violin_grouped
 # (as it pools yrep draws within groups)
 color_scheme_set("gray")
@@ -172,17 +265,28 @@ ppc_violin_grouped(y, yrep, group, alpha = 0, y_draw = "points", y_size = 1.5)
 ppc_violin_grouped(y, yrep, group, alpha = 0, y_draw = "both",
                    y_size = 1.5, y_alpha = 0.5, y_jitter = 0.33)
 }
-
 }
 \references{
+Gabry, J. , Simpson, D. , Vehtari, A. , Betancourt, M. and
+Gelman, A. (2019), Visualization in Bayesian workflow.
+\emph{J. R. Stat. Soc. A}, 182: 389-402. doi:10.1111/rssa.12378.
+(\href{https://rss.onlinelibrary.wiley.com/doi/full/10.1111/rssa.12378}{journal version},
+\href{https://arxiv.org/abs/1709.01449}{arXiv preprint},
+\href{https://github.com/jgabry/bayes-vis-paper}{code on GitHub})
+
 Gelman, A., Carlin, J. B., Stern, H. S., Dunson, D. B., Vehtari,
-  A., and Rubin, D. B. (2013). \emph{Bayesian Data Analysis.} Chapman & Hall/CRC
-  Press, London, third edition. (Ch. 6)
+A., and Rubin, D. B. (2013). \emph{Bayesian Data Analysis.} Chapman & Hall/CRC
+Press, London, third edition. (Ch. 6)
 }
 \seealso{
-Other PPCs: \code{\link{PPC-discrete}},
-  \code{\link{PPC-errors}}, \code{\link{PPC-intervals}},
-  \code{\link{PPC-loo}}, \code{\link{PPC-overview}},
-  \code{\link{PPC-scatterplots}},
-  \code{\link{PPC-test-statistics}}
+Other PPCs: 
+\code{\link{PPC-censoring}},
+\code{\link{PPC-discrete}},
+\code{\link{PPC-errors}},
+\code{\link{PPC-intervals}},
+\code{\link{PPC-loo}},
+\code{\link{PPC-overview}},
+\code{\link{PPC-scatterplots}},
+\code{\link{PPC-test-statistics}}
 }
+\concept{PPCs}

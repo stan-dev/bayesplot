@@ -1,48 +1,48 @@
 #' Example draws to use in demonstrations and tests
 #'
 #' These functions return various objects containing data used in the examples
-#' throughout the \pkg{bayesplot} package documentation.
+#' throughout the **bayesplot** package documentation.
 #'
 #' @name example-data
 #' @keywords internal
 #'
-#' @return See \strong{Details}.
+#' @return See **Details**.
 #'
 #' @details
 #' Each of these functions returns an object containing data, parameter draws, or
 #' predictions corresponding to a basic linear regression model with data
-#' \code{y} (outcome vector) and \code{X} (predictor matrix), and parameters
-#' \code{alpha} (intercept), \code{beta} (coefficient vector), and \code{sigma}
+#' `y` (outcome vector) and `X` (predictor matrix), and parameters
+#' `alpha` (intercept), `beta` (coefficient vector), and `sigma`
 #' (error sd).
 #'
 #' \describe{
-#' \item{\code{example_mcmc_draws}}{
-#'  If \code{chains > 1}, a \code{250} (iterations) by \code{chains} by
-#'  \code{params} array or, if \code{chains = 1}, a \code{250} by \code{params}
+#' \item{`example_mcmc_draws()`}{
+#'  If `chains > 1`, a `250` (iterations) by `chains` by
+#'  `params` array or, if `chains = 1`, a `250` by `params`
 #'  matrix of MCMC draws from the posterior distribution of the parameters in
-#'  the linear regression model described above. If \code{params = 1} then only
-#'  the draws for \code{alpha} are included in the returned object. If
-#'  \code{params >= 2} then draws for \code{sigma} are also included. And if
-#'  \code{params} is between \code{3} and the maximum of \code{6} then draws
-#'  for regression coefficients \code{beta[k]} (\code{k} in \code{1:(params-2)})
+#'  the linear regression model described above. If `params = 1` then only
+#'  the draws for `alpha` are included in the returned object. If
+#'  `params >= 2` then draws for `sigma` are also included. And if
+#'  `params` is between `3` and the maximum of `6` then draws
+#'  for regression coefficients `beta[k]` (`k` in `1:(params-2)`)
 #'  are also included.
 #' }
-#' \item{\code{example_y_data}}{
-#'  A numeric vector with \code{434} observations of the outcome variable in the
+#' \item{`example_y_data()`}{
+#'  A numeric vector with `434` observations of the outcome variable in the
 #'  linear regression model.
 #' }
-#' \item{\code{example_x_data}}{
-#'  A numeric vector with \code{434} observations of one of the predictor
+#' \item{`example_x_data()`}{
+#'  A numeric vector with `434` observations of one of the predictor
 #'  variables in the linear regression model.
 #' }
-#' \item{\code{example_group_data}}{
-#'  A factor variable with \code{434} observations of a grouping variable with
+#' \item{`example_group_data()`}{
+#'  A factor variable with `434` observations of a grouping variable with
 #'  two levels.
 #' }
-#' \item{\code{example_yrep_draws}}{
-#'  A \code{500} (draws) by \code{434} (data points) matrix of draws from the
+#' \item{`example_yrep_draws()`}{
+#'  A `500` (draws) by `434` (data points) matrix of draws from the
 #'  posterior predictive distribution. Each row represents a full dataset drawn
-#'  from the posterior predictive distribution of the outcome \code{y} after
+#'  from the posterior predictive distribution of the outcome `y` after
 #'  fitting the linear regression model mentioned above.
 #' }
 #' }
@@ -52,7 +52,7 @@ NULL
 
 #' @rdname example-data
 #' @export
-#' @param chains An interger between 1 and 4 indicating the desired number of
+#' @param chains An integer between 1 and 4 indicating the desired number of
 #'   chains.
 #' @param params An integer between 1 and 6 indicating the desired number of
 #'   parameters.

@@ -6,54 +6,120 @@
 \alias{ppc_intervals_grouped}
 \alias{ppc_ribbon}
 \alias{ppc_ribbon_grouped}
+\alias{ppc_intervals_data}
+\alias{ppc_ribbon_data}
 \title{PPC intervals}
 \usage{
-ppc_intervals(y, yrep, x, ..., prob = 0.9, size = 1, fatten = 3)
+ppc_intervals(
+  y,
+  yrep,
+  x = NULL,
+  ...,
+  prob = 0.5,
+  prob_outer = 0.9,
+  size = 1,
+  fatten = 3
+)
 
-ppc_intervals_grouped(y, yrep, x, group, facet_args = list(), ...,
-  prob = 0.9, size = 1, fatten = 3)
+ppc_intervals_grouped(
+  y,
+  yrep,
+  x = NULL,
+  group,
+  ...,
+  facet_args = list(),
+  prob = 0.5,
+  prob_outer = 0.9,
+  size = 1,
+  fatten = 3
+)
 
-ppc_ribbon(y, yrep, x, ..., prob = 0.9, alpha = 0.33, size = 0.25)
+ppc_ribbon(
+  y,
+  yrep,
+  x = NULL,
+  ...,
+  prob = 0.5,
+  prob_outer = 0.9,
+  alpha = 0.33,
+  size = 0.25,
+  y_draw = c("line", "points", "both")
+)
 
-ppc_ribbon_grouped(y, yrep, x, group, facet_args = list(), ..., prob = 0.9,
-  alpha = 0.33, size = 0.25)
+ppc_ribbon_grouped(
+  y,
+  yrep,
+  x = NULL,
+  group,
+  ...,
+  facet_args = list(),
+  prob = 0.5,
+  prob_outer = 0.9,
+  alpha = 0.33,
+  size = 0.25,
+  y_draw = c("line", "points", "both")
+)
+
+ppc_intervals_data(
+  y,
+  yrep,
+  x = NULL,
+  group = NULL,
+  ...,
+  prob = 0.5,
+  prob_outer = 0.9
+)
+
+ppc_ribbon_data(
+  y,
+  yrep,
+  x = NULL,
+  group = NULL,
+  ...,
+  prob = 0.5,
+  prob_outer = 0.9
+)
 }
 \arguments{
 \item{y}{A vector of observations. See \strong{Details}.}
 
 \item{yrep}{An \eqn{S} by \eqn{N} matrix of draws from the posterior
 predictive distribution, where \eqn{S} is the size of the posterior sample
-(or subset of the posterior sample used to generate \code{yrep}) and
-\eqn{N} is the number of observations (the length of \code{y}). The columns
-of \code{yrep} should be in the same order as the data points in \code{y}
-for the plots to make sense. See \strong{Details} for additional
-instructions.}
+(or subset of the posterior sample used to generate \code{yrep}) and \eqn{N} is
+the number of observations (the length of \code{y}). The columns of \code{yrep}
+should be in the same order as the data points in \code{y} for the plots to make
+sense. See \strong{Details} for additional instructions.}
 
 \item{x}{A numeric vector the same length as \code{y} to use as the x-axis
 variable. For example, \code{x} could be a predictor variable from a
 regression model, a time variable for time-series models, etc. If \code{x}
-is missing then \code{1:length(y)} is used for the x-axis.}
+is missing or \code{NULL}, then \code{1:length(y)} is used for the x-axis.}
 
 \item{...}{Currently unused.}
 
-\item{prob}{A value between 0 and 1 indicating the desired probability mass
-to include in the \code{yrep} intervals. The default is 0.9.}
+\item{prob, prob_outer}{Values between 0 and 1 indicating the desired
+probability mass to include in the inner and outer intervals. The defaults
+are \code{prob=0.5} and \code{prob_outer=0.9}.}
 
 \item{group}{A grouping variable (a vector or factor) the same length as
 \code{y}. Each value in \code{group} is interpreted as the group level
 pertaining to the corresponding value of \code{y}.}
 
 \item{facet_args}{An optional list of  arguments (other than \code{facets})
-passed to \code{\link[ggplot2]{facet_wrap}} to control faceting.}
+passed to \code{\link[ggplot2:facet_wrap]{ggplot2::facet_wrap()}} to control faceting.}
 
-\item{alpha, size, fatten}{Arguments passed to geoms. For ribbon plots
-\code{alpha} and \code{size} are passed to
-\code{\link[ggplot2]{geom_ribbon}}. For interval plots \code{size} and
-\code{fatten} are passed to \code{\link[ggplot2]{geom_pointrange}}.}
+\item{alpha, size, fatten}{Arguments passed to geoms. For ribbon plots \code{alpha}
+and \code{size} are passed to \code{\link[ggplot2:geom_ribbon]{ggplot2::geom_ribbon()}}. For interval plots
+\code{size} and \code{fatten} are passed to \code{\link[ggplot2:geom_linerange]{ggplot2::geom_pointrange()}}.}
+
+\item{y_draw}{For ribbon plots only, a string specifying how to draw \code{y}. Can
+be \code{"line"} (the default), \code{"points"}, or \code{"both"}.}
 }
 \value{
-A ggplot object that can be further customized using the
-  \pkg{ggplot2} package.
+The plotting functions return a ggplot object that can be further
+customized using the \strong{ggplot2} package. The functions with suffix
+\verb{_data()} return the data that would have been drawn by the plotting
+function.
 }
 \description{
 Medians and central interval estimates of \code{yrep} with \code{y} overlaid.
@@ -62,23 +128,23 @@ See the \strong{Plot Descriptions} section, below.
 \section{Plot Descriptions}{
 
 \describe{
-  \item{\code{ppc_intervals, ppc_ribbon}}{
-   \code{100*prob}\% central intervals for \code{yrep} at each \code{x}
-   value. \code{ppc_intervals} plots intervals as vertical bars with points
-   indicating \code{yrep} medians and darker points indicating observed
-   \code{y} values. \code{ppc_ribbon} plots a ribbon of connected intervals
-   with a line through the median of \code{yrep} and a darker line connecting
-   observed \code{y} values. In both cases an optional \code{x} variable can
-   also be specified for the x-axis variable.
+\item{\verb{ppc_intervals(), ppc_ribbon()}}{
+\code{100*prob}\% central intervals for \code{yrep} at each \code{x}
+value. \code{ppc_intervals()} plots intervals as vertical bars with points
+indicating \code{yrep} medians and darker points indicating observed
+\code{y} values. \code{ppc_ribbon()} plots a ribbon of connected intervals
+with a line through the median of \code{yrep} and a darker line connecting
+observed \code{y} values. In both cases an optional \code{x} variable can
+also be specified for the x-axis variable.
 
-   Depending on the number of observations and the variability in the
-   predictions at different values of \code{x}, one or the other of these
-   plots may be easier to read than the other.
-  }
-  \item{\code{ppc_intervals_grouped, ppc_ribbon_grouped}}{
-   Same as \code{ppc_intervals} and \code{ppc_ribbon}, respectively, but a
-   separate plot (facet) is generated for each level of a grouping variable.
-  }
+Depending on the number of observations and the variability in the
+predictions at different values of \code{x}, one or the other of these
+plots may be easier to read than the other.
+}
+\item{\verb{ppc_intervals_grouped(), ppc_ribbon_grouped()}}{
+Same as \code{ppc_intervals()} and \code{ppc_ribbon()}, respectively, but a
+separate plot (facet) is generated for each level of a grouping variable.
+}
 }
 }
 
@@ -89,6 +155,10 @@ yrep <- matrix(rnorm(5000, 0, 2), ncol = 50)
 color_scheme_set("brightblue")
 ppc_ribbon(y, yrep)
 ppc_intervals(y, yrep)
+
+# change x axis to y values (instead of indices) and add x = y line
+ppc_intervals(y, yrep, x = y) + abline_01()
+
 
 color_scheme_set("teal")
 year <- 1950:1999
@@ -110,9 +180,12 @@ ppc_ribbon_grouped(
  xaxis_ticks(FALSE) +
  panel_bg(fill = "gray20")
 
+ppc_dat <- ppc_intervals_data(y, yrep, x = year, prob = 0.5)
+ppc_group_dat <- ppc_intervals_data(y, yrep, x = year, group = group, prob = 0.5)
+
 \dontrun{
 library("rstanarm")
-fit <- stan_glmer(mpg ~ wt + (1|cyl), data = mtcars)
+fit <- stan_glmer(mpg ~ wt + (1|cyl), data = mtcars, refresh = 0)
 yrep <- posterior_predict(fit)
 
 color_scheme_set("purple")
@@ -138,14 +211,18 @@ ppc_intervals(mtcars$mpg, yrep, prob = 0.5) +
 }
 \references{
 Gelman, A., Carlin, J. B., Stern, H. S., Dunson, D. B., Vehtari,
-  A., and Rubin, D. B. (2013). \emph{Bayesian Data Analysis.} Chapman & Hall/CRC
-  Press, London, third edition. (Ch. 6)
+A., and Rubin, D. B. (2013). \emph{Bayesian Data Analysis.} Chapman & Hall/CRC
+Press, London, third edition. (Ch. 6)
 }
 \seealso{
-Other PPCs: \code{\link{PPC-discrete}},
-  \code{\link{PPC-distributions}},
-  \code{\link{PPC-errors}}, \code{\link{PPC-loo}},
-  \code{\link{PPC-overview}},
-  \code{\link{PPC-scatterplots}},
-  \code{\link{PPC-test-statistics}}
+Other PPCs: 
+\code{\link{PPC-censoring}},
+\code{\link{PPC-discrete}},
+\code{\link{PPC-distributions}},
+\code{\link{PPC-errors}},
+\code{\link{PPC-loo}},
+\code{\link{PPC-overview}},
+\code{\link{PPC-scatterplots}},
+\code{\link{PPC-test-statistics}}
 }
+\concept{PPCs}

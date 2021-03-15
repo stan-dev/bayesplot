@@ -8,13 +8,38 @@
 \alias{ppc_stat_2d}
 \title{PPC test statistics}
 \usage{
-ppc_stat(y, yrep, stat = "mean", ..., binwidth = NULL, freq = TRUE)
+ppc_stat(
+  y,
+  yrep,
+  stat = "mean",
+  ...,
+  binwidth = NULL,
+  breaks = NULL,
+  freq = TRUE
+)
 
-ppc_stat_grouped(y, yrep, group, stat = "mean", ..., binwidth = NULL,
-  freq = TRUE)
+ppc_stat_grouped(
+  y,
+  yrep,
+  group,
+  stat = "mean",
+  ...,
+  facet_args = list(),
+  binwidth = NULL,
+  breaks = NULL,
+  freq = TRUE
+)
 
-ppc_stat_freqpoly_grouped(y, yrep, group, stat = "mean", ...,
-  binwidth = NULL, freq = TRUE)
+ppc_stat_freqpoly_grouped(
+  y,
+  yrep,
+  group,
+  stat = "mean",
+  ...,
+  facet_args = list(),
+  binwidth = NULL,
+  freq = TRUE
+)
 
 ppc_stat_2d(y, yrep, stat = c("mean", "sd"), ..., size = 2.5, alpha = 0.7)
 }
@@ -23,72 +48,79 @@ ppc_stat_2d(y, yrep, stat = c("mean", "sd"), ..., size = 2.5, alpha = 0.7)
 
 \item{yrep}{An \eqn{S} by \eqn{N} matrix of draws from the posterior
 predictive distribution, where \eqn{S} is the size of the posterior sample
-(or subset of the posterior sample used to generate \code{yrep}) and
-\eqn{N} is the number of observations (the length of \code{y}). The columns
-of \code{yrep} should be in the same order as the data points in \code{y}
-for the plots to make sense. See \strong{Details} for additional
-instructions.}
+(or subset of the posterior sample used to generate \code{yrep}) and \eqn{N} is
+the number of observations (the length of \code{y}). The columns of \code{yrep}
+should be in the same order as the data points in \code{y} for the plots to make
+sense. See \strong{Details} for additional instructions.}
 
 \item{stat}{A single function or a string naming a function, except for
-\code{ppc_stat_2d} which requires a vector of exactly two functions or
+\code{ppc_stat_2d()} which requires a vector of exactly two functions or
 function names. In all cases the function(s) should take a vector input and
-return a scalar test statistic. If specified as a string (or strings) then
+return a scalar statistic. If specified as a string (or strings) then
 the legend will display function names. If specified as a function (or
 functions) then generic naming is used in the legend.}
 
 \item{...}{Currently unused.}
 
-\item{binwidth}{An optional value used as the \code{binwidth} argument to
-\code{\link[ggplot2]{geom_histogram}} to override the default binwidth.}
+\item{binwidth}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}} to override
+the default binwidth.}
+
+\item{breaks}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}} as an
+alternative to \code{binwidth}.}
 
 \item{freq}{For histograms, \code{freq=TRUE} (the default) puts count on the
 y-axis. Setting \code{freq=FALSE} puts density on the y-axis. (For many
 plots the y-axis text is off by default. To view the count or density
-labels on the y-axis see the \code{\link{yaxis_text}} convenience
+labels on the y-axis see the \code{\link[=yaxis_text]{yaxis_text()}} convenience
 function.)}
 
 \item{group}{A grouping variable (a vector or factor) the same length as
 \code{y}. Each value in \code{group} is interpreted as the group level
 pertaining to the corresponding value of \code{y}.}
 
-\item{size, alpha}{Arguments passed to \code{\link[ggplot2]{geom_point}} to
-control the appearance of scatterplot points.}
+\item{facet_args}{A named list of arguments (other than \code{facets}) passed
+to \code{\link[ggplot2:facet_wrap]{ggplot2::facet_wrap()}} or \code{\link[ggplot2:facet_grid]{ggplot2::facet_grid()}}
+to control faceting.}
+
+\item{size, alpha}{Arguments passed to \code{\link[ggplot2:geom_point]{ggplot2::geom_point()}} to control the
+appearance of scatterplot points.}
 }
 \value{
-A ggplot object that can be further customized using the
-  \pkg{ggplot2} package.
+A ggplot object that can be further customized using the \strong{ggplot2} package.
 }
 \description{
-The distribution of a test statistic \code{T(yrep)}, or a pair of test
+The distribution of a (test) statistic \code{T(yrep)}, or a pair of (test)
 statistics, over the simulated datasets in \code{yrep}, compared to the
 observed value \code{T(y)} computed from the data \code{y}. See the
-\strong{Plot Descriptions} and \strong{Details} sections, below.
+\strong{Plot Descriptions} and \strong{Details} sections, below, as
+well as \href{https://github.com/jgabry/bayes-vis-paper#readme}{Gabry et al. (2019)}.
 }
 \details{
 For Binomial data, the plots will typically be most useful if
-  \code{y} and \code{yrep} contain the "success" proportions (not discrete
-  "success" or "failure" counts).
+\code{y} and \code{yrep} contain the "success" proportions (not discrete
+"success" or "failure" counts).
 }
 \section{Plot Descriptions}{
 
 \describe{
-  \item{\code{ppc_stat}}{
-   A histogram of the distribution of a test statistic computed by applying
-   \code{stat} to each dataset (row) in \code{yrep}. The value of the
-   statistic in the observed data, \code{stat(y)}, is overlaid as a vertical
-   line.
-  }
-  \item{\code{ppc_stat_grouped,ppc_stat_freqpoly_grouped}}{
-   The same as \code{ppc_stat}, but a separate plot is generated for each
-   level of a grouping variable. In the case of
-   \code{ppc_stat_freqpoly_grouped} the plots are frequency polygons rather
-   than histograms.
-  }
-  \item{\code{ppc_stat_2d}}{
-   A scatterplot showing the joint distribution of two test statistics
-   computed over the datasets (rows) in \code{yrep}. The value of the
-   statistics in the observed data is overlaid as large point.
-  }
+\item{\code{ppc_stat()}}{
+A histogram of the distribution of a test statistic computed by applying
+\code{stat} to each dataset (row) in \code{yrep}. The value of the statistic in the
+observed data, \code{stat(y)}, is overlaid as a vertical line. More details on
+\code{ppc_stat()} can be found in Gabry et al. (2019).
+}
+\item{\code{ppc_stat_grouped()},\code{ppc_stat_freqpoly_grouped()}}{
+The same as \code{ppc_stat()}, but a separate plot is generated for each
+level of a grouping variable. In the case of
+\code{ppc_stat_freqpoly_grouped()} the plots are frequency polygons rather
+than histograms. More details on \code{ppc_stat_grouped()} can be found in
+Gabry et al. (2019).
+}
+\item{\code{ppc_stat_2d()}}{
+A scatterplot showing the joint distribution of two test statistics
+computed over the datasets (rows) in \code{yrep}. The value of the
+statistics in the observed data is overlaid as large point.
+}
 }
 }
 
@@ -105,7 +137,7 @@ group <- example_group_data()
 ppc_stat_grouped(y, yrep, group)
 
 color_scheme_set("mix-red-blue")
-ppc_stat_freqpoly_grouped(y, yrep, group)
+ppc_stat_freqpoly_grouped(y, yrep, group, facet_args = list(nrow = 2))
 
 # use your own function to compute test statistics
 color_scheme_set("brightblue")
@@ -118,14 +150,26 @@ ppc_stat(y, yrep, stat = function(y) quantile(y, 0.25))
 
 }
 \references{
+Gabry, J. , Simpson, D. , Vehtari, A. , Betancourt, M. and
+Gelman, A. (2019), Visualization in Bayesian workflow.
+\emph{J. R. Stat. Soc. A}, 182: 389-402. doi:10.1111/rssa.12378.
+(\href{https://rss.onlinelibrary.wiley.com/doi/full/10.1111/rssa.12378}{journal version},
+\href{https://arxiv.org/abs/1709.01449}{arXiv preprint},
+\href{https://github.com/jgabry/bayes-vis-paper}{code on GitHub})
+
 Gelman, A., Carlin, J. B., Stern, H. S., Dunson, D. B., Vehtari,
-  A., and Rubin, D. B. (2013). \emph{Bayesian Data Analysis.} Chapman & Hall/CRC
-  Press, London, third edition. (Ch. 6)
+A., and Rubin, D. B. (2013). \emph{Bayesian Data Analysis.} Chapman & Hall/CRC
+Press, London, third edition. (Ch. 6)
 }
 \seealso{
-Other PPCs: \code{\link{PPC-discrete}},
-  \code{\link{PPC-distributions}},
-  \code{\link{PPC-errors}}, \code{\link{PPC-intervals}},
-  \code{\link{PPC-loo}}, \code{\link{PPC-overview}},
-  \code{\link{PPC-scatterplots}}
+Other PPCs: 
+\code{\link{PPC-censoring}},
+\code{\link{PPC-discrete}},
+\code{\link{PPC-distributions}},
+\code{\link{PPC-errors}},
+\code{\link{PPC-intervals}},
+\code{\link{PPC-loo}},
+\code{\link{PPC-overview}},
+\code{\link{PPC-scatterplots}}
 }
+\concept{PPCs}

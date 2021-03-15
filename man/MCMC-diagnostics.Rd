@@ -4,61 +4,94 @@
 \alias{MCMC-diagnostics}
 \alias{mcmc_rhat}
 \alias{mcmc_rhat_hist}
+\alias{mcmc_rhat_data}
 \alias{mcmc_neff}
 \alias{mcmc_neff_hist}
+\alias{mcmc_neff_data}
 \alias{mcmc_acf}
 \alias{mcmc_acf_bar}
 \title{General MCMC diagnostics}
 \usage{
 mcmc_rhat(rhat, ..., size = NULL)
 
-mcmc_rhat_hist(rhat, ..., binwidth = NULL)
+mcmc_rhat_hist(rhat, ..., binwidth = NULL, breaks = NULL)
+
+mcmc_rhat_data(rhat, ...)
 
 mcmc_neff(ratio, ..., size = NULL)
 
-mcmc_neff_hist(ratio, ..., binwidth = NULL)
+mcmc_neff_hist(ratio, ..., binwidth = NULL, breaks = NULL)
 
-mcmc_acf(x, pars = character(), regex_pars = character(),
-  facet_args = list(), ..., lags = 20, size = NULL)
+mcmc_neff_data(ratio, ...)
 
-mcmc_acf_bar(x, pars = character(), regex_pars = character(),
-  facet_args = list(), ..., lags = 20)
+mcmc_acf(
+  x,
+  pars = character(),
+  regex_pars = character(),
+  ...,
+  facet_args = list(),
+  lags = 20,
+  size = NULL
+)
+
+mcmc_acf_bar(
+  x,
+  pars = character(),
+  regex_pars = character(),
+  ...,
+  facet_args = list(),
+  lags = 20
+)
 }
 \arguments{
-\item{rhat}{A vector of \code{\link[=rhat]{Rhat}} estimates.}
+\item{rhat}{A vector of R-hat estimates.}
 
 \item{...}{Currently ignored.}
 
-\item{size}{An optional value to override \code{\link[ggplot2]{geom_point}}'s
-default size (for \code{mcmc_rhat}, \code{mcmc_neff}) or
-\code{\link[ggplot2]{geom_line}}'s default size (for \code{mcmc_acf}).}
+\item{size}{An optional value to override \code{\link[ggplot2:geom_point]{ggplot2::geom_point()}}'s
+default size (for \code{mcmc_rhat()}, \code{mcmc_neff()}) or
+\code{\link[ggplot2:geom_path]{ggplot2::geom_line()}}'s default size (for \code{mcmc_acf()}).}
 
-\item{binwidth}{An optional value used as the \code{binwidth} argument to
-\code{\link[ggplot2]{geom_histogram}} to override the default binwidth.}
+\item{binwidth}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}} to override
+the default binwidth.}
+
+\item{breaks}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}} as an
+alternative to \code{binwidth}.}
 
 \item{ratio}{A vector of \emph{ratios} of effective sample size estimates to
-total sample size. See \code{\link{neff_ratio}}.}
+total sample size. See \code{\link[=neff_ratio]{neff_ratio()}}.}
 
 \item{x}{A 3-D array, matrix, list of matrices, or data frame of MCMC draws.
 The \link{MCMC-overview} page provides details on how to specify each these
-allowed inputs.}
+allowed inputs. It is also possible to use an object with an
+\code{as.array()} method that returns the same kind of 3-D array described on
+the \link{MCMC-overview} page.}
 
 \item{pars}{An optional character vector of parameter names. If neither
-\code{pars} nor \code{regex_pars} is specified then the default is to use
-\emph{all} parameters.}
+\code{pars} nor \code{regex_pars} is specified then the default is to use \emph{all}
+parameters. As of version \verb{1.7.0}, \strong{bayesplot} also supports 'tidy'
+parameter selection by specifying \code{pars = vars(...)}, where \code{...} is
+specified the same way as in \link[dplyr:select]{dplyr::select(...)} and
+similar functions. Examples of using \code{pars} in this way can be found on the
+\link[=tidy-params]{Tidy parameter selection} page.}
 
-\item{regex_pars}{An optional \link[=grep]{regular expression} to use for
-parameter selection. Can be specified instead of \code{pars} or in addition
-to \code{pars}.}
+\item{regex_pars}{An optional \link[base:grep]{regular expression} to use for
+parameter selection. Can be specified instead of \code{pars} or in addition to
+\code{pars}. When using \code{pars} for tidy parameter selection, the \code{regex_pars}
+argument is ignored since \link[tidyselect:language]{select helpers}
+perform a similar function.}
 
-\item{facet_args}{Arguments (other than \code{facets}) passed to
-\code{\link[ggplot2]{facet_grid}} to control faceting.}
+\item{facet_args}{A named list of arguments (other than \code{facets}) passed
+to \code{\link[ggplot2:facet_wrap]{ggplot2::facet_wrap()}} or \code{\link[ggplot2:facet_grid]{ggplot2::facet_grid()}}
+to control faceting.}
 
 \item{lags}{The number of lags to show in the autocorrelation plot.}
 }
 \value{
-A ggplot object that can be further customized using the
-  \pkg{ggplot2} package.
+The plotting functions return a ggplot object that can be further
+customized using the \strong{ggplot2} package. The functions with suffix
+\verb{_data()} return the data that would have been drawn by the plotting
+function.
 }
 \description{
 Plots of Rhat statistics, ratios of effective sample size to total sample
@@ -69,32 +102,34 @@ also \link{MCMC-nuts} for additional MCMC diagnostic plots.
 \section{Plot Descriptions}{
 
 \describe{
-\item{\code{mcmc_rhat, mcmc_rhat_hist}}{
+\item{\code{mcmc_rhat()}, \code{mcmc_rhat_hist()}}{
 Rhat values as either points or a histogram. Values are colored using
 different shades (lighter is better). The chosen thresholds are somewhat
 arbitrary, but can be useful guidelines in practice.
- \itemize{
-   \item \emph{light}: below 1.05 (good)
-   \item \emph{mid}: between 1.05 and 1.1 (ok)
-   \item \emph{dark}: above 1.1 (too high)
- }
+\itemize{
+\item \emph{light}: below 1.05 (good)
+\item \emph{mid}: between 1.05 and 1.1 (ok)
+\item \emph{dark}: above 1.1 (too high)
 }
-\item{\code{mcmc_neff, mcmc_neff_hist}}{
+}
+
+\item{\code{mcmc_neff()}, \code{mcmc_neff_hist()}}{
 Ratios of effective sample size to total sample size as either points or a
-histogram. Values are colored using different shades (lighter is better). The
-chosen thresholds are somewhat arbitrary, but can be useful guidelines in
-practice.
- \itemize{
-   \item \emph{light}: between 0.5 and 1 (high)
-   \item \emph{mid}: between 0.1 and 0.5 (good)
-   \item \emph{dark}: below 0.1 (low)
- }
+histogram. Values are colored using different shades (lighter is better).
+The chosen thresholds are somewhat arbitrary, but can be useful guidelines
+in practice.
+\itemize{
+\item \emph{light}: between 0.5 and 1 (high)
+\item \emph{mid}: between 0.1 and 0.5 (good)
+\item \emph{dark}: below 0.1 (low)
 }
-\item{\code{mcmc_acf}}{
-Grid of autocorrelation plots by chain and parameter. The \code{lags}
-argument gives the maximum number of lags at which to calculate the
-autocorrelation function. \code{mcmc_acf} is a line plot whereas
-\code{mcmc_acf_bar} is a barplot.
+}
+
+\item{\code{mcmc_acf()}, \code{mcmc_acf_bar()}}{
+Grid of autocorrelation plots by chain and parameter. The \code{lags} argument
+gives the maximum number of lags at which to calculate the autocorrelation
+function. \code{mcmc_acf()} is a line plot whereas \code{mcmc_acf_bar()} is a
+barplot.
 }
 }
 }
@@ -111,10 +146,8 @@ mcmc_acf(x, pars = c("alpha", "beta[1]"))
 color_scheme_set("pink")
 (p <- mcmc_acf_bar(x, pars = c("alpha", "beta[1]")))
 
-# add tick marks on y axis and horiztonal dashed line at 0.5
-p +
- yaxis_ticks() +
- hline_at(0.5, linetype = 2, size = 0.15, color = "gray")
+# add horiztonal dashed line at 0.5
+p + hline_at(0.5, linetype = 2, size = 0.15, color = "gray")
 }
 
 # fake rhat values to use for demonstration
@@ -141,15 +174,15 @@ library(rstanarm)
 
 # intentionally use small 'iter' so there are some
 # problems with rhat and neff for demonstration
-fit <- stan_glm(mpg ~ ., data = mtcars, iter = 50)
+fit <- stan_glm(mpg ~ ., data = mtcars, iter = 50, refresh = 0)
 rhats <- rhat(fit)
 ratios <- neff_ratio(fit)
 mcmc_rhat(rhats)
-mcmc_neff(ratios)
+mcmc_neff(ratios, size = 3)
 
 # there's a small enough number of parameters in the
 # model that we can display their names on the y-axis
-mcmc_neff(ratios) + yaxis_text()
+mcmc_neff(ratios) + yaxis_text(hjust = 1)
 
 # can also look at autocorrelation
 draws <- as.array(fit)
@@ -164,8 +197,9 @@ mcmc_acf(as.array(fit2), pars = c("wt", "cyl"), lags = 10)
 
 }
 \references{
-Stan Development Team. (2016). \emph{Stan Modeling Language Users
-Guide and Reference Manual.} \url{http://mc-stan.org/documentation/}
+Stan Development Team.
+\emph{Stan Modeling Language Users Guide and Reference Manual.}
+\url{https://mc-stan.org/users/documentation/}
 
 Gelman, A. and Rubin, D. B. (1992). Inference from iterative
 simulation using multiple sequences. \emph{Statistical Science}. 7(4),
@@ -173,15 +207,21 @@ simulation using multiple sequences. \emph{Statistical Science}. 7(4),
 }
 \seealso{
 \itemize{
-\item The \emph{Visual MCMC Diagnostics} vignette.
+\item The \href{https://mc-stan.org/bayesplot/articles/visual-mcmc-diagnostics.html}{Visual MCMC Diagnostics}
+vignette.
 \item \link{MCMC-nuts} for additional MCMC diagnostic plots for models fit
-  using the No-U-Turn-Sampler.
+using the No-U-Turn-Sampler.
 }
 
-Other MCMC: \code{\link{MCMC-combos}},
-  \code{\link{MCMC-distributions}},
-  \code{\link{MCMC-intervals}}, \code{\link{MCMC-nuts}},
-  \code{\link{MCMC-overview}}, \code{\link{MCMC-recover}},
-  \code{\link{MCMC-scatterplots}},
-  \code{\link{MCMC-traces}}
+Other MCMC: 
+\code{\link{MCMC-combos}},
+\code{\link{MCMC-distributions}},
+\code{\link{MCMC-intervals}},
+\code{\link{MCMC-nuts}},
+\code{\link{MCMC-overview}},
+\code{\link{MCMC-parcoord}},
+\code{\link{MCMC-recover}},
+\code{\link{MCMC-scatterplots}},
+\code{\link{MCMC-traces}}
 }
+\concept{MCMC}

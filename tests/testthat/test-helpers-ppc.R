@@ -1,7 +1,7 @@
 library(bayesplot)
 context("PPC: misc. functions")
 
-source("data-for-ppc-tests.R")
+source(test_path("data-for-ppc-tests.R"))
 
 # melt_yrep ---------------------------------------------------------------
 expect_molten_yrep <- function(yrep) {
@@ -9,11 +9,19 @@ expect_molten_yrep <- function(yrep) {
   yrep <- validate_yrep(yrep, y)
 
   x <- melt_yrep(yrep)
-  expect_equal(ncol(x), 3)
+  expect_equal(ncol(x), 4)
   expect_equal(nrow(x), prod(dim(yrep)))
-  expect_identical(colnames(x), c("rep_id", "y_id", "value"))
+
+  rep_nums <- rep(seq_len(nrow(yrep)), length(y))
+  obs_nums <- sort(rep(seq_len(length(y)), nrow(yrep)))
+
+  expect_identical(colnames(x), c("y_id", "rep_id", "rep_label", "value"))
+  expect_equal(x$y_id, obs_nums)
+  expect_equal(x$rep_id, rep_nums)
+
   expect_s3_class(x, "data.frame")
-  expect_s3_class(x$rep_id, "factor")
+  expect_s3_class(x$rep_label, "factor")
+  expect_type(x$rep_id, "integer")
   expect_type(x$y_id, "integer")
   expect_type(x$value, "double")
 }
@@ -22,7 +30,7 @@ test_that("melt_yrep returns correct structure", {
   expect_molten_yrep(yrep)
   expect_molten_yrep(yrep2)
 
-  load("data-for-binomial.rda")
+  load(test_path("data-for-binomial.rda"))
   expect_molten_yrep(Ey)
   expect_molten_yrep(validate_yrep(yrep, y))
 })
@@ -34,7 +42,9 @@ test_that("melt_and_stack returns correct structure", {
   d <- melt_and_stack(y, yrep)
   expect_s3_class(d, "data.frame")
   expect_equal(nrow(d), nrow(molten_yrep) + length(y))
-  expect_identical(colnames(d), c(colnames(molten_yrep), "is_y"))
+
+  sorted_names <- sort(c(colnames(molten_yrep), c("is_y", "is_y_label")))
+  expect_equal(sort(colnames(d)), sorted_names)
 })
 
 
@@ -89,3 +99,4 @@ test_that("all_counts works correctly", {
   expect_false(all_counts(c(1, 1.5)))
   expect_false(all_counts(c(-1, 2)))
 })
+
