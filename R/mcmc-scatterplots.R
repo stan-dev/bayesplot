@@ -788,7 +788,7 @@ pairs_setfacet <- function(fname1, fvalue1, fname2, fvalue2, select_rows) {
   function(x) {
     # The use of fvalue1 and fvalue2 is so that we can ensure that there is not
     # a column name conflict
-    stopifnot(!any(c(fname1, fname2) %in% names(data)))
+    stopifnot(!any(c(fname1, fname2) %in% names(x)))
     x[[fname1]] <- fvalue1
     x[[fname2]] <- fvalue2
     # Filter to just the rows of interest
