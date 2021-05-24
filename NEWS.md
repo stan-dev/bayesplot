@@ -4,6 +4,11 @@
 
 Items for next release go here
 
+### Breaking changes
+
+* `mcmc_pairs()` now returns a ggplot object rather than a `bayesplot_grid`
+  object.  Code that modified the output of `mcmc_pairs()` will need to change.
+  (#268, @billdenney)
 
 # bayesplot 1.8.0
 

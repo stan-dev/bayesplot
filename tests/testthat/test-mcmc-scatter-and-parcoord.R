@@ -61,50 +61,85 @@ test_that("mcmc_hex throws error if number of parameters is not 2", {
 # mcmc_pairs  -------------------------------------------------------------
 test_that("mcmc_pairs returns a bayesplot_grid object", {
   g <- mcmc_pairs(arr, pars = c("(Intercept)", "sigma"))
-  expect_bayesplot_grid(g)
+  expect_s3_class(g, "gg")
   expect_equal(print(g), plot(g))
-  expect_bayesplot_grid(mcmc_pairs(arr, pars = "sigma", regex_pars = "beta"))
-  expect_bayesplot_grid(mcmc_pairs(arr, regex_pars = "x:[1-3]",
-                                   transformations = "exp",
-                                   diag_fun = "dens", off_diag_fun = "hex",
-                                   diag_args = list(trim = FALSE),
-                                   off_diag_args = list(binwidth = c(0.5, 0.5))))
+  expect_s3_class(
+    mcmc_pairs(arr, pars = "sigma", regex_pars = "beta"),
+    "gg"
+  )
+  expect_s3_class(
+    mcmc_pairs(arr, regex_pars = "x:[1-3]",
+               transformations = "exp",
+               diag_fun = "dens", off_diag_fun = "hex",
+               diag_args = list(trim = FALSE),
+               off_diag_args = list(binwidth = c(0.5, 0.5))),
+    "gg"
+  )
 
-  expect_bayesplot_grid(suppressWarnings(mcmc_pairs(arr1chain, regex_pars = "beta")))
-  expect_bayesplot_grid(suppressWarnings(mcmc_pairs(mat, pars = c("(Intercept)", "sigma"))))
-  expect_bayesplot_grid(suppressWarnings(mcmc_pairs(dframe, pars = c("(Intercept)", "sigma"))))
-  expect_bayesplot_grid(mcmc_pairs(dframe_multiple_chains, regex_pars = "beta"))
+  expect_s3_class(
+    suppressWarnings(mcmc_pairs(arr1chain, regex_pars = "beta")),
+    "gg"
+  )
+  expect_s3_class(
+    suppressWarnings(mcmc_pairs(mat, pars = c("(Intercept)", "sigma"))),
+    "gg"
+  )
+  expect_s3_class(
+    suppressWarnings(mcmc_pairs(dframe, pars = c("(Intercept)", "sigma"))),
+    "gg"
+  )
+  expect_s3_class(
+    mcmc_pairs(dframe_multiple_chains, regex_pars = "beta"),
+    "gg"
+  )
 })
 
 test_that("no mcmc_pairs non-NUTS 'condition's fail", {
-  expect_bayesplot_grid(
+  expect_s3_class(
     mcmc_pairs(arr, pars = "sigma", regex_pars = "beta",
-               condition = pairs_condition(chains = list(1, 2:4)))
-    )
-  expect_bayesplot_grid(
-    mcmc_pairs(arr, pars = "sigma", regex_pars = "beta",
-               condition = pairs_condition(draws = rep(c(T,F), length.out = prod(dim(arr)[1:2]))))
-    )
-  expect_bayesplot_grid(
-    mcmc_pairs(arr, pars = "sigma", regex_pars = "beta",
-               condition = pairs_condition(draws = 1/3))
+               condition = pairs_condition(chains = list(1, 2:4))),
+    "gg"
   )
-  expect_bayesplot_grid(
+  expect_s3_class(
     mcmc_pairs(arr, pars = "sigma", regex_pars = "beta",
-               condition = pairs_condition(chains = c(1,3)))
+               condition = pairs_condition(draws = rep(c(T,F), length.out = prod(dim(arr)[1:2])))),
+    "gg"
+  )
+  expect_s3_class(
+    mcmc_pairs(arr, pars = "sigma", regex_pars = "beta",
+               condition = pairs_condition(draws = 1/3),
+               ),
+    "gg"
+  )
+  expect_s3_class(
+    mcmc_pairs(arr, pars = "sigma", regex_pars = "beta",
+               condition = pairs_condition(chains = c(1,3))),
+    "gg"
   )
 })
 
 test_that("mcmc_pairs works with NUTS info", {
   skip_if_not_installed("rstanarm")
-  expect_bayesplot_grid(mcmc_pairs(post, pars = c("wt", "am", "sigma"), np = np))
-  expect_bayesplot_grid(mcmc_pairs(post, pars = c("wt", "am"),
-                                   condition = pairs_condition(nuts="energy__"), np = np))
-  expect_bayesplot_grid(mcmc_pairs(post, pars = c("wt", "am"),
-                                   condition = pairs_condition(nuts="divergent__"), np = np))
-  expect_bayesplot_grid(mcmc_pairs(post, pars = c("wt", "am"),
-                                   condition = pairs_condition(nuts = "lp__"), lp=lp, np = np,
-                                   max_treedepth = 2))
+  expect_s3_class(
+    mcmc_pairs(post, pars = c("wt", "am", "sigma"), np = np),
+    "gg"
+  )
+  expect_s3_class(
+    mcmc_pairs(post, pars = c("wt", "am"),
+               condition = pairs_condition(nuts="energy__"), np = np),
+    "gg"
+  )
+  expect_s3_class(
+    mcmc_pairs(post, pars = c("wt", "am"),
+               condition = pairs_condition(nuts="divergent__"), np = np),
+    "gg"
+  )
+  expect_s3_class(
+    mcmc_pairs(post, pars = c("wt", "am"),
+               condition = pairs_condition(nuts = "lp__"), lp=lp, np = np,
+               max_treedepth = 2),
+    "gg"
+  )
 
   p <- mcmc_pairs(
     post,
@@ -116,7 +151,7 @@ test_that("mcmc_pairs works with NUTS info", {
     np_style = pairs_style_np(div_color = "firebrick", td_color = "dodgerblue", div_size = 2, td_size = 2),
     max_treedepth = with(np, max(Value[Parameter == "treedepth__"]) - 1)
   )
-  expect_bayesplot_grid(p)
+  expect_s3_class(p, "gg")
 })
 
 
@@ -300,8 +335,6 @@ test_that("pairs_condition message if multiple args specified", {
     fixed = TRUE
   )
 })
-
-
 
 # mcmc_parcoord -----------------------------------------------------------
 test_that("mcmc_parcoord returns a ggplot object", {
