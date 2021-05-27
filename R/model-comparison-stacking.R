@@ -1,6 +1,6 @@
 #' Find opportunities for model stacking 
 #' 
-#' The pancake plot shows how the predictive accuracy of two different
+#' The LOO difference plot shows how the predictive accuracy of two different
 #' models varies as another variable changes. 
 #' 
 #' @param y A vector of observations. See Details.
@@ -38,7 +38,7 @@
 #' 
 #' # Plot using groups from WHO
 #' 
-#' pancake_plot(factor(GM@data$super_region_name), loo3, loo2, 
+#' plot_loo_dif(factor(GM@data$super_region_name), loo3, loo2, 
 #'              group = GM@data$super_region_name, alpha = .5, 
 #'              jitter = c(.45, .2)
 #'              ) + 
@@ -46,7 +46,7 @@
 #' 
 #' # Plot using groups identified with clustering
 #' 
-#' pancake_plot(factor(GM@data$cluster_region), loo3, loo2, 
+#' plot_loo_dif(factor(GM@data$cluster_region), loo3, loo2, 
 #'              group = GM@data$super_region_name, alpha = .5, 
 #'              jitter = c(.45, .2)
 #'              ) + 
@@ -54,13 +54,13 @@
 #'              
 #' # Plot using an index variable to reduce crowding
 #' 
-#' pancake_plot(1:2980, loo3, loo2, group = GM@data$super_region_name, 
+#' plot_loo_dif(1:2980, loo3, loo2, group = GM@data$super_region_name, 
 #'              alpha = .5, sortByGroup = TRUE, 
 #'              ) + 
 #'              xlab("Index") + scale_colour_manual(values=cbPalette)
 #' 
 #' 
-pancake_plot <- 
+plot_loo_dif <- 
   function(y,
            psis_object_1,
            psis_object_2,
@@ -73,11 +73,6 @@ pancake_plot <-
            quantiles = FALSE,
            sortByGroup = FALSE
   ){
- 
-    
-    
-    # I called it a pancake plot because stacks remind me of pancakes.
-    # I did just eat pancakes. (Can be renamed)
     
     # Adding a 0 at the end lets users provide a single number as input.
     # In this case, only horizontal jitter is applied.
