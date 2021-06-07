@@ -28,7 +28,7 @@ dframe_multiple_chains$chain <- rep(1:4, 25)
 
 # for vdiffr visual tests
 set.seed(11172017)
-vdiff_dframe <- as.data.frame(matrix(rnorm(1000), nrow = 100, ncol = 5))
+vdiff_dframe <- as.data.frame(matrix(rnorm(500), nrow = 100, ncol = 5))
 vdiff_dframe_chains <- as.data.frame(
   matrix(rnorm(4000), nrow = 2000, ncol = 2)
 )
