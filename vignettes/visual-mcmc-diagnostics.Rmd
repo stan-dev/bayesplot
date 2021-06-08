@@ -22,6 +22,7 @@ library("bayesplot")
 library("ggplot2")
 library("rstan")
 library("dplyr") #Used only for consistency checks
+rstan_options(auto_write = TRUE) #Helpful throughout development
 ```
 
 ## Introduction
@@ -81,8 +82,8 @@ y_j &\sim {\rm Normal}(\theta_j, \sigma_j), \quad j = 1,\dots,J \\
 $$
 with the normal distribution parameterized by the mean and standard deviation, 
 not the variance or precision. In Stan code:
-```{r stancode1}
-schools_mod_cp_code <- "
+```{stan stancode1, output.var = "schools_mod_cp"}
+// Saved in 'schools_mod_cp.stan'
 data {
   int<lower=0> J;
   vector[J] y;
@@ -98,7 +99,7 @@ model {
   tau ~ cauchy(0, 10);
   theta ~ normal(mu, tau);
   y ~ normal(theta, sigma);
-}"
+}
 ```
 
 This parameterization of the model is referred to as the centered 
@@ -114,8 +115,8 @@ $$
 \end{align*}
 $$
 The Stan code for this model is:
-```{r stancode2}
-schools_mod_ncp_code <- "
+```{stan, stancode2, output.var = "schools_mod_ncp"}
+// Saved in 'schools_mod_ncp.stan'
 data {
   int<lower=0> J;
   vector[J] y;
@@ -135,7 +136,7 @@ model {
   tau ~ cauchy(0, 10);
   eta ~ normal(0, 1); // implies theta ~ normal(mu, tau)
   y ~ normal(theta, sigma);
-}"
+}
 ```
 
 The centered and non-centered are two parameterizations of the same statistical 
@@ -145,9 +146,9 @@ required in order to properly explore the posterior distribution.
 
 To fit both models we first translate the Stan code to C++ and compile it using 
 the `stan_model` function.
-```{r compile-models}
-schools_mod_cp <- stan_model(model_code = schools_mod_cp_code)
-schools_mod_ncp <- stan_model(model_code = schools_mod_ncp_code)
+```{r compile-models, eval=FALSE}
+schools_mod_cp <- stan_model("schools_mod_cp.stan")
+schools_mod_ncp <- stan_model("schools_mod_ncp.stan")
 ```
 We then fit the model by calling Stan's MCMC algorithm using the `sampling` 
 function (the increased `adapt_delta` param is to make the sampler a bit more "careful" and avoid false positive divergences),
