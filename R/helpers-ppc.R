@@ -40,9 +40,10 @@ validate_y <- function(y) {
 #' correct number of columns (equal to the length of `y`).
 #'
 #' @param yrep,y The user's `yrep` object and the `y` object returned by `validate_y()`.
+#' @param match_ncols Is the number of columns in 'yrep' required to match the length of 'y'.
 #' @return Either throws an error or returns a numeric matrix.
 #' @noRd
-validate_yrep <- function(yrep, y) {
+validate_yrep <- function(yrep, y, require_ncols = TRUE) {
   stopifnot(is.matrix(yrep), is.numeric(yrep))
   if (is.integer(yrep)) {
     if (nrow(yrep) == 1) {
@@ -57,13 +58,20 @@ validate_yrep <- function(yrep, y) {
     abort("NAs not allowed in 'yrep'.")
   }
 
-  if (ncol(yrep) != length(y)) {
+  if (all(match_ncols, ncol(yrep) != length(y))) {
     abort("ncol(yrep) must be equal to length(y).")
   }
 
   unclass(unname(yrep))
 }
 
+validate_pit <- function(pit) {
+  stopifnot(is.matrix(pit), is.numeric(yrep))
+  if (any(pit < 0) || any(pit > 1)) {
+    abort("'pit' values expected to lie between 0 and 1 (inclusive).")
+  }
+  unclass(unname(pit))
+}
 
 #' Validate group
 #'

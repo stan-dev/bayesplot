@@ -126,6 +126,25 @@ ppc_data <- function(y, yrep, group = NULL) {
   data
 }
 
+comparison_data <- function(y, yrep, pit) {
+  if (!missing(pit)) {
+    data <- validate_pit(pit)
+  } elif (missing(y)) {
+    if (nrow(yrep) < 2) {
+      abort(paste("When both 'pit' and 'y' are missing, 'yrep' must include ",
+                  "multiple rows to allow for sample comparison.", sep=""))
+    }
+    data <- u_scale(validate_yrep(yrep[1,], yrep))
+  } else {
+    y <- validate_y(y)
+    yrep <- validate_yrep(yrep, y, match_ncols = FALSE)
+    data <- apply(yrep, 1, function(rep) {
+      u_scale(matrix(c(y, rep), ncol=2)[,2])
+      })
+  }
+  data
+  }
+}
 
 
 #' @rdname PPC-distributions
@@ -456,6 +475,19 @@ ppc_ecdf_overlay_grouped <- function(
     force_axes_in_facets()
 }
 
+ppc_ecdf_intervals <- function(
+  y,
+  yrep,
+  pit,
+  ...,
+  conf_level = 0.95,
+  size = 0.25,
+  alpha = 0.7
+) {
+  check_ignored_arguments(...)
+  data <- comparison_data(y, yrep, pit)
+  
+}
 
 
 #' @export
