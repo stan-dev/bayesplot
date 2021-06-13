@@ -1,8 +1,8 @@
 <!-- See http://style.tidyverse.org/news.html for advice on writing news -->
 
-# bayesplot 1.8.0.9000
+# bayesplot 1.8.1
 
-Items for next release go here
+* Fix R cmd check error on linux for CRAN 
 
 
 # bayesplot 1.8.0
