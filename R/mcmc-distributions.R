@@ -323,12 +323,8 @@ mcmc_violin <- function(x,
   n_param <- num_params(data)
 
   graph <- ggplot(data, aes(x = ~ value)) +
-    geom_histogram(
-      set_hist_aes(freq),
-      fill = get_color("mid"),
-      color = get_color("mid_highlight"),
-      size = .25,
-      na.rm = TRUE,
+    geom_mcmc_hist(
+      freq = freq, 
       binwidth = binwidth,
       breaks = breaks
     )
@@ -450,3 +446,4 @@ mcmc_violin <- function(x,
     yaxis_title(on = n_param == 1 && violin) +
     xaxis_title(on = n_param == 1)
 }
+
