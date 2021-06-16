@@ -159,9 +159,9 @@ comparison_data <- function(y, yrep, pit, K) {
   } else {
     y <- validate_y(y)
     yrep <- validate_yrep(yrep, y, match_ncols = FALSE)
-    pit <- u_scale(rbind(y,yrep))
+    pit <- u_scale(rbind(y, yrep))
     ecdfs <- t(apply(pit, 1, function(row) ecdf(row)(z)))
-    ecdfs <- melt_and_stack(ecdfs[1, ], ecdfs[2, nrow(yrep) + 1])
+    ecdfs <- melt_and_stack(ecdfs[1, ], ecdfs[2:nrow(yrep) + 1,])
   }
   ecdfs
 }
@@ -530,7 +530,11 @@ ppc_ecdf_intervals <- function(
       conf_level = conf_level
     )
   }
-  limits <- ecdf_intervals(gamma, K, max(data$rep_id) + any(data$is_y))
+  limits <- ecdf_intervals(
+    N = max(data$y_id),
+    L = max(data$rep_id) + any(data$is_y),
+    K = K,
+    gamma = gamma)
   z <- 0:K / K
   fig <- ggplot(data, mapping = aes_(x = rep(L, z))) +
     geom_step(
