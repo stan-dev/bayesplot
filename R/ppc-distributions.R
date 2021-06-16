@@ -126,24 +126,44 @@ ppc_data <- function(y, yrep, group = NULL) {
   data
 }
 
-comparison_data <- function(y, yrep, pit) {
+
+#' @rdname PPC-distributions
+#' @export
+comparison_data <- function(y, yrep, pit, K) {
+  if (missing(K)){
+    if (!missing(y)) {
+      K <- length(y)
+    }
+    else if (!missing(pit)) {
+      K = ncol(pit)
+    }
+    else {
+      K = ncol(yrep)
+    }
+  }
+  z <- seq(0,1, length.out = K + 1)
   if (!missing(pit)) {
-    data <- validate_pit(pit)
-  } elif (missing(y)) {
+    pit <- validate_pit(pit)
+    ecdfs <- t(apply(pit, 1, function(row) ecdf(row)(z)))
+    ecdfs <- melt_and_stack(ecdfs[1,], ecdfs)
+    ecdfs <- dplyr::filter(ecdfs, !ecdfs$is_y)
+  } else if (missing(y)) {
+    pit <- u_scale(validate_yrep(yrep, yrep[1, ], match_ncols = FALSE))
     if (nrow(yrep) < 2) {
       abort(paste("When both 'pit' and 'y' are missing, 'yrep' must include ",
                   "multiple rows to allow for sample comparison.", sep=""))
     }
-    data <- u_scale(validate_yrep(yrep[1,], yrep))
+    ecdfs <- t(apply(pit, 1, function(row) ecdf(row)(z)))
+    ecdfs <- melt_and_stack(ecdfs[1,], ecdfs)
+    ecdfs <- dplyr::filter(ecdfs, !ecdfs$is_y)
   } else {
     y <- validate_y(y)
     yrep <- validate_yrep(yrep, y, match_ncols = FALSE)
-    data <- apply(yrep, 1, function(rep) {
-      u_scale(matrix(c(y, rep), ncol=2)[,2])
-      })
+    pit <- u_scale(rbind(y,yrep))
+    ecdfs <- t(apply(ecdfs, 1, function(row) ecdf(row)(z)))
+    ecdfs <- melt_and_stack(ecdfs[1, ], ecdfs[2, nrow(yrep) + 1])
   }
-  data
-  }
+  ecdfs
 }
 
 
@@ -179,7 +199,6 @@ ppc_hist <- function(y, yrep, ..., binwidth = NULL, breaks = NULL,
 #' @export
 #' @param notch A logical scalar passed to [ggplot2::geom_boxplot()].
 #'   Unlike for `geom_boxplot()`, the default is `notch=TRUE`.
-#'
 ppc_boxplot <- function(y, yrep, ..., notch = TRUE, size = 0.5, alpha = 1) {
   check_ignored_arguments(...)
   data <- ppc_data(y, yrep)
@@ -236,7 +255,7 @@ ppc_freqpoly <- function(y, yrep, ...,
 #' @rdname PPC-distributions
 #' @export
 #' @template args-group
-#'
+
 ppc_freqpoly_grouped <- function(y, yrep, group, ..., binwidth = NULL,
                                  freq = TRUE, size = 0.25, alpha = 1) {
     check_ignored_arguments(...)
@@ -475,18 +494,74 @@ ppc_ecdf_overlay_grouped <- function(
     force_axes_in_facets()
 }
 
+#' @export
+#' @rdname PPC-distributions
+#' @param pit For 'ppc_ecdf_intervals' and 'ppc_ecdf_diff_intervals', the PIT
+#'   values of one or more samples can be provided directly making 'y' and
+#'   yrep' optional.
+#' @param conf_level For 'ppc_ecdf_intervals' and 'ppc_ecdf_diff_intervals',
+#'   the desired simultaneous confidence level of the bands to be drawn.
+#' @param K, For 'ppc_ecdf_intervals' and 'ppc_ecdf_diff_intervals', number of
+#'   equally spaced evaluation points for the ECDF plot. Affects the granularity
+#' of the plot and can significantly speed up the computation of the confidence
+#' bands. The default is 'K = ncol(yrep)', or 'K = ncol(pit)' if PIT values are
+#' provided instead.
 ppc_ecdf_intervals <- function(
   y,
   yrep,
   pit,
+  gamma,
+  K,
   ...,
   conf_level = 0.95,
   size = 0.25,
   alpha = 0.7
 ) {
   check_ignored_arguments(...)
-  data <- comparison_data(y, yrep, pit)
-  
+  data <- comparison_data(y, yrep, pit, K)
+  if (missing(K)) {
+    K <- max(data$y_id)
+  }
+  if (missing(gamma)) {
+    gamma <- adjust_gamma(
+      N = max(data$y_id),
+      L = max(data$rep_id) + any(data$is_y),
+      K = K,
+      conf_level = conf_level
+    )
+  }
+  limits <- ecdf_intervals(gamma, K, L)
+  z <- 0:K / K
+  fig <- ggplot(data, mapping = aes_(x = rep(L, z))) +
+    geom_step(
+      data = function(x) dplyr::filter(x, !.data$is_y),
+      aes_(group = ~ variable, y = ~ value, color = ~ variable)
+    ) +
+    geom_line(
+      data = data.frame(x = c(0, 1), y = c(0, 1)),
+      mapping = aes_(x = ~ x, y = ~ y),
+      alpha = 0.5 * alpha,
+      color = 'gray'
+    ) +
+    geom_step(aes_(y = limits$upper)) +
+    geom_step(aes_(y = limits$lower))
+  if any(data$is_y) {
+    fig <- fig + geom_step(
+      data = function(x) dplyr::filter(x, .data$is_y),
+      aes_(y = ~ value)
+    )
+  }
+  fig + scale_y_continuous(breaks = c(0, 0.5, 1)) +
+    yaxis_title(FALSE) +
+    xaxis_title(FALSE) +
+    yaxis_ticks(FALSE) +
+    bayesplot_theme_get()
+
+
+
+
+
+
 }
 
 
