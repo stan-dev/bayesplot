@@ -522,17 +522,19 @@ ppc_ecdf_intervals <- function(
   if (missing(K)) {
     K <- max(data$y_id)
   }
+  N <- max(data$y_id)
+  L <- max(data$rep_id) + any(data$is_y)
   if (missing(gamma)) {
     gamma <- adjust_gamma(
-      N = max(data$y_id),
-      L = max(data$rep_id) + any(data$is_y),
+      N = N,
+      L = L,
       K = K,
       conf_level = conf_level
     )
   }
   limits <- ecdf_intervals(
-    N = max(data$y_id),
-    L = max(data$rep_id) + any(data$is_y),
+    N = N,
+    L = L,
     K = K,
     gamma = gamma)
   z <- 0:K / K
