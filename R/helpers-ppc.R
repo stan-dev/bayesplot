@@ -43,7 +43,7 @@ validate_y <- function(y) {
 #' @param match_ncols Is the number of columns in 'yrep' required to match the length of 'y'.
 #' @return Either throws an error or returns a numeric matrix.
 #' @noRd
-validate_yrep <- function(yrep, y, require_ncols = TRUE) {
+validate_yrep <- function(yrep, y, match_ncols = TRUE) {
   stopifnot(is.matrix(yrep), is.numeric(yrep))
   if (is.integer(yrep)) {
     if (nrow(yrep) == 1) {
@@ -65,11 +65,25 @@ validate_yrep <- function(yrep, y, require_ncols = TRUE) {
   unclass(unname(yrep))
 }
 
+
+#' Validate PIT
+#'
+#' Checks that the probability integral transformation (PIT) values from
+#' a numeric matrix with no NAs and that the provided values fall in [0,1].
+#'
+#' @param pit The 'pit' object provided by the user.
+#' @returns Either throws an error or returns a numeric matrix.
+#' @noRd
 validate_pit <- function(pit) {
   stopifnot(is.matrix(pit), is.numeric(yrep))
   if (any(pit < 0) || any(pit > 1)) {
     abort("'pit' values expected to lie between 0 and 1 (inclusive).")
   }
+
+  if (anyNA(pit)) {
+    abort("NAs not allowed in 'pit'.")
+  }
+
   unclass(unname(pit))
 }
 
@@ -256,6 +270,127 @@ all_whole_number <- function(x, ...) {
 }
 all_counts <- function(x, ...) {
   all_whole_number(x, ...) && min(x) >= 0
+}
+
+adjust_gamma <- function(N, L, K=N, conf_level=0.95) {
+  if (any(c(K, N, L) < 1)) {
+    abort("Parameters 'N', 'L' and 'K' must be positive integers.")
+  }
+  if (conf_level >= 1 || conf_level <= 0) {
+    abort("Value of 'conf_level' must be in (0,1).")
+  }
+  if (L==1) {
+    gamma <- adjust_gamma_optimize(N, K, conf_level)
+  }
+  else {
+    gamma <- adjust_gamma_simulate(N, L, K, conf_level)
+  }
+  gamma
+}
+
+adjust_gamma_optimize <- function(N, K, conf_level=0.95) {
+  target <- function(gamma, conf_level, N, K) {
+    z <- 1:(K - 1) / K
+    z1 <- c(0,z)
+    z2 <- c(z,1)
+
+    # pre-compute quantiles and use symmetry for increased efficiency.
+    x2_lower <- qbinom(gamma / 2, N, z2)
+    x2_upper <- c(N - rev(x2_lower)[2:K], 1)
+
+    # Compute the total probability of trajectories inside the confidence
+    # intervals. Initialize the set and corresponding probasbilities known
+    # to be 0 and 1 for the starting value z1 = 0.
+    x1 <- 0
+    p_int <- 1
+    for (i in seq_along(z1)) {
+      tmp <- p_interior(
+        p_int, x1 = x1, x2 = x2_lower[i]: x2_upper[i],
+        z1 = z1[i], z2 = z2[i], gamma = gamma, N = N
+      )
+      x1 <- tmp$x1
+      p_int <- tmp$p_int
+    }
+    abs(conf_level - sum(p_int))
+  }
+  optimize(target, c(0, 1 - conf_level), conf_level, N = N, K = K)$minimum
+}
+
+adjust_gamma_simulate <-function(N, L, K, conf_level=0.95, M=5000) {
+  gamma <- numeric(M)
+  z <- (1:(K - 1)) / K
+  if (L > 1){
+    n <- N * (L - 1)
+    k <- floor(z * N * L)
+    for (m in seq_len(M)) {
+      u = u_scale(replicate(L, runif(N)))
+      scaled_ecdfs <- apply(outer(u, z, "<="), c(2,3), sum)
+      gamma[m] <- 2 * min(
+        apply(
+          scaled_ecdfs, 1, phyper, m = N, n = n, k = k
+        ),
+        apply(
+          scaled_ecdfs - 1, 1, phyper, m = N, n = n, k = k, lower.tail = FALSE
+        )
+      )
+    }
+
+  }
+  else {
+    for (m in seq_len(M)) {
+      u <- runif(N)
+      scaled_ecdf <- colSums(outer(u, z, "<="))
+      gamma[m] <- 2 * min(
+        pbinom(scaled_ecdf, N, z),
+        pbinom(scaled_ecdfs - 1, N, z, lower.tail = FALSE)
+      )
+    }
+  }
+  alpha_quantile(gamma, 1 - conf_level)
+}
+
+p_interior <- function(p_int, x1, x2, z1, z2, gamma, N) {
+  z_tilde <- (z2 - z1) / (1 - z1)
+
+  N_tilde <- rep(N - x1, each = length(x2))
+  p_int <- rep(p_int, each = length(x2))
+  x_diff <- outer(x2, x1, "-")
+  p_x2_int <- p_int * dbinom(x_diff, N_tilde, z_tilde)
+
+  list(p_int = rowSums(p_x2_int), x1 = x2)
+}
+
+# alpha percent of the trials are allowed to be rejected
+alpha_quantile <- function(gamma, alpha, tol = 0.001) {
+  a <- unname(quantile(gamma, probs = alpha))
+  a_tol <- unname(quantile(gamma, probs = alpha + tol))
+  if (a == a_tol) {
+    if (min(gamma) < a) {
+      # take the largest value that doesn't exceed the tolerance.
+      a <- max(gamma[gamma < a])
+    }
+  }
+  a
+}
+
+ecdf_intervals <- function(N, L, K, gamma) {
+  lims <- list()
+  z <- seq(0,1, length.out = K + 1)
+  if (L == 1) {
+    lims$lower <- qbinom(gamma / 2, N, z)
+    lims$upper <- qbinom(1 - gamma / 2, N, z)
+  } else {
+    n <- N * (L - 1)
+    k <- floor(z * L * N)
+    lims$lower <- qhyper(gamma / 2, N, n, k)
+    lims$upper <- qhyper(1 - gamma / 2, N, n, k)
+  }
+  lims
+}
+
+# Transform observations in 'x' into their corresponding fractional ranks.
+u_scale <- function(x) {
+  array(rank(x) / length(x), dim = dim(x), dimnames = dimnames(x))
 }
 
 # labels ----------------------------------------------------------------
