@@ -545,7 +545,7 @@ ppc_ecdf_intervals <- function(
     ) +
     geom_step(aes_(y = limits$upper)) +
     geom_step(aes_(y = limits$lower))
-  if any(data$is_y) {
+  if (any(data$is_y)) {
     fig <- fig + geom_step(
       data = function(x) dplyr::filter(x, .data$is_y),
       aes_(y = ~ value)
@@ -556,12 +556,6 @@ ppc_ecdf_intervals <- function(
     xaxis_title(FALSE) +
     yaxis_ticks(FALSE) +
     bayesplot_theme_get()
-
-
-
-
-
-
 }
 
 
