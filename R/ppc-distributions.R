@@ -549,25 +549,25 @@ ppc_ecdf_intervals <- function(
     K = K,
     gamma = gamma)
   z <- 0:K / K
-  fig <- ggplot(data, mapping = aes_(x = rep(z, L))) +
+  fig <- ggplot() +
     geom_line(
       data = data.frame(x = c(0, 1), y = c(0, 1)),
       mapping = aes_(x = ~ x, y = ~ y),
       alpha = 0.5 * alpha,
       color = 'gray'
     ) +
-    geom_step(aes_(y = limits$upper)) +
-    geom_step(aes_(y = limits$lower))
+    geom_step(aes_(x = z, y = limits$upper / N), color = 'gray') +
+    geom_step(aes_(x = z, y = limits$lower / N), color = 'gray')
   if (any(data$is_y)) {
     fig <- fig + geom_step(
       data = function(x) dplyr::filter(x, .data$is_y),
-      aes_(y = ~ value)
+      aes_(x = z, y = ~ value)
     )
   }
   if (any(!data$is_y)) {
     fig <- fig + geom_step(
         data = function(x) dplyr::filter(x, !.data$is_y),
-        aes_(group = ~ rep_id, y = ~ value, color = ~ rep_id)
+        aes_(x = rep(z, L - any(data$is_y)), group = ~ rep_id, y = ~ value, color = ~ rep_id)
       )
   }
   fig + scale_y_continuous(breaks = c(0, 0.5, 1)) +
