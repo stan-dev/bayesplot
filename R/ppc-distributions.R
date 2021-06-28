@@ -549,7 +549,7 @@ ppc_ecdf_intervals <- function(
     K = K,
     gamma = gamma)
   z <- 0:K / K
-  fig <- ggplot() +
+  fig <- ggplot(data) +
     geom_line(
       data = data.frame(x = c(0, 1), y = c(0, 1)),
       mapping = aes_(x = ~ x, y = ~ y),
