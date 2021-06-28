@@ -525,9 +525,15 @@ ppc_ecdf_intervals <- function(
   check_ignored_arguments(...)
   data <- comparison_data(y, yrep, pit, K)
   if (missing(K)) {
-    K <- max(data$y_id)
+    K <- max(data$y_id) - 1
   }
-  N <- max(data$y_id)
+  if (!missing(y)) {
+    N <- length(y)
+  } else if (!missing(yrep)) {
+    N <- ncol(yrep)
+  } else {
+    N <- ncol(pit)
+  }
   L <- max(data$rep_id) + any(data$is_y)
   if (missing(gamma)) {
     gamma <- adjust_gamma(
