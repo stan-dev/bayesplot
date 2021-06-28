@@ -544,10 +544,6 @@ ppc_ecdf_intervals <- function(
     gamma = gamma)
   z <- 0:K / K
   fig <- ggplot(data, mapping = aes_(x = rep(z, L))) +
-    geom_step(
-      data = function(x) dplyr::filter(x, !.data$is_y),
-      aes_(group = ~ rep_id, y = ~ value, color = ~ rep_id)
-    ) +
     geom_line(
       data = data.frame(x = c(0, 1), y = c(0, 1)),
       mapping = aes_(x = ~ x, y = ~ y),
@@ -561,6 +557,12 @@ ppc_ecdf_intervals <- function(
       data = function(x) dplyr::filter(x, .data$is_y),
       aes_(y = ~ value)
     )
+  }
+  if (any(!data$is_y)) {
+    fig <- fig + geom_step(
+        data = function(x) dplyr::filter(x, !.data$is_y),
+        aes_(group = ~ rep_id, y = ~ value, color = ~ rep_id)
+      )
   }
   fig + scale_y_continuous(breaks = c(0, 0.5, 1)) +
     yaxis_title(FALSE) +
