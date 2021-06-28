@@ -135,16 +135,17 @@ comparison_data <- function(y, yrep, pit, K) {
       K <- length(y)
     }
     else if (!missing(pit)) {
-      K = ncol(pit)
+      K <- ncol(pit)
     }
     else {
-      K = ncol(yrep)
+      K <- ncol(yrep)
     }
   }
   z <- seq(0,1, length.out = K + 1)
   if (!missing(pit)) {
     pit <- validate_pit(pit)
     ecdfs <- t(apply(pit, 1, function(row) ecdf(row)(z)))
+    # work around to adhere to the melt_and_stack-format with only "yrep".
     ecdfs <- melt_and_stack(ecdfs[1,], ecdfs)
     ecdfs <- dplyr::filter(ecdfs, !ecdfs$is_y)
   } else if (missing(y)) {
@@ -154,14 +155,17 @@ comparison_data <- function(y, yrep, pit, K) {
                   "multiple rows to allow for sample comparison.", sep=""))
     }
     ecdfs <- t(apply(pit, 1, function(row) ecdf(row)(z)))
+    # work around to adhere to the melt_and_stack-format with only "yrep".
     ecdfs <- melt_and_stack(ecdfs[1,], ecdfs)
     ecdfs <- dplyr::filter(ecdfs, !ecdfs$is_y)
   } else {
     y <- validate_y(y)
     yrep <- validate_yrep(yrep, y, match_ncols = FALSE)
-    pit <- u_scale(rbind(y, yrep))
-    ecdfs <- t(apply(pit, 1, function(row) ecdf(row)(z)))
-    ecdfs <- melt_and_stack(ecdfs[1, ], ecdfs[2:nrow(yrep) + 1,])
+    pit <- empirical_pit(y, yrep)
+    ecdfs <- ecdf(pit)(z)
+    # work around to adhere to the melt_and_stack-format with only "y".
+    ecdfs <- melt_and_stack(ecdfs, t(ecdfs))
+    ecdfs <- dplyr::filter(ecdfs, ecdf$is_y)
   }
   ecdfs
 }
@@ -523,7 +527,7 @@ ppc_ecdf_intervals <- function(
     K <- max(data$y_id)
   }
   N <- max(data$y_id)
-  L <- max(data$rep_id) + any(data$is_y)
+  L <- max(replace(molten[molten$is_y, ]$rep_id, 'NA', 0)) + any(data$is_y)
   if (missing(gamma)) {
     gamma <- adjust_gamma(
       N = N,
@@ -538,7 +542,7 @@ ppc_ecdf_intervals <- function(
     K = K,
     gamma = gamma)
   z <- 0:K / K
-  fig <- ggplot(data, mapping = aes_(x = rep(L, z))) +
+  fig <- ggplot(data, mapping = aes_(x = rep(z, L))) +
     geom_step(
       data = function(x) dplyr::filter(x, !.data$is_y),
       aes_(group = ~ variable, y = ~ value, color = ~ variable)

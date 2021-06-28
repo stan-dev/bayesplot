@@ -273,6 +273,7 @@ all_counts <- function(x, ...) {
 }
 
 adjust_gamma <- function(N, L, K=N, conf_level=0.95) {
+  print(paste(K, N, L, sep=" "))
   if (any(c(K, N, L) < 1)) {
     abort("Parameters 'N', 'L' and 'K' must be positive integers.")
   }
@@ -391,6 +392,11 @@ ecdf_intervals <- function(N, L, K, gamma) {
 # Transform observations in 'x' into their corresponding fractional ranks.
 u_scale <- function(x) {
   array(rank(x) / length(x), dim = dim(x), dimnames = dimnames(x))
+}
+
+
+empirical_pit <- function(y, yrep) {
+  apply(outer(yrep, y, "<="), 3, sum) / length(yrep)
 }
 
 # labels ----------------------------------------------------------------
