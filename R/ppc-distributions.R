@@ -163,7 +163,7 @@ comparison_data <- function(y, yrep, pit, K) {
     yrep <- validate_yrep(yrep, y, match_ncols = FALSE)
     pit <- empirical_pit(y, yrep)
     ecdfs <- ecdf(pit)(z)
-    # work around to adhere to the melt_and_stack-format with only "y".
+    # work around to adhere to the melt_and_stack-format with only "y" .
     ecdfs <- melt_and_stack(ecdfs, t(ecdfs))
     ecdfs <- dplyr::filter(ecdfs, ecdfs$is_y)
   }
