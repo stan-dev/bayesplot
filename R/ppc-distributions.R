@@ -556,8 +556,8 @@ ppc_ecdf_intervals <- function(
       alpha = 0.5 * alpha,
       color = 'gray'
     ) +
-    geom_step(data = limits, aes_(x = z, y = ~ upper / N), color = 'gray') +
-    geom_step(data = limits, aes_(x = z, y = ~ lower / N), color = 'gray')
+    geom_step(data = data.frame(limits), aes_(x = z, y = ~ upper / N), color = 'gray') +
+    geom_step(data = data.frame(limits), aes_(x = z, y = ~ lower / N), color = 'gray')
   if (any(data$is_y)) {
     fig <- fig + geom_step(
       data = function(x) dplyr::filter(x, .data$is_y),
