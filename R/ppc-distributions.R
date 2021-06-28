@@ -165,7 +165,7 @@ comparison_data <- function(y, yrep, pit, K) {
     ecdfs <- ecdf(pit)(z)
     # work around to adhere to the melt_and_stack-format with only "y".
     ecdfs <- melt_and_stack(ecdfs, t(ecdfs))
-    ecdfs <- dplyr::filter(ecdfs, ecdf$is_y)
+    ecdfs <- dplyr::filter(ecdfs, ecdfs$is_y)
   }
   ecdfs
 }
