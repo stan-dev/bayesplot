@@ -566,7 +566,7 @@ ppc_ecdf_intervals <- function(
       )
   }
   fig + scale_y_continuous(breaks = c(0, 0.5, 1)) +
-    scale_color_ppc_dist() +
+    scale_color_discrete() +
     yaxis_title(FALSE) +
     xaxis_title(FALSE) +
     yaxis_ticks(FALSE) +
