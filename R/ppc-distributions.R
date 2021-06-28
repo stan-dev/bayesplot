@@ -562,7 +562,7 @@ ppc_ecdf_intervals <- function(
     fig <- fig + geom_step(
         data = function(x) dplyr::filter(x, !.data$is_y),
         aes_(x = rep(z, each = L - any(data$is_y)), group = ~ rep_id,
-             y = ~ value, color = ~ as.factor(rep_id))
+             y = ~ value, color = ~ rep_label)
       )
   }
   fig + scale_y_continuous(breaks = c(0, 0.5, 1)) +
