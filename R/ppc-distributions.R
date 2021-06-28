@@ -167,6 +167,7 @@ comparison_data <- function(y, yrep, pit, K) {
     ecdfs <- melt_and_stack(ecdfs, t(ecdfs))
     ecdfs <- dplyr::filter(ecdfs, ecdfs$is_y)
   }
+  ecdfs$rep_id[is.na(ecdfs$rep_id)] <- 0
   ecdfs
 }
 
@@ -527,7 +528,7 @@ ppc_ecdf_intervals <- function(
     K <- max(data$y_id)
   }
   N <- max(data$y_id)
-  L <- max(replace(data$rep_id, NA, 0)) + any(data$is_y)
+  L <- max(data$rep_id) + any(data$is_y)
   if (missing(gamma)) {
     gamma <- adjust_gamma(
       N = N,
@@ -545,7 +546,7 @@ ppc_ecdf_intervals <- function(
   fig <- ggplot(data, mapping = aes_(x = rep(z, L))) +
     geom_step(
       data = function(x) dplyr::filter(x, !.data$is_y),
-      aes_(group = ~ variable, y = ~ value, color = ~ variable)
+      aes_(group = ~ rep_id, y = ~ value, color = ~ rep_id)
     ) +
     geom_line(
       data = data.frame(x = c(0, 1), y = c(0, 1)),
