@@ -550,12 +550,6 @@ ppc_ecdf_intervals <- function(
     gamma = gamma)
   z <- 0:K / K
   fig <- ggplot(data) +
-    geom_line(
-      data = data.frame(x = c(0, 1), y = c(0, 1)),
-      mapping = aes_(x = ~ x, y = ~ y),
-      alpha = 0.5 * alpha,
-      color = 'gray'
-    ) +
     geom_step(data = data.frame(limits), aes_(x = z, y = ~ upper / N), color = 'gray') +
     geom_step(data = data.frame(limits), aes_(x = z, y = ~ lower / N), color = 'gray')
   if (any(data$is_y)) {
@@ -571,6 +565,7 @@ ppc_ecdf_intervals <- function(
       )
   }
   fig + scale_y_continuous(breaks = c(0, 0.5, 1)) +
+    scale_color_ppc_dist() +
     yaxis_title(FALSE) +
     xaxis_title(FALSE) +
     yaxis_ticks(FALSE) +
