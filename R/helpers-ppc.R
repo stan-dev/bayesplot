@@ -273,7 +273,6 @@ all_counts <- function(x, ...) {
 }
 
 adjust_gamma <- function(N, L, K=N, conf_level=0.95) {
-  print(paste(K, N, L, sep=" "))
   if (any(c(K, N, L) < 1)) {
     abort("Parameters 'N', 'L' and 'K' must be positive integers.")
   }
