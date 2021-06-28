@@ -527,7 +527,7 @@ ppc_ecdf_intervals <- function(
     K <- max(data$y_id)
   }
   N <- max(data$y_id)
-  L <- max(replace(molten[molten$is_y, ]$rep_id, 'NA', 0)) + any(data$is_y)
+  L <- max(replace(data[data$is_y, ]$rep_id, 'NA', 0)) + any(data$is_y)
   if (missing(gamma)) {
     gamma <- adjust_gamma(
       N = N,
