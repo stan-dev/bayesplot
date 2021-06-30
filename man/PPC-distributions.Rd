@@ -3,7 +3,6 @@
 \name{PPC-distributions}
 \alias{PPC-distributions}
 \alias{ppc_data}
-\alias{comparison_data}
 \alias{ppc_hist}
 \alias{ppc_boxplot}
 \alias{ppc_freqpoly}
@@ -13,46 +12,99 @@
 \alias{ppc_dens_overlay_grouped}
 \alias{ppc_ecdf_overlay}
 \alias{ppc_ecdf_overlay_grouped}
-\alias{ppc_ecdf_intervals}
 \alias{ppc_violin_grouped}
 \title{PPC distributions}
 \usage{
 ppc_data(y, yrep, group = NULL)
 
-comparison_data(y, yrep, pit, K)
-
 ppc_hist(y, yrep, ..., binwidth = NULL, breaks = NULL, freq = TRUE)
 
 ppc_boxplot(y, yrep, ..., notch = TRUE, size = 0.5, alpha = 1)
 
-ppc_freqpoly(y, yrep, ..., binwidth = NULL, freq = TRUE, size = 0.25,
-  alpha = 1)
+ppc_freqpoly(
+  y,
+  yrep,
+  ...,
+  binwidth = NULL,
+  freq = TRUE,
+  size = 0.25,
+  alpha = 1
+)
 
-ppc_freqpoly_grouped(y, yrep, group, ..., binwidth = NULL, freq = TRUE,
-  size = 0.25, alpha = 1)
+ppc_freqpoly_grouped(
+  y,
+  yrep,
+  group,
+  ...,
+  binwidth = NULL,
+  freq = TRUE,
+  size = 0.25,
+  alpha = 1
+)
 
 ppc_dens(y, yrep, ..., trim = FALSE, size = 0.5, alpha = 1)
 
-ppc_dens_overlay(y, yrep, ..., size = 0.25, alpha = 0.7,
-  trim = FALSE, bw = "nrd0", adjust = 1, kernel = "gaussian",
-  n_dens = 1024)
+ppc_dens_overlay(
+  y,
+  yrep,
+  ...,
+  size = 0.25,
+  alpha = 0.7,
+  trim = FALSE,
+  bw = "nrd0",
+  adjust = 1,
+  kernel = "gaussian",
+  n_dens = 1024
+)
 
-ppc_dens_overlay_grouped(y, yrep, group, ..., size = 0.25, alpha = 0.7,
-  trim = FALSE, bw = "nrd0", adjust = 1, kernel = "gaussian",
-  n_dens = 1024)
+ppc_dens_overlay_grouped(
+  y,
+  yrep,
+  group,
+  ...,
+  size = 0.25,
+  alpha = 0.7,
+  trim = FALSE,
+  bw = "nrd0",
+  adjust = 1,
+  kernel = "gaussian",
+  n_dens = 1024
+)
 
-ppc_ecdf_overlay(y, yrep, ..., discrete = FALSE, pad = TRUE,
-  size = 0.25, alpha = 0.7)
+ppc_ecdf_overlay(
+  y,
+  yrep,
+  ...,
+  discrete = FALSE,
+  pad = TRUE,
+  size = 0.25,
+  alpha = 0.7
+)
 
-ppc_ecdf_overlay_grouped(y, yrep, group, ..., discrete = FALSE,
-  pad = TRUE, size = 0.25, alpha = 0.7)
+ppc_ecdf_overlay_grouped(
+  y,
+  yrep,
+  group,
+  ...,
+  discrete = FALSE,
+  pad = TRUE,
+  size = 0.25,
+  alpha = 0.7
+)
 
-ppc_ecdf_intervals(y, yrep, pit, gamma, K, ..., conf_level = 0.95,
-  size = 0.25, alpha = 0.7)
-
-ppc_violin_grouped(y, yrep, group, ..., probs = c(0.1, 0.5, 0.9),
-  size = 1, alpha = 1, y_draw = c("violin", "points", "both"),
-  y_size = 1, y_alpha = 1, y_jitter = 0.1)
+ppc_violin_grouped(
+  y,
+  yrep,
+  group,
+  ...,
+  probs = c(0.1, 0.5, 0.9),
+  size = 1,
+  alpha = 1,
+  y_draw = c("violin", "points", "both"),
+  y_size = 1,
+  y_alpha = 1,
+  y_jitter = 0.1
+)
 }
 \arguments{
 \item{y}{A vector of observations. See \strong{Details}.}
@@ -67,16 +119,6 @@ sense. See \strong{Details} for additional instructions.}
 \item{group}{A grouping variable (a vector or factor) the same length as
 \code{y}. Each value in \code{group} is interpreted as the group level
 pertaining to the corresponding value of \code{y}.}
-
-\item{pit}{For 'ppc_ecdf_intervals' and 'ppc_ecdf_diff_intervals', the PIT
-values of one or more samples can be provided directly making 'y' and
-yrep' optional.}
-
-\item{K, }{For 'ppc_ecdf_intervals' and 'ppc_ecdf_diff_intervals', number of
-equally spaced evaluation points for the ECDF plot. Affects the granularity
-of the plot and can significantly speed up the computation of the confidence
-bands. The default is 'K = ncol(yrep)', or 'K = ncol(pit)' if PIT values are
-provided instead.}
 
 \item{...}{Currently unused.}
 
@@ -111,9 +153,6 @@ passed to \code{\link[ggplot2:stat_ecdf]{ggplot2::stat_ecdf()}}. If \code{discre
 
 \item{pad}{A logical scalar passed to \code{\link[ggplot2:stat_ecdf]{ggplot2::stat_ecdf()}}.}
 
-\item{conf_level}{For 'ppc_ecdf_intervals' and 'ppc_ecdf_diff_intervals',
-the desired simultaneous confidence level of the bands to be drawn.}
-
 \item{probs}{A numeric vector passed to \code{\link[ggplot2:geom_violin]{ggplot2::geom_violin()}}'s
 \code{draw_quantiles} argument to specify at which quantiles to draw
 horizontal lines. Set to \code{NULL} to remove the lines.}
@@ -126,15 +165,11 @@ horizontal lines. Set to \code{NULL} to remove the lines.}
 to to the \code{size}, \code{alpha}, and \code{width} arguments of \code{\link[ggplot2:geom_jitter]{ggplot2::geom_jitter()}}
 to control the appearance of \code{y} points. The default of \code{y_jitter=NULL}
 will let \strong{ggplot2} determine the amount of jitter.}
-
-\item{bw, adjust, kernel, n_dens}{Optional arguments passed to
-\code{\link[stats:density]{stats::density()}} to override default kernel density estimation
-parameters. \code{n_dens} defaults to \code{1024}.}
 }
 \value{
 The plotting functions return a ggplot object that can be further
 customized using the \strong{ggplot2} package. The functions with suffix
-\code{_data()} return the data that would have been drawn by the plotting
+\verb{_data()} return the data that would have been drawn by the plotting
 function.
 }
 \description{
@@ -151,7 +186,7 @@ For Binomial data, the plots will typically be most useful if
 \section{Plot Descriptions}{
 
 \describe{
-\item{\code{ppc_hist(), ppc_freqpoly(), ppc_dens(), ppc_boxplot()}}{
+\item{\verb{ppc_hist(), ppc_freqpoly(), ppc_dens(), ppc_boxplot()}}{
 A separate histogram, shaded frequency polygon, smoothed kernel density
 estimate, or box and whiskers plot is displayed for \code{y} and each
 dataset (row) in \code{yrep}. For these plots \code{yrep} should therefore
@@ -163,7 +198,7 @@ variable for \code{y} and each dataset (row) in \code{yrep}. For this plot
 \code{yrep} should therefore contain only a small number of rows. See the
 \strong{Examples} section.
 }
-\item{\code{ppc_ecdf_overlay(), ppc_dens_overlay(), ppc_ecdf_overlay_grouped(), ppc_dens_overlay_grouped()}}{
+\item{\verb{ppc_ecdf_overlay(), ppc_dens_overlay(), ppc_ecdf_overlay_grouped(), ppc_dens_overlay_grouped()}}{
 Kernel density or empirical CDF estimates of each dataset (row) in
 \code{yrep} are overlaid, with the distribution of \code{y} itself on top
 (and in a darker shade). When using \code{ppc_ecdf_overlay()} with discrete
@@ -244,11 +279,14 @@ A., and Rubin, D. B. (2013). \emph{Bayesian Data Analysis.} Chapman & Hall/CRC
 Press, London, third edition. (Ch. 6)
 }
 \seealso{
-Other PPCs: \code{\link{PPC-censoring}},
-  \code{\link{PPC-discrete}}, \code{\link{PPC-errors}},
-  \code{\link{PPC-intervals}}, \code{\link{PPC-loo}},
-  \code{\link{PPC-overview}},
-  \code{\link{PPC-scatterplots}},
-  \code{\link{PPC-test-statistics}}
+Other PPCs: 
+\code{\link{PPC-censoring}},
+\code{\link{PPC-discrete}},
+\code{\link{PPC-errors}},
+\code{\link{PPC-intervals}},
+\code{\link{PPC-loo}},
+\code{\link{PPC-overview}},
+\code{\link{PPC-scatterplots}},
+\code{\link{PPC-test-statistics}}
 }
 \concept{PPCs}

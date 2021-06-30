@@ -3,6 +3,8 @@
 \name{PPC-intervals}
 \alias{PPC-intervals}
 \alias{ppc_intervals}
+\alias{ppc_ecdf_intervals}
+\alias{ppc_ecdf_intervals_difference}
 \alias{ppc_intervals_grouped}
 \alias{ppc_ribbon}
 \alias{ppc_ribbon_grouped}
@@ -19,6 +21,34 @@ ppc_intervals(
   prob_outer = 0.9,
   size = 1,
   fatten = 3
+)
+
+ppc_ecdf_intervals(
+  y,
+  yrep,
+  pit,
+  gamma,
+  gamma_outer,
+  K,
+  ...,
+  prob = 0.5,
+  prob_outer = 0.9,
+  size = 1,
+  alpha = 0.33
+)
+
+ppc_ecdf_intervals_difference(
+  y,
+  yrep,
+  pit,
+  gamma,
+  gamma_outer,
+  K,
+  ...,
+  prob = 0.5,
+  prob_outer = 0.9,
+  size = 1,
+  alpha = 0.33
 )
 
 ppc_intervals_grouped(
@@ -101,16 +131,27 @@ is missing or \code{NULL}, then \code{1:length(y)} is used for the x-axis.}
 probability mass to include in the inner and outer intervals. The defaults
 are \code{prob=0.5} and \code{prob_outer=0.9}.}
 
+\item{pit}{For 'ppc_ecdf_intervals' and 'ppc_ecdf_intervals_difference', the
+PIT values of one or more samples can be provided directly causing'y' and
+'yrep' to be ignored.}
+
+\item{K, }{For 'ppc_ecdf_intervals' and 'ppc_ecdf_intervals_difference',
+number of uniformly spaced evaluation points for the ECDF or ECDFs. Affects
+the granularity of the plot and can significantly speed up the computation
+of the simultaneous confidence bands. Defaults to 'length(y)',
+'K = ncol(yrep)', or lastly to 'K = ncol(pit)' depending on which one is
+provided.}
+
+\item{alpha, size, fatten}{Arguments passed to geoms. For ribbon plots \code{alpha}
+and \code{size} are passed to \code{\link[ggplot2:geom_ribbon]{ggplot2::geom_ribbon()}}. For interval plots
+\code{size} and \code{fatten} are passed to \code{\link[ggplot2:geom_linerange]{ggplot2::geom_pointrange()}}.}
+
 \item{group}{A grouping variable (a vector or factor) the same length as
 \code{y}. Each value in \code{group} is interpreted as the group level
 pertaining to the corresponding value of \code{y}.}
 
 \item{facet_args}{An optional list of  arguments (other than \code{facets})
 passed to \code{\link[ggplot2:facet_wrap]{ggplot2::facet_wrap()}} to control faceting.}
-
-\item{alpha, size, fatten}{Arguments passed to geoms. For ribbon plots \code{alpha}
-and \code{size} are passed to \code{\link[ggplot2:geom_ribbon]{ggplot2::geom_ribbon()}}. For interval plots
-\code{size} and \code{fatten} are passed to \code{\link[ggplot2:geom_linerange]{ggplot2::geom_pointrange()}}.}
 
 \item{y_draw}{For ribbon plots only, a string specifying how to draw \code{y}. Can
 be \code{"line"} (the default), \code{"points"}, or \code{"both"}.}
