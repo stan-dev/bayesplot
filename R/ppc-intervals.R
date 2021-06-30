@@ -175,6 +175,14 @@ ppc_ecdf_intervals <- function(
       conf_level = prob_outer
     )
   }
+  if (missing(gamma)) {
+    gamma <- adjust_gamma(
+      N = N,
+      L = L,
+      K = K,
+      conf_level = prob
+    )
+  }
   limits <- ecdf_intervals(
     N = N,
     L = L,
@@ -262,6 +270,14 @@ ppc_ecdf_intervals_difference <- function(
       L = L,
       K = K,
       conf_level = prob_outer
+    )
+  }
+  if (missing(gamma)) {
+    gamma <- adjust_gamma(
+      N = N,
+      L = L,
+      K = K,
+      conf_level = prob
     )
   }
   limits <- ecdf_intervals(
