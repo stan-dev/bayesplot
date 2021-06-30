@@ -72,7 +72,7 @@ validate_yrep <- function(yrep, y, match_ncols = TRUE) {
 #' a numeric matrix with no NAs and that the provided values fall in [0,1].
 #'
 #' @param pit The 'pit' object provided by the user.
-#' @returns Either throws an error or returns a numeric matrix.
+#' @return Either throws an error or returns a numeric matrix.
 #' @noRd
 validate_pit <- function(pit) {
   stopifnot(is.matrix(pit), is.numeric(yrep))
