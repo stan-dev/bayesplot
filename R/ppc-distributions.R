@@ -501,16 +501,17 @@ ppc_ecdf_overlay_grouped <- function(
 
 #' @export
 #' @rdname PPC-distributions
-#' @param pit For 'ppc_ecdf_intervals' and 'ppc_ecdf_diff_intervals', the PIT
-#'   values of one or more samples can be provided directly making 'y' and
+#' @param pit For 'ppc_ecdf_intervals' and 'ppc_ecdf_intervals_difference', the
+#'   PIT values of one or more samples can be provided directly making 'y' and
 #'   yrep' optional.
-#' @param conf_level For 'ppc_ecdf_intervals' and 'ppc_ecdf_diff_intervals',
-#'   the desired simultaneous confidence level of the bands to be drawn.
-#' @param K, For 'ppc_ecdf_intervals' and 'ppc_ecdf_diff_intervals', number of
-#'   equally spaced evaluation points for the ECDF plot. Affects the granularity
-#' of the plot and can significantly speed up the computation of the confidence
-#' bands. The default is 'K = ncol(yrep)', or 'K = ncol(pit)' if PIT values are
-#' provided instead.
+#' @param conf_level For 'ppc_ecdf_intervals' and
+#'   'ppc_ecdf_intervals_difference', the desired simultaneous confidence level
+#'   of the bands to be drawn.
+#' @param K, For 'ppc_ecdf_intervals' and 'ppc_ecdf_intervals_difference',
+#'   number of equally spaced evaluation points for the ECDF plot. Affects the
+#'   granularity of the plot and can significantly speed up the computation of
+#'   the confidencebands. The default is 'K = ncol(yrep)', or 'K = ncol(pit)'
+#'   if PIT values are provided instead.
 ppc_ecdf_intervals <- function(
   y,
   yrep,
@@ -563,6 +564,71 @@ ppc_ecdf_intervals <- function(
         data = function(x) dplyr::filter(x, !.data$is_y),
         aes_(x = rep(z, each = L - any(data$is_y)), group = ~ rep_id,
              y = ~ value, color = ~ rep_label)
+      )
+  }
+  fig + scale_y_continuous(breaks = c(0, 0.5, 1)) +
+    scale_color_discrete() +
+    yaxis_title(FALSE) +
+    xaxis_title(FALSE) +
+    yaxis_ticks(FALSE) +
+    bayesplot_theme_get()
+}
+
+
+#' @export
+#' @rdname PPC-distributions
+ppc_ecdf_intervals_difference <- function(
+  y,
+  yrep,
+  pit,
+  gamma,
+  K,
+  ...,
+  conf_level = 0.95,
+  size = 0.25,
+  alpha = 0.7
+) {
+  check_ignored_arguments(...)
+  data <- comparison_data(y, yrep, pit, K)
+  if (missing(K)) {
+    K <- max(data$y_id) - 1
+  }
+  if (!missing(y)) {
+    N <- length(y)
+  } else if (!missing(yrep)) {
+    N <- ncol(yrep)
+  } else {
+    N <- ncol(pit)
+  }
+  L <- max(data$rep_id) + any(data$is_y)
+  if (missing(gamma)) {
+    gamma <- adjust_gamma(
+      N = N,
+      L = L,
+      K = K,
+      conf_level = conf_level
+    )
+  }
+  limits <- ecdf_intervals(
+    N = N,
+    L = L,
+    K = K,
+    gamma = gamma)
+  z <- 0:K / K
+  fig <- ggplot(data) +
+    geom_step(data = data.frame(limits), aes_(x = z, y = ~ upper / N - z), color = 'gray') +
+    geom_step(data = data.frame(limits), aes_(x = z, y = ~ lower / N - z), color = 'gray')
+  if (any(data$is_y)) {
+    fig <- fig + geom_step(
+      data = function(x) dplyr::filter(x, .data$is_y),
+      aes_(x = z, y = ~ value - z)
+    )
+  }
+  if (any(!data$is_y)) {
+    fig <- fig + geom_step(
+        data = function(x) dplyr::filter(x, !.data$is_y),
+        aes_(x = rep(z, each = L - any(data$is_y)), group = ~ rep_id,
+             y = ~ value - z, color = ~ rep_label)
       )
   }
   fig + scale_y_continuous(breaks = c(0, 0.5, 1)) +
