@@ -385,6 +385,8 @@ ecdf_intervals <- function(N, L, K, gamma) {
     lims$lower <- qhyper(gamma / 2, N, n, k)
     lims$upper <- qhyper(1 - gamma / 2, N, n, k)
   }
+  lims$lower <- c(rep(lims$lower[1:K], each=2), lims$lower[K + 1])
+  lims$upper <- c(rep(lims$upper[1:K], each=2), lims$upper[K + 1])
   lims
 }
 
