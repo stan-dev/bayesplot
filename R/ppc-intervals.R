@@ -290,13 +290,13 @@ ppc_ecdf_intervals_difference <- function(
     L = L,
     K = K,
     gamma = gamma_outer)
-  z <- 0:K / K
+  z <- seq(0,1, length.out = K + 1)
   fig <- ggplot(data) +
     geom_ribbon(
       data = data.frame(limits_outer),
       aes_(
         x = c(0, rep(z[2:(K + 1)], each = 2)),
-        ymax = ~ upper / N - c(0, rep(z[2:(K + 1)], each = 2)),
+        ymax = ~ upper / N - c(0, rep(z[1:K], each = 2)),
         ymin = ~ lower / N - c(0, rep(z[2:(K + 1)], each = 2))
       ),
       alpha = alpha,
@@ -305,8 +305,8 @@ ppc_ecdf_intervals_difference <- function(
       data = data.frame(limits),
       aes_(
         x = c(0, rep(z[2:(K + 1)], each = 2)),
-        ymax = ~ upper / N - c(0, rep(z[2:(K + 1)], each = 2)),
-        ymin = ~ lower / N - c(0, rep(z[2:(K + 1)], each = 2))
+        ymax = ~ upper / N - c(rep(z[1:K], each = 2), 1),
+        ymin = ~ lower / N - c(rep(z[1:K], each = 2), 1)
       ),
       alpha = alpha,
       size = size)
