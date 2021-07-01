@@ -233,7 +233,12 @@ ppc_ecdf_intervals <- function(
       )
   }
   fig + scale_y_continuous(breaks = c(0, 0.5, 1)) +
-    scale_color_discrete("") +
+    scale_color_discrete(
+      name = "")
+    ) +
+    scale_fill_discrete(
+      name = "")
+    ) +
     yaxis_title(FALSE) +
     xaxis_title(FALSE) +
     yaxis_ticks(FALSE) +
@@ -336,7 +341,12 @@ ppc_ecdf_intervals_difference <- function(
       )
   }
   fig + scale_y_continuous(breaks = c(0, 0.5, 1)) +
-    scale_color_discrete("") +
+    scale_color_discrete(
+      name = "")
+    ) +
+    scale_fill_discrete(
+      name = "")
+    ) +
     yaxis_title(FALSE) +
     xaxis_title(FALSE) +
     yaxis_ticks(FALSE) +
