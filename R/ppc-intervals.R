@@ -203,7 +203,8 @@ ppc_ecdf_intervals <- function(
         ymin = ~ lower / N
       ),
       alpha = alpha,
-      size = size) +
+      size = size,
+      colour = "theoretical CDF") +
     geom_ribbon(
       data = data.frame(limits),
       aes_(
@@ -212,12 +213,14 @@ ppc_ecdf_intervals <- function(
         ymin = ~ lower / N
       ),
       alpha = alpha,
-      size = size)
+      size = size,
+      colour = "theoretical CDF")
   if (any(data$is_y)) {
     fig <- fig + geom_step(
       data = function(x) dplyr::filter(x, .data$is_y),
       aes_(x = z, y = ~ value),
-      size = size
+      size = size,
+      colour = "ECDF"
     )
   }
   if (any(!data$is_y)) {
@@ -300,7 +303,8 @@ ppc_ecdf_intervals_difference <- function(
         ymin = ~ lower / N - c(rep(z[1:K], each = 2), 1)
       ),
       alpha = alpha,
-      size = size) +
+      size = size,
+      colour = "theoretical CDF") +
     geom_ribbon(
       data = data.frame(limits),
       aes_(
@@ -309,11 +313,13 @@ ppc_ecdf_intervals_difference <- function(
         ymin = ~ lower / N - c(rep(z[1:K], each = 2), 1)
       ),
       alpha = alpha,
-      size = size)
+      size = size,
+      colour = "theoretical CDF")
   if (any(data$is_y)) {
     fig <- fig + geom_step(
       data = function(x) dplyr::filter(x, .data$is_y),
-      aes_(x = z, y = ~ value - z)
+      aes_(x = z, y = ~ value - z),
+      colour = "ECDF"
     )
   }
   if (any(!data$is_y)) {
