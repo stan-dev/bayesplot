@@ -201,7 +201,7 @@ ppc_ecdf_intervals <- function(
         x = c(0, rep(z[2:(K + 1)], each = 2)),
         ymax = ~ upper / N,
         ymin = ~ lower / N,
-        colour = "theoretical CDF",
+        color = "theoretical CDF",
         fill = "theoretical CDF"
       ),
       alpha = alpha,
@@ -212,7 +212,7 @@ ppc_ecdf_intervals <- function(
         x = c(0, rep(z[2:(K + 1)], each = 2)),
         ymax = ~ upper / N,
         ymin = ~ lower / N,
-        colour = "theoretical CDF",
+        color = "theoretical CDF",
         fill = "theoretical CDF"
       ),
       alpha = alpha,
@@ -220,7 +220,7 @@ ppc_ecdf_intervals <- function(
   if (any(data$is_y)) {
     fig <- fig + geom_step(
       data = function(x) dplyr::filter(x, .data$is_y),
-      aes_(x = z, y = ~ value, colour = "ECDF"),
+      aes_(x = z, y = ~ value, color = "ECDF"),
       size = size
     )
   }
@@ -233,7 +233,7 @@ ppc_ecdf_intervals <- function(
       )
   }
   fig + scale_y_continuous(breaks = c(0, 0.5, 1)) +
-    scale_color_discrete() +
+    scale_color_discrete("") +
     yaxis_title(FALSE) +
     xaxis_title(FALSE) +
     yaxis_ticks(FALSE) +
@@ -302,7 +302,8 @@ ppc_ecdf_intervals_difference <- function(
         x = c(0, rep(z[2:(K + 1)], each = 2)),
         ymax = ~ upper / N - c(rep(z[1:K], each = 2), 1),
         ymin = ~ lower / N - c(rep(z[1:K], each = 2), 1),
-        colour = "theoretical CDF"
+        colour = "theoretical CDF",
+        fill = "theoretical CDF"
       ),
       alpha = alpha,
       size = size) +
@@ -312,7 +313,8 @@ ppc_ecdf_intervals_difference <- function(
         x = c(0, rep(z[2:(K + 1)], each = 2)),
         ymax = ~ upper / N - c(rep(z[1:K], each = 2), 1),
         ymin = ~ lower / N - c(rep(z[1:K], each = 2), 1),
-        colour = "theoretical CDF"
+        colour = "theoretical CDF",
+        fill = "theoretical CDF"
       ),
       alpha = alpha,
       size = size)
@@ -334,7 +336,7 @@ ppc_ecdf_intervals_difference <- function(
       )
   }
   fig + scale_y_continuous(breaks = c(0, 0.5, 1)) +
-    scale_color_discrete() +
+    scale_color_discrete("") +
     yaxis_title(FALSE) +
     xaxis_title(FALSE) +
     yaxis_ticks(FALSE) +
