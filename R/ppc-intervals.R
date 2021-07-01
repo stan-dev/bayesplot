@@ -200,27 +200,26 @@ ppc_ecdf_intervals <- function(
       aes_(
         x = c(0, rep(z[2:(K + 1)], each = 2)),
         ymax = ~ upper / N,
-        ymin = ~ lower / N
+        ymin = ~ lower / N,
+        colour = "theoretical CDF"
       ),
       alpha = alpha,
-      size = size,
-      colour = "theoretical CDF") +
+      size = size) +
     geom_ribbon(
       data = data.frame(limits),
       aes_(
         x = c(0, rep(z[2:(K + 1)], each = 2)),
         ymax = ~ upper / N,
-        ymin = ~ lower / N
+        ymin = ~ lower / N,
+        colour = "theoretical CDF"
       ),
       alpha = alpha,
-      size = size,
-      colour = "theoretical CDF")
+      size = size)
   if (any(data$is_y)) {
     fig <- fig + geom_step(
       data = function(x) dplyr::filter(x, .data$is_y),
-      aes_(x = z, y = ~ value),
-      size = size,
-      colour = "ECDF"
+      aes_(x = z, y = ~ value, colour = "ECDF"),
+      size = size
     )
   }
   if (any(!data$is_y)) {
@@ -300,26 +299,25 @@ ppc_ecdf_intervals_difference <- function(
       aes_(
         x = c(0, rep(z[2:(K + 1)], each = 2)),
         ymax = ~ upper / N - c(rep(z[1:K], each = 2), 1),
-        ymin = ~ lower / N - c(rep(z[1:K], each = 2), 1)
+        ymin = ~ lower / N - c(rep(z[1:K], each = 2), 1),
+        colour = "theoretical CDF"
       ),
       alpha = alpha,
-      size = size,
-      colour = "theoretical CDF") +
+      size = size) +
     geom_ribbon(
       data = data.frame(limits),
       aes_(
         x = c(0, rep(z[2:(K + 1)], each = 2)),
         ymax = ~ upper / N - c(rep(z[1:K], each = 2), 1),
-        ymin = ~ lower / N - c(rep(z[1:K], each = 2), 1)
+        ymin = ~ lower / N - c(rep(z[1:K], each = 2), 1),
+        colour = "theoretical CDF"
       ),
       alpha = alpha,
-      size = size,
-      colour = "theoretical CDF")
+      size = size)
   if (any(data$is_y)) {
     fig <- fig + geom_step(
       data = function(x) dplyr::filter(x, .data$is_y),
-      aes_(x = z, y = ~ value - z),
-      colour = "ECDF"
+      aes_(x = z, y = ~ value - z, colour = "ECDF")
     )
   }
   if (any(!data$is_y)) {
