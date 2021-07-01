@@ -201,7 +201,8 @@ ppc_ecdf_intervals <- function(
         x = c(0, rep(z[2:(K + 1)], each = 2)),
         ymax = ~ upper / N,
         ymin = ~ lower / N,
-        colour = "theoretical CDF"
+        colour = "theoretical CDF",
+        fill = "theoretical CDF"
       ),
       alpha = alpha,
       size = size) +
@@ -211,7 +212,8 @@ ppc_ecdf_intervals <- function(
         x = c(0, rep(z[2:(K + 1)], each = 2)),
         ymax = ~ upper / N,
         ymin = ~ lower / N,
-        colour = "theoretical CDF"
+        colour = "theoretical CDF",
+        fill = "theoretical CDF"
       ),
       alpha = alpha,
       size = size)
