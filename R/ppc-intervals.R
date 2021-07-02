@@ -200,7 +200,9 @@ ppc_ecdf_intervals <- function(
       aes_(
         x = c(0, rep(z[2:(K + 1)], each = 2)),
         ymax = ~ upper / N,
-        ymin = ~ lower / N
+        ymin = ~ lower / N,
+        color = "theoretical CDF",
+        fill = "theoretical CDF"
       ),
       alpha = alpha,
       size = size) +
@@ -209,14 +211,16 @@ ppc_ecdf_intervals <- function(
       aes_(
         x = c(0, rep(z[2:(K + 1)], each = 2)),
         ymax = ~ upper / N,
-        ymin = ~ lower / N
+        ymin = ~ lower / N,
+        color = "theoretical CDF",
+        fill = "theoretical CDF"
       ),
       alpha = alpha,
       size = size)
   if (any(data$is_y)) {
     fig <- fig + geom_step(
       data = function(x) dplyr::filter(x, .data$is_y),
-      aes_(x = z, y = ~ value),
+      aes_(x = z, y = ~ value, color = "ECDF"),
       size = size
     )
   }
@@ -229,7 +233,12 @@ ppc_ecdf_intervals <- function(
       )
   }
   fig + scale_y_continuous(breaks = c(0, 0.5, 1)) +
-    scale_color_discrete() +
+    scale_color_discrete(
+      name = ""
+    ) +
+    scale_fill_discrete(
+      name = ""
+    ) +
     yaxis_title(FALSE) +
     xaxis_title(FALSE) +
     yaxis_ticks(FALSE) +
@@ -297,7 +306,9 @@ ppc_ecdf_intervals_difference <- function(
       aes_(
         x = c(0, rep(z[2:(K + 1)], each = 2)),
         ymax = ~ upper / N - c(rep(z[1:K], each = 2), 1),
-        ymin = ~ lower / N - c(rep(z[1:K], each = 2), 1)
+        ymin = ~ lower / N - c(rep(z[1:K], each = 2), 1),
+        color = "theoretical CDF",
+        fill = "theoretical CDF"
       ),
       alpha = alpha,
       size = size) +
@@ -306,14 +317,16 @@ ppc_ecdf_intervals_difference <- function(
       aes_(
         x = c(0, rep(z[2:(K + 1)], each = 2)),
         ymax = ~ upper / N - c(rep(z[1:K], each = 2), 1),
-        ymin = ~ lower / N - c(rep(z[1:K], each = 2), 1)
+        ymin = ~ lower / N - c(rep(z[1:K], each = 2), 1),
+        color = "theoretical CDF",
+        fill = "theoretical CDF"
       ),
       alpha = alpha,
       size = size)
   if (any(data$is_y)) {
     fig <- fig + geom_step(
       data = function(x) dplyr::filter(x, .data$is_y),
-      aes_(x = z, y = ~ value - z)
+      aes_(x = z, y = ~ value - z, color = "ECDF")
     )
   }
   if (any(!data$is_y)) {
@@ -328,7 +341,12 @@ ppc_ecdf_intervals_difference <- function(
       )
   }
   fig + scale_y_continuous(breaks = c(0, 0.5, 1)) +
-    scale_color_discrete() +
+    scale_color_discrete(
+      name = ""
+    ) +
+    scale_fill_discrete(
+      name = ""
+    ) +
     yaxis_title(FALSE) +
     xaxis_title(FALSE) +
     yaxis_ticks(FALSE) +
