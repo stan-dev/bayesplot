@@ -75,7 +75,7 @@ validate_yrep <- function(yrep, y, match_ncols = TRUE) {
 #' @return Either throws an error or returns a numeric matrix.
 #' @noRd
 validate_pit <- function(pit) {
-  stopifnot(is.matrix(pit), is.numeric(yrep))
+  stopifnot(is.matrix(pit), is.numeric(pit))
   if (any(pit < 0) || any(pit > 1)) {
     abort("'pit' values expected to lie between 0 and 1 (inclusive).")
   }
