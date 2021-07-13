@@ -68,7 +68,7 @@ validate_yrep <- function(yrep, y, match_ncols = TRUE) {
 
 #' Validate PIT
 #'
-#' Checks that the probability integral transformation (PIT) values from
+#' Checks that the provided probability integral transformation (PIT) values are
 #' a numeric matrix with no NAs and that the provided values fall in [0,1].
 #'
 #' @param pit The 'pit' object provided by the user.
@@ -272,6 +272,7 @@ all_counts <- function(x, ...) {
   all_whole_number(x, ...) && min(x) >= 0
 }
 
+
 adjust_gamma <- function(N, L, K=N, conf_level=0.95) {
   if (any(c(K, N, L) < 1)) {
     abort("Parameters 'N', 'L' and 'K' must be positive integers.")
@@ -288,6 +289,11 @@ adjust_gamma <- function(N, L, K=N, conf_level=0.95) {
   gamma
 }
 
+# Adjust coverage parameter to find silmultaneous confidence intervals for the
+# ECDF of a sample from the uniform distribution.
+# N - length of samples
+# K - number of equally spaced evaluation points, i.e. the right ends of the
+# partition intervals.
 adjust_gamma_optimize <- function(N, K, conf_level=0.95) {
   target <- function(gamma, conf_level, N, K) {
     z <- 1:(K - 1) / K
@@ -316,6 +322,13 @@ adjust_gamma_optimize <- function(N, K, conf_level=0.95) {
   optimize(target, c(0, 1 - conf_level), conf_level, N = N, K = K)$minimum
 }
 
+# Adjust coverage parameter to find silmultaneous confidence intervals for the
+# ECDFs of multiple samples (chains) from the uniform distribution.
+# N - length of samples (chains).
+# L - number of samples (chains).
+# K - number of equally spaced evaluation points, i.e. the right ends of the
+# partition intervals.
+# M - number of simulations used to determine the 'conf_level' middle quantile.
 adjust_gamma_simulate <-function(N, L, K, conf_level=0.95, M=5000) {
   gamma <- numeric(M)
   z <- (1:(K - 1)) / K
@@ -360,7 +373,9 @@ p_interior <- function(p_int, x1, x2, z1, z2, gamma, N) {
   list(p_int = rowSums(p_x2_int), x1 = x2)
 }
 
-# alpha percent of the trials are allowed to be rejected
+# 100 * `alpha` percent of the trials are allowed to be rejected.
+# In case of ties, return the largest value dominating at most
+# 100 * (alpha + tol) percent of the values.
 alpha_quantile <- function(gamma, alpha, tol = 0.001) {
   a <- unname(quantile(gamma, probs = alpha))
   a_tol <- unname(quantile(gamma, probs = alpha + tol))
@@ -373,6 +388,13 @@ alpha_quantile <- function(gamma, alpha, tol = 0.001) {
   a
 }
 
+# Compute simultaneous confidence intervals for one or more samples from the
+# standard uniform distribution.
+# N - sample length
+# L - number of samples
+# K - size of uniform partition defining the ECDF evaluation points.
+# gamma - coverage parameter for the marginal distribution (binomial for
+# one sample and hypergeometric for multiple rank transformed chains).
 ecdf_intervals <- function(N, L, K, gamma) {
   lims <- list()
   z <- seq(0,1, length.out = K + 1)
@@ -395,7 +417,8 @@ u_scale <- function(x) {
   array(rank(x) / length(x), dim = dim(x), dimnames = dimnames(x))
 }
 
-
+# for each value in 'y', compute the fractional ranks (empirical pit values)
+# with respect to 'yrep'.
 empirical_pit <- function(y, yrep) {
   apply(outer(yrep, y, "<="), 3, sum) / length(yrep)
 }

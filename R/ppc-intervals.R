@@ -233,11 +233,22 @@ ppc_ecdf_intervals <- function(
       )
   }
   fig + scale_y_continuous(breaks = c(0, 0.5, 1)) +
-    scale_color_discrete(
-      name = ""
+    scale_color_manual(
+      name = "",
+      values = set_names(
+        get_color(c("lh", "dh")),
+        c("theoretical CDF", "ECDF")),
+      labels = set_names(
+        c(expression(italic(ECDF)), expression(italic("theoretical CDF"))),
+        c("ECDF", "theoretical ECDF"))
     ) +
-    scale_fill_discrete(
-      name = ""
+    scale_fill_manual(
+      name = "",
+      values = c(yrep = get_color("l"),
+                 y = NA),
+      labels = set_names(
+        c(expression(italic(ECDF)), expression(italic("theoretical CDF"))),
+        c("ECDF", "theoretical ECDF"))
     ) +
     yaxis_title(FALSE) +
     xaxis_title(FALSE) +
@@ -340,12 +351,21 @@ ppc_ecdf_intervals_difference <- function(
         )
       )
   }
-  fig + scale_y_continuous(breaks = c(0, 0.5, 1)) +
-    scale_color_discrete(
-      name = ""
+  fig +
+    scale_color_manual(
+      name = "",
+      values = set_names(get_color(c("lh", "dh")), c("theoretical CDF", "ECDF")),
+      labels = set_names(
+        c(expression(italic(ECDF)), expression(italic("theoretical CDF"))),
+        c("ECDF", "theoretical ECDF"))
     ) +
-    scale_fill_discrete(
-      name = ""
+    scale_fill_manual(
+      name = "",
+      values = c(yrep = get_color("l"),
+                 y = NA),
+      labels = set_names(
+                c(expression(italic(ECDF)), expression(italic("theoretical CDF"))),
+                c("ECDF", "theoretical ECDF"))
     ) +
     yaxis_title(FALSE) +
     xaxis_title(FALSE) +
