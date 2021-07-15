@@ -41,6 +41,16 @@
 #'    Same as `ppc_intervals()` and `ppc_ribbon()`, respectively, but a
 #'    separate plot (facet) is generated for each level of a grouping variable.
 #'   }
+#'   \item{`ppc_ecdf_intervals(), ppc_ecdf_intervals_difference()`}{
+#'    `100*prob`% central simultaneous confidence intervals for the ECDF of the
+#'    probability integral transformed sample at `K` evenly spaced evaluation
+#'    points. If `y` and `yrep` are provided, the PIT values of `y` are computed
+#'    with regards to `yrep`. PIT values can also be provided directly as `pit`.
+#'    `ppc_ecdf_intervals()' plots the ECDF with the desired simultaneous
+#'    confidence intervals, whereas `ppc_ecdf_intervals_difference()` in
+#'    addition substracts the value of the theoretical CDF from the ECDF at each
+#'    evaluation point, resulting in a more dynamic range especially for large
+#'    samples.
 #' }
 #'
 #' @examples
@@ -50,6 +60,8 @@
 #' color_scheme_set("brightblue")
 #' ppc_ribbon(y, yrep)
 #' ppc_intervals(y, yrep)
+#' ppc_ecdf_intervals(y, yrep)
+#' ppc_ecdf_intervals_difference(y, yrep)
 #'
 #' # change x axis to y values (instead of indices) and add x = y line
 #' ppc_intervals(y, yrep, x = y) + abline_01()
@@ -159,6 +171,7 @@ ppc_ecdf_intervals <- function(
   if (missing(K)) {
     K <- max(data$y_id) - 1
   }
+  # Infer sample length
   if (!missing(y)) {
     N <- length(y)
   } else if (!missing(yrep)) {
@@ -166,7 +179,9 @@ ppc_ecdf_intervals <- function(
   } else {
     N <- ncol(pit)
   }
+  # Infer number of chains
   L <- max(data$rep_id) + any(data$is_y)
+  # Adjust confidence intervals for simultaneous coverage
   if (missing(gamma_outer)) {
     gamma_outer <- adjust_gamma(
       N = N,
@@ -183,6 +198,7 @@ ppc_ecdf_intervals <- function(
       conf_level = prob
     )
   }
+  # Compute limits
   limits <- ecdf_intervals(
     N = N,
     L = L,
@@ -193,7 +209,9 @@ ppc_ecdf_intervals <- function(
     L = L,
     K = K,
     gamma = gamma_outer)
+  # determine evaluation points.
   z <- 0:K / K
+  # construct figure
   fig <- ggplot(data) +
     geom_ribbon(
       data = data.frame(limits_outer),
@@ -217,17 +235,19 @@ ppc_ecdf_intervals <- function(
       ),
       alpha = alpha,
       size = size)
+  # add sample ECDF
   if (any(data$is_y)) {
     fig <- fig + geom_step(
       data = function(x) dplyr::filter(x, .data$is_y),
-      aes_(x = z, y = ~ value, color = "ECDF"),
+      aes_(x = z, y = ~ value, color = "sample ECDF"),
       size = size
     )
   }
+  # add
   if (any(!data$is_y)) {
     fig <- fig + geom_step(
         data = function(x) dplyr::filter(x, !.data$is_y),
-        aes_(x = rep(z, each = L - any(data$is_y)), group = ~ rep_id,
+        aes_(x = rep(z, each = L), group = ~ rep_id,
              y = ~ value, color = ~ rep_label),
         size = size
       )
@@ -237,19 +257,19 @@ ppc_ecdf_intervals <- function(
       name = "",
       values = set_names(
         get_color(c("lh", "dh")),
-        c("theoretical CDF", "ECDF")),
+        c("theoretical CDF", "sample ECDF")),
       labels = c(
         "theoretical CDF" = expression(italic("theoretical CDF")),
-        "ECDF" = expression(italic("ECDF"))
+        "sample ECDF" = expression(italic("sample ECDF"))
       )
     ) +
     scale_fill_manual(
       name = "",
       values = c("theoretical CDF" = get_color("l"),
-                 "ECDF" = NA),
+                 "sample ECDF" = NA),
       labels = c(
         "theoretical CDF" = expression(italic("theoretical CDF")),
-        "ECDF" = expression(italic("ECDF"))
+        "sample ECDF" = expression(italic("sample ECDF"))
       )
     ) +
     yaxis_title(FALSE) +
@@ -339,15 +359,15 @@ ppc_ecdf_intervals_difference <- function(
   if (any(data$is_y)) {
     fig <- fig + geom_step(
       data = function(x) dplyr::filter(x, .data$is_y),
-      aes_(x = z, y = ~ value - z, color = "ECDF")
+      aes_(x = z, y = ~ value - z, color = "sample ECDF")
     )
   }
   if (any(!data$is_y)) {
     fig <- fig + geom_step(
         data = function(x) dplyr::filter(x, !.data$is_y),
         aes_(
-          x = rep(z, each = L - any(data$is_y)),
-          y = ~ value - rep(z, each = L - any(data$is_y)),
+          x = rep(z, each = L)),
+          y = ~ value - rep(z, each = L),
           group = ~ rep_id,
           color = ~ rep_label
         )
@@ -358,19 +378,19 @@ ppc_ecdf_intervals_difference <- function(
       name = "",
       values = set_names(
         get_color(c("lh", "dh")),
-        c("theoretical CDF", "ECDF")),
+        c("theoretical CDF", "sample ECDF")),
       labels = c(
         "theoretical CDF" = expression(italic("theoretical CDF")),
-        "ECDF" = expression(italic("ECDF"))
+        "sample ECDF" = expression(italic("sample ECDF"))
       )
     ) +
     scale_fill_manual(
       name = "",
       values = c("theoretical CDF" = get_color("l"),
-                 "ECDF" = NA),
+                 "sample ECDF" = NA),
       labels = c(
         "theoretical CDF" = expression(italic("theoretical CDF")),
-        "ECDF" = expression(italic("ECDF"))
+        "sample ECDF" = expression(italic("sample ECDF"))
       )
     ) +
     yaxis_title(FALSE) +
