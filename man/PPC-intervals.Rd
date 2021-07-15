@@ -135,7 +135,7 @@ are \code{prob=0.5} and \code{prob_outer=0.9}.}
 PIT values of one or more samples can be provided directly causing'y' and
 'yrep' to be ignored.}
 
-\item{K, }{For 'ppc_ecdf_intervals' and 'ppc_ecdf_intervals_difference',
+\item{K}{For 'ppc_ecdf_intervals' and 'ppc_ecdf_intervals_difference',
 number of uniformly spaced evaluation points for the ECDF or ECDFs. Affects
 the granularity of the plot and can significantly speed up the computation
 of the simultaneous confidence bands. Defaults to 'length(y)',
@@ -186,6 +186,15 @@ plots may be easier to read than the other.
 Same as \code{ppc_intervals()} and \code{ppc_ribbon()}, respectively, but a
 separate plot (facet) is generated for each level of a grouping variable.
 }
+\item{\verb{ppc_ecdf_intervals(), ppc_ecdf_intervals_difference()}}{
+\code{100*prob}\% central simultaneous confidence intervals for the ECDF of the
+probability integral transformed sample at \code{K} evenly spaced evaluation
+points. If \code{y} and \code{yrep} are provided, the PIT values of \code{y} are computed
+with regards to \code{yrep}. PIT values can also be provided directly as \code{pit}.
+\verb{ppc_ecdf_intervals()' plots the ECDF with the desired simultaneous confidence intervals, whereas }ppc_ecdf_intervals_difference()` in
+addition substracts the value of the theoretical CDF from the ECDF at each
+evaluation point, resulting in a more dynamic range especially for large
+samples.
 }
 }
 
@@ -196,6 +205,8 @@ yrep <- matrix(rnorm(5000, 0, 2), ncol = 50)
 color_scheme_set("brightblue")
 ppc_ribbon(y, yrep)
 ppc_intervals(y, yrep)
+ppc_ecdf_intervals(y, yrep)
+ppc_ecdf_intervals_difference(y, yrep)
 
 # change x axis to y values (instead of indices) and add x = y line
 ppc_intervals(y, yrep, x = y) + abline_01()

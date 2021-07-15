@@ -371,7 +371,6 @@ ppc_ecdf_intervals_difference <- function(
           group = ~ rep_id,
           color = ~ rep_label
         )
-      )
   }
   fig +
     scale_color_manual(
