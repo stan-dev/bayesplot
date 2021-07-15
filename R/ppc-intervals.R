@@ -147,7 +147,7 @@ ppc_intervals <- function(y, yrep, x = NULL, ..., prob = 0.5, prob_outer = 0.9,
 #' @param pit For 'ppc_ecdf_intervals' and 'ppc_ecdf_intervals_difference', the
 #'   PIT values of one or more samples can be provided directly causing'y' and
 #'   'yrep' to be ignored.
-#' @param K, For 'ppc_ecdf_intervals' and 'ppc_ecdf_intervals_difference',
+#' @param K For 'ppc_ecdf_intervals' and 'ppc_ecdf_intervals_difference',
 #'   number of uniformly spaced evaluation points for the ECDF or ECDFs. Affects
 #'   the granularity of the plot and can significantly speed up the computation
 #'   of the simultaneous confidence bands. Defaults to 'length(y)',

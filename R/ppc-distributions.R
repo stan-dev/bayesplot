@@ -127,6 +127,7 @@ ppc_data <- function(y, yrep, group = NULL) {
 }
 
 
+
 #' @rdname PPC-distributions
 #' @export
 ppc_hist <- function(y, yrep, ..., binwidth = NULL, breaks = NULL,
@@ -159,6 +160,7 @@ ppc_hist <- function(y, yrep, ..., binwidth = NULL, breaks = NULL,
 #' @export
 #' @param notch A logical scalar passed to [ggplot2::geom_boxplot()].
 #'   Unlike for `geom_boxplot()`, the default is `notch=TRUE`.
+#'
 ppc_boxplot <- function(y, yrep, ..., notch = TRUE, size = 0.5, alpha = 1) {
   check_ignored_arguments(...)
   data <- ppc_data(y, yrep)
@@ -215,7 +217,7 @@ ppc_freqpoly <- function(y, yrep, ...,
 #' @rdname PPC-distributions
 #' @export
 #' @template args-group
-
+#'
 ppc_freqpoly_grouped <- function(y, yrep, group, ..., binwidth = NULL,
                                  freq = TRUE, size = 0.25, alpha = 1) {
     check_ignored_arguments(...)
@@ -453,6 +455,7 @@ ppc_ecdf_overlay_grouped <- function(
     facet_wrap("group") +
     force_axes_in_facets()
 }
+
 
 
 #' @export
