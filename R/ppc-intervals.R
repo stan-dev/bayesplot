@@ -238,17 +238,19 @@ ppc_ecdf_intervals <- function(
       values = set_names(
         get_color(c("lh", "dh")),
         c("theoretical CDF", "ECDF")),
-      labels = set_names(
-        c(expression(italic(ECDF)), expression(italic("theoretical CDF"))),
-        c("ECDF", "theoretical ECDF"))
+      labels = c(
+        "theoretical CDF" = expression(italic("theoretical CDF")),
+        "ECDF" = expression(italic("ECDF"))
+      )
     ) +
     scale_fill_manual(
       name = "",
-      values = c(yrep = get_color("l"),
-                 y = NA),
-      labels = set_names(
-        c(expression(italic(ECDF)), expression(italic("theoretical CDF"))),
-        c("ECDF", "theoretical ECDF"))
+      values = c("theoretical CDF" = get_color("l"),
+                 "ECDF" = NA),
+      labels = c(
+        "theoretical CDF" = expression(italic("theoretical CDF")),
+        "ECDF" = expression(italic("ECDF"))
+      )
     ) +
     yaxis_title(FALSE) +
     xaxis_title(FALSE) +
@@ -354,18 +356,22 @@ ppc_ecdf_intervals_difference <- function(
   fig +
     scale_color_manual(
       name = "",
-      values = set_names(get_color(c("lh", "dh")), c("theoretical CDF", "ECDF")),
-      labels = set_names(
-        c(expression(italic(ECDF)), expression(italic("theoretical CDF"))),
-        c("ECDF", "theoretical ECDF"))
+      values = set_names(
+        get_color(c("lh", "dh")),
+        c("theoretical CDF", "ECDF")),
+      labels = c(
+        "theoretical CDF" = expression(italic("theoretical CDF")),
+        "ECDF" = expression(italic("ECDF"))
+      )
     ) +
     scale_fill_manual(
       name = "",
-      values = c(yrep = get_color("l"),
-                 y = NA),
-      labels = set_names(
-                c(expression(italic(ECDF)), expression(italic("theoretical CDF"))),
-                c("ECDF", "theoretical ECDF"))
+      values = c("theoretical CDF" = get_color("l"),
+                 "ECDF" = NA),
+      labels = c(
+        "theoretical CDF" = expression(italic("theoretical CDF")),
+        "ECDF" = expression(italic("ECDF"))
+      )
     ) +
     yaxis_title(FALSE) +
     xaxis_title(FALSE) +
