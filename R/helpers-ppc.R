@@ -412,15 +412,15 @@ ecdf_intervals <- function(N, L, K, gamma) {
   lims
 }
 
-# Transform observations in 'x' into their corresponding fractional ranks.
+#' Transform observations in 'x' into their corresponding fractional ranks.
 u_scale <- function(x) {
   array(rank(x) / length(x), dim = dim(x), dimnames = dimnames(x))
 }
 
-# for each value in 'y', compute the fractional ranks (empirical pit values)
-# with respect to 'yrep'.
+#' For each value in 'y', estimate its probability integral transformation with
+#' respect to 'yrep' through its fractional rank.
 empirical_pit <- function(y, yrep) {
-  apply(outer(yrep, y, "<="), 3, sum) / length(yrep)
+  (1 + apply(outer(yrep, y, "<="), 3, sum)) / (1 + length(yrep))
 }
 
 # labels ----------------------------------------------------------------
