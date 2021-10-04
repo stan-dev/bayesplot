@@ -168,13 +168,13 @@ test_that("ppc_ribbon renders correctly", {
   vdiffr::expect_doppelganger("ppc_ribbon (interval width)", p_50)
 
   p_line <- ppc_ribbon(vdiff_y, vdiff_yrep, y_draw = "line")
-  vdiffr::expect_doppelganger("ppc_intervals (y_draw = line)", p_line)
+  vdiffr::expect_doppelganger("ppc_ribbon (y_draw = line)", p_line)
 
   p_point <- ppc_ribbon(vdiff_y, vdiff_yrep, y_draw = "point")
-  vdiffr::expect_doppelganger("ppc_intervals (y_draw = point)", p_point)
+  vdiffr::expect_doppelganger("ppc_ribbon (y_draw = point)", p_point)
 
   p_both <- ppc_ribbon(vdiff_y, vdiff_yrep, y_draw = "both")
-  vdiffr::expect_doppelganger("ppc_intervals (y_draw = both)", p_both)
+  vdiffr::expect_doppelganger("ppc_ribbon (y_draw = both)", p_both)
 
   # ppd versions
   p_base <- ppd_ribbon(vdiff_yrep)

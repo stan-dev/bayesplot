@@ -236,7 +236,7 @@ ppc_loo_pit_overlay <- function(y,
   }
 
   p +
-    scale_color_ppc_dist(labels = c("PIT", "Unif")) +
+    scale_color_ppc(labels = c("PIT", "Unif")) +
     scale_y_continuous(
       limits = c(0, NA),
       expand = expansion(mult = c(0, .25))
@@ -266,7 +266,7 @@ ppc_loo_pit_data <-
     } else {
       suggested_package("rstantools")
       y <- validate_y(y)
-      yrep <- validate_yrep(yrep, y)
+      yrep <- validate_predictions(yrep, length(y))
       stopifnot(identical(dim(yrep), dim(lw)))
       pit <- rstantools::loo_pit(object = yrep, y = y, lw = lw)
     }

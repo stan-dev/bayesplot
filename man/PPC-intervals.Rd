@@ -58,7 +58,8 @@ ppc_ribbon_grouped(
   prob = 0.5,
   prob_outer = 0.9,
   alpha = 0.33,
-  size = 0.25
+  size = 0.25,
+  y_draw = c("line", "points", "both")
 )
 
 ppc_intervals_data(
@@ -163,6 +164,7 @@ yrep <- matrix(rnorm(5000, 0, 2), ncol = 50)
 color_scheme_set("brightblue")
 ppc_intervals(y, yrep)
 ppc_ribbon(y, yrep)
+ppc_ribbon(y, yrep, y_draw = "points")
 
 ppc_intervals(y, yrep, size = 1.5, fatten = 0) # remove the yrep point estimates
 
