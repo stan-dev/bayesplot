@@ -184,7 +184,7 @@ validate_x <- function(x = NULL, y, unique_x = FALSE) {
 ungroup_call <- function(fn, call) {
   args <- rlang::call_args(call)
   args$called_from_internal <- TRUE
-  args$... <- NULL
+  args[["..."]] <- NULL
   rlang::call2(.fn = fn, !!!args, .ns = "bayesplot")
 }
 

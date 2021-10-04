@@ -165,6 +165,9 @@ color_scheme_set("brightblue")
 ppc_intervals(y, yrep)
 ppc_ribbon(y, yrep)
 ppc_ribbon(y, yrep, y_draw = "points")
+\dontrun{
+ppc_ribbon(y, yrep, y_draw = "both")
+}
 
 ppc_intervals(y, yrep, size = 1.5, fatten = 0) # remove the yrep point estimates
 
@@ -176,7 +179,7 @@ ppc_ribbon(y, yrep, x = year) + ggplot2::xlab("Year")
 color_scheme_set("pink")
 year <- rep(2000:2009, each = 5)
 group <- gl(5, 1, length = 50, labels = LETTERS[1:5])
-ppc_ribbon_grouped(y, yrep, x = year, group) +
+ppc_ribbon_grouped(y, yrep, x = year, group, y_draw = "both") +
   ggplot2::scale_x_continuous(breaks = pretty)
 
 ppc_ribbon_grouped(y, yrep, x = year, group,
@@ -185,6 +188,7 @@ ppc_ribbon_grouped(y, yrep, x = year, group,
  xaxis_ticks(FALSE) +
  panel_bg(fill = "gray20")
 
+# get the data frames used to make the ggplots
 ppc_dat <- ppc_intervals_data(y, yrep, x = year, prob = 0.5)
 ppc_group_dat <- ppc_intervals_data(y, yrep, x = year, group = group, prob = 0.5)
 
