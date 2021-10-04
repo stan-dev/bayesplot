@@ -287,7 +287,8 @@ ppc_ribbon_grouped <-
            prob = 0.5,
            prob_outer = 0.9,
            alpha = 0.33,
-           size = 0.25) {
+           size = 0.25,
+           y_draw = c("line", "points", "both")) {
     check_ignored_arguments(...)
     call <- match.call(expand.dots = FALSE)
     g <- eval(ungroup_call("ppc_ribbon", call), parent.frame())
