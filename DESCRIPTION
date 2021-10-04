@@ -52,7 +52,7 @@ Suggests:
     shinystan (>= 2.3.0),
     survival,
     testthat (>= 2.0.0),
-    vdiffr
+    vdiffr (>= 1.0.2)
 RoxygenNote: 7.1.1
 VignetteBuilder: knitr
 Encoding: UTF-8
