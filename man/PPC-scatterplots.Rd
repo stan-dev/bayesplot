@@ -136,6 +136,7 @@ Press, London, third edition. (Ch. 6)
 }
 \seealso{
 Other PPCs: 
+\code{\link{PPC-censoring}},
 \code{\link{PPC-discrete}},
 \code{\link{PPC-distributions}},
 \code{\link{PPC-errors}},

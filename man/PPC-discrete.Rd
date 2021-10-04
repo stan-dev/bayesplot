@@ -212,6 +212,7 @@ Visualizing count data regressions using rootograms.
 }
 \seealso{
 Other PPCs: 
+\code{\link{PPC-censoring}},
 \code{\link{PPC-distributions}},
 \code{\link{PPC-errors}},
 \code{\link{PPC-intervals}},

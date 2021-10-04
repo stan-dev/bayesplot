@@ -33,7 +33,8 @@
 #'    `yrep` should therefore contain only a small number of rows. See the
 #'    **Examples** section.
 #'   }
-#'   \item{`ppc_dens_overlay(), ppc_ecdf_overlay()`}{
+#'   \item{`ppc_ecdf_overlay(), ppc_dens_overlay(),
+#'          ppc_ecdf_overlay_grouped(), ppc_dens_overlay_grouped()`}{
 #'    Kernel density or empirical CDF estimates of each dataset (row) in
 #'    `yrep` are overlaid, with the distribution of `y` itself on top
 #'    (and in a darker shade). When using `ppc_ecdf_overlay()` with discrete
@@ -58,6 +59,7 @@
 #' yrep <- example_yrep_draws()
 #' dim(yrep)
 #' ppc_dens_overlay(y, yrep[1:25, ])
+#'
 #' \donttest{
 #' # ppc_ecdf_overlay with continuous data (set discrete=TRUE if discrete data)
 #' ppc_ecdf_overlay(y, yrep[sample(nrow(yrep), 25), ])
@@ -79,12 +81,17 @@
 #' # frequency polygons
 #' ppc_freqpoly(y, yrep[1:3,], alpha = 0.1, size = 1, binwidth = 5)
 #'
-#' # if groups are different sizes then the 'freq' argument can be useful
 #' group <- example_group_data()
 #' ppc_freqpoly_grouped(y, yrep[1:3,], group) + yaxis_text()
 #' \donttest{
+#' # if groups are different sizes then the 'freq' argument can be useful
 #' ppc_freqpoly_grouped(y, yrep[1:3,], group, freq = FALSE) + yaxis_text()
 #' }
+#'
+#' # density and distribution overlays by group
+#' ppc_dens_overlay_grouped(y, yrep[1:25, ], group = group)
+#'
+#' ppc_ecdf_overlay_grouped(y, yrep[1:25, ], group = group)
 #'
 #' # don't need to only use small number of rows for ppc_violin_grouped
 #' # (as it pools yrep draws within groups)
@@ -167,52 +174,133 @@ ppc_dens_overlay <-
 
 #' @rdname PPC-distributions
 #' @export
-#' @param discrete For the ecdf plot, should the data be treated as discrete?
-#'   The default is `FALSE`, in which case `geom="line"` is passed to
-#'   [ggplot2::stat_ecdf()]. If `discrete` is set to `TRUE` then `geom="step"`
-#'   is used.
-#' @param pad For the ecdf plot, A logical scalar passed to
-#'   [ggplot2::stat_ecdf()].
-#'
-ppc_ecdf_overlay <-
-  function(y,
-           yrep,
-           ...,
-           discrete = FALSE,
-           pad = TRUE,
-           size = 0.25,
-           alpha = 0.7) {
-    check_ignored_arguments(...)
+#' @template args-density-controls
+ppc_dens_overlay_grouped <- function(
+  y,
+  yrep,
+  group,
+  ...,
+  size = 0.25,
+  alpha = 0.7,
+  trim = FALSE,
+  bw = "nrd0",
+  adjust = 1,
+  kernel = "gaussian",
+  n_dens = 1024
+) {
+  check_ignored_arguments(...)
 
-    data <- ppc_data(y, yrep)
-    ggplot(data, mapping = aes_(x = ~ value)) +
-      hline_at(
-        c(0, 0.5, 1),
-        size = c(0.2, 0.1, 0.2),
-        linetype = 2,
-        color = get_color("dh")
-      ) +
-      stat_ecdf(
-        data = function(x) dplyr::filter(x, !.data$is_y),
-        mapping = aes_(group = ~ rep_id, color = "yrep"),
-        geom = if (discrete) "step" else "line",
-        size = size,
-        alpha = alpha,
-        pad = pad
-      ) +
-      stat_ecdf(
-        data = function(x) dplyr::filter(x, .data$is_y),
-        mapping = aes_(color = "y"),
-        geom = if (discrete) "step" else "line",
-        size = 1,
-        pad = pad
-      ) +
+  p_overlay <- ppc_dens_overlay(
+    y = y,
+    yrep = yrep,
+    ...,
+    size = size,
+    alpha = alpha,
+    trim = trim,
+    bw = bw,
+    adjust = adjust,
+    kernel = kernel,
+    n_dens = n_dens
+  )
+  # Use + list(data) trick to replace the data in the plot. The layer-specific
+  # data in the y and yrep layers should be safe because they are
+  # specified using a function on the main plot data.
+  data <- ppc_data(y, yrep, group = group)
+  p_overlay <- p_overlay + list(data)
+
+  p_overlay +
+    facet_wrap("group") +
+    force_axes_in_facets()
+}
+
+#' @export
+#' @rdname PPC-distributions
+#' @param discrete For `ppc_ecdf_overlay()`, should the data be treated as
+#'   discrete? The default is `FALSE`, in which case `geom="line"` is
+#'   passed to [ggplot2::stat_ecdf()]. If `discrete` is set to
+#'   `TRUE` then `geom="step"` is used.
+#' @param pad A logical scalar passed to [ggplot2::stat_ecdf()].
+#'
+ppc_ecdf_overlay <- function(
+  y,
+  yrep,
+  ...,
+  discrete = FALSE,
+  pad = TRUE,
+  size = 0.25,
+  alpha = 0.7
+) {
+  check_ignored_arguments(...)
+  data <- ppc_data(y, yrep)
+
+  ggplot(data) +
+    aes_(x = ~ value) +
+    hline_at(
+      0.5,
+      size = 0.1,
+      linetype = 2,
+      color = get_color("dh")
+    ) +
+    hline_at(
+      c(0, 1),
+      size = 0.2,
+      linetype = 2,
+      color = get_color("dh")
+    ) +
+    stat_ecdf(
+      data = function(x) dplyr::filter(x, !.data$is_y),
+      mapping = aes_(group = ~ rep_id, color = "yrep"),
+      geom = if (discrete) "step" else "line",
+      size = size,
+      alpha = alpha,
+      pad = pad
+    ) +
+    stat_ecdf(
+      data = function(x) dplyr::filter(x, .data$is_y),
+      mapping = aes_(color = "y"),
+      geom = if (discrete) "step" else "line",
+      size = 1,
+      pad = pad
+    ) +
       scale_color_ppc() +
       scale_y_continuous(breaks = c(0, 0.5, 1)) +
       bayesplot_theme_get() +
       yaxis_title(FALSE) +
       xaxis_title(FALSE)
   }
+
+#' @export
+#' @rdname PPC-distributions
+ppc_ecdf_overlay_grouped <- function(
+  y,
+  yrep,
+  group,
+  ...,
+  discrete = FALSE,
+  pad = TRUE,
+  size = 0.25,
+  alpha = 0.7
+) {
+  check_ignored_arguments(...)
+
+  p_overlay <- ppc_ecdf_overlay(
+    y = y,
+    yrep = yrep,
+    ...,
+    discrete = discrete,
+    pad = pad,
+    size = size,
+    alpha = alpha
+  )
+
+  # Use + list(data) trick to replace the data in the plot
+  data <- ppc_data(y, yrep, group = group)
+  p_overlay <- p_overlay + list(data)
+
+  p_overlay +
+    facet_wrap("group") +
+    force_axes_in_facets()
+}
 
 
 #' @rdname PPC-distributions
@@ -309,10 +397,10 @@ ppc_freqpoly <-
 
     data <- ppc_data(y, yrep, group = dots$group)
     ggplot(data, mapping = set_hist_aes(
-        freq = freq,
-        fill = ~ is_y_label,
-        color = ~ is_y_label
-      )) +
+      freq = freq,
+      fill = ~ is_y_label,
+      color = ~ is_y_label
+    )) +
       geom_area(
         stat = "bin",
         binwidth = binwidth,

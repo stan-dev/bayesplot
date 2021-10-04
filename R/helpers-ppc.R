@@ -126,10 +126,6 @@ validate_group <- function(group, n_obs) {
     abort("length(group) must be equal to the number of observations.")
   }
 
-  if (length(unique(group)) == 1) {
-    abort("'group' must have more than one unique value.")
-  }
-
   unname(group)
 }
 
@@ -276,4 +272,3 @@ create_rep_ids <- function(ids) paste('italic(y)[rep] (', ids, ")")
 y_label <- function() expression(italic(y))
 yrep_label <- function() expression(italic(y)[rep])
 ypred_label <- function() expression(italic(y)[pred])
-

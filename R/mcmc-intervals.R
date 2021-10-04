@@ -55,6 +55,10 @@
 #'
 #' @examples
 #' set.seed(9262017)
+#'
+#' # load ggplot2 to use its functions to modify our plots
+#' library(ggplot2)
+#'
 #' # some parameter draws to use for demonstration
 #' x <- example_mcmc_draws(params = 6)
 #' dim(x)
@@ -64,18 +68,43 @@
 #' mcmc_intervals(x)
 #' mcmc_intervals(x, pars = c("beta[1]", "beta[2]"))
 #' mcmc_areas(x, regex_pars = "beta\\[[1-3]\\]",  prob = 0.8) +
-#'  ggplot2::labs(
+#'  labs(
 #'    title = "Posterior distributions",
 #'    subtitle = "with medians and 80% intervals"
 #'  )
 #'
 #' color_scheme_set("red")
-#' mcmc_areas(
+#' p <- mcmc_areas(
 #'    x,
 #'    pars = c("alpha", "beta[4]"),
 #'    prob = 2/3,
 #'    prob_outer = 0.9,
 #'    point_est = "mean"
+#' )
+#' plot(p)
+#'
+#' # control spacing at top and bottom of plot
+#' # see ?ggplot2::expansion
+#' p + scale_y_discrete(
+#'   limits = c("beta[4]", "alpha"),
+#'   expand = expansion(add = c(1, 2))
+#' )
+#' p + scale_y_discrete(
+#'   limits = c("beta[4]", "alpha"),
+#'   expand = expansion(add = c(.1, .3))
+#' )
+#'
+#' # relabel parameters
+#' p + scale_y_discrete(
+#'   labels = c("alpha" = "param label 1",
+#'              "beta[4]" = "param label 2")
+#')
+#'
+#' # relabel parameters and define the order
+#' p + scale_y_discrete(
+#'   labels = c("alpha" = "param label 1",
+#'              "beta[4]" = "param label 2"),
+#'   limits = c("beta[4]", "alpha")
 #' )
 #'
 #' # color by rhat value
@@ -97,22 +126,22 @@
 #' b3 <- c("beta[1]", "beta[2]", "beta[3]")
 #'
 #' mcmc_areas(x, pars = b3, area_method = "equal area") +
-#'   ggplot2::labs(
+#'   labs(
 #'     title = "Curves have same area",
-#'     subtitle =
-#'       "A wide, uncertain interval is spread thin when areas are equal")
+#'     subtitle = "A wide, uncertain interval is spread thin when areas are equal"
+#'    )
 #'
 #' mcmc_areas(x, pars = b3, area_method = "equal height") +
-#'   ggplot2::labs(
+#'   labs(
 #'     title = "Curves have same maximum height",
-#'     subtitle =
-#'       "Local curvature is clearer but more uncertain curves use more area")
+#'     subtitle = "Local curvature is clearer but more uncertain curves use more area"
+#'   )
 #'
 #' mcmc_areas(x, pars = b3, area_method = "scaled height") +
-#'   ggplot2::labs(
+#'   labs(
 #'     title = "Same maximum heights but heights scaled by square-root",
-#'     subtitle =
-#'       "Compromise: Local curvature is accentuated and less area is used")
+#'     subtitle = "Compromise: Local curvature is accentuated and less area is used"
+#'    )
 #'
 #' \donttest{
 #' # apply transformations
@@ -148,7 +177,7 @@
 #' # plotted with ridgelines
 #' m <- shinystan::eight_schools@posterior_sample
 #' mcmc_areas_ridges(m, pars = "mu", regex_pars = "theta") +
-#'  ggplot2::ggtitle("Treatment effect on eight schools (Rubin, 1981)")
+#'   ggtitle("Treatment effect on eight schools (Rubin, 1981)")
 #' }
 #'
 NULL
@@ -273,7 +302,8 @@ mcmc_areas <- function(x,
     x, pars, regex_pars, transformations,
     prob = prob, prob_outer = prob_outer,
     point_est = point_est, rhat = rhat,
-    bw = bw, adjust = adjust, kernel = kernel, n_dens = n_dens)
+    bw = bw, adjust = adjust, kernel = kernel, n_dens = n_dens
+  )
   datas <- split(data, data$interval)
 
   # Use a dummy empty dataframe if no point estimate
@@ -316,7 +346,11 @@ mcmc_areas <- function(x,
 
   datas$bottom <- datas$outer %>%
     group_by(!!! groups) %>%
-    summarise(ll = min(.data$x), hh = max(.data$x)) %>%
+    summarise(
+      ll = min(.data$x),
+      hh = max(.data$x),
+      .groups = "drop_last"
+    ) %>%
     ungroup()
 
   args_bottom <- list(
@@ -358,9 +392,16 @@ mcmc_areas <- function(x,
     args_outer$color <- get_color("dark")
   }
 
+  # An invisible layer that is 2.5% taller than the plotted one
+  args_outer2 <- args_outer
+  args_outer2$mapping <- args_outer2$mapping %>%
+    modify_aes_(scale = .925)
+  args_outer2$color <- NA
+
   layer_bottom <- do.call(geom_segment, args_bottom)
   layer_inner <- do.call(ggridges::geom_ridgeline, args_inner)
   layer_outer <- do.call(ggridges::geom_ridgeline, args_outer)
+  layer_outer2 <- do.call(ggridges::geom_ridgeline, args_outer2)
 
   point_geom <- if (no_point_est) {
     geom_ignore
@@ -384,12 +425,17 @@ mcmc_areas <- function(x,
     layer_inner +
     layer_point +
     layer_outer +
+    layer_outer2 +
     layer_bottom +
     scale_color +
     scale_fill +
     scale_y_discrete(
       limits = unique(rev(data$parameter)),
-      expand = expansion(add = c(0, .1), mult = c(.1, .3))) +
+      expand = expansion(
+        add = c(0, .5 + 1/(2 * nlevels(data$parameter))),
+        mult = c(.1, .1)
+      )
+    ) +
     xlim(x_lim) +
     bayesplot_theme_get() +
     legend_move(ifelse(color_by_rhat, "top", "none")) +

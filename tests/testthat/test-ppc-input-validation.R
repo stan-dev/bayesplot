@@ -47,8 +47,6 @@ test_that("validate_group throws errors", {
   expect_error(validate_group(c(1,2,NA), n_obs = 3), "NAs not allowed")
   expect_error(validate_group(1:4, n_obs = 3),
                "must be equal to the number of observations")
-  expect_error(validate_group(rep(1,3), n_obs = 3),
-               "must have more than one unique value")
 })
 
 

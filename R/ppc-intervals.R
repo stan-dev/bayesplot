@@ -1,3 +1,5 @@
+
+
 #' PPC intervals
 #'
 #' Medians and central interval estimates of `yrep` with `y` overlaid.
@@ -31,7 +33,7 @@
 #' @section Plot Descriptions:
 #' \describe{
 #'   \item{`ppc_intervals(), ppc_ribbon()`}{
-#'    `100*prob`\% central intervals for `yrep` at each `x`
+#'    `100*prob`% central intervals for `yrep` at each `x`
 #'    value. `ppc_intervals()` plots intervals as vertical bars with points
 #'    indicating `yrep` medians and darker points indicating observed
 #'    `y` values. `ppc_ribbon()` plots a ribbon of connected intervals
@@ -56,6 +58,7 @@
 #' color_scheme_set("brightblue")
 #' ppc_intervals(y, yrep)
 #' ppc_ribbon(y, yrep)
+#' ppc_ribbon(y, yrep, y_draw = "points")
 #'
 #' ppc_intervals(y, yrep, size = 1.5, fatten = 0) # remove the yrep point estimates
 #'
@@ -198,6 +201,8 @@ ppc_intervals_grouped <-
 
 #' @rdname PPC-intervals
 #' @export
+#' @param y_draw For ribbon plots only, a string specifying how to draw `y`. Can
+#'   be `"line"` (the default), `"points"`, or `"both"`.
 ppc_ribbon <-
   function(y,
            yrep,
@@ -206,7 +211,8 @@ ppc_ribbon <-
            prob = 0.5,
            prob_outer = 0.9,
            alpha = 0.33,
-           size = 0.25) {
+           size = 0.25,
+           y_draw = c("line", "points", "both")) {
 
     dots <- list(...)
     if (!from_grouped(dots)) {
@@ -224,7 +230,7 @@ ppc_ribbon <-
         prob_outer = prob_outer
       )
 
-    ggplot(data) +
+    g <- ggplot(data) +
       intervals_inner_aes(fill = "yrep", color = "yrep") +
       geom_ribbon(
         mapping = intervals_outer_aes(fill = "yrep", color = "yrep"),
@@ -245,12 +251,23 @@ ppc_ribbon <-
         color = get_color("m"),
         size = size
       ) +
-      geom_blank(aes_(fill = "y")) +
-      geom_line(
+      geom_blank(aes_(fill = "y"))
+
+    if (y_draw == "line" || y_draw == "both") {
+      g <- g + geom_line(
         aes_(y = ~ y_obs, color = "y"),
-        size = 0.5,
-        alpha = 0.66
-      ) +
+        size = 0.5
+      )
+    }
+
+    if (y_draw == "points" || y_draw == "both") {
+      g <- g + geom_point(
+        mapping = aes_(y = ~ y_obs, color = "y", fill = "y"),
+        shape = 21,
+        size = 1.5
+      )
+    }
+    g +
       scale_color_ppc() +
       scale_fill_ppc(values = c(NA, get_color("l"))) +
       intervals_axis_labels(has_x = !is.null(x)) +

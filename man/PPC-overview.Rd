@@ -92,6 +92,10 @@ discrete. For example, rootograms for count outcomes and bar plots for
 ordinal, categorical, and multinomial outcomes.
 \item \link{PPC-loo}: PPC functions for predictive checks based on (approximate)
 leave-one-out (LOO) cross-validation.
+'
+\item \link{PPC-censoring}: PPC functions comparing the empirical
+distribution of censored data \code{y} to the distributions of individual
+simulated datasets (rows) in \code{yrep}.
 }
 }
 
@@ -120,6 +124,7 @@ Press, London, third edition. (Ch. 6)
 }
 \seealso{
 Other PPCs: 
+\code{\link{PPC-censoring}},
 \code{\link{PPC-discrete}},
 \code{\link{PPC-distributions}},
 \code{\link{PPC-errors}},

@@ -47,7 +47,7 @@ distributions without comparisons to observed data.
 
 \itemize{
 \item \strong{Online documentation and vignettes}: Visit the \strong{bayesplot} website at
-\url{https://mc-stan.org/bayesplot}
+\url{https://mc-stan.org/bayesplot/}
 \item \strong{Bug reports and feature requests}: If you would like to request a new
 feature or if you have noticed a bug that needs to be fixed please let us
 know at the \strong{bayesplot} issue tracker at

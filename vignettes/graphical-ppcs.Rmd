@@ -16,7 +16,7 @@ vignette: >
 
 ```{r, child="children/SETTINGS-knitr.txt"}
 ```
-```{r, pkgs, include=FALSE}
+```{r pkgs, include=FALSE}
 library("ggplot2")
 library("rstanarm")
 set.seed(840)
@@ -97,12 +97,12 @@ binomial regression models from one of the
 First we fit a Poisson regression model with outcome variable `y` representing 
 the roach count in each apartment at the end of the experiment.
 
-```{r, roaches-data}
+```{r roaches-data}
 head(roaches) # see help("rstanarm-datasets")
 roaches$roach100 <- roaches$roach1 / 100 # pre-treatment number of roaches (in 100s)
 ```
 
-```{r, roaches-model-pois, message=FALSE}
+```{r roaches-model-pois, message=FALSE}
 # using rstanarm's default priors. For details see the section on default
 # weakly informative priors at https://mc-stan.org/rstanarm/articles/priors.html
 fit_poisson <- stan_glm(
@@ -115,18 +115,18 @@ fit_poisson <- stan_glm(
 )
 ```
 
-```{r, print-pois}
+```{r print-pois}
 print(fit_poisson)
 ```
 
 We'll also fit the negative binomial model that we'll compare to the Poisson:
 
-```{r, roaches-model-nb, message=FALSE}
+```{r roaches-model-nb, message=FALSE}
 fit_nb <- update(fit_poisson, family = "neg_binomial_2")
 ```
 
 
-```{r, print-nb}
+```{r print-nb}
 print(fit_nb)
 ```
 
@@ -135,12 +135,12 @@ print(fit_nb)
 In order to use the PPC functions from the **bayesplot** package we need
 a vector `y` of outcome values,
 
-```{r, y}
+```{r y}
 y <- roaches$y
 ```
 
 and a matrix `yrep` of draws from the posterior predictive distribution,
-```{r, yrep}
+```{r yrep}
 yrep_poisson <- posterior_predict(fit_poisson, draws = 500)
 yrep_nb <- posterior_predict(fit_nb, draws = 500)
 dim(yrep_poisson)
@@ -230,7 +230,7 @@ observed zeros in `y`.
 First we define a function that takes a vector as input and returns the
 proportion of zeros:
 
-```{r, prop_zero}
+```{r prop_zero}
 prop_zero <- function(x) mean(x == 0)
 prop_zero(y) # check proportion of zeros in y
 ```
@@ -285,7 +285,7 @@ from R or the [online documentation](https://mc-stan.org/bayesplot/reference/ind
 The `available_ppc` function can also be used to list the names of all PPC
 plotting functions:
 
-```{r, available_ppc}
+```{r available_ppc}
 available_ppc()
 ```
 
@@ -294,7 +294,7 @@ variable. Any function for PPCs by group will have a name ending in `_grouped`
 and will accept an additional argument `group`. The full list of currently 
 available `_grouped` functions is:
 
-```{r, available_ppc-grouped}
+```{r available_ppc-grouped}
 available_ppc(pattern = "_grouped")
 ```
 
@@ -339,7 +339,7 @@ Suppose that objects of class `"foo"` are lists with named components, two of
 which are `y` and `yrep`. Here's a simple method `pp_check.foo` that offers the
 user the option of two different plots:
 
-```{r, pp_check.foo}
+```{r pp_check.foo}
 # @param object An object of class "foo".
 # @param type The type of plot.
 # @param ... Optional arguments passed on to the bayesplot plotting function.
@@ -362,15 +362,15 @@ pp_check.foo <- function(object, type = c("multiple", "overlaid"), ...) {
 To try out `pp_check.foo` we can just make a list with `y` and `yrep` components
 and give it class `foo`:
 
-```{r, foo-object}
+```{r foo-object}
 x <- list(y = rnorm(200), yrep = matrix(rnorm(1e5), nrow = 500, ncol = 200))
 class(x) <- "foo"
 ```
-```{r, pp_check-1, message=FALSE}
+```{r pp_check-1, message=FALSE}
 color_scheme_set("purple")
 pp_check(x, type = "multiple", binwidth = 0.3)
 ```
-```{r, pp_check-2}
+```{r pp_check-2}
 color_scheme_set("darkgray")
 pp_check(x, type = "overlaid")
 ```
@@ -392,7 +392,7 @@ version 1.7.0. https://CRAN.R-project.org/package=brms
 
 Gabry, J., and Goodrich, B. (2017). rstanarm: Bayesian Applied Regression 
 Modeling via Stan. R package version 2.15.3. 
-https://mc-stan.org/rstanarm, https://CRAN.R-project.org/package=rstanarm
+https://mc-stan.org/rstanarm/, https://CRAN.R-project.org/package=rstanarm
 
 Gabry, J. , Simpson, D. , Vehtari, A. , Betancourt, M. and Gelman, A. (2019), 
 Visualization in Bayesian workflow. _J. R. Stat. Soc. A_, 182: 389-402. 

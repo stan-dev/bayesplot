@@ -44,7 +44,8 @@ ppc_ribbon(
   prob = 0.5,
   prob_outer = 0.9,
   alpha = 0.33,
-  size = 0.25
+  size = 0.25,
+  y_draw = c("line", "points", "both")
 )
 
 ppc_ribbon_grouped(
@@ -118,6 +119,9 @@ to \code{\link[ggplot2:facet_wrap]{ggplot2::facet_wrap()}} or \code{\link[ggplot
 to control faceting. Note: if \code{scales} is not included in \code{facet_args}
 then \strong{bayesplot} may use \code{scales="free"} as the default (depending
 on the plot) instead of the \strong{ggplot2} default of \code{scales="fixed"}.}
+
+\item{y_draw}{For ribbon plots only, a string specifying how to draw \code{y}. Can
+be \code{"line"} (the default), \code{"points"}, or \code{"both"}.}
 }
 \value{
 The plotting functions return a ggplot object that can be further
@@ -133,7 +137,7 @@ See the \strong{Plot Descriptions} section, below.
 
 \describe{
 \item{\verb{ppc_intervals(), ppc_ribbon()}}{
-\code{100*prob}\\% central intervals for \code{yrep} at each \code{x}
+\code{100*prob}\% central intervals for \code{yrep} at each \code{x}
 value. \code{ppc_intervals()} plots intervals as vertical bars with points
 indicating \code{yrep} medians and darker points indicating observed
 \code{y} values. \code{ppc_ribbon()} plots a ribbon of connected intervals
@@ -226,6 +230,7 @@ Press, London, third edition. (Ch. 6)
 }
 \seealso{
 Other PPCs: 
+\code{\link{PPC-censoring}},
 \code{\link{PPC-discrete}},
 \code{\link{PPC-distributions}},
 \code{\link{PPC-errors}},

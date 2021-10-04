@@ -1,5 +1,5 @@
 library(bayesplot)
-suppressPackageStartupMessages(library(rstanarm))
+# suppressPackageStartupMessages(library(rstanarm))
 context("PPC: discrete")
 
 source(test_path("data-for-ppc-tests.R"))
@@ -174,5 +174,4 @@ test_that("ppc_rootogram renders correctly", {
     title = "ppc_rootogram (style='hanging', prob, size)",
     fig = p_custom_hanging)
 })
-
 

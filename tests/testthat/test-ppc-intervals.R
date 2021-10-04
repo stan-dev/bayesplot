@@ -167,6 +167,15 @@ test_that("ppc_ribbon renders correctly", {
   p_50 <- ppc_ribbon(vdiff_y, vdiff_yrep, prob = 0.5)
   vdiffr::expect_doppelganger("ppc_ribbon (interval width)", p_50)
 
+  p_line <- ppc_ribbon(vdiff_y, vdiff_yrep, y_draw = "line")
+  vdiffr::expect_doppelganger("ppc_intervals (y_draw = line)", p_line)
+
+  p_point <- ppc_ribbon(vdiff_y, vdiff_yrep, y_draw = "point")
+  vdiffr::expect_doppelganger("ppc_intervals (y_draw = point)", p_point)
+
+  p_both <- ppc_ribbon(vdiff_y, vdiff_yrep, y_draw = "both")
+  vdiffr::expect_doppelganger("ppc_intervals (y_draw = both)", p_both)
+
   # ppd versions
   p_base <- ppd_ribbon(vdiff_yrep)
   vdiffr::expect_doppelganger("ppd_ribbon (default)", p_base)
@@ -185,6 +194,18 @@ test_that("ppc_ribbon_grouped renders correctly", {
   p_base <- ppc_ribbon_grouped(vdiff_y, vdiff_yrep, group = vdiff_group)
   vdiffr::expect_doppelganger("ppc_ribbon_grouped (default)", p_base)
 
+  p_line <- ppc_ribbon_grouped(vdiff_y, vdiff_yrep, group = vdiff_group,
+                               y_draw = "line")
+  vdiffr::expect_doppelganger("ppc_ribbon_grouped (y_draw = line)", p_line)
+
+  p_point <- ppc_ribbon_grouped(vdiff_y, vdiff_yrep, group = vdiff_group,
+                               y_draw = "point")
+  vdiffr::expect_doppelganger("ppc_ribbon_grouped (y_draw = point)", p_point)
+
+  p_both <- ppc_ribbon_grouped(vdiff_y, vdiff_yrep, group = vdiff_group,
+                               y_draw = "both")
+  vdiffr::expect_doppelganger("ppc_ribbon_grouped (y_draw = both)", p_both)
+
   p_x <- ppc_ribbon_grouped(
     y = vdiff_y,
     yrep = vdiff_yrep,
@@ -202,4 +223,3 @@ test_that("ppc_ribbon_grouped renders correctly", {
     group = vdiff_group)
   vdiffr::expect_doppelganger("ppd_ribbon_grouped (x values)", p_x)
 })
-

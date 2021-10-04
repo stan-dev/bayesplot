@@ -89,13 +89,12 @@ parameters. \code{n_dens} defaults to \code{1024}.}
 \code{\link[stats:density]{stats::density()}} to override default kernel density estimation
 parameters. \code{n_dens} defaults to \code{1024}.}
 
-\item{discrete}{For the ecdf plot, should the data be treated as discrete?
-The default is \code{FALSE}, in which case \code{geom="line"} is passed to
-\code{\link[ggplot2:stat_ecdf]{ggplot2::stat_ecdf()}}. If \code{discrete} is set to \code{TRUE} then \code{geom="step"}
-is used.}
+\item{discrete}{For \code{ppc_ecdf_overlay()}, should the data be treated as
+discrete? The default is \code{FALSE}, in which case \code{geom="line"} is
+passed to \code{\link[ggplot2:stat_ecdf]{ggplot2::stat_ecdf()}}. If \code{discrete} is set to
+\code{TRUE} then \code{geom="step"} is used.}
 
-\item{pad}{For the ecdf plot, A logical scalar passed to
-\code{\link[ggplot2:stat_ecdf]{ggplot2::stat_ecdf()}}.}
+\item{pad}{A logical scalar passed to \code{\link[ggplot2:stat_ecdf]{ggplot2::stat_ecdf()}}.}
 
 \item{binwidth}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}} to override
 the default binwidth.}

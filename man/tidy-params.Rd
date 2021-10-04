@@ -41,7 +41,7 @@ would select parameters with names
 Parameter selection in the style of \strong{dplyr} and other tidyverse packages.
 }
 \details{
-As of version \verb{1.7.0}, \strong{bayesplot} allows the \code{pars} argument for \link[bayesplot:MCMC-overview]{MCMC plots} to use "tidy" variable selection (in the
+As of version \verb{1.7.0}, \strong{bayesplot} allows the \code{pars} argument for \link[=MCMC-overview]{MCMC plots} to use "tidy" variable selection (in the
 style of the \strong{dplyr} package). The \code{\link[dplyr:vars]{vars()}} function is
 re-exported from \strong{dplyr} for this purpose.
 
