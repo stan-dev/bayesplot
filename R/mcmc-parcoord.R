@@ -154,6 +154,7 @@ mcmc_parcoord <-
 
     graph +
       scale_x_discrete(expand = c(0,0), labels = levels(draws$Parameter)) +
+      expand_limits(x = nlevels(draws$Parameter) + 0.25) +
       labs(x = NULL, y = NULL)
   }
 
