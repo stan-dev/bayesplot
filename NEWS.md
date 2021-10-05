@@ -4,6 +4,8 @@
 
 * `mcmc_dens()` and `mcmc_dens_overlay()` gain arguments for controlling the 
   the density calculation. (#258)
+  
+* `mcmc_hist()` and `mcmc_dens()` gain argument `alpha` for controlling transparency. (#244)
 
 # bayesplot 1.8.1
 
@@ -34,8 +36,6 @@
   can be set to FALSE to recover the old version of the plot. (#171, #235,
   @ecoronado92)
   
-* `mcmc_hist()` and `mcmc_dens()` gain argument `alpha` for controling transparency. (#244)
-
 * CmdStanMCMC objects (from CmdStanR) can now be used with extractor
   functions `nuts_params()`, `log_posterior()`, `rhat()`, and
   `neff_ratio()`. (#227)
