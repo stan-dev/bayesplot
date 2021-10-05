@@ -4,9 +4,9 @@
 
 * New PPD module with a lot of new plotting functions with `ppd_` prefix (e.g.,
 `ppd_intervals()`) for plotting posterior and prior predictive distributions
-without comparing to observed data. These plots are essentially the same as the
-corresponding PPC plots (e.g., `ppc_intervals()`) but without showing any
-observed data. See `help("PPD-overview")` for details.
+without comparing to observed data (i.e., no `y` argument). These plots are
+essentially the same as the corresponding PPC plots (e.g., `ppc_intervals()`)
+but without showing any observed data. See `help("PPD-overview")` for details.
 
 * All PPC categories now have one or more `_data()` functions that return the
  data used for plotting (Advances #97). Many already existed, but the new ones in
@@ -32,12 +32,10 @@ observed data. See `help("PPD-overview")` for details.
   argument `ref_line`, which can be set to `FALSE` to turn off the `x=y` line
   drawn behind the scatterplot.
 
+# bayesplot 1.8.1.9000
 
 # bayesplot 1.8.1
 * Fix R cmd check error on linux for CRAN
-
-* `mcmc_dens()` and `mcmc_dens_overlay()` gain arguments for controlling the 
-  the density calculation. (#258)
 
 # bayesplot 1.8.0
 
