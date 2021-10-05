@@ -230,8 +230,9 @@ plot_scheme <- function(scheme = NULL) {
     legend_none() +
     xaxis_text(
       face = "bold",
-      margin = margin(t = -3, b = 10),
+      margin = margin(t = -3, b = 10, unit = "pt"),
       angle = 0,
+      vjust = 1,
       debug = FALSE
     )
 }

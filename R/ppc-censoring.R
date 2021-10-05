@@ -5,12 +5,11 @@
 #'   predictive distribution. See the **Plot Descriptions** section, below, for
 #'   details.
 #'
-#'   Although some of the other plots can be used with censored data,
-#'   `ppc_km_overlay()` is currently the only plotting function designed
+#'   Although some of the other \pkg{bayesplot} plots can be used with censored
+#'   data, `ppc_km_overlay()` is currently the only plotting function designed
 #'   *specifically* for censored data. We encourage you to suggest or contribute
-#'   additional plots at [https://github.com/stan-dev/bayesplot](github.com/stan-dev/bayesplot).
-#'
-#'
+#'   additional plots at
+#'   [github.com/stan-dev/bayesplot](https://github.com/stan-dev/bayesplot).
 #'
 #' @name PPC-censoring
 #' @family PPCs
@@ -26,10 +25,10 @@
 #' \describe{
 #'   \item{`ppc_km_overlay()`}{
 #'    Empirical CCDF estimates of each dataset (row) in `yrep` are overlaid,
-#'    with the Kaplan-Meier estimate (Kaplan and Meier, 1958) for `y` itself
-#'    on top (and in a darker shade). This is a PPC suitable for
-#'    right-censored `y`. Note that the replicated data from `yrep` is assumed
-#'    to be uncensored.
+#'    with the Kaplan-Meier estimate (Kaplan and Meier, 1958) for `y` itself on
+#'    top (and in a darker shade). This is a PPC suitable for right-censored
+#'    `y`. Note that the replicated data from `yrep` is assumed to be
+#'    uncensored.
 #'   }
 #' }
 #'
@@ -74,11 +73,9 @@ ppc_km_overlay <-
       abort("Package 'ggfortify' required.")
     }
 
-    # Checks for 'status_y':
     stopifnot(is.numeric(status_y))
     stopifnot(all(status_y %in% c(0, 1)))
 
-    # Create basic PPC dataset:
     data <- ppc_data(y, yrep, group = status_y)
 
     # Modify the status indicator:
@@ -93,23 +90,20 @@ ppc_km_overlay <-
                                    as.numeric(as.character(.data$group)),
                                    1))
 
-    # Create 'survfit' object and 'fortify' it
     sf <- survival::survfit(
       survival::Surv(value, group) ~ rep_label,
       data = data
     )
     fsf <- fortify(sf)
 
-    # Add variables specifying color, size, and alpha:
     fsf$is_y_color <- as.factor(sub("\\[rep\\] \\(.*$", "rep", sub("^italic\\(y\\)", "y", fsf$strata)))
     fsf$is_y_size <- ifelse(fsf$is_y_color == "yrep", size, 1)
     fsf$is_y_alpha <- ifelse(fsf$is_y_color == "yrep", alpha, 1)
 
     # Ensure that the observed data gets plotted last by reordering the
-    # levels of the factor "strata":
+    # levels of the factor "strata"
     fsf$strata <- factor(fsf$strata, levels = rev(levels(fsf$strata)))
 
-    # Plot:
     ggplot(data = fsf,
            mapping = aes_(x = ~ time,
                           y = ~ surv,

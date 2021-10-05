@@ -1,23 +1,28 @@
 library(bayesplot)
-suppressPackageStartupMessages(library(rstanarm))
 context("PPC: discrete")
 
 
 # bar plots ---------------------------------------------------------------
-data("esoph", package = "datasets")
-fit <- stan_polr(tobgp ~ agegp, data = esoph, method = "probit", prior = R2(0.2, "mean"),
-                 init_r = 0.1, seed = 12345, chains = 1, iter = 500, refresh = 0)
-y <- as.integer(fit$y)
-yrep_char <- posterior_predict(fit, draws = 10)
-yrep <- sapply(data.frame(yrep_char, stringsAsFactors = TRUE), as.integer)
+
+if (requireNamespace("rstanarm", quietly = TRUE)) {
+  suppressPackageStartupMessages(library(rstanarm))
+  data("esoph", package = "datasets")
+  fit <- stan_polr(tobgp ~ agegp, data = esoph, method = "probit", prior = R2(0.2, "mean"),
+                   init_r = 0.1, seed = 12345, chains = 1, iter = 500, refresh = 0)
+  y <- as.integer(fit$y)
+  yrep_char <- posterior_predict(fit, draws = 10)
+  yrep <- sapply(data.frame(yrep_char, stringsAsFactors = TRUE), as.integer)
+}
 
 test_that("ppc_bars & ppc_bars_grouped return a ggplot object", {
+  skip_if_not_installed("rstanarm")
   expect_gg(ppc_bars(y, yrep))
   expect_gg(ppc_bars(y, yrep, prob = 0))
   expect_gg(ppc_bars_grouped(y, yrep, group = esoph$agegp))
 })
 
 test_that("freq argument to ppc_bars works", {
+  skip_if_not_installed("rstanarm")
   p_freq <- ggplot2::ggplot_build(ppc_bars(y, yrep, freq = TRUE))
   p_prop <- ggplot2::ggplot_build(ppc_bars(y, yrep, freq = FALSE))
 
@@ -34,6 +39,7 @@ test_that("ppc_bars works with negative integers", {
 })
 
 test_that("ppc_bars(_grouped) errors if y/yrep not discrete", {
+  skip_if_not_installed("rstanarm")
   expect_error(ppc_bars(y + 0.5, yrep),
                "ppc_bars expects 'y' to be discrete")
   expect_error(ppc_bars(y, yrep + 0.5),

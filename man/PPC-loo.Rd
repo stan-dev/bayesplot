@@ -281,7 +281,7 @@ Vehtari, A., Gelman, A., and Gabry, J. (2017). Practical
 Bayesian model evaluation using leave-one-out cross-validation and WAIC.
 \emph{Statistics and Computing}. 27(5), 1413--1432.
 doi:10.1007/s11222-016-9696-4. arXiv preprint:
-\url{https://arxiv.org/abs/1507.04544/}
+\url{https://arxiv.org/abs/1507.04544}
 
 Boneva, L. I., Kendall, D., & Stefanov, I. (1971). Spline
 transformations: Three new diagnostic aids for the statistical

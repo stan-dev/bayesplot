@@ -8,4 +8,3 @@ test_check("bayesplot")
 # pr <- testthat::ProgressReporter$new()
 # pr$max_fail = 1000
 # devtools::test(reporter = pr)
-

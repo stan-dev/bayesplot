@@ -31,8 +31,12 @@ mcmc_dens(
   transformations = list(),
   ...,
   facet_args = list(),
+  alpha = 1,
   trim = FALSE,
-  alpha = 1
+  bw = NULL,
+  adjust = NULL,
+  kernel = NULL,
+  n_dens = NULL
 )
 
 mcmc_hist_by_chain(
@@ -55,7 +59,11 @@ mcmc_dens_overlay(
   ...,
   facet_args = list(),
   color_chains = TRUE,
-  trim = FALSE
+  trim = FALSE,
+  bw = NULL,
+  adjust = NULL,
+  kernel = NULL,
+  n_dens = NULL
 )
 
 mcmc_dens_chains(
@@ -158,11 +166,11 @@ function.)}
 
 \item{trim}{A logical scalar passed to \code{\link[ggplot2:geom_density]{ggplot2::geom_density()}}.}
 
-\item{color_chains}{Option for whether to separately color chains.}
-
 \item{bw, adjust, kernel, n_dens}{Optional arguments passed to
 \code{\link[stats:density]{stats::density()}} to override default kernel density estimation
 parameters. \code{n_dens} defaults to \code{1024}.}
+
+\item{color_chains}{Option for whether to separately color chains.}
 
 \item{probs}{A numeric vector passed to \code{\link[ggplot2:geom_violin]{ggplot2::geom_violin()}}'s
 \code{draw_quantiles} argument to specify at which quantiles to draw
