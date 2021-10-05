@@ -1,17 +1,29 @@
 <!-- See http://style.tidyverse.org/news.html for advice on writing news -->
 
-# bayesplot 1.8.0.9000
+# bayesplot 1.8.1.9000
 
-Items for next release go here
+* `mcmc_dens()` and `mcmc_dens_overlay()` gain arguments for controlling the 
+  the density calculation. (#258)
+  
+* `mcmc_hist()` and `mcmc_dens()` gain argument `alpha` for controlling transparency. (#244)
 
 * Size of points and interval lines can set in 
   `mcmc_intervals(..., outer_size, inner_size, point_size)`. (#215, #228, #229) 
  
+
+# bayesplot 1.8.1
+
+* Fix R cmd check error on linux for CRAN 
+
 # bayesplot 1.8.0
 
 ### Bug fixes
 
 * `mcmc_areas()` tries to use less vertical blank space. (#218, #230)
+
+* Fix bug in `color_scheme_view()` minimal theme (#213).
+
+* Fix error in `mcmc_acf()` for certain input types. (#244, #245, @hhau)
 
 ### New features
 
@@ -27,7 +39,7 @@ Items for next release go here
   density estimation. The new argument `boundary_correction` defaults to TRUE but
   can be set to FALSE to recover the old version of the plot. (#171, #235,
   @ecoronado92)
-
+  
 * CmdStanMCMC objects (from CmdStanR) can now be used with extractor
   functions `nuts_params()`, `log_posterior()`, `rhat()`, and
   `neff_ratio()`. (#227)
@@ -373,3 +385,4 @@ Initial CRAN release
 
 [ggridges]: https://CRAN.R-project.org/package=ggridges
             "ggridges package"
+            
