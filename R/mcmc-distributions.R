@@ -13,6 +13,7 @@
 #' @template args-facet_args
 #' @template args-density-controls
 #' @param ... Currently ignored.
+#' @param alpha Passed to the geom to control the transparency.
 #'
 #' @template return-ggplot
 #'
@@ -115,7 +116,8 @@ mcmc_hist <- function(
   facet_args = list(),
   binwidth = NULL,
   breaks = NULL,
-  freq = TRUE
+  freq = TRUE,
+  alpha = 1
 ) {
   check_ignored_arguments(...)
   .mcmc_hist(
@@ -128,6 +130,7 @@ mcmc_hist <- function(
     breaks = breaks,
     by_chain = FALSE,
     freq = freq,
+    alpha = alpha,
     ...
   )
 }
@@ -145,7 +148,8 @@ mcmc_dens <- function(
   bw = NULL,
   adjust = NULL,
   kernel = NULL,
-  n_dens = NULL
+  n_dens = NULL,
+  alpha = 1
 ) {
   check_ignored_arguments(...)
   .mcmc_dens(
@@ -160,6 +164,7 @@ mcmc_dens <- function(
     adjust = adjust,
     kernel = kernel,
     n_dens = n_dens,
+    alpha = alpha,
     ...
   )
 }
@@ -175,7 +180,8 @@ mcmc_hist_by_chain <- function(
   ...,
   facet_args = list(),
   binwidth = NULL,
-  freq = TRUE
+  freq = TRUE,
+  alpha = 1
 ) {
   check_ignored_arguments(...)
   .mcmc_hist(
@@ -187,6 +193,7 @@ mcmc_hist_by_chain <- function(
     binwidth = binwidth,
     by_chain = TRUE,
     freq = freq,
+    alpha = alpha,
     ...
   )
 }
@@ -363,6 +370,7 @@ mcmc_violin <- function(
   breaks = NULL,
   by_chain = FALSE,
   freq = TRUE,
+  alpha = 1,
   ...
 ) {
   x <- prepare_mcmc_array(x, pars, regex_pars, transformations)
@@ -382,7 +390,8 @@ mcmc_violin <- function(
       size = .25,
       na.rm = TRUE,
       binwidth = binwidth,
-      breaks = breaks
+      breaks = breaks,
+      alpha = alpha
     )
 
   facet_args[["scales"]] <- facet_args[["scales"]] %||% "free"
@@ -426,6 +435,7 @@ mcmc_violin <- function(
   geom = c("density", "violin"),
   probs = c(0.1, 0.5, 0.9),
   trim = FALSE,
+  alpha = 1,
   bw = NULL,
   adjust = NULL,
   kernel = NULL,
@@ -460,8 +470,7 @@ mcmc_violin <- function(
   } else {
     list(x = ~ Value)
   }
-
-  geom_args <- list(size = 0.5, na.rm = TRUE)
+  geom_args <- list(size = 0.5, na.rm = TRUE, alpha = alpha)
   if (violin) {
     geom_args[["draw_quantiles"]] <- probs
   } else {
@@ -519,4 +528,3 @@ mcmc_violin <- function(
     yaxis_title(on = n_param == 1 && violin) +
     xaxis_title(on = n_param == 1)
 }
-

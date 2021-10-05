@@ -36,6 +36,8 @@ but without showing any observed data. See `help("PPD-overview")` for details.
 
 * `mcmc_dens()` and `mcmc_dens_overlay()` gain arguments for controlling the
   the density calculation. (#258)
+  
+* `mcmc_hist()` and `mcmc_dens()` gain argument `alpha` for controlling transparency. (#244)
 
 # bayesplot 1.8.1
 * Fix R cmd check error on linux for CRAN
@@ -64,7 +66,7 @@ but without showing any observed data. See `help("PPD-overview")` for details.
   density estimation. The new argument `boundary_correction` defaults to TRUE but
   can be set to FALSE to recover the old version of the plot. (#171, #235,
   @ecoronado92)
-
+  
 * CmdStanMCMC objects (from CmdStanR) can now be used with extractor
   functions `nuts_params()`, `log_posterior()`, `rhat()`, and
   `neff_ratio()`. (#227)

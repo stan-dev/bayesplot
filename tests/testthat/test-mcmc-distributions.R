@@ -119,5 +119,19 @@ test_that("mcmc_hist renders correctly", {
 
   p_freq <- mcmc_hist(vdiff_dframe, freq = TRUE)
   vdiffr::expect_doppelganger("mcmc_hist (freq)", p_freq)
+
+  p_alpha <- mcmc_hist(vdiff_dframe, alpha = 0)
+  vdiffr::expect_doppelganger("mcmc_hist (alpha)", p_alpha)
+})
+
+test_that("mcmc_dens renders correctly", {
+  testthat::skip_on_cran()
+  testthat::skip_if_not_installed("vdiffr")
+
+  p_base <- mcmc_dens(vdiff_dframe)
+  vdiffr::expect_doppelganger("mcmc_dens (default)", p_base)
+
+  p_alpha <- mcmc_dens(vdiff_dframe, alpha = 0)
+  vdiffr::expect_doppelganger("mcmc_dens (alpha)", p_alpha)
 })
 
