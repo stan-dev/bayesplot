@@ -473,7 +473,7 @@ mcmc_trace_data <- function(x,
       value_rank = rank(.data$value, ties.method = "average")
     ) %>%
     ungroup() %>%
-    select(!!! first_cols, dplyr::everything())
+    select(!!! first_cols, tidyselect::everything())
 
   data$highlight <- if (!is.null(highlight)) {
     data$chain == highlight

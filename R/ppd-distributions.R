@@ -301,7 +301,7 @@ ppd_boxplot <-
 #' @param y User's `y` argument (if applicable), already validated.
 #' @param group User's `group` argument, already validated.
 #' @return A molten data frame of predictions, possible including `y`.
-#' @importFrom dplyr left_join select everything
+#' @importFrom dplyr left_join select
 .ppd_data <- function(predictions, y = NULL, group = NULL) {
   if (!is.null(y)) {
     data <- melt_and_stack(y, predictions)
@@ -313,7 +313,7 @@ ppd_boxplot <-
     group_indices <- tibble::tibble(group, y_id = seq_along(group))
     data <- data %>%
       left_join(group_indices, by = "y_id") %>%
-      select(.data$group, everything())
+      select(.data$group, tidyselect::everything())
   }
   data
 }
