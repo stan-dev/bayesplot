@@ -1,7 +1,7 @@
 Package: bayesplot
 Type: Package
 Title: Plotting for Bayesian Models
-Version: 1.8.1
+Version: 1.8.1.9000
 Date: 2021-06-13
 Authors@R: c(person("Jonah", "Gabry", role = c("aut", "cre"), email = "jsg2201@columbia.edu"),
              person("Tristan", "Mahr", role = "aut"),
