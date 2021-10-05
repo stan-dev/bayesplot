@@ -105,11 +105,11 @@ function.
 }
 \description{
 The distribution of a (test) statistic \code{T(ypred)}, or a pair of (test)
-statistics, over the simulated datasets in \code{ypred}. Each of these functions
-makes the same plot as the corresponding \code{\link[=PPC-test-statistics]{ppc_}}
-function but without comparing to any observed data \code{y}. The \strong{Plot
-Descriptions} section at \link{PPC-test-statistics} has details on the individual
-plots.
+statistics, over the simulations from the posterior or prior predictive
+distribution. Each of these functions makes the same plot as the
+corresponding \code{\link[=PPC-test-statistics]{ppc_}} function but without comparing to
+any observed data \code{y}. The \strong{Plot Descriptions} section at
+\link{PPC-test-statistics} has details on the individual plots.
 }
 \details{
 For Binomial data, the plots may be more useful if

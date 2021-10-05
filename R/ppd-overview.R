@@ -5,8 +5,8 @@
 #' @family PPDs
 #'
 #' @description The **bayesplot** PPD module provides various plotting functions
-#'   for creating graphical displays of simulated data from the posterior (or
-#'   prior) predictive distribution. These plots are essentially the same as the
+#'   for creating graphical displays of simulated data from the posterior or
+#'   prior predictive distribution. These plots are essentially the same as the
 #'   corresponding [PPC] plots but without showing any observed data.
 #'
 #' @section PPD plotting functions: The functions for plotting prior and

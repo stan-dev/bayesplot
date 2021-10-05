@@ -133,10 +133,11 @@ customized using the \strong{ggplot2} package. The functions with suffix
 function.
 }
 \description{
-Medians and central interval estimates of \code{ypred}. Each of these functions
-makes the same plot as the corresponding \code{\link[=PPC-intervals]{ppc_}} function but
-without plotting any observed data \code{y}. The \strong{Plot Descriptions} section at
-\link{PPC-intervals} has details on the individual plots.
+Medians and central interval estimates of posterior or prior predictive
+distributions. Each of these functions makes the same plot as the
+corresponding \code{\link[=PPC-intervals]{ppc_}} function but without plotting any
+observed data \code{y}. The \strong{Plot Descriptions} section at \link{PPC-intervals} has
+details on the individual plots.
 }
 \examples{
 color_scheme_set("brightblue")

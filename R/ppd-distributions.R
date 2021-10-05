@@ -1,6 +1,6 @@
 #' PPD distributions
 #'
-#' Plot posterior (or prior) predictive distributions. Each of these functions
+#' Plot posterior or prior predictive distributions. Each of these functions
 #' makes the same plot as the corresponding [`ppc_`][PPC-distributions] function
 #' but without plotting any observed data `y`. The **Plot Descriptions** section
 #' at [PPC-distributions] has details on the individual plots.

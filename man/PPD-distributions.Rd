@@ -119,7 +119,7 @@ customized using the \strong{ggplot2} package. The functions with suffix
 function.
 }
 \description{
-Plot posterior (or prior) predictive distributions. Each of these functions
+Plot posterior or prior predictive distributions. Each of these functions
 makes the same plot as the corresponding \code{\link[=PPC-distributions]{ppc_}} function
 but without plotting any observed data \code{y}. The \strong{Plot Descriptions} section
 at \link{PPC-distributions} has details on the individual plots.

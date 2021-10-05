@@ -1,9 +1,10 @@
 #' PPD intervals
 #'
-#' Medians and central interval estimates of `ypred`. Each of these functions
-#' makes the same plot as the corresponding [`ppc_`][PPC-intervals] function but
-#' without plotting any observed data `y`. The **Plot Descriptions** section at
-#' [PPC-intervals] has details on the individual plots.
+#' Medians and central interval estimates of posterior or prior predictive
+#' distributions. Each of these functions makes the same plot as the
+#' corresponding [`ppc_`][PPC-intervals] function but without plotting any
+#' observed data `y`. The **Plot Descriptions** section at [PPC-intervals] has
+#' details on the individual plots.
 #'
 #' @name PPD-intervals
 #' @family PPDs

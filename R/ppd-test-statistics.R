@@ -1,11 +1,11 @@
 #' PPD test statistics
 #'
 #' The distribution of a (test) statistic `T(ypred)`, or a pair of (test)
-#' statistics, over the simulated datasets in `ypred`. Each of these functions
-#' makes the same plot as the corresponding [`ppc_`][PPC-test-statistics]
-#' function but without comparing to any observed data `y`. The **Plot
-#' Descriptions** section at [PPC-test-statistics] has details on the individual
-#' plots.
+#' statistics, over the simulations from the posterior or prior predictive
+#' distribution. Each of these functions makes the same plot as the
+#' corresponding [`ppc_`][PPC-test-statistics] function but without comparing to
+#' any observed data `y`. The **Plot Descriptions** section at
+#' [PPC-test-statistics] has details on the individual plots.
 #'
 #' @name PPD-test-statistics
 #' @aliases PPD-statistics
