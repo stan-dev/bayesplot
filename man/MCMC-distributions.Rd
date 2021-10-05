@@ -20,7 +20,8 @@ mcmc_hist(
   facet_args = list(),
   binwidth = NULL,
   breaks = NULL,
-  freq = TRUE
+  freq = TRUE,
+  alpha = 1
 )
 
 mcmc_dens(
@@ -30,6 +31,7 @@ mcmc_dens(
   transformations = list(),
   ...,
   facet_args = list(),
+  alpha = 1,
   trim = FALSE,
   bw = NULL,
   adjust = NULL,
@@ -45,7 +47,8 @@ mcmc_hist_by_chain(
   ...,
   facet_args = list(),
   binwidth = NULL,
-  freq = TRUE
+  freq = TRUE,
+  alpha = 1
 )
 
 mcmc_dens_overlay(
@@ -158,6 +161,8 @@ y-axis. Setting \code{freq=FALSE} puts density on the y-axis. (For many
 plots the y-axis text is off by default. To view the count or density
 labels on the y-axis see the \code{\link[=yaxis_text]{yaxis_text()}} convenience
 function.)}
+
+\item{alpha}{Passed to the geom to control the transparency.}
 
 \item{trim}{A logical scalar passed to \code{\link[ggplot2:geom_density]{ggplot2::geom_density()}}.}
 
