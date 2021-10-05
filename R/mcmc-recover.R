@@ -315,6 +315,7 @@ mcmc_recover_hist <-
 
     vline_data <- data.frame(Parameter = colnames(x), True = true)
     hist_data <- melt_mcmc(x)[, -1]
+    vline_data$Parameter <- factor(vline_data$Parameter, levels = levels(hist_data$Parameter))
 
     facet_args[["facets"]] <- "Parameter"
     facet_args[["scales"]] <- facet_args[["scales"]] %||% "free"

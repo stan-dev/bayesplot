@@ -42,7 +42,8 @@ ppc_ribbon(
   prob = 0.5,
   prob_outer = 0.9,
   alpha = 0.33,
-  size = 0.25
+  size = 0.25,
+  y_draw = c("line", "points", "both")
 )
 
 ppc_ribbon_grouped(
@@ -55,7 +56,8 @@ ppc_ribbon_grouped(
   prob = 0.5,
   prob_outer = 0.9,
   alpha = 0.33,
-  size = 0.25
+  size = 0.25,
+  y_draw = c("line", "points", "both")
 )
 
 ppc_intervals_data(
@@ -109,6 +111,9 @@ passed to \code{\link[ggplot2:facet_wrap]{ggplot2::facet_wrap()}} to control fac
 \item{alpha, size, fatten}{Arguments passed to geoms. For ribbon plots \code{alpha}
 and \code{size} are passed to \code{\link[ggplot2:geom_ribbon]{ggplot2::geom_ribbon()}}. For interval plots
 \code{size} and \code{fatten} are passed to \code{\link[ggplot2:geom_linerange]{ggplot2::geom_pointrange()}}.}
+
+\item{y_draw}{For ribbon plots only, a string specifying how to draw \code{y}. Can
+be \code{"line"} (the default), \code{"points"}, or \code{"both"}.}
 }
 \value{
 The plotting functions return a ggplot object that can be further
