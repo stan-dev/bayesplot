@@ -2,6 +2,9 @@
 
 # bayesplot 1.8.1.9000
 
+* `mcmc_dens()` and `mcmc_dens_overlay()` gain arguments for controlling the 
+  the density calculation. (#258)
+
 # bayesplot 1.8.1
 
 * Fix R cmd check error on linux for CRAN 
