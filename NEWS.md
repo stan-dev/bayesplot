@@ -34,7 +34,7 @@ but without showing any observed data. See `help("PPD-overview")` for details.
 
 # bayesplot 1.8.1.9000
 
-* `mcmc_dens()` and `mcmc_dens_overlay()` gain arguments for controlling the 
+* `mcmc_dens()` and `mcmc_dens_overlay()` gain arguments for controlling the
   the density calculation. (#258)
 
 # bayesplot 1.8.1
