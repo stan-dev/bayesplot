@@ -144,12 +144,12 @@ mcmc_dens <- function(
   transformations = list(),
   ...,
   facet_args = list(),
-  alpha = 1,
   trim = FALSE,
   bw = NULL,
   adjust = NULL,
   kernel = NULL,
-  n_dens = NULL
+  n_dens = NULL,
+  alpha = 1
 ) {
   check_ignored_arguments(...)
   .mcmc_dens(
