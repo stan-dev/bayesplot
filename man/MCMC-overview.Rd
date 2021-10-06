@@ -26,6 +26,8 @@ frame with one column per parameter (if only a single chain or all chains
 have already been merged), or a data frame with one column per parameter plus
 an additional column \code{"Chain"} that contains the chain number (an integer)
 corresponding to each row in the data frame.
+\item \strong{draws}: Any of the \code{draws} formats supported by the
+\pkg{\link{posterior}} package.
 }
 
 \strong{Note}: typically the user should \emph{not} include warmup iterations
