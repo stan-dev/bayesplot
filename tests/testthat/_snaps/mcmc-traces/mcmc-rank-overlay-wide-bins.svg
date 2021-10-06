@@ -1,0 +1,67 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' class='svglite' data-engine-version='2.0' width='720.00pt' height='576.00pt' viewBox='0 0 720.00 576.00'>
+<defs>
+  <style type='text/css'><![CDATA[
+    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {
+      fill: none;
+      stroke: #000000;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-miterlimit: 10.00;
+    }
+  ]]></style>
+</defs>
+<rect width='100%' height='100%' style='stroke: none; fill: #FFFFFF;'/>
+<defs>
+  <clipPath id='cpMC4wMHw3MjAuMDB8MC4wMHw1NzYuMDA='>
+    <rect x='0.00' y='0.00' width='720.00' height='576.00' />
+  </clipPath>
+</defs>
+<g clip-path='url(#cpMC4wMHw3MjAuMDB8MC4wMHw1NzYuMDA=)'>
+</g>
+<defs>
+  <clipPath id='cpMjcuMzh8NjU4Ljc2fDI0Ljg1fDU0Mi4zMA=='>
+    <rect x='27.38' y='24.85' width='631.38' height='517.45' />
+  </clipPath>
+</defs>
+<g clip-path='url(#cpMjcuMzh8NjU4Ljc2fDI0Ljg1fDU0Mi4zMA==)'>
+<polyline points='56.08,116.04 199.64,116.04 199.64,116.04 343.21,116.04 343.21,99.93 486.78,99.93 486.78,132.15 630.06,132.15 630.06,132.15 ' style='stroke-width: 1.07; stroke: #011F4B; stroke-linecap: butt;' />
+<polyline points='56.08,103.15 199.64,103.15 199.64,161.14 343.21,161.14 343.21,151.48 486.78,151.48 486.78,48.38 630.06,48.38 630.06,48.38 ' style='stroke-width: 1.07; stroke: #03396C; stroke-linecap: butt;' />
+<polyline points='56.08,80.59 199.64,80.59 199.64,77.37 343.21,77.37 343.21,141.81 486.78,141.81 486.78,164.37 630.06,164.37 630.06,164.37 ' style='stroke-width: 1.07; stroke: #6497B1; stroke-linecap: butt;' />
+<polyline points='56.08,164.37 199.64,164.37 199.64,109.59 343.21,109.59 343.21,70.93 486.78,70.93 486.78,119.26 630.06,119.26 630.06,119.26 ' style='stroke-width: 1.07; stroke: #D1E1EC; stroke-linecap: butt;' />
+<line x1='27.38' y1='542.30' x2='658.76' y2='542.30' style='stroke-width: 0.85; stroke-linecap: butt;' />
+</g>
+<g clip-path='url(#cpMC4wMHw3MjAuMDB8MC4wMHw1NzYuMDA=)'>
+<polyline points='27.38,542.30 27.38,24.85 ' style='stroke-width: 0.85; stroke-linecap: butt;' />
+<text x='22.00' y='522.09' text-anchor='end' style='font-size: 9.60px; fill: #4D4D4D; font-family: sans;' textLength='5.34px' lengthAdjust='spacingAndGlyphs'>0</text>
+<text x='22.00' y='360.99' text-anchor='end' style='font-size: 9.60px; fill: #4D4D4D; font-family: sans;' textLength='10.68px' lengthAdjust='spacingAndGlyphs'>50</text>
+<text x='22.00' y='199.89' text-anchor='end' style='font-size: 9.60px; fill: #4D4D4D; font-family: sans;' textLength='16.02px' lengthAdjust='spacingAndGlyphs'>100</text>
+<text x='22.00' y='38.79' text-anchor='end' style='font-size: 9.60px; fill: #4D4D4D; font-family: sans;' textLength='16.02px' lengthAdjust='spacingAndGlyphs'>150</text>
+<polyline points='24.39,518.78 27.38,518.78 ' style='stroke-width: 0.64; stroke: #333333; stroke-linecap: butt;' />
+<polyline points='24.39,357.69 27.38,357.69 ' style='stroke-width: 0.64; stroke: #333333; stroke-linecap: butt;' />
+<polyline points='24.39,196.59 27.38,196.59 ' style='stroke-width: 0.64; stroke: #333333; stroke-linecap: butt;' />
+<polyline points='24.39,35.49 27.38,35.49 ' style='stroke-width: 0.64; stroke: #333333; stroke-linecap: butt;' />
+<polyline points='27.38,542.30 658.76,542.30 ' style='stroke-width: 0.85; stroke-linecap: butt;' />
+<polyline points='55.79,545.29 55.79,542.30 ' style='stroke-width: 0.64; stroke: #333333; stroke-linecap: butt;' />
+<polyline points='199.36,545.29 199.36,542.30 ' style='stroke-width: 0.64; stroke: #333333; stroke-linecap: butt;' />
+<polyline points='342.92,545.29 342.92,542.30 ' style='stroke-width: 0.64; stroke: #333333; stroke-linecap: butt;' />
+<polyline points='486.49,545.29 486.49,542.30 ' style='stroke-width: 0.64; stroke: #333333; stroke-linecap: butt;' />
+<polyline points='630.06,545.29 630.06,542.30 ' style='stroke-width: 0.64; stroke: #333333; stroke-linecap: butt;' />
+<text x='55.79' y='554.29' text-anchor='middle' style='font-size: 9.60px; fill: #4D4D4D; font-family: sans;' textLength='5.34px' lengthAdjust='spacingAndGlyphs'>0</text>
+<text x='199.36' y='554.29' text-anchor='middle' style='font-size: 9.60px; fill: #4D4D4D; font-family: sans;' textLength='16.02px' lengthAdjust='spacingAndGlyphs'>500</text>
+<text x='342.92' y='554.29' text-anchor='middle' style='font-size: 9.60px; fill: #4D4D4D; font-family: sans;' textLength='21.36px' lengthAdjust='spacingAndGlyphs'>1000</text>
+<text x='486.49' y='554.29' text-anchor='middle' style='font-size: 9.60px; fill: #4D4D4D; font-family: sans;' textLength='21.36px' lengthAdjust='spacingAndGlyphs'>1500</text>
+<text x='630.06' y='554.29' text-anchor='middle' style='font-size: 9.60px; fill: #4D4D4D; font-family: sans;' textLength='21.36px' lengthAdjust='spacingAndGlyphs'>2000</text>
+<text x='343.07' y='567.53' text-anchor='middle' style='font-size: 12.00px; font-family: sans;' textLength='28.02px' lengthAdjust='spacingAndGlyphs'>Rank</text>
+<text x='676.69' y='250.16' style='font-size: 12.00px; font-family: sans;' textLength='31.36px' lengthAdjust='spacingAndGlyphs'>Chain</text>
+<line x1='678.42' y1='266.02' x2='692.24' y2='266.02' style='stroke-width: 1.07; stroke: #011F4B; stroke-linecap: butt;' />
+<line x1='678.42' y1='283.30' x2='692.24' y2='283.30' style='stroke-width: 1.07; stroke: #03396C; stroke-linecap: butt;' />
+<line x1='678.42' y1='300.58' x2='692.24' y2='300.58' style='stroke-width: 1.07; stroke: #6497B1; stroke-linecap: butt;' />
+<line x1='678.42' y1='317.86' x2='692.24' y2='317.86' style='stroke-width: 1.07; stroke: #D1E1EC; stroke-linecap: butt;' />
+<text x='699.95' y='270.50' style='font-size: 13.00px; font-family: sans;' textLength='7.23px' lengthAdjust='spacingAndGlyphs'>1</text>
+<text x='699.95' y='287.78' style='font-size: 13.00px; font-family: sans;' textLength='7.23px' lengthAdjust='spacingAndGlyphs'>2</text>
+<text x='699.95' y='305.06' style='font-size: 13.00px; font-family: sans;' textLength='7.23px' lengthAdjust='spacingAndGlyphs'>3</text>
+<text x='699.95' y='322.34' style='font-size: 13.00px; font-family: sans;' textLength='7.23px' lengthAdjust='spacingAndGlyphs'>4</text>
+<text x='27.38' y='15.89' style='font-size: 14.40px; font-family: sans;' textLength='202.51px' lengthAdjust='spacingAndGlyphs'>mcmc_rank_overlay (wide bins)</text>
+</g>
+</svg>
