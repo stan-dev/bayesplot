@@ -3,6 +3,8 @@ set.seed(8420)
 # Prepare input objects
 arr <- array(rnorm(4000), dim = c(100, 4, 10))
 arr1chain <- arr[, 1, , drop = FALSE]
+drawsarr <- posterior::example_draws()
+drawsarr1chain <- drawsarr[, 1, , drop = FALSE]
 mat <- matrix(rnorm(1000), nrow = 100, ncol = 10)
 dframe <- as.data.frame(mat)
 chainlist <- list(matrix(rnorm(1000), nrow = 100, ncol = 10),
@@ -16,6 +18,7 @@ chainlist1chain <- chainlist[1]
 
 # one parameter
 arr1 <- arr[, , 1, drop = FALSE]
+drawsarr1 <- drawsarr[, , 1, drop = FALSE]
 mat1 <- mat[, 1, drop = FALSE]
 dframe1 <- dframe[, 1, drop = FALSE]
 chainlist1 <- list(chainlist[[1]][, 1, drop=FALSE],

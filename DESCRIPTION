@@ -31,6 +31,7 @@ Imports:
     ggplot2 (>= 3.0.0),
     ggridges,
     glue,
+    posterior,
     reshape2,
     rlang (>= 0.3.0),
     stats,
@@ -53,7 +54,7 @@ Suggests:
     survival,
     testthat (>= 2.0.0),
     vdiffr
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
 VignetteBuilder: knitr
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)

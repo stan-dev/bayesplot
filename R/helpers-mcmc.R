@@ -9,7 +9,9 @@ prepare_mcmc_array <- function(x,
                                pars = character(),
                                regex_pars = character(),
                                transformations = list()) {
-  if (is_df_with_chain(x)) {
+  if (posterior::is_draws(x)) {
+    x <- posterior::as_draws_array(x)
+  } else if (is_df_with_chain(x)) {
     x <- df_with_chain2array(x)
   } else if (is_chain_list(x)) {
     # this will apply to mcmc.list and similar objects
