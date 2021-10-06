@@ -11,11 +11,14 @@ get_palette <- function(ggplot, n) {
 test_that("mcmc_hist returns a ggplot object", {
   expect_gg(mcmc_hist(arr, pars = "beta[1]", regex_pars = "x\\:"))
   expect_gg(mcmc_hist(arr1chain, regex_pars = "beta"))
+  expect_gg(mcmc_hist(drawsarr, pars = "theta[1]"))
+  expect_gg(mcmc_hist(drawsarr1chain, regex_pars = "theta"))
   expect_gg(mcmc_hist(mat))
   expect_gg(mcmc_hist(dframe))
   expect_gg(mcmc_hist(dframe_multiple_chains))
 
   expect_gg(mcmc_hist(arr1))
+  expect_gg(mcmc_hist(drawsarr1))
   expect_gg(mcmc_hist(mat1))
   expect_gg(mcmc_hist(dframe1))
 })
@@ -23,6 +26,8 @@ test_that("mcmc_hist returns a ggplot object", {
 test_that("mcmc_dens returns a ggplot object", {
   expect_gg(mcmc_dens(arr, pars = "beta[2]", regex_pars = "x\\:"))
   expect_gg(mcmc_dens(arr1chain, regex_pars = "beta"))
+  expect_gg(mcmc_hist(drawsarr, pars = "theta[1]"))
+  expect_gg(mcmc_hist(drawsarr1chain, regex_pars = "theta"))
   expect_gg(mcmc_dens(mat))
 
   expect_gg(mcmc_dens(dframe, transformations = list(sigma = function(x) x^2)))
@@ -33,6 +38,7 @@ test_that("mcmc_dens returns a ggplot object", {
   ))
 
   expect_gg(mcmc_dens(arr1))
+  expect_gg(mcmc_hist(drawsarr1))
   expect_gg(mcmc_dens(mat1))
   expect_gg(mcmc_dens(dframe1))
 })
@@ -92,18 +98,22 @@ test_that("mcmc_* throws error if 1 chain but multiple chains required", {
   expect_error(mcmc_hist_by_chain(mat), "requires multiple chains")
   expect_error(mcmc_hist_by_chain(dframe), "requires multiple chains")
   expect_error(mcmc_hist_by_chain(arr1chain), "requires multiple chains")
+  expect_error(mcmc_hist_by_chain(drawsarr1chain), "requires multiple chains")
 
   expect_error(mcmc_dens_overlay(mat), "requires multiple chains")
   expect_error(mcmc_dens_overlay(dframe), "requires multiple chains")
   expect_error(mcmc_dens_overlay(arr1chain), "requires multiple chains")
+  expect_error(mcmc_dens_overlay(drawsarr1chain), "requires multiple chains")
 
   expect_error(mcmc_dens_chains(mat), "requires multiple chains")
   expect_error(mcmc_dens_chains(dframe), "requires multiple chains")
   expect_error(mcmc_dens_chains(arr1chain), "requires multiple chains")
+  expect_error(mcmc_dens_chains(drawsarr1chain), "requires multiple chains")
 
   expect_error(mcmc_violin(mat), "requires multiple chains")
   expect_error(mcmc_violin(dframe), "requires multiple chains")
   expect_error(mcmc_violin(arr1chain), "requires multiple chains")
+  expect_error(mcmc_violin(drawsarr1chain), "requires multiple chains")
 })
 
 
@@ -119,5 +129,19 @@ test_that("mcmc_hist renders correctly", {
 
   p_freq <- mcmc_hist(vdiff_dframe, freq = TRUE)
   vdiffr::expect_doppelganger("mcmc_hist (freq)", p_freq)
+
+  p_alpha <- mcmc_hist(vdiff_dframe, alpha = 0)
+  vdiffr::expect_doppelganger("mcmc_hist (alpha)", p_alpha)
+})
+
+test_that("mcmc_dens renders correctly", {
+  testthat::skip_on_cran()
+  testthat::skip_if_not_installed("vdiffr")
+
+  p_base <- mcmc_dens(vdiff_dframe)
+  vdiffr::expect_doppelganger("mcmc_dens (default)", p_base)
+
+  p_alpha <- mcmc_dens(vdiff_dframe, alpha = 0)
+  vdiffr::expect_doppelganger("mcmc_dens (alpha)", p_alpha)
 })
 
