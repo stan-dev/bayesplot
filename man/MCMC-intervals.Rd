@@ -36,6 +36,7 @@ mcmc_areas(
   prob_outer = 1,
   point_est = c("median", "mean", "none"),
   rhat = numeric(),
+  border_size = NULL,
   bw = NULL,
   adjust = NULL,
   kernel = NULL,
@@ -50,6 +51,7 @@ mcmc_areas_ridges(
   ...,
   prob_outer = 1,
   prob = 1,
+  border_size = NULL,
   bw = NULL,
   adjust = NULL,
   kernel = NULL,
@@ -99,11 +101,15 @@ mcmc_areas_ridges_data(
 )
 }
 \arguments{
-\item{x}{A 3-D array, matrix, list of matrices, or data frame of MCMC draws.
-The \link{MCMC-overview} page provides details on how to specify each these
-allowed inputs. It is also possible to use an object with an
-\code{as.array()} method that returns the same kind of 3-D array described on
-the \link{MCMC-overview} page.}
+\item{x}{An object containing MCMC draws:
+\itemize{
+\item A 3-D array, matrix, list of matrices, or data frame. The \link{MCMC-overview}
+page provides details on how to specify each these.
+\item A \code{draws} object from the \pkg{\link{posterior}} package (e.g.,
+\code{draws_array}, \code{draws_rvars}, etc.).
+\item An object with an \code{as.array()} method that returns the same kind of 3-D
+array described on the \link{MCMC-overview} page.
+}}
 
 \item{pars}{An optional character vector of parameter names. If neither
 \code{pars} nor \code{regex_pars} is specified then the default is to use \emph{all}
@@ -170,6 +176,9 @@ area. With \code{"equal height"}, the curves are scaled so that the highest
 points across the curves are the same height. The method \code{"scaled height"} tries a compromise between to the two: the heights from
 \code{"equal height"} are scaled using \code{height*sqrt(height)}}
 
+\item{border_size}{For \code{mcmc_areas()} and \code{mcmc_areas_ridges()}, the size of
+the ridgelines.}
+
 \item{bw, adjust, kernel, n_dens}{Optional arguments passed to
 \code{\link[stats:density]{stats::density()}} to override default kernel density estimation
 parameters. \code{n_dens} defaults to \code{1024}.}
@@ -229,7 +238,8 @@ p <- mcmc_areas(
    pars = c("alpha", "beta[4]"),
    prob = 2/3,
    prob_outer = 0.9,
-   point_est = "mean"
+   point_est = "mean",
+   border_size = 1.5 # make the ridgelines fatter
 )
 plot(p)
 
@@ -326,7 +336,7 @@ mcmc_areas(x, regex_pars = "cyl", bw = "SJ",
 # Example of hierarchically related parameters
 # plotted with ridgelines
 m <- shinystan::eight_schools@posterior_sample
-mcmc_areas_ridges(m, pars = "mu", regex_pars = "theta") +
+mcmc_areas_ridges(m, pars = "mu", regex_pars = "theta", border_size = 0.75) +
   ggtitle("Treatment effect on eight schools (Rubin, 1981)")
 }
 

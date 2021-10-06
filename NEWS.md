@@ -34,12 +34,18 @@ but without showing any observed data. See `help("PPD-overview")` for details.
 
 # bayesplot 1.8.1.9000
 
+* `mcmc_*()` functions now support all draws formats from the **posterior** package. (#277, @Ozan147)
+
 * `mcmc_dens()` and `mcmc_dens_overlay()` gain arguments for controlling the
   the density calculation. (#258)
-  
+
 * `mcmc_hist()` and `mcmc_dens()` gain argument `alpha` for controlling transparency. (#244)
 
+* `mcmc_areas()` and `mcmc_areas_ridges()` gain an argument `border_size` for
+controlling the thickness of the ridgelines. (#224)
+
 # bayesplot 1.8.1
+
 * Fix R cmd check error on linux for CRAN
 
 # bayesplot 1.8.0
@@ -66,7 +72,7 @@ but without showing any observed data. See `help("PPD-overview")` for details.
   density estimation. The new argument `boundary_correction` defaults to TRUE but
   can be set to FALSE to recover the old version of the plot. (#171, #235,
   @ecoronado92)
-  
+
 * CmdStanMCMC objects (from CmdStanR) can now be used with extractor
   functions `nuts_params()`, `log_posterior()`, `rhat()`, and
   `neff_ratio()`. (#227)
