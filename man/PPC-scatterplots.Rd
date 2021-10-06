@@ -61,9 +61,10 @@ appearance of the points.}
 \item{ref_line}{If \code{TRUE} (the default) a dashed line with intercept 0 and
 slope 1 is drawn behind the scatter plot.}
 
-\item{group}{A grouping variable. Will be coerced to \link[base:factor]{factor}
-if not already a factor. Each value in \code{group} is interpreted as the group
-level pertaining to the corresponding observation.}
+\item{group}{A grouping variable of the same length as \code{y}.
+Will be coerced to \link[base:factor]{factor} if not already a factor.
+Each value in \code{group} is interpreted as the group level pertaining
+to the corresponding observation.}
 }
 \value{
 The plotting functions return a ggplot object that can be further
