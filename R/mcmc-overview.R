@@ -25,6 +25,8 @@
 #' have already been merged), or a data frame with one column per parameter plus
 #' an additional column `"Chain"` that contains the chain number (an integer)
 #' corresponding to each row in the data frame.
+#' * __draws__: Any of the `draws` formats supported by the
+#' \pkg{\link{posterior}} package.
 #'
 #' __Note__: typically the user should *not* include warmup iterations
 #' in the object passed to **bayesplot** plotting functions, although for

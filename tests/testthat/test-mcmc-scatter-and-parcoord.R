@@ -17,6 +17,7 @@ if (requireNamespace("rstanarm", quietly = TRUE)) {
 test_that("mcmc_scatter returns a ggplot object", {
   expect_gg(mcmc_scatter(arr, pars = c("beta[1]", "beta[2]")))
   expect_gg(mcmc_scatter(arr1chain, regex_pars = "beta", size = 3, alpha = 0.5))
+  expect_gg(mcmc_scatter(drawsarr, pars = c("theta[1]", "theta[2]")))
   expect_gg(mcmc_scatter(mat, pars = c("sigma", "(Intercept)")))
   expect_gg(mcmc_scatter(dframe, regex_pars = "x:[2,4]"))
   expect_gg(mcmc_scatter(dframe_multiple_chains,
@@ -26,7 +27,9 @@ test_that("mcmc_scatter returns a ggplot object", {
 test_that("mcmc_scatter throws error if number of parameters is not 2", {
   expect_error(mcmc_scatter(arr, pars = c("sigma", "beta[1]", "beta[2]")), "exactly 2 parameters")
   expect_error(mcmc_scatter(arr, pars = "sigma"), "exactly 2 parameters")
+  expect_error(mcmc_scatter(drawsarr, pars = "mu"), "exactly 2 parameters")
   expect_error(mcmc_scatter(arr1), "exactly 2 parameters")
+  expect_error(mcmc_scatter(drawsarr1), "exactly 2 parameters")
   expect_error(mcmc_scatter(mat1), "exactly 2 parameters")
 })
 
@@ -46,12 +49,14 @@ test_that("mcmc_hex returns a ggplot object", {
   skip_if_not_installed("hexbin")
   expect_gg(mcmc_hex(arr, pars = c("beta[1]", "beta[2]")))
   expect_gg(mcmc_hex(arr1chain, regex_pars = "beta", binwidth = c(.5,.5)))
+  expect_gg(mcmc_hex(drawsarr, pars = c("theta[1]", "theta[2]")))
 })
 
 test_that("mcmc_hex throws error if number of parameters is not 2", {
   skip_if_not_installed("hexbin")
   expect_error(mcmc_hex(arr, pars = c("sigma", "beta[1]", "beta[2]")), "exactly 2 parameters")
   expect_error(mcmc_hex(arr, pars = "sigma"), "exactly 2 parameters")
+  expect_error(mcmc_hex(drawsarr, pars = "mu"), "exactly 2 parameters")
   expect_error(mcmc_hex(arr1), "exactly 2 parameters")
   expect_error(mcmc_hex(mat1), "exactly 2 parameters")
 })
@@ -69,8 +74,10 @@ test_that("mcmc_pairs returns a bayesplot_grid object", {
                                    diag_fun = "dens", off_diag_fun = "hex",
                                    diag_args = list(trim = FALSE),
                                    off_diag_args = list(binwidth = c(0.5, 0.5))))
+  expect_bayesplot_grid(mcmc_pairs(drawsarr, pars = "mu", regex_pars = "theta"))
 
   expect_bayesplot_grid(suppressWarnings(mcmc_pairs(arr1chain, regex_pars = "beta")))
+  expect_bayesplot_grid(suppressWarnings(mcmc_pairs(drawsarr1chain, regex_pars = "theta")))
   expect_bayesplot_grid(suppressWarnings(mcmc_pairs(mat, pars = c("(Intercept)", "sigma"))))
   expect_bayesplot_grid(suppressWarnings(mcmc_pairs(dframe, pars = c("(Intercept)", "sigma"))))
   expect_bayesplot_grid(mcmc_pairs(dframe_multiple_chains, regex_pars = "beta"))

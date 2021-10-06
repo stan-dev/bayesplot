@@ -41,11 +41,15 @@ mcmc_recover_hist(
 )
 }
 \arguments{
-\item{x}{A 3-D array, matrix, list of matrices, or data frame of MCMC draws.
-The \link{MCMC-overview} page provides details on how to specify each these
-allowed inputs. It is also possible to use an object with an
-\code{as.array()} method that returns the same kind of 3-D array described on
-the \link{MCMC-overview} page.}
+\item{x}{An object containing MCMC draws:
+\itemize{
+\item A 3-D array, matrix, list of matrices, or data frame. The \link{MCMC-overview}
+page provides details on how to specify each these.
+\item A \code{draws} object from the \pkg{\link{posterior}} package (e.g.,
+\code{draws_array}, \code{draws_rvars}, etc.).
+\item An object with an \code{as.array()} method that returns the same kind of 3-D
+array described on the \link{MCMC-overview} page.
+}}
 
 \item{true}{A numeric vector of "true" values of the parameters in \code{x}.
 There should be one value in \code{true} for each parameter included in

@@ -2,6 +2,8 @@
 
 # bayesplot 1.8.1.9000
 
+* `mcmc_*()` functions now support all draws formats from the **posterior** package. (#277, @Ozan147)
+
 * `mcmc_dens()` and `mcmc_dens_overlay()` gain arguments for controlling the
   the density calculation. (#258)
 
