@@ -31,12 +31,12 @@ mcmc_dens(
   transformations = list(),
   ...,
   facet_args = list(),
-  alpha = 1,
   trim = FALSE,
   bw = NULL,
   adjust = NULL,
   kernel = NULL,
-  n_dens = NULL
+  n_dens = NULL,
+  alpha = 1
 )
 
 mcmc_hist_by_chain(

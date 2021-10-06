@@ -7,9 +7,8 @@
 
 * `mcmc_hist()` and `mcmc_dens()` gain argument `alpha` for controlling transparency. (#244)
 
-* Size of points and interval lines can set in
-  `mcmc_intervals(..., outer_size, inner_size, point_size)`. (#215, #228, #229)
-
+* `mcmc_areas()` and `mcmc_areas_ridges()` gain an argument `border_size` for
+controlling the thickness of the ridgelines. (#224)
 
 # bayesplot 1.8.1
 

@@ -79,7 +79,8 @@
 #'    pars = c("alpha", "beta[4]"),
 #'    prob = 2/3,
 #'    prob_outer = 0.9,
-#'    point_est = "mean"
+#'    point_est = "mean",
+#'    border_size = 1.5 # make the ridgelines fatter
 #' )
 #' plot(p)
 #'
@@ -176,7 +177,7 @@
 #' # Example of hierarchically related parameters
 #' # plotted with ridgelines
 #' m <- shinystan::eight_schools@posterior_sample
-#' mcmc_areas_ridges(m, pars = "mu", regex_pars = "theta") +
+#' mcmc_areas_ridges(m, pars = "mu", regex_pars = "theta", border_size = 0.75) +
 #'   ggtitle("Treatment effect on eight schools (Rubin, 1981)")
 #' }
 #'
@@ -281,8 +282,8 @@ mcmc_intervals <- function(x,
 
 #' @rdname MCMC-intervals
 #' @export
-#' @param size For `mcmc_areas()` and `mcmc_areas_ridges()`, the size of the
-#'   ridgelines.
+#' @param border_size For `mcmc_areas()` and `mcmc_areas_ridges()`, the size of
+#'   the ridgelines.
 mcmc_areas <- function(x,
                        pars = character(),
                        regex_pars = character(),
@@ -293,7 +294,7 @@ mcmc_areas <- function(x,
                        prob_outer = 1,
                        point_est = c("median", "mean", "none"),
                        rhat = numeric(),
-                       size = NULL,
+                       border_size = NULL,
                        bw = NULL,
                        adjust = NULL,
                        kernel = NULL,
@@ -374,10 +375,10 @@ mcmc_areas <- function(x,
     fill = NA
   )
 
-  if (!is.null(size)) {
-    args_bottom$size <- size
-    args_outer$size <- size
-    args_inner$size <- size
+  if (!is.null(border_size)) {
+    args_bottom$size <- border_size
+    args_outer$size <- border_size
+    args_inner$size <- border_size
   }
 
   if (color_by_rhat) {
@@ -441,8 +442,8 @@ mcmc_areas <- function(x,
     scale_y_discrete(
       limits = unique(rev(data$parameter)),
       expand = expansion(
-        add = c(0, .5 + 1/(2 * nlevels(data$parameter))),
-        mult = c(.1, .1)
+        add = c(0, 0.5 + 1/(2 * nlevels(data$parameter))),
+        mult = c(0.05, 1/(2 * nlevels(data$parameter)))
       )
     ) +
     xlim(x_lim) +
@@ -463,7 +464,7 @@ mcmc_areas_ridges <- function(x,
                              ...,
                              prob_outer = 1,
                              prob = 1,
-                             size = NULL,
+                             border_size = NULL,
                              bw = NULL, adjust = NULL, kernel = NULL,
                              n_dens = NULL) {
   check_ignored_arguments(...)
@@ -494,8 +495,8 @@ mcmc_areas_ridges <- function(x,
     fill = NA,
     stat = "identity"
   )
-  if (!is.null(size)) {
-    args_outer$size <- size
+  if (!is.null(border_size)) {
+    args_outer$size <- border_size
   }
 
   layer_outer <- do.call(ggridges::geom_density_ridges, args_outer)
@@ -535,8 +536,8 @@ mcmc_areas_ridges <- function(x,
         scale = scale,
         stat = "identity")
 
-    if (!is.null(size)) {
-      args_inner$size <- size
+    if (!is.null(border_size)) {
+      args_inner$size <- border_size
     }
 
     layer_list_inner[[par_num]] <- do.call(ggridges::geom_ridgeline, args_inner)
@@ -547,8 +548,8 @@ mcmc_areas_ridges <- function(x,
     layer_outer +
     scale_y_discrete(limits = unique(rev(data$parameter)),
                      expand = expansion(
-                       add = c(0, 1 + 1/(2 * nlevels(data$parameter))),
-                       mult = c(.1, .1)
+                       add = c(0, 1.4 + 1/(2 * nlevels(data$parameter))),
+                       mult = c(0.05, 1/(2 * nlevels(data$parameter)))
                      )) +
     layer_list_inner +
     layer_vertical_line +
