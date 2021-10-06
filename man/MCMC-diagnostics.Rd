@@ -8,6 +8,9 @@
 \alias{mcmc_neff}
 \alias{mcmc_neff_hist}
 \alias{mcmc_neff_data}
+\alias{mcmc_mcse}
+\alias{mcmc_mcse_hist}
+\alias{mcmc_mcse_data}
 \alias{mcmc_acf}
 \alias{mcmc_acf_bar}
 \title{General MCMC diagnostics}
@@ -23,6 +26,12 @@ mcmc_neff(ratio, ..., size = NULL)
 mcmc_neff_hist(ratio, ..., binwidth = NULL, breaks = NULL)
 
 mcmc_neff_data(ratio, ...)
+
+mcmc_mcse(ratio, ..., size = NULL)
+
+mcmc_mcse_hist(ratio, ..., binwidth = NULL, breaks = NULL)
+
+mcmc_mcse_data(ratio, ...)
 
 mcmc_acf(
   x,
@@ -58,8 +67,8 @@ the default binwidth.}
 \item{breaks}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}} as an
 alternative to \code{binwidth}.}
 
-\item{ratio}{A vector of \emph{ratios} of effective sample size estimates to
-total sample size. See \code{\link[=neff_ratio]{neff_ratio()}}.}
+\item{ratio}{A vector of \emph{ratios} of monte carlo standard error to
+posterior standard deviation. See \code{\link[=mcse_ratio]{mcse_ratio()}}.}
 
 \item{x}{An object containing MCMC draws:
 \itemize{
