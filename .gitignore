@@ -5,6 +5,7 @@
 inst/doc
 
 tests/testthat/Rplots.pdf
+tests/testthat/_snaps/
 
 .DS_Store
 
