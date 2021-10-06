@@ -30,9 +30,10 @@ right censored, 1 = event).}
 \item{size, alpha}{Passed to the appropriate geom to control the appearance of
 the \code{yrep} distributions.}
 
-\item{group}{A grouping variable (a vector or factor) of the same length as
-\code{y}. Each value in \code{group} is interpreted as the group level
-pertaining to the corresponding value of \code{y}.}
+\item{group}{A grouping variable of the same length as \code{y}.
+Will be coerced to \link[base:factor]{factor} if not already a factor.
+Each value in \code{group} is interpreted as the group level pertaining
+to the corresponding observation.}
 }
 \value{
 A ggplot object that can be further customized using the \strong{ggplot2} package.

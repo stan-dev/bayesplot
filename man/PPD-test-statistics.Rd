@@ -81,9 +81,10 @@ plots the y-axis text is off by default. To view the count or density
 labels on the y-axis see the \code{\link[=yaxis_text]{yaxis_text()}} convenience
 function.)}
 
-\item{group}{A grouping variable. Will be coerced to \link[base:factor]{factor}
-if not already a factor. Each value in \code{group} is interpreted as the group
-level pertaining to the corresponding observation.}
+\item{group}{A grouping variable of the same length as \code{y}.
+Will be coerced to \link[base:factor]{factor} if not already a factor.
+Each value in \code{group} is interpreted as the group level pertaining
+to the corresponding observation.}
 
 \item{facet_args}{A named list of arguments (other than \code{facets}) passed
 to \code{\link[ggplot2:facet_wrap]{ggplot2::facet_wrap()}} or \code{\link[ggplot2:facet_grid]{ggplot2::facet_grid()}}
