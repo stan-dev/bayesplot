@@ -116,7 +116,7 @@ the number of observations (the length of \code{y}). The columns of \code{yrep}
 should be in the same order as the data points in \code{y} for the plots to make
 sense. See \strong{Details} for additional instructions.}
 
-\item{group}{A grouping variable (a vector or factor) the same length as
+\item{group}{A grouping variable (a vector or factor) of the same length as
 \code{y}. Each value in \code{group} is interpreted as the group level
 pertaining to the corresponding value of \code{y}.}
 

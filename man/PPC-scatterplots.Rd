@@ -28,7 +28,7 @@ sense. See \strong{Details} for additional instructions.}
 \item{size, alpha}{Arguments passed to \code{\link[ggplot2:geom_point]{ggplot2::geom_point()}} to control the
 appearance of the points.}
 
-\item{group}{A grouping variable (a vector or factor) the same length as
+\item{group}{A grouping variable (a vector or factor) of the same length as
 \code{y}. Each value in \code{group} is interpreted as the group level
 pertaining to the corresponding value of \code{y}.}
 }

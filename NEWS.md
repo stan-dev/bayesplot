@@ -12,6 +12,9 @@
 * `mcmc_areas()` and `mcmc_areas_ridges()` gain an argument `border_size` for
 controlling the thickness of the ridgelines. (#224)
 
+* New plotting function `ppc_km_overlay_grouped()`, the grouped variant of
+  `ppc_km_overlay()`. (#260, @fweber144)
+
 # bayesplot 1.8.1
 
 * Fix R cmd check error on linux for CRAN

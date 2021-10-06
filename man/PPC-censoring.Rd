@@ -3,9 +3,12 @@
 \name{PPC-censoring}
 \alias{PPC-censoring}
 \alias{ppc_km_overlay}
+\alias{ppc_km_overlay_grouped}
 \title{PPC censoring}
 \usage{
 ppc_km_overlay(y, yrep, ..., status_y, size = 0.25, alpha = 0.7)
+
+ppc_km_overlay_grouped(y, yrep, group, ..., status_y, size = 0.25, alpha = 0.7)
 }
 \arguments{
 \item{y}{A vector of observations. See \strong{Details}.}
@@ -17,7 +20,7 @@ the number of observations (the length of \code{y}). The columns of \code{yrep}
 should be in the same order as the data points in \code{y} for the plots to make
 sense. See \strong{Details} for additional instructions.}
 
-\item{...}{Currently unused.}
+\item{...}{Currently only used internally.}
 
 \item{status_y}{The status indicator for the observations from \code{y}. This must
 be a numeric vector of the same length as \code{y} with values in \{0, 1\} (0 =
@@ -25,6 +28,10 @@ right censored, 1 = event).}
 
 \item{size, alpha}{Passed to the appropriate geom to control the appearance of
 the \code{yrep} distributions.}
+
+\item{group}{A grouping variable (a vector or factor) of the same length as
+\code{y}. Each value in \code{group} is interpreted as the group level
+pertaining to the corresponding value of \code{y}.}
 }
 \value{
 A ggplot object that can be further customized using the \strong{ggplot2} package.
@@ -51,6 +58,9 @@ top (and in a darker shade). This is a PPC suitable for right-censored
 \code{y}. Note that the replicated data from \code{yrep} is assumed to be
 uncensored.
 }
+\item{\code{ppc_km_overlay_grouped()}}{
+The same as \code{ppc_km_overlay()}, but with separate facets by \code{group}.
+}
 }
 }
 
@@ -67,6 +77,11 @@ yrep <- example_yrep_draws()
 dim(yrep)
 \donttest{
 ppc_km_overlay(y, yrep[1:25, ], status_y = status_y)
+}
+# With separate facets by group:
+group <- example_group_data()
+\donttest{
+ppc_km_overlay_grouped(y, yrep[1:25, ], group = group, status_y = status_y)
 }
 }
 \references{
