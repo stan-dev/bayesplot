@@ -12,6 +12,10 @@
 * `mcmc_areas()` and `mcmc_areas_ridges()` gain an argument `border_size` for
 controlling the thickness of the ridgelines. (#224)
 
+* New plotting functions `mcmc_mcse()` and `mcmc_mcse_hist()` that are similar
+to `mcmc_neff()` and `mcmc_neff_hist()` but for plotting ratios of MCSE to 
+posterior SD. (#278, @VeenDuco)
+
 * New plotting function `ppc_km_overlay_grouped()`, the grouped variant of
   `ppc_km_overlay()`. (#260, @fweber144)
 
