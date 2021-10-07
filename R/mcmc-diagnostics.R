@@ -1,17 +1,18 @@
 #' General MCMC diagnostics
 #'
 #' Plots of Rhat statistics, ratios of effective sample size to total sample
-#' size, and autocorrelation of MCMC draws. See the **Plot Descriptions**
-#' section, below, for details. For models fit using the No-U-Turn-Sampler, see
-#' also [MCMC-nuts] for additional MCMC diagnostic plots.
+#' size, ratios of MCSE to posterior SD, and autocorrelation of MCMC draws. See
+#' the **Plot Descriptions** section, below, for details. For models fit using
+#' the No-U-Turn-Sampler, see also [MCMC-nuts] for additional MCMC diagnostic
+#' plots.
 #'
 #' @name MCMC-diagnostics
 #' @family MCMC
 #'
 #' @param ratio For effective sample size plots, a vector of *ratios* of
-#'   effective sample size estimates to total sample size. See [neff_ratio()].
-#'   For MCSE plots, a vector of *ratios* of Monte Carlo standard error to
-#'   posterior standard deviation. See [mcse_ratio()].
+#'   effective sample size estimates to total sample sizes (see [neff_ratio()]).
+#'   For MCSE plots, a vector of *ratios* of Monte Carlo standard errors to
+#'   posterior standard deviations.
 #' @template args-hist
 #' @param size An optional value to override [ggplot2::geom_point()]'s
 #'   default size (for `mcmc_rhat()`, `mcmc_neff()`) or
@@ -36,9 +37,19 @@
 #'   histogram. Values are colored using different shades (lighter is better).
 #'   The chosen thresholds are somewhat arbitrary, but can be useful guidelines
 #'   in practice.
-#'   * _light_: between 0.5 and 1 (high)
-#'   * _mid_: between 0.1 and 0.5 (good)
-#'   * _dark_: below 0.1 (low)
+#'   * _light_: between 0.5 and 1 (good)
+#'   * _mid_: between 0.1 and 0.5 (ok)
+#'   * _dark_: below 0.1 (too low)
+#' }
+#'
+#' \item{`mcmc_mcse()`, `mcmc_mcse_hist()`}{
+#'   Ratios of Monte Carlo standard errors to posterior standard deviations as
+#'   either points or a histogram. Values are colored using different shades
+#'   (lighter is better). The chosen thresholds are somewhat arbitrary, but can
+#'   be useful guidelines in practice.
+#'   * _light_: below 0.05 (good)
+#'   * _mid_: between 0.05 and 0.1 (ok)
+#'   * _dark_: above 0.1 (too high)
 #' }
 #'
 #' \item{`mcmc_acf()`, `mcmc_acf_bar()`}{
@@ -94,6 +105,11 @@
 #' ratio <- c(runif(100, 0, 1))
 #' mcmc_neff_hist(ratio)
 #' mcmc_neff(ratio)
+#'
+#' # fake mcse ratio values to use for demonstration
+#' ratio <- c(runif(100, 0, 1.5))
+#' mcmc_mcse_hist(ratio)
+#' mcmc_mcse(ratio)
 #'
 #' \dontrun{
 #' # Example using rstanarm model (requires rstanarm package)
@@ -443,7 +459,7 @@ mcmc_acf_bar <-
 #'
 #' @param x A numeric vector.
 #' @param breaks A numeric vector of length two. The resulting factor variable
-#'   will have three levels ('low', 'ok', and 'high') corresponding to (
+#'   will have three levels ('low', 'mid', and 'high') corresponding to (
 #'   `x <= breaks[1]`, `breaks[1] < x <= breaks[2]`, `x > breaks[2]`).
 #' @return A factor the same length as `x` with three levels.
 #' @noRd
@@ -453,19 +469,19 @@ diagnostic_factor <- function(x, breaks, ...) {
 
 diagnostic_factor.rhat <- function(x, breaks = c(1.05, 1.1)) {
   cut(x, breaks = c(-Inf, breaks, Inf),
-      labels = c("low", "ok", "high"),
+      labels = c("low", "mid", "high"),
       ordered_result = FALSE)
 }
 
 diagnostic_factor.neff_ratio <- function(x, breaks = c(0.1, 0.5)) {
   cut(x, breaks = c(-Inf, breaks, Inf),
-      labels = c("low", "ok", "high"),
+      labels = c("low", "mid", "high"),
       ordered_result = FALSE)
 }
 
 diagnostic_factor.mcse_ratio <- function(x, breaks = c(0.05, 0.1)) {
   cut(x, breaks = c(-Inf, breaks, Inf),
-      labels = c("low", "ok", "high"),
+      labels = c("low", "mid", "high"),
       ordered_result = FALSE)
 }
 
@@ -553,23 +569,23 @@ diagnostic_colors <- function(diagnostic = c("rhat", "neff_ratio", "mcse_ratio")
        aesthetic = aesthetic,
        color_levels = color_levels,
        color_labels = color_labels,
-       values = set_names(get_color(color_levels), c("low", "ok", "high")))
+       values = set_names(get_color(color_levels), c("low", "mid", "high")))
 }
 
 diagnostic_color_labels <- list(
   rhat = c(
     low  = expression(hat(R) <= 1.05),
-    ok   = expression(hat(R) <= 1.10),
+    mid   = expression(hat(R) <= 1.10),
     high = expression(hat(R) > 1.10)
   ),
   neff_ratio = c(
     low  = expression(N[eff] / N <= 0.1),
-    ok   = expression(N[eff] / N <= 0.5),
+    mid   = expression(N[eff] / N <= 0.5),
     high = expression(N[eff] / N > 0.5)
   ),
   mcse_ratio = c(
     low  = expression(mcse / sd <= 0.05),
-    ok   = expression(mcse / sd <= 0.1),
+    mid   = expression(mcse / sd <= 0.1),
     high = expression(mcse / sd > 0.1)
   )
 )

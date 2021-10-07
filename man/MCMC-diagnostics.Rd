@@ -67,8 +67,10 @@ the default binwidth.}
 \item{breaks}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}} as an
 alternative to \code{binwidth}.}
 
-\item{ratio}{A vector of \emph{ratios} of monte carlo standard error to
-posterior standard deviation. See \code{\link[=mcse_ratio]{mcse_ratio()}}.}
+\item{ratio}{For effective sample size plots, a vector of \emph{ratios} of
+effective sample size estimates to total sample sizes (see \code{\link[=neff_ratio]{neff_ratio()}}).
+For MCSE plots, a vector of \emph{ratios} of Monte Carlo standard errors to
+posterior standard deviations.}
 
 \item{x}{An object containing MCMC draws:
 \itemize{
@@ -108,9 +110,10 @@ function.
 }
 \description{
 Plots of Rhat statistics, ratios of effective sample size to total sample
-size, and autocorrelation of MCMC draws. See the \strong{Plot Descriptions}
-section, below, for details. For models fit using the No-U-Turn-Sampler, see
-also \link{MCMC-nuts} for additional MCMC diagnostic plots.
+size, ratios of MCSE to posterior SD, and autocorrelation of MCMC draws. See
+the \strong{Plot Descriptions} section, below, for details. For models fit using
+the No-U-Turn-Sampler, see also \link{MCMC-nuts} for additional MCMC diagnostic
+plots.
 }
 \section{Plot Descriptions}{
 
@@ -132,9 +135,21 @@ histogram. Values are colored using different shades (lighter is better).
 The chosen thresholds are somewhat arbitrary, but can be useful guidelines
 in practice.
 \itemize{
-\item \emph{light}: between 0.5 and 1 (high)
-\item \emph{mid}: between 0.1 and 0.5 (good)
-\item \emph{dark}: below 0.1 (low)
+\item \emph{light}: between 0.5 and 1 (good)
+\item \emph{mid}: between 0.1 and 0.5 (ok)
+\item \emph{dark}: below 0.1 (too low)
+}
+}
+
+\item{\code{mcmc_mcse()}, \code{mcmc_mcse_hist()}}{
+Ratios of Monte Carlo standard errors to posterior standard deviations as
+either points or a histogram. Values are colored using different shades
+(lighter is better). The chosen thresholds are somewhat arbitrary, but can
+be useful guidelines in practice.
+\itemize{
+\item \emph{light}: below 0.05 (good)
+\item \emph{mid}: between 0.05 and 0.1 (ok)
+\item \emph{dark}: above 0.1 (too high)
 }
 }
 
@@ -180,6 +195,11 @@ mcmc_rhat(runif(1000, 1, 1.3)) + legend_move("top") # add legend above plot
 ratio <- c(runif(100, 0, 1))
 mcmc_neff_hist(ratio)
 mcmc_neff(ratio)
+
+# fake mcse ratio values to use for demonstration
+ratio <- c(runif(100, 0, 1.5))
+mcmc_mcse_hist(ratio)
+mcmc_mcse(ratio)
 
 \dontrun{
 # Example using rstanarm model (requires rstanarm package)
