@@ -299,20 +299,20 @@ test_that("tidy parameter selection throws correct errors", {
 # rhat and neff helpers ---------------------------------------------------
 test_that("diagnostic_factor.rhat works", {
   rhats <- new_rhat(c(low = 0.99, low = 1, low = 1.01,
-                      ok = 1.06, ok = 1.09, ok = 1.1,
+                      mid = 1.06, mid = 1.09, mid = 1.1,
                       high = 1.2, high = 1.7))
 
   r <- diagnostic_factor(unname(rhats))
   expect_equivalent(r, as.factor(names(rhats)))
-  expect_identical(levels(r), c("low", "ok", "high"))
+  expect_identical(levels(r), c("low", "mid", "high"))
 })
 test_that("diagnostic_factor.neff_ratio works", {
   ratios <- new_neff_ratio(c(low = 0.05, low = 0.01,
-                             ok = 0.2, ok = 0.49,
+                             mid = 0.2, mid = 0.49,
                              high = 0.51, high = 0.99, high = 1))
 
   r <- diagnostic_factor(unname(ratios))
   expect_equivalent(r, as.factor(names(ratios)))
-  expect_identical(levels(r), c("low", "ok", "high"))
+  expect_identical(levels(r), c("low", "mid", "high"))
 })
 
