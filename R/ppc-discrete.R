@@ -166,7 +166,7 @@ ppc_bars <-
       scale_color_ppc(
         values = get_color("d"),
         labels = yrep_label(),
-        guide = guide_legend(order = 1)
+        guide = guide_legend(order = 1, override.aes = list(size = .75 * size))
       ) +
       scale_fill_ppc(values = get_color("l"), labels = y_label()) +
       scale_x_continuous(breaks = pretty) +
