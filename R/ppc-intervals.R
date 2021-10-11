@@ -274,7 +274,7 @@ ppc_ribbon <-
     }
     g +
       scale_color_ppc() +
-      scale_fill_ppc(values = c(NA, get_color("l"))) +
+      scale_fill_ppc(values = c(NA, get_color("l")), na.value = NA) +
       intervals_axis_labels(has_x = !is.null(x)) +
       bayesplot_theme_get()
   }
