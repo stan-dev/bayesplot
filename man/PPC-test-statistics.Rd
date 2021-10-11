@@ -182,6 +182,7 @@ bayesplot_theme_set(ggplot2::theme_grey())
 color_scheme_set("brewer-Paired")
 ppc_stat_2d(y, yrep, stat = c("median", "mad"))
 
+# reset aesthetics
 color_scheme_set()
 bayesplot_theme_set()
 

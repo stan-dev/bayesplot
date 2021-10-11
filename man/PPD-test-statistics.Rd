@@ -117,6 +117,16 @@ For Binomial data, the plots may be more useful if
 the input contains the "success" \emph{proportions} (not discrete
 "success" or "failure" counts).
 }
+\examples{
+yrep <- example_yrep_draws()
+ppd_stat(yrep)
+ppd_stat(yrep, stat = "sd") + legend_none()
+
+# use your own function for the 'stat' argument
+color_scheme_set("brightblue")
+q25 <- function(y) quantile(y, 0.25)
+ppd_stat(yrep, stat = "q25") # legend includes function name
+}
 \references{
 Gabry, J. , Simpson, D. , Vehtari, A. , Betancourt, M. and
 Gelman, A. (2019), Visualization in Bayesian workflow.
