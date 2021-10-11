@@ -63,8 +63,8 @@
 <text x='473.93' y='554.29' text-anchor='middle' style='font-size: 9.60px; fill: #4D4D4D; font-family: sans;' textLength='10.68px' lengthAdjust='spacingAndGlyphs'>75</text>
 <text x='617.70' y='554.29' text-anchor='middle' style='font-size: 9.60px; fill: #4D4D4D; font-family: sans;' textLength='16.02px' lengthAdjust='spacingAndGlyphs'>100</text>
 <text x='333.03' y='567.53' text-anchor='middle' style='font-size: 12.00px; font-family: sans;' textLength='94.72px' lengthAdjust='spacingAndGlyphs'>Data point (index)</text>
-<rect x='664.17' y='274.73' width='17.14' height='17.14' style='stroke-width: 0.11; stroke: none; stroke-linecap: square; stroke-linejoin: miter; fill: #7F7F7F; fill-opacity: 0.33;' />
-<rect x='664.28' y='274.84' width='16.93' height='16.93' style='stroke-width: 0.27; stroke: #011F4B; stroke-linecap: square; stroke-linejoin: miter; fill: #7F7F7F;' />
+<rect x='664.17' y='274.73' width='17.14' height='17.14' style='stroke-width: 0.11; stroke: none; stroke-linecap: square; stroke-linejoin: miter;' />
+<rect x='664.28' y='274.84' width='16.93' height='16.93' style='stroke-width: 0.27; stroke: #011F4B; stroke-linecap: square; stroke-linejoin: miter;' />
 <line x1='665.83' y1='283.30' x2='679.65' y2='283.30' style='stroke-width: 1.07; stroke: #011F4B; stroke-linecap: butt;' />
 <rect x='664.17' y='292.01' width='17.14' height='17.14' style='stroke-width: 0.11; stroke: none; stroke-linecap: square; stroke-linejoin: miter; fill: #D1E1EC; fill-opacity: 0.33;' />
 <rect x='664.28' y='292.12' width='16.93' height='16.93' style='stroke-width: 0.27; stroke: #B3CDE0; stroke-linecap: square; stroke-linejoin: miter; fill: #D1E1EC;' />
