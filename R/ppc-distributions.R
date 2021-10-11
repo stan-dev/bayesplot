@@ -545,10 +545,8 @@ ppc_violin_grouped <-
       show.legend = FALSE
     )
 
-    violin_y_func <- if (y_violin)
-      geom_violin else geom_ignore
-    jitter_y_func <- if (y_points)
-      geom_jitter else geom_ignore
+    violin_y_func <- if (y_violin) geom_violin else geom_ignore
+    jitter_y_func <- if (y_points) geom_jitter else geom_ignore
 
     layer_violin_yrep <- do.call(geom_violin, args_violin_yrep)
     layer_violin_y <- do.call(violin_y_func, args_violin_y)
