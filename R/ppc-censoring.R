@@ -150,7 +150,7 @@ ppc_km_overlay <- function(
     ) +
     scale_size_identity() +
     scale_alpha_identity() +
-    scale_color_ppc_dist() +
+    scale_color_ppc() +
     scale_y_continuous(breaks = c(0, 0.5, 1)) +
     xlab(y_label()) +
     yaxis_title(FALSE) +
