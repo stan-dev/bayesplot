@@ -76,12 +76,8 @@ ppc_km_overlay <- function(
   check_ignored_arguments(..., ok_args = "add_group")
   add_group <- list(...)$add_group
 
-  if(!requireNamespace("survival", quietly = TRUE)){
-    abort("Package 'survival' required.")
-  }
-  if(!requireNamespace("ggfortify", quietly = TRUE)){
-    abort("Package 'ggfortify' required.")
-  }
+  suggested_package("survival")
+  suggested_package("ggfortify")
 
   stopifnot(is.numeric(status_y))
   stopifnot(all(status_y %in% c(0, 1)))
