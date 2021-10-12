@@ -8,7 +8,10 @@
 The \strong{bayesplot} PPD module provides various plotting functions
 for creating graphical displays of simulated data from the posterior or
 prior predictive distribution. These plots are essentially the same as the
-corresponding \link{PPC} plots but without showing any observed data.
+corresponding \link{PPC} plots but without showing any observed data. Because
+these are not "checks" compared to data we use PPD (for prior/posterior
+predictive distribution) instead of PPC (for prior/posterior predictive
+check).
 }
 \section{PPD plotting functions}{
  The functions for plotting prior and
