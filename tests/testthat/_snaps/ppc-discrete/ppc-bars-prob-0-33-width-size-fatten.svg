@@ -69,8 +69,8 @@
 <text x='494.32' y='568.03' text-anchor='middle' style='font-size: 9.60px; fill: #4D4D4D; font-family: sans;' textLength='5.34px' lengthAdjust='spacingAndGlyphs'>4</text>
 <text x='593.89' y='568.03' text-anchor='middle' style='font-size: 9.60px; fill: #4D4D4D; font-family: sans;' textLength='5.34px' lengthAdjust='spacingAndGlyphs'>5</text>
 <text transform='translate(14.24,290.45) rotate(-90)' text-anchor='middle' style='font-size: 12.00px; font-family: sans;' textLength='32.03px' lengthAdjust='spacingAndGlyphs'>Count</text>
-<line x1='672.74' y1='286.29' x2='672.74' y2='272.46' style='stroke-width: 1.07; stroke: #03396C; stroke-linecap: butt;' />
-<circle cx='672.74' cy='279.37' r='2.84' style='stroke-width: 1.42; stroke: #03396C; fill: #03396C;' />
+<line x1='672.74' y1='286.29' x2='672.74' y2='272.46' style='stroke-width: 0.80; stroke: #03396C; stroke-linecap: butt;' />
+<circle cx='672.74' cy='279.37' r='2.31' style='stroke-width: 1.42; stroke: #03396C; fill: #03396C;' />
 <text x='687.36' y='280.66' style='font-size: 13.00px; font-style: italic; font-family: sans;' textLength='6.51px' lengthAdjust='spacingAndGlyphs'>y</text>
 <text x='694.89' y='283.07' style='font-size: 9.10px; font-family: sans;' textLength='3.03px' lengthAdjust='spacingAndGlyphs'>r</text>
 <text x='697.92' y='283.07' style='font-size: 9.10px; font-family: sans;' textLength='5.06px' lengthAdjust='spacingAndGlyphs'>e</text>

@@ -225,3 +225,6 @@ test_that("color_scheme_view renders correctly", {
 
   color_scheme_set()
 })
+
+bayesplot_theme_set(bayesplot::theme_default())
+color_scheme_set()

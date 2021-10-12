@@ -126,8 +126,8 @@
 <polyline points='40.79,209.43 43.78,209.43 ' style='stroke-width: 0.64; stroke: #333333; stroke-linecap: butt;' />
 <polyline points='40.79,93.89 43.78,93.89 ' style='stroke-width: 0.64; stroke: #333333; stroke-linecap: butt;' />
 <text transform='translate(14.24,300.07) rotate(-90)' text-anchor='middle' style='font-size: 12.00px; font-family: sans;' textLength='32.03px' lengthAdjust='spacingAndGlyphs'>Count</text>
-<line x1='672.74' y1='295.91' x2='672.74' y2='282.08' style='stroke-width: 2.13; stroke: #03396C; stroke-linecap: butt;' />
-<circle cx='672.74' cy='288.99' r='4.98' style='stroke-width: 1.42; stroke: #03396C; fill: #03396C;' />
+<line x1='672.74' y1='295.91' x2='672.74' y2='282.08' style='stroke-width: 1.60; stroke: #03396C; stroke-linecap: butt;' />
+<circle cx='672.74' cy='288.99' r='3.91' style='stroke-width: 1.42; stroke: #03396C; fill: #03396C;' />
 <text x='687.36' y='290.28' style='font-size: 13.00px; font-style: italic; font-family: sans;' textLength='6.51px' lengthAdjust='spacingAndGlyphs'>y</text>
 <text x='694.89' y='292.69' style='font-size: 9.10px; font-family: sans;' textLength='3.03px' lengthAdjust='spacingAndGlyphs'>r</text>
 <text x='697.92' y='292.69' style='font-size: 9.10px; font-family: sans;' textLength='5.06px' lengthAdjust='spacingAndGlyphs'>e</text>
