@@ -47,6 +47,7 @@ test_that("ppc_km_overlay renders correctly", {
 
 test_that("ppc_km_overlay_grouped renders correctly", {
   testthat::skip_on_cran()
+  skip_if_not_installed("ggfortify")
 
   p_base <- ppc_km_overlay_grouped(vdiff_y2, vdiff_yrep2, vdiff_group2,
                                    status_y = vdiff_status_y2)

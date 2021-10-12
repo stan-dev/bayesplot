@@ -1,16 +1,19 @@
 <!-- See http://style.tidyverse.org/news.html for advice on writing news -->
 
-# placeholder for news items from PPD branch
+# bayesplot 1.8.1.9000
 
-* New PPD module with a lot of new plotting functions with `ppd_` prefix (e.g.,
-`ppd_intervals()`) for plotting posterior and prior predictive distributions
-without comparing to observed data (i.e., no `y` argument). These plots are
-essentially the same as the corresponding PPC plots (e.g., `ppc_intervals()`)
-but without showing any observed data. See `help("PPD-overview")` for details.
+* New module PPD (posterior/prior predictive distribution) with a lot of new
+plotting functions with `ppd_` prefix. These functions plot draws from the prior
+or posterior predictive distributions (PPD) without comparing to observed data
+(i.e., no `y` argument). Because these are not "checks" against the observed
+data we use PPD instead of PPC. These plots are essentially the same as the
+corresponding PPC plots but without showing any observed data (e.g.,
+`ppd_intervals()` is like `ppc_intervals()` but without plotting `y`). See
+`help("PPD-overview")` for details. (#151, #222)
 
 * All PPC categories now have one or more `_data()` functions that return the
- data used for plotting (Advances #97). Many already existed, but the new ones in
- this release are:
+data frame used for plotting (#97, #222). Many of these have already been in
+previous releases, but the new ones in this release are:
    - `ppc_bars_data()`
    - `ppc_error_data()`
    - `ppc_error_binnned_data()`
@@ -27,12 +30,13 @@ but without showing any observed data. See `help("PPD-overview")` for details.
    - `ppc_error_hist_grouped()`
    - `ppc_error_scatter()`
    - `ppc_error_binned()`
+   
+* New plotting function `ppc_km_overlay_grouped()`, the grouped variant of
+  `ppc_km_overlay()`. (#260, @fweber144)
 
 * `ppc_scatter()`, `ppc_scatter_avg()`, and `ppc_scatter_avg_grouped()` gain an
   argument `ref_line`, which can be set to `FALSE` to turn off the `x=y` line
   drawn behind the scatterplot.
-
-# bayesplot 1.8.1.9000
 
 * `mcmc_*()` functions now support all draws formats from the **posterior** package. (#277, @Ozan147)
 
@@ -43,9 +47,6 @@ but without showing any observed data. See `help("PPD-overview")` for details.
 
 * `mcmc_areas()` and `mcmc_areas_ridges()` gain an argument `border_size` for
 controlling the thickness of the ridgelines. (#224)
-
-* New plotting function `ppc_km_overlay_grouped()`, the grouped variant of
-  `ppc_km_overlay()`. (#260, @fweber144)
 
 # bayesplot 1.8.1
 
