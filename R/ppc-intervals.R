@@ -366,11 +366,11 @@ ppc_ecdf_intervals_difference <- function(
     fig <- fig + geom_step(
         data = function(x) dplyr::filter(x, !.data$is_y),
         aes_(
-          x = rep(z, each = L)),
+          x = rep(z, each = L),
           y = ~ value - rep(z, each = L),
           group = ~ rep_id,
           color = ~ rep_label
-        )
+        ))
   }
   fig +
     scale_color_manual(
