@@ -50,7 +50,9 @@ mcmc_rank_overlay(
   facet_args = list(),
   ...,
   n_bins = 20,
-  ref_line = FALSE
+  ref_line = FALSE,
+  ref_interval = FALSE,
+  interval_args = list(width = 0.95, alpha = 0.2)
 )
 
 mcmc_rank_hist(
@@ -61,7 +63,9 @@ mcmc_rank_hist(
   ...,
   facet_args = list(),
   n_bins = 20,
-  ref_line = FALSE
+  ref_line = FALSE,
+  ref_interval = FALSE,
+  interval_args = list(width = 0.95, alpha = 0.2)
 )
 
 mcmc_trace_data(
@@ -176,6 +180,15 @@ of rank-normalized MCMC samples. Defaults to \code{20}.}
 
 \item{ref_line}{For the rank plots, whether to draw a horizontal line at the
 average number of ranks per bin. Defaults to \code{FALSE}.}
+
+\item{ref_interval}{For the rank plots, whether to draw a reference
+uncertainty interval based on the expected distribution of the rank histogram
+bins. Defaults to \code{FALSE}.}
+
+\item{interval_args}{If \code{ref_interval = TRUE}, optional arguments controlling
+the width and alpha of the reference interval. The default is a \verb{95\\\%}
+uncertainty interval plotted with an alpha value of \code{0.2}. This must be a
+list with elements named \code{width} and \code{alpha}.}
 }
 \value{
 The plotting functions return a ggplot object that can be further

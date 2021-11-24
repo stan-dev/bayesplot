@@ -261,6 +261,13 @@ trace_style_np <- function(div_color = "red", div_size = 0.25, div_alpha = 1) {
 #'   of rank-normalized MCMC samples. Defaults to `20`.
 #' @param ref_line For the rank plots, whether to draw a horizontal line at the
 #'   average number of ranks per bin. Defaults to `FALSE`.
+#' @param ref_interval For the rank plots, whether to draw a reference 
+#' uncertainty interval based on the expected distribution of the rank histogram
+#' bins. Defaults to `FALSE`.
+#' @param interval_args If `ref_interval = TRUE`, optional arguments controlling
+#' the width and alpha of the reference interval. The default is a `95\%` 
+#' uncertainty interval plotted with an alpha value of `0.2`. This must be a 
+#' list with elements named `width` and `alpha`.
 #' @export
 mcmc_rank_overlay <- function(x,
                               pars = character(),
@@ -269,7 +276,9 @@ mcmc_rank_overlay <- function(x,
                               facet_args = list(),
                               ...,
                               n_bins = 20,
-                              ref_line = FALSE) {
+                              ref_line = FALSE,
+                              ref_interval = FALSE,
+                              interval_args = list(width = 0.95, alpha = 0.2)) {
   check_ignored_arguments(...)
   data <- mcmc_trace_data(
     x,
@@ -278,6 +287,14 @@ mcmc_rank_overlay <- function(x,
     transformations = transformations
   )
 
+  # mcmc_rank plots make no sense if there aren't multiple chains
+  # a rank plot of 1 chain is perfectly uniform by construction, and
+  # has no power as a diagnostic.
+  if (!(unique(data$n_chains) > 1)){
+    STOP_need_multiple_chains()
+  }
+
+  n_iter <- unique(data$n_iterations)
   n_chains <- unique(data$n_chains)
   n_param <- unique(data$n_parameters)
 
@@ -316,6 +333,12 @@ mcmc_rank_overlay <- function(x,
   } else {
     NULL
   }
+
+  interval_call <- if (ref_interval) {
+    rank_polygon_geom(n_iter, n_chains, n_bins, interval_args)
+  } else {
+    NULL
+  } 
   
   facet_call <- NULL
   if (n_param > 1) {
@@ -329,6 +352,7 @@ mcmc_rank_overlay <- function(x,
     geom_step() +
     layer_ref_line +
     facet_call +
+    interval_call +
     scale_color +
     ylim(c(0, NA)) +
     bayesplot_theme_get() +
@@ -345,7 +369,9 @@ mcmc_rank_hist <- function(x,
                            ...,
                            facet_args = list(),
                            n_bins = 20,
-                           ref_line = FALSE) {
+                           ref_line = FALSE,
+                           ref_interval = FALSE,
+                           interval_args = list(width = 0.95, alpha = 0.2)) {
   check_ignored_arguments(...)
   data <- mcmc_trace_data(
     x,
@@ -353,6 +379,10 @@ mcmc_rank_hist <- function(x,
     regex_pars = regex_pars,
     transformations = transformations
   )
+
+  if (!(unique(data$n_chains) > 1)){
+    STOP_need_multiple_chains()
+  }
 
   n_iter <- unique(data$n_iterations)
   n_chains <- unique(data$n_chains)
@@ -396,6 +426,11 @@ mcmc_rank_hist <- function(x,
   }
 
   facet_call <- do.call(facet_f, facet_args)
+  interval_call <- if (ref_interval) {
+    rank_polygon_geom(n_iter, n_chains, n_bins, interval_args)
+  } else {
+    NULL
+  }
 
   ggplot(data) +
     aes_(x = ~ value_rank) +
@@ -409,6 +444,7 @@ mcmc_rank_hist <- function(x,
     layer_ref_line +
     geom_blank(data = data_boundaries) +
     facet_call +
+    interval_call + 
     force_x_axis_in_facets() +
     dont_expand_y_axis(c(0.005, 0)) +
     bayesplot_theme_get() +
@@ -680,4 +716,31 @@ divergence_rug <- function(np, np_style, n_iter, n_chain) {
     size = np_style$size[["div"]],
     alpha = np_style$alpha[["div"]]
   )
+}
+
+rank_polygon_geom <- function(n_iter, n_chains, n_bins, interval_args) {
+  validate_interval_args(interval_args)
+  polygon_y_vals <- qbinom(
+    c((1 - interval_args$width) / 2, (1 + interval_args$width) / 2),
+    size = n_iter,
+    prob = (n_bins)^(-1)
+  )
+
+  polygon_df <- data.frame(
+    x = rep(c(0, n_iter * n_chains), each = 2),
+    y = c(polygon_y_vals, rev(polygon_y_vals))
+  )
+
+  geom_polygon(
+    mapping = aes(x = x, y = y),
+    data = polygon_df,
+    inherit.aes = FALSE,  
+    alpha = interval_args$alpha
+  )
+}
+
+validate_interval_args <- function(interval_args) {
+  stopifnot(all(names(interval_args) %in% c("width", "alpha")))
+  stopifnot(interval_args$width %>% dplyr::between(0, 1))
+  stopifnot(interval_args$alpha %>% dplyr::between(0, 1))
 }
