@@ -13,6 +13,8 @@
 \alias{ppc_ecdf_overlay}
 \alias{ppc_ecdf_overlay_grouped}
 \alias{ppc_violin_grouped}
+\alias{ppc_pit_ecdf}
+\alias{ppc_pit_ecdf_grouped}
 \title{PPC distributions}
 \usage{
 ppc_data(y, yrep, group = NULL)
@@ -104,6 +106,29 @@ ppc_violin_grouped(
   y_size = 1,
   y_alpha = 1,
   y_jitter = 0.1
+)
+
+ppc_pit_ecdf(
+  y,
+  yrep,
+  ...,
+  pit = NULL,
+  K = NULL,
+  confidence_level = 0.99,
+  difference = TRUE,
+  adj_method = "interpolate"
+)
+
+ppc_pit_ecdf_grouped(
+  y,
+  yrep,
+  group,
+  ...,
+  K,
+  pit,
+  confidence_level = 0.99,
+  difference = TRUE,
+  adj_method
 )
 }
 \arguments{
@@ -211,6 +236,12 @@ variable is plotted as a violin with horizontal lines at notable
 quantiles. \code{y} is overlaid on the plot either as a violin, points, or
 both, depending on the \code{y_draw} argument.
 }
+\item{\code{ppc_pit_ecdf()}}{
+The \code{100 * prob}\% central simultaneous confidence intervals for the ECDF
+of the empirical PIT values of \code{y} computed with respect to the
+corresponding \code{yrep} values. If 'y' and 'yrep'. Th PIT values can also be
+provided directly as \code{pit}.
+See Säilynoja et al. for more details.}
 }
 }
 
@@ -273,6 +304,10 @@ Gelman, A. (2019), Visualization in Bayesian workflow.
 (\href{https://rss.onlinelibrary.wiley.com/doi/full/10.1111/rssa.12378}{journal version},
 \href{https://arxiv.org/abs/1709.01449}{arXiv preprint},
 \href{https://github.com/jgabry/bayes-vis-paper}{code on GitHub})
+
+Säilynoja, T., Bürkner, P., Vehtari, A.
+(2021). Graphical Test for Discrete Uniformity and its Applications in
+Goodness of Fit Evaluation and Multiple Sample Comparison \href{https://arxiv.org/abs/2103.10522}{arXiv preprint}.
 
 Gelman, A., Carlin, J. B., Stern, H. S., Dunson, D. B., Vehtari,
 A., and Rubin, D. B. (2013). \emph{Bayesian Data Analysis.} Chapman & Hall/CRC

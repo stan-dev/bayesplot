@@ -47,9 +47,16 @@
 #'    quantiles. `y` is overlaid on the plot either as a violin, points, or
 #'    both, depending on the `y_draw` argument.
 #'   }
+#'   \item{`ppc_pit_ecdf()`}{
+#'    The `100 * prob`% central simultaneous confidence intervals for the ECDF
+#'    of the empirical PIT values of `y` computed with respect to the
+#'    corresponding `yrep` values. If 'y' and 'yrep'. Th PIT values can also be
+#'    provided directly as `pit`.
+#'    See Säilynoja et al. for more details.}
 #' }
 #'
 #' @template reference-vis-paper
+#' @template reference-uniformity-test
 #' @templateVar bdaRef (Ch. 6)
 #' @template reference-bda
 #'
@@ -528,6 +535,146 @@ ppc_violin_grouped <- function(y, yrep, group, ..., probs = c(0.1, 0.5, 0.9),
     bayesplot_theme_get()
 }
 
+#' @export
+#' @rdname PPC-distributions
+#'
+ppc_pit_ecdf <- function(y,
+                         yrep,
+                         ...,
+                         pit = NULL,
+                         K = NULL,
+                         confidence_level = .99,
+                         difference = TRUE,
+                         adj_method = "interpolate") {
+  check_ignored_arguments(...)
+
+  if (is.null(pit)) {
+    pit <- ppc_data(y, yrep) %>%
+      group_by(y_id) %>%
+      dplyr::group_map(~ mean(.x$value[.x$is_y] >= .x$value[!.x$is_y])) %>%
+      unlist()
+    if (is.null(K)) {
+      K <- min(length(unique(ppc_data(y, yrep)$rep_id)) + 1, length(pit))
+    }
+  } else {
+    inform("'pit' specified so ignoring 'y', and 'yrep' if specified.")
+    pit <- validate_pit(pit)
+    if (is.null(K)) {
+      K <- length(pit)
+    }
+  }
+  N <- length(pit)
+  gamma <- adjust_gamma(N,
+    K = K,
+    conf_level = confidence_level,
+    adj_method = adj_method
+  )
+  lims <- ecdf_intervals(N, K = K, gamma = gamma)
+  ggplot() +
+    aes_(
+      x = 0:K / K,
+      y = ecdf(pit)(0:K / K) - (difference == TRUE) * 0:K / K,
+      color = "y"
+    ) +
+    geom_step(show.legend = FALSE) +
+    geom_step(aes(
+      y = lims$upper / N - (difference == TRUE) * 0:K / K,
+      color = "yrep"
+    ), show.legend = FALSE) +
+    geom_step(aes(
+      y = lims$lower / N - (difference == TRUE) * 0:K / K,
+      color = "yrep"
+    ), show.legend = FALSE) +
+    yaxis_title(FALSE) +
+    xaxis_title(FALSE) +
+    yaxis_ticks(FALSE) +
+    scale_color_ppc_dist() +
+    bayesplot_theme_get()
+}
+
+#' @export
+#' @rdname PPC-distributions
+#'
+ppc_pit_ecdf_grouped <-
+  function(y,
+           yrep,
+           group,
+           ...,
+           K,
+           pit,
+           confidence_level = .99,
+           difference = TRUE,
+           adj_method) {
+    check_ignored_arguments(...)
+
+    if (missing(pit)) {
+      pit <- ppc_data(y, yrep, group) %>%
+        group_by(y_id) %>%
+        dplyr::group_map(~ mean(.x$value[.x$is_y] >= .x$value[!.x$is_y])) %>%
+        unlist()
+      if (missing(K)) {
+        K0 <- length(unique(ppc_data(y, yrep)$rep_id))
+      }
+    } else {
+      inform("'pit' specified so ignoring 'y', and 'yrep' if specified.")
+      pit <- validate_pit(pit)
+    }
+    N <- length(pit)
+
+    gammas <- lapply(unique(group), function(g) {
+      N_g <- sum(group == g)
+      adjust_gamma(
+        N_g,
+        K = min(N_g, K0),
+        conf_level = confidence_level,
+        adj_method = adj_method
+      )
+    })
+    names(gammas) <- unique(group)
+
+    data <- data.frame(pit = pit, group = group) %>%
+      group_by(group) %>%
+      dplyr::group_map(~ data.frame(
+        ecdf_value = ecdf(.x$pit)(
+          seq(0, 1, length.out = min(nrow(.x) + 1, K0 + 1))),
+        group = .y[1],
+        lims_upper = ecdf_intervals(
+          N = nrow(.x),
+          K = min(nrow(.x), K0),
+          gamma = gammas[[unlist(.y[1])]]
+        )$upper / nrow(.x),
+        lims_lower = ecdf_intervals(
+          N = nrow(.x),
+          K = min(nrow(.x), K0),
+          gamma = gammas[[unlist(.y[1])]]
+        )$lower / nrow(.x),
+        x = seq(0, 1, length.out = min(nrow(.x) + 1, K0 + 1))
+      )) %>%
+      dplyr::bind_rows()
+    ggplot(data) +
+      aes_(
+        x = ~x,
+        y = ~ ecdf_value - (difference == TRUE) * x,
+        group = ~group,
+        color = "y"
+      ) +
+      geom_step(show.legend = FALSE) +
+      geom_step(aes_(
+        y = ~ lims_upper - (difference == TRUE) * x,
+        color = "yrep"
+      ), show.legend = FALSE) +
+      geom_step(aes_(
+        y = ~ lims_lower - (difference == TRUE) * x,
+        color = "yrep"
+      ), show.legend = FALSE) +
+      xaxis_title(FALSE) +
+      yaxis_title(FALSE) +
+      yaxis_ticks(FALSE) +
+      bayesplot_theme_get() +
+      facet_wrap("group") +
+      scale_color_ppc_dist() +
+      force_axes_in_facets()
+  }
 
 # internal ----------------------------------------------------------------
 scale_color_ppc_dist <- function(name = NULL, values = NULL, labels = NULL) {
