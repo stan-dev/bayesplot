@@ -63,9 +63,17 @@
 #'    Ranks from `mcmc_rank_hist()` are plotted using overlaid lines in a
 #'    single panel.
 #'   }
+#'   \item{`mcmc_rank_ecdf()`}{
+#'    The ECDFs of the ranks from `mcmc_rank_hist()` are plotted and
+#'    simultaneous confidence bands with a coverage determined by
+#'    `prob` are drawn. By default, the difference between the
+#'    observed ECDF and the theoretical expectation is drawn.
+#'    See Säilynoja et al. (2021) for details.
+#'   }
 #' }
 #'
 #' @template reference-improved-rhat
+#' @template reference-uniformity-test
 #' @examples
 #' # some parameter draws to use for demonstration
 #' x <- example_mcmc_draws(chains = 4, params = 6)
@@ -316,14 +324,14 @@ mcmc_rank_overlay <- function(x,
   } else {
     NULL
   }
-  
+
   facet_call <- NULL
   if (n_param > 1) {
     facet_args$facets <- ~ parameter
     facet_args$scales <- facet_args$scales %||% "fixed"
     facet_call <- do.call("facet_wrap", facet_args)
   }
-  
+
   ggplot(d_bin_counts) +
     aes_(x = ~ bin_start, y =  ~ n, color = ~ chain) +
     geom_step() +
@@ -421,6 +429,33 @@ mcmc_rank_hist <- function(x,
     labs(x = "Rank")
 }
 
+#' @rdname MCMC-traces
+#' @param prob For `mcmc_rank_ecdf()`, a value between 0 and 1
+#' specifying the desired simultaneous confidence of the confidence bands to be
+#' drawn for the rank ECDF plots.
+#' @param plot_diff For `mcmc_rank_ecdf()`, a boolean specifying it the
+#' difference between the observed rank ECDFs and the theoretical expectation
+#' should be drawn instead of the unmodified rank ECDF plots.
+#' @export
+mcmc_rank_ecdf <-
+  function(x,
+           pars = character(),
+           regex_pars = character(),
+           transformations = list(),
+           ...,
+           facet_args = list(),
+           prob = 0.99,
+           plot_diff = TRUE) {
+    check_ignored_arguments(...)
+    .mcmc_rank_ecdf(x,
+      pars = pars,
+      regex_pars = regex_pars,
+      transformations = transformations,
+      facet_args = facet_args,
+      prob = prob,
+      plot_diff = plot_diff
+    )
+  }
 
 #' @rdname MCMC-traces
 #' @export
@@ -604,6 +639,99 @@ mcmc_trace_data <- function(x,
     yaxis_title(on = n_param == 1)
 }
 
+.mcmc_rank_ecdf <- function(x,
+                            pars = character(),
+                            regex_pars = character(),
+                            transformations = list(),
+                            facet_args = list(),
+                            ...,
+                            K,
+                            plot_diff = TRUE,
+                            prob = 0.99,
+                            adj_method = "interpolate") {
+  data <- mcmc_trace_data(
+    x,
+    pars = pars,
+    regex_pars = regex_pars,
+    transformations = transformations
+  )
+  n_iter <- unique(data$n_iterations)
+  n_chain <- unique(data$n_chains)
+  n_param <- unique(data$n_parameters)
+
+  x <- if (missing(K)) {
+    0:n_iter / n_iter
+  } else {
+    0:K / K
+  }
+  gamma <- adjust_gamma(
+    N = n_iter,
+    L = n_chain,
+    K = if (missing(K)) {
+      n_iter
+    } else {
+      K
+    },
+    conf_level = prob,
+    ...,
+    adj_method = adj_method
+  )
+  lims <- ecdf_intervals(
+    N = n_iter,
+    L = n_chain,
+    K = if (missing(K)) {
+      n_iter
+    } else {
+      K
+    },
+    gamma = gamma
+  )
+  data_lim <- data.frame(
+    upper = lims$upper / n_iter - (plot_diff == TRUE) * x,
+    lower = lims$lower / n_iter - (plot_diff == TRUE) * x,
+    x = x
+  )
+  data <- data %>%
+    group_by(parameter, chain) %>%
+    dplyr::group_map(~ data.frame(
+      parameter = .y[1],
+      chain = .y[2],
+      ecdf_value = ecdf(.x$value_rank / (n_iter * n_chain))(x) -
+        (plot_diff == TRUE) * x,
+      x = x
+    )) %>%
+    dplyr::bind_rows()
+
+  mapping <- aes_(
+    x = ~x,
+    y = ~ecdf_value,
+    color = ~chain,
+    group = ~chain
+  )
+
+  scale_color <- scale_color_manual("Chain", values = chain_colors(n_chain))
+
+  facet_call <- NULL
+  if (n_param == 1) {
+    facet_call <- ylab(levels(data$parameter))
+  } else {
+    facet_args$facets <- ~parameter
+    facet_args$scales <- facet_args$scales %||% "free"
+    facet_call <- do.call("facet_wrap", facet_args)
+  }
+
+  ggplot() +
+    geom_step(data = data_lim, aes_(x = ~x, y = ~upper), show.legend = FALSE) +
+    geom_step(data = data_lim, aes_(x = ~x, y = ~lower), show.legend = FALSE) +
+    geom_step(mapping, data) +
+    bayesplot_theme_get() +
+    scale_color +
+    facet_call +
+    scale_x_continuous(breaks = pretty) +
+    legend_move(ifelse(n_chain > 1, "right", "none")) +
+    xaxis_title(FALSE) +
+    yaxis_title(on = n_param == 1)
+}
 
 chain_colors <- function(n) {
   all_clrs <- unlist(color_scheme_get())

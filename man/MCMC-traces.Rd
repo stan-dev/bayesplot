@@ -7,6 +7,7 @@
 \alias{trace_style_np}
 \alias{mcmc_rank_overlay}
 \alias{mcmc_rank_hist}
+\alias{mcmc_rank_ecdf}
 \alias{mcmc_trace_data}
 \title{Trace plots of MCMC draws}
 \usage{
@@ -62,6 +63,17 @@ mcmc_rank_hist(
   facet_args = list(),
   n_bins = 20,
   ref_line = FALSE
+)
+
+mcmc_rank_ecdf(
+  x,
+  pars = character(),
+  regex_pars = character(),
+  transformations = list(),
+  ...,
+  facet_args = list(),
+  confidence_level = 0.99,
+  difference = TRUE
 )
 
 mcmc_trace_data(
@@ -176,6 +188,14 @@ of rank-normalized MCMC samples. Defaults to \code{20}.}
 
 \item{ref_line}{For the rank plots, whether to draw a horizontal line at the
 average number of ranks per bin. Defaults to \code{FALSE}.}
+
+\item{confidence_level}{For \code{mcmc_rank_ecdf()}, a value between 0 and 1
+specifying the desired simultaneous confidence of the confidence bands to be
+drawn for the rank ECDF plots.}
+
+\item{difference}{For \code{mcmc_rank_ecdf()}, a boolean specifying it the
+difference between the observed rank ECDFs and the theoretical expectation
+should be drawn instead of the unmodified rank ECDF plots.}
 }
 \value{
 The plotting functions return a ggplot object that can be further
@@ -211,6 +231,13 @@ See Vehtari et al. (2019) for details.
 \item{\code{mcmc_rank_overlay()}}{
 Ranks from \code{mcmc_rank_hist()} are plotted using overlaid lines in a
 single panel.
+}
+\item{\code{mcmc_rank_ecdf()}}{
+The ECDFs of the ranks from \code{mcmc_rank_hist()} are plotted and
+simultaneous confidence bands with a coverage determined by
+\code{confidence_level} are drawn. By default, the \code{difference} between the
+observed ECDF and the theoretical expectation is drawn.
+See Säilynoja et al. (2021) for details.
 }
 }
 }
@@ -300,6 +327,10 @@ mcmc_trace(
 Vehtari, A., Gelman, A., Simpson, D., Carpenter, B., Bürkner, P.
 (2019). Rank-normalization, folding, and localization: An improved \emph{R}-hat
 for assessing convergence of MCMC. \href{https://arxiv.org/abs/1903.08008}{arXiv preprint}.
+
+Säilynoja, T., Bürkner, P., Vehtari, A.
+(2021). Graphical Test for Discrete Uniformity and its Applications in
+Goodness of Fit Evaluation and Multiple Sample Comparison \href{https://arxiv.org/abs/2103.10522}{arXiv preprint}.
 }
 \seealso{
 Other MCMC: 
