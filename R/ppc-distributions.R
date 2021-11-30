@@ -12,6 +12,7 @@
 #' @template args-hist
 #' @template args-hist-freq
 #' @template args-dens
+#' @template args-pit-ecdf
 #' @param size,alpha Passed to the appropriate geom to control the appearance of
 #'   the `yrep` distributions.
 #' @param ... Currently unused.
@@ -48,10 +49,10 @@
 #'    both, depending on the `y_draw` argument.
 #'   }
 #'   \item{`ppc_pit_ecdf()`}{
-#'    The `100 * prob`% central simultaneous confidence intervals for the ECDF
-#'    of the empirical PIT values of `y` computed with respect to the
-#'    corresponding `yrep` values. If 'y' and 'yrep'. Th PIT values can also be
-#'    provided directly as `pit`.
+#'    The ECDF of the empirical PIT values of `y` computed with respect to the
+#'    corresponding `yrep` values. `100 * prob`% central simultaneous confidence
+#'    intervals are provided to asses if ´y´ and ´yrep´ originate from the same
+#'    distribution. The PIT values can also be provided directly as `pit`.
 #'    See Säilynoja et al. for more details.}
 #' }
 #'
@@ -71,6 +72,11 @@
 #' # ppc_ecdf_overlay with continuous data (set discrete=TRUE if discrete data)
 #' ppc_ecdf_overlay(y, yrep[sample(nrow(yrep), 25), ])
 #' }
+#' # ECDF and ECDF difference plot of the PIT values of ´y´ compared to ´yrep
+#' # with 99% simultaneous confidence bands.
+#' ppc_pit_ecdf(y, yrep, prob=0.99, plot_diff=FALSE)
+#' ppc_pit_ecdf(y, yrep, prob=0.99)
+#'
 #'
 #' # for ppc_hist,dens,freqpoly,boxplot definitely use a subset yrep rows so
 #' # only a few (instead of nrow(yrep)) histograms are plotted
@@ -98,6 +104,10 @@
 #' ppc_dens_overlay_grouped(y, yrep[1:25, ], group = group)
 #'
 #' ppc_ecdf_overlay_grouped(y, yrep[1:25, ], group = group)
+#'
+#' # ECDF difference plots of the PIT values by group
+#' # with 99% simultaneous confidence bands.
+#' ppc_pit_ecdf_grouped(y, yrep, group=group, prob=0.99)
 #'
 #' # don't need to only use small number of rows for ppc_violin_grouped
 #' # (as it pools yrep draws within groups)
@@ -536,6 +546,9 @@ ppc_violin_grouped <- function(y, yrep, group, ..., probs = c(0.1, 0.5, 0.9),
 }
 
 #' @export
+#' @param pit An optional vector of probability integral transformed values for
+#' which the ECDF is to be drawn. If NULL, PIT values are computed to ´y´ with
+#' respect to the corresponding values in ´yrep´.
 #' @rdname PPC-distributions
 #'
 ppc_pit_ecdf <- function(y,
@@ -543,8 +556,8 @@ ppc_pit_ecdf <- function(y,
                          ...,
                          pit = NULL,
                          K = NULL,
-                         confidence_level = .99,
-                         difference = TRUE,
+                         prob = .99,
+                         plot_diff = TRUE,
                          adj_method = "interpolate") {
   check_ignored_arguments(...)
 
@@ -566,23 +579,23 @@ ppc_pit_ecdf <- function(y,
   N <- length(pit)
   gamma <- adjust_gamma(N,
     K = K,
-    conf_level = confidence_level,
+    conf_level = prob,
     adj_method = adj_method
   )
   lims <- ecdf_intervals(N, K = K, gamma = gamma)
   ggplot() +
     aes_(
       x = 0:K / K,
-      y = ecdf(pit)(0:K / K) - (difference == TRUE) * 0:K / K,
+      y = ecdf(pit)(0:K / K) - (plot_diff == TRUE) * 0:K / K,
       color = "y"
     ) +
     geom_step(show.legend = FALSE) +
     geom_step(aes(
-      y = lims$upper / N - (difference == TRUE) * 0:K / K,
+      y = lims$upper / N - (plot_diff == TRUE) * 0:K / K,
       color = "yrep"
     ), show.legend = FALSE) +
     geom_step(aes(
-      y = lims$lower / N - (difference == TRUE) * 0:K / K,
+      y = lims$lower / N - (plot_diff == TRUE) * 0:K / K,
       color = "yrep"
     ), show.legend = FALSE) +
     yaxis_title(FALSE) +
@@ -602,9 +615,9 @@ ppc_pit_ecdf_grouped <-
            ...,
            K,
            pit,
-           confidence_level = .99,
-           difference = TRUE,
-           adj_method) {
+           prob = .99,
+           plot_diff = TRUE,
+           adj_method = "interpolate") {
     check_ignored_arguments(...)
 
     if (missing(pit)) {
@@ -626,7 +639,7 @@ ppc_pit_ecdf_grouped <-
       adjust_gamma(
         N_g,
         K = min(N_g, K0),
-        conf_level = confidence_level,
+        conf_level = prob,
         adj_method = adj_method
       )
     })
@@ -654,17 +667,17 @@ ppc_pit_ecdf_grouped <-
     ggplot(data) +
       aes_(
         x = ~x,
-        y = ~ ecdf_value - (difference == TRUE) * x,
+        y = ~ ecdf_value - (plot_diff == TRUE) * x,
         group = ~group,
         color = "y"
       ) +
       geom_step(show.legend = FALSE) +
       geom_step(aes_(
-        y = ~ lims_upper - (difference == TRUE) * x,
+        y = ~ lims_upper - (plot_diff == TRUE) * x,
         color = "yrep"
       ), show.legend = FALSE) +
       geom_step(aes_(
-        y = ~ lims_lower - (difference == TRUE) * x,
+        y = ~ lims_lower - (plot_diff == TRUE) * x,
         color = "yrep"
       ), show.legend = FALSE) +
       xaxis_title(FALSE) +

@@ -114,8 +114,8 @@ ppc_pit_ecdf(
   ...,
   pit = NULL,
   K = NULL,
-  confidence_level = 0.99,
-  difference = TRUE,
+  prob = 0.99,
+  plot_diff = TRUE,
   adj_method = "interpolate"
 )
 
@@ -126,9 +126,9 @@ ppc_pit_ecdf_grouped(
   ...,
   K,
   pit,
-  confidence_level = 0.99,
-  difference = TRUE,
-  adj_method
+  prob = 0.99,
+  plot_diff = TRUE,
+  adj_method = "interpolate"
 )
 }
 \arguments{
@@ -190,6 +190,25 @@ horizontal lines. Set to \code{NULL} to remove the lines.}
 to to the \code{size}, \code{alpha}, and \code{width} arguments of \code{\link[ggplot2:geom_jitter]{ggplot2::geom_jitter()}}
 to control the appearance of \code{y} points. The default of \code{y_jitter=NULL}
 will let \strong{ggplot2} determine the amount of jitter.}
+
+\item{pit}{An optional vector of probability integral transformed values for
+which the ECDF is to be drawn. If NULL, PIT values are computed to ´y´ with
+respect to the corresponding values in ´yrep´.}
+
+\item{K}{An optional integer defining the number of equally spaced evaluation
+points for the ECDF. If the
+submitted PIT values are known to be discrete, this should be the number of
+discrete cases. Defaults to the smaller of length(y) and ncol(yrep).}
+
+\item{prob}{The desired simultaneous coverage level of the bands around the
+ECDF. A value in (0,1).}
+
+\item{plot_diff}{Wether to plot the difference between the observed ECDF and
+the theoretical expectation when the PIT values are uniform.}
+
+\item{adj_method}{Method to obtain the simultaneous confidence bands.
+Possible values: "interpolate", "simulate", "optimize".
+Defaults to "interpolate".}
 }
 \value{
 The plotting functions return a ggplot object that can be further
@@ -237,10 +256,10 @@ quantiles. \code{y} is overlaid on the plot either as a violin, points, or
 both, depending on the \code{y_draw} argument.
 }
 \item{\code{ppc_pit_ecdf()}}{
-The \code{100 * prob}\% central simultaneous confidence intervals for the ECDF
-of the empirical PIT values of \code{y} computed with respect to the
-corresponding \code{yrep} values. If 'y' and 'yrep'. Th PIT values can also be
-provided directly as \code{pit}.
+The ECDF of the empirical PIT values of \code{y} computed with respect to the
+corresponding \code{yrep} values. \code{100 * prob}\% central simultaneous confidence
+intervals are provided to asses if ´y´ and ´yrep´ originate from the same
+distribution. The PIT values can also be provided directly as \code{pit}.
 See Säilynoja et al. for more details.}
 }
 }
@@ -256,6 +275,11 @@ ppc_dens_overlay(y, yrep[1:25, ])
 # ppc_ecdf_overlay with continuous data (set discrete=TRUE if discrete data)
 ppc_ecdf_overlay(y, yrep[sample(nrow(yrep), 25), ])
 }
+# ECDF and ECDF difference plot of the PIT values of ´y´ compared to ´yrep
+# with 99\% simultaneous confidence bands.
+ppc_pit_ecdf(y, yrep, prob=0.99, plot_diff=FALSE)
+ppc_pit_ecdf(y, yrep, prob=0.99)
+
 
 # for ppc_hist,dens,freqpoly,boxplot definitely use a subset yrep rows so
 # only a few (instead of nrow(yrep)) histograms are plotted
@@ -283,6 +307,10 @@ ppc_freqpoly_grouped(y, yrep[1:3,], group, freq = FALSE) + yaxis_text()
 ppc_dens_overlay_grouped(y, yrep[1:25, ], group = group)
 
 ppc_ecdf_overlay_grouped(y, yrep[1:25, ], group = group)
+
+# ECDF difference plots of the PIT values by group
+# with 99\% simultaneous confidence bands.
+ppc_pit_ecdf_grouped(y, yrep, group=group, prob=0.99)
 
 # don't need to only use small number of rows for ppc_violin_grouped
 # (as it pools yrep draws within groups)
