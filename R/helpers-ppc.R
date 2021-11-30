@@ -276,7 +276,18 @@ all_counts <- function(x, ...) {
   all_whole_number(x, ...) && min(x) >= 0
 }
 
-
+#' Obtain the coverage parameter for simultaneous confidence bands for ECDFs
+#'
+#' @param N Length of sample.
+#' @param L Number of chains. Used for MCMC, defaults to 1 for ppc.
+#' @param K Number of equally spaced evaluation points (1:K / K). Defaults to N.
+#' @param prob Desired simultaneous coverage (0,1).
+#' @param M number of simulations to run, if simulation method is used.
+#' @param adj_method String defining the desired adjustment method. By default
+#'  "interpolate" is used. Other available options "optimize" and "simulate".
+#' @return The adjusted coverage parameter yielding the desired simultaneous
+#'  coverage of the ECDF traces.
+#' @noRd
 adjust_gamma <- function(N,
                          L = 1,
                          K = N,
@@ -298,11 +309,7 @@ adjust_gamma <- function(N,
   gamma
 }
 
-# Adjust coverage parameter to find simultaneous confidence intervals for the
-# ECDF of a sample from the uniform distribution.
-# N - length of samples
-# K - number of equally spaced evaluation points, i.e. the right ends of the
-# partition intervals.
+# Adjust coverage parameter for single sample using the optimization method.
 adjust_gamma_optimize <- function(N, K, prob=0.99) {
   target <- function(gamma, prob, N, K) {
     z <- 1:(K - 1) / K
@@ -321,7 +328,7 @@ adjust_gamma_optimize <- function(N, K, prob=0.99) {
     for (i in seq_along(z1)) {
       tmp <- p_interior(
         p_int, x1 = x1, x2 = x2_lower[i]: x2_upper[i],
-        z1 = z1[i], z2 = z2[i], gamma = gamma, N = N
+        z1 = z1[i], z2 = z2[i], N = N
       )
       x1 <- tmp$x1
       p_int <- tmp$p_int
@@ -331,21 +338,14 @@ adjust_gamma_optimize <- function(N, K, prob=0.99) {
   optimize(target, c(0, 1 - prob), prob, N = N, K = K)$minimum
 }
 
-# Adjust coverage parameter to find silmultaneous confidence intervals for the
-# ECDFs of multiple samples (chains) from the uniform distribution.
-# N - length of samples (chains).
-# L - number of samples (chains).
-# K - number of equally spaced evaluation points, i.e. the right ends of the
-# partition intervals.
-# M - number of simulations used to determine the 'prob' middle quantile.
-#'
+# Adjust coverage parameter for multiple chains using simulation method.
 adjust_gamma_simulate <- function(N, L, K, prob = 0.99, M = 1000) {
   gamma <- numeric(M)
   z <- (1:(K - 1)) / K
   n <- N * (L - 1)
   k <- floor(z * N * L)
   for (m in seq_len(M)) {
-    u <- replicate(L, runif(N)) %>% u_scale
+    u <- u_scale(replicate(L, runif(N)))
     scaled_ecdfs <- apply(outer(u, z, "<="), c(2, 3), sum)
     gamma[m] <- 2 * min(
       apply(
@@ -359,7 +359,10 @@ adjust_gamma_simulate <- function(N, L, K, prob = 0.99, M = 1000) {
   alpha_quantile(gamma, 1 - prob)
 }
 
-p_interior <- function(p_int, x1, x2, z1, z2, gamma, N) {
+#' A helper function for 'adjust_gamma_optimize' defining the probability that
+#' an ECDF stays within the supplied bounds between z1 and z2.
+#' @noRd
+p_interior <- function(p_int, x1, x2, z1, z2, N) {
   z_tilde <- (z2 - z1) / (1 - z1)
   N_tilde <- rep(N - x1, each = length(x2))
   p_int <- rep(p_int, each = length(x2))
@@ -369,9 +372,11 @@ p_interior <- function(p_int, x1, x2, z1, z2, gamma, N) {
   list(p_int = rowSums(p_x2_int), x1 = x2)
 }
 
-# 100 * `alpha` percent of the trials are allowed to be rejected.
-# In case of ties, return the largest value dominating at most
-# 100 * (alpha + tol) percent of the values.
+#' A helper function for 'adjust_alpha_simulate'
+#' 100 * `alpha` percent of the trials are allowed to be rejected.
+#' In case of ties, return the largest value dominating at most
+#' 100 * (alpha + tol) percent of the values.
+#' @noRd
 alpha_quantile <- function(gamma, alpha, tol = 0.001) {
   a <- unname(quantile(gamma, probs = alpha))
   a_tol <- unname(quantile(gamma, probs = alpha + tol))
@@ -384,17 +389,17 @@ alpha_quantile <- function(gamma, alpha, tol = 0.001) {
   a
 }
 
-# Compute simultaneous confidence intervals for one or more samples from the
-# standard uniform distribution.
-# N - sample length
-# L - number of samples
-# K - size of uniform partition defining the ECDF evaluation points.
-# gamma - coverage parameter for the marginal distribution (binomial for
-# one sample and hypergeometric for multiple rank transformed chains).
+#' Compute simultaneous confidence intervals with the given adjusted coverage
+#'  parameter gamma.
+#' @param N Sample length.
+#' @param L Number of MCMC-chains. (1 for ppc)
+#' @param K Number of uniformly spaced evaluation points.
+#' @param gamma Adjusted coverage parameter for the marginal distribution
+#'  (binomial for PIT values and hypergeometric for rank transformed chains).
 #' @noRd
 ecdf_intervals <- function(N, L=1, K, gamma) {
   lims <- list()
-  z <- seq(0,1, length.out = K + 1)
+  z <- seq(0, 1, length.out = K + 1)
   if (L == 1) {
     lims$lower <- qbinom(gamma / 2, N, z)
     lims$upper <- qbinom(1 - gamma / 2, N, z)
@@ -407,7 +412,8 @@ ecdf_intervals <- function(N, L=1, K, gamma) {
   lims
 }
 
-#' Transform observations in 'x' into their corresponding fractional ranks.
+#' Helper for 'adjust_gamma_simulate`
+#' Transforms observations in 'x' into their corresponding fractional ranks.
 #' @noRd
 u_scale <- function(x) {
   array(rank(x) / length(x), dim = dim(x), dimnames = dimnames(x))
