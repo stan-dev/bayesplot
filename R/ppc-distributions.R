@@ -558,8 +558,9 @@ ppc_pit_ecdf <- function(y,
                          K = NULL,
                          prob = .99,
                          plot_diff = TRUE,
-                         adj_method = "interpolate") {
-  check_ignored_arguments(...)
+                         interpolate_adj = FALSE) {
+  check_ignored_arguments(...,
+      ok_args = c("K", "pit", "prob", "plot_diff", "interpolate_adj"))
 
   if (is.null(pit)) {
     pit <- ppc_data(y, yrep) %>%
@@ -578,24 +579,23 @@ ppc_pit_ecdf <- function(y,
   }
   N <- length(pit)
   gamma <- adjust_gamma(N,
-    K = K,
-    conf_level = prob,
-    adj_method = adj_method
-  )
+                        K = K,
+                        prob = prob,
+                        interpolate_adj = interpolate_adj)
   lims <- ecdf_intervals(N, K = K, gamma = gamma)
   ggplot() +
     aes_(
-      x = 0:K / K,
-      y = ecdf(pit)(0:K / K) - (plot_diff == TRUE) * 0:K / K,
+      x = 1:K / K,
+      y = ecdf(pit)(seq(0, 1, length.out = K)) - (plot_diff == TRUE) * 1:K / K,
       color = "y"
     ) +
     geom_step(show.legend = FALSE) +
     geom_step(aes(
-      y = lims$upper / N - (plot_diff == TRUE) * 0:K / K,
+      y = lims$upper[-1] / N - (plot_diff == TRUE) * 1:K / K,
       color = "yrep"
     ), show.legend = FALSE) +
     geom_step(aes(
-      y = lims$lower / N - (plot_diff == TRUE) * 0:K / K,
+      y = lims$lower[-1] / N - (plot_diff == TRUE) * 1:K / K,
       color = "yrep"
     ), show.legend = FALSE) +
     yaxis_title(FALSE) +
@@ -613,20 +613,21 @@ ppc_pit_ecdf_grouped <-
            yrep,
            group,
            ...,
-           K,
-           pit,
+           K = NULL,
+           pit = NULL,
            prob = .99,
            plot_diff = TRUE,
-           adj_method = "interpolate") {
-    check_ignored_arguments(...)
+           interpolate_adj = FALSE) {
+    check_ignored_arguments(...,
+      ok_args = c("K", "pit", "prob", "plot_diff", "interpolate_adj"))
 
-    if (missing(pit)) {
+    if (is.null(pit)) {
       pit <- ppc_data(y, yrep, group) %>%
         group_by(y_id) %>%
         dplyr::group_map(~ mean(.x$value[.x$is_y] >= .x$value[!.x$is_y])) %>%
         unlist()
-      if (missing(K)) {
-        K0 <- length(unique(ppc_data(y, yrep)$rep_id))
+      if (is.null(K)) {
+        K <- length(unique(ppc_data(y, yrep)$rep_id)) + 1
       }
     } else {
       inform("'pit' specified so ignoring 'y', and 'yrep' if specified.")
@@ -638,9 +639,9 @@ ppc_pit_ecdf_grouped <-
       N_g <- sum(group == g)
       adjust_gamma(
         N_g,
-        K = min(N_g, K0),
-        conf_level = prob,
-        adj_method = adj_method
+        K = min(N_g, K),
+        prob = prob,
+        interpolate_adj = interpolate_adj
       )
     })
     names(gammas) <- unique(group)
@@ -649,26 +650,26 @@ ppc_pit_ecdf_grouped <-
       group_by(group) %>%
       dplyr::group_map(~ data.frame(
         ecdf_value = ecdf(.x$pit)(
-          seq(0, 1, length.out = min(nrow(.x) + 1, K0 + 1))),
+          seq(0, 1, length.out = min(nrow(.x), K))),
         group = .y[1],
         lims_upper = ecdf_intervals(
           N = nrow(.x),
-          K = min(nrow(.x), K0),
+          K = min(nrow(.x), K),
           gamma = gammas[[unlist(.y[1])]]
-        )$upper / nrow(.x),
+        )$upper[-1] / nrow(.x),
         lims_lower = ecdf_intervals(
           N = nrow(.x),
-          K = min(nrow(.x), K0),
+          K = min(nrow(.x), K),
           gamma = gammas[[unlist(.y[1])]]
-        )$lower / nrow(.x),
-        x = seq(0, 1, length.out = min(nrow(.x) + 1, K0 + 1))
+        )$lower[-1] / nrow(.x),
+        x = seq(0, 1, length.out = min(nrow(.x), K))
       )) %>%
       dplyr::bind_rows()
     ggplot(data) +
       aes_(
-        x = ~x,
+        x = ~ x,
         y = ~ ecdf_value - (plot_diff == TRUE) * x,
-        group = ~group,
+        group = ~ group,
         color = "y"
       ) +
       geom_step(show.legend = FALSE) +

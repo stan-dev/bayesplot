@@ -453,8 +453,10 @@ mcmc_rank_ecdf <-
            facet_args = list(),
            prob = 0.99,
            plot_diff = TRUE,
-           adj_method = "interpolate") {
-  check_ignored_arguments(..., ok_args = c("M"))
+           interpolate_adj = FALSE) {
+  check_ignored_arguments(...,
+    ok_args = c("K", "pit", "prob", "plot_diff", "interpolate_adj", "M")
+  )
   data <- mcmc_trace_data(
     x,
     pars = pars,
@@ -479,8 +481,8 @@ mcmc_rank_ecdf <-
       K
     },
     prob = prob,
-    ...,
-    adj_method = adj_method
+    interpolate_adj = interpolate_adj,
+    ...
   )
   lims <- ecdf_intervals(
     N = n_iter,

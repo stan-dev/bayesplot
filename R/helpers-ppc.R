@@ -293,24 +293,38 @@ adjust_gamma <- function(N,
                          K = N,
                          prob = 0.99,
                          M = 1000,
-                         adj_method = "interpolate") {
-  if (any(c(K, N, L) < 1)) {
+                         interpolate_adj = FALSE) {
+  if (any(
+    c(K, N, L) < 1,
+    all_counts(c(K, N, L))
+    )) {
     abort("Parameters 'N', 'L' and 'K' must be positive integers.")
   }
   if (prob >= 1 || prob <= 0) {
     abort("Value of 'prob' must be in (0,1).")
   }
   if (L == 1) {
-    gamma <- adjust_gamma_optimize(N, K, prob)
-  }
-  else {
-    gamma <- adjust_gamma_simulate(N, L, K, prob, M)
+    if (interpolate_adj == TRUE) {
+      gamma <- 0
+    } else {
+      gamma <- adjust_gamma_optimize(N, K, prob)
+    }
+  } else {
+    if (interpolate_adj == TRUE) {
+      gamma <- 0
+    } else {
+      gamma <- adjust_gamma_simulate(N,
+                                     L,
+                                     K,
+                                     prob,
+                                     M)
+    }
   }
   gamma
 }
 
 # Adjust coverage parameter for single sample using the optimization method.
-adjust_gamma_optimize <- function(N, K, prob=0.99) {
+adjust_gamma_optimize <- function(N, K, prob) {
   target <- function(gamma, prob, N, K) {
     z <- 1:(K - 1) / K
     z1 <- c(0, z)
@@ -339,7 +353,7 @@ adjust_gamma_optimize <- function(N, K, prob=0.99) {
 }
 
 # Adjust coverage parameter for multiple chains using simulation method.
-adjust_gamma_simulate <- function(N, L, K, prob = 0.99, M = 1000) {
+adjust_gamma_simulate <- function(N, L, K, prob, M) {
   gamma <- numeric(M)
   z <- (1:(K - 1)) / K
   n <- N * (L - 1)
@@ -397,7 +411,7 @@ alpha_quantile <- function(gamma, alpha, tol = 0.001) {
 #' @param gamma Adjusted coverage parameter for the marginal distribution
 #'  (binomial for PIT values and hypergeometric for rank transformed chains).
 #' @noRd
-ecdf_intervals <- function(N, L=1, K, gamma) {
+ecdf_intervals <- function(N, L = 1, K, gamma) {
   lims <- list()
   z <- seq(0, 1, length.out = K + 1)
   if (L == 1) {
