@@ -294,10 +294,7 @@ adjust_gamma <- function(N,
                          prob = 0.99,
                          M = 1000,
                          interpolate_adj = FALSE) {
-  if (any(
-    c(K, N, L) < 1,
-    all_counts(c(K, N, L))
-    )) {
+  if (! all_counts(c(K, N, L))) {
     abort("Parameters 'N', 'L' and 'K' must be positive integers.")
   }
   if (prob >= 1 || prob <= 0) {
