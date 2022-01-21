@@ -558,7 +558,7 @@ ppc_pit_ecdf <- function(y,
                          K = NULL,
                          prob = .99,
                          plot_diff = TRUE,
-                         interpolate_adj = FALSE) {
+                         interpolate_adj = TRUE) {
   check_ignored_arguments(...,
       ok_args = c("K", "pit", "prob", "plot_diff", "interpolate_adj"))
 
@@ -617,7 +617,7 @@ ppc_pit_ecdf_grouped <-
            pit = NULL,
            prob = .99,
            plot_diff = TRUE,
-           interpolate_adj = FALSE) {
+           interpolate_adj = TRUE) {
     check_ignored_arguments(...,
       ok_args = c("K", "pit", "prob", "plot_diff", "interpolate_adj"))
 

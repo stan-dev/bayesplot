@@ -453,7 +453,7 @@ mcmc_rank_ecdf <-
            facet_args = list(),
            prob = 0.99,
            plot_diff = TRUE,
-           interpolate_adj = FALSE) {
+           interpolate_adj = TRUE) {
   check_ignored_arguments(...,
     ok_args = c("K", "pit", "prob", "plot_diff", "interpolate_adj", "M")
   )

@@ -300,22 +300,16 @@ adjust_gamma <- function(N,
   if (prob >= 1 || prob <= 0) {
     abort("Value of 'prob' must be in (0,1).")
   }
-  if (L == 1) {
-    if (interpolate_adj == TRUE) {
-      gamma <- 0
-    } else {
-      gamma <- adjust_gamma_optimize(N, K, prob)
-    }
+  if (interpolate_adj == TRUE) {
+    gamma <- interpolate_gamma(N, K, prob, L)
+  } else if (L == 1) {
+    gamma <- adjust_gamma_optimize(N, K, prob)
   } else {
-    if (interpolate_adj == TRUE) {
-      gamma <- 0
-    } else {
-      gamma <- adjust_gamma_simulate(N,
-                                     L,
-                                     K,
-                                     prob,
-                                     M)
-    }
+    gamma <- adjust_gamma_simulate(N,
+                                    L,
+                                    K,
+                                    prob,
+                                    M)
   }
   gamma
 }
@@ -370,6 +364,55 @@ adjust_gamma_simulate <- function(N, L, K, prob, M) {
   alpha_quantile(gamma, 1 - prob)
 }
 
+interpolate_gamma <- function(N, K, p, L) {
+  vals <- get_interpolation_values(N, K, L, p)
+  N_lb <- max(vals[vals$N <= N, ]$N)
+  N_ub <- min(vals[vals$N >= N, ]$N)
+  g_lb <- approx(
+    x = log(vals[vals$N == N_lb, ]$K),
+    y = log(vals[vals$N == N_lb, ]$val),
+    xout = log(K)
+  )$y
+  g_ub <- approx(
+    x = log(vals[vals$N == N_ub, ]$K),
+    y = log(vals[vals$N == N_ub, ]$val),
+    xout = log(K)
+  )$y
+  if (N_ub == N_lb) {
+    g <- exp(g_lb)
+  } else {
+    g <- exp(approx(x = log(c(N_lb, N_ub)), y = c(g_lb, g_ub), xout = log(N))$y)
+  }
+  g
+}
+
+get_interpolation_values <- function(N, K, L, p) {
+  for (dim in c("L", "prob")) {
+    if (all(get(if (dim == "L") dim else "p") != bayesplot:::gamma_adj[, dim])) {
+      stop(paste(
+        "No precomputed values to interpolate from for '", dim, "' = ",
+        get(if (dim == "L") dim else "p"),
+        ".\n",
+        "Values of '", dim, "' available for interpolation: ",
+        unique(bayesplot:::gamma_adj[, dim]),
+        ".",
+        sep = ""
+      ))
+    }
+  }
+  vals <- bayesplot:::gamma_adj[bayesplot:::gamma_adj$L == L & bayesplot:::gamma_adj$prob == p, ]
+  if (K > max(vals[vals$N <= N, ]$K)) {
+    stop(paste(
+      "No precomputed values available for interpolation for 'K' = ",
+      K,
+      ".\n",
+      "Try either setting a value of 'K' <= ",
+      max(vals[vals$N <= N, ]$K),
+      "or 'interpolate_adj' = FALSE."
+    ))
+  }
+  vals
+}
 #' A helper function for 'adjust_gamma_optimize' defining the probability that
 #' an ECDF stays within the supplied bounds between z1 and z2.
 #' @noRd
