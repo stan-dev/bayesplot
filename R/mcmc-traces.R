@@ -65,10 +65,13 @@
 #'    single panel.
 #'   }
 #'   \item{`mcmc_rank_ecdf()`}{
-#'    The ECDFs of the ranks from `mcmc_rank_hist()` are plotted and
-#'    simultaneous confidence bands with a coverage determined by
-#'    `prob` are drawn. By default, the difference between the
-#'    observed ECDF and the theoretical expectation is drawn.
+#'    The ECDFs of the ranks from `mcmc_rank_hist()` are plotted with the
+#'    simultaneous confidence bands with a coverage determined by `prob`,
+#'    that is, bands that completely cover all of the rank ECDFs with the
+#'    probability 'prob'.
+#'    By default, the difference between the observed rank ECDFs and the
+#'    theoretical expectation for samples originating from the same distribution
+#'    is drawn.
 #'    See Säilynoja et al. (2021) for details.
 #'   }
 #' }
@@ -485,14 +488,14 @@ mcmc_rank_ecdf <-
     ...
   )
   lims <- ecdf_intervals(
+    gamma = gamma,
     N = n_iter,
-    L = n_chain,
     K = if (is.null(K)) {
       n_iter
     } else {
       K
     },
-    gamma = gamma
+    L <- n_chain
   )
   data_lim <- data.frame(
     upper = lims$upper / n_iter - (plot_diff == TRUE) * x,
