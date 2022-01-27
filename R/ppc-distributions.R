@@ -53,7 +53,7 @@
 #'    corresponding `yrep` values. `100 * prob`% central simultaneous confidence
 #'    intervals are provided to asses if ´y´ and ´yrep´ originate from the same
 #'    distribution. The PIT values can also be provided directly as `pit`.
-#'    See Säilynoja et al. for more details.}
+#'    See Säilynoja et al. (2021) for more details.}
 #' }
 #'
 #' @template reference-vis-paper
@@ -568,7 +568,10 @@ ppc_pit_ecdf <- function(y,
       dplyr::group_map(~ mean(.x$value[.x$is_y] >= .x$value[!.x$is_y])) %>%
       unlist()
     if (is.null(K)) {
-      K <- min(length(unique(ppc_data(y, yrep)$rep_id)) + 1, length(pit))
+      K <- min(
+        length(unique(ppc_data(y, yrep)$rep_id)) + 1,
+        length(pit)
+      )
     }
   } else {
     inform("'pit' specified so ignoring 'y', and 'yrep' if specified.")
@@ -578,11 +581,11 @@ ppc_pit_ecdf <- function(y,
     }
   }
   N <- length(pit)
-  gamma <- adjust_gamma(N,
+  gamma <- adjust_gamma(N = N,
                         K = K,
                         prob = prob,
                         interpolate_adj = interpolate_adj)
-  lims <- ecdf_intervals(N, K = K, gamma = gamma)
+  lims <- ecdf_intervals(gamma = gamma, N = N, K = K)
   ggplot() +
     aes_(
       x = 1:K / K,
@@ -630,7 +633,7 @@ ppc_pit_ecdf_grouped <-
         K <- length(unique(ppc_data(y, yrep)$rep_id)) + 1
       }
     } else {
-      inform("'pit' specified so ignoring 'y', and 'yrep' if specified.")
+      inform("'pit' specified so ignoring 'y' and 'yrep' if specified.")
       pit <- validate_pit(pit)
     }
     N <- length(pit)
@@ -638,7 +641,7 @@ ppc_pit_ecdf_grouped <-
     gammas <- lapply(unique(group), function(g) {
       N_g <- sum(group == g)
       adjust_gamma(
-        N_g,
+        N = N_g,
         K = min(N_g, K),
         prob = prob,
         interpolate_adj = interpolate_adj
@@ -653,18 +656,19 @@ ppc_pit_ecdf_grouped <-
           seq(0, 1, length.out = min(nrow(.x), K))),
         group = .y[1],
         lims_upper = ecdf_intervals(
+          gamma = gammas[[unlist(.y[1])]],
           N = nrow(.x),
-          K = min(nrow(.x), K),
-          gamma = gammas[[unlist(.y[1])]]
-        )$upper[-1] / nrow(.x),
+          K = min(nrow(.x), K)
+          )$upper[-1] / nrow(.x),
         lims_lower = ecdf_intervals(
+          gamma = gammas[[unlist(.y[1])]],
           N = nrow(.x),
-          K = min(nrow(.x), K),
-          gamma = gammas[[unlist(.y[1])]]
-        )$lower[-1] / nrow(.x),
+          K = min(nrow(.x), K)
+          )$lower[-1] / nrow(.x),
         x = seq(0, 1, length.out = min(nrow(.x), K))
       )) %>%
       dplyr::bind_rows()
+
     ggplot(data) +
       aes_(
         x = ~ x,
