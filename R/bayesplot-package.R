@@ -9,7 +9,7 @@
 #'
 #' @description
 #' \if{html}{
-#'    \figure{stanlogo.png}{options: width="50px" alt="mc-stan.org"}
+#'    \figure{stanlogo.png}{options: width="50" alt="mc-stan.org"}
 #' }
 #' *Stan Development Team*
 #'
