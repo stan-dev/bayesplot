@@ -129,6 +129,9 @@ theme_default <-
 #' bayesplot_theme_set(theme_dark())
 #' mcmc_hist(x) + panel_bg(fill = "black")
 #'
+#' # reset
+#' bayesplot_theme_set()
+#'
 bayesplot_theme_get <- function() {
   if (!identical(.bayesplot_theme_env$gg_current, ggplot2::theme_get())) {
     .bayesplot_theme_env$current <- ggplot2::theme_get()

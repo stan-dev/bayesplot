@@ -2,6 +2,42 @@
 
 # bayesplot 1.8.1.9000
 
+* New module PPD (posterior/prior predictive distribution) with a lot of new
+plotting functions with `ppd_` prefix. These functions plot draws from the prior
+or posterior predictive distributions (PPD) without comparing to observed data
+(i.e., no `y` argument). Because these are not "checks" against the observed
+data we use PPD instead of PPC. These plots are essentially the same as the
+corresponding PPC plots but without showing any observed data (e.g.,
+`ppd_intervals()` is like `ppc_intervals()` but without plotting `y`). See
+`help("PPD-overview")` for details. (#151, #222)
+
+* All PPC categories now have one or more `_data()` functions that return the
+data frame used for plotting (#97, #222). Many of these have already been in
+previous releases, but the new ones in this release are:
+   - `ppc_bars_data()`
+   - `ppc_error_data()`
+   - `ppc_error_binnned_data()`
+   - `ppc_scatter_data()`
+   - `ppc_scatter_avg_data()`
+   - `ppc_stat_data()`
+
+* Many functions gain an argument `facet_args` for controlling ggplot2 faceting
+  (many other functions have had this argument for a long time).
+  The ones that just now got the argument are:
+   - `ppc_scatter()`
+   - `ppc_scatter_avg_grouped()`
+   - `ppc_error_hist()`
+   - `ppc_error_hist_grouped()`
+   - `ppc_error_scatter()`
+   - `ppc_error_binned()`
+   
+* New plotting function `ppc_km_overlay_grouped()`, the grouped variant of
+  `ppc_km_overlay()`. (#260, @fweber144)
+
+* `ppc_scatter()`, `ppc_scatter_avg()`, and `ppc_scatter_avg_grouped()` gain an
+  argument `ref_line`, which can be set to `FALSE` to turn off the `x=y` line
+  drawn behind the scatterplot.
+
 * `mcmc_*()` functions now support all draws formats from the **posterior** package. (#277, @Ozan147)
 
 * `mcmc_dens()` and `mcmc_dens_overlay()` gain arguments for controlling the
@@ -11,9 +47,6 @@
 
 * `mcmc_areas()` and `mcmc_areas_ridges()` gain an argument `border_size` for
 controlling the thickness of the ridgelines. (#224)
-
-* New plotting function `ppc_km_overlay_grouped()`, the grouped variant of
-  `ppc_km_overlay()`. (#260, @fweber144)
 
 # bayesplot 1.8.1
 

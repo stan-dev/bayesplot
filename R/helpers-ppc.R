@@ -1,3 +1,5 @@
+# input validation and type checking ----------------------------------------
+
 # Check if an object is a vector (but not list) or a 1-D array
 is_vector_or_1Darray <- function(x) {
   if (is.vector(x) && !is.list(x)) {
@@ -5,6 +7,25 @@ is_vector_or_1Darray <- function(x) {
   }
 
   isTRUE(is.array(x) && length(dim(x)) == 1)
+}
+
+# Check if x consists of whole numbers (very close to integers)
+# Implementation here follows example ?integer
+is_whole_number <- function(x, tol = .Machine$double.eps) {
+  if (!is.numeric(x)) {
+    FALSE
+  } else {
+    abs(x - round(x)) < tol
+  }
+}
+
+# Check if all values in x are whole numbers or counts (non-negative whole
+# numbers)
+all_whole_number <- function(x, ...) {
+  all(is_whole_number(x, ...))
+}
+all_counts <- function(x, ...) {
+  all_whole_number(x, ...) && min(x) >= 0
 }
 
 
@@ -34,48 +55,64 @@ validate_y <- function(y) {
 }
 
 
-#' Validate yrep
+#' Validate predictions (`yrep` or `ypred`)
 #'
-#' Checks that `yrep` is a numeric matrix, doesn't have any NAs, and has the
-#' correct number of columns (equal to the length of `y`).
+#' Checks that `predictions` is a numeric matrix, doesn't have any NAs, and has
+#' the correct number of columns.
 #'
-#' @param yrep,y The user's `yrep` object and the `y` object returned by `validate_y()`.
+#' @param predictions The user's `yrep` or `ypred` object (SxN matrix).
+#' @param `n_obs` The number of observations (columns) that `predictions` should
+#'   have, if applicable.
 #' @return Either throws an error or returns a numeric matrix.
 #' @noRd
-validate_yrep <- function(yrep, y) {
-  stopifnot(is.matrix(yrep), is.numeric(yrep))
-  if (is.integer(yrep)) {
-    if (nrow(yrep) == 1) {
-      yrep[1, ] <- as.numeric(yrep[1,, drop = FALSE])
+validate_predictions <- function(predictions, n_obs = NULL) {
+  # sanity checks
+  stopifnot(is.matrix(predictions), is.numeric(predictions))
+  if (!is.null(n_obs)) {
+    stopifnot(length(n_obs) == 1, n_obs == as.integer(n_obs))
+  }
+
+  if (is.integer(predictions)) {
+    if (nrow(predictions) == 1) {
+      predictions[1, ] <- as.numeric(predictions[1,, drop = FALSE])
     }
     else {
-      yrep <- apply(yrep, 2, as.numeric)
+      predictions <- apply(predictions, 2, as.numeric)
     }
   }
 
-  if (anyNA(yrep)) {
-    abort("NAs not allowed in 'yrep'.")
+  if (anyNA(predictions)) {
+    abort("NAs not allowed in predictions.")
   }
 
-  if (ncol(yrep) != length(y)) {
+  if (!is.null(n_obs) && (ncol(predictions) != n_obs)) {
     abort("ncol(yrep) must be equal to length(y).")
   }
 
-  unclass(unname(yrep))
+  # get rid of names but keep them as an attribute in case we want them
+  obs_names <- colnames(predictions)
+  predictions <- unclass(unname(predictions))
+  attr(predictions, "obs_names") <- obs_names
+
+  predictions
 }
 
 
 #' Validate group
 #'
-#' Checks that grouping variable has same length as `y` and is either a vector or
-#' factor variable.
+#' Checks that grouping variable has correct number of observations and is
+#' either a factor variable or vector (which is coerced to factor).
 #'
-#' @param group,y The user's `group` object and the `y` object returned by
-#'   `validate_y()`.
+#' @param group The user's `group` argument.
+#' @param n_obs The number of observations that `group` should contain (e.g.,
+#'   `length(y)`, `ncol(yrepd)`, etc.). Unlike for `validate_predictions()`,
+#'   this is always required for `validate_group()`.
 #' @return Either throws an error or returns `group` (coerced to a factor).
 #' @noRd
-validate_group <- function(group, y) {
-  stopifnot(is.vector(group) || is.factor(group))
+validate_group <- function(group, n_obs) {
+  # sanity checks
+  stopifnot(is.vector(group) || is.factor(group),
+            length(n_obs) == 1, n_obs == as.integer(n_obs))
 
   if (!is.factor(group)) {
     group <- as.factor(group)
@@ -85,8 +122,8 @@ validate_group <- function(group, y) {
     abort("NAs not allowed in 'group'.")
   }
 
-  if (length(group) != length(y)) {
-    abort("length(group) must be equal to length(y).")
+  if (length(group) != n_obs) {
+    abort("length(group) must be equal to the number of observations.")
   }
 
   unname(group)
@@ -135,136 +172,103 @@ validate_x <- function(x = NULL, y, unique_x = FALSE) {
 }
 
 
-#' Convert yrep matrix into a molten data frame
-#'
-#' @param yrep A matrix, already validated using `validate_yrep()`.
-#' @return A data frame with 4 columns:
-#'   1. `y_id`: integer indicating the observation number (`yrep` column).
-#'   1. `rep_id`: integer indicating the simulation number (`yrep` row).
-#'   1. `rep_label`: factor with S levels, where S is `nrow(yrep)`, i.e. the
-#'      number of simulations included in `yrep`.
-#'   1. `value`: the simulation values.
+# Internals for grouped plots ---------------------------------------------
+
+#' Modify a call to a `_grouped` function to a call to the ungrouped version
+#' @param fn The new function to call (a string).
+#' @param call The original call (from `match.call(expand.dots = FALSE)`).
+#' @return The new unevaluated call, with additional argument
+#'   `called_from_internal=TRUE` which can be detected by the function to be
+#'   called so it knows not to warn about the `group` and `facet_args` arguments.
 #' @noRd
-melt_yrep <- function(yrep) {
-  out <- yrep %>%
-    reshape2::melt(varnames = c("rep_id", "y_id")) %>%
-    tibble::as_tibble()
-  id <- create_yrep_ids(out$rep_id)
-  out$rep_label <- factor(id, levels = unique(id))
-  out[c("y_id", "rep_id", "rep_label", "value")]
+ungroup_call <- function(fn, call) {
+  args <- rlang::call_args(call)
+  args$called_from_internal <- TRUE
+  args[["..."]] <- NULL
+  rlang::call2(.fn = fn, !!!args, .ns = "bayesplot")
+}
+
+#' Check if the `...` to a plotting function was passed from it's `_grouped` version
+#' @param dots The `...` arguments already in a list, i.e., `list(...)`.
+#' @return `TRUE` or `FALSE`
+#' @noRd
+from_grouped <- function(dots) {
+  isTRUE(dots[["called_from_internal"]]) && !is.null(dots[["group"]])
 }
 
 
-#' Stack y below melted yrep data
+
+# reshaping ---------------------------------------------------
+
+#' Convert matrix of predictions into a molten data frame
 #'
-#' @param y Validated y input.
-#' @param yrep Validated yrep input.
+#' @param predictions A matrix (`yrep` or `ypred`), already validated using
+#'   `validate_predictions()`.
+#' @return A data frame with columns:
+#'   * `y_id`: integer indicating the observation number (`predictions` column).
+#'   * `rep_id`: integer indicating the simulation number (`predictions` row).
+#'   * `rep_label`: factor with S levels, where S is `nrow(predictions)`, i.e.
+#'     the number of simulations included in `predictions`.
+#'   * `value`: the simulation values.
+#' @noRd
+melt_predictions <- function(predictions) {
+  obs_names <- attr(predictions, "obs_names")
+  out <- predictions %>%
+    reshape2::melt(varnames = c("rep_id", "y_id")) %>%
+    tibble::as_tibble()
+
+  rep_labels <- create_rep_ids(out$rep_id)
+  y_names <- obs_names[out$y_id] %||% out$y_id
+  out$rep_label <- factor(rep_labels, levels = unique(rep_labels))
+  out$y_name <- factor(y_names, levels = unique(y_names))
+  out[c("y_id", "y_name", "rep_id", "rep_label", "value")]
+}
+
+
+#' Stack `y` below melted `yrep` data
+#'
+#' @param y Validated `y` input.
+#' @param yrep Validated `yrep` input.
 #' @return A data frame with the all the columns as the one returned by
-#'   `melt_yrep()`, plus additional columns:
-#'   1. `is_y`: logical indicating whether the values are observations (`TRUE`)
+#'   `melt_predictions()`, plus additional columns:
+#'   * `is_y`: logical indicating whether the values are observations (`TRUE`)
 #'      or simulations (`FALSE`).
-#'   1. `is_y_label`: factor with levels `italic(y)` for observations and
+#'   * `is_y_label`: factor with levels `italic(y)` for observations and
 #'      `italic(y)[rep]` for simulations.
 #' @noRd
 melt_and_stack <- function(y, yrep) {
   y_text <- as.character(y_label())
   yrep_text <- as.character(yrep_label())
 
-  molten_yrep <- melt_yrep(yrep)
+  molten_preds <- melt_predictions(yrep)
 
   # Add a level in the labels for the observed y values
-  levels(molten_yrep$rep_label) <- c(levels(molten_yrep$rep_label), y_text)
+  levels(molten_preds$rep_label) <- c(levels(molten_preds$rep_label), y_text)
+
+  y_names <-  attr(yrep, "obs_names") %||% seq_along(y)
 
   ydat <- tibble::tibble(
-    rep_label = factor(y_text, levels = levels(molten_yrep$rep_label)),
+    rep_label = factor(y_text, levels = levels(molten_preds$rep_label)),
     rep_id = NA_integer_,
     y_id = seq_along(y),
+    y_name = factor(y_names, levels = unique(y_names)),
     value = y)
 
-  data <- dplyr::bind_rows(molten_yrep, ydat) %>%
+  data <- dplyr::bind_rows(molten_preds, ydat) %>%
     mutate(
       rep_label = relevel(.data$rep_label, y_text),
       is_y = is.na(.data$rep_id),
       is_y_label = ifelse(.data$is_y, y_text, yrep_text) %>%
         factor(levels = c(y_text, yrep_text)))
 
-  data[c("y_id", "rep_id", "rep_label", "is_y", "is_y_label", "value")]
+  cols <- c("y_id", "y_name", "rep_id", "rep_label",
+            "is_y", "is_y_label", "value")
+  data[cols]
 }
 
-
-#' Prepare data for use in PPCs by group
-#'
-#' @param y,yrep,group Validated `y`, `yrep`, and `group` objects.
-#' @param stat Either `NULL` or a string naming a function.
-#' @return If `stat` is `NULL`, a molten data frame grouped by group and
-#'   variable. If `stat` specifies a function then a summary table created
-#'   by `dplyr::summarise()`.
-#' @noRd
-#'
-#' @examples
-#' y <- example_y_data()
-#' yrep <- example_yrep_draws()
-#' group <- example_group_data()
-#' ppc_group_data(y, yrep, group)
-#' ppc_group_data(y, yrep, group, median)
-ppc_group_data <- function(y, yrep, group, stat = NULL) {
-  d <- data.frame(
-    group = factor(group),
-    y = y,
-    yrep = t(yrep)
-  )
-  colnames(d) <- gsub(".", "_", colnames(d), fixed = TRUE)
-  molten_d <- reshape2::melt(d, id.vars = "group")
-  molten_d <- dplyr::group_by(molten_d, .data$group, .data$variable)
-
-  # Default to identity function.
-  dplyr_fun <- dplyr::summarise
-  if (is.null(stat)) {
-    stat <- function(x) x
-    dplyr_fun <- dplyr::mutate
-  }
-
-  stat <- match.fun(stat)
-  dplyr_fun(molten_d, value = stat(.data$value))
-
-  # todo: does this result need to be ungrouped. If mutating path, it has two
-  # grouping vars. It summarising path, it has one grouping var.
-}
-
-# Check if x consists of whole numbers (very close to integers)
-# Implementation here follows example ?integer
-is_whole_number <- function(x, tol = .Machine$double.eps) {
-  if (!is.numeric(x)) {
-    FALSE
-  } else {
-    abs(x - round(x)) < tol
-  }
-}
-
-# Check if all values in x are whole numbers or counts (non-negative whole
-# numbers)
-all_whole_number <- function(x, ...) {
-  all(is_whole_number(x, ...))
-}
-all_counts <- function(x, ...) {
-  all_whole_number(x, ...) && min(x) >= 0
-}
 
 # labels ----------------------------------------------------------------
-create_yrep_ids <- function(ids) paste('italic(y)[rep] (', ids, ")")
-yrep_label <- function() expression(italic(y)[rep])
-yrep_avg_label <- function() expression(paste("Average ", italic(y)[rep]))
+create_rep_ids <- function(ids) paste('italic(y)[rep] (', ids, ")")
 y_label <- function() expression(italic(y))
-Ty_label <- function() expression(italic(T(italic(y))))
-Tyrep_label <- function() expression(italic(T)(italic(y)[rep]))
-# Ty_label_2d <- function() {
-#   expression(bgroup(
-#     "(", list(italic(T)[1](italic(y)),
-#               italic(T)[2](italic(y))), ")"
-#   ))
-# }
-# Tyrep_label_2d <- function(k) {
-#   stopifnot(k == 1 || k == 2)
-#   if (k == 1) expression(paste(italic(T)[1](italic(y)[rep])))
-#   else expression(paste(italic(T)[2](italic(y)[rep])))
-# }
+yrep_label <- function() expression(italic(y)[rep])
+ypred_label <- function() expression(italic(y)[pred])

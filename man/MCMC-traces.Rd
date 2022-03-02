@@ -8,7 +8,7 @@
 \alias{mcmc_rank_overlay}
 \alias{mcmc_rank_hist}
 \alias{mcmc_trace_data}
-\title{Trace plots of MCMC draws}
+\title{Trace and rank plots of MCMC draws}
 \usage{
 mcmc_trace(
   x,
@@ -126,7 +126,9 @@ abbreviated for convenience in interactive use (e.g., \code{transform}).}
 
 \item{facet_args}{A named list of arguments (other than \code{facets}) passed
 to \code{\link[ggplot2:facet_wrap]{ggplot2::facet_wrap()}} or \code{\link[ggplot2:facet_grid]{ggplot2::facet_grid()}}
-to control faceting.}
+to control faceting. Note: if \code{scales} is not included in \code{facet_args}
+then \strong{bayesplot} may use \code{scales="free"} as the default (depending
+on the plot) instead of the \strong{ggplot2} default of \code{scales="fixed"}.}
 
 \item{n_warmup}{An integer; the number of warmup iterations included in
 \code{x}. The default is \code{n_warmup = 0}, i.e. to assume no warmup
@@ -187,7 +189,7 @@ function.
 in the same data frame.
 }
 \description{
-Trace plot (or traceplot) of MCMC draws. See the \strong{Plot Descriptions}
+Trace and rank plots of MCMC draws. See the \strong{Plot Descriptions}
 section, below, for details.
 }
 \section{Plot Descriptions}{

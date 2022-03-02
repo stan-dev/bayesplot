@@ -81,6 +81,9 @@ mcmc_hist(x)
 bayesplot_theme_set(theme_dark())
 mcmc_hist(x) + panel_bg(fill = "black")
 
+# reset
+bayesplot_theme_set()
+
 }
 \seealso{
 \code{\link[=theme_default]{theme_default()}} for the default \strong{bayesplot} theme.

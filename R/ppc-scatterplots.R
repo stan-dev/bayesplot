@@ -8,12 +8,16 @@
 #' @family PPCs
 #'
 #' @template args-y-yrep
+#' @template args-group
+#' @template args-facet_args
 #' @param ... Currently unused.
 #' @param size,alpha Arguments passed to [ggplot2::geom_point()] to control the
 #'   appearance of the points.
+#' @param ref_line If `TRUE` (the default) a dashed line with intercept 0 and
+#'   slope 1 is drawn behind the scatter plot.
 #'
 #' @template details-binomial
-#' @template return-ggplot
+#' @template return-ggplot-or-data
 #'
 #' @templateVar bdaRef (Ch. 6)
 #' @template reference-bda
@@ -26,9 +30,11 @@
 #'    small number of rows.
 #'   }
 #'   \item{`ppc_scatter_avg()`}{
-#'    A scatterplot of `y` against the average values of `yrep`, i.e.,
-#'    the points `(mean(yrep[, n]), y[n])`, where each `yrep[, n]` is
-#'    a vector of length equal to the number of posterior draws.
+#'    A single scatterplot of `y` against the average values of `yrep`, i.e.,
+#'    the points `(x,y) = (mean(yrep[, n]), y[n])`, where each `yrep[, n]` is
+#'    a vector of length equal to the number of posterior draws. Unlike
+#'    for `ppc_scatter()`, for `ppc_scatter_avg()` `yrep` should contain many
+#'    draws (rows).
 #'   }
 #'   \item{`ppc_scatter_avg_grouped()`}{
 #'    The same as `ppc_scatter_avg()`, but a separate plot is generated for
@@ -41,6 +47,10 @@
 #' yrep <- example_yrep_draws()
 #' p1 <- ppc_scatter_avg(y, yrep)
 #' p1
+#'
+#' # don't draw line x=y
+#' ppc_scatter_avg(y, yrep, ref_line = FALSE)
+#'
 #' p2 <- ppc_scatter(y, yrep[20:23, ], alpha = 0.5, size = 1.5)
 #' p2
 #'
@@ -49,139 +59,172 @@
 #' p1 + lims
 #' p2 + lims
 #'
+#' # for ppc_scatter_avg_grouped the default is to allow the facets
+#' # to have different x and y axes
 #' group <- example_group_data()
-#' ppc_scatter_avg_grouped(y, yrep, group, alpha = 0.7) + lims
+#' ppc_scatter_avg_grouped(y, yrep, group)
+#'
+#' # let x-axis vary but force y-axis to be the same
+#' ppc_scatter_avg_grouped(y, yrep, group, facet_args = list(scales = "free_x"))
 #'
 NULL
 
-#' @export
 #' @rdname PPC-scatterplots
-#'
+#' @export
 ppc_scatter <-
   function(y,
            yrep,
            ...,
+           facet_args = list(),
            size = 2.5,
-           alpha = 0.8) {
+           alpha = 0.8,
+           ref_line = TRUE) {
     check_ignored_arguments(...)
 
-    y <- validate_y(y)
-    yrep <- validate_yrep(yrep, y)
-    graph <- .ppc_scatter(
-      data = data.frame(
-        melt_yrep(yrep),
-        y = rep(y, each = nrow(yrep))
-      ),
-      mapping = aes_(x = ~ value, y = ~ y),
-      y_lab = y_label(),
-      x_lab = yrep_label(),
-      alpha = alpha,
-      size = size
-    )
-    if (nrow(yrep) == 1)
-      return(graph)
+    data <- ppc_scatter_data(y, yrep)
+    if (nrow(yrep) == 1) {
+      facet_layer <- geom_ignore()
+    } else {
+      facet_args[["facets"]] <- "rep_label"
+      facet_layer <- do.call("facet_wrap_parsed", facet_args)
+    }
 
-    graph +
-      facet_wrap_parsed("rep_id") +
+    ggplot(data, scatter_aes(color = "yrep", fill = "yrep")) +
+      scatter_ref_line(ref_line) +
+      geom_point(
+        size = size,
+        alpha = alpha,
+        shape = 21,
+        show.legend = FALSE
+      ) +
+      # use ppd color scale since only need one color
+      # (and legend is off so no label modification needed)
+      scale_color_ppd() +
+      scale_fill_ppd() +
+      bayesplot_theme_get() +
+      facet_layer +
+      labs(x = yrep_label(), y = y_label()) +
       force_axes_in_facets() +
       facet_text(FALSE) +
-      facet_bg(FALSE)
+      legend_none()
   }
 
-#' @export
+
 #' @rdname PPC-scatterplots
-#'
+#' @export
 ppc_scatter_avg <-
   function(y,
            yrep,
            ...,
            size = 2.5,
-           alpha = 0.8) {
-    check_ignored_arguments(...)
+           alpha = 0.8,
+           ref_line = TRUE) {
+    dots <- list(...)
+    if (!from_grouped(dots)) {
+      check_ignored_arguments(...)
+      dots$group <- NULL
+    }
 
-    y <- validate_y(y)
-    yrep <- validate_yrep(yrep, y)
-    if (nrow(yrep) == 1)
-      return(ppc_scatter(y, yrep, size = size, alpha = alpha, ...))
+    data <- ppc_scatter_avg_data(y, yrep, group = dots$group)
+    if (is.null(dots$group) && nrow(yrep) == 1) {
+      inform(
+        "With only 1 row in 'yrep' ppc_scatter_avg is the same as ppc_scatter."
+      )
+    }
 
-    .ppc_scatter(
-      data = data.frame(y, avg_y_rep = colMeans(yrep)),
-      mapping = aes_(x = ~ avg_y_rep, y = ~ y),
-      y_lab = y_label(),
-      x_lab = yrep_avg_label(),
-      alpha = alpha,
-      size = size
-    )
+    ggplot(data, scatter_aes(color = "yrep", fill = "yrep")) +
+      scatter_ref_line(ref_line) +
+      geom_point(
+        alpha = alpha,
+        size = size,
+        shape = 21,
+        show.legend = FALSE
+      ) +
+      # ppd instead of ppc (see comment in ppc_scatter)
+      scale_color_ppd() +
+      scale_fill_ppd() +
+      labs(x = yrep_avg_label(), y = y_label()) +
+      bayesplot_theme_get()
   }
 
-#' @export
+
 #' @rdname PPC-scatterplots
-#' @template args-group
-#'
+#' @export
 ppc_scatter_avg_grouped <-
   function(y,
            yrep,
            group,
            ...,
+           facet_args = list(),
            size = 2.5,
-           alpha = 0.8) {
+           alpha = 0.8,
+           ref_line = TRUE) {
     check_ignored_arguments(...)
-
-    y <- validate_y(y)
-    yrep <- validate_yrep(yrep, y)
-    ggplot(
-      data = data.frame(
-        y = y,
-        avg_yrep = colMeans(yrep),
-        group = validate_group(group, y)
-      ),
-      mapping = aes_(x = ~ avg_yrep, y = ~ y, group = ~ group)
-    ) +
-      geom_point(
-        shape = 21,
-        fill = get_color("m"),
-        color = get_color("mh"),
-        alpha = alpha,
-        size = size
-      ) +
-      labs(
-        y = y_label(),
-        x = yrep_avg_label()
-      ) +
-      facet_wrap("group", scales = "free") +
-      bayesplot_theme_get()
+    call <- match.call(expand.dots = FALSE)
+    g <- eval(ungroup_call("ppc_scatter_avg", call), parent.frame())
+    g +
+      scatter_avg_group_facets(facet_args) +
+      force_axes_in_facets()
   }
 
 
-# internal -----------------------------------------------------------------
-.ppc_scatter <-
-  function(data,
-           mapping,
-           x_lab = "",
-           y_lab = "",
-           color = c("mid", "light"),
-           size = 2.5,
-           alpha = 1,
-           abline = TRUE) {
-    mid <- isTRUE(match.arg(color) == "mid")
-    graph <- ggplot(data, mapping)
-    if (abline) {
-      graph <- graph +
-        geom_abline(
-          intercept = 0,
-          slope = 1,
-          linetype = 2,
-          color = get_color("dh")
-        )
+#' @rdname PPC-scatterplots
+#' @export
+ppc_scatter_data <- function(y, yrep) {
+  y <- validate_y(y)
+  yrep <- validate_predictions(yrep, length(y))
+  melt_predictions(yrep) %>%
+    dplyr::arrange(.data$y_id) %>%
+    tibble::add_column(
+      y_obs = rep(y, each = nrow(yrep)),
+      .before = "rep_id"
+    )
+}
+
+
+#' @rdname PPC-scatterplots
+#' @export
+ppc_scatter_avg_data <- function(y, yrep, group = NULL) {
+  y <- validate_y(y)
+  yrep <- validate_predictions(yrep, length(y))
+  if (!is.null(group)) {
+    group <- validate_group(group, length(y))
+  }
+
+  data <- ppc_scatter_data(y = y, yrep = t(colMeans(yrep)))
+  data$rep_id <- NA_integer_
+  levels(data$rep_label) <- "mean(italic(y)[rep]))"
+
+  if (!is.null(group)) {
+    data <- tibble::add_column(data,
+      group = group[data$y_id],
+      .before = "y_id"
+    )
+  }
+
+  data
+}
+
+# internal ----------------------------------------------------------------
+yrep_avg_label <- function() expression(paste("Average ", italic(y)[rep]))
+
+scatter_aes <- function(...) {
+  aes_(x = ~ value, y = ~ y_obs, ...)
+}
+
+scatter_avg_group_facets <- function(facet_args) {
+  facet_args[["facets"]] <- "group"
+  facet_args[["scales"]] <- facet_args[["scales"]] %||% "free"
+  do.call("facet_wrap", facet_args)
+}
+
+scatter_ref_line <-
+  function(ref_line,
+           linetype = 2,
+           color = get_color("dh"),
+           ...) {
+    if (!ref_line) {
+      return(geom_ignore())
     }
-    graph +
-      geom_point(
-        shape = 21,
-        fill = get_color(ifelse(mid, "m", "l")),
-        color = get_color(ifelse(mid, "mh", "lh")),
-        size = size,
-        alpha = alpha
-      ) +
-      labs(x = x_lab, y = y_lab) +
-      bayesplot_theme_get()
+    abline_01(linetype = 2, color = get_color("dh"), ...)
   }
