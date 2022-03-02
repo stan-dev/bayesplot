@@ -1,6 +1,6 @@
 <!-- See http://style.tidyverse.org/news.html for advice on writing news -->
 
-# bayesplot 1.8.1.9000
+# bayesplot 1.9.0
 
 * New module PPD (posterior/prior predictive distribution) with a lot of new
 plotting functions with `ppd_` prefix. These functions plot draws from the prior
