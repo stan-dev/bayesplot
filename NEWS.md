@@ -48,6 +48,9 @@ previous releases, but the new ones in this release are:
 * `mcmc_areas()` and `mcmc_areas_ridges()` gain an argument `border_size` for
 controlling the thickness of the ridgelines. (#224)
 
+* Extractors `nuts_params()`, `log_posterior()`, `rhat()`, and `neff_ratio()`
+now support CmdStanMCMC objects from CmdStanR. 
+
 # bayesplot 1.8.1
 
 * Fix R cmd check error on linux for CRAN
