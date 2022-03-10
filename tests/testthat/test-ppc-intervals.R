@@ -8,32 +8,46 @@ test_that("ppc_intervals returns ggplot object", {
   expect_gg(ppc_intervals(y, yrep, size = 2, fatten = 1))
   expect_gg(ppc_intervals(y, yrep, x = seq(1, 2 * length(y), by = 2)))
   expect_gg(ppc_intervals(y2, yrep2))
+
+  # ppd versions
+  expect_gg(ppd_intervals(yrep, x = seq(1, 2 * length(y), by = 2)))
+  expect_gg(ppd_intervals(yrep2))
 })
 
 test_that("ppc_ribbon returns ggplot object", {
   expect_gg(ppc_ribbon(y, yrep, prob = 0.5))
   expect_gg(ppc_ribbon(y, yrep, alpha = 0, size = .5))
   expect_gg(ppc_ribbon(y2, yrep2, x = rnorm(length(y2)), prob = 0.5))
+
+  # ppd versions
+  expect_gg(ppd_ribbon(yrep, prob = 0.5))
+  expect_gg(ppd_ribbon(yrep2, x = rnorm(length(y2)), prob = 0.5))
 })
 
 
 y <- rnorm(50)
 yrep <- matrix(rnorm(500, 0, 2), ncol = 50)
 x <- rep(1:10, each = 5)
-group <- gl(5, 1, length = 50, labels = LETTERS[1:5])
+grp <- gl(5, 1, length = 50, labels = LETTERS[1:5])
+d <- ppc_intervals_data(y, yrep, x = 1:length(y), prob = .9)
+d_group <- ppc_intervals_data(y, yrep, x, grp)
 
 test_that("ppc_intervals_grouped returns ggplot object", {
-  expect_gg(ppc_intervals_grouped(y, yrep, x, group))
+  expect_gg(ppc_intervals_grouped(y, yrep, x, grp))
+
+  # ppd versions
+  expect_gg(ppd_intervals_grouped(yrep, x, grp))
 })
 
 test_that("ppc_ribbon_grouped returns ggplot object", {
-  expect_gg(ppc_ribbon_grouped(y, yrep, x, group))
-  expect_gg(ppc_ribbon_grouped(y, yrep, x, group, facet_args = list(scales = "fixed")))
+  expect_gg(ppc_ribbon_grouped(y, yrep, x, grp))
+  expect_gg(ppc_ribbon_grouped(y, yrep, x, grp, facet_args = list(scales = "fixed")))
+
+  # ppd versions
+  expect_gg(ppd_ribbon_grouped(yrep, x, grp, facet_args = list(scales = "fixed")))
 })
 
 test_that("ppc_intervals_data returns correct structure", {
-  d <- ppc_intervals_data(y, yrep, x = 1:length(y), prob = .9)
-  d_group <- ppc_intervals_data(y, yrep, x, group)
   expect_named(d, c("y_id", "y_obs", "x",
                     "outer_width", "inner_width",
                     "ll", "l", "m", "h", "hh"))
@@ -52,6 +66,13 @@ test_that("ppc_intervals_data returns correct structure", {
 
   expect_error(
     ppc_intervals_data(y, yrep, x = 1:length(y), prob_outer = 1.01), "prob_outer")
+})
+
+test_that("ppd_intervals_data + y_obs column same as ppc_intervals_data", {
+  d2 <- ppd_intervals_data(yrep, x = 1:length(y), prob = .9)
+  d_group2 <- ppd_intervals_data(yrep, x, grp)
+  expect_equal(tibble::add_column(d2, y_obs = d$y_obs, .after = "y_id"), d)
+  expect_equal(tibble::add_column(d_group2, y_obs = d_group$y_obs, .after = "y_id"), d_group)
 })
 
 test_that("ppc_intervals_data does math correctly", {
@@ -82,7 +103,6 @@ test_that("ppc_intervals_data does math correctly", {
 
 
 
-
 # Visual tests -----------------------------------------------------------------
 
 test_that("ppc_intervals renders correctly", {
@@ -97,6 +117,16 @@ test_that("ppc_intervals renders correctly", {
 
   p_50 <- ppc_intervals(vdiff_y, vdiff_yrep, prob = .50)
   vdiffr::expect_doppelganger("ppc_intervals (interval width)", p_50)
+
+  # ppd versions
+  p_base <- ppd_intervals(vdiff_yrep)
+  vdiffr::expect_doppelganger("ppd_intervals (default)", p_base)
+
+  p_x <- ppd_intervals(vdiff_yrep, x = vdiff_y)
+  vdiffr::expect_doppelganger("ppd_intervals (x values)", p_x)
+
+  p_50 <- ppd_intervals(vdiff_yrep, prob = .50)
+  vdiffr::expect_doppelganger("ppd_intervals (interval width)", p_50)
 })
 
 test_that("ppc_intervals_grouped renders correctly", {
@@ -112,6 +142,16 @@ test_that("ppc_intervals_grouped renders correctly", {
     x = vdiff_y,
     group = vdiff_group)
   vdiffr::expect_doppelganger("ppc_intervals_grouped (x values)", p_x)
+
+  # ppd versions
+  p_base <- ppd_intervals_grouped(vdiff_yrep, group = vdiff_group)
+  vdiffr::expect_doppelganger("ppd_intervals_grouped (default)", p_base)
+
+  p_x <- ppd_intervals_grouped(
+    ypred = vdiff_yrep,
+    x = vdiff_y,
+    group = vdiff_group)
+  vdiffr::expect_doppelganger("ppd_intervals_grouped (x values)", p_x)
 })
 
 test_that("ppc_ribbon renders correctly", {
@@ -126,4 +166,60 @@ test_that("ppc_ribbon renders correctly", {
 
   p_50 <- ppc_ribbon(vdiff_y, vdiff_yrep, prob = 0.5)
   vdiffr::expect_doppelganger("ppc_ribbon (interval width)", p_50)
+
+  p_line <- ppc_ribbon(vdiff_y, vdiff_yrep, y_draw = "line")
+  vdiffr::expect_doppelganger("ppc_ribbon (y_draw = line)", p_line)
+
+  p_point <- ppc_ribbon(vdiff_y, vdiff_yrep, y_draw = "point")
+  vdiffr::expect_doppelganger("ppc_ribbon (y_draw = point)", p_point)
+
+  p_both <- ppc_ribbon(vdiff_y, vdiff_yrep, y_draw = "both")
+  vdiffr::expect_doppelganger("ppc_ribbon (y_draw = both)", p_both)
+
+  # ppd versions
+  p_base <- ppd_ribbon(vdiff_yrep)
+  vdiffr::expect_doppelganger("ppd_ribbon (default)", p_base)
+
+  p_x <- ppd_ribbon(vdiff_yrep, x = vdiff_y)
+  vdiffr::expect_doppelganger("ppd_ribbon (x values)", p_x)
+
+  p_50 <- ppd_ribbon(vdiff_yrep, prob = 0.5)
+  vdiffr::expect_doppelganger("ppd_ribbon (interval width)", p_50)
+})
+
+test_that("ppc_ribbon_grouped renders correctly", {
+  testthat::skip_on_cran()
+  testthat::skip_if_not_installed("vdiffr")
+
+  p_base <- ppc_ribbon_grouped(vdiff_y, vdiff_yrep, group = vdiff_group)
+  vdiffr::expect_doppelganger("ppc_ribbon_grouped (default)", p_base)
+
+  p_line <- ppc_ribbon_grouped(vdiff_y, vdiff_yrep, group = vdiff_group,
+                               y_draw = "line")
+  vdiffr::expect_doppelganger("ppc_ribbon_grouped (y_draw = line)", p_line)
+
+  p_point <- ppc_ribbon_grouped(vdiff_y, vdiff_yrep, group = vdiff_group,
+                               y_draw = "point")
+  vdiffr::expect_doppelganger("ppc_ribbon_grouped (y_draw = point)", p_point)
+
+  p_both <- ppc_ribbon_grouped(vdiff_y, vdiff_yrep, group = vdiff_group,
+                               y_draw = "both")
+  vdiffr::expect_doppelganger("ppc_ribbon_grouped (y_draw = both)", p_both)
+
+  p_x <- ppc_ribbon_grouped(
+    y = vdiff_y,
+    yrep = vdiff_yrep,
+    x = vdiff_y,
+    group = vdiff_group)
+  vdiffr::expect_doppelganger("ppc_ribbon_grouped (x values)", p_x)
+
+  # ppd versions
+  p_base <- ppd_ribbon_grouped(vdiff_yrep, group = vdiff_group)
+  vdiffr::expect_doppelganger("ppd_ribbon_grouped (default)", p_base)
+
+  p_x <- ppd_ribbon_grouped(
+    ypred = vdiff_yrep,
+    x = vdiff_y,
+    group = vdiff_group)
+  vdiffr::expect_doppelganger("ppd_ribbon_grouped (x values)", p_x)
 })

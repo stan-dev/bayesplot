@@ -165,7 +165,7 @@ posterior_ncp <- as.array(fit_ncp)
 ```
 
 You may have noticed the warnings about divergent transitions for the centered
-parametrization fit. Those are serious business and in most cases indicate that
+parameterization fit. Those are serious business and in most cases indicate that
 something is wrong with the model and the results should not be trusted.
 For an explanation of these warnings see
 [Divergent transitions after warmup](https://mc-stan.org/misc/warnings.html#divergent-transitions-after-warmup).

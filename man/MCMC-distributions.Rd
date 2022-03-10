@@ -20,7 +20,8 @@ mcmc_hist(
   facet_args = list(),
   binwidth = NULL,
   breaks = NULL,
-  freq = TRUE
+  freq = TRUE,
+  alpha = 1
 )
 
 mcmc_dens(
@@ -30,7 +31,12 @@ mcmc_dens(
   transformations = list(),
   ...,
   facet_args = list(),
-  trim = FALSE
+  trim = FALSE,
+  bw = NULL,
+  adjust = NULL,
+  kernel = NULL,
+  n_dens = NULL,
+  alpha = 1
 )
 
 mcmc_hist_by_chain(
@@ -41,7 +47,8 @@ mcmc_hist_by_chain(
   ...,
   facet_args = list(),
   binwidth = NULL,
-  freq = TRUE
+  freq = TRUE,
+  alpha = 1
 )
 
 mcmc_dens_overlay(
@@ -52,7 +59,11 @@ mcmc_dens_overlay(
   ...,
   facet_args = list(),
   color_chains = TRUE,
-  trim = FALSE
+  trim = FALSE,
+  bw = NULL,
+  adjust = NULL,
+  kernel = NULL,
+  n_dens = NULL
 )
 
 mcmc_dens_chains(
@@ -91,11 +102,15 @@ mcmc_violin(
 )
 }
 \arguments{
-\item{x}{A 3-D array, matrix, list of matrices, or data frame of MCMC draws.
-The \link{MCMC-overview} page provides details on how to specify each these
-allowed inputs. It is also possible to use an object with an
-\code{as.array()} method that returns the same kind of 3-D array described on
-the \link{MCMC-overview} page.}
+\item{x}{An object containing MCMC draws:
+\itemize{
+\item A 3-D array, matrix, list of matrices, or data frame. The \link{MCMC-overview}
+page provides details on how to specify each these.
+\item A \code{draws} object from the \pkg{\link{posterior}} package (e.g.,
+\code{draws_array}, \code{draws_rvars}, etc.).
+\item An object with an \code{as.array()} method that returns the same kind of 3-D
+array described on the \link{MCMC-overview} page.
+}}
 
 \item{pars}{An optional character vector of parameter names. If neither
 \code{pars} nor \code{regex_pars} is specified then the default is to use \emph{all}
@@ -137,7 +152,9 @@ abbreviated for convenience in interactive use (e.g., \code{transform}).}
 
 \item{facet_args}{A named list of arguments (other than \code{facets}) passed
 to \code{\link[ggplot2:facet_wrap]{ggplot2::facet_wrap()}} or \code{\link[ggplot2:facet_grid]{ggplot2::facet_grid()}}
-to control faceting.}
+to control faceting. Note: if \code{scales} is not included in \code{facet_args}
+then \strong{bayesplot} may use \code{scales="free"} as the default (depending
+on the plot) instead of the \strong{ggplot2} default of \code{scales="fixed"}.}
 
 \item{binwidth}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}} to override
 the default binwidth.}
@@ -151,13 +168,15 @@ plots the y-axis text is off by default. To view the count or density
 labels on the y-axis see the \code{\link[=yaxis_text]{yaxis_text()}} convenience
 function.)}
 
-\item{trim}{A logical scalar passed to \code{\link[ggplot2:geom_density]{ggplot2::geom_density()}}.}
+\item{alpha}{Passed to the geom to control the transparency.}
 
-\item{color_chains}{Option for whether to separately color chains.}
+\item{trim}{A logical scalar passed to \code{\link[ggplot2:geom_density]{ggplot2::geom_density()}}.}
 
 \item{bw, adjust, kernel, n_dens}{Optional arguments passed to
 \code{\link[stats:density]{stats::density()}} to override default kernel density estimation
 parameters. \code{n_dens} defaults to \code{1024}.}
+
+\item{color_chains}{Option for whether to separately color chains.}
 
 \item{probs}{A numeric vector passed to \code{\link[ggplot2:geom_violin]{ggplot2::geom_violin()}}'s
 \code{draw_quantiles} argument to specify at which quantiles to draw

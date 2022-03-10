@@ -8,7 +8,7 @@
 \alias{mcmc_rank_overlay}
 \alias{mcmc_rank_hist}
 \alias{mcmc_trace_data}
-\title{Trace plots of MCMC draws}
+\title{Trace and rank plots of MCMC draws}
 \usage{
 mcmc_trace(
   x,
@@ -76,11 +76,15 @@ mcmc_trace_data(
 )
 }
 \arguments{
-\item{x}{A 3-D array, matrix, list of matrices, or data frame of MCMC draws.
-The \link{MCMC-overview} page provides details on how to specify each these
-allowed inputs. It is also possible to use an object with an
-\code{as.array()} method that returns the same kind of 3-D array described on
-the \link{MCMC-overview} page.}
+\item{x}{An object containing MCMC draws:
+\itemize{
+\item A 3-D array, matrix, list of matrices, or data frame. The \link{MCMC-overview}
+page provides details on how to specify each these.
+\item A \code{draws} object from the \pkg{\link{posterior}} package (e.g.,
+\code{draws_array}, \code{draws_rvars}, etc.).
+\item An object with an \code{as.array()} method that returns the same kind of 3-D
+array described on the \link{MCMC-overview} page.
+}}
 
 \item{pars}{An optional character vector of parameter names. If neither
 \code{pars} nor \code{regex_pars} is specified then the default is to use \emph{all}
@@ -122,7 +126,9 @@ abbreviated for convenience in interactive use (e.g., \code{transform}).}
 
 \item{facet_args}{A named list of arguments (other than \code{facets}) passed
 to \code{\link[ggplot2:facet_wrap]{ggplot2::facet_wrap()}} or \code{\link[ggplot2:facet_grid]{ggplot2::facet_grid()}}
-to control faceting.}
+to control faceting. Note: if \code{scales} is not included in \code{facet_args}
+then \strong{bayesplot} may use \code{scales="free"} as the default (depending
+on the plot) instead of the \strong{ggplot2} default of \code{scales="fixed"}.}
 
 \item{n_warmup}{An integer; the number of warmup iterations included in
 \code{x}. The default is \code{n_warmup = 0}, i.e. to assume no warmup
@@ -183,7 +189,7 @@ function.
 in the same data frame.
 }
 \description{
-Trace plot (or traceplot) of MCMC draws. See the \strong{Plot Descriptions}
+Trace and rank plots of MCMC draws. See the \strong{Plot Descriptions}
 section, below, for details.
 }
 \section{Plot Descriptions}{

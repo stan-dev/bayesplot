@@ -61,11 +61,15 @@ alternative to \code{binwidth}.}
 \item{ratio}{A vector of \emph{ratios} of effective sample size estimates to
 total sample size. See \code{\link[=neff_ratio]{neff_ratio()}}.}
 
-\item{x}{A 3-D array, matrix, list of matrices, or data frame of MCMC draws.
-The \link{MCMC-overview} page provides details on how to specify each these
-allowed inputs. It is also possible to use an object with an
-\code{as.array()} method that returns the same kind of 3-D array described on
-the \link{MCMC-overview} page.}
+\item{x}{An object containing MCMC draws:
+\itemize{
+\item A 3-D array, matrix, list of matrices, or data frame. The \link{MCMC-overview}
+page provides details on how to specify each these.
+\item A \code{draws} object from the \pkg{\link{posterior}} package (e.g.,
+\code{draws_array}, \code{draws_rvars}, etc.).
+\item An object with an \code{as.array()} method that returns the same kind of 3-D
+array described on the \link{MCMC-overview} page.
+}}
 
 \item{pars}{An optional character vector of parameter names. If neither
 \code{pars} nor \code{regex_pars} is specified then the default is to use \emph{all}
@@ -83,7 +87,9 @@ perform a similar function.}
 
 \item{facet_args}{A named list of arguments (other than \code{facets}) passed
 to \code{\link[ggplot2:facet_wrap]{ggplot2::facet_wrap()}} or \code{\link[ggplot2:facet_grid]{ggplot2::facet_grid()}}
-to control faceting.}
+to control faceting. Note: if \code{scales} is not included in \code{facet_args}
+then \strong{bayesplot} may use \code{scales="free"} as the default (depending
+on the plot) instead of the \strong{ggplot2} default of \code{scales="fixed"}.}
 
 \item{lags}{The number of lags to show in the autocorrelation plot.}
 }

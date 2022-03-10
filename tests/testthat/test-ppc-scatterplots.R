@@ -14,17 +14,12 @@ test_that("ppc_scatter_avg returns ggplot object", {
   expect_gg(ppc_scatter_avg(y2, yrep2))
 })
 
-test_that("ppc_scatter_avg same as ppc_scatter if nrow(yrep) = 1", {
-  expect_equal(
-    ppc_scatter_avg(y2, yrep2),
-    ppc_scatter(y2, yrep2),
-    check.environment = FALSE
-  )
-  expect_equal(
-    ppc_scatter_avg(y, yrep[1,, drop=FALSE]),
-    ppc_scatter(y, yrep[1,, drop = FALSE]),
-    check.environment = FALSE
-  )
+test_that("ppc_scatter_avg_data same as ppc_scatter_data if nrow(yrep) = 1", {
+  # really only a few columns are _exactly_ the same
+  cols <- c("y_id", "y_obs", "value")
+  d1 <- ppc_scatter_data(y2, yrep2)
+  d2 <- ppc_scatter_avg_data(y2, yrep2)
+  expect_equal(d1[, cols], d2[, cols])
 })
 
 test_that("ppc_scatter_avg_grouped returns a ggplot object", {
@@ -67,7 +62,7 @@ test_that("ppc_scatter_avg renders correctly", {
     y = vdiff_y,
     yrep = vdiff_yrep,
     size = 1.5,
-    alpha = .5
+    alpha = .1
   )
 
   vdiffr::expect_doppelganger(
@@ -87,11 +82,11 @@ test_that("ppc_scatter_avg_grouped renders correctly", {
     yrep = vdiff_yrep,
     group = vdiff_group,
     size = 3,
-    alpha = 0.25
+    alpha = 0.25,
+    ref_line = FALSE
   )
 
   vdiffr::expect_doppelganger(
-    title = "ppc_scatter_avg_grouped (size, alpha)",
+    title = "ppc_scatter_avg_grouped (size, alpha, ref_line)",
     fig = p_custom)
 })
-

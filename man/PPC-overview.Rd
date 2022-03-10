@@ -5,17 +5,20 @@
 \alias{PPC}
 \title{Graphical posterior predictive checking}
 \description{
-The \strong{bayesplot} PPC module provides various plotting functions for creating
-graphical displays comparing observed data to simulated data from the
-posterior (or prior) predictive distribution. See below for a brief
-discussion of the ideas behind posterior predictive checking, a description
-of the structure of this package, and tips on providing an interface to
-\strong{bayesplot} from another package.
+The \strong{bayesplot} PPC module provides various plotting functions
+for creating graphical displays comparing observed data to simulated data
+from the posterior (or prior) predictive distribution. See the sections
+below for a brief discussion of the ideas behind posterior predictive
+checking, an overview of the available PPC plots, and tips on providing an
+interface to \strong{bayesplot} from another package.
+
+For plots of posterior (or prior) predictive distributions that do \emph{not}
+include observed data see \link{PPD-overview} instead.
 }
 \details{
-The idea behind posterior predictive checking is simple: if a model is a good
-fit then we should be able to use it to generate data that looks a lot like
-the data we observed.
+The idea behind posterior predictive checking is simple: if a model
+is a good fit then we should be able to use it to generate data that looks
+a lot like the data we observed.
 
 \subsection{Posterior predictive distribution}{
 To generate the data used for posterior predictive checks we simulate from
@@ -56,40 +59,41 @@ from the prior predictive distribution instead of the posterior predictive
 distribution. See Gabry et al. (2019) for more on prior predictive checking
 and when it is reasonable to compare the prior predictive distribution to the
 observed data. If you want to avoid using the observed data for prior
-predictive checks, then the \code{y} argument to the PPC plotting functions can be
-used to provide plausible or implausible \code{y} values that you want to compare
-to the prior predictive realizations.
+predictive checks then you can use the \strong{bayesplot} \link{PPD} plots instead,
+which do not take a \code{y} argument, or you can use the PPC plots but provide
+plausible or implausible \code{y} values that you want to compare to the prior
+predictive realizations.
 }
 }
 \section{PPC plotting functions}{
  The plotting functions for prior and
-posterior predictive checking are organized into several categories, each
-with its own documentation:
+posterior predictive checking all have the prefix \code{ppc_} and all require
+the arguments \code{y}, a vector of observations, and \code{yrep}, a matrix of
+replications (in-sample predictions). The plots are organized into several
+categories, each with its own documentation:
 \itemize{
-\item \link[=PPC-distributions]{Distributions}: Histograms, kernel density
-estimates, boxplots, and other plots comparing the empirical distribution
-of data \code{y} to the distributions of individual simulated datasets (rows)
-in \code{yrep}.
-\item \link[=PPC-test-statistics]{Statistics}: The distribution of a statistic,
-or a pair of statistics, over the simulated datasets (rows) in \code{yrep}
-compared to value of the statistic(s) computed from \code{y}.
-\item \link[=PPC-intervals]{Intervals}: Interval estimates of \code{yrep} with \code{y}
+\item \link{PPC-distributions}: Histograms, kernel density estimates, boxplots, and
+other plots comparing the empirical distribution of data \code{y} to the
+distributions of individual simulated datasets (rows) in \code{yrep}.
+\item \link{PPC-test-statistics}: The distribution of a statistic, or a pair of
+statistics, over the simulated datasets (rows) in \code{yrep} compared to value of
+the statistic(s) computed from \code{y}.
+\item \link{PPC-intervals}: Interval estimates of \code{yrep} with \code{y}
 overlaid. The x-axis variable can be optionally specified by the user
 (e.g. to plot against a predictor variable or over time).
-\item \link[=PPC-errors]{Predictive errors}: Plots of predictive errors
-(\code{y - yrep}) computed from \code{y} and each of the simulated datasets (rows)
-in \code{yrep}. For binomial models binned error plots are also available.
-\item \link[=PPC-scatterplots]{Scatterplots}: Scatterplots (and similar
-visualizations) of the data \code{y} vs. individual simulated datasets
-(rows) in \code{yrep}, or vs. the average value of the distributions of each
-data point (columns) in \code{yrep}.
-\item \link[=PPC-discrete]{Plots for discrete outcomes}: PPC functions that can
-only be used if \code{y} and \code{yrep} are discrete. For example, rootograms for
-count outcomes and bar plots for ordinal, categorical, and
-multinomial outcomes.
-\item \link[=PPC-loo]{LOO predictive checks}: PPC functions for predictive checks
-based on (approximate) leave-one-out (LOO) cross-validation.
-\item \link[=PPC-censoring]{Censored data}: PPC functions comparing the empirical
+\item \link{PPC-errors}: Plots of predictive errors (\code{y - yrep}) computed from \code{y} and
+each of the simulated datasets (rows) in \code{yrep}. For binomial models binned
+error plots are also available.
+\item \link{PPC-scatterplots}: Scatterplots (and similar visualizations) of the data
+\code{y} vs. individual simulated datasets (rows) in \code{yrep}, or vs. the average
+value of the distributions of each data point (columns) in \code{yrep}.
+\item \link{PPC-discrete}: PPC functions that can only be used if \code{y} and \code{yrep} are
+discrete. For example, rootograms for count outcomes and bar plots for
+ordinal, categorical, and multinomial outcomes.
+\item \link{PPC-loo}: PPC functions for predictive checks based on (approximate)
+leave-one-out (LOO) cross-validation.
+'
+\item \link{PPC-censoring}: PPC functions comparing the empirical
 distribution of censored data \code{y} to the distributions of individual
 simulated datasets (rows) in \code{yrep}.
 }

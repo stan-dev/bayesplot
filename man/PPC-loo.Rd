@@ -71,8 +71,9 @@ ppc_loo_intervals(
   ...,
   prob = 0.5,
   prob_outer = 0.9,
+  alpha = 0.33,
   size = 1,
-  fatten = 3,
+  fatten = 2.5,
   order = c("index", "median")
 )
 
@@ -93,12 +94,13 @@ ppc_loo_ribbon(
 \arguments{
 \item{y}{A vector of observations. See \strong{Details}.}
 
-\item{yrep}{An \eqn{S} by \eqn{N} matrix of draws from the posterior
-predictive distribution, where \eqn{S} is the size of the posterior sample
-(or subset of the posterior sample used to generate \code{yrep}) and \eqn{N} is
-the number of observations (the length of \code{y}). The columns of \code{yrep}
-should be in the same order as the data points in \code{y} for the plots to make
-sense. See \strong{Details} for additional instructions.}
+\item{yrep}{An \code{S} by \code{N} matrix of draws from the posterior (or prior)
+predictive distribution. The number of rows, \code{S}, is the size of the
+posterior (or prior) sample used to generate \code{yrep}. The number of columns,
+\code{N} is the number of predicted observations (\code{length(y)}). The columns of
+\code{yrep} should be in the same order as the data points in \code{y} for the plots
+to make sense. See the \strong{Details} and \strong{Plot Descriptions} sections for
+additional advice specific to particular plots.}
 
 \item{lw}{A matrix of (smoothed) log weights with the same dimensions as
 \code{yrep}. See \code{\link[loo:psis]{loo::psis()}} and the associated \code{weights()} method as well as
@@ -173,7 +175,7 @@ five columns in the following order: lower outer interval, lower inner
 interval, median (50\%), upper inner interval and upper outer interval
 (column names are ignored).}
 
-\item{prob, prob_outer}{Values between 0 and 1 indicating the desired
+\item{prob, prob_outer}{Values between \code{0} and \code{1} indicating the desired
 probability mass to include in the inner and outer intervals. The defaults
 are \code{prob=0.5} and \code{prob_outer=0.9}.}
 
@@ -229,8 +231,8 @@ the LOO predictive distribution.
 \examples{
 
 \dontrun{
-suppressPackageStartupMessages(library(rstanarm))
-suppressPackageStartupMessages(library(loo))
+library(rstanarm)
+library(loo)
 
 head(radon)
 fit <- stan_lmer(
@@ -238,15 +240,15 @@ fit <- stan_lmer(
                + (1 + floor | county),
   data = radon,
   iter = 1000,
-  chains = 2,  # cores = 2
-  refresh = 500
+  chains = 2,
+  cores = 2
  )
 y <- radon$log_radon
 yrep <- posterior_predict(fit)
 
-loo1 <- loo(fit, save_psis = TRUE, cores = 2)
+loo1 <- loo(fit, save_psis = TRUE, cores = 4)
 psis1 <- loo1$psis_object
-lw <- weights(psis1)
+lw <- weights(psis1) # normalized log weights
 
 # marginal predictive check using LOO probability integral transform
 color_scheme_set("orange")

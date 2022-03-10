@@ -26,16 +26,14 @@ test_that("ppc_error_scatter_avg returns ggplot2 object", {
 })
 
 test_that("ppc_error_scatter_avg same as ppc_error_scatter if nrow(yrep) = 1", {
-  expect_equal(
-    ppc_error_scatter_avg(y2, yrep2),
-    ppc_error_scatter(y2, yrep2),
-    check.environment = FALSE
-  )
-  expect_equal(
-    ppc_error_scatter_avg(y, yrep[1,, drop=FALSE]),
-    ppc_error_scatter(y, yrep[1,, drop = FALSE]),
-    check.environment = FALSE
-  )
+  p1 <- ppc_error_scatter_avg(y2, yrep2)
+  p2 <- ppc_error_scatter(y2, yrep2)
+  d1 <- p1$data
+  d2 <- p2$data
+
+  # really only a few columns are _exactly_ the same
+  cols <- c("y_id", "y_obs", "value")
+  expect_equal(d1[, cols], d2[, cols])
 })
 
 test_that("ppc_error_scatter_avg_vs_x returns ggplot2 object", {
@@ -65,6 +63,48 @@ test_that("bin_errors works for edge cases", {
 
 # Visual tests -----------------------------------------------------------------
 
+test_that("ppc_error_hist renders correctly", {
+  testthat::skip_on_cran()
+  testthat::skip_if_not_installed("vdiffr")
+  p_base <- ppc_error_hist(vdiff_y, vdiff_yrep[1:3, ])
+  vdiffr::expect_doppelganger("ppc_error_hist (default)", p_base)
+})
+
+test_that("ppc_error_hist_grouped renders correctly", {
+  testthat::skip_on_cran()
+  testthat::skip_if_not_installed("vdiffr")
+  p_base <- ppc_error_hist_grouped(vdiff_y, vdiff_yrep[1:3, ], vdiff_group)
+  vdiffr::expect_doppelganger("ppc_error_hist_grouped (default)", p_base)
+})
+
+test_that("ppc_error_scatter renders correctly", {
+  testthat::skip_on_cran()
+  testthat::skip_if_not_installed("vdiffr")
+  p_base <- ppc_error_scatter(vdiff_y, vdiff_yrep[1:3, ])
+  vdiffr::expect_doppelganger("ppc_error_scatter (default)", p_base)
+})
+
+test_that("ppc_error_scatter_avg renders correctly", {
+  testthat::skip_on_cran()
+  testthat::skip_if_not_installed("vdiffr")
+  p_base <- ppc_error_scatter_avg(vdiff_y, vdiff_yrep)
+  vdiffr::expect_doppelganger("ppc_error_scatter_avg (default)", p_base)
+})
+
+test_that("ppc_error_scatter_avg_grouped renders correctly", {
+  testthat::skip_on_cran()
+  testthat::skip_if_not_installed("vdiffr")
+  p_base <- ppc_error_scatter_avg_grouped(vdiff_y, vdiff_yrep, vdiff_group)
+  vdiffr::expect_doppelganger("ppc_error_scatter_avg_grouped (default)", p_base)
+})
+
+test_that("ppc_error_scatter_avg_vs_x renders correctly", {
+  testthat::skip_on_cran()
+  testthat::skip_if_not_installed("vdiffr")
+  p_base <- ppc_error_scatter_avg_vs_x(vdiff_y, vdiff_yrep, x = seq_along(vdiff_y))
+  vdiffr::expect_doppelganger("ppc_error_scatter_avg_vs_x (default)", p_base)
+})
+
 test_that("ppc_error_binned renders correctly", {
   testthat::skip_on_cran()
   testthat::skip_if_not_installed("vdiffr")
@@ -90,10 +130,5 @@ test_that("ppc_error_binned renders correctly", {
   y_rep <- t(apply(four_draws, 1, function(x) rbeta2(50, plogis(x[1]), x[2])))
 
   p_base <- ppc_error_binned(y, y_rep)
-
-  vdiffr::expect_doppelganger(
-    title = "ppc_error_binned (default)",
-    fig = p_base
-  )
-
+  vdiffr::expect_doppelganger("ppc_error_binned (default)", p_base)
 })

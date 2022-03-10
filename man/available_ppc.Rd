@@ -2,32 +2,57 @@
 % Please edit documentation in R/available-module-functions.R
 \name{available_ppc}
 \alias{available_ppc}
+\alias{available_ppd}
 \alias{available_mcmc}
-\title{Get or view the names of available plotting functions}
+\title{Get or view the names of available plotting or data functions}
 \usage{
-available_ppc(pattern = NULL, fixed = FALSE, invert = FALSE)
+available_ppc(pattern = NULL, fixed = FALSE, invert = FALSE, plots_only = TRUE)
 
-available_mcmc(pattern = NULL, fixed = FALSE, invert = FALSE)
+available_ppd(pattern = NULL, fixed = FALSE, invert = FALSE, plots_only = TRUE)
+
+available_mcmc(
+  pattern = NULL,
+  fixed = FALSE,
+  invert = FALSE,
+  plots_only = TRUE
+)
 }
 \arguments{
 \item{pattern, fixed, invert}{Passed to \code{\link[base:grep]{base::grep()}}.}
+
+\item{plots_only}{If \code{TRUE} (the default) only plotting functions are
+searched for. If \code{FALSE} then functions that return data for plotting
+(functions ending in \verb{_data()}) are also included.}
 }
 \value{
 A possibly empty character vector of function names with several
 additional attributes (for use by a custom print method). If \code{pattern}
 is missing then the returned object contains the names of all available
-plotting functions in the \link{MCMC} or \link{PPC} module, depending on
+plotting functions in the \link{MCMC}, \link{PPC}, or \link{PPD} module, depending on
 which function is called. If \code{pattern} is specified then a subset of
 function names is returned.
 }
 \description{
-Get or view the names of available plotting functions
+Get or view the names of available plotting or data functions
 }
 \examples{
 available_mcmc()
 available_mcmc("nuts")
 available_mcmc("rhat|neff")
+
+available_ppc()
 available_ppc("grouped")
 available_ppc("grouped", invert = TRUE)
+
+available_ppd()
+available_ppd("grouped")
+
+# can also see which functions that return data are available
+available_ppc(plots_only = FALSE)
+
+# only show the _data functions
+available_ppc("_data", plots_only = FALSE)
+available_ppd("_data", plots_only = FALSE)
+available_mcmc("_data", plots_only = FALSE)
 
 }

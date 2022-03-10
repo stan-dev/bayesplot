@@ -1,12 +1,60 @@
 <!-- See http://style.tidyverse.org/news.html for advice on writing news -->
 
+# bayesplot 1.9.0
+
+* New module PPD (posterior/prior predictive distribution) with a lot of new
+plotting functions with `ppd_` prefix. These functions plot draws from the prior
+or posterior predictive distributions (PPD) without comparing to observed data
+(i.e., no `y` argument). Because these are not "checks" against the observed
+data we use PPD instead of PPC. These plots are essentially the same as the
+corresponding PPC plots but without showing any observed data (e.g.,
+`ppd_intervals()` is like `ppc_intervals()` but without plotting `y`). See
+`help("PPD-overview")` for details. (#151, #222)
+
+* All PPC categories now have one or more `_data()` functions that return the
+data frame used for plotting (#97, #222). Many of these have already been in
+previous releases, but the new ones in this release are:
+   - `ppc_bars_data()`
+   - `ppc_error_data()`
+   - `ppc_error_binnned_data()`
+   - `ppc_scatter_data()`
+   - `ppc_scatter_avg_data()`
+   - `ppc_stat_data()`
+
+* Many functions gain an argument `facet_args` for controlling ggplot2 faceting
+  (many other functions have had this argument for a long time).
+  The ones that just now got the argument are:
+   - `ppc_scatter()`
+   - `ppc_scatter_avg_grouped()`
+   - `ppc_error_hist()`
+   - `ppc_error_hist_grouped()`
+   - `ppc_error_scatter()`
+   - `ppc_error_binned()`
+   
+* New plotting function `ppc_km_overlay_grouped()`, the grouped variant of
+  `ppc_km_overlay()`. (#260, @fweber144)
+
+* `ppc_scatter()`, `ppc_scatter_avg()`, and `ppc_scatter_avg_grouped()` gain an
+  argument `ref_line`, which can be set to `FALSE` to turn off the `x=y` line
+  drawn behind the scatterplot.
+  
+* `ppc_ribbon()` and `ppc_ribbon_grouped()` gain argument `y_draw` that specifies whether the observed y should be plotted using a point, line, or both. (#257, @charlesm93)
+
+* `mcmc_*()` functions now support all draws formats from the **posterior** package. (#277, @Ozan147)
+
+* `mcmc_dens()` and `mcmc_dens_overlay()` gain arguments for controlling the
+  the density calculation. (#258)
+
+* `mcmc_hist()` and `mcmc_dens()` gain argument `alpha` for controlling transparency. (#244)
+
+* `mcmc_areas()` and `mcmc_areas_ridges()` gain an argument `border_size` for
+controlling the thickness of the ridgelines. (#224)
+
+# bayesplot 1.8.1
+
+* Fix R cmd check error on linux for CRAN
 
 # bayesplot 1.8.0
-
-<!--
-(GitHub issue/PR numbers in parentheses)
-* Items for next release go here
--->
 
 ### Bug fixes
 
@@ -25,7 +73,7 @@
 * New plotting function `ppc_km_overlay()` for outcome variables that are   
   right-censored. Empirical CCDF estimates of `yrep` are compared with the
   Kaplan-Meier estimate of `y`. (#233, #234, @fweber144)
-  
+
 * `ppc_loo_pit_overlay()` now uses a boundary correction for an improved kernel
   density estimation. The new argument `boundary_correction` defaults to TRUE but
   can be set to FALSE to recover the old version of the plot. (#171, #235,
@@ -34,7 +82,7 @@
 * CmdStanMCMC objects (from CmdStanR) can now be used with extractor
   functions `nuts_params()`, `log_posterior()`, `rhat()`, and
   `neff_ratio()`. (#227)
-  
+
 * On the y axis, `ppc_loo_pit_qq(..., compare = "normal")` now plots standard
   normal quantiles calculated from the PIT values (instead of the standardized
   PIT values). (#240, #243, @fweber144)

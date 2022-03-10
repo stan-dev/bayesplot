@@ -5,35 +5,72 @@
 \alias{ppc_scatter}
 \alias{ppc_scatter_avg}
 \alias{ppc_scatter_avg_grouped}
+\alias{ppc_scatter_data}
+\alias{ppc_scatter_avg_data}
 \title{PPC scatterplots}
 \usage{
-ppc_scatter(y, yrep, ..., size = 2.5, alpha = 0.8)
+ppc_scatter(
+  y,
+  yrep,
+  ...,
+  facet_args = list(),
+  size = 2.5,
+  alpha = 0.8,
+  ref_line = TRUE
+)
 
-ppc_scatter_avg(y, yrep, ..., size = 2.5, alpha = 0.8)
+ppc_scatter_avg(y, yrep, ..., size = 2.5, alpha = 0.8, ref_line = TRUE)
 
-ppc_scatter_avg_grouped(y, yrep, group, ..., size = 2.5, alpha = 0.8)
+ppc_scatter_avg_grouped(
+  y,
+  yrep,
+  group,
+  ...,
+  facet_args = list(),
+  size = 2.5,
+  alpha = 0.8,
+  ref_line = TRUE
+)
+
+ppc_scatter_data(y, yrep)
+
+ppc_scatter_avg_data(y, yrep, group = NULL)
 }
 \arguments{
 \item{y}{A vector of observations. See \strong{Details}.}
 
-\item{yrep}{An \eqn{S} by \eqn{N} matrix of draws from the posterior
-predictive distribution, where \eqn{S} is the size of the posterior sample
-(or subset of the posterior sample used to generate \code{yrep}) and \eqn{N} is
-the number of observations (the length of \code{y}). The columns of \code{yrep}
-should be in the same order as the data points in \code{y} for the plots to make
-sense. See \strong{Details} for additional instructions.}
+\item{yrep}{An \code{S} by \code{N} matrix of draws from the posterior (or prior)
+predictive distribution. The number of rows, \code{S}, is the size of the
+posterior (or prior) sample used to generate \code{yrep}. The number of columns,
+\code{N} is the number of predicted observations (\code{length(y)}). The columns of
+\code{yrep} should be in the same order as the data points in \code{y} for the plots
+to make sense. See the \strong{Details} and \strong{Plot Descriptions} sections for
+additional advice specific to particular plots.}
 
 \item{...}{Currently unused.}
+
+\item{facet_args}{A named list of arguments (other than \code{facets}) passed
+to \code{\link[ggplot2:facet_wrap]{ggplot2::facet_wrap()}} or \code{\link[ggplot2:facet_grid]{ggplot2::facet_grid()}}
+to control faceting. Note: if \code{scales} is not included in \code{facet_args}
+then \strong{bayesplot} may use \code{scales="free"} as the default (depending
+on the plot) instead of the \strong{ggplot2} default of \code{scales="fixed"}.}
 
 \item{size, alpha}{Arguments passed to \code{\link[ggplot2:geom_point]{ggplot2::geom_point()}} to control the
 appearance of the points.}
 
-\item{group}{A grouping variable (a vector or factor) the same length as
-\code{y}. Each value in \code{group} is interpreted as the group level
-pertaining to the corresponding value of \code{y}.}
+\item{ref_line}{If \code{TRUE} (the default) a dashed line with intercept 0 and
+slope 1 is drawn behind the scatter plot.}
+
+\item{group}{A grouping variable of the same length as \code{y}.
+Will be coerced to \link[base:factor]{factor} if not already a factor.
+Each value in \code{group} is interpreted as the group level pertaining
+to the corresponding observation.}
 }
 \value{
-A ggplot object that can be further customized using the \strong{ggplot2} package.
+The plotting functions return a ggplot object that can be further
+customized using the \strong{ggplot2} package. The functions with suffix
+\verb{_data()} return the data that would have been drawn by the plotting
+function.
 }
 \description{
 Scatterplots of the observed data \code{y} vs. simulated/replicated data
@@ -41,8 +78,8 @@ Scatterplots of the observed data \code{y} vs. simulated/replicated data
 \strong{Plot Descriptions} and \strong{Details} sections, below.
 }
 \details{
-For Binomial data, the plots will typically be most useful if
-\code{y} and \code{yrep} contain the "success" proportions (not discrete
+For Binomial data, the plots may be more useful if
+the input contains the "success" \emph{proportions} (not discrete
 "success" or "failure" counts).
 }
 \section{Plot Descriptions}{
@@ -54,9 +91,11 @@ against that row of \code{yrep}. For this plot \code{yrep} should only contain a
 small number of rows.
 }
 \item{\code{ppc_scatter_avg()}}{
-A scatterplot of \code{y} against the average values of \code{yrep}, i.e.,
-the points \verb{(mean(yrep[, n]), y[n])}, where each \code{yrep[, n]} is
-a vector of length equal to the number of posterior draws.
+A single scatterplot of \code{y} against the average values of \code{yrep}, i.e.,
+the points \verb{(x,y) = (mean(yrep[, n]), y[n])}, where each \code{yrep[, n]} is
+a vector of length equal to the number of posterior draws. Unlike
+for \code{ppc_scatter()}, for \code{ppc_scatter_avg()} \code{yrep} should contain many
+draws (rows).
 }
 \item{\code{ppc_scatter_avg_grouped()}}{
 The same as \code{ppc_scatter_avg()}, but a separate plot is generated for
@@ -70,6 +109,10 @@ y <- example_y_data()
 yrep <- example_yrep_draws()
 p1 <- ppc_scatter_avg(y, yrep)
 p1
+
+# don't draw line x=y
+ppc_scatter_avg(y, yrep, ref_line = FALSE)
+
 p2 <- ppc_scatter(y, yrep[20:23, ], alpha = 0.5, size = 1.5)
 p2
 
@@ -78,8 +121,13 @@ lims <- ggplot2::lims(x = c(0, 160), y = c(0, 160))
 p1 + lims
 p2 + lims
 
+# for ppc_scatter_avg_grouped the default is to allow the facets
+# to have different x and y axes
 group <- example_group_data()
-ppc_scatter_avg_grouped(y, yrep, group, alpha = 0.7) + lims
+ppc_scatter_avg_grouped(y, yrep, group)
+
+# let x-axis vary but force y-axis to be the same
+ppc_scatter_avg_grouped(y, yrep, group, facet_args = list(scales = "free_x"))
 
 }
 \references{
