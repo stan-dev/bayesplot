@@ -1,5 +1,9 @@
 <!-- See http://style.tidyverse.org/news.html for advice on writing news -->
 
+# bayesplot 1.9.0.9000
+
+Items for next release go here
+
 # bayesplot 1.9.0
 
 * New module PPD (posterior/prior predictive distribution) with a lot of new
