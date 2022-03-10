@@ -37,6 +37,8 @@ previous releases, but the new ones in this release are:
 * `ppc_scatter()`, `ppc_scatter_avg()`, and `ppc_scatter_avg_grouped()` gain an
   argument `ref_line`, which can be set to `FALSE` to turn off the `x=y` line
   drawn behind the scatterplot.
+  
+* `ppc_ribbon()` and `ppc_ribbon_grouped()` gain argument `y_draw` that specifies whether the observed y should be plotted using a point, line, or both. (#257, @charlesm93)
 
 * `mcmc_*()` functions now support all draws formats from the **posterior** package. (#277, @Ozan147)
 
@@ -47,9 +49,6 @@ previous releases, but the new ones in this release are:
 
 * `mcmc_areas()` and `mcmc_areas_ridges()` gain an argument `border_size` for
 controlling the thickness of the ridgelines. (#224)
-
-* Extractors `nuts_params()`, `log_posterior()`, `rhat()`, and `neff_ratio()`
-now support CmdStanMCMC objects from CmdStanR. 
 
 # bayesplot 1.8.1
 
