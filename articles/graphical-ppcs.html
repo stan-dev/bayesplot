@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bayesplot</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.8.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.9.0</span>
       </span>
     </div>
 
@@ -133,13 +133,13 @@
 
       
 
-      </header><script src="graphical-ppcs_files/header-attrs-2.3/header-attrs.js"></script><div class="row">
+      </header><script src="graphical-ppcs_files/header-attrs-2.9/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Graphical posterior predictive checks using the bayesplot package</h1>
                         <h4 class="author">Jonah Gabry</h4>
             
-            <h4 class="date">Latest version: 2021-01-11</h4>
+            <h4 class="date">Latest version: 2022-03-10</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/stan-dev/bayesplot/blob/master/vignettes/graphical-ppcs.Rmd"><code>vignettes/graphical-ppcs.Rmd</code></a></small>
       <div class="hidden name"><code>graphical-ppcs.Rmd</code></div>
@@ -173,9 +173,10 @@ p(\widetilde{y} \,|\, \theta) \, p(\theta \,|\, y) \, d\theta.\]</span> Typicall
 <li>
 <strong>rstanarm</strong>, for fitting the example models used throughout the vignette</li>
 </ul>
-<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="st">"bayesplot"</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="st">"ggplot2"</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="st">"rstanarm"</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://mc-stan.org/bayesplot/">"bayesplot"</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://ggplot2.tidyverse.org">"ggplot2"</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://mc-stan.org/rstanarm/">"rstanarm"</a></span><span class="op">)</span></code></pre></div>
 </div>
 <div id="example-models" class="section level3">
 <h3 class="hasAnchor">
@@ -185,7 +186,8 @@ p(\widetilde{y} \,|\, \theta) \, p(\theta \,|\, y) \, d\theta.\]</span> Typicall
 <p>We want to make inferences about the efficacy of a certain pest management system at reducing the number of roaches in urban apartments. […] The regression predictors for the model are the pre-treatment number of roaches <code>roach1</code>, the treatment indicator <code>treatment</code>, and a variable <code>senior</code> indicating whether the apartment is in a building restricted to elderly residents. Because the number of days for which the roach traps were used is not the same for all apartments in the sample, we include it as an exposure […].</p>
 </blockquote>
 <p>First we fit a Poisson regression model with outcome variable <code>y</code> representing the roach count in each apartment at the end of the experiment.</p>
-<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="no">roaches</span>) <span class="co"># see help("rstanarm-datasets")</span></pre></body></html></div>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">roaches</span><span class="op">)</span> <span class="co"># see help("rstanarm-datasets")</span></code></pre></div>
 <pre><code>    y roach1 treatment senior exposure2
 1 153 308.00         1      0  0.800000
 2 127 331.25         1      0  0.600000
@@ -193,18 +195,21 @@ p(\widetilde{y} \,|\, \theta) \, p(\theta \,|\, y) \, d\theta.\]</span> Typicall
 4   7   3.00         1      0  1.000000
 5   0   2.00         1      0  1.142857
 6   0   0.00         1      0  1.000000</code></pre>
-<div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="no">roaches</span>$<span class="no">roach100</span> <span class="kw">&lt;-</span> <span class="no">roaches</span>$<span class="no">roach1</span> / <span class="fl">100</span> <span class="co"># pre-treatment number of roaches (in 100s)</span></pre></body></html></div>
-<div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="co"># using rstanarm's default priors. For details see the section on default</span>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">roaches</span><span class="op">$</span><span class="va">roach100</span> <span class="op">&lt;-</span> <span class="va">roaches</span><span class="op">$</span><span class="va">roach1</span> <span class="op">/</span> <span class="fl">100</span> <span class="co"># pre-treatment number of roaches (in 100s)</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># using rstanarm's default priors. For details see the section on default</span>
 <span class="co"># weakly informative priors at https://mc-stan.org/rstanarm/articles/priors.html</span>
-<span class="no">fit_poisson</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://mc-stan.org/rstanarm/reference/stan_glm.html">stan_glm</a></span>(
-  <span class="no">y</span> ~ <span class="no">roach100</span> + <span class="no">treatment</span> + <span class="no">senior</span>,
-  <span class="kw">offset</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span>(<span class="no">exposure2</span>),
-  <span class="kw">family</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/family.html">poisson</a></span>(<span class="kw">link</span> <span class="kw">=</span> <span class="st">"log"</span>),
-  <span class="kw">data</span> <span class="kw">=</span> <span class="no">roaches</span>,
-  <span class="kw">seed</span> <span class="kw">=</span> <span class="fl">1111</span>,
-  <span class="kw">refresh</span> <span class="kw">=</span> <span class="fl">0</span> <span class="co"># suppresses all output as of v2.18.1 of rstan</span>
-)</pre></body></html></div>
-<div class="sourceCode" id="cb6"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span>(<span class="no">fit_poisson</span>)</pre></body></html></div>
+<span class="va">fit_poisson</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://mc-stan.org/rstanarm/reference/stan_glm.html">stan_glm</a></span><span class="op">(</span>
+  <span class="va">y</span> <span class="op">~</span> <span class="va">roach100</span> <span class="op">+</span> <span class="va">treatment</span> <span class="op">+</span> <span class="va">senior</span>,
+  offset <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="va">exposure2</span><span class="op">)</span>,
+  family <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/family.html">poisson</a></span><span class="op">(</span>link <span class="op">=</span> <span class="st">"log"</span><span class="op">)</span>,
+  data <span class="op">=</span> <span class="va">roaches</span>,
+  seed <span class="op">=</span> <span class="fl">1111</span>,
+  refresh <span class="op">=</span> <span class="fl">0</span> <span class="co"># suppresses all output as of v2.18.1 of rstan</span>
+<span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">fit_poisson</span><span class="op">)</span></code></pre></div>
 <pre><code>stan_glm
  family:       poisson [log]
  formula:      y ~ roach100 + treatment + senior
@@ -221,8 +226,10 @@ senior      -0.4    0.0
 * For help interpreting the printed output see ?print.stanreg
 * For info on the priors used see ?prior_summary.stanreg</code></pre>
 <p>We’ll also fit the negative binomial model that we’ll compare to the Poisson:</p>
-<div class="sourceCode" id="cb8"><html><body><pre class="r"><span class="no">fit_nb</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/update.html">update</a></span>(<span class="no">fit_poisson</span>, <span class="kw">family</span> <span class="kw">=</span> <span class="st">"neg_binomial_2"</span>)</pre></body></html></div>
-<div class="sourceCode" id="cb9"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span>(<span class="no">fit_nb</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">fit_nb</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/update.html">update</a></span><span class="op">(</span><span class="va">fit_poisson</span>, family <span class="op">=</span> <span class="st">"neg_binomial_2"</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">fit_nb</span><span class="op">)</span></code></pre></div>
 <pre><code>stan_glm
  family:       neg_binomial_2 [log]
  formula:      y ~ roach100 + treatment + senior
@@ -248,13 +255,16 @@ reciprocal_dispersion 0.3    0.0
 <a href="#defining-y-and-yrep" class="anchor"></a>Defining <code>y</code> and <code>yrep</code>
 </h3>
 <p>In order to use the PPC functions from the <strong>bayesplot</strong> package we need a vector <code>y</code> of outcome values,</p>
-<div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="no">y</span> <span class="kw">&lt;-</span> <span class="no">roaches</span>$<span class="no">y</span></pre></body></html></div>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">y</span> <span class="op">&lt;-</span> <span class="va">roaches</span><span class="op">$</span><span class="va">y</span></code></pre></div>
 <p>and a matrix <code>yrep</code> of draws from the posterior predictive distribution,</p>
-<div class="sourceCode" id="cb12"><html><body><pre class="r"><span class="no">yrep_poisson</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://mc-stan.org/rstanarm/reference/posterior_predict.stanreg.html">posterior_predict</a></span>(<span class="no">fit_poisson</span>, <span class="kw">draws</span> <span class="kw">=</span> <span class="fl">500</span>)
-<span class="no">yrep_nb</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://mc-stan.org/rstanarm/reference/posterior_predict.stanreg.html">posterior_predict</a></span>(<span class="no">fit_nb</span>, <span class="kw">draws</span> <span class="kw">=</span> <span class="fl">500</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span>(<span class="no">yrep_poisson</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">yrep_poisson</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://mc-stan.org/rstanarm/reference/posterior_predict.stanreg.html">posterior_predict</a></span><span class="op">(</span><span class="va">fit_poisson</span>, draws <span class="op">=</span> <span class="fl">500</span><span class="op">)</span>
+<span class="va">yrep_nb</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://mc-stan.org/rstanarm/reference/posterior_predict.stanreg.html">posterior_predict</a></span><span class="op">(</span><span class="va">fit_nb</span>, draws <span class="op">=</span> <span class="fl">500</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span><span class="op">(</span><span class="va">yrep_poisson</span><span class="op">)</span></code></pre></div>
 <pre><code>[1] 500 262</code></pre>
-<div class="sourceCode" id="cb14"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span>(<span class="no">yrep_nb</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span><span class="op">(</span><span class="va">yrep_nb</span><span class="op">)</span></code></pre></div>
 <pre><code>[1] 500 262</code></pre>
 <p>Each row of the matrix is a draw from the posterior predictive distribution, i.e. a vector with one element for each of the data points in <code>y</code>.</p>
 <p>Since we fit the models using <strong>rstanarm</strong> we used its special <code>posterior_predict</code> function, but if we were using a model fit with the <strong>rstan</strong> package we could create <code>yrep</code> in the <code>generated quantities</code> block of the Stan program or by doing simulations in R after fitting the model. Draws from the posterior predictive distribution can be used with <strong>bayesplot</strong> regardless of whether or not the model was fit using an interface to Stan. <strong>bayesplot</strong> just requires a <code>yrep</code> matrix that has <code>number_of_draws</code> rows and <code>number_of_observations</code> columns.</p>
@@ -268,12 +278,14 @@ reciprocal_dispersion 0.3    0.0
 <h4 class="hasAnchor">
 <a href="#ppc_dens_overlay" class="anchor"></a>ppc_dens_overlay</h4>
 <p>The first PPC we’ll look at is a comparison of the distribution of <code>y</code> and the distributions of some of the simulated datasets (rows) in the <code>yrep</code> matrix.</p>
-<div class="sourceCode" id="cb16"><html><body><pre class="r"><span class="fu"><a href="../reference/bayesplot-colors.html">color_scheme_set</a></span>(<span class="st">"brightblue"</span>)
-<span class="fu"><a href="../reference/PPC-distributions.html">ppc_dens_overlay</a></span>(<span class="no">y</span>, <span class="no">yrep_poisson</span>[<span class="fl">1</span>:<span class="fl">50</span>, ])</pre></body></html></div>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/bayesplot-colors.html">color_scheme_set</a></span><span class="op">(</span><span class="st">"brightblue"</span><span class="op">)</span>
+<span class="fu"><a href="../reference/PPC-distributions.html">ppc_dens_overlay</a></span><span class="op">(</span><span class="va">y</span>, <span class="va">yrep_poisson</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">50</span>, <span class="op">]</span><span class="op">)</span></code></pre></div>
 <p><img src="graphical-ppcs_files/figure-html/ppc_dens_overlay-1.png" width="60%" style="display: block; margin: auto;"></p>
 <p>In the plot above, the dark line is the distribution of the observed outcomes <code>y</code> and each of the 50 lighter lines is the kernel density estimate of one of the replications of <code>y</code> from the posterior predictive distribution (i.e., one of the rows in <code>yrep</code>). This plot makes it easy to see that this model fails to account for the large proportion of zeros in <code>y</code>. That is, the model predicts fewer zeros than were actually observed.</p>
 <p>To see the discrepancy at the lower values of more clearly we can use the <code>xlim</code> function from <strong>ggplot2</strong> to restrict the range of the x-axis:</p>
-<div class="sourceCode" id="cb17"><html><body><pre class="r"><span class="fu"><a href="../reference/PPC-distributions.html">ppc_dens_overlay</a></span>(<span class="no">y</span>, <span class="no">yrep_poisson</span>[<span class="fl">1</span>:<span class="fl">50</span>, ]) + <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/lims.html">xlim</a></span>(<span class="fl">0</span>, <span class="fl">150</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/PPC-distributions.html">ppc_dens_overlay</a></span><span class="op">(</span><span class="va">y</span>, <span class="va">yrep_poisson</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">50</span>, <span class="op">]</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/lims.html">xlim</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">150</span><span class="op">)</span></code></pre></div>
 <p><img src="graphical-ppcs_files/figure-html/ppc_dens_overlay-2-1.png" width="60%" style="display: block; margin: auto;"></p>
 <p>See Figure 6 in <a href="#gabry2019">Gabry et al. (2019)</a> for another example of using <code>ppc_dens_overlay</code>.</p>
 </div>
@@ -281,14 +293,17 @@ reciprocal_dispersion 0.3    0.0
 <h4 class="hasAnchor">
 <a href="#ppc_hist" class="anchor"></a>ppc_hist</h4>
 <p>We could see the same thing from a different perspective by looking at separate histograms of <code>y</code> and some of the <code>yrep</code> datasets using the <code>ppc_hist</code> function:</p>
-<div class="sourceCode" id="cb18"><html><body><pre class="r"><span class="fu"><a href="../reference/PPC-distributions.html">ppc_hist</a></span>(<span class="no">y</span>, <span class="no">yrep_poisson</span>[<span class="fl">1</span>:<span class="fl">5</span>, ])</pre></body></html></div>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/PPC-distributions.html">ppc_hist</a></span><span class="op">(</span><span class="va">y</span>, <span class="va">yrep_poisson</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="op">]</span><span class="op">)</span></code></pre></div>
 <p><img src="graphical-ppcs_files/figure-html/ppc_hist-1.png" width="60%" style="display: block; margin: auto;"></p>
 <p>The same plot for the negative binomial model looks much different:</p>
-<div class="sourceCode" id="cb19"><html><body><pre class="r"><span class="fu"><a href="../reference/PPC-distributions.html">ppc_hist</a></span>(<span class="no">y</span>, <span class="no">yrep_nb</span>[<span class="fl">1</span>:<span class="fl">5</span>, ])</pre></body></html></div>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/PPC-distributions.html">ppc_hist</a></span><span class="op">(</span><span class="va">y</span>, <span class="va">yrep_nb</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="op">]</span><span class="op">)</span></code></pre></div>
 <p><img src="graphical-ppcs_files/figure-html/ppc_hist-nb-1.png" width="60%" style="display: block; margin: auto;"></p>
 <p>The negative binomial model does better handling the number of zeros in the data, but it occasionally predicts values that are way too large, which is why the x-axes extend to such high values in the plot and make it difficult to read. To see the predictions for the smaller values more clearly we can zoom in:</p>
-<div class="sourceCode" id="cb20"><html><body><pre class="r"><span class="fu"><a href="../reference/PPC-distributions.html">ppc_hist</a></span>(<span class="no">y</span>, <span class="no">yrep_nb</span>[<span class="fl">1</span>:<span class="fl">5</span>, ], <span class="kw">binwidth</span> <span class="kw">=</span> <span class="fl">20</span>) +
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_cartesian.html">coord_cartesian</a></span>(<span class="kw">xlim</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(-<span class="fl">1</span>, <span class="fl">300</span>))</pre></body></html></div>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/PPC-distributions.html">ppc_hist</a></span><span class="op">(</span><span class="va">y</span>, <span class="va">yrep_nb</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="op">]</span>, binwidth <span class="op">=</span> <span class="fl">20</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_cartesian.html">coord_cartesian</a></span><span class="op">(</span>xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>, <span class="fl">300</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p><img src="graphical-ppcs_files/figure-html/ppc_hist-nb-2-1.png" width="60%" style="display: block; margin: auto;"></p>
 <p><br></p>
 </div>
@@ -301,24 +316,30 @@ reciprocal_dispersion 0.3    0.0
 <h4 class="hasAnchor">
 <a href="#ppc_stat" class="anchor"></a>ppc_stat</h4>
 <p>First we define a function that takes a vector as input and returns the proportion of zeros:</p>
-<div class="sourceCode" id="cb21"><html><body><pre class="r"><span class="no">prop_zero</span> <span class="kw">&lt;-</span> <span class="kw">function</span>(<span class="no">x</span>) <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span>(<span class="no">x</span> <span class="kw">==</span> <span class="fl">0</span>)
-<span class="fu">prop_zero</span>(<span class="no">y</span>) <span class="co"># check proportion of zeros in y</span></pre></body></html></div>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">prop_zero</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">x</span> <span class="op">==</span> <span class="fl">0</span><span class="op">)</span>
+<span class="fu">prop_zero</span><span class="op">(</span><span class="va">y</span><span class="op">)</span> <span class="co"># check proportion of zeros in y</span></code></pre></div>
 <pre><code>[1] 0.3587786</code></pre>
 <p>The <code>stat</code> argument to <code>ppc_stat</code> accepts a function or the name of a function for computing a test statistic from a vector of data. In our case we can specify <code>stat = "prop_zero"</code> since we’ve already defined the <code>prop_zero</code> function, but we also could have used <code>stat = function(x) mean(x == 0)</code>.</p>
-<div class="sourceCode" id="cb23"><html><body><pre class="r"><span class="fu"><a href="../reference/PPC-test-statistics.html">ppc_stat</a></span>(<span class="no">y</span>, <span class="no">yrep_poisson</span>, <span class="kw">stat</span> <span class="kw">=</span> <span class="st">"prop_zero"</span>, <span class="kw">binwidth</span> <span class="kw">=</span> <span class="fl">0.005</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/PPC-test-statistics.html">ppc_stat</a></span><span class="op">(</span><span class="va">y</span>, <span class="va">yrep_poisson</span>, stat <span class="op">=</span> <span class="st">"prop_zero"</span>, binwidth <span class="op">=</span> <span class="fl">0.005</span><span class="op">)</span></code></pre></div>
 <p><img src="graphical-ppcs_files/figure-html/ppc_stat-1.png" width="60%" style="display: block; margin: auto;"></p>
 <p>The dark line is at the value <span class="math inline">\(T(y)\)</span>, i.e. the value of the test statistic computed from the observed <span class="math inline">\(y\)</span>, in this case <code>prop_zero(y)</code>. The lighter area on the left is actually a histogram of the proportion of zeros in in the <code>yrep</code> simulations, but it can be hard to see because almost none of the simulated datasets in <code>yrep</code> have any zeros.</p>
 <p>Here’s the same plot for the negative binomial model:</p>
-<div class="sourceCode" id="cb24"><html><body><pre class="r"><span class="fu"><a href="../reference/PPC-test-statistics.html">ppc_stat</a></span>(<span class="no">y</span>, <span class="no">yrep_nb</span>, <span class="kw">stat</span> <span class="kw">=</span> <span class="st">"prop_zero"</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/PPC-test-statistics.html">ppc_stat</a></span><span class="op">(</span><span class="va">y</span>, <span class="va">yrep_nb</span>, stat <span class="op">=</span> <span class="st">"prop_zero"</span><span class="op">)</span></code></pre></div>
 <p><img src="graphical-ppcs_files/figure-html/ppc_stat-nb-1.png" width="60%" style="display: block; margin: auto;"></p>
 <p>Again we see that the negative binomial model does a much better job predicting the proportion of observed zeros than the Poisson.</p>
 <p>However, if we look instead at the distribution of the maximum value in the replications, we can see that the Poisson model makes more realistic predictions than the negative binomial:</p>
-<div class="sourceCode" id="cb25"><html><body><pre class="r"><span class="fu"><a href="../reference/PPC-test-statistics.html">ppc_stat</a></span>(<span class="no">y</span>, <span class="no">yrep_poisson</span>, <span class="kw">stat</span> <span class="kw">=</span> <span class="st">"max"</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/PPC-test-statistics.html">ppc_stat</a></span><span class="op">(</span><span class="va">y</span>, <span class="va">yrep_poisson</span>, stat <span class="op">=</span> <span class="st">"max"</span><span class="op">)</span></code></pre></div>
 <p><img src="graphical-ppcs_files/figure-html/ppc_stat-max-1.png" width="60%" style="display: block; margin: auto;"></p>
-<div class="sourceCode" id="cb26"><html><body><pre class="r"><span class="fu"><a href="../reference/PPC-test-statistics.html">ppc_stat</a></span>(<span class="no">y</span>, <span class="no">yrep_nb</span>, <span class="kw">stat</span> <span class="kw">=</span> <span class="st">"max"</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/PPC-test-statistics.html">ppc_stat</a></span><span class="op">(</span><span class="va">y</span>, <span class="va">yrep_nb</span>, stat <span class="op">=</span> <span class="st">"max"</span><span class="op">)</span></code></pre></div>
 <p><img src="graphical-ppcs_files/figure-html/ppc_stat-max-2.png" width="60%" style="display: block; margin: auto;"></p>
-<div class="sourceCode" id="cb27"><html><body><pre class="r"><span class="fu"><a href="../reference/PPC-test-statistics.html">ppc_stat</a></span>(<span class="no">y</span>, <span class="no">yrep_nb</span>, <span class="kw">stat</span> <span class="kw">=</span> <span class="st">"max"</span>, <span class="kw">binwidth</span> <span class="kw">=</span> <span class="fl">100</span>) +
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_cartesian.html">coord_cartesian</a></span>(<span class="kw">xlim</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(-<span class="fl">1</span>, <span class="fl">5000</span>))</pre></body></html></div>
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/PPC-test-statistics.html">ppc_stat</a></span><span class="op">(</span><span class="va">y</span>, <span class="va">yrep_nb</span>, stat <span class="op">=</span> <span class="st">"max"</span>, binwidth <span class="op">=</span> <span class="fl">100</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_cartesian.html">coord_cartesian</a></span><span class="op">(</span>xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>, <span class="fl">5000</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p><img src="graphical-ppcs_files/figure-html/ppc_stat-max-3.png" width="60%" style="display: block; margin: auto;"></p>
 <p>See Figure 7 in <a href="#gabry2019">Gabry et al. (2019)</a> for another example of using <code>ppc_stat</code>.</p>
 <p><br></p>
@@ -329,12 +350,12 @@ reciprocal_dispersion 0.3    0.0
 <a href="#other-ppcs-and-ppcs-by-group" class="anchor"></a>Other PPCs and PPCs by group</h2>
 <p>There are many additional PPCs available, including plots of predictive intervals, distributions of predictive errors, and more. For links to the documentation for all of the various PPC plots see <code><a href="../reference/PPC-overview.html">help("PPC-overview")</a></code> from R or the <a href="https://mc-stan.org/bayesplot/reference/index.html#section-ppc">online documentation</a> on the Stan website.</p>
 <p>The <code>available_ppc</code> function can also be used to list the names of all PPC plotting functions:</p>
-<div class="sourceCode" id="cb28"><html><body><pre class="r"><span class="fu"><a href="../reference/available_ppc.html">available_ppc</a></span>()</pre></body></html></div>
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/available_ppc.html">available_ppc</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <pre><code>bayesplot PPC module:
   ppc_bars
   ppc_bars_grouped
   ppc_boxplot
-  ppc_data
   ppc_dens
   ppc_dens_overlay
   ppc_dens_overlay_grouped
@@ -345,22 +366,21 @@ reciprocal_dispersion 0.3    0.0
   ppc_error_hist_grouped
   ppc_error_scatter
   ppc_error_scatter_avg
+  ppc_error_scatter_avg_grouped
   ppc_error_scatter_avg_vs_x
   ppc_freqpoly
   ppc_freqpoly_grouped
   ppc_hist
   ppc_intervals
-  ppc_intervals_data
   ppc_intervals_grouped
   ppc_km_overlay
+  ppc_km_overlay_grouped
   ppc_loo_intervals
   ppc_loo_pit
-  ppc_loo_pit_data
   ppc_loo_pit_overlay
   ppc_loo_pit_qq
   ppc_loo_ribbon
   ppc_ribbon
-  ppc_ribbon_data
   ppc_ribbon_grouped
   ppc_rootogram
   ppc_scatter
@@ -368,19 +388,23 @@ reciprocal_dispersion 0.3    0.0
   ppc_scatter_avg_grouped
   ppc_stat
   ppc_stat_2d
+  ppc_stat_freqpoly
   ppc_stat_freqpoly_grouped
   ppc_stat_grouped
   ppc_violin_grouped</code></pre>
 <p>Many of the available PPCs can also be carried out within levels of a grouping variable. Any function for PPCs by group will have a name ending in <code>_grouped</code> and will accept an additional argument <code>group</code>. The full list of currently available <code>_grouped</code> functions is:</p>
-<div class="sourceCode" id="cb30"><html><body><pre class="r"><span class="fu"><a href="../reference/available_ppc.html">available_ppc</a></span>(<span class="kw">pattern</span> <span class="kw">=</span> <span class="st">"_grouped"</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/available_ppc.html">available_ppc</a></span><span class="op">(</span>pattern <span class="op">=</span> <span class="st">"_grouped"</span><span class="op">)</span></code></pre></div>
 <pre><code>bayesplot PPC module:
 (matching pattern '_grouped') 
   ppc_bars_grouped
   ppc_dens_overlay_grouped
   ppc_ecdf_overlay_grouped
   ppc_error_hist_grouped
+  ppc_error_scatter_avg_grouped
   ppc_freqpoly_grouped
   ppc_intervals_grouped
+  ppc_km_overlay_grouped
   ppc_ribbon_grouped
   ppc_scatter_avg_grouped
   ppc_stat_freqpoly_grouped
@@ -390,7 +414,8 @@ reciprocal_dispersion 0.3    0.0
 <h4 class="hasAnchor">
 <a href="#ppc_stat_grouped" class="anchor"></a>ppc_stat_grouped</h4>
 <p>For example, <code>ppc_stat_grouped</code> is the same as <code>ppc_stat</code> except that the test statistic is computed within levels of the grouping variable and a separate plot is made for each level:</p>
-<div class="sourceCode" id="cb32"><html><body><pre class="r"><span class="fu"><a href="../reference/PPC-test-statistics.html">ppc_stat_grouped</a></span>(<span class="no">y</span>, <span class="no">yrep_nb</span>, <span class="kw">group</span> <span class="kw">=</span> <span class="no">roaches</span>$<span class="no">treatment</span>, <span class="kw">stat</span> <span class="kw">=</span> <span class="st">"prop_zero"</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/PPC-test-statistics.html">ppc_stat_grouped</a></span><span class="op">(</span><span class="va">y</span>, <span class="va">yrep_nb</span>, group <span class="op">=</span> <span class="va">roaches</span><span class="op">$</span><span class="va">treatment</span>, stat <span class="op">=</span> <span class="st">"prop_zero"</span><span class="op">)</span></code></pre></div>
 <p><img src="graphical-ppcs_files/figure-html/ppc_stat_grouped-1.png" width="60%" style="display: block; margin: auto;"></p>
 <p>See Figure 8 in <a href="#gabry2019">Gabry et al. (2019)</a> for another example of using <code>ppc_stat_grouped</code>.</p>
 <p><br></p>
@@ -406,31 +431,35 @@ reciprocal_dispersion 0.3    0.0
 <a href="#defining-a-pp_check-method" class="anchor"></a>Defining a <code>pp_check</code> method</h3>
 <p>Here is an example for how to define a simple <code>pp_check</code> method in a package that creates fitted model objects of class <code>"foo"</code>. We will define a method <code>pp_check.foo</code> that extracts the data <code>y</code> and the draws from the posterior predictive distribution <code>yrep</code> from an object of class <code>"foo"</code> and then calls one of the plotting functions from <strong>bayesplot</strong>.</p>
 <p>Suppose that objects of class <code>"foo"</code> are lists with named components, two of which are <code>y</code> and <code>yrep</code>. Here’s a simple method <code>pp_check.foo</code> that offers the user the option of two different plots:</p>
-<div class="sourceCode" id="cb33"><html><body><pre class="r"><span class="co"># @param object An object of class "foo".</span>
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># @param object An object of class "foo".</span>
 <span class="co"># @param type The type of plot.</span>
 <span class="co"># @param ... Optional arguments passed on to the bayesplot plotting function.</span>
-<span class="no">pp_check.foo</span> <span class="kw">&lt;-</span> <span class="kw">function</span>(<span class="no">object</span>, <span class="no">type</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"multiple"</span>, <span class="st">"overlaid"</span>), <span class="no">...</span>) {
-  <span class="no">type</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/match.arg.html">match.arg</a></span>(<span class="no">type</span>)
-  <span class="no">y</span> <span class="kw">&lt;-</span> <span class="no">object</span><span class="kw">[[</span><span class="st">"y"</span>]]
-  <span class="no">yrep</span> <span class="kw">&lt;-</span> <span class="no">object</span><span class="kw">[[</span><span class="st">"yrep"</span>]]
-  <span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html">stopifnot</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(<span class="no">yrep</span>) <span class="kw">&gt;=</span> <span class="fl">50</span>)
-  <span class="no">samp</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(<span class="no">yrep</span>), <span class="kw">size</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span>(<span class="no">type</span> <span class="kw">==</span> <span class="st">"overlaid"</span>, <span class="fl">50</span>, <span class="fl">5</span>))
-  <span class="no">yrep</span> <span class="kw">&lt;-</span> <span class="no">yrep</span>[<span class="no">samp</span>, ]
+<span class="va">pp_check.foo</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">object</span>, <span class="va">type</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"multiple"</span>, <span class="st">"overlaid"</span><span class="op">)</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span>
+  <span class="va">type</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/match.arg.html">match.arg</a></span><span class="op">(</span><span class="va">type</span><span class="op">)</span>
+  <span class="va">y</span> <span class="op">&lt;-</span> <span class="va">object</span><span class="op">[[</span><span class="st">"y"</span><span class="op">]</span><span class="op">]</span>
+  <span class="va">yrep</span> <span class="op">&lt;-</span> <span class="va">object</span><span class="op">[[</span><span class="st">"yrep"</span><span class="op">]</span><span class="op">]</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">yrep</span><span class="op">)</span> <span class="op">&gt;=</span> <span class="fl">50</span><span class="op">)</span>
+  <span class="va">samp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">yrep</span><span class="op">)</span>, size <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span><span class="va">type</span> <span class="op">==</span> <span class="st">"overlaid"</span>, <span class="fl">50</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span>
+  <span class="va">yrep</span> <span class="op">&lt;-</span> <span class="va">yrep</span><span class="op">[</span><span class="va">samp</span>, <span class="op">]</span>
 
-  <span class="kw">if</span> (<span class="no">type</span> <span class="kw">==</span> <span class="st">"overlaid"</span>) {
-    <span class="fu"><a href="../reference/PPC-distributions.html">ppc_dens_overlay</a></span>(<span class="no">y</span>, <span class="no">yrep</span>, <span class="no">...</span>)
-  } <span class="kw">else</span> {
-    <span class="fu"><a href="../reference/PPC-distributions.html">ppc_hist</a></span>(<span class="no">y</span>, <span class="no">yrep</span>, <span class="no">...</span>)
-  }
-}</pre></body></html></div>
+  <span class="kw">if</span> <span class="op">(</span><span class="va">type</span> <span class="op">==</span> <span class="st">"overlaid"</span><span class="op">)</span> <span class="op">{</span>
+    <span class="fu"><a href="../reference/PPC-distributions.html">ppc_dens_overlay</a></span><span class="op">(</span><span class="va">y</span>, <span class="va">yrep</span>, <span class="va">...</span><span class="op">)</span>
+  <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span>
+    <span class="fu"><a href="../reference/PPC-distributions.html">ppc_hist</a></span><span class="op">(</span><span class="va">y</span>, <span class="va">yrep</span>, <span class="va">...</span><span class="op">)</span>
+  <span class="op">}</span>
+<span class="op">}</span></code></pre></div>
 <p>To try out <code>pp_check.foo</code> we can just make a list with <code>y</code> and <code>yrep</code> components and give it class <code>foo</code>:</p>
-<div class="sourceCode" id="cb34"><html><body><pre class="r"><span class="no">x</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="kw">y</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span>(<span class="fl">200</span>), <span class="kw">yrep</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span>(<span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span>(<span class="fl">1e5</span>), <span class="kw">nrow</span> <span class="kw">=</span> <span class="fl">500</span>, <span class="kw">ncol</span> <span class="kw">=</span> <span class="fl">200</span>))
-<span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span>(<span class="no">x</span>) <span class="kw">&lt;-</span> <span class="st">"foo"</span></pre></body></html></div>
-<div class="sourceCode" id="cb35"><html><body><pre class="r"><span class="fu"><a href="../reference/bayesplot-colors.html">color_scheme_set</a></span>(<span class="st">"purple"</span>)
-<span class="fu"><a href="../reference/pp_check.html">pp_check</a></span>(<span class="no">x</span>, <span class="kw">type</span> <span class="kw">=</span> <span class="st">"multiple"</span>, <span class="kw">binwidth</span> <span class="kw">=</span> <span class="fl">0.3</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="fl">200</span><span class="op">)</span>, yrep <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="fl">1e5</span><span class="op">)</span>, nrow <span class="op">=</span> <span class="fl">500</span>, ncol <span class="op">=</span> <span class="fl">200</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"foo"</span></code></pre></div>
+<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/bayesplot-colors.html">color_scheme_set</a></span><span class="op">(</span><span class="st">"purple"</span><span class="op">)</span>
+<span class="fu"><a href="../reference/pp_check.html">pp_check</a></span><span class="op">(</span><span class="va">x</span>, type <span class="op">=</span> <span class="st">"multiple"</span>, binwidth <span class="op">=</span> <span class="fl">0.3</span><span class="op">)</span></code></pre></div>
 <p><img src="graphical-ppcs_files/figure-html/pp_check-1-1.png" width="60%" style="display: block; margin: auto;"></p>
-<div class="sourceCode" id="cb36"><html><body><pre class="r"><span class="fu"><a href="../reference/bayesplot-colors.html">color_scheme_set</a></span>(<span class="st">"darkgray"</span>)
-<span class="fu"><a href="../reference/pp_check.html">pp_check</a></span>(<span class="no">x</span>, <span class="kw">type</span> <span class="kw">=</span> <span class="st">"overlaid"</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/bayesplot-colors.html">color_scheme_set</a></span><span class="op">(</span><span class="st">"darkgray"</span><span class="op">)</span>
+<span class="fu"><a href="../reference/pp_check.html">pp_check</a></span><span class="op">(</span><span class="va">x</span>, type <span class="op">=</span> <span class="st">"overlaid"</span><span class="op">)</span></code></pre></div>
 <p><img src="graphical-ppcs_files/figure-html/pp_check-2-1.png" width="60%" style="display: block; margin: auto;"></p>
 </div>
 <div id="examples-of-pp_check-methods-in-other-packages" class="section level3">
@@ -466,7 +495,7 @@ reciprocal_dispersion 0.3    0.0
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

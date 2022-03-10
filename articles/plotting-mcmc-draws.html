@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bayesplot</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.8.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.9.0</span>
       </span>
     </div>
 
@@ -133,13 +133,13 @@
 
       
 
-      </header><script src="plotting-mcmc-draws_files/header-attrs-2.3/header-attrs.js"></script><div class="row">
+      </header><script src="plotting-mcmc-draws_files/header-attrs-2.9/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Plotting MCMC draws using the bayesplot package</h1>
                         <h4 class="author">Jonah Gabry</h4>
             
-            <h4 class="date">Latest version: 2021-01-11</h4>
+            <h4 class="date">Latest version: 2022-03-10</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/stan-dev/bayesplot/blob/master/vignettes/plotting-mcmc-draws.Rmd"><code>vignettes/plotting-mcmc-draws.Rmd</code></a></small>
       <div class="hidden name"><code>plotting-mcmc-draws.Rmd</code></div>
@@ -163,16 +163,18 @@
 <li>
 <strong>rstanarm</strong>, for fitting the example models used throughout the vignette</li>
 </ul>
-<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="st">"bayesplot"</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="st">"ggplot2"</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="st">"rstanarm"</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://mc-stan.org/bayesplot/">"bayesplot"</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://ggplot2.tidyverse.org">"ggplot2"</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://mc-stan.org/rstanarm/">"rstanarm"</a></span><span class="op">)</span>      </code></pre></div>
 </div>
 <div id="example-model" class="section level3">
 <h3 class="hasAnchor">
 <a href="#example-model" class="anchor"></a>Example model</h3>
 <p>The <strong>bayesplot</strong> package provides various plotting functions for visualizing Markov chain Monte Carlo (MCMC) draws from the posterior distribution of the parameters of a Bayesian model.</p>
 <p>In this vignette we’ll use draws obtained using the <code>stan_glm</code> function in the <strong>rstanarm</strong> package (Gabry and Goodrich, 2017), but MCMC draws from using any package can be used with the functions in the <strong>bayesplot</strong> package. See, for example, <strong>brms</strong>, which, like <strong>rstanarm</strong>, calls the <strong>rstan</strong> package internally to use <a href="https://mc-stan.org/">Stan</a>’s MCMC sampler.</p>
-<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="no">mtcars</span>) <span class="co"># see help("mtcars")</span></pre></body></html></div>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">)</span> <span class="co"># see help("mtcars")</span></code></pre></div>
 <pre><code>                   mpg cyl disp  hp drat    wt  qsec vs am gear carb
 Mazda RX4         21.0   6  160 110 3.90 2.620 16.46  0  1    4    4
 Mazda RX4 Wag     21.0   6  160 110 3.90 2.875 17.02  0  1    4    4
@@ -180,10 +182,11 @@ Datsun 710        22.8   4  108  93 3.85 2.320 18.61  1  1    4    1
 Hornet 4 Drive    21.4   6  258 110 3.08 3.215 19.44  1  0    3    1
 Hornet Sportabout 18.7   8  360 175 3.15 3.440 17.02  0  0    3    2
 Valiant           18.1   6  225 105 2.76 3.460 20.22  1  0    3    1</code></pre>
-<div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="co"># linear regression model using stan_glm</span>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># linear regression model using stan_glm</span>
 <span class="co"># using '~ .' to include all variables</span>
-<span class="no">fit</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://mc-stan.org/rstanarm/reference/stan_glm.html">stan_glm</a></span>(<span class="no">mpg</span> ~ <span class="no">.</span>, <span class="kw">data</span> <span class="kw">=</span> <span class="no">mtcars</span>, <span class="kw">seed</span> <span class="kw">=</span> <span class="fl">1111</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span>(<span class="no">fit</span>)</pre></body></html></div>
+<span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://mc-stan.org/rstanarm/reference/stan_glm.html">stan_glm</a></span><span class="op">(</span><span class="va">mpg</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">mtcars</span>, seed <span class="op">=</span> <span class="fl">1111</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></code></pre></div>
 <pre><code>stan_glm
  family:       gaussian [identity]
  formula:      mpg ~ .
@@ -211,10 +214,12 @@ sigma 2.7    0.4
 * For help interpreting the printed output see ?print.stanreg
 * For info on the priors used see ?prior_summary.stanreg</code></pre>
 <p>To use the posterior draws with the functions in the <strong>bayesplot</strong> package we’ll extract them from the fitted model object:</p>
-<div class="sourceCode" id="cb6"><html><body><pre class="r"><span class="no">posterior</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/array.html">as.array</a></span>(<span class="no">fit</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span>(<span class="no">posterior</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">posterior</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/array.html">as.array</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span><span class="op">(</span><span class="va">posterior</span><span class="op">)</span></code></pre></div>
 <pre><code>[1] 1000    4   12</code></pre>
-<div class="sourceCode" id="cb8"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/dimnames.html">dimnames</a></span>(<span class="no">posterior</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/dimnames.html">dimnames</a></span><span class="op">(</span><span class="va">posterior</span><span class="op">)</span></code></pre></div>
 <pre><code>$iterations
 NULL
 
@@ -243,18 +248,20 @@ $parameters
 <h4 class="hasAnchor">
 <a href="#mcmc_intervals-mcmc_areas" class="anchor"></a>mcmc_intervals, mcmc_areas</h4>
 <p>Central posterior uncertainty intervals can be plotted using the <code>mcmc_intervals</code> function.</p>
-<div class="sourceCode" id="cb10"><html><body><pre class="r"><span class="fu"><a href="../reference/bayesplot-colors.html">color_scheme_set</a></span>(<span class="st">"red"</span>)
-<span class="fu"><a href="../reference/MCMC-intervals.html">mcmc_intervals</a></span>(<span class="no">posterior</span>, <span class="kw">pars</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"cyl"</span>, <span class="st">"drat"</span>, <span class="st">"am"</span>, <span class="st">"sigma"</span>))</pre></body></html></div>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/bayesplot-colors.html">color_scheme_set</a></span><span class="op">(</span><span class="st">"red"</span><span class="op">)</span>
+<span class="fu"><a href="../reference/MCMC-intervals.html">mcmc_intervals</a></span><span class="op">(</span><span class="va">posterior</span>, pars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"cyl"</span>, <span class="st">"drat"</span>, <span class="st">"am"</span>, <span class="st">"sigma"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p><img src="plotting-mcmc-draws_files/figure-html/mcmc_intervals-1.png" width="60%" style="display: block; margin: auto;"></p>
 <p>The default is to show 50% intervals (the thick segments) and 90% intervals (the thinner outer lines). These defaults can be changed using the <code>prob</code> and <code>prob_outer</code> arguments, respectively. The points in the above plot are posterior medians. The <code>point_est</code> argument can be used to select posterior means instead or to omit the point estimates.</p>
 <p>To show the uncertainty intervals as shaded areas under the estimated posterior density curves we can use the <code>mcmc_areas</code> function.</p>
-<div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="fu"><a href="../reference/MCMC-intervals.html">mcmc_areas</a></span>(
-  <span class="no">posterior</span>,
-  <span class="kw">pars</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"cyl"</span>, <span class="st">"drat"</span>, <span class="st">"am"</span>, <span class="st">"sigma"</span>),
-  <span class="kw">prob</span> <span class="kw">=</span> <span class="fl">0.8</span>, <span class="co"># 80% intervals</span>
-  <span class="kw">prob_outer</span> <span class="kw">=</span> <span class="fl">0.99</span>, <span class="co"># 99%</span>
-  <span class="kw">point_est</span> <span class="kw">=</span> <span class="st">"mean"</span>
-)</pre></body></html></div>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/MCMC-intervals.html">mcmc_areas</a></span><span class="op">(</span>
+  <span class="va">posterior</span>,
+  pars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"cyl"</span>, <span class="st">"drat"</span>, <span class="st">"am"</span>, <span class="st">"sigma"</span><span class="op">)</span>,
+  prob <span class="op">=</span> <span class="fl">0.8</span>, <span class="co"># 80% intervals</span>
+  prob_outer <span class="op">=</span> <span class="fl">0.99</span>, <span class="co"># 99%</span>
+  point_est <span class="op">=</span> <span class="st">"mean"</span>
+<span class="op">)</span></code></pre></div>
 <p><img src="plotting-mcmc-draws_files/figure-html/mcmc_areas-1.png" width="60%" style="display: block; margin: auto;"></p>
 <p><br></p>
 </div>
@@ -273,13 +280,15 @@ $parameters
 <h4 class="hasAnchor">
 <a href="#mcmc_hist" class="anchor"></a>mcmc_hist</h4>
 <p>The <code>mcmc_hist</code> function plots marginal posterior distributions (combining all chains):</p>
-<div class="sourceCode" id="cb12"><html><body><pre class="r"><span class="fu"><a href="../reference/bayesplot-colors.html">color_scheme_set</a></span>(<span class="st">"green"</span>)
-<span class="fu"><a href="../reference/MCMC-distributions.html">mcmc_hist</a></span>(<span class="no">posterior</span>, <span class="kw">pars</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"wt"</span>, <span class="st">"sigma"</span>))</pre></body></html></div>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/bayesplot-colors.html">color_scheme_set</a></span><span class="op">(</span><span class="st">"green"</span><span class="op">)</span>
+<span class="fu"><a href="../reference/MCMC-distributions.html">mcmc_hist</a></span><span class="op">(</span><span class="va">posterior</span>, pars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"wt"</span>, <span class="st">"sigma"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p><img src="plotting-mcmc-draws_files/figure-html/mcmc_hist-1.png" width="60%" style="display: block; margin: auto;"></p>
 <p>If we want to plot <code><a href="https://rdrr.io/r/base/Log.html">log(sigma)</a></code> rather than <code>sigma</code> we can either transform the draws in advance or use the <code>transformations</code> argument.</p>
-<div class="sourceCode" id="cb13"><html><body><pre class="r"><span class="fu"><a href="../reference/bayesplot-colors.html">color_scheme_set</a></span>(<span class="st">"blue"</span>)
-<span class="fu"><a href="../reference/MCMC-distributions.html">mcmc_hist</a></span>(<span class="no">posterior</span>, <span class="kw">pars</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"wt"</span>, <span class="st">"sigma"</span>),
-          <span class="kw">transformations</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="st">"sigma"</span> <span class="kw">=</span> <span class="st">"log"</span>))</pre></body></html></div>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/bayesplot-colors.html">color_scheme_set</a></span><span class="op">(</span><span class="st">"blue"</span><span class="op">)</span>
+<span class="fu"><a href="../reference/MCMC-distributions.html">mcmc_hist</a></span><span class="op">(</span><span class="va">posterior</span>, pars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"wt"</span>, <span class="st">"sigma"</span><span class="op">)</span>,
+          transformations <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="st">"sigma"</span> <span class="op">=</span> <span class="st">"log"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p><img src="plotting-mcmc-draws_files/figure-html/mcmc_hist-transform-1.png" width="60%" style="display: block; margin: auto;"></p>
 <!-- ```{r mcmc_hist-transform, message=FALSE, eval=FALSE} -->
 <!-- # not evaluated to reduce vignette size for CRAN -->
@@ -294,31 +303,35 @@ $parameters
 <h4 class="hasAnchor">
 <a href="#mcmc_hist_by_chain" class="anchor"></a>mcmc_hist_by_chain</h4>
 <p>To view separate histograms of each of the four Markov chains we can use <code>mcmc_hist_by_chain</code>, which plots each chain in a separate facet in the plot.</p>
-<div class="sourceCode" id="cb14"><html><body><pre class="r"><span class="fu"><a href="../reference/bayesplot-colors.html">color_scheme_set</a></span>(<span class="st">"brightblue"</span>)
-<span class="fu"><a href="../reference/MCMC-distributions.html">mcmc_hist_by_chain</a></span>(<span class="no">posterior</span>, <span class="kw">pars</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"wt"</span>, <span class="st">"sigma"</span>))</pre></body></html></div>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/bayesplot-colors.html">color_scheme_set</a></span><span class="op">(</span><span class="st">"brightblue"</span><span class="op">)</span>
+<span class="fu"><a href="../reference/MCMC-distributions.html">mcmc_hist_by_chain</a></span><span class="op">(</span><span class="va">posterior</span>, pars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"wt"</span>, <span class="st">"sigma"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p><img src="plotting-mcmc-draws_files/figure-html/mcmc_hist_by_chain-1.png" width="60%" style="display: block; margin: auto;"></p>
 </div>
 <div id="mcmc_dens" class="section level4">
 <h4 class="hasAnchor">
 <a href="#mcmc_dens" class="anchor"></a>mcmc_dens</h4>
 <p>The <code>mcmc_dens</code> function is similar to <code>mcmc_hist</code> but plots kernel density estimates instead of histograms.</p>
-<div class="sourceCode" id="cb15"><html><body><pre class="r"><span class="fu"><a href="../reference/bayesplot-colors.html">color_scheme_set</a></span>(<span class="st">"purple"</span>)
-<span class="fu"><a href="../reference/MCMC-distributions.html">mcmc_dens</a></span>(<span class="no">posterior</span>, <span class="kw">pars</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"wt"</span>, <span class="st">"sigma"</span>))</pre></body></html></div>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/bayesplot-colors.html">color_scheme_set</a></span><span class="op">(</span><span class="st">"purple"</span><span class="op">)</span>
+<span class="fu"><a href="../reference/MCMC-distributions.html">mcmc_dens</a></span><span class="op">(</span><span class="va">posterior</span>, pars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"wt"</span>, <span class="st">"sigma"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p><img src="plotting-mcmc-draws_files/figure-html/mcmc_dens-1.png" width="60%" style="display: block; margin: auto;"></p>
 </div>
 <div id="mcmc_dens_overlay" class="section level4">
 <h4 class="hasAnchor">
 <a href="#mcmc_dens_overlay" class="anchor"></a>mcmc_dens_overlay</h4>
 <p>Like <code>mcmc_hist_by_chain</code>, the <code>mcmc_dens_overlay</code> function separates the Markov chains. But instead of plotting each chain individually, the density estimates are overlaid.</p>
-<div class="sourceCode" id="cb16"><html><body><pre class="r"><span class="fu"><a href="../reference/MCMC-distributions.html">mcmc_dens_overlay</a></span>(<span class="no">posterior</span>, <span class="kw">pars</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"wt"</span>, <span class="st">"sigma"</span>))</pre></body></html></div>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/MCMC-distributions.html">mcmc_dens_overlay</a></span><span class="op">(</span><span class="va">posterior</span>, pars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"wt"</span>, <span class="st">"sigma"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p><img src="plotting-mcmc-draws_files/figure-html/mcmc_dens_overlay-1.png" width="60%" style="display: block; margin: auto;"></p>
 </div>
 <div id="mcmc_violin" class="section level4">
 <h4 class="hasAnchor">
 <a href="#mcmc_violin" class="anchor"></a>mcmc_violin</h4>
 <p>The <code>mcmc_violin</code> function plots the density estimates of each chain as violins and draws horizontal line segments at user-specified quantiles.</p>
-<div class="sourceCode" id="cb17"><html><body><pre class="r"><span class="fu"><a href="../reference/bayesplot-colors.html">color_scheme_set</a></span>(<span class="st">"teal"</span>)
-<span class="fu"><a href="../reference/MCMC-distributions.html">mcmc_violin</a></span>(<span class="no">posterior</span>, <span class="kw">pars</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"wt"</span>, <span class="st">"sigma"</span>), <span class="kw">probs</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0.1</span>, <span class="fl">0.5</span>, <span class="fl">0.9</span>))</pre></body></html></div>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/bayesplot-colors.html">color_scheme_set</a></span><span class="op">(</span><span class="st">"teal"</span><span class="op">)</span>
+<span class="fu"><a href="../reference/MCMC-distributions.html">mcmc_violin</a></span><span class="op">(</span><span class="va">posterior</span>, pars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"wt"</span>, <span class="st">"sigma"</span><span class="op">)</span>, probs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.1</span>, <span class="fl">0.5</span>, <span class="fl">0.9</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p><img src="plotting-mcmc-draws_files/figure-html/mcmc_violin-1.png" width="60%" style="display: block; margin: auto;"></p>
 <p><br></p>
 </div>
@@ -337,28 +350,31 @@ $parameters
 <h4 class="hasAnchor">
 <a href="#mcmc_scatter" class="anchor"></a>mcmc_scatter</h4>
 <p>The <code>mcmc_scatter</code> function creates a simple scatterplot of two parameters.</p>
-<div class="sourceCode" id="cb18"><html><body><pre class="r"><span class="fu"><a href="../reference/bayesplot-colors.html">color_scheme_set</a></span>(<span class="st">"gray"</span>)
-<span class="fu"><a href="../reference/MCMC-scatterplots.html">mcmc_scatter</a></span>(<span class="no">posterior</span>, <span class="kw">pars</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"(Intercept)"</span>, <span class="st">"wt"</span>),
-             <span class="kw">size</span> <span class="kw">=</span> <span class="fl">1.5</span>, <span class="kw">alpha</span> <span class="kw">=</span> <span class="fl">0.5</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/bayesplot-colors.html">color_scheme_set</a></span><span class="op">(</span><span class="st">"gray"</span><span class="op">)</span>
+<span class="fu"><a href="../reference/MCMC-scatterplots.html">mcmc_scatter</a></span><span class="op">(</span><span class="va">posterior</span>, pars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"(Intercept)"</span>, <span class="st">"wt"</span><span class="op">)</span>,
+             size <span class="op">=</span> <span class="fl">1.5</span>, alpha <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></code></pre></div>
 <p><img src="plotting-mcmc-draws_files/figure-html/mcmc_scatter-1.png" width="60%" style="display: block; margin: auto;"></p>
 </div>
 <div id="mcmc_hex" class="section level4">
 <h4 class="hasAnchor">
 <a href="#mcmc_hex" class="anchor"></a>mcmc_hex</h4>
 <p>The <code>mcmc_hex</code> function creates a similar plot but using hexagonal binning, which can be useful to avoid overplotting.</p>
-<div class="sourceCode" id="cb19"><html><body><pre class="r"><span class="co"># requires hexbin package</span>
-<span class="kw">if</span> (<span class="fu"><a href="https://rdrr.io/r/base/ns-load.html">requireNamespace</a></span>(<span class="st">"hexbin"</span>, <span class="kw">quietly</span> <span class="kw">=</span> <span class="fl">TRUE</span>)) {
-  <span class="fu"><a href="../reference/MCMC-scatterplots.html">mcmc_hex</a></span>(<span class="no">posterior</span>, <span class="kw">pars</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"(Intercept)"</span>, <span class="st">"wt"</span>))
-}</pre></body></html></div>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># requires hexbin package</span>
+<span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html">requireNamespace</a></span><span class="op">(</span><span class="st">"hexbin"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
+  <span class="fu"><a href="../reference/MCMC-scatterplots.html">mcmc_hex</a></span><span class="op">(</span><span class="va">posterior</span>, pars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"(Intercept)"</span>, <span class="st">"wt"</span><span class="op">)</span><span class="op">)</span>
+<span class="op">}</span></code></pre></div>
 <p><img src="plotting-mcmc-draws_files/figure-html/mcmc_hex-1.png" width="60%" style="display: block; margin: auto;"></p>
 </div>
 <div id="mcmc_pairs" class="section level4">
 <h4 class="hasAnchor">
 <a href="#mcmc_pairs" class="anchor"></a>mcmc_pairs</h4>
 <p>In addition to <code>mcmc_scatter</code> and <code>mcmc_hex</code>, <strong>bayesplot</strong> now provides an <code>mcmc_pairs</code> function for creating pairs plots with more than two parameters.</p>
-<div class="sourceCode" id="cb20"><html><body><pre class="r"><span class="fu"><a href="../reference/bayesplot-colors.html">color_scheme_set</a></span>(<span class="st">"pink"</span>)
-<span class="fu"><a href="../reference/MCMC-scatterplots.html">mcmc_pairs</a></span>(<span class="no">posterior</span>, <span class="kw">pars</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"(Intercept)"</span>, <span class="st">"wt"</span>, <span class="st">"sigma"</span>),
-           <span class="kw">off_diag_args</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="kw">size</span> <span class="kw">=</span> <span class="fl">1.5</span>))</pre></body></html></div>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/bayesplot-colors.html">color_scheme_set</a></span><span class="op">(</span><span class="st">"pink"</span><span class="op">)</span>
+<span class="fu"><a href="../reference/MCMC-scatterplots.html">mcmc_pairs</a></span><span class="op">(</span><span class="va">posterior</span>, pars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"(Intercept)"</span>, <span class="st">"wt"</span>, <span class="st">"sigma"</span><span class="op">)</span>,
+           off_diag_args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">1.5</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p><img src="plotting-mcmc-draws_files/figure-html/mcmc_pairs-1.png" width="60%" style="display: block; margin: auto;"></p>
 <!-- ```{r mcmc_pairs, message=FALSE, eval=FALSE} -->
 <!-- # not evaluated to reduce vignette size for CRAN -->
@@ -385,18 +401,21 @@ $parameters
 <h4 class="hasAnchor">
 <a href="#mcmc_trace" class="anchor"></a>mcmc_trace</h4>
 <p>The <code>mcmc_trace</code> function creates standard trace plots:</p>
-<div class="sourceCode" id="cb21"><html><body><pre class="r"><span class="fu"><a href="../reference/bayesplot-colors.html">color_scheme_set</a></span>(<span class="st">"blue"</span>)
-<span class="fu"><a href="../reference/MCMC-traces.html">mcmc_trace</a></span>(<span class="no">posterior</span>, <span class="kw">pars</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"wt"</span>, <span class="st">"sigma"</span>))</pre></body></html></div>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/bayesplot-colors.html">color_scheme_set</a></span><span class="op">(</span><span class="st">"blue"</span><span class="op">)</span>
+<span class="fu"><a href="../reference/MCMC-traces.html">mcmc_trace</a></span><span class="op">(</span><span class="va">posterior</span>, pars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"wt"</span>, <span class="st">"sigma"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p><img src="plotting-mcmc-draws_files/figure-html/mcmc_trace-1.png" width="60%" style="display: block; margin: auto;"></p>
 <p>If it’s hard to see the difference between the chains we can change to a mixed color scheme, for example:</p>
-<div class="sourceCode" id="cb22"><html><body><pre class="r"><span class="fu"><a href="../reference/bayesplot-colors.html">color_scheme_set</a></span>(<span class="st">"mix-blue-red"</span>)
-<span class="fu"><a href="../reference/MCMC-traces.html">mcmc_trace</a></span>(<span class="no">posterior</span>, <span class="kw">pars</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"wt"</span>, <span class="st">"sigma"</span>),
-           <span class="kw">facet_args</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="kw">ncol</span> <span class="kw">=</span> <span class="fl">1</span>, <span class="kw">strip.position</span> <span class="kw">=</span> <span class="st">"left"</span>))</pre></body></html></div>
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/bayesplot-colors.html">color_scheme_set</a></span><span class="op">(</span><span class="st">"mix-blue-red"</span><span class="op">)</span>
+<span class="fu"><a href="../reference/MCMC-traces.html">mcmc_trace</a></span><span class="op">(</span><span class="va">posterior</span>, pars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"wt"</span>, <span class="st">"sigma"</span><span class="op">)</span>,
+           facet_args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>ncol <span class="op">=</span> <span class="fl">1</span>, strip.position <span class="op">=</span> <span class="st">"left"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p><img src="plotting-mcmc-draws_files/figure-html/change-scheme-1.png" width="60%" style="display: block; margin: auto;"></p>
 <p>The code above also illustrates the use of the <code>facet_args</code> argument, which is a list of parameters passed to <code>facet_wrap</code> in <strong>ggplot2</strong>. Specifying <code>ncol=1</code> means the trace plots will be stacked in a single column rather than placed side by side, and <code>strip.position="left"</code> moves the facet labels to the y-axis (instead of above each facet).</p>
 <p>The <a href="https://CRAN.R-project.org/package=viridis"><code>"viridis"</code> color scheme</a> is also useful for trace plots because it is comprised of very distinct colors:</p>
-<div class="sourceCode" id="cb23"><html><body><pre class="r"><span class="fu"><a href="../reference/bayesplot-colors.html">color_scheme_set</a></span>(<span class="st">"viridis"</span>)
-<span class="fu"><a href="../reference/MCMC-traces.html">mcmc_trace</a></span>(<span class="no">posterior</span>, <span class="kw">pars</span> <span class="kw">=</span> <span class="st">"(Intercept)"</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/bayesplot-colors.html">color_scheme_set</a></span><span class="op">(</span><span class="st">"viridis"</span><span class="op">)</span>
+<span class="fu"><a href="../reference/MCMC-traces.html">mcmc_trace</a></span><span class="op">(</span><span class="va">posterior</span>, pars <span class="op">=</span> <span class="st">"(Intercept)"</span><span class="op">)</span></code></pre></div>
 <!-- ```{r viridis-scheme, eval=FALSE} -->
 <!-- # not evaluated to reduce vignette size for CRAN -->
 <!-- # full version available at mc-stan.org/bayesplot/articles -->
@@ -408,7 +427,8 @@ $parameters
 <h4 class="hasAnchor">
 <a href="#mcmc_trace_highlight" class="anchor"></a>mcmc_trace_highlight</h4>
 <p>The <code>mcmc_trace_highlight</code> function uses points instead of lines and reduces the opacity of all but a single chain (which is specified using the <code>highlight</code> argument).</p>
-<div class="sourceCode" id="cb24"><html><body><pre class="r"><span class="fu"><a href="../reference/MCMC-traces.html">mcmc_trace_highlight</a></span>(<span class="no">posterior</span>, <span class="kw">pars</span> <span class="kw">=</span> <span class="st">"sigma"</span>, <span class="kw">highlight</span> <span class="kw">=</span> <span class="fl">3</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/MCMC-traces.html">mcmc_trace_highlight</a></span><span class="op">(</span><span class="va">posterior</span>, pars <span class="op">=</span> <span class="st">"sigma"</span>, highlight <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></code></pre></div>
 <p><img src="plotting-mcmc-draws_files/figure-html/mcmc_trace_highlight-1.png" width="60%" style="display: block; margin: auto;"></p>
 <p><br></p>
 </div>
@@ -438,7 +458,7 @@ $parameters
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

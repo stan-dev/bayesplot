@@ -87,7 +87,7 @@ throughout the bayesplot package documentation." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bayesplot</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.8.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.9.0</span>
       </span>
     </div>
 
@@ -193,15 +193,15 @@ throughout the bayesplot package documentation." />
 throughout the <strong>bayesplot</strong> package documentation.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>example_mcmc_draws</span>(<span class='kw'>chains</span> <span class='kw'>=</span> <span class='fl'>4</span>, <span class='kw'>params</span> <span class='kw'>=</span> <span class='fl'>4</span>)
+    <pre class="usage"><span class='fu'>example_mcmc_draws</span><span class='op'>(</span>chains <span class='op'>=</span> <span class='fl'>4</span>, params <span class='op'>=</span> <span class='fl'>4</span><span class='op'>)</span>
 
-<span class='fu'>example_yrep_draws</span>()
+<span class='fu'>example_yrep_draws</span><span class='op'>(</span><span class='op'>)</span>
 
-<span class='fu'>example_y_data</span>()
+<span class='fu'>example_y_data</span><span class='op'>(</span><span class='op'>)</span>
 
-<span class='fu'>example_x_data</span>()
+<span class='fu'>example_x_data</span><span class='op'>(</span><span class='op'>)</span>
 
-<span class='fu'>example_group_data</span>()</pre>
+<span class='fu'>example_group_data</span><span class='op'>(</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -228,7 +228,7 @@ predictions corresponding to a basic linear regression model with data
 <code>y</code> (outcome vector) and <code>X</code> (predictor matrix), and parameters
 <code>alpha</code> (intercept), <code>beta</code> (coefficient vector), and <code>sigma</code>
 (error sd).</p>
-<dl'>
+<dl>
 <dt><code>example_mcmc_draws()</code></dt><dd><p>If <code>chains &gt; 1</code>, a <code>250</code> (iterations) by <code>chains</code> by
 <code>params</code> array or, if <code>chains = 1</code>, a <code>250</code> by <code>params</code>
 matrix of MCMC draws from the posterior distribution of the parameters in
@@ -253,8 +253,10 @@ fitting the linear regression model mentioned above.</p></dd>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>draws</span> <span class='kw'>&lt;-</span> <span class='fu'>example_mcmc_draws</span>()
-<span class='fu'><a href='https://rdrr.io/r/base/dim.html'>dim</a></span>(<span class='no'>draws</span>)</div><div class='output co'>#&gt; [1] 250   4   4</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/dimnames.html'>dimnames</a></span>(<span class='no'>draws</span>)</div><div class='output co'>#&gt; $Iteration
+    <pre class="examples"><div class='input'><span class='va'>draws</span> <span class='op'>&lt;-</span> <span class='fu'>example_mcmc_draws</span><span class='op'>(</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/dim.html'>dim</a></span><span class='op'>(</span><span class='va'>draws</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 250   4   4</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/dimnames.html'>dimnames</a></span><span class='op'>(</span><span class='va'>draws</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; $Iteration
 #&gt; NULL
 #&gt; 
 #&gt; $Chain
@@ -263,21 +265,29 @@ fitting the linear regression model mentioned above.</p></dd>
 #&gt; $Parameter
 #&gt; [1] "alpha"   "sigma"   "beta[1]" "beta[2]"
 #&gt; </div><div class='input'>
-<span class='no'>draws</span> <span class='kw'>&lt;-</span> <span class='fu'>example_mcmc_draws</span>(<span class='fl'>1</span>, <span class='fl'>2</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/dim.html'>dim</a></span>(<span class='no'>draws</span>)</div><div class='output co'>#&gt; [1] 250   2</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span>(<span class='no'>draws</span>)</div><div class='output co'>#&gt; [1] "alpha" "sigma"</div><div class='input'>
-<span class='no'>draws</span> <span class='kw'>&lt;-</span> <span class='fu'>example_mcmc_draws</span>(<span class='kw'>params</span> <span class='kw'>=</span> <span class='fl'>6</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/dimnames.html'>dimnames</a></span>(<span class='no'>draws</span>)<span class='kw'>[[</span><span class='fl'>3</span>]]</div><div class='output co'>#&gt; [1] "alpha"   "sigma"   "beta[1]" "beta[2]" "beta[3]" "beta[4]"</div><div class='input'>
-<span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='fu'>example_y_data</span>()
-<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'>example_x_data</span>()
-<span class='no'>group</span> <span class='kw'>&lt;-</span> <span class='fu'>example_group_data</span>()
-<span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span>(<span class='no'>y</span>)</div><div class='output co'>#&gt; [1] 434</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; [1] 434</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span>(<span class='no'>group</span>)</div><div class='output co'>#&gt; [1] 434</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>tail</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(<span class='no'>y</span>, <span class='no'>x</span>, <span class='no'>group</span>), <span class='fl'>5</span>)</div><div class='output co'>#&gt;      y        x  group
+<span class='va'>draws</span> <span class='op'>&lt;-</span> <span class='fu'>example_mcmc_draws</span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/dim.html'>dim</a></span><span class='op'>(</span><span class='va'>draws</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 250   2</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span><span class='op'>(</span><span class='va'>draws</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "alpha" "sigma"</div><div class='input'>
+<span class='va'>draws</span> <span class='op'>&lt;-</span> <span class='fu'>example_mcmc_draws</span><span class='op'>(</span>params <span class='op'>=</span> <span class='fl'>6</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/dimnames.html'>dimnames</a></span><span class='op'>(</span><span class='va'>draws</span><span class='op'>)</span><span class='op'>[[</span><span class='fl'>3</span><span class='op'>]</span><span class='op'>]</span>
+</div><div class='output co'>#&gt; [1] "alpha"   "sigma"   "beta[1]" "beta[2]" "beta[3]" "beta[4]"</div><div class='input'>
+<span class='va'>y</span> <span class='op'>&lt;-</span> <span class='fu'>example_y_data</span><span class='op'>(</span><span class='op'>)</span>
+<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'>example_x_data</span><span class='op'>(</span><span class='op'>)</span>
+<span class='va'>group</span> <span class='op'>&lt;-</span> <span class='fu'>example_group_data</span><span class='op'>(</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span><span class='op'>(</span><span class='va'>y</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 434</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 434</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span><span class='op'>(</span><span class='va'>group</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 434</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>tail</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span><span class='va'>y</span>, <span class='va'>x</span>, <span class='va'>group</span><span class='op'>)</span>, <span class='fl'>5</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;      y        x  group
 #&gt; 430 94 84.87741 GroupA
 #&gt; 431 76 92.99039 GroupB
 #&gt; 432 50 94.85971 GroupA
 #&gt; 433 88 96.85662 GroupB
 #&gt; 434 70 91.25334 GroupB</div><div class='input'>
-<span class='no'>yrep</span> <span class='kw'>&lt;-</span> <span class='fu'>example_yrep_draws</span>()
-<span class='fu'><a href='https://rdrr.io/r/base/dim.html'>dim</a></span>(<span class='no'>yrep</span>) <span class='co'># ncol(yrep) = length(y) = length(x) = length(group)</span></div><div class='output co'>#&gt; [1] 500 434</div><div class='input'>
+<span class='va'>yrep</span> <span class='op'>&lt;-</span> <span class='fu'>example_yrep_draws</span><span class='op'>(</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/dim.html'>dim</a></span><span class='op'>(</span><span class='va'>yrep</span><span class='op'>)</span> <span class='co'># ncol(yrep) = length(y) = length(x) = length(group)</span>
+</div><div class='output co'>#&gt; [1] 500 434</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -294,7 +304,7 @@ fitting the linear regression model mentioned above.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

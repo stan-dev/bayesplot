@@ -77,12 +77,21 @@ reference:
   - title: "PPC"
     desc: >
       Functions for carrying out a wide variety of graphical model checks
-      based on comparing observed data to draws from the posterior (or prior)
+      based on comparing observed data to draws from the posterior or prior
       predictive distribution.
     contents:
       - PPC-overview
       - starts_with("ppc")
       - pp_check
+  - title: "PPD"
+    desc: >
+      Functions for creating graphical displays of simulated data from the
+      posterior or prior predictive distribution (PPD). These plots are essentially
+      the same as the corresponding PPC plots but without comparing to any observed
+      data.
+    contents:
+      - PPD-overview
+      - starts_with("ppd")
   - title: "MCMC"
     desc: >
       Functions for creating plots of MCMC draws of model parameters and

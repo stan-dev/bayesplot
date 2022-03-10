@@ -87,7 +87,7 @@ Plot Descriptions section, below, for details." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bayesplot</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.8.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.9.0</span>
       </span>
     </div>
 
@@ -193,76 +193,79 @@ Plot Descriptions section, below, for details." />
 <strong>Plot Descriptions</strong> section, below, for details.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>mcmc_scatter</span>(
-  <span class='no'>x</span>,
-  <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span>(),
-  <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span>(),
-  <span class='kw'>transformations</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(),
-  <span class='no'>...</span>,
-  <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>2.5</span>,
-  <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.8</span>,
-  <span class='kw'>np</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>np_style</span> <span class='kw'>=</span> <span class='fu'>scatter_style_np</span>()
-)
+    <pre class="usage"><span class='fu'>mcmc_scatter</span><span class='op'>(</span>
+  <span class='va'>x</span>,
+  pars <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span><span class='op'>(</span><span class='op'>)</span>,
+  regex_pars <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span><span class='op'>(</span><span class='op'>)</span>,
+  transformations <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>,
+  <span class='va'>...</span>,
+  size <span class='op'>=</span> <span class='fl'>2.5</span>,
+  alpha <span class='op'>=</span> <span class='fl'>0.8</span>,
+  np <span class='op'>=</span> <span class='cn'>NULL</span>,
+  np_style <span class='op'>=</span> <span class='fu'>scatter_style_np</span><span class='op'>(</span><span class='op'>)</span>
+<span class='op'>)</span>
 
-<span class='fu'>mcmc_hex</span>(
-  <span class='no'>x</span>,
-  <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span>(),
-  <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span>(),
-  <span class='kw'>transformations</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(),
-  <span class='no'>...</span>,
-  <span class='kw'>binwidth</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
-)
+<span class='fu'>mcmc_hex</span><span class='op'>(</span>
+  <span class='va'>x</span>,
+  pars <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span><span class='op'>(</span><span class='op'>)</span>,
+  regex_pars <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span><span class='op'>(</span><span class='op'>)</span>,
+  transformations <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>,
+  <span class='va'>...</span>,
+  binwidth <span class='op'>=</span> <span class='cn'>NULL</span>
+<span class='op'>)</span>
 
-<span class='fu'>mcmc_pairs</span>(
-  <span class='no'>x</span>,
-  <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span>(),
-  <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span>(),
-  <span class='kw'>transformations</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(),
-  <span class='no'>...</span>,
-  <span class='kw'>diag_fun</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"hist"</span>, <span class='st'>"dens"</span>),
-  <span class='kw'>off_diag_fun</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"scatter"</span>, <span class='st'>"hex"</span>),
-  <span class='kw'>diag_args</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(),
-  <span class='kw'>off_diag_args</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(),
-  <span class='kw'>condition</span> <span class='kw'>=</span> <span class='fu'>pairs_condition</span>(),
-  <span class='kw'>lp</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>np</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>np_style</span> <span class='kw'>=</span> <span class='fu'>pairs_style_np</span>(),
-  <span class='kw'>max_treedepth</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>grid_args</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(),
-  <span class='kw'>save_gg_objects</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
-)
+<span class='fu'>mcmc_pairs</span><span class='op'>(</span>
+  <span class='va'>x</span>,
+  pars <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span><span class='op'>(</span><span class='op'>)</span>,
+  regex_pars <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span><span class='op'>(</span><span class='op'>)</span>,
+  transformations <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>,
+  <span class='va'>...</span>,
+  diag_fun <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"hist"</span>, <span class='st'>"dens"</span><span class='op'>)</span>,
+  off_diag_fun <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"scatter"</span>, <span class='st'>"hex"</span><span class='op'>)</span>,
+  diag_args <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>,
+  off_diag_args <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>,
+  condition <span class='op'>=</span> <span class='fu'>pairs_condition</span><span class='op'>(</span><span class='op'>)</span>,
+  lp <span class='op'>=</span> <span class='cn'>NULL</span>,
+  np <span class='op'>=</span> <span class='cn'>NULL</span>,
+  np_style <span class='op'>=</span> <span class='fu'>pairs_style_np</span><span class='op'>(</span><span class='op'>)</span>,
+  max_treedepth <span class='op'>=</span> <span class='cn'>NULL</span>,
+  grid_args <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>,
+  save_gg_objects <span class='op'>=</span> <span class='cn'>TRUE</span>
+<span class='op'>)</span>
 
-<span class='fu'>scatter_style_np</span>(
-  <span class='kw'>div_color</span> <span class='kw'>=</span> <span class='st'>"red"</span>,
-  <span class='kw'>div_shape</span> <span class='kw'>=</span> <span class='fl'>16</span>,
-  <span class='kw'>div_size</span> <span class='kw'>=</span> <span class='fl'>2.5</span>,
-  <span class='kw'>div_alpha</span> <span class='kw'>=</span> <span class='fl'>1</span>
-)
+<span class='fu'>scatter_style_np</span><span class='op'>(</span>
+  div_color <span class='op'>=</span> <span class='st'>"red"</span>,
+  div_shape <span class='op'>=</span> <span class='fl'>16</span>,
+  div_size <span class='op'>=</span> <span class='fl'>2.5</span>,
+  div_alpha <span class='op'>=</span> <span class='fl'>1</span>
+<span class='op'>)</span>
 
-<span class='fu'>pairs_style_np</span>(
-  <span class='kw'>div_color</span> <span class='kw'>=</span> <span class='st'>"red"</span>,
-  <span class='kw'>div_shape</span> <span class='kw'>=</span> <span class='fl'>4</span>,
-  <span class='kw'>div_size</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>div_alpha</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>td_color</span> <span class='kw'>=</span> <span class='st'>"yellow2"</span>,
-  <span class='kw'>td_shape</span> <span class='kw'>=</span> <span class='fl'>3</span>,
-  <span class='kw'>td_size</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>td_alpha</span> <span class='kw'>=</span> <span class='fl'>1</span>
-)
+<span class='fu'>pairs_style_np</span><span class='op'>(</span>
+  div_color <span class='op'>=</span> <span class='st'>"red"</span>,
+  div_shape <span class='op'>=</span> <span class='fl'>4</span>,
+  div_size <span class='op'>=</span> <span class='fl'>1</span>,
+  div_alpha <span class='op'>=</span> <span class='fl'>1</span>,
+  td_color <span class='op'>=</span> <span class='st'>"yellow2"</span>,
+  td_shape <span class='op'>=</span> <span class='fl'>3</span>,
+  td_size <span class='op'>=</span> <span class='fl'>1</span>,
+  td_alpha <span class='op'>=</span> <span class='fl'>1</span>
+<span class='op'>)</span>
 
-<span class='fu'>pairs_condition</span>(<span class='kw'>chains</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>draws</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>nuts</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+<span class='fu'>pairs_condition</span><span class='op'>(</span>chains <span class='op'>=</span> <span class='cn'>NULL</span>, draws <span class='op'>=</span> <span class='cn'>NULL</span>, nuts <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>A 3-D array, matrix, list of matrices, or data frame of MCMC draws.
-The <a href='MCMC-overview.html'>MCMC-overview</a> page provides details on how to specify each these
-allowed inputs. It is also possible to use an object with an
-<code><a href='https://rdrr.io/r/base/array.html'>as.array()</a></code> method that returns the same kind of 3-D array described on
-the <a href='MCMC-overview.html'>MCMC-overview</a> page.</p></td>
+      <td><p>An object containing MCMC draws:</p><ul>
+<li><p>A 3-D array, matrix, list of matrices, or data frame. The <a href='MCMC-overview.html'>MCMC-overview</a>
+page provides details on how to specify each these.</p></li>
+<li><p>A <code>draws</code> object from the <span class="pkg">posterior</span> package (e.g.,
+<code>draws_array</code>, <code>draws_rvars</code>, etc.).</p></li>
+<li><p>An object with an <code><a href='https://rdrr.io/r/base/array.html'>as.array()</a></code> method that returns the same kind of 3-D
+array described on the <a href='MCMC-overview.html'>MCMC-overview</a> page.</p></li>
+</ul></td>
     </tr>
     <tr>
       <th>pars</th>
@@ -388,7 +391,7 @@ treedepth.</p></td>
       <th>grid_args, save_gg_objects</th>
       <td><p>For <code>mcmc_pairs()</code>, arguments to pass to
 <code><a href='bayesplot_grid.html'>bayesplot_grid()</a></code>. For example, since <code>mcmc_pairs()</code> returns
-more than a single ggplot object, using <code>ggtitle()</code> afterwards
+more than a single ggplot object, using <code><a href='https://ggplot2.tidyverse.org/reference/labs.html'>ggtitle()</a></code> afterwards
 will not work. But you you can still add a title to the plot using
 <code>grid_args = list(top="My title")</code>.</p></td>
     </tr>
@@ -450,7 +453,7 @@ can be further customized using the <strong>ggplot2</strong> package.</p>
 
     
 
-<dl'>
+<dl>
 <dt><code>mcmc_scatter()</code></dt><dd><p>Bivariate scatterplot of posterior draws. If using a very large number of
 posterior draws then <code>mcmc_hex()</code> may be preferable to avoid
 overplotting. For models fit using <a href='MCMC-nuts.html'>NUTS</a> the <code>np</code>,
@@ -503,11 +506,12 @@ Gelman, A. (2019), Visualization in Bayesian workflow.
 <code><a href='MCMC-traces.html'>MCMC-traces</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='st'>"ggplot2"</span>)
+    <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='st'><a href='https://ggplot2.tidyverse.org'>"ggplot2"</a></span><span class='op'>)</span>
 
 <span class='co'># some parameter draws to use for demonstration</span>
-<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='example-data.html'>example_mcmc_draws</a></span>(<span class='kw'>params</span> <span class='kw'>=</span> <span class='fl'>6</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/dimnames.html'>dimnames</a></span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; $Iteration
+<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='example-data.html'>example_mcmc_draws</a></span><span class='op'>(</span>params <span class='op'>=</span> <span class='fl'>6</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/dimnames.html'>dimnames</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; $Iteration
 #&gt; NULL
 #&gt; 
 #&gt; $Chain
@@ -517,110 +521,125 @@ Gelman, A. (2019), Visualization in Bayesian workflow.
 #&gt; [1] "alpha"   "sigma"   "beta[1]" "beta[2]" "beta[3]" "beta[4]"
 #&gt; </div><div class='input'>
 <span class='co'># scatterplot of alpha vs log(sigma)</span>
-<span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"teal"</span>)
-(<span class='no'>p</span> <span class='kw'>&lt;-</span> <span class='fu'>mcmc_scatter</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"alpha"</span>, <span class='st'>"sigma"</span>),
-                  <span class='kw'>transform</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>sigma</span> <span class='kw'>=</span> <span class='st'>"log"</span>)))</div><div class='img'><img src='MCMC-scatterplots-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='no'>p</span> +
-  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span>(
-    <span class='kw'>title</span> <span class='kw'>=</span> <span class='st'>"Insert your own headline-grabbing title"</span>,
-    <span class='kw'>subtitle</span> <span class='kw'>=</span> <span class='st'>"with a provocative subtitle"</span>,
-    <span class='kw'>caption</span> <span class='kw'>=</span> <span class='st'>"and a controversial caption"</span>,
-    <span class='kw'>x</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/expression.html'>expression</a></span>(<span class='no'>alpha</span>),
-    <span class='kw'>y</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/expression.html'>expression</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span>(<span class='no'>sigma</span>))
-   )</div><div class='img'><img src='MCMC-scatterplots-2.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span><span class='op'>(</span><span class='st'>"teal"</span><span class='op'>)</span>
+<span class='op'>(</span><span class='va'>p</span> <span class='op'>&lt;-</span> <span class='fu'>mcmc_scatter</span><span class='op'>(</span><span class='va'>x</span>, pars <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"alpha"</span>, <span class='st'>"sigma"</span><span class='op'>)</span>,
+                  transform <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>sigma <span class='op'>=</span> <span class='st'>"log"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='img'><img src='MCMC-scatterplots-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='va'>p</span> <span class='op'>+</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='op'>(</span>
+    title <span class='op'>=</span> <span class='st'>"Insert your own headline-grabbing title"</span>,
+    subtitle <span class='op'>=</span> <span class='st'>"with a provocative subtitle"</span>,
+    caption <span class='op'>=</span> <span class='st'>"and a controversial caption"</span>,
+    x <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/expression.html'>expression</a></span><span class='op'>(</span><span class='va'>alpha</span><span class='op'>)</span>,
+    y <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/expression.html'>expression</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span><span class='op'>(</span><span class='va'>sigma</span><span class='op'>)</span><span class='op'>)</span>
+   <span class='op'>)</span>
+</div><div class='img'><img src='MCMC-scatterplots-2.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># add ellipse</span>
-<span class='no'>p</span> + <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/stat_ellipse.html'>stat_ellipse</a></span>(<span class='kw'>level</span> <span class='kw'>=</span> <span class='fl'>0.9</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"gray20"</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>1</span>)</div><div class='img'><img src='MCMC-scatterplots-3.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='va'>p</span> <span class='op'>+</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/stat_ellipse.html'>stat_ellipse</a></span><span class='op'>(</span>level <span class='op'>=</span> <span class='fl'>0.9</span>, color <span class='op'>=</span> <span class='st'>"gray20"</span>, size <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>
+</div><div class='img'><img src='MCMC-scatterplots-3.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># add contour</span>
-<span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"red"</span>)
-<span class='no'>p2</span> <span class='kw'>&lt;-</span> <span class='fu'>mcmc_scatter</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"alpha"</span>, <span class='st'>"sigma"</span>), <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>3.5</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.25</span>)
-<span class='no'>p2</span> + <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_density_2d.html'>stat_density_2d</a></span>(<span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"black"</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>.5</span>)</div><div class='img'><img src='MCMC-scatterplots-4.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span><span class='op'>(</span><span class='st'>"red"</span><span class='op'>)</span>
+<span class='va'>p2</span> <span class='op'>&lt;-</span> <span class='fu'>mcmc_scatter</span><span class='op'>(</span><span class='va'>x</span>, pars <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"alpha"</span>, <span class='st'>"sigma"</span><span class='op'>)</span>, size <span class='op'>=</span> <span class='fl'>3.5</span>, alpha <span class='op'>=</span> <span class='fl'>0.25</span><span class='op'>)</span>
+<span class='va'>p2</span> <span class='op'>+</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_density_2d.html'>stat_density_2d</a></span><span class='op'>(</span>color <span class='op'>=</span> <span class='st'>"black"</span>, size <span class='op'>=</span> <span class='fl'>.5</span><span class='op'>)</span>
+</div><div class='img'><img src='MCMC-scatterplots-4.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># can also add lines/smooths</span>
-<span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"pink"</span>)
-(<span class='no'>p3</span> <span class='kw'>&lt;-</span> <span class='fu'>mcmc_scatter</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"alpha"</span>, <span class='st'>"beta[3]"</span>), <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.25</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>3</span>))</div><div class='img'><img src='MCMC-scatterplots-5.png' alt='' width='700' height='433' /></div><div class='input'><span class='no'>p3</span> + <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_smooth.html'>geom_smooth</a></span>(<span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"lm"</span>, <span class='kw'>se</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"gray20"</span>,
-                 <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>.75</span>, <span class='kw'>linetype</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='output co'>#&gt; <span class='message'>`geom_smooth()` using formula 'y ~ x'</span></div><div class='img'><img src='MCMC-scatterplots-6.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span><span class='op'>(</span><span class='st'>"pink"</span><span class='op'>)</span>
+<span class='op'>(</span><span class='va'>p3</span> <span class='op'>&lt;-</span> <span class='fu'>mcmc_scatter</span><span class='op'>(</span><span class='va'>x</span>, pars <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"alpha"</span>, <span class='st'>"beta[3]"</span><span class='op'>)</span>, alpha <span class='op'>=</span> <span class='fl'>0.25</span>, size <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='img'><img src='MCMC-scatterplots-5.png' alt='' width='700' height='433' /></div><div class='input'><span class='va'>p3</span> <span class='op'>+</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_smooth.html'>geom_smooth</a></span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>"lm"</span>, se <span class='op'>=</span> <span class='cn'>FALSE</span>, color <span class='op'>=</span> <span class='st'>"gray20"</span>,
+                 size <span class='op'>=</span> <span class='fl'>.75</span>, linetype <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>`geom_smooth()` using formula 'y ~ x'</span></div><div class='img'><img src='MCMC-scatterplots-6.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># \donttest{</span>
-<span class='kw'>if</span> (<span class='fu'><a href='https://rdrr.io/r/base/ns-load.html'>requireNamespace</a></span>(<span class='st'>"hexbin"</span>, <span class='kw'>quietly</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)) {
+<span class='kw'>if</span> <span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/ns-load.html'>requireNamespace</a></span><span class='op'>(</span><span class='st'>"hexbin"</span>, quietly <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span>
  <span class='co'># hexagonal heatmap</span>
- <span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"brightblue"</span>)
- (<span class='no'>p</span> <span class='kw'>&lt;-</span> <span class='fu'>mcmc_hex</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"sigma"</span>, <span class='st'>"alpha"</span>), <span class='kw'>transform</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>sigma</span> <span class='kw'>=</span> <span class='st'>"log"</span>)))
- <span class='no'>p</span> + <span class='fu'><a href='bayesplot-helpers.html'>plot_bg</a></span>(<span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>"gray95"</span>)
- <span class='no'>p</span> + <span class='fu'><a href='bayesplot-helpers.html'>plot_bg</a></span>(<span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>"gray95"</span>) + <span class='fu'><a href='bayesplot-helpers.html'>panel_bg</a></span>(<span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>"gray70"</span>)
-}</div><div class='img'><img src='MCMC-scatterplots-7.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># }</span>
+ <span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span><span class='op'>(</span><span class='st'>"brightblue"</span><span class='op'>)</span>
+ <span class='op'>(</span><span class='va'>p</span> <span class='op'>&lt;-</span> <span class='fu'>mcmc_hex</span><span class='op'>(</span><span class='va'>x</span>, pars <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"sigma"</span>, <span class='st'>"alpha"</span><span class='op'>)</span>, transform <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>sigma <span class='op'>=</span> <span class='st'>"log"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
+ <span class='va'>p</span> <span class='op'>+</span> <span class='fu'><a href='bayesplot-helpers.html'>plot_bg</a></span><span class='op'>(</span>fill <span class='op'>=</span> <span class='st'>"gray95"</span><span class='op'>)</span>
+ <span class='va'>p</span> <span class='op'>+</span> <span class='fu'><a href='bayesplot-helpers.html'>plot_bg</a></span><span class='op'>(</span>fill <span class='op'>=</span> <span class='st'>"gray95"</span><span class='op'>)</span> <span class='op'>+</span> <span class='fu'><a href='bayesplot-helpers.html'>panel_bg</a></span><span class='op'>(</span>fill <span class='op'>=</span> <span class='st'>"gray70"</span><span class='op'>)</span>
+<span class='op'>}</span>
+</div><div class='img'><img src='MCMC-scatterplots-7.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># }</span>
 <span class='co'># \donttest{</span>
-<span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"purple"</span>)
+<span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span><span class='op'>(</span><span class='st'>"purple"</span><span class='op'>)</span>
 
 <span class='co'># pairs plots</span>
 <span class='co'># default of condition=NULL implies splitting chains between upper and lower panels</span>
-<span class='fu'>mcmc_pairs</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='st'>"alpha"</span>, <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='st'>"beta\\[[1,4]\\]"</span>,
-           <span class='kw'>off_diag_args</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.5</span>))</div><div class='img'><img src='MCMC-scatterplots-8.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'>mcmc_pairs</span><span class='op'>(</span><span class='va'>x</span>, pars <span class='op'>=</span> <span class='st'>"alpha"</span>, regex_pars <span class='op'>=</span> <span class='st'>"beta\\[[1,4]\\]"</span>,
+           off_diag_args <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>1</span>, alpha <span class='op'>=</span> <span class='fl'>0.5</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='img'><img src='MCMC-scatterplots-8.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># change to density plots instead of histograms and hex plots instead of</span>
 <span class='co'># scatterplots</span>
-<span class='fu'>mcmc_pairs</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='st'>"alpha"</span>, <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='st'>"beta\\[[1,4]\\]"</span>,
-           <span class='kw'>diag_fun</span> <span class='kw'>=</span> <span class='st'>"dens"</span>, <span class='kw'>off_diag_fun</span> <span class='kw'>=</span> <span class='st'>"hex"</span>)</div><div class='img'><img src='MCMC-scatterplots-9.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'>mcmc_pairs</span><span class='op'>(</span><span class='va'>x</span>, pars <span class='op'>=</span> <span class='st'>"alpha"</span>, regex_pars <span class='op'>=</span> <span class='st'>"beta\\[[1,4]\\]"</span>,
+           diag_fun <span class='op'>=</span> <span class='st'>"dens"</span>, off_diag_fun <span class='op'>=</span> <span class='st'>"hex"</span><span class='op'>)</span>
+</div><div class='img'><img src='MCMC-scatterplots-9.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># plot chain 1 above diagonal and chains 2, 3, and 4 below</span>
-<span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"brightblue"</span>)
-<span class='fu'>mcmc_pairs</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='st'>"alpha"</span>, <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='st'>"beta\\[[1,4]\\]"</span>,
-           <span class='kw'>diag_fun</span> <span class='kw'>=</span> <span class='st'>"dens"</span>, <span class='kw'>off_diag_fun</span> <span class='kw'>=</span> <span class='st'>"hex"</span>,
-           <span class='kw'>condition</span> <span class='kw'>=</span> <span class='fu'>pairs_condition</span>(<span class='kw'>chains</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fl'>1</span>, <span class='fl'>2</span>:<span class='fl'>4</span>)))</div><div class='img'><img src='MCMC-scatterplots-10.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># }</span>
+<span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span><span class='op'>(</span><span class='st'>"brightblue"</span><span class='op'>)</span>
+<span class='fu'>mcmc_pairs</span><span class='op'>(</span><span class='va'>x</span>, pars <span class='op'>=</span> <span class='st'>"alpha"</span>, regex_pars <span class='op'>=</span> <span class='st'>"beta\\[[1,4]\\]"</span>,
+           diag_fun <span class='op'>=</span> <span class='st'>"dens"</span>, off_diag_fun <span class='op'>=</span> <span class='st'>"hex"</span>,
+           condition <span class='op'>=</span> <span class='fu'>pairs_condition</span><span class='op'>(</span>chains <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>:</span><span class='fl'>4</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='img'><img src='MCMC-scatterplots-10.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># }</span>
 
 <span class='co'># \dontrun{</span>
 <span class='co'>### Adding NUTS diagnostics to scatterplots and pairs plots</span>
 
 <span class='co'># examples using rstanarm package</span>
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>rstanarm</span>)
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://mc-stan.org/rstanarm/'>rstanarm</a></span><span class='op'>)</span>
 
 <span class='co'># for demonstration purposes, intentionally fit a model that</span>
 <span class='co'># will (almost certainly) have some divergences</span>
-<span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://mc-stan.org/rstanarm/reference/stan_glm.html'>stan_glm</a></span>(
-  <span class='no'>mpg</span> ~ <span class='no'>.</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>mtcars</span>,
-  <span class='kw'>iter</span> <span class='kw'>=</span> <span class='fl'>1000</span>, <span class='kw'>refresh</span> <span class='kw'>=</span> <span class='fl'>0</span>,
+<span class='va'>fit</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://mc-stan.org/rstanarm/reference/stan_glm.html'>stan_glm</a></span><span class='op'>(</span>
+  <span class='va'>mpg</span> <span class='op'>~</span> <span class='va'>.</span>, data <span class='op'>=</span> <span class='va'>mtcars</span>,
+  iter <span class='op'>=</span> <span class='fl'>1000</span>, refresh <span class='op'>=</span> <span class='fl'>0</span>,
   <span class='co'># this combo of prior and adapt_delta should lead to some divergences</span>
-  <span class='kw'>prior</span> <span class='kw'>=</span> <span class='fu'><a href='https://mc-stan.org/rstanarm/reference/priors.html'>hs</a></span>(),
-  <span class='kw'>adapt_delta</span> <span class='kw'>=</span> <span class='fl'>0.9</span>
-)</div><div class='output co'>#&gt; <span class='warning'>Warning: There were 47 divergent transitions after warmup. See</span>
-#&gt; <span class='warning'>http://mc-stan.org/misc/warnings.html#divergent-transitions-after-warmup</span>
+  prior <span class='op'>=</span> <span class='fu'><a href='https://mc-stan.org/rstanarm/reference/priors.html'>hs</a></span><span class='op'>(</span><span class='op'>)</span>,
+  adapt_delta <span class='op'>=</span> <span class='fl'>0.9</span>
+<span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='warning'>Warning: There were 47 divergent transitions after warmup. See</span>
+#&gt; <span class='warning'>https://mc-stan.org/misc/warnings.html#divergent-transitions-after-warmup</span>
 #&gt; <span class='warning'>to find out why this is a problem and how to eliminate them.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Examine the pairs() plot to diagnose sampling problems</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Bulk Effective Samples Size (ESS) is too low, indicating posterior means and medians may be unreliable.</span>
 #&gt; <span class='warning'>Running the chains for more iterations may help. See</span>
-#&gt; <span class='warning'>http://mc-stan.org/misc/warnings.html#bulk-ess</span></div><div class='input'><span class='no'>posterior</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/array.html'>as.array</a></span>(<span class='no'>fit</span>)
-<span class='no'>np</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='bayesplot-extractors.html'>nuts_params</a></span>(<span class='no'>fit</span>)
+#&gt; <span class='warning'>https://mc-stan.org/misc/warnings.html#bulk-ess</span></div><div class='input'><span class='va'>posterior</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/array.html'>as.array</a></span><span class='op'>(</span><span class='va'>fit</span><span class='op'>)</span>
+<span class='va'>np</span> <span class='op'>&lt;-</span> <span class='fu'><a href='bayesplot-extractors.html'>nuts_params</a></span><span class='op'>(</span><span class='va'>fit</span><span class='op'>)</span>
 
 <span class='co'># mcmc_scatter with divergences highlighted</span>
-<span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"brightblue"</span>)
-<span class='fu'>mcmc_scatter</span>(<span class='no'>posterior</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"wt"</span>, <span class='st'>"sigma"</span>), <span class='kw'>np</span> <span class='kw'>=</span> <span class='no'>np</span>)</div><div class='img'><img src='MCMC-scatterplots-11.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"darkgray"</span>)
-<span class='no'>div_style</span> <span class='kw'>&lt;-</span> <span class='fu'>scatter_style_np</span>(<span class='kw'>div_color</span> <span class='kw'>=</span> <span class='st'>"green"</span>, <span class='kw'>div_shape</span> <span class='kw'>=</span> <span class='fl'>4</span>, <span class='kw'>div_size</span> <span class='kw'>=</span> <span class='fl'>4</span>)
-<span class='fu'>mcmc_scatter</span>(<span class='no'>posterior</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"sigma"</span>, <span class='st'>"(Intercept)"</span>),
-             <span class='kw'>np</span> <span class='kw'>=</span> <span class='no'>np</span>, <span class='kw'>np_style</span> <span class='kw'>=</span> <span class='no'>div_style</span>)</div><div class='img'><img src='MCMC-scatterplots-12.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span><span class='op'>(</span><span class='st'>"brightblue"</span><span class='op'>)</span>
+<span class='fu'>mcmc_scatter</span><span class='op'>(</span><span class='va'>posterior</span>, pars <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"wt"</span>, <span class='st'>"sigma"</span><span class='op'>)</span>, np <span class='op'>=</span> <span class='va'>np</span><span class='op'>)</span>
+</div><div class='img'><img src='MCMC-scatterplots-11.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span><span class='op'>(</span><span class='st'>"darkgray"</span><span class='op'>)</span>
+<span class='va'>div_style</span> <span class='op'>&lt;-</span> <span class='fu'>scatter_style_np</span><span class='op'>(</span>div_color <span class='op'>=</span> <span class='st'>"green"</span>, div_shape <span class='op'>=</span> <span class='fl'>4</span>, div_size <span class='op'>=</span> <span class='fl'>4</span><span class='op'>)</span>
+<span class='fu'>mcmc_scatter</span><span class='op'>(</span><span class='va'>posterior</span>, pars <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"sigma"</span>, <span class='st'>"(Intercept)"</span><span class='op'>)</span>,
+             np <span class='op'>=</span> <span class='va'>np</span>, np_style <span class='op'>=</span> <span class='va'>div_style</span><span class='op'>)</span>
+</div><div class='img'><img src='MCMC-scatterplots-12.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># split the draws according to above/below median accept_stat__</span>
 <span class='co'># and show approximate location of divergences (red points)</span>
-<span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"brightblue"</span>)
-<span class='fu'>mcmc_pairs</span>(
-  <span class='no'>posterior</span>,
-  <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"wt"</span>, <span class='st'>"cyl"</span>, <span class='st'>"sigma"</span>),
-  <span class='kw'>off_diag_args</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>1</span>/<span class='fl'>3</span>),
-  <span class='kw'>condition</span> <span class='kw'>=</span> <span class='fu'>pairs_condition</span>(<span class='kw'>nuts</span> <span class='kw'>=</span> <span class='st'>"accept_stat__"</span>),
-  <span class='kw'>np</span> <span class='kw'>=</span> <span class='no'>np</span>
-)</div><div class='img'><img src='MCMC-scatterplots-13.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span><span class='op'>(</span><span class='st'>"brightblue"</span><span class='op'>)</span>
+<span class='fu'>mcmc_pairs</span><span class='op'>(</span>
+  <span class='va'>posterior</span>,
+  pars <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"wt"</span>, <span class='st'>"cyl"</span>, <span class='st'>"sigma"</span><span class='op'>)</span>,
+  off_diag_args <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>1</span>, alpha <span class='op'>=</span> <span class='fl'>1</span><span class='op'>/</span><span class='fl'>3</span><span class='op'>)</span>,
+  condition <span class='op'>=</span> <span class='fu'>pairs_condition</span><span class='op'>(</span>nuts <span class='op'>=</span> <span class='st'>"accept_stat__"</span><span class='op'>)</span>,
+  np <span class='op'>=</span> <span class='va'>np</span>
+<span class='op'>)</span>
+</div><div class='img'><img src='MCMC-scatterplots-13.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># more customizations:</span>
 <span class='co'># - transform sigma to log(sigma)</span>
 <span class='co'># - median log-posterior as 'condition'</span>
 <span class='co'># - hex instead of scatter for off-diagonal plots</span>
 <span class='co'># - show points where max treedepth hit in blue</span>
-<span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"darkgray"</span>)
-<span class='fu'>mcmc_pairs</span>(
-  <span class='no'>posterior</span>,
-  <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"wt"</span>, <span class='st'>"cyl"</span>, <span class='st'>"sigma"</span>),
-  <span class='kw'>transform</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>sigma</span> <span class='kw'>=</span> <span class='st'>"log"</span>),
-  <span class='kw'>off_diag_fun</span> <span class='kw'>=</span> <span class='st'>"hex"</span>,
-  <span class='kw'>condition</span> <span class='kw'>=</span> <span class='fu'>pairs_condition</span>(<span class='kw'>nuts</span> <span class='kw'>=</span> <span class='st'>"lp__"</span>),
-  <span class='kw'>lp</span> <span class='kw'>=</span> <span class='fu'><a href='bayesplot-extractors.html'>log_posterior</a></span>(<span class='no'>fit</span>),
-  <span class='kw'>np</span> <span class='kw'>=</span> <span class='no'>np</span>,
-  <span class='kw'>np_style</span> <span class='kw'>=</span> <span class='fu'>pairs_style_np</span>(<span class='kw'>div_color</span> <span class='kw'>=</span> <span class='st'>"firebrick"</span>,
-                            <span class='kw'>td_color</span> <span class='kw'>=</span> <span class='st'>"blue"</span>,
-                            <span class='kw'>td_size</span> <span class='kw'>=</span> <span class='fl'>2</span>),
+<span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span><span class='op'>(</span><span class='st'>"darkgray"</span><span class='op'>)</span>
+<span class='fu'>mcmc_pairs</span><span class='op'>(</span>
+  <span class='va'>posterior</span>,
+  pars <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"wt"</span>, <span class='st'>"cyl"</span>, <span class='st'>"sigma"</span><span class='op'>)</span>,
+  transform <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>sigma <span class='op'>=</span> <span class='st'>"log"</span><span class='op'>)</span>,
+  off_diag_fun <span class='op'>=</span> <span class='st'>"hex"</span>,
+  condition <span class='op'>=</span> <span class='fu'>pairs_condition</span><span class='op'>(</span>nuts <span class='op'>=</span> <span class='st'>"lp__"</span><span class='op'>)</span>,
+  lp <span class='op'>=</span> <span class='fu'><a href='bayesplot-extractors.html'>log_posterior</a></span><span class='op'>(</span><span class='va'>fit</span><span class='op'>)</span>,
+  np <span class='op'>=</span> <span class='va'>np</span>,
+  np_style <span class='op'>=</span> <span class='fu'>pairs_style_np</span><span class='op'>(</span>div_color <span class='op'>=</span> <span class='st'>"firebrick"</span>,
+                            td_color <span class='op'>=</span> <span class='st'>"blue"</span>,
+                            td_size <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span>,
   <span class='co'># for demonstration purposes, set max_treedepth to a value that will</span>
   <span class='co'># result in at least a few max treedepth warnings</span>
-  <span class='kw'>max_treedepth</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/with.html'>with</a></span>(<span class='no'>np</span>, -<span class='fl'>1</span> + <span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>max</a></span>(<span class='no'>Value</span>[<span class='no'>Parameter</span> <span class='kw'>==</span> <span class='st'>"treedepth__"</span>]))
-)</div><div class='img'><img src='MCMC-scatterplots-14.png' alt='' width='700' height='433' /></div><div class='input'># }
+  max_treedepth <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/with.html'>with</a></span><span class='op'>(</span><span class='va'>np</span>, <span class='op'>-</span><span class='fl'>1</span> <span class='op'>+</span> <span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>max</a></span><span class='op'>(</span><span class='va'>Value</span><span class='op'>[</span><span class='va'>Parameter</span> <span class='op'>==</span> <span class='st'>"treedepth__"</span><span class='op'>]</span><span class='op'>)</span><span class='op'>)</span>
+<span class='op'>)</span>
+</div><div class='img'><img src='MCMC-scatterplots-14.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># }</span>
 
 </div></pre>
   </div>
@@ -638,7 +657,7 @@ Gelman, A. (2019), Visualization in Bayesian workflow.
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

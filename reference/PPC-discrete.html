@@ -91,7 +91,7 @@ Plot Descriptions section below." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bayesplot</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.8.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.9.0</span>
       </span>
     </div>
 
@@ -201,38 +201,40 @@ plots for ordinal, categorical, and multinomial outcomes. See the
 <strong>Plot Descriptions</strong> section below.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>ppc_bars</span>(
-  <span class='no'>y</span>,
-  <span class='no'>yrep</span>,
-  <span class='no'>...</span>,
-  <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.9</span>,
-  <span class='kw'>width</span> <span class='kw'>=</span> <span class='fl'>0.9</span>,
-  <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>fatten</span> <span class='kw'>=</span> <span class='fl'>3</span>,
-  <span class='kw'>freq</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
-)
+    <pre class="usage"><span class='fu'>ppc_bars</span><span class='op'>(</span>
+  <span class='va'>y</span>,
+  <span class='va'>yrep</span>,
+  <span class='va'>...</span>,
+  prob <span class='op'>=</span> <span class='fl'>0.9</span>,
+  width <span class='op'>=</span> <span class='fl'>0.9</span>,
+  size <span class='op'>=</span> <span class='fl'>1</span>,
+  fatten <span class='op'>=</span> <span class='fl'>2.5</span>,
+  freq <span class='op'>=</span> <span class='cn'>TRUE</span>
+<span class='op'>)</span>
 
-<span class='fu'>ppc_bars_grouped</span>(
-  <span class='no'>y</span>,
-  <span class='no'>yrep</span>,
-  <span class='no'>group</span>,
-  <span class='no'>...</span>,
-  <span class='kw'>facet_args</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(),
-  <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.9</span>,
-  <span class='kw'>width</span> <span class='kw'>=</span> <span class='fl'>0.9</span>,
-  <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>fatten</span> <span class='kw'>=</span> <span class='fl'>3</span>,
-  <span class='kw'>freq</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
-)
+<span class='fu'>ppc_bars_grouped</span><span class='op'>(</span>
+  <span class='va'>y</span>,
+  <span class='va'>yrep</span>,
+  <span class='va'>group</span>,
+  <span class='va'>...</span>,
+  facet_args <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>,
+  prob <span class='op'>=</span> <span class='fl'>0.9</span>,
+  width <span class='op'>=</span> <span class='fl'>0.9</span>,
+  size <span class='op'>=</span> <span class='fl'>1</span>,
+  fatten <span class='op'>=</span> <span class='fl'>2.5</span>,
+  freq <span class='op'>=</span> <span class='cn'>TRUE</span>
+<span class='op'>)</span>
 
-<span class='fu'>ppc_rootogram</span>(
-  <span class='no'>y</span>,
-  <span class='no'>yrep</span>,
-  <span class='kw'>style</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"standing"</span>, <span class='st'>"hanging"</span>, <span class='st'>"suspended"</span>),
-  <span class='no'>...</span>,
-  <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.9</span>,
-  <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>1</span>
-)</pre>
+<span class='fu'>ppc_rootogram</span><span class='op'>(</span>
+  <span class='va'>y</span>,
+  <span class='va'>yrep</span>,
+  style <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"standing"</span>, <span class='st'>"hanging"</span>, <span class='st'>"suspended"</span><span class='op'>)</span>,
+  <span class='va'>...</span>,
+  prob <span class='op'>=</span> <span class='fl'>0.9</span>,
+  size <span class='op'>=</span> <span class='fl'>1</span>
+<span class='op'>)</span>
+
+<span class='fu'>ppc_bars_data</span><span class='op'>(</span><span class='va'>y</span>, <span class='va'>yrep</span>, group <span class='op'>=</span> <span class='cn'>NULL</span>, prob <span class='op'>=</span> <span class='fl'>0.9</span>, freq <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -243,12 +245,13 @@ plots for ordinal, categorical, and multinomial outcomes. See the
     </tr>
     <tr>
       <th>yrep</th>
-      <td><p>An \(S\) by \(N\) matrix of draws from the posterior
-predictive distribution, where \(S\) is the size of the posterior sample
-(or subset of the posterior sample used to generate <code>yrep</code>) and \(N\) is
-the number of observations (the length of <code>y</code>). The columns of <code>yrep</code>
-should be in the same order as the data points in <code>y</code> for the plots to make
-sense. See <strong>Details</strong> for additional instructions.</p></td>
+      <td><p>An <code>S</code> by <code>N</code> matrix of draws from the posterior (or prior)
+predictive distribution. The number of rows, <code>S</code>, is the size of the
+posterior (or prior) sample used to generate <code>yrep</code>. The number of columns,
+<code>N</code> is the number of predicted observations (<code><a href='https://rdrr.io/r/base/length.html'>length(y)</a></code>). The columns of
+<code>yrep</code> should be in the same order as the data points in <code>y</code> for the plots
+to make sense. See the <strong>Details</strong> and <strong>Plot Descriptions</strong> sections for
+additional advice specific to particular plots.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -258,32 +261,31 @@ sense. See <strong>Details</strong> for additional instructions.</p></td>
       <th>prob</th>
       <td><p>A value between <code>0</code> and <code>1</code> indicating the desired probability
 mass to include in the <code>yrep</code> intervals. Set <code>prob=0</code> to remove the
-intervals. For <code>ppc_rootogram()</code> these are intervals of the <em>square roots</em>
-of the expected counts.</p></td>
+intervals. (Note: for rootograms these are intervals of the <em>square roots</em>
+of the expected counts.)</p></td>
     </tr>
     <tr>
       <th>width</th>
-      <td><p>For <code>ppc_bars()</code> and <code>ppc_bars_grouped()</code>, passed to
-<code><a href='https://ggplot2.tidyverse.org/reference/geom_bar.html'>ggplot2::geom_bar()</a></code> to control the bar width.</p></td>
+      <td><p>For bar plots only, passed to <code><a href='https://ggplot2.tidyverse.org/reference/geom_bar.html'>ggplot2::geom_bar()</a></code> to control
+the bar width.</p></td>
     </tr>
     <tr>
       <th>size, fatten</th>
-      <td><p>For <code>ppc_bars()</code> and <code>ppc_bars_grouped()</code>, <code>size</code> and
-<code>fatten</code> are passed to <code><a href='https://ggplot2.tidyverse.org/reference/geom_linerange.html'>ggplot2::geom_pointrange()</a></code> to control the
-appearance of the <code>yrep</code> points and intervals. For <code>ppc_rootogram()</code> <code>size</code>
-is passed to <code><a href='https://ggplot2.tidyverse.org/reference/geom_path.html'>ggplot2::geom_line()</a></code>.</p></td>
+      <td><p>For bar plots, <code>size</code> and <code>fatten</code> are passed to
+<code><a href='https://ggplot2.tidyverse.org/reference/geom_linerange.html'>ggplot2::geom_pointrange()</a></code> to control the appearance of the <code>yrep</code> points
+and intervals. For rootograms <code>size</code> is passed to <code><a href='https://ggplot2.tidyverse.org/reference/geom_path.html'>ggplot2::geom_line()</a></code>.</p></td>
     </tr>
     <tr>
       <th>freq</th>
-      <td><p>For <code>ppc_bars()</code> and <code>ppc_bars_grouped()</code>, if <code>TRUE</code> (the
-default) the y-axis will display counts. Setting <code>freq=FALSE</code> will put
-proportions on the y-axis.</p></td>
+      <td><p>For bar plots only, if <code>TRUE</code> (the default) the y-axis will
+display counts. Setting <code>freq=FALSE</code> will put proportions on the y-axis.</p></td>
     </tr>
     <tr>
       <th>group</th>
-      <td><p>A grouping variable (a vector or factor) the same length as
-<code>y</code>. Each value in <code>group</code> is interpreted as the group level
-pertaining to the corresponding value of <code>y</code>.</p></td>
+      <td><p>A grouping variable of the same length as <code>y</code>.
+Will be coerced to <a href='https://rdrr.io/r/base/factor.html'>factor</a> if not already a factor.
+Each value in <code>group</code> is interpreted as the group level pertaining
+to the corresponding observation.</p></td>
     </tr>
     <tr>
       <th>facet_args</th>
@@ -301,7 +303,10 @@ details on the different styles.</p></td>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A ggplot object that can be further customized using the <strong>ggplot2</strong> package.</p>
+    <p>The plotting functions return a ggplot object that can be further
+customized using the <strong>ggplot2</strong> package. The functions with suffix
+<code>_data()</code> return the data that would have been drawn by the plotting
+function.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>For all of these plots <code>y</code> and <code>yrep</code> must be integers, although
@@ -312,7 +317,7 @@ be non-negative.</p>
 
     
 
-<dl'>
+<dl>
 <dt><code>ppc_bars()</code></dt><dd><p>Bar plot of <code>y</code> with <code>yrep</code> medians and uncertainty intervals
 superimposed on the bars.</p></dd>
 <dt><code>ppc_bars_grouped()</code></dt><dd><p>Same as <code>ppc_bars()</code> but a separate plot (facet) is generated for each
@@ -331,9 +336,9 @@ showing expected counts.</p></li>
 representing expected counts.</p></li>
 <li><p><em>Suspended</em>: histogram of the differences between expected and
 observed counts.</p></li>
-</ul><strong>All of these are plotted on the square root scale</strong>. See Kleiber and
-Zeileis (2016) for advice on interpreting rootograms and selecting among
-the different styles.</p></dd>
+</ul><strong>All of the rootograms are plotted on the square root scale</strong>. See Kleiber
+and Zeileis (2016) for advice on interpreting rootograms and selecting
+among the different styles.</p></dd>
 
 </dl>
 
@@ -356,29 +361,71 @@ Visualizing count data regressions using rootograms.
 <code><a href='PPC-test-statistics.html'>PPC-test-statistics</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span>(<span class='fl'>9222017</span>)
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>9222017</span><span class='op'>)</span>
 
 <span class='co'># bar plots</span>
-<span class='no'>f</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>N</span>) {
-  <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span>(<span class='fl'>1</span>:<span class='fl'>4</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='no'>N</span>, <span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.25</span>, <span class='fl'>0.4</span>, <span class='fl'>0.1</span>, <span class='fl'>0.25</span>))
-}
-<span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='fu'>f</span>(<span class='fl'>100</span>)
-<span class='no'>yrep</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/t.html'>t</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>replicate</a></span>(<span class='fl'>500</span>, <span class='fu'>f</span>(<span class='fl'>100</span>)))
-<span class='fu'><a href='https://rdrr.io/r/base/dim.html'>dim</a></span>(<span class='no'>yrep</span>)</div><div class='output co'>#&gt; [1] 500 100</div><div class='input'><span class='no'>group</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/gl.html'>gl</a></span>(<span class='fl'>2</span>, <span class='fl'>50</span>, <span class='kw'>length</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>labels</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"GroupA"</span>, <span class='st'>"GroupB"</span>))
+<span class='va'>f</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>N</span><span class='op'>)</span> <span class='op'>{</span>
+  <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span>, size <span class='op'>=</span> <span class='va'>N</span>, replace <span class='op'>=</span> <span class='cn'>TRUE</span>, prob <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.25</span>, <span class='fl'>0.4</span>, <span class='fl'>0.1</span>, <span class='fl'>0.25</span><span class='op'>)</span><span class='op'>)</span>
+<span class='op'>}</span>
+<span class='va'>y</span> <span class='op'>&lt;-</span> <span class='fu'>f</span><span class='op'>(</span><span class='fl'>100</span><span class='op'>)</span>
+<span class='va'>yrep</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/t.html'>t</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>replicate</a></span><span class='op'>(</span><span class='fl'>500</span>, <span class='fu'>f</span><span class='op'>(</span><span class='fl'>100</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/dim.html'>dim</a></span><span class='op'>(</span><span class='va'>yrep</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 500 100</div><div class='input'><span class='va'>group</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/gl.html'>gl</a></span><span class='op'>(</span><span class='fl'>2</span>, <span class='fl'>50</span>, length <span class='op'>=</span> <span class='fl'>100</span>, labels <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"GroupA"</span>, <span class='st'>"GroupB"</span><span class='op'>)</span><span class='op'>)</span>
 
-<span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"mix-pink-blue"</span>)
-<span class='fu'>ppc_bars</span>(<span class='no'>y</span>, <span class='no'>yrep</span>)</div><div class='img'><img src='PPC-discrete-1.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span><span class='op'>(</span><span class='st'>"mix-pink-blue"</span><span class='op'>)</span>
+<span class='fu'>ppc_bars</span><span class='op'>(</span><span class='va'>y</span>, <span class='va'>yrep</span><span class='op'>)</span>
+</div><div class='img'><img src='PPC-discrete-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># split by group, change interval width, and display proportion</span>
 <span class='co'># instead of count on y-axis</span>
-<span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"mix-blue-pink"</span>)
-<span class='fu'>ppc_bars_grouped</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='no'>group</span>, <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>freq</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='img'><img src='PPC-discrete-2.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='co'># rootograms for counts</span>
-<span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/Poisson.html'>rpois</a></span>(<span class='fl'>100</span>, <span class='fl'>20</span>)
-<span class='no'>yrep</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='fu'><a href='https://rdrr.io/r/stats/Poisson.html'>rpois</a></span>(<span class='fl'>10000</span>, <span class='fl'>20</span>), <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>100</span>)
+<span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span><span class='op'>(</span><span class='st'>"mix-blue-pink"</span><span class='op'>)</span>
+<span class='fu'>ppc_bars_grouped</span><span class='op'>(</span><span class='va'>y</span>, <span class='va'>yrep</span>, <span class='va'>group</span>, prob <span class='op'>=</span> <span class='fl'>0.5</span>, freq <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
+</div><div class='img'><img src='PPC-discrete-2.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='co'># \dontrun{</span>
+<span class='co'># example for ordinal regression using rstanarm</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://mc-stan.org/rstanarm/'>rstanarm</a></span><span class='op'>)</span>
+<span class='va'>fit</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://mc-stan.org/rstanarm/reference/stan_polr.html'>stan_polr</a></span><span class='op'>(</span>
+  <span class='va'>tobgp</span> <span class='op'>~</span> <span class='va'>agegp</span>,
+  data <span class='op'>=</span> <span class='va'>esoph</span>,
+  method <span class='op'>=</span> <span class='st'>"probit"</span>,
+  prior <span class='op'>=</span> <span class='fu'><a href='https://mc-stan.org/rstanarm/reference/priors.html'>R2</a></span><span class='op'>(</span><span class='fl'>0.2</span>, <span class='st'>"mean"</span><span class='op'>)</span>,
+  init_r <span class='op'>=</span> <span class='fl'>0.1</span>,
+  seed <span class='op'>=</span> <span class='fl'>12345</span>,
+  <span class='co'># cores = 4,</span>
+  refresh <span class='op'>=</span> <span class='fl'>0</span>
+ <span class='op'>)</span>
 
-<span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"brightblue"</span>)
-<span class='fu'>ppc_rootogram</span>(<span class='no'>y</span>, <span class='no'>yrep</span>)</div><div class='img'><img src='PPC-discrete-3.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>ppc_rootogram</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0</span>)</div><div class='img'><img src='PPC-discrete-4.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='fu'>ppc_rootogram</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='kw'>style</span> <span class='kw'>=</span> <span class='st'>"hanging"</span>, <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.8</span>)</div><div class='img'><img src='PPC-discrete-5.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>ppc_rootogram</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='kw'>style</span> <span class='kw'>=</span> <span class='st'>"suspended"</span>)</div><div class='img'><img src='PPC-discrete-6.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='co'># coded as character, so convert to integer</span>
+<span class='va'>yrep_char</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://mc-stan.org/rstanarm/reference/posterior_predict.stanreg.html'>posterior_predict</a></span><span class='op'>(</span><span class='va'>fit</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>yrep_char</span><span class='op'>[</span><span class='fl'>1</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span><span class='op'>]</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;          1          2          3          4 
+#&gt; "0-9g/day" "0-9g/day"    "10-19"    "10-19" </div><div class='input'>
+<span class='va'>yrep_int</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>sapply</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span><span class='va'>yrep_char</span>, stringsAsFactors <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>, <span class='va'>as.integer</span><span class='op'>)</span>
+<span class='va'>y_int</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/integer.html'>as.integer</a></span><span class='op'>(</span><span class='va'>esoph</span><span class='op'>$</span><span class='va'>tobgp</span><span class='op'>)</span>
+
+<span class='fu'>ppc_bars</span><span class='op'>(</span><span class='va'>y_int</span>, <span class='va'>yrep_int</span><span class='op'>)</span>
+</div><div class='img'><img src='PPC-discrete-3.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'>ppc_bars_grouped</span><span class='op'>(</span>
+  y <span class='op'>=</span> <span class='va'>y_int</span>,
+  yrep <span class='op'>=</span> <span class='va'>yrep_int</span>,
+  group <span class='op'>=</span> <span class='va'>esoph</span><span class='op'>$</span><span class='va'>agegp</span>,
+  freq<span class='op'>=</span><span class='cn'>FALSE</span>,
+  prob <span class='op'>=</span> <span class='fl'>0.5</span>,
+  fatten <span class='op'>=</span> <span class='fl'>1</span>,
+  size <span class='op'>=</span> <span class='fl'>1.5</span>
+<span class='op'>)</span>
+</div><div class='img'><img src='PPC-discrete-4.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># }</span>
+
+<span class='co'># rootograms for counts</span>
+<span class='va'>y</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/Poisson.html'>rpois</a></span><span class='op'>(</span><span class='fl'>100</span>, <span class='fl'>20</span><span class='op'>)</span>
+<span class='va'>yrep</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/Poisson.html'>rpois</a></span><span class='op'>(</span><span class='fl'>10000</span>, <span class='fl'>20</span><span class='op'>)</span>, ncol <span class='op'>=</span> <span class='fl'>100</span><span class='op'>)</span>
+
+<span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span><span class='op'>(</span><span class='st'>"brightblue"</span><span class='op'>)</span>
+<span class='fu'>ppc_rootogram</span><span class='op'>(</span><span class='va'>y</span>, <span class='va'>yrep</span><span class='op'>)</span>
+</div><div class='img'><img src='PPC-discrete-5.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>ppc_rootogram</span><span class='op'>(</span><span class='va'>y</span>, <span class='va'>yrep</span>, prob <span class='op'>=</span> <span class='fl'>0</span><span class='op'>)</span>
+</div><div class='img'><img src='PPC-discrete-6.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'>ppc_rootogram</span><span class='op'>(</span><span class='va'>y</span>, <span class='va'>yrep</span>, style <span class='op'>=</span> <span class='st'>"hanging"</span>, prob <span class='op'>=</span> <span class='fl'>0.8</span><span class='op'>)</span>
+</div><div class='img'><img src='PPC-discrete-7.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>ppc_rootogram</span><span class='op'>(</span><span class='va'>y</span>, <span class='va'>yrep</span>, style <span class='op'>=</span> <span class='st'>"suspended"</span><span class='op'>)</span>
+</div><div class='img'><img src='PPC-discrete-8.png' alt='' width='700' height='433' /></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -395,7 +442,7 @@ Visualizing count data regressions using rootograms.
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

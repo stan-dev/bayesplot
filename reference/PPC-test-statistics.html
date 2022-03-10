@@ -90,7 +90,7 @@ well as Gabry et al. (2019)." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bayesplot</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.8.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.9.0</span>
       </span>
     </div>
 
@@ -199,40 +199,52 @@ observed value <code><a href='https://rdrr.io/r/base/logical.html'>T(y)</a></cod
 well as <a href='https://github.com/jgabry/bayes-vis-paper#readme'>Gabry et al. (2019)</a>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>ppc_stat</span>(
-  <span class='no'>y</span>,
-  <span class='no'>yrep</span>,
-  <span class='kw'>stat</span> <span class='kw'>=</span> <span class='st'>"mean"</span>,
-  <span class='no'>...</span>,
-  <span class='kw'>binwidth</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>breaks</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>freq</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
-)
+    <pre class="usage"><span class='fu'>ppc_stat</span><span class='op'>(</span>
+  <span class='va'>y</span>,
+  <span class='va'>yrep</span>,
+  stat <span class='op'>=</span> <span class='st'>"mean"</span>,
+  <span class='va'>...</span>,
+  binwidth <span class='op'>=</span> <span class='cn'>NULL</span>,
+  breaks <span class='op'>=</span> <span class='cn'>NULL</span>,
+  freq <span class='op'>=</span> <span class='cn'>TRUE</span>
+<span class='op'>)</span>
 
-<span class='fu'>ppc_stat_grouped</span>(
-  <span class='no'>y</span>,
-  <span class='no'>yrep</span>,
-  <span class='no'>group</span>,
-  <span class='kw'>stat</span> <span class='kw'>=</span> <span class='st'>"mean"</span>,
-  <span class='no'>...</span>,
-  <span class='kw'>facet_args</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(),
-  <span class='kw'>binwidth</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>breaks</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>freq</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
-)
+<span class='fu'>ppc_stat_grouped</span><span class='op'>(</span>
+  <span class='va'>y</span>,
+  <span class='va'>yrep</span>,
+  <span class='va'>group</span>,
+  stat <span class='op'>=</span> <span class='st'>"mean"</span>,
+  <span class='va'>...</span>,
+  facet_args <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>,
+  binwidth <span class='op'>=</span> <span class='cn'>NULL</span>,
+  breaks <span class='op'>=</span> <span class='cn'>NULL</span>,
+  freq <span class='op'>=</span> <span class='cn'>TRUE</span>
+<span class='op'>)</span>
 
-<span class='fu'>ppc_stat_freqpoly_grouped</span>(
-  <span class='no'>y</span>,
-  <span class='no'>yrep</span>,
-  <span class='no'>group</span>,
-  <span class='kw'>stat</span> <span class='kw'>=</span> <span class='st'>"mean"</span>,
-  <span class='no'>...</span>,
-  <span class='kw'>facet_args</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(),
-  <span class='kw'>binwidth</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>freq</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
-)
+<span class='fu'>ppc_stat_freqpoly</span><span class='op'>(</span>
+  <span class='va'>y</span>,
+  <span class='va'>yrep</span>,
+  stat <span class='op'>=</span> <span class='st'>"mean"</span>,
+  <span class='va'>...</span>,
+  facet_args <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>,
+  binwidth <span class='op'>=</span> <span class='cn'>NULL</span>,
+  freq <span class='op'>=</span> <span class='cn'>TRUE</span>
+<span class='op'>)</span>
 
-<span class='fu'>ppc_stat_2d</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='kw'>stat</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"mean"</span>, <span class='st'>"sd"</span>), <span class='no'>...</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>2.5</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.7</span>)</pre>
+<span class='fu'>ppc_stat_freqpoly_grouped</span><span class='op'>(</span>
+  <span class='va'>y</span>,
+  <span class='va'>yrep</span>,
+  <span class='va'>group</span>,
+  stat <span class='op'>=</span> <span class='st'>"mean"</span>,
+  <span class='va'>...</span>,
+  facet_args <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>,
+  binwidth <span class='op'>=</span> <span class='cn'>NULL</span>,
+  freq <span class='op'>=</span> <span class='cn'>TRUE</span>
+<span class='op'>)</span>
+
+<span class='fu'>ppc_stat_2d</span><span class='op'>(</span><span class='va'>y</span>, <span class='va'>yrep</span>, stat <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"mean"</span>, <span class='st'>"sd"</span><span class='op'>)</span>, <span class='va'>...</span>, size <span class='op'>=</span> <span class='fl'>2.5</span>, alpha <span class='op'>=</span> <span class='fl'>0.7</span><span class='op'>)</span>
+
+<span class='fu'>ppc_stat_data</span><span class='op'>(</span><span class='va'>y</span>, <span class='va'>yrep</span>, group <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>stat</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -243,21 +255,22 @@ well as <a href='https://github.com/jgabry/bayes-vis-paper#readme'>Gabry et al. 
     </tr>
     <tr>
       <th>yrep</th>
-      <td><p>An \(S\) by \(N\) matrix of draws from the posterior
-predictive distribution, where \(S\) is the size of the posterior sample
-(or subset of the posterior sample used to generate <code>yrep</code>) and \(N\) is
-the number of observations (the length of <code>y</code>). The columns of <code>yrep</code>
-should be in the same order as the data points in <code>y</code> for the plots to make
-sense. See <strong>Details</strong> for additional instructions.</p></td>
+      <td><p>An <code>S</code> by <code>N</code> matrix of draws from the posterior (or prior)
+predictive distribution. The number of rows, <code>S</code>, is the size of the
+posterior (or prior) sample used to generate <code>yrep</code>. The number of columns,
+<code>N</code> is the number of predicted observations (<code><a href='https://rdrr.io/r/base/length.html'>length(y)</a></code>). The columns of
+<code>yrep</code> should be in the same order as the data points in <code>y</code> for the plots
+to make sense. See the <strong>Details</strong> and <strong>Plot Descriptions</strong> sections for
+additional advice specific to particular plots.</p></td>
     </tr>
     <tr>
       <th>stat</th>
-      <td><p>A single function or a string naming a function, except for
-<code>ppc_stat_2d()</code> which requires a vector of exactly two functions or
-function names. In all cases the function(s) should take a vector input and
-return a scalar statistic. If specified as a string (or strings) then
-the legend will display function names. If specified as a function (or
-functions) then generic naming is used in the legend.</p></td>
+      <td><p>A single function or a string naming a function, except for the
+2D plot which requires a vector of exactly two names or functions. In all
+cases the function(s) should take a vector input and return a scalar
+statistic. If specified as a string (or strings) then the legend will
+display the function name(s). If specified as a function (or functions)
+then generic naming is used in the legend.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -283,46 +296,51 @@ function.)</p></td>
     </tr>
     <tr>
       <th>group</th>
-      <td><p>A grouping variable (a vector or factor) the same length as
-<code>y</code>. Each value in <code>group</code> is interpreted as the group level
-pertaining to the corresponding value of <code>y</code>.</p></td>
+      <td><p>A grouping variable of the same length as <code>y</code>.
+Will be coerced to <a href='https://rdrr.io/r/base/factor.html'>factor</a> if not already a factor.
+Each value in <code>group</code> is interpreted as the group level pertaining
+to the corresponding observation.</p></td>
     </tr>
     <tr>
       <th>facet_args</th>
       <td><p>A named list of arguments (other than <code>facets</code>) passed
 to <code><a href='https://ggplot2.tidyverse.org/reference/facet_wrap.html'>ggplot2::facet_wrap()</a></code> or <code><a href='https://ggplot2.tidyverse.org/reference/facet_grid.html'>ggplot2::facet_grid()</a></code>
-to control faceting.</p></td>
+to control faceting. Note: if <code>scales</code> is not included in <code>facet_args</code>
+then <strong>bayesplot</strong> may use <code>scales="free"</code> as the default (depending
+on the plot) instead of the <strong>ggplot2</strong> default of <code>scales="fixed"</code>.</p></td>
     </tr>
     <tr>
       <th>size, alpha</th>
-      <td><p>Arguments passed to <code><a href='https://ggplot2.tidyverse.org/reference/geom_point.html'>ggplot2::geom_point()</a></code> to control the
-appearance of scatterplot points.</p></td>
+      <td><p>For the 2D plot only, arguments passed to
+<code><a href='https://ggplot2.tidyverse.org/reference/geom_point.html'>ggplot2::geom_point()</a></code> to control the appearance of scatterplot points.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A ggplot object that can be further customized using the <strong>ggplot2</strong> package.</p>
+    <p>The plotting functions return a ggplot object that can be further
+customized using the <strong>ggplot2</strong> package. The functions with suffix
+<code>_data()</code> return the data that would have been drawn by the plotting
+function.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>For Binomial data, the plots will typically be most useful if
-<code>y</code> and <code>yrep</code> contain the "success" proportions (not discrete
+    <p>For Binomial data, the plots may be more useful if
+the input contains the "success" <em>proportions</em> (not discrete
 "success" or "failure" counts).</p>
     <h2 class="hasAnchor" id="plot-descriptions"><a class="anchor" href="#plot-descriptions"></a>Plot Descriptions</h2>
 
     
 
-<dl'>
-<dt><code>ppc_stat()</code></dt><dd><p>A histogram of the distribution of a test statistic computed by applying
-<code>stat</code> to each dataset (row) in <code>yrep</code>. The value of the statistic in the
-observed data, <code>stat(y)</code>, is overlaid as a vertical line. More details on
-<code>ppc_stat()</code> can be found in Gabry et al. (2019).</p></dd>
-<dt><code>ppc_stat_grouped()</code>,<code>ppc_stat_freqpoly_grouped()</code></dt><dd><p>The same as <code>ppc_stat()</code>, but a separate plot is generated for each
-level of a grouping variable. In the case of
-<code>ppc_stat_freqpoly_grouped()</code> the plots are frequency polygons rather
-than histograms. More details on <code>ppc_stat_grouped()</code> can be found in
-Gabry et al. (2019).</p></dd>
-<dt><code>ppc_stat_2d()</code></dt><dd><p>A scatterplot showing the joint distribution of two test statistics
+<dl>
+<dt><code>ppc_stat()</code>, <code>ppc_stat_freqpoly()</code></dt><dd><p>A histogram or frequency polygon of the distribution of a statistic
+computed by applying <code>stat</code> to each dataset (row) in <code>yrep</code>. The value of
+the statistic in the observed data, <code><a href='https://ggplot2.tidyverse.org/reference/aes_eval.html'>stat(y)</a></code>, is overlaid as a vertical
+line. More details and example usage of <code>ppc_stat()</code> can be found in Gabry
+et al. (2019).</p></dd>
+<dt><code>ppc_stat_grouped()</code>,<code>ppc_stat_freqpoly_grouped()</code></dt><dd><p>The same as <code>ppc_stat()</code> and <code>ppc_stat_freqpoly()</code>, but a separate plot is
+generated for each level of a grouping variable. More details and example
+usage of <code>ppc_stat_grouped()</code> can be found in Gabry et al. (2019).</p></dd>
+<dt><code>ppc_stat_2d()</code></dt><dd><p>A scatterplot showing the joint distribution of two statistics
 computed over the datasets (rows) in <code>yrep</code>. The value of the
 statistics in the observed data is overlaid as large point.</p></dd>
 
@@ -352,21 +370,46 @@ Press, London, third edition. (Ch. 6)</p>
 <code><a href='PPC-scatterplots.html'>PPC-scatterplots</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='example-data.html'>example_y_data</a></span>()
-<span class='no'>yrep</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='example-data.html'>example_yrep_draws</a></span>()
-<span class='fu'>ppc_stat</span>(<span class='no'>y</span>, <span class='no'>yrep</span>)</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='PPC-test-statistics-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>ppc_stat</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='kw'>stat</span> <span class='kw'>=</span> <span class='st'>"sd"</span>) + <span class='fu'><a href='bayesplot-helpers.html'>legend_none</a></span>()</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='PPC-test-statistics-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>ppc_stat_2d</span>(<span class='no'>y</span>, <span class='no'>yrep</span>)</div><div class='img'><img src='PPC-test-statistics-3.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>ppc_stat_2d</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='kw'>stat</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"median"</span>, <span class='st'>"mean"</span>)) + <span class='fu'><a href='bayesplot-helpers.html'>legend_move</a></span>(<span class='st'>"bottom"</span>)</div><div class='img'><img src='PPC-test-statistics-4.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"teal"</span>)
-<span class='no'>group</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='example-data.html'>example_group_data</a></span>()
-<span class='fu'>ppc_stat_grouped</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='no'>group</span>)</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='PPC-test-statistics-5.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"mix-red-blue"</span>)
-<span class='fu'>ppc_stat_freqpoly_grouped</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='no'>group</span>, <span class='kw'>facet_args</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>nrow</span> <span class='kw'>=</span> <span class='fl'>2</span>))</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='PPC-test-statistics-6.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='co'># use your own function to compute test statistics</span>
-<span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"brightblue"</span>)
-<span class='no'>q25</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>y</span>) <span class='fu'><a href='https://rdrr.io/r/stats/quantile.html'>quantile</a></span>(<span class='no'>y</span>, <span class='fl'>0.25</span>)
-<span class='fu'>ppc_stat</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='kw'>stat</span> <span class='kw'>=</span> <span class='st'>"q25"</span>) <span class='co'># legend includes function name</span></div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='PPC-test-statistics-7.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='co'># can define the function in the 'stat' argument but then</span>
-<span class='co'># the legend doesn't include a function name</span>
-<span class='fu'>ppc_stat</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='kw'>stat</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>y</span>) <span class='fu'><a href='https://rdrr.io/r/stats/quantile.html'>quantile</a></span>(<span class='no'>y</span>, <span class='fl'>0.25</span>))</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='PPC-test-statistics-8.png' alt='' width='700' height='433' /></div><div class='input'>
+    <pre class="examples"><div class='input'><span class='va'>y</span> <span class='op'>&lt;-</span> <span class='fu'><a href='example-data.html'>example_y_data</a></span><span class='op'>(</span><span class='op'>)</span>
+<span class='va'>yrep</span> <span class='op'>&lt;-</span> <span class='fu'><a href='example-data.html'>example_yrep_draws</a></span><span class='op'>(</span><span class='op'>)</span>
+<span class='fu'>ppc_stat</span><span class='op'>(</span><span class='va'>y</span>, <span class='va'>yrep</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='PPC-test-statistics-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>ppc_stat</span><span class='op'>(</span><span class='va'>y</span>, <span class='va'>yrep</span>, stat <span class='op'>=</span> <span class='st'>"sd"</span><span class='op'>)</span> <span class='op'>+</span> <span class='fu'><a href='bayesplot-helpers.html'>legend_none</a></span><span class='op'>(</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='PPC-test-statistics-2.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='co'># use your own function for the 'stat' argument</span>
+<span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span><span class='op'>(</span><span class='st'>"brightblue"</span><span class='op'>)</span>
+<span class='va'>q25</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>y</span><span class='op'>)</span> <span class='fu'><a href='https://rdrr.io/r/stats/quantile.html'>quantile</a></span><span class='op'>(</span><span class='va'>y</span>, <span class='fl'>0.25</span><span class='op'>)</span>
+<span class='fu'>ppc_stat</span><span class='op'>(</span><span class='va'>y</span>, <span class='va'>yrep</span>, stat <span class='op'>=</span> <span class='st'>"q25"</span><span class='op'>)</span> <span class='co'># legend includes function name</span>
+</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='PPC-test-statistics-3.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='co'># can define the function in the 'stat' argument instead of</span>
+<span class='co'># using its name but then the legend doesn't include the function name</span>
+<span class='fu'>ppc_stat</span><span class='op'>(</span><span class='va'>y</span>, <span class='va'>yrep</span>, stat <span class='op'>=</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>y</span><span class='op'>)</span> <span class='fu'><a href='https://rdrr.io/r/stats/quantile.html'>quantile</a></span><span class='op'>(</span><span class='va'>y</span>, <span class='fl'>0.25</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='PPC-test-statistics-4.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='co'># plots by group</span>
+<span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span><span class='op'>(</span><span class='st'>"teal"</span><span class='op'>)</span>
+<span class='va'>group</span> <span class='op'>&lt;-</span> <span class='fu'><a href='example-data.html'>example_group_data</a></span><span class='op'>(</span><span class='op'>)</span>
+<span class='fu'>ppc_stat_grouped</span><span class='op'>(</span><span class='va'>y</span>, <span class='va'>yrep</span>, <span class='va'>group</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='PPC-test-statistics-5.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>ppc_stat_grouped</span><span class='op'>(</span><span class='va'>y</span>, <span class='va'>yrep</span>, <span class='va'>group</span><span class='op'>)</span> <span class='op'>+</span> <span class='fu'><a href='bayesplot-helpers.html'>yaxis_text</a></span><span class='op'>(</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='PPC-test-statistics-6.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='co'># force y-axes to have same scales, allow x axis to vary</span>
+<span class='fu'>ppc_stat_grouped</span><span class='op'>(</span><span class='va'>y</span>, <span class='va'>yrep</span>, <span class='va'>group</span>, facet_args <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>scales <span class='op'>=</span> <span class='st'>"free_x"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span> <span class='fu'><a href='bayesplot-helpers.html'>yaxis_text</a></span><span class='op'>(</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='PPC-test-statistics-7.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='co'># the freqpoly plots use frequency polygons instead of histograms</span>
+<span class='fu'>ppc_stat_freqpoly</span><span class='op'>(</span><span class='va'>y</span>, <span class='va'>yrep</span>, stat <span class='op'>=</span> <span class='st'>"median"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='PPC-test-statistics-8.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>ppc_stat_freqpoly_grouped</span><span class='op'>(</span><span class='va'>y</span>, <span class='va'>yrep</span>, <span class='va'>group</span>, stat <span class='op'>=</span> <span class='st'>"median"</span>, facet_args <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>nrow <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='PPC-test-statistics-9.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='co'># ppc_stat_2d allows 2 statistics and makes a scatterplot</span>
+<span class='fu'><a href='bayesplot_theme_get.html'>bayesplot_theme_set</a></span><span class='op'>(</span><span class='fu'>ggplot2</span><span class='fu'>::</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggtheme.html'>theme_linedraw</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span><span class='op'>(</span><span class='st'>"viridisE"</span><span class='op'>)</span>
+<span class='fu'>ppc_stat_2d</span><span class='op'>(</span><span class='va'>y</span>, <span class='va'>yrep</span>, stat <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"mean"</span>, <span class='st'>"sd"</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='img'><img src='PPC-test-statistics-10.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'><a href='bayesplot_theme_get.html'>bayesplot_theme_set</a></span><span class='op'>(</span><span class='fu'>ggplot2</span><span class='fu'>::</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggtheme.html'>theme_grey</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span><span class='op'>(</span><span class='st'>"brewer-Paired"</span><span class='op'>)</span>
+<span class='fu'>ppc_stat_2d</span><span class='op'>(</span><span class='va'>y</span>, <span class='va'>yrep</span>, stat <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"median"</span>, <span class='st'>"mad"</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='img'><img src='PPC-test-statistics-11.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='co'># reset aesthetics</span>
+<span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span><span class='op'>(</span><span class='op'>)</span>
+<span class='fu'><a href='bayesplot_theme_get.html'>bayesplot_theme_set</a></span><span class='op'>(</span><span class='op'>)</span>
+
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -383,7 +426,7 @@ Press, London, third edition. (Ch. 6)</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

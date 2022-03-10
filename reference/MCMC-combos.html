@@ -86,7 +86,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bayesplot</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.8.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.9.0</span>
       </span>
     </div>
 
@@ -191,18 +191,21 @@
     <p>Combination plots</p>
     </div>
 
-    <pre class="usage"><span class='fu'>mcmc_combo</span>(<span class='no'>x</span>, <span class='kw'>combo</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"dens"</span>, <span class='st'>"trace"</span>), <span class='no'>...</span>, <span class='kw'>widths</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>gg_theme</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>mcmc_combo</span><span class='op'>(</span><span class='va'>x</span>, combo <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"dens"</span>, <span class='st'>"trace"</span><span class='op'>)</span>, <span class='va'>...</span>, widths <span class='op'>=</span> <span class='cn'>NULL</span>, gg_theme <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>A 3-D array, matrix, list of matrices, or data frame of MCMC draws.
-The <a href='MCMC-overview.html'>MCMC-overview</a> page provides details on how to specify each these
-allowed inputs. It is also possible to use an object with an
-<code><a href='https://rdrr.io/r/base/array.html'>as.array()</a></code> method that returns the same kind of 3-D array described on
-the <a href='MCMC-overview.html'>MCMC-overview</a> page.</p></td>
+      <td><p>An object containing MCMC draws:</p><ul>
+<li><p>A 3-D array, matrix, list of matrices, or data frame. The <a href='MCMC-overview.html'>MCMC-overview</a>
+page provides details on how to specify each these.</p></li>
+<li><p>A <code>draws</code> object from the <span class="pkg">posterior</span> package (e.g.,
+<code>draws_array</code>, <code>draws_rvars</code>, etc.).</p></li>
+<li><p>An object with an <code><a href='https://rdrr.io/r/base/array.html'>as.array()</a></code> method that returns the same kind of 3-D
+array described on the <a href='MCMC-overview.html'>MCMC-overview</a> page.</p></li>
+</ul></td>
     </tr>
     <tr>
       <th>combo</th>
@@ -257,8 +260,10 @@ a row for each parameter.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># some parameter draws to use for demonstration</span>
-<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='example-data.html'>example_mcmc_draws</a></span>()
-<span class='fu'><a href='https://rdrr.io/r/base/dim.html'>dim</a></span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; [1] 250   4   4</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/dimnames.html'>dimnames</a></span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; $Iteration
+<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='example-data.html'>example_mcmc_draws</a></span><span class='op'>(</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/dim.html'>dim</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 250   4   4</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/dimnames.html'>dimnames</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; $Iteration
 #&gt; NULL
 #&gt; 
 #&gt; $Chain
@@ -267,26 +272,30 @@ a row for each parameter.</p>
 #&gt; $Parameter
 #&gt; [1] "alpha"   "sigma"   "beta[1]" "beta[2]"
 #&gt; </div><div class='input'>
-<span class='fu'>mcmc_combo</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"alpha"</span>, <span class='st'>"sigma"</span>))</div><div class='img'><img src='MCMC-combos-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>mcmc_combo</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"alpha"</span>, <span class='st'>"sigma"</span>), <span class='kw'>widths</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>2</span>))</div><div class='img'><img src='MCMC-combos-2.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'>mcmc_combo</span><span class='op'>(</span><span class='va'>x</span>, pars <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"alpha"</span>, <span class='st'>"sigma"</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='img'><img src='MCMC-combos-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>mcmc_combo</span><span class='op'>(</span><span class='va'>x</span>, pars <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"alpha"</span>, <span class='st'>"sigma"</span><span class='op'>)</span>, widths <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='img'><img src='MCMC-combos-2.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># \donttest{</span>
 <span class='co'># change second plot, show log(sigma) instead of sigma,</span>
 <span class='co'># and remove the legends</span>
-<span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"mix-blue-red"</span>)
-<span class='fu'>mcmc_combo</span>(
- <span class='no'>x</span>,
- <span class='kw'>combo</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"dens_overlay"</span>, <span class='st'>"trace"</span>),
- <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"alpha"</span>, <span class='st'>"sigma"</span>),
- <span class='kw'>transformations</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>sigma</span> <span class='kw'>=</span> <span class='st'>"log"</span>),
- <span class='kw'>gg_theme</span> <span class='kw'>=</span> <span class='fu'><a href='bayesplot-helpers.html'>legend_none</a></span>()
-)</div><div class='img'><img src='MCMC-combos-3.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span><span class='op'>(</span><span class='st'>"mix-blue-red"</span><span class='op'>)</span>
+<span class='fu'>mcmc_combo</span><span class='op'>(</span>
+ <span class='va'>x</span>,
+ combo <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"dens_overlay"</span>, <span class='st'>"trace"</span><span class='op'>)</span>,
+ pars <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"alpha"</span>, <span class='st'>"sigma"</span><span class='op'>)</span>,
+ transformations <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>sigma <span class='op'>=</span> <span class='st'>"log"</span><span class='op'>)</span>,
+ gg_theme <span class='op'>=</span> <span class='fu'><a href='bayesplot-helpers.html'>legend_none</a></span><span class='op'>(</span><span class='op'>)</span>
+<span class='op'>)</span>
+</div><div class='img'><img src='MCMC-combos-3.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># same thing but this time also change the entire ggplot theme</span>
-<span class='fu'>mcmc_combo</span>(
- <span class='no'>x</span>,
- <span class='kw'>combo</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"dens_overlay"</span>, <span class='st'>"trace"</span>),
- <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"alpha"</span>, <span class='st'>"sigma"</span>),
- <span class='kw'>transformations</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>sigma</span> <span class='kw'>=</span> <span class='st'>"log"</span>),
- <span class='kw'>gg_theme</span> <span class='kw'>=</span> <span class='kw pkg'>ggplot2</span><span class='kw ns'>::</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggtheme.html'>theme_gray</a></span>() + <span class='fu'><a href='bayesplot-helpers.html'>legend_none</a></span>()
-)</div><div class='img'><img src='MCMC-combos-4.png' alt='' width='700' height='433' /></div><div class='input'># }
+<span class='fu'>mcmc_combo</span><span class='op'>(</span>
+ <span class='va'>x</span>,
+ combo <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"dens_overlay"</span>, <span class='st'>"trace"</span><span class='op'>)</span>,
+ pars <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"alpha"</span>, <span class='st'>"sigma"</span><span class='op'>)</span>,
+ transformations <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>sigma <span class='op'>=</span> <span class='st'>"log"</span><span class='op'>)</span>,
+ gg_theme <span class='op'>=</span> <span class='fu'>ggplot2</span><span class='fu'>::</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggtheme.html'>theme_gray</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span> <span class='fu'><a href='bayesplot-helpers.html'>legend_none</a></span><span class='op'>(</span><span class='op'>)</span>
+<span class='op'>)</span>
+</div><div class='img'><img src='MCMC-combos-4.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># }</span>
 
 </div></pre>
   </div>
@@ -304,7 +313,7 @@ a row for each parameter.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Trace plots of MCMC draws — MCMC-traces • bayesplot</title>
+<title>Trace and rank plots of MCMC draws — MCMC-traces • bayesplot</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -52,8 +52,8 @@
 
 
 
-<meta property="og:title" content="Trace plots of MCMC draws — MCMC-traces" />
-<meta property="og:description" content="Trace plot (or traceplot) of MCMC draws. See the Plot Descriptions
+<meta property="og:title" content="Trace and rank plots of MCMC draws — MCMC-traces" />
+<meta property="og:description" content="Trace and rank plots of MCMC draws. See the Plot Descriptions
 section, below, for details." />
 <meta property="og:image" content="https://mc-stan.org/bayesplot/logo.png" />
 
@@ -87,7 +87,7 @@ section, below, for details." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bayesplot</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.8.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.9.0</span>
       </span>
     </div>
 
@@ -183,91 +183,94 @@ section, below, for details." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Trace plots of MCMC draws</h1>
+    <h1>Trace and rank plots of MCMC draws</h1>
     <small class="dont-index">Source: <a href='https://github.com/stan-dev/bayesplot/blob/master/R/mcmc-traces.R'><code>R/mcmc-traces.R</code></a></small>
     <div class="hidden name"><code>MCMC-traces.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Trace plot (or traceplot) of MCMC draws. See the <strong>Plot Descriptions</strong>
+    <p>Trace and rank plots of MCMC draws. See the <strong>Plot Descriptions</strong>
 section, below, for details.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>mcmc_trace</span>(
-  <span class='no'>x</span>,
-  <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span>(),
-  <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span>(),
-  <span class='kw'>transformations</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(),
-  <span class='no'>...</span>,
-  <span class='kw'>facet_args</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(),
-  <span class='kw'>n_warmup</span> <span class='kw'>=</span> <span class='fl'>0</span>,
-  <span class='kw'>iter1</span> <span class='kw'>=</span> <span class='fl'>0</span>,
-  <span class='kw'>window</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>size</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>np</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>np_style</span> <span class='kw'>=</span> <span class='fu'>trace_style_np</span>(),
-  <span class='kw'>divergences</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
-)
+    <pre class="usage"><span class='fu'>mcmc_trace</span><span class='op'>(</span>
+  <span class='va'>x</span>,
+  pars <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span><span class='op'>(</span><span class='op'>)</span>,
+  regex_pars <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span><span class='op'>(</span><span class='op'>)</span>,
+  transformations <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>,
+  <span class='va'>...</span>,
+  facet_args <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>,
+  n_warmup <span class='op'>=</span> <span class='fl'>0</span>,
+  iter1 <span class='op'>=</span> <span class='fl'>0</span>,
+  window <span class='op'>=</span> <span class='cn'>NULL</span>,
+  size <span class='op'>=</span> <span class='cn'>NULL</span>,
+  np <span class='op'>=</span> <span class='cn'>NULL</span>,
+  np_style <span class='op'>=</span> <span class='fu'>trace_style_np</span><span class='op'>(</span><span class='op'>)</span>,
+  divergences <span class='op'>=</span> <span class='cn'>NULL</span>
+<span class='op'>)</span>
 
-<span class='fu'>mcmc_trace_highlight</span>(
-  <span class='no'>x</span>,
-  <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span>(),
-  <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span>(),
-  <span class='kw'>transformations</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(),
-  <span class='no'>...</span>,
-  <span class='kw'>facet_args</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(),
-  <span class='kw'>n_warmup</span> <span class='kw'>=</span> <span class='fl'>0</span>,
-  <span class='kw'>window</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>size</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.2</span>,
-  <span class='kw'>highlight</span> <span class='kw'>=</span> <span class='fl'>1</span>
-)
+<span class='fu'>mcmc_trace_highlight</span><span class='op'>(</span>
+  <span class='va'>x</span>,
+  pars <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span><span class='op'>(</span><span class='op'>)</span>,
+  regex_pars <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span><span class='op'>(</span><span class='op'>)</span>,
+  transformations <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>,
+  <span class='va'>...</span>,
+  facet_args <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>,
+  n_warmup <span class='op'>=</span> <span class='fl'>0</span>,
+  window <span class='op'>=</span> <span class='cn'>NULL</span>,
+  size <span class='op'>=</span> <span class='cn'>NULL</span>,
+  alpha <span class='op'>=</span> <span class='fl'>0.2</span>,
+  highlight <span class='op'>=</span> <span class='fl'>1</span>
+<span class='op'>)</span>
 
-<span class='fu'>trace_style_np</span>(<span class='kw'>div_color</span> <span class='kw'>=</span> <span class='st'>"red"</span>, <span class='kw'>div_size</span> <span class='kw'>=</span> <span class='fl'>0.25</span>, <span class='kw'>div_alpha</span> <span class='kw'>=</span> <span class='fl'>1</span>)
+<span class='fu'>trace_style_np</span><span class='op'>(</span>div_color <span class='op'>=</span> <span class='st'>"red"</span>, div_size <span class='op'>=</span> <span class='fl'>0.25</span>, div_alpha <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>
 
-<span class='fu'>mcmc_rank_overlay</span>(
-  <span class='no'>x</span>,
-  <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span>(),
-  <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span>(),
-  <span class='kw'>transformations</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(),
-  <span class='kw'>facet_args</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(),
-  <span class='no'>...</span>,
-  <span class='kw'>n_bins</span> <span class='kw'>=</span> <span class='fl'>20</span>,
-  <span class='kw'>ref_line</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
-)
+<span class='fu'>mcmc_rank_overlay</span><span class='op'>(</span>
+  <span class='va'>x</span>,
+  pars <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span><span class='op'>(</span><span class='op'>)</span>,
+  regex_pars <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span><span class='op'>(</span><span class='op'>)</span>,
+  transformations <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>,
+  facet_args <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>,
+  <span class='va'>...</span>,
+  n_bins <span class='op'>=</span> <span class='fl'>20</span>,
+  ref_line <span class='op'>=</span> <span class='cn'>FALSE</span>
+<span class='op'>)</span>
 
-<span class='fu'>mcmc_rank_hist</span>(
-  <span class='no'>x</span>,
-  <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span>(),
-  <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span>(),
-  <span class='kw'>transformations</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(),
-  <span class='no'>...</span>,
-  <span class='kw'>facet_args</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(),
-  <span class='kw'>n_bins</span> <span class='kw'>=</span> <span class='fl'>20</span>,
-  <span class='kw'>ref_line</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
-)
+<span class='fu'>mcmc_rank_hist</span><span class='op'>(</span>
+  <span class='va'>x</span>,
+  pars <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span><span class='op'>(</span><span class='op'>)</span>,
+  regex_pars <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span><span class='op'>(</span><span class='op'>)</span>,
+  transformations <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>,
+  <span class='va'>...</span>,
+  facet_args <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>,
+  n_bins <span class='op'>=</span> <span class='fl'>20</span>,
+  ref_line <span class='op'>=</span> <span class='cn'>FALSE</span>
+<span class='op'>)</span>
 
-<span class='fu'>mcmc_trace_data</span>(
-  <span class='no'>x</span>,
-  <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span>(),
-  <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span>(),
-  <span class='kw'>transformations</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(),
-  <span class='no'>...</span>,
-  <span class='kw'>highlight</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>n_warmup</span> <span class='kw'>=</span> <span class='fl'>0</span>,
-  <span class='kw'>iter1</span> <span class='kw'>=</span> <span class='fl'>0</span>
-)</pre>
+<span class='fu'>mcmc_trace_data</span><span class='op'>(</span>
+  <span class='va'>x</span>,
+  pars <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span><span class='op'>(</span><span class='op'>)</span>,
+  regex_pars <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span><span class='op'>(</span><span class='op'>)</span>,
+  transformations <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>,
+  <span class='va'>...</span>,
+  highlight <span class='op'>=</span> <span class='cn'>NULL</span>,
+  n_warmup <span class='op'>=</span> <span class='fl'>0</span>,
+  iter1 <span class='op'>=</span> <span class='fl'>0</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>A 3-D array, matrix, list of matrices, or data frame of MCMC draws.
-The <a href='MCMC-overview.html'>MCMC-overview</a> page provides details on how to specify each these
-allowed inputs. It is also possible to use an object with an
-<code><a href='https://rdrr.io/r/base/array.html'>as.array()</a></code> method that returns the same kind of 3-D array described on
-the <a href='MCMC-overview.html'>MCMC-overview</a> page.</p></td>
+      <td><p>An object containing MCMC draws:</p><ul>
+<li><p>A 3-D array, matrix, list of matrices, or data frame. The <a href='MCMC-overview.html'>MCMC-overview</a>
+page provides details on how to specify each these.</p></li>
+<li><p>A <code>draws</code> object from the <span class="pkg">posterior</span> package (e.g.,
+<code>draws_array</code>, <code>draws_rvars</code>, etc.).</p></li>
+<li><p>An object with an <code><a href='https://rdrr.io/r/base/array.html'>as.array()</a></code> method that returns the same kind of 3-D
+array described on the <a href='MCMC-overview.html'>MCMC-overview</a> page.</p></li>
+</ul></td>
     </tr>
     <tr>
       <th>pars</th>
@@ -318,7 +321,9 @@ abbreviated for convenience in interactive use (e.g., <code>transform</code>).</
       <th>facet_args</th>
       <td><p>A named list of arguments (other than <code>facets</code>) passed
 to <code><a href='https://ggplot2.tidyverse.org/reference/facet_wrap.html'>ggplot2::facet_wrap()</a></code> or <code><a href='https://ggplot2.tidyverse.org/reference/facet_grid.html'>ggplot2::facet_grid()</a></code>
-to control faceting.</p></td>
+to control faceting. Note: if <code>scales</code> is not included in <code>facet_args</code>
+then <strong>bayesplot</strong> may use <code>scales="free"</code> as the default (depending
+on the plot) instead of the <strong>ggplot2</strong> default of <code>scales="fixed"</code>.</p></td>
     </tr>
     <tr>
       <th>n_warmup</th>
@@ -407,7 +412,7 @@ in the same data frame.</p>
 
     
 
-<dl'>
+<dl>
 <dt><code>mcmc_trace()</code></dt><dd><p>Standard trace plots of MCMC draws. For models fit using <a href='MCMC-nuts.html'>NUTS</a>,
 the <code>np</code> argument can be used to also show divergences on the trace plot.</p></dd>
 <dt><code>mcmc_trace_highlight()</code></dt><dd><p>Traces are plotted using points rather than lines and the opacity of all
@@ -457,7 +462,7 @@ for assessing convergence of MCMC. <a href='https://arxiv.org/abs/1903.08008'>ar
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

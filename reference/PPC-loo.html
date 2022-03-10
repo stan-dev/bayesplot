@@ -88,7 +88,7 @@ for details." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bayesplot</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.8.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.9.0</span>
       </span>
     </div>
 
@@ -195,85 +195,86 @@ below, and <a href='https://github.com/jgabry/bayes-vis-paper#readme'>Gabry et a
 for details.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>ppc_loo_pit_overlay</span>(
-  <span class='no'>y</span>,
-  <span class='no'>yrep</span>,
-  <span class='no'>lw</span>,
-  <span class='no'>...</span>,
-  <span class='kw'>pit</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>samples</span> <span class='kw'>=</span> <span class='fl'>100</span>,
-  <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>0.25</span>,
-  <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.7</span>,
-  <span class='kw'>boundary_correction</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>grid_len</span> <span class='kw'>=</span> <span class='fl'>512</span>,
-  <span class='kw'>bw</span> <span class='kw'>=</span> <span class='st'>"nrd0"</span>,
-  <span class='kw'>trim</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>adjust</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>kernel</span> <span class='kw'>=</span> <span class='st'>"gaussian"</span>,
-  <span class='kw'>n_dens</span> <span class='kw'>=</span> <span class='fl'>1024</span>
-)
+    <pre class="usage"><span class='fu'>ppc_loo_pit_overlay</span><span class='op'>(</span>
+  <span class='va'>y</span>,
+  <span class='va'>yrep</span>,
+  <span class='va'>lw</span>,
+  <span class='va'>...</span>,
+  pit <span class='op'>=</span> <span class='cn'>NULL</span>,
+  samples <span class='op'>=</span> <span class='fl'>100</span>,
+  size <span class='op'>=</span> <span class='fl'>0.25</span>,
+  alpha <span class='op'>=</span> <span class='fl'>0.7</span>,
+  boundary_correction <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  grid_len <span class='op'>=</span> <span class='fl'>512</span>,
+  bw <span class='op'>=</span> <span class='st'>"nrd0"</span>,
+  trim <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  adjust <span class='op'>=</span> <span class='fl'>1</span>,
+  kernel <span class='op'>=</span> <span class='st'>"gaussian"</span>,
+  n_dens <span class='op'>=</span> <span class='fl'>1024</span>
+<span class='op'>)</span>
 
-<span class='fu'>ppc_loo_pit_data</span>(
-  <span class='no'>y</span>,
-  <span class='no'>yrep</span>,
-  <span class='no'>lw</span>,
-  <span class='no'>...</span>,
-  <span class='kw'>pit</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>samples</span> <span class='kw'>=</span> <span class='fl'>100</span>,
-  <span class='kw'>bw</span> <span class='kw'>=</span> <span class='st'>"nrd0"</span>,
-  <span class='kw'>boundary_correction</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>grid_len</span> <span class='kw'>=</span> <span class='fl'>512</span>
-)
+<span class='fu'>ppc_loo_pit_data</span><span class='op'>(</span>
+  <span class='va'>y</span>,
+  <span class='va'>yrep</span>,
+  <span class='va'>lw</span>,
+  <span class='va'>...</span>,
+  pit <span class='op'>=</span> <span class='cn'>NULL</span>,
+  samples <span class='op'>=</span> <span class='fl'>100</span>,
+  bw <span class='op'>=</span> <span class='st'>"nrd0"</span>,
+  boundary_correction <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  grid_len <span class='op'>=</span> <span class='fl'>512</span>
+<span class='op'>)</span>
 
-<span class='fu'>ppc_loo_pit_qq</span>(
-  <span class='no'>y</span>,
-  <span class='no'>yrep</span>,
-  <span class='no'>lw</span>,
-  <span class='no'>pit</span>,
-  <span class='kw'>compare</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"uniform"</span>, <span class='st'>"normal"</span>),
-  <span class='no'>...</span>,
-  <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>2</span>,
-  <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>1</span>
-)
+<span class='fu'>ppc_loo_pit_qq</span><span class='op'>(</span>
+  <span class='va'>y</span>,
+  <span class='va'>yrep</span>,
+  <span class='va'>lw</span>,
+  <span class='va'>pit</span>,
+  compare <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"uniform"</span>, <span class='st'>"normal"</span><span class='op'>)</span>,
+  <span class='va'>...</span>,
+  size <span class='op'>=</span> <span class='fl'>2</span>,
+  alpha <span class='op'>=</span> <span class='fl'>1</span>
+<span class='op'>)</span>
 
-<span class='fu'>ppc_loo_pit</span>(
-  <span class='no'>y</span>,
-  <span class='no'>yrep</span>,
-  <span class='no'>lw</span>,
-  <span class='no'>pit</span>,
-  <span class='kw'>compare</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"uniform"</span>, <span class='st'>"normal"</span>),
-  <span class='no'>...</span>,
-  <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>2</span>,
-  <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>1</span>
-)
+<span class='fu'>ppc_loo_pit</span><span class='op'>(</span>
+  <span class='va'>y</span>,
+  <span class='va'>yrep</span>,
+  <span class='va'>lw</span>,
+  <span class='va'>pit</span>,
+  compare <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"uniform"</span>, <span class='st'>"normal"</span><span class='op'>)</span>,
+  <span class='va'>...</span>,
+  size <span class='op'>=</span> <span class='fl'>2</span>,
+  alpha <span class='op'>=</span> <span class='fl'>1</span>
+<span class='op'>)</span>
 
-<span class='fu'>ppc_loo_intervals</span>(
-  <span class='no'>y</span>,
-  <span class='no'>yrep</span>,
-  <span class='no'>psis_object</span>,
-  <span class='kw'>subset</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>intervals</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='no'>...</span>,
-  <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.5</span>,
-  <span class='kw'>prob_outer</span> <span class='kw'>=</span> <span class='fl'>0.9</span>,
-  <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>fatten</span> <span class='kw'>=</span> <span class='fl'>3</span>,
-  <span class='kw'>order</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"index"</span>, <span class='st'>"median"</span>)
-)
+<span class='fu'>ppc_loo_intervals</span><span class='op'>(</span>
+  <span class='va'>y</span>,
+  <span class='va'>yrep</span>,
+  <span class='va'>psis_object</span>,
+  subset <span class='op'>=</span> <span class='cn'>NULL</span>,
+  intervals <span class='op'>=</span> <span class='cn'>NULL</span>,
+  <span class='va'>...</span>,
+  prob <span class='op'>=</span> <span class='fl'>0.5</span>,
+  prob_outer <span class='op'>=</span> <span class='fl'>0.9</span>,
+  alpha <span class='op'>=</span> <span class='fl'>0.33</span>,
+  size <span class='op'>=</span> <span class='fl'>1</span>,
+  fatten <span class='op'>=</span> <span class='fl'>2.5</span>,
+  order <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"index"</span>, <span class='st'>"median"</span><span class='op'>)</span>
+<span class='op'>)</span>
 
-<span class='fu'>ppc_loo_ribbon</span>(
-  <span class='no'>y</span>,
-  <span class='no'>yrep</span>,
-  <span class='no'>lw</span>,
-  <span class='no'>psis_object</span>,
-  <span class='kw'>subset</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>intervals</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='no'>...</span>,
-  <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.5</span>,
-  <span class='kw'>prob_outer</span> <span class='kw'>=</span> <span class='fl'>0.9</span>,
-  <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.33</span>,
-  <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>0.25</span>
-)</pre>
+<span class='fu'>ppc_loo_ribbon</span><span class='op'>(</span>
+  <span class='va'>y</span>,
+  <span class='va'>yrep</span>,
+  <span class='va'>lw</span>,
+  <span class='va'>psis_object</span>,
+  subset <span class='op'>=</span> <span class='cn'>NULL</span>,
+  intervals <span class='op'>=</span> <span class='cn'>NULL</span>,
+  <span class='va'>...</span>,
+  prob <span class='op'>=</span> <span class='fl'>0.5</span>,
+  prob_outer <span class='op'>=</span> <span class='fl'>0.9</span>,
+  alpha <span class='op'>=</span> <span class='fl'>0.33</span>,
+  size <span class='op'>=</span> <span class='fl'>0.25</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -284,12 +285,13 @@ for details.</p>
     </tr>
     <tr>
       <th>yrep</th>
-      <td><p>An \(S\) by \(N\) matrix of draws from the posterior
-predictive distribution, where \(S\) is the size of the posterior sample
-(or subset of the posterior sample used to generate <code>yrep</code>) and \(N\) is
-the number of observations (the length of <code>y</code>). The columns of <code>yrep</code>
-should be in the same order as the data points in <code>y</code> for the plots to make
-sense. See <strong>Details</strong> for additional instructions.</p></td>
+      <td><p>An <code>S</code> by <code>N</code> matrix of draws from the posterior (or prior)
+predictive distribution. The number of rows, <code>S</code>, is the size of the
+posterior (or prior) sample used to generate <code>yrep</code>. The number of columns,
+<code>N</code> is the number of predicted observations (<code><a href='https://rdrr.io/r/base/length.html'>length(y)</a></code>). The columns of
+<code>yrep</code> should be in the same order as the data points in <code>y</code> for the plots
+to make sense. See the <strong>Details</strong> and <strong>Plot Descriptions</strong> sections for
+additional advice specific to particular plots.</p></td>
     </tr>
     <tr>
       <th>lw</th>
@@ -364,7 +366,7 @@ quantiles.</p></td>
     <tr>
       <th>psis_object</th>
       <td><p>If using <strong>loo</strong> version <code>2.0.0</code> or greater, an
-object returned by the <code>psis()</code> function (or by the <code>loo()</code> function
+object returned by the <code>psis()</code> function (or by the <code><a href='https://mc-stan.org/rstanarm/reference/loo.stanreg.html'>loo()</a></code> function
 with argument <code>save_psis</code> set to <code>TRUE</code>).</p></td>
     </tr>
     <tr>
@@ -392,7 +394,7 @@ interval, median (50%), upper inner interval and upper outer interval
     </tr>
     <tr>
       <th>prob, prob_outer</th>
-      <td><p>Values between 0 and 1 indicating the desired
+      <td><p>Values between <code>0</code> and <code>1</code> indicating the desired
 probability mass to include in the inner and outer intervals. The defaults
 are <code>prob=0.5</code> and <code>prob_outer=0.9</code>.</p></td>
     </tr>
@@ -412,7 +414,7 @@ by median value from smallest (left) to largest (right).</p></td>
 
     
 
-<dl'>
+<dl>
 <dt><code>ppc_loo_pit_overlay()</code>, <code>ppc_loo_pit_qq()</code></dt><dd><p>The calibration of marginal predictions can be assessed using probability
 integral transformation (PIT) checks. LOO improves the check by avoiding the
 double use of data. See the section on marginal predictive checks in Gelman
@@ -473,75 +475,50 @@ https://www.jstor.org/stable/2986005.</p>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
 <span class='co'># \dontrun{</span>
-<span class='fu'><a href='https://rdrr.io/r/base/message.html'>suppressPackageStartupMessages</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>rstanarm</span>))
-<span class='fu'><a href='https://rdrr.io/r/base/message.html'>suppressPackageStartupMessages</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>loo</span>))
-
-<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='no'>radon</span>)</div><div class='output co'>#&gt;   floor county  log_radon log_uranium
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://mc-stan.org/rstanarm/'>rstanarm</a></span><span class='op'>)</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://mc-stan.org/loo/'>loo</a></span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>This is loo version 2.5.0</span></div><div class='output co'>#&gt; <span class='message'>- Online documentation and vignettes at mc-stan.org/loo</span></div><div class='output co'>#&gt; <span class='message'>- As of v2.0.0 loo defaults to 1 core but we recommend using as many as possible. Use the 'cores' argument or set options(mc.cores = NUM_CORES) for an entire session. </span></div><div class='output co'>#&gt; <span class='message'></span>
+#&gt; <span class='message'>Attaching package: ‘loo’</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:rstan’:</span>
+#&gt; <span class='message'></span>
+#&gt; <span class='message'>    loo</span></div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>radon</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;   floor county  log_radon log_uranium
 #&gt; 1     1 AITKIN 0.83290912  -0.6890476
 #&gt; 2     0 AITKIN 0.83290912  -0.6890476
 #&gt; 3     0 AITKIN 1.09861229  -0.6890476
 #&gt; 4     0 AITKIN 0.09531018  -0.6890476
 #&gt; 5     0  ANOKA 1.16315081  -0.8473129
-#&gt; 6     0  ANOKA 0.95551145  -0.8473129</div><div class='input'><span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://mc-stan.org/rstanarm/reference/stan_glmer.html'>stan_lmer</a></span>(
-  <span class='no'>log_radon</span> ~ <span class='no'>floor</span> + <span class='no'>log_uranium</span> + <span class='no'>floor</span>:<span class='no'>log_uranium</span>
-               + (<span class='fl'>1</span> + <span class='no'>floor</span> <span class='kw'>|</span> <span class='no'>county</span>),
-  <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>radon</span>,
-  <span class='kw'>iter</span> <span class='kw'>=</span> <span class='fl'>1000</span>,
-  <span class='kw'>chains</span> <span class='kw'>=</span> <span class='fl'>2</span>,  <span class='co'># cores = 2</span>
-  <span class='kw'>refresh</span> <span class='kw'>=</span> <span class='fl'>500</span>
- )</div><div class='output co'>#&gt; 
-#&gt; SAMPLING FOR MODEL 'continuous' NOW (CHAIN 1).
-#&gt; Chain 1: 
-#&gt; Chain 1: Gradient evaluation took 0.000595 seconds
-#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 5.95 seconds.
-#&gt; Chain 1: Adjust your expectations accordingly!
-#&gt; Chain 1: 
-#&gt; Chain 1: 
-#&gt; Chain 1: Iteration:   1 / 1000 [  0%]  (Warmup)
-#&gt; Chain 1: Iteration: 500 / 1000 [ 50%]  (Warmup)
-#&gt; Chain 1: Iteration: 501 / 1000 [ 50%]  (Sampling)
-#&gt; Chain 1: Iteration: 1000 / 1000 [100%]  (Sampling)
-#&gt; Chain 1: 
-#&gt; Chain 1:  Elapsed Time: 14.7332 seconds (Warm-up)
-#&gt; Chain 1:                3.38318 seconds (Sampling)
-#&gt; Chain 1:                18.1164 seconds (Total)
-#&gt; Chain 1: 
-#&gt; 
-#&gt; SAMPLING FOR MODEL 'continuous' NOW (CHAIN 2).
-#&gt; Chain 2: 
-#&gt; Chain 2: Gradient evaluation took 0.000193 seconds
-#&gt; Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 1.93 seconds.
-#&gt; Chain 2: Adjust your expectations accordingly!
-#&gt; Chain 2: 
-#&gt; Chain 2: 
-#&gt; Chain 2: Iteration:   1 / 1000 [  0%]  (Warmup)
-#&gt; Chain 2: Iteration: 500 / 1000 [ 50%]  (Warmup)
-#&gt; Chain 2: Iteration: 501 / 1000 [ 50%]  (Sampling)
-#&gt; Chain 2: Iteration: 1000 / 1000 [100%]  (Sampling)
-#&gt; Chain 2: 
-#&gt; Chain 2:  Elapsed Time: 12.655 seconds (Warm-up)
-#&gt; Chain 2:                3.35926 seconds (Sampling)
-#&gt; Chain 2:                16.0142 seconds (Total)
-#&gt; Chain 2: </div><div class='output co'>#&gt; <span class='warning'>Warning: Bulk Effective Samples Size (ESS) is too low, indicating posterior means and medians may be unreliable.</span>
-#&gt; <span class='warning'>Running the chains for more iterations may help. See</span>
-#&gt; <span class='warning'>http://mc-stan.org/misc/warnings.html#bulk-ess</span></div><div class='input'><span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='no'>radon</span>$<span class='no'>log_radon</span>
-<span class='no'>yrep</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://mc-stan.org/rstanarm/reference/posterior_predict.stanreg.html'>posterior_predict</a></span>(<span class='no'>fit</span>)
+#&gt; 6     0  ANOKA 0.95551145  -0.8473129</div><div class='input'><span class='va'>fit</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://mc-stan.org/rstanarm/reference/stan_glmer.html'>stan_lmer</a></span><span class='op'>(</span>
+  <span class='va'>log_radon</span> <span class='op'>~</span> <span class='va'>floor</span> <span class='op'>+</span> <span class='va'>log_uranium</span> <span class='op'>+</span> <span class='va'>floor</span><span class='op'>:</span><span class='va'>log_uranium</span>
+               <span class='op'>+</span> <span class='op'>(</span><span class='fl'>1</span> <span class='op'>+</span> <span class='va'>floor</span> <span class='op'>|</span> <span class='va'>county</span><span class='op'>)</span>,
+  data <span class='op'>=</span> <span class='va'>radon</span>,
+  iter <span class='op'>=</span> <span class='fl'>1000</span>,
+  chains <span class='op'>=</span> <span class='fl'>2</span>,
+  cores <span class='op'>=</span> <span class='fl'>2</span>
+ <span class='op'>)</span>
+<span class='va'>y</span> <span class='op'>&lt;-</span> <span class='va'>radon</span><span class='op'>$</span><span class='va'>log_radon</span>
+<span class='va'>yrep</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://mc-stan.org/rstanarm/reference/posterior_predict.stanreg.html'>posterior_predict</a></span><span class='op'>(</span><span class='va'>fit</span><span class='op'>)</span>
 
-<span class='no'>loo1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://mc-stan.org/rstanarm/reference/loo.stanreg.html'>loo</a></span>(<span class='no'>fit</span>, <span class='kw'>save_psis</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>cores</span> <span class='kw'>=</span> <span class='fl'>2</span>)
-<span class='no'>psis1</span> <span class='kw'>&lt;-</span> <span class='no'>loo1</span>$<span class='no'>psis_object</span>
-<span class='no'>lw</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/weights.html'>weights</a></span>(<span class='no'>psis1</span>)
+<span class='va'>loo1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://mc-stan.org/rstanarm/reference/loo.stanreg.html'>loo</a></span><span class='op'>(</span><span class='va'>fit</span>, save_psis <span class='op'>=</span> <span class='cn'>TRUE</span>, cores <span class='op'>=</span> <span class='fl'>4</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='warning'>Warning: Found 2 observation(s) with a pareto_k &gt; 0.7. We recommend calling 'loo' again with argument 'k_threshold = 0.7' in order to calculate the ELPD without the assumption that these observations are negligible. This will refit the model 2 times to compute the ELPDs for the problematic observations directly.</span></div><div class='input'><span class='va'>psis1</span> <span class='op'>&lt;-</span> <span class='va'>loo1</span><span class='op'>$</span><span class='va'>psis_object</span>
+<span class='va'>lw</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/weights.html'>weights</a></span><span class='op'>(</span><span class='va'>psis1</span><span class='op'>)</span> <span class='co'># normalized log weights</span>
 
 <span class='co'># marginal predictive check using LOO probability integral transform</span>
-<span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"orange"</span>)
-<span class='fu'>ppc_loo_pit_overlay</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='kw'>lw</span> <span class='kw'>=</span> <span class='no'>lw</span>)</div><div class='output co'>#&gt; <span class='message'>NOTE: The kernel density estimate assumes continuous observations and is not optimal for discrete observations.</span></div><div class='img'><img src='PPC-loo-1.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='fu'>ppc_loo_pit_qq</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='kw'>lw</span> <span class='kw'>=</span> <span class='no'>lw</span>)</div><div class='img'><img src='PPC-loo-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>ppc_loo_pit_qq</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='kw'>lw</span> <span class='kw'>=</span> <span class='no'>lw</span>, <span class='kw'>compare</span> <span class='kw'>=</span> <span class='st'>"normal"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 5 rows containing non-finite values (stat_qq).</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 5 rows containing non-finite values (stat_qq_line).</span></div><div class='img'><img src='PPC-loo-3.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span><span class='op'>(</span><span class='st'>"orange"</span><span class='op'>)</span>
+<span class='fu'>ppc_loo_pit_overlay</span><span class='op'>(</span><span class='va'>y</span>, <span class='va'>yrep</span>, lw <span class='op'>=</span> <span class='va'>lw</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>NOTE: The kernel density estimate assumes continuous observations and is not optimal for discrete observations.</span></div><div class='img'><img src='PPC-loo-1.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'>ppc_loo_pit_qq</span><span class='op'>(</span><span class='va'>y</span>, <span class='va'>yrep</span>, lw <span class='op'>=</span> <span class='va'>lw</span><span class='op'>)</span>
+</div><div class='img'><img src='PPC-loo-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>ppc_loo_pit_qq</span><span class='op'>(</span><span class='va'>y</span>, <span class='va'>yrep</span>, lw <span class='op'>=</span> <span class='va'>lw</span>, compare <span class='op'>=</span> <span class='st'>"normal"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='warning'>Warning: NaNs produced</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 5 rows containing non-finite values (stat_qq).</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 5 rows containing non-finite values (stat_qq_line).</span></div><div class='img'><img src='PPC-loo-3.png' alt='' width='700' height='433' /></div><div class='input'>
 
 <span class='co'># loo predictive intervals vs observations</span>
-<span class='no'>keep_obs</span> <span class='kw'>&lt;-</span> <span class='fl'>1</span>:<span class='fl'>50</span>
-<span class='fu'>ppc_loo_intervals</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='kw'>psis_object</span> <span class='kw'>=</span> <span class='no'>psis1</span>, <span class='kw'>subset</span> <span class='kw'>=</span> <span class='no'>keep_obs</span>)</div><div class='img'><img src='PPC-loo-4.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"gray"</span>)
-<span class='fu'>ppc_loo_intervals</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='kw'>psis_object</span> <span class='kw'>=</span> <span class='no'>psis1</span>, <span class='kw'>subset</span> <span class='kw'>=</span> <span class='no'>keep_obs</span>,
-                  <span class='kw'>order</span> <span class='kw'>=</span> <span class='st'>"median"</span>)</div><div class='img'><img src='PPC-loo-5.png' alt='' width='700' height='433' /></div><div class='input'># }
+<span class='va'>keep_obs</span> <span class='op'>&lt;-</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>50</span>
+<span class='fu'>ppc_loo_intervals</span><span class='op'>(</span><span class='va'>y</span>, <span class='va'>yrep</span>, psis_object <span class='op'>=</span> <span class='va'>psis1</span>, subset <span class='op'>=</span> <span class='va'>keep_obs</span><span class='op'>)</span>
+</div><div class='img'><img src='PPC-loo-4.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span><span class='op'>(</span><span class='st'>"gray"</span><span class='op'>)</span>
+<span class='fu'>ppc_loo_intervals</span><span class='op'>(</span><span class='va'>y</span>, <span class='va'>yrep</span>, psis_object <span class='op'>=</span> <span class='va'>psis1</span>, subset <span class='op'>=</span> <span class='va'>keep_obs</span>,
+                  order <span class='op'>=</span> <span class='st'>"median"</span><span class='op'>)</span>
+</div><div class='img'><img src='PPC-loo-5.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># }</span>
 
 </div></pre>
   </div>
@@ -559,7 +536,7 @@ https://www.jstor.org/stable/2986005.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

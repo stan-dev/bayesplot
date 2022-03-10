@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Get or view the names of available plotting functions — available_ppc • bayesplot</title>
+<title>Get or view the names of available plotting or data functions — available_ppc • bayesplot</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -52,8 +52,8 @@
 
 
 
-<meta property="og:title" content="Get or view the names of available plotting functions — available_ppc" />
-<meta property="og:description" content="Get or view the names of available plotting functions" />
+<meta property="og:title" content="Get or view the names of available plotting or data functions — available_ppc" />
+<meta property="og:description" content="Get or view the names of available plotting or data functions" />
 <meta property="og:image" content="https://mc-stan.org/bayesplot/logo.png" />
 
 
@@ -86,7 +86,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bayesplot</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.8.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.9.0</span>
       </span>
     </div>
 
@@ -182,18 +182,25 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Get or view the names of available plotting functions</h1>
+    <h1>Get or view the names of available plotting or data functions</h1>
     <small class="dont-index">Source: <a href='https://github.com/stan-dev/bayesplot/blob/master/R/available-module-functions.R'><code>R/available-module-functions.R</code></a></small>
     <div class="hidden name"><code>available_ppc.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Get or view the names of available plotting functions</p>
+    <p>Get or view the names of available plotting or data functions</p>
     </div>
 
-    <pre class="usage"><span class='fu'>available_ppc</span>(<span class='kw'>pattern</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>fixed</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>invert</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+    <pre class="usage"><span class='fu'>available_ppc</span><span class='op'>(</span>pattern <span class='op'>=</span> <span class='cn'>NULL</span>, fixed <span class='op'>=</span> <span class='cn'>FALSE</span>, invert <span class='op'>=</span> <span class='cn'>FALSE</span>, plots_only <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 
-<span class='fu'>available_mcmc</span>(<span class='kw'>pattern</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>fixed</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>invert</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+<span class='fu'>available_ppd</span><span class='op'>(</span>pattern <span class='op'>=</span> <span class='cn'>NULL</span>, fixed <span class='op'>=</span> <span class='cn'>FALSE</span>, invert <span class='op'>=</span> <span class='cn'>FALSE</span>, plots_only <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+
+<span class='fu'>available_mcmc</span><span class='op'>(</span>
+  pattern <span class='op'>=</span> <span class='cn'>NULL</span>,
+  fixed <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  invert <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  plots_only <span class='op'>=</span> <span class='cn'>TRUE</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -202,6 +209,12 @@
       <th>pattern, fixed, invert</th>
       <td><p>Passed to <code><a href='https://rdrr.io/r/base/grep.html'>base::grep()</a></code>.</p></td>
     </tr>
+    <tr>
+      <th>plots_only</th>
+      <td><p>If <code>TRUE</code> (the default) only plotting functions are
+searched for. If <code>FALSE</code> then functions that return data for plotting
+(functions ending in <code>_data()</code>) are also included.</p></td>
+    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
@@ -209,30 +222,26 @@
     <p>A possibly empty character vector of function names with several
 additional attributes (for use by a custom print method). If <code>pattern</code>
 is missing then the returned object contains the names of all available
-plotting functions in the <a href='MCMC-overview.html'>MCMC</a> or <a href='PPC-overview.html'>PPC</a> module, depending on
+plotting functions in the <a href='MCMC-overview.html'>MCMC</a>, <a href='PPC-overview.html'>PPC</a>, or <a href='PPD-overview.html'>PPD</a> module, depending on
 which function is called. If <code>pattern</code> is specified then a subset of
 function names is returned.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>available_mcmc</span>()</div><div class='output co'>#&gt; bayesplot MCMC module:
+    <pre class="examples"><div class='input'><span class='fu'>available_mcmc</span><span class='op'>(</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; bayesplot MCMC module:
 #&gt;   mcmc_acf
 #&gt;   mcmc_acf_bar
 #&gt;   mcmc_areas
-#&gt;   mcmc_areas_data
 #&gt;   mcmc_areas_ridges
-#&gt;   mcmc_areas_ridges_data
 #&gt;   mcmc_combo
 #&gt;   mcmc_dens
 #&gt;   mcmc_dens_chains
-#&gt;   mcmc_dens_chains_data
 #&gt;   mcmc_dens_overlay
 #&gt;   mcmc_hex
 #&gt;   mcmc_hist
 #&gt;   mcmc_hist_by_chain
 #&gt;   mcmc_intervals
-#&gt;   mcmc_intervals_data
 #&gt;   mcmc_neff
-#&gt;   mcmc_neff_data
 #&gt;   mcmc_neff_hist
 #&gt;   mcmc_nuts_acceptance
 #&gt;   mcmc_nuts_divergence
@@ -241,49 +250,90 @@ function names is returned.</p>
 #&gt;   mcmc_nuts_treedepth
 #&gt;   mcmc_pairs
 #&gt;   mcmc_parcoord
-#&gt;   mcmc_parcoord_data
 #&gt;   mcmc_rank_hist
 #&gt;   mcmc_rank_overlay
 #&gt;   mcmc_recover_hist
 #&gt;   mcmc_recover_intervals
 #&gt;   mcmc_recover_scatter
 #&gt;   mcmc_rhat
-#&gt;   mcmc_rhat_data
 #&gt;   mcmc_rhat_hist
 #&gt;   mcmc_scatter
 #&gt;   mcmc_trace
-#&gt;   mcmc_trace_data
 #&gt;   mcmc_trace_highlight
-#&gt;   mcmc_violin</div><div class='input'><span class='fu'>available_mcmc</span>(<span class='st'>"nuts"</span>)</div><div class='output co'>#&gt; bayesplot MCMC module:
+#&gt;   mcmc_violin</div><div class='input'><span class='fu'>available_mcmc</span><span class='op'>(</span><span class='st'>"nuts"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; bayesplot MCMC module:
 #&gt; (matching pattern 'nuts') 
 #&gt;   mcmc_nuts_acceptance
 #&gt;   mcmc_nuts_divergence
 #&gt;   mcmc_nuts_energy
 #&gt;   mcmc_nuts_stepsize
-#&gt;   mcmc_nuts_treedepth</div><div class='input'><span class='fu'>available_mcmc</span>(<span class='st'>"rhat|neff"</span>)</div><div class='output co'>#&gt; bayesplot MCMC module:
+#&gt;   mcmc_nuts_treedepth</div><div class='input'><span class='fu'>available_mcmc</span><span class='op'>(</span><span class='st'>"rhat|neff"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; bayesplot MCMC module:
 #&gt; (matching pattern 'rhat|neff') 
 #&gt;   mcmc_neff
-#&gt;   mcmc_neff_data
 #&gt;   mcmc_neff_hist
 #&gt;   mcmc_rhat
-#&gt;   mcmc_rhat_data
-#&gt;   mcmc_rhat_hist</div><div class='input'><span class='fu'>available_ppc</span>(<span class='st'>"grouped"</span>)</div><div class='output co'>#&gt; bayesplot PPC module:
+#&gt;   mcmc_rhat_hist</div><div class='input'>
+<span class='fu'>available_ppc</span><span class='op'>(</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; bayesplot PPC module:
+#&gt;   ppc_bars
+#&gt;   ppc_bars_grouped
+#&gt;   ppc_boxplot
+#&gt;   ppc_dens
+#&gt;   ppc_dens_overlay
+#&gt;   ppc_dens_overlay_grouped
+#&gt;   ppc_ecdf_overlay
+#&gt;   ppc_ecdf_overlay_grouped
+#&gt;   ppc_error_binned
+#&gt;   ppc_error_hist
+#&gt;   ppc_error_hist_grouped
+#&gt;   ppc_error_scatter
+#&gt;   ppc_error_scatter_avg
+#&gt;   ppc_error_scatter_avg_grouped
+#&gt;   ppc_error_scatter_avg_vs_x
+#&gt;   ppc_freqpoly
+#&gt;   ppc_freqpoly_grouped
+#&gt;   ppc_hist
+#&gt;   ppc_intervals
+#&gt;   ppc_intervals_grouped
+#&gt;   ppc_km_overlay
+#&gt;   ppc_km_overlay_grouped
+#&gt;   ppc_loo_intervals
+#&gt;   ppc_loo_pit
+#&gt;   ppc_loo_pit_overlay
+#&gt;   ppc_loo_pit_qq
+#&gt;   ppc_loo_ribbon
+#&gt;   ppc_ribbon
+#&gt;   ppc_ribbon_grouped
+#&gt;   ppc_rootogram
+#&gt;   ppc_scatter
+#&gt;   ppc_scatter_avg
+#&gt;   ppc_scatter_avg_grouped
+#&gt;   ppc_stat
+#&gt;   ppc_stat_2d
+#&gt;   ppc_stat_freqpoly
+#&gt;   ppc_stat_freqpoly_grouped
+#&gt;   ppc_stat_grouped
+#&gt;   ppc_violin_grouped</div><div class='input'><span class='fu'>available_ppc</span><span class='op'>(</span><span class='st'>"grouped"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; bayesplot PPC module:
 #&gt; (matching pattern 'grouped') 
 #&gt;   ppc_bars_grouped
 #&gt;   ppc_dens_overlay_grouped
 #&gt;   ppc_ecdf_overlay_grouped
 #&gt;   ppc_error_hist_grouped
+#&gt;   ppc_error_scatter_avg_grouped
 #&gt;   ppc_freqpoly_grouped
 #&gt;   ppc_intervals_grouped
+#&gt;   ppc_km_overlay_grouped
 #&gt;   ppc_ribbon_grouped
 #&gt;   ppc_scatter_avg_grouped
 #&gt;   ppc_stat_freqpoly_grouped
 #&gt;   ppc_stat_grouped
-#&gt;   ppc_violin_grouped</div><div class='input'><span class='fu'>available_ppc</span>(<span class='st'>"grouped"</span>, <span class='kw'>invert</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; bayesplot PPC module:
+#&gt;   ppc_violin_grouped</div><div class='input'><span class='fu'>available_ppc</span><span class='op'>(</span><span class='st'>"grouped"</span>, invert <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; bayesplot PPC module:
 #&gt; (excluding pattern 'grouped') 
 #&gt;   ppc_bars
 #&gt;   ppc_boxplot
-#&gt;   ppc_data
 #&gt;   ppc_dens
 #&gt;   ppc_dens_overlay
 #&gt;   ppc_ecdf_overlay
@@ -295,8 +345,73 @@ function names is returned.</p>
 #&gt;   ppc_freqpoly
 #&gt;   ppc_hist
 #&gt;   ppc_intervals
-#&gt;   ppc_intervals_data
 #&gt;   ppc_km_overlay
+#&gt;   ppc_loo_intervals
+#&gt;   ppc_loo_pit
+#&gt;   ppc_loo_pit_overlay
+#&gt;   ppc_loo_pit_qq
+#&gt;   ppc_loo_ribbon
+#&gt;   ppc_ribbon
+#&gt;   ppc_rootogram
+#&gt;   ppc_scatter
+#&gt;   ppc_scatter_avg
+#&gt;   ppc_stat
+#&gt;   ppc_stat_2d
+#&gt;   ppc_stat_freqpoly</div><div class='input'>
+<span class='fu'>available_ppd</span><span class='op'>(</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; bayesplot PPD module:
+#&gt;   ppd_boxplot
+#&gt;   ppd_dens
+#&gt;   ppd_dens_overlay
+#&gt;   ppd_ecdf_overlay
+#&gt;   ppd_freqpoly
+#&gt;   ppd_freqpoly_grouped
+#&gt;   ppd_hist
+#&gt;   ppd_intervals
+#&gt;   ppd_intervals_grouped
+#&gt;   ppd_ribbon
+#&gt;   ppd_ribbon_grouped
+#&gt;   ppd_stat
+#&gt;   ppd_stat_2d
+#&gt;   ppd_stat_freqpoly
+#&gt;   ppd_stat_freqpoly_grouped
+#&gt;   ppd_stat_grouped</div><div class='input'><span class='fu'>available_ppd</span><span class='op'>(</span><span class='st'>"grouped"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; bayesplot PPD module:
+#&gt; (matching pattern 'grouped') 
+#&gt;   ppd_freqpoly_grouped
+#&gt;   ppd_intervals_grouped
+#&gt;   ppd_ribbon_grouped
+#&gt;   ppd_stat_freqpoly_grouped
+#&gt;   ppd_stat_grouped</div><div class='input'>
+<span class='co'># can also see which functions that return data are available</span>
+<span class='fu'>available_ppc</span><span class='op'>(</span>plots_only <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; bayesplot PPC module:
+#&gt;   ppc_bars
+#&gt;   ppc_bars_data
+#&gt;   ppc_bars_grouped
+#&gt;   ppc_boxplot
+#&gt;   ppc_data
+#&gt;   ppc_dens
+#&gt;   ppc_dens_overlay
+#&gt;   ppc_dens_overlay_grouped
+#&gt;   ppc_ecdf_overlay
+#&gt;   ppc_ecdf_overlay_grouped
+#&gt;   ppc_error_binned
+#&gt;   ppc_error_data
+#&gt;   ppc_error_hist
+#&gt;   ppc_error_hist_grouped
+#&gt;   ppc_error_scatter
+#&gt;   ppc_error_scatter_avg
+#&gt;   ppc_error_scatter_avg_grouped
+#&gt;   ppc_error_scatter_avg_vs_x
+#&gt;   ppc_freqpoly
+#&gt;   ppc_freqpoly_grouped
+#&gt;   ppc_hist
+#&gt;   ppc_intervals
+#&gt;   ppc_intervals_data
+#&gt;   ppc_intervals_grouped
+#&gt;   ppc_km_overlay
+#&gt;   ppc_km_overlay_grouped
 #&gt;   ppc_loo_intervals
 #&gt;   ppc_loo_pit
 #&gt;   ppc_loo_pit_data
@@ -305,11 +420,49 @@ function names is returned.</p>
 #&gt;   ppc_loo_ribbon
 #&gt;   ppc_ribbon
 #&gt;   ppc_ribbon_data
+#&gt;   ppc_ribbon_grouped
 #&gt;   ppc_rootogram
 #&gt;   ppc_scatter
 #&gt;   ppc_scatter_avg
+#&gt;   ppc_scatter_avg_data
+#&gt;   ppc_scatter_avg_grouped
+#&gt;   ppc_scatter_data
 #&gt;   ppc_stat
-#&gt;   ppc_stat_2d</div><div class='input'>
+#&gt;   ppc_stat_2d
+#&gt;   ppc_stat_data
+#&gt;   ppc_stat_freqpoly
+#&gt;   ppc_stat_freqpoly_grouped
+#&gt;   ppc_stat_grouped
+#&gt;   ppc_violin_grouped</div><div class='input'>
+<span class='co'># only show the _data functions</span>
+<span class='fu'>available_ppc</span><span class='op'>(</span><span class='st'>"_data"</span>, plots_only <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; bayesplot PPC module:
+#&gt; (matching pattern '_data') 
+#&gt;   ppc_bars_data
+#&gt;   ppc_data
+#&gt;   ppc_error_data
+#&gt;   ppc_intervals_data
+#&gt;   ppc_loo_pit_data
+#&gt;   ppc_ribbon_data
+#&gt;   ppc_scatter_avg_data
+#&gt;   ppc_scatter_data
+#&gt;   ppc_stat_data</div><div class='input'><span class='fu'>available_ppd</span><span class='op'>(</span><span class='st'>"_data"</span>, plots_only <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; bayesplot PPD module:
+#&gt; (matching pattern '_data') 
+#&gt;   ppd_data
+#&gt;   ppd_intervals_data
+#&gt;   ppd_ribbon_data
+#&gt;   ppd_stat_data</div><div class='input'><span class='fu'>available_mcmc</span><span class='op'>(</span><span class='st'>"_data"</span>, plots_only <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; bayesplot MCMC module:
+#&gt; (matching pattern '_data') 
+#&gt;   mcmc_areas_data
+#&gt;   mcmc_areas_ridges_data
+#&gt;   mcmc_dens_chains_data
+#&gt;   mcmc_intervals_data
+#&gt;   mcmc_neff_data
+#&gt;   mcmc_parcoord_data
+#&gt;   mcmc_rhat_data
+#&gt;   mcmc_trace_data</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -326,7 +479,7 @@ function names is returned.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

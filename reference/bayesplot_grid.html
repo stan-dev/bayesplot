@@ -87,7 +87,7 @@ common \(x\) and/or \(y\) axes." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bayesplot</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.8.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.9.0</span>
       </span>
     </div>
 
@@ -193,17 +193,17 @@ common \(x\) and/or \(y\) axes." />
 common \(x\) and/or \(y\) axes.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>bayesplot_grid</span>(
-  <span class='no'>...</span>,
-  <span class='kw'>plots</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(),
-  <span class='kw'>xlim</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>ylim</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>grid_args</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(),
-  <span class='kw'>titles</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span>(),
-  <span class='kw'>subtitles</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span>(),
-  <span class='kw'>legends</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>save_gg_objects</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
-)</pre>
+    <pre class="usage"><span class='fu'>bayesplot_grid</span><span class='op'>(</span>
+  <span class='va'>...</span>,
+  plots <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>,
+  xlim <span class='op'>=</span> <span class='cn'>NULL</span>,
+  ylim <span class='op'>=</span> <span class='cn'>NULL</span>,
+  grid_args <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>,
+  titles <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span><span class='op'>(</span><span class='op'>)</span>,
+  subtitles <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span><span class='op'>(</span><span class='op'>)</span>,
+  legends <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  save_gg_objects <span class='op'>=</span> <span class='cn'>TRUE</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -255,38 +255,44 @@ these individual plot objects will not be available.</p></td>
 from <code><a href='https://rdrr.io/pkg/gridExtra/man/arrangeGrob.html'>gridExtra::arrangeGrob()</a></code>), which has a <code>plot</code> method.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='example-data.html'>example_y_data</a></span>()
-<span class='no'>yrep</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='example-data.html'>example_yrep_draws</a></span>()
-<span class='no'>stats</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"sd"</span>, <span class='st'>"median"</span>, <span class='st'>"max"</span>, <span class='st'>"min"</span>)
+    <pre class="examples"><div class='input'><span class='va'>y</span> <span class='op'>&lt;-</span> <span class='fu'><a href='example-data.html'>example_y_data</a></span><span class='op'>(</span><span class='op'>)</span>
+<span class='va'>yrep</span> <span class='op'>&lt;-</span> <span class='fu'><a href='example-data.html'>example_yrep_draws</a></span><span class='op'>(</span><span class='op'>)</span>
+<span class='va'>stats</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"sd"</span>, <span class='st'>"median"</span>, <span class='st'>"max"</span>, <span class='st'>"min"</span><span class='op'>)</span>
 
-<span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"pink"</span>)
-<span class='fu'>bayesplot_grid</span>(
- <span class='kw'>plots</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>lapply</a></span>(<span class='no'>stats</span>, <span class='kw'>function</span>(<span class='no'>s</span>) <span class='fu'><a href='PPC-test-statistics.html'>ppc_stat</a></span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='kw'>stat</span> <span class='kw'>=</span> <span class='no'>s</span>)),
- <span class='kw'>titles</span> <span class='kw'>=</span> <span class='no'>stats</span>,
- <span class='kw'>legends</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
- <span class='kw'>grid_args</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>1</span>)
-)</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='bayesplot_grid-1.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span><span class='op'>(</span><span class='st'>"pink"</span><span class='op'>)</span>
+<span class='fu'>bayesplot_grid</span><span class='op'>(</span>
+ plots <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>lapply</a></span><span class='op'>(</span><span class='va'>stats</span>, <span class='kw'>function</span><span class='op'>(</span><span class='va'>s</span><span class='op'>)</span> <span class='fu'><a href='PPC-test-statistics.html'>ppc_stat</a></span><span class='op'>(</span><span class='va'>y</span>, <span class='va'>yrep</span>, stat <span class='op'>=</span> <span class='va'>s</span><span class='op'>)</span><span class='op'>)</span>,
+ titles <span class='op'>=</span> <span class='va'>stats</span>,
+ legends <span class='op'>=</span> <span class='cn'>FALSE</span>,
+ grid_args <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>ncol <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>
+<span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='bayesplot_grid-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># \dontrun{</span>
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>rstanarm</span>)
-<span class='no'>mtcars</span>$<span class='no'>log_mpg</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span>(<span class='no'>mtcars</span>$<span class='no'>mpg</span>)
-<span class='no'>fit1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://mc-stan.org/rstanarm/reference/stan_glm.html'>stan_glm</a></span>(<span class='no'>mpg</span> ~ <span class='no'>wt</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>mtcars</span>, <span class='kw'>refresh</span> <span class='kw'>=</span> <span class='fl'>0</span>)
-<span class='no'>fit2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://mc-stan.org/rstanarm/reference/stan_glm.html'>stan_glm</a></span>(<span class='no'>log_mpg</span> ~ <span class='no'>wt</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>mtcars</span>, <span class='kw'>refresh</span> <span class='kw'>=</span> <span class='fl'>0</span>)
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://mc-stan.org/rstanarm/'>rstanarm</a></span><span class='op'>)</span>
+<span class='va'>mtcars</span><span class='op'>$</span><span class='va'>log_mpg</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span><span class='op'>(</span><span class='va'>mtcars</span><span class='op'>$</span><span class='va'>mpg</span><span class='op'>)</span>
+<span class='va'>fit1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://mc-stan.org/rstanarm/reference/stan_glm.html'>stan_glm</a></span><span class='op'>(</span><span class='va'>mpg</span> <span class='op'>~</span> <span class='va'>wt</span>, data <span class='op'>=</span> <span class='va'>mtcars</span>, refresh <span class='op'>=</span> <span class='fl'>0</span><span class='op'>)</span>
+<span class='va'>fit2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://mc-stan.org/rstanarm/reference/stan_glm.html'>stan_glm</a></span><span class='op'>(</span><span class='va'>log_mpg</span> <span class='op'>~</span> <span class='va'>wt</span>, data <span class='op'>=</span> <span class='va'>mtcars</span>, refresh <span class='op'>=</span> <span class='fl'>0</span><span class='op'>)</span>
 
-<span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='no'>mtcars</span>$<span class='no'>mpg</span>
-<span class='no'>yrep1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://mc-stan.org/rstanarm/reference/posterior_predict.stanreg.html'>posterior_predict</a></span>(<span class='no'>fit1</span>, <span class='kw'>draws</span> <span class='kw'>=</span> <span class='fl'>50</span>)
-<span class='no'>yrep2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://mc-stan.org/rstanarm/reference/posterior_predict.stanreg.html'>posterior_predict</a></span>(<span class='no'>fit2</span>, <span class='kw'>fun</span> <span class='kw'>=</span> <span class='no'>exp</span>, <span class='kw'>draws</span> <span class='kw'>=</span> <span class='fl'>50</span>)
+<span class='va'>y</span> <span class='op'>&lt;-</span> <span class='va'>mtcars</span><span class='op'>$</span><span class='va'>mpg</span>
+<span class='va'>yrep1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://mc-stan.org/rstanarm/reference/posterior_predict.stanreg.html'>posterior_predict</a></span><span class='op'>(</span><span class='va'>fit1</span>, draws <span class='op'>=</span> <span class='fl'>50</span><span class='op'>)</span>
+<span class='va'>yrep2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://mc-stan.org/rstanarm/reference/posterior_predict.stanreg.html'>posterior_predict</a></span><span class='op'>(</span><span class='va'>fit2</span>, fun <span class='op'>=</span> <span class='va'>exp</span>, draws <span class='op'>=</span> <span class='fl'>50</span><span class='op'>)</span>
 
-<span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"blue"</span>)
-<span class='no'>ppc1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='PPC-distributions.html'>ppc_dens_overlay</a></span>(<span class='no'>y</span>, <span class='no'>yrep1</span>)
-<span class='no'>ppc1</span></div><div class='img'><img src='bayesplot_grid-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='no'>ppc1</span> + <span class='fu'><a href='bayesplot-helpers.html'>yaxis_text</a></span>()</div><div class='img'><img src='bayesplot_grid-3.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"red"</span>)
-<span class='no'>ppc2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='PPC-distributions.html'>ppc_dens_overlay</a></span>(<span class='no'>y</span>, <span class='no'>yrep2</span>)
-<span class='fu'>bayesplot_grid</span>(<span class='no'>ppc1</span>, <span class='no'>ppc2</span>)</div><div class='img'><img src='bayesplot_grid-4.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span><span class='op'>(</span><span class='st'>"blue"</span><span class='op'>)</span>
+<span class='va'>ppc1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='PPC-distributions.html'>ppc_dens_overlay</a></span><span class='op'>(</span><span class='va'>y</span>, <span class='va'>yrep1</span><span class='op'>)</span>
+<span class='va'>ppc1</span>
+</div><div class='img'><img src='bayesplot_grid-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='va'>ppc1</span> <span class='op'>+</span> <span class='fu'><a href='bayesplot-helpers.html'>yaxis_text</a></span><span class='op'>(</span><span class='op'>)</span>
+</div><div class='img'><img src='bayesplot_grid-3.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span><span class='op'>(</span><span class='st'>"red"</span><span class='op'>)</span>
+<span class='va'>ppc2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='PPC-distributions.html'>ppc_dens_overlay</a></span><span class='op'>(</span><span class='va'>y</span>, <span class='va'>yrep2</span><span class='op'>)</span>
+<span class='fu'>bayesplot_grid</span><span class='op'>(</span><span class='va'>ppc1</span>, <span class='va'>ppc2</span><span class='op'>)</span>
+</div><div class='img'><img src='bayesplot_grid-4.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># make sure the plots use the same limits for the axes</span>
-<span class='fu'>bayesplot_grid</span>(<span class='no'>ppc1</span>, <span class='no'>ppc2</span>, <span class='kw'>xlim</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(-<span class='fl'>5</span>, <span class='fl'>60</span>), <span class='kw'>ylim</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>0.2</span>))</div><div class='img'><img src='bayesplot_grid-5.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'>bayesplot_grid</span><span class='op'>(</span><span class='va'>ppc1</span>, <span class='va'>ppc2</span>, xlim <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>5</span>, <span class='fl'>60</span><span class='op'>)</span>, ylim <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>0.2</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='img'><img src='bayesplot_grid-5.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># remove the legends and add text</span>
-<span class='fu'>bayesplot_grid</span>(<span class='no'>ppc1</span>, <span class='no'>ppc2</span>, <span class='kw'>xlim</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(-<span class='fl'>5</span>, <span class='fl'>60</span>), <span class='kw'>ylim</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>0.2</span>),
-               <span class='kw'>legends</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>subtitles</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='st'>"Predicted MPG"</span>, <span class='fl'>2</span>))</div><div class='img'><img src='bayesplot_grid-6.png' alt='' width='700' height='433' /></div><div class='input'># }
+<span class='fu'>bayesplot_grid</span><span class='op'>(</span><span class='va'>ppc1</span>, <span class='va'>ppc2</span>, xlim <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>5</span>, <span class='fl'>60</span><span class='op'>)</span>, ylim <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>0.2</span><span class='op'>)</span>,
+               legends <span class='op'>=</span> <span class='cn'>FALSE</span>, subtitles <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='st'>"Predicted MPG"</span>, <span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='img'><img src='bayesplot_grid-6.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># }</span>
 
 </div></pre>
   </div>
@@ -304,7 +310,7 @@ from <code><a href='https://rdrr.io/pkg/gridExtra/man/arrangeGrob.html'>gridExtr
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

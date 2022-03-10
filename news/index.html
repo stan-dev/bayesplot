@@ -85,7 +85,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bayesplot</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.8.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.9.0</span>
       </span>
     </div>
 
@@ -185,14 +185,55 @@
       <small>Source: <a href='https://github.com/stan-dev/bayesplot/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="bayesplot-190" class="section level1">
+<h1 class="page-header" data-toc-text="1.9.0">
+<a href="#bayesplot-190" class="anchor"></a>bayesplot 1.9.0<small> 2022-03-10 </small>
+</h1>
+<ul>
+<li><p>New module PPD (posterior/prior predictive distribution) with a lot of new plotting functions with <code>ppd_</code> prefix. These functions plot draws from the prior or posterior predictive distributions (PPD) without comparing to observed data (i.e., no <code>y</code> argument). Because these are not “checks” against the observed data we use PPD instead of PPC. These plots are essentially the same as the corresponding PPC plots but without showing any observed data (e.g., <code><a href="../reference/PPD-intervals.html">ppd_intervals()</a></code> is like <code><a href="../reference/PPC-intervals.html">ppc_intervals()</a></code> but without plotting <code>y</code>). See <code><a href="../reference/PPD-overview.html">help("PPD-overview")</a></code> for details. (<a href='https://github.com/stan-dev/bayesplot/issues/151'>#151</a>, <a href='https://github.com/stan-dev/bayesplot/issues/222'>#222</a>)</p></li>
+<li>
+<p>All PPC categories now have one or more <code>_data()</code> functions that return the data frame used for plotting (<a href='https://github.com/stan-dev/bayesplot/issues/97'>#97</a>, <a href='https://github.com/stan-dev/bayesplot/issues/222'>#222</a>). Many of these have already been in previous releases, but the new ones in this release are:</p>
+<ul>
+<li><code><a href="../reference/PPC-discrete.html">ppc_bars_data()</a></code></li>
+<li><code><a href="../reference/PPC-errors.html">ppc_error_data()</a></code></li>
+<li><code>ppc_error_binnned_data()</code></li>
+<li><code><a href="../reference/PPC-scatterplots.html">ppc_scatter_data()</a></code></li>
+<li><code><a href="../reference/PPC-scatterplots.html">ppc_scatter_avg_data()</a></code></li>
+<li><code><a href="../reference/PPC-test-statistics.html">ppc_stat_data()</a></code></li>
+</ul>
+</li>
+<li>
+<p>Many functions gain an argument <code>facet_args</code> for controlling ggplot2 faceting (many other functions have had this argument for a long time). The ones that just now got the argument are:</p>
+<ul>
+<li><code><a href="../reference/PPC-scatterplots.html">ppc_scatter()</a></code></li>
+<li><code><a href="../reference/PPC-scatterplots.html">ppc_scatter_avg_grouped()</a></code></li>
+<li><code><a href="../reference/PPC-errors.html">ppc_error_hist()</a></code></li>
+<li><code><a href="../reference/PPC-errors.html">ppc_error_hist_grouped()</a></code></li>
+<li><code><a href="../reference/PPC-errors.html">ppc_error_scatter()</a></code></li>
+<li><code><a href="../reference/PPC-errors.html">ppc_error_binned()</a></code></li>
+</ul>
+</li>
+<li><p>New plotting function <code><a href="../reference/PPC-censoring.html">ppc_km_overlay_grouped()</a></code>, the grouped variant of <code><a href="../reference/PPC-censoring.html">ppc_km_overlay()</a></code>. (<a href='https://github.com/stan-dev/bayesplot/issues/260'>#260</a>, <a href='https://github.com/fweber144'>@fweber144</a>)</p></li>
+<li><p><code><a href="../reference/PPC-scatterplots.html">ppc_scatter()</a></code>, <code><a href="../reference/PPC-scatterplots.html">ppc_scatter_avg()</a></code>, and <code><a href="../reference/PPC-scatterplots.html">ppc_scatter_avg_grouped()</a></code> gain an argument <code>ref_line</code>, which can be set to <code>FALSE</code> to turn off the <code>x=y</code> line drawn behind the scatterplot.</p></li>
+<li><p><code><a href="../reference/PPC-intervals.html">ppc_ribbon()</a></code> and <code><a href="../reference/PPC-intervals.html">ppc_ribbon_grouped()</a></code> gain argument <code>y_draw</code> that specifies whether the observed y should be plotted using a point, line, or both. (<a href='https://github.com/stan-dev/bayesplot/issues/257'>#257</a>, <a href='https://github.com/charlesm93'>@charlesm93</a>)</p></li>
+<li><p><code>mcmc_*()</code> functions now support all draws formats from the <strong>posterior</strong> package. (<a href='https://github.com/stan-dev/bayesplot/issues/277'>#277</a>, <a href='https://github.com/Ozan147'>@Ozan147</a>)</p></li>
+<li><p><code><a href="../reference/MCMC-distributions.html">mcmc_dens()</a></code> and <code><a href="../reference/MCMC-distributions.html">mcmc_dens_overlay()</a></code> gain arguments for controlling the the density calculation. (<a href='https://github.com/stan-dev/bayesplot/issues/258'>#258</a>)</p></li>
+<li><p><code><a href="../reference/MCMC-distributions.html">mcmc_hist()</a></code> and <code><a href="../reference/MCMC-distributions.html">mcmc_dens()</a></code> gain argument <code>alpha</code> for controlling transparency. (<a href='https://github.com/stan-dev/bayesplot/issues/244'>#244</a>)</p></li>
+<li><p><code><a href="../reference/MCMC-intervals.html">mcmc_areas()</a></code> and <code><a href="../reference/MCMC-intervals.html">mcmc_areas_ridges()</a></code> gain an argument <code>border_size</code> for controlling the thickness of the ridgelines. (<a href='https://github.com/stan-dev/bayesplot/issues/224'>#224</a>)</p></li>
+</ul>
+</div>
+    <div id="bayesplot-181" class="section level1">
+<h1 class="page-header" data-toc-text="1.8.1">
+<a href="#bayesplot-181" class="anchor"></a>bayesplot 1.8.1<small> 2021-06-14 </small>
+</h1>
+<ul>
+<li>Fix R cmd check error on linux for CRAN</li>
+</ul>
+</div>
     <div id="bayesplot-180" class="section level1">
 <h1 class="page-header" data-toc-text="1.8.0">
 <a href="#bayesplot-180" class="anchor"></a>bayesplot 1.8.0<small> 2021-01-10 </small>
 </h1>
-<!--
-(GitHub issue/PR numbers in parentheses)
-* Items for next release go here
--->
 <div id="bug-fixes" class="section level3">
 <h3 class="hasAnchor">
 <a href="#bug-fixes" class="anchor"></a>Bug fixes</h3>
@@ -245,10 +286,10 @@ right-censored. Empirical CCDF estimates of <code>yrep</code> are compared with 
 <p><code><a href="../reference/MCMC-traces.html">mcmc_rank_overlay()</a></code>: Instead of drawing each chain’s histogram in a separate panel, this plot draws the top edge of the chains’ histograms in a single panel.</p>
 </li>
 <li><p>Added <code><a href="../reference/MCMC-traces.html">mcmc_trace_data()</a></code>, which returns the data used for plotting the trace plots and rank histograms. (Advances <a href='https://github.com/stan-dev/bayesplot/issues/97'>#97</a>)</p></li>
-<li><p><a href="https://colorbrewer2.org/">ColorBrewer</a> palettes are now available as color schemes via <a href="https://mc-stan.org/bayesplot/reference/bayesplot-colors.html"><code><a href="../reference/bayesplot-colors.html">color_scheme_set()</a></code></a>. For example, <code><a href="../reference/bayesplot-colors.html">color_scheme_set("brewer-Spectral")</a></code> will use the Spectral palette. (<a href='https://github.com/stan-dev/bayesplot/issues/177'>#177</a>, <a href='https://github.com/stan-dev/bayesplot/issues/190'>#190</a>)</p></li>
+<li><p><a href="https://colorbrewer2.org/">ColorBrewer</a> palettes are now available as color schemes via <a href="https://mc-stan.org/bayesplot/reference/bayesplot-colors.html"><code>color_scheme_set()</code></a>. For example, <code><a href="../reference/bayesplot-colors.html">color_scheme_set("brewer-Spectral")</a></code> will use the Spectral palette. (<a href='https://github.com/stan-dev/bayesplot/issues/177'>#177</a>, <a href='https://github.com/stan-dev/bayesplot/issues/190'>#190</a>)</p></li>
 <li><p>MCMC plots now also accept objects with an <code>as.array</code> method as input (e.g., stanfit objects). (<a href='https://github.com/stan-dev/bayesplot/issues/175'>#175</a>, <a href='https://github.com/stan-dev/bayesplot/issues/184'>#184</a>)</p></li>
-<li><p><a href="https://mc-stan.org/bayesplot/reference/MCMC-traces.html"><code><a href="../reference/MCMC-traces.html">mcmc_trace()</a></code></a> gains an argument <code>iter1</code> which can be used to label the traceplot starting from the first iteration after warmup. (<a href='https://github.com/stan-dev/bayesplot/issues/14'>#14</a>, <a href='https://github.com/stan-dev/bayesplot/issues/155'>#155</a>, <a href='https://github.com/mcol'>@mcol</a>)</p></li>
-<li><p><a href="https://mc-stan.org/bayesplot/reference/MCMC-intervals.html"><code><a href="../reference/MCMC-intervals.html">mcmc_areas()</a></code></a> gains an argument <code>area_method</code> which controls how to draw the density curves. The default <code>"equal area"</code> constrains the heights so that the curves have the same area. As a result, a narrow interval will appear as a spike of density, while a wide, uncertain interval is spread thin over the <em>x</em> axis. Alternatively <code>"equal height"</code> will set the maximum height on each curve to the same value. This works well when the intervals are about the same width. Otherwise, that wide, uncertain interval will dominate the visual space compared to a narrow, less uncertain interval. A compromise between the two is <code>"scaled height"</code> which scales the curves from <code>"equal height"</code> using <code>height * sqrt(height)</code>. (<a href='https://github.com/stan-dev/bayesplot/issues/163'>#163</a>, <a href='https://github.com/stan-dev/bayesplot/issues/169'>#169</a>)</p></li>
+<li><p><a href="https://mc-stan.org/bayesplot/reference/MCMC-traces.html"><code>mcmc_trace()</code></a> gains an argument <code>iter1</code> which can be used to label the traceplot starting from the first iteration after warmup. (<a href='https://github.com/stan-dev/bayesplot/issues/14'>#14</a>, <a href='https://github.com/stan-dev/bayesplot/issues/155'>#155</a>, <a href='https://github.com/mcol'>@mcol</a>)</p></li>
+<li><p><a href="https://mc-stan.org/bayesplot/reference/MCMC-intervals.html"><code>mcmc_areas()</code></a> gains an argument <code>area_method</code> which controls how to draw the density curves. The default <code>"equal area"</code> constrains the heights so that the curves have the same area. As a result, a narrow interval will appear as a spike of density, while a wide, uncertain interval is spread thin over the <em>x</em> axis. Alternatively <code>"equal height"</code> will set the maximum height on each curve to the same value. This works well when the intervals are about the same width. Otherwise, that wide, uncertain interval will dominate the visual space compared to a narrow, less uncertain interval. A compromise between the two is <code>"scaled height"</code> which scales the curves from <code>"equal height"</code> using <code>height * sqrt(height)</code>. (<a href='https://github.com/stan-dev/bayesplot/issues/163'>#163</a>, <a href='https://github.com/stan-dev/bayesplot/issues/169'>#169</a>)</p></li>
 <li><p><code><a href="../reference/MCMC-intervals.html">mcmc_areas()</a></code> correctly plots density curves where the point estimate does not include the highest point of the density curve. (<a href='https://github.com/stan-dev/bayesplot/issues/168'>#168</a>, <a href='https://github.com/stan-dev/bayesplot/issues/169'>#169</a>, <a href='https://github.com/jtimonen'>@jtimonen</a>)</p></li>
 <li><p><code><a href="../reference/MCMC-intervals.html">mcmc_areas_ridges()</a></code> draws the vertical line at <em>x</em> = 0 over the curves so that it is always visible.</p></li>
 <li><p><code><a href="../reference/MCMC-intervals.html">mcmc_intervals()</a></code> and <code><a href="../reference/MCMC-intervals.html">mcmc_areas()</a></code> raise a warning if <code>prob_outer</code> is ever less than <code>prob</code>. It sorts these two values into the correct order. (<a href='https://github.com/stan-dev/bayesplot/issues/138'>#138</a>)</p></li>
@@ -277,8 +318,8 @@ right-censored. Empirical CCDF estimates of <code>yrep</code> are compared with 
 <li><p>The <a href="https://mc-stan.org/bayesplot/articles/visual-mcmc-diagnostics.html">Visual MCMC Diagnostics vignette</a> has been reorganized and has a lot of useful new content thanks to Martin Modrák. (<a href='https://github.com/stan-dev/bayesplot/issues/144'>#144</a>, <a href='https://github.com/stan-dev/bayesplot/issues/153'>#153</a>)</p></li>
 <li><p>The <a href="https://mc-stan.org/bayesplot/reference/PPC-loo.html">LOO predictive checks</a> now require <strong>loo</strong> version <code>&gt;= 2.0.0</code>. (<a href='https://github.com/stan-dev/bayesplot/issues/139'>#139</a>)</p></li>
 <li><p>Histogram plots gain a <code>breaks</code> argument that can be used as an alternative to <code>binwidth</code>. (<a href='https://github.com/stan-dev/bayesplot/issues/148'>#148</a>)</p></li>
-<li><p><a href="https://mc-stan.org/bayesplot/reference/MCMC-scatterplots.html"><code><a href="../reference/MCMC-scatterplots.html">mcmc_pairs()</a></code></a> now has an argument <code>grid_args</code> to provide a way of passing optional arguments to <code><a href="https://rdrr.io/pkg/gridExtra/man/arrangeGrob.html">gridExtra::arrangeGrob()</a></code>. This can be used to add a title to the plot, for example. (<a href='https://github.com/stan-dev/bayesplot/issues/143'>#143</a>)</p></li>
-<li><p><a href="https://mc-stan.org/bayesplot/reference/PPC-distributions.html"><code><a href="../reference/PPC-distributions.html">ppc_ecdf_overlay()</a></code></a> gains an argument <code>discrete</code>, which is <code>FALSE</code> by default, but can be used to make the Geom more appropriate for discrete data. (<a href='https://github.com/stan-dev/bayesplot/issues/145'>#145</a>)</p></li>
+<li><p><a href="https://mc-stan.org/bayesplot/reference/MCMC-scatterplots.html"><code>mcmc_pairs()</code></a> now has an argument <code>grid_args</code> to provide a way of passing optional arguments to <code><a href="https://rdrr.io/pkg/gridExtra/man/arrangeGrob.html">gridExtra::arrangeGrob()</a></code>. This can be used to add a title to the plot, for example. (<a href='https://github.com/stan-dev/bayesplot/issues/143'>#143</a>)</p></li>
+<li><p><a href="https://mc-stan.org/bayesplot/reference/PPC-distributions.html"><code>ppc_ecdf_overlay()</code></a> gains an argument <code>discrete</code>, which is <code>FALSE</code> by default, but can be used to make the Geom more appropriate for discrete data. (<a href='https://github.com/stan-dev/bayesplot/issues/145'>#145</a>)</p></li>
 <li><p><a href="https://mc-stan.org/bayesplot/reference/PPC-intervals.html">PPC intervals plots</a> and <a href="https://mc-stan.org/bayesplot/reference/PPC-loo.html">LOO predictive checks</a> now draw both an outer and an inner probability interval, which can be controlled through the new argument <code>prob_outer</code> and the already existing <code>prob</code>. This is consistent with what is produced by <code><a href="../reference/MCMC-intervals.html">mcmc_intervals()</a></code>. (<a href='https://github.com/stan-dev/bayesplot/issues/152'>#152</a>, <a href='https://github.com/stan-dev/bayesplot/issues/154'>#154</a>, <a href='https://github.com/mcol'>@mcol</a>)</p></li>
 </ul>
 </div>
@@ -381,8 +422,8 @@ caused some unexpected behavior when customizing these plots.</li>
 <h2 class="hasAnchor">
 <a href="#new-functions" class="anchor"></a>New functions</h2>
 <ul>
-<li><p><code><a href="../reference/MCMC-scatterplots.html">mcmc_pairs()</a></code>, which is essentially a ggplot2+grid implementation of rstan’s <code>pairs.stanfit()</code> method. (<a href='https://github.com/stan-dev/bayesplot/issues/67'>#67</a>)</p></li>
-<li><p><code><a href="../reference/MCMC-scatterplots.html">mcmc_hex()</a></code>, which is similar to <code><a href="../reference/MCMC-scatterplots.html">mcmc_scatter()</a></code> but using <code>geom_hex()</code> instead of <code>geom_point()</code>. This can be used to avoid overplotting. (<a href='https://github.com/stan-dev/bayesplot/issues/67'>#67</a>)</p></li>
+<li><p><code><a href="../reference/MCMC-scatterplots.html">mcmc_pairs()</a></code>, which is essentially a ggplot2+grid implementation of rstan’s <code><a href="https://mc-stan.org/rstan/reference/stanfit-method-pairs.html">pairs.stanfit()</a></code> method. (<a href='https://github.com/stan-dev/bayesplot/issues/67'>#67</a>)</p></li>
+<li><p><code><a href="../reference/MCMC-scatterplots.html">mcmc_hex()</a></code>, which is similar to <code><a href="../reference/MCMC-scatterplots.html">mcmc_scatter()</a></code> but using <code><a href="https://ggplot2.tidyverse.org/reference/geom_hex.html">geom_hex()</a></code> instead of <code><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point()</a></code>. This can be used to avoid overplotting. (<a href='https://github.com/stan-dev/bayesplot/issues/67'>#67</a>)</p></li>
 <li><p><code><a href="../reference/bayesplot-helpers.html">overlay_function()</a></code> convenience function. Example usage: add a Gaussian (or any distribution) density curve to a plot made with <code><a href="../reference/MCMC-distributions.html">mcmc_hist()</a></code>.</p></li>
 <li><p><code><a href="../reference/MCMC-recover.html">mcmc_recover_scatter()</a></code> and <code><a href="../reference/MCMC-recover.html">mcmc_recover_hist()</a></code>, which are similar to <code><a href="../reference/MCMC-recover.html">mcmc_recover_intervals()</a></code> and compare estimates to “true” values used to simulate data. (<a href='https://github.com/stan-dev/bayesplot/issues/81'>#81</a>, <a href='https://github.com/stan-dev/bayesplot/issues/83'>#83</a>)</p></li>
 <li>
@@ -417,7 +458,7 @@ caused some unexpected behavior when customizing these plots.</li>
 <a href="#fixes-1" class="anchor"></a>Fixes</h2>
 <ul>
 <li><p>Images in vignettes should now render properly using <code>png</code> device. Thanks to TJ Mahr. (<a href='https://github.com/stan-dev/bayesplot/issues/51'>#51</a>)</p></li>
-<li><p><code><a href="../reference/bayesplot-helpers.html">xaxis_title(FALSE)</a></code> and <code><a href="../reference/bayesplot-helpers.html">yaxis_title(FALSE)</a></code> now set axis titles to <code>NULL</code> rather than changing theme elements to <code>element_blank()</code>. This makes it easier to add axis titles to plots that don’t have them by default. Thanks to Bill Harris. (<a href='https://github.com/stan-dev/bayesplot/issues/53'>#53</a>)</p></li>
+<li><p><code><a href="../reference/bayesplot-helpers.html">xaxis_title(FALSE)</a></code> and <code><a href="../reference/bayesplot-helpers.html">yaxis_title(FALSE)</a></code> now set axis titles to <code>NULL</code> rather than changing theme elements to <code><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank()</a></code>. This makes it easier to add axis titles to plots that don’t have them by default. Thanks to Bill Harris. (<a href='https://github.com/stan-dev/bayesplot/issues/53'>#53</a>)</p></li>
 </ul>
 </div>
 <div id="new-features-in-existing-functions-1" class="section level2">
@@ -461,7 +502,7 @@ caused some unexpected behavior when customizing these plots.</li>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

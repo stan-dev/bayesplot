@@ -87,7 +87,7 @@ Plot Descriptions section, below, for details." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bayesplot</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.8.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.9.0</span>
       </span>
     </div>
 
@@ -193,95 +193,109 @@ Plot Descriptions section, below, for details." />
 <strong>Plot Descriptions</strong> section, below, for details.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>mcmc_hist</span>(
-  <span class='no'>x</span>,
-  <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span>(),
-  <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span>(),
-  <span class='kw'>transformations</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(),
-  <span class='no'>...</span>,
-  <span class='kw'>facet_args</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(),
-  <span class='kw'>binwidth</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>breaks</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>freq</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
-)
+    <pre class="usage"><span class='fu'>mcmc_hist</span><span class='op'>(</span>
+  <span class='va'>x</span>,
+  pars <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span><span class='op'>(</span><span class='op'>)</span>,
+  regex_pars <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span><span class='op'>(</span><span class='op'>)</span>,
+  transformations <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>,
+  <span class='va'>...</span>,
+  facet_args <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>,
+  binwidth <span class='op'>=</span> <span class='cn'>NULL</span>,
+  breaks <span class='op'>=</span> <span class='cn'>NULL</span>,
+  freq <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  alpha <span class='op'>=</span> <span class='fl'>1</span>
+<span class='op'>)</span>
 
-<span class='fu'>mcmc_dens</span>(
-  <span class='no'>x</span>,
-  <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span>(),
-  <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span>(),
-  <span class='kw'>transformations</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(),
-  <span class='no'>...</span>,
-  <span class='kw'>facet_args</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(),
-  <span class='kw'>trim</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
-)
+<span class='fu'>mcmc_dens</span><span class='op'>(</span>
+  <span class='va'>x</span>,
+  pars <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span><span class='op'>(</span><span class='op'>)</span>,
+  regex_pars <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span><span class='op'>(</span><span class='op'>)</span>,
+  transformations <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>,
+  <span class='va'>...</span>,
+  facet_args <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>,
+  trim <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  bw <span class='op'>=</span> <span class='cn'>NULL</span>,
+  adjust <span class='op'>=</span> <span class='cn'>NULL</span>,
+  kernel <span class='op'>=</span> <span class='cn'>NULL</span>,
+  n_dens <span class='op'>=</span> <span class='cn'>NULL</span>,
+  alpha <span class='op'>=</span> <span class='fl'>1</span>
+<span class='op'>)</span>
 
-<span class='fu'>mcmc_hist_by_chain</span>(
-  <span class='no'>x</span>,
-  <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span>(),
-  <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span>(),
-  <span class='kw'>transformations</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(),
-  <span class='no'>...</span>,
-  <span class='kw'>facet_args</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(),
-  <span class='kw'>binwidth</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>freq</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
-)
+<span class='fu'>mcmc_hist_by_chain</span><span class='op'>(</span>
+  <span class='va'>x</span>,
+  pars <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span><span class='op'>(</span><span class='op'>)</span>,
+  regex_pars <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span><span class='op'>(</span><span class='op'>)</span>,
+  transformations <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>,
+  <span class='va'>...</span>,
+  facet_args <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>,
+  binwidth <span class='op'>=</span> <span class='cn'>NULL</span>,
+  freq <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  alpha <span class='op'>=</span> <span class='fl'>1</span>
+<span class='op'>)</span>
 
-<span class='fu'>mcmc_dens_overlay</span>(
-  <span class='no'>x</span>,
-  <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span>(),
-  <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span>(),
-  <span class='kw'>transformations</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(),
-  <span class='no'>...</span>,
-  <span class='kw'>facet_args</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(),
-  <span class='kw'>color_chains</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>trim</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
-)
+<span class='fu'>mcmc_dens_overlay</span><span class='op'>(</span>
+  <span class='va'>x</span>,
+  pars <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span><span class='op'>(</span><span class='op'>)</span>,
+  regex_pars <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span><span class='op'>(</span><span class='op'>)</span>,
+  transformations <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>,
+  <span class='va'>...</span>,
+  facet_args <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>,
+  color_chains <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  trim <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  bw <span class='op'>=</span> <span class='cn'>NULL</span>,
+  adjust <span class='op'>=</span> <span class='cn'>NULL</span>,
+  kernel <span class='op'>=</span> <span class='cn'>NULL</span>,
+  n_dens <span class='op'>=</span> <span class='cn'>NULL</span>
+<span class='op'>)</span>
 
-<span class='fu'>mcmc_dens_chains</span>(
-  <span class='no'>x</span>,
-  <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span>(),
-  <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span>(),
-  <span class='kw'>transformations</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(),
-  <span class='no'>...</span>,
-  <span class='kw'>color_chains</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>bw</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>adjust</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>kernel</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>n_dens</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
-)
+<span class='fu'>mcmc_dens_chains</span><span class='op'>(</span>
+  <span class='va'>x</span>,
+  pars <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span><span class='op'>(</span><span class='op'>)</span>,
+  regex_pars <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span><span class='op'>(</span><span class='op'>)</span>,
+  transformations <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>,
+  <span class='va'>...</span>,
+  color_chains <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  bw <span class='op'>=</span> <span class='cn'>NULL</span>,
+  adjust <span class='op'>=</span> <span class='cn'>NULL</span>,
+  kernel <span class='op'>=</span> <span class='cn'>NULL</span>,
+  n_dens <span class='op'>=</span> <span class='cn'>NULL</span>
+<span class='op'>)</span>
 
-<span class='fu'>mcmc_dens_chains_data</span>(
-  <span class='no'>x</span>,
-  <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span>(),
-  <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span>(),
-  <span class='kw'>transformations</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(),
-  <span class='no'>...</span>,
-  <span class='kw'>bw</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>adjust</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>kernel</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>n_dens</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
-)
+<span class='fu'>mcmc_dens_chains_data</span><span class='op'>(</span>
+  <span class='va'>x</span>,
+  pars <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span><span class='op'>(</span><span class='op'>)</span>,
+  regex_pars <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span><span class='op'>(</span><span class='op'>)</span>,
+  transformations <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>,
+  <span class='va'>...</span>,
+  bw <span class='op'>=</span> <span class='cn'>NULL</span>,
+  adjust <span class='op'>=</span> <span class='cn'>NULL</span>,
+  kernel <span class='op'>=</span> <span class='cn'>NULL</span>,
+  n_dens <span class='op'>=</span> <span class='cn'>NULL</span>
+<span class='op'>)</span>
 
-<span class='fu'>mcmc_violin</span>(
-  <span class='no'>x</span>,
-  <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span>(),
-  <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span>(),
-  <span class='kw'>transformations</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(),
-  <span class='no'>...</span>,
-  <span class='kw'>facet_args</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(),
-  <span class='kw'>probs</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.1</span>, <span class='fl'>0.5</span>, <span class='fl'>0.9</span>)
-)</pre>
+<span class='fu'>mcmc_violin</span><span class='op'>(</span>
+  <span class='va'>x</span>,
+  pars <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span><span class='op'>(</span><span class='op'>)</span>,
+  regex_pars <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span><span class='op'>(</span><span class='op'>)</span>,
+  transformations <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>,
+  <span class='va'>...</span>,
+  facet_args <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>,
+  probs <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.1</span>, <span class='fl'>0.5</span>, <span class='fl'>0.9</span><span class='op'>)</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>A 3-D array, matrix, list of matrices, or data frame of MCMC draws.
-The <a href='MCMC-overview.html'>MCMC-overview</a> page provides details on how to specify each these
-allowed inputs. It is also possible to use an object with an
-<code><a href='https://rdrr.io/r/base/array.html'>as.array()</a></code> method that returns the same kind of 3-D array described on
-the <a href='MCMC-overview.html'>MCMC-overview</a> page.</p></td>
+      <td><p>An object containing MCMC draws:</p><ul>
+<li><p>A 3-D array, matrix, list of matrices, or data frame. The <a href='MCMC-overview.html'>MCMC-overview</a>
+page provides details on how to specify each these.</p></li>
+<li><p>A <code>draws</code> object from the <span class="pkg">posterior</span> package (e.g.,
+<code>draws_array</code>, <code>draws_rvars</code>, etc.).</p></li>
+<li><p>An object with an <code><a href='https://rdrr.io/r/base/array.html'>as.array()</a></code> method that returns the same kind of 3-D
+array described on the <a href='MCMC-overview.html'>MCMC-overview</a> page.</p></li>
+</ul></td>
     </tr>
     <tr>
       <th>pars</th>
@@ -332,7 +346,9 @@ abbreviated for convenience in interactive use (e.g., <code>transform</code>).</
       <th>facet_args</th>
       <td><p>A named list of arguments (other than <code>facets</code>) passed
 to <code><a href='https://ggplot2.tidyverse.org/reference/facet_wrap.html'>ggplot2::facet_wrap()</a></code> or <code><a href='https://ggplot2.tidyverse.org/reference/facet_grid.html'>ggplot2::facet_grid()</a></code>
-to control faceting.</p></td>
+to control faceting. Note: if <code>scales</code> is not included in <code>facet_args</code>
+then <strong>bayesplot</strong> may use <code>scales="free"</code> as the default (depending
+on the plot) instead of the <strong>ggplot2</strong> default of <code>scales="fixed"</code>.</p></td>
     </tr>
     <tr>
       <th>binwidth</th>
@@ -353,18 +369,22 @@ labels on the y-axis see the <code><a href='bayesplot-helpers.html'>yaxis_text()
 function.)</p></td>
     </tr>
     <tr>
-      <th>trim</th>
-      <td><p>A logical scalar passed to <code><a href='https://ggplot2.tidyverse.org/reference/geom_density.html'>ggplot2::geom_density()</a></code>.</p></td>
+      <th>alpha</th>
+      <td><p>Passed to the geom to control the transparency.</p></td>
     </tr>
     <tr>
-      <th>color_chains</th>
-      <td><p>Option for whether to separately color chains.</p></td>
+      <th>trim</th>
+      <td><p>A logical scalar passed to <code><a href='https://ggplot2.tidyverse.org/reference/geom_density.html'>ggplot2::geom_density()</a></code>.</p></td>
     </tr>
     <tr>
       <th>bw, adjust, kernel, n_dens</th>
       <td><p>Optional arguments passed to
 <code><a href='https://rdrr.io/r/stats/density.html'>stats::density()</a></code> to override default kernel density estimation
 parameters. <code>n_dens</code> defaults to <code>1024</code>.</p></td>
+    </tr>
+    <tr>
+      <th>color_chains</th>
+      <td><p>Option for whether to separately color chains.</p></td>
     </tr>
     <tr>
       <th>probs</th>
@@ -381,7 +401,7 @@ horizontal lines. Set to <code>NULL</code> to remove the lines.</p></td>
 
     
 
-<dl'>
+<dl>
 <dt><code>mcmc_hist()</code></dt><dd><p>Histograms of posterior draws with all chains merged.</p></dd>
 <dt><code>mcmc_dens()</code></dt><dd><p>Kernel density plots of posterior draws with all chains merged.</p></dd>
 <dt><code>mcmc_hist_by_chain()</code></dt><dd><p>Histograms of posterior draws with chains separated via faceting.</p></dd>
@@ -410,10 +430,12 @@ same panel and can overlap vertically.</p></dd>
 <code><a href='MCMC-traces.html'>MCMC-traces</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span>(<span class='fl'>9262017</span>)
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>9262017</span><span class='op'>)</span>
 <span class='co'># some parameter draws to use for demonstration</span>
-<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='example-data.html'>example_mcmc_draws</a></span>()
-<span class='fu'><a href='https://rdrr.io/r/base/dim.html'>dim</a></span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; [1] 250   4   4</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/dimnames.html'>dimnames</a></span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; $Iteration
+<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='example-data.html'>example_mcmc_draws</a></span><span class='op'>(</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/dim.html'>dim</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 250   4   4</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/dimnames.html'>dimnames</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; $Iteration
 #&gt; NULL
 #&gt; 
 #&gt; $Chain
@@ -427,40 +449,50 @@ same panel and can overlap vertically.</p></dd>
 <span class='co'>##################</span>
 
 <span class='co'># histograms of all parameters</span>
-<span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"brightblue"</span>)
-<span class='fu'>mcmc_hist</span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='MCMC-distributions-1.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span><span class='op'>(</span><span class='st'>"brightblue"</span><span class='op'>)</span>
+<span class='fu'>mcmc_hist</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='MCMC-distributions-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># histograms of some parameters</span>
-<span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"pink"</span>)
-<span class='fu'>mcmc_hist</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"alpha"</span>, <span class='st'>"beta[2]"</span>))</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='MCMC-distributions-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># \donttest{</span>
-<span class='fu'>mcmc_hist</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='st'>"sigma"</span>, <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='st'>"beta"</span>)</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='MCMC-distributions-3.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># }</span>
+<span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span><span class='op'>(</span><span class='st'>"pink"</span><span class='op'>)</span>
+<span class='fu'>mcmc_hist</span><span class='op'>(</span><span class='va'>x</span>, pars <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"alpha"</span>, <span class='st'>"beta[2]"</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='MCMC-distributions-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># \donttest{</span>
+<span class='fu'>mcmc_hist</span><span class='op'>(</span><span class='va'>x</span>, pars <span class='op'>=</span> <span class='st'>"sigma"</span>, regex_pars <span class='op'>=</span> <span class='st'>"beta"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='MCMC-distributions-3.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># }</span>
 <span class='co'># example of using 'transformations' argument to plot log(sigma),</span>
 <span class='co'># and parsing facet labels (e.g. to get greek letters for parameters)</span>
-<span class='fu'>mcmc_hist</span>(<span class='no'>x</span>, <span class='kw'>transformations</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>sigma</span> <span class='kw'>=</span> <span class='st'>"log"</span>),
-          <span class='kw'>facet_args</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>labeller</span> <span class='kw'>=</span> <span class='kw pkg'>ggplot2</span><span class='kw ns'>::</span><span class='no'><a href='https://ggplot2.tidyverse.org/reference/labellers.html'>label_parsed</a></span>)) +
-          <span class='fu'><a href='bayesplot-helpers.html'>facet_text</a></span>(<span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>15</span>)</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='MCMC-distributions-4.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># \donttest{</span>
+<span class='fu'>mcmc_hist</span><span class='op'>(</span><span class='va'>x</span>, transformations <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>sigma <span class='op'>=</span> <span class='st'>"log"</span><span class='op'>)</span>,
+          facet_args <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>labeller <span class='op'>=</span> <span class='fu'>ggplot2</span><span class='fu'>::</span><span class='va'><a href='https://ggplot2.tidyverse.org/reference/labellers.html'>label_parsed</a></span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+          <span class='fu'><a href='bayesplot-helpers.html'>facet_text</a></span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>15</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='MCMC-distributions-4.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># \donttest{</span>
 <span class='co'># instead of list(sigma = "log"), you could specify the transformation as</span>
 <span class='co'># list(sigma = log) or list(sigma = function(x) log(x)), but then the</span>
 <span class='co'># label for the transformed sigma is 't(sigma)' instead of 'log(sigma)'</span>
-<span class='fu'>mcmc_hist</span>(<span class='no'>x</span>, <span class='kw'>transformations</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>sigma</span> <span class='kw'>=</span> <span class='no'>log</span>))</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='MCMC-distributions-5.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'>mcmc_hist</span><span class='op'>(</span><span class='va'>x</span>, transformations <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>sigma <span class='op'>=</span> <span class='va'>log</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='MCMC-distributions-5.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># separate histograms by chain</span>
-<span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"pink"</span>)
-<span class='fu'>mcmc_hist_by_chain</span>(<span class='no'>x</span>, <span class='kw'>regex_pars</span> <span class='kw'>=</span> <span class='st'>"beta"</span>)</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='MCMC-distributions-6.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># }</span>
+<span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span><span class='op'>(</span><span class='st'>"pink"</span><span class='op'>)</span>
+<span class='fu'>mcmc_hist_by_chain</span><span class='op'>(</span><span class='va'>x</span>, regex_pars <span class='op'>=</span> <span class='st'>"beta"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='MCMC-distributions-6.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># }</span>
 
 <span class='co'>#################</span>
 <span class='co'>### Densities ###</span>
 <span class='co'>#################</span>
 
-<span class='fu'>mcmc_dens</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"sigma"</span>, <span class='st'>"beta[2]"</span>),
-          <span class='kw'>facet_args</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>nrow</span> <span class='kw'>=</span> <span class='fl'>2</span>))</div><div class='img'><img src='MCMC-distributions-7.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># \donttest{</span>
+<span class='fu'>mcmc_dens</span><span class='op'>(</span><span class='va'>x</span>, pars <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"sigma"</span>, <span class='st'>"beta[2]"</span><span class='op'>)</span>,
+          facet_args <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>nrow <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='img'><img src='MCMC-distributions-7.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># \donttest{</span>
 <span class='co'># separate and overlay chains</span>
-<span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"mix-teal-pink"</span>)
-<span class='fu'>mcmc_dens_overlay</span>(<span class='no'>x</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"sigma"</span>, <span class='st'>"beta[2]"</span>),
-                  <span class='kw'>facet_args</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>nrow</span> <span class='kw'>=</span> <span class='fl'>2</span>)) +
-                  <span class='fu'><a href='bayesplot-helpers.html'>facet_text</a></span>(<span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>14</span>)</div><div class='img'><img src='MCMC-distributions-8.png' alt='' width='700' height='433' /></div><div class='input'><span class='no'>x2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='example-data.html'>example_mcmc_draws</a></span>(<span class='kw'>params</span> <span class='kw'>=</span> <span class='fl'>6</span>)
-<span class='fu'>mcmc_dens_chains</span>(<span class='no'>x2</span>, <span class='kw'>pars</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"beta[1]"</span>, <span class='st'>"beta[2]"</span>, <span class='st'>"beta[3]"</span>))</div><div class='img'><img src='MCMC-distributions-9.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># }</span>
+<span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span><span class='op'>(</span><span class='st'>"mix-teal-pink"</span><span class='op'>)</span>
+<span class='fu'>mcmc_dens_overlay</span><span class='op'>(</span><span class='va'>x</span>, pars <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"sigma"</span>, <span class='st'>"beta[2]"</span><span class='op'>)</span>,
+                  facet_args <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>nrow <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+                  <span class='fu'><a href='bayesplot-helpers.html'>facet_text</a></span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>14</span><span class='op'>)</span>
+</div><div class='img'><img src='MCMC-distributions-8.png' alt='' width='700' height='433' /></div><div class='input'><span class='va'>x2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='example-data.html'>example_mcmc_draws</a></span><span class='op'>(</span>params <span class='op'>=</span> <span class='fl'>6</span><span class='op'>)</span>
+<span class='fu'>mcmc_dens_chains</span><span class='op'>(</span><span class='va'>x2</span>, pars <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"beta[1]"</span>, <span class='st'>"beta[2]"</span>, <span class='st'>"beta[3]"</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='img'><img src='MCMC-distributions-9.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># }</span>
 <span class='co'># separate chains as violin plots</span>
-<span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span>(<span class='st'>"green"</span>)
-<span class='fu'>mcmc_violin</span>(<span class='no'>x</span>) + <span class='fu'><a href='bayesplot-helpers.html'>panel_bg</a></span>(<span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"gray20"</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>"gray30"</span>)</div><div class='img'><img src='MCMC-distributions-10.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'><a href='bayesplot-colors.html'>color_scheme_set</a></span><span class='op'>(</span><span class='st'>"green"</span><span class='op'>)</span>
+<span class='fu'>mcmc_violin</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='op'>+</span> <span class='fu'><a href='bayesplot-helpers.html'>panel_bg</a></span><span class='op'>(</span>color <span class='op'>=</span> <span class='st'>"gray20"</span>, size <span class='op'>=</span> <span class='fl'>2</span>, fill <span class='op'>=</span> <span class='st'>"gray30"</span><span class='op'>)</span>
+</div><div class='img'><img src='MCMC-distributions-10.png' alt='' width='700' height='433' /></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -477,7 +509,7 @@ same panel and can overlap vertically.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

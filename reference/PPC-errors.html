@@ -87,7 +87,7 @@ Details and Plot Descriptions sections, below." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bayesplot</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.8.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.9.0</span>
       </span>
     </div>
 
@@ -193,25 +193,54 @@ Details and Plot Descriptions sections, below." />
 <strong>Details</strong> and <strong>Plot Descriptions</strong> sections, below.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>ppc_error_hist</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='no'>...</span>, <span class='kw'>binwidth</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>breaks</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>freq</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+    <pre class="usage"><span class='fu'>ppc_error_hist</span><span class='op'>(</span>
+  <span class='va'>y</span>,
+  <span class='va'>yrep</span>,
+  <span class='va'>...</span>,
+  facet_args <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>,
+  binwidth <span class='op'>=</span> <span class='cn'>NULL</span>,
+  breaks <span class='op'>=</span> <span class='cn'>NULL</span>,
+  freq <span class='op'>=</span> <span class='cn'>TRUE</span>
+<span class='op'>)</span>
 
-<span class='fu'>ppc_error_hist_grouped</span>(
-  <span class='no'>y</span>,
-  <span class='no'>yrep</span>,
-  <span class='no'>group</span>,
-  <span class='no'>...</span>,
-  <span class='kw'>binwidth</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>breaks</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>freq</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
-)
+<span class='fu'>ppc_error_hist_grouped</span><span class='op'>(</span>
+  <span class='va'>y</span>,
+  <span class='va'>yrep</span>,
+  <span class='va'>group</span>,
+  <span class='va'>...</span>,
+  facet_args <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>,
+  binwidth <span class='op'>=</span> <span class='cn'>NULL</span>,
+  breaks <span class='op'>=</span> <span class='cn'>NULL</span>,
+  freq <span class='op'>=</span> <span class='cn'>TRUE</span>
+<span class='op'>)</span>
 
-<span class='fu'>ppc_error_scatter</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='no'>...</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>2.5</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.8</span>)
+<span class='fu'>ppc_error_scatter</span><span class='op'>(</span><span class='va'>y</span>, <span class='va'>yrep</span>, <span class='va'>...</span>, facet_args <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>, size <span class='op'>=</span> <span class='fl'>2.5</span>, alpha <span class='op'>=</span> <span class='fl'>0.8</span><span class='op'>)</span>
 
-<span class='fu'>ppc_error_scatter_avg</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='no'>...</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>2.5</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.8</span>)
+<span class='fu'>ppc_error_scatter_avg</span><span class='op'>(</span><span class='va'>y</span>, <span class='va'>yrep</span>, <span class='va'>...</span>, size <span class='op'>=</span> <span class='fl'>2.5</span>, alpha <span class='op'>=</span> <span class='fl'>0.8</span><span class='op'>)</span>
 
-<span class='fu'>ppc_error_scatter_avg_vs_x</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='no'>x</span>, <span class='no'>...</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>2.5</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.8</span>)
+<span class='fu'>ppc_error_scatter_avg_grouped</span><span class='op'>(</span>
+  <span class='va'>y</span>,
+  <span class='va'>yrep</span>,
+  <span class='va'>group</span>,
+  <span class='va'>...</span>,
+  facet_args <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>,
+  size <span class='op'>=</span> <span class='fl'>2.5</span>,
+  alpha <span class='op'>=</span> <span class='fl'>0.8</span>
+<span class='op'>)</span>
 
-<span class='fu'>ppc_error_binned</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='no'>...</span>, <span class='kw'>bins</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.25</span>)</pre>
+<span class='fu'>ppc_error_scatter_avg_vs_x</span><span class='op'>(</span><span class='va'>y</span>, <span class='va'>yrep</span>, <span class='va'>x</span>, <span class='va'>...</span>, size <span class='op'>=</span> <span class='fl'>2.5</span>, alpha <span class='op'>=</span> <span class='fl'>0.8</span><span class='op'>)</span>
+
+<span class='fu'>ppc_error_binned</span><span class='op'>(</span>
+  <span class='va'>y</span>,
+  <span class='va'>yrep</span>,
+  <span class='va'>...</span>,
+  facet_args <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>,
+  bins <span class='op'>=</span> <span class='cn'>NULL</span>,
+  size <span class='op'>=</span> <span class='fl'>1</span>,
+  alpha <span class='op'>=</span> <span class='fl'>0.25</span>
+<span class='op'>)</span>
+
+<span class='fu'>ppc_error_data</span><span class='op'>(</span><span class='va'>y</span>, <span class='va'>yrep</span>, group <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -222,16 +251,25 @@ Details and Plot Descriptions sections, below." />
     </tr>
     <tr>
       <th>yrep</th>
-      <td><p>An \(S\) by \(N\) matrix of draws from the posterior
-predictive distribution, where \(S\) is the size of the posterior sample
-(or subset of the posterior sample used to generate <code>yrep</code>) and \(N\) is
-the number of observations (the length of <code>y</code>). The columns of <code>yrep</code>
-should be in the same order as the data points in <code>y</code> for the plots to make
-sense. See <strong>Details</strong> for additional instructions.</p></td>
+      <td><p>An <code>S</code> by <code>N</code> matrix of draws from the posterior (or prior)
+predictive distribution. The number of rows, <code>S</code>, is the size of the
+posterior (or prior) sample used to generate <code>yrep</code>. The number of columns,
+<code>N</code> is the number of predicted observations (<code><a href='https://rdrr.io/r/base/length.html'>length(y)</a></code>). The columns of
+<code>yrep</code> should be in the same order as the data points in <code>y</code> for the plots
+to make sense. See the <strong>Details</strong> and <strong>Plot Descriptions</strong> sections for
+additional advice specific to particular plots.</p></td>
     </tr>
     <tr>
       <th>...</th>
       <td><p>Currently unused.</p></td>
+    </tr>
+    <tr>
+      <th>facet_args</th>
+      <td><p>A named list of arguments (other than <code>facets</code>) passed
+to <code><a href='https://ggplot2.tidyverse.org/reference/facet_wrap.html'>ggplot2::facet_wrap()</a></code> or <code><a href='https://ggplot2.tidyverse.org/reference/facet_grid.html'>ggplot2::facet_grid()</a></code>
+to control faceting. Note: if <code>scales</code> is not included in <code>facet_args</code>
+then <strong>bayesplot</strong> may use <code>scales="free"</code> as the default (depending
+on the plot) instead of the <strong>ggplot2</strong> default of <code>scales="fixed"</code>.</p></td>
     </tr>
     <tr>
       <th>binwidth</th>
@@ -253,9 +291,10 @@ function.)</p></td>
     </tr>
     <tr>
       <th>group</th>
-      <td><p>A grouping variable (a vector or factor) the same length as
-<code>y</code>. Each value in <code>group</code> is interpreted as the group level
-pertaining to the corresponding value of <code>y</code>.</p></td>
+      <td><p>A grouping variable of the same length as <code>y</code>.
+Will be coerced to <a href='https://rdrr.io/r/base/factor.html'>factor</a> if not already a factor.
+Each value in <code>group</code> is interpreted as the group level pertaining
+to the corresponding observation.</p></td>
     </tr>
     <tr>
       <th>size, alpha</th>
@@ -292,25 +331,23 @@ proportions (not counts). See the <strong>Examples</strong> section, below.</p>
 
     
 
-<dl'>
+<dl>
 <dt><code>ppc_error_hist()</code></dt><dd><p>A separate histogram is plotted for the predictive errors computed from
-<code>y</code> and each dataset (row) in <code>yrep</code>. For this plot <code>yrep</code>
-should have only a small number of rows.</p></dd>
+<code>y</code> and each dataset (row) in <code>yrep</code>. For this plot <code>yrep</code> should have
+only a small number of rows.</p></dd>
 <dt><code>ppc_error_hist_grouped()</code></dt><dd><p>Like <code>ppc_error_hist()</code>, except errors are computed within levels of a
 grouping variable. The number of histograms is therefore equal to the
 product of the number of rows in <code>yrep</code> and the number of groups
 (unique values of <code>group</code>).</p></dd>
 <dt><code>ppc_error_scatter()</code></dt><dd><p>A separate scatterplot is displayed for <code>y</code> vs. the predictive errors
-computed from <code>y</code> and each dataset (row) in <code>yrep</code>. For this
-plot <code>yrep</code> should have only a small number of rows.</p></dd>
-<dt><code>ppc_error_scatter_avg()</code></dt><dd><p>A single scatterplot of <code>y</code> vs. the average of the errors computed
-from <code>y</code> and each dataset (row) in <code>yrep</code>. For each individual
-data point <code>y[n]</code> the average error is the average of the
-errors for <code>y[n]</code> computed over the the draws from the posterior
-predictive distribution.</p></dd>
+computed from <code>y</code> and each dataset (row) in <code>yrep</code>. For this plot <code>yrep</code>
+should have only a small number of rows.</p></dd>
+<dt><code>ppc_error_scatter_avg()</code></dt><dd><p>A single scatterplot of <code>y</code> vs. the average of the errors computed from
+<code>y</code> and each dataset (row) in <code>yrep</code>. For each individual data point
+<code>y[n]</code> the average error is the average of the errors for <code>y[n]</code> computed
+over the the draws from the posterior predictive distribution.</p></dd>
 <dt><code>ppc_error_scatter_avg_vs_x()</code></dt><dd><p>Same as <code>ppc_error_scatter_avg()</code>, except the average is plotted on the
-\(y\)-axis and a a predictor variable <code>x</code> is plotted on the
-\(x\)-axis.</p></dd>
+y-axis and a predictor variable <code>x</code> is plotted on the x-axis.</p></dd>
 <dt><code>ppc_error_binned()</code></dt><dd><p>Intended for use with binomial data. A separate binned error plot (similar
 to <code><a href='https://rdrr.io/pkg/arm/man/binnedplot.html'>arm::binnedplot()</a></code>) is generated for each dataset (row) in <code>yrep</code>. For
 this plot <code>y</code> and <code>yrep</code> should contain proportions rather than counts,
@@ -336,31 +373,42 @@ Press, London, third edition. (Ch. 6)</p>
 <code><a href='PPC-test-statistics.html'>PPC-test-statistics</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='example-data.html'>example_y_data</a></span>()
-<span class='no'>yrep</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='example-data.html'>example_yrep_draws</a></span>()
-<span class='fu'>ppc_error_hist</span>(<span class='no'>y</span>, <span class='no'>yrep</span>[<span class='fl'>1</span>:<span class='fl'>3</span>, ])</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='PPC-errors-1.png' alt='' width='700' height='433' /></div><div class='input'>
+    <pre class="examples"><div class='input'><span class='va'>y</span> <span class='op'>&lt;-</span> <span class='fu'><a href='example-data.html'>example_y_data</a></span><span class='op'>(</span><span class='op'>)</span>
+<span class='va'>yrep</span> <span class='op'>&lt;-</span> <span class='fu'><a href='example-data.html'>example_yrep_draws</a></span><span class='op'>(</span><span class='op'>)</span>
+<span class='fu'>ppc_error_hist</span><span class='op'>(</span><span class='va'>y</span>, <span class='va'>yrep</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span>, <span class='op'>]</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='PPC-errors-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># errors within groups</span>
-<span class='no'>group</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='example-data.html'>example_group_data</a></span>()
-(<span class='no'>p1</span> <span class='kw'>&lt;-</span> <span class='fu'>ppc_error_hist_grouped</span>(<span class='no'>y</span>, <span class='no'>yrep</span>[<span class='fl'>1</span>:<span class='fl'>3</span>, ], <span class='no'>group</span>))</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='PPC-errors-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='no'>p1</span> + <span class='fu'><a href='bayesplot-helpers.html'>yaxis_text</a></span>() <span class='co'># defaults to showing counts on y-axis</span></div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='PPC-errors-3.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># \donttest{</span>
-<span class='fu'><a href='https://rdrr.io/r/base/table.html'>table</a></span>(<span class='no'>group</span>) <span class='co'># more obs in GroupB, can set freq=FALSE to show density on y-axis</span></div><div class='output co'>#&gt; group
+<span class='va'>group</span> <span class='op'>&lt;-</span> <span class='fu'><a href='example-data.html'>example_group_data</a></span><span class='op'>(</span><span class='op'>)</span>
+<span class='op'>(</span><span class='va'>p1</span> <span class='op'>&lt;-</span> <span class='fu'>ppc_error_hist_grouped</span><span class='op'>(</span><span class='va'>y</span>, <span class='va'>yrep</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span>, <span class='op'>]</span>, <span class='va'>group</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='PPC-errors-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='va'>p1</span> <span class='op'>+</span> <span class='fu'><a href='bayesplot-helpers.html'>yaxis_text</a></span><span class='op'>(</span><span class='op'>)</span> <span class='co'># defaults to showing counts on y-axis</span>
+</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='PPC-errors-3.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># \donttest{</span>
+<span class='fu'><a href='https://rdrr.io/r/base/table.html'>table</a></span><span class='op'>(</span><span class='va'>group</span><span class='op'>)</span> <span class='co'># more obs in GroupB, can set freq=FALSE to show density on y-axis</span>
+</div><div class='output co'>#&gt; group
 #&gt; GroupA GroupB 
-#&gt;     93    341 </div><div class='input'>(<span class='no'>p2</span> <span class='kw'>&lt;-</span> <span class='fu'>ppc_error_hist_grouped</span>(<span class='no'>y</span>, <span class='no'>yrep</span>[<span class='fl'>1</span>:<span class='fl'>3</span>, ], <span class='no'>group</span>, <span class='kw'>freq</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>))</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='PPC-errors-4.png' alt='' width='700' height='433' /></div><div class='input'><span class='no'>p2</span> + <span class='fu'><a href='bayesplot-helpers.html'>yaxis_text</a></span>()</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='PPC-errors-5.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># }</span>
+#&gt;     93    341 </div><div class='input'><span class='op'>(</span><span class='va'>p2</span> <span class='op'>&lt;-</span> <span class='fu'>ppc_error_hist_grouped</span><span class='op'>(</span><span class='va'>y</span>, <span class='va'>yrep</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span>, <span class='op'>]</span>, <span class='va'>group</span>, freq <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='PPC-errors-4.png' alt='' width='700' height='433' /></div><div class='input'><span class='va'>p2</span> <span class='op'>+</span> <span class='fu'><a href='bayesplot-helpers.html'>yaxis_text</a></span><span class='op'>(</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='PPC-errors-5.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># }</span>
 
 <span class='co'># scatterplots</span>
-<span class='fu'>ppc_error_scatter</span>(<span class='no'>y</span>, <span class='no'>yrep</span>[<span class='fl'>10</span>:<span class='fl'>14</span>, ])</div><div class='img'><img src='PPC-errors-6.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>ppc_error_scatter_avg</span>(<span class='no'>y</span>, <span class='no'>yrep</span>)</div><div class='img'><img src='PPC-errors-7.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='example-data.html'>example_x_data</a></span>()
-<span class='fu'>ppc_error_scatter_avg_vs_x</span>(<span class='no'>y</span>, <span class='no'>yrep</span>, <span class='no'>x</span>)</div><div class='img'><img src='PPC-errors-8.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='co'># ppc_error_binned with binomial model from rstanarm</span>
+<span class='fu'>ppc_error_scatter</span><span class='op'>(</span><span class='va'>y</span>, <span class='va'>yrep</span><span class='op'>[</span><span class='fl'>10</span><span class='op'>:</span><span class='fl'>14</span>, <span class='op'>]</span><span class='op'>)</span>
+</div><div class='img'><img src='PPC-errors-6.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>ppc_error_scatter_avg</span><span class='op'>(</span><span class='va'>y</span>, <span class='va'>yrep</span><span class='op'>)</span>
+</div><div class='img'><img src='PPC-errors-7.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='example-data.html'>example_x_data</a></span><span class='op'>(</span><span class='op'>)</span>
+<span class='fu'>ppc_error_scatter_avg_vs_x</span><span class='op'>(</span><span class='va'>y</span>, <span class='va'>yrep</span>, <span class='va'>x</span><span class='op'>)</span>
+</div><div class='img'><img src='PPC-errors-8.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># \dontrun{</span>
-<span class='fu'><a href='https://rdrr.io/r/base/message.html'>suppressPackageStartupMessages</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>rstanarm</span>))
-<span class='fu'><a href='https://rdrr.io/r/base/warning.html'>suppressWarnings</a></span>(<span class='fu'><a href='https://rdrr.io/r/utils/example.html'>example</a></span>(<span class='st'>"example_model"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"rstanarm"</span>))</div><div class='output co'>#&gt; 
-#&gt; exmpl_&gt; example_model &lt;- 
+<span class='co'># binned error plot with binomial model from rstanarm</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://mc-stan.org/rstanarm/'>rstanarm</a></span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/example.html'>example</a></span><span class='op'>(</span><span class='st'>"example_model"</span>, package <span class='op'>=</span> <span class='st'>"rstanarm"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; 
+#&gt; exmpl_&gt; if (.Platform$OS.type != "windows" || .Platform$r_arch != "i386") {
+#&gt; exmpl_+ example_model &lt;- 
 #&gt; exmpl_+   stan_glmer(cbind(incidence, size - incidence) ~ size + period + (1|herd),
 #&gt; exmpl_+              data = lme4::cbpp, family = binomial, QR = TRUE,
 #&gt; exmpl_+              # this next line is only to keep the example small in size!
 #&gt; exmpl_+              chains = 2, cores = 1, seed = 12345, iter = 1000, refresh = 0)
-#&gt; 
-#&gt; exmpl_&gt; example_model
+#&gt; exmpl_+ example_model
+#&gt; exmpl_+ }
 #&gt; stan_glmer
 #&gt;  family:       binomial [logit]
 #&gt;  formula:      cbind(incidence, size - incidence) ~ size + period + (1 | herd)
@@ -380,17 +428,19 @@ Press, London, third edition. (Ch. 6)</p>
 #&gt; 
 #&gt; ------
 #&gt; * For help interpreting the printed output see ?print.stanreg
-#&gt; * For info on the priors used see ?prior_summary.stanreg</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/stats/formula.html'>formula</a></span>(<span class='no'>example_model</span>)</div><div class='output co'>#&gt; cbind(incidence, size - incidence) ~ size + period + (1 | herd)</div><div class='input'>
+#&gt; * For info on the priors used see ?prior_summary.stanreg</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/stats/formula.html'>formula</a></span><span class='op'>(</span><span class='va'>example_model</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; cbind(incidence, size - incidence) ~ size + period + (1 | herd)</div><div class='input'>
 <span class='co'># get observed proportion of "successes"</span>
-<span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='no'>example_model</span>$<span class='no'>y</span>  <span class='co'># matrix of "success" and "failure" counts</span>
-<span class='no'>trials</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/colSums.html'>rowSums</a></span>(<span class='no'>y</span>)
-<span class='no'>y_prop</span> <span class='kw'>&lt;-</span> <span class='no'>y</span>[, <span class='fl'>1</span>] / <span class='no'>trials</span>  <span class='co'># proportions</span>
+<span class='va'>y</span> <span class='op'>&lt;-</span> <span class='va'>example_model</span><span class='op'>$</span><span class='va'>y</span>  <span class='co'># matrix of "success" and "failure" counts</span>
+<span class='va'>trials</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/colSums.html'>rowSums</a></span><span class='op'>(</span><span class='va'>y</span><span class='op'>)</span>
+<span class='va'>y_prop</span> <span class='op'>&lt;-</span> <span class='va'>y</span><span class='op'>[</span>, <span class='fl'>1</span><span class='op'>]</span> <span class='op'>/</span> <span class='va'>trials</span>  <span class='co'># proportions</span>
 
 <span class='co'># get predicted success proportions</span>
-<span class='no'>yrep</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://mc-stan.org/rstanarm/reference/posterior_predict.stanreg.html'>posterior_predict</a></span>(<span class='no'>example_model</span>)
-<span class='no'>yrep_prop</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sweep.html'>sweep</a></span>(<span class='no'>yrep</span>, <span class='fl'>2</span>, <span class='no'>trials</span>, <span class='st'>"/"</span>)
+<span class='va'>yrep</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://mc-stan.org/rstanarm/reference/posterior_predict.stanreg.html'>posterior_predict</a></span><span class='op'>(</span><span class='va'>example_model</span><span class='op'>)</span>
+<span class='va'>yrep_prop</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sweep.html'>sweep</a></span><span class='op'>(</span><span class='va'>yrep</span>, <span class='fl'>2</span>, <span class='va'>trials</span>, <span class='st'>"/"</span><span class='op'>)</span>
 
-<span class='fu'>ppc_error_binned</span>(<span class='no'>y_prop</span>, <span class='no'>yrep_prop</span>[<span class='fl'>1</span>:<span class='fl'>6</span>, ])</div><div class='img'><img src='PPC-errors-9.png' alt='' width='700' height='433' /></div><div class='input'># }
+<span class='fu'>ppc_error_binned</span><span class='op'>(</span><span class='va'>y_prop</span>, <span class='va'>yrep_prop</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>6</span>, <span class='op'>]</span><span class='op'>)</span>
+</div><div class='img'><img src='PPC-errors-9.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># }</span>
 
 </div></pre>
   </div>
@@ -408,7 +458,7 @@ Press, London, third edition. (Ch. 6)</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>
