@@ -4,18 +4,19 @@
 #' @aliases PPC
 #' @family PPCs
 #'
-#' @description
-#' The **bayesplot** PPC module provides various plotting functions for creating
-#' graphical displays comparing observed data to simulated data from the
-#' posterior (or prior) predictive distribution. See below for a brief
-#' discussion of the ideas behind posterior predictive checking, a description
-#' of the structure of this package, and tips on providing an interface to
-#' **bayesplot** from another package.
+#' @description The **bayesplot** PPC module provides various plotting functions
+#'   for creating graphical displays comparing observed data to simulated data
+#'   from the posterior (or prior) predictive distribution. See the sections
+#'   below for a brief discussion of the ideas behind posterior predictive
+#'   checking, an overview of the available PPC plots, and tips on providing an
+#'   interface to **bayesplot** from another package.
 #'
-#' @details
-#' The idea behind posterior predictive checking is simple: if a model is a good
-#' fit then we should be able to use it to generate data that looks a lot like
-#' the data we observed.
+#'   For plots of posterior (or prior) predictive distributions that do _not_
+#'   include observed data see [PPD-overview] instead.
+#'
+#' @details The idea behind posterior predictive checking is simple: if a model
+#'   is a good fit then we should be able to use it to generate data that looks
+#'   a lot like the data we observed.
 #'
 #' \subsection{Posterior predictive distribution}{
 #' To generate the data used for posterior predictive checks we simulate from
@@ -56,38 +57,45 @@
 #' distribution. See Gabry et al. (2019) for more on prior predictive checking
 #' and when it is reasonable to compare the prior predictive distribution to the
 #' observed data. If you want to avoid using the observed data for prior
-#' predictive checks, then the `y` argument to the PPC plotting functions can be
-#' used to provide plausible or implausible `y` values that you want to compare
-#' to the prior predictive realizations.
+#' predictive checks then you can use the **bayesplot** [PPD] plots instead,
+#' which do not take a `y` argument, or you can use the PPC plots but provide
+#' plausible or implausible `y` values that you want to compare to the prior
+#' predictive realizations.
 #' }
 #'
 #' @section PPC plotting functions: The plotting functions for prior and
-#'   posterior predictive checking are organized into several categories, each
-#'   with its own documentation:
-#' * [Distributions][PPC-distributions]: Histograms, kernel density
-#'   estimates, boxplots, and other plots comparing the empirical distribution
-#'   of data `y` to the distributions of individual simulated datasets (rows)
-#'   in `yrep`.
-#' * [Statistics][PPC-test-statistics]: The distribution of a statistic,
-#'   or a pair of statistics, over the simulated datasets (rows) in `yrep`
-#'   compared to value of the statistic(s) computed from `y`.
-#' * [Intervals][PPC-intervals]: Interval estimates of `yrep` with `y`
+#'   posterior predictive checking all have the prefix `ppc_` and all require
+#'   the arguments `y`, a vector of observations, and `yrep`, a matrix of
+#'   replications (in-sample predictions). The plots are organized into several
+#'   categories, each with its own documentation:
+#' * [PPC-distributions]: Histograms, kernel density estimates, boxplots, and
+#'   other plots comparing the empirical distribution of data `y` to the
+#'   distributions of individual simulated datasets (rows) in `yrep`.
+#'
+#' * [PPC-test-statistics]: The distribution of a statistic, or a pair of
+#'   statistics, over the simulated datasets (rows) in `yrep` compared to value of
+#'   the statistic(s) computed from `y`.
+#'
+#' * [PPC-intervals]: Interval estimates of `yrep` with `y`
 #'   overlaid. The x-axis variable can be optionally specified by the user
 #'   (e.g. to plot against a predictor variable or over time).
-#' * [Predictive errors][PPC-errors]: Plots of predictive errors
-#'   (`y - yrep`) computed from `y` and each of the simulated datasets (rows)
-#'   in `yrep`. For binomial models binned error plots are also available.
-#' * [Scatterplots][PPC-scatterplots]: Scatterplots (and similar
-#'   visualizations) of the data `y` vs. individual simulated datasets
-#'   (rows) in `yrep`, or vs. the average value of the distributions of each
-#'   data point (columns) in `yrep`.
-#' * [Plots for discrete outcomes][PPC-discrete]: PPC functions that can
-#'   only be used if `y` and `yrep` are discrete. For example, rootograms for
-#'   count outcomes and bar plots for ordinal, categorical, and
-#'   multinomial outcomes.
-#' * [LOO predictive checks][PPC-loo]: PPC functions for predictive checks
-#'   based on (approximate) leave-one-out (LOO) cross-validation.
-#' * [Censored data][PPC-censoring]: PPC functions comparing the empirical
+#'
+#' * [PPC-errors]: Plots of predictive errors (`y - yrep`) computed from `y` and
+#'   each of the simulated datasets (rows) in `yrep`. For binomial models binned
+#'   error plots are also available.
+#'
+#' * [PPC-scatterplots]: Scatterplots (and similar visualizations) of the data
+#'   `y` vs. individual simulated datasets (rows) in `yrep`, or vs. the average
+#'   value of the distributions of each data point (columns) in `yrep`.
+#'
+#' * [PPC-discrete]: PPC functions that can only be used if `y` and `yrep` are
+#'   discrete. For example, rootograms for count outcomes and bar plots for
+#'   ordinal, categorical, and multinomial outcomes.
+#'
+#' * [PPC-loo]: PPC functions for predictive checks based on (approximate)
+#'   leave-one-out (LOO) cross-validation.
+#''
+#' * [PPC-censoring]: PPC functions comparing the empirical
 #'   distribution of censored data `y` to the distributions of individual
 #'   simulated datasets (rows) in `yrep`.
 #'

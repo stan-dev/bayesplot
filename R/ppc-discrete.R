@@ -14,20 +14,17 @@
 #' @param ... Currently unused.
 #' @param prob A value between `0` and `1` indicating the desired probability
 #'   mass to include in the `yrep` intervals. Set `prob=0` to remove the
-#'   intervals. For `ppc_rootogram()` these are intervals of the *square roots*
-#'   of the expected counts.
-#' @param width For `ppc_bars()` and `ppc_bars_grouped()`, passed to
-#'   [ggplot2::geom_bar()] to control the bar width.
-#' @param size,fatten For `ppc_bars()` and `ppc_bars_grouped()`, `size` and
-#'   `fatten` are passed to [ggplot2::geom_pointrange()] to control the
-#'   appearance of the `yrep` points and intervals. For `ppc_rootogram()` `size`
-#'   is passed to [ggplot2::geom_line()].
-#' @param freq For `ppc_bars()` and `ppc_bars_grouped()`, if `TRUE` (the
-#'   default) the y-axis will display counts. Setting `freq=FALSE` will put
-#'   proportions on the y-axis.
+#'   intervals. (Note: for rootograms these are intervals of the *square roots*
+#'   of the expected counts.)
+#' @param width For bar plots only, passed to [ggplot2::geom_bar()] to control
+#'   the bar width.
+#' @param size,fatten For bar plots, `size` and `fatten` are passed to
+#'   [ggplot2::geom_pointrange()] to control the appearance of the `yrep` points
+#'   and intervals. For rootograms `size` is passed to [ggplot2::geom_line()].
+#' @param freq For bar plots only, if `TRUE` (the default) the y-axis will
+#'   display counts. Setting `freq=FALSE` will put proportions on the y-axis.
 #'
-#'
-#' @template return-ggplot
+#' @template return-ggplot-or-data
 #'
 #' @details For all of these plots `y` and `yrep` must be integers, although
 #'   they need not be integers in the strict sense of \R's
@@ -59,9 +56,9 @@
 #'   * _Suspended_: histogram of the differences between expected and
 #'    observed counts.
 #'
-#'   **All of these are plotted on the square root scale**. See Kleiber and
-#'   Zeileis (2016) for advice on interpreting rootograms and selecting among
-#'   the different styles.
+#'   **All of the rootograms are plotted on the square root scale**. See Kleiber
+#'   and Zeileis (2016) for advice on interpreting rootograms and selecting
+#'   among the different styles.
 #' }
 #' }
 #'
@@ -85,6 +82,40 @@
 #' color_scheme_set("mix-blue-pink")
 #' ppc_bars_grouped(y, yrep, group, prob = 0.5, freq = FALSE)
 #'
+#' \dontrun{
+#' # example for ordinal regression using rstanarm
+#' library(rstanarm)
+#' fit <- stan_polr(
+#'   tobgp ~ agegp,
+#'   data = esoph,
+#'   method = "probit",
+#'   prior = R2(0.2, "mean"),
+#'   init_r = 0.1,
+#'   seed = 12345,
+#'   # cores = 4,
+#'   refresh = 0
+#'  )
+#'
+#' # coded as character, so convert to integer
+#' yrep_char <- posterior_predict(fit)
+#' print(yrep_char[1, 1:4])
+#'
+#' yrep_int <- sapply(data.frame(yrep_char, stringsAsFactors = TRUE), as.integer)
+#' y_int <- as.integer(esoph$tobgp)
+#'
+#' ppc_bars(y_int, yrep_int)
+#'
+#' ppc_bars_grouped(
+#'   y = y_int,
+#'   yrep = yrep_int,
+#'   group = esoph$agegp,
+#'   freq=FALSE,
+#'   prob = 0.5,
+#'   fatten = 1,
+#'   size = 1.5
+#' )
+#' }
+#'
 NULL
 
 #' @rdname PPC-discrete
@@ -96,40 +127,55 @@ ppc_bars <-
            prob = 0.9,
            width = 0.9,
            size = 1,
-           fatten = 3,
+           fatten = 2.5,
            freq = TRUE) {
 
-  check_ignored_arguments(...)
-  y <- validate_y(y)
-  yrep <- validate_yrep(yrep, y)
-  if (!all_whole_number(y)) {
-    abort("ppc_bars expects 'y' to be discrete.")
-  }
-  if (!all_whole_number(yrep)) {
-    abort("ppc_bars expects 'yrep' to be discrete.")
-  }
+    dots <- list(...)
+    if (!from_grouped(dots)) {
+      check_ignored_arguments(...)
+      dots$group <- NULL
+    }
 
-  alpha <- (1 - prob) / 2
-  probs <- sort(c(alpha, 0.5, 1 - alpha))
-  yrep_data <- ppc_bars_yrep_data(
-    y,
-    yrep,
-    probs = probs,
-    freq = freq,
-    group = NULL
-  )
+    data <- ppc_bars_data(
+      y = y,
+      yrep = yrep,
+      group = dots$group,
+      prob = prob,
+      freq = freq
+    )
 
-  .ppc_bars(
-    y_data = data.frame(y = y),
-    yrep_data,
-    grouped = FALSE,
-    facet_args = list(),
-    width = width,
-    size = size,
-    fatten = fatten,
-    freq = freq
-  )
-}
+    if (!is.null(dots$group)) {
+      limits <- geom_ignore()
+    } else {
+      limits <- expand_limits(y = 1.05 * max(data[["h"]], na.rm = TRUE))
+    }
+
+    ggplot(data) +
+      geom_col(
+        data = dplyr::filter(data, !is.na(.data$y_obs)),
+        mapping = aes_(x = ~ x, y = ~ y_obs, fill = "y"),
+        color = get_color("lh"),
+        width = width
+      ) +
+      geom_pointrange(
+        mapping = intervals_inner_aes(needs_y = TRUE, color = "yrep"),
+        size = size,
+        fatten = fatten,
+        na.rm = TRUE
+      ) +
+      scale_color_ppc(
+        values = get_color("d"),
+        labels = yrep_label(),
+        guide = guide_legend(order = 1, override.aes = list(size = .75 * size))
+      ) +
+      scale_fill_ppc(values = get_color("l"), labels = y_label()) +
+      scale_x_continuous(breaks = pretty) +
+      labs(x = NULL, y = if (freq) "Count" else "Proportion") +
+      dont_expand_y_axis() +
+      bayesplot_theme_get() +
+      limits +
+      reduce_legend_spacing(0.25)
+  }
 
 
 #' @rdname PPC-discrete
@@ -146,33 +192,17 @@ ppc_bars_grouped <-
            prob = 0.9,
            width = 0.9,
            size = 1,
-           fatten = 3,
+           fatten = 2.5,
            freq = TRUE) {
-
   check_ignored_arguments(...)
-  y <- validate_y(y)
-  yrep <- validate_yrep(yrep, y)
-  group <- validate_group(group, y)
-  if (!all_whole_number(y)) {
-    abort("ppc_bars_grouped expects 'y' to be discrete.")
+  call <- match.call(expand.dots = FALSE)
+  g <- eval(ungroup_call("ppc_bars", call), parent.frame())
+  if (fixed_y(facet_args)) {
+    g <- g + expand_limits(y = 1.05 * max(g$data[["h"]], na.rm = TRUE))
   }
-  if (!all_whole_number(yrep)) {
-    abort("ppc_bars_grouped expects 'yrep' to be discrete.")
-  }
-
-  alpha <- (1 - prob) / 2
-  probs <- sort(c(alpha, 0.5, 1 - alpha))
-  yrep_data <- ppc_bars_yrep_data(y, yrep, probs, freq = freq, group = group)
-  .ppc_bars(
-    y_data = data.frame(y, group),
-    yrep_data,
-    grouped = TRUE,
-    facet_args = facet_args,
-    width = width,
-    size = size,
-    fatten = fatten,
-    freq = freq
-  )
+  g +
+    bars_group_facets(facet_args) +
+    force_axes_in_facets()
 }
 
 
@@ -210,7 +240,7 @@ ppc_rootogram <- function(y,
   check_ignored_arguments(...)
   style <- match.arg(style)
   y <- validate_y(y)
-  yrep <- validate_yrep(yrep, y)
+  yrep <- validate_predictions(yrep, length(y))
   if (!all_counts(y)) {
     abort("ppc_rootogram expects counts as inputs to 'y'.")
   }
@@ -266,8 +296,9 @@ ppc_rootogram <- function(y,
     ) +
     bayesplot_theme_get()
 
-  if (style != "standing")
+  if (style != "standing") {
     graph <- graph + hline_0(size = 0.4)
+  }
 
   graph <- graph +
     geom_smooth(
@@ -285,26 +316,63 @@ ppc_rootogram <- function(y,
     labs(x = expression(italic(y)),
          y = expression(sqrt(Count)))
 
-  if (style == "standing")
+  if (style == "standing") {
     graph <- graph + dont_expand_y_axis()
+  }
 
   graph + reduce_legend_spacing(0.25)
 }
 
 
-
+#' @rdname PPC-discrete
+#' @export
+ppc_bars_data <-
+  function(y,
+           yrep,
+           group = NULL,
+           prob = 0.9,
+           freq = TRUE) {
+    stopifnot(0 <= prob && prob <= 1, is.logical(freq))
+    y <- validate_y(y)
+    yrep <- validate_predictions(yrep, length(y))
+    if (!all_whole_number(y)) {
+      abort("ppc_bars expects 'y' to be discrete.")
+    }
+    if (!all_whole_number(yrep)) {
+      abort("ppc_bars expects 'yrep' to be discrete.")
+    }
+    if (!is.null(group)) {
+      group <- validate_group(group, length(y))
+    }
+    .ppc_bars_data(
+      y = y,
+      yrep = yrep,
+      group = group,
+      prob = prob,
+      freq = freq
+    )
+  }
 
 
 # internal ----------------------------------------------------------------
 
-#' @importFrom dplyr "%>%" ungroup count arrange mutate
-ppc_bars_yrep_data <- function(y, yrep, probs, freq = TRUE, group = NULL) {
+#' Internal function for `ppc_bars_data()`
+#'
+#' @noRd
+#' @param y,yrep,group User's already validated `y`, `yrep`, and (if applicable)
+#'   `group` arguments.
+#' @param prob,freq User's `prob` and `freq` arguments.
+#' @importFrom dplyr "%>%" ungroup count arrange mutate summarise across full_join rename
+.ppc_bars_data <- function(y, yrep, group = NULL, prob = 0.9, freq = TRUE) {
+  alpha <- (1 - prob) / 2
+  probs <- sort(c(alpha, 0.5, 1 - alpha))
+
   # Prepare for final summary
-  sel <- ifelse(freq, "n", "proportion")
   lo  <- function(x) quantile(x, probs[1])
   mid <- function(x) quantile(x, probs[2])
   hi  <- function(x) quantile(x, probs[3])
-  fs <- list(lo = lo, mid = mid, hi = hi)
+  summary_var <- ifelse(freq, "n", "proportion")
+  summary_funs <- list(l = lo, m = mid, h = hi) # use l,m,h like in our intervals data
 
   # Set a dummy group for ungrouped data
   if (is.null(group)) {
@@ -314,87 +382,55 @@ ppc_bars_yrep_data <- function(y, yrep, probs, freq = TRUE, group = NULL) {
     was_null_group <- FALSE
   }
 
-  # FIXME: make sure that levels with zero counts are still plotted
-  yrep_data <- ppc_group_data(y, yrep, group = group, stat = NULL) %>%
-    dplyr::filter(.data$variable != "y") %>%
-    ungroup() %>%
+  tmp_data <- data.frame(
+    group = factor(group),
+    y = y,
+    yrep = t(yrep)
+  )
+  data <-
+    reshape2::melt(tmp_data, id.vars = "group") %>%
     count(.data$group, .data$value, .data$variable) %>%
     group_by(.data$variable, .data$group) %>%
     mutate(proportion = .data$n / sum(.data$n)) %>%
     ungroup() %>%
     group_by(.data$group, .data$value)
 
-  summary_stats <- yrep_data %>%
-    dplyr::summarise_at(sel, fs) %>%
-    ungroup()
+  yrep_summary <- data %>%
+    dplyr::filter(!.data$variable == "y") %>%
+    summarise(across(summary_var, summary_funs, .names = "{.fn}")) %>%
+    ungroup() %>%
+    arrange(.data$group, .data$value)
 
-  # Drop dummy group
-  if (was_null_group) {
-    summary_stats$group <- NULL
-  }
+  y_summary <- data %>%
+    dplyr::filter(.data$variable == "y") %>%
+    ungroup() %>%
+    rename(y_obs = .data[[summary_var]]) %>%
+    arrange(.data$group, .data$value)
 
-  summary_stats %>%
-    rename(x = .data$value)
+  cols <- syms(c(if (!was_null_group) "group", "x", "y_obs", "l", "m", "h"))
+
+  # full join to keep empty cells
+  full_join(yrep_summary, y_summary, by = c("group", "value")) %>%
+    rename(x = .data$value) %>%
+    arrange(.data$x) %>%
+    select(!!!cols)
 }
 
-.ppc_bars <- function(y_data,
-                      yrep_data,
-                      facet_args = list(),
-                      grouped = FALSE,
-                      width = 0.9,
-                      size = 1,
-                      fatten = 3,
-                      freq = TRUE) {
 
-  graph <- ggplot() +
-    geom_bar(
-      data = y_data,
-      mapping =
-        if (freq)
-          aes_(x = ~ y, fill = "y")
-        else
-          aes_(x = ~ y, y = ~ ..prop.., fill = "y"),
-      color = get_color("lh"),
-      width = width
-    ) +
-    geom_pointrange(
-      data = yrep_data,
-      mapping = aes_(
-        x = ~ x,
-        y = ~ mid,
-        ymin = ~ lo,
-        ymax = ~ hi,
-        color = "yrep"
-      ),
-      size = size,
-      fatten = fatten
-    ) +
-    scale_fill_manual("", values = get_color("l"),
-                      labels = y_label()) +
-    scale_color_manual("", values = get_color("dh"),
-                       labels = yrep_label()) +
-    guides(color = guide_legend(order = 1),
-           fill = guide_legend(order = 2)) +
-    labs(x = NULL, y = if (freq) "Count" else "Proportion") +
-    bayesplot_theme_get()
-
-  if (grouped) {
-    facet_args[["facets"]] <- "group"
-    graph <- graph + do.call("facet_wrap", facet_args)
-  }
-
-  graph <- graph +
-    scale_x_continuous(breaks = pretty) +
-    dont_expand_y_axis()
-
-
-  # add a little space between the max value plotted and the top of the plot
-  if (!grouped || !(isTRUE(facet_args[["scales"]] %in% c("free", "free_y")))) {
-    g <- ggplot_build(graph)
-    y_axis_max <- max(g$data[[1]][["ymax"]], g$data[[2]][["ymax"]])
-    graph <- graph + expand_limits(y = 1.05 * y_axis_max)
-  }
-
-  graph + reduce_legend_spacing(0.25)
+#' Create the facet layer for grouped bar plots
+#' @param facet_args User's `facet_args` argument.
+#' @param scales_default String to use for `scales` argument to `facet_wrap()`
+#'   if not specified by user. The default is `"fixed"` for bar plots. This is
+#'   the same as `ggplot2::facet_wrap()` but different than
+#'   `bayesplot::intervals_group_facets()`, which has a default of `"free"`.
+#' @return Object returned by `facet_wrap()`.
+#' @noRd
+bars_group_facets <- function(facet_args, scales_default = "fixed") {
+  facet_args[["facets"]] <- "group"
+  facet_args[["scales"]] <- facet_args[["scales"]] %||% scales_default
+  do.call("facet_wrap", facet_args)
 }
 
+fixed_y <- function(facet_args) {
+  !isTRUE(facet_args[["scales"]] %in% c("free", "free_y"))
+}

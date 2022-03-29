@@ -3,48 +3,21 @@
 \name{PPC-distributions}
 \alias{PPC-distributions}
 \alias{ppc_data}
-\alias{ppc_hist}
-\alias{ppc_boxplot}
-\alias{ppc_freqpoly}
-\alias{ppc_freqpoly_grouped}
-\alias{ppc_dens}
 \alias{ppc_dens_overlay}
 \alias{ppc_dens_overlay_grouped}
 \alias{ppc_ecdf_overlay}
 \alias{ppc_ecdf_overlay_grouped}
+\alias{ppc_dens}
+\alias{ppc_hist}
+\alias{ppc_freqpoly}
+\alias{ppc_freqpoly_grouped}
+\alias{ppc_boxplot}
 \alias{ppc_violin_grouped}
 \alias{ppc_pit_ecdf}
 \alias{ppc_pit_ecdf_grouped}
 \title{PPC distributions}
 \usage{
 ppc_data(y, yrep, group = NULL)
-
-ppc_hist(y, yrep, ..., binwidth = NULL, breaks = NULL, freq = TRUE)
-
-ppc_boxplot(y, yrep, ..., notch = TRUE, size = 0.5, alpha = 1)
-
-ppc_freqpoly(
-  y,
-  yrep,
-  ...,
-  binwidth = NULL,
-  freq = TRUE,
-  size = 0.25,
-  alpha = 1
-)
-
-ppc_freqpoly_grouped(
-  y,
-  yrep,
-  group,
-  ...,
-  binwidth = NULL,
-  freq = TRUE,
-  size = 0.25,
-  alpha = 1
-)
-
-ppc_dens(y, yrep, ..., trim = FALSE, size = 0.5, alpha = 1)
 
 ppc_dens_overlay(
   y,
@@ -94,6 +67,25 @@ ppc_ecdf_overlay_grouped(
   alpha = 0.7
 )
 
+ppc_dens(y, yrep, ..., trim = FALSE, size = 0.5, alpha = 1)
+
+ppc_hist(y, yrep, ..., binwidth = NULL, breaks = NULL, freq = TRUE)
+
+ppc_freqpoly(y, yrep, ..., binwidth = NULL, freq = TRUE, size = 0.5, alpha = 1)
+
+ppc_freqpoly_grouped(
+  y,
+  yrep,
+  group,
+  ...,
+  binwidth = NULL,
+  freq = TRUE,
+  size = 0.5,
+  alpha = 1
+)
+
+ppc_boxplot(y, yrep, ..., notch = TRUE, size = 0.5, alpha = 1)
+
 ppc_violin_grouped(
   y,
   yrep,
@@ -134,36 +126,23 @@ ppc_pit_ecdf_grouped(
 \arguments{
 \item{y}{A vector of observations. See \strong{Details}.}
 
-\item{yrep}{An \eqn{S} by \eqn{N} matrix of draws from the posterior
-predictive distribution, where \eqn{S} is the size of the posterior sample
-(or subset of the posterior sample used to generate \code{yrep}) and \eqn{N} is
-the number of observations (the length of \code{y}). The columns of \code{yrep}
-should be in the same order as the data points in \code{y} for the plots to make
-sense. See \strong{Details} for additional instructions.}
+\item{yrep}{An \code{S} by \code{N} matrix of draws from the posterior (or prior)
+predictive distribution. The number of rows, \code{S}, is the size of the
+posterior (or prior) sample used to generate \code{yrep}. The number of columns,
+\code{N} is the number of predicted observations (\code{length(y)}). The columns of
+\code{yrep} should be in the same order as the data points in \code{y} for the plots
+to make sense. See the \strong{Details} and \strong{Plot Descriptions} sections for
+additional advice specific to particular plots.}
 
-\item{group}{A grouping variable (a vector or factor) of the same length as
-\code{y}. Each value in \code{group} is interpreted as the group level
-pertaining to the corresponding value of \code{y}.}
+\item{group}{A grouping variable of the same length as \code{y}.
+Will be coerced to \link[base:factor]{factor} if not already a factor.
+Each value in \code{group} is interpreted as the group level pertaining
+to the corresponding observation.}
 
 \item{...}{Currently unused.}
 
-\item{binwidth}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}} to override
-the default binwidth.}
-
-\item{breaks}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}} as an
-alternative to \code{binwidth}.}
-
-\item{freq}{For histograms, \code{freq=TRUE} (the default) puts count on the
-y-axis. Setting \code{freq=FALSE} puts density on the y-axis. (For many
-plots the y-axis text is off by default. To view the count or density
-labels on the y-axis see the \code{\link[=yaxis_text]{yaxis_text()}} convenience
-function.)}
-
-\item{notch}{A logical scalar passed to \code{\link[ggplot2:geom_boxplot]{ggplot2::geom_boxplot()}}.
-Unlike for \code{geom_boxplot()}, the default is \code{notch=TRUE}.}
-
 \item{size, alpha}{Passed to the appropriate geom to control the appearance of
-the \code{yrep} distributions.}
+the predictive distributions.}
 
 \item{trim}{A logical scalar passed to \code{\link[ggplot2:geom_density]{ggplot2::geom_density()}}.}
 
@@ -177,6 +156,22 @@ passed to \code{\link[ggplot2:stat_ecdf]{ggplot2::stat_ecdf()}}. If \code{discre
 \code{TRUE} then \code{geom="step"} is used.}
 
 \item{pad}{A logical scalar passed to \code{\link[ggplot2:stat_ecdf]{ggplot2::stat_ecdf()}}.}
+
+\item{binwidth}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}} to override
+the default binwidth.}
+
+\item{breaks}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}} as an
+alternative to \code{binwidth}.}
+
+\item{freq}{For histograms, \code{freq=TRUE} (the default) puts count on the
+y-axis. Setting \code{freq=FALSE} puts density on the y-axis. (For many
+plots the y-axis text is off by default. To view the count or density
+labels on the y-axis see the \code{\link[=yaxis_text]{yaxis_text()}} convenience
+function.)}
+
+\item{notch}{For the box plot, a logical scalar passed to
+\code{\link[ggplot2:geom_boxplot]{ggplot2::geom_boxplot()}}. Note: unlike \code{geom_boxplot()}, the default is
+\code{notch=TRUE}.}
 
 \item{probs}{A numeric vector passed to \code{\link[ggplot2:geom_violin]{ggplot2::geom_violin()}}'s
 \code{draw_quantiles} argument to specify at which quantiles to draw
@@ -217,14 +212,13 @@ customized using the \strong{ggplot2} package. The functions with suffix
 function.
 }
 \description{
-Compare the empirical distribution of the data \code{y} to the distributions
-of simulated/replicated data \code{yrep} from the posterior predictive
-distribution. See the \strong{Plot Descriptions} section, below,
-for details.
+Compare the empirical distribution of the data \code{y} to the distributions of
+simulated/replicated data \code{yrep} from the posterior predictive distribution.
+See the \strong{Plot Descriptions} section, below, for details.
 }
 \details{
-For Binomial data, the plots will typically be most useful if
-\code{y} and \code{yrep} contain the "success" proportions (not discrete
+For Binomial data, the plots may be more useful if
+the input contains the "success" \emph{proportions} (not discrete
 "success" or "failure" counts).
 }
 \section{Plot Descriptions}{
@@ -294,12 +288,13 @@ color_scheme_set("blue")
 ppc_dens(y, yrep[200:202, ])
 }
 
+# frequency polygons
 ppc_freqpoly(y, yrep[1:3,], alpha = 0.1, size = 1, binwidth = 5)
 
-# if groups are different sizes then the 'freq' argument can be useful
 group <- example_group_data()
 ppc_freqpoly_grouped(y, yrep[1:3,], group) + yaxis_text()
 \donttest{
+# if groups are different sizes then the 'freq' argument can be useful
 ppc_freqpoly_grouped(y, yrep[1:3,], group, freq = FALSE) + yaxis_text()
 }
 

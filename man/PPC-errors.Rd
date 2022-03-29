@@ -6,41 +6,79 @@
 \alias{ppc_error_hist_grouped}
 \alias{ppc_error_scatter}
 \alias{ppc_error_scatter_avg}
+\alias{ppc_error_scatter_avg_grouped}
 \alias{ppc_error_scatter_avg_vs_x}
 \alias{ppc_error_binned}
+\alias{ppc_error_data}
 \title{PPC errors}
 \usage{
-ppc_error_hist(y, yrep, ..., binwidth = NULL, breaks = NULL, freq = TRUE)
+ppc_error_hist(
+  y,
+  yrep,
+  ...,
+  facet_args = list(),
+  binwidth = NULL,
+  breaks = NULL,
+  freq = TRUE
+)
 
 ppc_error_hist_grouped(
   y,
   yrep,
   group,
   ...,
+  facet_args = list(),
   binwidth = NULL,
   breaks = NULL,
   freq = TRUE
 )
 
-ppc_error_scatter(y, yrep, ..., size = 2.5, alpha = 0.8)
+ppc_error_scatter(y, yrep, ..., facet_args = list(), size = 2.5, alpha = 0.8)
 
 ppc_error_scatter_avg(y, yrep, ..., size = 2.5, alpha = 0.8)
 
+ppc_error_scatter_avg_grouped(
+  y,
+  yrep,
+  group,
+  ...,
+  facet_args = list(),
+  size = 2.5,
+  alpha = 0.8
+)
+
 ppc_error_scatter_avg_vs_x(y, yrep, x, ..., size = 2.5, alpha = 0.8)
 
-ppc_error_binned(y, yrep, ..., bins = NULL, size = 1, alpha = 0.25)
+ppc_error_binned(
+  y,
+  yrep,
+  ...,
+  facet_args = list(),
+  bins = NULL,
+  size = 1,
+  alpha = 0.25
+)
+
+ppc_error_data(y, yrep, group = NULL)
 }
 \arguments{
 \item{y}{A vector of observations. See \strong{Details}.}
 
-\item{yrep}{An \eqn{S} by \eqn{N} matrix of draws from the posterior
-predictive distribution, where \eqn{S} is the size of the posterior sample
-(or subset of the posterior sample used to generate \code{yrep}) and \eqn{N} is
-the number of observations (the length of \code{y}). The columns of \code{yrep}
-should be in the same order as the data points in \code{y} for the plots to make
-sense. See \strong{Details} for additional instructions.}
+\item{yrep}{An \code{S} by \code{N} matrix of draws from the posterior (or prior)
+predictive distribution. The number of rows, \code{S}, is the size of the
+posterior (or prior) sample used to generate \code{yrep}. The number of columns,
+\code{N} is the number of predicted observations (\code{length(y)}). The columns of
+\code{yrep} should be in the same order as the data points in \code{y} for the plots
+to make sense. See the \strong{Details} and \strong{Plot Descriptions} sections for
+additional advice specific to particular plots.}
 
 \item{...}{Currently unused.}
+
+\item{facet_args}{A named list of arguments (other than \code{facets}) passed
+to \code{\link[ggplot2:facet_wrap]{ggplot2::facet_wrap()}} or \code{\link[ggplot2:facet_grid]{ggplot2::facet_grid()}}
+to control faceting. Note: if \code{scales} is not included in \code{facet_args}
+then \strong{bayesplot} may use \code{scales="free"} as the default (depending
+on the plot) instead of the \strong{ggplot2} default of \code{scales="fixed"}.}
 
 \item{binwidth}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}} to override
 the default binwidth.}
@@ -54,9 +92,10 @@ plots the y-axis text is off by default. To view the count or density
 labels on the y-axis see the \code{\link[=yaxis_text]{yaxis_text()}} convenience
 function.)}
 
-\item{group}{A grouping variable (a vector or factor) of the same length as
-\code{y}. Each value in \code{group} is interpreted as the group level
-pertaining to the corresponding value of \code{y}.}
+\item{group}{A grouping variable of the same length as \code{y}.
+Will be coerced to \link[base:factor]{factor} if not already a factor.
+Each value in \code{group} is interpreted as the group level pertaining
+to the corresponding observation.}
 
 \item{size, alpha}{For scatterplots, arguments passed to
 \code{\link[ggplot2:geom_point]{ggplot2::geom_point()}} to control the appearance of the points. For the
@@ -91,8 +130,8 @@ proportions (not counts). See the \strong{Examples} section, below.
 \describe{
 \item{\code{ppc_error_hist()}}{
 A separate histogram is plotted for the predictive errors computed from
-\code{y} and each dataset (row) in \code{yrep}. For this plot \code{yrep}
-should have only a small number of rows.
+\code{y} and each dataset (row) in \code{yrep}. For this plot \code{yrep} should have
+only a small number of rows.
 }
 \item{\code{ppc_error_hist_grouped()}}{
 Like \code{ppc_error_hist()}, except errors are computed within levels of a
@@ -102,20 +141,18 @@ product of the number of rows in \code{yrep} and the number of groups
 }
 \item{\code{ppc_error_scatter()}}{
 A separate scatterplot is displayed for \code{y} vs. the predictive errors
-computed from \code{y} and each dataset (row) in \code{yrep}. For this
-plot \code{yrep} should have only a small number of rows.
+computed from \code{y} and each dataset (row) in \code{yrep}. For this plot \code{yrep}
+should have only a small number of rows.
 }
 \item{\code{ppc_error_scatter_avg()}}{
-A single scatterplot of \code{y} vs. the average of the errors computed
-from \code{y} and each dataset (row) in \code{yrep}. For each individual
-data point \code{y[n]} the average error is the average of the
-errors for \code{y[n]} computed over the the draws from the posterior
-predictive distribution.
+A single scatterplot of \code{y} vs. the average of the errors computed from
+\code{y} and each dataset (row) in \code{yrep}. For each individual data point
+\code{y[n]} the average error is the average of the errors for \code{y[n]} computed
+over the the draws from the posterior predictive distribution.
 }
 \item{\code{ppc_error_scatter_avg_vs_x()}}{
 Same as \code{ppc_error_scatter_avg()}, except the average is plotted on the
-\eqn{y}-axis and a a predictor variable \code{x} is plotted on the
-\eqn{x}-axis.
+y-axis and a predictor variable \code{x} is plotted on the x-axis.
 }
 \item{\code{ppc_error_binned()}}{
 Intended for use with binomial data. A separate binned error plot (similar
@@ -148,8 +185,8 @@ ppc_error_scatter_avg(y, yrep)
 x <- example_x_data()
 ppc_error_scatter_avg_vs_x(y, yrep, x)
 
-# ppc_error_binned with binomial model from rstanarm
 \dontrun{
+# binned error plot with binomial model from rstanarm
 library(rstanarm)
 example("example_model", package = "rstanarm")
 formula(example_model)

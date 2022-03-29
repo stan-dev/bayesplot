@@ -5,6 +5,7 @@
 \alias{ppc_bars}
 \alias{ppc_bars_grouped}
 \alias{ppc_rootogram}
+\alias{ppc_bars_data}
 \title{PPCs for discrete outcomes}
 \usage{
 ppc_bars(
@@ -14,7 +15,7 @@ ppc_bars(
   prob = 0.9,
   width = 0.9,
   size = 1,
-  fatten = 3,
+  fatten = 2.5,
   freq = TRUE
 )
 
@@ -27,7 +28,7 @@ ppc_bars_grouped(
   prob = 0.9,
   width = 0.9,
   size = 1,
-  fatten = 3,
+  fatten = 2.5,
   freq = TRUE
 )
 
@@ -39,39 +40,41 @@ ppc_rootogram(
   prob = 0.9,
   size = 1
 )
+
+ppc_bars_data(y, yrep, group = NULL, prob = 0.9, freq = TRUE)
 }
 \arguments{
 \item{y}{A vector of observations. See \strong{Details}.}
 
-\item{yrep}{An \eqn{S} by \eqn{N} matrix of draws from the posterior
-predictive distribution, where \eqn{S} is the size of the posterior sample
-(or subset of the posterior sample used to generate \code{yrep}) and \eqn{N} is
-the number of observations (the length of \code{y}). The columns of \code{yrep}
-should be in the same order as the data points in \code{y} for the plots to make
-sense. See \strong{Details} for additional instructions.}
+\item{yrep}{An \code{S} by \code{N} matrix of draws from the posterior (or prior)
+predictive distribution. The number of rows, \code{S}, is the size of the
+posterior (or prior) sample used to generate \code{yrep}. The number of columns,
+\code{N} is the number of predicted observations (\code{length(y)}). The columns of
+\code{yrep} should be in the same order as the data points in \code{y} for the plots
+to make sense. See the \strong{Details} and \strong{Plot Descriptions} sections for
+additional advice specific to particular plots.}
 
 \item{...}{Currently unused.}
 
 \item{prob}{A value between \code{0} and \code{1} indicating the desired probability
 mass to include in the \code{yrep} intervals. Set \code{prob=0} to remove the
-intervals. For \code{ppc_rootogram()} these are intervals of the \emph{square roots}
-of the expected counts.}
+intervals. (Note: for rootograms these are intervals of the \emph{square roots}
+of the expected counts.)}
 
-\item{width}{For \code{ppc_bars()} and \code{ppc_bars_grouped()}, passed to
-\code{\link[ggplot2:geom_bar]{ggplot2::geom_bar()}} to control the bar width.}
+\item{width}{For bar plots only, passed to \code{\link[ggplot2:geom_bar]{ggplot2::geom_bar()}} to control
+the bar width.}
 
-\item{size, fatten}{For \code{ppc_bars()} and \code{ppc_bars_grouped()}, \code{size} and
-\code{fatten} are passed to \code{\link[ggplot2:geom_linerange]{ggplot2::geom_pointrange()}} to control the
-appearance of the \code{yrep} points and intervals. For \code{ppc_rootogram()} \code{size}
-is passed to \code{\link[ggplot2:geom_path]{ggplot2::geom_line()}}.}
+\item{size, fatten}{For bar plots, \code{size} and \code{fatten} are passed to
+\code{\link[ggplot2:geom_linerange]{ggplot2::geom_pointrange()}} to control the appearance of the \code{yrep} points
+and intervals. For rootograms \code{size} is passed to \code{\link[ggplot2:geom_path]{ggplot2::geom_line()}}.}
 
-\item{freq}{For \code{ppc_bars()} and \code{ppc_bars_grouped()}, if \code{TRUE} (the
-default) the y-axis will display counts. Setting \code{freq=FALSE} will put
-proportions on the y-axis.}
+\item{freq}{For bar plots only, if \code{TRUE} (the default) the y-axis will
+display counts. Setting \code{freq=FALSE} will put proportions on the y-axis.}
 
-\item{group}{A grouping variable (a vector or factor) of the same length as
-\code{y}. Each value in \code{group} is interpreted as the group level
-pertaining to the corresponding value of \code{y}.}
+\item{group}{A grouping variable of the same length as \code{y}.
+Will be coerced to \link[base:factor]{factor} if not already a factor.
+Each value in \code{group} is interpreted as the group level pertaining
+to the corresponding observation.}
 
 \item{facet_args}{An optional list of  arguments (other than \code{facets})
 passed to \code{\link[ggplot2:facet_wrap]{ggplot2::facet_wrap()}} to control faceting.}
@@ -82,7 +85,10 @@ style. The options are \code{"standing"}, \code{"hanging"}, and
 details on the different styles.}
 }
 \value{
-A ggplot object that can be further customized using the \strong{ggplot2} package.
+The plotting functions return a ggplot object that can be further
+customized using the \strong{ggplot2} package. The functions with suffix
+\verb{_data()} return the data that would have been drawn by the plotting
+function.
 }
 \description{
 Many of the \link[=PPC-overview]{PPC} functions in \strong{bayesplot} can
@@ -126,9 +132,9 @@ representing expected counts.
 observed counts.
 }
 
-\strong{All of these are plotted on the square root scale}. See Kleiber and
-Zeileis (2016) for advice on interpreting rootograms and selecting among
-the different styles.
+\strong{All of the rootograms are plotted on the square root scale}. See Kleiber
+and Zeileis (2016) for advice on interpreting rootograms and selecting
+among the different styles.
 }
 }
 }
@@ -152,6 +158,40 @@ ppc_bars(y, yrep)
 # instead of count on y-axis
 color_scheme_set("mix-blue-pink")
 ppc_bars_grouped(y, yrep, group, prob = 0.5, freq = FALSE)
+
+\dontrun{
+# example for ordinal regression using rstanarm
+library(rstanarm)
+fit <- stan_polr(
+  tobgp ~ agegp,
+  data = esoph,
+  method = "probit",
+  prior = R2(0.2, "mean"),
+  init_r = 0.1,
+  seed = 12345,
+  # cores = 4,
+  refresh = 0
+ )
+
+# coded as character, so convert to integer
+yrep_char <- posterior_predict(fit)
+print(yrep_char[1, 1:4])
+
+yrep_int <- sapply(data.frame(yrep_char, stringsAsFactors = TRUE), as.integer)
+y_int <- as.integer(esoph$tobgp)
+
+ppc_bars(y_int, yrep_int)
+
+ppc_bars_grouped(
+  y = y_int,
+  yrep = yrep_int,
+  group = esoph$agegp,
+  freq=FALSE,
+  prob = 0.5,
+  fatten = 1,
+  size = 1.5
+)
+}
 
 # rootograms for counts
 y <- rpois(100, 20)

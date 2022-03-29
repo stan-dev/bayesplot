@@ -1,3 +1,3 @@
-#' @details For Binomial data, the plots will typically be most useful if
-#'   `y` and `yrep` contain the "success" proportions (not discrete
+#' @details For Binomial data, the plots may be more useful if
+#'   the input contains the "success" *proportions* (not discrete
 #'   "success" or "failure" counts).
