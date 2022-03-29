@@ -464,7 +464,8 @@ mcmc_rank_ecdf <-
     x,
     pars = pars,
     regex_pars = regex_pars,
-    transformations = transformations
+    transformations = transformations,
+    highlight = 1
   )
   n_iter <- unique(data$n_iterations)
   n_chain <- unique(data$n_chains)
