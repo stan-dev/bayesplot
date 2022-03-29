@@ -436,7 +436,7 @@ get_interpolation_values <- function(N, K, L, prob) {
         get(dim),
         ".\n",
         "Values of '", dim, "' available for interpolation: ",
-        unique(bayesplot:::gamma_adj[, dim]),
+        paste(unique(bayesplot:::gamma_adj[, dim]), collapse = ", "),
         ".",
         sep = ""
       ))
@@ -445,6 +445,28 @@ get_interpolation_values <- function(N, K, L, prob) {
   vals <- bayesplot:::gamma_adj[
     bayesplot:::gamma_adj$L == L & bayesplot:::gamma_adj$prob == prob,
   ]
+  if (N > max(vals$N)) {
+    stop(paste(
+      "No precomputed values to interpolate from for sample length of ",
+      N,
+      ".\n",
+      "Please use a subsample of length ",
+      max(vals$N),
+      " or smaller, or consider setting 'interpolate_adj' = FALSE.",
+      sep = ""
+    ))
+  }
+  if (N < min(vals$N)) {
+    stop(paste(
+      "No precomputed values to interpolate from for sample length of ",
+      N,
+      ".\n",
+      "Please use a subsample of length ",
+      min(vals$N),
+      " or larger, or consider setting 'interpolate_adj' = FALSE.",
+      sep = ""
+    ))
+  }
   if (K > max(vals[vals$N <= N, ]$K)) {
     stop(paste(
       "No precomputed values available for interpolation for 'K' = ",
@@ -452,7 +474,19 @@ get_interpolation_values <- function(N, K, L, prob) {
       ".\n",
       "Try either setting a value of 'K' <= ",
       max(vals[vals$N <= N, ]$K),
-      "or 'interpolate_adj' = FALSE."
+      "or 'interpolate_adj' = FALSE.",
+      sep = ""
+    ))
+  }
+  if (K < min(vals[vals$N <= N, ]$K)) {
+    stop(paste(
+      "No precomputed values available for interpolation for 'K' = ",
+      K,
+      ".\n",
+      "Try either setting a value of 'K' >= ",
+      min(vals[vals$N <= N, ]$K),
+      "or 'interpolate_adj' = FALSE.",
+      sep = ""
     ))
   }
   vals
