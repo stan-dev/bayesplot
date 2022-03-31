@@ -638,7 +638,7 @@ ppc_pit_ecdf <- function(y,
     yaxis_title(FALSE) +
     xaxis_title(FALSE) +
     yaxis_ticks(FALSE) +
-    scale_color_ppc_dist() +
+    scale_color_ppc() +
     bayesplot_theme_get()
 }
 
@@ -725,6 +725,6 @@ ppc_pit_ecdf_grouped <-
       yaxis_ticks(FALSE) +
       bayesplot_theme_get() +
       facet_wrap("group") +
-      scale_color_ppc_dist() +
+      scale_color_ppc() +
       force_axes_in_facets()
   }
