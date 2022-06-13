@@ -91,7 +91,7 @@ appearance of plotted points.}
 the default binwidth.}
 
 \item{bins}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}} to override
-the default binwidth.}
+the default bins. Overridden by \code{binwidth}.}
 
 \item{breaks}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}} as an
 alternative to \code{binwidth}.}

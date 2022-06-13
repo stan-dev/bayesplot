@@ -30,6 +30,7 @@ ppc_stat_grouped(
   ...,
   facet_args = list(),
   binwidth = NULL,
+  bins = NULL,
   breaks = NULL,
   freq = TRUE
 )
@@ -52,6 +53,7 @@ ppc_stat_freqpoly_grouped(
   ...,
   facet_args = list(),
   binwidth = NULL,
+  bins = NULL,
   freq = TRUE
 )
 
@@ -83,7 +85,7 @@ then generic naming is used in the legend.}
 the default binwidth.}
 
 \item{bins}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}} to override
-the default binwidth.}
+the default bins. Overridden by \code{binwidth}.}
 
 \item{breaks}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}} as an
 alternative to \code{binwidth}.}

@@ -129,13 +129,16 @@ NULL
 #' @export
 #' @param binwidth An optional value passed to [ggplot2::geom_histogram()] to
 #'   override the default binwidth.
+#' @param bins An optional value passed to [ggplot2::geom_histogram()] to
+#'   override the default bins. Overridden by `binwidth`.
 #'
 mcmc_nuts_acceptance <-
   function(x,
            lp,
            chain = NULL,
            ...,
-           binwidth = NULL) {
+           binwidth = NULL,
+           bins = NULL) {
     suggested_package("gridExtra")
     check_ignored_arguments(...)
 
@@ -160,7 +163,8 @@ mcmc_nuts_acceptance <-
         color = get_color("lh"),
         linewidth = 0.25,
         na.rm = TRUE,
-        binwidth = binwidth
+        binwidth = binwidth,
+        bins = bins
       ) +
       bayesplot_theme_get()
 
@@ -209,7 +213,8 @@ mcmc_nuts_acceptance <-
           color = NA,
           alpha = 0.5,
           na.rm = TRUE,
-          binwidth = binwidth
+          binwidth = binwidth,
+          bins = bins
         )
 
       chain_scatter_data <- data.frame(
@@ -417,6 +422,7 @@ mcmc_nuts_energy <-
   function(x,
            ...,
            binwidth = NULL,
+           bins = NULL,
            alpha = 0.5,
            merge_chains = FALSE) {
     check_ignored_arguments(...)
@@ -446,7 +452,8 @@ mcmc_nuts_energy <-
         ),
         linewidth = 0.25,
         na.rm = TRUE,
-        binwidth = binwidth
+        binwidth = binwidth,
+        bins = bins
       ) +
       geom_histogram(
         aes(
@@ -457,7 +464,8 @@ mcmc_nuts_energy <-
         linewidth = 0.25,
         na.rm = TRUE,
         alpha = alpha,
-        binwidth = binwidth
+        binwidth = binwidth,
+        bins = bins
       ) +
       scale_fill_manual("", values = fills, labels = aes_labs) +
       scale_color_manual("", values = clrs, labels = aes_labs) +

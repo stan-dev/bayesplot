@@ -79,7 +79,16 @@ ppc_hist(
   freq = TRUE
 )
 
-ppc_freqpoly(y, yrep, ..., binwidth = NULL, freq = TRUE, size = 0.5, alpha = 1)
+ppc_freqpoly(
+  y,
+  yrep,
+  ...,
+  binwidth = NULL,
+  bins = NULL,
+  freq = TRUE,
+  size = 0.5,
+  alpha = 1
+)
 
 ppc_freqpoly_grouped(
   y,
@@ -87,6 +96,7 @@ ppc_freqpoly_grouped(
   group,
   ...,
   binwidth = NULL,
+  bins = NULL,
   freq = TRUE,
   size = 0.5,
   alpha = 1
@@ -169,7 +179,7 @@ passed to \code{\link[ggplot2:stat_ecdf]{ggplot2::stat_ecdf()}}. If \code{discre
 the default binwidth.}
 
 \item{bins}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}} to override
-the default binwidth.}
+the default bins. Overridden by \code{binwidth}.}
 
 \item{breaks}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}} as an
 alternative to \code{binwidth}.}

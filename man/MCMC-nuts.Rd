@@ -10,7 +10,7 @@
 \alias{mcmc_nuts_energy}
 \title{Diagnostic plots for the No-U-Turn-Sampler (NUTS)}
 \usage{
-mcmc_nuts_acceptance(x, lp, chain = NULL, ..., binwidth = NULL)
+mcmc_nuts_acceptance(x, lp, chain = NULL, ..., binwidth = NULL, bins = NULL)
 
 mcmc_nuts_divergence(x, lp, chain = NULL, ...)
 
@@ -18,7 +18,14 @@ mcmc_nuts_stepsize(x, lp, chain = NULL, ...)
 
 mcmc_nuts_treedepth(x, lp, chain = NULL, ...)
 
-mcmc_nuts_energy(x, ..., binwidth = NULL, alpha = 0.5, merge_chains = FALSE)
+mcmc_nuts_energy(
+  x,
+  ...,
+  binwidth = NULL,
+  bins = NULL,
+  alpha = 0.5,
+  merge_chains = FALSE
+)
 }
 \arguments{
 \item{x}{A molten data frame of NUTS sampler parameters, either created by
@@ -41,6 +48,9 @@ is not used by \code{mcmc_nuts_energy()}.}
 
 \item{binwidth}{An optional value passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}} to
 override the default binwidth.}
+
+\item{bins}{An optional value passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}} to
+override the default bins. Overridden by \code{binwidth}.}
 
 \item{alpha}{For \code{mcmc_nuts_energy()} only, the transparency (alpha) level
 in \verb{[0,1]} used for the overlaid histogram.}

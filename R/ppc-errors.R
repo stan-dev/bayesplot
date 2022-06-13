@@ -164,6 +164,7 @@ ppc_error_hist_grouped <-
            ...,
            facet_args = list(),
            binwidth = NULL,
+           bins = bins,
            breaks = NULL,
            freq = TRUE) {
 

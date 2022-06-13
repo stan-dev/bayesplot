@@ -165,6 +165,7 @@ ppc_stat_grouped <-
            ...,
            facet_args = list(),
            binwidth = NULL,
+           bins = NULL,
            breaks = NULL,
            freq = TRUE) {
     check_ignored_arguments(...)
@@ -208,7 +209,8 @@ ppc_stat_freqpoly <-
         aes(color = "yrep"),
         linewidth = 0.5,
         na.rm = TRUE,
-        binwidth = binwidth
+        binwidth = binwidth,
+        bins = bins
       ) +
       geom_vline(
         data = dplyr::filter(data, .data$variable == "y"),
@@ -240,6 +242,7 @@ ppc_stat_freqpoly_grouped <-
            ...,
            facet_args = list(),
            binwidth = NULL,
+           bins = NULL,
            freq = TRUE) {
     check_ignored_arguments(...)
     call <- match.call(expand.dots = FALSE)
