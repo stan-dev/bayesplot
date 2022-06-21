@@ -119,7 +119,7 @@
 #'
 #' # ECDF difference plots of the ranking of MCMC samples between chains.
 #' # Provide 99% simultaneous confidence intervals for the chains sampling from
-#' the same distribution.
+#' # the same distribution.
 #' mcmc_rank_ecdf(x, prob = 0.99)
 #'
 #' \dontrun{

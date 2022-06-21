@@ -445,6 +445,7 @@ interpolate_gamma <- function(N, K, prob, L) {
 #' @param L Number of chains. Used for MCMC, defaults to 1 for ppc.
 #' @param prob Desired simultaneous coverage (0,1).
 #' @return A data.frame containing the relevant precomputed values.
+#' @noRd
 get_interpolation_values <- function(N, K, L, prob) {
   for (dim in c("L", "prob")) {
     if (all(get(dim) != bayesplot:::gamma_adj[, dim])) {

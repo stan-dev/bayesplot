@@ -75,7 +75,7 @@ mcmc_rank_ecdf(
   facet_args = list(),
   prob = 0.99,
   plot_diff = TRUE,
-  adj_method = "interpolate"
+  interpolate_adj = TRUE
 )
 
 mcmc_trace_data(
@@ -194,9 +194,9 @@ of rank-normalized MCMC samples. Defaults to \code{20}.}
 average number of ranks per bin. Defaults to \code{FALSE}.}
 
 \item{K}{An optional integer defining the number of equally spaced evaluation
-points for the ECDF. If the
-submitted PIT values are known to be discrete, this should be the number of
-discrete cases. Defaults to the smaller of length(y) and ncol(yrep).}
+points for the ECDF. If the submitted PIT values are known to be discrete,
+this should be the number of the discrete cases. Defaults to the smaller of
+´length(y)´ and ´ncol(yrep)´ when applicable.}
 
 \item{prob}{For \code{mcmc_rank_ecdf()}, a value between 0 and 1
 specifying the desired simultaneous confidence of the confidence bands to be
@@ -206,9 +206,10 @@ drawn for the rank ECDF plots.}
 difference between the observed rank ECDFs and the theoretical expectation
 should be drawn instead of the unmodified rank ECDF plots.}
 
-\item{adj_method}{Method to obtain the simultaneous confidence bands.
-Possible values: "interpolate", "simulate", "optimize".
-Defaults to "interpolate".}
+\item{interpolate_adj}{A boolean defining if the simultaneous confidence
+bands should be computed or interpolated from precomputed values. Computing
+the bands may be computationally intensive and approximation gives a fast
+method for assessing the ECDF trajectory.}
 }
 \value{
 The plotting functions return a ggplot object that can be further
@@ -246,10 +247,13 @@ Ranks from \code{mcmc_rank_hist()} are plotted using overlaid lines in a
 single panel.
 }
 \item{\code{mcmc_rank_ecdf()}}{
-The ECDFs of the ranks from \code{mcmc_rank_hist()} are plotted and
-simultaneous confidence bands with a coverage determined by
-\code{prob} are drawn. By default, the difference between the
-observed ECDF and the theoretical expectation is drawn.
+The ECDFs of the ranks from \code{mcmc_rank_hist()} are plotted with the
+simultaneous confidence bands with a coverage determined by \code{prob},
+that is, bands that completely cover all of the rank ECDFs with the
+probability 'prob'.
+By default, the difference between the observed rank ECDFs and the
+theoretical expectation for samples originating from the same distribution
+is drawn.
 See Säilynoja et al. (2021) for details.
 }
 }
@@ -296,7 +300,7 @@ mcmc_rank_overlay(x, "alpha")
 
 # ECDF difference plots of the ranking of MCMC samples between chains.
 # Provide 99\% simultaneous confidence intervals for the chains sampling from
-the same distribution.
+# the same distribution.
 mcmc_rank_ecdf(x, prob = 0.99)
 
 \dontrun{

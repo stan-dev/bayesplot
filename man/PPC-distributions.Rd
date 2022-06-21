@@ -108,7 +108,7 @@ ppc_pit_ecdf(
   K = NULL,
   prob = 0.99,
   plot_diff = TRUE,
-  adj_method = "interpolate"
+  interpolate_adj = TRUE
 )
 
 ppc_pit_ecdf_grouped(
@@ -116,11 +116,11 @@ ppc_pit_ecdf_grouped(
   yrep,
   group,
   ...,
-  K,
-  pit,
+  K = NULL,
+  pit = NULL,
   prob = 0.99,
   plot_diff = TRUE,
-  adj_method = "interpolate"
+  interpolate_adj = TRUE
 )
 }
 \arguments{
@@ -191,19 +191,20 @@ which the ECDF is to be drawn. If NULL, PIT values are computed to ´y´ with
 respect to the corresponding values in ´yrep´.}
 
 \item{K}{An optional integer defining the number of equally spaced evaluation
-points for the ECDF. If the
-submitted PIT values are known to be discrete, this should be the number of
-discrete cases. Defaults to the smaller of length(y) and ncol(yrep).}
+points for the ECDF. If the submitted PIT values are known to be discrete,
+this should be the number of the discrete cases. Defaults to the smaller of
+´length(y)´ and ´ncol(yrep)´ when applicable.}
 
 \item{prob}{The desired simultaneous coverage level of the bands around the
 ECDF. A value in (0,1).}
 
-\item{plot_diff}{Wether to plot the difference between the observed ECDF and
-the theoretical expectation when the PIT values are uniform.}
+\item{plot_diff}{A boolean defining wether to plot the difference between the
+observed ECDF and the theoretical expectation for uniform PIT values.}
 
-\item{adj_method}{Method to obtain the simultaneous confidence bands.
-Possible values: "interpolate", "simulate", "optimize".
-Defaults to "interpolate".}
+\item{interpolate_adj}{A boolean defining if the simultaneous confidence
+bands should be computed or interpolated from precomputed values. Computing
+the bands may be computationally intensive and approximation gives a fast
+method for assessing the ECDF trajectory.}
 }
 \value{
 The plotting functions return a ggplot object that can be further
@@ -254,7 +255,7 @@ The ECDF of the empirical PIT values of \code{y} computed with respect to the
 corresponding \code{yrep} values. \code{100 * prob}\% central simultaneous confidence
 intervals are provided to asses if ´y´ and ´yrep´ originate from the same
 distribution. The PIT values can also be provided directly as \code{pit}.
-See Säilynoja et al. for more details.}
+See Säilynoja et al. (2021) for more details.}
 }
 }
 
@@ -264,21 +265,19 @@ y <- example_y_data()
 yrep <- example_yrep_draws()
 dim(yrep)
 ppc_dens_overlay(y, yrep[1:25, ])
-
 \donttest{
 # ppc_ecdf_overlay with continuous data (set discrete=TRUE if discrete data)
 ppc_ecdf_overlay(y, yrep[sample(nrow(yrep), 25), ])
 }
 # ECDF and ECDF difference plot of the PIT values of ´y´ compared to ´yrep
 # with 99\% simultaneous confidence bands.
-ppc_pit_ecdf(y, yrep, prob=0.99, plot_diff=FALSE)
-ppc_pit_ecdf(y, yrep, prob=0.99)
+ppc_pit_ecdf(y, yrep, prob = 0.99, plot_diff = FALSE)
+ppc_pit_ecdf(y, yrep, prob = 0.99)
 
 
 # for ppc_hist,dens,freqpoly,boxplot definitely use a subset yrep rows so
 # only a few (instead of nrow(yrep)) histograms are plotted
 ppc_hist(y, yrep[1:8, ])
-
 \donttest{
 color_scheme_set("red")
 ppc_boxplot(y, yrep[1:8, ])
@@ -289,13 +288,13 @@ ppc_dens(y, yrep[200:202, ])
 }
 
 # frequency polygons
-ppc_freqpoly(y, yrep[1:3,], alpha = 0.1, size = 1, binwidth = 5)
+ppc_freqpoly(y, yrep[1:3, ], alpha = 0.1, size = 1, binwidth = 5)
 
 group <- example_group_data()
-ppc_freqpoly_grouped(y, yrep[1:3,], group) + yaxis_text()
+ppc_freqpoly_grouped(y, yrep[1:3, ], group) + yaxis_text()
 \donttest{
 # if groups are different sizes then the 'freq' argument can be useful
-ppc_freqpoly_grouped(y, yrep[1:3,], group, freq = FALSE) + yaxis_text()
+ppc_freqpoly_grouped(y, yrep[1:3, ], group, freq = FALSE) + yaxis_text()
 }
 
 # density and distribution overlays by group
@@ -305,7 +304,7 @@ ppc_ecdf_overlay_grouped(y, yrep[1:25, ], group = group)
 
 # ECDF difference plots of the PIT values by group
 # with 99\% simultaneous confidence bands.
-ppc_pit_ecdf_grouped(y, yrep, group=group, prob=0.99)
+ppc_pit_ecdf_grouped(y, yrep, group = group, prob = 0.99)
 
 # don't need to only use small number of rows for ppc_violin_grouped
 # (as it pools yrep draws within groups)
@@ -316,8 +315,10 @@ ppc_violin_grouped(y, yrep, group, alpha = 0)
 
 # change how y is drawn
 ppc_violin_grouped(y, yrep, group, alpha = 0, y_draw = "points", y_size = 1.5)
-ppc_violin_grouped(y, yrep, group, alpha = 0, y_draw = "both",
-                   y_size = 1.5, y_alpha = 0.5, y_jitter = 0.33)
+ppc_violin_grouped(y, yrep, group,
+  alpha = 0, y_draw = "both",
+  y_size = 1.5, y_alpha = 0.5, y_jitter = 0.33
+)
 }
 }
 \references{
