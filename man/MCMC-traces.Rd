@@ -7,6 +7,7 @@
 \alias{trace_style_np}
 \alias{mcmc_rank_overlay}
 \alias{mcmc_rank_hist}
+\alias{mcmc_rank_ecdf}
 \alias{mcmc_trace_data}
 \title{Trace and rank plots of MCMC draws}
 \usage{
@@ -62,6 +63,19 @@ mcmc_rank_hist(
   facet_args = list(),
   n_bins = 20,
   ref_line = FALSE
+)
+
+mcmc_rank_ecdf(
+  x,
+  pars = character(),
+  regex_pars = character(),
+  transformations = list(),
+  ...,
+  K = NULL,
+  facet_args = list(),
+  prob = 0.99,
+  plot_diff = TRUE,
+  interpolate_adj = TRUE
 )
 
 mcmc_trace_data(
@@ -178,6 +192,24 @@ of rank-normalized MCMC samples. Defaults to \code{20}.}
 
 \item{ref_line}{For the rank plots, whether to draw a horizontal line at the
 average number of ranks per bin. Defaults to \code{FALSE}.}
+
+\item{K}{An optional integer defining the number of equally spaced evaluation
+points for the ECDF. If the submitted PIT values are known to be discrete,
+this should be the number of the discrete cases. Defaults to the smaller of
+´length(y)´ and ´ncol(yrep)´ when applicable.}
+
+\item{prob}{For \code{mcmc_rank_ecdf()}, a value between 0 and 1
+specifying the desired simultaneous confidence of the confidence bands to be
+drawn for the rank ECDF plots.}
+
+\item{plot_diff}{For \code{mcmc_rank_ecdf()}, a boolean specifying it the
+difference between the observed rank ECDFs and the theoretical expectation
+should be drawn instead of the unmodified rank ECDF plots.}
+
+\item{interpolate_adj}{A boolean defining if the simultaneous confidence
+bands should be computed or interpolated from precomputed values. Computing
+the bands may be computationally intensive and approximation gives a fast
+method for assessing the ECDF trajectory.}
 }
 \value{
 The plotting functions return a ggplot object that can be further
@@ -213,6 +245,16 @@ See Vehtari et al. (2019) for details.
 \item{\code{mcmc_rank_overlay()}}{
 Ranks from \code{mcmc_rank_hist()} are plotted using overlaid lines in a
 single panel.
+}
+\item{\code{mcmc_rank_ecdf()}}{
+The ECDFs of the ranks from \code{mcmc_rank_hist()} are plotted with the
+simultaneous confidence bands with a coverage determined by \code{prob},
+that is, bands that completely cover all of the rank ECDFs with the
+probability 'prob'.
+By default, the difference between the observed rank ECDFs and the
+theoretical expectation for samples originating from the same distribution
+is drawn.
+See Säilynoja et al. (2021) for details.
 }
 }
 }
@@ -255,6 +297,11 @@ color_scheme_set("viridisE")
 mcmc_rank_hist(x, "alpha")
 mcmc_rank_hist(x, pars = c("alpha", "sigma"), ref_line = TRUE)
 mcmc_rank_overlay(x, "alpha")
+
+# ECDF difference plots of the ranking of MCMC samples between chains.
+# Provide 99\% simultaneous confidence intervals for the chains sampling from
+# the same distribution.
+mcmc_rank_ecdf(x, prob = 0.99)
 
 \dontrun{
 # parse facet label text
@@ -302,6 +349,10 @@ mcmc_trace(
 Vehtari, A., Gelman, A., Simpson, D., Carpenter, B., Bürkner, P.
 (2019). Rank-normalization, folding, and localization: An improved \emph{R}-hat
 for assessing convergence of MCMC. \href{https://arxiv.org/abs/1903.08008}{arXiv preprint}.
+
+Säilynoja, T., Bürkner, P., Vehtari, A.
+(2021). Graphical Test for Discrete Uniformity and its Applications in
+Goodness of Fit Evaluation and Multiple Sample Comparison \href{https://arxiv.org/abs/2103.10522}{arXiv preprint}.
 }
 \seealso{
 Other MCMC: 

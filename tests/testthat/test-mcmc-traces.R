@@ -33,6 +33,17 @@ test_that("mcmc_trace_highlight throws error if highlight > number of chains", {
   expect_error(mcmc_trace_highlight(arr, pars = "sigma", highlight = 7), "'highlight' is 7")
 })
 
+test_that("mcmc_rank_ecdf returns a ggplot object", {
+  expect_gg(mcmc_rank_ecdf(arr, regex_pars = c("beta", "x\\:")))
+  expect_gg(mcmc_rank_ecdf(dframe_multiple_chains, interpolate_adj = FALSE))
+})
+
+test_that("mcmc_rank_ecdf throws error if 1 chain but multiple chains required", {
+  expect_error(mcmc_rank_ecdf(mat), "requires multiple chains")
+  expect_error(mcmc_rank_ecdf(dframe), "requires multiple chains")
+  expect_error(mcmc_rank_ecdf(arr1chain), "requires multiple chains")
+})
+
 # options -----------------------------------------------------------------
 test_that("mcmc_trace options work", {
   expect_gg(g1 <- mcmc_trace(arr, regex_pars = "beta", window = c(5, 10)))
@@ -47,6 +58,12 @@ test_that("mcmc_trace options work", {
   expect_error(mcmc_trace(arr, n_warmup = 50, iter1 = 20))
 })
 
+test_that("mcmc_rank_ecdf options work", {
+  expect_error(
+    mcmc_rank_ecdf(dframe_multiple_chains, interpolate_adj = TRUE),
+    "No precomputed values"
+  )
+})
 
 # displaying divergences in traceplot -------------------------------------
 test_that("mcmc_trace 'np' argument works", {
@@ -205,6 +222,34 @@ test_that("mcmc_trace_highlight renders correctly", {
   vdiffr::expect_doppelganger("mcmc_trace_highlight (default)", p_base)
   vdiffr::expect_doppelganger("mcmc_trace_highlight (other chain)", p_2)
   vdiffr::expect_doppelganger("mcmc_trace_highlight (alpha)", p_alpha)
+})
+
+test_that("mcmc_rank_ecdf renders correctly", {
+  testthat::skip_on_cran()
+  testthat::skip_if_not_installed("vdiffr")
+
+  p_base <- mcmc_rank_ecdf(vdiff_dframe_chains, pars = c("V1", "V2"))
+  p_one_param <- mcmc_rank_ecdf(vdiff_dframe_chains, pars = "V1")
+
+  p_no_diff <- mcmc_rank_ecdf(
+    vdiff_dframe_chains,
+    pars = c("V1", "V2"),
+    plot_diff = FALSE
+  )
+
+  p_no_diff_one_param <- mcmc_rank_ecdf(
+    vdiff_dframe_chains,
+    pars = "V1",
+    plot_diff = FALSE
+  )
+
+  vdiffr::expect_doppelganger("mcmc_rank_ecdf (default)", p_base)
+  vdiffr::expect_doppelganger("mcmc_rank_ecdf (one parameter)", p_one_param)
+  vdiffr::expect_doppelganger("mcmc_rank_ecdf (no diff)", p_no_diff)
+  vdiffr::expect_doppelganger(
+    "mcmc_rank_ecdf (one param no diff)",
+    p_no_diff_one_param
+  )
 })
 
 test_that("mcmc_trace with 'np' renders correctly", {

@@ -98,6 +98,32 @@ validate_predictions <- function(predictions, n_obs = NULL) {
 }
 
 
+#' Validate PIT
+#'
+#' Checks that `pit` is numeric, doesn't have any NAs, and is either a vector,
+#' or a 1-D array with values in [0,1].
+#'
+#' @param pit The 'pit' object from the user.
+#' @return Either throws an error or returns a numeric vector.
+#' @noRd
+validate_pit <- function(pit) {
+  stopifnot(is.numeric(pit))
+
+  if (!is_vector_or_1Darray(pit)) {
+    abort("'pit' must be a vector or 1D array.")
+  }
+
+  if (any(pit > 1) || any(pit < 0)) {
+    abort("'pit' must only contain values between 0 and 1.")
+  }
+
+  if (anyNA(pit)) {
+    abort("NAs not allowed in 'pit'.")
+  }
+
+  unname(pit)
+}
+
 #' Validate group
 #'
 #' Checks that grouping variable has correct number of observations and is
@@ -266,6 +292,298 @@ melt_and_stack <- function(y, yrep) {
   data[cols]
 }
 
+
+#' Obtain the coverage parameter for simultaneous confidence bands for ECDFs
+#'
+#' @param N Length of sample.
+#' @param L Number of chains. Used for MCMC, defaults to 1 for ppc.
+#' @param K Number of equally spaced evaluation points (1:K / K). Defaults to N.
+#' @param prob Desired simultaneous coverage (0,1).
+#' @param M number of simulations to run, if simulation method is used.
+#' @param interpolate_adj Boolean defining whether to interpolate the confidence
+#' bands from precomputed values. Interpolation provides a faster plot with the
+#' trade-off of possible loss of accuracy.
+#' @return The adjusted coverage parameter yielding the desired simultaneous
+#'  coverage of the ECDF traces.
+#' @noRd
+adjust_gamma <- function(N,
+                         L = 1,
+                         K = N,
+                         prob = 0.99,
+                         M = 1000,
+                         interpolate_adj = FALSE) {
+  if (! all_counts(c(K, N, L))) {
+    abort("Parameters 'N', 'L' and 'K' must be positive integers.")
+  }
+  if (prob >= 1 || prob <= 0) {
+    abort("Value of 'prob' must be in (0,1).")
+  }
+  if (interpolate_adj == TRUE) {
+    gamma <- interpolate_gamma(N = N, K = K, prob = prob, L = L)
+  } else if (L == 1) {
+    gamma <- adjust_gamma_optimize(N = N, K = K, prob = prob)
+  } else {
+    gamma <- adjust_gamma_simulate(N = N, L = L, K = K, prob = prob, M = M)
+  }
+  gamma
+}
+
+#' Adjust coverage parameter for single sample using the optimization method.
+#' @param N Length of sample.
+#' @param K Number of equally spaced evaluation points (1:K / K). Defaults to N.
+#' @param prob Desired simultaneous coverage (0,1).
+#' @return The adjusted coverage parameter yielding the desired simultaneous
+#'  coverage of the ECDF traces.
+#' @noRd
+adjust_gamma_optimize <- function(N, K, prob) {
+  target <- function(gamma, prob, N, K) {
+    z <- 1:(K - 1) / K
+    z1 <- c(0, z)
+    z2 <- c(z, 1)
+
+    # pre-compute quantiles and use symmetry for increased efficiency.
+    x2_lower <- qbinom(gamma / 2, N, z2)
+    x2_upper <- c(N - rev(x2_lower)[2:K], 1)
+
+    # Compute the total probability of trajectories inside the confidence
+    # intervals. Initialize the set and corresponding probabilities known
+    # to be 0 and 1 for the starting value z1 = 0.
+    x1 <- 0
+    p_int <- 1
+    for (i in seq_along(z1)) {
+      p_int <- p_interior(
+        p_int = p_int,
+        x1 = x1,
+        x2 = x2_lower[i]: x2_upper[i],
+        z1 = z1[i],
+        z2 = z2[i],
+        N = N
+      )
+      x1 <- x2_lower[i]:x2_upper[i]
+    }
+    return(abs(prob - sum(p_int)))
+  }
+  optimize(target, c(0, 1 - prob), prob = prob, N = N, K = K)$minimum
+}
+
+#' Adjust coverage parameter for multiple chains using the simulation method.
+#' In short, 'M' simulations of 'L' standard uniform chains are run and the
+#' confidence bands are set to cover 100 * 'prob' % of these simulations.
+#' @param N Length of sample.
+#' @param L Number of chains. Used for MCMC, defaults to 1 for ppc.
+#' @param K Number of equally spaced evaluation points (1:K / K). Defaults to N.
+#' @param prob Desired simultaneous coverage (0,1).
+#' @param M number of simulations to run.
+#' @return The adjusted coverage parameter yielding the desired simultaneous
+#'  coverage of the ECDF traces.
+#' @noRd
+adjust_gamma_simulate <- function(N, L, K, prob, M) {
+  gamma <- numeric(M)
+  z <- (1:(K - 1)) / K # Rank ECDF evaluation points.
+  n <- N * (L - 1)
+  k <- floor(z * N * L)
+  for (m in seq_len(M)) {
+    u <- u_scale(replicate(L, runif(N))) # Fractional ranks of sample chains
+    scaled_ecdfs <- apply(outer(u, z, "<="), c(2, 3), sum)
+    # Find the smalles marginal probability of the simulation run
+    gamma[m] <- 2 * min(
+      apply(
+        scaled_ecdfs, 1, phyper, m = N, n = n, k = k
+      ),
+      apply(
+        scaled_ecdfs - 1, 1, phyper, m = N, n = n, k = k, lower.tail = FALSE
+      )
+    )
+  }
+  alpha_quantile(gamma, 1 - prob)
+}
+
+#' Approximate the required adjustement to obtain simultaneous confidence bands
+#' of an ECDF plot with interpolation with regards to N and K from precomputed
+#' values for a fixed set of prob and L values.
+#' @param N Length of sample.
+#' @param L Number of chains. Used for MCMC, defaults to 1 for ppc.
+#' @param prob Desired simultaneous coverage (0,1).
+#' @param K Number of equally spaced evaluation points (1:K / K). Defaults to N.
+#' @return The approximated adjusted coverage parameter yielding the desired
+#' simultaneous coverage of the ECDF traces.
+#' @noRd
+interpolate_gamma <- function(N, K, prob, L) {
+  # Find the precomputed values ueful for the interpolation task.
+  vals <- get_interpolation_values(N, K, L, prob)
+  # Largest lower bound and smalles upper bound for N among precomputed values.
+  N_lb <- max(vals[vals$N <= N, ]$N)
+  N_ub <- min(vals[vals$N >= N, ]$N)
+  # Approximate largest lower bound and smalles upper bound for gamma.
+  log_gamma_lb <- approx(
+    x = log(vals[vals$N == N_lb, ]$K),
+    y = log(vals[vals$N == N_lb, ]$val),
+    xout = log(K)
+  )$y
+  log_gamma_ub <- approx(
+    x = log(vals[vals$N == N_ub, ]$K),
+    y = log(vals[vals$N == N_ub, ]$val),
+    xout = log(K)
+  )$y
+  if (N_ub == N_lb) {
+    log_gamma_approx <- log_gamma_lb
+  } else {
+    # Approximate log_gamma for the desired value of N.
+    log_gamma_approx <- approx(
+      x = log(c(N_lb, N_ub)),
+      y = c(log_gamma_lb, log_gamma_ub),
+      xout = log(N)
+    )$y
+  }
+  exp(log_gamma_approx)
+}
+
+#' Filter the precomputed values useful for the interpolation task given to
+#' interpolate_gamma. Check, if the task is possible with the availabel data.
+#' @param N Length of sample.
+#' @param K Number of equally spaced evaluation points (1:K / K). Defaults to N.
+#' @param L Number of chains. Used for MCMC, defaults to 1 for ppc.
+#' @param prob Desired simultaneous coverage (0,1).
+#' @return A data.frame containing the relevant precomputed values.
+#' @noRd
+get_interpolation_values <- function(N, K, L, prob) {
+  for (dim in c("L", "prob")) {
+    if (all(get(dim) != bayesplot:::gamma_adj[, dim])) {
+      stop(paste(
+        "No precomputed values to interpolate from for '", dim, "' = ",
+        get(dim),
+        ".\n",
+        "Values of '", dim, "' available for interpolation: ",
+        paste(unique(bayesplot:::gamma_adj[, dim]), collapse = ", "),
+        ".",
+        sep = ""
+      ))
+    }
+  }
+  vals <- bayesplot:::gamma_adj[
+    bayesplot:::gamma_adj$L == L & bayesplot:::gamma_adj$prob == prob,
+  ]
+  if (N > max(vals$N)) {
+    stop(paste(
+      "No precomputed values to interpolate from for sample length of ",
+      N,
+      ".\n",
+      "Please use a subsample of length ",
+      max(vals$N),
+      " or smaller, or consider setting 'interpolate_adj' = FALSE.",
+      sep = ""
+    ))
+  }
+  if (N < min(vals$N)) {
+    stop(paste(
+      "No precomputed values to interpolate from for sample length of ",
+      N,
+      ".\n",
+      "Please use a subsample of length ",
+      min(vals$N),
+      " or larger, or consider setting 'interpolate_adj' = FALSE.",
+      sep = ""
+    ))
+  }
+  if (K > max(vals[vals$N <= N, ]$K)) {
+    stop(paste(
+      "No precomputed values available for interpolation for 'K' = ",
+      K,
+      ".\n",
+      "Try either setting a value of 'K' <= ",
+      max(vals[vals$N <= N, ]$K),
+      "or 'interpolate_adj' = FALSE.",
+      sep = ""
+    ))
+  }
+  if (K < min(vals[vals$N <= N, ]$K)) {
+    stop(paste(
+      "No precomputed values available for interpolation for 'K' = ",
+      K,
+      ".\n",
+      "Try either setting a value of 'K' >= ",
+      min(vals[vals$N <= N, ]$K),
+      "or 'interpolate_adj' = FALSE.",
+      sep = ""
+    ))
+  }
+  vals
+}
+
+#' A helper function for 'adjust_gamma_optimize' defining the probability that
+#' a scaled ECDF stays within the supplied bounds between two evaluation points.
+#' @param p_int For each value in x1, the probability that the ECDF has stayed
+#' within the bounds until z1 and takes the value in x1 at z1.
+#' @param x1 Vector of scaled ECDF values at the left end of the interval, z1.
+#' @param x2 Vector of scaled ECDF values at the right end of the interval, z2.
+#' @param z1 Left evaluation point in [0,1]
+#' @param z2 Right evaluation point in [0,1] with z2 > z1.
+#' @param N Total number of values in the sample.
+#' @return A vector containing the probability to transitioning from the values
+#' in x1 to each of the values in x2 weighted by the probabilities in p_int.
+#' @noRd
+p_interior <- function(p_int, x1, x2, z1, z2, N) {
+  # Ratio between the length of the evaluation interval and the total length of
+  # the interval left to cover by ECDF.
+  z_tilde <- (z2 - z1) / (1 - z1)
+  # Number of samples left to cover by ECDF.
+  N_tilde <- rep(N - x1, each = length(x2))
+
+  p_int <- rep(p_int, each = length(x2))
+  x_diff <- outer(x2, x1, "-")
+  # Pobability of each transition from a value in x1 to a value in x2.
+  p_x2_int <- p_int * dbinom(x_diff, N_tilde, z_tilde)
+  rowSums(p_x2_int)
+}
+
+#' A helper function for 'adjust_alpha_simulate'
+#' 100 * `alpha` percent of the trials in 'gamma' are allowed to be rejected.
+#' In case of ties, return the largest value dominating at most
+#' 100 * (alpha + tol) percent of the values.
+#' @noRd
+alpha_quantile <- function(gamma, alpha, tol = 0.001) {
+  a <- unname(quantile(gamma, probs = alpha))
+  a_tol <- unname(quantile(gamma, probs = alpha + tol))
+  if (a == a_tol) {
+    if (min(gamma) < a) {
+      # take the largest value that doesn't exceed the tolerance.
+      a <- max(gamma[gamma < a])
+    }
+  }
+  a
+}
+
+#' Compute simultaneous confidence intervals with the given adjusted coverage
+#'  parameter gamma.
+#' @param gamma Adjusted coverage parameter for the marginal distribution
+#'  (binomial for PIT values and hypergeometric for rank transformed chains).
+#' @param N Sample length.
+#' @param K Number of uniformly spaced evaluation points.
+#' @param L Number of MCMC-chains. (1 for ppc)
+#' @return A list with upper and lower confidence interval values at the
+#' evaluation points.
+#' @noRd
+ecdf_intervals <- function(gamma, N, K, L = 1) {
+  lims <- list()
+  z <- seq(0, 1, length.out = K + 1)
+  if (L == 1) {
+    lims$lower <- qbinom(gamma / 2, N, z)
+    lims$upper <- qbinom(1 - gamma / 2, N, z)
+  } else {
+    n <- N * (L - 1)
+    k <- floor(z * L * N)
+    lims$lower <- qhyper(gamma / 2, N, n, k)
+    lims$upper <- qhyper(1 - gamma / 2, N, n, k)
+  }
+  lims
+}
+
+#' Helper for 'adjust_gamma_simulate`
+#' Transforms observations in 'x' into their corresponding fractional ranks.
+#' @noRd
+u_scale <- function(x) {
+  array(rank(x) / length(x), dim = dim(x), dimnames = dimnames(x))
+}
 
 # labels ----------------------------------------------------------------
 create_rep_ids <- function(ids) paste('italic(y)[rep] (', ids, ")")
