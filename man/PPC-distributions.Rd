@@ -271,8 +271,8 @@ ppc_ecdf_overlay(y, yrep[sample(nrow(yrep), 25), ])
 }
 # ECDF and ECDF difference plot of the PIT values of ´y´ compared to ´yrep
 # with 99\% simultaneous confidence bands.
-ppc_pit_ecdf(y, yrep, prob = 0.99, plot_diff = FALSE)
-ppc_pit_ecdf(y, yrep, prob = 0.99)
+ppc_pit_ecdf(y, yrep, prob = 0.99, plot_diff = FALSE, interpolate_adj = FALSE)
+ppc_pit_ecdf(y, yrep, prob = 0.99, interpolate_adj = FALSE)
 
 
 # for ppc_hist,dens,freqpoly,boxplot definitely use a subset yrep rows so
@@ -304,7 +304,7 @@ ppc_ecdf_overlay_grouped(y, yrep[1:25, ], group = group)
 
 # ECDF difference plots of the PIT values by group
 # with 99\% simultaneous confidence bands.
-ppc_pit_ecdf_grouped(y, yrep, group = group, prob = 0.99)
+ppc_pit_ecdf_grouped(y, yrep, group=group, prob=0.99, interpolate_adj=FALSE)
 
 # don't need to only use small number of rows for ppc_violin_grouped
 # (as it pools yrep draws within groups)

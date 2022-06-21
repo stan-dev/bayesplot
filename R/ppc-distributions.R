@@ -73,8 +73,8 @@
 #' }
 #' # ECDF and ECDF difference plot of the PIT values of ´y´ compared to ´yrep
 #' # with 99% simultaneous confidence bands.
-#' ppc_pit_ecdf(y, yrep, prob = 0.99, plot_diff = FALSE)
-#' ppc_pit_ecdf(y, yrep, prob = 0.99)
+#' ppc_pit_ecdf(y, yrep, prob = 0.99, plot_diff = FALSE, interpolate_adj = FALSE)
+#' ppc_pit_ecdf(y, yrep, prob = 0.99, interpolate_adj = FALSE)
 #'
 #'
 #' # for ppc_hist,dens,freqpoly,boxplot definitely use a subset yrep rows so
