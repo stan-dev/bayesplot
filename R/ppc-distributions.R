@@ -106,7 +106,7 @@
 #'
 #' # ECDF difference plots of the PIT values by group
 #' # with 99% simultaneous confidence bands.
-#' ppc_pit_ecdf_grouped(y, yrep, group = group, prob = 0.99)
+#' ppc_pit_ecdf_grouped(y, yrep, group=group, prob=0.99, interpolate_adj=FALSE)
 #'
 #' # don't need to only use small number of rows for ppc_violin_grouped
 #' # (as it pools yrep draws within groups)
