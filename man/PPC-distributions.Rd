@@ -268,12 +268,12 @@ ppc_dens_overlay(y, yrep[1:25, ])
 \donttest{
 # ppc_ecdf_overlay with continuous data (set discrete=TRUE if discrete data)
 ppc_ecdf_overlay(y, yrep[sample(nrow(yrep), 25), ])
-}
+
 # ECDF and ECDF difference plot of the PIT values of ´y´ compared to ´yrep
 # with 99\% simultaneous confidence bands.
 ppc_pit_ecdf(y, yrep, prob = 0.99, plot_diff = FALSE, interpolate_adj = FALSE)
 ppc_pit_ecdf(y, yrep, prob = 0.99, interpolate_adj = FALSE)
-
+}
 
 # for ppc_hist,dens,freqpoly,boxplot definitely use a subset yrep rows so
 # only a few (instead of nrow(yrep)) histograms are plotted
@@ -302,9 +302,11 @@ ppc_dens_overlay_grouped(y, yrep[1:25, ], group = group)
 
 ppc_ecdf_overlay_grouped(y, yrep[1:25, ], group = group)
 
+\donttest{
 # ECDF difference plots of the PIT values by group
 # with 99\% simultaneous confidence bands.
 ppc_pit_ecdf_grouped(y, yrep, group=group, prob=0.99, interpolate_adj=FALSE)
+}
 
 # don't need to only use small number of rows for ppc_violin_grouped
 # (as it pools yrep draws within groups)
