@@ -504,7 +504,7 @@ mcmc_rank_ecdf <-
     x = x
   )
   data <- data %>%
-    group_by(parameter, chain) %>%
+    group_by(.data$parameter, .data$chain) %>%
     dplyr::group_map(~ data.frame(
       parameter = .y[1],
       chain = .y[2],

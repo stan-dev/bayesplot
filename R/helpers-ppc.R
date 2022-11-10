@@ -448,21 +448,19 @@ interpolate_gamma <- function(N, K, prob, L) {
 #' @noRd
 get_interpolation_values <- function(N, K, L, prob) {
   for (dim in c("L", "prob")) {
-    if (all(get(dim) != bayesplot:::gamma_adj[, dim])) {
+    if (all(get(dim) != gamma_adj[, dim])) {
       stop(paste(
         "No precomputed values to interpolate from for '", dim, "' = ",
         get(dim),
         ".\n",
         "Values of '", dim, "' available for interpolation: ",
-        paste(unique(bayesplot:::gamma_adj[, dim]), collapse = ", "),
+        paste(unique(gamma_adj[, dim]), collapse = ", "),
         ".",
         sep = ""
       ))
     }
   }
-  vals <- bayesplot:::gamma_adj[
-    bayesplot:::gamma_adj$L == L & bayesplot:::gamma_adj$prob == prob,
-  ]
+  vals <- gamma_adj[gamma_adj$L == L & gamma_adj$prob == prob, ]
   if (N > max(vals$N)) {
     stop(paste(
       "No precomputed values to interpolate from for sample length of ",

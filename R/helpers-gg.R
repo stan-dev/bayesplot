@@ -100,7 +100,7 @@ set_hist_aes <- function(freq = TRUE, ...) {
   if (freq) {
     aes_(x = ~ value, ...)
   } else {
-    aes_(x = ~ value, y = ~ stat(density), ...)
+    aes_(x = ~ value, y = ~ after_stat(density), ...)
   }
 }
 

@@ -221,7 +221,7 @@ plot_scheme <- function(scheme = NULL) {
     value = rep(1, length(x))
   )
 
-  ggplot(color_data, aes_(x = ~ name, y = ~ value, fill = ~ group)) +
+  ggplot(color_data, aes(x = .data$name, y = .data$value, fill = .data$group)) +
     geom_bar(
       width = .5,
       stat = "identity",

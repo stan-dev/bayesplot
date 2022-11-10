@@ -154,7 +154,7 @@ mcmc_nuts_acceptance <-
                            Mean = mean(.data$Value),
                            Median = median(.data$Value))
 
-    hists <- ggplot(data, aes_(x = ~ Value, y = ~ ..density..)) +
+    hists <- ggplot(data, aes_(x = ~ Value, y = ~ after_stat(density))) +
       geom_histogram(
         fill = get_color("l"),
         color = get_color("lh"),
@@ -354,7 +354,7 @@ mcmc_nuts_treedepth <- function(x, lp, chain = NULL, ...) {
   treedepth <- dplyr::filter(x, .data$Parameter == "treedepth__")
   accept_stat <- dplyr::filter(x, .data$Parameter == "accept_stat__")
 
-  hist_td <- ggplot(treedepth, aes_(x = ~ Value, y = ~ ..density..)) +
+  hist_td <- ggplot(treedepth, aes_(x = ~ Value, y = ~ after_stat(density))) +
     geom_histogram(
       fill = get_color("l"),
       color = get_color("lh"),
@@ -450,7 +450,7 @@ mcmc_nuts_energy <-
     clrs <- set_names(get_color(c("lh", "mh")), c("E_fill", "Ediff_fill"))
     aes_labs <- c(expression(pi[E]), expression(pi[paste(Delta, E)]))
 
-    graph <- ggplot(data, aes_(y = ~ ..density..)) +
+    graph <- ggplot(data, aes_(y = ~ after_stat(density))) +
       geom_histogram(
         aes_(
           x = ~ Ediff_centered,

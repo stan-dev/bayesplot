@@ -30,7 +30,8 @@ test_that("bayesplot_grid throws correct errors", {
 test_that("bayesplot_grid works", {
   expect_message(
     a <- bayesplot_grid(p1, p2, xlim = c(-200, 200), ylim = c(0, 200)),
-    "Adding another scale for 'y'"
+    "is already present",
+    fixed = TRUE
   )
   expect_silent(
     b <- bayesplot_grid(plots = list(p1, p2),
