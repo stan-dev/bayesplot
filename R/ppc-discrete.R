@@ -18,9 +18,10 @@
 #'   of the expected counts.)
 #' @param width For bar plots only, passed to [ggplot2::geom_bar()] to control
 #'   the bar width.
-#' @param size,fatten For bar plots, `size` and `fatten` are passed to
-#'   [ggplot2::geom_pointrange()] to control the appearance of the `yrep` points
-#'   and intervals. For rootograms `size` is passed to [ggplot2::geom_line()].
+#' @param size,fatten,linewidth For bar plots, `size`, `fatten`, and `linewidth`
+#'   are passed to [ggplot2::geom_pointrange()] to control the appearance of the
+#'   `yrep` points and intervals. For rootograms `size` is passed to
+#'   [ggplot2::geom_line()].
 #' @param freq For bar plots only, if `TRUE` (the default) the y-axis will
 #'   display counts. Setting `freq=FALSE` will put proportions on the y-axis.
 #'
@@ -128,6 +129,7 @@ ppc_bars <-
            width = 0.9,
            size = 1,
            fatten = 2.5,
+           linewidth = 1,
            freq = TRUE) {
 
     dots <- list(...)
@@ -161,6 +163,7 @@ ppc_bars <-
         mapping = intervals_inner_aes(needs_y = TRUE, color = "yrep"),
         size = size,
         fatten = fatten,
+        linewidth = linewidth,
         na.rm = TRUE
       ) +
       scale_color_ppc(
@@ -193,6 +196,7 @@ ppc_bars_grouped <-
            width = 0.9,
            size = 1,
            fatten = 2.5,
+           linewidth = 1,
            freq = TRUE) {
   check_ignored_arguments(...)
   call <- match.call(expand.dots = FALSE)

@@ -23,11 +23,12 @@
 #' group <- example_group_data()
 #'
 #' ppd_intervals(ypred[, 1:50])
-#' ppd_intervals(ypred[, 1:50], fatten = .5)
-#' ppd_intervals(ypred[, 1:50], prob_outer = 0.75, size = 2, fatten = 0)
+#' ppd_intervals(ypred[, 1:50], fatten = 0)
+#' ppd_intervals(ypred[, 1:50], fatten = 0, linewidth = 2)
+#' ppd_intervals(ypred[, 1:50], prob_outer = 0.75, fatten = 0, linewidth = 2)
 #'
 #' # put a predictor variable on the x-axis
-#' ppd_intervals(ypred[, 1:100], x = x[1:100], size = 1, fatten = 0) +
+#' ppd_intervals(ypred[, 1:100], x = x[1:100], fatten = 1) +
 #'   ggplot2::labs(y = "Prediction", x = "Some variable of interest")
 #'
 #' # with a grouping variable too
@@ -42,10 +43,9 @@
 #'
 #' # even reducing size, ppd_intervals is too cluttered when there are many
 #' # observations included (ppd_ribbon is better)
-#' ppd_intervals(ypred, size = 0.5, fatten = 0.1)
+#' ppd_intervals(ypred, size = 0.5, fatten = 0.1, linewidth = 0.5)
 #' ppd_ribbon(ypred)
 #' ppd_ribbon(ypred, size = 0) # remove line showing median prediction
-#'
 #'
 NULL
 
@@ -59,7 +59,8 @@ ppd_intervals <-
            prob_outer = 0.9,
            alpha = 0.33,
            size = 1,
-           fatten = 2.5) {
+           fatten = 2.5,
+           linewidth = 1) {
 
     dots <- list(...)
     if (!from_grouped(dots)) {
@@ -83,13 +84,15 @@ ppd_intervals <-
       geom_linerange(
         mapping = intervals_outer_aes(color = "ypred"),
         alpha = alpha,
-        size = size
+        size = size,
+        linewidth = linewidth
       ) +
       geom_pointrange(
         shape = 21,
         stroke = 0.5,
         size = size,
-        fatten = fatten
+        fatten = fatten,
+        linewidth = linewidth
       ) +
       scale_color_ppd() +
       scale_fill_ppd() +
@@ -111,7 +114,8 @@ ppd_intervals_grouped <-
            prob_outer = 0.9,
            alpha = 0.33,
            size = 1,
-           fatten = 2.5) {
+           fatten = 2.5,
+           linewidth = 1) {
     check_ignored_arguments(...)
     call <- match.call(expand.dots = FALSE)
     g <- eval(ungroup_call("ppd_intervals", call), parent.frame())

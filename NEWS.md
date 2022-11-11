@@ -8,6 +8,9 @@ assessing if two or more chains sample the same distribution (#282,
 * New functions `ppc_pit_ecdf()`, `ppc_pit_ecdf_grouped()`, PIT ecdf plots with
 confidence bands to assess if `y` and `yrep` contain samples from the same
 distribution. (#282, @TeemuSailynoja)
+* New `linewidth` argument (introduced in recent ggplot2 release) for
+`ppc_bars()`, `ppc_bars_grouped()`, `ppc_intervals()`,
+`ppc_intervals_grouped()`, `ppd_intervals()`, `ppd_intervals_grouped()`.
 * Fix failing tests due to latest ggplot2 release (#289)
 
 # bayesplot 1.9.0
