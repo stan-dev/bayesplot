@@ -226,7 +226,7 @@ plot_scheme <- function(scheme = NULL) {
       width = .5,
       stat = "identity",
       color = "white",
-      size = 0.1
+      linewidth = 0.1
     ) +
     scale_fill_manual("", values = unlist(x)) +
     theme_void() +

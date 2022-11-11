@@ -124,7 +124,7 @@ ppc_stat <-
       geom_histogram(
         aes_(fill = "yrep"),
         color = get_color("lh"),
-        size = .25,
+        linewidth = 0.25,
         na.rm = TRUE,
         binwidth = binwidth,
         breaks = breaks
@@ -132,7 +132,7 @@ ppc_stat <-
       geom_vline(
         data = dplyr::filter(data, .data$variable == "y"),
         mapping = aes_(xintercept = ~ value, color = "y"),
-        size = 1.5
+        linewidth = 1.5
       ) +
       scale_color_ppc(values = get_color("dh"), labels = Ty_label()) +
       scale_fill_ppc(values = get_color("l"), labels = Tyrep_label()) +
@@ -204,7 +204,7 @@ ppc_stat_freqpoly <-
     ) +
       geom_freqpoly(
         aes_(color = "yrep"),
-        size = .5,
+        linewidth = 0.5,
         na.rm = TRUE,
         binwidth = binwidth
       ) +
@@ -212,7 +212,7 @@ ppc_stat_freqpoly <-
         data = dplyr::filter(data, .data$variable == "y"),
         mapping = aes_(xintercept = ~ value, color = "y"),
         show.legend = FALSE,
-        size = 1
+        linewidth = 1
       ) +
       scale_color_ppc(
         name = stat_legend_title(stat, deparse(substitute(stat))),
@@ -307,7 +307,7 @@ ppc_stat_2d <- function(y,
         color = "y"
       ),
       linetype = 2,
-      size = 0.4,
+      linewidth = 0.4,
       show.legend = FALSE
     ) +
     geom_point(

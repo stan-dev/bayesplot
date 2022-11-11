@@ -457,7 +457,7 @@ mcmc_nuts_energy <-
           fill = ~ "Ediff_fill",
           color = ~ "Ediff_fill"
         ),
-        size = 0.25,
+        linewidth = 0.25,
         na.rm = TRUE,
         binwidth = binwidth
       ) +
@@ -467,7 +467,7 @@ mcmc_nuts_energy <-
           fill = ~ "E_fill",
           color = ~ "E_fill"
         ),
-        size = 0.25,
+        linewidth = 0.25,
         na.rm = TRUE,
         alpha = alpha,
         binwidth = binwidth

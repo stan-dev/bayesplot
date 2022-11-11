@@ -213,7 +213,7 @@ mcmc_intervals <- function(x,
 
   # faint vertical line at zero if zero is within x_lim
   layer_vertical_line <- if (0 > x_lim[1] && 0 < x_lim[2]) {
-    vline_0(color = "gray90", size = 0.5)
+    vline_0(color = "gray90", linewidth = 0.5)
   } else {
     geom_ignore()
   }
@@ -275,7 +275,7 @@ mcmc_intervals <- function(x,
     legend_move(ifelse(color_by_rhat, "top", "none")) +
     yaxis_text(face = "bold") +
     yaxis_title(FALSE) +
-    yaxis_ticks(size = 1) +
+    yaxis_ticks(linewidth = 1) +
     xaxis_title(FALSE)
 }
 

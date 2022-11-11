@@ -163,15 +163,15 @@ test_that("yaxis_title returns correct theme object", {
 test_that("xaxis_ticks returns correct theme object", {
   expect_identical(xaxis_ticks(FALSE), theme(axis.ticks.x = element_blank()))
   expect_equal(
-    xaxis_ticks(size = 0.5, color = "red"),
-    theme(axis.ticks.x = element_line(size = 0.5, color = "red"))
+    xaxis_ticks(linewidth = 0.5, color = "red"),
+    theme(axis.ticks.x = element_line(linewidth = 0.5, color = "red"))
   )
 })
 test_that("yaxis_ticks returns correct theme object", {
   expect_identical(yaxis_ticks(FALSE), theme(axis.ticks.y = element_blank()))
   expect_equal(
-    yaxis_ticks(size = 0.5, color = "red"),
-    theme(axis.ticks.y = element_line(size = 0.5, color = "red"))
+    yaxis_ticks(linewidth = 0.5, color = "red"),
+    theme(axis.ticks.y = element_line(linewidth = 0.5, color = "red"))
   )
 })
 

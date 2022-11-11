@@ -56,7 +56,7 @@ ppd_stat <-
       fill = "ypred"
     )) +
       geom_histogram(
-        size = .25,
+        linewidth = 0.25,
         na.rm = TRUE,
         binwidth = binwidth,
         breaks = breaks
@@ -118,7 +118,7 @@ ppd_stat_freqpoly <-
     ggplot(data, mapping = set_hist_aes(freq)) +
       geom_freqpoly(
         aes_(color = "ypred"),
-        size = .5,
+        linewidth = 0.5,
         na.rm = TRUE,
         binwidth = binwidth
       ) +
