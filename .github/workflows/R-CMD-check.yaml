@@ -44,6 +44,7 @@ jobs:
           extra-packages: |
             any::rcmdcheck
             any::BH
+            any::RcppEigen
           needs: check
 
       - uses: r-lib/actions/check-r-package@v2
