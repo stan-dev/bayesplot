@@ -107,8 +107,8 @@ ppc_pit_ecdf(
   pit = NULL,
   K = NULL,
   prob = 0.99,
-  plot_diff = TRUE,
-  interpolate_adj = TRUE
+  plot_diff = FALSE,
+  interpolate_adj = NULL
 )
 
 ppc_pit_ecdf_grouped(
@@ -272,7 +272,7 @@ ppc_ecdf_overlay(y, yrep[sample(nrow(yrep), 25), ])
 # ECDF and ECDF difference plot of the PIT values of ´y´ compared to ´yrep
 # with 99\% simultaneous confidence bands.
 ppc_pit_ecdf(y, yrep, prob = 0.99, plot_diff = FALSE, interpolate_adj = FALSE)
-ppc_pit_ecdf(y, yrep, prob = 0.99, interpolate_adj = FALSE)
+ppc_pit_ecdf(y, yrep, prob = 0.99, plot_diff = TRUE, interpolate_adj = FALSE)
 }
 
 # for ppc_hist,dens,freqpoly,boxplot definitely use a subset yrep rows so

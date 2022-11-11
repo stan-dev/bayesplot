@@ -75,7 +75,7 @@ mcmc_rank_ecdf(
   facet_args = list(),
   prob = 0.99,
   plot_diff = TRUE,
-  interpolate_adj = TRUE
+  interpolate_adj = NULL
 )
 
 mcmc_trace_data(
@@ -251,7 +251,7 @@ The ECDFs of the ranks from \code{mcmc_rank_hist()} are plotted with the
 simultaneous confidence bands with a coverage determined by \code{prob},
 that is, bands that completely cover all of the rank ECDFs with the
 probability 'prob'.
-By default, the difference between the observed rank ECDFs and the
+If plot_diff = TRUE, the difference between the observed rank ECDFs and the
 theoretical expectation for samples originating from the same distribution
 is drawn.
 See Säilynoja et al. (2021) for details.
@@ -298,10 +298,11 @@ mcmc_rank_hist(x, "alpha")
 mcmc_rank_hist(x, pars = c("alpha", "sigma"), ref_line = TRUE)
 mcmc_rank_overlay(x, "alpha")
 
-# ECDF difference plots of the ranking of MCMC samples between chains.
+# ECDF and ECDF difference plots of the ranking of MCMC samples between chains.
 # Provide 99\% simultaneous confidence intervals for the chains sampling from
 # the same distribution.
 mcmc_rank_ecdf(x, prob = 0.99)
+mcmc_rank_ecdf(x, prob = 0.99, plot_diff = TRUE)
 
 \dontrun{
 # parse facet label text
