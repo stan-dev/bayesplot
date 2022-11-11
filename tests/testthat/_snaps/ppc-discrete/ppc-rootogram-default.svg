@@ -25,15 +25,15 @@
   </clipPath>
 </defs>
 <g clip-path='url(#cpMzMuMjF8NjEwLjQ4fDI0Ljg1fDU0MS43Mw==)'>
-<rect x='59.45' y='109.77' width='87.46' height='431.96' style='stroke-width: 0.53; stroke: #B3CDE0; stroke-linecap: square; stroke-linejoin: miter; fill: #D1E1EC;' />
-<rect x='146.91' y='90.56' width='87.46' height='451.16' style='stroke-width: 0.53; stroke: #B3CDE0; stroke-linecap: square; stroke-linejoin: miter; fill: #D1E1EC;' />
-<rect x='234.38' y='250.50' width='87.46' height='291.23' style='stroke-width: 0.53; stroke: #B3CDE0; stroke-linecap: square; stroke-linejoin: miter; fill: #D1E1EC;' />
-<rect x='321.84' y='411.49' width='87.46' height='130.24' style='stroke-width: 0.53; stroke: #B3CDE0; stroke-linecap: square; stroke-linejoin: miter; fill: #D1E1EC;' />
-<rect x='409.31' y='541.73' width='87.46' height='0.00' style='stroke-width: 0.53; stroke: #B3CDE0; stroke-linecap: square; stroke-linejoin: miter; fill: #D1E1EC;' />
-<rect x='496.77' y='411.49' width='87.46' height='130.24' style='stroke-width: 0.53; stroke: #B3CDE0; stroke-linecap: square; stroke-linejoin: miter; fill: #D1E1EC;' />
-<polygon points='103.18,24.85 190.65,26.50 278.11,197.15 365.58,296.34 453.04,379.58 540.50,541.73 540.50,541.73 453.04,541.73 365.58,454.36 278.11,337.87 190.65,151.01 103.18,188.64 ' style='stroke-width: 0.00; stroke: none; fill: #03396C; fill-opacity: 0.40;' />
-<polyline points='103.18,24.85 190.65,26.50 278.11,197.15 365.58,296.34 453.04,379.58 540.50,541.73 ' style='stroke-width: 2.13; stroke: none;' />
-<polyline points='540.50,541.73 453.04,541.73 365.58,454.36 278.11,337.87 190.65,151.01 103.18,188.64 ' style='stroke-width: 2.13; stroke: none;' />
+<rect x='59.45' y='109.77' width='87.46' height='431.96' style='stroke-width: 0.53; stroke: #B3CDE0; stroke-linecap: butt; stroke-linejoin: miter; fill: #D1E1EC;' />
+<rect x='146.91' y='90.56' width='87.46' height='451.16' style='stroke-width: 0.53; stroke: #B3CDE0; stroke-linecap: butt; stroke-linejoin: miter; fill: #D1E1EC;' />
+<rect x='234.38' y='250.50' width='87.46' height='291.23' style='stroke-width: 0.53; stroke: #B3CDE0; stroke-linecap: butt; stroke-linejoin: miter; fill: #D1E1EC;' />
+<rect x='321.84' y='411.49' width='87.46' height='130.24' style='stroke-width: 0.53; stroke: #B3CDE0; stroke-linecap: butt; stroke-linejoin: miter; fill: #D1E1EC;' />
+<rect x='409.31' y='541.73' width='87.46' height='0.00' style='stroke-width: 0.53; stroke: #B3CDE0; stroke-linecap: butt; stroke-linejoin: miter; fill: #D1E1EC;' />
+<rect x='496.77' y='411.49' width='87.46' height='130.24' style='stroke-width: 0.53; stroke: #B3CDE0; stroke-linecap: butt; stroke-linejoin: miter; fill: #D1E1EC;' />
+<polygon points='103.18,24.85 190.65,26.50 278.11,197.15 365.58,296.34 453.04,379.58 540.50,541.73 540.50,541.73 453.04,541.73 365.58,454.36 278.11,337.87 190.65,151.01 103.18,188.64 ' style='stroke-width: 0.00; stroke: none; stroke-linecap: butt; fill: #03396C; fill-opacity: 0.40;' />
+<polyline points='103.18,24.85 190.65,26.50 278.11,197.15 365.58,296.34 453.04,379.58 540.50,541.73 ' style='stroke-width: 2.13; stroke: none; stroke-linecap: butt;' />
+<polyline points='540.50,541.73 453.04,541.73 365.58,454.36 278.11,337.87 190.65,151.01 103.18,188.64 ' style='stroke-width: 2.13; stroke: none; stroke-linecap: butt;' />
 <polyline points='103.18,103.92 190.65,101.99 278.11,247.61 365.58,362.21 453.04,470.39 540.50,541.73 ' style='stroke-width: 2.13; stroke: #011F4B; stroke-linecap: butt;' />
 </g>
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8MC4wMHw1NzYuMDA=)'>
@@ -63,7 +63,7 @@
 <rect x='628.41' y='263.58' width='17.28' height='17.28' style='stroke-width: 0.75; stroke: none; fill: #03396C; fill-opacity: 0.40;' />
 <line x1='630.14' y1='272.22' x2='643.96' y2='272.22' style='stroke-width: 2.13; stroke: #011F4B; stroke-linecap: butt;' />
 <text x='651.67' y='276.69' style='font-size: 13.00px; font-family: sans;' textLength='54.22px' lengthAdjust='spacingAndGlyphs'>Expected</text>
-<rect x='628.76' y='289.74' width='16.57' height='16.57' style='stroke-width: 0.53; stroke: #B3CDE0; stroke-linecap: square; stroke-linejoin: miter; fill: #D1E1EC;' />
+<rect x='628.76' y='289.74' width='16.57' height='16.57' style='stroke-width: 0.53; stroke: #B3CDE0; stroke-linecap: butt; stroke-linejoin: miter; fill: #D1E1EC;' />
 <text x='651.67' y='302.50' style='font-size: 13.00px; font-family: sans;' textLength='56.38px' lengthAdjust='spacingAndGlyphs'>Observed</text>
 <text x='33.21' y='15.89' style='font-size: 14.40px; font-family: sans;' textLength='153.70px' lengthAdjust='spacingAndGlyphs'>ppc_rootogram (default)</text>
 </g>

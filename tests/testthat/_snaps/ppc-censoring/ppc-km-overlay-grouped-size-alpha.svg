@@ -39,8 +39,8 @@
 <line x1='24.70' y1='300.07' x2='324.63' y2='300.07' style='stroke-width: 0.21; stroke: #011F4B; stroke-dasharray: 4.00,4.00; stroke-linecap: butt;' />
 <line x1='24.70' y1='532.77' x2='324.63' y2='532.77' style='stroke-width: 0.43; stroke: #011F4B; stroke-dasharray: 4.00,4.00; stroke-linecap: butt;' />
 <line x1='24.70' y1='67.36' x2='324.63' y2='67.36' style='stroke-width: 0.43; stroke: #011F4B; stroke-dasharray: 4.00,4.00; stroke-linecap: butt;' />
-<line x1='24.70' y1='556.04' x2='324.63' y2='556.04' style='stroke-width: 0.85; stroke-linecap: butt;' />
-<line x1='24.70' y1='556.04' x2='24.70' y2='44.09' style='stroke-width: 0.85; stroke-linecap: butt;' />
+<line x1='24.70' y1='556.04' x2='324.63' y2='556.04' style='stroke-width: 1.07; stroke-linecap: butt;' />
+<line x1='24.70' y1='556.04' x2='24.70' y2='44.09' style='stroke-width: 1.07; stroke-linecap: butt;' />
 </g>
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8MC4wMHw1NzYuMDA=)'>
 </g>
@@ -64,8 +64,8 @@
 <line x1='346.23' y1='300.07' x2='646.17' y2='300.07' style='stroke-width: 0.21; stroke: #011F4B; stroke-dasharray: 4.00,4.00; stroke-linecap: butt;' />
 <line x1='346.23' y1='532.77' x2='646.17' y2='532.77' style='stroke-width: 0.43; stroke: #011F4B; stroke-dasharray: 4.00,4.00; stroke-linecap: butt;' />
 <line x1='346.23' y1='67.36' x2='646.17' y2='67.36' style='stroke-width: 0.43; stroke: #011F4B; stroke-dasharray: 4.00,4.00; stroke-linecap: butt;' />
-<line x1='346.23' y1='556.04' x2='646.17' y2='556.04' style='stroke-width: 0.85; stroke-linecap: butt;' />
-<line x1='346.23' y1='556.04' x2='346.23' y2='44.09' style='stroke-width: 0.85; stroke-linecap: butt;' />
+<line x1='346.23' y1='556.04' x2='646.17' y2='556.04' style='stroke-width: 1.07; stroke-linecap: butt;' />
+<line x1='346.23' y1='556.04' x2='346.23' y2='44.09' style='stroke-width: 1.07; stroke-linecap: butt;' />
 </g>
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8MC4wMHw1NzYuMDA=)'>
 </g>

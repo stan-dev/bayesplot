@@ -126,8 +126,8 @@
 <circle cx='157.49' cy='156.34' r='1.42' style='stroke-width: 0.71; stroke: #005B96; fill: #6497B1;' />
 <circle cx='163.69' cy='197.58' r='1.42' style='stroke-width: 0.71; stroke: #005B96; fill: #6497B1;' />
 <circle cx='157.21' cy='193.07' r='1.42' style='stroke-width: 0.71; stroke: #005B96; fill: #6497B1;' />
-<line x1='34.21' y1='271.76' x2='246.41' y2='271.76' style='stroke-width: 0.85; stroke-linecap: butt;' />
-<line x1='34.21' y1='271.76' x2='34.21' y2='24.85' style='stroke-width: 0.85; stroke-linecap: butt;' />
+<line x1='34.21' y1='271.76' x2='246.41' y2='271.76' style='stroke-width: 1.07; stroke-linecap: butt;' />
+<line x1='34.21' y1='271.76' x2='34.21' y2='24.85' style='stroke-width: 1.07; stroke-linecap: butt;' />
 </g>
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8MC4wMHw1NzYuMDA=)'>
 </g>
@@ -238,8 +238,8 @@
 <circle cx='98.34' cy='424.84' r='1.42' style='stroke-width: 0.71; stroke: #005B96; fill: #6497B1;' />
 <circle cx='178.37' cy='466.08' r='1.42' style='stroke-width: 0.71; stroke: #005B96; fill: #6497B1;' />
 <circle cx='109.15' cy='461.57' r='1.42' style='stroke-width: 0.71; stroke: #005B96; fill: #6497B1;' />
-<line x1='34.21' y1='540.26' x2='246.41' y2='540.26' style='stroke-width: 0.85; stroke-linecap: butt;' />
-<line x1='34.21' y1='540.26' x2='34.21' y2='293.36' style='stroke-width: 0.85; stroke-linecap: butt;' />
+<line x1='34.21' y1='540.26' x2='246.41' y2='540.26' style='stroke-width: 1.07; stroke-linecap: butt;' />
+<line x1='34.21' y1='540.26' x2='34.21' y2='293.36' style='stroke-width: 1.07; stroke-linecap: butt;' />
 </g>
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8MC4wMHw1NzYuMDA=)'>
 </g>
@@ -350,8 +350,8 @@
 <circle cx='383.64' cy='156.34' r='1.42' style='stroke-width: 0.71; stroke: #005B96; fill: #6497B1;' />
 <circle cx='357.92' cy='197.58' r='1.42' style='stroke-width: 0.71; stroke: #005B96; fill: #6497B1;' />
 <circle cx='403.51' cy='193.07' r='1.42' style='stroke-width: 0.71; stroke: #005B96; fill: #6497B1;' />
-<line x1='268.01' y1='271.76' x2='480.22' y2='271.76' style='stroke-width: 0.85; stroke-linecap: butt;' />
-<line x1='268.01' y1='271.76' x2='268.01' y2='24.85' style='stroke-width: 0.85; stroke-linecap: butt;' />
+<line x1='268.01' y1='271.76' x2='480.22' y2='271.76' style='stroke-width: 1.07; stroke-linecap: butt;' />
+<line x1='268.01' y1='271.76' x2='268.01' y2='24.85' style='stroke-width: 1.07; stroke-linecap: butt;' />
 </g>
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8MC4wMHw1NzYuMDA=)'>
 </g>
@@ -462,8 +462,8 @@
 <circle cx='306.78' cy='424.84' r='1.42' style='stroke-width: 0.71; stroke: #005B96; fill: #6497B1;' />
 <circle cx='379.82' cy='466.08' r='1.42' style='stroke-width: 0.71; stroke: #005B96; fill: #6497B1;' />
 <circle cx='341.33' cy='461.57' r='1.42' style='stroke-width: 0.71; stroke: #005B96; fill: #6497B1;' />
-<line x1='268.01' y1='540.26' x2='480.22' y2='540.26' style='stroke-width: 0.85; stroke-linecap: butt;' />
-<line x1='268.01' y1='540.26' x2='268.01' y2='293.36' style='stroke-width: 0.85; stroke-linecap: butt;' />
+<line x1='268.01' y1='540.26' x2='480.22' y2='540.26' style='stroke-width: 1.07; stroke-linecap: butt;' />
+<line x1='268.01' y1='540.26' x2='268.01' y2='293.36' style='stroke-width: 1.07; stroke-linecap: butt;' />
 </g>
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8MC4wMHw1NzYuMDA=)'>
 </g>
@@ -574,8 +574,8 @@
 <circle cx='554.99' cy='156.34' r='1.42' style='stroke-width: 0.71; stroke: #005B96; fill: #6497B1;' />
 <circle cx='525.53' cy='197.58' r='1.42' style='stroke-width: 0.71; stroke: #005B96; fill: #6497B1;' />
 <circle cx='601.01' cy='193.07' r='1.42' style='stroke-width: 0.71; stroke: #005B96; fill: #6497B1;' />
-<line x1='501.82' y1='271.76' x2='714.02' y2='271.76' style='stroke-width: 0.85; stroke-linecap: butt;' />
-<line x1='501.82' y1='271.76' x2='501.82' y2='24.85' style='stroke-width: 0.85; stroke-linecap: butt;' />
+<line x1='501.82' y1='271.76' x2='714.02' y2='271.76' style='stroke-width: 1.07; stroke-linecap: butt;' />
+<line x1='501.82' y1='271.76' x2='501.82' y2='24.85' style='stroke-width: 1.07; stroke-linecap: butt;' />
 </g>
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8MC4wMHw1NzYuMDA=)'>
 </g>
@@ -686,8 +686,8 @@
 <circle cx='638.06' cy='424.84' r='1.42' style='stroke-width: 0.71; stroke: #005B96; fill: #6497B1;' />
 <circle cx='570.52' cy='466.08' r='1.42' style='stroke-width: 0.71; stroke: #005B96; fill: #6497B1;' />
 <circle cx='674.30' cy='461.57' r='1.42' style='stroke-width: 0.71; stroke: #005B96; fill: #6497B1;' />
-<line x1='501.82' y1='540.26' x2='714.02' y2='540.26' style='stroke-width: 0.85; stroke-linecap: butt;' />
-<line x1='501.82' y1='540.26' x2='501.82' y2='293.36' style='stroke-width: 0.85; stroke-linecap: butt;' />
+<line x1='501.82' y1='540.26' x2='714.02' y2='540.26' style='stroke-width: 1.07; stroke-linecap: butt;' />
+<line x1='501.82' y1='540.26' x2='501.82' y2='293.36' style='stroke-width: 1.07; stroke-linecap: butt;' />
 </g>
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8MC4wMHw1NzYuMDA=)'>
 </g>
