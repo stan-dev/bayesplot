@@ -701,7 +701,7 @@ pairs_condition <- function(chains = NULL, draws = NULL, nuts = NULL) {
   } else { # hex binning
     graph <- graph +
       geom_hex(
-        aes_(fill = ~ scales::rescale(..density..)),
+        aes_(fill = ~ scales::rescale(after_stat(density))),
         binwidth = binwidth
       ) +
       scale_fill_gradientn(

@@ -47,10 +47,12 @@ library("rstanarm")
 
 The **bayesplot** package provides various plotting functions for visualizing 
 Markov chain Monte Carlo (MCMC) draws from the posterior distribution of the 
-parameters of a Bayesian model.
+parameters of a Bayesian model. In this vignette we demonstrate a few of 
+these functions. Example usage of the functions not demonstrated here can be
+found in the package documentation.
 
-In this vignette we'll use draws obtained using the `stan_glm` function in the 
-**rstanarm** package (Gabry and Goodrich, 2017), but MCMC draws from using 
+For demonstration we will use draws obtained using the `stan_glm` function in
+the **rstanarm** package (Gabry and Goodrich, 2017), but MCMC draws from using
 any package can be used with the functions in the **bayesplot** package. See,
 for example, **brms**, which, like **rstanarm**, calls the **rstan** package
 internally to use [Stan](https://mc-stan.org/)'s MCMC sampler.
