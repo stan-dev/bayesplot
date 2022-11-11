@@ -119,8 +119,8 @@ ppc_pit_ecdf_grouped(
   K = NULL,
   pit = NULL,
   prob = 0.99,
-  plot_diff = TRUE,
-  interpolate_adj = TRUE
+  plot_diff = FALSE,
+  interpolate_adj = NULL
 )
 }
 \arguments{
