@@ -193,12 +193,12 @@ respect to the corresponding values in ´yrep´.}
 \item{K}{An optional integer defining the number of equally spaced evaluation
 points for the ECDF. If the submitted PIT values are known to be discrete,
 this should be the number of the discrete cases. Defaults to the smaller of
-´length(y)´ and ´ncol(yrep)´ when applicable.}
+\code{length(y)} and \code{ncol(yrep)} when applicable.}
 
 \item{prob}{The desired simultaneous coverage level of the bands around the
 ECDF. A value in (0,1).}
 
-\item{plot_diff}{A boolean defining wether to plot the difference between the
+\item{plot_diff}{A boolean defining whether to plot the difference between the
 observed ECDF and the theoretical expectation for uniform PIT values.}
 
 \item{interpolate_adj}{A boolean defining if the simultaneous confidence
@@ -250,10 +250,10 @@ variable is plotted as a violin with horizontal lines at notable
 quantiles. \code{y} is overlaid on the plot either as a violin, points, or
 both, depending on the \code{y_draw} argument.
 }
-\item{\code{ppc_pit_ecdf()}}{
+\item{\code{ppc_pit_ecdf()}, \code{ppc_pit_ecdf_grouped()}}{
 The ECDF of the empirical PIT values of \code{y} computed with respect to the
 corresponding \code{yrep} values. \code{100 * prob}\% central simultaneous confidence
-intervals are provided to asses if ´y´ and ´yrep´ originate from the same
+intervals are provided to asses if \code{y} and \code{yrep} originate from the same
 distribution. The PIT values can also be provided directly as \code{pit}.
 See Säilynoja et al. (2021) for more details.}
 }

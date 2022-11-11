@@ -45,6 +45,7 @@ jobs:
             any::rcmdcheck
             any::BH
             any::RcppEigen
+            any::vdiffr
           needs: check
 
       - uses: r-lib/actions/check-r-package@v2

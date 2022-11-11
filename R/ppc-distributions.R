@@ -48,10 +48,10 @@
 #'    quantiles. `y` is overlaid on the plot either as a violin, points, or
 #'    both, depending on the `y_draw` argument.
 #'   }
-#'   \item{`ppc_pit_ecdf()`}{
+#'   \item{`ppc_pit_ecdf()`, `ppc_pit_ecdf_grouped()`}{
 #'    The ECDF of the empirical PIT values of `y` computed with respect to the
 #'    corresponding `yrep` values. `100 * prob`% central simultaneous confidence
-#'    intervals are provided to asses if ´y´ and ´yrep´ originate from the same
+#'    intervals are provided to asses if `y` and `yrep` originate from the same
 #'    distribution. The PIT values can also be provided directly as `pit`.
 #'    See Säilynoja et al. (2021) for more details.}
 #' }

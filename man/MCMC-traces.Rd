@@ -196,7 +196,7 @@ average number of ranks per bin. Defaults to \code{FALSE}.}
 \item{K}{An optional integer defining the number of equally spaced evaluation
 points for the ECDF. If the submitted PIT values are known to be discrete,
 this should be the number of the discrete cases. Defaults to the smaller of
-´length(y)´ and ´ncol(yrep)´ when applicable.}
+\code{length(y)} and \code{ncol(yrep)} when applicable.}
 
 \item{prob}{For \code{mcmc_rank_ecdf()}, a value between 0 and 1
 specifying the desired simultaneous confidence of the confidence bands to be
