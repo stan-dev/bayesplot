@@ -298,8 +298,8 @@ test_that("ppc_pit_ecdf, ppc_pit_ecdf_grouped renders correctly", {
 
   p_base <- ppc_pit_ecdf(y, yrep, interpolate_adj = FALSE)
   g_base <- ppc_pit_ecdf_grouped(y, yrep, group = group, interpolate_adj = FALSE)
-  p_diff <- ppc_pit_ecdf(y, yrep, plot_diff = FALSE, interpolate_adj = FALSE)
-  g_diff <- ppc_pit_ecdf_grouped(y, yrep, plot_diff = FALSE, group = group, interpolate_adj = FALSE)
+  p_diff <- ppc_pit_ecdf(y, yrep, plot_diff = TRUE, interpolate_adj = FALSE)
+  g_diff <- ppc_pit_ecdf_grouped(y, yrep, plot_diff = TRUE, group = group, interpolate_adj = FALSE)
 
   vdiffr::expect_doppelganger("ppc_pit_ecdf (default)", p_base)
   vdiffr::expect_doppelganger("ppc_pit_ecdf_grouped (default)", g_base)
