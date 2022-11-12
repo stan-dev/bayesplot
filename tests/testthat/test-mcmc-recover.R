@@ -109,7 +109,7 @@ test_that("mcmc_recover_scatter returns a ggplot object", {
 test_that("mcmc_recover_hist returns a ggplot object", {
   skip_if_not_installed("rstanarm")
 
-  expect_gg(mcmc_recover_hist(draws, true))
-  expect_gg(mcmc_recover_hist(draws, true, binwidth = .1,
+  expect_gg(mcmc_recover_hist(draws, true, binwidth = 0.1))
+  expect_gg(mcmc_recover_hist(draws, true, binwidth = 0.1,
                               facet_args = list(nrow = 1)))
 })

@@ -55,8 +55,8 @@
 <rect x='199.50' y='540.26' width='6.69' height='0.00' style='stroke-width: 0.53; stroke: #B3CDE0; stroke-linecap: butt; stroke-linejoin: miter; fill: #D1E1EC;' />
 <rect x='206.19' y='488.72' width='6.69' height='51.54' style='stroke-width: 0.53; stroke: #B3CDE0; stroke-linecap: butt; stroke-linejoin: miter; fill: #D1E1EC;' />
 <rect x='212.87' y='540.26' width='6.69' height='0.00' style='stroke-width: 0.53; stroke: #B3CDE0; stroke-linecap: butt; stroke-linejoin: miter; fill: #D1E1EC;' />
-<line x1='8.97' y1='540.26' x2='229.59' y2='540.26' style='stroke-width: 1.07; stroke-linecap: butt;' />
-<line x1='8.97' y1='540.26' x2='8.97' y2='24.85' style='stroke-width: 1.07; stroke-linecap: butt;' />
+<line x1='8.97' y1='540.26' x2='229.59' y2='540.26' style='stroke-width: 0.85; stroke-linecap: butt;' />
+<line x1='8.97' y1='540.26' x2='8.97' y2='24.85' style='stroke-width: 0.85; stroke-linecap: butt;' />
 </g>
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8MC4wMHw1NzYuMDA=)'>
 </g>
@@ -96,8 +96,8 @@
 <rect x='441.72' y='540.26' width='6.69' height='0.00' style='stroke-width: 0.53; stroke: #B3CDE0; stroke-linecap: butt; stroke-linejoin: miter; fill: #D1E1EC;' />
 <rect x='448.40' y='540.26' width='6.69' height='0.00' style='stroke-width: 0.53; stroke: #B3CDE0; stroke-linecap: butt; stroke-linejoin: miter; fill: #D1E1EC;' />
 <rect x='455.09' y='540.26' width='6.69' height='0.00' style='stroke-width: 0.53; stroke: #B3CDE0; stroke-linecap: butt; stroke-linejoin: miter; fill: #D1E1EC;' />
-<line x1='251.19' y1='540.26' x2='471.80' y2='540.26' style='stroke-width: 1.07; stroke-linecap: butt;' />
-<line x1='251.19' y1='540.26' x2='251.19' y2='24.85' style='stroke-width: 1.07; stroke-linecap: butt;' />
+<line x1='251.19' y1='540.26' x2='471.80' y2='540.26' style='stroke-width: 0.85; stroke-linecap: butt;' />
+<line x1='251.19' y1='540.26' x2='251.19' y2='24.85' style='stroke-width: 0.85; stroke-linecap: butt;' />
 </g>
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8MC4wMHw1NzYuMDA=)'>
 </g>
@@ -137,8 +137,8 @@
 <rect x='683.94' y='540.26' width='6.69' height='0.00' style='stroke-width: 0.53; stroke: #B3CDE0; stroke-linecap: butt; stroke-linejoin: miter; fill: #D1E1EC;' />
 <rect x='690.62' y='540.26' width='6.69' height='0.00' style='stroke-width: 0.53; stroke: #B3CDE0; stroke-linecap: butt; stroke-linejoin: miter; fill: #D1E1EC;' />
 <rect x='697.31' y='488.72' width='6.69' height='51.54' style='stroke-width: 0.53; stroke: #B3CDE0; stroke-linecap: butt; stroke-linejoin: miter; fill: #D1E1EC;' />
-<line x1='493.40' y1='540.26' x2='714.02' y2='540.26' style='stroke-width: 1.07; stroke-linecap: butt;' />
-<line x1='493.40' y1='540.26' x2='493.40' y2='24.85' style='stroke-width: 1.07; stroke-linecap: butt;' />
+<line x1='493.40' y1='540.26' x2='714.02' y2='540.26' style='stroke-width: 0.85; stroke-linecap: butt;' />
+<line x1='493.40' y1='540.26' x2='493.40' y2='24.85' style='stroke-width: 0.85; stroke-linecap: butt;' />
 </g>
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8MC4wMHw1NzYuMDA=)'>
 </g>

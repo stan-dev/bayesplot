@@ -39,8 +39,8 @@
 <polyline points='24.70,532.77 38.34,532.77 38.34,253.53 92.87,253.53 92.87,98.39 147.40,98.39 147.40,67.36 324.63,67.36 324.63,67.36 ' style='stroke-width: 4.27; stroke: #B3CDE0; stroke-opacity: 0.20; stroke-linecap: butt;' />
 <polyline points='24.70,532.77 38.34,532.77 38.34,191.47 92.87,191.47 92.87,98.39 147.40,98.39 147.40,67.36 324.63,67.36 324.63,67.36 ' style='stroke-width: 4.27; stroke: #B3CDE0; stroke-opacity: 0.20; stroke-linecap: butt;' />
 <polyline points='24.70,532.77 38.34,532.77 38.34,439.69 92.87,439.69 92.87,253.53 147.40,253.53 147.40,129.42 201.94,129.42 201.94,98.39 311.00,98.39 311.00,67.36 324.63,67.36 324.63,67.36 ' style='stroke-width: 2.13; stroke: #011F4B; stroke-linecap: butt;' />
-<line x1='24.70' y1='556.04' x2='324.63' y2='556.04' style='stroke-width: 1.07; stroke-linecap: butt;' />
-<line x1='24.70' y1='556.04' x2='24.70' y2='44.09' style='stroke-width: 1.07; stroke-linecap: butt;' />
+<line x1='24.70' y1='556.04' x2='324.63' y2='556.04' style='stroke-width: 0.85; stroke-linecap: butt;' />
+<line x1='24.70' y1='556.04' x2='24.70' y2='44.09' style='stroke-width: 0.85; stroke-linecap: butt;' />
 </g>
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8MC4wMHw1NzYuMDA=)'>
 </g>
@@ -64,8 +64,8 @@
 <polyline points='346.23,532.77 359.87,532.77 359.87,501.75 414.40,501.75 414.40,222.50 468.93,222.50 468.93,129.42 523.47,129.42 523.47,67.36 646.17,67.36 646.17,67.36 ' style='stroke-width: 4.27; stroke: #B3CDE0; stroke-opacity: 0.20; stroke-linecap: butt;' />
 <polyline points='346.23,532.77 359.87,532.77 359.87,315.58 414.40,315.58 414.40,129.42 468.93,129.42 468.93,98.39 523.47,98.39 523.47,67.36 646.17,67.36 646.17,67.36 ' style='stroke-width: 4.27; stroke: #B3CDE0; stroke-opacity: 0.20; stroke-linecap: butt;' />
 <polyline points='346.23,532.77 359.87,532.77 359.87,284.55 414.40,284.55 414.40,98.39 468.93,98.39 468.93,67.36 646.17,67.36 646.17,67.36 ' style='stroke-width: 2.13; stroke: #011F4B; stroke-linecap: butt;' />
-<line x1='346.23' y1='556.04' x2='646.17' y2='556.04' style='stroke-width: 1.07; stroke-linecap: butt;' />
-<line x1='346.23' y1='556.04' x2='346.23' y2='44.09' style='stroke-width: 1.07; stroke-linecap: butt;' />
+<line x1='346.23' y1='556.04' x2='646.17' y2='556.04' style='stroke-width: 0.85; stroke-linecap: butt;' />
+<line x1='346.23' y1='556.04' x2='346.23' y2='44.09' style='stroke-width: 0.85; stroke-linecap: butt;' />
 </g>
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8MC4wMHw1NzYuMDA=)'>
 </g>

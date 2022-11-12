@@ -22,15 +22,15 @@ test_that("ppc_ecdf_overlay returns a ggplot object", {
 })
 
 test_that("ppc_dens,pp_hist,ppc_freqpoly,ppc_boxplot return ggplot objects", {
-  expect_gg(ppc_hist(y, yrep[1,, drop = FALSE]))
-  expect_gg(ppc_hist(y, yrep[1:8, ]))
-  expect_gg(ppc_hist(y2, yrep2))
+  expect_gg(ppc_hist(y, yrep[1,, drop = FALSE], binwidth = 0.1))
+  expect_gg(ppc_hist(y, yrep[1:8, ], binwidth = 0.1))
+  expect_gg(ppc_hist(y2, yrep2, binwidth = 0.1))
 
   expect_gg(ppc_dens(y, yrep[1:8, ]))
   expect_gg(ppc_dens(y2, yrep2))
 
   expect_gg(ppc_freqpoly(y, yrep[1:8, ], binwidth = 2, size = 2, alpha = 0.1))
-  expect_gg(ppc_freqpoly(y2, yrep2))
+  expect_gg(ppc_freqpoly(y2, yrep2, binwidth = 0.1))
 
   expect_gg(ppc_boxplot(y, yrep[1,, drop = FALSE]))
   expect_gg(ppc_boxplot(y, yrep[1:8, ]))
@@ -43,15 +43,15 @@ test_that("ppc_dens,pp_hist,ppc_freqpoly,ppc_boxplot return ggplot objects", {
   }
 
   # ppd versions
-  expect_gg(ppd_hist(yrep[1,, drop = FALSE]))
-  expect_gg(ppd_hist(yrep[1:8, ]))
-  expect_gg(ppd_hist(yrep2))
+  expect_gg(ppd_hist(yrep[1,, drop = FALSE], binwidth = 0.1))
+  expect_gg(ppd_hist(yrep[1:8, ], binwidth = 0.1))
+  expect_gg(ppd_hist(yrep2, binwidth = 0.1))
 
   expect_gg(ppc_dens(y, yrep[1:8, ]))
   expect_gg(ppc_dens(y2, yrep2))
 
   expect_gg(ppd_freqpoly(yrep[1:8, ], binwidth = 2, size = 2, alpha = 0.1))
-  expect_gg(ppd_freqpoly(yrep2))
+  expect_gg(ppd_freqpoly(yrep2, binwidth = 0.1))
 
   expect_gg(ppd_boxplot(yrep[1,, drop = FALSE]))
   expect_gg(ppd_boxplot(yrep[1:8, ]))
