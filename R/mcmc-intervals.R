@@ -327,7 +327,7 @@ mcmc_areas <- function(x,
   x_lim[2] <- x_lim[2] + 0.05 * x_range
 
   layer_vertical_line <- if (0 > x_lim[1] && 0 < x_lim[2]) {
-    vline_0(color = "gray90", size = 0.5)
+    vline_0(color = "gray90", linewidth = 0.5)
   } else {
     geom_ignore()
   }
@@ -338,14 +338,6 @@ mcmc_areas <- function(x,
     rlang::syms(c("parameter", "rhat_rating"))
   } else {
     rlang::syms(c("parameter"))
-  }
-
-  if (area_method == "equal height") {
-    dens_col = ~ scaled_density
-  } else if (area_method == "scaled height") {
-    dens_col = ~ scaled_density * sqrt(scaled_density)
-  } else {
-    dens_col = ~ plotting_density
   }
 
   datas$bottom <- datas$outer %>%
@@ -362,18 +354,31 @@ mcmc_areas <- function(x,
     data = datas$bottom
   )
   args_inner <- list(
-    mapping = aes_(height = dens_col, scale = ~ .9),
+    mapping = aes(scale = 0.9),
     data = datas$inner
   )
   args_point <- list(
-    mapping = aes_(height = dens_col, scale = ~ .9),
+    mapping = aes(scale = 0.9),
     data = datas$point,
     color = NA
   )
   args_outer <- list(
-    mapping = aes_(height = dens_col, scale = ~ .9),
+    mapping = aes(scale = 0.9),
     fill = NA
   )
+  if (area_method == "equal height") {
+    args_inner$mapping <- modify_aes(args_inner$mapping, height = .data$scaled_density)
+    args_point$mapping <- modify_aes(args_point$mapping, height = .data$scaled_density)
+    args_outer$mapping <- modify_aes(args_outer$mapping, height = .data$scaled_density)
+  } else if (area_method == "scaled height") {
+    args_inner$mapping <- modify_aes(args_inner$mapping, height = .data$scaled_density * sqrt(.data$scaled_density))
+    args_point$mapping <- modify_aes(args_point$mapping, height = .data$scaled_density * sqrt(.data$scaled_density))
+    args_outer$mapping <- modify_aes(args_outer$mapping, height = .data$scaled_density * sqrt(.data$scaled_density))
+  } else {
+    args_inner$mapping <- modify_aes(args_inner$mapping, height = .data$plotting_density)
+    args_point$mapping <- modify_aes(args_point$mapping, height = .data$plotting_density)
+    args_outer$mapping <- modify_aes(args_outer$mapping, height = .data$plotting_density)
+  }
 
   if (!is.null(border_size)) {
     args_bottom$size <- border_size
@@ -451,7 +456,7 @@ mcmc_areas <- function(x,
     legend_move(ifelse(color_by_rhat, "top", "none")) +
     yaxis_text(face = "bold") +
     yaxis_title(FALSE) +
-    yaxis_ticks(size = 1) +
+    yaxis_ticks(linewidth = 1) +
     xaxis_title(FALSE)
 }
 
@@ -685,8 +690,8 @@ mcmc_areas_data <- function(x,
   # Compute the density intervals
   data_inner <- data_long %>%
     compute_column_density(
-      group_vars = .data$parameter,
-      value_var = .data$value,
+      group_vars = "parameter",
+      value_var = "value",
       interval_width = probs[1],
       bw = bw,
       adjust = adjust,
@@ -696,8 +701,8 @@ mcmc_areas_data <- function(x,
 
   data_outer <- data_long %>%
     compute_column_density(
-      group_vars = .data$parameter,
-      value_var = .data$value,
+      group_vars = "parameter",
+      value_var = "value",
       interval_width = probs[2],
       bw = bw,
       adjust = adjust,
