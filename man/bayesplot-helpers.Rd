@@ -210,13 +210,13 @@ colnames(x)
 
 # vertical line at zero (with some optional styling)
 p + vline_0()
-p + vline_0(size = 0.25, color = "darkgray", linetype = 2)
+p + vline_0(linewidth = 0.25, color = "darkgray", linetype = 2)
 
 # vertical line(s) at specified values
 v <- c(-0.5, 0, 0.5)
-p + vline_at(v, linetype = 3, size = 0.25)
+p + vline_at(v, linetype = 3, linewidth = 0.25)
 
-my_lines <- vline_at(v, alpha = 0.25, size = 0.75 * c(1, 2, 1),
+my_lines <- vline_at(v, alpha = 0.25, linewidth = 0.75 * c(1, 2, 1),
                      color = c("maroon", "skyblue", "violet"))
 p + my_lines
 
@@ -227,10 +227,10 @@ color_scheme_set("brightblue")
 p <- mcmc_intervals(x, regex_pars = "beta")
 p + vline_at(x[, 3:4], colMeans)
 p + vline_at(x[, 3:4], "colMeans", color = "darkgray",
-             lty = 2, size = 0.25)
+             lty = 2, linewidth = 0.25)
 p + vline_at(x[, 3:4], function(a) apply(a, 2, mean),
              color = "orange",
-             size = 2, alpha = 0.1)
+             linewidth = 2, alpha = 0.1)
 }
 
 # using the lbub function to get interval lower and upper bounds (lb, ub)
@@ -242,9 +242,9 @@ p2 <- mcmc_hist(x, pars = "beta[1]", binwidth = 1/20,
 
 b1 <- x[, "beta[1]"]
 p2 + vline_at(b1, fun = lbub(0.8), color = "gray20",
-              size = 2 * c(1,.5,1), alpha = 0.75)
+              linewidth = 2 * c(1,.5,1), alpha = 0.75)
 p2 + vline_at(b1, lbub(0.8, med = FALSE), color = "gray20",
-              size = 2, alpha = 0.75)
+              linewidth = 2, alpha = 0.75)
 
 
 ##########################
@@ -281,7 +281,7 @@ p4 +
  myfacets +
  yaxis_text(FALSE) +
  yaxis_ticks(FALSE) +
- xaxis_ticks(size = 1, color = "skyblue")
+ xaxis_ticks(linewidth = 1, color = "skyblue")
 }
 
 ##############################
@@ -305,7 +305,7 @@ ppc_dens_overlay(y, yrep[1:30, ]) +
  legend_text(size = 14) +
  legend_move(c(0.75, 0.5)) +
  plot_bg(fill = "gray90") +
- panel_bg(color = "black", fill = "gray99", size = 3)
+ panel_bg(color = "black", fill = "gray99", linewidth = 3)
 }
 
 
@@ -321,12 +321,14 @@ purple_gaussian <-
     fun = dnorm,
     args = list(mean(x[,, "beta[1]"]), sd(x[,, "beta[1]"])),
     color = "purple",
-    size = 2
+    linewidth = 2
   )
 
 color_scheme_set("gray")
-mcmc_hist(x, pars = "beta[1]") + purple_gaussian
-\donttest{mcmc_dens(x, pars = "beta[1]") + purple_gaussian}
+mcmc_hist(x, pars = "beta[1]", freq = FALSE) + purple_gaussian
+\donttest{
+mcmc_dens(x, pars = "beta[1]") + purple_gaussian
+}
 
 }
 \seealso{

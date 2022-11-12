@@ -322,8 +322,8 @@ mcmc_dens_chains_data <- function(
     ) %>%
     melt_mcmc() %>%
     compute_column_density(
-      group_vars = c(.data$Parameter, .data$Chain),
-      value_var = .data$Value,
+      group_vars = c("Parameter", "Chain"),
+      value_var = "Value",
       interval_width = 1,
       bw = bw, adjust = adjust, kernel = kernel, n_dens = n_dens
     ) %>%

@@ -313,7 +313,7 @@ ppd_boxplot <-
     group_indices <- tibble::tibble(group, y_id = seq_along(group))
     data <- data %>%
       left_join(group_indices, by = "y_id") %>%
-      select(.data$group, tidyselect::everything())
+      select("group", tidyselect::everything())
   }
   data
 }

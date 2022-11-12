@@ -657,7 +657,7 @@ mcmc_trace_data <- function(x,
 
   layer_warmup <- if (n_warmup > 0) {
     layer_warmup <- annotate(
-      "rect", xmin = -Inf, xmax = n_warmup, ymin = -Inf, ymax = Inf, size = 1,
+      "rect", xmin = -Inf, xmax = n_warmup, ymin = -Inf, ymax = Inf, linewidth = 1,
       color = "gray88", fill = "gray88", alpha = 0.5
     )
   } else {
