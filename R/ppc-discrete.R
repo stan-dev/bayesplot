@@ -155,7 +155,7 @@ ppc_bars <-
     ggplot(data) +
       geom_col(
         data = dplyr::filter(data, !is.na(.data$y_obs)),
-        mapping = aes_(x = ~ x, y = ~ y_obs, fill = "y"),
+        mapping = aes(x = .data$x, y = .data$y_obs, fill = "y"),
         color = get_color("lh"),
         width = width
       ) +
@@ -278,24 +278,25 @@ ppc_rootogram <- function(y,
   }
   ty[is.na(ty)] <- 0
   ypos <- ty / 2
-  if (style == "hanging")
+  if (style == "hanging") {
     ypos <- tyexp - ypos
+  }
 
   data <- data.frame(xpos, ypos, ty, tyexp, tyquantile)
   graph <- ggplot(data) +
-    aes_(
-      ymin = ~ tylower,
-      ymax = ~ tyupper,
-      height = ~ ty
+    aes(
+      ymin = .data$tylower,
+      ymax = .data$tyupper,
+      height = .data$ty
     ) +
     geom_tile(
-      aes_(
-        x = ~ xpos,
-        y = ~ ypos,
+      aes(
+        x = .data$xpos,
+        y = .data$ypos,
         fill = "Observed"
       ),
       color = get_color("lh"),
-      size = 0.25,
+      linewidth = 0.25,
       width = 1
     ) +
     bayesplot_theme_get()
@@ -306,13 +307,13 @@ ppc_rootogram <- function(y,
 
   graph <- graph +
     geom_smooth(
-      aes_(
-        x = ~ xpos,
-        y = ~ tyexp,
+      aes(
+        x = .data$xpos,
+        y = .data$tyexp,
         color = "Expected"
       ),
       fill = get_color("d"),
-      size = size,
+      linewidth = size,
       stat = "identity"
     ) +
     scale_fill_manual("", values = get_color("l")) +
@@ -408,14 +409,14 @@ ppc_bars_data <-
   y_summary <- data %>%
     dplyr::filter(.data$variable == "y") %>%
     ungroup() %>%
-    rename(y_obs = .data[[summary_var]]) %>%
+    rename(y_obs = all_of(summary_var)) %>%
     arrange(.data$group, .data$value)
 
   cols <- syms(c(if (!was_null_group) "group", "x", "y_obs", "l", "m", "h"))
 
   # full join to keep empty cells
   full_join(yrep_summary, y_summary, by = c("group", "value")) %>%
-    rename(x = .data$value) %>%
+    rename(x = "value") %>%
     arrange(.data$x) %>%
     select(!!!cols)
 }

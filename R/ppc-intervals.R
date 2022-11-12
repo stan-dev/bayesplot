@@ -168,8 +168,8 @@ ppc_intervals <-
         linewidth = linewidth
       ) +
       geom_point(
-        mapping = aes_(
-          y = ~ y_obs,
+        mapping = aes(
+          y = .data$y_obs,
           color = "y",
           fill = "y"
         ),
@@ -245,34 +245,34 @@ ppc_ribbon <-
       geom_ribbon(
         mapping = intervals_outer_aes(fill = "yrep", color = "yrep"),
         color = NA,
-        size = 0.2 * size,
+        linewidth = 0.2 * size,
         alpha = alpha
       ) +
       geom_ribbon(
         mapping = intervals_outer_aes(),
         fill = NA,
         color = get_color("m"),
-        size = 0.2 * size,
+        linewidth = 0.2 * size,
         alpha = 1
       ) +
-      geom_ribbon(size = 0.5 * size) +
+      geom_ribbon(linewidth = 0.5 * size) +
       geom_line(
-        mapping = aes_(y = ~ m),
+        mapping = aes(y = .data$m),
         color = get_color("m"),
-        size = size
+        linewidth = size
       ) +
-      geom_blank(aes_(fill = "y"))
+      geom_blank(aes(fill = "y"))
 
     if (y_draw == "line" || y_draw == "both") {
       g <- g + geom_line(
-        aes_(y = ~ y_obs, color = "y"),
-        size = 0.5
+        aes(y = .data$y_obs, color = "y"),
+        linewidth = 0.5
       )
     }
 
     if (y_draw == "points" || y_draw == "both") {
       g <- g + geom_point(
-        mapping = aes_(y = ~ y_obs, color = "y", fill = "y"),
+        mapping = aes(y = .data$y_obs, color = "y", fill = "y"),
         shape = 21,
         size = 1.5
       )

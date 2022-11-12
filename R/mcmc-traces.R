@@ -307,7 +307,7 @@ mcmc_rank_overlay <- function(x,
     group_by(.data$cut) %>%
     mutate(bin_start = min(.data$value_rank)) %>%
     ungroup() %>%
-    select(-.data$cut)
+    select(-c("cut"))
 
   d_bin_counts <- data %>%
     left_join(histobins, by = "value_rank") %>%
@@ -343,7 +343,7 @@ mcmc_rank_overlay <- function(x,
   }
 
   ggplot(d_bin_counts) +
-    aes_(x = ~ bin_start, y =  ~ n, color = ~ chain) +
+    aes(x = .data$bin_start, y =  .data$n, color = .data$chain) +
     geom_step() +
     layer_ref_line +
     facet_call +
@@ -416,13 +416,13 @@ mcmc_rank_hist <- function(x,
   facet_call <- do.call(facet_f, facet_args)
 
   ggplot(data) +
-    aes_(x = ~ value_rank) +
+    aes(x = .data$value_rank) +
     geom_histogram(
       color = get_color("mid_highlight"),
       fill = get_color("mid"),
       binwidth = right_edge / n_bins,
       boundary = right_edge,
-      size = .25
+      linewidth = 0.25
     ) +
     layer_ref_line +
     geom_blank(data = data_boundaries) +
@@ -515,11 +515,11 @@ mcmc_rank_ecdf <-
     )) %>%
     dplyr::bind_rows()
 
-  mapping <- aes_(
-    x = ~x,
-    y = ~ecdf_value,
-    color = ~chain,
-    group = ~chain
+  mapping <- aes(
+    x = .data$x,
+    y = .data$ecdf_value,
+    color = .data$chain,
+    group = .data$chain
   )
 
   scale_color <- scale_color_manual("Chain", values = chain_colors(n_chain))
@@ -534,8 +534,8 @@ mcmc_rank_ecdf <-
   }
 
   ggplot() +
-    geom_step(data = data_lim, aes_(x = ~x, y = ~upper), show.legend = FALSE) +
-    geom_step(data = data_lim, aes_(x = ~x, y = ~lower), show.legend = FALSE) +
+    geom_step(data = data_lim, aes(x = .data$x, y = .data$upper), show.legend = FALSE) +
+    geom_step(data = data_lim, aes(x = .data$x, y = .data$lower), show.legend = FALSE) +
     geom_step(mapping, data) +
     bayesplot_theme_get() +
     scale_color +
@@ -641,17 +641,17 @@ mcmc_trace_data <- function(x,
   n_chain <- unique(data$n_chains)
   n_param <- unique(data$n_parameters)
 
-  mapping <- aes_(
-    x = ~ iteration,
-    y = ~ value,
-    color = ~ chain
+  mapping <- aes(
+    x = .data$iteration,
+    y = .data$value,
+    color = .data$chain
   )
 
   if (!is.null(highlight)) {
-    mapping <- modify_aes_(
+    mapping <- modify_aes(
       mapping,
-      alpha = ~ highlight,
-      color = ~ highlight
+      alpha = .data$highlight,
+      color = .data$highlight
     )
   }
 
@@ -794,13 +794,13 @@ divergence_rug <- function(np, np_style, n_iter, n_chain) {
   }
 
   geom_rug(
-    aes_(x = ~ Divergent, linetype = "Divergence"),
+    aes(x = .data$Divergent, linetype = "Divergence"),
     data = div_info,
     na.rm = TRUE,
     inherit.aes = FALSE,
     sides = "b",
     color = np_style$color[["div"]],
-    size = np_style$size[["div"]],
+    linewidth = np_style$size[["div"]],
     alpha = np_style$alpha[["div"]]
   )
 }

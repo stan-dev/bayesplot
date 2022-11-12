@@ -403,7 +403,7 @@ mcmc_pairs <- function(x,
                              labels = c("NoDiv", "Div"))
         plots[[j]] <- plots[[j]] +
           geom_point(
-            aes_(color = divs_j_fac, size = divs_j_fac),
+            aes(color = divs_j_fac, size = divs_j_fac),
             shape = np_style$shape[["div"]],
             alpha = np_style$alpha[["div"]],
             na.rm = TRUE
@@ -414,7 +414,7 @@ mcmc_pairs <- function(x,
                                    labels = c("NoHit", "Hit"))
         plots[[j]] <- plots[[j]] +
           geom_point(
-            aes_(color = max_td_hit_j_fac, size = max_td_hit_j_fac),
+            aes(color = max_td_hit_j_fac, size = max_td_hit_j_fac),
             shape = np_style$shape[["td"]],
             alpha = np_style$alpha[["td"]],
             na.rm = TRUE
@@ -675,7 +675,7 @@ pairs_condition <- function(chains = NULL, draws = NULL, nuts = NULL) {
     xydata <- dplyr::filter(xydata, UQ(divg) == 0)
   }
 
-  graph <- ggplot(data = xydata, aes_(x = ~ x, y = ~ y)) +
+  graph <- ggplot(data = xydata, aes(x = .data$x, y = .data$y)) +
     bayesplot_theme_get()
 
   if (!hex) { # scatterplot
@@ -701,7 +701,7 @@ pairs_condition <- function(chains = NULL, draws = NULL, nuts = NULL) {
   } else { # hex binning
     graph <- graph +
       geom_hex(
-        aes_(fill = ~ scales::rescale(after_stat(density))),
+        aes(fill = scales::rescale(after_stat(density))),
         binwidth = binwidth
       ) +
       scale_fill_gradientn(

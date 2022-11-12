@@ -275,13 +275,15 @@ mcmc_dens_chains <- function(
   }
 
   ggplot(data) +
-    aes_(
-      x = ~ x, y = ~ parameter, color = ~ chain,
-      group = ~ interaction(chain, parameter)
+    aes(
+      x = .data$x,
+      y = .data$parameter,
+      color = .data$chain,
+      group = interaction(.data$chain, .data$parameter)
     ) +
     geom_line(data = line_training) +
     ggridges::geom_density_ridges(
-      aes_(height = ~ density),
+      aes(height = .data$density),
       stat = "identity",
       fill = NA,
       show.legend = FALSE
@@ -465,11 +467,6 @@ mcmc_violin <- function(
     }
   }
 
-  aes_mapping <- if (violin) {
-    list(x = ~ Chain, y = ~ Value)
-  } else {
-    list(x = ~ Value)
-  }
   geom_args <- list(size = 0.5, na.rm = TRUE, alpha = alpha)
   if (violin) {
     geom_args[["draw_quantiles"]] <- probs
@@ -480,18 +477,27 @@ mcmc_violin <- function(
     geom_args[["kernel"]] <- kernel
     geom_args[["n"]] <- n_dens
   }
-
   if (by_chain) {
-    aes_mapping[["color"]] <- ~ Chain
-    aes_mapping[["group"]] <- ~ Chain
+    # aes_mapping[["color"]] <- ~ Chain
+    # aes_mapping[["group"]] <- ~ Chain
+    if (violin) {
+      aes_mapping <- aes(x = .data$Chain, y = .data$Value, color = .data$Chain, group = .data$Chain)
+    } else {
+      aes_mapping <- aes(x = .data$Value, color = .data$Chain, group = .data$Chain)
+    }
     geom_args[["geom"]] <- "line"
     geom_args[["position"]] <- "identity"
   } else {
+    if (violin) {
+      aes_mapping <- aes(x = .data$Chain, y = .data$Value)
+    } else {
+      aes_mapping <- aes(x = .data$Value)
+    }
     geom_args[["fill"]] <- get_color("mid")
     geom_args[["color"]] <- get_color("mid_highlight")
   }
 
-  graph <- ggplot(data, mapping = do.call("aes_", aes_mapping)) +
+  graph <- ggplot(data, mapping = aes_mapping) +
     do.call(geom_fun, geom_args)
 
   if (!violin) {

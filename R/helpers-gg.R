@@ -47,6 +47,9 @@ geom_area_ridges2 <- function(...) {
 modify_aes_ <- function(mapping, ...) {
   utils::modifyList(mapping, aes_(...))
 }
+modify_aes <- function(mapping, ...) {
+  utils::modifyList(mapping, aes(...))
+}
 
 
 
@@ -91,16 +94,18 @@ reduce_legend_spacing <- function(cm) {
   theme(legend.spacing.y = unit(-cm, "cm"))
 }
 space_legend_keys <- function(relative_size = 2, color = "white") {
-  theme(legend.key = element_rect(size = rel(relative_size), color = color))
+  theme(legend.key = element_rect(linewidth = rel(relative_size), color = color))
 }
 
 
 # set aesthetic mapping for histograms depending on freq argument
 set_hist_aes <- function(freq = TRUE, ...) {
   if (freq) {
-    aes_(x = ~ value, ...)
+    # aes_(x = ~ value, ...)
+    aes(x = .data$value, ...)
   } else {
-    aes_(x = ~ value, y = ~ after_stat(density), ...)
+    # aes_(x = ~ value, y = ~ after_stat(density), ...)
+    aes(x = .data$value, y = after_stat(density), ...)
   }
 }
 

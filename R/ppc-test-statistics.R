@@ -122,7 +122,7 @@ ppc_stat <-
       mapping = set_hist_aes(freq)
     ) +
       geom_histogram(
-        aes_(fill = "yrep"),
+        aes(fill = "yrep"),
         color = get_color("lh"),
         linewidth = 0.25,
         na.rm = TRUE,
@@ -131,7 +131,7 @@ ppc_stat <-
       ) +
       geom_vline(
         data = dplyr::filter(data, .data$variable == "y"),
-        mapping = aes_(xintercept = ~ value, color = "y"),
+        mapping = aes(xintercept = .data$value, color = "y"),
         linewidth = 1.5
       ) +
       scale_color_ppc(values = get_color("dh"), labels = Ty_label()) +
@@ -203,14 +203,14 @@ ppc_stat_freqpoly <-
       mapping = set_hist_aes(freq)
     ) +
       geom_freqpoly(
-        aes_(color = "yrep"),
+        aes(color = "yrep"),
         linewidth = 0.5,
         na.rm = TRUE,
         binwidth = binwidth
       ) +
       geom_vline(
         data = dplyr::filter(data, .data$variable == "y"),
-        mapping = aes_(xintercept = ~ value, color = "y"),
+        mapping = aes(xintercept = .data$value, color = "y"),
         show.legend = FALSE,
         linewidth = 1
       ) +
@@ -287,9 +287,9 @@ ppc_stat_2d <- function(y,
 
   ggplot(data) +
     geom_point(
-      aes_(
-        x = ~ value,
-        y = ~ value2,
+      aes(
+        x = .data$value,
+        y = .data$value2,
         fill = "yrep",
         color = "yrep"
       ),
@@ -299,11 +299,11 @@ ppc_stat_2d <- function(y,
     ) +
     geom_segment(
       data = y_segment_data,
-      aes_(
-        x = ~ x,
-        y = ~ y,
-        xend = ~ xend,
-        yend = ~ yend,
+      aes(
+        x = .data$x,
+        y = .data$y,
+        xend = .data$xend,
+        yend = .data$yend,
         color = "y"
       ),
       linetype = 2,
@@ -312,9 +312,9 @@ ppc_stat_2d <- function(y,
     ) +
     geom_point(
       data = y_point_data,
-      mapping = aes_(
-        x = ~ x,
-        y = ~ y,
+      mapping = aes(
+        x = .data$x,
+        y = .data$y,
         fill = "y",
         color = "y"
       ),

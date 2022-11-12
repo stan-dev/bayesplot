@@ -301,14 +301,16 @@ lbub <- function(p, med = TRUE) {
 
 # internal
 calc_v <- function(v, fun, fun_args, ...) {
-  if (missing(v))
+  if (missing(v)) {
     abort("'v' can't be missing.")
-  if (missing(fun))
+  }
+  if (missing(fun)) {
     return(v)
+  }
   f <- match.fun(fun)
-  if (missing(fun_args))
+  if (missing(fun_args)) {
     return(f(v))
-
+  }
   do.call(f, c(list(v), fun_args))
 }
 
@@ -347,8 +349,9 @@ legend_text <- function(...) {
 #' @rdname bayesplot-helpers
 #' @export
 xaxis_title <- function(on = TRUE, ...) {
-  if (!on)
+  if (!on) {
     return(xlab(NULL))
+  }
   theme(axis.title.x = element_text(...))
 }
 #' @rdname bayesplot-helpers

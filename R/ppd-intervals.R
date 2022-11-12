@@ -165,9 +165,9 @@ ppd_ribbon <-
       ) +
       geom_ribbon(size = 0.5 * size) +
       geom_line(
-        mapping = aes_(y = ~ m),
+        mapping = aes(y = .data$m),
         color = get_color("d"),
-        size = size
+        linewidth = size
       ) +
       scale_color_ppd() +
       scale_fill_ppd() +
@@ -295,34 +295,34 @@ ppd_ribbon_data <- ppd_intervals_data
 
 #' Aesthetic mapping for interval and ribbon plots
 #'
-#' @param needs_y Whether to include `y = ~m` in the call to `aes_()`. Needed
-#'   for `geom_pointrange()`.
-#' @param ... Aguments to pass to `aes_()` other than `x`,`y`,`ymin`,`ymax`.
-#' @return Object returned by `aes_()`. Always sets at least `x`, `ymin`, `ymax`.
+#' @param needs_y Whether to include `y` in call to `aes()`. Needed for
+#'   `geom_pointrange()`.
+#' @param ... Aguments to pass to `aes()` other than `x`,`y`,`ymin`,`ymax`.
+#' @return Object returned by `aes()`. Always sets at least `x`, `ymin`, `ymax`.
 #' @noRd
 intervals_inner_aes <- function(needs_y = FALSE, ...) {
-  mapping <- aes_(
-    x = ~ x,
-    ymin = ~ l,
-    ymax = ~ h,
+  mapping <- aes(
+    x = .data$x,
+    ymin = .data$l,
+    ymax = .data$h,
     ...
   )
   if (!needs_y) {
     return(mapping)
   }
-  modify_aes_(mapping, y = ~ m)
+  modify_aes(mapping, y = .data$m)
 }
 intervals_outer_aes <- function(needs_y = FALSE, ...) {
-  mapping <- aes_(
-    x = ~ x,
-    ymin = ~ ll,
-    ymax = ~ hh,
+  mapping <- aes(
+    x = .data$x,
+    ymin = .data$ll,
+    ymax = .data$hh,
     ...
   )
   if (!needs_y) {
     return(mapping)
   }
-  modify_aes_(mapping, y = ~ m)
+  modify_aes(mapping, y = .data$m)
 }
 
 #' Create the facet layer for grouped interval and ribbon plots

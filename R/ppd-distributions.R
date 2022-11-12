@@ -49,10 +49,10 @@ ppd_dens_overlay <-
     check_ignored_arguments(...)
 
     data <- ppd_data(ypred)
-    ggplot(data, mapping = aes_(x = ~ value)) +
+    ggplot(data, mapping = aes(x = .data$value)) +
       overlay_ppd_densities(
-        mapping = aes_(group = ~ rep_id, color = "ypred"),
-        size = size,
+        mapping = aes(group = .data$rep_id, color = "ypred"),
+        linewidth = size,
         alpha = alpha,
         trim = trim,
         bw = bw,
@@ -87,24 +87,24 @@ ppd_ecdf_overlay <-
     check_ignored_arguments(...)
 
     data <- ppd_data(ypred)
-    ggplot(data, mapping = aes_(x = ~ value)) +
+    ggplot(data, mapping = aes(x = .data$value)) +
       hline_at(
         c(0, 0.5, 1),
-        size = c(0.2, 0.1, 0.2),
+        linewidth = c(0.2, 0.1, 0.2),
         linetype = 2,
         color = get_color("dh")
       ) +
       stat_ecdf(
-        mapping = aes_(group = ~ rep_id, color = "ypred"),
+        mapping = aes(group = .data$rep_id, color = "ypred"),
         geom = if (discrete) "step" else "line",
-        size = size,
+        linewidth = size,
         alpha = alpha,
         pad = pad
       ) +
       scale_color_ppd(
         values = get_color("m"),
         guide = guide_legend( # in case user turns legend back on
-          override.aes = list(size = 2 * size, alpha = 1))
+          override.aes = list(linewidth = 2 * size, alpha = 1))
       ) +
       scale_y_continuous(breaks = c(0, 0.5, 1)) +
       bayesplot_theme_get() +
@@ -125,13 +125,13 @@ ppd_dens <-
     check_ignored_arguments(...)
 
     data <- ppd_data(ypred)
-    ggplot(data, mapping = aes_(
-      x = ~ value,
+    ggplot(data, mapping = aes(
+      x = .data$value,
       color = "ypred",
       fill = "ypred"
     )) +
       geom_density(
-        size = size,
+        linewidth = size,
         alpha = alpha,
         trim = trim
       ) +
@@ -266,15 +266,15 @@ ppd_boxplot <-
     check_ignored_arguments(...)
 
     data <- ppd_data(ypred)
-    ggplot(data, mapping = aes_(
-      x = ~ rep_label,
-      y = ~ value,
+    ggplot(data, mapping = aes(
+      x = .data$rep_label,
+      y = .data$value,
       color = "ypred",
       fill = "ypred"
     )) +
       geom_boxplot(
         notch = notch,
-        size = size,
+        linewidth = size,
         alpha = alpha,
         outlier.color = get_color("lh"),
         outlier.alpha = 2/3,

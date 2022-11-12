@@ -150,15 +150,15 @@ mcmc_recover_intervals <-
 
     plot_caption <- paste0("Showing ", round(prob * 100, 1), "% and ",
                            round(prob_outer * 100, 1), "% intervals")
-    graph <- ggplot(plot_data, aes_(x = ~ Parameter, xend = ~ Parameter)) +
+    graph <- ggplot(plot_data, aes(x = .data$Parameter, xend = .data$Parameter)) +
       geom_segment(
-        aes_(y = ~ ll, yend = ~ uu, color = "Estimated"),
+        aes(y = .data$ll, yend = .data$uu, color = "Estimated"),
         lineend = "round",
         show.legend = FALSE
       ) +
       geom_segment(
-        aes_(y = ~ l, yend = ~ u, color = "Estimated"),
-        size = 2,
+        aes(y = .data$l, yend = .data$u, color = "Estimated"),
+        linewidth = 2,
         lineend = "round",
         show.legend = FALSE
       ) +
@@ -167,16 +167,16 @@ mcmc_recover_intervals <-
     if (!is.null(point_est)) {
       graph <- graph +
       geom_point(
-        aes_(y = ~ Point, shape = "Estimated",
-             color = "Estimated", fill = "Estimated"),
+        aes(y = .data$Point, shape = "Estimated",
+            color = "Estimated", fill = "Estimated"),
         size = size
       )
     }
 
     graph <- graph +
       geom_point(
-        aes_(y = ~ True, shape = "True",
-             color = "True", fill = "True"),
+        aes(y = .data$True, shape = "True",
+            color = "True", fill = "True"),
         size = size,
         alpha = alpha
       ) +
@@ -266,7 +266,7 @@ mcmc_recover_scatter <-
     )
 
   graph <-
-    ggplot(plot_data, aes_(x = ~ True, y = ~ Point)) +
+    ggplot(plot_data, aes(x = .data$True, y = .data$Point)) +
     geom_abline(
       slope = 1,
       intercept = 0,
@@ -322,17 +322,17 @@ mcmc_recover_hist <-
 
     ggplot() +
       geom_histogram(
-        aes_(x = ~ Value, fill = "Estimated"),
+        aes(x = .data$Value, fill = "Estimated"),
         data = hist_data,
         color = get_color("lh"),
-        size = .25,
+        linewidth = 0.25,
         binwidth = binwidth,
         breaks = breaks
       ) +
       geom_vline(
-        aes_(xintercept = ~ True, color = "True"),
+        aes(xintercept = .data$True, color = "True"),
         data = vline_data,
-        size = 1.5
+        linewidth = 1.5
       ) +
       do.call("facet_wrap", facet_args) +
       scale_fill_manual("", values = get_color("l")) +
