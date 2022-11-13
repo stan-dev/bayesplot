@@ -219,17 +219,17 @@ mcmc_intervals <- function(x,
   }
 
   args_outer <- list(
-    mapping = aes_(x = ~ ll, xend = ~ hh, y = ~ parameter, yend = ~ parameter),
+    mapping = aes(x = .data$ll, xend = .data$hh, y = .data$parameter, yend = .data$parameter),
     color = get_color("mid"),
-    size = outer_size
+    linewidth = outer_size
   )
   args_inner <- list(
-    mapping = aes_(x = ~ l, xend = ~ h, y = ~ parameter, yend = ~ parameter),
-    size = inner_size,
+    mapping = aes(x = .data$l, xend = .data$h, y = .data$parameter, yend = .data$parameter),
+    linewidth = inner_size,
     show.legend = FALSE
   )
   args_point <- list(
-    mapping = aes_(x = ~ m, y = ~ parameter),
+    mapping = aes(x = .data$m, y = .data$parameter),
     data = data,
     size = point_size,
     shape = 21
@@ -237,10 +237,10 @@ mcmc_intervals <- function(x,
 
   if (color_by_rhat) {
     args_inner$mapping <- args_inner$mapping %>%
-      modify_aes_(color = ~ rhat_rating)
+      modify_aes(color = .data$rhat_rating)
     args_point$mapping <- args_point$mapping %>%
-      modify_aes_(color = ~ rhat_rating,
-                  fill = ~ rhat_rating)
+      modify_aes(color = .data$rhat_rating,
+                 fill = .data$rhat_rating)
   } else {
     args_inner$color <- get_color("dark")
     args_point$color <- get_color("dark_highlight")
@@ -327,7 +327,7 @@ mcmc_areas <- function(x,
   x_lim[2] <- x_lim[2] + 0.05 * x_range
 
   layer_vertical_line <- if (0 > x_lim[1] && 0 < x_lim[2]) {
-    vline_0(color = "gray90", size = 0.5)
+    vline_0(color = "gray90", linewidth = 0.5)
   } else {
     geom_ignore()
   }
@@ -340,14 +340,6 @@ mcmc_areas <- function(x,
     rlang::syms(c("parameter"))
   }
 
-  if (area_method == "equal height") {
-    dens_col = ~ scaled_density
-  } else if (area_method == "scaled height") {
-    dens_col = ~ scaled_density * sqrt(scaled_density)
-  } else {
-    dens_col = ~ plotting_density
-  }
-
   datas$bottom <- datas$outer %>%
     group_by(!!! groups) %>%
     summarise(
@@ -358,22 +350,35 @@ mcmc_areas <- function(x,
     ungroup()
 
   args_bottom <- list(
-    mapping = aes_(x = ~ ll, xend = ~ hh, yend = ~ parameter),
+    mapping = aes(x = .data$ll, xend = .data$hh, yend = .data$parameter),
     data = datas$bottom
   )
   args_inner <- list(
-    mapping = aes_(height = dens_col, scale = ~ .9),
+    mapping = aes(scale = 0.9),
     data = datas$inner
   )
   args_point <- list(
-    mapping = aes_(height = dens_col, scale = ~ .9),
+    mapping = aes(scale = 0.9),
     data = datas$point,
     color = NA
   )
   args_outer <- list(
-    mapping = aes_(height = dens_col, scale = ~ .9),
+    mapping = aes(scale = 0.9),
     fill = NA
   )
+  if (area_method == "equal height") {
+    args_inner$mapping <- modify_aes(args_inner$mapping, height = .data$scaled_density)
+    args_point$mapping <- modify_aes(args_point$mapping, height = .data$scaled_density)
+    args_outer$mapping <- modify_aes(args_outer$mapping, height = .data$scaled_density)
+  } else if (area_method == "scaled height") {
+    args_inner$mapping <- modify_aes(args_inner$mapping, height = .data$scaled_density * sqrt(.data$scaled_density))
+    args_point$mapping <- modify_aes(args_point$mapping, height = .data$scaled_density * sqrt(.data$scaled_density))
+    args_outer$mapping <- modify_aes(args_outer$mapping, height = .data$scaled_density * sqrt(.data$scaled_density))
+  } else {
+    args_inner$mapping <- modify_aes(args_inner$mapping, height = .data$plotting_density)
+    args_point$mapping <- modify_aes(args_point$mapping, height = .data$plotting_density)
+    args_outer$mapping <- modify_aes(args_outer$mapping, height = .data$plotting_density)
+  }
 
   if (!is.null(border_size)) {
     args_bottom$size <- border_size
@@ -383,12 +388,12 @@ mcmc_areas <- function(x,
 
   if (color_by_rhat) {
     args_bottom$mapping <- args_bottom$mapping %>%
-      modify_aes_(color = ~ rhat_rating)
+      modify_aes(color = .data$rhat_rating)
     args_inner$mapping <- args_inner$mapping %>%
-      modify_aes_(color = ~ rhat_rating,
-                  fill = ~ rhat_rating)
+      modify_aes(color = .data$rhat_rating,
+                  fill = .data$rhat_rating)
     args_outer$mapping <- args_outer$mapping %>%
-      modify_aes_(color = ~ rhat_rating)
+      modify_aes(color = .data$rhat_rating)
     # rhat fill color scale uses light/mid/dark colors. The point estimate needs
     # to be drawn with highlighted color scale, so we manually set the color for
     # the rhat fills.
@@ -405,7 +410,7 @@ mcmc_areas <- function(x,
   # An invisible layer that is 2.5% taller than the plotted one
   args_outer2 <- args_outer
   args_outer2$mapping <- args_outer2$mapping %>%
-    modify_aes_(scale = .925)
+    modify_aes(scale = .925)
   args_outer2$color <- NA
 
   layer_bottom <- do.call(geom_segment, args_bottom)
@@ -430,7 +435,7 @@ mcmc_areas <- function(x,
   }
 
   ggplot(datas$outer) +
-    aes_(x = ~ x, y = ~ parameter) +
+    aes(x = .data$x, y = .data$parameter) +
     layer_vertical_line +
     layer_inner +
     layer_point +
@@ -451,7 +456,7 @@ mcmc_areas <- function(x,
     legend_move(ifelse(color_by_rhat, "top", "none")) +
     yaxis_text(face = "bold") +
     yaxis_title(FALSE) +
-    yaxis_ticks(size = 1) +
+    yaxis_ticks(linewidth = 1) +
     xaxis_title(FALSE)
 }
 
@@ -490,7 +495,7 @@ mcmc_areas_ridges <- function(x,
   }
 
   args_outer <- list(
-    mapping = aes_(height = ~ density),
+    mapping = aes(height = .data$density),
     color = get_color("dark"),
     fill = NA,
     stat = "identity"
@@ -503,7 +508,7 @@ mcmc_areas_ridges <- function(x,
 
   # Force ggridges to compute the scaling now
   test_plot <- ggplot(datas$outer) +
-    aes_(x = ~ x, y = ~ parameter) +
+    aes(x = .data$x, y = .data$parameter) +
     layer_outer
 
   soft_build <- ggplot_build(test_plot)
@@ -531,7 +536,7 @@ mcmc_areas_ridges <- function(x,
       mutate(color = get_color("dark"), fill = bg)
 
     args_inner <- list(
-        mapping = aes_(height = ~ density, color = ~ color, fill = ~ fill),
+        mapping = aes(height = .data$density, color = .data$color, fill = .data$fill),
         data = dplyr::bind_rows(this_par_data, next_par_data),
         scale = scale,
         stat = "identity")
@@ -544,7 +549,7 @@ mcmc_areas_ridges <- function(x,
   }
 
   ggplot(datas$outer) +
-    aes_(x = ~ x, y = ~ parameter) +
+    aes(x = .data$x, y = .data$parameter) +
     layer_outer +
     scale_y_discrete(limits = unique(rev(data$parameter)),
                      expand = expansion(
@@ -630,9 +635,9 @@ mcmc_intervals_data <- function(x,
     rhat_tbl <- rhat %>%
       mcmc_rhat_data() %>%
       select(one_of("parameter"),
-             rhat_value = .data$value,
-             rhat_rating = .data$rating,
-             rhat_description = .data$description) %>%
+             rhat_value = "value",
+             rhat_rating = "rating",
+             rhat_description = "description") %>%
       mutate(parameter = factor(.data$parameter, levels(data$parameter)))
 
     data <- dplyr::inner_join(data, rhat_tbl, by = "parameter")
@@ -685,8 +690,8 @@ mcmc_areas_data <- function(x,
   # Compute the density intervals
   data_inner <- data_long %>%
     compute_column_density(
-      group_vars = .data$parameter,
-      value_var = .data$value,
+      group_vars = "parameter",
+      value_var = "value",
       interval_width = probs[1],
       bw = bw,
       adjust = adjust,
@@ -696,8 +701,8 @@ mcmc_areas_data <- function(x,
 
   data_outer <- data_long %>%
     compute_column_density(
-      group_vars = .data$parameter,
-      value_var = .data$value,
+      group_vars = "parameter",
+      value_var = "value",
       interval_width = probs[2],
       bw = bw,
       adjust = adjust,
@@ -722,7 +727,7 @@ mcmc_areas_data <- function(x,
     mutate(diff = abs(.data$m - .data$x)) %>%
     dplyr::top_n(1, -.data$diff) %>%
     select(one_of("parameter", "x", "m")) %>%
-    rename(center = .data$x) %>%
+    rename(center = "x") %>%
     ungroup()
 
   # Keep density values that are within +/- .4% of x-axis of the point estimate
@@ -732,8 +737,9 @@ mcmc_areas_data <- function(x,
     dplyr::filter(abs(.data$center - .data$x) <= half_point_width) %>%
     mutate(
       interval_width = 0,
-      interval = "point") %>%
-    select(-.data$center, .data$m) %>%
+      interval = "point"
+    ) %>%
+    select(-c("center"), "m") %>%
     ungroup()
 
   # Ignore points calculcation if no point estimate was requested
@@ -820,7 +826,7 @@ compute_column_density <- function(df, group_vars, value_var, ...) {
   reconstructed <- as.list(seq_len(nrow(nested)))
   for (df_i in seq_along(nested$density)) {
     row <- nested[df_i, ]
-    parent <- row %>% select(-.data$density)
+    parent <- row %>% select(-c("density"))
     groups <- rep(list(parent), nrow(row$density[[1]])) %>% dplyr::bind_rows()
 
     reconstructed[[df_i]] <- dplyr::bind_cols(groups, row$density[[1]])

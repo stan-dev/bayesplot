@@ -158,11 +158,11 @@ ppc_dens_overlay <-
     check_ignored_arguments(...)
 
     data <- ppc_data(y, yrep)
-    ggplot(data, mapping = aes_(x = ~value)) +
+    ggplot(data, mapping = aes(x = .data$value)) +
       overlay_ppd_densities(
-        mapping = aes_(group = ~rep_id, color = "yrep"),
+        mapping = aes(group = .data$rep_id, color = "yrep"),
         data = function(x) dplyr::filter(x, !.data$is_y),
-        size = size,
+        linewidth = size,
         alpha = alpha,
         trim = trim,
         bw = bw,
@@ -171,10 +171,10 @@ ppc_dens_overlay <-
         n = n_dens
       ) +
       overlay_ppd_densities(
-        mapping = aes_(color = "y"),
+        mapping = aes(color = "y"),
         data = function(x) dplyr::filter(x, .data$is_y),
         lineend = "round",
-        size = 1,
+        linewidth = 1,
         trim = trim,
         bw = bw,
         adjust = adjust,
@@ -249,32 +249,32 @@ ppc_ecdf_overlay <- function(y,
   data <- ppc_data(y, yrep)
 
   ggplot(data) +
-    aes_(x = ~value) +
+    aes(x = .data$value) +
     hline_at(
       0.5,
-      size = 0.1,
+      linewidth = 0.1,
       linetype = 2,
       color = get_color("dh")
     ) +
     hline_at(
       c(0, 1),
-      size = 0.2,
+      linewidth = 0.2,
       linetype = 2,
       color = get_color("dh")
     ) +
     stat_ecdf(
       data = function(x) dplyr::filter(x, !.data$is_y),
-      mapping = aes_(group = ~rep_id, color = "yrep"),
+      mapping = aes(group = .data$rep_id, color = "yrep"),
       geom = if (discrete) "step" else "line",
-      size = size,
+      linewidth = size,
       alpha = alpha,
       pad = pad
     ) +
     stat_ecdf(
       data = function(x) dplyr::filter(x, .data$is_y),
-      mapping = aes_(color = "y"),
+      mapping = aes(color = "y"),
       geom = if (discrete) "step" else "line",
-      size = 1,
+      linewidth = 1,
       pad = pad
     ) +
     scale_color_ppc() +
@@ -327,13 +327,13 @@ ppc_dens <-
            alpha = 1) {
     check_ignored_arguments(...)
     data <- ppc_data(y, yrep)
-    ggplot(data, mapping = aes_(
-      x = ~value,
-      fill = ~is_y_label,
-      color = ~is_y_label
+    ggplot(data, mapping = aes(
+      x = .data$value,
+      fill = .data$is_y_label,
+      color = .data$is_y_label
     )) +
       geom_density(
-        size = size,
+        linewidth = size,
         alpha = alpha,
         trim = trim
       ) +
@@ -367,11 +367,11 @@ ppc_hist <-
     data <- ppc_data(y, yrep)
     ggplot(data, mapping = set_hist_aes(
       freq = freq,
-      fill = ~is_y_label,
-      color = ~is_y_label
+      fill = !!quote(is_y_label),
+      color = !!quote(is_y_label)
     )) +
       geom_histogram(
-        size = 0.25,
+        linewidth = 0.25,
         binwidth = binwidth,
         breaks = breaks
       ) +
@@ -410,13 +410,13 @@ ppc_freqpoly <-
     data <- ppc_data(y, yrep, group = dots$group)
     ggplot(data, mapping = set_hist_aes(
       freq = freq,
-      fill = ~is_y_label,
-      color = ~is_y_label
+      fill = !!quote(is_y_label),
+      color = !!quote(is_y_label)
     )) +
       geom_area(
         stat = "bin",
         binwidth = binwidth,
-        size = size,
+        linewidth = size,
         alpha = alpha
       ) +
       scale_fill_ppc() +
@@ -476,15 +476,15 @@ ppc_boxplot <-
     check_ignored_arguments(...)
 
     data <- ppc_data(y, yrep)
-    ggplot(data, mapping = aes_(
-      x = ~rep_label,
-      y = ~value,
-      fill = ~is_y_label,
-      color = ~is_y_label
+    ggplot(data, mapping = aes(
+      x = .data$rep_label,
+      y = .data$value,
+      fill = .data$is_y_label,
+      color = .data$is_y_label
     )) +
       geom_boxplot(
         notch = notch,
-        size = size,
+        linewidth = size,
         alpha = alpha,
         outlier.alpha = 2 / 3,
         outlier.size = 1
@@ -533,22 +533,22 @@ ppc_violin_grouped <-
 
     args_violin_yrep <- list(
       data = function(x) dplyr::filter(x, !.data$is_y),
-      aes_(fill = "yrep", color = "yrep"),
+      aes(fill = "yrep", color = "yrep"),
       draw_quantiles = probs,
       alpha = alpha,
-      size = size
+      linewidth = size
     )
 
     args_violin_y <- list(
       data = function(x) dplyr::filter(x, .data$is_y),
-      aes_(fill = "y", color = "y"),
+      aes(fill = "y", color = "y"),
       show.legend = FALSE,
       alpha = 0
     )
 
     args_jitter_y <- list(
       data = function(x) dplyr::filter(x, .data$is_y),
-      aes_(fill = "y", color = "y"),
+      aes(fill = "y", color = "y"),
       shape = 21,
       alpha = y_alpha,
       size = y_size,
@@ -566,7 +566,7 @@ ppc_violin_grouped <-
 
     data <- ppc_data(y, yrep, group)
 
-    ggplot(data, mapping = aes_(x = ~group, y = ~value)) +
+    ggplot(data, mapping = aes(x = .data$group, y = .data$value)) +
       layer_violin_yrep +
       layer_violin_y +
       layer_jitter_y +
@@ -623,7 +623,7 @@ ppc_pit_ecdf <- function(y,
   )
   lims <- ecdf_intervals(gamma = gamma, N = N, K = K)
   ggplot() +
-    aes_(
+    aes(
       x = 1:K / K,
       y = ecdf(pit)(seq(0, 1, length.out = K)) - (plot_diff == TRUE) * 1:K / K,
       color = "y"
@@ -689,8 +689,7 @@ ppc_pit_ecdf_grouped <-
     data <- data.frame(pit = pit, group = group) %>%
       group_by(group) %>%
       dplyr::group_map(~ data.frame(
-        ecdf_value = ecdf(.x$pit)(
-          seq(0, 1, length.out = min(nrow(.x), K))),
+        ecdf_value = ecdf(.x$pit)(seq(0, 1, length.out = min(nrow(.x), K))),
         group = .y[1],
         lims_upper = ecdf_intervals(
           gamma = gammas[[unlist(.y[1])]],
@@ -707,19 +706,19 @@ ppc_pit_ecdf_grouped <-
       dplyr::bind_rows()
 
     ggplot(data) +
-      aes_(
-        x = ~x,
-        y = ~ ecdf_value - (plot_diff == TRUE) * x,
-        group = ~group,
+      aes(
+        x = .data$x,
+        y = .data$ecdf_value - (plot_diff == TRUE) * .data$x,
+        group = .data$group,
         color = "y"
       ) +
       geom_step(show.legend = FALSE) +
-      geom_step(aes_(
-        y = ~ lims_upper - (plot_diff == TRUE) * x,
+      geom_step(aes(
+        y = .data$lims_upper - (plot_diff == TRUE) * .data$x,
         color = "yrep"
       ), show.legend = FALSE) +
-      geom_step(aes_(
-        y = ~ lims_lower - (plot_diff == TRUE) * x,
+      geom_step(aes(
+        y = .data$lims_lower - (plot_diff == TRUE) * .data$x,
         color = "yrep"
       ), show.legend = FALSE) +
       xaxis_title(FALSE) +

@@ -4,18 +4,18 @@ context("PPC: predictive errors")
 source(test_path("data-for-ppc-tests.R"))
 
 test_that("ppc_error_hist and ppc_error_scatter return ggplot object", {
-  expect_gg(ppc_error_hist(y, yrep[1:5, ]))
+  expect_gg(ppc_error_hist(y, yrep[1:5, ], binwidth = 0.1))
   expect_gg(ppc_error_scatter(y, yrep[1:5, ]))
 
-  expect_gg(ppc_error_hist(y, yrep[1,, drop = FALSE]))
+  expect_gg(ppc_error_hist(y, yrep[1,, drop = FALSE], binwidth = 0.1))
   expect_gg(ppc_error_scatter(y, yrep[1,, drop = FALSE]))
 
-  expect_gg(ppc_error_hist(y2, yrep2))
+  expect_gg(ppc_error_hist(y2, yrep2, binwidth = 0.1))
   expect_gg(ppc_error_scatter(y2, yrep2))
 })
 
 test_that("ppc_error_hist_grouped returns ggplot object", {
-  expect_gg(ppc_error_hist_grouped(y, yrep[1:5, ], group))
+  expect_gg(ppc_error_hist_grouped(y, yrep[1:5, ], group, binwidth = 0.1))
   expect_gg(ppc_error_hist_grouped(y, yrep[1,, drop = FALSE], group,
                                    freq = FALSE, binwidth = 1))
 })

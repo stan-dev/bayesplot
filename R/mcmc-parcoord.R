@@ -130,13 +130,13 @@ mcmc_parcoord <-
     div_draws <- dplyr::filter(data, UQ(divg) == 1)
     has_divs <- isTRUE(nrow(div_draws) > 0)
 
-    graph <- ggplot(draws, aes_(
-      x = ~ Parameter,
-      y = ~ Value,
-      group = ~ factor(Draw)
+    graph <- ggplot(draws, aes(
+      x = .data$Parameter,
+      y = .data$Value,
+      group = factor(.data$Draw)
     )) +
       geom_line(
-        size = size,
+        linewidth = size,
         alpha = alpha,
         color = get_color("dh")
       ) +

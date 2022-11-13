@@ -6,17 +6,17 @@ source(test_path("data-for-mcmc-tests.R"))
 test_that("rhat and neff plots return a ggplot object", {
   rhat <- runif(100, 1, 1.5)
   expect_gg(mcmc_rhat(rhat))
-  expect_gg(mcmc_rhat_hist(rhat))
+  expect_gg(mcmc_rhat_hist(rhat, binwidth = .01))
 
   ratio <- runif(100, 0, 1)
   expect_gg(mcmc_neff(ratio))
-  expect_gg(mcmc_neff_hist(ratio))
+  expect_gg(mcmc_neff_hist(ratio, binwidth = .01))
 
   # 1-D array ok
   expect_gg(mcmc_rhat(array(rhat)))
-  expect_gg(mcmc_rhat_hist(array(rhat)))
+  expect_gg(mcmc_rhat_hist(array(rhat), binwidth = .01))
   expect_gg(mcmc_neff(array(ratio)))
-  expect_gg(mcmc_neff_hist(array(ratio)))
+  expect_gg(mcmc_neff_hist(array(ratio), binwidth = .01))
 
   # named ok
   rhat <- setNames(runif(5, 1, 1.5), paste0("alpha[", 1:5, "]"))

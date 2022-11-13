@@ -11,12 +11,12 @@
 #' @param lw A matrix of (smoothed) log weights with the same dimensions as
 #'   `yrep`. See [loo::psis()] and the associated `weights()` method as well as
 #'   the **Examples** section, below.
-#' @param alpha,size,fatten Arguments passed to code geoms to control plot
+#' @param alpha,size,fatten,linewidth Arguments passed to code geoms to control plot
 #'   aesthetics. For `ppc_loo_pit_qq()` and `ppc_loo_pit_overlay()`, `size` and
 #'   `alpha` are passed to [ggplot2::geom_point()] and
 #'   [ggplot2::geom_density()], respectively. For `ppc_loo_intervals()`, `size`
-#'   and `fatten` are passed to [ggplot2::geom_pointrange()]. For
-#'   `ppc_loo_ribbon()`, `alpha` and `size` are passed to
+#'   `linewidth` and `fatten` are passed to [ggplot2::geom_pointrange()]. For
+#'   `ppc_loo_ribbon()`, `alpha` and `size`  are passed to
 #'   [ggplot2::geom_ribbon()].
 #'
 #' @template return-ggplot
@@ -179,17 +179,17 @@ ppc_loo_pit_overlay <- function(y,
 
   if (boundary_correction) {
     p <- ggplot(data) +
-      aes_(x = ~ x, y = ~ value) +
+      aes(x = .data$x, y = .data$value) +
       geom_line(
-        aes_(group = ~ rep_id,  color = "yrep"),
+        aes(group = .data$rep_id,  color = "yrep"),
         data = function(x) dplyr::filter(x, !.data$is_y),
         alpha = alpha,
-        size = size,
+        linewidth = size,
         na.rm = TRUE) +
       geom_line(
-        aes_(color = "y"),
+        aes(color = "y"),
         data = function(x) dplyr::filter(x, .data$is_y),
-        size = 1,
+        linewidth = 1,
         lineend = "round",
         na.rm = TRUE) +
       scale_x_continuous(
@@ -201,13 +201,13 @@ ppc_loo_pit_overlay <- function(y,
 
   } else {
     p <- ggplot(data) +
-      aes_(x = ~ value) +
+      aes(x = .data$value) +
       stat_density(
-        aes_(group = ~ rep_id, color = "yrep"),
+        aes(group = .data$rep_id, color = "yrep"),
         data = function(x) dplyr::filter(x, !.data$is_y),
         geom = "line",
         position = "identity",
-        size = size,
+        linewidth = size,
         alpha = alpha,
         trim = trim,
         bw = bw,
@@ -216,12 +216,12 @@ ppc_loo_pit_overlay <- function(y,
         n = n_dens,
         na.rm = TRUE) +
       stat_density(
-        aes_(color = "y"),
+        aes(color = "y"),
         data = function(x) dplyr::filter(x, .data$is_y),
         geom = "line",
         position = "identity",
         lineend = "round",
-        size = 1,
+        linewidth = 1,
         trim = trim,
         bw = bw,
         adjust = adjust,
@@ -328,13 +328,13 @@ ppc_loo_pit_qq <- function(y,
 
   ggplot(data.frame(p = pit)) +
     geom_qq(
-      aes_(sample = ~ p),
+      aes(sample = .data$p),
       distribution = theoretical,
       color = get_color("m"),
       size = size,
       alpha = alpha) +
     geom_qq_line(
-      aes_(sample = ~ p),
+      aes(sample = .data$p),
       linetype = 2,
       distribution = theoretical,
       color = "black",
@@ -409,6 +409,7 @@ ppc_loo_intervals <-
            alpha = 0.33,
            size = 1,
            fatten = 2.5,
+           linewidth = 1,
            order = c("index", "median")) {
 
     check_ignored_arguments(...)
@@ -468,12 +469,13 @@ ppc_loo_intervals <-
       geom_pointrange(
         shape = 21,
         stroke = 0.5,
+        linewidth = linewidth,
         size = size,
         fatten = fatten
       ) +
       geom_point(
-        mapping = aes_(
-          y = ~ y_obs,
+        mapping = aes(
+          y = .data$y_obs,
           color = "y",
           fill = "y"
         ),
@@ -540,25 +542,25 @@ ppc_loo_ribbon <-
       geom_ribbon(
         mapping = intervals_outer_aes(fill = "yrep", color = "yrep"),
         alpha = alpha,
-        size = 0.05
+        linewidth = 0.05
       ) +
       geom_ribbon(
         mapping = intervals_outer_aes(),
         alpha = 1,
-        size = 0.05,
+        linewidth = 0.05,
         fill = NA,
         color = get_color("m")
       ) +
-      geom_ribbon(size = 0.05) +
+      geom_ribbon(linewidth = 0.05) +
       geom_line(
-        mapping = aes_(y = ~ m),
+        mapping = aes(y = .data$m),
         color = get_color("m"),
-        size = size
+        linewidth = size
       ) +
-      geom_blank(aes_(fill = "y")) +
+      geom_blank(aes(fill = "y")) +
       geom_line(
-        aes_(y = ~ y_obs, color = "y"),
-        size = 0.5,
+        aes(y = .data$y_obs, color = "y"),
+        linewidth = 0.5,
         alpha = 2/3
       ) +
       scale_color_ppc() +

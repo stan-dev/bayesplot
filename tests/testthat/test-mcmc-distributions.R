@@ -9,25 +9,25 @@ get_palette <- function(ggplot, n) {
 }
 
 test_that("mcmc_hist returns a ggplot object", {
-  expect_gg(mcmc_hist(arr, pars = "beta[1]", regex_pars = "x\\:"))
-  expect_gg(mcmc_hist(arr1chain, regex_pars = "beta"))
-  expect_gg(mcmc_hist(drawsarr, pars = "theta[1]"))
-  expect_gg(mcmc_hist(drawsarr1chain, regex_pars = "theta"))
-  expect_gg(mcmc_hist(mat))
-  expect_gg(mcmc_hist(dframe))
-  expect_gg(mcmc_hist(dframe_multiple_chains))
+  expect_gg(mcmc_hist(arr, pars = "beta[1]", regex_pars = "x\\:", binwidth = 0.1))
+  expect_gg(mcmc_hist(arr1chain, regex_pars = "beta", binwidth = 0.1))
+  expect_gg(mcmc_hist(drawsarr, pars = "theta[1]", binwidth = 0.1))
+  expect_gg(mcmc_hist(drawsarr1chain, regex_pars = "theta", binwidth = 0.1))
+  expect_gg(mcmc_hist(mat, binwidth = 0.1))
+  expect_gg(mcmc_hist(dframe, binwidth = 0.1))
+  expect_gg(mcmc_hist(dframe_multiple_chains, binwidth = 0.1))
 
-  expect_gg(mcmc_hist(arr1))
-  expect_gg(mcmc_hist(drawsarr1))
-  expect_gg(mcmc_hist(mat1))
-  expect_gg(mcmc_hist(dframe1))
+  expect_gg(mcmc_hist(arr1, binwidth = 0.1))
+  expect_gg(mcmc_hist(drawsarr1, binwidth = 0.1))
+  expect_gg(mcmc_hist(mat1, binwidth = 0.1))
+  expect_gg(mcmc_hist(dframe1, binwidth = 0.1))
 })
 
 test_that("mcmc_dens returns a ggplot object", {
   expect_gg(mcmc_dens(arr, pars = "beta[2]", regex_pars = "x\\:"))
   expect_gg(mcmc_dens(arr1chain, regex_pars = "beta"))
-  expect_gg(mcmc_hist(drawsarr, pars = "theta[1]"))
-  expect_gg(mcmc_hist(drawsarr1chain, regex_pars = "theta"))
+  expect_gg(mcmc_dens(drawsarr, pars = "theta[1]"))
+  expect_gg(mcmc_dens(drawsarr1chain, regex_pars = "theta"))
   expect_gg(mcmc_dens(mat))
 
   expect_gg(mcmc_dens(dframe, transformations = list(sigma = function(x) x^2)))
@@ -38,7 +38,7 @@ test_that("mcmc_dens returns a ggplot object", {
   ))
 
   expect_gg(mcmc_dens(arr1))
-  expect_gg(mcmc_hist(drawsarr1))
+  expect_gg(mcmc_dens(drawsarr1))
   expect_gg(mcmc_dens(mat1))
   expect_gg(mcmc_dens(dframe1))
 })
@@ -46,9 +46,9 @@ test_that("mcmc_dens returns a ggplot object", {
 
 # functions that require multiple chains ----------------------------------
 test_that("mcmc_hist_by_chain returns a ggplot object", {
-  expect_gg(mcmc_hist_by_chain(arr, pars = "beta[1]", regex_pars = "x\\:"))
+  expect_gg(mcmc_hist_by_chain(arr, pars = "beta[1]", regex_pars = "x\\:", binwidth = 0.1))
   expect_gg(mcmc_hist_by_chain(dframe_multiple_chains,
-                               regex_pars = c("(Intercept)", "beta")))
+                               regex_pars = c("(Intercept)", "beta"), binwidth = 0.1))
 })
 
 test_that("mcmc_dens_overlay returns a ggplot object", {
@@ -124,13 +124,13 @@ test_that("mcmc_hist renders correctly", {
   testthat::skip_on_cran()
   testthat::skip_if_not_installed("vdiffr")
 
-  p_base <- mcmc_hist(vdiff_dframe)
+  p_base <- mcmc_hist(vdiff_dframe, binwidth = 0.1)
   vdiffr::expect_doppelganger("mcmc_hist (default)", p_base)
 
-  p_freq <- mcmc_hist(vdiff_dframe, freq = TRUE)
+  p_freq <- mcmc_hist(vdiff_dframe, freq = TRUE, binwidth = 0.1)
   vdiffr::expect_doppelganger("mcmc_hist (freq)", p_freq)
 
-  p_alpha <- mcmc_hist(vdiff_dframe, alpha = 0)
+  p_alpha <- mcmc_hist(vdiff_dframe, alpha = 0, binwidth = 0.1)
   vdiffr::expect_doppelganger("mcmc_hist (alpha)", p_alpha)
 })
 
