@@ -84,6 +84,7 @@
 #' )
 #' plot(p)
 #'
+#' \donttest{
 #' # control spacing at top and bottom of plot
 #' # see ?ggplot2::expansion
 #' p + scale_y_discrete(
@@ -107,6 +108,7 @@
 #'              "beta[4]" = "param label 2"),
 #'   limits = c("beta[4]", "alpha")
 #' )
+#' }
 #'
 #' # color by rhat value
 #' color_scheme_set("blue")
