@@ -105,10 +105,9 @@ NULL
 # release reminders (for devtools)
 release_questions <- function() {
   c(
-    "Have you reduced the size of the vignettes for CRAN?"
-  )
-  c(
-    "Have you put '^tests/testthat/_snaps$' in .Rbuildignore?"
+    "Have you reduced the size of the vignettes for CRAN?",
+    "Have you tested with '^tests/testthat/_snaps$' removed from .Rbuildignore?",
+    "Have you put '^tests/testthat/_snaps$' back in .Rbuildignore? before submitting?"
   )
 }
 # nocov end

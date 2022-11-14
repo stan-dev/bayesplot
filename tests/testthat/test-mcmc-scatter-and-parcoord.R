@@ -421,3 +421,21 @@ test_that("mcmc_parcoord renders correctly", {
   )
   vdiffr::expect_doppelganger("mcmc_parcoord (np)", p_divergences)
 })
+
+
+test_that("mcmc_pairs renders correctly", {
+  skip_on_cran()
+  skip_if_not_installed("vdiffr")
+  skip_if_not_installed("hexbin")
+
+  p_base <- mcmc_pairs(vdiff_dframe_chains)
+  vdiffr::expect_doppelganger("mcmc_pairs (default)", p_base)
+
+  p_divergences <- mcmc_pairs(
+    vdiff_dframe_chains,
+    np = vdiff_dframe_chains_divergences,
+    np_style = pairs_style_np(div_size = 2),
+    off_diag_fun = "hex"
+  )
+  vdiffr::expect_doppelganger("mcmc_pairs (np, hex)", p_divergences)
+})

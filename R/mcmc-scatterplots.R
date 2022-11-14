@@ -903,7 +903,7 @@ format_nuts_points <- function(graph, np_args) {
                          c("NoDiv", "Div", "NoHit", "Hit"))
     ) +
     scale_size_manual(
-      values = set_names(c(0, rel(np_args$size[["div"]]), 0, rel(np_args$size[["td"]])),
+      values = set_names(c(NA, rel(np_args$size[["div"]]), NA, rel(np_args$size[["td"]])),
                          c("NoDiv", "Div", "NoHit", "Hit"))
     )
 }
