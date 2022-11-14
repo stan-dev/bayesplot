@@ -107,11 +107,8 @@ test_that("mcmc_recover_hist renders correctly", {
   skip_on_cran()
   skip_if_not_installed("vdiffr")
 
-  p_base <- mcmc_recover_hist(draws, true)
+  p_base <- mcmc_recover_hist(draws, true, binwidth = 0.01)
   vdiffr::expect_doppelganger("mcmc_recover_hist (default)", p_base)
-
-  p_custom <- mcmc_recover_hist(draws, true, binwidth = 0.01)
-  vdiffr::expect_doppelganger("mcmc_recover_hist (args)", p_custom)
 })
 
 test_that("mcmc_recover_intervals renders correctly", {
