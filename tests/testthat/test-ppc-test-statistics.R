@@ -213,7 +213,7 @@ test_that("ppc_stat_freqpoly_grouped renders correctly", {
     binwidth = 0.5
   )
   vdiffr::expect_doppelganger(
-    title = "ppc_stat_freqpoly_grouped (stat, facet_args, binwidth)",
+    title = "ppc_stat_freqpoly_grouped (stat, facets, bw)",
     fig = p_custom)
 
   # ppd versions
@@ -228,6 +228,6 @@ test_that("ppc_stat_freqpoly_grouped renders correctly", {
     binwidth = 0.5
   )
   vdiffr::expect_doppelganger(
-    title = "ppd_stat_freqpoly_grouped (stat, facet_args, binwidth)",
+    title = "ppd_stat_freqpoly_grouped (stat, facets, bw)",
     fig = p_custom)
 })

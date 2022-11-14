@@ -135,6 +135,6 @@
 <text x='692.52' y='314.75' style='font-size: 9.10px; font-family: sans;' textLength='5.06px' lengthAdjust='spacingAndGlyphs'>e</text>
 <text x='697.58' y='314.75' style='font-size: 9.10px; font-family: sans;' textLength='5.06px' lengthAdjust='spacingAndGlyphs'>d</text>
 <text x='702.64' y='312.35' style='font-size: 16.25px; font-family: sans;' textLength='5.40px' lengthAdjust='spacingAndGlyphs'>)</text>
-<text x='8.97' y='15.89' style='font-size: 14.40px; font-family: sans;' textLength='348.25px' lengthAdjust='spacingAndGlyphs'>ppd_stat_freqpoly_grouped (stat, facet_args, binwidth)</text>
+<text x='8.97' y='15.89' style='font-size: 14.40px; font-family: sans;' textLength='285.01px' lengthAdjust='spacingAndGlyphs'>ppd_stat_freqpoly_grouped (stat, facets, bw)</text>
 </g>
 </svg>
