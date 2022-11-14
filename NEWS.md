@@ -12,6 +12,7 @@ distribution. (#282, @TeemuSailynoja)
 introduced in ggplot2 3.4.0: `ppc_bars()`, `ppc_bars_grouped()`,
 `ppc_intervals()`, `ppc_intervals_grouped()`, `ppd_intervals()`,
 `ppd_intervals_grouped()`.
+* Fix bug in how `mcmc_pairs()` detected hitting `max_treedepth`, thanks to @dmphillippo. (#281)
 * Fix failing tests due to changes in ggplot2 3.4.0 (#289)
 
 # bayesplot 1.9.0
