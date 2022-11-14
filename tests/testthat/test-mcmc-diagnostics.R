@@ -151,3 +151,25 @@ test_that("mcmc_neff_hist renders correctly", {
   p_binwidth <- mcmc_neff_hist(neffs, binwidth = .05)
   vdiffr::expect_doppelganger("mcmc_neff_hist (binwidth)", p_binwidth)
 })
+
+test_that("mcmc_acf renders correctly", {
+  testthat::skip_on_cran()
+  testthat::skip_if_not_installed("vdiffr")
+
+  p_base <- mcmc_acf(vdiff_dframe)
+  vdiffr::expect_doppelganger("mcmc_acf (default)", p_base)
+
+  p_lags <- mcmc_acf(vdiff_dframe, lags = 5)
+  vdiffr::expect_doppelganger("mcmc_acf (lags)", p_lags)
+})
+
+test_that("mcmc_acf_bar renders correctly", {
+  testthat::skip_on_cran()
+  testthat::skip_if_not_installed("vdiffr")
+
+  p_base <- mcmc_acf_bar(vdiff_dframe)
+  vdiffr::expect_doppelganger("mcmc_acf_bar (default)", p_base)
+
+  p_lags <- mcmc_acf_bar(vdiff_dframe, lags = 5)
+  vdiffr::expect_doppelganger("mcmc_acf_bar (lags)", p_lags)
+})

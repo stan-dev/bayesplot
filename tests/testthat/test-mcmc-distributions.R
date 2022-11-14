@@ -145,3 +145,35 @@ test_that("mcmc_dens renders correctly", {
   vdiffr::expect_doppelganger("mcmc_dens (alpha)", p_alpha)
 })
 
+test_that("mcmc_dens_overlay renders correctly", {
+  testthat::skip_on_cran()
+  testthat::skip_if_not_installed("vdiffr")
+
+  p_base <- mcmc_dens_overlay(vdiff_dframe_chains)
+  vdiffr::expect_doppelganger("mcmc_dens_overlay (default)", p_base)
+})
+
+test_that("mcmc_dens_chains renders correctly", {
+  testthat::skip_on_cran()
+  testthat::skip_if_not_installed("vdiffr")
+
+  p_base <- mcmc_dens_chains(vdiff_dframe_chains)
+  vdiffr::expect_doppelganger("mcmc_dens_chains (default)", p_base)
+})
+
+test_that("mcmc_hist_by_chain renders correctly", {
+  testthat::skip_on_cran()
+  testthat::skip_if_not_installed("vdiffr")
+
+  p_base <- mcmc_hist_by_chain(vdiff_dframe_chains, binwidth = 0.5)
+  vdiffr::expect_doppelganger("mcmc_hist_by_chain (default)", p_base)
+})
+
+test_that("mcmc_violin renders correctly", {
+  testthat::skip_on_cran()
+  testthat::skip_if_not_installed("vdiffr")
+
+  p_base <- mcmc_violin(vdiff_dframe_chains)
+  vdiffr::expect_doppelganger("mcmc_violin (default)", p_base)
+})
+

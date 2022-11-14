@@ -1,18 +1,12 @@
 library(bayesplot)
 context("MCMC: recover")
 
-if (requireNamespace("rstanarm", quietly = TRUE)) {
-  alpha <- 1; beta <- c(-.5, .5); sigma <- 2
-  X <- matrix(rnorm(200), 100, 2)
-  y <- rnorm(100, mean = c(alpha + X %*% beta), sd = sigma)
-  fit <- rstanarm::stan_glm(y ~ ., data = data.frame(y, X), refresh = 0, iter = 750, chains = 2, seed = 8420)
-  draws <- as.matrix(fit)
-  true <- c(alpha, beta, sigma)
-}
+set.seed(123)
+draws <- matrix(rnorm(4 * 1000), nrow = 1000)
+colnames(draws) <- c("alpha", "beta[1]", "beta[2]", "sigma")
+true <- c(-1, 0, 0.5, 1)
 
 test_that("mcmc_recover_intervals throws correct errors", {
-  skip_if_not_installed("rstanarm")
-
   expect_error(
     mcmc_recover_intervals(draws, letters[1:ncol(draws)]),
     "is.numeric(true) is not TRUE",
@@ -46,19 +40,15 @@ test_that("mcmc_recover_intervals throws correct errors", {
 })
 
 test_that("mcmc_recover_intervals returns a ggplot object", {
-  skip_if_not_installed("rstanarm")
-
   expect_gg(mcmc_recover_intervals(draws, true))
   expect_gg(mcmc_recover_intervals(draws, true, batch = c(1, 2, 2, 1),
                                    point_est = "mean"))
-  expect_gg(mcmc_recover_intervals(draws, true, batch = grepl("X", colnames(draws))))
-  expect_gg(mcmc_recover_intervals(draws, true, batch = grepl("X", colnames(draws)),
+  expect_gg(mcmc_recover_intervals(draws, true, batch = grepl("beta", colnames(draws))))
+  expect_gg(mcmc_recover_intervals(draws, true, batch = grepl("beta", colnames(draws)),
                                    facet_args = list(ncol = 1)))
 })
 
 test_that("mcmc_recover_intervals works when point_est = 'none'", {
-  skip_if_not_installed("rstanarm")
-
   a <- mcmc_recover_intervals(draws, true, batch = 1:4, point_est = "none")
   expect_gg(a)
   expect_equal(a$data$Point, rep(NA, ncol(draws)))
@@ -66,8 +56,6 @@ test_that("mcmc_recover_intervals works when point_est = 'none'", {
 
 
 test_that("mcmc_recover_scatter returns a ggplot object", {
-  skip_if_not_installed("rstanarm")
-
   expect_gg(
     mcmc_recover_scatter(draws, true)
   )
@@ -92,14 +80,14 @@ test_that("mcmc_recover_scatter returns a ggplot object", {
     mcmc_recover_scatter(
       draws,
       true,
-      batch = grepl("X", colnames(draws))
+      batch = grepl("beta", colnames(draws))
     )
   )
   expect_gg(
     mcmc_recover_scatter(
       draws,
       true,
-      batch = grepl("X", colnames(draws)),
+      batch = grepl("beta", colnames(draws)),
       facet_args = list(ncol = 1)
     )
   )
@@ -107,9 +95,43 @@ test_that("mcmc_recover_scatter returns a ggplot object", {
 
 
 test_that("mcmc_recover_hist returns a ggplot object", {
-  skip_if_not_installed("rstanarm")
-
   expect_gg(mcmc_recover_hist(draws, true, binwidth = 0.1))
   expect_gg(mcmc_recover_hist(draws, true, binwidth = 0.1,
                               facet_args = list(nrow = 1)))
+})
+
+
+# Visual tests -----------------------------------------------------------------
+
+test_that("mcmc_recover_hist renders correctly", {
+  skip_on_cran()
+  skip_if_not_installed("vdiffr")
+
+  p_base <- mcmc_recover_hist(draws, true)
+  vdiffr::expect_doppelganger("mcmc_recover_hist (default)", p_base)
+
+  p_custom <- mcmc_recover_hist(draws, true, binwidth = 0.01)
+  vdiffr::expect_doppelganger("mcmc_recover_hist (args)", p_custom)
+})
+
+test_that("mcmc_recover_intervals renders correctly", {
+  skip_on_cran()
+  skip_if_not_installed("vdiffr")
+
+  p_base <- mcmc_recover_intervals(draws, true)
+  vdiffr::expect_doppelganger("mcmc_recover_intervals (default)", p_base)
+
+  p_custom <- mcmc_recover_intervals(draws, true, prob = 0.6, prob_outer = 0.8)
+  vdiffr::expect_doppelganger("mcmc_recover_intervals (prob)", p_custom)
+})
+
+test_that("mcmc_recover_scatter renders correctly", {
+  skip_on_cran()
+  skip_if_not_installed("vdiffr")
+
+  p_base <- mcmc_recover_scatter(draws, true)
+  vdiffr::expect_doppelganger("mcmc_recover_scatter (default)", p_base)
+
+  p_custom <- mcmc_recover_scatter(draws, true, size = 6)
+  vdiffr::expect_doppelganger("mcmc_recover_scatter (size)", p_custom)
 })
