@@ -351,7 +351,7 @@ mcmc_pairs <- function(x,
     divs <- dplyr::filter(np, UQ(param) == "divergent__") %>% pull(UQ(val))
     divergent__ <- matrix(divs, nrow = n_iter * n_chain, ncol = n_param)[, 1]
     if (!no_max_td) {
-      gt_max_td <- (dplyr::filter(np, UQ(param) == "treedepth__") %>% pull(UQ(val))) > max_treedepth
+      gt_max_td <- (dplyr::filter(np, UQ(param) == "treedepth__") %>% pull(UQ(val))) >= max_treedepth
       max_td_hit__ <- matrix(gt_max_td, nrow = n_iter * n_chain, ncol = n_param)[, 1]
     }
   }
