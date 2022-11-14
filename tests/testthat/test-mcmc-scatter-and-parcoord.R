@@ -437,5 +437,26 @@ test_that("mcmc_pairs renders correctly", {
     np_style = pairs_style_np(div_size = 2),
     off_diag_fun = "hex"
   )
-  vdiffr::expect_doppelganger("mcmc_pairs (np, hex)", p_divergences)
+  vdiffr::expect_doppelganger("mcmc_pairs (divs, hex)", p_divergences)
+
+  # create fake treedepth data frame
+  vdiff_dframe_chains_treedepth <- vdiff_dframe_chains_divergences
+  vdiff_dframe_chains_treedepth$Parameter <- "treedepth__"
+  vdiff_dframe_chains_treedepth$Value <- 1
+  vdiff_dframe_chains_treedepth$Value[seq(1, nrow(vdiff_dframe_chains_treedepth), by = 10)] <- 2
+  p_treedepth <- mcmc_pairs(
+    vdiff_dframe_chains,
+    np = vdiff_dframe_chains_treedepth,
+    np_style = pairs_style_np(td_color = "green"),
+    max_treedepth = 2
+  )
+  vdiffr::expect_doppelganger("mcmc_pairs (td)", p_treedepth)
+
+  p_divs_treedepth_divergences <- mcmc_pairs(
+    vdiff_dframe_chains,
+    np = rbind(vdiff_dframe_chains_divergences, vdiff_dframe_chains_treedepth),
+    np_style = pairs_style_np(div_size = 3, td_color = "green"),
+    max_treedepth = 2
+  )
+  vdiffr::expect_doppelganger("mcmc_pairs (divs, td)", p_divs_treedepth_divergences)
 })
