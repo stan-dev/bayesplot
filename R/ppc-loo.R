@@ -165,7 +165,7 @@ ppc_loo_pit_overlay <- function(y,
       grid_len = grid_len
     )
 
-  if (all(data$value[data$is_y] %in% 0:1)) {
+  if (!missing(y) && all(y %in% 0:1)) {
     warning(
       "This plot is not recommended for binary data. ",
       "For plots that are more suitable see ",
@@ -667,7 +667,7 @@ ppc_loo_ribbon <-
   }
 
   if (grid_len < 100){
-    grid_len = 100
+    grid_len <- 100
   }
 
   # Get relative frequency boundaries and counts for input vector

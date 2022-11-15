@@ -157,6 +157,16 @@ test_that("theme_default creates ggplot theme", {
   expect_equal(thm2[["text"]][["size"]], 13)
 })
 
+test_that("bayesplot_theme_set warns of missing theme elements", {
+  dark2 <- ggplot2::theme_dark()
+  dark2$line <- NULL
+  expect_warning(
+    bayesplot_theme_set(dark2),
+    "New theme missing the following elements: line"
+  )
+  bayesplot_theme_set()
+})
+
 test_that("bayesplot_theme_set/get work", {
   bayesplot_theme_set()
   expect_identical(bayesplot_theme_get(), default)

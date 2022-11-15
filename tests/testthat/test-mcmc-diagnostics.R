@@ -21,6 +21,10 @@ test_that("rhat and neff plots return a ggplot object", {
   # named ok
   rhat <- setNames(runif(5, 1, 1.5), paste0("alpha[", 1:5, "]"))
   expect_gg(mcmc_rhat(rhat))
+
+  # doesn't error with ratios > 1 (not common but can happen)
+  expect_gg(mcmc_neff(ratio = c(0.5, 1, 1.25)))
+  expect_gg(mcmc_neff(ratio = c(0.5, 1, 2)))
 })
 
 test_that("rhat and neff plot functions throw correct errors & warnings", {

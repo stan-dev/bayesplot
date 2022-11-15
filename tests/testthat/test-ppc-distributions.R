@@ -61,6 +61,11 @@ test_that("ppc_dens,pp_hist,ppc_freqpoly,ppc_boxplot return ggplot objects", {
 test_that("ppc_pit_ecdf, ppc_pit_ecdf_grouped returns a ggplot object", {
   expect_gg(ppc_pit_ecdf(y, yrep, interpolate_adj = FALSE))
   expect_gg(ppc_pit_ecdf_grouped(y, yrep, group = group, interpolate_adj = FALSE))
+  expect_message(ppc_pit_ecdf(pit = runif(100)), "'pit' specified")
+  expect_message(
+    ppc_pit_ecdf_grouped(pit = runif(length(group)), group = group, interpolate_adj = FALSE),
+    "'pit' specified"
+  )
 })
 
 test_that("ppc_freqpoly_grouped returns a ggplot object", {

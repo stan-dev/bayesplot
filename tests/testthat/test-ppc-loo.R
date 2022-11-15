@@ -34,7 +34,16 @@ test_that("ppc_loo_pit gives deprecation warning but still works", {
 test_that("ppc_loo_pit_overlay returns ggplot object", {
   skip_if_not_installed("rstanarm")
   skip_if_not_installed("loo")
-  expect_gg(p1 <- ppc_loo_pit_overlay(y, yrep, lw, samples = 25))
+  expect_gg(ppc_loo_pit_overlay(y, yrep, lw, samples = 25))
+})
+
+test_that("ppc_loo_pit_overlay warns about binary data", {
+  skip_if_not_installed("rstanarm")
+  skip_if_not_installed("loo")
+  expect_warning(
+    ppc_loo_pit_overlay(rep(1, length(y)), yrep, lw),
+    "not recommended for binary data"
+  )
 })
 
 test_that("ppc_loo_pit_overlay works with boundary_correction=TRUE", {

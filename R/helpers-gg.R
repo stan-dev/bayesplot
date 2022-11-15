@@ -21,22 +21,6 @@ geom_ignore <- function(...) {
     show.legend = FALSE, inherit.aes = FALSE)
 }
 
-#' Wrappers for ggridges
-#'
-#' The "area ridges" are for use in `mcmc_areas()`. The scale of 1 and the
-#' identity statistic prevent the ridges from overlapping.
-#' `geom_density_ridges2()` draws closed polygons.
-#'
-#' @importFrom ggridges geom_density_ridges geom_density_ridges2
-#' @noRd
-geom_area_ridges <- function(...) {
-  ggridges::geom_density_ridges(..., stat = "identity", scale = .95)
-}
-
-geom_area_ridges2 <- function(...) {
-  ggridges::geom_density_ridges2(..., stat = "identity", scale = .95)
-}
-
 
 #' Add new aesthetic mappings to a list of aesthetic mappings
 #'

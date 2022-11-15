@@ -107,6 +107,10 @@ validate_predictions <- function(predictions, n_obs = NULL) {
 #' @return Either throws an error or returns a numeric vector.
 #' @noRd
 validate_pit <- function(pit) {
+  if (anyNA(pit)) {
+    abort("NAs not allowed in 'pit'.")
+  }
+
   stopifnot(is.numeric(pit))
 
   if (!is_vector_or_1Darray(pit)) {
@@ -115,10 +119,6 @@ validate_pit <- function(pit) {
 
   if (any(pit > 1) || any(pit < 0)) {
     abort("'pit' must only contain values between 0 and 1.")
-  }
-
-  if (anyNA(pit)) {
-    abort("NAs not allowed in 'pit'.")
   }
 
   unname(pit)
@@ -508,7 +508,7 @@ get_interpolation_values <- function(N, K, L, prob) {
       ".\n",
       "Try either setting a value of 'K' >= ",
       min(vals[vals$N <= N, ]$K),
-      "or 'interpolate_adj' = FALSE.",
+      " or 'interpolate_adj' = FALSE.",
       sep = ""
     ))
   }
