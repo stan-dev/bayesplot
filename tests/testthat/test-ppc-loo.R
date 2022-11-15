@@ -142,3 +142,96 @@ test_that("error if subset is bigger than num obs", {
 })
 
 
+# Visual tests ------------------------------------------------------------
+
+source(test_path("data-for-ppc-tests.R"))
+set.seed(123)
+
+test_that("ppc_loo_pit_overlay renders correctly", {
+  skip_on_cran()
+  skip_if_not_installed("vdiffr")
+  skip_if_not_installed("loo")
+
+  p_base <- suppressMessages(ppc_loo_pit_overlay(vdiff_loo_y, vdiff_loo_yrep, vdiff_loo_lw))
+  vdiffr::expect_doppelganger("ppc_loo_pit_overlay (default)", p_base)
+
+  p_custom <- suppressMessages(ppc_loo_pit_overlay(
+    vdiff_loo_y,
+    vdiff_loo_yrep,
+    vdiff_loo_lw,
+    boundary_correction = FALSE
+  ))
+  vdiffr::expect_doppelganger("ppc_loo_pit_overlay (boundary)", p_custom)
+})
+
+test_that("ppc_loo_pit_qq renders correctly", {
+  skip_on_cran()
+  skip_if_not_installed("vdiffr")
+  skip_if_not_installed("loo")
+
+  p_base <- ppc_loo_pit_qq(vdiff_loo_y, vdiff_loo_yrep, vdiff_loo_lw)
+  vdiffr::expect_doppelganger("ppc_loo_pit_qq (default)", p_base)
+})
+
+test_that("ppc_loo_intervals renders correctly", {
+  skip_on_cran()
+  skip_if_not_installed("vdiffr")
+  skip_if_not_installed("loo")
+
+  psis_object <- suppressWarnings(loo::psis(-vdiff_loo_lw))
+  p_base <- ppc_loo_intervals(
+    vdiff_loo_y,
+    vdiff_loo_yrep,
+    psis_object = psis_object
+  )
+  vdiffr::expect_doppelganger("ppc_loo_intervals (default)", p_base)
+
+  p_custom <- ppc_loo_intervals(
+    vdiff_loo_y,
+    vdiff_loo_yrep,
+    psis_object = psis_object,
+    prob = 0.6,
+    prob_outer = 0.7
+  )
+  vdiffr::expect_doppelganger("ppc_loo_intervals (prob)", p_custom)
+
+  p_custom <- ppc_loo_intervals(
+    vdiff_loo_y,
+    vdiff_loo_yrep,
+    psis_object = psis_object,
+    order = "median"
+  )
+  vdiffr::expect_doppelganger("ppc_loo_intervals (order)", p_custom)
+})
+
+test_that("ppc_loo_ribbon renders correctly", {
+  skip_on_cran()
+  skip_if_not_installed("vdiffr")
+  skip_if_not_installed("loo")
+
+  psis_object <- suppressWarnings(loo::psis(-vdiff_loo_lw))
+  p_base <- ppc_loo_ribbon(
+    vdiff_loo_y,
+    vdiff_loo_yrep,
+    psis_object = psis_object
+  )
+  vdiffr::expect_doppelganger("ppc_loo_ribbon (default)", p_base)
+
+  p_custom <- ppc_loo_ribbon(
+    vdiff_loo_y,
+    vdiff_loo_yrep,
+    psis_object = psis_object,
+    prob = 0.6,
+    prob_outer = 0.7
+  )
+  vdiffr::expect_doppelganger("ppc_loo_ribbon (prob)", p_custom)
+
+  p_custom <- ppc_loo_ribbon(
+    vdiff_loo_y,
+    vdiff_loo_yrep,
+    psis_object = psis_object,
+    subset = 1:10
+  )
+  vdiffr::expect_doppelganger("ppc_loo_ribbon (subset)", p_custom)
+})
+

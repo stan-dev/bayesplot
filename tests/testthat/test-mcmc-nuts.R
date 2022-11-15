@@ -87,3 +87,65 @@ test_that("validate_nuts_data_frame throws errors", {
     "Number of chains"
   )
 })
+
+
+
+# Visual tests -----------------------------------------------------------------
+
+source(test_path("data-for-mcmc-tests.R"))
+
+test_that("mcmc_nuts_acceptance renders correctly", {
+  skip_on_cran()
+  skip_if_not_installed("vdiffr")
+
+  p_base <- mcmc_nuts_acceptance(vdiff_dframe_chains_np, vdiff_dframe_chains_lp)
+  vdiffr::expect_doppelganger("mcmc_nuts_acceptance (default)", p_base)
+
+  p_chain <- mcmc_nuts_acceptance(vdiff_dframe_chains_np, vdiff_dframe_chains_lp, chain = 1)
+  vdiffr::expect_doppelganger("mcmc_nuts_acceptance (chain)", p_chain)
+})
+
+test_that("mcmc_nuts_divergence renders correctly", {
+  skip_on_cran()
+  skip_if_not_installed("vdiffr")
+
+  p_base <- mcmc_nuts_divergence(vdiff_dframe_chains_np, vdiff_dframe_chains_lp)
+  vdiffr::expect_doppelganger("mcmc_nuts_divergence (default)", p_base)
+
+  p_chain <- mcmc_nuts_divergence(vdiff_dframe_chains_np, vdiff_dframe_chains_lp, chain = 1)
+  vdiffr::expect_doppelganger("mcmc_nuts_divergence (chain)", p_chain)
+})
+
+test_that("mcmc_nuts_treedepth renders correctly", {
+  skip_on_cran()
+  skip_if_not_installed("vdiffr")
+
+  p_base <- mcmc_nuts_treedepth(vdiff_dframe_chains_np, vdiff_dframe_chains_lp)
+  vdiffr::expect_doppelganger("mcmc_nuts_treedepth (default)", p_base)
+
+  p_chain <- mcmc_nuts_treedepth(vdiff_dframe_chains_np, vdiff_dframe_chains_lp, chain = 1)
+  vdiffr::expect_doppelganger("mcmc_nuts_treedepth (chain)", p_chain)
+})
+
+test_that("mcmc_nuts_stepsize renders correctly", {
+  skip_on_cran()
+  skip_if_not_installed("vdiffr")
+
+  p_base <- mcmc_nuts_stepsize(vdiff_dframe_chains_np, vdiff_dframe_chains_lp)
+  vdiffr::expect_doppelganger("mcmc_nuts_stepsize (default)", p_base)
+
+  p_chain <- mcmc_nuts_stepsize(vdiff_dframe_chains_np, vdiff_dframe_chains_lp, chain = 1)
+  vdiffr::expect_doppelganger("mcmc_nuts_stepsize (chain)", p_chain)
+})
+
+test_that("mcmc_nuts_energy renders correctly", {
+  skip_on_cran()
+  skip_if_not_installed("vdiffr")
+
+  p_base <- mcmc_nuts_energy(vdiff_dframe_chains_np, vdiff_dframe_chains_lp, binwidth = 10)
+  vdiffr::expect_doppelganger("mcmc_nuts_energy (default)", p_base)
+
+  p_merged <- mcmc_nuts_energy(vdiff_dframe_chains_np, vdiff_dframe_chains_lp, binwidth = 10, merge_chains = TRUE)
+  vdiffr::expect_doppelganger("mcmc_nuts_energy (merged)", p_merged)
+})
+
