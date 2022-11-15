@@ -231,24 +231,24 @@ test_that("mcmc_rank_ecdf renders correctly", {
   p_base <- mcmc_rank_ecdf(vdiff_dframe_chains, pars = c("V1", "V2"))
   p_one_param <- mcmc_rank_ecdf(vdiff_dframe_chains, pars = "V1")
 
-  p_no_diff <- mcmc_rank_ecdf(
+  p_diff <- mcmc_rank_ecdf(
     vdiff_dframe_chains,
     pars = c("V1", "V2"),
-    plot_diff = FALSE
+    plot_diff = TRUE
   )
 
-  p_no_diff_one_param <- mcmc_rank_ecdf(
+  p_diff_one_param <- mcmc_rank_ecdf(
     vdiff_dframe_chains,
     pars = "V1",
-    plot_diff = FALSE
+    plot_diff = TRUE
   )
 
   vdiffr::expect_doppelganger("mcmc_rank_ecdf (default)", p_base)
   vdiffr::expect_doppelganger("mcmc_rank_ecdf (one parameter)", p_one_param)
-  vdiffr::expect_doppelganger("mcmc_rank_ecdf (no diff)", p_no_diff)
+  vdiffr::expect_doppelganger("mcmc_rank_ecdf (diff)", p_diff)
   vdiffr::expect_doppelganger(
-    "mcmc_rank_ecdf (one param no diff)",
-    p_no_diff_one_param
+    "mcmc_rank_ecdf (one param, diff)",
+    p_diff_one_param
   )
 })
 

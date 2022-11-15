@@ -74,7 +74,12 @@ example_mcmc_draws <- function(chains = 4, params = 4) {
     chains >= 1 && chains <= 4,
     params >= 1 && params <= 6
   )
-  .example_mcmc_draws(chains, params)
+  x <- .ex_draws[, seq_len(chains), ]
+  if (chains > 1) {
+    x[, , seq_len(params), drop = FALSE]
+  } else {
+    x[, seq_len(params), drop = FALSE]
+  }
 }
 
 
@@ -93,50 +98,23 @@ example_mcmc_draws <- function(chains = 4, params = 4) {
 #' dim(yrep) # ncol(yrep) = length(y) = length(x) = length(group)
 #'
 example_yrep_draws <- function() {
-  .example_yrep_draws()
+  .ex_yrep
 }
 
 #' @rdname example-data
 #' @export
 example_y_data <- function() {
-  .example_y_data()
+  .ex_y
 }
 
 #' @rdname example-data
 #' @export
 example_x_data <- function() {
-  .example_x_data()
+  .ex_x
 }
 
 #' @rdname example-data
 #' @export
 example_group_data <- function() {
-  .example_group_data()
-}
-
-
-# internal ----------------------------------------------------------------
-.example_y_data <- function() {
-  # ex_y is stored internally in R/sysdata.rda
-  return(ex_y)
-}
-.example_x_data <- function() {
-  # ex_x is stored internally in R/sysdata.rda
-  return(ex_x)
-}
-.example_group_data <- function() {
-  # ex_group is stored internally in R/sysdata.rda
-  return(ex_group)
-}
-.example_yrep_draws <- function() {
-  # ex_yrep is stored internally in R/sysdata.rda
-  return(ex_yrep)
-}
-.example_mcmc_draws <- function(chains, params) {
-  # ex_draws is stored internally in R/sysdata.rda
-  x <- ex_draws[, seq_len(chains), ]
-  if (chains > 1)
-    x[, , seq_len(params), drop = FALSE]
-  else
-    x[, seq_len(params), drop = FALSE]
+  .ex_group
 }

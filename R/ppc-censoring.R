@@ -97,7 +97,7 @@ ppc_km_overlay <- function(
                                  1))
 
   sf_form <- survival::Surv(value, group) ~ rep_label
-  if(!is.null(add_group)){
+  if (!is.null(add_group)) {
     data <- dplyr::inner_join(data,
                               tibble::tibble(y_id = seq_along(y),
                                              add_group = add_group),
@@ -125,22 +125,22 @@ ppc_km_overlay <- function(
   fsf$strata <- factor(fsf$strata, levels = rev(levels(fsf$strata)))
 
   ggplot(data = fsf,
-         mapping = aes_(x = ~ time,
-                        y = ~ surv,
-                        color = ~ is_y_color,
-                        group = ~ strata,
-                        size = ~ is_y_size,
-                        alpha = ~ is_y_alpha)) +
+         mapping = aes(x = .data$time,
+                       y = .data$surv,
+                       color = .data$is_y_color,
+                       group = .data$strata,
+                       size = .data$is_y_size,
+                       alpha = .data$is_y_alpha)) +
     geom_step() +
     hline_at(
       0.5,
-      size = 0.1,
+      linewidth = 0.1,
       linetype = 2,
       color = get_color("dh")
     ) +
     hline_at(
       c(0, 1),
-      size = 0.2,
+      linewidth = 0.2,
       linetype = 2,
       color = get_color("dh")
     ) +

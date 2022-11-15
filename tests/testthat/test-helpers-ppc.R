@@ -105,6 +105,15 @@ test_that("get_interpolation_values catches impossible values", {
     get_interpolation_values(0, 1000, 4, .95),
     "No precomputed values to interpolate from for sample length of 0."
   )
+  expect_error(
+    get_interpolation_values(1e5, 10, 4, .95),
+    "No precomputed values to interpolate from for sample length of 1e+05",
+    fixed = TRUE
+  )
+  expect_error(
+    get_interpolation_values(100, 300, 4, .95),
+    "No precomputed values available for interpolation for 'K' = 300"
+  )
 })
 
 # ecdf_intervals ---------------------------------------------------------

@@ -154,11 +154,11 @@ mcmc_nuts_acceptance <-
                            Mean = mean(.data$Value),
                            Median = median(.data$Value))
 
-    hists <- ggplot(data, aes_(x = ~ Value, y = ~ ..density..)) +
+    hists <- ggplot(data, aes(x = .data$Value, y = after_stat(density))) +
       geom_histogram(
         fill = get_color("l"),
         color = get_color("lh"),
-        size = .25,
+        linewidth = 0.25,
         na.rm = TRUE,
         binwidth = binwidth
       ) +
@@ -167,12 +167,12 @@ mcmc_nuts_acceptance <-
     if (!overlay_chain) {
       hists <- hists +
         geom_vline(
-          aes_(xintercept = ~ Mean),
+          aes(xintercept = .data$Mean),
           data = stats_par,
           color = get_color("dh")
         ) +
         geom_vline(
-          aes_(xintercept = ~ Median),
+          aes(xintercept = .data$Median),
           data = stats_par,
           color = get_color("d"),
           linetype = 2
@@ -186,9 +186,13 @@ mcmc_nuts_acceptance <-
       yaxis_ticks(FALSE) +
       xaxis_title(FALSE)
 
-    scatter <- ggplot(NULL) +
+    scatter_data <- data.frame(
+      x = accept_stat$Value,
+      y = lp$Value
+    )
+    scatter <- ggplot(scatter_data) +
       geom_point(
-        aes_(x = ~ accept_stat$Value, y = ~ lp$Value),
+        aes(x = .data$x, y = .data$y),
         alpha = 0.75,
         shape = 21,
         fill = get_color(ifelse(overlay_chain, "l", "m")),
@@ -208,28 +212,19 @@ mcmc_nuts_acceptance <-
           binwidth = binwidth
         )
 
+      chain_scatter_data <- data.frame(
+        x = accept_stat$Value[accept_stat$Chain == chain],
+        y = lp$Value[lp$Chain == chain]
+      )
       scatter <- scatter +
         geom_point(
-          aes_(x = ~ accept_stat$Value[accept_stat$Chain == chain],
-               y = ~ lp$Value[lp$Chain == chain]),
+          aes(x = .data$x, y = .data$y),
           color = get_color("d"),
-          alpha = 0.5
+          alpha = 0.5,
+          data = chain_scatter_data
         )
     }
-
-    nuts_plot <- gridExtra::arrangeGrob(
-      hists,
-      gridExtra::arrangeGrob(empty_grob()),
-      gridExtra::arrangeGrob(
-        empty_grob(),
-        scatter,
-        empty_grob(),
-        ncol = 3,
-        widths = c(1, 3, 1)
-      ),
-      nrow = 3,
-      heights = c(1, 0.1, 1)
-    )
+    nuts_plot <- gridExtra::arrangeGrob(hists, scatter, nrow = 2)
     as_bayesplot_grid(nuts_plot)
   }
 
@@ -250,19 +245,19 @@ mcmc_nuts_divergence <- function(x, lp, chain = NULL, ...) {
                             labels = c("No divergence", "Divergence"))
 
   violin_lp_data <- data.frame(divergent, lp = lp$Value)
-  violin_lp <- ggplot(violin_lp_data, aes_(x = ~ Value, y = ~ lp)) +
+  violin_lp <- ggplot(violin_lp_data, aes(x = .data$Value, y = .data$lp)) +
     geom_violin(fill = get_color("l"), color = get_color("lh")) +
     ylab("lp__") +
     xaxis_title(FALSE) +
-      bayesplot_theme_get()
+    bayesplot_theme_get()
 
   violin_accept_stat_data <- data.frame(divergent, as = accept_stat$Value)
-  violin_accept_stat <- ggplot(violin_accept_stat_data, aes_(x = ~ Value, y = ~ as)) +
+  violin_accept_stat <- ggplot(violin_accept_stat_data, aes(x = .data$Value, y = .data$as)) +
     geom_violin(fill = get_color("l"), color = get_color("lh")) +
     ylab("accept_stat__") +
     scale_y_continuous(limits = c(NA, 1.05)) +
     xaxis_title(FALSE) +
-      bayesplot_theme_get()
+    bayesplot_theme_get()
 
   div_count <- table(divergent$Value)[[2]]
   div_text <- ngettext(div_count, "divergence", "divergences")
@@ -312,7 +307,7 @@ mcmc_nuts_stepsize <- function(x, lp, chain = NULL, ...) {
   stepsize_labels <- scale_x_discrete(labels = stepsize_labels_text)
 
   violin_lp_data <- dplyr::left_join(lp, stepsize_by_chain, by = "Chain")
-  violin_lp <- ggplot(violin_lp_data, aes_(x = ~as.factor(ss), y = ~Value)) +
+  violin_lp <- ggplot(violin_lp_data, aes(x = as.factor(.data$ss), y = .data$Value)) +
     geom_violin(fill = get_color("l"), color = get_color("lh")) +
     ylab("lp__") +
     stepsize_labels +
@@ -322,7 +317,7 @@ mcmc_nuts_stepsize <- function(x, lp, chain = NULL, ...) {
   violin_accept_stat_data <-
     dplyr::left_join(accept_stat, stepsize_by_chain, by = "Chain")
   violin_accept_stat <-
-    ggplot(violin_accept_stat_data, aes_(x = ~as.factor(ss), y = ~Value)) +
+    ggplot(violin_accept_stat_data, aes(x = as.factor(.data$ss), y = .data$Value)) +
     geom_violin(fill = get_color("l"), color = get_color("lh")) +
     ylab("accept_stat__") +
     scale_y_continuous(limits = c(NA, 1.05)) +
@@ -354,11 +349,11 @@ mcmc_nuts_treedepth <- function(x, lp, chain = NULL, ...) {
   treedepth <- dplyr::filter(x, .data$Parameter == "treedepth__")
   accept_stat <- dplyr::filter(x, .data$Parameter == "accept_stat__")
 
-  hist_td <- ggplot(treedepth, aes_(x = ~ Value, y = ~ ..density..)) +
+  hist_td <- ggplot(treedepth, aes(x = .data$Value, y = after_stat(density))) +
     geom_histogram(
       fill = get_color("l"),
       color = get_color("lh"),
-      size = .2,
+      linewidth = 0.2,
       na.rm = TRUE,
       binwidth = 1
     ) +
@@ -370,14 +365,14 @@ mcmc_nuts_treedepth <- function(x, lp, chain = NULL, ...) {
 
   violin_lp_data <- data.frame(treedepth, lp = lp$Value)
   violin_lp <-
-    ggplot(violin_lp_data, aes_(x = ~ factor(Value), y = ~ lp)) +
+    ggplot(violin_lp_data, aes(x = factor(.data$Value), y = .data$lp)) +
     geom_violin(fill = get_color("l"), color = get_color("lh")) +
     labs(x = "treedepth__", y = "lp__") +
     bayesplot_theme_get()
 
   violin_accept_stat_data <- data.frame(treedepth, as = accept_stat$Value)
   violin_accept_stat <-
-    ggplot(violin_accept_stat_data, aes_(x = ~ factor(Value), y = ~ as)) +
+    ggplot(violin_accept_stat_data, aes(x = factor(.data$Value), y = .data$as)) +
     geom_violin(fill = get_color("l"), color = get_color("lh")) +
     labs(x = "treedepth__", y = "accept_stat__") +
     scale_y_continuous(breaks = c(0, 0.5, 1)) +
@@ -401,19 +396,10 @@ mcmc_nuts_treedepth <- function(x, lp, chain = NULL, ...) {
       chain_violin(violin_accept_stat_data, chain)
   }
 
-  nuts_plot <- gridExtra::arrangeGrob(
-    gridExtra::arrangeGrob(
-      violin_lp, violin_accept_stat,
-      nrow = 1
-    ),
-    gridExtra::arrangeGrob(
-      empty_grob()
-    ),
-    gridExtra::arrangeGrob(
-      empty_grob(), hist_td, empty_grob(),
-      ncol = 3, widths = c(1, 3, 1)
-    ),
-    nrow = 3, heights = c(1, 0.1, 1)
+  nuts_plot <- gridExtra::grid.arrange(
+    gridExtra::arrangeGrob(violin_lp, violin_accept_stat, nrow = 1),
+    hist_td,
+    nrow = 2
   )
   as_bayesplot_grid(nuts_plot)
 }
@@ -444,30 +430,31 @@ mcmc_nuts_energy <-
       mutate(
         Ediff = .data$Value - dplyr::lag(.data$Value),
         E_centered = .data$Value - mean(.data$Value),
-        Ediff_centered = .data$Ediff - mean(.data$Ediff, na.rm = TRUE))
+        Ediff_centered = .data$Ediff - mean(.data$Ediff, na.rm = TRUE)
+      )
 
     fills <- set_names(get_color(c("l", "m")), c("E_fill", "Ediff_fill"))
     clrs <- set_names(get_color(c("lh", "mh")), c("E_fill", "Ediff_fill"))
     aes_labs <- c(expression(pi[E]), expression(pi[paste(Delta, E)]))
 
-    graph <- ggplot(data, aes_(y = ~ ..density..)) +
+    graph <- ggplot(data, aes(y = after_stat(density))) +
       geom_histogram(
-        aes_(
-          x = ~ Ediff_centered,
-          fill = ~ "Ediff_fill",
-          color = ~ "Ediff_fill"
+        aes(
+          x = .data$Ediff_centered,
+          fill = "Ediff_fill",
+          color = "Ediff_fill"
         ),
-        size = 0.25,
+        linewidth = 0.25,
         na.rm = TRUE,
         binwidth = binwidth
       ) +
       geom_histogram(
-        aes_(
-          x = ~ E_centered,
-          fill = ~ "E_fill",
-          color = ~ "E_fill"
+        aes(
+          x = .data$E_centered,
+          fill = "E_fill",
+          color = "E_fill"
         ),
-        size = 0.25,
+        linewidth = 0.25,
         na.rm = TRUE,
         alpha = alpha,
         binwidth = binwidth
@@ -563,7 +550,3 @@ chain_violin <-
       alpha = alpha
     )
   }
-
-empty_grob <- function() {
-  structure(list(), class = c("grob", "gDesc"))
-}

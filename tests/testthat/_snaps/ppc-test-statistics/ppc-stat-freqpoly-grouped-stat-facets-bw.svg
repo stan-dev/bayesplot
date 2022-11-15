@@ -130,19 +130,19 @@
 <text x='644.00' y='282.90' style='font-size: 12.00px; font-style: italic; font-family: sans;' textLength='7.33px' lengthAdjust='spacingAndGlyphs'>T</text>
 <text x='655.35' y='282.90' style='font-size: 12.00px; font-family: sans;' textLength='9.32px' lengthAdjust='spacingAndGlyphs'>=</text>
 <text x='667.44' y='282.90' style='font-size: 12.00px; font-family: sans;' textLength='22.68px' lengthAdjust='spacingAndGlyphs'>sum</text>
-<line x1='645.73' y1='299.74' x2='659.55' y2='299.74' style='stroke-width: 1.07; stroke: #6497B1; stroke-linecap: butt;' />
-<line x1='645.73' y1='317.99' x2='659.55' y2='317.99' style='stroke-width: 1.07; stroke: #011F4B; stroke-linecap: butt;' />
+<line x1='645.73' y1='298.99' x2='659.55' y2='298.99' style='stroke-width: 1.07; stroke: #011F4B; stroke-linecap: butt;' />
+<line x1='645.73' y1='317.23' x2='659.55' y2='317.23' style='stroke-width: 1.07; stroke: #6497B1; stroke-linecap: butt;' />
 <text x='667.26' y='303.60' style='font-size: 13.00px; font-style: italic; font-family: sans;' textLength='7.94px' lengthAdjust='spacingAndGlyphs'>T</text>
 <text x='676.54' y='303.60' style='font-size: 16.25px; font-family: sans;' textLength='5.41px' lengthAdjust='spacingAndGlyphs'>(</text>
 <text x='681.95' y='303.60' style='font-size: 13.00px; font-style: italic; font-family: sans;' textLength='6.51px' lengthAdjust='spacingAndGlyphs'>y</text>
-<text x='689.49' y='306.01' style='font-size: 9.10px; font-family: sans;' textLength='3.03px' lengthAdjust='spacingAndGlyphs'>r</text>
-<text x='692.52' y='306.01' style='font-size: 9.10px; font-family: sans;' textLength='5.06px' lengthAdjust='spacingAndGlyphs'>e</text>
-<text x='697.58' y='306.01' style='font-size: 9.10px; font-family: sans;' textLength='5.06px' lengthAdjust='spacingAndGlyphs'>p</text>
-<text x='702.64' y='303.60' style='font-size: 16.25px; font-family: sans;' textLength='5.40px' lengthAdjust='spacingAndGlyphs'>)</text>
-<text x='667.26' y='322.61' style='font-size: 13.00px; font-style: italic; font-family: sans;' textLength='7.94px' lengthAdjust='spacingAndGlyphs'>T</text>
-<text x='676.54' y='322.61' style='font-size: 16.25px; font-family: sans;' textLength='5.41px' lengthAdjust='spacingAndGlyphs'>(</text>
-<text x='681.95' y='322.61' style='font-size: 13.00px; font-style: italic; font-family: sans;' textLength='6.51px' lengthAdjust='spacingAndGlyphs'>y</text>
-<text x='689.49' y='322.61' style='font-size: 16.25px; font-family: sans;' textLength='5.40px' lengthAdjust='spacingAndGlyphs'>)</text>
-<text x='8.97' y='15.89' style='font-size: 14.40px; font-family: sans;' textLength='347.45px' lengthAdjust='spacingAndGlyphs'>ppc_stat_freqpoly_grouped (stat, facet_args, binwidth)</text>
+<text x='689.49' y='303.60' style='font-size: 16.25px; font-family: sans;' textLength='5.40px' lengthAdjust='spacingAndGlyphs'>)</text>
+<text x='667.26' y='321.09' style='font-size: 13.00px; font-style: italic; font-family: sans;' textLength='7.94px' lengthAdjust='spacingAndGlyphs'>T</text>
+<text x='676.54' y='321.09' style='font-size: 16.25px; font-family: sans;' textLength='5.41px' lengthAdjust='spacingAndGlyphs'>(</text>
+<text x='681.95' y='321.09' style='font-size: 13.00px; font-style: italic; font-family: sans;' textLength='6.51px' lengthAdjust='spacingAndGlyphs'>y</text>
+<text x='689.49' y='323.50' style='font-size: 9.10px; font-family: sans;' textLength='3.03px' lengthAdjust='spacingAndGlyphs'>r</text>
+<text x='692.52' y='323.50' style='font-size: 9.10px; font-family: sans;' textLength='5.06px' lengthAdjust='spacingAndGlyphs'>e</text>
+<text x='697.58' y='323.50' style='font-size: 9.10px; font-family: sans;' textLength='5.06px' lengthAdjust='spacingAndGlyphs'>p</text>
+<text x='702.64' y='321.09' style='font-size: 16.25px; font-family: sans;' textLength='5.40px' lengthAdjust='spacingAndGlyphs'>)</text>
+<text x='8.97' y='15.89' style='font-size: 14.40px; font-family: sans;' textLength='284.20px' lengthAdjust='spacingAndGlyphs'>ppc_stat_freqpoly_grouped (stat, facets, bw)</text>
 </g>
 </svg>

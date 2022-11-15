@@ -101,9 +101,13 @@ NULL
 
 # internal ----------------------------------------------------------------
 
+# nocov start
 # release reminders (for devtools)
-release_questions <- function() { # nocov start
+release_questions <- function() {
   c(
-    "Have you reduced the size of the vignettes for CRAN?"
+    "Have you reduced the size of the vignettes for CRAN?",
+    "Have you tested with '^tests/testthat/_snaps$' removed from .Rbuildignore?",
+    "Have you put '^tests/testthat/_snaps$' back in .Rbuildignore? before submitting?"
   )
-} # nocov end
+}
+# nocov end

@@ -16,12 +16,13 @@
 #'   variable. For example, `x` could be a predictor variable from a
 #'   regression model, a time variable for time-series models, etc. If `x`
 #'   is missing or `NULL` then the observation index is used for the x-axis.
-#' @param alpha,size,fatten Arguments passed to geoms. For ribbon plots `alpha`
-#'   is passed to [ggplot2::geom_ribbon()] to control the opacity of the outer
-#'   ribbon and `size` is passed to [ggplot2::geom_line()] to control the size
-#'   of the line representing the median prediction (`size=0` will remove the
-#'   line). For interval plots `alpha`, `size` and `fatten` are passed to
-#'   [ggplot2::geom_pointrange()] (`fatten=0` will remove the point estimates).
+#' @param alpha,size,fatten,linewidth Arguments passed to geoms. For ribbon
+#'   plots `alpha` is passed to [ggplot2::geom_ribbon()] to control the opacity
+#'   of the outer ribbon and `size` is passed to [ggplot2::geom_line()] to
+#'   control the size of the line representing the median prediction (`size=0`
+#'   will remove the line). For interval plots `alpha`, `size`, `fatten`, and
+#'   `linewidth` are passed to [ggplot2::geom_pointrange()] (`fatten=0` will
+#'   remove the point estimates).
 #' @param ... Currently unused.
 #'
 #' @template return-ggplot-or-data
@@ -128,7 +129,8 @@ ppc_intervals <-
            prob_outer = 0.9,
            alpha = 0.33,
            size = 1,
-           fatten = 2.5) {
+           fatten = 2.5,
+           linewidth = 1) {
 
     dots <- list(...)
     if (!from_grouped(dots)) {
@@ -155,17 +157,19 @@ ppc_intervals <-
       geom_linerange(
         mapping = intervals_outer_aes(color = "yrep"),
         alpha = alpha,
-        size = size
+        size = size,
+        linewidth = linewidth
       ) +
       geom_pointrange(
         shape = 21,
         stroke = 0.5,
         size = size,
-        fatten = fatten
+        fatten = fatten,
+        linewidth = linewidth
       ) +
       geom_point(
-        mapping = aes_(
-          y = ~ y_obs,
+        mapping = aes(
+          y = .data$y_obs,
           color = "y",
           fill = "y"
         ),
@@ -193,7 +197,8 @@ ppc_intervals_grouped <-
            prob_outer = 0.9,
            alpha = 0.33,
            size = 1,
-           fatten = 2.5) {
+           fatten = 2.5,
+           linewidth = 1) {
     check_ignored_arguments(...)
     call <- match.call(expand.dots = FALSE)
     g <- eval(ungroup_call("ppc_intervals", call), parent.frame())
@@ -240,34 +245,34 @@ ppc_ribbon <-
       geom_ribbon(
         mapping = intervals_outer_aes(fill = "yrep", color = "yrep"),
         color = NA,
-        size = 0.2 * size,
+        linewidth = 0.2 * size,
         alpha = alpha
       ) +
       geom_ribbon(
         mapping = intervals_outer_aes(),
         fill = NA,
         color = get_color("m"),
-        size = 0.2 * size,
+        linewidth = 0.2 * size,
         alpha = 1
       ) +
-      geom_ribbon(size = 0.5 * size) +
+      geom_ribbon(linewidth = 0.5 * size) +
       geom_line(
-        mapping = aes_(y = ~ m),
+        mapping = aes(y = .data$m),
         color = get_color("m"),
-        size = size
+        linewidth = size
       ) +
-      geom_blank(aes_(fill = "y"))
+      geom_blank(aes(fill = "y"))
 
     if (y_draw == "line" || y_draw == "both") {
       g <- g + geom_line(
-        aes_(y = ~ y_obs, color = "y"),
-        size = 0.5
+        aes(y = .data$y_obs, color = "y"),
+        linewidth = 0.5
       )
     }
 
     if (y_draw == "points" || y_draw == "both") {
       g <- g + geom_point(
-        mapping = aes_(y = ~ y_obs, color = "y", fill = "y"),
+        mapping = aes(y = .data$y_obs, color = "y", fill = "y"),
         shape = 21,
         size = 1.5
       )

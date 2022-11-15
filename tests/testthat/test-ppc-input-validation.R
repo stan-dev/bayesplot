@@ -3,7 +3,6 @@ context("PPC: input validation")
 
 source(test_path("data-for-ppc-tests.R"))
 
-# validating y ------------------------------------------------------------
 test_that("validate_y works", {
   expect_identical(validate_y(y), y)
   expect_identical(validate_y(as.array(y)), y)
@@ -19,7 +18,6 @@ test_that("validate_y throws errors", {
   expect_error(validate_y(c(y, NA)), "NAs not allowed")
 })
 
-# validating yrep ----------------------------------------------------------
 test_that("validate_predictions works", {
   expect_identical(validate_predictions(yrep, length(y)), yrep)
   expect_equal(validate_predictions(yrep2, length(y2)), yrep2)
@@ -35,7 +33,6 @@ test_that("validate_predictions throws errors", {
   expect_error(validate_predictions(yrep, length(y2)), "must be equal to ")
 })
 
-# validating group --------------------------------------------------------
 test_that("validate_group works", {
   expect_identical(validate_group(1:3, n_obs = 3), as.factor(1:3))
   expect_identical(validate_group(as.numeric(1:3), n_obs = 3), as.factor(1:3))
@@ -49,8 +46,6 @@ test_that("validate_group throws errors", {
                "must be equal to the number of observations")
 })
 
-
-# validating x --------------------------------------------------------
 test_that("validate_x works", {
   x <- rnorm(3)
   expect_identical(validate_x(x, y = 1:3), x)
@@ -64,4 +59,12 @@ test_that("validate_x throws errors", {
   expect_error(validate_x(factor(1:3), y = 1:3), "numeric")
   expect_error(validate_x(c(1,2,NA), y = 1:3), "NAs not allowed")
   expect_error(validate_x(1:4, y = 1:3), "must be equal to")
+})
+
+test_that("validate_pit works", {
+  expect_error(validate_pit("pit"), "is.numeric")
+  expect_error(validate_pit(cbind(1, 2)), "vector")
+  expect_error(validate_pit(-1), "between 0 and 1")
+  expect_error(validate_pit(NA), "NAs not allowed")
+  expect_identical(validate_pit(c(name = 0.5)), 0.5)
 })

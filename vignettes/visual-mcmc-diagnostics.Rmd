@@ -6,8 +6,8 @@ output:
   rmarkdown::html_vignette:
     toc: true
     toc_depth: 3
-params:
-  EVAL: !r identical(Sys.getenv("NOT_CRAN"), "true")
+params: 
+  EVAL: !r identical(Sys.getenv("NOT_CRAN"), "true") && !(isTRUE(as.logical(Sys.getenv("CI"))) && .Platform$OS.type == "windows")
 vignette: >
   %\VignetteIndexEntry{Visual MCMC diagnostics}
   %\VignetteEngine{knitr::rmarkdown}
@@ -23,6 +23,7 @@ library("ggplot2")
 library("rstan")
 library("dplyr") #Used only for consistency checks
 rstan_options(auto_write = TRUE) #Helpful throughout development
+bayesplot_theme_set()
 ```
 
 ## Introduction

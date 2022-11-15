@@ -16,6 +16,7 @@ ppc_bars(
   width = 0.9,
   size = 1,
   fatten = 2.5,
+  linewidth = 1,
   freq = TRUE
 )
 
@@ -29,6 +30,7 @@ ppc_bars_grouped(
   width = 0.9,
   size = 1,
   fatten = 2.5,
+  linewidth = 1,
   freq = TRUE
 )
 
@@ -64,9 +66,10 @@ of the expected counts.)}
 \item{width}{For bar plots only, passed to \code{\link[ggplot2:geom_bar]{ggplot2::geom_bar()}} to control
 the bar width.}
 
-\item{size, fatten}{For bar plots, \code{size} and \code{fatten} are passed to
-\code{\link[ggplot2:geom_linerange]{ggplot2::geom_pointrange()}} to control the appearance of the \code{yrep} points
-and intervals. For rootograms \code{size} is passed to \code{\link[ggplot2:geom_path]{ggplot2::geom_line()}}.}
+\item{size, fatten, linewidth}{For bar plots, \code{size}, \code{fatten}, and \code{linewidth}
+are passed to \code{\link[ggplot2:geom_linerange]{ggplot2::geom_pointrange()}} to control the appearance of the
+\code{yrep} points and intervals. For rootograms \code{size} is passed to
+\code{\link[ggplot2:geom_path]{ggplot2::geom_line()}}.}
 
 \item{freq}{For bar plots only, if \code{TRUE} (the default) the y-axis will
 display counts. Setting \code{freq=FALSE} will put proportions on the y-axis.}

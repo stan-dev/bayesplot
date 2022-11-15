@@ -122,17 +122,17 @@ ppc_stat <-
       mapping = set_hist_aes(freq)
     ) +
       geom_histogram(
-        aes_(fill = "yrep"),
+        aes(fill = "yrep"),
         color = get_color("lh"),
-        size = .25,
+        linewidth = 0.25,
         na.rm = TRUE,
         binwidth = binwidth,
         breaks = breaks
       ) +
       geom_vline(
         data = dplyr::filter(data, .data$variable == "y"),
-        mapping = aes_(xintercept = ~ value, color = "y"),
-        size = 1.5
+        mapping = aes(xintercept = .data$value, color = "y"),
+        linewidth = 1.5
       ) +
       scale_color_ppc(values = get_color("dh"), labels = Ty_label()) +
       scale_fill_ppc(values = get_color("l"), labels = Tyrep_label()) +
@@ -203,16 +203,16 @@ ppc_stat_freqpoly <-
       mapping = set_hist_aes(freq)
     ) +
       geom_freqpoly(
-        aes_(color = "yrep"),
-        size = .5,
+        aes(color = "yrep"),
+        linewidth = 0.5,
         na.rm = TRUE,
         binwidth = binwidth
       ) +
       geom_vline(
         data = dplyr::filter(data, .data$variable == "y"),
-        mapping = aes_(xintercept = ~ value, color = "y"),
+        mapping = aes(xintercept = .data$value, color = "y"),
         show.legend = FALSE,
-        size = 1
+        linewidth = 1
       ) +
       scale_color_ppc(
         name = stat_legend_title(stat, deparse(substitute(stat))),
@@ -287,9 +287,9 @@ ppc_stat_2d <- function(y,
 
   ggplot(data) +
     geom_point(
-      aes_(
-        x = ~ value,
-        y = ~ value2,
+      aes(
+        x = .data$value,
+        y = .data$value2,
         fill = "yrep",
         color = "yrep"
       ),
@@ -299,22 +299,22 @@ ppc_stat_2d <- function(y,
     ) +
     geom_segment(
       data = y_segment_data,
-      aes_(
-        x = ~ x,
-        y = ~ y,
-        xend = ~ xend,
-        yend = ~ yend,
+      aes(
+        x = .data$x,
+        y = .data$y,
+        xend = .data$xend,
+        yend = .data$yend,
         color = "y"
       ),
       linetype = 2,
-      size = 0.4,
+      linewidth = 0.4,
       show.legend = FALSE
     ) +
     geom_point(
       data = y_point_data,
-      mapping = aes_(
-        x = ~ x,
-        y = ~ y,
+      mapping = aes(
+        x = .data$x,
+        y = .data$y,
         fill = "y",
         color = "y"
       ),

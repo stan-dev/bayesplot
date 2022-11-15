@@ -14,4 +14,3 @@ book/*
 docs/*
 Rplots.pdf
 ^\.github$
-^tests/testthat/_snaps$

@@ -107,6 +107,10 @@ validate_predictions <- function(predictions, n_obs = NULL) {
 #' @return Either throws an error or returns a numeric vector.
 #' @noRd
 validate_pit <- function(pit) {
+  if (anyNA(pit)) {
+    abort("NAs not allowed in 'pit'.")
+  }
+
   stopifnot(is.numeric(pit))
 
   if (!is_vector_or_1Darray(pit)) {
@@ -115,10 +119,6 @@ validate_pit <- function(pit) {
 
   if (any(pit > 1) || any(pit < 0)) {
     abort("'pit' must only contain values between 0 and 1.")
-  }
-
-  if (anyNA(pit)) {
-    abort("NAs not allowed in 'pit'.")
   }
 
   unname(pit)
@@ -318,6 +318,13 @@ adjust_gamma <- function(N,
   if (prob >= 1 || prob <= 0) {
     abort("Value of 'prob' must be in (0,1).")
   }
+  if (is.null(interpolate_adj)) {
+    if (K <= 200) {
+      interpolate_adj <- FALSE
+    } else {
+      interpolate_adj <- TRUE
+    }
+  }
   if (interpolate_adj == TRUE) {
     gamma <- interpolate_gamma(N = N, K = K, prob = prob, L = L)
   } else if (L == 1) {
@@ -448,21 +455,19 @@ interpolate_gamma <- function(N, K, prob, L) {
 #' @noRd
 get_interpolation_values <- function(N, K, L, prob) {
   for (dim in c("L", "prob")) {
-    if (all(get(dim) != bayesplot:::gamma_adj[, dim])) {
+    if (all(get(dim) != .gamma_adj[, dim])) {
       stop(paste(
         "No precomputed values to interpolate from for '", dim, "' = ",
         get(dim),
         ".\n",
         "Values of '", dim, "' available for interpolation: ",
-        paste(unique(bayesplot:::gamma_adj[, dim]), collapse = ", "),
+        paste(unique(.gamma_adj[, dim]), collapse = ", "),
         ".",
         sep = ""
       ))
     }
   }
-  vals <- bayesplot:::gamma_adj[
-    bayesplot:::gamma_adj$L == L & bayesplot:::gamma_adj$prob == prob,
-  ]
+  vals <- .gamma_adj[.gamma_adj$L == L & .gamma_adj$prob == prob, ]
   if (N > max(vals$N)) {
     stop(paste(
       "No precomputed values to interpolate from for sample length of ",
@@ -503,7 +508,7 @@ get_interpolation_values <- function(N, K, L, prob) {
       ".\n",
       "Try either setting a value of 'K' >= ",
       min(vals[vals$N <= N, ]$K),
-      "or 'interpolate_adj' = FALSE.",
+      " or 'interpolate_adj' = FALSE.",
       sep = ""
     ))
   }

@@ -5,41 +5,38 @@ context("Convenience functions (for ggplot objects)")
 
 # abline_01, vline_ and hline_ ------------------------------------------
 test_that("abline_01 returns the correct object", {
-  expect_equal(
-    abline_01(color = "green", linetype = 2),
-    geom_abline(intercept = 0, slope = 1, color = "green", linetype = 2, na.rm = TRUE),
-    check.environment = FALSE
-  )
+  a <- abline_01(color = "green", linetype = 2)
+  b <- geom_abline(intercept = 0, slope = 1, color = "green", linetype = 2, na.rm = TRUE)
+  a$constructor <- b$constructor <- NULL
+  expect_equal(a, b, check.environment = FALSE)
 })
 test_that("vline_* and hline_* return correct objects", {
-  expect_equal(
-    vline_0(color = "red"),
-    geom_vline(xintercept = 0, color = "red", na.rm = TRUE),
-    check.environment = FALSE
-  )
-  expect_equal(
-    hline_0(size = 2, linetype = 3),
-    geom_hline(yintercept = 0, size = 2, linetype = 3, na.rm = TRUE),
-    check.environment = FALSE
-  )
-  expect_equal(
-    vline_at(c(3,4), na.rm = FALSE),
-    geom_vline(xintercept = c(3,4)),
-    check.environment = FALSE
-  )
-  expect_equal(
-    hline_at(c(3,4), na.rm = FALSE),
-    geom_hline(yintercept = c(3,4)),
-    check.environment = FALSE
-  )
+  a <- vline_0(color = "red")
+  b <- geom_vline(xintercept = 0, color = "red", na.rm = TRUE)
+  a$constructor <- b$constructor <- NULL
+  expect_equal(a, b, check.environment = FALSE)
+
+  a <- hline_0(linewidth = 2, linetype = 3)
+  b <- geom_hline(yintercept = 0, linewidth = 2, linetype = 3, na.rm = TRUE)
+  a$constructor <- b$constructor <- NULL
+  expect_equal(a, b, check.environment = FALSE)
+
+  a <- vline_at(c(3,4), na.rm = FALSE)
+  b <- geom_vline(xintercept = c(3,4))
+  a$constructor <- b$constructor <- NULL
+  expect_equal(a, b, check.environment = FALSE)
+
+  a <- hline_at(c(3,4), na.rm = FALSE)
+  b <- geom_hline(yintercept = c(3,4))
+  a$constructor <- b$constructor <- NULL
+  expect_equal(a, b, check.environment = FALSE)
 })
 test_that("vline_at with 'fun' works", {
   x <- example_mcmc_draws(chains = 1)
-  expect_equal(
-    vline_at(x, colMeans),
-    geom_vline(xintercept = colMeans(x), na.rm = TRUE),
-    check.environment = FALSE
-  )
+  a <- vline_at(x, colMeans)
+  b <- geom_vline(xintercept = colMeans(x), na.rm = TRUE)
+  a$constructor <- b$constructor <- NULL
+  expect_equal(a, b, check.environment = FALSE)
 })
 test_that("calc_v (internal function) works", {
   a <- 1:4
@@ -70,8 +67,8 @@ test_that("lbub works", {
 # plot and facet backgrounds ----------------------------------------------
 test_that("grid_lines returns correct theme object", {
   thm <- theme_default() + grid_lines(size = 1.5, color = "purple")
-  expect_equal(thm$panel.grid.major, element_line(size = 1.5, color = "purple"))
-  expect_equal(thm$panel.grid.minor, element_line(size = 0.75, color = "purple"))
+  expect_equal(thm$panel.grid.major, element_line(linewidth = 1.5, color = "purple"))
+  expect_equal(thm$panel.grid.minor, element_line(linewidth = 0.75, color = "purple"))
 })
 test_that("panel_bg returns correct theme object", {
   bg1 <- panel_bg()
@@ -166,15 +163,15 @@ test_that("yaxis_title returns correct theme object", {
 test_that("xaxis_ticks returns correct theme object", {
   expect_identical(xaxis_ticks(FALSE), theme(axis.ticks.x = element_blank()))
   expect_equal(
-    xaxis_ticks(size = 0.5, color = "red"),
-    theme(axis.ticks.x = element_line(size = 0.5, color = "red"))
+    xaxis_ticks(linewidth = 0.5, color = "red"),
+    theme(axis.ticks.x = element_line(linewidth = 0.5, color = "red"))
   )
 })
 test_that("yaxis_ticks returns correct theme object", {
   expect_identical(yaxis_ticks(FALSE), theme(axis.ticks.y = element_blank()))
   expect_equal(
-    yaxis_ticks(size = 0.5, color = "red"),
-    theme(axis.ticks.y = element_line(size = 0.5, color = "red"))
+    yaxis_ticks(linewidth = 0.5, color = "red"),
+    theme(axis.ticks.y = element_line(linewidth = 0.5, color = "red"))
   )
 })
 
@@ -182,9 +179,8 @@ test_that("yaxis_ticks returns correct theme object", {
 # overlay functions -------------------------------------------------------
 test_that("overlay_function returns the correct object", {
   expect_error(overlay_function(), 'argument "fun" is missing')
-  expect_equal(
-    overlay_function(fun = "dnorm"),
-    stat_function(fun = "dnorm", inherit.aes = FALSE),
-    check.environment = FALSE
-  )
+  a <- overlay_function(fun = "dnorm")
+  b <- stat_function(fun = "dnorm", inherit.aes = FALSE)
+  a$constructor <- b$constructor <- NULL
+  expect_equal(a, b, check.environment = FALSE)
 })
