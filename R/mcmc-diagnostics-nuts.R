@@ -224,20 +224,7 @@ mcmc_nuts_acceptance <-
           data = chain_scatter_data
         )
     }
-
-    nuts_plot <- gridExtra::arrangeGrob(
-      hists,
-      gridExtra::arrangeGrob(empty_grob()),
-      gridExtra::arrangeGrob(
-        empty_grob(),
-        scatter,
-        empty_grob(),
-        ncol = 3,
-        widths = c(1, 3, 1)
-      ),
-      nrow = 3,
-      heights = c(1, 0.1, 1)
-    )
+    nuts_plot <- gridExtra::arrangeGrob(hists, scatter, nrow = 2)
     as_bayesplot_grid(nuts_plot)
   }
 
@@ -409,19 +396,10 @@ mcmc_nuts_treedepth <- function(x, lp, chain = NULL, ...) {
       chain_violin(violin_accept_stat_data, chain)
   }
 
-  nuts_plot <- gridExtra::arrangeGrob(
-    gridExtra::arrangeGrob(
-      violin_lp, violin_accept_stat,
-      nrow = 1
-    ),
-    gridExtra::arrangeGrob(
-      empty_grob()
-    ),
-    gridExtra::arrangeGrob(
-      empty_grob(), hist_td, empty_grob(),
-      ncol = 3, widths = c(1, 3, 1)
-    ),
-    nrow = 3, heights = c(1, 0.1, 1)
+  nuts_plot <- gridExtra::grid.arrange(
+    gridExtra::arrangeGrob(violin_lp, violin_accept_stat, nrow = 1),
+    hist_td,
+    nrow = 2
   )
   as_bayesplot_grid(nuts_plot)
 }
@@ -572,7 +550,3 @@ chain_violin <-
       alpha = alpha
     )
   }
-
-empty_grob <- function() {
-  structure(list(), class = c("grob", "gDesc"))
-}
