@@ -48,6 +48,6 @@
 <text x='358.97' y='568.03' text-anchor='middle' style='font-size: 9.60px; fill: #4D4D4D; font-family: sans;' textLength='18.69px' lengthAdjust='spacingAndGlyphs'>0.50</text>
 <text x='520.90' y='568.03' text-anchor='middle' style='font-size: 9.60px; fill: #4D4D4D; font-family: sans;' textLength='18.69px' lengthAdjust='spacingAndGlyphs'>0.75</text>
 <text x='682.84' y='568.03' text-anchor='middle' style='font-size: 9.60px; fill: #4D4D4D; font-family: sans;' textLength='18.69px' lengthAdjust='spacingAndGlyphs'>1.00</text>
-<text x='27.90' y='15.89' style='font-size: 14.40px; font-family: sans;' textLength='134.49px' lengthAdjust='spacingAndGlyphs'>ppc_pit_ecdf (no diff)</text>
+<text x='27.90' y='15.89' style='font-size: 14.40px; font-family: sans;' textLength='114.47px' lengthAdjust='spacingAndGlyphs'>ppc_pit_ecdf (diff)</text>
 </g>
 </svg>

@@ -66,13 +66,11 @@
 #'   }
 #'   \item{`mcmc_rank_ecdf()`}{
 #'    The ECDFs of the ranks from `mcmc_rank_hist()` are plotted with the
-#'    simultaneous confidence bands with a coverage determined by `prob`,
-#'    that is, bands that completely cover all of the rank ECDFs with the
-#'    probability 'prob'.
-#'    If plot_diff = TRUE, the difference between the observed rank ECDFs and the
-#'    theoretical expectation for samples originating from the same distribution
-#'    is drawn.
-#'    See Säilynoja et al. (2021) for details.
+#'    simultaneous confidence bands with a coverage determined by `prob`, that
+#'    is, bands that completely cover all of the rank ECDFs with the probability
+#'    `prob`. If `plot_diff = TRUE`, the difference between the observed rank
+#'    ECDFs and the theoretical expectation for samples originating from the
+#'    same distribution is drawn. See Säilynoja et al. (2021) for details.
 #'   }
 #' }
 #'
@@ -443,7 +441,7 @@ mcmc_rank_hist <- function(x,
 #' @param prob For `mcmc_rank_ecdf()`, a value between 0 and 1
 #' specifying the desired simultaneous confidence of the confidence bands to be
 #' drawn for the rank ECDF plots.
-#' @param plot_diff For `mcmc_rank_ecdf()`, a boolean specifying it the
+#' @param plot_diff For `mcmc_rank_ecdf()`, a boolean specifying if the
 #' difference between the observed rank ECDFs and the theoretical expectation
 #' should be drawn instead of the unmodified rank ECDF plots.
 #' @export
@@ -456,7 +454,7 @@ mcmc_rank_ecdf <-
            K = NULL,
            facet_args = list(),
            prob = 0.99,
-           plot_diff = TRUE,
+           plot_diff = FALSE,
            interpolate_adj = NULL) {
   check_ignored_arguments(...,
     ok_args = c("K", "pit", "prob", "plot_diff", "interpolate_adj", "M")

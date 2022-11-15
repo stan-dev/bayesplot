@@ -71,10 +71,10 @@
 #' # ppc_ecdf_overlay with continuous data (set discrete=TRUE if discrete data)
 #' ppc_ecdf_overlay(y, yrep[sample(nrow(yrep), 25), ])
 #'
-#' # ECDF and ECDF difference plot of the PIT values of ´y´ compared to ´yrep
+#' # ECDF and ECDF difference plot of the PIT values of y compared to yrep
 #' # with 99% simultaneous confidence bands.
-#' ppc_pit_ecdf(y, yrep, prob = 0.99, plot_diff = FALSE, interpolate_adj = FALSE)
-#' ppc_pit_ecdf(y, yrep, prob = 0.99, plot_diff = TRUE, interpolate_adj = FALSE)
+#' ppc_pit_ecdf(y, yrep, prob = 0.99, plot_diff = FALSE)
+#' ppc_pit_ecdf(y, yrep, prob = 0.99, plot_diff = TRUE)
 #' }
 #'
 #' # for ppc_hist,dens,freqpoly,boxplot definitely use a subset yrep rows so
@@ -107,7 +107,7 @@
 #' \donttest{
 #' # ECDF difference plots of the PIT values by group
 #' # with 99% simultaneous confidence bands.
-#' ppc_pit_ecdf_grouped(y, yrep, group=group, prob=0.99, interpolate_adj=FALSE)
+#' ppc_pit_ecdf_grouped(y, yrep, group=group, prob=0.99, plot_diff = TRUE)
 #' }
 #'
 #' # don't need to only use small number of rows for ppc_violin_grouped
@@ -580,8 +580,8 @@ ppc_violin_grouped <-
 
 #' @export
 #' @param pit An optional vector of probability integral transformed values for
-#' which the ECDF is to be drawn. If NULL, PIT values are computed to ´y´ with
-#' respect to the corresponding values in ´yrep´.
+#'   which the ECDF is to be drawn. If NULL, PIT values are computed to `y` with
+#'   respect to the corresponding values in `yrep`.
 #' @rdname PPC-distributions
 #'
 ppc_pit_ecdf <- function(y,

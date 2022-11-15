@@ -150,6 +150,6 @@
 <polyline points='24.91,510.83 27.90,510.83 ' style='stroke-width: 0.64; stroke: #333333; stroke-linecap: butt;' />
 <polyline points='24.91,445.11 27.90,445.11 ' style='stroke-width: 0.64; stroke: #333333; stroke-linecap: butt;' />
 <polyline points='24.91,379.39 27.90,379.39 ' style='stroke-width: 0.64; stroke: #333333; stroke-linecap: butt;' />
-<text x='27.90' y='15.89' style='font-size: 14.40px; font-family: sans;' textLength='195.35px' lengthAdjust='spacingAndGlyphs'>ppc_pit_ecdf_grouped (no diff)</text>
+<text x='27.90' y='15.89' style='font-size: 14.40px; font-family: sans;' textLength='175.33px' lengthAdjust='spacingAndGlyphs'>ppc_pit_ecdf_grouped (diff)</text>
 </g>
 </svg>

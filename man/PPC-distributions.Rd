@@ -187,8 +187,8 @@ to control the appearance of \code{y} points. The default of \code{y_jitter=NULL
 will let \strong{ggplot2} determine the amount of jitter.}
 
 \item{pit}{An optional vector of probability integral transformed values for
-which the ECDF is to be drawn. If NULL, PIT values are computed to ´y´ with
-respect to the corresponding values in ´yrep´.}
+which the ECDF is to be drawn. If NULL, PIT values are computed to \code{y} with
+respect to the corresponding values in \code{yrep}.}
 
 \item{K}{An optional integer defining the number of equally spaced evaluation
 points for the ECDF. If the submitted PIT values are known to be discrete,
@@ -198,13 +198,17 @@ this should be the number of the discrete cases. Defaults to the smaller of
 \item{prob}{The desired simultaneous coverage level of the bands around the
 ECDF. A value in (0,1).}
 
-\item{plot_diff}{A boolean defining whether to plot the difference between the
-observed ECDF and the theoretical expectation for uniform PIT values.}
+\item{plot_diff}{A boolean defining whether to plot the difference between
+the observed ECDF and the theoretical expectation for uniform PIT values
+rather than plotting the regular ECDF. The default is \code{FALSE}, but for
+large samples we recommend setting \code{plot_diff=TRUE} as the difference plot
+will visually show a more dynamic range.}
 
 \item{interpolate_adj}{A boolean defining if the simultaneous confidence
-bands should be computed or interpolated from precomputed values. Computing
-the bands may be computationally intensive and approximation gives a fast
-method for assessing the ECDF trajectory.}
+bands should be interpolated based on precomputed values rather than
+computed exactly. Computing the bands may be computationally intensive and
+the approximation gives a fast method for assessing the ECDF trajectory.
+The default is to use interpolation if \code{K} is greater than 200.}
 }
 \value{
 The plotting functions return a ggplot object that can be further
@@ -269,10 +273,10 @@ ppc_dens_overlay(y, yrep[1:25, ])
 # ppc_ecdf_overlay with continuous data (set discrete=TRUE if discrete data)
 ppc_ecdf_overlay(y, yrep[sample(nrow(yrep), 25), ])
 
-# ECDF and ECDF difference plot of the PIT values of ´y´ compared to ´yrep
+# ECDF and ECDF difference plot of the PIT values of y compared to yrep
 # with 99\% simultaneous confidence bands.
-ppc_pit_ecdf(y, yrep, prob = 0.99, plot_diff = FALSE, interpolate_adj = FALSE)
-ppc_pit_ecdf(y, yrep, prob = 0.99, plot_diff = TRUE, interpolate_adj = FALSE)
+ppc_pit_ecdf(y, yrep, prob = 0.99, plot_diff = FALSE)
+ppc_pit_ecdf(y, yrep, prob = 0.99, plot_diff = TRUE)
 }
 
 # for ppc_hist,dens,freqpoly,boxplot definitely use a subset yrep rows so
@@ -305,7 +309,7 @@ ppc_ecdf_overlay_grouped(y, yrep[1:25, ], group = group)
 \donttest{
 # ECDF difference plots of the PIT values by group
 # with 99\% simultaneous confidence bands.
-ppc_pit_ecdf_grouped(y, yrep, group=group, prob=0.99, interpolate_adj=FALSE)
+ppc_pit_ecdf_grouped(y, yrep, group=group, prob=0.99, plot_diff = TRUE)
 }
 
 # don't need to only use small number of rows for ppc_violin_grouped

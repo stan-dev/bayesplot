@@ -308,6 +308,6 @@ test_that("ppc_pit_ecdf, ppc_pit_ecdf_grouped renders correctly", {
 
   vdiffr::expect_doppelganger("ppc_pit_ecdf (default)", p_base)
   vdiffr::expect_doppelganger("ppc_pit_ecdf_grouped (default)", g_base)
-  vdiffr::expect_doppelganger("ppc_pit_ecdf (no diff)", p_diff)
-  vdiffr::expect_doppelganger("ppc_pit_ecdf_grouped (no diff)", g_diff)
+  vdiffr::expect_doppelganger("ppc_pit_ecdf (diff)", p_diff)
+  vdiffr::expect_doppelganger("ppc_pit_ecdf_grouped (diff)", g_diff)
 })
