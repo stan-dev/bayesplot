@@ -291,12 +291,13 @@ color_scheme_set("blue")
 ppc_dens(y, yrep[200:202, ])
 }
 
+\donttest{
 # frequency polygons
 ppc_freqpoly(y, yrep[1:3, ], alpha = 0.1, size = 1, binwidth = 5)
 
 group <- example_group_data()
 ppc_freqpoly_grouped(y, yrep[1:3, ], group) + yaxis_text()
-\donttest{
+
 # if groups are different sizes then the 'freq' argument can be useful
 ppc_freqpoly_grouped(y, yrep[1:3, ], group, freq = FALSE) + yaxis_text()
 }
@@ -312,11 +313,11 @@ ppc_ecdf_overlay_grouped(y, yrep[1:25, ], group = group)
 ppc_pit_ecdf_grouped(y, yrep, group=group, prob=0.99, plot_diff = TRUE)
 }
 
+\donttest{
 # don't need to only use small number of rows for ppc_violin_grouped
 # (as it pools yrep draws within groups)
 color_scheme_set("gray")
 ppc_violin_grouped(y, yrep, group, size = 1.5)
-\donttest{
 ppc_violin_grouped(y, yrep, group, alpha = 0)
 
 # change how y is drawn
