@@ -44,4 +44,33 @@ vdiff_dframe_chains_divergences <- data.frame(
   Chain = vdiff_dframe_chains$chain,
   stringsAsFactors = FALSE
 )
+
+vdiff_dframe_chains_treedepth <- vdiff_dframe_chains_divergences
+vdiff_dframe_chains_treedepth$Parameter <- "treedepth__"
+vdiff_dframe_chains_treedepth$Value <- sample(1:10, size = 2000, replace = TRUE)
+
+vdiff_dframe_chains_acceptance <- vdiff_dframe_chains_divergences
+vdiff_dframe_chains_acceptance$Parameter <- "accept_stat__"
+vdiff_dframe_chains_acceptance$Value <- runif(2000, 0.7, 1)
+
+vdiff_dframe_chains_stepsize <- vdiff_dframe_chains_divergences
+vdiff_dframe_chains_stepsize$Parameter <- "stepsize__"
+vdiff_dframe_chains_stepsize$Value <- rep(c(0.37, 0.42, 0.33, 0.47), each = 500)
+
+vdiff_dframe_chains_energy <- vdiff_dframe_chains_divergences
+vdiff_dframe_chains_energy$Parameter <- "energy__"
+vdiff_dframe_chains_energy$Value <- rexp(2000, rate = 0.1)
+
+vdiff_dframe_chains_np <- rbind(
+  vdiff_dframe_chains_divergences,
+  vdiff_dframe_chains_treedepth,
+  vdiff_dframe_chains_energy,
+  vdiff_dframe_chains_acceptance,
+  vdiff_dframe_chains_stepsize
+)
+
+vdiff_dframe_chains_lp <- vdiff_dframe_chains_divergences
+vdiff_dframe_chains_lp$Parameter <- NULL
+vdiff_dframe_chains_lp$Value <- runif(2000, -100, -50)
+
 set.seed(seed = NULL)

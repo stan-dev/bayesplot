@@ -9,9 +9,9 @@
 #' @family MCMC
 #'
 #' @template args-hist
-#' @param size An optional value to override [ggplot2::geom_point()]'s
+#' @param size Optional values to override [ggplot2::geom_point()]'s
 #'   default size (for `mcmc_rhat()`, `mcmc_neff()`) or
-#'   [ggplot2::geom_line()]'s default size (for `mcmc_acf()`).
+#'   [ggplot2::geom_line()]'s default line width (for `mcmc_acf()`).
 #' @param ... Currently ignored.
 #'
 #' @template return-ggplot-or-data
@@ -133,21 +133,21 @@ mcmc_rhat <- function(rhat, ..., size = NULL) {
 
   graph <- ggplot(
     data = data,
-    mapping = aes_(
-      x = ~ value,
-      y = ~ parameter,
-      color = ~ rating,
-      fill = ~ rating)) +
+    mapping = aes(
+      x = .data$value,
+      y = .data$parameter,
+      color = .data$rating,
+      fill = .data$rating)) +
     geom_segment(
-      mapping = aes_(
-        yend = ~ parameter,
-        xend = ifelse(min(data$value) < 1, 1, -Inf)),
+      mapping = aes(
+        yend = .data$parameter,
+        xend = ifelse(min(.data$value) < 1, 1, -Inf)),
       na.rm = TRUE) +
       bayesplot_theme_get()
 
   if (min(data$value) < 1) {
     graph <- graph +
-      vline_at(1, color = "gray", size = 1)
+      vline_at(1, color = "gray", linewidth = 1)
   }
 
   brks <- set_rhat_breaks(data$value)
@@ -158,7 +158,7 @@ mcmc_rhat <- function(rhat, ..., size = NULL) {
       brks[-1],
       color = "gray",
       linetype = 2,
-      size = 0.25) +
+      linewidth = 0.25) +
     labs(y = NULL, x = expression(hat(R))) +
     scale_fill_diagnostic("rhat") +
     scale_color_diagnostic("rhat") +
@@ -177,12 +177,12 @@ mcmc_rhat_hist <- function(rhat, ..., binwidth = NULL, breaks = NULL) {
 
   ggplot(
     data = data,
-    mapping = aes_(
-      x = ~ value,
-      color = ~ rating,
-      fill = ~ rating)) +
+    mapping = aes(
+      x = .data$value,
+      color = .data$rating,
+      fill = .data$rating)) +
     geom_histogram(
-      size = .25,
+      linewidth = 0.25,
       na.rm = TRUE,
       binwidth = binwidth,
       breaks = breaks
@@ -230,20 +230,20 @@ mcmc_neff <- function(ratio, ..., size = NULL) {
 
   ggplot(
     data,
-    mapping = aes_(
-      x = ~ value,
-      y = ~ parameter,
-      color = ~ rating,
-      fill = ~ rating)) +
+    mapping = aes(
+      x = .data$value,
+      y = .data$parameter,
+      color = .data$rating,
+      fill = .data$rating)) +
     geom_segment(
-      aes_(yend = ~ parameter, xend = -Inf),
+      aes(yend = .data$parameter, xend = -Inf),
       na.rm = TRUE) +
     diagnostic_points(size) +
     vline_at(
       c(0.1, 0.5, 1),
       color = "gray",
       linetype = 2,
-      size = 0.25) +
+      linewidth = 0.25) +
     labs(y = NULL, x = expression(N[eff]/N)) +
     scale_fill_diagnostic("neff") +
     scale_color_diagnostic("neff") +
@@ -267,12 +267,12 @@ mcmc_neff_hist <- function(ratio, ..., binwidth = NULL, breaks = NULL) {
 
   ggplot(
     data,
-    mapping = aes_(
-      x = ~ value,
-      color = ~ rating,
-      fill = ~ rating)) +
+    mapping = aes(
+      x = .data$value,
+      color = .data$rating,
+      fill = .data$rating)) +
     geom_histogram(
-      size = .25,
+      linewidth = 0.25,
       na.rm = TRUE,
       binwidth = binwidth,
       breaks = breaks) +
@@ -524,31 +524,31 @@ drop_NAs_and_warn <- function(x) {
       facet_fun <- "facet_wrap"
     }
 
-    graph <- ggplot(plot_data, aes_(x = ~ Lag, y = ~ AC))  +
+    graph <- ggplot(plot_data, aes(x = .data$Lag, y = .data$AC))  +
       bayesplot_theme_get()
     if (style == "bar") {
       graph <- graph +
         geom_bar(
           position = "identity",
           stat = "identity",
-          size = 0.2,
+          linewidth = 0.2,
           fill = get_color("l"),
           color = get_color("lh"),
           width = 1
         ) +
-        hline_0(size = 0.25, color = get_color("dh"))
+        hline_0(linewidth = 0.25, color = get_color("dh"))
     } else {
       graph <- graph +
-        hline_0(size = 0.25, color = get_color("m")) +
+        hline_0(linewidth = 0.25, color = get_color("m")) +
         geom_segment(
-          aes_(xend = ~ Lag),
+          aes(xend = .data$Lag),
           yend = 0,
           color = get_color("l"),
-          size = 0.2
+          linewidth = 0.2
         ) +
         do.call(
           "geom_line",
-          args = c(list(color = get_color("d")), size = size)
+          args = c(list(color = get_color("d")), linewidth = size)
         )
     }
 

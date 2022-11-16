@@ -56,7 +56,7 @@ ppd_stat <-
       fill = "ypred"
     )) +
       geom_histogram(
-        size = .25,
+        linewidth = 0.25,
         na.rm = TRUE,
         binwidth = binwidth,
         breaks = breaks
@@ -117,8 +117,8 @@ ppd_stat_freqpoly <-
     )
     ggplot(data, mapping = set_hist_aes(freq)) +
       geom_freqpoly(
-        aes_(color = "ypred"),
-        size = .5,
+        aes(color = "ypred"),
+        linewidth = 0.5,
         na.rm = TRUE,
         binwidth = binwidth
       ) +
@@ -182,9 +182,9 @@ ppd_stat_2d <-
     )
     ggplot(data) +
       geom_point(
-        mapping = aes_(
-          x = ~ value,
-          y = ~ value2,
+        mapping = aes(
+          x = .data$value,
+          y = .data$value2,
           fill = "ypred",
           color = "ypred"
         ),
@@ -283,7 +283,7 @@ ppd_stat_data <- function(ypred, group = NULL, stat) {
       value2 = if (!is.null(stat2))
         stat2(.data$value) else NA
     ) %>%
-    rename(value = .data$value1) %>%
+    rename(value = "value1") %>%
     ungroup()
 
   if (is.null(stat2)) {

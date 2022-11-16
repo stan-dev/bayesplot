@@ -23,11 +23,12 @@
 #' group <- example_group_data()
 #'
 #' ppd_intervals(ypred[, 1:50])
-#' ppd_intervals(ypred[, 1:50], fatten = .5)
-#' ppd_intervals(ypred[, 1:50], prob_outer = 0.75, size = 2, fatten = 0)
+#' ppd_intervals(ypred[, 1:50], fatten = 0)
+#' ppd_intervals(ypred[, 1:50], fatten = 0, linewidth = 2)
+#' ppd_intervals(ypred[, 1:50], prob_outer = 0.75, fatten = 0, linewidth = 2)
 #'
 #' # put a predictor variable on the x-axis
-#' ppd_intervals(ypred[, 1:100], x = x[1:100], size = 1, fatten = 0) +
+#' ppd_intervals(ypred[, 1:100], x = x[1:100], fatten = 1) +
 #'   ggplot2::labs(y = "Prediction", x = "Some variable of interest")
 #'
 #' # with a grouping variable too
@@ -42,10 +43,9 @@
 #'
 #' # even reducing size, ppd_intervals is too cluttered when there are many
 #' # observations included (ppd_ribbon is better)
-#' ppd_intervals(ypred, size = 0.5, fatten = 0.1)
+#' ppd_intervals(ypred, size = 0.5, fatten = 0.1, linewidth = 0.5)
 #' ppd_ribbon(ypred)
 #' ppd_ribbon(ypred, size = 0) # remove line showing median prediction
-#'
 #'
 NULL
 
@@ -59,7 +59,8 @@ ppd_intervals <-
            prob_outer = 0.9,
            alpha = 0.33,
            size = 1,
-           fatten = 2.5) {
+           fatten = 2.5,
+           linewidth = 1) {
 
     dots <- list(...)
     if (!from_grouped(dots)) {
@@ -83,13 +84,15 @@ ppd_intervals <-
       geom_linerange(
         mapping = intervals_outer_aes(color = "ypred"),
         alpha = alpha,
-        size = size
+        size = size,
+        linewidth = linewidth
       ) +
       geom_pointrange(
         shape = 21,
         stroke = 0.5,
         size = size,
-        fatten = fatten
+        fatten = fatten,
+        linewidth = linewidth
       ) +
       scale_color_ppd() +
       scale_fill_ppd() +
@@ -111,7 +114,8 @@ ppd_intervals_grouped <-
            prob_outer = 0.9,
            alpha = 0.33,
            size = 1,
-           fatten = 2.5) {
+           fatten = 2.5,
+           linewidth = 1) {
     check_ignored_arguments(...)
     call <- match.call(expand.dots = FALSE)
     g <- eval(ungroup_call("ppd_intervals", call), parent.frame())
@@ -161,9 +165,9 @@ ppd_ribbon <-
       ) +
       geom_ribbon(size = 0.5 * size) +
       geom_line(
-        mapping = aes_(y = ~ m),
+        mapping = aes(y = .data$m),
         color = get_color("d"),
-        size = size
+        linewidth = size
       ) +
       scale_color_ppd() +
       scale_fill_ppd() +
@@ -291,34 +295,34 @@ ppd_ribbon_data <- ppd_intervals_data
 
 #' Aesthetic mapping for interval and ribbon plots
 #'
-#' @param needs_y Whether to include `y = ~m` in the call to `aes_()`. Needed
-#'   for `geom_pointrange()`.
-#' @param ... Aguments to pass to `aes_()` other than `x`,`y`,`ymin`,`ymax`.
-#' @return Object returned by `aes_()`. Always sets at least `x`, `ymin`, `ymax`.
+#' @param needs_y Whether to include `y` in call to `aes()`. Needed for
+#'   `geom_pointrange()`.
+#' @param ... Aguments to pass to `aes()` other than `x`,`y`,`ymin`,`ymax`.
+#' @return Object returned by `aes()`. Always sets at least `x`, `ymin`, `ymax`.
 #' @noRd
 intervals_inner_aes <- function(needs_y = FALSE, ...) {
-  mapping <- aes_(
-    x = ~ x,
-    ymin = ~ l,
-    ymax = ~ h,
+  mapping <- aes(
+    x = .data$x,
+    ymin = .data$l,
+    ymax = .data$h,
     ...
   )
   if (!needs_y) {
     return(mapping)
   }
-  modify_aes_(mapping, y = ~ m)
+  modify_aes(mapping, y = .data$m)
 }
 intervals_outer_aes <- function(needs_y = FALSE, ...) {
-  mapping <- aes_(
-    x = ~ x,
-    ymin = ~ ll,
-    ymax = ~ hh,
+  mapping <- aes(
+    x = .data$x,
+    ymin = .data$ll,
+    ymax = .data$hh,
     ...
   )
   if (!needs_y) {
     return(mapping)
   }
-  modify_aes_(mapping, y = ~ m)
+  modify_aes(mapping, y = .data$m)
 }
 
 #' Create the facet layer for grouped interval and ribbon plots

@@ -18,9 +18,10 @@
 #'   of the expected counts.)
 #' @param width For bar plots only, passed to [ggplot2::geom_bar()] to control
 #'   the bar width.
-#' @param size,fatten For bar plots, `size` and `fatten` are passed to
-#'   [ggplot2::geom_pointrange()] to control the appearance of the `yrep` points
-#'   and intervals. For rootograms `size` is passed to [ggplot2::geom_line()].
+#' @param size,fatten,linewidth For bar plots, `size`, `fatten`, and `linewidth`
+#'   are passed to [ggplot2::geom_pointrange()] to control the appearance of the
+#'   `yrep` points and intervals. For rootograms `size` is passed to
+#'   [ggplot2::geom_line()].
 #' @param freq For bar plots only, if `TRUE` (the default) the y-axis will
 #'   display counts. Setting `freq=FALSE` will put proportions on the y-axis.
 #'
@@ -128,6 +129,7 @@ ppc_bars <-
            width = 0.9,
            size = 1,
            fatten = 2.5,
+           linewidth = 1,
            freq = TRUE) {
 
     dots <- list(...)
@@ -153,7 +155,7 @@ ppc_bars <-
     ggplot(data) +
       geom_col(
         data = dplyr::filter(data, !is.na(.data$y_obs)),
-        mapping = aes_(x = ~ x, y = ~ y_obs, fill = "y"),
+        mapping = aes(x = .data$x, y = .data$y_obs, fill = "y"),
         color = get_color("lh"),
         width = width
       ) +
@@ -161,6 +163,7 @@ ppc_bars <-
         mapping = intervals_inner_aes(needs_y = TRUE, color = "yrep"),
         size = size,
         fatten = fatten,
+        linewidth = linewidth,
         na.rm = TRUE
       ) +
       scale_color_ppc(
@@ -193,6 +196,7 @@ ppc_bars_grouped <-
            width = 0.9,
            size = 1,
            fatten = 2.5,
+           linewidth = 1,
            freq = TRUE) {
   check_ignored_arguments(...)
   call <- match.call(expand.dots = FALSE)
@@ -274,24 +278,25 @@ ppc_rootogram <- function(y,
   }
   ty[is.na(ty)] <- 0
   ypos <- ty / 2
-  if (style == "hanging")
+  if (style == "hanging") {
     ypos <- tyexp - ypos
+  }
 
   data <- data.frame(xpos, ypos, ty, tyexp, tyquantile)
   graph <- ggplot(data) +
-    aes_(
-      ymin = ~ tylower,
-      ymax = ~ tyupper,
-      height = ~ ty
+    aes(
+      ymin = .data$tylower,
+      ymax = .data$tyupper,
+      height = .data$ty
     ) +
     geom_tile(
-      aes_(
-        x = ~ xpos,
-        y = ~ ypos,
+      aes(
+        x = .data$xpos,
+        y = .data$ypos,
         fill = "Observed"
       ),
       color = get_color("lh"),
-      size = 0.25,
+      linewidth = 0.25,
       width = 1
     ) +
     bayesplot_theme_get()
@@ -302,13 +307,13 @@ ppc_rootogram <- function(y,
 
   graph <- graph +
     geom_smooth(
-      aes_(
-        x = ~ xpos,
-        y = ~ tyexp,
+      aes(
+        x = .data$xpos,
+        y = .data$tyexp,
         color = "Expected"
       ),
       fill = get_color("d"),
-      size = size,
+      linewidth = size,
       stat = "identity"
     ) +
     scale_fill_manual("", values = get_color("l")) +
@@ -362,7 +367,7 @@ ppc_bars_data <-
 #' @param y,yrep,group User's already validated `y`, `yrep`, and (if applicable)
 #'   `group` arguments.
 #' @param prob,freq User's `prob` and `freq` arguments.
-#' @importFrom dplyr "%>%" ungroup count arrange mutate summarise across full_join rename
+#' @importFrom dplyr "%>%" ungroup count arrange mutate summarise across full_join rename all_of
 .ppc_bars_data <- function(y, yrep, group = NULL, prob = 0.9, freq = TRUE) {
   alpha <- (1 - prob) / 2
   probs <- sort(c(alpha, 0.5, 1 - alpha))
@@ -397,21 +402,21 @@ ppc_bars_data <-
 
   yrep_summary <- data %>%
     dplyr::filter(!.data$variable == "y") %>%
-    summarise(across(summary_var, summary_funs, .names = "{.fn}")) %>%
+    summarise(across(all_of(summary_var), summary_funs, .names = "{.fn}")) %>%
     ungroup() %>%
     arrange(.data$group, .data$value)
 
   y_summary <- data %>%
     dplyr::filter(.data$variable == "y") %>%
     ungroup() %>%
-    rename(y_obs = .data[[summary_var]]) %>%
+    rename(y_obs = all_of(summary_var)) %>%
     arrange(.data$group, .data$value)
 
   cols <- syms(c(if (!was_null_group) "group", "x", "y_obs", "l", "m", "h"))
 
   # full join to keep empty cells
   full_join(yrep_summary, y_summary, by = c("group", "value")) %>%
-    rename(x = .data$value) %>%
+    rename(x = "value") %>%
     arrange(.data$x) %>%
     select(!!!cols)
 }

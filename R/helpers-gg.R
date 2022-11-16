@@ -11,7 +11,7 @@
 #' # Draw a vertical line at zero (or do nothing)
 #' xs <- -2:2
 #' maybe_vertical_line <- if (0 > min(xs) && 0 < max(xs)) {
-#'   vline_0(color = "gray90", size = 0.5)
+#'   vline_0(color = "gray90", linewidth = 0.5)
 #' } else {
 #'   geom_ignore()
 #' }
@@ -19,22 +19,6 @@ geom_ignore <- function(...) {
   geom_blank(
     mapping = NULL, data = NULL,
     show.legend = FALSE, inherit.aes = FALSE)
-}
-
-#' Wrappers for ggridges
-#'
-#' The "area ridges" are for use in `mcmc_areas()`. The scale of 1 and the
-#' identity statistic prevent the ridges from overlapping.
-#' `geom_density_ridges2()` draws closed polygons.
-#'
-#' @importFrom ggridges geom_density_ridges geom_density_ridges2
-#' @noRd
-geom_area_ridges <- function(...) {
-  ggridges::geom_density_ridges(..., stat = "identity", scale = .95)
-}
-
-geom_area_ridges2 <- function(...) {
-  ggridges::geom_density_ridges2(..., stat = "identity", scale = .95)
 }
 
 
@@ -46,6 +30,13 @@ geom_area_ridges2 <- function(...) {
 #' @noRd
 modify_aes_ <- function(mapping, ...) {
   utils::modifyList(mapping, aes_(...))
+}
+
+#' Same as `modify_aes_` but using `aes()` instead of `aes_()` (now deprecated).
+#' Often `...` will need to contain expression of the form `.data$x` to avoid R cmd check warnings
+#' @noRd
+modify_aes <- function(mapping, ...) {
+  utils::modifyList(mapping, aes(...))
 }
 
 
@@ -69,7 +60,7 @@ force_axes_in_facets <- function() {
     x = c(-Inf, -Inf), xend = c(Inf,-Inf),
     y = c(-Inf,-Inf), yend = c(-Inf, Inf),
     color = thm$axis.line$colour %||% thm$line$colour %||% "black",
-    size = thm$axis.line$size %||% thm$line$size %||% 0.5
+    linewidth = thm$axis.line$linewidth %||% thm$line$linewidth %||% 0.5
   )
 }
 
@@ -80,7 +71,7 @@ force_x_axis_in_facets <- function() {
     x = -Inf, xend = Inf,
     y = -Inf, yend = -Inf,
     color = thm$axis.line$colour %||% thm$line$colour %||% "black",
-    size = thm$axis.line$size %||% thm$line$size %||% 0.5
+    linewidth = thm$axis.line$linewidth %||% thm$line$linewidth %||% 0.5
   )
 }
 
@@ -91,16 +82,18 @@ reduce_legend_spacing <- function(cm) {
   theme(legend.spacing.y = unit(-cm, "cm"))
 }
 space_legend_keys <- function(relative_size = 2, color = "white") {
-  theme(legend.key = element_rect(size = rel(relative_size), color = color))
+  theme(legend.key = element_rect(linewidth = rel(relative_size), color = color))
 }
 
 
 # set aesthetic mapping for histograms depending on freq argument
 set_hist_aes <- function(freq = TRUE, ...) {
   if (freq) {
-    aes_(x = ~ value, ...)
+    # aes_(x = ~ value, ...)
+    aes(x = .data$value, ...)
   } else {
-    aes_(x = ~ value, y = ~ stat(density), ...)
+    # aes_(x = ~ value, y = ~ after_stat(density), ...)
+    aes(x = .data$value, y = after_stat(density), ...)
   }
 }
 

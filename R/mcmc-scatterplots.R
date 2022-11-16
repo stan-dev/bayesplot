@@ -351,7 +351,7 @@ mcmc_pairs <- function(x,
     divs <- dplyr::filter(np, UQ(param) == "divergent__") %>% pull(UQ(val))
     divergent__ <- matrix(divs, nrow = n_iter * n_chain, ncol = n_param)[, 1]
     if (!no_max_td) {
-      gt_max_td <- (dplyr::filter(np, UQ(param) == "treedepth__") %>% pull(UQ(val))) > max_treedepth
+      gt_max_td <- (dplyr::filter(np, UQ(param) == "treedepth__") %>% pull(UQ(val))) >= max_treedepth
       max_td_hit__ <- matrix(gt_max_td, nrow = n_iter * n_chain, ncol = n_param)[, 1]
     }
   }
@@ -403,7 +403,7 @@ mcmc_pairs <- function(x,
                              labels = c("NoDiv", "Div"))
         plots[[j]] <- plots[[j]] +
           geom_point(
-            aes_(color = divs_j_fac, size = divs_j_fac),
+            aes(color = divs_j_fac, size = divs_j_fac),
             shape = np_style$shape[["div"]],
             alpha = np_style$alpha[["div"]],
             na.rm = TRUE
@@ -414,7 +414,7 @@ mcmc_pairs <- function(x,
                                    labels = c("NoHit", "Hit"))
         plots[[j]] <- plots[[j]] +
           geom_point(
-            aes_(color = max_td_hit_j_fac, size = max_td_hit_j_fac),
+            aes(color = max_td_hit_j_fac, size = max_td_hit_j_fac),
             shape = np_style$shape[["td"]],
             alpha = np_style$alpha[["td"]],
             na.rm = TRUE
@@ -675,7 +675,7 @@ pairs_condition <- function(chains = NULL, draws = NULL, nuts = NULL) {
     xydata <- dplyr::filter(xydata, UQ(divg) == 0)
   }
 
-  graph <- ggplot(data = xydata, aes_(x = ~ x, y = ~ y)) +
+  graph <- ggplot(data = xydata, aes(x = .data$x, y = .data$y)) +
     bayesplot_theme_get()
 
   if (!hex) { # scatterplot
@@ -701,7 +701,7 @@ pairs_condition <- function(chains = NULL, draws = NULL, nuts = NULL) {
   } else { # hex binning
     graph <- graph +
       geom_hex(
-        aes_(fill = ~ scales::rescale(..density..)),
+        aes(fill = scales::rescale(after_stat(density))),
         binwidth = binwidth
       ) +
       scale_fill_gradientn(
@@ -903,7 +903,7 @@ format_nuts_points <- function(graph, np_args) {
                          c("NoDiv", "Div", "NoHit", "Hit"))
     ) +
     scale_size_manual(
-      values = set_names(c(0, rel(np_args$size[["div"]]), 0, rel(np_args$size[["td"]])),
+      values = set_names(c(NA, rel(np_args$size[["div"]]), NA, rel(np_args$size[["td"]])),
                          c("NoDiv", "Div", "NoHit", "Hit"))
     )
 }

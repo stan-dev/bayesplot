@@ -66,27 +66,12 @@ to the corresponding observation.}
 
 \item{...}{Currently unused.}
 
-\item{size}{Passed to the appropriate geom to control the appearance of
-the predictive distributions.}
-
-\item{alpha}{Passed to the appropriate geom to control the appearance of
+\item{size, alpha}{Passed to the appropriate geom to control the appearance of
 the predictive distributions.}
 
 \item{trim}{A logical scalar passed to \code{\link[ggplot2:geom_density]{ggplot2::geom_density()}}.}
 
-\item{bw}{Optional arguments passed to
-\code{\link[stats:density]{stats::density()}} to override default kernel density estimation
-parameters. \code{n_dens} defaults to \code{1024}.}
-
-\item{adjust}{Optional arguments passed to
-\code{\link[stats:density]{stats::density()}} to override default kernel density estimation
-parameters. \code{n_dens} defaults to \code{1024}.}
-
-\item{kernel}{Optional arguments passed to
-\code{\link[stats:density]{stats::density()}} to override default kernel density estimation
-parameters. \code{n_dens} defaults to \code{1024}.}
-
-\item{n_dens}{Optional arguments passed to
+\item{bw, adjust, kernel, n_dens}{Optional arguments passed to
 \code{\link[stats:density]{stats::density()}} to override default kernel density estimation
 parameters. \code{n_dens} defaults to \code{1024}.}
 

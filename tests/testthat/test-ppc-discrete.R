@@ -11,7 +11,7 @@ load(test_path("data-for-ordinal.rda"))
 # yrep_char <- posterior_predict(fit, draws = 50)
 # yrep_ord <- sapply(data.frame(yrep_char, stringsAsFactors = TRUE), as.integer)
 # group_ord <- datasets::esoph$agegp
-# save(y_ord, yrep_ord, group_ord, file = testthat::test_path("data-for-ordinal.rda"))
+# save(y_ord, yrep_ord, group_ord, file = testthat::test_path("data-for-ordinal.rda"), version = 2)
 
 
 # bar plots ---------------------------------------------------------------

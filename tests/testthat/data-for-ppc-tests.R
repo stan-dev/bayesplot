@@ -21,4 +21,9 @@ vdiff_y2 <- rpois(30, 1)
 vdiff_yrep2 <- matrix(rpois(30 * 10, 1), ncol = 30, nrow = 10)
 vdiff_group2 <- rep_len(c(1,2), length.out = 30)
 vdiff_status_y2 <- rep_len(0:1, length.out = length(vdiff_y2))
+
+vdiff_loo_y <- rnorm(100, 30, 5)
+vdiff_loo_yrep <- matrix(rnorm(100 * 400, 30, 5), nrow = 400)
+vdiff_loo_lw <- vdiff_loo_yrep
+vdiff_loo_lw[] <- rnorm(100 * 400, -8, 2)
 set.seed(seed = NULL)

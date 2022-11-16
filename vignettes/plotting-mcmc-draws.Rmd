@@ -1,13 +1,13 @@
 ---
 title: "Plotting MCMC draws using the bayesplot package"
 author: "Jonah Gabry"
-date: "Latest version: `r Sys.Date()`"
-output:
+date: "`r Sys.Date()`"
+output: 
   rmarkdown::html_vignette:
     toc: true
     toc_depth: 3
 params:
-  EVAL: !r TRUE
+  EVAL: !r identical(Sys.getenv("NOT_CRAN"), "true")
 vignette: >
   %\VignetteIndexEntry{Plotting MCMC draws}
   %\VignetteEngine{knitr::rmarkdown}
@@ -24,15 +24,15 @@ library("rstanarm")
 
 ## Introduction
 
-This vignette focuses on plotting parameter estimates from MCMC draws. MCMC
+This vignette focuses on plotting parameter estimates from MCMC draws. MCMC 
 diagnostic plots are covered in the separate vignette
-[_Visual MCMC diagnostics_](https://mc-stan.org/bayesplot/articles/visual-mcmc-diagnostics.html),
+[_Visual MCMC diagnostics_](https://mc-stan.org/bayesplot/articles/visual-mcmc-diagnostics.html), 
 and graphical posterior predictive model checking is covered in the vignette
 [_Graphical posterior predictive checks_](https://mc-stan.org/bayesplot/articles/graphical-ppcs.html).
 
 ### Setup
 
-In addition to __bayesplot__ we'll load the following packages:
+In addition to __bayesplot__ we'll load the following packages: 
 
 * __ggplot2__, in case we want to customize the ggplot objects created by __bayesplot__
 * __rstanarm__, for fitting the example models used throughout the vignette
@@ -45,12 +45,14 @@ library("rstanarm")
 
 ### Example model
 
-The **bayesplot** package provides various plotting functions for visualizing
-Markov chain Monte Carlo (MCMC) draws from the posterior distribution of the
-parameters of a Bayesian model.
+The **bayesplot** package provides various plotting functions for visualizing 
+Markov chain Monte Carlo (MCMC) draws from the posterior distribution of the 
+parameters of a Bayesian model. In this vignette we demonstrate a few of 
+these functions. Example usage of the functions not demonstrated here can be
+found in the package documentation.
 
-In this vignette we'll use draws obtained using the `stan_glm` function in the
-**rstanarm** package (Gabry and Goodrich, 2017), but MCMC draws from using
+For demonstration we will use draws obtained using the `stan_glm` function in
+the **rstanarm** package (Gabry and Goodrich, 2017), but MCMC draws from using
 any package can be used with the functions in the **bayesplot** package. See,
 for example, **brms**, which, like **rstanarm**, calls the **rstan** package
 internally to use [Stan](https://mc-stan.org/)'s MCMC sampler.
@@ -75,7 +77,7 @@ print(fit)
 ```
 
 To use the posterior draws with the functions in the **bayesplot** package
-we'll extract them from the fitted model object:
+we'll extract them from the fitted model object: 
 
 ```{r get-draws}
 posterior <- as.array(fit)
@@ -83,9 +85,9 @@ dim(posterior)
 dimnames(posterior)
 ```
 
-We've used `as.array` above (as opposed to `as.matrix`) because it keeps the
+We've used `as.array` above (as opposed to `as.matrix`) because it keeps the 
 Markov chains separate (`stan_glm` runs four chains by default). Most of the
-plots don't actually need the chains to be separate, but for a few of the
+plots don't actually need the chains to be separate, but for a few of the 
 plots we make in this vignette we'll want to show the chains individually.
 
 
@@ -101,7 +103,7 @@ particular cases).
 
 **Documentation:**
 
-* `help("MCMC-intervals")`
+* `help("MCMC-intervals")` 
 * [mc-stan.org/bayesplot/reference/MCMC-intervals](https://mc-stan.org/bayesplot/reference/MCMC-intervals.html)
 
 ------
@@ -116,9 +118,9 @@ color_scheme_set("red")
 mcmc_intervals(posterior, pars = c("cyl", "drat", "am", "sigma"))
 ```
 
-The default is to show 50% intervals (the thick segments) and 90% intervals
+The default is to show 50% intervals (the thick segments) and 90% intervals 
 (the thinner outer lines). These defaults can be changed using the `prob`
-and `prob_outer` arguments, respectively. The points in the above plot
+and `prob_outer` arguments, respectively. The points in the above plot 
 are posterior medians. The `point_est` argument can be used to select posterior
 means instead or to omit the point estimates.
 
@@ -127,7 +129,7 @@ density curves we can use the `mcmc_areas` function.
 
 ```{r mcmc_areas}
 mcmc_areas(
-  posterior,
+  posterior, 
   pars = c("cyl", "drat", "am", "sigma"),
   prob = 0.8, # 80% intervals
   prob_outer = 0.99, # 99%
@@ -146,14 +148,14 @@ combined or with the chains separate.
 
 **Documentation:**
 
-* `help("MCMC-distributions")`
+* `help("MCMC-distributions")` 
 * [mc-stan.org/bayesplot/reference/MCMC-distributions](https://mc-stan.org/bayesplot/reference/MCMC-distributions.html)
 
 ------
 
 #### mcmc_hist
 
-The `mcmc_hist` function plots marginal posterior distributions
+The `mcmc_hist` function plots marginal posterior distributions 
 (combining all chains):
 
 ```{r mcmc_hist, message=FALSE}
@@ -161,7 +163,7 @@ color_scheme_set("green")
 mcmc_hist(posterior, pars = c("wt", "sigma"))
 ```
 
-If we want to plot `log(sigma)` rather than `sigma` we can either
+If we want to plot `log(sigma)` rather than `sigma` we can either 
 transform the draws in advance or use the `transformations` argument.
 
 ```{r mcmc_hist-transform, message=FALSE}
@@ -194,8 +196,8 @@ mcmc_hist_by_chain(posterior, pars = c("wt", "sigma"))
 
 #### mcmc_dens
 
-The `mcmc_dens` function is similar to `mcmc_hist` but plots kernel
-density estimates instead of histograms.
+The `mcmc_dens` function is similar to `mcmc_hist` but plots kernel 
+density estimates instead of histograms. 
 
 ```{r mcmc_dens, message=FALSE}
 color_scheme_set("purple")
@@ -229,15 +231,15 @@ mcmc_violin(posterior, pars = c("wt", "sigma"), probs = c(0.1, 0.5, 0.9))
 
 ## Bivariate plots
 
-Various functions are available for plotting bivariate marginal posterior
-distributions. Some of these functions also take optional arguments
-for adding MCMC diagnostic information to the plots. That additional functionality
+Various functions are available for plotting bivariate marginal posterior 
+distributions. Some of these functions also take optional arguments 
+for adding MCMC diagnostic information to the plots. That additional functionality 
 is discussed in the separate [_Visual MCMC diagnostics_](https://mc-stan.org/bayesplot/articles/visual-mcmc-diagnostics.html)
 vignette.
 
 **Documentation:**
 
-* `help("MCMC-scatterplots")`
+* `help("MCMC-scatterplots")` 
 * [mc-stan.org/bayesplot/reference/MCMC-scatterplots](https://mc-stan.org/bayesplot/reference/MCMC-scatterplots.html)
 
 ------
@@ -248,7 +250,7 @@ The `mcmc_scatter` function creates a simple scatterplot of two parameters.
 
 ```{r mcmc_scatter}
 color_scheme_set("gray")
-mcmc_scatter(posterior, pars = c("(Intercept)", "wt"),
+mcmc_scatter(posterior, pars = c("(Intercept)", "wt"), 
              size = 1.5, alpha = 0.5)
 ```
 
@@ -283,34 +285,33 @@ mcmc_pairs(posterior, pars = c("(Intercept)", "wt", "sigma"),
 <!--            off_diag_args = list(size = 1.5)) -->
 <!-- ``` -->
 
-The univariate marginal posteriors are shown along the diagonal as histograms,
+The univariate marginal posteriors are shown along the diagonal as histograms, 
 but this can be changed to densities by setting `diag_fun="dens"`. Bivariate
 plots are displayed above and below the diagonal as scatterplots, but it is also
 possible to use hex plots by setting `off_diag_fun="hex"`. By default,
 `mcmc_pairs` shows some of the Markov chains (half, if an even number of chains)
-above the diagonal and the others below. There are many more options for
+above the diagonal and the others below. There are many more options for 
 controlling how the draws should be split between the plots above and below the
 diagonal (see the documentation for the `condition` argument), but they are more
-useful when MCMC diagnostic information is included. This is discussed in the
+useful when MCMC diagnostic information is included. This is discussed in the 
 [_Visual MCMC diagnostics_](https://mc-stan.org/bayesplot/articles/visual-mcmc-diagnostics.html)
 vignette.
 
 
-
 <br>
 
-## Trace plots
+## Trace plots 
 
-Trace plots are time series plots of Markov chains. In this vignette
+Trace plots are time series plots of Markov chains. In this vignette 
 we show the standard trace plots that **bayesplot** can make. For models
-fit using any Stan interface (or Hamiltonian Monte Carlo in general), the
+fit using any Stan interface (or Hamiltonian Monte Carlo in general), the 
 [_Visual MCMC diagnostics_](https://mc-stan.org/bayesplot/articles/visual-mcmc-diagnostics.html)
 vignette provides an example of also adding information about divergences
 to trace plots.
 
 **Documentation:**
 
-* `help("MCMC-traces")`
+* `help("MCMC-traces")` 
 * [mc-stan.org/bayesplot/reference/MCMC-traces](https://mc-stan.org/bayesplot/reference/MCMC-traces.html)
 
 -------
@@ -324,12 +325,12 @@ color_scheme_set("blue")
 mcmc_trace(posterior, pars = c("wt", "sigma"))
 ```
 
-If it's hard to see the difference between the chains we can
+If it's hard to see the difference between the chains we can 
 change to a mixed color scheme, for example:
 
 ```{r change-scheme}
 color_scheme_set("mix-blue-red")
-mcmc_trace(posterior, pars = c("wt", "sigma"),
+mcmc_trace(posterior, pars = c("wt", "sigma"), 
            facet_args = list(ncol = 1, strip.position = "left"))
 ```
 
@@ -342,7 +343,7 @@ by side, and `strip.position="left"` moves the facet labels to the y-axis
 The [`"viridis"` color scheme](https://CRAN.R-project.org/package=viridis) is
 also useful for trace plots because it is comprised of very distinct colors:
 
-```{r viridis-scheme, eval=FALSE}
+```{r viridis-scheme}
 color_scheme_set("viridis")
 mcmc_trace(posterior, pars = "(Intercept)")
 ```
@@ -369,14 +370,14 @@ mcmc_trace_highlight(posterior, pars = "sigma", highlight = 3)
 
 ## References
 
-Gabry, J., and Goodrich, B. (2017). rstanarm: Bayesian Applied Regression
-Modeling via Stan. R package version 2.15.3.
+Gabry, J., and Goodrich, B. (2017). rstanarm: Bayesian Applied Regression 
+Modeling via Stan. R package version 2.15.3. 
 https://mc-stan.org/rstanarm/, https://CRAN.R-project.org/package=rstanarm
 
 Gabry, J., Simpson, D., Vehtari, A., Betancourt, M. and Gelman, A. (2019),
-Visualization in Bayesian workflow. _J. R. Stat. Soc. A_, 182: 389-402.
-\doi:10.1111/rssa.12378. ([journal version](https://rss.onlinelibrary.wiley.com/doi/full/10.1111/rssa.12378),
-[arXiv preprint](https://arxiv.org/abs/1709.01449),
+Visualization in Bayesian workflow. _J. R. Stat. Soc. A_, 182: 389-402. 
+\doi:10.1111/rssa.12378. ([journal version](https://rss.onlinelibrary.wiley.com/doi/full/10.1111/rssa.12378), 
+[arXiv preprint](https://arxiv.org/abs/1709.01449), 
 [code on GitHub](https://github.com/jgabry/bayes-vis-paper))
 <a id="gabry2019"></a>
 

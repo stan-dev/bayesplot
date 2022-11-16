@@ -221,12 +221,12 @@ plot_scheme <- function(scheme = NULL) {
     value = rep(1, length(x))
   )
 
-  ggplot(color_data, aes_(x = ~ name, y = ~ value, fill = ~ group)) +
+  ggplot(color_data, aes(x = .data$name, y = .data$value, fill = .data$group)) +
     geom_bar(
       width = .5,
       stat = "identity",
       color = "white",
-      size = 0.1
+      linewidth = 0.1
     ) +
     scale_fill_manual("", values = unlist(x)) +
     theme_void() +

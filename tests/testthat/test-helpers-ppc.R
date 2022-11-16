@@ -1,7 +1,8 @@
 library(bayesplot)
 context("PPC: misc. functions")
 
-source("data-for-ppc-tests.R")
+source(test_path("data-for-ppc-tests.R"))
+source(test_path("data-for-mcmc-tests.R"))
 
 # melt_predictions ---------------------------------------------------------------
 expect_molten_yrep <- function(yrep) {
@@ -54,6 +55,7 @@ test_that("is_whole_number works correctly", {
                c(rep(TRUE, 3), FALSE))
   expect_true(!is_whole_number("1"))
 })
+
 test_that("all_counts works correctly", {
   expect_true(all_counts(1))
   expect_true(all_counts(0:5))
@@ -64,3 +66,64 @@ test_that("all_counts works correctly", {
   expect_false(all_counts(c(-1, 2)))
 })
 
+# adjust_gamma
+
+test_that("adjust_gamma works with different adjustment methods", {
+  set.seed(8420)
+
+  expect_equal(
+    adjust_gamma(N = 100, K = 100, L = 1, prob = .99),
+    adjust_gamma(N = 100, K = 100, L = 1, prob = .99, interpolate_adj = TRUE),
+    tolerance = 1e-3
+  )
+
+  expect_equal(
+    adjust_gamma(N = 100, K = 100, L = 4, prob = .99, M = 1000),
+    adjust_gamma(N = 100, K = 100, L = 4, prob = .99, interpolate_adj = TRUE),
+    tolerance = 1e-3
+  )
+
+  set.seed(NULL)
+})
+
+
+# get_interpolation_values ------------------------------------------------
+test_that("get_interpolation_values catches impossible values", {
+  expect_error(
+    get_interpolation_values(1000, 1000, 0, .5),
+    "No precomputed values to interpolate from for 'L' = 0."
+  )
+  expect_error(
+    get_interpolation_values(1000, 1000, 4, 0),
+    "No precomputed values to interpolate from for 'prob' = 0."
+  )
+  expect_error(
+    get_interpolation_values(1000, 0, 4, .95),
+    "No precomputed values available for interpolation for 'K' = 0."
+  )
+  expect_error(
+    get_interpolation_values(0, 1000, 4, .95),
+    "No precomputed values to interpolate from for sample length of 0."
+  )
+  expect_error(
+    get_interpolation_values(1e5, 10, 4, .95),
+    "No precomputed values to interpolate from for sample length of 1e+05",
+    fixed = TRUE
+  )
+  expect_error(
+    get_interpolation_values(100, 300, 4, .95),
+    "No precomputed values available for interpolation for 'K' = 300"
+  )
+})
+
+# ecdf_intervals ---------------------------------------------------------
+test_that("ecdf_intervals returns right dimensions and values", {
+  lims <- ecdf_intervals(.0001, N = 100, K = 100, L = 1)
+  expect_named(lims, c("lower", "upper"))
+  expect_length(lims$upper, 101)
+  expect_length(lims$lower, 101)
+  expect_equal(min(lims$upper), 0)
+  expect_equal(max(lims$upper), 100)
+  expect_equal(min(lims$lower), 0)
+  expect_equal(max(lims$lower), 100)
+})

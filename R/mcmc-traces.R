@@ -10,6 +10,7 @@
 #' @template args-regex_pars
 #' @template args-transformations
 #' @template args-facet_args
+#' @template args-pit-ecdf
 #' @param ... Currently ignored.
 #' @param size An optional value to override the default line size
 #'   for `mcmc_trace()` or the default point size for `mcmc_trace_highlight()`.
@@ -63,9 +64,18 @@
 #'    Ranks from `mcmc_rank_hist()` are plotted using overlaid lines in a
 #'    single panel.
 #'   }
+#'   \item{`mcmc_rank_ecdf()`}{
+#'    The ECDFs of the ranks from `mcmc_rank_hist()` are plotted with the
+#'    simultaneous confidence bands with a coverage determined by `prob`, that
+#'    is, bands that completely cover all of the rank ECDFs with the probability
+#'    `prob`. If `plot_diff = TRUE`, the difference between the observed rank
+#'    ECDFs and the theoretical expectation for samples originating from the
+#'    same distribution is drawn. See Säilynoja et al. (2021) for details.
+#'   }
 #' }
 #'
 #' @template reference-improved-rhat
+#' @template reference-uniformity-test
 #' @examples
 #' # some parameter draws to use for demonstration
 #' x <- example_mcmc_draws(chains = 4, params = 6)
@@ -104,6 +114,12 @@
 #' mcmc_rank_hist(x, "alpha")
 #' mcmc_rank_hist(x, pars = c("alpha", "sigma"), ref_line = TRUE)
 #' mcmc_rank_overlay(x, "alpha")
+#'
+#' # ECDF and ECDF difference plots of the ranking of MCMC samples between chains.
+#' # Provide 99% simultaneous confidence intervals for the chains sampling from
+#' # the same distribution.
+#' mcmc_rank_ecdf(x, prob = 0.99)
+#' mcmc_rank_ecdf(x, prob = 0.99, plot_diff = TRUE)
 #'
 #' \dontrun{
 #' # parse facet label text
@@ -289,7 +305,7 @@ mcmc_rank_overlay <- function(x,
     group_by(.data$cut) %>%
     mutate(bin_start = min(.data$value_rank)) %>%
     ungroup() %>%
-    select(-.data$cut)
+    select(-c("cut"))
 
   d_bin_counts <- data %>%
     left_join(histobins, by = "value_rank") %>%
@@ -325,7 +341,7 @@ mcmc_rank_overlay <- function(x,
   }
 
   ggplot(d_bin_counts) +
-    aes_(x = ~ bin_start, y =  ~ n, color = ~ chain) +
+    aes(x = .data$bin_start, y =  .data$n, color = .data$chain) +
     geom_step() +
     layer_ref_line +
     facet_call +
@@ -398,13 +414,13 @@ mcmc_rank_hist <- function(x,
   facet_call <- do.call(facet_f, facet_args)
 
   ggplot(data) +
-    aes_(x = ~ value_rank) +
+    aes(x = .data$value_rank) +
     geom_histogram(
       color = get_color("mid_highlight"),
       fill = get_color("mid"),
       binwidth = right_edge / n_bins,
       boundary = right_edge,
-      size = .25
+      linewidth = 0.25
     ) +
     layer_ref_line +
     geom_blank(data = data_boundaries) +
@@ -421,6 +437,112 @@ mcmc_rank_hist <- function(x,
     labs(x = "Rank")
 }
 
+#' @rdname MCMC-traces
+#' @param prob For `mcmc_rank_ecdf()`, a value between 0 and 1
+#' specifying the desired simultaneous confidence of the confidence bands to be
+#' drawn for the rank ECDF plots.
+#' @param plot_diff For `mcmc_rank_ecdf()`, a boolean specifying if the
+#' difference between the observed rank ECDFs and the theoretical expectation
+#' should be drawn instead of the unmodified rank ECDF plots.
+#' @export
+mcmc_rank_ecdf <-
+  function(x,
+           pars = character(),
+           regex_pars = character(),
+           transformations = list(),
+           ...,
+           K = NULL,
+           facet_args = list(),
+           prob = 0.99,
+           plot_diff = FALSE,
+           interpolate_adj = NULL) {
+  check_ignored_arguments(...,
+    ok_args = c("K", "pit", "prob", "plot_diff", "interpolate_adj", "M")
+  )
+  data <- mcmc_trace_data(
+    x,
+    pars = pars,
+    regex_pars = regex_pars,
+    transformations = transformations,
+    highlight = 1
+  )
+  n_iter <- unique(data$n_iterations)
+  n_chain <- unique(data$n_chains)
+  n_param <- unique(data$n_parameters)
+
+  x <- if (is.null(K)) {
+    0:n_iter / n_iter
+  } else {
+    0:K / K
+  }
+  gamma <- adjust_gamma(
+    N = n_iter,
+    L = n_chain,
+    K = if (is.null(K)) {
+      n_iter
+    } else {
+      K
+    },
+    prob = prob,
+    interpolate_adj = interpolate_adj,
+    ...
+  )
+  lims <- ecdf_intervals(
+    gamma = gamma,
+    N = n_iter,
+    K = if (is.null(K)) {
+      n_iter
+    } else {
+      K
+    },
+    L <- n_chain
+  )
+  data_lim <- data.frame(
+    upper = lims$upper / n_iter - (plot_diff == TRUE) * x,
+    lower = lims$lower / n_iter - (plot_diff == TRUE) * x,
+    x = x
+  )
+  data <- data %>%
+    group_by(.data$parameter, .data$chain) %>%
+    dplyr::group_map(~ data.frame(
+      parameter = .y[1],
+      chain = .y[2],
+      ecdf_value = ecdf(.x$value_rank / (n_iter * n_chain))(x) -
+        (plot_diff == TRUE) * x,
+      x = x
+    )) %>%
+    dplyr::bind_rows()
+
+  mapping <- aes(
+    x = .data$x,
+    y = .data$ecdf_value,
+    color = .data$chain,
+    group = .data$chain
+  )
+
+  scale_color <- scale_color_manual("Chain", values = chain_colors(n_chain))
+
+  facet_call <- NULL
+  if (n_param == 1) {
+    facet_call <- ylab(levels(data$parameter))
+  } else {
+    facet_args$facets <- ~parameter
+    facet_args$scales <- facet_args$scales %||% "free"
+    facet_call <- do.call("facet_wrap", facet_args)
+  }
+
+  ggplot() +
+    geom_step(data = data_lim, aes(x = .data$x, y = .data$upper), show.legend = FALSE) +
+    geom_step(data = data_lim, aes(x = .data$x, y = .data$lower), show.legend = FALSE) +
+    geom_step(mapping, data) +
+    bayesplot_theme_get() +
+    scale_color +
+    facet_call +
+    scale_x_continuous(breaks = pretty) +
+    legend_move(ifelse(n_chain > 1, "right", "none")) +
+    xaxis_title(FALSE) +
+    yaxis_title(on = n_param == 1)
+}
 
 #' @rdname MCMC-traces
 #' @export
@@ -517,23 +639,23 @@ mcmc_trace_data <- function(x,
   n_chain <- unique(data$n_chains)
   n_param <- unique(data$n_parameters)
 
-  mapping <- aes_(
-    x = ~ iteration,
-    y = ~ value,
-    color = ~ chain
+  mapping <- aes(
+    x = .data$iteration,
+    y = .data$value,
+    color = .data$chain
   )
 
   if (!is.null(highlight)) {
-    mapping <- modify_aes_(
+    mapping <- modify_aes(
       mapping,
-      alpha = ~ highlight,
-      color = ~ highlight
+      alpha = .data$highlight,
+      color = .data$highlight
     )
   }
 
   layer_warmup <- if (n_warmup > 0) {
     layer_warmup <- annotate(
-      "rect", xmin = -Inf, xmax = n_warmup, ymin = -Inf, ymax = Inf, size = 1,
+      "rect", xmin = -Inf, xmax = n_warmup, ymin = -Inf, ymax = Inf, linewidth = 1,
       color = "gray88", fill = "gray88", alpha = 0.5
     )
   } else {
@@ -604,7 +726,6 @@ mcmc_trace_data <- function(x,
     yaxis_title(on = n_param == 1)
 }
 
-
 chain_colors <- function(n) {
   all_clrs <- unlist(color_scheme_get())
   clrs <- switch(
@@ -671,13 +792,13 @@ divergence_rug <- function(np, np_style, n_iter, n_chain) {
   }
 
   geom_rug(
-    aes_(x = ~ Divergent, linetype = "Divergence"),
+    aes(x = .data$Divergent, linetype = "Divergence"),
     data = div_info,
     na.rm = TRUE,
     inherit.aes = FALSE,
     sides = "b",
     color = np_style$color[["div"]],
-    size = np_style$size[["div"]],
+    linewidth = np_style$size[["div"]],
     alpha = np_style$alpha[["div"]]
   )
 }

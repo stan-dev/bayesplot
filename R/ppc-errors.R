@@ -307,26 +307,26 @@ ppc_error_binned <-
     point_fill <- get_color(ifelse(mixed_scheme, "m", "d"))
     point_color <- get_color(ifelse(mixed_scheme, "mh", "dh"))
 
-    ggplot(data, aes_(x = ~ ey_bar)) +
+    ggplot(data, aes(x = .data$ey_bar)) +
       hline_0(linetype = 2, color = "black") +
       geom_ribbon(
-        mapping = aes_(ymax = ~ se2, ymin = ~ -se2),
+        mapping = aes(ymax = .data$se2, ymin = -.data$se2),
         fill = get_color("l"),
         color = NA,
         alpha = alpha
       ) +
       geom_path(
-        mapping = aes_(y = ~ se2),
+        mapping = aes(y = .data$se2),
         color = get_color("l"),
-        size = size
+        linewidth = size
       ) +
       geom_path(
-        mapping = aes_(y = ~ -se2),
+        mapping = aes(y = -.data$se2),
         color = get_color("l"),
-        size = size
+        linewidth = size
       ) +
       geom_point(
-        mapping = aes_(y = ~ err_bar),
+        mapping = aes(y = .data$err_bar),
         shape = 21,
         fill = point_fill,
         color = point_color

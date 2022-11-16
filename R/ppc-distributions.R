@@ -12,6 +12,7 @@
 #' @template args-hist
 #' @template args-hist-freq
 #' @template args-dens
+#' @template args-pit-ecdf
 #' @param size,alpha Passed to the appropriate geom to control the appearance of
 #'   the predictive distributions.
 #' @param ... Currently unused.
@@ -47,9 +48,16 @@
 #'    quantiles. `y` is overlaid on the plot either as a violin, points, or
 #'    both, depending on the `y_draw` argument.
 #'   }
+#'   \item{`ppc_pit_ecdf()`, `ppc_pit_ecdf_grouped()`}{
+#'    The ECDF of the empirical PIT values of `y` computed with respect to the
+#'    corresponding `yrep` values. `100 * prob`% central simultaneous confidence
+#'    intervals are provided to asses if `y` and `yrep` originate from the same
+#'    distribution. The PIT values can also be provided directly as `pit`.
+#'    See Säilynoja et al. (2021) for more details.}
 #' }
 #'
 #' @template reference-vis-paper
+#' @template reference-uniformity-test
 #' @templateVar bdaRef (Ch. 6)
 #' @template reference-bda
 #'
@@ -57,18 +65,23 @@
 #' color_scheme_set("brightblue")
 #' y <- example_y_data()
 #' yrep <- example_yrep_draws()
+#' group <- example_group_data()
 #' dim(yrep)
-#' ppc_dens_overlay(y, yrep[1:25, ])
 #'
+#' ppc_dens_overlay(y, yrep[1:25, ])
 #' \donttest{
 #' # ppc_ecdf_overlay with continuous data (set discrete=TRUE if discrete data)
 #' ppc_ecdf_overlay(y, yrep[sample(nrow(yrep), 25), ])
+#'
+#' # ECDF and ECDF difference plot of the PIT values of y compared to yrep
+#' # with 99% simultaneous confidence bands.
+#' ppc_pit_ecdf(y, yrep, prob = 0.99, plot_diff = FALSE)
+#' ppc_pit_ecdf(y, yrep, prob = 0.99, plot_diff = TRUE)
 #' }
 #'
 #' # for ppc_hist,dens,freqpoly,boxplot definitely use a subset yrep rows so
 #' # only a few (instead of nrow(yrep)) histograms are plotted
 #' ppc_hist(y, yrep[1:8, ])
-#'
 #' \donttest{
 #' color_scheme_set("red")
 #' ppc_boxplot(y, yrep[1:8, ])
@@ -78,14 +91,14 @@
 #' ppc_dens(y, yrep[200:202, ])
 #' }
 #'
-#' # frequency polygons
-#' ppc_freqpoly(y, yrep[1:3,], alpha = 0.1, size = 1, binwidth = 5)
-#'
-#' group <- example_group_data()
-#' ppc_freqpoly_grouped(y, yrep[1:3,], group) + yaxis_text()
 #' \donttest{
+#' # frequency polygons
+#' ppc_freqpoly(y, yrep[1:3, ], alpha = 0.1, size = 1, binwidth = 5)
+#'
+#' ppc_freqpoly_grouped(y, yrep[1:3, ], group) + yaxis_text()
+#'
 #' # if groups are different sizes then the 'freq' argument can be useful
-#' ppc_freqpoly_grouped(y, yrep[1:3,], group, freq = FALSE) + yaxis_text()
+#' ppc_freqpoly_grouped(y, yrep[1:3, ], group, freq = FALSE) + yaxis_text()
 #' }
 #'
 #' # density and distribution overlays by group
@@ -93,17 +106,25 @@
 #'
 #' ppc_ecdf_overlay_grouped(y, yrep[1:25, ], group = group)
 #'
+#' \donttest{
+#' # ECDF difference plots of the PIT values by group
+#' # with 99% simultaneous confidence bands.
+#' ppc_pit_ecdf_grouped(y, yrep, group=group, prob=0.99, plot_diff = TRUE)
+#' }
+#'
+#' \donttest{
 #' # don't need to only use small number of rows for ppc_violin_grouped
 #' # (as it pools yrep draws within groups)
 #' color_scheme_set("gray")
 #' ppc_violin_grouped(y, yrep, group, size = 1.5)
-#' \donttest{
 #' ppc_violin_grouped(y, yrep, group, alpha = 0)
 #'
 #' # change how y is drawn
 #' ppc_violin_grouped(y, yrep, group, alpha = 0, y_draw = "points", y_size = 1.5)
-#' ppc_violin_grouped(y, yrep, group, alpha = 0, y_draw = "both",
-#'                    y_size = 1.5, y_alpha = 0.5, y_jitter = 0.33)
+#' ppc_violin_grouped(y, yrep, group,
+#'   alpha = 0, y_draw = "both",
+#'   y_size = 1.5, y_alpha = 0.5, y_jitter = 0.33
+#' )
 #' }
 NULL
 
@@ -139,11 +160,11 @@ ppc_dens_overlay <-
     check_ignored_arguments(...)
 
     data <- ppc_data(y, yrep)
-    ggplot(data, mapping = aes_(x = ~ value)) +
+    ggplot(data, mapping = aes(x = .data$value)) +
       overlay_ppd_densities(
-        mapping = aes_(group = ~ rep_id, color = "yrep"),
+        mapping = aes(group = .data$rep_id, color = "yrep"),
         data = function(x) dplyr::filter(x, !.data$is_y),
-        size = size,
+        linewidth = size,
         alpha = alpha,
         trim = trim,
         bw = bw,
@@ -152,10 +173,10 @@ ppc_dens_overlay <-
         n = n_dens
       ) +
       overlay_ppd_densities(
-        mapping = aes_(color = "y"),
+        mapping = aes(color = "y"),
         data = function(x) dplyr::filter(x, .data$is_y),
         lineend = "round",
-        size = 1,
+        linewidth = 1,
         trim = trim,
         bw = bw,
         adjust = adjust,
@@ -175,19 +196,17 @@ ppc_dens_overlay <-
 #' @rdname PPC-distributions
 #' @export
 #' @template args-density-controls
-ppc_dens_overlay_grouped <- function(
-  y,
-  yrep,
-  group,
-  ...,
-  size = 0.25,
-  alpha = 0.7,
-  trim = FALSE,
-  bw = "nrd0",
-  adjust = 1,
-  kernel = "gaussian",
-  n_dens = 1024
-) {
+ppc_dens_overlay_grouped <- function(y,
+                                     yrep,
+                                     group,
+                                     ...,
+                                     size = 0.25,
+                                     alpha = 0.7,
+                                     trim = FALSE,
+                                     bw = "nrd0",
+                                     adjust = 1,
+                                     kernel = "gaussian",
+                                     n_dens = 1024) {
   check_ignored_arguments(...)
 
   p_overlay <- ppc_dens_overlay(
@@ -221,66 +240,62 @@ ppc_dens_overlay_grouped <- function(
 #'   `TRUE` then `geom="step"` is used.
 #' @param pad A logical scalar passed to [ggplot2::stat_ecdf()].
 #'
-ppc_ecdf_overlay <- function(
-  y,
-  yrep,
-  ...,
-  discrete = FALSE,
-  pad = TRUE,
-  size = 0.25,
-  alpha = 0.7
-) {
+ppc_ecdf_overlay <- function(y,
+                             yrep,
+                             ...,
+                             discrete = FALSE,
+                             pad = TRUE,
+                             size = 0.25,
+                             alpha = 0.7) {
   check_ignored_arguments(...)
   data <- ppc_data(y, yrep)
 
   ggplot(data) +
-    aes_(x = ~ value) +
+    aes(x = .data$value) +
     hline_at(
       0.5,
-      size = 0.1,
+      linewidth = 0.1,
       linetype = 2,
       color = get_color("dh")
     ) +
     hline_at(
       c(0, 1),
-      size = 0.2,
+      linewidth = 0.2,
       linetype = 2,
       color = get_color("dh")
     ) +
     stat_ecdf(
       data = function(x) dplyr::filter(x, !.data$is_y),
-      mapping = aes_(group = ~ rep_id, color = "yrep"),
+      mapping = aes(group = .data$rep_id, color = "yrep"),
       geom = if (discrete) "step" else "line",
-      size = size,
+      linewidth = size,
       alpha = alpha,
       pad = pad
     ) +
     stat_ecdf(
       data = function(x) dplyr::filter(x, .data$is_y),
-      mapping = aes_(color = "y"),
+      mapping = aes(color = "y"),
       geom = if (discrete) "step" else "line",
-      size = 1,
+      linewidth = 1,
       pad = pad
     ) +
-      scale_color_ppc() +
-      scale_y_continuous(breaks = c(0, 0.5, 1)) +
-      bayesplot_theme_get() +
-      yaxis_title(FALSE) +
-      xaxis_title(FALSE)
-  }
+    scale_color_ppc() +
+    scale_y_continuous(breaks = c(0, 0.5, 1)) +
+    bayesplot_theme_get() +
+    yaxis_title(FALSE) +
+    xaxis_title(FALSE)
+}
 
 #' @export
 #' @rdname PPC-distributions
-ppc_ecdf_overlay_grouped <- function(
-  y,
-  yrep,
-  group,
-  ...,
-  discrete = FALSE,
-  pad = TRUE,
-  size = 0.25,
-  alpha = 0.7
-) {
+ppc_ecdf_overlay_grouped <- function(y,
+                                     yrep,
+                                     group,
+                                     ...,
+                                     discrete = FALSE,
+                                     pad = TRUE,
+                                     size = 0.25,
+                                     alpha = 0.7) {
   check_ignored_arguments(...)
 
   p_overlay <- ppc_ecdf_overlay(
@@ -314,13 +329,13 @@ ppc_dens <-
            alpha = 1) {
     check_ignored_arguments(...)
     data <- ppc_data(y, yrep)
-    ggplot(data, mapping = aes_(
-      x = ~ value,
-      fill = ~ is_y_label,
-      color = ~ is_y_label
+    ggplot(data, mapping = aes(
+      x = .data$value,
+      fill = .data$is_y_label,
+      color = .data$is_y_label
     )) +
       geom_density(
-        size = size,
+        linewidth = size,
         alpha = alpha,
         trim = trim
       ) +
@@ -354,11 +369,11 @@ ppc_hist <-
     data <- ppc_data(y, yrep)
     ggplot(data, mapping = set_hist_aes(
       freq = freq,
-      fill = ~ is_y_label,
-      color = ~ is_y_label
+      fill = !!quote(is_y_label),
+      color = !!quote(is_y_label)
     )) +
       geom_histogram(
-        size = 0.25,
+        linewidth = 0.25,
         binwidth = binwidth,
         breaks = breaks
       ) +
@@ -388,7 +403,6 @@ ppc_freqpoly <-
            freq = TRUE,
            size = 0.5,
            alpha = 1) {
-
     dots <- list(...)
     if (!from_grouped(dots)) {
       check_ignored_arguments(...)
@@ -398,13 +412,13 @@ ppc_freqpoly <-
     data <- ppc_data(y, yrep, group = dots$group)
     ggplot(data, mapping = set_hist_aes(
       freq = freq,
-      fill = ~ is_y_label,
-      color = ~ is_y_label
+      fill = !!quote(is_y_label),
+      color = !!quote(is_y_label)
     )) +
       geom_area(
         stat = "bin",
         binwidth = binwidth,
-        size = size,
+        linewidth = size,
         alpha = alpha
       ) +
       scale_fill_ppc() +
@@ -464,20 +478,20 @@ ppc_boxplot <-
     check_ignored_arguments(...)
 
     data <- ppc_data(y, yrep)
-    ggplot(data, mapping = aes_(
-      x = ~ rep_label,
-      y = ~ value,
-      fill = ~ is_y_label,
-      color = ~ is_y_label
+    ggplot(data, mapping = aes(
+      x = .data$rep_label,
+      y = .data$value,
+      fill = .data$is_y_label,
+      color = .data$is_y_label
     )) +
       geom_boxplot(
         notch = notch,
-        size = size,
+        linewidth = size,
         alpha = alpha,
-        outlier.alpha = 2/3,
+        outlier.alpha = 2 / 3,
         outlier.size = 1
       ) +
-      scale_x_discrete(labels = function(x) parse(text=x)) +
+      scale_x_discrete(labels = function(x) parse(text = x)) +
       scale_fill_ppc() +
       scale_color_ppc() +
       bayesplot_theme_get() +
@@ -520,23 +534,23 @@ ppc_violin_grouped <-
     y_points <- y_draw %in% c("points", "both")
 
     args_violin_yrep <- list(
-      data = function(x) dplyr::filter(x,!.data$is_y),
-      aes_(fill = "yrep", color = "yrep"),
+      data = function(x) dplyr::filter(x, !.data$is_y),
+      aes(fill = "yrep", color = "yrep"),
       draw_quantiles = probs,
       alpha = alpha,
-      size = size
+      linewidth = size
     )
 
     args_violin_y <- list(
       data = function(x) dplyr::filter(x, .data$is_y),
-      aes_(fill = "y", color = "y"),
+      aes(fill = "y", color = "y"),
       show.legend = FALSE,
       alpha = 0
     )
 
     args_jitter_y <- list(
       data = function(x) dplyr::filter(x, .data$is_y),
-      aes_(fill = "y", color = "y"),
+      aes(fill = "y", color = "y"),
       shape = 21,
       alpha = y_alpha,
       size = y_size,
@@ -553,7 +567,8 @@ ppc_violin_grouped <-
     layer_jitter_y <- do.call(jitter_y_func, args_jitter_y)
 
     data <- ppc_data(y, yrep, group)
-    ggplot(data, mapping = aes_(x = ~ group, y = ~ value)) +
+
+    ggplot(data, mapping = aes(x = .data$group, y = .data$value)) +
       layer_violin_yrep +
       layer_violin_y +
       layer_jitter_y +
@@ -562,4 +577,157 @@ ppc_violin_grouped <-
       yaxis_title(FALSE) +
       xaxis_title(FALSE) +
       bayesplot_theme_get()
+  }
+
+
+#' @export
+#' @param pit An optional vector of probability integral transformed values for
+#'   which the ECDF is to be drawn. If NULL, PIT values are computed to `y` with
+#'   respect to the corresponding values in `yrep`.
+#' @rdname PPC-distributions
+#'
+ppc_pit_ecdf <- function(y,
+                         yrep,
+                         ...,
+                         pit = NULL,
+                         K = NULL,
+                         prob = .99,
+                         plot_diff = FALSE,
+                         interpolate_adj = NULL) {
+  check_ignored_arguments(...,
+    ok_args = c("K", "pit", "prob", "plot_diff", "interpolate_adj")
+  )
+
+  if (is.null(pit)) {
+    pit <- ppc_data(y, yrep) %>%
+      group_by(.data$y_id) %>%
+      dplyr::group_map(~ mean(.x$value[.x$is_y] >= .x$value[!.x$is_y])) %>%
+      unlist()
+    if (is.null(K)) {
+      K <- min(
+        length(unique(ppc_data(y, yrep)$rep_id)) + 1,
+        length(pit)
+      )
+    }
+  } else {
+    inform("'pit' specified so ignoring 'y', and 'yrep' if specified.")
+    pit <- validate_pit(pit)
+    if (is.null(K)) {
+      K <- length(pit)
+    }
+  }
+  N <- length(pit)
+  gamma <- adjust_gamma(
+    N = N,
+    K = K,
+    prob = prob,
+    interpolate_adj = interpolate_adj
+  )
+  lims <- ecdf_intervals(gamma = gamma, N = N, K = K)
+  ggplot() +
+    aes(
+      x = 1:K / K,
+      y = ecdf(pit)(seq(0, 1, length.out = K)) - (plot_diff == TRUE) * 1:K / K,
+      color = "y"
+    ) +
+    geom_step(show.legend = FALSE) +
+    geom_step(aes(
+      y = lims$upper[-1] / N - (plot_diff == TRUE) * 1:K / K,
+      color = "yrep"
+    ), show.legend = FALSE) +
+    geom_step(aes(
+      y = lims$lower[-1] / N - (plot_diff == TRUE) * 1:K / K,
+      color = "yrep"
+    ), show.legend = FALSE) +
+    yaxis_title(FALSE) +
+    xaxis_title(FALSE) +
+    yaxis_ticks(FALSE) +
+    scale_color_ppc() +
+    bayesplot_theme_get()
+}
+
+#' @export
+#' @rdname PPC-distributions
+#'
+ppc_pit_ecdf_grouped <-
+  function(y,
+           yrep,
+           group,
+           ...,
+           K = NULL,
+           pit = NULL,
+           prob = .99,
+           plot_diff = FALSE,
+           interpolate_adj = NULL) {
+    check_ignored_arguments(...,
+      ok_args = c("K", "pit", "prob", "plot_diff", "interpolate_adj")
+    )
+
+    if (is.null(pit)) {
+      pit <- ppc_data(y, yrep, group) %>%
+        group_by(.data$y_id) %>%
+        dplyr::group_map(~ mean(.x$value[.x$is_y] >= .x$value[!.x$is_y])) %>%
+        unlist()
+      if (is.null(K)) {
+        K <- length(unique(ppc_data(y, yrep)$rep_id)) + 1
+      }
+    } else {
+      inform("'pit' specified so ignoring 'y' and 'yrep' if specified.")
+      pit <- validate_pit(pit)
+    }
+    N <- length(pit)
+
+    gammas <- lapply(unique(group), function(g) {
+      N_g <- sum(group == g)
+      adjust_gamma(
+        N = N_g,
+        K = min(N_g, K),
+        prob = prob,
+        interpolate_adj = interpolate_adj
+      )
+    })
+    names(gammas) <- unique(group)
+
+    data <- data.frame(pit = pit, group = group) %>%
+      group_by(group) %>%
+      dplyr::group_map(~ data.frame(
+        ecdf_value = ecdf(.x$pit)(seq(0, 1, length.out = min(nrow(.x), K))),
+        group = .y[1],
+        lims_upper = ecdf_intervals(
+          gamma = gammas[[unlist(.y[1])]],
+          N = nrow(.x),
+          K = min(nrow(.x), K)
+        )$upper[-1] / nrow(.x),
+        lims_lower = ecdf_intervals(
+          gamma = gammas[[unlist(.y[1])]],
+          N = nrow(.x),
+          K = min(nrow(.x), K)
+        )$lower[-1] / nrow(.x),
+        x = seq(0, 1, length.out = min(nrow(.x), K))
+      )) %>%
+      dplyr::bind_rows()
+
+    ggplot(data) +
+      aes(
+        x = .data$x,
+        y = .data$ecdf_value - (plot_diff == TRUE) * .data$x,
+        group = .data$group,
+        color = "y"
+      ) +
+      geom_step(show.legend = FALSE) +
+      geom_step(aes(
+        y = .data$lims_upper - (plot_diff == TRUE) * .data$x,
+        color = "yrep"
+      ), show.legend = FALSE) +
+      geom_step(aes(
+        y = .data$lims_lower - (plot_diff == TRUE) * .data$x,
+        color = "yrep"
+      ), show.legend = FALSE) +
+      xaxis_title(FALSE) +
+      yaxis_title(FALSE) +
+      yaxis_ticks(FALSE) +
+      bayesplot_theme_get() +
+      facet_wrap("group") +
+      scale_color_ppc() +
+      force_axes_in_facets()
   }

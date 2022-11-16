@@ -48,9 +48,9 @@ mcmc_acf_bar(
 
 \item{...}{Currently ignored.}
 
-\item{size}{An optional value to override \code{\link[ggplot2:geom_point]{ggplot2::geom_point()}}'s
+\item{size}{Optional values to override \code{\link[ggplot2:geom_point]{ggplot2::geom_point()}}'s
 default size (for \code{mcmc_rhat()}, \code{mcmc_neff()}) or
-\code{\link[ggplot2:geom_path]{ggplot2::geom_line()}}'s default size (for \code{mcmc_acf()}).}
+\code{\link[ggplot2:geom_path]{ggplot2::geom_line()}}'s default line width (for \code{mcmc_acf()}).}
 
 \item{binwidth}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}} to override
 the default binwidth.}

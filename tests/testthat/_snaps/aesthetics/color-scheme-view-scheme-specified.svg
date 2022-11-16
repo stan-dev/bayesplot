@@ -25,12 +25,12 @@
   </clipPath>
 </defs>
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8MTcuMzB8NTU5LjE3)'>
-<rect x='210.00' y='452.44' width='300.00' height='82.10' style='stroke-width: 0.21; stroke: #FFFFFF; stroke-linecap: square; stroke-linejoin: miter; fill: #DCBCBC;' />
-<rect x='210.00' y='370.34' width='300.00' height='82.10' style='stroke-width: 0.21; stroke: #FFFFFF; stroke-linecap: square; stroke-linejoin: miter; fill: #C79999;' />
-<rect x='210.00' y='288.24' width='300.00' height='82.10' style='stroke-width: 0.21; stroke: #FFFFFF; stroke-linecap: square; stroke-linejoin: miter; fill: #B97C7C;' />
-<rect x='210.00' y='206.14' width='300.00' height='82.10' style='stroke-width: 0.21; stroke: #FFFFFF; stroke-linecap: square; stroke-linejoin: miter; fill: #A25050;' />
-<rect x='210.00' y='124.04' width='300.00' height='82.10' style='stroke-width: 0.21; stroke: #FFFFFF; stroke-linecap: square; stroke-linejoin: miter; fill: #8F2727;' />
-<rect x='210.00' y='41.93' width='300.00' height='82.10' style='stroke-width: 0.21; stroke: #FFFFFF; stroke-linecap: square; stroke-linejoin: miter; fill: #7C0000;' />
+<rect x='210.00' y='452.44' width='300.00' height='82.10' style='stroke-width: 0.21; stroke: #FFFFFF; stroke-linecap: butt; stroke-linejoin: miter; fill: #DCBCBC;' />
+<rect x='210.00' y='370.34' width='300.00' height='82.10' style='stroke-width: 0.21; stroke: #FFFFFF; stroke-linecap: butt; stroke-linejoin: miter; fill: #C79999;' />
+<rect x='210.00' y='288.24' width='300.00' height='82.10' style='stroke-width: 0.21; stroke: #FFFFFF; stroke-linecap: butt; stroke-linejoin: miter; fill: #B97C7C;' />
+<rect x='210.00' y='206.14' width='300.00' height='82.10' style='stroke-width: 0.21; stroke: #FFFFFF; stroke-linecap: butt; stroke-linejoin: miter; fill: #A25050;' />
+<rect x='210.00' y='124.04' width='300.00' height='82.10' style='stroke-width: 0.21; stroke: #FFFFFF; stroke-linecap: butt; stroke-linejoin: miter; fill: #8F2727;' />
+<rect x='210.00' y='41.93' width='300.00' height='82.10' style='stroke-width: 0.21; stroke: #FFFFFF; stroke-linecap: butt; stroke-linejoin: miter; fill: #7C0000;' />
 </g>
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8MC4wMHw1NzYuMDA=)'>
 <text x='360.00' y='563.75' text-anchor='middle' style='font-size: 11.00px; font-weight: bold; font-family: sans;' textLength='15.90px' lengthAdjust='spacingAndGlyphs'>red</text>

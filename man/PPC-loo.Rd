@@ -74,6 +74,7 @@ ppc_loo_intervals(
   alpha = 0.33,
   size = 1,
   fatten = 2.5,
+  linewidth = 1,
   order = c("index", "median")
 )
 
@@ -119,12 +120,12 @@ distribution. The default is 100. The density estimate of each dataset is
 plotted as a thin line in the plot, with the density estimate of the LOO
 PITs overlaid as a thicker dark line.}
 
-\item{alpha, size, fatten}{Arguments passed to code geoms to control plot
+\item{alpha, size, fatten, linewidth}{Arguments passed to code geoms to control plot
 aesthetics. For \code{ppc_loo_pit_qq()} and \code{ppc_loo_pit_overlay()}, \code{size} and
 \code{alpha} are passed to \code{\link[ggplot2:geom_point]{ggplot2::geom_point()}} and
 \code{\link[ggplot2:geom_density]{ggplot2::geom_density()}}, respectively. For \code{ppc_loo_intervals()}, \code{size}
-and \code{fatten} are passed to \code{\link[ggplot2:geom_linerange]{ggplot2::geom_pointrange()}}. For
-\code{ppc_loo_ribbon()}, \code{alpha} and \code{size} are passed to
+\code{linewidth} and \code{fatten} are passed to \code{\link[ggplot2:geom_linerange]{ggplot2::geom_pointrange()}}. For
+\code{ppc_loo_ribbon()}, \code{alpha} and \code{size}  are passed to
 \code{\link[ggplot2:geom_ribbon]{ggplot2::geom_ribbon()}}.}
 
 \item{boundary_correction}{For \code{ppc_loo_pit_overlay()}, when set to \code{TRUE}

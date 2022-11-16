@@ -17,4 +17,3 @@ tests/figs/*
 ^docs$
 ^_pkgdown\.yml$
 ^\.github$
-^tests/testthat/_snaps$

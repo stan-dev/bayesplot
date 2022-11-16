@@ -13,6 +13,8 @@
 \alias{ppc_freqpoly_grouped}
 \alias{ppc_boxplot}
 \alias{ppc_violin_grouped}
+\alias{ppc_pit_ecdf}
+\alias{ppc_pit_ecdf_grouped}
 \title{PPC distributions}
 \usage{
 ppc_data(y, yrep, group = NULL)
@@ -97,6 +99,29 @@ ppc_violin_grouped(
   y_alpha = 1,
   y_jitter = 0.1
 )
+
+ppc_pit_ecdf(
+  y,
+  yrep,
+  ...,
+  pit = NULL,
+  K = NULL,
+  prob = 0.99,
+  plot_diff = FALSE,
+  interpolate_adj = NULL
+)
+
+ppc_pit_ecdf_grouped(
+  y,
+  yrep,
+  group,
+  ...,
+  K = NULL,
+  pit = NULL,
+  prob = 0.99,
+  plot_diff = FALSE,
+  interpolate_adj = NULL
+)
 }
 \arguments{
 \item{y}{A vector of observations. See \strong{Details}.}
@@ -160,6 +185,30 @@ horizontal lines. Set to \code{NULL} to remove the lines.}
 to to the \code{size}, \code{alpha}, and \code{width} arguments of \code{\link[ggplot2:geom_jitter]{ggplot2::geom_jitter()}}
 to control the appearance of \code{y} points. The default of \code{y_jitter=NULL}
 will let \strong{ggplot2} determine the amount of jitter.}
+
+\item{pit}{An optional vector of probability integral transformed values for
+which the ECDF is to be drawn. If NULL, PIT values are computed to \code{y} with
+respect to the corresponding values in \code{yrep}.}
+
+\item{K}{An optional integer defining the number of equally spaced evaluation
+points for the ECDF. If the submitted PIT values are known to be discrete,
+this should be the number of the discrete cases. Defaults to the smaller of
+\code{length(y)} and \code{ncol(yrep)} when applicable.}
+
+\item{prob}{The desired simultaneous coverage level of the bands around the
+ECDF. A value in (0,1).}
+
+\item{plot_diff}{A boolean defining whether to plot the difference between
+the observed ECDF and the theoretical expectation for uniform PIT values
+rather than plotting the regular ECDF. The default is \code{FALSE}, but for
+large samples we recommend setting \code{plot_diff=TRUE} as the difference plot
+will visually show a more dynamic range.}
+
+\item{interpolate_adj}{A boolean defining if the simultaneous confidence
+bands should be interpolated based on precomputed values rather than
+computed exactly. Computing the bands may be computationally intensive and
+the approximation gives a fast method for assessing the ECDF trajectory.
+The default is to use interpolation if \code{K} is greater than 200.}
 }
 \value{
 The plotting functions return a ggplot object that can be further
@@ -205,6 +254,12 @@ variable is plotted as a violin with horizontal lines at notable
 quantiles. \code{y} is overlaid on the plot either as a violin, points, or
 both, depending on the \code{y_draw} argument.
 }
+\item{\code{ppc_pit_ecdf()}, \code{ppc_pit_ecdf_grouped()}}{
+The ECDF of the empirical PIT values of \code{y} computed with respect to the
+corresponding \code{yrep} values. \code{100 * prob}\% central simultaneous confidence
+intervals are provided to asses if \code{y} and \code{yrep} originate from the same
+distribution. The PIT values can also be provided directly as \code{pit}.
+See Säilynoja et al. (2021) for more details.}
 }
 }
 
@@ -212,18 +267,23 @@ both, depending on the \code{y_draw} argument.
 color_scheme_set("brightblue")
 y <- example_y_data()
 yrep <- example_yrep_draws()
+group <- example_group_data()
 dim(yrep)
-ppc_dens_overlay(y, yrep[1:25, ])
 
+ppc_dens_overlay(y, yrep[1:25, ])
 \donttest{
 # ppc_ecdf_overlay with continuous data (set discrete=TRUE if discrete data)
 ppc_ecdf_overlay(y, yrep[sample(nrow(yrep), 25), ])
+
+# ECDF and ECDF difference plot of the PIT values of y compared to yrep
+# with 99\% simultaneous confidence bands.
+ppc_pit_ecdf(y, yrep, prob = 0.99, plot_diff = FALSE)
+ppc_pit_ecdf(y, yrep, prob = 0.99, plot_diff = TRUE)
 }
 
 # for ppc_hist,dens,freqpoly,boxplot definitely use a subset yrep rows so
 # only a few (instead of nrow(yrep)) histograms are plotted
 ppc_hist(y, yrep[1:8, ])
-
 \donttest{
 color_scheme_set("red")
 ppc_boxplot(y, yrep[1:8, ])
@@ -233,14 +293,14 @@ color_scheme_set("blue")
 ppc_dens(y, yrep[200:202, ])
 }
 
-# frequency polygons
-ppc_freqpoly(y, yrep[1:3,], alpha = 0.1, size = 1, binwidth = 5)
-
-group <- example_group_data()
-ppc_freqpoly_grouped(y, yrep[1:3,], group) + yaxis_text()
 \donttest{
+# frequency polygons
+ppc_freqpoly(y, yrep[1:3, ], alpha = 0.1, size = 1, binwidth = 5)
+
+ppc_freqpoly_grouped(y, yrep[1:3, ], group) + yaxis_text()
+
 # if groups are different sizes then the 'freq' argument can be useful
-ppc_freqpoly_grouped(y, yrep[1:3,], group, freq = FALSE) + yaxis_text()
+ppc_freqpoly_grouped(y, yrep[1:3, ], group, freq = FALSE) + yaxis_text()
 }
 
 # density and distribution overlays by group
@@ -248,17 +308,25 @@ ppc_dens_overlay_grouped(y, yrep[1:25, ], group = group)
 
 ppc_ecdf_overlay_grouped(y, yrep[1:25, ], group = group)
 
+\donttest{
+# ECDF difference plots of the PIT values by group
+# with 99\% simultaneous confidence bands.
+ppc_pit_ecdf_grouped(y, yrep, group=group, prob=0.99, plot_diff = TRUE)
+}
+
+\donttest{
 # don't need to only use small number of rows for ppc_violin_grouped
 # (as it pools yrep draws within groups)
 color_scheme_set("gray")
 ppc_violin_grouped(y, yrep, group, size = 1.5)
-\donttest{
 ppc_violin_grouped(y, yrep, group, alpha = 0)
 
 # change how y is drawn
 ppc_violin_grouped(y, yrep, group, alpha = 0, y_draw = "points", y_size = 1.5)
-ppc_violin_grouped(y, yrep, group, alpha = 0, y_draw = "both",
-                   y_size = 1.5, y_alpha = 0.5, y_jitter = 0.33)
+ppc_violin_grouped(y, yrep, group,
+  alpha = 0, y_draw = "both",
+  y_size = 1.5, y_alpha = 0.5, y_jitter = 0.33
+)
 }
 }
 \references{
@@ -268,6 +336,10 @@ Gelman, A. (2019), Visualization in Bayesian workflow.
 (\href{https://rss.onlinelibrary.wiley.com/doi/full/10.1111/rssa.12378}{journal version},
 \href{https://arxiv.org/abs/1709.01449}{arXiv preprint},
 \href{https://github.com/jgabry/bayes-vis-paper}{code on GitHub})
+
+Säilynoja, T., Bürkner, P., Vehtari, A.
+(2021). Graphical Test for Discrete Uniformity and its Applications in
+Goodness of Fit Evaluation and Multiple Sample Comparison \href{https://arxiv.org/abs/2103.10522}{arXiv preprint}.
 
 Gelman, A., Carlin, J. B., Stern, H. S., Dunson, D. B., Vehtari,
 A., and Rubin, D. B. (2013). \emph{Bayesian Data Analysis.} Chapman & Hall/CRC

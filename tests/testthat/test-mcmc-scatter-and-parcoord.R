@@ -366,3 +366,92 @@ test_that("parcoord_style_np throws correct errors", {
     fixed = TRUE
   )
 })
+
+
+# Visual tests -----------------------------------------------------------------
+
+test_that("mcmc_scatter renders correctly", {
+  skip_on_cran()
+  skip_if_not_installed("vdiffr")
+
+  p_base <- mcmc_scatter(vdiff_dframe_chains)
+  vdiffr::expect_doppelganger("mcmc_scatter (default)", p_base)
+
+  p_custom <- mcmc_scatter(
+    vdiff_dframe_chains,
+    size = 2,
+    alpha = 0.2
+  )
+  vdiffr::expect_doppelganger("mcmc_scatter (size, alpha)", p_custom)
+
+  p_divergences <- mcmc_scatter(
+    vdiff_dframe_chains,
+    np = vdiff_dframe_chains_divergences
+  )
+  vdiffr::expect_doppelganger("mcmc_scatter (np)", p_divergences)
+})
+
+test_that("mcmc_hex renders correctly", {
+  skip_on_cran()
+  skip_if_not_installed("vdiffr")
+  skip_if_not_installed("hexbin")
+
+  p_base <- mcmc_hex(vdiff_dframe, pars = c("V1", "V2"))
+  vdiffr::expect_doppelganger("mcmc_hex (default)", p_base)
+
+  p_custom <- mcmc_hex(
+    vdiff_dframe,
+    pars = c("V1", "V2"),
+    binwidth = 0.1
+  )
+  vdiffr::expect_doppelganger("mcmc_hex (bw)", p_custom)
+})
+
+test_that("mcmc_parcoord renders correctly", {
+  skip_on_cran()
+  skip_if_not_installed("vdiffr")
+
+  p_base <- mcmc_parcoord(vdiff_dframe_chains)
+  vdiffr::expect_doppelganger("mcmc_parcoord (default)", p_base)
+
+  p_divergences <- mcmc_parcoord(
+    vdiff_dframe_chains,
+    np = vdiff_dframe_chains_divergences,
+    np_style = parcoord_style_np(div_size = 2)
+  )
+  vdiffr::expect_doppelganger("mcmc_parcoord (np)", p_divergences)
+})
+
+
+test_that("mcmc_pairs renders correctly", {
+  skip_on_cran()
+  skip_if_not_installed("vdiffr")
+  skip_if_not_installed("hexbin")
+
+  p_base <- mcmc_pairs(vdiff_dframe_chains)
+  vdiffr::expect_doppelganger("mcmc_pairs (default)", p_base)
+
+  p_divergences <- mcmc_pairs(
+    vdiff_dframe_chains,
+    np = vdiff_dframe_chains_divergences,
+    np_style = pairs_style_np(div_size = 2),
+    off_diag_fun = "hex"
+  )
+  vdiffr::expect_doppelganger("mcmc_pairs (divs, hex)", p_divergences)
+
+  p_treedepth <- mcmc_pairs(
+    vdiff_dframe_chains,
+    np = vdiff_dframe_chains_treedepth,
+    np_style = pairs_style_np(td_color = "green"),
+    max_treedepth = 9
+  )
+  vdiffr::expect_doppelganger("mcmc_pairs (td)", p_treedepth)
+
+  p_divs_treedepth_divergences <- mcmc_pairs(
+    vdiff_dframe_chains,
+    np = vdiff_dframe_chains_np,
+    np_style = pairs_style_np(div_size = 3, td_color = "green"),
+    max_treedepth = 9
+  )
+  vdiffr::expect_doppelganger("mcmc_pairs (divs, td)", p_divs_treedepth_divergences)
+})

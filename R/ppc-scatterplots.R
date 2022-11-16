@@ -209,7 +209,7 @@ ppc_scatter_avg_data <- function(y, yrep, group = NULL) {
 yrep_avg_label <- function() expression(paste("Average ", italic(y)[rep]))
 
 scatter_aes <- function(...) {
-  aes_(x = ~ value, y = ~ y_obs, ...)
+  aes(x = .data$value, y = .data$y_obs, ...)
 }
 
 scatter_avg_group_facets <- function(facet_args) {

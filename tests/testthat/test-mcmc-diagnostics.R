@@ -6,21 +6,25 @@ source(test_path("data-for-mcmc-tests.R"))
 test_that("rhat and neff plots return a ggplot object", {
   rhat <- runif(100, 1, 1.5)
   expect_gg(mcmc_rhat(rhat))
-  expect_gg(mcmc_rhat_hist(rhat))
+  expect_gg(mcmc_rhat_hist(rhat, binwidth = .01))
 
   ratio <- runif(100, 0, 1)
   expect_gg(mcmc_neff(ratio))
-  expect_gg(mcmc_neff_hist(ratio))
+  expect_gg(mcmc_neff_hist(ratio, binwidth = .01))
 
   # 1-D array ok
   expect_gg(mcmc_rhat(array(rhat)))
-  expect_gg(mcmc_rhat_hist(array(rhat)))
+  expect_gg(mcmc_rhat_hist(array(rhat), binwidth = .01))
   expect_gg(mcmc_neff(array(ratio)))
-  expect_gg(mcmc_neff_hist(array(ratio)))
+  expect_gg(mcmc_neff_hist(array(ratio), binwidth = .01))
 
   # named ok
   rhat <- setNames(runif(5, 1, 1.5), paste0("alpha[", 1:5, "]"))
   expect_gg(mcmc_rhat(rhat))
+
+  # doesn't error with ratios > 1 (not common but can happen)
+  expect_gg(mcmc_neff(ratio = c(0.5, 1, 1.25)))
+  expect_gg(mcmc_neff(ratio = c(0.5, 1, 2)))
 })
 
 test_that("rhat and neff plot functions throw correct errors & warnings", {
@@ -150,4 +154,26 @@ test_that("mcmc_neff_hist renders correctly", {
 
   p_binwidth <- mcmc_neff_hist(neffs, binwidth = .05)
   vdiffr::expect_doppelganger("mcmc_neff_hist (binwidth)", p_binwidth)
+})
+
+test_that("mcmc_acf renders correctly", {
+  testthat::skip_on_cran()
+  testthat::skip_if_not_installed("vdiffr")
+
+  p_base <- mcmc_acf(vdiff_dframe)
+  vdiffr::expect_doppelganger("mcmc_acf (default)", p_base)
+
+  p_lags <- mcmc_acf(vdiff_dframe, lags = 5)
+  vdiffr::expect_doppelganger("mcmc_acf (lags)", p_lags)
+})
+
+test_that("mcmc_acf_bar renders correctly", {
+  testthat::skip_on_cran()
+  testthat::skip_if_not_installed("vdiffr")
+
+  p_base <- mcmc_acf_bar(vdiff_dframe)
+  vdiffr::expect_doppelganger("mcmc_acf_bar (default)", p_base)
+
+  p_lags <- mcmc_acf_bar(vdiff_dframe, lags = 5)
+  vdiffr::expect_doppelganger("mcmc_acf_bar (lags)", p_lags)
 })

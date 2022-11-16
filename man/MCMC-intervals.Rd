@@ -243,6 +243,7 @@ p <- mcmc_areas(
 )
 plot(p)
 
+\donttest{
 # control spacing at top and bottom of plot
 # see ?ggplot2::expansion
 p + scale_y_discrete(
@@ -281,6 +282,8 @@ color_scheme_set("gray")
 p <- mcmc_areas(x, pars = c("alpha", "beta[4]"), rhat = c(1, 1.1))
 p + legend_move("bottom")
 p + legend_move("none") # or p + legend_none()
+
+}
 
 # Different area calculations
 b3 <- c("beta[1]", "beta[2]", "beta[3]")

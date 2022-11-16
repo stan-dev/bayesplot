@@ -22,15 +22,15 @@ test_that("ppc_ecdf_overlay returns a ggplot object", {
 })
 
 test_that("ppc_dens,pp_hist,ppc_freqpoly,ppc_boxplot return ggplot objects", {
-  expect_gg(ppc_hist(y, yrep[1,, drop = FALSE]))
-  expect_gg(ppc_hist(y, yrep[1:8, ]))
-  expect_gg(ppc_hist(y2, yrep2))
+  expect_gg(ppc_hist(y, yrep[1,, drop = FALSE], binwidth = 0.1))
+  expect_gg(ppc_hist(y, yrep[1:8, ], binwidth = 0.1))
+  expect_gg(ppc_hist(y2, yrep2, binwidth = 0.1))
 
   expect_gg(ppc_dens(y, yrep[1:8, ]))
   expect_gg(ppc_dens(y2, yrep2))
 
   expect_gg(ppc_freqpoly(y, yrep[1:8, ], binwidth = 2, size = 2, alpha = 0.1))
-  expect_gg(ppc_freqpoly(y2, yrep2))
+  expect_gg(ppc_freqpoly(y2, yrep2, binwidth = 0.1))
 
   expect_gg(ppc_boxplot(y, yrep[1,, drop = FALSE]))
   expect_gg(ppc_boxplot(y, yrep[1:8, ]))
@@ -43,19 +43,29 @@ test_that("ppc_dens,pp_hist,ppc_freqpoly,ppc_boxplot return ggplot objects", {
   }
 
   # ppd versions
-  expect_gg(ppd_hist(yrep[1,, drop = FALSE]))
-  expect_gg(ppd_hist(yrep[1:8, ]))
-  expect_gg(ppd_hist(yrep2))
+  expect_gg(ppd_hist(yrep[1,, drop = FALSE], binwidth = 0.1))
+  expect_gg(ppd_hist(yrep[1:8, ], binwidth = 0.1))
+  expect_gg(ppd_hist(yrep2, binwidth = 0.1))
 
   expect_gg(ppc_dens(y, yrep[1:8, ]))
   expect_gg(ppc_dens(y2, yrep2))
 
   expect_gg(ppd_freqpoly(yrep[1:8, ], binwidth = 2, size = 2, alpha = 0.1))
-  expect_gg(ppd_freqpoly(yrep2))
+  expect_gg(ppd_freqpoly(yrep2, binwidth = 0.1))
 
   expect_gg(ppd_boxplot(yrep[1,, drop = FALSE]))
   expect_gg(ppd_boxplot(yrep[1:8, ]))
   expect_gg(ppd_boxplot(yrep2, notch = FALSE))
+})
+
+test_that("ppc_pit_ecdf, ppc_pit_ecdf_grouped returns a ggplot object", {
+  expect_gg(ppc_pit_ecdf(y, yrep, interpolate_adj = FALSE))
+  expect_gg(ppc_pit_ecdf_grouped(y, yrep, group = group, interpolate_adj = FALSE))
+  expect_message(ppc_pit_ecdf(pit = runif(100)), "'pit' specified")
+  expect_message(
+    ppc_pit_ecdf_grouped(pit = runif(length(group)), group = group, interpolate_adj = FALSE),
+    "'pit' specified"
+  )
 })
 
 test_that("ppc_freqpoly_grouped returns a ggplot object", {
@@ -285,4 +295,19 @@ test_that("ppc_violin_grouped renders correctly", {
     p_dots_jitter)
 
   set.seed(seed = NULL)
+})
+
+test_that("ppc_pit_ecdf, ppc_pit_ecdf_grouped renders correctly", {
+  testthat::skip_on_cran()
+  testthat::skip_if_not_installed("vdiffr")
+
+  p_base <- ppc_pit_ecdf(y, yrep, interpolate_adj = FALSE)
+  g_base <- ppc_pit_ecdf_grouped(y, yrep, group = group, interpolate_adj = FALSE)
+  p_diff <- ppc_pit_ecdf(y, yrep, plot_diff = TRUE, interpolate_adj = FALSE)
+  g_diff <- ppc_pit_ecdf_grouped(y, yrep, plot_diff = TRUE, group = group, interpolate_adj = FALSE)
+
+  vdiffr::expect_doppelganger("ppc_pit_ecdf (default)", p_base)
+  vdiffr::expect_doppelganger("ppc_pit_ecdf_grouped (default)", g_base)
+  vdiffr::expect_doppelganger("ppc_pit_ecdf (diff)", p_diff)
+  vdiffr::expect_doppelganger("ppc_pit_ecdf_grouped (diff)", g_diff)
 })

@@ -13,8 +13,10 @@ param_glue(pattern, ..., vars = NULL)
 \arguments{
 \item{prefix, range}{For \code{param_range()} only, \code{prefix} is a string naming a
 parameter and \code{range} is an integer vector providing the indices of a
-subset of elements to select. For example, using\preformatted{  param_range("beta", c(1,2,8))
-}
+subset of elements to select. For example, using
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{  param_range("beta", c(1,2,8))
+}\if{html}{\out{</div>}}
 
 would select parameters named \code{beta[1]}, \code{beta[2]}, and \code{beta[8]}.
 \code{param_range()} is only designed for the case that the indices are integers
@@ -29,10 +31,12 @@ left as \code{NULL} and will be set automatically for the user.}
 \item{pattern, ...}{For \code{param_glue()} only, \code{pattern} is a string containing
 expressions enclosed in braces and \code{...} should be named arguments
 providing one character vector per expression in braces in \code{pattern}. It is
-easiest to describe how to use these arguments with an example:\preformatted{param_glue("beta_\{var\}[\{level\}]",
+easiest to describe how to use these arguments with an example:
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{param_glue("beta_\{var\}[\{level\}]",
            var = c("age", "income"),
            level = c(3,8))
-}
+}\if{html}{\out{</div>}}
 
 would select parameters with names
 \code{"beta_age[3]"}, \code{"beta_income[3]"}, \code{"beta_age[8]"}, \code{"beta_income[8]"}.}
