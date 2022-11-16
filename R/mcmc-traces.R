@@ -126,7 +126,7 @@
 #' color_scheme_set("purple")
 #' p <- mcmc_trace(
 #'   x,
-#'   regex_pars = "beta\\\[[1,3]\\\]",
+#'   regex_pars = "beta\\[[1,3]\\]",
 #'   facet_args = list(labeller = ggplot2::label_parsed)
 #' )
 #' p + facet_text(size = 15)
