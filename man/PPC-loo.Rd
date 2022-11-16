@@ -232,8 +232,8 @@ the LOO predictive distribution.
 \examples{
 
 \dontrun{
-library(rstanarm)
-library(loo)
+suppressPackageStartupMessages(library(rstanarm))
+suppressPackageStartupMessages(library(loo))
 
 head(radon)
 fit <- stan_lmer(
