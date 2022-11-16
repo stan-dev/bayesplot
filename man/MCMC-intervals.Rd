@@ -267,7 +267,6 @@ p + scale_y_discrete(
              "beta[4]" = "param label 2"),
   limits = c("beta[4]", "alpha")
 )
-}
 
 # color by rhat value
 color_scheme_set("blue")
@@ -283,6 +282,8 @@ color_scheme_set("gray")
 p <- mcmc_areas(x, pars = c("alpha", "beta[4]"), rhat = c(1, 1.1))
 p + legend_move("bottom")
 p + legend_move("none") # or p + legend_none()
+
+}
 
 # Different area calculations
 b3 <- c("beta[1]", "beta[2]", "beta[3]")
