@@ -65,6 +65,11 @@ articles:
       - graphical-ppcs
 
 reference:
+  - title: "Overview"
+    desc: >
+      Package overview
+    contents:
+      - bayesplot-package
   - title: "Aesthetics"
     desc: >
       Functions for setting the color scheme and ggplot theme used

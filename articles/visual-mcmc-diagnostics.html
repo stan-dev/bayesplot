@@ -21,13 +21,15 @@
 <link href="../docsearch.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script><meta property="og:title" content="Visual MCMC diagnostics using the bayesplot package">
 <meta property="og:description" content="bayesplot">
-<meta property="og:image" content="https://mc-stan.org/bayesplot/logo.png">
+<meta property="og:image" content="https://mc-stan.org/bayesplot/logo.svg">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -40,7 +42,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bayesplot</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.9.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.10.0</span>
       </span>
     </div>
 
@@ -62,57 +64,57 @@
   <a href="../news/index.html">News</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Other Packages
      
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="https://mc-stan.org/rstan">rstan</a>
+      <a href="https://mc-stan.org/rstan" class="external-link">rstan</a>
     </li>
     <li>
-      <a href="https://mc-stan.org/cmdstanr">cmdstanr</a>
+      <a href="https://mc-stan.org/cmdstanr" class="external-link">cmdstanr</a>
     </li>
     <li>
-      <a href="https://mc-stan.org/rstanarm">rstanarm</a>
+      <a href="https://mc-stan.org/rstanarm" class="external-link">rstanarm</a>
     </li>
     <li>
-      <a href="https://mc-stan.org/shinystan">shinystan</a>
+      <a href="https://mc-stan.org/shinystan" class="external-link">shinystan</a>
     </li>
     <li>
-      <a href="https://mc-stan.org/loo">loo</a>
+      <a href="https://mc-stan.org/loo" class="external-link">loo</a>
     </li>
     <li>
-      <a href="https://mc-stan.org/projpred">projpred</a>
+      <a href="https://mc-stan.org/projpred" class="external-link">projpred</a>
     </li>
     <li>
-      <a href="https://mc-stan.org/rstantools">rstantools</a>
+      <a href="https://mc-stan.org/rstantools" class="external-link">rstantools</a>
     </li>
     <li>
-      <a href="https://mc-stan.org/posterior">posterior</a>
+      <a href="https://mc-stan.org/posterior" class="external-link">posterior</a>
     </li>
   </ul>
 </li>
 <li>
-  <a href="https://mc-stan.org">Stan</a>
+  <a href="https://mc-stan.org" class="external-link">Stan</a>
 </li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://twitter.com/mcmc_stan">
+  <a href="https://twitter.com/mcmc_stan" class="external-link">
     <span class="fa fa-twitter"></span>
      
   </a>
 </li>
 <li>
-  <a href="https://github.com/stan-dev/bayesplot">
+  <a href="https://github.com/stan-dev/bayesplot" class="external-link">
     <span class="fa fa-github"></span>
      
   </a>
 </li>
 <li>
-  <a href="https://discourse.mc-stan.org/">
+  <a href="https://discourse.mc-stan.org/" class="external-link">
     <span class="fa fa-users"></span>
      
   </a>
@@ -133,52 +135,74 @@
 
       
 
-      </header><script src="visual-mcmc-diagnostics_files/header-attrs-2.9/header-attrs.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1 data-toc-skip>Visual MCMC diagnostics using the bayesplot package</h1>
-                        <h4 class="author">Jonah Gabry and Martin Modrák</h4>
+      <h1 data-toc-skip>Visual MCMC diagnostics using the bayesplot
+package</h1>
+                        <h4 data-toc-skip class="author">Jonah Gabry and
+Martin Modrák</h4>
             
-            <h4 class="date">Latest version: 2022-03-10</h4>
+            <h4 data-toc-skip class="date">2022-11-16</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/stan-dev/bayesplot/blob/master/vignettes/visual-mcmc-diagnostics.Rmd"><code>vignettes/visual-mcmc-diagnostics.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/stan-dev/bayesplot/blob/HEAD/vignettes/visual-mcmc-diagnostics.Rmd" class="external-link"><code>vignettes/visual-mcmc-diagnostics.Rmd</code></a></small>
       <div class="hidden name"><code>visual-mcmc-diagnostics.Rmd</code></div>
 
     </div>
 
     
     
-<div id="introduction" class="section level2">
-<h2 class="hasAnchor">
-<a href="#introduction" class="anchor"></a>Introduction</h2>
-<p>This vignette focuses on MCMC diagnostic plots, in particular on diagnosing divergent transitions and on the <code>n_eff</code> and <code>Rhat</code> statistics that help you determine that the chains have mixed well. Plots of parameter estimates from MCMC draws are covered in the separate vignette <a href="https://mc-stan.org/bayesplot/articles/plotting-mcmc-draws.html"><em>Plotting MCMC draws</em></a>, and graphical posterior predictive model checking is covered in the <a href="https://mc-stan.org/bayesplot/articles/graphical-ppcs.html"><em>Graphical posterior predictive checks</em></a> vignette.</p>
-<p>Note that most of these plots can also be browsed interactively using the <a href="https://mc-stan.org/shinystan/">shinystan</a> package.</p>
-<div id="setup" class="section level3">
-<h3 class="hasAnchor">
-<a href="#setup" class="anchor"></a>Setup</h3>
-<p>In addition to <strong>bayesplot</strong> we’ll load the following packages:</p>
+<div class="section level2">
+<h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
+</h2>
+<p>This vignette focuses on MCMC diagnostic plots, in particular on
+diagnosing divergent transitions and on the <code>n_eff</code> and
+<code>Rhat</code> statistics that help you determine that the chains
+have mixed well. Plots of parameter estimates from MCMC draws are
+covered in the separate vignette <a href="https://mc-stan.org/bayesplot/articles/plotting-mcmc-draws.html"><em>Plotting
+MCMC draws</em></a>, and graphical posterior predictive model checking
+is covered in the <a href="https://mc-stan.org/bayesplot/articles/graphical-ppcs.html"><em>Graphical
+posterior predictive checks</em></a> vignette.</p>
+<p>Note that most of these plots can also be browsed interactively using
+the <a href="https://mc-stan.org/shinystan/" class="external-link">shinystan</a> package.</p>
+<div class="section level3">
+<h3 id="setup">Setup<a class="anchor" aria-label="anchor" href="#setup"></a>
+</h3>
+<p>In addition to <strong>bayesplot</strong> we’ll load the following
+packages:</p>
 <ul>
 <li>
-<strong>ggplot2</strong>, in case we want to customize the ggplot objects created by <strong>bayesplot</strong>
+<strong>ggplot2</strong>, in case we want to customize the ggplot
+objects created by <strong>bayesplot</strong>
 </li>
 <li>
-<strong>rstan</strong>, for fitting the example models used throughout the vignette</li>
+<strong>rstan</strong>, for fitting the example models used
+throughout the vignette</li>
 </ul>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://mc-stan.org/bayesplot/">"bayesplot"</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://ggplot2.tidyverse.org">"ggplot2"</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://mc-stan.org/rstan/">"rstan"</a></span><span class="op">)</span>      </code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://mc-stan.org/bayesplot/">"bayesplot"</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://ggplot2.tidyverse.org" class="external-link">"ggplot2"</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://mc-stan.org/rstan/" class="external-link">"rstan"</a></span><span class="op">)</span>      </span></code></pre></div>
 </div>
-<div id="example-model" class="section level3">
-<h3 class="hasAnchor">
-<a href="#example-model" class="anchor"></a>Example model</h3>
-<p>Before we delve into the actual plotting we need to fit a model to have something to work with. In this vignette we’ll use the eight schools example, which is discussed in many places, including Rubin (1981), Gelman et al. (2013), and the <a href="https://github.com/stan-dev/rstan/wiki/RStan-Getting-Started#how-to-use-rstan">RStan Getting Started</a> wiki. This is a simple hierarchical meta-analysis model with data consisting of point estimates <code>y</code> and standard errors <code>sigma</code> from analyses of test prep programs in <code>J=8</code> schools. Ideally we would have the full data from each of the previous studies, but in this case we only have the these estimates.</p>
+<div class="section level3">
+<h3 id="example-model">Example model<a class="anchor" aria-label="anchor" href="#example-model"></a>
+</h3>
+<p>Before we delve into the actual plotting we need to fit a model to
+have something to work with. In this vignette we’ll use the eight
+schools example, which is discussed in many places, including Rubin
+(1981), Gelman et al. (2013), and the <a href="https://github.com/stan-dev/rstan/wiki/RStan-Getting-Started#how-to-use-rstan" class="external-link">RStan
+Getting Started</a> wiki. This is a simple hierarchical meta-analysis
+model with data consisting of point estimates <code>y</code> and
+standard errors <code>sigma</code> from analyses of test prep programs
+in <code>J=8</code> schools. Ideally we would have the full data from
+each of the previous studies, but in this case we only have the these
+estimates.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">schools_dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>
-  J <span class="op">=</span> <span class="fl">8</span>,
-  y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">28</span>,  <span class="fl">8</span>, <span class="op">-</span><span class="fl">3</span>,  <span class="fl">7</span>, <span class="op">-</span><span class="fl">1</span>,  <span class="fl">1</span>, <span class="fl">18</span>, <span class="fl">12</span><span class="op">)</span>,
-  sigma <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">15</span>, <span class="fl">10</span>, <span class="fl">16</span>, <span class="fl">11</span>,  <span class="fl">9</span>, <span class="fl">11</span>, <span class="fl">10</span>, <span class="fl">18</span><span class="op">)</span>
-<span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">schools_dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>  J <span class="op">=</span> <span class="fl">8</span>, </span>
+<span>  y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">28</span>,  <span class="fl">8</span>, <span class="op">-</span><span class="fl">3</span>,  <span class="fl">7</span>, <span class="op">-</span><span class="fl">1</span>,  <span class="fl">1</span>, <span class="fl">18</span>, <span class="fl">12</span><span class="op">)</span>,</span>
+<span>  sigma <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">15</span>, <span class="fl">10</span>, <span class="fl">16</span>, <span class="fl">11</span>,  <span class="fl">9</span>, <span class="fl">11</span>, <span class="fl">10</span>, <span class="fl">18</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <p>The model is: <span class="math display">\[
 \begin{align*}
 y_j &amp;\sim {\rm Normal}(\theta_j, \sigma_j), \quad j = 1,\dots,J \\
@@ -186,59 +210,73 @@ y_j &amp;\sim {\rm Normal}(\theta_j, \sigma_j), \quad j = 1,\dots,J \\
 \mu &amp;\sim {\rm Normal}(0, 10) \\
 \tau &amp;\sim {\rm half-Cauchy}(0, 10),
 \end{align*}
-\]</span> with the normal distribution parameterized by the mean and standard deviation, not the variance or precision. In Stan code:</p>
-<pre class="stan"><code>// Saved in 'schools_mod_cp.stan'
-data {
-  int&lt;lower=0&gt; J;
-  vector[J] y;
-  vector&lt;lower=0&gt;[J] sigma;
-}
-parameters {
-  real mu;
-  real&lt;lower=0&gt; tau;
-  vector[J] theta;
-}
-model {
-  mu ~ normal(0, 10);
-  tau ~ cauchy(0, 10);
-  theta ~ normal(mu, tau);
-  y ~ normal(theta, sigma);
-}</code></pre>
-<p>This parameterization of the model is referred to as the centered parameterization (CP). We’ll also fit the same statistical model but using the so-called non-centered parameterization (NCP), which replaces the vector <span class="math inline">\(\theta\)</span> with a vector <span class="math inline">\(\eta\)</span> of a priori <em>i.i.d.</em> standard normal parameters and then constructs <span class="math inline">\(\theta\)</span> deterministically from <span class="math inline">\(\eta\)</span> by scaling by <span class="math inline">\(\tau\)</span> and shifting by <span class="math inline">\(\mu\)</span>: <span class="math display">\[
+\]</span> with the normal distribution parameterized by the mean and
+standard deviation, not the variance or precision. In Stan code:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Saved in 'schools_mod_cp.stan'</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="kw">data</span> {</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; J;</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">vector</span>[J] y;</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="dt">vector</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt;[J] sigma;</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="kw">parameters</span> {</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="dt">real</span> mu;</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  <span class="dt">real</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; tau;</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  <span class="dt">vector</span>[J] theta;</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="kw">model</span> {</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>  mu ~ normal(<span class="dv">0</span>, <span class="dv">10</span>);</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>  tau ~ cauchy(<span class="dv">0</span>, <span class="dv">10</span>);</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>  theta ~ normal(mu, tau);</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>  y ~ normal(theta, sigma);</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>This parameterization of the model is referred to as the centered
+parameterization (CP). We’ll also fit the same statistical model but
+using the so-called non-centered parameterization (NCP), which replaces
+the vector <span class="math inline">\(\theta\)</span> with a vector
+<span class="math inline">\(\eta\)</span> of a priori <em>i.i.d.</em>
+standard normal parameters and then constructs <span class="math inline">\(\theta\)</span> deterministically from <span class="math inline">\(\eta\)</span> by scaling by <span class="math inline">\(\tau\)</span> and shifting by <span class="math inline">\(\mu\)</span>: <span class="math display">\[
 \begin{align*}
 \theta_j &amp;= \mu + \tau \,\eta_j, \quad j = 1,\dots,J \\
 \eta_j &amp;\sim N(0,1), \quad j = 1,\dots,J.
 \end{align*}
 \]</span> The Stan code for this model is:</p>
-<pre class="stan"><code>// Saved in 'schools_mod_ncp.stan'
-data {
-  int&lt;lower=0&gt; J;
-  vector[J] y;
-  vector&lt;lower=0&gt;[J] sigma;
-}
-parameters {
-  real mu;
-  real&lt;lower=0&gt; tau;
-  vector[J] eta;
-}
-transformed parameters {
-  vector[J] theta;
-  theta = mu + tau * eta;
-}
-model {
-  mu ~ normal(0, 10);
-  tau ~ cauchy(0, 10);
-  eta ~ normal(0, 1); // implies theta ~ normal(mu, tau)
-  y ~ normal(theta, sigma);
-}</code></pre>
-<p>The centered and non-centered are two parameterizations of the same statistical model, but they have very different practical implications for MCMC. Using the <strong>bayesplot</strong> diagnostic plots, we’ll see that, for this data, the NCP is required in order to properly explore the posterior distribution.</p>
-<p>To fit both models we first translate the Stan code to C++ and compile it using the <code>stan_model</code> function.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Saved in 'schools_mod_ncp.stan'</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="kw">data</span> {</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; J;</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">vector</span>[J] y;</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="dt">vector</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt;[J] sigma;</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="kw">parameters</span> {</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  <span class="dt">real</span> mu;</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  <span class="dt">real</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; tau;</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  <span class="dt">vector</span>[J] eta;</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="kw">transformed parameters</span> {</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>  <span class="dt">vector</span>[J] theta;</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>  theta = mu + tau * eta;</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="kw">model</span> {</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>  mu ~ normal(<span class="dv">0</span>, <span class="dv">10</span>);</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>  tau ~ cauchy(<span class="dv">0</span>, <span class="dv">10</span>);</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>  eta ~ normal(<span class="dv">0</span>, <span class="dv">1</span>); <span class="co">// implies theta ~ normal(mu, tau)</span></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>  y ~ normal(theta, sigma);</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>The centered and non-centered are two parameterizations of the same
+statistical model, but they have very different practical implications
+for MCMC. Using the <strong>bayesplot</strong> diagnostic plots, we’ll
+see that, for this data, the NCP is required in order to properly
+explore the posterior distribution.</p>
+<p>To fit both models we first translate the Stan code to C++ and
+compile it using the <code>stan_model</code> function.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">schools_mod_cp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://mc-stan.org/rstan/reference/stan_model.html">stan_model</a></span><span class="op">(</span><span class="st">"schools_mod_cp.stan"</span><span class="op">)</span>
-<span class="va">schools_mod_ncp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://mc-stan.org/rstan/reference/stan_model.html">stan_model</a></span><span class="op">(</span><span class="st">"schools_mod_ncp.stan"</span><span class="op">)</span></code></pre></div>
-<p>We then fit the model by calling Stan’s MCMC algorithm using the <code>sampling</code> function (the increased <code>adapt_delta</code> param is to make the sampler a bit more “careful” and avoid false positive divergences),</p>
+<code class="sourceCode R"><span><span class="va">schools_mod_cp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://mc-stan.org/rstan/reference/stan_model.html" class="external-link">stan_model</a></span><span class="op">(</span><span class="st">"schools_mod_cp.stan"</span><span class="op">)</span></span>
+<span><span class="va">schools_mod_ncp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://mc-stan.org/rstan/reference/stan_model.html" class="external-link">stan_model</a></span><span class="op">(</span><span class="st">"schools_mod_ncp.stan"</span><span class="op">)</span></span></code></pre></div>
+<p>We then fit the model by calling Stan’s MCMC algorithm using the
+<code>sampling</code> function (the increased <code>adapt_delta</code>
+param is to make the sampler a bit more “careful” and avoid false
+positive divergences),</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">fit_cp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://mc-stan.org/rstan/reference/stanmodel-method-sampling.html">sampling</a></span><span class="op">(</span><span class="va">schools_mod_cp</span>, data <span class="op">=</span> <span class="va">schools_dat</span>, seed <span class="op">=</span> <span class="fl">803214053</span>, control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>adapt_delta <span class="op">=</span> <span class="fl">0.9</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">fit_cp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://mc-stan.org/rstan/reference/stanmodel-method-sampling.html" class="external-link">sampling</a></span><span class="op">(</span><span class="va">schools_mod_cp</span>, data <span class="op">=</span> <span class="va">schools_dat</span>, seed <span class="op">=</span> <span class="fl">803214053</span>, control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>adapt_delta <span class="op">=</span> <span class="fl">0.9</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code>Warning: There were 85 divergent transitions after warmup. See
 https://mc-stan.org/misc/warnings.html#divergent-transitions-after-warmup
 to find out why this is a problem and how to eliminate them.</code></pre>
@@ -250,29 +288,43 @@ https://mc-stan.org/misc/warnings.html#bulk-ess</code></pre>
 Running the chains for more iterations may help. See
 https://mc-stan.org/misc/warnings.html#tail-ess</code></pre>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">fit_ncp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://mc-stan.org/rstan/reference/stanmodel-method-sampling.html">sampling</a></span><span class="op">(</span><span class="va">schools_mod_ncp</span>, data <span class="op">=</span> <span class="va">schools_dat</span>, seed <span class="op">=</span> <span class="fl">457721433</span>, control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>adapt_delta <span class="op">=</span> <span class="fl">0.9</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<p>and extract a <code>iterations x chains x parameters</code> array of posterior draws with <code>as.array</code>,</p>
+<code class="sourceCode R"><span><span class="va">fit_ncp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://mc-stan.org/rstan/reference/stanmodel-method-sampling.html" class="external-link">sampling</a></span><span class="op">(</span><span class="va">schools_mod_ncp</span>, data <span class="op">=</span> <span class="va">schools_dat</span>, seed <span class="op">=</span> <span class="fl">457721433</span>, control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>adapt_delta <span class="op">=</span> <span class="fl">0.9</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p>and extract a <code>iterations x chains x parameters</code> array of
+posterior draws with <code>as.array</code>,</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Extract posterior draws for later use</span>
-<span class="va">posterior_cp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/array.html">as.array</a></span><span class="op">(</span><span class="va">fit_cp</span><span class="op">)</span>
-<span class="va">posterior_ncp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/array.html">as.array</a></span><span class="op">(</span><span class="va">fit_ncp</span><span class="op">)</span></code></pre></div>
-<p>You may have noticed the warnings about divergent transitions for the centered parameterization fit. Those are serious business and in most cases indicate that something is wrong with the model and the results should not be trusted. For an explanation of these warnings see <a href="https://mc-stan.org/misc/warnings.html#divergent-transitions-after-warmup">Divergent transitions after warmup</a>. We’ll have a look at diagnosing the source of the divergences first and then dive into some diagnostics that should be checked even if there are no warnings from the sampler.</p>
+<code class="sourceCode R"><span><span class="co"># Extract posterior draws for later use</span></span>
+<span><span class="va">posterior_cp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/array.html" class="external-link">as.array</a></span><span class="op">(</span><span class="va">fit_cp</span><span class="op">)</span></span>
+<span><span class="va">posterior_ncp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/array.html" class="external-link">as.array</a></span><span class="op">(</span><span class="va">fit_ncp</span><span class="op">)</span></span></code></pre></div>
+<p>You may have noticed the warnings about divergent transitions for the
+centered parameterization fit. Those are serious business and in most
+cases indicate that something is wrong with the model and the results
+should not be trusted. For an explanation of these warnings see <a href="https://mc-stan.org/misc/warnings.html#divergent-transitions-after-warmup" class="external-link">Divergent
+transitions after warmup</a>. We’ll have a look at diagnosing the source
+of the divergences first and then dive into some diagnostics that should
+be checked even if there are no warnings from the sampler.</p>
 <p><br></p>
 </div>
 </div>
-<div id="diagnostics-for-the-no-u-turn-sampler" class="section level2">
-<h2 class="hasAnchor">
-<a href="#diagnostics-for-the-no-u-turn-sampler" class="anchor"></a>Diagnostics for the No-U-Turn Sampler</h2>
-<p>The No-U-Turn Sampler (NUTS, Hoffman and Gelman, 2014) is the variant of Hamiltonian Monte Carlo (HMC) used by <a href="https://mc-stan.org/">Stan</a> and the various R packages that depend on Stan for fitting Bayesian models. The <strong>bayesplot</strong> package has special functions for visualizing some of the unique diagnostics permitted by HMC, and NUTS in particular. See Betancourt (2017), Betancourt and Girolami (2013), and Stan Development Team (2017) for more details on the concepts.</p>
+<div class="section level2">
+<h2 id="diagnostics-for-the-no-u-turn-sampler">Diagnostics for the No-U-Turn Sampler<a class="anchor" aria-label="anchor" href="#diagnostics-for-the-no-u-turn-sampler"></a>
+</h2>
+<p>The No-U-Turn Sampler (NUTS, Hoffman and Gelman, 2014) is the variant
+of Hamiltonian Monte Carlo (HMC) used by <a href="https://mc-stan.org/" class="external-link">Stan</a> and the various R packages that
+depend on Stan for fitting Bayesian models. The
+<strong>bayesplot</strong> package has special functions for visualizing
+some of the unique diagnostics permitted by HMC, and NUTS in particular.
+See Betancourt (2017), Betancourt and Girolami (2013), and Stan
+Development Team (2017) for more details on the concepts.</p>
 <p><strong>Documentation:</strong></p>
 <ul>
 <li><code><a href="../reference/MCMC-nuts.html">help("MCMC-nuts")</a></code></li>
 <li><a href="https://mc-stan.org/bayesplot/reference/MCMC-nuts.html">mc-stan.org/bayesplot/reference/MCMC-nuts</a></li>
 </ul>
 <hr>
-<p>The special <strong>bayesplot</strong> functions for NUTS diagnostics are</p>
+<p>The special <strong>bayesplot</strong> functions for NUTS diagnostics
+are</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/available_ppc.html">available_mcmc</a></span><span class="op">(</span>pattern <span class="op">=</span> <span class="st">"_nuts_"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/available_ppc.html">available_mcmc</a></span><span class="op">(</span>pattern <span class="op">=</span> <span class="st">"_nuts_"</span><span class="op">)</span></span></code></pre></div>
 <pre><code>bayesplot MCMC module:
 (matching pattern '_nuts_') 
   mcmc_nuts_acceptance
@@ -280,10 +332,21 @@ https://mc-stan.org/misc/warnings.html#tail-ess</code></pre>
   mcmc_nuts_energy
   mcmc_nuts_stepsize
   mcmc_nuts_treedepth</code></pre>
-<p>Those functions require more information than simply the posterior draws, in particular the log of the posterior density for each draw and some NUTS-specific diagnostic values may be needed. The <strong>bayesplot</strong> package provides generic functions <code>log_posterior</code> and <code>nuts_params</code> for extracting this information from fitted model objects. Currently methods are provided for models fit using the <strong>rstan</strong>, <strong>rstanarm</strong> and <strong>brms</strong> packages, although it is not difficult to define additional methods for the objects returned by other R packages. For the Stan models we fit above we can use the <code>log_posterior</code> and <code>nuts_params</code> methods for stanfit objects:</p>
+<p>Those functions require more information than simply the posterior
+draws, in particular the log of the posterior density for each draw and
+some NUTS-specific diagnostic values may be needed. The
+<strong>bayesplot</strong> package provides generic functions
+<code>log_posterior</code> and <code>nuts_params</code> for extracting
+this information from fitted model objects. Currently methods are
+provided for models fit using the <strong>rstan</strong>,
+<strong>rstanarm</strong> and <strong>brms</strong> packages, although
+it is not difficult to define additional methods for the objects
+returned by other R packages. For the Stan models we fit above we can
+use the <code>log_posterior</code> and <code>nuts_params</code> methods
+for stanfit objects:</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">lp_cp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bayesplot-extractors.html">log_posterior</a></span><span class="op">(</span><span class="va">fit_cp</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">lp_cp</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">lp_cp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bayesplot-extractors.html">log_posterior</a></span><span class="op">(</span><span class="va">fit_cp</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">lp_cp</span><span class="op">)</span></span></code></pre></div>
 <pre><code>  Chain Iteration      Value
 1     1         1 -14.618445
 2     1         2 -13.577036
@@ -292,8 +355,8 @@ https://mc-stan.org/misc/warnings.html#tail-ess</code></pre>
 5     1         5  -9.836825
 6     1         6 -17.011813</code></pre>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">np_cp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bayesplot-extractors.html">nuts_params</a></span><span class="op">(</span><span class="va">fit_cp</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">np_cp</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">np_cp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bayesplot-extractors.html">nuts_params</a></span><span class="op">(</span><span class="va">fit_cp</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">np_cp</span><span class="op">)</span></span></code></pre></div>
 <pre><code>  Chain Iteration     Parameter     Value
 1     1         1 accept_stat__ 0.9920356
 2     1         2 accept_stat__ 0.9681231
@@ -302,22 +365,33 @@ https://mc-stan.org/misc/warnings.html#tail-ess</code></pre>
 5     1         5 accept_stat__ 0.1907053
 6     1         6 accept_stat__ 0.3128032</code></pre>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># for the second model</span>
-<span class="va">lp_ncp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bayesplot-extractors.html">log_posterior</a></span><span class="op">(</span><span class="va">fit_ncp</span><span class="op">)</span>
-<span class="va">np_ncp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bayesplot-extractors.html">nuts_params</a></span><span class="op">(</span><span class="va">fit_ncp</span><span class="op">)</span></code></pre></div>
-<p>In addition to the NUTS-specific plotting functions, some of the general MCMC plotting functions demonstrated in the <a href="https://mc-stan.org/bayesplot/articles/plotting-mcmc-draws.html"><em>Plotting MCMC draws</em></a> vignette also take optional arguments that can be used to display important HMC/NUTS diagnostic information. We’ll see examples of this in the next section on divergent transitions.</p>
-<div id="divergent-transitions" class="section level3">
-<h3 class="hasAnchor">
-<a href="#divergent-transitions" class="anchor"></a>Divergent transitions</h3>
-<p>When running the Stan models above, there were warnings about divergent transitions. Here we’ll look at diagnosing the source of divergences through visualizations.</p>
-<div id="mcmc_parcoord" class="section level4">
-<h4 class="hasAnchor">
-<a href="#mcmc_parcoord" class="anchor"></a>mcmc_parcoord</h4>
-<p>The <code>mcmc_parcoord</code> plot shows one line per iteration, connecting the parameter values at this iteration. This lets you see global patterns in the divergences.</p>
-<p>This function works in general without including information about the divergences, but if the optional <code>np</code> argument is used to pass NUTS parameter information, then divergences will be colored in the plot (by default in red).</p>
+<code class="sourceCode R"><span><span class="co"># for the second model</span></span>
+<span><span class="va">lp_ncp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bayesplot-extractors.html">log_posterior</a></span><span class="op">(</span><span class="va">fit_ncp</span><span class="op">)</span></span>
+<span><span class="va">np_ncp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bayesplot-extractors.html">nuts_params</a></span><span class="op">(</span><span class="va">fit_ncp</span><span class="op">)</span></span></code></pre></div>
+<p>In addition to the NUTS-specific plotting functions, some of the
+general MCMC plotting functions demonstrated in the <a href="https://mc-stan.org/bayesplot/articles/plotting-mcmc-draws.html"><em>Plotting
+MCMC draws</em></a> vignette also take optional arguments that can be
+used to display important HMC/NUTS diagnostic information. We’ll see
+examples of this in the next section on divergent transitions.</p>
+<div class="section level3">
+<h3 id="divergent-transitions">Divergent transitions<a class="anchor" aria-label="anchor" href="#divergent-transitions"></a>
+</h3>
+<p>When running the Stan models above, there were warnings about
+divergent transitions. Here we’ll look at diagnosing the source of
+divergences through visualizations.</p>
+<div class="section level4">
+<h4 id="mcmc_parcoord">mcmc_parcoord<a class="anchor" aria-label="anchor" href="#mcmc_parcoord"></a>
+</h4>
+<p>The <code>mcmc_parcoord</code> plot shows one line per iteration,
+connecting the parameter values at this iteration. This lets you see
+global patterns in the divergences.</p>
+<p>This function works in general without including information about
+the divergences, but if the optional <code>np</code> argument is used to
+pass NUTS parameter information, then divergences will be colored in the
+plot (by default in red).</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/bayesplot-colors.html">color_scheme_set</a></span><span class="op">(</span><span class="st">"darkgray"</span><span class="op">)</span>
-<span class="fu"><a href="../reference/MCMC-parcoord.html">mcmc_parcoord</a></span><span class="op">(</span><span class="va">posterior_cp</span>, np <span class="op">=</span> <span class="va">np_cp</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/bayesplot-colors.html">color_scheme_set</a></span><span class="op">(</span><span class="st">"darkgray"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/MCMC-parcoord.html">mcmc_parcoord</a></span><span class="op">(</span><span class="va">posterior_cp</span>, np <span class="op">=</span> <span class="va">np_cp</span><span class="op">)</span></span></code></pre></div>
 <p><img src="visual-mcmc-diagnostics_files/figure-html/mcmc_parcoord-1-1.png" width="60%" style="display: block; margin: auto;"></p>
 <!-- ```{r mcmc_parcoord-1, eval=FALSE} -->
 <!-- # not evaluated to reduce vignette size for CRAN -->
@@ -325,16 +399,30 @@ https://mc-stan.org/misc/warnings.html#tail-ess</code></pre>
 <!-- color_scheme_set("darkgray") -->
 <!-- mcmc_parcoord(posterior_cp, np = np_cp) -->
 <!-- ``` -->
-<p>Here, you may notice that divergences in the centered parameterization happen exclusively when <code>tau</code>, the hierarchical standard deviation, goes near zero and the values of the <code>theta</code>s are essentially fixed. This makes <code>tau</code> immediately suspect. See <a href="#gabry2019">Gabry et al. (2019)</a> for another example of the parallel coordinates plot.</p>
+<p>Here, you may notice that divergences in the centered
+parameterization happen exclusively when <code>tau</code>, the
+hierarchical standard deviation, goes near zero and the values of the
+<code>theta</code>s are essentially fixed. This makes <code>tau</code>
+immediately suspect. See <a href="#gabry2019">Gabry et al. (2019)</a>
+for another example of the parallel coordinates plot.</p>
 </div>
-<div id="mcmc_pairs" class="section level4">
-<h4 class="hasAnchor">
-<a href="#mcmc_pairs" class="anchor"></a>mcmc_pairs</h4>
-<p>The <code>mcmc_pairs</code> function can also be used to look at multiple parameters at once, but unlike <code>mcmc_parcoord</code> (which works well even when including several dozen parameters) <code>mcmc_pairs</code> is more useful for up to ~8 parameters. It shows univariate histograms and bivariate scatter plots for selected parameters and is especially useful in identifying collinearity between variables (which manifests as narrow bivariate plots) as well as the presence of multiplicative non-identifiabilities (banana-like shapes).</p>
-<p>Let’s look at how <code>tau</code> interacts with other variables, using only one of the <code>theta</code>s to keep the plot readable:</p>
+<div class="section level4">
+<h4 id="mcmc_pairs">mcmc_pairs<a class="anchor" aria-label="anchor" href="#mcmc_pairs"></a>
+</h4>
+<p>The <code>mcmc_pairs</code> function can also be used to look at
+multiple parameters at once, but unlike <code>mcmc_parcoord</code>
+(which works well even when including several dozen parameters)
+<code>mcmc_pairs</code> is more useful for up to ~8 parameters. It shows
+univariate histograms and bivariate scatter plots for selected
+parameters and is especially useful in identifying collinearity between
+variables (which manifests as narrow bivariate plots) as well as the
+presence of multiplicative non-identifiabilities (banana-like
+shapes).</p>
+<p>Let’s look at how <code>tau</code> interacts with other variables,
+using only one of the <code>theta</code>s to keep the plot readable:</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/MCMC-scatterplots.html">mcmc_pairs</a></span><span class="op">(</span><span class="va">posterior_cp</span>, np <span class="op">=</span> <span class="va">np_cp</span>, pars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"mu"</span>,<span class="st">"tau"</span>,<span class="st">"theta[1]"</span><span class="op">)</span>,
-           off_diag_args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">0.75</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/MCMC-scatterplots.html">mcmc_pairs</a></span><span class="op">(</span><span class="va">posterior_cp</span>, np <span class="op">=</span> <span class="va">np_cp</span>, pars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"mu"</span>,<span class="st">"tau"</span>,<span class="st">"theta[1]"</span><span class="op">)</span>,</span>
+<span>           off_diag_args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">0.75</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="visual-mcmc-diagnostics_files/figure-html/mcmc_pairs-1.png" width="60%" style="display: block; margin: auto;"></p>
 <!-- ```{r mcmc_pairs, eval=FALSE} -->
 <!-- # not evaluated to reduce vignette size for CRAN -->
@@ -342,107 +430,189 @@ https://mc-stan.org/misc/warnings.html#tail-ess</code></pre>
 <!-- mcmc_pairs(posterior_cp, np = np_cp, pars = c("mu","tau","theta[1]"),  -->
 <!--            off_diag_args = list(size = 0.75)) -->
 <!-- ``` -->
-<p>Note that each bivariate plot is present twice – by default each of those contain half of the chains, so you also get to see if the chains produced similar results (see the documentation for the <code>condition</code> argument for other options). Here, the interaction of <code>tau</code> and <code>theta[1]</code> seems most interesting, as it concentrates the divergences into a tight region.</p>
-<p>Further examples of pairs plots and instructions for using the various optional arguments to <code>mcmc_pairs</code> are provided via <code><a href="../reference/MCMC-scatterplots.html">help("mcmc_pairs")</a></code>.</p>
+<p>Note that each bivariate plot is present twice – by default each of
+those contain half of the chains, so you also get to see if the chains
+produced similar results (see the documentation for the
+<code>condition</code> argument for other options). Here, the
+interaction of <code>tau</code> and <code>theta[1]</code> seems most
+interesting, as it concentrates the divergences into a tight region.</p>
+<p>Further examples of pairs plots and instructions for using the
+various optional arguments to <code>mcmc_pairs</code> are provided via
+<code><a href="../reference/MCMC-scatterplots.html">help("mcmc_pairs")</a></code>.</p>
 </div>
-<div id="mcmc_scatter" class="section level4">
-<h4 class="hasAnchor">
-<a href="#mcmc_scatter" class="anchor"></a>mcmc_scatter</h4>
-<p>Using the <code>mcmc_scatter</code> function (with optional argument <code>np</code>) we can look at a single bivariate plot to investigate it more closely. For hierarchical models, a good place to start is to plot a “local” parameter (<code>theta[j]</code>) against a “global” scale parameter on which it depends (<code>tau</code>).</p>
-<p>We will also use the <code>transformations</code> argument to look at the log of <code>tau</code>, as this is what Stan is doing under the hood for parameters like <code>tau</code> that have a lower bound of zero. That is, even though the draws for <code>tau</code> returned from Stan are all positive, the parameter space that the Markov chains actual explore is unconstrained. Transforming <code>tau</code> is not strictly necessary for the plot (often the plot is still useful without it) but plotting in the unconstrained is often even more informative.</p>
+<div class="section level4">
+<h4 id="mcmc_scatter">mcmc_scatter<a class="anchor" aria-label="anchor" href="#mcmc_scatter"></a>
+</h4>
+<p>Using the <code>mcmc_scatter</code> function (with optional argument
+<code>np</code>) we can look at a single bivariate plot to investigate
+it more closely. For hierarchical models, a good place to start is to
+plot a “local” parameter (<code>theta[j]</code>) against a “global”
+scale parameter on which it depends (<code>tau</code>).</p>
+<p>We will also use the <code>transformations</code> argument to look at
+the log of <code>tau</code>, as this is what Stan is doing under the
+hood for parameters like <code>tau</code> that have a lower bound of
+zero. That is, even though the draws for <code>tau</code> returned from
+Stan are all positive, the parameter space that the Markov chains actual
+explore is unconstrained. Transforming <code>tau</code> is not strictly
+necessary for the plot (often the plot is still useful without it) but
+plotting in the unconstrained is often even more informative.</p>
 <p>First the plot for the centered parameterization:</p>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># assign to an object so we can reuse later</span>
-<span class="va">scatter_theta_cp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/MCMC-scatterplots.html">mcmc_scatter</a></span><span class="op">(</span>
-  <span class="va">posterior_cp</span>,
-  pars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"theta[1]"</span>, <span class="st">"tau"</span><span class="op">)</span>,
-  transform <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>tau <span class="op">=</span> <span class="st">"log"</span><span class="op">)</span>, <span class="co"># can abbrev. 'transformations'</span>
-  np <span class="op">=</span> <span class="va">np_cp</span>,
-  size <span class="op">=</span> <span class="fl">1</span>
-<span class="op">)</span>
-<span class="va">scatter_theta_cp</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># assign to an object so we can reuse later</span></span>
+<span><span class="va">scatter_theta_cp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/MCMC-scatterplots.html">mcmc_scatter</a></span><span class="op">(</span></span>
+<span>  <span class="va">posterior_cp</span>, </span>
+<span>  pars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"theta[1]"</span>, <span class="st">"tau"</span><span class="op">)</span>, </span>
+<span>  transform <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>tau <span class="op">=</span> <span class="st">"log"</span><span class="op">)</span>, <span class="co"># can abbrev. 'transformations'</span></span>
+<span>  np <span class="op">=</span> <span class="va">np_cp</span>, </span>
+<span>  size <span class="op">=</span> <span class="fl">1</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">scatter_theta_cp</span></span></code></pre></div>
 <p><img src="visual-mcmc-diagnostics_files/figure-html/mcmc_scatter-1-1.png" width="60%" style="display: block; margin: auto;"></p>
-<p>The shape of this bivariate distribution resembles a funnel (or tornado). This one in particular is essentially the same as an example referred to as Neal’s funnel (details in the Stan manual) and it is a clear indication that the Markov chains are struggling to explore the tip of the funnel, which is narrower than the rest of the space.</p>
-<p>The main problem is that large steps are required to explore the less narrow regions efficiently, but those steps become too large for navigating the narrow region. The required step size is connected to the value of <code>tau</code>. When <code>tau</code> is large it allows for large variation in <code>theta</code> (and requires large steps) while small <code>tau</code> requires small steps in <code>theta</code>.</p>
-<p>The non-centered parameterization avoids this by sampling the <code>eta</code> parameter which, unlike <code>theta</code>, is <em>a priori independent</em> of <code>tau</code>. Then <code>theta</code> is computed deterministically from the parameters <code>eta</code>, <code>mu</code> and <code>tau</code> afterwards. Here’s the same plot as above, but with <code>eta[1]</code> from non-centered parameterization instead of <code>theta[1]</code> from the centered parameterization:</p>
+<p>The shape of this bivariate distribution resembles a funnel (or
+tornado). This one in particular is essentially the same as an example
+referred to as Neal’s funnel (details in the Stan manual) and it is a
+clear indication that the Markov chains are struggling to explore the
+tip of the funnel, which is narrower than the rest of the space.</p>
+<p>The main problem is that large steps are required to explore the less
+narrow regions efficiently, but those steps become too large for
+navigating the narrow region. The required step size is connected to the
+value of <code>tau</code>. When <code>tau</code> is large it allows for
+large variation in <code>theta</code> (and requires large steps) while
+small <code>tau</code> requires small steps in <code>theta</code>.</p>
+<p>The non-centered parameterization avoids this by sampling the
+<code>eta</code> parameter which, unlike <code>theta</code>, is <em>a
+priori independent</em> of <code>tau</code>. Then <code>theta</code> is
+computed deterministically from the parameters <code>eta</code>,
+<code>mu</code> and <code>tau</code> afterwards. Here’s the same plot as
+above, but with <code>eta[1]</code> from non-centered parameterization
+instead of <code>theta[1]</code> from the centered parameterization:</p>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">scatter_eta_ncp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/MCMC-scatterplots.html">mcmc_scatter</a></span><span class="op">(</span>
-  <span class="va">posterior_ncp</span>,
-  pars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"eta[1]"</span>, <span class="st">"tau"</span><span class="op">)</span>,
-  transform <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>tau <span class="op">=</span> <span class="st">"log"</span><span class="op">)</span>,
-  np <span class="op">=</span> <span class="va">np_ncp</span>,
-  size <span class="op">=</span> <span class="fl">1</span>
-<span class="op">)</span>
-<span class="va">scatter_eta_ncp</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">scatter_eta_ncp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/MCMC-scatterplots.html">mcmc_scatter</a></span><span class="op">(</span></span>
+<span>  <span class="va">posterior_ncp</span>, </span>
+<span>  pars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"eta[1]"</span>, <span class="st">"tau"</span><span class="op">)</span>, </span>
+<span>  transform <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>tau <span class="op">=</span> <span class="st">"log"</span><span class="op">)</span>, </span>
+<span>  np <span class="op">=</span> <span class="va">np_ncp</span>, </span>
+<span>  size <span class="op">=</span> <span class="fl">1</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">scatter_eta_ncp</span></span></code></pre></div>
 <p><img src="visual-mcmc-diagnostics_files/figure-html/mcmc_scatter-2-1.png" width="60%" style="display: block; margin: auto;"></p>
-<p>We can see that the funnel/tornado shape is replaced by a somewhat Gaussian blob/cloud and the divergences go away. <a href="#gabry2019">Gabry et al. (2019)</a> has further discussion of this example.</p>
-<p>Ultimately we only care about <code>eta</code> insofar as it enables the Markov chains to better explore the posterior, so let’s directly examine how much more exploration was possible after the reparameterization. For the non-centered parameterization we can make the same scatterplot but use the values of <code>theta[1] = mu + eta[1] * tau</code> instead of <code>eta[1]</code>. Below is a side by side comparison with the scatterplot of <code>theta[1]</code> vs <code><a href="https://rdrr.io/r/base/Log.html">log(tau)</a></code> from the centered parameterization that we made above. We will also force the plots to have the same <span class="math inline">\(y\)</span>-axis limits, which will make the most important difference much more apparent:</p>
+<p>We can see that the funnel/tornado shape is replaced by a somewhat
+Gaussian blob/cloud and the divergences go away. <a href="#gabry2019">Gabry et al. (2019)</a> has further discussion of this
+example.</p>
+<p>Ultimately we only care about <code>eta</code> insofar as it enables
+the Markov chains to better explore the posterior, so let’s directly
+examine how much more exploration was possible after the
+reparameterization. For the non-centered parameterization we can make
+the same scatterplot but use the values of
+<code>theta[1] = mu + eta[1] * tau</code> instead of
+<code>eta[1]</code>. Below is a side by side comparison with the
+scatterplot of <code>theta[1]</code> vs <code>log(tau)</code> from the
+centered parameterization that we made above. We will also force the
+plots to have the same <span class="math inline">\(y\)</span>-axis
+limits, which will make the most important difference much more
+apparent:</p>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># A function we'll use several times to plot comparisons of the centered</span>
-<span class="co"># parameterization (cp) and the non-centered parameterization (ncp). See</span>
-<span class="co"># help("bayesplot_grid") for details on the bayesplot_grid function used here.</span>
-<span class="va">compare_cp_ncp</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">cp_plot</span>, <span class="va">ncp_plot</span>, <span class="va">ncol</span> <span class="op">=</span> <span class="fl">2</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span>
-  <span class="fu"><a href="../reference/bayesplot_grid.html">bayesplot_grid</a></span><span class="op">(</span>
-    <span class="va">cp_plot</span>, <span class="va">ncp_plot</span>,
-    grid_args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>ncol <span class="op">=</span> <span class="va">ncol</span><span class="op">)</span>,
-    subtitles <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Centered parameterization"</span>,
-                  <span class="st">"Non-centered parameterization"</span><span class="op">)</span>,
-    <span class="va">...</span>
-  <span class="op">)</span>
-<span class="op">}</span>
-
-
-<span class="va">scatter_theta_ncp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/MCMC-scatterplots.html">mcmc_scatter</a></span><span class="op">(</span>
-  <span class="va">posterior_ncp</span>,
-  pars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"theta[1]"</span>, <span class="st">"tau"</span><span class="op">)</span>,
-  transform <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>tau <span class="op">=</span> <span class="st">"log"</span><span class="op">)</span>,
-  np <span class="op">=</span> <span class="va">np_ncp</span>,
-  size <span class="op">=</span> <span class="fl">1</span>
-<span class="op">)</span>
-
-<span class="fu">compare_cp_ncp</span><span class="op">(</span><span class="va">scatter_theta_cp</span>, <span class="va">scatter_theta_ncp</span>, ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">8</span>, <span class="fl">4</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># A function we'll use several times to plot comparisons of the centered </span></span>
+<span><span class="co"># parameterization (cp) and the non-centered parameterization (ncp). See</span></span>
+<span><span class="co"># help("bayesplot_grid") for details on the bayesplot_grid function used here.</span></span>
+<span><span class="va">compare_cp_ncp</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">cp_plot</span>, <span class="va">ncp_plot</span>, <span class="va">ncol</span> <span class="op">=</span> <span class="fl">2</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="../reference/bayesplot_grid.html">bayesplot_grid</a></span><span class="op">(</span></span>
+<span>    <span class="va">cp_plot</span>, <span class="va">ncp_plot</span>, </span>
+<span>    grid_args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>ncol <span class="op">=</span> <span class="va">ncol</span><span class="op">)</span>,</span>
+<span>    subtitles <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Centered parameterization"</span>, </span>
+<span>                  <span class="st">"Non-centered parameterization"</span><span class="op">)</span>,</span>
+<span>    <span class="va">...</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span></span>
+<span><span class="va">scatter_theta_ncp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/MCMC-scatterplots.html">mcmc_scatter</a></span><span class="op">(</span></span>
+<span>  <span class="va">posterior_ncp</span>, </span>
+<span>  pars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"theta[1]"</span>, <span class="st">"tau"</span><span class="op">)</span>, </span>
+<span>  transform <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>tau <span class="op">=</span> <span class="st">"log"</span><span class="op">)</span>, </span>
+<span>  np <span class="op">=</span> <span class="va">np_ncp</span>, </span>
+<span>  size <span class="op">=</span> <span class="fl">1</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">compare_cp_ncp</span><span class="op">(</span><span class="va">scatter_theta_cp</span>, <span class="va">scatter_theta_ncp</span>, ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">8</span>, <span class="fl">4</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="visual-mcmc-diagnostics_files/figure-html/mcmc_scatter-3-1.png" width="60%" style="display: block; margin: auto;"></p>
-<p>Once we transform the <code>eta</code> values into <code>theta</code> values we actually see an even more pronounced funnel/tornado shape than we have with the centered parameterization. But this is precisely what we want! The non-centered parameterization allowed us to obtain draws from the funnel distribution without having to directly navigate the curvature of the funnel. With the centered parameterization the chains never could make it into the neck of funnel and we see a clustering of divergences and no draws in the tail of the distribution.</p>
+<p>Once we transform the <code>eta</code> values into <code>theta</code>
+values we actually see an even more pronounced funnel/tornado shape than
+we have with the centered parameterization. But this is precisely what
+we want! The non-centered parameterization allowed us to obtain draws
+from the funnel distribution without having to directly navigate the
+curvature of the funnel. With the centered parameterization the chains
+never could make it into the neck of funnel and we see a clustering of
+divergences and no draws in the tail of the distribution.</p>
 </div>
-<div id="mcmc_trace" class="section level4">
-<h4 class="hasAnchor">
-<a href="#mcmc_trace" class="anchor"></a>mcmc_trace</h4>
-<p>Another useful diagnostic plot is the trace plot, which is a time series plot of the Markov chains. That is, a trace plot shows the evolution of parameter vector over the iterations of one or many Markov chains. The <code>np</code> argument to the <code>mcmc_trace</code> function can be used to add a rug plot of the divergences to a trace plot of parameter draws. Typically we can see that at least one of the chains is getting stuck wherever there is a cluster of many red marks.</p>
-<p>Here is the trace plot for the <code>tau</code> parameter from the centered parameterization:</p>
+<div class="section level4">
+<h4 id="mcmc_trace">mcmc_trace<a class="anchor" aria-label="anchor" href="#mcmc_trace"></a>
+</h4>
+<p>Another useful diagnostic plot is the trace plot, which is a time
+series plot of the Markov chains. That is, a trace plot shows the
+evolution of parameter vector over the iterations of one or many Markov
+chains. The <code>np</code> argument to the <code>mcmc_trace</code>
+function can be used to add a rug plot of the divergences to a trace
+plot of parameter draws. Typically we can see that at least one of the
+chains is getting stuck wherever there is a cluster of many red
+marks.</p>
+<p>Here is the trace plot for the <code>tau</code> parameter from the
+centered parameterization:</p>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/bayesplot-colors.html">color_scheme_set</a></span><span class="op">(</span><span class="st">"mix-brightblue-gray"</span><span class="op">)</span>
-<span class="fu"><a href="../reference/MCMC-traces.html">mcmc_trace</a></span><span class="op">(</span><span class="va">posterior_cp</span>, pars <span class="op">=</span> <span class="st">"tau"</span>, np <span class="op">=</span> <span class="va">np_cp</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">xlab</a></span><span class="op">(</span><span class="st">"Post-warmup iteration"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/bayesplot-colors.html">color_scheme_set</a></span><span class="op">(</span><span class="st">"mix-brightblue-gray"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/MCMC-traces.html">mcmc_trace</a></span><span class="op">(</span><span class="va">posterior_cp</span>, pars <span class="op">=</span> <span class="st">"tau"</span>, np <span class="op">=</span> <span class="va">np_cp</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">xlab</a></span><span class="op">(</span><span class="st">"Post-warmup iteration"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="visual-mcmc-diagnostics_files/figure-html/mcmc_trace-1.png" width="60%" style="display: block; margin: auto;"></p>
-<p>The first thing to note is that all chains seem to be exploring the same region of parameter values, which is a good sign. But the plot is too crowded to help us diagnose divergences. We may however zoom in to investigate, using the <code>window</code> argument:</p>
+<p>The first thing to note is that all chains seem to be exploring the
+same region of parameter values, which is a good sign. But the plot is
+too crowded to help us diagnose divergences. We may however zoom in to
+investigate, using the <code>window</code> argument:</p>
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/MCMC-traces.html">mcmc_trace</a></span><span class="op">(</span><span class="va">posterior_cp</span>, pars <span class="op">=</span> <span class="st">"tau"</span>, np <span class="op">=</span> <span class="va">np_cp</span>, window <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">300</span>,<span class="fl">500</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">xlab</a></span><span class="op">(</span><span class="st">"Post-warmup iteration"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/MCMC-traces.html">mcmc_trace</a></span><span class="op">(</span><span class="va">posterior_cp</span>, pars <span class="op">=</span> <span class="st">"tau"</span>, np <span class="op">=</span> <span class="va">np_cp</span>, window <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">300</span>,<span class="fl">500</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">xlab</a></span><span class="op">(</span><span class="st">"Post-warmup iteration"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="visual-mcmc-diagnostics_files/figure-html/mcmc_trace_zoom-1.png" width="60%" style="display: block; margin: auto;"></p>
-<p>What we see here is that chains can get stuck as <code>tau</code> approaches zero and spend substantial time in the same region of the parameter space. This is just another indication that there is problematic geometry at <span class="math inline">\(\tau \simeq 0\)</span> – healthy chains jump up and down frequently.</p>
+<p>What we see here is that chains can get stuck as <code>tau</code>
+approaches zero and spend substantial time in the same region of the
+parameter space. This is just another indication that there is
+problematic geometry at <span class="math inline">\(\tau \simeq
+0\)</span> – healthy chains jump up and down frequently.</p>
 </div>
-<div id="mcmc_nuts_divergence" class="section level4">
-<h4 class="hasAnchor">
-<a href="#mcmc_nuts_divergence" class="anchor"></a>mcmc_nuts_divergence</h4>
-<p>To understand how the divergences interact with the model globally, we can use the <code>mcmc_nuts_divergence</code> function:</p>
+<div class="section level4">
+<h4 id="mcmc_nuts_divergence">mcmc_nuts_divergence<a class="anchor" aria-label="anchor" href="#mcmc_nuts_divergence"></a>
+</h4>
+<p>To understand how the divergences interact with the model globally,
+we can use the <code>mcmc_nuts_divergence</code> function:</p>
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/bayesplot-colors.html">color_scheme_set</a></span><span class="op">(</span><span class="st">"red"</span><span class="op">)</span>
-<span class="fu"><a href="../reference/MCMC-nuts.html">mcmc_nuts_divergence</a></span><span class="op">(</span><span class="va">np_cp</span>, <span class="va">lp_cp</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/bayesplot-colors.html">color_scheme_set</a></span><span class="op">(</span><span class="st">"red"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/MCMC-nuts.html">mcmc_nuts_divergence</a></span><span class="op">(</span><span class="va">np_cp</span>, <span class="va">lp_cp</span><span class="op">)</span></span></code></pre></div>
 <p><img src="visual-mcmc-diagnostics_files/figure-html/mcmc_nuts_divergence-1.png" width="60%" style="display: block; margin: auto;"></p>
-<p>In the top panel we see the distribution of the log-posterior when there was no divergence vs the distribution when there was a divergence. Divergences often indicate that some part of the posterior isn’t being explored and the plot confirms that <code>lp|Divergence</code> indeed has lighter tails than <code>lp|No divergence</code>.</p>
-<p>The bottom panel shows the same thing but instead of the log-posterior the NUTS acceptance statistic is shown.</p>
-<p>Specifying the optional <code>chain</code> argument will overlay the plot just for a particular Markov chain on the plot for all chains combined:</p>
+<p>In the top panel we see the distribution of the log-posterior when
+there was no divergence vs the distribution when there was a divergence.
+Divergences often indicate that some part of the posterior isn’t being
+explored and the plot confirms that <code>lp|Divergence</code> indeed
+has lighter tails than <code>lp|No divergence</code>.</p>
+<p>The bottom panel shows the same thing but instead of the
+log-posterior the NUTS acceptance statistic is shown.</p>
+<p>Specifying the optional <code>chain</code> argument will overlay the
+plot just for a particular Markov chain on the plot for all chains
+combined:</p>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/MCMC-nuts.html">mcmc_nuts_divergence</a></span><span class="op">(</span><span class="va">np_cp</span>, <span class="va">lp_cp</span>, chain <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/MCMC-nuts.html">mcmc_nuts_divergence</a></span><span class="op">(</span><span class="va">np_cp</span>, <span class="va">lp_cp</span>, chain <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span></code></pre></div>
 <p><img src="visual-mcmc-diagnostics_files/figure-html/mcmc_nuts_divergence-chain-1.png" width="60%" style="display: block; margin: auto;"></p>
-<p>For the non-centered parameterization we may get a few warnings about divergences but if we do we’ll have far fewer of them to worry about.</p>
+<p>For the non-centered parameterization we may get a few warnings about
+divergences but if we do we’ll have far fewer of them to worry
+about.</p>
 <div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/MCMC-nuts.html">mcmc_nuts_divergence</a></span><span class="op">(</span><span class="va">np_ncp</span>, <span class="va">lp_ncp</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/MCMC-nuts.html">mcmc_nuts_divergence</a></span><span class="op">(</span><span class="va">np_ncp</span>, <span class="va">lp_ncp</span><span class="op">)</span></span></code></pre></div>
 <p><img src="visual-mcmc-diagnostics_files/figure-html/mcmc_nuts_divergence-2-1.png" width="60%" style="display: block; margin: auto;"></p>
-<p>If there are only a few divergences we can often get rid of them by increasing the target acceptance rate (<code>adapt_delta</code>, the upper limit is 1), which has the effect of lowering the step size used by the sampler and allowing the Markov chains to explore more complicated curvature in the target distribution.</p>
+<p>If there are only a few divergences we can often get rid of them by
+increasing the target acceptance rate (<code>adapt_delta</code>, the
+upper limit is 1), which has the effect of lowering the step size used
+by the sampler and allowing the Markov chains to explore more
+complicated curvature in the target distribution.</p>
 <div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">fit_cp_2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://mc-stan.org/rstan/reference/stanmodel-method-sampling.html">sampling</a></span><span class="op">(</span><span class="va">schools_mod_cp</span>, data <span class="op">=</span> <span class="va">schools_dat</span>,
-                     control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>adapt_delta <span class="op">=</span> <span class="fl">0.999</span><span class="op">)</span>, seed <span class="op">=</span> <span class="fl">978245244</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">fit_cp_2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://mc-stan.org/rstan/reference/stanmodel-method-sampling.html" class="external-link">sampling</a></span><span class="op">(</span><span class="va">schools_mod_cp</span>, data <span class="op">=</span> <span class="va">schools_dat</span>,</span>
+<span>                     control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>adapt_delta <span class="op">=</span> <span class="fl">0.999</span><span class="op">)</span>, seed <span class="op">=</span> <span class="fl">978245244</span><span class="op">)</span></span></code></pre></div>
 <pre><code>Warning: There were 18 divergent transitions after warmup. See
 https://mc-stan.org/misc/warnings.html#divergent-transitions-after-warmup
 to find out why this is a problem and how to eliminate them.</code></pre>
@@ -459,70 +629,108 @@ https://mc-stan.org/misc/warnings.html#bulk-ess</code></pre>
 Running the chains for more iterations may help. See
 https://mc-stan.org/misc/warnings.html#tail-ess</code></pre>
 <div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">fit_ncp_2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://mc-stan.org/rstan/reference/stanmodel-method-sampling.html">sampling</a></span><span class="op">(</span><span class="va">schools_mod_ncp</span>, data <span class="op">=</span> <span class="va">schools_dat</span>,
-                      control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>adapt_delta <span class="op">=</span> <span class="fl">0.999</span><span class="op">)</span>, seed <span class="op">=</span> <span class="fl">843256842</span><span class="op">)</span></code></pre></div>
-<p>For the first model and this particular data, increasing <code>adapt_delta</code> will not solve the problem and a reparameterization is required.</p>
+<code class="sourceCode R"><span><span class="va">fit_ncp_2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://mc-stan.org/rstan/reference/stanmodel-method-sampling.html" class="external-link">sampling</a></span><span class="op">(</span><span class="va">schools_mod_ncp</span>, data <span class="op">=</span> <span class="va">schools_dat</span>,</span>
+<span>                      control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>adapt_delta <span class="op">=</span> <span class="fl">0.999</span><span class="op">)</span>, seed <span class="op">=</span> <span class="fl">843256842</span><span class="op">)</span></span></code></pre></div>
+<p>For the first model and this particular data, increasing
+<code>adapt_delta</code> will not solve the problem and a
+reparameterization is required.</p>
 <div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/MCMC-nuts.html">mcmc_nuts_divergence</a></span><span class="op">(</span><span class="fu"><a href="../reference/bayesplot-extractors.html">nuts_params</a></span><span class="op">(</span><span class="va">fit_cp_2</span><span class="op">)</span>, <span class="fu"><a href="../reference/bayesplot-extractors.html">log_posterior</a></span><span class="op">(</span><span class="va">fit_cp_2</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/MCMC-nuts.html">mcmc_nuts_divergence</a></span><span class="op">(</span><span class="fu"><a href="../reference/bayesplot-extractors.html">nuts_params</a></span><span class="op">(</span><span class="va">fit_cp_2</span><span class="op">)</span>, <span class="fu"><a href="../reference/bayesplot-extractors.html">log_posterior</a></span><span class="op">(</span><span class="va">fit_cp_2</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="visual-mcmc-diagnostics_files/figure-html/mcmc_nuts_divergence-3-1.png" width="60%" style="display: block; margin: auto;"></p>
 <div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/MCMC-nuts.html">mcmc_nuts_divergence</a></span><span class="op">(</span><span class="fu"><a href="../reference/bayesplot-extractors.html">nuts_params</a></span><span class="op">(</span><span class="va">fit_ncp_2</span><span class="op">)</span>, <span class="fu"><a href="../reference/bayesplot-extractors.html">log_posterior</a></span><span class="op">(</span><span class="va">fit_ncp_2</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/MCMC-nuts.html">mcmc_nuts_divergence</a></span><span class="op">(</span><span class="fu"><a href="../reference/bayesplot-extractors.html">nuts_params</a></span><span class="op">(</span><span class="va">fit_ncp_2</span><span class="op">)</span>, <span class="fu"><a href="../reference/bayesplot-extractors.html">log_posterior</a></span><span class="op">(</span><span class="va">fit_ncp_2</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="visual-mcmc-diagnostics_files/figure-html/mcmc_nuts_divergence-3-2.png" width="60%" style="display: block; margin: auto;"></p>
 </div>
 </div>
-<div id="energy-and-bayesian-fraction-of-missing-information" class="section level3">
-<h3 class="hasAnchor">
-<a href="#energy-and-bayesian-fraction-of-missing-information" class="anchor"></a>Energy and Bayesian fraction of missing information</h3>
-<p>The <code>mcmc_nuts_energy</code> function creates plots similar to those presented in Betancourt (2017). While <code>mcmcm_nuts_divergence</code> can identify light tails and incomplete exploration of the target distribution, the <code>mcmc_nuts_energy</code> function can identify overly heavy tails that are also challenging for sampling. Informally, the energy diagnostic for HMC (and the related energy-based Bayesian fraction of missing information) quantifies the heaviness of the tails of the posterior distribution.</p>
-<div id="mcmc_nuts_energy" class="section level4">
-<h4 class="hasAnchor">
-<a href="#mcmc_nuts_energy" class="anchor"></a>mcmc_nuts_energy</h4>
-<p>The plot created by <code>mcmc_nuts_energy</code> shows overlaid histograms of the (centered) marginal energy distribution <span class="math inline">\(\pi_E\)</span> and the first-differenced distribution <span class="math inline">\(\pi_{\Delta E}\)</span>,</p>
+<div class="section level3">
+<h3 id="energy-and-bayesian-fraction-of-missing-information">Energy and Bayesian fraction of missing information<a class="anchor" aria-label="anchor" href="#energy-and-bayesian-fraction-of-missing-information"></a>
+</h3>
+<p>The <code>mcmc_nuts_energy</code> function creates plots similar to
+those presented in Betancourt (2017). While
+<code>mcmcm_nuts_divergence</code> can identify light tails and
+incomplete exploration of the target distribution, the
+<code>mcmc_nuts_energy</code> function can identify overly heavy tails
+that are also challenging for sampling. Informally, the energy
+diagnostic for HMC (and the related energy-based Bayesian fraction of
+missing information) quantifies the heaviness of the tails of the
+posterior distribution.</p>
+<div class="section level4">
+<h4 id="mcmc_nuts_energy">mcmc_nuts_energy<a class="anchor" aria-label="anchor" href="#mcmc_nuts_energy"></a>
+</h4>
+<p>The plot created by <code>mcmc_nuts_energy</code> shows overlaid
+histograms of the (centered) marginal energy distribution <span class="math inline">\(\pi_E\)</span> and the first-differenced
+distribution <span class="math inline">\(\pi_{\Delta E}\)</span>,</p>
 <div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/bayesplot-colors.html">color_scheme_set</a></span><span class="op">(</span><span class="st">"red"</span><span class="op">)</span>
-<span class="fu"><a href="../reference/MCMC-nuts.html">mcmc_nuts_energy</a></span><span class="op">(</span><span class="va">np_cp</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/bayesplot-colors.html">color_scheme_set</a></span><span class="op">(</span><span class="st">"red"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/MCMC-nuts.html">mcmc_nuts_energy</a></span><span class="op">(</span><span class="va">np_cp</span><span class="op">)</span></span></code></pre></div>
 <p><img src="visual-mcmc-diagnostics_files/figure-html/mcmc_nuts_energy-1-1.png" width="60%" style="display: block; margin: auto;"></p>
-<p>The two histograms ideally look the same (Betancourt, 2017), which is only the case for the non-centered parameterization (right):</p>
+<p>The two histograms ideally look the same (Betancourt, 2017), which is
+only the case for the non-centered parameterization (right):</p>
 <div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">compare_cp_ncp</span><span class="op">(</span>
-  <span class="fu"><a href="../reference/MCMC-nuts.html">mcmc_nuts_energy</a></span><span class="op">(</span><span class="va">np_cp</span>, binwidth <span class="op">=</span> <span class="fl">1</span><span class="op">/</span><span class="fl">2</span><span class="op">)</span>,
-  <span class="fu"><a href="../reference/MCMC-nuts.html">mcmc_nuts_energy</a></span><span class="op">(</span><span class="va">np_ncp</span>, binwidth <span class="op">=</span> <span class="fl">1</span><span class="op">/</span><span class="fl">2</span><span class="op">)</span>
-<span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">compare_cp_ncp</span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="../reference/MCMC-nuts.html">mcmc_nuts_energy</a></span><span class="op">(</span><span class="va">np_cp</span>, binwidth <span class="op">=</span> <span class="fl">1</span><span class="op">/</span><span class="fl">2</span><span class="op">)</span>,</span>
+<span>  <span class="fu"><a href="../reference/MCMC-nuts.html">mcmc_nuts_energy</a></span><span class="op">(</span><span class="va">np_ncp</span>, binwidth <span class="op">=</span> <span class="fl">1</span><span class="op">/</span><span class="fl">2</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <p><img src="visual-mcmc-diagnostics_files/figure-html/mcmc_nuts_energy-3-1.png" width="60%" style="display: block; margin: auto;"></p>
-<p>The difference between the parameterizations is even more apparent if we force the step size to a smaller value and help the chains explore more of the posterior:</p>
+<p>The difference between the parameterizations is even more apparent if
+we force the step size to a smaller value and help the chains explore
+more of the posterior:</p>
 <div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">np_cp_2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bayesplot-extractors.html">nuts_params</a></span><span class="op">(</span><span class="va">fit_cp_2</span><span class="op">)</span>
-<span class="va">np_ncp_2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bayesplot-extractors.html">nuts_params</a></span><span class="op">(</span><span class="va">fit_ncp_2</span><span class="op">)</span>
-
-<span class="fu">compare_cp_ncp</span><span class="op">(</span>
-  <span class="fu"><a href="../reference/MCMC-nuts.html">mcmc_nuts_energy</a></span><span class="op">(</span><span class="va">np_cp_2</span><span class="op">)</span>,
-  <span class="fu"><a href="../reference/MCMC-nuts.html">mcmc_nuts_energy</a></span><span class="op">(</span><span class="va">np_ncp_2</span><span class="op">)</span>
-<span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">np_cp_2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bayesplot-extractors.html">nuts_params</a></span><span class="op">(</span><span class="va">fit_cp_2</span><span class="op">)</span></span>
+<span><span class="va">np_ncp_2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bayesplot-extractors.html">nuts_params</a></span><span class="op">(</span><span class="va">fit_ncp_2</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">compare_cp_ncp</span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="../reference/MCMC-nuts.html">mcmc_nuts_energy</a></span><span class="op">(</span><span class="va">np_cp_2</span><span class="op">)</span>, </span>
+<span>  <span class="fu"><a href="../reference/MCMC-nuts.html">mcmc_nuts_energy</a></span><span class="op">(</span><span class="va">np_ncp_2</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <p><img src="visual-mcmc-diagnostics_files/figure-html/mcmc_nuts_energy-4-1.png" width="60%" style="display: block; margin: auto;"></p>
-<p>See Betancourt (2017) for more on this particular example as well as the general theory behind the energy plots.</p>
+<p>See Betancourt (2017) for more on this particular example as well as
+the general theory behind the energy plots.</p>
 <p><br></p>
 </div>
 </div>
 </div>
-<div id="general-mcmc-diagnostics" class="section level2">
-<h2 class="hasAnchor">
-<a href="#general-mcmc-diagnostics" class="anchor"></a>General MCMC diagnostics</h2>
-<p>A Markov chain generates draws from the target distribution only after it has converged to an equilibrium. Unfortunately, this is only guaranteed in the limit in theory. In practice, diagnostics must be applied to monitor whether the Markov chain(s) have converged. The <strong>bayesplot</strong> package provides various plotting functions for visualizing Markov chain Monte Carlo (MCMC) diagnostics after fitting a Bayesian model. MCMC draws from any package can be used, although there are a few diagnostic plots that we will see later in this vignette that are specifically intended to be used for <a href="https://mc-stan.org/">Stan</a> models (or models fit using the same algorithms as Stan).</p>
+<div class="section level2">
+<h2 id="general-mcmc-diagnostics">General MCMC diagnostics<a class="anchor" aria-label="anchor" href="#general-mcmc-diagnostics"></a>
+</h2>
+<p>A Markov chain generates draws from the target distribution only
+after it has converged to an equilibrium. Unfortunately, this is only
+guaranteed in the limit in theory. In practice, diagnostics must be
+applied to monitor whether the Markov chain(s) have converged. The
+<strong>bayesplot</strong> package provides various plotting functions
+for visualizing Markov chain Monte Carlo (MCMC) diagnostics after
+fitting a Bayesian model. MCMC draws from any package can be used,
+although there are a few diagnostic plots that we will see later in this
+vignette that are specifically intended to be used for <a href="https://mc-stan.org/" class="external-link">Stan</a> models (or models fit using the
+same algorithms as Stan).</p>
 <p><strong>Documentation:</strong></p>
 <ul>
 <li><code><a href="../reference/MCMC-diagnostics.html">help("MCMC-diagnostics")</a></code></li>
 <li><a href="https://mc-stan.org/bayesplot/reference/MCMC-diagnostics.html">mc-stan.org/bayesplot/reference/MCMC-diagnostics</a></li>
 </ul>
 <hr>
-<div id="rhat-potential-scale-reduction-statistic" class="section level3">
-<h3 class="hasAnchor">
-<a href="#rhat-potential-scale-reduction-statistic" class="anchor"></a>Rhat: potential scale reduction statistic</h3>
-<p>One way to monitor whether a chain has converged to the equilibrium distribution is to compare its behavior to other randomly initialized chains. This is the motivation for the potential scale reduction statistic, split-<span class="math inline">\(\hat{R}\)</span>. The split-<span class="math inline">\(\hat{R}\)</span> statistic measures the ratio of the average variance of draws within each chain to the variance of the pooled draws across chains; if all chains are at equilibrium, these will be the same and <span class="math inline">\(\hat{R}\)</span> will be one. If the chains have not converged to a common distribution, the <span class="math inline">\(\hat{R}\)</span> statistic will be greater than one (see Gelman et al. 2013, Stan Development Team 2018).</p>
-<p>The <strong>bayesplot</strong> package provides the functions <code>mcmc_rhat</code> and <code>mcmc_rhat_hist</code> for visualizing <span class="math inline">\(\hat{R}\)</span> estimates.</p>
-<p>First we’ll quickly fit one of the models above again, this time intentionally using too few MCMC iterations and allowing more dispersed initial values. This should lead to some high <span class="math inline">\(\hat{R}\)</span> values.</p>
+<div class="section level3">
+<h3 id="rhat-potential-scale-reduction-statistic">Rhat: potential scale reduction statistic<a class="anchor" aria-label="anchor" href="#rhat-potential-scale-reduction-statistic"></a>
+</h3>
+<p>One way to monitor whether a chain has converged to the equilibrium
+distribution is to compare its behavior to other randomly initialized
+chains. This is the motivation for the potential scale reduction
+statistic, split-<span class="math inline">\(\hat{R}\)</span>. The
+split-<span class="math inline">\(\hat{R}\)</span> statistic measures
+the ratio of the average variance of draws within each chain to the
+variance of the pooled draws across chains; if all chains are at
+equilibrium, these will be the same and <span class="math inline">\(\hat{R}\)</span> will be one. If the chains have
+not converged to a common distribution, the <span class="math inline">\(\hat{R}\)</span> statistic will be greater than
+one (see Gelman et al. 2013, Stan Development Team 2018).</p>
+<p>The <strong>bayesplot</strong> package provides the functions
+<code>mcmc_rhat</code> and <code>mcmc_rhat_hist</code> for visualizing
+<span class="math inline">\(\hat{R}\)</span> estimates.</p>
+<p>First we’ll quickly fit one of the models above again, this time
+intentionally using too few MCMC iterations and allowing more dispersed
+initial values. This should lead to some high <span class="math inline">\(\hat{R}\)</span> values.</p>
 <div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">fit_cp_bad_rhat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://mc-stan.org/rstan/reference/stanmodel-method-sampling.html">sampling</a></span><span class="op">(</span><span class="va">schools_mod_cp</span>, data <span class="op">=</span> <span class="va">schools_dat</span>,
-                            iter <span class="op">=</span> <span class="fl">50</span>, init_r <span class="op">=</span> <span class="fl">10</span>, seed <span class="op">=</span> <span class="fl">671254821</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">fit_cp_bad_rhat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://mc-stan.org/rstan/reference/stanmodel-method-sampling.html" class="external-link">sampling</a></span><span class="op">(</span><span class="va">schools_mod_cp</span>, data <span class="op">=</span> <span class="va">schools_dat</span>, </span>
+<span>                            iter <span class="op">=</span> <span class="fl">50</span>, init_r <span class="op">=</span> <span class="fl">10</span>, seed <span class="op">=</span> <span class="fl">671254821</span><span class="op">)</span></span></code></pre></div>
 <pre><code>Warning: There were 48 transitions after warmup that exceeded the maximum treedepth. Increase max_treedepth above 10. See
 https://mc-stan.org/misc/warnings.html#maximum-treedepth-exceeded</code></pre>
 <pre><code>Warning: Examine the pairs() plot to diagnose sampling problems</code></pre>
@@ -535,101 +743,194 @@ https://mc-stan.org/misc/warnings.html#bulk-ess</code></pre>
 <pre><code>Warning: Tail Effective Samples Size (ESS) is too low, indicating posterior variances and tail quantiles may be unreliable.
 Running the chains for more iterations may help. See
 https://mc-stan.org/misc/warnings.html#tail-ess</code></pre>
-<p><strong>bayesplot</strong> provides a generic <code>rhat</code> extractor function, currently with methods defined for models fit using the <strong>rstan</strong>, <strong>rstanarm</strong> and <strong>brms</strong> packages. But regardless of how you fit your model, all <strong>bayesplot</strong> needs is a vector of <span class="math inline">\(\hat{R}\)</span> values.</p>
+<p><strong>bayesplot</strong> provides a generic <code>rhat</code>
+extractor function, currently with methods defined for models fit using
+the <strong>rstan</strong>, <strong>rstanarm</strong> and
+<strong>brms</strong> packages. But regardless of how you fit your
+model, all <strong>bayesplot</strong> needs is a vector of <span class="math inline">\(\hat{R}\)</span> values.</p>
 <div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">rhats</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bayesplot-extractors.html">rhat</a></span><span class="op">(</span><span class="va">fit_cp_bad_rhat</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">rhats</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">rhats</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bayesplot-extractors.html">rhat</a></span><span class="op">(</span><span class="va">fit_cp_bad_rhat</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">rhats</span><span class="op">)</span></span></code></pre></div>
 <pre><code>      mu      tau theta[1] theta[2] theta[3] theta[4] theta[5] theta[6] 
 1.195701 1.652152 1.299397 1.396105 1.255962 1.123406 1.154050 1.424646 
 theta[7] theta[8]     lp__ 
 1.133948 1.577158 1.839991 </code></pre>
-<div id="mcmc_rhat-mcmc_rhat_hist" class="section level4">
-<h4 class="hasAnchor">
-<a href="#mcmc_rhat-mcmc_rhat_hist" class="anchor"></a>mcmc_rhat, mcmc_rhat_hist</h4>
-<p>We can visualize the <span class="math inline">\(\hat{R}\)</span> values with the <code>mcmc_rhat</code> function:</p>
+<div class="section level4">
+<h4 id="mcmc_rhat-mcmc_rhat_hist">mcmc_rhat, mcmc_rhat_hist<a class="anchor" aria-label="anchor" href="#mcmc_rhat-mcmc_rhat_hist"></a>
+</h4>
+<p>We can visualize the <span class="math inline">\(\hat{R}\)</span>
+values with the <code>mcmc_rhat</code> function:</p>
 <div class="sourceCode" id="cb51"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/bayesplot-colors.html">color_scheme_set</a></span><span class="op">(</span><span class="st">"brightblue"</span><span class="op">)</span> <span class="co"># see help("color_scheme_set")</span>
-<span class="fu"><a href="../reference/MCMC-diagnostics.html">mcmc_rhat</a></span><span class="op">(</span><span class="va">rhats</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/bayesplot-colors.html">color_scheme_set</a></span><span class="op">(</span><span class="st">"brightblue"</span><span class="op">)</span> <span class="co"># see help("color_scheme_set")</span></span>
+<span><span class="fu"><a href="../reference/MCMC-diagnostics.html">mcmc_rhat</a></span><span class="op">(</span><span class="va">rhats</span><span class="op">)</span></span></code></pre></div>
 <p><img src="visual-mcmc-diagnostics_files/figure-html/mcmc_rhat-1-1.png" width="60%" style="display: block; margin: auto;"></p>
-<p>In the plot, the points representing the <span class="math inline">\(\hat{R}\)</span> values are colored based on whether they are less than <span class="math inline">\(1.05\)</span>, between <span class="math inline">\(1.05\)</span> and <span class="math inline">\(1.1\)</span>, or greater than <span class="math inline">\(1.1\)</span>. There is no theoretical reason to trichotomize <span class="math inline">\(\hat{R}\)</span> values using these cutoffs, so keep in mind that this is just a heuristic.</p>
-<p>The <span class="math inline">\(y\)</span>-axis text is off by default for this plot because it’s only possible to see the labels clearly for models with very few parameters. We can see the names of the parameters with the concerning <span class="math inline">\(\hat{R}\)</span> values using the <code>yaxis_text</code> convenience function (which passes arguments like <code>hjust</code> to <code><a href="https://ggplot2.tidyverse.org/reference/element.html">ggplot2::element_text</a></code>):</p>
+<p>In the plot, the points representing the <span class="math inline">\(\hat{R}\)</span> values are colored based on
+whether they are less than <span class="math inline">\(1.05\)</span>,
+between <span class="math inline">\(1.05\)</span> and <span class="math inline">\(1.1\)</span>, or greater than <span class="math inline">\(1.1\)</span>. There is no theoretical reason to
+trichotomize <span class="math inline">\(\hat{R}\)</span> values using
+these cutoffs, so keep in mind that this is just a heuristic.</p>
+<p>The <span class="math inline">\(y\)</span>-axis text is off by
+default for this plot because it’s only possible to see the labels
+clearly for models with very few parameters. We can see the names of the
+parameters with the concerning <span class="math inline">\(\hat{R}\)</span> values using the
+<code>yaxis_text</code> convenience function (which passes arguments
+like <code>hjust</code> to <code><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">ggplot2::element_text</a></code>):</p>
 <div class="sourceCode" id="cb52"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/MCMC-diagnostics.html">mcmc_rhat</a></span><span class="op">(</span><span class="va">rhats</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="../reference/bayesplot-helpers.html">yaxis_text</a></span><span class="op">(</span>hjust <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/MCMC-diagnostics.html">mcmc_rhat</a></span><span class="op">(</span><span class="va">rhats</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="../reference/bayesplot-helpers.html">yaxis_text</a></span><span class="op">(</span>hjust <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
 <p><img src="visual-mcmc-diagnostics_files/figure-html/mcmc_rhat-2-1.png" width="60%" style="display: block; margin: auto;"></p>
-<p>If we look at the same model fit using longer Markov chains we should see all <span class="math inline">\(\hat{R} &lt; 1.1\)</span>, and all points in the plot the same (light) color:</p>
+<p>If we look at the same model fit using longer Markov chains we should
+see all <span class="math inline">\(\hat{R} &lt; 1.1\)</span>, and all
+points in the plot the same (light) color:</p>
 <div class="sourceCode" id="cb53"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/MCMC-diagnostics.html">mcmc_rhat</a></span><span class="op">(</span>rhat <span class="op">=</span> <span class="fu"><a href="../reference/bayesplot-extractors.html">rhat</a></span><span class="op">(</span><span class="va">fit_cp</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="../reference/bayesplot-helpers.html">yaxis_text</a></span><span class="op">(</span>hjust <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/MCMC-diagnostics.html">mcmc_rhat</a></span><span class="op">(</span>rhat <span class="op">=</span> <span class="fu"><a href="../reference/bayesplot-extractors.html">rhat</a></span><span class="op">(</span><span class="va">fit_cp</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="../reference/bayesplot-helpers.html">yaxis_text</a></span><span class="op">(</span>hjust <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span></code></pre></div>
 <p><img src="visual-mcmc-diagnostics_files/figure-html/mcmc_rhat-3-1.png" width="60%" style="display: block; margin: auto;"></p>
-<p>We can see the same information shown by <code>mcmc_rhat</code> but in histogram form using the <code>mcmc_rhat_hist</code> function. See the <strong>Examples</strong> section in <code><a href="../reference/MCMC-diagnostics.html">help("mcmc_rhat_hist")</a></code> for examples.</p>
+<p>We can see the same information shown by <code>mcmc_rhat</code> but
+in histogram form using the <code>mcmc_rhat_hist</code> function. See
+the <strong>Examples</strong> section in
+<code><a href="../reference/MCMC-diagnostics.html">help("mcmc_rhat_hist")</a></code> for examples.</p>
 </div>
 </div>
-<div id="effective-sample-size" class="section level3">
-<h3 class="hasAnchor">
-<a href="#effective-sample-size" class="anchor"></a>Effective sample size</h3>
-<p>The effective sample size is an estimate of the number of independent draws from the posterior distribution of the estimand of interest. The <span class="math inline">\(n_{eff}\)</span> metric used in Stan is based on the ability of the draws to estimate the true mean value of the parameter, which is related to (but not necessarily equivalent to) estimating other functions of the draws. Because the draws within a Markov chain are <em>not</em> independent if there is autocorrelation, the effective sample size, <span class="math inline">\(n_{eff}\)</span>, is usually smaller than the total sample size, <span class="math inline">\(N\)</span> (although it may be larger in some cases<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>). The larger the ratio of <span class="math inline">\(n_{eff}\)</span> to <span class="math inline">\(N\)</span> the better (see Gelman et al. 2013, Stan Development Team 2018 for more details) .</p>
-<p>The <strong>bayesplot</strong> package provides a generic <code>neff_ratio</code> extractor function, currently with methods defined for models fit using the <strong>rstan</strong>, <strong>rstanarm</strong> and <strong>brms</strong> packages. But regardless of how you fit your model, all <strong>bayesplot</strong> needs is a vector of <span class="math inline">\(n_{eff}/N\)</span> values. The <code>mcmc_neff</code> and <code>mcmc_neff_hist</code> can then be used to plot the ratios.</p>
-<div id="mcmc_neff-mcmc_neff_hist" class="section level4">
-<h4 class="hasAnchor">
-<a href="#mcmc_neff-mcmc_neff_hist" class="anchor"></a>mcmc_neff, mcmc_neff_hist</h4>
+<div class="section level3">
+<h3 id="effective-sample-size">Effective sample size<a class="anchor" aria-label="anchor" href="#effective-sample-size"></a>
+</h3>
+<p>The effective sample size is an estimate of the number of independent
+draws from the posterior distribution of the estimand of interest. The
+<span class="math inline">\(n_{eff}\)</span> metric used in Stan is
+based on the ability of the draws to estimate the true mean value of the
+parameter, which is related to (but not necessarily equivalent to)
+estimating other functions of the draws. Because the draws within a
+Markov chain are <em>not</em> independent if there is autocorrelation,
+the effective sample size, <span class="math inline">\(n_{eff}\)</span>,
+is usually smaller than the total sample size, <span class="math inline">\(N\)</span> (although it may be larger in some
+cases<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>).
+The larger the ratio of <span class="math inline">\(n_{eff}\)</span> to
+<span class="math inline">\(N\)</span> the better (see Gelman et
+al. 2013, Stan Development Team 2018 for more details) .</p>
+<p>The <strong>bayesplot</strong> package provides a generic
+<code>neff_ratio</code> extractor function, currently with methods
+defined for models fit using the <strong>rstan</strong>,
+<strong>rstanarm</strong> and <strong>brms</strong> packages. But
+regardless of how you fit your model, all <strong>bayesplot</strong>
+needs is a vector of <span class="math inline">\(n_{eff}/N\)</span>
+values. The <code>mcmc_neff</code> and <code>mcmc_neff_hist</code> can
+then be used to plot the ratios.</p>
+<div class="section level4">
+<h4 id="mcmc_neff-mcmc_neff_hist">mcmc_neff, mcmc_neff_hist<a class="anchor" aria-label="anchor" href="#mcmc_neff-mcmc_neff_hist"></a>
+</h4>
 <div class="sourceCode" id="cb54"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">ratios_cp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bayesplot-extractors.html">neff_ratio</a></span><span class="op">(</span><span class="va">fit_cp</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">ratios_cp</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">ratios_cp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bayesplot-extractors.html">neff_ratio</a></span><span class="op">(</span><span class="va">fit_cp</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">ratios_cp</span><span class="op">)</span></span></code></pre></div>
 <pre><code>        mu        tau   theta[1]   theta[2]   theta[3]   theta[4]   theta[5] 
 0.17747782 0.07888915 0.23721746 0.31043499 0.26172096 0.33117235 0.24058234 
   theta[6]   theta[7]   theta[8]       lp__ 
 0.35324348 0.20698268 0.31805612 0.03564320 </code></pre>
 <div class="sourceCode" id="cb56"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/MCMC-diagnostics.html">mcmc_neff</a></span><span class="op">(</span><span class="va">ratios_cp</span>, size <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/MCMC-diagnostics.html">mcmc_neff</a></span><span class="op">(</span><span class="va">ratios_cp</span>, size <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
 <p><img src="visual-mcmc-diagnostics_files/figure-html/print-neff-ratios-1.png" width="60%" style="display: block; margin: auto;"></p>
-<p>In the plot, the points representing the values of <span class="math inline">\(n_{eff}/N\)</span> are colored based on whether they are less than <span class="math inline">\(0.1\)</span>, between <span class="math inline">\(0.1\)</span> and <span class="math inline">\(0.5\)</span>, or greater than <span class="math inline">\(0.5\)</span>. These particular values are arbitrary in that they have no particular theoretical meaning, but a useful heuristic is to worry about any <span class="math inline">\(n_{eff}/N\)</span> less than <span class="math inline">\(0.1\)</span>.</p>
-<p>One important thing to keep in mind is that these ratios will depend not only on the model being fit but also on the particular MCMC algorithm used. One reason why we have such high ratios of <span class="math inline">\(n_{eff}\)</span> to <span class="math inline">\(N\)</span> is that the No-U-Turn sampler used by <strong>rstan</strong> generally produces draws from the posterior distribution with much lower autocorrelations compared to draws obtained using other MCMC algorithms (e.g., Gibbs).</p>
-<p>Even for models fit using <strong>rstan</strong> the parameterization can make a big difference. Here are the <span class="math inline">\(n_{eff}/N\)</span> plots for <code>fit_cp</code> and <code>fit_ncp</code> side by side.</p>
+<p>In the plot, the points representing the values of <span class="math inline">\(n_{eff}/N\)</span> are colored based on whether
+they are less than <span class="math inline">\(0.1\)</span>, between
+<span class="math inline">\(0.1\)</span> and <span class="math inline">\(0.5\)</span>, or greater than <span class="math inline">\(0.5\)</span>. These particular values are
+arbitrary in that they have no particular theoretical meaning, but a
+useful heuristic is to worry about any <span class="math inline">\(n_{eff}/N\)</span> less than <span class="math inline">\(0.1\)</span>.</p>
+<p>One important thing to keep in mind is that these ratios will depend
+not only on the model being fit but also on the particular MCMC
+algorithm used. One reason why we have such high ratios of <span class="math inline">\(n_{eff}\)</span> to <span class="math inline">\(N\)</span> is that the No-U-Turn sampler used by
+<strong>rstan</strong> generally produces draws from the posterior
+distribution with much lower autocorrelations compared to draws obtained
+using other MCMC algorithms (e.g., Gibbs).</p>
+<p>Even for models fit using <strong>rstan</strong> the parameterization
+can make a big difference. Here are the <span class="math inline">\(n_{eff}/N\)</span> plots for <code>fit_cp</code>
+and <code>fit_ncp</code> side by side.</p>
 <div class="sourceCode" id="cb57"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">neff_cp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bayesplot-extractors.html">neff_ratio</a></span><span class="op">(</span><span class="va">fit_cp</span>, pars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"theta"</span>, <span class="st">"mu"</span>, <span class="st">"tau"</span><span class="op">)</span><span class="op">)</span>
-<span class="va">neff_ncp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bayesplot-extractors.html">neff_ratio</a></span><span class="op">(</span><span class="va">fit_ncp</span>, pars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"theta"</span>, <span class="st">"mu"</span>, <span class="st">"tau"</span><span class="op">)</span><span class="op">)</span>
-<span class="fu">compare_cp_ncp</span><span class="op">(</span><span class="fu"><a href="../reference/MCMC-diagnostics.html">mcmc_neff</a></span><span class="op">(</span><span class="va">neff_cp</span><span class="op">)</span>, <span class="fu"><a href="../reference/MCMC-diagnostics.html">mcmc_neff</a></span><span class="op">(</span><span class="va">neff_ncp</span><span class="op">)</span>, ncol <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">neff_cp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bayesplot-extractors.html">neff_ratio</a></span><span class="op">(</span><span class="va">fit_cp</span>, pars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"theta"</span>, <span class="st">"mu"</span>, <span class="st">"tau"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">neff_ncp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bayesplot-extractors.html">neff_ratio</a></span><span class="op">(</span><span class="va">fit_ncp</span>, pars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"theta"</span>, <span class="st">"mu"</span>, <span class="st">"tau"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu">compare_cp_ncp</span><span class="op">(</span><span class="fu"><a href="../reference/MCMC-diagnostics.html">mcmc_neff</a></span><span class="op">(</span><span class="va">neff_cp</span><span class="op">)</span>, <span class="fu"><a href="../reference/MCMC-diagnostics.html">mcmc_neff</a></span><span class="op">(</span><span class="va">neff_ncp</span><span class="op">)</span>, ncol <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
 <p><img src="visual-mcmc-diagnostics_files/figure-html/mcmc_neff-compare-1.png" width="60%" style="display: block; margin: auto;"></p>
-<p>Because of the difference in parameterization, the effective sample sizes are much better for the second model, the non-centered parameterization.</p>
+<p>Because of the difference in parameterization, the effective sample
+sizes are much better for the second model, the non-centered
+parameterization.</p>
 </div>
 </div>
-<div id="autocorrelation" class="section level3">
-<h3 class="hasAnchor">
-<a href="#autocorrelation" class="anchor"></a>Autocorrelation</h3>
-<p>As mentioned above, <span class="math inline">\(n_{eff}/N\)</span> decreases as autocorrelation becomes more extreme. We can visualize the autocorrelation using the <code>mcmc_acf</code> (line plot) or <code>mcmc_acf_bar</code> (bar plot) functions. For the selected parameters, these functions show the autocorrelation for each Markov chain separately up to a user-specified number of lags. Positive autocorrelation is bad (it means the chain tends to stay in the same area between iterations) and you want it to drop quickly to zero with increasing lag. Negative autocorrelation is possible and it is useful as it indicates fast convergence of sample mean towards true mean.</p>
-<div id="mcmc_acf-mcmc_acf_bar" class="section level4">
-<h4 class="hasAnchor">
-<a href="#mcmc_acf-mcmc_acf_bar" class="anchor"></a><code>mcmc_acf</code>, <code>mcmc_acf_bar</code>
+<div class="section level3">
+<h3 id="autocorrelation">Autocorrelation<a class="anchor" aria-label="anchor" href="#autocorrelation"></a>
+</h3>
+<p>As mentioned above, <span class="math inline">\(n_{eff}/N\)</span>
+decreases as autocorrelation becomes more extreme. We can visualize the
+autocorrelation using the <code>mcmc_acf</code> (line plot) or
+<code>mcmc_acf_bar</code> (bar plot) functions. For the selected
+parameters, these functions show the autocorrelation for each Markov
+chain separately up to a user-specified number of lags. Positive
+autocorrelation is bad (it means the chain tends to stay in the same
+area between iterations) and you want it to drop quickly to zero with
+increasing lag. Negative autocorrelation is possible and it is useful as
+it indicates fast convergence of sample mean towards true mean.</p>
+<div class="section level4">
+<h4 id="mcmc_acf-mcmc_acf_bar">
+<code>mcmc_acf</code>, <code>mcmc_acf_bar</code><a class="anchor" aria-label="anchor" href="#mcmc_acf-mcmc_acf_bar"></a>
 </h4>
-<p>Here we can again see a difference when comparing the two parameterizations of the same model. For model 1, <span class="math inline">\(\theta_1\)</span> is the primitive parameter for school 1, whereas for the non-centered parameterization in model 2 the primitive parameter is <span class="math inline">\(\eta_1\)</span> (and <span class="math inline">\(\theta_1\)</span> is later constructed from <span class="math inline">\(\eta_1\)</span>, <span class="math inline">\(\mu\)</span>, and <span class="math inline">\(\tau\)</span>):</p>
+<p>Here we can again see a difference when comparing the two
+parameterizations of the same model. For model 1, <span class="math inline">\(\theta_1\)</span> is the primitive parameter for
+school 1, whereas for the non-centered parameterization in model 2 the
+primitive parameter is <span class="math inline">\(\eta_1\)</span> (and
+<span class="math inline">\(\theta_1\)</span> is later constructed from
+<span class="math inline">\(\eta_1\)</span>, <span class="math inline">\(\mu\)</span>, and <span class="math inline">\(\tau\)</span>):</p>
 <div class="sourceCode" id="cb58"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">compare_cp_ncp</span><span class="op">(</span>
-  <span class="fu"><a href="../reference/MCMC-diagnostics.html">mcmc_acf</a></span><span class="op">(</span><span class="va">posterior_cp</span>, pars <span class="op">=</span> <span class="st">"theta[1]"</span>, lags <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>,
-  <span class="fu"><a href="../reference/MCMC-diagnostics.html">mcmc_acf</a></span><span class="op">(</span><span class="va">posterior_ncp</span>, pars <span class="op">=</span> <span class="st">"eta[1]"</span>, lags <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>
-<span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">compare_cp_ncp</span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="../reference/MCMC-diagnostics.html">mcmc_acf</a></span><span class="op">(</span><span class="va">posterior_cp</span>, pars <span class="op">=</span> <span class="st">"theta[1]"</span>, lags <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>,</span>
+<span>  <span class="fu"><a href="../reference/MCMC-diagnostics.html">mcmc_acf</a></span><span class="op">(</span><span class="va">posterior_ncp</span>, pars <span class="op">=</span> <span class="st">"eta[1]"</span>, lags <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <p><img src="visual-mcmc-diagnostics_files/figure-html/mcmc_acf-1.png" width="70%" style="display: block; margin: auto;"></p>
 <p><br></p>
 </div>
 </div>
 </div>
-<div id="references" class="section level2">
-<h2 class="hasAnchor">
-<a href="#references" class="anchor"></a>References</h2>
-<p>Betancourt, M. (2017). A conceptual introduction to Hamiltonian Monte Carlo. <a href="https://arxiv.org/abs/1701.02434" class="uri">https://arxiv.org/abs/1701.02434</a></p>
-<p>Betancourt, M. (2016). Diagnosing suboptimal cotangent disintegrations in Hamiltonian Monte Carlo. <a href="https://arxiv.org/abs/1604.00695" class="uri">https://arxiv.org/abs/1604.00695</a></p>
-<p>Betancourt, M. and Girolami, M. (2013). Hamiltonian Monte Carlo for hierarchical models. <a href="https://arxiv.org/abs/1312.0906" class="uri">https://arxiv.org/abs/1312.0906</a></p>
-<p>Gabry, J., and Goodrich, B. (2018). rstanarm: Bayesian Applied Regression Modeling via Stan. R package version 2.17.4. <a href="https://mc-stan.org/rstanarm/" class="uri">https://mc-stan.org/rstanarm/</a></p>
-<p>Gabry, J., Simpson, D., Vehtari, A., Betancourt, M. and Gelman, A. (2019), Visualization in Bayesian workflow. <em>J. R. Stat. Soc. A</em>, 182: 389-402. :10.1111/rssa.12378. (<a href="https://rss.onlinelibrary.wiley.com/doi/full/10.1111/rssa.12378">journal version</a>, <a href="https://arxiv.org/abs/1709.01449">arXiv preprint</a>, <a href="https://github.com/jgabry/bayes-vis-paper">code on GitHub</a>) <a id="gabry2019"></a></p>
-<p>Gelman, A. and Rubin, D. B. (1992). Inference from iterative simulation using multiple sequences. <em>Statistical Science</em>. 7(4): 457–472.</p>
-<p>Gelman, A., Carlin, J. B., Stern, H. S., Dunson, D. B., Vehtari, A., and Rubin, D. B. (2013). <em>Bayesian Data Analysis</em>. Chapman &amp; Hall/CRC Press, London, third edition.</p>
-<p>Hoffman, M. D. and Gelman, A. (2014). The No-U-Turn Sampler: adaptively setting path lengths in Hamiltonian Monte Carlo. <em>Journal of Machine Learning Research</em>. 15:1593–1623.</p>
-<p>Rubin, D. B. (1981). Estimation in Parallel Randomized Experiments. <em>Journal of Educational and Behavioral Statistics</em>. 6:377–401.</p>
-<p>Stan Development Team. <em>Stan Modeling Language Users Guide and Reference Manual</em>. <a href="https://mc-stan.org/users/documentation/" class="uri">https://mc-stan.org/users/documentation/</a></p>
-<p>Stan Development Team. (2018). RStan: the R interface to Stan. R package version 2.17.3. <a href="https://mc-stan.org/rstan/" class="uri">https://mc-stan.org/rstan/</a></p>
+<div class="section level2">
+<h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
+</h2>
+<p>Betancourt, M. (2017). A conceptual introduction to Hamiltonian Monte
+Carlo. <a href="https://arxiv.org/abs/1701.02434" class="external-link uri">https://arxiv.org/abs/1701.02434</a></p>
+<p>Betancourt, M. (2016). Diagnosing suboptimal cotangent
+disintegrations in Hamiltonian Monte Carlo. <a href="https://arxiv.org/abs/1604.00695" class="external-link uri">https://arxiv.org/abs/1604.00695</a></p>
+<p>Betancourt, M. and Girolami, M. (2013). Hamiltonian Monte Carlo for
+hierarchical models. <a href="https://arxiv.org/abs/1312.0906" class="external-link uri">https://arxiv.org/abs/1312.0906</a></p>
+<p>Gabry, J., and Goodrich, B. (2018). rstanarm: Bayesian Applied
+Regression Modeling via Stan. R package version 2.17.4. <a href="https://mc-stan.org/rstanarm/" class="external-link uri">https://mc-stan.org/rstanarm/</a></p>
+<p>Gabry, J., Simpson, D., Vehtari, A., Betancourt, M. and Gelman, A.
+(2019), Visualization in Bayesian workflow. <em>J. R. Stat. Soc. A</em>,
+182: 389-402. :10.1111/rssa.12378. (<a href="https://rss.onlinelibrary.wiley.com/doi/full/10.1111/rssa.12378" class="external-link">journal
+version</a>, <a href="https://arxiv.org/abs/1709.01449" class="external-link">arXiv
+preprint</a>, <a href="https://github.com/jgabry/bayes-vis-paper" class="external-link">code
+on GitHub</a>) <a id="gabry2019"></a></p>
+<p>Gelman, A. and Rubin, D. B. (1992). Inference from iterative
+simulation using multiple sequences. <em>Statistical Science</em>. 7(4):
+457–472.</p>
+<p>Gelman, A., Carlin, J. B., Stern, H. S., Dunson, D. B., Vehtari, A.,
+and Rubin, D. B. (2013). <em>Bayesian Data Analysis</em>. Chapman &amp;
+Hall/CRC Press, London, third edition.</p>
+<p>Hoffman, M. D. and Gelman, A. (2014). The No-U-Turn Sampler:
+adaptively setting path lengths in Hamiltonian Monte Carlo. <em>Journal
+of Machine Learning Research</em>. 15:1593–1623.</p>
+<p>Rubin, D. B. (1981). Estimation in Parallel Randomized Experiments.
+<em>Journal of Educational and Behavioral Statistics</em>.
+6:377–401.</p>
+<p>Stan Development Team. <em>Stan Modeling Language Users Guide and
+Reference Manual</em>. <a href="https://mc-stan.org/users/documentation/" class="external-link uri">https://mc-stan.org/users/documentation/</a></p>
+<p>Stan Development Team. (2018). RStan: the R interface to Stan. R
+package version 2.17.3. <a href="https://mc-stan.org/rstan/" class="external-link uri">https://mc-stan.org/rstan/</a></p>
 </div>
-<div class="footnotes">
+<div class="footnotes footnotes-end-of-document">
 <hr>
 <ol>
-<li id="fn1"><p><span class="math inline">\(n_{eff} &gt; N\)</span> indicates that the mean estimate of the parameter computed from Stan draws approaches the true mean faster than the mean estimate computed from independent samples from the true posterior (the estimate from Stan has smaller variance). This is possible when the draws are anticorrelated - draws above the mean tend to be well matched with draws below the mean. Other functions computed from draws (quantiles, posterior intervals, tail probabilities) may not necessarily approach the true posterior faster. Google “antithetic sampling” or visit <a href="https://discourse.mc-stan.org/t/n-eff-bda3-vs-stan/2608/19">the relevant forum thread</a> for some further explanation.<a href="#fnref1" class="footnote-back">↩︎</a></p></li>
+<li id="fn1"><p><span class="math inline">\(n_{eff} &gt; N\)</span>
+indicates that the mean estimate of the parameter computed from Stan
+draws approaches the true mean faster than the mean estimate computed
+from independent samples from the true posterior (the estimate from Stan
+has smaller variance). This is possible when the draws are
+anticorrelated - draws above the mean tend to be well matched with draws
+below the mean. Other functions computed from draws (quantiles,
+posterior intervals, tail probabilities) may not necessarily approach
+the true posterior faster. Google “antithetic sampling” or visit <a href="https://discourse.mc-stan.org/t/n-eff-bda3-vs-stan/2608/19" class="external-link">the
+relevant forum thread</a> for some further explanation.<a href="#fnref1" class="footnote-back">↩︎</a></p></li>
 </ol>
 </div>
   </div>
@@ -645,11 +946,13 @@ theta[7] theta[8]     lp__
 
 
       <footer><div class="copyright">
-  <p>Developed by Jonah Gabry, Tristan Mahr.</p>
+  <p></p>
+<p>Developed by Jonah Gabry, Tristan Mahr.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer>

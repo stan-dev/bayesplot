@@ -1,7 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://mc-stan.org/bayesplot/404.html</loc>
+  </url>
+  <url>
+    <loc>https://mc-stan.org/bayesplot/LICENSE-text.html</loc>
+  </url>
+  <url>
+    <loc>https://mc-stan.org/bayesplot/LICENSE.html</loc>
+  </url>
+  <url>
+    <loc>https://mc-stan.org/bayesplot/articles/graphical-ppcs.html</loc>
+  </url>
+  <url>
+    <loc>https://mc-stan.org/bayesplot/articles/index.html</loc>
+  </url>
+  <url>
+    <loc>https://mc-stan.org/bayesplot/articles/plotting-mcmc-draws.html</loc>
+  </url>
+  <url>
+    <loc>https://mc-stan.org/bayesplot/articles/visual-mcmc-diagnostics.html</loc>
+  </url>
+  <url>
+    <loc>https://mc-stan.org/bayesplot/authors.html</loc>
+  </url>
+  <url>
     <loc>https://mc-stan.org/bayesplot/index.html</loc>
+  </url>
+  <url>
+    <loc>https://mc-stan.org/bayesplot/index.utf8.html</loc>
+  </url>
+  <url>
+    <loc>https://mc-stan.org/bayesplot/news/index.html</loc>
   </url>
   <url>
     <loc>https://mc-stan.org/bayesplot/reference/MCMC-combos.html</loc>
@@ -97,6 +127,9 @@
     <loc>https://mc-stan.org/bayesplot/reference/example-data.html</loc>
   </url>
   <url>
+    <loc>https://mc-stan.org/bayesplot/reference/index.html</loc>
+  </url>
+  <url>
     <loc>https://mc-stan.org/bayesplot/reference/pp_check.html</loc>
   </url>
   <url>
@@ -107,14 +140,5 @@
   </url>
   <url>
     <loc>https://mc-stan.org/bayesplot/reference/tidy-params.html</loc>
-  </url>
-  <url>
-    <loc>https://mc-stan.org/bayesplot/articles/graphical-ppcs.html</loc>
-  </url>
-  <url>
-    <loc>https://mc-stan.org/bayesplot/articles/plotting-mcmc-draws.html</loc>
-  </url>
-  <url>
-    <loc>https://mc-stan.org/bayesplot/articles/visual-mcmc-diagnostics.html</loc>
   </url>
 </urlset>
