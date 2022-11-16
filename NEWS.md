@@ -1,5 +1,9 @@
 <!-- See http://style.tidyverse.org/news.html for advice on writing news -->
 
+# bayesplot 1.10.0.9000
+
+* Items for next release here
+
 # bayesplot 1.10.0
 
 * New function `mcmc_rank_ecdf()` for rank ecdf plots with confidence bands for
