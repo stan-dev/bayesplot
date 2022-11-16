@@ -7,8 +7,7 @@
 # bayesplot 1.10.0
 
 * New function `mcmc_rank_ecdf()` for rank ecdf plots with confidence bands for
-assessing if two or more chains sample the same distribution (#282,
-@TeemuSailynoja)
+assessing if two or more chains sample the same distribution (#282, @TeemuSailynoja)
 * New functions `ppc_pit_ecdf()`, `ppc_pit_ecdf_grouped()`, PIT ecdf plots with
 confidence bands to assess if `y` and `yrep` contain samples from the same
 distribution. (#282, @TeemuSailynoja)
