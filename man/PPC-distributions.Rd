@@ -267,7 +267,9 @@ See Säilynoja et al. (2021) for more details.}
 color_scheme_set("brightblue")
 y <- example_y_data()
 yrep <- example_yrep_draws()
+group <- example_group_data()
 dim(yrep)
+
 ppc_dens_overlay(y, yrep[1:25, ])
 \donttest{
 # ppc_ecdf_overlay with continuous data (set discrete=TRUE if discrete data)
@@ -295,7 +297,6 @@ ppc_dens(y, yrep[200:202, ])
 # frequency polygons
 ppc_freqpoly(y, yrep[1:3, ], alpha = 0.1, size = 1, binwidth = 5)
 
-group <- example_group_data()
 ppc_freqpoly_grouped(y, yrep[1:3, ], group) + yaxis_text()
 
 # if groups are different sizes then the 'freq' argument can be useful
