@@ -156,6 +156,7 @@ ppd_hist <-
   function(ypred,
            ...,
            binwidth = NULL,
+           bins = NULL,
            breaks = NULL,
            freq = TRUE) {
     check_ignored_arguments(...)
@@ -169,6 +170,7 @@ ppd_hist <-
       geom_histogram(
         size = 0.25,
         binwidth = binwidth,
+        bins = bins,
         breaks = breaks
       ) +
       scale_color_ppd() +

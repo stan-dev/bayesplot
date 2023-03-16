@@ -115,6 +115,7 @@ mcmc_hist <- function(
   ...,
   facet_args = list(),
   binwidth = NULL,
+  bins = NULL,
   breaks = NULL,
   freq = TRUE,
   alpha = 1
@@ -127,6 +128,7 @@ mcmc_hist <- function(
     transformations = transformations,
     facet_args = facet_args,
     binwidth = binwidth,
+    bins = bins,
     breaks = breaks,
     by_chain = FALSE,
     freq = freq,
@@ -180,6 +182,7 @@ mcmc_hist_by_chain <- function(
   ...,
   facet_args = list(),
   binwidth = NULL,
+  bins = NULL,
   freq = TRUE,
   alpha = 1
 ) {
@@ -191,6 +194,7 @@ mcmc_hist_by_chain <- function(
     transformations = transformations,
     facet_args = facet_args,
     binwidth = binwidth,
+    bins = bins,
     by_chain = TRUE,
     freq = freq,
     alpha = alpha,
@@ -369,6 +373,7 @@ mcmc_violin <- function(
   transformations = list(),
   facet_args = list(),
   binwidth = NULL,
+  bins = NULL,
   breaks = NULL,
   by_chain = FALSE,
   freq = TRUE,
@@ -392,6 +397,7 @@ mcmc_violin <- function(
       size = .25,
       na.rm = TRUE,
       binwidth = binwidth,
+      bins = bins,
       breaks = breaks,
       alpha = alpha
     )

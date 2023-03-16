@@ -362,6 +362,7 @@ ppc_hist <-
            yrep,
            ...,
            binwidth = NULL,
+           bins = NULL,
            breaks = NULL,
            freq = TRUE) {
     check_ignored_arguments(...)
@@ -375,6 +376,7 @@ ppc_hist <-
       geom_histogram(
         linewidth = 0.25,
         binwidth = binwidth,
+        bins = bins,
         breaks = breaks
       ) +
       scale_fill_ppc() +

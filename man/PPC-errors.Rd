@@ -18,6 +18,7 @@ ppc_error_hist(
   ...,
   facet_args = list(),
   binwidth = NULL,
+  bins = NULL,
   breaks = NULL,
   freq = TRUE
 )
@@ -83,6 +84,8 @@ on the plot) instead of the \strong{ggplot2} default of \code{scales="fixed"}.}
 \item{binwidth}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}} to override
 the default binwidth.}
 
+\item{bins}{For \code{ppc_error_binned()}, the number of bins to use (approximately).}
+
 \item{breaks}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}} as an
 alternative to \code{binwidth}.}
 
@@ -104,8 +107,6 @@ opacity of the shaded region indicating the 2-SE bounds.}
 
 \item{x}{A numeric vector the same length as \code{y} to use as the x-axis
 variable.}
-
-\item{bins}{For \code{ppc_error_binned()}, the number of bins to use (approximately).}
 }
 \value{
 A ggplot object that can be further customized using the \strong{ggplot2} package.

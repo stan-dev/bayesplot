@@ -15,6 +15,7 @@ test_that("mcmc_hist returns a ggplot object", {
   expect_gg(mcmc_hist(drawsarr1chain, regex_pars = "theta", binwidth = 0.1))
   expect_gg(mcmc_hist(mat, binwidth = 0.1))
   expect_gg(mcmc_hist(dframe, binwidth = 0.1))
+  expect_gg(mcmc_hist(dframe, bins = 10))
   expect_gg(mcmc_hist(dframe_multiple_chains, binwidth = 0.1))
 
   expect_gg(mcmc_hist(arr1, binwidth = 0.1))

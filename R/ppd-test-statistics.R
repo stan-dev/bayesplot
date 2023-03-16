@@ -36,6 +36,7 @@ ppd_stat <-
            stat = "mean",
            ...,
            binwidth = NULL,
+           bins = NULL,
            breaks = NULL,
            freq = TRUE) {
     stopifnot(length(stat) == 1)
@@ -59,6 +60,7 @@ ppd_stat <-
         linewidth = 0.25,
         na.rm = TRUE,
         binwidth = binwidth,
+        bins = bins,
         breaks = breaks
       ) +
       scale_color_ppd(guide = "none") +

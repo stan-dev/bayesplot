@@ -19,6 +19,7 @@ mcmc_hist(
   ...,
   facet_args = list(),
   binwidth = NULL,
+  bins = NULL,
   breaks = NULL,
   freq = TRUE,
   alpha = 1
@@ -47,6 +48,7 @@ mcmc_hist_by_chain(
   ...,
   facet_args = list(),
   binwidth = NULL,
+  bins = NULL,
   freq = TRUE,
   alpha = 1
 )
@@ -157,6 +159,9 @@ then \strong{bayesplot} may use \code{scales="free"} as the default (depending
 on the plot) instead of the \strong{ggplot2} default of \code{scales="fixed"}.}
 
 \item{binwidth}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}} to override
+the default binwidth.}
+
+\item{bins}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}} to override
 the default binwidth.}
 
 \item{breaks}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}} as an

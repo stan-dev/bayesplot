@@ -119,6 +119,7 @@ ppc_error_hist <-
            ...,
            facet_args = list(),
            binwidth = NULL,
+           bins = NULL,
            breaks = NULL,
            freq = TRUE) {
 
@@ -135,6 +136,7 @@ ppc_error_hist <-
         color = get_color("lh"),
         size = 0.25,
         binwidth = binwidth,
+        bins = bins,
         breaks = breaks
       ) +
       xlab(error_label()) +
