@@ -37,6 +37,7 @@ mcmc_recover_hist(
   ...,
   facet_args = list(),
   binwidth = NULL,
+  bins = NULL,
   breaks = NULL
 )
 }
@@ -87,6 +88,9 @@ default), \code{"mean"}, or \code{"none"}.}
 appearance of plotted points.}
 
 \item{binwidth}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}} to override
+the default binwidth.}
+
+\item{bins}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}} to override
 the default binwidth.}
 
 \item{breaks}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}} as an

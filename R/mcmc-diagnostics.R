@@ -171,7 +171,7 @@ mcmc_rhat <- function(rhat, ..., size = NULL) {
 
 #' @rdname MCMC-diagnostics
 #' @export
-mcmc_rhat_hist <- function(rhat, ..., binwidth = NULL, breaks = NULL) {
+mcmc_rhat_hist <- function(rhat, ..., binwidth = NULL, bins = NULL, breaks = NULL) {
   check_ignored_arguments(...)
   data <- mcmc_rhat_data(rhat)
 
@@ -185,6 +185,7 @@ mcmc_rhat_hist <- function(rhat, ..., binwidth = NULL, breaks = NULL) {
       linewidth = 0.25,
       na.rm = TRUE,
       binwidth = binwidth,
+      bins = bins,
       breaks = breaks
     ) +
     scale_color_diagnostic("rhat") +
@@ -261,7 +262,7 @@ mcmc_neff <- function(ratio, ..., size = NULL) {
 
 #' @rdname MCMC-diagnostics
 #' @export
-mcmc_neff_hist <- function(ratio, ..., binwidth = NULL, breaks = NULL) {
+mcmc_neff_hist <- function(ratio, ..., binwidth = NULL, bins = NULL, breaks = NULL) {
   check_ignored_arguments(...)
   data <- mcmc_neff_data(ratio)
 
@@ -275,6 +276,7 @@ mcmc_neff_hist <- function(ratio, ..., binwidth = NULL, breaks = NULL) {
       linewidth = 0.25,
       na.rm = TRUE,
       binwidth = binwidth,
+      bins = bins,
       breaks = breaks) +
     scale_color_diagnostic("neff") +
     scale_fill_diagnostic("neff") +

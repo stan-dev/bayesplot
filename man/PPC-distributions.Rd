@@ -69,7 +69,15 @@ ppc_ecdf_overlay_grouped(
 
 ppc_dens(y, yrep, ..., trim = FALSE, size = 0.5, alpha = 1)
 
-ppc_hist(y, yrep, ..., binwidth = NULL, breaks = NULL, freq = TRUE)
+ppc_hist(
+  y,
+  yrep,
+  ...,
+  binwidth = NULL,
+  bins = NULL,
+  breaks = NULL,
+  freq = TRUE
+)
 
 ppc_freqpoly(y, yrep, ..., binwidth = NULL, freq = TRUE, size = 0.5, alpha = 1)
 
@@ -158,6 +166,9 @@ passed to \code{\link[ggplot2:stat_ecdf]{ggplot2::stat_ecdf()}}. If \code{discre
 \item{pad}{A logical scalar passed to \code{\link[ggplot2:stat_ecdf]{ggplot2::stat_ecdf()}}.}
 
 \item{binwidth}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}} to override
+the default binwidth.}
+
+\item{bins}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}} to override
 the default binwidth.}
 
 \item{breaks}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}} as an
