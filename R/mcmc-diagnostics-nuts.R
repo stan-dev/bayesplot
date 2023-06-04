@@ -117,7 +117,7 @@
 #' mcmc_nuts_energy(np)
 #' mcmc_nuts_energy(np, merge_chains = TRUE, binwidth = .15)
 #' mcmc_nuts_energy(np) +
-#'  facet_wrap(~ Chain, nrow = 1) +
+#'  facet_wrap(vars(Chain), nrow = 1) +
 #'  coord_fixed(ratio = 150) +
 #'  ggtitle("NUTS Energy Diagnostic")
 #' }
@@ -180,7 +180,7 @@ mcmc_nuts_acceptance <-
     }
     hists <- hists +
       dont_expand_y_axis(c(0.005, 0)) +
-      facet_wrap(~ Parameter, scales = "free") +
+      facet_wrap(vars(Parameter), scales = "free") +
       yaxis_text(FALSE) +
       yaxis_title(FALSE) +
       yaxis_ticks(FALSE) +
@@ -476,7 +476,7 @@ mcmc_nuts_energy <-
     }
 
     graph +
-      facet_wrap(~ Chain) +
+      facet_wrap(vars(Chain)) +
       force_axes_in_facets()
   }
 

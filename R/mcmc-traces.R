@@ -335,7 +335,7 @@ mcmc_rank_overlay <- function(x,
 
   facet_call <- NULL
   if (n_param > 1) {
-    facet_args$facets <- ~ parameter
+    facet_args$facets <- vars(parameter)
     facet_args$scales <- facet_args$scales %||% "fixed"
     facet_call <- do.call("facet_wrap", facet_args)
   }
@@ -387,7 +387,8 @@ mcmc_rank_hist <- function(x,
   right_edge <- max(data_boundaries$value_rank)
 
   facet_args[["scales"]] <- facet_args[["scales"]] %||% "fixed"
-  facet_args[["facets"]] <- facet_args[["facets"]] %||% (parameter ~ chain)
+  facet_args[["rows"]] <- facet_args[["rows"]] %||% vars(parameter)
+  facet_args[["cols"]] <- facet_args[["cols"]] %||% vars(chain)
 
   # If there is one parameter, put the chains in one row.
   # Otherwise, use a grid.
@@ -526,7 +527,7 @@ mcmc_rank_ecdf <-
   if (n_param == 1) {
     facet_call <- ylab(levels(data$parameter))
   } else {
-    facet_args$facets <- ~parameter
+    facet_args$facets <- vars(parameter)
     facet_args$scales <- facet_args$scales %||% "free"
     facet_call <- do.call("facet_wrap", facet_args)
   }
@@ -705,7 +706,7 @@ mcmc_trace_data <- function(x,
   if (n_param == 1) {
     facet_call <- ylab(levels(data$parameter))
   } else {
-    facet_args$facets <- ~ parameter
+    facet_args$facets <- vars(parameter)
     facet_args$scales <- facet_args$scales %||% "free"
     facet_call <- do.call("facet_wrap", facet_args)
   }
