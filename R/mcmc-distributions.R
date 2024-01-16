@@ -409,7 +409,7 @@ mcmc_violin <- function(
       graph <- graph + do.call("facet_wrap", facet_args)
     }
   } else {
-    facet_args[["facets"]] <- if (n_param > 1) {
+    facet_args[["rows"]] <- if (n_param > 1) {
       "Chain ~ Parameter"
     } else {
       "Chain ~ ."

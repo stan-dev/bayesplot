@@ -393,6 +393,7 @@ mcmc_rank_hist <- function(x,
   # Otherwise, use a grid.
   if (n_param > 1) {
     facet_f <- facet_grid
+    names(facet_args)[names(facet_args) == "facets"] <- "rows"
   } else {
     facet_f <- facet_wrap
     facet_args[["nrow"]] <- facet_args[["nrow"]] %||% 1
