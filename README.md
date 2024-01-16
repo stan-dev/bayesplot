@@ -43,6 +43,10 @@ _J. R. Stat. Soc. A_, 182: 389-402. doi:10.1111/rssa.12378.
 * [Ask a question](https://discourse.mc-stan.org) (Stan Forums on Discourse)
 * [Open an issue](https://github.com/stan-dev/bayesplot/issues) (GitHub issues for bug reports, feature requests)
 
+### Contributing 
+
+We are always looking for new contributors! See [CONTRIBUTING.md](https://github.com/stan-dev/bayesplot/blob/master/.github/CONTRIBUTING.md) for details and/or reach out via the issue tracker.
+
 ### Installation
 
 * Install from CRAN:
