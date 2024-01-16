@@ -54,8 +54,7 @@ theme_default <-
         panel.spacing = unit(1.5, "lines"),
         legend.position = "right",
         legend.background = element_blank(),
-        legend.text = element_text(size = 13),
-        legend.text.align = 0,
+        legend.text = element_text(size = 13, hjust = 0),
         legend.key = element_blank()
       )
   }
