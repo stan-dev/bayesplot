@@ -180,7 +180,7 @@ mcmc_nuts_acceptance <-
     }
     hists <- hists +
       dont_expand_y_axis(c(0.005, 0)) +
-      facet_wrap(vars(Parameter), scales = "free") +
+      facet_wrap(vars(.data$Parameter), scales = "free") +
       yaxis_text(FALSE) +
       yaxis_title(FALSE) +
       yaxis_ticks(FALSE) +
@@ -476,7 +476,7 @@ mcmc_nuts_energy <-
     }
 
     graph +
-      facet_wrap(vars(Chain)) +
+      facet_wrap(vars(.data$Chain)) +
       force_axes_in_facets()
   }
 

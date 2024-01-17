@@ -398,11 +398,11 @@ error_hist_facets <-
 
     if (grouped) {
       facet_fun <- "facet_grid"
-      facet_args[["rows"]] <- vars(rep_id)
-      facet_args[["cols"]] <- vars(group)
+      facet_args[["rows"]] <- vars(.data$rep_id)
+      facet_args[["cols"]] <- vars(.data$group)
     } else {
       facet_fun <- "facet_wrap"
-      facet_args[["facets"]] <- vars(rep_id)
+      facet_args[["facets"]] <- vars(.data$rep_id)
     }
     facet_args[["scales"]] <- facet_args[["scales"]] %||% scales_default
 

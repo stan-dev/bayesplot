@@ -519,8 +519,8 @@ drop_NAs_and_warn <- function(x) {
     plot_data <- acf_data(x = x, lags = lags)
 
     if (num_chains(x) > 1) {
-      facet_args$rows <- vars(Chain)
-      facet_args$cols <- vars(Parameter)
+      facet_args$rows <- vars(.data$Chain)
+      facet_args$cols <- vars(.data$Parameter)
       facet_fun <- "facet_grid"
     } else { # 1 chain
       facet_args$facets <- "Parameter"
