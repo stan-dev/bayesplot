@@ -333,7 +333,11 @@ calc_intervals <- function(x, p, med = TRUE, ...) {
 #'   equivalent to using `legend_none()`.
 #'
 legend_move <- function(position = "right") {
-  theme(legend.position = position)
+  if (is.numeric(position) && "legend.position.inside" %in% fn_fmls_names(theme)) {
+    theme(legend.position = "inside", legend.position.inside = position)
+  } else {
+    theme(legend.position = position)
+  }
 }
 #' @rdname bayesplot-helpers
 #' @export

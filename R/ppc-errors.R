@@ -398,7 +398,7 @@ error_hist_facets <-
 
     if (grouped) {
       facet_fun <- "facet_grid"
-      facet_args[["facets"]] <- rep_id ~ group
+      facet_args[["rows"]] <- rep_id ~ group
     } else {
       facet_fun <- "facet_wrap"
       facet_args[["facets"]] <- ~ rep_id
