@@ -189,7 +189,7 @@ ppc_loo_pit_overlay <- function(y,
       geom_line(
         aes(color = "y"),
         data = function(x) dplyr::filter(x, .data$is_y),
-        linewidth = 1,
+       linewidth = 1,
         lineend = "round",
         na.rm = TRUE) +
       scale_x_continuous(
@@ -326,21 +326,23 @@ ppc_loo_pit_qq <- function(y,
     y_lab <- "LOO-PIT (standard normal quantiles)"
   }
 
-  ggplot(data.frame(p = pit)) +
+  qq <- ggplot(data.frame(p = pit)) +
     geom_qq(
       aes(sample = .data$p),
       distribution = theoretical,
       color = get_color("m"),
       size = size,
       alpha = alpha) +
-    geom_qq_line(
-      aes(sample = .data$p),
+    geom_abline(
       linetype = 2,
-      distribution = theoretical,
-      color = "black",
-      fullrange = FALSE) +
+      color = "black") +
     bayesplot_theme_get() +
     labs(x = x_lab, y = y_lab)
+  if (compare == "uniform") {
+    qq + lims(x=c(0,1), y=c(0,1))
+  } else {
+    qq
+  }
 }
 
 
