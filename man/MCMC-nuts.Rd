@@ -145,7 +145,7 @@ color_scheme_set("red")
 mcmc_nuts_energy(np)
 mcmc_nuts_energy(np, merge_chains = TRUE, binwidth = .15)
 mcmc_nuts_energy(np) +
- facet_wrap(~ Chain, nrow = 1) +
+ facet_wrap(vars(Chain), nrow = 1) +
  coord_fixed(ratio = 150) +
  ggtitle("NUTS Energy Diagnostic")
 }

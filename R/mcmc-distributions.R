@@ -405,14 +405,13 @@ mcmc_violin <- function(
   facet_args[["scales"]] <- facet_args[["scales"]] %||% "free"
   if (!by_chain) {
     if (n_param > 1) {
-      facet_args[["facets"]] <- ~ Parameter
+      facet_args[["facets"]] <- vars(Parameter)
       graph <- graph + do.call("facet_wrap", facet_args)
     }
   } else {
-    facet_args[["rows"]] <- if (n_param > 1) {
-      "Chain ~ Parameter"
-    } else {
-      "Chain ~ ."
+    facet_args[["rows"]] <- vars(Chain)
+    if (n_param > 1) {
+      facet_args[["cols"]] <- vars(Parameter)
     }
     graph <- graph +
       do.call("facet_grid", facet_args) +
@@ -527,7 +526,7 @@ mcmc_violin <- function(
       labs(x = if (violin) "Chain" else levels(data$Parameter),
            y = if (violin) levels(data$Parameter) else NULL)
   } else {
-    facet_args[["facets"]] <- ~ Parameter
+    facet_args[["facets"]] <- vars(Parameter)
     facet_args[["scales"]] <- facet_args[["scales"]] %||% "free"
     graph <- graph + do.call("facet_wrap", facet_args)
   }
