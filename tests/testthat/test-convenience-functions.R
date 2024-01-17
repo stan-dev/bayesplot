@@ -110,7 +110,10 @@ test_that("legend_move returns correct theme object", {
 
   pos <- legend_move(c(0.25, 0.5))
   expect_s3_class(pos, "theme")
-  expect_equivalent(pos, list(legend.position = c(0.25, 0.5)))
+  expect_equivalent(
+    pos$legend.position.inside %||% pos$legend.position,
+    c(0.25, 0.5)
+  )
   expect_false(attr(pos, "complete"))
 })
 test_that("legend_text returns correct theme object", {
