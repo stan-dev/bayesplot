@@ -35,6 +35,7 @@ test_that("ppc_loo_pit_overlay returns ggplot object", {
   skip_if_not_installed("rstanarm")
   skip_if_not_installed("loo")
   expect_gg(ppc_loo_pit_overlay(y, yrep, lw, samples = 25))
+  expect_gg(ppc_loo_pit_overlay(y, yrep, psis_object = psis1, samples = 25))
 })
 
 test_that("ppc_loo_pit_overlay warns about binary data", {
@@ -65,9 +66,11 @@ test_that("ppc_loo_pit_qq returns ggplot object", {
   skip_if_not_installed("rstanarm")
   skip_if_not_installed("loo")
   expect_gg(p1 <- ppc_loo_pit_qq(y, yrep, lw))
+  expect_gg(p2 <- ppc_loo_pit_qq(y, yrep, psis_object = psis1))
   expect_equal(p1$labels$x, "Uniform")
-  expect_gg(p2 <- ppc_loo_pit_qq(y, yrep, lw, compare = "normal"))
-  expect_equal(p2$labels$x, "Normal")
+  expect_equal(p1$data, p2$data)
+  expect_gg(p3 <- ppc_loo_pit_qq(y, yrep, lw, compare = "normal"))
+  expect_equal(p3$labels$x, "Normal")
 })
 
 test_that("ppc_loo_pit functions work when pit specified instead of y,yrep,lw", {
@@ -75,17 +78,21 @@ test_that("ppc_loo_pit functions work when pit specified instead of y,yrep,lw", 
   skip_if_not_installed("loo")
   expect_gg(ppc_loo_pit_qq(pit = pits))
   expect_message(
-    ppc_loo_pit_qq(y = y, yrep = yrep, lw = lw, pit = pits),
+    p1 <- ppc_loo_pit_qq(y = y, yrep = yrep, lw = lw, pit = pits),
     "'pit' specified so ignoring 'y','yrep','lw' if specified"
   )
+  expect_message(
+    p2 <- ppc_loo_pit_qq(pit = pits)
+  )
+  expect_equal(p1$data, p2$data)
 
-  expect_gg(ppc_loo_pit_overlay(pit = pits))
+
+  expect_gg(p1 <- ppc_loo_pit_overlay(pit = pits))
   expect_message(
     ppc_loo_pit_overlay(y = y, yrep = yrep, lw = lw, pit = pits),
     "'pit' specified so ignoring 'y','yrep','lw' if specified"
   )
 })
-
 
 
 test_that("ppc_loo_intervals returns ggplot object", {
