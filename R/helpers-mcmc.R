@@ -51,13 +51,13 @@ prepare_mcmc_array <- function(x,
   if (is.matrix(x)) {
     x <- x[, pars, drop=FALSE]
     if (length(transformations)) {
-      x <- apply_transformations(x, transformations)
+      x <- apply_transformations(x, transformations = transformations)
     }
     x <- array(x, dim = c(nrow(x), 1, ncol(x)))
   } else {
     x <- x[, , pars, drop = FALSE]
     if (length(transformations)) {
-      x <- apply_transformations(x, transformations)
+      x <- apply_transformations(x, transformations = transformations)
     }
   }
 
@@ -388,10 +388,10 @@ validate_transformations <-
 #'   functions.
 #' @return x, with tranformations having been applied to some parameters.
 #'
-apply_transformations <- function(x, transformations = list(), ...) {
+apply_transformations <- function(x, ...) {
   UseMethod("apply_transformations")
 }
-apply_transformations.matrix <- function(x, transformations = list()) {
+apply_transformations.matrix <- function(x, ..., transformations = list()) {
   pars <- colnames(x)
   x_transforms <- validate_transformations(transformations, pars)
   for (p in names(x_transforms)) {
@@ -400,7 +400,7 @@ apply_transformations.matrix <- function(x, transformations = list()) {
 
   x
 }
-apply_transformations.array <- function(x, transformations = list()) {
+apply_transformations.array <- function(x, ..., transformations = list()) {
   stopifnot(length(dim(x)) == 3)
   pars <- dimnames(x)[[3]]
   x_transforms <- validate_transformations(transformations, pars)
