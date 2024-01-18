@@ -28,6 +28,7 @@ mcmc_hex(
   regex_pars = character(),
   transformations = list(),
   ...,
+  bins = 30,
   binwidth = NULL
 )
 
@@ -134,7 +135,7 @@ arguments controlling the appearance of superimposed points representing
 NUTS diagnostic information. (Note: for \code{pairs_style_np()} the
 \code{size} arguments are interpreted as scaling factors).}
 
-\item{binwidth}{For \code{mcmc_hex()}, an optional numeric vector of
+\item{bins, binwidth}{For \code{mcmc_hex()}, an optional numeric vector of
 \emph{length two} passed to \code{\link[ggplot2:geom_hex]{ggplot2::geom_hex()}} to override the
 default binwidth in both the vertical and horizontal directions.}
 
