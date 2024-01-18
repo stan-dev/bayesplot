@@ -79,7 +79,16 @@ ppc_hist(
   freq = TRUE
 )
 
-ppc_freqpoly(y, yrep, ..., binwidth = NULL, freq = TRUE, size = 0.5, alpha = 1)
+ppc_freqpoly(
+  y,
+  yrep,
+  ...,
+  binwidth = NULL,
+  bins = NULL,
+  freq = TRUE,
+  size = 0.5,
+  alpha = 1
+)
 
 ppc_freqpoly_grouped(
   y,
@@ -87,6 +96,7 @@ ppc_freqpoly_grouped(
   group,
   ...,
   binwidth = NULL,
+  bins = NULL,
   freq = TRUE,
   size = 0.5,
   alpha = 1

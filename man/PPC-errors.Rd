@@ -30,6 +30,7 @@ ppc_error_hist_grouped(
   ...,
   facet_args = list(),
   binwidth = NULL,
+  bins = NULL,
   breaks = NULL,
   freq = TRUE
 )
