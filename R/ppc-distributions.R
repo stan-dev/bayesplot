@@ -402,6 +402,7 @@ ppc_freqpoly <-
            yrep,
            ...,
            binwidth = NULL,
+           bins = NULL,
            freq = TRUE,
            size = 0.5,
            alpha = 1) {
@@ -420,6 +421,7 @@ ppc_freqpoly <-
       geom_area(
         stat = "bin",
         binwidth = binwidth,
+        bins = bins,
         linewidth = size,
         alpha = alpha
       ) +
@@ -446,6 +448,7 @@ ppc_freqpoly_grouped <-
            group,
            ...,
            binwidth = NULL,
+           bins = NULL,
            freq = TRUE,
            size = 0.5,
            alpha = 1) {

@@ -85,6 +85,7 @@ ppd_stat_grouped <-
            ...,
            facet_args = list(),
            binwidth = NULL,
+           bins = NULL,
            breaks = NULL,
            freq = TRUE) {
     check_ignored_arguments(...)
@@ -104,6 +105,7 @@ ppd_stat_freqpoly <-
            ...,
            facet_args = list(),
            binwidth = NULL,
+           bins = NULL,
            freq = TRUE) {
     stopifnot(length(stat) == 1)
     dots <- list(...)
@@ -122,7 +124,8 @@ ppd_stat_freqpoly <-
         aes(color = "ypred"),
         linewidth = 0.5,
         na.rm = TRUE,
-        binwidth = binwidth
+        binwidth = binwidth,
+        bins = bins
       ) +
       scale_color_ppd(
         name = stat_legend_title(stat, deparse(substitute(stat))),
@@ -146,6 +149,7 @@ ppd_stat_freqpoly_grouped <-
            ...,
            facet_args = list(),
            binwidth = NULL,
+           bins = NULL,
            freq = TRUE) {
     check_ignored_arguments(...)
     call <- match.call(expand.dots = FALSE)
