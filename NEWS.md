@@ -2,11 +2,9 @@
 
 # bayesplot 1.11.0
 
-* Add 'bins' argument to many histogram plots by @paul-buerkner in #300
-* Update for new ggplot2 release by @teunbrand in #309
-* Follow ggplot2 updates on facet_grid() and facet_wrap() by @heavywatal in #305
-* Better loo_pit_qq plots by @avehtari in #307
-* Check `prob` is numeric for intervals plots by @tony-stone in #299
+ADD ANYTHING COMMITTED DIRECTLY TO PR FOR RELEASE (e.g. psis_object argument)
+
+ADD AUTO-GENERATED RELEASE NOTES
 
 # bayesplot 1.10.0
 
