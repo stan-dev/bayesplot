@@ -665,7 +665,11 @@ mcmc_trace_data <- function(x,
   }
 
   geom_args <- list()
-  geom_args$size <- size %||% ifelse(style == "line", 1/3, 1)
+  if (style == "line") {
+    geom_args$linewidth = size %||% 1 / 3
+  } else {
+    geom_args$size = size %||% 1
+  }
   layer_draws <- do.call(paste0("geom_", style), geom_args)
 
   coord_window <- if (!is.null(window)) {

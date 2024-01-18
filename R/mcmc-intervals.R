@@ -384,9 +384,9 @@ mcmc_areas <- function(x,
   }
 
   if (!is.null(border_size)) {
-    args_bottom$size <- border_size
-    args_outer$size <- border_size
-    args_inner$size <- border_size
+    args_bottom$linewidth <- border_size
+    args_outer$linewidth <- border_size
+    args_inner$linewidth <- border_size
   }
 
   if (color_by_rhat) {
@@ -504,7 +504,7 @@ mcmc_areas_ridges <- function(x,
     stat = "identity"
   )
   if (!is.null(border_size)) {
-    args_outer$size <- border_size
+    args_outer$linewidth <- border_size
   }
 
   layer_outer <- do.call(ggridges::geom_density_ridges, args_outer)
@@ -545,7 +545,7 @@ mcmc_areas_ridges <- function(x,
         stat = "identity")
 
     if (!is.null(border_size)) {
-      args_inner$size <- border_size
+      args_inner$linewidth <- border_size
     }
 
     layer_list_inner[[par_num]] <- do.call(ggridges::geom_ridgeline, args_inner)
