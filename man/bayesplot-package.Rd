@@ -114,3 +114,23 @@ for plotting.
 
 \code{\link[ggplot2:ggsave]{ggplot2::ggsave()}} for saving plots.
 }
+\author{
+\strong{Maintainer}: Jonah Gabry \email{jsg2201@columbia.edu}
+
+Authors:
+\itemize{
+  \item Tristan Mahr
+}
+
+Other contributors:
+\itemize{
+  \item Paul-Christian Bürkner [contributor]
+  \item Martin Modrák [contributor]
+  \item Malcolm Barrett [contributor]
+  \item Frank Weber [contributor]
+  \item Eduardo Coronado Sroka [contributor]
+  \item Teemu Sailynoja [contributor]
+  \item Aki Vehtari [contributor]
+}
+
+}
