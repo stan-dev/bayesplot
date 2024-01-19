@@ -2,6 +2,7 @@
 
 # bayesplot 1.10.0.9000
 
+* `ppc_pit_ecdf()` and `ppc_pit_ecdf_grouped()` now support discrete variables, and their default method for selecting the number of ECDF evaluation points has been updated.
 * Items for next release here
 
 # bayesplot 1.10.0
