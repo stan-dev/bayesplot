@@ -51,7 +51,7 @@
 <text x='524.53' y='554.29' text-anchor='middle' style='font-size: 9.60px; fill: #4D4D4D; font-family: sans;' textLength='18.69px' lengthAdjust='spacingAndGlyphs'>0.75</text>
 <text x='683.46' y='554.29' text-anchor='middle' style='font-size: 9.60px; fill: #4D4D4D; font-family: sans;' textLength='18.69px' lengthAdjust='spacingAndGlyphs'>1.00</text>
 <text x='377.83' y='567.53' text-anchor='middle' style='font-size: 12.00px; font-family: sans;' textLength='18.67px' lengthAdjust='spacingAndGlyphs'>PIT</text>
-<text transform='translate(14.24,283.58) rotate(-90)' text-anchor='middle' style='font-size: 12.00px; font-family: sans;' textLength='32.67px' lengthAdjust='spacingAndGlyphs'>ECDF</text>
+<text transform='translate(14.24,283.58) rotate(-90)' text-anchor='middle' style='font-size: 12.00px; font-family: sans;' textLength='96.04px' lengthAdjust='spacingAndGlyphs'>ECDF - difference</text>
 <text x='41.64' y='15.89' style='font-size: 14.40px; font-family: sans;' textLength='114.47px' lengthAdjust='spacingAndGlyphs'>ppc_pit_ecdf (diff)</text>
 </g>
 </svg>

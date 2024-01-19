@@ -151,7 +151,7 @@
 <polyline points='38.65,434.61 41.64,434.61 ' style='stroke-width: 0.64; stroke: #333333; stroke-linecap: butt;' />
 <polyline points='38.65,370.80 41.64,370.80 ' style='stroke-width: 0.64; stroke: #333333; stroke-linecap: butt;' />
 <text x='377.83' y='567.53' text-anchor='middle' style='font-size: 12.00px; font-family: sans;' textLength='18.67px' lengthAdjust='spacingAndGlyphs'>PIT</text>
-<text transform='translate(14.24,293.20) rotate(-90)' text-anchor='middle' style='font-size: 12.00px; font-family: sans;' textLength='32.67px' lengthAdjust='spacingAndGlyphs'>ECDF</text>
+<text transform='translate(14.24,293.20) rotate(-90)' text-anchor='middle' style='font-size: 12.00px; font-family: sans;' textLength='96.04px' lengthAdjust='spacingAndGlyphs'>ECDF - difference</text>
 <text x='41.64' y='15.89' style='font-size: 14.40px; font-family: sans;' textLength='175.33px' lengthAdjust='spacingAndGlyphs'>ppc_pit_ecdf_grouped (diff)</text>
 </g>
 </svg>

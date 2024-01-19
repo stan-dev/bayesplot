@@ -647,7 +647,7 @@ ppc_pit_ecdf <- function(y,
       color = "yrep"
     ),
     linetype = 2, show.legend = FALSE) +
-    labs(y = "ECDF", x = "PIT") +
+    labs(y = ifelse(plot_diff,"ECDF - difference","ECDF"), x = "PIT") +
     yaxis_ticks(FALSE) +
     scale_color_ppc() +
     bayesplot_theme_get()
@@ -735,7 +735,7 @@ ppc_pit_ecdf_grouped <-
         color = "yrep"
       ),
       linetype = 2, show.legend = FALSE) +
-      labs(y = "ECDF", x = "PIT") +
+      labs(y = ifelse(plot_diff,"ECDF - difference","ECDF"), x = "PIT") +
       yaxis_ticks(FALSE) +
       bayesplot_theme_get() +
       facet_wrap("group") +
