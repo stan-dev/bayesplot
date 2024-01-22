@@ -364,12 +364,14 @@ diagnostic_factor <- function(x, ...) {
   UseMethod("diagnostic_factor")
 }
 
+#' @export
 diagnostic_factor.rhat <- function(x, ..., breaks = c(1.05, 1.1)) {
   cut(x, breaks = c(-Inf, breaks, Inf),
       labels = c("low", "ok", "high"),
       ordered_result = FALSE)
 }
 
+#' @export
 diagnostic_factor.neff_ratio <- function(x, ..., breaks = c(0.1, 0.5)) {
   cut(x, breaks = c(-Inf, breaks, Inf),
       labels = c("low", "ok", "high"),
