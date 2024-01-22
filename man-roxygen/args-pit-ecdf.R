@@ -1,7 +1,9 @@
 #' @param K An optional integer defining the number of equally spaced evaluation
-#'   points for the ECDF. If the submitted PIT values are known to be discrete,
-#'   this should be the number of the discrete cases. Defaults to the smaller of
-#'   `length(y)` and `ncol(yrep)` when applicable.
+#'   points for the ECDF. Reducing K when using `interpolate_adj = FALSE` makes
+#' computing the confidence bands faster. For `ppc_pit_ecdf` and
+#' `ppc_pit_ecdf_grouped`, defaults to `ncol(yrep) + 1`, or `length(pit)` if PIT
+#'  values are supplied. For `mcmc_rank_ecdf` defaults to the number of
+#'  iterations per chain in `x`.
 #' @param prob The desired simultaneous coverage level of the bands around the
 #'   ECDF. A value in (0,1).
 #' @param plot_diff A boolean defining whether to plot the difference between

@@ -6,6 +6,9 @@ ADD ANYTHING COMMITTED DIRECTLY TO PR FOR RELEASE (e.g. psis_object argument)
 
 ADD AUTO-GENERATED RELEASE NOTES
 
+* `ppc_pit_ecdf()` and `ppc_pit_ecdf_grouped()` now support discrete variables, and their default method for selecting the number of ECDF evaluation points has been updated.
+* Items for next release here
+
 # bayesplot 1.10.0
 
 * New function `mcmc_rank_ecdf()` for rank ecdf plots with confidence bands for
@@ -50,14 +53,14 @@ previous releases, but the new ones in this release are:
    - `ppc_error_hist_grouped()`
    - `ppc_error_scatter()`
    - `ppc_error_binned()`
-   
+
 * New plotting function `ppc_km_overlay_grouped()`, the grouped variant of
   `ppc_km_overlay()`. (#260, @fweber144)
 
 * `ppc_scatter()`, `ppc_scatter_avg()`, and `ppc_scatter_avg_grouped()` gain an
   argument `ref_line`, which can be set to `FALSE` to turn off the `x=y` line
   drawn behind the scatterplot.
-  
+
 * `ppc_ribbon()` and `ppc_ribbon_grouped()` gain argument `y_draw` that specifies whether the observed y should be plotted using a point, line, or both. (#257, @charlesm93)
 
 * `mcmc_*()` functions now support all draws formats from the **posterior** package. (#277, @Ozan147)
