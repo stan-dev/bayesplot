@@ -416,12 +416,12 @@ adjust_gamma_simulate <- function(N, L, K, prob, M) {
 #' simultaneous coverage of the ECDF traces.
 #' @noRd
 interpolate_gamma <- function(N, K, prob, L) {
-  # Find the precomputed values ueful for the interpolation task.
+  # Find the precomputed values useful for the interpolation task.
   vals <- get_interpolation_values(N, K, L, prob)
   # Largest lower bound and smalles upper bound for N among precomputed values.
   N_lb <- max(vals[vals$N <= N, ]$N)
   N_ub <- min(vals[vals$N >= N, ]$N)
-  # Approximate largest lower bound and smalles upper bound for gamma.
+  # Approximate largest lower bound and smallest upper bound for gamma.
   log_gamma_lb <- approx(
     x = log(vals[vals$N == N_lb, ]$K),
     y = log(vals[vals$N == N_lb, ]$val),

@@ -606,13 +606,13 @@ ppc_pit_ecdf <- function(y,
   if (is.null(pit)) {
     pit <- ppc_data(y, yrep) %>%
       group_by(.data$y_id) %>%
-      dplyr::group_map(~ mean(.x$value[.x$is_y] >= .x$value[!.x$is_y])) %>%
+      dplyr::group_map(
+        ~ mean(.x$value[.x$is_y] > .x$value[!.x$is_y]) +
+        runif(1, max = mean(.x$value[.x$is_y] == .x$value[!.x$is_y]))
+        ) %>%
       unlist()
     if (is.null(K)) {
-      K <- min(
-        length(unique(ppc_data(y, yrep)$rep_id)) + 1,
-        length(pit)
-      )
+      K <- nrow(yrep) + 1
     }
   } else {
     inform("'pit' specified so ignoring 'y', and 'yrep' if specified.")
@@ -632,20 +632,22 @@ ppc_pit_ecdf <- function(y,
   ggplot() +
     aes(
       x = 1:K / K,
-      y = ecdf(pit)(seq(0, 1, length.out = K)) - (plot_diff == TRUE) * 1:K / K,
+      y = ecdf(pit)(seq(0, 1, length.out = K)) -
+          (plot_diff == TRUE) * seq(0, 1, length.out = K),
       color = "y"
     ) +
     geom_step(show.legend = FALSE) +
     geom_step(aes(
-      y = lims$upper[-1] / N - (plot_diff == TRUE) * 1:K / K,
+      y = lims$upper[-1] / N - (plot_diff == TRUE) * seq(0, 1, length.out = K),
       color = "yrep"
-    ), show.legend = FALSE) +
+    ),
+    linetype = 2, show.legend = FALSE) +
     geom_step(aes(
-      y = lims$lower[-1] / N - (plot_diff == TRUE) * 1:K / K,
+      y = lims$lower[-1] / N - (plot_diff == TRUE) * seq(0, 1, length.out = K),
       color = "yrep"
-    ), show.legend = FALSE) +
-    yaxis_title(FALSE) +
-    xaxis_title(FALSE) +
+    ),
+    linetype = 2, show.legend = FALSE) +
+    labs(y = ifelse(plot_diff,"ECDF - difference","ECDF"), x = "PIT") +
     yaxis_ticks(FALSE) +
     scale_color_ppc() +
     bayesplot_theme_get()
@@ -671,10 +673,13 @@ ppc_pit_ecdf_grouped <-
     if (is.null(pit)) {
       pit <- ppc_data(y, yrep, group) %>%
         group_by(.data$y_id) %>%
-        dplyr::group_map(~ mean(.x$value[.x$is_y] >= .x$value[!.x$is_y])) %>%
+        dplyr::group_map(
+          ~ mean(.x$value[.x$is_y] > .x$value[!.x$is_y]) +
+          runif(1, max = mean(.x$value[.x$is_y] == .x$value[!.x$is_y]))
+          ) %>%
         unlist()
       if (is.null(K)) {
-        K <- length(unique(ppc_data(y, yrep)$rep_id)) + 1
+        K <- nrow(yrep) + 1
       }
     } else {
       inform("'pit' specified so ignoring 'y' and 'yrep' if specified.")
@@ -723,13 +728,14 @@ ppc_pit_ecdf_grouped <-
       geom_step(aes(
         y = .data$lims_upper - (plot_diff == TRUE) * .data$x,
         color = "yrep"
-      ), show.legend = FALSE) +
+      ),
+      linetype = 2, show.legend = FALSE) +
       geom_step(aes(
         y = .data$lims_lower - (plot_diff == TRUE) * .data$x,
         color = "yrep"
-      ), show.legend = FALSE) +
-      xaxis_title(FALSE) +
-      yaxis_title(FALSE) +
+      ),
+      linetype = 2, show.legend = FALSE) +
+      labs(y = ifelse(plot_diff,"ECDF - difference","ECDF"), x = "PIT") +
       yaxis_ticks(FALSE) +
       bayesplot_theme_get() +
       facet_wrap("group") +
