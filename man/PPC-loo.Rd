@@ -171,7 +171,7 @@ section for a demonstration.}
 
 \item{intervals}{For \code{ppc_loo_intervals()} and \code{ppc_loo_ribbon()}, optionally
 a matrix of pre-computed LOO predictive intervals that can be specified
-instead of \code{yrep} ( ignored if \code{intervals} is specified). If not specified
+instead of \code{yrep} (ignored if \code{intervals} is specified). If not specified
 the intervals are computed internally before plotting. If specified,
 \code{intervals} must be a matrix with number of rows equal to the number of
 data points and five columns in the following order: lower outer interval,

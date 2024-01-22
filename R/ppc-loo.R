@@ -388,7 +388,7 @@ ppc_loo_pit <-
 #' @template args-prob-prob_outer
 #' @param intervals For `ppc_loo_intervals()` and `ppc_loo_ribbon()`, optionally
 #'   a matrix of pre-computed LOO predictive intervals that can be specified
-#'   instead of `yrep` ( ignored if `intervals` is specified). If not specified
+#'   instead of `yrep` (ignored if `intervals` is specified). If not specified
 #'   the intervals are computed internally before plotting. If specified,
 #'   `intervals` must be a matrix with number of rows equal to the number of
 #'   data points and five columns in the following order: lower outer interval,
