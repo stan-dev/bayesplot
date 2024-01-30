@@ -69,9 +69,26 @@ ppc_ecdf_overlay_grouped(
 
 ppc_dens(y, yrep, ..., trim = FALSE, size = 0.5, alpha = 1)
 
-ppc_hist(y, yrep, ..., binwidth = NULL, breaks = NULL, freq = TRUE)
+ppc_hist(
+  y,
+  yrep,
+  ...,
+  binwidth = NULL,
+  bins = NULL,
+  breaks = NULL,
+  freq = TRUE
+)
 
-ppc_freqpoly(y, yrep, ..., binwidth = NULL, freq = TRUE, size = 0.5, alpha = 1)
+ppc_freqpoly(
+  y,
+  yrep,
+  ...,
+  binwidth = NULL,
+  bins = NULL,
+  freq = TRUE,
+  size = 0.5,
+  alpha = 1
+)
 
 ppc_freqpoly_grouped(
   y,
@@ -79,6 +96,7 @@ ppc_freqpoly_grouped(
   group,
   ...,
   binwidth = NULL,
+  bins = NULL,
   freq = TRUE,
   size = 0.5,
   alpha = 1
@@ -160,6 +178,9 @@ passed to \code{\link[ggplot2:stat_ecdf]{ggplot2::stat_ecdf()}}. If \code{discre
 \item{binwidth}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}} to override
 the default binwidth.}
 
+\item{bins}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}} to override
+the default binwidth.}
+
 \item{breaks}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}} as an
 alternative to \code{binwidth}.}
 
@@ -191,9 +212,11 @@ which the ECDF is to be drawn. If NULL, PIT values are computed to \code{y} with
 respect to the corresponding values in \code{yrep}.}
 
 \item{K}{An optional integer defining the number of equally spaced evaluation
-points for the ECDF. If the submitted PIT values are known to be discrete,
-this should be the number of the discrete cases. Defaults to the smaller of
-\code{length(y)} and \code{ncol(yrep)} when applicable.}
+points for the ECDF. Reducing K when using \code{interpolate_adj = FALSE} makes
+computing the confidence bands faster. For \code{ppc_pit_ecdf} and
+\code{ppc_pit_ecdf_grouped}, defaults to \code{ncol(yrep) + 1}, or \code{length(pit)} if PIT
+values are supplied. For \code{mcmc_rank_ecdf} defaults to the number of
+iterations per chain in \code{x}.}
 
 \item{prob}{The desired simultaneous coverage level of the bands around the
 ECDF. A value in (0,1).}

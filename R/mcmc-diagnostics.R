@@ -171,7 +171,7 @@ mcmc_rhat <- function(rhat, ..., size = NULL) {
 
 #' @rdname MCMC-diagnostics
 #' @export
-mcmc_rhat_hist <- function(rhat, ..., binwidth = NULL, breaks = NULL) {
+mcmc_rhat_hist <- function(rhat, ..., binwidth = NULL, bins = NULL, breaks = NULL) {
   check_ignored_arguments(...)
   data <- mcmc_rhat_data(rhat)
 
@@ -185,6 +185,7 @@ mcmc_rhat_hist <- function(rhat, ..., binwidth = NULL, breaks = NULL) {
       linewidth = 0.25,
       na.rm = TRUE,
       binwidth = binwidth,
+      bins = bins,
       breaks = breaks
     ) +
     scale_color_diagnostic("rhat") +
@@ -261,7 +262,7 @@ mcmc_neff <- function(ratio, ..., size = NULL) {
 
 #' @rdname MCMC-diagnostics
 #' @export
-mcmc_neff_hist <- function(ratio, ..., binwidth = NULL, breaks = NULL) {
+mcmc_neff_hist <- function(ratio, ..., binwidth = NULL, bins = NULL, breaks = NULL) {
   check_ignored_arguments(...)
   data <- mcmc_neff_data(ratio)
 
@@ -275,6 +276,7 @@ mcmc_neff_hist <- function(ratio, ..., binwidth = NULL, breaks = NULL) {
       linewidth = 0.25,
       na.rm = TRUE,
       binwidth = binwidth,
+      bins = bins,
       breaks = breaks) +
     scale_color_diagnostic("neff") +
     scale_fill_diagnostic("neff") +
@@ -358,17 +360,19 @@ mcmc_acf_bar <-
 #'   `x <= breaks[1]`, `breaks[1] < x <= breaks[2]`, `x > breaks[2]`).
 #' @return A factor the same length as `x` with three levels.
 #' @noRd
-diagnostic_factor <- function(x, breaks, ...) {
+diagnostic_factor <- function(x, ...) {
   UseMethod("diagnostic_factor")
 }
 
-diagnostic_factor.rhat <- function(x, breaks = c(1.05, 1.1)) {
+#' @export
+diagnostic_factor.rhat <- function(x, ..., breaks = c(1.05, 1.1)) {
   cut(x, breaks = c(-Inf, breaks, Inf),
       labels = c("low", "ok", "high"),
       ordered_result = FALSE)
 }
 
-diagnostic_factor.neff_ratio <- function(x, breaks = c(0.1, 0.5)) {
+#' @export
+diagnostic_factor.neff_ratio <- function(x, ..., breaks = c(0.1, 0.5)) {
   cut(x, breaks = c(-Inf, breaks, Inf),
       labels = c("low", "ok", "high"),
       ordered_result = FALSE)
@@ -517,7 +521,8 @@ drop_NAs_and_warn <- function(x) {
     plot_data <- acf_data(x = x, lags = lags)
 
     if (num_chains(x) > 1) {
-      facet_args$facets <- "Chain ~ Parameter"
+      facet_args$rows <- vars(.data$Chain)
+      facet_args$cols <- vars(.data$Parameter)
       facet_fun <- "facet_grid"
     } else { # 1 chain
       facet_args$facets <- "Parameter"

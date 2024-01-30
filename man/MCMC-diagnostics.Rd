@@ -14,13 +14,13 @@
 \usage{
 mcmc_rhat(rhat, ..., size = NULL)
 
-mcmc_rhat_hist(rhat, ..., binwidth = NULL, breaks = NULL)
+mcmc_rhat_hist(rhat, ..., binwidth = NULL, bins = NULL, breaks = NULL)
 
 mcmc_rhat_data(rhat, ...)
 
 mcmc_neff(ratio, ..., size = NULL)
 
-mcmc_neff_hist(ratio, ..., binwidth = NULL, breaks = NULL)
+mcmc_neff_hist(ratio, ..., binwidth = NULL, bins = NULL, breaks = NULL)
 
 mcmc_neff_data(ratio, ...)
 
@@ -53,6 +53,9 @@ default size (for \code{mcmc_rhat()}, \code{mcmc_neff()}) or
 \code{\link[ggplot2:geom_path]{ggplot2::geom_line()}}'s default line width (for \code{mcmc_acf()}).}
 
 \item{binwidth}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}} to override
+the default binwidth.}
+
+\item{bins}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}} to override
 the default binwidth.}
 
 \item{breaks}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}} as an

@@ -193,11 +193,11 @@ test_that("validate_transformations throws correct errors", {
 test_that("apply_transformations works", {
   trans <- list('beta[1]' = "exp", sigma = function(x) x^2)
 
-  arr_trans <- apply_transformations(arr, trans)
+  arr_trans <- apply_transformations(arr, transformations = trans)
   expect_equal(arr_trans[,, "sigma"], arr[,, "sigma"]^2)
   expect_equal(arr_trans[,, "beta[1]"], exp(arr[,, "beta[1]"]))
 
-  mat_trans <- apply_transformations(mat, trans)
+  mat_trans <- apply_transformations(mat, transformations = trans)
   expect_equal(mat_trans[, "sigma"], mat[, "sigma"]^2)
   expect_equal(mat_trans[, "beta[1]"], exp(mat[, "beta[1]"]))
 })

@@ -115,6 +115,7 @@ mcmc_hist <- function(
   ...,
   facet_args = list(),
   binwidth = NULL,
+  bins = NULL,
   breaks = NULL,
   freq = TRUE,
   alpha = 1
@@ -127,6 +128,7 @@ mcmc_hist <- function(
     transformations = transformations,
     facet_args = facet_args,
     binwidth = binwidth,
+    bins = bins,
     breaks = breaks,
     by_chain = FALSE,
     freq = freq,
@@ -180,6 +182,7 @@ mcmc_hist_by_chain <- function(
   ...,
   facet_args = list(),
   binwidth = NULL,
+  bins = NULL,
   freq = TRUE,
   alpha = 1
 ) {
@@ -191,6 +194,7 @@ mcmc_hist_by_chain <- function(
     transformations = transformations,
     facet_args = facet_args,
     binwidth = binwidth,
+    bins = bins,
     by_chain = TRUE,
     freq = freq,
     alpha = alpha,
@@ -369,6 +373,7 @@ mcmc_violin <- function(
   transformations = list(),
   facet_args = list(),
   binwidth = NULL,
+  bins = NULL,
   breaks = NULL,
   by_chain = FALSE,
   freq = TRUE,
@@ -392,6 +397,7 @@ mcmc_violin <- function(
       size = .25,
       na.rm = TRUE,
       binwidth = binwidth,
+      bins = bins,
       breaks = breaks,
       alpha = alpha
     )
@@ -399,14 +405,13 @@ mcmc_violin <- function(
   facet_args[["scales"]] <- facet_args[["scales"]] %||% "free"
   if (!by_chain) {
     if (n_param > 1) {
-      facet_args[["facets"]] <- ~ Parameter
+      facet_args[["facets"]] <- vars(.data$Parameter)
       graph <- graph + do.call("facet_wrap", facet_args)
     }
   } else {
-    facet_args[["facets"]] <- if (n_param > 1) {
-      "Chain ~ Parameter"
-    } else {
-      "Chain ~ ."
+    facet_args[["rows"]] <- vars(.data$Chain)
+    if (n_param > 1) {
+      facet_args[["cols"]] <- vars(.data$Parameter)
     }
     graph <- graph +
       do.call("facet_grid", facet_args) +
@@ -521,7 +526,7 @@ mcmc_violin <- function(
       labs(x = if (violin) "Chain" else levels(data$Parameter),
            y = if (violin) levels(data$Parameter) else NULL)
   } else {
-    facet_args[["facets"]] <- ~ Parameter
+    facet_args[["facets"]] <- vars(.data$Parameter)
     facet_args[["scales"]] <- facet_args[["scales"]] %||% "free"
     graph <- graph + do.call("facet_wrap", facet_args)
   }

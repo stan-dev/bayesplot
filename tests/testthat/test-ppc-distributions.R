@@ -38,8 +38,8 @@ test_that("ppc_dens,pp_hist,ppc_freqpoly,ppc_boxplot return ggplot objects", {
 
   expect_gg(p <- ppc_hist(y, yrep[1:8, ], binwidth = 3))
   if (utils::packageVersion("ggplot2") >= "3.0.0") {
-    facet_var <- "~rep_label"
-    expect_equal(as.character(p$facet$params$facets[1]), facet_var)
+    facet_var <- vars(rep_label)
+    expect_equal(p$facet$params$facets[[1]], facet_var[[1]])
   }
 
   # ppd versions

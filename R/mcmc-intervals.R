@@ -384,9 +384,9 @@ mcmc_areas <- function(x,
   }
 
   if (!is.null(border_size)) {
-    args_bottom$size <- border_size
-    args_outer$size <- border_size
-    args_inner$size <- border_size
+    args_bottom$linewidth <- border_size
+    args_outer$linewidth <- border_size
+    args_inner$linewidth <- border_size
   }
 
   if (color_by_rhat) {
@@ -492,7 +492,7 @@ mcmc_areas_ridges <- function(x,
   x_lim[2] <- x_lim[2] + 0.05 * x_range
 
   layer_vertical_line <- if (0 > x_lim[1] && 0 < x_lim[2]) {
-    vline_0(color = "gray90", size = 0.5)
+    vline_0(color = "gray90", linewidth = 0.5)
   } else {
     geom_ignore()
   }
@@ -504,7 +504,7 @@ mcmc_areas_ridges <- function(x,
     stat = "identity"
   )
   if (!is.null(border_size)) {
-    args_outer$size <- border_size
+    args_outer$linewidth <- border_size
   }
 
   layer_outer <- do.call(ggridges::geom_density_ridges, args_outer)
@@ -545,7 +545,7 @@ mcmc_areas_ridges <- function(x,
         stat = "identity")
 
     if (!is.null(border_size)) {
-      args_inner$size <- border_size
+      args_inner$linewidth <- border_size
     }
 
     layer_list_inner[[par_num]] <- do.call(ggridges::geom_ridgeline, args_inner)
@@ -864,6 +864,8 @@ compute_interval_density <- function(x, interval_width = 1, n_dens = 1024,
 }
 
 check_interval_widths <- function(prob, prob_outer) {
+  if (!(is.numeric(prob) && is.numeric(prob_outer)))
+    abort("`prob` and `prob_outer` must be numeric")
   if (prob < 0 || prob > 1 || prob_outer < 0 || prob_outer > 1)
     abort("`prob` and `prob_outer` must be in [0,1].")
   if (prob_outer < prob) {

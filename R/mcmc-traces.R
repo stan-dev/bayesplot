@@ -335,7 +335,7 @@ mcmc_rank_overlay <- function(x,
 
   facet_call <- NULL
   if (n_param > 1) {
-    facet_args$facets <- ~ parameter
+    facet_args$facets <- vars(.data$parameter)
     facet_args$scales <- facet_args$scales %||% "fixed"
     facet_call <- do.call("facet_wrap", facet_args)
   }
@@ -387,14 +387,16 @@ mcmc_rank_hist <- function(x,
   right_edge <- max(data_boundaries$value_rank)
 
   facet_args[["scales"]] <- facet_args[["scales"]] %||% "fixed"
-  facet_args[["facets"]] <- facet_args[["facets"]] %||% (parameter ~ chain)
 
   # If there is one parameter, put the chains in one row.
   # Otherwise, use a grid.
   if (n_param > 1) {
     facet_f <- facet_grid
+    facet_args[["rows"]] <- facet_args[["rows"]] %||% vars(.data$parameter)
+    facet_args[["cols"]] <- facet_args[["cols"]] %||% vars(.data$chain)
   } else {
     facet_f <- facet_wrap
+    facet_args[["facets"]] <- vars(.data$parameter, .data$chain)
     facet_args[["nrow"]] <- facet_args[["nrow"]] %||% 1
     labeller <- function(x) label_value(x, multi_line = FALSE)
     facet_args[["labeller"]] <- facet_args[["labeller"]] %||% labeller
@@ -526,7 +528,7 @@ mcmc_rank_ecdf <-
   if (n_param == 1) {
     facet_call <- ylab(levels(data$parameter))
   } else {
-    facet_args$facets <- ~parameter
+    facet_args$facets <- vars(.data$parameter)
     facet_args$scales <- facet_args$scales %||% "free"
     facet_call <- do.call("facet_wrap", facet_args)
   }
@@ -663,7 +665,11 @@ mcmc_trace_data <- function(x,
   }
 
   geom_args <- list()
-  geom_args$size <- size %||% ifelse(style == "line", 1/3, 1)
+  if (style == "line") {
+    geom_args$linewidth = size %||% 1 / 3
+  } else {
+    geom_args$size = size %||% 1
+  }
   layer_draws <- do.call(paste0("geom_", style), geom_args)
 
   coord_window <- if (!is.null(window)) {
@@ -705,7 +711,7 @@ mcmc_trace_data <- function(x,
   if (n_param == 1) {
     facet_call <- ylab(levels(data$parameter))
   } else {
-    facet_args$facets <- ~ parameter
+    facet_args$facets <- vars(.data$parameter)
     facet_args$scales <- facet_args$scales %||% "free"
     facet_call <- do.call("facet_wrap", facet_args)
   }

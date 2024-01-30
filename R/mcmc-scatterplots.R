@@ -13,7 +13,7 @@
 #' @param ... Currently ignored.
 #' @param size,alpha For `mcmc_scatter()`, passed to
 #'   [ggplot2::geom_point()] to control the appearance of the points.
-#' @param binwidth For `mcmc_hex()`, an optional numeric vector of
+#' @param bins,binwidth For `mcmc_hex()`, an optional numeric vector of
 #'   *length two* passed to [ggplot2::geom_hex()] to override the
 #'   default binwidth in both the vertical and horizontal directions.
 #'
@@ -156,6 +156,7 @@ mcmc_hex <- function(x,
                      regex_pars = character(),
                      transformations = list(),
                      ...,
+                     bins = 30,
                      binwidth = NULL) {
   suggested_package("scales")
   suggested_package("hexbin")
@@ -166,6 +167,7 @@ mcmc_hex <- function(x,
     regex_pars = regex_pars,
     transformations = transformations,
     hex = TRUE,
+    bins = bins,
     binwidth = binwidth,
     size = NULL,
     alpha = NULL
@@ -641,6 +643,7 @@ pairs_condition <- function(chains = NULL, draws = NULL, nuts = NULL) {
                           hex = FALSE,
                           size = 2.5,
                           alpha = 0.8,
+                          bins = 30,
                           binwidth = NULL,
                           np = NULL,
                           np_style = scatter_style_np()) {
@@ -702,6 +705,7 @@ pairs_condition <- function(chains = NULL, draws = NULL, nuts = NULL) {
     graph <- graph +
       geom_hex(
         aes(fill = scales::rescale(after_stat(density))),
+        bins = bins,
         binwidth = binwidth
       ) +
       scale_fill_gradientn(

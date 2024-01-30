@@ -119,6 +119,7 @@ ppc_error_hist <-
            ...,
            facet_args = list(),
            binwidth = NULL,
+           bins = NULL,
            breaks = NULL,
            freq = TRUE) {
 
@@ -135,6 +136,7 @@ ppc_error_hist <-
         color = get_color("lh"),
         size = 0.25,
         binwidth = binwidth,
+        bins = bins,
         breaks = breaks
       ) +
       xlab(error_label()) +
@@ -162,6 +164,7 @@ ppc_error_hist_grouped <-
            ...,
            facet_args = list(),
            binwidth = NULL,
+           bins = NULL,
            breaks = NULL,
            freq = TRUE) {
 
@@ -396,10 +399,11 @@ error_hist_facets <-
 
     if (grouped) {
       facet_fun <- "facet_grid"
-      facet_args[["facets"]] <- rep_id ~ group
+      facet_args[["rows"]] <- vars(.data$rep_id)
+      facet_args[["cols"]] <- vars(.data$group)
     } else {
       facet_fun <- "facet_wrap"
-      facet_args[["facets"]] <- ~ rep_id
+      facet_args[["facets"]] <- vars(.data$rep_id)
     }
     facet_args[["scales"]] <- facet_args[["scales"]] %||% scales_default
 

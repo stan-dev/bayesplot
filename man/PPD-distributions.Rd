@@ -37,15 +37,24 @@ ppd_ecdf_overlay(
 
 ppd_dens(ypred, ..., trim = FALSE, size = 0.5, alpha = 1)
 
-ppd_hist(ypred, ..., binwidth = NULL, breaks = NULL, freq = TRUE)
+ppd_hist(ypred, ..., binwidth = NULL, bins = NULL, breaks = NULL, freq = TRUE)
 
-ppd_freqpoly(ypred, ..., binwidth = NULL, freq = TRUE, size = 0.5, alpha = 1)
+ppd_freqpoly(
+  ypred,
+  ...,
+  binwidth = NULL,
+  bins = NULL,
+  freq = TRUE,
+  size = 0.5,
+  alpha = 1
+)
 
 ppd_freqpoly_grouped(
   ypred,
   group,
   ...,
   binwidth = NULL,
+  bins = NULL,
   freq = TRUE,
   size = 0.5,
   alpha = 1
@@ -83,6 +92,9 @@ passed to \code{\link[ggplot2:stat_ecdf]{ggplot2::stat_ecdf()}}. If \code{discre
 \item{pad}{A logical scalar passed to \code{\link[ggplot2:stat_ecdf]{ggplot2::stat_ecdf()}}.}
 
 \item{binwidth}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}} to override
+the default binwidth.}
+
+\item{bins}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}} to override
 the default binwidth.}
 
 \item{breaks}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}} as an

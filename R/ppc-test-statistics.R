@@ -102,6 +102,7 @@ ppc_stat <-
            stat = "mean",
            ...,
            binwidth = NULL,
+           bins = NULL,
            breaks = NULL,
            freq = TRUE) {
     stopifnot(length(stat) == 1)
@@ -127,6 +128,7 @@ ppc_stat <-
         linewidth = 0.25,
         na.rm = TRUE,
         binwidth = binwidth,
+        bins = bins,
         breaks = breaks
       ) +
       geom_vline(
@@ -163,6 +165,7 @@ ppc_stat_grouped <-
            ...,
            facet_args = list(),
            binwidth = NULL,
+           bins = NULL,
            breaks = NULL,
            freq = TRUE) {
     check_ignored_arguments(...)
@@ -183,6 +186,7 @@ ppc_stat_freqpoly <-
            ...,
            facet_args = list(),
            binwidth = NULL,
+           bins = NULL,
            freq = TRUE) {
     stopifnot(length(stat) == 1)
     dots <- list(...)
@@ -206,7 +210,8 @@ ppc_stat_freqpoly <-
         aes(color = "yrep"),
         linewidth = 0.5,
         na.rm = TRUE,
-        binwidth = binwidth
+        binwidth = binwidth,
+        bins = bins
       ) +
       geom_vline(
         data = dplyr::filter(data, .data$variable == "y"),
@@ -238,6 +243,7 @@ ppc_stat_freqpoly_grouped <-
            ...,
            facet_args = list(),
            binwidth = NULL,
+           bins = NULL,
            freq = TRUE) {
     check_ignored_arguments(...)
     call <- match.call(expand.dots = FALSE)

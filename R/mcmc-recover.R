@@ -303,6 +303,7 @@ mcmc_recover_hist <-
            ...,
            facet_args = list(),
            binwidth = NULL,
+           bins = NULL,
            breaks = NULL) {
 
     check_ignored_arguments(...)
@@ -327,6 +328,7 @@ mcmc_recover_hist <-
         color = get_color("lh"),
         linewidth = 0.25,
         binwidth = binwidth,
+        bins = bins,
         breaks = breaks
       ) +
       geom_vline(

@@ -146,7 +146,7 @@ mcmc_parcoord <-
       graph <- graph +
         geom_line(
           data = div_draws,
-          size = np_style$size[["div"]],
+          linewidth = np_style$size[["div"]],
           alpha = np_style$alpha[["div"]],
           color = np_style$color[["div"]]
         )

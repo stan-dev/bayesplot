@@ -16,6 +16,7 @@ ppd_stat(
   stat = "mean",
   ...,
   binwidth = NULL,
+  bins = NULL,
   breaks = NULL,
   freq = TRUE
 )
@@ -27,6 +28,7 @@ ppd_stat_grouped(
   ...,
   facet_args = list(),
   binwidth = NULL,
+  bins = NULL,
   breaks = NULL,
   freq = TRUE
 )
@@ -37,6 +39,7 @@ ppd_stat_freqpoly(
   ...,
   facet_args = list(),
   binwidth = NULL,
+  bins = NULL,
   freq = TRUE
 )
 
@@ -47,6 +50,7 @@ ppd_stat_freqpoly_grouped(
   ...,
   facet_args = list(),
   binwidth = NULL,
+  bins = NULL,
   freq = TRUE
 )
 
@@ -70,6 +74,9 @@ then generic naming is used in the legend.}
 \item{...}{Currently unused.}
 
 \item{binwidth}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}} to override
+the default binwidth.}
+
+\item{bins}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}} to override
 the default binwidth.}
 
 \item{breaks}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}} as an

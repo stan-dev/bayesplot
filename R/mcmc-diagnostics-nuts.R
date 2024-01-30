@@ -117,7 +117,7 @@
 #' mcmc_nuts_energy(np)
 #' mcmc_nuts_energy(np, merge_chains = TRUE, binwidth = .15)
 #' mcmc_nuts_energy(np) +
-#'  facet_wrap(~ Chain, nrow = 1) +
+#'  facet_wrap(vars(Chain), nrow = 1) +
 #'  coord_fixed(ratio = 150) +
 #'  ggtitle("NUTS Energy Diagnostic")
 #' }
@@ -127,15 +127,16 @@ NULL
 
 #' @rdname MCMC-nuts
 #' @export
-#' @param binwidth An optional value passed to [ggplot2::geom_histogram()] to
-#'   override the default binwidth.
+#' @template args-hist
 #'
 mcmc_nuts_acceptance <-
   function(x,
            lp,
            chain = NULL,
            ...,
-           binwidth = NULL) {
+           binwidth = NULL,
+           bins = NULL,
+           breaks = NULL) {
     suggested_package("gridExtra")
     check_ignored_arguments(...)
 
@@ -160,7 +161,9 @@ mcmc_nuts_acceptance <-
         color = get_color("lh"),
         linewidth = 0.25,
         na.rm = TRUE,
-        binwidth = binwidth
+        binwidth = binwidth,
+        bins = bins,
+        breaks = breaks
       ) +
       bayesplot_theme_get()
 
@@ -180,7 +183,7 @@ mcmc_nuts_acceptance <-
     }
     hists <- hists +
       dont_expand_y_axis(c(0.005, 0)) +
-      facet_wrap(~ Parameter, scales = "free") +
+      facet_wrap(vars(.data$Parameter), scales = "free") +
       yaxis_text(FALSE) +
       yaxis_title(FALSE) +
       yaxis_ticks(FALSE) +
@@ -209,7 +212,9 @@ mcmc_nuts_acceptance <-
           color = NA,
           alpha = 0.5,
           na.rm = TRUE,
-          binwidth = binwidth
+          binwidth = binwidth,
+          bins = bins,
+          breaks = breaks
         )
 
       chain_scatter_data <- data.frame(
@@ -417,6 +422,8 @@ mcmc_nuts_energy <-
   function(x,
            ...,
            binwidth = NULL,
+           bins = NULL,
+           breaks = NULL,
            alpha = 0.5,
            merge_chains = FALSE) {
     check_ignored_arguments(...)
@@ -446,7 +453,9 @@ mcmc_nuts_energy <-
         ),
         linewidth = 0.25,
         na.rm = TRUE,
-        binwidth = binwidth
+        binwidth = binwidth,
+        bins = bins,
+        breaks = breaks
       ) +
       geom_histogram(
         aes(
@@ -457,7 +466,9 @@ mcmc_nuts_energy <-
         linewidth = 0.25,
         na.rm = TRUE,
         alpha = alpha,
-        binwidth = binwidth
+        binwidth = binwidth,
+        bins = bins,
+        breaks = breaks
       ) +
       scale_fill_manual("", values = fills, labels = aes_labs) +
       scale_color_manual("", values = clrs, labels = aes_labs) +
@@ -476,7 +487,7 @@ mcmc_nuts_energy <-
     }
 
     graph +
-      facet_wrap(~ Chain) +
+      facet_wrap(vars(.data$Chain)) +
       force_axes_in_facets()
   }
 
