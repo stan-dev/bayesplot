@@ -367,7 +367,7 @@ ppc_bars_data <-
 #' @param y,yrep,group User's already validated `y`, `yrep`, and (if applicable)
 #'   `group` arguments.
 #' @param prob,freq User's `prob` and `freq` arguments.
-#' @importFrom dplyr "%>%" ungroup count arrange mutate summarise across full_join rename all_of
+#' @importFrom dplyr %>% ungroup count arrange mutate summarise across full_join rename all_of
 .ppc_bars_data <- function(y, yrep, group = NULL, prob = 0.9, freq = TRUE) {
   alpha <- (1 - prob) / 2
   probs <- sort(c(alpha, 0.5, 1 - alpha))

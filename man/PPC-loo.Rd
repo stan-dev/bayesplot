@@ -13,8 +13,9 @@
 ppc_loo_pit_overlay(
   y,
   yrep,
-  lw,
+  lw = NULL,
   ...,
+  psis_object = NULL,
   pit = NULL,
   samples = 100,
   size = 0.25,
@@ -31,8 +32,9 @@ ppc_loo_pit_overlay(
 ppc_loo_pit_data(
   y,
   yrep,
-  lw,
+  lw = NULL,
   ...,
+  psis_object = NULL,
   pit = NULL,
   samples = 100,
   bw = "nrd0",
@@ -43,10 +45,11 @@ ppc_loo_pit_data(
 ppc_loo_pit_qq(
   y,
   yrep,
-  lw,
-  pit,
-  compare = c("uniform", "normal"),
+  lw = NULL,
   ...,
+  psis_object = NULL,
+  pit = NULL,
+  compare = c("uniform", "normal"),
   size = 2,
   alpha = 1
 )
@@ -55,7 +58,7 @@ ppc_loo_pit(
   y,
   yrep,
   lw,
-  pit,
+  pit = NULL,
   compare = c("uniform", "normal"),
   ...,
   size = 2,
@@ -66,9 +69,9 @@ ppc_loo_intervals(
   y,
   yrep,
   psis_object,
+  ...,
   subset = NULL,
   intervals = NULL,
-  ...,
   prob = 0.5,
   prob_outer = 0.9,
   alpha = 0.33,
@@ -81,11 +84,10 @@ ppc_loo_intervals(
 ppc_loo_ribbon(
   y,
   yrep,
-  lw,
   psis_object,
+  ...,
   subset = NULL,
   intervals = NULL,
-  ...,
   prob = 0.5,
   prob_outer = 0.9,
   alpha = 0.33,
@@ -105,9 +107,14 @@ additional advice specific to particular plots.}
 
 \item{lw}{A matrix of (smoothed) log weights with the same dimensions as
 \code{yrep}. See \code{\link[loo:psis]{loo::psis()}} and the associated \code{weights()} method as well as
-the \strong{Examples} section, below.}
+the \strong{Examples} section, below. If \code{lw} is not specified then
+\code{psis_object} can be provided and log weights will be extracted.}
 
 \item{...}{Currently unused.}
+
+\item{psis_object}{If using \strong{loo} version \verb{2.0.0} or greater, an
+object returned by the \code{psis()} function (or by the \code{loo()} function
+with argument \code{save_psis} set to \code{TRUE}).}
 
 \item{pit}{For \code{ppc_loo_pit_overlay()} and \code{ppc_loo_pit_qq()}, optionally a
 vector of precomputed PIT values that can be specified instead of \code{y},
@@ -153,10 +160,6 @@ compares computed PIT values to the standard uniform distribution. If
 calculated from the PIT values to the theoretical standard normal
 quantiles.}
 
-\item{psis_object}{If using \strong{loo} version \verb{2.0.0} or greater, an
-object returned by the \code{psis()} function (or by the \code{loo()} function
-with argument \code{save_psis} set to \code{TRUE}).}
-
 \item{subset}{For \code{ppc_loo_intervals()} and \code{ppc_loo_ribbon()}, an optional
 integer vector indicating which observations in \code{y} (and \code{yrep}) to
 include. Dropping observations from \code{y} and \code{yrep} manually before passing
@@ -166,15 +169,14 @@ are passed along with \code{subset} then \strong{bayesplot} can do the subsettin
 internally for \code{y}, \code{yrep} \emph{and} \code{psis_object}. See the \strong{Examples}
 section for a demonstration.}
 
-\item{intervals}{For \code{ppc_loo_intervals()} and \code{ppc_loo_ribbon()},
-optionally a matrix of precomputed LOO predictive intervals
-that can be specified instead of \code{yrep} and \code{lw} (these are both
-ignored if \code{intervals} is specified). If not specified the intervals
-are computed internally before plotting. If specified, \code{intervals}
-must be a matrix with number of rows equal to the number of data points and
-five columns in the following order: lower outer interval, lower inner
-interval, median (50\%), upper inner interval and upper outer interval
-(column names are ignored).}
+\item{intervals}{For \code{ppc_loo_intervals()} and \code{ppc_loo_ribbon()}, optionally
+a matrix of pre-computed LOO predictive intervals that can be specified
+instead of \code{yrep} (ignored if \code{intervals} is specified). If not specified
+the intervals are computed internally before plotting. If specified,
+\code{intervals} must be a matrix with number of rows equal to the number of
+data points and five columns in the following order: lower outer interval,
+lower inner interval, median (50\%), upper inner interval and upper outer
+interval (column names are ignored).}
 
 \item{prob, prob_outer}{Values between \code{0} and \code{1} indicating the desired
 probability mass to include in the inner and outer intervals. The defaults
@@ -240,7 +242,7 @@ fit <- stan_lmer(
   log_radon ~ floor + log_uranium + floor:log_uranium
                + (1 + floor | county),
   data = radon,
-  iter = 1000,
+  iter = 100,
   chains = 2,
   cores = 2
  )
@@ -258,6 +260,8 @@ ppc_loo_pit_overlay(y, yrep, lw = lw)
 ppc_loo_pit_qq(y, yrep, lw = lw)
 ppc_loo_pit_qq(y, yrep, lw = lw, compare = "normal")
 
+# can use the psis object instead of lw
+ppc_loo_pit_qq(y, yrep, psis_object = psis1)
 
 # loo predictive intervals vs observations
 keep_obs <- 1:50

@@ -1,9 +1,16 @@
 <!-- See http://style.tidyverse.org/news.html for advice on writing news -->
 
-# bayesplot 1.10.0.9000
+# bayesplot 1.11.0
 
-* `ppc_pit_ecdf()` and `ppc_pit_ecdf_grouped()` now support discrete variables, and their default method for selecting the number of ECDF evaluation points has been updated.
-* Items for next release here
+* Update for new ggplot2 release by @teunbrand in #309
+* Add `bins` argument to many histogram plots by @paul-buerkner in #300
+* Follow ggplot2 updates on `facet_grid()` and `facet_wrap()` by @heavywatal in #305
+* Better `ppc_loo_pit_qq` plots by @avehtari in #307
+* Check `prob` is numeric for intervals plots by @tony-stone in #299
+* Add `bins` and `breaks` arguments to more histogram and hex plots by @heavywatal in #313
+* Replace `size` argument with `linewidth` for `geom_line` and `geom_ridgeline` by @heavywatal in #314
+* All LOO plots now accept `psis_object` argument by @jgabry in #311
+* `ppc_pit_ecdf()` and `ppc_pit_ecdf_grouped()` now support discrete variables, and their default method for selecting the number of ECDF evaluation points has been updated. by @TeemuSailynoja in #316
 
 # bayesplot 1.10.0
 
@@ -49,14 +56,14 @@ previous releases, but the new ones in this release are:
    - `ppc_error_hist_grouped()`
    - `ppc_error_scatter()`
    - `ppc_error_binned()`
-   
+
 * New plotting function `ppc_km_overlay_grouped()`, the grouped variant of
   `ppc_km_overlay()`. (#260, @fweber144)
 
 * `ppc_scatter()`, `ppc_scatter_avg()`, and `ppc_scatter_avg_grouped()` gain an
   argument `ref_line`, which can be set to `FALSE` to turn off the `x=y` line
   drawn behind the scatterplot.
-  
+
 * `ppc_ribbon()` and `ppc_ribbon_grouped()` gain argument `y_draw` that specifies whether the observed y should be plotted using a point, line, or both. (#257, @charlesm93)
 
 * `mcmc_*()` functions now support all draws formats from the **posterior** package. (#277, @Ozan147)

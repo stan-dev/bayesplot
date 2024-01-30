@@ -360,17 +360,19 @@ mcmc_acf_bar <-
 #'   `x <= breaks[1]`, `breaks[1] < x <= breaks[2]`, `x > breaks[2]`).
 #' @return A factor the same length as `x` with three levels.
 #' @noRd
-diagnostic_factor <- function(x, breaks, ...) {
+diagnostic_factor <- function(x, ...) {
   UseMethod("diagnostic_factor")
 }
 
-diagnostic_factor.rhat <- function(x, breaks = c(1.05, 1.1)) {
+#' @export
+diagnostic_factor.rhat <- function(x, ..., breaks = c(1.05, 1.1)) {
   cut(x, breaks = c(-Inf, breaks, Inf),
       labels = c("low", "ok", "high"),
       ordered_result = FALSE)
 }
 
-diagnostic_factor.neff_ratio <- function(x, breaks = c(0.1, 0.5)) {
+#' @export
+diagnostic_factor.neff_ratio <- function(x, ..., breaks = c(0.1, 0.5)) {
   cut(x, breaks = c(-Inf, breaks, Inf),
       labels = c("low", "ok", "high"),
       ordered_result = FALSE)

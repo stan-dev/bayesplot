@@ -51,13 +51,13 @@ prepare_mcmc_array <- function(x,
   if (is.matrix(x)) {
     x <- x[, pars, drop=FALSE]
     if (length(transformations)) {
-      x <- apply_transformations(x, transformations)
+      x <- apply_transformations(x, transformations = transformations)
     }
     x <- array(x, dim = c(nrow(x), 1, ncol(x)))
   } else {
     x <- x[, , pars, drop = FALSE]
     if (length(transformations)) {
-      x <- apply_transformations(x, transformations)
+      x <- apply_transformations(x, transformations = transformations)
     }
   }
 
@@ -124,6 +124,8 @@ select_parameters <-
 #' @return A molten data frame.
 #'
 melt_mcmc <- function(x, ...) UseMethod("melt_mcmc")
+
+#' @export
 melt_mcmc.mcmc_array <- function(x,
                                  varnames =
                                    c("Iteration", "Chain", "Parameter"),
@@ -144,6 +146,7 @@ melt_mcmc.mcmc_array <- function(x,
 }
 
 # If all chains are already merged
+#' @export
 melt_mcmc.matrix <- function(x,
                              varnames = c("Draw", "Parameter"),
                              value.name = "Value",
@@ -305,13 +308,17 @@ chain_list2array <- function(x) {
 
 # Get parameter names from a 3-D array
 parameter_names <- function(x) UseMethod("parameter_names")
+
+#' @export
 parameter_names.array <- function(x) {
   stopifnot(is_3d_array(x))
   dimnames(x)[[3]] %||% abort("No parameter names found.")
 }
+#' @export
 parameter_names.default <- function(x) {
   colnames(x) %||% abort("No parameter names found.")
 }
+#' @export
 parameter_names.matrix <- function(x) {
   colnames(x) %||% abort("No parameter names found.")
 }
@@ -388,10 +395,12 @@ validate_transformations <-
 #'   functions.
 #' @return x, with tranformations having been applied to some parameters.
 #'
-apply_transformations <- function(x, transformations = list(), ...) {
+apply_transformations <- function(x, ...) {
   UseMethod("apply_transformations")
 }
-apply_transformations.matrix <- function(x, transformations = list()) {
+
+#' @export
+apply_transformations.matrix <- function(x, ..., transformations = list()) {
   pars <- colnames(x)
   x_transforms <- validate_transformations(transformations, pars)
   for (p in names(x_transforms)) {
@@ -400,7 +409,9 @@ apply_transformations.matrix <- function(x, transformations = list()) {
 
   x
 }
-apply_transformations.array <- function(x, transformations = list()) {
+
+#' @export
+apply_transformations.array <- function(x, ..., transformations = list()) {
   stopifnot(length(dim(x)) == 3)
   pars <- dimnames(x)[[3]]
   x_transforms <- validate_transformations(transformations, pars)
@@ -437,17 +448,23 @@ num_chains <- function(x, ...) UseMethod("num_chains")
 num_iters <- function(x, ...) UseMethod("num_iters")
 num_params <- function(x, ...) UseMethod("num_params")
 
+#' @export
 num_params.mcmc_array <- function(x, ...) dim(x)[3]
+#' @export
 num_chains.mcmc_array <- function(x, ...) dim(x)[2]
+#' @export
 num_iters.mcmc_array <- function(x, ...) dim(x)[1]
+#' @export
 num_params.data.frame <- function(x, ...) {
   stopifnot("Parameter" %in% colnames(x))
   length(unique(x$Parameter))
 }
+#' @export
 num_chains.data.frame <- function(x, ...) {
   stopifnot("Chain" %in% colnames(x))
   length(unique(x$Chain))
 }
+#' @export
 num_iters.data.frame <- function(x, ...) {
   cols <- colnames(x)
   stopifnot("Iteration" %in% cols || "Draws" %in% cols)
