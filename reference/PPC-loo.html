@@ -19,7 +19,7 @@ for details."><meta property="og:image" content="https://mc-stan.org/bayesplot/l
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bayesplot</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.10.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.11.0</span>
       </span>
     </div>
 
@@ -120,8 +120,9 @@ for details.</p>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">ppc_loo_pit_overlay</span><span class="op">(</span></span>
 <span>  <span class="va">y</span>,</span>
 <span>  <span class="va">yrep</span>,</span>
-<span>  <span class="va">lw</span>,</span>
+<span>  lw <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  <span class="va">...</span>,</span>
+<span>  psis_object <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  pit <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  samples <span class="op">=</span> <span class="fl">100</span>,</span>
 <span>  size <span class="op">=</span> <span class="fl">0.25</span>,</span>
@@ -138,8 +139,9 @@ for details.</p>
 <span><span class="fu">ppc_loo_pit_data</span><span class="op">(</span></span>
 <span>  <span class="va">y</span>,</span>
 <span>  <span class="va">yrep</span>,</span>
-<span>  <span class="va">lw</span>,</span>
+<span>  lw <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  <span class="va">...</span>,</span>
+<span>  psis_object <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  pit <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  samples <span class="op">=</span> <span class="fl">100</span>,</span>
 <span>  bw <span class="op">=</span> <span class="st">"nrd0"</span>,</span>
@@ -150,10 +152,11 @@ for details.</p>
 <span><span class="fu">ppc_loo_pit_qq</span><span class="op">(</span></span>
 <span>  <span class="va">y</span>,</span>
 <span>  <span class="va">yrep</span>,</span>
-<span>  <span class="va">lw</span>,</span>
-<span>  <span class="va">pit</span>,</span>
-<span>  compare <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"uniform"</span>, <span class="st">"normal"</span><span class="op">)</span>,</span>
+<span>  lw <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  <span class="va">...</span>,</span>
+<span>  psis_object <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  pit <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  compare <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"uniform"</span>, <span class="st">"normal"</span><span class="op">)</span>,</span>
 <span>  size <span class="op">=</span> <span class="fl">2</span>,</span>
 <span>  alpha <span class="op">=</span> <span class="fl">1</span></span>
 <span><span class="op">)</span></span>
@@ -162,7 +165,7 @@ for details.</p>
 <span>  <span class="va">y</span>,</span>
 <span>  <span class="va">yrep</span>,</span>
 <span>  <span class="va">lw</span>,</span>
-<span>  <span class="va">pit</span>,</span>
+<span>  pit <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  compare <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"uniform"</span>, <span class="st">"normal"</span><span class="op">)</span>,</span>
 <span>  <span class="va">...</span>,</span>
 <span>  size <span class="op">=</span> <span class="fl">2</span>,</span>
@@ -173,9 +176,9 @@ for details.</p>
 <span>  <span class="va">y</span>,</span>
 <span>  <span class="va">yrep</span>,</span>
 <span>  <span class="va">psis_object</span>,</span>
+<span>  <span class="va">...</span>,</span>
 <span>  subset <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  intervals <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  <span class="va">...</span>,</span>
 <span>  prob <span class="op">=</span> <span class="fl">0.5</span>,</span>
 <span>  prob_outer <span class="op">=</span> <span class="fl">0.9</span>,</span>
 <span>  alpha <span class="op">=</span> <span class="fl">0.33</span>,</span>
@@ -188,11 +191,10 @@ for details.</p>
 <span><span class="fu">ppc_loo_ribbon</span><span class="op">(</span></span>
 <span>  <span class="va">y</span>,</span>
 <span>  <span class="va">yrep</span>,</span>
-<span>  <span class="va">lw</span>,</span>
 <span>  <span class="va">psis_object</span>,</span>
+<span>  <span class="va">...</span>,</span>
 <span>  subset <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  intervals <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  <span class="va">...</span>,</span>
 <span>  prob <span class="op">=</span> <span class="fl">0.5</span>,</span>
 <span>  prob_outer <span class="op">=</span> <span class="fl">0.9</span>,</span>
 <span>  alpha <span class="op">=</span> <span class="fl">0.33</span>,</span>
@@ -219,11 +221,18 @@ additional advice specific to particular plots.</p></dd>
 <dt>lw</dt>
 <dd><p>A matrix of (smoothed) log weights with the same dimensions as
 <code>yrep</code>. See <code><a href="https://mc-stan.org/loo/reference/psis.html" class="external-link">loo::psis()</a></code> and the associated <code><a href="https://rdrr.io/r/stats/weights.html" class="external-link">weights()</a></code> method as well as
-the <strong>Examples</strong> section, below.</p></dd>
+the <strong>Examples</strong> section, below. If <code>lw</code> is not specified then
+<code>psis_object</code> can be provided and log weights will be extracted.</p></dd>
 
 
 <dt>...</dt>
 <dd><p>Currently unused.</p></dd>
+
+
+<dt>psis_object</dt>
+<dd><p>If using <strong>loo</strong> version <code>2.0.0</code> or greater, an
+object returned by the <code><a href="https://mc-stan.org/loo/reference/psis.html" class="external-link">psis()</a></code> function (or by the <code><a href="https://mc-stan.org/loo/reference/loo.html" class="external-link">loo()</a></code> function
+with argument <code>save_psis</code> set to <code>TRUE</code>).</p></dd>
 
 
 <dt>pit</dt>
@@ -286,12 +295,6 @@ calculated from the PIT values to the theoretical standard normal
 quantiles.</p></dd>
 
 
-<dt>psis_object</dt>
-<dd><p>If using <strong>loo</strong> version <code>2.0.0</code> or greater, an
-object returned by the <code><a href="https://mc-stan.org/loo/reference/psis.html" class="external-link">psis()</a></code> function (or by the <code><a href="https://mc-stan.org/loo/reference/loo.html" class="external-link">loo()</a></code> function
-with argument <code>save_psis</code> set to <code>TRUE</code>).</p></dd>
-
-
 <dt>subset</dt>
 <dd><p>For <code>ppc_loo_intervals()</code> and <code>ppc_loo_ribbon()</code>, an optional
 integer vector indicating which observations in <code>y</code> (and <code>yrep</code>) to
@@ -304,15 +307,14 @@ section for a demonstration.</p></dd>
 
 
 <dt>intervals</dt>
-<dd><p>For <code>ppc_loo_intervals()</code> and <code>ppc_loo_ribbon()</code>,
-optionally a matrix of precomputed LOO predictive intervals
-that can be specified instead of <code>yrep</code> and <code>lw</code> (these are both
-ignored if <code>intervals</code> is specified). If not specified the intervals
-are computed internally before plotting. If specified, <code>intervals</code>
-must be a matrix with number of rows equal to the number of data points and
-five columns in the following order: lower outer interval, lower inner
-interval, median (50%), upper inner interval and upper outer interval
-(column names are ignored).</p></dd>
+<dd><p>For <code>ppc_loo_intervals()</code> and <code>ppc_loo_ribbon()</code>, optionally
+a matrix of pre-computed LOO predictive intervals that can be specified
+instead of <code>yrep</code> (ignored if <code>intervals</code> is specified). If not specified
+the intervals are computed internally before plotting. If specified,
+<code>intervals</code> must be a matrix with number of rows equal to the number of
+data points and five columns in the following order: lower outer interval,
+lower inner interval, median (50%), upper inner interval and upper outer
+interval (column names are ignored).</p></dd>
 
 
 <dt>prob, prob_outer</dt>
@@ -421,15 +423,24 @@ https://www.jstor.org/stable/2986005.</p>
 <span class="r-in"><span>  <span class="va">log_radon</span> <span class="op">~</span> <span class="va">floor</span> <span class="op">+</span> <span class="va">log_uranium</span> <span class="op">+</span> <span class="va">floor</span><span class="op">:</span><span class="va">log_uranium</span></span></span>
 <span class="r-in"><span>               <span class="op">+</span> <span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="va">floor</span> <span class="op">|</span> <span class="va">county</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  data <span class="op">=</span> <span class="va">radon</span>,</span></span>
-<span class="r-in"><span>  iter <span class="op">=</span> <span class="fl">1000</span>,</span></span>
+<span class="r-in"><span>  iter <span class="op">=</span> <span class="fl">100</span>,</span></span>
 <span class="r-in"><span>  chains <span class="op">=</span> <span class="fl">2</span>,</span></span>
 <span class="r-in"><span>  cores <span class="op">=</span> <span class="fl">2</span></span></span>
 <span class="r-in"><span> <span class="op">)</span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>The largest R-hat is 1.13, indicating chains have not mixed.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> Running the chains for more iterations may help. See</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> https://mc-stan.org/misc/warnings.html#r-hat</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Bulk Effective Samples Size (ESS) is too low, indicating posterior means and medians may be unreliable.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> Running the chains for more iterations may help. See</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> https://mc-stan.org/misc/warnings.html#bulk-ess</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Tail Effective Samples Size (ESS) is too low, indicating posterior variances and tail quantiles may be unreliable.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> Running the chains for more iterations may help. See</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> https://mc-stan.org/misc/warnings.html#tail-ess</span>
 <span class="r-in"><span><span class="va">y</span> <span class="op">&lt;-</span> <span class="va">radon</span><span class="op">$</span><span class="va">log_radon</span></span></span>
 <span class="r-in"><span><span class="va">yrep</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://mc-stan.org/rstantools/reference/posterior_predict.html" class="external-link">posterior_predict</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">loo1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://mc-stan.org/loo/reference/loo.html" class="external-link">loo</a></span><span class="op">(</span><span class="va">fit</span>, save_psis <span class="op">=</span> <span class="cn">TRUE</span>, cores <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Found 2 observation(s) with a pareto_k &gt; 0.7. We recommend calling 'loo' again with argument 'k_threshold = 0.7' in order to calculate the ELPD without the assumption that these observations are negligible. This will refit the model 2 times to compute the ELPDs for the problematic observations directly.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Found 8 observation(s) with a pareto_k &gt; 0.7. We recommend calling 'loo' again with argument 'k_threshold = 0.7' in order to calculate the ELPD without the assumption that these observations are negligible. This will refit the model 8 times to compute the ELPDs for the problematic observations directly.</span>
 <span class="r-in"><span><span class="va">psis1</span> <span class="op">&lt;-</span> <span class="va">loo1</span><span class="op">$</span><span class="va">psis_object</span></span></span>
 <span class="r-in"><span><span class="va">lw</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/weights.html" class="external-link">weights</a></span><span class="op">(</span><span class="va">psis1</span><span class="op">)</span> <span class="co"># normalized log weights</span></span></span>
 <span class="r-in"><span></span></span>
@@ -440,23 +451,27 @@ https://www.jstor.org/stable/2986005.</p>
 <span class="r-plt img"><img src="PPC-loo-1.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">ppc_loo_pit_qq</span><span class="op">(</span><span class="va">y</span>, <span class="va">yrep</span>, lw <span class="op">=</span> <span class="va">lw</span><span class="op">)</span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 7 rows containing missing values (`geom_point()`).</span>
 <span class="r-plt img"><img src="PPC-loo-2.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="fu">ppc_loo_pit_qq</span><span class="op">(</span><span class="va">y</span>, <span class="va">yrep</span>, lw <span class="op">=</span> <span class="va">lw</span>, compare <span class="op">=</span> <span class="st">"normal"</span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>NaNs produced</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 5 rows containing non-finite values (`stat_qq()`).</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 5 rows containing non-finite values (`stat_qq_line()`).</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 19 rows containing non-finite values (`stat_qq()`).</span>
 <span class="r-plt img"><img src="PPC-loo-3.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># can use the psis object instead of lw</span></span></span>
+<span class="r-in"><span><span class="fu">ppc_loo_pit_qq</span><span class="op">(</span><span class="va">y</span>, <span class="va">yrep</span>, psis_object <span class="op">=</span> <span class="va">psis1</span><span class="op">)</span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 7 rows containing missing values (`geom_point()`).</span>
+<span class="r-plt img"><img src="PPC-loo-4.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># loo predictive intervals vs observations</span></span></span>
 <span class="r-in"><span><span class="va">keep_obs</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="fl">50</span></span></span>
 <span class="r-in"><span><span class="fu">ppc_loo_intervals</span><span class="op">(</span><span class="va">y</span>, <span class="va">yrep</span>, psis_object <span class="op">=</span> <span class="va">psis1</span>, subset <span class="op">=</span> <span class="va">keep_obs</span><span class="op">)</span></span></span>
-<span class="r-plt img"><img src="PPC-loo-4.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="PPC-loo-5.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="bayesplot-colors.html">color_scheme_set</a></span><span class="op">(</span><span class="st">"gray"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">ppc_loo_intervals</span><span class="op">(</span><span class="va">y</span>, <span class="va">yrep</span>, psis_object <span class="op">=</span> <span class="va">psis1</span>, subset <span class="op">=</span> <span class="va">keep_obs</span>,</span></span>
 <span class="r-in"><span>                  order <span class="op">=</span> <span class="st">"median"</span><span class="op">)</span></span></span>
-<span class="r-plt img"><img src="PPC-loo-5.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="PPC-loo-6.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
@@ -473,7 +488,7 @@ https://www.jstor.org/stable/2986005.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

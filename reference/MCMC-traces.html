@@ -18,7 +18,7 @@ section, below, for details."><meta property="og:image" content="https://mc-stan
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bayesplot</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.10.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.11.0</span>
       </span>
     </div>
 
@@ -334,9 +334,11 @@ average number of ranks per bin. Defaults to <code>FALSE</code>.</p></dd>
 
 <dt>K</dt>
 <dd><p>An optional integer defining the number of equally spaced evaluation
-points for the ECDF. If the submitted PIT values are known to be discrete,
-this should be the number of the discrete cases. Defaults to the smaller of
-<code>length(y)</code> and <code>ncol(yrep)</code> when applicable.</p></dd>
+points for the ECDF. Reducing K when using <code>interpolate_adj = FALSE</code> makes
+computing the confidence bands faster. For <code>ppc_pit_ecdf</code> and
+<code>ppc_pit_ecdf_grouped</code>, defaults to <code>ncol(yrep) + 1</code>, or <code>length(pit)</code> if PIT
+values are supplied. For <code>mcmc_rank_ecdf</code> defaults to the number of
+iterations per chain in <code>x</code>.</p></dd>
 
 
 <dt>prob</dt>
@@ -522,7 +524,7 @@ Goodness of Fit Evaluation and Multiple Sample Comparison <a href="https://arxiv
 <span class="r-in"><span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://mc-stan.org/rstanarm/reference/stan_glm.html" class="external-link">stan_glm</a></span><span class="op">(</span><span class="va">mpg</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">mtcars</span>, refresh <span class="op">=</span> <span class="fl">0</span>,</span></span>
 <span class="r-in"><span>  <span class="co"># next line to keep example fast and also ensure we get some divergences</span></span></span>
 <span class="r-in"><span>                prior <span class="op">=</span> <span class="fu"><a href="https://mc-stan.org/rstanarm/reference/priors.html" class="external-link">hs</a></span><span class="op">(</span><span class="op">)</span>, iter <span class="op">=</span> <span class="fl">400</span>, adapt_delta <span class="op">=</span> <span class="fl">0.8</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>There were 20 divergent transitions after warmup. See</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>There were 21 divergent transitions after warmup. See</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> https://mc-stan.org/misc/warnings.html#divergent-transitions-after-warmup</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> to find out why this is a problem and how to eliminate them.</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Examine the pairs() plot to diagnose sampling problems</span>
@@ -567,7 +569,7 @@ Goodness of Fit Evaluation and Multiple Sample Comparison <a href="https://arxiv
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

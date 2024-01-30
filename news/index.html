@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bayesplot</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.10.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.11.0</span>
       </span>
     </div>
 
@@ -108,7 +108,20 @@
     </div>
 
     <div class="section level2">
-<h2 class="page-header" data-toc-text="1.10.0" id="bayesplot-1100">bayesplot 1.10.0<a class="anchor" aria-label="anchor" href="#bayesplot-1100"></a></h2>
+<h2 class="page-header" data-toc-text="1.11.0" id="bayesplot-1110">bayesplot 1.11.0<a class="anchor" aria-label="anchor" href="#bayesplot-1110"></a></h2>
+<ul><li>Update for new ggplot2 release by <a href="https://github.com/teunbrand" class="external-link">@teunbrand</a> in <a href="https://github.com/stan-dev/bayesplot/issues/309" class="external-link">#309</a></li>
+<li>Add <code>bins</code> argument to many histogram plots by <code>@paul-buerkner</code> in <a href="https://github.com/stan-dev/bayesplot/issues/300" class="external-link">#300</a></li>
+<li>Follow ggplot2 updates on <code>facet_grid()</code> and <code>facet_wrap()</code> by <a href="https://github.com/heavywatal" class="external-link">@heavywatal</a> in <a href="https://github.com/stan-dev/bayesplot/issues/305" class="external-link">#305</a></li>
+<li>Better <code>ppc_loo_pit_qq</code> plots by <a href="https://github.com/avehtari" class="external-link">@avehtari</a> in <a href="https://github.com/stan-dev/bayesplot/issues/307" class="external-link">#307</a></li>
+<li>Check <code>prob</code> is numeric for intervals plots by <a href="https://github.com/tony-stone" class="external-link">@tony-stone</a> in <a href="https://github.com/stan-dev/bayesplot/issues/299" class="external-link">#299</a></li>
+<li>Add <code>bins</code> and <code>breaks</code> arguments to more histogram and hex plots by <a href="https://github.com/heavywatal" class="external-link">@heavywatal</a> in <a href="https://github.com/stan-dev/bayesplot/issues/313" class="external-link">#313</a></li>
+<li>Replace <code>size</code> argument with <code>linewidth</code> for <code>geom_line</code> and <code>geom_ridgeline</code> by <a href="https://github.com/heavywatal" class="external-link">@heavywatal</a> in <a href="https://github.com/stan-dev/bayesplot/issues/314" class="external-link">#314</a></li>
+<li>All LOO plots now accept <code>psis_object</code> argument by <a href="https://github.com/jgabry" class="external-link">@jgabry</a> in <a href="https://github.com/stan-dev/bayesplot/issues/311" class="external-link">#311</a></li>
+<li>
+<code><a href="../reference/PPC-distributions.html">ppc_pit_ecdf()</a></code> and <code><a href="../reference/PPC-distributions.html">ppc_pit_ecdf_grouped()</a></code> now support discrete variables, and their default method for selecting the number of ECDF evaluation points has been updated. by <a href="https://github.com/TeemuSailynoja" class="external-link">@TeemuSailynoja</a> in <a href="https://github.com/stan-dev/bayesplot/issues/316" class="external-link">#316</a></li>
+</ul></div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="1.10.0" id="bayesplot-1100">bayesplot 1.10.0<small>2022-11-16</small><a class="anchor" aria-label="anchor" href="#bayesplot-1100"></a></h2>
 <ul><li>New function <code><a href="../reference/MCMC-traces.html">mcmc_rank_ecdf()</a></code> for rank ecdf plots with confidence bands for assessing if two or more chains sample the same distribution (<a href="https://github.com/stan-dev/bayesplot/issues/282" class="external-link">#282</a>, <a href="https://github.com/TeemuSailynoja" class="external-link">@TeemuSailynoja</a>)</li>
 <li>New functions <code><a href="../reference/PPC-distributions.html">ppc_pit_ecdf()</a></code>, <code><a href="../reference/PPC-distributions.html">ppc_pit_ecdf_grouped()</a></code>, PIT ecdf plots with confidence bands to assess if <code>y</code> and <code>yrep</code> contain samples from the same distribution. (<a href="https://github.com/stan-dev/bayesplot/issues/282" class="external-link">#282</a>, <a href="https://github.com/TeemuSailynoja" class="external-link">@TeemuSailynoja</a>)</li>
 <li>Several <code>ppc</code> and <code>ppd</code> functions now accept the new <code>linewidth</code> argument introduced in ggplot2 3.4.0: <code><a href="../reference/PPC-discrete.html">ppc_bars()</a></code>, <code><a href="../reference/PPC-discrete.html">ppc_bars_grouped()</a></code>, <code><a href="../reference/PPC-intervals.html">ppc_intervals()</a></code>, <code><a href="../reference/PPC-intervals.html">ppc_intervals_grouped()</a></code>, <code><a href="../reference/PPD-intervals.html">ppd_intervals()</a></code>, <code><a href="../reference/PPD-intervals.html">ppd_intervals_grouped()</a></code>.</li>
@@ -350,7 +363,7 @@ caused some unexpected behavior when customizing these plots.</li>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bayesplot</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.10.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.11.0</span>
       </span>
     </div>
 
@@ -124,7 +124,7 @@
 <dd><p>For <code>param_range()</code> only, <code>prefix</code> is a string naming a
 parameter and <code>range</code> is an integer vector providing the indices of a
 subset of elements to select. For example, using</p>
-<p></p><div class="sourceCode"><pre><code><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>  <span class="fu">param_range</span>(<span class="st">"beta"</span>, <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">8</span>))</span></code></pre><p></p></div>
+<p></p><div class="sourceCode"><pre><code><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a>  <span class="fu">param_range</span>(<span class="st">"beta"</span>, <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">8</span>))</span></code></pre><p></p></div>
 <p>would select parameters named <code>beta[1]</code>, <code>beta[2]</code>, and <code>beta[8]</code>.
 <code>param_range()</code> is only designed for the case that the indices are integers
 surrounded by brackets. If there are no brackets use
@@ -143,9 +143,9 @@ left as <code>NULL</code> and will be set automatically for the user.</p></dd>
 expressions enclosed in braces and <code>...</code> should be named arguments
 providing one character vector per expression in braces in <code>pattern</code>. It is
 easiest to describe how to use these arguments with an example:</p>
-<p></p><div class="sourceCode"><pre><code><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">param_glue</span>(<span class="st">"beta_{var}[{level}]"</span>,</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>           <span class="at">var =</span> <span class="fu">c</span>(<span class="st">"age"</span>, <span class="st">"income"</span>),</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">level =</span> <span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">8</span>))</span></code></pre><p></p></div>
+<p></p><div class="sourceCode"><pre><code><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">param_glue</span>(<span class="st">"beta_{var}[{level}]"</span>,</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>           <span class="at">var =</span> <span class="fu">c</span>(<span class="st">"age"</span>, <span class="st">"income"</span>),</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>           <span class="at">level =</span> <span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">8</span>))</span></code></pre><p></p></div>
 <p>would select parameters with names
 <code>"beta_age[3]"</code>, <code>"beta_income[3]"</code>, <code>"beta_age[8]"</code>, <code>"beta_income[8]"</code>.</p></dd>
 
@@ -288,11 +288,11 @@ use backticks to escape it <code>vars(`1`)</code>.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> size         0.0    0.0  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> period2     -1.0    0.3  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> period3     -1.1    0.4  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> period4     -1.6    0.5  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> period4     -1.6    0.4  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Error terms:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Groups Name        Std.Dev.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  herd   (Intercept) 0.79    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  herd   (Intercept) 0.8     </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Num. levels: herd 15 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ------</span>
@@ -308,38 +308,38 @@ use backticks to escape it <code>vars(`1`)</code>.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> size         0.0    0.0  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> period2     -1.0    0.3  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> period3     -1.1    0.4  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> period4     -1.6    0.5  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> period4     -1.6    0.4  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Error terms:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Groups Name        Std.Dev.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  herd   (Intercept) 0.79    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  herd   (Intercept) 0.8     </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Num. levels: herd 15 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ------</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> * For help interpreting the printed output see ?print.stanreg</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> * For info on the priors used see ?prior_summary.stanreg</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 'data.frame':	1000 obs. of  21 variables:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ (Intercept)                        : num  -1.23 -1.83 -1.42 -1.67 -1.72 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ size                               : num  -0.00155 0.02421 0.00601 0.01445 0.02242 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ period2                            : num  -0.692 -0.835 -1.607 -0.93 -1.475 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ period3                            : num  -1.562 -0.762 -1.132 -1.531 -1.076 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ period4                            : num  -1.27 -1.43 -2.47 -1.24 -1.85 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ b[(Intercept) herd:1]              : num  0.22 1.367 0.214 1.326 0.554 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ b[(Intercept) herd:2]              : num  -0.284 -0.639 -0.894 0.309 -0.167 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ b[(Intercept) herd:3]              : num  0.449 0.122 0.367 0.121 0.143 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ b[(Intercept) herd:4]              : num  -0.113 0.874 -0.609 0.782 0.325 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ b[(Intercept) herd:5]              : num  -0.75684 0.00387 -0.06393 -0.51919 0.3108 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ b[(Intercept) herd:6]              : num  -1.625 0.172 -0.208 -0.77 -0.424 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ b[(Intercept) herd:7]              : num  1.135 1.102 0.806 0.77 0.636 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ b[(Intercept) herd:8]              : num  0.1765 -0.0504 0.391 1.0216 0.0622 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ b[(Intercept) herd:9]              : num  -0.498 -0.142 -0.154 -0.342 0.543 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ b[(Intercept) herd:10]             : num  -1.151 -0.83 -0.771 -0.691 -0.546 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ b[(Intercept) herd:11]             : num  -0.2197 -0.5348 0.0396 -0.5771 -0.2001 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ b[(Intercept) herd:12]             : num  -0.5736 0.3059 -0.2886 0.3454 -0.0195 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ b[(Intercept) herd:13]             : num  -0.538 -1.327 -0.547 -1.051 -0.245 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ b[(Intercept) herd:14]             : num  1.542 0.879 1.146 0.557 0.393 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ b[(Intercept) herd:15]             : num  -0.265 -1.148 -0.325 -1.117 -0.774 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ Sigma[herd:(Intercept),(Intercept)]: num  0.717 0.711 0.239 0.695 0.248 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ (Intercept)                        : num  -1.47 -1.78 -1.72 -1.6 -1.53 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ size                               : num  0.00888 0.01476 0.01494 0.01283 -0.01193 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ period2                            : num  -0.667 -0.684 -0.883 -0.924 -0.825 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ period3                            : num  -1.2 -1.05 -1.26 -1.34 -0.66 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ period4                            : num  -1.89 -1.67 -1.46 -1.83 -1.44 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ b[(Intercept) herd:1]              : num  0.297 0.562 1.261 0.392 0.7 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ b[(Intercept) herd:2]              : num  -0.451 -0.1626 -0.8416 -0.8944 0.0944 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ b[(Intercept) herd:3]              : num  -0.211 -0.3071 0.0957 0.5282 0.5645 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ b[(Intercept) herd:4]              : num  -0.109 0.213 -0.212 0.384 -0.357 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ b[(Intercept) herd:5]              : num  -0.297 -0.17 -1.254 -0.591 0.155 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ b[(Intercept) herd:6]              : num  -0.1702 0.0193 -0.7049 -0.6454 -0.1529 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ b[(Intercept) herd:7]              : num  1.702 1.663 1.069 0.75 0.968 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ b[(Intercept) herd:8]              : num  -0.313 0.287 0.861 0.466 1.233 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ b[(Intercept) herd:9]              : num  -0.783 -0.088 0.871 -0.407 -0.296 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ b[(Intercept) herd:10]             : num  -0.6759 -1.0561 -0.8712 -0.0397 -0.7307 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ b[(Intercept) herd:11]             : num  -0.541 -0.688 -0.137 -0.13 0.273 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ b[(Intercept) herd:12]             : num  -0.2329 -0.1093 0.5054 0.0264 -0.3146 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ b[(Intercept) herd:13]             : num  -1.411 -1.178 -0.714 -0.927 -0.386 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ b[(Intercept) herd:14]             : num  1.479 1.682 1.474 1.065 0.391 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ b[(Intercept) herd:15]             : num  -0.691 -1.16 -0.526 -0.629 -0.484 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ Sigma[herd:(Intercept),(Intercept)]: num  1.24 1.588 1.993 0.832 0.312 ...</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Attaching package: ‘dplyr’</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> The following objects are masked from ‘package:stats’:</span>
@@ -367,22 +367,22 @@ use backticks to escape it <code>vars(`1`)</code>.</p>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">posterior</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 1,000 × 8</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    b_Intercept sd_condition__I…¹   sigma r_con…² r_con…³ r_con…⁴ r_con…⁵ r_con…⁶</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span>       1.33             0.638  0.351    1.15    -<span style="color: #BB0000;">0.585</span>  0.634    1.77    1.07 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span>      -<span style="color: #BB0000;">0.219</span>            0.065<span style="text-decoration: underline;">9</span> 0.055<span style="text-decoration: underline;">6</span>   1.64     0.736  0.182    0.420   0.454</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span>      -<span style="color: #BB0000;">0.832</span>            1.39   1.46     0.628    0.159  0.442    0.509  -<span style="color: #BB0000;">1.66</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span>       0.591            0.474  3.40     0.242   -<span style="color: #BB0000;">0.540</span>  1.18    -<span style="color: #BB0000;">0.842</span>  -<span style="color: #BB0000;">0.247</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span>       1.86             0.179  0.642    0.322    0.688  0.541    0.315   0.460</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span>       0.639            0.175  0.396   -<span style="color: #BB0000;">0.011</span><span style="color: #BB0000; text-decoration: underline;">0</span>  -<span style="color: #BB0000;">1.25</span>  -<span style="color: #BB0000;">0.206</span>    0.450  -<span style="color: #BB0000;">1.58</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span>      -<span style="color: #BB0000;">1.38</span>             0.056<span style="text-decoration: underline;">2</span> 0.433    0.322    0.905  0.093<span style="text-decoration: underline;">4</span>  -<span style="color: #BB0000;">0.308</span>  -<span style="color: #BB0000;">1.34</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span>       0.276            0.023<span style="text-decoration: underline;">2</span> 0.002<span style="text-decoration: underline;">54</span> -<span style="color: #BB0000;">2.48</span>    -<span style="color: #BB0000;">1.05</span>   0.989   -<span style="color: #BB0000;">0.209</span>   0.693</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span>       1.12             0.556  0.034<span style="text-decoration: underline;">4</span>  -<span style="color: #BB0000;">0.098</span><span style="color: #BB0000; text-decoration: underline;">9</span>   0.466  0.566   -<span style="color: #BB0000;">0.827</span>   1.15 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span>      -<span style="color: #BB0000;">0.379</span>            1.02   1.82     0.022<span style="text-decoration: underline;">8</span>  -<span style="color: #BB0000;">0.487</span>  0.021<span style="text-decoration: underline;">3</span>   0.867  -<span style="color: #BB0000;">1.41</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 990 more rows, and abbreviated variable names</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   ¹​sd_condition__Intercept, ²​`r_condition[A,Intercept]`,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   ³​`r_condition[B,Intercept]`, ⁴​`r_condition[C,Intercept]`,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   ⁵​`r_condition[A,Slope]`, ⁶​`r_condition[B,Slope]`</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    b_Intercept sd_condition__Intercept sigma `r_condition[A,Intercept]`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>                   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>                      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span>      1.29                     0.540 0.300                    -<span style="color: #BB0000;">0.780</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span>      1.80                     0.124 0.426                    -<span style="color: #BB0000;">0.110</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span>      0.588                    3.73  0.630                     0.068<span style="text-decoration: underline;">7</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span>     -<span style="color: #BB0000;">1.27</span>                     0.623 1.19                     -<span style="color: #BB0000;">0.223</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span>     -<span style="color: #BB0000;">0.695</span>                    0.696 0.322                     0.809 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span>     -<span style="color: #BB0000;">0.081</span><span style="color: #BB0000; text-decoration: underline;">2</span>                   0.112 0.731                     0.085<span style="text-decoration: underline;">4</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span>     -<span style="color: #BB0000;">0.246</span>                    0.781 2.84                      0.125 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span>      1.62                     2.40  1.59                     -<span style="color: #BB0000;">2.54</span>  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span>     -<span style="color: #BB0000;">0.111</span>                    0.441 0.896                    -<span style="color: #BB0000;">0.244</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span>     -<span style="color: #BB0000;">0.846</span>                    0.764 1.85                      0.798 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 990 more rows</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 4 more variables: `r_condition[B,Intercept]` &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   `r_condition[C,Intercept]` &lt;dbl&gt;, `r_condition[A,Slope]` &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   `r_condition[B,Slope]` &lt;dbl&gt;</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># using one expression in braces</span></span></span>
 <span class="r-in"><span><span class="va">posterior</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
@@ -419,7 +419,7 @@ use backticks to escape it <code>vars(`1`)</code>.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

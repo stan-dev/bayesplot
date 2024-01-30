@@ -4,6 +4,9 @@
     <loc>https://mc-stan.org/bayesplot/404.html</loc>
   </url>
   <url>
+    <loc>https://mc-stan.org/bayesplot/CONTRIBUTING.html</loc>
+  </url>
+  <url>
     <loc>https://mc-stan.org/bayesplot/LICENSE-text.html</loc>
   </url>
   <url>
@@ -140,5 +143,113 @@
   </url>
   <url>
     <loc>https://mc-stan.org/bayesplot/reference/tidy-params.html</loc>
+  </url>
+  <url>
+    <loc>https://mc-stan.org/bayesplot/revdep/library.noindex/bayesplot/new/Rcpp/doc/index.html</loc>
+  </url>
+  <url>
+    <loc>https://mc-stan.org/bayesplot/revdep/library.noindex/bayesplot/new/Rcpp/html/00Index.html</loc>
+  </url>
+  <url>
+    <loc>https://mc-stan.org/bayesplot/revdep/library.noindex/bayesplot/new/bayesplot/html/00Index.html</loc>
+  </url>
+  <url>
+    <loc>https://mc-stan.org/bayesplot/revdep/library.noindex/bayesplot/new/checkmate/doc/checkmate.html</loc>
+  </url>
+  <url>
+    <loc>https://mc-stan.org/bayesplot/revdep/library.noindex/bayesplot/new/checkmate/doc/index.html</loc>
+  </url>
+  <url>
+    <loc>https://mc-stan.org/bayesplot/revdep/library.noindex/bayesplot/new/checkmate/doc/tinytest.html</loc>
+  </url>
+  <url>
+    <loc>https://mc-stan.org/bayesplot/revdep/library.noindex/bayesplot/new/checkmate/html/00Index.html</loc>
+  </url>
+  <url>
+    <loc>https://mc-stan.org/bayesplot/revdep/library.noindex/bayesplot/new/digest/doc/index.html</loc>
+  </url>
+  <url>
+    <loc>https://mc-stan.org/bayesplot/revdep/library.noindex/bayesplot/new/digest/doc/sha1.html</loc>
+  </url>
+  <url>
+    <loc>https://mc-stan.org/bayesplot/revdep/library.noindex/bayesplot/new/digest/html/00Index.html</loc>
+  </url>
+  <url>
+    <loc>https://mc-stan.org/bayesplot/revdep/library.noindex/bayesplot/new/dplyr/doc/base.html</loc>
+  </url>
+  <url>
+    <loc>https://mc-stan.org/bayesplot/revdep/library.noindex/bayesplot/new/dplyr/doc/colwise.html</loc>
+  </url>
+  <url>
+    <loc>https://mc-stan.org/bayesplot/revdep/library.noindex/bayesplot/new/dplyr/doc/dplyr.html</loc>
+  </url>
+  <url>
+    <loc>https://mc-stan.org/bayesplot/revdep/library.noindex/bayesplot/new/dplyr/doc/grouping.html</loc>
+  </url>
+  <url>
+    <loc>https://mc-stan.org/bayesplot/revdep/library.noindex/bayesplot/new/dplyr/doc/in-packages.html</loc>
+  </url>
+  <url>
+    <loc>https://mc-stan.org/bayesplot/revdep/library.noindex/bayesplot/new/dplyr/doc/index.html</loc>
+  </url>
+  <url>
+    <loc>https://mc-stan.org/bayesplot/revdep/library.noindex/bayesplot/new/dplyr/doc/programming.html</loc>
+  </url>
+  <url>
+    <loc>https://mc-stan.org/bayesplot/revdep/library.noindex/bayesplot/new/dplyr/doc/rowwise.html</loc>
+  </url>
+  <url>
+    <loc>https://mc-stan.org/bayesplot/revdep/library.noindex/bayesplot/new/dplyr/doc/two-table.html</loc>
+  </url>
+  <url>
+    <loc>https://mc-stan.org/bayesplot/revdep/library.noindex/bayesplot/new/dplyr/doc/window-functions.html</loc>
+  </url>
+  <url>
+    <loc>https://mc-stan.org/bayesplot/revdep/library.noindex/bayesplot/new/dplyr/html/00Index.html</loc>
+  </url>
+  <url>
+    <loc>https://mc-stan.org/bayesplot/revdep/library.noindex/bayesplot/new/matrixStats/doc/index.html</loc>
+  </url>
+  <url>
+    <loc>https://mc-stan.org/bayesplot/revdep/library.noindex/bayesplot/new/matrixStats/doc/matrixStats-methods.html</loc>
+  </url>
+  <url>
+    <loc>https://mc-stan.org/bayesplot/revdep/library.noindex/bayesplot/new/matrixStats/html/00Index.html</loc>
+  </url>
+  <url>
+    <loc>https://mc-stan.org/bayesplot/revdep/library.noindex/bayesplot/new/stringi/html/00Index.html</loc>
+  </url>
+  <url>
+    <loc>https://mc-stan.org/bayesplot/revdep/library.noindex/bayesplot/new/stringr/doc/from-base.html</loc>
+  </url>
+  <url>
+    <loc>https://mc-stan.org/bayesplot/revdep/library.noindex/bayesplot/new/stringr/doc/index.html</loc>
+  </url>
+  <url>
+    <loc>https://mc-stan.org/bayesplot/revdep/library.noindex/bayesplot/new/stringr/doc/regular-expressions.html</loc>
+  </url>
+  <url>
+    <loc>https://mc-stan.org/bayesplot/revdep/library.noindex/bayesplot/new/stringr/doc/stringr.html</loc>
+  </url>
+  <url>
+    <loc>https://mc-stan.org/bayesplot/revdep/library.noindex/bayesplot/new/stringr/html/00Index.html</loc>
+  </url>
+  <url>
+    <loc>https://mc-stan.org/bayesplot/revdep/library.noindex/bayesplot/new/tensorA/html/00Index.html</loc>
+  </url>
+  <url>
+    <loc>https://mc-stan.org/bayesplot/revdep/library.noindex/bayesplot/old/bayesplot/doc/graphical-ppcs.html</loc>
+  </url>
+  <url>
+    <loc>https://mc-stan.org/bayesplot/revdep/library.noindex/bayesplot/old/bayesplot/doc/index.html</loc>
+  </url>
+  <url>
+    <loc>https://mc-stan.org/bayesplot/revdep/library.noindex/bayesplot/old/bayesplot/doc/plotting-mcmc-draws.html</loc>
+  </url>
+  <url>
+    <loc>https://mc-stan.org/bayesplot/revdep/library.noindex/bayesplot/old/bayesplot/doc/visual-mcmc-diagnostics.html</loc>
+  </url>
+  <url>
+    <loc>https://mc-stan.org/bayesplot/revdep/library.noindex/bayesplot/old/bayesplot/html/00Index.html</loc>
   </url>
 </urlset>

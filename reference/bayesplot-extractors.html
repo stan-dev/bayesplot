@@ -20,7 +20,7 @@ but adding new methods should be relatively straightforward."><meta property="og
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bayesplot</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.10.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.11.0</span>
       </span>
     </div>
 
@@ -229,38 +229,38 @@ The data frame should have columns <code>"Parameter"</code> (factor), <code>"Ite
 <span class="r-in"><span><span class="va">np</span> <span class="op">&lt;-</span> <span class="fu">nuts_params</span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">np</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Chain Iteration     Parameter     Value</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1     1         1 accept_stat__ 0.9838861</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2     1         2 accept_stat__ 0.8507451</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3     1         3 accept_stat__ 0.9594235</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4     1         4 accept_stat__ 0.8385368</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5     1         5 accept_stat__ 0.9388126</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6     1         6 accept_stat__ 0.9858187</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1     1         1 accept_stat__ 0.9959800</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2     1         2 accept_stat__ 0.9990818</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3     1         3 accept_stat__ 0.9922949</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4     1         4 accept_stat__ 0.9592249</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5     1         5 accept_stat__ 0.9959713</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6     1         6 accept_stat__ 0.9846108</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">tail</a></span><span class="op">(</span><span class="va">np</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       Chain Iteration Parameter    Value</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 23995     4       995  energy__ 86.05362</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 23996     4       996  energy__ 86.57945</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 23997     4       997  energy__ 86.96234</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 23998     4       998  energy__ 86.57093</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 23999     4       999  energy__ 87.20269</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 24000     4      1000  energy__ 87.75982</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23995     4       995  energy__ 86.09516</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23996     4       996  energy__ 86.63987</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23997     4       997  energy__ 87.05197</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23998     4       998  energy__ 91.53823</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23999     4       999  energy__ 88.10087</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24000     4      1000  energy__ 89.14512</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">lp</span> <span class="op">&lt;-</span> <span class="fu">log_posterior</span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">lp</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Chain Iteration     Value</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1     1         1 -86.68534</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2     1         2 -85.95846</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3     1         3 -86.06546</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4     1         4 -87.08975</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5     1         5 -87.13908</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6     1         6 -86.32505</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1     1         1 -86.46143</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2     1         2 -86.45492</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3     1         3 -86.55465</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4     1         4 -87.06081</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5     1         5 -86.32876</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6     1         6 -86.77675</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">tail</a></span><span class="op">(</span><span class="va">lp</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      Chain Iteration     Value</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3995     4       995 -85.96086</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3996     4       996 -86.22458</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3997     4       997 -85.97892</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3998     4       998 -86.40689</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3999     4       999 -86.30494</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4000     4      1000 -87.38177</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3995     4       995 -85.93512</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3996     4       996 -86.07147</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3997     4       997 -86.54743</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3998     4       998 -87.97370</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3999     4       999 -86.85226</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4000     4      1000 -88.45662</span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
@@ -277,7 +277,7 @@ The data frame should have columns <code>"Parameter"</code> (factor), <code>"Ite
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

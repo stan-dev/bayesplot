@@ -20,7 +20,7 @@ also MCMC-nuts for additional MCMC diagnostic plots."><meta property="og:image" 
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bayesplot</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.10.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.11.0</span>
       </span>
     </div>
 
@@ -121,13 +121,13 @@ also <a href="MCMC-nuts.html">MCMC-nuts</a> for additional MCMC diagnostic plots
     <div id="ref-usage">
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">mcmc_rhat</span><span class="op">(</span><span class="va">rhat</span>, <span class="va">...</span>, size <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">mcmc_rhat_hist</span><span class="op">(</span><span class="va">rhat</span>, <span class="va">...</span>, binwidth <span class="op">=</span> <span class="cn">NULL</span>, breaks <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
+<span><span class="fu">mcmc_rhat_hist</span><span class="op">(</span><span class="va">rhat</span>, <span class="va">...</span>, binwidth <span class="op">=</span> <span class="cn">NULL</span>, bins <span class="op">=</span> <span class="cn">NULL</span>, breaks <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">mcmc_rhat_data</span><span class="op">(</span><span class="va">rhat</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">mcmc_neff</span><span class="op">(</span><span class="va">ratio</span>, <span class="va">...</span>, size <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">mcmc_neff_hist</span><span class="op">(</span><span class="va">ratio</span>, <span class="va">...</span>, binwidth <span class="op">=</span> <span class="cn">NULL</span>, breaks <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
+<span><span class="fu">mcmc_neff_hist</span><span class="op">(</span><span class="va">ratio</span>, <span class="va">...</span>, binwidth <span class="op">=</span> <span class="cn">NULL</span>, bins <span class="op">=</span> <span class="cn">NULL</span>, breaks <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">mcmc_neff_data</span><span class="op">(</span><span class="va">ratio</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
@@ -168,6 +168,11 @@ default size (for <code>mcmc_rhat()</code>, <code>mcmc_neff()</code>) or
 
 
 <dt>binwidth</dt>
+<dd><p>Passed to <code><a href="https://ggplot2.tidyverse.org/reference/geom_histogram.html" class="external-link">ggplot2::geom_histogram()</a></code> to override
+the default binwidth.</p></dd>
+
+
+<dt>bins</dt>
 <dd><p>Passed to <code><a href="https://ggplot2.tidyverse.org/reference/geom_histogram.html" class="external-link">ggplot2::geom_histogram()</a></code> to override
 the default binwidth.</p></dd>
 
@@ -351,7 +356,7 @@ using the No-U-Turn-Sampler.</p></li>
 <span class="r-in"><span><span class="co"># Example using rstanarm model (requires rstanarm package)</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://mc-stan.org/rstanarm/" class="external-link">rstanarm</a></span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: Rcpp</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> This is rstanarm version 2.21.3</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> This is rstanarm version 2.26.1</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> - See https://mc-stan.org/rstanarm/articles/priors for changes to default priors!</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> - Default priors may change, so it's safest to specify priors, even if equivalent to the defaults.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> - For execution on a local, multicore CPU with excess RAM we recommend calling</span>
@@ -360,7 +365,11 @@ using the No-U-Turn-Sampler.</p></li>
 <span class="r-in"><span><span class="co"># intentionally use small 'iter' so there are some</span></span></span>
 <span class="r-in"><span><span class="co"># problems with rhat and neff for demonstration</span></span></span>
 <span class="r-in"><span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://mc-stan.org/rstanarm/reference/stan_glm.html" class="external-link">stan_glm</a></span><span class="op">(</span><span class="va">mpg</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">mtcars</span>, iter <span class="op">=</span> <span class="fl">50</span>, refresh <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>The largest R-hat is 1.36, indicating chains have not mixed.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>There were 5 divergent transitions after warmup. See</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> https://mc-stan.org/misc/warnings.html#divergent-transitions-after-warmup</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> to find out why this is a problem and how to eliminate them.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Examine the pairs() plot to diagnose sampling problems</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>The largest R-hat is 1.28, indicating chains have not mixed.</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> Running the chains for more iterations may help. See</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> https://mc-stan.org/misc/warnings.html#r-hat</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Bulk Effective Samples Size (ESS) is too low, indicating posterior means and medians may be unreliable.</span>
@@ -414,7 +423,7 @@ using the No-U-Turn-Sampler.</p></li>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>
