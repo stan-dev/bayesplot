@@ -1,4 +1,6 @@
-<!-- See http://style.tidyverse.org/news.html for advice on writing news -->
+# bayesplot 1.11.0.9000
+
+Items for next release go here
 
 # bayesplot 1.11.0
 
