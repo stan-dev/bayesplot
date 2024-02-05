@@ -49,10 +49,11 @@
 #'    both, depending on the `y_draw` argument.
 #'   }
 #'   \item{`ppc_pit_ecdf()`, `ppc_pit_ecdf_grouped()`}{
-#'    The ECDF of the empirical PIT values of `y` computed with respect to the
-#'    corresponding `yrep` values. `100 * prob`% central simultaneous confidence
-#'    intervals are provided to asses if `y` and `yrep` originate from the same
-#'    distribution. The PIT values can also be provided directly as `pit`.
+#'    The PIT-ECDF of the empirical PIT values of `y` computed with respect to
+#'    the corresponding `yrep` values. `100 * prob`% central simultaneous
+#'    confidence intervals are provided to asses if `y` and `yrep` originate
+#'    from the same distribution. The PIT values can also be provided directly
+#'    as `pit`.
 #'    See Säilynoja et al. (2021) for more details.}
 #' }
 #'
@@ -73,8 +74,8 @@
 #' # ppc_ecdf_overlay with continuous data (set discrete=TRUE if discrete data)
 #' ppc_ecdf_overlay(y, yrep[sample(nrow(yrep), 25), ])
 #'
-#' # ECDF and ECDF difference plot of the PIT values of y compared to yrep
-#' # with 99% simultaneous confidence bands.
+#' # PIT-ECDF and PIT-ECDF difference plot of the PIT values of y compared to
+#' # yrep with 99% simultaneous confidence bands.
 #' ppc_pit_ecdf(y, yrep, prob = 0.99, plot_diff = FALSE)
 #' ppc_pit_ecdf(y, yrep, prob = 0.99, plot_diff = TRUE)
 #' }
@@ -107,9 +108,9 @@
 #' ppc_ecdf_overlay_grouped(y, yrep[1:25, ], group = group)
 #'
 #' \donttest{
-#' # ECDF difference plots of the PIT values by group
+#' # PIT-ECDF plots of the PIT values by group
 #' # with 99% simultaneous confidence bands.
-#' ppc_pit_ecdf_grouped(y, yrep, group=group, prob=0.99, plot_diff = TRUE)
+#' ppc_pit_ecdf_grouped(y, yrep, group=group, prob=0.99)
 #' }
 #'
 #' \donttest{
@@ -612,7 +613,7 @@ ppc_pit_ecdf <- function(y,
         ) %>%
       unlist()
     if (is.null(K)) {
-      K <- nrow(yrep) + 1
+      K <- min(nrow(yrep) + 1, 1000)
     }
   } else {
     inform("'pit' specified so ignoring 'y', and 'yrep' if specified.")
@@ -631,7 +632,7 @@ ppc_pit_ecdf <- function(y,
   lims <- ecdf_intervals(gamma = gamma, N = N, K = K)
   ggplot() +
     aes(
-      x = 1:K / K,
+      x = seq(0,1,length.out = K),
       y = ecdf(pit)(seq(0, 1, length.out = K)) -
           (plot_diff == TRUE) * seq(0, 1, length.out = K),
       color = "y"
@@ -679,7 +680,7 @@ ppc_pit_ecdf_grouped <-
           ) %>%
         unlist()
       if (is.null(K)) {
-        K <- nrow(yrep) + 1
+        K <- min(nrow(yrep) + 1, 1000)
       }
     } else {
       inform("'pit' specified so ignoring 'y' and 'yrep' if specified.")
@@ -691,7 +692,7 @@ ppc_pit_ecdf_grouped <-
       N_g <- sum(group == g)
       adjust_gamma(
         N = N_g,
-        K = min(N_g, K),
+        K = ifelse(is.null(K), N_g, K),
         prob = prob,
         interpolate_adj = interpolate_adj
       )
@@ -700,21 +701,23 @@ ppc_pit_ecdf_grouped <-
 
     data <- data.frame(pit = pit, group = group) %>%
       group_by(group) %>%
-      dplyr::group_map(~ data.frame(
-        ecdf_value = ecdf(.x$pit)(seq(0, 1, length.out = min(nrow(.x), K))),
-        group = .y[1],
-        lims_upper = ecdf_intervals(
-          gamma = gammas[[unlist(.y[1])]],
-          N = nrow(.x),
-          K = min(nrow(.x), K)
-        )$upper[-1] / nrow(.x),
-        lims_lower = ecdf_intervals(
-          gamma = gammas[[unlist(.y[1])]],
-          N = nrow(.x),
-          K = min(nrow(.x), K)
-        )$lower[-1] / nrow(.x),
-        x = seq(0, 1, length.out = min(nrow(.x), K))
-      )) %>%
+      dplyr::group_map(
+        ~ data.frame(
+          ecdf_value = ecdf(.x$pit)(seq(0, 1, length.out = ifelse(is.null(K), nrow(.x), K))),
+          group = .y[1],
+          lims_upper = ecdf_intervals(
+            gamma = gammas[[unlist(.y[1])]],
+            N = nrow(.x),
+            K = ifelse(is.null(K), nrow(.x), K)
+          )$upper[-1] / nrow(.x),
+          lims_lower = ecdf_intervals(
+            gamma = gammas[[unlist(.y[1])]],
+            N = nrow(.x),
+            K = ifelse(is.null(K), nrow(.x), K)
+          )$lower[-1] / nrow(.x),
+          x = seq(0, 1, length.out = ifelse(is.null(K), nrow(.x), K))
+        )
+      ) %>%
       dplyr::bind_rows()
 
     ggplot(data) +

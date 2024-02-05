@@ -319,7 +319,7 @@ adjust_gamma <- function(N,
     abort("Value of 'prob' must be in (0,1).")
   }
   if (is.null(interpolate_adj)) {
-    if (K <= 200) {
+    if (K <= 200 || N < 100) {
       interpolate_adj <- FALSE
     } else {
       interpolate_adj <- TRUE
