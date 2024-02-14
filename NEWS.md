@@ -1,6 +1,6 @@
-# bayesplot 1.11.0.9000
+# bayesplot 1.11.1
 
-Items for next release go here
+* Limit maximum number of evaluation points in `ppc_pit_ecdf` functions by default to 1000. by @TeemuSailynoja in #318
 
 # bayesplot 1.11.0
 
