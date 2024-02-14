@@ -3,7 +3,7 @@
 #'  makes computing the confidence bands faster. For `ppc_pit_ecdf` and
 #'  `ppc_pit_ecdf_grouped`, if PIT values are supplied, defaults to
 #'  `length(pit)`, otherwise yrep determines the maximum accuracy of the
-#'  estimated PIT values and `Ḱ` is set to `min(nrow(yrep) + 1, 1000)`. For
+#'  estimated PIT values and `K` is set to `min(nrow(yrep) + 1, 1000)`. For
 #'  `mcmc_rank_ecdf`, defaults to the number of iterations per chain in `x`.
 #' @param prob The desired simultaneous coverage level of the bands around the
 #'   ECDF. A value in (0,1).

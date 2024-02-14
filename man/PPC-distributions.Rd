@@ -216,7 +216,7 @@ points for the PIT-ECDF. Reducing K when using \code{interpolate_adj = FALSE}
 makes computing the confidence bands faster. For \code{ppc_pit_ecdf} and
 \code{ppc_pit_ecdf_grouped}, if PIT values are supplied, defaults to
 \code{length(pit)}, otherwise yrep determines the maximum accuracy of the
-estimated PIT values and \code{Ḱ} is set to \code{min(nrow(yrep) + 1, 1000)}. For
+estimated PIT values and \code{K} is set to \code{min(nrow(yrep) + 1, 1000)}. For
 \code{mcmc_rank_ecdf}, defaults to the number of iterations per chain in \code{x}.}
 
 \item{prob}{The desired simultaneous coverage level of the bands around the
