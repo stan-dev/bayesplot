@@ -237,12 +237,9 @@
 <polyline points='16.90,388.80 19.89,388.80 ' style='stroke-width: 0.64; stroke: #333333; stroke-linecap: butt;' />
 <polyline points='16.90,347.51 19.89,347.51 ' style='stroke-width: 0.64; stroke: #333333; stroke-linecap: butt;' />
 <text x='330.03' y='567.53' style='font-size: 12.00px; font-style: italic; font-family: sans;' textLength='6.00px' lengthAdjust='spacingAndGlyphs'>x</text>
-<rect x='664.17' y='285.31' width='17.14' height='17.14' style='stroke-width: 0.11; stroke: none; stroke-linecap: butt; stroke-linejoin: miter;' />
-<rect x='664.28' y='285.42' width='16.93' height='16.93' style='stroke-width: 0.27; stroke: #011F4B; stroke-linecap: butt; stroke-linejoin: miter;' />
 <line x1='665.83' y1='293.88' x2='679.65' y2='293.88' style='stroke-width: 1.07; stroke: #011F4B; stroke-linecap: butt;' />
 <rect x='664.17' y='302.59' width='17.14' height='17.14' style='stroke-width: 0.11; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #D1E1EC; fill-opacity: 0.33;' />
 <rect x='664.28' y='302.70' width='16.93' height='16.93' style='stroke-width: 0.27; stroke: #B3CDE0; stroke-linecap: butt; stroke-linejoin: miter; fill: #D1E1EC;' />
-<line x1='665.83' y1='311.16' x2='679.65' y2='311.16' style='stroke-width: 1.07; stroke: #B3CDE0; stroke-linecap: butt;' />
 <text x='687.36' y='295.97' style='font-size: 13.00px; font-style: italic; font-family: sans;' textLength='6.51px' lengthAdjust='spacingAndGlyphs'>y</text>
 <text x='687.36' y='312.45' style='font-size: 13.00px; font-style: italic; font-family: sans;' textLength='6.51px' lengthAdjust='spacingAndGlyphs'>y</text>
 <text x='694.89' y='314.85' style='font-size: 9.10px; font-family: sans;' textLength='3.03px' lengthAdjust='spacingAndGlyphs'>r</text>

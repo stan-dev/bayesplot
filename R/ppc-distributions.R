@@ -550,7 +550,6 @@ ppc_violin_grouped <-
     args_violin_y <- list(
       data = function(x) dplyr::filter(x, .data$is_y),
       aes(fill = "y", color = "y"),
-      show.legend = FALSE,
       alpha = 0
     )
 
@@ -561,8 +560,7 @@ ppc_violin_grouped <-
       alpha = y_alpha,
       size = y_size,
       width = y_jitter,
-      height = 0,
-      show.legend = FALSE
+      height = 0
     )
 
     violin_y_func <- if (y_violin) geom_violin else geom_ignore

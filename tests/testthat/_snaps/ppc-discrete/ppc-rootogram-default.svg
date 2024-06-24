@@ -60,11 +60,11 @@
 <text transform='translate(16.90,281.40) rotate(-90)' style='font-size: 12.00px; font-family: sans;' textLength='6.67px' lengthAdjust='spacingAndGlyphs'>u</text>
 <text transform='translate(16.90,274.73) rotate(-90)' style='font-size: 12.00px; font-family: sans;' textLength='6.67px' lengthAdjust='spacingAndGlyphs'>n</text>
 <text transform='translate(16.90,268.06) rotate(-90)' style='font-size: 12.00px; font-family: sans;' textLength='3.33px' lengthAdjust='spacingAndGlyphs'>t</text>
-<rect x='628.41' y='263.58' width='17.28' height='17.28' style='stroke-width: 0.75; stroke: none; fill: #03396C; fill-opacity: 0.40;' />
-<line x1='630.14' y1='272.22' x2='643.96' y2='272.22' style='stroke-width: 2.13; stroke: #011F4B; stroke-linecap: butt;' />
-<text x='651.67' y='276.69' style='font-size: 13.00px; font-family: sans;' textLength='54.22px' lengthAdjust='spacingAndGlyphs'>Expected</text>
-<rect x='628.76' y='289.74' width='16.57' height='16.57' style='stroke-width: 0.53; stroke: #B3CDE0; stroke-linecap: butt; stroke-linejoin: miter; fill: #D1E1EC;' />
-<text x='651.67' y='302.50' style='font-size: 13.00px; font-family: sans;' textLength='56.38px' lengthAdjust='spacingAndGlyphs'>Observed</text>
+<rect x='628.76' y='263.93' width='16.57' height='16.57' style='stroke-width: 0.53; stroke: #B3CDE0; stroke-linecap: butt; stroke-linejoin: miter; fill: #D1E1EC;' />
+<text x='651.67' y='276.69' style='font-size: 13.00px; font-family: sans;' textLength='56.38px' lengthAdjust='spacingAndGlyphs'>Observed</text>
+<rect x='628.41' y='302.45' width='17.28' height='17.28' style='stroke-width: 0.75; stroke: none; fill: #03396C; fill-opacity: 0.40;' />
+<line x1='630.14' y1='311.09' x2='643.96' y2='311.09' style='stroke-width: 2.13; stroke: #011F4B; stroke-linecap: butt;' />
+<text x='651.67' y='315.57' style='font-size: 13.00px; font-family: sans;' textLength='54.22px' lengthAdjust='spacingAndGlyphs'>Expected</text>
 <text x='33.21' y='15.89' style='font-size: 14.40px; font-family: sans;' textLength='153.70px' lengthAdjust='spacingAndGlyphs'>ppc_rootogram (default)</text>
 </g>
 </svg>

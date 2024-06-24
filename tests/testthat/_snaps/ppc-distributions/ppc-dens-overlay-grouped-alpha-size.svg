@@ -222,10 +222,8 @@
 <text x='575.79' y='568.03' text-anchor='middle' style='font-size: 9.60px; fill: #4D4D4D; font-family: sans;' textLength='5.34px' lengthAdjust='spacingAndGlyphs'>2</text>
 <polyline points='8.97,279.65 8.97,44.09 ' style='stroke-width: 0.85; stroke-linecap: butt;' />
 <polyline points='8.97,556.04 8.97,320.49 ' style='stroke-width: 0.85; stroke-linecap: butt;' />
-<line x1='665.83' y1='299.79' x2='679.65' y2='299.79' style='stroke-width: 2.13; stroke: #011F4B; stroke-opacity: 0.20; stroke-linecap: butt;' />
 <line x1='665.83' y1='299.79' x2='679.65' y2='299.79' style='stroke-width: 2.13; stroke: #011F4B;' />
 <line x1='665.83' y1='317.07' x2='679.65' y2='317.07' style='stroke-width: 2.13; stroke: #B3CDE0; stroke-opacity: 0.20; stroke-linecap: butt;' />
-<line x1='665.83' y1='317.07' x2='679.65' y2='317.07' style='stroke-width: 2.13; stroke: #B3CDE0;' />
 <text x='687.36' y='301.88' style='font-size: 13.00px; font-style: italic; font-family: sans;' textLength='6.51px' lengthAdjust='spacingAndGlyphs'>y</text>
 <text x='687.36' y='318.36' style='font-size: 13.00px; font-style: italic; font-family: sans;' textLength='6.51px' lengthAdjust='spacingAndGlyphs'>y</text>
 <text x='694.89' y='320.77' style='font-size: 9.10px; font-family: sans;' textLength='3.03px' lengthAdjust='spacingAndGlyphs'>r</text>

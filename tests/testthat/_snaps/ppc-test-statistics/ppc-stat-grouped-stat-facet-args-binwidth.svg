@@ -141,22 +141,22 @@
 <polyline points='8.97,279.65 8.97,182.29 ' style='stroke-width: 0.85; stroke-linecap: butt;' />
 <polyline points='8.97,417.85 8.97,320.49 ' style='stroke-width: 0.85; stroke-linecap: butt;' />
 <polyline points='8.97,556.04 8.97,458.68 ' style='stroke-width: 0.85; stroke-linecap: butt;' />
-<text x='635.91' y='279.91' style='font-size: 12.00px; font-style: italic; font-family: sans;' textLength='7.33px' lengthAdjust='spacingAndGlyphs'>T</text>
-<text x='647.26' y='279.91' style='font-size: 12.00px; font-family: sans;' textLength='9.32px' lengthAdjust='spacingAndGlyphs'>=</text>
-<text x='659.35' y='279.91' style='font-size: 12.00px; font-family: sans;' textLength='48.69px' lengthAdjust='spacingAndGlyphs'>stats::var</text>
-<rect x='636.26' y='281.63' width='16.57' height='18.30' style='stroke-width: 0.53; stroke: #B3CDE0; stroke-linecap: butt; stroke-linejoin: miter; fill: #D1E1EC;' />
-<text x='659.17' y='294.64' style='font-size: 13.00px; font-style: italic; font-family: sans;' textLength='7.94px' lengthAdjust='spacingAndGlyphs'>T</text>
-<text x='668.45' y='294.64' style='font-size: 16.25px; font-family: sans;' textLength='5.41px' lengthAdjust='spacingAndGlyphs'>(</text>
-<text x='673.86' y='294.64' style='font-size: 13.00px; font-style: italic; font-family: sans;' textLength='6.51px' lengthAdjust='spacingAndGlyphs'>y</text>
-<text x='681.40' y='297.04' style='font-size: 9.10px; font-family: sans;' textLength='3.03px' lengthAdjust='spacingAndGlyphs'>r</text>
-<text x='684.43' y='297.04' style='font-size: 9.10px; font-family: sans;' textLength='5.06px' lengthAdjust='spacingAndGlyphs'>e</text>
-<text x='689.49' y='297.04' style='font-size: 9.10px; font-family: sans;' textLength='5.06px' lengthAdjust='spacingAndGlyphs'>p</text>
-<text x='694.55' y='294.64' style='font-size: 16.25px; font-family: sans;' textLength='5.40px' lengthAdjust='spacingAndGlyphs'>)</text>
-<line x1='644.55' y1='329.73' x2='644.55' y2='312.24' style='stroke-width: 3.20; stroke: #011F4B; stroke-linecap: butt;' />
-<text x='659.17' y='325.60' style='font-size: 13.00px; font-style: italic; font-family: sans;' textLength='7.94px' lengthAdjust='spacingAndGlyphs'>T</text>
-<text x='668.45' y='325.60' style='font-size: 16.25px; font-family: sans;' textLength='5.41px' lengthAdjust='spacingAndGlyphs'>(</text>
-<text x='673.86' y='325.60' style='font-size: 13.00px; font-style: italic; font-family: sans;' textLength='6.51px' lengthAdjust='spacingAndGlyphs'>y</text>
-<text x='681.40' y='325.60' style='font-size: 16.25px; font-family: sans;' textLength='5.40px' lengthAdjust='spacingAndGlyphs'>)</text>
+<text x='635.91' y='276.93' style='font-size: 12.00px; font-style: italic; font-family: sans;' textLength='7.33px' lengthAdjust='spacingAndGlyphs'>T</text>
+<text x='647.26' y='276.93' style='font-size: 12.00px; font-family: sans;' textLength='9.32px' lengthAdjust='spacingAndGlyphs'>=</text>
+<text x='659.35' y='276.93' style='font-size: 12.00px; font-family: sans;' textLength='48.69px' lengthAdjust='spacingAndGlyphs'>stats::var</text>
+<rect x='636.26' y='284.62' width='16.57' height='18.30' style='stroke-width: 0.53; stroke: #B3CDE0; stroke-linecap: butt; stroke-linejoin: miter; fill: #D1E1EC;' />
+<text x='659.17' y='297.63' style='font-size: 13.00px; font-style: italic; font-family: sans;' textLength='7.94px' lengthAdjust='spacingAndGlyphs'>T</text>
+<text x='668.45' y='297.63' style='font-size: 16.25px; font-family: sans;' textLength='5.41px' lengthAdjust='spacingAndGlyphs'>(</text>
+<text x='673.86' y='297.63' style='font-size: 13.00px; font-style: italic; font-family: sans;' textLength='6.51px' lengthAdjust='spacingAndGlyphs'>y</text>
+<text x='681.40' y='300.03' style='font-size: 9.10px; font-family: sans;' textLength='3.03px' lengthAdjust='spacingAndGlyphs'>r</text>
+<text x='684.43' y='300.03' style='font-size: 9.10px; font-family: sans;' textLength='5.06px' lengthAdjust='spacingAndGlyphs'>e</text>
+<text x='689.49' y='300.03' style='font-size: 9.10px; font-family: sans;' textLength='5.06px' lengthAdjust='spacingAndGlyphs'>p</text>
+<text x='694.55' y='297.63' style='font-size: 16.25px; font-family: sans;' textLength='5.40px' lengthAdjust='spacingAndGlyphs'>)</text>
+<line x1='644.55' y1='332.71' x2='644.55' y2='315.22' style='stroke-width: 3.20; stroke: #011F4B; stroke-linecap: butt;' />
+<text x='659.17' y='328.59' style='font-size: 13.00px; font-style: italic; font-family: sans;' textLength='7.94px' lengthAdjust='spacingAndGlyphs'>T</text>
+<text x='668.45' y='328.59' style='font-size: 16.25px; font-family: sans;' textLength='5.41px' lengthAdjust='spacingAndGlyphs'>(</text>
+<text x='673.86' y='328.59' style='font-size: 13.00px; font-style: italic; font-family: sans;' textLength='6.51px' lengthAdjust='spacingAndGlyphs'>y</text>
+<text x='681.40' y='328.59' style='font-size: 16.25px; font-family: sans;' textLength='5.40px' lengthAdjust='spacingAndGlyphs'>)</text>
 <text x='8.97' y='15.89' style='font-size: 14.40px; font-family: sans;' textLength='288.20px' lengthAdjust='spacingAndGlyphs'>ppc_stat_grouped (stat, facet_args, binwidth)</text>
 </g>
 </svg>

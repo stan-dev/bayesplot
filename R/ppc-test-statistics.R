@@ -216,7 +216,7 @@ ppc_stat_freqpoly <-
       geom_vline(
         data = dplyr::filter(data, .data$variable == "y"),
         mapping = aes(xintercept = .data$value, color = "y"),
-        show.legend = FALSE,
+        show.legend = TRUE,
         linewidth = 1
       ) +
       scale_color_ppc(

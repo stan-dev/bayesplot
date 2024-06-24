@@ -132,8 +132,8 @@
 <text x='694.89' y='292.69' style='font-size: 9.10px; font-family: sans;' textLength='3.03px' lengthAdjust='spacingAndGlyphs'>r</text>
 <text x='697.92' y='292.69' style='font-size: 9.10px; font-family: sans;' textLength='5.06px' lengthAdjust='spacingAndGlyphs'>e</text>
 <text x='702.98' y='292.69' style='font-size: 9.10px; font-family: sans;' textLength='5.06px' lengthAdjust='spacingAndGlyphs'>p</text>
-<rect x='664.81' y='306.87' width='15.86' height='15.86' style='stroke-width: 1.07; stroke: #B3CDE0; stroke-linecap: butt; stroke-linejoin: miter; fill: #D1E1EC;' />
-<text x='687.36' y='316.89' style='font-size: 13.00px; font-style: italic; font-family: sans;' textLength='6.51px' lengthAdjust='spacingAndGlyphs'>y</text>
+<rect x='664.81' y='319.94' width='15.86' height='15.86' style='stroke-width: 1.07; stroke: #B3CDE0; stroke-linecap: butt; stroke-linejoin: miter; fill: #D1E1EC;' />
+<text x='687.36' y='329.96' style='font-size: 13.00px; font-style: italic; font-family: sans;' textLength='6.51px' lengthAdjust='spacingAndGlyphs'>y</text>
 <text x='43.78' y='15.89' style='font-size: 14.40px; font-family: sans;' textLength='176.94px' lengthAdjust='spacingAndGlyphs'>ppc_bars_grouped (default)</text>
 </g>
 </svg>
