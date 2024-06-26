@@ -109,7 +109,7 @@ test_that("mcmc_acf & mcmc_acf_bar throw correct errors", {
 test_that("mcmc_rhat renders correctly", {
   testthat::skip_on_cran()
   testthat::skip_if_not_installed("vdiffr")
-  skip_if_not_r_release()
+  skip_on_r_oldrel()
 
   rhats <- seq(from = 1, to = 1.20, length.out = 10)
 
@@ -123,7 +123,7 @@ test_that("mcmc_rhat renders correctly", {
 test_that("mcmc_rhat_hist renders correctly", {
   testthat::skip_on_cran()
   testthat::skip_if_not_installed("vdiffr")
-  skip_if_not_r_release()
+  skip_on_r_oldrel()
 
   rhats <- seq(from = 1, to = 1.20, length.out = 10)
 
@@ -138,7 +138,7 @@ test_that("mcmc_rhat_hist renders correctly", {
 test_that("mcmc_neff renders correctly", {
   testthat::skip_on_cran()
   testthat::skip_if_not_installed("vdiffr")
-  skip_if_not_r_release()
+  skip_on_r_oldrel()
 
   neffs <- seq(from = 0, to = 1, length.out = 20)
 
@@ -149,7 +149,7 @@ test_that("mcmc_neff renders correctly", {
 test_that("mcmc_neff_hist renders correctly", {
   testthat::skip_on_cran()
   testthat::skip_if_not_installed("vdiffr")
-  skip_if_not_r_release()
+  skip_on_r_oldrel()
 
   neffs <- seq(from = 0, to = 1, length.out = 20)
 
@@ -163,7 +163,7 @@ test_that("mcmc_neff_hist renders correctly", {
 test_that("mcmc_acf renders correctly", {
   testthat::skip_on_cran()
   testthat::skip_if_not_installed("vdiffr")
-  skip_if_not_r_release()
+  skip_on_r_oldrel()
 
   p_base <- mcmc_acf(vdiff_dframe)
   vdiffr::expect_doppelganger("mcmc_acf (default)", p_base)
@@ -175,7 +175,7 @@ test_that("mcmc_acf renders correctly", {
 test_that("mcmc_acf_bar renders correctly", {
   testthat::skip_on_cran()
   testthat::skip_if_not_installed("vdiffr")
-  skip_if_not_r_release()
+  skip_on_r_oldrel()
 
   p_base <- mcmc_acf_bar(vdiff_dframe)
   vdiffr::expect_doppelganger("mcmc_acf_bar (default)", p_base)

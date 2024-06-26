@@ -124,7 +124,7 @@ test_that("mcmc_* throws error if 1 chain but multiple chains required", {
 test_that("mcmc_hist renders correctly", {
   testthat::skip_on_cran()
   testthat::skip_if_not_installed("vdiffr")
-  skip_if_not_r_release()
+  skip_on_r_oldrel()
 
   p_base <- mcmc_hist(vdiff_dframe, binwidth = 0.1)
   vdiffr::expect_doppelganger("mcmc_hist (default)", p_base)
@@ -139,7 +139,7 @@ test_that("mcmc_hist renders correctly", {
 test_that("mcmc_dens renders correctly", {
   testthat::skip_on_cran()
   testthat::skip_if_not_installed("vdiffr")
-  skip_if_not_r_release()
+  skip_on_r_oldrel()
 
   p_base <- mcmc_dens(vdiff_dframe)
   vdiffr::expect_doppelganger("mcmc_dens (default)", p_base)
@@ -151,7 +151,7 @@ test_that("mcmc_dens renders correctly", {
 test_that("mcmc_dens_overlay renders correctly", {
   testthat::skip_on_cran()
   testthat::skip_if_not_installed("vdiffr")
-  skip_if_not_r_release()
+  skip_on_r_oldrel()
 
   p_base <- mcmc_dens_overlay(vdiff_dframe_chains)
   vdiffr::expect_doppelganger("mcmc_dens_overlay (default)", p_base)
@@ -160,7 +160,7 @@ test_that("mcmc_dens_overlay renders correctly", {
 test_that("mcmc_dens_chains renders correctly", {
   testthat::skip_on_cran()
   testthat::skip_if_not_installed("vdiffr")
-  skip_if_not_r_release()
+  skip_on_r_oldrel()
 
   p_base <- mcmc_dens_chains(vdiff_dframe_chains)
   vdiffr::expect_doppelganger("mcmc_dens_chains (default)", p_base)
@@ -169,7 +169,7 @@ test_that("mcmc_dens_chains renders correctly", {
 test_that("mcmc_hist_by_chain renders correctly", {
   testthat::skip_on_cran()
   testthat::skip_if_not_installed("vdiffr")
-  skip_if_not_r_release()
+  skip_on_r_oldrel()
 
   p_base <- mcmc_hist_by_chain(vdiff_dframe_chains, binwidth = 0.5)
   vdiffr::expect_doppelganger("mcmc_hist_by_chain (default)", p_base)
@@ -178,7 +178,7 @@ test_that("mcmc_hist_by_chain renders correctly", {
 test_that("mcmc_violin renders correctly", {
   testthat::skip_on_cran()
   testthat::skip_if_not_installed("vdiffr")
-  skip_if_not_r_release()
+  skip_on_r_oldrel()
 
   p_base <- mcmc_violin(vdiff_dframe_chains)
   vdiffr::expect_doppelganger("mcmc_violin (default)", p_base)

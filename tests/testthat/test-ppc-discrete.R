@@ -104,7 +104,7 @@ test_that("ppc_rootogram errors if y/yrep not counts", {
 test_that("ppc_bars renders correctly", {
   testthat::skip_on_cran()
   testthat::skip_if_not_installed("vdiffr")
-  skip_if_not_r_release()
+  skip_on_r_oldrel()
 
   p_base <- ppc_bars(vdiff_y2, vdiff_yrep2)
   vdiffr::expect_doppelganger("ppc_bars (default)", p_base)
@@ -138,7 +138,7 @@ test_that("ppc_bars renders correctly", {
 test_that("ppc_bars_grouped renders correctly", {
   testthat::skip_on_cran()
   testthat::skip_if_not_installed("vdiffr")
-  skip_if_not_r_release()
+  skip_on_r_oldrel()
 
   p_base <- ppc_bars_grouped(vdiff_y2, vdiff_yrep2, vdiff_group2)
   vdiffr::expect_doppelganger("ppc_bars_grouped (default)", p_base)
@@ -160,7 +160,7 @@ test_that("ppc_bars_grouped renders correctly", {
 test_that("ppc_rootogram renders correctly", {
   testthat::skip_on_cran()
   testthat::skip_if_not_installed("vdiffr")
-  skip_if_not_r_release()
+  skip_on_r_oldrel()
 
   p_base <- ppc_rootogram(vdiff_y2, vdiff_yrep2)
   vdiffr::expect_doppelganger("ppc_rootogram (default)", p_base)

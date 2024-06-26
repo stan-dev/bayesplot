@@ -35,7 +35,7 @@ test_that("ppc_scatter_avg_grouped returns a ggplot object", {
 test_that("ppc_scatter renders correctly", {
   testthat::skip_on_cran()
   testthat::skip_if_not_installed("vdiffr")
-  skip_if_not_r_release()
+  skip_on_r_oldrel()
 
   p_base <- ppc_scatter(vdiff_y, vdiff_yrep[1:6, ])
   vdiffr::expect_doppelganger("ppc_scatter (default)", p_base)
@@ -55,7 +55,7 @@ test_that("ppc_scatter renders correctly", {
 test_that("ppc_scatter_avg renders correctly", {
   testthat::skip_on_cran()
   testthat::skip_if_not_installed("vdiffr")
-  skip_if_not_r_release()
+  skip_on_r_oldrel()
 
   p_base <- ppc_scatter_avg(vdiff_y, vdiff_yrep)
   vdiffr::expect_doppelganger("ppc_scatter_avg (default)", p_base)
@@ -75,7 +75,7 @@ test_that("ppc_scatter_avg renders correctly", {
 test_that("ppc_scatter_avg_grouped renders correctly", {
   testthat::skip_on_cran()
   testthat::skip_if_not_installed("vdiffr")
-  skip_if_not_r_release()
+  skip_on_r_oldrel()
 
   p_base <- ppc_scatter_avg_grouped(vdiff_y, vdiff_yrep, vdiff_group)
   vdiffr::expect_doppelganger("ppc_scatter_avg_grouped (default)", p_base)

@@ -66,7 +66,7 @@ test_that("bin_errors works for edge cases", {
 test_that("ppc_error_hist renders correctly", {
   testthat::skip_on_cran()
   testthat::skip_if_not_installed("vdiffr")
-  skip_if_not_r_release()
+  skip_on_r_oldrel()
 
   p_base <- ppc_error_hist(vdiff_y, vdiff_yrep[1:3, ])
   vdiffr::expect_doppelganger("ppc_error_hist (default)", p_base)
@@ -75,7 +75,7 @@ test_that("ppc_error_hist renders correctly", {
 test_that("ppc_error_hist_grouped renders correctly", {
   testthat::skip_on_cran()
   testthat::skip_if_not_installed("vdiffr")
-  skip_if_not_r_release()
+  skip_on_r_oldrel()
 
   p_base <- ppc_error_hist_grouped(vdiff_y, vdiff_yrep[1:3, ], vdiff_group)
   vdiffr::expect_doppelganger("ppc_error_hist_grouped (default)", p_base)
@@ -84,7 +84,7 @@ test_that("ppc_error_hist_grouped renders correctly", {
 test_that("ppc_error_scatter renders correctly", {
   testthat::skip_on_cran()
   testthat::skip_if_not_installed("vdiffr")
-  skip_if_not_r_release()
+  skip_on_r_oldrel()
 
   p_base <- ppc_error_scatter(vdiff_y, vdiff_yrep[1:3, ])
   vdiffr::expect_doppelganger("ppc_error_scatter (default)", p_base)
@@ -93,7 +93,7 @@ test_that("ppc_error_scatter renders correctly", {
 test_that("ppc_error_scatter_avg renders correctly", {
   testthat::skip_on_cran()
   testthat::skip_if_not_installed("vdiffr")
-  skip_if_not_r_release()
+  skip_on_r_oldrel()
 
   p_base <- ppc_error_scatter_avg(vdiff_y, vdiff_yrep)
   vdiffr::expect_doppelganger("ppc_error_scatter_avg (default)", p_base)
@@ -102,7 +102,7 @@ test_that("ppc_error_scatter_avg renders correctly", {
 test_that("ppc_error_scatter_avg_grouped renders correctly", {
   testthat::skip_on_cran()
   testthat::skip_if_not_installed("vdiffr")
-  skip_if_not_r_release()
+  skip_on_r_oldrel()
 
   p_base <- ppc_error_scatter_avg_grouped(vdiff_y, vdiff_yrep, vdiff_group)
   vdiffr::expect_doppelganger("ppc_error_scatter_avg_grouped (default)", p_base)
@@ -111,7 +111,7 @@ test_that("ppc_error_scatter_avg_grouped renders correctly", {
 test_that("ppc_error_scatter_avg_vs_x renders correctly", {
   testthat::skip_on_cran()
   testthat::skip_if_not_installed("vdiffr")
-  skip_if_not_r_release()
+  skip_on_r_oldrel()
 
   p_base <- ppc_error_scatter_avg_vs_x(vdiff_y, vdiff_yrep, x = seq_along(vdiff_y))
   vdiffr::expect_doppelganger("ppc_error_scatter_avg_vs_x (default)", p_base)
@@ -120,7 +120,7 @@ test_that("ppc_error_scatter_avg_vs_x renders correctly", {
 test_that("ppc_error_binned renders correctly", {
   testthat::skip_on_cran()
   testthat::skip_if_not_installed("vdiffr")
-  skip_if_not_r_release()
+  skip_on_r_oldrel()
 
   rbeta2 <- function(n, mu, phi) {
     a <- mu * phi

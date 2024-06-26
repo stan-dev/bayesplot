@@ -108,7 +108,7 @@ test_that("ppc_intervals_data does math correctly", {
 test_that("ppc_intervals renders correctly", {
   testthat::skip_on_cran()
   testthat::skip_if_not_installed("vdiffr")
-  skip_if_not_r_release()
+  skip_on_r_oldrel()
 
   p_base <- ppc_intervals(vdiff_y, vdiff_yrep)
   vdiffr::expect_doppelganger("ppc_intervals (default)", p_base)
@@ -133,7 +133,7 @@ test_that("ppc_intervals renders correctly", {
 test_that("ppc_intervals_grouped renders correctly", {
   testthat::skip_on_cran()
   testthat::skip_if_not_installed("vdiffr")
-  skip_if_not_r_release()
+  skip_on_r_oldrel()
 
   p_base <- ppc_intervals_grouped(vdiff_y, vdiff_yrep, group = vdiff_group)
   vdiffr::expect_doppelganger("ppc_intervals_grouped (default)", p_base)
@@ -159,7 +159,7 @@ test_that("ppc_intervals_grouped renders correctly", {
 test_that("ppc_ribbon renders correctly", {
   testthat::skip_on_cran()
   testthat::skip_if_not_installed("vdiffr")
-  skip_if_not_r_release()
+  skip_on_r_oldrel()
 
   p_base <- ppc_ribbon(vdiff_y, vdiff_yrep)
   vdiffr::expect_doppelganger("ppc_ribbon (default)", p_base)
@@ -193,7 +193,7 @@ test_that("ppc_ribbon renders correctly", {
 test_that("ppc_ribbon_grouped renders correctly", {
   testthat::skip_on_cran()
   testthat::skip_if_not_installed("vdiffr")
-  skip_if_not_r_release()
+  skip_on_r_oldrel()
 
   p_base <- ppc_ribbon_grouped(vdiff_y, vdiff_yrep, group = vdiff_group)
   vdiffr::expect_doppelganger("ppc_ribbon_grouped (default)", p_base)

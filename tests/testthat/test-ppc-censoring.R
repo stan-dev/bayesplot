@@ -32,7 +32,7 @@ test_that("ppc_km_overlay renders correctly", {
   testthat::skip_on_cran()
   testthat::skip_if_not_installed("vdiffr")
   skip_if_not_installed("ggfortify")
-  skip_if_not_r_release()
+  skip_on_r_oldrel()
 
   p_base <- ppc_km_overlay(vdiff_y2, vdiff_yrep2, status_y = vdiff_status_y2)
   vdiffr::expect_doppelganger("ppc_km_overlay (default)", p_base)
@@ -50,7 +50,7 @@ test_that("ppc_km_overlay_grouped renders correctly", {
   testthat::skip_on_cran()
   testthat::skip_if_not_installed("vdiffr")
   skip_if_not_installed("ggfortify")
-  skip_if_not_r_release()
+  skip_on_r_oldrel()
 
   p_base <- ppc_km_overlay_grouped(vdiff_y2, vdiff_yrep2, vdiff_group2,
                                    status_y = vdiff_status_y2)
