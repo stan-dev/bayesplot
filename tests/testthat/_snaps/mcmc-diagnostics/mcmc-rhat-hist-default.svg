@@ -131,21 +131,21 @@
 <text x='579.25' y='549.15' text-anchor='middle' style='font-size: 9.60px; fill: #4D4D4D; font-family: sans;' textLength='18.69px' lengthAdjust='spacingAndGlyphs'>1.20</text>
 <text x='308.17' y='567.53' style='font-size: 12.00px; font-family: sans;' textLength='8.67px' lengthAdjust='spacingAndGlyphs'>R</text>
 <text x='309.69' y='562.39' style='font-size: 12.00px; font-family: sans;' textLength='5.63px' lengthAdjust='spacingAndGlyphs'>^</text>
-<rect x='634.33' y='256.60' width='16.57' height='18.41' style='stroke-width: 0.53; stroke: #B3CDE0; stroke-linecap: butt; stroke-linejoin: miter; fill: #D1E1EC;' />
-<rect x='634.33' y='275.71' width='16.57' height='18.41' style='stroke-width: 0.53; stroke: #005B96; stroke-linecap: butt; stroke-linejoin: miter; fill: #6497B1;' />
-<rect x='634.33' y='294.83' width='16.57' height='16.57' style='stroke-width: 0.53; stroke: #011F4B; stroke-linecap: butt; stroke-linejoin: miter; fill: #03396C;' />
-<text x='657.23' y='272.11' style='font-size: 13.00px; font-family: sans;' textLength='9.39px' lengthAdjust='spacingAndGlyphs'>R</text>
-<text x='658.88' y='266.54' style='font-size: 13.00px; font-family: sans;' textLength='6.10px' lengthAdjust='spacingAndGlyphs'>^</text>
-<text x='669.63' y='272.11' style='font-size: 13.00px; font-family: sans;' textLength='10.10px' lengthAdjust='spacingAndGlyphs'>≤</text>
-<text x='682.74' y='272.11' style='font-size: 13.00px; font-family: sans;' textLength='25.30px' lengthAdjust='spacingAndGlyphs'>1.05</text>
-<text x='657.23' y='291.22' style='font-size: 13.00px; font-family: sans;' textLength='9.39px' lengthAdjust='spacingAndGlyphs'>R</text>
-<text x='658.88' y='285.66' style='font-size: 13.00px; font-family: sans;' textLength='6.10px' lengthAdjust='spacingAndGlyphs'>^</text>
-<text x='669.63' y='291.22' style='font-size: 13.00px; font-family: sans;' textLength='10.10px' lengthAdjust='spacingAndGlyphs'>≤</text>
-<text x='682.74' y='291.22' style='font-size: 13.00px; font-family: sans;' textLength='18.07px' lengthAdjust='spacingAndGlyphs'>1.1</text>
-<text x='657.23' y='310.34' style='font-size: 13.00px; font-family: sans;' textLength='9.39px' lengthAdjust='spacingAndGlyphs'>R</text>
-<text x='658.88' y='304.78' style='font-size: 13.00px; font-family: sans;' textLength='6.10px' lengthAdjust='spacingAndGlyphs'>^</text>
-<text x='669.63' y='310.34' style='font-size: 13.00px; font-family: sans;' textLength='10.09px' lengthAdjust='spacingAndGlyphs'>&gt;</text>
-<text x='682.73' y='310.34' style='font-size: 13.00px; font-family: sans;' textLength='18.07px' lengthAdjust='spacingAndGlyphs'>1.1</text>
+<rect x='634.33' y='253.61' width='16.57' height='18.41' style='stroke-width: 0.53; stroke: #B3CDE0; stroke-linecap: butt; stroke-linejoin: miter; fill: #D1E1EC;' />
+<rect x='634.33' y='272.72' width='16.57' height='18.41' style='stroke-width: 0.53; stroke: #005B96; stroke-linecap: butt; stroke-linejoin: miter; fill: #6497B1;' />
+<rect x='634.33' y='291.84' width='16.57' height='16.57' style='stroke-width: 0.53; stroke: #011F4B; stroke-linecap: butt; stroke-linejoin: miter; fill: #03396C;' />
+<text x='657.23' y='269.12' style='font-size: 13.00px; font-family: sans;' textLength='9.39px' lengthAdjust='spacingAndGlyphs'>R</text>
+<text x='658.88' y='263.55' style='font-size: 13.00px; font-family: sans;' textLength='6.10px' lengthAdjust='spacingAndGlyphs'>^</text>
+<text x='669.63' y='269.12' style='font-size: 13.00px; font-family: sans;' textLength='10.10px' lengthAdjust='spacingAndGlyphs'>≤</text>
+<text x='682.74' y='269.12' style='font-size: 13.00px; font-family: sans;' textLength='25.30px' lengthAdjust='spacingAndGlyphs'>1.05</text>
+<text x='657.23' y='288.23' style='font-size: 13.00px; font-family: sans;' textLength='9.39px' lengthAdjust='spacingAndGlyphs'>R</text>
+<text x='658.88' y='282.67' style='font-size: 13.00px; font-family: sans;' textLength='6.10px' lengthAdjust='spacingAndGlyphs'>^</text>
+<text x='669.63' y='288.23' style='font-size: 13.00px; font-family: sans;' textLength='10.10px' lengthAdjust='spacingAndGlyphs'>≤</text>
+<text x='682.74' y='288.23' style='font-size: 13.00px; font-family: sans;' textLength='18.07px' lengthAdjust='spacingAndGlyphs'>1.1</text>
+<text x='657.23' y='307.36' style='font-size: 13.00px; font-family: sans;' textLength='9.39px' lengthAdjust='spacingAndGlyphs'>R</text>
+<text x='658.88' y='301.79' style='font-size: 13.00px; font-family: sans;' textLength='6.10px' lengthAdjust='spacingAndGlyphs'>^</text>
+<text x='669.63' y='307.36' style='font-size: 13.00px; font-family: sans;' textLength='10.09px' lengthAdjust='spacingAndGlyphs'>&gt;</text>
+<text x='682.73' y='307.36' style='font-size: 13.00px; font-family: sans;' textLength='18.07px' lengthAdjust='spacingAndGlyphs'>1.1</text>
 <text x='8.97' y='15.89' style='font-size: 14.40px; font-family: sans;' textLength='158.48px' lengthAdjust='spacingAndGlyphs'>mcmc_rhat_hist (default)</text>
 </g>
 </svg>

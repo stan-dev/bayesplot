@@ -2614,8 +2614,8 @@
 <polyline points='8.97,556.04 8.97,327.48 ' style='stroke-width: 0.85; stroke-linecap: butt;' />
 <rect x='627.33' y='280.71' width='16.57' height='16.57' style='stroke-width: 0.53; stroke: #B3CDE0; stroke-linecap: butt; stroke-linejoin: miter; fill: #D1E1EC;' />
 <text x='650.23' y='293.47' style='font-size: 13.00px; font-family: sans;' textLength='57.81px' lengthAdjust='spacingAndGlyphs'>Estimated</text>
-<line x1='635.61' y1='323.45' x2='635.61' y2='306.17' style='stroke-width: 3.20; stroke: #011F4B; stroke-linecap: butt;' />
-<text x='650.23' y='319.28' style='font-size: 13.00px; font-family: sans;' textLength='26.73px' lengthAdjust='spacingAndGlyphs'>True</text>
+<line x1='635.61' y1='336.51' x2='635.61' y2='319.23' style='stroke-width: 3.20; stroke: #011F4B; stroke-linecap: butt;' />
+<text x='650.23' y='332.34' style='font-size: 13.00px; font-family: sans;' textLength='26.73px' lengthAdjust='spacingAndGlyphs'>True</text>
 <text x='8.97' y='15.89' style='font-size: 14.40px; font-family: sans;' textLength='181.70px' lengthAdjust='spacingAndGlyphs'>mcmc_recover_hist (default)</text>
 </g>
 </svg>

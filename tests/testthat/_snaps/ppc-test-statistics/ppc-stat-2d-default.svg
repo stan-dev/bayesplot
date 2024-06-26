@@ -82,10 +82,8 @@
 <text x='687.38' y='266.60' style='font-size: 12.00px; font-family: sans;' textLength='3.00px' lengthAdjust='spacingAndGlyphs'> </text>
 <text x='690.38' y='266.60' style='font-size: 12.00px; font-family: sans;' textLength='12.68px' lengthAdjust='spacingAndGlyphs'>sd</text>
 <text x='703.06' y='266.60' style='font-size: 15.00px; font-family: sans;' textLength='4.99px' lengthAdjust='spacingAndGlyphs'>)</text>
-<circle cx='634.55' cy='285.14' r='3.02' style='stroke-width: 0.71; stroke: #011F4B; stroke-opacity: 0.70; fill: #03396C; fill-opacity: 0.70;' />
 <circle cx='634.55' cy='285.14' r='4.53' style='stroke-width: 1.06; stroke: #011F4B; fill: #03396C;' />
 <circle cx='634.55' cy='303.39' r='3.02' style='stroke-width: 0.71; stroke: #B3CDE0; stroke-opacity: 0.70; fill: #D1E1EC; fill-opacity: 0.70;' />
-<circle cx='634.55' cy='303.39' r='4.53' style='stroke-width: 1.06; stroke: #B3CDE0; fill: #D1E1EC;' />
 <text x='649.17' y='289.75' style='font-size: 13.00px; font-style: italic; font-family: sans;' textLength='7.94px' lengthAdjust='spacingAndGlyphs'>T</text>
 <text x='658.45' y='289.75' style='font-size: 16.25px; font-family: sans;' textLength='5.41px' lengthAdjust='spacingAndGlyphs'>(</text>
 <text x='663.87' y='289.75' style='font-size: 13.00px; font-style: italic; font-family: sans;' textLength='6.51px' lengthAdjust='spacingAndGlyphs'>y</text>

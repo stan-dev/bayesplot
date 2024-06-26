@@ -140,10 +140,8 @@
 <text x='326.35' y='568.03' text-anchor='middle' style='font-size: 9.60px; fill: #4D4D4D; font-family: sans;' textLength='13.35px' lengthAdjust='spacingAndGlyphs'>0.5</text>
 <text x='481.93' y='568.03' text-anchor='middle' style='font-size: 9.60px; fill: #4D4D4D; font-family: sans;' textLength='18.69px' lengthAdjust='spacingAndGlyphs'>0.75</text>
 <text x='637.51' y='568.03' text-anchor='middle' style='font-size: 9.60px; fill: #4D4D4D; font-family: sans;' textLength='5.34px' lengthAdjust='spacingAndGlyphs'>1</text>
-<line x1='663.40' y1='290.17' x2='677.22' y2='290.17' style='stroke-width: 0.53; stroke: #011F4B; stroke-opacity: 0.70; stroke-linecap: butt;' />
 <line x1='663.40' y1='290.17' x2='677.22' y2='290.17' style='stroke-width: 2.13; stroke: #011F4B;' />
 <line x1='663.40' y1='307.45' x2='677.22' y2='307.45' style='stroke-width: 0.53; stroke: #B3CDE0; stroke-opacity: 0.70; stroke-linecap: butt;' />
-<line x1='663.40' y1='307.45' x2='677.22' y2='307.45' style='stroke-width: 2.13; stroke: #B3CDE0;' />
 <text x='684.93' y='294.65' style='font-size: 13.00px; font-family: sans;' textLength='20.23px' lengthAdjust='spacingAndGlyphs'>PIT</text>
 <text x='684.93' y='311.93' style='font-size: 13.00px; font-family: sans;' textLength='23.12px' lengthAdjust='spacingAndGlyphs'>Unif</text>
 <text x='8.97' y='15.89' style='font-size: 14.40px; font-family: sans;' textLength='184.93px' lengthAdjust='spacingAndGlyphs'>ppc_loo_pit_overlay (default)</text>
