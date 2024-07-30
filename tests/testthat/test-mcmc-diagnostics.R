@@ -146,6 +146,17 @@ test_that("mcmc_neff renders correctly", {
   vdiffr::expect_doppelganger("mcmc_neff (default)", p_base)
 })
 
+test_that("mcmc_neff renders legend correctly even if some levels missing", {
+  testthat::skip_on_cran()
+  testthat::skip_if_not_installed("vdiffr")
+  skip_on_r_oldrel()
+
+  neffs <- c(0.1, 0.2, 0.3, 0.4) # above 0.5 is missing but should still appear in legend
+
+  p_base <- mcmc_neff(neffs)
+  vdiffr::expect_doppelganger("mcmc_neff (missing levels)", p_base)
+})
+
 test_that("mcmc_neff_hist renders correctly", {
   testthat::skip_on_cran()
   testthat::skip_if_not_installed("vdiffr")
