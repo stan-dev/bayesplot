@@ -1,10 +1,15 @@
 #' PPC test statistics
 #'
-#' The distribution of a (test) statistic `T(yrep)`, or a pair of (test)
-#' statistics, over the simulated datasets in `yrep`, compared to the
-#' observed value `T(y)` computed from the data `y`. See the
-#' **Plot Descriptions** and **Details** sections, below, as
-#' well as [Gabry et al. (2019)](https://github.com/jgabry/bayes-vis-paper#readme).
+#' @description The distribution of a (test) statistic `T(yrep)`, or a pair of
+#'   (test) statistics, over the simulated datasets in `yrep`, compared to the
+#'   observed value `T(y)` computed from the data `y`. See the
+#'   **Plot Descriptions** and **Details** sections, below, as
+#'   well as Gabry et al. (2019).
+#'
+#'   **NOTE:** Although the default test statistic
+#'   is the mean, this is unlikely to detect anything interesting in most cases.
+#'   In general we recommend using some other test statistic as discussed in
+#'   Section 5 of Gabry et al. (2019).
 #'
 #' @name PPC-test-statistics
 #' @aliases PPC-statistics

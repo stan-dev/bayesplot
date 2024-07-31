@@ -118,11 +118,16 @@ customized using the \strong{ggplot2} package. The functions with suffix
 function.
 }
 \description{
-The distribution of a (test) statistic \code{T(yrep)}, or a pair of (test)
-statistics, over the simulated datasets in \code{yrep}, compared to the
+The distribution of a (test) statistic \code{T(yrep)}, or a pair of
+(test) statistics, over the simulated datasets in \code{yrep}, compared to the
 observed value \code{T(y)} computed from the data \code{y}. See the
 \strong{Plot Descriptions} and \strong{Details} sections, below, as
-well as \href{https://github.com/jgabry/bayes-vis-paper#readme}{Gabry et al. (2019)}.
+well as Gabry et al. (2019).
+
+\strong{NOTE:} Although the default test statistic
+is the mean, this is unlikely to detect anything interesting in most cases.
+In general we recommend using some other test statistic as discussed in
+Section 5 of Gabry et al. (2019).
 }
 \details{
 For Binomial data, the plots may be more useful if
