@@ -24,6 +24,37 @@ test_that("ppc_stat throws errors if 'stat' wrong length", {
                "length(stat) == 1 is not TRUE", fixed = TRUE)
 })
 
+test_that("ppc_stat and ppc_stat_freqpoly message if stat='mean'", {
+  expect_message(
+    ppc_stat(y, yrep),
+    "'mean' is too weak to detect anything of interest"
+  )
+  expect_silent(
+    ppc_stat(y, yrep, stat = "mad")
+  )
+  expect_message(
+    ppc_stat_grouped(y, yrep, group),
+    "'mean' is too weak to detect anything of interest"
+  )
+  expect_silent(
+    ppc_stat_grouped(y, yrep, group, stat = "mad")
+  )
+  expect_message(
+    ppc_stat_freqpoly(y, yrep),
+    "'mean' is too weak to detect anything of interest"
+  )
+  expect_silent(
+    ppc_stat_freqpoly(y, yrep, group, stat = "mad")
+  )
+  expect_message(
+    ppc_stat_freqpoly_grouped(y, yrep, group),
+    "'mean' is too weak to detect anything of interest"
+  )
+  expect_silent(
+    ppc_stat_freqpoly_grouped(y, yrep, group, stat = "mad")
+  )
+})
+
 test_that("ppc_stat returns ggplot object", {
   expect_gg(ppc_stat(y, yrep, binwidth = 0.05))
   expect_gg(ppc_stat(y, yrep, stat = "sd", binwidth = 0.05))

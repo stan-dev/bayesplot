@@ -118,11 +118,16 @@ customized using the \strong{ggplot2} package. The functions with suffix
 function.
 }
 \description{
-The distribution of a (test) statistic \code{T(yrep)}, or a pair of (test)
-statistics, over the simulated datasets in \code{yrep}, compared to the
+The distribution of a (test) statistic \code{T(yrep)}, or a pair of
+(test) statistics, over the simulated datasets in \code{yrep}, compared to the
 observed value \code{T(y)} computed from the data \code{y}. See the
 \strong{Plot Descriptions} and \strong{Details} sections, below, as
-well as \href{https://github.com/jgabry/bayes-vis-paper#readme}{Gabry et al. (2019)}.
+well as Gabry et al. (2019).
+
+\strong{NOTE:} Although the default test statistic
+is the mean, this is unlikely to detect anything interesting in most cases.
+In general we recommend using some other test statistic as discussed in
+Section 5 of Gabry et al. (2019).
 }
 \details{
 For Binomial data, the plots may be more useful if
@@ -155,7 +160,7 @@ statistics in the observed data is overlaid as large point.
 \examples{
 y <- example_y_data()
 yrep <- example_yrep_draws()
-ppc_stat(y, yrep)
+ppc_stat(y, yrep, stat = "median")
 ppc_stat(y, yrep, stat = "sd") + legend_none()
 
 # use your own function for the 'stat' argument
@@ -170,8 +175,8 @@ ppc_stat(y, yrep, stat = function(y) quantile(y, 0.25))
 # plots by group
 color_scheme_set("teal")
 group <- example_group_data()
-ppc_stat_grouped(y, yrep, group)
-ppc_stat_grouped(y, yrep, group) + yaxis_text()
+ppc_stat_grouped(y, yrep, group, stat = "median")
+ppc_stat_grouped(y, yrep, group, stat = "mad") + yaxis_text()
 
 # force y-axes to have same scales, allow x axis to vary
 ppc_stat_grouped(y, yrep, group, facet_args = list(scales = "free_x")) + yaxis_text()
