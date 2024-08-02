@@ -160,7 +160,7 @@ statistics in the observed data is overlaid as large point.
 \examples{
 y <- example_y_data()
 yrep <- example_yrep_draws()
-ppc_stat(y, yrep)
+ppc_stat(y, yrep, stat = "median")
 ppc_stat(y, yrep, stat = "sd") + legend_none()
 
 # use your own function for the 'stat' argument
@@ -175,8 +175,8 @@ ppc_stat(y, yrep, stat = function(y) quantile(y, 0.25))
 # plots by group
 color_scheme_set("teal")
 group <- example_group_data()
-ppc_stat_grouped(y, yrep, group)
-ppc_stat_grouped(y, yrep, group) + yaxis_text()
+ppc_stat_grouped(y, yrep, group, stat = "median")
+ppc_stat_grouped(y, yrep, group, stat = "mad") + yaxis_text()
 
 # force y-axes to have same scales, allow x axis to vary
 ppc_stat_grouped(y, yrep, group, facet_args = list(scales = "free_x")) + yaxis_text()
