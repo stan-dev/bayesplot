@@ -154,6 +154,9 @@ test_that("mcmc_rank_overlay renders correctly", {
     n_bins = 4
   )
 
+  # https://github.com/stan-dev/bayesplot/issues/331
+  p_not_all_bins_exist <- mcmc_rank_overlay(vdiff_dframe_rank_overlay_bins_test)
+
   vdiffr::expect_doppelganger("mcmc_rank_overlay (default)", p_base)
   vdiffr::expect_doppelganger(
     "mcmc_rank_overlay (reference line)",
@@ -164,6 +167,9 @@ test_that("mcmc_rank_overlay renders correctly", {
     "mcmc_rank_overlay (wide bins)",
     p_one_param_wide_bins
   )
+
+  # https://github.com/stan-dev/bayesplot/issues/331
+  vdiffr::expect_doppelganger("mcmc_rank_overlay (not all bins)", p_not_all_bins_exist)
 })
 
 test_that("mcmc_rank_hist renders correctly", {
