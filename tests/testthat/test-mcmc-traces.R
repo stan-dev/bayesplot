@@ -157,6 +157,10 @@ test_that("mcmc_rank_overlay renders correctly", {
   # https://github.com/stan-dev/bayesplot/issues/331
   p_not_all_bins_exist <- mcmc_rank_overlay(vdiff_dframe_rank_overlay_bins_test)
 
+  # https://github.com/stan-dev/bayesplot/issues/333
+  p_split_chains <- mcmc_rank_overlay(vdiff_dframe_rank_overlay_split_chain_test,
+                                      split_chains = TRUE)
+
   vdiffr::expect_doppelganger("mcmc_rank_overlay (default)", p_base)
   vdiffr::expect_doppelganger(
     "mcmc_rank_overlay (reference line)",
@@ -170,6 +174,9 @@ test_that("mcmc_rank_overlay renders correctly", {
 
   # https://github.com/stan-dev/bayesplot/issues/331
   vdiffr::expect_doppelganger("mcmc_rank_overlay (not all bins)", p_not_all_bins_exist)
+
+  # https://github.com/stan-dev/bayesplot/issues/333
+  vdiffr::expect_doppelganger("mcmc_rank_overlay (split chains)", p_split_chains)
 })
 
 test_that("mcmc_rank_hist renders correctly", {
