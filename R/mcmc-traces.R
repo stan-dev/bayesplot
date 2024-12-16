@@ -311,7 +311,7 @@ mcmc_rank_overlay <- function(x,
       group_by(.data$chain) %>%
       mutate(
         chain = ifelse(
-          iteration <= midpoint,
+          .data$iteration <= midpoint,
           paste0(.data$chain, "_1"),
           paste0(.data$chain, "_2")
         )
@@ -523,7 +523,7 @@ mcmc_rank_ecdf <-
       group_by(.data$chain) %>%
       mutate(
         chain = ifelse(
-          iteration <= midpoint,
+          .data$iteration <= midpoint,
           paste0(.data$chain, "_1"),
           paste0(.data$chain, "_2")
         )
