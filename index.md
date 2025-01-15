@@ -15,23 +15,23 @@
 
 <br>
 
-<a href="https://mc-stan.org/assets/img/bayesplot/mcmc_areas-rstanarm.png">
-<img src="https://mc-stan.org/assets/img/bayesplot/mcmc_areas-rstanarm.png" style="width: 15%;"/>
+<a href="man/figures/mcmc_areas-rstanarm.png">
+  <img src="man/figures/mcmc_areas-rstanarm.png" style="width: 15%;"/>
 </a>
-<a href="https://mc-stan.org/assets/img/bayesplot/mcmc_nuts_energy-rstan.png">
-<img src="https://mc-stan.org/assets/img/bayesplot/mcmc_nuts_energy-rstan.png" style="width: 15%;"/>
+<a href="man/figures/mcmc_nuts_energy-rstan.png">
+<img src="man/figures/mcmc_nuts_energy-rstan.png" style="width: 15%;"/>
 </a>
-<a href="https://mc-stan.org/assets/img/bayesplot/mcmc_trace-rstan.png">
-<img src="https://mc-stan.org/assets/img/bayesplot/mcmc_trace-rstan.png" style="width: 15%;"/>
+<a href="man/figures/mcmc_trace-rstan.png">
+<img src="man/figures/mcmc_trace-rstan.png" style="width: 15%;"/>
 </a>
-<a href="https://mc-stan.org/assets/img/bayesplot/ppc_dens_overlay-rstanarm.png">
-<img src="https://mc-stan.org/assets/img/bayesplot/ppc_dens_overlay-rstanarm.png" style="width: 15%;"/>
+<a href="man/figures/ppc_dens_overlay-rstanarm.png">
+<img src="man/figures/ppc_dens_overlay-rstanarm.png" style="width: 15%;"/>
 </a>
-<a href="https://mc-stan.org/assets/img/bayesplot/ppc_intervals-rstanarm.png">
-<img src="https://mc-stan.org/assets/img/bayesplot/ppc_intervals-rstanarm.png" style="width: 15%;"/>
+<a href="man/figures/ppc_intervals-rstanarm.png">
+<img src="man/figures/ppc_intervals-rstanarm.png" style="width: 15%;"/>
 </a>
-<a href="https://mc-stan.org/assets/img/bayesplot/ppc_stat-rstanarm.png">
-<img src="https://mc-stan.org/assets/img/bayesplot/ppc_stat-rstanarm.png" style="width: 15%;"/>
+<a href="man/figures/ppc_stat-rstanarm.png">
+<img src="man/figures/ppc_stat-rstanarm.png" style="width: 15%;"/>
 </a>
 
 
@@ -107,8 +107,8 @@ mcmc_areas(posterior,
 ```
 
 <div style="text-align:center">
-<a href="https://raw.githubusercontent.com/stan-dev/bayesplot/master/images/mcmc_areas-rstanarm.png">
-<img src=https://raw.githubusercontent.com/stan-dev/bayesplot/master/images/mcmc_areas-rstanarm.png width=50%/>
+<a href="man/figures/mcmc_areas-rstanarm.png">
+<img src=man/figures/mcmc_areas-rstanarm.png width=50%/>
 </a>
 </div>
 
@@ -119,8 +119,8 @@ ppc_dens_overlay(y = fit$y,
 ```
 
 <div style="text-align:center">
-<a href="https://raw.githubusercontent.com/stan-dev/bayesplot/master/images/ppc_dens_overlay-rstanarm.png">
-<img src=https://raw.githubusercontent.com/stan-dev/bayesplot/master/images/ppc_dens_overlay-rstanarm.png width=50%/>
+<a href="man/figures/ppc_dens_overlay-rstanarm.png">
+<img src=man/figures/ppc_dens_overlay-rstanarm.png width=50%/>
 </a>
 </div>
 
@@ -137,8 +137,8 @@ fit %>%
 ```
 
 <div style="text-align:center">
-<a href="https://raw.githubusercontent.com/stan-dev/bayesplot/master/images/ppc_stat_grouped-rstanarm.png">
-<img src=https://raw.githubusercontent.com/stan-dev/bayesplot/master/images/ppc_stat_grouped-rstanarm.png width=50%/>
+<a href="man/figures/ppc_stat_grouped-rstanarm.png">
+<img src=man/figures/ppc_stat_grouped-rstanarm.png width=50%/>
 </a>
 </div>
 
@@ -155,8 +155,8 @@ p + facet_text(size = 15)
 ```
 
 <div style="text-align:center">
-<a href="https://raw.githubusercontent.com/stan-dev/bayesplot/master/images/mcmc_trace-rstan.png">
-<img src=https://raw.githubusercontent.com/stan-dev/bayesplot/master/images/mcmc_trace-rstan.png width=50% />
+<a href="man/figures/mcmc_trace-rstan.png">
+<img src=man/figures/mcmc_trace-rstan.png width=50% />
 </a>
 </div>
 
@@ -172,8 +172,8 @@ mcmc_scatter(
 ```
 
 <div style="text-align:center">
-<a href="https://raw.githubusercontent.com/stan-dev/bayesplot/master/images/mcmc_scatter-rstan.png">
-<img src=https://raw.githubusercontent.com/stan-dev/bayesplot/master/images/mcmc_scatter-rstan.png width=50% />
+<a href="man/figures/mcmc_scatter-rstan.png">
+<img src=man/figures/mcmc_scatter-rstan.png width=50% />
 </a>
 </div>
 
@@ -184,8 +184,8 @@ mcmc_nuts_energy(np) + ggtitle("NUTS Energy Diagnostic")
 ```
 
 <div style="text-align:center">
-<a href="https://raw.githubusercontent.com/stan-dev/bayesplot/master/images/mcmc_nuts_energy-rstan.png">
-<img src=https://raw.githubusercontent.com/stan-dev/bayesplot/master/images/mcmc_nuts_energy-rstan.png width=50% />
+<a href="man/figures/mcmc_nuts_energy-rstan.png">
+<img src=man/figures/mcmc_nuts_energy-rstan.png width=50% />
 </a>
 </div>
 
@@ -211,7 +211,7 @@ ppc_intervals(
 ```
 
 <div style="text-align:center">
-<a href="https://raw.githubusercontent.com/stan-dev/bayesplot/master/images/ppc_intervals-rstanarm.png">
-<img src=https://raw.githubusercontent.com/stan-dev/bayesplot/master/images/ppc_intervals-rstanarm.png width=55% />
+<a href="man/figures/ppc_intervals-rstanarm.png">
+<img src=man/figures/ppc_intervals-rstanarm.png width=55% />
 </a>
 </div>
