@@ -134,7 +134,7 @@ ppc_error_hist <-
       geom_histogram(
         fill = get_color("l"),
         color = get_color("lh"),
-        size = 0.25,
+        linewidth = 0.25,
         binwidth = binwidth,
         bins = bins,
         breaks = breaks

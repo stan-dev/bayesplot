@@ -51,7 +51,11 @@ test_that("mcmc_trace options work", {
   expect_equal(g1$coordinates$limits$x, c(5, 10))
 
   expect_gg(g2 <- mcmc_trace(arr, regex_pars = "beta", n_warmup = 10))
-  ll <- g2$labels
+  if ("get_labs" %in% getNamespaceExports("ggplot2")) {
+    ll <- ggplot2::get_labs(g2)
+  } else {
+    ll <- g2$labels
+  }
   expect_true(all(c("xmin", "xmax", "ymin", "ymax") %in% names(ll)))
 
   expect_error(mcmc_trace(arr, iter1 = -1))
