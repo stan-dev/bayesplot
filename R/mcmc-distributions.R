@@ -394,7 +394,7 @@ mcmc_violin <- function(
       set_hist_aes(freq),
       fill = get_color("mid"),
       color = get_color("mid_highlight"),
-      size = .25,
+      linewidth = .25,
       na.rm = TRUE,
       binwidth = binwidth,
       bins = bins,
