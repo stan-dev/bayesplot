@@ -28,6 +28,7 @@ test_that("available_ppc works", {
 
   all_ppc_plots <- sort(grep("^ppc_", getNamespaceExports("bayesplot"), value = TRUE))
   all_ppc_plots <- grep("_data", all_ppc_plots, invert = TRUE, value = TRUE)
+  all_ppc_plots <- setdiff(all_ppc_plots, "ppc_loo_pit") # remove deprecated
   expect_identical(as.character(a), all_ppc_plots)
 
   b <- available_ppc("grouped")

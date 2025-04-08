@@ -130,6 +130,9 @@ print.bayesplot_function_list <- function(x, ...) {
       )
     }
 
+    # remove deprecated functions
+    return_funs <- setdiff(return_funs, "ppc_loo_pit")
+
     structure(
       return_funs,
       class = c("bayesplot_function_list", "character"),
