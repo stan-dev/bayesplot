@@ -1,6 +1,15 @@
-# bayesplot 1.11.1.9000
+# bayesplot 1.12.0
 
-Items for next release go here
+* Compatibility with ggplot2 3.6.0 by @teunbrand (#337)
+* Ensure rank overlay plot starts at 0 even if not all bins present (#332)
+* Expand checking workflows to more platforms by @andrjohns in (#324)
+* Fix missing legends for unobserved levels in rhat and neff plots (#328)
+* Document problems with `ppc_stat` with `stat="mean"` (#329)
+* Remove deprecated functions from `available_ppc()` (#340)
+* Skip tests depending on Suggested dependency gridExtra if not installed by @MichaelChirico (#326) 
+* Skip tests depending on Suggested dependency rstantools if not installed by @MichaelChirico (#325)
+* Update GitHub actions workflows (#338)
+
 
 # bayesplot 1.11.1
 
