@@ -212,7 +212,7 @@ mcmc_hex <- function(x,
 #'   `alpha`.
 #' @param grid_args,save_gg_objects For `mcmc_pairs()`, arguments to pass to
 #'   [bayesplot_grid()]. For example, since `mcmc_pairs()` returns
-#'   more than a single ggplot object, using [ggtitle()] afterwards
+#'   more than a single ggplot object, using `ggtitle()` afterwards
 #'   will not work. But you you can still add a title to the plot using
 #'   `grid_args = list(top="My title")`.
 #'

@@ -76,7 +76,7 @@ pairs_condition(chains = NULL, draws = NULL, nuts = NULL)
 \itemize{
 \item A 3-D array, matrix, list of matrices, or data frame. The \link{MCMC-overview}
 page provides details on how to specify each these.
-\item A \code{draws} object from the \pkg{\link{posterior}} package (e.g.,
+\item A \code{draws} object from the \pkg{posterior} package (e.g.,
 \code{draws_array}, \code{draws_rvars}, etc.).
 \item An object with an \code{as.array()} method that returns the same kind of 3-D
 array described on the \link{MCMC-overview} page.
@@ -179,7 +179,7 @@ treedepth.}
 
 \item{grid_args, save_gg_objects}{For \code{mcmc_pairs()}, arguments to pass to
 \code{\link[=bayesplot_grid]{bayesplot_grid()}}. For example, since \code{mcmc_pairs()} returns
-more than a single ggplot object, using \code{\link[=ggtitle]{ggtitle()}} afterwards
+more than a single ggplot object, using \code{ggtitle()} afterwards
 will not work. But you you can still add a title to the plot using
 \code{grid_args = list(top="My title")}.}
 

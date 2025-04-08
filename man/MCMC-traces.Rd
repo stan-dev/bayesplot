@@ -94,7 +94,7 @@ mcmc_trace_data(
 \itemize{
 \item A 3-D array, matrix, list of matrices, or data frame. The \link{MCMC-overview}
 page provides details on how to specify each these.
-\item A \code{draws} object from the \pkg{\link{posterior}} package (e.g.,
+\item A \code{draws} object from the \pkg{posterior} package (e.g.,
 \code{draws_array}, \code{draws_rvars}, etc.).
 \item An object with an \code{as.array()} method that returns the same kind of 3-D
 array described on the \link{MCMC-overview} page.
