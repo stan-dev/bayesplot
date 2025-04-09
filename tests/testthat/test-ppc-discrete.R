@@ -68,15 +68,15 @@ test_that("ppc_bars_data includes all levels", {
   # yrep has more unique values than y
   d2 <- ppc_bars_data(y_ord2, yrep_ord)
   expect_equal(d2$x, 1:4)
-  expect_equal(d2$y_obs, c(NA, sum(tab[1:2]), tab[3:4]))
+  expect_equal(d2$y_obs, c(0, sum(tab[1:2]), tab[3:4]))
 
   # y has more unique values than yrep
   d3 <- ppc_bars_data(y_ord, yrep_ord2)
   expect_equal(d3$x, 1:4)
   expect_equal(d3$y_obs, tab)
-  expect_equivalent(d3$l[2], NA_real_)
-  expect_equivalent(d3$m[2], NA_real_)
-  expect_equivalent(d3$h[2], NA_real_)
+  expect_equivalent(d3$l[2], 0)
+  expect_equivalent(d3$m[2], 0)
+  expect_equivalent(d3$h[2], 0)
 })
 
 
