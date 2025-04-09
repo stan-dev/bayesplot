@@ -395,6 +395,7 @@ ppc_bars_data <-
   data <-
     reshape2::melt(tmp_data, id.vars = "group") %>%
     count(.data$group, .data$value, .data$variable) %>%
+    tidyr::complete(.data$group, .data$value, .data$variable, fill = list(n = 0)) %>% 
     group_by(.data$variable, .data$group) %>%
     mutate(proportion = .data$n / sum(.data$n)) %>%
     ungroup() %>%
