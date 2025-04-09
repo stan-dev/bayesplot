@@ -9,6 +9,7 @@
 * Skip tests depending on Suggested dependency gridExtra if not installed by @MichaelChirico (#326) 
 * Skip tests depending on Suggested dependency rstantools if not installed by @MichaelChirico (#325)
 * Update GitHub actions workflows (#338)
+* Fix missing counts in `ppc_bars_data()` by @TeemuSailynoja, thanks @famuvie (#342)
 
 
 # bayesplot 1.11.1
