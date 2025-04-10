@@ -1,3 +1,5 @@
+# bayesplot (development version)
+
 # bayesplot 1.12.0
 
 * Expand checking workflows to more platforms by @andrjohns (#324)
