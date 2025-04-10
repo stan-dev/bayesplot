@@ -94,7 +94,7 @@ mcmc_trace_data(
 \itemize{
 \item A 3-D array, matrix, list of matrices, or data frame. The \link{MCMC-overview}
 page provides details on how to specify each these.
-\item A \code{draws} object from the \pkg{\link{posterior}} package (e.g.,
+\item A \code{draws} object from the \pkg{posterior} package (e.g.,
 \code{draws_array}, \code{draws_rvars}, etc.).
 \item An object with an \code{as.array()} method that returns the same kind of 3-D
 array described on the \link{MCMC-overview} page.
@@ -194,11 +194,12 @@ of rank-normalized MCMC samples. Defaults to \code{20}.}
 average number of ranks per bin. Defaults to \code{FALSE}.}
 
 \item{K}{An optional integer defining the number of equally spaced evaluation
-points for the ECDF. Reducing K when using \code{interpolate_adj = FALSE} makes
-computing the confidence bands faster. For \code{ppc_pit_ecdf} and
-\code{ppc_pit_ecdf_grouped}, defaults to \code{ncol(yrep) + 1}, or \code{length(pit)} if PIT
-values are supplied. For \code{mcmc_rank_ecdf} defaults to the number of
-iterations per chain in \code{x}.}
+points for the PIT-ECDF. Reducing K when using \code{interpolate_adj = FALSE}
+makes computing the confidence bands faster. For \code{ppc_pit_ecdf} and
+\code{ppc_pit_ecdf_grouped}, if PIT values are supplied, defaults to
+\code{length(pit)}, otherwise yrep determines the maximum accuracy of the
+estimated PIT values and \code{K} is set to \code{min(nrow(yrep) + 1, 1000)}. For
+\code{mcmc_rank_ecdf}, defaults to the number of iterations per chain in \code{x}.}
 
 \item{prob}{For \code{mcmc_rank_ecdf()}, a value between 0 and 1
 specifying the desired simultaneous confidence of the confidence bands to be

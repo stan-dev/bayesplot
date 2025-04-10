@@ -1,8 +1,8 @@
 Package: bayesplot
 Type: Package
 Title: Plotting for Bayesian Models
-Version: 1.11.0
-Date: 2024-01-30
+Version: 1.12.0
+Date: 2025-04-09
 Authors@R: c(person("Jonah", "Gabry", role = c("aut", "cre"), email = "jsg2201@columbia.edu"),
              person("Tristan", "Mahr", role = "aut"),
              person("Paul-Christian", "Bürkner", role = "ctb"),
@@ -37,6 +37,7 @@ Imports:
     rlang (>= 0.3.0),
     stats,
     tibble (>= 2.0.0),
+    tidyr,
     tidyselect,
     utils
 Suggests:
@@ -55,7 +56,7 @@ Suggests:
     survival,
     testthat (>= 2.0.0),
     vdiffr (>= 1.0.2)
-RoxygenNote: 7.3.0
+RoxygenNote: 7.3.2
 VignetteBuilder: knitr
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)

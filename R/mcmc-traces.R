@@ -304,17 +304,28 @@ mcmc_rank_overlay <- function(x,
     mutate(cut = cut(.data$value_rank, n_bins)) %>%
     group_by(.data$cut) %>%
     mutate(bin_start = min(.data$value_rank)) %>%
-    ungroup() %>%
-    select(-c("cut"))
+    ungroup()
 
+  # Count how many values fall into each bin per chain & parameter
   d_bin_counts <- data %>%
     left_join(histobins, by = "value_rank") %>%
     count(.data$parameter, .data$chain, .data$bin_start)
 
+  # Now ensure that all combinations of parameter, chain, and bin_start exist
+  # even if no counts are present (https://github.com/stan-dev/bayesplot/issues/331)
+  all_combos <- dplyr::as_tibble(expand.grid(
+    parameter = unique(data$parameter),
+    chain = unique(data$chain),
+    bin_start = unique(histobins$bin_start),
+    stringsAsFactors = FALSE
+  ))
+  d_bin_counts <- all_combos %>%
+    left_join(d_bin_counts, by = c("parameter", "chain", "bin_start")) %>%
+    mutate(n = dplyr::if_else(is.na(n), 0L, n))
+
   # Duplicate the final bin, setting the left edge to the greatest x value, so
   # that the entire x-axis is used,
   right_edge <- max(data$value_rank)
-
   d_bin_counts <- d_bin_counts %>%
     dplyr::filter(.data$bin_start == max(.data$bin_start)) %>%
     mutate(bin_start = right_edge) %>%

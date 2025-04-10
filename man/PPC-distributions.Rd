@@ -212,20 +212,21 @@ which the ECDF is to be drawn. If NULL, PIT values are computed to \code{y} with
 respect to the corresponding values in \code{yrep}.}
 
 \item{K}{An optional integer defining the number of equally spaced evaluation
-points for the ECDF. Reducing K when using \code{interpolate_adj = FALSE} makes
-computing the confidence bands faster. For \code{ppc_pit_ecdf} and
-\code{ppc_pit_ecdf_grouped}, defaults to \code{ncol(yrep) + 1}, or \code{length(pit)} if PIT
-values are supplied. For \code{mcmc_rank_ecdf} defaults to the number of
-iterations per chain in \code{x}.}
+points for the PIT-ECDF. Reducing K when using \code{interpolate_adj = FALSE}
+makes computing the confidence bands faster. For \code{ppc_pit_ecdf} and
+\code{ppc_pit_ecdf_grouped}, if PIT values are supplied, defaults to
+\code{length(pit)}, otherwise yrep determines the maximum accuracy of the
+estimated PIT values and \code{K} is set to \code{min(nrow(yrep) + 1, 1000)}. For
+\code{mcmc_rank_ecdf}, defaults to the number of iterations per chain in \code{x}.}
 
 \item{prob}{The desired simultaneous coverage level of the bands around the
 ECDF. A value in (0,1).}
 
 \item{plot_diff}{A boolean defining whether to plot the difference between
-the observed ECDF and the theoretical expectation for uniform PIT values
-rather than plotting the regular ECDF. The default is \code{FALSE}, but for
-large samples we recommend setting \code{plot_diff=TRUE} as the difference plot
-will visually show a more dynamic range.}
+the observed PIT- ECDF and the theoretical expectation for uniform PIT
+values rather than plotting the regular ECDF. The default is \code{FALSE}, but
+for large samples we recommend setting \code{plot_diff=TRUE} as the difference
+plot will visually show a more dynamic range.}
 
 \item{interpolate_adj}{A boolean defining if the simultaneous confidence
 bands should be interpolated based on precomputed values rather than
@@ -278,10 +279,11 @@ quantiles. \code{y} is overlaid on the plot either as a violin, points, or
 both, depending on the \code{y_draw} argument.
 }
 \item{\code{ppc_pit_ecdf()}, \code{ppc_pit_ecdf_grouped()}}{
-The ECDF of the empirical PIT values of \code{y} computed with respect to the
-corresponding \code{yrep} values. \code{100 * prob}\% central simultaneous confidence
-intervals are provided to asses if \code{y} and \code{yrep} originate from the same
-distribution. The PIT values can also be provided directly as \code{pit}.
+The PIT-ECDF of the empirical PIT values of \code{y} computed with respect to
+the corresponding \code{yrep} values. \code{100 * prob}\% central simultaneous
+confidence intervals are provided to asses if \code{y} and \code{yrep} originate
+from the same distribution. The PIT values can also be provided directly
+as \code{pit}.
 See Säilynoja et al. (2021) for more details.}
 }
 }
@@ -298,8 +300,8 @@ ppc_dens_overlay(y, yrep[1:25, ])
 # ppc_ecdf_overlay with continuous data (set discrete=TRUE if discrete data)
 ppc_ecdf_overlay(y, yrep[sample(nrow(yrep), 25), ])
 
-# ECDF and ECDF difference plot of the PIT values of y compared to yrep
-# with 99\% simultaneous confidence bands.
+# PIT-ECDF and PIT-ECDF difference plot of the PIT values of y compared to
+# yrep with 99\% simultaneous confidence bands.
 ppc_pit_ecdf(y, yrep, prob = 0.99, plot_diff = FALSE)
 ppc_pit_ecdf(y, yrep, prob = 0.99, plot_diff = TRUE)
 }
@@ -332,9 +334,9 @@ ppc_dens_overlay_grouped(y, yrep[1:25, ], group = group)
 ppc_ecdf_overlay_grouped(y, yrep[1:25, ], group = group)
 
 \donttest{
-# ECDF difference plots of the PIT values by group
+# PIT-ECDF plots of the PIT values by group
 # with 99\% simultaneous confidence bands.
-ppc_pit_ecdf_grouped(y, yrep, group=group, prob=0.99, plot_diff = TRUE)
+ppc_pit_ecdf_grouped(y, yrep, group=group, prob=0.99)
 }
 
 \donttest{

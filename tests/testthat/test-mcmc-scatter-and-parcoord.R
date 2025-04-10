@@ -373,6 +373,7 @@ test_that("parcoord_style_np throws correct errors", {
 test_that("mcmc_scatter renders correctly", {
   skip_on_cran()
   skip_if_not_installed("vdiffr")
+  skip_on_r_oldrel()
 
   p_base <- mcmc_scatter(vdiff_dframe_chains)
   vdiffr::expect_doppelganger("mcmc_scatter (default)", p_base)
@@ -395,6 +396,7 @@ test_that("mcmc_hex renders correctly", {
   skip_on_cran()
   skip_if_not_installed("vdiffr")
   skip_if_not_installed("hexbin")
+  skip_on_r_oldrel()
 
   p_base <- mcmc_hex(vdiff_dframe, pars = c("V1", "V2"))
   vdiffr::expect_doppelganger("mcmc_hex (default)", p_base)
@@ -410,6 +412,7 @@ test_that("mcmc_hex renders correctly", {
 test_that("mcmc_parcoord renders correctly", {
   skip_on_cran()
   skip_if_not_installed("vdiffr")
+  skip_on_r_oldrel()
 
   p_base <- mcmc_parcoord(vdiff_dframe_chains)
   vdiffr::expect_doppelganger("mcmc_parcoord (default)", p_base)
@@ -427,6 +430,7 @@ test_that("mcmc_pairs renders correctly", {
   skip_on_cran()
   skip_if_not_installed("vdiffr")
   skip_if_not_installed("hexbin")
+  skip_on_r_oldrel()
 
   p_base <- mcmc_pairs(vdiff_dframe_chains)
   vdiffr::expect_doppelganger("mcmc_pairs (default)", p_base)

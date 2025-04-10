@@ -142,7 +142,8 @@ mcmc_rhat <- function(rhat, ..., size = NULL) {
       mapping = aes(
         yend = .data$parameter,
         xend = ifelse(min(.data$value) < 1, 1, -Inf)),
-      na.rm = TRUE) +
+      na.rm = TRUE,
+      show.legend = TRUE) +
       bayesplot_theme_get()
 
   if (min(data$value) < 1) {
@@ -238,7 +239,8 @@ mcmc_neff <- function(ratio, ..., size = NULL) {
       fill = .data$rating)) +
     geom_segment(
       aes(yend = .data$parameter, xend = -Inf),
-      na.rm = TRUE) +
+      na.rm = TRUE,
+      show.legend = TRUE) +
     diagnostic_points(size) +
     vline_at(
       c(0.1, 0.5, 1),
@@ -408,7 +410,7 @@ zero_pad_int <- function(xs) {
 }
 
 diagnostic_points <- function(size = NULL) {
-  args <- list(shape = 21, na.rm = TRUE)
+  args <- list(shape = 21, na.rm = TRUE, show.legend = TRUE)
   do.call("geom_point", c(args, size = size))
 }
 
@@ -454,7 +456,6 @@ diagnostic_colors <- function(diagnostic = c("rhat", "neff_ratio"),
   }
 
   color_labels <- diagnostic_color_labels[[diagnostic]]
-
   list(diagnostic = diagnostic,
        aesthetic = aesthetic,
        color_levels = color_levels,

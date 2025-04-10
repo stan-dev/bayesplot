@@ -75,8 +75,6 @@
 <polyline points='24.91,210.35 27.90,210.35 ' style='stroke-width: 0.64; stroke: #333333; stroke-linecap: butt;' />
 <polyline points='24.91,123.99 27.90,123.99 ' style='stroke-width: 0.64; stroke: #333333; stroke-linecap: butt;' />
 <circle cx='635.61' cy='298.54' r='4.62' style='stroke-width: 0.71; stroke: #03396C; fill: #03396C;' />
-<circle cx='635.61' cy='298.54' r='4.62' style='stroke-width: 0.71; stroke: #03396C; fill: #03396C;' />
-<polygon points='635.61,308.63 641.84,319.41 629.39,319.41 ' style='stroke-width: 0.71; stroke: #011F4B; fill: #D1E1EC;' />
 <polygon points='635.61,308.63 641.84,319.41 629.39,319.41 ' style='stroke-width: 0.71; stroke: #011F4B; fill: #D1E1EC;' />
 <text x='650.23' y='303.01' style='font-size: 13.00px; font-family: sans;' textLength='57.81px' lengthAdjust='spacingAndGlyphs'>Estimated</text>
 <text x='650.23' y='320.29' style='font-size: 13.00px; font-family: sans;' textLength='26.73px' lengthAdjust='spacingAndGlyphs'>True</text>

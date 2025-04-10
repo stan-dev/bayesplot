@@ -24,6 +24,37 @@ test_that("ppc_stat throws errors if 'stat' wrong length", {
                "length(stat) == 1 is not TRUE", fixed = TRUE)
 })
 
+test_that("ppc_stat and ppc_stat_freqpoly message if stat='mean'", {
+  expect_message(
+    ppc_stat(y, yrep),
+    "'mean' is too weak to detect anything of interest"
+  )
+  expect_silent(
+    ppc_stat(y, yrep, stat = "mad")
+  )
+  expect_message(
+    ppc_stat_grouped(y, yrep, group),
+    "'mean' is too weak to detect anything of interest"
+  )
+  expect_silent(
+    ppc_stat_grouped(y, yrep, group, stat = "mad")
+  )
+  expect_message(
+    ppc_stat_freqpoly(y, yrep),
+    "'mean' is too weak to detect anything of interest"
+  )
+  expect_silent(
+    ppc_stat_freqpoly(y, yrep, group, stat = "mad")
+  )
+  expect_message(
+    ppc_stat_freqpoly_grouped(y, yrep, group),
+    "'mean' is too weak to detect anything of interest"
+  )
+  expect_silent(
+    ppc_stat_freqpoly_grouped(y, yrep, group, stat = "mad")
+  )
+})
+
 test_that("ppc_stat returns ggplot object", {
   expect_gg(ppc_stat(y, yrep, binwidth = 0.05))
   expect_gg(ppc_stat(y, yrep, stat = "sd", binwidth = 0.05))
@@ -99,6 +130,7 @@ test_that("ppc_stat_data and ppd_stat_data throw correct errors", {
 test_that("ppc_stat renders correctly", {
   testthat::skip_on_cran()
   testthat::skip_if_not_installed("vdiffr")
+  skip_on_r_oldrel()
 
   p_base <- ppc_stat(vdiff_y, vdiff_yrep, binwidth = 0.05) + yaxis_text()
   vdiffr::expect_doppelganger("ppc_stat (default)", p_base)
@@ -132,6 +164,7 @@ test_that("ppc_stat renders correctly", {
 test_that("ppc_stat_2d renders correctly", {
   testthat::skip_on_cran()
   testthat::skip_if_not_installed("vdiffr")
+  skip_on_r_oldrel()
 
   p_base <- ppc_stat_2d(vdiff_y, vdiff_yrep)
   vdiffr::expect_doppelganger("ppc_stat_2d (default)", p_base)
@@ -165,6 +198,7 @@ test_that("ppc_stat_2d renders correctly", {
 test_that("ppc_stat_grouped renders correctly", {
   testthat::skip_on_cran()
   testthat::skip_if_not_installed("vdiffr")
+  skip_on_r_oldrel()
 
   p_base <- ppc_stat_grouped(vdiff_y, vdiff_yrep, vdiff_group, binwidth = 0.05)
   vdiffr::expect_doppelganger("ppc_stat_grouped (default)", p_base)
@@ -200,6 +234,7 @@ test_that("ppc_stat_grouped renders correctly", {
 test_that("ppc_stat_freqpoly_grouped renders correctly", {
   testthat::skip_on_cran()
   testthat::skip_if_not_installed("vdiffr")
+  skip_on_r_oldrel()
 
   p_base <- ppc_stat_freqpoly_grouped(vdiff_y, vdiff_yrep, vdiff_group, binwidth = 0.05)
   vdiffr::expect_doppelganger("ppc_stat_freqpoly_grouped (default)", p_base)

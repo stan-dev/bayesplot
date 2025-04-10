@@ -130,8 +130,9 @@
 <text x='644.00' y='282.90' style='font-size: 12.00px; font-style: italic; font-family: sans;' textLength='7.33px' lengthAdjust='spacingAndGlyphs'>T</text>
 <text x='655.35' y='282.90' style='font-size: 12.00px; font-family: sans;' textLength='9.32px' lengthAdjust='spacingAndGlyphs'>=</text>
 <text x='667.44' y='282.90' style='font-size: 12.00px; font-family: sans;' textLength='22.68px' lengthAdjust='spacingAndGlyphs'>sum</text>
-<line x1='645.73' y1='298.99' x2='659.55' y2='298.99' style='stroke-width: 1.07; stroke: #011F4B; stroke-linecap: butt;' />
+<line x1='652.64' y1='307.73' x2='652.64' y2='290.24' style='stroke-width: 2.13; stroke: #011F4B; stroke-linecap: butt;' />
 <line x1='645.73' y1='317.23' x2='659.55' y2='317.23' style='stroke-width: 1.07; stroke: #6497B1; stroke-linecap: butt;' />
+<line x1='652.64' y1='326.74' x2='652.64' y2='307.73' style='stroke-width: 2.13; stroke: #6497B1; stroke-linecap: butt;' />
 <text x='667.26' y='303.60' style='font-size: 13.00px; font-style: italic; font-family: sans;' textLength='7.94px' lengthAdjust='spacingAndGlyphs'>T</text>
 <text x='676.54' y='303.60' style='font-size: 16.25px; font-family: sans;' textLength='5.41px' lengthAdjust='spacingAndGlyphs'>(</text>
 <text x='681.95' y='303.60' style='font-size: 13.00px; font-style: italic; font-family: sans;' textLength='6.51px' lengthAdjust='spacingAndGlyphs'>y</text>

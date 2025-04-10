@@ -167,6 +167,7 @@ test_that("ppc_loo_pit_overlay renders correctly", {
   skip_on_cran()
   skip_if_not_installed("vdiffr")
   skip_if_not_installed("loo")
+  skip_on_r_oldrel()
 
   p_base <- suppressMessages(ppc_loo_pit_overlay(vdiff_loo_y, vdiff_loo_yrep, vdiff_loo_lw))
   vdiffr::expect_doppelganger("ppc_loo_pit_overlay (default)", p_base)
@@ -184,6 +185,7 @@ test_that("ppc_loo_pit_qq renders correctly", {
   skip_on_cran()
   skip_if_not_installed("vdiffr")
   skip_if_not_installed("loo")
+  skip_on_r_oldrel()
 
   p_base <- ppc_loo_pit_qq(vdiff_loo_y, vdiff_loo_yrep, vdiff_loo_lw)
   vdiffr::expect_doppelganger("ppc_loo_pit_qq (default)", p_base)
@@ -193,6 +195,7 @@ test_that("ppc_loo_intervals renders correctly", {
   skip_on_cran()
   skip_if_not_installed("vdiffr")
   skip_if_not_installed("loo")
+  skip_on_r_oldrel()
 
   psis_object <- suppressWarnings(loo::psis(-vdiff_loo_lw))
   p_base <- ppc_loo_intervals(
@@ -224,6 +227,7 @@ test_that("ppc_loo_ribbon renders correctly", {
   skip_on_cran()
   skip_if_not_installed("vdiffr")
   skip_if_not_installed("loo")
+  skip_on_r_oldrel()
 
   psis_object <- suppressWarnings(loo::psis(-vdiff_loo_lw))
   p_base <- ppc_loo_ribbon(

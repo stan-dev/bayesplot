@@ -150,14 +150,14 @@
 <text x='612.24' y='554.29' text-anchor='middle' style='font-size: 9.60px; fill: #4D4D4D; font-family: sans;' textLength='5.34px' lengthAdjust='spacingAndGlyphs'>3</text>
 <text x='337.95' y='567.53' text-anchor='middle' style='font-size: 12.00px; font-family: sans;' textLength='14.68px' lengthAdjust='spacingAndGlyphs'>V1</text>
 <text transform='translate(14.24,283.58) rotate(-90)' text-anchor='middle' style='font-size: 12.00px; font-family: sans;' textLength='14.68px' lengthAdjust='spacingAndGlyphs'>V2</text>
+<text x='660.21' y='241.52' style='font-size: 12.00px; font-family: sans;' textLength='40.02px' lengthAdjust='spacingAndGlyphs'>Density</text>
 <image width='17.28' height='86.40' x='660.21' y='248.74' preserveAspectRatio='none' xlink:href='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAEsCAYAAAACUNnVAAAAu0lEQVQ4ja2UUQ7DIAxDn73uHDvQ7n8e9kFLGwqMVv1BSezYiUCgzzcZhBEMIsDoHCnzRpSB/ATlKjkPNKO373bFXK2OiN4gT7pJOP2ntPVGlDSrEn1Tj2LAbwkvAi8leuVD2AJbWmuONQusQ20DdCU6pUG5hXbbugKa0WuQHcmopGoYFRRC+iB5coy6I1/3pHxd24Y8WXY68p9THpzyS2SLyr7r31ShKr0VWinvqKLyjqrhG6Z6UOregj+1SAj0m5i3hAAAAABJRU5ErkJggg=='/>
+<polyline points='674.03,326.39 677.49,326.39 ' style='stroke-width: 0.38; stroke: #FFFFFF; stroke-linecap: butt;' />
+<polyline points='674.03,257.50 677.49,257.50 ' style='stroke-width: 0.38; stroke: #FFFFFF; stroke-linecap: butt;' />
+<polyline points='663.67,326.39 660.21,326.39 ' style='stroke-width: 0.38; stroke: #FFFFFF; stroke-linecap: butt;' />
+<polyline points='663.67,257.50 660.21,257.50 ' style='stroke-width: 0.38; stroke: #FFFFFF; stroke-linecap: butt;' />
 <text x='683.47' y='330.86' style='font-size: 13.00px; font-family: sans;' textLength='19.51px' lengthAdjust='spacingAndGlyphs'>low</text>
 <text x='683.47' y='261.97' style='font-size: 13.00px; font-family: sans;' textLength='24.58px' lengthAdjust='spacingAndGlyphs'>high</text>
-<text x='660.21' y='241.52' style='font-size: 12.00px; font-family: sans;' textLength='40.02px' lengthAdjust='spacingAndGlyphs'>Density</text>
-<line x1='660.21' y1='326.39' x2='663.67' y2='326.39' style='stroke-width: 0.38; stroke: #FFFFFF; stroke-linecap: butt;' />
-<line x1='660.21' y1='257.50' x2='663.67' y2='257.50' style='stroke-width: 0.38; stroke: #FFFFFF; stroke-linecap: butt;' />
-<line x1='674.03' y1='326.39' x2='677.49' y2='326.39' style='stroke-width: 0.38; stroke: #FFFFFF; stroke-linecap: butt;' />
-<line x1='674.03' y1='257.50' x2='677.49' y2='257.50' style='stroke-width: 0.38; stroke: #FFFFFF; stroke-linecap: butt;' />
 <text x='33.63' y='15.89' style='font-size: 14.40px; font-family: sans;' textLength='126.47px' lengthAdjust='spacingAndGlyphs'>mcmc_hex (default)</text>
 </g>
 </svg>

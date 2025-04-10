@@ -1,10 +1,15 @@
 #' PPC test statistics
 #'
-#' The distribution of a (test) statistic `T(yrep)`, or a pair of (test)
-#' statistics, over the simulated datasets in `yrep`, compared to the
-#' observed value `T(y)` computed from the data `y`. See the
-#' **Plot Descriptions** and **Details** sections, below, as
-#' well as [Gabry et al. (2019)](https://github.com/jgabry/bayes-vis-paper#readme).
+#' @description The distribution of a (test) statistic `T(yrep)`, or a pair of
+#'   (test) statistics, over the simulated datasets in `yrep`, compared to the
+#'   observed value `T(y)` computed from the data `y`. See the
+#'   **Plot Descriptions** and **Details** sections, below, as
+#'   well as Gabry et al. (2019).
+#'
+#'   **NOTE:** Although the default test statistic
+#'   is the mean, this is unlikely to detect anything interesting in most cases.
+#'   In general we recommend using some other test statistic as discussed in
+#'   Section 5 of Gabry et al. (2019).
 #'
 #' @name PPC-test-statistics
 #' @aliases PPC-statistics
@@ -54,7 +59,7 @@
 #' @examples
 #' y <- example_y_data()
 #' yrep <- example_yrep_draws()
-#' ppc_stat(y, yrep)
+#' ppc_stat(y, yrep, stat = "median")
 #' ppc_stat(y, yrep, stat = "sd") + legend_none()
 #'
 #' # use your own function for the 'stat' argument
@@ -69,8 +74,8 @@
 #' # plots by group
 #' color_scheme_set("teal")
 #' group <- example_group_data()
-#' ppc_stat_grouped(y, yrep, group)
-#' ppc_stat_grouped(y, yrep, group) + yaxis_text()
+#' ppc_stat_grouped(y, yrep, group, stat = "median")
+#' ppc_stat_grouped(y, yrep, group, stat = "mad") + yaxis_text()
 #'
 #' # force y-axes to have same scales, allow x axis to vary
 #' ppc_stat_grouped(y, yrep, group, facet_args = list(scales = "free_x")) + yaxis_text()
@@ -106,6 +111,7 @@ ppc_stat <-
            breaks = NULL,
            freq = TRUE) {
     stopifnot(length(stat) == 1)
+    message_if_using_mean(stat)
     dots <- list(...)
     if (!from_grouped(dots)) {
       check_ignored_arguments(...)
@@ -189,6 +195,7 @@ ppc_stat_freqpoly <-
            bins = NULL,
            freq = TRUE) {
     stopifnot(length(stat) == 1)
+    message_if_using_mean(stat)
     dots <- list(...)
     if (!from_grouped(dots)) {
       check_ignored_arguments(...)
@@ -216,7 +223,7 @@ ppc_stat_freqpoly <-
       geom_vline(
         data = dplyr::filter(data, .data$variable == "y"),
         mapping = aes(xintercept = .data$value, color = "y"),
-        show.legend = FALSE,
+        show.legend = TRUE,
         linewidth = 1
       ) +
       scale_color_ppc(
@@ -270,6 +277,8 @@ ppc_stat_2d <- function(y,
   if (length(stat) != 2) {
     abort("For ppc_stat_2d the 'stat' argument must have length 2.")
   }
+  message_if_using_mean(stat[1])
+  message_if_using_mean(stat[2])
 
   if (is.character(stat)) {
     lgnd_title <- bquote(italic(T) == (list(.(stat[1]), .(stat[2]))))
@@ -405,3 +414,12 @@ stat_2d_segment_data <- function(data) {
 Ty_label <- function() expression(italic(T(italic(y))))
 Tyrep_label <- function() expression(italic(T)(italic(y)[rep]))
 
+
+message_if_using_mean <- function(stat) {
+  if (is.character(stat) && stat == "mean") {
+    message(
+      "Note: in most cases the default test statistic 'mean' is ",
+      "too weak to detect anything of interest."
+    )
+  }
+}

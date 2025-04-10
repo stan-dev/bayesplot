@@ -219,6 +219,7 @@ color_scheme_set()
 test_that("color_scheme_view renders correctly", {
   testthat::skip_on_cran()
   testthat::skip_if_not_installed("vdiffr")
+  skip_on_r_oldrel()
 
   color_scheme_set()
   p_default <- color_scheme_view()

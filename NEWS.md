@@ -1,4 +1,20 @@
-<!-- See http://style.tidyverse.org/news.html for advice on writing news -->
+# bayesplot 1.12.0
+
+* Expand checking workflows to more platforms by @andrjohns (#324)
+* Skip tests depending on Suggested dependency rstantools if not installed by @MichaelChirico (#325)
+* Skip tests depending on Suggested dependency gridExtra if not installed by @MichaelChirico (#326) 
+* Fix missing legends for unobserved levels in rhat and neff plots (#328)
+* Document problems with `ppc_stat` with `stat="mean"` (#329)
+* Ensure rank overlay plot starts at 0 even if not all bins present, thanks @sims1253 (#332)
+* Compatibility with ggplot2 3.6.0 by @teunbrand (#337)
+* Update GitHub actions workflows (#338)
+* Remove deprecated functions from `available_ppc()` (#340)
+* Fix missing counts in `ppc_bars_data()` by @TeemuSailynoja, thanks @famuvie (#342)
+
+
+# bayesplot 1.11.1
+
+* Limit maximum number of evaluation points in `ppc_pit_ecdf` functions by default to 1000. by @TeemuSailynoja in #318
 
 # bayesplot 1.11.0
 

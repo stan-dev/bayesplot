@@ -97,6 +97,7 @@ source(test_path("data-for-mcmc-tests.R"))
 test_that("mcmc_nuts_acceptance renders correctly", {
   skip_on_cran()
   skip_if_not_installed("vdiffr")
+  skip_on_r_oldrel()
 
   p_base <- mcmc_nuts_acceptance(vdiff_dframe_chains_np, vdiff_dframe_chains_lp)
   vdiffr::expect_doppelganger("mcmc_nuts_acceptance (default)", p_base)
@@ -108,6 +109,7 @@ test_that("mcmc_nuts_acceptance renders correctly", {
 test_that("mcmc_nuts_divergence renders correctly", {
   skip_on_cran()
   skip_if_not_installed("vdiffr")
+  skip_on_r_oldrel()
 
   p_base <- mcmc_nuts_divergence(vdiff_dframe_chains_np, vdiff_dframe_chains_lp)
   vdiffr::expect_doppelganger("mcmc_nuts_divergence (default)", p_base)
@@ -119,6 +121,7 @@ test_that("mcmc_nuts_divergence renders correctly", {
 test_that("mcmc_nuts_treedepth renders correctly", {
   skip_on_cran()
   skip_if_not_installed("vdiffr")
+  skip_on_r_oldrel()
 
   p_base <- mcmc_nuts_treedepth(vdiff_dframe_chains_np, vdiff_dframe_chains_lp)
   vdiffr::expect_doppelganger("mcmc_nuts_treedepth (default)", p_base)
@@ -130,6 +133,7 @@ test_that("mcmc_nuts_treedepth renders correctly", {
 test_that("mcmc_nuts_stepsize renders correctly", {
   skip_on_cran()
   skip_if_not_installed("vdiffr")
+  skip_on_r_oldrel()
 
   p_base <- mcmc_nuts_stepsize(vdiff_dframe_chains_np, vdiff_dframe_chains_lp)
   vdiffr::expect_doppelganger("mcmc_nuts_stepsize (default)", p_base)
@@ -141,6 +145,7 @@ test_that("mcmc_nuts_stepsize renders correctly", {
 test_that("mcmc_nuts_energy renders correctly", {
   skip_on_cran()
   skip_if_not_installed("vdiffr")
+  skip_on_r_oldrel()
 
   p_base <- mcmc_nuts_energy(vdiff_dframe_chains_np, vdiff_dframe_chains_lp, binwidth = 10)
   vdiffr::expect_doppelganger("mcmc_nuts_energy (default)", p_base)

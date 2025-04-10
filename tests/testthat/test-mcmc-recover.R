@@ -106,6 +106,7 @@ test_that("mcmc_recover_hist returns a ggplot object", {
 test_that("mcmc_recover_hist renders correctly", {
   skip_on_cran()
   skip_if_not_installed("vdiffr")
+  skip_on_r_oldrel()
 
   p_base <- mcmc_recover_hist(draws, true, binwidth = 0.01)
   vdiffr::expect_doppelganger("mcmc_recover_hist (default)", p_base)
@@ -114,6 +115,7 @@ test_that("mcmc_recover_hist renders correctly", {
 test_that("mcmc_recover_intervals renders correctly", {
   skip_on_cran()
   skip_if_not_installed("vdiffr")
+  skip_on_r_oldrel()
 
   p_base <- mcmc_recover_intervals(draws, true)
   vdiffr::expect_doppelganger("mcmc_recover_intervals (default)", p_base)
@@ -125,6 +127,7 @@ test_that("mcmc_recover_intervals renders correctly", {
 test_that("mcmc_recover_scatter renders correctly", {
   skip_on_cran()
   skip_if_not_installed("vdiffr")
+  skip_on_r_oldrel()
 
   p_base <- mcmc_recover_scatter(draws, true)
   vdiffr::expect_doppelganger("mcmc_recover_scatter (default)", p_base)

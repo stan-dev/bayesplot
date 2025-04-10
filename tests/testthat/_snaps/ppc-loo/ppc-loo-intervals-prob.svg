@@ -446,14 +446,10 @@
 <text x='474.52' y='554.29' text-anchor='middle' style='font-size: 9.60px; fill: #4D4D4D; font-family: sans;' textLength='10.68px' lengthAdjust='spacingAndGlyphs'>75</text>
 <text x='617.80' y='554.29' text-anchor='middle' style='font-size: 9.60px; fill: #4D4D4D; font-family: sans;' textLength='16.02px' lengthAdjust='spacingAndGlyphs'>100</text>
 <text x='334.10' y='567.53' text-anchor='middle' style='font-size: 12.00px; font-family: sans;' textLength='94.72px' lengthAdjust='spacingAndGlyphs'>Data point (index)</text>
-<line x1='672.74' y1='290.22' x2='672.74' y2='276.39' style='stroke-width: 2.13; stroke: #011F4B; stroke-opacity: 0.33; stroke-linecap: butt;' />
-<line x1='672.74' y1='290.22' x2='672.74' y2='276.39' style='stroke-width: 2.13; stroke: #011F4B; stroke-linecap: butt;' />
-<circle cx='672.74' cy='283.30' r='4.62' style='stroke-width: 0.71; stroke: #011F4B; fill: #03396C;' />
 <circle cx='672.74' cy='283.30' r='1.42' style='stroke-width: 0.71; stroke: #011F4B; fill: #03396C;' />
 <line x1='672.74' y1='307.50' x2='672.74' y2='293.67' style='stroke-width: 2.13; stroke: #B3CDE0; stroke-opacity: 0.33; stroke-linecap: butt;' />
 <line x1='672.74' y1='307.50' x2='672.74' y2='293.67' style='stroke-width: 2.13; stroke: #B3CDE0; stroke-linecap: butt;' />
 <circle cx='672.74' cy='300.58' r='4.62' style='stroke-width: 0.71; stroke: #B3CDE0; fill: #D1E1EC;' />
-<circle cx='672.74' cy='300.58' r='1.42' style='stroke-width: 0.71; stroke: #B3CDE0; fill: #D1E1EC;' />
 <text x='687.36' y='285.39' style='font-size: 13.00px; font-style: italic; font-family: sans;' textLength='6.51px' lengthAdjust='spacingAndGlyphs'>y</text>
 <text x='687.36' y='301.87' style='font-size: 13.00px; font-style: italic; font-family: sans;' textLength='6.51px' lengthAdjust='spacingAndGlyphs'>y</text>
 <text x='694.89' y='304.28' style='font-size: 9.10px; font-family: sans;' textLength='3.03px' lengthAdjust='spacingAndGlyphs'>r</text>

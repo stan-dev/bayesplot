@@ -4,6 +4,7 @@ context("MCMC: combo")
 source("data-for-mcmc-tests.R")
 
 test_that("mcmc_combo returns a gtable object", {
+  skip_if_not_installed("gridExtra")
   expect_gtable(mcmc_combo(arr, regex_pars = "beta"))
   expect_gtable(mcmc_combo(arr, regex_pars = "beta",
                            gg_theme = ggplot2::theme_dark()))
@@ -26,6 +27,7 @@ test_that("mcmc_combo returns a gtable object", {
 
 # functions that require multiple chains ----------------------------------
 test_that("mcmc_combo throws error if 1 chain but multiple chains required", {
+  skip_if_not_installed("gridExtra")
   expect_error(mcmc_combo(arr1chain, regex_pars = "beta",
                combo = c("trace_highlight", "dens")),
                "requires multiple chains")
@@ -42,6 +44,7 @@ test_that("mcmc_combo throws error if 1 chain but multiple chains required", {
 
 # other errors ------------------------------------------------------------
 test_that("mcmc_combo throws errors", {
+  skip_if_not_installed("gridExtra")
   expect_error(mcmc_combo(arr, combo = c("trace_highlight")),
                "'combo' should have at least two elements")
   expect_error(mcmc_combo(arr, regex_pars = "beta",

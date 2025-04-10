@@ -593,14 +593,10 @@
 <polyline points='16.90,388.80 19.89,388.80 ' style='stroke-width: 0.64; stroke: #333333; stroke-linecap: butt;' />
 <polyline points='16.90,347.51 19.89,347.51 ' style='stroke-width: 0.64; stroke: #333333; stroke-linecap: butt;' />
 <text x='330.03' y='567.53' style='font-size: 12.00px; font-style: italic; font-family: sans;' textLength='6.00px' lengthAdjust='spacingAndGlyphs'>x</text>
-<line x1='672.74' y1='300.79' x2='672.74' y2='286.97' style='stroke-width: 2.13; stroke: #011F4B; stroke-opacity: 0.33; stroke-linecap: butt;' />
-<line x1='672.74' y1='300.79' x2='672.74' y2='286.97' style='stroke-width: 2.13; stroke: #011F4B; stroke-linecap: butt;' />
-<circle cx='672.74' cy='293.88' r='4.62' style='stroke-width: 0.71; stroke: #011F4B; fill: #03396C;' />
 <circle cx='672.74' cy='293.88' r='1.42' style='stroke-width: 0.71; stroke: #011F4B; fill: #03396C;' />
 <line x1='672.74' y1='318.07' x2='672.74' y2='304.25' style='stroke-width: 2.13; stroke: #B3CDE0; stroke-opacity: 0.33; stroke-linecap: butt;' />
 <line x1='672.74' y1='318.07' x2='672.74' y2='304.25' style='stroke-width: 2.13; stroke: #B3CDE0; stroke-linecap: butt;' />
 <circle cx='672.74' cy='311.16' r='4.62' style='stroke-width: 0.71; stroke: #B3CDE0; fill: #D1E1EC;' />
-<circle cx='672.74' cy='311.16' r='1.42' style='stroke-width: 0.71; stroke: #B3CDE0; fill: #D1E1EC;' />
 <text x='687.36' y='295.97' style='font-size: 13.00px; font-style: italic; font-family: sans;' textLength='6.51px' lengthAdjust='spacingAndGlyphs'>y</text>
 <text x='687.36' y='312.45' style='font-size: 13.00px; font-style: italic; font-family: sans;' textLength='6.51px' lengthAdjust='spacingAndGlyphs'>y</text>
 <text x='694.89' y='314.85' style='font-size: 9.10px; font-family: sans;' textLength='3.03px' lengthAdjust='spacingAndGlyphs'>r</text>

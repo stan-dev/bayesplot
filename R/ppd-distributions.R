@@ -168,7 +168,7 @@ ppd_hist <-
       fill = "ypred"
     )) +
       geom_histogram(
-        size = 0.25,
+        linewidth = 0.25,
         binwidth = binwidth,
         bins = bins,
         breaks = breaks
