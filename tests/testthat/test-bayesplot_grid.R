@@ -1,6 +1,8 @@
 library(bayesplot)
 context("bayesplot_grid")
 
+skip_if_not_installed("gridExtra")
+
 y <- example_y_data()
 yrep <- example_yrep_draws()[1:25, ]
 gr <- gridExtra::arrangeGrob(ppc_stat(y, yrep, binwidth = 1))
