@@ -65,6 +65,7 @@ test_that("mcmc_hex throws error if number of parameters is not 2", {
 
 # mcmc_pairs  -------------------------------------------------------------
 test_that("mcmc_pairs returns a bayesplot_grid object", {
+  skip_if_not_installed("gridExtra")
   g <- mcmc_pairs(arr, pars = c("(Intercept)", "sigma"))
   expect_bayesplot_grid(g)
   expect_equal(print(g), plot(g))
@@ -88,6 +89,7 @@ test_that("mcmc_pairs using hexbin works", {
 })
 
 test_that("no mcmc_pairs non-NUTS 'condition's fail", {
+  skip_if_not_installed("gridExtra")
   expect_bayesplot_grid(
     mcmc_pairs(arr, pars = "sigma", regex_pars = "beta",
                condition = pairs_condition(chains = list(1, 2:4)))
