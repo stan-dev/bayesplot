@@ -1,5 +1,7 @@
 # bayesplot (development version)
 
+* Added `ppc_loo_pit_ecdf()` bu @TeemuSäilynoja
+
 # bayesplot 1.12.0
 
 * Expand checking workflows to more platforms by @andrjohns (#324)

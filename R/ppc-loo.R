@@ -15,9 +15,9 @@
 #' @param psis_object If using **loo** version `2.0.0` or greater, an
 #'   object returned by the `psis()` function (or by the `loo()` function
 #'   with argument `save_psis` set to `TRUE`).
-#' @param alpha,size,fatten,linewidth Arguments passed to code geoms to control plot
-#'   aesthetics. For `ppc_loo_pit_qq()` and `ppc_loo_pit_overlay()`, `size` and
-#'   `alpha` are passed to [ggplot2::geom_point()] and
+#' @param alpha,size,fatten,linewidth Arguments passed to code geoms to control
+#'   plot aesthetics. For `ppc_loo_pit_qq()` and `ppc_loo_pit_overlay()`,`size`
+#'   and `alpha` are passed to [ggplot2::geom_point()] and
 #'   [ggplot2::geom_density()], respectively. For `ppc_loo_intervals()`, `size`
 #'   `linewidth` and `fatten` are passed to [ggplot2::geom_pointrange()]. For
 #'   `ppc_loo_ribbon()`, `alpha` and `size`  are passed to
@@ -65,7 +65,6 @@
 #' @template reference-loo
 #'
 #' @examples
-#'
 #' \dontrun{
 #' library(rstanarm)
 #' library(loo)
@@ -73,12 +72,12 @@
 #' head(radon)
 #' fit <- stan_lmer(
 #'   log_radon ~ floor + log_uranium + floor:log_uranium
-#'                + (1 + floor | county),
+#'     + (1 + floor | county),
 #'   data = radon,
 #'   iter = 100,
 #'   chains = 2,
 #'   cores = 2
-#'  )
+#' )
 #' y <- radon$log_radon
 #' yrep <- posterior_predict(fit)
 #'
@@ -93,6 +92,12 @@
 #' ppc_loo_pit_qq(y, yrep, lw = lw)
 #' ppc_loo_pit_qq(y, yrep, lw = lw, compare = "normal")
 #'
+#' # predictive calibration check using LOO probability integral transform
+#' ppc_loo_pit_ecdf(y, yrep, lw)
+#'
+#' # With `plot_diff = TRUE` it is easier to assess the calibration.
+#' ppc_loo_pit_ecdf(y, yrep, lw, plot_diff = TRUE)
+#'
 #' # can use the psis object instead of lw
 #' ppc_loo_pit_qq(y, yrep, psis_object = psis1)
 #'
@@ -101,18 +106,21 @@
 #' ppc_loo_intervals(y, yrep, psis_object = psis1, subset = keep_obs)
 #'
 #' color_scheme_set("gray")
-#' ppc_loo_intervals(y, yrep, psis_object = psis1, subset = keep_obs,
-#'                   order = "median")
+#' ppc_loo_intervals(y, yrep,
+#'   psis_object = psis1, subset = keep_obs,
+#'   order = "median"
+#' )
 #' }
 #'
 NULL
 
 #' @rdname PPC-loo
 #' @export
-#' @param pit For `ppc_loo_pit_overlay()` and `ppc_loo_pit_qq()`, optionally a
-#'   vector of precomputed PIT values that can be specified instead of `y`,
-#'   `yrep`, and `lw` (these are all ignored if `pit` is specified). If not
-#'   specified the PIT values are computed internally before plotting.
+#' @param pit For `ppc_loo_pit_overlay()`, `ppc_loo_pit_qq()`, and
+#'   `ppc_loo_pit_ecdf()` optionally a vector of precomputed PIT values that
+#'   can be specified instead of `y`, `yrep`, and `lw` (these are all ignored
+#'   if `pit` is specified). If not specified the PIT values are computed
+#'   internally before plotting.
 #' @param samples For `ppc_loo_pit_overlay()`, the number of data sets (each
 #'   the same size as `y`) to simulate from the standard uniform
 #'   distribution. The default is 100. The density estimate of each dataset is
@@ -182,31 +190,34 @@ ppc_loo_pit_overlay <- function(y,
     )
   }
 
-  message(paste("NOTE: The kernel density estimate assumes continuous observations",
-                "and is not optimal for discrete observations."))
+  message(paste(
+    "NOTE: The kernel density estimate assumes continuous observations",
+    "and is not optimal for discrete observations."
+  ))
 
   if (boundary_correction) {
     p <- ggplot(data) +
       aes(x = .data$x, y = .data$value) +
       geom_line(
-        aes(group = .data$rep_id,  color = "yrep"),
+        aes(group = .data$rep_id, color = "yrep"),
         data = function(x) dplyr::filter(x, !.data$is_y),
         alpha = alpha,
         linewidth = size,
-        na.rm = TRUE) +
+        na.rm = TRUE
+      ) +
       geom_line(
         aes(color = "y"),
         data = function(x) dplyr::filter(x, .data$is_y),
-       linewidth = 1,
+        linewidth = 1,
         lineend = "round",
-        na.rm = TRUE) +
+        na.rm = TRUE
+      ) +
       scale_x_continuous(
         limits = c(0, 1),
         expand = expansion(0, 0.01),
         breaks = seq(0, 1, by = 0.25),
         labels = c("0", "0.25", "0.5", "0.75", "1")
       )
-
   } else {
     p <- ggplot(data) +
       aes(x = .data$value) +
@@ -222,7 +233,8 @@ ppc_loo_pit_overlay <- function(y,
         adjust = adjust,
         kernel = kernel,
         n = n_dens,
-        na.rm = TRUE) +
+        na.rm = TRUE
+      ) +
       stat_density(
         aes(color = "y"),
         data = function(x) dplyr::filter(x, .data$is_y),
@@ -235,7 +247,8 @@ ppc_loo_pit_overlay <- function(y,
         adjust = adjust,
         kernel = kernel,
         n = n_dens,
-        na.rm = TRUE) +
+        na.rm = TRUE
+      ) +
       scale_x_continuous(
         limits = c(0.05, 0.95),
         expand = expansion(0, 0),
@@ -344,17 +357,108 @@ ppc_loo_pit_qq <- function(y,
       distribution = theoretical,
       color = get_color("m"),
       size = size,
-      alpha = alpha) +
+      alpha = alpha
+    ) +
     geom_abline(
       linetype = 2,
-      color = "black") +
+      color = "black"
+    ) +
     bayesplot_theme_get() +
     labs(x = x_lab, y = y_lab)
   if (compare == "uniform") {
-    qq + lims(x=c(0,1), y=c(0,1))
+    qq + lims(x = c(0, 1), y = c(0, 1))
   } else {
     qq
   }
+}
+
+#' @rdname PPC-loo
+#' @export
+#' @param eval_points For `ppc_loo_pit_ecdf()`, an optional integer defining
+#'    the number of equally spaced evaluation points for the ECDF. Reducing
+#'    `eval_poins` when using `interpolate_adj = FALSE` makes computing the
+#'    confidence bands faster. If `pit` is supplied, defaults to `length(pit)`,
+#'    otherwise `min(nrow(yrep) + 1,
+#' @param prob For `ppc_loo_pit_ecdf()`, the desired simultaneous coverage
+#'    level of the bands around the ECDF. A value in (0,1).
+#' @param plot_diff For `ppc_loo_pit_ecdf()`, a boolean defining whether to
+#'    plot the difference between the observed PIT-ECDF and the theoretical
+#'    expectation for uniform PIT values rather than plotting the regular ECDF.
+#'    The default is `FALSE`, but for large samples we recommend setting
+#'    `plot_diff = TRUE` to better use the plot area.
+#' @param interval_method For `ppc_loo_pit_ecdf()`, a string that can be either
+#'    "interpolate" or "optimize". If "simulate" (the default), the simultaneous
+#'    confidence bands are interpolated based on precomputed values rather than
+#'    solved for the specific combination of `eval_points` and `dim(yrep)`.
+#'    The default is to use interpolation if `eval_points` is greater than 200.
+#'
+ppc_loo_pit_ecdf <- function(y,
+                             yrep,
+                             lw = NULL,
+                             ...,
+                             psis_object = NULL,
+                             pit = NULL,
+                             eval_points = NULL,
+                             prob = .99,
+                             plot_diff = FALSE,
+                             interval_method = c("interpolate", "optimize")) {
+  check_ignored_arguments(...)
+
+  interval_method <- match.arg(interval_method)
+  if (!is.null(pit)) {
+    inform("'pit' specified so ignoring 'y','yrep','lw' if specified.")
+    pit <- validate_pit(pit)
+    if (is.null(eval_points)) {
+      eval_points <- length(pit)
+    }
+  } else {
+    suggested_package("rstantools")
+    y <- validate_y(y)
+    yrep <- validate_predictions(yrep, length(y))
+    lw <- .get_lw(lw, psis_object)
+    stopifnot(identical(dim(yrep), dim(lw)))
+    pit <- pmin(1, rstantools::loo_pit(object = yrep, y = y, lw = lw))
+    if (is.null(eval_points)) {
+      eval_points <- min(nrow(yrep) + 1, 1000)
+    }
+  }
+
+  n_obs <- length(pit)
+  gamma <- adjust_gamma(
+    N = n_obs,
+    K = eval_points,
+    prob = prob,
+    interpolate_adj = interval_method == "interpolate"
+  )
+  lims <- ecdf_intervals(gamma = gamma, N = n_obs, K = eval_points)
+  ggplot() +
+    aes(
+      x = seq(0, 1, length.out = eval_points),
+      y = ecdf(pit)(seq(0, 1, length.out = eval_points)) -
+        (plot_diff == TRUE) * seq(0, 1, length.out = eval_points),
+      color = "y"
+    ) +
+    geom_step(show.legend = FALSE) +
+    geom_step(
+      aes(
+        y = lims$upper[-1] / n_obs -
+          (plot_diff == TRUE) * seq(0, 1, length.out = eval_points),
+        color = "yrep"
+      ),
+      linetype = 2, show.legend = FALSE
+    ) +
+    geom_step(
+      aes(
+        y = lims$lower[-1] / n_obs -
+          (plot_diff == TRUE) * seq(0, 1, length.out = eval_points),
+        color = "yrep"
+      ),
+      linetype = 2, show.legend = FALSE
+    ) +
+    labs(y = ifelse(plot_diff, "ECDF difference", "ECDF"), x = "LOO PIT") +
+    yaxis_ticks(FALSE) +
+    scale_color_ppc() +
+    bayesplot_theme_get()
 }
 
 
@@ -421,7 +525,6 @@ ppc_loo_intervals <-
            fatten = 2.5,
            linewidth = 1,
            order = c("index", "median")) {
-
     check_ignored_arguments(...)
     y <- validate_y(y)
     order_by_median <- match.arg(order) == "median"
@@ -440,7 +543,7 @@ ppc_loo_intervals <-
       if (!is.null(subset)) {
         stopifnot(length(y) >= length(subset))
         y <- y[subset]
-        yrep <- yrep[, subset, drop=FALSE]
+        yrep <- yrep[, subset, drop = FALSE]
         psis_object <- .psis_subset(psis_object, subset)
       }
       probs <- sort(c(prob, prob_outer))
@@ -523,7 +626,7 @@ ppc_loo_ribbon <-
         "'yrep', 'psis_object', 'subset', if specified."
       ))
       if (ncol(intervals) == 3) {
-          intervals <- cbind(intervals[, 1], intervals, intervals[, 3])
+        intervals <- cbind(intervals[, 1], intervals, intervals[, 3])
       }
     } else {
       suggested_package("loo", min_version = "2.0.0")
@@ -531,7 +634,7 @@ ppc_loo_ribbon <-
       if (!is.null(subset)) {
         stopifnot(length(y) >= length(subset))
         y <- y[subset]
-        yrep <- yrep[, subset, drop=FALSE]
+        yrep <- yrep[, subset, drop = FALSE]
         psis_object <- .psis_subset(psis_object, subset)
       }
       probs <- sort(c(prob, prob_outer))
@@ -570,7 +673,7 @@ ppc_loo_ribbon <-
       geom_line(
         aes(y = .data$y_obs, color = "y"),
         linewidth = 0.5,
-        alpha = 2/3
+        alpha = 2 / 3
       ) +
       scale_color_ppc() +
       scale_fill_ppc(values = c(NA, get_color("l"))) +
@@ -589,10 +692,11 @@ ppc_loo_ribbon <-
     y_obs = y,
     x = x,
     ll = intervals[, 1],
-    l  = intervals[, 2],
-    m  = intervals[, 3],
-    h  = intervals[, 4],
-    hh = intervals[, 5])
+    l = intervals[, 2],
+    m = intervals[, 3],
+    h = intervals[, 4],
+    hh = intervals[, 5]
+  )
 }
 
 # subset a psis_object without breaking it
@@ -602,7 +706,7 @@ ppc_loo_ribbon <-
   if (length(subset) > dim(psis_object)[2]) {
     abort("'subset' has too many elements.")
   }
-  psis_object$log_weights <- psis_object$log_weights[, subset, drop=FALSE]
+  psis_object$log_weights <- psis_object$log_weights[, subset, drop = FALSE]
   psis_object$diagnostics$pareto_k <- psis_object$diagnostics$pareto_k[subset]
   psis_object$diagnostics$n_eff <- psis_object$diagnostics$n_eff[subset]
 
@@ -618,29 +722,28 @@ ppc_loo_ribbon <-
 # convolution with a Gaussian filter.
 
 # Based on scipy.signal.gaussian formula
-.gaussian <- function(N, bw){
-  n <- seq(0, N -1) - (N - 1)/2
-  sigma = 2 * bw * bw
-  w = exp(-n^2 / sigma)
+.gaussian <- function(N, bw) {
+  n <- seq(0, N - 1) - (N - 1) / 2
+  sigma <- 2 * bw * bw
+  w <- exp(-n^2 / sigma)
   return(w)
-
 }
 
 .linear_convolution <- function(x,
                                 bw,
                                 grid_counts,
                                 grid_breaks,
-                                grid_len){
+                                grid_len) {
   # 1-D Gaussian estimation via
   # convolution of a Gaussian filter and the binned relative freqs
-  bin_width <-  grid_breaks[2] - grid_breaks[1]
+  bin_width <- grid_breaks[2] - grid_breaks[1]
   f <- grid_counts / bin_width / length(x)
   bw <- bw / bin_width
 
   # number of data points to generate for gaussian filter
-  gauss_n <- as.integer(bw * 2 *pi)
-  if (gauss_n == 0){
-    gauss_n = 1
+  gauss_n <- as.integer(bw * 2 * pi)
+  if (gauss_n == 0) {
+    gauss_n <- 1
   }
 
   # Generate Gaussian filter vector
@@ -648,39 +751,44 @@ ppc_loo_ribbon <-
   npad <- as.integer(grid_len / 5)
 
   # Reflection method (i.e. get first N and last N points to pad vector)
-  f <- c(rev(f[1:(npad)]),
-         f,
-         rev(f)[(grid_len - npad):(grid_len - 1)])
+  f <- c(
+    rev(f[1:(npad)]),
+    f,
+    rev(f)[(grid_len - npad):(grid_len - 1)]
+  )
 
   # Convolution: Gaussian filter + reflection method (pading) works as an
   # averaging moving window based on a Gaussian density which takes care
   # of the density boundary values near 0 and 1.
   bc_pvals <- stats::filter(f,
-                            kernel,
-                            method = 'convolution',
-                            sides = 2)[(npad + 1):(npad + grid_len)]
+    kernel,
+    method = "convolution",
+    sides = 2
+  )[(npad + 1):(npad + grid_len)]
 
   bc_pvals / (bw * (2 * pi)^0.5)
 }
 
 .kde_correction <- function(x,
                             bw,
-                            grid_len){
+                            grid_len) {
   # Generate boundary corrected values via a linear convolution using a
   # 1-D Gaussian window filter. This method uses the "reflection method"
   # to estimate these pvalues and helps speed up the code
-  if (any(is.infinite(x))){
-    warning(paste("Ignored", sum(is.infinite(x)),
-                  "Non-finite PIT values are invalid for KDE boundary correction method"))
+  if (any(is.infinite(x))) {
+    warning(paste(
+      "Ignored", sum(is.infinite(x)),
+      "Non-finite PIT values are invalid for KDE boundary correction method"
+    ))
     x <- x[is.finite(x)]
   }
 
-  if (grid_len < 100){
+  if (grid_len < 100) {
     grid_len <- 100
   }
 
   # Get relative frequency boundaries and counts for input vector
-  bins <- seq(from= min(x), to = max(x), length.out = grid_len + 1)
+  bins <- seq(from = min(x), to = max(x), length.out = grid_len + 1)
   hist_obj <- graphics::hist(x, breaks = bins, plot = FALSE)
   grid_breaks <- hist_obj$breaks
   grid_counts <- hist_obj$counts
@@ -694,10 +802,10 @@ ppc_loo_ribbon <-
   # Generate vector of x-axis values for plotting based on binned relative freqs
   n_breaks <- length(grid_breaks)
 
-  xs <-  (grid_breaks[2:n_breaks] + grid_breaks[1:(n_breaks - 1)]) / 2
+  xs <- (grid_breaks[2:n_breaks] + grid_breaks[1:(n_breaks - 1)]) / 2
 
-  first_nonNA <- utils::head(which(!is.na(bc_pvals)),1)
-  last_nonNA <- utils::tail(which(!is.na(bc_pvals)),1)
+  first_nonNA <- utils::head(which(!is.na(bc_pvals)), 1)
+  last_nonNA <- utils::tail(which(!is.na(bc_pvals)), 1)
   bc_pvals[1:first_nonNA] <- bc_pvals[first_nonNA]
   bc_pvals[last_nonNA:length(bc_pvals)] <- bc_pvals[last_nonNA]
 
@@ -706,23 +814,25 @@ ppc_loo_ribbon <-
 
 # Wrapper function to generate runif reference lines based on
 # .kde_correction()
-.ref_kde_correction <- function(unifs, bw, grid_len){
-
+.ref_kde_correction <- function(unifs, bw, grid_len) {
   # Allocate memory
-  idx <- seq(from = 1,
-             to = ncol(unifs)*nrow(unifs) + ncol(unifs),
-             by = ncol(unifs))
-  idx <- c(idx, ncol(unifs)*nrow(unifs))
-  xs <- rep(0, ncol(unifs)*nrow(unifs))
+  idx <- seq(
+    from = 1,
+    to = ncol(unifs) * nrow(unifs) + ncol(unifs),
+    by = ncol(unifs)
+  )
+  idx <- c(idx, ncol(unifs) * nrow(unifs))
+  xs <- rep(0, ncol(unifs) * nrow(unifs))
   bc_mat <- matrix(0, nrow(unifs), ncol(unifs))
 
   # Generate boundary corrected reference values
-  for (i in 1:nrow(unifs)){
-    bc_list <- .kde_correction(unifs[i,],
-                               bw = bw,
-                               grid_len = grid_len)
-    bc_mat[i,] <- bc_list$bc_pvals
-    xs[idx[i]:(idx[i+1]-1)] <- bc_list$xs
+  for (i in 1:nrow(unifs)) {
+    bc_list <- .kde_correction(unifs[i, ],
+      bw = bw,
+      grid_len = grid_len
+    )
+    bc_mat[i, ] <- bc_list$bc_pvals
+    xs[idx[i]:(idx[i + 1] - 1)] <- bc_list$xs
   }
 
   list(xs = xs, unifs = bc_mat)
