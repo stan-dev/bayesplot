@@ -73,10 +73,25 @@ test_that("ppc_loo_pit_qq returns ggplot object", {
   expect_equal(p3$labels$x, "Normal")
 })
 
-test_that("ppc_loo_pit functions work when pit specified instead of y,yrep,lw", {
+test_that("ppc_loo_pit_ecdf returns a ggplot object", {
+  skip_if_not_installed("rstanarm")
+  skip_if_not_installed("loo")
+  expect_gg(p0 <- ppc_loo_pit_ecdf(y, yrep, lw, interval_method = "optimize",
+                                   eval_points = 100))
+  expect_gg(p1 <- ppc_loo_pit_ecdf(y, yrep, lw, interval_method = "optimize"))
+  expect_gg(p2 <- ppc_loo_pit_ecdf(y, yrep, psis_object = psis1, interval_method = "optimize"))
+  expect_equal(p1$labels$x, "LOO PIT")
+  expect_equal(p1$labels$y, "ECDF")
+  expect_equal(p1$data, p2$data)
+  expect_gg(p3 <- ppc_loo_pit_ecdf(y, yrep, lw, plot_diff = TRUE, interval_method = "optimize"))
+  expect_equal(p3$labels$y, "ECDF difference")
+})
+
+test_that("ppc_loo_pit functions work when pit specified instead of y, yrep, and lw", {
   skip_if_not_installed("rstanarm")
   skip_if_not_installed("loo")
   expect_gg(ppc_loo_pit_qq(pit = pits))
+  # ppc_loo_pit_qq
   expect_message(
     p1 <- ppc_loo_pit_qq(y = y, yrep = yrep, lw = lw, pit = pits),
     "'pit' specified so ignoring 'y','yrep','lw' if specified"
@@ -86,7 +101,18 @@ test_that("ppc_loo_pit functions work when pit specified instead of y,yrep,lw", 
   )
   expect_equal(p1$data, p2$data)
 
+  # ppc_loo_pit_ecdf
+  expect_gg(ppc_loo_pit_ecdf(pit = rep(pits, 4)))
+  expect_message(
+    p1 <- ppc_loo_pit_ecdf(y = y, yrep = yrep, lw = lw, pit = rep(pits, 4)),
+    "'pit' specified so ignoring 'y','yrep','lw' if specified"
+  )
+  expect_message(
+    p2 <- ppc_loo_pit_ecdf(pit = rep(pits, 4))
+  )
+  expect_equal(p1$data, p2$data)
 
+  # ppc_loo_pit_overlay
   expect_gg(p1 <- ppc_loo_pit_overlay(pit = pits))
   expect_message(
     ppc_loo_pit_overlay(y = y, yrep = yrep, lw = lw, pit = pits),
@@ -255,3 +281,37 @@ test_that("ppc_loo_ribbon renders correctly", {
   vdiffr::expect_doppelganger("ppc_loo_ribbon (subset)", p_custom)
 })
 
+test_that("ppc_loo_pit_ecdf renders correctly", {
+  skip_on_cran()
+  skip_if_not_installed("vdiffr")
+  skip_if_not_installed("loo")
+  skip_on_r_oldrel()
+  pit <- pmin(1, rstantools::loo_pit(
+    example_yrep_draws(),
+    example_y_data(),
+    matrix(log(1 / nrow(example_yrep_draws())), ncol = ncol(example_yrep_draws()),
+           nrow = nrow(example_yrep_draws()))
+  ))
+
+  p_base <- ppc_loo_pit_ecdf(pit = pit)
+  vdiffr::expect_doppelganger("ppc_loo_pit_ecdf (default)", p_base)
+
+  p_custom <- ppc_loo_pit_ecdf(
+    pit = pit,
+    eval_points = 200,
+  )
+  vdiffr::expect_doppelganger("ppc_loo_pit_ecdf (eval_points)", p_custom)
+
+  p_custom <- ppc_loo_pit_ecdf(
+    pit = pit,
+    prob = 0.95,
+    eval_points = 500
+  )
+  vdiffr::expect_doppelganger("ppc_loo_pit_ecdf (prob)", p_custom)
+
+  p_custom <- ppc_loo_pit_ecdf(
+    pit = pit,
+    plot_diff = TRUE
+  )
+  vdiffr::expect_doppelganger("ppc_loo_pit_ecdf (ecdf difference)", p_custom)
+})
