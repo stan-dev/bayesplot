@@ -374,42 +374,40 @@ ppc_loo_pit_qq <- function(y,
 
 #' @rdname PPC-loo
 #' @export
-#' @param eval_points For `ppc_loo_pit_ecdf()`, an optional integer defining
-#'    the number of equally spaced evaluation points for the ECDF. Reducing
-#'    `eval_poins` when using `interpolate_adj = FALSE` makes computing the
-#'    confidence bands faster. If `pit` is supplied, defaults to `length(pit)`,
-#'    otherwise `min(nrow(yrep) + 1,
-#' @param prob For `ppc_loo_pit_ecdf()`, the desired simultaneous coverage
-#'    level of the bands around the ECDF. A value in (0,1).
+#' @param K For `ppc_loo_pit_ecdf()` an optional integer defining the number
+#'  of equally spaced evaluation points for the PIT-ECDF. Reducing K when
+#'  using `interpolate_adj = FALSE` makes computing the confidence bands
+#'  faster. If `pit` is supplied, defaults to `length(pit)`, otherwise
+#'  `yrep` determines the maximum accuracy of the estimated PIT values and
+#'  `K` is set to `min(nrow(yrep) + 1, 1000)`.
 #' @param plot_diff For `ppc_loo_pit_ecdf()`, a boolean defining whether to
-#'    plot the difference between the observed PIT-ECDF and the theoretical
-#'    expectation for uniform PIT values rather than plotting the regular ECDF.
-#'    The default is `FALSE`, but for large samples we recommend setting
-#'    `plot_diff = TRUE` to better use the plot area.
-#' @param interval_method For `ppc_loo_pit_ecdf()`, a string that can be either
-#'    "interpolate" or "optimize". If "simulate" (the default), the simultaneous
-#'    confidence bands are interpolated based on precomputed values rather than
-#'    solved for the specific combination of `eval_points` and `dim(yrep)`.
-#'    The default is to use interpolation if `eval_points` is greater than 200.
-#'
+#'   plot the difference between the observed PIT-ECDF and the theoretical
+#'   expectation for uniform PIT values rather than plotting the regular ECDF.
+#'   The default is `FALSE`, but for large samples we recommend setting
+#'   `plot_diff = TRUE` to better use the plot area.
+#' @param interpolate_adj For `ppc_loo_pit_ecdf()`, a boolean defining if the
+#'   simultaneous confidence bands should be interpolated based on precomputed
+#'   values rather than computed exactly. Computing the bands may be
+#'   computationally intensive and the approximation gives a fast method for
+#'   assessing the ECDF trajectory. The default is to use interpolation if `K`
+#'   is greater than 200.
 ppc_loo_pit_ecdf <- function(y,
                              yrep,
                              lw = NULL,
                              ...,
                              psis_object = NULL,
                              pit = NULL,
-                             eval_points = NULL,
+                             K = NULL,
                              prob = .99,
                              plot_diff = FALSE,
-                             interval_method = c("interpolate", "optimize")) {
+                             interpolate_adj = NULL) {
   check_ignored_arguments(...)
 
-  interval_method <- match.arg(interval_method)
   if (!is.null(pit)) {
     inform("'pit' specified so ignoring 'y','yrep','lw' if specified.")
     pit <- validate_pit(pit)
-    if (is.null(eval_points)) {
-      eval_points <- length(pit)
+    if (is.null(K)) {
+      K <- length(pit)
     }
   } else {
     suggested_package("rstantools")
@@ -418,31 +416,31 @@ ppc_loo_pit_ecdf <- function(y,
     lw <- .get_lw(lw, psis_object)
     stopifnot(identical(dim(yrep), dim(lw)))
     pit <- pmin(1, rstantools::loo_pit(object = yrep, y = y, lw = lw))
-    if (is.null(eval_points)) {
-      eval_points <- min(nrow(yrep) + 1, 1000)
+    if (is.null(K)) {
+      K <- min(nrow(yrep) + 1, 1000)
     }
   }
 
   n_obs <- length(pit)
   gamma <- adjust_gamma(
     N = n_obs,
-    K = eval_points,
+    K = K,
     prob = prob,
-    interpolate_adj = interval_method == "interpolate"
+    interpolate_adj = interpolate_adj
   )
-  lims <- ecdf_intervals(gamma = gamma, N = n_obs, K = eval_points)
+  lims <- ecdf_intervals(gamma = gamma, N = n_obs, K = K)
   ggplot() +
     aes(
-      x = seq(0, 1, length.out = eval_points),
-      y = ecdf(pit)(seq(0, 1, length.out = eval_points)) -
-        (plot_diff == TRUE) * seq(0, 1, length.out = eval_points),
+      x = seq(0, 1, length.out = K),
+      y = ecdf(pit)(seq(0, 1, length.out = K)) -
+        (plot_diff == TRUE) * seq(0, 1, length.out = K),
       color = "y"
     ) +
     geom_step(show.legend = FALSE) +
     geom_step(
       aes(
         y = lims$upper[-1] / n_obs -
-          (plot_diff == TRUE) * seq(0, 1, length.out = eval_points),
+          (plot_diff == TRUE) * seq(0, 1, length.out = K),
         color = "yrep"
       ),
       linetype = 2, show.legend = FALSE
@@ -450,7 +448,7 @@ ppc_loo_pit_ecdf <- function(y,
     geom_step(
       aes(
         y = lims$lower[-1] / n_obs -
-          (plot_diff == TRUE) * seq(0, 1, length.out = eval_points),
+          (plot_diff == TRUE) * seq(0, 1, length.out = K),
         color = "yrep"
       ),
       linetype = 2, show.legend = FALSE
@@ -489,7 +487,6 @@ ppc_loo_pit <-
 
 #' @rdname PPC-loo
 #' @export
-#' @template args-prob-prob_outer
 #' @param intervals For `ppc_loo_intervals()` and `ppc_loo_ribbon()`, optionally
 #'   a matrix of pre-computed LOO predictive intervals that can be specified
 #'   instead of `yrep` (ignored if `intervals` is specified). If not specified
@@ -502,6 +499,10 @@ ppc_loo_pit <-
 #'   the plotted intervals. The default (`"index"`) is to plot them in the
 #'   order of the observations. The alternative (`"median"`) arranges them
 #'   by median value from smallest (left) to largest (right).
+#' @param prob,prob_outer Values between `0` and `1` indicating the desired
+#'   probability mass to include in the inner and outer intervals. The defaults
+#'   are `prob=0.5` and `prob_outer=0.9` for `ppc_loo_intervals()` and
+#'   `prob = 0.99` for `ppc_loo_pit_ecdf()`.
 #' @param subset For `ppc_loo_intervals()` and `ppc_loo_ribbon()`, an optional
 #'   integer vector indicating which observations in `y` (and `yrep`) to
 #'   include. Dropping observations from `y` and `yrep` manually before passing

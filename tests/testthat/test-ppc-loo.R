@@ -76,14 +76,13 @@ test_that("ppc_loo_pit_qq returns ggplot object", {
 test_that("ppc_loo_pit_ecdf returns a ggplot object", {
   skip_if_not_installed("rstanarm")
   skip_if_not_installed("loo")
-  expect_gg(p0 <- ppc_loo_pit_ecdf(y, yrep, lw, interval_method = "optimize",
-                                   eval_points = 100))
-  expect_gg(p1 <- ppc_loo_pit_ecdf(y, yrep, lw, interval_method = "optimize"))
-  expect_gg(p2 <- ppc_loo_pit_ecdf(y, yrep, psis_object = psis1, interval_method = "optimize"))
+  expect_gg(p0 <- ppc_loo_pit_ecdf(y, yrep, lw))
+  expect_gg(p1 <- ppc_loo_pit_ecdf(y, yrep, lw))
+  expect_gg(p2 <- ppc_loo_pit_ecdf(y, yrep, psis_object = psis1))
   expect_equal(p1$labels$x, "LOO PIT")
   expect_equal(p1$labels$y, "ECDF")
   expect_equal(p1$data, p2$data)
-  expect_gg(p3 <- ppc_loo_pit_ecdf(y, yrep, lw, plot_diff = TRUE, interval_method = "optimize"))
+  expect_gg(p3 <- ppc_loo_pit_ecdf(y, yrep, lw, plot_diff = TRUE))
   expect_equal(p3$labels$y, "ECDF difference")
 })
 
@@ -286,32 +285,37 @@ test_that("ppc_loo_pit_ecdf renders correctly", {
   skip_if_not_installed("vdiffr")
   skip_if_not_installed("loo")
   skip_on_r_oldrel()
-  pit <- pmin(1, rstantools::loo_pit(
-    example_yrep_draws(),
-    example_y_data(),
-    matrix(log(1 / nrow(example_yrep_draws())), ncol = ncol(example_yrep_draws()),
-           nrow = nrow(example_yrep_draws()))
-  ))
 
-  p_base <- ppc_loo_pit_ecdf(pit = pit)
+  psis_object <- suppressWarnings(loo::psis(-vdiff_loo_lw))
+  p_base <- ppc_loo_pit_ecdf(
+    vdiff_loo_y,
+    vdiff_loo_yrep,
+    psis_object = psis_object
+  )
   vdiffr::expect_doppelganger("ppc_loo_pit_ecdf (default)", p_base)
 
   p_custom <- ppc_loo_pit_ecdf(
-    pit = pit,
-    eval_points = 200,
+    vdiff_loo_y,
+    vdiff_loo_yrep,
+    psis_object = psis_object,
+    K = 50
   )
-  vdiffr::expect_doppelganger("ppc_loo_pit_ecdf (eval_points)", p_custom)
+  vdiffr::expect_doppelganger("ppc_loo_pit_ecdf (K)", p_custom)
 
   p_custom <- ppc_loo_pit_ecdf(
-    pit = pit,
-    prob = 0.95,
-    eval_points = 500
+    vdiff_loo_y,
+    vdiff_loo_yrep,
+    psis_object = psis_object,
+    prob = 0.95
   )
   vdiffr::expect_doppelganger("ppc_loo_pit_ecdf (prob)", p_custom)
 
   p_custom <- ppc_loo_pit_ecdf(
-    pit = pit,
-    plot_diff = TRUE
+    vdiff_loo_y,
+    vdiff_loo_yrep,
+    psis_object = psis_object,
+    plot_diff = TRUE,
+    K = 100
   )
   vdiffr::expect_doppelganger("ppc_loo_pit_ecdf (ecdf difference)", p_custom)
 })

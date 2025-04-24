@@ -62,10 +62,10 @@ ppc_loo_pit_ecdf(
   ...,
   psis_object = NULL,
   pit = NULL,
-  eval_points = NULL,
+  K = NULL,
   prob = 0.99,
   plot_diff = FALSE,
-  interval_method = c("interpolate", "optimize")
+  interpolate_adj = NULL
 )
 
 ppc_loo_pit(
@@ -175,14 +175,17 @@ compares computed PIT values to the standard uniform distribution. If
 calculated from the PIT values to the theoretical standard normal
 quantiles.}
 
-\item{eval_points}{For \code{ppc_loo_pit_ecdf()}, an optional integer defining
-the number of equally spaced evaluation points for the ECDF. Reducing
-\code{eval_poins} when using \code{interpolate_adj = FALSE} makes computing the
-confidence bands faster. If \code{pit} is supplied, defaults to \code{length(pit)},
-otherwise `min(nrow(yrep) + 1,}
+\item{K}{For \code{ppc_loo_pit_ecdf()} an optional integer defining the number
+of equally spaced evaluation points for the PIT-ECDF. Reducing K when
+using \code{interpolate_adj = FALSE} makes computing the confidence bands
+faster. If \code{pit} is supplied, defaults to \code{length(pit)}, otherwise
+\code{yrep} determines the maximum accuracy of the estimated PIT values and
+\code{K} is set to \code{min(nrow(yrep) + 1, 1000)}.}
 
-\item{prob}{For \code{ppc_loo_pit_ecdf()}, the desired simultaneous coverage
-level of the bands around the ECDF. A value in (0,1).}
+\item{prob, prob_outer}{Values between \code{0} and \code{1} indicating the desired
+probability mass to include in the inner and outer intervals. The defaults
+are \code{prob=0.5} and \code{prob_outer=0.9} for \code{ppc_loo_intervals()} and
+\code{prob = 0.99} for \code{ppc_loo_pit_ecdf()}.}
 
 \item{plot_diff}{For \code{ppc_loo_pit_ecdf()}, a boolean defining whether to
 plot the difference between the observed PIT-ECDF and the theoretical
@@ -190,11 +193,12 @@ expectation for uniform PIT values rather than plotting the regular ECDF.
 The default is \code{FALSE}, but for large samples we recommend setting
 \code{plot_diff = TRUE} to better use the plot area.}
 
-\item{interval_method}{For \code{ppc_loo_pit_ecdf()}, a string that can be either
-"interpolate" or "optimize". If "simulate" (the default), the simultaneous
-confidence bands are interpolated based on precomputed values rather than
-solved for the specific combination of \code{eval_points} and \code{dim(yrep)}.
-The default is to use interpolation if \code{eval_points} is greater than 200.}
+\item{interpolate_adj}{For \code{ppc_loo_pit_ecdf()}, a boolean defining if the
+simultaneous confidence bands should be interpolated based on precomputed
+values rather than computed exactly. Computing the bands may be
+computationally intensive and the approximation gives a fast method for
+assessing the ECDF trajectory. The default is to use interpolation if \code{K}
+is greater than 200.}
 
 \item{subset}{For \code{ppc_loo_intervals()} and \code{ppc_loo_ribbon()}, an optional
 integer vector indicating which observations in \code{y} (and \code{yrep}) to
@@ -218,10 +222,6 @@ interval (column names are ignored).}
 the plotted intervals. The default (\code{"index"}) is to plot them in the
 order of the observations. The alternative (\code{"median"}) arranges them
 by median value from smallest (left) to largest (right).}
-
-\item{prob, prob_outer}{Values between \code{0} and \code{1} indicating the desired
-probability mass to include in the inner and outer intervals. The defaults
-are \code{prob=0.5} and \code{prob_outer=0.9}.}
 }
 \value{
 A ggplot object that can be further customized using the \strong{ggplot2} package.
