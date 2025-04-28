@@ -234,7 +234,7 @@ for details.
 \section{Plot Descriptions}{
 
 \describe{
-\item{\code{ppc_loo_pit_overlay()}, \code{ppc_loo_pit_qq()}}{
+\item{\code{ppc_loo_pit_overlay()}, \code{ppc_loo_pit_qq()}, \code{ppc_loo_pit_ecdf()}}{
 The calibration of marginal predictions can be assessed using probability
 integral transformation (PIT) checks. LOO improves the check by avoiding the
 double use of data. See the section on marginal predictive checks in Gelman
@@ -259,6 +259,14 @@ the (mis)calibration better for the extreme values. However, in most cases
 we have found that the overlaid density plot (\code{ppc_loo_pit_overlay()})
 function will provide a clearer picture of calibration problems than the
 Q-Q plot.
+
+The \code{ppc_loo_pit_ecdf()} function visualizes the empirical cumulative
+distribution function (ECDF) of the LOO PITs overlaid with simultaneous
+confidence intervals for a standard uniform sample. For large samples,
+these confidence intervals are visually very narrow. Setting the
+\code{plot_diff} argument to \code{TRUE} transforms the plot to display the
+difference of the ECDF and the theoretical expectation, which can aid in
+the visual assessment of calibration.
 }
 \item{\code{ppc_loo_intervals()}, \code{ppc_loo_ribbon()}}{
 Similar to \code{\link[=ppc_intervals]{ppc_intervals()}} and \code{\link[=ppc_ribbon]{ppc_ribbon()}} but the intervals are for
