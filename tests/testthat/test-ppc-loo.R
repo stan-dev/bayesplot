@@ -67,10 +67,20 @@ test_that("ppc_loo_pit_qq returns ggplot object", {
   skip_if_not_installed("loo")
   expect_gg(p1 <- ppc_loo_pit_qq(y, yrep, lw))
   expect_gg(p2 <- ppc_loo_pit_qq(y, yrep, psis_object = psis1))
-  expect_equal(p1$labels$x, "Uniform")
+  if ("get_labs" %in% getNamespaceExports("ggplot2")) {
+    ll1 <- ggplot2::get_labs(p1)
+  } else {
+    ll1 <- p1$labels
+  }
+  expect_equal(ll1$x, "Uniform")
   expect_equal(p1$data, p2$data)
   expect_gg(p3 <- ppc_loo_pit_qq(y, yrep, lw, compare = "normal"))
-  expect_equal(p3$labels$x, "Normal")
+  if ("get_labs" %in% getNamespaceExports("ggplot2")) {
+    ll3 <- ggplot2::get_labs(p3)
+  } else {
+    ll3 <- p3$labels
+  }
+  expect_equal(ll3$x, "Normal")
 })
 
 test_that("ppc_loo_pit_ecdf returns a ggplot object", {
@@ -79,11 +89,21 @@ test_that("ppc_loo_pit_ecdf returns a ggplot object", {
   expect_gg(p0 <- ppc_loo_pit_ecdf(y, yrep, lw))
   expect_gg(p1 <- ppc_loo_pit_ecdf(y, yrep, lw))
   expect_gg(p2 <- ppc_loo_pit_ecdf(y, yrep, psis_object = psis1))
-  expect_equal(p1$labels$x, "LOO PIT")
-  expect_equal(p1$labels$y, "ECDF")
+  if ("get_labs" %in% getNamespaceExports("ggplot2")) {
+    ll1 <- ggplot2::get_labs(p1)
+  } else {
+    ll1 <- p1$labels
+  }
+  expect_equal(ll1$x, "LOO PIT")
+  expect_equal(ll1$y, "ECDF")
   expect_equal(p1$data, p2$data)
   expect_gg(p3 <- ppc_loo_pit_ecdf(y, yrep, lw, plot_diff = TRUE))
-  expect_equal(p3$labels$y, "ECDF difference")
+  if ("get_labs" %in% getNamespaceExports("ggplot2")) {
+    ll3 <- ggplot2::get_labs(p3)
+  } else {
+    ll3 <- p3$labels
+  }
+  expect_equal(ll3$y, "ECDF difference")
 })
 
 test_that("ppc_loo_pit functions work when pit specified instead of y, yrep, and lw", {
