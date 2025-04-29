@@ -70,6 +70,7 @@ ppc_km_overlay <- function(
   yrep,
   ...,
   status_y,
+  left_truncation_y = NULL,
   size = 0.25,
   alpha = 0.7
 ) {
@@ -82,7 +83,19 @@ ppc_km_overlay <- function(
   stopifnot(is.numeric(status_y))
   stopifnot(all(status_y %in% c(0, 1)))
 
+  if (!is.null(left_truncation_y)) {
+    if (!is.numeric(left_truncation_y) || length(left_truncation_y) != length(y)) {
+      stop("`left_truncation_y` must be a numeric vector of the same length as `y`.")
+    }
+  }
+
   data <- ppc_data(y, yrep, group = status_y)
+
+  if (!is.null(left_truncation_y)) {
+    data$left_trunc <- left_truncation_y[data$y_id]
+  } else {
+    data$left_trunc <- 0
+  }
 
   # Modify the status indicator:
   #   * For the observed data ("y"), convert the status indicator back to
@@ -96,7 +109,7 @@ ppc_km_overlay <- function(
                                  as.numeric(as.character(.data$group)),
                                  1))
 
-  sf_form <- survival::Surv(value, group) ~ rep_label
+  sf_form <- survival::Surv(time = data$left_trunc, time2 = data$value, event = data$group) ~ rep_label
   if (!is.null(add_group)) {
     data <- dplyr::inner_join(data,
                               tibble::tibble(y_id = seq_along(y),
@@ -164,6 +177,7 @@ ppc_km_overlay_grouped <- function(
   group,
   ...,
   status_y,
+  left_truncation_y = NULL,
   size = 0.25,
   alpha = 0.7
 ) {
@@ -175,6 +189,7 @@ ppc_km_overlay_grouped <- function(
     add_group = group,
     ...,
     status_y = status_y,
+    left_truncation_y = left_truncation_y,
     size = size,
     alpha = alpha
   )
