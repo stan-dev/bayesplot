@@ -1,5 +1,6 @@
 # bayesplot (development version)
 
+* Add possibility for left-truncation to `ppc_km_overlay()` and `ppc_km_overlay_grouped()` by @Sakuski
 * Added `ppc_loo_pit_ecdf()` by @TeemuSailynoja
 
 # bayesplot 1.12.0
