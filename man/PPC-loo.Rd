@@ -5,6 +5,7 @@
 \alias{ppc_loo_pit_overlay}
 \alias{ppc_loo_pit_data}
 \alias{ppc_loo_pit_qq}
+\alias{ppc_loo_pit_ecdf}
 \alias{ppc_loo_pit}
 \alias{ppc_loo_intervals}
 \alias{ppc_loo_ribbon}
@@ -52,6 +53,19 @@ ppc_loo_pit_qq(
   compare = c("uniform", "normal"),
   size = 2,
   alpha = 1
+)
+
+ppc_loo_pit_ecdf(
+  y,
+  yrep,
+  lw = NULL,
+  ...,
+  psis_object = NULL,
+  pit = NULL,
+  K = NULL,
+  prob = 0.99,
+  plot_diff = FALSE,
+  interpolate_adj = NULL
 )
 
 ppc_loo_pit(
@@ -116,10 +130,11 @@ the \strong{Examples} section, below. If \code{lw} is not specified then
 object returned by the \code{psis()} function (or by the \code{loo()} function
 with argument \code{save_psis} set to \code{TRUE}).}
 
-\item{pit}{For \code{ppc_loo_pit_overlay()} and \code{ppc_loo_pit_qq()}, optionally a
-vector of precomputed PIT values that can be specified instead of \code{y},
-\code{yrep}, and \code{lw} (these are all ignored if \code{pit} is specified). If not
-specified the PIT values are computed internally before plotting.}
+\item{pit}{For \code{ppc_loo_pit_overlay()}, \code{ppc_loo_pit_qq()}, and
+\code{ppc_loo_pit_ecdf()} optionally a vector of precomputed PIT values that
+can be specified instead of \code{y}, \code{yrep}, and \code{lw} (these are all ignored
+if \code{pit} is specified). If not specified the PIT values are computed
+internally before plotting.}
 
 \item{samples}{For \code{ppc_loo_pit_overlay()}, the number of data sets (each
 the same size as \code{y}) to simulate from the standard uniform
@@ -127,9 +142,9 @@ distribution. The default is 100. The density estimate of each dataset is
 plotted as a thin line in the plot, with the density estimate of the LOO
 PITs overlaid as a thicker dark line.}
 
-\item{alpha, size, fatten, linewidth}{Arguments passed to code geoms to control plot
-aesthetics. For \code{ppc_loo_pit_qq()} and \code{ppc_loo_pit_overlay()}, \code{size} and
-\code{alpha} are passed to \code{\link[ggplot2:geom_point]{ggplot2::geom_point()}} and
+\item{alpha, size, fatten, linewidth}{Arguments passed to code geoms to control
+plot aesthetics. For \code{ppc_loo_pit_qq()} and \code{ppc_loo_pit_overlay()},\code{size}
+and \code{alpha} are passed to \code{\link[ggplot2:geom_point]{ggplot2::geom_point()}} and
 \code{\link[ggplot2:geom_density]{ggplot2::geom_density()}}, respectively. For \code{ppc_loo_intervals()}, \code{size}
 \code{linewidth} and \code{fatten} are passed to \code{\link[ggplot2:geom_linerange]{ggplot2::geom_pointrange()}}. For
 \code{ppc_loo_ribbon()}, \code{alpha} and \code{size}  are passed to
@@ -160,6 +175,31 @@ compares computed PIT values to the standard uniform distribution. If
 calculated from the PIT values to the theoretical standard normal
 quantiles.}
 
+\item{K}{For \code{ppc_loo_pit_ecdf()} an optional integer defining the number
+of equally spaced evaluation points for the PIT-ECDF. Reducing K when
+using \code{interpolate_adj = FALSE} makes computing the confidence bands
+faster. If \code{pit} is supplied, defaults to \code{length(pit)}, otherwise
+\code{yrep} determines the maximum accuracy of the estimated PIT values and
+\code{K} is set to \code{min(nrow(yrep) + 1, 1000)}.}
+
+\item{prob, prob_outer}{Values between \code{0} and \code{1} indicating the desired
+probability mass to include in the inner and outer intervals. The defaults
+are \code{prob=0.5} and \code{prob_outer=0.9} for \code{ppc_loo_intervals()} and
+\code{prob = 0.99} for \code{ppc_loo_pit_ecdf()}.}
+
+\item{plot_diff}{For \code{ppc_loo_pit_ecdf()}, a boolean defining whether to
+plot the difference between the observed PIT-ECDF and the theoretical
+expectation for uniform PIT values rather than plotting the regular ECDF.
+The default is \code{FALSE}, but for large samples we recommend setting
+\code{plot_diff = TRUE} to better use the plot area.}
+
+\item{interpolate_adj}{For \code{ppc_loo_pit_ecdf()}, a boolean defining if the
+simultaneous confidence bands should be interpolated based on precomputed
+values rather than computed exactly. Computing the bands may be
+computationally intensive and the approximation gives a fast method for
+assessing the ECDF trajectory. The default is to use interpolation if \code{K}
+is greater than 200.}
+
 \item{subset}{For \code{ppc_loo_intervals()} and \code{ppc_loo_ribbon()}, an optional
 integer vector indicating which observations in \code{y} (and \code{yrep}) to
 include. Dropping observations from \code{y} and \code{yrep} manually before passing
@@ -178,10 +218,6 @@ data points and five columns in the following order: lower outer interval,
 lower inner interval, median (50\%), upper inner interval and upper outer
 interval (column names are ignored).}
 
-\item{prob, prob_outer}{Values between \code{0} and \code{1} indicating the desired
-probability mass to include in the inner and outer intervals. The defaults
-are \code{prob=0.5} and \code{prob_outer=0.9}.}
-
 \item{order}{For \code{ppc_loo_intervals()}, a string indicating how to arrange
 the plotted intervals. The default (\code{"index"}) is to plot them in the
 order of the observations. The alternative (\code{"median"}) arranges them
@@ -198,7 +234,7 @@ for details.
 \section{Plot Descriptions}{
 
 \describe{
-\item{\code{ppc_loo_pit_overlay()}, \code{ppc_loo_pit_qq()}}{
+\item{\code{ppc_loo_pit_overlay()}, \code{ppc_loo_pit_qq()}, \code{ppc_loo_pit_ecdf()}}{
 The calibration of marginal predictions can be assessed using probability
 integral transformation (PIT) checks. LOO improves the check by avoiding the
 double use of data. See the section on marginal predictive checks in Gelman
@@ -223,6 +259,14 @@ the (mis)calibration better for the extreme values. However, in most cases
 we have found that the overlaid density plot (\code{ppc_loo_pit_overlay()})
 function will provide a clearer picture of calibration problems than the
 Q-Q plot.
+
+The \code{ppc_loo_pit_ecdf()} function visualizes the empirical cumulative
+distribution function (ECDF) of the LOO PITs overlaid with simultaneous
+confidence intervals for a standard uniform sample. For large samples,
+these confidence intervals are visually very narrow. Setting the
+\code{plot_diff} argument to \code{TRUE} transforms the plot to display the
+difference of the ECDF and the theoretical expectation, which can aid in
+the visual assessment of calibration.
 }
 \item{\code{ppc_loo_intervals()}, \code{ppc_loo_ribbon()}}{
 Similar to \code{\link[=ppc_intervals]{ppc_intervals()}} and \code{\link[=ppc_ribbon]{ppc_ribbon()}} but the intervals are for
@@ -232,7 +276,6 @@ the LOO predictive distribution.
 }
 
 \examples{
-
 \dontrun{
 library(rstanarm)
 library(loo)
@@ -240,12 +283,12 @@ library(loo)
 head(radon)
 fit <- stan_lmer(
   log_radon ~ floor + log_uranium + floor:log_uranium
-               + (1 + floor | county),
+    + (1 + floor | county),
   data = radon,
   iter = 100,
   chains = 2,
   cores = 2
- )
+)
 y <- radon$log_radon
 yrep <- posterior_predict(fit)
 
@@ -260,6 +303,12 @@ ppc_loo_pit_overlay(y, yrep, lw = lw)
 ppc_loo_pit_qq(y, yrep, lw = lw)
 ppc_loo_pit_qq(y, yrep, lw = lw, compare = "normal")
 
+# predictive calibration check using LOO probability integral transform
+ppc_loo_pit_ecdf(y, yrep, lw)
+
+# With `plot_diff = TRUE` it is easier to assess the calibration.
+ppc_loo_pit_ecdf(y, yrep, lw, plot_diff = TRUE)
+
 # can use the psis object instead of lw
 ppc_loo_pit_qq(y, yrep, psis_object = psis1)
 
@@ -268,8 +317,10 @@ keep_obs <- 1:50
 ppc_loo_intervals(y, yrep, psis_object = psis1, subset = keep_obs)
 
 color_scheme_set("gray")
-ppc_loo_intervals(y, yrep, psis_object = psis1, subset = keep_obs,
-                  order = "median")
+ppc_loo_intervals(y, yrep,
+  psis_object = psis1, subset = keep_obs,
+  order = "median"
+)
 }
 
 }

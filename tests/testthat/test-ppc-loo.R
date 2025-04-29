@@ -67,16 +67,50 @@ test_that("ppc_loo_pit_qq returns ggplot object", {
   skip_if_not_installed("loo")
   expect_gg(p1 <- ppc_loo_pit_qq(y, yrep, lw))
   expect_gg(p2 <- ppc_loo_pit_qq(y, yrep, psis_object = psis1))
-  expect_equal(p1$labels$x, "Uniform")
+  if ("get_labs" %in% getNamespaceExports("ggplot2")) {
+    ll1 <- ggplot2::get_labs(p1)
+  } else {
+    ll1 <- p1$labels
+  }
+  expect_equal(ll1$x, "Uniform")
   expect_equal(p1$data, p2$data)
   expect_gg(p3 <- ppc_loo_pit_qq(y, yrep, lw, compare = "normal"))
-  expect_equal(p3$labels$x, "Normal")
+  if ("get_labs" %in% getNamespaceExports("ggplot2")) {
+    ll3 <- ggplot2::get_labs(p3)
+  } else {
+    ll3 <- p3$labels
+  }
+  expect_equal(ll3$x, "Normal")
 })
 
-test_that("ppc_loo_pit functions work when pit specified instead of y,yrep,lw", {
+test_that("ppc_loo_pit_ecdf returns a ggplot object", {
+  skip_if_not_installed("rstanarm")
+  skip_if_not_installed("loo")
+  expect_gg(p0 <- ppc_loo_pit_ecdf(y, yrep, lw))
+  expect_gg(p1 <- ppc_loo_pit_ecdf(y, yrep, lw))
+  expect_gg(p2 <- ppc_loo_pit_ecdf(y, yrep, psis_object = psis1))
+  if ("get_labs" %in% getNamespaceExports("ggplot2")) {
+    ll1 <- ggplot2::get_labs(p1)
+  } else {
+    ll1 <- p1$labels
+  }
+  expect_equal(ll1$x, "LOO PIT")
+  expect_equal(ll1$y, "ECDF")
+  expect_equal(p1$data, p2$data)
+  expect_gg(p3 <- ppc_loo_pit_ecdf(y, yrep, lw, plot_diff = TRUE))
+  if ("get_labs" %in% getNamespaceExports("ggplot2")) {
+    ll3 <- ggplot2::get_labs(p3)
+  } else {
+    ll3 <- p3$labels
+  }
+  expect_equal(ll3$y, "ECDF difference")
+})
+
+test_that("ppc_loo_pit functions work when pit specified instead of y, yrep, and lw", {
   skip_if_not_installed("rstanarm")
   skip_if_not_installed("loo")
   expect_gg(ppc_loo_pit_qq(pit = pits))
+  # ppc_loo_pit_qq
   expect_message(
     p1 <- ppc_loo_pit_qq(y = y, yrep = yrep, lw = lw, pit = pits),
     "'pit' specified so ignoring 'y','yrep','lw' if specified"
@@ -86,7 +120,18 @@ test_that("ppc_loo_pit functions work when pit specified instead of y,yrep,lw", 
   )
   expect_equal(p1$data, p2$data)
 
+  # ppc_loo_pit_ecdf
+  expect_gg(ppc_loo_pit_ecdf(pit = rep(pits, 4)))
+  expect_message(
+    p1 <- ppc_loo_pit_ecdf(y = y, yrep = yrep, lw = lw, pit = rep(pits, 4)),
+    "'pit' specified so ignoring 'y','yrep','lw' if specified"
+  )
+  expect_message(
+    p2 <- ppc_loo_pit_ecdf(pit = rep(pits, 4))
+  )
+  expect_equal(p1$data, p2$data)
 
+  # ppc_loo_pit_overlay
   expect_gg(p1 <- ppc_loo_pit_overlay(pit = pits))
   expect_message(
     ppc_loo_pit_overlay(y = y, yrep = yrep, lw = lw, pit = pits),
@@ -255,3 +300,42 @@ test_that("ppc_loo_ribbon renders correctly", {
   vdiffr::expect_doppelganger("ppc_loo_ribbon (subset)", p_custom)
 })
 
+test_that("ppc_loo_pit_ecdf renders correctly", {
+  skip_on_cran()
+  skip_if_not_installed("vdiffr")
+  skip_if_not_installed("loo")
+  skip_on_r_oldrel()
+
+  psis_object <- suppressWarnings(loo::psis(-vdiff_loo_lw))
+  p_base <- ppc_loo_pit_ecdf(
+    vdiff_loo_y,
+    vdiff_loo_yrep,
+    psis_object = psis_object
+  )
+  vdiffr::expect_doppelganger("ppc_loo_pit_ecdf (default)", p_base)
+
+  p_custom <- ppc_loo_pit_ecdf(
+    vdiff_loo_y,
+    vdiff_loo_yrep,
+    psis_object = psis_object,
+    K = 50
+  )
+  vdiffr::expect_doppelganger("ppc_loo_pit_ecdf (K)", p_custom)
+
+  p_custom <- ppc_loo_pit_ecdf(
+    vdiff_loo_y,
+    vdiff_loo_yrep,
+    psis_object = psis_object,
+    prob = 0.95
+  )
+  vdiffr::expect_doppelganger("ppc_loo_pit_ecdf (prob)", p_custom)
+
+  p_custom <- ppc_loo_pit_ecdf(
+    vdiff_loo_y,
+    vdiff_loo_yrep,
+    psis_object = psis_object,
+    plot_diff = TRUE,
+    K = 100
+  )
+  vdiffr::expect_doppelganger("ppc_loo_pit_ecdf (ecdf difference)", p_custom)
+})
