@@ -58,6 +58,12 @@
 #' \donttest{
 #' ppc_km_overlay_grouped(y, yrep[1:25, ], group = group, status_y = status_y)
 #' }
+#' # With left-truncation (delayed entry) times:
+#' left_truncation_y <- runif(length(y), min = 0, max = 0.6) * y
+#' \donttest{
+#' ppc_km_overlay(y, yrep[1:25, ], status_y = status_y,
+#'               left_truncation_y = left_truncation_y)
+#' }
 NULL
 
 #' @export
@@ -65,6 +71,10 @@ NULL
 #' @param status_y The status indicator for the observations from `y`. This must
 #'   be a numeric vector of the same length as `y` with values in \{0, 1\} (0 =
 #'   right censored, 1 = event).
+#' @param left_truncation_y Optional parameter that specifies left-truncation
+#'   (delayed entry) times for the observations from `y`. This must
+#'   be a numeric vector of the same length as `y`. If `NULL` (default),
+#'   no left-truncation is assumed.
 ppc_km_overlay <- function(
   y,
   yrep,
