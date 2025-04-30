@@ -91,12 +91,6 @@ ppc_km_overlay <- function(
 
   data <- ppc_data(y, yrep, group = status_y)
 
-  if (!is.null(left_truncation_y)) {
-    data$left_trunc <- left_truncation_y[data$y_id]
-  } else {
-    data$left_trunc <- 0
-  }
-
   # Modify the status indicator:
   #   * For the observed data ("y"), convert the status indicator back to
   #     a numeric.
@@ -109,7 +103,12 @@ ppc_km_overlay <- function(
                                  as.numeric(as.character(.data$group)),
                                  1))
 
-  sf_form <- survival::Surv(time = data$left_trunc, time2 = data$value, event = data$group) ~ rep_label
+  if (is.null(left_truncation_y)) {
+    sf_form <- survival::Surv(time = data$value, event = data$group) ~ rep_label
+  } else {
+    sf_form <- survival::Surv(time = left_truncation_y[data$y_id], time2 = data$value, event = data$group) ~ rep_label
+  }
+
   if (!is.null(add_group)) {
     data <- dplyr::inner_join(data,
                               tibble::tibble(y_id = seq_along(y),
