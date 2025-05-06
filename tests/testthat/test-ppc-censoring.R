@@ -5,18 +5,24 @@ source(test_path("data-for-ppc-tests.R"))
 
 test_that("ppc_km_overlay returns a ggplot object", {
   skip_if_not_installed("ggfortify")
-  expect_gg(ppc_km_overlay(y, yrep, status_y = status_y, size = 0.5, alpha = 0.2))
+  expect_gg(ppc_km_overlay(y, yrep, status_y = status_y, left_truncation_y = left_truncation_y, size = 0.5, alpha = 0.2))
   expect_gg(ppc_km_overlay(y2, yrep2, status_y = status_y2))
 })
 
 test_that("ppc_km_overlay_grouped returns a ggplot object", {
   skip_if_not_installed("ggfortify")
   expect_gg(ppc_km_overlay_grouped(y, yrep, group,
-                                   status_y = status_y))
+                                   status_y = status_y,
+                                   left_truncation_y = left_truncation_y,
+                                   size = 0.5, alpha = 0.2))
   expect_gg(ppc_km_overlay_grouped(y, yrep, as.numeric(group),
-                                   status_y = status_y))
+                                   status_y = status_y,
+                                   left_truncation_y = left_truncation_y,
+                                   size = 0.5, alpha = 0.2))
   expect_gg(ppc_km_overlay_grouped(y, yrep, as.integer(group),
-                                   status_y = status_y))
+                                   status_y = status_y,
+                                   left_truncation_y = left_truncation_y,
+                                   size = 0.5, alpha = 0.2))
 
   expect_gg(ppc_km_overlay_grouped(y2, yrep2, group2,
                                    status_y = status_y2))
@@ -44,6 +50,17 @@ test_that("ppc_km_overlay renders correctly", {
     size = 2,
     alpha = .2)
   vdiffr::expect_doppelganger("ppc_km_overlay (size, alpha)", p_custom)
+
+  p_base2 <- ppc_km_overlay(vdiff_y3, vdiff_yrep3, status_y = vdiff_status_y3)
+  vdiffr::expect_doppelganger("ppc_km_overlay (default 2)", p_base2)
+
+  p_custom2 <- ppc_km_overlay(
+    vdiff_y3,
+    vdiff_yrep3,
+    status_y = vdiff_status_y3,
+    left_truncation_y = vdiff_left_truncation_y3)
+  vdiffr::expect_doppelganger("ppc_km_overlay (left_truncation_y)",
+                              p_custom2)
 })
 
 test_that("ppc_km_overlay_grouped renders correctly", {
@@ -68,5 +85,22 @@ test_that("ppc_km_overlay_grouped renders correctly", {
   vdiffr::expect_doppelganger(
     "ppc_km_overlay_grouped (size, alpha)",
     p_custom
+  )
+
+  p_base2 <- ppc_km_overlay_grouped(vdiff_y3, vdiff_yrep3, vdiff_group3,
+                                   status_y = vdiff_status_y3)
+  vdiffr::expect_doppelganger("ppc_km_overlay_grouped (default 2)", p_base2)
+
+  p_custom2 <- ppc_km_overlay_grouped(
+    vdiff_y3,
+    vdiff_yrep3,
+    vdiff_group3,
+    status_y = vdiff_status_y3,
+    left_truncation_y = vdiff_left_truncation_y3
+  )
+
+  vdiffr::expect_doppelganger(
+    "ppc_km_overlay_grouped (left_truncation_y)",
+    p_custom2
   )
 })
