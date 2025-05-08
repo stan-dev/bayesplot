@@ -32,6 +32,22 @@ test_that("ppc_km_overlay_grouped returns a ggplot object", {
                                    status_y = status_y2))
 })
 
+test_that("ppc_km_overlay errors if bad status_y value", {
+  skip_if_not_installed("ggfortify")
+  expect_error(
+    ppc_km_overlay(y, yrep, status_y = FALSE),
+    "`status_y` must be a numeric vector of 0s and 1s the same length as `y`."
+  )
+  expect_error(
+    ppc_km_overlay(y, yrep, status_y = 1:10),
+    "`status_y` must be a numeric vector of 0s and 1s the same length as `y`."
+  )
+  expect_error(
+    ppc_km_overlay(y, yrep, status_y = rep(10, length(y))),
+    "`status_y` must be a numeric vector of 0s and 1s the same length as `y`."
+  )
+})
+
 test_that("ppc_km_overlay errors if bad left_truncation_y value", {
   skip_if_not_installed("ggfortify")
   expect_error(

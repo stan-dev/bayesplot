@@ -90,8 +90,9 @@ ppc_km_overlay <- function(
   suggested_package("survival")
   suggested_package("ggfortify")
 
-  stopifnot(is.numeric(status_y))
-  stopifnot(all(status_y %in% c(0, 1)))
+  if (!is.numeric(status_y) || length(status_y) != length(y) || !all(status_y %in% c(0, 1))) {
+    stop("`status_y` must be a numeric vector of 0s and 1s the same length as `y`.")
+  }
 
   if (!is.null(left_truncation_y)) {
     if (!is.numeric(left_truncation_y) || length(left_truncation_y) != length(y)) {
