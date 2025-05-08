@@ -59,7 +59,11 @@
 #' ppc_km_overlay_grouped(y, yrep[1:25, ], group = group, status_y = status_y)
 #' }
 #' # With left-truncation (delayed entry) times:
-#' left_truncation_y <- runif(length(y), min = 0, max = 0.6) * y
+#' condition <- y > mean(y) / 2
+#' left_truncation_y[condition] <- pmin(
+#'   runif(sum(condition), min = 0.6, max = 0.99) * y[condition],
+#'   min_vals[condition] - 0.001
+#' )
 #' \donttest{
 #' ppc_km_overlay(y, yrep[1:25, ], status_y = status_y,
 #'               left_truncation_y = left_truncation_y)
