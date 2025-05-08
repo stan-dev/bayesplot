@@ -32,6 +32,18 @@ test_that("ppc_km_overlay_grouped returns a ggplot object", {
                                    status_y = status_y2))
 })
 
+test_that("ppc_km_overlay errors if bad left_truncation_y value", {
+  skip_if_not_installed("ggfortify")
+  expect_error(
+    ppc_km_overlay(y, yrep, status_y = status_y, left_truncation_y = "a"),
+    "`left_truncation_y` must be a numeric vector of the same length as `y`"
+  )
+  expect_error(
+    ppc_km_overlay(y, yrep, status_y = status_y, left_truncation_y = 1:10),
+    "`left_truncation_y` must be a numeric vector of the same length as `y`"
+  )
+})
+
 # Visual tests -----------------------------------------------------------------
 
 test_that("ppc_km_overlay renders correctly", {
