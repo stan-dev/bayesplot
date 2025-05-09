@@ -6,9 +6,26 @@
 \alias{ppc_km_overlay_grouped}
 \title{PPC censoring}
 \usage{
-ppc_km_overlay(y, yrep, ..., status_y, size = 0.25, alpha = 0.7)
+ppc_km_overlay(
+  y,
+  yrep,
+  ...,
+  status_y,
+  left_truncation_y = NULL,
+  size = 0.25,
+  alpha = 0.7
+)
 
-ppc_km_overlay_grouped(y, yrep, group, ..., status_y, size = 0.25, alpha = 0.7)
+ppc_km_overlay_grouped(
+  y,
+  yrep,
+  group,
+  ...,
+  status_y,
+  left_truncation_y = NULL,
+  size = 0.25,
+  alpha = 0.7
+)
 }
 \arguments{
 \item{y}{A vector of observations. See \strong{Details}.}
@@ -26,6 +43,11 @@ additional advice specific to particular plots.}
 \item{status_y}{The status indicator for the observations from \code{y}. This must
 be a numeric vector of the same length as \code{y} with values in \{0, 1\} (0 =
 right censored, 1 = event).}
+
+\item{left_truncation_y}{Optional parameter that specifies left-truncation
+(delayed entry) times for the observations from \code{y}. This must
+be a numeric vector of the same length as \code{y}. If \code{NULL} (default),
+no left-truncation is assumed.}
 
 \item{size, alpha}{Passed to the appropriate geom to control the appearance of
 the \code{yrep} distributions.}
@@ -84,6 +106,18 @@ ppc_km_overlay(y, yrep[1:25, ], status_y = status_y)
 group <- example_group_data()
 \donttest{
 ppc_km_overlay_grouped(y, yrep[1:25, ], group = group, status_y = status_y)
+}
+# With left-truncation (delayed entry) times:
+min_vals <- pmin(y, apply(yrep, 2, min))
+left_truncation_y <- rep(0, length(y))
+condition <- y > mean(y) / 2
+left_truncation_y[condition] <- pmin(
+  runif(sum(condition), min = 0.6, max = 0.99) * y[condition],
+  min_vals[condition] - 0.001
+)
+\donttest{
+ppc_km_overlay(y, yrep[1:25, ], status_y = status_y,
+              left_truncation_y = left_truncation_y)
 }
 }
 \references{
