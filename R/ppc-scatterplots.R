@@ -11,6 +11,8 @@
 #' @template args-group
 #' @template args-facet_args
 #' @param ... Currently unused.
+#' @param fun_avg Function to apply to compute the posterior average.
+#'   Defaults to `"mean"`.
 #' @param size,alpha Arguments passed to [ggplot2::geom_point()] to control the
 #'   appearance of the points.
 #' @param ref_line If `TRUE` (the default) a dashed line with intercept 0 and
@@ -31,10 +33,10 @@
 #'   }
 #'   \item{`ppc_scatter_avg()`}{
 #'    A single scatterplot of `y` against the average values of `yrep`, i.e.,
-#'    the points `(x,y) = (mean(yrep[, n]), y[n])`, where each `yrep[, n]` is
-#'    a vector of length equal to the number of posterior draws. Unlike
-#'    for `ppc_scatter()`, for `ppc_scatter_avg()` `yrep` should contain many
-#'    draws (rows).
+#'    the points `(x,y) = (average(yrep[, n]), y[n])`, where each `yrep[, n]` is
+#'    a vector of length equal to the number of posterior draws and `average()`
+#'    is summary statistic. Unlike for `ppc_scatter()`, for `ppc_scatter_avg()`
+#'    `yrep` should contain many draws (rows).
 #'   }
 #'   \item{`ppc_scatter_avg_grouped()`}{
 #'    The same as `ppc_scatter_avg()`, but a separate plot is generated for
@@ -58,6 +60,9 @@
 #' lims <- ggplot2::lims(x = c(0, 160), y = c(0, 160))
 #' p1 + lims
 #' p2 + lims
+#'
+#' # "average" function is customizable
+#' ppc_scatter_avg(y, yrep, fun_avg = "median", ref_line = FALSE)
 #'
 #' # for ppc_scatter_avg_grouped the default is to allow the facets
 #' # to have different x and y axes
@@ -116,6 +121,7 @@ ppc_scatter_avg <-
   function(y,
            yrep,
            ...,
+           fun_avg = "mean",
            size = 2.5,
            alpha = 0.8,
            ref_line = TRUE) {
@@ -125,7 +131,7 @@ ppc_scatter_avg <-
       dots$group <- NULL
     }
 
-    data <- ppc_scatter_avg_data(y, yrep, group = dots$group)
+    data <- ppc_scatter_avg_data(y, yrep, group = dots$group, fun_avg = fun_avg)
     if (is.null(dots$group) && nrow(yrep) == 1) {
       inform(
         "With only 1 row in 'yrep' ppc_scatter_avg is the same as ppc_scatter."
@@ -155,6 +161,7 @@ ppc_scatter_avg_grouped <-
            yrep,
            group,
            ...,
+           fun_avg = "mean",
            facet_args = list(),
            size = 2.5,
            alpha = 0.8,
@@ -184,16 +191,20 @@ ppc_scatter_data <- function(y, yrep) {
 
 #' @rdname PPC-scatterplots
 #' @export
-ppc_scatter_avg_data <- function(y, yrep, group = NULL) {
+ppc_scatter_avg_data <- function(y, yrep, group = NULL, fun_avg = "mean") {
   y <- validate_y(y)
   yrep <- validate_predictions(yrep, length(y))
   if (!is.null(group)) {
     group <- validate_group(group, length(y))
   }
 
-  data <- ppc_scatter_data(y = y, yrep = t(colMeans(yrep)))
+  data <- ppc_scatter_data(y = y, yrep = t(apply(yrep, 2, FUN = fun_avg)))
   data$rep_id <- NA_integer_
-  levels(data$rep_label) <- "mean(italic(y)[rep]))"
+  if (is.character(fun_avg)) {
+    levels(data$rep_label) <- sprintf("%s(italic(y)[rep]))", fun_avg)
+  } else {
+    levels(data$rep_label) <- "Average(italic(y)[rep]))"
+  }
 
   if (!is.null(group)) {
     data <- tibble::add_column(data,

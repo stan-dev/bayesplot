@@ -2,6 +2,7 @@
 
 * Add possibility for left-truncation to `ppc_km_overlay()` and `ppc_km_overlay_grouped()` by @Sakuski
 * Added `ppc_loo_pit_ecdf()` by @TeemuSailynoja
+* PPC "avg" functions (`ppc_scatter_avg()`, `ppc_error_scatter_avg()`, etc.) gain a `fun_arg` argument to set the averaging function. (Suggestion of #348, @kruschke).
 
 # bayesplot 1.12.0
 

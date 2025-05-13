@@ -37,19 +37,28 @@ ppc_error_hist_grouped(
 
 ppc_error_scatter(y, yrep, ..., facet_args = list(), size = 2.5, alpha = 0.8)
 
-ppc_error_scatter_avg(y, yrep, ..., size = 2.5, alpha = 0.8)
+ppc_error_scatter_avg(y, yrep, ..., fun_avg = "mean", size = 2.5, alpha = 0.8)
 
 ppc_error_scatter_avg_grouped(
   y,
   yrep,
   group,
   ...,
+  fun_avg = "mean",
   facet_args = list(),
   size = 2.5,
   alpha = 0.8
 )
 
-ppc_error_scatter_avg_vs_x(y, yrep, x, ..., size = 2.5, alpha = 0.8)
+ppc_error_scatter_avg_vs_x(
+  y,
+  yrep,
+  x,
+  ...,
+  fun_avg = "mean",
+  size = 2.5,
+  alpha = 0.8
+)
 
 ppc_error_binned(
   y,
@@ -105,6 +114,9 @@ to the corresponding observation.}
 \code{\link[ggplot2:geom_point]{ggplot2::geom_point()}} to control the appearance of the points. For the
 binned error plot, arguments controlling the size of the outline and
 opacity of the shaded region indicating the 2-SE bounds.}
+
+\item{fun_avg}{Function to apply to compute the posterior average.
+Defaults to \code{"mean"}.}
 
 \item{x}{A numeric vector the same length as \code{y} to use as the x-axis
 variable.}
