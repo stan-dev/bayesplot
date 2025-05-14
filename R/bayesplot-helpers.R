@@ -474,12 +474,17 @@ overlay_function <- function(...) {
 
 # Resolve a function name and store the expression passed in by the user
 #' @noRd
-#' @param f a function-like object
-#' @param f_expr (optional) expression to provide. We need this value when
-#' constructing tagged function inside of a function function.
+#' @param f a function-like thing: a string naming a function, a function
+#'   object, a `quote()`-ed function name, an anonymous function object, and
+#'   `NULL`.
+#' @param f_expr (optional) expression to record. Inside of a function we would
+#' write `as_tagged_function(stat, enexpr(stat))` to make sure that the user's
+#' expression is the tagged expression.
 #' @param fallback character string providing a fallback function name
 #' @return the function named in `f` with an added `"tagged_expr"` attribute
-#' containing the expression to represent the function name.
+#' containing the expression to represent the function name and an
+#' `"is_anonymous_function"` attribute to flag if the expression is a call to
+#' `function()`.
 as_tagged_function <- function(f, f_expr = NULL, fallback = "func") {
   if (is.null(f_expr)) f_expr <- enexpr(f)
   if (!is.null(attr(f, "tagged_expr"))) return(f)
