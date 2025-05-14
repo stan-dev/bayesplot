@@ -11,8 +11,11 @@
 #' @template args-group
 #' @template args-facet_args
 #' @param ... Currently unused.
-#' @param fun_avg Function to apply to compute the posterior average.
-#'   Defaults to `"mean"`.
+#' @param stat A function or a string naming a function for computing the
+#'   posterior average. In both cases, the function should take a vector input
+#'   and return a scalar statistic. The function name is displayed in the
+#'   axis-label, and the underlying `$rep_label` for `ppc_scatter_avg_data()`
+#'   includes the function name. Defaults to `"mean"`.
 #' @param size,alpha Arguments passed to [ggplot2::geom_point()] to control the
 #'   appearance of the points.
 #' @param ref_line If `TRUE` (the default) a dashed line with intercept 0 and
@@ -62,7 +65,7 @@
 #' p2 + lims
 #'
 #' # "average" function is customizable
-#' ppc_scatter_avg(y, yrep, fun_avg = "median", ref_line = FALSE)
+#' ppc_scatter_avg(y, yrep, stat = "median", ref_line = FALSE)
 #'
 #' # for ppc_scatter_avg_grouped the default is to allow the facets
 #' # to have different x and y axes
@@ -121,17 +124,19 @@ ppc_scatter_avg <-
   function(y,
            yrep,
            ...,
-           fun_avg = "mean",
+           stat = "mean",
            size = 2.5,
            alpha = 0.8,
            ref_line = TRUE) {
     dots <- list(...)
+    stat <- as_tagged_function(stat, enexpr(stat))
+
     if (!from_grouped(dots)) {
       check_ignored_arguments(...)
       dots$group <- NULL
     }
 
-    data <- ppc_scatter_avg_data(y, yrep, group = dots$group, fun_avg = fun_avg)
+    data <- ppc_scatter_avg_data(y, yrep, group = dots$group, stat = stat)
     if (is.null(dots$group) && nrow(yrep) == 1) {
       inform(
         "With only 1 row in 'yrep' ppc_scatter_avg is the same as ppc_scatter."
@@ -149,7 +154,7 @@ ppc_scatter_avg <-
       # ppd instead of ppc (see comment in ppc_scatter)
       scale_color_ppd() +
       scale_fill_ppd() +
-      labs(x = yrep_avg_label(), y = y_label()) +
+      labs(x = yrep_avg_label(stat), y = y_label()) +
       bayesplot_theme_get()
   }
 
@@ -161,7 +166,7 @@ ppc_scatter_avg_grouped <-
            yrep,
            group,
            ...,
-           fun_avg = "mean",
+           stat = "mean",
            facet_args = list(),
            size = 2.5,
            alpha = 0.8,
@@ -191,20 +196,19 @@ ppc_scatter_data <- function(y, yrep) {
 
 #' @rdname PPC-scatterplots
 #' @export
-ppc_scatter_avg_data <- function(y, yrep, group = NULL, fun_avg = "mean") {
+ppc_scatter_avg_data <- function(y, yrep, group = NULL, stat = "mean") {
   y <- validate_y(y)
   yrep <- validate_predictions(yrep, length(y))
   if (!is.null(group)) {
     group <- validate_group(group, length(y))
   }
+  stat <- as_tagged_function(stat, enexpr(stat))
 
-  data <- ppc_scatter_data(y = y, yrep = t(apply(yrep, 2, FUN = fun_avg)))
+  data <- ppc_scatter_data(y = y, yrep = t(apply(yrep, 2, FUN = stat)))
   data$rep_id <- NA_integer_
-  if (is.character(fun_avg)) {
-    levels(data$rep_label) <- sprintf("%s(italic(y)[rep]))", fun_avg)
-  } else {
-    levels(data$rep_label) <- "Average(italic(y)[rep]))"
-  }
+  levels(data$rep_label) <- yrep_avg_label(stat) |>
+    as.expression() |>
+    as.character()
 
   if (!is.null(group)) {
     data <- tibble::add_column(data,
@@ -217,7 +221,16 @@ ppc_scatter_avg_data <- function(y, yrep, group = NULL, fun_avg = "mean") {
 }
 
 # internal ----------------------------------------------------------------
-yrep_avg_label <- function() expression(paste("Average ", italic(y)[rep]))
+
+yrep_avg_label <- function(stat = NULL) {
+  stat <- as_tagged_function(stat, enexpr(stat), fallback = "Average")
+  e <- if (attr(stat, "is_anonymous_function")) {
+    expr("Average")
+  } else {
+    attr(stat, "tagged_expr")
+  }
+  expr(plain((!!e)) (italic(y)[rep]))
+}
 
 scatter_aes <- function(...) {
   aes(x = .data$value, y = .data$y_obs, ...)

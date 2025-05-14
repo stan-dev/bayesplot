@@ -28,6 +28,15 @@ test_that("ppc_scatter_avg_grouped returns a ggplot object", {
   expect_gg(ppc_scatter_avg_grouped(y, yrep, as.integer(group)))
 })
 
+test_that("ppc_scatter_avg_data can take a custom fun_avg", {
+  # using the colMeans() and colSums() to avoid using apply(yrep, 2, fun)
+  # because apply() is used in ppc_scatter_avg_data()
+  means <- ppc_scatter_avg_data(y, yrep)
+  expect_equal(means$value, colMeans(yrep))
+  sums <- ppc_scatter_avg_data(y, yrep, stat = "sum")
+  expect_equal(sums$value, colSums(yrep))
+})
+
 
 
 # Visual tests ------------------------------------------------------------

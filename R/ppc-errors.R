@@ -10,8 +10,10 @@
 #' @template args-group
 #' @template args-facet_args
 #' @param ... Currently unused.
-#' @param fun_avg Function to apply to compute the posterior average.
-#'   Defaults to `"mean"`.
+#' @param stat A function or a string naming a function for computing the
+#' posterior average. In both cases, the function should take a vector input and
+#' return a scalar statistic. The function name is displayed in the axis-label.
+#' Defaults to `"mean"`.
 #' @param size,alpha For scatterplots, arguments passed to
 #'   [ggplot2::geom_point()] to control the appearance of the points. For the
 #'   binned error plot, arguments controlling the size of the outline and
@@ -211,7 +213,7 @@ ppc_error_scatter_avg <-
   function(y,
            yrep,
            ...,
-           fun_avg = "mean",
+           stat = "mean",
            size = 2.5,
            alpha = 0.8) {
     check_ignored_arguments(...)
@@ -219,15 +221,17 @@ ppc_error_scatter_avg <-
     y <- validate_y(y)
     yrep <- validate_predictions(yrep, length(y))
     errors <- compute_errors(y, yrep)
+    stat <- as_tagged_function(stat, enexpr(stat))
+
     ppc_scatter_avg(
       y = y,
       yrep = errors,
       size = size,
       alpha = alpha,
       ref_line = FALSE,
-      fun_avg = fun_avg
+      stat = stat
     ) +
-      labs(x = error_avg_label(), y = y_label())
+      labs(x = error_avg_label(stat), y = y_label())
   }
 
 
@@ -238,7 +242,7 @@ ppc_error_scatter_avg_grouped <-
            yrep,
            group,
            ...,
-           fun_avg = "mean",
+           stat = "mean",
            facet_args = list(),
            size = 2.5,
            alpha = 0.8) {
@@ -246,6 +250,8 @@ ppc_error_scatter_avg_grouped <-
 
     y <- validate_y(y)
     yrep <- validate_predictions(yrep, length(y))
+    stat <- as_tagged_function(stat, enexpr(stat))
+
     errors <- compute_errors(y, yrep)
     ppc_scatter_avg_grouped(
       y = y,
@@ -255,9 +261,9 @@ ppc_error_scatter_avg_grouped <-
       alpha = alpha,
       facet_args = facet_args,
       ref_line = FALSE,
-      fun_avg = fun_avg
+      stat = stat
     ) +
-      labs(x = error_avg_label(), y = y_label())
+      labs(x = error_avg_label(stat), y = y_label())
   }
 
 
@@ -271,7 +277,7 @@ ppc_error_scatter_avg_vs_x <-
            yrep,
            x,
            ...,
-           fun_avg = "mean",
+           stat = "mean",
            size = 2.5,
            alpha = 0.8) {
     check_ignored_arguments(...)
@@ -279,6 +285,7 @@ ppc_error_scatter_avg_vs_x <-
     y <- validate_y(y)
     yrep <- validate_predictions(yrep, length(y))
     x <- validate_x(x, y)
+    stat <- as_tagged_function(stat, enexpr(stat))
     errors <- compute_errors(y, yrep)
     ppc_scatter_avg(
       y = x,
@@ -286,9 +293,9 @@ ppc_error_scatter_avg_vs_x <-
       size = size,
       alpha = alpha,
       ref_line = FALSE,
-      fun_avg = fun_avg
+      stat = stat
     ) +
-      labs(x = error_avg_label(), y = expression(italic(x))) +
+      labs(x = error_avg_label(stat), y = expression(italic(x))) +
       coord_flip()
   }
 
@@ -422,8 +429,15 @@ error_hist_facets <-
 error_label <- function() {
   expression(italic(y) - italic(y)[rep])
 }
-error_avg_label <- function() {
-  expression(paste("Average ", italic(y) - italic(y)[rep]))
+
+error_avg_label <- function(stat = NULL) {
+  stat <- as_tagged_function(stat, enexpr(stat), fallback = "Average")
+  e <- if (attr(stat, "is_anonymous_function")) {
+    expr("Average")
+  } else {
+    attr(stat, "tagged_expr")
+  }
+  expr(plain((!!e))(italic(y) - italic(y)[rep]))
 }
 
 

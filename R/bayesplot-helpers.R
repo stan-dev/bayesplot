@@ -469,3 +469,47 @@ grid_lines_y <- function(color = "gray50", size = 0.2) {
 overlay_function <- function(...) {
   stat_function(..., inherit.aes = FALSE)
 }
+
+
+
+# Resolve a function name and store the expression passed in by the user
+#' @noRd
+#' @param f a function-like object
+#' @param f_expr (optional) expression to provide. We need this value when
+#' constructing tagged function inside of a function function.
+#' @param fallback character string providing a fallback function name
+#' @return the function named in `f` with an added `"tagged_expr"` attribute
+#' containing the expression to represent the function name.
+as_tagged_function <- function(f, f_expr = NULL, fallback = "func") {
+  if (is.null(f_expr)) f_expr <- enexpr(f)
+  if (!is.null(attr(f, "tagged_expr"))) return(f)
+
+  if (rlang::is_character(f)) {      # f = "mean"
+    f_expr <- rlang::sym(f)
+    f_fn <- match.fun(f)
+  } else if (is_null(f)) {           # f = NULL
+    f_fn <- identity
+    f_expr <- rlang::sym(fallback)
+  } else if (is_expression(f)) {     # f = quote(mean)
+    f_expr <- f
+    f_fn <- rlang::eval_tidy(f_expr)
+  } else if (is_callable(f)) {       # f = mean or f = function(x) mean(x)
+    f_expr <- f_expr
+    f_fn <- f
+  }
+
+  # Setting attributes on primitive functions is deprecated, so wrap them
+  # and then tag
+  if (is_primitive(f_fn)) {
+    f_fn_old <- f_fn
+    f_factory <- function(f) { function(...) f(...) }
+    f_fn <- f_factory(f_fn_old)
+  }
+
+  attr(f_fn, "tagged_expr") <- f_expr
+  attr(f_fn, "is_anonymous_function") <- is_call(f_expr, name = "function")
+  f_fn
+}
+
+
+

@@ -37,14 +37,14 @@ ppc_error_hist_grouped(
 
 ppc_error_scatter(y, yrep, ..., facet_args = list(), size = 2.5, alpha = 0.8)
 
-ppc_error_scatter_avg(y, yrep, ..., fun_avg = "mean", size = 2.5, alpha = 0.8)
+ppc_error_scatter_avg(y, yrep, ..., stat = "mean", size = 2.5, alpha = 0.8)
 
 ppc_error_scatter_avg_grouped(
   y,
   yrep,
   group,
   ...,
-  fun_avg = "mean",
+  stat = "mean",
   facet_args = list(),
   size = 2.5,
   alpha = 0.8
@@ -55,7 +55,7 @@ ppc_error_scatter_avg_vs_x(
   yrep,
   x,
   ...,
-  fun_avg = "mean",
+  stat = "mean",
   size = 2.5,
   alpha = 0.8
 )
@@ -115,7 +115,9 @@ to the corresponding observation.}
 binned error plot, arguments controlling the size of the outline and
 opacity of the shaded region indicating the 2-SE bounds.}
 
-\item{fun_avg}{Function to apply to compute the posterior average.
+\item{stat}{A function or a string naming a function for computing the
+posterior average. In both cases, the function should take a vector input and
+return a scalar statistic. The function name is displayed in the axis-label.
 Defaults to \code{"mean"}.}
 
 \item{x}{A numeric vector the same length as \code{y} to use as the x-axis

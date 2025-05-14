@@ -23,7 +23,7 @@ ppc_scatter_avg(
   y,
   yrep,
   ...,
-  fun_avg = "mean",
+  stat = "mean",
   size = 2.5,
   alpha = 0.8,
   ref_line = TRUE
@@ -34,7 +34,7 @@ ppc_scatter_avg_grouped(
   yrep,
   group,
   ...,
-  fun_avg = "mean",
+  stat = "mean",
   facet_args = list(),
   size = 2.5,
   alpha = 0.8,
@@ -43,7 +43,7 @@ ppc_scatter_avg_grouped(
 
 ppc_scatter_data(y, yrep)
 
-ppc_scatter_avg_data(y, yrep, group = NULL, fun_avg = "mean")
+ppc_scatter_avg_data(y, yrep, group = NULL, stat = "mean")
 }
 \arguments{
 \item{y}{A vector of observations. See \strong{Details}.}
@@ -70,8 +70,11 @@ appearance of the points.}
 \item{ref_line}{If \code{TRUE} (the default) a dashed line with intercept 0 and
 slope 1 is drawn behind the scatter plot.}
 
-\item{fun_avg}{Function to apply to compute the posterior average.
-Defaults to \code{"mean"}.}
+\item{stat}{A function or a string naming a function for computing the
+posterior average. In both cases, the function should take a vector input
+and return a scalar statistic. The function name is displayed in the
+axis-label, and the underlying \verb{$rep_label} for \code{ppc_scatter_avg_data()}
+includes the function name. Defaults to \code{"mean"}.}
 
 \item{group}{A grouping variable of the same length as \code{y}.
 Will be coerced to \link[base:factor]{factor} if not already a factor.
@@ -134,7 +137,7 @@ p1 + lims
 p2 + lims
 
 # "average" function is customizable
-ppc_scatter_avg(y, yrep, fun_avg = "median", ref_line = FALSE)
+ppc_scatter_avg(y, yrep, stat = "median", ref_line = FALSE)
 
 # for ppc_scatter_avg_grouped the default is to allow the facets
 # to have different x and y axes
