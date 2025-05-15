@@ -210,13 +210,6 @@ test_that("as_tagged_function handles string input", {
   expect_equal(attr(fn, "tagged_expr"), rlang::sym("mean"))
 })
 
-test_that("as_tagged_function handles quoted symbol", {
-  fn <- as_tagged_function(quote(mean))
-  expect_type(fn, "closure")
-  expect_equal(fn(1:10), mean(1:10))
-  expect_equal(attr(fn, "tagged_expr"), quote(mean))
-})
-
 test_that("as_tagged_function handles anonymous function", {
   fn <- as_tagged_function(function(x) mean(x^2))
   expect_type(fn, "closure")
@@ -238,11 +231,11 @@ test_that("as_tagged_function doesn't lose previous tags", {
   expect_equal(attr(fn2, "tagged_expr"), rlang::expr(mean))
 
   f_outer <- function(stat_outer) {
-    stat_outer <- as_tagged_function(stat_outer, enexpr(stat_outer))
+    stat_outer <- as_tagged_function({{ stat_outer }})
     f_inner(stat_outer)
   }
   f_inner <- function(stat_inner) {
-    stat_inner <- as_tagged_function(stat_inner, enexpr(stat_inner))
+    stat_inner <- as_tagged_function({{ stat_inner }})
     stat_inner
   }
 
@@ -258,5 +251,7 @@ test_that("as_tagged_function doesn't lose previous tags", {
     deparse() |>
     expect_equal("my_function_name")
 
-
+  # All the non-standard evaluation still provides a callable function
+  f_outer(my_function_name)(1:10) |>
+    expect_equal(1:10)
 })

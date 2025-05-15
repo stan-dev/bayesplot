@@ -221,7 +221,8 @@ ppc_error_scatter_avg <-
     y <- validate_y(y)
     yrep <- validate_predictions(yrep, length(y))
     errors <- compute_errors(y, yrep)
-    stat <- as_tagged_function(stat, enexpr(stat))
+
+    stat <- as_tagged_function({{ stat }})
 
     ppc_scatter_avg(
       y = y,
@@ -250,7 +251,7 @@ ppc_error_scatter_avg_grouped <-
 
     y <- validate_y(y)
     yrep <- validate_predictions(yrep, length(y))
-    stat <- as_tagged_function(stat, enexpr(stat))
+    stat <- as_tagged_function({{ stat }})
 
     errors <- compute_errors(y, yrep)
     ppc_scatter_avg_grouped(
@@ -285,7 +286,7 @@ ppc_error_scatter_avg_vs_x <-
     y <- validate_y(y)
     yrep <- validate_predictions(yrep, length(y))
     x <- validate_x(x, y)
-    stat <- as_tagged_function(stat, enexpr(stat))
+    stat <- as_tagged_function({{ stat }})
     errors <- compute_errors(y, yrep)
     ppc_scatter_avg(
       y = x,
@@ -431,13 +432,13 @@ error_label <- function() {
 }
 
 error_avg_label <- function(stat = NULL) {
-  stat <- as_tagged_function(stat, enexpr(stat), fallback = "Average")
-  e <- if (attr(stat, "is_anonymous_function")) {
-    expr("Average")
-  } else {
-    attr(stat, "tagged_expr")
+  stat <- as_tagged_function({{ stat }}, fallback = "Average")
+  e <- attr(stat, "tagged_expr")
+  de <- deparse1(e)
+  if (attr(stat, "is_anonymous_function")) {
+    de <- paste0("(", de, ")")
   }
-  expr(plain((!!e))(italic(y) - italic(y)[rep]))
+  expr(paste((!!de))(italic(y) - italic(y)[rep]))
 }
 
 

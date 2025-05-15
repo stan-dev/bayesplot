@@ -129,7 +129,7 @@ ppc_scatter_avg <-
            alpha = 0.8,
            ref_line = TRUE) {
     dots <- list(...)
-    stat <- as_tagged_function(stat, enexpr(stat))
+    stat <- as_tagged_function({{ stat }})
 
     if (!from_grouped(dots)) {
       check_ignored_arguments(...)
@@ -202,7 +202,7 @@ ppc_scatter_avg_data <- function(y, yrep, group = NULL, stat = "mean") {
   if (!is.null(group)) {
     group <- validate_group(group, length(y))
   }
-  stat <- as_tagged_function(stat, enexpr(stat))
+  stat <- as_tagged_function({{ stat }})
 
   data <- ppc_scatter_data(y = y, yrep = t(apply(yrep, 2, FUN = stat)))
   data$rep_id <- NA_integer_
@@ -223,13 +223,13 @@ ppc_scatter_avg_data <- function(y, yrep, group = NULL, stat = "mean") {
 # internal ----------------------------------------------------------------
 
 yrep_avg_label <- function(stat = NULL) {
-  stat <- as_tagged_function(stat, enexpr(stat), fallback = "Average")
-  e <- if (attr(stat, "is_anonymous_function")) {
-    expr("Average")
-  } else {
-    attr(stat, "tagged_expr")
+  stat <- as_tagged_function({{ stat }}, fallback = "Average")
+  e <- attr(stat, "tagged_expr")
+  de <- deparse1(e)
+  if (attr(stat, "is_anonymous_function")) {
+    de <- paste0("(", de, ")")
   }
-  expr(plain((!!e)) (italic(y)[rep]))
+  expr(paste((!!de))(italic(y)[rep]))
 }
 
 scatter_aes <- function(...) {
