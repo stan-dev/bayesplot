@@ -475,13 +475,13 @@ overlay_function <- function(...) {
 # Resolve a function name and store the expression passed in by the user
 #' @noRd
 #' @param f a function-like thing: a string naming a function, a function
-#'   object, an anonymous function object, and `NULL`.
+#'   object, an anonymous function object, a formula-based lambda, and `NULL`.
 #' @param fallback character string providing a fallback function name
 #' @return the function named in `f` with an added `"tagged_expr"` attribute
 #' containing the expression to represent the function name and an
 #' `"is_anonymous_function"` attribute to flag if the expression is a call to
 #' `function()`.
-as_tagged_function <- function(f, fallback = "func") {
+as_tagged_function <- function(f = NULL, fallback = "func") {
   qf <- enquo(f)
   f <- eval_tidy(qf)
   if (!is.null(attr(f, "tagged_expr"))) return(f)
@@ -490,17 +490,17 @@ as_tagged_function <- function(f, fallback = "func") {
   f_fn <- f
 
   if (rlang::is_character(f)) {      # f = "mean"
-    # using sym() on the evaluated `f` that a variable that names a
+    # using sym() on the evaluated `f` means that a variable that names a
     # function string `x <- "mean"; as_tagged_function(x)` will be lost
-    # but that seems okay!
+    # but that seems okay
     f_expr <- rlang::sym(f)
     f_fn <- match.fun(f)
   } else if (is_null(f)) {           # f = NULL
     f_fn <- identity
     f_expr <- rlang::sym(fallback)
   } else if (is_callable(f)) {       # f = mean or f = function(x) mean(x)
-    f_expr <- f_expr
-    f_fn <- f
+    f_expr <- f_expr                 # or f = ~mean(.x)
+    f_fn <- as_function(f)
   }
 
   # Setting attributes on primitive functions is deprecated, so wrap them
@@ -512,7 +512,8 @@ as_tagged_function <- function(f, fallback = "func") {
   }
 
   attr(f_fn, "tagged_expr") <- f_expr
-  attr(f_fn, "is_anonymous_function") <- is_call(f_expr, name = "function")
+  attr(f_fn, "is_anonymous_function") <- is_call(f_expr, name = "function") ||
+    is_formula(f_expr)
   f_fn
 }
 

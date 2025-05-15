@@ -432,12 +432,12 @@ error_label <- function() {
 }
 
 error_avg_label <- function(stat = NULL) {
-  stat <- as_tagged_function({{ stat }}, fallback = "Average")
+  stat <- as_tagged_function({{ stat }}, fallback = "stat")
   e <- attr(stat, "tagged_expr")
-  de <- deparse1(e)
   if (attr(stat, "is_anonymous_function")) {
-    de <- paste0("(", de, ")")
+    e <- sym("stat")
   }
+  de <- deparse1(e)
   expr(paste((!!de))(italic(y) - italic(y)[rep]))
 }
 

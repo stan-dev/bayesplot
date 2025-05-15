@@ -210,11 +210,16 @@ test_that("as_tagged_function handles string input", {
   expect_equal(attr(fn, "tagged_expr"), rlang::sym("mean"))
 })
 
-test_that("as_tagged_function handles anonymous function", {
+test_that("as_tagged_function handles anonymous functions", {
   fn <- as_tagged_function(function(x) mean(x^2))
   expect_type(fn, "closure")
   expect_equal(fn(1:3), mean((1:3)^2))
   expect_equal(attr(fn, "tagged_expr"), rlang::expr( function(x) mean(x^2)))
+
+  fn <- as_tagged_function(~mean(.x^2))
+  expect_type(fn, "closure")
+  expect_equal(fn(1:3), mean((1:3)^2))
+  expect_equal(attr(fn, "tagged_expr"), rlang::expr( ~mean(.x^2)))
 })
 
 test_that("as_tagged_function handles NULL with fallback name", {
