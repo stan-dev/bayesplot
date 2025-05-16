@@ -273,32 +273,37 @@ ppc_error_scatter_avg_grouped <-
 #' @param x A numeric vector the same length as `y` to use as the x-axis
 #'   variable.
 #'
-ppc_error_scatter_avg_vs_x <-
-  function(y,
-           yrep,
-           x,
-           ...,
-           stat = "mean",
-           size = 2.5,
-           alpha = 0.8) {
-    check_ignored_arguments(...)
+ppc_error_scatter_avg_vs_x <- function(
+    y,
+    yrep,
+    x,
+    ...,
+    stat = "mean",
+    size = 2.5,
+    alpha = 0.8
+) {
+  check_ignored_arguments(...)
 
-    y <- validate_y(y)
-    yrep <- validate_predictions(yrep, length(y))
-    x <- validate_x(x, y)
-    stat <- as_tagged_function({{ stat }})
-    errors <- compute_errors(y, yrep)
-    ppc_scatter_avg(
-      y = x,
-      yrep = errors,
-      size = size,
-      alpha = alpha,
-      ref_line = FALSE,
-      stat = stat
+  y <- validate_y(y)
+  yrep <- validate_predictions(yrep, length(y))
+  qx <- enquo(x)
+  x <- validate_x(x, y)
+  stat <- as_tagged_function({{ stat }})
+  errors <- compute_errors(y, yrep)
+  ppc_scatter_avg(
+    y = x,
+    yrep = errors,
+    size = size,
+    alpha = alpha,
+    ref_line = FALSE,
+    stat = stat
+  ) +
+    labs(
+      x = error_avg_label(stat),
+      y = as_label((qx))
     ) +
-      labs(x = error_avg_label(stat), y = expression(italic(x))) +
-      coord_flip()
-  }
+    coord_flip()
+}
 
 
 #' @rdname PPC-errors
@@ -438,7 +443,7 @@ error_avg_label <- function(stat = NULL) {
     e <- sym("stat")
   }
   de <- deparse1(e)
-  expr(paste((!!de))(italic(y) - italic(y)[rep]))
+  expr(paste((!!de))*(italic(y) - italic(y)[rep]))
 }
 
 

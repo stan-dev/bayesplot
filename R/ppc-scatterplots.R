@@ -229,7 +229,7 @@ yrep_avg_label <- function(stat = NULL) {
     e <- sym("stat")
   }
   de <- deparse1(e)
-  expr(paste((!!de))(italic(y)[rep]))
+  expr(paste((!!de))*(italic(y)[rep]))
 }
 
 scatter_aes <- function(...) {
