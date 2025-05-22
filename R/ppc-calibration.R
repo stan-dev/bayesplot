@@ -115,10 +115,10 @@ ppc_calibration <- function(
 #' @rdname PPC-calibration
 #' @export
 ppc_calibration_grouped <- function(
-    y, prep, group, show_mean, ..., linewidth = 0.25, alpha = 0.7) {
+    y, prep, group, prob = .95, show_mean = TRUE, ..., linewidth = 0.5, alpha = 0.7) {
   check_ignored_arguments(...)
-  data <- .ppc_calibration_data(y, prep) %>%
-    group_by(y_id) %>%
+  data <- .ppc_calibration_data(y, prep, group) %>%
+    group_by(group, y_id) %>%
     summarise(
       value = median(value),
       lb = quantile(cep, .5 - .5 * prob),
@@ -127,12 +127,16 @@ ppc_calibration_grouped <- function(
     )
 
   ggplot(data) +
+    aes(value, cep) +
     geom_abline(color = "black", linetype = 2) +
-    geom_line(aes(value, cep, group = rep_id, color = "yrep"),
-      linewidth = linewidth, alpha = alpha
+    geom_ribbon(aes(ymin = lb, ymax = ub, fill = "yrep"), alpha = alpha) +
+    geom_line(
+      aes(color = "y"),
+      linewidth = linewidth
     ) +
     facet_wrap(vars(group)) +
     scale_color_ppc() +
+    scale_fill_ppc() +
     bayesplot_theme_get() +
     legend_none() +
     coord_equal(xlim = c(0, 1), ylim = c(0, 1), expand = FALSE) +
