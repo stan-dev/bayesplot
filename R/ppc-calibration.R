@@ -25,6 +25,16 @@
 #'   }
 #' }
 #'
+#' @examples
+#' color_scheme_set("brightblue")
+#'
+#' # Make an example dataset of binary observations
+#' ymin <- range(example_y_data(), example_yrep_draws())[1]
+#' ymax <- range(example_y_data(), example_yrep_draws())[2]
+#' y <- rbinom(length(example_y_data()), 1, (example_y_data() - ymin) / (ymax - ymin))
+#' prep <- (example_yrep_draws() - ymin) / (ymax - ymin)
+#'
+#' ppc_calibration_overlay(y, prep[1:50, ])
 NULL
 
 
@@ -73,7 +83,7 @@ ppc_calibration_overlay_grouped <- function(
 #' @rdname PPC-calibration
 #' @export
 ppc_calibration <- function(
-    y, prep, prob = .95, show_mean = TRUE, ..., linewidth = 0.25, alpha = 0.7) {
+    y, prep, prob = .95, show_mean = TRUE, ..., linewidth = 0.5, alpha = 0.7) {
   check_ignored_arguments(...)
   data <- .ppc_calibration_data(y, prep) %>%
     group_by(y_id) %>%
@@ -95,7 +105,7 @@ ppc_calibration <- function(
     scale_color_ppc() +
     scale_fill_ppc() +
     bayesplot_theme_get() +
-    # legend_none() +
+    legend_none() +
     coord_equal(xlim = c(0, 1), ylim = c(0, 1), expand = FALSE) +
     xlab("Predicted probability") +
     ylab("Conditional event probability") +
@@ -105,9 +115,17 @@ ppc_calibration <- function(
 #' @rdname PPC-calibration
 #' @export
 ppc_calibration_grouped <- function(
-    y, prep, show_mean, ..., linewidth = 0.25, alpha = 0.7) {
+    y, prep, group, show_mean, ..., linewidth = 0.25, alpha = 0.7) {
   check_ignored_arguments(...)
-  data <- .ppc_calibration_data(y, prep, group)
+  data <- .ppc_calibration_data(y, prep) %>%
+    group_by(y_id) %>%
+    summarise(
+      value = median(value),
+      lb = quantile(cep, .5 - .5 * prob),
+      ub = quantile(cep, .5 + .5 * prob),
+      cep = median(cep)
+    )
+
   ggplot(data) +
     geom_abline(color = "black", linetype = 2) +
     geom_line(aes(value, cep, group = rep_id, color = "yrep"),
@@ -147,7 +165,7 @@ ppc_loo_calibration <- function(
 #' @rdname PPC-calibration
 #' @export
 ppc_loo_calibration_grouped <- function(
-    y, prep, lw, ..., linewidth = 0.25, alpha = 0.7) {
+    y, prep, group, lw, ..., linewidth = 0.25, alpha = 0.7) {
   check_ignored_arguments(...)
   data <- .ppc_calibration_data(y, prep, group)
   ggplot(data) +
