@@ -7,7 +7,7 @@
 #' @name PPC-calibration
 #' @family PPCs
 #'
-#' @template args-y-rep
+#' @template args-y-yrep
 #' @template args-group
 #'
 #' @template return-ggplot-or-data
