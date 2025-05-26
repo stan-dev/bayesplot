@@ -5,7 +5,8 @@ source(test_path("data-for-ppc-tests.R"))
 
 test_that("ppc_km_overlay returns a ggplot object", {
   skip_if_not_installed("ggfortify")
-  expect_gg(ppc_km_overlay(y, yrep, status_y = status_y, left_truncation_y = left_truncation_y, size = 0.5, alpha = 0.2))
+  expect_gg(ppc_km_overlay(y, yrep, status_y = status_y, left_truncation_y = left_truncation_y, size = 0.5, alpha = 0.2, extrapolation_factor = Inf))
+  expect_gg(ppc_km_overlay(y, yrep, status_y = status_y, left_truncation_y = left_truncation_y, size = 0.5, alpha = 0.2, extrapolation_factor = 1))
   expect_gg(ppc_km_overlay(y2, yrep2, status_y = status_y2))
 })
 
@@ -57,6 +58,14 @@ test_that("ppc_km_overlay errors if bad left_truncation_y value", {
   expect_error(
     ppc_km_overlay(y, yrep, status_y = status_y, left_truncation_y = 1:10),
     "`left_truncation_y` must be a numeric vector of the same length as `y`"
+  )
+})
+
+test_that("ppc_km_overlay errors if bad extrapolation_factor value", {
+  skip_if_not_installed("ggfortify")
+  expect_error(
+    ppc_km_overlay(y, yrep, status_y = status_y, extrapolation_factor = 0.99),
+    "`extrapolation_factor` must be greater than or equal to 1."
   )
 })
 

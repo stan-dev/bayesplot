@@ -204,7 +204,8 @@ ppc_km_overlay_grouped <- function(
   status_y,
   left_truncation_y = NULL,
   size = 0.25,
-  alpha = 0.7
+  alpha = 0.7,
+  extrapolation_factor = 1.2
 ) {
   check_ignored_arguments(...)
 
@@ -216,7 +217,8 @@ ppc_km_overlay_grouped <- function(
     status_y = status_y,
     left_truncation_y = left_truncation_y,
     size = size,
-    alpha = alpha
+    alpha = alpha,
+    extrapolation_factor = extrapolation_factor
   )
 
   p_overlay +
