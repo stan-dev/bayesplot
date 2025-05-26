@@ -81,6 +81,13 @@ NULL
 #'   (delayed entry) times for the observations from `y`. This must
 #'   be a numeric vector of the same length as `y`. If `NULL` (default),
 #'   no left-truncation is assumed.
+#' @param extrapolation_factor A numeric value (>=1) that controls how far the
+#'   plot is extended beyond the largest observed value in `y`. The default
+#'   value is 1.2, which corresponds to 20 % extrapolation. To display all
+#'   posterior predictive draws, set `extrapolation_factor = Inf`.
+#'   Note that the plot is never extrapolated further than the largest
+#'   value in `yrep`.
+#'
 ppc_km_overlay <- function(
   y,
   yrep,
