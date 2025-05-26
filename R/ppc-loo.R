@@ -174,7 +174,7 @@ ppc_loo_pit_overlay <- function(y,
                                 adjust = 1,
                                 kernel = "gaussian",
                                 n_dens = 1024) {
-  check_ignored_arguments(...)
+  check_ignored_arguments(..., ok_args = list("moment_match"))
 
   data <-
     ppc_loo_pit_data(
@@ -333,7 +333,7 @@ ppc_loo_pit_qq <- function(y,
                            compare = c("uniform", "normal"),
                            size = 2,
                            alpha = 1) {
-  check_ignored_arguments(...)
+  check_ignored_arguments(..., ok_args = list("moment_match"))
 
   compare <- match.arg(compare)
   if (!is.null(pit)) {
@@ -409,7 +409,7 @@ ppc_loo_pit_ecdf <- function(y,
                              prob = .99,
                              plot_diff = FALSE,
                              interpolate_adj = NULL) {
-  check_ignored_arguments(...)
+  check_ignored_arguments(..., ok_args = list("moment_match"))
 
   if (!is.null(pit)) {
     inform("'pit' specified so ignoring 'y','yrep','lw' if specified.")
@@ -534,7 +534,7 @@ ppc_loo_intervals <-
            fatten = 2.5,
            linewidth = 1,
            order = c("index", "median")) {
-    check_ignored_arguments(...)
+    check_ignored_arguments(..., ok_args = list("moment_match"))
     y <- validate_y(y)
     order_by_median <- match.arg(order) == "median"
     if (!is.null(intervals)) {
@@ -626,7 +626,7 @@ ppc_loo_ribbon <-
            prob_outer = 0.9,
            alpha = 0.33,
            size = 0.25) {
-    check_ignored_arguments(...)
+    check_ignored_arguments(..., ok_args = list("moment_match"))
     y <- validate_y(y)
     if (!is.null(intervals)) {
       stopifnot(is.matrix(intervals), ncol(intervals) %in% c(3, 5))
