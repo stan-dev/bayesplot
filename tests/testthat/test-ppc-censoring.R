@@ -91,13 +91,31 @@ test_that("ppc_km_overlay renders correctly", {
   p_base2 <- ppc_km_overlay(vdiff_y3, vdiff_yrep3, status_y = vdiff_status_y3)
   vdiffr::expect_doppelganger("ppc_km_overlay (default 2)", p_base2)
 
-  p_custom2 <- ppc_km_overlay(
+  p_custom2_left_truncation <- ppc_km_overlay(
     vdiff_y3,
     vdiff_yrep3,
     status_y = vdiff_status_y3,
     left_truncation_y = vdiff_left_truncation_y3)
   vdiffr::expect_doppelganger("ppc_km_overlay (left_truncation_y)",
-                              p_custom2)
+                              p_custom2_left_truncation)
+
+  p_custom2_no_extrapolation <- ppc_km_overlay(
+    vdiff_y3,
+    vdiff_yrep3,
+    status_y = vdiff_status_y3,
+    extrapolation_factor = 1
+  )
+  vdiffr::expect_doppelganger("ppc_km_overlay (no extrapolation)",
+                              p_custom2_no_extrapolation)
+
+  p_custom2_max_extrapolation <- ppc_km_overlay(
+    vdiff_y3,
+    vdiff_yrep3,
+    status_y = vdiff_status_y3,
+    extrapolation_factor = Inf
+  )
+  vdiffr::expect_doppelganger("ppc_km_overlay (max extrapolation)",
+                              p_custom2_max_extrapolation)
 })
 
 test_that("ppc_km_overlay_grouped renders correctly", {
@@ -128,7 +146,7 @@ test_that("ppc_km_overlay_grouped renders correctly", {
                                    status_y = vdiff_status_y3)
   vdiffr::expect_doppelganger("ppc_km_overlay_grouped (default 2)", p_base2)
 
-  p_custom2 <- ppc_km_overlay_grouped(
+  p_custom2_left_truncation <- ppc_km_overlay_grouped(
     vdiff_y3,
     vdiff_yrep3,
     vdiff_group3,
@@ -138,6 +156,32 @@ test_that("ppc_km_overlay_grouped renders correctly", {
 
   vdiffr::expect_doppelganger(
     "ppc_km_overlay_grouped (left_truncation_y)",
-    p_custom2
+    p_custom2_left_truncation
+  )
+
+  p_custom2_no_extrapolation <- ppc_km_overlay_grouped(
+    vdiff_y3,
+    vdiff_yrep3,
+    vdiff_group3,
+    status_y = vdiff_status_y3,
+    extrapolation_factor = 1
+  )
+
+  vdiffr::expect_doppelganger(
+    "ppc_km_overlay_grouped (no extrapolation)",
+    p_custom2_no_extrapolation
+  )
+
+  p_custom2_max_extrapolation <- ppc_km_overlay_grouped(
+    vdiff_y3,
+    vdiff_yrep3,
+    vdiff_group3,
+    status_y = vdiff_status_y3,
+    extrapolation_factor = Inf
+  )
+
+  vdiffr::expect_doppelganger(
+    "ppc_km_overlay_grouped (max extrapolation)",
+    p_custom2_max_extrapolation
   )
 })
