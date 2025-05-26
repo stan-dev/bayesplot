@@ -53,6 +53,14 @@
 #' \donttest{
 #' ppc_km_overlay(y, yrep[1:25, ], status_y = status_y)
 #' }
+#' # With extrapolation_factor = 1 (no extrapolation)
+#' \donttest{
+#' ppc_km_overlay(y, yrep[1:25, ], status_y = status_y, extrapolation_factor = 1)
+#' }
+#' # With extrapolation_factor = Inf (show all posterior predictive draws)
+#' \donttest{
+#' ppc_km_overlay(y, yrep[1:25, ], status_y = status_y, extrapolation_factor = Inf)
+#' }
 #' # With separate facets by group:
 #' group <- example_group_data()
 #' \donttest{
@@ -83,10 +91,10 @@ NULL
 #'   no left-truncation is assumed.
 #' @param extrapolation_factor A numeric value (>=1) that controls how far the
 #'   plot is extended beyond the largest observed value in `y`. The default
-#'   value is 1.2, which corresponds to 20 % extrapolation. To display all
-#'   posterior predictive draws, set `extrapolation_factor = Inf`.
-#'   Note that the plot is never extrapolated further than the largest
-#'   value in `yrep`.
+#'   value is 1.2, which corresponds to 20 % extrapolation. Note that all
+#'   posterior predictive draws may not be shown by default because of
+#'   the controlled extrapolation. To display all posterior predictive draws,
+#'   set `extrapolation_factor = Inf`.
 #'
 ppc_km_overlay <- function(
   y,
