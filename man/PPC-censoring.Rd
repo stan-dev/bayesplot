@@ -13,7 +13,8 @@ ppc_km_overlay(
   status_y,
   left_truncation_y = NULL,
   size = 0.25,
-  alpha = 0.7
+  alpha = 0.7,
+  extrapolation_factor = 1.2
 )
 
 ppc_km_overlay_grouped(
@@ -24,7 +25,8 @@ ppc_km_overlay_grouped(
   status_y,
   left_truncation_y = NULL,
   size = 0.25,
-  alpha = 0.7
+  alpha = 0.7,
+  extrapolation_factor = 1.2
 )
 }
 \arguments{
@@ -51,6 +53,13 @@ no left-truncation is assumed.}
 
 \item{size, alpha}{Passed to the appropriate geom to control the appearance of
 the \code{yrep} distributions.}
+
+\item{extrapolation_factor}{A numeric value (>=1) that controls how far the
+plot is extended beyond the largest observed value in \code{y}. The default
+value is 1.2, which corresponds to 20 \% extrapolation. Note that all
+posterior predictive draws may not be shown by default because of
+the controlled extrapolation. To display all posterior predictive draws,
+set \code{extrapolation_factor = Inf}.}
 
 \item{group}{A grouping variable of the same length as \code{y}.
 Will be coerced to \link[base:factor]{factor} if not already a factor.
@@ -101,6 +110,14 @@ yrep <- example_yrep_draws()
 dim(yrep)
 \donttest{
 ppc_km_overlay(y, yrep[1:25, ], status_y = status_y)
+}
+# With extrapolation_factor = 1 (no extrapolation)
+\donttest{
+ppc_km_overlay(y, yrep[1:25, ], status_y = status_y, extrapolation_factor = 1)
+}
+# With extrapolation_factor = Inf (show all posterior predictive draws)
+\donttest{
+ppc_km_overlay(y, yrep[1:25, ], status_y = status_y, extrapolation_factor = Inf)
 }
 # With separate facets by group:
 group <- example_group_data()
