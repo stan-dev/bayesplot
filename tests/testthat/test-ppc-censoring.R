@@ -69,6 +69,14 @@ test_that("ppc_km_overlay errors if bad extrapolation_factor value", {
   )
 })
 
+test_that("ppc_km_overlay messages if extrapolation_factor left at default value", {
+  skip_if_not_installed("ggfortify")
+  expect_message(
+    ppc_km_overlay(y, yrep, status_y = status_y),
+    "To display all posterior predictive draws, set `extrapolation_factor = Inf`.",
+  )
+})
+
 # Visual tests -----------------------------------------------------------------
 
 test_that("ppc_km_overlay renders correctly", {

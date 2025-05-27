@@ -12,9 +12,9 @@ ppc_km_overlay(
   ...,
   status_y,
   left_truncation_y = NULL,
+  extrapolation_factor = 1.2,
   size = 0.25,
-  alpha = 0.7,
-  extrapolation_factor = 1.2
+  alpha = 0.7
 )
 
 ppc_km_overlay_grouped(
@@ -24,9 +24,9 @@ ppc_km_overlay_grouped(
   ...,
   status_y,
   left_truncation_y = NULL,
+  extrapolation_factor = 1.2,
   size = 0.25,
-  alpha = 0.7,
-  extrapolation_factor = 1.2
+  alpha = 0.7
 )
 }
 \arguments{
@@ -51,15 +51,15 @@ right censored, 1 = event).}
 be a numeric vector of the same length as \code{y}. If \code{NULL} (default),
 no left-truncation is assumed.}
 
-\item{size, alpha}{Passed to the appropriate geom to control the appearance of
-the \code{yrep} distributions.}
-
 \item{extrapolation_factor}{A numeric value (>=1) that controls how far the
 plot is extended beyond the largest observed value in \code{y}. The default
 value is 1.2, which corresponds to 20 \% extrapolation. Note that all
 posterior predictive draws may not be shown by default because of
 the controlled extrapolation. To display all posterior predictive draws,
 set \code{extrapolation_factor = Inf}.}
+
+\item{size, alpha}{Passed to the appropriate geom to control the appearance of
+the \code{yrep} distributions.}
 
 \item{group}{A grouping variable of the same length as \code{y}.
 Will be coerced to \link[base:factor]{factor} if not already a factor.
@@ -85,11 +85,12 @@ additional plots at
 
 \describe{
 \item{\code{ppc_km_overlay()}}{
-Empirical CCDF estimates of each dataset (row) in \code{yrep} are overlaid,
-with the Kaplan-Meier estimate (Kaplan and Meier, 1958) for \code{y} itself on
-top (and in a darker shade). This is a PPC suitable for right-censored
-\code{y}. Note that the replicated data from \code{yrep} is assumed to be
-uncensored.
+Empirical CCDF estimates of each dataset (row) in \code{yrep} are overlaid, with
+the Kaplan-Meier estimate (Kaplan and Meier, 1958) for \code{y} itself on top
+(and in a darker shade). This is a PPC suitable for right-censored \code{y}.
+Note that the replicated data from \code{yrep} is assumed to be uncensored. Left
+truncation (delayed entry) times for \code{y} can be specified using
+\code{left_truncation_y}.
 }
 \item{\code{ppc_km_overlay_grouped()}}{
 The same as \code{ppc_km_overlay()}, but with separate facets by \code{group}.
@@ -98,32 +99,33 @@ The same as \code{ppc_km_overlay()}, but with separate facets by \code{group}.
 }
 
 \examples{
+\donttest{
 color_scheme_set("brightblue")
-y <- example_y_data()
+
 # For illustrative purposes, (right-)censor values y > 110:
+y <- example_y_data()
 status_y <- as.numeric(y <= 110)
 y <- pmin(y, 110)
+
 # In reality, the replicated data (yrep) would be obtained from a
 # model which takes the censoring of y properly into account. Here,
 # for illustrative purposes, we simply use example_yrep_draws():
 yrep <- example_yrep_draws()
 dim(yrep)
-\donttest{
+
+# Overlay 25 curves
 ppc_km_overlay(y, yrep[1:25, ], status_y = status_y)
-}
+
 # With extrapolation_factor = 1 (no extrapolation)
-\donttest{
 ppc_km_overlay(y, yrep[1:25, ], status_y = status_y, extrapolation_factor = 1)
-}
+
 # With extrapolation_factor = Inf (show all posterior predictive draws)
-\donttest{
 ppc_km_overlay(y, yrep[1:25, ], status_y = status_y, extrapolation_factor = Inf)
-}
+
 # With separate facets by group:
 group <- example_group_data()
-\donttest{
 ppc_km_overlay_grouped(y, yrep[1:25, ], group = group, status_y = status_y)
-}
+
 # With left-truncation (delayed entry) times:
 min_vals <- pmin(y, apply(yrep, 2, min))
 left_truncation_y <- rep(0, length(y))
@@ -132,7 +134,6 @@ left_truncation_y[condition] <- pmin(
   runif(sum(condition), min = 0.6, max = 0.99) * y[condition],
   min_vals[condition] - 0.001
 )
-\donttest{
 ppc_km_overlay(y, yrep[1:25, ], status_y = status_y,
               left_truncation_y = left_truncation_y)
 }
