@@ -1,6 +1,5 @@
 #' **bayesplot**: Plotting for Bayesian Models
 #'
-#' @docType package
 #' @name bayesplot-package
 #' @aliases bayesplot
 #'
@@ -96,7 +95,7 @@
 #' ppd_hist(ypred[1:8, ])
 #' }
 #'
-NULL
+"_PACKAGE"
 
 
 # internal ----------------------------------------------------------------
