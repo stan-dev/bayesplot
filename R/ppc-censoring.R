@@ -58,6 +58,18 @@
 #' \donttest{
 #' ppc_km_overlay_grouped(y, yrep[1:25, ], group = group, status_y = status_y)
 #' }
+#' # With left-truncation (delayed entry) times:
+#' min_vals <- pmin(y, apply(yrep, 2, min))
+#' left_truncation_y <- rep(0, length(y))
+#' condition <- y > mean(y) / 2
+#' left_truncation_y[condition] <- pmin(
+#'   runif(sum(condition), min = 0.6, max = 0.99) * y[condition],
+#'   min_vals[condition] - 0.001
+#' )
+#' \donttest{
+#' ppc_km_overlay(y, yrep[1:25, ], status_y = status_y,
+#'               left_truncation_y = left_truncation_y)
+#' }
 NULL
 
 #' @export
@@ -65,11 +77,16 @@ NULL
 #' @param status_y The status indicator for the observations from `y`. This must
 #'   be a numeric vector of the same length as `y` with values in \{0, 1\} (0 =
 #'   right censored, 1 = event).
+#' @param left_truncation_y Optional parameter that specifies left-truncation
+#'   (delayed entry) times for the observations from `y`. This must
+#'   be a numeric vector of the same length as `y`. If `NULL` (default),
+#'   no left-truncation is assumed.
 ppc_km_overlay <- function(
   y,
   yrep,
   ...,
   status_y,
+  left_truncation_y = NULL,
   size = 0.25,
   alpha = 0.7
 ) {
@@ -79,8 +96,15 @@ ppc_km_overlay <- function(
   suggested_package("survival")
   suggested_package("ggfortify")
 
-  stopifnot(is.numeric(status_y))
-  stopifnot(all(status_y %in% c(0, 1)))
+  if (!is.numeric(status_y) || length(status_y) != length(y) || !all(status_y %in% c(0, 1))) {
+    stop("`status_y` must be a numeric vector of 0s and 1s the same length as `y`.")
+  }
+
+  if (!is.null(left_truncation_y)) {
+    if (!is.numeric(left_truncation_y) || length(left_truncation_y) != length(y)) {
+      stop("`left_truncation_y` must be a numeric vector of the same length as `y`.")
+    }
+  }
 
   data <- ppc_data(y, yrep, group = status_y)
 
@@ -96,7 +120,12 @@ ppc_km_overlay <- function(
                                  as.numeric(as.character(.data$group)),
                                  1))
 
-  sf_form <- survival::Surv(value, group) ~ rep_label
+  if (is.null(left_truncation_y)) {
+    sf_form <- survival::Surv(time = data$value, event = data$group) ~ rep_label
+  } else {
+    sf_form <- survival::Surv(time = left_truncation_y[data$y_id], time2 = data$value, event = data$group) ~ rep_label
+  }
+
   if (!is.null(add_group)) {
     data <- dplyr::inner_join(data,
                               tibble::tibble(y_id = seq_along(y),
@@ -164,6 +193,7 @@ ppc_km_overlay_grouped <- function(
   group,
   ...,
   status_y,
+  left_truncation_y = NULL,
   size = 0.25,
   alpha = 0.7
 ) {
@@ -175,6 +205,7 @@ ppc_km_overlay_grouped <- function(
     add_group = group,
     ...,
     status_y = status_y,
+    left_truncation_y = left_truncation_y,
     size = size,
     alpha = alpha
   )
