@@ -47,16 +47,16 @@ be a numeric vector of the same length as \code{y} with values in \{0, 1\} (0 =
 right censored, 1 = event).}
 
 \item{left_truncation_y}{Optional parameter that specifies left-truncation
-(delayed entry) times for the observations from \code{y}. This must
-be a numeric vector of the same length as \code{y}. If \code{NULL} (default),
-no left-truncation is assumed.}
+(delayed entry) times for the observations from \code{y}. This must be a numeric
+vector of the same length as \code{y}. If \code{NULL} (default), no left-truncation
+is assumed.}
 
 \item{extrapolation_factor}{A numeric value (>=1) that controls how far the
 plot is extended beyond the largest observed value in \code{y}. The default
 value is 1.2, which corresponds to 20 \% extrapolation. Note that all
-posterior predictive draws may not be shown by default because of
-the controlled extrapolation. To display all posterior predictive draws,
-set \code{extrapolation_factor = Inf}.}
+posterior predictive draws may not be shown by default because of the
+controlled extrapolation. To display all posterior predictive draws, set
+\code{extrapolation_factor = Inf}.}
 
 \item{size, alpha}{Passed to the appropriate geom to control the appearance of
 the \code{yrep} distributions.}

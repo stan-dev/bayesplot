@@ -178,7 +178,7 @@ ppc_km_overlay <- function(
 
   max_time_y <- max(y, na.rm = TRUE)
   fsf <- fsf %>%
-    dplyr::filter(is_y_color != "yrep" | time <= max_time_y * extrapolation_factor)
+    dplyr::filter(.data$is_y_color != "yrep" | .data$time <= max_time_y * extrapolation_factor)
 
   # Ensure that the observed data gets plotted last by reordering the
   # levels of the factor "strata"
