@@ -15,3 +15,4 @@ book/*
 docs/*
 Rplots.pdf
 ^\.github$
+^release-prep\.R$
