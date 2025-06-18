@@ -1,8 +1,11 @@
-# bayesplot (development version)
+# bayesplot 1.13.0
 
-* Add extrapolation_factor parameter to `ppc_km_overlay()` and `ppc_km_overlay_grouped()` by @Sakuski
-* Add possibility for left-truncation to `ppc_km_overlay()` and `ppc_km_overlay_grouped()` by @Sakuski
-* Added `ppc_loo_pit_ecdf()` by @TeemuSailynoja
+* Add `ppc_loo_pit_ecdf()` by @TeemuSailynoja (#345)
+* Add possibility for left-truncation to `ppc_km_overlay()` and `ppc_km_overlay_grouped()` by @Sakuski (#347)
+* Give user control over extrapolation in `ppc_km_overlay()` and `ppc_km_overlay_grouped()` by @Sakuski (#353)
+* Allow passing `moment_match` via `...`  for loo functions by @n-kall (#351)
+* Skip some tests when missing Suggests by @MichaelChirico (#344)
+* Remove a test that will fail with next ggplot2 release (#356)
 
 # bayesplot 1.12.0
 
