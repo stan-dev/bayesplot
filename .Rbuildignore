@@ -18,3 +18,4 @@ tests/figs/*
 ^docs$
 ^_pkgdown\.yml$
 ^\.github$
+^release-prep\.R$

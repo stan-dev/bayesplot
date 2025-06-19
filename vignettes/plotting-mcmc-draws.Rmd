@@ -176,7 +176,7 @@ mcmc_hist(posterior, pars = c("wt", "sigma"),
 <!-- # not evaluated to reduce vignette size for CRAN -->
 <!-- # full version available at mc-stan.org/bayesplot/articles -->
 <!-- color_scheme_set("blue") -->
-<!-- mcmc_hist(posterior, pars = c("wt", "sigma"),  -->
+<!-- mcmc_hist(posterior, pars = c("wt", "sigma"), -->
 <!--           transformations = list("sigma" = "log")) -->
 <!-- ``` -->
 

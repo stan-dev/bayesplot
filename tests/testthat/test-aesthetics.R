@@ -135,6 +135,7 @@ test_that("color_scheme_view returns correct ggplot object", {
 })
 
 test_that("color_scheme_view returns gtable if length(scheme) >= 1", {
+  skip_if_not_installed("gridExtra")
   expect_gtable(color_scheme_view(c("red", "gray")))
   expect_gtable(color_scheme_view(c("red", "gray", "blue")))
 })
