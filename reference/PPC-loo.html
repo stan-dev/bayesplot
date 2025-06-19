@@ -19,7 +19,7 @@ for details."><meta property="og:image" content="https://mc-stan.org/bayesplot/l
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bayesplot</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.12.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.13.0</span>
       </span>
     </div>
 
@@ -161,6 +161,19 @@ for details.</p>
 <span>  alpha <span class="op">=</span> <span class="fl">1</span></span>
 <span><span class="op">)</span></span>
 <span></span>
+<span><span class="fu">ppc_loo_pit_ecdf</span><span class="op">(</span></span>
+<span>  <span class="va">y</span>,</span>
+<span>  <span class="va">yrep</span>,</span>
+<span>  lw <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  <span class="va">...</span>,</span>
+<span>  psis_object <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  pit <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  K <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  prob <span class="op">=</span> <span class="fl">0.99</span>,</span>
+<span>  plot_diff <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  interpolate_adj <span class="op">=</span> <span class="cn">NULL</span></span>
+<span><span class="op">)</span></span>
+<span></span>
 <span><span class="fu">ppc_loo_pit</span><span class="op">(</span></span>
 <span>  <span class="va">y</span>,</span>
 <span>  <span class="va">yrep</span>,</span>
@@ -236,10 +249,11 @@ with argument <code>save_psis</code> set to <code>TRUE</code>).</p></dd>
 
 
 <dt>pit</dt>
-<dd><p>For <code>ppc_loo_pit_overlay()</code> and <code>ppc_loo_pit_qq()</code>, optionally a
-vector of precomputed PIT values that can be specified instead of <code>y</code>,
-<code>yrep</code>, and <code>lw</code> (these are all ignored if <code>pit</code> is specified). If not
-specified the PIT values are computed internally before plotting.</p></dd>
+<dd><p>For <code>ppc_loo_pit_overlay()</code>, <code>ppc_loo_pit_qq()</code>, and
+<code>ppc_loo_pit_ecdf()</code> optionally a vector of precomputed PIT values that
+can be specified instead of <code>y</code>, <code>yrep</code>, and <code>lw</code> (these are all ignored
+if <code>pit</code> is specified). If not specified the PIT values are computed
+internally before plotting.</p></dd>
 
 
 <dt>samples</dt>
@@ -251,9 +265,9 @@ PITs overlaid as a thicker dark line.</p></dd>
 
 
 <dt>alpha, size, fatten, linewidth</dt>
-<dd><p>Arguments passed to code geoms to control plot
-aesthetics. For <code>ppc_loo_pit_qq()</code> and <code>ppc_loo_pit_overlay()</code>, <code>size</code> and
-<code>alpha</code> are passed to <code><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">ggplot2::geom_point()</a></code> and
+<dd><p>Arguments passed to code geoms to control
+plot aesthetics. For <code>ppc_loo_pit_qq()</code> and <code>ppc_loo_pit_overlay()</code>,<code>size</code>
+and <code>alpha</code> are passed to <code><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">ggplot2::geom_point()</a></code> and
 <code><a href="https://ggplot2.tidyverse.org/reference/geom_density.html" class="external-link">ggplot2::geom_density()</a></code>, respectively. For <code>ppc_loo_intervals()</code>, <code>size</code>
 <code>linewidth</code> and <code>fatten</code> are passed to <code><a href="https://ggplot2.tidyverse.org/reference/geom_linerange.html" class="external-link">ggplot2::geom_pointrange()</a></code>. For
 <code>ppc_loo_ribbon()</code>, <code>alpha</code> and <code>size</code>  are passed to
@@ -295,6 +309,39 @@ calculated from the PIT values to the theoretical standard normal
 quantiles.</p></dd>
 
 
+<dt>K</dt>
+<dd><p>For <code>ppc_loo_pit_ecdf()</code> an optional integer defining the number
+of equally spaced evaluation points for the PIT-ECDF. Reducing K when
+using <code>interpolate_adj = FALSE</code> makes computing the confidence bands
+faster. If <code>pit</code> is supplied, defaults to <code>length(pit)</code>, otherwise
+<code>yrep</code> determines the maximum accuracy of the estimated PIT values and
+<code>K</code> is set to <code>min(nrow(yrep) + 1, 1000)</code>.</p></dd>
+
+
+<dt>prob, prob_outer</dt>
+<dd><p>Values between <code>0</code> and <code>1</code> indicating the desired
+probability mass to include in the inner and outer intervals. The defaults
+are <code>prob=0.5</code> and <code>prob_outer=0.9</code> for <code>ppc_loo_intervals()</code> and
+<code>prob = 0.99</code> for <code>ppc_loo_pit_ecdf()</code>.</p></dd>
+
+
+<dt>plot_diff</dt>
+<dd><p>For <code>ppc_loo_pit_ecdf()</code>, a boolean defining whether to
+plot the difference between the observed PIT-ECDF and the theoretical
+expectation for uniform PIT values rather than plotting the regular ECDF.
+The default is <code>FALSE</code>, but for large samples we recommend setting
+<code>plot_diff = TRUE</code> to better use the plot area.</p></dd>
+
+
+<dt>interpolate_adj</dt>
+<dd><p>For <code>ppc_loo_pit_ecdf()</code>, a boolean defining if the
+simultaneous confidence bands should be interpolated based on precomputed
+values rather than computed exactly. Computing the bands may be
+computationally intensive and the approximation gives a fast method for
+assessing the ECDF trajectory. The default is to use interpolation if <code>K</code>
+is greater than 200.</p></dd>
+
+
 <dt>subset</dt>
 <dd><p>For <code>ppc_loo_intervals()</code> and <code>ppc_loo_ribbon()</code>, an optional
 integer vector indicating which observations in <code>y</code> (and <code>yrep</code>) to
@@ -317,12 +364,6 @@ lower inner interval, median (50%), upper inner interval and upper outer
 interval (column names are ignored).</p></dd>
 
 
-<dt>prob, prob_outer</dt>
-<dd><p>Values between <code>0</code> and <code>1</code> indicating the desired
-probability mass to include in the inner and outer intervals. The defaults
-are <code>prob=0.5</code> and <code>prob_outer=0.9</code>.</p></dd>
-
-
 <dt>order</dt>
 <dd><p>For <code>ppc_loo_intervals()</code>, a string indicating how to arrange
 the plotted intervals. The default (<code>"index"</code>) is to plot them in the
@@ -340,7 +381,7 @@ by median value from smallest (left) to largest (right).</p></dd>
     <h2>Plot Descriptions</h2>
     
 
-<dl><dt><code>ppc_loo_pit_overlay()</code>, <code>ppc_loo_pit_qq()</code></dt>
+<dl><dt><code>ppc_loo_pit_overlay()</code>, <code>ppc_loo_pit_qq()</code>, <code>ppc_loo_pit_ecdf()</code></dt>
 <dd><p>The calibration of marginal predictions can be assessed using probability
 integral transformation (PIT) checks. LOO improves the check by avoiding the
 double use of data. See the section on marginal predictive checks in Gelman
@@ -362,7 +403,14 @@ PIT values to the theoretical standard normal quantiles. This can help see
 the (mis)calibration better for the extreme values. However, in most cases
 we have found that the overlaid density plot (<code>ppc_loo_pit_overlay()</code>)
 function will provide a clearer picture of calibration problems than the
-Q-Q plot.</p></dd>
+Q-Q plot.</p>
+<p>The <code>ppc_loo_pit_ecdf()</code> function visualizes the empirical cumulative
+distribution function (ECDF) of the LOO PITs overlaid with simultaneous
+confidence intervals for a standard uniform sample. For large samples,
+these confidence intervals are visually very narrow. Setting the
+<code>plot_diff</code> argument to <code>TRUE</code> transforms the plot to display the
+difference of the ECDF and the theoretical expectation, which can aid in
+the visual assessment of calibration.</p></dd>
 
 <dt><code>ppc_loo_intervals()</code>, <code>ppc_loo_ribbon()</code></dt>
 <dd><p>Similar to <code><a href="PPC-intervals.html">ppc_intervals()</a></code> and <code><a href="PPC-intervals.html">ppc_ribbon()</a></code> but the intervals are for
@@ -406,8 +454,7 @@ https://www.jstor.org/stable/2986005.</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># \dontrun{</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \dontrun{</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">suppressPackageStartupMessages</a></span><span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://mc-stan.org/rstanarm/" class="external-link">rstanarm</a></span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">suppressPackageStartupMessages</a></span><span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://mc-stan.org/loo/" class="external-link">loo</a></span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
@@ -421,12 +468,12 @@ https://www.jstor.org/stable/2986005.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 6     0  ANOKA 0.95551145  -0.8473129</span>
 <span class="r-in"><span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://mc-stan.org/rstanarm/reference/stan_glmer.html" class="external-link">stan_lmer</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  <span class="va">log_radon</span> <span class="op">~</span> <span class="va">floor</span> <span class="op">+</span> <span class="va">log_uranium</span> <span class="op">+</span> <span class="va">floor</span><span class="op">:</span><span class="va">log_uranium</span></span></span>
-<span class="r-in"><span>               <span class="op">+</span> <span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="va">floor</span> <span class="op">|</span> <span class="va">county</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    <span class="op">+</span> <span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="va">floor</span> <span class="op">|</span> <span class="va">county</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  data <span class="op">=</span> <span class="va">radon</span>,</span></span>
 <span class="r-in"><span>  iter <span class="op">=</span> <span class="fl">100</span>,</span></span>
 <span class="r-in"><span>  chains <span class="op">=</span> <span class="fl">2</span>,</span></span>
 <span class="r-in"><span>  cores <span class="op">=</span> <span class="fl">2</span></span></span>
-<span class="r-in"><span> <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>The largest R-hat is 1.13, indicating chains have not mixed.</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> Running the chains for more iterations may help. See</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> https://mc-stan.org/misc/warnings.html#r-hat</span>
@@ -447,80 +494,43 @@ https://www.jstor.org/stable/2986005.</p>
 <span class="r-in"><span><span class="co"># marginal predictive check using LOO probability integral transform</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="bayesplot-colors.html">color_scheme_set</a></span><span class="op">(</span><span class="st">"orange"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">ppc_loo_pit_overlay</span><span class="op">(</span><span class="va">y</span>, <span class="va">yrep</span>, lw <span class="op">=</span> <span class="va">lw</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Some PIT values larger than 1! Largest:  1 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Rounding PIT &gt; 1 to 1. Gradient evaluation took 0.000535 seconds</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 5.35 seconds.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2: Adjust your expectations accordingly!</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2: </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2: Chain 1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> : Iteration:  1 / 100 [  1%]  (Warmup)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2: WARNING: There aren't enough warmup iterations to fit the</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2:          three stages of adaptation as currently configured.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2:          Reducing each adaptation stage to 15%/75%/10% of</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2:          the given number of warmup iterations:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2:            init_buffer = 7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2:            adapt_window = 38</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2:            term_buffer = 5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2: </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2: Iteration:  1 / 100 [  1%]  (Warmup)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: Iteration: 10 / 100 [ 10%]  (Warmup)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2: Iteration: 10 / 100 [ 10%]  (Warmup)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: Iteration: 20 / 100 [ 20%]  (Warmup)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2: Iteration: 20 / 100 [ 20%]  (Warmup)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: Iteration: 30 / 100 [ 30%]  (Warmup)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2: Iteration: 30 / 100 [ 30%]  (Warmup)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2: Iteration: 40 / 100 [ 40%]  (Warmup)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: Iteration: 40 / 100 [ 40%]  (Warmup)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2: Iteration: 50 / 100 [ 50%]  (Warmup)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2: Iteration: 51 / 100 [ 51%]  (Sampling)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: Iteration: 50 / 100 [ 50%]  (Warmup)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: Iteration: 51 / 100 [ 51%]  (Sampling)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2: Iteration: 60 / 100 [ 60%]  (Sampling)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: Iteration: 60 / 100 [ 60%]  (Sampling)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2: Iteration: 70 / 100 [ 70%]  (Sampling)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: Iteration: 70 / 100 [ 70%]  (Sampling)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2: Iteration: 80 / 100 [ 80%]  (Sampling)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: Iteration: 80 / 100 [ 80%]  (Sampling)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2: Iteration: 90 / 100 [ 90%]  (Sampling)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: Iteration: 90 / 100 [ 90%]  (Sampling)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2: Iteration: 100 / 100 [100%]  (Sampling)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2: </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2:  Elapsed Time: 4.103 seconds (Warm-up)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2:                3.157 seconds (Sampling)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2:                7.26 seconds (Total)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2: </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: Iteration: 100 / 100 [100%]  (Sampling)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1:  Elapsed Time: 4.552 seconds (Warm-up)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1:                3.131 seconds (Sampling)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1:                7.683 seconds (Total)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: </span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> NOTE: The kernel density estimate assumes continuous observations and is not optimal for discrete observations.</span>
 <span class="r-plt img"><img src="PPC-loo-1.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">ppc_loo_pit_qq</span><span class="op">(</span><span class="va">y</span>, <span class="va">yrep</span>, lw <span class="op">=</span> <span class="va">lw</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 7 rows containing missing values or values outside the scale range</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> (`geom_point()`).</span>
 <span class="r-plt img"><img src="PPC-loo-2.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="fu">ppc_loo_pit_qq</span><span class="op">(</span><span class="va">y</span>, <span class="va">yrep</span>, lw <span class="op">=</span> <span class="va">lw</span>, compare <span class="op">=</span> <span class="st">"normal"</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>NaNs produced</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 17 rows containing non-finite outside the scale range (`stat_qq()`).</span>
 <span class="r-plt img"><img src="PPC-loo-3.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># predictive calibration check using LOO probability integral transform</span></span></span>
+<span class="r-in"><span><span class="fu">ppc_loo_pit_ecdf</span><span class="op">(</span><span class="va">y</span>, <span class="va">yrep</span>, <span class="va">lw</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="PPC-loo-4.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># With `plot_diff = TRUE` it is easier to assess the calibration.</span></span></span>
+<span class="r-in"><span><span class="fu">ppc_loo_pit_ecdf</span><span class="op">(</span><span class="va">y</span>, <span class="va">yrep</span>, <span class="va">lw</span>, plot_diff <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="PPC-loo-5.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># can use the psis object instead of lw</span></span></span>
 <span class="r-in"><span><span class="fu">ppc_loo_pit_qq</span><span class="op">(</span><span class="va">y</span>, <span class="va">yrep</span>, psis_object <span class="op">=</span> <span class="va">psis1</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span></span>
-<span class="r-plt img"><img src="PPC-loo-4.png" alt="" width="700" height="433"></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 7 rows containing missing values or values outside the scale range</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> (`geom_point()`).</span>
+<span class="r-plt img"><img src="PPC-loo-6.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># loo predictive intervals vs observations</span></span></span>
 <span class="r-in"><span><span class="va">keep_obs</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="fl">50</span></span></span>
 <span class="r-in"><span><span class="fu">ppc_loo_intervals</span><span class="op">(</span><span class="va">y</span>, <span class="va">yrep</span>, psis_object <span class="op">=</span> <span class="va">psis1</span>, subset <span class="op">=</span> <span class="va">keep_obs</span><span class="op">)</span></span></span>
-<span class="r-plt img"><img src="PPC-loo-5.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="PPC-loo-7.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="bayesplot-colors.html">color_scheme_set</a></span><span class="op">(</span><span class="st">"gray"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">ppc_loo_intervals</span><span class="op">(</span><span class="va">y</span>, <span class="va">yrep</span>, psis_object <span class="op">=</span> <span class="va">psis1</span>, subset <span class="op">=</span> <span class="va">keep_obs</span>,</span></span>
-<span class="r-in"><span>                  order <span class="op">=</span> <span class="st">"median"</span><span class="op">)</span></span></span>
-<span class="r-plt img"><img src="PPC-loo-6.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span><span class="fu">ppc_loo_intervals</span><span class="op">(</span><span class="va">y</span>, <span class="va">yrep</span>,</span></span>
+<span class="r-in"><span>  psis_object <span class="op">=</span> <span class="va">psis1</span>, subset <span class="op">=</span> <span class="va">keep_obs</span>,</span></span>
+<span class="r-in"><span>  order <span class="op">=</span> <span class="st">"median"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="PPC-loo-8.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>

@@ -25,7 +25,7 @@ github.com/stan-dev/bayesplot."><meta property="og:image" content="https://mc-st
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bayesplot</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.12.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.13.0</span>
       </span>
     </div>
 
@@ -129,9 +129,28 @@ additional plots at
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">ppc_km_overlay</span><span class="op">(</span><span class="va">y</span>, <span class="va">yrep</span>, <span class="va">...</span>, <span class="va">status_y</span>, size <span class="op">=</span> <span class="fl">0.25</span>, alpha <span class="op">=</span> <span class="fl">0.7</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">ppc_km_overlay</span><span class="op">(</span></span>
+<span>  <span class="va">y</span>,</span>
+<span>  <span class="va">yrep</span>,</span>
+<span>  <span class="va">...</span>,</span>
+<span>  <span class="va">status_y</span>,</span>
+<span>  left_truncation_y <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  extrapolation_factor <span class="op">=</span> <span class="fl">1.2</span>,</span>
+<span>  size <span class="op">=</span> <span class="fl">0.25</span>,</span>
+<span>  alpha <span class="op">=</span> <span class="fl">0.7</span></span>
+<span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">ppc_km_overlay_grouped</span><span class="op">(</span><span class="va">y</span>, <span class="va">yrep</span>, <span class="va">group</span>, <span class="va">...</span>, <span class="va">status_y</span>, size <span class="op">=</span> <span class="fl">0.25</span>, alpha <span class="op">=</span> <span class="fl">0.7</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">ppc_km_overlay_grouped</span><span class="op">(</span></span>
+<span>  <span class="va">y</span>,</span>
+<span>  <span class="va">yrep</span>,</span>
+<span>  <span class="va">group</span>,</span>
+<span>  <span class="va">...</span>,</span>
+<span>  <span class="va">status_y</span>,</span>
+<span>  left_truncation_y <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  extrapolation_factor <span class="op">=</span> <span class="fl">1.2</span>,</span>
+<span>  size <span class="op">=</span> <span class="fl">0.25</span>,</span>
+<span>  alpha <span class="op">=</span> <span class="fl">0.7</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -160,6 +179,22 @@ be a numeric vector of the same length as <code>y</code> with values in {0, 1} (
 right censored, 1 = event).</p></dd>
 
 
+<dt>left_truncation_y</dt>
+<dd><p>Optional parameter that specifies left-truncation
+(delayed entry) times for the observations from <code>y</code>. This must be a numeric
+vector of the same length as <code>y</code>. If <code>NULL</code> (default), no left-truncation
+is assumed.</p></dd>
+
+
+<dt>extrapolation_factor</dt>
+<dd><p>A numeric value (&gt;=1) that controls how far the
+plot is extended beyond the largest observed value in <code>y</code>. The default
+value is 1.2, which corresponds to 20 % extrapolation. Note that all
+posterior predictive draws may not be shown by default because of the
+controlled extrapolation. To display all posterior predictive draws, set
+<code>extrapolation_factor = Inf</code>.</p></dd>
+
+
 <dt>size, alpha</dt>
 <dd><p>Passed to the appropriate geom to control the appearance of
 the <code>yrep</code> distributions.</p></dd>
@@ -183,11 +218,12 @@ to the corresponding observation.</p></dd>
     
 
 <dl><dt><code>ppc_km_overlay()</code></dt>
-<dd><p>Empirical CCDF estimates of each dataset (row) in <code>yrep</code> are overlaid,
-with the Kaplan-Meier estimate (Kaplan and Meier, 1958) for <code>y</code> itself on
-top (and in a darker shade). This is a PPC suitable for right-censored
-<code>y</code>. Note that the replicated data from <code>yrep</code> is assumed to be
-uncensored.</p></dd>
+<dd><p>Empirical CCDF estimates of each dataset (row) in <code>yrep</code> are overlaid, with
+the Kaplan-Meier estimate (Kaplan and Meier, 1958) for <code>y</code> itself on top
+(and in a darker shade). This is a PPC suitable for right-censored <code>y</code>.
+Note that the replicated data from <code>yrep</code> is assumed to be uncensored. Left
+truncation (delayed entry) times for <code>y</code> can be specified using
+<code>left_truncation_y</code>.</p></dd>
 
 <dt><code>ppc_km_overlay_grouped()</code></dt>
 <dd><p>The same as <code>ppc_km_overlay()</code>, but with separate facets by <code>group</code>.</p></dd>
@@ -219,26 +255,55 @@ doi:10.1080/01621459.1958.10501452.</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="bayesplot-colors.html">color_scheme_set</a></span><span class="op">(</span><span class="st">"brightblue"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="example-data.html">example_y_data</a></span><span class="op">(</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="bayesplot-colors.html">color_scheme_set</a></span><span class="op">(</span><span class="st">"brightblue"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># For illustrative purposes, (right-)censor values y &gt; 110:</span></span></span>
+<span class="r-in"><span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="example-data.html">example_y_data</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">status_y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">y</span> <span class="op">&lt;=</span> <span class="fl">110</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">pmin</a></span><span class="op">(</span><span class="va">y</span>, <span class="fl">110</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># In reality, the replicated data (yrep) would be obtained from a</span></span></span>
 <span class="r-in"><span><span class="co"># model which takes the censoring of y properly into account. Here,</span></span></span>
 <span class="r-in"><span><span class="co"># for illustrative purposes, we simply use example_yrep_draws():</span></span></span>
 <span class="r-in"><span><span class="va">yrep</span> <span class="op">&lt;-</span> <span class="fu"><a href="example-data.html">example_yrep_draws</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">yrep</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 500 434</span>
-<span class="r-in"><span><span class="co"># \donttest{</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Overlay 25 curves</span></span></span>
 <span class="r-in"><span><span class="fu">ppc_km_overlay</span><span class="op">(</span><span class="va">y</span>, <span class="va">yrep</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">25</span>, <span class="op">]</span>, status_y <span class="op">=</span> <span class="va">status_y</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Note: `extrapolation_factor` now defaults to 1.2 (20%).</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> To display all posterior predictive draws, set `extrapolation_factor = Inf`.</span>
 <span class="r-plt img"><img src="PPC-censoring-1.png" alt="" width="700" height="433"></span>
-<span class="r-in"><span><span class="co"># }</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># With extrapolation_factor = 1 (no extrapolation)</span></span></span>
+<span class="r-in"><span><span class="fu">ppc_km_overlay</span><span class="op">(</span><span class="va">y</span>, <span class="va">yrep</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">25</span>, <span class="op">]</span>, status_y <span class="op">=</span> <span class="va">status_y</span>, extrapolation_factor <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="PPC-censoring-2.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># With extrapolation_factor = Inf (show all posterior predictive draws)</span></span></span>
+<span class="r-in"><span><span class="fu">ppc_km_overlay</span><span class="op">(</span><span class="va">y</span>, <span class="va">yrep</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">25</span>, <span class="op">]</span>, status_y <span class="op">=</span> <span class="va">status_y</span>, extrapolation_factor <span class="op">=</span> <span class="cn">Inf</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="PPC-censoring-3.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># With separate facets by group:</span></span></span>
 <span class="r-in"><span><span class="va">group</span> <span class="op">&lt;-</span> <span class="fu"><a href="example-data.html">example_group_data</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span><span class="fu">ppc_km_overlay_grouped</span><span class="op">(</span><span class="va">y</span>, <span class="va">yrep</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">25</span>, <span class="op">]</span>, group <span class="op">=</span> <span class="va">group</span>, status_y <span class="op">=</span> <span class="va">status_y</span><span class="op">)</span></span></span>
-<span class="r-plt img"><img src="PPC-censoring-2.png" alt="" width="700" height="433"></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Note: `extrapolation_factor` now defaults to 1.2 (20%).</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> To display all posterior predictive draws, set `extrapolation_factor = Inf`.</span>
+<span class="r-plt img"><img src="PPC-censoring-4.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># With left-truncation (delayed entry) times:</span></span></span>
+<span class="r-in"><span><span class="va">min_vals</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">pmin</a></span><span class="op">(</span><span class="va">y</span>, <span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">yrep</span>, <span class="fl">2</span>, <span class="va">min</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">left_truncation_y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">condition</span> <span class="op">&lt;-</span> <span class="va">y</span> <span class="op">&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span> <span class="op">/</span> <span class="fl">2</span></span></span>
+<span class="r-in"><span><span class="va">left_truncation_y</span><span class="op">[</span><span class="va">condition</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">pmin</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">condition</span><span class="op">)</span>, min <span class="op">=</span> <span class="fl">0.6</span>, max <span class="op">=</span> <span class="fl">0.99</span><span class="op">)</span> <span class="op">*</span> <span class="va">y</span><span class="op">[</span><span class="va">condition</span><span class="op">]</span>,</span></span>
+<span class="r-in"><span>  <span class="va">min_vals</span><span class="op">[</span><span class="va">condition</span><span class="op">]</span> <span class="op">-</span> <span class="fl">0.001</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">ppc_km_overlay</span><span class="op">(</span><span class="va">y</span>, <span class="va">yrep</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">25</span>, <span class="op">]</span>, status_y <span class="op">=</span> <span class="va">status_y</span>,</span></span>
+<span class="r-in"><span>              left_truncation_y <span class="op">=</span> <span class="va">left_truncation_y</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Note: `extrapolation_factor` now defaults to 1.2 (20%).</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> To display all posterior predictive draws, set `extrapolation_factor = Inf`.</span>
+<span class="r-plt img"><img src="PPC-censoring-5.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 </code></pre></div>
     </div>
