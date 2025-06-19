@@ -1,3 +1,5 @@
+# bayesplot (development version)
+
 # bayesplot 1.13.0
 
 * Add `ppc_loo_pit_ecdf()` by @TeemuSailynoja (#345)
