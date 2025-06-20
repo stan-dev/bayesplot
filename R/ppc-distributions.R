@@ -507,6 +507,108 @@ ppc_boxplot <-
       xaxis_title(FALSE)
   }
 
+#' @rdname PPC-distributions
+#' @export
+ppc_qdotplot <-
+  function(y,
+           yrep,
+           ...,
+           binwidth = NULL,
+           freq = TRUE) {
+    check_ignored_arguments(...)
+
+    data <- ppc_data(y, yrep)
+
+    # Calculate adaptive binwidth if not provided
+    if (is.null(binwidth)) {
+      data_range <- diff(range(data$value, na.rm = TRUE))
+      binwidth <- data_range / 30
+    }
+
+    # Create a test plot to understand the data structure per facet
+    test_plot <- ggplot(data, aes(x = .data$value)) +
+      geom_dotplot(
+        binwidth = binwidth,
+        method = "histodot",
+      ) +
+      facet_wrap_parsed("rep_label")
+
+    # Build the plot to extract scaling information
+    built_plot <- ggplot_build(test_plot)
+
+    # Find the maximum count across all facets
+    max_count_per_facet <- built_plot$data[[1]] %>%
+      group_by(PANEL) %>%
+      summarise(max_count = max(count, na.rm = TRUE), .groups = "drop")
+    overall_max_count <- max(max_count_per_facet$max_count, na.rm = TRUE)
+
+    # More aggressive scaling for high counts
+    if (overall_max_count <= 9) {
+      optimal_dotsize <- 1.0
+    } else {
+      optimal_dotsize <- 3 / sqrt(overall_max_count)
+    }
+
+    ggplot(data, mapping = set_hist_aes(
+      freq = freq,
+      fill = !!quote(is_y_label),
+      color = !!quote(is_y_label),
+    )) +
+      geom_dotplot(
+        binwidth = binwidth,
+        method = "histodot",
+        dotsize = optimal_dotsize,
+      ) +
+      scale_fill_ppc() +
+      scale_color_ppc() +
+      facet_wrap_parsed("rep_label") +
+      force_axes_in_facets() +
+      bayesplot_theme_get() +
+      space_legend_keys() +
+      yaxis_text(FALSE) +
+      yaxis_title(FALSE) +
+      yaxis_ticks(FALSE) +
+      xaxis_title(FALSE) +
+      facet_text(FALSE) +
+      facet_bg(FALSE)
+  }
+
+### GGDIST VERSION
+library(ggdist)
+ppc_qdotplot_ggdist <-
+  function(y,
+           yrep,
+           ...,
+           binwidth = NA,
+           quantiles = NA,
+           freq = TRUE) {
+    check_ignored_arguments(...)
+
+    data <- ppc_data(y, yrep)
+
+    ggplot(data, mapping = aes(
+      x = .data$value,
+      fill = .data$is_y_label,
+      color = .data$is_y_label
+    )) +
+      stat_dots(
+        binwidth = binwidth,
+        quantiles = quantiles,
+        overflow = "warn"
+      ) +
+      scale_fill_ppc() +
+      scale_color_ppc() +
+      facet_wrap_parsed("rep_label") +
+      force_axes_in_facets() +
+      bayesplot_theme_get() +
+      space_legend_keys() +
+      yaxis_text(FALSE) +
+      yaxis_title(FALSE) +
+      yaxis_ticks(FALSE) +
+      xaxis_title(FALSE) +
+      facet_text(FALSE) +
+      facet_bg(FALSE)
+  }
 
 #' @rdname PPC-distributions
 #' @export
