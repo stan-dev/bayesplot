@@ -39,7 +39,7 @@ Imports:
     tibble (>= 2.0.0),
     tidyr,
     tidyselect,
-    utils,
+    utils
 Suggests:
     ggfortify,
     gridExtra (>= 2.2.1),
