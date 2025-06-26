@@ -58,6 +58,22 @@ test_that("ppc_dens,pp_hist,ppc_freqpoly,ppc_boxplot return ggplot objects", {
   expect_gg(ppd_boxplot(yrep2, notch = FALSE))
 })
 
+test_that("ppc_qdotplot returns a ggplot object", {
+  testthat::skip_if_not_installed("ggdist")
+
+  expect_gg(ppc_qdotplot(y, yrep[1:8, ]))
+  expect_gg(ppc_qdotplot(y, yrep[1,, drop = FALSE], quantiles=25))
+  expect_gg(ppc_qdotplot(y, yrep[1:8, ], binwidth = 0.1))
+  expect_gg(ppc_qdotplot(y2, yrep2, binwidth = 0.1, quantiles = 25))
+
+
+  # ppd versions
+  expect_gg(ppd_qdotplot(y, yrep[1:8, ]))
+  expect_gg(ppd_qdotplot(yrep[1,, drop = FALSE], quantiles = 25))
+  expect_gg(ppd_qdotplot(yrep[1:8, ], binwidth = 0.1))
+  expect_gg(ppd_qdotplot(yrep2, binwidth = 0.1, quantiles = 25))
+})
+
 test_that("ppc_pit_ecdf, ppc_pit_ecdf_grouped returns a ggplot object", {
   expect_gg(ppc_pit_ecdf(y, yrep, interpolate_adj = FALSE))
   expect_gg(ppc_pit_ecdf_grouped(y, yrep, group = group, interpolate_adj = FALSE))
@@ -175,6 +191,38 @@ test_that("ppc_boxplot renders correctly", {
 
   p_custom <- ppd_boxplot(vdiff_yrep[1:8, ], size = 1.5, alpha = .5)
   vdiffr::expect_doppelganger("ppd_boxplot (alpha, size)", p_custom)
+})
+
+test_that("ppc_qdotplot renders correctly", {
+  testthat::skip_on_cran()
+  testthat::skip_if_not_installed("vdiffr")
+  testthat::skip_if_not_installed("ggdist")
+  skip_on_r_oldrel()
+
+  p_base <- ppc_qdotplot(vdiff_y, vdiff_yrep[1:8, ])
+  vdiffr::expect_doppelganger("ppc_qdotplot (default)", p_base)
+
+  p_binwidth <- ppc_qdotplot(vdiff_y, vdiff_yrep[1:8, ], binwidth = 3)
+  vdiffr::expect_doppelganger("ppc_qdotplot (binwidth)", p_binwidth)
+
+  p_quantile <- ppc_qdotplot(vdiff_y, vdiff_yrep[1:8, ], quantiles = 50)
+  vdiffr::expect_doppelganger("ppc_qdotplot (quantile)", p_quantile)
+
+  p_quantile_binwidth <- ppc_qdotplot(vdiff_y, vdiff_yrep[1:8, ], binwidth = 3, quantiles = 50)
+  vdiffr::expect_doppelganger("ppc_qdotplot (quantile-binwidth)", p_quantile_binwidth)
+
+  # ppd versions
+  p_base <- ppd_qdotplot(vdiff_yrep[1:8, ])
+  vdiffr::expect_doppelganger("ppd_qdotplot (default)", p_base)
+
+  p_binwidth <- ppd_qdotplot(vdiff_yrep[1:8, ], binwidth = 3)
+  vdiffr::expect_doppelganger("ppd_qdotplot (binwidth)", p_binwidth)
+
+  p_quantile <- ppd_qdotplot(vdiff_yrep[1:8, ], quantiles = 50)
+  vdiffr::expect_doppelganger("ppd_qdotplot (quantile)", p_quantile)
+
+  p_quantile_binwidth <- ppd_qdotplot(vdiff_yrep[1:8, ], binwidth = 3, quantiles = 50)
+  vdiffr::expect_doppelganger("ppd_qdotplot (quantile-binwidth)", p_quantile_binwidth)
 })
 
 test_that("ppc_ecdf_overlay renders correctly", {
