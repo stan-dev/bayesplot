@@ -28,6 +28,11 @@
 #'    dataset (row) in `yrep`. For these plots `yrep` should therefore
 #'    contain only a small number of rows. See the **Examples** section.
 #'   }
+#'   \item{`ppc_qdotplot()`}{
+#'    A dot plot plot is displayed for `y` and each dataset (row) in `yrep`.
+#'    For these plots `yrep` should therefore contain only a small number of rows.
+#'    See the **Examples** section. This function requires [ggdist::stat_dots] to be installed.
+#'    }
 #'   \item{`ppc_freqpoly_grouped()`}{
 #'    A separate frequency polygon is plotted for each level of a grouping
 #'    variable for `y` and each dataset (row) in `yrep`. For this plot
@@ -80,7 +85,7 @@
 #' ppc_pit_ecdf(y, yrep, prob = 0.99, plot_diff = TRUE)
 #' }
 #'
-#' # for ppc_hist,dens,freqpoly,boxplot definitely use a subset yrep rows so
+#' # for ppc_hist,dens,freqpoly,boxplot,qdotplot definitely use a subset yrep rows so
 #' # only a few (instead of nrow(yrep)) histograms are plotted
 #' ppc_hist(y, yrep[1:8, ])
 #' \donttest{
@@ -90,6 +95,9 @@
 #' # wizard hat plot
 #' color_scheme_set("blue")
 #' ppc_dens(y, yrep[200:202, ])
+#'
+#' # dot plot
+#' ppc_qdotplot(y, yrep[1:8, ])
 #' }
 #'
 #' \donttest{
@@ -509,73 +517,8 @@ ppc_boxplot <-
 
 #' @rdname PPC-distributions
 #' @export
+#' @template args-qdotplot
 ppc_qdotplot <-
-  function(y,
-           yrep,
-           ...,
-           binwidth = NULL,
-           freq = TRUE) {
-    check_ignored_arguments(...)
-
-    data <- ppc_data(y, yrep)
-
-    # Calculate adaptive binwidth if not provided
-    if (is.null(binwidth)) {
-      data_range <- diff(range(data$value, na.rm = TRUE))
-      binwidth <- data_range / 30
-    }
-
-    # Create a test plot to understand the data structure per facet
-    test_plot <- ggplot(data, aes(x = .data$value)) +
-      geom_dotplot(
-        binwidth = binwidth,
-        method = "histodot",
-      ) +
-      facet_wrap_parsed("rep_label")
-
-    # Build the plot to extract scaling information
-    built_plot <- ggplot_build(test_plot)
-
-    # Find the maximum count across all facets
-    max_count_per_facet <- built_plot$data[[1]] %>%
-      group_by(PANEL) %>%
-      summarise(max_count = max(count, na.rm = TRUE), .groups = "drop")
-    overall_max_count <- max(max_count_per_facet$max_count, na.rm = TRUE)
-
-    # More aggressive scaling for high counts
-    if (overall_max_count <= 9) {
-      optimal_dotsize <- 1.0
-    } else {
-      optimal_dotsize <- 3 / sqrt(overall_max_count)
-    }
-
-    ggplot(data, mapping = set_hist_aes(
-      freq = freq,
-      fill = !!quote(is_y_label),
-      color = !!quote(is_y_label),
-    )) +
-      geom_dotplot(
-        binwidth = binwidth,
-        method = "histodot",
-        dotsize = optimal_dotsize,
-      ) +
-      scale_fill_ppc() +
-      scale_color_ppc() +
-      facet_wrap_parsed("rep_label") +
-      force_axes_in_facets() +
-      bayesplot_theme_get() +
-      space_legend_keys() +
-      yaxis_text(FALSE) +
-      yaxis_title(FALSE) +
-      yaxis_ticks(FALSE) +
-      xaxis_title(FALSE) +
-      facet_text(FALSE) +
-      facet_bg(FALSE)
-  }
-
-### GGDIST VERSION
-library(ggdist)
-ppc_qdotplot_ggdist <-
   function(y,
            yrep,
            ...,
@@ -584,14 +527,16 @@ ppc_qdotplot_ggdist <-
            freq = TRUE) {
     check_ignored_arguments(...)
 
+    suggested_package("ggdist")
+
     data <- ppc_data(y, yrep)
 
-    ggplot(data, mapping = aes(
-      x = .data$value,
+    ggplot(data, mapping = set_hist_aes(
+      freq = freq,
       fill = .data$is_y_label,
       color = .data$is_y_label
     )) +
-      stat_dots(
+      ggdist::stat_dots(
         binwidth = binwidth,
         quantiles = quantiles,
         overflow = "warn"
