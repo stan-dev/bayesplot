@@ -195,7 +195,7 @@ ppd_qdotplot <-
            binwidth = NA,
            quantiles = NA,
            freq = TRUE) {
-    check_ignored_arguments(...)
+    check_ignored_arguments(..., ok_args = c("dotsize", "layout", "stackratio", "overflow"))
 
     suggested_package("ggdist")
 
@@ -208,7 +208,7 @@ ppd_qdotplot <-
       ggdist::stat_dots(
         binwidth = binwidth,
         quantiles = quantiles,
-        overflow = "warn"
+        ...
       ) +
       scale_color_ppd() +
       scale_fill_ppd() +

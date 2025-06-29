@@ -41,6 +41,7 @@ Imports:
     tidyselect,
     utils
 Suggests:
+    ggdist,
     ggfortify,
     gridExtra (>= 2.2.1),
     hexbin,
@@ -55,8 +56,7 @@ Suggests:
     shinystan (>= 2.3.0),
     survival,
     testthat (>= 2.0.0),
-    vdiffr (>= 1.0.2),
-    ggdist
+    vdiffr (>= 1.0.2)
 RoxygenNote: 7.3.2
 VignetteBuilder: knitr
 Encoding: UTF-8

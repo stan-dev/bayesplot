@@ -15,7 +15,7 @@
 #' @template args-pit-ecdf
 #' @param size,alpha Passed to the appropriate geom to control the appearance of
 #'   the predictive distributions.
-#' @param ... Currently unused.
+#' @param ... For dot plots, optional additional arguments to pass to [ggdist::stat_dots()].
 #'
 #' @template details-binomial
 #' @template return-ggplot-or-data
@@ -525,7 +525,7 @@ ppc_qdotplot <-
            binwidth = NA,
            quantiles = NA,
            freq = TRUE) {
-    check_ignored_arguments(...)
+    check_ignored_arguments(..., ok_args = c("dotsize", "layout", "stackratio", "overflow"))
 
     suggested_package("ggdist")
 
@@ -539,7 +539,7 @@ ppc_qdotplot <-
       ggdist::stat_dots(
         binwidth = binwidth,
         quantiles = quantiles,
-        overflow = "warn"
+        ...
       ) +
       scale_fill_ppc() +
       scale_color_ppc() +
