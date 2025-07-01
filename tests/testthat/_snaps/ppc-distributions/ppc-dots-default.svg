@@ -1131,6 +1131,6 @@
 <text x='694.89' y='311.15' style='font-size: 9.10px; font-family: sans;' textLength='3.03px' lengthAdjust='spacingAndGlyphs'>r</text>
 <text x='697.92' y='311.15' style='font-size: 9.10px; font-family: sans;' textLength='5.06px' lengthAdjust='spacingAndGlyphs'>e</text>
 <text x='702.98' y='311.15' style='font-size: 9.10px; font-family: sans;' textLength='5.06px' lengthAdjust='spacingAndGlyphs'>p</text>
-<text x='8.97' y='15.89' style='font-size: 14.40px; font-family: sans;' textLength='139.30px' lengthAdjust='spacingAndGlyphs'>ppc_qdotplot (default)</text>
+<text x='8.97' y='15.89' style='font-size: 14.40px; font-family: sans;' textLength='115.28px' lengthAdjust='spacingAndGlyphs'>ppc_dots (default)</text>
 </g>
 </svg>

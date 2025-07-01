@@ -28,7 +28,7 @@
 #'    dataset (row) in `yrep`. For these plots `yrep` should therefore
 #'    contain only a small number of rows. See the **Examples** section.
 #'   }
-#'   \item{`ppc_qdotplot()`}{
+#'   \item{`ppc_dots()`}{
 #'    A dot plot plot is displayed for `y` and each dataset (row) in `yrep`.
 #'    For these plots `yrep` should therefore contain only a small number of rows.
 #'    See the **Examples** section. This function requires [ggdist::stat_dots] to be installed.
@@ -85,7 +85,7 @@
 #' ppc_pit_ecdf(y, yrep, prob = 0.99, plot_diff = TRUE)
 #' }
 #'
-#' # for ppc_hist,dens,freqpoly,boxplot,qdotplot definitely use a subset yrep rows so
+#' # for ppc_hist,dens,freqpoly,boxplot,dots definitely use a subset yrep rows so
 #' # only a few (instead of nrow(yrep)) histograms are plotted
 #' ppc_hist(y, yrep[1:8, ])
 #' \donttest{
@@ -97,7 +97,7 @@
 #' ppc_dens(y, yrep[200:202, ])
 #'
 #' # dot plot
-#' ppc_qdotplot(y, yrep[1:8, ])
+#' ppc_dots(y, yrep[1:8, ])
 #' }
 #'
 #' \donttest{
@@ -517,8 +517,8 @@ ppc_boxplot <-
 
 #' @rdname PPC-distributions
 #' @export
-#' @template args-qdotplot
-ppc_qdotplot <-
+#' @template args-dots
+ppc_dots <-
   function(y,
            yrep,
            ...,

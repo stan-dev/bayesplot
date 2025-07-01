@@ -715,6 +715,6 @@
 <polyline points='8.97,187.52 8.97,24.85 ' style='stroke-width: 0.85; stroke-linecap: butt;' />
 <polyline points='8.97,371.78 8.97,209.12 ' style='stroke-width: 0.85; stroke-linecap: butt;' />
 <polyline points='8.97,556.04 8.97,393.38 ' style='stroke-width: 0.85; stroke-linecap: butt;' />
-<text x='8.97' y='15.89' style='font-size: 14.40px; font-family: sans;' textLength='149.71px' lengthAdjust='spacingAndGlyphs'>ppd_qdotplot (binwidth)</text>
+<text x='8.97' y='15.89' style='font-size: 14.40px; font-family: sans;' textLength='125.69px' lengthAdjust='spacingAndGlyphs'>ppd_dots (binwidth)</text>
 </g>
 </svg>

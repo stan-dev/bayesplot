@@ -58,19 +58,19 @@ test_that("ppc_dens,pp_hist,ppc_freqpoly,ppc_boxplot return ggplot objects", {
   expect_gg(ppd_boxplot(yrep2, notch = FALSE))
 })
 
-test_that("ppc_qdotplot returns a ggplot object", {
+test_that("ppc_dots returns a ggplot object", {
   testthat::skip_if_not_installed("ggdist")
 
-  expect_gg(ppc_qdotplot(y, yrep[1:8, ]))
-  expect_gg(ppc_qdotplot(y, yrep[1,, drop = FALSE], quantiles = 25))
-  expect_gg(ppc_qdotplot(y, yrep[1:8, ], binwidth = 0.1))
-  expect_gg(ppc_qdotplot(y2, yrep2, binwidth = 0.1, quantiles = 25))
+  expect_gg(ppc_dots(y, yrep[1:8, ]))
+  expect_gg(ppc_dots(y, yrep[1,, drop = FALSE], quantiles = 25))
+  expect_gg(ppc_dots(y, yrep[1:8, ], binwidth = 0.1))
+  expect_gg(ppc_dots(y2, yrep2, binwidth = 0.1, quantiles = 25))
 
   # ppd versions
-  expect_gg(ppd_qdotplot(yrep[1:8, ]))
-  expect_gg(ppd_qdotplot(yrep[1,, drop = FALSE], quantiles = 25))
-  expect_gg(ppd_qdotplot(yrep[1:8, ], binwidth = 0.1))
-  expect_gg(ppd_qdotplot(yrep2, binwidth = 0.1, quantiles = 25))
+  expect_gg(ppd_dots(yrep[1:8, ]))
+  expect_gg(ppd_dots(yrep[1,, drop = FALSE], quantiles = 25))
+  expect_gg(ppd_dots(yrep[1:8, ], binwidth = 0.1))
+  expect_gg(ppd_dots(yrep2, binwidth = 0.1, quantiles = 25))
 
 })
 
@@ -193,40 +193,40 @@ test_that("ppc_boxplot renders correctly", {
   vdiffr::expect_doppelganger("ppd_boxplot (alpha, size)", p_custom)
 })
 
-test_that("ppc_qdotplot renders correctly", {
+test_that("ppc_dots renders correctly", {
   testthat::skip_on_cran()
   testthat::skip_if_not_installed("vdiffr")
   testthat::skip_if_not_installed("ggdist")
   skip_on_r_oldrel()
 
-  p_base <- ppc_qdotplot(vdiff_y, vdiff_yrep[1:8, ])
-  vdiffr::expect_doppelganger("ppc_qdotplot (default)", p_base)
+  p_base <- ppc_dots(vdiff_y, vdiff_yrep[1:8, ])
+  vdiffr::expect_doppelganger("ppc_dots (default)", p_base)
 
-  p_binwidth <- ppc_qdotplot(vdiff_y, vdiff_yrep[1:8, ], binwidth = 3)
-  expect_warning(vdiffr::expect_doppelganger("ppc_qdotplot (binwidth)", p_binwidth),
-                 "The provided binwidth will cause dots to overflow the boundaries of the geometry.")
+  p_binwidth <- ppc_dots(vdiff_y, vdiff_yrep[1:8, ], binwidth = 3)
+  expect_warning(vdiffr::expect_doppelganger("ppc_dots (binwidth)", p_binwidth),
+                 "The provided binwidth will cause dots to overflow the boundaries")
 
-  p_quantile <- ppc_qdotplot(vdiff_y, vdiff_yrep[1:8, ], quantiles = 50)
-  vdiffr::expect_doppelganger("ppc_qdotplot (quantile)", p_quantile)
+  p_quantile <- ppc_dots(vdiff_y, vdiff_yrep[1:8, ], quantiles = 50)
+  vdiffr::expect_doppelganger("ppc_dots (quantile)", p_quantile)
 
-  p_quantile_binwidth <- ppc_qdotplot(vdiff_y, vdiff_yrep[1:8, ], binwidth = 3, quantiles = 50)
-  expect_warning(vdiffr::expect_doppelganger("ppc_qdotplot (quantile-binwidth)", p_quantile_binwidth),
-                 "The provided binwidth will cause dots to overflow the boundaries of the geometry.")
+  p_quantile_binwidth <- ppc_dots(vdiff_y, vdiff_yrep[1:8, ], binwidth = 3, quantiles = 50)
+  expect_warning(vdiffr::expect_doppelganger("ppc_dots (quantile-binwidth)", p_quantile_binwidth),
+                 "The provided binwidth will cause dots to overflow the boundaries")
 
   # ppd versions
-  p_base <- ppd_qdotplot(vdiff_yrep[1:8, ])
-  vdiffr::expect_doppelganger("ppd_qdotplot (default)", p_base)
+  p_base <- ppd_dots(vdiff_yrep[1:8, ])
+  vdiffr::expect_doppelganger("ppd_dots (default)", p_base)
 
-  p_binwidth <- ppd_qdotplot(vdiff_yrep[1:8, ], binwidth = 3)
-  expect_warning(vdiffr::expect_doppelganger("ppd_qdotplot (binwidth)", p_binwidth),
-                 "The provided binwidth will cause dots to overflow the boundaries of the geometry.")
+  p_binwidth <- ppd_dots(vdiff_yrep[1:8, ], binwidth = 3)
+  expect_warning(vdiffr::expect_doppelganger("ppd_dots (binwidth)", p_binwidth),
+                 "The provided binwidth will cause dots to overflow the boundaries")
 
-  p_quantile <- ppd_qdotplot(vdiff_yrep[1:8, ], quantiles = 50)
-  vdiffr::expect_doppelganger("ppd_qdotplot (quantile)", p_quantile)
+  p_quantile <- ppd_dots(vdiff_yrep[1:8, ], quantiles = 50)
+  vdiffr::expect_doppelganger("ppd_dots (quantile)", p_quantile)
 
-  p_quantile_binwidth <- ppd_qdotplot(vdiff_yrep[1:8, ], binwidth = 3, quantiles = 50)
-  expect_warning(vdiffr::expect_doppelganger("ppd_qdotplot (quantile-binwidth)", p_quantile_binwidth),
-                 "The provided binwidth will cause dots to overflow the boundaries of the geometry.")
+  p_quantile_binwidth <- ppd_dots(vdiff_yrep[1:8, ], binwidth = 3, quantiles = 50)
+  expect_warning(vdiffr::expect_doppelganger("ppd_dots (quantile-binwidth)", p_quantile_binwidth),
+                 "The provided binwidth will cause dots to overflow the boundaries")
 })
 
 test_that("ppc_ecdf_overlay renders correctly", {

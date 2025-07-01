@@ -12,6 +12,7 @@
 \alias{ppc_freqpoly}
 \alias{ppc_freqpoly_grouped}
 \alias{ppc_boxplot}
+\alias{ppc_dots}
 \alias{ppc_violin_grouped}
 \alias{ppc_pit_ecdf}
 \alias{ppc_pit_ecdf_grouped}
@@ -104,6 +105,8 @@ ppc_freqpoly_grouped(
 
 ppc_boxplot(y, yrep, ..., notch = TRUE, size = 0.5, alpha = 1)
 
+ppc_dots(y, yrep, ..., binwidth = NA, quantiles = NA, freq = TRUE)
+
 ppc_violin_grouped(
   y,
   yrep,
@@ -157,7 +160,7 @@ Will be coerced to \link[base:factor]{factor} if not already a factor.
 Each value in \code{group} is interpreted as the group level pertaining
 to the corresponding observation.}
 
-\item{...}{Currently unused.}
+\item{...}{For dot plots, optional additional arguments to pass to \code{\link[ggdist:stat_dots]{ggdist::stat_dots()}}.}
 
 \item{size, alpha}{Passed to the appropriate geom to control the appearance of
 the predictive distributions.}
@@ -193,6 +196,11 @@ function.)}
 \item{notch}{For the box plot, a logical scalar passed to
 \code{\link[ggplot2:geom_boxplot]{ggplot2::geom_boxplot()}}. Note: unlike \code{geom_boxplot()}, the default is
 \code{notch=TRUE}.}
+
+\item{quantiles}{For dot plots, an optional integer passed to
+\code{\link[ggdist:stat_dots]{ggdist::stat_dots()}} specifying the number of quantiles to use for a
+quantile dot plot. If \code{quantiles} is \code{NA} (the default) then all data
+points are plotted.}
 
 \item{probs}{A numeric vector passed to \code{\link[ggplot2:geom_violin]{ggplot2::geom_violin()}}'s
 \code{draw_quantiles} argument to specify at which quantiles to draw
@@ -259,6 +267,11 @@ estimate, or box and whiskers plot is displayed for \code{y} and each
 dataset (row) in \code{yrep}. For these plots \code{yrep} should therefore
 contain only a small number of rows. See the \strong{Examples} section.
 }
+\item{\code{ppc_dots()}}{
+A dot plot plot is displayed for \code{y} and each dataset (row) in \code{yrep}.
+For these plots \code{yrep} should therefore contain only a small number of rows.
+See the \strong{Examples} section. This function requires \link[ggdist:stat_dots]{ggdist::stat_dots} to be installed.
+}
 \item{\code{ppc_freqpoly_grouped()}}{
 A separate frequency polygon is plotted for each level of a grouping
 variable for \code{y} and each dataset (row) in \code{yrep}. For this plot
@@ -306,7 +319,7 @@ ppc_pit_ecdf(y, yrep, prob = 0.99, plot_diff = FALSE)
 ppc_pit_ecdf(y, yrep, prob = 0.99, plot_diff = TRUE)
 }
 
-# for ppc_hist,dens,freqpoly,boxplot definitely use a subset yrep rows so
+# for ppc_hist,dens,freqpoly,boxplot,dots definitely use a subset yrep rows so
 # only a few (instead of nrow(yrep)) histograms are plotted
 ppc_hist(y, yrep[1:8, ])
 \donttest{
@@ -316,6 +329,9 @@ ppc_boxplot(y, yrep[1:8, ])
 # wizard hat plot
 color_scheme_set("blue")
 ppc_dens(y, yrep[200:202, ])
+
+# dot plot
+ppc_dots(y, yrep[1:8, ])
 }
 
 \donttest{

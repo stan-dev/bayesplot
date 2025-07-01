@@ -189,7 +189,7 @@ ppd_hist <-
 
 #' @rdname PPD-distributions
 #' @export
-ppd_qdotplot <-
+ppd_dots <-
   function(ypred,
            ...,
            binwidth = NA,
