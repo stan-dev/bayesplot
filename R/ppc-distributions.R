@@ -39,8 +39,8 @@
 #'    `yrep` should therefore contain only a small number of rows. See the
 #'    **Examples** section.
 #'   }
-#'   \item{`ppc_ecdf_overlay(), ppc_dens_overlay(),
-#'          ppc_ecdf_overlay_grouped(), ppc_dens_overlay_grouped()`}{
+#'   \item{`ppc_ecdf_overlay()`, `ppc_dens_overlay()`,
+#'          `ppc_ecdf_overlay_grouped()`, `ppc_dens_overlay_grouped()`}{
 #'    Kernel density or empirical CDF estimates of each dataset (row) in
 #'    `yrep` are overlaid, with the distribution of `y` itself on top
 #'    (and in a darker shade). When using `ppc_ecdf_overlay()` with discrete
