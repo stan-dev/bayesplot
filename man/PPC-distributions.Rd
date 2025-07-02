@@ -278,7 +278,8 @@ variable for \code{y} and each dataset (row) in \code{yrep}. For this plot
 \code{yrep} should therefore contain only a small number of rows. See the
 \strong{Examples} section.
 }
-\item{\verb{ppc_ecdf_overlay(), ppc_dens_overlay(), ppc_ecdf_overlay_grouped(), ppc_dens_overlay_grouped()}}{
+\item{\code{ppc_ecdf_overlay()}, \code{ppc_dens_overlay()},
+\code{ppc_ecdf_overlay_grouped()}, \code{ppc_dens_overlay_grouped()}}{
 Kernel density or empirical CDF estimates of each dataset (row) in
 \code{yrep} are overlaid, with the distribution of \code{y} itself on top
 (and in a darker shade). When using \code{ppc_ecdf_overlay()} with discrete
