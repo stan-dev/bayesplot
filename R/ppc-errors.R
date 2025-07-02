@@ -443,9 +443,12 @@ error_avg_label <- function(stat = NULL) {
     e <- sym("stat")
   }
   de <- deparse1(e)
-  # dummy globals to pass R check for globals
+
+  # create some dummy variables to pass the R package check for
+  # global variables in the expression below
   italic <- sym("italic")
   y <- sym("y")
+
   expr(paste((!!de))*(italic(y) - italic(y)[rep]))
 }
 

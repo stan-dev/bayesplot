@@ -109,8 +109,8 @@ small number of rows.
 A single scatterplot of \code{y} against the average values of \code{yrep}, i.e.,
 the points \verb{(x,y) = (average(yrep[, n]), y[n])}, where each \code{yrep[, n]} is
 a vector of length equal to the number of posterior draws and \code{average()}
-is summary statistic. Unlike for \code{ppc_scatter()}, for \code{ppc_scatter_avg()}
-\code{yrep} should contain many draws (rows).
+is a summary statistic. Unlike for \code{ppc_scatter()}, for
+\code{ppc_scatter_avg()} \code{yrep} should contain many draws (rows).
 }
 \item{\code{ppc_scatter_avg_grouped()}}{
 The same as \code{ppc_scatter_avg()}, but a separate plot is generated for

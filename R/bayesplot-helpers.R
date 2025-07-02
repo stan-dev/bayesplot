@@ -489,17 +489,17 @@ as_tagged_function <- function(f = NULL, fallback = "func") {
   f_expr <- quo_get_expr(qf)
   f_fn <- f
 
-  if (rlang::is_character(f)) {      # f = "mean"
+  if (is_character(f)) {        # f = "mean"
     # using sym() on the evaluated `f` means that a variable that names a
     # function string `x <- "mean"; as_tagged_function(x)` will be lost
     # but that seems okay
-    f_expr <- rlang::sym(f)
+    f_expr <- sym(f)
     f_fn <- match.fun(f)
-  } else if (is_null(f)) {           # f = NULL
+  } else if (is_null(f)) {      # f = NULL
     f_fn <- identity
-    f_expr <- rlang::sym(fallback)
-  } else if (is_callable(f)) {       # f = mean or f = function(x) mean(x)
-    f_expr <- f_expr                 # or f = ~mean(.x)
+    f_expr <- sym(fallback)
+  } else if (is_callable(f)) {  # f = mean or f = function(x) mean(x)
+    f_expr <- f_expr            # or f = ~mean(.x)
     f_fn <- as_function(f)
   }
 
@@ -512,8 +512,8 @@ as_tagged_function <- function(f = NULL, fallback = "func") {
   }
 
   attr(f_fn, "tagged_expr") <- f_expr
-  attr(f_fn, "is_anonymous_function") <- is_call(f_expr, name = "function") ||
-    is_formula(f_expr)
+  attr(f_fn, "is_anonymous_function") <-
+    is_call(f_expr, name = "function") || is_formula(f_expr)
   f_fn
 }
 

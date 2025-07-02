@@ -38,8 +38,8 @@
 #'    A single scatterplot of `y` against the average values of `yrep`, i.e.,
 #'    the points `(x,y) = (average(yrep[, n]), y[n])`, where each `yrep[, n]` is
 #'    a vector of length equal to the number of posterior draws and `average()`
-#'    is summary statistic. Unlike for `ppc_scatter()`, for `ppc_scatter_avg()`
-#'    `yrep` should contain many draws (rows).
+#'    is a summary statistic. Unlike for `ppc_scatter()`, for
+#'    `ppc_scatter_avg()` `yrep` should contain many draws (rows).
 #'   }
 #'   \item{`ppc_scatter_avg_grouped()`}{
 #'    The same as `ppc_scatter_avg()`, but a separate plot is generated for
@@ -229,9 +229,12 @@ yrep_avg_label <- function(stat = NULL) {
     e <- sym("stat")
   }
   de <- deparse1(e)
-  # dummy globals to pass R check for globals
+
+  # create some dummy variables to pass the R package check for
+  # global variables in the expression below
   italic <- sym("italic")
   y <- sym("y")
+
   expr(paste((!!de))*(italic(y)[rep]))
 }
 
