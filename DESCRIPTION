@@ -41,6 +41,7 @@ Imports:
     tidyselect,
     utils
 Suggests:
+    ggdist,
     ggfortify,
     gridExtra (>= 2.2.1),
     hexbin,
