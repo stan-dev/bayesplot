@@ -12,3 +12,4 @@ cran-comments.md
 revdep/*
 CRAN-RELEASE
 CRAN-SUBMISSION
+release-prep.R

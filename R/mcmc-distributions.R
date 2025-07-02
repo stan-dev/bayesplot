@@ -472,7 +472,7 @@ mcmc_violin <- function(
     }
   }
 
-  geom_args <- list(size = 0.5, na.rm = TRUE, alpha = alpha)
+  geom_args <- list(linewidth = 0.5, na.rm = TRUE, alpha = alpha)
   if (violin) {
     geom_args[["draw_quantiles"]] <- probs
   } else {

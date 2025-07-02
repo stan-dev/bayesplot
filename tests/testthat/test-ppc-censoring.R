@@ -5,7 +5,8 @@ source(test_path("data-for-ppc-tests.R"))
 
 test_that("ppc_km_overlay returns a ggplot object", {
   skip_if_not_installed("ggfortify")
-  expect_gg(ppc_km_overlay(y, yrep, status_y = status_y, left_truncation_y = left_truncation_y, size = 0.5, alpha = 0.2))
+  expect_gg(ppc_km_overlay(y, yrep, status_y = status_y, left_truncation_y = left_truncation_y, size = 0.5, alpha = 0.2, extrapolation_factor = Inf))
+  expect_gg(ppc_km_overlay(y, yrep, status_y = status_y, left_truncation_y = left_truncation_y, size = 0.5, alpha = 0.2, extrapolation_factor = 1))
   expect_gg(ppc_km_overlay(y2, yrep2, status_y = status_y2))
 })
 
@@ -60,6 +61,22 @@ test_that("ppc_km_overlay errors if bad left_truncation_y value", {
   )
 })
 
+test_that("ppc_km_overlay errors if bad extrapolation_factor value", {
+  skip_if_not_installed("ggfortify")
+  expect_error(
+    ppc_km_overlay(y, yrep, status_y = status_y, extrapolation_factor = 0.99),
+    "`extrapolation_factor` must be greater than or equal to 1."
+  )
+})
+
+test_that("ppc_km_overlay messages if extrapolation_factor left at default value", {
+  skip_if_not_installed("ggfortify")
+  expect_message(
+    ppc_km_overlay(y, yrep, status_y = status_y),
+    "To display all posterior predictive draws, set `extrapolation_factor = Inf`.",
+  )
+})
+
 # Visual tests -----------------------------------------------------------------
 
 test_that("ppc_km_overlay renders correctly", {
@@ -82,13 +99,31 @@ test_that("ppc_km_overlay renders correctly", {
   p_base2 <- ppc_km_overlay(vdiff_y3, vdiff_yrep3, status_y = vdiff_status_y3)
   vdiffr::expect_doppelganger("ppc_km_overlay (default 2)", p_base2)
 
-  p_custom2 <- ppc_km_overlay(
+  p_custom2_left_truncation <- ppc_km_overlay(
     vdiff_y3,
     vdiff_yrep3,
     status_y = vdiff_status_y3,
     left_truncation_y = vdiff_left_truncation_y3)
   vdiffr::expect_doppelganger("ppc_km_overlay (left_truncation_y)",
-                              p_custom2)
+                              p_custom2_left_truncation)
+
+  p_custom2_no_extrapolation <- ppc_km_overlay(
+    vdiff_y3,
+    vdiff_yrep3,
+    status_y = vdiff_status_y3,
+    extrapolation_factor = 1
+  )
+  vdiffr::expect_doppelganger("ppc_km_overlay (no extrapolation)",
+                              p_custom2_no_extrapolation)
+
+  p_custom2_max_extrapolation <- ppc_km_overlay(
+    vdiff_y3,
+    vdiff_yrep3,
+    status_y = vdiff_status_y3,
+    extrapolation_factor = Inf
+  )
+  vdiffr::expect_doppelganger("ppc_km_overlay (max extrapolation)",
+                              p_custom2_max_extrapolation)
 })
 
 test_that("ppc_km_overlay_grouped renders correctly", {
@@ -119,7 +154,7 @@ test_that("ppc_km_overlay_grouped renders correctly", {
                                    status_y = vdiff_status_y3)
   vdiffr::expect_doppelganger("ppc_km_overlay_grouped (default 2)", p_base2)
 
-  p_custom2 <- ppc_km_overlay_grouped(
+  p_custom2_left_truncation <- ppc_km_overlay_grouped(
     vdiff_y3,
     vdiff_yrep3,
     vdiff_group3,
@@ -129,6 +164,32 @@ test_that("ppc_km_overlay_grouped renders correctly", {
 
   vdiffr::expect_doppelganger(
     "ppc_km_overlay_grouped (left_truncation_y)",
-    p_custom2
+    p_custom2_left_truncation
+  )
+
+  p_custom2_no_extrapolation <- ppc_km_overlay_grouped(
+    vdiff_y3,
+    vdiff_yrep3,
+    vdiff_group3,
+    status_y = vdiff_status_y3,
+    extrapolation_factor = 1
+  )
+
+  vdiffr::expect_doppelganger(
+    "ppc_km_overlay_grouped (no extrapolation)",
+    p_custom2_no_extrapolation
+  )
+
+  p_custom2_max_extrapolation <- ppc_km_overlay_grouped(
+    vdiff_y3,
+    vdiff_yrep3,
+    vdiff_group3,
+    status_y = vdiff_status_y3,
+    extrapolation_factor = Inf
+  )
+
+  vdiffr::expect_doppelganger(
+    "ppc_km_overlay_grouped (max extrapolation)",
+    p_custom2_max_extrapolation
   )
 })

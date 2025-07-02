@@ -176,7 +176,7 @@ mcmc_hist(posterior, pars = c("wt", "sigma"),
 <!-- # not evaluated to reduce vignette size for CRAN -->
 <!-- # full version available at mc-stan.org/bayesplot/articles -->
 <!-- color_scheme_set("blue") -->
-<!-- mcmc_hist(posterior, pars = c("wt", "sigma"),  -->
+<!-- mcmc_hist(posterior, pars = c("wt", "sigma"), -->
 <!--           transformations = list("sigma" = "log")) -->
 <!-- ``` -->
 
@@ -343,7 +343,7 @@ by side, and `strip.position="left"` moves the facet labels to the y-axis
 The [`"viridis"` color scheme](https://CRAN.R-project.org/package=viridis) is
 also useful for trace plots because it is comprised of very distinct colors:
 
-```{r viridis-scheme, eval=FALSE}
+```{r viridis-scheme}
 color_scheme_set("viridis")
 mcmc_trace(posterior, pars = "(Intercept)")
 ```
