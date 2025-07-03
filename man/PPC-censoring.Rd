@@ -132,6 +132,7 @@ doi:10.1080/01621459.1958.10501452.
 }
 \seealso{
 Other PPCs: 
+\code{\link{PPC-calibration}},
 \code{\link{PPC-discrete}},
 \code{\link{PPC-distributions}},
 \code{\link{PPC-errors}},
