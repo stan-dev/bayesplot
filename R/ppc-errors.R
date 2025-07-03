@@ -10,6 +10,10 @@
 #' @template args-group
 #' @template args-facet_args
 #' @param ... Currently unused.
+#' @param stat A function or a string naming a function for computing the
+#' posterior average. In both cases, the function should take a vector input and
+#' return a scalar statistic. The function name is displayed in the axis-label.
+#' Defaults to `"mean"`.
 #' @param size,alpha For scatterplots, arguments passed to
 #'   [ggplot2::geom_point()] to control the appearance of the points. For the
 #'   binned error plot, arguments controlling the size of the outline and
@@ -209,6 +213,7 @@ ppc_error_scatter_avg <-
   function(y,
            yrep,
            ...,
+           stat = "mean",
            size = 2.5,
            alpha = 0.8) {
     check_ignored_arguments(...)
@@ -216,14 +221,18 @@ ppc_error_scatter_avg <-
     y <- validate_y(y)
     yrep <- validate_predictions(yrep, length(y))
     errors <- compute_errors(y, yrep)
+
+    stat <- as_tagged_function({{ stat }})
+
     ppc_scatter_avg(
       y = y,
       yrep = errors,
       size = size,
       alpha = alpha,
-      ref_line = FALSE
+      ref_line = FALSE,
+      stat = stat
     ) +
-      labs(x = error_avg_label(), y = y_label())
+      labs(x = error_avg_label(stat), y = y_label())
   }
 
 
@@ -234,6 +243,7 @@ ppc_error_scatter_avg_grouped <-
            yrep,
            group,
            ...,
+           stat = "mean",
            facet_args = list(),
            size = 2.5,
            alpha = 0.8) {
@@ -241,6 +251,8 @@ ppc_error_scatter_avg_grouped <-
 
     y <- validate_y(y)
     yrep <- validate_predictions(yrep, length(y))
+    stat <- as_tagged_function({{ stat }})
+
     errors <- compute_errors(y, yrep)
     ppc_scatter_avg_grouped(
       y = y,
@@ -249,9 +261,10 @@ ppc_error_scatter_avg_grouped <-
       size = size,
       alpha = alpha,
       facet_args = facet_args,
-      ref_line = FALSE
+      ref_line = FALSE,
+      stat = stat
     ) +
-      labs(x = error_avg_label(), y = y_label())
+      labs(x = error_avg_label(stat), y = y_label())
   }
 
 
@@ -260,29 +273,37 @@ ppc_error_scatter_avg_grouped <-
 #' @param x A numeric vector the same length as `y` to use as the x-axis
 #'   variable.
 #'
-ppc_error_scatter_avg_vs_x <-
-  function(y,
-           yrep,
-           x,
-           ...,
-           size = 2.5,
-           alpha = 0.8) {
-    check_ignored_arguments(...)
+ppc_error_scatter_avg_vs_x <- function(
+    y,
+    yrep,
+    x,
+    ...,
+    stat = "mean",
+    size = 2.5,
+    alpha = 0.8
+) {
+  check_ignored_arguments(...)
 
-    y <- validate_y(y)
-    yrep <- validate_predictions(yrep, length(y))
-    x <- validate_x(x, y)
-    errors <- compute_errors(y, yrep)
-    ppc_scatter_avg(
-      y = x,
-      yrep = errors,
-      size = size,
-      alpha = alpha,
-      ref_line = FALSE
+  y <- validate_y(y)
+  yrep <- validate_predictions(yrep, length(y))
+  qx <- enquo(x)
+  x <- validate_x(x, y)
+  stat <- as_tagged_function({{ stat }})
+  errors <- compute_errors(y, yrep)
+  ppc_scatter_avg(
+    y = x,
+    yrep = errors,
+    size = size,
+    alpha = alpha,
+    ref_line = FALSE,
+    stat = stat
+  ) +
+    labs(
+      x = error_avg_label(stat),
+      y = as_label((qx))
     ) +
-      labs(x = error_avg_label(), y = expression(italic(x))) +
-      coord_flip()
-  }
+    coord_flip()
+}
 
 
 #' @rdname PPC-errors
@@ -414,8 +435,21 @@ error_hist_facets <-
 error_label <- function() {
   expression(italic(y) - italic(y)[rep])
 }
-error_avg_label <- function() {
-  expression(paste("Average ", italic(y) - italic(y)[rep]))
+
+error_avg_label <- function(stat = NULL) {
+  stat <- as_tagged_function({{ stat }}, fallback = "stat")
+  e <- attr(stat, "tagged_expr")
+  if (attr(stat, "is_anonymous_function")) {
+    e <- sym("stat")
+  }
+  de <- deparse1(e)
+
+  # create some dummy variables to pass the R package check for
+  # global variables in the expression below
+  italic <- sym("italic")
+  y <- sym("y")
+
+  expr(paste((!!de))*(italic(y) - italic(y)[rep]))
 }
 
 

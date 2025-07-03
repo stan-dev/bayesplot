@@ -15,7 +15,7 @@
 #' @template args-pit-ecdf
 #' @param size,alpha Passed to the appropriate geom to control the appearance of
 #'   the predictive distributions.
-#' @param ... Currently unused.
+#' @param ... For dot plots, optional additional arguments to pass to [ggdist::stat_dots()].
 #'
 #' @template details-binomial
 #' @template return-ggplot-or-data
@@ -28,14 +28,19 @@
 #'    dataset (row) in `yrep`. For these plots `yrep` should therefore
 #'    contain only a small number of rows. See the **Examples** section.
 #'   }
+#'   \item{`ppc_dots()`}{
+#'    A dot plot plot is displayed for `y` and each dataset (row) in `yrep`.
+#'    For these plots `yrep` should therefore contain only a small number of rows.
+#'    See the **Examples** section. This function requires [ggdist::stat_dots] to be installed.
+#'    }
 #'   \item{`ppc_freqpoly_grouped()`}{
 #'    A separate frequency polygon is plotted for each level of a grouping
 #'    variable for `y` and each dataset (row) in `yrep`. For this plot
 #'    `yrep` should therefore contain only a small number of rows. See the
 #'    **Examples** section.
 #'   }
-#'   \item{`ppc_ecdf_overlay(), ppc_dens_overlay(),
-#'          ppc_ecdf_overlay_grouped(), ppc_dens_overlay_grouped()`}{
+#'   \item{`ppc_ecdf_overlay()`, `ppc_dens_overlay()`,
+#'          `ppc_ecdf_overlay_grouped()`, `ppc_dens_overlay_grouped()`}{
 #'    Kernel density or empirical CDF estimates of each dataset (row) in
 #'    `yrep` are overlaid, with the distribution of `y` itself on top
 #'    (and in a darker shade). When using `ppc_ecdf_overlay()` with discrete
@@ -80,7 +85,7 @@
 #' ppc_pit_ecdf(y, yrep, prob = 0.99, plot_diff = TRUE)
 #' }
 #'
-#' # for ppc_hist,dens,freqpoly,boxplot definitely use a subset yrep rows so
+#' # for ppc_hist,dens,freqpoly,boxplot,dots definitely use a subset yrep rows so
 #' # only a few (instead of nrow(yrep)) histograms are plotted
 #' ppc_hist(y, yrep[1:8, ])
 #' \donttest{
@@ -90,6 +95,9 @@
 #' # wizard hat plot
 #' color_scheme_set("blue")
 #' ppc_dens(y, yrep[200:202, ])
+#'
+#' # dot plot
+#' ppc_dots(y, yrep[1:8, ])
 #' }
 #'
 #' \donttest{
@@ -507,6 +515,45 @@ ppc_boxplot <-
       xaxis_title(FALSE)
   }
 
+#' @rdname PPC-distributions
+#' @export
+#' @template args-dots
+ppc_dots <-
+  function(y,
+           yrep,
+           ...,
+           binwidth = NA,
+           quantiles = NA,
+           freq = TRUE) {
+    check_ignored_arguments(..., ok_args = c("dotsize", "layout", "stackratio", "overflow"))
+
+    suggested_package("ggdist")
+
+    data <- ppc_data(y, yrep)
+
+    ggplot(data, mapping = set_hist_aes(
+      freq = freq,
+      fill = .data$is_y_label,
+      color = .data$is_y_label
+    )) +
+      ggdist::stat_dots(
+        binwidth = binwidth,
+        quantiles = quantiles,
+        ...
+      ) +
+      scale_fill_ppc() +
+      scale_color_ppc() +
+      facet_wrap_parsed("rep_label") +
+      force_axes_in_facets() +
+      bayesplot_theme_get() +
+      space_legend_keys() +
+      yaxis_text(FALSE) +
+      yaxis_title(FALSE) +
+      yaxis_ticks(FALSE) +
+      xaxis_title(FALSE) +
+      facet_text(FALSE) +
+      facet_bg(FALSE)
+  }
 
 #' @rdname PPC-distributions
 #' @export

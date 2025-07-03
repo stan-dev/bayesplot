@@ -7,6 +7,7 @@
 \alias{ppd_ecdf_overlay}
 \alias{ppd_dens}
 \alias{ppd_hist}
+\alias{ppd_dots}
 \alias{ppd_freqpoly}
 \alias{ppd_freqpoly_grouped}
 \alias{ppd_boxplot}
@@ -38,6 +39,8 @@ ppd_ecdf_overlay(
 ppd_dens(ypred, ..., trim = FALSE, size = 0.5, alpha = 1)
 
 ppd_hist(ypred, ..., binwidth = NULL, bins = NULL, breaks = NULL, freq = TRUE)
+
+ppd_dots(ypred, ..., binwidth = NA, quantiles = NA, freq = TRUE)
 
 ppd_freqpoly(
   ypred,
@@ -73,7 +76,7 @@ Will be coerced to \link[base:factor]{factor} if not already a factor.
 Each value in \code{group} is interpreted as the group level pertaining
 to the corresponding observation.}
 
-\item{...}{Currently unused.}
+\item{...}{For dot plots, optional additional arguments to pass to \code{\link[ggdist:stat_dots]{ggdist::stat_dots()}}.}
 
 \item{size, alpha}{Passed to the appropriate geom to control the appearance of
 the predictive distributions.}
@@ -105,6 +108,11 @@ y-axis. Setting \code{freq=FALSE} puts density on the y-axis. (For many
 plots the y-axis text is off by default. To view the count or density
 labels on the y-axis see the \code{\link[=yaxis_text]{yaxis_text()}} convenience
 function.)}
+
+\item{quantiles}{For dot plots, an optional integer passed to
+\code{\link[ggdist:stat_dots]{ggdist::stat_dots()}} specifying the number of quantiles to use for a
+quantile dot plot. If \code{quantiles} is \code{NA} (the default) then all data
+points are plotted.}
 
 \item{notch}{For the box plot, a logical scalar passed to
 \code{\link[ggplot2:geom_boxplot]{ggplot2::geom_boxplot()}}. Note: unlike \code{geom_boxplot()}, the default is

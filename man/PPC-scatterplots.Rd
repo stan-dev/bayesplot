@@ -19,13 +19,22 @@ ppc_scatter(
   ref_line = TRUE
 )
 
-ppc_scatter_avg(y, yrep, ..., size = 2.5, alpha = 0.8, ref_line = TRUE)
+ppc_scatter_avg(
+  y,
+  yrep,
+  ...,
+  stat = "mean",
+  size = 2.5,
+  alpha = 0.8,
+  ref_line = TRUE
+)
 
 ppc_scatter_avg_grouped(
   y,
   yrep,
   group,
   ...,
+  stat = "mean",
   facet_args = list(),
   size = 2.5,
   alpha = 0.8,
@@ -34,7 +43,7 @@ ppc_scatter_avg_grouped(
 
 ppc_scatter_data(y, yrep)
 
-ppc_scatter_avg_data(y, yrep, group = NULL)
+ppc_scatter_avg_data(y, yrep, group = NULL, stat = "mean")
 }
 \arguments{
 \item{y}{A vector of observations. See \strong{Details}.}
@@ -60,6 +69,12 @@ appearance of the points.}
 
 \item{ref_line}{If \code{TRUE} (the default) a dashed line with intercept 0 and
 slope 1 is drawn behind the scatter plot.}
+
+\item{stat}{A function or a string naming a function for computing the
+posterior average. In both cases, the function should take a vector input
+and return a scalar statistic. The function name is displayed in the
+axis-label, and the underlying \verb{$rep_label} for \code{ppc_scatter_avg_data()}
+includes the function name. Defaults to \code{"mean"}.}
 
 \item{group}{A grouping variable of the same length as \code{y}.
 Will be coerced to \link[base:factor]{factor} if not already a factor.
@@ -92,10 +107,10 @@ small number of rows.
 }
 \item{\code{ppc_scatter_avg()}}{
 A single scatterplot of \code{y} against the average values of \code{yrep}, i.e.,
-the points \verb{(x,y) = (mean(yrep[, n]), y[n])}, where each \code{yrep[, n]} is
-a vector of length equal to the number of posterior draws. Unlike
-for \code{ppc_scatter()}, for \code{ppc_scatter_avg()} \code{yrep} should contain many
-draws (rows).
+the points \verb{(x,y) = (average(yrep[, n]), y[n])}, where each \code{yrep[, n]} is
+a vector of length equal to the number of posterior draws and \code{average()}
+is a summary statistic. Unlike for \code{ppc_scatter()}, for
+\code{ppc_scatter_avg()} \code{yrep} should contain many draws (rows).
 }
 \item{\code{ppc_scatter_avg_grouped()}}{
 The same as \code{ppc_scatter_avg()}, but a separate plot is generated for
@@ -120,6 +135,9 @@ p2
 lims <- ggplot2::lims(x = c(0, 160), y = c(0, 160))
 p1 + lims
 p2 + lims
+
+# "average" function is customizable
+ppc_scatter_avg(y, yrep, stat = "median", ref_line = FALSE)
 
 # for ppc_scatter_avg_grouped the default is to allow the facets
 # to have different x and y axes
