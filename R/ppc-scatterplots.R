@@ -11,6 +11,11 @@
 #' @template args-group
 #' @template args-facet_args
 #' @param ... Currently unused.
+#' @param stat A function or a string naming a function for computing the
+#'   posterior average. In both cases, the function should take a vector input
+#'   and return a scalar statistic. The function name is displayed in the
+#'   axis-label, and the underlying `$rep_label` for `ppc_scatter_avg_data()`
+#'   includes the function name. Defaults to `"mean"`.
 #' @param size,alpha Arguments passed to [ggplot2::geom_point()] to control the
 #'   appearance of the points.
 #' @param ref_line If `TRUE` (the default) a dashed line with intercept 0 and
@@ -31,10 +36,10 @@
 #'   }
 #'   \item{`ppc_scatter_avg()`}{
 #'    A single scatterplot of `y` against the average values of `yrep`, i.e.,
-#'    the points `(x,y) = (mean(yrep[, n]), y[n])`, where each `yrep[, n]` is
-#'    a vector of length equal to the number of posterior draws. Unlike
-#'    for `ppc_scatter()`, for `ppc_scatter_avg()` `yrep` should contain many
-#'    draws (rows).
+#'    the points `(x,y) = (average(yrep[, n]), y[n])`, where each `yrep[, n]` is
+#'    a vector of length equal to the number of posterior draws and `average()`
+#'    is a summary statistic. Unlike for `ppc_scatter()`, for
+#'    `ppc_scatter_avg()` `yrep` should contain many draws (rows).
 #'   }
 #'   \item{`ppc_scatter_avg_grouped()`}{
 #'    The same as `ppc_scatter_avg()`, but a separate plot is generated for
@@ -58,6 +63,9 @@
 #' lims <- ggplot2::lims(x = c(0, 160), y = c(0, 160))
 #' p1 + lims
 #' p2 + lims
+#'
+#' # "average" function is customizable
+#' ppc_scatter_avg(y, yrep, stat = "median", ref_line = FALSE)
 #'
 #' # for ppc_scatter_avg_grouped the default is to allow the facets
 #' # to have different x and y axes
@@ -116,16 +124,19 @@ ppc_scatter_avg <-
   function(y,
            yrep,
            ...,
+           stat = "mean",
            size = 2.5,
            alpha = 0.8,
            ref_line = TRUE) {
     dots <- list(...)
+    stat <- as_tagged_function({{ stat }})
+
     if (!from_grouped(dots)) {
       check_ignored_arguments(...)
       dots$group <- NULL
     }
 
-    data <- ppc_scatter_avg_data(y, yrep, group = dots$group)
+    data <- ppc_scatter_avg_data(y, yrep, group = dots$group, stat = stat)
     if (is.null(dots$group) && nrow(yrep) == 1) {
       inform(
         "With only 1 row in 'yrep' ppc_scatter_avg is the same as ppc_scatter."
@@ -143,7 +154,7 @@ ppc_scatter_avg <-
       # ppd instead of ppc (see comment in ppc_scatter)
       scale_color_ppd() +
       scale_fill_ppd() +
-      labs(x = yrep_avg_label(), y = y_label()) +
+      labs(x = yrep_avg_label(stat), y = y_label()) +
       bayesplot_theme_get()
   }
 
@@ -155,6 +166,7 @@ ppc_scatter_avg_grouped <-
            yrep,
            group,
            ...,
+           stat = "mean",
            facet_args = list(),
            size = 2.5,
            alpha = 0.8,
@@ -184,16 +196,19 @@ ppc_scatter_data <- function(y, yrep) {
 
 #' @rdname PPC-scatterplots
 #' @export
-ppc_scatter_avg_data <- function(y, yrep, group = NULL) {
+ppc_scatter_avg_data <- function(y, yrep, group = NULL, stat = "mean") {
   y <- validate_y(y)
   yrep <- validate_predictions(yrep, length(y))
   if (!is.null(group)) {
     group <- validate_group(group, length(y))
   }
+  stat <- as_tagged_function({{ stat }})
 
-  data <- ppc_scatter_data(y = y, yrep = t(colMeans(yrep)))
+  data <- ppc_scatter_data(y = y, yrep = t(apply(yrep, 2, FUN = stat)))
   data$rep_id <- NA_integer_
-  levels(data$rep_label) <- "mean(italic(y)[rep]))"
+  levels(data$rep_label) <- yrep_avg_label(stat) |>
+    as.expression() |>
+    as.character()
 
   if (!is.null(group)) {
     data <- tibble::add_column(data,
@@ -206,7 +221,22 @@ ppc_scatter_avg_data <- function(y, yrep, group = NULL) {
 }
 
 # internal ----------------------------------------------------------------
-yrep_avg_label <- function() expression(paste("Average ", italic(y)[rep]))
+
+yrep_avg_label <- function(stat = NULL) {
+  stat <- as_tagged_function({{ stat }}, fallback = "stat")
+  e <- attr(stat, "tagged_expr")
+  if (attr(stat, "is_anonymous_function")) {
+    e <- sym("stat")
+  }
+  de <- deparse1(e)
+
+  # create some dummy variables to pass the R package check for
+  # global variables in the expression below
+  italic <- sym("italic")
+  y <- sym("y")
+
+  expr(paste((!!de))*(italic(y)[rep]))
+}
 
 scatter_aes <- function(...) {
   aes(x = .data$value, y = .data$y_obs, ...)

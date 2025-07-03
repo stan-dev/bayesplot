@@ -1,5 +1,8 @@
 # bayesplot (development version)
 
+* PPC "avg" functions (`ppc_scatter_avg()`, `ppc_error_scatter_avg()`, etc.) gain a `stat` argument to set the averaging function. (Suggestion of #348, @kruschke).
+* `ppc_error_scatter_avg_vs_x(x = some_expression)` labels the *x* axis with `some_expression`.
+
 # bayesplot 1.13.0
 
 * Add `ppc_loo_pit_ecdf()` by @TeemuSailynoja (#345)

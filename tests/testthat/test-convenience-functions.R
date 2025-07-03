@@ -187,3 +187,76 @@ test_that("overlay_function returns the correct object", {
   a$constructor <- b$constructor <- NULL
   expect_equal(a, b, check.environment = FALSE)
 })
+
+
+# tagged functions  -------------------------------------------------------
+
+test_that("as_tagged_function handles bare function (symbol)", {
+  fn <- as_tagged_function(mean)
+  expect_type(fn, "closure")
+  expect_equal(fn(1:10), mean(1:10))
+  expect_equal(attr(fn, "tagged_expr"), rlang::expr(mean))
+
+  # primitive functions are wrapped then tagged
+  fn <- as_tagged_function(max)
+  expect_equal(fn(1:10), 10)
+  expect_equal(attr(fn, "tagged_expr"), rlang::expr(max))
+})
+
+test_that("as_tagged_function handles string input", {
+  fn <- as_tagged_function("mean")
+  expect_type(fn, "closure")
+  expect_equal(fn(1:10), mean(1:10))
+  expect_equal(attr(fn, "tagged_expr"), rlang::sym("mean"))
+})
+
+test_that("as_tagged_function handles anonymous functions", {
+  fn <- as_tagged_function(function(x) mean(x^2))
+  expect_type(fn, "closure")
+  expect_equal(fn(1:3), mean((1:3)^2))
+  expect_equal(attr(fn, "tagged_expr"), rlang::expr( function(x) mean(x^2)))
+
+  fn <- as_tagged_function(~mean(.x^2))
+  expect_type(fn, "closure")
+  expect_equal(fn(1:3), mean((1:3)^2))
+  expect_equal(attr(fn, "tagged_expr"), rlang::expr( ~mean(.x^2)))
+})
+
+test_that("as_tagged_function handles NULL with fallback name", {
+  fn <- as_tagged_function(NULL, fallback = "my_func")
+  expect_type(fn, "closure")
+  expect_equal(fn(1:5), 1:5)
+  expect_equal(attr(fn, "tagged_expr"), rlang::sym("my_func"))
+})
+
+test_that("as_tagged_function doesn't lose previous tags", {
+  fn1 <- as_tagged_function(mean)
+  fn2 <- as_tagged_function(fn1)
+  expect_identical(fn1, fn2)
+  expect_equal(attr(fn2, "tagged_expr"), rlang::expr(mean))
+
+  f_outer <- function(stat_outer) {
+    stat_outer <- as_tagged_function({{ stat_outer }})
+    f_inner(stat_outer)
+  }
+  f_inner <- function(stat_inner) {
+    stat_inner <- as_tagged_function({{ stat_inner }})
+    stat_inner
+  }
+
+  # We don't want the tagged expressions to be stat_outer or stat_inner
+  my_function_name <- identity
+  f_inner(my_function_name) |>
+    attr("tagged_expr") |>
+    deparse() |>
+    expect_equal("my_function_name")
+
+  f_outer(my_function_name) |>
+    attr("tagged_expr") |>
+    deparse() |>
+    expect_equal("my_function_name")
+
+  # All the non-standard evaluation still provides a callable function
+  f_outer(my_function_name)(1:10) |>
+    expect_equal(1:10)
+})
