@@ -312,6 +312,7 @@ ppc_error_scatter_avg_vs_x <- function(
 ppc_error_binned <-
   function(y,
            yrep,
+           x = NULL,
            ...,
            facet_args = list(),
            bins = NULL,
@@ -319,7 +320,7 @@ ppc_error_binned <-
            alpha = 0.25) {
     check_ignored_arguments(...)
 
-    data <- ppc_error_binnned_data(y, yrep, bins = bins)
+    data <- ppc_error_binnned_data(y, yrep, x = x, bins = bins)
     facet_layer <- if (nrow(yrep) == 1) {
       geom_ignore()
     } else {
@@ -356,7 +357,7 @@ ppc_error_binned <-
         color = point_color
       ) +
       labs(
-        x = "Predicted proportion",
+        x = if (is.null(x)) "Predicted proportion" else deparse(substitute(x)),
         y = "Average Errors \n (with 2SE bounds)"
       ) +
       bayesplot_theme_get() +
@@ -454,9 +455,13 @@ error_avg_label <- function(stat = NULL) {
 
 
 # Data for binned errors plots
-ppc_error_binnned_data <- function(y, yrep, bins = NULL) {
+ppc_error_binnned_data <- function(y, yrep, x = NULL, bins = NULL) {
   y <- validate_y(y)
   yrep <- validate_predictions(yrep, length(y))
+
+  if (!is.null(x)) {
+    x <- validate_x(x, y)
+  }
 
   if (is.null(bins)) {
     bins <- n_bins(length(y))
@@ -465,13 +470,24 @@ ppc_error_binnned_data <- function(y, yrep, bins = NULL) {
   errors <- compute_errors(y, yrep)
   binned_errs <- list()
   for (s in 1:nrow(errors)) {
-    binned_errs[[s]] <-
-      bin_errors(
-        ey = yrep[s, ],
-        r = errors[s, ],
-        bins = bins,
-        rep_id = s
-      )
+    if (is.null(x)) {
+      binned_errs[[s]] <-
+        bin_errors(
+          ey = yrep[s, ],
+          r = errors[s, ],
+          bins = bins,
+          rep_id = s
+        )
+    } else {
+      binned_errs[[s]] <-
+        bin_errors(
+          ey = x,
+          r = errors[s, ],
+          bins = bins,
+          rep_id = s
+        )
+    }
+
   }
 
   binned_errs <- dplyr::bind_rows(binned_errs)
