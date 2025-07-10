@@ -9,6 +9,7 @@
 #' @template args-y-yrep
 #' @template args-group
 #' @template args-facet_args
+#' @param x A numeric vector the same length as `y` to use as the x-axis variable.
 #' @param ... Currently unused.
 #' @param stat A function or a string naming a function for computing the
 #' posterior average. In both cases, the function should take a vector input and
@@ -109,6 +110,10 @@
 #' yrep_prop <- sweep(yrep, 2, trials, "/")
 #'
 #' ppc_error_binned(y_prop, yrep_prop[1:6, ])
+#'
+#' # plotting against a covariate on x-axis
+#' herd <- as.numeric(example_model$data$herd)
+#' ppc_error_binned(y_prop, yrep_prop[1:6, ], x = herd)
 #' }
 #'
 NULL
@@ -270,9 +275,6 @@ ppc_error_scatter_avg_grouped <-
 
 #' @rdname PPC-errors
 #' @export
-#' @param x A numeric vector the same length as `y` to use as the x-axis
-#'   variable.
-#'
 ppc_error_scatter_avg_vs_x <- function(
     y,
     yrep,
