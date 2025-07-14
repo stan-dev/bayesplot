@@ -322,6 +322,7 @@ ppc_error_binned <-
            alpha = 0.25) {
     check_ignored_arguments(...)
 
+    qx <- enquo(x)
     data <- ppc_error_binnned_data(y, yrep, x = x, bins = bins)
     facet_layer <- if (nrow(yrep) == 1) {
       geom_ignore()
@@ -359,7 +360,7 @@ ppc_error_binned <-
         color = point_color
       ) +
       labs(
-        x = if (is.null(x)) "Predicted proportion" else deparse(substitute(x)),
+        x = if (is.null(x)) "Predicted proportion" else as_label((qx)),
         y = "Average Errors \n (with 2SE bounds)"
       ) +
       bayesplot_theme_get() +
