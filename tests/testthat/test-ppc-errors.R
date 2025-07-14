@@ -52,6 +52,8 @@ test_that("ppc_error_binned returns ggplot object", {
   expect_gg(ppc_error_binned(y, Ey))
   expect_gg(ppc_error_binned(y[1:5], Ey[, 1:5]))
   expect_gg(ppc_error_binned(rep(y, 2), cbind(Ey, Ey)))
+  expect_gg(ppc_error_binned(y, Ey, x = x))
+  expect_gg(ppc_error_binned(rep(y, 2), cbind(Ey, Ey), x = rep(x, 2)))
 })
 
 test_that("bin_errors works for edge cases", {
@@ -150,4 +152,8 @@ test_that("ppc_error_binned renders correctly", {
 
   p_base <- ppc_error_binned(y, y_rep)
   vdiffr::expect_doppelganger("ppc_error_binned (default)", p_base)
+
+  x <- rnorm(length(y), mean = 5)
+  p_base_x <- ppc_error_binned(y, y_rep, x = x)
+  vdiffr::expect_doppelganger("ppc_error_binned (with x)", p_base_x)
 })

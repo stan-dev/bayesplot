@@ -63,6 +63,7 @@ ppc_error_scatter_avg_vs_x(
 ppc_error_binned(
   y,
   yrep,
+  x = NULL,
   ...,
   facet_args = list(),
   bins = NULL,
@@ -120,8 +121,7 @@ posterior average. In both cases, the function should take a vector input and
 return a scalar statistic. The function name is displayed in the axis-label.
 Defaults to \code{"mean"}.}
 
-\item{x}{A numeric vector the same length as \code{y} to use as the x-axis
-variable.}
+\item{x}{A numeric vector the same length as \code{y} to use as the x-axis variable.}
 }
 \value{
 A ggplot object that can be further customized using the \strong{ggplot2} package.
@@ -217,6 +217,10 @@ yrep <- posterior_predict(example_model)
 yrep_prop <- sweep(yrep, 2, trials, "/")
 
 ppc_error_binned(y_prop, yrep_prop[1:6, ])
+
+# plotting against a covariate on x-axis
+herd <- as.numeric(example_model$data$herd)
+ppc_error_binned(y_prop, yrep_prop[1:6, ], x = herd)
 }
 
 }
