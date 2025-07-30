@@ -237,7 +237,7 @@ ppc_bars_grouped <-
 #'
 ppc_rootogram <- function(y,
                           yrep,
-                          style = c("standing", "hanging", "suspended"),
+                          style = c("standing", "hanging", "suspended", "discrete"),
                           ...,
                           prob = 0.9,
                           size = 1) {
@@ -266,6 +266,44 @@ ppc_rootogram <- function(y,
   }
   tyrep <- do.call(rbind, tyrep)
   tyrep[is.na(tyrep)] <- 0
+
+  #Discrete style
+  pred_mean <- colMeans(tyrep)
+  pred_quantile <- t(apply(tyrep, 2, quantile, probs = probs))
+  colnames(pred_quantile) <- c("lower", "upper")
+
+  # prepare a table for y
+  ty <- table(y)
+  y_count <- as.numeric(ty[match(xpos, rownames(ty))])
+  y_count[is.na(y_count)] <- 0
+
+  if (style == "discrete") {
+    obs_color <- ifelse(y_count >= pred_quantile[, "lower"] & y_count <= pred_quantile[, "upper"], "blue", "red")
+
+    data <- data.frame(
+      xpos = xpos,
+      obs = y_count,
+      pred_mean = pred_mean,
+      lower = pred_quantile[, "lower"],
+      upper = pred_quantile[, "upper"],
+      obs_color = obs_color
+    )
+
+    graph <- ggplot(data, aes(x = xpos)) +
+      geom_point(aes(y = obs, fill = "Observed"), size = size * 3.5, color = obs_color, shape=18) +
+      geom_pointrange(aes(y = pred_mean, ymin = lower + (pred_mean - lower)*0.5, ymax = upper - (upper - pred_mean)*0.5, color = "Expected"), linewidth = size, size = size, fatten = 2, alpha = 0.6) +
+      geom_linerange(aes(y = pred_mean, ymin = lower, ymax = upper, color = "Expected"), linewidth = size, size = size, alpha = 0.4) +
+      scale_y_sqrt() +
+      scale_fill_manual("", values = get_color("l")) +
+      scale_color_manual("", values = get_color("dh")) +
+      labs(x = expression(italic(y)), y = "Count") +
+      bayesplot_theme_get() +
+      reduce_legend_spacing(0.25)
+    return(graph)
+  }
+
+
+  #Standing, hanging, and suspended styles
   tyexp <- sqrt(colMeans(tyrep))
   tyquantile <- sqrt(t(apply(tyrep, 2, quantile, probs = probs)))
   colnames(tyquantile) <- c("tylower", "tyupper")
@@ -395,7 +433,7 @@ ppc_bars_data <-
   data <-
     reshape2::melt(tmp_data, id.vars = "group") %>%
     count(.data$group, .data$value, .data$variable) %>%
-    tidyr::complete(.data$group, .data$value, .data$variable, fill = list(n = 0)) %>% 
+    tidyr::complete(.data$group, .data$value, .data$variable, fill = list(n = 0)) %>%
     group_by(.data$variable, .data$group) %>%
     mutate(proportion = .data$n / sum(.data$n)) %>%
     ungroup() %>%
