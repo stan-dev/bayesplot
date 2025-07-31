@@ -198,16 +198,16 @@ ppc_bars_grouped <-
            fatten = 2.5,
            linewidth = 1,
            freq = TRUE) {
-  check_ignored_arguments(...)
-  call <- match.call(expand.dots = FALSE)
-  g <- eval(ungroup_call("ppc_bars", call), parent.frame())
-  if (fixed_y(facet_args)) {
-    g <- g + expand_limits(y = 1.05 * max(g$data[["h"]], na.rm = TRUE))
+    check_ignored_arguments(...)
+    call <- match.call(expand.dots = FALSE)
+    g <- eval(ungroup_call("ppc_bars", call), parent.frame())
+    if (fixed_y(facet_args)) {
+      g <- g + expand_limits(y = 1.05 * max(g$data[["h"]], na.rm = TRUE))
+    }
+    g +
+      bars_group_facets(facet_args) +
+      force_axes_in_facets()
   }
-  g +
-    bars_group_facets(facet_args) +
-    force_axes_in_facets()
-}
 
 
 #' @rdname PPC-discrete
@@ -278,7 +278,7 @@ ppc_rootogram <- function(y,
   y_count[is.na(y_count)] <- 0
 
   if (style == "discrete") {
-    obs_color <- ifelse(y_count >= pred_quantile[, "lower"] & y_count <= pred_quantile[, "upper"], "blue", "red")
+    obs_shape <- ifelse(y_count >= pred_quantile[, "lower"] & y_count <= pred_quantile[, "upper"], 24, 25)
 
     data <- data.frame(
       xpos = xpos,
@@ -286,19 +286,20 @@ ppc_rootogram <- function(y,
       pred_mean = pred_mean,
       lower = pred_quantile[, "lower"],
       upper = pred_quantile[, "upper"],
-      obs_color = obs_color
+      obs_shape = obs_shape
     )
-
+    # Create the graph
     graph <- ggplot(data, aes(x = xpos)) +
-      geom_point(aes(y = obs, fill = "Observed"), size = size * 3.5, color = obs_color, shape=18) +
-      geom_pointrange(aes(y = pred_mean, ymin = lower + (pred_mean - lower)*0.5, ymax = upper - (upper - pred_mean)*0.5, color = "Expected"), linewidth = size, size = size, fatten = 2, alpha = 0.6) +
-      geom_linerange(aes(y = pred_mean, ymin = lower, ymax = upper, color = "Expected"), linewidth = size, size = size, alpha = 0.4) +
+      geom_pointrange(aes(y = pred_mean, ymin = lower, ymax = upper, color = "Expected"), fill = get_color("d"), linewidth = size, size = size, fatten = 2, alpha = 0.65) +
+      geom_point(aes(y = obs, shape=ifelse(obs_shape==24, "In", "Out")), size = size * 2, color = get_color("lh"), fill = get_color("lh")) +
       scale_y_sqrt() +
-      scale_fill_manual("", values = get_color("l")) +
+      scale_fill_manual("", values = get_color("lh"), guide="none") +
       scale_color_manual("", values = get_color("dh")) +
       labs(x = expression(italic(y)), y = "Count") +
       bayesplot_theme_get() +
-      reduce_legend_spacing(0.25)
+      reduce_legend_spacing(0.25) +
+      scale_shape_manual(values = c("Out"=24, "In"=25), guide = "legend") +
+      guides(shape = guide_legend(" Observation \n within bounds"))
     return(graph)
   }
 
