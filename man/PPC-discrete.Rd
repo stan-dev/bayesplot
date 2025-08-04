@@ -37,10 +37,11 @@ ppc_bars_grouped(
 ppc_rootogram(
   y,
   yrep,
-  style = c("standing", "hanging", "suspended"),
+  style = c("standing", "hanging", "suspended", "discrete"),
   ...,
   prob = 0.9,
-  size = 1
+  size = 1,
+  bound_distinct = TRUE
 )
 
 ppc_bars_data(y, yrep, group = NULL, prob = 0.9, freq = TRUE)
@@ -69,7 +70,7 @@ the bar width.}
 \item{size, fatten, linewidth}{For bar plots, \code{size}, \code{fatten}, and \code{linewidth}
 are passed to \code{\link[ggplot2:geom_linerange]{ggplot2::geom_pointrange()}} to control the appearance of the
 \code{yrep} points and intervals. For rootograms \code{size} is passed to
-\code{\link[ggplot2:geom_path]{ggplot2::geom_line()}}.}
+\code{\link[ggplot2:geom_path]{ggplot2::geom_line()}} and \code{\link[ggplot2:geom_linerange]{ggplot2::geom_pointrange()}}.}
 
 \item{freq}{For bar plots only, if \code{TRUE} (the default) the y-axis will
 display counts. Setting \code{freq=FALSE} will put proportions on the y-axis.}
@@ -83,9 +84,13 @@ to the corresponding observation.}
 passed to \code{\link[ggplot2:facet_wrap]{ggplot2::facet_wrap()}} to control faceting.}
 
 \item{style}{For \code{ppc_rootogram}, a string specifying the rootogram
-style. The options are \code{"standing"}, \code{"hanging"}, and
+style. The options are \verb{"discrete", "standing"}, \code{"hanging"}, and
 \code{"suspended"}. See the \strong{Plot Descriptions} section, below, for
 details on the different styles.}
+
+\item{bound_distinct}{For \verb{ppc_rootogram(style = "discrete)},
+if \code{TRUE} then the observed counts will be plotted with different shapes
+depending on whether they are within the bounds of the expected quantiles.}
 }
 \value{
 The plotting functions return a ggplot object that can be further
@@ -129,10 +134,12 @@ style can be adjusted to focus on different aspects of the data:
 \itemize{
 \item \emph{Standing}: basic histogram of observed counts with curve
 showing expected counts.
-\item \emph{Hanging}: observed counts counts hanging from the curve
+\item \emph{Hanging}: observed counts hanging from the curve
 representing expected counts.
 \item \emph{Suspended}: histogram of the differences between expected and
 observed counts.
+\item \emph{Discrete}: a dot-and-whisker plot of the expected counts and dots
+representing observed counts
 }
 
 \strong{All of the rootograms are plotted on the square root scale}. See Kleiber
@@ -206,6 +213,7 @@ ppc_rootogram(y, yrep, prob = 0)
 
 ppc_rootogram(y, yrep, style = "hanging", prob = 0.8)
 ppc_rootogram(y, yrep, style = "suspended")
+ppc_rootogram(y, yrep, style = "discrete")
 
 }
 \references{

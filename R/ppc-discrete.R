@@ -21,9 +21,12 @@
 #' @param size,fatten,linewidth For bar plots, `size`, `fatten`, and `linewidth`
 #'   are passed to [ggplot2::geom_pointrange()] to control the appearance of the
 #'   `yrep` points and intervals. For rootograms `size` is passed to
-#'   [ggplot2::geom_line()].
+#'   [ggplot2::geom_line()] and [ggplot2::geom_pointrange()].
 #' @param freq For bar plots only, if `TRUE` (the default) the y-axis will
 #'   display counts. Setting `freq=FALSE` will put proportions on the y-axis.
+#' @param bound_distinct For `ppc_rootogram(style = "discrete)`,
+#'  if `TRUE` then the observed counts will be plotted with different shapes
+#'  depending on whether they are within the bounds of the expected quantiles.
 #'
 #' @template return-ggplot-or-data
 #'
@@ -52,10 +55,12 @@
 #'   style can be adjusted to focus on different aspects of the data:
 #'   * _Standing_: basic histogram of observed counts with curve
 #'    showing expected counts.
-#'   * _Hanging_: observed counts counts hanging from the curve
+#'   * _Hanging_: observed counts hanging from the curve
 #'    representing expected counts.
 #'   * _Suspended_: histogram of the differences between expected and
 #'    observed counts.
+#'    * _Discrete_: a dot-and-whisker plot of the expected counts and dots
+#'   representing observed counts
 #'
 #'   **All of the rootograms are plotted on the square root scale**. See Kleiber
 #'   and Zeileis (2016) for advice on interpreting rootograms and selecting
@@ -213,7 +218,7 @@ ppc_bars_grouped <-
 #' @rdname PPC-discrete
 #' @export
 #' @param style For `ppc_rootogram`, a string specifying the rootogram
-#'   style. The options are `"standing"`, `"hanging"`, and
+#'   style. The options are `"discrete", "standing"`, `"hanging"`, and
 #'   `"suspended"`. See the **Plot Descriptions** section, below, for
 #'   details on the different styles.
 #'
@@ -234,13 +239,15 @@ ppc_bars_grouped <-
 #'
 #' ppc_rootogram(y, yrep, style = "hanging", prob = 0.8)
 #' ppc_rootogram(y, yrep, style = "suspended")
+#' ppc_rootogram(y, yrep, style = "discrete")
 #'
 ppc_rootogram <- function(y,
                           yrep,
                           style = c("standing", "hanging", "suspended", "discrete"),
                           ...,
                           prob = 0.9,
-                          size = 1) {
+                          size = 1,
+                          bound_distinct = TRUE) {
   check_ignored_arguments(...)
   style <- match.arg(style)
   y <- validate_y(y)
@@ -268,7 +275,7 @@ ppc_rootogram <- function(y,
   tyrep[is.na(tyrep)] <- 0
 
   #Discrete style
-  pred_mean <- colMeans(tyrep)
+  pred_median <- apply(tyrep, 2, median)
   pred_quantile <- t(apply(tyrep, 2, quantile, probs = probs))
   colnames(pred_quantile) <- c("lower", "upper")
 
@@ -278,28 +285,40 @@ ppc_rootogram <- function(y,
   y_count[is.na(y_count)] <- 0
 
   if (style == "discrete") {
-    obs_shape <- ifelse(y_count >= pred_quantile[, "lower"] & y_count <= pred_quantile[, "upper"], 24, 25)
+    if (bound_distinct) {
+      # If the observed count is within the bounds of the predicted quantiles,
+      # use a different shape for the point
+      obs_shape <- obs_shape <- ifelse(y_count >= pred_quantile[, "lower"] & y_count <= pred_quantile[, "upper"], "In", "Out")
+    } else {
+      obs_shape <- rep("Observed", length(y_count)) # all points are the same shape for obsved
+    }
 
     data <- data.frame(
       xpos = xpos,
       obs = y_count,
-      pred_mean = pred_mean,
+      pred_median = pred_median,
       lower = pred_quantile[, "lower"],
       upper = pred_quantile[, "upper"],
       obs_shape = obs_shape
     )
     # Create the graph
     graph <- ggplot(data, aes(x = xpos)) +
-      geom_pointrange(aes(y = pred_mean, ymin = lower, ymax = upper, color = "Expected"), fill = get_color("d"), linewidth = size, size = size, fatten = 2, alpha = 0.65) +
-      geom_point(aes(y = obs, shape=ifelse(obs_shape==24, "In", "Out")), size = size * 2, color = get_color("lh"), fill = get_color("lh")) +
+      geom_pointrange(aes(y = pred_median, ymin = lower, ymax = upper, color = "Expected"), fill = get_color("lh"), linewidth = size, size = size, fatten = 2, alpha = 1) +
+      geom_point(aes(y = obs, shape = obs_shape), size = size * 1.5, color = get_color("d"), fill = get_color("d")) +
       scale_y_sqrt() +
-      scale_fill_manual("", values = get_color("lh"), guide="none") +
-      scale_color_manual("", values = get_color("dh")) +
+      scale_fill_manual("", values = get_color("d"), guide="none") +
+      scale_color_manual("", values = get_color("lh")) +
       labs(x = expression(italic(y)), y = "Count") +
       bayesplot_theme_get() +
       reduce_legend_spacing(0.25) +
-      scale_shape_manual(values = c("Out"=24, "In"=25), guide = "legend") +
-      guides(shape = guide_legend(" Observation \n within bounds"))
+      scale_shape_manual(values = c("In" = 22, "Out" = 23, "Observed" = 22), guide = "legend")
+      if (bound_distinct) {
+        graph <- graph +
+          guides(shape = guide_legend(" Observation \n within bounds"))
+      } else {
+        graph <- graph +
+          guides(shape = guide_legend(""))
+      }
     return(graph)
   }
 

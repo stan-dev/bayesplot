@@ -87,6 +87,7 @@ test_that("ppc_rootogram returns a ggplot object", {
   expect_gg(ppc_rootogram(y2, yrep2))
   expect_gg(ppc_rootogram(y2, yrep3, style = "hanging", prob = 0.5))
   expect_gg(ppc_rootogram(y2, yrep3, style = "suspended"))
+  expect_gg(ppc_rootogram(y2, yrep3, style = "discrete"))
 })
 
 test_that("ppc_rootogram errors if y/yrep not counts", {
@@ -176,5 +177,30 @@ test_that("ppc_rootogram renders correctly", {
   vdiffr::expect_doppelganger(
     title = "ppc_rootogram (style='hanging', prob, size)",
     fig = p_custom_hanging)
+
+  p_discrete <- ppc_rootogram(
+    y = vdiff_y2,
+    yrep = vdiff_yrep2,
+    prob = 0.5,
+    size = 1,
+    style = "discrete"
+  )
+
+  vdiffr::expect_doppelganger(
+    title = "ppc_rootogram (style='discrete', prob, size)",
+    fig = p_discrete)
+
+  p_discrete_nonbound <- ppc_rootogram(
+    y = vdiff_y2,
+    yrep = vdiff_yrep2,
+    prob = 0.8,
+    size = 1,
+    style = "discrete",
+    bound_distinct = FALSE
+  )
+
+  vdiffr::expect_doppelganger(
+    title = "ppc_rootogram (style='discrete', prob, size, bound_distinct=FALSE)",
+    fig = p_discrete_nonbound)
 })
 
