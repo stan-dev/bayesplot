@@ -4,6 +4,7 @@
 * `ppc_error_scatter_avg_vs_x(x = some_expression)` labels the *x* axis with `some_expression`.
 * Add `ppc_dots()` and `ppd_dots()` by @behramulukir (#357)
 * Add `x` argument to `ppc_error_binned` by @behramulukir (#359)
+* Add `disrete` style to `ppc_rootogram` by @behramulukir (#360)
 
 # bayesplot 1.13.0
 
