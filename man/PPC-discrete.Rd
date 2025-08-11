@@ -90,7 +90,7 @@ details on the different styles.}
 
 \item{bound_distinct}{For \verb{ppc_rootogram(style = "discrete)},
 if \code{TRUE} then the observed counts will be plotted with different shapes
-depending on whether they are within the bounds of the expected quantiles.}
+depending on whether they are within the bounds of the \code{y} quantiles.}
 }
 \value{
 The plotting functions return a ggplot object that can be further
@@ -125,12 +125,18 @@ level of a grouping variable.
 }
 \item{\code{ppc_rootogram()}}{
 Rootograms allow for diagnosing problems in count data models such as
-overdispersion or excess zeros. They consist of a histogram of \code{y} with the
-expected counts based on \code{yrep} overlaid as a line along with uncertainty
-intervals. The y-axis represents the square roots of the counts to
+overdispersion or excess zeros. In \code{standing}, \code{hanging}, and \code{suspended}
+styles, they consist of a histogram of \code{y} with the expected counts based on
+\code{yrep} overlaid as a line along with uncertainty intervals.
+
+Meanwhile, in \code{discrete} style, median counts based on \code{yrep} are laid
+as a point range with uncertainty intervals along with dots
+representing the \code{y}.
+
+The y-axis represents the square roots of the counts to
 approximately adjust for scale differences and thus ease comparison between
-observed and expected counts. Using the \code{style} argument, the histogram
-style can be adjusted to focus on different aspects of the data:
+observed and expected counts. Using the \code{style} argument, the rootogram
+can be adjusted to focus on different aspects of the data:
 \itemize{
 \item \emph{Standing}: basic histogram of observed counts with curve
 showing expected counts.
@@ -138,8 +144,8 @@ showing expected counts.
 representing expected counts.
 \item \emph{Suspended}: histogram of the differences between expected and
 observed counts.
-\item \emph{Discrete}: a dot-and-whisker plot of the expected counts and dots
-representing observed counts
+\item \emph{Discrete}: a dot-and-whisker plot of the median counts and
+dots representing observed counts.
 }
 
 \strong{All of the rootograms are plotted on the square root scale}. See Kleiber

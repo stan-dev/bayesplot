@@ -26,7 +26,7 @@
 #'   display counts. Setting `freq=FALSE` will put proportions on the y-axis.
 #' @param bound_distinct For `ppc_rootogram(style = "discrete)`,
 #'  if `TRUE` then the observed counts will be plotted with different shapes
-#'  depending on whether they are within the bounds of the expected quantiles.
+#'  depending on whether they are within the bounds of the `y` quantiles.
 #'
 #' @template return-ggplot-or-data
 #'
@@ -47,20 +47,26 @@
 #' }
 #' \item{`ppc_rootogram()`}{
 #'   Rootograms allow for diagnosing problems in count data models such as
-#'   overdispersion or excess zeros. They consist of a histogram of `y` with the
-#'   expected counts based on `yrep` overlaid as a line along with uncertainty
-#'   intervals. The y-axis represents the square roots of the counts to
+#'   overdispersion or excess zeros. In `standing`, `hanging`, and `suspended`
+#'   styles, they consist of a histogram of `y` with the expected counts based on
+#'   `yrep` overlaid as a line along with uncertainty intervals.
+#'
+#'   Meanwhile, in `discrete` style, median counts based on `yrep` are laid
+#'   as a point range with uncertainty intervals along with dots
+#'   representing the `y`.
+#'
+#'   The y-axis represents the square roots of the counts to
 #'   approximately adjust for scale differences and thus ease comparison between
-#'   observed and expected counts. Using the `style` argument, the histogram
-#'   style can be adjusted to focus on different aspects of the data:
+#'   observed and expected counts. Using the `style` argument, the rootogram
+#'  can be adjusted to focus on different aspects of the data:
 #'   * _Standing_: basic histogram of observed counts with curve
 #'    showing expected counts.
 #'   * _Hanging_: observed counts hanging from the curve
 #'    representing expected counts.
 #'   * _Suspended_: histogram of the differences between expected and
 #'    observed counts.
-#'    * _Discrete_: a dot-and-whisker plot of the expected counts and dots
-#'   representing observed counts
+#'    * _Discrete_: a dot-and-whisker plot of the median counts and
+#'    dots representing observed counts.
 #'
 #'   **All of the rootograms are plotted on the square root scale**. See Kleiber
 #'   and Zeileis (2016) for advice on interpreting rootograms and selecting
@@ -290,7 +296,7 @@ ppc_rootogram <- function(y,
       # use a different shape for the point
       obs_shape <- obs_shape <- ifelse(y_count >= pred_quantile[, "lower"] & y_count <= pred_quantile[, "upper"], "In", "Out")
     } else {
-      obs_shape <- rep("Observed", length(y_count)) # all points are the same shape for obsved
+      obs_shape <- rep("y", length(y_count)) # all points are the same shape for observed
     }
 
     data <- data.frame(
@@ -303,21 +309,21 @@ ppc_rootogram <- function(y,
     )
     # Create the graph
     graph <- ggplot(data, aes(x = xpos)) +
-      geom_pointrange(aes(y = pred_median, ymin = lower, ymax = upper, color = "Expected"), fill = get_color("lh"), linewidth = size, size = size, fatten = 2, alpha = 1) +
+      geom_pointrange(aes(y = pred_median, ymin = lower, ymax = upper, color = "y_rep"), fill = get_color("lh"), linewidth = size, size = size, fatten = 2, alpha = 1) +
       geom_point(aes(y = obs, shape = obs_shape), size = size * 1.5, color = get_color("d"), fill = get_color("d")) +
       scale_y_sqrt() +
       scale_fill_manual("", values = get_color("d"), guide="none") +
-      scale_color_manual("", values = get_color("lh")) +
+      scale_color_manual("", values = get_color("lh"), labels = yrep_label()) +
       labs(x = expression(italic(y)), y = "Count") +
       bayesplot_theme_get() +
       reduce_legend_spacing(0.25) +
-      scale_shape_manual(values = c("In" = 22, "Out" = 23, "Observed" = 22), guide = "legend")
+      scale_shape_manual(values = c("In" = 22, "Out" = 23, "y" = 22), guide = "legend")
       if (bound_distinct) {
         graph <- graph +
-          guides(shape = guide_legend(" Observation \n within bounds"))
+          guides(shape = guide_legend(expression(italic(y)~within~bounds)))
       } else {
         graph <- graph +
-          guides(shape = guide_legend(""))
+          guides(shape = guide_legend(" "))
       }
     return(graph)
   }
