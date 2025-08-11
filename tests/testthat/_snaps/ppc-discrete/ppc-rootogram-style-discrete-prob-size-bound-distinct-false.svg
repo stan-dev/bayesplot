@@ -71,7 +71,7 @@
 <text transform='translate(14.24,283.29) rotate(-90)' text-anchor='middle' style='font-size: 12.00px; font-family: sans;' textLength='32.03px' lengthAdjust='spacingAndGlyphs'>Count</text>
 <text x='664.10' y='256.35' style='font-size: 12.00px; font-family: sans;' textLength='3.33px' lengthAdjust='spacingAndGlyphs'> </text>
 <rect x='671.01' y='270.48' width='3.46' height='3.46' style='stroke-width: 0.71; stroke: #03396C; fill: #03396C;' />
-<text x='687.36' y='276.69' style='font-size: 13.00px; font-family: sans;' textLength='6.51px' lengthAdjust='spacingAndGlyphs'>y</text>
+<text x='687.36' y='274.30' style='font-size: 13.00px; font-style: italic; font-family: sans;' textLength='6.51px' lengthAdjust='spacingAndGlyphs'>y</text>
 <line x1='672.74' y1='318.01' x2='672.74' y2='304.18' style='stroke-width: 2.13; stroke: #B3CDE0; stroke-linecap: butt;' />
 <circle cx='672.74' cy='311.09' r='4.98' style='stroke-width: 1.42; stroke: #B3CDE0; fill: #B3CDE0;' />
 <text x='687.36' y='312.38' style='font-size: 13.00px; font-style: italic; font-family: sans;' textLength='6.51px' lengthAdjust='spacingAndGlyphs'>y</text>

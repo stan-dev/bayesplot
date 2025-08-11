@@ -317,7 +317,7 @@ ppc_rootogram <- function(y,
       labs(x = expression(italic(y)), y = "Count") +
       bayesplot_theme_get() +
       reduce_legend_spacing(0.25) +
-      scale_shape_manual(values = c("In" = 22, "Out" = 23, "y" = 22), guide = "legend")
+      scale_shape_manual(values = c("In" = 22, "Out" = 23, "y" = 22), guide = "legend", labels = c("y" = expression(italic(y))))
       if (bound_distinct) {
         graph <- graph +
           guides(shape = guide_legend(expression(italic(y)~within~bounds)))
