@@ -26,6 +26,10 @@ test_that("ppc_error_scatter_avg returns ggplot2 object", {
   skip_if_not_installed("rstantools")
   expect_gg(ppc_error_scatter_avg(y, yrep))
   expect_gg(ppc_error_scatter_avg(y, yrep[1:5, ]))
+
+  # when x is provided
+  expect_gg(ppc_error_scatter_avg(y, yrep, x = rnorm(length(y))))
+  expect_gg(ppc_error_scatter_avg(y, yrep[1:5, ], x = rnorm(length(y))))
 })
 
 test_that("ppc_error_scatter_avg same as ppc_error_scatter if nrow(yrep) = 1", {
@@ -42,8 +46,12 @@ test_that("ppc_error_scatter_avg same as ppc_error_scatter if nrow(yrep) = 1", {
 
 test_that("ppc_error_scatter_avg_vs_x returns ggplot2 object", {
   skip_if_not_installed("rstantools")
-  expect_gg(ppc_error_scatter_avg_vs_x(y, yrep, x = rnorm(length(y))))
-  expect_gg(ppc_error_scatter_avg_vs_x(y, yrep[1:5, ], x = rnorm(length(y))))
+
+  # expect warning
+  expect_warning(expect_gg(ppc_error_scatter_avg_vs_x(y, yrep, x = rnorm(length(y)))),
+                 "Use ppc_error_scatter_avg\\(x = x\\) instead of ppc_error_scatter_avg_vs_x\\(\\).")
+  expect_warning(expect_gg(ppc_error_scatter_avg_vs_x(y, yrep[1:5, ], x = rnorm(length(y)))),
+                 "Use ppc_error_scatter_avg\\(x = x\\) instead of ppc_error_scatter_avg_vs_x\\(\\).")
 })
 
 test_that("ppc_error_binned returns ggplot object", {
@@ -105,6 +113,9 @@ test_that("ppc_error_scatter_avg renders correctly", {
 
   p_base <- ppc_error_scatter_avg(vdiff_y, vdiff_yrep)
   vdiffr::expect_doppelganger("ppc_error_scatter_avg (default)", p_base)
+
+  p_base_x <- ppc_error_scatter_avg(vdiff_y, vdiff_yrep, x = seq_along(vdiff_y))
+  vdiffr::expect_doppelganger("ppc_error_scatter_avg (with x)", p_base_x)
 })
 
 test_that("ppc_error_scatter_avg_grouped renders correctly", {
@@ -121,8 +132,13 @@ test_that("ppc_error_scatter_avg_vs_x renders correctly", {
   testthat::skip_if_not_installed("vdiffr")
   skip_on_r_oldrel()
 
-  p_base <- ppc_error_scatter_avg_vs_x(vdiff_y, vdiff_yrep, x = seq_along(vdiff_y))
+  # expect warning
+  expect_warning(
+    p_base <- ppc_error_scatter_avg_vs_x(vdiff_y, vdiff_yrep, x = seq_along(vdiff_y)),
+    "Use ppc_error_scatter_avg\\(x = x\\) instead of ppc_error_scatter_avg_vs_x\\(\\)."
+  )
   vdiffr::expect_doppelganger("ppc_error_scatter_avg_vs_x (default)", p_base)
+
 })
 
 test_that("ppc_error_binned renders correctly", {

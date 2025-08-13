@@ -54,10 +54,12 @@
 #'    `y` and each dataset (row) in `yrep`. For each individual data point
 #'    `y[n]` the average error is the average of the errors for `y[n]` computed
 #'    over the the draws from the posterior predictive distribution.
+#'
+#'    When the optional `x` argument is provided, the average error is plotted
+#'    on the y-axis and the predictor variable `x` is plotted on the x-axis.
 #'   }
 #'   \item{`ppc_error_scatter_avg_vs_x()`}{
-#'    Same as `ppc_error_scatter_avg()`, except the average is plotted on the
-#'    y-axis and a predictor variable `x` is plotted on the x-axis.
+#'    Deprecated. Use `ppc_error_scatter_avg(x = x)` instead.
 #'   }
 #'   \item{`ppc_error_binned()`}{
 #'    Intended for use with binomial data. A separate binned error plot (similar
@@ -92,7 +94,7 @@
 #' ppc_error_scatter_avg(y, yrep)
 #'
 #' x <- example_x_data()
-#' ppc_error_scatter_avg_vs_x(y, yrep, x)
+#' ppc_error_scatter_avg(y, yrep, x)
 #'
 #' \dontrun{
 #' # binned error plot with binomial model from rstanarm
@@ -217,6 +219,7 @@ ppc_error_scatter <-
 ppc_error_scatter_avg <-
   function(y,
            yrep,
+           x = NULL,
            ...,
            stat = "mean",
            size = 2.5,
@@ -225,19 +228,31 @@ ppc_error_scatter_avg <-
 
     y <- validate_y(y)
     yrep <- validate_predictions(yrep, length(y))
+
+    if (!missing(x)) {
+      qx <- enquo(x)
+      x <- validate_x(x, y)
+    }
     errors <- compute_errors(y, yrep)
 
     stat <- as_tagged_function({{ stat }})
 
     ppc_scatter_avg(
-      y = y,
+      y = if (is_null(x)) y else x,
       yrep = errors,
       size = size,
       alpha = alpha,
       ref_line = FALSE,
       stat = stat
     ) +
-      labs(x = error_avg_label(stat), y = y_label())
+      labs(
+        x = error_avg_label(stat),
+        y = if (is_null(x)) y_label() else as_label((qx))
+        ) + if (is_null(x)) {
+          NULL
+        } else {
+          coord_flip()
+        }
   }
 
 
@@ -285,6 +300,9 @@ ppc_error_scatter_avg_vs_x <- function(
     alpha = 0.8
 ) {
   check_ignored_arguments(...)
+
+  .Deprecated(new = "ppc_error_scatter_avg()",
+              msg = "Use ppc_error_scatter_avg(x = x) instead of ppc_error_scatter_avg_vs_x().")
 
   y <- validate_y(y)
   yrep <- validate_predictions(yrep, length(y))
