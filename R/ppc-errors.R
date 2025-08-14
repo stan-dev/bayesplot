@@ -301,8 +301,7 @@ ppc_error_scatter_avg_vs_x <- function(
 ) {
   check_ignored_arguments(...)
 
-  .Deprecated(new = "ppc_error_scatter_avg()",
-              msg = "Use ppc_error_scatter_avg(x = x) instead of ppc_error_scatter_avg_vs_x().")
+  .Deprecated(new = "ppc_error_scatter_avg(y, yrep, x)")
 
   y <- validate_y(y)
   yrep <- validate_predictions(yrep, length(y))
