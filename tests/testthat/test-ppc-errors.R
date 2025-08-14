@@ -49,9 +49,9 @@ test_that("ppc_error_scatter_avg_vs_x returns ggplot2 object", {
 
   # expect warning
   expect_warning(expect_gg(ppc_error_scatter_avg_vs_x(y, yrep, x = rnorm(length(y)))),
-                 "Use ppc_error_scatter_avg\\(x = x\\) instead of ppc_error_scatter_avg_vs_x\\(\\).")
+                 "'ppc_error_scatter_avg_vs_x' is deprecated.")
   expect_warning(expect_gg(ppc_error_scatter_avg_vs_x(y, yrep[1:5, ], x = rnorm(length(y)))),
-                 "Use ppc_error_scatter_avg\\(x = x\\) instead of ppc_error_scatter_avg_vs_x\\(\\).")
+                 "'ppc_error_scatter_avg_vs_x' is deprecated.")
 })
 
 test_that("ppc_error_binned returns ggplot object", {
@@ -135,7 +135,7 @@ test_that("ppc_error_scatter_avg_vs_x renders correctly", {
   # expect warning
   expect_warning(
     p_base <- ppc_error_scatter_avg_vs_x(vdiff_y, vdiff_yrep, x = seq_along(vdiff_y)),
-    "Use ppc_error_scatter_avg\\(x = x\\) instead of ppc_error_scatter_avg_vs_x\\(\\)."
+    "'ppc_error_scatter_avg_vs_x' is deprecated."
   )
   vdiffr::expect_doppelganger("ppc_error_scatter_avg_vs_x (default)", p_base)
 
