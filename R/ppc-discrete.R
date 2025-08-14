@@ -224,7 +224,7 @@ ppc_bars_grouped <-
 #' @rdname PPC-discrete
 #' @export
 #' @param style For `ppc_rootogram`, a string specifying the rootogram
-#'   style. The options are `"discrete", "standing"`, `"hanging"`, and
+#'   style. The options are `"discrete"`, `"standing"`, `"hanging"`, and
 #'   `"suspended"`. See the **Plot Descriptions** section, below, for
 #'   details on the different styles.
 #'

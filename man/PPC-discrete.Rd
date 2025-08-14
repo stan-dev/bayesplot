@@ -84,7 +84,7 @@ to the corresponding observation.}
 passed to \code{\link[ggplot2:facet_wrap]{ggplot2::facet_wrap()}} to control faceting.}
 
 \item{style}{For \code{ppc_rootogram}, a string specifying the rootogram
-style. The options are \verb{"discrete", "standing"}, \code{"hanging"}, and
+style. The options are \code{"discrete"}, \code{"standing"}, \code{"hanging"}, and
 \code{"suspended"}. See the \strong{Plot Descriptions} section, below, for
 details on the different styles.}
 
