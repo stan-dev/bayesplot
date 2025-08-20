@@ -349,6 +349,7 @@ https://www.jstor.org/stable/2986005.
 }
 \seealso{
 Other PPCs: 
+\code{\link{PPC-calibration}},
 \code{\link{PPC-censoring}},
 \code{\link{PPC-discrete}},
 \code{\link{PPC-distributions}},
