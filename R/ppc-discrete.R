@@ -256,103 +256,23 @@ ppc_rootogram <- function(y,
                           bound_distinct = TRUE) {
   check_ignored_arguments(...)
   style <- match.arg(style)
-  y <- validate_y(y)
-  yrep <- validate_predictions(yrep, length(y))
-  if (!all_counts(y)) {
-    abort("ppc_rootogram expects counts as inputs to 'y'.")
-  }
-  if (!all_counts(yrep)) {
-    abort("ppc_rootogram expects counts as inputs to 'yrep'.")
-  }
 
-  alpha <- (1 - prob) / 2
-  probs <- c(alpha, 1 - alpha)
-  ymax <- max(y, yrep)
-  xpos <- 0L:ymax
+  data <- .ppc_rootogram_data(
+    y = y,
+    yrep = yrep,
+    style = style,
+    prob = prob,
+    bound_distinct = bound_distinct
+  )
 
-  # prepare a table for yrep
-  tyrep <- as.list(rep(NA, nrow(yrep)))
-  for (i in seq_along(tyrep)) {
-    tyrep[[i]] <- table(yrep[i,])
-    matches <- match(xpos, rownames(tyrep[[i]]))
-    tyrep[[i]] <- as.numeric(tyrep[[i]][matches])
-  }
-  tyrep <- do.call(rbind, tyrep)
-  tyrep[is.na(tyrep)] <- 0
-
-  #Discrete style
-  pred_median <- apply(tyrep, 2, median)
-  pred_quantile <- t(apply(tyrep, 2, quantile, probs = probs))
-  colnames(pred_quantile) <- c("lower", "upper")
-
-  # prepare a table for y
-  ty <- table(y)
-  y_count <- as.numeric(ty[match(xpos, rownames(ty))])
-  y_count[is.na(y_count)] <- 0
-
-  if (style == "discrete") {
-    if (bound_distinct) {
-      # If the observed count is within the bounds of the predicted quantiles,
-      # use a different shape for the point
-      obs_shape <- obs_shape <- ifelse(y_count >= pred_quantile[, "lower"] & y_count <= pred_quantile[, "upper"], "In", "Out")
-    } else {
-      obs_shape <- rep("y", length(y_count)) # all points are the same shape for observed
-    }
-
-    data <- data.frame(
-      xpos = xpos,
-      obs = y_count,
-      pred_median = pred_median,
-      lower = pred_quantile[, "lower"],
-      upper = pred_quantile[, "upper"],
-      obs_shape = obs_shape
-    )
-    # Create the graph
-    graph <- ggplot(data, aes(x = xpos)) +
-      geom_pointrange(aes(y = pred_median, ymin = lower, ymax = upper, color = "y_rep"), fill = get_color("lh"), linewidth = size, size = size, fatten = 2, alpha = 1) +
-      geom_point(aes(y = obs, shape = obs_shape), size = size * 1.5, color = get_color("d"), fill = get_color("d")) +
-      scale_y_sqrt() +
-      scale_fill_manual("", values = get_color("d"), guide="none") +
-      scale_color_manual("", values = get_color("lh"), labels = yrep_label()) +
-      labs(x = expression(italic(y)), y = "Count") +
-      bayesplot_theme_get() +
-      reduce_legend_spacing(0.25) +
-      scale_shape_manual(values = c("In" = 22, "Out" = 23, "y" = 22), guide = "legend", labels = c("y" = expression(italic(y))))
-      if (bound_distinct) {
-        graph <- graph +
-          guides(shape = guide_legend(expression(italic(y)~within~bounds)))
-      } else {
-        graph <- graph +
-          guides(shape = guide_legend(" "))
-      }
-    return(graph)
-  }
-
-
-  #Standing, hanging, and suspended styles
-  tyexp <- sqrt(colMeans(tyrep))
-  tyquantile <- sqrt(t(apply(tyrep, 2, quantile, probs = probs)))
-  colnames(tyquantile) <- c("tylower", "tyupper")
-
-  # prepare a table for y
-  ty <- table(y)
-  ty <- sqrt(as.numeric(ty[match(xpos, rownames(ty))]))
-  if (style == "suspended") {
-    ty <- tyexp - ty
-  }
-  ty[is.na(ty)] <- 0
-  ypos <- ty / 2
-  if (style == "hanging") {
-    ypos <- tyexp - ypos
-  }
-
-  data <- data.frame(xpos, ypos, ty, tyexp, tyquantile)
-  graph <- ggplot(data) +
-    aes(
-      ymin = .data$tylower,
-      ymax = .data$tyupper,
-      height = .data$ty
-    ) +
+  # Building geoms for y and y_rep
+  geom_y <- if (style == "discrete") {
+    geom_point(
+      aes(y = .data$obs, shape = .data$obs_shape),
+      size = size * 1.5,
+      color = get_color("d"),
+      fill = get_color("d"))
+  } else {
     geom_tile(
       aes(
         x = .data$xpos,
@@ -362,34 +282,69 @@ ppc_rootogram <- function(y,
       color = get_color("lh"),
       linewidth = 0.25,
       width = 1
-    ) +
-    bayesplot_theme_get()
-
-  if (style != "standing") {
-    graph <- graph + hline_0(size = 0.4)
+    )
   }
 
-  graph <- graph +
+  geom_yrep <- if (style == "discrete") {
+    geom_pointrange(
+      aes(y = .data$pred_median, ymin = .data$lower, ymax = .data$upper, color = "y_rep"),
+      fill = get_color("lh"),
+      linewidth = size,
+      size = size,
+      fatten = 2,
+      alpha = 1
+    )
+  } else {
     geom_smooth(
-      aes(
-        x = .data$xpos,
-        y = .data$tyexp,
-        color = "Expected"
-      ),
+      aes(x = .data$xpos, y = .data$tyexp, color = "Expected"),
       fill = get_color("d"),
       linewidth = size,
       stat = "identity"
-    ) +
-    scale_fill_manual("", values = get_color("l")) +
-    scale_color_manual("", values = get_color("dh")) +
-    labs(x = expression(italic(y)),
-         y = expression(sqrt(Count)))
-
-  if (style == "standing") {
-    graph <- graph + dont_expand_y_axis()
+    )
   }
 
-  graph + reduce_legend_spacing(0.25)
+  # Creating the graph
+  graph <- ggplot(data)
+
+  if (style == "discrete") {
+    graph <- graph +
+      geom_yrep +
+      geom_y +
+      aes(x = xpos) +
+      scale_y_sqrt() +
+      scale_fill_manual("", values = get_color("d"), guide = "none") +
+      scale_color_manual("", values = get_color("lh"), labels = yrep_label()) +
+      labs(x = expression(italic(y)), y = "Count") +
+      bayesplot_theme_get() +
+      reduce_legend_spacing(0.25) +
+      scale_shape_manual(values = c("In" = 22, "Out" = 23, "y" = 22), guide = "legend", labels = c("y" = expression(italic(y))))
+    if (bound_distinct) {
+      graph <- graph + guides(shape = guide_legend(expression(italic(y)~within~bounds)))
+    } else {
+      graph <- graph + guides(shape = guide_legend(" "))
+    }
+  } else {
+    graph <- graph +
+      geom_y +
+      geom_yrep +
+      aes(
+        ymin = .data$tylower,
+        ymax = .data$tyupper,
+        height = .data$ty
+      ) +
+      scale_fill_manual("", values = get_color("l")) +
+      scale_color_manual("", values = get_color("dh")) +
+      labs(x = expression(italic(y)), y = expression(sqrt(Count))) +
+      bayesplot_theme_get() +
+      reduce_legend_spacing(0.25)
+    if (style == "standing") {
+      graph <- graph + dont_expand_y_axis()
+    } else {
+      graph <- graph + hline_0(size = 0.4)
+    }
+  }
+
+  return(graph)
 }
 
 
@@ -503,4 +458,91 @@ bars_group_facets <- function(facet_args, scales_default = "fixed") {
 
 fixed_y <- function(facet_args) {
   !isTRUE(facet_args[["scales"]] %in% c("free", "free_y"))
+}
+
+#' Internal function for `ppc_rootogram()`
+#' @param y,yrep User's `y` and `yrep` arguments.
+#' @param style,prob,bound_distinct User's `style`, `prob`, and
+#' (if applicable) `bound_distinct` arguments.
+#' @noRd
+.ppc_rootogram_data <- function(y,
+                              yrep,
+                              style = c("standing", "hanging", "suspended", "discrete"),
+                              prob = 0.9,
+                              bound_distinct) {
+
+  y <- validate_y(y)
+  yrep <- validate_predictions(yrep, length(y))
+  if (!all_counts(y)) {
+    abort("ppc_rootogram expects counts as inputs to 'y'.")
+  }
+  if (!all_counts(yrep)) {
+    abort("ppc_rootogram expects counts as inputs to 'yrep'.")
+  }
+
+  alpha <- (1 - prob) / 2
+  probs <- c(alpha, 1 - alpha)
+  ymax <- max(y, yrep)
+  xpos <- 0L:ymax
+
+  # prepare a table for yrep
+  tyrep <- as.list(rep(NA, nrow(yrep)))
+  for (i in seq_along(tyrep)) {
+    tyrep[[i]] <- table(yrep[i,])
+    matches <- match(xpos, rownames(tyrep[[i]]))
+    tyrep[[i]] <- as.numeric(tyrep[[i]][matches])
+  }
+  tyrep <- do.call(rbind, tyrep)
+  tyrep[is.na(tyrep)] <- 0
+
+  # discrete style
+  if (style == "discrete"){
+    pred_median <- apply(tyrep, 2, median)
+    pred_quantile <- t(apply(tyrep, 2, quantile, probs = probs))
+    colnames(pred_quantile) <- c("lower", "upper")
+
+    # prepare a table for y
+    ty <- table(y)
+    y_count <- as.numeric(ty[match(xpos, rownames(ty))])
+    y_count[is.na(y_count)] <- 0
+
+    if (bound_distinct) {
+      # If the observed count is within the bounds of the predicted quantiles,
+      # use a different shape for the point
+      obs_shape <- obs_shape <- ifelse(y_count >= pred_quantile[, "lower"] & y_count <= pred_quantile[, "upper"], "In", "Out")
+    } else {
+      obs_shape <- rep("y", length(y_count)) # all points are the same shape for observed
+    }
+
+    data <- data.frame(
+      xpos = xpos,
+      obs = y_count,
+      pred_median = pred_median,
+      lower = pred_quantile[, "lower"],
+      upper = pred_quantile[, "upper"],
+      obs_shape = obs_shape
+    )
+  }
+  # standing, hanging, suspended styles
+  else {
+    tyexp <- sqrt(colMeans(tyrep))
+    tyquantile <- sqrt(t(apply(tyrep, 2, quantile, probs = probs)))
+    colnames(tyquantile) <- c("tylower", "tyupper")
+
+    # prepare a table for y
+    ty <- table(y)
+    ty <- sqrt(as.numeric(ty[match(xpos, rownames(ty))]))
+    if (style == "suspended") {
+      ty <- tyexp - ty
+    }
+    ty[is.na(ty)] <- 0
+    ypos <- ty / 2
+    if (style == "hanging") {
+      ypos <- tyexp - ypos
+    }
+
+    data <- data.frame(xpos, ypos, ty, tyexp, tyquantile)
+  }
+
+  return(data)
 }
