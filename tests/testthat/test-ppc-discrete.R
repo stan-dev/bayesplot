@@ -200,7 +200,7 @@ test_that("ppc_rootogram renders correctly", {
   )
 
   vdiffr::expect_doppelganger(
-    title = "ppc_rootogram (style='discrete', prob, size, bound_distinct=FALSE)",
+    title = "ppc_rootogram ('discrete', prob, size, bound_distinct=FALSE)",
     fig = p_discrete_nonbound)
 })
 

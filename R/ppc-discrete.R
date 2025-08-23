@@ -310,7 +310,7 @@ ppc_rootogram <- function(y,
     graph <- graph +
       geom_yrep +
       geom_y +
-      aes(x = xpos) +
+      aes(x = .data$xpos) +
       scale_y_sqrt() +
       scale_fill_manual("", values = get_color("d"), guide = "none") +
       scale_color_manual("", values = get_color("lh"), labels = yrep_label()) +
