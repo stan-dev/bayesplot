@@ -55,10 +55,10 @@
 #'   as a point range with uncertainty intervals along with dots
 #'   representing the `y`.
 #'
-#'   The y-axis represents the square roots of the counts to
-#'   approximately adjust for scale differences and thus ease comparison between
-#'   observed and expected counts. Using the `style` argument, the rootogram
-#'  can be adjusted to focus on different aspects of the data:
+#'   The y-axis represents the square roots of the counts to approximately
+#'   adjust for scale differences and thus ease comparison between observed
+#'   and expected counts. Using the `style` argument, the rootogram can be
+#'   adjusted to focus on different aspects of the data:
 #'   * _Standing_: basic histogram of observed counts with curve
 #'    showing expected counts.
 #'   * _Hanging_: observed counts hanging from the curve
@@ -67,6 +67,9 @@
 #'    observed counts.
 #'    * _Discrete_: a dot-and-whisker plot of the median counts and
 #'    dots representing observed counts.
+#'
+#'    As it emphasizes the discrete nature of the count data,
+#'    using `discrete` style is suggested.
 #'
 #'   **All of the rootograms are plotted on the square root scale**. See Kleiber
 #'   and Zeileis (2016) for advice on interpreting rootograms and selecting

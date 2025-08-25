@@ -133,10 +133,10 @@ Meanwhile, in \code{discrete} style, median counts based on \code{yrep} are laid
 as a point range with uncertainty intervals along with dots
 representing the \code{y}.
 
-The y-axis represents the square roots of the counts to
-approximately adjust for scale differences and thus ease comparison between
-observed and expected counts. Using the \code{style} argument, the rootogram
-can be adjusted to focus on different aspects of the data:
+The y-axis represents the square roots of the counts to approximately
+adjust for scale differences and thus ease comparison between observed
+and expected counts. Using the \code{style} argument, the rootogram can be
+adjusted to focus on different aspects of the data:
 \itemize{
 \item \emph{Standing}: basic histogram of observed counts with curve
 showing expected counts.
@@ -147,6 +147,9 @@ observed counts.
 \item \emph{Discrete}: a dot-and-whisker plot of the median counts and
 dots representing observed counts.
 }
+
+As it emphasizes the discrete nature of the count data,
+using \code{discrete} style is suggested.
 
 \strong{All of the rootograms are plotted on the square root scale}. See Kleiber
 and Zeileis (2016) for advice on interpreting rootograms and selecting
