@@ -106,6 +106,7 @@ ppc_stat <-
            yrep,
            stat = "mean",
            ...,
+           discrete = FALSE,
            binwidth = NULL,
            bins = NULL,
            breaks = NULL,
@@ -124,11 +125,21 @@ ppc_stat <-
       group = dots$group,
       stat = match.fun(stat)
     )
-    ggplot(
+
+    graph <- ggplot(
       data = dplyr::filter(data, .data$variable != "y"),
       mapping = set_hist_aes(freq)
-    ) +
-      geom_histogram(
+    )
+
+    graph <- if (discrete) {
+      graph + geom_bar(
+        aes(fill = "yrep"),
+        color = get_color("lh"),
+        linewidth = 0.25,
+        na.rm = TRUE,
+      )
+    } else {
+      graph + geom_histogram(
         aes(fill = "yrep"),
         color = get_color("lh"),
         linewidth = 0.25,
@@ -136,8 +147,10 @@ ppc_stat <-
         binwidth = binwidth,
         bins = bins,
         breaks = breaks
-      ) +
-      geom_vline(
+      )
+    }
+
+    graph + geom_vline(
         data = dplyr::filter(data, .data$variable == "y"),
         mapping = aes(xintercept = .data$value, color = "y"),
         linewidth = 1.5
@@ -169,6 +182,7 @@ ppc_stat_grouped <-
            group,
            stat = "mean",
            ...,
+           discrete = FALSE,
            facet_args = list(),
            binwidth = NULL,
            bins = NULL,

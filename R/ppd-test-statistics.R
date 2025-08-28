@@ -35,6 +35,7 @@ ppd_stat <-
   function(ypred,
            stat = "mean",
            ...,
+           discrete = FALSE,
            binwidth = NULL,
            bins = NULL,
            breaks = NULL,
@@ -51,18 +52,28 @@ ppd_stat <-
       group = dots$group,
       stat = match.fun(stat)
     )
-    ggplot(data, mapping = set_hist_aes(
+    graph <- ggplot(data, mapping = set_hist_aes(
       freq,
       color = "ypred",
       fill = "ypred"
-    )) +
+    ))
+    graph <- graph + if (discrete) {
+      geom_bar(
+        color = get_color("lh"),
+        linewidth = 0.25,
+        na.rm = TRUE,
+        position = "identity",
+      )
+    }
+    else {
       geom_histogram(
         linewidth = 0.25,
         na.rm = TRUE,
         binwidth = binwidth,
         bins = bins,
         breaks = breaks
-      ) +
+      ) }
+      graph +
       scale_color_ppd(guide = "none") +
       scale_fill_ppd(labels = Typred_label(), guide = guide_legend(
         title = stat_legend_title(stat, deparse(substitute(stat)))
@@ -83,6 +94,7 @@ ppd_stat_grouped <-
            group,
            stat = "mean",
            ...,
+           discrete = FALSE,
            facet_args = list(),
            binwidth = NULL,
            bins = NULL,
