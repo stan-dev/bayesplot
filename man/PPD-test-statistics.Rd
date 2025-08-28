@@ -75,6 +75,9 @@ then generic naming is used in the legend.}
 
 \item{...}{Currently unused.}
 
+\item{discrete}{For \code{ppc_stat()} and \code{ppc_stat_grouped()}, if \code{TRUE} then a
+bar chart is used instead of a histogram.}
+
 \item{binwidth}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}} to override
 the default binwidth.}
 

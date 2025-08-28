@@ -27,7 +27,8 @@
 #'   display the function name(s). If specified as a function (or functions)
 #'   then generic naming is used in the legend.
 #' @param ... Currently unused.
-#'
+#' @param discrete For `ppc_stat()` and `ppc_stat_grouped()`, if `TRUE` then a
+#'   bar chart is used instead of a histogram.
 #' @template details-binomial
 #' @template return-ggplot-or-data
 #'
@@ -38,7 +39,7 @@
 #' @section Plot Descriptions:
 #' \describe{
 #'   \item{`ppc_stat()`, `ppc_stat_freqpoly()`}{
-#'    A histogram or frequency polygon of the distribution of a statistic
+#'    A histogram/bar plot or frequency polygon of the distribution of a statistic
 #'    computed by applying `stat` to each dataset (row) in `yrep`. The value of
 #'    the statistic in the observed data, `stat(y)`, is overlaid as a vertical
 #'    line. More details and example usage of `ppc_stat()` can be found in Gabry
@@ -62,6 +63,12 @@
 #' ppc_stat(y, yrep, stat = "median")
 #' ppc_stat(y, yrep, stat = "sd") + legend_none()
 #'
+#' # discrete data example
+#' set.seed(0)
+#' y_discrete <- rbinom(20, 1, 0.2)
+#' yrep_discrete <- matrix(rbinom(2000, 1, prob = 0.4), 1000, 20, byrow = TRUE)
+#' ppc_stat(y_discrete, yrep_discrete, stat = "mean", discrete = TRUE)
+#'
 #' # use your own function for the 'stat' argument
 #' color_scheme_set("brightblue")
 #' q25 <- function(y) quantile(y, 0.25)
@@ -76,6 +83,10 @@
 #' group <- example_group_data()
 #' ppc_stat_grouped(y, yrep, group, stat = "median")
 #' ppc_stat_grouped(y, yrep, group, stat = "mad") + yaxis_text()
+#'
+#' # discrete data example with groups
+#' group_discrete <- rep(c("First Half","Second Half"), each = 10)
+#' ppc_stat_grouped(y_discrete, yrep_discrete, group_discrete, stat = "mean", discrete = TRUE)
 #'
 #' # force y-axes to have same scales, allow x axis to vary
 #' ppc_stat_grouped(y, yrep, group, facet_args = list(scales = "free_x")) + yaxis_text()

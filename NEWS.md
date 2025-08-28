@@ -6,6 +6,7 @@
 * Add `x` argument to `ppc_error_binned` by @behramulukir (#359)
 * Add `x` argument to `ppc_error_scatter_avg()` by @behramulukir (#367)
 * Add `discrete` style to `ppc_rootogram` by @behramulukir (#362)
+* Add `discrete` argument to `ppc_stat` and `ppd_stat` by @behramulukir (#369)
 
 # bayesplot 1.13.0
 
