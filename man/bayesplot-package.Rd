@@ -131,6 +131,7 @@ Other contributors:
   \item Eduardo Coronado Sroka [contributor]
   \item Teemu Sailynoja [contributor]
   \item Aki Vehtari [contributor]
+  \item Behram Ulukır [contributor]
 }
 
 }
