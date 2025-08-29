@@ -89,6 +89,7 @@
 #'    with `discrete = TRUE`.
 #' - [ppc_pit_ecdf()] and [ppc_pit_ecdf_grouped()] can also handle discrete
 #'   variables to plot PIT-ECDF of the empirical PIT values.
+#'
 #' These functions are not limited to discrete outcomes, but offer discrete-friendly
 #' displays for integer-valued statistics.
 #'
