@@ -1,12 +1,13 @@
 # bayesplot (development version)
 
-* PPC "avg" functions (`ppc_scatter_avg()`, `ppc_error_scatter_avg()`, etc.) gain a `stat` argument to set the averaging function. (Suggestion of #348, @kruschke).
-* `ppc_error_scatter_avg_vs_x(x = some_expression)` labels the *x* axis with `some_expression`.
-* Add `ppc_dots()` and `ppd_dots()` by @behramulukir (#357)
-* Add `x` argument to `ppc_error_binned` by @behramulukir (#359)
-* Add `x` argument to `ppc_error_scatter_avg()` by @behramulukir (#367)
-* Add `discrete` style to `ppc_rootogram` by @behramulukir (#362)
-* Add `discrete` argument to `ppc_stat` and `ppd_stat` by @behramulukir (#369)
+* PPC "avg" functions (`ppc_scatter_avg()`, `ppc_error_scatter_avg()`, etc.) gain a `stat` argument 
+  to set the averaging function. (Suggestion of #348, @kruschke).
+* `ppc_error_scatter_avg_vs_x(x = some_expression)` labels the x axis with `some_expression`.
+* New quantile dot plot functions `ppc_dots()` and `ppd_dots()` by @behramulukir (#357)
+* Add `x` argument to `ppc_error_binned()` to control x axis by @behramulukir (#359)
+* Add `x` argument to `ppc_error_scatter_avg()` to control x axis by @behramulukir (#367)
+* Add `discrete` style to `ppc_rootogram()` by @behramulukir (#362)
+* Add `discrete` argument to `ppc_stat()` and `ppd_stat()` to support discrete stats by @behramulukir (#369)
 
 # bayesplot 1.13.0
 

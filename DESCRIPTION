@@ -1,8 +1,8 @@
 Package: bayesplot
 Type: Package
 Title: Plotting for Bayesian Models
-Version: 1.13.0.9000
-Date: 2025-06-18
+Version: 1.14.0
+Date: 2025-09-01
 Authors@R: c(person("Jonah", "Gabry", role = c("aut", "cre"), email = "jsg2201@columbia.edu"),
              person("Tristan", "Mahr", role = "aut", comment = c(ORCID = "0000-0002-8890-5116")),
              person("Paul-Christian", "Bürkner", role = "ctb"),
@@ -11,7 +11,8 @@ Authors@R: c(person("Jonah", "Gabry", role = c("aut", "cre"), email = "jsg2201@c
              person("Frank", "Weber", role = "ctb"),
              person("Eduardo", "Coronado Sroka", role = "ctb"),
              person("Teemu", "Sailynoja", role = "ctb"),
-             person("Aki", "Vehtari", role = "ctb"))
+             person("Aki", "Vehtari", role = "ctb"), 
+             person("Behram", "Ulukır", role = "ctb"))
 Maintainer: Jonah Gabry <jsg2201@columbia.edu>
 Description: Plotting functions for posterior analysis, MCMC diagnostics,
     prior and posterior predictive checks, and other visualizations
