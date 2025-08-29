@@ -15,6 +15,7 @@ ppd_stat(
   ypred,
   stat = "mean",
   ...,
+  discrete = FALSE,
   binwidth = NULL,
   bins = NULL,
   breaks = NULL,
@@ -26,6 +27,7 @@ ppd_stat_grouped(
   group,
   stat = "mean",
   ...,
+  discrete = FALSE,
   facet_args = list(),
   binwidth = NULL,
   bins = NULL,
@@ -72,6 +74,9 @@ display the function name(s). If specified as a function (or functions)
 then generic naming is used in the legend.}
 
 \item{...}{Currently unused.}
+
+\item{discrete}{For \code{ppc_stat()} and \code{ppc_stat_grouped()}, if \code{TRUE} then a
+bar chart is used instead of a histogram.}
 
 \item{binwidth}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}} to override
 the default binwidth.}

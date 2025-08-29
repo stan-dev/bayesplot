@@ -77,6 +77,21 @@
 #' }
 #' }
 #'
+#' @section Related functions:
+#' In addition to the functions on this page that are restricted to discrete
+#' outcomes, some general PPC/PPD functions also support discrete data
+#' when requested:
+#' - [ppc_stat()] and [ppc_stat_grouped()] can visualize discrete test statistics
+#'    with predictive checks when `discrete = TRUE`.
+#' - [ppd_stat()] and [ppd_stat_grouped()] can visualize discrete test statistics
+#'    from predictive draws when `discrete = TRUE`.
+#' - [ppc_ecdf_overlay] can visualize empirical CDFs for discrete statistics
+#'    with `discrete = TRUE`.
+#' - [ppc_pit_ecdf()] and [ppc_pit_ecdf_grouped()] can also handle discrete
+#'   variables to plot PIT-ECDF of the empirical PIT values.
+#' These functions are not limited to discrete outcomes, but offer discrete-friendly
+#' displays for integer-valued statistics.
+#'
 #' @examples
 #' set.seed(9222017)
 #'

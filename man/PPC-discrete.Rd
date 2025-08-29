@@ -158,6 +158,25 @@ among the different styles.
 }
 }
 
+\section{Related functions}{
+
+In addition to the functions on this page that are restricted to discrete
+outcomes, some general PPC/PPD functions also support discrete data
+when requested:
+\itemize{
+\item \code{\link[=ppc_stat]{ppc_stat()}} and \code{\link[=ppc_stat_grouped]{ppc_stat_grouped()}} can visualize discrete test statistics
+with predictive checks when \code{discrete = TRUE}.
+\item \code{\link[=ppd_stat]{ppd_stat()}} and \code{\link[=ppd_stat_grouped]{ppd_stat_grouped()}} can visualize discrete test statistics
+from predictive draws when \code{discrete = TRUE}.
+\item \link{ppc_ecdf_overlay} can visualize empirical CDFs for discrete statistics
+with \code{discrete = TRUE}.
+\item \code{\link[=ppc_pit_ecdf]{ppc_pit_ecdf()}} and \code{\link[=ppc_pit_ecdf_grouped]{ppc_pit_ecdf_grouped()}} can also handle discrete
+variables to plot PIT-ECDF of the empirical PIT values.
+These functions are not limited to discrete outcomes, but offer discrete-friendly
+displays for integer-valued statistics.
+}
+}
+
 \examples{
 set.seed(9222017)
 
