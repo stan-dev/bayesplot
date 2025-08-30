@@ -252,7 +252,7 @@ Visualizing count data regressions using rootograms.
 \url{https://arxiv.org/abs/1605.01311}.
 }
 \seealso{
-Other PPCs:
+Other PPCs: 
 \code{\link{PPC-censoring}},
 \code{\link{PPC-distributions}},
 \code{\link{PPC-errors}},
