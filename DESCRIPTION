@@ -1,17 +1,18 @@
 Package: bayesplot
 Type: Package
 Title: Plotting for Bayesian Models
-Version: 1.13.0
-Date: 2025-06-18
+Version: 1.14.0.9000
+Date: 2025-08-31
 Authors@R: c(person("Jonah", "Gabry", role = c("aut", "cre"), email = "jsg2201@columbia.edu"),
-             person("Tristan", "Mahr", role = "aut"),
+             person("Tristan", "Mahr", role = "aut", comment = c(ORCID = "0000-0002-8890-5116")),
              person("Paul-Christian", "Bürkner", role = "ctb"),
              person("Martin", "Modrák", role = "ctb"),
              person("Malcolm", "Barrett", role = "ctb"),
              person("Frank", "Weber", role = "ctb"),
              person("Eduardo", "Coronado Sroka", role = "ctb"),
              person("Teemu", "Sailynoja", role = "ctb"),
-             person("Aki", "Vehtari", role = "ctb"))
+             person("Aki", "Vehtari", role = "ctb"), 
+             person("Behram", "Ulukır", role = "ctb"))
 Maintainer: Jonah Gabry <jsg2201@columbia.edu>
 Description: Plotting functions for posterior analysis, MCMC diagnostics,
     prior and posterior predictive checks, and other visualizations
@@ -26,7 +27,7 @@ URL: https://mc-stan.org/bayesplot/
 BugReports: https://github.com/stan-dev/bayesplot/issues/
 SystemRequirements: pandoc (>= 1.12.3), pandoc-citeproc
 Depends:
-    R (>= 3.1.0)
+    R (>= 4.1.0)
 Imports:
     dplyr (>= 0.8.0),
     ggplot2 (>= 3.4.0),
@@ -41,6 +42,7 @@ Imports:
     tidyselect,
     utils
 Suggests:
+    ggdist,
     ggfortify,
     gridExtra (>= 2.2.1),
     hexbin,

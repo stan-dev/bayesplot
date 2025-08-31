@@ -161,6 +161,6 @@
 <text transform='translate(19.29,258.00) rotate(-90)' style='font-size: 8.40px; font-family: sans;' textLength='4.67px' lengthAdjust='spacingAndGlyphs'>e</text>
 <text transform='translate(19.29,253.32) rotate(-90)' style='font-size: 8.40px; font-family: sans;' textLength='4.67px' lengthAdjust='spacingAndGlyphs'>p</text>
 <text transform='translate(17.07,248.65) rotate(-90)' style='font-size: 15.00px; font-family: sans;' textLength='4.99px' lengthAdjust='spacingAndGlyphs'>)</text>
-<text x='40.43' y='15.89' style='font-size: 14.40px; font-family: sans;' textLength='238.57px' lengthAdjust='spacingAndGlyphs'>ppc_error_scatter_avg_vs_x (default)</text>
+<text x='40.43' y='15.89' style='font-size: 14.40px; font-family: sans;' textLength='194.51px' lengthAdjust='spacingAndGlyphs'>ppc_error_scatter_avg (with x)</text>
 </g>
 </svg>

@@ -119,7 +119,7 @@ for plotting.
 
 Authors:
 \itemize{
-  \item Tristan Mahr
+  \item Tristan Mahr (\href{https://orcid.org/0000-0002-8890-5116}{ORCID})
 }
 
 Other contributors:
@@ -131,6 +131,7 @@ Other contributors:
   \item Eduardo Coronado Sroka [contributor]
   \item Teemu Sailynoja [contributor]
   \item Aki Vehtari [contributor]
+  \item Behram Ulukır [contributor]
 }
 
 }

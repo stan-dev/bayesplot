@@ -64,11 +64,14 @@ test_that("ppc_stat returns ggplot object", {
   expect_gg(ppc_stat(y, yrep, stat = function(x) median(x), binwidth = 0.05))
   expect_gg(ppc_stat(y2, yrep2, binwidth = 0.05))
   expect_gg(ppc_stat(y2, yrep2, stat = "prop0", binwidth = 0.05))
+  expect_gg(ppc_stat(y2, yrep2, discrete = TRUE))
+  expect_gg(ppc_stat(y2, yrep2, stat = "prop0", discrete = TRUE))
 
   # ppd versions
   expect_gg(ppd_stat(yrep, stat = "q25", binwidth = 0.05))
   expect_gg(ppd_stat(yrep, stat = q25, binwidth = 0.05))
   expect_gg(ppd_stat(yrep2, stat = "prop0", binwidth = 0.05))
+  expect_gg(ppd_stat(yrep2, stat = "prop0", discrete = TRUE))
 })
 
 test_that("ppc_stat_2d returns ggplot object", {
@@ -93,6 +96,11 @@ test_that("ppc_stat_grouped returns ggplot object", {
   expect_gg(ppc_stat_grouped(y, yrep, group, binwidth = 0.05))
   expect_gg(ppc_stat_grouped(y, yrep, as.numeric(group), stat = function(z) var(z), binwidth = 0.05))
   expect_gg(ppc_stat_grouped(y, yrep, as.integer(group), stat = "sd", binwidth = 0.05))
+  expect_gg(ppc_stat_grouped(y2, yrep2, group2, discrete = TRUE))
+
+  # ppd version
+  expect_gg(ppd_stat_grouped(yrep, group, binwidth = 0.05))
+  expect_gg(ppd_stat_grouped(yrep2, group2, discrete = TRUE))
 })
 
 test_that("ppc_stat_freqpoly_grouped returns ggplot object", {
@@ -146,6 +154,16 @@ test_that("ppc_stat renders correctly", {
     title = "ppc_stat (stat, binwidth, freq)",
     fig = p_custom)
 
+  p_discrete <- ppc_stat(
+    y = vdiff_y2,
+    yrep = vdiff_yrep2,
+    stat = "prop0",
+    discrete = TRUE
+  ) + yaxis_text()
+  vdiffr::expect_doppelganger(
+    title = "ppc_stat (discrete, stat)",
+    fig = p_discrete)
+
   # ppd versions
   p_base <- ppd_stat(vdiff_yrep, binwidth = 0.05) + yaxis_text()
   vdiffr::expect_doppelganger("ppd_stat (default)", p_base)
@@ -159,6 +177,15 @@ test_that("ppc_stat renders correctly", {
   vdiffr::expect_doppelganger(
     title = "ppd_stat (stat, binwidth, freq)",
     fig = p_custom)
+
+  p_discrete <- ppd_stat(
+    ypred = vdiff_yrep2,
+    stat = "prop0",
+    discrete = TRUE
+  ) + yaxis_text()
+  vdiffr::expect_doppelganger(
+    title = "ppd_stat (discrete, stat)",
+    fig = p_discrete)
 })
 
 test_that("ppc_stat_2d renders correctly", {
@@ -215,6 +242,17 @@ test_that("ppc_stat_grouped renders correctly", {
     title = "ppc_stat_grouped (stat, facet_args, binwidth)",
     fig = p_custom)
 
+  p_discrete <- ppc_stat_grouped(
+    y = vdiff_y2,
+    yrep = vdiff_yrep2,
+    group = vdiff_group2,
+    stat = "prop0",
+    discrete = TRUE
+  )
+  vdiffr::expect_doppelganger(
+    title = "ppc_stat_grouped (discrete, stat)",
+    fig = p_discrete)
+
   # ppd versions
   p_base <- ppd_stat_grouped(vdiff_yrep, vdiff_group, binwidth = 0.05)
   vdiffr::expect_doppelganger("ppd_stat_grouped (default)", p_base)
@@ -229,6 +267,16 @@ test_that("ppc_stat_grouped renders correctly", {
   vdiffr::expect_doppelganger(
     title = "ppd_stat_grouped (stat, facet_args, binwidth)",
     fig = p_custom)
+
+  p_discrete <- ppd_stat_grouped(
+    ypred = vdiff_yrep2,
+    group = vdiff_group2,
+    stat = "prop0",
+    discrete = TRUE
+  )
+  vdiffr::expect_doppelganger(
+    title = "ppd_stat_grouped (discrete, stat)",
+    fig = p_discrete)
 })
 
 test_that("ppc_stat_freqpoly_grouped renders correctly", {

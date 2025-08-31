@@ -37,23 +37,41 @@ ppc_error_hist_grouped(
 
 ppc_error_scatter(y, yrep, ..., facet_args = list(), size = 2.5, alpha = 0.8)
 
-ppc_error_scatter_avg(y, yrep, ..., size = 2.5, alpha = 0.8)
+ppc_error_scatter_avg(
+  y,
+  yrep,
+  x = NULL,
+  ...,
+  stat = "mean",
+  size = 2.5,
+  alpha = 0.8
+)
 
 ppc_error_scatter_avg_grouped(
   y,
   yrep,
   group,
   ...,
+  stat = "mean",
   facet_args = list(),
   size = 2.5,
   alpha = 0.8
 )
 
-ppc_error_scatter_avg_vs_x(y, yrep, x, ..., size = 2.5, alpha = 0.8)
+ppc_error_scatter_avg_vs_x(
+  y,
+  yrep,
+  x,
+  ...,
+  stat = "mean",
+  size = 2.5,
+  alpha = 0.8
+)
 
 ppc_error_binned(
   y,
   yrep,
+  x = NULL,
   ...,
   facet_args = list(),
   bins = NULL,
@@ -106,8 +124,12 @@ to the corresponding observation.}
 binned error plot, arguments controlling the size of the outline and
 opacity of the shaded region indicating the 2-SE bounds.}
 
-\item{x}{A numeric vector the same length as \code{y} to use as the x-axis
-variable.}
+\item{x}{A numeric vector the same length as \code{y} to use as the x-axis variable.}
+
+\item{stat}{A function or a string naming a function for computing the
+posterior average. In both cases, the function should take a vector input and
+return a scalar statistic. The function name is displayed in the axis-label.
+Defaults to \code{"mean"}.}
 }
 \value{
 A ggplot object that can be further customized using the \strong{ggplot2} package.
@@ -151,10 +173,12 @@ A single scatterplot of \code{y} vs. the average of the errors computed from
 \code{y} and each dataset (row) in \code{yrep}. For each individual data point
 \code{y[n]} the average error is the average of the errors for \code{y[n]} computed
 over the the draws from the posterior predictive distribution.
+
+When the optional \code{x} argument is provided, the average error is plotted
+on the y-axis and the predictor variable \code{x} is plotted on the x-axis.
 }
 \item{\code{ppc_error_scatter_avg_vs_x()}}{
-Same as \code{ppc_error_scatter_avg()}, except the average is plotted on the
-y-axis and a predictor variable \code{x} is plotted on the x-axis.
+Deprecated. Use \code{ppc_error_scatter_avg(x = x)} instead.
 }
 \item{\code{ppc_error_binned()}}{
 Intended for use with binomial data. A separate binned error plot (similar
@@ -185,7 +209,7 @@ ppc_error_scatter(y, yrep[10:14, ])
 ppc_error_scatter_avg(y, yrep)
 
 x <- example_x_data()
-ppc_error_scatter_avg_vs_x(y, yrep, x)
+ppc_error_scatter_avg(y, yrep, x)
 
 \dontrun{
 # binned error plot with binomial model from rstanarm
@@ -203,6 +227,10 @@ yrep <- posterior_predict(example_model)
 yrep_prop <- sweep(yrep, 2, trials, "/")
 
 ppc_error_binned(y_prop, yrep_prop[1:6, ])
+
+# plotting against a covariate on x-axis
+herd <- as.numeric(example_model$data$herd)
+ppc_error_binned(y_prop, yrep_prop[1:6, ], x = herd)
 }
 
 }
