@@ -20,7 +20,7 @@ at PPC-distributions has details on the individual plots."><meta property="og:im
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bayesplot</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.13.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.14.0</span>
       </span>
     </div>
 
@@ -146,6 +146,8 @@ at <a href="PPC-distributions.html">PPC-distributions</a> has details on the ind
 <span></span>
 <span><span class="fu">ppd_hist</span><span class="op">(</span><span class="va">ypred</span>, <span class="va">...</span>, binwidth <span class="op">=</span> <span class="cn">NULL</span>, bins <span class="op">=</span> <span class="cn">NULL</span>, breaks <span class="op">=</span> <span class="cn">NULL</span>, freq <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
+<span><span class="fu">ppd_dots</span><span class="op">(</span><span class="va">ypred</span>, <span class="va">...</span>, binwidth <span class="op">=</span> <span class="cn">NA</span>, quantiles <span class="op">=</span> <span class="cn">NA</span>, freq <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
 <span><span class="fu">ppd_freqpoly</span><span class="op">(</span></span>
 <span>  <span class="va">ypred</span>,</span>
 <span>  <span class="va">...</span>,</span>
@@ -187,7 +189,7 @@ to the corresponding observation.</p></dd>
 
 
 <dt>...</dt>
-<dd><p>Currently unused.</p></dd>
+<dd><p>For dot plots, optional additional arguments to pass to <code><a href="https://mjskay.github.io/ggdist/reference/stat_dots.html" class="external-link">ggdist::stat_dots()</a></code>.</p></dd>
 
 
 <dt>size, alpha</dt>
@@ -237,6 +239,13 @@ y-axis. Setting <code>freq=FALSE</code> puts density on the y-axis. (For many
 plots the y-axis text is off by default. To view the count or density
 labels on the y-axis see the <code><a href="bayesplot-helpers.html">yaxis_text()</a></code> convenience
 function.)</p></dd>
+
+
+<dt>quantiles</dt>
+<dd><p>For dot plots, an optional integer passed to
+<code><a href="https://mjskay.github.io/ggdist/reference/stat_dots.html" class="external-link">ggdist::stat_dots()</a></code> specifying the number of quantiles to use for a
+quantile dot plot. If <code>quantiles</code> is <code>NA</code> (the default) then all data
+points are plotted.</p></dd>
 
 
 <dt>notch</dt>

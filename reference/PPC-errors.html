@@ -18,7 +18,7 @@ Details and Plot Descriptions sections, below."><meta property="og:image" conten
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bayesplot</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.13.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.14.0</span>
       </span>
     </div>
 
@@ -140,23 +140,41 @@ Details and Plot Descriptions sections, below."><meta property="og:image" conten
 <span></span>
 <span><span class="fu">ppc_error_scatter</span><span class="op">(</span><span class="va">y</span>, <span class="va">yrep</span>, <span class="va">...</span>, facet_args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>, size <span class="op">=</span> <span class="fl">2.5</span>, alpha <span class="op">=</span> <span class="fl">0.8</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">ppc_error_scatter_avg</span><span class="op">(</span><span class="va">y</span>, <span class="va">yrep</span>, <span class="va">...</span>, size <span class="op">=</span> <span class="fl">2.5</span>, alpha <span class="op">=</span> <span class="fl">0.8</span><span class="op">)</span></span>
+<span><span class="fu">ppc_error_scatter_avg</span><span class="op">(</span></span>
+<span>  <span class="va">y</span>,</span>
+<span>  <span class="va">yrep</span>,</span>
+<span>  x <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  <span class="va">...</span>,</span>
+<span>  stat <span class="op">=</span> <span class="st">"mean"</span>,</span>
+<span>  size <span class="op">=</span> <span class="fl">2.5</span>,</span>
+<span>  alpha <span class="op">=</span> <span class="fl">0.8</span></span>
+<span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">ppc_error_scatter_avg_grouped</span><span class="op">(</span></span>
 <span>  <span class="va">y</span>,</span>
 <span>  <span class="va">yrep</span>,</span>
 <span>  <span class="va">group</span>,</span>
 <span>  <span class="va">...</span>,</span>
+<span>  stat <span class="op">=</span> <span class="st">"mean"</span>,</span>
 <span>  facet_args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  size <span class="op">=</span> <span class="fl">2.5</span>,</span>
 <span>  alpha <span class="op">=</span> <span class="fl">0.8</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">ppc_error_scatter_avg_vs_x</span><span class="op">(</span><span class="va">y</span>, <span class="va">yrep</span>, <span class="va">x</span>, <span class="va">...</span>, size <span class="op">=</span> <span class="fl">2.5</span>, alpha <span class="op">=</span> <span class="fl">0.8</span><span class="op">)</span></span>
+<span><span class="fu">ppc_error_scatter_avg_vs_x</span><span class="op">(</span></span>
+<span>  <span class="va">y</span>,</span>
+<span>  <span class="va">yrep</span>,</span>
+<span>  <span class="va">x</span>,</span>
+<span>  <span class="va">...</span>,</span>
+<span>  stat <span class="op">=</span> <span class="st">"mean"</span>,</span>
+<span>  size <span class="op">=</span> <span class="fl">2.5</span>,</span>
+<span>  alpha <span class="op">=</span> <span class="fl">0.8</span></span>
+<span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">ppc_error_binned</span><span class="op">(</span></span>
 <span>  <span class="va">y</span>,</span>
 <span>  <span class="va">yrep</span>,</span>
+<span>  x <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  <span class="va">...</span>,</span>
 <span>  facet_args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  bins <span class="op">=</span> <span class="cn">NULL</span>,</span>
@@ -232,8 +250,14 @@ opacity of the shaded region indicating the 2-SE bounds.</p></dd>
 
 
 <dt>x</dt>
-<dd><p>A numeric vector the same length as <code>y</code> to use as the x-axis
-variable.</p></dd>
+<dd><p>A numeric vector the same length as <code>y</code> to use as the x-axis variable.</p></dd>
+
+
+<dt>stat</dt>
+<dd><p>A function or a string naming a function for computing the
+posterior average. In both cases, the function should take a vector input and
+return a scalar statistic. The function name is displayed in the axis-label.
+Defaults to <code>"mean"</code>.</p></dd>
 
 </dl></div>
     <div id="value">
@@ -277,11 +301,12 @@ should have only a small number of rows.</p></dd>
 <dd><p>A single scatterplot of <code>y</code> vs. the average of the errors computed from
 <code>y</code> and each dataset (row) in <code>yrep</code>. For each individual data point
 <code>y[n]</code> the average error is the average of the errors for <code>y[n]</code> computed
-over the the draws from the posterior predictive distribution.</p></dd>
+over the the draws from the posterior predictive distribution.</p>
+<p>When the optional <code>x</code> argument is provided, the average error is plotted
+on the y-axis and the predictor variable <code>x</code> is plotted on the x-axis.</p></dd>
 
 <dt><code>ppc_error_scatter_avg_vs_x()</code></dt>
-<dd><p>Same as <code>ppc_error_scatter_avg()</code>, except the average is plotted on the
-y-axis and a predictor variable <code>x</code> is plotted on the x-axis.</p></dd>
+<dd><p>Deprecated. Use <code>ppc_error_scatter_avg(x = x)</code> instead.</p></dd>
 
 <dt><code>ppc_error_binned()</code></dt>
 <dd><p>Intended for use with binomial data. A separate binned error plot (similar
@@ -346,7 +371,7 @@ Press, London, third edition. (Ch. 6)</p>
 <span class="r-plt img"><img src="PPC-errors-7.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="example-data.html">example_x_data</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">ppc_error_scatter_avg_vs_x</span><span class="op">(</span><span class="va">y</span>, <span class="va">yrep</span>, <span class="va">x</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">ppc_error_scatter_avg</span><span class="op">(</span><span class="va">y</span>, <span class="va">yrep</span>, <span class="va">x</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="PPC-errors-8.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># \dontrun{</span></span></span>
@@ -396,6 +421,11 @@ Press, London, third edition. (Ch. 6)</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">ppc_error_binned</span><span class="op">(</span><span class="va">y_prop</span>, <span class="va">yrep_prop</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">6</span>, <span class="op">]</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="PPC-errors-9.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># plotting against a covariate on x-axis</span></span></span>
+<span class="r-in"><span><span class="va">herd</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">example_model</span><span class="op">$</span><span class="va">data</span><span class="op">$</span><span class="va">herd</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">ppc_error_binned</span><span class="op">(</span><span class="va">y_prop</span>, <span class="va">yrep_prop</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">6</span>, <span class="op">]</span>, x <span class="op">=</span> <span class="va">herd</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="PPC-errors-10.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>

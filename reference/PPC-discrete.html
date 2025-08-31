@@ -22,7 +22,7 @@ Plot Descriptions section below."><meta property="og:image" content="https://mc-
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bayesplot</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.13.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.14.0</span>
       </span>
     </div>
 
@@ -152,10 +152,11 @@ plots for ordinal, categorical, and multinomial outcomes. See the
 <span><span class="fu">ppc_rootogram</span><span class="op">(</span></span>
 <span>  <span class="va">y</span>,</span>
 <span>  <span class="va">yrep</span>,</span>
-<span>  style <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"standing"</span>, <span class="st">"hanging"</span>, <span class="st">"suspended"</span><span class="op">)</span>,</span>
+<span>  style <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"standing"</span>, <span class="st">"hanging"</span>, <span class="st">"suspended"</span>, <span class="st">"discrete"</span><span class="op">)</span>,</span>
 <span>  <span class="va">...</span>,</span>
 <span>  prob <span class="op">=</span> <span class="fl">0.9</span>,</span>
-<span>  size <span class="op">=</span> <span class="fl">1</span></span>
+<span>  size <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  bound_distinct <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">ppc_bars_data</span><span class="op">(</span><span class="va">y</span>, <span class="va">yrep</span>, group <span class="op">=</span> <span class="cn">NULL</span>, prob <span class="op">=</span> <span class="fl">0.9</span>, freq <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
@@ -197,7 +198,7 @@ the bar width.</p></dd>
 <dd><p>For bar plots, <code>size</code>, <code>fatten</code>, and <code>linewidth</code>
 are passed to <code><a href="https://ggplot2.tidyverse.org/reference/geom_linerange.html" class="external-link">ggplot2::geom_pointrange()</a></code> to control the appearance of the
 <code>yrep</code> points and intervals. For rootograms <code>size</code> is passed to
-<code><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">ggplot2::geom_line()</a></code>.</p></dd>
+<code><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">ggplot2::geom_line()</a></code> and <code><a href="https://ggplot2.tidyverse.org/reference/geom_linerange.html" class="external-link">ggplot2::geom_pointrange()</a></code>.</p></dd>
 
 
 <dt>freq</dt>
@@ -219,9 +220,15 @@ passed to <code><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html
 
 <dt>style</dt>
 <dd><p>For <code>ppc_rootogram</code>, a string specifying the rootogram
-style. The options are <code>"standing"</code>, <code>"hanging"</code>, and
+style. The options are <code>"discrete"</code>, <code>"standing"</code>, <code>"hanging"</code>, and
 <code>"suspended"</code>. See the <strong>Plot Descriptions</strong> section, below, for
 details on the different styles.</p></dd>
+
+
+<dt>bound_distinct</dt>
+<dd><p>For <code>ppc_rootogram(style = "discrete)</code>,
+if <code>TRUE</code> then the observed counts will be plotted with different shapes
+depending on whether they are within the bounds of the <code>y</code> quantiles.</p></dd>
 
 </dl></div>
     <div id="value">
@@ -254,23 +261,48 @@ level of a grouping variable.</p></dd>
 
 <dt><code>ppc_rootogram()</code></dt>
 <dd><p>Rootograms allow for diagnosing problems in count data models such as
-overdispersion or excess zeros. They consist of a histogram of <code>y</code> with the
-expected counts based on <code>yrep</code> overlaid as a line along with uncertainty
-intervals. The y-axis represents the square roots of the counts to
-approximately adjust for scale differences and thus ease comparison between
-observed and expected counts. Using the <code>style</code> argument, the histogram
-style can be adjusted to focus on different aspects of the data:</p><ul><li><p><em>Standing</em>: basic histogram of observed counts with curve
+overdispersion or excess zeros. In <code>standing</code>, <code>hanging</code>, and <code>suspended</code>
+styles, they consist of a histogram of <code>y</code> with the expected counts based on
+<code>yrep</code> overlaid as a line along with uncertainty intervals.</p>
+<p>Meanwhile, in <code>discrete</code> style, median counts based on <code>yrep</code> are laid
+as a point range with uncertainty intervals along with dots
+representing the <code>y</code>.</p>
+<p>The y-axis represents the square roots of the counts to approximately
+adjust for scale differences and thus ease comparison between observed
+and expected counts. Using the <code>style</code> argument, the rootogram can be
+adjusted to focus on different aspects of the data:</p><ul><li><p><em>Standing</em>: basic histogram of observed counts with curve
 showing expected counts.</p></li>
-<li><p><em>Hanging</em>: observed counts counts hanging from the curve
+<li><p><em>Hanging</em>: observed counts hanging from the curve
 representing expected counts.</p></li>
 <li><p><em>Suspended</em>: histogram of the differences between expected and
 observed counts.</p></li>
-</ul><p><strong>All of the rootograms are plotted on the square root scale</strong>. See Kleiber
+<li><p><em>Discrete</em>: a dot-and-whisker plot of the median counts and
+dots representing observed counts.</p></li>
+</ul><p>As it emphasizes the discrete nature of the count data,
+using <code>discrete</code> style is suggested.</p>
+<p><strong>All of the rootograms are plotted on the square root scale</strong>. See Kleiber
 and Zeileis (2016) for advice on interpreting rootograms and selecting
 among the different styles.</p></dd>
 
 
 </dl></div>
+    <div id="related-functions">
+    <h2>Related functions</h2>
+    
+
+<p>In addition to the functions on this page that are restricted to discrete
+outcomes, some general PPC/PPD functions also support discrete data
+when requested:</p><ul><li><p><code><a href="PPC-test-statistics.html">ppc_stat()</a></code> and <code><a href="PPC-test-statistics.html">ppc_stat_grouped()</a></code> can visualize discrete test statistics
+with predictive checks when <code>discrete = TRUE</code>.</p></li>
+<li><p><code><a href="PPD-test-statistics.html">ppd_stat()</a></code> and <code><a href="PPD-test-statistics.html">ppd_stat_grouped()</a></code> can visualize discrete test statistics
+from predictive draws when <code>discrete = TRUE</code>.</p></li>
+<li><p><a href="PPC-distributions.html">ppc_ecdf_overlay</a> can visualize empirical CDFs for discrete statistics
+with <code>discrete = TRUE</code>.</p></li>
+<li><p><code><a href="PPC-distributions.html">ppc_pit_ecdf()</a></code> and <code><a href="PPC-distributions.html">ppc_pit_ecdf_grouped()</a></code> can also handle discrete
+variables to plot PIT-ECDF of the empirical PIT values.</p></li>
+</ul><p>These functions are not limited to discrete outcomes, but offer discrete-friendly
+displays for integer-valued statistics.</p>
+    </div>
     <div id="references">
     <h2>References</h2>
     <p>Kleiber, C. and Zeileis, A. (2016).
@@ -367,6 +399,8 @@ Visualizing count data regressions using rootograms.
 <span class="r-plt img"><img src="PPC-discrete-7.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="fu">ppc_rootogram</span><span class="op">(</span><span class="va">y</span>, <span class="va">yrep</span>, style <span class="op">=</span> <span class="st">"suspended"</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="PPC-discrete-8.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span><span class="fu">ppc_rootogram</span><span class="op">(</span><span class="va">y</span>, <span class="va">yrep</span>, style <span class="op">=</span> <span class="st">"discrete"</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="PPC-discrete-9.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

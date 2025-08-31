@@ -22,7 +22,7 @@ PPC-test-statistics has details on the individual plots."><meta property="og:ima
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bayesplot</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.13.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.14.0</span>
       </span>
     </div>
 
@@ -127,6 +127,7 @@ any observed data <code>y</code>. The <strong>Plot Descriptions</strong> section
 <span>  <span class="va">ypred</span>,</span>
 <span>  stat <span class="op">=</span> <span class="st">"mean"</span>,</span>
 <span>  <span class="va">...</span>,</span>
+<span>  discrete <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  binwidth <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  bins <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  breaks <span class="op">=</span> <span class="cn">NULL</span>,</span>
@@ -138,6 +139,7 @@ any observed data <code>y</code>. The <strong>Plot Descriptions</strong> section
 <span>  <span class="va">group</span>,</span>
 <span>  stat <span class="op">=</span> <span class="st">"mean"</span>,</span>
 <span>  <span class="va">...</span>,</span>
+<span>  discrete <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  facet_args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  binwidth <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  bins <span class="op">=</span> <span class="cn">NULL</span>,</span>
@@ -191,6 +193,11 @@ then generic naming is used in the legend.</p></dd>
 
 <dt>...</dt>
 <dd><p>Currently unused.</p></dd>
+
+
+<dt>discrete</dt>
+<dd><p>For <code><a href="PPC-test-statistics.html">ppc_stat()</a></code> and <code><a href="PPC-test-statistics.html">ppc_stat_grouped()</a></code>, if <code>TRUE</code> then a
+bar chart is used instead of a histogram.</p></dd>
 
 
 <dt>binwidth</dt>
