@@ -213,7 +213,7 @@ test_that("ppc_loo_pit_overlay renders correctly", {
   skip_if_not_installed("vdiffr")
   skip_if_not_installed("loo")
   skip_on_r_oldrel()
-  skip_if(packageVersion("rstantools") > "2.4.0")
+  skip_if(packageVersion("rstantools") <= "2.4.0")
 
   p_base <- suppressMessages(ppc_loo_pit_overlay(vdiff_loo_y, vdiff_loo_yrep, vdiff_loo_lw))
   vdiffr::expect_doppelganger("ppc_loo_pit_overlay (default)", p_base)
@@ -232,7 +232,7 @@ test_that("ppc_loo_pit_qq renders correctly", {
   skip_if_not_installed("vdiffr")
   skip_if_not_installed("loo")
   skip_on_r_oldrel()
-  skip_if(packageVersion("rstantools") > "2.4.0")
+  skip_if(packageVersion("rstantools") <= "2.4.0")
 
   p_base <- ppc_loo_pit_qq(vdiff_loo_y, vdiff_loo_yrep, vdiff_loo_lw)
   vdiffr::expect_doppelganger("ppc_loo_pit_qq (default)", p_base)
