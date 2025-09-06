@@ -11,7 +11,7 @@
 #' @template args-regex_pars
 #' @template args-transformations
 #' @param ... Currently ignored.
-#' @param size,alpha For `mcmc_scatter()`, passed to
+#' @param shape,size,alpha For `mcmc_scatter()`, passed to
 #'   [ggplot2::geom_point()] to control the appearance of the points.
 #' @param bins,binwidth For `mcmc_hex()`, an optional numeric vector of
 #'   *length two* passed to [ggplot2::geom_hex()] to override the

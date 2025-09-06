@@ -1,5 +1,7 @@
 # bayesplot (development version)
 
+* Add `shape` argument to `mcmc_scatter()` by @behramulukir (#375)
+
 * PPC "avg" functions (`ppc_scatter_avg()`, `ppc_error_scatter_avg()`, etc.) gain a `stat` argument to set the averaging function. (Suggestion of #348, @kruschke).
 * `ppc_error_scatter_avg_vs_x(x = some_expression)` labels the *x* axis with `some_expression`.
 * Add `ppc_dots()` and `ppd_dots()` by @behramulukir (#357)

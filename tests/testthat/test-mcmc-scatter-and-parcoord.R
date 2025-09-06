@@ -17,6 +17,7 @@ if (requireNamespace("rstanarm", quietly = TRUE)) {
 test_that("mcmc_scatter returns a ggplot object", {
   expect_gg(mcmc_scatter(arr, pars = c("beta[1]", "beta[2]")))
   expect_gg(mcmc_scatter(arr1chain, regex_pars = "beta", size = 3, alpha = 0.5))
+  expect_gg(mcmc_scatter(arr1chain, regex_pars = "beta", shape = 23, size = 3, alpha = 0.5))
   expect_gg(mcmc_scatter(drawsarr, pars = c("theta[1]", "theta[2]")))
   expect_gg(mcmc_scatter(mat, pars = c("sigma", "(Intercept)")))
   expect_gg(mcmc_scatter(dframe, regex_pars = "x:[2,4]"))
@@ -386,6 +387,14 @@ test_that("mcmc_scatter renders correctly", {
     alpha = 0.2
   )
   vdiffr::expect_doppelganger("mcmc_scatter (size, alpha)", p_custom)
+
+  p_custom_shape <- mcmc_scatter(
+    vdiff_dframe_chains,
+    shape = 3,
+    size = 2,
+    alpha = 0.2
+  )
+  vdiffr::expect_doppelganger("mcmc_scatter (shape, size, alpha)", p_custom_shape)
 
   p_divergences <- mcmc_scatter(
     vdiff_dframe_chains,
