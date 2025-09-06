@@ -172,9 +172,10 @@ from predictive draws when \code{discrete = TRUE}.
 with \code{discrete = TRUE}.
 \item \code{\link[=ppc_pit_ecdf]{ppc_pit_ecdf()}} and \code{\link[=ppc_pit_ecdf_grouped]{ppc_pit_ecdf_grouped()}} can also handle discrete
 variables to plot PIT-ECDF of the empirical PIT values.
+}
+
 These functions are not limited to discrete outcomes, but offer discrete-friendly
 displays for integer-valued statistics.
-}
 }
 
 \examples{
