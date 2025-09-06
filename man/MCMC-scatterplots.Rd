@@ -16,6 +16,7 @@ mcmc_scatter(
   regex_pars = character(),
   transformations = list(),
   ...,
+  shape = 21,
   size = 2.5,
   alpha = 0.8,
   np = NULL,
@@ -120,7 +121,7 @@ abbreviated for convenience in interactive use (e.g., \code{transform}).}
 
 \item{...}{Currently ignored.}
 
-\item{size, alpha}{For \code{mcmc_scatter()}, passed to
+\item{shape, size, alpha}{For \code{mcmc_scatter()}, passed to
 \code{\link[ggplot2:geom_point]{ggplot2::geom_point()}} to control the appearance of the points.}
 
 \item{np}{Optionally, a data frame of NUTS sampler parameters, either created

@@ -1,5 +1,7 @@
 # bayesplot (development version)
 
+* Add `shape` argument to `mcmc_scatter()` by @behramulukir (#375)
+
 # bayesplot 1.14.0
 
 * PPC "avg" functions (`ppc_scatter_avg()`, `ppc_error_scatter_avg()`, etc.) gain a `stat` argument 
