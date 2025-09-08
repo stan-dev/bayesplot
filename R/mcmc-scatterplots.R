@@ -11,7 +11,7 @@
 #' @template args-regex_pars
 #' @template args-transformations
 #' @param ... Currently ignored.
-#' @param size,alpha For `mcmc_scatter()`, passed to
+#' @param shape,size,alpha For `mcmc_scatter()`, passed to
 #'   [ggplot2::geom_point()] to control the appearance of the points.
 #' @param bins,binwidth For `mcmc_hex()`, an optional numeric vector of
 #'   *length two* passed to [ggplot2::geom_hex()] to override the
@@ -129,6 +129,7 @@ mcmc_scatter <- function(x,
                          regex_pars = character(),
                          transformations = list(),
                          ...,
+                         shape = 21,
                          size = 2.5,
                          alpha = 0.8,
                          np = NULL,
@@ -139,6 +140,7 @@ mcmc_scatter <- function(x,
     pars = pars,
     regex_pars = regex_pars,
     transformations = transformations,
+    shape = shape,
     size = size,
     alpha = alpha,
     hex = FALSE,
@@ -641,6 +643,7 @@ pairs_condition <- function(chains = NULL, draws = NULL, nuts = NULL) {
                           regex_pars = character(),
                           transformations = list(),
                           hex = FALSE,
+                          shape = 21,
                           size = 2.5,
                           alpha = 0.8,
                           bins = 30,
@@ -684,7 +687,7 @@ pairs_condition <- function(chains = NULL, draws = NULL, nuts = NULL) {
   if (!hex) { # scatterplot
     graph <- graph +
       geom_point(
-        shape = 21,
+        shape = shape,
         color = get_color("dh"),
         fill = get_color("d"),
         size = size,
