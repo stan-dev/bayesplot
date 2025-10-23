@@ -25,20 +25,11 @@
   </clipPath>
 </defs>
 <g clip-path='url(#cpNDEuNjR8NzE0LjAyfDI0Ljg1fDU0Mi4zMA==)'>
-<line x1='-630.75' y1='1059.75' x2='1386.41' y2='-492.60' style='stroke-width: 1.07; stroke-dasharray: 5.69,5.69; stroke-linecap: butt;' />
-<circle cx='72.20' cy='281.41' r='3.56' style='stroke-width: 0.71; stroke: #005B96; fill: #6497B1;' />
-<circle cx='377.83' cy='270.68' r='3.56' style='stroke-width: 0.71; stroke: #005B96; fill: #6497B1;' />
-<circle cx='530.64' cy='295.47' r='3.56' style='stroke-width: 0.71; stroke: #005B96; fill: #6497B1;' />
-<circle cx='683.46' cy='285.51' r='3.56' style='stroke-width: 0.71; stroke: #005B96; fill: #6497B1;' />
-</g>
-<g clip-path='url(#cpMC4wMHw3MjAuMDB8MC4wMHw1NzYuMDA=)'>
-</g>
-<defs>
-  <clipPath id='cpNDEuNjR8NzE0LjAyfDI0Ljg1fDI0Ljg1'>
-    <rect x='41.64' y='24.85' width='672.38' height='0.00' />
-  </clipPath>
-</defs>
-<g clip-path='url(#cpNDEuNjR8NzE0LjAyfDI0Ljg1fDI0Ljg1)'>
+<line x1='-630.75' y1='1059.75' x2='1386.41' y2='-492.60' style='stroke-width: 1.16; stroke-dasharray: 6.21,6.21; stroke-linecap: butt;' />
+<circle cx='72.20' cy='281.41' r='3.59' style='stroke-width: 0.77; stroke: #005B96; fill: #6497B1;' />
+<circle cx='377.83' cy='270.68' r='3.59' style='stroke-width: 0.77; stroke: #005B96; fill: #6497B1;' />
+<circle cx='530.64' cy='295.47' r='3.59' style='stroke-width: 0.77; stroke: #005B96; fill: #6497B1;' />
+<circle cx='683.46' cy='285.51' r='3.59' style='stroke-width: 0.77; stroke: #005B96; fill: #6497B1;' />
 </g>
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8MC4wMHw1NzYuMDA=)'>
 <polyline points='41.64,542.30 714.02,542.30 ' style='stroke-width: 0.85; stroke-linecap: butt;' />

@@ -64,8 +64,8 @@
 <text x='617.70' y='554.29' text-anchor='middle' style='font-size: 9.60px; fill: #4D4D4D; font-family: sans;' textLength='16.02px' lengthAdjust='spacingAndGlyphs'>100</text>
 <text x='333.03' y='567.53' text-anchor='middle' style='font-size: 12.00px; font-family: sans;' textLength='94.72px' lengthAdjust='spacingAndGlyphs'>Data point (index)</text>
 <line x1='665.83' y1='283.30' x2='679.65' y2='283.30' style='stroke-width: 1.07; stroke: #011F4B; stroke-linecap: butt;' />
-<rect x='664.17' y='292.01' width='17.14' height='17.14' style='stroke-width: 0.11; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #D1E1EC; fill-opacity: 0.33;' />
-<rect x='664.28' y='292.12' width='16.93' height='16.93' style='stroke-width: 0.27; stroke: #B3CDE0; stroke-linecap: butt; stroke-linejoin: miter; fill: #D1E1EC;' />
+<rect x='664.17' y='292.01' width='17.14' height='17.14' style='stroke-width: 0.11; stroke: none; stroke-linecap: butt; fill: #D1E1EC; fill-opacity: 0.33;' />
+<rect x='664.28' y='292.12' width='16.93' height='16.93' style='stroke-width: 0.27; stroke: #B3CDE0; stroke-linecap: butt; fill: #D1E1EC;' />
 <text x='687.36' y='285.39' style='font-size: 13.00px; font-style: italic; font-family: sans;' textLength='6.51px' lengthAdjust='spacingAndGlyphs'>y</text>
 <text x='687.36' y='301.87' style='font-size: 13.00px; font-style: italic; font-family: sans;' textLength='6.51px' lengthAdjust='spacingAndGlyphs'>y</text>
 <text x='694.89' y='304.28' style='font-size: 9.10px; font-family: sans;' textLength='3.03px' lengthAdjust='spacingAndGlyphs'>r</text>
