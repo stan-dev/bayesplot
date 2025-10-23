@@ -3,7 +3,7 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 LICENSE
-^\.travis\.yml$
+^\_pkgdown\.yml$
 ^README\.md$
 .gitignore
 .git/*
