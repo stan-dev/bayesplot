@@ -1,0 +1,131 @@
+url: https://mc-stan.org/bayesplot
+
+development:
+  mode: auto
+
+destination: "."
+
+template:
+  package: pkgdownconfig
+
+navbar:
+  title: "bayesplot"
+
+  structure:
+    left: [home, vignettes, functions, news, pkgs, stan]
+    right: [search, bluesky, forum, github, lightswitch]
+
+  components:
+    pkgs:
+      text: Other Packages
+      menu:
+        - text: cmdstanr
+          href: https://mc-stan.org/cmdstanr
+        - text: loo
+          href: https://mc-stan.org/loo
+        - text: posterior
+          href: https://mc-stan.org/posterior
+        - text: projpred
+          href: https://mc-stan.org/projpred
+        - text: rstan
+          href: https://mc-stan.org/rstan
+        - text: rstanarm
+          href: https://mc-stan.org/rstanarm
+        - text: rstantools
+          href: https://mc-stan.org/rstantools
+        - text: shinystan
+          href: https://mc-stan.org/shinystan
+
+articles:
+  - title: "Getting Started"
+    desc: >
+      These vignettes provide an introduction to visualizing MCMC draws and
+      diagnostics and performing graphical posterior predictive checks using
+      the **bayesplot** package.
+    contents:
+      - plotting-mcmc-draws
+      - visual-mcmc-diagnostics
+      - graphical-ppcs
+
+reference:
+  - title: "Overview"
+    desc: >
+      Package overview
+    contents:
+      - bayesplot-package
+  - title: "Aesthetics"
+    desc: >
+      Functions for setting the color scheme and ggplot theme used
+      by **bayesplot**. (Also see the separate **ggplot helpers** section
+      below.)
+    contents:
+      - bayesplot-colors
+      - bayesplot_theme_get
+      - theme_default
+  - title: "PPC"
+    desc: >
+      Functions for carrying out a wide variety of graphical model checks
+      based on comparing observed data to draws from the posterior or prior
+      predictive distribution.
+    contents:
+      - PPC-overview
+      - starts_with("ppc")
+      - pp_check
+  - title: "PPD"
+    desc: >
+      Functions for creating graphical displays of simulated data from the
+      posterior or prior predictive distribution (PPD). These plots are essentially
+      the same as the corresponding PPC plots but without comparing to any observed
+      data.
+    contents:
+      - PPD-overview
+      - starts_with("ppd")
+  - title: "MCMC"
+    desc: >
+      Functions for creating plots of MCMC draws of model parameters and
+      general MCMC diagnostics.
+    contents:
+      - MCMC-overview
+      - MCMC-diagnostics
+      - MCMC-distributions
+      - MCMC-intervals
+      - MCMC-recover
+      - MCMC-scatterplots
+      - MCMC-parcoord
+      - MCMC-traces
+      - MCMC-combos
+  - title: "HMC/NUTS diagnostics"
+    desc: >
+      Functions for plotting diagnostics specific to Hamiltonian Monte Carlo (HMC)
+      and the No-U-Turn Sampler (NUTS). Some of the general MCMC plotting functions
+      (`mcmc_parcoord()`, `mcmc_pairs()`, `mcmc_scatter()`, `mcmc_trace()`) can also
+      show HMC/NUTS diagnostic information if optional arguments are specified,
+      but the special functions below are _only_ intended for use with HMC/NUTS.
+    contents:
+      - MCMC-nuts
+  - title: "Tidy parameter selection for MCMC plots"
+    desc: >
+      Helper functions for tidy parameter selection and examples of using
+      **bayesplot** with [**dplyr**](https://dplyr.tidyverse.org/).
+    contents:
+      - tidy-params
+  - title: "ggplot helpers"
+    desc: >
+      Convenience functions for arranging multiple plots, adding features
+      to plots, and shortcuts for modifying individual ggplot theme elements.
+    contents:
+      - bayesplot_grid
+      - bayesplot-helpers
+  - title: "Extractors"
+    desc: >
+      Functions extracting various quantities needed for plotting from different
+      types of fitted model objects.
+    contents:
+      - bayesplot-extractors
+  - title: "Miscellaneous"
+    desc: >
+      Functions for generating data for examples and listing available
+      plotting functions.
+    contents:
+      - example-data
+      - available_ppc
