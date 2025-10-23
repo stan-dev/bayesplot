@@ -25,24 +25,24 @@
   </clipPath>
 </defs>
 <g clip-path='url(#cpNDMuNzh8NjQ2LjE3fDI0Ljg1fDU1Ni4wNA==)'>
-<rect x='71.16' y='92.31' width='49.78' height='463.74' style='stroke-width: 1.07; stroke: #B3CDE0; stroke-linecap: butt; stroke-linejoin: miter; fill: #D1E1EC;' />
-<rect x='170.73' y='50.15' width='49.78' height='505.89' style='stroke-width: 1.07; stroke: #B3CDE0; stroke-linecap: butt; stroke-linejoin: miter; fill: #D1E1EC;' />
-<rect x='270.30' y='345.25' width='49.78' height='210.79' style='stroke-width: 1.07; stroke: #B3CDE0; stroke-linecap: butt; stroke-linejoin: miter; fill: #D1E1EC;' />
-<rect x='369.87' y='513.89' width='49.78' height='42.16' style='stroke-width: 1.07; stroke: #B3CDE0; stroke-linecap: butt; stroke-linejoin: miter; fill: #D1E1EC;' />
-<rect x='469.43' y='556.04' width='49.78' height='0.00' style='stroke-width: 1.07; stroke: #B3CDE0; stroke-linecap: butt; stroke-linejoin: miter; fill: #D1E1EC;' />
-<rect x='569.00' y='513.89' width='49.78' height='42.16' style='stroke-width: 1.07; stroke: #B3CDE0; stroke-linecap: butt; stroke-linejoin: miter; fill: #D1E1EC;' />
+<rect x='71.16' y='92.31' width='49.78' height='463.74' style='stroke-width: 1.16; stroke: #B3CDE0; stroke-linecap: butt; stroke-linejoin: miter; fill: #D1E1EC;' />
+<rect x='170.73' y='50.15' width='49.78' height='505.89' style='stroke-width: 1.16; stroke: #B3CDE0; stroke-linecap: butt; stroke-linejoin: miter; fill: #D1E1EC;' />
+<rect x='270.30' y='345.25' width='49.78' height='210.79' style='stroke-width: 1.16; stroke: #B3CDE0; stroke-linecap: butt; stroke-linejoin: miter; fill: #D1E1EC;' />
+<rect x='369.87' y='513.89' width='49.78' height='42.16' style='stroke-width: 1.16; stroke: #B3CDE0; stroke-linecap: butt; stroke-linejoin: miter; fill: #D1E1EC;' />
+<rect x='469.43' y='556.04' width='49.78' height='0.00' style='stroke-width: 1.16; stroke: #B3CDE0; stroke-linecap: butt; stroke-linejoin: miter; fill: #D1E1EC;' />
+<rect x='569.00' y='513.89' width='49.78' height='42.16' style='stroke-width: 1.16; stroke: #B3CDE0; stroke-linecap: butt; stroke-linejoin: miter; fill: #D1E1EC;' />
 <line x1='96.05' y1='133.83' x2='96.05' y2='50.78' style='stroke-width: 2.13; stroke: #03396C; stroke-linecap: butt;' />
 <line x1='195.62' y1='175.99' x2='195.62' y2='50.15' style='stroke-width: 2.13; stroke: #03396C; stroke-linecap: butt;' />
 <line x1='295.19' y1='386.78' x2='295.19' y2='303.10' style='stroke-width: 2.13; stroke: #03396C; stroke-linecap: butt;' />
 <line x1='394.76' y1='513.25' x2='394.76' y2='471.73' style='stroke-width: 2.13; stroke: #03396C; stroke-linecap: butt;' />
 <line x1='494.32' y1='556.04' x2='494.32' y2='556.04' style='stroke-width: 2.13; stroke: #03396C; stroke-linecap: butt;' />
 <line x1='593.89' y1='556.04' x2='593.89' y2='556.04' style='stroke-width: 2.13; stroke: #03396C; stroke-linecap: butt;' />
-<circle cx='96.05' cy='92.31' r='3.38' style='stroke-width: 1.42; stroke: #03396C; fill: #03396C;' />
-<circle cx='195.62' cy='92.31' r='3.38' style='stroke-width: 1.42; stroke: #03396C; fill: #03396C;' />
-<circle cx='295.19' cy='324.18' r='3.38' style='stroke-width: 1.42; stroke: #03396C; fill: #03396C;' />
-<circle cx='394.76' cy='471.73' r='3.38' style='stroke-width: 1.42; stroke: #03396C; fill: #03396C;' />
-<circle cx='494.32' cy='556.04' r='3.38' style='stroke-width: 1.42; stroke: #03396C; fill: #03396C;' />
-<circle cx='593.89' cy='556.04' r='3.38' style='stroke-width: 1.42; stroke: #03396C; fill: #03396C;' />
+<circle cx='96.05' cy='92.31' r='3.44' style='stroke-width: 1.55; stroke: #03396C; fill: #03396C;' />
+<circle cx='195.62' cy='92.31' r='3.44' style='stroke-width: 1.55; stroke: #03396C; fill: #03396C;' />
+<circle cx='295.19' cy='324.18' r='3.44' style='stroke-width: 1.55; stroke: #03396C; fill: #03396C;' />
+<circle cx='394.76' cy='471.73' r='3.44' style='stroke-width: 1.55; stroke: #03396C; fill: #03396C;' />
+<circle cx='494.32' cy='556.04' r='3.44' style='stroke-width: 1.55; stroke: #03396C; fill: #03396C;' />
+<circle cx='593.89' cy='556.04' r='3.44' style='stroke-width: 1.55; stroke: #03396C; fill: #03396C;' />
 </g>
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8MC4wMHw1NzYuMDA=)'>
 <polyline points='43.78,556.04 43.78,24.85 ' style='stroke-width: 0.85; stroke-linecap: butt;' />
@@ -73,12 +73,12 @@
 <text x='593.89' y='568.03' text-anchor='middle' style='font-size: 9.60px; fill: #4D4D4D; font-family: sans;' textLength='5.34px' lengthAdjust='spacingAndGlyphs'>5</text>
 <text transform='translate(14.24,290.45) rotate(-90)' text-anchor='middle' style='font-size: 12.00px; font-family: sans;' textLength='32.03px' lengthAdjust='spacingAndGlyphs'>Count</text>
 <line x1='672.74' y1='286.29' x2='672.74' y2='272.46' style='stroke-width: 2.13; stroke: #03396C; stroke-linecap: butt;' />
-<circle cx='672.74' cy='279.37' r='2.31' style='stroke-width: 1.42; stroke: #03396C; fill: #03396C;' />
+<circle cx='672.74' cy='279.37' r='2.37' style='stroke-width: 1.55; stroke: #03396C; fill: #03396C;' />
 <text x='687.36' y='280.66' style='font-size: 13.00px; font-style: italic; font-family: sans;' textLength='6.51px' lengthAdjust='spacingAndGlyphs'>y</text>
 <text x='694.89' y='283.07' style='font-size: 9.10px; font-family: sans;' textLength='3.03px' lengthAdjust='spacingAndGlyphs'>r</text>
 <text x='697.92' y='283.07' style='font-size: 9.10px; font-family: sans;' textLength='5.06px' lengthAdjust='spacingAndGlyphs'>e</text>
 <text x='702.98' y='283.07' style='font-size: 9.10px; font-family: sans;' textLength='5.06px' lengthAdjust='spacingAndGlyphs'>p</text>
-<rect x='664.81' y='310.32' width='15.86' height='15.86' style='stroke-width: 1.07; stroke: #B3CDE0; stroke-linecap: butt; stroke-linejoin: miter; fill: #D1E1EC;' />
+<rect x='664.87' y='310.38' width='15.73' height='15.73' style='stroke-width: 1.16; stroke: #B3CDE0; stroke-linecap: butt; stroke-linejoin: miter; fill: #D1E1EC;' />
 <text x='687.36' y='320.34' style='font-size: 13.00px; font-style: italic; font-family: sans;' textLength='6.51px' lengthAdjust='spacingAndGlyphs'>y</text>
 <text x='43.78' y='15.89' style='font-size: 14.40px; font-family: sans;' textLength='257.38px' lengthAdjust='spacingAndGlyphs'>ppc_bars (prob=0.33, width, size, fatten)</text>
 </g>

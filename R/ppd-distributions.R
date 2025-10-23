@@ -252,7 +252,7 @@ ppd_freqpoly <-
         stat = "bin",
         binwidth = binwidth,
         bins = bins,
-        size = size,
+        linewidth = size,
         alpha = alpha
       ) +
       facet_wrap_parsed("rep_label") +
