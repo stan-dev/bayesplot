@@ -19,6 +19,7 @@ vignette: >
 ```{r pkgs, include=FALSE}
 library("ggplot2")
 library("rstanarm")
+bayesplot_theme_set()
 ```
 
 
