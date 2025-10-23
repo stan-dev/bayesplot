@@ -62,10 +62,10 @@
 <text x='485.58' y='568.03' text-anchor='middle' style='font-size: 9.60px; fill: #4D4D4D; font-family: sans;' textLength='5.34px' lengthAdjust='spacingAndGlyphs'>2</text>
 <text x='638.39' y='568.03' text-anchor='middle' style='font-size: 9.60px; fill: #4D4D4D; font-family: sans;' textLength='5.34px' lengthAdjust='spacingAndGlyphs'>4</text>
 <text x='676.69' y='257.03' style='font-size: 12.00px; font-family: sans;' textLength='31.36px' lengthAdjust='spacingAndGlyphs'>Chain</text>
-<line x1='678.42' y1='272.89' x2='692.24' y2='272.89' style='stroke-width: 1.07; stroke: #011F4B; stroke-linecap: butt;' />
-<line x1='678.42' y1='290.17' x2='692.24' y2='290.17' style='stroke-width: 1.07; stroke: #03396C; stroke-linecap: butt;' />
-<line x1='678.42' y1='307.45' x2='692.24' y2='307.45' style='stroke-width: 1.07; stroke: #6497B1; stroke-linecap: butt;' />
-<line x1='678.42' y1='324.73' x2='692.24' y2='324.73' style='stroke-width: 1.07; stroke: #D1E1EC; stroke-linecap: butt;' />
+<line x1='678.42' y1='272.89' x2='692.24' y2='272.89' style='stroke-width: 1.16; stroke: #011F4B; stroke-linecap: butt;' />
+<line x1='678.42' y1='290.17' x2='692.24' y2='290.17' style='stroke-width: 1.16; stroke: #03396C; stroke-linecap: butt;' />
+<line x1='678.42' y1='307.45' x2='692.24' y2='307.45' style='stroke-width: 1.16; stroke: #6497B1; stroke-linecap: butt;' />
+<line x1='678.42' y1='324.73' x2='692.24' y2='324.73' style='stroke-width: 1.16; stroke: #D1E1EC; stroke-linecap: butt;' />
 <text x='699.95' y='277.37' style='font-size: 13.00px; font-family: sans;' textLength='7.23px' lengthAdjust='spacingAndGlyphs'>1</text>
 <text x='699.95' y='294.65' style='font-size: 13.00px; font-family: sans;' textLength='7.23px' lengthAdjust='spacingAndGlyphs'>2</text>
 <text x='699.95' y='311.93' style='font-size: 13.00px; font-family: sans;' textLength='7.23px' lengthAdjust='spacingAndGlyphs'>3</text>
