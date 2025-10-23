@@ -3,7 +3,7 @@
 <!-- badges: start -->
 [![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/bayesplot?color=blue)](https://cran.r-project.org/web/packages/bayesplot)
 [![Downloads](https://cranlogs.r-pkg.org/badges/bayesplot?color=blue)](https://cran.rstudio.com/package=bayesplot)
-[![R-CMD-check](https://github.com/stan-dev/bayesplot/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/stan-dev/bayesplot/actions/workflows/R-CMD-check.yaml)
+[![R-CMD-check](https://raw.githubusercontent.com/stan-dev/bayesplot/actions/workflows/R-CMD-check.yaml/badge.svg)](https://raw.githubusercontent.com/stan-dev/bayesplot/actions/workflows/R-CMD-check.yaml)
 [![codecov](https://codecov.io/gh/stan-dev/bayesplot/branch/master/graph/badge.svg)](https://codecov.io/gh/stan-dev/bayesplot)
 <!-- badges: end -->
 
@@ -35,17 +35,17 @@ and the paper _Visualization in Bayesian workflow_:
 _J. R. Stat. Soc. A_, 182: 389-402. doi:10.1111/rssa.12378. 
 ([journal version](https://rss.onlinelibrary.wiley.com/doi/full/10.1111/rssa.12378),
 [arXiv preprint](https://arxiv.org/abs/1709.01449),
-[code on GitHub](https://github.com/jgabry/bayes-vis-paper))
+[code on GitHub](https://raw.githubusercontent.com/jgabry/bayes-vis-paper))
 
 ### Resources
 
 * [mc-stan.org/bayesplot](https://mc-stan.org/bayesplot) (online documentation, vignettes)
 * [Ask a question](https://discourse.mc-stan.org) (Stan Forums on Discourse)
-* [Open an issue](https://github.com/stan-dev/bayesplot/issues) (GitHub issues for bug reports, feature requests)
+* [Open an issue](https://raw.githubusercontent.com/stan-dev/bayesplot/issues) (GitHub issues for bug reports, feature requests)
 
 ### Contributing 
 
-We are always looking for new contributors! See [CONTRIBUTING.md](https://github.com/stan-dev/bayesplot/blob/master/.github/CONTRIBUTING.md) for details and/or reach out via the issue tracker.
+We are always looking for new contributors! See [CONTRIBUTING.md](https://raw.githubusercontent.com/stan-dev/bayesplot//master/.github/CONTRIBUTING.md) for details and/or reach out via the issue tracker.
 
 ### Installation
 
@@ -55,7 +55,7 @@ We are always looking for new contributors! See [CONTRIBUTING.md](https://github
 install.packages("bayesplot")
 ```
 
-* Install latest development version from GitHub (requires [devtools](https://github.com/hadley/devtools) package):
+* Install latest development version from GitHub (requires [devtools](https://raw.githubusercontent.com/hadley/devtools) package):
 
 ```r
 if (!require("devtools")) {
@@ -88,7 +88,7 @@ mcmc_areas(posterior,
            prob = 0.8) + plot_title
 ```
 
-<img src=https://github.com/stan-dev/bayesplot/blob/master/images/mcmc_areas-rstanarm.png width=50%/>
+<img src="https://raw.githubusercontent.com/stan-dev/bayesplot/master/images/mcmc_areas-rstanarm.png" width="50%">
 
 ```r
 color_scheme_set("red")
@@ -96,7 +96,7 @@ ppc_dens_overlay(y = fit$y,
                  yrep = posterior_predict(fit, draws = 50))
 ```
 
-<img src=https://github.com/stan-dev/bayesplot/blob/master/images/ppc_dens_overlay-rstanarm.png width=50%/>
+<img src=https://raw.githubusercontent.com/stan-dev/bayesplot//master/images/ppc_dens_overlay-rstanarm.png width=50%/>
 
 ```r
 # also works nicely with piping
@@ -110,7 +110,7 @@ fit %>%
 
 ```
 
-<img src=https://github.com/stan-dev/bayesplot/blob/master/images/ppc_stat_grouped-rstanarm.png width=50%/>
+<img src=https://raw.githubusercontent.com/stan-dev/bayesplot//master/images/ppc_stat_grouped-rstanarm.png width=50%/>
 
 ```r
 # with rstan demo model
@@ -124,7 +124,7 @@ p <- mcmc_trace(posterior2,  pars = c("mu", "tau"), n_warmup = 300,
 p + facet_text(size = 15)
 ```
 
-<img src=https://github.com/stan-dev/bayesplot/blob/master/images/mcmc_trace-rstan.png width=50% />
+<img src=https://raw.githubusercontent.com/stan-dev/bayesplot//master/images/mcmc_trace-rstan.png width=50% />
 
 ```r
 # scatter plot also showing divergences
@@ -137,7 +137,7 @@ mcmc_scatter(
 )
 ```
 
-<img src=https://github.com/stan-dev/bayesplot/blob/master/images/mcmc_scatter-rstan.png width=50% />
+<img src=https://raw.githubusercontent.com/stan-dev/bayesplot//master/images/mcmc_scatter-rstan.png width=50% />
 
 ```r
 color_scheme_set("red")
@@ -145,7 +145,7 @@ np <- nuts_params(fit2)
 mcmc_nuts_energy(np) + ggtitle("NUTS Energy Diagnostic")
 ```
 
-<img src=https://github.com/stan-dev/bayesplot/blob/master/images/mcmc_nuts_energy-rstan.png width=50% />
+<img src=https://raw.githubusercontent.com/stan-dev/bayesplot//master/images/mcmc_nuts_energy-rstan.png width=50% />
 
 ```r
 # another example with rstanarm
@@ -168,4 +168,4 @@ ppc_intervals(
   grid_lines(color = "white")
 ```
 
-<img src=https://github.com/stan-dev/bayesplot/blob/master/images/ppc_intervals-rstanarm.png width=55% />
+<img src=https://raw.githubusercontent.com/stan-dev/bayesplot//master/images/ppc_intervals-rstanarm.png width=55% />
