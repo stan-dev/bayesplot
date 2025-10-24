@@ -132,14 +132,28 @@ theme_default <-
 #' bayesplot_theme_set()
 #'
 bayesplot_theme_get <- function() {
-  if (!identical(.bayesplot_theme_env$gg_current, ggplot2::theme_get())) {
-    .bayesplot_theme_env$current <- ggplot2::theme_get()
-    .bayesplot_theme_env$gg_current <- ggplot2::theme_get()
-    thm <- .bayesplot_theme_env$gg_current
-  } else {
-    thm <- .bayesplot_theme_env$current
+  gg_theme <- ggplot2::theme_get()
+  gg_theme_clean <- strip_theme_env(gg_theme)
+  same_theme <- themes_equivalent(
+    .bayesplot_theme_env$gg_current_clean,
+    gg_theme_clean
+  )
+
+  .bayesplot_theme_env$gg_current <- gg_theme
+  .bayesplot_theme_env$gg_current_clean <- gg_theme_clean
+
+  if (!same_theme) {
+    if (themes_equivalent(.bayesplot_theme_env$gg_baseline_clean, gg_theme_clean)) {
+      if (identical(.bayesplot_theme_env$current_source, "ggplot2")) {
+        .bayesplot_theme_env$current <- theme_default()
+        .bayesplot_theme_env$current_source <- "bayesplot"
+      }
+    } else {
+      .bayesplot_theme_env$current <- gg_theme
+      .bayesplot_theme_env$current_source <- "ggplot2"
+    }
   }
-   thm
+  .bayesplot_theme_env$current
 }
 
 #' @rdname bayesplot_theme_get
@@ -156,6 +170,8 @@ bayesplot_theme_set <- function(new = theme_default()) {
   old <- .bayesplot_theme_env$current
   .bayesplot_theme_env$current <- new
   .bayesplot_theme_env$gg_current <- ggplot2::theme_get()
+  .bayesplot_theme_env$gg_current_clean <- strip_theme_env(.bayesplot_theme_env$gg_current)
+  .bayesplot_theme_env$current_source <- "bayesplot"
   invisible(old)
 }
 
@@ -175,8 +191,63 @@ bayesplot_theme_replace <- function(...) {
 
 
 # internal ----------------------------------------------------------------
+themes_equivalent <- function(x, y) {
+  if (is.null(x) && is.null(y)) {
+    return(TRUE)
+  }
+
+  if (is.null(x) || is.null(y)) {
+    return(FALSE)
+  }
+
+  if (identical(x, y)) {
+    return(TRUE)
+  }
+
+  x_clean <- strip_theme_env(x)
+  y_clean <- strip_theme_env(y)
+
+  if (identical(x_clean, y_clean)) {
+    return(TRUE)
+  }
+
+  isTRUE(all.equal(x_clean, y_clean, check.attributes = TRUE))
+}
+
+strip_theme_env <- function(x) {
+  if (is.null(x)) {
+    return(x)
+  }
+
+  if (is.environment(x)) {
+    return(x)
+  }
+
+  attrs <- attributes(x)
+  if (!is.null(attrs)) {
+    attrs[".Environment"] <- NULL
+  }
+
+  if (is.list(x)) {
+    x <- lapply(x, strip_theme_env)
+  }
+
+  if (!is.null(attrs)) {
+    attributes(x) <- attrs
+  }
+  x
+}
 
 .bayesplot_theme_env <- new.env(parent = emptyenv())
 .bayesplot_theme_env$current <- theme_default()
+.bayesplot_theme_env$current_source <- "bayesplot"
 .bayesplot_theme_env$gg_current <- ggplot2::theme_grey()
+.bayesplot_theme_env$gg_current_clean <- strip_theme_env(.bayesplot_theme_env$gg_current)
+.bayesplot_theme_env$gg_baseline_clean <- strip_theme_env(ggplot2::theme_grey())
 
+if (!themes_equivalent(
+  .bayesplot_theme_env$gg_baseline_clean,
+  .bayesplot_theme_env$gg_current_clean
+)) {
+  .bayesplot_theme_env$gg_baseline_clean <- .bayesplot_theme_env$gg_current_clean
+}
