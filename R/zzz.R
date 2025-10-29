@@ -10,3 +10,6 @@
                           "\nUse update.packages('ggplot2') to update.")
   }
 }
+.onLoad <- function(libname, pkgname) {
+  bayesplot_theme_set()
+}
