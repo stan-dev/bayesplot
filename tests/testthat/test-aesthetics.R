@@ -210,6 +210,18 @@ test_that("ggplot2::theme_set overrides bayesplot theme", {
   expect_identical(bayesplot_theme_get(), minimal)
 })
 
+test_that(".onLoad keeps ggplot theme and resets bayesplot theme", {
+  old <- ggplot2::theme_set(ggplot2::theme_minimal())
+  before <- ggplot2::theme_get()
+  bayesplot:::.onLoad()
+
+  expect_identical(bayesplot_theme_get(), default)
+  expect_equal(.bayesplot_theme_env$current, default)
+  expect_equal(ggplot2::theme_get(), before)
+  expect_equal(.bayesplot_theme_env$gg_current, before)
+  ggplot2::theme_set(old)
+})
+
 bayesplot_theme_set(bayesplot::theme_default())
 color_scheme_set()
 
