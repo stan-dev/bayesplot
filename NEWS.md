@@ -1,6 +1,7 @@
 # bayesplot (development version)
 
 * Add `shape` argument to `mcmc_scatter()` by @behramulukir (#375)
+* Restore pre ggplot2 v4.0 behavior of bayesplot theme setting (#385)
 
 # bayesplot 1.14.0
 
