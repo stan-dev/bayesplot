@@ -25,9 +25,9 @@
 #'
 #' @section Plotting functionality:
 #'  \if{html}{
-#'    \figure{bayesplot1.png}{options: width="30\%" alt="mcmc_areas"}
-#'    \figure{bayesplot2.png}{options: width="30\%" alt="ppc_hist"}
-#'    \figure{bayesplot3.png}{options: width="30\%" alt="ppc_dens_overlay"}
+#'    \figure{bayesplot1.png}{options: style="width: 30\%;" alt="mcmc_areas"}
+#'    \figure{bayesplot2.png}{options: style="width: 30\%;" alt="ppc_hist"}
+#'    \figure{bayesplot3.png}{options: style="width: 30\%;" alt="ppc_dens_overlay"}
 #'  }
 #'
 #' The plotting functions in **bayesplot** are organized into several modules:
