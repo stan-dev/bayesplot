@@ -25,9 +25,9 @@ Examples of packages that will soon (or already are) using \strong{bayesplot} ar
 \section{Plotting functionality}{
 
 \if{html}{
-   \figure{bayesplot1.png}{options: width="30\%" alt="mcmc_areas"}
-   \figure{bayesplot2.png}{options: width="30\%" alt="ppc_hist"}
-   \figure{bayesplot3.png}{options: width="30\%" alt="ppc_dens_overlay"}
+   \figure{bayesplot1.png}{options: style="width: 30\%;" alt="mcmc_areas"}
+   \figure{bayesplot2.png}{options: style="width: 30\%;" alt="ppc_hist"}
+   \figure{bayesplot3.png}{options: style="width: 30\%;" alt="ppc_dens_overlay"}
  }
 
 The plotting functions in \strong{bayesplot} are organized into several modules:
