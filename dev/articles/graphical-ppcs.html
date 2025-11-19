@@ -101,9 +101,9 @@
                         <h4 data-toc-skip class="author">Jonah
 Gabry</h4>
             
-            <h4 data-toc-skip class="date">2025-10-29</h4>
+            <h4 data-toc-skip class="date">2025-11-19</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/stan-dev/bayesplot/blob/master/vignettes/graphical-ppcs.Rmd" class="external-link"><code>vignettes/graphical-ppcs.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/stan-dev/bayesplot/blob/fix-pkgdown-action/vignettes/graphical-ppcs.Rmd" class="external-link"><code>vignettes/graphical-ppcs.Rmd</code></a></small>
       <div class="d-none name"><code>graphical-ppcs.Rmd</code></div>
     </div>
 
@@ -308,7 +308,7 @@ and <code>number_of_observations</code> columns.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/bayesplot-colors.html">color_scheme_set</a></span><span class="op">(</span><span class="st">"brightblue"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/PPC-distributions.html">ppc_dens_overlay</a></span><span class="op">(</span><span class="va">y</span>, <span class="va">yrep_poisson</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">50</span>, <span class="op">]</span><span class="op">)</span></span></code></pre></div>
-<p><img src="graphical-ppcs_files/figure-html/ppc_dens_overlay-1.png" width="60%" style="display: block; margin: auto;"></p>
+<p><img src="graphical-ppcs_files/figure-html/ppc_dens_overlay-1.png" class="r-plt" width="60%" style="display: block; margin: auto;"></p>
 <p>In the plot above, the dark line is the distribution of the observed
 outcomes <code>y</code> and each of the 50 lighter lines is the kernel
 density estimate of one of the replications of <code>y</code> from the
@@ -321,7 +321,7 @@ the <code>xlim</code> function from <strong>ggplot2</strong> to restrict
 the range of the x-axis:</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/PPC-distributions.html">ppc_dens_overlay</a></span><span class="op">(</span><span class="va">y</span>, <span class="va">yrep_poisson</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">50</span>, <span class="op">]</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/lims.html" class="external-link">xlim</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">150</span><span class="op">)</span></span></code></pre></div>
-<p><img src="graphical-ppcs_files/figure-html/ppc_dens_overlay-2-1.png" width="60%" style="display: block; margin: auto;"></p>
+<p><img src="graphical-ppcs_files/figure-html/ppc_dens_overlay-2-1.png" class="r-plt" width="60%" style="display: block; margin: auto;"></p>
 <p>See Figure 6 in <a href="#gabry2019">Gabry et al. (2019)</a> for
 another example of using <code>ppc_dens_overlay</code>.</p>
 </div>
@@ -333,12 +333,12 @@ at separate histograms of <code>y</code> and some of the
 <code>yrep</code> datasets using the <code>ppc_hist</code> function:</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/PPC-distributions.html">ppc_hist</a></span><span class="op">(</span><span class="va">y</span>, <span class="va">yrep_poisson</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="op">]</span><span class="op">)</span></span></code></pre></div>
-<p><img src="graphical-ppcs_files/figure-html/ppc_hist-1.png" width="60%" style="display: block; margin: auto;"></p>
+<p><img src="graphical-ppcs_files/figure-html/ppc_hist-1.png" class="r-plt" width="60%" style="display: block; margin: auto;"></p>
 <p>The same plot for the negative binomial model looks much
 different:</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/PPC-distributions.html">ppc_hist</a></span><span class="op">(</span><span class="va">y</span>, <span class="va">yrep_nb</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="op">]</span><span class="op">)</span></span></code></pre></div>
-<p><img src="graphical-ppcs_files/figure-html/ppc_hist-nb-1.png" width="60%" style="display: block; margin: auto;"></p>
+<p><img src="graphical-ppcs_files/figure-html/ppc_hist-nb-1.png" class="r-plt" width="60%" style="display: block; margin: auto;"></p>
 <p>The negative binomial model does better handling the number of zeros
 in the data, but it occasionally predicts values that are way too large,
 which is why the x-axes extend to such high values in the plot and make
@@ -347,7 +347,7 @@ clearly we can zoom in:</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/PPC-distributions.html">ppc_hist</a></span><span class="op">(</span><span class="va">y</span>, <span class="va">yrep_nb</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="op">]</span>, binwidth <span class="op">=</span> <span class="fl">20</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_cartesian.html" class="external-link">coord_cartesian</a></span><span class="op">(</span>xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>, <span class="fl">300</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="graphical-ppcs_files/figure-html/ppc_hist-nb-2-1.png" width="60%" style="display: block; margin: auto;"></p>
+<p><img src="graphical-ppcs_files/figure-html/ppc_hist-nb-2-1.png" class="r-plt" width="60%" style="display: block; margin: auto;"></p>
 <p><br></p>
 </div>
 </div>
@@ -376,7 +376,7 @@ vector of data. In our case we can specify
 <code>stat = function(x) mean(x == 0)</code>.</p>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/PPC-test-statistics.html">ppc_stat</a></span><span class="op">(</span><span class="va">y</span>, <span class="va">yrep_poisson</span>, stat <span class="op">=</span> <span class="st">"prop_zero"</span>, binwidth <span class="op">=</span> <span class="fl">0.005</span><span class="op">)</span></span></code></pre></div>
-<p><img src="graphical-ppcs_files/figure-html/ppc_stat-1.png" width="60%" style="display: block; margin: auto;"></p>
+<p><img src="graphical-ppcs_files/figure-html/ppc_stat-1.png" class="r-plt" width="60%" style="display: block; margin: auto;"></p>
 <p>The dark line is at the value <span class="math inline">\(T(y)\)</span>, i.e. the value of the test
 statistic computed from the observed <span class="math inline">\(y\)</span>, in this case
 <code>prop_zero(y)</code>. The lighter area on the left is actually a
@@ -386,7 +386,7 @@ simulated datasets in <code>yrep</code> have any zeros.</p>
 <p>Here’s the same plot for the negative binomial model:</p>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/PPC-test-statistics.html">ppc_stat</a></span><span class="op">(</span><span class="va">y</span>, <span class="va">yrep_nb</span>, stat <span class="op">=</span> <span class="st">"prop_zero"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="graphical-ppcs_files/figure-html/ppc_stat-nb-1.png" width="60%" style="display: block; margin: auto;"></p>
+<p><img src="graphical-ppcs_files/figure-html/ppc_stat-nb-1.png" class="r-plt" width="60%" style="display: block; margin: auto;"></p>
 <p>Again we see that the negative binomial model does a much better job
 predicting the proportion of observed zeros than the Poisson.</p>
 <p>However, if we look instead at the distribution of the maximum value
@@ -394,14 +394,14 @@ in the replications, we can see that the Poisson model makes more
 realistic predictions than the negative binomial:</p>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/PPC-test-statistics.html">ppc_stat</a></span><span class="op">(</span><span class="va">y</span>, <span class="va">yrep_poisson</span>, stat <span class="op">=</span> <span class="st">"max"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="graphical-ppcs_files/figure-html/ppc_stat-max-1.png" width="60%" style="display: block; margin: auto;"></p>
+<p><img src="graphical-ppcs_files/figure-html/ppc_stat-max-1.png" class="r-plt" width="60%" style="display: block; margin: auto;"></p>
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/PPC-test-statistics.html">ppc_stat</a></span><span class="op">(</span><span class="va">y</span>, <span class="va">yrep_nb</span>, stat <span class="op">=</span> <span class="st">"max"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="graphical-ppcs_files/figure-html/ppc_stat-max-2.png" width="60%" style="display: block; margin: auto;"></p>
+<p><img src="graphical-ppcs_files/figure-html/ppc_stat-max-2.png" class="r-plt" width="60%" style="display: block; margin: auto;"></p>
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/PPC-test-statistics.html">ppc_stat</a></span><span class="op">(</span><span class="va">y</span>, <span class="va">yrep_nb</span>, stat <span class="op">=</span> <span class="st">"max"</span>, binwidth <span class="op">=</span> <span class="fl">100</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_cartesian.html" class="external-link">coord_cartesian</a></span><span class="op">(</span>xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>, <span class="fl">5000</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="graphical-ppcs_files/figure-html/ppc_stat-max-3.png" width="60%" style="display: block; margin: auto;"></p>
+<p><img src="graphical-ppcs_files/figure-html/ppc_stat-max-3.png" class="r-plt" width="60%" style="display: block; margin: auto;"></p>
 <p>See Figure 7 in <a href="#gabry2019">Gabry et al. (2019)</a> for
 another example of using <code>ppc_stat</code>.</p>
 <p><br></p>
@@ -494,7 +494,7 @@ levels of the grouping variable and a separate plot is made for each
 level:</p>
 <div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/PPC-test-statistics.html">ppc_stat_grouped</a></span><span class="op">(</span><span class="va">y</span>, <span class="va">yrep_nb</span>, group <span class="op">=</span> <span class="va">roaches</span><span class="op">$</span><span class="va">treatment</span>, stat <span class="op">=</span> <span class="st">"prop_zero"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="graphical-ppcs_files/figure-html/ppc_stat_grouped-1.png" width="60%" style="display: block; margin: auto;"></p>
+<p><img src="graphical-ppcs_files/figure-html/ppc_stat_grouped-1.png" class="r-plt" width="60%" style="display: block; margin: auto;"></p>
 <p>See Figure 8 in <a href="#gabry2019">Gabry et al. (2019)</a> for
 another example of using <code>ppc_stat_grouped</code>.</p>
 <p><br></p>
@@ -558,11 +558,11 @@ the option of two different plots:</p>
 <div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/bayesplot-colors.html">color_scheme_set</a></span><span class="op">(</span><span class="st">"purple"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/pp_check.html">pp_check</a></span><span class="op">(</span><span class="va">x</span>, type <span class="op">=</span> <span class="st">"multiple"</span>, binwidth <span class="op">=</span> <span class="fl">0.3</span><span class="op">)</span></span></code></pre></div>
-<p><img src="graphical-ppcs_files/figure-html/pp_check-1-1.png" width="60%" style="display: block; margin: auto;"></p>
+<p><img src="graphical-ppcs_files/figure-html/pp_check-1-1.png" class="r-plt" width="60%" style="display: block; margin: auto;"></p>
 <div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/bayesplot-colors.html">color_scheme_set</a></span><span class="op">(</span><span class="st">"darkgray"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/pp_check.html">pp_check</a></span><span class="op">(</span><span class="va">x</span>, type <span class="op">=</span> <span class="st">"overlaid"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="graphical-ppcs_files/figure-html/pp_check-2-1.png" width="60%" style="display: block; margin: auto;"></p>
+<p><img src="graphical-ppcs_files/figure-html/pp_check-2-1.png" class="r-plt" width="60%" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level3">
 <h3 id="examples-of-pp_check-methods-in-other-packages">Examples of <code>pp_check</code> methods in other packages<a class="anchor" aria-label="anchor" href="#examples-of-pp_check-methods-in-other-packages"></a>
@@ -605,7 +605,7 @@ Reference Manual</em>. <a href="https://mc-stan.org/users/documentation/" class=
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer>
