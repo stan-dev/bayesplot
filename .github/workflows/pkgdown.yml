@@ -33,8 +33,14 @@ jobs:
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
-          extra-packages: any::pkgdown, local::., any::withr, stan-dev/pkgdown-config
-
+          extra-packages: |
+            any::pkgdown
+            any::withr
+            any::BH
+            any::RcppEigen
+            stan-dev/pkgdown-config
+            local::.
+            
       - name: Build site
         run: |
           withr::with_envvar(
