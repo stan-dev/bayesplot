@@ -14,5 +14,6 @@ images/*
 book/*
 docs/*
 Rplots.pdf
+.vscode/*
 ^\.github$
 ^release-prep\.R$

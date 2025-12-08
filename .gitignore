@@ -13,3 +13,6 @@ revdep/*
 CRAN-RELEASE
 CRAN-SUBMISSION
 release-prep.R
+
+# vscode/positron/etc settings
+.vscode/*

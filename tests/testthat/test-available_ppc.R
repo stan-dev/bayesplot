@@ -1,7 +1,3 @@
-library(bayesplot)
-context("available_mcmc and available_ppc")
-
-
 test_that("available_mcmc works", {
   a <- available_mcmc()
   expect_s3_class(a, "bayesplot_function_list")
