@@ -42,6 +42,7 @@ Imports:
     tidyselect,
     utils
 Suggests:
+    cmdstanr,
     ggdist,
     ggfortify,
     gridExtra (>= 2.2.1),
