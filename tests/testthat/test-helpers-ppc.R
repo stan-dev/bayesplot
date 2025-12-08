@@ -1,6 +1,3 @@
-library(bayesplot)
-context("PPC: misc. functions")
-
 source(test_path("data-for-ppc-tests.R"))
 source(test_path("data-for-mcmc-tests.R"))
 

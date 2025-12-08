@@ -1,7 +1,3 @@
-library(bayesplot)
-context("Aesthetics")
-
-
 # color scheme stuff ------------------------------------------------------
 
 prepare_colors_for_test <- function(scheme) {
@@ -13,13 +9,13 @@ prepare_colors_for_test <- function(scheme) {
 
 test_that("getting and setting the color scheme works", {
   color_scheme_set("red")
-  expect_equivalent(color_scheme_get(), prepare_colors_for_test("red"))
+  expect_equal(color_scheme_get(), prepare_colors_for_test("red"), ignore_attr = TRUE)
   expect_named(prepare_colors_for_test("blue"), scheme_level_names())
   expect_named(color_scheme_get(), scheme_level_names())
   for (clr in names(master_color_list)) {
     color_scheme_set(clr)
-    expect_equivalent(color_scheme_get(), prepare_colors_for_test(clr),
-                      info = clr)
+    expect_equal(color_scheme_get(), prepare_colors_for_test(clr),
+                      info = clr, ignore_attr = TRUE)
     expect_named(color_scheme_get(), scheme_level_names())
   }
 
@@ -28,7 +24,7 @@ test_that("getting and setting the color scheme works", {
   expect_gg(plot(color_scheme_get("mix-blue-green")))
 
   color_scheme_set("blue")
-  expect_equivalent(color_scheme_get("teal"), prepare_colors_for_test("teal"))
+  expect_equal(color_scheme_get("teal"), prepare_colors_for_test("teal"), ignore_attr = TRUE)
 
   # error if not character
   expect_error(color_scheme_set(7), "'scheme' should be a character vector of length 1 or 6")
@@ -60,10 +56,10 @@ test_that("color_scheme_get with i argument works", {
 
 test_that("setting mixed scheme works", {
   color_scheme_set("mix-gray-blue")
-  expect_equivalent(color_scheme_get(), mixed_scheme("gray", "blue"))
+  expect_equal(color_scheme_get(), mixed_scheme("gray", "blue"), ignore_attr = TRUE)
 
   color_scheme_set("mix-blue-gray")
-  expect_equivalent(color_scheme_get(), mixed_scheme("blue", "gray"))
+  expect_equal(color_scheme_get(), mixed_scheme("blue", "gray"), ignore_attr = TRUE)
 
   expect_error(color_scheme_set("mix-green-reds"), "should be one of")
   expect_error(color_scheme_set("mix-greens-red"), "should be one of")
@@ -72,9 +68,9 @@ test_that("setting mixed scheme works", {
 test_that("setting brewer scheme works", {
   skip_if_not_installed("RColorBrewer")
   color_scheme_set("brewer-Blues")
-  expect_equivalent(unlist(color_scheme_get()), RColorBrewer::brewer.pal(6, "Blues"))
+  expect_equal(unlist(color_scheme_get()), RColorBrewer::brewer.pal(6, "Blues"), ignore_attr = TRUE)
   color_scheme_set("brewer-Spectral")
-  expect_equivalent(unlist(color_scheme_get()), RColorBrewer::brewer.pal(6, "Spectral"))
+  expect_equal(unlist(color_scheme_get()), RColorBrewer::brewer.pal(6, "Spectral"), ignore_attr = TRUE)
   expect_error(color_scheme_set("brewer-FAKE"), "FAKE is not a valid palette")
 })
 
@@ -106,11 +102,11 @@ test_that("mixed_scheme internal function doesn't error", {
 test_that("custom color schemes work", {
   color_scheme_set(orange_scheme_ok)
   expect_named(color_scheme_get())
-  expect_equivalent(unlist(color_scheme_get()), orange_scheme_ok)
+  expect_equal(unlist(color_scheme_get()), orange_scheme_ok, ignore_attr = TRUE)
 
   random_scheme <- colors()[sample(length(colors()), 6)]
   color_scheme_set(random_scheme)
-  expect_equivalent(unlist(color_scheme_get()), random_scheme)
+  expect_equal(unlist(color_scheme_get()), random_scheme, ignore_attr = TRUE)
 })
 
 test_that("get_color returns correct color values", {

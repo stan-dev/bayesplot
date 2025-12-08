@@ -1,6 +1,3 @@
-library(bayesplot)
-context("bayesplot_grid")
-
 skip_if_not_installed("gridExtra")
 
 y <- example_y_data()

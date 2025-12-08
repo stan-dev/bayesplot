@@ -1,6 +1,3 @@
-library(bayesplot)
-context("PPC: loo")
-
 options(useFancyQuotes = FALSE)
 
 if (requireNamespace("rstanarm", quietly = TRUE) &&

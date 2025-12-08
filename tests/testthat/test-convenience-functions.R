@@ -1,42 +1,39 @@
-library(bayesplot)
 library(ggplot2)
-context("Convenience functions (for ggplot objects)")
-
 
 # abline_01, vline_ and hline_ ------------------------------------------
 test_that("abline_01 returns the correct object", {
   a <- abline_01(color = "green", linetype = 2)
   b <- geom_abline(intercept = 0, slope = 1, color = "green", linetype = 2, na.rm = TRUE)
   a$constructor <- b$constructor <- NULL
-  expect_equal(a, b, check.environment = FALSE)
+  expect_equal(a, b, ignore_function_env = TRUE)
 })
 test_that("vline_* and hline_* return correct objects", {
   a <- vline_0(color = "red")
   b <- geom_vline(xintercept = 0, color = "red", na.rm = TRUE)
   a$constructor <- b$constructor <- NULL
-  expect_equal(a, b, check.environment = FALSE)
+  expect_equal(a, b, ignore_function_env = TRUE)
 
   a <- hline_0(linewidth = 2, linetype = 3)
   b <- geom_hline(yintercept = 0, linewidth = 2, linetype = 3, na.rm = TRUE)
   a$constructor <- b$constructor <- NULL
-  expect_equal(a, b, check.environment = FALSE)
+  expect_equal(a, b, ignore_function_env = TRUE)
 
   a <- vline_at(c(3,4), na.rm = FALSE)
   b <- geom_vline(xintercept = c(3,4))
   a$constructor <- b$constructor <- NULL
-  expect_equal(a, b, check.environment = FALSE)
+  expect_equal(a, b, ignore_function_env = TRUE)
 
   a <- hline_at(c(3,4), na.rm = FALSE)
   b <- geom_hline(yintercept = c(3,4))
   a$constructor <- b$constructor <- NULL
-  expect_equal(a, b, check.environment = FALSE)
+  expect_equal(a, b, ignore_function_env = TRUE)
 })
 test_that("vline_at with 'fun' works", {
   x <- example_mcmc_draws(chains = 1)
   a <- vline_at(x, colMeans)
   b <- geom_vline(xintercept = colMeans(x), na.rm = TRUE)
   a$constructor <- b$constructor <- NULL
-  expect_equal(a, b, check.environment = FALSE)
+  expect_equal(a, b, ignore_function_env = TRUE)
 })
 test_that("calc_v (internal function) works", {
   a <- 1:4
@@ -99,20 +96,21 @@ test_that("facet_bg returns correct theme object", {
 test_that("legend_none returns correct theme object", {
   none <- legend_none()
   expect_s3_class(none, "theme")
-  expect_equivalent(none, list(legend.position = "none"))
+  expect_equal(none$legend.position, "none", ignore_attr = TRUE)
   expect_false(attr(none, "complete"))
 })
 test_that("legend_move returns correct theme object", {
   left <- legend_move("left")
   expect_s3_class(left, "theme")
-  expect_equivalent(left, list(legend.position = "left"))
+  expect_equal(left$legend.position, "left", ignore_attr = TRUE)
   expect_false(attr(left, "complete"))
 
   pos <- legend_move(c(0.25, 0.5))
   expect_s3_class(pos, "theme")
-  expect_equivalent(
+  expect_equal(
     pos$legend.position.inside %||% pos$legend.position,
-    c(0.25, 0.5)
+    c(0.25, 0.5),
+    ignore_attr = TRUE
   )
   expect_false(attr(pos, "complete"))
 })
@@ -133,9 +131,10 @@ test_that("xaxis_text returns correct theme object", {
 })
 test_that("yaxis_text returns correct theme object", {
   expect_identical(yaxis_text(FALSE), theme(axis.text.y = element_blank()))
-  expect_equivalent(
+  expect_equal(
     yaxis_text(face = "bold", angle = 30),
-    theme(axis.text.y = element_text(face = "bold", angle = 30))
+    theme(axis.text.y = element_text(face = "bold", angle = 30)),
+    ignore_attr = TRUE
   )
 })
 test_that("facet_text returns correct theme object", {
@@ -185,7 +184,7 @@ test_that("overlay_function returns the correct object", {
   a <- overlay_function(fun = "dnorm")
   b <- stat_function(fun = "dnorm", inherit.aes = FALSE)
   a$constructor <- b$constructor <- NULL
-  expect_equal(a, b, check.environment = FALSE)
+  expect_equal(a, b, ignore_function_env = TRUE)
 })
 
 

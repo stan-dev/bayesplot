@@ -1,6 +1,3 @@
-library(bayesplot)
-context("MCMC: diagnostics")
-
 source(test_path("data-for-mcmc-tests.R"))
 
 test_that("rhat and neff plots return a ggplot object", {
