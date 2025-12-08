@@ -81,7 +81,7 @@ test_that("neff_ratio.stanreg returns correct structure", {
   ratio <- neff_ratio(fit)
   expect_named(ratio)
   ans <- summary(fit)[1:length(ratio), "n_eff"] / (floor(ITER / 2) * CHAINS)
-  expect_equal(ratio, ans, tol = 0.001)
+  expect_equal(ratio, ans, tolerance = 0.001)
 })
 
 test_that("rhat.stanfit returns correct structure", {
@@ -104,12 +104,12 @@ test_that("neff_ratio.stanreg returns correct structure", {
   ratio <- neff_ratio(fit$stanfit)
   expect_named(ratio)
   ans <- summary(fit)[, "n_eff"] / denom
-  expect_equal(ratio, ans, tol = 0.001)
+  expect_equal(ratio, ans, tolerance = 0.001)
 
   ratio2 <- neff_ratio(fit$stanfit, pars = c("wt", "sigma"))
   expect_named(ratio2)
   ans2 <- summary(fit, pars = c("wt", "sigma"))[, "n_eff"] / denom
-  expect_equal(ratio2, ans2, tol = 0.001)
+  expect_equal(ratio2, ans2, tolerance = 0.001)
 })
 
 test_that("cmdstanr methods work", {

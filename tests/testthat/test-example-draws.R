@@ -23,7 +23,7 @@ test_that("example ppc data works", {
 
   yrep <- example_yrep_draws()
   expect_type(yrep, "double")
-  expect_is(yrep, "matrix")
+  expect_true(is.matrix(yrep))
   expect_equal(ncol(yrep), length(y))
 
   group <- example_group_data()
