@@ -37,29 +37,32 @@ ppd_data <- function(ypred, group = NULL) {
 #' @rdname PPD-distributions
 #' @export
 ppd_dens_overlay <-
-  function(ypred,
-           ...,
-           size = 0.25,
-           alpha = 0.7,
-           trim = FALSE,
-           bw = "nrd0",
-           adjust = 1,
-           kernel = "gaussian",
-           n_dens = 1024) {
-    check_ignored_arguments(...)
+    function(ypred,
+             ...,
+             size = 0.25,
+             alpha = 0.7,
+             trim = FALSE,
+             bw = "nrd0",
+             adjust = 1,
+             kernel = "gaussian",
+             bounds = NULL,
+             n_dens = 1024) {
+      check_ignored_arguments(...)
+      bounds <- validate_density_bounds(bounds)
 
-    data <- ppd_data(ypred)
-    ggplot(data, mapping = aes(x = .data$value)) +
-      overlay_ppd_densities(
+      data <- ppd_data(ypred)
+      ggplot(data, mapping = aes(x = .data$value)) +
+        overlay_ppd_densities(
         mapping = aes(group = .data$rep_id, color = "ypred"),
         linewidth = size,
         alpha = alpha,
-        trim = trim,
-        bw = bw,
-        adjust = adjust,
-        kernel = kernel,
-        n = n_dens
-      ) +
+          trim = trim,
+          bw = bw,
+          adjust = adjust,
+          kernel = kernel,
+          bounds = bounds,
+          n = n_dens
+        ) +
       scale_color_ppd(
         values = get_color("m"),
         guide = guide_legend( # in case user turns legend back on
@@ -117,24 +120,27 @@ ppd_ecdf_overlay <-
 #' @rdname PPD-distributions
 #' @export
 ppd_dens <-
-  function(ypred,
-           ...,
-           trim = FALSE,
-           size = 0.5,
-           alpha = 1) {
-    check_ignored_arguments(...)
+    function(ypred,
+             ...,
+             trim = FALSE,
+             size = 0.5,
+             alpha = 1,
+             bounds = NULL) {
+      check_ignored_arguments(...)
+      bounds <- validate_density_bounds(bounds)
 
-    data <- ppd_data(ypred)
-    ggplot(data, mapping = aes(
-      x = .data$value,
-      color = "ypred",
-      fill = "ypred"
-    )) +
-      geom_density(
-        linewidth = size,
-        alpha = alpha,
-        trim = trim
-      ) +
+      data <- ppd_data(ypred)
+      ggplot(data, mapping = aes(
+        x = .data$value,
+        color = "ypred",
+        fill = "ypred"
+      )) +
+        geom_density(
+          linewidth = size,
+          alpha = alpha,
+          trim = trim,
+          bounds = bounds
+        ) +
       scale_color_ppd() +
       scale_fill_ppd() +
       bayesplot_theme_get() +
