@@ -96,20 +96,21 @@ test_that("facet_bg returns correct theme object", {
 test_that("legend_none returns correct theme object", {
   none <- legend_none()
   expect_s3_class(none, "theme")
-  expect_equal(none, list(legend.position = "none"), ignore_attr = TRUE)
+  expect_equal(none$legend.position, "none", ignore_attr = TRUE)
   expect_false(attr(none, "complete"))
 })
 test_that("legend_move returns correct theme object", {
   left <- legend_move("left")
   expect_s3_class(left, "theme")
-  expect_equal(left, list(legend.position = "left"), ignore_attr = TRUE)
+  expect_equal(left$legend.position, "left", ignore_attr = TRUE)
   expect_false(attr(left, "complete"))
 
   pos <- legend_move(c(0.25, 0.5))
   expect_s3_class(pos, "theme")
-  expect_equivalent(
+  expect_equal(
     pos$legend.position.inside %||% pos$legend.position,
-    c(0.25, 0.5)
+    c(0.25, 0.5),
+    ignore_attr = TRUE
   )
   expect_false(attr(pos, "complete"))
 })
@@ -130,9 +131,10 @@ test_that("xaxis_text returns correct theme object", {
 })
 test_that("yaxis_text returns correct theme object", {
   expect_identical(yaxis_text(FALSE), theme(axis.text.y = element_blank()))
-  expect_equivalent(
+  expect_equal(
     yaxis_text(face = "bold", angle = 30),
-    theme(axis.text.y = element_text(face = "bold", angle = 30))
+    theme(axis.text.y = element_text(face = "bold", angle = 30)),
+    ignore_attr = TRUE
   )
 })
 test_that("facet_text returns correct theme object", {

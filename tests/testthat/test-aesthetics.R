@@ -14,8 +14,8 @@ test_that("getting and setting the color scheme works", {
   expect_named(color_scheme_get(), scheme_level_names())
   for (clr in names(master_color_list)) {
     color_scheme_set(clr)
-    expect_equal(color_scheme_get(), prepare_colors_for_test(clr, ignore_attr = TRUE),
-                      info = clr)
+    expect_equal(color_scheme_get(), prepare_colors_for_test(clr),
+                      info = clr, ignore_attr = TRUE)
     expect_named(color_scheme_get(), scheme_level_names())
   }
 

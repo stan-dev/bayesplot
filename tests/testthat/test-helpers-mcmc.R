@@ -298,7 +298,11 @@ test_that("diagnostic_factor.rhat works", {
                       high = 1.2, high = 1.7))
 
   r <- diagnostic_factor(unname(rhats))
-  expect_equal(r, as.factor(names(rhats)), ignore_attr = TRUE)
+  expect_equal(
+    r,
+    factor(names(rhats), levels = c("low", "ok", "high")),
+    ignore_attr = TRUE
+  )
   expect_identical(levels(r), c("low", "ok", "high"))
 })
 test_that("diagnostic_factor.neff_ratio works", {
@@ -307,7 +311,11 @@ test_that("diagnostic_factor.neff_ratio works", {
                              high = 0.51, high = 0.99, high = 1))
 
   r <- diagnostic_factor(unname(ratios))
-  expect_equal(r, as.factor(names(ratios)), ignore_attr = TRUE)
+  expect_equal(
+    r,
+    factor(names(ratios), levels = c("low", "ok", "high")),
+    ignore_attr = TRUE
+  )
   expect_identical(levels(r), c("low", "ok", "high"))
 })
 

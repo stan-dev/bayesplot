@@ -130,8 +130,8 @@ test_that("mcmc_areas_data computes density", {
   densities <- lapply(raw_values, do_dens, 1, 1024)
 
   for (name in names(by_parameter)) {
-    expect_equivalent(by_parameter[[name]][["density"]],
-                      densities[[name]][["y"]])
+    expect_equal(by_parameter[[name]][["density"]],
+                      densities[[name]][["y"]], ignore_attr = TRUE)
   }
 })
 
