@@ -1,6 +1,3 @@
-library(bayesplot)
-context("MCMC: recover")
-
 set.seed(123)
 draws <- matrix(rnorm(4 * 1000), nrow = 1000)
 colnames(draws) <- c("alpha", "beta[1]", "beta[2]", "sigma")

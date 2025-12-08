@@ -1,7 +1,3 @@
-library(bayesplot)
-context("Aesthetics")
-
-
 # color scheme stuff ------------------------------------------------------
 
 prepare_colors_for_test <- function(scheme) {

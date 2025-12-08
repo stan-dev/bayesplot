@@ -1,6 +1,3 @@
-library(bayesplot)
-context("PPC: scatterplots")
-
 source(test_path("data-for-ppc-tests.R"))
 
 test_that("ppc_scatter returns ggplot object", {

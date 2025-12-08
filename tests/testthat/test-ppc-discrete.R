@@ -1,6 +1,4 @@
-library(bayesplot)
 # suppressPackageStartupMessages(library(rstanarm))
-context("PPC: discrete")
 
 source(test_path("data-for-ppc-tests.R"))
 load(test_path("data-for-ordinal.rda"))

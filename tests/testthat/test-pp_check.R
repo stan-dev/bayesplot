@@ -1,6 +1,3 @@
-library(bayesplot)
-context("PPC: pp_check generic and default method")
-
 test_that("default pp_check method works", {
   y <- example_y_data()
   yrep <- example_yrep_draws()

@@ -1,7 +1,4 @@
-library(bayesplot)
 library(ggplot2)
-context("Convenience functions (for ggplot objects)")
-
 
 # abline_01, vline_ and hline_ ------------------------------------------
 test_that("abline_01 returns the correct object", {

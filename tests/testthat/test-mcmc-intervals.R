@@ -1,8 +1,4 @@
-library(bayesplot)
-context("MCMC: intervals")
-
 source(test_path("data-for-mcmc-tests.R"))
-
 
 test_that("mcmc_intervals_data computes quantiles", {
   xs <- melt_mcmc(merge_chains(prepare_mcmc_array(arr, pars = "beta[1]")))

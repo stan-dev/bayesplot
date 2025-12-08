@@ -1,6 +1,3 @@
-library(bayesplot)
-context("PPC: predictive errors")
-
 source(test_path("data-for-ppc-tests.R"))
 
 test_that("ppc_error_hist and ppc_error_scatter return ggplot object", {

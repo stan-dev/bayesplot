@@ -1,6 +1,3 @@
-library(bayesplot)
-context("Shared: misc. functions")
-
 # suggested packages ------------------------------------------------------
 test_that("suggested_package throws correct errors", {
   expect_error(suggested_package("NOPACKAGE"),

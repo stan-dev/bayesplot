@@ -1,6 +1,3 @@
-library(bayesplot)
-context("MCMC: scatter, hex, and parallel coordinates plots")
-
 source(test_path("data-for-mcmc-tests.R"))
 
 if (requireNamespace("rstanarm", quietly = TRUE)) {

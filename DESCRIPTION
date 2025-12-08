@@ -56,9 +56,10 @@ Suggests:
     scales,
     shinystan (>= 2.3.0),
     survival,
-    testthat (>= 2.0.0),
+    testthat (>= 3.0.0),
     vdiffr (>= 1.0.2)
 RoxygenNote: 7.3.3
 VignetteBuilder: knitr
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
+Config/testthat/edition: 3

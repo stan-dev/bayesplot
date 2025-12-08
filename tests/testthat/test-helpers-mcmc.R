@@ -1,9 +1,4 @@
-library(bayesplot)
-context("MCMC: misc. functions")
-
 source(test_path("data-for-mcmc-tests.R"))
-
-
 
 # melt_mcmc ----------------------------------------------------------------
 test_that("melt_mcmc does not convert integer parameter names to integers #162", {

@@ -1,6 +1,3 @@
-library(bayesplot)
-context("Example draws")
-
 test_that("example_mcmc_draws throws correct errors", {
   expect_error(example_mcmc_draws(chains = 5), "chains <= 4")
   expect_error(example_mcmc_draws(chains = 0), "chains >= 1")
