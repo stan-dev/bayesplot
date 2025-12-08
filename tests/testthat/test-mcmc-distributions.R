@@ -58,6 +58,12 @@ test_that("mcmc_dens_overlay returns a ggplot object", {
                               pars = c("(Intercept)", "beta[2]")))
 })
 
+test_that("mcmc density plots accept bounds", {
+  expect_gg(mcmc_dens(arr, pars = "beta[1]", bounds = c(0, Inf)))
+  expect_gg(mcmc_dens_overlay(arr, pars = "beta[1]", bounds = c(0, Inf)))
+  expect_gg(mcmc_dens_chains(arr, pars = "beta[1]", bounds = c(0, Inf)))
+})
+
 test_that("mcmc_dens_chains returns a ggplot object", {
   p <- mcmc_dens_chains(arr, pars = "beta[1]", regex_pars = "x\\:",
                         color_chains = FALSE)

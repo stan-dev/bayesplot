@@ -65,6 +65,11 @@ test_that("mcmc_areas returns a ggplot object", {
   expect_gg(mcmc_areas(dframe1))
 })
 
+test_that("mcmc_areas and ridges accept bounds", {
+  expect_gg(mcmc_areas(arr, pars = "beta[1]", bounds = c(0, Inf)))
+  expect_gg(mcmc_areas_ridges(arr, pars = "beta[1]", bounds = c(0, Inf)))
+})
+
 test_that("mcmc_areas_ridges returns a ggplot object", {
   expect_gg(mcmc_areas_ridges(arr, pars = "beta[2]", regex_pars = "x\\:"))
   expect_gg(mcmc_areas_ridges(arr1chain, regex_pars = c("beta", "x\\:")))

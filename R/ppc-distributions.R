@@ -165,8 +165,10 @@ ppc_dens_overlay <-
            bw = "nrd0",
            adjust = 1,
            kernel = "gaussian",
+           bounds = NULL,
            n_dens = 1024) {
     check_ignored_arguments(...)
+    bounds <- validate_density_bounds(bounds)
 
     data <- ppc_data(y, yrep)
     ggplot(data, mapping = aes(x = .data$value)) +
@@ -179,6 +181,7 @@ ppc_dens_overlay <-
         bw = bw,
         adjust = adjust,
         kernel = kernel,
+        bounds = bounds,
         n = n_dens
       ) +
       overlay_ppd_densities(
@@ -190,6 +193,7 @@ ppc_dens_overlay <-
         bw = bw,
         adjust = adjust,
         kernel = kernel,
+        bounds = bounds,
         n = n_dens
       ) +
       scale_color_ppc() +
@@ -215,6 +219,7 @@ ppc_dens_overlay_grouped <- function(y,
                                      bw = "nrd0",
                                      adjust = 1,
                                      kernel = "gaussian",
+                                     bounds = NULL,
                                      n_dens = 1024) {
   check_ignored_arguments(...)
 
@@ -228,6 +233,7 @@ ppc_dens_overlay_grouped <- function(y,
     bw = bw,
     adjust = adjust,
     kernel = kernel,
+    bounds = bounds,
     n_dens = n_dens
   )
   # Use + list(data) trick to replace the data in the plot. The layer-specific
@@ -335,8 +341,10 @@ ppc_dens <-
            ...,
            trim = FALSE,
            size = 0.5,
-           alpha = 1) {
+           alpha = 1,
+           bounds = NULL) {
     check_ignored_arguments(...)
+    bounds <- validate_density_bounds(bounds)
     data <- ppc_data(y, yrep)
     ggplot(data, mapping = aes(
       x = .data$value,
@@ -346,7 +354,8 @@ ppc_dens <-
       geom_density(
         linewidth = size,
         alpha = alpha,
-        trim = trim
+        trim = trim,
+        bounds = bounds
       ) +
       scale_fill_ppc() +
       scale_color_ppc() +
