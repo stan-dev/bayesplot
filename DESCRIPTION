@@ -63,3 +63,5 @@ VignetteBuilder: knitr
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 Config/testthat/edition: 3
+Config/testthat/parallel: true
+Config/testthat/start-first: mcmc-scatter-and-parcoord, ppc-distributions, mcmc-intervals, extractors
