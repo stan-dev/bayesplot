@@ -28,6 +28,9 @@ jobs:
           extra-packages: any::covr, any::xml2, any::vdiffr, any::cmdstanr
           needs: coverage
 
+      - name: Install CmdStan
+        run: Rscript -e "cmdstanr::install_cmdstan()"
+
       - name: Test coverage
         run: |
           cov <- covr::package_coverage(
