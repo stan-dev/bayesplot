@@ -1,177 +1,49 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://mc-stan.org/bayesplot/404.html</loc>
-  </url>
-  <url>
-    <loc>https://mc-stan.org/bayesplot/CONTRIBUTING.html</loc>
-  </url>
-  <url>
-    <loc>https://mc-stan.org/bayesplot/LICENSE-text.html</loc>
-  </url>
-  <url>
-    <loc>https://mc-stan.org/bayesplot/LICENSE.html</loc>
-  </url>
-  <url>
-    <loc>https://mc-stan.org/bayesplot/articles/graphical-ppcs.html</loc>
-  </url>
-  <url>
-    <loc>https://mc-stan.org/bayesplot/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>https://mc-stan.org/bayesplot/articles/plotting-mcmc-draws.html</loc>
-  </url>
-  <url>
-    <loc>https://mc-stan.org/bayesplot/articles/visual-mcmc-diagnostics.html</loc>
-  </url>
-  <url>
-    <loc>https://mc-stan.org/bayesplot/authors.html</loc>
-  </url>
-  <url>
-    <loc>https://mc-stan.org/bayesplot/index.html</loc>
-  </url>
-  <url>
-    <loc>https://mc-stan.org/bayesplot/index.utf8.html</loc>
-  </url>
-  <url>
-    <loc>https://mc-stan.org/bayesplot/news/index.html</loc>
-  </url>
-  <url>
-    <loc>https://mc-stan.org/bayesplot/reference/MCMC-combos.html</loc>
-  </url>
-  <url>
-    <loc>https://mc-stan.org/bayesplot/reference/MCMC-diagnostics.html</loc>
-  </url>
-  <url>
-    <loc>https://mc-stan.org/bayesplot/reference/MCMC-distributions.html</loc>
-  </url>
-  <url>
-    <loc>https://mc-stan.org/bayesplot/reference/MCMC-intervals.html</loc>
-  </url>
-  <url>
-    <loc>https://mc-stan.org/bayesplot/reference/MCMC-nuts.html</loc>
-  </url>
-  <url>
-    <loc>https://mc-stan.org/bayesplot/reference/MCMC-overview.html</loc>
-  </url>
-  <url>
-    <loc>https://mc-stan.org/bayesplot/reference/MCMC-parcoord.html</loc>
-  </url>
-  <url>
-    <loc>https://mc-stan.org/bayesplot/reference/MCMC-recover.html</loc>
-  </url>
-  <url>
-    <loc>https://mc-stan.org/bayesplot/reference/MCMC-scatterplots.html</loc>
-  </url>
-  <url>
-    <loc>https://mc-stan.org/bayesplot/reference/MCMC-traces.html</loc>
-  </url>
-  <url>
-    <loc>https://mc-stan.org/bayesplot/reference/PPC-censoring.html</loc>
-  </url>
-  <url>
-    <loc>https://mc-stan.org/bayesplot/reference/PPC-discrete.html</loc>
-  </url>
-  <url>
-    <loc>https://mc-stan.org/bayesplot/reference/PPC-distributions.html</loc>
-  </url>
-  <url>
-    <loc>https://mc-stan.org/bayesplot/reference/PPC-errors.html</loc>
-  </url>
-  <url>
-    <loc>https://mc-stan.org/bayesplot/reference/PPC-intervals.html</loc>
-  </url>
-  <url>
-    <loc>https://mc-stan.org/bayesplot/reference/PPC-loo.html</loc>
-  </url>
-  <url>
-    <loc>https://mc-stan.org/bayesplot/reference/PPC-overview.html</loc>
-  </url>
-  <url>
-    <loc>https://mc-stan.org/bayesplot/reference/PPC-scatterplots.html</loc>
-  </url>
-  <url>
-    <loc>https://mc-stan.org/bayesplot/reference/PPC-test-statistics.html</loc>
-  </url>
-  <url>
-    <loc>https://mc-stan.org/bayesplot/reference/PPD-distributions.html</loc>
-  </url>
-  <url>
-    <loc>https://mc-stan.org/bayesplot/reference/PPD-intervals.html</loc>
-  </url>
-  <url>
-    <loc>https://mc-stan.org/bayesplot/reference/PPD-overview.html</loc>
-  </url>
-  <url>
-    <loc>https://mc-stan.org/bayesplot/reference/PPD-test-statistics.html</loc>
-  </url>
-  <url>
-    <loc>https://mc-stan.org/bayesplot/reference/available_ppc.html</loc>
-  </url>
-  <url>
-    <loc>https://mc-stan.org/bayesplot/reference/bayesplot-colors.html</loc>
-  </url>
-  <url>
-    <loc>https://mc-stan.org/bayesplot/reference/bayesplot-extractors.html</loc>
-  </url>
-  <url>
-    <loc>https://mc-stan.org/bayesplot/reference/bayesplot-helpers.html</loc>
-  </url>
-  <url>
-    <loc>https://mc-stan.org/bayesplot/reference/bayesplot-package.html</loc>
-  </url>
-  <url>
-    <loc>https://mc-stan.org/bayesplot/reference/bayesplot_grid.html</loc>
-  </url>
-  <url>
-    <loc>https://mc-stan.org/bayesplot/reference/bayesplot_theme_get.html</loc>
-  </url>
-  <url>
-    <loc>https://mc-stan.org/bayesplot/reference/example-data.html</loc>
-  </url>
-  <url>
-    <loc>https://mc-stan.org/bayesplot/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>https://mc-stan.org/bayesplot/reference/pp_check.html</loc>
-  </url>
-  <url>
-    <loc>https://mc-stan.org/bayesplot/reference/reexports.html</loc>
-  </url>
-  <url>
-    <loc>https://mc-stan.org/bayesplot/reference/theme_default.html</loc>
-  </url>
-  <url>
-    <loc>https://mc-stan.org/bayesplot/reference/tidy-params.html</loc>
-  </url>
-  <url>
-    <loc>https://mc-stan.org/bayesplot/revdep/library.noindex/bayesplot/new/bayesplot/html/00Index.html</loc>
-  </url>
-  <url>
-    <loc>https://mc-stan.org/bayesplot/revdep/library.noindex/bayesplot/new/ggridges/doc/gallery.html</loc>
-  </url>
-  <url>
-    <loc>https://mc-stan.org/bayesplot/revdep/library.noindex/bayesplot/new/ggridges/doc/index.html</loc>
-  </url>
-  <url>
-    <loc>https://mc-stan.org/bayesplot/revdep/library.noindex/bayesplot/new/ggridges/doc/introduction.html</loc>
-  </url>
-  <url>
-    <loc>https://mc-stan.org/bayesplot/revdep/library.noindex/bayesplot/new/ggridges/html/00Index.html</loc>
-  </url>
-  <url>
-    <loc>https://mc-stan.org/bayesplot/revdep/library.noindex/bayesplot/old/bayesplot/doc/graphical-ppcs.html</loc>
-  </url>
-  <url>
-    <loc>https://mc-stan.org/bayesplot/revdep/library.noindex/bayesplot/old/bayesplot/doc/index.html</loc>
-  </url>
-  <url>
-    <loc>https://mc-stan.org/bayesplot/revdep/library.noindex/bayesplot/old/bayesplot/doc/plotting-mcmc-draws.html</loc>
-  </url>
-  <url>
-    <loc>https://mc-stan.org/bayesplot/revdep/library.noindex/bayesplot/old/bayesplot/doc/visual-mcmc-diagnostics.html</loc>
-  </url>
-  <url>
-    <loc>https://mc-stan.org/bayesplot/revdep/library.noindex/bayesplot/old/bayesplot/html/00Index.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://mc-stan.org/bayesplot/404.html</loc></url>
+<url><loc>https://mc-stan.org/bayesplot/CONTRIBUTING.html</loc></url>
+<url><loc>https://mc-stan.org/bayesplot/LICENSE-text.html</loc></url>
+<url><loc>https://mc-stan.org/bayesplot/articles/graphical-ppcs.html</loc></url>
+<url><loc>https://mc-stan.org/bayesplot/articles/index.html</loc></url>
+<url><loc>https://mc-stan.org/bayesplot/articles/plotting-mcmc-draws.html</loc></url>
+<url><loc>https://mc-stan.org/bayesplot/articles/visual-mcmc-diagnostics.html</loc></url>
+<url><loc>https://mc-stan.org/bayesplot/authors.html</loc></url>
+<url><loc>https://mc-stan.org/bayesplot/index.html</loc></url>
+<url><loc>https://mc-stan.org/bayesplot/news/index.html</loc></url>
+<url><loc>https://mc-stan.org/bayesplot/reference/MCMC-combos.html</loc></url>
+<url><loc>https://mc-stan.org/bayesplot/reference/MCMC-diagnostics.html</loc></url>
+<url><loc>https://mc-stan.org/bayesplot/reference/MCMC-distributions.html</loc></url>
+<url><loc>https://mc-stan.org/bayesplot/reference/MCMC-intervals.html</loc></url>
+<url><loc>https://mc-stan.org/bayesplot/reference/MCMC-nuts.html</loc></url>
+<url><loc>https://mc-stan.org/bayesplot/reference/MCMC-overview.html</loc></url>
+<url><loc>https://mc-stan.org/bayesplot/reference/MCMC-parcoord.html</loc></url>
+<url><loc>https://mc-stan.org/bayesplot/reference/MCMC-recover.html</loc></url>
+<url><loc>https://mc-stan.org/bayesplot/reference/MCMC-scatterplots.html</loc></url>
+<url><loc>https://mc-stan.org/bayesplot/reference/MCMC-traces.html</loc></url>
+<url><loc>https://mc-stan.org/bayesplot/reference/PPC-censoring.html</loc></url>
+<url><loc>https://mc-stan.org/bayesplot/reference/PPC-discrete.html</loc></url>
+<url><loc>https://mc-stan.org/bayesplot/reference/PPC-distributions.html</loc></url>
+<url><loc>https://mc-stan.org/bayesplot/reference/PPC-errors.html</loc></url>
+<url><loc>https://mc-stan.org/bayesplot/reference/PPC-intervals.html</loc></url>
+<url><loc>https://mc-stan.org/bayesplot/reference/PPC-loo.html</loc></url>
+<url><loc>https://mc-stan.org/bayesplot/reference/PPC-overview.html</loc></url>
+<url><loc>https://mc-stan.org/bayesplot/reference/PPC-scatterplots.html</loc></url>
+<url><loc>https://mc-stan.org/bayesplot/reference/PPC-test-statistics.html</loc></url>
+<url><loc>https://mc-stan.org/bayesplot/reference/PPD-distributions.html</loc></url>
+<url><loc>https://mc-stan.org/bayesplot/reference/PPD-intervals.html</loc></url>
+<url><loc>https://mc-stan.org/bayesplot/reference/PPD-overview.html</loc></url>
+<url><loc>https://mc-stan.org/bayesplot/reference/PPD-test-statistics.html</loc></url>
+<url><loc>https://mc-stan.org/bayesplot/reference/available_ppc.html</loc></url>
+<url><loc>https://mc-stan.org/bayesplot/reference/bayesplot-colors.html</loc></url>
+<url><loc>https://mc-stan.org/bayesplot/reference/bayesplot-extractors.html</loc></url>
+<url><loc>https://mc-stan.org/bayesplot/reference/bayesplot-helpers.html</loc></url>
+<url><loc>https://mc-stan.org/bayesplot/reference/bayesplot-package.html</loc></url>
+<url><loc>https://mc-stan.org/bayesplot/reference/bayesplot_grid.html</loc></url>
+<url><loc>https://mc-stan.org/bayesplot/reference/bayesplot_theme_get.html</loc></url>
+<url><loc>https://mc-stan.org/bayesplot/reference/example-data.html</loc></url>
+<url><loc>https://mc-stan.org/bayesplot/reference/index.html</loc></url>
+<url><loc>https://mc-stan.org/bayesplot/reference/pp_check.html</loc></url>
+<url><loc>https://mc-stan.org/bayesplot/reference/reexports.html</loc></url>
+<url><loc>https://mc-stan.org/bayesplot/reference/theme_default.html</loc></url>
+<url><loc>https://mc-stan.org/bayesplot/reference/tidy-params.html</loc></url>
 </urlset>
+
