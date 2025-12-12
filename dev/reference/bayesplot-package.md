@@ -71,7 +71,7 @@ for saving plots.
 
 ## Author
 
-**Maintainer**: Jonah Gabry <jsg2201@columbia.edu>
+**Maintainer**: Jonah Gabry <jgabry@gmail.com>
 
 Authors:
 
@@ -94,6 +94,8 @@ Other contributors:
 - Aki Vehtari \[contributor\]
 
 - Behram Ulukır \[contributor\]
+
+- Visruth Srimath Kandali \[contributor\]
 
 ## Examples
 

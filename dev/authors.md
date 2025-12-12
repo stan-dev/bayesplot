@@ -22,19 +22,21 @@
 
 - **Behram Ulukır**. Contributor.
 
+- **Visruth Srimath Kandali**. Contributor.
+
 ## Citation
 
 Source:
 [`inst/CITATION`](https://github.com/stan-dev/bayesplot/blob/master/inst/CITATION)
 
 Gabry J, Mahr T (2025). “bayesplot: Plotting for Bayesian Models.” R
-package version 1.14.0.9000, <https://mc-stan.org/bayesplot/>.
+package version 1.15.0.9000, <https://mc-stan.org/bayesplot/>.
 
     @Misc{,
       title = {bayesplot: Plotting for Bayesian Models},
       author = {Jonah Gabry and Tristan Mahr},
       year = {2025},
-      note = {R package version 1.14.0.9000},
+      note = {R package version 1.15.0.9000},
       url = {https://mc-stan.org/bayesplot/},
     }
 

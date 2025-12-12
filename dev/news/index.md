@@ -2,12 +2,31 @@
 
 ## bayesplot (development version)
 
-- Add `shape` argument to
-  [`mcmc_scatter()`](https://mc-stan.org/bayesplot/dev/reference/MCMC-scatterplots.md)
-  by [@behramulukir](https://github.com/behramulukir)
+## bayesplot 1.15.0
+
+CRAN release: 2025-12-12
+
+- Add `shape` argument to `mcmc_scatter` by
+  [@behramulukir](https://github.com/behramulukir)
   ([\#375](https://github.com/stan-dev/bayesplot/issues/375))
-- Restore pre ggplot2 v4.0 behavior of bayesplot theme setting
+- Restore pre ggplot2 v4.0 behavior of bayesplot theme setting by
+  [@jgabry](https://github.com/jgabry)
   ([\#385](https://github.com/stan-dev/bayesplot/issues/385))
+- New pkgdown theme by [@VisruthSK](https://github.com/VisruthSK) in
+  ([\#378](https://github.com/stan-dev/bayesplot/issues/378))
+- Testthat 3e by [@VisruthSK](https://github.com/VisruthSK)
+  ([\#397](https://github.com/stan-dev/bayesplot/issues/397))
+- Update loo PIT visual tests by [@jgabry](https://github.com/jgabry)
+  ([\#374](https://github.com/stan-dev/bayesplot/issues/374))
+- Update SVGs for visual tests for ggplot2 v4.0 by
+  [@jgabry](https://github.com/jgabry)
+  ([\#379](https://github.com/stan-dev/bayesplot/issues/379))
+- Bumped roxygen and fixed linking note by
+  [@VisruthSK](https://github.com/VisruthSK)
+  ([\#382](https://github.com/stan-dev/bayesplot/issues/382))
+- Fix height/width attributes in Rd files for CRAN by
+  [@jgabry](https://github.com/jgabry)
+  ([\#387](https://github.com/stan-dev/bayesplot/issues/387))
 
 ## bayesplot 1.14.0
 
