@@ -115,7 +115,7 @@ for plotting.
 \code{\link[ggplot2:ggsave]{ggplot2::ggsave()}} for saving plots.
 }
 \author{
-\strong{Maintainer}: Jonah Gabry \email{jsg2201@columbia.edu}
+\strong{Maintainer}: Jonah Gabry \email{jgabry@gmail.com}
 
 Authors:
 \itemize{
@@ -132,6 +132,7 @@ Other contributors:
   \item Teemu Sailynoja [contributor]
   \item Aki Vehtari [contributor]
   \item Behram Ulukır [contributor]
+  \item Visruth Srimath Kandali [contributor]
 }
 
 }

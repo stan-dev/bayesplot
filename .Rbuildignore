@@ -17,3 +17,4 @@ Rplots.pdf
 .vscode/*
 ^\.github$
 ^release-prep\.R$
+release-prep.R
