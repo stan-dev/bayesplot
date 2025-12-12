@@ -1,3 +1,5 @@
+# bayesplot (development version)
+
 # bayesplot 1.15.0
 
 * Add `shape` argument to `mcmc_scatter` by @behramulukir (#375)
