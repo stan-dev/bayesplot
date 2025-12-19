@@ -10,6 +10,7 @@
 \alias{mcmc_dens_chains_data}
 \alias{mcmc_violin}
 \alias{mcmc_dots}
+\alias{mcmc_dots_by_chain}
 \title{Histograms and kernel density plots of MCMC draws}
 \usage{
 mcmc_hist(
@@ -105,6 +106,18 @@ mcmc_violin(
 )
 
 mcmc_dots(
+  x,
+  pars = character(),
+  regex_pars = character(),
+  transformations = list(),
+  ...,
+  facet_args = list(),
+  binwidth = NA,
+  alpha = 1,
+  quantiles = NA
+)
+
+mcmc_dots_by_chain(
   x,
   pars = character(),
   regex_pars = character(),
@@ -332,7 +345,7 @@ mcmc_dots_by_chain(x, regex_pars = "beta")
 
 }
 \seealso{
-Other MCMC:
+Other MCMC: 
 \code{\link{MCMC-combos}},
 \code{\link{MCMC-diagnostics}},
 \code{\link{MCMC-intervals}},

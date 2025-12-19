@@ -426,6 +426,8 @@ mcmc_dots <- function(
   )
 }
 
+#' @rdname MCMC-distributions
+#' @export
 mcmc_dots_by_chain <- function(
     x,
     pars = character(),
