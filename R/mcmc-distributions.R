@@ -362,7 +362,64 @@ mcmc_violin <- function(
   )
 }
 
+#' @rdname MCMC-distributions
+#' @export
+mcmc_dots <- function(
+    x,
+    pars = character(),
+    regex_pars = character(),
+    transformations = list(),
+    ...,
+    facet_args = list(),
+    binwidth = NA,
+    alpha = 1,
+    quantiles = NA
+) {
+  check_ignored_arguments(..., ok_args = c("dotsize", "layout", "stackratio", "overflow"))
 
+  suggested_package("ggdist")
+
+  .mcmc_dots(
+    x,
+    pars = pars,
+    regex_pars = regex_pars,
+    transformations = transformations,
+    binwidth = binwidth,
+    facet_args = facet_args,
+    alpha = alpha,
+    quantiles = quantiles,
+    ...
+  )
+}
+
+mcmc_dots_by_chain <- function(
+    x,
+    pars = character(),
+    regex_pars = character(),
+    transformations = list(),
+    ...,
+    facet_args = list(),
+    binwidth = NA,
+    alpha = 1,
+    quantiles = NA
+) {
+  check_ignored_arguments(..., ok_args = c("dotsize", "layout", "stackratio", "overflow"))
+
+  suggested_package("ggdist")
+
+  .mcmc_dots(
+    x,
+    pars = pars,
+    regex_pars = regex_pars,
+    transformations = transformations,
+    binwidth = binwidth,
+    facet_args = facet_args,
+    by_chain = TRUE,
+    alpha = alpha,
+    quantiles = quantiles,
+    ...
+  )
+}
 
 
 # internal -----------------------------------------------------------------
@@ -537,5 +594,66 @@ mcmc_violin <- function(
     yaxis_text(FALSE) +
     yaxis_ticks(FALSE) +
     yaxis_title(on = n_param == 1 && violin) +
+    xaxis_title(on = n_param == 1)
+}
+
+
+.mcmc_dots <- function(
+    x,
+    pars = character(),
+    regex_pars = character(),
+    transformations = list(),
+    facet_args = list(),
+    binwidth = NA,
+    by_chain = FALSE,
+    alpha = 1,
+    quantiles = NA,
+    ...
+) {
+  x <- prepare_mcmc_array(x, pars, regex_pars, transformations)
+
+  if (by_chain && !has_multiple_chains(x)) {
+    STOP_need_multiple_chains()
+  }
+
+  data <- melt_mcmc(x, value.name = "value")
+  n_param <- num_params(data)
+
+  graph <- ggplot(data, aes(x = .data$value)) +
+    ggdist::stat_dots(
+      binwidth = binwidth,
+      quantiles = quantiles,
+      fill = get_color("mid"),
+      color = get_color("mid_highlight"),
+      alpha = alpha,
+      ...
+    )
+
+  facet_args[["scales"]] <- facet_args[["scales"]] %||% "free"
+  if (!by_chain) {
+    if (n_param > 1) {
+      facet_args[["facets"]] <- vars(.data$Parameter)
+      graph <- graph + do.call("facet_wrap", facet_args)
+    }
+  } else {
+    facet_args[["rows"]] <- vars(.data$Chain)
+    if (n_param > 1) {
+      facet_args[["cols"]] <- vars(.data$Parameter)
+    }
+    graph <- graph +
+      do.call("facet_grid", facet_args) +
+      force_axes_in_facets()
+  }
+
+  if (n_param == 1) {
+    graph <- graph + xlab(levels(data$Parameter))
+  }
+
+  graph +
+    dont_expand_y_axis(c(0.005, 0)) +
+    bayesplot_theme_get() +
+    yaxis_text(FALSE) +
+    yaxis_title(FALSE) +
+    yaxis_ticks(FALSE) +
     xaxis_title(on = n_param == 1)
 }
