@@ -12,7 +12,7 @@
 #' @template args-transformations
 #' @template args-facet_args
 #' @template args-density-controls
-#' @param ... Currently ignored.
+#' @param ... For dot plots, optional additional arguments to pass to [ggdist::stat_dots()].
 #' @param alpha Passed to the geom to control the transparency.
 #'
 #' @template return-ggplot
@@ -25,12 +25,18 @@
 #'   \item{`mcmc_dens()`}{
 #'    Kernel density plots of posterior draws with all chains merged.
 #'   }
+#'   \item{`mcmc_dots()`}{
+#'   Dot plots of posterior draws with all chains merged.
+#'   }
 #'   \item{`mcmc_hist_by_chain()`}{
 #'    Histograms of posterior draws with chains separated via faceting.
 #'   }
 #'   \item{`mcmc_dens_overlay()`}{
 #'    Kernel density plots of posterior draws with chains separated but
 #'    overlaid on a single plot.
+#'   }
+#'   \item{`mcmc_dots_by_chain()`}{
+#'   Dot plots of posterior draws with chains separated via faceting.
 #'   }
 #'   \item{`mcmc_violin()`}{
 #'    The density estimate of each chain is plotted as a violin with
@@ -99,6 +105,33 @@
 #' # separate chains as violin plots
 #' color_scheme_set("green")
 #' mcmc_violin(x) + panel_bg(color = "gray20", size = 2, fill = "gray30")
+#'
+#'
+#' #################
+#' ### Dot Plots ###
+#' #################
+#'
+#' # dot plots of all parameters
+#' \donttest{
+#' mcmc_dots(x)
+#' }
+#'
+#' # dot plots of some parameters
+#' \donttest{
+#' color_scheme_set("pink")
+#' mcmc_dots(x, pars = c("alpha", "beta[2]"))
+#' }
+#'
+#' # example of using 'transformations' argument to plot log(sigma),
+#' # and and using 'quantiles' to plot number of dots corresponding to quantiles
+#' \donttest{
+#' mcmc_dots(x, transformations = list(sigma = "log"), quantiles = 80)
+#' }
+#'
+#' # separate dot plots by chain
+#' \donttest{
+#' mcmc_dots_by_chain(x, regex_pars = "beta")
+#' }
 #'
 NULL
 

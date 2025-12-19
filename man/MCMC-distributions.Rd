@@ -9,6 +9,7 @@
 \alias{mcmc_dens_chains}
 \alias{mcmc_dens_chains_data}
 \alias{mcmc_violin}
+\alias{mcmc_dots}
 \title{Histograms and kernel density plots of MCMC draws}
 \usage{
 mcmc_hist(
@@ -102,6 +103,18 @@ mcmc_violin(
   facet_args = list(),
   probs = c(0.1, 0.5, 0.9)
 )
+
+mcmc_dots(
+  x,
+  pars = character(),
+  regex_pars = character(),
+  transformations = list(),
+  ...,
+  facet_args = list(),
+  binwidth = NA,
+  alpha = 1,
+  quantiles = NA
+)
 }
 \arguments{
 \item{x}{An object containing MCMC draws:
@@ -150,7 +163,7 @@ parameter is transformed (e.g. \code{"t(sigma)"}).
 Note: due to partial argument matching \code{transformations} can be
 abbreviated for convenience in interactive use (e.g., \code{transform}).}
 
-\item{...}{Currently ignored.}
+\item{...}{For dot plots, optional additional arguments to pass to \code{\link[ggdist:stat_dots]{ggdist::stat_dots()}}.}
 
 \item{facet_args}{A named list of arguments (other than \code{facets}) passed
 to \code{\link[ggplot2:facet_wrap]{ggplot2::facet_wrap()}} or \code{\link[ggplot2:facet_grid]{ggplot2::facet_grid()}}
@@ -186,6 +199,11 @@ parameters. \code{n_dens} defaults to \code{1024}.}
 \item{probs}{A numeric vector passed to \code{\link[ggplot2:geom_violin]{ggplot2::geom_violin()}}'s
 \code{draw_quantiles} argument to specify at which quantiles to draw
 horizontal lines. Set to \code{NULL} to remove the lines.}
+
+\item{quantiles}{For dot plots, an optional integer passed to
+\code{\link[ggdist:stat_dots]{ggdist::stat_dots()}} specifying the number of quantiles to use for a
+quantile dot plot. If \code{quantiles} is \code{NA} (the default) then all data
+points are plotted.}
 }
 \value{
 A ggplot object that can be further customized using the \strong{ggplot2} package.
@@ -203,12 +221,18 @@ Histograms of posterior draws with all chains merged.
 \item{\code{mcmc_dens()}}{
 Kernel density plots of posterior draws with all chains merged.
 }
+\item{\code{mcmc_dots()}}{
+Dot plots of posterior draws with all chains merged.
+}
 \item{\code{mcmc_hist_by_chain()}}{
 Histograms of posterior draws with chains separated via faceting.
 }
 \item{\code{mcmc_dens_overlay()}}{
 Kernel density plots of posterior draws with chains separated but
 overlaid on a single plot.
+}
+\item{\code{mcmc_dots_by_chain()}}{
+Dot plots of posterior draws with chains separated via faceting.
 }
 \item{\code{mcmc_violin()}}{
 The density estimate of each chain is plotted as a violin with
@@ -278,6 +302,33 @@ mcmc_dens_chains(x2, pars = c("beta[1]", "beta[2]", "beta[3]"))
 # separate chains as violin plots
 color_scheme_set("green")
 mcmc_violin(x) + panel_bg(color = "gray20", size = 2, fill = "gray30")
+
+
+#################
+### Dot Plots ###
+#################
+
+# dot plots of all parameters
+\donttest{
+mcmc_dots(x)
+}
+
+# dot plots of some parameters
+\donttest{
+color_scheme_set("pink")
+mcmc_dots(x, pars = c("alpha", "beta[2]"))
+}
+
+# example of using 'transformations' argument to plot log(sigma),
+# and and using 'quantiles' to plot number of dots corresponding to quantiles
+\donttest{
+mcmc_dots(x, transformations = list(sigma = "log"), quantiles = 80)
+}
+
+# separate dot plots by chain
+\donttest{
+mcmc_dots_by_chain(x, regex_pars = "beta")
+}
 
 }
 \seealso{
