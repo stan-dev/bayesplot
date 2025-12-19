@@ -332,7 +332,7 @@ mcmc_dots_by_chain(x, regex_pars = "beta")
 
 }
 \seealso{
-Other MCMC: 
+Other MCMC:
 \code{\link{MCMC-combos}},
 \code{\link{MCMC-diagnostics}},
 \code{\link{MCMC-intervals}},

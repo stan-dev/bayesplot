@@ -397,6 +397,7 @@ mcmc_violin <- function(
 
 #' @rdname MCMC-distributions
 #' @export
+#' @template args-dots
 mcmc_dots <- function(
     x,
     pars = character(),
