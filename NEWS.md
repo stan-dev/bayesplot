@@ -1,5 +1,7 @@
 # bayesplot (development version)
 
+* New functions `mcmc_dots` and `mcmc_dots_by_chain` for dot plots of MCMC draws by @behramulukir (#402)
+
 # bayesplot 1.15.0
 
 * Add `shape` argument to `mcmc_scatter` by @behramulukir (#375)
