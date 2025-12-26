@@ -1,6 +1,3 @@
-library(bayesplot)
-context("MCMC: traces")
-
 source(test_path("data-for-mcmc-tests.R"))
 
 test_that("mcmc_trace returns a ggplot object", {

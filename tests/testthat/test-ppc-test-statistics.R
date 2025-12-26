@@ -1,6 +1,3 @@
-library(bayesplot)
-context("PPC: test-statistics")
-
 source(test_path("data-for-ppc-tests.R"))
 
 q25 <- function(x) quantile(x, 0.25)

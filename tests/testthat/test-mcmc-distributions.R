@@ -1,6 +1,3 @@
-library(bayesplot)
-context("MCMC: distributions")
-
 source(test_path("data-for-mcmc-tests.R"))
 
 get_palette <- function(ggplot, n) {

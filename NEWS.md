@@ -1,7 +1,16 @@
 # bayesplot (development version)
 
-* Add `shape` argument to `mcmc_scatter()` by @behramulukir (#375)
-* Restore pre ggplot2 v4.0 behavior of bayesplot theme setting (#385)
+# bayesplot 1.15.0
+
+* Add `shape` argument to `mcmc_scatter` by @behramulukir (#375)
+* Restore pre ggplot2 v4.0 behavior of bayesplot theme setting by @jgabry (#385)
+* New pkgdown theme by @VisruthSK in (#378)
+* Testthat 3e by @VisruthSK (#397)
+* Update loo PIT visual tests by @jgabry (#374)
+* Update SVGs for visual tests for ggplot2 v4.0  by @jgabry (#379)
+* Bumped roxygen and fixed linking note by @VisruthSK (#382)
+* Fix height/width attributes in Rd files for CRAN by @jgabry (#387)
+
 
 # bayesplot 1.14.0
 

@@ -1,8 +1,4 @@
-library(bayesplot)
-context("MCMC: intervals")
-
 source(test_path("data-for-mcmc-tests.R"))
-
 
 test_that("mcmc_intervals_data computes quantiles", {
   xs <- melt_mcmc(merge_chains(prepare_mcmc_array(arr, pars = "beta[1]")))
@@ -11,7 +7,7 @@ test_that("mcmc_intervals_data computes quantiles", {
 
   qs <- unlist(d[, c("ll", "l", "m", "h", "hh")])
   by_hand <- quantile(xs$Value, c(.25, .35, .5, .65, .75))
-  expect_equivalent(qs, by_hand)
+  expect_equal(qs, by_hand, ignore_attr = TRUE)
 
   expect_equal(d$parameter, factor("beta[1]"))
   expect_equal(d$outer_width, .5)
@@ -30,7 +26,7 @@ test_that("mcmc_intervals_data computes point estimates", {
   d <- mcmc_intervals_data(arr, pars = "beta[2]",
                            prob = .3, prob_outer = .5, point_est = "mean")
 
-  expect_equivalent(d$m, mean(xs$Value))
+  expect_equal(d$m, mean(xs$Value), ignore_attr = TRUE)
   expect_equal(d$parameter, factor("beta[2]"))
   expect_equal(d$point_est, "mean")
 
@@ -139,8 +135,8 @@ test_that("mcmc_areas_data computes density", {
   densities <- lapply(raw_values, do_dens, 1, 1024)
 
   for (name in names(by_parameter)) {
-    expect_equivalent(by_parameter[[name]][["density"]],
-                      densities[[name]][["y"]])
+    expect_equal(by_parameter[[name]][["density"]],
+                      densities[[name]][["y"]], ignore_attr = TRUE)
   }
 })
 

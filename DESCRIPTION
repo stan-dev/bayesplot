@@ -1,8 +1,8 @@
 Package: bayesplot
 Type: Package
 Title: Plotting for Bayesian Models
-Version: 1.14.0.9000
-Date: 2025-08-31
+Version: 1.15.0.9000
+Date: 2025-12-11
 Authors@R: c(person("Jonah", "Gabry", role = c("aut", "cre"), email = "jgabry@gmail.com"),
              person("Tristan", "Mahr", role = "aut", comment = c(ORCID = "0000-0002-8890-5116")),
              person("Paul-Christian", "Bürkner", role = "ctb"),
@@ -12,7 +12,8 @@ Authors@R: c(person("Jonah", "Gabry", role = c("aut", "cre"), email = "jgabry@gm
              person("Eduardo", "Coronado Sroka", role = "ctb"),
              person("Teemu", "Sailynoja", role = "ctb"),
              person("Aki", "Vehtari", role = "ctb"), 
-             person("Behram", "Ulukır", role = "ctb"))
+             person("Behram", "Ulukır", role = "ctb"), 
+             person("Visruth", "Srimath Kandali", role = "ctb"))
 Maintainer: Jonah Gabry <jgabry@gmail.com>
 Description: Plotting functions for posterior analysis, MCMC diagnostics,
     prior and posterior predictive checks, and other visualizations
@@ -56,9 +57,10 @@ Suggests:
     scales,
     shinystan (>= 2.3.0),
     survival,
-    testthat (>= 2.0.0),
+    testthat (>= 3.0.0),
     vdiffr (>= 1.0.2)
 RoxygenNote: 7.3.3
 VignetteBuilder: knitr
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
+Config/testthat/edition: 3

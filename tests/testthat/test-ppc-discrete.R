@@ -1,6 +1,4 @@
-library(bayesplot)
 # suppressPackageStartupMessages(library(rstanarm))
-context("PPC: discrete")
 
 source(test_path("data-for-ppc-tests.R"))
 load(test_path("data-for-ordinal.rda"))
@@ -74,9 +72,9 @@ test_that("ppc_bars_data includes all levels", {
   d3 <- ppc_bars_data(y_ord, yrep_ord2)
   expect_equal(d3$x, 1:4)
   expect_equal(d3$y_obs, tab)
-  expect_equivalent(d3$l[2], 0)
-  expect_equivalent(d3$m[2], 0)
-  expect_equivalent(d3$h[2], 0)
+  expect_equal(d3$l[2], 0, ignore_attr = TRUE)
+  expect_equal(d3$m[2], 0, ignore_attr = TRUE)
+  expect_equal(d3$h[2], 0, ignore_attr = TRUE)
 })
 
 
