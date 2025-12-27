@@ -9,6 +9,14 @@ test_that("ppc_dens_overlay returns a ggplot object", {
   expect_gg(ppd_dens_overlay(yrep2, size = 0.5, alpha = 0.2))
 })
 
+test_that("density PPC/PPD plots accept bounds", {
+  expect_gg(ppc_dens(y, yrep[1:8, ], bounds = c(0, Inf)))
+  expect_gg(ppc_dens_overlay(y, yrep, bounds = c(0, Inf)))
+  expect_gg(ppc_dens_overlay_grouped(y, yrep, group = group, bounds = c(0, Inf)))
+  expect_gg(ppd_dens(yrep[1:8, ], bounds = c(0, Inf)))
+  expect_gg(ppd_dens_overlay(yrep, bounds = c(0, Inf)))
+})
+
 test_that("ppc_ecdf_overlay returns a ggplot object", {
   expect_gg(ppc_ecdf_overlay(y, yrep, size = 0.5, alpha = 0.2))
   expect_gg(ppc_ecdf_overlay(y2, yrep2))

@@ -24,6 +24,7 @@ ppd_dens_overlay(
   bw = "nrd0",
   adjust = 1,
   kernel = "gaussian",
+  bounds = NULL,
   n_dens = 1024
 )
 
@@ -36,7 +37,7 @@ ppd_ecdf_overlay(
   alpha = 0.7
 )
 
-ppd_dens(ypred, ..., trim = FALSE, size = 0.5, alpha = 1)
+ppd_dens(ypred, ..., trim = FALSE, size = 0.5, alpha = 1, bounds = NULL)
 
 ppd_hist(ypred, ..., binwidth = NULL, bins = NULL, breaks = NULL, freq = TRUE)
 
@@ -83,9 +84,10 @@ the predictive distributions.}
 
 \item{trim}{A logical scalar passed to \code{\link[ggplot2:geom_density]{ggplot2::geom_density()}}.}
 
-\item{bw, adjust, kernel, n_dens}{Optional arguments passed to
-\code{\link[stats:density]{stats::density()}} to override default kernel density estimation
-parameters. \code{n_dens} defaults to \code{1024}.}
+\item{bw, adjust, kernel, n_dens, bounds}{Optional arguments passed to
+\code{\link[stats:density]{stats::density()}} (and \code{bounds} to \code{\link[ggplot2:geom_density]{ggplot2::stat_density()}}) to override
+default kernel density estimation parameters or truncate the density
+support. \code{n_dens} defaults to \code{1024}.}
 
 \item{discrete}{For \code{ppc_ecdf_overlay()}, should the data be treated as
 discrete? The default is \code{FALSE}, in which case \code{geom="line"} is

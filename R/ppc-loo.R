@@ -173,8 +173,10 @@ ppc_loo_pit_overlay <- function(y,
                                 trim = FALSE,
                                 adjust = 1,
                                 kernel = "gaussian",
+                                bounds = NULL,
                                 n_dens = 1024) {
   check_ignored_arguments(..., ok_args = list("moment_match"))
+  bounds <- validate_density_bounds(bounds)
 
   data <-
     ppc_loo_pit_data(
@@ -240,6 +242,7 @@ ppc_loo_pit_overlay <- function(y,
         bw = bw,
         adjust = adjust,
         kernel = kernel,
+        bounds = bounds,
         n = n_dens,
         na.rm = TRUE
       ) +
@@ -254,6 +257,7 @@ ppc_loo_pit_overlay <- function(y,
         bw = bw,
         adjust = adjust,
         kernel = kernel,
+        bounds = bounds,
         n = n_dens,
         na.rm = TRUE
       ) +
