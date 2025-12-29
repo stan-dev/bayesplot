@@ -303,12 +303,18 @@ test_that("ppc_dens_overlay renders correctly", {
   p_custom <- ppc_dens_overlay(vdiff_y, vdiff_yrep, size = 1, alpha = 0.2)
   vdiffr::expect_doppelganger("ppc_dens_overlay (alpha, size)", p_custom)
 
+  p_bounds <- suppressWarnings(ppc_dens_overlay(vdiff_y, vdiff_yrep, bounds = c(0, Inf)))
+  vdiffr::expect_doppelganger("ppc_dens_overlay (bounds)", p_bounds)
+
   # ppd versions
   p_base <- ppd_dens_overlay(vdiff_yrep)
   vdiffr::expect_doppelganger("ppd_dens_overlay (default)", p_base)
 
   p_custom <- ppd_dens_overlay(vdiff_yrep, size = 1, alpha = 0.2)
   vdiffr::expect_doppelganger("ppd_dens_overlay (alpha, size)", p_custom)
+
+  p_bounds <- suppressWarnings(ppd_dens_overlay(vdiff_yrep, bounds = c(0, Inf)))
+  vdiffr::expect_doppelganger("ppd_dens_overlay (bounds)", p_bounds)
 })
 
 test_that("ppc_dens_overlay_grouped renders correctly", {
