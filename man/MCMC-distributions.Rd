@@ -293,14 +293,14 @@ mcmc_hist(x, transformations = list(sigma = "log"),
 mcmc_hist(x, transformations = list(sigma = log))
 
 # separate histograms by chain
-color_scheme_set("pink")
+color_scheme_set("orange")
 mcmc_hist_by_chain(x, regex_pars = "beta")
 }
 
 #################
 ### Densities ###
 #################
-
+color_scheme_set("purple")
 mcmc_dens(x, pars = c("sigma", "beta[2]"),
           facet_args = list(nrow = 2))
 \donttest{
@@ -314,7 +314,7 @@ mcmc_dens_chains(x2, pars = c("beta[1]", "beta[2]", "beta[3]"))
 }
 # separate chains as violin plots
 color_scheme_set("green")
-mcmc_violin(x) + panel_bg(color = "gray20", size = 2, fill = "gray30")
+mcmc_violin(x) + panel_bg(color = "gray20", linewidth = 2, fill = "gray30")
 
 
 #################
