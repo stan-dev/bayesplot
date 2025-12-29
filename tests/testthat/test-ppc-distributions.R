@@ -10,11 +10,11 @@ test_that("ppc_dens_overlay returns a ggplot object", {
 })
 
 test_that("density PPC/PPD plots accept bounds", {
-  expect_gg(ppc_dens(y, yrep[1:8, ], bounds = c(0, Inf)))
-  expect_gg(ppc_dens_overlay(y, yrep, bounds = c(0, Inf)))
-  expect_gg(ppc_dens_overlay_grouped(y, yrep, group = group, bounds = c(0, Inf)))
-  expect_gg(ppd_dens(yrep[1:8, ], bounds = c(0, Inf)))
-  expect_gg(ppd_dens_overlay(yrep, bounds = c(0, Inf)))
+  suppressWarnings(expect_gg(ppc_dens(y, yrep[1:8, ], bounds = c(0, Inf))))
+  suppressWarnings(expect_gg(ppc_dens_overlay(y, yrep, bounds = c(0, Inf))))
+  suppressWarnings(expect_gg(ppc_dens_overlay_grouped(y, yrep, group = group, bounds = c(0, Inf))))
+  suppressWarnings(expect_gg(ppd_dens(yrep[1:8, ], bounds = c(0, Inf))))
+  suppressWarnings(expect_gg(ppd_dens_overlay(yrep, bounds = c(0, Inf))))
 })
 
 test_that("ppc_ecdf_overlay returns a ggplot object", {
@@ -208,30 +208,30 @@ test_that("ppc_dots renders correctly", {
   vdiffr::expect_doppelganger("ppc_dots (default)", p_base)
 
   p_binwidth <- ppc_dots(vdiff_y, vdiff_yrep[1:8, ], binwidth = 3)
-  expect_warning(vdiffr::expect_doppelganger("ppc_dots (binwidth)", p_binwidth),
-                 "The provided binwidth will cause dots to overflow the boundaries")
+  suppressWarnings(expect_warning(vdiffr::expect_doppelganger("ppc_dots (binwidth)", p_binwidth),
+                 "The provided binwidth will cause dots to overflow the boundaries"))
 
   p_quantile <- ppc_dots(vdiff_y, vdiff_yrep[1:8, ], quantiles = 50)
   vdiffr::expect_doppelganger("ppc_dots (quantile)", p_quantile)
 
   p_quantile_binwidth <- ppc_dots(vdiff_y, vdiff_yrep[1:8, ], binwidth = 3, quantiles = 50)
-  expect_warning(vdiffr::expect_doppelganger("ppc_dots (quantile-binwidth)", p_quantile_binwidth),
-                 "The provided binwidth will cause dots to overflow the boundaries")
+  suppressWarnings(expect_warning(vdiffr::expect_doppelganger("ppc_dots (quantile-binwidth)", p_quantile_binwidth),
+                 "The provided binwidth will cause dots to overflow the boundaries"))
 
   # ppd versions
   p_base <- ppd_dots(vdiff_yrep[1:8, ])
   vdiffr::expect_doppelganger("ppd_dots (default)", p_base)
 
-  p_binwidth <- ppd_dots(vdiff_yrep[1:8, ], binwidth = 3)
-  expect_warning(vdiffr::expect_doppelganger("ppd_dots (binwidth)", p_binwidth),
-                 "The provided binwidth will cause dots to overflow the boundaries")
+  p_binwidth <- suppressWarnings(ppd_dots(vdiff_yrep[1:8, ], binwidth = 3))
+  suppressWarnings(expect_warning(vdiffr::expect_doppelganger("ppd_dots (binwidth)", p_binwidth),
+                 "The provided binwidth will cause dots to overflow the boundaries"))
 
   p_quantile <- ppd_dots(vdiff_yrep[1:8, ], quantiles = 50)
   vdiffr::expect_doppelganger("ppd_dots (quantile)", p_quantile)
 
-  p_quantile_binwidth <- ppd_dots(vdiff_yrep[1:8, ], binwidth = 3, quantiles = 50)
-  expect_warning(vdiffr::expect_doppelganger("ppd_dots (quantile-binwidth)", p_quantile_binwidth),
-                 "The provided binwidth will cause dots to overflow the boundaries")
+  p_quantile_binwidth <- suppressWarnings(ppd_dots(vdiff_yrep[1:8, ], binwidth = 3, quantiles = 50))
+  suppressWarnings(expect_warning(vdiffr::expect_doppelganger("ppd_dots (quantile-binwidth)", p_quantile_binwidth),
+                 "The provided binwidth will cause dots to overflow the boundaries"))
 })
 
 test_that("ppc_ecdf_overlay renders correctly", {
@@ -304,7 +304,7 @@ test_that("ppc_dens_overlay renders correctly", {
   vdiffr::expect_doppelganger("ppc_dens_overlay (alpha, size)", p_custom)
 
   p_bounds <- suppressWarnings(ppc_dens_overlay(vdiff_y, vdiff_yrep, bounds = c(0, Inf)))
-  vdiffr::expect_doppelganger("ppc_dens_overlay (bounds)", p_bounds)
+  suppressWarnings(vdiffr::expect_doppelganger("ppc_dens_overlay (bounds)", p_bounds))
 
   # ppd versions
   p_base <- ppd_dens_overlay(vdiff_yrep)
@@ -314,7 +314,7 @@ test_that("ppc_dens_overlay renders correctly", {
   vdiffr::expect_doppelganger("ppd_dens_overlay (alpha, size)", p_custom)
 
   p_bounds <- suppressWarnings(ppd_dens_overlay(vdiff_yrep, bounds = c(0, Inf)))
-  vdiffr::expect_doppelganger("ppd_dens_overlay (bounds)", p_bounds)
+  suppressWarnings(vdiffr::expect_doppelganger("ppd_dens_overlay (bounds)", p_bounds))
 })
 
 test_that("ppc_dens_overlay_grouped renders correctly", {
