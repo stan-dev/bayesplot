@@ -56,9 +56,9 @@ test_that("mcmc_dens_overlay returns a ggplot object", {
 })
 
 test_that("mcmc density plots accept bounds", {
-  expect_gg(mcmc_dens(arr, pars = "beta[1]", bounds = c(0, Inf)))
-  expect_gg(mcmc_dens_overlay(arr, pars = "beta[1]", bounds = c(0, Inf)))
-  expect_gg(mcmc_dens_chains(arr, pars = "beta[1]", bounds = c(0, Inf)))
+  suppressWarnings(expect_gg(mcmc_dens(arr, pars = "beta[1]", bounds = c(0, Inf))))
+  suppressWarnings(expect_gg(mcmc_dens_overlay(arr, pars = "beta[1]", bounds = c(0, Inf))))
+  suppressWarnings(expect_gg(mcmc_dens_chains(arr, pars = "beta[1]", bounds = c(0, Inf))))
 })
 
 test_that("mcmc_dens_chains returns a ggplot object", {
@@ -151,7 +151,7 @@ test_that("mcmc_dens renders correctly", {
   vdiffr::expect_doppelganger("mcmc_dens (alpha)", p_alpha)
 
   p_bounds <- suppressWarnings(mcmc_dens(vdiff_dframe, bounds = c(0, Inf)))
-  vdiffr::expect_doppelganger("mcmc_dens (bounds)", p_bounds)
+  suppressWarnings(vdiffr::expect_doppelganger("mcmc_dens (bounds)", p_bounds))
 })
 
 test_that("mcmc_dens_overlay renders correctly", {
@@ -163,7 +163,7 @@ test_that("mcmc_dens_overlay renders correctly", {
   vdiffr::expect_doppelganger("mcmc_dens_overlay (default)", p_base)
 
   p_bounds <- suppressWarnings(mcmc_dens_overlay(vdiff_dframe_chains, bounds = c(1,2)))
-  vdiffr::expect_doppelganger("mcmc_dens_overlay (bounds)", p_bounds)
+  suppressWarnings(vdiffr::expect_doppelganger("mcmc_dens_overlay (bounds)", p_bounds))
 })
 
 test_that("mcmc_dens_chains renders correctly", {
