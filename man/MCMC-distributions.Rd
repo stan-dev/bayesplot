@@ -321,26 +321,18 @@ mcmc_violin(x) + panel_bg(color = "gray20", size = 2, fill = "gray30")
 ### Dot Plots ###
 #################
 
-# dot plots of all parameters
-\donttest{
-mcmc_dots(x)
-}
-
 # dot plots of some parameters
-\donttest{
 color_scheme_set("pink")
 mcmc_dots(x, pars = c("alpha", "beta[2]"))
-}
 
-# example of using 'transformations' argument to plot log(sigma),
-# and and using 'quantiles' to plot number of dots corresponding to quantiles
 \donttest{
-mcmc_dots(x, transformations = list(sigma = "log"), quantiles = 80)
-}
-
+color_scheme_set("teal")
 # separate dot plots by chain
-\donttest{
 mcmc_dots_by_chain(x, regex_pars = "beta")
+
+# custom facet labels (will change row labels to e.g. "Chain: 1" instead of just "1")
+chain_labeller <- ggplot2::labeller(.rows = ggplot2::label_both)
+mcmc_dots_by_chain(x, regex_pars = "beta", facet_args = list(labeller = chain_labeller))
 }
 
 }
