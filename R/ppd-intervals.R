@@ -84,7 +84,6 @@ ppd_intervals <-
       geom_linerange(
         mapping = intervals_outer_aes(color = "ypred"),
         alpha = alpha,
-        size = size,
         linewidth = linewidth
       ) +
       geom_pointrange(
@@ -153,14 +152,14 @@ ppd_ribbon <-
       geom_ribbon(
         mapping = intervals_outer_aes(fill = "ypred", color = "ypred"),
         color = NA,
-        size = 0.2 * size,
+        linewidth = 0.2 * size,
         alpha = alpha
       ) +
       geom_ribbon(
         mapping = intervals_outer_aes(),
         fill = NA,
         color = get_color("mh"),
-        size = 0.2 * size,
+        linewidth = 0.2 * size,
         alpha = 1
       ) +
       geom_ribbon(size = 0.5 * size) +
