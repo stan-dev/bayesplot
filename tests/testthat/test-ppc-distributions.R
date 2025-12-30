@@ -17,6 +17,30 @@ test_that("density PPC/PPD plots accept bounds", {
   suppressWarnings(expect_gg(ppd_dens_overlay(yrep, bounds = c(0, Inf))))
 })
 
+test_that("density PPC/PPD plots reject invalid bounds", {
+  # non-numeric bounds
+  expect_error(ppc_dens_overlay(y, yrep, bounds = c("a", "b")),
+               "`bounds` must be a numeric vector of length 2")
+  
+  # bounds with length != 2
+  expect_error(ppc_dens_overlay(y, yrep, bounds = c(0, 1, 2)),
+               "`bounds` must be a numeric vector of length 2")
+  expect_error(ppc_dens_overlay(y, yrep, bounds = 1),
+               "`bounds` must be a numeric vector of length 2")
+  
+  # bounds with NA values
+  expect_error(ppc_dens_overlay(y, yrep, bounds = c(0, NA)),
+               "`bounds` must be a numeric vector of length 2")
+  expect_error(ppc_dens_overlay(y, yrep, bounds = c(NA, 1)),
+               "`bounds` must be a numeric vector of length 2")
+  
+  # bounds where bounds[1] >= bounds[2]
+  expect_error(ppc_dens_overlay(y, yrep, bounds = c(1, 0)),
+               "`bounds` must satisfy bounds\\[1\\] < bounds\\[2\\]")
+  expect_error(ppc_dens_overlay(y, yrep, bounds = c(1, 1)),
+               "`bounds` must satisfy bounds\\[1\\] < bounds\\[2\\]")
+})
+
 test_that("ppc_ecdf_overlay returns a ggplot object", {
   expect_gg(ppc_ecdf_overlay(y, yrep, size = 0.5, alpha = 0.2))
   expect_gg(ppc_ecdf_overlay(y2, yrep2))
