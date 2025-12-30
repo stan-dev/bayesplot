@@ -61,6 +61,30 @@ test_that("mcmc density plots accept bounds", {
   suppressWarnings(expect_gg(mcmc_dens_chains(arr, pars = "beta[1]", bounds = c(0, Inf))))
 })
 
+test_that("mcmc density plots reject invalid bounds", {
+  # non-numeric bounds
+  expect_error(mcmc_dens(arr, pars = "beta[1]", bounds = c("a", "b")),
+               "`bounds` must be a numeric vector of length 2")
+  
+  # bounds with length != 2
+  expect_error(mcmc_dens(arr, pars = "beta[1]", bounds = c(0, 1, 2)),
+               "`bounds` must be a numeric vector of length 2")
+  expect_error(mcmc_dens(arr, pars = "beta[1]", bounds = 1),
+               "`bounds` must be a numeric vector of length 2")
+  
+  # bounds with NA values
+  expect_error(mcmc_dens(arr, pars = "beta[1]", bounds = c(0, NA)),
+               "`bounds` must be a numeric vector of length 2")
+  expect_error(mcmc_dens(arr, pars = "beta[1]", bounds = c(NA, 1)),
+               "`bounds` must be a numeric vector of length 2")
+  
+  # bounds where bounds[1] >= bounds[2]
+  expect_error(mcmc_dens(arr, pars = "beta[1]", bounds = c(1, 0)),
+               "`bounds` must satisfy bounds\\[1\\] < bounds\\[2\\]")
+  expect_error(mcmc_dens(arr, pars = "beta[1]", bounds = c(1, 1)),
+               "`bounds` must satisfy bounds\\[1\\] < bounds\\[2\\]")
+})
+
 test_that("mcmc_dens_chains returns a ggplot object", {
   p <- mcmc_dens_chains(arr, pars = "beta[1]", regex_pars = "x\\:",
                         color_chains = FALSE)
