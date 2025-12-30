@@ -40,7 +40,9 @@ jobs:
           r-version: ${{ matrix.config.r }}
           http-user-agent: ${{ matrix.config.http-user-agent }}
           use-public-rspm: true
-          extra-repositories: 'https://stan-dev.r-universe.dev'
+          extra-repositories: |
+            https://community.r-multiverse.org
+            https://stan-dev.r-universe.dev
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
