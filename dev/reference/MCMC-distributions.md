@@ -32,6 +32,7 @@ mcmc_dens(
   adjust = NULL,
   kernel = NULL,
   n_dens = NULL,
+  bounds = NULL,
   alpha = 1
 )
 
@@ -60,7 +61,8 @@ mcmc_dens_overlay(
   bw = NULL,
   adjust = NULL,
   kernel = NULL,
-  n_dens = NULL
+  n_dens = NULL,
+  bounds = NULL
 )
 
 mcmc_dens_chains(
@@ -73,7 +75,8 @@ mcmc_dens_chains(
   bw = NULL,
   adjust = NULL,
   kernel = NULL,
-  n_dens = NULL
+  n_dens = NULL,
+  bounds = NULL
 )
 
 mcmc_dens_chains_data(
@@ -85,7 +88,8 @@ mcmc_dens_chains_data(
   bw = NULL,
   adjust = NULL,
   kernel = NULL,
-  n_dens = NULL
+  n_dens = NULL,
+  bounds = NULL
 )
 
 mcmc_violin(
@@ -213,12 +217,14 @@ mcmc_violin(
   A logical scalar passed to
   [`ggplot2::geom_density()`](https://ggplot2.tidyverse.org/reference/geom_density.html).
 
-- bw, adjust, kernel, n_dens:
+- bw, adjust, kernel, n_dens, bounds:
 
   Optional arguments passed to
-  [`stats::density()`](https://rdrr.io/r/stats/density.html) to override
-  default kernel density estimation parameters. `n_dens` defaults to
-  `1024`.
+  [`stats::density()`](https://rdrr.io/r/stats/density.html) (and
+  `bounds` to
+  [`ggplot2::stat_density()`](https://ggplot2.tidyverse.org/reference/geom_density.html))
+  to override default kernel density estimation parameters or truncate
+  the density support. `n_dens` defaults to `1024`.
 
 - color_chains:
 

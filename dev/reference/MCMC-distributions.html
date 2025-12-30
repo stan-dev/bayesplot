@@ -97,6 +97,7 @@ Plot Descriptions section, below, for details."><meta property="og:image" conten
 <span>  adjust <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  kernel <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  n_dens <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  bounds <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  alpha <span class="op">=</span> <span class="fl">1</span></span>
 <span><span class="op">)</span></span>
 <span></span>
@@ -125,7 +126,8 @@ Plot Descriptions section, below, for details."><meta property="og:image" conten
 <span>  bw <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  adjust <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  kernel <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  n_dens <span class="op">=</span> <span class="cn">NULL</span></span>
+<span>  n_dens <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  bounds <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">mcmc_dens_chains</span><span class="op">(</span></span>
@@ -138,7 +140,8 @@ Plot Descriptions section, below, for details."><meta property="og:image" conten
 <span>  bw <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  adjust <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  kernel <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  n_dens <span class="op">=</span> <span class="cn">NULL</span></span>
+<span>  n_dens <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  bounds <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">mcmc_dens_chains_data</span><span class="op">(</span></span>
@@ -150,7 +153,8 @@ Plot Descriptions section, below, for details."><meta property="og:image" conten
 <span>  bw <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  adjust <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  kernel <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  n_dens <span class="op">=</span> <span class="cn">NULL</span></span>
+<span>  n_dens <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  bounds <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">mcmc_violin</span><span class="op">(</span></span>
@@ -262,10 +266,11 @@ function.)</p></dd>
 <dd><p>A logical scalar passed to <code><a href="https://ggplot2.tidyverse.org/reference/geom_density.html" class="external-link">ggplot2::geom_density()</a></code>.</p></dd>
 
 
-<dt id="arg-bw-adjust-kernel-n-dens">bw, adjust, kernel, n_dens<a class="anchor" aria-label="anchor" href="#arg-bw-adjust-kernel-n-dens"></a></dt>
+<dt id="arg-bw-adjust-kernel-n-dens-bounds">bw, adjust, kernel, n_dens, bounds<a class="anchor" aria-label="anchor" href="#arg-bw-adjust-kernel-n-dens-bounds"></a></dt>
 <dd><p>Optional arguments passed to
-<code><a href="https://rdrr.io/r/stats/density.html" class="external-link">stats::density()</a></code> to override default kernel density estimation
-parameters. <code>n_dens</code> defaults to <code>1024</code>.</p></dd>
+<code><a href="https://rdrr.io/r/stats/density.html" class="external-link">stats::density()</a></code> (and <code>bounds</code> to <code><a href="https://ggplot2.tidyverse.org/reference/geom_density.html" class="external-link">ggplot2::stat_density()</a></code>) to override
+default kernel density estimation parameters or truncate the density
+support. <code>n_dens</code> defaults to <code>1024</code>.</p></dd>
 
 
 <dt id="arg-color-chains">color_chains<a class="anchor" aria-label="anchor" href="#arg-color-chains"></a></dt>

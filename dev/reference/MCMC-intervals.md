@@ -36,7 +36,8 @@ mcmc_areas(
   bw = NULL,
   adjust = NULL,
   kernel = NULL,
-  n_dens = NULL
+  n_dens = NULL,
+  bounds = NULL
 )
 
 mcmc_areas_ridges(
@@ -51,7 +52,8 @@ mcmc_areas_ridges(
   bw = NULL,
   adjust = NULL,
   kernel = NULL,
-  n_dens = NULL
+  n_dens = NULL,
+  bounds = NULL
 )
 
 mcmc_intervals_data(
@@ -79,7 +81,8 @@ mcmc_areas_data(
   bw = NULL,
   adjust = NULL,
   kernel = NULL,
-  n_dens = NULL
+  n_dens = NULL,
+  bounds = NULL
 )
 
 mcmc_areas_ridges_data(
@@ -93,7 +96,8 @@ mcmc_areas_ridges_data(
   bw = NULL,
   adjust = NULL,
   kernel = NULL,
-  n_dens = NULL
+  n_dens = NULL,
+  bounds = NULL
 )
 ```
 
@@ -214,12 +218,14 @@ mcmc_areas_ridges_data(
   For `mcmc_areas()` and `mcmc_areas_ridges()`, the size of the
   ridgelines.
 
-- bw, adjust, kernel, n_dens:
+- bw, adjust, kernel, n_dens, bounds:
 
   Optional arguments passed to
-  [`stats::density()`](https://rdrr.io/r/stats/density.html) to override
-  default kernel density estimation parameters. `n_dens` defaults to
-  `1024`.
+  [`stats::density()`](https://rdrr.io/r/stats/density.html) (and
+  `bounds` to
+  [`ggplot2::stat_density()`](https://ggplot2.tidyverse.org/reference/geom_density.html))
+  to override default kernel density estimation parameters or truncate
+  the density support. `n_dens` defaults to `1024`.
 
 ## Value
 

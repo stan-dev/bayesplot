@@ -19,6 +19,7 @@ ppc_dens_overlay(
   bw = "nrd0",
   adjust = 1,
   kernel = "gaussian",
+  bounds = NULL,
   n_dens = 1024
 )
 
@@ -33,6 +34,7 @@ ppc_dens_overlay_grouped(
   bw = "nrd0",
   adjust = 1,
   kernel = "gaussian",
+  bounds = NULL,
   n_dens = 1024
 )
 
@@ -57,7 +59,7 @@ ppc_ecdf_overlay_grouped(
   alpha = 0.7
 )
 
-ppc_dens(y, yrep, ..., trim = FALSE, size = 0.5, alpha = 1)
+ppc_dens(y, yrep, ..., trim = FALSE, size = 0.5, alpha = 1, bounds = NULL)
 
 ppc_hist(
   y,
@@ -172,12 +174,14 @@ ppc_pit_ecdf_grouped(
   A logical scalar passed to
   [`ggplot2::geom_density()`](https://ggplot2.tidyverse.org/reference/geom_density.html).
 
-- bw, adjust, kernel, n_dens:
+- bw, adjust, kernel, n_dens, bounds:
 
   Optional arguments passed to
-  [`stats::density()`](https://rdrr.io/r/stats/density.html) to override
-  default kernel density estimation parameters. `n_dens` defaults to
-  `1024`.
+  [`stats::density()`](https://rdrr.io/r/stats/density.html) (and
+  `bounds` to
+  [`ggplot2::stat_density()`](https://ggplot2.tidyverse.org/reference/geom_density.html))
+  to override default kernel density estimation parameters or truncate
+  the density support. `n_dens` defaults to `1024`.
 
 - discrete:
 

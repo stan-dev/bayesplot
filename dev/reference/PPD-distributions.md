@@ -22,6 +22,7 @@ ppd_dens_overlay(
   bw = "nrd0",
   adjust = 1,
   kernel = "gaussian",
+  bounds = NULL,
   n_dens = 1024
 )
 
@@ -34,7 +35,7 @@ ppd_ecdf_overlay(
   alpha = 0.7
 )
 
-ppd_dens(ypred, ..., trim = FALSE, size = 0.5, alpha = 1)
+ppd_dens(ypred, ..., trim = FALSE, size = 0.5, alpha = 1, bounds = NULL)
 
 ppd_hist(ypred, ..., binwidth = NULL, bins = NULL, breaks = NULL, freq = TRUE)
 
@@ -95,12 +96,14 @@ ppd_boxplot(ypred, ..., notch = TRUE, size = 0.5, alpha = 1)
   A logical scalar passed to
   [`ggplot2::geom_density()`](https://ggplot2.tidyverse.org/reference/geom_density.html).
 
-- bw, adjust, kernel, n_dens:
+- bw, adjust, kernel, n_dens, bounds:
 
   Optional arguments passed to
-  [`stats::density()`](https://rdrr.io/r/stats/density.html) to override
-  default kernel density estimation parameters. `n_dens` defaults to
-  `1024`.
+  [`stats::density()`](https://rdrr.io/r/stats/density.html) (and
+  `bounds` to
+  [`ggplot2::stat_density()`](https://ggplot2.tidyverse.org/reference/geom_density.html))
+  to override default kernel density estimation parameters or truncate
+  the density support. `n_dens` defaults to `1024`.
 
 - discrete:
 

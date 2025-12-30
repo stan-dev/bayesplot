@@ -88,6 +88,7 @@ at <a href="PPC-distributions.html">PPC-distributions</a> has details on the ind
 <span>  bw <span class="op">=</span> <span class="st">"nrd0"</span>,</span>
 <span>  adjust <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  kernel <span class="op">=</span> <span class="st">"gaussian"</span>,</span>
+<span>  bounds <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  n_dens <span class="op">=</span> <span class="fl">1024</span></span>
 <span><span class="op">)</span></span>
 <span></span>
@@ -100,7 +101,7 @@ at <a href="PPC-distributions.html">PPC-distributions</a> has details on the ind
 <span>  alpha <span class="op">=</span> <span class="fl">0.7</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">ppd_dens</span><span class="op">(</span><span class="va">ypred</span>, <span class="va">...</span>, trim <span class="op">=</span> <span class="cn">FALSE</span>, size <span class="op">=</span> <span class="fl">0.5</span>, alpha <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="fu">ppd_dens</span><span class="op">(</span><span class="va">ypred</span>, <span class="va">...</span>, trim <span class="op">=</span> <span class="cn">FALSE</span>, size <span class="op">=</span> <span class="fl">0.5</span>, alpha <span class="op">=</span> <span class="fl">1</span>, bounds <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">ppd_hist</span><span class="op">(</span><span class="va">ypred</span>, <span class="va">...</span>, binwidth <span class="op">=</span> <span class="cn">NULL</span>, bins <span class="op">=</span> <span class="cn">NULL</span>, breaks <span class="op">=</span> <span class="cn">NULL</span>, freq <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
@@ -161,10 +162,11 @@ the predictive distributions.</p></dd>
 <dd><p>A logical scalar passed to <code><a href="https://ggplot2.tidyverse.org/reference/geom_density.html" class="external-link">ggplot2::geom_density()</a></code>.</p></dd>
 
 
-<dt id="arg-bw-adjust-kernel-n-dens">bw, adjust, kernel, n_dens<a class="anchor" aria-label="anchor" href="#arg-bw-adjust-kernel-n-dens"></a></dt>
+<dt id="arg-bw-adjust-kernel-n-dens-bounds">bw, adjust, kernel, n_dens, bounds<a class="anchor" aria-label="anchor" href="#arg-bw-adjust-kernel-n-dens-bounds"></a></dt>
 <dd><p>Optional arguments passed to
-<code><a href="https://rdrr.io/r/stats/density.html" class="external-link">stats::density()</a></code> to override default kernel density estimation
-parameters. <code>n_dens</code> defaults to <code>1024</code>.</p></dd>
+<code><a href="https://rdrr.io/r/stats/density.html" class="external-link">stats::density()</a></code> (and <code>bounds</code> to <code><a href="https://ggplot2.tidyverse.org/reference/geom_density.html" class="external-link">ggplot2::stat_density()</a></code>) to override
+default kernel density estimation parameters or truncate the density
+support. <code>n_dens</code> defaults to <code>1024</code>.</p></dd>
 
 
 <dt id="arg-discrete">discrete<a class="anchor" aria-label="anchor" href="#arg-discrete"></a></dt>
