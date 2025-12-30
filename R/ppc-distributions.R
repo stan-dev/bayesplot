@@ -566,9 +566,8 @@ ppc_dots <-
 
 #' @rdname PPC-distributions
 #' @export
-#' @param probs A numeric vector passed to [ggplot2::geom_violin()]'s
-#'   `draw_quantiles` argument to specify at which quantiles to draw
-#'   horizontal lines. Set to `NULL` to remove the lines.
+#' @param probs A numeric vector of probabilities controlling where quantile
+#'   lines are drawn. Set to `NULL` to remove the lines.
 #' @param y_draw For `ppc_violin_grouped()`, a string specifying how to draw
 #'   `y`: `"violin"` (default), `"points"` (jittered points), or `"both"`.
 #' @param y_jitter,y_size,y_alpha For `ppc_violin_grouped()`, if `y_draw` is
@@ -602,6 +601,11 @@ ppc_violin_grouped <-
       alpha = alpha,
       linewidth = size
     )
+    if (utils::packageVersion("ggplot2") >= "4.0.0") {
+      args_violin_yrep$draw_quantiles <- NULL
+      args_violin_yrep$quantiles <- probs
+      args_violin_yrep$quantile.linetype <- 1
+    }
 
     args_violin_y <- list(
       data = function(x) dplyr::filter(x, .data$is_y),

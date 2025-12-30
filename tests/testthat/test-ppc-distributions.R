@@ -21,19 +21,19 @@ test_that("density PPC/PPD plots reject invalid bounds", {
   # non-numeric bounds
   expect_error(ppc_dens_overlay(y, yrep, bounds = c("a", "b")),
                "`bounds` must be a numeric vector of length 2")
-  
+
   # bounds with length != 2
   expect_error(ppc_dens_overlay(y, yrep, bounds = c(0, 1, 2)),
                "`bounds` must be a numeric vector of length 2")
   expect_error(ppc_dens_overlay(y, yrep, bounds = 1),
                "`bounds` must be a numeric vector of length 2")
-  
+
   # bounds with NA values
   expect_error(ppc_dens_overlay(y, yrep, bounds = c(0, NA)),
                "`bounds` must be a numeric vector of length 2")
   expect_error(ppc_dens_overlay(y, yrep, bounds = c(NA, 1)),
                "`bounds` must be a numeric vector of length 2")
-  
+
   # bounds where bounds[1] >= bounds[2]
   expect_error(ppc_dens_overlay(y, yrep, bounds = c(1, 0)),
                "`bounds` must satisfy bounds\\[1\\] < bounds\\[2\\]")
@@ -392,6 +392,17 @@ test_that("ppc_violin_grouped renders correctly", {
   vdiffr::expect_doppelganger(
     "ppc_violin_grouped (points, low jitter)",
     p_dots_jitter)
+
+  p_probs <- ppc_violin_grouped(
+    y = vdiff_y,
+    yrep = vdiff_yrep,
+    group = vdiff_group,
+    y_draw = "points",
+    probs = c(0.1, 0.9)
+  )
+  vdiffr::expect_doppelganger(
+    "ppc_violin_grouped (points, probs)",
+    p_probs)
 
   set.seed(seed = NULL)
 })

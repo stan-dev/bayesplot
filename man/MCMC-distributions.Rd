@@ -188,9 +188,8 @@ support. \code{n_dens} defaults to \code{1024}.}
 
 \item{color_chains}{Option for whether to separately color chains.}
 
-\item{probs}{A numeric vector passed to \code{\link[ggplot2:geom_violin]{ggplot2::geom_violin()}}'s
-\code{draw_quantiles} argument to specify at which quantiles to draw
-horizontal lines. Set to \code{NULL} to remove the lines.}
+\item{probs}{A numeric vector of probabilities controlling where quantile
+lines are drawn. Set to \code{NULL} to remove the lines.}
 }
 \value{
 A ggplot object that can be further customized using the \strong{ggplot2} package.

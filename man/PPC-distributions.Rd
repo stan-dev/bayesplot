@@ -205,9 +205,8 @@ function.)}
 quantile dot plot. If \code{quantiles} is \code{NA} (the default) then all data
 points are plotted.}
 
-\item{probs}{A numeric vector passed to \code{\link[ggplot2:geom_violin]{ggplot2::geom_violin()}}'s
-\code{draw_quantiles} argument to specify at which quantiles to draw
-horizontal lines. Set to \code{NULL} to remove the lines.}
+\item{probs}{A numeric vector of probabilities controlling where quantile
+lines are drawn. Set to \code{NULL} to remove the lines.}
 
 \item{y_draw}{For \code{ppc_violin_grouped()}, a string specifying how to draw
 \code{y}: \code{"violin"} (default), \code{"points"} (jittered points), or \code{"both"}.}

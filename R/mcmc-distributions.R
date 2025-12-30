@@ -460,13 +460,13 @@ mcmc_violin <- function(
     ...
   ) {
 
-    bw <- bw %||% "nrd0"
-    adjust <- adjust %||% 1
-    kernel <- kernel %||% "gaussian"
-    n_dens <- n_dens %||% 1024
-    bounds <- validate_density_bounds(bounds)
+  bw <- bw %||% "nrd0"
+  adjust <- adjust %||% 1
+  kernel <- kernel %||% "gaussian"
+  n_dens <- n_dens %||% 1024
+  bounds <- validate_density_bounds(bounds)
 
-    x <- prepare_mcmc_array(x, pars, regex_pars, transformations)
+  x <- prepare_mcmc_array(x, pars, regex_pars, transformations)
   data <- melt_mcmc.mcmc_array(x)
   data$Chain <- factor(data$Chain)
   n_param <- num_params(data)
@@ -486,16 +486,21 @@ mcmc_violin <- function(
   geom_args <- list(linewidth = 0.5, na.rm = TRUE, alpha = alpha)
   if (violin) {
     geom_args[["draw_quantiles"]] <- probs
-    } else {
-      geom_args[["trim"]] <- trim
-      geom_args[["bw"]] <- bw
-      geom_args[["adjust"]] <- adjust
-      geom_args[["kernel"]] <- kernel
-      geom_args[["n"]] <- n_dens
-      if (!is.null(bounds)) {
-        geom_args[["bounds"]] <- bounds
-      }
+    if (utils::packageVersion("ggplot2") >= "4.0.0") {
+      geom_args[["draw_quantiles"]] <- NULL
+      geom_args[["quantiles"]] <- probs
+      geom_args[["quantile.linetype"]] <- 1
     }
+  } else {
+    geom_args[["trim"]] <- trim
+    geom_args[["bw"]] <- bw
+    geom_args[["adjust"]] <- adjust
+    geom_args[["kernel"]] <- kernel
+    geom_args[["n"]] <- n_dens
+    if (!is.null(bounds)) {
+      geom_args[["bounds"]] <- bounds
+    }
+  }
   if (by_chain) {
     # aes_mapping[["color"]] <- ~ Chain
     # aes_mapping[["group"]] <- ~ Chain
