@@ -239,10 +239,8 @@ ppc_pit_ecdf_grouped(
 
 - probs:
 
-  A numeric vector passed to
-  [`ggplot2::geom_violin()`](https://ggplot2.tidyverse.org/reference/geom_violin.html)'s
-  `draw_quantiles` argument to specify at which quantiles to draw
-  horizontal lines. Set to `NULL` to remove the lines.
+  A numeric vector of probabilities controlling where quantile lines are
+  drawn. Set to `NULL` to remove the lines.
 
 - y_draw:
 
