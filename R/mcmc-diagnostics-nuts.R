@@ -369,19 +369,29 @@ mcmc_nuts_treedepth <- function(x, lp, chain = NULL, ...) {
     yaxis_ticks(FALSE)
 
   violin_lp_data <- data.frame(treedepth, lp = lp$Value)
+
+  # Only keep treedepth values that occur more than once for violin plot
+  value_counts <- table(violin_lp_data$Value)
+  keep_values <- names(value_counts[value_counts > 1])
+  violin_lp_data <- violin_lp_data[violin_lp_data$Value %in% keep_values, ]
+
   violin_lp <-
     ggplot(violin_lp_data, aes(x = factor(.data$Value), y = .data$lp)) +
     geom_violin(fill = get_color("l"), color = get_color("lh")) +
     labs(x = "treedepth__", y = "lp__") +
-    scale_x_discrete(drop = FALSE) +
     bayesplot_theme_get()
 
   violin_accept_stat_data <- data.frame(treedepth, as = accept_stat$Value)
+
+  # Only keep treedepth values that occur more than once for violin plot
+  value_counts <- table(violin_accept_stat_data$Value)
+  keep_values <- names(value_counts[value_counts > 1])
+  violin_accept_stat_data <- violin_accept_stat_data[violin_accept_stat_data$Value %in% keep_values, ]
+
   violin_accept_stat <-
     ggplot(violin_accept_stat_data, aes(x = factor(.data$Value), y = .data$as)) +
     geom_violin(fill = get_color("l"), color = get_color("lh")) +
     labs(x = "treedepth__", y = "accept_stat__") +
-    scale_x_discrete(drop = FALSE) +
     scale_y_continuous(breaks = c(0, 0.5, 1)) +
     bayesplot_theme_get()
 
@@ -410,7 +420,6 @@ mcmc_nuts_treedepth <- function(x, lp, chain = NULL, ...) {
   )
   as_bayesplot_grid(nuts_plot)
 }
-
 
 #' @rdname MCMC-nuts
 #' @export
