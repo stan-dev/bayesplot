@@ -373,6 +373,7 @@ mcmc_nuts_treedepth <- function(x, lp, chain = NULL, ...) {
     ggplot(violin_lp_data, aes(x = factor(.data$Value), y = .data$lp)) +
     geom_violin(fill = get_color("l"), color = get_color("lh")) +
     labs(x = "treedepth__", y = "lp__") +
+    scale_x_discrete(drop = FALSE) +
     bayesplot_theme_get()
 
   violin_accept_stat_data <- data.frame(treedepth, as = accept_stat$Value)
@@ -380,6 +381,7 @@ mcmc_nuts_treedepth <- function(x, lp, chain = NULL, ...) {
     ggplot(violin_accept_stat_data, aes(x = factor(.data$Value), y = .data$as)) +
     geom_violin(fill = get_color("l"), color = get_color("lh")) +
     labs(x = "treedepth__", y = "accept_stat__") +
+    scale_x_discrete(drop = FALSE) +
     scale_y_continuous(breaks = c(0, 0.5, 1)) +
     bayesplot_theme_get()
 
