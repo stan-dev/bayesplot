@@ -19,8 +19,9 @@
 #' @param chain A positive integer for selecting a particular chain. The default
 #'   (`NULL`) is to merge the chains before plotting. If `chain = k`
 #'   then the plot for chain `k` is overlaid (in a darker shade but with
-#'   transparency) on top of the plot for all chains. The `chain` argument
-#'   is not used by `mcmc_nuts_energy()`.
+#'   transparency) on top of the plot for all chains. For `mcmc_nuts_stepsize()`,
+#'   chains are always plotted separately, and `chain` simply highlights the
+#'   selected chain. The `chain` argument is not used by `mcmc_nuts_energy()`.
 #' @param ... Currently ignored.
 #'
 #' @return A gtable object (the result of calling
@@ -284,7 +285,6 @@ mcmc_nuts_divergence <- function(x, lp, chain = NULL, ...) {
   nuts_plot <- gridExtra::arrangeGrob(violin_lp, violin_accept_stat, nrow = 2)
   as_bayesplot_grid(nuts_plot)
 }
-
 
 #' @rdname MCMC-nuts
 #' @export
