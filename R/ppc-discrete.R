@@ -359,7 +359,7 @@ ppc_rootogram <- function(y,
     if (style == "standing") {
       graph <- graph + dont_expand_y_axis()
     } else {
-      graph <- graph + hline_0(size = 0.4)
+      graph <- graph + hline_0(linewidth = 0.4)
     }
   }
 

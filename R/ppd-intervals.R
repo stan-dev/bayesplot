@@ -162,7 +162,7 @@ ppd_ribbon <-
         linewidth = 0.2 * size,
         alpha = 1
       ) +
-      geom_ribbon(size = 0.5 * size) +
+      geom_ribbon(linewidth = 0.5 * size) +
       geom_line(
         mapping = aes(y = .data$m),
         color = get_color("d"),

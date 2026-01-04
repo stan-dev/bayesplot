@@ -13,7 +13,8 @@ ppc_km_overlay(
   status_y,
   left_truncation_y = NULL,
   extrapolation_factor = 1.2,
-  size = 0.25,
+  linewidth = 0.25,
+  size = deprecated(),
   alpha = 0.7
 )
 
@@ -25,7 +26,8 @@ ppc_km_overlay_grouped(
   status_y,
   left_truncation_y = NULL,
   extrapolation_factor = 1.2,
-  size = 0.25,
+  linewidth = 0.25,
+  size = deprecated(),
   alpha = 0.7
 )
 }
@@ -58,8 +60,10 @@ posterior predictive draws may not be shown by default because of the
 controlled extrapolation. To display all posterior predictive draws, set
 \code{extrapolation_factor = Inf}.}
 
-\item{size, alpha}{Passed to the appropriate geom to control the appearance of
+\item{linewidth, alpha}{Passed to the appropriate geom to control the appearance of
 the \code{yrep} distributions.}
+
+\item{size}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Please use \code{linewidth} instead of \code{size}.}
 
 \item{group}{A grouping variable of the same length as \code{y}.
 Will be coerced to \link[base:factor]{factor} if not already a factor.

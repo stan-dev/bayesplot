@@ -15,8 +15,9 @@
 #' @family PPCs
 #'
 #' @template args-y-yrep
-#' @param size,alpha Passed to the appropriate geom to control the appearance of
+#' @param linewidth,alpha Passed to the appropriate geom to control the appearance of
 #'   the `yrep` distributions.
+#' @param size `r lifecycle::badge("deprecated")` Please use `linewidth` instead of `size`.
 #' @param ... Currently only used internally.
 #'
 #' @template return-ggplot
@@ -96,7 +97,7 @@ NULL
 #'   posterior predictive draws may not be shown by default because of the
 #'   controlled extrapolation. To display all posterior predictive draws, set
 #'   `extrapolation_factor = Inf`.
-#'
+#' @importFrom lifecycle deprecated
 ppc_km_overlay <- function(
   y,
   yrep,
@@ -104,9 +105,19 @@ ppc_km_overlay <- function(
   status_y,
   left_truncation_y = NULL,
   extrapolation_factor = 1.2,
-  size = 0.25,
+  linewidth = 0.25,
+  size = deprecated(),
   alpha = 0.7
 ) {
+  if (lifecycle::is_present(size)) {
+    lifecycle::deprecate_warn(
+      "1.16.0",
+      "ppc_km_overlay(size)",
+      details = "Please use `linewidth` instead of `size`."
+    )
+    linewidth <- size
+  }
+
   check_ignored_arguments(..., ok_args = "add_group")
   add_group <- list(...)$add_group
 
@@ -173,7 +184,7 @@ ppc_km_overlay <- function(
   }
 
   fsf$is_y_color <- as.factor(sub("\\[rep\\] \\(.*$", "rep", sub("^italic\\(y\\)", "y", fsf$strata)))
-  fsf$is_y_size <- ifelse(fsf$is_y_color == "yrep", size, 1)
+  fsf$is_y_linewidth <- ifelse(fsf$is_y_color == "yrep", linewidth, 1)
   fsf$is_y_alpha <- ifelse(fsf$is_y_color == "yrep", alpha, 1)
 
   max_time_y <- max(y, na.rm = TRUE)
@@ -189,7 +200,7 @@ ppc_km_overlay <- function(
                        y = .data$surv,
                        color = .data$is_y_color,
                        group = .data$strata,
-                       size = .data$is_y_size,
+                       linewidth = .data$is_y_linewidth,
                        alpha = .data$is_y_alpha)) +
     geom_step() +
     hline_at(
@@ -204,7 +215,7 @@ ppc_km_overlay <- function(
       linetype = 2,
       color = get_color("dh")
     ) +
-    scale_size_identity() +
+    scale_linewidth_identity() +
     scale_alpha_identity() +
     scale_color_ppc() +
     scale_y_continuous(breaks = c(0, 0.5, 1)) +
@@ -218,6 +229,7 @@ ppc_km_overlay <- function(
 #' @export
 #' @rdname PPC-censoring
 #' @template args-group
+#' @importFrom lifecycle deprecated
 ppc_km_overlay_grouped <- function(
   y,
   yrep,
@@ -226,9 +238,18 @@ ppc_km_overlay_grouped <- function(
   status_y,
   left_truncation_y = NULL,
   extrapolation_factor = 1.2,
-  size = 0.25,
+  linewidth = 0.25,
+  size = deprecated(),
   alpha = 0.7
 ) {
+  if (lifecycle::is_present(size)) {
+    lifecycle::deprecate_warn(
+      "1.16.0",
+      "ppc_km_overlay_grouped(size)",
+      details = "Please use `linewidth` instead of `size`."
+    )
+    linewidth <- size
+  }
   check_ignored_arguments(...)
 
   p_overlay <- ppc_km_overlay(
@@ -238,7 +259,7 @@ ppc_km_overlay_grouped <- function(
     ...,
     status_y = status_y,
     left_truncation_y = left_truncation_y,
-    size = size,
+    linewidth = linewidth,
     alpha = alpha,
     extrapolation_factor = extrapolation_factor
   )
