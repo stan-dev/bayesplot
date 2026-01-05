@@ -123,8 +123,9 @@ object with the same form as the object returned by
 <dd><p>A positive integer for selecting a particular chain. The default
 (<code>NULL</code>) is to merge the chains before plotting. If <code>chain = k</code>
 then the plot for chain <code>k</code> is overlaid (in a darker shade but with
-transparency) on top of the plot for all chains. The <code>chain</code> argument
-is not used by <code>mcmc_nuts_energy()</code>.</p></dd>
+transparency) on top of the plot for all chains. For <code>mcmc_nuts_stepsize()</code>,
+chains are always plotted separately, and <code>chain</code> simply highlights the
+selected chain. The <code>chain</code> argument is not used by <code>mcmc_nuts_energy()</code>.</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
