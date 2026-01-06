@@ -163,8 +163,7 @@ set to \code{TRUE} this parameter specifies the number of points used to
 generate the estimations. This is set to 512 by default.}
 
 \item{bw, adjust, kernel, n_dens}{Optional arguments passed to
-\code{\link[stats:density]{stats::density()}} to override default kernel density estimation
-parameters. \code{n_dens} defaults to \code{1024}.}
+\code{\link[stats:density]{stats::density()}} to override the defaults.}
 
 \item{trim}{Passed to \code{\link[ggplot2:geom_density]{ggplot2::stat_density()}}.}
 

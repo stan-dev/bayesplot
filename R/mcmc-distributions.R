@@ -176,6 +176,7 @@ mcmc_dens <- function(
   adjust = NULL,
   kernel = NULL,
   n_dens = NULL,
+  bounds = NULL,
   alpha = 1
 ) {
   check_ignored_arguments(...)
@@ -191,6 +192,7 @@ mcmc_dens <- function(
     adjust = adjust,
     kernel = kernel,
     n_dens = n_dens,
+    bounds = bounds,
     alpha = alpha,
     ...
   )
@@ -241,7 +243,8 @@ mcmc_dens_overlay <- function(
   bw = NULL,
   adjust = NULL,
   kernel = NULL,
-  n_dens = NULL
+  n_dens = NULL,
+  bounds = NULL
 ) {
   check_ignored_arguments(...)
   .mcmc_dens(
@@ -257,6 +260,7 @@ mcmc_dens_overlay <- function(
     adjust = adjust,
     kernel = kernel,
     n_dens = n_dens,
+    bounds = bounds,
     ...
   )
 }
@@ -275,7 +279,8 @@ mcmc_dens_chains <- function(
   bw = NULL,
   adjust = NULL,
   kernel = NULL,
-  n_dens = NULL
+  n_dens = NULL,
+  bounds = NULL
 ) {
   check_ignored_arguments(...)
   data <- mcmc_dens_chains_data(
@@ -286,7 +291,8 @@ mcmc_dens_chains <- function(
     bw = bw,
     adjust = adjust,
     kernel = kernel,
-    n_dens = n_dens
+    n_dens = n_dens,
+    bounds = bounds
   )
 
   n_chains <- length(unique(data$chain))
@@ -339,9 +345,11 @@ mcmc_dens_chains_data <- function(
   transformations = list(),
   ...,
   bw = NULL, adjust = NULL, kernel = NULL,
-  n_dens = NULL
+  n_dens = NULL,
+  bounds = NULL
 ) {
   check_ignored_arguments(...)
+  bounds <- validate_density_bounds(bounds)
 
   x %>%
     prepare_mcmc_array(
@@ -354,7 +362,8 @@ mcmc_dens_chains_data <- function(
       group_vars = c("Parameter", "Chain"),
       value_var = "Value",
       interval_width = 1,
-      bw = bw, adjust = adjust, kernel = kernel, n_dens = n_dens
+      bw = bw, adjust = adjust, kernel = kernel,
+      bounds = bounds, n_dens = n_dens
     ) %>%
     mutate(Chain = factor(.data$Chain)) %>%
     rlang::set_names(tolower) %>%
@@ -526,19 +535,21 @@ mcmc_dots_by_chain <- function(
   color_chains = FALSE,
   geom = c("density", "violin"),
   probs = c(0.1, 0.5, 0.9),
-  trim = FALSE,
-  alpha = 1,
-  bw = NULL,
-  adjust = NULL,
-  kernel = NULL,
-  n_dens = NULL,
-  ...
-) {
+    trim = FALSE,
+    alpha = 1,
+    bw = NULL,
+    adjust = NULL,
+    kernel = NULL,
+    n_dens = NULL,
+    bounds = NULL,
+    ...
+  ) {
 
   bw <- bw %||% "nrd0"
   adjust <- adjust %||% 1
   kernel <- kernel %||% "gaussian"
   n_dens <- n_dens %||% 1024
+  bounds <- validate_density_bounds(bounds)
 
   x <- prepare_mcmc_array(x, pars, regex_pars, transformations)
   data <- melt_mcmc.mcmc_array(x)
@@ -560,12 +571,20 @@ mcmc_dots_by_chain <- function(
   geom_args <- list(linewidth = 0.5, na.rm = TRUE, alpha = alpha)
   if (violin) {
     geom_args[["draw_quantiles"]] <- probs
+    if (utils::packageVersion("ggplot2") >= "4.0.0") {
+      geom_args[["draw_quantiles"]] <- NULL
+      geom_args[["quantiles"]] <- probs
+      geom_args[["quantile.linetype"]] <- 1
+    }
   } else {
     geom_args[["trim"]] <- trim
     geom_args[["bw"]] <- bw
     geom_args[["adjust"]] <- adjust
     geom_args[["kernel"]] <- kernel
     geom_args[["n"]] <- n_dens
+    if (!is.null(bounds)) {
+      geom_args[["bounds"]] <- bounds
+    }
   }
   if (by_chain) {
     # aes_mapping[["color"]] <- ~ Chain

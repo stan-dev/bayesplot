@@ -19,8 +19,9 @@
 #' @param chain A positive integer for selecting a particular chain. The default
 #'   (`NULL`) is to merge the chains before plotting. If `chain = k`
 #'   then the plot for chain `k` is overlaid (in a darker shade but with
-#'   transparency) on top of the plot for all chains. The `chain` argument
-#'   is not used by `mcmc_nuts_energy()`.
+#'   transparency) on top of the plot for all chains. For `mcmc_nuts_stepsize()`,
+#'   chains are always plotted separately, and `chain` simply highlights the
+#'   selected chain. The `chain` argument is not used by `mcmc_nuts_energy()`.
 #' @param ... Currently ignored.
 #'
 #' @return A gtable object (the result of calling
@@ -285,7 +286,6 @@ mcmc_nuts_divergence <- function(x, lp, chain = NULL, ...) {
   as_bayesplot_grid(nuts_plot)
 }
 
-
 #' @rdname MCMC-nuts
 #' @export
 mcmc_nuts_stepsize <- function(x, lp, chain = NULL, ...) {
@@ -369,6 +369,12 @@ mcmc_nuts_treedepth <- function(x, lp, chain = NULL, ...) {
     yaxis_ticks(FALSE)
 
   violin_lp_data <- data.frame(treedepth, lp = lp$Value)
+
+  # Only keep treedepth values that occur more than once for violin plot
+  value_counts <- table(violin_lp_data$Value)
+  keep_values <- names(value_counts[value_counts > 1])
+  violin_lp_data <- violin_lp_data[violin_lp_data$Value %in% keep_values, ]
+
   violin_lp <-
     ggplot(violin_lp_data, aes(x = factor(.data$Value), y = .data$lp)) +
     geom_violin(fill = get_color("l"), color = get_color("lh")) +
@@ -376,6 +382,12 @@ mcmc_nuts_treedepth <- function(x, lp, chain = NULL, ...) {
     bayesplot_theme_get()
 
   violin_accept_stat_data <- data.frame(treedepth, as = accept_stat$Value)
+
+  # Only keep treedepth values that occur more than once for violin plot
+  value_counts <- table(violin_accept_stat_data$Value)
+  keep_values <- names(value_counts[value_counts > 1])
+  violin_accept_stat_data <- violin_accept_stat_data[violin_accept_stat_data$Value %in% keep_values, ]
+
   violin_accept_stat <-
     ggplot(violin_accept_stat_data, aes(x = factor(.data$Value), y = .data$as)) +
     geom_violin(fill = get_color("l"), color = get_color("lh")) +
@@ -408,7 +420,6 @@ mcmc_nuts_treedepth <- function(x, lp, chain = NULL, ...) {
   )
   as_bayesplot_grid(nuts_plot)
 }
-
 
 #' @rdname MCMC-nuts
 #' @export

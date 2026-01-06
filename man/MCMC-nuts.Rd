@@ -50,8 +50,9 @@ object with the same form as the object returned by
 \item{chain}{A positive integer for selecting a particular chain. The default
 (\code{NULL}) is to merge the chains before plotting. If \code{chain = k}
 then the plot for chain \code{k} is overlaid (in a darker shade but with
-transparency) on top of the plot for all chains. The \code{chain} argument
-is not used by \code{mcmc_nuts_energy()}.}
+transparency) on top of the plot for all chains. For \code{mcmc_nuts_stepsize()},
+chains are always plotted separately, and \code{chain} simply highlights the
+selected chain. The \code{chain} argument is not used by \code{mcmc_nuts_energy()}.}
 
 \item{...}{Currently ignored.}
 
