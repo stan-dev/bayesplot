@@ -408,8 +408,8 @@ lw <- weights(psis1) # normalized log weights
 color_scheme_set("orange")
 ppc_loo_pit_overlay(y, yrep, lw = lw)
 #> Some PIT values larger than 1! Largest:  1 
-#> Rounding PIT > 1 to 1. Gradient evaluation took 0.000383 seconds
-#> Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 3.83 seconds.
+#> Rounding PIT > 1 to 1. Gradient evaluation took 0.000367 seconds
+#> Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 3.67 seconds.
 #> Chain 2: Adjust your expectations accordingly!
 #> Chain 2: 
 #> Chain 2: 
@@ -428,8 +428,8 @@ ppc_loo_pit_overlay(y, yrep, lw = lw)
 #> Chain 2: Iteration: 20 / 100 [ 20%]  (Warmup)
 #> Chain 2: Iteration: 30 / 100 [ 30%]  (Warmup)
 #> Chain 1: Iteration: 30 / 100 [ 30%]  (Warmup)
-#> Chain 1: Iteration: 40 / 100 [ 40%]  (Warmup)
 #> Chain 2: Iteration: 40 / 100 [ 40%]  (Warmup)
+#> Chain 1: Iteration: 40 / 100 [ 40%]  (Warmup)
 #> Chain 2: Iteration: 50 / 100 [ 50%]  (Warmup)
 #> Chain 2: Iteration: 51 / 100 [ 51%]  (Sampling)
 #> Chain 1: Iteration: 50 / 100 [ 50%]  (Warmup)
@@ -444,15 +444,15 @@ ppc_loo_pit_overlay(y, yrep, lw = lw)
 #> Chain 1: Iteration: 90 / 100 [ 90%]  (Sampling)
 #> Chain 2: Iteration: 100 / 100 [100%]  (Sampling)
 #> Chain 2: 
-#> Chain 2:  Elapsed Time: 2.752 seconds (Warm-up)
-#> Chain 2:                2.445 seconds (Sampling)
-#> Chain 2:                5.197 seconds (Total)
+#> Chain 2:  Elapsed Time: 2.233 seconds (Warm-up)
+#> Chain 2:                2.002 seconds (Sampling)
+#> Chain 2:                4.235 seconds (Total)
 #> Chain 2: 
 #> Chain 1: Iteration: 100 / 100 [100%]  (Sampling)
 #> Chain 1: 
-#> Chain 1:  Elapsed Time: 2.921 seconds (Warm-up)
-#> Chain 1:                2.43 seconds (Sampling)
-#> Chain 1:                5.351 seconds (Total)
+#> Chain 1:  Elapsed Time: 2.447 seconds (Warm-up)
+#> Chain 1:                2.037 seconds (Sampling)
+#> Chain 1:                4.484 seconds (Total)
 #> Chain 1: 
 #> Warning: 
 #> NOTE: The kernel density estimate assumes continuous observations and is not optimal for discrete observations.
@@ -463,7 +463,7 @@ ppc_loo_pit_qq(y, yrep, lw = lw)
 
 ppc_loo_pit_qq(y, yrep, lw = lw, compare = "normal")
 #> Warning: 
-#> Warning: Removed 18 rows containing non-finite outside the scale range (`stat_qq()`).
+#> Warning: Removed 17 rows containing non-finite outside the scale range (`stat_qq()`).
 
 
 # predictive calibration check using LOO probability integral transform
