@@ -96,7 +96,6 @@ NULL
 #'   posterior predictive draws may not be shown by default because of the
 #'   controlled extrapolation. To display all posterior predictive draws, set
 #'   `extrapolation_factor = Inf`.
-#'
 ppc_km_overlay <- function(
   y,
   yrep,
@@ -173,7 +172,7 @@ ppc_km_overlay <- function(
   }
 
   fsf$is_y_color <- as.factor(sub("\\[rep\\] \\(.*$", "rep", sub("^italic\\(y\\)", "y", fsf$strata)))
-  fsf$is_y_size <- ifelse(fsf$is_y_color == "yrep", size, 1)
+  fsf$is_y_linewidth <- ifelse(fsf$is_y_color == "yrep", size, 1)
   fsf$is_y_alpha <- ifelse(fsf$is_y_color == "yrep", alpha, 1)
 
   max_time_y <- max(y, na.rm = TRUE)
@@ -189,7 +188,7 @@ ppc_km_overlay <- function(
                        y = .data$surv,
                        color = .data$is_y_color,
                        group = .data$strata,
-                       size = .data$is_y_size,
+                       linewidth = .data$is_y_linewidth,
                        alpha = .data$is_y_alpha)) +
     geom_step() +
     hline_at(
@@ -204,7 +203,7 @@ ppc_km_overlay <- function(
       linetype = 2,
       color = get_color("dh")
     ) +
-    scale_size_identity() +
+    scale_linewidth_identity() +
     scale_alpha_identity() +
     scale_color_ppc() +
     scale_y_continuous(breaks = c(0, 0.5, 1)) +

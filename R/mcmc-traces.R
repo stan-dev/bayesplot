@@ -337,7 +337,7 @@ mcmc_rank_overlay <- function(x,
     geom_hline(
       yintercept = (right_edge / n_bins) / n_chains,
       color = get_color("dark_highlight"),
-      size = 1,
+      linewidth = 1,
       linetype = "dashed"
     )
   } else {
@@ -417,7 +417,7 @@ mcmc_rank_hist <- function(x,
     geom_hline(
       yintercept = (right_edge / n_bins) / n_chains,
       color = get_color("dark_highlight"),
-      size = .5,
+      linewidth = .5,
       linetype = "dashed"
     )
   } else {
