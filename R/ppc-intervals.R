@@ -157,7 +157,6 @@ ppc_intervals <-
       geom_linerange(
         mapping = intervals_outer_aes(color = "yrep"),
         alpha = alpha,
-        size = size,
         linewidth = linewidth
       ) +
       geom_pointrange(

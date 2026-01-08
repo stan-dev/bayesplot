@@ -37,6 +37,7 @@ mcmc_dens(
   adjust = NULL,
   kernel = NULL,
   n_dens = NULL,
+  bounds = NULL,
   alpha = 1
 )
 
@@ -65,7 +66,8 @@ mcmc_dens_overlay(
   bw = NULL,
   adjust = NULL,
   kernel = NULL,
-  n_dens = NULL
+  n_dens = NULL,
+  bounds = NULL
 )
 
 mcmc_dens_chains(
@@ -78,7 +80,8 @@ mcmc_dens_chains(
   bw = NULL,
   adjust = NULL,
   kernel = NULL,
-  n_dens = NULL
+  n_dens = NULL,
+  bounds = NULL
 )
 
 mcmc_dens_chains_data(
@@ -90,7 +93,8 @@ mcmc_dens_chains_data(
   bw = NULL,
   adjust = NULL,
   kernel = NULL,
-  n_dens = NULL
+  n_dens = NULL,
+  bounds = NULL
 )
 
 mcmc_violin(
@@ -177,15 +181,15 @@ function.)}
 
 \item{trim}{A logical scalar passed to \code{\link[ggplot2:geom_density]{ggplot2::geom_density()}}.}
 
-\item{bw, adjust, kernel, n_dens}{Optional arguments passed to
-\code{\link[stats:density]{stats::density()}} to override default kernel density estimation
-parameters. \code{n_dens} defaults to \code{1024}.}
+\item{bw, adjust, kernel, n_dens, bounds}{Optional arguments passed to
+\code{\link[stats:density]{stats::density()}} (and \code{bounds} to \code{\link[ggplot2:geom_density]{ggplot2::stat_density()}}) to override
+default kernel density estimation parameters or truncate the density
+support. \code{n_dens} defaults to \code{1024}.}
 
 \item{color_chains}{Option for whether to separately color chains.}
 
-\item{probs}{A numeric vector passed to \code{\link[ggplot2:geom_violin]{ggplot2::geom_violin()}}'s
-\code{draw_quantiles} argument to specify at which quantiles to draw
-horizontal lines. Set to \code{NULL} to remove the lines.}
+\item{probs}{A numeric vector of probabilities controlling where quantile
+lines are drawn. Set to \code{NULL} to remove the lines.}
 }
 \value{
 A ggplot object that can be further customized using the \strong{ggplot2} package.

@@ -22,7 +22,7 @@ and general plots of posterior (or prior) predictive distributions.
 The idea behind **bayesplot** is not only to provide convenient functionality
 for users, but also a common set of functions that can be easily used by
 developers working on a variety of packages for Bayesian modeling, particularly
-(but not necessarily) those powered by [**RStan**](https://mc-stan.org/rstan).
+(but not necessarily) those powered by [Stan](https://mc-stan.org/).
 
 ### Getting started 
 

@@ -301,7 +301,8 @@ mcmc_areas <- function(x,
                        bw = NULL,
                        adjust = NULL,
                        kernel = NULL,
-                       n_dens = NULL) {
+                       n_dens = NULL,
+                       bounds = NULL) {
   check_ignored_arguments(...)
   area_method <- match.arg(area_method)
 
@@ -309,7 +310,8 @@ mcmc_areas <- function(x,
     x, pars, regex_pars, transformations,
     prob = prob, prob_outer = prob_outer,
     point_est = point_est, rhat = rhat,
-    bw = bw, adjust = adjust, kernel = kernel, n_dens = n_dens
+    bw = bw, adjust = adjust, kernel = kernel,
+    n_dens = n_dens, bounds = bounds
   )
   datas <- split(data, data$interval)
 
@@ -474,13 +476,14 @@ mcmc_areas_ridges <- function(x,
                              prob = 1,
                              border_size = NULL,
                              bw = NULL, adjust = NULL, kernel = NULL,
-                             n_dens = NULL) {
+                             n_dens = NULL,
+                             bounds = NULL) {
   check_ignored_arguments(...)
   data <- mcmc_areas_ridges_data(x, pars = pars, regex_pars = regex_pars,
                                  transformations = transformations,
                                  prob = prob, prob_outer = prob_outer,
                                  bw = bw, adjust = adjust, kernel = kernel,
-                                 n_dens = n_dens)
+                                 n_dens = n_dens, bounds = bounds)
 
   datas <- data %>%
     split(data$interval)
@@ -668,8 +671,10 @@ mcmc_areas_data <- function(x,
                             bw = NULL,
                             adjust = NULL,
                             kernel = NULL,
-                            n_dens = NULL) {
+                            n_dens = NULL,
+                            bounds = NULL) {
   probs <- check_interval_widths(prob, prob_outer)
+  bounds <- validate_density_bounds(bounds)
 
   # First compute normal intervals so we know the width of the data, point
   # estimates, and have prepared rhat values.
@@ -699,6 +704,7 @@ mcmc_areas_data <- function(x,
       bw = bw,
       adjust = adjust,
       kernel = kernel,
+      bounds = bounds,
       n_dens = n_dens) %>%
     mutate(interval = "inner")
 
@@ -710,6 +716,7 @@ mcmc_areas_data <- function(x,
       bw = bw,
       adjust = adjust,
       kernel = kernel,
+      bounds = bounds,
       n_dens = n_dens) %>%
     mutate(interval = "outer")
 
@@ -777,12 +784,14 @@ mcmc_areas_ridges_data <- function(x,
                                    prob = 1,
                                    bw = NULL,
                                    adjust = NULL, kernel = NULL,
-                                   n_dens = NULL) {
+                                   n_dens = NULL,
+                                   bounds = NULL) {
   check_ignored_arguments(...)
   mcmc_areas_data(x, pars = pars, regex_pars = regex_pars,
                   transformations = transformations,
                   prob = prob, prob_outer = prob_outer, point_est = "none",
-                  bw = bw, adjust = adjust, kernel = kernel, n_dens = n_dens)
+                  bw = bw, adjust = adjust, kernel = kernel,
+                  n_dens = n_dens, bounds = bounds)
 }
 
 
@@ -841,15 +850,24 @@ compute_column_density <- function(df, group_vars, value_var, ...) {
 
 # Given a vector of values, compute a density dataframe.
 compute_interval_density <- function(x, interval_width = 1, n_dens = 1024,
-                                     bw = NULL, adjust = NULL, kernel = NULL) {
+                                     bw = NULL, adjust = NULL, kernel = NULL,
+                                     bounds = NULL) {
   n_dens <- n_dens %||% 1024
 
   tail_width <- (1 - interval_width) / 2
   qs <- quantile(x, probs = c(tail_width, 1 - tail_width))
+  support <- range(qs)
+  if (!is.null(bounds)) {
+    support[1] <- max(bounds[1], support[1])
+    support[2] <- min(bounds[2], support[2])
+    if (!(support[1] < support[2])) {
+      support <- range(qs)
+    }
+  }
 
   args <- c(
     # can't be null
-    list(x = x, from = min(qs), to = max(qs), n = n_dens),
+    list(x = x, from = support[1], to = support[2], n = n_dens),
     # might be null
     bw = bw, adjust = adjust, kernel = kernel)
 

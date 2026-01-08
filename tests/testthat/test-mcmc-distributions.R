@@ -55,6 +55,36 @@ test_that("mcmc_dens_overlay returns a ggplot object", {
                               pars = c("(Intercept)", "beta[2]")))
 })
 
+test_that("mcmc density plots accept bounds", {
+  suppressWarnings(expect_gg(mcmc_dens(arr, pars = "beta[1]", bounds = c(0, Inf))))
+  suppressWarnings(expect_gg(mcmc_dens_overlay(arr, pars = "beta[1]", bounds = c(0, Inf))))
+  suppressWarnings(expect_gg(mcmc_dens_chains(arr, pars = "beta[1]", bounds = c(0, Inf))))
+})
+
+test_that("mcmc density plots reject invalid bounds", {
+  # non-numeric bounds
+  expect_error(mcmc_dens(arr, pars = "beta[1]", bounds = c("a", "b")),
+               "`bounds` must be a numeric vector of length 2")
+  
+  # bounds with length != 2
+  expect_error(mcmc_dens(arr, pars = "beta[1]", bounds = c(0, 1, 2)),
+               "`bounds` must be a numeric vector of length 2")
+  expect_error(mcmc_dens(arr, pars = "beta[1]", bounds = 1),
+               "`bounds` must be a numeric vector of length 2")
+  
+  # bounds with NA values
+  expect_error(mcmc_dens(arr, pars = "beta[1]", bounds = c(0, NA)),
+               "`bounds` must be a numeric vector of length 2")
+  expect_error(mcmc_dens(arr, pars = "beta[1]", bounds = c(NA, 1)),
+               "`bounds` must be a numeric vector of length 2")
+  
+  # bounds where bounds[1] >= bounds[2]
+  expect_error(mcmc_dens(arr, pars = "beta[1]", bounds = c(1, 0)),
+               "`bounds` must satisfy bounds\\[1\\] < bounds\\[2\\]")
+  expect_error(mcmc_dens(arr, pars = "beta[1]", bounds = c(1, 1)),
+               "`bounds` must satisfy bounds\\[1\\] < bounds\\[2\\]")
+})
+
 test_that("mcmc_dens_chains returns a ggplot object", {
   p <- mcmc_dens_chains(arr, pars = "beta[1]", regex_pars = "x\\:",
                         color_chains = FALSE)
@@ -143,6 +173,9 @@ test_that("mcmc_dens renders correctly", {
 
   p_alpha <- mcmc_dens(vdiff_dframe, alpha = 0)
   vdiffr::expect_doppelganger("mcmc_dens (alpha)", p_alpha)
+
+  p_bounds <- suppressWarnings(mcmc_dens(vdiff_dframe, bounds = c(0, Inf)))
+  suppressWarnings(vdiffr::expect_doppelganger("mcmc_dens (bounds)", p_bounds))
 })
 
 test_that("mcmc_dens_overlay renders correctly", {
@@ -152,6 +185,9 @@ test_that("mcmc_dens_overlay renders correctly", {
 
   p_base <- mcmc_dens_overlay(vdiff_dframe_chains)
   vdiffr::expect_doppelganger("mcmc_dens_overlay (default)", p_base)
+
+  p_bounds <- suppressWarnings(mcmc_dens_overlay(vdiff_dframe_chains, bounds = c(1,2)))
+  suppressWarnings(vdiffr::expect_doppelganger("mcmc_dens_overlay (bounds)", p_bounds))
 })
 
 test_that("mcmc_dens_chains renders correctly", {

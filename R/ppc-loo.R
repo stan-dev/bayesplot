@@ -141,7 +141,8 @@ NULL
 #'   calculated from the PIT values to the theoretical standard normal
 #'   quantiles.
 #' @param trim Passed to [ggplot2::stat_density()].
-#' @template args-density-controls
+#' @param bw,adjust,kernel,n_dens Optional arguments passed to
+#'   [stats::density()] to override the defaults.
 #' @param boundary_correction For `ppc_loo_pit_overlay()`, when set to `TRUE`
 #'   (the default) the function will compute boundary corrected density values
 #'   via convolution and a Gaussian filter, also known as the reflection method
@@ -586,7 +587,7 @@ ppc_loo_intervals <-
       geom_linerange(
         mapping = intervals_outer_aes(color = "yrep"),
         alpha = alpha,
-        size = size
+        linewidth = size
       ) +
       geom_pointrange(
         shape = 21,

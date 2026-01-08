@@ -44,3 +44,18 @@ check_ignored_arguments <- function(..., ok_args = character()) {
     }
   }
 }
+
+#' Validate bounds passed to stat_density/geom_density wrappers
+#' @noRd
+validate_density_bounds <- function(bounds) {
+  if (is.null(bounds)) {
+    return(NULL)
+  }
+  if (!is.numeric(bounds) || length(bounds) != 2 || anyNA(bounds)) {
+    abort("`bounds` must be a numeric vector of length 2.")
+  }
+  if (bounds[1] >= bounds[2]) {
+    abort("`bounds` must satisfy bounds[1] < bounds[2].")
+  }
+  bounds
+}
