@@ -689,7 +689,7 @@ mcmc_dots_by_chain <- function(
     }
     graph <- graph +
       do.call("facet_grid", facet_args) +
-      force_axes_in_facets()
+      force_x_axis_in_facets()
   }
 
   if (n_param == 1) {
@@ -702,5 +702,6 @@ mcmc_dots_by_chain <- function(
     yaxis_text(FALSE) +
     yaxis_title(FALSE) +
     yaxis_ticks(FALSE) +
+    theme(axis.line.y = element_blank()) +
     xaxis_title(on = n_param == 1)
 }

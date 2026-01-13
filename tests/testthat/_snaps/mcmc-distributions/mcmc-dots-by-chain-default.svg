@@ -526,7 +526,6 @@
 <circle cx='292.02' cy='153.34' r='1.47' style='stroke-width: 1.06; stroke: #005B96; fill: #6497B1;' />
 <circle cx='324.42' cy='153.34' r='1.47' style='stroke-width: 1.06; stroke: #005B96; fill: #6497B1;' />
 <line x1='5.98' y1='155.88' x2='339.58' y2='155.88' style='stroke-width: 0.85; stroke-linecap: butt;' />
-<line x1='5.98' y1='155.88' x2='5.98' y2='44.09' style='stroke-width: 0.85; stroke-linecap: butt;' />
 </g>
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8MC4wMHw1NzYuMDA=)'>
 </g>
@@ -1037,7 +1036,6 @@
 <circle cx='281.66' cy='282.22' r='1.65' style='stroke-width: 1.06; stroke: #005B96; fill: #6497B1;' />
 <circle cx='281.66' cy='277.89' r='1.65' style='stroke-width: 1.06; stroke: #005B96; fill: #6497B1;' />
 <line x1='5.98' y1='289.27' x2='339.58' y2='289.27' style='stroke-width: 0.85; stroke-linecap: butt;' />
-<line x1='5.98' y1='289.27' x2='5.98' y2='177.48' style='stroke-width: 0.85; stroke-linecap: butt;' />
 </g>
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8MC4wMHw1NzYuMDA=)'>
 </g>
@@ -1548,7 +1546,6 @@
 <circle cx='305.38' cy='420.04' r='1.54' style='stroke-width: 1.06; stroke: #005B96; fill: #6497B1;' />
 <circle cx='316.47' cy='420.04' r='1.54' style='stroke-width: 1.06; stroke: #005B96; fill: #6497B1;' />
 <line x1='5.98' y1='422.66' x2='339.58' y2='422.66' style='stroke-width: 0.85; stroke-linecap: butt;' />
-<line x1='5.98' y1='422.66' x2='5.98' y2='310.87' style='stroke-width: 0.85; stroke-linecap: butt;' />
 </g>
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8MC4wMHw1NzYuMDA=)'>
 </g>
@@ -2059,7 +2056,6 @@
 <circle cx='287.47' cy='553.53' r='1.44' style='stroke-width: 1.06; stroke: #005B96; fill: #6497B1;' />
 <circle cx='295.37' cy='553.53' r='1.44' style='stroke-width: 1.06; stroke: #005B96; fill: #6497B1;' />
 <line x1='5.98' y1='556.04' x2='339.58' y2='556.04' style='stroke-width: 0.85; stroke-linecap: butt;' />
-<line x1='5.98' y1='556.04' x2='5.98' y2='444.26' style='stroke-width: 0.85; stroke-linecap: butt;' />
 </g>
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8MC4wMHw1NzYuMDA=)'>
 </g>
@@ -2570,7 +2566,6 @@
 <circle cx='643.72' cy='153.41' r='1.39' style='stroke-width: 1.06; stroke: #005B96; fill: #6497B1;' />
 <circle cx='651.27' cy='153.41' r='1.39' style='stroke-width: 1.06; stroke: #005B96; fill: #6497B1;' />
 <line x1='361.18' y1='155.88' x2='694.78' y2='155.88' style='stroke-width: 0.85; stroke-linecap: butt;' />
-<line x1='361.18' y1='155.88' x2='361.18' y2='44.09' style='stroke-width: 0.85; stroke-linecap: butt;' />
 </g>
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8MC4wMHw1NzYuMDA=)'>
 </g>
@@ -3081,7 +3076,6 @@
 <circle cx='633.45' cy='286.82' r='1.37' style='stroke-width: 1.06; stroke: #005B96; fill: #6497B1;' />
 <circle cx='679.62' cy='286.82' r='1.37' style='stroke-width: 1.06; stroke: #005B96; fill: #6497B1;' />
 <line x1='361.18' y1='289.27' x2='694.78' y2='289.27' style='stroke-width: 0.85; stroke-linecap: butt;' />
-<line x1='361.18' y1='289.27' x2='361.18' y2='177.48' style='stroke-width: 0.85; stroke-linecap: butt;' />
 </g>
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8MC4wMHw1NzYuMDA=)'>
 </g>
@@ -3592,7 +3586,6 @@
 <circle cx='630.75' cy='412.93' r='1.31' style='stroke-width: 1.06; stroke: #005B96; fill: #6497B1;' />
 <circle cx='645.14' cy='420.27' r='1.31' style='stroke-width: 1.06; stroke: #005B96; fill: #6497B1;' />
 <line x1='361.18' y1='422.66' x2='694.78' y2='422.66' style='stroke-width: 0.85; stroke-linecap: butt;' />
-<line x1='361.18' y1='422.66' x2='361.18' y2='310.87' style='stroke-width: 0.85; stroke-linecap: butt;' />
 </g>
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8MC4wMHw1NzYuMDA=)'>
 </g>
@@ -4103,7 +4096,6 @@
 <circle cx='634.06' cy='549.70' r='1.41' style='stroke-width: 1.06; stroke: #005B96; fill: #6497B1;' />
 <circle cx='639.88' cy='553.56' r='1.41' style='stroke-width: 1.06; stroke: #005B96; fill: #6497B1;' />
 <line x1='361.18' y1='556.04' x2='694.78' y2='556.04' style='stroke-width: 0.85; stroke-linecap: butt;' />
-<line x1='361.18' y1='556.04' x2='361.18' y2='444.26' style='stroke-width: 0.85; stroke-linecap: butt;' />
 </g>
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8MC4wMHw1NzYuMDA=)'>
 </g>
@@ -4184,10 +4176,6 @@
 <text x='523.70' y='568.03' text-anchor='middle' style='font-size: 9.60px; fill: #4D4D4D; font-family: sans;' textLength='5.34px' lengthAdjust='spacingAndGlyphs'>0</text>
 <text x='603.90' y='568.03' text-anchor='middle' style='font-size: 9.60px; fill: #4D4D4D; font-family: sans;' textLength='5.34px' lengthAdjust='spacingAndGlyphs'>2</text>
 <text x='684.10' y='568.03' text-anchor='middle' style='font-size: 9.60px; fill: #4D4D4D; font-family: sans;' textLength='5.34px' lengthAdjust='spacingAndGlyphs'>4</text>
-<polyline points='5.98,155.88 5.98,44.09 ' style='stroke-width: 0.85; stroke-linecap: butt;' />
-<polyline points='5.98,289.27 5.98,177.48 ' style='stroke-width: 0.85; stroke-linecap: butt;' />
-<polyline points='5.98,422.66 5.98,310.87 ' style='stroke-width: 0.85; stroke-linecap: butt;' />
-<polyline points='5.98,556.04 5.98,444.26 ' style='stroke-width: 0.85; stroke-linecap: butt;' />
 <text x='5.98' y='15.89' style='font-size: 14.40px; font-family: sans;' textLength='196.14px' lengthAdjust='spacingAndGlyphs'>mcmc_dots_by_chain (default)</text>
 </g>
 </svg>
