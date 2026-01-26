@@ -408,7 +408,7 @@ mcmc_dots <- function(
     facet_args = list(),
     binwidth = NA,
     alpha = 1,
-    quantiles = NA
+    quantiles = 100
 ) {
   check_ignored_arguments(..., ok_args = c("dotsize", "layout", "stackratio", "overflow"))
 
@@ -438,7 +438,7 @@ mcmc_dots_by_chain <- function(
     facet_args = list(),
     binwidth = NA,
     alpha = 1,
-    quantiles = NA
+    quantiles = 100
 ) {
   check_ignored_arguments(..., ok_args = c("dotsize", "layout", "stackratio", "overflow"))
 

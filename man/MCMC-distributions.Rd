@@ -118,7 +118,7 @@ mcmc_dots(
   facet_args = list(),
   binwidth = NA,
   alpha = 1,
-  quantiles = NA
+  quantiles = 100
 )
 
 mcmc_dots_by_chain(
@@ -130,7 +130,7 @@ mcmc_dots_by_chain(
   facet_args = list(),
   binwidth = NA,
   alpha = 1,
-  quantiles = NA
+  quantiles = 100
 )
 }
 \arguments{
