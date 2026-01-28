@@ -97,6 +97,20 @@ test_that("ppc_rootogram errors if y/yrep not counts", {
                "ncol(yrep) must be equal to length(y)", fixed = TRUE)
 })
 
+test_that("ppc_rootogram_grouped returns a ggplot object", {
+  expect_gg(ppc_rootogram_grouped(y2, yrep2, group = vdiff_group2))
+  expect_gg(ppc_rootogram_grouped(y2, yrep3, group = vdiff_group2, style = "hanging", prob = 0.5))
+  expect_gg(ppc_rootogram_grouped(y2, yrep3, group = vdiff_group2, style = "suspended"))
+  expect_gg(ppc_rootogram_grouped(y2, yrep3, group = vdiff_group2, style = "discrete"))
+})
+
+test_that("ppc_rootogram_grouped errors if y/yrep not counts", {
+  expect_error(ppc_rootogram_grouped(y, yrep, group = vdiff_group2),
+               "ppc_rootogram expects counts as inputs to 'y'")
+  expect_error(ppc_rootogram_grouped(y2, yrep[1:5, seq_along(y2)], group = vdiff_group2),
+               "ppc_rootogram expects counts as inputs to 'yrep'")
+})
+
 
 
 # Visual tests ------------------------------------------------------------
@@ -201,4 +215,41 @@ test_that("ppc_rootogram renders correctly", {
     title = "ppc_rootogram ('discrete', bound_distinct=FALSE)",
     fig = p_discrete_nonbound)
 })
+
+test_that("ppc_rootogram_grouped renders correctly", {
+  testthat::skip_on_cran()
+  testthat::skip_if_not_installed("vdiffr")
+  skip_on_r_oldrel()
+
+  p_base <- ppc_rootogram_grouped(vdiff_y2, vdiff_yrep2, vdiff_group2)
+  vdiffr::expect_doppelganger("ppc_rootogram_grouped (default)", p_base)
+
+  p_custom_hanging <- ppc_rootogram_grouped(
+    y = vdiff_y2,
+    yrep = vdiff_yrep2,
+    group = vdiff_group2,
+    prob = 2/3,
+    size = 2,
+    style = "hanging",
+    facet_args = list(nrow = 2)
+  )
+
+  vdiffr::expect_doppelganger(
+    title = "ppc_rootogram_grouped (style='hanging', prob, size, facet_args)",
+    fig = p_custom_hanging)
+
+  p_discrete <- ppc_rootogram_grouped(
+    y = vdiff_y2,
+    yrep = vdiff_yrep2,
+    group = vdiff_group2,
+    prob = 0.5,
+    size = 1,
+    style = "discrete"
+  )
+
+  vdiffr::expect_doppelganger(
+    title = "ppc_rootogram_grouped (style='discrete', prob, size)",
+    fig = p_discrete)
+})
+
 
