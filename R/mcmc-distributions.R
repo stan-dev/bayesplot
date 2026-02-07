@@ -67,9 +67,11 @@
 #' }
 #' # example of using 'transformations' argument to plot log(sigma),
 #' # and parsing facet labels (e.g. to get greek letters for parameters)
-#' mcmc_hist(x, transformations = list(sigma = "log"),
-#'           facet_args = list(labeller = ggplot2::label_parsed)) +
-#'           facet_text(size = 15)
+#' mcmc_hist(x,
+#'   transformations = list(sigma = "log"),
+#'   facet_args = list(labeller = ggplot2::label_parsed)
+#' ) +
+#'   facet_text(size = 15)
 #' \donttest{
 #' # instead of list(sigma = "log"), you could specify the transformation as
 #' # list(sigma = log) or list(sigma = function(x) log(x)), but then the
@@ -85,14 +87,18 @@
 #' ### Densities ###
 #' #################
 #'
-#' mcmc_dens(x, pars = c("sigma", "beta[2]"),
-#'           facet_args = list(nrow = 2))
+#' mcmc_dens(x,
+#'   pars = c("sigma", "beta[2]"),
+#'   facet_args = list(nrow = 2)
+#' )
 #' \donttest{
 #' # separate and overlay chains
 #' color_scheme_set("mix-teal-pink")
-#' mcmc_dens_overlay(x, pars = c("sigma", "beta[2]"),
-#'                   facet_args = list(nrow = 2)) +
-#'                   facet_text(size = 14)
+#' mcmc_dens_overlay(x,
+#'   pars = c("sigma", "beta[2]"),
+#'   facet_args = list(nrow = 2)
+#' ) +
+#'   facet_text(size = 14)
 #' x2 <- example_mcmc_draws(params = 6)
 #' mcmc_dens_chains(x2, pars = c("beta[1]", "beta[2]", "beta[3]"))
 #' }
@@ -170,7 +176,10 @@ mcmc_dens <- function(
     bounds = bounds,
     alpha = alpha,
     ...
-  )
+  ) +
+    yaxis_text(FALSE) +
+    yaxis_title(FALSE) +
+    yaxis_ticks(FALSE)
 }
 
 #' @rdname MCMC-distributions
@@ -237,7 +246,10 @@ mcmc_dens_overlay <- function(
     n_dens = n_dens,
     bounds = bounds,
     ...
-  )
+  ) +
+    yaxis_text(FALSE) +
+    yaxis_title(FALSE) +
+    yaxis_ticks(FALSE)
 }
 
 #' @rdname MCMC-distributions
@@ -281,7 +293,8 @@ mcmc_dens_chains <- function(
   } else {
     scale_color <- scale_color_manual(
       values = rep(get_color("m"), n_chains),
-      guide = "none")
+      guide = "none"
+    )
   }
 
   ggplot(data) +
@@ -371,9 +384,6 @@ mcmc_violin <- function(
   )
 }
 
-
-
-
 # internal -----------------------------------------------------------------
 .mcmc_hist <- function(
   x,
@@ -398,7 +408,7 @@ mcmc_violin <- function(
   data <- melt_mcmc(x, value.name = "value")
   n_param <- num_params(data)
 
-  graph <- ggplot(data, aes(x = ~ value)) +
+  graph <- ggplot(data, aes(x = ~value)) +
     geom_histogram(
       set_hist_aes(freq),
       fill = get_color("mid"),
@@ -450,16 +460,15 @@ mcmc_violin <- function(
   color_chains = FALSE,
   geom = c("density", "violin"),
   probs = c(0.1, 0.5, 0.9),
-    trim = FALSE,
-    alpha = 1,
-    bw = NULL,
-    adjust = NULL,
-    kernel = NULL,
-    n_dens = NULL,
-    bounds = NULL,
-    ...
-  ) {
-
+  trim = FALSE,
+  alpha = 1,
+  bw = NULL,
+  adjust = NULL,
+  kernel = NULL,
+  n_dens = NULL,
+  bounds = NULL,
+  ...
+) {
   bw <- bw %||% "nrd0"
   adjust <- adjust %||% 1
   kernel <- kernel %||% "gaussian"
@@ -534,7 +543,8 @@ mcmc_violin <- function(
     } else {
       scale_color <- scale_color_manual(
         values = rep(get_color("m"), n_chains),
-        guide = "none")
+        guide = "none"
+      )
     }
     graph <- graph + scale_color
   }
@@ -542,8 +552,10 @@ mcmc_violin <- function(
   if (n_param == 1) {
     graph <-
       graph +
-      labs(x = if (violin) "Chain" else levels(data$Parameter),
-           y = if (violin) levels(data$Parameter) else NULL)
+      labs(
+        x = if (violin) "Chain" else levels(data$Parameter),
+        y = if (violin) levels(data$Parameter) else NULL
+      )
   } else {
     facet_args[["facets"]] <- vars(.data$Parameter)
     facet_args[["scales"]] <- facet_args[["scales"]] %||% "free"
@@ -555,6 +567,6 @@ mcmc_violin <- function(
     bayesplot_theme_get() +
     yaxis_text(FALSE) +
     yaxis_ticks(FALSE) +
-    yaxis_title(on = n_param == 1 && violin) +
+    yaxis_title(FALSE) +
     xaxis_title(on = n_param == 1)
 }
