@@ -1,6 +1,7 @@
 # bayesplot (development version)
 
 * New functions `mcmc_dots` and `mcmc_dots_by_chain` for dot plots of MCMC draws by @behramulukir (#402)
+* Default to `quantiles=100` for all dot plots by @behramulukir (#402)
 
 # bayesplot 1.15.0
 
