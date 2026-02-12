@@ -107,7 +107,7 @@ ppc_freqpoly_grouped(
 
 ppc_boxplot(y, yrep, ..., notch = TRUE, size = 0.5, alpha = 1)
 
-ppc_dots(y, yrep, ..., binwidth = NA, quantiles = NA, freq = TRUE)
+ppc_dots(y, yrep, ..., binwidth = NA, quantiles = 100, freq = TRUE)
 
 ppc_violin_grouped(
   y,

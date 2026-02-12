@@ -532,7 +532,7 @@ ppc_dots <-
            yrep,
            ...,
            binwidth = NA,
-           quantiles = NA,
+           quantiles = 100,
            freq = TRUE) {
     check_ignored_arguments(..., ok_args = c("dotsize", "layout", "stackratio", "overflow"))
 

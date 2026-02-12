@@ -41,7 +41,7 @@ ppd_dens(ypred, ..., trim = FALSE, size = 0.5, alpha = 1, bounds = NULL)
 
 ppd_hist(ypred, ..., binwidth = NULL, bins = NULL, breaks = NULL, freq = TRUE)
 
-ppd_dots(ypred, ..., binwidth = NA, quantiles = NA, freq = TRUE)
+ppd_dots(ypred, ..., binwidth = NA, quantiles = 100, freq = TRUE)
 
 ppd_freqpoly(
   ypred,
