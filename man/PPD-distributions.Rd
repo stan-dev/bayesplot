@@ -113,8 +113,9 @@ function.)}
 
 \item{quantiles}{For dot plots, an optional integer passed to
 \code{\link[ggdist:stat_dots]{ggdist::stat_dots()}} specifying the number of quantiles to use for a
-quantile dot plot. If \code{quantiles} is \code{NA} (the default) then all data
-points are plotted.}
+quantile dot plot. If \code{quantiles} is \code{NA} then all data points are plotted.
+The default is \code{quantiles=100} so that each dot represent one percent of
+posterior mass.}
 
 \item{notch}{For the box plot, a logical scalar passed to
 \code{\link[ggplot2:geom_boxplot]{ggplot2::geom_boxplot()}}. Note: unlike \code{geom_boxplot()}, the default is
