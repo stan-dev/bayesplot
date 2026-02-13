@@ -107,7 +107,7 @@ ppc_freqpoly_grouped(
 
 ppc_boxplot(y, yrep, ..., notch = TRUE, size = 0.5, alpha = 1)
 
-ppc_dots(y, yrep, ..., binwidth = NA, quantiles = NA, freq = TRUE)
+ppc_dots(y, yrep, ..., binwidth = NA, quantiles = 100, freq = TRUE)
 
 ppc_violin_grouped(
   y,
@@ -202,8 +202,9 @@ function.)}
 
 \item{quantiles}{For dot plots, an optional integer passed to
 \code{\link[ggdist:stat_dots]{ggdist::stat_dots()}} specifying the number of quantiles to use for a
-quantile dot plot. If \code{quantiles} is \code{NA} (the default) then all data
-points are plotted.}
+quantile dot plot. If \code{quantiles} is \code{NA} then all data points are plotted.
+The default is \code{quantiles=100} so that each dot represent one percent of
+posterior mass.}
 
 \item{probs}{A numeric vector of probabilities controlling where quantile
 lines are drawn. Set to \code{NULL} to remove the lines.}

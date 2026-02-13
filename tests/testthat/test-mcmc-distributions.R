@@ -41,6 +41,21 @@ test_that("mcmc_dens returns a ggplot object", {
   expect_gg(mcmc_dens(dframe1))
 })
 
+test_that("mcmc_dots returns a ggplot object", {
+  expect_gg(mcmc_dots(arr, pars = "beta[2]", regex_pars = "x\\:"))
+  expect_gg(mcmc_dots(arr1chain, regex_pars = "beta"))
+  expect_gg(mcmc_dots(drawsarr, pars = "theta[1]", quantiles = 100))
+  expect_gg(mcmc_dots(drawsarr1chain, regex_pars = "theta"))
+  expect_gg(mcmc_dots(mat))
+  expect_gg(mcmc_dots(dframe))
+  expect_gg(mcmc_dots(dframe_multiple_chains))
+
+  expect_gg(mcmc_dots(arr1))
+  expect_gg(mcmc_dots(drawsarr1, quantiles = 67))
+  expect_gg(mcmc_dots(mat1))
+  expect_gg(mcmc_dots(dframe1))
+})
+
 
 # functions that require multiple chains ----------------------------------
 test_that("mcmc_hist_by_chain returns a ggplot object", {
@@ -116,6 +131,14 @@ test_that("mcmc_dens_chains/mcmc_dens_overlay color chains", {
   expect_equal(get_palette(p4, 4), chain_colors(4))
 })
 
+test_that("mcmc_dots_by_chain returns a ggplot object", {
+  expect_gg(mcmc_dots_by_chain(arr, pars = "beta[2]", regex_pars = "x\\:"))
+  expect_gg(mcmc_dots_by_chain(dframe_multiple_chains,
+                               regex_pars = c("\\(Intercept\\)$", "beta")))
+  expect_gg(mcmc_dots_by_chain(arr, pars = "beta[2]", regex_pars = "x\\:",
+                                 quantiles = 80))
+})
+
 test_that("mcmc_violin returns a ggplot object", {
   expect_gg(mcmc_violin(arr, pars = "beta[2]", regex_pars = "x\\:"))
   expect_gg(mcmc_violin(dframe_multiple_chains,
@@ -142,6 +165,11 @@ test_that("mcmc_* throws error if 1 chain but multiple chains required", {
   expect_error(mcmc_violin(dframe), "requires multiple chains")
   expect_error(mcmc_violin(arr1chain), "requires multiple chains")
   expect_error(mcmc_violin(drawsarr1chain), "requires multiple chains")
+
+  expect_error(mcmc_dots_by_chain(mat), "requires multiple chains")
+  expect_error(mcmc_dots_by_chain(dframe), "requires multiple chains")
+  expect_error(mcmc_dots_by_chain(arr1chain), "requires multiple chains")
+  expect_error(mcmc_dots_by_chain(drawsarr1chain), "requires multiple chains")
 })
 
 
@@ -215,5 +243,23 @@ test_that("mcmc_violin renders correctly", {
 
   p_base <- mcmc_violin(vdiff_dframe_chains)
   vdiffr::expect_doppelganger("mcmc_violin (default)", p_base)
+})
+
+test_that("mcmc_dots renders correctly", {
+  testthat::skip_on_cran()
+  testthat::skip_if_not_installed("vdiffr")
+  skip_on_r_oldrel()
+
+  p_base <- mcmc_dots(vdiff_dframe)
+  vdiffr::expect_doppelganger("mcmc_dots (default)", p_base)
+})
+
+test_that("mcmc_dots_by_chain renders correctly", {
+  testthat::skip_on_cran()
+  testthat::skip_if_not_installed("vdiffr")
+  skip_on_r_oldrel()
+
+  p_base <- mcmc_dots_by_chain(vdiff_dframe_chains)
+  vdiffr::expect_doppelganger("mcmc_dots_by_chain (default)", p_base)
 })
 
