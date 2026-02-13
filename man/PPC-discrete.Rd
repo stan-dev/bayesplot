@@ -5,6 +5,7 @@
 \alias{ppc_bars}
 \alias{ppc_bars_grouped}
 \alias{ppc_rootogram}
+\alias{ppc_rootogram_grouped}
 \alias{ppc_bars_data}
 \title{PPCs for discrete outcomes}
 \usage{
@@ -39,6 +40,18 @@ ppc_rootogram(
   yrep,
   style = c("standing", "hanging", "suspended", "discrete"),
   ...,
+  prob = 0.9,
+  size = 1,
+  bound_distinct = TRUE
+)
+
+ppc_rootogram_grouped(
+  y,
+  yrep,
+  group,
+  style = c("standing", "hanging", "suspended", "discrete"),
+  ...,
+  facet_args = list(),
   prob = 0.9,
   size = 1,
   bound_distinct = TRUE
@@ -88,7 +101,7 @@ style. The options are \code{"discrete"}, \code{"standing"}, \code{"hanging"}, a
 \code{"suspended"}. See the \strong{Plot Descriptions} section, below, for
 details on the different styles.}
 
-\item{bound_distinct}{For \verb{ppc_rootogram(style = "discrete)},
+\item{bound_distinct}{For \verb{ppc_rootogram(style = "discrete)} and \verb{ppc_rootogram_grouped(style = "discrete)},
 if \code{TRUE} then the observed counts will be plotted with different shapes
 depending on whether they are within the bounds of the \code{y} quantiles.}
 }
@@ -154,6 +167,10 @@ using \code{discrete} style is suggested.
 \strong{All of the rootograms are plotted on the square root scale}. See Kleiber
 and Zeileis (2016) for advice on interpreting rootograms and selecting
 among the different styles.
+}
+\item{\code{ppc_rootogram_grouped()}}{
+Same as \code{ppc_rootogram()} but a separate plot (facet) is generated for each
+level of a grouping variable.
 }
 }
 }
@@ -243,6 +260,12 @@ ppc_rootogram(y, yrep, prob = 0)
 ppc_rootogram(y, yrep, style = "hanging", prob = 0.8)
 ppc_rootogram(y, yrep, style = "suspended")
 ppc_rootogram(y, yrep, style = "discrete")
+
+# rootograms for counts with groups
+group <- gl(2, 50, length = 100, labels = c("GroupA", "GroupB"))
+ppc_rootogram_grouped(y, yrep, group)
+ppc_rootogram_grouped(y, yrep, group, style = "hanging", facet_args = list(nrow = 2))
+ppc_rootogram_grouped(y, yrep, group, style = "discrete", prob = 0.5)
 
 }
 \references{
