@@ -39,7 +39,7 @@ ppd_dens(ypred, ..., trim = FALSE, size = 0.5, alpha = 1, bounds = NULL)
 
 ppd_hist(ypred, ..., binwidth = NULL, bins = NULL, breaks = NULL, freq = TRUE)
 
-ppd_dots(ypred, ..., binwidth = NA, quantiles = NA, freq = TRUE)
+ppd_dots(ypred, ..., binwidth = NA, quantiles = 100, freq = TRUE)
 
 ppd_freqpoly(
   ypred,
@@ -151,7 +151,9 @@ ppd_boxplot(ypred, ..., notch = TRUE, size = 0.5, alpha = 1)
   For dot plots, an optional integer passed to
   [`ggdist::stat_dots()`](https://mjskay.github.io/ggdist/reference/stat_dots.html)
   specifying the number of quantiles to use for a quantile dot plot. If
-  `quantiles` is `NA` (the default) then all data points are plotted.
+  `quantiles` is `NA` then all data points are plotted. The default is
+  `quantiles=100` so that each dot represent one percent of posterior
+  mass.
 
 - notch:
 

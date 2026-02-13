@@ -2,6 +2,13 @@
 
 ## bayesplot (development version)
 
+- New functions `mcmc_dots` and `mcmc_dots_by_chain` for dot plots of
+  MCMC draws by [@behramulukir](https://github.com/behramulukir)
+  ([\#402](https://github.com/stan-dev/bayesplot/issues/402))
+- Default to `quantiles=100` for all dot plots by
+  [@behramulukir](https://github.com/behramulukir)
+  ([\#402](https://github.com/stan-dev/bayesplot/issues/402))
+
 ## bayesplot 1.15.0
 
 CRAN release: 2025-12-12

@@ -345,6 +345,8 @@ general MCMC diagnostics.
   [`mcmc_dens_chains()`](https://mc-stan.org/bayesplot/dev/reference/MCMC-distributions.md)
   [`mcmc_dens_chains_data()`](https://mc-stan.org/bayesplot/dev/reference/MCMC-distributions.md)
   [`mcmc_violin()`](https://mc-stan.org/bayesplot/dev/reference/MCMC-distributions.md)
+  [`mcmc_dots()`](https://mc-stan.org/bayesplot/dev/reference/MCMC-distributions.md)
+  [`mcmc_dots_by_chain()`](https://mc-stan.org/bayesplot/dev/reference/MCMC-distributions.md)
   : Histograms and kernel density plots of MCMC draws
 - [`mcmc_intervals()`](https://mc-stan.org/bayesplot/dev/reference/MCMC-intervals.md)
   [`mcmc_areas()`](https://mc-stan.org/bayesplot/dev/reference/MCMC-intervals.md)

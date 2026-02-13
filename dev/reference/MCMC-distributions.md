@@ -101,6 +101,30 @@ mcmc_violin(
   facet_args = list(),
   probs = c(0.1, 0.5, 0.9)
 )
+
+mcmc_dots(
+  x,
+  pars = character(),
+  regex_pars = character(),
+  transformations = list(),
+  ...,
+  facet_args = list(),
+  binwidth = NA,
+  alpha = 1,
+  quantiles = 100
+)
+
+mcmc_dots_by_chain(
+  x,
+  pars = character(),
+  regex_pars = character(),
+  transformations = list(),
+  ...,
+  facet_args = list(),
+  binwidth = NA,
+  alpha = 1,
+  quantiles = 100
+)
 ```
 
 ## Arguments
@@ -169,7 +193,8 @@ mcmc_violin(
 
 - ...:
 
-  Currently ignored.
+  For dot plots, optional additional arguments to pass to
+  [`ggdist::stat_dots()`](https://mjskay.github.io/ggdist/reference/stat_dots.html).
 
 - facet_args:
 
@@ -235,6 +260,15 @@ mcmc_violin(
   A numeric vector of probabilities controlling where quantile lines are
   drawn. Set to `NULL` to remove the lines.
 
+- quantiles:
+
+  For dot plots, an optional integer passed to
+  [`ggdist::stat_dots()`](https://mjskay.github.io/ggdist/reference/stat_dots.html)
+  specifying the number of quantiles to use for a quantile dot plot. If
+  `quantiles` is `NA` then all data points are plotted. The default is
+  `quantiles=100` so that each dot represent one percent of posterior
+  mass.
+
 ## Value
 
 A ggplot object that can be further customized using the **ggplot2**
@@ -250,6 +284,10 @@ package.
 
   Kernel density plots of posterior draws with all chains merged.
 
+- `mcmc_dots()`:
+
+  Dot plots of posterior draws with all chains merged.
+
 - `mcmc_hist_by_chain()`:
 
   Histograms of posterior draws with chains separated via faceting.
@@ -258,6 +296,10 @@ package.
 
   Kernel density plots of posterior draws with chains separated but
   overlaid on a single plot.
+
+- `mcmc_dots_by_chain()`:
+
+  Dot plots of posterior draws with chains separated via faceting.
 
 - `mcmc_violin()`:
 
@@ -339,7 +381,7 @@ mcmc_hist(x, transformations = list(sigma = log))
 
 
 # separate histograms by chain
-color_scheme_set("pink")
+color_scheme_set("orange")
 mcmc_hist_by_chain(x, regex_pars = "beta")
 #> `stat_bin()` using `bins = 30`. Pick better value `binwidth`.
 
@@ -348,7 +390,7 @@ mcmc_hist_by_chain(x, regex_pars = "beta")
 #################
 ### Densities ###
 #################
-
+color_scheme_set("purple")
 mcmc_dens(x, pars = c("sigma", "beta[2]"),
           facet_args = list(nrow = 2))
 
@@ -365,10 +407,28 @@ mcmc_dens_chains(x2, pars = c("beta[1]", "beta[2]", "beta[3]"))
 # }
 # separate chains as violin plots
 color_scheme_set("green")
-mcmc_violin(x) + panel_bg(color = "gray20", size = 2, fill = "gray30")
-#> Warning: The `size` argument of `element_rect()` is deprecated as of ggplot2 3.4.0.
-#> ℹ Please use the `linewidth` argument instead.
-#> ℹ The deprecated feature was likely used in the bayesplot package.
-#>   Please report the issue at <https://github.com/stan-dev/bayesplot/issues/>.
+mcmc_violin(x) + panel_bg(color = "gray20", linewidth = 2, fill = "gray30")
 
+
+
+#################
+### Dot Plots ###
+#################
+
+# dot plots of some parameters
+color_scheme_set("pink")
+mcmc_dots(x, pars = c("alpha", "beta[2]"))
+
+
+# \donttest{
+color_scheme_set("teal")
+# separate dot plots by chain
+mcmc_dots_by_chain(x, regex_pars = "beta")
+
+
+# custom facet labels (will change row labels to e.g. "Chain: 1" instead of just "1")
+chain_labeller <- ggplot2::labeller(.rows = ggplot2::label_both)
+mcmc_dots_by_chain(x, regex_pars = "beta", facet_args = list(labeller = chain_labeller))
+
+# }
 ```

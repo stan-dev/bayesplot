@@ -165,6 +165,30 @@ Plot Descriptions section, below, for details."><meta property="og:image" conten
 <span>  <span class="va">...</span>,</span>
 <span>  facet_args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  probs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.1</span>, <span class="fl">0.5</span>, <span class="fl">0.9</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">mcmc_dots</span><span class="op">(</span></span>
+<span>  <span class="va">x</span>,</span>
+<span>  pars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  regex_pars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  transformations <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  <span class="va">...</span>,</span>
+<span>  facet_args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  binwidth <span class="op">=</span> <span class="cn">NA</span>,</span>
+<span>  alpha <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  quantiles <span class="op">=</span> <span class="fl">100</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">mcmc_dots_by_chain</span><span class="op">(</span></span>
+<span>  <span class="va">x</span>,</span>
+<span>  pars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  regex_pars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  transformations <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  <span class="va">...</span>,</span>
+<span>  facet_args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  binwidth <span class="op">=</span> <span class="cn">NA</span>,</span>
+<span>  alpha <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  quantiles <span class="op">=</span> <span class="fl">100</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -224,7 +248,7 @@ abbreviated for convenience in interactive use (e.g., <code>transform</code>).</
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
-<dd><p>Currently ignored.</p></dd>
+<dd><p>For dot plots, optional additional arguments to pass to <code><a href="https://mjskay.github.io/ggdist/reference/stat_dots.html" class="external-link">ggdist::stat_dots()</a></code>.</p></dd>
 
 
 <dt id="arg-facet-args">facet_args<a class="anchor" aria-label="anchor" href="#arg-facet-args"></a></dt>
@@ -281,6 +305,14 @@ support. <code>n_dens</code> defaults to <code>1024</code>.</p></dd>
 <dd><p>A numeric vector of probabilities controlling where quantile
 lines are drawn. Set to <code>NULL</code> to remove the lines.</p></dd>
 
+
+<dt id="arg-quantiles">quantiles<a class="anchor" aria-label="anchor" href="#arg-quantiles"></a></dt>
+<dd><p>For dot plots, an optional integer passed to
+<code><a href="https://mjskay.github.io/ggdist/reference/stat_dots.html" class="external-link">ggdist::stat_dots()</a></code> specifying the number of quantiles to use for a
+quantile dot plot. If <code>quantiles</code> is <code>NA</code> then all data points are plotted.
+The default is <code>quantiles=100</code> so that each dot represent one percent of
+posterior mass.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
@@ -296,12 +328,18 @@ lines are drawn. Set to <code>NULL</code> to remove the lines.</p></dd>
 <dt><code>mcmc_dens()</code></dt>
 <dd><p>Kernel density plots of posterior draws with all chains merged.</p></dd>
 
+<dt><code>mcmc_dots()</code></dt>
+<dd><p>Dot plots of posterior draws with all chains merged.</p></dd>
+
 <dt><code>mcmc_hist_by_chain()</code></dt>
 <dd><p>Histograms of posterior draws with chains separated via faceting.</p></dd>
 
 <dt><code>mcmc_dens_overlay()</code></dt>
 <dd><p>Kernel density plots of posterior draws with chains separated but
 overlaid on a single plot.</p></dd>
+
+<dt><code>mcmc_dots_by_chain()</code></dt>
+<dd><p>Dot plots of posterior draws with chains separated via faceting.</p></dd>
 
 <dt><code>mcmc_violin()</code></dt>
 <dd><p>The density estimate of each chain is plotted as a violin with
@@ -383,7 +421,7 @@ same panel and can overlap vertically.</p></dd>
 <span class="r-plt img"><img src="MCMC-distributions-5.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># separate histograms by chain</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="bayesplot-colors.html">color_scheme_set</a></span><span class="op">(</span><span class="st">"pink"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="bayesplot-colors.html">color_scheme_set</a></span><span class="op">(</span><span class="st">"orange"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">mcmc_hist_by_chain</span><span class="op">(</span><span class="va">x</span>, regex_pars <span class="op">=</span> <span class="st">"beta"</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> `stat_bin()` using `bins = 30`. Pick better value `binwidth`.</span>
 <span class="r-plt img"><img src="MCMC-distributions-6.png" alt="" width="700" height="433"></span>
@@ -392,7 +430,7 @@ same panel and can overlap vertically.</p></dd>
 <span class="r-in"><span><span class="co">#################</span></span></span>
 <span class="r-in"><span><span class="co">### Densities ###</span></span></span>
 <span class="r-in"><span><span class="co">#################</span></span></span>
-<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="bayesplot-colors.html">color_scheme_set</a></span><span class="op">(</span><span class="st">"purple"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">mcmc_dens</span><span class="op">(</span><span class="va">x</span>, pars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"sigma"</span>, <span class="st">"beta[2]"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>          facet_args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>nrow <span class="op">=</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="MCMC-distributions-7.png" alt="" width="700" height="433"></span>
@@ -409,12 +447,30 @@ same panel and can overlap vertically.</p></dd>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 <span class="r-in"><span><span class="co"># separate chains as violin plots</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="bayesplot-colors.html">color_scheme_set</a></span><span class="op">(</span><span class="st">"green"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">mcmc_violin</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="bayesplot-helpers.html">panel_bg</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"gray20"</span>, size <span class="op">=</span> <span class="fl">2</span>, fill <span class="op">=</span> <span class="st">"gray30"</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>The `size` argument of `element_rect()` is deprecated as of ggplot2 3.4.0.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Please use the `linewidth` argument instead.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> The deprecated feature was likely used in the <span style="color: #0000BB;">bayesplot</span> package.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span>   Please report the issue at <span style="color: #0000BB; font-style: italic;">&lt;https://github.com/stan-dev/bayesplot/issues/&gt;</span>.</span>
+<span class="r-in"><span><span class="fu">mcmc_violin</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="bayesplot-helpers.html">panel_bg</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"gray20"</span>, linewidth <span class="op">=</span> <span class="fl">2</span>, fill <span class="op">=</span> <span class="st">"gray30"</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="MCMC-distributions-10.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">#################</span></span></span>
+<span class="r-in"><span><span class="co">### Dot Plots ###</span></span></span>
+<span class="r-in"><span><span class="co">#################</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># dot plots of some parameters</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="bayesplot-colors.html">color_scheme_set</a></span><span class="op">(</span><span class="st">"pink"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">mcmc_dots</span><span class="op">(</span><span class="va">x</span>, pars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"alpha"</span>, <span class="st">"beta[2]"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="MCMC-distributions-11.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># \donttest{</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="bayesplot-colors.html">color_scheme_set</a></span><span class="op">(</span><span class="st">"teal"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># separate dot plots by chain</span></span></span>
+<span class="r-in"><span><span class="fu">mcmc_dots_by_chain</span><span class="op">(</span><span class="va">x</span>, regex_pars <span class="op">=</span> <span class="st">"beta"</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="MCMC-distributions-12.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># custom facet labels (will change row labels to e.g. "Chain: 1" instead of just "1")</span></span></span>
+<span class="r-in"><span><span class="va">chain_labeller</span> <span class="op">&lt;-</span> <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labeller.html" class="external-link">labeller</a></span><span class="op">(</span>.rows <span class="op">=</span> <span class="fu">ggplot2</span><span class="fu">::</span><span class="va"><a href="https://ggplot2.tidyverse.org/reference/labellers.html" class="external-link">label_both</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">mcmc_dots_by_chain</span><span class="op">(</span><span class="va">x</span>, regex_pars <span class="op">=</span> <span class="st">"beta"</span>, facet_args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>labeller <span class="op">=</span> <span class="va">chain_labeller</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="MCMC-distributions-13.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span><span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

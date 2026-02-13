@@ -54,6 +54,8 @@ available_mcmc()
 #>   mcmc_dens
 #>   mcmc_dens_chains
 #>   mcmc_dens_overlay
+#>   mcmc_dots
+#>   mcmc_dots_by_chain
 #>   mcmc_hex
 #>   mcmc_hist
 #>   mcmc_hist_by_chain

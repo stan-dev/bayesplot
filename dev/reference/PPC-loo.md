@@ -408,8 +408,8 @@ lw <- weights(psis1) # normalized log weights
 color_scheme_set("orange")
 ppc_loo_pit_overlay(y, yrep, lw = lw)
 #> Some PIT values larger than 1! Largest:  1 
-#> Rounding PIT > 1 to 1. Gradient evaluation took 0.000367 seconds
-#> Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 3.67 seconds.
+#> Rounding PIT > 1 to 1. Gradient evaluation took 0.000418 seconds
+#> Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 4.18 seconds.
 #> Chain 2: Adjust your expectations accordingly!
 #> Chain 2: 
 #> Chain 2: 
@@ -444,15 +444,15 @@ ppc_loo_pit_overlay(y, yrep, lw = lw)
 #> Chain 1: Iteration: 90 / 100 [ 90%]  (Sampling)
 #> Chain 2: Iteration: 100 / 100 [100%]  (Sampling)
 #> Chain 2: 
-#> Chain 2:  Elapsed Time: 2.233 seconds (Warm-up)
-#> Chain 2:                2.002 seconds (Sampling)
-#> Chain 2:                4.235 seconds (Total)
+#> Chain 2:  Elapsed Time: 2.751 seconds (Warm-up)
+#> Chain 2:                2.436 seconds (Sampling)
+#> Chain 2:                5.187 seconds (Total)
 #> Chain 2: 
 #> Chain 1: Iteration: 100 / 100 [100%]  (Sampling)
 #> Chain 1: 
-#> Chain 1:  Elapsed Time: 2.447 seconds (Warm-up)
-#> Chain 1:                2.037 seconds (Sampling)
-#> Chain 1:                4.484 seconds (Total)
+#> Chain 1:  Elapsed Time: 2.946 seconds (Warm-up)
+#> Chain 1:                2.443 seconds (Sampling)
+#> Chain 1:                5.389 seconds (Total)
 #> Chain 1: 
 #> Warning: 
 #> NOTE: The kernel density estimate assumes continuous observations and is not optimal for discrete observations.
@@ -463,7 +463,7 @@ ppc_loo_pit_qq(y, yrep, lw = lw)
 
 ppc_loo_pit_qq(y, yrep, lw = lw, compare = "normal")
 #> Warning: 
-#> Warning: Removed 17 rows containing non-finite outside the scale range (`stat_qq()`).
+#> Warning: Removed 18 rows containing non-finite outside the scale range (`stat_qq()`).
 
 
 # predictive calibration check using LOO probability integral transform

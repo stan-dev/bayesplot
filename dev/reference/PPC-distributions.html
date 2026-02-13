@@ -163,7 +163,7 @@ See the <strong>Plot Descriptions</strong> section, below, for details.</p>
 <span></span>
 <span><span class="fu">ppc_boxplot</span><span class="op">(</span><span class="va">y</span>, <span class="va">yrep</span>, <span class="va">...</span>, notch <span class="op">=</span> <span class="cn">TRUE</span>, size <span class="op">=</span> <span class="fl">0.5</span>, alpha <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">ppc_dots</span><span class="op">(</span><span class="va">y</span>, <span class="va">yrep</span>, <span class="va">...</span>, binwidth <span class="op">=</span> <span class="cn">NA</span>, quantiles <span class="op">=</span> <span class="cn">NA</span>, freq <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="fu">ppc_dots</span><span class="op">(</span><span class="va">y</span>, <span class="va">yrep</span>, <span class="va">...</span>, binwidth <span class="op">=</span> <span class="cn">NA</span>, quantiles <span class="op">=</span> <span class="fl">100</span>, freq <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">ppc_violin_grouped</span><span class="op">(</span></span>
 <span>  <span class="va">y</span>,</span>
@@ -291,8 +291,9 @@ function.)</p></dd>
 <dt id="arg-quantiles">quantiles<a class="anchor" aria-label="anchor" href="#arg-quantiles"></a></dt>
 <dd><p>For dot plots, an optional integer passed to
 <code><a href="https://mjskay.github.io/ggdist/reference/stat_dots.html" class="external-link">ggdist::stat_dots()</a></code> specifying the number of quantiles to use for a
-quantile dot plot. If <code>quantiles</code> is <code>NA</code> (the default) then all data
-points are plotted.</p></dd>
+quantile dot plot. If <code>quantiles</code> is <code>NA</code> then all data points are plotted.
+The default is <code>quantiles=100</code> so that each dot represent one percent of
+posterior mass.</p></dd>
 
 
 <dt id="arg-probs">probs<a class="anchor" aria-label="anchor" href="#arg-probs"></a></dt>
