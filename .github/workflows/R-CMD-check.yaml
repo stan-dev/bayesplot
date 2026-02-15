@@ -40,11 +40,17 @@ jobs:
           r-version: ${{ matrix.config.r }}
           http-user-agent: ${{ matrix.config.http-user-agent }}
           use-public-rspm: true
+          extra-repositories: |
+            https://community.r-multiverse.org
+            https://stan-dev.r-universe.dev
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
-          extra-packages: any::rcmdcheck, any::BH, any::RcppEigen, any::vdiffr
+          extra-packages: any::rcmdcheck, any::BH, any::RcppEigen, any::vdiffr, any::cmdstanr
           needs: check
+
+      - name: Install CmdStan
+        run: Rscript -e "cmdstanr::install_cmdstan()"
 
       - uses: r-lib/actions/check-r-package@v2
         with:
