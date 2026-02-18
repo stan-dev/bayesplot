@@ -80,4 +80,11 @@ vdiff_dframe_rank_overlay_bins_test <- posterior::as_draws_df(
   )
 )
 
+vdiff_dframe_rank_split_chain_test <- posterior::as_draws_df(
+  list(
+    list(theta = -2 + 0.003 * 1:1000 + stats::arima.sim(list(ar = 0.7), n = 1000, sd = 0.5)),
+    list(theta = 1 + -0.003 * 1:1000 + stats::arima.sim(list(ar = 0.7), n = 1000, sd = 0.5))
+  )
+)
+
 set.seed(seed = NULL)
