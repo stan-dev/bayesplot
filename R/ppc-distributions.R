@@ -17,8 +17,43 @@
 #'   the predictive distributions.
 #' @param ... For dot plots, optional additional arguments to pass to [ggdist::stat_dots()].
 #'
+#' @param binwidth Numeric scalar; passed to the underlying geom/stat used
+#'   by the plotting function. Behavior by function:
+#'   * `ppc_hist()`: forwarded to `ggplot2::geom_histogram(binwidth = ...)`.
+#'   * `ppc_freqpoly()` / `ppc_freqpoly_grouped()`: forwarded to
+#'     `ggplot2::geom_area(stat = "bin", binwidth = ...)` (i.e. `stat = "bin"`).
+#'   * `ppc_dots()`: forwarded to `ggdist::stat_dots(binwidth = ...)`.
+#'   If `NULL`, the default binning behavior of the respective geom/stat is used.
+#'
+#' @param bins Integer number of bins. Forwarded in the same way as `binwidth`
+#'   (i.e. to `geom_histogram()`, `geom_area(stat = "bin")`, and `ggdist::stat_dots()`).
+#'
+#' @param breaks Numeric vector of break positions. Forwarded in the same way
+#'   as `binwidth`/`bins` (where supported).
+#'
+#' @param freq Logical. Controls whether the vertical scale shows counts
+#'   (`freq = TRUE`) or densities/proportions (`freq = FALSE`). This argument
+#'   is not limited to `ppc_hist()` — it is also used by `ppc_freqpoly()` and
+#'   `ppc_freqpoly_grouped()` because those functions use `stat="bin"`
+#'   (implemented via `geom_area(stat = "bin")`). The `freq` value is passed
+#'   to `set_hist_aes()` and affects the y aesthetic used by `geom_histogram()`
+#'   and `geom_area(stat="bin")`.
+#'
 #' @template details-binomial
 #' @template return-ggplot-or-data
+#'
+#' @section Version & Dependencies:
+#'
+#' - Requires **ggplot2 (>= 3.4.0)** for the use of modern layering and
+#'   consistent handling of bin arguments.
+#'
+#' - Uses **ggdist::stat_dots()** (requires **ggdist >= 3.3.0**).
+#'
+#' - All `ppc_*` functions depend on **bayesplot** core plotting infrastructure
+#'   and `ggplot2` grammar of graphics.
+#'
+#' - Ensure that dependent packages (`ggplot2`, `ggdist`, and `bayesplot`)
+#'   are loaded or properly imported in your package’s `DESCRIPTION` file.
 #'
 #' @section Plot Descriptions:
 #' \describe{
@@ -61,6 +96,57 @@
 #'    as `pit`.
 #'    See Säilynoja et al. (2021) for more details.}
 #' }
+#'
+#' @section When to Use Each Plot:
+#'
+#' These plots offer different perspectives on how simulated (`yrep`) and observed (`y`) data compare.
+#'
+#' \itemize{
+#'   \item **`ppc_hist()`** — Best for visualizing **overall distribution shapes**.  
+#'   Use this when your data are continuous and you want to see how model predictions align
+#'   with observed distributions.
+#'
+#'   \item **`ppc_dots()`** — Ideal for **small or discrete datasets**.  
+#'   Displays each simulated dataset as dots, giving an intuitive visual comparison
+#'   between simulated and observed values.
+#'
+#'   \item **`ppc_freqpoly()`** — Useful for **moderate to large continuous datasets**.  
+#'   Highlights how predicted and observed **frequencies vary** across the range of `y`.
+#'
+#'   \item **`ppc_freqpoly_grouped()`** — When you have a **grouping variable** (e.g., categories),
+#'   use this to compare frequencies across levels of that variable.
+#' }
+#'
+#' @section Usage Note:
+#'
+#' - The `binwidth`, `bins`, and `breaks` arguments are passed to multiple
+#'   underlying `ggplot2` and `ggdist` geoms (`geom_histogram()`, `geom_area()`,
+#'   and `stat_dots()`), which means they affect both histogram and dot plot outputs.
+#'
+#' - The `freq` argument controls whether the y-axis represents **counts**
+#'   (`freq = TRUE`) or **densities** (`freq = FALSE`) for both histograms
+#'   and frequency polygons.
+#'
+#' - These plots assume numeric `y` values. For categorical data,
+#'   consider `ppc_bars()` or similar discrete comparison functions.
+#'
+#' - If a grouping variable is provided, ensure that `y` and `yrep` have
+#'   matching group structures; otherwise, plots may not align correctly.
+#'
+#' - For large replicated datasets (`yrep` with > 50 rows), consider
+#'   summarizing or subsampling to avoid overplotting.
+#'
+#' Note:
+#' The `binwidth`, `bins`, and `breaks` arguments are forwarded not only
+#' to `ggplot2::geom_histogram()` (used by `ppc_hist()`), but also to
+#' `ggdist::stat_dots()` (used by `ppc_dots()`) and to the `stat = "bin"`
+#' layers used by `ppc_freqpoly()` and `ppc_freqpoly_grouped()`
+#' (implemented with `ggplot2::geom_area(stat = "bin", ...)`).
+#'
+#' Similarly, the `freq` argument affects not only histograms but also
+#' frequency polygons created with `ppc_freqpoly()` and
+#' `ppc_freqpoly_grouped()`, where it determines whether the y-axis
+#' represents counts (`freq = TRUE`) or densities (`freq = FALSE`).
 #'
 #' @template reference-vis-paper
 #' @template reference-uniformity-test
