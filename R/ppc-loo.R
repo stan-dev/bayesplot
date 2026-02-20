@@ -400,6 +400,21 @@ ppc_loo_pit_qq <- function(y,
 #'   computationally intensive and the approximation gives a fast method for
 #'   assessing the ECDF trajectory. The default is to use interpolation if `K`
 #'   is greater than 200.
+#' @param method For `ppc_loo_pit_ecdf()`, the method used to calculate the
+#'   uniformity test:
+#'   * `"independent"`: (Current default) Assumes independence (Säilynoja et al., 2022).
+#'   * `"correlated"`: (Recommended) Accounts for correlation (Tesso & Vehtari, 2026).
+#' @param test For `ppc_loo_pit_ecdf()` when `method = "correlated"`, which
+#'   dependence-aware test to use: `"POT-C"`, `"PRIT-C"`, or `"PIET-C"`.
+#'   Defaults to `"POT-C"`.
+#' @param gamma For `ppc_loo_pit_ecdf()` when `method = "correlated"`, tolerance
+#'   threshold controlling how strongly suspicious points are flagged. Larger
+#'   values highlight only the most influential points. If `NULL`, automatically
+#'   determined based on p-value.
+#' @param infl_points_only For `ppc_loo_pit_ecdf()` when `method = "correlated"`,
+#'   logical; if `TRUE` only the most influential points are colored (in case of
+#'   rejection), otherwise all suspicious points (regions) are highlighted
+#'   (recommended).
 ppc_loo_pit_ecdf <- function(y,
                              yrep,
                              lw = NULL,
@@ -409,8 +424,31 @@ ppc_loo_pit_ecdf <- function(y,
                              K = NULL,
                              prob = .99,
                              plot_diff = FALSE,
-                             interpolate_adj = NULL) {
+                             interpolate_adj = NULL,
+                             method = NULL,
+                             test = c("POT", "PRIT", "PIET"),
+                             gamma = NULL,
+                             infl_points_only = FALSE) {
   check_ignored_arguments(..., ok_args = list("moment_match"))
+  if (is.null(method)) {
+    inform(
+      c(
+        "i" = "In the next major release, the default `method` will change to 'correlated'.",
+        "*" = "To silence this message, explicitly set `method = 'independent'` or `method = 'correlated'`."
+      )
+    )
+    method <- "independent"
+  } else {
+    method <- match.arg(method, choices = c("independent", "correlated"))
+    if (method == "independent") {
+      inform(
+        paste(
+          "The 'independent' method is superseded by the 'correlated' method.",
+          "The new 'correlated' approach provides an updated uniformity test and graphical representation."
+        )
+      )
+    }
+  }
 
   if (!is.null(pit)) {
     inform("'pit' specified so ignoring 'y','yrep','lw' if specified.")
@@ -431,33 +469,196 @@ ppc_loo_pit_ecdf <- function(y,
   }
 
   n_obs <- length(pit)
-  gamma <- adjust_gamma(
+  alpha = 1 - prob
+  if (is.null(K)) {
+      K <- length(pit)
+    }
+  x_eval <- seq(0, 1, length.out = K)
+
+  # Correlated method: use dependence-aware tests
+  if (method == "correlated") {
+    test <- match.arg(test)
+    
+    # Compute test p-value and Cauchy-transformed values
+    if (test == "POT") {
+      cauchy_vals <- cauchy_space(.pot(sort(pit)))
+      pval <- cauchy_agg(.pot(pit), truncate = FALSE)
+    } else if (test == "PIET") {
+      cauchy_vals <- cauchy_space(.piet(sort(pit)))
+      pval <- cauchy_agg(.piet(pit), truncate = FALSE)
+    } else {  # PRIT
+      cauchy_vals <- cauchy_space(.prit(sort(pit)))
+      pval <- cauchy_agg(.prit(pit), truncate = TRUE)
+    }
+    sh_val_sorted <- shapley_mean_closedform(cauchy_vals)
+    # Determine color based on p-value
+    highlight_color <- ifelse(pval < alpha, "red", "#F97316")
+    
+    # Combine x_eval and pit values, then sort to ensure step function aligns properly
+    # This ensures the ECDF has jumps at actual data points
+    x_combined <- sort(unique(c(x_eval, pit)))
+    
+    # Create main data frame for plotting
+    df_main <- tibble(
+      x = x_combined,
+      ecdf_pit = ecdf(pit)(x_combined) - (plot_diff == TRUE) * x_combined
+    )
+    
+    # Create data frame with actual pit values for highlighting
+    # Extract the exact y-values from df_main to ensure perfect alignment
+    # This ensures highlights use the exact same values as the main plot at pit positions
+    pit_indices <- match(pit, x_combined)
+    df_pit <- tibble(
+      pit = pit,
+      ecdf_pit = ecdf(pit)(pit) - (plot_diff == TRUE) * pit
+    )
+    df_pit <- df_pit[order(df_pit$pit), ]
+    
+    # Base plot with ECDF using geom_step to match independent method
+    p <- ggplot(df_main, aes(
+        x = x,
+        y = ecdf_pit)) +
+      geom_step(show.legend = FALSE) +
+      labs(
+        y = ifelse(plot_diff, "ECDF difference", "ECDF"),
+        x = "LOO PIT"
+      )
+    
+    # Add reference line (matching independent method style)
+    if (plot_diff) {
+      p <- p + geom_abline(
+        intercept = 0,
+        slope = 0,
+        linetype = 2,
+        color = get_color("m")
+      )
+    } else {
+      p <- p + geom_abline(
+        intercept = 0,
+        slope = 1,
+        linetype = 2,
+        color = get_color("m")
+      )
+    }
+  
+  if (infl_points_only) {
+    if(pval < alpha){
+      pos_idx <- influential_points_idx(
+        x = sh_val_sorted, alpha = alpha
+      )
+      # Use actual PIT values and their ECDF values for highlighting
+      df_points <- df_pit[pos_idx, ]
+
+      p <- p + geom_point(
+        data = df_points,
+        aes(x = pit, y = ecdf_pit),
+        color = highlight_color,
+        size = 2,
+        show.legend = FALSE
+      )
+    }
+    } else {
+      # Auto-determine gamma if not provided
+      if (is.null(gamma) || gamma < 0) {
+        gamma <- ifelse(
+          pval <= 0.5, 0,
+          ifelse(pval <= 0.9, 0.05, 0.2)
+        )
+      }
+      
+      red_idx <- which(sh_val_sorted > gamma)
+      
+      if (length(red_idx) != 0) {
+        df_red <- df_pit[red_idx, ]
+        
+        # Groups of consecutive suspicious points
+        consec_groups <- cumsum(c(1, diff(red_idx) != 1))
+        df_red$segment <- consec_groups
+        
+        # Separate isolated vs grouped points
+        df_isolated <- df_red[
+          stats::ave(df_red$pit, df_red$segment, FUN = length) == 1,
+        ]
+        df_grouped <- df_red[
+          stats::ave(df_red$pit, df_red$segment, FUN = length) > 1,
+        ]
+        
+        # Create segments based on x_combined values for grouped points
+        if (nrow(df_grouped) > 0) {
+          # Create data frame with x_combined values for each group
+          segments_list <- lapply(split(df_grouped, df_grouped$segment), function(group) {
+            # Map pit values to x_combined indices
+            group_indices <- match(group$pit, x_combined)
+            # Find the range in x_combined that covers this group
+            min_idx <- min(group_indices)
+            max_idx <- max(group_indices)
+            
+            # Extract all x_combined values in this range (inclusive)
+            idx_range <- min_idx:max_idx
+            tibble(
+              x = df_main$x[idx_range],
+              ecdf_pit = df_main$ecdf_pit[idx_range],
+              segment = group$segment[1]
+            )
+          })
+          df_segments <- do.call(rbind, segments_list)
+          
+          p <- p + 
+            geom_step( 
+              data = df_segments,
+              aes(x = x, y = ecdf_pit, group = segment), 
+              color = highlight_color,
+              linewidth = 1
+            )
+        }
+        
+        # Add isolated points
+        if (nrow(df_isolated) > 0) {
+          p <- p + geom_point(
+            data = df_isolated,
+            aes(x = pit, y = ecdf_pit),
+            color = highlight_color,
+            size = 1.5
+          )
+        }
+      }
+    }
+    
+    # Apply bayesplot theme and styling
+    p <- p +
+      yaxis_ticks(FALSE) +
+      scale_color_ppc() +
+      bayesplot_theme_get()
+    
+    return(p)
+  }
+  
+  # Independent method: use confidence bands
+  gamma_indep <- adjust_gamma(
     N = n_obs,
     K = K,
     prob = prob,
     interpolate_adj = interpolate_adj
   )
-  lims <- ecdf_intervals(gamma = gamma, N = n_obs, K = K)
-  ggplot() +
+  lims <- ecdf_intervals(gamma = gamma_indep, N = n_obs, K = K)
+  
+  p <- ggplot() +
     aes(
-      x = seq(0, 1, length.out = K),
-      y = ecdf(pit)(seq(0, 1, length.out = K)) -
-        (plot_diff == TRUE) * seq(0, 1, length.out = K),
+      x = x_eval,
+      y = ecdf(pit)(x_eval) - (plot_diff == TRUE) * x_eval,
       color = "y"
     ) +
     geom_step(show.legend = FALSE) +
     geom_step(
       aes(
-        y = lims$upper[-1] / n_obs -
-          (plot_diff == TRUE) * seq(0, 1, length.out = K),
+        y = lims$upper[-1] / n_obs - (plot_diff == TRUE) * x_eval,
         color = "yrep"
       ),
       linetype = 2, show.legend = FALSE
     ) +
     geom_step(
       aes(
-        y = lims$lower[-1] / n_obs -
-          (plot_diff == TRUE) * seq(0, 1, length.out = K),
+        y = lims$lower[-1] / n_obs - (plot_diff == TRUE) * x_eval,
         color = "yrep"
       ),
       linetype = 2, show.legend = FALSE
@@ -466,6 +667,8 @@ ppc_loo_pit_ecdf <- function(y,
     yaxis_ticks(FALSE) +
     scale_color_ppc() +
     bayesplot_theme_get()
+  
+  return(p)
 }
 
 
@@ -836,7 +1039,7 @@ ppc_loo_ribbon <-
   bc_mat <- matrix(0, nrow(unifs), ncol(unifs))
 
   # Generate boundary corrected reference values
-  for (i in 1:nrow(unifs)) {
+  for (i in seq_len(nrow(unifs))) {
     bc_list <- .kde_correction(unifs[i, ],
       bw = bw,
       grid_len = grid_len
