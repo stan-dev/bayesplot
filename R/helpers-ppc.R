@@ -595,3 +595,109 @@ create_rep_ids <- function(ids) paste('italic(y)[rep] (', ids, ")")
 y_label <- function() expression(italic(y))
 yrep_label <- function() expression(italic(y)[rep])
 ypred_label <- function() expression(italic(y)[pred])
+
+# Dependence-aware uniformity tests -------------------------------------
+
+#' Compute Shapley values for mean value function (closed form)
+#'
+#' Computes Shapley values for the mean value function using a closed-form
+#' formula. This is used to assess the marginal contribution of each ordered
+#' PIT value to the overall uniformity test statistic.
+#'
+#' @param x Numeric vector of values (typically Cauchy-transformed PIT values).
+#' @return Numeric vector of Shapley values with the same length as `x`.
+#' @noRd
+shapley_mean_closedform <- function(x) {
+  n <- length(x)
+  if (n == 0) {
+    return(numeric(0))
+  }
+  if (n == 1) {
+    return(0)
+  }
+  
+  # Harmonic number H_n = sum(1/i) for i = 1 to n
+  Hn <- sum(1 / seq_len(n))
+  
+  Sh <- numeric(n)
+  for (i in seq_len(n)) {
+    mean_others <- sum(x[-i]) / (n - 1)
+    Sh[i] <- (1 / n) * x[i] + ((Hn - 1) / n) * (x[i] - mean_others)
+  }
+  return(Sh)
+}
+
+.piet <- function(x) {
+  pe <- pexp(-log(x), rate = 1)
+  2 * pmin(pe, 1 - pe)
+}
+
+.pot <- function(x) {
+  n <- length(x)
+  pb <- pbeta(sort(x), 1:n, seq(n, 1, by = -1))
+  2 * pmin(pb, 1 - pb)
+}
+
+.prit <- function(x) {
+  n <- length(x)
+  # Ranks: R = N * F(x) - evaluate and scale ECDF at each point x_i
+  ranks <- colSums(outer(x, x, "<="))
+  # P(R <= r_i) where R follows Binom(N, x_i)
+  probs1 <- pbinom(ranks, n, x)
+  # P(R > r_i - 1) = 1 - P(R <= r_i - 1)
+  probs2 <- pbinom(ranks - 1, n, x)
+  # Individual test p-values
+  2 * pmin(probs1, 1 - probs2)
+}
+
+#' Transform Test values to Cauchy space
+#'
+#' @param x Numeric vector of PIT values in [0, 1].
+#' @return Numeric vector of Cauchy-transformed values.
+#' @noRd
+cauchy_space <- function(x_test) {
+  tan((0.5 - x_test) * pi)
+}
+
+#' Truncated Cauchy combination test
+#'
+#' Combines dependent p-values using the Cauchy combination method.
+#' If truncate, only p-values less than 0.5 are included.
+#'
+#' @param x Numeric vector of p-values (dependent PITs).
+#' @param truncate Boolean; If TRUE only p-values less than 0.5 are
+#' included.
+#' @return Combined p-value.
+#' @noRd
+cauchy_agg <- function(x, truncate = NULL) {
+  if (truncate) {
+    mask <- as.numeric(x < 0.5)
+    1 - pcauchy(mean(tan((0.5 - x) * pi) * mask))
+  } else {
+    1 - pcauchy(mean(tan((0.5 - x) * pi)))
+  }
+}
+
+#' Identify influential points for uniformity test
+#'
+#' Identifies the minimal set of points that need to be removed to bring
+#' the test statistic below the critical threshold.
+#'
+#' @param x Numeric vector of Shapley values (typically from Cauchy space).
+#' @param alpha Significance level (default 0.05).
+#' @return Integer vector of indices of influential points to remove.
+#' @noRd
+influential_points_idx <- function(x, alpha = 0.05) {
+  stopifnot(is.numeric(x), is.numeric(alpha), length(alpha) == 1,
+            alpha > 0 && alpha < 1)
+  
+  target <- qcauchy(1 - alpha)
+  pos_idx <- order(x, decreasing = TRUE)
+  pos_idx <- pos_idx[x[pos_idx] > 0]
+  pos_vals <- x[pos_idx]
+  
+  cumsum_remove <- cumsum(pos_vals)
+  needed <- which(sum(x) - cumsum_remove <= target)[1]
+  removed_idx <- pos_idx[seq_len(needed)]
+  return(removed_idx)
+}
