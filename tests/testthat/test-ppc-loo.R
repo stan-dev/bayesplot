@@ -103,6 +103,111 @@ test_that("ppc_loo_pit_ecdf returns a ggplot object", {
   expect_equal(ll3$y, "ECDF difference")
 })
 
+test_that("ppc_loo_pit_ecdf with method='correlated' returns ggplot object", {
+  skip_if_not_installed("rstanarm")
+  skip_if_not_installed("loo")
+  
+  # Test with POT-C (default)
+  expect_gg(p1 <- ppc_loo_pit_ecdf(y, yrep, lw, method = "correlated"))
+  expect_gg(p2 <- ppc_loo_pit_ecdf(y, yrep, lw, method = "correlated", test = "POT"))
+  
+  # Test with PRIT-C
+  expect_gg(p3 <- ppc_loo_pit_ecdf(y, yrep, lw, method = "correlated", test = "PRIT"))
+  
+  # Test with PIET-C
+  expect_gg(p4 <- ppc_loo_pit_ecdf(y, yrep, lw, method = "correlated", test = "PIET"))
+  
+  # Test with plot_diff = TRUE
+  expect_gg(p5 <- ppc_loo_pit_ecdf(y, yrep, lw, method = "correlated", plot_diff = TRUE))
+  
+  # Test with infl_points_only = TRUE
+  expect_gg(p6 <- ppc_loo_pit_ecdf(y, yrep, lw, method = "correlated", infl_points_only = TRUE))
+  
+  # Test with gamma specified
+  expect_gg(p7 <- ppc_loo_pit_ecdf(y, yrep, lw, method = "correlated", gamma = 0.1))
+})
+
+test_that("ppc_loo_pit_ecdf method argument works correctly", {
+  skip_if_not_installed("rstanarm")
+  skip_if_not_installed("loo")
+  
+  # Test default (should inform about upcoming change)
+  expect_message(
+    p1 <- ppc_loo_pit_ecdf(y, yrep, lw),
+    "In the next major release"
+  )
+  expect_gg(p1)
+  
+  # Test explicit independent method (should inform about supersession)
+  expect_message(
+    p2 <- ppc_loo_pit_ecdf(y, yrep, lw, method = "independent"),
+    "superseded by the 'correlated' method"
+  )
+  expect_gg(p2)
+  
+  # Test correlated method (no message expected)
+  expect_gg(p3 <- ppc_loo_pit_ecdf(y, yrep, lw, method = "correlated"))
+  
+  # Test that independent and correlated produce different plots
+  expect_true(!identical(p2$data, p3$data) || !identical(p2$layers, p3$layers))
+})
+
+test_that("dependence-aware uniformity tests work with example data", {
+  # TODO
+})
+
+test_that("helper functions for dependence-aware tests work correctly", {
+  # Test Cauchy space transformation
+  x <- runif(100)
+  
+  cauchy_piet <- bayesplot:::cauchy_space(x)
+  expect_true(is.numeric(cauchy_piet))
+  expect_true(length(cauchy_piet) == length(x))
+  expect_true(all(is.finite(cauchy_piet)))
+  
+  # Test Shapley values
+  sh_val <- bayesplot:::shapley_mean_closedform(cauchy_pot)
+  expect_true(is.numeric(sh_val))
+  expect_true(length(sh_val) == length(cauchy_pot))
+  
+  # Test influential points
+  infl_idx <- bayesplot:::influential_points_idx(sh_val, alpha = 0.05)
+  expect_true(is.integer(infl_idx) || is.numeric(infl_idx))
+  expect_true(all(infl_idx >= 1 & infl_idx <= length(sh_val)))
+  
+  # Test Cauchy aggregation
+  pvals <- runif(50, 0, 0.5)
+  agg_pval <- bayesplot:::cauchy_agg(pvals, truncate = FALSE)
+  expect_true(is.numeric(agg_pval))
+  expect_true(agg_pval >= 0 && agg_pval <= 1)
+  
+  # Test truncated Cauchy aggregation
+  t_agg_pval <- bayesplot:::cauchy_agg(pvals, truncate = TRUE)
+  expect_true(is.numeric(t_agg_pval))
+  expect_true(t_agg_pval >= 0 && t_agg_pval <= 1)
+})
+
+test_that("ppc_loo_pit_ecdf correlated method handles edge cases", {
+  skip_if_not_installed("rstanarm")
+  skip_if_not_installed("loo")
+  
+  # Test with small sample
+  small_pit <- runif(10)
+  expect_gg(p1 <- ppc_loo_pit_ecdf(pit = small_pit, method = "correlated"))
+  
+  # Test with perfect uniform
+  uniform_pit <- seq(0, 1, length.out = 100)
+  expect_gg(p2 <- ppc_loo_pit_ecdf(pit = uniform_pit, method = "correlated"))
+  
+  # Test with extreme values
+  extreme_pit <- c(rep(0, 10), rep(1, 10), runif(80))
+  expect_gg(p3 <- ppc_loo_pit_ecdf(pit = extreme_pit, method = "correlated"))
+  
+  # Test with single value (edge case)
+  single_pit <- 0.5
+  expect_gg(p4 <- ppc_loo_pit_ecdf(pit = single_pit, method = "correlated"))
+})
+
 test_that("ppc_loo_pit functions work when pit specified instead of y, yrep, and lw", {
   skip_if_not_installed("rstanarm")
   skip_if_not_installed("loo")
