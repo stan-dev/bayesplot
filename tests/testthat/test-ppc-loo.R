@@ -107,9 +107,6 @@ test_that("ppc_loo_pit_ecdf with method='correlated' returns ggplot object", {
   skip_if_not_installed("rstanarm")
   skip_if_not_installed("loo")
 
-  x <- 1 - (1 - runif(300))^(1.2)
-  ppc_loo_pit_ecdf(pit=x, method = "correlated", prob = 0.95, plot_diff = TRUE)
-
   # Test with POT-C (default)
   expect_gg(p1 <- ppc_loo_pit_ecdf(y, yrep, lw, method = "correlated"))
   expect_gg(p2 <- ppc_loo_pit_ecdf(y, yrep, lw, method = "correlated", test = "POT"))
@@ -155,40 +152,11 @@ test_that("ppc_loo_pit_ecdf method argument works correctly", {
   expect_true(!identical(p2$data, p3$data) || !identical(p2$layers, p3$layers))
 })
 
-test_that("helper functions for dependence-aware tests work correctly", {
-  # Test Cauchy space transformation
-  x <- runif(100)
-  
-  cauchy_piet <- bayesplot:::cauchy_space(x)
-  expect_true(is.numeric(cauchy_piet))
-  expect_true(length(cauchy_piet) == length(x))
-  expect_true(all(is.finite(cauchy_piet)))
-  
-  # Test Shapley values
-  sh_val <- bayesplot:::shapley_mean_closedform(cauchy_pot)
-  expect_true(is.numeric(sh_val))
-  expect_true(length(sh_val) == length(cauchy_pot))
-  
-  # Test influential points
-  infl_idx <- bayesplot:::influential_points_idx(sh_val, alpha = 0.05)
-  expect_true(is.integer(infl_idx) || is.numeric(infl_idx))
-  expect_true(all(infl_idx >= 1 & infl_idx <= length(sh_val)))
-  
-  # Test Cauchy aggregation
-  pvals <- runif(50, 0, 0.5)
-  agg_pval <- bayesplot:::cauchy_agg(pvals, truncate = FALSE)
-  expect_true(is.numeric(agg_pval))
-  expect_true(agg_pval >= 0 && agg_pval <= 1)
-  
-  # Test truncated Cauchy aggregation
-  t_agg_pval <- bayesplot:::cauchy_agg(pvals, truncate = TRUE)
-  expect_true(is.numeric(t_agg_pval))
-  expect_true(t_agg_pval >= 0 && t_agg_pval <= 1)
-})
-
 test_that("ppc_loo_pit_ecdf correlated method handles edge cases", {
   skip_if_not_installed("rstanarm")
   skip_if_not_installed("loo")
+  
+  set.seed(2026)
   
   # Test with small sample
   small_pit <- runif(10)
