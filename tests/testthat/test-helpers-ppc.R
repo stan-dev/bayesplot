@@ -207,3 +207,37 @@ test_that("prit_test computes correct p-values", {
   expect_equal(prit_test(x), c(0.5, 0.5))
 })
 
+# Test for computation of Shapley values -------------------------------------
+
+test_that("compute_shapley_values handles empty vector and single element", {
+  result_empty <- compute_shapley_values(numeric(0))
+  result_single <- compute_shapley_values(5)
+
+  expect_equal(result_empty, numeric(0))
+  expect_equal(length(result_empty), 0)
+  expect_equal(result_single, 0)
+  expect_equal(length(result_single), 1)
+})
+
+test_that("compute_shapley_values for simple case", {
+  x <- c(1, 2)
+  result <- compute_shapley_values(x)
+  
+  # Manual calculation for n=2:
+  # harmonic_number = 1 + 1/2 = 1.5
+  # For i=1: mean_others = 2/1 = 2
+  # shapley[1] = (1/2)*1 + ((1.5-1)/2)*(1-2) = 0.5 - 0.25 = 0.25
+  # For i=2: mean_others = 1/1 = 1
+  # shapley[2] = (1/2)*2 + ((1.5-1)/2)*(2-1) = 1 + 0.25 = 1.25
+  
+  expected <- c(0.25, 1.25)
+  expect_equal(result, expected, tolerance = 1e-10)
+  expect_equal(length(result), 2)
+})
+
+test_that("compute_shapley_values handles mixed input values", {
+  x <- c(-0.2, 0, 2, 3.1, 4.2)
+  result <- compute_shapley_values(x)
+  expect_equal(length(result), 5)
+  expect_true(all(is.finite(result)))
+})
