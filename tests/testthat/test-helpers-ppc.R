@@ -241,3 +241,42 @@ test_that("compute_shapley_values handles mixed input values", {
   expect_equal(length(result), 5)
   expect_true(all(is.finite(result)))
 })
+
+# Test for (truncated) Cauchy combination test ----------------------------------
+test_that("cauchy_combination_test handles truncate = FALSE", {
+  # avg = mean(-qcauchy(x))
+  # result = 1 - pcauchy(avg)
+  
+  x <- c(0.1, 0.2, 0.3)
+  result <- cauchy_combination_test(x, truncate = FALSE)
+  expected <- 1 - pcauchy(mean(-qcauchy(x)))
+  
+  expect_equal(result, expected, tolerance = 1e-10)
+  expect_true(is.finite(result))
+  expect_true(result >= 0 && result <= 1)
+})
+
+test_that("cauchy_combination_test handles truncate = TRUE", {
+  # avg = mean(-qcauchy(x))
+  # result = 1 - pcauchy(avg)
+  
+  x <- c(0.1, 0.2, 0.3, 0.4, 0.7, 0.8)
+  result <- cauchy_combination_test(x, truncate = TRUE)
+  expected <- 1 - pcauchy(mean(-qcauchy(c(0.1, 0.2, 0.3, 0.4))))
+  
+  expect_equal(result, expected, tolerance = 1e-10)
+  expect_true(is.finite(result))
+  expect_true(result >= 0 && result <= 1)
+})
+
+test_that("cauchy_combination_test handles boundary values", {
+  # x = 0: -qdf(0) = Inf and cdf(Inf) = 1 -> 1 - 1 = 0
+  # x = 1: -qdf(1) = -Inf and cdf(-Inf) = 0 -> 1 - 0 = 1 
+  
+  expect_equal(cauchy_combination_test(0, truncate = FALSE), 0)
+  expect_equal(cauchy_combination_test(1, truncate = FALSE), 1)
+  expect_true(is.nan(cauchy_combination_test(c(0, 1), truncate = FALSE)))
+  # TODO: if 1 included in vector, CCT will always evaluate to 0 
+  # as the mean evaluates to Inf and 1 - cdf(Inf) = 1 - 1 = 0
+  expect_equal(cauchy_combination_test(c(0, 0.3, 0.4, 1), truncate = TRUE), 0)
+})
