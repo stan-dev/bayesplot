@@ -616,38 +616,73 @@ shapley_mean_closedform <- function(x) {
     return(0)
   }
   
-  # Harmonic number H_n = sum(1/i) for i = 1 to n
-  Hn <- sum(1 / seq_len(n))
+  # Harmonic number
+  # H_n = sum(1/i) for i = 1 to n
+  harmonic_number <- sum(1 / seq_len(n))
   
-  Sh <- numeric(n)
+  shapley_values <- numeric(n)
   for (i in seq_len(n)) {
     mean_others <- sum(x[-i]) / (n - 1)
-    Sh[i] <- (1 / n) * x[i] + ((Hn - 1) / n) * (x[i] - mean_others)
+    shapley_values[i] <- (1 / n) * x[i] + ((harmonic_number - 1) / n) * (x[i] - mean_others)
   }
-  return(Sh)
+
+  return(shapley_values)
 }
 
-.piet <- function(x) {
-  pe <- pexp(-log(x), rate = 1)
-  2 * pmin(pe, 1 - pe)
+#' Pointwise Inverse-CDF Evaluation Tests Combination (PIET)
+#'
+#' Uniformity test with respect to any continuous distribution.
+#' H0: The value obtained via the inverse CDF transformation F^(-1)(x_i)
+#' follows the distribution of X under uniformity.
+#' HA: The p-value p_(i) provides evidence against uniformity.
+#' 
+#' @param x Numeric vector of PIT values in [0, 1].
+#' @return Numeric vector of p-values.
+#' @noRd
+piet_test <- function(x) {
+  cdf_exp <- pexp(-log(x), rate = 1) # same as 1-x but numerically more stable
+  p_values <- 2 * pmin(cdf_exp, 1 - cdf_exp)
+
+  return(p_values)
 }
 
-.pot <- function(x) {
+#' Pointwise Order Tests Combination (POT)
+#'
+#' Uniformity test based on a beta distribution.
+#' H0: The i-th order statistic u_(i) follows a beta distribution
+#' under uniformity.
+#' HA: The p-value p_(i) provides evidence against uniformity
+#' at the i-th order statistic u_(i).
+#' 
+#' @param x Numeric vector of PIT values in [0, 1].
+#' @return Numeric vector of p-values.
+#' @noRd
+pot_test <- function(x) {
   n <- length(x)
-  pb <- pbeta(sort(x), 1:n, seq(n, 1, by = -1))
-  2 * pmin(pb, 1 - pb)
+  cdf_beta <- pbeta(sort(x), 1:n, seq(n, 1, by = -1))
+  p_value <- 2 * pmin(cdf_beta, 1 - cdf_beta)
+
+  return(p_value)
 }
 
-.prit <- function(x) {
+#' Pointwise Rank-based Individual Tests Combination (PRIT)
+#' 
+#' Uniformity test based on a binomial distribution.
+#' H0: The number of observations falling at or below x_i
+#' follows a binomial distribution under uniformity.
+#' HA: The p-value p_i provides evidence against uniformity.
+#' 
+#' @param x Numeric vector of PIT values in [0, 1].
+#' @return Numeric vector of p-values.
+#' @noRd
+prit_test <- function(x) {
   n <- length(x)
-  # Ranks: R = N * F(x) - evaluate and scale ECDF at each point x_i
-  ranks <- colSums(outer(x, x, "<="))
-  # P(R <= r_i) where R follows Binom(N, x_i)
-  probs1 <- pbinom(ranks, n, x)
-  # P(R > r_i - 1) = 1 - P(R <= r_i - 1)
-  probs2 <- pbinom(ranks - 1, n, x)
-  # Individual test p-values
-  2 * pmin(probs1, 1 - probs2)
+  scaled_ecdf <- n * ecdf(x)(x)
+  probs1 <- pbinom(scaled_ecdf - 1, n, x)
+  probs2 <- pbinom(scaled_ecdf, n, x)
+  p_values <- 2 * pmin(1 - probs1, probs2)
+  
+  return(p_values)
 }
 
 #' Transform Test values to Cauchy space

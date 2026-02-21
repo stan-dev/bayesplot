@@ -432,7 +432,7 @@ ppc_loo_pit_ecdf <- function(y,
   
   check_ignored_arguments(..., ok_args = list("moment_match"))
   
-  # input validation
+  # Input validation
   if (is.null(method)) {
     inform(
       c(
@@ -491,14 +491,14 @@ ppc_loo_pit_ecdf <- function(y,
     
     # Compute test p-value and Cauchy-transformed values
     if (test == "POT") {
-      cauchy_vals <- cauchy_space(.pot(sort(pit)))
-      pval <- cauchy_agg(.pot(pit), truncate = FALSE)
+      cauchy_vals <- cauchy_space(pot_test(sort(pit)))
+      pval <- cauchy_agg(pot_test(pit), truncate = FALSE)
     } else if (test == "PIET") {
-      cauchy_vals <- cauchy_space(.piet(sort(pit)))
-      pval <- cauchy_agg(.piet(pit), truncate = FALSE)
+      cauchy_vals <- cauchy_space(piet_test(sort(pit)))
+      pval <- cauchy_agg(piet_test(pit), truncate = FALSE)
     } else {  # PRIT
-      cauchy_vals <- cauchy_space(.prit(sort(pit)))
-      pval <- cauchy_agg(.prit(pit), truncate = TRUE)
+      cauchy_vals <- cauchy_space(prit_test(sort(pit)))
+      pval <- cauchy_agg(prit_test(pit), truncate = TRUE)
     }
 
     sh_val_sorted <- shapley_mean_closedform(cauchy_vals)
@@ -540,7 +540,7 @@ ppc_loo_pit_ecdf <- function(y,
         df_points <- df_pit[pos_idx, ]
 
         p <- p + geom_point(
-          data = df_points, 
+          data = df_points,
           aes(x = pit, y = ecdf_pit),
           color = highlight_color,
           size = 2,
@@ -588,7 +588,7 @@ ppc_loo_pit_ecdf <- function(y,
           df_segments <- do.call(rbind, segments_list)
           
           p <- p + geom_step(
-            data = df_segments, 
+            data = df_segments,
             aes(x = x, y = ecdf_pit, group = segment),
             color = highlight_color,
             linewidth = 1
@@ -597,7 +597,7 @@ ppc_loo_pit_ecdf <- function(y,
         
         if (nrow(df_isolated) > 0) {
           p <- p + geom_point(
-            data = df_isolated, 
+            data = df_isolated,
             aes(x = pit, y = ecdf_pit),
             color = highlight_color,
             size = 1.5
@@ -633,17 +633,17 @@ ppc_loo_pit_ecdf <- function(y,
   
   p <- ggplot() +
     geom_step(
-      aes(x = x_eval, y = ecdf_eval, color = "y"), 
+      aes(x = x_eval, y = ecdf_eval, color = "y"),
       show.legend = FALSE
     ) +
     geom_step(
       aes(x = x_eval, y = lims_upper_scaled, color = "yrep"),
-      linetype = 2, 
+      linetype = 2,
       show.legend = FALSE
     ) +
     geom_step(
       aes(x = x_eval, y = lims_lower_scaled, color = "yrep"),
-      linetype = 2, 
+      linetype = 2,
       show.legend = FALSE
     ) +
     labs(
