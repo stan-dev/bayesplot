@@ -501,7 +501,7 @@ ppc_loo_pit_ecdf <- function(y,
       pval <- cauchy_agg(prit_test(pit), truncate = TRUE)
     }
 
-    sh_val_sorted <- shapley_mean_closedform(cauchy_vals)
+    pointwise_contribution <- compute_shapley_values(cauchy_vals)
     highlight_color <- dplyr::if_else(pval < alpha, "red", "#F97316")
     x_combined <- sort(unique(c(x_eval, pit)))
     
@@ -536,7 +536,7 @@ ppc_loo_pit_ecdf <- function(y,
   
     if (infl_points_only) {
       if (pval < alpha) {
-        pos_idx <- influential_points_idx(x = sh_val_sorted, alpha = alpha)
+        pos_idx <- influential_points_idx(x = pointwise_contribution, alpha = alpha)
         df_points <- df_pit[pos_idx, ]
 
         p <- p + geom_point(
