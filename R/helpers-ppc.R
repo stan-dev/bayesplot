@@ -714,21 +714,28 @@ cauchy_combination_test <- function(x, truncate = NULL) {
 #' Identifies the minimal set of points that need to be removed to bring
 #' the test statistic below the critical threshold.
 #'
-#' @param x Numeric vector of Shapley values (typically from Cauchy space).
-#' @param alpha Significance level (default 0.05).
+#' @param x Numeric vector of Shapley values.
+#' @param alpha Significance level.
 #' @return Integer vector of indices of influential points to remove.
 #' @noRd
-influential_points_idx <- function(x, alpha = 0.05) {
+influential_points_idx <- function(x, alpha) {
   stopifnot(is.numeric(x), is.numeric(alpha), length(alpha) == 1,
             alpha > 0 && alpha < 1)
   
   target <- qcauchy(1 - alpha)
-  pos_idx <- order(x, decreasing = TRUE)
-  pos_idx <- pos_idx[x[pos_idx] > 0]
+  pos_idx <- which(x > 0)
   pos_vals <- x[pos_idx]
-  
-  cumsum_remove <- cumsum(pos_vals)
-  needed <- which(sum(x) - cumsum_remove <= target)[1]
-  removed_idx <- pos_idx[seq_len(needed)]
-  return(removed_idx)
+
+  ord <- order(pos_vals, decreasing = TRUE)
+  sorted_idx <- pos_idx[ord]
+  sorted_vals <- pos_vals[ord]
+
+  cumsum_remove <- cumsum(sorted_vals)
+  needed <- which(cumsum_remove >= sum(x) - target)[1L]
+
+  if (is.na(needed)) {
+    return(integer(0))
+  }
+
+  return(sorted_idx[seq_len(needed)])
 }
