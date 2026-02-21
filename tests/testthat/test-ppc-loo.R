@@ -106,7 +106,10 @@ test_that("ppc_loo_pit_ecdf returns a ggplot object", {
 test_that("ppc_loo_pit_ecdf with method='correlated' returns ggplot object", {
   skip_if_not_installed("rstanarm")
   skip_if_not_installed("loo")
-  
+
+  x <- 1 - (1 - runif(300))^(1.2)
+  ppc_loo_pit_ecdf(pit=x, method = "correlated", prob = 0.95, plot_diff = TRUE)
+
   # Test with POT-C (default)
   expect_gg(p1 <- ppc_loo_pit_ecdf(y, yrep, lw, method = "correlated"))
   expect_gg(p2 <- ppc_loo_pit_ecdf(y, yrep, lw, method = "correlated", test = "POT"))
@@ -152,8 +155,86 @@ test_that("ppc_loo_pit_ecdf method argument works correctly", {
   expect_true(!identical(p2$data, p3$data) || !identical(p2$layers, p3$layers))
 })
 
-test_that("dependence-aware uniformity tests work with example data", {
-  # TODO
+# Tests for the dependence-aware uniformity tests ------------------------------
+test_that("piet_test computes correct p-values", {
+  x <- c(0.1, 0.25, 0.5, 0.75, 0.9)
+  # Equivalent to 2 * min(1-x, x)
+  expected <- c(0.2, 0.5, 1.0, 0.5, 0.2)
+  
+  expect_equal(piet_test(x), expected, tolerance = 1e-7)
+})
+
+test_that("piet_test handles boundary values of 0 and 1", {
+  x <- c(0, 1)
+  expected <- c(0, 0)
+  
+  expect_equal(piet_test(x), expected)
+})
+
+test_that("piet_test handles extreme values stably", {
+  # Testing values very close to 0 and 1
+  x <- c(1e-17, 1 - 1e-17)
+  expected <- c(2e-17, 2e-17)
+  
+  # Tolerance needs to be adjusted for very small numbers
+  expect_equal(piet_test(x), expected, tolerance = 1e-16)
+})
+
+test_that("piet_test handles NA, NaN, and empty inputs correctly", {
+  # NA and NaN propagation
+  x_na <- c(0.5, NA, NaN)
+  res_na <- piet_test(x_na)
+  
+  expect_equal(res_na[1], 1.0)
+  expect_true(is.na(res_na[2]))
+  expect_true(is.nan(res_na[3]))
+})
+
+test_that("pot_test calculates correct p-values", {
+  # Manually calculating expected values for x = c(0.2, 0.8), n = 2. 
+  # Note: If X ~ Beta(1, b) then X ~ Kumaraswamy(1, b) with CDF 1 - (1 - x)^b 
+  # and if X ~ Beta(a, 1) then X ~ Kumaraswamy(a, 1) with CDF to x^a
+  # Beta(1, 2) CDF at 0.2 is 1 - (1 - 0.2)^2 = 0.36
+  # Beta(2, 1) CDF at 0.8 is 0.8^2 = 0.64
+  # p-values: 2 * min(0.36, 1-0.36) = 0.72; 2 * min(0.64, 1-0.64) = 0.72
+  x <- c(0.8, 0.2)
+  expected <- c(0.72, 0.72)
+  
+  expect_equal(pot_test(x), expected)
+})
+
+test_that("pot_test handles boundary values correctly", {
+  x <- c(0, 1)
+  expected <- c(0, 0)
+  
+  expect_equal(pot_test(x), expected)
+})
+
+test_that("pot_test bounds p-values between 0 and 1 for extreme out-of-bounds inputs", {
+  # pbeta handles values outside [0, 1] by returning 0
+  x <- c(-0.5, 1.5)
+  expected <- c(0, 0)
+  
+  expect_equal(pot_test(x), expected)
+})
+
+test_that("pot_test handles NAs", {
+  x_na <- c(0.5, NA) # resulting in a = 2, b = 1
+  # Beta(2, 1) at 0.5 = 0.25 -> 2 * min(0.25, 0.75) = 0.5
+  expected <- c(0.5, NA)
+
+  expect_equal(pot_test(x_na), expected)
+})
+
+test_that("prit_test computes correct p-values", {
+  # Let n = 2, x = c(0.5, 0.5) 
+  # scaled_ecdf = 2 * c(1, 1) = c(2, 2)
+  # probs1 = pbinom(1, 2, 0.5) = 0.75
+  # probs2 = pbinom(2, 2, 0.5) = 1.00
+  # p_val = 2 * min(1 - 0.75, 1.00) = 2 * 0.25 = 0.5
+  
+  x <- c(0.5, 0.5)
+  expect_equal(prit_test(x), c(0.5, 0.5))
 })
 
 test_that("helper functions for dependence-aware tests work correctly", {
