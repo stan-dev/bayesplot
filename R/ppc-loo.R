@@ -481,7 +481,7 @@ ppc_loo_pit_ecdf <- function(y,
   }
 
   n_obs <- length(pit)
-  x_eval <- seq(0, 1, length.out = K)
+  unit_interval <- seq(0, 1, length.out = K)
   ecdf_pit_fn <- ecdf(pit)
 
   # Correlated method --------------------------------------------------
@@ -491,24 +491,24 @@ ppc_loo_pit_ecdf <- function(y,
     
     # Compute test p-value and Cauchy-transformed values
     if (test == "POT") {
-      cauchy_vals <- cauchy_space(pot_test(sort(pit)))
-      pval <- cauchy_agg(pot_test(pit), truncate = FALSE)
+      std_cauchy_values <- -qcauchy(pot_test(sort(pit)))
+      p_value_CCT <- cauchy_combination_test(pot_test(pit), truncate = FALSE)
     } else if (test == "PIET") {
-      cauchy_vals <- cauchy_space(piet_test(sort(pit)))
-      pval <- cauchy_agg(piet_test(pit), truncate = FALSE)
+      std_cauchy_values <- -qcauchy(piet_test(sort(pit)))
+      p_value_CCT <- cauchy_combination_test(piet_test(pit), truncate = FALSE)
     } else {  # PRIT
-      cauchy_vals <- cauchy_space(prit_test(sort(pit)))
-      pval <- cauchy_agg(prit_test(pit), truncate = TRUE)
+      std_cauchy_values <- -qcauchy(prit_test(sort(pit)))
+      p_value_CCT <- cauchy_combination_test(prit_test(pit), truncate = TRUE)
     }
 
-    pointwise_contribution <- compute_shapley_values(cauchy_vals)
-    highlight_color <- dplyr::if_else(pval < alpha, "red", "#F97316")
-    x_combined <- sort(unique(c(x_eval, pit)))
+    pointwise_contribution <- compute_shapley_values(std_cauchy_values)
+    highlight_color <- dplyr::if_else(p_value_CCT < alpha, "red", "#F97316")
+    x_axis_combined <- sort(unique(c(unit_interval, pit)))
     
     # Evaluate at 0-1 interval b´values
     df_main <- tibble::tibble(
-      x = x_combined,
-      ecdf_pit = ecdf_pit_fn(x_combined) - plot_diff * x_combined
+      x = x_axis_combined,
+      ecdf_pit = ecdf_pit_fn(x_axis_combined) - plot_diff * x_axis_combined
     )
     
     # Evaluate at pit values (used for highlighing)
@@ -535,7 +535,7 @@ ppc_loo_pit_ecdf <- function(y,
     )
   
     if (infl_points_only) {
-      if (pval < alpha) {
+      if (p_value_CCT < alpha) {
         pos_idx <- influential_points_idx(x = pointwise_contribution, alpha = alpha)
         df_points <- df_pit[pos_idx, ]
 
@@ -549,16 +549,16 @@ ppc_loo_pit_ecdf <- function(y,
       }
     } else {
       if (is.null(gamma) || gamma < 0) {
-        if (pval <= 0.5) {
+        if (p_value_CCT <= 0.5) {
           gamma <- 0
-        } else if (pval <= 0.9) {
+        } else if (p_value_CCT <= 0.9) {
           gamma <- 0.05
         } else {
           gamma <- 0.2
         }
       }
         
-      red_idx <- which(sh_val_sorted > gamma)
+      red_idx <- which(pointwise_contribution > gamma)
       
       if (length(red_idx) > 0) {
         df_red <- df_pit[red_idx, ]
@@ -575,7 +575,7 @@ ppc_loo_pit_ecdf <- function(y,
         if (nrow(df_grouped) > 0) {
           segments_list <- lapply(
             split(df_grouped, df_grouped$segment), function(group) {
-              group_indices <- match(group$pit, x_combined)
+              group_indices <- match(group$pit, x_axis_combined)
               idx_range <- min(group_indices):max(group_indices)
             
               tibble::tibble(
@@ -624,25 +624,25 @@ ppc_loo_pit_ecdf <- function(y,
   )
 
   lims <- ecdf_intervals(gamma = gamma_indep, N = n_obs, K = K)
-  ecdf_eval <- ecdf_pit_fn(x_eval) - plot_diff * x_eval
+  ecdf_eval <- ecdf_pit_fn(unit_interval) - plot_diff * unit_interval
   
   # Precompute division by n_obs
   n_obs_inv <- 1 / n_obs
-  lims_upper_scaled <- lims$upper[-1] * n_obs_inv - plot_diff * x_eval
-  lims_lower_scaled <- lims$lower[-1] * n_obs_inv - plot_diff * x_eval
+  lims_upper_scaled <- lims$upper[-1] * n_obs_inv - plot_diff * unit_interval
+  lims_lower_scaled <- lims$lower[-1] * n_obs_inv - plot_diff * unit_interval
   
   p <- ggplot() +
     geom_step(
-      aes(x = x_eval, y = ecdf_eval, color = "y"),
+      aes(x = unit_interval, y = ecdf_eval, color = "y"),
       show.legend = FALSE
     ) +
     geom_step(
-      aes(x = x_eval, y = lims_upper_scaled, color = "yrep"),
+      aes(x = unit_interval, y = lims_upper_scaled, color = "yrep"),
       linetype = 2,
       show.legend = FALSE
     ) +
     geom_step(
-      aes(x = x_eval, y = lims_lower_scaled, color = "yrep"),
+      aes(x = unit_interval, y = lims_lower_scaled, color = "yrep"),
       linetype = 2,
       show.legend = FALSE
     ) +
