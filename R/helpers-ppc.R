@@ -598,16 +598,17 @@ ypred_label <- function() expression(italic(y)[pred])
 
 # Dependence-aware uniformity tests -------------------------------------
 
-#' Compute Shapley values for mean value function (closed form)
+#' Compute Shapley values
 #'
-#' Computes Shapley values for the mean value function using a closed-form
-#' formula. This is used to assess the marginal contribution of each ordered
-#' PIT value to the overall uniformity test statistic.
+#' Calculates the average marginal contribution of players across 
+#' all random arrival orders in a cooperative game.
+#' Used to provide a principled approach for quantifying 
+#' point-specific influences in a way that reflects local miscalibration.
 #'
-#' @param x Numeric vector of values (typically Cauchy-transformed PIT values).
+#' @param x Numeric vector of Cauchy-transformed PIT values.
 #' @return Numeric vector of Shapley values with the same length as `x`.
 #' @noRd
-shapley_mean_closedform <- function(x) {
+compute_shapley_values <- function(x) {
   n <- length(x)
   if (n == 0) {
     return(numeric(0))
@@ -623,6 +624,7 @@ shapley_mean_closedform <- function(x) {
   shapley_values <- numeric(n)
   for (i in seq_len(n)) {
     mean_others <- sum(x[-i]) / (n - 1)
+    # Applies the closed-form formula to assign player i their fair share.
     shapley_values[i] <- (1 / n) * x[i] + ((harmonic_number - 1) / n) * (x[i] - mean_others)
   }
 
