@@ -689,31 +689,23 @@ prit_test <- function(x) {
   return(p_values)
 }
 
-#' Transform Test values to Cauchy space
-#'
-#' @param x Numeric vector of PIT values in [0, 1].
-#' @return Numeric vector of Cauchy-transformed values.
-#' @noRd
-cauchy_space <- function(x_test) {
-  tan((0.5 - x_test) * pi)
-}
-
 #' Truncated Cauchy combination test
 #'
 #' Combines dependent p-values using the Cauchy combination method.
 #' If truncate, only p-values less than 0.5 are included.
 #'
-#' @param x Numeric vector of p-values (dependent PITs).
+#' @param x Numeric vector of p-values transformed to follow a standard
+#' Cauchy distribution.
 #' @param truncate Boolean; If TRUE only p-values less than 0.5 are
 #' included.
-#' @return Combined p-value.
+#' @return p-value of the Cauchy combination method.
 #' @noRd
-cauchy_agg <- function(x, truncate = NULL) {
+cauchy_combination_test <- function(x, truncate = NULL) {
   if (truncate) {
-    mask <- as.numeric(x < 0.5)
-    1 - pcauchy(mean(tan((0.5 - x) * pi) * mask))
+    idx <- which(x < 0.5)
+    1 - pcauchy(mean(-qcauchy(x[idx])))
   } else {
-    1 - pcauchy(mean(tan((0.5 - x) * pi)))
+    1 - pcauchy(mean(-qcauchy(x)))
   }
 }
 
