@@ -659,10 +659,12 @@ piet_test <- function(x) {
 #' @noRd
 pot_test <- function(x) {
   n <- length(x)
-  cdf_beta <- pbeta(sort(x), 1:n, seq(n, 1, by = -1))
-  p_value <- 2 * pmin(cdf_beta, 1 - cdf_beta)
+  # keep NA values instead of silent recycling via sort()
+  # TODO: Can PIT values be NAN at this point?
+  cdf_beta <- pbeta(sort(x, na.last = TRUE), 1:n, seq(n, 1, by = -1))
+  p_values <- 2 * pmin(cdf_beta, 1 - cdf_beta)
 
-  return(p_value)
+  return(p_values)
 }
 
 #' Pointwise Rank-based Individual Tests Combination (PRIT)
