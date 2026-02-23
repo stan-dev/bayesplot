@@ -260,6 +260,11 @@ Leave-One-Out (LOO) predictive checks. See the \strong{Plot Descriptions} sectio
 below, and \href{https://github.com/jgabry/bayes-vis-paper#readme}{Gabry et al. (2019)}
 for details.
 }
+\note{
+Note that the default "independent" method is \strong{superseded} by
+the "correlated" method (Tesso & Vehtari, 2026) which accounts for dependent
+LOO-PIT values.
+}
 \section{Plot Descriptions}{
 
 \describe{
