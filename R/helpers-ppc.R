@@ -708,3 +708,14 @@ cauchy_combination_test <- function(x, truncate = NULL) {
     1 - pcauchy(mean(-qcauchy(x)))
   }
 }
+
+#' Compute Cauchy transformation
+#'
+#' Transforms PIT values to follow a standard Cauchy distribution.
+#'
+#' @param x Numeric vector of PIT values in [0, 1].
+#' @return Numeric vector of Cauchy-transformed values.
+#' @noRd
+compute_cauchy <- function(x) {
+  tan((0.5 - x) * pi)
+}
