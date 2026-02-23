@@ -108,7 +108,7 @@ test_that("ppc_loo_pit_ecdf with method='correlated' validates input correctly",
   pit <- 1 - (1 - runif(300))^(1.2)
 
   expect_error(
-    expect_gg(ppc_loo_pit_ecdf(pit = pit, method = "correlated", test="PRIT"),
+    expect_gg(ppc_loo_pit_ecdf(pit = pit, method = "correlated"),
     "method = 'correlated' requires 'test' argument. Possible values: 'POT', 'PRIT', 'PIET'."
   ))
 })
@@ -127,10 +127,12 @@ test_that("ppc_loo_pit_ecdf with method='correlated' returns ggplot object", {
   expect_gg(p3 <- ppc_loo_pit_ecdf(y, yrep, lw, method = "correlated", test = "PIET"))
   
   # Test with plot_diff = TRUE
-  expect_gg(p4 <- ppc_loo_pit_ecdf(y, yrep, lw, method = "correlated", plot_diff = TRUE))
+  expect_gg(p4 <- ppc_loo_pit_ecdf(y, yrep, lw, method = "correlated", test = "POT", 
+  plot_diff = TRUE))
   
   # Test with gamma specified
-  expect_gg(p5 <- ppc_loo_pit_ecdf(y, yrep, lw, method = "correlated", gamma = 0.1))
+  expect_gg(p5 <- ppc_loo_pit_ecdf(y, yrep, lw, method = "correlated", test = "POT", 
+  gamma = 0.1))
 })
 
 test_that("ppc_loo_pit_ecdf method argument works correctly", {
@@ -152,7 +154,7 @@ test_that("ppc_loo_pit_ecdf method argument works correctly", {
   expect_gg(p2)
   
   # Test correlated method (no message expected)
-  expect_gg(p3 <- ppc_loo_pit_ecdf(y, yrep, lw, method = "correlated"))
+  expect_gg(p3 <- ppc_loo_pit_ecdf(y, yrep, lw, method = "correlated", test = "POT"))
   
   # Test that independent and correlated produce different plots
   expect_true(!identical(p2$data, p3$data) || !identical(p2$layers, p3$layers))
@@ -376,7 +378,7 @@ test_that("ppc_loo_ribbon renders correctly", {
   vdiffr::expect_doppelganger("ppc_loo_ribbon (subset)", p_custom)
 })
 
-test_that("ppc_loo_pit_ecdf with minimal examples", {
+test_that("ppc_loo_pit_ecdf with method correlated renders different tests correctly", {
   set.seed(2025)
   pit <- 1 - (1 - runif(300))^(1.2)
   
@@ -400,6 +402,35 @@ test_that("ppc_loo_pit_ecdf with minimal examples", {
     test = "PIET"
   )
   vdiffr::expect_doppelganger("ppc_loo_pit_ecdf (correlated piet)", p_cor_piet)
+})
+
+test_that("ppc_loo_pit_ecdf renders different linewidths and colors correctly", {
+  set.seed(2025)
+  pit <- 1 - (1 - runif(300))^(1.2)
+  
+  p_cor_lw1 <- ppc_loo_pit_ecdf(
+    pit = pit, 
+    method = "correlated", 
+    test = "POT",
+    linewidth = 1.
+  )
+  vdiffr::expect_doppelganger("ppc_loo_pit_ecdf (linewidth = 1)", p_cor_lw1)
+
+  p_cor_lw2 <- ppc_loo_pit_ecdf(
+    pit = pit, 
+    method = "correlated", 
+    test = "POT",
+    linewidth = 2.
+  )
+  vdiffr::expect_doppelganger("ppc_loo_pit_ecdf (linewidth = 2)", p_cor_lw2)
+
+  p_cor_col <- ppc_loo_pit_ecdf(
+    pit = pit, 
+    method = "correlated", 
+    test = "POT",
+    color = c(ecdf = "darkblue", highlight = "red")
+  )
+  vdiffr::expect_doppelganger("ppc_loo_pit_ecdf (color change)", p_cor_col)
 })
 
 test_that("ppc_loo_pit_ecdf renders correctly", {
