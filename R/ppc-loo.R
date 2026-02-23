@@ -492,7 +492,7 @@ ppc_loo_pit_ecdf <- function(y,
   if (method == "correlated") {
     inform("method = 'correlated' specified so ignoring 'interpolate_adj' if specified.")
     if (is.null(test)) {
-      # TODO: No default value for 'test'. Is this desired?
+      # TODO: No default value for 'test'. Is this desired? Default should be POT
       stop(paste(
         "method = 'correlated' requires 'test' argument.",
         "Possible values: 'POT', 'PRIT', 'PIET'."
@@ -506,7 +506,6 @@ ppc_loo_pit_ecdf <- function(y,
     gamma <- gamma %||% 0
     linewidth <- linewidth %||% 0.3
     color <- color %||% c(ecdf = "gray60", highlight = "gray30")
-    # TODO: Shall we inform the user about the used default arguments?
 
   } else if (method == "independent") {
     inform(paste("method = 'independent' is specified so ignoring",
