@@ -411,10 +411,9 @@ ppc_loo_pit_qq <- function(y,
 #'   threshold controlling how strongly suspicious points are flagged. Larger
 #'   values highlight only the most influential points. If `NULL`, automatically
 #'   determined based on p-value.
-#' @param infl_points_only For `ppc_loo_pit_ecdf()` when `method = "correlated"`,
-#'   logical; if `TRUE` only the most influential points are colored (in case of
-#'   rejection), otherwise all suspicious points (regions) are highlighted
-#'   (recommended).
+#' @param lw For `ppc_loo_pit_ecdf()`, linewidth for the ECDF plot. Defaults to 0.3.
+#' @param color For `ppc_loo_pit_ecdf()`. Vector with base color and highlight color 
+#' for the ECDF plot. Defaults to c(ecdf = "gray60", highlight = "gray30").
 ppc_loo_pit_ecdf <- function(y,
                              yrep,
                              lw = NULL,
@@ -426,13 +425,14 @@ ppc_loo_pit_ecdf <- function(y,
                              plot_diff = FALSE,
                              interpolate_adj = NULL,
                              method = NULL,
-                             test = c("POT", "PRIT", "PIET"),
+                             test = NULL,
                              gamma = NULL,
-                             infl_points_only = FALSE) {
+                             linewidth = NULL,
+                             color = NULL) {
   
   check_ignored_arguments(..., ok_args = list("moment_match"))
   
-  # Input validation
+  # Input validation -------------------------------------------------------
   if (is.null(method)) {
     inform(
       c(
@@ -480,6 +480,37 @@ ppc_loo_pit_ecdf <- function(y,
     }
   }
 
+  # Input validation dependent on method
+  if (method == "correlated") {
+    inform("method = 'correlated' specified so ignoring 'interpolate_adj' if specified.")
+    if (is.null(test)) {
+      # TODO: No default value for 'test'. Is this desired?
+      stop(paste(
+        "method = 'correlated' requires 'test' argument.",
+        "Possible values: 'POT', 'PRIT', 'PIET'."
+      ))
+      
+      # set default arguments
+      gamma            <- gamma %||% 0
+      linewidth        <- linewidth %||% 0.3
+      color            <- color %||% c(ecdf = "gray60", highlight = "gray30")
+    }
+    # TODO: Shall we inform the user about the used default arguments?
+    pointwise_contribution <- compute_shapley_values(std_cauchy_values)
+
+    if (gamma < 0 || gamma > max(pointwise_contribution)) {
+      stop(sprintf(
+        "gamma must be in the interval [0, %.2f], but gamma = %s was provided",
+        max(pointwise_contribution), gamma
+      ))
+    }
+
+  } else if (method == "independent") {
+    inform(paste("method = 'independent' is specified so ignoring",
+     "'test', 'gamma' if specified."
+    ))
+  }
+
   n_obs <- length(pit)
   unit_interval <- seq(0, 1, length.out = K)
   ecdf_pit_fn <- ecdf(pit)
@@ -501,8 +532,9 @@ ppc_loo_pit_ecdf <- function(y,
       p_value_CCT <- cauchy_combination_test(prit_test(pit), truncate = TRUE)
     }
 
-    pointwise_contribution <- compute_shapley_values(std_cauchy_values)
-    highlight_color <- dplyr::if_else(p_value_CCT < alpha, "red", "#F97316")
+    
+
+    # highlight_color <- dplyr::if_else(p_value_CCT < alpha, "red", "#F97316")
     x_axis_combined <- sort(unique(c(unit_interval, pit)))
     
     # Evaluate at 0-1 interval b´values
@@ -520,7 +552,7 @@ ppc_loo_pit_ecdf <- function(y,
     
     # Plot ECDF
     p <- ggplot(df_main, aes(x = x, y = ecdf_pit)) +
-      geom_step(show.legend = FALSE) +
+      geom_step(show.legend = FALSE, linewidth = linewidth, color = color[1]) +
       labs(
         y = dplyr::if_else(plot_diff, "ECDF difference", "ECDF"),
         x = "LOO PIT"
@@ -534,30 +566,8 @@ ppc_loo_pit_ecdf <- function(y,
       color = get_color("m")
     )
   
-    if (infl_points_only) {
-      if (p_value_CCT < alpha) {
-        pos_idx <- influential_points_idx(x = pointwise_contribution, alpha = alpha)
-        df_points <- df_pit[pos_idx, ]
-
-        p <- p + geom_point(
-          data = df_points,
-          aes(x = pit, y = ecdf_pit),
-          color = highlight_color,
-          size = 2,
-          show.legend = FALSE
-        )
-      }
-    } else {
-      if (is.null(gamma) || gamma < 0) {
-        if (p_value_CCT <= 0.5) {
-          gamma <- 0
-        } else if (p_value_CCT <= 0.9) {
-          gamma <- 0.05
-        } else {
-          gamma <- 0.2
-        }
-      }
-        
+    # Identify and highlight suspecious points (regions) of the ECDF
+    if (p_value_CCT < alpha) {
       red_idx <- which(pointwise_contribution > gamma)
       
       if (length(red_idx) > 0) {
@@ -590,8 +600,8 @@ ppc_loo_pit_ecdf <- function(y,
           p <- p + geom_step(
             data = df_segments,
             aes(x = x, y = ecdf_pit, group = segment),
-            color = highlight_color,
-            linewidth = 1
+            color = color[2],
+            linewidth = linewidth + 0.8
           )
         }
         
@@ -599,8 +609,8 @@ ppc_loo_pit_ecdf <- function(y,
           p <- p + geom_point(
             data = df_isolated,
             aes(x = pit, y = ecdf_pit),
-            color = highlight_color,
-            size = 1.5
+            color = color[2],
+            size = linewidth + 1
           )
         }
       }
@@ -612,6 +622,11 @@ ppc_loo_pit_ecdf <- function(y,
       scale_color_ppc() +
       bayesplot_theme_get()
     
+    message(sprintf(
+      "Using tolerance \u03b3 = %s (valid range: [0, %.2f]).\nSetting \u03b3 > 0 emphasizes points with larger deviations.",
+      gamma, max(pointwise_contribution)
+    ))
+
     return(p)
   }
   
@@ -633,8 +648,8 @@ ppc_loo_pit_ecdf <- function(y,
   
   p <- ggplot() +
     geom_step(
-      aes(x = unit_interval, y = ecdf_eval, color = "y"),
-      show.legend = FALSE
+      aes(x = unit_interval, y = ecdf_eval, color = "y", linewidth = linewidth),
+      color = color[1], show.legend = FALSE
     ) +
     geom_step(
       aes(x = unit_interval, y = lims_upper_scaled, color = "yrep"),
