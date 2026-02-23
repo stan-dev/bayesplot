@@ -418,6 +418,10 @@ ppc_loo_pit_qq <- function(y,
 #'   with base color and highlight color for the ECDF plot. Defaults to
 #'   `c(ecdf = "gray60", highlight = "gray30")`. The first element is used for
 #'   the main ECDF line, the second for highlighted suspicious regions.
+#' @note
+#' Note that the default "independent" method is **superseded** by
+#' the "correlated" method (Tesso & Vehtari, 2026) which accounts for dependent
+#' LOO-PIT values.
 ppc_loo_pit_ecdf <- function(y,
                              yrep,
                              lw = NULL,
