@@ -638,7 +638,7 @@ compute_shapley_values <- function(x) {
 #' follows the distribution of X under uniformity.
 #' HA: The p-value p_(i) provides evidence against uniformity.
 #' 
-#' @param x Numeric vector of PIT values in [0, 1].
+#' @param x Numeric vector of PIT values in `[0, 1]`.
 #' @return Numeric vector of p-values.
 #' @noRd
 piet_test <- function(x) {
@@ -656,7 +656,7 @@ piet_test <- function(x) {
 #' HA: The p-value p_(i) provides evidence against uniformity
 #' at the i-th order statistic u_(i).
 #' 
-#' @param x Numeric vector of PIT values in [0, 1].
+#' @param x Numeric vector of PIT values in `[0, 1]`.
 #' @return Numeric vector of p-values.
 #' @noRd
 pot_test <- function(x) {
@@ -676,7 +676,7 @@ pot_test <- function(x) {
 #' follows a binomial distribution under uniformity.
 #' HA: The p-value p_i provides evidence against uniformity.
 #' 
-#' @param x Numeric vector of PIT values in [0, 1].
+#' @param x Numeric vector of PIT values in `[0, 1]`.
 #' @return Numeric vector of p-values.
 #' @noRd
 prit_test <- function(x) {
@@ -713,7 +713,7 @@ cauchy_combination_test <- function(x, truncate = NULL) {
 #'
 #' Transforms PIT values to follow a standard Cauchy distribution.
 #'
-#' @param x Numeric vector of PIT values in [0, 1].
+#' @param x Numeric vector of PIT values in `[0, 1]`.
 #' @return Numeric vector of Cauchy-transformed values.
 #' @noRd
 compute_cauchy <- function(x) {
