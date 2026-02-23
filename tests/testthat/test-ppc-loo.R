@@ -404,6 +404,35 @@ test_that("ppc_loo_pit_ecdf with method correlated renders different tests corre
   vdiffr::expect_doppelganger("ppc_loo_pit_ecdf (correlated piet)", p_cor_piet)
 })
 
+test_that("ppc_loo_pit_ecdf with plot_diff=TRUE and method correlated renders different tests correctly", {
+  set.seed(2025)
+  pit <- 1 - (1 - runif(300))^(1.2)
+  
+  p_cor_pot <- ppc_loo_pit_ecdf(
+    pit = pit, 
+    method = "correlated", 
+    test = "POT",
+    plot_diff = TRUE
+  )
+  vdiffr::expect_doppelganger("ppc_loo_pit_ecdf (diff, correlated pot)", p_cor_pot)
+
+  p_cor_prit <- ppc_loo_pit_ecdf(
+    pit = pit, 
+    method = "correlated", 
+    test = "PRIT",
+    plot_diff = TRUE
+  )
+  vdiffr::expect_doppelganger("ppc_loo_pit_ecdf (diff, correlated prit)", p_cor_prit)
+
+  p_cor_piet <- ppc_loo_pit_ecdf(
+    pit = pit, 
+    method = "correlated", 
+    test = "PIET",
+    plot_diff = TRUE
+  )
+  vdiffr::expect_doppelganger("ppc_loo_pit_ecdf (diff, correlated piet)", p_cor_piet)
+})
+
 test_that("ppc_loo_pit_ecdf renders different linewidths and colors correctly", {
   set.seed(2025)
   pit <- 1 - (1 - runif(300))^(1.2)
