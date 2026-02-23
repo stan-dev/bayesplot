@@ -153,7 +153,9 @@ and \code{alpha} are passed to \code{\link[ggplot2:geom_point]{ggplot2::geom_poi
 \code{\link[ggplot2:geom_density]{ggplot2::geom_density()}}, respectively. For \code{ppc_loo_intervals()}, \code{size}
 \code{linewidth} and \code{fatten} are passed to \code{\link[ggplot2:geom_linerange]{ggplot2::geom_pointrange()}}. For
 \code{ppc_loo_ribbon()}, \code{alpha} and \code{size}  are passed to
-\code{\link[ggplot2:geom_ribbon]{ggplot2::geom_ribbon()}}.}
+\code{\link[ggplot2:geom_ribbon]{ggplot2::geom_ribbon()}}. For \code{ppc_loo_pit_ecdf()}, linewidth for the ECDF plot. When
+\code{method = "correlated"}, defaults to 0.3. When \code{method = "independent"},
+if \code{NULL} no linewidth is specified for the ECDF line.}
 
 \item{boundary_correction}{For \code{ppc_loo_pit_overlay()}, when set to \code{TRUE}
 (the default) the function will compute boundary corrected density values
@@ -219,10 +221,6 @@ Defaults to \code{"POT"}.}
 threshold controlling how strongly suspicious points are flagged. Larger
 values highlight only the most influential points. If \code{NULL}, automatically
 determined based on p-value.}
-
-\item{linewidth}{For \code{ppc_loo_pit_ecdf()}, linewidth for the ECDF plot. When
-\code{method = "correlated"}, defaults to 0.3. When \code{method = "independent"},
-if \code{NULL} no linewidth is specified for the ECDF line.}
 
 \item{color}{For \code{ppc_loo_pit_ecdf()} when \code{method = "correlated"}, a vector
 with base color and highlight color for the ECDF plot. Defaults to
