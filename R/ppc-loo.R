@@ -411,9 +411,13 @@ ppc_loo_pit_qq <- function(y,
 #'   threshold controlling how strongly suspicious points are flagged. Larger
 #'   values highlight only the most influential points. If `NULL`, automatically
 #'   determined based on p-value.
-#' @param linewidth For `ppc_loo_pit_ecdf()`, linewidth for the ECDF plot. Defaults to 0.3.
-#' @param color For `ppc_loo_pit_ecdf()`. Vector with base color and highlight color 
-#' for the ECDF plot. Defaults to c(ecdf = "gray60", highlight = "gray30").
+#' @param linewidth For `ppc_loo_pit_ecdf()`, linewidth for the ECDF plot. When
+#'   `method = "correlated"`, defaults to 0.3. When `method = "independent"`,
+#'   if `NULL` no linewidth is specified for the ECDF line.
+#' @param color For `ppc_loo_pit_ecdf()` when `method = "correlated"`, a vector
+#'   with base color and highlight color for the ECDF plot. Defaults to
+#'   `c(ecdf = "gray60", highlight = "gray30")`. The first element is used for
+#'   the main ECDF line, the second for highlighted suspicious regions.
 ppc_loo_pit_ecdf <- function(y,
                              yrep,
                              lw = NULL,
