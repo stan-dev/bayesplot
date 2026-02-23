@@ -708,34 +708,3 @@ cauchy_combination_test <- function(x, truncate = NULL) {
     1 - pcauchy(mean(-qcauchy(x)))
   }
 }
-
-#' Identify influential points for uniformity test
-#'
-#' Identifies the minimal set of points that need to be removed to bring
-#' the test statistic below the critical threshold.
-#'
-#' @param x Numeric vector of Shapley values.
-#' @param alpha Significance level.
-#' @return Integer vector of indices of influential points to remove.
-#' @noRd
-influential_points_idx <- function(x, alpha) {
-  stopifnot(is.numeric(x), is.numeric(alpha), length(alpha) == 1,
-            alpha > 0 && alpha < 1)
-  
-  target <- qcauchy(1 - alpha)
-  pos_idx <- which(x > 0)
-  pos_vals <- x[pos_idx]
-
-  ord <- order(pos_vals, decreasing = TRUE)
-  sorted_idx <- pos_idx[ord]
-  sorted_vals <- pos_vals[ord]
-
-  cumsum_remove <- cumsum(sorted_vals)
-  needed <- which(cumsum_remove >= sum(x) - target)[1L]
-
-  if (is.na(needed)) {
-    return(integer(0))
-  }
-
-  return(sorted_idx[seq_len(needed)])
-}
