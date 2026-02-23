@@ -411,7 +411,7 @@ ppc_loo_pit_qq <- function(y,
 #'   threshold controlling how strongly suspicious points are flagged. Larger
 #'   values highlight only the most influential points. If `NULL`, automatically
 #'   determined based on p-value.
-#' @param lw For `ppc_loo_pit_ecdf()`, linewidth for the ECDF plot. Defaults to 0.3.
+#' @param linewidth For `ppc_loo_pit_ecdf()`, linewidth for the ECDF plot. Defaults to 0.3.
 #' @param color For `ppc_loo_pit_ecdf()`. Vector with base color and highlight color 
 #' for the ECDF plot. Defaults to c(ecdf = "gray60", highlight = "gray30").
 ppc_loo_pit_ecdf <- function(y,
@@ -489,21 +489,16 @@ ppc_loo_pit_ecdf <- function(y,
         "method = 'correlated' requires 'test' argument.",
         "Possible values: 'POT', 'PRIT', 'PIET'."
       ))
-      
-      # set default arguments
-      gamma            <- gamma %||% 0
-      linewidth        <- linewidth %||% 0.3
-      color            <- color %||% c(ecdf = "gray60", highlight = "gray30")
     }
-    # TODO: Shall we inform the user about the used default arguments?
-    pointwise_contribution <- compute_shapley_values(std_cauchy_values)
 
-    if (gamma < 0 || gamma > max(pointwise_contribution)) {
-      stop(sprintf(
-        "gamma must be in the interval [0, %.2f], but gamma = %s was provided",
-        max(pointwise_contribution), gamma
-      ))
-    }
+    test <- match.arg(test, choices = c("POT", "PRIT", "PIET"))
+    
+    # set default arguments
+    alpha <- 1 - prob
+    gamma <- gamma %||% 0
+    linewidth <- linewidth %||% 0.3
+    color <- color %||% c(ecdf = "gray60", highlight = "gray30")
+    # TODO: Shall we inform the user about the used default arguments?
 
   } else if (method == "independent") {
     inform(paste("method = 'independent' is specified so ignoring",
@@ -517,9 +512,6 @@ ppc_loo_pit_ecdf <- function(y,
 
   # Correlated method --------------------------------------------------
   if (method == "correlated") {
-    test <- match.arg(test)
-    alpha <- 1 - prob
-    
     # Compute test p-value and Cauchy-transformed values
     if (test == "POT") {
       std_cauchy_values <- -qcauchy(pot_test(sort(pit)))
@@ -527,14 +519,19 @@ ppc_loo_pit_ecdf <- function(y,
     } else if (test == "PIET") {
       std_cauchy_values <- -qcauchy(piet_test(sort(pit)))
       p_value_CCT <- cauchy_combination_test(piet_test(pit), truncate = FALSE)
-    } else {  # PRIT
+    } else if (test == "PRIT") {
       std_cauchy_values <- -qcauchy(prit_test(sort(pit)))
       p_value_CCT <- cauchy_combination_test(prit_test(pit), truncate = TRUE)
     }
 
-    
+    pointwise_contribution <- compute_shapley_values(std_cauchy_values)
 
-    # highlight_color <- dplyr::if_else(p_value_CCT < alpha, "red", "#F97316")
+    if (gamma < 0 || gamma > max(pointwise_contribution)) {
+      stop(sprintf(
+        "gamma must be in the interval [0, %.2f], but gamma = %s was provided",
+        max(pointwise_contribution), gamma
+      ))
+    }
     x_axis_combined <- sort(unique(c(unit_interval, pit)))
     
     # Evaluate at 0-1 interval b´values
@@ -563,7 +560,7 @@ ppc_loo_pit_ecdf <- function(y,
       intercept = 0,
       slope = dplyr::if_else(plot_diff, 0, 1),
       linetype = 2,
-      color = get_color("m")
+      color = "darkgrey"
     )
   
     # Identify and highlight suspecious points (regions) of the ECDF
@@ -620,7 +617,7 @@ ppc_loo_pit_ecdf <- function(y,
     p <- p +
       yaxis_ticks(FALSE) +
       scale_color_ppc() +
-      bayesplot_theme_get()
+      bayesplot::theme_default(base_family = "sans", base_size = 16)
     
     message(sprintf(
       "Using tolerance \u03b3 = %s (valid range: [0, %.2f]).\nSetting \u03b3 > 0 emphasizes points with larger deviations.",
@@ -648,17 +645,15 @@ ppc_loo_pit_ecdf <- function(y,
   
   p <- ggplot() +
     geom_step(
-      aes(x = unit_interval, y = ecdf_eval, color = "y", linewidth = linewidth),
-      color = color[1], show.legend = FALSE
-    ) +
-    geom_step(
       aes(x = unit_interval, y = lims_upper_scaled, color = "yrep"),
-      linetype = 2,
-      show.legend = FALSE
+      linetype = 1, show.legend = FALSE
     ) +
     geom_step(
       aes(x = unit_interval, y = lims_lower_scaled, color = "yrep"),
-      linetype = 2,
+      linetype = 1, show.legend = FALSE
+    ) +
+    geom_step(
+      aes(x = unit_interval, y = ecdf_eval, color = "y", linewidth = linewidth),
       show.legend = FALSE
     ) +
     labs(
@@ -667,7 +662,7 @@ ppc_loo_pit_ecdf <- function(y,
     ) +
     yaxis_ticks(FALSE) +
     scale_color_ppc() +
-    bayesplot_theme_get()
+    bayesplot::theme_default(base_family = "sans", base_size = 16)
   
   return(p)
 }
