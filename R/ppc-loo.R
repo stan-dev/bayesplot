@@ -21,7 +21,9 @@
 #'   [ggplot2::geom_density()], respectively. For `ppc_loo_intervals()`, `size`
 #'   `linewidth` and `fatten` are passed to [ggplot2::geom_pointrange()]. For
 #'   `ppc_loo_ribbon()`, `alpha` and `size`  are passed to
-#'   [ggplot2::geom_ribbon()].
+#'   [ggplot2::geom_ribbon()]. For `ppc_loo_pit_ecdf()`, linewidth for the ECDF plot. When
+#'   `method = "correlated"`, defaults to 0.3. When `method = "independent"`,
+#'   if `NULL` no linewidth is specified for the ECDF line.
 #'
 #' @template return-ggplot
 #'
@@ -411,9 +413,6 @@ ppc_loo_pit_qq <- function(y,
 #'   threshold controlling how strongly suspicious points are flagged. Larger
 #'   values highlight only the most influential points. If `NULL`, automatically
 #'   determined based on p-value.
-#' @param linewidth For `ppc_loo_pit_ecdf()`, linewidth for the ECDF plot. When
-#'   `method = "correlated"`, defaults to 0.3. When `method = "independent"`,
-#'   if `NULL` no linewidth is specified for the ECDF line.
 #' @param color For `ppc_loo_pit_ecdf()` when `method = "correlated"`, a vector
 #'   with base color and highlight color for the ECDF plot. Defaults to
 #'   `c(ecdf = "gray60", highlight = "gray30")`. The first element is used for
@@ -555,8 +554,10 @@ ppc_loo_pit_ecdf <- function(y,
     df_pit <- df_pit[order(df_pit$pit), ]
     
     # Plot ECDF
-    p <- ggplot(df_main, aes(x = x, y = ecdf_pit)) +
-      geom_step(show.legend = FALSE, linewidth = linewidth, color = color[1]) +
+    p <- ggplot() +
+      geom_step(
+        data = df_main, aes(x = .data$x, y = .data$ecdf_pit),
+        show.legend = FALSE, linewidth = linewidth, color = color[1]) +
       labs(
         y = dplyr::if_else(plot_diff, "ECDF difference", "ECDF"),
         x = "LOO PIT"
@@ -603,7 +604,7 @@ ppc_loo_pit_ecdf <- function(y,
           
           p <- p + geom_step(
             data = df_segments,
-            aes(x = x, y = ecdf_pit, group = segment),
+            aes(x = .data$x, y = .data$ecdf_pit, group = .data$segment),
             color = color[2],
             linewidth = linewidth + 0.8
           )
@@ -612,7 +613,7 @@ ppc_loo_pit_ecdf <- function(y,
         if (nrow(df_isolated) > 0) {
           p <- p + geom_point(
             data = df_isolated,
-            aes(x = pit, y = ecdf_pit),
+            aes(x = .data$pit, y = .data$ecdf_pit),
             color = color[2],
             size = linewidth + 1
           )
