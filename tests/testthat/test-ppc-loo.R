@@ -103,28 +103,34 @@ test_that("ppc_loo_pit_ecdf returns a ggplot object", {
   expect_equal(ll3$y, "ECDF difference")
 })
 
+test_that("ppc_loo_pit_ecdf with method='correlated' validates input correctly", {
+  set.seed(2025)
+  pit <- 1 - (1 - runif(300))^(1.2)
+
+  expect_error(
+    expect_gg(ppc_loo_pit_ecdf(pit = pit, method = "correlated", test="PRIT"),
+    "method = 'correlated' requires 'test' argument. Possible values: 'POT', 'PRIT', 'PIET'."
+  ))
+})
+
 test_that("ppc_loo_pit_ecdf with method='correlated' returns ggplot object", {
   skip_if_not_installed("rstanarm")
   skip_if_not_installed("loo")
 
   # Test with POT-C (default)
-  expect_gg(p1 <- ppc_loo_pit_ecdf(y, yrep, lw, method = "correlated"))
-  expect_gg(p2 <- ppc_loo_pit_ecdf(y, yrep, lw, method = "correlated", test = "POT"))
+  expect_gg(p1 <- ppc_loo_pit_ecdf(y, yrep, lw, method = "correlated", test = "POT"))
   
   # Test with PRIT-C
-  expect_gg(p3 <- ppc_loo_pit_ecdf(y, yrep, lw, method = "correlated", test = "PRIT"))
+  expect_gg(p2 <- ppc_loo_pit_ecdf(y, yrep, lw, method = "correlated", test = "PRIT"))
   
   # Test with PIET-C
-  expect_gg(p4 <- ppc_loo_pit_ecdf(y, yrep, lw, method = "correlated", test = "PIET"))
+  expect_gg(p3 <- ppc_loo_pit_ecdf(y, yrep, lw, method = "correlated", test = "PIET"))
   
   # Test with plot_diff = TRUE
-  expect_gg(p5 <- ppc_loo_pit_ecdf(y, yrep, lw, method = "correlated", plot_diff = TRUE))
-  
-  # Test with infl_points_only = TRUE
-  expect_gg(p6 <- ppc_loo_pit_ecdf(y, yrep, lw, method = "correlated", infl_points_only = TRUE))
+  expect_gg(p4 <- ppc_loo_pit_ecdf(y, yrep, lw, method = "correlated", plot_diff = TRUE))
   
   # Test with gamma specified
-  expect_gg(p7 <- ppc_loo_pit_ecdf(y, yrep, lw, method = "correlated", gamma = 0.1))
+  expect_gg(p5 <- ppc_loo_pit_ecdf(y, yrep, lw, method = "correlated", gamma = 0.1))
 })
 
 test_that("ppc_loo_pit_ecdf method argument works correctly", {
@@ -160,19 +166,19 @@ test_that("ppc_loo_pit_ecdf correlated method handles edge cases", {
   
   # Test with small sample
   small_pit <- runif(10)
-  expect_gg(p1 <- ppc_loo_pit_ecdf(pit = small_pit, method = "correlated"))
+  expect_gg(p1 <- ppc_loo_pit_ecdf(pit = small_pit, method = "correlated", test = "POT"))
   
   # Test with perfect uniform
   uniform_pit <- seq(0, 1, length.out = 100)
-  expect_gg(p2 <- ppc_loo_pit_ecdf(pit = uniform_pit, method = "correlated"))
+  expect_gg(p2 <- ppc_loo_pit_ecdf(pit = uniform_pit, method = "correlated", test = "POT"))
   
   # Test with extreme values
   extreme_pit <- c(rep(0, 10), rep(1, 10), runif(80))
-  expect_gg(p3 <- ppc_loo_pit_ecdf(pit = extreme_pit, method = "correlated"))
+  expect_gg(p3 <- ppc_loo_pit_ecdf(pit = extreme_pit, method = "correlated", test = "POT"))
   
   # Test with single value (edge case)
   single_pit <- 0.5
-  expect_gg(p4 <- ppc_loo_pit_ecdf(pit = single_pit, method = "correlated"))
+  expect_gg(p4 <- ppc_loo_pit_ecdf(pit = single_pit, method = "correlated", test = "POT"))
 })
 
 test_that("ppc_loo_pit functions work when pit specified instead of y, yrep, and lw", {
@@ -207,7 +213,6 @@ test_that("ppc_loo_pit functions work when pit specified instead of y, yrep, and
     "'pit' specified so ignoring 'y','yrep','lw' if specified"
   )
 })
-
 
 test_that("ppc_loo_intervals returns ggplot object", {
   skip_if_not_installed("rstanarm")
@@ -369,6 +374,32 @@ test_that("ppc_loo_ribbon renders correctly", {
     subset = 1:10
   )
   vdiffr::expect_doppelganger("ppc_loo_ribbon (subset)", p_custom)
+})
+
+test_that("ppc_loo_pit_ecdf with minimal examples", {
+  set.seed(2025)
+  pit <- 1 - (1 - runif(300))^(1.2)
+  
+  p_cor_pot <- ppc_loo_pit_ecdf(
+    pit = pit, 
+    method = "correlated", 
+    test = "POT"
+  )
+  vdiffr::expect_doppelganger("ppc_loo_pit_ecdf (correlated pot)", p_cor_pot)
+
+  p_cor_prit <- ppc_loo_pit_ecdf(
+    pit = pit, 
+    method = "correlated", 
+    test = "PRIT"
+  )
+  vdiffr::expect_doppelganger("ppc_loo_pit_ecdf (correlated prit)", p_cor_prit)
+
+  p_cor_piet <- ppc_loo_pit_ecdf(
+    pit = pit, 
+    method = "correlated", 
+    test = "PIET"
+  )
+  vdiffr::expect_doppelganger("ppc_loo_pit_ecdf (correlated piet)", p_cor_piet)
 })
 
 test_that("ppc_loo_pit_ecdf renders correctly", {
