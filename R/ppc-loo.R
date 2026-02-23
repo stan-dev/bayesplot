@@ -514,13 +514,13 @@ ppc_loo_pit_ecdf <- function(y,
   if (method == "correlated") {
     # Compute test p-value and Cauchy-transformed values
     if (test == "POT") {
-      std_cauchy_values <- -qcauchy(pot_test(sort(pit)))
+      std_cauchy_values <- compute_cauchy(pot_test(sort(pit)))
       p_value_CCT <- cauchy_combination_test(pot_test(pit), truncate = FALSE)
     } else if (test == "PIET") {
-      std_cauchy_values <- -qcauchy(piet_test(sort(pit)))
+      std_cauchy_values <- compute_cauchy(piet_test(sort(pit)))
       p_value_CCT <- cauchy_combination_test(piet_test(pit), truncate = FALSE)
-    } else if (test == "PRIT") {
-      std_cauchy_values <- -qcauchy(prit_test(sort(pit)))
+    } else { # PRIT
+      std_cauchy_values <- compute_cauchy(prit_test(sort(pit)))
       p_value_CCT <- cauchy_combination_test(prit_test(pit), truncate = TRUE)
     }
 
@@ -646,11 +646,11 @@ ppc_loo_pit_ecdf <- function(y,
   p <- ggplot() +
     geom_step(
       aes(x = unit_interval, y = lims_upper_scaled, color = "yrep"),
-      linetype = 1, show.legend = FALSE
+      linetype = 2, show.legend = FALSE
     ) +
     geom_step(
       aes(x = unit_interval, y = lims_lower_scaled, color = "yrep"),
-      linetype = 1, show.legend = FALSE
+      linetype = 2, show.legend = FALSE
     ) +
     geom_step(
       aes(x = unit_interval, y = ecdf_eval, color = "y", linewidth = linewidth),
