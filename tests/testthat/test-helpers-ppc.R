@@ -131,14 +131,14 @@ test_that("piet_test computes correct p-values", {
   # Equivalent to 2 * min(1-x, x)
   expected <- c(0.2, 0.5, 1.0, 0.5, 0.2)
   
-  expect_equal(piet_test(x), expected, tolerance = 1e-7)
+  expect_equal(.piet_test(x), expected, tolerance = 1e-7)
 })
 
 test_that("piet_test handles boundary values of 0 and 1", {
   x <- c(0, 1)
   expected <- c(0, 0)
   
-  expect_equal(piet_test(x), expected)
+  expect_equal(.piet_test(x), expected)
 })
 
 test_that("piet_test handles extreme values stably", {
@@ -147,13 +147,13 @@ test_that("piet_test handles extreme values stably", {
   expected <- c(2e-17, 2e-17)
   
   # Tolerance needs to be adjusted for very small numbers
-  expect_equal(piet_test(x), expected, tolerance = 1e-16)
+  expect_equal(.piet_test(x), expected, tolerance = 1e-16)
 })
 
 test_that("piet_test handles NA, NaN, and empty inputs correctly", {
   # NA and NaN propagation
   x_na <- c(0.5, NA, NaN)
-  res_na <- piet_test(x_na)
+  res_na <- .piet_test(x_na)
   
   expect_equal(res_na[1], 1.0)
   expect_true(is.na(res_na[2]))
@@ -170,14 +170,14 @@ test_that("pot_test calculates correct p-values", {
   x <- c(0.8, 0.2)
   expected <- c(0.72, 0.72)
   
-  expect_equal(pot_test(x), expected)
+  expect_equal(.pot_test(x), expected)
 })
 
 test_that("pot_test handles boundary values correctly", {
   x <- c(0, 1)
   expected <- c(0, 0)
   
-  expect_equal(pot_test(x), expected)
+  expect_equal(.pot_test(x), expected)
 })
 
 test_that("pot_test bounds p-values between 0 and 1 for extreme out-of-bounds inputs", {
@@ -185,7 +185,7 @@ test_that("pot_test bounds p-values between 0 and 1 for extreme out-of-bounds in
   x <- c(-0.5, 1.5)
   expected <- c(0, 0)
   
-  expect_equal(pot_test(x), expected)
+  expect_equal(.pot_test(x), expected)
 })
 
 test_that("pot_test handles NAs", {
@@ -193,7 +193,7 @@ test_that("pot_test handles NAs", {
   # Beta(2, 1) at 0.5 = 0.25 -> 2 * min(0.25, 0.75) = 0.5
   expected <- c(0.5, NA)
 
-  expect_equal(pot_test(x_na), expected)
+  expect_equal(.pot_test(x_na), expected)
 })
 
 test_that("prit_test computes correct p-values", {
@@ -204,14 +204,14 @@ test_that("prit_test computes correct p-values", {
   # p_val = 2 * min(1 - 0.75, 1.00) = 2 * 0.25 = 0.5
   
   x <- c(0.5, 0.5)
-  expect_equal(prit_test(x), c(0.5, 0.5))
+  expect_equal(.prit_test(x), c(0.5, 0.5))
 })
 
 # Test for computation of Shapley values -------------------------------------
 
 test_that("compute_shapley_values handles empty vector and single element", {
-  result_empty <- compute_shapley_values(numeric(0))
-  result_single <- compute_shapley_values(5)
+  result_empty <- .compute_shapley_values(numeric(0))
+  result_single <- .compute_shapley_values(5)
 
   expect_equal(result_empty, numeric(0))
   expect_equal(length(result_empty), 0)
@@ -221,7 +221,7 @@ test_that("compute_shapley_values handles empty vector and single element", {
 
 test_that("compute_shapley_values for simple case", {
   x <- c(1, 2)
-  result <- compute_shapley_values(x)
+  result <- .compute_shapley_values(x)
   
   # Manual calculation for n=2:
   # harmonic_number = 1 + 1/2 = 1.5
@@ -237,7 +237,7 @@ test_that("compute_shapley_values for simple case", {
 
 test_that("compute_shapley_values handles mixed input values", {
   x <- c(-0.2, 0, 2, 3.1, 4.2)
-  result <- compute_shapley_values(x)
+  result <- .compute_shapley_values(x)
   expect_equal(length(result), 5)
   expect_true(all(is.finite(result)))
 })
@@ -248,7 +248,7 @@ test_that("cauchy_combination_test handles truncate = FALSE", {
   # result = 1 - pcauchy(avg)
   
   x <- c(0.1, 0.2, 0.3)
-  result <- cauchy_combination_test(x, truncate = FALSE)
+  result <- .cauchy_combination_test(x, truncate = FALSE)
   expected <- 1 - pcauchy(mean(-qcauchy(x)))
   
   expect_equal(result, expected, tolerance = 1e-10)
@@ -261,7 +261,7 @@ test_that("cauchy_combination_test handles truncate = TRUE", {
   # result = 1 - pcauchy(avg)
   
   x <- c(0.1, 0.2, 0.3, 0.4, 0.7, 0.8)
-  result <- cauchy_combination_test(x, truncate = TRUE)
+  result <- .cauchy_combination_test(x, truncate = TRUE)
   expected <- 1 - pcauchy(mean(-qcauchy(c(0.1, 0.2, 0.3, 0.4))))
   
   expect_equal(result, expected, tolerance = 1e-10)
@@ -273,37 +273,23 @@ test_that("cauchy_combination_test handles boundary values", {
   # x = 0: -qdf(0) = Inf and cdf(Inf) = 1 -> 1 - 1 = 0
   # x = 1: -qdf(1) = -Inf and cdf(-Inf) = 0 -> 1 - 0 = 1 
   
-  expect_equal(cauchy_combination_test(0, truncate = FALSE), 0)
-  expect_equal(cauchy_combination_test(1, truncate = FALSE), 1)
-  expect_true(is.nan(cauchy_combination_test(c(0, 1), truncate = FALSE)))
+  expect_equal(.cauchy_combination_test(0, truncate = FALSE), 0)
+  expect_equal(.cauchy_combination_test(1, truncate = FALSE), 1)
+  expect_true(is.nan(.cauchy_combination_test(c(0, 1), truncate = FALSE)))
   # TODO: if 1 included in vector, CCT will always evaluate to 0 
   # as the mean evaluates to Inf and 1 - cdf(Inf) = 1 - 1 = 0
-  expect_equal(cauchy_combination_test(c(0, 0.3, 0.4, 1), truncate = TRUE), 0)
+  expect_equal(.cauchy_combination_test(c(0, 0.3, 0.4, 1), truncate = TRUE), 0)
 })
 
 # Test for compute_cauchy -----------------------------------------------------
 
 test_that("compute_cauchy computes correct transformations", {
   # For x = 0.5: tan((0.5 - 0.5) * pi) = tan(0) = 0
-  expect_equal(compute_cauchy(0.5), 0, tolerance = 1e-10)
+  expect_equal(.compute_cauchy(0.5), 0, tolerance = 1e-10)
   
   # For x = 0.25: tan((0.5 - 0.25) * pi) = tan(0.25 * pi) = 1
-  expect_equal(compute_cauchy(0.25), 1, tolerance = 1e-10)
+  expect_equal(.compute_cauchy(0.25), 1, tolerance = 1e-10)
   
   # For x = 0.75: tan((0.5 - 0.75) * pi) = tan(-0.25 * pi) = -1
-  expect_equal(compute_cauchy(0.75), -1, tolerance = 1e-10)
-})
-
-skip("evaluates currently to FALSE")
-test_that("compute_cauchy handles boundary values", {
-  # For x = 0: tan((0.5 - 0) * pi) = tan(π/2) = Inf
-  result_0 <- compute_cauchy(0)
-  # working alternative computation: result_0 = -qcauchy(0)
-  expect_true(is.infinite(result_0))
-  expect_true(result_0 > 0)
-  
-  # For x = 1: tan((0.5 - 1) * pi) = tan(-π/2) = -Inf
-  result_1 <- compute_cauchy(1)
-  expect_true(is.infinite(result_1))
-  expect_true(result_1 < 0)
+  expect_equal(.compute_cauchy(0.75), -1, tolerance = 1e-10)
 })
