@@ -202,7 +202,8 @@ ppc_dens_overlay <-
       yaxis_title(FALSE) +
       xaxis_title(FALSE) +
       yaxis_text(FALSE) +
-      yaxis_ticks(FALSE)
+      yaxis_ticks(FALSE) +
+      theme(axis.line.y = element_blank())
   }
 
 
@@ -367,6 +368,7 @@ ppc_dens <-
       yaxis_text(FALSE) +
       yaxis_title(FALSE) +
       yaxis_ticks(FALSE) +
+      theme(axis.line.y = element_blank()) +
       xaxis_title(FALSE) +
       facet_text(FALSE) +
       facet_bg(FALSE)
@@ -407,6 +409,7 @@ ppc_hist <-
       yaxis_text(FALSE) +
       yaxis_title(FALSE) +
       yaxis_ticks(FALSE) +
+      theme(axis.line.y = element_blank()) +
       xaxis_title(FALSE) +
       facet_text(FALSE) +
       facet_bg(FALSE)
@@ -453,6 +456,7 @@ ppc_freqpoly <-
       yaxis_text(FALSE) +
       yaxis_title(FALSE) +
       yaxis_ticks(FALSE) +
+      theme(axis.line.y = element_blank()) +
       xaxis_title(FALSE) +
       facet_text(FALSE)
   }
@@ -559,6 +563,7 @@ ppc_dots <-
       yaxis_text(FALSE) +
       yaxis_title(FALSE) +
       yaxis_ticks(FALSE) +
+      theme(axis.line.y = element_blank()) +
       xaxis_title(FALSE) +
       facet_text(FALSE) +
       facet_bg(FALSE)

@@ -288,9 +288,6 @@
 <text x='661.29' y='568.03' text-anchor='middle' style='font-size: 9.60px; fill: #4D4D4D; font-family: sans;' textLength='5.34px' lengthAdjust='spacingAndGlyphs'>1</text>
 <text x='686.50' y='568.03' text-anchor='middle' style='font-size: 9.60px; fill: #4D4D4D; font-family: sans;' textLength='5.34px' lengthAdjust='spacingAndGlyphs'>2</text>
 <text x='711.70' y='568.03' text-anchor='middle' style='font-size: 9.60px; fill: #4D4D4D; font-family: sans;' textLength='5.34px' lengthAdjust='spacingAndGlyphs'>3</text>
-<polyline points='5.98,194.84 5.98,35.84 ' style='stroke-width: 0.85; stroke-linecap: butt;' />
-<polyline points='5.98,375.44 5.98,216.44 ' style='stroke-width: 0.85; stroke-linecap: butt;' />
-<polyline points='5.98,556.04 5.98,397.04 ' style='stroke-width: 0.85; stroke-linecap: butt;' />
 <text x='5.98' y='15.89' style='font-size: 14.40px; font-family: sans;' textLength='200.96px' lengthAdjust='spacingAndGlyphs'>ppd_freqpoly_grouped (default)</text>
 </g>
 </svg>

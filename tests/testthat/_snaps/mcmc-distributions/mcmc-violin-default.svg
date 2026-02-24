@@ -106,8 +106,6 @@
 <text x='501.55' y='568.03' text-anchor='middle' style='font-size: 9.60px; fill: #4D4D4D; font-family: sans;' textLength='5.34px' lengthAdjust='spacingAndGlyphs'>2</text>
 <text x='583.27' y='568.03' text-anchor='middle' style='font-size: 9.60px; fill: #4D4D4D; font-family: sans;' textLength='5.34px' lengthAdjust='spacingAndGlyphs'>3</text>
 <text x='664.99' y='568.03' text-anchor='middle' style='font-size: 9.60px; fill: #4D4D4D; font-family: sans;' textLength='5.34px' lengthAdjust='spacingAndGlyphs'>4</text>
-<polyline points='370.80,556.04 370.80,44.09 ' style='stroke-width: 0.85; stroke-linecap: butt;' />
-<polyline points='5.98,556.04 5.98,44.09 ' style='stroke-width: 0.85; stroke-linecap: butt;' />
 <text x='5.98' y='15.89' style='font-size: 14.40px; font-family: sans;' textLength='136.06px' lengthAdjust='spacingAndGlyphs'>mcmc_violin (default)</text>
 </g>
 </svg>
