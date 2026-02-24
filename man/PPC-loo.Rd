@@ -219,7 +219,7 @@ Defaults to \code{"POT"}.}
 
 \item{gamma}{For \code{ppc_loo_pit_ecdf()} when \code{method = "correlated"}, tolerance
 threshold controlling how strongly suspicious points are flagged. Larger
-values highlight only the most influential points. If \code{NULL}, automatically
+values (gamma > 0) emphasizes points with larger deviations. If \code{NULL}, automatically
 determined based on p-value.}
 
 \item{color}{For \code{ppc_loo_pit_ecdf()} when \code{method = "correlated"}, a vector
