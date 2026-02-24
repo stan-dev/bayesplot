@@ -522,6 +522,7 @@ mcmc_dots_by_chain <- function(
     yaxis_text(FALSE) +
     yaxis_title(FALSE) +
     yaxis_ticks(FALSE) +
+    theme(axis.line.y = element_blank()) +
     xaxis_title(on = n_param == 1)
 }
 
@@ -641,6 +642,7 @@ mcmc_dots_by_chain <- function(
     yaxis_text(FALSE) +
     yaxis_ticks(FALSE) +
     yaxis_title(on = n_param == 1 && violin) +
+    theme(axis.line.y = element_blank()) +
     xaxis_title(on = n_param == 1)
 }
 

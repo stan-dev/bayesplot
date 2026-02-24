@@ -155,9 +155,6 @@
 <text x='603.21' y='383.77' text-anchor='middle' style='font-size: 9.60px; fill: #4D4D4D; font-family: sans;' textLength='13.35px' lengthAdjust='spacingAndGlyphs'>0.0</text>
 <text x='653.58' y='383.77' text-anchor='middle' style='font-size: 9.60px; fill: #4D4D4D; font-family: sans;' textLength='13.35px' lengthAdjust='spacingAndGlyphs'>2.5</text>
 <text x='703.95' y='383.77' text-anchor='middle' style='font-size: 9.60px; fill: #4D4D4D; font-family: sans;' textLength='13.35px' lengthAdjust='spacingAndGlyphs'>5.0</text>
-<polyline points='5.98,187.52 5.98,24.85 ' style='stroke-width: 0.85; stroke-linecap: butt;' />
-<polyline points='5.98,371.78 5.98,209.12 ' style='stroke-width: 0.85; stroke-linecap: butt;' />
-<polyline points='5.98,556.04 5.98,393.38 ' style='stroke-width: 0.85; stroke-linecap: butt;' />
 <text x='5.98' y='15.89' style='font-size: 14.40px; font-family: sans;' textLength='226.55px' lengthAdjust='spacingAndGlyphs'>ppd_freqpoly (alpha, binwidth, size)</text>
 </g>
 </svg>

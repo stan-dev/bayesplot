@@ -1,5 +1,6 @@
 # bayesplot (development version)
 
+* Remove y-axis line from density, histogram, dot, violin, and frequency polygon plots where the y-axis has no meaningful scale
 * New functions `mcmc_dots` and `mcmc_dots_by_chain` for dot plots of MCMC draws by @behramulukir (#402)
 * Default to `quantiles=100` for all dot plots by @behramulukir (#402)
 

@@ -312,10 +312,6 @@
 <text x='518.50' y='568.03' text-anchor='middle' style='font-size: 9.60px; fill: #4D4D4D; font-family: sans;' textLength='5.34px' lengthAdjust='spacingAndGlyphs'>0</text>
 <text x='594.32' y='568.03' text-anchor='middle' style='font-size: 9.60px; fill: #4D4D4D; font-family: sans;' textLength='5.34px' lengthAdjust='spacingAndGlyphs'>2</text>
 <text x='670.14' y='568.03' text-anchor='middle' style='font-size: 9.60px; fill: #4D4D4D; font-family: sans;' textLength='5.34px' lengthAdjust='spacingAndGlyphs'>4</text>
-<polyline points='5.98,155.88 5.98,44.09 ' style='stroke-width: 0.85; stroke-linecap: butt;' />
-<polyline points='5.98,289.27 5.98,177.48 ' style='stroke-width: 0.85; stroke-linecap: butt;' />
-<polyline points='5.98,422.66 5.98,310.87 ' style='stroke-width: 0.85; stroke-linecap: butt;' />
-<polyline points='5.98,556.04 5.98,444.26 ' style='stroke-width: 0.85; stroke-linecap: butt;' />
 <text x='5.98' y='15.89' style='font-size: 14.40px; font-family: sans;' textLength='191.32px' lengthAdjust='spacingAndGlyphs'>mcmc_hist_by_chain (default)</text>
 </g>
 </svg>

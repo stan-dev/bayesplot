@@ -1038,9 +1038,6 @@
 <text x='489.09' y='568.03' text-anchor='middle' style='font-size: 9.60px; fill: #4D4D4D; font-family: sans;' textLength='8.54px' lengthAdjust='spacingAndGlyphs'>-2</text>
 <text x='545.89' y='568.03' text-anchor='middle' style='font-size: 9.60px; fill: #4D4D4D; font-family: sans;' textLength='5.34px' lengthAdjust='spacingAndGlyphs'>0</text>
 <text x='602.68' y='568.03' text-anchor='middle' style='font-size: 9.60px; fill: #4D4D4D; font-family: sans;' textLength='5.34px' lengthAdjust='spacingAndGlyphs'>2</text>
-<polyline points='5.98,187.52 5.98,24.85 ' style='stroke-width: 0.85; stroke-linecap: butt;' />
-<polyline points='5.98,371.78 5.98,209.12 ' style='stroke-width: 0.85; stroke-linecap: butt;' />
-<polyline points='5.98,556.04 5.98,393.38 ' style='stroke-width: 0.85; stroke-linecap: butt;' />
 <rect x='664.10' y='281.53' width='17.28' height='17.28' style='stroke-width: 2.33; stroke: #FFFFFF; fill: #FFFFFF;' />
 <circle cx='672.74' cy='290.17' r='2.67' style='stroke-width: 1.06; stroke: #011F4B; fill: #03396C;' />
 <rect x='664.10' y='298.81' width='17.28' height='17.28' style='stroke-width: 2.33; stroke: #FFFFFF; fill: #FFFFFF;' />

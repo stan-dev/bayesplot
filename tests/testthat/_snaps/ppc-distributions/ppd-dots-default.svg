@@ -927,9 +927,6 @@
 <text x='539.09' y='383.77' text-anchor='middle' style='font-size: 9.60px; fill: #4D4D4D; font-family: sans;' textLength='8.54px' lengthAdjust='spacingAndGlyphs'>-2</text>
 <text x='602.34' y='383.77' text-anchor='middle' style='font-size: 9.60px; fill: #4D4D4D; font-family: sans;' textLength='5.34px' lengthAdjust='spacingAndGlyphs'>0</text>
 <text x='665.60' y='383.77' text-anchor='middle' style='font-size: 9.60px; fill: #4D4D4D; font-family: sans;' textLength='5.34px' lengthAdjust='spacingAndGlyphs'>2</text>
-<polyline points='5.98,187.52 5.98,24.85 ' style='stroke-width: 0.85; stroke-linecap: butt;' />
-<polyline points='5.98,371.78 5.98,209.12 ' style='stroke-width: 0.85; stroke-linecap: butt;' />
-<polyline points='5.98,556.04 5.98,393.38 ' style='stroke-width: 0.85; stroke-linecap: butt;' />
 <text x='5.98' y='15.89' style='font-size: 14.40px; font-family: sans;' textLength='116.09px' lengthAdjust='spacingAndGlyphs'>ppd_dots (default)</text>
 </g>
 </svg>

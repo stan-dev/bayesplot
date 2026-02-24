@@ -350,10 +350,6 @@
 <text x='599.00' y='568.03' text-anchor='middle' style='font-size: 9.60px; fill: #4D4D4D; font-family: sans;' textLength='5.34px' lengthAdjust='spacingAndGlyphs'>1</text>
 <text x='621.54' y='568.03' text-anchor='middle' style='font-size: 9.60px; fill: #4D4D4D; font-family: sans;' textLength='5.34px' lengthAdjust='spacingAndGlyphs'>2</text>
 <text x='644.09' y='568.03' text-anchor='middle' style='font-size: 9.60px; fill: #4D4D4D; font-family: sans;' textLength='5.34px' lengthAdjust='spacingAndGlyphs'>3</text>
-<polyline points='5.98,149.69 5.98,35.84 ' style='stroke-width: 0.85; stroke-linecap: butt;' />
-<polyline points='5.98,285.14 5.98,171.29 ' style='stroke-width: 0.85; stroke-linecap: butt;' />
-<polyline points='5.98,420.59 5.98,306.74 ' style='stroke-width: 0.85; stroke-linecap: butt;' />
-<polyline points='5.98,556.04 5.98,442.19 ' style='stroke-width: 0.85; stroke-linecap: butt;' />
 <rect x='664.10' y='287.03' width='17.28' height='17.28' style='stroke-width: 2.33; stroke: #FFFFFF; fill: #FFFFFF;' />
 <rect x='664.81' y='287.73' width='15.86' height='15.86' style='stroke-width: 1.07; stroke: #011F4B; stroke-linecap: butt; fill: #03396C;' />
 <rect x='664.10' y='304.31' width='17.28' height='17.28' style='stroke-width: 2.33; stroke: #FFFFFF; fill: #FFFFFF;' />
