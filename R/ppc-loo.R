@@ -411,7 +411,7 @@ ppc_loo_pit_qq <- function(y,
 #'   Defaults to `"POT"`.
 #' @param gamma For `ppc_loo_pit_ecdf()` when `method = "correlated"`, tolerance
 #'   threshold controlling how strongly suspicious points are flagged. Larger
-#'   values highlight only the most influential points. If `NULL`, automatically
+#'   values (gamma > 0) emphasizes points with larger deviations. If `NULL`, automatically
 #'   determined based on p-value.
 #' @param color For `ppc_loo_pit_ecdf()` when `method = "correlated"`, a vector
 #'   with base color and highlight color for the ECDF plot. Defaults to
@@ -440,6 +440,13 @@ ppc_loo_pit_ecdf <- function(y,
   check_ignored_arguments(..., ok_args = list("moment_match"))
   
   # Input validation -------------------------------------------------------
+  # internal helper for printing user information if needed
+  .warn_ignored <- function(method, args) {
+    msg <- paste0("As method = ", method, " specified; ignoring: ",
+    paste(args, collapse = ", "), ".")
+    inform(msg)
+  }
+
   if (is.null(method)) {
     inform(
       c(
@@ -459,9 +466,7 @@ ppc_loo_pit_ecdf <- function(y,
     if (method == "independent") {
       inform(
         paste(
-          "The 'independent' method is superseded by the 'correlated' method.",
-          "The new 'correlated' approach provides an updated uniformity test",
-          "and graphical representation."
+          "The 'independent' method is superseded by the 'correlated' method."
         )
       )
     }
@@ -469,11 +474,19 @@ ppc_loo_pit_ecdf <- function(y,
 
   # PIT calculation or validation
   if (!is.null(pit)) {
-    inform("'pit' specified so ignoring 'y','yrep','lw' if specified.")
     pit <- validate_pit(pit)
     if (is.null(K)) {
       K <- length(pit)
     }
+    # print user info only if corresponding args are specified
+    ignored <- character(0)
+    if (!missing(y) && !is.null(y)) ignored <- c(ignored, "y")
+    if (!missing(yrep) && !is.null(yrep)) ignored <- c(ignored, "yrep")
+    if (!is.null(lw)) ignored <- c(ignored, "lw")
+    if (length(ignored) > 0) {
+      inform(paste0("As 'pit' specified; ignoring: ", paste(ignored, collapse = ", "), "."))
+    }
+
   } else {
     suggested_package("rstantools")
     y <- validate_y(y)
@@ -488,29 +501,25 @@ ppc_loo_pit_ecdf <- function(y,
   }
 
   # Input validation dependent on method
-  if (method == "correlated") {
-    inform("method = 'correlated' specified so ignoring 'interpolate_adj' if specified.")
-    if (is.null(test)) {
-      # TODO: No default value for 'test'. Is this desired? Default should be POT
-      stop(paste(
-        "method = 'correlated' requires 'test' argument.",
-        "Possible values: 'POT', 'PRIT', 'PIET'."
-      ))
-    }
-
-    test <- match.arg(test, choices = c("POT", "PRIT", "PIET"))
+  switch(method,
+    "correlated" = {
+      if (!is.null(interpolate_adj)) .warn_ignored("'correlated'", "interpolate_adj")
+      
+      test <- match.arg(test %||% "POT", choices = c("POT", "PRIT", "PIET"))
+      
+      alpha     <- 1 - prob
+      gamma     <- gamma %||% 0
+      linewidth <- linewidth %||% 0.3
+      color     <- color %||% c(ecdf = "gray60", highlight = "gray30")
+    },
     
-    # set default arguments
-    alpha <- 1 - prob
-    gamma <- gamma %||% 0
-    linewidth <- linewidth %||% 0.3
-    color <- color %||% c(ecdf = "gray60", highlight = "gray30")
-
-  } else if (method == "independent") {
-    inform(paste("method = 'independent' is specified so ignoring",
-     "'test', 'gamma' if specified."
-    ))
-  }
+    "independent" = {
+      ignored <- character(0)
+      if (!is.null(test)) ignored <- c(ignored, "test")
+      if (!is.null(gamma)) ignored <- c(ignored, "gamma")
+      if (length(ignored) > 0) .warn_ignored("'independent'", ignored)
+    }
+  )
 
   n_obs <- length(pit)
   unit_interval <- seq(0, 1, length.out = K)
@@ -626,11 +635,6 @@ ppc_loo_pit_ecdf <- function(y,
       yaxis_ticks(FALSE) +
       scale_color_ppc() +
       bayesplot::theme_default(base_family = "sans", base_size = 16)
-    
-    message(sprintf(
-      "Using tolerance \u03b3 = %s (valid range: [0, %.2f]).\nSetting \u03b3 > 0 emphasizes points with larger deviations.",
-      gamma, max(pointwise_contribution)
-    ))
 
     return(p)
   }
