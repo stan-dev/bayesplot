@@ -608,7 +608,7 @@ ypred_label <- function() expression(italic(y)[pred])
 #' @param x Numeric vector of Cauchy-transformed PIT values.
 #' @return Numeric vector of Shapley values with the same length as `x`.
 #' @noRd
-compute_shapley_values <- function(x) {
+.compute_shapley_values <- function(x) {
   n <- length(x)
   if (n == 0) {
     return(numeric(0))
@@ -641,7 +641,7 @@ compute_shapley_values <- function(x) {
 #' @param x Numeric vector of PIT values in `[0, 1]`.
 #' @return Numeric vector of p-values.
 #' @noRd
-piet_test <- function(x) {
+.piet_test <- function(x) {
   cdf_exp <- pexp(-log(x), rate = 1) # same as 1-x but numerically more stable
   p_values <- 2 * pmin(cdf_exp, 1 - cdf_exp)
 
@@ -659,7 +659,7 @@ piet_test <- function(x) {
 #' @param x Numeric vector of PIT values in `[0, 1]`.
 #' @return Numeric vector of p-values.
 #' @noRd
-pot_test <- function(x) {
+.pot_test <- function(x) {
   n <- length(x)
   # keep NA values instead of silent recycling via sort()
   # TODO: Can PIT values be NAN at this point?
@@ -679,7 +679,7 @@ pot_test <- function(x) {
 #' @param x Numeric vector of PIT values in `[0, 1]`.
 #' @return Numeric vector of p-values.
 #' @noRd
-prit_test <- function(x) {
+.prit_test <- function(x) {
   n <- length(x)
   scaled_ecdf <- n * ecdf(x)(x)
   probs1 <- pbinom(scaled_ecdf - 1, n, x)
@@ -700,7 +700,7 @@ prit_test <- function(x) {
 #' included.
 #' @return p-value of the Cauchy combination method.
 #' @noRd
-cauchy_combination_test <- function(x, truncate = NULL) {
+.cauchy_combination_test <- function(x, truncate = NULL) {
   if (truncate) {
     idx <- which(x < 0.5)
     1 - pcauchy(mean(-qcauchy(x[idx])))
@@ -716,6 +716,6 @@ cauchy_combination_test <- function(x, truncate = NULL) {
 #' @param x Numeric vector of PIT values in `[0, 1]`.
 #' @return Numeric vector of Cauchy-transformed values.
 #' @noRd
-compute_cauchy <- function(x) {
+.compute_cauchy <- function(x) {
   tan((0.5 - x) * pi)
 }

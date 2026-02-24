@@ -523,23 +523,23 @@ ppc_loo_pit_ecdf <- function(y,
 
   n_obs <- length(pit)
   unit_interval <- seq(0, 1, length.out = K)
-  ecdf_pit_fn <- ecdf(pit)
+  .ecdf_pit_fn <- ecdf(pit)
 
   # Correlated method --------------------------------------------------
   if (method == "correlated") {
     # Compute test p-value and Cauchy-transformed values
     if (test == "POT") {
-      std_cauchy_values <- compute_cauchy(pot_test(sort(pit)))
-      p_value_CCT <- cauchy_combination_test(pot_test(pit), truncate = FALSE)
+      std_cauchy_values <- .compute_cauchy(.pot_test(sort(pit)))
+      p_value_CCT <- .cauchy_combination_test(.pot_test(pit), truncate = FALSE)
     } else if (test == "PIET") {
-      std_cauchy_values <- compute_cauchy(piet_test(sort(pit)))
-      p_value_CCT <- cauchy_combination_test(piet_test(pit), truncate = FALSE)
+      std_cauchy_values <- .compute_cauchy(.piet_test(sort(pit)))
+      p_value_CCT <- .cauchy_combination_test(.piet_test(pit), truncate = FALSE)
     } else { # PRIT
-      std_cauchy_values <- compute_cauchy(prit_test(sort(pit)))
-      p_value_CCT <- cauchy_combination_test(prit_test(pit), truncate = TRUE)
+      std_cauchy_values <- .compute_cauchy(.prit_test(sort(pit)))
+      p_value_CCT <- .cauchy_combination_test(.prit_test(pit), truncate = TRUE)
     }
 
-    pointwise_contribution <- compute_shapley_values(std_cauchy_values)
+    pointwise_contribution <- .compute_shapley_values(std_cauchy_values)
 
     if (gamma < 0 || gamma > max(pointwise_contribution)) {
       stop(sprintf(
@@ -552,13 +552,13 @@ ppc_loo_pit_ecdf <- function(y,
     # Evaluate at 0-1 interval b´values
     df_main <- tibble::tibble(
       x = x_axis_combined,
-      ecdf_pit = ecdf_pit_fn(x_axis_combined) - plot_diff * x_axis_combined
+      ecdf_pit = .ecdf_pit_fn(x_axis_combined) - plot_diff * x_axis_combined
     )
     
     # Evaluate at pit values (used for highlighing)
     df_pit <- tibble::tibble(
       pit = pit,
-      ecdf_pit = ecdf_pit_fn(pit) - plot_diff * pit
+      ecdf_pit = .ecdf_pit_fn(pit) - plot_diff * pit
     )
     df_pit <- df_pit[order(df_pit$pit), ]
     
@@ -648,7 +648,7 @@ ppc_loo_pit_ecdf <- function(y,
   )
 
   lims <- ecdf_intervals(gamma = gamma_indep, N = n_obs, K = K)
-  ecdf_eval <- ecdf_pit_fn(unit_interval) - plot_diff * unit_interval
+  ecdf_eval <- .ecdf_pit_fn(unit_interval) - plot_diff * unit_interval
   
   # Precompute division by n_obs
   n_obs_inv <- 1 / n_obs
