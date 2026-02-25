@@ -703,6 +703,10 @@ ypred_label <- function() expression(italic(y)[pred])
 .cauchy_combination_test <- function(x, truncate = NULL) {
   if (truncate) {
     idx <- which(x < 0.5)
+    if (length(idx) == 0) {
+      stop("Cannot compute truncated Cauchy combination test. ",
+           "No p-values below 0.5 found.")
+    }
     1 - pcauchy(mean(-qcauchy(x[idx])))
   } else {
     1 - pcauchy(mean(-qcauchy(x)))
