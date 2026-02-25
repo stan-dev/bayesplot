@@ -561,7 +561,7 @@ ppc_loo_pit_ecdf <- function(y,
       ecdf_pit = .ecdf_pit_fn(pit) - plot_diff * pit
     )
     df_pit <- df_pit[order(df_pit$pit), ]
-    
+
     # Plot ECDF
     p <- ggplot() +
       geom_step(
@@ -629,11 +629,12 @@ ppc_loo_pit_ecdf <- function(y,
         }
       }
     }
-    
+
     # Apply bayesplot theme and styling
     p <- p +
       yaxis_ticks(FALSE) +
       scale_color_ppc() +
+      labs(title = sprintf("Uniformity p-value = %.3f", p_value_CCT)) +
       bayesplot::theme_default(base_family = "sans", base_size = 16)
 
     return(p)
