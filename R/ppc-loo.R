@@ -530,7 +530,7 @@ ppc_loo_pit_ecdf <- function(y,
     # Compute test p-value and Cauchy-transformed values
     if (test == "POT") {
       std_cauchy_values <- .compute_cauchy(.pot_test(sort(pit)))
-      p_value_CCT <- .cauchy_combination_test(.pot_test(pit), truncate = FALSE)
+      p_value_CCT <- .cauchy_combination_test(.pot_test(pit), truncate = TRUE)
     } else if (test == "PIET") {
       std_cauchy_values <- .compute_cauchy(.piet_test(sort(pit)))
       p_value_CCT <- .cauchy_combination_test(.piet_test(pit), truncate = FALSE)
