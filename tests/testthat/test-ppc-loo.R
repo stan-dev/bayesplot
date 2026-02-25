@@ -191,7 +191,8 @@ test_that("ppc_loo_pit_ecdf correlated method handles edge cases", {
   
   # Test with single value (edge case)
   single_pit <- 0.5
-  expect_gg(p4 <- ppc_loo_pit_ecdf(pit = single_pit, method = "correlated"))
+  expect_error(ppc_loo_pit_ecdf(pit = single_pit, method = "correlated"))
+  expect_gg(p5 <- ppc_loo_pit_ecdf(pit = single_pit, method = "correlated", test = "PIET"))
 })
 
 test_that("ppc_loo_pit functions work when pit specified instead of y, yrep, and lw", {
