@@ -51,6 +51,6 @@
 <text x='682.51' y='547.05' text-anchor='middle' style='font-size: 12.80px; fill: #4D4D4D; font-family: sans;' textLength='24.91px' lengthAdjust='spacingAndGlyphs'>1.00</text>
 <text x='387.33' y='564.71' text-anchor='middle' style='font-size: 16.00px; font-family: sans;' textLength='63.14px' lengthAdjust='spacingAndGlyphs'>LOO PIT</text>
 <text transform='translate(18.98,282.11) rotate(-90)' text-anchor='middle' style='font-size: 16.00px; font-family: sans;' textLength='118.28px' lengthAdjust='spacingAndGlyphs'>ECDF difference</text>
-<text x='62.64' y='21.18' style='font-size: 19.20px; font-family: sans;' textLength='321.27px' lengthAdjust='spacingAndGlyphs'>ppc_loo_pit_ecdf (diff, correlated piet)</text>
+<text x='62.64' y='21.18' style='font-size: 19.20px; font-family: sans;' textLength='224.67px' lengthAdjust='spacingAndGlyphs'>Uniformity p-value = 0.188</text>
 </g>
 </svg>

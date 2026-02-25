@@ -15889,3 +15889,192 @@ Failed doppelganger: ppc-loo-pit-ecdf-ecdf-difference (C:\Users\flore\Documents\
   </g>                                                                          
   </svg>                                                                        
 
+
+Failed doppelganger: ppc-loo-pit-ecdf-correlated-pot (C:\Users\flore\Documents\GitHub\bayesplot\tests\testthat\_snaps/ppc-loo/ppc-loo-pit-ecdf-correlated-pot.svg)
+
+< before                                                                        
+> after                                                                         
+@@ 58,5 / 58,5 @@                                                               
+  <text x='385.20' y='564.71' text-anchor='middle' style='font-size: 16.00px; fo
+  nt-family: sans;' textLength='63.14px' lengthAdjust='spacingAndGlyphs'>LOO PIT
+  </text>                                                                       
+  <text transform='translate(18.98,282.11) rotate(-90)' text-anchor='middle' sty
+  le='font-size: 16.00px; font-family: sans;' textLength='43.56px' lengthAdjust=
+  'spacingAndGlyphs'>ECDF</text>                                                
+< <text x='58.37' y='21.18' style='font-size: 19.20px; font-family: sans;' textL
+: ength='280.73px' lengthAdjust='spacingAndGlyphs'>ppc_loo_pit_ecdf (correlated 
+: pot)</text>                                                                   
+> <text x='58.37' y='21.18' style='font-size: 19.20px; font-family: sans;' textL
+: ength='224.67px' lengthAdjust='spacingAndGlyphs'>Uniformity p-value = 0.000</t
+: ext>                                                                          
+  </g>                                                                          
+  </svg>                                                                        
+
+
+Failed doppelganger: ppc-loo-pit-ecdf-correlated-prit (C:\Users\flore\Documents\GitHub\bayesplot\tests\testthat\_snaps/ppc-loo/ppc-loo-pit-ecdf-correlated-prit.svg)
+
+< before                                                                        
+> after                                                                         
+@@ 60,5 / 60,5 @@                                                               
+  <text x='385.20' y='564.71' text-anchor='middle' style='font-size: 16.00px; fo
+  nt-family: sans;' textLength='63.14px' lengthAdjust='spacingAndGlyphs'>LOO PIT
+  </text>                                                                       
+  <text transform='translate(18.98,282.11) rotate(-90)' text-anchor='middle' sty
+  le='font-size: 16.00px; font-family: sans;' textLength='43.56px' lengthAdjust=
+  'spacingAndGlyphs'>ECDF</text>                                                
+< <text x='58.37' y='21.18' style='font-size: 19.20px; font-family: sans;' textL
+: ength='280.71px' lengthAdjust='spacingAndGlyphs'>ppc_loo_pit_ecdf (correlated 
+: prit)</text>                                                                  
+> <text x='58.37' y='21.18' style='font-size: 19.20px; font-family: sans;' textL
+: ength='224.67px' lengthAdjust='spacingAndGlyphs'>Uniformity p-value = 0.001</t
+: ext>                                                                          
+  </g>                                                                          
+  </svg>                                                                        
+
+
+Failed doppelganger: ppc-loo-pit-ecdf-correlated-piet (C:\Users\flore\Documents\GitHub\bayesplot\tests\testthat\_snaps/ppc-loo/ppc-loo-pit-ecdf-correlated-piet.svg)
+
+< before                                                                        
+> after                                                                         
+@@ 54,5 / 54,5 @@                                                               
+  <text x='385.20' y='564.71' text-anchor='middle' style='font-size: 16.00px; fo
+  nt-family: sans;' textLength='63.14px' lengthAdjust='spacingAndGlyphs'>LOO PIT
+  </text>                                                                       
+  <text transform='translate(18.98,282.11) rotate(-90)' text-anchor='middle' sty
+  le='font-size: 16.00px; font-family: sans;' textLength='43.56px' lengthAdjust=
+  'spacingAndGlyphs'>ECDF</text>                                                
+< <text x='58.37' y='21.18' style='font-size: 19.20px; font-family: sans;' textL
+: ength='284.99px' lengthAdjust='spacingAndGlyphs'>ppc_loo_pit_ecdf (correlated 
+: piet)</text>                                                                  
+> <text x='58.37' y='21.18' style='font-size: 19.20px; font-family: sans;' textL
+: ength='224.67px' lengthAdjust='spacingAndGlyphs'>Uniformity p-value = 0.188</t
+: ext>                                                                          
+  </g>                                                                          
+  </svg>                                                                        
+
+
+Failed doppelganger: ppc-loo-pit-ecdf-diff-correlated-pot (C:\Users\flore\Documents\GitHub\bayesplot\tests\testthat\_snaps/ppc-loo/ppc-loo-pit-ecdf-diff-correlated-pot.svg)
+
+< before                                                                        
+> after                                                                         
+@@ 56,5 / 56,5 @@                                                               
+  <text x='387.33' y='564.71' text-anchor='middle' style='font-size: 16.00px; fo
+  nt-family: sans;' textLength='63.14px' lengthAdjust='spacingAndGlyphs'>LOO PIT
+  </text>                                                                       
+  <text transform='translate(18.98,282.11) rotate(-90)' text-anchor='middle' sty
+  le='font-size: 16.00px; font-family: sans;' textLength='118.28px' lengthAdjust
+  ='spacingAndGlyphs'>ECDF difference</text>                                    
+< <text x='62.64' y='21.18' style='font-size: 19.20px; font-family: sans;' textL
+: ength='317.01px' lengthAdjust='spacingAndGlyphs'>ppc_loo_pit_ecdf (diff, corre
+: lated pot)</text>                                                             
+> <text x='62.64' y='21.18' style='font-size: 19.20px; font-family: sans;' textL
+: ength='224.67px' lengthAdjust='spacingAndGlyphs'>Uniformity p-value = 0.000</t
+: ext>                                                                          
+  </g>                                                                          
+  </svg>                                                                        
+
+
+Failed doppelganger: ppc-loo-pit-ecdf-diff-correlated-prit (C:\Users\flore\Documents\GitHub\bayesplot\tests\testthat\_snaps/ppc-loo/ppc-loo-pit-ecdf-diff-correlated-prit.svg)
+
+< before                                                                        
+> after                                                                         
+@@ 58,5 / 58,5 @@                                                               
+  <text x='387.33' y='564.71' text-anchor='middle' style='font-size: 16.00px; fo
+  nt-family: sans;' textLength='63.14px' lengthAdjust='spacingAndGlyphs'>LOO PIT
+  </text>                                                                       
+  <text transform='translate(18.98,282.11) rotate(-90)' text-anchor='middle' sty
+  le='font-size: 16.00px; font-family: sans;' textLength='118.28px' lengthAdjust
+  ='spacingAndGlyphs'>ECDF difference</text>                                    
+< <text x='62.64' y='21.18' style='font-size: 19.20px; font-family: sans;' textL
+: ength='316.98px' lengthAdjust='spacingAndGlyphs'>ppc_loo_pit_ecdf (diff, corre
+: lated prit)</text>                                                            
+> <text x='62.64' y='21.18' style='font-size: 19.20px; font-family: sans;' textL
+: ength='224.67px' lengthAdjust='spacingAndGlyphs'>Uniformity p-value = 0.001</t
+: ext>                                                                          
+  </g>                                                                          
+  </svg>                                                                        
+
+
+Failed doppelganger: ppc-loo-pit-ecdf-diff-correlated-piet (C:\Users\flore\Documents\GitHub\bayesplot\tests\testthat\_snaps/ppc-loo/ppc-loo-pit-ecdf-diff-correlated-piet.svg)
+
+< before                                                                        
+> after                                                                         
+@@ 52,5 / 52,5 @@                                                               
+  <text x='387.33' y='564.71' text-anchor='middle' style='font-size: 16.00px; fo
+  nt-family: sans;' textLength='63.14px' lengthAdjust='spacingAndGlyphs'>LOO PIT
+  </text>                                                                       
+  <text transform='translate(18.98,282.11) rotate(-90)' text-anchor='middle' sty
+  le='font-size: 16.00px; font-family: sans;' textLength='118.28px' lengthAdjust
+  ='spacingAndGlyphs'>ECDF difference</text>                                    
+< <text x='62.64' y='21.18' style='font-size: 19.20px; font-family: sans;' textL
+: ength='321.27px' lengthAdjust='spacingAndGlyphs'>ppc_loo_pit_ecdf (diff, corre
+: lated piet)</text>                                                            
+> <text x='62.64' y='21.18' style='font-size: 19.20px; font-family: sans;' textL
+: ength='224.67px' lengthAdjust='spacingAndGlyphs'>Uniformity p-value = 0.188</t
+: ext>                                                                          
+  </g>                                                                          
+  </svg>                                                                        
+
+
+Failed doppelganger: ppc-loo-pit-ecdf-linewidth-1 (C:\Users\flore\Documents\GitHub\bayesplot\tests\testthat\_snaps/ppc-loo/ppc-loo-pit-ecdf-linewidth-1.svg)
+
+< before                                                                        
+> after                                                                         
+@@ 58,5 / 58,5 @@                                                               
+  <text x='385.20' y='564.71' text-anchor='middle' style='font-size: 16.00px; fo
+  nt-family: sans;' textLength='63.14px' lengthAdjust='spacingAndGlyphs'>LOO PIT
+  </text>                                                                       
+  <text transform='translate(18.98,282.11) rotate(-90)' text-anchor='middle' sty
+  le='font-size: 16.00px; font-family: sans;' textLength='43.56px' lengthAdjust=
+  'spacingAndGlyphs'>ECDF</text>                                                
+< <text x='58.37' y='21.18' style='font-size: 19.20px; font-family: sans;' textL
+: ength='270.59px' lengthAdjust='spacingAndGlyphs'>ppc_loo_pit_ecdf (linewidth =
+:  1)</text>                                                                    
+> <text x='58.37' y='21.18' style='font-size: 19.20px; font-family: sans;' textL
+: ength='224.67px' lengthAdjust='spacingAndGlyphs'>Uniformity p-value = 0.000</t
+: ext>                                                                          
+  </g>                                                                          
+  </svg>                                                                        
+
+
+Failed doppelganger: ppc-loo-pit-ecdf-linewidth-2 (C:\Users\flore\Documents\GitHub\bayesplot\tests\testthat\_snaps/ppc-loo/ppc-loo-pit-ecdf-linewidth-2.svg)
+
+< before                                                                        
+> after                                                                         
+@@ 58,5 / 58,5 @@                                                               
+  <text x='385.20' y='564.71' text-anchor='middle' style='font-size: 16.00px; fo
+  nt-family: sans;' textLength='63.14px' lengthAdjust='spacingAndGlyphs'>LOO PIT
+  </text>                                                                       
+  <text transform='translate(18.98,282.11) rotate(-90)' text-anchor='middle' sty
+  le='font-size: 16.00px; font-family: sans;' textLength='43.56px' lengthAdjust=
+  'spacingAndGlyphs'>ECDF</text>                                                
+< <text x='58.37' y='21.18' style='font-size: 19.20px; font-family: sans;' textL
+: ength='270.59px' lengthAdjust='spacingAndGlyphs'>ppc_loo_pit_ecdf (linewidth =
+:  2)</text>                                                                    
+> <text x='58.37' y='21.18' style='font-size: 19.20px; font-family: sans;' textL
+: ength='224.67px' lengthAdjust='spacingAndGlyphs'>Uniformity p-value = 0.000</t
+: ext>                                                                          
+  </g>                                                                          
+  </svg>                                                                        
+
+
+Failed doppelganger: ppc-loo-pit-ecdf-color-change (C:\Users\flore\Documents\GitHub\bayesplot\tests\testthat\_snaps/ppc-loo/ppc-loo-pit-ecdf-color-change.svg)
+
+< before                                                                        
+> after                                                                         
+@@ 58,5 / 58,5 @@                                                               
+  <text x='385.20' y='564.71' text-anchor='middle' style='font-size: 16.00px; fo
+  nt-family: sans;' textLength='63.14px' lengthAdjust='spacingAndGlyphs'>LOO PIT
+  </text>                                                                       
+  <text transform='translate(18.98,282.11) rotate(-90)' text-anchor='middle' sty
+  le='font-size: 16.00px; font-family: sans;' textLength='43.56px' lengthAdjust=
+  'spacingAndGlyphs'>ECDF</text>                                                
+< <text x='58.37' y='21.18' style='font-size: 19.20px; font-family: sans;' textL
+: ength='273.28px' lengthAdjust='spacingAndGlyphs'>ppc_loo_pit_ecdf (color chang
+: e)</text>                                                                     
+> <text x='58.37' y='21.18' style='font-size: 19.20px; font-family: sans;' textL
+: ength='224.67px' lengthAdjust='spacingAndGlyphs'>Uniformity p-value = 0.000</t
+: ext>                                                                          
+  </g>                                                                          
+  </svg>                                                                        
+
