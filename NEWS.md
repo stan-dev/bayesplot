@@ -1,5 +1,6 @@
 # bayesplot (development version)
 
+* Documentation added for `ppc_data()` and `ppc_loo_pit_data()` functions (#209)
 * New functions `mcmc_dots` and `mcmc_dots_by_chain` for dot plots of MCMC draws by @behramulukir (#402)
 * Default to `quantiles=100` for all dot plots by @behramulukir (#402)
 
