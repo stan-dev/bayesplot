@@ -23,13 +23,13 @@
 #' @section Plot Descriptions:
 #' \describe{
 #'   \item{`ppc_data()`}{
-#'    This function prepares data for plotting with **ggplot2**. It is the
-#'    data-preparation back end for all the `ppc_*()` plotting functions, and
-#'    users can call it directly to create custom PPC plots using ggplot2. The
-#'    function returns a data frame (or list of data frames) that can be used to
-#'    build ggplot objects. This is useful when you want to customize the
-#'    appearance of PPC plots beyond what the built-in plotting functions allow,
-#'    or when you want to create entirely new types of PPC visualizations.
+#'    This function prepares data for plotting with **ggplot2**. It is a
+#'    general-purpose data-preparation helper used by many `ppc_*()` plotting
+#'    functions, and users can call it directly to create custom PPC plots using
+#'    ggplot2. The function returns a data frame that can be used to build ggplot
+#'    objects. This is useful when you want to customize the appearance of PPC
+#'    plots beyond what the built-in plotting functions allow, or when you want to
+#'    construct new types of PPC visualizations based on the same underlying data.
 #'   }
 #'   \item{`ppc_hist(), ppc_freqpoly(), ppc_dens(), ppc_boxplot()`}{
 #'    A separate histogram, shaded frequency polygon, smoothed kernel density
