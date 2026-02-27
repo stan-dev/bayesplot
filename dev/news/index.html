@@ -63,7 +63,11 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="bayesplot-development-version">bayesplot (development version)<a class="anchor" aria-label="anchor" href="#bayesplot-development-version"></a></h2>
-<ul><li>New functions <code>mcmc_dots</code> and <code>mcmc_dots_by_chain</code> for dot plots of MCMC draws by <a href="https://github.com/behramulukir" class="external-link">@behramulukir</a> (<a href="https://github.com/stan-dev/bayesplot/issues/402" class="external-link">#402</a>)</li>
+<ul><li>Improved documentation for <code>binwidth</code>, <code>bins</code>, and <code>breaks</code> arguments to clarify they are passed to <code><a href="https://ggplot2.tidyverse.org/reference/geom_ribbon.html" class="external-link">ggplot2::geom_area()</a></code> and <code><a href="https://mjskay.github.io/ggdist/reference/stat_dots.html" class="external-link">ggdist::stat_dots()</a></code> in addition to <code><a href="https://ggplot2.tidyverse.org/reference/geom_histogram.html" class="external-link">ggplot2::geom_histogram()</a></code>
+</li>
+<li>Improved documentation for <code>freq</code> argument to clarify it applies to frequency polygons in addition to histograms</li>
+<li>Fixed test in <code>test-ppc-distributions.R</code> that incorrectly used <code><a href="../reference/PPC-distributions.html">ppc_dens()</a></code> instead of <code><a href="../reference/PPD-distributions.html">ppd_dens()</a></code> when testing PPD functions</li>
+<li>New functions <code>mcmc_dots</code> and <code>mcmc_dots_by_chain</code> for dot plots of MCMC draws by <a href="https://github.com/behramulukir" class="external-link">@behramulukir</a> (<a href="https://github.com/stan-dev/bayesplot/issues/402" class="external-link">#402</a>)</li>
 <li>Default to <code>quantiles=100</code> for all dot plots by <a href="https://github.com/behramulukir" class="external-link">@behramulukir</a> (<a href="https://github.com/stan-dev/bayesplot/issues/402" class="external-link">#402</a>)</li>
 </ul></div>
     <div class="section level2">

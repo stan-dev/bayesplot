@@ -2,6 +2,20 @@
 
 ## bayesplot (development version)
 
+- Improved documentation for `binwidth`, `bins`, and `breaks` arguments
+  to clarify they are passed to
+  [`ggplot2::geom_area()`](https://ggplot2.tidyverse.org/reference/geom_ribbon.html)
+  and
+  [`ggdist::stat_dots()`](https://mjskay.github.io/ggdist/reference/stat_dots.html)
+  in addition to
+  [`ggplot2::geom_histogram()`](https://ggplot2.tidyverse.org/reference/geom_histogram.html)
+- Improved documentation for `freq` argument to clarify it applies to
+  frequency polygons in addition to histograms
+- Fixed test in `test-ppc-distributions.R` that incorrectly used
+  [`ppc_dens()`](https://mc-stan.org/bayesplot/dev/reference/PPC-distributions.md)
+  instead of
+  [`ppd_dens()`](https://mc-stan.org/bayesplot/dev/reference/PPD-distributions.md)
+  when testing PPD functions
 - New functions `mcmc_dots` and `mcmc_dots_by_chain` for dot plots of
   MCMC draws by [@behramulukir](https://github.com/behramulukir)
   ([\#402](https://github.com/stan-dev/bayesplot/issues/402))

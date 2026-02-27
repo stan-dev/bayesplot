@@ -260,25 +260,25 @@ on the plot) instead of the <strong>ggplot2</strong> default of <code>scales="fi
 
 
 <dt id="arg-binwidth">binwidth<a class="anchor" aria-label="anchor" href="#arg-binwidth"></a></dt>
-<dd><p>Passed to <code><a href="https://ggplot2.tidyverse.org/reference/geom_histogram.html" class="external-link">ggplot2::geom_histogram()</a></code> to override
-the default binwidth.</p></dd>
+<dd><p>Passed to <code><a href="https://ggplot2.tidyverse.org/reference/geom_histogram.html" class="external-link">ggplot2::geom_histogram()</a></code>, <code><a href="https://ggplot2.tidyverse.org/reference/geom_ribbon.html" class="external-link">ggplot2::geom_area()</a></code>,
+and <code><a href="https://mjskay.github.io/ggdist/reference/stat_dots.html" class="external-link">ggdist::stat_dots()</a></code> to override the default binwidth.</p></dd>
 
 
 <dt id="arg-bins">bins<a class="anchor" aria-label="anchor" href="#arg-bins"></a></dt>
-<dd><p>Passed to <code><a href="https://ggplot2.tidyverse.org/reference/geom_histogram.html" class="external-link">ggplot2::geom_histogram()</a></code> to override
-the default binwidth.</p></dd>
+<dd><p>Passed to <code><a href="https://ggplot2.tidyverse.org/reference/geom_histogram.html" class="external-link">ggplot2::geom_histogram()</a></code> and <code><a href="https://ggplot2.tidyverse.org/reference/geom_ribbon.html" class="external-link">ggplot2::geom_area()</a></code>
+to override the default binning.</p></dd>
 
 
 <dt id="arg-breaks">breaks<a class="anchor" aria-label="anchor" href="#arg-breaks"></a></dt>
-<dd><p>Passed to <code><a href="https://ggplot2.tidyverse.org/reference/geom_histogram.html" class="external-link">ggplot2::geom_histogram()</a></code> as an
-alternative to <code>binwidth</code>.</p></dd>
+<dd><p>Passed to <code><a href="https://ggplot2.tidyverse.org/reference/geom_histogram.html" class="external-link">ggplot2::geom_histogram()</a></code> as an alternative to
+<code>binwidth</code>.</p></dd>
 
 
 <dt id="arg-freq">freq<a class="anchor" aria-label="anchor" href="#arg-freq"></a></dt>
-<dd><p>For histograms, <code>freq=TRUE</code> (the default) puts count on the
-y-axis. Setting <code>freq=FALSE</code> puts density on the y-axis. (For many
-plots the y-axis text is off by default. To view the count or density
-labels on the y-axis see the <code><a href="bayesplot-helpers.html">yaxis_text()</a></code> convenience
+<dd><p>For histograms and frequency polygons, <code>freq=TRUE</code> (the default)
+puts count on the y-axis. Setting <code>freq=FALSE</code> puts density on the y-axis.
+(For many plots the y-axis text is off by default. To view the count or
+density labels on the y-axis see the <code><a href="bayesplot-helpers.html">yaxis_text()</a></code> convenience
 function.)</p></dd>
 
 
