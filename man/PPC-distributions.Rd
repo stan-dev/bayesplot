@@ -264,6 +264,15 @@ the input contains the "success" \emph{proportions} (not discrete
 \section{Plot Descriptions}{
 
 \describe{
+\item{\code{ppc_data()}}{
+This function prepares data for plotting with \strong{ggplot2}. It is a
+general-purpose data-preparation helper used by many \verb{ppc_*()} plotting
+functions, and users can call it directly to create custom PPC plots using
+ggplot2. The function returns a data frame that can be used to build ggplot
+objects. This is useful when you want to customize the appearance of PPC
+plots beyond what the built-in plotting functions allow, or when you want to
+construct new types of PPC visualizations based on the same underlying data.
+}
 \item{\verb{ppc_hist(), ppc_freqpoly(), ppc_dens(), ppc_boxplot()}}{
 A separate histogram, shaded frequency polygon, smoothed kernel density
 estimate, or box and whiskers plot is displayed for \code{y} and each

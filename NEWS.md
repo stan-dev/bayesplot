@@ -1,5 +1,6 @@
 # bayesplot (development version)
 
+* Documentation added for `ppc_data()` and `ppc_loo_pit_data()` functions (#209)
 * Improved documentation for `binwidth`, `bins`, and `breaks` arguments to clarify they are passed to `ggplot2::geom_area()` and `ggdist::stat_dots()` in addition to `ggplot2::geom_histogram()`
 * Improved documentation for `freq` argument to clarify it applies to frequency polygons in addition to histograms
 * Fixed test in `test-ppc-distributions.R` that incorrectly used `ppc_dens()` instead of `ppd_dens()` when testing PPD functions
