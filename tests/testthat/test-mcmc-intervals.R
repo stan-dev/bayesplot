@@ -78,6 +78,27 @@ test_that("mcmc_areas_ridges returns a ggplot object", {
   expect_gg(mcmc_areas_ridges(dframe1))
 })
 
+test_that("mcmc_areas_ridges overlay is not broken by scale_y_discrete (#287)", {
+  # Adding scale_y_discrete (e.g. to rename labels) used to silently replace
+  # the internal `limits =` that encodes the y-axis draw order, causing the
+  # ridgeline masking to break.
+  pars3 <- c("V1", "V2", "V3")
+  p_base <- mcmc_areas_ridges(vdiff_dframe, pars = pars3)
+
+  # The plot still builds cleanly after adding a user-supplied scale_y_discrete
+  expect_gg(p_base + ggplot2::scale_y_discrete(labels = c("A", "B", "C")))
+  expect_gg(p_base + ggplot2::scale_y_discrete(labels = pars3))
+
+  # mcmc_areas_ridges_data returns parameters in their original order.
+  # mcmc_areas_ridges() reverses these levels internally so that the first
+  # parameter is placed at the top of the plot without needing `limits =` in
+  # scale_y_discrete.
+  data <- mcmc_areas_ridges_data(vdiff_dframe, pars = pars3)
+  par_levels <- levels(data$parameter)
+  expect_equal(par_levels[1], "V1")
+  expect_equal(par_levels[length(par_levels)], "V3")
+})
+
 test_that("mcmc_intervals/areas with rhat", {
   r <- runif(ncol(mat), 0.9, 1.3)
   rbad <- c(NA, r[-1])
@@ -254,4 +275,9 @@ test_that("mcmc_areas_ridges renders correctly", {
 
   p_size <- mcmc_areas_ridges(vdiff_dframe, border_size = 2)
   vdiffr::expect_doppelganger("mcmc_areas_ridges (size)", p_size)
+
+  # Regression test for #287: overlay must remain correct after scale_y_discrete
+  p_labels <- mcmc_areas_ridges(vdiff_dframe, pars = c("V1", "V2", "V3")) +
+    ggplot2::scale_y_discrete(labels = c("z", "y", "x"))
+  vdiffr::expect_doppelganger("mcmc_areas_ridges (scale_y_discrete labels)", p_labels)
 })

@@ -485,6 +485,14 @@ mcmc_areas_ridges <- function(x,
                                  bw = bw, adjust = adjust, kernel = kernel,
                                  n_dens = n_dens, bounds = bounds)
 
+  # Encode the intended display order (first parameter at top, last at bottom)
+  # directly in the factor levels. This way the default scale_y_discrete does
+  # not require an explicit `limits =` argument to produce the correct ordering,
+  # so the plot remains correct when users add their own scale_y_discrete (e.g.
+  # to relabel or reorder the y-axis) — which would otherwise silently discard
+  # the `limits =` argument and break the layer masking draw order.
+  data$parameter <- factor(data$parameter, levels = rev(levels(data$parameter)))
+
   datas <- data %>%
     split(data$interval)
 
@@ -524,7 +532,11 @@ mcmc_areas_ridges <- function(x,
 
   # Draw each ridgeline from top the bottom
   layer_list_inner <- list()
-  par_draw_order <- levels(unique(data$parameter))
+  # After reversing the factor levels above, the first level is the bottom-most
+  # parameter and the last is the top-most. `par_draw_order` must go from the
+  # top-most to the bottom-most so that each successive layer correctly masks
+  # the outer ridgelines of the parameters below it.
+  par_draw_order <- rev(levels(unique(data$parameter)))
   bg <- bayesplot_theme_get()[["panel.background"]][["fill"]] %||% "white"
 
   for (par_num in seq_along(unique(data$parameter))) {
@@ -557,11 +569,16 @@ mcmc_areas_ridges <- function(x,
   ggplot(datas$outer) +
     aes(x = .data$x, y = .data$parameter) +
     layer_outer +
-    scale_y_discrete(limits = unique(rev(data$parameter)),
-                     expand = expansion(
-                       add = c(0, 1.4 + 1/(2 * nlevels(data$parameter))),
-                       mult = c(0.05, 1/(2 * nlevels(data$parameter)))
-                     )) +
+    # No `limits =` needed: factor levels already encode the correct display
+    # order so that the default scale_y_discrete produces the right result.
+    # Omitting `limits =` means a user-supplied scale_y_discrete (e.g. to
+    # rename labels) will not silently break the overlay.
+    scale_y_discrete(
+      expand = expansion(
+        add = c(0, 1.4 + 1 / (2 * nlevels(data$parameter))),
+        mult = c(0.05, 1 / (2 * nlevels(data$parameter)))
+      )
+    ) +
     layer_list_inner +
     layer_vertical_line +
     scale_fill_identity() +
