@@ -634,7 +634,13 @@ ppc_loo_pit_ecdf <- function(y,
     p <- p +
       yaxis_ticks(FALSE) +
       scale_color_ppc() +
-      labs(title = sprintf("Uniformity p-value = %.3f", p_value_CCT)) +
+      annotate(
+        "text",
+        x = -Inf, y = Inf,
+        label = sprintf("Uniformity p-value = %.3f", p_value_CCT),
+        hjust = -0.1, vjust = 1.5,
+        size = 6, color = "black"
+      ) +
       bayesplot::theme_default(base_family = "sans", base_size = 16)
 
     return(p)
