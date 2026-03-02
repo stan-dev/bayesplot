@@ -22,3 +22,6 @@ release-prep.R
 *_files
 vignettes/*.quarto
 vignettes/*.html
+
+# draft vignette
+ppc-loo-draft.Rmd

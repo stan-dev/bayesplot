@@ -649,9 +649,7 @@ ppc_loo_pit_ecdf <- function(y,
         max(abs(df_main$ecdf_pit))
       )
 
-      p <- p + scale_y_continuous(
-        limits = c(-epsilon, epsilon)
-      )
+      p <- p + scale_y_continuous(limits = c(-epsilon, epsilon))
     }
 
     return(p)
