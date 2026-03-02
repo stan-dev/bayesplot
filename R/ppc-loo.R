@@ -642,6 +642,17 @@ ppc_loo_pit_ecdf <- function(y,
         size = 6, color = "black"
       ) +
       bayesplot::theme_default(base_family = "sans", base_size = 16)
+    
+    if (plot_diff) {
+      epsilon = max(
+        sqrt(log(2 / (1 - prob)) / (2 * length(pit))),
+        max(abs(df_main$ecdf_pit))
+      )
+
+      p <- p + scale_y_continuous(
+        limits = c(-epsilon, epsilon)
+      )
+    }
 
     return(p)
   }
