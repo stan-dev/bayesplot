@@ -24,4 +24,4 @@ vignettes/*.quarto
 vignettes/*.html
 
 # draft vignette
-ppc-loo-draft.Rmd
+ppc_loo_pit.Rmd
