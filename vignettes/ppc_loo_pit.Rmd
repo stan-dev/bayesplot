@@ -1,0 +1,236 @@
+---
+title: "Model checking with (LOO-)PIT using bayesplot"
+author: "TODO"
+date: "`r Sys.Date()`"
+output: 
+  rmarkdown::html_vignette:
+    toc: true
+    toc_depth: 3
+params:
+  EVAL: true
+  MESSAGE: false
+  WARNING: false
+vignette: >
+  %\VignetteIndexEntry{Model checking with (LOO-)PIT using bayesplot}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, child="children/SETTINGS-knitr.txt"}
+```
+```{r setup-width, include=FALSE}
+# Override global width setting for this vignette
+knitr::opts_chunk$set(out.width = "100%")
+```
+```{r pkgs, include=FALSE}
+library("ggplot2")
+library("rstanarm")
+library("brms")
+library("tinytable")
+library("posterior")
+library("patchwork")
+devtools::load_all()
+bayesplot::bayesplot_theme_set()
+set.seed(1840)
+```
+
+## Conceptual Introduction
+One approach to check a model's (in)adequacy involves comparing the model's predictive simultations with the actual observed data. In the following, we focus on predictive check techniques that lead to the examination of the observed data with respect to the collection of univariate (or pointwise) conditional distributions arising from this joint distribution, that is, pointwise predictive checks. 
+
+### Using PIT for model checking
+Pointwise checks utilize the **probability integral transformation (PIT)** to recast model evaluation into a problem of testing for uniformity: PIT corresponds to the model's predictive univariate cumulative distributions function (CDF) evaluated given the observation, resulting in values that, for a well-calibrated model, should be near uniformly distributed between 0 and 1.
+
+**Leave-one-out (LOO) cross-validation** approach termed LOO-PIT is an approach that iteratively holds out each data point, conditioning on the remaining data, and compares the corresponding LOO predictive distribution to the heldout point, by testing for departures from uniformity of the associated LOO-PIT values.
+
+The LOO folds—each consisting of all but one observation—overlap, meaning that the posterior distributions used to compute the LOO predictive densities are conditioned on nearly but not exactly identical data sets. As a result, the posterior draws across folds are correlated, which in turn induces dependence among the LOO-PIT values. 
+
+## Implementation in `bayesplot`
+A graphical uniformity test which assumes independence of PIT values has been developed by [Säilynoja et al. (2022)](#saeilynoja2022) and provides simultaneous confidence bands for the whole empirical cumulative distribution function (ECDF) of the PIT values. However, the dependency in LOO-PIT values reduces the variability of ECDF compared to independent uniform variables, and the confidence bands based on the independence assumption are too wide, reducing the test’s ability to reveal model miscalibration. 
+
+This visual test developed by [Säilynoja et al. (2022)](#saeilynoja2022) is implemented in `bayesplot` through the function `ppc_pit_ecdf` and for the LOO-approach through the function `ppc_pit_loo_ecdf`. In both cases the uniformity test assumes independence. 
+
+From `bayesplot (x.x.x)` onwards an updated `ppc_pit_loo_ecdf` function is provided that provides an alternative method for computing the uniformity test that is dependence aware [(Tesso & Vehtari, 2026)](#tesso2016). 
+
+## Practical Example: Sleep Study
+[Belenky et al., 2003](#belenky2003) collected data on the effect of chronic sleep restriction. We use a subset of data in the R package `lme4` [(Bates et al., 2015)](#bates2015). The data contains average reaction times (in milliseconds) for 18 subjects with sleep restricted to 3 hours per night for 7 consecutive nights (days 0 and 1 were adaptation and training and removed from this analysis).
+
+```{r sleep-data}
+data(sleepstudy, package = "lme4")
+
+sleepstudy2 <- sleepstudy |>
+  dplyr::filter(Days >= 2)
+```
+
+The compared models are a linear model, a linear model with varying intercept for each subject, and a linear model with varying intercept and slope for each subject. All models use a normal data model. The models were fitted using `brms` [(Bürkner, 2017)](#buerkner2017), and the default `brms` priors; prior for the coefficient for Days is uniform, the prior for the varying intercept is normal with unknown scale having a half-normal prior, and the prior for the varying intercept and slope is bivariate normal with unknown scales having half-normal priors and correlation having LKJ prior [(Lewandowski, Kurowicka, & Joe, 2009)](#lewandowski2009).
+
+Using the `brms` formula notation, the compared models are
+
+$$
+\begin{align*}
+    \mathrm{M}_1: \quad & \mathrm{Reaction} \sim \mathrm{Days} \\
+    \mathrm{M}_2: \quad & \mathrm{Reaction} \sim \mathrm{Days} + (1\,\mid\,\mathrm{Subject}) \\
+    \mathrm{M}_3: \quad & \mathrm{Reaction} \sim \mathrm{Days} + (\mathrm{Days}\,\mid\, \mathrm{Subject}).
+\end{align*}
+$$
+
+Based on the study design, $\mathrm{M}_3$ is the appropriate model for the analysis, but comparing models is useful for assessing how much information the data has about the varying intercepts and slopes. For a few LOO-folds with high Pareto-$\hat{k}$ diagnostic value ($>0.7$, [Vehtari et al., 2024](#vehtari2024)) we re-ran MCMC (with `reloo=TRUE` in `brms`). We use `add_criterion()` to store the loo object inside the brmsfit objects.
+
+```{r model-fitting, cache=TRUE, echo=FALSE}
+M_1 <- brms::brm(Reaction ~ Days,
+           data = sleepstudy2,
+           family = gaussian(),
+           refresh = 0) |>
+  brms::add_criterion(criterion = "loo", save_psis = TRUE, reloo = TRUE)
+M_2 <- brms::brm(Reaction ~ Days + (1 | Subject),
+           data = sleepstudy2,
+           family = gaussian(),
+           refresh = 0) |>
+  brms::add_criterion(criterion = "loo", save_psis = TRUE, reloo = TRUE)
+M_3 <- brms::brm(Reaction ~ Days + (Days | Subject),
+           data = sleepstudy2,
+           family = gaussian(),
+           refresh = 0) |>
+  brms::add_criterion(criterion = "loo", save_psis = TRUE, reloo = TRUE)
+```
+
+We compare the models $\mathrm{M}_1, \mathrm{M}_2,\mathrm{M}_3,\mathrm{M}_4$
+
+```{r model-comparison}
+brms::loo_compare(M_1, M_2, M_3) |>
+  as.data.frame() |>
+  tibble::rownames_to_column(var = "model") |>
+  dplyr::select(model, elpd_diff, se_diff) |>
+  tinytable::tt() |>
+  tinytable::format_tt(j = 2:3, digits = 5)
+```
+
+Model $\mathrm{M}_3$ is estimated to have better predictive performance. Model-checking reveals that two observations are clear outliers with respect to these models, making the normal approximation likely to be poorly calibrated. 
+We see the outliers, for example, by comparing LOO predictive intervals to observations.
+
+```{r pp-check, out.width="100%", warning=FALSE, message=FALSE}
+p1 <- pp_check(M_2, type = "loo_intervals") +
+  ggplot2::labs(y = "Reaction time (ms)", subtitle = "M2") +
+  bayesplot::theme_default(base_family = "sans")
+
+p2 <- pp_check(M_3, type = "loo_intervals") +
+  ggplot2::labs(subtitle = "M3") +
+  bayesplot::theme_default(base_family = "sans")
+
+p1 + p2 + plot_layout(ncol = 2, guides = "collect") & theme_bw(base_size = 6)
+```
+
+We see miscalibration also with LOO-PIT plots
+
+```{r calibration-plots-helper}
+plot_ppc <- function(qp, method = "correlated", diff, prob = 0.95) {
+
+    p1 <- ppc_loo_pit_ecdf(
+        pit = qp, method = method, test = "PRIT", plot_diff = diff,
+        prob = prob
+        ) +
+        labs(subtitle = "PRIT Test")
+    p2 <- ppc_loo_pit_ecdf(
+        pit = qp, method = method, test = "POT", plot_diff = diff,
+        prob = prob
+        ) +
+        labs(subtitle = "POT Test")
+    p3 <- ppc_loo_pit_ecdf(
+        pit = qp, method = method, test = "PIET", plot_diff = diff,
+        prob = prob
+        ) +
+        labs(subtitle = "PIET Test")
+
+    p1 + p2 + p3 +
+    plot_layout(ncol = 3, guides = "collect") & theme_bw(base_size = 6)
+}
+```
+
+```{r calibration-plots-1}
+qp <- posterior::pit(posterior_predict(M_2), sleepstudy2$Reaction)
+
+plot_ppc(qp, method = "correlated", diff = FALSE)
+plot_ppc(qp, method = "independent", diff = FALSE)
+```
+
+```{r calibration-plots-2}
+qp <- posterior::pit(
+    posterior_predict(M_2), sleepstudy2$Reaction,
+    weights(brms::loo(M_2), log = TRUE), log = TRUE
+    )
+
+plot_ppc(qp, diff = FALSE)
+plot_ppc(qp, diff = TRUE)
+```
+
+```{r calibration-plots-3}
+qp <- posterior::pit(
+    posterior_predict(M_3), sleepstudy2$Reaction,
+    weights(brms::loo(M_3), log = TRUE), log = TRUE
+    )
+
+plot_ppc(qp, diff = FALSE)
+plot_ppc(qp, diff = TRUE)
+```
+
+## Independent vs. dependence-aware uniformity tests
+
+```{r}
+qp <- posterior::pit(
+    posterior_predict(M_2), sleepstudy2$Reaction,
+    weights(brms::loo(M_2), log = TRUE), log = TRUE
+    )
+
+p1 <- ppc_loo_pit_ecdf(
+    pit = qp, method = "independent", plot_diff = FALSE) +
+    labs(subtitle = "Independent uniformity test")
+p2 <- ppc_loo_pit_ecdf(
+    pit = qp, method = "correlated", plot_diff = FALSE) +
+    labs(subtitle = "Dependence-aware uniformity test")
+
+p1 + p2 + 
+plot_layout(ncol = 2, guides = "collect") & theme_bw(base_size = 6)
+```
+
+```{r}
+qp <- posterior::pit(
+    posterior_predict(M_2), sleepstudy2$Reaction,
+    weights(brms::loo(M_2), log = TRUE), log = TRUE
+    )
+
+p1 <- ppc_loo_pit_ecdf(
+    pit = qp, method = "independent", plot_diff = TRUE) +
+    labs(subtitle = "Säilynoja et al. (2022); independence")
+p2 <- ppc_loo_pit_ecdf(
+    pit = qp, method = "correlated", plot_diff = TRUE) +
+    labs(subtitle = "Tesso & Vehtari (2026); dependence-aware")
+
+p1 + p2 + 
+    plot_layout(ncol = 2, guides = "collect") & theme_bw(base_size = 6)
+```
+
+```{r}
+qp <- posterior::pit(
+    posterior_predict(M_2), sleepstudy2$Reaction,
+    weights(brms::loo(M_2), log = TRUE), log = TRUE
+    )
+
+ppc_loo_pit_ecdf(pit = qp, method = "correlated", plot_diff = TRUE) +
+    ggplot2::labs(subtitle = "POT test") +
+    ggplot2::ylim(c(-0.2, 0.2)) +
+    theme_bw(base_size = 6)
+```
+
+## References
+
+Bates, D., Maechler, M., Bolker, B., Walker, S., Christensen, R. H. B., Singmann, H., ... & Bolker, M. B. (2015). Package ‘lme4’. Convergence, 12(1), 2.
+
+Belenky, G., Wesensten, N. J., Thorne, D. R., Thomas, M. L., Sing, H. C., Redmond, D. P., ... & Balkin, T. J. (2003). Patterns of performance degradation and restoration during sleep restriction and subsequent recovery: A sleep dose‐response study. Journal of sleep research, 12(1), 1-12.
+
+Buerkner, P. (2017). brms: Bayesian Regression Models using Stan. R package
+version 1.7.0. https://CRAN.R-project.org/package=brms
+
+Lewandowski, D., Kurowicka, D., & Joe, H. (2009). Generating random correlation
+matrices based on vines and extended onion method. Journal of Multivariate
+Analysis, 100 (9), 1989–2001.
+
+Vehtari, A., Simpson, D., Gelman, A., Yao, Y., & Gabry, J. (2024). Pareto smoothed importance sampling. Journal of Machine Learning Research, 25(72), 1-58.
