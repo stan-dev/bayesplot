@@ -510,7 +510,7 @@ ppc_loo_pit_ecdf <- function(y,
       alpha     <- 1 - prob
       gamma     <- gamma %||% 0
       linewidth <- linewidth %||% 0.3
-      color     <- color %||% c(ecdf = "gray60", highlight = "gray30")
+      color     <- color %||% c(ecdf = "black", highlight = "red")
     },
     
     "independent" = {
