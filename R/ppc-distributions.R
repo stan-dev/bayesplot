@@ -657,7 +657,13 @@ ppc_pit_ecdf <- function(y,
                          K = NULL,
                          prob = .99,
                          plot_diff = FALSE,
-                         interpolate_adj = NULL) {
+                         interpolate_adj = NULL,
+                         method = "independent",
+                         test = NULL,
+                         gamma = NULL,
+                         linewidth = NULL,
+                         color = NULL
+                        ) {
   check_ignored_arguments(...,
     ok_args = c("K", "pit", "prob", "plot_diff", "interpolate_adj")
   )
