@@ -16,3 +16,9 @@ release-prep.R
 
 # vscode/positron/etc settings
 .vscode/*
+
+# knitting of vignettes
+*_cache
+*_files
+vignettes/*.quarto
+vignettes/*.html
