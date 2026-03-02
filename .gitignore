@@ -16,3 +16,6 @@ release-prep.R
 
 # vscode/positron/etc settings
 .vscode/*
+
+# ignore draft vignette
+vignettes/ppc_loo_pit.Rmd
