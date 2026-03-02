@@ -665,7 +665,33 @@ ppc_pit_ecdf <- function(y,
                          color = NULL
                         ) {
   check_ignored_arguments(...,
-    ok_args = c("K", "pit", "prob", "plot_diff", "interpolate_adj")
+    ok_args = c("K", "pit", "prob", "plot_diff", "interpolate_adj",
+    "method", "test", "gamma", "linewidth", "color")
+  )
+
+  method <- match.arg(method, choices = c("independent", "correlated"))
+
+  .warn_ignored <- function(method, args) {
+    msg <- paste0("As method = ", method, " specified; ignoring: ",
+    paste(args, collapse = ", "), ".")
+    inform(msg)
+  }
+
+  switch(method,
+    "correlated" = {
+      if (!is.null(interpolate_adj)) .warn_ignored("'correlated'", "interpolate_adj")
+      test <- match.arg(test %||% "POT", choices = c("POT", "PRIT", "PIET"))
+      alpha     <- 1 - prob
+      gamma     <- gamma %||% 0
+      linewidth <- linewidth %||% 0.3
+      color     <- color %||% c(ecdf = "black", highlight = "red")
+    },
+    "independent" = {
+      ignored <- character(0)
+      if (!is.null(test)) ignored <- c(ignored, "test")
+      if (!is.null(gamma)) ignored <- c(ignored, "gamma")
+      if (length(ignored) > 0) .warn_ignored("'independent'", ignored)
+    }
   )
 
   if (is.null(pit)) {
@@ -686,36 +712,178 @@ ppc_pit_ecdf <- function(y,
       K <- length(pit)
     }
   }
-  N <- length(pit)
-  gamma <- adjust_gamma(
-    N = N,
+
+  n_obs <- length(pit)
+  unit_interval <- seq(0, 1, length.out = K)
+  .ecdf_pit_fn <- ecdf(pit)
+
+  # Correlated method --------------------------------------------------
+  if (method == "correlated") {
+    # Compute test p-value and Cauchy-transformed values
+    if (test == "POT") {
+      std_cauchy_values <- .compute_cauchy(.pot_test(sort(pit)))
+      p_value_CCT <- .cauchy_combination_test(.pot_test(pit), truncate = TRUE)
+    } else if (test == "PIET") {
+      std_cauchy_values <- .compute_cauchy(.piet_test(sort(pit)))
+      p_value_CCT <- .cauchy_combination_test(.piet_test(pit), truncate = FALSE)
+    } else { # PRIT
+      std_cauchy_values <- .compute_cauchy(.prit_test(sort(pit)))
+      p_value_CCT <- .cauchy_combination_test(.prit_test(pit), truncate = TRUE)
+    }
+
+    pointwise_contribution <- .compute_shapley_values(std_cauchy_values)
+
+    if (gamma < 0 || gamma > max(pointwise_contribution)) {
+      stop(sprintf(
+        "gamma must be in the interval [0, %.2f], but gamma = %s was provided",
+        max(pointwise_contribution), gamma
+      ))
+    }
+    x_axis_combined <- sort(unique(c(unit_interval, pit)))
+    
+    # Evaluate at 0-1 interval b´values
+    df_main <- tibble::tibble(
+      x = x_axis_combined,
+      ecdf_pit = .ecdf_pit_fn(x_axis_combined) - plot_diff * x_axis_combined
+    )
+    
+    # Evaluate at pit values (used for highlighing)
+    df_pit <- tibble::tibble(
+      pit = pit,
+      ecdf_pit = .ecdf_pit_fn(pit) - plot_diff * pit
+    )
+    df_pit <- df_pit[order(df_pit$pit), ]
+
+    # Plot ECDF
+    p <- ggplot() +
+      geom_step(
+        data = df_main, aes(x = .data$x, y = .data$ecdf_pit),
+        show.legend = FALSE, linewidth = linewidth, color = color[1]) +
+      labs(
+        y = dplyr::if_else(plot_diff, "ECDF difference", "ECDF"),
+        x = "PIT"
+      )
+    
+    # Add reference line
+    p <- p + geom_segment(
+      aes(
+        x = 0, y = 0, xend = 1, 
+        yend = dplyr::if_else(plot_diff, 0, 1)
+      ),
+    linetype = 2, color = "darkgrey"
+    )
+  
+    # Identify and highlight suspecious points (regions) of the ECDF
+    if (p_value_CCT < alpha) {
+      red_idx <- which(pointwise_contribution > gamma)
+      
+      if (length(red_idx) > 0) {
+        df_red <- df_pit[red_idx, ]
+        
+        # Groups of consecutive suspicious points
+        df_red$segment <- cumsum(c(1, diff(red_idx) != 1))
+        
+        # Separate isolated vs grouped points
+        segment_lengths <- stats::ave(df_red$pit, df_red$segment, FUN = length)
+        df_isolated <- df_red[segment_lengths == 1, ]
+        df_grouped <- df_red[segment_lengths > 1, ]
+        
+        # Create segments based on x_combined values for grouped points
+        if (nrow(df_grouped) > 0) {
+          segments_list <- lapply(
+            split(df_grouped, df_grouped$segment), function(group) {
+              group_indices <- match(group$pit, x_axis_combined)
+              idx_range <- min(group_indices):max(group_indices)
+            
+              tibble::tibble(
+                x = df_main$x[idx_range],
+                ecdf_pit = df_main$ecdf_pit[idx_range],
+                segment = group$segment[1]
+              )
+            }
+          )
+          df_segments <- do.call(rbind, segments_list)
+          
+          p <- p + geom_step(
+            data = df_segments,
+            aes(x = .data$x, y = .data$ecdf_pit, group = .data$segment),
+            color = color[2],
+            linewidth = linewidth + 0.8
+          )
+        }
+        
+        if (nrow(df_isolated) > 0) {
+          p <- p + geom_point(
+            data = df_isolated,
+            aes(x = .data$pit, y = .data$ecdf_pit),
+            color = color[2],
+            size = linewidth + 1
+          )
+        }
+      }
+    }
+    
+    # Apply bayesplot theme and styling
+    p <- p +
+      yaxis_ticks(FALSE) +
+      scale_color_ppc() +
+      annotate(
+        "text",
+        x = -Inf, y = Inf,
+        label = sprintf("Uniformity p-value = %.3f", p_value_CCT),
+        hjust = -0.1, vjust = 1.5,
+        size = 6, color = "black"
+      ) +
+      bayesplot::theme_default(base_family = "sans", base_size = 16)
+    
+    if (plot_diff) {
+      epsilon = max(
+        sqrt(log(2 / (1 - prob)) / (2 * length(pit))),
+        max(abs(df_main$ecdf_pit))
+      )
+
+      p <- p + scale_y_continuous(limits = c(-epsilon, epsilon))
+    }
+
+    return(p)
+  }
+
+  # Independent method --------------------------------------------------
+  gamma_indep <- adjust_gamma(
+    N = n_obs,
     K = K,
     prob = prob,
     interpolate_adj = interpolate_adj
   )
-  lims <- ecdf_intervals(gamma = gamma, N = N, K = K)
-  ggplot() +
-    aes(
-      x = seq(0,1,length.out = K),
-      y = ecdf(pit)(seq(0, 1, length.out = K)) -
-          (plot_diff == TRUE) * seq(0, 1, length.out = K),
-      color = "y"
+
+  lims <- ecdf_intervals(gamma = gamma_indep, N = n_obs, K = K)
+  ecdf_eval <- .ecdf_pit_fn(unit_interval) - plot_diff * unit_interval
+
+  lims_upper_scaled <- lims$upper[-1] * (1 / n_obs) - plot_diff * unit_interval
+  lims_lower_scaled <- lims$lower[-1] * (1 / n_obs) - plot_diff * unit_interval
+
+  p <- ggplot() +
+    geom_step(
+      aes(x = unit_interval, y = lims_upper_scaled, color = "yrep"),
+      linetype = 2, show.legend = FALSE
     ) +
-    geom_step(show.legend = FALSE) +
-    geom_step(aes(
-      y = lims$upper[-1] / N - (plot_diff == TRUE) * seq(0, 1, length.out = K),
-      color = "yrep"
-    ),
-    linetype = 2, show.legend = FALSE) +
-    geom_step(aes(
-      y = lims$lower[-1] / N - (plot_diff == TRUE) * seq(0, 1, length.out = K),
-      color = "yrep"
-    ),
-    linetype = 2, show.legend = FALSE) +
-    labs(y = ifelse(plot_diff,"ECDF - difference","ECDF"), x = "PIT") +
+    geom_step(
+      aes(x = unit_interval, y = lims_lower_scaled, color = "yrep"),
+      linetype = 2, show.legend = FALSE
+    ) +
+    geom_step(
+      aes(x = unit_interval, y = ecdf_eval, color = "y", linewidth = linewidth),
+      show.legend = FALSE
+    ) +
+    labs(
+      y = dplyr::if_else(plot_diff, "ECDF difference", "ECDF"),
+      x = "PIT"
+    ) +
     yaxis_ticks(FALSE) +
     scale_color_ppc() +
-    bayesplot_theme_get()
+    bayesplot::theme_default(base_family = "sans", base_size = 16)
+
+  return(p)
 }
 
 #' @export
