@@ -595,3 +595,131 @@ create_rep_ids <- function(ids) paste('italic(y)[rep] (', ids, ")")
 y_label <- function() expression(italic(y))
 yrep_label <- function() expression(italic(y)[rep])
 ypred_label <- function() expression(italic(y)[pred])
+
+# Dependence-aware uniformity tests -------------------------------------
+
+#' Compute Shapley values
+#'
+#' Calculates the average marginal contribution of players across 
+#' all random arrival orders in a cooperative game.
+#' Used to provide a principled approach for quantifying 
+#' point-specific influences in a way that reflects local miscalibration.
+#'
+#' @param x Numeric vector of Cauchy-transformed PIT values.
+#' @return Numeric vector of Shapley values with the same length as `x`.
+#' @noRd
+.compute_shapley_values <- function(x) {
+  n <- length(x)
+  if (n == 0) {
+    return(numeric(0))
+  }
+  if (n == 1) {
+    return(0)
+  }
+  
+  # Harmonic number
+  # H_n = sum(1/i) for i = 1 to n
+  harmonic_number <- sum(1 / seq_len(n))
+  
+  shapley_values <- numeric(n)
+  for (i in seq_len(n)) {
+    mean_others <- sum(x[-i]) / (n - 1)
+    # Applies the closed-form formula to assign player i their fair share.
+    shapley_values[i] <- (1 / n) * x[i] + ((harmonic_number - 1) / n) * (x[i] - mean_others)
+  }
+
+  return(shapley_values)
+}
+
+#' Pointwise Inverse-CDF Evaluation Tests Combination (PIET)
+#'
+#' Uniformity test with respect to any continuous distribution.
+#' H0: The value obtained via the inverse CDF transformation F^(-1)(x_i)
+#' follows the distribution of X under uniformity.
+#' HA: The p-value p_(i) provides evidence against uniformity.
+#' 
+#' @param x Numeric vector of PIT values in `[0, 1]`.
+#' @return Numeric vector of p-values.
+#' @noRd
+.piet_test <- function(x) {
+  cdf_exp <- pexp(-log(x), rate = 1) # same as 1-x but numerically more stable
+  p_values <- 2 * pmin(cdf_exp, 1 - cdf_exp)
+
+  return(p_values)
+}
+
+#' Pointwise Order Tests Combination (POT)
+#'
+#' Uniformity test based on a beta distribution.
+#' H0: The i-th order statistic u_(i) follows a beta distribution
+#' under uniformity.
+#' HA: The p-value p_(i) provides evidence against uniformity
+#' at the i-th order statistic u_(i).
+#' 
+#' @param x Numeric vector of PIT values in `[0, 1]`.
+#' @return Numeric vector of p-values.
+#' @noRd
+.pot_test <- function(x) {
+  n <- length(x)
+  # keep NA values instead of silent recycling via sort()
+  # TODO: Can PIT values be NAN at this point?
+  cdf_beta <- pbeta(sort(x, na.last = TRUE), 1:n, seq(n, 1, by = -1))
+  p_values <- 2 * pmin(cdf_beta, 1 - cdf_beta)
+
+  return(p_values)
+}
+
+#' Pointwise Rank-based Individual Tests Combination (PRIT)
+#' 
+#' Uniformity test based on a binomial distribution.
+#' H0: The number of observations falling at or below x_i
+#' follows a binomial distribution under uniformity.
+#' HA: The p-value p_i provides evidence against uniformity.
+#' 
+#' @param x Numeric vector of PIT values in `[0, 1]`.
+#' @return Numeric vector of p-values.
+#' @noRd
+.prit_test <- function(x) {
+  n <- length(x)
+  scaled_ecdf <- n * ecdf(x)(x)
+  probs1 <- pbinom(scaled_ecdf - 1, n, x)
+  probs2 <- pbinom(scaled_ecdf, n, x)
+  p_values <- 2 * pmin(1 - probs1, probs2)
+  
+  return(p_values)
+}
+
+#' Truncated Cauchy combination test
+#'
+#' Combines dependent p-values using the Cauchy combination method.
+#' If truncate, only p-values less than 0.5 are included.
+#'
+#' @param x Numeric vector of p-values transformed to follow a standard
+#' Cauchy distribution.
+#' @param truncate Boolean; If TRUE only p-values less than 0.5 are
+#' included.
+#' @return p-value of the Cauchy combination method.
+#' @noRd
+.cauchy_combination_test <- function(x, truncate = NULL) {
+  if (truncate) {
+    idx <- which(x < 0.5)
+    if (length(idx) == 0) {
+      stop("Cannot compute truncated Cauchy combination test. ",
+           "No p-values below 0.5 found.")
+    }
+    1 - pcauchy(mean(-qcauchy(x[idx])))
+  } else {
+    1 - pcauchy(mean(-qcauchy(x)))
+  }
+}
+
+#' Compute Cauchy transformation
+#'
+#' Transforms PIT values to follow a standard Cauchy distribution.
+#'
+#' @param x Numeric vector of PIT values in `[0, 1]`.
+#' @return Numeric vector of Cauchy-transformed values.
+#' @noRd
+.compute_cauchy <- function(x) {
+  tan((0.5 - x) * pi)
+}
