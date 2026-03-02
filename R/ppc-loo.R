@@ -573,11 +573,12 @@ ppc_loo_pit_ecdf <- function(y,
       )
     
     # Add reference line
-    p <- p + geom_abline(
-      intercept = 0,
-      slope = dplyr::if_else(plot_diff, 0, 1),
-      linetype = 2,
-      color = "darkgrey"
+    p <- p + geom_segment(
+      aes(
+        x = 0, y = 0, xend = 1, 
+        yend = dplyr::if_else(plot_diff, 0, 1)
+      ),
+    linetype = 2, color = "darkgrey"
     )
   
     # Identify and highlight suspecious points (regions) of the ECDF
