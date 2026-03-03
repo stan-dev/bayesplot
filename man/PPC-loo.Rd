@@ -225,7 +225,7 @@ determined based on p-value.}
 
 \item{color}{For \code{ppc_loo_pit_ecdf()} when \code{method = "correlated"}, a vector
 with base color and highlight color for the ECDF plot. Defaults to
-\code{c(ecdf = "gray60", highlight = "gray30")}. The first element is used for
+\code{c(ecdf = "black", highlight = "red")}. The first element is used for
 the main ECDF line, the second for highlighted suspicious regions.}
 
 \item{help_text}{For \code{ppc_loo_pit_ecdf()} when \code{method = "correlated"}, a boolean
