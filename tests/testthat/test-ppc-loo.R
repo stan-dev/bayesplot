@@ -531,7 +531,7 @@ test_that("ppc_loo_pit_ecdf renders correctly", {
   vdiffr::expect_doppelganger("ppc_loo_pit_ecdf (no help_text)", p_custom)
 
 
-  setheme_set(bayesplot::theme_default(base_family = "sans", base_size = 12))
+  theme_set(bayesplot::theme_default(base_family = "sans", base_size = 12))
   p_custom <- ppc_loo_pit_ecdf(
     vdiff_loo_y,
     vdiff_loo_yrep,
