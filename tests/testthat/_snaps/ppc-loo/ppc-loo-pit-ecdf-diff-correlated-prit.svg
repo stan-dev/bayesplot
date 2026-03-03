@@ -33,19 +33,19 @@
 <circle cx='518.16' cy='484.19' r='1.77' style='stroke-width: 0.77; stroke: #FF0000; fill: #FF0000;' />
 <circle cx='529.00' cy='479.47' r='1.77' style='stroke-width: 0.77; stroke: #FF0000; fill: #FF0000;' />
 <circle cx='583.40' cy='456.63' r='1.77' style='stroke-width: 0.77; stroke: #FF0000; fill: #FF0000;' />
-<text x='54.90' y='36.35' style='font-size: 7.70px; font-family: sans;' textLength='4.28px' lengthAdjust='spacingAndGlyphs'>p</text>
-<text x='59.19' y='37.77' style='font-size: 5.39px; font-family: sans;' textLength='3.00px' lengthAdjust='spacingAndGlyphs'>u</text>
-<text x='62.19' y='37.77' style='font-size: 5.39px; font-family: sans;' textLength='3.00px' lengthAdjust='spacingAndGlyphs'>n</text>
-<text x='65.18' y='37.77' style='font-size: 5.39px; font-family: sans;' textLength='1.20px' lengthAdjust='spacingAndGlyphs'>i</text>
-<text x='66.38' y='37.77' style='font-size: 5.39px; font-family: sans;' textLength='1.50px' lengthAdjust='spacingAndGlyphs'>f</text>
-<text x='69.66' y='36.35' style='font-size: 7.70px; font-family: sans;' textLength='5.98px' lengthAdjust='spacingAndGlyphs'>=</text>
-<text x='77.42' y='36.35' style='font-size: 7.70px; font-family: sans;' textLength='19.27px' lengthAdjust='spacingAndGlyphs'>0.001</text>
-<text x='96.69' y='36.35' style='font-size: 7.70px; font-family: sans;' textLength='1.93px' lengthAdjust='spacingAndGlyphs'> </text>
-<text x='98.62' y='36.35' style='font-size: 9.62px; font-family: sans;' textLength='3.21px' lengthAdjust='spacingAndGlyphs'>(</text>
-<text x='101.82' y='36.35' style='font-size: 7.70px; font-family: sans;' textLength='4.62px' lengthAdjust='spacingAndGlyphs'>α</text>
-<text x='108.22' y='36.35' style='font-size: 7.70px; font-family: sans;' textLength='5.98px' lengthAdjust='spacingAndGlyphs'>=</text>
-<text x='115.99' y='36.35' style='font-size: 7.70px; font-family: sans;' textLength='14.99px' lengthAdjust='spacingAndGlyphs'>0.01</text>
-<text x='130.97' y='36.35' style='font-size: 9.62px; font-family: sans;' textLength='3.20px' lengthAdjust='spacingAndGlyphs'>)</text>
+<text x='51.30' y='37.39' style='font-size: 8.40px; font-family: sans;' textLength='4.67px' lengthAdjust='spacingAndGlyphs'>p</text>
+<text x='55.97' y='38.95' style='font-size: 5.88px; font-family: sans;' textLength='3.27px' lengthAdjust='spacingAndGlyphs'>u</text>
+<text x='59.24' y='38.95' style='font-size: 5.88px; font-family: sans;' textLength='3.27px' lengthAdjust='spacingAndGlyphs'>n</text>
+<text x='62.51' y='38.95' style='font-size: 5.88px; font-family: sans;' textLength='1.31px' lengthAdjust='spacingAndGlyphs'>i</text>
+<text x='63.82' y='38.95' style='font-size: 5.88px; font-family: sans;' textLength='1.63px' lengthAdjust='spacingAndGlyphs'>f</text>
+<text x='67.40' y='37.39' style='font-size: 8.40px; font-family: sans;' textLength='6.52px' lengthAdjust='spacingAndGlyphs'>=</text>
+<text x='75.86' y='37.39' style='font-size: 8.40px; font-family: sans;' textLength='21.02px' lengthAdjust='spacingAndGlyphs'>0.001</text>
+<text x='96.89' y='37.39' style='font-size: 8.40px; font-family: sans;' textLength='2.10px' lengthAdjust='spacingAndGlyphs'> </text>
+<text x='98.99' y='37.39' style='font-size: 10.50px; font-family: sans;' textLength='3.50px' lengthAdjust='spacingAndGlyphs'>(</text>
+<text x='102.48' y='37.39' style='font-size: 8.40px; font-family: sans;' textLength='5.04px' lengthAdjust='spacingAndGlyphs'>α</text>
+<text x='109.47' y='37.39' style='font-size: 8.40px; font-family: sans;' textLength='6.52px' lengthAdjust='spacingAndGlyphs'>=</text>
+<text x='117.94' y='37.39' style='font-size: 8.40px; font-family: sans;' textLength='16.35px' lengthAdjust='spacingAndGlyphs'>0.01</text>
+<text x='134.29' y='37.39' style='font-size: 10.50px; font-family: sans;' textLength='3.49px' lengthAdjust='spacingAndGlyphs'>)</text>
 </g>
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8MC4wMHw1NzYuMDA=)'>
 <polyline points='46.98,542.30 46.98,24.85 ' style='stroke-width: 0.85; stroke-linecap: butt;' />
