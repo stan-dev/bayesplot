@@ -508,4 +508,36 @@ test_that("ppc_loo_pit_ecdf renders correctly", {
     K = 100
   )
   vdiffr::expect_doppelganger("ppc_loo_pit_ecdf (ecdf difference)", p_custom)
+
+  p_custom <- ppc_loo_pit_ecdf(
+    vdiff_loo_y,
+    vdiff_loo_yrep,
+    psis_object = psis_object,
+    method = "correlated",
+    plot_diff = TRUE,
+    prob = 0.95
+  )
+  vdiffr::expect_doppelganger("ppc_loo_pit_ecdf (alpha=0.05)", p_custom)
+
+  p_custom <- ppc_loo_pit_ecdf(
+    vdiff_loo_y,
+    vdiff_loo_yrep,
+    psis_object = psis_object,
+    method = "correlated",
+    plot_diff = TRUE,
+    prob = 0.95,
+    help_text = FALSE 
+  )
+  vdiffr::expect_doppelganger("ppc_loo_pit_ecdf (no help_text)", p_custom)
+
+
+  setheme_set(bayesplot::theme_default(base_family = "sans", base_size = 12))
+  p_custom <- ppc_loo_pit_ecdf(
+    vdiff_loo_y,
+    vdiff_loo_yrep,
+    psis_object = psis_object,
+    method = "correlated",
+    plot_diff = TRUE
+  )
+  vdiffr::expect_doppelganger("ppc_loo_pit_ecdf (changed theme)", p_custom)
 })
