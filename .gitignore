@@ -25,3 +25,4 @@ vignettes/*.html
 
 # draft vignette
 ppc_loo_pit.Rmd
+test_greyscale.qmd
