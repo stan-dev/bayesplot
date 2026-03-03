@@ -417,6 +417,8 @@ ppc_loo_pit_qq <- function(y,
 #'   with base color and highlight color for the ECDF plot. Defaults to
 #'   `c(ecdf = "gray60", highlight = "gray30")`. The first element is used for
 #'   the main ECDF line, the second for highlighted suspicious regions.
+#' @param help_text For `ppc_loo_pit_ecdf()` when `method = "correlated"`, a boolean
+#'   defining whether to add informative text to the plot. Defaults to `TRUE`.
 #' @note
 #' Note that the default "independent" method is **superseded** by
 #' the "correlated" method (Tesso & Vehtari, 2026) which accounts for dependent
@@ -435,7 +437,8 @@ ppc_loo_pit_ecdf <- function(y,
                              test = NULL,
                              gamma = NULL,
                              linewidth = NULL,
-                             color = NULL) {
+                             color = NULL,
+                             help_text = NULL) {
   
   check_ignored_arguments(..., ok_args = list("moment_match"))
   
@@ -511,12 +514,14 @@ ppc_loo_pit_ecdf <- function(y,
       gamma     <- gamma %||% 0
       linewidth <- linewidth %||% 0.3
       color     <- color %||% c(ecdf = "black", highlight = "red")
+      help_text <- help_text %||% TRUE
     },
     
     "independent" = {
       ignored <- character(0)
       if (!is.null(test)) ignored <- c(ignored, "test")
       if (!is.null(gamma)) ignored <- c(ignored, "gamma")
+      if (!is.null(help_text)) ignored <- c(ignored, "help_text")
       if (length(ignored) > 0) .warn_ignored("'independent'", ignored)
     }
   )
@@ -578,7 +583,7 @@ ppc_loo_pit_ecdf <- function(y,
         x = 0, y = 0, xend = 1, 
         yend = dplyr::if_else(plot_diff, 0, 1)
       ),
-    linetype = 2, color = "darkgrey"
+    linetype = "dashed", color = "darkgrey", linewidth = 0.3
     )
   
     # Identify and highlight suspecious points (regions) of the ECDF
@@ -635,15 +640,18 @@ ppc_loo_pit_ecdf <- function(y,
     p <- p +
       yaxis_ticks(FALSE) +
       scale_color_ppc() +
-      annotate(
+      bayesplot::theme_default(base_family = "sans")
+    
+    if (help_text) {
+      p <- p + annotate(
         "text",
         x = -Inf, y = Inf,
-        label = sprintf("Uniformity p-value = %.3f", p_value_CCT),
-        hjust = -0.1, vjust = 1.5,
-        size = 6, color = "black"
-      ) +
-      bayesplot::theme_default(base_family = "sans", base_size = 16)
-    
+        label = sprintf("p[unif] == '%.3f' ~ (alpha == '%.2f')", p_value_CCT, alpha),
+        hjust = -0.05, vjust = 1.5, color = "black",
+        parse = TRUE, size = 0.7 * bayesplot_theme_get()$text@size / ggplot2::.pt
+      )
+    }
+
     if (plot_diff) {
       epsilon = max(
         sqrt(log(2 / (1 - prob)) / (2 * length(pit))),
@@ -675,11 +683,11 @@ ppc_loo_pit_ecdf <- function(y,
   p <- ggplot() +
     geom_step(
       aes(x = unit_interval, y = lims_upper_scaled, color = "yrep"),
-      linetype = 2, show.legend = FALSE
+      linetype = "dashed", linewidth = 0.3, show.legend = FALSE
     ) +
     geom_step(
       aes(x = unit_interval, y = lims_lower_scaled, color = "yrep"),
-      linetype = 2, show.legend = FALSE
+      linetype = "dashed", linewidth = 0.3, show.legend = FALSE
     ) +
     geom_step(
       aes(x = unit_interval, y = ecdf_eval, color = "y", linewidth = linewidth),
@@ -691,7 +699,7 @@ ppc_loo_pit_ecdf <- function(y,
     ) +
     yaxis_ticks(FALSE) +
     scale_color_ppc() +
-    bayesplot::theme_default(base_family = "sans", base_size = 16)
+    bayesplot::theme_default(base_family = "sans")
   
   return(p)
 }
