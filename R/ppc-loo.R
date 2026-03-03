@@ -415,7 +415,7 @@ ppc_loo_pit_qq <- function(y,
 #'   determined based on p-value.
 #' @param color For `ppc_loo_pit_ecdf()` when `method = "correlated"`, a vector
 #'   with base color and highlight color for the ECDF plot. Defaults to
-#'   `c(ecdf = "black", highlight = "red")`. The first element is used for
+#'   `c(ecdf = "grey60", highlight = "red")`. The first element is used for
 #'   the main ECDF line, the second for highlighted suspicious regions.
 #' @param help_text For `ppc_loo_pit_ecdf()` when `method = "correlated"`, a boolean
 #'   defining whether to add informative text to the plot. Defaults to `TRUE`.
@@ -513,7 +513,7 @@ ppc_loo_pit_ecdf <- function(y,
       alpha     <- 1 - prob
       gamma     <- gamma %||% 0
       linewidth <- linewidth %||% 0.3
-      color     <- color %||% c(ecdf = "black", highlight = "red")
+      color     <- color %||% c(ecdf = "grey60", highlight = "red")
       help_text <- help_text %||% TRUE
     },
     
