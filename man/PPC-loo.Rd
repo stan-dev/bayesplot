@@ -70,7 +70,8 @@ ppc_loo_pit_ecdf(
   test = NULL,
   gamma = NULL,
   linewidth = NULL,
-  color = NULL
+  color = NULL,
+  help_text = NULL
 )
 
 ppc_loo_pit(
@@ -226,6 +227,9 @@ determined based on p-value.}
 with base color and highlight color for the ECDF plot. Defaults to
 \code{c(ecdf = "gray60", highlight = "gray30")}. The first element is used for
 the main ECDF line, the second for highlighted suspicious regions.}
+
+\item{help_text}{For \code{ppc_loo_pit_ecdf()} when \code{method = "correlated"}, a boolean
+defining whether to add informative text to the plot. Defaults to \code{TRUE}.}
 
 \item{subset}{For \code{ppc_loo_intervals()} and \code{ppc_loo_ribbon()}, an optional
 integer vector indicating which observations in \code{y} (and \code{yrep}) to
