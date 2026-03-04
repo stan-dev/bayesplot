@@ -19,3 +19,14 @@ release-prep.R
 
 # ignore draft vignette
 vignettes/ppc_loo_pit.Rmd
+vignettes/test_greyscale.qmd
+
+# internal knitting of vignettes
+*_cache
+*_files
+vignettes/*.quarto
+vignettes/*.html
+vignettes/.gitignore
+
+# visual regression test
+tests/vdiffr.Rout.fail
