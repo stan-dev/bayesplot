@@ -503,7 +503,7 @@ test_that("ppc_pit_ecdf with method correlated renders different tests correctly
     method = "correlated", 
     test = "PIET"
   )
-  vdiffr::expect_doppelganger("ppc_pit_ecdf (correlated piet)", p_cor_piet)
+  vdiffr::expect_doppelganger("ppc_pit_ecdf (correlated piet 2)", p_cor_piet)
 })
 
 test_that("ppc_pit_ecdf with plot_diff=TRUE and method correlated renders different tests correctly", {
