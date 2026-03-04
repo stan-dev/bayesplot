@@ -699,7 +699,7 @@ ppc_loo_pit_ecdf <- function(y,
     ) +
     yaxis_ticks(FALSE) +
     scale_color_ppc() +
-    bayesplot::theme_default(base_family = "sans")
+    bayesplot_theme_get()
   
   return(p)
 }
