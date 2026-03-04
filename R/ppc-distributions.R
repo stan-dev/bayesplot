@@ -667,8 +667,10 @@ ppc_violin_grouped <-
 #'   determined based on p-value.
 #' @param color For `ppc_loo_pit_ecdf()` when `method = "correlated"`, a vector
 #'   with base color and highlight color for the ECDF plot. Defaults to
-#'   `c(ecdf = "black", highlight = "red")`. The first element is used for
+#'   `c(ecdf = "grey60", highlight = "red")`. The first element is used for
 #'   the main ECDF line, the second for highlighted suspicious regions.
+#' @param help_text For 'ppc_pit_ecdf()' when `method = "correlated"`, a boolean 
+#'   defining whether to add informative text to the plot. Defaults to `TRUE`.
 #' @rdname PPC-distributions
 #'
 ppc_pit_ecdf <- function(y,
@@ -683,11 +685,12 @@ ppc_pit_ecdf <- function(y,
                          test = NULL,
                          gamma = NULL,
                          linewidth = NULL,
-                         color = NULL
+                         color = NULL,
+                         help_text = NULL
                         ) {
   check_ignored_arguments(...,
     ok_args = c("K", "pit", "prob", "plot_diff", "interpolate_adj",
-    "method", "test", "gamma", "linewidth", "color")
+    "method", "test", "gamma", "linewidth", "color", "help_text")
   )
 
   method <- match.arg(method, choices = c("independent", "correlated"))
@@ -697,23 +700,6 @@ ppc_pit_ecdf <- function(y,
     paste(args, collapse = ", "), ".")
     inform(msg)
   }
-
-  switch(method,
-    "correlated" = {
-      if (!is.null(interpolate_adj)) .warn_ignored("'correlated'", "interpolate_adj")
-      test <- match.arg(test %||% "POT", choices = c("POT", "PRIT", "PIET"))
-      alpha     <- 1 - prob
-      gamma     <- gamma %||% 0
-      linewidth <- linewidth %||% 0.3
-      color     <- color %||% c(ecdf = "black", highlight = "red")
-    },
-    "independent" = {
-      ignored <- character(0)
-      if (!is.null(test)) ignored <- c(ignored, "test")
-      if (!is.null(gamma)) ignored <- c(ignored, "gamma")
-      if (length(ignored) > 0) .warn_ignored("'independent'", ignored)
-    }
-  )
 
   if (is.null(pit)) {
     pit <- ppc_data(y, yrep) %>%
@@ -727,12 +713,37 @@ ppc_pit_ecdf <- function(y,
       K <- min(nrow(yrep) + 1, 1000)
     }
   } else {
-    inform("'pit' specified so ignoring 'y', and 'yrep' if specified.")
     pit <- validate_pit(pit)
     if (is.null(K)) {
       K <- length(pit)
     }
+    ignored <- character(0)
+    if (!missing(y) && !is.null(y)) ignored <- c(ignored, "y")
+    if (!missing(yrep) && !is.null(yrep)) ignored <- c(ignored, "yrep")
+    if (length(ignored) > 0) {
+      inform(paste0("As 'pit' specified; ignoring: ", paste(ignored, collapse = ", "), "."))
+    }
   }
+
+  # input validation and setting of defaults dependent on method
+  switch(method,
+    "correlated" = {
+      if (!is.null(interpolate_adj)) .warn_ignored("'correlated'", "interpolate_adj")
+      test <- match.arg(test %||% "POT", choices = c("POT", "PRIT", "PIET"))
+      alpha     <- 1 - prob
+      gamma     <- gamma %||% 0
+      linewidth <- linewidth %||% 0.3
+      color     <- color %||% c(ecdf = "grey60", highlight = "red")
+      help_text <- help_text %||%  TRUE
+    },
+    "independent" = {
+      ignored <- character(0)
+      if (!is.null(test)) ignored <- c(ignored, "test")
+      if (!is.null(gamma)) ignored <- c(ignored, "gamma")
+      if (!is.null(help_text)) ignored <- c(ignored, "help_text")
+      if (length(ignored) > 0) .warn_ignored("'independent'", ignored)
+    }
+  )
 
   n_obs <- length(pit)
   unit_interval <- seq(0, 1, length.out = K)
@@ -791,7 +802,7 @@ ppc_pit_ecdf <- function(y,
         x = 0, y = 0, xend = 1, 
         yend = dplyr::if_else(plot_diff, 0, 1)
       ),
-    linetype = 2, color = "darkgrey"
+    linetype = "dashed", color = "darkgrey", linewidth = 0.3
     )
   
     # Identify and highlight suspecious points (regions) of the ECDF
@@ -845,26 +856,28 @@ ppc_pit_ecdf <- function(y,
     }
     
     # Apply bayesplot theme and styling
-    p <- p +
-      yaxis_ticks(FALSE) +
-      scale_color_ppc() +
-      annotate(
+    if (help_text) {
+      p <- p + annotate(
         "text",
         x = -Inf, y = Inf,
-        label = sprintf("Uniformity p-value = %.3f", p_value_CCT),
-        hjust = -0.1, vjust = 1.5,
-        size = 6, color = "black"
-      ) +
-      bayesplot::theme_default(base_family = "sans", base_size = 16)
-    
+        label = sprintf("p[unif] == '%.3f' ~ (alpha == '%.2f')", p_value_CCT, alpha),
+        hjust = -0.05, vjust = 1.5, color = "black",
+        parse = TRUE, size = 0.7 * bayesplot_theme_get()$text@size / ggplot2::.pt
+      )
+    }
+
     if (plot_diff) {
       epsilon = max(
         sqrt(log(2 / (1 - prob)) / (2 * length(pit))),
         max(abs(df_main$ecdf_pit))
       )
-
       p <- p + scale_y_continuous(limits = c(-epsilon, epsilon))
     }
+
+    p <- p +
+      yaxis_ticks(FALSE) +
+      scale_color_ppc() +
+      bayesplot_theme_get()
 
     return(p)
   }
@@ -886,11 +899,11 @@ ppc_pit_ecdf <- function(y,
   p <- ggplot() +
     geom_step(
       aes(x = unit_interval, y = lims_upper_scaled, color = "yrep"),
-      linetype = 2, show.legend = FALSE
+      linetype = "dashed", linewidth = 0.3, show.legend = FALSE
     ) +
     geom_step(
       aes(x = unit_interval, y = lims_lower_scaled, color = "yrep"),
-      linetype = 2, show.legend = FALSE
+      linetype = "dashed", linewidth = 0.3, show.legend = FALSE
     ) +
     geom_step(
       aes(x = unit_interval, y = ecdf_eval, color = "y", linewidth = linewidth),
@@ -902,7 +915,7 @@ ppc_pit_ecdf <- function(y,
     ) +
     yaxis_ticks(FALSE) +
     scale_color_ppc() +
-    bayesplot::theme_default(base_family = "sans", base_size = 16)
+    bayesplot_theme_get()
 
   return(p)
 }
