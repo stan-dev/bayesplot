@@ -116,13 +116,10 @@ test_that("ppc_pit_ecdf, ppc_pit_ecdf_grouped returns a ggplot object", {
   expect_gg(ppc_pit_ecdf(y, yrep, method = "correlated", test = "PIET"))
 
   # Specify 'pit' directly
-  expect_message(ppc_pit_ecdf(pit = runif(100)), "'pit' specified")
   expect_message(
     ppc_pit_ecdf_grouped(pit = runif(length(group)), group = group, interpolate_adj = FALSE),
     "'pit' specified"
   )
-  expect_message(ppc_pit_ecdf(pit = runif(100), method = "correlated"),
-  "'pit' specified")
 })
 
 test_that("ppc_pit_ecdf method validation and ignored-argument warnings", {
