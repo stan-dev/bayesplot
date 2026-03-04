@@ -480,3 +480,82 @@ test_that("ppc_pit_ecdf, ppc_pit_ecdf_grouped renders correctly", {
   p_corr_piet <- ppc_pit_ecdf(y, yrep, method = "correlated", test = "PIET")
   vdiffr::expect_doppelganger("ppc_pit_ecdf (correlated PIET)", p_corr_piet)
 })
+
+test_that("ppc_pit_ecdf with method correlated renders different tests correctly", {
+  set.seed(2025)
+  pit <- 1 - (1 - runif(300))^(1.2)
+  
+  p_cor_pot <- ppc_pit_ecdf(
+    pit = pit, 
+    method = "correlated"
+  )
+  vdiffr::expect_doppelganger("ppc_pit_ecdf (correlated pot)", p_cor_pot)
+
+  p_cor_prit <- ppc_pit_ecdf(
+    pit = pit, 
+    method = "correlated", 
+    test = "PRIT"
+  )
+  vdiffr::expect_doppelganger("ppc_pit_ecdf (correlated prit 2)", p_cor_prit)
+
+  p_cor_piet <- ppc_pit_ecdf(
+    pit = pit, 
+    method = "correlated", 
+    test = "PIET"
+  )
+  vdiffr::expect_doppelganger("ppc_pit_ecdf (correlated piet)", p_cor_piet)
+})
+
+test_that("ppc_pit_ecdf with plot_diff=TRUE and method correlated renders different tests correctly", {
+  set.seed(2025)
+  pit <- 1 - (1 - runif(300))^(1.2)
+  
+  p_cor_pot <- ppc_pit_ecdf(
+    pit = pit, 
+    method = "correlated",
+    plot_diff = TRUE
+  )
+  vdiffr::expect_doppelganger("ppc_pit_ecdf (diff, correlated pot)", p_cor_pot)
+
+  p_cor_prit <- ppc_pit_ecdf(
+    pit = pit, 
+    method = "correlated", 
+    test = "PRIT",
+    plot_diff = TRUE
+  )
+  vdiffr::expect_doppelganger("ppc_pit_ecdf (diff, correlated prit)", p_cor_prit)
+
+  p_cor_piet <- ppc_pit_ecdf(
+    pit = pit, 
+    method = "correlated", 
+    test = "PIET",
+    plot_diff = TRUE
+  )
+  vdiffr::expect_doppelganger("ppc_pit_ecdf (diff, correlated piet)", p_cor_piet)
+})
+
+test_that("ppc_pit_ecdf renders different linewidths and colors correctly", {
+  set.seed(2025)
+  pit <- 1 - (1 - runif(300))^(1.2)
+  
+  p_cor_lw1 <- ppc_pit_ecdf(
+    pit = pit, 
+    method = "correlated",
+    linewidth = 1.
+  )
+  vdiffr::expect_doppelganger("ppc_pit_ecdf (linewidth = 1)", p_cor_lw1)
+
+  p_cor_lw2 <- ppc_pit_ecdf(
+    pit = pit, 
+    method = "correlated",
+    linewidth = 2.
+  )
+  vdiffr::expect_doppelganger("ppc_pit_ecdf (linewidth = 2)", p_cor_lw2)
+
+  p_cor_col <- ppc_pit_ecdf(
+    pit = pit, 
+    method = "correlated",
+    color = c(ecdf = "darkblue", highlight = "red")
+  )
+  vdiffr::expect_doppelganger("ppc_pit_ecdf (color change)", p_cor_col)
+})
