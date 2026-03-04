@@ -104,12 +104,56 @@ test_that("ppc_dots returns a ggplot object", {
 })
 
 test_that("ppc_pit_ecdf, ppc_pit_ecdf_grouped returns a ggplot object", {
+  # Independent method (default)
   expect_gg(ppc_pit_ecdf(y, yrep, interpolate_adj = FALSE))
+  expect_gg(ppc_pit_ecdf(y, yrep, method = "independent", interpolate_adj = FALSE))
   expect_gg(ppc_pit_ecdf_grouped(y, yrep, group = group, interpolate_adj = FALSE))
-  expect_message(ppc_pit_ecdf(pit = runif(100)), "'pit' specified")
+
+  # Correlated method
+  expect_gg(ppc_pit_ecdf(y, yrep, method = "correlated"))
+  expect_gg(ppc_pit_ecdf(y, yrep, method = "correlated", plot_diff = TRUE))
+  expect_gg(ppc_pit_ecdf(y, yrep, method = "correlated", test = "PRIT"))
+  expect_gg(ppc_pit_ecdf(y, yrep, method = "correlated", test = "PIET"))
+
+  # Specify 'pit' directly
   expect_message(
     ppc_pit_ecdf_grouped(pit = runif(length(group)), group = group, interpolate_adj = FALSE),
     "'pit' specified"
+  )
+})
+
+test_that("ppc_pit_ecdf method validation and ignored-argument warnings", {
+  # Invalid method
+  expect_error(ppc_pit_ecdf(y, yrep, method = "bogus"))
+
+  # method = "correlated" warns about interpolate_adj
+  expect_message(
+    ppc_pit_ecdf(y, yrep, method = "correlated", interpolate_adj = TRUE),
+    "ignoring.*interpolate_adj"
+  )
+
+  # method = "independent" warns about test and gamma
+  expect_message(
+    ppc_pit_ecdf(y, yrep, method = "independent", test = "POT",
+                 interpolate_adj = FALSE),
+    "ignoring.*test"
+  )
+  expect_message(
+    ppc_pit_ecdf(y, yrep, method = "independent", test = "POT", gamma = 0.5,
+                 interpolate_adj = FALSE),
+    "ignoring.*test, gamma"
+  )
+
+  # Invalid test type for correlated
+  expect_error(
+    ppc_pit_ecdf(y, yrep, method = "correlated", test = "INVALID")
+  )
+})
+
+test_that("ppc_pit_ecdf correlated method validates gamma", {
+  expect_error(
+    ppc_pit_ecdf(y, yrep, method = "correlated", gamma = -1),
+    "gamma must be in the interval"
   )
 })
 
@@ -412,6 +456,7 @@ test_that("ppc_pit_ecdf, ppc_pit_ecdf_grouped renders correctly", {
   testthat::skip_if_not_installed("vdiffr")
   skip_on_r_oldrel()
 
+  # Independent method
   p_base <- ppc_pit_ecdf(y, yrep, interpolate_adj = FALSE)
   g_base <- ppc_pit_ecdf_grouped(y, yrep, group = group, interpolate_adj = FALSE)
   p_diff <- ppc_pit_ecdf(y, yrep, plot_diff = TRUE, interpolate_adj = FALSE)
@@ -421,4 +466,96 @@ test_that("ppc_pit_ecdf, ppc_pit_ecdf_grouped renders correctly", {
   vdiffr::expect_doppelganger("ppc_pit_ecdf_grouped (default)", g_base)
   vdiffr::expect_doppelganger("ppc_pit_ecdf (diff)", p_diff)
   vdiffr::expect_doppelganger("ppc_pit_ecdf_grouped (diff)", g_diff)
+
+  # Correlated method
+  p_corr <- ppc_pit_ecdf(y, yrep, method = "correlated")
+  vdiffr::expect_doppelganger("ppc_pit_ecdf (correlated)", p_corr)
+
+  p_corr_diff <- ppc_pit_ecdf(y, yrep, method = "correlated", plot_diff = TRUE)
+  vdiffr::expect_doppelganger("ppc_pit_ecdf (correlated diff)", p_corr_diff)
+
+  p_corr_prit <- ppc_pit_ecdf(y, yrep, method = "correlated", test = "PRIT")
+  vdiffr::expect_doppelganger("ppc_pit_ecdf (correlated PRIT)", p_corr_prit)
+
+  p_corr_piet <- ppc_pit_ecdf(y, yrep, method = "correlated", test = "PIET")
+  vdiffr::expect_doppelganger("ppc_pit_ecdf (correlated PIET)", p_corr_piet)
+})
+
+test_that("ppc_pit_ecdf with method correlated renders different tests correctly", {
+  set.seed(2025)
+  pit <- 1 - (1 - runif(300))^(1.2)
+  
+  p_cor_pot <- ppc_pit_ecdf(
+    pit = pit, 
+    method = "correlated"
+  )
+  vdiffr::expect_doppelganger("ppc_pit_ecdf (correlated pot)", p_cor_pot)
+
+  p_cor_prit <- ppc_pit_ecdf(
+    pit = pit, 
+    method = "correlated", 
+    test = "PRIT"
+  )
+  vdiffr::expect_doppelganger("ppc_pit_ecdf (correlated prit 2)", p_cor_prit)
+
+  p_cor_piet <- ppc_pit_ecdf(
+    pit = pit, 
+    method = "correlated", 
+    test = "PIET"
+  )
+  vdiffr::expect_doppelganger("ppc_pit_ecdf (correlated piet 2)", p_cor_piet)
+})
+
+test_that("ppc_pit_ecdf with plot_diff=TRUE and method correlated renders different tests correctly", {
+  set.seed(2025)
+  pit <- 1 - (1 - runif(300))^(1.2)
+  
+  p_cor_pot <- ppc_pit_ecdf(
+    pit = pit, 
+    method = "correlated",
+    plot_diff = TRUE
+  )
+  vdiffr::expect_doppelganger("ppc_pit_ecdf (diff, correlated pot)", p_cor_pot)
+
+  p_cor_prit <- ppc_pit_ecdf(
+    pit = pit, 
+    method = "correlated", 
+    test = "PRIT",
+    plot_diff = TRUE
+  )
+  vdiffr::expect_doppelganger("ppc_pit_ecdf (diff, correlated prit)", p_cor_prit)
+
+  p_cor_piet <- ppc_pit_ecdf(
+    pit = pit, 
+    method = "correlated", 
+    test = "PIET",
+    plot_diff = TRUE
+  )
+  vdiffr::expect_doppelganger("ppc_pit_ecdf (diff, correlated piet)", p_cor_piet)
+})
+
+test_that("ppc_pit_ecdf renders different linewidths and colors correctly", {
+  set.seed(2025)
+  pit <- 1 - (1 - runif(300))^(1.2)
+  
+  p_cor_lw1 <- ppc_pit_ecdf(
+    pit = pit, 
+    method = "correlated",
+    linewidth = 1.
+  )
+  vdiffr::expect_doppelganger("ppc_pit_ecdf (linewidth = 1)", p_cor_lw1)
+
+  p_cor_lw2 <- ppc_pit_ecdf(
+    pit = pit, 
+    method = "correlated",
+    linewidth = 2.
+  )
+  vdiffr::expect_doppelganger("ppc_pit_ecdf (linewidth = 2)", p_cor_lw2)
+
+  p_cor_col <- ppc_pit_ecdf(
+    pit = pit, 
+    method = "correlated",
+    color = c(ecdf = "darkblue", highlight = "red")
+  )
+  vdiffr::expect_doppelganger("ppc_pit_ecdf (color change)", p_cor_col)
 })

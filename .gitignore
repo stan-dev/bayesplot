@@ -17,15 +17,15 @@ release-prep.R
 # vscode/positron/etc settings
 .vscode/*
 
-# knitting of vignettes
+# ignore draft vignette
+vignettes/ppc_loo_pit.Rmd
+vignettes/test_greyscale.qmd
+
+# internal knitting of vignettes
 *_cache
 *_files
 vignettes/*.quarto
 vignettes/*.html
-
-# draft vignette
-ppc_loo_pit.Rmd
-test_greyscale.qmd
 vignettes/.gitignore
 
 # visual regression test

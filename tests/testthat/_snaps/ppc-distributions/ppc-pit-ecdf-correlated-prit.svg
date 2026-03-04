@@ -25,9 +25,22 @@
   </clipPath>
 </defs>
 <g clip-path='url(#cpNDMuNzh8NzE0LjAyfDI0Ljg1fDU0Mi4zMA==)'>
-<polyline points='74.25,467.04 98.62,467.04 98.62,434.11 122.99,434.11 122.99,410.59 147.36,410.59 147.36,387.07 171.74,387.07 171.74,363.55 196.11,363.55 196.11,340.03 220.48,340.03 220.48,321.21 244.85,321.21 244.85,302.40 269.23,302.40 269.23,278.88 293.60,278.88 293.60,260.06 317.97,260.06 317.97,241.24 342.34,241.24 342.34,227.13 366.72,227.13 366.72,208.31 391.09,208.31 391.09,189.50 415.46,189.50 415.46,175.39 439.83,175.39 439.83,156.57 464.21,156.57 464.21,142.46 488.58,142.46 488.58,123.64 512.95,123.64 512.95,109.53 537.32,109.53 537.32,95.42 561.69,95.42 561.69,86.01 586.07,86.01 586.07,71.90 610.44,71.90 610.44,62.49 634.81,62.49 634.81,53.08 659.18,53.08 659.18,48.38 683.56,48.38 683.56,48.38 ' style='stroke-width: 0.64; stroke: #B3CDE0; stroke-dasharray: 4.00,4.00; stroke-linecap: butt;' />
-<polyline points='74.25,518.78 98.62,518.78 98.62,514.08 122.99,514.08 122.99,504.67 147.36,504.67 147.36,495.26 171.74,495.26 171.74,481.15 196.11,481.15 196.11,471.74 220.48,471.74 220.48,457.63 244.85,457.63 244.85,443.52 269.23,443.52 269.23,424.70 293.60,424.70 293.60,410.59 317.97,410.59 317.97,391.77 342.34,391.77 342.34,377.66 366.72,377.66 366.72,358.85 391.09,358.85 391.09,340.03 415.46,340.03 415.46,325.92 439.83,325.92 439.83,307.10 464.21,307.10 464.21,288.28 488.58,288.28 488.58,264.76 512.95,264.76 512.95,245.95 537.32,245.95 537.32,227.13 561.69,227.13 561.69,203.61 586.07,203.61 586.07,180.09 610.44,180.09 610.44,156.57 634.81,156.57 634.81,133.05 659.18,133.05 659.18,100.12 683.56,100.12 683.56,48.38 ' style='stroke-width: 0.64; stroke: #B3CDE0; stroke-dasharray: 4.00,4.00; stroke-linecap: butt;' />
-<polyline points='74.25,514.08 98.62,514.08 98.62,490.56 122.99,490.56 122.99,462.33 147.36,462.33 147.36,448.22 171.74,448.22 171.74,429.41 196.11,429.41 196.11,410.59 220.48,410.59 220.48,387.07 244.85,387.07 244.85,368.25 269.23,368.25 269.23,354.14 293.60,354.14 293.60,340.03 317.97,340.03 317.97,321.21 342.34,321.21 342.34,292.99 366.72,292.99 366.72,274.17 391.09,274.17 391.09,264.76 415.46,264.76 415.46,255.36 439.83,255.36 439.83,241.24 464.21,241.24 464.21,213.02 488.58,213.02 488.58,198.91 512.95,198.91 512.95,175.39 537.32,175.39 537.32,165.98 561.69,165.98 561.69,147.16 586.07,147.16 586.07,123.64 610.44,123.64 610.44,109.53 634.81,109.53 634.81,76.60 659.18,76.60 659.18,57.78 683.56,57.78 683.56,48.38 ' style='stroke-width: 1.16; stroke: #011F4B; stroke-linecap: butt;' />
+<polyline points='74.25,514.08 98.62,514.08 98.62,490.56 122.99,490.56 122.99,462.33 147.36,462.33 147.36,448.22 171.74,448.22 171.74,429.41 196.11,429.41 196.11,410.59 220.48,410.59 220.48,387.07 244.85,387.07 244.85,368.25 269.23,368.25 269.23,354.14 293.60,354.14 293.60,340.03 317.97,340.03 317.97,321.21 342.34,321.21 342.34,292.99 366.72,292.99 366.72,274.17 391.09,274.17 391.09,264.76 415.46,264.76 415.46,255.36 439.83,255.36 439.83,241.24 464.21,241.24 464.21,213.02 488.58,213.02 488.58,198.91 512.95,198.91 512.95,175.39 537.32,175.39 537.32,165.98 561.69,165.98 561.69,147.16 586.07,147.16 586.07,123.64 610.44,123.64 610.44,109.53 634.81,109.53 634.81,76.60 659.18,76.60 659.18,57.78 683.56,57.78 683.56,48.38 ' style='stroke-width: 0.64; stroke: #999999; stroke-linecap: butt;' />
+<line x1='74.25' y1='518.78' x2='683.56' y2='48.38' style='stroke-width: 0.64; stroke: #A9A9A9; stroke-dasharray: 4.00,4.00; stroke-linecap: butt;' />
+<circle cx='74.25' cy='514.08' r='1.77' style='stroke-width: 0.77; stroke: #FF0000; fill: #FF0000;' />
+<text x='48.10' y='37.39' style='font-size: 8.40px; font-family: sans;' textLength='4.67px' lengthAdjust='spacingAndGlyphs'>p</text>
+<text x='52.78' y='38.95' style='font-size: 5.88px; font-family: sans;' textLength='3.27px' lengthAdjust='spacingAndGlyphs'>u</text>
+<text x='56.05' y='38.95' style='font-size: 5.88px; font-family: sans;' textLength='3.27px' lengthAdjust='spacingAndGlyphs'>n</text>
+<text x='59.32' y='38.95' style='font-size: 5.88px; font-family: sans;' textLength='1.31px' lengthAdjust='spacingAndGlyphs'>i</text>
+<text x='60.62' y='38.95' style='font-size: 5.88px; font-family: sans;' textLength='1.63px' lengthAdjust='spacingAndGlyphs'>f</text>
+<text x='64.20' y='37.39' style='font-size: 8.40px; font-family: sans;' textLength='6.52px' lengthAdjust='spacingAndGlyphs'>=</text>
+<text x='72.67' y='37.39' style='font-size: 8.40px; font-family: sans;' textLength='21.02px' lengthAdjust='spacingAndGlyphs'>0.000</text>
+<text x='93.69' y='37.39' style='font-size: 8.40px; font-family: sans;' textLength='2.10px' lengthAdjust='spacingAndGlyphs'> </text>
+<text x='95.79' y='37.39' style='font-size: 10.50px; font-family: sans;' textLength='3.50px' lengthAdjust='spacingAndGlyphs'>(</text>
+<text x='99.29' y='37.39' style='font-size: 8.40px; font-family: sans;' textLength='5.04px' lengthAdjust='spacingAndGlyphs'>α</text>
+<text x='106.27' y='37.39' style='font-size: 8.40px; font-family: sans;' textLength='6.52px' lengthAdjust='spacingAndGlyphs'>=</text>
+<text x='114.74' y='37.39' style='font-size: 8.40px; font-family: sans;' textLength='16.35px' lengthAdjust='spacingAndGlyphs'>0.01</text>
+<text x='131.09' y='37.39' style='font-size: 10.50px; font-family: sans;' textLength='3.49px' lengthAdjust='spacingAndGlyphs'>)</text>
 </g>
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8MC4wMHw1NzYuMDA=)'>
 <polyline points='43.78,542.30 43.78,24.85 ' style='stroke-width: 0.85; stroke-linecap: butt;' />
@@ -54,6 +67,6 @@
 <text x='683.56' y='554.29' text-anchor='middle' style='font-size: 9.60px; fill: #4D4D4D; font-family: sans;' textLength='18.69px' lengthAdjust='spacingAndGlyphs'>1.00</text>
 <text x='378.90' y='567.53' text-anchor='middle' style='font-size: 12.00px; font-family: sans;' textLength='18.67px' lengthAdjust='spacingAndGlyphs'>PIT</text>
 <text transform='translate(14.24,283.58) rotate(-90)' text-anchor='middle' style='font-size: 12.00px; font-family: sans;' textLength='32.67px' lengthAdjust='spacingAndGlyphs'>ECDF</text>
-<text x='43.78' y='15.89' style='font-size: 14.40px; font-family: sans;' textLength='138.50px' lengthAdjust='spacingAndGlyphs'>ppc_pit_ecdf (default)</text>
+<text x='43.78' y='15.89' style='font-size: 14.40px; font-family: sans;' textLength='196.11px' lengthAdjust='spacingAndGlyphs'>ppc_pit_ecdf (correlated PRIT)</text>
 </g>
 </svg>

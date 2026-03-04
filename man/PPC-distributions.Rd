@@ -131,7 +131,13 @@ ppc_pit_ecdf(
   K = NULL,
   prob = 0.99,
   plot_diff = FALSE,
-  interpolate_adj = NULL
+  interpolate_adj = NULL,
+  method = "independent",
+  test = NULL,
+  gamma = NULL,
+  linewidth = NULL,
+  color = NULL,
+  help_text = NULL
 )
 
 ppc_pit_ecdf_grouped(
@@ -239,11 +245,36 @@ values rather than plotting the regular ECDF. The default is \code{FALSE}, but
 for large samples we recommend setting \code{plot_diff=TRUE} as the difference
 plot will visually show a more dynamic range.}
 
-\item{interpolate_adj}{A boolean defining if the simultaneous confidence
-bands should be interpolated based on precomputed values rather than
-computed exactly. Computing the bands may be computationally intensive and
-the approximation gives a fast method for assessing the ECDF trajectory.
-The default is to use interpolation if \code{K} is greater than 200.}
+\item{interpolate_adj}{For \code{ppc_loo_pit_ecdf()} when \code{method = "independent"},
+a boolean defining if the simultaneous confidence bands should be
+interpolated based on precomputed values rather than computed exactly.
+Computing the bands may be computationally intensive and the approximation
+gives a fast method for assessing the ECDF trajectory. The default is to use
+interpolation if \code{K} is greater than 200.}
+
+\item{method}{For \code{ppc_loo_pit_ecdf()}, the method used to calculate the
+uniformity test:
+\itemize{
+\item \code{"independent"}: (default) Assumes independence (Säilynoja et al., 2022).
+\item \code{"correlated"}: Accounts for correlation (Tesso & Vehtari, 2026).
+}}
+
+\item{test}{For \code{ppc_loo_pit_ecdf()} when \code{method = "correlated"}, which
+dependence-aware test to use: \code{"POT"}, \code{"PRIT"}, or \code{"PIET"}.
+Defaults to \code{"POT"}.}
+
+\item{gamma}{For \code{ppc_loo_pit_ecdf()} when \code{method = "correlated"}, tolerance
+threshold controlling how strongly suspicious points are flagged. Larger
+values (gamma > 0) emphasizes points with larger deviations. If \code{NULL}, automatically
+determined based on p-value.}
+
+\item{color}{For \code{ppc_loo_pit_ecdf()} when \code{method = "correlated"}, a vector
+with base color and highlight color for the ECDF plot. Defaults to
+\code{c(ecdf = "grey60", highlight = "red")}. The first element is used for
+the main ECDF line, the second for highlighted suspicious regions.}
+
+\item{help_text}{For 'ppc_pit_ecdf()' when \code{method = "correlated"}, a boolean
+defining whether to add informative text to the plot. Defaults to \code{TRUE}.}
 }
 \value{
 The plotting functions return a ggplot object that can be further
