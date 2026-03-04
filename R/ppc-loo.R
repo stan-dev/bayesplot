@@ -637,11 +637,6 @@ ppc_loo_pit_ecdf <- function(y,
     }
 
     # Apply bayesplot theme and styling
-    p <- p +
-      yaxis_ticks(FALSE) +
-      scale_color_ppc() +
-      bayesplot::theme_default(base_family = "sans")
-    
     if (help_text) {
       p <- p + annotate(
         "text",
@@ -660,6 +655,11 @@ ppc_loo_pit_ecdf <- function(y,
 
       p <- p + scale_y_continuous(limits = c(-epsilon, epsilon))
     }
+
+    p <- p +
+      yaxis_ticks(FALSE) +
+      scale_color_ppc() +
+      bayesplot_theme_get()
 
     return(p)
   }
