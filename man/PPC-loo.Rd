@@ -71,7 +71,8 @@ ppc_loo_pit_ecdf(
   gamma = NULL,
   linewidth = NULL,
   color = NULL,
-  help_text = NULL
+  help_text = NULL,
+  pareto_pit = NULL
 )
 
 ppc_loo_pit(
@@ -230,6 +231,11 @@ the main ECDF line, the second for highlighted suspicious regions.}
 
 \item{help_text}{For \code{ppc_loo_pit_ecdf()} when \code{method = "correlated"}, a boolean
 defining whether to add informative text to the plot. Defaults to \code{TRUE}.}
+
+\item{pareto_pit}{For \code{ppc_loo_pit_ecdf()}. Computes PIT values using Pareto-PIT method.
+Defaults to \code{TRUE} if \code{test} is either \code{"POT"} or \code{"PIET"} and no \code{pit} values are
+provided otherwise \code{FALSE}. This argument should not normally be modified by the user,
+except for development purposes.}
 
 \item{subset}{For \code{ppc_loo_intervals()} and \code{ppc_loo_ribbon()}, an optional
 integer vector indicating which observations in \code{y} (and \code{yrep}) to

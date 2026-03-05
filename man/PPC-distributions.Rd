@@ -126,7 +126,9 @@ ppc_violin_grouped(
 ppc_pit_ecdf(
   y,
   yrep,
+  lw = NULL,
   ...,
+  psis_object = NULL,
   pit = NULL,
   K = NULL,
   prob = 0.99,
@@ -137,7 +139,8 @@ ppc_pit_ecdf(
   gamma = NULL,
   linewidth = NULL,
   color = NULL,
-  help_text = NULL
+  help_text = NULL,
+  pareto_pit = NULL
 )
 
 ppc_pit_ecdf_grouped(
@@ -224,6 +227,19 @@ to to the \code{size}, \code{alpha}, and \code{width} arguments of \code{\link[g
 to control the appearance of \code{y} points. The default of \code{y_jitter=NULL}
 will let \strong{ggplot2} determine the amount of jitter.}
 
+\item{lw}{A matrix of (smoothed) log weights with the same dimensions as
+\code{yrep}. See \code{\link[loo:psis]{loo::psis()}} and the associated \code{weights()} method as well as
+the \strong{Examples} section, below. If \code{lw} is not specified then
+\code{psis_object} can be provided and log weights will be extracted.
+Only required if \code{pareto_pit = TRUE}. \code{pareto_pit} defaults to \code{TRUE} if
+\code{method = "correlated"} and \code{test} is \code{"POT"} or \code{"PIET"}.}
+
+\item{psis_object}{If using \strong{loo} version \verb{2.0.0} or greater, an
+object returned by the \code{psis()} function (or by the \code{loo()} function
+with argument \code{save_psis} set to \code{TRUE}).
+Only required if \code{pareto_pit = TRUE}. \code{pareto_pit} defaults to \code{TRUE} if
+\code{method = "correlated"} and \code{test} is \code{"POT"} or \code{"PIET"}.}
+
 \item{pit}{An optional vector of probability integral transformed values for
 which the ECDF is to be drawn. If NULL, PIT values are computed to \code{y} with
 respect to the corresponding values in \code{yrep}.}
@@ -273,8 +289,14 @@ with base color and highlight color for the ECDF plot. Defaults to
 \code{c(ecdf = "grey60", highlight = "red")}. The first element is used for
 the main ECDF line, the second for highlighted suspicious regions.}
 
-\item{help_text}{For 'ppc_pit_ecdf()' when \code{method = "correlated"}, a boolean
+\item{help_text}{For \code{ppc_pit_ecdf()} when \code{method = "correlated"}, a boolean
 defining whether to add informative text to the plot. Defaults to \code{TRUE}.}
+
+\item{pareto_pit}{For \code{ppc_pit_ecdf()}, a boolean defining whether to compute
+the PIT values using Pareto-smoothed importance sampling (if \code{TRUE} and no pit values are provided).
+Defaults to \code{TRUE} when \code{method = "correlated"} and \code{test} is \code{"POT"} or \code{"PIET"}.
+Otherwise defaults to \code{FALSE}. If \code{TRUE} requires the specification of \code{lw} or \code{psis_object}.
+The defaults should not be changed by the user, but the option is provided for developers.}
 }
 \value{
 The plotting functions return a ggplot object that can be further
