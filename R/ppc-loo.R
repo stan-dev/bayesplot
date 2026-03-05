@@ -419,6 +419,10 @@ ppc_loo_pit_qq <- function(y,
 #'   the main ECDF line, the second for highlighted suspicious regions.
 #' @param help_text For `ppc_loo_pit_ecdf()` when `method = "correlated"`, a boolean
 #'   defining whether to add informative text to the plot. Defaults to `TRUE`.
+#' @param pareto_pit For `ppc_loo_pit_ecdf()`. Computes PIT values using Pareto-PIT method. 
+#'   Defaults to `TRUE` if `test` is either `"POT"` or `"PIET"` and no `pit` values are 
+#'   provided otherwise `FALSE`. This argument should not normally be modified by the user, 
+#'   except for development purposes.
 #' @note
 #' Note that the default "independent" method is **superseded** by
 #' the "correlated" method (Tesso & Vehtari, 2026) which accounts for dependent
@@ -438,59 +442,125 @@ ppc_loo_pit_ecdf <- function(y,
                              gamma = NULL,
                              linewidth = NULL,
                              color = NULL,
-                             help_text = NULL) {
-  
+                             help_text = NULL,
+                             pareto_pit = NULL) {
+  # Expected input combinations for ppc_loo_pit_ecdf() based on method and test choices:
+  # | yrep | y | lw | psis_object | pit | method      | test | pareto_pit | approach           |
+  # |------|---|----|-------------|-----|-------------|------|------------|--------------------|
+  # | x    | x | x  |             |     | independent | NULL | TRUE       | compute pareto-pit |
+  # | x    | x |    | x           |     | independent | NULL | TRUE       | compute pareto-pit |
+  # |      |   |    |             | x   | independent | NULL | FALSE      |                    |
+  # | x    | x | x  |             |     | correlated  | POT  | TRUE       | compute pareto-pit |
+  # | x    | x |    | x           |     | correlated  | POT  | TRUE       | compute pareto-pit |
+  # |      |   |    |             | x   | correlated  | POT  | FALSE      |                    |
+  # | x    | x | x  |             |     | correlated  | PIET | TRUE       | compute pareto-pit |
+  # | x    | x |    | x           |     | correlated  | PIET | TRUE       | compute pareto-pit |
+  # |      |   |    |             | x   | correlated  | PIET | FALSE      |                    |
+  # | x    | x | x  |             |     | correlated  | PRIT | FALSE      | compute loo-pit    |
+  # | x    | x |    | x           |     | correlated  | PRIT | FALSE      | compute loo-pit    |
+  # |      |   |    |             | x   | correlated  | PRIT | FALSE      |                    |
+
   check_ignored_arguments(..., ok_args = list("moment_match"))
-  
-  # Input validation -------------------------------------------------------
-  # internal helper for printing user information if needed
-  .warn_ignored <- function(method, args) {
-    msg <- paste0("As method = ", method, " specified; ignoring: ",
-    paste(args, collapse = ", "), ".")
-    inform(msg)
+
+  # ---------------------------------------------------------------------------
+  # Internal helpers
+  # ---------------------------------------------------------------------------
+
+  .warn_ignored <- function(method_name, args) {
+    inform(paste0(
+      "As method = ", method_name, " specified; ignoring: ",
+      paste(args, collapse = ", "), "."
+    ))
   }
+  
+  # ---------------------------------------------------------------------------
+  # Resolve and validate `method`
+  # ---------------------------------------------------------------------------
 
   if (is.null(method)) {
-    inform(
-      c(
-        "i" = paste(
-          "In the next major release, the default `method`",
-          "will change to 'correlated'."
-        ),
-        "*" = paste(
-          "To silence this message, explicitly set",
-          "`method = 'independent'` or `method = 'correlated'`."
-        )
+    inform(c(
+      "i" = paste(
+        "In the next major release, the default `method`",
+        "will change to 'correlated'."
+      ),
+      "*" = paste(
+        "To silence this message, explicitly set",
+        "`method = 'independent'` or `method = 'correlated'`."
       )
-    )
+    ))
     method <- "independent"
   } else {
     method <- match.arg(method, choices = c("independent", "correlated"))
     if (method == "independent") {
-      inform(
-        paste(
-          "The 'independent' method is superseded by the 'correlated' method."
-        )
-      )
+      inform("The 'independent' method is superseded by the 'correlated' method.")
     }
   }
+  
+  # ---------------------------------------------------------------------------
+  # Method-specific defaults and validation
+  # ---------------------------------------------------------------------------
 
-  # PIT calculation or validation
-  if (!is.null(pit)) {
-    pit <- validate_pit(pit)
-    if (is.null(K)) {
-      K <- length(pit)
+  switch(method,
+    "correlated" = {
+      if (!is.null(interpolate_adj)) .warn_ignored("'correlated'", "interpolate_adj")
+      
+      test      <- match.arg(test %||% "POT", choices = c("POT", "PRIT", "PIET"))
+      alpha     <- 1 - prob
+      gamma     <- gamma     %||% 0
+      linewidth <- linewidth %||% 0.3
+      color     <- color     %||% c(ecdf = "grey60", highlight = "red")
+      help_text <- help_text %||% TRUE
+      
+      # Pareto PIT applies only when `pit` is not already supplied and the
+      # test is POT or PIET.
+      pareto_pit <- is.null(pit) && test %in% c("POT", "PIET")
+    },
+    "independent" = {
+      # Collect args that are meaningless under the independent method.
+      ignored <- c(
+        if (!is.null(test))      "test",
+        if (!is.null(gamma))     "gamma",
+        if (!is.null(help_text)) "help_text"
+      )
+      if (length(ignored) > 0) .warn_ignored("'independent'", ignored)
     }
-    # print user info only if corresponding args are specified
-    ignored <- character(0)
-    if (!missing(y) && !is.null(y)) ignored <- c(ignored, "y")
-    if (!missing(yrep) && !is.null(yrep)) ignored <- c(ignored, "yrep")
-    if (!is.null(lw)) ignored <- c(ignored, "lw")
+  )
+
+  # ---------------------------------------------------------------------------
+  # Compute PIT values
+  # ---------------------------------------------------------------------------
+
+  if (isTRUE(pareto_pit) && is.null(pit)) {
+    # --- Pareto-smoothed LOO PIT ---
+    suggested_package("rstantools")
+    y <- validate_y(y)
+    yrep <- validate_predictions(yrep, length(y))
+    lw <- .get_lw(lw, psis_object)
+    stopifnot(identical(dim(yrep), dim(lw)))
+
+    pit <- pareto_pit(x = yrep, y = y, weights = lw, log = TRUE)
+    K   <- K %||% length(pit)
+
+  } else if (!is.null(pit)) {
+    # --- Pre-supplied PIT values ---
+    pit <- validate_pit(pit)
+    K   <- K %||% length(pit)
+
+    # Warn about any ignored arguments.
+    ignored <- c(
+      if (!missing(y)    && !is.null(y))    "y",
+      if (!missing(yrep) && !is.null(yrep)) "yrep",
+      if (!is.null(lw))                     "lw"
+    )
     if (length(ignored) > 0) {
-      inform(paste0("As 'pit' specified; ignoring: ", paste(ignored, collapse = ", "), "."))
+      inform(paste0(
+        "As 'pit' specified; ignoring: ",
+        paste(ignored, collapse = ", "), "."
+      ))
     }
 
   } else {
+    # --- Standard LOO PIT ---
     suggested_package("rstantools")
     y <- validate_y(y)
     yrep <- validate_predictions(yrep, length(y))
@@ -498,161 +568,151 @@ ppc_loo_pit_ecdf <- function(y,
     stopifnot(identical(dim(yrep), dim(lw)))
 
     pit <- pmin(1, rstantools::loo_pit(object = yrep, y = y, lw = lw))
-    if (is.null(K)) {
-      K <- min(nrow(yrep) + 1, 1000)
-    }
+    K   <- K %||% min(nrow(yrep) + 1, 1000)
   }
 
-  # Input validation dependent on method
-  switch(method,
-    "correlated" = {
-      if (!is.null(interpolate_adj)) .warn_ignored("'correlated'", "interpolate_adj")
-      
-      test <- match.arg(test %||% "POT", choices = c("POT", "PRIT", "PIET"))
-      
-      alpha     <- 1 - prob
-      gamma     <- gamma %||% 0
-      linewidth <- linewidth %||% 0.3
-      color     <- color %||% c(ecdf = "grey60", highlight = "red")
-      help_text <- help_text %||% TRUE
-    },
-    
-    "independent" = {
-      ignored <- character(0)
-      if (!is.null(test)) ignored <- c(ignored, "test")
-      if (!is.null(gamma)) ignored <- c(ignored, "gamma")
-      if (!is.null(help_text)) ignored <- c(ignored, "help_text")
-      if (length(ignored) > 0) .warn_ignored("'independent'", ignored)
-    }
-  )
+  # ---------------------------------------------------------------------------
+  # Shared ECDF setup
+  # ---------------------------------------------------------------------------
 
-  n_obs <- length(pit)
-  unit_interval <- seq(0, 1, length.out = K)
-  .ecdf_pit_fn <- ecdf(pit)
+  n_obs          <- length(pit)
+  unit_interval  <- seq(0, 1, length.out = K)
+  ecdf_pit_fn    <- ecdf(pit)
+  y_label        <- if (plot_diff) "ECDF difference" else "ECDF"
 
-  # Correlated method --------------------------------------------------
+  # ===========================================================================
+  # Correlated method
+  # ===========================================================================
+
   if (method == "correlated") {
-    # Compute test p-value and Cauchy-transformed values
-    if (test == "POT") {
-      std_cauchy_values <- .compute_cauchy(.pot_test(sort(pit)))
-      p_value_CCT <- .cauchy_combination_test(.pot_test(pit), truncate = TRUE)
-    } else if (test == "PIET") {
-      std_cauchy_values <- .compute_cauchy(.piet_test(sort(pit)))
-      p_value_CCT <- .cauchy_combination_test(.piet_test(pit), truncate = FALSE)
-    } else { # PRIT
-      std_cauchy_values <- .compute_cauchy(.prit_test(sort(pit)))
-      p_value_CCT <- .cauchy_combination_test(.prit_test(pit), truncate = TRUE)
-    }
 
-    pointwise_contribution <- .compute_shapley_values(std_cauchy_values)
+    # Compute the per-observation test statistics (sorted for Shapley values)
+    # and the combined Cauchy p-value.
+    test_fn <- switch(test,
+      POT  = .pot_test,
+      PIET = .piet_test,
+      PRIT = .prit_test
+    )
 
-    if (gamma < 0 || gamma > max(pointwise_contribution)) {
+    pit_sorted           <- sort(pit)
+    std_cauchy_values    <- .compute_cauchy(test_fn(pit_sorted))
+    p_value_CCT          <- .cauchy_combination_test(
+      test_fn(pit),
+      truncate = test != "PIET"
+    )
+    pointwise_contrib    <- .compute_shapley_values(std_cauchy_values)
+
+    # Validate gamma against computed Shapley values.
+    max_contrib <- max(pointwise_contrib)
+    if (gamma < 0 || gamma > max_contrib) {
       stop(sprintf(
-        "gamma must be in the interval [0, %.2f], but gamma = %s was provided",
-        max(pointwise_contribution), gamma
+        "gamma must be in [0, %.2f], but gamma = %s was provided.",
+        max_contrib, gamma
       ))
     }
-    x_axis_combined <- sort(unique(c(unit_interval, pit)))
-    
-    # Evaluate at 0-1 interval b´values
-    df_main <- tibble::tibble(
-      x = x_axis_combined,
-      ecdf_pit = .ecdf_pit_fn(x_axis_combined) - plot_diff * x_axis_combined
-    )
-    
-    # Evaluate at pit values (used for highlighing)
-    df_pit <- tibble::tibble(
-      pit = pit,
-      ecdf_pit = .ecdf_pit_fn(pit) - plot_diff * pit
-    )
-    df_pit <- df_pit[order(df_pit$pit), ]
 
-    # Plot ECDF
+    # Build the main ECDF data frame over a dense grid that includes pit values
+    # so step discontinuities are rendered exactly.
+    x_combined <- sort(unique(c(unit_interval, pit)))
+
+    df_main <- tibble::tibble(
+      x        = x_combined,
+      ecdf_val = ecdf_pit_fn(x_combined) - plot_diff * x_combined
+    )
+
+    # Sorted pit data frame (used for highlighting suspicious points).
+    df_pit <- tibble::tibble(
+      pit      = pit_sorted,
+      ecdf_val = ecdf_pit_fn(pit_sorted) - plot_diff * pit_sorted
+    )
+
+    # --- Base plot -----------------------------------------------------------
+
     p <- ggplot() +
       geom_step(
-        data = df_main, aes(x = .data$x, y = .data$ecdf_pit),
-        show.legend = FALSE, linewidth = linewidth, color = color[1]) +
-      labs(
-        y = dplyr::if_else(plot_diff, "ECDF difference", "ECDF"),
-        x = "LOO PIT"
-      )
-    
-    # Add reference line
-    p <- p + geom_segment(
-      aes(
-        x = 0, y = 0, xend = 1, 
-        yend = dplyr::if_else(plot_diff, 0, 1)
-      ),
-    linetype = "dashed", color = "darkgrey", linewidth = 0.3
-    )
-  
-    # Identify and highlight suspecious points (regions) of the ECDF
+        data = df_main, 
+        mapping = aes(x = .data$x, y = .data$ecdf_val),
+        show.legend = FALSE, 
+        linewidth = linewidth, 
+        color = color["ecdf"]
+      ) +
+      geom_segment(
+        mapping  = aes(x = 0, y = 0, xend = 1, yend = if (plot_diff) 0 else 1),
+        linetype = "dashed",
+        color    = "darkgrey",
+        linewidth = 0.3
+      ) +
+      labs(x = "PIT", y = y_label)
+
+    # --- Highlight suspicious regions ----------------------------------------
+
     if (p_value_CCT < alpha) {
-      red_idx <- which(pointwise_contribution > gamma)
+      red_idx <- which(pointwise_contrib > gamma)
       
       if (length(red_idx) > 0) {
-        df_red <- df_pit[red_idx, ]
-        
-        # Groups of consecutive suspicious points
+        df_red         <- df_pit[red_idx, ]
         df_red$segment <- cumsum(c(1, diff(red_idx) != 1))
         
-        # Separate isolated vs grouped points
-        segment_lengths <- stats::ave(df_red$pit, df_red$segment, FUN = length)
-        df_isolated <- df_red[segment_lengths == 1, ]
-        df_grouped <- df_red[segment_lengths > 1, ]
+        seg_sizes <- stats::ave(df_red$pit, df_red$segment, FUN = length)
+        df_isolated <- df_red[seg_sizes == 1, ]
+        df_grouped <- df_red[seg_sizes > 1, ]
         
-        # Create segments based on x_combined values for grouped points
+        # Highlight contiguous groups as coloured step segments.
         if (nrow(df_grouped) > 0) {
-          segments_list <- lapply(
-            split(df_grouped, df_grouped$segment), function(group) {
-              group_indices <- match(group$pit, x_axis_combined)
-              idx_range <- min(group_indices):max(group_indices)
-            
+          df_segments <- do.call(rbind, lapply(
+            split(df_grouped, df_grouped$segment),
+            function(grp) {
+              pit_idx   <- match(grp$pit, x_combined)
+              idx_range <- seq(min(pit_idx), max(pit_idx))
               tibble::tibble(
-                x = df_main$x[idx_range],
-                ecdf_pit = df_main$ecdf_pit[idx_range],
-                segment = group$segment[1]
+                x        = df_main$x[idx_range],
+                ecdf_val = df_main$ecdf_val[idx_range],
+                segment  = grp$segment[1L]
               )
             }
-          )
-          df_segments <- do.call(rbind, segments_list)
-          
+          ))
+
           p <- p + geom_step(
-            data = df_segments,
-            aes(x = .data$x, y = .data$ecdf_pit, group = .data$segment),
-            color = color[2],
+            data    = df_segments,
+            mapping = aes(x = .data$x, y = .data$ecdf_val, group = .data$segment),
+            color   = color["highlight"],
             linewidth = linewidth + 0.8
           )
         }
         
+        # Highlight isolated suspicious points as dots.
         if (nrow(df_isolated) > 0) {
           p <- p + geom_point(
             data = df_isolated,
-            aes(x = .data$pit, y = .data$ecdf_pit),
-            color = color[2],
+            mapping = aes(x = .data$pit, y = .data$ecdf_val),
+            color = color["highlight"],
             size = linewidth + 1
           )
         }
       }
     }
 
-    # Apply bayesplot theme and styling
-    if (help_text) {
+    # --- Annotation and axis scaling -----------------------------------------
+
+    if (isTRUE(help_text)) {
+      label_size <- 0.7 * bayesplot_theme_get()$text@size / ggplot2::.pt
       p <- p + annotate(
         "text",
-        x = -Inf, y = Inf,
-        label = sprintf("p[unif] == '%.3f' ~ (alpha == '%.2f')", p_value_CCT, alpha),
-        hjust = -0.05, vjust = 1.5, color = "black",
-        parse = TRUE, size = 0.7 * bayesplot_theme_get()$text@size / ggplot2::.pt
+        x     = -Inf, y = Inf,
+        label = sprintf(
+          "p[unif] == '%.3f' ~ (alpha == '%.2f')",
+          p_value_CCT, alpha
+        ),
+        hjust = -0.05, vjust = 1.5,
+        color = "black", parse = TRUE, size = label_size
       )
     }
 
     if (plot_diff) {
-      epsilon = max(
-        sqrt(log(2 / (1 - prob)) / (2 * length(pit))),
-        max(abs(df_main$ecdf_pit))
+      epsilon <- max(
+        sqrt(log(2 / (1 - prob)) / (2 * n_obs)),
+        max(abs(df_main$ecdf_val))
       )
-
       p <- p + scale_y_continuous(limits = c(-epsilon, epsilon))
     }
 
@@ -664,43 +724,44 @@ ppc_loo_pit_ecdf <- function(y,
     return(p)
   }
   
-  # Independent method --------------------------------------------------
-  gamma_indep <- adjust_gamma(
-    N = n_obs,
-    K = K,
-    prob = prob,
-    interpolate_adj = interpolate_adj
-  )
+  # ===========================================================================
+  # Independent method
+  # ===========================================================================
+
+  gamma_indep <- adjust_gamma(N = n_obs, K = K, prob = prob,
+                              interpolate_adj = interpolate_adj)
 
   lims <- ecdf_intervals(gamma = gamma_indep, N = n_obs, K = K)
-  ecdf_eval <- .ecdf_pit_fn(unit_interval) - plot_diff * unit_interval
-  
-  # Precompute division by n_obs
-  n_obs_inv <- 1 / n_obs
-  lims_upper_scaled <- lims$upper[-1] * n_obs_inv - plot_diff * unit_interval
-  lims_lower_scaled <- lims$lower[-1] * n_obs_inv - plot_diff * unit_interval
-  
+
+  # `lims` contains K + 1 elements (including the boundary at 0); drop it so
+  # lengths match `unit_interval`.
+  lims_upper <- lims$upper[-1L] / n_obs - plot_diff * unit_interval
+  lims_lower <- lims$lower[-1L] / n_obs - plot_diff * unit_interval
+  ecdf_eval  <- ecdf_pit_fn(unit_interval) - plot_diff * unit_interval
+
   p <- ggplot() +
     geom_step(
-      aes(x = unit_interval, y = lims_upper_scaled, color = "yrep"),
-      linetype = "dashed", linewidth = 0.3, show.legend = FALSE
-    ) +
-    geom_step(
-      aes(x = unit_interval, y = lims_lower_scaled, color = "yrep"),
-      linetype = "dashed", linewidth = 0.3, show.legend = FALSE
-    ) +
-    geom_step(
-      aes(x = unit_interval, y = ecdf_eval, color = "y", linewidth = linewidth),
+      mapping   = aes(x = unit_interval, y = lims_upper, color = "yrep"),
+      linetype  = "dashed",
+      linewidth = 0.3,
       show.legend = FALSE
     ) +
-    labs(
-      y = dplyr::if_else(plot_diff, "ECDF difference", "ECDF"), 
-      x = "LOO PIT"
+    geom_step(
+      mapping   = aes(x = unit_interval, y = lims_lower, color = "yrep"),
+      linetype  = "dashed",
+      linewidth = 0.3,
+      show.legend = FALSE
     ) +
+    geom_step(
+      mapping   = aes(x = unit_interval, y = ecdf_eval, color = "y"),
+      linewidth = 0.5,
+      show.legend = FALSE
+    ) +
+    labs(x = x_label, y = y_label) +
     yaxis_ticks(FALSE) +
     scale_color_ppc() +
     bayesplot_theme_get()
-  
+
   return(p)
 }
 
