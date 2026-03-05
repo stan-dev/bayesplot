@@ -513,7 +513,7 @@ ppc_loo_pit_ecdf <- function(y,
       
       # Pareto PIT applies only when `pit` is not already supplied and the
       # test is POT or PIET.
-      pareto_pit <- is.null(pit) && test %in% c("POT", "PIET")
+      pareto_pit <- pareto_pit %||% is.null(pit) && test %in% c("POT", "PIET")
     },
     "independent" = {
       # Collect args that are meaningless under the independent method.
