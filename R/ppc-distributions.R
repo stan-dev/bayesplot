@@ -648,17 +648,6 @@ ppc_violin_grouped <-
 #' @param pit An optional vector of probability integral transformed values for
 #'   which the ECDF is to be drawn. If NULL, PIT values are computed to `y` with
 #'   respect to the corresponding values in `yrep`.
-#' @param lw A matrix of (smoothed) log weights with the same dimensions as
-#'   `yrep`. See [loo::psis()] and the associated `weights()` method as well as
-#'   the **Examples** section, below. If `lw` is not specified then
-#'   `psis_object` can be provided and log weights will be extracted.
-#'   Only required if `pareto_pit = TRUE`. `pareto_pit` defaults to `TRUE` if
-#'   `method = "correlated"` and `test` is `"POT"` or `"PIET"`.
-#' @param psis_object If using **loo** version `2.0.0` or greater, an
-#'   object returned by the `psis()` function (or by the `loo()` function
-#'   with argument `save_psis` set to `TRUE`).
-#'   Only required if `pareto_pit = TRUE`. `pareto_pit` defaults to `TRUE` if
-#'   `method = "correlated"` and `test` is `"POT"` or `"PIET"`.
 #' @param interpolate_adj For `ppc_loo_pit_ecdf()` when `method = "independent"`,
 #'   a boolean defining if the simultaneous confidence bands should be 
 #'   interpolated based on precomputed values rather than computed exactly. 
@@ -691,9 +680,7 @@ ppc_violin_grouped <-
 #'
 ppc_pit_ecdf <- function(y,
                          yrep,
-                         lw = NULL,
                          ...,
-                         psis_object = NULL,
                          pit = NULL,
                          K = NULL,
                          prob = .99,
@@ -708,23 +695,20 @@ ppc_pit_ecdf <- function(y,
                          pareto_pit = NULL
                         ) {
   # Expected input combinations for ppc_pit_ecdf() based on method and test choices:
-  # | yrep | y | lw | psis_object | pit | method      | test | pareto_pit | approach           |
-  # |------|---|----|-------------|-----|-------------|------|------------|--------------------|
-  # | x    | x |    |             |     | independent | NULL | FALSE      | empirical pit      |
-  # |      |   |    |             | x   | independent | NULL | FALSE      |                    |
-  # | x    | x |    | x           |     | independent | NULL | TRUE       | compute pareto-pit |
-  # | x    | x | x  |             |     | independent | NULL | TRUE       | compute pareto-pit |
-  # | x    | x | x  |             |     | correlated  | POT  | TRUE       | compute pareto-pit |
-  # | x    | x |    | x           |     | correlated  | POT  | TRUE       | compute pareto-pit |
-  # |      |   |    |             | x   | correlated  | POT  | FALSE      |                    |
-  # | x    | x | x  |             |     | correlated  | PIET | TRUE       | compute pareto-pit |
-  # | x    | x |    | x           |     | correlated  | PIET | TRUE       | compute pareto-pit |
-  # |      |   |    |             | x   | correlated  | PIET | FALSE      |                    |
-  # | x    | x |    |             |     | correlated  | PRIT | FALSE      | empirical pit      |
-  # |      |   |    |             | x   | correlated  | PRIT | FALSE      |                    |
+  # | yrep | y | pit | method      | test | pareto_pit | approach           |
+  # |------|---|-----|-------------|------|------------|--------------------|
+  # | x    | x |     | independent | NULL | FALSE      | empirical pit      |
+  # |      |   | x   | independent | NULL | FALSE      |                    |
+  # | x    | x |     | independent | NULL | TRUE       | compute pareto-pit |
+  # | x    | x |     | correlated  | POT  | TRUE       | compute pareto-pit |
+  # |      |   | x   | correlated  | POT  | FALSE      |                    |
+  # | x    | x |     | correlated  | PIET | TRUE       | compute pareto-pit |
+  # |      |   | x   | correlated  | PIET | FALSE      |                    |
+  # | x    | x |     | correlated  | PRIT | FALSE      | empirical pit      |
+  # |      |   | x   | correlated  | PRIT | FALSE      |                    |
   
   check_ignored_arguments(...,
-    ok_args = c("K", "lw", "psis_object", "pareto_pit", "pit", "prob", "plot_diff", 
+    ok_args = c("K", "pareto_pit", "pit", "prob", "plot_diff", 
     "interpolate_adj", "method", "test", "gamma", "linewidth", "color", 
     "help_text")
   )
@@ -762,10 +746,9 @@ ppc_pit_ecdf <- function(y,
       color     <- color     %||% c(ecdf = "grey60", highlight = "red")
       help_text <- help_text %||%  TRUE
 
-      # Pareto PIT applies for correlated only when lw/psis_object is supplied
-      # and the test is POT or PIET (not PRIT, which uses empirical PIT).
-      pareto_pit <- pareto_pit %||% is.null(pit) && !is.null(lw %||% psis_object) &&
-                    test %in% c("POT", "PIET")
+      # Pareto PIT applies for correlated only when the test is POT or PIET 
+      # (not PRIT, which uses empirical PIT).
+      pareto_pit <- pareto_pit %||% is.null(pit) && test %in% c("POT", "PIET")
     },
     "independent" = {
       ignored <- c(
@@ -775,7 +758,7 @@ ppc_pit_ecdf <- function(y,
       )
       if (length(ignored) > 0) .warn_ignored("'independent'", ignored)
 
-      # Pareto PIT applies for independent whenever lw/psis_object is supplied.
+      # Pareto PIT applies for independent whenever pareto_pit = TRUE.
       pareto_pit <- pareto_pit %||% FALSE
     }
   )
@@ -801,9 +784,7 @@ ppc_pit_ecdf <- function(y,
     # Warn about any ignored arguments.
     ignored <- c(
       if (!missing(y)    && !is.null(y))    "y",
-      if (!missing(yrep) && !is.null(yrep)) "yrep",
-      #if (!missing(lw)   && !is.null(lw))   "lw",
-      #if (!missing(psis_object) && !is.null(psis_object)) "psis_object"
+      if (!missing(yrep) && !is.null(yrep)) "yrep"
     )
     if (length(ignored) > 0) {
       inform(paste0(
@@ -952,8 +933,8 @@ ppc_pit_ecdf <- function(y,
       p <- p + annotate(
         "text",
         x = -Inf, y = Inf,
-        label = sprintf("p[unif]^{%s} == '%.3f' ~ (alpha == '%.2f')", 
-        test, p_value_CCT, alpha
+        label = sprintf("p[unif]^{%s} == '%s' ~ (alpha == '%.2f')", 
+        test, fmt_p(p_value_CCT), alpha
       ),
         hjust = -0.05, vjust = 1.5, 
         color = "black", parse = TRUE, size = label_size
