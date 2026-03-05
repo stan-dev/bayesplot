@@ -1185,3 +1185,8 @@ gpdfit <- function(x, wip = TRUE, min_grid_pts = 30, sort_x = TRUE,
 
   list(k = k_hat, sigma = sigma_hat)
 }
+
+# helper function for formatting p-value
+fmt_p <- function(x) {
+  dplyr::if_else(x < 0.0005, "0.000", as.character(round(signif(x, 2) + 1e-10, 3)))
+}
