@@ -559,3 +559,216 @@ test_that("ppc_pit_ecdf renders different linewidths and colors correctly", {
   )
   vdiffr::expect_doppelganger("ppc_pit_ecdf (color change)", p_cor_col)
 })
+
+
+# Test PIT computation branches ------------------------------------------------
+# use monkey-patching to test whether the correct branch of the 
+# PIT computation is taken 
+
+ppc_pit_ecdf_patched <- ppc_pit_ecdf  # copy
+
+body(ppc_pit_ecdf_patched)[[
+  # Replace the PIT computation block (the large if/else if/else)
+  # with a version that emits diagnostics
+  which(sapply(as.list(body(ppc_pit_ecdf)), function(e) {
+    is.call(e) && deparse(e[[1]]) == "if" &&
+      grepl("pareto_pit", deparse(e[[2]]))
+  }))
+]] <- quote({
+
+  if (isTRUE(pareto_pit) && is.null(pit)) {
+    message("[PIT BRANCH] Pareto-smoothed LOO PIT")
+    suggested_package("rstantools")
+    y    <- validate_y(y)
+    yrep <- validate_predictions(yrep, length(y))
+    lw   <- .get_lw(lw, psis_object)
+    stopifnot(identical(dim(yrep), dim(lw)))
+    pit  <- pareto_pit(x = yrep, y = y, weights = lw, log = TRUE)
+    K    <- K %||% length(pit)
+
+  } else if (!is.null(pit)) {
+    message("[PIT BRANCH] Pre-supplied PIT")
+    pit <- validate_pit(pit)
+    K   <- K %||% length(pit)
+    
+    ignored <- c(
+      if (!missing(y)    && !is.null(y))    "y",
+      if (!missing(yrep) && !is.null(yrep)) "yrep",
+      if (!is.null(lw))                     "lw"
+    )
+    if (length(ignored) > 0) {
+      inform(paste0("As 'pit' specified; ignoring: ",
+                    paste(ignored, collapse = ", "), "."))
+    }
+
+  } else {
+    message("[PIT BRANCH] Empirical PIT")
+    pit <- ppc_data(y, yrep) %>%
+      group_by(.data$y_id) %>%
+      dplyr::group_map(
+        ~ mean(.x$value[.x$is_y] > .x$value[!.x$is_y]) +
+        runif(1, max = mean(.x$value[.x$is_y] == .x$value[!.x$is_y]))
+      ) %>%
+      unlist()
+    K <- K %||% min(nrow(yrep) + 1, 1000)
+  }
+})
+
+testthat::test_that("ppc_pit_ecdf takes correct PIT computation branch", {
+  skip_on_cran()
+  skip_if_not_installed("loo")
+  skip_on_r_oldrel()
+  skip_if(packageVersion("rstantools") <= "2.4.0")
+
+  # | yrep | y | lw | psis_object | pit | method      | test | pareto_pit | approach           |
+  # |------|---|----|-------------|-----|-------------|------|------------|--------------------|
+  # | x    | x |    |             |     | independent | NULL | FALSE (D)  | empirical pit      |
+  # | x    | x | x  |             |     | independent | NULL | TRUE       | compute pareto-pit |
+  # | x    | x |    | x           |     | independent | NULL | TRUE       | compute pareto-pit |
+  # |      |   |    |             | x   | independent | NULL | FALSE      |                    |
+  # | x    | x | x  |             |     | correlated  | POT  | TRUE       | compute pareto-pit |
+  # | x    | x |    | x           |     | correlated  | POT  | TRUE       | compute pareto-pit |
+  # |      |   |    |             | x   | correlated  | POT  | FALSE      |                    |
+  # | x    | x | x  |             |     | correlated  | PIET | TRUE       | compute pareto-pit |
+  # | x    | x |    | x           |     | correlated  | PIET | TRUE       | compute pareto-pit |
+  # |      |   |    |             | x   | correlated  | PIET | FALSE      |                    |
+  # | x    | x | x  |             |     | correlated  | PRIT | FALSE      | empirical pit      |
+  # | x    | x |    | x           |     | correlated  | PRIT | FALSE      | empirical pit      |
+  # |      |   |    |             | x   | correlated  | PRIT | FALSE      |                    |
+
+  psis_object <- suppressWarnings(loo::psis(-vdiff_loo_lw))
+  pits <- rstantools::loo_pit(vdiff_loo_yrep, vdiff_loo_y, vdiff_loo_lw)
+
+  # method = independent ------------------------------------------
+  expect_message(
+    ppc_pit_ecdf_patched(
+      vdiff_loo_y,
+      vdiff_loo_yrep,
+      method = "independent"
+    ),
+    regexp = "\\[PIT BRANCH\\] Empirical PIT"
+  )
+
+  expect_message(
+    ppc_pit_ecdf_patched(
+      vdiff_loo_y,
+      vdiff_loo_yrep,
+      method = "independent",
+      psis_object = psis_object,
+      pareto_pit = TRUE
+    ),
+    regexp = "\\[PIT BRANCH\\] Pareto-smoothed LOO PIT"
+  )
+
+  expect_message(
+    ppc_pit_ecdf_patched(
+      method = "independent",
+      pit = pits,
+    ),
+    regexp = "\\[PIT BRANCH\\] Pre-supplied PIT"
+  )
+
+  # method = correlated + POT test -------------------------------
+  expect_message(
+    ppc_pit_ecdf_patched(
+      vdiff_loo_y,
+      vdiff_loo_yrep,
+      method = "correlated",
+      lw = vdiff_loo_lw
+    ),
+    regexp = "\\[PIT BRANCH\\] Pareto-smoothed LOO PIT"
+  )
+
+  expect_message(
+    ppc_pit_ecdf_patched(
+      vdiff_loo_y,
+      vdiff_loo_yrep,
+      method = "correlated",
+      lw = vdiff_loo_lw,
+      pareto_pit = FALSE
+    ),
+    regexp = "\\[PIT BRANCH\\] Empirical PIT"
+  )
+
+  expect_message(
+    ppc_pit_ecdf_patched(
+      vdiff_loo_y,
+      vdiff_loo_yrep,
+      method = "correlated",
+      psis_object = psis_object,
+    ),
+    regexp = "\\[PIT BRANCH\\] Pareto-smoothed LOO PIT"
+  )
+
+  expect_message(
+    ppc_pit_ecdf_patched(
+      method = "correlated",
+      pit = pits,
+    ),
+    regexp = "\\[PIT BRANCH\\] Pre-supplied PIT"
+  )
+
+  # method = correlated + PIET test -------------------------------
+  expect_message(
+    ppc_pit_ecdf_patched(
+      vdiff_loo_y,
+      vdiff_loo_yrep,
+      method = "correlated",
+      test = "PIET",
+      lw = vdiff_loo_lw
+    ),
+    regexp = "\\[PIT BRANCH\\] Pareto-smoothed LOO PIT"
+  )
+
+  expect_message(
+    ppc_pit_ecdf_patched(
+      vdiff_loo_y,
+      vdiff_loo_yrep,
+      method = "correlated",
+      test = "PIET",
+      psis_object = psis_object,
+    ),
+    regexp = "\\[PIT BRANCH\\] Pareto-smoothed LOO PIT"
+  )
+
+  expect_message(
+    ppc_pit_ecdf_patched(
+      method = "correlated",
+      test = "PIET",
+      pit = pits,
+    ),
+    regexp = "\\[PIT BRANCH\\] Pre-supplied PIT"
+  )
+
+  # method = correlated + PRIT test -------------------------------
+  expect_message(
+    ppc_pit_ecdf_patched(
+      vdiff_loo_y,
+      vdiff_loo_yrep,
+      method = "correlated",
+      test = "PRIT",
+      lw = vdiff_loo_lw
+    ),
+    regexp = "\\[PIT BRANCH\\] Empirical PIT"
+  )
+
+  expect_message(
+    ppc_pit_ecdf_patched(
+      vdiff_loo_y,
+      vdiff_loo_yrep,
+      method = "correlated",
+      test = "PRIT",
+      psis_object = psis_object,
+    ),
+    regexp = "\\[PIT BRANCH\\] Empirical PIT"
+  )
+
+  expect_message(
+    ppc_pit_ecdf_patched(
+      method = "correlated",
+      test = "PRIT",
+      pit = pits,
+    ),
+    regexp = "\\[PIT BRANCH\\] Pre-supplied PIT"
+  )
+})
