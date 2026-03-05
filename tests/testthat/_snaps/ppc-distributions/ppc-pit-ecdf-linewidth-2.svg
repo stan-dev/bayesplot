@@ -31,19 +31,22 @@
 <polyline points='570.90,173.82 571.48,173.82 571.48,173.82 572.92,173.82 572.92,172.25 573.51,172.25 573.51,172.25 573.94,172.25 573.94,170.68 575.55,170.68 575.55,170.68 576.40,170.68 576.40,169.11 577.59,169.11 577.59,169.11 577.91,169.11 577.91,167.55 ' style='stroke-width: 5.98; stroke: #FF0000; stroke-linecap: butt;' />
 <polyline points='591.14,158.14 591.85,158.14 591.85,158.14 593.89,158.14 593.89,158.14 595.93,158.14 595.93,158.14 597.47,158.14 597.47,156.57 597.97,156.57 597.97,156.57 599.12,156.57 599.12,155.00 599.55,155.00 599.55,153.43 599.83,153.43 599.83,151.87 600.01,151.87 600.01,151.87 602.04,151.87 602.04,151.87 602.21,151.87 602.21,150.30 602.94,150.30 602.94,148.73 602.96,148.73 602.96,147.16 604.08,147.16 604.08,147.16 605.25,147.16 605.25,145.59 606.12,145.59 606.12,145.59 608.16,145.59 608.16,145.59 608.40,145.59 608.40,144.02 608.77,144.02 608.77,142.46 610.20,142.46 610.20,142.46 610.37,142.46 610.37,140.89 612.23,140.89 612.23,140.89 613.11,140.89 613.11,139.32 614.27,139.32 614.27,139.32 614.52,139.32 614.52,137.75 616.31,137.75 616.31,137.75 616.34,137.75 616.34,136.18 616.87,136.18 616.87,134.62 617.72,134.62 617.72,133.05 618.35,133.05 618.35,133.05 619.17,133.05 619.17,131.48 620.38,131.48 620.38,131.48 621.71,131.48 621.71,129.91 622.42,129.91 622.42,129.91 623.16,129.91 623.16,128.34 624.42,128.34 624.42,126.78 624.46,126.78 624.46,126.78 624.53,126.78 624.53,125.21 624.67,125.21 624.67,123.64 626.50,123.64 626.50,123.64 626.83,123.64 626.83,122.07 628.54,122.07 628.54,122.07 630.57,122.07 630.57,122.07 631.59,122.07 631.59,120.50 632.61,120.50 632.61,120.50 634.42,120.50 634.42,118.94 634.65,118.94 634.65,118.94 634.91,118.94 634.91,117.37 636.52,117.37 636.52,115.80 636.69,115.80 636.69,115.80 636.77,115.80 636.77,114.23 637.03,114.23 637.03,112.66 638.72,112.66 638.72,112.66 640.25,112.66 640.25,111.10 640.76,111.10 640.76,111.10 641.39,111.10 641.39,109.53 642.05,109.53 642.05,107.96 642.54,107.96 642.54,106.39 642.80,106.39 642.80,106.39 644.37,106.39 644.37,104.82 ' style='stroke-width: 5.98; stroke: #FF0000; stroke-linecap: butt;' />
 <circle cx='582.78' cy='162.84' r='3.59' style='stroke-width: 0.77; stroke: #FF0000; fill: #FF0000;' />
-<text x='48.10' y='37.39' style='font-size: 8.40px; font-family: sans;' textLength='4.67px' lengthAdjust='spacingAndGlyphs'>p</text>
-<text x='52.78' y='38.95' style='font-size: 5.88px; font-family: sans;' textLength='3.27px' lengthAdjust='spacingAndGlyphs'>u</text>
-<text x='56.05' y='38.95' style='font-size: 5.88px; font-family: sans;' textLength='3.27px' lengthAdjust='spacingAndGlyphs'>n</text>
-<text x='59.32' y='38.95' style='font-size: 5.88px; font-family: sans;' textLength='1.31px' lengthAdjust='spacingAndGlyphs'>i</text>
-<text x='60.62' y='38.95' style='font-size: 5.88px; font-family: sans;' textLength='1.63px' lengthAdjust='spacingAndGlyphs'>f</text>
-<text x='64.20' y='37.39' style='font-size: 8.40px; font-family: sans;' textLength='6.52px' lengthAdjust='spacingAndGlyphs'>=</text>
-<text x='72.67' y='37.39' style='font-size: 8.40px; font-family: sans;' textLength='21.02px' lengthAdjust='spacingAndGlyphs'>0.000</text>
-<text x='93.69' y='37.39' style='font-size: 8.40px; font-family: sans;' textLength='2.10px' lengthAdjust='spacingAndGlyphs'> </text>
-<text x='95.79' y='37.39' style='font-size: 10.50px; font-family: sans;' textLength='3.50px' lengthAdjust='spacingAndGlyphs'>(</text>
-<text x='99.29' y='37.39' style='font-size: 8.40px; font-family: sans;' textLength='5.04px' lengthAdjust='spacingAndGlyphs'>α</text>
-<text x='106.27' y='37.39' style='font-size: 8.40px; font-family: sans;' textLength='6.52px' lengthAdjust='spacingAndGlyphs'>=</text>
-<text x='114.74' y='37.39' style='font-size: 8.40px; font-family: sans;' textLength='16.35px' lengthAdjust='spacingAndGlyphs'>0.01</text>
-<text x='131.09' y='37.39' style='font-size: 10.50px; font-family: sans;' textLength='3.49px' lengthAdjust='spacingAndGlyphs'>)</text>
+<text x='48.24' y='38.67' style='font-size: 8.40px; font-family: sans;' textLength='4.67px' lengthAdjust='spacingAndGlyphs'>p</text>
+<text x='52.91' y='41.27' style='font-size: 5.88px; font-family: sans;' textLength='3.27px' lengthAdjust='spacingAndGlyphs'>u</text>
+<text x='56.18' y='41.27' style='font-size: 5.88px; font-family: sans;' textLength='3.27px' lengthAdjust='spacingAndGlyphs'>n</text>
+<text x='59.45' y='41.27' style='font-size: 5.88px; font-family: sans;' textLength='1.31px' lengthAdjust='spacingAndGlyphs'>i</text>
+<text x='60.75' y='41.27' style='font-size: 5.88px; font-family: sans;' textLength='1.63px' lengthAdjust='spacingAndGlyphs'>f</text>
+<text x='52.91' y='34.45' style='font-size: 5.88px; font-family: sans;' textLength='3.92px' lengthAdjust='spacingAndGlyphs'>P</text>
+<text x='56.83' y='34.45' style='font-size: 5.88px; font-family: sans;' textLength='4.58px' lengthAdjust='spacingAndGlyphs'>O</text>
+<text x='61.41' y='34.45' style='font-size: 5.88px; font-family: sans;' textLength='3.59px' lengthAdjust='spacingAndGlyphs'>T</text>
+<text x='66.94' y='38.67' style='font-size: 8.40px; font-family: sans;' textLength='6.52px' lengthAdjust='spacingAndGlyphs'>=</text>
+<text x='75.41' y='38.67' style='font-size: 8.40px; font-family: sans;' textLength='21.02px' lengthAdjust='spacingAndGlyphs'>0.000</text>
+<text x='96.43' y='38.67' style='font-size: 8.40px; font-family: sans;' textLength='2.10px' lengthAdjust='spacingAndGlyphs'> </text>
+<text x='98.53' y='38.67' style='font-size: 10.50px; font-family: sans;' textLength='3.50px' lengthAdjust='spacingAndGlyphs'>(</text>
+<text x='102.03' y='38.67' style='font-size: 8.40px; font-family: sans;' textLength='5.04px' lengthAdjust='spacingAndGlyphs'>α</text>
+<text x='109.01' y='38.67' style='font-size: 8.40px; font-family: sans;' textLength='6.52px' lengthAdjust='spacingAndGlyphs'>=</text>
+<text x='117.48' y='38.67' style='font-size: 8.40px; font-family: sans;' textLength='16.35px' lengthAdjust='spacingAndGlyphs'>0.01</text>
+<text x='133.83' y='38.67' style='font-size: 10.50px; font-family: sans;' textLength='3.49px' lengthAdjust='spacingAndGlyphs'>)</text>
 </g>
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8MC4wMHw1NzYuMDA=)'>
 <polyline points='43.78,542.30 43.78,24.85 ' style='stroke-width: 0.85; stroke-linecap: butt;' />
