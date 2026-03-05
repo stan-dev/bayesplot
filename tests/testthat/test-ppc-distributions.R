@@ -800,6 +800,5 @@ test_that("ppc_pit_ecdf works with pareto_pit method", {
     y = y, yrep = draws, psis_object = psis_object, method = "correlated"
   ))
 
-  expect_gg(brms::pp_check(fit_nb, type = "pit_ecdf", method = "correlated",
-  psis_object = psis_object))
+  expect_gg(brms::pp_check(fit_nb, type = "pit_ecdf", method = "correlated"))
 })
