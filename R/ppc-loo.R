@@ -757,7 +757,7 @@ ppc_loo_pit_ecdf <- function(y,
       linewidth = 0.5,
       show.legend = FALSE
     ) +
-    labs(x = x_label, y = y_label) +
+    labs(x = "PIT", y = y_label) +
     yaxis_ticks(FALSE) +
     scale_color_ppc() +
     bayesplot_theme_get()
