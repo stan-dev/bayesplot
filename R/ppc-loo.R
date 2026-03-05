@@ -642,7 +642,7 @@ ppc_loo_pit_ecdf <- function(y,
         color    = "darkgrey",
         linewidth = 0.3
       ) +
-      labs(x = "PIT", y = y_label)
+      labs(x = "LOO PIT", y = y_label)
 
     # --- Highlight suspicious regions ----------------------------------------
 
