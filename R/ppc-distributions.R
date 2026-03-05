@@ -789,10 +789,8 @@ ppc_pit_ecdf <- function(y,
     suggested_package("rstantools")
     y    <- validate_y(y)
     yrep <- validate_predictions(yrep, length(y))
-    lw   <- .get_lw(NULL, psis_object)
-    stopifnot(identical(dim(yrep), dim(lw)))
 
-    pit <- pareto_pit(x = yrep, y = y, weights = lw, log = TRUE)
+    pit <- pareto_pit(x = yrep, y = y, weights = NULL, log = TRUE)
     K   <- K %||% length(pit)
 
   } else if (!is.null(pit)) {
@@ -804,8 +802,8 @@ ppc_pit_ecdf <- function(y,
     ignored <- c(
       if (!missing(y)    && !is.null(y))    "y",
       if (!missing(yrep) && !is.null(yrep)) "yrep",
-      if (!missing(lw)   && !is.null(lw))   "lw",
-      if (!missing(psis_object) && !is.null(psis_object)) "psis_object"
+      #if (!missing(lw)   && !is.null(lw))   "lw",
+      #if (!missing(psis_object) && !is.null(psis_object)) "psis_object"
     )
     if (length(ignored) > 0) {
       inform(paste0(
