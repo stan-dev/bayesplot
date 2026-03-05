@@ -776,7 +776,7 @@ ppc_pit_ecdf <- function(y,
       if (length(ignored) > 0) .warn_ignored("'independent'", ignored)
 
       # Pareto PIT applies for independent whenever lw/psis_object is supplied.
-      pareto_pit <- pareto_pit %||% is.null(pit) && !is.null(lw %||% psis_object)
+      pareto_pit <- pareto_pit %||% FALSE
     }
   )
 
