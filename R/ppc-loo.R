@@ -700,8 +700,8 @@ ppc_loo_pit_ecdf <- function(y,
         "text",
         x     = -Inf, y = Inf,
         label = sprintf(
-          "p[unif]^{%s} == '%.3f' ~ (alpha == '%.2f')",
-          test, p_value_CCT, alpha
+          "p[unif]^{%s} == '%s' ~ (alpha == '%.2f')",
+          test, fmt_p(p_value_CCT), alpha
         ),
         hjust = -0.05, vjust = 1.5,
         color = "black", parse = TRUE, size = label_size
