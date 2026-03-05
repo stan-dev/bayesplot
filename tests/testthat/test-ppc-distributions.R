@@ -153,7 +153,7 @@ test_that("ppc_pit_ecdf method validation and ignored-argument warnings", {
 test_that("ppc_pit_ecdf correlated method validates gamma", {
   expect_error(
     ppc_pit_ecdf(y, yrep, method = "correlated", gamma = -1),
-    "gamma must be in the interval"
+    regexp = "gamma must be in"
   )
 })
 
@@ -771,4 +771,35 @@ testthat::test_that("ppc_pit_ecdf takes correct PIT computation branch", {
     ),
     regexp = "\\[PIT BRANCH\\] Pre-supplied PIT"
   )
+})
+
+test_that("ppc_pit_ecdf works with pareto_pit method", {
+  skip_if_not_installed("brms")
+  skip_if_not_installed("rstanarm")
+
+  data("roaches", package = "rstanarm")
+  roaches$sqrt_roach1 <- sqrt(roaches$roach1)
+
+  fit_p <- brms::brm(y ~ sqrt_roach1 + treatment + senior + offset(log(exposure2)),
+             data = roaches,
+             family = poisson,
+             prior = brms::prior(normal(0, 1), class = b),
+             refresh = 0)
+  
+  fit_p <- brms::add_criterion(fit_p, criterion = "loo")
+  fit_p <- brms::add_criterion(fit_p, criterion = "loo", moment_match = TRUE, overwrite = TRUE)
+  fit_nb <- update(fit_p, family = brms::negbinomial)
+
+  expect_gg(brms::pp_check(fit_nb, type = "pit_ecdf"))
+
+  draws <- brms::posterior_predict(fit_nb)
+  psis_object <- brms::loo(fit_nb, save_psis = TRUE)$psis_object
+  y <- roaches$y
+
+  expect_gg(ppc_pit_ecdf(
+    y = y, yrep = draws, psis_object = psis_object, method = "correlated"
+  ))
+
+  expect_gg(brms::pp_check(fit_nb, type = "pit_ecdf", method = "correlated",
+  psis_object = psis_object))
 })
