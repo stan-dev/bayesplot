@@ -623,7 +623,6 @@ testthat::test_that("ppc_pit_ecdf takes correct PIT computation branch", {
   # | x    | x |     | independent | NULL | FALSE      | empirical pit      |
   # |      |   | x   | independent | NULL | FALSE      |                    |
   # | x    | x |     | independent | NULL | TRUE       | compute pareto-pit |
-  # | x    | x |     | independent | NULL | TRUE       | compute pareto-pit |
   # | x    | x |     | correlated  | POT  | TRUE       | compute pareto-pit |
   # |      |   | x   | correlated  | POT  | FALSE      |                    |
   # | x    | x |     | correlated  | PIET | TRUE       | compute pareto-pit |
