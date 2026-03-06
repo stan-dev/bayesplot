@@ -43,6 +43,7 @@ Imports:
     tidyselect,
     utils
 Suggests:
+    brms (>= 2.23.0),
     ggdist,
     ggfortify,
     gridExtra (>= 2.2.1),
