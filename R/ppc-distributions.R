@@ -648,24 +648,26 @@ ppc_violin_grouped <-
 #' @param pit An optional vector of probability integral transformed values for
 #'   which the ECDF is to be drawn. If NULL, PIT values are computed to `y` with
 #'   respect to the corresponding values in `yrep`.
-#' @param interpolate_adj For `ppc_loo_pit_ecdf()` when `method = "independent"`,
+#' @param interpolate_adj For `ppc_pit_ecdf()` when `method = "independent"`,
 #'   a boolean defining if the simultaneous confidence bands should be 
 #'   interpolated based on precomputed values rather than computed exactly. 
 #'   Computing the bands may be computationally intensive and the approximation 
 #'   gives a fast method for assessing the ECDF trajectory. The default is to use
 #'   interpolation if `K` is greater than 200.
-#' @param method For `ppc_loo_pit_ecdf()`, the method used to calculate the
+#' @param method For `ppc_pit_ecdf()`, the method used to calculate the
 #'   uniformity test:
 #'   * `"independent"`: (default) Assumes independence (Säilynoja et al., 2022).
 #'   * `"correlated"`: Accounts for correlation (Tesso & Vehtari, 2026).
-#' @param test For `ppc_loo_pit_ecdf()` when `method = "correlated"`, which
+#' @param test For `ppc_pit_ecdf()` when `method = "correlated"`, which
 #'   dependence-aware test to use: `"POT"`, `"PRIT"`, or `"PIET"`.
 #'   Defaults to `"POT"`.
-#' @param gamma For `ppc_loo_pit_ecdf()` when `method = "correlated"`, tolerance
+#' @param gamma For `ppc_pit_ecdf()` when `method = "correlated"`, tolerance
 #'   threshold controlling how strongly suspicious points are flagged. Larger
 #'   values (gamma > 0) emphasizes points with larger deviations. If `NULL`, automatically
 #'   determined based on p-value.
-#' @param color For `ppc_loo_pit_ecdf()` when `method = "correlated"`, a vector
+#' @param linewidth For `ppc_pit_ecdf()` when `method = "correlated"`, the line width of the ECDF 
+#' and highlighting points. Defaults to 0.3.
+#' @param color For `ppc_pit_ecdf()` when `method = "correlated"`, a vector
 #'   with base color and highlight color for the ECDF plot. Defaults to
 #'   `c(ecdf = "grey60", highlight = "red")`. The first element is used for
 #'   the main ECDF line, the second for highlighted suspicious regions.
