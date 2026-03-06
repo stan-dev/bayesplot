@@ -786,8 +786,8 @@ ypred_label <- function() expression(italic(y)[pred])
 #'   Pareto smoothing of draws.
 #'
 #' @examples
-#' x <- example_draws()
-#' y <- rnorm(nvariables(x), 5, 5)
+#' x <- posterior::example_draws()
+#' y <- rnorm(posterior::nvariables(x), 5, 5)
 #' pareto_pit(x, y)
 #'
 NULL
@@ -827,7 +827,7 @@ pareto_pit.draws_matrix <- function(x, y, weights = NULL, log = FALSE,
   if (is.null(ndraws_tail)) {
     ndraws_tail <- posterior::ps_tail_length(ndraws, 1)
   } else {
-    ndraws_tail <- posterior::as_one_integer(ndraws_tail)
+    ndraws_tail <- posterior:::as_one_integer(ndraws_tail)
   }
 
   # validate ndraws_tail once for all variables
@@ -889,7 +889,7 @@ pareto_pit.draws_matrix <- function(x, y, weights = NULL, log = FALSE,
     # --- right tail ---
     right_replaced <- FALSE
     right_tail <- sorted[tail_ids]
-    if (!posterior:::is_constant(right_tail)) {
+    if (!posterior::is_constant(right_tail)) {
       right_cutoff <- sorted[min(tail_ids) - 1]
       if (right_cutoff == right_tail[1]) {
         right_cutoff <- right_cutoff - .Machine$double.eps
@@ -920,7 +920,7 @@ pareto_pit.draws_matrix <- function(x, y, weights = NULL, log = FALSE,
       log_wt_left_sorted <- if (!is.null(weights)) weights[left_ord$ix, j] else NULL
 
       left_tail <- left_sorted[tail_ids]
-      if (!posterior:::is_constant(left_tail)) {
+      if (!posterior::is_constant(left_tail)) {
         left_cutoff <- left_sorted[min(tail_ids) - 1]
         if (left_cutoff == left_tail[1]) {
           left_cutoff <- left_cutoff - .Machine$double.eps
@@ -963,7 +963,7 @@ pareto_pit.rvar <- function(x, y, weights = NULL, log = FALSE,
   y <- pareto_pit_validate_y(y, x)
   out <- array(
     data = pareto_pit(
-      x = as_draws_matrix(c(x)),
+      x = posterior::as_draws_matrix(c(x)),
       y = c(y),
       weights = weights,
       log = log,
@@ -1151,11 +1151,11 @@ gpdfit <- function(x, wip = TRUE, min_grid_pts = 30, sort_x = TRUE,
       # weighted mean across observations for each theta value
       k <- drop(log1p_mat %*% weights) / N
     } else {
-      k <- matrixStats::rowMeans2(log1p_mat)
+      k <- rowMeans(log1p_mat)
     }
 
     l_theta <- N * (log(-theta / k) - k - 1) # profile log-lik
-    w_theta <- exp(l_theta - matrixStats::logSumExp(l_theta)) # normalize
+    w_theta <- exp(l_theta - posterior:::log_sum_exp(l_theta)) # normalize
     theta_hat <- sum(theta * w_theta)
 
     if (!is.null(weights)) {
