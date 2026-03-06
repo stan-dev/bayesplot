@@ -565,58 +565,58 @@ test_that("ppc_pit_ecdf renders different linewidths and colors correctly", {
 # use monkey-patching to test whether the correct branch of the 
 # PIT computation is taken 
 
-ppc_pit_ecdf_patched <- ppc_pit_ecdf
-
-body(ppc_pit_ecdf_patched)[[
-  # Replace the PIT computation block (the large if/else if/else)
-  # with a version that emits diagnostics
-  which(sapply(as.list(body(ppc_pit_ecdf)), function(e) {
-    is.call(e) && deparse(e[[1]]) == "if" &&
-      grepl("pareto_pit", deparse(e[[2]]))
-  }))
-]] <- quote({
-
-  if (isTRUE(pareto_pit) && is.null(pit)) {
-    message("[PIT BRANCH] Pareto-smoothed LOO PIT")
-    suggested_package("rstantools")
-    y    <- validate_y(y)
-    yrep <- validate_predictions(yrep, length(y))
-
-    pit  <- pareto_pit(x = yrep, y = y, weights = NULL, log = TRUE)
-    K    <- K %||% length(pit)
-
-  } else if (!is.null(pit)) {
-    message("[PIT BRANCH] Pre-supplied PIT")
-    pit <- validate_pit(pit)
-    K   <- K %||% length(pit)
-    
-    ignored <- c(
-      if (!missing(y)    && !is.null(y))    "y",
-      if (!missing(yrep) && !is.null(yrep)) "yrep"
-    )
-    if (length(ignored) > 0) {
-      inform(paste0("As 'pit' specified; ignoring: ",
-                    paste(ignored, collapse = ", "), "."))
-    }
-
-  } else {
-    message("[PIT BRANCH] Empirical PIT")
-    pit <- ppc_data(y, yrep) %>%
-      group_by(.data$y_id) %>%
-      dplyr::group_map(
-        ~ mean(.x$value[.x$is_y] > .x$value[!.x$is_y]) +
-        runif(1, max = mean(.x$value[.x$is_y] == .x$value[!.x$is_y]))
-      ) %>%
-      unlist()
-    K <- K %||% min(nrow(yrep) + 1, 1000)
-  }
-})
-
 testthat::test_that("ppc_pit_ecdf takes correct PIT computation branch", {
   skip_on_cran()
   skip_if_not_installed("loo")
   skip_on_r_oldrel()
   skip_if(packageVersion("rstantools") <= "2.4.0")
+
+  ppc_pit_ecdf_patched <- ppc_pit_ecdf
+
+  body(ppc_pit_ecdf_patched)[[
+    # Replace the PIT computation block (the large if/else if/else)
+    # with a version that emits diagnostics
+    which(sapply(as.list(body(ppc_pit_ecdf)), function(e) {
+      is.call(e) && deparse(e[[1]]) == "if" &&
+        grepl("pareto_pit", deparse(e[[2]]))
+    }))
+  ]] <- quote({
+
+    if (isTRUE(pareto_pit) && is.null(pit)) {
+      message("[PIT BRANCH] Pareto-smoothed LOO PIT")
+      suggested_package("rstantools")
+      y    <- validate_y(y)
+      yrep <- validate_predictions(yrep, length(y))
+
+      pit  <- pareto_pit(x = yrep, y = y, weights = NULL, log = TRUE)
+      K    <- K %||% length(pit)
+
+    } else if (!is.null(pit)) {
+      message("[PIT BRANCH] Pre-supplied PIT")
+      pit <- validate_pit(pit)
+      K   <- K %||% length(pit)
+      
+      ignored <- c(
+        if (!missing(y)    && !is.null(y))    "y",
+        if (!missing(yrep) && !is.null(yrep)) "yrep"
+      )
+      if (length(ignored) > 0) {
+        inform(paste0("As 'pit' specified; ignoring: ",
+                      paste(ignored, collapse = ", "), "."))
+      }
+
+    } else {
+      message("[PIT BRANCH] Empirical PIT")
+      pit <- ppc_data(y, yrep) %>%
+        group_by(.data$y_id) %>%
+        dplyr::group_map(
+          ~ mean(.x$value[.x$is_y] > .x$value[!.x$is_y]) +
+          runif(1, max = mean(.x$value[.x$is_y] == .x$value[!.x$is_y]))
+        ) %>%
+        unlist()
+      K <- K %||% min(nrow(yrep) + 1, 1000)
+    }
+  })
 
   # | yrep | y | pit | method      | test | pareto_pit | approach           |
   # |------|---|-----|-------------|------|------------|--------------------|

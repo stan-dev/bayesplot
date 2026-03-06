@@ -584,59 +584,59 @@ test_that("ppc_loo_pit_ecdf renders correctly", {
 # use monkey-patching to test whether the correct branch of the 
 # PIT computation is taken 
 
-ppc_loo_pit_ecdf_patched <- ppc_loo_pit_ecdf  # copy
-
-body(ppc_loo_pit_ecdf_patched)[[
-  # Replace the PIT computation block (the large if/else if/else)
-  # with a version that emits diagnostics
-  which(sapply(as.list(body(ppc_loo_pit_ecdf)), function(e) {
-    is.call(e) && deparse(e[[1]]) == "if" &&
-      grepl("pareto_pit", deparse(e[[2]]))
-  }))
-]] <- quote({
-
-  if (isTRUE(pareto_pit) && is.null(pit)) {
-    message("[PIT BRANCH] Pareto-smoothed LOO PIT")
-    suggested_package("rstantools")
-    y    <- validate_y(y)
-    yrep <- validate_predictions(yrep, length(y))
-    lw   <- .get_lw(lw, psis_object)
-    stopifnot(identical(dim(yrep), dim(lw)))
-    pit  <- pareto_pit(x = yrep, y = y, weights = lw, log = TRUE)
-    K    <- K %||% length(pit)
-
-  } else if (!is.null(pit)) {
-    message("[PIT BRANCH] Pre-supplied PIT")
-    pit <- validate_pit(pit)
-    K   <- K %||% length(pit)
-    
-    ignored <- c(
-      if (!missing(y)    && !is.null(y))    "y",
-      if (!missing(yrep) && !is.null(yrep)) "yrep",
-      if (!is.null(lw))                     "lw"
-    )
-    if (length(ignored) > 0) {
-      inform(paste0("As 'pit' specified; ignoring: ",
-                    paste(ignored, collapse = ", "), "."))
-    }
-
-  } else {
-    message("[PIT BRANCH] Standard LOO PIT")
-    suggested_package("rstantools")
-    y    <- validate_y(y)
-    yrep <- validate_predictions(yrep, length(y))
-    lw   <- .get_lw(lw, psis_object)
-    stopifnot(identical(dim(yrep), dim(lw)))
-    pit  <- pmin(1, rstantools::loo_pit(object = yrep, y = y, lw = lw))
-    K    <- K %||% min(nrow(yrep) + 1, 1000)
-  }
-})
-
 testthat::test_that("ppc_loo_pit_ecdf takes correct PIT computation branch", {
   skip_on_cran()
   skip_if_not_installed("loo")
   skip_on_r_oldrel()
   skip_if(packageVersion("rstantools") <= "2.4.0")
+
+  ppc_loo_pit_ecdf_patched <- ppc_loo_pit_ecdf  # copy
+
+  body(ppc_loo_pit_ecdf_patched)[[
+    # Replace the PIT computation block (the large if/else if/else)
+    # with a version that emits diagnostics
+    which(sapply(as.list(body(ppc_loo_pit_ecdf)), function(e) {
+      is.call(e) && deparse(e[[1]]) == "if" &&
+        grepl("pareto_pit", deparse(e[[2]]))
+    }))
+  ]] <- quote({
+
+    if (isTRUE(pareto_pit) && is.null(pit)) {
+      message("[PIT BRANCH] Pareto-smoothed LOO PIT")
+      suggested_package("rstantools")
+      y    <- validate_y(y)
+      yrep <- validate_predictions(yrep, length(y))
+      lw   <- .get_lw(lw, psis_object)
+      stopifnot(identical(dim(yrep), dim(lw)))
+      pit  <- pareto_pit(x = yrep, y = y, weights = lw, log = TRUE)
+      K    <- K %||% length(pit)
+
+    } else if (!is.null(pit)) {
+      message("[PIT BRANCH] Pre-supplied PIT")
+      pit <- validate_pit(pit)
+      K   <- K %||% length(pit)
+      
+      ignored <- c(
+        if (!missing(y)    && !is.null(y))    "y",
+        if (!missing(yrep) && !is.null(yrep)) "yrep",
+        if (!is.null(lw))                     "lw"
+      )
+      if (length(ignored) > 0) {
+        inform(paste0("As 'pit' specified; ignoring: ",
+                      paste(ignored, collapse = ", "), "."))
+      }
+
+    } else {
+      message("[PIT BRANCH] Standard LOO PIT")
+      suggested_package("rstantools")
+      y    <- validate_y(y)
+      yrep <- validate_predictions(yrep, length(y))
+      lw   <- .get_lw(lw, psis_object)
+      stopifnot(identical(dim(yrep), dim(lw)))
+      pit  <- pmin(1, rstantools::loo_pit(object = yrep, y = y, lw = lw))
+      K    <- K %||% min(nrow(yrep) + 1, 1000)
+    }
+  })
 
   # | yrep | y | lw | psis_object | pit | method      | test | pareto_pit | approach           |
   # |------|---|----|-------------|-----|-------------|------|------------|--------------------|
