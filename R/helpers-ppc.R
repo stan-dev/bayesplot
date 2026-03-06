@@ -740,28 +740,28 @@ ypred_label <- function() expression(italic(y)[pred])
 #'
 #' @name pareto_pit
 #'
-#' @param x (draws) A [`draws_matrix`] object or one coercible to a
-#'   `draws_matrix` object, or an [`rvar`] object.
+#' @param x (draws) A `posterior::draws_matrix` object or one coercible to a
+#'   `posterior::draws_matrix` object, or an `posterior::rvar` object.
 #'
-#' @param y (observations) A 1D vector, or an array of dim(x), if x is `rvar`.
+#' @param y (observations) A 1D vector, or an array of dim(x), if x is `posterior::rvar`.
 #'   Each element of `y` corresponds to a variable in `x`.
 #'
 #' @param weights A matrix of weights for each draw and variable. `weights`
-#'   should have one column per variable in `x`, and `ndraws(x)` rows.
+#'   should have one column per variable in `x`, and `posterior::ndraws(x)` rows.
 #'
 #' @param log (logical) Are the weights passed already on the log scale? The
 #'   default is `FALSE`, that is, expecting `weights` to be on the standard
 #'   (non-log) scale.
 #'
 #' @param ndraws_tail (integer) Number of tail draws to use for GPD
-#'   fitting. If `NULL` (the default), computed using [ps_tail_length()].
+#'   fitting. If `NULL` (the default), computed using `posterior::ps_tail_length()`.
 #'
 #' @template args-methods-dots
 #'
 #' @details The function first computes raw PIT values identically to
-#'   [pit()] (including support for weighted draws). It then fits a
+#'   `posterior::pit()` (including support for weighted draws). It then fits a
 #'   GPD to both tails of the draws (using the same approach as
-#'   [pareto_smooth()]) and replaces PIT values for observations falling in
+#'   `posterior::pareto_smooth()`) and replaces PIT values for observations falling in
 #'   the tail regions:
 #'
 #'   For a right-tail observation \eqn{y_i > c_R} (where \eqn{c_R} is
@@ -777,12 +777,12 @@ ypred_label <- function() expression(italic(y)[pred])
 #'   tail.
 #'
 #'   When (log-)weights in `weights` are provided, they are used for
-#'   the raw PIT computation (as in [pit()]) and for GPD fit.
+#'   the raw PIT computation (as in `posterior::pit()`) and for GPD fit.
 #'
 #' @return A numeric vector of length `length(y)` containing the PIT values, or
 #'   an array of shape `dim(y)`, if `x` is an `rvar`.
 #'
-#' @seealso [pit()] for the unsmoothed version, [pareto_smooth()] for
+#' @seealso `posterior::pit()` for the unsmoothed version, `posterior::pareto_smooth()` for
 #'   Pareto smoothing of draws.
 #'
 #' @examples
@@ -889,7 +889,7 @@ pareto_pit.draws_matrix <- function(x, y, weights = NULL, log = FALSE,
     # --- right tail ---
     right_replaced <- FALSE
     right_tail <- sorted[tail_ids]
-    if (!posterior::is_constant(right_tail)) {
+    if (!posterior:::is_constant(right_tail)) {
       right_cutoff <- sorted[min(tail_ids) - 1]
       if (right_cutoff == right_tail[1]) {
         right_cutoff <- right_cutoff - .Machine$double.eps
@@ -920,7 +920,7 @@ pareto_pit.draws_matrix <- function(x, y, weights = NULL, log = FALSE,
       log_wt_left_sorted <- if (!is.null(weights)) weights[left_ord$ix, j] else NULL
 
       left_tail <- left_sorted[tail_ids]
-      if (!posterior::is_constant(left_tail)) {
+      if (!posterior:::is_constant(left_tail)) {
         left_cutoff <- left_sorted[min(tail_ids) - 1]
         if (left_cutoff == left_tail[1]) {
           left_cutoff <- left_cutoff - .Machine$double.eps

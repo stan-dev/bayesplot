@@ -16,23 +16,23 @@ pareto_pit(x, y, ...)
 \method{pareto_pit}{rvar}(x, y, weights = NULL, log = FALSE, ndraws_tail = NULL, ...)
 }
 \arguments{
-\item{x}{(draws) A \code{\link[posterior:draws_matrix]{posterior::draws_matrix}} object or one coercible to a
-\code{draws_matrix} object, or an \code{\link[posterior:rvar]{posterior::rvar}} object.}
+\item{x}{(draws) A \code{posterior::draws_matrix} object or one coercible to a
+\code{posterior::draws_matrix} object, or an \code{posterior::rvar} object.}
 
-\item{y}{(observations) A 1D vector, or an array of dim(x), if x is \code{rvar}.
+\item{y}{(observations) A 1D vector, or an array of dim(x), if x is \code{posterior::rvar}.
 Each element of \code{y} corresponds to a variable in \code{x}.}
 
 \item{...}{Arguments passed to individual methods (if applicable).}
 
 \item{weights}{A matrix of weights for each draw and variable. \code{weights}
-should have one column per variable in \code{x}, and \code{ndraws(x)} rows.}
+should have one column per variable in \code{x}, and \code{posterior::ndraws(x)} rows.}
 
 \item{log}{(logical) Are the weights passed already on the log scale? The
 default is \code{FALSE}, that is, expecting \code{weights} to be on the standard
 (non-log) scale.}
 
 \item{ndraws_tail}{(integer) Number of tail draws to use for GPD
-fitting. If \code{NULL} (the default), computed using \code{\link[posterior:ps_tail_length]{posterior::ps_tail_length()}}.}
+fitting. If \code{NULL} (the default), computed using \code{posterior::ps_tail_length()}.}
 }
 \value{
 A numeric vector of length \code{length(y)} containing the PIT values, or
@@ -49,9 +49,9 @@ test is appropriate.
 }
 \details{
 The function first computes raw PIT values identically to
-\code{\link[posterior:pit]{posterior::pit()}} (including support for weighted draws). It then fits a
+\code{posterior::pit()} (including support for weighted draws). It then fits a
 GPD to both tails of the draws (using the same approach as
-\code{\link[posterior:pareto_smooth]{posterior::pareto_smooth()}}) and replaces PIT values for observations falling in
+\code{posterior::pareto_smooth()}) and replaces PIT values for observations falling in
 the tail regions:
 
 For a right-tail observation \eqn{y_i > c_R} (where \eqn{c_R} is
@@ -67,7 +67,7 @@ where \eqn{p_{tail}} is the proportion of (weighted) mass in the
 tail.
 
 When (log-)weights in \code{weights} are provided, they are used for
-the raw PIT computation (as in \code{\link[posterior:pit]{posterior::pit()}}) and for GPD fit.
+the raw PIT computation (as in \code{posterior::pit()}) and for GPD fit.
 }
 \examples{
 x <- posterior::example_draws()
@@ -76,6 +76,6 @@ pareto_pit(x, y)
 
 }
 \seealso{
-\code{\link[posterior:pit]{posterior::pit()}} for the unsmoothed version, \code{\link[posterior:pareto_smooth]{posterior::pareto_smooth()}} for
+\code{posterior::pit()} for the unsmoothed version, \code{posterior::pareto_smooth()} for
 Pareto smoothing of draws.
 }
