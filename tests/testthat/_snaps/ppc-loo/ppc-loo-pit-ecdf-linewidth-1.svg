@@ -71,7 +71,7 @@
 <text x='378.90' y='554.29' text-anchor='middle' style='font-size: 9.60px; fill: #4D4D4D; font-family: sans;' textLength='18.69px' lengthAdjust='spacingAndGlyphs'>0.50</text>
 <text x='531.23' y='554.29' text-anchor='middle' style='font-size: 9.60px; fill: #4D4D4D; font-family: sans;' textLength='18.69px' lengthAdjust='spacingAndGlyphs'>0.75</text>
 <text x='683.56' y='554.29' text-anchor='middle' style='font-size: 9.60px; fill: #4D4D4D; font-family: sans;' textLength='18.69px' lengthAdjust='spacingAndGlyphs'>1.00</text>
-<text x='378.90' y='567.53' text-anchor='middle' style='font-size: 12.00px; font-family: sans;' textLength='47.35px' lengthAdjust='spacingAndGlyphs'>LOO PIT</text>
+<text x='378.90' y='567.53' text-anchor='middle' style='font-size: 12.00px; font-family: sans;' textLength='48.02px' lengthAdjust='spacingAndGlyphs'>LOO-PIT</text>
 <text transform='translate(14.24,283.58) rotate(-90)' text-anchor='middle' style='font-size: 12.00px; font-family: sans;' textLength='32.67px' lengthAdjust='spacingAndGlyphs'>ECDF</text>
 <text x='43.78' y='15.89' style='font-size: 14.40px; font-family: sans;' textLength='202.94px' lengthAdjust='spacingAndGlyphs'>ppc_loo_pit_ecdf (linewidth = 1)</text>
 </g>
