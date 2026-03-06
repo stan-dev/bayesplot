@@ -126,9 +126,7 @@ ppc_violin_grouped(
 ppc_pit_ecdf(
   y,
   yrep,
-  lw = NULL,
   ...,
-  psis_object = NULL,
   pit = NULL,
   K = NULL,
   prob = 0.99,
@@ -227,19 +225,6 @@ to to the \code{size}, \code{alpha}, and \code{width} arguments of \code{\link[g
 to control the appearance of \code{y} points. The default of \code{y_jitter=NULL}
 will let \strong{ggplot2} determine the amount of jitter.}
 
-\item{lw}{A matrix of (smoothed) log weights with the same dimensions as
-\code{yrep}. See \code{\link[loo:psis]{loo::psis()}} and the associated \code{weights()} method as well as
-the \strong{Examples} section, below. If \code{lw} is not specified then
-\code{psis_object} can be provided and log weights will be extracted.
-Only required if \code{pareto_pit = TRUE}. \code{pareto_pit} defaults to \code{TRUE} if
-\code{method = "correlated"} and \code{test} is \code{"POT"} or \code{"PIET"}.}
-
-\item{psis_object}{If using \strong{loo} version \verb{2.0.0} or greater, an
-object returned by the \code{psis()} function (or by the \code{loo()} function
-with argument \code{save_psis} set to \code{TRUE}).
-Only required if \code{pareto_pit = TRUE}. \code{pareto_pit} defaults to \code{TRUE} if
-\code{method = "correlated"} and \code{test} is \code{"POT"} or \code{"PIET"}.}
-
 \item{pit}{An optional vector of probability integral transformed values for
 which the ECDF is to be drawn. If NULL, PIT values are computed to \code{y} with
 respect to the corresponding values in \code{yrep}.}
@@ -261,30 +246,33 @@ values rather than plotting the regular ECDF. The default is \code{FALSE}, but
 for large samples we recommend setting \code{plot_diff=TRUE} as the difference
 plot will visually show a more dynamic range.}
 
-\item{interpolate_adj}{For \code{ppc_loo_pit_ecdf()} when \code{method = "independent"},
+\item{interpolate_adj}{For \code{ppc_pit_ecdf()} when \code{method = "independent"},
 a boolean defining if the simultaneous confidence bands should be
 interpolated based on precomputed values rather than computed exactly.
 Computing the bands may be computationally intensive and the approximation
 gives a fast method for assessing the ECDF trajectory. The default is to use
 interpolation if \code{K} is greater than 200.}
 
-\item{method}{For \code{ppc_loo_pit_ecdf()}, the method used to calculate the
+\item{method}{For \code{ppc_pit_ecdf()}, the method used to calculate the
 uniformity test:
 \itemize{
 \item \code{"independent"}: (default) Assumes independence (Säilynoja et al., 2022).
 \item \code{"correlated"}: Accounts for correlation (Tesso & Vehtari, 2026).
 }}
 
-\item{test}{For \code{ppc_loo_pit_ecdf()} when \code{method = "correlated"}, which
+\item{test}{For \code{ppc_pit_ecdf()} when \code{method = "correlated"}, which
 dependence-aware test to use: \code{"POT"}, \code{"PRIT"}, or \code{"PIET"}.
 Defaults to \code{"POT"}.}
 
-\item{gamma}{For \code{ppc_loo_pit_ecdf()} when \code{method = "correlated"}, tolerance
+\item{gamma}{For \code{ppc_pit_ecdf()} when \code{method = "correlated"}, tolerance
 threshold controlling how strongly suspicious points are flagged. Larger
 values (gamma > 0) emphasizes points with larger deviations. If \code{NULL}, automatically
 determined based on p-value.}
 
-\item{color}{For \code{ppc_loo_pit_ecdf()} when \code{method = "correlated"}, a vector
+\item{linewidth}{For \code{ppc_pit_ecdf()} when \code{method = "correlated"}, the line width of the ECDF
+and highlighting points. Defaults to 0.3.}
+
+\item{color}{For \code{ppc_pit_ecdf()} when \code{method = "correlated"}, a vector
 with base color and highlight color for the ECDF plot. Defaults to
 \code{c(ecdf = "grey60", highlight = "red")}. The first element is used for
 the main ECDF line, the second for highlighted suspicious regions.}

@@ -70,8 +70,8 @@ When (log-)weights in \code{weights} are provided, they are used for
 the raw PIT computation (as in \code{\link[posterior:pit]{posterior::pit()}}) and for GPD fit.
 }
 \examples{
-x <- example_draws()
-y <- rnorm(nvariables(x), 5, 5)
+x <- posterior::example_draws()
+y <- rnorm(posterior::nvariables(x), 5, 5)
 pareto_pit(x, y)
 
 }
