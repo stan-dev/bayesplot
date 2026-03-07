@@ -844,7 +844,7 @@ pareto_pit.draws_matrix <- function(x, y, weights = NULL, log = FALSE,
     tail_ids <- seq(ndraws - ndraws_tail + 1, ndraws)
   }
 
-  pit_values <- vapply(seq_len(ncol(x)), function(j) {
+  test_func <- function(j) {
     draws <- x[, j]
 
     # --- raw PIT (same logic as pit.draws_matrix) ---
@@ -949,7 +949,9 @@ pareto_pit.draws_matrix <- function(x, y, weights = NULL, log = FALSE,
     }
 
     raw_pit
-  }, FUN.VALUE = 1.0)
+  }
+
+  pit_values <- vapply(seq_len(ncol(x)), test_func, FUN.VALUE = 1.0)
 
   min_tail_prob <- 1/ndraws/1e4
   pit_values <- pmin(pmax(pit_values, min_tail_prob), 1-min_tail_prob)
@@ -1151,11 +1153,11 @@ gpdfit <- function(x, wip = TRUE, min_grid_pts = 30, sort_x = TRUE,
       # weighted mean across observations for each theta value
       k <- drop(log1p_mat %*% weights) / N
     } else {
-      k <- rowMeans(log1p_mat)
+      k <- matrixStats::rowMeans2(log1p_mat)
     }
 
     l_theta <- N * (log(-theta / k) - k - 1) # profile log-lik
-    w_theta <- exp(l_theta - posterior:::log_sum_exp(l_theta)) # normalize
+    w_theta <- exp(l_theta - matrixStats::logSumExp(l_theta)) # normalize
     theta_hat <- sum(theta * w_theta)
 
     if (!is.null(weights)) {

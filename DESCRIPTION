@@ -41,7 +41,8 @@ Imports:
     tibble (>= 2.0.0),
     tidyr,
     tidyselect,
-    utils
+    utils,
+    matrixStats
 Suggests:
     brms (>= 2.23.0),
     ggdist,
