@@ -76,7 +76,6 @@
 <circle cx='162.62' cy='-2421.01' r='57.79' style='stroke-width: 1.06; stroke: #005B96; fill: #6497B1;' />
 <circle cx='162.62' cy='-2536.94' r='57.79' style='stroke-width: 1.06; stroke: #005B96; fill: #6497B1;' />
 <line x1='5.98' y1='187.52' x2='227.59' y2='187.52' style='stroke-width: 0.85; stroke-linecap: butt;' />
-<line x1='5.98' y1='187.52' x2='5.98' y2='24.85' style='stroke-width: 0.85; stroke-linecap: butt;' />
 </g>
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8MC4wMHw1NzYuMDA=)'>
 </g>
@@ -137,7 +136,6 @@
 <circle cx='175.10' cy='-1888.94' r='57.79' style='stroke-width: 1.06; stroke: #005B96; fill: #6497B1;' />
 <circle cx='175.10' cy='-2004.88' r='57.79' style='stroke-width: 1.06; stroke: #005B96; fill: #6497B1;' />
 <line x1='5.98' y1='371.78' x2='227.59' y2='371.78' style='stroke-width: 0.85; stroke-linecap: butt;' />
-<line x1='5.98' y1='371.78' x2='5.98' y2='209.12' style='stroke-width: 0.85; stroke-linecap: butt;' />
 </g>
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8MC4wMHw1NzYuMDA=)'>
 </g>
@@ -198,7 +196,6 @@
 <circle cx='169.05' cy='-2284.35' r='57.79' style='stroke-width: 1.06; stroke: #005B96; fill: #6497B1;' />
 <circle cx='169.05' cy='-2400.29' r='57.79' style='stroke-width: 1.06; stroke: #005B96; fill: #6497B1;' />
 <line x1='5.98' y1='556.04' x2='227.59' y2='556.04' style='stroke-width: 0.85; stroke-linecap: butt;' />
-<line x1='5.98' y1='556.04' x2='5.98' y2='393.38' style='stroke-width: 0.85; stroke-linecap: butt;' />
 </g>
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8MC4wMHw1NzYuMDA=)'>
 </g>
@@ -259,7 +256,6 @@
 <circle cx='410.33' cy='-2536.94' r='57.79' style='stroke-width: 1.06; stroke: #005B96; fill: #6497B1;' />
 <circle cx='410.33' cy='-2652.88' r='57.79' style='stroke-width: 1.06; stroke: #005B96; fill: #6497B1;' />
 <line x1='249.19' y1='187.52' x2='470.81' y2='187.52' style='stroke-width: 0.85; stroke-linecap: butt;' />
-<line x1='249.19' y1='187.52' x2='249.19' y2='24.85' style='stroke-width: 0.85; stroke-linecap: butt;' />
 </g>
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8MC4wMHw1NzYuMDA=)'>
 </g>
@@ -320,7 +316,6 @@
 <circle cx='414.01' cy='-2120.81' r='57.79' style='stroke-width: 1.06; stroke: #005B96; fill: #6497B1;' />
 <circle cx='414.01' cy='-2236.75' r='57.79' style='stroke-width: 1.06; stroke: #005B96; fill: #6497B1;' />
 <line x1='249.19' y1='371.78' x2='470.81' y2='371.78' style='stroke-width: 0.85; stroke-linecap: butt;' />
-<line x1='249.19' y1='371.78' x2='249.19' y2='209.12' style='stroke-width: 0.85; stroke-linecap: butt;' />
 </g>
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8MC4wMHw1NzYuMDA=)'>
 </g>
@@ -381,7 +376,6 @@
 <circle cx='424.80' cy='-1936.55' r='57.79' style='stroke-width: 1.06; stroke: #005B96; fill: #6497B1;' />
 <circle cx='424.80' cy='-2052.48' r='57.79' style='stroke-width: 1.06; stroke: #005B96; fill: #6497B1;' />
 <line x1='249.19' y1='556.04' x2='470.81' y2='556.04' style='stroke-width: 0.85; stroke-linecap: butt;' />
-<line x1='249.19' y1='556.04' x2='249.19' y2='393.38' style='stroke-width: 0.85; stroke-linecap: butt;' />
 </g>
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8MC4wMHw1NzYuMDA=)'>
 </g>
@@ -438,7 +432,6 @@
 <circle cx='664.43' cy='-1841.34' r='57.79' style='stroke-width: 1.06; stroke: #005B96; fill: #6497B1;' />
 <circle cx='664.43' cy='-1957.27' r='57.79' style='stroke-width: 1.06; stroke: #005B96; fill: #6497B1;' />
 <line x1='492.41' y1='187.52' x2='714.02' y2='187.52' style='stroke-width: 0.85; stroke-linecap: butt;' />
-<line x1='492.41' y1='187.52' x2='492.41' y2='24.85' style='stroke-width: 0.85; stroke-linecap: butt;' />
 </g>
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8MC4wMHw1NzYuMDA=)'>
 </g>
@@ -499,7 +492,6 @@
 <circle cx='648.67' cy='-2584.55' r='57.79' style='stroke-width: 1.06; stroke: #005B96; fill: #6497B1;' />
 <circle cx='648.67' cy='-2700.48' r='57.79' style='stroke-width: 1.06; stroke: #005B96; fill: #6497B1;' />
 <line x1='492.41' y1='371.78' x2='714.02' y2='371.78' style='stroke-width: 0.85; stroke-linecap: butt;' />
-<line x1='492.41' y1='371.78' x2='492.41' y2='209.12' style='stroke-width: 0.85; stroke-linecap: butt;' />
 </g>
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8MC4wMHw1NzYuMDA=)'>
 <polyline points='5.98,556.04 227.59,556.04 ' style='stroke-width: 0.85; stroke-linecap: butt;' />
@@ -541,9 +533,6 @@
 <text x='635.27' y='383.77' text-anchor='middle' style='font-size: 9.60px; fill: #4D4D4D; font-family: sans;' textLength='5.34px' lengthAdjust='spacingAndGlyphs'>1</text>
 <text x='671.39' y='383.77' text-anchor='middle' style='font-size: 9.60px; fill: #4D4D4D; font-family: sans;' textLength='5.34px' lengthAdjust='spacingAndGlyphs'>2</text>
 <text x='707.51' y='383.77' text-anchor='middle' style='font-size: 9.60px; fill: #4D4D4D; font-family: sans;' textLength='5.34px' lengthAdjust='spacingAndGlyphs'>3</text>
-<polyline points='5.98,187.52 5.98,24.85 ' style='stroke-width: 0.85; stroke-linecap: butt;' />
-<polyline points='5.98,371.78 5.98,209.12 ' style='stroke-width: 0.85; stroke-linecap: butt;' />
-<polyline points='5.98,556.04 5.98,393.38 ' style='stroke-width: 0.85; stroke-linecap: butt;' />
 <text x='5.98' y='15.89' style='font-size: 14.40px; font-family: sans;' textLength='180.92px' lengthAdjust='spacingAndGlyphs'>ppd_dots (quantile-binwidth)</text>
 </g>
 </svg>

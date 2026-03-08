@@ -78,8 +78,6 @@
 <text x='413.05' y='568.03' text-anchor='middle' style='font-size: 9.60px; fill: #4D4D4D; font-family: sans;' textLength='8.54px' lengthAdjust='spacingAndGlyphs'>-2</text>
 <text x='496.51' y='568.03' text-anchor='middle' style='font-size: 9.60px; fill: #4D4D4D; font-family: sans;' textLength='5.34px' lengthAdjust='spacingAndGlyphs'>0</text>
 <text x='579.96' y='568.03' text-anchor='middle' style='font-size: 9.60px; fill: #4D4D4D; font-family: sans;' textLength='5.34px' lengthAdjust='spacingAndGlyphs'>2</text>
-<polyline points='343.17,556.04 343.17,44.09 ' style='stroke-width: 0.85; stroke-linecap: butt;' />
-<polyline points='5.98,556.04 5.98,44.09 ' style='stroke-width: 0.85; stroke-linecap: butt;' />
 <text x='676.69' y='266.65' style='font-size: 12.00px; font-family: sans;' textLength='31.36px' lengthAdjust='spacingAndGlyphs'>Chain</text>
 <line x1='678.42' y1='282.51' x2='692.24' y2='282.51' style='stroke-width: 1.07; stroke: #011F4B; stroke-linecap: butt;' />
 <line x1='678.42' y1='299.79' x2='692.24' y2='299.79' style='stroke-width: 1.07; stroke: #03396C; stroke-linecap: butt;' />
