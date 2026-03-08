@@ -60,7 +60,14 @@ ppd_stat_freqpoly_grouped(
   freq = TRUE
 )
 
-ppd_stat_2d(ypred, stat = c("mean", "sd"), ..., size = 2.5, alpha = 0.7)
+ppd_stat_2d(
+  ypred,
+  stat = c("mean", "sd"),
+  show_marginal = FALSE,
+  ...,
+  size = 2.5,
+  alpha = 0.7
+)
 
 ppd_stat_data(ypred, group = NULL, stat, show_marginal = FALSE)
 }

@@ -209,6 +209,7 @@ ppd_stat_freqpoly_grouped <-
 ppd_stat_2d <-
   function(ypred,
            stat = c("mean", "sd"),
+           show_marginal = FALSE,
            ...,
            size = 2.5,
            alpha = 0.7) {
@@ -228,20 +229,25 @@ ppd_stat_2d <-
     data <- ppd_stat_data(
       ypred = ypred,
       group = NULL,
-      stat = c(match.fun(stat[[1]]), match.fun(stat[[2]]))
+      stat = c(match.fun(stat[[1]]), match.fun(stat[[2]])),
+      show_marginal = show_marginal
     )
+    data$type <- ifelse(grepl("ypred", data$variable), "ypred", "PPD")
+
     ggplot(data) +
       geom_point(
         mapping = aes(
           x = .data$value,
           y = .data$value2,
-          fill = "ypred",
-          color = "ypred"
+          fill = .data$type,
+          color = .data$type,
+          shape = .data$type
         ),
-        shape = 21,
         size = size,
         alpha = alpha
       ) +
+      scale_shape_manual(lgnd_title, labels = Typred_label(),
+                         values = c(ypred = 21, PPD = 23)) +
       scale_fill_ppd(lgnd_title, labels = Typred_label()) +
       scale_color_ppd(lgnd_title, labels = Typred_label()) +
       labs(x = stat_labs[1], y = stat_labs[2]) +
