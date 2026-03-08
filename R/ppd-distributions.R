@@ -107,6 +107,7 @@ ppd_dens_overlay <-
 #' @export
 ppd_ecdf_overlay <-
   function(ypred,
+           show_marginal= FALSE,
            ...,
            discrete = FALSE,
            pad = TRUE,
@@ -115,7 +116,7 @@ ppd_ecdf_overlay <-
     check_ignored_arguments(...)
 
     data <- ppd_data(ypred)
-    ggplot(data, mapping = aes(x = .data$value)) +
+    p <- ggplot(data, mapping = aes(x = .data$value)) +
       hline_at(
         c(0, 0.5, 1),
         linewidth = c(0.2, 0.1, 0.2),
@@ -129,16 +130,34 @@ ppd_ecdf_overlay <-
         alpha = alpha,
         pad = pad
       ) +
-      scale_color_ppd(
-        values = get_color("m"),
-        guide = guide_legend( # in case user turns legend back on
-          override.aes = list(linewidth = 2 * size, alpha = 1))
-      ) +
       scale_y_continuous(breaks = c(0, 0.5, 1)) +
       bayesplot_theme_get() +
       yaxis_title(FALSE) +
-      xaxis_title(FALSE) +
-      legend_none()
+      xaxis_title(FALSE)
+
+    if (isTRUE(show_marginal)) {
+      p +
+        stat_ecdf(
+          mapping = aes(color = "PPD"),
+          geom = if (discrete) "step" else "line",
+          linewidth = 1,
+          pad = pad
+        ) +
+        scale_color_ppd(
+          labels = ypred_label(show_marginal = TRUE),
+          values = get_color(c("d", "m")),
+          guide = guide_legend(
+            override.aes = list(size = 2 * size, alpha = 1))
+        )
+    } else {
+      p +
+        scale_color_ppd(
+          values = get_color("m"),
+          guide = guide_legend( # in case user turns legend back on
+            override.aes = list(linewidth = 2 * size, alpha = 1))
+        ) +
+        legend_none()
+    }
   }
 
 
