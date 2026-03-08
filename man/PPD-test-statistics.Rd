@@ -40,6 +40,7 @@ ppd_stat_grouped(
 ppd_stat_freqpoly(
   ypred,
   stat = "mean",
+  show_marginal = FALSE,
   ...,
   facet_args = list(),
   binwidth = NULL,
@@ -51,6 +52,7 @@ ppd_stat_freqpoly_grouped(
   ypred,
   group,
   stat = "mean",
+  show_marginal = FALSE,
   ...,
   facet_args = list(),
   binwidth = NULL,

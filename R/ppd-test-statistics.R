@@ -130,6 +130,7 @@ ppd_stat_grouped <-
 ppd_stat_freqpoly <-
   function(ypred,
            stat = "mean",
+           show_marginal = FALSE,
            ...,
            facet_args = list(),
            binwidth = NULL,
@@ -145,15 +146,18 @@ ppd_stat_freqpoly <-
     data <- ppd_stat_data(
       ypred = ypred,
       group = dots$group,
-      stat = match.fun(stat)
+      stat = match.fun(stat),
+      show_marginal = show_marginal
     )
-    ggplot(data, mapping = set_hist_aes(freq)) +
+    data$type <- ifelse(grepl("ypred", data$variable), "ypred", "PPD")
+
+    p <- ggplot(data, mapping = set_hist_aes(freq, color = .data$type)) +
       geom_freqpoly(
-        aes(color = "ypred"),
         linewidth = 0.5,
         na.rm = TRUE,
         binwidth = binwidth,
-        bins = bins
+        bins = bins,
+        data = subset(data, type != "PPD")
       ) +
       scale_color_ppd(
         name = stat_legend_title(stat, deparse(substitute(stat))),
@@ -165,6 +169,17 @@ ppd_stat_freqpoly <-
       yaxis_text(FALSE) +
       yaxis_ticks(FALSE) +
       yaxis_title(FALSE)
+
+    if (isTRUE(show_marginal)) {
+      p <- p +
+        geom_vline(
+          aes(xintercept = .data$value, color = .data$type),
+          data = subset(data, type == "PPD"),
+          key_glyph = "path"
+        )
+    }
+
+    p
   }
 
 
@@ -174,6 +189,7 @@ ppd_stat_freqpoly_grouped <-
   function(ypred,
            group,
            stat = "mean",
+           show_marginal = FALSE,
            ...,
            facet_args = list(),
            binwidth = NULL,
