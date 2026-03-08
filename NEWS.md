@@ -1,6 +1,9 @@
 # bayesplot (development version)
 
 * Remove y-axis line from density, histogram, dot, and frequency polygon plots where the y-axis has no meaningful scale (#418)
+* Improved documentation for `binwidth`, `bins`, and `breaks` arguments to clarify they are passed to `ggplot2::geom_area()` and `ggdist::stat_dots()` in addition to `ggplot2::geom_histogram()`
+* Improved documentation for `freq` argument to clarify it applies to frequency polygons in addition to histograms
+* Fixed test in `test-ppc-distributions.R` that incorrectly used `ppc_dens()` instead of `ppd_dens()` when testing PPD functions
 * New functions `mcmc_dots` and `mcmc_dots_by_chain` for dot plots of MCMC draws by @behramulukir (#402)
 * Default to `quantiles=100` for all dot plots by @behramulukir (#402)
 
