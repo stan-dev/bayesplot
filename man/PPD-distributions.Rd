@@ -56,7 +56,7 @@ ppd_hist(
   binwidth = NULL,
   bins = NULL,
   breaks = NULL,
-  freq = TRUE
+  freq = !show_marginal
 )
 
 ppd_dots(

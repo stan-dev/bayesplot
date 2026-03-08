@@ -236,15 +236,14 @@ ppd_hist <-
            binwidth = NULL,
            bins = NULL,
            breaks = NULL,
-           freq = TRUE) {
+           freq = !show_marginal) {
     check_ignored_arguments(...)
 
     data <- ppd_data(ypred)
     p <- ggplot(data, mapping = set_hist_aes(freq)) +
       geom_histogram(
         aes(color = "ypred",
-            fill = "ypred",
-            y = after_stat(density)),
+            fill = "ypred"),
         linewidth = 0.25,
         binwidth = binwidth,
         bins = bins,
@@ -266,8 +265,7 @@ ppd_hist <-
       p +
         geom_histogram(
           aes(color = "PPD",
-              fill = "PPD",
-              y = after_stat(density)),
+              fill = "PPD"),
           linewidth = 1,
           binwidth = binwidth,
           bins = bins,
