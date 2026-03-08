@@ -125,7 +125,7 @@ scale_fill_ppc <-
 
 scale_color_ppd <-
   function(name = NULL,
-           values = get_color("mh"),
+           values = setNames(get_color(c("dh", "mh")), nm = c("PPD", "ypred")),
            labels = ypred_label(),
            ...) {
     scale_color_ppc(name = name,
@@ -136,7 +136,7 @@ scale_color_ppd <-
 
 scale_fill_ppd <-
   function(name = NULL,
-           values = get_color("m"),
+           values = setNames(get_color(c("d", "m")), nm = c("PPD", "ypred")),
            labels = ypred_label(),
            ...) {
     scale_fill_ppc(name = name,

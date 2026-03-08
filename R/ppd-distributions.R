@@ -75,7 +75,7 @@ ppd_dens_overlay <-
     if (isTRUE(show_marginal)) {
       p +
         overlay_ppd_densities(
-          mapping = aes(color = "marginal"),
+          mapping = aes(color = "PPD"),
           linewidth = 1,
           trim = trim,
           bw = bw,
@@ -85,8 +85,8 @@ ppd_dens_overlay <-
           n = n_dens
         ) +
         scale_color_ppd(
-          labels = ypred_label(show_marginal = TRUE),
-          values = get_color(c("d", "m")),
+          labels = ypred_label(),
+          values = setNames(get_color(c("d", "m")), nm = c("PPD", "ypred")),
           guide = guide_legend(
             override.aes = list(size = 2 * size, alpha = 1))
         )
@@ -144,8 +144,8 @@ ppd_ecdf_overlay <-
           pad = pad
         ) +
         scale_color_ppd(
-          labels = ypred_label(show_marginal = TRUE),
-          values = get_color(c("d", "m")),
+          labels = ypred_label(),
+          values = setNames(get_color(c("d", "m")), nm = c("PPD", "ypred")),
           guide = guide_legend(
             override.aes = list(size = 2 * size, alpha = 1))
         )
@@ -192,7 +192,9 @@ ppd_dens <-
         yaxis_title(FALSE) +
         yaxis_ticks(FALSE) +
         xaxis_title(FALSE) +
-        facet_text(FALSE)
+        facet_text(FALSE) +
+        scale_color_ppd() +
+        scale_fill_ppd()
 
       if (isTRUE(show_marginal)) {
         data2 <- transform(data, rep_label = "PPD")
@@ -205,23 +207,9 @@ ppd_dens <-
             trim = trim,
             bounds = bounds,
             data = data2
-          ) +
-          scale_color_ppd(
-            labels = ypred_label(show_marginal = TRUE),
-            values = get_color(c("dh", "mh")),
-            guide = guide_legend(
-              override.aes = list(size = 2 * size, alpha = 1))
-          ) +
-          scale_fill_ppd(
-            labels = ypred_label(show_marginal = TRUE),
-            values = get_color(c("d", "m")),
-            guide = guide_legend(
-              override.aes = list(size = 2 * size, alpha = 1))
           )
       } else {
         p +
-          scale_color_ppd() +
-          scale_fill_ppd() +
           legend_none()
       }
     }
@@ -257,7 +245,9 @@ ppd_hist <-
       yaxis_title(FALSE) +
       yaxis_ticks(FALSE) +
       xaxis_title(FALSE) +
-      facet_text(FALSE)
+      facet_text(FALSE) +
+      scale_color_ppd() +
+      scale_fill_ppd()
 
     if (isTRUE(show_marginal)) {
       data2 <- transform(data, rep_label = "PPD")
@@ -271,20 +261,10 @@ ppd_hist <-
           bins = bins,
           breaks = breaks,
           data = data2
-        ) +
-        scale_color_ppd(
-          labels = ypred_label(show_marginal = TRUE),
-          values = get_color(c("dh", "mh"))
-        ) +
-        scale_fill_ppd(
-          labels = ypred_label(show_marginal = TRUE),
-          values = get_color(c("d", "m"))
         )
 
     } else {
       p +
-        scale_color_ppd() +
-        scale_fill_ppd() +
         legend_none()
     }
   }
@@ -320,7 +300,9 @@ ppd_dots <-
       yaxis_title(FALSE) +
       yaxis_ticks(FALSE) +
       xaxis_title(FALSE) +
-      facet_text(FALSE)
+      facet_text(FALSE) +
+      scale_color_ppd() +
+      scale_fill_ppd()
 
     if (isTRUE(show_marginal)) {
       data2 <- transform(data, rep_label = "PPD")
@@ -333,20 +315,10 @@ ppd_dots <-
           binwidth = binwidth,
           quantiles = quantiles,
           ...
-        ) +
-        scale_color_ppd(
-          labels = ypred_label(show_marginal = TRUE),
-          values = get_color(c("dh", "mh"))
-        ) +
-        scale_fill_ppd(
-          labels = ypred_label(show_marginal = TRUE),
-          values = get_color(c("d", "m"))
         )
 
     } else {
       p +
-        scale_color_ppd() +
-        scale_fill_ppd() +
         legend_none()
     }
   }
@@ -389,7 +361,9 @@ ppd_freqpoly <-
       yaxis_title(FALSE) +
       yaxis_ticks(FALSE) +
       xaxis_title(FALSE) +
-      facet_text(FALSE)
+      facet_text(FALSE) +
+      scale_color_ppd() +
+      scale_fill_ppd()
 
 
     if (isTRUE(show_marginal)) {
@@ -404,22 +378,10 @@ ppd_freqpoly <-
           binwidth = binwidth,
           bins = bins,
           linewidth = 1,
-        ) +
-        scale_color_ppd(
-          labels = ypred_label(show_marginal = TRUE),
-          values = get_color(c("dh", "mh")),
-          guide = guide_legend(override.aes = list(size = 2 * size, alpha = 1))
-        ) +
-        scale_fill_ppd(
-          labels = ypred_label(show_marginal = TRUE),
-          values = get_color(c("d", "m")),
-          guide = guide_legend(override.aes = list(size = 2 * size, alpha = 1))
         )
 
     } else {
       p +
-        scale_color_ppd() +
-        scale_fill_ppd() +
         legend_none()
     }
   }
