@@ -356,10 +356,11 @@ ppd_dots <-
 #' @export
 ppd_freqpoly <-
   function(ypred,
+           show_marginal = FALSE,
            ...,
            binwidth = NULL,
            bins = NULL,
-           freq = TRUE,
+           freq = !show_marginal,
            size = 0.5,
            alpha = 1) {
 
@@ -370,12 +371,10 @@ ppd_freqpoly <-
     }
 
     data <- ppd_data(ypred, group = dots$group)
-    ggplot(data, mapping = set_hist_aes(
-      freq,
-      color = "ypred",
-      fill = "ypred"
-    )) +
+    p <- ggplot(data, mapping = set_hist_aes(freq)) +
       geom_area(
+        aes(color = "ypred",
+            fill = "ypred"),
         stat = "bin",
         binwidth = binwidth,
         bins = bins,
@@ -383,8 +382,6 @@ ppd_freqpoly <-
         alpha = alpha
       ) +
       facet_wrap_parsed("rep_label") +
-      scale_color_ppd() +
-      scale_fill_ppd() +
       bayesplot_theme_get() +
       force_axes_in_facets() +
       dont_expand_y_axis() +
@@ -392,8 +389,39 @@ ppd_freqpoly <-
       yaxis_title(FALSE) +
       yaxis_ticks(FALSE) +
       xaxis_title(FALSE) +
-      facet_text(FALSE) +
-      legend_none()
+      facet_text(FALSE)
+
+
+    if (isTRUE(show_marginal)) {
+      data2 <- transform(data, rep_label = "PPD")
+
+      p +
+        geom_area(
+          aes(color = "PPD",
+              fill = "PPD"),
+          data = data2,
+          stat = "bin",
+          binwidth = binwidth,
+          bins = bins,
+          linewidth = 1,
+        ) +
+        scale_color_ppd(
+          labels = ypred_label(show_marginal = TRUE),
+          values = get_color(c("d", "m")),
+          guide = guide_legend(override.aes = list(size = 2 * size, alpha = 1))
+        ) +
+        scale_fill_ppd(
+          labels = ypred_label(show_marginal = TRUE),
+          values = get_color(c("d", "m")),
+          guide = guide_legend(override.aes = list(size = 2 * size, alpha = 1))
+        )
+
+    } else {
+      p +
+        scale_color_ppd() +
+        scale_fill_ppd() +
+        legend_none()
+    }
   }
 
 
