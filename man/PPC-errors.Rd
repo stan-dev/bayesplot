@@ -132,7 +132,10 @@ return a scalar statistic. The function name is displayed in the axis-label.
 Defaults to \code{"mean"}.}
 }
 \value{
-A ggplot object that can be further customized using the \strong{ggplot2} package.
+The plotting functions return a ggplot object that can be further
+customized using the \strong{ggplot2} package. The functions with suffix
+\verb{_data()} return the data that would have been drawn by the plotting
+function.
 }
 \description{
 Various plots of predictive errors \code{y - yrep}. See the
@@ -152,6 +155,12 @@ proportions (not counts). See the \strong{Examples} section, below.
 \section{Plot descriptions}{
 
 \describe{
+\item{\code{ppc_error_data()}}{
+Data-preparation back end for the \verb{ppc_error_*()} family of plotting
+functions. Users can call \code{ppc_error_data()} directly to obtain the
+data frame of predictive errors (\code{y - yrep}) and create custom error
+visualizations with \strong{ggplot2}.
+}
 \item{\code{ppc_error_hist()}}{
 A separate histogram is plotted for the predictive errors computed from
 \code{y} and each dataset (row) in \code{yrep}. For this plot \code{yrep} should have

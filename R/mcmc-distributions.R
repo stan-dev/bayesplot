@@ -15,10 +15,16 @@
 #' @param ... For dot plots, optional additional arguments to pass to [ggdist::stat_dots()].
 #' @param alpha Passed to the geom to control the transparency.
 #'
-#' @template return-ggplot
+#' @template return-ggplot-or-data
 #'
 #' @section Plot Descriptions:
 #' \describe{
+#'   \item{`mcmc_dens_chains_data()`}{
+#'    Data-preparation back end for `mcmc_dens_chains()`. Users can call
+#'    `mcmc_dens_chains_data()` directly to obtain the prepared long-format
+#'    data frame of MCMC draws (with chain information retained) and create
+#'    custom ridgeline density visualizations with **ggplot2**.
+#'   }
 #'   \item{`mcmc_hist()`}{
 #'    Histograms of posterior draws with all chains merged.
 #'   }

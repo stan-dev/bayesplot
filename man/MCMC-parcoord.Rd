@@ -112,6 +112,12 @@ for more background and a real example.
 \section{Plot Descriptions}{
 
 \describe{
+\item{\code{mcmc_parcoord_data()}}{
+Data-preparation back end for \code{mcmc_parcoord()}. Users can call
+\code{mcmc_parcoord_data()} directly to obtain the prepared long-format data
+frame of MCMC draws (with optional NUTS diagnostic information) and
+create custom parallel coordinates visualizations with \strong{ggplot2}.
+}
 \item{\code{mcmc_parcoord()}}{
 \href{https://en.wikipedia.org/wiki/Parallel_coordinates}{Parallel coordinates plot}
 of MCMC draws. There is one dimension per parameter along the horizontal

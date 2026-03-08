@@ -37,6 +37,11 @@
 #'
 #' @section Plot Descriptions:
 #' \describe{
+#' \item{`ppc_bars_data()`}{
+#'   Data-preparation back end for `ppc_bars()` and `ppc_bars_grouped()`.
+#'   Users can call `ppc_bars_data()` directly to obtain the prepared data
+#'   frame and create custom bar chart visualizations with **ggplot2**.
+#' }
 #' \item{`ppc_bars()`}{
 #'   Bar plot of `y` with `yrep` medians and uncertainty intervals
 #'   superimposed on the bars.

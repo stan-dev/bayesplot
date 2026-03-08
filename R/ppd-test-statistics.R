@@ -17,6 +17,18 @@
 #' @template details-binomial
 #' @template return-ggplot-or-data
 #'
+#' @section Plot Descriptions:
+#' \describe{
+#'   \item{`ppd_stat_data()`}{
+#'    Data-preparation back end for `ppd_stat()`, `ppd_stat_freqpoly()`, and
+#'    their grouped variants. Users can call `ppd_stat_data()` directly to
+#'    obtain the data frame of test-statistic values computed from each row of
+#'    `ypred`, enabling custom test-statistic visualizations with **ggplot2**.
+#'    The `ppd_stat_data()` function is the PPD counterpart to
+#'    [ppc_stat_data()].
+#'   }
+#' }
+#'
 #' @template reference-vis-paper
 #' @examples
 #' yrep <- example_yrep_draws()

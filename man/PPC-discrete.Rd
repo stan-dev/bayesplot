@@ -115,6 +115,11 @@ be non-negative.
 \section{Plot Descriptions}{
 
 \describe{
+\item{\code{ppc_bars_data()}}{
+Data-preparation back end for \code{ppc_bars()} and \code{ppc_bars_grouped()}.
+Users can call \code{ppc_bars_data()} directly to obtain the prepared data
+frame and create custom bar chart visualizations with \strong{ggplot2}.
+}
 \item{\code{ppc_bars()}}{
 Bar plot of \code{y} with \code{yrep} medians and uncertainty intervals
 superimposed on the bars.

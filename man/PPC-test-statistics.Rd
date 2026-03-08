@@ -142,6 +142,13 @@ the input contains the "success" \emph{proportions} (not discrete
 \section{Plot Descriptions}{
 
 \describe{
+\item{\code{ppc_stat_data()}}{
+Data-preparation back end for \code{ppc_stat()}, \code{ppc_stat_freqpoly()}, and
+their grouped variants. Users can call \code{ppc_stat_data()} directly to
+obtain the data frame of test-statistic values computed from \code{y} and
+each row of \code{yrep}, enabling custom test-statistic visualizations with
+\strong{ggplot2}.
+}
 \item{\code{ppc_stat()}, \code{ppc_stat_freqpoly()}}{
 A histogram/bar plot or frequency polygon of the distribution of a statistic
 computed by applying \code{stat} to each dataset (row) in \code{yrep}. The value of

@@ -29,6 +29,14 @@
 #'
 #' @section Plot Descriptions:
 #' \describe{
+#'   \item{`ppc_scatter_data()`, `ppc_scatter_avg_data()`}{
+#'    Data-preparation back ends for the `ppc_scatter*()` family of plotting
+#'    functions. `ppc_scatter_data()` returns a data frame with one row per
+#'    observation per `yrep` draw, while `ppc_scatter_avg_data()` returns a
+#'    data frame with one row per observation summarising `yrep` draws with
+#'    the chosen `stat`. Users can call these functions directly to create
+#'    custom scatterplot visualizations with **ggplot2**.
+#'   }
 #'   \item{`ppc_scatter()`}{
 #'    For each dataset (row) in `yrep` a scatterplot is generated showing `y`
 #'    against that row of `yrep`. For this plot `yrep` should only contain a

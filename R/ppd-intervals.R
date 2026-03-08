@@ -14,6 +14,19 @@
 #'
 #' @template return-ggplot-or-data
 #'
+#' @section Plot Descriptions:
+#' \describe{
+#'   \item{`ppd_intervals_data()`, `ppd_ribbon_data()`}{
+#'    Data-preparation back end for `ppd_intervals()`, `ppd_ribbon()`, and
+#'    their grouped variants. `ppd_ribbon_data()` is an alias for
+#'    `ppd_intervals_data()`. Users can call either function directly to
+#'    obtain the prepared data frame and create custom interval or ribbon
+#'    visualizations with **ggplot2**.
+#'    These functions are PPD counterparts to [ppc_intervals_data()] and
+#'    [ppc_ribbon_data()].
+#'   }
+#' }
+#'
 #' @template reference-vis-paper
 #'
 #' @examples

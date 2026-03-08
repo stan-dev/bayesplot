@@ -33,6 +33,13 @@
 #'
 #' @section Plot Descriptions:
 #' \describe{
+#'   \item{`ppc_intervals_data()`, `ppc_ribbon_data()`}{
+#'    Data-preparation back end for `ppc_intervals()`, `ppc_ribbon()`, and
+#'    their grouped variants. `ppc_ribbon_data()` is an alias for
+#'    `ppc_intervals_data()`. Users can call either function directly to
+#'    obtain the prepared data frame and create custom interval or ribbon
+#'    visualizations with **ggplot2**.
+#'   }
 #'   \item{`ppc_intervals(), ppc_ribbon()`}{
 #'    `100*prob`% central intervals for `yrep` at each `x`
 #'    value. `ppc_intervals()` plots intervals as vertical bars with points
