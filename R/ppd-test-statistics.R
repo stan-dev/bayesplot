@@ -34,12 +34,13 @@ NULL
 ppd_stat <-
   function(ypred,
            stat = "mean",
+           show_marginal = FALSE,
            ...,
            discrete = FALSE,
            binwidth = NULL,
            bins = NULL,
            breaks = NULL,
-           freq = TRUE) {
+           freq = !show_marginal) {
     stopifnot(length(stat) == 1)
     dots <- list(...)
     if (!from_grouped(dots)) {
@@ -50,34 +51,48 @@ ppd_stat <-
     data <- ppd_stat_data(
       ypred = ypred,
       group = dots$group,
-      stat = match.fun(stat)
+      stat = match.fun(stat),
+      show_marginal = show_marginal
     )
+    data$type <- ifelse(grepl("ypred", data$variable), "ypred", "PPD")
+
     graph <- ggplot(data, mapping = set_hist_aes(
       freq,
-      color = "ypred",
-      fill = "ypred"
+      color = .data$type,
+      fill = .data$type
     ))
-    graph <- graph + if (discrete) {
-      geom_bar(
-        color = get_color("lh"),
-        linewidth = 0.25,
-        na.rm = TRUE,
-        position = "identity",
-      )
+
+    if (discrete) {
+      graph <- graph +
+        geom_bar(
+          linewidth = 0.25,
+          na.rm = TRUE,
+          position = "identity",
+        )
+    } else {
+      graph <- graph +
+        geom_histogram(
+          data = subset(data, type != "PPD"),
+          linewidth = 0.25,
+          na.rm = TRUE,
+          binwidth = binwidth,
+          bins = bins,
+          breaks = breaks
+        )
+      if (isTRUE(show_marginal)) {
+        graph <- graph +
+          geom_vline(
+            aes(xintercept = .data$value, color = .data$type),
+            data = subset(data, type == "PPD"),
+            key_glyph = "rect"
+          )
+      }
     }
-    else {
-      geom_histogram(
-        linewidth = 0.25,
-        na.rm = TRUE,
-        binwidth = binwidth,
-        bins = bins,
-        breaks = breaks
-      ) }
-      graph +
-      scale_color_ppd(guide = "none") +
-      scale_fill_ppd(labels = Typred_label(), guide = guide_legend(
-        title = stat_legend_title(stat, deparse(substitute(stat)))
-      )) +
+    graph +
+      scale_fill_ppd(guide = "none") +
+      scale_color_ppd(labels = Typred_label(), guide = guide_legend(
+        title = stat_legend_title(stat, deparse(substitute(stat))),
+        override.aes = list(fill = get_color(c(if (show_marginal) "d", "m"))))) +
       bayesplot_theme_get() +
       dont_expand_y_axis() +
       xaxis_title(FALSE) +
@@ -93,6 +108,7 @@ ppd_stat_grouped <-
   function(ypred,
            group,
            stat = "mean",
+           show_marginal = FALSE,
            ...,
            discrete = FALSE,
            facet_args = list(),
@@ -219,7 +235,7 @@ ppd_stat_2d <-
 
 #' @rdname PPD-test-statistics
 #' @export
-ppd_stat_data <- function(ypred, group = NULL, stat) {
+ppd_stat_data <- function(ypred, group = NULL, stat, show_marginal = FALSE) {
   if (!(length(stat) %in% 1:2)) {
     abort("'stat' must have length 1 or 2.")
   }
@@ -239,7 +255,8 @@ ppd_stat_data <- function(ypred, group = NULL, stat) {
     predictions = ypred,
     y = NULL,
     group = group,
-    stat = stat
+    stat = stat,
+    show_marginal = show_marginal
   )
 }
 
@@ -263,7 +280,7 @@ ppd_stat_data <- function(ypred, group = NULL, stat) {
 #' ppc_stat_data(y, yrep, group, stat = "median")
 #'
 #' @importFrom dplyr group_by ungroup summarise rename
-.ppd_stat_data <- function(predictions, y = NULL, group = NULL, stat) {
+.ppd_stat_data <- function(predictions, y = NULL, group = NULL, stat, show_marginal) {
   stopifnot(length(stat) %in% c(1,2))
   if (length(stat) == 1) {
     stopifnot(is.function(stat)) # sanity check, should already be validated
@@ -292,10 +309,10 @@ ppd_stat_data <- function(ypred, group = NULL, stat) {
   )
   colnames(d) <- gsub(".", "_", colnames(d), fixed = TRUE)
   molten_d <- reshape2::melt(d, id.vars = "group")
-  molten_d <- group_by(molten_d, .data$group, .data$variable)
 
   data <-
     molten_d %>%
+    group_by(.data$group, .data$variable) %>%
     summarise(
       value1 = stat1(.data$value),
       value2 = if (!is.null(stat2))
@@ -303,6 +320,22 @@ ppd_stat_data <- function(ypred, group = NULL, stat) {
     ) %>%
     rename(value = "value1") %>%
     ungroup()
+
+  if (isTRUE(show_marginal)) {
+    data_ppd <- molten_d %>%
+      dplyr::filter(.data$variable != "y") %>%
+      group_by(.data$group) %>%
+      summarise(
+        variable = "PPD",
+        value1 = stat1(.data$value),
+        value2 = if (!is.null(stat2))
+          stat2(.data$value) else NA
+      ) %>%
+      rename(value = "value1") %>%
+      ungroup()
+
+    data <- rbind(data, data_ppd)
+  }
 
   if (is.null(stat2)) {
     data$value2 <- NULL
@@ -328,4 +361,7 @@ stat_group_facets <- function(facet_args, scales_default = "free") {
   do.call("facet_wrap", facet_args)
 }
 
-Typred_label <- function() expression(italic(T)(italic(y)[pred]))
+Typred_label <- function() {
+  expression(PPD = italic(T)(PPD),
+             ypred = italic(T)(italic(y)[pred]))
+}

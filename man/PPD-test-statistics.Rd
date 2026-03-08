@@ -14,6 +14,7 @@
 ppd_stat(
   ypred,
   stat = "mean",
+  show_marginal = FALSE,
   ...,
   discrete = FALSE,
   binwidth = NULL,
@@ -58,7 +59,7 @@ ppd_stat_freqpoly_grouped(
 
 ppd_stat_2d(ypred, stat = c("mean", "sd"), ..., size = 2.5, alpha = 0.7)
 
-ppd_stat_data(ypred, group = NULL, stat)
+ppd_stat_data(ypred, group = NULL, stat, show_marginal)
 }
 \arguments{
 \item{ypred}{An \code{S} by \code{N} matrix of draws from the posterior (or prior)
