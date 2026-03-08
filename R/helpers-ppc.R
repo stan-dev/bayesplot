@@ -725,8 +725,8 @@ ypred_label <- function() expression(italic(y)[pred])
 }
 
 # Support pareto_pit in ppc_loo_pit_ecdf and ppc_pit_ecdf --------------
-# TODO: Once this function is available via posterior, remove this internal implementation
-# and import from posterior.
+# TODO: Once this function is available via posterior, remove this internal 
+# implementation and import from posterior.
 
 #' Pareto-smoothed probability integral transform
 #'
