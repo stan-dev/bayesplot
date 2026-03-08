@@ -31,6 +31,7 @@ ppd_dens_overlay(
 
 ppd_ecdf_overlay(
   ypred,
+  show_marginal = FALSE,
   ...,
   discrete = FALSE,
   pad = TRUE,
