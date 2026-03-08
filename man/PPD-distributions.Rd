@@ -59,7 +59,14 @@ ppd_hist(
   freq = TRUE
 )
 
-ppd_dots(ypred, ..., binwidth = NA, quantiles = 100, freq = TRUE)
+ppd_dots(
+  ypred,
+  show_marginal = FALSE,
+  ...,
+  binwidth = NA,
+  quantiles = 100,
+  freq = TRUE
+)
 
 ppd_freqpoly(
   ypred,

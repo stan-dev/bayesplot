@@ -295,6 +295,7 @@ ppd_hist <-
 #' @export
 ppd_dots <-
   function(ypred,
+           show_marginal = FALSE,
            ...,
            binwidth = NA,
            quantiles = 100,
@@ -304,28 +305,52 @@ ppd_dots <-
     suggested_package("ggdist")
 
     data <- ppd_data(ypred)
-    ggplot(data, mapping = set_hist_aes(
-      freq,
-      color = "ypred",
-      fill = "ypred"
-    )) +
+
+    p <- ggplot(data, mapping = set_hist_aes(freq)) +
       ggdist::stat_dots(
+        aes(color = "ypred",
+            fill = "ypred"),
         binwidth = binwidth,
         quantiles = quantiles,
         ...
       ) +
-      scale_color_ppd() +
-      scale_fill_ppd() +
       bayesplot_theme_get() +
       facet_wrap_parsed("rep_label") +
       force_axes_in_facets() +
       dont_expand_y_axis() +
-      legend_none() +
       yaxis_text(FALSE) +
       yaxis_title(FALSE) +
       yaxis_ticks(FALSE) +
       xaxis_title(FALSE) +
       facet_text(FALSE)
+
+    if (isTRUE(show_marginal)) {
+      data2 <- transform(data, rep_label = "PPD")
+
+      p +
+        ggdist::stat_dots(
+          aes(color = "PPD",
+              fill = "PPD"),
+          data = data2,
+          binwidth = binwidth,
+          quantiles = quantiles,
+          ...
+        ) +
+        scale_color_ppd(
+          labels = ypred_label(show_marginal = TRUE),
+          values = get_color(c("d", "m"))
+        ) +
+        scale_fill_ppd(
+          labels = ypred_label(show_marginal = TRUE),
+          values = get_color(c("d", "m"))
+        )
+
+    } else {
+      p +
+        scale_color_ppd() +
+        scale_fill_ppd() +
+        legend_none()
+    }
   }
 
 
