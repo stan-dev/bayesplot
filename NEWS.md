@@ -1,5 +1,6 @@
 # bayesplot (development version)
 
+* New `show_marginal` argument to `ppd_*()` functions to show the PPD - the marginal predictive distribution by @mattansb (#425)
 * New functions `mcmc_dots` and `mcmc_dots_by_chain` for dot plots of MCMC draws by @behramulukir (#402)
 * Default to `quantiles=100` for all dot plots by @behramulukir (#402)
 
