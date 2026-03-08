@@ -39,7 +39,15 @@ ppd_ecdf_overlay(
   alpha = 0.7
 )
 
-ppd_dens(ypred, ..., trim = FALSE, size = 0.5, alpha = 1, bounds = NULL)
+ppd_dens(
+  ypred,
+  show_marginal = FALSE,
+  ...,
+  trim = FALSE,
+  size = 0.5,
+  alpha = 1,
+  bounds = NULL
+)
 
 ppd_hist(ypred, ..., binwidth = NULL, bins = NULL, breaks = NULL, freq = TRUE)
 

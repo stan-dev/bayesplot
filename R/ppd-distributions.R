@@ -165,6 +165,7 @@ ppd_ecdf_overlay <-
 #' @export
 ppd_dens <-
     function(ypred,
+             show_marginal = FALSE,
              ...,
              trim = FALSE,
              size = 0.5,
@@ -174,30 +175,56 @@ ppd_dens <-
       bounds <- validate_density_bounds(bounds)
 
       data <- ppd_data(ypred)
-      ggplot(data, mapping = aes(
-        x = .data$value,
-        color = "ypred",
-        fill = "ypred"
-      )) +
+      p <- ggplot(data, mapping = aes(.data$value)) +
         geom_density(
+          aes(color = "ypred",
+              fill = "ypred"),
           linewidth = size,
           alpha = alpha,
           trim = trim,
           bounds = bounds
         ) +
-      scale_color_ppd() +
-      scale_fill_ppd() +
-      bayesplot_theme_get() +
-      facet_wrap_parsed("rep_label") +
-      force_axes_in_facets() +
-      dont_expand_y_axis() +
-      legend_none() +
-      yaxis_text(FALSE) +
-      yaxis_title(FALSE) +
-      yaxis_ticks(FALSE) +
-      xaxis_title(FALSE) +
-      facet_text(FALSE)
-  }
+        bayesplot_theme_get() +
+        facet_wrap_parsed("rep_label") +
+        force_axes_in_facets() +
+        dont_expand_y_axis() +
+        yaxis_text(FALSE) +
+        yaxis_title(FALSE) +
+        yaxis_ticks(FALSE) +
+        xaxis_title(FALSE) +
+        facet_text(FALSE)
+
+      if (isTRUE(show_marginal)) {
+        data2 <- transform(data, rep_label = "PPD")
+
+        p +
+          geom_density(
+            aes(color = "PPD",
+                fill = "PPD"),
+            linewidth = 1,
+            trim = trim,
+            bounds = bounds,
+            data = data2
+          ) +
+          scale_color_ppd(
+            labels = ypred_label(show_marginal = TRUE),
+            values = get_color(c("d", "m")),
+            guide = guide_legend(
+              override.aes = list(size = 2 * size, alpha = 1))
+          ) +
+          scale_fill_ppd(
+            labels = ypred_label(show_marginal = TRUE),
+            values = get_color(c("d", "m")),
+            guide = guide_legend(
+              override.aes = list(size = 2 * size, alpha = 1))
+          )
+      } else {
+        p +
+          scale_color_ppd() +
+          scale_fill_ppd() +
+          legend_none()
+      }
+    }
 
 
 #' @rdname PPD-distributions
