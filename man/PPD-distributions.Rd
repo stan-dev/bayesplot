@@ -111,7 +111,7 @@ Will be coerced to \link[base:factor]{factor} if not already a factor.
 Each value in \code{group} is interpreted as the group level pertaining
 to the corresponding observation.}
 
-\item{show_marginal}{Plot the marginal PPD along with the yreps.}
+\item{show_marginal}{Plot the marginal PPD along with the \code{ypred}s.}
 
 \item{...}{For dot plots, optional additional arguments to pass to \code{\link[ggdist:stat_dots]{ggdist::stat_dots()}}.}
 
@@ -179,6 +179,7 @@ the input contains the "success" \emph{proportions} (not discrete
 color_scheme_set("brightblue")
 preds <- example_yrep_draws()
 ppd_dens_overlay(ypred = preds[1:50, ])
+ppd_dens_overlay(ypred = preds[1:50, ], show_marginal = TRUE)
 ppc_dens_overlay(y = example_y_data(), yrep = preds[1:50, ])
 
 }

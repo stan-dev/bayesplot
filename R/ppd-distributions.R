@@ -10,7 +10,7 @@
 #'
 #' @template args-ypred
 #' @inheritParams PPC-distributions
-#' @param show_marginal Plot the marginal PPD along with the yreps.
+#' @param show_marginal Plot the marginal PPD along with the `ypred`s.
 #'
 #' @template details-binomial
 #' @template return-ggplot-or-data
@@ -20,6 +20,7 @@
 #' color_scheme_set("brightblue")
 #' preds <- example_yrep_draws()
 #' ppd_dens_overlay(ypred = preds[1:50, ])
+#' ppd_dens_overlay(ypred = preds[1:50, ], show_marginal = TRUE)
 #' ppc_dens_overlay(y = example_y_data(), yrep = preds[1:50, ])
 #'
 NULL

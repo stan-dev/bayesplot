@@ -22,11 +22,13 @@
 #' yrep <- example_yrep_draws()
 #' ppd_stat(yrep)
 #' ppd_stat(yrep, stat = "sd") + legend_none()
+#' ppd_stat(yrep, show_marginal = TRUE)
 #'
 #' # use your own function for the 'stat' argument
 #' color_scheme_set("brightblue")
 #' q25 <- function(y) quantile(y, 0.25)
 #' ppd_stat(yrep, stat = "q25") # legend includes function name
+#' ppd_stat(yrep, stat = "q25", show_marginal = TRUE)
 NULL
 
 #' @rdname PPD-test-statistics
