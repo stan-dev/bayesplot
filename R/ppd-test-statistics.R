@@ -84,7 +84,8 @@ ppd_stat <-
           geom_vline(
             aes(xintercept = .data$value, color = .data$type),
             data = subset(data, type == "PPD"),
-            key_glyph = "rect"
+            key_glyph = "rect",
+            linewidth = 2
           )
       }
     }
@@ -175,7 +176,8 @@ ppd_stat_freqpoly <-
         geom_vline(
           aes(xintercept = .data$value, color = .data$type),
           data = subset(data, type == "PPD"),
-          key_glyph = "path"
+          key_glyph = "path",
+          linewidth = 2
         )
     }
 
