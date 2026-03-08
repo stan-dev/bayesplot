@@ -77,7 +77,6 @@ ppd_dens_overlay <-
         overlay_ppd_densities(
           mapping = aes(color = "marginal"),
           linewidth = 1,
-          alpha = alpha,
           trim = trim,
           bw = bw,
           adjust = adjust,
