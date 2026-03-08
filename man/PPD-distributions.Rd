@@ -49,7 +49,15 @@ ppd_dens(
   bounds = NULL
 )
 
-ppd_hist(ypred, ..., binwidth = NULL, bins = NULL, breaks = NULL, freq = TRUE)
+ppd_hist(
+  ypred,
+  show_marginal = FALSE,
+  ...,
+  binwidth = NULL,
+  bins = NULL,
+  breaks = NULL,
+  freq = TRUE
+)
 
 ppd_dots(ypred, ..., binwidth = NA, quantiles = 100, freq = TRUE)
 

@@ -231,6 +231,7 @@ ppd_dens <-
 #' @export
 ppd_hist <-
   function(ypred,
+           show_marginal = FALSE,
            ...,
            binwidth = NULL,
            bins = NULL,
@@ -239,29 +240,55 @@ ppd_hist <-
     check_ignored_arguments(...)
 
     data <- ppd_data(ypred)
-    ggplot(data, mapping = set_hist_aes(
-      freq,
-      color = "ypred",
-      fill = "ypred"
-    )) +
+    p <- ggplot(data, mapping = set_hist_aes(freq)) +
       geom_histogram(
+        aes(color = "ypred",
+            fill = "ypred",
+            y = after_stat(density)),
         linewidth = 0.25,
         binwidth = binwidth,
         bins = bins,
         breaks = breaks
       ) +
-      scale_color_ppd() +
-      scale_fill_ppd() +
       bayesplot_theme_get() +
       facet_wrap_parsed("rep_label") +
       force_axes_in_facets() +
       dont_expand_y_axis() +
-      legend_none() +
       yaxis_text(FALSE) +
       yaxis_title(FALSE) +
       yaxis_ticks(FALSE) +
       xaxis_title(FALSE) +
       facet_text(FALSE)
+
+    if (isTRUE(show_marginal)) {
+      data2 <- transform(data, rep_label = "PPD")
+
+      p +
+        geom_histogram(
+          aes(color = "PPD",
+              fill = "PPD",
+              y = after_stat(density)),
+          linewidth = 1,
+          binwidth = binwidth,
+          bins = bins,
+          breaks = breaks,
+          data = data2
+        ) +
+        scale_color_ppd(
+          labels = ypred_label(show_marginal = TRUE),
+          values = get_color(c("d", "m"))
+        ) +
+        scale_fill_ppd(
+          labels = ypred_label(show_marginal = TRUE),
+          values = get_color(c("d", "m"))
+        )
+
+    } else {
+      p +
+        scale_color_ppd() +
+        scale_fill_ppd() +
+        legend_none()
+    }
   }
 
 #' @rdname PPD-distributions
