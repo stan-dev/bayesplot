@@ -208,7 +208,7 @@ ppd_dens <-
           ) +
           scale_color_ppd(
             labels = ypred_label(show_marginal = TRUE),
-            values = get_color(c("d", "m")),
+            values = get_color(c("dh", "mh")),
             guide = guide_legend(
               override.aes = list(size = 2 * size, alpha = 1))
           ) +
@@ -274,7 +274,7 @@ ppd_hist <-
         ) +
         scale_color_ppd(
           labels = ypred_label(show_marginal = TRUE),
-          values = get_color(c("d", "m"))
+          values = get_color(c("dh", "mh"))
         ) +
         scale_fill_ppd(
           labels = ypred_label(show_marginal = TRUE),
@@ -336,7 +336,7 @@ ppd_dots <-
         ) +
         scale_color_ppd(
           labels = ypred_label(show_marginal = TRUE),
-          values = get_color(c("d", "m"))
+          values = get_color(c("dh", "mh"))
         ) +
         scale_fill_ppd(
           labels = ypred_label(show_marginal = TRUE),
@@ -407,7 +407,7 @@ ppd_freqpoly <-
         ) +
         scale_color_ppd(
           labels = ypred_label(show_marginal = TRUE),
-          values = get_color(c("d", "m")),
+          values = get_color(c("dh", "mh")),
           guide = guide_legend(override.aes = list(size = 2 * size, alpha = 1))
         ) +
         scale_fill_ppd(
