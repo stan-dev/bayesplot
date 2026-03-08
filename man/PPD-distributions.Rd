@@ -17,6 +17,7 @@ ppd_data(ypred, group = NULL)
 
 ppd_dens_overlay(
   ypred,
+  show_marginal = FALSE,
   ...,
   size = 0.25,
   alpha = 0.7,
@@ -76,6 +77,8 @@ columns, \code{N}, is the number of predicted observations.}
 Will be coerced to \link[base:factor]{factor} if not already a factor.
 Each value in \code{group} is interpreted as the group level pertaining
 to the corresponding observation.}
+
+\item{show_marginal}{Plot the marginal PPD along with the yreps.}
 
 \item{...}{For dot plots, optional additional arguments to pass to \code{\link[ggdist:stat_dots]{ggdist::stat_dots()}}.}
 

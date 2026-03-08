@@ -10,6 +10,7 @@
 #'
 #' @template args-ypred
 #' @inheritParams PPC-distributions
+#' @param show_marginal Plot the marginal PPD along with the yreps.
 #'
 #' @template details-binomial
 #' @template return-ggplot-or-data
@@ -37,25 +38,46 @@ ppd_data <- function(ypred, group = NULL) {
 #' @rdname PPD-distributions
 #' @export
 ppd_dens_overlay <-
-    function(ypred,
-             ...,
-             size = 0.25,
-             alpha = 0.7,
-             trim = FALSE,
-             bw = "nrd0",
-             adjust = 1,
-             kernel = "gaussian",
-             bounds = NULL,
-             n_dens = 1024) {
-      check_ignored_arguments(...)
-      bounds <- validate_density_bounds(bounds)
+  function(ypred,
+           show_marginal = FALSE,
+           ...,
+           size = 0.25,
+           alpha = 0.7,
+           trim = FALSE,
+           bw = "nrd0",
+           adjust = 1,
+           kernel = "gaussian",
+           bounds = NULL,
+           n_dens = 1024) {
+    check_ignored_arguments(...)
+    bounds <- validate_density_bounds(bounds)
 
-      data <- ppd_data(ypred)
-      ggplot(data, mapping = aes(x = .data$value)) +
-        overlay_ppd_densities(
+    data <- ppd_data(ypred)
+    p <- ggplot(data, mapping = aes(x = .data$value)) +
+      overlay_ppd_densities(
         mapping = aes(group = .data$rep_id, color = "ypred"),
         linewidth = size,
         alpha = alpha,
+        trim = trim,
+        bw = bw,
+        adjust = adjust,
+        kernel = kernel,
+        bounds = bounds,
+        n = n_dens
+      ) +
+      bayesplot_theme_get() +
+      dont_expand_axes() +
+      yaxis_title(FALSE) +
+      xaxis_title(FALSE) +
+      yaxis_text(FALSE) +
+      yaxis_ticks(FALSE)
+
+    if (isTRUE(show_marginal)) {
+      p +
+        overlay_ppd_densities(
+          mapping = aes(color = "marginal"),
+          linewidth = 1,
+          alpha = alpha,
           trim = trim,
           bw = bw,
           adjust = adjust,
@@ -63,18 +85,22 @@ ppd_dens_overlay <-
           bounds = bounds,
           n = n_dens
         ) +
-      scale_color_ppd(
+        scale_color_ppd(
+          labels = ypred_label(show_marginal = TRUE),
+          values = get_color(c("d", "m")),
+          guide = guide_legend(
+            override.aes = list(size = 2 * size, alpha = 1))
+        )
+    } else {
+      p + scale_color_ppd(
         values = get_color("m"),
-        guide = guide_legend( # in case user turns legend back on
+        # in case user turns legend back on
+        guide = guide_legend(
           override.aes = list(size = 2 * size, alpha = 1))
       ) +
-      bayesplot_theme_get() +
-      dont_expand_axes() +
-      yaxis_title(FALSE) +
-      xaxis_title(FALSE) +
-      yaxis_text(FALSE) +
-      yaxis_ticks(FALSE) +
-      legend_none()
+        legend_none()
+    }
+
   }
 
 
