@@ -146,7 +146,7 @@ ppd_dens <-
       scale_fill_ppd() +
       bayesplot_theme_get() +
       facet_wrap_parsed("rep_label") +
-      force_axes_in_facets() +
+      force_x_axis_in_facets() +
       dont_expand_y_axis() +
       legend_none() +
       yaxis_text(FALSE) +
@@ -185,7 +185,7 @@ ppd_hist <-
       scale_fill_ppd() +
       bayesplot_theme_get() +
       facet_wrap_parsed("rep_label") +
-      force_axes_in_facets() +
+      force_x_axis_in_facets() +
       dont_expand_y_axis() +
       legend_none() +
       yaxis_text(FALSE) +
@@ -223,7 +223,7 @@ ppd_dots <-
       scale_fill_ppd() +
       bayesplot_theme_get() +
       facet_wrap_parsed("rep_label") +
-      force_axes_in_facets() +
+      force_x_axis_in_facets() +
       dont_expand_y_axis() +
       legend_none() +
       yaxis_text(FALSE) +
@@ -269,7 +269,7 @@ ppd_freqpoly <-
       scale_color_ppd() +
       scale_fill_ppd() +
       bayesplot_theme_get() +
-      force_axes_in_facets() +
+      force_x_axis_in_facets() +
       dont_expand_y_axis() +
       yaxis_text(FALSE) +
       yaxis_title(FALSE) +
@@ -302,7 +302,7 @@ ppd_freqpoly_grouped <-
         scales = "free",
         labeller = label_parsed
       ) +
-      force_axes_in_facets() +
+      force_x_axis_in_facets() +
       facet_text() +
       theme(strip.text.y = element_blank())
   }
