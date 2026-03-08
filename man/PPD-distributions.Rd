@@ -91,7 +91,14 @@ ppd_freqpoly_grouped(
   alpha = 1
 )
 
-ppd_boxplot(ypred, ..., notch = TRUE, size = 0.5, alpha = 1)
+ppd_boxplot(
+  ypred,
+  show_marginal = FALSE,
+  ...,
+  notch = TRUE,
+  size = 0.5,
+  alpha = 1
+)
 }
 \arguments{
 \item{ypred}{An \code{S} by \code{N} matrix of draws from the posterior (or prior)

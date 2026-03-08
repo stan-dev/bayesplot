@@ -419,6 +419,7 @@ ppd_freqpoly_grouped <-
 #' @export
 ppd_boxplot <-
   function(ypred,
+           show_marginal = FALSE,
            ...,
            notch = TRUE,
            size = 0.5,
@@ -426,13 +427,13 @@ ppd_boxplot <-
     check_ignored_arguments(...)
 
     data <- ppd_data(ypred)
-    ggplot(data, mapping = aes(
+    p <- ggplot(data, mapping = aes(
       x = .data$rep_label,
-      y = .data$value,
-      color = "ypred",
-      fill = "ypred"
+      y = .data$value
     )) +
       geom_boxplot(
+        aes(color = "ypred",
+            fill = "ypred"),
         notch = notch,
         linewidth = size,
         alpha = alpha,
@@ -447,8 +448,24 @@ ppd_boxplot <-
       yaxis_title(FALSE) +
       xaxis_ticks(FALSE) +
       xaxis_text(FALSE) +
-      xaxis_title(FALSE) +
-      legend_none()
+      xaxis_title(FALSE)
+
+    if (isTRUE(show_marginal)) {
+      p +
+        geom_boxplot(
+          aes(x = "PPD",
+              color = "PPD",
+              fill = "PPD"),
+          notch = notch,
+          linewidth = 1,
+          outlier.color = get_color("mh"),
+          outlier.alpha = 2/3,
+          outlier.size = 1
+        )
+
+    } else {
+      p + legend_none()
+    }
   }
 
 
