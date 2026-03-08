@@ -392,10 +392,11 @@ ppd_freqpoly <-
 ppd_freqpoly_grouped <-
   function(ypred,
            group,
+           show_marginal = FALSE,
            ...,
            binwidth = NULL,
            bins = NULL,
-           freq = TRUE,
+           freq = !show_marginal,
            size = 0.5,
            alpha = 1) {
 
