@@ -18,8 +18,8 @@ ppc_intervals(
   prob = 0.5,
   prob_outer = 0.9,
   alpha = 0.33,
-  size = 1,
-  fatten = 2.5,
+  size = 2.5,
+  fatten = deprecated(),
   linewidth = 1
 )
 
@@ -33,8 +33,8 @@ ppc_intervals_grouped(
   prob = 0.5,
   prob_outer = 0.9,
   alpha = 0.33,
-  size = 1,
-  fatten = 2.5,
+  size = 2.5,
+  fatten = deprecated(),
   linewidth = 1
 )
 
@@ -46,7 +46,8 @@ ppc_ribbon(
   prob = 0.5,
   prob_outer = 0.9,
   alpha = 0.33,
-  size = 0.25,
+  size = NULL,
+  linewidth = 0.25,
   y_draw = c("line", "points", "both")
 )
 
@@ -60,7 +61,8 @@ ppc_ribbon_grouped(
   prob = 0.5,
   prob_outer = 0.9,
   alpha = 0.33,
-  size = 0.25,
+  size = NULL,
+  linewidth = 0.25,
   y_draw = c("line", "points", "both")
 )
 
@@ -106,13 +108,15 @@ is missing or \code{NULL} then the observation index is used for the x-axis.}
 probability mass to include in the inner and outer intervals. The defaults
 are \code{prob=0.5} and \code{prob_outer=0.9}.}
 
-\item{alpha, size, fatten, linewidth}{Arguments passed to geoms. For ribbon
-plots \code{alpha} is passed to \code{\link[ggplot2:geom_ribbon]{ggplot2::geom_ribbon()}} to control the opacity
-of the outer ribbon and \code{size} is passed to \code{\link[ggplot2:geom_path]{ggplot2::geom_line()}} to
-control the size of the line representing the median prediction (\code{size=0}
-will remove the line). For interval plots \code{alpha}, \code{size}, \code{fatten}, and
-\code{linewidth} are passed to \code{\link[ggplot2:geom_linerange]{ggplot2::geom_pointrange()}} (\code{fatten=0} will
-remove the point estimates).}
+\item{alpha, size, linewidth}{Arguments passed to geoms. For ribbon plots
+\code{alpha} is passed to \code{\link[ggplot2:geom_ribbon]{ggplot2::geom_ribbon()}} to control the opacity of the
+outer ribbon and \code{linewidth} is passed to \code{\link[ggplot2:geom_path]{ggplot2::geom_line()}} to control
+the width of the line representing the median prediction (\code{linewidth=0}
+will remove the line). For interval plots \code{alpha}, \code{size}, and \code{linewidth}
+are passed to \code{\link[ggplot2:geom_linerange]{ggplot2::geom_pointrange()}} where \code{size} controls the point
+size and \code{linewidth} controls the line width.}
+
+\item{fatten}{Deprecated. Point size is now controlled directly by \code{size}.}
 
 \item{group}{A grouping variable of the same length as \code{y}.
 Will be coerced to \link[base:factor]{factor} if not already a factor.
@@ -180,11 +184,11 @@ ppc_ribbon(y, yrep, y_draw = "points")
 ppc_ribbon(y, yrep, y_draw = "both")
 }
 
-ppc_intervals(y, yrep, size = 1.5, fatten = 0) # remove the yrep point estimates
+ppc_intervals(y, yrep, size = 0) # remove the yrep point estimates
 
 color_scheme_set("teal")
 year <- 1950:1999
-ppc_intervals(y, yrep, x = year, fatten = 1) + ggplot2::xlab("Year")
+ppc_intervals(y, yrep, x = year, size = 1) + ggplot2::xlab("Year")
 ppc_ribbon(y, yrep, x = year) + ggplot2::xlab("Year")
 
 color_scheme_set("pink")

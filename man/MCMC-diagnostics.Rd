@@ -31,7 +31,8 @@ mcmc_acf(
   ...,
   facet_args = list(),
   lags = 20,
-  size = NULL
+  size = NULL,
+  linewidth = NULL
 )
 
 mcmc_acf_bar(

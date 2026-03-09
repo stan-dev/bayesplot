@@ -39,7 +39,8 @@ ppd_data <- function(ypred, group = NULL) {
 ppd_dens_overlay <-
     function(ypred,
              ...,
-             size = 0.25,
+             size = NULL,
+             linewidth = 0.25,
              alpha = 0.7,
              trim = FALSE,
              bw = "nrd0",
@@ -48,13 +49,15 @@ ppd_dens_overlay <-
              bounds = NULL,
              n_dens = 1024) {
       check_ignored_arguments(...)
+      linewidth <- resolve_linewidth(size, linewidth, default_linewidth = 0.25,
+                                     calling_fn = "ppd_dens_overlay")
       bounds <- validate_density_bounds(bounds)
 
       data <- ppd_data(ypred)
       ggplot(data, mapping = aes(x = .data$value)) +
         overlay_ppd_densities(
         mapping = aes(group = .data$rep_id, color = "ypred"),
-        linewidth = size,
+        linewidth = linewidth,
         alpha = alpha,
           trim = trim,
           bw = bw,
@@ -66,7 +69,7 @@ ppd_dens_overlay <-
       scale_color_ppd(
         values = get_color("m"),
         guide = guide_legend( # in case user turns legend back on
-          override.aes = list(size = 2 * size, alpha = 1))
+          override.aes = list(linewidth = 2 * linewidth, alpha = 1))
       ) +
       bayesplot_theme_get() +
       dont_expand_axes() +
@@ -85,9 +88,12 @@ ppd_ecdf_overlay <-
            ...,
            discrete = FALSE,
            pad = TRUE,
-           size = 0.25,
+           size = NULL,
+           linewidth = 0.25,
            alpha = 0.7) {
     check_ignored_arguments(...)
+    linewidth <- resolve_linewidth(size, linewidth, default_linewidth = 0.25,
+                                   calling_fn = "ppd_ecdf_overlay")
 
     data <- ppd_data(ypred)
     ggplot(data, mapping = aes(x = .data$value)) +
@@ -100,14 +106,14 @@ ppd_ecdf_overlay <-
       stat_ecdf(
         mapping = aes(group = .data$rep_id, color = "ypred"),
         geom = if (discrete) "step" else "line",
-        linewidth = size,
+        linewidth = linewidth,
         alpha = alpha,
         pad = pad
       ) +
       scale_color_ppd(
         values = get_color("m"),
         guide = guide_legend( # in case user turns legend back on
-          override.aes = list(linewidth = 2 * size, alpha = 1))
+          override.aes = list(linewidth = 2 * linewidth, alpha = 1))
       ) +
       scale_y_continuous(breaks = c(0, 0.5, 1)) +
       bayesplot_theme_get() +
@@ -123,10 +129,13 @@ ppd_dens <-
     function(ypred,
              ...,
              trim = FALSE,
-             size = 0.5,
+             size = NULL,
+             linewidth = 0.5,
              alpha = 1,
              bounds = NULL) {
       check_ignored_arguments(...)
+      linewidth <- resolve_linewidth(size, linewidth, default_linewidth = 0.5,
+                                     calling_fn = "ppd_dens")
       bounds <- validate_density_bounds(bounds)
 
       data <- ppd_data(ypred)
@@ -136,7 +145,7 @@ ppd_dens <-
         fill = "ypred"
       )) +
         geom_density(
-          linewidth = size,
+          linewidth = linewidth,
           alpha = alpha,
           trim = trim,
           bounds = bounds
@@ -239,7 +248,8 @@ ppd_freqpoly <-
            binwidth = NULL,
            bins = NULL,
            freq = TRUE,
-           size = 0.5,
+           size = NULL,
+           linewidth = 0.5,
            alpha = 1) {
 
     dots <- list(...)
@@ -247,6 +257,8 @@ ppd_freqpoly <-
       check_ignored_arguments(...)
       dots$group <- NULL
     }
+    linewidth <- resolve_linewidth(size, linewidth, default_linewidth = 0.5,
+                                   calling_fn = "ppd_freqpoly")
 
     data <- ppd_data(ypred, group = dots$group)
     ggplot(data, mapping = set_hist_aes(
@@ -258,7 +270,7 @@ ppd_freqpoly <-
         stat = "bin",
         binwidth = binwidth,
         bins = bins,
-        linewidth = size,
+        linewidth = linewidth,
         alpha = alpha
       ) +
       facet_wrap_parsed("rep_label") +
@@ -285,10 +297,13 @@ ppd_freqpoly_grouped <-
            binwidth = NULL,
            bins = NULL,
            freq = TRUE,
-           size = 0.5,
+           size = NULL,
+           linewidth = 0.5,
            alpha = 1) {
 
     check_ignored_arguments(...)
+    linewidth <- resolve_linewidth(size, linewidth, default_linewidth = 0.5,
+                                   calling_fn = "ppd_freqpoly_grouped")
     call <- match.call(expand.dots = FALSE)
     g <- eval(ungroup_call("ppd_freqpoly", call), parent.frame())
     g +
@@ -309,9 +324,12 @@ ppd_boxplot <-
   function(ypred,
            ...,
            notch = TRUE,
-           size = 0.5,
+           size = NULL,
+           linewidth = 0.5,
            alpha = 1) {
     check_ignored_arguments(...)
+    linewidth <- resolve_linewidth(size, linewidth, default_linewidth = 0.5,
+                                   calling_fn = "ppd_boxplot")
 
     data <- ppd_data(ypred)
     ggplot(data, mapping = aes(
@@ -322,7 +340,7 @@ ppd_boxplot <-
     )) +
       geom_boxplot(
         notch = notch,
-        linewidth = size,
+        linewidth = linewidth,
         alpha = alpha,
         outlier.color = get_color("lh"),
         outlier.alpha = 2/3,

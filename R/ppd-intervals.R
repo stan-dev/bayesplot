@@ -23,12 +23,12 @@
 #' group <- example_group_data()
 #'
 #' ppd_intervals(ypred[, 1:50])
-#' ppd_intervals(ypred[, 1:50], fatten = 0)
-#' ppd_intervals(ypred[, 1:50], fatten = 0, linewidth = 2)
-#' ppd_intervals(ypred[, 1:50], prob_outer = 0.75, fatten = 0, linewidth = 2)
+#' ppd_intervals(ypred[, 1:50], size = 0)
+#' ppd_intervals(ypred[, 1:50], size = 0, linewidth = 2)
+#' ppd_intervals(ypred[, 1:50], prob_outer = 0.75, size = 0, linewidth = 2)
 #'
 #' # put a predictor variable on the x-axis
-#' ppd_intervals(ypred[, 1:100], x = x[1:100], fatten = 1) +
+#' ppd_intervals(ypred[, 1:100], x = x[1:100], size = 1) +
 #'   ggplot2::labs(y = "Prediction", x = "Some variable of interest")
 #'
 #' # with a grouping variable too
@@ -36,16 +36,15 @@
 #'   ypred = ypred[, 1:100],
 #'   x = x[1:100],
 #'   group = group[1:100],
-#'   size = 2,
-#'   fatten = 0,
+#'   size = 0,
 #'   facet_args = list(nrow = 2)
 #' )
 #'
 #' # even reducing size, ppd_intervals is too cluttered when there are many
 #' # observations included (ppd_ribbon is better)
-#' ppd_intervals(ypred, size = 0.5, fatten = 0.1, linewidth = 0.5)
+#' ppd_intervals(ypred, size = 0.1, linewidth = 0.5)
 #' ppd_ribbon(ypred)
-#' ppd_ribbon(ypred, size = 0) # remove line showing median prediction
+#' ppd_ribbon(ypred, linewidth = 0) # remove line showing median prediction
 #'
 NULL
 
@@ -58,8 +57,8 @@ ppd_intervals <-
            prob = 0.5,
            prob_outer = 0.9,
            alpha = 0.33,
-           size = 1,
-           fatten = 2.5,
+           size = 2.5,
+           fatten = deprecated(),
            linewidth = 1) {
 
     dots <- list(...)
@@ -67,7 +66,8 @@ ppd_intervals <-
       check_ignored_arguments(...)
       dots$group <- NULL
     }
-
+    size <- resolve_fatten(fatten, size, default_size = 2.5,
+                           calling_fn = "ppd_intervals")
 
     data <- ppd_intervals_data(
       ypred = ypred,
@@ -90,7 +90,6 @@ ppd_intervals <-
         shape = 21,
         stroke = 0.5,
         size = size,
-        fatten = fatten,
         linewidth = linewidth
       ) +
       scale_color_ppd() +
@@ -112,8 +111,8 @@ ppd_intervals_grouped <-
            prob = 0.5,
            prob_outer = 0.9,
            alpha = 0.33,
-           size = 1,
-           fatten = 2.5,
+           size = 2.5,
+           fatten = deprecated(),
            linewidth = 1) {
     check_ignored_arguments(...)
     call <- match.call(expand.dots = FALSE)
@@ -133,8 +132,12 @@ ppd_ribbon <-
            prob = 0.5,
            prob_outer = 0.9,
            alpha = 0.33,
-           size = 0.25) {
+           size = NULL,
+           linewidth = 0.25) {
 
+    linewidth <- resolve_linewidth(size, linewidth,
+                                   default_linewidth = 0.25,
+                                   calling_fn = "ppd_ribbon")
     dots <- list(...)
     if (!from_grouped(dots)) {
       check_ignored_arguments(...)
@@ -152,21 +155,21 @@ ppd_ribbon <-
       geom_ribbon(
         mapping = intervals_outer_aes(fill = "ypred", color = "ypred"),
         color = NA,
-        linewidth = 0.2 * size,
+        linewidth = 0.2 * linewidth,
         alpha = alpha
       ) +
       geom_ribbon(
         mapping = intervals_outer_aes(),
         fill = NA,
         color = get_color("mh"),
-        linewidth = 0.2 * size,
+        linewidth = 0.2 * linewidth,
         alpha = 1
       ) +
-      geom_ribbon(linewidth = 0.5 * size) +
+      geom_ribbon(linewidth = 0.5 * linewidth) +
       geom_line(
         mapping = aes(y = .data$m),
         color = get_color("d"),
-        linewidth = size
+        linewidth = linewidth
       ) +
       scale_color_ppd() +
       scale_fill_ppd() +
@@ -187,7 +190,8 @@ ppd_ribbon_grouped <-
            prob = 0.5,
            prob_outer = 0.9,
            alpha = 0.33,
-           size = 0.25) {
+           size = NULL,
+           linewidth = 0.25) {
     check_ignored_arguments(...)
     call <- match.call(expand.dots = FALSE)
     g <- eval(ungroup_call("ppd_ribbon", call), parent.frame())

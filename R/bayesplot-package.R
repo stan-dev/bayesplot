@@ -4,6 +4,7 @@
 #' @aliases bayesplot
 #'
 #' @import ggplot2 stats rlang
+#' @importFrom lifecycle deprecated deprecate_warn is_present
 #' @importFrom dplyr %>% summarise group_by select
 #'
 #' @description

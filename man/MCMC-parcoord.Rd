@@ -13,7 +13,8 @@ mcmc_parcoord(
   regex_pars = character(),
   transformations = list(),
   ...,
-  size = 0.2,
+  size = NULL,
+  linewidth = 0.2,
   alpha = 0.3,
   np = NULL,
   np_style = parcoord_style_np()

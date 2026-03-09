@@ -75,7 +75,8 @@ ppc_error_binned(
   ...,
   facet_args = list(),
   bins = NULL,
-  size = 1,
+  size = NULL,
+  linewidth = 1,
   alpha = 0.25
 )
 

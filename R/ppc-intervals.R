@@ -16,13 +16,14 @@
 #'   variable. For example, `x` could be a predictor variable from a
 #'   regression model, a time variable for time-series models, etc. If `x`
 #'   is missing or `NULL` then the observation index is used for the x-axis.
-#' @param alpha,size,fatten,linewidth Arguments passed to geoms. For ribbon
-#'   plots `alpha` is passed to [ggplot2::geom_ribbon()] to control the opacity
-#'   of the outer ribbon and `size` is passed to [ggplot2::geom_line()] to
-#'   control the size of the line representing the median prediction (`size=0`
-#'   will remove the line). For interval plots `alpha`, `size`, `fatten`, and
-#'   `linewidth` are passed to [ggplot2::geom_pointrange()] (`fatten=0` will
-#'   remove the point estimates).
+#' @param alpha,size,linewidth Arguments passed to geoms. For ribbon plots
+#'   `alpha` is passed to [ggplot2::geom_ribbon()] to control the opacity of the
+#'   outer ribbon and `linewidth` is passed to [ggplot2::geom_line()] to control
+#'   the width of the line representing the median prediction (`linewidth=0`
+#'   will remove the line). For interval plots `alpha`, `size`, and `linewidth`
+#'   are passed to [ggplot2::geom_pointrange()] where `size` controls the point
+#'   size and `linewidth` controls the line width.
+#' @param fatten Deprecated. Point size is now controlled directly by `size`.
 #' @param ... Currently unused.
 #'
 #' @template return-ggplot-or-data
@@ -71,11 +72,11 @@
 #' ppc_ribbon(y, yrep, y_draw = "both")
 #' }
 #'
-#' ppc_intervals(y, yrep, size = 1.5, fatten = 0) # remove the yrep point estimates
+#' ppc_intervals(y, yrep, size = 0) # remove the yrep point estimates
 #'
 #' color_scheme_set("teal")
 #' year <- 1950:1999
-#' ppc_intervals(y, yrep, x = year, fatten = 1) + ggplot2::xlab("Year")
+#' ppc_intervals(y, yrep, x = year, size = 1) + ggplot2::xlab("Year")
 #' ppc_ribbon(y, yrep, x = year) + ggplot2::xlab("Year")
 #'
 #' color_scheme_set("pink")
@@ -135,8 +136,8 @@ ppc_intervals <-
            prob = 0.5,
            prob_outer = 0.9,
            alpha = 0.33,
-           size = 1,
-           fatten = 2.5,
+           size = 2.5,
+           fatten = deprecated(),
            linewidth = 1) {
 
     dots <- list(...)
@@ -144,6 +145,8 @@ ppc_intervals <-
       check_ignored_arguments(...)
       dots$group <- NULL
     }
+    size <- resolve_fatten(fatten, size, default_size = 2.5,
+                           calling_fn = "ppc_intervals")
 
     data <-
       ppc_intervals_data(
@@ -170,7 +173,6 @@ ppc_intervals <-
         shape = 21,
         stroke = 0.5,
         size = size,
-        fatten = fatten,
         linewidth = linewidth
       ) +
       geom_point(
@@ -202,8 +204,8 @@ ppc_intervals_grouped <-
            prob = 0.5,
            prob_outer = 0.9,
            alpha = 0.33,
-           size = 1,
-           fatten = 2.5,
+           size = 2.5,
+           fatten = deprecated(),
            linewidth = 1) {
     check_ignored_arguments(...)
     call <- match.call(expand.dots = FALSE)
@@ -226,10 +228,14 @@ ppc_ribbon <-
            prob = 0.5,
            prob_outer = 0.9,
            alpha = 0.33,
-           size = 0.25,
+           size = NULL,
+           linewidth = 0.25,
            y_draw = c("line", "points", "both")) {
 
     y_draw <- match.arg(y_draw)
+    linewidth <- resolve_linewidth(size, linewidth,
+                                   default_linewidth = 0.25,
+                                   calling_fn = "ppc_ribbon")
     dots <- list(...)
     if (!from_grouped(dots)) {
       check_ignored_arguments(...)
@@ -251,21 +257,21 @@ ppc_ribbon <-
       geom_ribbon(
         mapping = intervals_outer_aes(fill = "yrep", color = "yrep"),
         color = NA,
-        linewidth = 0.2 * size,
+        linewidth = 0.2 * linewidth,
         alpha = alpha
       ) +
       geom_ribbon(
         mapping = intervals_outer_aes(),
         fill = NA,
         color = get_color("m"),
-        linewidth = 0.2 * size,
+        linewidth = 0.2 * linewidth,
         alpha = 1
       ) +
-      geom_ribbon(linewidth = 0.5 * size) +
+      geom_ribbon(linewidth = 0.5 * linewidth) +
       geom_line(
         mapping = aes(y = .data$m),
         color = get_color("m"),
-        linewidth = size
+        linewidth = linewidth
       ) +
       geom_blank(aes(fill = "y"))
 
@@ -303,7 +309,8 @@ ppc_ribbon_grouped <-
            prob = 0.5,
            prob_outer = 0.9,
            alpha = 0.33,
-           size = 0.25,
+           size = NULL,
+           linewidth = 0.25,
            y_draw = c("line", "points", "both")) {
     check_ignored_arguments(...)
     call <- match.call(expand.dots = FALSE)

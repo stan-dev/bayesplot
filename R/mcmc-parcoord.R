@@ -114,11 +114,13 @@ mcmc_parcoord <-
            regex_pars = character(),
            transformations = list(),
            ...,
-           size = 0.2,
+           size = NULL,
+           linewidth = 0.2,
            alpha = 0.3,
            np = NULL,
            np_style = parcoord_style_np()) {
     check_ignored_arguments(...)
+    linewidth <- resolve_linewidth(size, linewidth, default_linewidth = 0.2, calling_fn = "mcmc_parcoord")
     stopifnot(inherits(np_style, "nuts_style"))
 
     data <-
@@ -142,7 +144,7 @@ mcmc_parcoord <-
       group = factor(.data$Draw)
     )) +
       geom_line(
-        linewidth = size,
+        linewidth = linewidth,
         alpha = alpha,
         color = get_color("dh")
       ) +

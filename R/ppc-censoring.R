@@ -103,10 +103,12 @@ ppc_km_overlay <- function(
   status_y,
   left_truncation_y = NULL,
   extrapolation_factor = 1.2,
-  size = 0.25,
+  size = NULL,
+  linewidth = 0.25,
   alpha = 0.7
 ) {
   check_ignored_arguments(..., ok_args = "add_group")
+  linewidth <- resolve_linewidth(size, linewidth, default_linewidth = 0.25, calling_fn = "ppc_km_overlay")
   add_group <- list(...)$add_group
 
   suggested_package("survival")
@@ -172,7 +174,7 @@ ppc_km_overlay <- function(
   }
 
   fsf$is_y_color <- as.factor(sub("\\[rep\\] \\(.*$", "rep", sub("^italic\\(y\\)", "y", fsf$strata)))
-  fsf$is_y_linewidth <- ifelse(fsf$is_y_color == "yrep", size, 1)
+  fsf$is_y_linewidth <- ifelse(fsf$is_y_color == "yrep", linewidth, 1)
   fsf$is_y_alpha <- ifelse(fsf$is_y_color == "yrep", alpha, 1)
 
   max_time_y <- max(y, na.rm = TRUE)
@@ -225,7 +227,8 @@ ppc_km_overlay_grouped <- function(
   status_y,
   left_truncation_y = NULL,
   extrapolation_factor = 1.2,
-  size = 0.25,
+  size = NULL,
+  linewidth = 0.25,
   alpha = 0.7
 ) {
   check_ignored_arguments(...)
@@ -238,6 +241,7 @@ ppc_km_overlay_grouped <- function(
     status_y = status_y,
     left_truncation_y = left_truncation_y,
     size = size,
+    linewidth = linewidth,
     alpha = alpha,
     extrapolation_factor = extrapolation_factor
   )

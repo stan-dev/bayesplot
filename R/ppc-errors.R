@@ -341,9 +341,11 @@ ppc_error_binned <-
            ...,
            facet_args = list(),
            bins = NULL,
-           size = 1,
+           size = NULL,
+           linewidth = 1,
            alpha = 0.25) {
     check_ignored_arguments(...)
+    linewidth <- resolve_linewidth(size, linewidth, default_linewidth = 1, calling_fn = "ppc_error_binned")
 
     qx <- enquo(x)
     data <- ppc_error_binnned_data(y, yrep, x = x, bins = bins)
@@ -369,12 +371,12 @@ ppc_error_binned <-
       geom_path(
         mapping = aes(y = .data$se2),
         color = get_color("l"),
-        linewidth = size
+        linewidth = linewidth
       ) +
       geom_path(
         mapping = aes(y = -.data$se2),
         color = get_color("l"),
-        linewidth = size
+        linewidth = linewidth
       ) +
       geom_point(
         mapping = aes(y = .data$err_bar),

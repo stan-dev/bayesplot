@@ -1,5 +1,14 @@
 # bayesplot (development version)
 
+* Deprecate user-facing `size` arguments that controlled line width in favor of
+  `linewidth` across all plotting functions. The `size` argument still works but
+  emits a deprecation warning. (#408)
+* Deprecate the `fatten` argument in `ppc_intervals()`, `ppd_intervals()`,
+  `ppc_loo_intervals()`, `ppc_bars()`, and their grouped variants. Point size in
+  `geom_pointrange()` is now controlled directly by `size`, matching ggplot2 4.0
+  semantics. The default `size` has been changed from 1 to 2.5 to preserve the
+  previous visual appearance (old `size * fatten`). (#408)
+* Added `lifecycle` as an imported dependency for deprecation infrastructure.
 * Documentation added for all exported `*_data()` functions (#209)
 * Improved documentation for `binwidth`, `bins`, and `breaks` arguments to clarify they are passed to `ggplot2::geom_area()` and `ggdist::stat_dots()` in addition to `ggplot2::geom_histogram()`
 * Improved documentation for `freq` argument to clarify it applies to frequency polygons in addition to histograms

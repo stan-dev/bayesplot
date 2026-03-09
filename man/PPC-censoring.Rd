@@ -13,7 +13,8 @@ ppc_km_overlay(
   status_y,
   left_truncation_y = NULL,
   extrapolation_factor = 1.2,
-  size = 0.25,
+  size = NULL,
+  linewidth = 0.25,
   alpha = 0.7
 )
 
@@ -25,7 +26,8 @@ ppc_km_overlay_grouped(
   status_y,
   left_truncation_y = NULL,
   extrapolation_factor = 1.2,
-  size = 0.25,
+  size = NULL,
+  linewidth = 0.25,
   alpha = 0.7
 )
 }
