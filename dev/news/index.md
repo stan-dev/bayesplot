@@ -2,6 +2,8 @@
 
 ## bayesplot (development version)
 
+- Documentation added for all exported `*_data()` functions
+  ([\#209](https://github.com/stan-dev/bayesplot/issues/209))
 - Improved documentation for `binwidth`, `bins`, and `breaks` arguments
   to clarify they are passed to
   [`ggplot2::geom_area()`](https://ggplot2.tidyverse.org/reference/geom_ribbon.html)

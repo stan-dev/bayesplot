@@ -276,8 +276,10 @@ mcmc_dots_by_chain(
 
 ## Value
 
-A ggplot object that can be further customized using the **ggplot2**
-package.
+The plotting functions return a ggplot object that can be further
+customized using the **ggplot2** package. The functions with suffix
+`_data()` return the data that would have been drawn by the plotting
+function.
 
 ## Plot Descriptions
 
@@ -317,6 +319,13 @@ package.
   separated but overlaid on a single plot. In `mcmc_dens_overlay()`
   parameters appear in separate facets; in `mcmc_dens_chains()` they
   appear in the same panel and can overlap vertically.
+
+- `mcmc_dens_chains_data()`:
+
+  Data-preparation back end for `mcmc_dens_chains()`. Users can call
+  this function directly to obtain the prepared long-format data frame
+  of MCMC draws (with chain information retained) and create custom
+  visualizations with **ggplot2**.
 
 ## See also
 

@@ -198,7 +198,14 @@ function.</p>
     <h2 id="plot-descriptions">Plot Descriptions<a class="anchor" aria-label="anchor" href="#plot-descriptions"></a></h2>
 
 
-<dl><dt><code>mcmc_rhat()</code>, <code>mcmc_rhat_hist()</code></dt>
+<dl><dt><code>mcmc_rhat_data()</code>, <code>mcmc_neff_data()</code></dt>
+<dd><p>Data-preparation back ends for the R-hat and effective sample size plots.
+Users can call these functions directly to obtain the data frame of
+diagnostic values with rating labels and create custom diagnostic
+visualizations with <strong>ggplot2</strong>.</p></dd>
+
+
+<dt><code>mcmc_rhat()</code>, <code>mcmc_rhat_hist()</code></dt>
 <dd><p>Rhat values as either points or a histogram. Values are colored using
 different shades (lighter is better). The chosen thresholds are somewhat
 arbitrary, but can be useful guidelines in practice.</p><ul><li><p><em>light</em>: below 1.05 (good)</p></li>
@@ -327,7 +334,11 @@ using the No-U-Turn-Sampler.</p></li>
 <span class="r-in"><span><span class="co"># intentionally use small 'iter' so there are some</span></span></span>
 <span class="r-in"><span><span class="co"># problems with rhat and neff for demonstration</span></span></span>
 <span class="r-in"><span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://mc-stan.org/rstanarm/reference/stan_glm.html" class="external-link">stan_glm</a></span><span class="op">(</span><span class="va">mpg</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">mtcars</span>, iter <span class="op">=</span> <span class="fl">50</span>, refresh <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>The largest R-hat is 1.11, indicating chains have not mixed.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>There were 5 divergent transitions after warmup. See</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> https://mc-stan.org/misc/warnings.html#divergent-transitions-after-warmup</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> to find out why this is a problem and how to eliminate them.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Examine the pairs() plot to diagnose sampling problems</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>The largest R-hat is 1.28, indicating chains have not mixed.</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> Running the chains for more iterations may help. See</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> https://mc-stan.org/misc/warnings.html#r-hat</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Bulk Effective Samples Size (ESS) is too low, indicating posterior means and medians may be unreliable.</span>
@@ -336,6 +347,7 @@ using the No-U-Turn-Sampler.</p></li>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Tail Effective Samples Size (ESS) is too low, indicating posterior variances and tail quantiles may be unreliable.</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> Running the chains for more iterations may help. See</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> https://mc-stan.org/misc/warnings.html#tail-ess</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Markov chains did not converge! Do not analyze results!</span>
 <span class="r-in"><span><span class="va">rhats</span> <span class="op">&lt;-</span> <span class="fu"><a href="bayesplot-extractors.html">rhat</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">ratios</span> <span class="op">&lt;-</span> <span class="fu"><a href="bayesplot-extractors.html">neff_ratio</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">mcmc_rhat</span><span class="op">(</span><span class="va">rhats</span><span class="op">)</span></span></span>

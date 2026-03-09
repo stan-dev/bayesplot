@@ -450,7 +450,7 @@ fit <- stan_glm(
   prior = hs(),
   adapt_delta = 0.9
 )
-#> Warning: There were 35 divergent transitions after warmup. See
+#> Warning: There were 39 divergent transitions after warmup. See
 #> https://mc-stan.org/misc/warnings.html#divergent-transitions-after-warmup
 #> to find out why this is a problem and how to eliminate them.
 #> Warning: Examine the pairs() plot to diagnose sampling problems

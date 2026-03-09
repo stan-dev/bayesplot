@@ -162,8 +162,10 @@ ppc_error_data(y, yrep, group = NULL)
 
 ## Value
 
-A ggplot object that can be further customized using the **ggplot2**
-package.
+The plotting functions return a ggplot object that can be further
+customized using the **ggplot2** package. The functions with suffix
+`_data()` return the data that would have been drawn by the plotting
+function.
 
 ## Details
 
@@ -222,6 +224,13 @@ section, below.
   in `yrep`. For this plot `y` and `yrep` should contain proportions
   rather than counts, and `yrep` should have only a small number of
   rows.
+
+- `ppc_error_data()`:
+
+  Data-preparation back end for the `ppc_error_*()` family of plotting
+  functions. Users can call `ppc_error_data()` directly to obtain the
+  data frame of predictive errors (`y - yrep`) and create custom error
+  visualizations with **ggplot2**.
 
 ## References
 

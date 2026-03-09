@@ -219,6 +219,11 @@ superimposed on the bars.</p></dd>
 <dd><p>Same as <code>ppc_bars()</code> but a separate plot (facet) is generated for each
 level of a grouping variable.</p></dd>
 
+<dt><code>ppc_bars_data()</code></dt>
+<dd><p>Data-preparation back end for <code>ppc_bars()</code> and <code>ppc_bars_grouped()</code>.
+Users can call <code>ppc_bars_data()</code> directly to obtain the prepared data
+frame and create custom visualizations with <strong>ggplot2</strong>.</p></dd>
+
 <dt><code>ppc_rootogram()</code></dt>
 <dd><p>Rootograms allow for diagnosing problems in count data models such as
 overdispersion or excess zeros. In <code>standing</code>, <code>hanging</code>, and <code>suspended</code>

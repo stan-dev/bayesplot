@@ -271,10 +271,24 @@ ppc_loo_ribbon(
 
 ## Value
 
-A ggplot object that can be further customized using the **ggplot2**
-package.
+The plotting functions return a ggplot object that can be further
+customized using the **ggplot2** package. The functions with suffix
+`_data()` return the data that would have been drawn by the plotting
+function.
 
 ## Plot Descriptions
+
+- `ppc_loo_pit_data()`:
+
+  This function prepares LOO-PIT data for plotting with **ggplot2**. It
+  is the data-preparation back end for the LOO-PIT plotting functions
+  (`ppc_loo_pit_overlay()`, `ppc_loo_pit_qq()`, and
+  `ppc_loo_pit_ecdf()`), and users can call it directly to create custom
+  LOO-PIT plots using ggplot2. The function computes the leave-one-out
+  probability integral transform (LOO-PIT) values and returns a data
+  frame that can be used to build ggplot objects. This is useful when
+  you want to create custom visualizations of LOO-PIT values beyond what
+  the built-in plotting functions provide.
 
 - `ppc_loo_pit_overlay()`, `ppc_loo_pit_qq()`, `ppc_loo_pit_ecdf()`:
 
@@ -387,7 +401,7 @@ fit <- stan_lmer(
   chains = 2,
   cores = 2
 )
-#> Warning: The largest R-hat is 1.13, indicating chains have not mixed.
+#> Warning: The largest R-hat is 1.15, indicating chains have not mixed.
 #> Running the chains for more iterations may help. See
 #> https://mc-stan.org/misc/warnings.html#r-hat
 #> Warning: Bulk Effective Samples Size (ESS) is too low, indicating posterior means and medians may be unreliable.
@@ -400,7 +414,7 @@ y <- radon$log_radon
 yrep <- posterior_predict(fit)
 
 loo1 <- loo(fit, save_psis = TRUE, cores = 4)
-#> Warning: Found 7 observation(s) with a pareto_k > 0.7. We recommend calling 'loo' again with argument 'k_threshold = 0.7' in order to calculate the ELPD without the assumption that these observations are negligible. This will refit the model 7 times to compute the ELPDs for the problematic observations directly.
+#> Warning: Found 10 observation(s) with a pareto_k > 0.7. We recommend calling 'loo' again with argument 'k_threshold = 0.7' in order to calculate the ELPD without the assumption that these observations are negligible. This will refit the model 10 times to compute the ELPDs for the problematic observations directly.
 psis1 <- loo1$psis_object
 lw <- weights(psis1) # normalized log weights
 
@@ -408,8 +422,8 @@ lw <- weights(psis1) # normalized log weights
 color_scheme_set("orange")
 ppc_loo_pit_overlay(y, yrep, lw = lw)
 #> Some PIT values larger than 1! Largest:  1 
-#> Rounding PIT > 1 to 1. Gradient evaluation took 0.000365 seconds
-#> Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 3.65 seconds.
+#> Rounding PIT > 1 to 1. Gradient evaluation took 0.000412 seconds
+#> Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 4.12 seconds.
 #> Chain 2: Adjust your expectations accordingly!
 #> Chain 2: 
 #> Chain 2: 
@@ -424,8 +438,8 @@ ppc_loo_pit_overlay(y, yrep, lw = lw)
 #> Chain 2: Iteration:  1 / 100 [  1%]  (Warmup)
 #> Chain 2: Iteration: 10 / 100 [ 10%]  (Warmup)
 #> Chain 1: Iteration: 10 / 100 [ 10%]  (Warmup)
-#> Chain 1: Iteration: 20 / 100 [ 20%]  (Warmup)
 #> Chain 2: Iteration: 20 / 100 [ 20%]  (Warmup)
+#> Chain 1: Iteration: 20 / 100 [ 20%]  (Warmup)
 #> Chain 2: Iteration: 30 / 100 [ 30%]  (Warmup)
 #> Chain 1: Iteration: 30 / 100 [ 30%]  (Warmup)
 #> Chain 2: Iteration: 40 / 100 [ 40%]  (Warmup)
@@ -443,16 +457,16 @@ ppc_loo_pit_overlay(y, yrep, lw = lw)
 #> Chain 2: Iteration: 90 / 100 [ 90%]  (Sampling)
 #> Chain 1: Iteration: 90 / 100 [ 90%]  (Sampling)
 #> Chain 2: Iteration: 100 / 100 [100%]  (Sampling)
-#> Chain 2: 
-#> Chain 2:  Elapsed Time: 2.756 seconds (Warm-up)
-#> Chain 2:                2.45 seconds (Sampling)
-#> Chain 2:                5.206 seconds (Total)
-#> Chain 2: 
 #> Chain 1: Iteration: 100 / 100 [100%]  (Sampling)
+#> Chain 2: 
+#> Chain 2:  Elapsed Time: 2.701 seconds (Warm-up)
+#> Chain 2:                2.509 seconds (Sampling)
+#> Chain 2:                5.21 seconds (Total)
+#> Chain 2: 
 #> Chain 1: 
-#> Chain 1:  Elapsed Time: 2.954 seconds (Warm-up)
-#> Chain 1:                2.456 seconds (Sampling)
-#> Chain 1:                5.41 seconds (Total)
+#> Chain 1:  Elapsed Time: 2.786 seconds (Warm-up)
+#> Chain 1:                2.459 seconds (Sampling)
+#> Chain 1:                5.245 seconds (Total)
 #> Chain 1: 
 #> Warning: 
 #> NOTE: The kernel density estimate assumes continuous observations and is not optimal for discrete observations.
@@ -463,7 +477,7 @@ ppc_loo_pit_qq(y, yrep, lw = lw)
 
 ppc_loo_pit_qq(y, yrep, lw = lw, compare = "normal")
 #> Warning: 
-#> Warning: Removed 18 rows containing non-finite outside the scale range (`stat_qq()`).
+#> Warning: Removed 14 rows containing non-finite outside the scale range (`stat_qq()`).
 
 
 # predictive calibration check using LOO probability integral transform

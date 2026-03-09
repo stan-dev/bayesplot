@@ -377,7 +377,7 @@ contain only a small number of rows. See the <strong>Examples</strong> section.<
 <dt><code>ppc_dots()</code></dt>
 <dd><p>A dot plot plot is displayed for <code>y</code> and each dataset (row) in <code>yrep</code>.
 For these plots <code>yrep</code> should therefore contain only a small number of rows.
-See the <strong>Examples</strong> section. This function requires <a href="https://mjskay.github.io/ggdist/reference/stat_dots.html" class="external-link">ggdist::stat_dots</a> to be installed.</p></dd>
+See the <strong>Examples</strong> section.</p></dd>
 
 <dt><code>ppc_freqpoly_grouped()</code></dt>
 <dd><p>A separate frequency polygon is plotted for each level of a grouping
@@ -406,6 +406,14 @@ confidence intervals are provided to asses if <code>y</code> and <code>yrep</cod
 from the same distribution. The PIT values can also be provided directly
 as <code>pit</code>.
 See Säilynoja et al. (2021) for more details.</p></dd>
+
+<dt><code>ppc_data()</code></dt>
+<dd><p>This function prepares data for plotting with <strong>ggplot2</strong> and doesn't
+itself make any plots. Users can call it directly to obtain the underlying
+data frame that (in most cases) is passed to <strong>ggplot2</strong>. This is useful
+when you want to customize the appearance of PPC plots beyond what the
+built-in plotting functions allow, or when you want to construct new types
+of PPC visualizations based on the same underlying data.</p></dd>
 
 
 </dl></div>

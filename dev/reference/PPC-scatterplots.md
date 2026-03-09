@@ -136,6 +136,15 @@ counts).
   The same as `ppc_scatter_avg()`, but a separate plot is generated for
   each level of a grouping variable.
 
+- `ppc_scatter_data()`, `ppc_scatter_avg_data()`:
+
+  Data-preparation back ends for the `ppc_scatter*()` family of plotting
+  functions. `ppc_scatter_data()` returns a data frame with one row per
+  observation per `yrep` draw, while `ppc_scatter_avg_data()` returns a
+  data frame with one row per observation summarising `yrep` draws with
+  the chosen `stat`. Users can call these functions directly to create
+  custom visualizations with **ggplot2**.
+
 ## References
 
 Gelman, A., Carlin, J. B., Stern, H. S., Dunson, D. B., Vehtari, A., and

@@ -220,7 +220,10 @@ Defaults to <code>"mean"</code>.</p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A ggplot object that can be further customized using the <strong>ggplot2</strong> package.</p>
+    <p>The plotting functions return a ggplot object that can be further
+customized using the <strong>ggplot2</strong> package. The functions with suffix
+<code>_data()</code> return the data that would have been drawn by the plotting
+function.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
@@ -269,6 +272,12 @@ on the y-axis and the predictor variable <code>x</code> is plotted on the x-axis
 to <code>arm::binnedplot()</code>) is generated for each dataset (row) in <code>yrep</code>. For
 this plot <code>y</code> and <code>yrep</code> should contain proportions rather than counts,
 and <code>yrep</code> should have only a small number of rows.</p></dd>
+
+<dt><code>ppc_error_data()</code></dt>
+<dd><p>Data-preparation back end for the <code>ppc_error_*()</code> family of plotting
+functions. Users can call <code>ppc_error_data()</code> directly to obtain the
+data frame of predictive errors (<code>y - yrep</code>) and create custom error
+visualizations with <strong>ggplot2</strong>.</p></dd>
 
 
 </dl></div>

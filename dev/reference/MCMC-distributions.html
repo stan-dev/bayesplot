@@ -316,7 +316,10 @@ posterior mass.</p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A ggplot object that can be further customized using the <strong>ggplot2</strong> package.</p>
+    <p>The plotting functions return a ggplot object that can be further
+customized using the <strong>ggplot2</strong> package. The functions with suffix
+<code>_data()</code> return the data that would have been drawn by the plotting
+function.</p>
     </div>
     <div class="section level2">
     <h2 id="plot-descriptions">Plot Descriptions<a class="anchor" aria-label="anchor" href="#plot-descriptions"></a></h2>
@@ -350,6 +353,12 @@ horizontal lines at notable quantiles.</p></dd>
 but overlaid on a single plot. In <code>mcmc_dens_overlay()</code> parameters
 appear in separate facets; in <code>mcmc_dens_chains()</code> they appear in the
 same panel and can overlap vertically.</p></dd>
+
+<dt><code>mcmc_dens_chains_data()</code></dt>
+<dd><p>Data-preparation back end for <code>mcmc_dens_chains()</code>. Users can call this
+function directly to obtain the prepared long-format data frame of MCMC
+draws (with chain information retained) and create custom visualizations
+with <strong>ggplot2</strong>.</p></dd>
 
 
 </dl></div>

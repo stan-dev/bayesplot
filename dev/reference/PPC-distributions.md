@@ -327,9 +327,7 @@ counts).
 
   A dot plot plot is displayed for `y` and each dataset (row) in `yrep`.
   For these plots `yrep` should therefore contain only a small number of
-  rows. See the **Examples** section. This function requires
-  [ggdist::stat_dots](https://mjskay.github.io/ggdist/reference/stat_dots.html)
-  to be installed.
+  rows. See the **Examples** section.
 
 - `ppc_freqpoly_grouped()`:
 
@@ -361,6 +359,16 @@ counts).
   confidence intervals are provided to asses if `y` and `yrep` originate
   from the same distribution. The PIT values can also be provided
   directly as `pit`. See Säilynoja et al. (2021) for more details.
+
+- `ppc_data()`:
+
+  This function prepares data for plotting with **ggplot2** and doesn't
+  itself make any plots. Users can call it directly to obtain the
+  underlying data frame that (in most cases) is passed to **ggplot2**.
+  This is useful when you want to customize the appearance of PPC plots
+  beyond what the built-in plotting functions allow, or when you want to
+  construct new types of PPC visualizations based on the same underlying
+  data.
 
 ## References
 

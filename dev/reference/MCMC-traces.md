@@ -319,6 +319,15 @@ the same data frame.
   originating from the same distribution is drawn. See Säilynoja et
   al. (2021) for details.
 
+- `mcmc_trace_data()`:
+
+  Data-preparation back end for `mcmc_trace()`,
+  `mcmc_trace_highlight()`, `mcmc_rank_hist()`, `mcmc_rank_overlay()`,
+  and `mcmc_rank_ecdf()`. The returned data frame contains columns for
+  both the original draw values and their within-parameter ranks, so it
+  can be used to build both trace and rank-based visualizations with
+  **ggplot2**.
+
 ## References
 
 Vehtari, A., Gelman, A., Simpson, D., Carpenter, B., Bürkner, P. (2019).
@@ -439,7 +448,7 @@ library("rstanarm")
 fit <- stan_glm(mpg ~ ., data = mtcars, refresh = 0,
   # next line to keep example fast and also ensure we get some divergences
                 prior = hs(), iter = 400, adapt_delta = 0.8)
-#> Warning: There were 26 divergent transitions after warmup. See
+#> Warning: There were 13 divergent transitions after warmup. See
 #> https://mc-stan.org/misc/warnings.html#divergent-transitions-after-warmup
 #> to find out why this is a problem and how to eliminate them.
 #> Warning: Examine the pairs() plot to diagnose sampling problems

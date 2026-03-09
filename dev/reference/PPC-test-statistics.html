@@ -259,6 +259,13 @@ usage of <code>ppc_stat_grouped()</code> can be found in Gabry et al. (2019).</p
 computed over the datasets (rows) in <code>yrep</code>. The value of the
 statistics in the observed data is overlaid as large point.</p></dd>
 
+<dt><code>ppc_stat_data()</code></dt>
+<dd><p>Data-preparation back end for <code>ppc_stat()</code>, <code>ppc_stat_freqpoly()</code>, and
+their grouped variants. Users can call <code>ppc_stat_data()</code> directly to
+obtain the data frame of test-statistic values computed from <code>y</code> and
+each row of <code>yrep</code>, enabling custom test-statistic visualizations with
+<strong>ggplot2</strong>.</p></dd>
+
 
 </dl></div>
     <div class="section level2">

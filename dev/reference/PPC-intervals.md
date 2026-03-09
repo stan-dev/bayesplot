@@ -177,6 +177,14 @@ function.
   separate plot (facet) is generated for each level of a grouping
   variable.
 
+- `ppc_intervals_data()`, `ppc_ribbon_data()`:
+
+  Data-preparation back end for `ppc_intervals()`, `ppc_ribbon()`, and
+  their grouped variants. `ppc_ribbon_data()` is an alias for
+  `ppc_intervals_data()`. Users can call either function directly to
+  obtain the prepared data frame and create custom interval or ribbon
+  visualizations with **ggplot2**.
+
 ## References
 
 Gabry, J. , Simpson, D. , Vehtari, A. , Betancourt, M. and Gelman, A.

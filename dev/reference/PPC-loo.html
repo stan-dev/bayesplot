@@ -331,13 +331,27 @@ by median value from smallest (left) to largest (right).</p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A ggplot object that can be further customized using the <strong>ggplot2</strong> package.</p>
+    <p>The plotting functions return a ggplot object that can be further
+customized using the <strong>ggplot2</strong> package. The functions with suffix
+<code>_data()</code> return the data that would have been drawn by the plotting
+function.</p>
     </div>
     <div class="section level2">
     <h2 id="plot-descriptions">Plot Descriptions<a class="anchor" aria-label="anchor" href="#plot-descriptions"></a></h2>
 
 
-<dl><dt><code>ppc_loo_pit_overlay()</code>, <code>ppc_loo_pit_qq()</code>, <code>ppc_loo_pit_ecdf()</code></dt>
+<dl><dt><code>ppc_loo_pit_data()</code></dt>
+<dd><p>This function prepares LOO-PIT data for plotting with <strong>ggplot2</strong>. It is
+the data-preparation back end for the LOO-PIT plotting functions
+(<code>ppc_loo_pit_overlay()</code>, <code>ppc_loo_pit_qq()</code>, and <code>ppc_loo_pit_ecdf()</code>),
+and users can call it directly to create custom LOO-PIT plots using
+ggplot2. The function computes the leave-one-out probability integral
+transform (LOO-PIT) values and returns a data frame that can be used to
+build ggplot objects. This is useful when you want to create custom
+visualizations of LOO-PIT values beyond what the built-in plotting
+functions provide.</p></dd>
+
+<dt><code>ppc_loo_pit_overlay()</code>, <code>ppc_loo_pit_qq()</code>, <code>ppc_loo_pit_ecdf()</code></dt>
 <dd><p>The calibration of marginal predictions can be assessed using probability
 integral transformation (PIT) checks. LOO improves the check by avoiding the
 double use of data. See the section on marginal predictive checks in Gelman
@@ -438,7 +452,7 @@ https://www.jstor.org/stable/2986005.</p>
 <span class="r-in"><span>  chains <span class="op">=</span> <span class="fl">2</span>,</span></span>
 <span class="r-in"><span>  cores <span class="op">=</span> <span class="fl">2</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>The largest R-hat is 1.13, indicating chains have not mixed.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>The largest R-hat is 1.15, indicating chains have not mixed.</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> Running the chains for more iterations may help. See</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> https://mc-stan.org/misc/warnings.html#r-hat</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Bulk Effective Samples Size (ESS) is too low, indicating posterior means and medians may be unreliable.</span>
@@ -451,7 +465,7 @@ https://www.jstor.org/stable/2986005.</p>
 <span class="r-in"><span><span class="va">yrep</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://mc-stan.org/rstantools/reference/posterior_predict.html" class="external-link">posterior_predict</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">loo1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://mc-stan.org/loo/reference/loo.html" class="external-link">loo</a></span><span class="op">(</span><span class="va">fit</span>, save_psis <span class="op">=</span> <span class="cn">TRUE</span>, cores <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Found 7 observation(s) with a pareto_k &gt; 0.7. We recommend calling 'loo' again with argument 'k_threshold = 0.7' in order to calculate the ELPD without the assumption that these observations are negligible. This will refit the model 7 times to compute the ELPDs for the problematic observations directly.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Found 10 observation(s) with a pareto_k &gt; 0.7. We recommend calling 'loo' again with argument 'k_threshold = 0.7' in order to calculate the ELPD without the assumption that these observations are negligible. This will refit the model 10 times to compute the ELPDs for the problematic observations directly.</span>
 <span class="r-in"><span><span class="va">psis1</span> <span class="op">&lt;-</span> <span class="va">loo1</span><span class="op">$</span><span class="va">psis_object</span></span></span>
 <span class="r-in"><span><span class="va">lw</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/weights.html" class="external-link">weights</a></span><span class="op">(</span><span class="va">psis1</span><span class="op">)</span> <span class="co"># normalized log weights</span></span></span>
 <span class="r-in"><span></span></span>
@@ -459,8 +473,8 @@ https://www.jstor.org/stable/2986005.</p>
 <span class="r-in"><span><span class="fu"><a href="bayesplot-colors.html">color_scheme_set</a></span><span class="op">(</span><span class="st">"orange"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">ppc_loo_pit_overlay</span><span class="op">(</span><span class="va">y</span>, <span class="va">yrep</span>, lw <span class="op">=</span> <span class="va">lw</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Some PIT values larger than 1! Largest:  1 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Rounding PIT &gt; 1 to 1. Gradient evaluation took 0.000365 seconds</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 3.65 seconds.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Rounding PIT &gt; 1 to 1. Gradient evaluation took 0.000412 seconds</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 4.12 seconds.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2: Adjust your expectations accordingly!</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2: </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2: </span>
@@ -475,8 +489,8 @@ https://www.jstor.org/stable/2986005.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2: Iteration:  1 / 100 [  1%]  (Warmup)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2: Iteration: 10 / 100 [ 10%]  (Warmup)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: Iteration: 10 / 100 [ 10%]  (Warmup)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: Iteration: 20 / 100 [ 20%]  (Warmup)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2: Iteration: 20 / 100 [ 20%]  (Warmup)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: Iteration: 20 / 100 [ 20%]  (Warmup)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2: Iteration: 30 / 100 [ 30%]  (Warmup)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: Iteration: 30 / 100 [ 30%]  (Warmup)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2: Iteration: 40 / 100 [ 40%]  (Warmup)</span>
@@ -494,16 +508,16 @@ https://www.jstor.org/stable/2986005.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2: Iteration: 90 / 100 [ 90%]  (Sampling)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: Iteration: 90 / 100 [ 90%]  (Sampling)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2: Iteration: 100 / 100 [100%]  (Sampling)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2: </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2:  Elapsed Time: 2.756 seconds (Warm-up)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2:                2.45 seconds (Sampling)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2:                5.206 seconds (Total)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2: </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: Iteration: 100 / 100 [100%]  (Sampling)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2: </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2:  Elapsed Time: 2.701 seconds (Warm-up)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2:                2.509 seconds (Sampling)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2:                5.21 seconds (Total)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2: </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1:  Elapsed Time: 2.954 seconds (Warm-up)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1:                2.456 seconds (Sampling)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1:                5.41 seconds (Total)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1:  Elapsed Time: 2.786 seconds (Warm-up)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1:                2.459 seconds (Sampling)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1:                5.245 seconds (Total)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: </span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> NOTE: The kernel density estimate assumes continuous observations and is not optimal for discrete observations.</span>
@@ -514,7 +528,7 @@ https://www.jstor.org/stable/2986005.</p>
 <span class="r-plt img"><img src="PPC-loo-2.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="fu">ppc_loo_pit_qq</span><span class="op">(</span><span class="va">y</span>, <span class="va">yrep</span>, lw <span class="op">=</span> <span class="va">lw</span>, compare <span class="op">=</span> <span class="st">"normal"</span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 18 rows containing non-finite outside the scale range (`stat_qq()`).</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 14 rows containing non-finite outside the scale range (`stat_qq()`).</span>
 <span class="r-plt img"><img src="PPC-loo-3.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># predictive calibration check using LOO probability integral transform</span></span></span>

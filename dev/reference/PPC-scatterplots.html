@@ -199,6 +199,14 @@ is a summary statistic. Unlike for <code>ppc_scatter()</code>, for
 <dd><p>The same as <code>ppc_scatter_avg()</code>, but a separate plot is generated for
 each level of a grouping variable.</p></dd>
 
+<dt><code>ppc_scatter_data()</code>, <code>ppc_scatter_avg_data()</code></dt>
+<dd><p>Data-preparation back ends for the <code>ppc_scatter*()</code> family of plotting
+functions. <code>ppc_scatter_data()</code> returns a data frame with one row per
+observation per <code>yrep</code> draw, while <code>ppc_scatter_avg_data()</code> returns a
+data frame with one row per observation summarising <code>yrep</code> draws with
+the chosen <code>stat</code>. Users can call these functions directly to create
+custom visualizations with <strong>ggplot2</strong>.</p></dd>
+
 
 </dl></div>
     <div class="section level2">
