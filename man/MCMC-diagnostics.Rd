@@ -111,6 +111,13 @@ also \link{MCMC-nuts} for additional MCMC diagnostic plots.
 \section{Plot Descriptions}{
 
 \describe{
+\item{\code{mcmc_rhat_data()}, \code{mcmc_neff_data()}}{
+Data-preparation back ends for the R-hat and effective sample size plots.
+Users can call these functions directly to obtain the data frame of
+diagnostic values with rating labels and create custom diagnostic
+visualizations with \strong{ggplot2}.
+}
+
 \item{\code{mcmc_rhat()}, \code{mcmc_rhat_hist()}}{
 Rhat values as either points or a histogram. Values are colored using
 different shades (lighter is better). The chosen thresholds are somewhat
