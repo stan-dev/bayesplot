@@ -33,12 +33,6 @@
 #'
 #' @section Plot descriptions:
 #' \describe{
-#'   \item{`ppc_error_data()`}{
-#'    Data-preparation back end for the `ppc_error_*()` family of plotting
-#'    functions. Users can call `ppc_error_data()` directly to obtain the
-#'    data frame of predictive errors (`y - yrep`) and create custom error
-#'    visualizations with **ggplot2**.
-#'   }
 #'   \item{`ppc_error_hist()`}{
 #'    A separate histogram is plotted for the predictive errors computed from
 #'    `y` and each dataset (row) in `yrep`. For this plot `yrep` should have
@@ -72,6 +66,12 @@
 #'    to `arm::binnedplot()`) is generated for each dataset (row) in `yrep`. For
 #'    this plot `y` and `yrep` should contain proportions rather than counts,
 #'    and `yrep` should have only a small number of rows.
+#'   }
+#'   \item{`ppc_error_data()`}{
+#'    Data-preparation back end for the `ppc_error_*()` family of plotting
+#'    functions. Users can call `ppc_error_data()` directly to obtain the
+#'    data frame of predictive errors (`y - yrep`) and create custom error
+#'    visualizations with **ggplot2**.
 #'   }
 #' }
 #'

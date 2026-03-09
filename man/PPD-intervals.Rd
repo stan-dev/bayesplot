@@ -125,21 +125,6 @@ corresponding \code{\link[=PPC-intervals]{ppc_}} function but without plotting a
 observed data \code{y}. The \strong{Plot Descriptions} section at \link{PPC-intervals} has
 details on the individual plots.
 }
-\section{Plot Descriptions}{
-
-\describe{
-\item{\code{ppd_intervals_data()}, \code{ppd_ribbon_data()}}{
-Data-preparation back end for \code{ppd_intervals()}, \code{ppd_ribbon()}, and
-their grouped variants. \code{ppd_ribbon_data()} is an alias for
-\code{ppd_intervals_data()}. Users can call either function directly to
-obtain the prepared data frame and create custom interval or ribbon
-visualizations with \strong{ggplot2}.
-These functions are PPD counterparts to \code{\link[=ppc_intervals_data]{ppc_intervals_data()}} and
-\code{\link[=ppc_ribbon_data]{ppc_ribbon_data()}}.
-}
-}
-}
-
 \examples{
 color_scheme_set("brightblue")
 ypred <- example_yrep_draws()

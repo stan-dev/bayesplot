@@ -236,12 +236,6 @@ Various types of histograms and kernel density plots of MCMC draws. See the
 \section{Plot Descriptions}{
 
 \describe{
-\item{\code{mcmc_dens_chains_data()}}{
-Data-preparation back end for \code{mcmc_dens_chains()}. Users can call
-\code{mcmc_dens_chains_data()} directly to obtain the prepared long-format
-data frame of MCMC draws (with chain information retained) and create
-custom ridgeline density visualizations with \strong{ggplot2}.
-}
 \item{\code{mcmc_hist()}}{
 Histograms of posterior draws with all chains merged.
 }
@@ -270,6 +264,12 @@ Ridgeline kernel density plots of posterior draws with chains separated
 but overlaid on a single plot. In \code{mcmc_dens_overlay()} parameters
 appear in separate facets; in \code{mcmc_dens_chains()} they appear in the
 same panel and can overlap vertically.
+}
+\item{\code{mcmc_dens_chains_data()}}{
+Data-preparation back end for \code{mcmc_dens_chains()}. Users can call this
+function directly to obtain the prepared long-format data frame of MCMC
+draws (with chain information retained) and create custom visualizations
+with \strong{ggplot2}.
 }
 }
 }

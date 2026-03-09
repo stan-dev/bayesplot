@@ -142,13 +142,6 @@ the input contains the "success" \emph{proportions} (not discrete
 \section{Plot Descriptions}{
 
 \describe{
-\item{\code{ppc_stat_data()}}{
-Data-preparation back end for \code{ppc_stat()}, \code{ppc_stat_freqpoly()}, and
-their grouped variants. Users can call \code{ppc_stat_data()} directly to
-obtain the data frame of test-statistic values computed from \code{y} and
-each row of \code{yrep}, enabling custom test-statistic visualizations with
-\strong{ggplot2}.
-}
 \item{\code{ppc_stat()}, \code{ppc_stat_freqpoly()}}{
 A histogram/bar plot or frequency polygon of the distribution of a statistic
 computed by applying \code{stat} to each dataset (row) in \code{yrep}. The value of
@@ -165,6 +158,13 @@ usage of \code{ppc_stat_grouped()} can be found in Gabry et al. (2019).
 A scatterplot showing the joint distribution of two statistics
 computed over the datasets (rows) in \code{yrep}. The value of the
 statistics in the observed data is overlaid as large point.
+}
+\item{\code{ppc_stat_data()}}{
+Data-preparation back end for \code{ppc_stat()}, \code{ppc_stat_freqpoly()}, and
+their grouped variants. Users can call \code{ppc_stat_data()} directly to
+obtain the data frame of test-statistic values computed from \code{y} and
+each row of \code{yrep}, enabling custom test-statistic visualizations with
+\strong{ggplot2}.
 }
 }
 }

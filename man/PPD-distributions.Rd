@@ -138,19 +138,6 @@ For Binomial data, the plots may be more useful if
 the input contains the "success" \emph{proportions} (not discrete
 "success" or "failure" counts).
 }
-\section{Plot Descriptions}{
-
-\describe{
-\item{\code{ppd_data()}}{
-Data-preparation back end for \code{ppd_dens_overlay()} and related
-\verb{ppd_*()} distribution plotting functions. Users can call \code{ppd_data()}
-directly to obtain the prepared data frame and create custom
-posterior/prior predictive distribution visualizations with \strong{ggplot2}.
-The \code{ppd_data()} function is the PPD counterpart to \code{\link[=ppc_data]{ppc_data()}}.
-}
-}
-}
-
 \examples{
 # difference between ppd_dens_overlay() and ppc_dens_overlay()
 color_scheme_set("brightblue")

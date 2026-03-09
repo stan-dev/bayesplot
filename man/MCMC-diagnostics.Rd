@@ -111,18 +111,11 @@ also \link{MCMC-nuts} for additional MCMC diagnostic plots.
 \section{Plot Descriptions}{
 
 \describe{
-\item{\code{mcmc_rhat_data()}}{
-Data-preparation back end for \code{mcmc_rhat()} and \code{mcmc_rhat_hist()}.
-Users can call \code{mcmc_rhat_data()} directly to obtain the data frame of
-Rhat values with rating labels and create custom Rhat diagnostic
+\item{\code{mcmc_rhat_data()}, \code{mcmc_neff_data()}}{
+Data-preparation back ends for the R-hat and effective sample size plots.
+Users can call these functions directly to obtain the data frame of
+diagnostic values with rating labels and create custom diagnostic
 visualizations with \strong{ggplot2}.
-}
-
-\item{\code{mcmc_neff_data()}}{
-Data-preparation back end for \code{mcmc_neff()} and \code{mcmc_neff_hist()}.
-Users can call \code{mcmc_neff_data()} directly to obtain the data frame of
-effective-sample-size ratios with rating labels and create custom Neff
-diagnostic visualizations with \strong{ggplot2}.
 }
 
 \item{\code{mcmc_rhat()}, \code{mcmc_rhat_hist()}}{

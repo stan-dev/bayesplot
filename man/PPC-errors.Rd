@@ -155,12 +155,6 @@ proportions (not counts). See the \strong{Examples} section, below.
 \section{Plot descriptions}{
 
 \describe{
-\item{\code{ppc_error_data()}}{
-Data-preparation back end for the \verb{ppc_error_*()} family of plotting
-functions. Users can call \code{ppc_error_data()} directly to obtain the
-data frame of predictive errors (\code{y - yrep}) and create custom error
-visualizations with \strong{ggplot2}.
-}
 \item{\code{ppc_error_hist()}}{
 A separate histogram is plotted for the predictive errors computed from
 \code{y} and each dataset (row) in \code{yrep}. For this plot \code{yrep} should have
@@ -194,6 +188,12 @@ Intended for use with binomial data. A separate binned error plot (similar
 to \code{arm::binnedplot()}) is generated for each dataset (row) in \code{yrep}. For
 this plot \code{y} and \code{yrep} should contain proportions rather than counts,
 and \code{yrep} should have only a small number of rows.
+}
+\item{\code{ppc_error_data()}}{
+Data-preparation back end for the \verb{ppc_error_*()} family of plotting
+functions. Users can call \code{ppc_error_data()} directly to obtain the
+data frame of predictive errors (\code{y - yrep}) and create custom error
+visualizations with \strong{ggplot2}.
 }
 }
 }

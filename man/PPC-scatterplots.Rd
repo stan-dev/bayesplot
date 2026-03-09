@@ -100,14 +100,6 @@ the input contains the "success" \emph{proportions} (not discrete
 \section{Plot Descriptions}{
 
 \describe{
-\item{\code{ppc_scatter_data()}, \code{ppc_scatter_avg_data()}}{
-Data-preparation back ends for the \verb{ppc_scatter*()} family of plotting
-functions. \code{ppc_scatter_data()} returns a data frame with one row per
-observation per \code{yrep} draw, while \code{ppc_scatter_avg_data()} returns a
-data frame with one row per observation summarising \code{yrep} draws with
-the chosen \code{stat}. Users can call these functions directly to create
-custom scatterplot visualizations with \strong{ggplot2}.
-}
 \item{\code{ppc_scatter()}}{
 For each dataset (row) in \code{yrep} a scatterplot is generated showing \code{y}
 against that row of \code{yrep}. For this plot \code{yrep} should only contain a
@@ -123,6 +115,14 @@ is a summary statistic. Unlike for \code{ppc_scatter()}, for
 \item{\code{ppc_scatter_avg_grouped()}}{
 The same as \code{ppc_scatter_avg()}, but a separate plot is generated for
 each level of a grouping variable.
+}
+\item{\code{ppc_scatter_data()}, \code{ppc_scatter_avg_data()}}{
+Data-preparation back ends for the \verb{ppc_scatter*()} family of plotting
+functions. \code{ppc_scatter_data()} returns a data frame with one row per
+observation per \code{yrep} draw, while \code{ppc_scatter_avg_data()} returns a
+data frame with one row per observation summarising \code{yrep} draws with
+the chosen \code{stat}. Users can call these functions directly to create
+custom visualizations with \strong{ggplot2}.
 }
 }
 }

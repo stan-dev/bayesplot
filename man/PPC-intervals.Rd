@@ -141,13 +141,6 @@ See the \strong{Plot Descriptions} section, below.
 \section{Plot Descriptions}{
 
 \describe{
-\item{\code{ppc_intervals_data()}, \code{ppc_ribbon_data()}}{
-Data-preparation back end for \code{ppc_intervals()}, \code{ppc_ribbon()}, and
-their grouped variants. \code{ppc_ribbon_data()} is an alias for
-\code{ppc_intervals_data()}. Users can call either function directly to
-obtain the prepared data frame and create custom interval or ribbon
-visualizations with \strong{ggplot2}.
-}
 \item{\verb{ppc_intervals(), ppc_ribbon()}}{
 \code{100*prob}\% central intervals for \code{yrep} at each \code{x}
 value. \code{ppc_intervals()} plots intervals as vertical bars with points
@@ -164,6 +157,13 @@ to read than the other.
 \item{\verb{ppc_intervals_grouped(), ppc_ribbon_grouped()}}{
 Same as \code{ppc_intervals()} and \code{ppc_ribbon()}, respectively, but a
 separate plot (facet) is generated for each level of a grouping variable.
+}
+\item{\code{ppc_intervals_data()}, \code{ppc_ribbon_data()}}{
+Data-preparation back end for \code{ppc_intervals()}, \code{ppc_ribbon()}, and
+their grouped variants. \code{ppc_ribbon_data()} is an alias for
+\code{ppc_intervals_data()}. Users can call either function directly to
+obtain the prepared data frame and create custom interval or ribbon
+visualizations with \strong{ggplot2}.
 }
 }
 }

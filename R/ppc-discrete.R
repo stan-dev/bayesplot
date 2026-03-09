@@ -37,11 +37,6 @@
 #'
 #' @section Plot Descriptions:
 #' \describe{
-#' \item{`ppc_bars_data()`}{
-#'   Data-preparation back end for `ppc_bars()` and `ppc_bars_grouped()`.
-#'   Users can call `ppc_bars_data()` directly to obtain the prepared data
-#'   frame and create custom bar chart visualizations with **ggplot2**.
-#' }
 #' \item{`ppc_bars()`}{
 #'   Bar plot of `y` with `yrep` medians and uncertainty intervals
 #'   superimposed on the bars.
@@ -49,6 +44,11 @@
 #' \item{`ppc_bars_grouped()`}{
 #'   Same as `ppc_bars()` but a separate plot (facet) is generated for each
 #'   level of a grouping variable.
+#' }
+#' \item{`ppc_bars_data()`}{
+#'   Data-preparation back end for `ppc_bars()` and `ppc_bars_grouped()`.
+#'   Users can call `ppc_bars_data()` directly to obtain the prepared data
+#'   frame and create custom visualizations with **ggplot2**.
 #' }
 #' \item{`ppc_rootogram()`}{
 #'   Rootograms allow for diagnosing problems in count data models such as

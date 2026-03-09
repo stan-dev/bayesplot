@@ -19,12 +19,6 @@
 #'
 #' @section Plot Descriptions:
 #' \describe{
-#'   \item{`mcmc_dens_chains_data()`}{
-#'    Data-preparation back end for `mcmc_dens_chains()`. Users can call
-#'    `mcmc_dens_chains_data()` directly to obtain the prepared long-format
-#'    data frame of MCMC draws (with chain information retained) and create
-#'    custom ridgeline density visualizations with **ggplot2**.
-#'   }
 #'   \item{`mcmc_hist()`}{
 #'    Histograms of posterior draws with all chains merged.
 #'   }
@@ -53,6 +47,12 @@
 #'    but overlaid on a single plot. In `mcmc_dens_overlay()` parameters
 #'    appear in separate facets; in `mcmc_dens_chains()` they appear in the
 #'    same panel and can overlap vertically.
+#'   }
+#'   \item{`mcmc_dens_chains_data()`}{
+#'    Data-preparation back end for `mcmc_dens_chains()`. Users can call this
+#'    function directly to obtain the prepared long-format data frame of MCMC
+#'    draws (with chain information retained) and create custom visualizations
+#'    with **ggplot2**.
 #'   }
 #' }
 #'

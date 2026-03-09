@@ -14,17 +14,6 @@
 #' @template details-binomial
 #' @template return-ggplot-or-data
 #'
-#' @section Plot Descriptions:
-#' \describe{
-#'   \item{`ppd_data()`}{
-#'    Data-preparation back end for `ppd_dens_overlay()` and related
-#'    `ppd_*()` distribution plotting functions. Users can call `ppd_data()`
-#'    directly to obtain the prepared data frame and create custom
-#'    posterior/prior predictive distribution visualizations with **ggplot2**.
-#'    The `ppd_data()` function is the PPD counterpart to [ppc_data()].
-#'   }
-#' }
-#'
 #' @examples
 #' # difference between ppd_dens_overlay() and ppc_dens_overlay()
 #' color_scheme_set("brightblue")

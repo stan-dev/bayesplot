@@ -18,18 +18,11 @@
 #'
 #' @section Plot Descriptions:
 #' \describe{
-#' \item{`mcmc_rhat_data()`}{
-#'   Data-preparation back end for `mcmc_rhat()` and `mcmc_rhat_hist()`.
-#'   Users can call `mcmc_rhat_data()` directly to obtain the data frame of
-#'   Rhat values with rating labels and create custom Rhat diagnostic
+#' \item{`mcmc_rhat_data()`, `mcmc_neff_data()`}{
+#'   Data-preparation back ends for the R-hat and effective sample size plots.
+#'   Users can call these functions directly to obtain the data frame of
+#'   diagnostic values with rating labels and create custom diagnostic
 #'   visualizations with **ggplot2**.
-#' }
-#'
-#' \item{`mcmc_neff_data()`}{
-#'   Data-preparation back end for `mcmc_neff()` and `mcmc_neff_hist()`.
-#'   Users can call `mcmc_neff_data()` directly to obtain the data frame of
-#'   effective-sample-size ratios with rating labels and create custom Neff
-#'   diagnostic visualizations with **ggplot2**.
 #' }
 #'
 #' \item{`mcmc_rhat()`, `mcmc_rhat_hist()`}{

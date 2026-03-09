@@ -126,20 +126,6 @@ For Binomial data, the plots may be more useful if
 the input contains the "success" \emph{proportions} (not discrete
 "success" or "failure" counts).
 }
-\section{Plot Descriptions}{
-
-\describe{
-\item{\code{ppd_stat_data()}}{
-Data-preparation back end for \code{ppd_stat()}, \code{ppd_stat_freqpoly()}, and
-their grouped variants. Users can call \code{ppd_stat_data()} directly to
-obtain the data frame of test-statistic values computed from each row of
-\code{ypred}, enabling custom test-statistic visualizations with \strong{ggplot2}.
-The \code{ppd_stat_data()} function is the PPD counterpart to
-\code{\link[=ppc_stat_data]{ppc_stat_data()}}.
-}
-}
-}
-
 \examples{
 yrep <- example_yrep_draws()
 ppd_stat(yrep)

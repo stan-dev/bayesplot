@@ -112,12 +112,6 @@ for more background and a real example.
 \section{Plot Descriptions}{
 
 \describe{
-\item{\code{mcmc_parcoord_data()}}{
-Data-preparation back end for \code{mcmc_parcoord()}. Users can call
-\code{mcmc_parcoord_data()} directly to obtain the prepared long-format data
-frame of MCMC draws (with optional NUTS diagnostic information) and
-create custom parallel coordinates visualizations with \strong{ggplot2}.
-}
 \item{\code{mcmc_parcoord()}}{
 \href{https://en.wikipedia.org/wiki/Parallel_coordinates}{Parallel coordinates plot}
 of MCMC draws. There is one dimension per parameter along the horizontal
@@ -136,6 +130,12 @@ When the plotted model parameters are on very different scales the
 all variables before plotting you could use function \code{(x - mean(x))/sd(x)}
 when specifying the \code{transformations} argument to
 \code{mcmc_parcoord}. See the \strong{Examples} section for how to do this.
+}
+\item{\code{mcmc_parcoord_data()}}{
+Data-preparation back end for \code{mcmc_parcoord()}. Users can call
+\code{mcmc_parcoord_data()} directly to obtain the prepared long-format data
+frame of MCMC draws (with optional NUTS diagnostic information) and
+create custom visualizations with \strong{ggplot2}.
 }
 }
 }

@@ -29,12 +29,6 @@
 #'
 #' @section Plot Descriptions:
 #' \describe{
-#'   \item{`mcmc_parcoord_data()`}{
-#'    Data-preparation back end for `mcmc_parcoord()`. Users can call
-#'    `mcmc_parcoord_data()` directly to obtain the prepared long-format data
-#'    frame of MCMC draws (with optional NUTS diagnostic information) and
-#'    create custom parallel coordinates visualizations with **ggplot2**.
-#'   }
 #'   \item{`mcmc_parcoord()`}{
 #'    [Parallel coordinates plot](https://en.wikipedia.org/wiki/Parallel_coordinates)
 #'    of MCMC draws. There is one dimension per parameter along the horizontal
@@ -53,6 +47,12 @@
 #'    all variables before plotting you could use function `(x - mean(x))/sd(x)`
 #'    when specifying the `transformations` argument to
 #'    `mcmc_parcoord`. See the **Examples** section for how to do this.
+#'   }
+#'   \item{`mcmc_parcoord_data()`}{
+#'    Data-preparation back end for `mcmc_parcoord()`. Users can call
+#'    `mcmc_parcoord_data()` directly to obtain the prepared long-format data
+#'    frame of MCMC draws (with optional NUTS diagnostic information) and
+#'    create custom visualizations with **ggplot2**.
 #'   }
 #' }
 #'
