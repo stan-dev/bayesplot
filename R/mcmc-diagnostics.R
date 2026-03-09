@@ -10,8 +10,9 @@
 #'
 #' @template args-hist
 #' @param size Optional values to override [ggplot2::geom_point()]'s
-#'   default size (for `mcmc_rhat()`, `mcmc_neff()`) or
-#'   [ggplot2::geom_line()]'s default line width (for `mcmc_acf()`).
+#'   default size (for `mcmc_rhat()`, `mcmc_neff()`).
+#' @param linewidth Optional value to override [ggplot2::geom_line()]'s
+#'   default line width (for `mcmc_acf()`).
 #' @param ... Currently ignored.
 #'
 #' @template return-ggplot-or-data

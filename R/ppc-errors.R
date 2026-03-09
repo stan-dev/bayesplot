@@ -19,6 +19,7 @@
 #'   [ggplot2::geom_point()] to control the appearance of the points. For the
 #'   binned error plot, arguments controlling the size of the outline and
 #'   opacity of the shaded region indicating the 2-SE bounds.
+#' @param linewidth For the binned error plot, the line width of the outline.
 #'
 #' @details
 #' All of these functions (aside from the `*_scatter_avg` functions)

@@ -15,8 +15,8 @@
 #' @family PPCs
 #'
 #' @template args-y-yrep
-#' @param size,alpha Passed to the appropriate geom to control the appearance of
-#'   the `yrep` distributions.
+#' @param size,alpha,linewidth Passed to the appropriate geom to control the
+#'   appearance of the `yrep` distributions.
 #' @param ... Currently only used internally.
 #'
 #' @template return-ggplot

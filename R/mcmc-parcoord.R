@@ -13,7 +13,7 @@
 #' @template args-regex_pars
 #' @template args-transformations
 #' @param ... Currently ignored.
-#' @param size,alpha Arguments passed on to [ggplot2::geom_line()].
+#' @param size,alpha,linewidth Arguments passed on to [ggplot2::geom_line()].
 #' @param np For models fit using [NUTS] (more generally,
 #'   any [symplectic integrator](https://en.wikipedia.org/wiki/Symplectic_integrator)),
 #'   an optional data frame providing NUTS diagnostic information. The data

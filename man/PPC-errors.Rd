@@ -131,6 +131,8 @@ opacity of the shaded region indicating the 2-SE bounds.}
 posterior average. In both cases, the function should take a vector input and
 return a scalar statistic. The function name is displayed in the axis-label.
 Defaults to \code{"mean"}.}
+
+\item{linewidth}{For the binned error plot, the line width of the outline.}
 }
 \value{
 The plotting functions return a ggplot object that can be further

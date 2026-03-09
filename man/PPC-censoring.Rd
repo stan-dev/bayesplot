@@ -60,8 +60,8 @@ posterior predictive draws may not be shown by default because of the
 controlled extrapolation. To display all posterior predictive draws, set
 \code{extrapolation_factor = Inf}.}
 
-\item{size, alpha}{Passed to the appropriate geom to control the appearance of
-the \code{yrep} distributions.}
+\item{size, alpha, linewidth}{Passed to the appropriate geom to control the
+appearance of the \code{yrep} distributions.}
 
 \item{group}{A grouping variable of the same length as \code{y}.
 Will be coerced to \link[base:factor]{factor} if not already a factor.
