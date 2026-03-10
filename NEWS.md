@@ -1,9 +1,6 @@
 # bayesplot (development version)
 
 * Replaced deprecated `dplyr` and `tidyselect` functions (`top_n`, `one_of`, `group_indices`) with their modern equivalents to ensure future compatibility. (#431)
-* New "Example Gallery" vignette providing a visual overview of all plotting
-  functions with thumbnail example plots, organized by category (PPC, PPD, MCMC,
-  HMC/NUTS). (#437)
 * Documentation added for all exported `*_data()` functions (#209)
 * Improved documentation for `binwidth`, `bins`, and `breaks` arguments to clarify they are passed to `ggplot2::geom_area()` and `ggdist::stat_dots()` in addition to `ggplot2::geom_histogram()`
 * Improved documentation for `freq` argument to clarify it applies to frequency polygons in addition to histograms
