@@ -66,7 +66,7 @@ ppd_dens_overlay <-
       scale_color_ppd(
         values = get_color("m"),
         guide = guide_legend( # in case user turns legend back on
-          override.aes = list(size = 2 * size, alpha = 1))
+          override.aes = list(linewidth = 2 * size, alpha = 1))
       ) +
       bayesplot_theme_get() +
       dont_expand_axes() +

@@ -719,7 +719,7 @@ mcmc_trace_data <- function(x,
           color = guide_legend(order = 1),
           linetype = guide_legend(
             order = 2, title = NULL, keywidth = rel(1/2),
-            override.aes = list(size = rel(1/2)))
+            override.aes = list(linewidth = rel(1/2)))
         )
       }
     }
