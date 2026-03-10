@@ -385,6 +385,8 @@ p +
 
 # add ellipse
 p + stat_ellipse(level = 0.9, color = "gray20", size = 1)
+#> Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
+#> ℹ Please use `linewidth` instead.
 
 
 # add contour
@@ -398,7 +400,7 @@ color_scheme_set("pink")
 (p3 <- mcmc_scatter(x, pars = c("alpha", "beta[3]"), alpha = 0.25, size = 3))
 
 p3 + geom_smooth(method = "lm", se = FALSE, color = "gray20",
-                 size = .75, linetype = 2)
+                 linewidth = .75, linetype = 2)
 #> `geom_smooth()` using formula = 'y ~ x'
 
 

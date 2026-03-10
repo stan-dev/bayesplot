@@ -245,11 +245,7 @@ color_scheme_set("pink")
 
 
 # add horiztonal dashed line at 0.5
-p + hline_at(0.5, linetype = 2, size = 0.15, color = "gray")
-#> Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
-#> ℹ Please use `linewidth` instead.
-#> ℹ The deprecated feature was likely used in the bayesplot package.
-#>   Please report the issue at <https://github.com/stan-dev/bayesplot/issues/>.
+p + hline_at(0.5, linetype = 2, linewidth = 0.15, color = "gray")
 
 # }
 
