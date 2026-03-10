@@ -55,6 +55,13 @@
 #'    computed over the datasets (rows) in `yrep`. The value of the
 #'    statistics in the observed data is overlaid as large point.
 #'   }
+#'   \item{`ppc_stat_data()`}{
+#'    Data-preparation back end for `ppc_stat()`, `ppc_stat_freqpoly()`, and
+#'    their grouped variants. Users can call `ppc_stat_data()` directly to
+#'    obtain the data frame of test-statistic values computed from `y` and
+#'    each row of `yrep`, enabling custom test-statistic visualizations with
+#'    **ggplot2**.
+#'   }
 #' }
 #'
 #' @examples

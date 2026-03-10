@@ -132,7 +132,10 @@ return a scalar statistic. The function name is displayed in the axis-label.
 Defaults to \code{"mean"}.}
 }
 \value{
-A ggplot object that can be further customized using the \strong{ggplot2} package.
+The plotting functions return a ggplot object that can be further
+customized using the \strong{ggplot2} package. The functions with suffix
+\verb{_data()} return the data that would have been drawn by the plotting
+function.
 }
 \description{
 Various plots of predictive errors \code{y - yrep}. See the
@@ -185,6 +188,12 @@ Intended for use with binomial data. A separate binned error plot (similar
 to \code{arm::binnedplot()}) is generated for each dataset (row) in \code{yrep}. For
 this plot \code{y} and \code{yrep} should contain proportions rather than counts,
 and \code{yrep} should have only a small number of rows.
+}
+\item{\code{ppc_error_data()}}{
+Data-preparation back end for the \verb{ppc_error_*()} family of plotting
+functions. Users can call \code{ppc_error_data()} directly to obtain the
+data frame of predictive errors (\code{y - yrep}) and create custom error
+visualizations with \strong{ggplot2}.
 }
 }
 }
