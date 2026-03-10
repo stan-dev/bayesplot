@@ -67,9 +67,15 @@
 #'    this plot `y` and `yrep` should contain proportions rather than counts,
 #'    and `yrep` should have only a small number of rows.
 #'   }
+#'   \item{`ppc_error_data()`}{
+#'    Data-preparation back end for the `ppc_error_*()` family of plotting
+#'    functions. Users can call `ppc_error_data()` directly to obtain the
+#'    data frame of predictive errors (`y - yrep`) and create custom error
+#'    visualizations with **ggplot2**.
+#'   }
 #' }
 #'
-#' @template return-ggplot
+#' @template return-ggplot-or-data
 #'
 #' @templateVar bdaRef (Ch. 6)
 #' @template reference-bda

@@ -224,7 +224,10 @@ The default is \code{quantiles=100} so that each dot represent one percent of
 posterior mass.}
 }
 \value{
-A ggplot object that can be further customized using the \strong{ggplot2} package.
+The plotting functions return a ggplot object that can be further
+customized using the \strong{ggplot2} package. The functions with suffix
+\verb{_data()} return the data that would have been drawn by the plotting
+function.
 }
 \description{
 Various types of histograms and kernel density plots of MCMC draws. See the
@@ -261,6 +264,12 @@ Ridgeline kernel density plots of posterior draws with chains separated
 but overlaid on a single plot. In \code{mcmc_dens_overlay()} parameters
 appear in separate facets; in \code{mcmc_dens_chains()} they appear in the
 same panel and can overlap vertically.
+}
+\item{\code{mcmc_dens_chains_data()}}{
+Data-preparation back end for \code{mcmc_dens_chains()}. Users can call this
+function directly to obtain the prepared long-format data frame of MCMC
+draws (with chain information retained) and create custom visualizations
+with \strong{ggplot2}.
 }
 }
 }

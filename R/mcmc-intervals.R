@@ -51,6 +51,13 @@
 #'    ridgelines. This plot provides a compact display of (hierarchically)
 #'    related distributions.
 #'   }
+#'   \item{`mcmc_intervals_data()`, `mcmc_areas_data()`, `mcmc_areas_ridges_data()`}{
+#'    Data-preparation back ends for `mcmc_intervals()`, `mcmc_areas()`, and
+#'    `mcmc_areas_ridges()`, respectively. Users can call these functions
+#'    directly to obtain the prepared data frames of posterior interval
+#'    summaries and create custom interval or density-area visualizations
+#'    with **ggplot2**.
+#'   }
 #' }
 #'
 #' @examples
