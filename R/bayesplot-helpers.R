@@ -446,19 +446,19 @@ plot_bg <- function(on = TRUE, ...) {
 
 #' @rdname bayesplot-helpers
 #' @export
-#' @param color,size Passed to [ggplot2::element_line()].
+#' @param color,linewidth Passed to [ggplot2::element_line()].
 #'
-grid_lines <- function(color = "gray50", size = 0.2) {
+grid_lines <- function(color = "gray50", linewidth = 0.2) {
   theme(
-    panel.grid.major = element_line(color = color, linewidth = size),
-    panel.grid.minor = element_line(color = color, linewidth = size * 0.5)
+    panel.grid.major = element_line(color = color, linewidth = linewidth),
+    panel.grid.minor = element_line(color = color, linewidth = linewidth * 0.5)
   )
 }
 
-grid_lines_y <- function(color = "gray50", size = 0.2) {
+grid_lines_y <- function(color = "gray50", linewidth = 0.2) {
   theme(
-    panel.grid.major.y = element_line(color = color, linewidth = size),
-    panel.grid.minor.y = element_line(color = color, linewidth = size * 0.5)
+    panel.grid.major.y = element_line(color = color, linewidth = linewidth),
+    panel.grid.minor.y = element_line(color = color, linewidth = linewidth * 0.5)
   )
 }
 
