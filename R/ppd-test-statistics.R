@@ -306,7 +306,7 @@ ppd_stat_data <- function(ypred, group = NULL, stat, show_marginal = FALSE) {
 #' ppc_stat_data(y, yrep, group, stat = "median")
 #'
 #' @importFrom dplyr group_by ungroup summarise rename
-.ppd_stat_data <- function(predictions, y = NULL, group = NULL, stat, show_marginal) {
+.ppd_stat_data <- function(predictions, y = NULL, group = NULL, stat, show_marginal = FALSE) {
   stopifnot(length(stat) %in% c(1,2))
   if (length(stat) == 1) {
     stopifnot(is.function(stat)) # sanity check, should already be validated
