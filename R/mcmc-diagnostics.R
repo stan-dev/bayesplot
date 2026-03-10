@@ -154,8 +154,9 @@ mcmc_rhat <- function(rhat, ..., size = NULL) {
       bayesplot_theme_get()
 
   if (min(data$value) < 1) {
+    ref_style <- annotation_style()
     graph <- graph +
-      vline_at(1, color = "gray", linewidth = 1)
+      vline_at(1, color = ref_style$color, linewidth = ref_style$linewidth)
   }
 
   brks <- set_rhat_breaks(data$value)

@@ -10,8 +10,9 @@
 #' @examples
 #' # Draw a vertical line at zero (or do nothing)
 #' xs <- -2:2
+#' style <- annotation_style()
 #' maybe_vertical_line <- if (0 > min(xs) && 0 < max(xs)) {
-#'   vline_0(color = "gray90", linewidth = 0.5)
+#'   vline_0(color = style$color, linewidth = style$linewidth)
 #' } else {
 #'   geom_ignore()
 #' }
@@ -72,6 +73,29 @@ force_x_axis_in_facets <- function() {
     y = -Inf, yend = -Inf,
     color = thm$axis.line$colour %||% thm$line$colour %||% "black",
     linewidth = thm$axis.line$linewidth %||% thm$line$linewidth %||% 0.5
+  )
+}
+
+# Derive annotation line aesthetics from the active theme's gridlines.
+# When the theme has visible gridlines, the reference line inherits their
+# color at twice the major gridline width. When gridlines are blank (e.g.
+# bayesplot's default theme), falls back to a light gray.
+annotation_style <- function() {
+  thm <- bayesplot_theme_get()
+  grid <- calc_element("panel.grid.major", thm)
+  if (inherits(grid, "element_blank") || is.null(grid)) {
+    return(list(color = "gray90", linewidth = 0.5))
+  }
+  minor <- calc_element("panel.grid.minor", thm)
+  minor_lw <- if (!inherits(minor, "element_blank") && !is.null(minor$linewidth)) {
+    minor$linewidth
+  } else {
+    0.125
+  }
+  major_lw <- grid$linewidth %||% (minor_lw * 2)
+  list(
+    color = grid$colour %||% "gray90",
+    linewidth = major_lw * 2
   )
 }
 
