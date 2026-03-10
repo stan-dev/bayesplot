@@ -75,7 +75,7 @@ ppd_stat <-
     } else {
       graph <- graph +
         geom_histogram(
-          data = subset(data, type != "PPD"),
+          data = data[data$type != "PPD",],
           linewidth = 0.25,
           na.rm = TRUE,
           binwidth = binwidth,
@@ -86,7 +86,7 @@ ppd_stat <-
         graph <- graph +
           geom_vline(
             aes(xintercept = .data$value, color = .data$type),
-            data = subset(data, type == "PPD"),
+            data = data[data$type == "PPD",],
             key_glyph = "rect",
             linewidth = 2
           )
@@ -161,7 +161,7 @@ ppd_stat_freqpoly <-
         na.rm = TRUE,
         binwidth = binwidth,
         bins = bins,
-        data = subset(data, type != "PPD")
+        data = data[data$type != "PPD",]
       ) +
       scale_color_ppd(
         name = stat_legend_title(stat, deparse(substitute(stat))),
@@ -178,7 +178,7 @@ ppd_stat_freqpoly <-
       p <- p +
         geom_vline(
           aes(xintercept = .data$value, color = .data$type),
-          data = subset(data, type == "PPD"),
+          data = data[data$type == "PPD",],
           key_glyph = "path",
           linewidth = 2
         )
