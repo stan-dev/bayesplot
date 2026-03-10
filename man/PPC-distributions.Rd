@@ -181,19 +181,19 @@ passed to \code{\link[ggplot2:stat_ecdf]{ggplot2::stat_ecdf()}}. If \code{discre
 
 \item{pad}{A logical scalar passed to \code{\link[ggplot2:stat_ecdf]{ggplot2::stat_ecdf()}}.}
 
-\item{binwidth}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}} to override
-the default binwidth.}
+\item{binwidth}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}}, \code{\link[ggplot2:geom_ribbon]{ggplot2::geom_area()}},
+and \code{\link[ggdist:stat_dots]{ggdist::stat_dots()}} to override the default binwidth.}
 
-\item{bins}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}} to override
-the default binwidth.}
+\item{bins}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}} and \code{\link[ggplot2:geom_ribbon]{ggplot2::geom_area()}}
+to override the default binning.}
 
-\item{breaks}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}} as an
-alternative to \code{binwidth}.}
+\item{breaks}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}} as an alternative to
+\code{binwidth}.}
 
-\item{freq}{For histograms, \code{freq=TRUE} (the default) puts count on the
-y-axis. Setting \code{freq=FALSE} puts density on the y-axis. (For many
-plots the y-axis text is off by default. To view the count or density
-labels on the y-axis see the \code{\link[=yaxis_text]{yaxis_text()}} convenience
+\item{freq}{For histograms and frequency polygons, \code{freq=TRUE} (the default)
+puts count on the y-axis. Setting \code{freq=FALSE} puts density on the y-axis.
+(For many plots the y-axis text is off by default. To view the count or
+density labels on the y-axis see the \code{\link[=yaxis_text]{yaxis_text()}} convenience
 function.)}
 
 \item{notch}{For the box plot, a logical scalar passed to
@@ -273,7 +273,7 @@ contain only a small number of rows. See the \strong{Examples} section.
 \item{\code{ppc_dots()}}{
 A dot plot plot is displayed for \code{y} and each dataset (row) in \code{yrep}.
 For these plots \code{yrep} should therefore contain only a small number of rows.
-See the \strong{Examples} section. This function requires \link[ggdist:stat_dots]{ggdist::stat_dots} to be installed.
+See the \strong{Examples} section.
 }
 \item{\code{ppc_freqpoly_grouped()}}{
 A separate frequency polygon is plotted for each level of a grouping
@@ -301,7 +301,16 @@ the corresponding \code{yrep} values. \code{100 * prob}\% central simultaneous
 confidence intervals are provided to asses if \code{y} and \code{yrep} originate
 from the same distribution. The PIT values can also be provided directly
 as \code{pit}.
-See Säilynoja et al. (2021) for more details.}
+See Säilynoja et al. (2021) for more details.
+}
+\item{\code{ppc_data()}}{
+This function prepares data for plotting with \strong{ggplot2} and doesn't
+itself make any plots. Users can call it directly to obtain the underlying
+data frame that (in most cases) is passed to \strong{ggplot2}. This is useful
+when you want to customize the appearance of PPC plots beyond what the
+built-in plotting functions allow, or when you want to construct new types
+of PPC visualizations based on the same underlying data.
+}
 }
 }
 
