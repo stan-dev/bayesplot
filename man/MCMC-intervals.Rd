@@ -214,6 +214,13 @@ Density plot, as in \code{mcmc_areas()}, but drawn with overlapping
 ridgelines. This plot provides a compact display of (hierarchically)
 related distributions.
 }
+\item{\code{mcmc_intervals_data()}, \code{mcmc_areas_data()}, \code{mcmc_areas_ridges_data()}}{
+Data-preparation back ends for \code{mcmc_intervals()}, \code{mcmc_areas()}, and
+\code{mcmc_areas_ridges()}, respectively. Users can call these functions
+directly to obtain the prepared data frames of posterior interval
+summaries and create custom interval or density-area visualizations
+with \strong{ggplot2}.
+}
 }
 }
 
