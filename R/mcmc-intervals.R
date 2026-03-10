@@ -742,7 +742,7 @@ mcmc_areas_data <- function(x,
     inner_join(point_ests, by = "parameter") %>%
     group_by(.data$parameter) %>%
     mutate(diff = abs(.data$m - .data$x)) %>%
-    dplyr::slice_min(.data$diff, n = 1) %>%
+    dplyr::slice_min(order_by = .data$diff, n = 1) %>%
     select(all_of(c("parameter", "x", "m"))) %>%
     rename(center = "x") %>%
     ungroup()
