@@ -89,14 +89,13 @@ test_that("mcmc_areas_ridges overlay is not broken by scale_y_discrete (#287)", 
   expect_gg(p_base + ggplot2::scale_y_discrete(labels = c("A", "B", "C")))
   expect_gg(p_base + ggplot2::scale_y_discrete(labels = pars3))
 
-  # mcmc_areas_ridges_data returns parameters in their original order.
-  # mcmc_areas_ridges() reverses these levels internally so that the first
-  # parameter is placed at the top of the plot without needing `limits =` in
-  # scale_y_discrete.
-  data <- mcmc_areas_ridges_data(vdiff_dframe, pars = pars3)
-  par_levels <- levels(data$parameter)
-  expect_equal(par_levels[1], "V1")
-  expect_equal(par_levels[length(par_levels)], "V3")
+  # mcmc_areas_ridges() reverses factor levels internally so that the first
+  # parameter sits at the top of the plot without relying on `limits =`.
+  # Check the built plot data to confirm the reversal.
+  plot_data <- ggplot2::ggplot_build(p_base)
+  y_limits <- plot_data$layout$panel_scales_y[[1]]$get_limits()
+  expect_equal(y_limits[1], "V3")
+  expect_equal(y_limits[length(y_limits)], "V1")
 })
 
 test_that("mcmc_intervals/areas with rhat", {
