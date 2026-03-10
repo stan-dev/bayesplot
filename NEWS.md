@@ -1,5 +1,9 @@
 # bayesplot (development version)
 
+* New unified wrapper functions for plot families (`ppc_error()`, `ppc_dist()`,
+  `ppc_discrete()`, `ppc_loo()`, `ppd_dist()`, `mcmc_dist()`, `mcmc_trace_w()`,
+  `mcmc_diag()`, `mcmc_nuts()`, `mcmc_recover()`) that dispatch to the
+  underlying plotting functions via a `type` argument (#433)
 * Documentation added for all exported `*_data()` functions (#209)
 * Improved documentation for `binwidth`, `bins`, and `breaks` arguments to clarify they are passed to `ggplot2::geom_area()` and `ggdist::stat_dots()` in addition to `ggplot2::geom_histogram()`
 * Improved documentation for `freq` argument to clarify it applies to frequency polygons in addition to histograms
