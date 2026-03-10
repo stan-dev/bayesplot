@@ -12,10 +12,13 @@ navbar:
   title: "bayesplot"
 
   structure:
-    left: [home, vignettes, functions, news, pkgs, stan]
+    left: [home, gallery, vignettes, functions, news, pkgs, stan]
     right: [search, bluesky, forum, github, lightswitch]
 
   components:
+    gallery:
+      text: Gallery
+      href: articles/example-gallery.html
     pkgs:
       text: Other Packages
       menu:
@@ -37,6 +40,12 @@ navbar:
           href: https://mc-stan.org/shinystan
 
 articles:
+  - title: "Example Gallery"
+    desc: >
+      A visual overview of all plotting functions available in **bayesplot**,
+      organized by category with thumbnail example plots.
+    contents:
+      - example-gallery
   - title: "Getting Started"
     desc: >
       These vignettes provide an introduction to visualizing MCMC draws and
