@@ -2,6 +2,10 @@
 
 ## bayesplot (development version)
 
+- Replaced deprecated `dplyr` and `tidyselect` functions (`top_n`,
+  `one_of`, `group_indices`) with their modern equivalents to ensure
+  future compatibility.
+  ([\#431](https://github.com/stan-dev/bayesplot/issues/431))
 - Documentation added for all exported `*_data()` functions
   ([\#209](https://github.com/stan-dev/bayesplot/issues/209))
 - Improved documentation for `binwidth`, `bins`, and `breaks` arguments
