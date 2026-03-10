@@ -1,5 +1,7 @@
 # bayesplot (development version)
 
+* Added vignette sections demonstrating `*_data()` companion functions for
+  building custom ggplot2 visualizations (#435)
 * Documentation added for all exported `*_data()` functions (#209)
 * Improved documentation for `binwidth`, `bins`, and `breaks` arguments to clarify they are passed to `ggplot2::geom_area()` and `ggdist::stat_dots()` in addition to `ggplot2::geom_histogram()`
 * Improved documentation for `freq` argument to clarify it applies to frequency polygons in addition to histograms
