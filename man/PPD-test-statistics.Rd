@@ -84,6 +84,8 @@ statistic. If specified as a string (or strings) then the legend will
 display the function name(s). If specified as a function (or functions)
 then generic naming is used in the legend.}
 
+\item{show_marginal}{Plot the marginal PPD along with the \code{ypred}s.}
+
 \item{...}{Currently unused.}
 
 \item{discrete}{For \code{ppc_stat()} and \code{ppc_stat_grouped()}, if \code{TRUE} then a

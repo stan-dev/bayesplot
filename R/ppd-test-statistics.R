@@ -13,6 +13,7 @@
 #'
 #' @template args-ypred
 #' @inheritParams PPC-test-statistics
+#' @inheritParams PPD-distributions
 #'
 #' @template details-binomial
 #' @template return-ggplot-or-data
