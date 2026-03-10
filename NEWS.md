@@ -1,5 +1,6 @@
 # bayesplot (development version)
 
+* Replaced deprecated `dplyr` and `tidyselect` functions (`top_n`, `one_of`, `group_indices`) with their modern equivalents to ensure future compatibility. (#431)
 * New "Example Gallery" vignette providing a visual overview of all plotting
   functions with thumbnail example plots, organized by category (PPC, PPD, MCMC,
   HMC/NUTS). (#437)
