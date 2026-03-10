@@ -1,0 +1,115 @@
+---
+title: "Which plot should I use?"
+author: "bayesplot team"
+date: "`r Sys.Date()`"
+output: 
+  rmarkdown::html_vignette:
+    toc: true
+    toc_depth: 3
+params:
+  EVAL: !r identical(Sys.getenv("NOT_CRAN"), "true")
+vignette: >
+  %\VignetteIndexEntry{Which plot should I use?}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, child="children/SETTINGS-knitr.txt"}
+```
+
+## Introduction
+
+The **bayesplot** package provides a large collection of plotting functions, and
+choosing the right one for your task can be overwhelming at first. This vignette
+acts as a quick-reference guide: find your diagnostic question in the tables
+below and jump straight to the recommended function(s).
+
+Each table covers one stage of a typical Bayesian analysis. For worked examples,
+see the companion vignettes:
+
+* [_Plotting MCMC draws_](https://mc-stan.org/bayesplot/articles/plotting-mcmc-draws.html)
+* [_Visual MCMC diagnostics_](https://mc-stan.org/bayesplot/articles/visual-mcmc-diagnostics.html)
+* [_Graphical posterior predictive checks_](https://mc-stan.org/bayesplot/articles/graphical-ppcs.html)
+
+## MCMC diagnostics
+
+These plots help you decide whether your sampler explored the posterior
+adequately.
+
+| Question | Recommended function(s) | Notes |
+|---|---|---|
+| Did my chains converge to the same distribution? | `mcmc_trace()`, `mcmc_trace_highlight()`, `mcmc_rank_overlay()`, `mcmc_rank_hist()` | Trace plots show the evolution of draws; rank plots are often easier to read for many chains. |
+| Is my R-hat acceptable? | `mcmc_rhat()`, `mcmc_rhat_hist()` | Values far above 1.0 indicate lack of convergence. |
+| Do I have enough effective samples? | `mcmc_neff()`, `mcmc_neff_hist()` | Low $n_{\text{eff}}/N$ ratios suggest high autocorrelation. |
+| How autocorrelated are my draws? | `mcmc_acf()`, `mcmc_acf_bar()` | Autocorrelation should drop to zero quickly with increasing lag. |
+| Are there divergent transitions (NUTS/HMC)? | `mcmc_nuts_divergence()`, `mcmc_parcoord()`, `mcmc_scatter()`, `mcmc_trace()` | Pass the `np` argument for divergence information. |
+| Is the energy distribution healthy (NUTS/HMC)? | `mcmc_nuts_energy()` | Marginal and transition energy histograms should overlap. |
+| What step sizes / tree depths is the sampler using? | `mcmc_nuts_stepsize()`, `mcmc_nuts_treedepth()` | Useful for tuning sampler settings. |
+| What is the NUTS acceptance rate? | `mcmc_nuts_acceptance()` | Helps diagnose sampler efficiency. |
+| Which parameters are correlated? | `mcmc_pairs()`, `mcmc_scatter()`, `mcmc_hex()` | Narrow bivariate shapes indicate collinearity; funnels indicate reparameterization problems. |
+
+## Visualizing posterior distributions
+
+Once you're satisfied that the sampler ran well, these plots help you
+understand the posterior.
+
+| Question | Recommended function(s) | Notes |
+|---|---|---|
+| What are the point estimates and uncertainty intervals? | `mcmc_intervals()`, `mcmc_areas()`, `mcmc_areas_ridges()` | `mcmc_intervals` for a compact multi-parameter summary; `mcmc_areas` shows shaded densities. |
+| What do the marginal posteriors look like? | `mcmc_hist()`, `mcmc_dens()`, `mcmc_dots()`, `mcmc_violin()` | Use `mcmc_dens_overlay()` or `mcmc_hist_by_chain()` to compare chains. |
+| How do two parameters relate to each other? | `mcmc_scatter()`, `mcmc_hex()`, `mcmc_pairs()` | `mcmc_hex` avoids overplotting with many draws. |
+| Can I recover the true values (simulation study)? | `mcmc_recover_hist()`, `mcmc_recover_intervals()`, `mcmc_recover_scatter()` | Compare posterior estimates to known parameter values. |
+
+## Posterior predictive checks (PPC)
+
+PPC plots compare observed data to replicated data simulated from the
+posterior predictive distribution.
+
+| Question | Recommended function(s) | Notes |
+|---|---|---|
+| Does the overall distribution of $y^{rep}$ match $y$? | `ppc_dens_overlay()`, `ppc_hist()`, `ppc_dens()`, `ppc_ecdf_overlay()`, `ppc_dots()`, `ppc_boxplot()` | `ppc_dens_overlay` is a good default starting point. |
+| Does match quality vary across groups? | `ppc_dens_overlay_grouped()`, `ppc_ecdf_overlay_grouped()`, `ppc_freqpoly_grouped()`, `ppc_violin_grouped()` | All `_grouped` variants accept a `group` argument. |
+| Are specific test statistics reproduced? | `ppc_stat()`, `ppc_stat_grouped()`, `ppc_stat_2d()`, `ppc_stat_freqpoly()` | Pass any R function via `stat`, e.g. `"mean"`, `"sd"`, or a custom function. |
+| What are the predictive intervals for each observation? | `ppc_intervals()`, `ppc_ribbon()` | Use `_grouped` variants for per-group intervals. |
+| Is the model mis-predicting specific observations? | `ppc_error_hist()`, `ppc_error_scatter()`, `ppc_error_scatter_avg()`, `ppc_error_binned()` | Error = $y - y^{rep}$; binned version is useful for logistic regression. |
+| Does the model predict the right proportions (discrete data)? | `ppc_bars()`, `ppc_bars_grouped()`, `ppc_rootogram()` | Good for count and categorical outcomes. |
+| Does the model match $y$ vs a predictor $x$? | `ppc_scatter()`, `ppc_scatter_avg()`, `ppc_error_scatter_avg_vs_x()` | Shows predictions as a function of a covariate. |
+| Is my model calibrated (LOO)? | `ppc_loo_pit_overlay()`, `ppc_loo_pit_qq()`, `ppc_loo_pit_ecdf()`, `ppc_loo_intervals()`, `ppc_loo_ribbon()` | Uses LOO probability integral transform; requires the **loo** package. |
+| How does a survival model fit? | `ppc_km_overlay()`, `ppc_km_overlay_grouped()` | Kaplan-Meier overlay for censored data. |
+| Are the PIT values uniformly distributed? | `ppc_pit_ecdf()`, `ppc_pit_ecdf_grouped()` | Probability integral transform ECDF. |
+
+## Posterior predictive distributions (PPD)
+
+PPD functions are the same as PPC functions but omit the observed data $y$.
+They are useful for prior predictive checks or predictions on new data.
+
+| Question | Recommended function(s) |
+|---|---|
+| What does the predictive distribution look like? | `ppd_dens_overlay()`, `ppd_hist()`, `ppd_dens()`, `ppd_ecdf_overlay()`, `ppd_dots()`, `ppd_boxplot()` |
+| What are the predictive intervals? | `ppd_intervals()`, `ppd_ribbon()` |
+| What are the summary statistics of the predictions? | `ppd_stat()`, `ppd_stat_grouped()`, `ppd_stat_2d()`, `ppd_stat_freqpoly()` |
+
+## Discovering functions programmatically
+
+You can also query the package directly:
+
+```{r avail-funcs, eval=FALSE}
+library(bayesplot)
+
+available_mcmc()
+available_ppc()
+available_ppd()
+```
+
+Use the `pattern` argument to narrow results, for example:
+
+```{r avail-funcs-grouped, eval=FALSE}
+available_ppc(pattern = "_grouped")
+available_mcmc(pattern = "_nuts_")
+```
+
+## Further reading
+
+* Gabry, J., Simpson, D., Vehtari, A., Betancourt, M. and Gelman, A. (2019),
+  Visualization in Bayesian workflow. _J. R. Stat. Soc. A_, 182: 389-402.
+  \doi{10.1111/rssa.12378}

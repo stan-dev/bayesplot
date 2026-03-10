@@ -1,0 +1,311 @@
+---
+title: "Customizing bayesplot outputs"
+author: "bayesplot team"
+date: "`r Sys.Date()`"
+output: 
+  rmarkdown::html_vignette:
+    toc: true
+    toc_depth: 3
+params:
+  EVAL: !r identical(Sys.getenv("NOT_CRAN"), "true")
+vignette: >
+  %\VignetteIndexEntry{Customizing bayesplot outputs}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, child="children/SETTINGS-knitr.txt"}
+```
+```{r pkgs, include=FALSE}
+library("ggplot2")
+library("bayesplot")
+bayesplot_theme_set()
+```
+
+## Introduction
+
+Every plot returned by **bayesplot** is a standard **ggplot2** object. That
+means you can modify titles, labels, scales, layers, facets, and themes using
+the same `+` operator you already know. This vignette shows you how.
+
+### Setup
+
+```{r setup, eval=FALSE}
+library("bayesplot")
+library("ggplot2")
+```
+
+We'll use the built-in example data throughout:
+
+```{r example-data}
+x <- example_mcmc_draws()
+dim(x)
+y <- example_y_data()
+yrep <- example_yrep_draws()
+```
+
+## Adding layers and labels with `+`
+
+Because every bayesplot is a ggplot, you can add geoms, labels, and
+coordinate adjustments in the usual way:
+
+```{r add-layers, message=FALSE}
+mcmc_hist(x, pars = "beta[1]") +
+  labs(
+    title = "Posterior distribution of beta[1]",
+    subtitle = "with a vertical line at zero"
+  ) +
+  vline_0(linetype = 2, color = "gray50")
+```
+
+The `vline_0()` helper above is one of several convenience functions provided
+by **bayesplot** (see [Convenience helpers](#convenience-helpers) below).
+
+### Restricting axis ranges
+
+```{r xlim, message=FALSE, warning=FALSE}
+ppc_dens_overlay(y, yrep[1:30, ]) +
+  xlim(-5, 60) +
+  labs(x = "Outcome", y = "Density")
+```
+
+### Annotating specific values
+
+```{r annotate, message=FALSE}
+mcmc_areas(x, pars = c("beta[1]", "beta[2]"), prob = 0.8) +
+  geom_vline(xintercept = 0, linetype = "dashed", color = "red")
+```
+
+## Color schemes
+
+**bayesplot** includes a flexible system for changing the color palette
+globally. Call `color_scheme_set()` with the name of a preset scheme:
+
+```{r color-scheme-set}
+color_scheme_set("red")
+mcmc_intervals(x, pars = c("beta[1]", "beta[2]", "sigma"))
+```
+
+```{r color-scheme-teal}
+color_scheme_set("teal")
+mcmc_intervals(x, pars = c("beta[1]", "beta[2]", "sigma"))
+```
+
+### Available preset schemes
+
+The built-in schemes include:
+
+`"blue"`, `"brightblue"`, `"gray"`, `"darkgray"`, `"green"`, `"pink"`,
+`"purple"`, `"red"`, `"teal"`, `"yellow"`, and the viridis family:
+`"viridis"`, `"viridisA"` through `"viridisE"`.
+
+You can also mix two schemes (e.g. `"mix-blue-red"`) or use ColorBrewer
+palettes (e.g. `"brewer-PuBuGn"`):
+
+```{r color-scheme-mix}
+color_scheme_set("mix-blue-red")
+mcmc_trace(x, pars = "sigma")
+```
+
+### Viewing and comparing schemes
+
+```{r color-scheme-view, fig.width=7}
+color_scheme_view(c("blue", "red", "green", "teal"))
+```
+
+### Custom color schemes
+
+Pass a character vector of exactly six colors (lightest to darkest) for a
+fully custom palette:
+
+```{r custom-scheme}
+color_scheme_set(c("#F0F0F0", "#C0C0C0", "#909090", "#606060", "#303030", "#000000"))
+mcmc_intervals(x, pars = c("beta[1]", "beta[2]", "sigma"))
+```
+
+```{r reset-scheme, include=FALSE}
+color_scheme_set("blue")
+```
+
+## Themes
+
+### The default theme
+
+**bayesplot** uses its own `theme_default()` based on `ggplot2::theme_bw()`.
+You can customise the base font size and family:
+
+```{r theme-default}
+bayesplot_theme_set(theme_default(base_size = 14, base_family = "sans"))
+mcmc_hist(x, pars = "sigma")
+```
+
+### Using any ggplot2 theme
+
+You can switch to any ggplot2 theme:
+
+```{r theme-minimal}
+bayesplot_theme_set(ggplot2::theme_minimal())
+mcmc_hist(x, pars = "sigma")
+```
+
+```{r theme-reset, include=FALSE}
+bayesplot_theme_set()
+```
+
+### Updating individual theme elements
+
+Use `bayesplot_theme_update()` to modify specific elements without replacing
+the entire theme:
+
+```{r theme-update}
+bayesplot_theme_update(
+  plot.title = element_text(face = "bold", size = 16),
+  axis.title = element_text(size = 12)
+)
+mcmc_areas(x, pars = c("beta[1]", "beta[2]")) +
+  ggtitle("Updated theme elements")
+```
+
+```{r theme-reset-2, include=FALSE}
+bayesplot_theme_set()
+```
+
+### Per-plot theme overrides
+
+You can always add a `theme()` call to a single plot without affecting the
+global setting:
+
+```{r per-plot-theme}
+mcmc_dens(x, pars = c("beta[1]", "beta[2]")) +
+  theme(
+    panel.background = element_rect(fill = "gray95"),
+    legend.position = "bottom"
+  )
+```
+
+## Convenience helpers {#convenience-helpers}
+
+**bayesplot** exports several small helper functions that make common
+modifications easier:
+
+### Reference lines
+
+| Function | Description |
+|---|---|
+| `vline_at(v, ...)` | Vertical line(s) at `v` (or `fun(v)`) |
+| `hline_at(v, ...)` | Horizontal line(s) at `v` (or `fun(v)`) |
+| `vline_0(...)` | Vertical line at zero |
+| `hline_0(...)` | Horizontal line at zero |
+| `abline_01(...)` | Diagonal identity line (slope 1, intercept 0) |
+
+```{r helpers-lines}
+mcmc_intervals(x, pars = c("beta[1]", "beta[2]")) +
+  vline_0(linetype = "dotted", linewidth = 0.5)
+```
+
+### Axis and legend control
+
+| Function | Description |
+|---|---|
+| `xaxis_text(...)` | Modify or toggle x-axis tick labels |
+| `yaxis_text(...)` | Modify or toggle y-axis tick labels |
+| `xaxis_ticks(...)` | Modify x-axis tick marks |
+| `yaxis_ticks(...)` | Modify y-axis tick marks |
+| `xaxis_title(...)` | Modify or toggle x-axis title |
+| `yaxis_title(...)` | Modify or toggle y-axis title |
+| `legend_move(position)` | Move the legend (e.g., `"bottom"`) |
+| `legend_none()` | Remove the legend |
+| `legend_text(...)` | Modify legend text |
+
+```{r helpers-axis}
+mcmc_intervals(x) +
+  yaxis_text(hjust = 1, size = 10, face = "italic") +
+  xaxis_title(size = 12, face = "bold")
+```
+
+### Background control
+
+| Function | Description |
+|---|---|
+| `plot_bg(...)` | Modify the plot background |
+| `panel_bg(...)` | Modify the panel background |
+| `facet_bg(...)` | Modify the facet strip background |
+| `facet_text(...)` | Modify the facet strip text |
+| `grid_lines(...)` | Add major grid lines |
+
+```{r helpers-bg}
+color_scheme_set("purple")
+mcmc_hist(x, pars = "beta[1]") +
+  panel_bg(fill = "gray95") +
+  grid_lines(color = "white", linewidth = 0.3)
+```
+
+### Function overlays
+
+`overlay_function()` is a wrapper around `ggplot2::stat_function()` for
+overlaying a mathematical function onto a plot:
+
+```{r overlay}
+color_scheme_set("brightblue")
+mcmc_hist(x, pars = "sigma", freq = FALSE) +
+  overlay_function(fun = dnorm, args = list(mean = 1, sd = 0.2), color = "red")
+```
+
+## Using `*_data()` functions for fully custom plots
+
+Many bayesplot functions have a `*_data()` companion that returns the
+pre-processed data as a tidy data frame. This gives you complete control over
+the final ggplot:
+
+```{r data-custom}
+d <- mcmc_intervals_data(x, pars = c("beta[1]", "beta[2]", "sigma"))
+d
+
+ggplot(d, aes(y = parameter, x = m)) +
+  geom_point(size = 3) +
+  geom_linerange(aes(xmin = ll, xmax = hh), linewidth = 0.5) +
+  geom_linerange(aes(xmin = l, xmax = h), linewidth = 1.2) +
+  labs(x = "Posterior estimate", y = NULL) +
+  theme_minimal()
+```
+
+See `available_mcmc(plots_only = FALSE)` and
+`available_ppc(plots_only = FALSE)` for a full list of data functions.
+
+## Composing multiple plots with `bayesplot_grid`
+
+`bayesplot_grid()` arranges several bayesplot objects into a grid:
+
+```{r grid, fig.width=7, fig.height=4}
+color_scheme_set("blue")
+p1 <- mcmc_hist(x, pars = "beta[1]")
+p2 <- mcmc_hist(x, pars = "beta[2]")
+bayesplot_grid(p1, p2, grid_args = list(ncol = 2),
+               subtitles = c("Beta 1", "Beta 2"))
+```
+
+You can also use **patchwork** or **cowplot** as you would with any ggplot
+objects.
+
+## Summary
+
+| Want to... | How |
+|---|---|
+| Change title/labels | `+ labs(...)` |
+| Restrict axis range | `+ xlim(...)` / `+ coord_cartesian(...)` |
+| Change color palette | `color_scheme_set("name")` |
+| Change theme globally | `bayesplot_theme_set(theme)` |
+| Tweak one theme element | `bayesplot_theme_update(...)` |
+| Add reference lines | `+ vline_at(...)`, `+ hline_0()`, etc. |
+| Toggle axis labels | `+ xaxis_text(FALSE)`, `+ yaxis_text(hjust = 1)` |
+| Build fully custom plot | Use the `*_data()` companion function |
+| Arrange plots in grid | `bayesplot_grid(...)` |
+
+## Further reading
+
+* [`?bayesplot-colors`](https://mc-stan.org/bayesplot/reference/bayesplot-colors.html)
+  -- full documentation for color scheme functions
+* [`?bayesplot-helpers`](https://mc-stan.org/bayesplot/reference/bayesplot-helpers.html)
+  -- full documentation for convenience helpers
+* [`?theme_default`](https://mc-stan.org/bayesplot/reference/theme_default.html)
+  -- default theme and theme management

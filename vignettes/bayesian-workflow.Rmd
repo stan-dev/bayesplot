@@ -1,0 +1,255 @@
+---
+title: "Bayesplot and the Bayesian workflow"
+author: "bayesplot team"
+date: "`r Sys.Date()`"
+output: 
+  rmarkdown::html_vignette:
+    toc: true
+    toc_depth: 3
+params:
+  EVAL: !r identical(Sys.getenv("NOT_CRAN"), "true")
+vignette: >
+  %\VignetteIndexEntry{Bayesplot and the Bayesian workflow}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, child="children/SETTINGS-knitr.txt"}
+```
+```{r pkgs, include=FALSE}
+library("ggplot2")
+library("rstanarm")
+library("bayesplot")
+bayesplot_theme_set()
+set.seed(1234)
+```
+
+## Introduction
+
+A Bayesian analysis is more than fitting a single model and reading off the
+estimates. The _Bayesian workflow_ (Gelman et al., 2020; Gabry et al., 2019)
+involves iterating through several stages:
+
+1. **Prior predictive checking** -- do the priors generate plausible data?
+2. **Fitting the model** -- obtain posterior draws via MCMC.
+3. **MCMC diagnostics** -- did the sampler explore the posterior adequately?
+4. **Posterior summarization** -- what did we learn about the parameters?
+5. **Posterior predictive checking** -- does the fitted model reproduce the data?
+6. **Model comparison / revision** -- can we do better?
+
+This vignette walks through each stage with a single running example, showing
+which **bayesplot** functions are useful at every step.
+
+### Setup
+
+```{r setup, eval=FALSE}
+library("bayesplot")
+library("ggplot2")
+library("rstanarm")
+```
+
+### Running example
+
+We use the `kidiq` dataset bundled with **rstanarm**, which contains IQ scores
+of children and mothers along with whether the mother completed high school.
+
+```{r data}
+data("kidiq", package = "rstanarm")
+head(kidiq)
+```
+
+Our goal is to model the child's IQ score (`kid_score`) as a function of the
+mother's IQ (`mom_iq`) and high-school completion status (`mom_hs`).
+
+## Step 1: Prior predictive checking
+
+Before looking at the data, it is useful to check whether our priors produce
+sensible predictions. We fit the model with `prior_PD = TRUE` so that the
+likelihood is ignored and we sample only from the prior predictive distribution.
+
+```{r prior-pred, message=FALSE}
+fit_prior <- stan_glm(
+  kid_score ~ mom_hs + mom_iq,
+  data = kidiq,
+  prior_PD = TRUE,
+  seed = 111,
+  refresh = 0
+)
+```
+
+We then draw from the prior predictive distribution and visualise it with
+`ppd_dens_overlay`:
+
+```{r ppd-prior}
+yrep_prior <- posterior_predict(fit_prior, draws = 100)
+ppd_dens_overlay(ypred = yrep_prior[1:50, ])
+```
+
+If the prior predictive densities cover an implausibly wide range (e.g.
+negative IQ scores, or values in the thousands), it is a signal to tighten the
+priors. With **rstanarm**'s default weakly informative priors the range is
+already reasonable for this problem, so we proceed.
+
+## Step 2: Fit the model
+
+```{r fit, message=FALSE}
+fit <- stan_glm(
+  kid_score ~ mom_hs + mom_iq,
+  data = kidiq,
+  seed = 111,
+  refresh = 0
+)
+print(fit)
+```
+
+## Step 3: MCMC diagnostics
+
+### Trace plots
+
+A quick visual check that the chains mixed well:
+
+```{r trace}
+posterior <- as.array(fit)
+color_scheme_set("mix-blue-red")
+mcmc_trace(posterior, pars = c("mom_hs", "mom_iq", "sigma"))
+```
+
+All chains should be exploring the same region, with no sustained trends or
+sticky patches.
+
+### R-hat
+
+```{r rhat}
+color_scheme_set("brightblue")
+mcmc_rhat(rhat(fit)) + yaxis_text(hjust = 1)
+```
+
+All $\hat{R}$ values should be close to 1.0 (below 1.01 is ideal).
+
+### Effective sample size
+
+```{r neff}
+mcmc_neff(neff_ratio(fit)) + yaxis_text(hjust = 1)
+```
+
+Ratios well above 0.1 indicate low autocorrelation and efficient sampling.
+
+### Autocorrelation
+
+```{r acf}
+mcmc_acf(posterior, pars = c("mom_hs", "mom_iq"), lags = 15)
+```
+
+Autocorrelation should drop to near zero within a few lags.
+
+## Step 4: Posterior summarization
+
+### Uncertainty intervals
+
+```{r intervals}
+color_scheme_set("red")
+mcmc_intervals(posterior, pars = c("mom_hs", "mom_iq", "sigma"))
+```
+
+### Posterior densities
+
+```{r areas}
+mcmc_areas(posterior, pars = c("mom_hs", "mom_iq"), prob = 0.8)
+```
+
+Both `mom_hs` and `mom_iq` have posterior mass clearly away from zero,
+indicating positive associations with the child's IQ.
+
+### Bivariate relationships
+
+```{r scatter}
+color_scheme_set("gray")
+mcmc_scatter(posterior, pars = c("mom_hs", "mom_iq"), size = 1, alpha = 0.3)
+```
+
+## Step 5: Posterior predictive checks
+
+Now we check whether the model can reproduce the observed data.
+
+```{r ppc-data}
+y <- kidiq$kid_score
+yrep <- posterior_predict(fit, draws = 500)
+```
+
+### Density overlay
+
+```{r ppc-dens}
+color_scheme_set("brightblue")
+ppc_dens_overlay(y, yrep[1:50, ])
+```
+
+The replicated densities should closely track the observed density.
+
+### Test statistics
+
+We can check specific summaries. For instance, does the model replicate the
+standard deviation of the data?
+
+```{r ppc-stat, message=FALSE}
+ppc_stat(y, yrep, stat = "sd")
+```
+
+And the proportion of scores above 100:
+
+```{r ppc-stat-custom, message=FALSE}
+ppc_stat(y, yrep, stat = function(x) mean(x > 100))
+```
+
+### Intervals per observation
+
+```{r ppc-intervals}
+ppc_intervals(y, yrep, x = kidiq$mom_iq, prob = 0.5, prob_outer = 0.9) +
+  labs(x = "Mother's IQ", y = "Child's IQ")
+```
+
+### Grouped checks
+
+```{r ppc-grouped, message=FALSE}
+ppc_stat_grouped(y, yrep, group = kidiq$mom_hs, stat = "median")
+```
+
+## Step 6: Model comparison and iteration
+
+If the checks above reveal systematic problems -- for example, if the model
+under-predicts for children of high-IQ mothers -- we might revise the model
+(add an interaction, use a different likelihood, etc.) and repeat the cycle.
+
+Model comparison tools such as **loo** can be used alongside **bayesplot**'s
+LOO-PIT plots to evaluate relative and absolute model fit:
+
+```{r loo-pit, eval=FALSE}
+library("loo")
+loo1 <- loo(fit, save_psis = TRUE)
+ppc_loo_pit_overlay(y, yrep, lw = weights(loo1$psis_object))
+```
+
+## Summary
+
+The table below maps each workflow stage to the most useful **bayesplot**
+functions:
+
+| Stage | Key functions |
+|---|---|
+| Prior predictive check | `ppd_dens_overlay()`, `ppd_hist()`, `ppd_stat()` |
+| MCMC diagnostics | `mcmc_trace()`, `mcmc_rhat()`, `mcmc_neff()`, `mcmc_acf()`, `mcmc_nuts_divergence()`, `mcmc_nuts_energy()` |
+| Posterior summaries | `mcmc_intervals()`, `mcmc_areas()`, `mcmc_hist()`, `mcmc_dens()`, `mcmc_pairs()` |
+| Posterior predictive checks | `ppc_dens_overlay()`, `ppc_stat()`, `ppc_intervals()`, `ppc_error_hist()`, `ppc_bars()` |
+| Model comparison (LOO) | `ppc_loo_pit_overlay()`, `ppc_loo_pit_qq()`, `ppc_loo_intervals()` |
+
+For a complete lookup table, see the
+[_Which plot should I use?_](https://mc-stan.org/bayesplot/articles/which-plot.html)
+vignette.
+
+## References
+
+Gabry, J., Simpson, D., Vehtari, A., Betancourt, M. and Gelman, A. (2019),
+Visualization in Bayesian workflow. _J. R. Stat. Soc. A_, 182: 389-402.
+\doi{10.1111/rssa.12378}
+
+Gelman, A., Vehtari, A., Simpson, D., et al. (2020), Bayesian Workflow.
+https://arxiv.org/abs/2011.01808
