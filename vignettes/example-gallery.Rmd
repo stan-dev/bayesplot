@@ -44,6 +44,43 @@ group <- example_group_data()
 draws <- example_mcmc_draws(params = 6)
 ```
 
+```{r gallery-helpers, echo=FALSE}
+# Base URL for reference pages
+ref_base <- "https://mc-stan.org/bayesplot/reference/"
+
+# Helper: emit one gallery card (clickable thumbnail + linked label)
+gallery_card <- function(chunk_label, ref_page, fn_name) {
+  url <- paste0(ref_base, ref_page)
+  cat('<div class="gallery-card">\n')
+  cat(paste0('<a href="', url, '">'))
+  cat(paste0('<img src="', fig_chunk(chunk_label, 'png'),
+             '" alt="', fn_name, '()" loading="lazy" />\n'))
+  cat('</a>\n')
+  cat(paste0('<div class="card-label"><a href="', url, '">',
+             fn_name, '()</a></div>\n'))
+  cat('</div>\n')
+}
+
+# Helper for conditional cards (e.g. requiring optional packages)
+gallery_card_cond <- function(chunk_label, ref_page, fn_name, condition,
+                              fallback = "Requires survival package") {
+  url <- paste0(ref_base, ref_page)
+  cat('<div class="gallery-card">\n')
+  if (condition) {
+    cat(paste0('<a href="', url, '">'))
+    cat(paste0('<img src="', fig_chunk(chunk_label, 'png'),
+               '" alt="', fn_name, '()" loading="lazy" />\n'))
+    cat('</a>\n')
+  } else {
+    cat(paste0('<div style="padding:40px;text-align:center;color:#999;">',
+               fallback, '</div>\n'))
+  }
+  cat(paste0('<div class="card-label"><a href="', url, '">',
+             fn_name, '()</a></div>\n'))
+  cat('</div>\n')
+}
+```
+
 ```{css gallery-styles, echo=FALSE}
 /* ---- Gallery grid layout ---- */
 .gallery-grid {
@@ -115,10 +152,7 @@ print(p)
 ```
 
 ```{r results='asis', echo=FALSE}
-cat('<div class="gallery-card">\n')
-cat(paste0('<img src="', fig_chunk("ppc_hist", "png"), '" />\n'))
-cat('<div class="card-label"><a href="../reference/PPC-distributions.html">ppc_hist()</a></div>\n')
-cat('</div>\n')
+gallery_card("ppc_hist", "PPC-distributions.html", "ppc_hist")
 ```
 
 ```{r ppc_dens, echo=FALSE, fig.show='hide'}
@@ -126,10 +160,7 @@ ppc_dens(y, yrep[200:202, ])
 ```
 
 ```{r results='asis', echo=FALSE}
-cat('<div class="gallery-card">\n')
-cat(paste0('<img src="', fig_chunk("ppc_dens", "png"), '" />\n'))
-cat('<div class="card-label"><a href="../reference/PPC-distributions.html">ppc_dens()</a></div>\n')
-cat('</div>\n')
+gallery_card("ppc_dens", "PPC-distributions.html", "ppc_dens")
 ```
 
 ```{r ppc_dens_overlay, echo=FALSE, fig.show='hide'}
@@ -137,10 +168,7 @@ ppc_dens_overlay(y, yrep[1:25, ])
 ```
 
 ```{r results='asis', echo=FALSE}
-cat('<div class="gallery-card">\n')
-cat(paste0('<img src="', fig_chunk("ppc_dens_overlay", "png"), '" />\n'))
-cat('<div class="card-label"><a href="../reference/PPC-distributions.html">ppc_dens_overlay()</a></div>\n')
-cat('</div>\n')
+gallery_card("ppc_dens_overlay", "PPC-distributions.html", "ppc_dens_overlay")
 ```
 
 ```{r ppc_ecdf_overlay, echo=FALSE, fig.show='hide'}
@@ -148,10 +176,7 @@ ppc_ecdf_overlay(y, yrep[sample(nrow(yrep), 25), ])
 ```
 
 ```{r results='asis', echo=FALSE}
-cat('<div class="gallery-card">\n')
-cat(paste0('<img src="', fig_chunk("ppc_ecdf_overlay", "png"), '" />\n'))
-cat('<div class="card-label"><a href="../reference/PPC-distributions.html">ppc_ecdf_overlay()</a></div>\n')
-cat('</div>\n')
+gallery_card("ppc_ecdf_overlay", "PPC-distributions.html", "ppc_ecdf_overlay")
 ```
 
 ```{r ppc_freqpoly, echo=FALSE, fig.show='hide'}
@@ -159,10 +184,7 @@ ppc_freqpoly(y, yrep[1:3, ], alpha = 0.1, size = 1)
 ```
 
 ```{r results='asis', echo=FALSE}
-cat('<div class="gallery-card">\n')
-cat(paste0('<img src="', fig_chunk("ppc_freqpoly", "png"), '" />\n'))
-cat('<div class="card-label"><a href="../reference/PPC-distributions.html">ppc_freqpoly()</a></div>\n')
-cat('</div>\n')
+gallery_card("ppc_freqpoly", "PPC-distributions.html", "ppc_freqpoly")
 ```
 
 ```{r ppc_freqpoly_grouped, echo=FALSE, fig.show='hide'}
@@ -170,10 +192,7 @@ ppc_freqpoly_grouped(y, yrep[1:3, ], group, freq = FALSE)
 ```
 
 ```{r results='asis', echo=FALSE}
-cat('<div class="gallery-card">\n')
-cat(paste0('<img src="', fig_chunk("ppc_freqpoly_grouped", "png"), '" />\n'))
-cat('<div class="card-label"><a href="../reference/PPC-distributions.html">ppc_freqpoly_grouped()</a></div>\n')
-cat('</div>\n')
+gallery_card("ppc_freqpoly_grouped", "PPC-distributions.html", "ppc_freqpoly_grouped")
 ```
 
 ```{r ppc_boxplot, echo=FALSE, fig.show='hide'}
@@ -181,10 +200,7 @@ ppc_boxplot(y, yrep[1:8, ])
 ```
 
 ```{r results='asis', echo=FALSE}
-cat('<div class="gallery-card">\n')
-cat(paste0('<img src="', fig_chunk("ppc_boxplot", "png"), '" />\n'))
-cat('<div class="card-label"><a href="../reference/PPC-distributions.html">ppc_boxplot()</a></div>\n')
-cat('</div>\n')
+gallery_card("ppc_boxplot", "PPC-distributions.html", "ppc_boxplot")
 ```
 
 ```{r ppc_violin_grouped, echo=FALSE, fig.show='hide'}
@@ -192,10 +208,7 @@ ppc_violin_grouped(y, yrep, group, size = 1.5)
 ```
 
 ```{r results='asis', echo=FALSE}
-cat('<div class="gallery-card">\n')
-cat(paste0('<img src="', fig_chunk("ppc_violin_grouped", "png"), '" />\n'))
-cat('<div class="card-label"><a href="../reference/PPC-distributions.html">ppc_violin_grouped()</a></div>\n')
-cat('</div>\n')
+gallery_card("ppc_violin_grouped", "PPC-distributions.html", "ppc_violin_grouped")
 ```
 
 ```{r ppc_dens_overlay_grouped, echo=FALSE, fig.show='hide'}
@@ -203,10 +216,7 @@ ppc_dens_overlay_grouped(y, yrep[1:25, ], group = group)
 ```
 
 ```{r results='asis', echo=FALSE}
-cat('<div class="gallery-card">\n')
-cat(paste0('<img src="', fig_chunk("ppc_dens_overlay_grouped", "png"), '" />\n'))
-cat('<div class="card-label"><a href="../reference/PPC-distributions.html">ppc_dens_overlay_grouped()</a></div>\n')
-cat('</div>\n')
+gallery_card("ppc_dens_overlay_grouped", "PPC-distributions.html", "ppc_dens_overlay_grouped")
 ```
 
 ```{r ppc_ecdf_overlay_grouped, echo=FALSE, fig.show='hide'}
@@ -214,10 +224,7 @@ ppc_ecdf_overlay_grouped(y, yrep[1:25, ], group = group)
 ```
 
 ```{r results='asis', echo=FALSE}
-cat('<div class="gallery-card">\n')
-cat(paste0('<img src="', fig_chunk("ppc_ecdf_overlay_grouped", "png"), '" />\n'))
-cat('<div class="card-label"><a href="../reference/PPC-distributions.html">ppc_ecdf_overlay_grouped()</a></div>\n')
-cat('</div>\n')
+gallery_card("ppc_ecdf_overlay_grouped", "PPC-distributions.html", "ppc_ecdf_overlay_grouped")
 ```
 
 ```{r ppc_pit_ecdf, echo=FALSE, fig.show='hide'}
@@ -225,10 +232,7 @@ ppc_pit_ecdf(y, yrep, prob = 0.99, plot_diff = FALSE)
 ```
 
 ```{r results='asis', echo=FALSE}
-cat('<div class="gallery-card">\n')
-cat(paste0('<img src="', fig_chunk("ppc_pit_ecdf", "png"), '" />\n'))
-cat('<div class="card-label"><a href="../reference/PPC-distributions.html">ppc_pit_ecdf()</a></div>\n')
-cat('</div>\n')
+gallery_card("ppc_pit_ecdf", "PPC-distributions.html", "ppc_pit_ecdf")
 ```
 
 ```{r results='asis', echo=FALSE}
@@ -246,10 +250,7 @@ ppc_stat(y, yrep, stat = "mean")
 ```
 
 ```{r results='asis', echo=FALSE}
-cat('<div class="gallery-card">\n')
-cat(paste0('<img src="', fig_chunk("ppc_stat", "png"), '" />\n'))
-cat('<div class="card-label"><a href="../reference/PPC-test-statistics.html">ppc_stat()</a></div>\n')
-cat('</div>\n')
+gallery_card("ppc_stat", "PPC-test-statistics.html", "ppc_stat")
 ```
 
 ```{r ppc_stat_2d, echo=FALSE, fig.show='hide'}
@@ -257,10 +258,7 @@ ppc_stat_2d(y, yrep, stat = c("mean", "sd"))
 ```
 
 ```{r results='asis', echo=FALSE}
-cat('<div class="gallery-card">\n')
-cat(paste0('<img src="', fig_chunk("ppc_stat_2d", "png"), '" />\n'))
-cat('<div class="card-label"><a href="../reference/PPC-test-statistics.html">ppc_stat_2d()</a></div>\n')
-cat('</div>\n')
+gallery_card("ppc_stat_2d", "PPC-test-statistics.html", "ppc_stat_2d")
 ```
 
 ```{r ppc_stat_grouped, echo=FALSE, fig.show='hide'}
@@ -268,10 +266,7 @@ ppc_stat_grouped(y, yrep, group = group, stat = "median")
 ```
 
 ```{r results='asis', echo=FALSE}
-cat('<div class="gallery-card">\n')
-cat(paste0('<img src="', fig_chunk("ppc_stat_grouped", "png"), '" />\n'))
-cat('<div class="card-label"><a href="../reference/PPC-test-statistics.html">ppc_stat_grouped()</a></div>\n')
-cat('</div>\n')
+gallery_card("ppc_stat_grouped", "PPC-test-statistics.html", "ppc_stat_grouped")
 ```
 
 ```{r ppc_stat_freqpoly, echo=FALSE, fig.show='hide'}
@@ -279,10 +274,7 @@ ppc_stat_freqpoly(y, yrep, stat = "mean")
 ```
 
 ```{r results='asis', echo=FALSE}
-cat('<div class="gallery-card">\n')
-cat(paste0('<img src="', fig_chunk("ppc_stat_freqpoly", "png"), '" />\n'))
-cat('<div class="card-label"><a href="../reference/PPC-test-statistics.html">ppc_stat_freqpoly()</a></div>\n')
-cat('</div>\n')
+gallery_card("ppc_stat_freqpoly", "PPC-test-statistics.html", "ppc_stat_freqpoly")
 ```
 
 ```{r ppc_stat_freqpoly_grouped, echo=FALSE, fig.show='hide'}
@@ -290,10 +282,7 @@ ppc_stat_freqpoly_grouped(y, yrep, group = group, stat = "median")
 ```
 
 ```{r results='asis', echo=FALSE}
-cat('<div class="gallery-card">\n')
-cat(paste0('<img src="', fig_chunk("ppc_stat_freqpoly_grouped", "png"), '" />\n'))
-cat('<div class="card-label"><a href="../reference/PPC-test-statistics.html">ppc_stat_freqpoly_grouped()</a></div>\n')
-cat('</div>\n')
+gallery_card("ppc_stat_freqpoly_grouped", "PPC-test-statistics.html", "ppc_stat_freqpoly_grouped")
 ```
 
 ```{r results='asis', echo=FALSE}
@@ -311,10 +300,7 @@ ppc_intervals(y, yrep, x = x)
 ```
 
 ```{r results='asis', echo=FALSE}
-cat('<div class="gallery-card">\n')
-cat(paste0('<img src="', fig_chunk("ppc_intervals", "png"), '" />\n'))
-cat('<div class="card-label"><a href="../reference/PPC-intervals.html">ppc_intervals()</a></div>\n')
-cat('</div>\n')
+gallery_card("ppc_intervals", "PPC-intervals.html", "ppc_intervals")
 ```
 
 ```{r ppc_ribbon, echo=FALSE, fig.show='hide'}
@@ -322,10 +308,7 @@ ppc_ribbon(y, yrep, x = x)
 ```
 
 ```{r results='asis', echo=FALSE}
-cat('<div class="gallery-card">\n')
-cat(paste0('<img src="', fig_chunk("ppc_ribbon", "png"), '" />\n'))
-cat('<div class="card-label"><a href="../reference/PPC-intervals.html">ppc_ribbon()</a></div>\n')
-cat('</div>\n')
+gallery_card("ppc_ribbon", "PPC-intervals.html", "ppc_ribbon")
 ```
 
 ```{r ppc_intervals_grouped, echo=FALSE, fig.show='hide'}
@@ -333,10 +316,7 @@ ppc_intervals_grouped(y, yrep, x = x, group = group)
 ```
 
 ```{r results='asis', echo=FALSE}
-cat('<div class="gallery-card">\n')
-cat(paste0('<img src="', fig_chunk("ppc_intervals_grouped", "png"), '" />\n'))
-cat('<div class="card-label"><a href="../reference/PPC-intervals.html">ppc_intervals_grouped()</a></div>\n')
-cat('</div>\n')
+gallery_card("ppc_intervals_grouped", "PPC-intervals.html", "ppc_intervals_grouped")
 ```
 
 ```{r ppc_ribbon_grouped, echo=FALSE, fig.show='hide'}
@@ -344,10 +324,7 @@ ppc_ribbon_grouped(y, yrep, x = x, group = group)
 ```
 
 ```{r results='asis', echo=FALSE}
-cat('<div class="gallery-card">\n')
-cat(paste0('<img src="', fig_chunk("ppc_ribbon_grouped", "png"), '" />\n'))
-cat('<div class="card-label"><a href="../reference/PPC-intervals.html">ppc_ribbon_grouped()</a></div>\n')
-cat('</div>\n')
+gallery_card("ppc_ribbon_grouped", "PPC-intervals.html", "ppc_ribbon_grouped")
 ```
 
 ```{r results='asis', echo=FALSE}
@@ -365,10 +342,7 @@ ppc_scatter(y, yrep[1:3, ])
 ```
 
 ```{r results='asis', echo=FALSE}
-cat('<div class="gallery-card">\n')
-cat(paste0('<img src="', fig_chunk("ppc_scatter", "png"), '" />\n'))
-cat('<div class="card-label"><a href="../reference/PPC-scatterplots.html">ppc_scatter()</a></div>\n')
-cat('</div>\n')
+gallery_card("ppc_scatter", "PPC-scatterplots.html", "ppc_scatter")
 ```
 
 ```{r ppc_scatter_avg, echo=FALSE, fig.show='hide'}
@@ -376,10 +350,7 @@ ppc_scatter_avg(y, yrep)
 ```
 
 ```{r results='asis', echo=FALSE}
-cat('<div class="gallery-card">\n')
-cat(paste0('<img src="', fig_chunk("ppc_scatter_avg", "png"), '" />\n'))
-cat('<div class="card-label"><a href="../reference/PPC-scatterplots.html">ppc_scatter_avg()</a></div>\n')
-cat('</div>\n')
+gallery_card("ppc_scatter_avg", "PPC-scatterplots.html", "ppc_scatter_avg")
 ```
 
 ```{r ppc_scatter_avg_grouped, echo=FALSE, fig.show='hide'}
@@ -387,10 +358,7 @@ ppc_scatter_avg_grouped(y, yrep, group = group)
 ```
 
 ```{r results='asis', echo=FALSE}
-cat('<div class="gallery-card">\n')
-cat(paste0('<img src="', fig_chunk("ppc_scatter_avg_grouped", "png"), '" />\n'))
-cat('<div class="card-label"><a href="../reference/PPC-scatterplots.html">ppc_scatter_avg_grouped()</a></div>\n')
-cat('</div>\n')
+gallery_card("ppc_scatter_avg_grouped", "PPC-scatterplots.html", "ppc_scatter_avg_grouped")
 ```
 
 ```{r results='asis', echo=FALSE}
@@ -408,10 +376,7 @@ ppc_error_hist(y, yrep[1:3, ])
 ```
 
 ```{r results='asis', echo=FALSE}
-cat('<div class="gallery-card">\n')
-cat(paste0('<img src="', fig_chunk("ppc_error_hist", "png"), '" />\n'))
-cat('<div class="card-label"><a href="../reference/PPC-errors.html">ppc_error_hist()</a></div>\n')
-cat('</div>\n')
+gallery_card("ppc_error_hist", "PPC-errors.html", "ppc_error_hist")
 ```
 
 ```{r ppc_error_hist_grouped, echo=FALSE, fig.show='hide'}
@@ -419,10 +384,7 @@ ppc_error_hist_grouped(y, yrep[1:3, ], group = group)
 ```
 
 ```{r results='asis', echo=FALSE}
-cat('<div class="gallery-card">\n')
-cat(paste0('<img src="', fig_chunk("ppc_error_hist_grouped", "png"), '" />\n'))
-cat('<div class="card-label"><a href="../reference/PPC-errors.html">ppc_error_hist_grouped()</a></div>\n')
-cat('</div>\n')
+gallery_card("ppc_error_hist_grouped", "PPC-errors.html", "ppc_error_hist_grouped")
 ```
 
 ```{r ppc_error_scatter, echo=FALSE, fig.show='hide'}
@@ -430,10 +392,7 @@ ppc_error_scatter(y, yrep[1:3, ])
 ```
 
 ```{r results='asis', echo=FALSE}
-cat('<div class="gallery-card">\n')
-cat(paste0('<img src="', fig_chunk("ppc_error_scatter", "png"), '" />\n'))
-cat('<div class="card-label"><a href="../reference/PPC-errors.html">ppc_error_scatter()</a></div>\n')
-cat('</div>\n')
+gallery_card("ppc_error_scatter", "PPC-errors.html", "ppc_error_scatter")
 ```
 
 ```{r ppc_error_scatter_avg, echo=FALSE, fig.show='hide'}
@@ -441,10 +400,7 @@ ppc_error_scatter_avg(y, yrep)
 ```
 
 ```{r results='asis', echo=FALSE}
-cat('<div class="gallery-card">\n')
-cat(paste0('<img src="', fig_chunk("ppc_error_scatter_avg", "png"), '" />\n'))
-cat('<div class="card-label"><a href="../reference/PPC-errors.html">ppc_error_scatter_avg()</a></div>\n')
-cat('</div>\n')
+gallery_card("ppc_error_scatter_avg", "PPC-errors.html", "ppc_error_scatter_avg")
 ```
 
 ```{r ppc_error_scatter_avg_vs_x, echo=FALSE, fig.show='hide'}
@@ -452,10 +408,7 @@ ppc_error_scatter_avg_vs_x(y, yrep, x = x)
 ```
 
 ```{r results='asis', echo=FALSE}
-cat('<div class="gallery-card">\n')
-cat(paste0('<img src="', fig_chunk("ppc_error_scatter_avg_vs_x", "png"), '" />\n'))
-cat('<div class="card-label"><a href="../reference/PPC-errors.html">ppc_error_scatter_avg_vs_x()</a></div>\n')
-cat('</div>\n')
+gallery_card("ppc_error_scatter_avg_vs_x", "PPC-errors.html", "ppc_error_scatter_avg_vs_x")
 ```
 
 ```{r ppc_error_binned, echo=FALSE, fig.show='hide'}
@@ -463,10 +416,7 @@ ppc_error_binned(y, yrep[1:3, ])
 ```
 
 ```{r results='asis', echo=FALSE}
-cat('<div class="gallery-card">\n')
-cat(paste0('<img src="', fig_chunk("ppc_error_binned", "png"), '" />\n'))
-cat('<div class="card-label"><a href="../reference/PPC-errors.html">ppc_error_binned()</a></div>\n')
-cat('</div>\n')
+gallery_card("ppc_error_binned", "PPC-errors.html", "ppc_error_binned")
 ```
 
 ```{r results='asis', echo=FALSE}
@@ -492,10 +442,7 @@ ppc_bars(y_disc, yrep_disc[1:50, ])
 ```
 
 ```{r results='asis', echo=FALSE}
-cat('<div class="gallery-card">\n')
-cat(paste0('<img src="', fig_chunk("ppc_bars", "png"), '" />\n'))
-cat('<div class="card-label"><a href="../reference/PPC-discrete.html">ppc_bars()</a></div>\n')
-cat('</div>\n')
+gallery_card("ppc_bars", "PPC-discrete.html", "ppc_bars")
 ```
 
 ```{r ppc_bars_grouped, echo=FALSE, fig.show='hide'}
@@ -503,10 +450,7 @@ ppc_bars_grouped(y_disc, yrep_disc[1:50, ], group = group_disc)
 ```
 
 ```{r results='asis', echo=FALSE}
-cat('<div class="gallery-card">\n')
-cat(paste0('<img src="', fig_chunk("ppc_bars_grouped", "png"), '" />\n'))
-cat('<div class="card-label"><a href="../reference/PPC-discrete.html">ppc_bars_grouped()</a></div>\n')
-cat('</div>\n')
+gallery_card("ppc_bars_grouped", "PPC-discrete.html", "ppc_bars_grouped")
 ```
 
 ```{r ppc_rootogram, echo=FALSE, fig.show='hide'}
@@ -514,10 +458,7 @@ ppc_rootogram(y_disc, yrep_disc)
 ```
 
 ```{r results='asis', echo=FALSE}
-cat('<div class="gallery-card">\n')
-cat(paste0('<img src="', fig_chunk("ppc_rootogram", "png"), '" />\n'))
-cat('<div class="card-label"><a href="../reference/PPC-discrete.html">ppc_rootogram()</a></div>\n')
-cat('</div>\n')
+gallery_card("ppc_rootogram", "PPC-discrete.html", "ppc_rootogram")
 ```
 
 ```{r results='asis', echo=FALSE}
@@ -551,10 +492,7 @@ ppc_loo_pit_overlay(y, yrep, pit = pit_vals)
 ```
 
 ```{r results='asis', echo=FALSE}
-cat('<div class="gallery-card">\n')
-cat(paste0('<img src="', fig_chunk("ppc_loo_pit_overlay", "png"), '" />\n'))
-cat('<div class="card-label"><a href="../reference/PPC-loo.html">ppc_loo_pit_overlay()</a></div>\n')
-cat('</div>\n')
+gallery_card("ppc_loo_pit_overlay", "PPC-loo.html", "ppc_loo_pit_overlay")
 ```
 
 ```{r ppc_loo_pit_qq, echo=FALSE, fig.show='hide'}
@@ -562,10 +500,7 @@ ppc_loo_pit_qq(y, yrep, pit = pit_vals)
 ```
 
 ```{r results='asis', echo=FALSE}
-cat('<div class="gallery-card">\n')
-cat(paste0('<img src="', fig_chunk("ppc_loo_pit_qq", "png"), '" />\n'))
-cat('<div class="card-label"><a href="../reference/PPC-loo.html">ppc_loo_pit_qq()</a></div>\n')
-cat('</div>\n')
+gallery_card("ppc_loo_pit_qq", "PPC-loo.html", "ppc_loo_pit_qq")
 ```
 
 ```{r ppc_loo_intervals, echo=FALSE, fig.show='hide'}
@@ -573,10 +508,7 @@ ppc_loo_intervals(y, yrep, intervals = loo_intervals, order = "median")
 ```
 
 ```{r results='asis', echo=FALSE}
-cat('<div class="gallery-card">\n')
-cat(paste0('<img src="', fig_chunk("ppc_loo_intervals", "png"), '" />\n'))
-cat('<div class="card-label"><a href="../reference/PPC-loo.html">ppc_loo_intervals()</a></div>\n')
-cat('</div>\n')
+gallery_card("ppc_loo_intervals", "PPC-loo.html", "ppc_loo_intervals")
 ```
 
 ```{r ppc_loo_ribbon, echo=FALSE, fig.show='hide'}
@@ -584,10 +516,7 @@ ppc_loo_ribbon(y, yrep, intervals = loo_intervals)
 ```
 
 ```{r results='asis', echo=FALSE}
-cat('<div class="gallery-card">\n')
-cat(paste0('<img src="', fig_chunk("ppc_loo_ribbon", "png"), '" />\n'))
-cat('<div class="card-label"><a href="../reference/PPC-loo.html">ppc_loo_ribbon()</a></div>\n')
-cat('</div>\n')
+gallery_card("ppc_loo_ribbon", "PPC-loo.html", "ppc_loo_ribbon")
 ```
 
 ```{r results='asis', echo=FALSE}
@@ -598,14 +527,14 @@ cat('</div>\n')
 
 ```{r setup-censoring, echo=FALSE}
 # Create survival-type data for censoring plots
-if (requireNamespace("survival", quietly = TRUE)) {
+has_survival <- requireNamespace("survival", quietly = TRUE)
+if (has_survival) {
   set.seed(789)
   n_cens <- 100
   y_cens <- rexp(n_cens, rate = 0.5)
   status_cens <- rbinom(n_cens, 1, prob = 0.7)
   y_cens[status_cens == 0] <- runif(sum(status_cens == 0), 0, y_cens[status_cens == 0])
   yrep_cens <- matrix(rexp(n_cens * 50, rate = 0.5), nrow = 50)
-  cens_val <- ifelse(status_cens == 1, y_cens, NA)
   group_cens <- factor(rep(c("A", "B"), each = n_cens / 2))
 }
 has_survival <- requireNamespace("survival", quietly = TRUE)
@@ -620,14 +549,7 @@ ppc_km_overlay(y_cens, yrep_cens, status_y = status_cens)
 ```
 
 ```{r results='asis', echo=FALSE}
-cat('<div class="gallery-card">\n')
-if (has_survival) {
-  cat(paste0('<img src="', fig_chunk("ppc_km_overlay", "png"), '" />\n'))
-} else {
-  cat('<div style="padding:40px;text-align:center;color:#999;">Requires survival package</div>\n')
-}
-cat('<div class="card-label"><a href="../reference/PPC-censoring.html">ppc_km_overlay()</a></div>\n')
-cat('</div>\n')
+gallery_card_cond("ppc_km_overlay", "PPC-censoring.html", "ppc_km_overlay", has_survival)
 ```
 
 ```{r ppc_km_overlay_grouped, echo=FALSE, fig.show='hide', eval=has_survival}
@@ -635,14 +557,7 @@ ppc_km_overlay_grouped(y_cens, yrep_cens, status_y = status_cens, group = group_
 ```
 
 ```{r results='asis', echo=FALSE}
-cat('<div class="gallery-card">\n')
-if (has_survival) {
-  cat(paste0('<img src="', fig_chunk("ppc_km_overlay_grouped", "png"), '" />\n'))
-} else {
-  cat('<div style="padding:40px;text-align:center;color:#999;">Requires survival package</div>\n')
-}
-cat('<div class="card-label"><a href="../reference/PPC-censoring.html">ppc_km_overlay_grouped()</a></div>\n')
-cat('</div>\n')
+gallery_card_cond("ppc_km_overlay_grouped", "PPC-censoring.html", "ppc_km_overlay_grouped", has_survival)
 ```
 
 ```{r results='asis', echo=FALSE}
@@ -668,10 +583,7 @@ ppd_hist(yrep[1:5, ])
 ```
 
 ```{r results='asis', echo=FALSE}
-cat('<div class="gallery-card">\n')
-cat(paste0('<img src="', fig_chunk("ppd_hist", "png"), '" />\n'))
-cat('<div class="card-label"><a href="../reference/PPD-distributions.html">ppd_hist()</a></div>\n')
-cat('</div>\n')
+gallery_card("ppd_hist", "PPD-distributions.html", "ppd_hist")
 ```
 
 ```{r ppd_dens_overlay, echo=FALSE, fig.show='hide'}
@@ -679,10 +591,7 @@ ppd_dens_overlay(yrep[1:25, ])
 ```
 
 ```{r results='asis', echo=FALSE}
-cat('<div class="gallery-card">\n')
-cat(paste0('<img src="', fig_chunk("ppd_dens_overlay", "png"), '" />\n'))
-cat('<div class="card-label"><a href="../reference/PPD-distributions.html">ppd_dens_overlay()</a></div>\n')
-cat('</div>\n')
+gallery_card("ppd_dens_overlay", "PPD-distributions.html", "ppd_dens_overlay")
 ```
 
 ```{r ppd_ecdf_overlay, echo=FALSE, fig.show='hide'}
@@ -690,10 +599,7 @@ ppd_ecdf_overlay(yrep[1:25, ])
 ```
 
 ```{r results='asis', echo=FALSE}
-cat('<div class="gallery-card">\n')
-cat(paste0('<img src="', fig_chunk("ppd_ecdf_overlay", "png"), '" />\n'))
-cat('<div class="card-label"><a href="../reference/PPD-distributions.html">ppd_ecdf_overlay()</a></div>\n')
-cat('</div>\n')
+gallery_card("ppd_ecdf_overlay", "PPD-distributions.html", "ppd_ecdf_overlay")
 ```
 
 ```{r ppd_dens, echo=FALSE, fig.show='hide'}
@@ -701,10 +607,7 @@ ppd_dens(yrep[200:202, ])
 ```
 
 ```{r results='asis', echo=FALSE}
-cat('<div class="gallery-card">\n')
-cat(paste0('<img src="', fig_chunk("ppd_dens", "png"), '" />\n'))
-cat('<div class="card-label"><a href="../reference/PPD-distributions.html">ppd_dens()</a></div>\n')
-cat('</div>\n')
+gallery_card("ppd_dens", "PPD-distributions.html", "ppd_dens")
 ```
 
 ```{r ppd_freqpoly, echo=FALSE, fig.show='hide'}
@@ -712,10 +615,7 @@ ppd_freqpoly(yrep[1:3, ])
 ```
 
 ```{r results='asis', echo=FALSE}
-cat('<div class="gallery-card">\n')
-cat(paste0('<img src="', fig_chunk("ppd_freqpoly", "png"), '" />\n'))
-cat('<div class="card-label"><a href="../reference/PPD-distributions.html">ppd_freqpoly()</a></div>\n')
-cat('</div>\n')
+gallery_card("ppd_freqpoly", "PPD-distributions.html", "ppd_freqpoly")
 ```
 
 ```{r ppd_boxplot, echo=FALSE, fig.show='hide'}
@@ -723,10 +623,7 @@ ppd_boxplot(yrep[1:8, ])
 ```
 
 ```{r results='asis', echo=FALSE}
-cat('<div class="gallery-card">\n')
-cat(paste0('<img src="', fig_chunk("ppd_boxplot", "png"), '" />\n'))
-cat('<div class="card-label"><a href="../reference/PPD-distributions.html">ppd_boxplot()</a></div>\n')
-cat('</div>\n')
+gallery_card("ppd_boxplot", "PPD-distributions.html", "ppd_boxplot")
 ```
 
 ```{r results='asis', echo=FALSE}
@@ -744,10 +641,7 @@ ppd_intervals(yrep, x = x)
 ```
 
 ```{r results='asis', echo=FALSE}
-cat('<div class="gallery-card">\n')
-cat(paste0('<img src="', fig_chunk("ppd_intervals", "png"), '" />\n'))
-cat('<div class="card-label"><a href="../reference/PPD-intervals.html">ppd_intervals()</a></div>\n')
-cat('</div>\n')
+gallery_card("ppd_intervals", "PPD-intervals.html", "ppd_intervals")
 ```
 
 ```{r ppd_ribbon, echo=FALSE, fig.show='hide'}
@@ -755,10 +649,7 @@ ppd_ribbon(yrep, x = x)
 ```
 
 ```{r results='asis', echo=FALSE}
-cat('<div class="gallery-card">\n')
-cat(paste0('<img src="', fig_chunk("ppd_ribbon", "png"), '" />\n'))
-cat('<div class="card-label"><a href="../reference/PPD-intervals.html">ppd_ribbon()</a></div>\n')
-cat('</div>\n')
+gallery_card("ppd_ribbon", "PPD-intervals.html", "ppd_ribbon")
 ```
 
 ```{r results='asis', echo=FALSE}
@@ -776,10 +667,7 @@ ppd_stat(yrep, stat = "mean")
 ```
 
 ```{r results='asis', echo=FALSE}
-cat('<div class="gallery-card">\n')
-cat(paste0('<img src="', fig_chunk("ppd_stat", "png"), '" />\n'))
-cat('<div class="card-label"><a href="../reference/PPD-test-statistics.html">ppd_stat()</a></div>\n')
-cat('</div>\n')
+gallery_card("ppd_stat", "PPD-test-statistics.html", "ppd_stat")
 ```
 
 ```{r ppd_stat_grouped, echo=FALSE, fig.show='hide'}
@@ -787,10 +675,7 @@ ppd_stat_grouped(yrep, group = group, stat = "median")
 ```
 
 ```{r results='asis', echo=FALSE}
-cat('<div class="gallery-card">\n')
-cat(paste0('<img src="', fig_chunk("ppd_stat_grouped", "png"), '" />\n'))
-cat('<div class="card-label"><a href="../reference/PPD-test-statistics.html">ppd_stat_grouped()</a></div>\n')
-cat('</div>\n')
+gallery_card("ppd_stat_grouped", "PPD-test-statistics.html", "ppd_stat_grouped")
 ```
 
 ```{r ppd_stat_freqpoly, echo=FALSE, fig.show='hide'}
@@ -798,10 +683,7 @@ ppd_stat_freqpoly(yrep, stat = "mean")
 ```
 
 ```{r results='asis', echo=FALSE}
-cat('<div class="gallery-card">\n')
-cat(paste0('<img src="', fig_chunk("ppd_stat_freqpoly", "png"), '" />\n'))
-cat('<div class="card-label"><a href="../reference/PPD-test-statistics.html">ppd_stat_freqpoly()</a></div>\n')
-cat('</div>\n')
+gallery_card("ppd_stat_freqpoly", "PPD-test-statistics.html", "ppd_stat_freqpoly")
 ```
 
 ```{r ppd_stat_2d, echo=FALSE, fig.show='hide'}
@@ -809,10 +691,7 @@ ppd_stat_2d(yrep, stat = c("mean", "sd"))
 ```
 
 ```{r results='asis', echo=FALSE}
-cat('<div class="gallery-card">\n')
-cat(paste0('<img src="', fig_chunk("ppd_stat_2d", "png"), '" />\n'))
-cat('<div class="card-label"><a href="../reference/PPD-test-statistics.html">ppd_stat_2d()</a></div>\n')
-cat('</div>\n')
+gallery_card("ppd_stat_2d", "PPD-test-statistics.html", "ppd_stat_2d")
 ```
 
 ```{r results='asis', echo=FALSE}
@@ -836,10 +715,7 @@ mcmc_intervals(draws)
 ```
 
 ```{r results='asis', echo=FALSE}
-cat('<div class="gallery-card">\n')
-cat(paste0('<img src="', fig_chunk("mcmc_intervals", "png"), '" />\n'))
-cat('<div class="card-label"><a href="../reference/MCMC-intervals.html">mcmc_intervals()</a></div>\n')
-cat('</div>\n')
+gallery_card("mcmc_intervals", "MCMC-intervals.html", "mcmc_intervals")
 ```
 
 ```{r mcmc_areas, echo=FALSE, fig.show='hide'}
@@ -847,10 +723,7 @@ mcmc_areas(draws, prob = 0.8)
 ```
 
 ```{r results='asis', echo=FALSE}
-cat('<div class="gallery-card">\n')
-cat(paste0('<img src="', fig_chunk("mcmc_areas", "png"), '" />\n'))
-cat('<div class="card-label"><a href="../reference/MCMC-intervals.html">mcmc_areas()</a></div>\n')
-cat('</div>\n')
+gallery_card("mcmc_areas", "MCMC-intervals.html", "mcmc_areas")
 ```
 
 ```{r mcmc_areas_ridges, echo=FALSE, fig.show='hide'}
@@ -858,10 +731,7 @@ mcmc_areas_ridges(draws)
 ```
 
 ```{r results='asis', echo=FALSE}
-cat('<div class="gallery-card">\n')
-cat(paste0('<img src="', fig_chunk("mcmc_areas_ridges", "png"), '" />\n'))
-cat('<div class="card-label"><a href="../reference/MCMC-intervals.html">mcmc_areas_ridges()</a></div>\n')
-cat('</div>\n')
+gallery_card("mcmc_areas_ridges", "MCMC-intervals.html", "mcmc_areas_ridges")
 ```
 
 ```{r results='asis', echo=FALSE}
@@ -879,10 +749,7 @@ mcmc_hist(draws)
 ```
 
 ```{r results='asis', echo=FALSE}
-cat('<div class="gallery-card">\n')
-cat(paste0('<img src="', fig_chunk("mcmc_hist", "png"), '" />\n'))
-cat('<div class="card-label"><a href="../reference/MCMC-distributions.html">mcmc_hist()</a></div>\n')
-cat('</div>\n')
+gallery_card("mcmc_hist", "MCMC-distributions.html", "mcmc_hist")
 ```
 
 ```{r mcmc_hist_by_chain, echo=FALSE, fig.show='hide'}
@@ -890,10 +757,7 @@ mcmc_hist_by_chain(draws, pars = "alpha")
 ```
 
 ```{r results='asis', echo=FALSE}
-cat('<div class="gallery-card">\n')
-cat(paste0('<img src="', fig_chunk("mcmc_hist_by_chain", "png"), '" />\n'))
-cat('<div class="card-label"><a href="../reference/MCMC-distributions.html">mcmc_hist_by_chain()</a></div>\n')
-cat('</div>\n')
+gallery_card("mcmc_hist_by_chain", "MCMC-distributions.html", "mcmc_hist_by_chain")
 ```
 
 ```{r mcmc_dens, echo=FALSE, fig.show='hide'}
@@ -901,10 +765,7 @@ mcmc_dens(draws)
 ```
 
 ```{r results='asis', echo=FALSE}
-cat('<div class="gallery-card">\n')
-cat(paste0('<img src="', fig_chunk("mcmc_dens", "png"), '" />\n'))
-cat('<div class="card-label"><a href="../reference/MCMC-distributions.html">mcmc_dens()</a></div>\n')
-cat('</div>\n')
+gallery_card("mcmc_dens", "MCMC-distributions.html", "mcmc_dens")
 ```
 
 ```{r mcmc_dens_overlay, echo=FALSE, fig.show='hide'}
@@ -912,10 +773,7 @@ mcmc_dens_overlay(draws, pars = c("alpha", "sigma"))
 ```
 
 ```{r results='asis', echo=FALSE}
-cat('<div class="gallery-card">\n')
-cat(paste0('<img src="', fig_chunk("mcmc_dens_overlay", "png"), '" />\n'))
-cat('<div class="card-label"><a href="../reference/MCMC-distributions.html">mcmc_dens_overlay()</a></div>\n')
-cat('</div>\n')
+gallery_card("mcmc_dens_overlay", "MCMC-distributions.html", "mcmc_dens_overlay")
 ```
 
 ```{r mcmc_dens_chains, echo=FALSE, fig.show='hide'}
@@ -923,10 +781,7 @@ mcmc_dens_chains(draws, pars = "alpha")
 ```
 
 ```{r results='asis', echo=FALSE}
-cat('<div class="gallery-card">\n')
-cat(paste0('<img src="', fig_chunk("mcmc_dens_chains", "png"), '" />\n'))
-cat('<div class="card-label"><a href="../reference/MCMC-distributions.html">mcmc_dens_chains()</a></div>\n')
-cat('</div>\n')
+gallery_card("mcmc_dens_chains", "MCMC-distributions.html", "mcmc_dens_chains")
 ```
 
 ```{r mcmc_violin, echo=FALSE, fig.show='hide'}
@@ -934,10 +789,7 @@ mcmc_violin(draws)
 ```
 
 ```{r results='asis', echo=FALSE}
-cat('<div class="gallery-card">\n')
-cat(paste0('<img src="', fig_chunk("mcmc_violin", "png"), '" />\n'))
-cat('<div class="card-label"><a href="../reference/MCMC-distributions.html">mcmc_violin()</a></div>\n')
-cat('</div>\n')
+gallery_card("mcmc_violin", "MCMC-distributions.html", "mcmc_violin")
 ```
 
 ```{r results='asis', echo=FALSE}
@@ -956,10 +808,7 @@ mcmc_trace(draws, pars = c("alpha", "sigma"))
 ```
 
 ```{r results='asis', echo=FALSE}
-cat('<div class="gallery-card">\n')
-cat(paste0('<img src="', fig_chunk("mcmc_trace", "png"), '" />\n'))
-cat('<div class="card-label"><a href="../reference/MCMC-traces.html">mcmc_trace()</a></div>\n')
-cat('</div>\n')
+gallery_card("mcmc_trace", "MCMC-traces.html", "mcmc_trace")
 ```
 
 ```{r mcmc_trace_highlight, echo=FALSE, fig.show='hide'}
@@ -967,10 +816,7 @@ mcmc_trace_highlight(draws, pars = "alpha", highlight = 1)
 ```
 
 ```{r results='asis', echo=FALSE}
-cat('<div class="gallery-card">\n')
-cat(paste0('<img src="', fig_chunk("mcmc_trace_highlight", "png"), '" />\n'))
-cat('<div class="card-label"><a href="../reference/MCMC-traces.html">mcmc_trace_highlight()</a></div>\n')
-cat('</div>\n')
+gallery_card("mcmc_trace_highlight", "MCMC-traces.html", "mcmc_trace_highlight")
 ```
 
 ```{r mcmc_rank_overlay, echo=FALSE, fig.show='hide'}
@@ -979,10 +825,7 @@ mcmc_rank_overlay(draws, pars = "alpha")
 ```
 
 ```{r results='asis', echo=FALSE}
-cat('<div class="gallery-card">\n')
-cat(paste0('<img src="', fig_chunk("mcmc_rank_overlay", "png"), '" />\n'))
-cat('<div class="card-label"><a href="../reference/MCMC-traces.html">mcmc_rank_overlay()</a></div>\n')
-cat('</div>\n')
+gallery_card("mcmc_rank_overlay", "MCMC-traces.html", "mcmc_rank_overlay")
 ```
 
 ```{r mcmc_rank_hist, echo=FALSE, fig.show='hide'}
@@ -990,10 +833,7 @@ mcmc_rank_hist(draws, pars = "alpha")
 ```
 
 ```{r results='asis', echo=FALSE}
-cat('<div class="gallery-card">\n')
-cat(paste0('<img src="', fig_chunk("mcmc_rank_hist", "png"), '" />\n'))
-cat('<div class="card-label"><a href="../reference/MCMC-traces.html">mcmc_rank_hist()</a></div>\n')
-cat('</div>\n')
+gallery_card("mcmc_rank_hist", "MCMC-traces.html", "mcmc_rank_hist")
 ```
 
 ```{r mcmc_rank_ecdf, echo=FALSE, fig.show='hide'}
@@ -1001,10 +841,7 @@ mcmc_rank_ecdf(draws, pars = "alpha")
 ```
 
 ```{r results='asis', echo=FALSE}
-cat('<div class="gallery-card">\n')
-cat(paste0('<img src="', fig_chunk("mcmc_rank_ecdf", "png"), '" />\n'))
-cat('<div class="card-label"><a href="../reference/MCMC-traces.html">mcmc_rank_ecdf()</a></div>\n')
-cat('</div>\n')
+gallery_card("mcmc_rank_ecdf", "MCMC-traces.html", "mcmc_rank_ecdf")
 ```
 
 ```{r results='asis', echo=FALSE}
@@ -1023,10 +860,7 @@ mcmc_scatter(draws, pars = c("alpha", "sigma"))
 ```
 
 ```{r results='asis', echo=FALSE}
-cat('<div class="gallery-card">\n')
-cat(paste0('<img src="', fig_chunk("mcmc_scatter", "png"), '" />\n'))
-cat('<div class="card-label"><a href="../reference/MCMC-scatterplots.html">mcmc_scatter()</a></div>\n')
-cat('</div>\n')
+gallery_card("mcmc_scatter", "MCMC-scatterplots.html", "mcmc_scatter")
 ```
 
 ```{r mcmc_hex, echo=FALSE, fig.show='hide'}
@@ -1034,10 +868,7 @@ mcmc_hex(draws, pars = c("alpha", "sigma"))
 ```
 
 ```{r results='asis', echo=FALSE}
-cat('<div class="gallery-card">\n')
-cat(paste0('<img src="', fig_chunk("mcmc_hex", "png"), '" />\n'))
-cat('<div class="card-label"><a href="../reference/MCMC-scatterplots.html">mcmc_hex()</a></div>\n')
-cat('</div>\n')
+gallery_card("mcmc_hex", "MCMC-scatterplots.html", "mcmc_hex")
 ```
 
 ```{r mcmc_pairs, echo=FALSE, fig.show='hide'}
@@ -1045,10 +876,7 @@ mcmc_pairs(draws, pars = c("alpha", "sigma", "beta[1]"))
 ```
 
 ```{r results='asis', echo=FALSE}
-cat('<div class="gallery-card">\n')
-cat(paste0('<img src="', fig_chunk("mcmc_pairs", "png"), '" />\n'))
-cat('<div class="card-label"><a href="../reference/MCMC-scatterplots.html">mcmc_pairs()</a></div>\n')
-cat('</div>\n')
+gallery_card("mcmc_pairs", "MCMC-scatterplots.html", "mcmc_pairs")
 ```
 
 ```{r results='asis', echo=FALSE}
@@ -1075,10 +903,7 @@ mcmc_rhat(rhat_vals)
 ```
 
 ```{r results='asis', echo=FALSE}
-cat('<div class="gallery-card">\n')
-cat(paste0('<img src="', fig_chunk("mcmc_rhat", "png"), '" />\n'))
-cat('<div class="card-label"><a href="../reference/MCMC-diagnostics.html">mcmc_rhat()</a></div>\n')
-cat('</div>\n')
+gallery_card("mcmc_rhat", "MCMC-diagnostics.html", "mcmc_rhat")
 ```
 
 ```{r mcmc_rhat_hist, echo=FALSE, fig.show='hide'}
@@ -1086,10 +911,7 @@ mcmc_rhat_hist(rhat_vals)
 ```
 
 ```{r results='asis', echo=FALSE}
-cat('<div class="gallery-card">\n')
-cat(paste0('<img src="', fig_chunk("mcmc_rhat_hist", "png"), '" />\n'))
-cat('<div class="card-label"><a href="../reference/MCMC-diagnostics.html">mcmc_rhat_hist()</a></div>\n')
-cat('</div>\n')
+gallery_card("mcmc_rhat_hist", "MCMC-diagnostics.html", "mcmc_rhat_hist")
 ```
 
 ```{r mcmc_neff, echo=FALSE, fig.show='hide'}
@@ -1097,10 +919,7 @@ mcmc_neff(neff_vals)
 ```
 
 ```{r results='asis', echo=FALSE}
-cat('<div class="gallery-card">\n')
-cat(paste0('<img src="', fig_chunk("mcmc_neff", "png"), '" />\n'))
-cat('<div class="card-label"><a href="../reference/MCMC-diagnostics.html">mcmc_neff()</a></div>\n')
-cat('</div>\n')
+gallery_card("mcmc_neff", "MCMC-diagnostics.html", "mcmc_neff")
 ```
 
 ```{r mcmc_neff_hist, echo=FALSE, fig.show='hide'}
@@ -1108,10 +927,7 @@ mcmc_neff_hist(neff_vals)
 ```
 
 ```{r results='asis', echo=FALSE}
-cat('<div class="gallery-card">\n')
-cat(paste0('<img src="', fig_chunk("mcmc_neff_hist", "png"), '" />\n'))
-cat('<div class="card-label"><a href="../reference/MCMC-diagnostics.html">mcmc_neff_hist()</a></div>\n')
-cat('</div>\n')
+gallery_card("mcmc_neff_hist", "MCMC-diagnostics.html", "mcmc_neff_hist")
 ```
 
 ```{r mcmc_acf, echo=FALSE, fig.show='hide'}
@@ -1119,10 +935,7 @@ mcmc_acf(draws, pars = c("alpha", "sigma"))
 ```
 
 ```{r results='asis', echo=FALSE}
-cat('<div class="gallery-card">\n')
-cat(paste0('<img src="', fig_chunk("mcmc_acf", "png"), '" />\n'))
-cat('<div class="card-label"><a href="../reference/MCMC-diagnostics.html">mcmc_acf()</a></div>\n')
-cat('</div>\n')
+gallery_card("mcmc_acf", "MCMC-diagnostics.html", "mcmc_acf")
 ```
 
 ```{r mcmc_acf_bar, echo=FALSE, fig.show='hide'}
@@ -1130,10 +943,7 @@ mcmc_acf_bar(draws, pars = c("alpha", "sigma"))
 ```
 
 ```{r results='asis', echo=FALSE}
-cat('<div class="gallery-card">\n')
-cat(paste0('<img src="', fig_chunk("mcmc_acf_bar", "png"), '" />\n'))
-cat('<div class="card-label"><a href="../reference/MCMC-diagnostics.html">mcmc_acf_bar()</a></div>\n')
-cat('</div>\n')
+gallery_card("mcmc_acf_bar", "MCMC-diagnostics.html", "mcmc_acf_bar")
 ```
 
 ```{r results='asis', echo=FALSE}
@@ -1151,10 +961,7 @@ mcmc_parcoord(draws, pars = c("alpha", "sigma", "beta[1]", "beta[2]"))
 ```
 
 ```{r results='asis', echo=FALSE}
-cat('<div class="gallery-card">\n')
-cat(paste0('<img src="', fig_chunk("mcmc_parcoord", "png"), '" />\n'))
-cat('<div class="card-label"><a href="../reference/MCMC-parcoord.html">mcmc_parcoord()</a></div>\n')
-cat('</div>\n')
+gallery_card("mcmc_parcoord", "MCMC-parcoord.html", "mcmc_parcoord")
 ```
 
 ```{r results='asis', echo=FALSE}
@@ -1178,10 +985,7 @@ mcmc_recover_intervals(draws, true = true_vals)
 ```
 
 ```{r results='asis', echo=FALSE}
-cat('<div class="gallery-card">\n')
-cat(paste0('<img src="', fig_chunk("mcmc_recover_intervals", "png"), '" />\n'))
-cat('<div class="card-label"><a href="../reference/MCMC-recover.html">mcmc_recover_intervals()</a></div>\n')
-cat('</div>\n')
+gallery_card("mcmc_recover_intervals", "MCMC-recover.html", "mcmc_recover_intervals")
 ```
 
 ```{r mcmc_recover_scatter, echo=FALSE, fig.show='hide'}
@@ -1189,10 +993,7 @@ mcmc_recover_scatter(draws, true = true_vals)
 ```
 
 ```{r results='asis', echo=FALSE}
-cat('<div class="gallery-card">\n')
-cat(paste0('<img src="', fig_chunk("mcmc_recover_scatter", "png"), '" />\n'))
-cat('<div class="card-label"><a href="../reference/MCMC-recover.html">mcmc_recover_scatter()</a></div>\n')
-cat('</div>\n')
+gallery_card("mcmc_recover_scatter", "MCMC-recover.html", "mcmc_recover_scatter")
 ```
 
 ```{r mcmc_recover_hist, echo=FALSE, fig.show='hide'}
@@ -1200,10 +1001,7 @@ mcmc_recover_hist(draws, true = true_vals)
 ```
 
 ```{r results='asis', echo=FALSE}
-cat('<div class="gallery-card">\n')
-cat(paste0('<img src="', fig_chunk("mcmc_recover_hist", "png"), '" />\n'))
-cat('<div class="card-label"><a href="../reference/MCMC-recover.html">mcmc_recover_hist()</a></div>\n')
-cat('</div>\n')
+gallery_card("mcmc_recover_hist", "MCMC-recover.html", "mcmc_recover_hist")
 ```
 
 ```{r results='asis', echo=FALSE}
@@ -1221,10 +1019,7 @@ mcmc_combo(draws, pars = c("alpha", "sigma"))
 ```
 
 ```{r results='asis', echo=FALSE}
-cat('<div class="gallery-card">\n')
-cat(paste0('<img src="', fig_chunk("mcmc_combo", "png"), '" />\n'))
-cat('<div class="card-label"><a href="../reference/MCMC-combos.html">mcmc_combo()</a></div>\n')
-cat('</div>\n')
+gallery_card("mcmc_combo", "MCMC-combos.html", "mcmc_combo")
 ```
 
 ```{r results='asis', echo=FALSE}
@@ -1274,10 +1069,7 @@ mcmc_nuts_divergence(np_data, lp_data)
 ```
 
 ```{r results='asis', echo=FALSE}
-cat('<div class="gallery-card">\n')
-cat(paste0('<img src="', fig_chunk("mcmc_nuts_divergence", "png"), '" />\n'))
-cat('<div class="card-label"><a href="../reference/MCMC-nuts.html">mcmc_nuts_divergence()</a></div>\n')
-cat('</div>\n')
+gallery_card("mcmc_nuts_divergence", "MCMC-nuts.html", "mcmc_nuts_divergence")
 ```
 
 ```{r mcmc_nuts_energy, echo=FALSE, fig.show='hide'}
@@ -1285,10 +1077,7 @@ mcmc_nuts_energy(np_data)
 ```
 
 ```{r results='asis', echo=FALSE}
-cat('<div class="gallery-card">\n')
-cat(paste0('<img src="', fig_chunk("mcmc_nuts_energy", "png"), '" />\n'))
-cat('<div class="card-label"><a href="../reference/MCMC-nuts.html">mcmc_nuts_energy()</a></div>\n')
-cat('</div>\n')
+gallery_card("mcmc_nuts_energy", "MCMC-nuts.html", "mcmc_nuts_energy")
 ```
 
 ```{r mcmc_nuts_acceptance, echo=FALSE, fig.show='hide'}
@@ -1296,10 +1085,7 @@ mcmc_nuts_acceptance(np_data, lp_data)
 ```
 
 ```{r results='asis', echo=FALSE}
-cat('<div class="gallery-card">\n')
-cat(paste0('<img src="', fig_chunk("mcmc_nuts_acceptance", "png"), '" />\n'))
-cat('<div class="card-label"><a href="../reference/MCMC-nuts.html">mcmc_nuts_acceptance()</a></div>\n')
-cat('</div>\n')
+gallery_card("mcmc_nuts_acceptance", "MCMC-nuts.html", "mcmc_nuts_acceptance")
 ```
 
 ```{r mcmc_nuts_treedepth, echo=FALSE, fig.show='hide'}
@@ -1307,10 +1093,7 @@ mcmc_nuts_treedepth(np_data, lp_data)
 ```
 
 ```{r results='asis', echo=FALSE}
-cat('<div class="gallery-card">\n')
-cat(paste0('<img src="', fig_chunk("mcmc_nuts_treedepth", "png"), '" />\n'))
-cat('<div class="card-label"><a href="../reference/MCMC-nuts.html">mcmc_nuts_treedepth()</a></div>\n')
-cat('</div>\n')
+gallery_card("mcmc_nuts_treedepth", "MCMC-nuts.html", "mcmc_nuts_treedepth")
 ```
 
 ```{r mcmc_nuts_stepsize, echo=FALSE, fig.show='hide'}
@@ -1318,10 +1101,7 @@ mcmc_nuts_stepsize(np_data, lp_data)
 ```
 
 ```{r results='asis', echo=FALSE}
-cat('<div class="gallery-card">\n')
-cat(paste0('<img src="', fig_chunk("mcmc_nuts_stepsize", "png"), '" />\n'))
-cat('<div class="card-label"><a href="../reference/MCMC-nuts.html">mcmc_nuts_stepsize()</a></div>\n')
-cat('</div>\n')
+gallery_card("mcmc_nuts_stepsize", "MCMC-nuts.html", "mcmc_nuts_stepsize")
 ```
 
 ```{r results='asis', echo=FALSE}
