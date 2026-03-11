@@ -1,5 +1,6 @@
 # bayesplot (development version)
 
+* Fix assignment-in-call bug in `mcmc_trace_ucdf`/`mcmc_trace_rcdf`: `L <- n_chain` (which leaked `L` into the calling environment) corrected to `L = n_chain` (#).
 * New functions `mcmc_dots` and `mcmc_dots_by_chain` for dot plots of MCMC draws by @behramulukir (#402)
 * Default to `quantiles=100` for all dot plots by @behramulukir (#402)
 
