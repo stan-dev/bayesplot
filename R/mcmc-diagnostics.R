@@ -153,8 +153,9 @@ mcmc_rhat <- function(rhat, ..., size = NULL) {
       show.legend = TRUE) +
       bayesplot_theme_get()
 
+  ref_style <- annotation_style(fallback_color = "gray", fallback_linewidth = 1)
+
   if (min(data$value) < 1) {
-    ref_style <- annotation_style()
     graph <- graph +
       vline_at(1, color = ref_style$color, linewidth = ref_style$linewidth)
   }
@@ -165,9 +166,9 @@ mcmc_rhat <- function(rhat, ..., size = NULL) {
     diagnostic_points(size) +
     vline_at(
       brks[-1],
-      color = "gray",
+      color = ref_style$color,
       linetype = 2,
-      linewidth = 0.25) +
+      linewidth = ref_style$linewidth * 0.25) +
     labs(y = NULL, x = expression(hat(R))) +
     scale_fill_diagnostic("rhat") +
     scale_color_diagnostic("rhat") +
@@ -238,6 +239,8 @@ mcmc_neff <- function(ratio, ..., size = NULL) {
   }
   breaks <- c(0, 0.1, 0.25, 0.5, 0.75, 1, additional_breaks)
 
+  ref_style <- annotation_style(fallback_color = "gray", fallback_linewidth = 1)
+
   ggplot(
     data,
     mapping = aes(
@@ -252,9 +255,9 @@ mcmc_neff <- function(ratio, ..., size = NULL) {
     diagnostic_points(size) +
     vline_at(
       c(0.1, 0.5, 1),
-      color = "gray",
+      color = ref_style$color,
       linetype = 2,
-      linewidth = 0.25) +
+      linewidth = ref_style$linewidth * 0.25) +
     labs(y = NULL, x = expression(N[eff]/N)) +
     scale_fill_diagnostic("neff") +
     scale_color_diagnostic("neff") +
