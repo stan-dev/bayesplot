@@ -2,6 +2,9 @@
 
 ## bayesplot (development version)
 
+- Fix assignment-in-call bug in
+  [`mcmc_rank_ecdf()`](https://mc-stan.org/bayesplot/dev/reference/MCMC-traces.md)
+  (#).
 - Replaced deprecated `dplyr` and `tidyselect` functions (`top_n`,
   `one_of`, `group_indices`) with their modern equivalents to ensure
   future compatibility.
