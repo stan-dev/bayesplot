@@ -258,6 +258,13 @@ is, bands that completely cover all of the rank ECDFs with the probability
 ECDFs and the theoretical expectation for samples originating from the
 same distribution is drawn. See Säilynoja et al. (2021) for details.
 }
+\item{\code{mcmc_trace_data()}}{
+Data-preparation back end for \code{mcmc_trace()}, \code{mcmc_trace_highlight()},
+\code{mcmc_rank_hist()}, \code{mcmc_rank_overlay()}, and \code{mcmc_rank_ecdf()}. The
+returned data frame contains columns for both the original draw values
+and their within-parameter ranks, so it can be used to build both trace
+and rank-based visualizations with \strong{ggplot2}.
+}
 }
 }
 

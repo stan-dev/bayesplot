@@ -72,6 +72,13 @@
 #'    ECDFs and the theoretical expectation for samples originating from the
 #'    same distribution is drawn. See Säilynoja et al. (2021) for details.
 #'   }
+#'   \item{`mcmc_trace_data()`}{
+#'    Data-preparation back end for `mcmc_trace()`, `mcmc_trace_highlight()`,
+#'    `mcmc_rank_hist()`, `mcmc_rank_overlay()`, and `mcmc_rank_ecdf()`. The
+#'    returned data frame contains columns for both the original draw values
+#'    and their within-parameter ranks, so it can be used to build both trace
+#'    and rank-based visualizations with **ggplot2**.
+#'   }
 #' }
 #'
 #' @template reference-improved-rhat
