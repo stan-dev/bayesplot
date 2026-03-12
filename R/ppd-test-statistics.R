@@ -93,10 +93,13 @@ ppd_stat <-
       }
     }
     graph +
-      scale_fill_ppd(guide = "none") +
-      scale_color_ppd(labels = Typred_label(), guide = guide_legend(
-        title = stat_legend_title(stat, deparse(substitute(stat))),
-        override.aes = list(fill = get_color(c(if (show_marginal) "d", "m"))))) +
+      scale_fill_ppd(guide = "none", show_marginal = show_marginal) +
+      scale_color_ppd(labels = Typred_label(),
+                      guide = guide_legend(
+                        title = stat_legend_title(stat, deparse(substitute(stat))),
+                        override.aes = list(fill = get_color(c(if (show_marginal) "d", "l")))
+                      ),
+                      show_marginal = show_marginal) +
       bayesplot_theme_get() +
       dont_expand_y_axis() +
       xaxis_title(FALSE) +
@@ -165,7 +168,8 @@ ppd_stat_freqpoly <-
       ) +
       scale_color_ppd(
         name = stat_legend_title(stat, deparse(substitute(stat))),
-        labels = Typred_label()
+        labels = Typred_label(),
+        show_marginal = show_marginal
       ) +
       dont_expand_y_axis(c(0.005, 0)) +
       bayesplot_theme_get() +
@@ -253,8 +257,10 @@ ppd_stat_2d <-
       ) +
       scale_shape_manual(lgnd_title, labels = Typred_label(),
                          values = c(ypred = 21, PPD = 23)) +
-      scale_fill_ppd(lgnd_title, labels = Typred_label()) +
-      scale_color_ppd(lgnd_title, labels = Typred_label()) +
+      scale_fill_ppd(lgnd_title, labels = Typred_label(),
+                     show_marginal = show_marginal) +
+      scale_color_ppd(lgnd_title, labels = Typred_label(),
+                      show_marginal = show_marginal) +
       labs(x = stat_labs[1], y = stat_labs[2]) +
       bayesplot_theme_get()
   }

@@ -127,10 +127,27 @@ scale_color_ppd <-
   function(name = NULL,
            values = NULL,
            labels = NULL,
+           highlight = TRUE,
+           show_marginal = FALSE,
            ...) {
+    if (isTRUE(show_marginal)) {
+      if (isTRUE(highlight)) {
+        cl <- c("dh", "lh")
+      } else {
+        cl <- c("d", "l")
+      }
+      default_values <- setNames(get_color(cl), nm = c("PPD", "ypred"))
+    } else {
+      if (isTRUE(highlight)) {
+        default_values <- get_color("mh")
+      } else {
+        default_values <- get_color("m")
+      }
+    }
+
     scale_color_ppc(
       name = name,
-      values = values %||% setNames(get_color(c("dh", "mh")), nm = c("PPD", "ypred")),
+      values = values %||% default_values,
       labels = labels %||% ypred_label(),
       ...
     )
@@ -140,10 +157,17 @@ scale_fill_ppd <-
   function(name = NULL,
            values = NULL,
            labels = NULL,
+           show_marginal = FALSE,
            ...) {
+    if (isTRUE(show_marginal)) {
+      default_values <- setNames(get_color(c("d", "l")), nm = c("PPD", "ypred"))
+    } else {
+      default_values <- get_color("m")
+    }
+
     scale_fill_ppc(
       name = name,
-      values = values %||% setNames(get_color(c("d", "m")), nm = c("PPD", "ypred")),
+      values = values %||% default_values,
       labels = labels %||% ypred_label(),
       ...
     )
