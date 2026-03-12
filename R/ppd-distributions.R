@@ -451,7 +451,7 @@ ppd_boxplot <-
               fill = "PPD"),
           notch = notch,
           linewidth = 1,
-          outlier.color = get_color("lh"),
+          outlier.color = get_color("mh"),
           outlier.alpha = 2/3,
           outlier.size = 1
         )
