@@ -678,6 +678,9 @@ ppc_violin_grouped <-
 #'   Defaults to `TRUE` when `method = "correlated"` and `test` is `"POT"` or `"PIET"`.
 #'   Otherwise defaults to `FALSE`. If `TRUE` requires the specification of `lw` or `psis_object`.
 #'   The defaults should not be changed by the user, but the option is provided for developers.
+#'   When `TRUE`, this calls `posterior::pareto_pit()`, which is proposed in
+#'   \url{https://github.com/stan-dev/posterior/pull/435}. This code path requires that PR to be merged
+#'   and released in the posterior package.
 #' @rdname PPC-distributions
 #'
 ppc_pit_ecdf <- function(y,
@@ -775,7 +778,8 @@ ppc_pit_ecdf <- function(y,
     y    <- validate_y(y)
     yrep <- validate_predictions(yrep, length(y))
 
-    pit <- pareto_pit(x = yrep, y = y, weights = NULL, log = TRUE)
+    # TODO: posterior::pareto_pit() from https://github.com/stan-dev/posterior/pull/435 - requires that PR merged
+    pit <- posterior::pareto_pit(x = yrep, y = y, weights = NULL, log = TRUE)
     K   <- K %||% length(pit)
 
   } else if (!is.null(pit)) {
@@ -824,19 +828,10 @@ ppc_pit_ecdf <- function(y,
 
     # Compute the per-observation test statistics (sorted for Shapley values)
     # and the combined Cauchy p-value.
-    test_fn <- switch(test,
-      POT  = .pot_test,
-      PIET = .piet_test,
-      PRIT = .prit_test
-    )
-
-    pit_sorted        <- sort(pit)
-    std_cauchy_values <- .compute_cauchy(test_fn(pit_sorted))
-    p_value_CCT       <- .cauchy_combination_test(
-      test_fn(pit),
-      truncate = test != "PIET"
-    )
-    pointwise_contrib <- .compute_shapley_values(std_cauchy_values)
+    # TODO: posterior::uniformity_test() from https://github.com/stan-dev/posterior/pull/435 - requires that PR merged
+    test_res <- posterior::uniformity_test(pit = pit, test = test)
+    p_value_CCT <- test_res$pvalue
+    pointwise_contrib <- test_res$pointwise
 
     # Validate gamma against computed Shapley values.
     max_contrib <- max(pointwise_contrib)
@@ -857,6 +852,7 @@ ppc_pit_ecdf <- function(y,
     )
 
     # Sorted pit data frame (used for highlighting suspicious points).
+    pit_sorted <- sort(pit)
     df_pit <- tibble::tibble(
       pit      = pit_sorted,
       ecdf_val = ecdf_pit_fn(pit_sorted) - plot_diff * pit_sorted

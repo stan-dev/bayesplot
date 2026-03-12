@@ -422,7 +422,9 @@ ppc_loo_pit_qq <- function(y,
 #' @param pareto_pit For `ppc_loo_pit_ecdf()`. Computes PIT values using Pareto-PIT method. 
 #'   Defaults to `TRUE` if `test` is either `"POT"` or `"PIET"` and no `pit` values are 
 #'   provided otherwise `FALSE`. This argument should not normally be modified by the user, 
-#'   except for development purposes.
+#'   except for development purposes. When `TRUE`, this calls `posterior::pareto_pit()`, which is
+#'   proposed in \url{https://github.com/stan-dev/posterior/pull/435}. This code path requires
+#'   that PR to be merged and released in the posterior package.
 #' @note
 #' Note that the default "independent" method is **superseded** by
 #' the "correlated" method (Tesso & Vehtari, 2026) which accounts for dependent
@@ -538,7 +540,8 @@ ppc_loo_pit_ecdf <- function(y,
     lw <- .get_lw(lw, psis_object)
     stopifnot(identical(dim(yrep), dim(lw)))
 
-    pit <- posterior::pareto_pit(x = yrep, y = y, weights = lw, log = TRUE) # TODO: pareto_pit() not yet merged into main
+    # TODO: posterior::pareto_pit() from https://github.com/stan-dev/posterior/pull/435 - requires that PR merged
+    pit <- posterior::pareto_pit(x = yrep, y = y, weights = lw, log = TRUE)
     K   <- K %||% length(pit)
 
   } else if (!is.null(pit)) {
@@ -588,19 +591,10 @@ ppc_loo_pit_ecdf <- function(y,
 
     # Compute the per-observation test statistics (sorted for Shapley values)
     # and the combined Cauchy p-value.
-    test_fn <- switch(test,
-      POT  = .pot_test,
-      PIET = .piet_test,
-      PRIT = .prit_test
-    )
-
-    pit_sorted           <- sort(pit)
-    std_cauchy_values    <- .compute_cauchy(test_fn(pit_sorted))
-    p_value_CCT          <- .cauchy_combination_test(
-      test_fn(pit),
-      truncate = test != "PIET"
-    )
-    pointwise_contrib    <- .compute_shapley_values(std_cauchy_values)
+    # TODO: posterior::uniformity_test() from https://github.com/stan-dev/posterior/pull/435 - requires that PR merged
+    test_res <- posterior::uniformity_test(pit = pit, test = test)
+    p_value_CCT <- test_res$pvalue
+    pointwise_contrib <- test_res$pointwise
 
     # Validate gamma against computed Shapley values.
     max_contrib <- max(pointwise_contrib)
@@ -621,6 +615,7 @@ ppc_loo_pit_ecdf <- function(y,
     )
 
     # Sorted pit data frame (used for highlighting suspicious points).
+    pit_sorted <- sort(pit)
     df_pit <- tibble::tibble(
       pit      = pit_sorted,
       ecdf_val = ecdf_pit_fn(pit_sorted) - plot_diff * pit_sorted

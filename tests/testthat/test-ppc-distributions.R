@@ -588,7 +588,7 @@ testthat::test_that("ppc_pit_ecdf takes correct PIT computation branch", {
       y    <- validate_y(y)
       yrep <- validate_predictions(yrep, length(y))
 
-      pit  <- pareto_pit(x = yrep, y = y, weights = NULL, log = TRUE)
+      pit  <- posterior::pareto_pit(x = yrep, y = y, weights = NULL, log = TRUE)
       K    <- K %||% length(pit)
 
     } else if (!is.null(pit)) {
