@@ -538,7 +538,7 @@ ppc_loo_pit_ecdf <- function(y,
     lw <- .get_lw(lw, psis_object)
     stopifnot(identical(dim(yrep), dim(lw)))
 
-    pit <- pareto_pit(x = yrep, y = y, weights = lw, log = TRUE)
+    pit <- posterior::pareto_pit(x = yrep, y = y, weights = lw, log = TRUE) # TODO: pareto_pit() not yet merged into main
     K   <- K %||% length(pit)
 
   } else if (!is.null(pit)) {
