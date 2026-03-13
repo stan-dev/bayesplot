@@ -80,10 +80,27 @@ test_that("'description' & 'rating' columns are correct (#176)", {
 })
 
 test_that("diagnostic color helpers handle neff names explicitly", {
+  # wrappers accept both aliases
   expect_no_error(scale_color_diagnostic("neff"))
   expect_no_error(scale_fill_diagnostic("neff"))
-  expect_no_error(diagnostic_color_scale("neff", aesthetic = "color"))
-  expect_no_error(diagnostic_color_scale("neff_ratio", aesthetic = "color"))
+  expect_no_error(scale_color_diagnostic("neff_ratio"))
+  expect_no_error(scale_fill_diagnostic("neff_ratio"))
+
+  # aliases map to equivalent scales
+  color_neff <- scale_color_diagnostic("neff")
+  color_neff_ratio <- scale_color_diagnostic("neff_ratio")
+  expect_equal(color_neff$palette(3), color_neff_ratio$palette(3))
+  expect_equal(color_neff$labels, color_neff_ratio$labels)
+
+  fill_neff <- scale_fill_diagnostic("neff")
+  fill_neff_ratio <- scale_fill_diagnostic("neff_ratio")
+  expect_equal(fill_neff$palette(3), fill_neff_ratio$palette(3))
+  expect_equal(fill_neff$labels, fill_neff_ratio$labels)
+
+  base_neff <- diagnostic_color_scale("neff", aesthetic = "color")
+  base_neff_ratio <- diagnostic_color_scale("neff_ratio", aesthetic = "color")
+  expect_equal(base_neff$palette(3), base_neff_ratio$palette(3))
+  expect_equal(base_neff$labels, base_neff_ratio$labels)
 })
 
 test_that("mcmc_acf & mcmc_acf_bar return a ggplot object", {

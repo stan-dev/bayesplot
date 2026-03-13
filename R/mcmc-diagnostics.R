@@ -425,21 +425,26 @@ diagnostic_points <- function(size = NULL) {
 # Functions wrapping around scale_color_manual() and scale_fill_manual(), used to
 # color the intervals by rhat value
 scale_color_diagnostic <- function(diagnostic = c("rhat", "neff")) {
-  d <- match.arg(diagnostic)
+  d <- match.arg(diagnostic, choices = c("rhat", "neff", "neff_ratio"))
   diagnostic_color_scale(d, aesthetic = "color")
 }
 
 scale_fill_diagnostic <- function(diagnostic = c("rhat", "neff")) {
-  d <- match.arg(diagnostic)
+  d <- match.arg(diagnostic, choices = c("rhat", "neff", "neff_ratio"))
   diagnostic_color_scale(d, aesthetic = "fill")
 }
 
-diagnostic_color_scale <- function(diagnostic = c("rhat", "neff_ratio"),
-                                   aesthetic = c("color", "fill")) {
+normalize_diagnostic_name <- function(diagnostic) {
   diagnostic <- match.arg(diagnostic, choices = c("rhat", "neff", "neff_ratio"))
   if (diagnostic == "neff") {
     diagnostic <- "neff_ratio"
   }
+  diagnostic
+}
+
+diagnostic_color_scale <- function(diagnostic = c("rhat", "neff_ratio"),
+                                   aesthetic = c("color", "fill")) {
+  diagnostic <- normalize_diagnostic_name(diagnostic)
   aesthetic <- match.arg(aesthetic)
   dc <- diagnostic_colors(diagnostic, aesthetic)
   do.call(
@@ -455,10 +460,7 @@ diagnostic_color_scale <- function(diagnostic = c("rhat", "neff_ratio"),
 
 diagnostic_colors <- function(diagnostic = c("rhat", "neff_ratio"),
                               aesthetic = c("color", "fill")) {
-  diagnostic <- match.arg(diagnostic, choices = c("rhat", "neff", "neff_ratio"))
-  if (diagnostic == "neff") {
-    diagnostic <- "neff_ratio"
-  }
+  diagnostic <- normalize_diagnostic_name(diagnostic)
   aesthetic <- match.arg(aesthetic)
   color_levels <- c("light", "mid", "dark")
   if (diagnostic == "neff_ratio") {
