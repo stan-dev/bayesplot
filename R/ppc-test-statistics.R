@@ -449,9 +449,9 @@ Tyrep_label <- function() expression(italic(T)(italic(y)[rep]))
 
 message_if_using_mean <- function(stat) {
   if (is.character(stat) && stat == "mean") {
-    message(
+    inform(paste0(
       "Note: in most cases the default test statistic 'mean' is ",
       "too weak to detect anything of interest."
-    )
+    ))
   }
 }
