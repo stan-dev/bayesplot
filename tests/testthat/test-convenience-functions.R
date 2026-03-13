@@ -180,8 +180,9 @@ test_that("yaxis_ticks returns correct theme object", {
 
 # overlay functions -------------------------------------------------------
 test_that("overlay_function returns the correct object", {
+  expect_error(overlay_function(), 'argument "fun" is missing')
   a <- overlay_function(fun = "dnorm")
-  b <- geom_function(fun = "dnorm", inherit.aes = FALSE)
+  b <- stat_function(fun = "dnorm", inherit.aes = FALSE)
   a$constructor <- b$constructor <- NULL
   expect_equal(a, b, ignore_function_env = TRUE)
 })

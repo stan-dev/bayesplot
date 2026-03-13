@@ -21,7 +21,7 @@
 #'   [ggplot2::element_line()].
 #'
 #'   For `overlay_function`, `...` is passed to
-#'   [ggplot2::geom_function()].
+#'   [ggplot2::stat_function()].
 #'
 #' @return
 #' A **ggplot2** layer or [ggplot2::theme()] object that can be
@@ -91,7 +91,7 @@
 #' }
 #'
 #' \subsection{Superimpose a function on an existing plot}{
-#' * `overlay_function()` is a simple wrapper for [ggplot2::geom_function()] but
+#' * `overlay_function()` is a simple wrapper for [ggplot2::stat_function()] but
 #'   with the `inherit.aes` argument fixed to `FALSE`. Fixing `inherit.aes=FALSE`
 #'   will avoid potential errors due to the [ggplot2::aes()]thetic mapping used by
 #'   certain **bayesplot** plotting functions.
@@ -476,7 +476,7 @@ grid_lines_y <- function(color = "gray50", linewidth = 0.2) {
 #' @rdname bayesplot-helpers
 #' @export
 overlay_function <- function(...) {
-  geom_function(..., inherit.aes = FALSE)
+  stat_function(..., inherit.aes = FALSE)
 }
 
 
