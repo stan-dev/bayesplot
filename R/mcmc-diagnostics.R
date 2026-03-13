@@ -255,8 +255,8 @@ mcmc_neff <- function(ratio, ..., size = NULL) {
       linetype = 2,
       linewidth = 0.25) +
     labs(y = NULL, x = expression(N[eff]/N)) +
-    scale_fill_diagnostic("neff") +
-    scale_color_diagnostic("neff") +
+    scale_fill_diagnostic("neff_ratio") +
+    scale_color_diagnostic("neff_ratio") +
     scale_x_continuous(
       breaks = breaks,
       # as.character truncates trailing zeroes, while ggplot default does not
@@ -287,8 +287,8 @@ mcmc_neff_hist <- function(ratio, ..., binwidth = NULL, bins = NULL, breaks = NU
       binwidth = binwidth,
       bins = bins,
       breaks = breaks) +
-    scale_color_diagnostic("neff") +
-    scale_fill_diagnostic("neff") +
+    scale_color_diagnostic("neff_ratio") +
+    scale_fill_diagnostic("neff_ratio") +
     labs(x = expression(N[eff]/N), y = NULL) +
     dont_expand_y_axis(c(0.005, 0)) +
     yaxis_title(FALSE) +
@@ -424,12 +424,12 @@ diagnostic_points <- function(size = NULL) {
 
 # Functions wrapping around scale_color_manual() and scale_fill_manual(), used to
 # color the intervals by rhat value
-scale_color_diagnostic <- function(diagnostic = c("rhat", "neff")) {
+scale_color_diagnostic <- function(diagnostic = c("rhat", "neff_ratio")) {
   d <- match.arg(diagnostic)
   diagnostic_color_scale(d, aesthetic = "color")
 }
 
-scale_fill_diagnostic <- function(diagnostic = c("rhat", "neff")) {
+scale_fill_diagnostic <- function(diagnostic = c("rhat", "neff_ratio")) {
   d <- match.arg(diagnostic)
   diagnostic_color_scale(d, aesthetic = "fill")
 }
