@@ -126,10 +126,10 @@ ppc_km_overlay <- function(
     stop("`extrapolation_factor` must be greater than or equal to 1.", call. = FALSE)
   }
   if (extrapolation_factor == 1.2) {
-    message(
+    inform(paste0(
       "Note: `extrapolation_factor` now defaults to 1.2 (20%).\n",
       "To display all posterior predictive draws, set `extrapolation_factor = Inf`."
-    )
+    ))
   }
 
   data <- ppc_data(y, yrep, group = status_y)
