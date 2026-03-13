@@ -71,7 +71,15 @@ ppd_dens_overlay <-
       yaxis_title(FALSE) +
       xaxis_title(FALSE) +
       yaxis_text(FALSE) +
-      yaxis_ticks(FALSE)
+      yaxis_ticks(FALSE) +
+      scale_color_ppd(
+        highlight = FALSE,
+        show_marginal = show_marginal,
+        # in case user turns legend back on
+        guide = guide_legend(
+          override.aes = list(size = 2 * size, alpha = 1)
+        )
+      )
 
     if (isTRUE(show_marginal)) {
       p +
@@ -84,21 +92,9 @@ ppd_dens_overlay <-
           kernel = kernel,
           bounds = bounds,
           n = n_dens
-        ) +
-        scale_color_ppd(
-          labels = ypred_label(),
-          values = setNames(get_color(c("d", "m")), nm = c("PPD", "ypred")),
-          guide = guide_legend(
-            override.aes = list(size = 2 * size, alpha = 1))
         )
     } else {
-      p + scale_color_ppd(
-        values = get_color("m"),
-        # in case user turns legend back on
-        guide = guide_legend(
-          override.aes = list(size = 2 * size, alpha = 1))
-      ) +
-        legend_none()
+      p + legend_none()
     }
 
   }
@@ -134,7 +130,15 @@ ppd_ecdf_overlay <-
       scale_y_continuous(breaks = c(0, 0.5, 1)) +
       bayesplot_theme_get() +
       yaxis_title(FALSE) +
-      xaxis_title(FALSE)
+      xaxis_title(FALSE) +
+      scale_color_ppd(
+        highlight = FALSE,
+        show_marginal = show_marginal,
+        # in case user turns legend back on
+        guide = guide_legend(
+          override.aes = list(size = 2 * size, alpha = 1)
+        )
+      )
 
     if (isTRUE(show_marginal)) {
       p +
@@ -143,21 +147,9 @@ ppd_ecdf_overlay <-
           geom = if (discrete) "step" else "line",
           linewidth = 1,
           pad = pad
-        ) +
-        scale_color_ppd(
-          labels = ypred_label(),
-          values = setNames(get_color(c("d", "m")), nm = c("PPD", "ypred")),
-          guide = guide_legend(
-            override.aes = list(size = 2 * size, alpha = 1))
         )
     } else {
-      p +
-        scale_color_ppd(
-          values = get_color("m"),
-          guide = guide_legend( # in case user turns legend back on
-            override.aes = list(linewidth = 2 * size, alpha = 1))
-        ) +
-        legend_none()
+      p + legend_none()
     }
   }
 
@@ -194,8 +186,8 @@ ppd_dens <-
         yaxis_ticks(FALSE) +
         xaxis_title(FALSE) +
         facet_text(FALSE) +
-        scale_color_ppd() +
-        scale_fill_ppd()
+        scale_color_ppd(show_marginal = show_marginal) +
+        scale_fill_ppd(show_marginal = show_marginal)
 
       if (isTRUE(show_marginal)) {
         data2 <- transform(data, rep_label = "PPD")
@@ -247,8 +239,8 @@ ppd_hist <-
       yaxis_ticks(FALSE) +
       xaxis_title(FALSE) +
       facet_text(FALSE) +
-      scale_color_ppd() +
-      scale_fill_ppd()
+      scale_color_ppd(show_marginal = show_marginal) +
+      scale_fill_ppd(show_marginal = show_marginal)
 
     if (isTRUE(show_marginal)) {
       data2 <- transform(data, rep_label = "PPD")
@@ -302,8 +294,8 @@ ppd_dots <-
       yaxis_ticks(FALSE) +
       xaxis_title(FALSE) +
       facet_text(FALSE) +
-      scale_color_ppd() +
-      scale_fill_ppd()
+      scale_color_ppd(show_marginal = show_marginal) +
+      scale_fill_ppd(show_marginal = show_marginal)
 
     if (isTRUE(show_marginal)) {
       data2 <- transform(data, rep_label = "PPD")
@@ -363,8 +355,8 @@ ppd_freqpoly <-
       yaxis_ticks(FALSE) +
       xaxis_title(FALSE) +
       facet_text(FALSE) +
-      scale_color_ppd() +
-      scale_fill_ppd()
+      scale_color_ppd(show_marginal = show_marginal) +
+      scale_fill_ppd(show_marginal = show_marginal)
 
 
     if (isTRUE(show_marginal)) {
@@ -442,8 +434,8 @@ ppd_boxplot <-
         outlier.alpha = 2/3,
         outlier.size = 1
       ) +
-      scale_color_ppd() +
-      scale_fill_ppd() +
+      scale_color_ppd(show_marginal = show_marginal) +
+      scale_fill_ppd(show_marginal = show_marginal) +
       scale_x_discrete(labels = function(x) parse(text=x)) +
       bayesplot_theme_get() +
       yaxis_title(FALSE) +
@@ -459,7 +451,7 @@ ppd_boxplot <-
               fill = "PPD"),
           notch = notch,
           linewidth = 1,
-          outlier.color = get_color("lh"),
+          outlier.color = get_color("mh"),
           outlier.alpha = 2/3,
           outlier.size = 1
         )
