@@ -325,7 +325,7 @@ For example, `ppc_intervals_data()` returns the quantile summaries that
 `ppc_intervals()` uses:
 
 ```{r data_intervals, eval=params$EVAL}
-d <- ppc_intervals_data(y, yrep, prob = 0.5, prob_outer = 0.9)
+d <- ppc_intervals_data(y, yrep_nb, prob = 0.5, prob_outer = 0.9)
 head(d)
 ```
 
@@ -344,7 +344,7 @@ ggplot(d, aes(x = x, y = m)) +
 Similarly, `ppc_stat_data()` returns the computed test statistics:
 
 ```{r data_stat, eval=params$EVAL, message=FALSE}
-stat_d <- ppc_stat_data(y, yrep, stat = "median")
+stat_d <- ppc_stat_data(y, yrep_nb, stat = "median")
 head(stat_d)
 ```
 
