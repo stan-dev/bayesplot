@@ -109,7 +109,7 @@
 #' color_scheme_set("pink")
 #' (p3 <- mcmc_scatter(x, pars = c("alpha", "beta[3]"), alpha = 0.25, size = 3))
 #' p3 + geom_smooth(method = "lm", se = FALSE, color = "gray20",
-#'                  size = .75, linetype = 2)
+#'                  linewidth = .75, linetype = 2)
 #'
 #' \donttest{
 #' if (requireNamespace("hexbin", quietly = TRUE)) {

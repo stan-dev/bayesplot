@@ -647,7 +647,7 @@ mcmc_intervals_data <- function(x,
 
     rhat_tbl <- rhat %>%
       mcmc_rhat_data() %>%
-      select(one_of("parameter"),
+      select(all_of("parameter"),
              rhat_value = "value",
              rhat_rating = "rating",
              rhat_description = "description") %>%
@@ -663,7 +663,7 @@ mcmc_intervals_data <- function(x,
 # Don't import `filter`: otherwise, you get a warning when using
 # `devtools::load_all(".")` because stats also has a `filter` function
 
-#' @importFrom dplyr inner_join one_of top_n
+#' @importFrom dplyr inner_join all_of slice_min
 #' @rdname MCMC-intervals
 #' @export
 mcmc_areas_data <- function(x,
@@ -736,14 +736,14 @@ mcmc_areas_data <- function(x,
 
   # Find the density values closest to the point estimate
   point_ests <- intervals %>%
-    select(one_of("parameter", "m"))
+    select(all_of(c("parameter", "m")))
 
   point_centers <- data_inner %>%
     inner_join(point_ests, by = "parameter") %>%
     group_by(.data$parameter) %>%
     mutate(diff = abs(.data$m - .data$x)) %>%
-    dplyr::top_n(1, -.data$diff) %>%
-    select(one_of("parameter", "x", "m")) %>%
+    dplyr::slice_min(order_by = .data$diff, n = 1) %>%
+    select(all_of(c("parameter", "x", "m"))) %>%
     rename(center = "x") %>%
     ungroup()
 
@@ -765,15 +765,15 @@ mcmc_areas_data <- function(x,
   }
 
   data <- dplyr::bind_rows(data_inner, data_outer, points) %>%
-    select(one_of("parameter", "interval", "interval_width",
-                  "x", "density", "scaled_density")) %>%
+    select(all_of(c("parameter", "interval", "interval_width",
+                  "x", "density", "scaled_density"))) %>%
     # Density scaled so the highest in entire dataframe has height 1
     mutate(plotting_density = .data$density / max(.data$density))
 
   if (rlang::has_name(intervals, "rhat_value")) {
     rhat_info <- intervals %>%
-      select(one_of("parameter", "rhat_value",
-                    "rhat_rating", "rhat_description"))
+      select(all_of(c("parameter", "rhat_value",
+                    "rhat_rating", "rhat_description")))
     data <- inner_join(data, rhat_info, by = "parameter")
   }
   data
@@ -824,18 +824,15 @@ compute_column_density <- function(df, group_vars, value_var, ...) {
     syms()
 
   # Tuck away the subgroups to compute densities on into nested dataframes
-  sub_df <- dplyr::select(df, !!! group_cols, !! value_var)
-
   group_df <- df %>%
     dplyr::select(!!! group_cols, !! value_var) %>%
     group_by(!!! group_cols)
 
   by_group <- group_df %>%
-    split(dplyr::group_indices(group_df)) %>%
+    dplyr::group_split() %>%
     lapply(pull, !! value_var)
 
-  nested <- df %>%
-    dplyr::distinct(!!! group_cols) %>%
+  nested <- dplyr::group_keys(group_df) %>%
     mutate(data = by_group)
 
   nested$density <- lapply(nested$data, compute_interval_density, ...)

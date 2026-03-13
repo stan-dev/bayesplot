@@ -515,7 +515,7 @@ mcmc_rank_ecdf <-
     } else {
       K
     },
-    L <- n_chain
+    L = n_chain
   )
   data_lim <- data.frame(
     upper = lims$upper / n_iter - (plot_diff == TRUE) * x,
