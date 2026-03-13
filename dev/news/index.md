@@ -2,6 +2,11 @@
 
 ## bayesplot (development version)
 
+- Use [`rlang::warn()`](https://rlang.r-lib.org/reference/abort.html)
+  and [`rlang::inform()`](https://rlang.r-lib.org/reference/abort.html)
+  for selected PPC user messages instead of base
+  [`warning()`](https://rdrr.io/r/base/warning.html) and
+  [`message()`](https://rdrr.io/r/base/message.html).
 - Standardize input validation errors in
   [`ppc_km_overlay()`](https://mc-stan.org/bayesplot/dev/reference/PPC-censoring.md)
   and interpolation helpers to use

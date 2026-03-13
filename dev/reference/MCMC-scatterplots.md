@@ -384,15 +384,13 @@ p +
 
 
 # add ellipse
-p + stat_ellipse(level = 0.9, color = "gray20", size = 1)
-#> Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
-#> ℹ Please use `linewidth` instead.
+p + stat_ellipse(level = 0.9, color = "gray20", linewidth = 1)
 
 
 # add contour
 color_scheme_set("red")
 p2 <- mcmc_scatter(x, pars = c("alpha", "sigma"), size = 3.5, alpha = 0.25)
-p2 + stat_density_2d(color = "black", size = .5)
+p2 + stat_density_2d(color = "black", linewidth = .5)
 
 
 # can also add lines/smooths

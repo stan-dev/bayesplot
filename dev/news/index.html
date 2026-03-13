@@ -63,7 +63,8 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="bayesplot-development-version">bayesplot (development version)<a class="anchor" aria-label="anchor" href="#bayesplot-development-version"></a></h2>
-<ul><li>Standardize input validation errors in <code><a href="../reference/PPC-censoring.html">ppc_km_overlay()</a></code> and interpolation helpers to use <code><a href="https://rlang.r-lib.org/reference/abort.html" class="external-link">rlang::abort()</a></code> for consistent error handling.</li>
+<ul><li>Use <code><a href="https://rlang.r-lib.org/reference/abort.html" class="external-link">rlang::warn()</a></code> and <code><a href="https://rlang.r-lib.org/reference/abort.html" class="external-link">rlang::inform()</a></code> for selected PPC user messages instead of base <code><a href="https://rdrr.io/r/base/warning.html" class="external-link">warning()</a></code> and <code><a href="https://rdrr.io/r/base/message.html" class="external-link">message()</a></code>.</li>
+<li>Standardize input validation errors in <code><a href="../reference/PPC-censoring.html">ppc_km_overlay()</a></code> and interpolation helpers to use <code><a href="https://rlang.r-lib.org/reference/abort.html" class="external-link">rlang::abort()</a></code> for consistent error handling.</li>
 <li>Fix assignment-in-call bug in <code><a href="../reference/MCMC-traces.html">mcmc_rank_ecdf()</a></code> (#).</li>
 <li>Replaced deprecated <code>dplyr</code> and <code>tidyselect</code> functions (<code>top_n</code>, <code>one_of</code>, <code>group_indices</code>) with their modern equivalents to ensure future compatibility. (<a href="https://github.com/stan-dev/bayesplot/issues/431" class="external-link">#431</a>)</li>
 <li>Documentation added for all exported <code>*_data()</code> functions (<a href="https://github.com/stan-dev/bayesplot/issues/209" class="external-link">#209</a>)</li>

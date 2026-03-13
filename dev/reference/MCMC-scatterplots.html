@@ -425,15 +425,13 @@ Gelman, A. (2019), Visualization in Bayesian workflow.
 <span class="r-plt img"><img src="MCMC-scatterplots-2.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># add ellipse</span></span></span>
-<span class="r-in"><span><span class="va">p</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/stat_ellipse.html" class="external-link">stat_ellipse</a></span><span class="op">(</span>level <span class="op">=</span> <span class="fl">0.9</span>, color <span class="op">=</span> <span class="st">"gray20"</span>, size <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Please use `linewidth` instead.</span>
+<span class="r-in"><span><span class="va">p</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/stat_ellipse.html" class="external-link">stat_ellipse</a></span><span class="op">(</span>level <span class="op">=</span> <span class="fl">0.9</span>, color <span class="op">=</span> <span class="st">"gray20"</span>, linewidth <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="MCMC-scatterplots-3.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># add contour</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="bayesplot-colors.html">color_scheme_set</a></span><span class="op">(</span><span class="st">"red"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">p2</span> <span class="op">&lt;-</span> <span class="fu">mcmc_scatter</span><span class="op">(</span><span class="va">x</span>, pars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"alpha"</span>, <span class="st">"sigma"</span><span class="op">)</span>, size <span class="op">=</span> <span class="fl">3.5</span>, alpha <span class="op">=</span> <span class="fl">0.25</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">p2</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_density_2d.html" class="external-link">stat_density_2d</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"black"</span>, size <span class="op">=</span> <span class="fl">.5</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">p2</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_density_2d.html" class="external-link">stat_density_2d</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"black"</span>, linewidth <span class="op">=</span> <span class="fl">.5</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="MCMC-scatterplots-4.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># can also add lines/smooths</span></span></span>
