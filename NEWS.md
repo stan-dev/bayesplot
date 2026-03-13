@@ -1,6 +1,8 @@
 # bayesplot (development version)
 
 * Remove y-axis line from density, histogram, dot, and frequency polygon plots where the y-axis has no meaningful scale (#418)
+* Fix assignment-in-call bug in `mcmc_rank_ecdf()` (#).
+* Replaced deprecated `dplyr` and `tidyselect` functions (`top_n`, `one_of`, `group_indices`) with their modern equivalents to ensure future compatibility. (#431)
 * Documentation added for all exported `*_data()` functions (#209)
 * Improved documentation for `binwidth`, `bins`, and `breaks` arguments to clarify they are passed to `ggplot2::geom_area()` and `ggdist::stat_dots()` in addition to `ggplot2::geom_histogram()`
 * Improved documentation for `freq` argument to clarify it applies to frequency polygons in addition to histograms

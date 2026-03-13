@@ -489,7 +489,7 @@ mcmc_dots_by_chain <- function(
   data <- melt_mcmc(x, value.name = "value")
   n_param <- num_params(data)
 
-  graph <- ggplot(data, aes(x = ~ value)) +
+  graph <- ggplot(data, aes(x = .data$value)) +
     geom_histogram(
       set_hist_aes(freq),
       fill = get_color("mid"),

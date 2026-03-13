@@ -236,11 +236,11 @@
 <rect x='666.24' y='283.81' width='16.57' height='16.57' style='stroke-width: 0.53; stroke: #B3CDE0; stroke-linecap: butt; stroke-linejoin: miter; fill: #D1E1EC; fill-opacity: 0.50;' />
 <rect x='665.89' y='300.74' width='17.28' height='17.28' style='stroke-width: 2.33; stroke: #FFFFFF; fill: #FFFFFF;' />
 <rect x='666.24' y='301.09' width='16.57' height='16.57' style='stroke-width: 0.53; stroke: #005B96; stroke-linecap: butt; stroke-linejoin: miter; fill: #6497B1;' />
-<text x='689.15' y='293.85' style='font-size: 13.20px; font-family: sans;' textLength='7.31px' lengthAdjust='spacingAndGlyphs'>π</text>
-<text x='696.46' y='296.29' style='font-size: 9.24px; font-family: sans;' textLength='6.16px' lengthAdjust='spacingAndGlyphs'>E</text>
-<text x='689.15' y='311.13' style='font-size: 13.20px; font-family: sans;' textLength='7.31px' lengthAdjust='spacingAndGlyphs'>π</text>
-<text x='696.46' y='313.57' style='font-size: 9.24px; font-family: sans;' textLength='5.42px' lengthAdjust='spacingAndGlyphs'>Δ</text>
-<text x='701.88' y='313.57' style='font-size: 9.24px; font-family: sans;' textLength='6.16px' lengthAdjust='spacingAndGlyphs'>E</text>
+<text x='689.15' y='293.84' style='font-size: 13.20px; font-family: sans;' textLength='7.31px' lengthAdjust='spacingAndGlyphs'>π</text>
+<text x='696.46' y='296.30' style='font-size: 9.24px; font-family: sans;' textLength='6.16px' lengthAdjust='spacingAndGlyphs'>E</text>
+<text x='689.15' y='311.12' style='font-size: 13.20px; font-family: sans;' textLength='7.31px' lengthAdjust='spacingAndGlyphs'>π</text>
+<text x='696.46' y='313.58' style='font-size: 9.24px; font-family: sans;' textLength='5.42px' lengthAdjust='spacingAndGlyphs'>Δ</text>
+<text x='701.88' y='313.58' style='font-size: 9.24px; font-family: sans;' textLength='6.16px' lengthAdjust='spacingAndGlyphs'>E</text>
 <text x='5.98' y='15.89' style='font-size: 14.40px; font-family: sans;' textLength='182.52px' lengthAdjust='spacingAndGlyphs'>mcmc_nuts_energy (default)</text>
 </g>
 </svg>
