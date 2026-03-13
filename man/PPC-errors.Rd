@@ -100,18 +100,18 @@ to control faceting. Note: if \code{scales} is not included in \code{facet_args}
 then \strong{bayesplot} may use \code{scales="free"} as the default (depending
 on the plot) instead of the \strong{ggplot2} default of \code{scales="fixed"}.}
 
-\item{binwidth}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}} to override
-the default binwidth.}
+\item{binwidth}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}}, \code{\link[ggplot2:geom_ribbon]{ggplot2::geom_area()}},
+and \code{\link[ggdist:stat_dots]{ggdist::stat_dots()}} to override the default binwidth.}
 
 \item{bins}{For \code{ppc_error_binned()}, the number of bins to use (approximately).}
 
-\item{breaks}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}} as an
-alternative to \code{binwidth}.}
+\item{breaks}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}} as an alternative to
+\code{binwidth}.}
 
-\item{freq}{For histograms, \code{freq=TRUE} (the default) puts count on the
-y-axis. Setting \code{freq=FALSE} puts density on the y-axis. (For many
-plots the y-axis text is off by default. To view the count or density
-labels on the y-axis see the \code{\link[=yaxis_text]{yaxis_text()}} convenience
+\item{freq}{For histograms and frequency polygons, \code{freq=TRUE} (the default)
+puts count on the y-axis. Setting \code{freq=FALSE} puts density on the y-axis.
+(For many plots the y-axis text is off by default. To view the count or
+density labels on the y-axis see the \code{\link[=yaxis_text]{yaxis_text()}} convenience
 function.)}
 
 \item{group}{A grouping variable of the same length as \code{y}.
@@ -132,7 +132,10 @@ return a scalar statistic. The function name is displayed in the axis-label.
 Defaults to \code{"mean"}.}
 }
 \value{
-A ggplot object that can be further customized using the \strong{ggplot2} package.
+The plotting functions return a ggplot object that can be further
+customized using the \strong{ggplot2} package. The functions with suffix
+\verb{_data()} return the data that would have been drawn by the plotting
+function.
 }
 \description{
 Various plots of predictive errors \code{y - yrep}. See the
@@ -185,6 +188,12 @@ Intended for use with binomial data. A separate binned error plot (similar
 to \code{arm::binnedplot()}) is generated for each dataset (row) in \code{yrep}. For
 this plot \code{y} and \code{yrep} should contain proportions rather than counts,
 and \code{yrep} should have only a small number of rows.
+}
+\item{\code{ppc_error_data()}}{
+Data-preparation back end for the \verb{ppc_error_*()} family of plotting
+functions. Users can call \code{ppc_error_data()} directly to obtain the
+data frame of predictive errors (\code{y - yrep}) and create custom error
+visualizations with \strong{ggplot2}.
 }
 }
 }

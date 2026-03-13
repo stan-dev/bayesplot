@@ -45,6 +45,11 @@
 #'   Same as `ppc_bars()` but a separate plot (facet) is generated for each
 #'   level of a grouping variable.
 #' }
+#' \item{`ppc_bars_data()`}{
+#'   Data-preparation back end for `ppc_bars()` and `ppc_bars_grouped()`.
+#'   Users can call `ppc_bars_data()` directly to obtain the prepared data
+#'   frame and create custom visualizations with **ggplot2**.
+#' }
 #' \item{`ppc_rootogram()`}{
 #'   Rootograms allow for diagnosing problems in count data models such as
 #'   overdispersion or excess zeros. In `standing`, `hanging`, and `suspended`
@@ -359,7 +364,7 @@ ppc_rootogram <- function(y,
     if (style == "standing") {
       graph <- graph + dont_expand_y_axis()
     } else {
-      graph <- graph + hline_0(size = 0.4)
+      graph <- graph + hline_0(linewidth = 0.4)
     }
   }
 
