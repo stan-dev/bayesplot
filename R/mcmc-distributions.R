@@ -15,7 +15,7 @@
 #' @param ... For dot plots, optional additional arguments to pass to [ggdist::stat_dots()].
 #' @param alpha Passed to the geom to control the transparency.
 #'
-#' @template return-ggplot
+#' @template return-ggplot-or-data
 #'
 #' @section Plot Descriptions:
 #' \describe{
@@ -47,6 +47,12 @@
 #'    but overlaid on a single plot. In `mcmc_dens_overlay()` parameters
 #'    appear in separate facets; in `mcmc_dens_chains()` they appear in the
 #'    same panel and can overlap vertically.
+#'   }
+#'   \item{`mcmc_dens_chains_data()`}{
+#'    Data-preparation back end for `mcmc_dens_chains()`. Users can call this
+#'    function directly to obtain the prepared long-format data frame of MCMC
+#'    draws (with chain information retained) and create custom visualizations
+#'    with **ggplot2**.
 #'   }
 #' }
 #'
@@ -483,7 +489,7 @@ mcmc_dots_by_chain <- function(
   data <- melt_mcmc(x, value.name = "value")
   n_param <- num_params(data)
 
-  graph <- ggplot(data, aes(x = ~ value)) +
+  graph <- ggplot(data, aes(x = .data$value)) +
     geom_histogram(
       set_hist_aes(freq),
       fill = get_color("mid"),

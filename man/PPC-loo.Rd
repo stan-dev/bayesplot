@@ -223,7 +223,10 @@ order of the observations. The alternative (\code{"median"}) arranges them
 by median value from smallest (left) to largest (right).}
 }
 \value{
-A ggplot object that can be further customized using the \strong{ggplot2} package.
+The plotting functions return a ggplot object that can be further
+customized using the \strong{ggplot2} package. The functions with suffix
+\verb{_data()} return the data that would have been drawn by the plotting
+function.
 }
 \description{
 Leave-One-Out (LOO) predictive checks. See the \strong{Plot Descriptions} section,
@@ -233,6 +236,17 @@ for details.
 \section{Plot Descriptions}{
 
 \describe{
+\item{\code{ppc_loo_pit_data()}}{
+This function prepares LOO-PIT data for plotting with \strong{ggplot2}. It is
+the data-preparation back end for the LOO-PIT plotting functions
+(\code{ppc_loo_pit_overlay()}, \code{ppc_loo_pit_qq()}, and \code{ppc_loo_pit_ecdf()}),
+and users can call it directly to create custom LOO-PIT plots using
+ggplot2. The function computes the leave-one-out probability integral
+transform (LOO-PIT) values and returns a data frame that can be used to
+build ggplot objects. This is useful when you want to create custom
+visualizations of LOO-PIT values beyond what the built-in plotting
+functions provide.
+}
 \item{\code{ppc_loo_pit_overlay()}, \code{ppc_loo_pit_qq()}, \code{ppc_loo_pit_ecdf()}}{
 The calibration of marginal predictions can be assessed using probability
 integral transformation (PIT) checks. LOO improves the check by avoiding the
