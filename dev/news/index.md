@@ -41,6 +41,8 @@
 - Default to `quantiles=100` for all dot plots by
   [@behramulukir](https://github.com/behramulukir)
   ([\#402](https://github.com/stan-dev/bayesplot/issues/402))
+- Use `"neff_ratio"` consistently in diagnostic color scale helpers to
+  avoid relying on partial matching of `"neff"`.
 
 ## bayesplot 1.15.0
 
