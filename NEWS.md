@@ -1,5 +1,6 @@
 # bayesplot (development version)
 
+* Use `warn()` and `inform()` for selected PPC user messages instead of base `warning()` and `message()`.
 * Fix assignment-in-call bug in `mcmc_rank_ecdf()` (#).
 * Replaced deprecated `dplyr` and `tidyselect` functions (`top_n`, `one_of`, `group_indices`) with their modern equivalents to ensure future compatibility. (#431)
 * Documentation added for all exported `*_data()` functions (#209)
