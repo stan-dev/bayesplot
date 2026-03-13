@@ -30,10 +30,11 @@ SystemRequirements: pandoc (>= 1.12.3), pandoc-citeproc
 Depends:
     R (>= 4.1.0)
 Imports:
-    dplyr (>= 0.8.0),
+    dplyr (>= 1.0.0),
     ggplot2 (>= 3.4.0),
     ggridges (>= 0.5.5),
     glue,
+    lifecycle,
     posterior,
     reshape2,
     rlang (>= 0.3.0),
