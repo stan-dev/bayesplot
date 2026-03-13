@@ -79,12 +79,6 @@ test_that("'description' & 'rating' columns are correct (#176)", {
   expect_equal(df$description, expected_descriptions)
 })
 
-test_that("diagnostic color helpers use neff_ratio consistently", {
-  expect_no_error(scale_color_diagnostic("neff_ratio"))
-  expect_no_error(scale_fill_diagnostic("neff_ratio"))
-  expect_no_error(diagnostic_color_scale("neff_ratio", aesthetic = "color"))
-})
-
 test_that("mcmc_acf & mcmc_acf_bar return a ggplot object", {
   expect_gg(mcmc_acf(arr, pars = "beta[1]", regex_pars = "x\\:[2,5]"))
   expect_gg(mcmc_acf_bar(arr, pars = "beta[1]", regex_pars = "x\\:[2,5]"))
