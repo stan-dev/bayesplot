@@ -515,7 +515,7 @@ mcmc_rank_ecdf <-
     } else {
       K
     },
-    L <- n_chain
+    L = n_chain
   )
   data_lim <- data.frame(
     upper = lims$upper / n_iter - (plot_diff == TRUE) * x,
@@ -789,7 +789,7 @@ divergence_rug <- function(np, np_style, n_iter, n_chain) {
     divg <- sym("Divergent")
 
     div_info <- np %>%
-      dplyr::filter(UQ(param) == "divergent__") %>%
+      dplyr::filter(!!param == "divergent__") %>%
       group_by(!! iter) %>%
       summarise(
         Divergent = ifelse(sum(!! val) > 0, !! iter, NA)

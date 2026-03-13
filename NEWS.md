@@ -3,6 +3,9 @@
 * New "Example Gallery" vignette providing a visual overview of all plotting
   functions with thumbnail example plots, organized by category (PPC, PPD, MCMC,
   HMC/NUTS). (#437)
+* Standardize input validation errors in `ppc_km_overlay()` and interpolation helpers to use `rlang::abort()` for consistent error handling.
+* Fix assignment-in-call bug in `mcmc_rank_ecdf()` (#).
+* Replaced deprecated `dplyr` and `tidyselect` functions (`top_n`, `one_of`, `group_indices`) with their modern equivalents to ensure future compatibility. (#431)
 * Documentation added for all exported `*_data()` functions (#209)
 * Improved documentation for `binwidth`, `bins`, and `breaks` arguments to clarify they are passed to `ggplot2::geom_area()` and `ggdist::stat_dots()` in addition to `ggplot2::geom_histogram()`
 * Improved documentation for `freq` argument to clarify it applies to frequency polygons in addition to histograms
