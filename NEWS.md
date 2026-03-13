@@ -2,6 +2,7 @@
 
 * New functions `mcmc_dots` and `mcmc_dots_by_chain` for dot plots of MCMC draws by @behramulukir (#402)
 * Default to `quantiles=100` for all dot plots by @behramulukir (#402)
+* Make diagnostic color scale helpers handle `"neff"` and `"neff_ratio"` explicitly, avoiding reliance on partial matching.
 
 # bayesplot 1.15.0
 
