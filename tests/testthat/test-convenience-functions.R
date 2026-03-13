@@ -63,7 +63,7 @@ test_that("lbub works", {
 
 # plot and facet backgrounds ----------------------------------------------
 test_that("grid_lines returns correct theme object", {
-  thm <- theme_default() + grid_lines(size = 1.5, color = "purple")
+  thm <- theme_default() + grid_lines(linewidth = 1.5, color = "purple")
   expect_equal(thm$panel.grid.major, element_line(linewidth = 1.5, color = "purple"))
   expect_equal(thm$panel.grid.minor, element_line(linewidth = 0.75, color = "purple"))
 })
