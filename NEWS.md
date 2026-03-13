@@ -1,6 +1,8 @@
 # bayesplot (development version)
 
 * New `show_marginal` argument to `ppd_*()` functions to show the PPD - the marginal predictive distribution by @mattansb (#425)
+* Fix assignment-in-call bug in `mcmc_rank_ecdf()` (#).
+* Replaced deprecated `dplyr` and `tidyselect` functions (`top_n`, `one_of`, `group_indices`) with their modern equivalents to ensure future compatibility. (#431)
 * Documentation added for all exported `*_data()` functions (#209)
 * Improved documentation for `binwidth`, `bins`, and `breaks` arguments to clarify they are passed to `ggplot2::geom_area()` and `ggdist::stat_dots()` in addition to `ggplot2::geom_histogram()`
 * Improved documentation for `freq` argument to clarify it applies to frequency polygons in addition to histograms
@@ -22,7 +24,7 @@
 
 # bayesplot 1.14.0
 
-* PPC "avg" functions (`ppc_scatter_avg()`, `ppc_error_scatter_avg()`, etc.) gain a `stat` argument 
+* PPC "avg" functions (`ppc_scatter_avg()`, `ppc_error_scatter_avg()`, etc.) gain a `stat` argument
   to set the averaging function. (Suggestion of #348, @kruschke).
 * `ppc_error_scatter_avg_vs_x(x = some_expression)` labels the x axis with `some_expression`.
 * New quantile dot plot functions `ppc_dots()` and `ppd_dots()` by @behramulukir (#357)
@@ -44,7 +46,7 @@
 
 * Expand checking workflows to more platforms by @andrjohns (#324)
 * Skip tests depending on Suggested dependency rstantools if not installed by @MichaelChirico (#325)
-* Skip tests depending on Suggested dependency gridExtra if not installed by @MichaelChirico (#326) 
+* Skip tests depending on Suggested dependency gridExtra if not installed by @MichaelChirico (#326)
 * Fix missing legends for unobserved levels in rhat and neff plots (#328)
 * Document problems with `ppc_stat` with `stat="mean"` (#329)
 * Ensure rank overlay plot starts at 0 even if not all bins present, thanks @sims1253 (#332)
