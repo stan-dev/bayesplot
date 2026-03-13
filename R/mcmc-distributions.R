@@ -515,7 +515,7 @@ mcmc_dots_by_chain <- function(
     }
     graph <- graph +
       do.call("facet_grid", facet_args) +
-      force_axes_in_facets()
+      force_x_axis_in_facets()
   }
 
   if (n_param == 1) {
@@ -528,6 +528,7 @@ mcmc_dots_by_chain <- function(
     yaxis_text(FALSE) +
     yaxis_title(FALSE) +
     yaxis_ticks(FALSE) +
+    theme(axis.line.y = element_blank()) +
     xaxis_title(on = n_param == 1)
 }
 
@@ -644,9 +645,10 @@ mcmc_dots_by_chain <- function(
   graph +
     dont_expand_y_axis(c(0.005, 0)) +
     bayesplot_theme_get() +
-    yaxis_text(FALSE) +
-    yaxis_ticks(FALSE) +
+    yaxis_text(on = violin) +
+    yaxis_ticks(on = violin) +
     yaxis_title(on = n_param == 1 && violin) +
+    (if (!violin) theme(axis.line.y = element_blank()) else geom_ignore()) +
     xaxis_title(on = n_param == 1)
 }
 

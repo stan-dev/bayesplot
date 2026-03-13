@@ -181,11 +181,6 @@
 <text x='621.64' y='284.65' text-anchor='middle' style='font-size: 9.60px; fill: #4D4D4D; font-family: sans;' textLength='5.34px' lengthAdjust='spacingAndGlyphs'>1</text>
 <text x='664.35' y='284.65' text-anchor='middle' style='font-size: 9.60px; fill: #4D4D4D; font-family: sans;' textLength='5.34px' lengthAdjust='spacingAndGlyphs'>2</text>
 <text x='707.06' y='284.65' text-anchor='middle' style='font-size: 9.60px; fill: #4D4D4D; font-family: sans;' textLength='5.34px' lengthAdjust='spacingAndGlyphs'>3</text>
-<polyline points='492.41,272.66 492.41,44.09 ' style='stroke-width: 0.85; stroke-linecap: butt;' />
-<polyline points='249.19,272.66 249.19,44.09 ' style='stroke-width: 0.85; stroke-linecap: butt;' />
-<polyline points='249.19,556.04 249.19,327.48 ' style='stroke-width: 0.85; stroke-linecap: butt;' />
-<polyline points='5.98,272.66 5.98,44.09 ' style='stroke-width: 0.85; stroke-linecap: butt;' />
-<polyline points='5.98,556.04 5.98,327.48 ' style='stroke-width: 0.85; stroke-linecap: butt;' />
 <text x='5.98' y='15.89' style='font-size: 14.40px; font-family: sans;' textLength='134.48px' lengthAdjust='spacingAndGlyphs'>mcmc_dens (default)</text>
 </g>
 </svg>

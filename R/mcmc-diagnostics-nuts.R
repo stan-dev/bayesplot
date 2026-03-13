@@ -188,6 +188,7 @@ mcmc_nuts_acceptance <-
       yaxis_text(FALSE) +
       yaxis_title(FALSE) +
       yaxis_ticks(FALSE) +
+      theme(axis.line.y = element_blank()) +
       xaxis_title(FALSE)
 
     scatter_data <- data.frame(
@@ -366,7 +367,8 @@ mcmc_nuts_treedepth <- function(x, lp, chain = NULL, ...) {
     bayesplot_theme_get() +
     yaxis_text(FALSE) +
     yaxis_title(FALSE) +
-    yaxis_ticks(FALSE)
+    yaxis_ticks(FALSE) +
+    theme(axis.line.y = element_blank())
 
   violin_lp_data <- data.frame(treedepth, lp = lp$Value)
 
@@ -491,7 +493,8 @@ mcmc_nuts_energy <-
       theme(legend.text = element_text(size = rel(1.1))) +
       yaxis_text(FALSE) +
       yaxis_title(FALSE) +
-      yaxis_ticks(FALSE)
+      yaxis_ticks(FALSE) +
+      theme(axis.line.y = element_blank())
 
     if (merge_chains) {
       return(graph)
@@ -499,7 +502,7 @@ mcmc_nuts_energy <-
 
     graph +
       facet_wrap(vars(.data$Chain)) +
-      force_axes_in_facets()
+      force_x_axis_in_facets()
   }
 
 

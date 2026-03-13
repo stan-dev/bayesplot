@@ -1,5 +1,6 @@
 # bayesplot (development version)
 
+* Remove y-axis line from density, histogram, dot, and frequency polygon plots where the y-axis has no meaningful scale (#418)
 * Standardize input validation errors in `ppc_km_overlay()` and interpolation helpers to use `rlang::abort()` for consistent error handling.
 * Fix assignment-in-call bug in `mcmc_rank_ecdf()` (#).
 * Replaced deprecated `dplyr` and `tidyselect` functions (`top_n`, `one_of`, `group_indices`) with their modern equivalents to ensure future compatibility. (#431)

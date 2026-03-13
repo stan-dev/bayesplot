@@ -211,7 +211,8 @@ ppc_dens_overlay <-
       yaxis_title(FALSE) +
       xaxis_title(FALSE) +
       yaxis_text(FALSE) +
-      yaxis_ticks(FALSE)
+      yaxis_ticks(FALSE) +
+      theme(axis.line.y = element_blank())
   }
 
 
@@ -253,7 +254,7 @@ ppc_dens_overlay_grouped <- function(y,
 
   p_overlay +
     facet_wrap("group") +
-    force_axes_in_facets()
+    force_x_axis_in_facets()
 }
 
 #' @export
@@ -370,12 +371,13 @@ ppc_dens <-
       scale_color_ppc() +
       bayesplot_theme_get() +
       facet_wrap_parsed("rep_label") +
-      force_axes_in_facets() +
+      force_x_axis_in_facets() +
       dont_expand_y_axis() +
       space_legend_keys() +
       yaxis_text(FALSE) +
       yaxis_title(FALSE) +
       yaxis_ticks(FALSE) +
+      theme(axis.line.y = element_blank()) +
       xaxis_title(FALSE) +
       facet_text(FALSE) +
       facet_bg(FALSE)
@@ -409,13 +411,14 @@ ppc_hist <-
       scale_fill_ppc() +
       scale_color_ppc() +
       facet_wrap_parsed("rep_label") +
-      force_axes_in_facets() +
+      force_x_axis_in_facets() +
       dont_expand_y_axis() +
       bayesplot_theme_get() +
       space_legend_keys() +
       yaxis_text(FALSE) +
       yaxis_title(FALSE) +
       yaxis_ticks(FALSE) +
+      theme(axis.line.y = element_blank()) +
       xaxis_title(FALSE) +
       facet_text(FALSE) +
       facet_bg(FALSE)
@@ -456,12 +459,13 @@ ppc_freqpoly <-
       scale_color_ppc() +
       facet_wrap_parsed("rep_label") +
       bayesplot_theme_get() +
-      force_axes_in_facets() +
+      force_x_axis_in_facets() +
       dont_expand_y_axis() +
       space_legend_keys() +
       yaxis_text(FALSE) +
       yaxis_title(FALSE) +
       yaxis_ticks(FALSE) +
+      theme(axis.line.y = element_blank()) +
       xaxis_title(FALSE) +
       facet_text(FALSE)
   }
@@ -488,7 +492,7 @@ ppc_freqpoly_grouped <-
         scales = "free",
         labeller = label_parsed
       ) +
-      force_axes_in_facets() +
+      force_x_axis_in_facets() +
       facet_text() +
       theme(strip.text.y = element_blank())
   }
@@ -562,12 +566,13 @@ ppc_dots <-
       scale_fill_ppc() +
       scale_color_ppc() +
       facet_wrap_parsed("rep_label") +
-      force_axes_in_facets() +
+      force_x_axis_in_facets() +
       bayesplot_theme_get() +
       space_legend_keys() +
       yaxis_text(FALSE) +
       yaxis_title(FALSE) +
       yaxis_ticks(FALSE) +
+      theme(axis.line.y = element_blank()) +
       xaxis_title(FALSE) +
       facet_text(FALSE) +
       facet_bg(FALSE)

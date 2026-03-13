@@ -54,7 +54,6 @@
 <rect x='240.20' y='270.83' width='15.83' height='0.00' style='stroke-width: 0.53; stroke: #B3CDE0; stroke-linecap: butt; stroke-linejoin: miter; fill: #D1E1EC; fill-opacity: 0.50;' />
 <rect x='256.03' y='270.83' width='15.83' height='0.00' style='stroke-width: 0.53; stroke: #B3CDE0; stroke-linecap: butt; stroke-linejoin: miter; fill: #D1E1EC; fill-opacity: 0.50;' />
 <line x1='5.98' y1='271.95' x2='316.17' y2='271.95' style='stroke-width: 0.85; stroke-linecap: butt;' />
-<line x1='5.98' y1='271.95' x2='5.98' y2='44.09' style='stroke-width: 0.85; stroke-linecap: butt;' />
 </g>
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8MC4wMHw1NzYuMDA=)'>
 </g>
@@ -93,7 +92,6 @@
 <rect x='240.20' y='538.46' width='15.83' height='1.07' style='stroke-width: 0.53; stroke: #B3CDE0; stroke-linecap: butt; stroke-linejoin: miter; fill: #D1E1EC; fill-opacity: 0.50;' />
 <rect x='256.03' y='539.52' width='15.83' height='0.00' style='stroke-width: 0.53; stroke: #B3CDE0; stroke-linecap: butt; stroke-linejoin: miter; fill: #D1E1EC; fill-opacity: 0.50;' />
 <line x1='5.98' y1='540.65' x2='316.17' y2='540.65' style='stroke-width: 0.85; stroke-linecap: butt;' />
-<line x1='5.98' y1='540.65' x2='5.98' y2='312.79' style='stroke-width: 0.85; stroke-linecap: butt;' />
 </g>
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8MC4wMHw1NzYuMDA=)'>
 </g>
@@ -132,7 +130,6 @@
 <rect x='571.99' y='268.69' width='15.83' height='2.14' style='stroke-width: 0.53; stroke: #B3CDE0; stroke-linecap: butt; stroke-linejoin: miter; fill: #D1E1EC; fill-opacity: 0.50;' />
 <rect x='587.82' y='269.76' width='15.83' height='1.07' style='stroke-width: 0.53; stroke: #B3CDE0; stroke-linecap: butt; stroke-linejoin: miter; fill: #D1E1EC; fill-opacity: 0.50;' />
 <line x1='337.77' y1='271.95' x2='647.96' y2='271.95' style='stroke-width: 0.85; stroke-linecap: butt;' />
-<line x1='337.77' y1='271.95' x2='337.77' y2='44.09' style='stroke-width: 0.85; stroke-linecap: butt;' />
 </g>
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8MC4wMHw1NzYuMDA=)'>
 </g>
@@ -171,7 +168,6 @@
 <rect x='571.99' y='538.46' width='15.83' height='1.07' style='stroke-width: 0.53; stroke: #B3CDE0; stroke-linecap: butt; stroke-linejoin: miter; fill: #D1E1EC; fill-opacity: 0.50;' />
 <rect x='587.82' y='539.52' width='15.83' height='0.00' style='stroke-width: 0.53; stroke: #B3CDE0; stroke-linecap: butt; stroke-linejoin: miter; fill: #D1E1EC; fill-opacity: 0.50;' />
 <line x1='337.77' y1='540.65' x2='647.96' y2='540.65' style='stroke-width: 0.85; stroke-linecap: butt;' />
-<line x1='337.77' y1='540.65' x2='337.77' y2='312.79' style='stroke-width: 0.85; stroke-linecap: butt;' />
 </g>
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8MC4wMHw1NzYuMDA=)'>
 </g>
@@ -232,8 +228,6 @@
 <text x='421.65' y='552.64' text-anchor='middle' style='font-size: 9.60px; fill: #4D4D4D; font-family: sans;' textLength='13.88px' lengthAdjust='spacingAndGlyphs'>-50</text>
 <text x='500.78' y='552.64' text-anchor='middle' style='font-size: 9.60px; fill: #4D4D4D; font-family: sans;' textLength='5.34px' lengthAdjust='spacingAndGlyphs'>0</text>
 <text x='579.91' y='552.64' text-anchor='middle' style='font-size: 9.60px; fill: #4D4D4D; font-family: sans;' textLength='10.68px' lengthAdjust='spacingAndGlyphs'>50</text>
-<polyline points='5.98,271.95 5.98,44.09 ' style='stroke-width: 0.85; stroke-linecap: butt;' />
-<polyline points='5.98,540.65 5.98,312.79 ' style='stroke-width: 0.85; stroke-linecap: butt;' />
 <text x='312.08' y='567.53' style='font-size: 12.00px; font-family: sans;' textLength='8.01px' lengthAdjust='spacingAndGlyphs'>E</text>
 <text x='322.31' y='567.53' style='font-size: 12.00px; font-family: sans;' textLength='9.32px' lengthAdjust='spacingAndGlyphs'>−</text>
 <text x='333.85' y='567.53' style='font-size: 12.00px; font-family: sans;' textLength='8.01px' lengthAdjust='spacingAndGlyphs'>E</text>
