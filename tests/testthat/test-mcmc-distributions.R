@@ -111,6 +111,38 @@ test_that("mcmc_dens_chains returns a ggplot object", {
   expect_gg(p2)
 })
 
+test_that("mcmc_dens_chains_data computes densities per parameter-chain group", {
+  # Regression test for compute_column_density().
+  # This path groups by both parameter and chain, so it exercises the
+  # group_split() + group_keys() replacement introduced in PR #448.
+  # The goal is to verify that densities are still computed for the
+  # correct parameter-chain groups, in the correct grouping structure.
+  dens_data <- mcmc_dens_chains_data(arr, n_dens = 100)
+  by_group <- split(
+    dens_data,
+    interaction(dens_data$parameter, dens_data$chain, drop = TRUE, lex.order = TRUE)
+  )
+
+  raw <- melt_mcmc(prepare_mcmc_array(arr))
+  raw_by_group <- split(
+    raw,
+    interaction(raw$Parameter, raw$Chain, drop = TRUE, lex.order = TRUE)
+  )
+
+  manual_density <- function(df) {
+    dens <- density(df$Value, from = min(df$Value), to = max(df$Value), n = 100)
+    data.frame(x = dens$x, density = dens$y)
+  }
+
+  expected <- lapply(raw_by_group, manual_density)
+  expect_setequal(names(by_group), names(expected))
+  for (nm in names(expected)) {
+    expect_equal(by_group[[nm]]$x, expected[[nm]]$x)
+    expect_equal(by_group[[nm]]$density, expected[[nm]]$density, tolerance = 1e-10)
+  }
+})
+
+
 test_that("mcmc_dens_chains/mcmc_dens_overlay color chains", {
   p1 <- mcmc_dens_chains(arr, pars = "beta[1]", regex_pars = "x\\:",
                          color_chains = FALSE)
