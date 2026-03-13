@@ -2,6 +2,11 @@
 
 ## bayesplot (development version)
 
+- Standardize input validation errors in
+  [`ppc_km_overlay()`](https://mc-stan.org/bayesplot/dev/reference/PPC-censoring.md)
+  and interpolation helpers to use
+  [`rlang::abort()`](https://rlang.r-lib.org/reference/abort.html) for
+  consistent error handling.
 - Fix assignment-in-call bug in
   [`mcmc_rank_ecdf()`](https://mc-stan.org/bayesplot/dev/reference/MCMC-traces.md)
   (#).
