@@ -78,7 +78,7 @@
 #' (p <- mcmc_acf_bar(x, pars = c("alpha", "beta[1]")))
 #'
 #' # add horiztonal dashed line at 0.5
-#' p + hline_at(0.5, linetype = 2, size = 0.15, color = "gray")
+#' p + hline_at(0.5, linetype = 2, linewidth = 0.15, color = "gray")
 #' }
 #'
 #' # fake rhat values to use for demonstration

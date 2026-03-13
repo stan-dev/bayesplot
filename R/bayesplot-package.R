@@ -6,6 +6,7 @@
 #' @import ggplot2 stats rlang
 #' @importFrom lifecycle deprecated deprecate_warn is_present
 #' @importFrom dplyr %>% summarise group_by select
+#' @importFrom lifecycle deprecated deprecate_warn is_present
 #'
 #' @description
 #' \if{html}{
