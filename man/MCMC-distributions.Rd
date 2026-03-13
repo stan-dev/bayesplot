@@ -188,19 +188,19 @@ to control faceting. Note: if \code{scales} is not included in \code{facet_args}
 then \strong{bayesplot} may use \code{scales="free"} as the default (depending
 on the plot) instead of the \strong{ggplot2} default of \code{scales="fixed"}.}
 
-\item{binwidth}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}} to override
-the default binwidth.}
+\item{binwidth}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}}, \code{\link[ggplot2:geom_ribbon]{ggplot2::geom_area()}},
+and \code{\link[ggdist:stat_dots]{ggdist::stat_dots()}} to override the default binwidth.}
 
-\item{bins}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}} to override
-the default binwidth.}
+\item{bins}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}} and \code{\link[ggplot2:geom_ribbon]{ggplot2::geom_area()}}
+to override the default binning.}
 
-\item{breaks}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}} as an
-alternative to \code{binwidth}.}
+\item{breaks}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}} as an alternative to
+\code{binwidth}.}
 
-\item{freq}{For histograms, \code{freq=TRUE} (the default) puts count on the
-y-axis. Setting \code{freq=FALSE} puts density on the y-axis. (For many
-plots the y-axis text is off by default. To view the count or density
-labels on the y-axis see the \code{\link[=yaxis_text]{yaxis_text()}} convenience
+\item{freq}{For histograms and frequency polygons, \code{freq=TRUE} (the default)
+puts count on the y-axis. Setting \code{freq=FALSE} puts density on the y-axis.
+(For many plots the y-axis text is off by default. To view the count or
+density labels on the y-axis see the \code{\link[=yaxis_text]{yaxis_text()}} convenience
 function.)}
 
 \item{alpha}{Passed to the geom to control the transparency.}
@@ -224,7 +224,10 @@ The default is \code{quantiles=100} so that each dot represent one percent of
 posterior mass.}
 }
 \value{
-A ggplot object that can be further customized using the \strong{ggplot2} package.
+The plotting functions return a ggplot object that can be further
+customized using the \strong{ggplot2} package. The functions with suffix
+\verb{_data()} return the data that would have been drawn by the plotting
+function.
 }
 \description{
 Various types of histograms and kernel density plots of MCMC draws. See the
@@ -261,6 +264,12 @@ Ridgeline kernel density plots of posterior draws with chains separated
 but overlaid on a single plot. In \code{mcmc_dens_overlay()} parameters
 appear in separate facets; in \code{mcmc_dens_chains()} they appear in the
 same panel and can overlap vertically.
+}
+\item{\code{mcmc_dens_chains_data()}}{
+Data-preparation back end for \code{mcmc_dens_chains()}. Users can call this
+function directly to obtain the prepared long-format data frame of MCMC
+draws (with chain information retained) and create custom visualizations
+with \strong{ggplot2}.
 }
 }
 }

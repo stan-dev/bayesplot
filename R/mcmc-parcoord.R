@@ -48,6 +48,12 @@
 #'    when specifying the `transformations` argument to
 #'    `mcmc_parcoord`. See the **Examples** section for how to do this.
 #'   }
+#'   \item{`mcmc_parcoord_data()`}{
+#'    Data-preparation back end for `mcmc_parcoord()`. Users can call
+#'    `mcmc_parcoord_data()` directly to obtain the prepared long-format data
+#'    frame of MCMC draws (with optional NUTS diagnostic information) and
+#'    create custom visualizations with **ggplot2**.
+#'   }
 #' }
 #'
 #' @template reference-vis-paper
