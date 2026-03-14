@@ -719,7 +719,7 @@ mcmc_trace_data <- function(x,
           color = guide_legend(order = 1),
           linetype = guide_legend(
             order = 2, title = NULL, keywidth = rel(1/2),
-            override.aes = list(size = rel(1/2)))
+            override.aes = list(linewidth = rel(1/2)))
         )
       }
     }
@@ -789,7 +789,7 @@ divergence_rug <- function(np, np_style, n_iter, n_chain) {
     divg <- sym("Divergent")
 
     div_info <- np %>%
-      dplyr::filter(UQ(param) == "divergent__") %>%
+      dplyr::filter(!!param == "divergent__") %>%
       group_by(!! iter) %>%
       summarise(
         Divergent = ifelse(sum(!! val) > 0, !! iter, NA)

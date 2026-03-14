@@ -41,8 +41,7 @@ vdiff_dframe_chains_divergences <- data.frame(
   Iteration = rep(1:500, each = 4),
   Parameter = "divergent__",
   Value = rbinom(2000, size = 1, prob = .02),
-  Chain = vdiff_dframe_chains$chain,
-  stringsAsFactors = FALSE
+  Chain = vdiff_dframe_chains$chain
 )
 
 vdiff_dframe_chains_treedepth <- vdiff_dframe_chains_divergences
