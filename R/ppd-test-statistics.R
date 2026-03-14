@@ -87,19 +87,35 @@ ppd_stat <-
           geom_vline(
             aes(xintercept = .data$value, color = .data$type),
             data = data[data$type == "PPD",],
-            key_glyph = "rect",
             linewidth = 2
           )
       }
     }
+
+    stat_title <-  stat_legend_title(stat, deparse(substitute(stat)))
+
+    if (isTRUE(show_marginal)) {
+      graph <- graph +
+        scale_color_ppd(
+          name = stat_title,
+          labels = Typred_label(),
+          guide = guide_legend(override.aes = list(
+            fill = get_color(c("d", "l")))
+          ),
+          show_marginal = show_marginal
+        ) +
+        scale_fill_ppd(guide = "none",
+                       show_marginal = show_marginal)
+    } else {
+      graph <- graph +
+        scale_fill_ppd(name = stat_title,
+                       labels = Typred_label(),
+                       show_marginal = show_marginal) +
+        scale_color_ppd(guide = "none",
+                        show_marginal = show_marginal)
+    }
+
     graph +
-      scale_fill_ppd(guide = "none", show_marginal = show_marginal) +
-      scale_color_ppd(labels = Typred_label(),
-                      guide = guide_legend(
-                        title = stat_legend_title(stat, deparse(substitute(stat))),
-                        override.aes = list(fill = get_color(c(if (show_marginal) "d", "l")))
-                      ),
-                      show_marginal = show_marginal) +
       bayesplot_theme_get() +
       dont_expand_y_axis() +
       xaxis_title(FALSE) +
