@@ -243,22 +243,22 @@ ppc_error_scatter_avg <-
 
     stat <- as_tagged_function({{ stat }})
 
-    ppc_scatter_avg(
+    p <- ppc_scatter_avg(
       y = if (is_null(x)) y else x,
       yrep = errors,
       size = size,
       alpha = alpha,
       ref_line = FALSE,
       stat = stat
-    ) +
-      labs(
-        x = error_avg_label(stat),
-        y = if (is_null(x)) y_label() else as_label((qx))
-        ) + if (is_null(x)) {
-          NULL
-        } else {
-          coord_flip()
-        }
+    )
+
+    if (is_null(x)) {
+      p + labs(x = error_avg_label(stat), y = y_label())
+    } else {
+      p +
+        aes(x = .data$y_obs, y = .data$value) +
+        labs(x = as_label((qx)), y = error_avg_label(stat))
+    }
   }
 
 
@@ -323,11 +323,11 @@ ppc_error_scatter_avg_vs_x <- function(
     ref_line = FALSE,
     stat = stat
   ) +
+    aes(x = .data$y_obs, y = .data$value) +
     labs(
-      x = error_avg_label(stat),
-      y = as_label((qx))
-    ) +
-    coord_flip()
+      x = as_label((qx)),
+      y = error_avg_label(stat)
+    )
 }
 
 
