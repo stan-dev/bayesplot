@@ -472,7 +472,7 @@ interpolate_gamma <- function(N, K, prob, L) {
 get_interpolation_values <- function(N, K, L, prob) {
   for (dim in c("L", "prob")) {
     if (all(get(dim) != .gamma_adj[, dim])) {
-      stop(paste(
+      abort(paste(
         "No precomputed values to interpolate from for '", dim, "' = ",
         get(dim),
         ".\n",
@@ -485,7 +485,7 @@ get_interpolation_values <- function(N, K, L, prob) {
   }
   vals <- .gamma_adj[.gamma_adj$L == L & .gamma_adj$prob == prob, ]
   if (N > max(vals$N)) {
-    stop(paste(
+    abort(paste(
       "No precomputed values to interpolate from for sample length of ",
       N,
       ".\n",
@@ -496,7 +496,7 @@ get_interpolation_values <- function(N, K, L, prob) {
     ))
   }
   if (N < min(vals$N)) {
-    stop(paste(
+    abort(paste(
       "No precomputed values to interpolate from for sample length of ",
       N,
       ".\n",
@@ -507,7 +507,7 @@ get_interpolation_values <- function(N, K, L, prob) {
     ))
   }
   if (K > max(vals[vals$N <= N, ]$K)) {
-    stop(paste(
+    abort(paste(
       "No precomputed values available for interpolation for 'K' = ",
       K,
       ".\n",
@@ -518,7 +518,7 @@ get_interpolation_values <- function(N, K, L, prob) {
     ))
   }
   if (K < min(vals[vals$N <= N, ]$K)) {
-    stop(paste(
+    abort(paste(
       "No precomputed values available for interpolation for 'K' = ",
       K,
       ".\n",

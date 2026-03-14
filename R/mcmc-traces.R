@@ -72,6 +72,13 @@
 #'    ECDFs and the theoretical expectation for samples originating from the
 #'    same distribution is drawn. See Säilynoja et al. (2021) for details.
 #'   }
+#'   \item{`mcmc_trace_data()`}{
+#'    Data-preparation back end for `mcmc_trace()`, `mcmc_trace_highlight()`,
+#'    `mcmc_rank_hist()`, `mcmc_rank_overlay()`, and `mcmc_rank_ecdf()`. The
+#'    returned data frame contains columns for both the original draw values
+#'    and their within-parameter ranks, so it can be used to build both trace
+#'    and rank-based visualizations with **ggplot2**.
+#'   }
 #' }
 #'
 #' @template reference-improved-rhat
@@ -508,7 +515,7 @@ mcmc_rank_ecdf <-
     } else {
       K
     },
-    L <- n_chain
+    L = n_chain
   )
   data_lim <- data.frame(
     upper = lims$upper / n_iter - (plot_diff == TRUE) * x,
@@ -712,7 +719,7 @@ mcmc_trace_data <- function(x,
           color = guide_legend(order = 1),
           linetype = guide_legend(
             order = 2, title = NULL, keywidth = rel(1/2),
-            override.aes = list(size = rel(1/2)))
+            override.aes = list(linewidth = rel(1/2)))
         )
       }
     }
@@ -782,7 +789,7 @@ divergence_rug <- function(np, np_style, n_iter, n_chain) {
     divg <- sym("Divergent")
 
     div_info <- np %>%
-      dplyr::filter(UQ(param) == "divergent__") %>%
+      dplyr::filter(!!param == "divergent__") %>%
       group_by(!! iter) %>%
       summarise(
         Divergent = ifelse(sum(!! val) > 0, !! iter, NA)

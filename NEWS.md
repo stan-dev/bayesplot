@@ -12,6 +12,7 @@
 * Default to `quantiles=100` for all dot plots by @behramulukir (#402)
 * Make diagnostic color scale helpers handle `"neff"` and `"neff_ratio"` explicitly, avoiding reliance on partial matching.
 * Replace `stopifnot()` checks with `abort()` and descriptive input-validation messages in helper and diagnostics internals.
+* Use `"neff_ratio"` consistently in diagnostic color scale helpers to avoid relying on partial matching of `"neff"`.
 
 # bayesplot 1.15.0
 

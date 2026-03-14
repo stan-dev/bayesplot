@@ -302,18 +302,18 @@ p +
    )
 
 # add ellipse
-p + stat_ellipse(level = 0.9, color = "gray20", size = 1)
+p + stat_ellipse(level = 0.9, color = "gray20", linewidth = 1)
 
 # add contour
 color_scheme_set("red")
 p2 <- mcmc_scatter(x, pars = c("alpha", "sigma"), size = 3.5, alpha = 0.25)
-p2 + stat_density_2d(color = "black", size = .5)
+p2 + stat_density_2d(color = "black", linewidth = .5)
 
 # can also add lines/smooths
 color_scheme_set("pink")
 (p3 <- mcmc_scatter(x, pars = c("alpha", "beta[3]"), alpha = 0.25, size = 3))
 p3 + geom_smooth(method = "lm", se = FALSE, color = "gray20",
-                 size = .75, linetype = 2)
+                 linewidth = .75, linetype = 2)
 
 \donttest{
 if (requireNamespace("hexbin", quietly = TRUE)) {
