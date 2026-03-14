@@ -422,8 +422,10 @@ lw <- weights(psis1) # normalized log weights
 color_scheme_set("orange")
 ppc_loo_pit_overlay(y, yrep, lw = lw)
 #> Some PIT values larger than 1! Largest:  1 
-#> Rounding PIT > 1 to 1. Gradient evaluation took 0.000559 seconds
-#> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 5.59 seconds.
+#> Rounding PIT > 1 to 1.:  1 / 100 [  1%]  (Warmup)
+#> Chain 1: 
+#> Chain 1: Gradient evaluation took 0.000495 seconds
+#> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 4.95 seconds.
 #> Chain 1: Adjust your expectations accordingly!
 #> Chain 1: 
 #> Chain 1: 
@@ -435,22 +437,7 @@ ppc_loo_pit_overlay(y, yrep, lw = lw)
 #> Chain 1:            adapt_window = 38
 #> Chain 1:            term_buffer = 5
 #> Chain 1: 
-#> Chain 2: 
-#> Chain 2: Gradient evaluation took 0.000373 seconds
-#> Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 3.73 seconds.
-#> Chain 2: Adjust your expectations accordingly!
-#> Chain 2: 
-#> Chain 2: 
-#> Chain 2: WARNING: There aren't enough warmup iterations to fit the
-#> Chain 2:          three stages of adaptation as currently configured.
-#> Chain 2:          Reducing each adaptation stage to 15%/75%/10% of
-#> Chain 2:          the given number of warmup iterations:
-#> Chain 2:            init_buffer = 7
-#> Chain 2:            adapt_window = 38
-#> Chain 2:            term_buffer = 5
-#> Chain 2: 
 #> Chain 1: Iteration:  1 / 100 [  1%]  (Warmup)
-#> Chain 2: Iteration:  1 / 100 [  1%]  (Warmup)
 #> Chain 2: Iteration: 10 / 100 [ 10%]  (Warmup)
 #> Chain 1: Iteration: 10 / 100 [ 10%]  (Warmup)
 #> Chain 2: Iteration: 20 / 100 [ 20%]  (Warmup)
@@ -473,15 +460,15 @@ ppc_loo_pit_overlay(y, yrep, lw = lw)
 #> Chain 1: Iteration: 90 / 100 [ 90%]  (Sampling)
 #> Chain 2: Iteration: 100 / 100 [100%]  (Sampling)
 #> Chain 2: 
-#> Chain 2:  Elapsed Time: 2.672 seconds (Warm-up)
-#> Chain 2:                2.439 seconds (Sampling)
-#> Chain 2:                5.111 seconds (Total)
+#> Chain 2:  Elapsed Time: 2.108 seconds (Warm-up)
+#> Chain 2:                1.925 seconds (Sampling)
+#> Chain 2:                4.033 seconds (Total)
 #> Chain 2: 
 #> Chain 1: Iteration: 100 / 100 [100%]  (Sampling)
 #> Chain 1: 
-#> Chain 1:  Elapsed Time: 2.792 seconds (Warm-up)
-#> Chain 1:                2.451 seconds (Sampling)
-#> Chain 1:                5.243 seconds (Total)
+#> Chain 1:  Elapsed Time: 2.206 seconds (Warm-up)
+#> Chain 1:                1.941 seconds (Sampling)
+#> Chain 1:                4.147 seconds (Total)
 #> Chain 1: 
 #> Warning: 
 #> NOTE: The kernel density estimate assumes continuous observations and is not optimal for discrete observations.
@@ -492,7 +479,7 @@ ppc_loo_pit_qq(y, yrep, lw = lw)
 
 ppc_loo_pit_qq(y, yrep, lw = lw, compare = "normal")
 #> Warning: 
-#> Warning: Removed 14 rows containing non-finite outside the scale range (`stat_qq()`).
+#> Warning: Removed 13 rows containing non-finite outside the scale range (`stat_qq()`).
 
 
 # predictive calibration check using LOO probability integral transform
