@@ -60,7 +60,7 @@ ppd_stat <-
     data$type <- ifelse(grepl("ypred", data$variable), "ypred", "PPD")
 
     graph <- ggplot(data, mapping = set_hist_aes(
-      freq,
+      freq || discrete, # this is needed because geom_bar fails otherwise
       color = .data$type,
       fill = .data$type
     ))
