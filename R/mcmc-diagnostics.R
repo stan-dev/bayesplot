@@ -382,7 +382,9 @@ diagnostic_factor.neff_ratio <- function(x, ..., breaks = c(0.1, 0.5)) {
 
 diagnostic_data_frame <- function(x) {
   x <- auto_name(sort(x))
-  stopifnot(!anyDuplicated(names(x)))
+  if (anyDuplicated(names(x))) {
+    abort("Diagnostic values must have unique parameter names.")
+  }
   diagnostic <- class(x)[1]
 
   d <- tibble::tibble(
@@ -577,7 +579,9 @@ drop_NAs_and_warn <- function(x) {
 # @param x object returned by prepare_mcmc_array
 # @param lags user's 'lags' argument
 acf_data <- function(x, lags) {
-  stopifnot(is_mcmc_array(x))
+  if (!is_mcmc_array(x)) {
+    abort("'x' must be an mcmc_array.")
+  }
   n_iter <- num_iters(x)
   n_chain <- num_chains(x)
   n_param <- num_params(x)
@@ -621,7 +625,9 @@ new_rhat <- function(x) {
 }
 
 validate_rhat <- function(x) {
-  stopifnot(is.numeric(x), !is.list(x), !is.array(x))
+  if (!is.numeric(x) || is.list(x) || is.array(x)) {
+    abort("'rhat' must be a numeric vector.")
+  }
   if (any(x < 0, na.rm = TRUE)) {
     abort("All 'rhat' values must be positive.")
   }
@@ -649,7 +655,9 @@ new_neff_ratio <- function(x) {
 }
 
 validate_neff_ratio <- function(x) {
-  stopifnot(is.numeric(x), !is.list(x), !is.array(x))
+  if (!is.numeric(x) || is.list(x) || is.array(x)) {
+    abort("'neff_ratio' must be a numeric vector.")
+  }
   if (any(x < 0, na.rm = TRUE)) {
     abort("All neff ratios must be positive.")
   }

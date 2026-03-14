@@ -24,7 +24,9 @@ prepare_mcmc_array <- function(x,
     x <- as.array(x)
   }
 
-  stopifnot(is.matrix(x) || is.array(x))
+  if (!(is.matrix(x) || is.array(x))) {
+    abort("'x' must be a matrix or array.")
+  }
   if (is.array(x) && !(length(dim(x)) %in% c(2,3))) {
     abort("Arrays should have 2 or 3 dimensions. See help('MCMC-overview').")
   }
@@ -80,9 +82,11 @@ select_parameters <-
            patterns = character(),
            complete_pars = character()) {
 
-    stopifnot(is.character(explicit),
-              is.character(patterns),
-              is.character(complete_pars))
+    if (!is.character(explicit) ||
+        !is.character(patterns) ||
+        !is.character(complete_pars)) {
+      abort("'explicit', 'patterns', and 'complete_pars' must be character vectors.")
+    }
 
     if (!length(explicit) && !length(patterns)) {
       return(complete_pars)
@@ -132,7 +136,9 @@ melt_mcmc.mcmc_array <- function(x,
                                  value.name = "Value",
                                  as.is = TRUE,
                                  ...) {
-  stopifnot(is_mcmc_array(x))
+  if (!is_mcmc_array(x)) {
+    abort("'x' must be an mcmc_array.")
+  }
 
   long <- reshape2::melt(
     data = x,
@@ -168,7 +174,9 @@ melt_mcmc.matrix <- function(x,
 #' @param parnames Character vector of parameter names
 #' @return x with a modified dimnames.
 set_mcmc_dimnames <- function(x, parnames) {
-  stopifnot(is_3d_array(x))
+  if (!is_3d_array(x)) {
+    abort("'x' must be a 3-D array.")
+  }
   dimnames(x) <- list(
     Iteration = seq_len(nrow(x)),
     Chain = seq_len(ncol(x)),
@@ -201,7 +209,9 @@ is_df_with_chain <- function(x) {
 }
 
 validate_df_with_chain <- function(x) {
-  stopifnot(is_df_with_chain(x))
+  if (!is_df_with_chain(x)) {
+    abort("'x' must be a data frame with a chain column.")
+  }
   x <- as.data.frame(x)
   if (!is.null(x$chain)) {
     if (is.null(x$Chain)) {
@@ -311,7 +321,9 @@ parameter_names <- function(x) UseMethod("parameter_names")
 
 #' @export
 parameter_names.array <- function(x) {
-  stopifnot(is_3d_array(x))
+  if (!is_3d_array(x)) {
+    abort("'x' must be a 3-D array.")
+  }
   dimnames(x)[[3]] %||% abort("No parameter names found.")
 }
 #' @export
@@ -350,12 +362,16 @@ is_mcmc_array <- function(x) {
 
 # Check if 3-D array has multiple chains
 has_multiple_chains <- function(x) {
-  stopifnot(is_3d_array(x))
+  if (!is_3d_array(x)) {
+    abort("'x' must be a 3-D array.")
+  }
   isTRUE(dim(x)[2] > 1)
 }
 # Check if 3-D array has multiple parameters
 has_multiple_params <- function(x) {
-  stopifnot(is_3d_array(x))
+  if (!is_3d_array(x)) {
+    abort("'x' must be a 3-D array.")
+  }
   isTRUE(dim(x)[3] > 1)
 }
 
@@ -412,7 +428,9 @@ apply_transformations.matrix <- function(x, ..., transformations = list()) {
 
 #' @export
 apply_transformations.array <- function(x, ..., transformations = list()) {
-  stopifnot(length(dim(x)) == 3)
+  if (length(dim(x)) != 3) {
+    abort("'x' must be a 3-D array.")
+  }
   pars <- dimnames(x)[[3]]
   x_transforms <- validate_transformations(transformations, pars)
   for (p in names(x_transforms)) {
@@ -423,7 +441,9 @@ apply_transformations.array <- function(x, ..., transformations = list()) {
 }
 
 rename_transformed_pars <- function(pars, transformations) {
-  stopifnot(is.character(pars), is.list(transformations))
+  if (!is.character(pars) || !is.list(transformations)) {
+    abort("'pars' must be a character vector and 'transformations' must be a list.")
+  }
   has_names <- sapply(transformations, is.character)
   if (any(has_names)) {
     nms <- names(which(has_names))
@@ -456,18 +476,24 @@ num_chains.mcmc_array <- function(x, ...) dim(x)[2]
 num_iters.mcmc_array <- function(x, ...) dim(x)[1]
 #' @export
 num_params.data.frame <- function(x, ...) {
-  stopifnot("Parameter" %in% colnames(x))
+  if (!("Parameter" %in% colnames(x))) {
+    abort("'x' must contain a 'Parameter' column.")
+  }
   length(unique(x$Parameter))
 }
 #' @export
 num_chains.data.frame <- function(x, ...) {
-  stopifnot("Chain" %in% colnames(x))
+  if (!("Chain" %in% colnames(x))) {
+    abort("'x' must contain a 'Chain' column.")
+  }
   length(unique(x$Chain))
 }
 #' @export
 num_iters.data.frame <- function(x, ...) {
   cols <- colnames(x)
-  stopifnot("Iteration" %in% cols || "Draws" %in% cols)
+  if (!("Iteration" %in% cols || "Draws" %in% cols)) {
+    abort("'x' must contain an 'Iteration' or 'Draws' column.")
+  }
 
   if ("Iteration" %in% cols) {
     n <- length(unique(x$Iteration))

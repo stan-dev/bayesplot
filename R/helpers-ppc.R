@@ -38,7 +38,9 @@ all_counts <- function(x, ...) {
 #' @return Either throws an error or returns a numeric vector.
 #' @noRd
 validate_y <- function(y) {
-  stopifnot(is.numeric(y))
+  if (!is.numeric(y)) {
+    abort("'y' must be numeric.")
+  }
 
   if (!(inherits(y, "ts") && is.null(dim(y)))) {
     if (!is_vector_or_1Darray(y)) {
@@ -67,9 +69,13 @@ validate_y <- function(y) {
 #' @noRd
 validate_predictions <- function(predictions, n_obs = NULL) {
   # sanity checks
-  stopifnot(is.matrix(predictions), is.numeric(predictions))
+  if (!is.matrix(predictions) || !is.numeric(predictions)) {
+    abort("'predictions' must be a numeric matrix.")
+  }
   if (!is.null(n_obs)) {
-    stopifnot(length(n_obs) == 1, n_obs == as.integer(n_obs))
+    if (length(n_obs) != 1 || !identical(n_obs, as.integer(n_obs))) {
+      abort("'n_obs' must be a single integer.")
+    }
   }
 
   if (is.integer(predictions)) {
@@ -111,7 +117,9 @@ validate_pit <- function(pit) {
     abort("NAs not allowed in 'pit'.")
   }
 
-  stopifnot(is.numeric(pit))
+  if (!is.numeric(pit)) {
+    abort("'pit' must be numeric.")
+  }
 
   if (!is_vector_or_1Darray(pit)) {
     abort("'pit' must be a vector or 1D array.")
@@ -137,8 +145,12 @@ validate_pit <- function(pit) {
 #' @noRd
 validate_group <- function(group, n_obs) {
   # sanity checks
-  stopifnot(is.vector(group) || is.factor(group),
-            length(n_obs) == 1, n_obs == as.integer(n_obs))
+  if (!(is.vector(group) || is.factor(group))) {
+    abort("'group' must be a vector or factor.")
+  }
+  if (length(n_obs) != 1 || !identical(n_obs, as.integer(n_obs))) {
+    abort("'n_obs' must be a single integer.")
+  }
 
   if (!is.factor(group)) {
     group <- as.factor(group)
@@ -175,7 +187,9 @@ validate_x <- function(x = NULL, y, unique_x = FALSE) {
     }
   }
 
-  stopifnot(is.numeric(x))
+  if (!is.numeric(x)) {
+    abort("'x' must be numeric.")
+  }
 
   if (!is_vector_or_1Darray(x)) {
     abort("'x' must be a vector or 1D array.")
@@ -191,7 +205,9 @@ validate_x <- function(x = NULL, y, unique_x = FALSE) {
   }
 
   if (unique_x) {
-    stopifnot(identical(length(x), length(unique(x))))
+    if (!identical(length(x), length(unique(x)))) {
+      abort("'x' must contain only unique values.")
+    }
   }
 
   unname(x)
