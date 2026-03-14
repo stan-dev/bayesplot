@@ -239,9 +239,13 @@ from_grouped <- function(dots) {
 #' @noRd
 melt_predictions <- function(predictions) {
   obs_names <- attr(predictions, "obs_names")
-  out <- predictions %>%
-    reshape2::melt(varnames = c("rep_id", "y_id")) %>%
-    tibble::as_tibble()
+  n_reps <- nrow(predictions)
+  n_obs  <- ncol(predictions)
+  out <- tibble::tibble(
+    rep_id = rep(seq_len(n_reps), times = n_obs),
+    y_id   = rep(seq_len(n_obs),  each  = n_reps),
+    value  = as.vector(predictions)
+  )
 
   rep_labels <- create_rep_ids(out$rep_id)
   y_names <- obs_names[out$y_id] %||% out$y_id

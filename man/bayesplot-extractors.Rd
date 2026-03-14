@@ -76,12 +76,12 @@ perform a similar function.}
 \value{
 \describe{
 \item{\code{log_posterior()}}{
-\code{log_posterior()} methods return a molten data frame (see \code{\link[reshape2:melt]{reshape2::melt()}}).
+\code{log_posterior()} methods return a long-format data frame.
 The data frame should have columns \code{"Iteration"} (integer), \code{"Chain"}
 (integer), and \code{"Value"} (numeric). See \strong{Examples}, below.
 }
 \item{\code{nuts_params()}}{
-\code{nuts_params()} methods return a molten data frame (see \code{\link[reshape2:melt]{reshape2::melt()}}).
+\code{nuts_params()} methods return a long-format data frame.
 The data frame should have columns \code{"Parameter"} (factor), \code{"Iteration"}
 (integer), \code{"Chain"} (integer), and \code{"Value"} (numeric). See \strong{Examples}, below.
 }

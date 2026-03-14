@@ -76,23 +76,23 @@
 <text x='512.84' y='554.29' text-anchor='middle' style='font-size: 9.60px; fill: #4D4D4D; font-family: sans;' textLength='13.35px' lengthAdjust='spacingAndGlyphs'>0.2</text>
 <text x='313.21' y='567.53' text-anchor='middle' style='font-size: 12.00px; font-family: sans;' textLength='39.36px' lengthAdjust='spacingAndGlyphs'>median</text>
 <text transform='translate(14.24,283.58) rotate(-90)' text-anchor='middle' style='font-size: 12.00px; font-family: sans;' textLength='23.35px' lengthAdjust='spacingAndGlyphs'>mad</text>
-<text x='605.91' y='275.18' style='font-size: 12.00px; font-style: italic; font-family: sans;' textLength='7.33px' lengthAdjust='spacingAndGlyphs'>T</text>
-<text x='617.25' y='275.18' style='font-size: 12.00px; font-family: sans;' textLength='9.32px' lengthAdjust='spacingAndGlyphs'>=</text>
-<text x='629.35' y='275.18' style='font-size: 15.00px; font-family: sans;' textLength='5.00px' lengthAdjust='spacingAndGlyphs'>(</text>
-<text x='634.34' y='275.18' style='font-size: 12.00px; font-family: sans;' textLength='39.36px' lengthAdjust='spacingAndGlyphs'>median</text>
-<text x='673.70' y='275.18' style='font-size: 12.00px; font-family: sans;' textLength='3.00px' lengthAdjust='spacingAndGlyphs'>,</text>
-<text x='676.71' y='275.18' style='font-size: 12.00px; font-family: sans;' textLength='3.00px' lengthAdjust='spacingAndGlyphs'> </text>
-<text x='679.71' y='275.18' style='font-size: 12.00px; font-family: sans;' textLength='23.35px' lengthAdjust='spacingAndGlyphs'>mad</text>
-<text x='703.06' y='275.18' style='font-size: 15.00px; font-family: sans;' textLength='4.99px' lengthAdjust='spacingAndGlyphs'>)</text>
+<text x='605.91' y='275.35' style='font-size: 12.00px; font-style: italic; font-family: sans;' textLength='7.33px' lengthAdjust='spacingAndGlyphs'>T</text>
+<text x='617.25' y='275.35' style='font-size: 12.00px; font-family: sans;' textLength='9.32px' lengthAdjust='spacingAndGlyphs'>=</text>
+<text x='629.35' y='275.35' style='font-size: 15.00px; font-family: sans;' textLength='5.00px' lengthAdjust='spacingAndGlyphs'>(</text>
+<text x='634.34' y='275.35' style='font-size: 12.00px; font-family: sans;' textLength='39.36px' lengthAdjust='spacingAndGlyphs'>median</text>
+<text x='673.70' y='275.35' style='font-size: 12.00px; font-family: sans;' textLength='3.00px' lengthAdjust='spacingAndGlyphs'>,</text>
+<text x='676.71' y='275.35' style='font-size: 12.00px; font-family: sans;' textLength='3.00px' lengthAdjust='spacingAndGlyphs'> </text>
+<text x='679.71' y='275.35' style='font-size: 12.00px; font-family: sans;' textLength='23.35px' lengthAdjust='spacingAndGlyphs'>mad</text>
+<text x='703.06' y='275.35' style='font-size: 15.00px; font-family: sans;' textLength='4.99px' lengthAdjust='spacingAndGlyphs'>)</text>
 <circle cx='614.55' cy='294.64' r='5.72' style='stroke-width: 0.77; stroke: #005B96; fill: #6497B1;' />
-<text x='629.16' y='298.33' style='font-size: 13.00px; font-style: italic; font-family: sans;' textLength='7.94px' lengthAdjust='spacingAndGlyphs'>T</text>
-<text x='638.45' y='298.33' style='font-size: 16.25px; font-family: sans;' textLength='5.41px' lengthAdjust='spacingAndGlyphs'>(</text>
-<text x='643.86' y='298.33' style='font-size: 13.00px; font-style: italic; font-family: sans;' textLength='6.51px' lengthAdjust='spacingAndGlyphs'>y</text>
-<text x='651.39' y='301.08' style='font-size: 9.10px; font-family: sans;' textLength='5.06px' lengthAdjust='spacingAndGlyphs'>p</text>
-<text x='656.45' y='301.08' style='font-size: 9.10px; font-family: sans;' textLength='3.03px' lengthAdjust='spacingAndGlyphs'>r</text>
-<text x='659.48' y='301.08' style='font-size: 9.10px; font-family: sans;' textLength='5.06px' lengthAdjust='spacingAndGlyphs'>e</text>
-<text x='664.55' y='301.08' style='font-size: 9.10px; font-family: sans;' textLength='5.06px' lengthAdjust='spacingAndGlyphs'>d</text>
-<text x='669.61' y='298.33' style='font-size: 16.25px; font-family: sans;' textLength='5.40px' lengthAdjust='spacingAndGlyphs'>)</text>
+<text x='629.16' y='298.50' style='font-size: 13.00px; font-style: italic; font-family: sans;' textLength='7.94px' lengthAdjust='spacingAndGlyphs'>T</text>
+<text x='638.45' y='298.50' style='font-size: 16.25px; font-family: sans;' textLength='5.41px' lengthAdjust='spacingAndGlyphs'>(</text>
+<text x='643.86' y='298.50' style='font-size: 13.00px; font-style: italic; font-family: sans;' textLength='6.51px' lengthAdjust='spacingAndGlyphs'>y</text>
+<text x='651.39' y='300.90' style='font-size: 9.10px; font-family: sans;' textLength='5.06px' lengthAdjust='spacingAndGlyphs'>p</text>
+<text x='656.45' y='300.90' style='font-size: 9.10px; font-family: sans;' textLength='3.03px' lengthAdjust='spacingAndGlyphs'>r</text>
+<text x='659.48' y='300.90' style='font-size: 9.10px; font-family: sans;' textLength='5.06px' lengthAdjust='spacingAndGlyphs'>e</text>
+<text x='664.55' y='300.90' style='font-size: 9.10px; font-family: sans;' textLength='5.06px' lengthAdjust='spacingAndGlyphs'>d</text>
+<text x='669.61' y='298.50' style='font-size: 16.25px; font-family: sans;' textLength='5.40px' lengthAdjust='spacingAndGlyphs'>)</text>
 <text x='38.44' y='15.89' style='font-size: 14.40px; font-family: sans;' textLength='192.94px' lengthAdjust='spacingAndGlyphs'>ppd_stat_2d (stat, size, alpha)</text>
 </g>
 </svg>

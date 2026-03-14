@@ -1,5 +1,7 @@
 # bayesplot (development version)
 
+* Replace deprecated `reshape2::melt()` with base R `as.data.frame.table()` and `tidyr::pivot_longer()` across all internal data-reshaping helpers. `reshape2` has been removed from `Imports`.
+
 * Use `rlang::warn()` and `rlang::inform()` for selected PPC user messages instead of base `warning()` and `message()`.
 * Standardize input validation errors in `ppc_km_overlay()` and interpolation helpers to use `rlang::abort()` for consistent error handling.
 * Fix assignment-in-call bug in `mcmc_rank_ecdf()` (#).

@@ -291,7 +291,9 @@ ppd_stat_data <- function(ypred, group = NULL, stat) {
     ypred = t(predictions)
   )
   colnames(d) <- gsub(".", "_", colnames(d), fixed = TRUE)
-  molten_d <- reshape2::melt(d, id.vars = "group")
+  var_levels <- setdiff(colnames(d), "group")
+  molten_d <- tidyr::pivot_longer(d, cols = -group, names_to = "variable", values_to = "value") %>%
+    dplyr::mutate(variable = factor(.data$variable, levels = var_levels))
   molten_d <- group_by(molten_d, .data$group, .data$variable)
 
   data <-

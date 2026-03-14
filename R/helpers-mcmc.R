@@ -120,8 +120,10 @@ select_parameters <-
 #'
 #' @noRd
 #' @param x An mcmc_array (from prepare_mcmc_array).
-#' @param varnames,value.name,... Passed to reshape2::melt (array method).
-#' @return A molten data frame.
+#' @param varnames Character vector of names for the dimension columns.
+#' @param value.name Name for the value column.
+#' @param ... Unused; kept for backward compatibility.
+#' @return A long-format data frame.
 #'
 melt_mcmc <- function(x, ...) UseMethod("melt_mcmc")
 
@@ -130,18 +132,16 @@ melt_mcmc.mcmc_array <- function(x,
                                  varnames =
                                    c("Iteration", "Chain", "Parameter"),
                                  value.name = "Value",
-                                 as.is = TRUE,
                                  ...) {
   stopifnot(is_mcmc_array(x))
 
-  long <- reshape2::melt(
-    data = x,
-    varnames = varnames,
-    value.name = value.name,
-    as.is = FALSE,
-    ...)
+  long <- as.data.frame.table(x, responseName = value.name,
+                              stringsAsFactors = FALSE)
+  colnames(long)[seq_along(varnames)] <- varnames
 
-  long$Parameter <- factor(long$Parameter)
+  long[[varnames[1]]] <- as.integer(long[[varnames[1]]])  # Iteration
+  long[[varnames[2]]] <- as.integer(long[[varnames[2]]])  # Chain
+  long$Parameter      <- factor(long$Parameter)
   long
 }
 
@@ -151,14 +151,12 @@ melt_mcmc.matrix <- function(x,
                              varnames = c("Draw", "Parameter"),
                              value.name = "Value",
                              ...) {
-  long <- reshape2::melt(
-    data = x,
-    varnames = varnames,
-    value.name = value.name,
-    as.is = FALSE,
-    ...)
+  long <- as.data.frame.table(x, responseName = value.name,
+                              stringsAsFactors = FALSE)
+  colnames(long)[seq_along(varnames)] <- varnames
 
-  long$Parameter <- factor(long$Parameter)
+  long[[varnames[1]]] <- as.integer(long[[varnames[1]]])  # Draw
+  long$Parameter      <- factor(long$Parameter)
   long
 }
 

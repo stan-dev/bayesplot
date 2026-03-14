@@ -435,8 +435,10 @@ ppc_bars_data <-
     y = y,
     yrep = t(yrep)
   )
+  var_levels <- setdiff(colnames(tmp_data), "group")
   data <-
-    reshape2::melt(tmp_data, id.vars = "group") %>%
+    tidyr::pivot_longer(tmp_data, cols = -group, names_to = "variable", values_to = "value") %>%
+    dplyr::mutate(variable = factor(.data$variable, levels = var_levels)) %>%
     count(.data$group, .data$value, .data$variable) %>%
     tidyr::complete(.data$group, .data$value, .data$variable, fill = list(n = 0)) %>%
     group_by(.data$variable, .data$group) %>%

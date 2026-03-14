@@ -137,18 +137,18 @@
 <polyline points='5.98,279.65 5.98,182.29 ' style='stroke-width: 0.85; stroke-linecap: butt;' />
 <polyline points='5.98,417.85 5.98,320.49 ' style='stroke-width: 0.85; stroke-linecap: butt;' />
 <polyline points='5.98,556.04 5.98,458.68 ' style='stroke-width: 0.85; stroke-linecap: butt;' />
-<text x='635.91' y='291.48' style='font-size: 12.00px; font-style: italic; font-family: sans;' textLength='7.33px' lengthAdjust='spacingAndGlyphs'>T</text>
-<text x='647.26' y='291.48' style='font-size: 12.00px; font-family: sans;' textLength='9.32px' lengthAdjust='spacingAndGlyphs'>=</text>
-<text x='659.35' y='291.48' style='font-size: 12.00px; font-family: sans;' textLength='48.69px' lengthAdjust='spacingAndGlyphs'>stats::var</text>
-<rect x='636.26' y='299.17' width='16.57' height='18.64' style='stroke-width: 0.53; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #6497B1;' />
-<text x='659.17' y='312.18' style='font-size: 13.00px; font-style: italic; font-family: sans;' textLength='7.94px' lengthAdjust='spacingAndGlyphs'>T</text>
-<text x='668.45' y='312.18' style='font-size: 16.25px; font-family: sans;' textLength='5.41px' lengthAdjust='spacingAndGlyphs'>(</text>
-<text x='673.86' y='312.18' style='font-size: 13.00px; font-style: italic; font-family: sans;' textLength='6.51px' lengthAdjust='spacingAndGlyphs'>y</text>
-<text x='681.40' y='314.92' style='font-size: 9.10px; font-family: sans;' textLength='5.06px' lengthAdjust='spacingAndGlyphs'>p</text>
-<text x='686.46' y='314.92' style='font-size: 9.10px; font-family: sans;' textLength='3.03px' lengthAdjust='spacingAndGlyphs'>r</text>
-<text x='689.49' y='314.92' style='font-size: 9.10px; font-family: sans;' textLength='5.06px' lengthAdjust='spacingAndGlyphs'>e</text>
-<text x='694.55' y='314.92' style='font-size: 9.10px; font-family: sans;' textLength='5.06px' lengthAdjust='spacingAndGlyphs'>d</text>
-<text x='699.61' y='312.18' style='font-size: 16.25px; font-family: sans;' textLength='5.40px' lengthAdjust='spacingAndGlyphs'>)</text>
+<text x='635.91' y='291.65' style='font-size: 12.00px; font-style: italic; font-family: sans;' textLength='7.33px' lengthAdjust='spacingAndGlyphs'>T</text>
+<text x='647.26' y='291.65' style='font-size: 12.00px; font-family: sans;' textLength='9.32px' lengthAdjust='spacingAndGlyphs'>=</text>
+<text x='659.35' y='291.65' style='font-size: 12.00px; font-family: sans;' textLength='48.69px' lengthAdjust='spacingAndGlyphs'>stats::var</text>
+<rect x='636.26' y='299.34' width='16.57' height='18.30' style='stroke-width: 0.53; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #6497B1;' />
+<text x='659.17' y='312.35' style='font-size: 13.00px; font-style: italic; font-family: sans;' textLength='7.94px' lengthAdjust='spacingAndGlyphs'>T</text>
+<text x='668.45' y='312.35' style='font-size: 16.25px; font-family: sans;' textLength='5.41px' lengthAdjust='spacingAndGlyphs'>(</text>
+<text x='673.86' y='312.35' style='font-size: 13.00px; font-style: italic; font-family: sans;' textLength='6.51px' lengthAdjust='spacingAndGlyphs'>y</text>
+<text x='681.40' y='314.75' style='font-size: 9.10px; font-family: sans;' textLength='5.06px' lengthAdjust='spacingAndGlyphs'>p</text>
+<text x='686.46' y='314.75' style='font-size: 9.10px; font-family: sans;' textLength='3.03px' lengthAdjust='spacingAndGlyphs'>r</text>
+<text x='689.49' y='314.75' style='font-size: 9.10px; font-family: sans;' textLength='5.06px' lengthAdjust='spacingAndGlyphs'>e</text>
+<text x='694.55' y='314.75' style='font-size: 9.10px; font-family: sans;' textLength='5.06px' lengthAdjust='spacingAndGlyphs'>d</text>
+<text x='699.61' y='312.35' style='font-size: 16.25px; font-family: sans;' textLength='5.40px' lengthAdjust='spacingAndGlyphs'>)</text>
 <text x='5.98' y='15.89' style='font-size: 14.40px; font-family: sans;' textLength='289.01px' lengthAdjust='spacingAndGlyphs'>ppd_stat_grouped (stat, facet_args, binwidth)</text>
 </g>
 </svg>

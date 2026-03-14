@@ -15,12 +15,12 @@
 #' @return
 #' \describe{
 #' \item{`log_posterior()`}{
-#' `log_posterior()` methods return a molten data frame (see [reshape2::melt()]).
+#' `log_posterior()` methods return a long-format data frame.
 #' The data frame should have columns `"Iteration"` (integer), `"Chain"`
 #' (integer), and `"Value"` (numeric). See **Examples**, below.
 #' }
 #' \item{`nuts_params()`}{
-#' `nuts_params()` methods return a molten data frame (see [reshape2::melt()]).
+#' `nuts_params()` methods return a long-format data frame.
 #' The data frame should have columns `"Parameter"` (factor), `"Iteration"`
 #' (integer), `"Chain"` (integer), and `"Value"` (numeric). See **Examples**, below.
 #' }
@@ -85,8 +85,13 @@ log_posterior.stanfit <- function(object, inc_warmup = FALSE, ...) {
   lp <- rstan::get_logposterior(object,
                                 inc_warmup = inc_warmup,
                                 ...)
-  lp <- lapply(lp, as.array)
-  lp <- set_names(reshape2::melt(lp), c("Iteration", "Value", "Chain"))
+  lp <- dplyr::bind_rows(lapply(seq_along(lp), function(i) {
+    data.frame(
+      Iteration = seq_along(lp[[i]]),
+      Value     = as.numeric(lp[[i]]),
+      Chain     = as.integer(i)
+    )
+  }))
   validate_df_classes(lp[, c("Chain", "Iteration", "Value")],
                       c("integer", "integer", "numeric"))
 }
@@ -104,7 +109,10 @@ log_posterior.stanreg <- function(object, inc_warmup = FALSE, ...) {
 #' @method log_posterior CmdStanMCMC
 log_posterior.CmdStanMCMC <- function(object, inc_warmup = FALSE, ...) {
   lp <- object$draws("lp__", inc_warmup = inc_warmup)
-  lp <- reshape2::melt(lp)
+  lp <- as.data.frame.table(unclass(lp), responseName = "value",
+                             stringsAsFactors = FALSE)
+  lp[[1]] <- as.integer(lp[[1]])
+  lp[[2]] <- as.integer(lp[[2]])
   lp$variable <- NULL
   lp <- dplyr::rename_with(lp, capitalize_first)
   validate_df_classes(lp[, c("Chain", "Iteration", "Value")],
@@ -163,8 +171,19 @@ nuts_params.list <- function(object, pars = NULL, ...) {
     object <- lapply(object, function(x) x[, pars, drop = FALSE])
   }
 
-  out <- reshape2::melt(object)
-  out <- set_names(out, c("Iteration", "Parameter", "Value", "Chain"))
+  out <- dplyr::bind_rows(lapply(seq_along(object), function(i) {
+    mat       <- object[[i]]
+    n_iter    <- nrow(mat)
+    par_names <- colnames(mat)
+    data.frame(
+      Iteration = rep(seq_len(n_iter), times = length(par_names)),
+      Parameter = factor(rep(par_names, each = n_iter), levels = par_names),
+      Value     = as.vector(mat),
+      Chain     = as.integer(i),
+      stringsAsFactors = FALSE
+    )
+  }))
+  out <- out[c("Iteration", "Parameter", "Value", "Chain")]
   validate_df_classes(out[, c("Chain", "Iteration", "Parameter", "Value")],
                       c("integer", "integer", "factor", "numeric"))
 }
@@ -177,8 +196,12 @@ nuts_params.CmdStanMCMC <- function(object, pars = NULL, ...) {
   if (!is.null(pars)) {
     arr <- arr[,, pars]
   }
-  out <- reshape2::melt(arr)
-  colnames(out)[colnames(out) == "variable"] <- "parameter"
+  out <- as.data.frame.table(unclass(arr), responseName = "value",
+                             stringsAsFactors = FALSE)
+  out[[1]] <- as.integer(out[[1]])
+  out[[2]] <- as.integer(out[[2]])
+  out[[3]] <- factor(out[[3]])
+  names(out)[names(out) == "variable"] <- "parameter"
   out <- dplyr::rename_with(out, capitalize_first)
   validate_df_classes(out[, c("Chain", "Iteration", "Parameter", "Value")],
                       c("integer", "integer", "factor", "numeric"))

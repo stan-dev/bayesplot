@@ -36,7 +36,6 @@ Imports:
     glue,
     lifecycle,
     posterior,
-    reshape2,
     rlang (>= 1.0.0),
     stats,
     tibble (>= 2.0.0),
