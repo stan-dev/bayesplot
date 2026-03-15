@@ -319,11 +319,9 @@ ppc_rootogram <- function(y,
       alpha = 1
     )
   } else {
-    geom_smooth(
+    geom_line(
       aes(x = .data$xpos, y = .data$tyexp, color = "Expected"),
-      fill = get_color("d"),
-      linewidth = size,
-      stat = "identity"
+      linewidth = size
     )
   }
 
