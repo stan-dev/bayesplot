@@ -756,7 +756,7 @@ mcmc_areas_data <- function(x,
       interval_width = 0,
       interval = "point"
     ) %>%
-    select(-c("center"), "m") %>%
+    select(-all_of("center"), all_of("m")) %>%
     ungroup()
 
   # Ignore points calculcation if no point estimate was requested
@@ -842,7 +842,7 @@ compute_column_density <- function(df, group_vars, value_var, ...) {
   reconstructed <- as.list(seq_len(nrow(nested)))
   for (df_i in seq_along(nested$density)) {
     row <- nested[df_i, ]
-    parent <- row %>% select(-c("density"))
+    parent <- row %>% select(-all_of("density"))
     groups <- rep(list(parent), nrow(row$density[[1]])) %>% dplyr::bind_rows()
 
     reconstructed[[df_i]] <- dplyr::bind_cols(groups, row$density[[1]])
