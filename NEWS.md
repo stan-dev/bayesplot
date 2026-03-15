@@ -1,14 +1,10 @@
 # bayesplot (development version)
 
-* Deprecate user-facing `size` arguments that controlled line width in favor of
-  `linewidth` across all plotting functions. The `size` argument still works but
-  emits a deprecation warning. (#408)
-* Deprecate the `fatten` argument in `ppc_intervals()`, `ppd_intervals()`,
-  `ppc_loo_intervals()`, `ppc_bars()`, and their grouped variants. Point size in
-  `geom_pointrange()` is now controlled directly by `size`, matching ggplot2 4.0
-  semantics. The default `size` has been changed from 1 to 2.5 to preserve the
-  previous visual appearance (old `size * fatten`). (#408)
+* Deprecate user-facing `size` arguments that controlled line width in favor of linewidth` across all plotting functions.
+* Deprecate the `fatten` argument in `ppc_intervals()`, `ppd_intervals()`,`ppc_loo_intervals()`, `ppc_bars()`, and their grouped variants. Point size in`geom_pointrange()` is now controlled directly by `size`.
 * Added `lifecycle` as an imported dependency for deprecation infrastructure.
+* Use `rlang::warn()` and `rlang::inform()` for selected PPC user messages instead of base `warning()` and `message()`.
+* Standardize input validation errors in `ppc_km_overlay()` and interpolation helpers to use `rlang::abort()` for consistent error handling.
 * Fix assignment-in-call bug in `mcmc_rank_ecdf()` (#).
 * Replaced deprecated `dplyr` and `tidyselect` functions (`top_n`, `one_of`, `group_indices`) with their modern equivalents to ensure future compatibility. (#431)
 * Documentation added for all exported `*_data()` functions (#209)
@@ -17,6 +13,7 @@
 * Fixed test in `test-ppc-distributions.R` that incorrectly used `ppc_dens()` instead of `ppd_dens()` when testing PPD functions
 * New functions `mcmc_dots` and `mcmc_dots_by_chain` for dot plots of MCMC draws by @behramulukir (#402)
 * Default to `quantiles=100` for all dot plots by @behramulukir (#402)
+* Use `"neff_ratio"` consistently in diagnostic color scale helpers to avoid relying on partial matching of `"neff"`.
 
 # bayesplot 1.15.0
 

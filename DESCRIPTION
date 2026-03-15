@@ -26,7 +26,7 @@ Description: Plotting functions for posterior analysis, MCMC diagnostics,
 License: GPL (>= 3)
 URL: https://mc-stan.org/bayesplot/
 BugReports: https://github.com/stan-dev/bayesplot/issues/
-SystemRequirements: pandoc (>= 1.12.3), pandoc-citeproc
+SystemRequirements: pandoc (>= 1.12.3)
 Depends:
     R (>= 4.1.0)
 Imports:
@@ -37,7 +37,7 @@ Imports:
     lifecycle,
     posterior,
     reshape2,
-    rlang (>= 0.3.0),
+    rlang (>= 1.0.0),
     stats,
     tibble (>= 2.0.0),
     tidyr,
