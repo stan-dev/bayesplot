@@ -130,7 +130,6 @@ melt_mcmc.mcmc_array <- function(x,
                                  varnames =
                                    c("Iteration", "Chain", "Parameter"),
                                  value.name = "Value",
-                                 as.is = TRUE,
                                  ...) {
   stopifnot(is_mcmc_array(x))
 
@@ -138,7 +137,7 @@ melt_mcmc.mcmc_array <- function(x,
     data = x,
     varnames = varnames,
     value.name = value.name,
-    as.is = as.is,
+    as.is = FALSE,
     ...)
 
   long$Parameter <- factor(long$Parameter)
