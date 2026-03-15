@@ -510,13 +510,14 @@ mcmc_areas_ridges <- function(x,
   args_outer <- list(
     mapping = aes(height = .data$density),
     color = get_color("dark"),
-    fill = NA
+    fill = NA,
+    stat = "identity"
   )
   if (!is.null(border_size)) {
     args_outer$linewidth <- border_size
   }
 
-  layer_outer <- do.call(ggridges::geom_ridgeline, args_outer)
+  layer_outer <- do.call(ggridges::geom_density_ridges, args_outer)
 
   # Force ggridges to compute the scaling now
   test_plot <- ggplot(datas$outer) +
