@@ -323,9 +323,8 @@ mcmc_dens_chains <- function(
       group = interaction(.data$chain, .data$parameter)
     ) +
     geom_line(data = line_training) +
-    ggridges::geom_density_ridges(
+    ggridges::geom_ridgeline(
       aes(height = .data$density),
-      stat = "identity",
       fill = NA,
       show.legend = FALSE
     ) +

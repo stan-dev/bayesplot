@@ -11,6 +11,7 @@
 * New functions `mcmc_dots` and `mcmc_dots_by_chain` for dot plots of MCMC draws by @behramulukir (#402)
 * Default to `quantiles=100` for all dot plots by @behramulukir (#402)
 * Use `"neff_ratio"` consistently in diagnostic color scale helpers to avoid relying on partial matching of `"neff"`.
+* Replace `geom_density_ridges(stat = "identity")` with `geom_ridgeline()` in `mcmc-intervals.R` and `mcmc-distributions.R` since density is pre-computed; also drop redundant `stat = "identity"` from `geom_ridgeline()` calls.
 
 # bayesplot 1.15.0
 
