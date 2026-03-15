@@ -541,9 +541,7 @@ drop_NAs_and_warn <- function(x) {
       bayesplot_theme_get()
     if (style == "bar") {
       graph <- graph +
-        geom_bar(
-          position = "identity",
-          stat = "identity",
+        geom_col(
           linewidth = 0.2,
           fill = get_color("l"),
           color = get_color("lh"),
