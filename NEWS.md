@@ -1,5 +1,6 @@
 # bayesplot (development version)
 
+* Fix `melt_mcmc.mcmc_array()` ignoring the `as.is` argument — the value passed by the caller is now forwarded correctly to `reshape2::melt()` instead of being silently overridden with `FALSE`.
 * Use `rlang::warn()` and `rlang::inform()` for selected PPC user messages instead of base `warning()` and `message()`.
 * Standardize input validation errors in `ppc_km_overlay()` and interpolation helpers to use `rlang::abort()` for consistent error handling.
 * Fix assignment-in-call bug in `mcmc_rank_ecdf()` (#).

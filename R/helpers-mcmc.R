@@ -138,7 +138,7 @@ melt_mcmc.mcmc_array <- function(x,
     data = x,
     varnames = varnames,
     value.name = value.name,
-    as.is = FALSE,
+    as.is = as.is,
     ...)
 
   long$Parameter <- factor(long$Parameter)
