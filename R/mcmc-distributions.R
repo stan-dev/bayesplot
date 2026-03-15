@@ -332,7 +332,7 @@ mcmc_dens_chains <- function(
     labs(color = "Chain") +
     scale_y_discrete(
       limits = unique(rev(data$parameter)),
-      expand = c(0.05, .6)
+      expand = expansion(mult = 0.05, add = 0.6)
     ) +
     scale_color +
     bayesplot_theme_get() +

@@ -484,7 +484,7 @@ mcmc_nuts_energy <-
       scale_fill_manual("", values = fills, labels = aes_labs) +
       scale_color_manual("", values = clrs, labels = aes_labs) +
       dont_expand_y_axis(c(0.005, 0)) +
-      scale_x_continuous(expand = c(0.2, 0)) +
+      scale_x_continuous(expand = expansion(mult = 0.2, add = 0)) +
       labs(y = NULL, x = expression(E - bar(E))) +
       bayesplot_theme_get() +
       space_legend_keys()  +
