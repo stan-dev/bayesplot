@@ -189,7 +189,7 @@ color_scheme_view <- function(scheme = NULL) {
 
 #' @export
 print.bayesplot_scheme <- function(x, ...) {
-  tab <- data.frame(unlist(x, use.names = FALSE), stringsAsFactors = FALSE)
+  tab <- data.frame(unlist(x, use.names = FALSE))
   colnames(tab) <- attr(x, "scheme_name") %||% "hex_color"
   print(tab, ...)
 }
