@@ -448,7 +448,7 @@ library("rstanarm")
 fit <- stan_glm(mpg ~ ., data = mtcars, refresh = 0,
   # next line to keep example fast and also ensure we get some divergences
                 prior = hs(), iter = 400, adapt_delta = 0.8)
-#> Warning: There were 13 divergent transitions after warmup. See
+#> Warning: There were 24 divergent transitions after warmup. See
 #> https://mc-stan.org/misc/warnings.html#divergent-transitions-after-warmup
 #> to find out why this is a problem and how to eliminate them.
 #> Warning: Examine the pairs() plot to diagnose sampling problems

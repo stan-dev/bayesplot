@@ -219,148 +219,32 @@ library(rstan)
 #> change `threads_per_chain` option:
 #> rstan_options(threads_per_chain = 1)
 fit <- stan_demo("eight_schools")
-#> 
-#> > J <- 8
-#> 
-#> > y <- c(28, 8, -3, 7, -1, 1, 18, 12)
-#> 
-#> > sigma <- c(15, 10, 16, 11, 9, 11, 10, 18)
-#> 
-#> > tau <- 25
-#> 
-#> SAMPLING FOR MODEL 'eight_schools' NOW (CHAIN 1).
-#> Chain 1: 
-#> Chain 1: Gradient evaluation took 5e-06 seconds
-#> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.05 seconds.
-#> Chain 1: Adjust your expectations accordingly!
-#> Chain 1: 
-#> Chain 1: 
-#> Chain 1: Iteration:    1 / 2000 [  0%]  (Warmup)
-#> Chain 1: Iteration:  200 / 2000 [ 10%]  (Warmup)
-#> Chain 1: Iteration:  400 / 2000 [ 20%]  (Warmup)
-#> Chain 1: Iteration:  600 / 2000 [ 30%]  (Warmup)
-#> Chain 1: Iteration:  800 / 2000 [ 40%]  (Warmup)
-#> Chain 1: Iteration: 1000 / 2000 [ 50%]  (Warmup)
-#> Chain 1: Iteration: 1001 / 2000 [ 50%]  (Sampling)
-#> Chain 1: Iteration: 1200 / 2000 [ 60%]  (Sampling)
-#> Chain 1: Iteration: 1400 / 2000 [ 70%]  (Sampling)
-#> Chain 1: Iteration: 1600 / 2000 [ 80%]  (Sampling)
-#> Chain 1: Iteration: 1800 / 2000 [ 90%]  (Sampling)
-#> Chain 1: Iteration: 2000 / 2000 [100%]  (Sampling)
-#> Chain 1: 
-#> Chain 1:  Elapsed Time: 0.04 seconds (Warm-up)
-#> Chain 1:                0.038 seconds (Sampling)
-#> Chain 1:                0.078 seconds (Total)
-#> Chain 1: 
-#> 
-#> SAMPLING FOR MODEL 'eight_schools' NOW (CHAIN 2).
-#> Chain 2: 
-#> Chain 2: Gradient evaluation took 3e-06 seconds
-#> Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0.03 seconds.
-#> Chain 2: Adjust your expectations accordingly!
-#> Chain 2: 
-#> Chain 2: 
-#> Chain 2: Iteration:    1 / 2000 [  0%]  (Warmup)
-#> Chain 2: Iteration:  200 / 2000 [ 10%]  (Warmup)
-#> Chain 2: Iteration:  400 / 2000 [ 20%]  (Warmup)
-#> Chain 2: Iteration:  600 / 2000 [ 30%]  (Warmup)
-#> Chain 2: Iteration:  800 / 2000 [ 40%]  (Warmup)
-#> Chain 2: Iteration: 1000 / 2000 [ 50%]  (Warmup)
-#> Chain 2: Iteration: 1001 / 2000 [ 50%]  (Sampling)
-#> Chain 2: Iteration: 1200 / 2000 [ 60%]  (Sampling)
-#> Chain 2: Iteration: 1400 / 2000 [ 70%]  (Sampling)
-#> Chain 2: Iteration: 1600 / 2000 [ 80%]  (Sampling)
-#> Chain 2: Iteration: 1800 / 2000 [ 90%]  (Sampling)
-#> Chain 2: Iteration: 2000 / 2000 [100%]  (Sampling)
-#> Chain 2: 
-#> Chain 2:  Elapsed Time: 0.046 seconds (Warm-up)
-#> Chain 2:                0.048 seconds (Sampling)
-#> Chain 2:                0.094 seconds (Total)
-#> Chain 2: 
-#> 
-#> SAMPLING FOR MODEL 'eight_schools' NOW (CHAIN 3).
-#> Chain 3: 
-#> Chain 3: Gradient evaluation took 4e-06 seconds
-#> Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 0.04 seconds.
-#> Chain 3: Adjust your expectations accordingly!
-#> Chain 3: 
-#> Chain 3: 
-#> Chain 3: Iteration:    1 / 2000 [  0%]  (Warmup)
-#> Chain 3: Iteration:  200 / 2000 [ 10%]  (Warmup)
-#> Chain 3: Iteration:  400 / 2000 [ 20%]  (Warmup)
-#> Chain 3: Iteration:  600 / 2000 [ 30%]  (Warmup)
-#> Chain 3: Iteration:  800 / 2000 [ 40%]  (Warmup)
-#> Chain 3: Iteration: 1000 / 2000 [ 50%]  (Warmup)
-#> Chain 3: Iteration: 1001 / 2000 [ 50%]  (Sampling)
-#> Chain 3: Iteration: 1200 / 2000 [ 60%]  (Sampling)
-#> Chain 3: Iteration: 1400 / 2000 [ 70%]  (Sampling)
-#> Chain 3: Iteration: 1600 / 2000 [ 80%]  (Sampling)
-#> Chain 3: Iteration: 1800 / 2000 [ 90%]  (Sampling)
-#> Chain 3: Iteration: 2000 / 2000 [100%]  (Sampling)
-#> Chain 3: 
-#> Chain 3:  Elapsed Time: 0.038 seconds (Warm-up)
-#> Chain 3:                0.02 seconds (Sampling)
-#> Chain 3:                0.058 seconds (Total)
-#> Chain 3: 
-#> 
-#> SAMPLING FOR MODEL 'eight_schools' NOW (CHAIN 4).
-#> Chain 4: 
-#> Chain 4: Gradient evaluation took 3e-06 seconds
-#> Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 0.03 seconds.
-#> Chain 4: Adjust your expectations accordingly!
-#> Chain 4: 
-#> Chain 4: 
-#> Chain 4: Iteration:    1 / 2000 [  0%]  (Warmup)
-#> Chain 4: Iteration:  200 / 2000 [ 10%]  (Warmup)
-#> Chain 4: Iteration:  400 / 2000 [ 20%]  (Warmup)
-#> Chain 4: Iteration:  600 / 2000 [ 30%]  (Warmup)
-#> Chain 4: Iteration:  800 / 2000 [ 40%]  (Warmup)
-#> Chain 4: Iteration: 1000 / 2000 [ 50%]  (Warmup)
-#> Chain 4: Iteration: 1001 / 2000 [ 50%]  (Sampling)
-#> Chain 4: Iteration: 1200 / 2000 [ 60%]  (Sampling)
-#> Chain 4: Iteration: 1400 / 2000 [ 70%]  (Sampling)
-#> Chain 4: Iteration: 1600 / 2000 [ 80%]  (Sampling)
-#> Chain 4: Iteration: 1800 / 2000 [ 90%]  (Sampling)
-#> Chain 4: Iteration: 2000 / 2000 [100%]  (Sampling)
-#> Chain 4: 
-#> Chain 4:  Elapsed Time: 0.041 seconds (Warm-up)
-#> Chain 4:                0.023 seconds (Sampling)
-#> Chain 4:                0.064 seconds (Total)
-#> Chain 4: 
-#> Warning: There were 41 divergent transitions after warmup. See
-#> https://mc-stan.org/misc/warnings.html#divergent-transitions-after-warmup
-#> to find out why this is a problem and how to eliminate them.
-#> Warning: Examine the pairs() plot to diagnose sampling problems
-#> Warning: Bulk Effective Samples Size (ESS) is too low, indicating posterior means and medians may be unreliable.
-#> Running the chains for more iterations may help. See
-#> https://mc-stan.org/misc/warnings.html#bulk-ess
-#> Warning: Tail Effective Samples Size (ESS) is too low, indicating posterior variances and tail quantiles may be unreliable.
-#> Running the chains for more iterations may help. See
-#> https://mc-stan.org/misc/warnings.html#tail-ess
+#> Warning: URL 'https://codeload.github.com/stan-dev/example-models/zip/refs/heads/master': Timeout of 60 seconds was reached
+#> Error in download.file(URL, FILE): download from 'https://github.com/stan-dev/example-models/archive/master.zip' failed
 draws <- as.array(fit, pars = c("mu", "tau", "theta", "lp__"))
+#> Download of example-models failed. Try unziping
+#>  https://github.com/stan-dev/example-models/archive/master.zip 
+#> in /tmp/Rtmprmj8ot
+#> Error: object 'fit' not found
 np <- nuts_params(fit)
+#> Error: object 'fit' not found
 str(np)
-#> 'data.frame':    24000 obs. of  4 variables:
-#>  $ Chain    : int  1 1 1 1 1 1 1 1 1 1 ...
-#>  $ Iteration: int  1 2 3 4 5 6 7 8 9 10 ...
-#>  $ Parameter: Factor w/ 6 levels "accept_stat__",..: 1 1 1 1 1 1 1 1 1 1 ...
-#>  $ Value    : num  0.998 0.973 0.996 0.995 0.998 ...
+#> Error: object 'np' not found
 levels(np$Parameter)
-#> [1] "accept_stat__" "stepsize__"    "treedepth__"   "n_leapfrog__" 
-#> [5] "divergent__"   "energy__"     
+#> Error: object 'np' not found
 
 color_scheme_set("brightblue")
 mcmc_parcoord(draws, alpha = 0.05)
-
+#> Error: object 'draws' not found
 mcmc_parcoord(draws, np = np)
-
+#> Error: object 'draws' not found
 
 # customize appearance of divergences
 color_scheme_set("darkgray")
 div_style <- parcoord_style_np(div_color = "green", div_size = 0.05, div_alpha = 0.4)
 mcmc_parcoord(draws, size = 0.25, alpha = 0.1,
               np = np, np_style = div_style)
-
+#> Error: object 'draws' not found
 
 # to use a transformation (e.g., standardizing all the variables can be helpful)
 # specify the 'transformations' argument (though partial argument name
@@ -373,29 +257,14 @@ mcmc_parcoord(
   np = np,
   np_style = div_style
  )
-
+#> Error: object 'draws' not found
 
 # mcmc_parcoord_data returns just the data in a conventient form for plotting
 d <- mcmc_parcoord_data(x, np = np)
+#> Error: object 'np' not found
 head(d)
-#> # A tibble: 6 × 4
-#>    Draw Parameter  Value Divergent
-#>   <int> <fct>      <dbl>     <dbl>
-#> 1     1 alpha     -14.1          0
-#> 2     2 alpha     -20.0          0
-#> 3     3 alpha     -21.0          0
-#> 4     4 alpha     -36.3          0
-#> 5     5 alpha      -7.58         0
-#> 6     6 alpha     -10.4          0
+#> Error: object 'd' not found
 tail(d)
-#> # A tibble: 6 × 4
-#>    Draw Parameter Value Divergent
-#>   <int> <fct>     <dbl>     <dbl>
-#> 1   995 beta[3]   1.04          0
-#> 2   996 beta[3]   1.07          0
-#> 3   997 beta[3]   0.983         0
-#> 4   998 beta[3]   0.821         0
-#> 5   999 beta[3]   0.903         0
-#> 6  1000 beta[3]   0.858         0
+#> Error: object 'd' not found
 # }
 ```

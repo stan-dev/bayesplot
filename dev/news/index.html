@@ -75,6 +75,7 @@
 <li>New functions <code>mcmc_dots</code> and <code>mcmc_dots_by_chain</code> for dot plots of MCMC draws by <a href="https://github.com/behramulukir" class="external-link">@behramulukir</a> (<a href="https://github.com/stan-dev/bayesplot/issues/402" class="external-link">#402</a>)</li>
 <li>Default to <code>quantiles=100</code> for all dot plots by <a href="https://github.com/behramulukir" class="external-link">@behramulukir</a> (<a href="https://github.com/stan-dev/bayesplot/issues/402" class="external-link">#402</a>)</li>
 <li>Use <code>"neff_ratio"</code> consistently in diagnostic color scale helpers to avoid relying on partial matching of <code>"neff"</code>.</li>
+<li>Replace <code>expand = c(mult, add)</code> with <code><a href="https://ggplot2.tidyverse.org/reference/expansion.html" class="external-link">ggplot2::expansion()</a></code> helper in scale functions for consistency with ggplot2 &gt;= 3.3.0 style.</li>
 <li>Replace uses of <code>geom_bar(stat = "identity")</code> with the more idiomatic ggplot2 form <code><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_col()</a></code>
 </li>
 </ul></div>
