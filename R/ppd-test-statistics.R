@@ -187,7 +187,7 @@ ppd_stat_freqpoly <-
         labels = Typred_label(),
         show_marginal = show_marginal
       ) +
-      dont_expand_y_axis(c(0.005, 0)) +
+      dont_expand_y_axis(expansion(mult = 0.005, add = 0)) +
       bayesplot_theme_get() +
       xaxis_title(FALSE) +
       yaxis_text(FALSE) +
