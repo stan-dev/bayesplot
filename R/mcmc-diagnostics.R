@@ -199,7 +199,7 @@ mcmc_rhat_hist <- function(rhat, ..., binwidth = NULL, bins = NULL, breaks = NUL
     scale_color_diagnostic("rhat") +
     scale_fill_diagnostic("rhat") +
     labs(x = expression(hat(R)), y = NULL) +
-    dont_expand_y_axis(c(0.005, 0)) +
+    dont_expand_y_axis(expansion(mult = 0.005, add = 0)) +
     bayesplot_theme_get() +
     yaxis_title(FALSE) +
     yaxis_text(FALSE) +
@@ -290,7 +290,7 @@ mcmc_neff_hist <- function(ratio, ..., binwidth = NULL, bins = NULL, breaks = NU
     scale_color_diagnostic("neff_ratio") +
     scale_fill_diagnostic("neff_ratio") +
     labs(x = expression(N[eff]/N), y = NULL) +
-    dont_expand_y_axis(c(0.005, 0)) +
+    dont_expand_y_axis(expansion(mult = 0.005, add = 0)) +
     yaxis_title(FALSE) +
     yaxis_text(FALSE) +
     yaxis_ticks(FALSE) +

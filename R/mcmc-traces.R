@@ -446,7 +446,7 @@ mcmc_rank_hist <- function(x,
     geom_blank(data = data_boundaries) +
     facet_call +
     force_x_axis_in_facets() +
-    dont_expand_y_axis(c(0.005, 0)) +
+    dont_expand_y_axis(expansion(mult = 0.005, add = 0)) +
     bayesplot_theme_get() +
     theme(
       axis.line.y = element_blank(),
