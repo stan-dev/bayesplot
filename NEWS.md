@@ -1,5 +1,7 @@
 # bayesplot (development version)
 
+* Use `rlang::warn()` and `rlang::inform()` for selected PPC user messages instead of base `warning()` and `message()`.
+* Standardize input validation errors in `ppc_km_overlay()` and interpolation helpers to use `rlang::abort()` for consistent error handling.
 * Fix assignment-in-call bug in `mcmc_rank_ecdf()` (#).
 * Replaced deprecated `dplyr` and `tidyselect` functions (`top_n`, `one_of`, `group_indices`) with their modern equivalents to ensure future compatibility. (#431)
 * Documentation added for all exported `*_data()` functions (#209)
@@ -8,6 +10,9 @@
 * Fixed test in `test-ppc-distributions.R` that incorrectly used `ppc_dens()` instead of `ppd_dens()` when testing PPD functions
 * New functions `mcmc_dots` and `mcmc_dots_by_chain` for dot plots of MCMC draws by @behramulukir (#402)
 * Default to `quantiles=100` for all dot plots by @behramulukir (#402)
+* Use `"neff_ratio"` consistently in diagnostic color scale helpers to avoid relying on partial matching of `"neff"`.
+* Replace `expand = c(mult, add)` with `ggplot2::expansion()` helper in scale functions for consistency with ggplot2 >= 3.3.0 style.
+* Replace uses of `geom_bar(stat = "identity")` with the more idiomatic ggplot2 form `geom_col()` 
 
 # bayesplot 1.15.0
 

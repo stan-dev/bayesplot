@@ -132,8 +132,8 @@ mcmc_parcoord <-
 
 
     divg <- sym("Divergent")
-    draws <- dplyr::filter(data, UQ(divg) == 0)
-    div_draws <- dplyr::filter(data, UQ(divg) == 1)
+    draws <- dplyr::filter(data, !!divg == 0)
+    div_draws <- dplyr::filter(data, !!divg == 1)
     has_divs <- isTRUE(nrow(div_draws) > 0)
 
     graph <- ggplot(draws, aes(
@@ -159,7 +159,7 @@ mcmc_parcoord <-
     }
 
     graph +
-      scale_x_discrete(expand = c(0,0), labels = levels(draws$Parameter)) +
+      scale_x_discrete(expand = expansion(0, 0), labels = levels(draws$Parameter)) +
       expand_limits(x = nlevels(draws$Parameter) + 0.25) +
       labs(x = NULL, y = NULL)
   }
@@ -191,7 +191,7 @@ mcmc_parcoord_data <-
       # 'Parameter' and 'Value' so need to be a little careful)
       divs <- np %>%
         validate_nuts_data_frame() %>%
-        dplyr::filter(UQ(param) == "divergent__") %>%
+        dplyr::filter(!!param == "divergent__") %>%
         select(- !!param) %>%
         rename("Divergent" = !!value)
 
