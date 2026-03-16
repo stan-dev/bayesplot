@@ -11,7 +11,7 @@
 * New functions `mcmc_dots` and `mcmc_dots_by_chain` for dot plots of MCMC draws by @behramulukir (#402)
 * Default to `quantiles=100` for all dot plots by @behramulukir (#402)
 * Use `"neff_ratio"` consistently in diagnostic color scale helpers to avoid relying on partial matching of `"neff"`.
-* Replace old-style `expand = c(mult, add)` with `expansion()` helper in scale functions across `helpers-gg.R`, `mcmc-diagnostics.R`, `mcmc-diagnostics-nuts.R`, `mcmc-distributions.R`, and `mcmc-parcoord.R` for consistency with ggplot2 >= 3.3.0 style.
+* Replace `expand = c(mult, add)` with `ggplot2::expansion()` helper in scale functions for consistency with ggplot2 >= 3.3.0 style.
 
 # bayesplot 1.15.0
 

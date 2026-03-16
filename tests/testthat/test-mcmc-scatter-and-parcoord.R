@@ -320,6 +320,14 @@ test_that("mcmc_parcoord returns a ggplot object", {
   expect_gg(mcmc_parcoord(arr, pars = "sigma", regex_pars = "beta"))
 })
 
+test_that("mcmc_parcoord uses the expected x-axis expansion", {
+  built <- ggplot2::ggplot_build(
+    mcmc_parcoord(example_mcmc_draws(), pars = c("beta[1]", "beta[2]", "sigma"))
+  )
+
+  expect_equal(built$layout$panel_params[[1]]$x.range, c(1, 3.25))
+})
+
 test_that("mcmc_parcoord with nuts info returns a ggplot object", {
   skip_if_not_installed("rstanarm")
   expect_gg(mcmc_parcoord(post, pars = c("wt", "am", "sigma"), np = np))

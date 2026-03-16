@@ -79,6 +79,14 @@ test_that("'description' & 'rating' columns are correct (#176)", {
   expect_equal(df$description, expected_descriptions)
 })
 
+test_that("mcmc_rhat uses the expected panel expansion", {
+  rhats <- seq(from = 1, to = 1.20, length.out = 10)
+  built <- ggplot2::ggplot_build(mcmc_rhat(rhats))
+
+  expect_equal(built$layout$panel_params[[1]]$x.range, c(0.99, 1.21))
+  expect_equal(built$layout$panel_params[[1]]$y.range, c(0.775, 10.225))
+})
+
 test_that("mcmc_acf & mcmc_acf_bar return a ggplot object", {
   expect_gg(mcmc_acf(arr, pars = "beta[1]", regex_pars = "x\\:[2,5]"))
   expect_gg(mcmc_acf_bar(arr, pars = "beta[1]", regex_pars = "x\\:[2,5]"))
