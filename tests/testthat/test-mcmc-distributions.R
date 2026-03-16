@@ -171,6 +171,18 @@ test_that("mcmc_dots_by_chain returns a ggplot object", {
                                  quantiles = 80))
 })
 
+test_that("mcmc_dots_by_chain uses the expected y-axis expansion", {
+  built <- ggplot2::ggplot_build(
+    mcmc_dots_by_chain(
+      example_mcmc_draws(),
+      pars = c("beta[1]", "beta[2]"),
+      quantiles = 50
+    )
+  )
+
+  expect_equal(built$layout$panel_params[[1]]$y.range, c(-0.005, 1.005))
+})
+
 test_that("mcmc_violin returns a ggplot object", {
   expect_gg(mcmc_violin(arr, pars = "beta[2]", regex_pars = "x\\:"))
   expect_gg(mcmc_violin(dframe_multiple_chains,
@@ -294,4 +306,3 @@ test_that("mcmc_dots_by_chain renders correctly", {
   p_base <- mcmc_dots_by_chain(vdiff_dframe_chains)
   vdiffr::expect_doppelganger("mcmc_dots_by_chain (default)", p_base)
 })
-

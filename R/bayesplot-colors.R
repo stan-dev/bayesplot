@@ -222,9 +222,8 @@ plot_scheme <- function(scheme = NULL) {
   )
 
   ggplot(color_data, aes(x = .data$name, y = .data$value, fill = .data$group)) +
-    geom_bar(
+    geom_col(
       width = .5,
-      stat = "identity",
       color = "white",
       linewidth = 0.1
     ) +

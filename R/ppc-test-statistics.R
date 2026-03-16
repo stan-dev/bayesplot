@@ -263,7 +263,7 @@ ppc_stat_freqpoly <-
         values = set_names(get_color(c("m", "dh")), c("yrep", "y")),
         labels = c(yrep = Tyrep_label(), y = Ty_label())
       ) +
-      dont_expand_y_axis(c(0.005, 0)) +
+      dont_expand_y_axis(expansion(mult = 0.005, add = 0)) +
       bayesplot_theme_get() +
       xaxis_title(FALSE) +
       yaxis_text(FALSE) +
