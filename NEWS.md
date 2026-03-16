@@ -11,7 +11,7 @@
 * New functions `mcmc_dots` and `mcmc_dots_by_chain` for dot plots of MCMC draws by @behramulukir (#402)
 * Default to `quantiles=100` for all dot plots by @behramulukir (#402)
 * Use `"neff_ratio"` consistently in diagnostic color scale helpers to avoid relying on partial matching of `"neff"`.
-* Replace `geom_bar(stat = "identity")` with `geom_col()` in `plot_scheme()` and `mcmc_acf()` for clarity and modern ggplot2 style.
+* Replace uses of `geom_bar(stat = "identity")` with the more idiomatic ggplot2 form `geom_col()` 
 
 # bayesplot 1.15.0
 
