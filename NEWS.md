@@ -1,5 +1,6 @@
 # bayesplot (development version)
 
+* Bumped minimum versions for suggested packages (`rstan`, `rstanarm`, `rstantools`, `knitr`, `rmarkdown`) to align with the `R >= 4.1.0` requirement.
 * Use `rlang::warn()` and `rlang::inform()` for selected PPC user messages instead of base `warning()` and `message()`.
 * Standardize input validation errors in `ppc_km_overlay()` and interpolation helpers to use `rlang::abort()` for consistent error handling.
 * Fix assignment-in-call bug in `mcmc_rank_ecdf()` (#).
