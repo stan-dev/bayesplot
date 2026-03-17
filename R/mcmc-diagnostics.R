@@ -658,6 +658,12 @@ validate_neff_ratio <- function(x) {
   if (any(x < 0, na.rm = TRUE)) {
     abort("All neff ratios must be positive.")
   }
+  if (any(x > 1, na.rm = TRUE)) {
+    warn(paste0(
+      "Some neff ratios are greater than 1. ",
+      "This is unusual and may indicate a problem with your model or MCMC sampler."
+    ))
+  }
   x
 }
 

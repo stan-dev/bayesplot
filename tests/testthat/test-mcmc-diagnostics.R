@@ -19,9 +19,9 @@ test_that("rhat and neff plots return a ggplot object", {
   rhat <- setNames(runif(5, 1, 1.5), paste0("alpha[", 1:5, "]"))
   expect_gg(mcmc_rhat(rhat))
 
-  # doesn't error with ratios > 1 (not common but can happen)
-  expect_gg(mcmc_neff(ratio = c(0.5, 1, 1.25)))
-  expect_gg(mcmc_neff(ratio = c(0.5, 1, 2)))
+  # doesn't error with ratios > 1 (not common but can happen), but does warn
+  expect_warning(mcmc_neff(ratio = c(0.5, 1, 1.25)), "greater than 1")
+  expect_warning(mcmc_neff(ratio = c(0.5, 1, 2)), "greater than 1")
 })
 
 test_that("rhat and neff plot functions throw correct errors & warnings", {
@@ -34,6 +34,7 @@ test_that("rhat and neff plot functions throw correct errors & warnings", {
 
   # need ratios between 0 and 1
   expect_error(mcmc_neff(c(-1, 0.5, 0.7)), "must be positive")
+  expect_warning(mcmc_neff(c(0.5, 1.1, 1.5)), "greater than 1")
 
   # drop NAs and warn
   expect_warning(mcmc_rhat(c(1, 1, NA)), "Dropped 1 NAs")

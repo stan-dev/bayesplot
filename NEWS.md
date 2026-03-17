@@ -1,5 +1,6 @@
 # bayesplot (development version)
 
+* `mcmc_neff()` and `mcmc_neff_hist()` now warn when any neff ratios are greater than 1, as this is unusual and may indicate a problem with the model or sampler.
 * Use `rlang::warn()` and `rlang::inform()` for selected PPC user messages instead of base `warning()` and `message()`.
 * Standardize input validation errors in `ppc_km_overlay()` and interpolation helpers to use `rlang::abort()` for consistent error handling.
 * Fix assignment-in-call bug in `mcmc_rank_ecdf()` (#).
