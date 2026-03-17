@@ -77,7 +77,7 @@ ppd_dens_overlay <-
         show_marginal = show_marginal,
         # in case user turns legend back on
         guide = guide_legend(
-          override.aes = list(size = 2 * size, alpha = 1)
+          override.aes = list(linewidth = 2 * size, alpha = 1)
         )
       )
 
@@ -136,7 +136,7 @@ ppd_ecdf_overlay <-
         show_marginal = show_marginal,
         # in case user turns legend back on
         guide = guide_legend(
-          override.aes = list(size = 2 * size, alpha = 1)
+          override.aes = list(linewidth = 2 * size, alpha = 1)
         )
       )
 
@@ -451,7 +451,7 @@ ppd_boxplot <-
               fill = "PPD"),
           notch = notch,
           linewidth = 1,
-          outlier.color = get_color("mh"),
+          outlier.color = get_color("dh"),
           outlier.alpha = 2/3,
           outlier.size = 1
         )
