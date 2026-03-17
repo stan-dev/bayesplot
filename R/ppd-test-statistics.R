@@ -68,6 +68,7 @@ ppd_stat <-
     if (discrete) {
       graph <- graph +
         geom_bar(
+          data = data[data$type != "PPD",],
           linewidth = 0.25,
           na.rm = TRUE,
           position = "identity",
@@ -82,14 +83,15 @@ ppd_stat <-
           bins = bins,
           breaks = breaks
         )
-      if (isTRUE(show_marginal)) {
-        graph <- graph +
-          geom_vline(
-            aes(xintercept = .data$value, color = .data$type),
-            data = data[data$type == "PPD",],
-            linewidth = 2
-          )
-      }
+    }
+
+    if (isTRUE(show_marginal)) {
+      graph <- graph +
+        geom_vline(
+          aes(xintercept = .data$value, color = .data$type),
+          data = data[data$type == "PPD",],
+          linewidth = 2
+        )
     }
 
     stat_title <-  stat_legend_title(stat, deparse(substitute(stat)))
