@@ -138,7 +138,7 @@ ppd_stat_grouped <-
            binwidth = NULL,
            bins = NULL,
            breaks = NULL,
-           freq = TRUE) {
+           freq = !show_marginal) {
     check_ignored_arguments(...)
     call <- match.call(expand.dots = FALSE)
     g <- eval(ungroup_call("ppd_stat", call), parent.frame())
