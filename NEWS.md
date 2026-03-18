@@ -2,7 +2,8 @@
 
 * Deprecate user-facing `size` arguments that controlled line width in favor of linewidth` across all plotting functions.
 * Deprecate the `fatten` argument in `ppc_intervals()`, `ppd_intervals()`,`ppc_loo_intervals()`, `ppc_bars()`, and their grouped variants. Point size in`geom_pointrange()` is now controlled directly by `size`.
-* Added `lifecycle` as an imported dependency for deprecation infrastructure.
+* Added unit tests for previously untested edge cases in `param_range()`, `param_glue()`, and `tidyselect_parameters()` (no-match, partial-match, and negation behavior).
+* Bumped minimum version for `rstantools` from `>= 1.5.0` to `>= 2.0.0` .
 * Use `rlang::warn()` and `rlang::inform()` for selected PPC user messages instead of base `warning()` and `message()`.
 * Standardize input validation errors in `ppc_km_overlay()` and interpolation helpers to use `rlang::abort()` for consistent error handling.
 * Fix assignment-in-call bug in `mcmc_rank_ecdf()` (#).
@@ -14,6 +15,8 @@
 * New functions `mcmc_dots` and `mcmc_dots_by_chain` for dot plots of MCMC draws by @behramulukir (#402)
 * Default to `quantiles=100` for all dot plots by @behramulukir (#402)
 * Use `"neff_ratio"` consistently in diagnostic color scale helpers to avoid relying on partial matching of `"neff"`.
+* Replace `expand = c(mult, add)` with `ggplot2::expansion()` helper in scale functions for consistency with ggplot2 >= 3.3.0 style.
+* Replace uses of `geom_bar(stat = "identity")` with the more idiomatic ggplot2 form `geom_col()` 
 
 # bayesplot 1.15.0
 

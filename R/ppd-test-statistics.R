@@ -143,7 +143,7 @@ ppd_stat_freqpoly <-
         name = stat_legend_title(stat, deparse(substitute(stat))),
         labels = Typred_label()
       ) +
-      dont_expand_y_axis(c(0.005, 0)) +
+      dont_expand_y_axis(expansion(mult = 0.005, add = 0)) +
       bayesplot_theme_get() +
       xaxis_title(FALSE) +
       yaxis_text(FALSE) +
