@@ -2,6 +2,8 @@
 
 ## bayesplot (development version)
 
+- Bumped minimum version for `rstantools` from `>= 1.5.0` to `>= 2.0.0`
+  .
 - Use [`rlang::warn()`](https://rlang.r-lib.org/reference/abort.html)
   and [`rlang::inform()`](https://rlang.r-lib.org/reference/abort.html)
   for selected PPC user messages instead of base

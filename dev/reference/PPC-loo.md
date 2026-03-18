@@ -422,8 +422,8 @@ lw <- weights(psis1) # normalized log weights
 color_scheme_set("orange")
 ppc_loo_pit_overlay(y, yrep, lw = lw)
 #> Some PIT values larger than 1! Largest:  1 
-#> Rounding PIT > 1 to 1. Gradient evaluation took 0.000402 seconds
-#> Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 4.02 seconds.
+#> Rounding PIT > 1 to 1. Gradient evaluation took 0.000381 seconds
+#> Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 3.81 seconds.
 #> Chain 2: Adjust your expectations accordingly!
 #> Chain 2: 
 #> Chain 2: 
@@ -435,21 +435,6 @@ ppc_loo_pit_overlay(y, yrep, lw = lw)
 #> Chain 2:            adapt_window = 38
 #> Chain 2:            term_buffer = 5
 #> Chain 2: 
-#> Chain 1: 
-#> Chain 1: Gradient evaluation took 0.000518 seconds
-#> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 5.18 seconds.
-#> Chain 1: Adjust your expectations accordingly!
-#> Chain 1: 
-#> Chain 1: 
-#> Chain 1: WARNING: There aren't enough warmup iterations to fit the
-#> Chain 1:          three stages of adaptation as currently configured.
-#> Chain 1:          Reducing each adaptation stage to 15%/75%/10% of
-#> Chain 1:          the given number of warmup iterations:
-#> Chain 1:            init_buffer = 7
-#> Chain 1:            adapt_window = 38
-#> Chain 1:            term_buffer = 5
-#> Chain 1: 
-#> Chain 1: Iteration:  1 / 100 [  1%]  (Warmup)
 #> Chain 2: Iteration:  1 / 100 [  1%]  (Warmup)
 #> Chain 2: Iteration: 10 / 100 [ 10%]  (Warmup)
 #> Chain 1: Iteration: 10 / 100 [ 10%]  (Warmup)
@@ -474,14 +459,14 @@ ppc_loo_pit_overlay(y, yrep, lw = lw)
 #> Chain 2: Iteration: 100 / 100 [100%]  (Sampling)
 #> Chain 1: Iteration: 100 / 100 [100%]  (Sampling)
 #> Chain 2: 
-#> Chain 2:  Elapsed Time: 2.917 seconds (Warm-up)
-#> Chain 2:                2.694 seconds (Sampling)
-#> Chain 2:                5.611 seconds (Total)
+#> Chain 2:  Elapsed Time: 2.329 seconds (Warm-up)
+#> Chain 2:                2.13 seconds (Sampling)
+#> Chain 2:                4.459 seconds (Total)
 #> Chain 2: 
 #> Chain 1: 
-#> Chain 1:  Elapsed Time: 3.003 seconds (Warm-up)
-#> Chain 1:                2.634 seconds (Sampling)
-#> Chain 1:                5.637 seconds (Total)
+#> Chain 1:  Elapsed Time: 2.399 seconds (Warm-up)
+#> Chain 1:                2.114 seconds (Sampling)
+#> Chain 1:                4.513 seconds (Total)
 #> Chain 1: 
 #> Warning: 
 #> NOTE: The kernel density estimate assumes continuous observations and is not optimal for discrete observations.
