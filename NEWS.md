@@ -1,5 +1,6 @@
 # bayesplot (development version)
 
+* Added unit tests for previously untested edge cases in `param_range()`, `param_glue()`, and `tidyselect_parameters()` (no-match, partial-match, and negation behavior).
 * Bumped minimum version for `rstantools` from `>= 1.5.0` to `>= 2.0.0` .
 * Use `rlang::warn()` and `rlang::inform()` for selected PPC user messages instead of base `warning()` and `message()`.
 * Standardize input validation errors in `ppc_km_overlay()` and interpolation helpers to use `rlang::abort()` for consistent error handling.
