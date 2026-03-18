@@ -1,6 +1,6 @@
 # bayesplot (development version)
 
-* Bumped minimum version for `rstantools` from `>= 1.5.0` to `>= 2.0.0` because `loo_pit()` and `predictive_error()`, used by `ppc_loo_pit_*()` and `ppc_error_*()` functions, were introduced in `rstantools` 2.0.0.
+* Bumped minimum version for `rstantools` from `>= 1.5.0` to `>= 2.0.0` .
 * Use `rlang::warn()` and `rlang::inform()` for selected PPC user messages instead of base `warning()` and `message()`.
 * Standardize input validation errors in `ppc_km_overlay()` and interpolation helpers to use `rlang::abort()` for consistent error handling.
 * Fix assignment-in-call bug in `mcmc_rank_ecdf()` (#).
