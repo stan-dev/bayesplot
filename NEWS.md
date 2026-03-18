@@ -1,6 +1,6 @@
 # bayesplot (development version)
 
-* Added dedicated unit tests for `param_range()`, `param_glue()`, and `tidyselect_parameters()` tidy parameter selection helpers.
+* Added unit tests for previously untested edge cases in `param_range()`, `param_glue()`, and `tidyselect_parameters()` (no-match, partial-match, and negation behavior).
 * Use `rlang::warn()` and `rlang::inform()` for selected PPC user messages instead of base `warning()` and `message()`.
 * Standardize input validation errors in `ppc_km_overlay()` and interpolation helpers to use `rlang::abort()` for consistent error handling.
 * Fix assignment-in-call bug in `mcmc_rank_ecdf()` (#).
