@@ -166,7 +166,7 @@ test_that("ppc_rootogram renders correctly", {
     y = vdiff_y2,
     yrep = vdiff_yrep2,
     prob = 2/3,
-    size = 3,
+    linewidth = 3,
     style = "hanging"
   )
 
@@ -178,7 +178,7 @@ test_that("ppc_rootogram renders correctly", {
     y = vdiff_y2,
     yrep = vdiff_yrep2,
     prob = 0.5,
-    size = 1,
+    linewidth = 1,
     style = "discrete"
   )
 
@@ -190,7 +190,7 @@ test_that("ppc_rootogram renders correctly", {
     y = vdiff_y2,
     yrep = vdiff_yrep2,
     prob = 0.8,
-    size = 1,
+    linewidth = 1,
     style = "discrete",
     bound_distinct = FALSE
   )

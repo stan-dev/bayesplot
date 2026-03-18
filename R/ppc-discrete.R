@@ -163,7 +163,7 @@ ppc_bars <-
            ...,
            prob = 0.9,
            width = 0.9,
-           size = 2.5,
+           size = 1,
            fatten = deprecated(),
            linewidth = 1,
            freq = TRUE) {
@@ -173,7 +173,7 @@ ppc_bars <-
       check_ignored_arguments(...)
       dots$group <- NULL
     }
-    size <- resolve_fatten(fatten, size, default_size = 2.5,
+    size <- resolve_fatten(fatten, size, default_size = 1,
                            calling_fn = "ppc_bars")
 
     data <- ppc_bars_data(
@@ -231,7 +231,7 @@ ppc_bars_grouped <-
            facet_args = list(),
            prob = 0.9,
            width = 0.9,
-           size = 2.5,
+           size = 1,
            fatten = deprecated(),
            linewidth = 1,
            freq = TRUE) {
@@ -278,11 +278,31 @@ ppc_rootogram <- function(y,
                           style = c("standing", "hanging", "suspended", "discrete"),
                           ...,
                           prob = 0.9,
-                          size = 1,
-                          linewidth = 1,
+                          size = NULL,
+                          linewidth = NULL,
                           bound_distinct = TRUE) {
   check_ignored_arguments(...)
   style <- match.arg(style)
+
+  if (!is.null(size) && !is.null(linewidth)) {
+    abort(paste0(
+      "Both `size` and `linewidth` were supplied to `ppc_rootogram()`. ",
+      "Use `size` for point size and `linewidth` for line width."
+    ))
+  }
+  if (!is.null(size) && is.null(linewidth)) {
+    lifecycle::deprecate_warn(
+      "1.16.0",
+      "ppc_rootogram(size)",
+      details = paste0(
+        "Previously `size` controlled both point size and line width. ",
+        "Now use `size` for point size and `linewidth` for line width."
+      )
+    )
+    linewidth <- size
+  }
+  size <- size %||% 1
+  linewidth <- linewidth %||% 1
 
   data <- .ppc_rootogram_data(
     y = y,

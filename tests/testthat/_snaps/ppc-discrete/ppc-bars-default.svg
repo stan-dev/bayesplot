@@ -37,12 +37,12 @@
 <line x1='388.00' y1='541.59' x2='388.00' y2='442.02' style='stroke-width: 2.13; stroke: #03396C; stroke-linecap: butt;' />
 <line x1='482.05' y1='556.04' x2='482.05' y2='506.26' style='stroke-width: 2.13; stroke: #03396C; stroke-linecap: butt;' />
 <line x1='576.10' y1='556.04' x2='576.10' y2='556.04' style='stroke-width: 2.13; stroke: #03396C; stroke-linecap: butt;' />
-<circle cx='105.84' cy='202.72' r='11.44' style='stroke-width: 1.55; stroke: #03396C; fill: #03396C;' />
-<circle cx='199.89' cy='202.72' r='11.44' style='stroke-width: 1.55; stroke: #03396C; fill: #03396C;' />
-<circle cx='293.94' cy='379.38' r='11.44' style='stroke-width: 1.55; stroke: #03396C; fill: #03396C;' />
-<circle cx='388.00' cy='491.80' r='11.44' style='stroke-width: 1.55; stroke: #03396C; fill: #03396C;' />
-<circle cx='482.05' cy='556.04' r='11.44' style='stroke-width: 1.55; stroke: #03396C; fill: #03396C;' />
-<circle cx='576.10' cy='556.04' r='11.44' style='stroke-width: 1.55; stroke: #03396C; fill: #03396C;' />
+<circle cx='105.84' cy='202.72' r='5.04' style='stroke-width: 1.55; stroke: #03396C; fill: #03396C;' />
+<circle cx='199.89' cy='202.72' r='5.04' style='stroke-width: 1.55; stroke: #03396C; fill: #03396C;' />
+<circle cx='293.94' cy='379.38' r='5.04' style='stroke-width: 1.55; stroke: #03396C; fill: #03396C;' />
+<circle cx='388.00' cy='491.80' r='5.04' style='stroke-width: 1.55; stroke: #03396C; fill: #03396C;' />
+<circle cx='482.05' cy='556.04' r='5.04' style='stroke-width: 1.55; stroke: #03396C; fill: #03396C;' />
+<circle cx='576.10' cy='556.04' r='5.04' style='stroke-width: 1.55; stroke: #03396C; fill: #03396C;' />
 </g>
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8MC4wMHw1NzYuMDA=)'>
 <polyline points='35.77,556.04 35.77,24.85 ' style='stroke-width: 0.85; stroke-linecap: butt;' />
@@ -71,7 +71,7 @@
 <text x='576.10' y='568.03' text-anchor='middle' style='font-size: 9.60px; fill: #4D4D4D; font-family: sans;' textLength='5.34px' lengthAdjust='spacingAndGlyphs'>5</text>
 <text transform='translate(14.24,290.45) rotate(-90)' text-anchor='middle' style='font-size: 12.00px; font-family: sans;' textLength='32.03px' lengthAdjust='spacingAndGlyphs'>Count</text>
 <line x1='672.74' y1='286.29' x2='672.74' y2='272.46' style='stroke-width: 2.13; stroke: #03396C; stroke-linecap: butt;' />
-<circle cx='672.74' cy='279.37' r='8.78' style='stroke-width: 1.55; stroke: #03396C; fill: #03396C;' />
+<circle cx='672.74' cy='279.37' r='3.97' style='stroke-width: 1.55; stroke: #03396C; fill: #03396C;' />
 <text x='687.36' y='280.66' style='font-size: 13.00px; font-style: italic; font-family: sans;' textLength='6.51px' lengthAdjust='spacingAndGlyphs'>y</text>
 <text x='694.89' y='283.07' style='font-size: 9.10px; font-family: sans;' textLength='3.03px' lengthAdjust='spacingAndGlyphs'>r</text>
 <text x='697.92' y='283.07' style='font-size: 9.10px; font-family: sans;' textLength='5.06px' lengthAdjust='spacingAndGlyphs'>e</text>

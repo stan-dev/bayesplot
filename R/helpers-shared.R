@@ -54,11 +54,18 @@ check_ignored_arguments <- function(..., ok_args = character()) {
 #' @return The resolved linewidth value.
 #' @noRd
 resolve_linewidth <- function(size, linewidth, default_linewidth, calling_fn = NULL) {
+  fn_name <- calling_fn %||% "fn"
+  if (!is.null(size) && !is.null(linewidth)) {
+    abort(paste0(
+      "Both `size` and `linewidth` were supplied to `", fn_name, "()`. ",
+      "Please use only `linewidth`."
+    ))
+  }
   if (!is.null(size)) {
     lifecycle::deprecate_warn(
       when = "1.16.0",
-      what = paste0(calling_fn %||% "fn", "(size)"),
-      with = paste0(calling_fn %||% "fn", "(linewidth)")
+      what = paste0(fn_name, "(size)"),
+      with = paste0(fn_name, "(linewidth)")
     )
     return(size)
   }

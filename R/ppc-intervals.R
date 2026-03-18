@@ -136,7 +136,7 @@ ppc_intervals <-
            prob = 0.5,
            prob_outer = 0.9,
            alpha = 0.33,
-           size = 2.5,
+           size = 1,
            fatten = deprecated(),
            linewidth = 1) {
 
@@ -145,7 +145,7 @@ ppc_intervals <-
       check_ignored_arguments(...)
       dots$group <- NULL
     }
-    size <- resolve_fatten(fatten, size, default_size = 2.5,
+    size <- resolve_fatten(fatten, size, default_size = 1,
                            calling_fn = "ppc_intervals")
 
     data <-
@@ -204,7 +204,7 @@ ppc_intervals_grouped <-
            prob = 0.5,
            prob_outer = 0.9,
            alpha = 0.33,
-           size = 2.5,
+           size = 1,
            fatten = deprecated(),
            linewidth = 1) {
     check_ignored_arguments(...)

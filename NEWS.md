@@ -1,7 +1,7 @@
 # bayesplot (development version)
 
-* Deprecate user-facing `size` arguments that controlled line width in favor of linewidth` across all plotting functions.
-* Deprecate the `fatten` argument in `ppc_intervals()`, `ppd_intervals()`,`ppc_loo_intervals()`, `ppc_bars()`, and their grouped variants. Point size in`geom_pointrange()` is now controlled directly by `size`.
+* Deprecate user-facing `size` arguments that controlled line width in favor of `linewidth` across all plotting functions.
+* Deprecate the `fatten` argument in `ppc_intervals()`, `ppd_intervals()`, `ppc_loo_intervals()`, `ppc_bars()`, and their grouped variants. Point size in `geom_pointrange()` is now controlled directly by `size`.
 * Added unit tests for previously untested edge cases in `param_range()`, `param_glue()`, and `tidyselect_parameters()` (no-match, partial-match, and negation behavior).
 * Bumped minimum version for `rstantools` from `>= 1.5.0` to `>= 2.0.0` .
 * Use `rlang::warn()` and `rlang::inform()` for selected PPC user messages instead of base `warning()` and `message()`.

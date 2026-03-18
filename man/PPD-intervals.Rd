@@ -17,7 +17,7 @@ ppd_intervals(
   prob = 0.5,
   prob_outer = 0.9,
   alpha = 0.33,
-  size = 2.5,
+  size = 1,
   fatten = deprecated(),
   linewidth = 1
 )
@@ -31,7 +31,7 @@ ppd_intervals_grouped(
   prob = 0.5,
   prob_outer = 0.9,
   alpha = 0.33,
-  size = 2.5,
+  size = 1,
   fatten = deprecated(),
   linewidth = 1
 )

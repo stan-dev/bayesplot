@@ -14,7 +14,7 @@ ppc_bars(
   ...,
   prob = 0.9,
   width = 0.9,
-  size = 2.5,
+  size = 1,
   fatten = deprecated(),
   linewidth = 1,
   freq = TRUE
@@ -28,7 +28,7 @@ ppc_bars_grouped(
   facet_args = list(),
   prob = 0.9,
   width = 0.9,
-  size = 2.5,
+  size = 1,
   fatten = deprecated(),
   linewidth = 1,
   freq = TRUE
@@ -40,8 +40,8 @@ ppc_rootogram(
   style = c("standing", "hanging", "suspended", "discrete"),
   ...,
   prob = 0.9,
-  size = 1,
-  linewidth = 1,
+  size = NULL,
+  linewidth = NULL,
   bound_distinct = TRUE
 )
 
