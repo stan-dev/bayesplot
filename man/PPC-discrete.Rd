@@ -40,8 +40,7 @@ ppc_rootogram(
   style = c("standing", "hanging", "suspended", "discrete"),
   ...,
   prob = 0.9,
-  size = NULL,
-  linewidth = NULL,
+  size = 1,
   bound_distinct = TRUE
 )
 
@@ -71,8 +70,8 @@ the bar width.}
 \item{size, linewidth}{For bar plots, \code{size} and \code{linewidth} are passed to
 \code{\link[ggplot2:geom_linerange]{ggplot2::geom_pointrange()}} to control the appearance of the \code{yrep} points
 and intervals, where \code{size} controls the point size and \code{linewidth} controls
-the line width. For rootograms \code{size} is passed to \code{\link[ggplot2:geom_point]{ggplot2::geom_point()}}
-and \code{\link[ggplot2:geom_linerange]{ggplot2::geom_pointrange()}}.}
+the line width. For rootograms \code{size} is passed to
+\code{\link[ggplot2:geom_path]{ggplot2::geom_line()}} and \code{\link[ggplot2:geom_linerange]{ggplot2::geom_pointrange()}}.}
 
 \item{fatten}{Deprecated. Point size is now controlled directly by \code{size}.}
 

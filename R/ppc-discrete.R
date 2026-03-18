@@ -21,8 +21,8 @@
 #' @param size,linewidth For bar plots, `size` and `linewidth` are passed to
 #'   [ggplot2::geom_pointrange()] to control the appearance of the `yrep` points
 #'   and intervals, where `size` controls the point size and `linewidth` controls
-#'   the line width. For rootograms `size` is passed to [ggplot2::geom_point()]
-#'   and [ggplot2::geom_pointrange()].
+#'   the line width. For rootograms `size` is passed to
+#'   [ggplot2::geom_line()] and [ggplot2::geom_pointrange()].
 #' @param fatten Deprecated. Point size is now controlled directly by `size`.
 #' @param freq For bar plots only, if `TRUE` (the default) the y-axis will
 #'   display counts. Setting `freq=FALSE` will put proportions on the y-axis.
@@ -278,31 +278,10 @@ ppc_rootogram <- function(y,
                           style = c("standing", "hanging", "suspended", "discrete"),
                           ...,
                           prob = 0.9,
-                          size = NULL,
-                          linewidth = NULL,
+                          size = 1,
                           bound_distinct = TRUE) {
   check_ignored_arguments(...)
   style <- match.arg(style)
-
-  if (!is.null(size) && !is.null(linewidth)) {
-    abort(paste0(
-      "Both `size` and `linewidth` were supplied to `ppc_rootogram()`. ",
-      "Use `size` for point size and `linewidth` for line width."
-    ))
-  }
-  if (!is.null(size) && is.null(linewidth)) {
-    lifecycle::deprecate_warn(
-      "1.16.0",
-      "ppc_rootogram(size)",
-      details = paste0(
-        "Previously `size` controlled both point size and line width. ",
-        "Now use `size` for point size and `linewidth` for line width."
-      )
-    )
-    linewidth <- size
-  }
-  size <- size %||% 1
-  linewidth <- linewidth %||% 1
 
   data <- .ppc_rootogram_data(
     y = y,
@@ -335,15 +314,16 @@ ppc_rootogram <- function(y,
     geom_pointrange(
       aes(y = .data$pred_median, ymin = .data$lower, ymax = .data$upper, color = "y_rep"),
       fill = get_color("lh"),
-      linewidth = linewidth,
+      linewidth = size,
       size = size,
+      fatten = 2,
       alpha = 1
     )
   } else {
     geom_smooth(
       aes(x = .data$xpos, y = .data$tyexp, color = "Expected"),
       fill = get_color("d"),
-      linewidth = linewidth,
+      linewidth = size,
       stat = "identity"
     )
   }
