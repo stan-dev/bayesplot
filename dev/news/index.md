@@ -2,6 +2,11 @@
 
 ## bayesplot (development version)
 
+- Added unit tests for previously untested edge cases in
+  [`param_range()`](https://mc-stan.org/bayesplot/dev/reference/tidy-params.md),
+  [`param_glue()`](https://mc-stan.org/bayesplot/dev/reference/tidy-params.md),
+  and `tidyselect_parameters()` (no-match, partial-match, and negation
+  behavior).
 - Bumped minimum version for `rstantools` from `>= 1.5.0` to `>= 2.0.0`
   .
 - Use [`rlang::warn()`](https://rlang.r-lib.org/reference/abort.html)
