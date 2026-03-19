@@ -34,7 +34,7 @@ ppd_stat_grouped(
   binwidth = NULL,
   bins = NULL,
   breaks = NULL,
-  freq = TRUE
+  freq = !show_marginal
 )
 
 ppd_stat_freqpoly(
