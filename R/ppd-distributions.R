@@ -56,7 +56,7 @@ ppd_dens_overlay <-
     data <- ppd_data(ypred)
     p <- ggplot(data, mapping = aes(x = .data$value)) +
       overlay_ppd_densities(
-        mapping = aes(group = .data$rep_id, color = "ypred"),
+        mapping = aes(group = .data$rep_id, color = "ypred", linetype = "ypred"),
         linewidth = size,
         alpha = alpha,
         trim = trim,
@@ -72,8 +72,9 @@ ppd_dens_overlay <-
       xaxis_title(FALSE) +
       yaxis_text(FALSE) +
       yaxis_ticks(FALSE) +
+      scale_linetype_ppd() +
       scale_color_ppd(
-        highlight = FALSE,
+        highlight = show_marginal,
         show_marginal = show_marginal,
         # in case user turns legend back on
         guide = guide_legend(
@@ -84,7 +85,7 @@ ppd_dens_overlay <-
     if (isTRUE(show_marginal)) {
       p +
         overlay_ppd_densities(
-          mapping = aes(color = "PPD"),
+          mapping = aes(color = "PPD", linetype = "PPD"),
           linewidth = 1,
           trim = trim,
           bw = bw,
@@ -121,7 +122,7 @@ ppd_ecdf_overlay <-
         color = get_color("dh")
       ) +
       stat_ecdf(
-        mapping = aes(group = .data$rep_id, color = "ypred"),
+        mapping = aes(group = .data$rep_id, color = "ypred", linetype = "ypred"),
         geom = if (discrete) "step" else "line",
         linewidth = size,
         alpha = alpha,
@@ -131,8 +132,9 @@ ppd_ecdf_overlay <-
       bayesplot_theme_get() +
       yaxis_title(FALSE) +
       xaxis_title(FALSE) +
+      scale_linetype_ppd() +
       scale_color_ppd(
-        highlight = FALSE,
+        highlight = show_marginal,
         show_marginal = show_marginal,
         # in case user turns legend back on
         guide = guide_legend(
@@ -143,7 +145,7 @@ ppd_ecdf_overlay <-
     if (isTRUE(show_marginal)) {
       p +
         stat_ecdf(
-          mapping = aes(color = "PPD"),
+          mapping = aes(color = "PPD", linetype = "PPD"),
           geom = if (discrete) "step" else "line",
           linewidth = 1,
           pad = pad
@@ -280,7 +282,8 @@ ppd_dots <-
     p <- ggplot(data, mapping = set_hist_aes(freq)) +
       ggdist::stat_dots(
         aes(color = "ypred",
-            fill = "ypred"),
+            fill = "ypred",
+            shape = "ypred"),
         binwidth = binwidth,
         quantiles = quantiles,
         ...
@@ -294,6 +297,7 @@ ppd_dots <-
       yaxis_ticks(FALSE) +
       xaxis_title(FALSE) +
       facet_text(FALSE) +
+      scale_shape_ppd() +
       scale_color_ppd(show_marginal = show_marginal) +
       scale_fill_ppd(show_marginal = show_marginal)
 
@@ -303,7 +307,8 @@ ppd_dots <-
       p +
         ggdist::stat_dots(
           aes(color = "PPD",
-              fill = "PPD"),
+              fill = "PPD",
+              shape = "PPD"),
           data = data2,
           binwidth = binwidth,
           quantiles = quantiles,

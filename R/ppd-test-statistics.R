@@ -88,9 +88,11 @@ ppd_stat <-
     if (isTRUE(show_marginal)) {
       graph <- graph +
         geom_vline(
-          aes(xintercept = .data$value, color = .data$type),
+          aes(xintercept = .data$value,
+              color = .data$type,
+              linetype = .data$type),
           data = data[data$type == "PPD",],
-          linewidth = 2
+          linewidth = 1.5
         )
     }
 
@@ -107,7 +109,8 @@ ppd_stat <-
           show_marginal = show_marginal
         ) +
         scale_fill_ppd(guide = "none",
-                       show_marginal = show_marginal)
+                       show_marginal = show_marginal) +
+        scale_linetype_ppd(guide = "none")
     } else {
       graph <- graph +
         scale_fill_ppd(name = stat_title,
@@ -187,7 +190,12 @@ ppd_stat_freqpoly <-
       scale_color_ppd(
         name = stat_legend_title(stat, deparse(substitute(stat))),
         labels = Typred_label(),
-        show_marginal = show_marginal
+        show_marginal = show_marginal,
+        values = if (show_marginal) {
+          set_names(get_color(c("m", "dh")), c("ypred", "PPD"))
+        } else {
+          get_color("mh")
+        }
       ) +
       dont_expand_y_axis(expansion(mult = 0.005, add = 0)) +
       bayesplot_theme_get() +
@@ -199,11 +207,12 @@ ppd_stat_freqpoly <-
     if (isTRUE(show_marginal)) {
       p <- p +
         geom_vline(
-          aes(xintercept = .data$value, color = .data$type),
+          aes(xintercept = .data$value, color = .data$type, linetype = .data$type),
           data = data[data$type == "PPD",],
           key_glyph = "path",
-          linewidth = 2
-        )
+          linewidth = 1
+        ) +
+        scale_linetype_ppd(guide = "none")
     }
 
     p
@@ -261,7 +270,7 @@ ppd_stat_2d <-
     )
     data$type <- ifelse(grepl("ypred", data$variable), "ypred", "PPD")
 
-    ggplot(data) +
+    graph <- ggplot() +
       geom_point(
         mapping = aes(
           x = .data$value,
@@ -270,17 +279,35 @@ ppd_stat_2d <-
           color = .data$type,
           shape = .data$type
         ),
+        data = data[data$type == "ypred", ],
         size = size,
         alpha = alpha
       ) +
-      scale_shape_manual(lgnd_title, labels = Typred_label(),
-                         values = c(ypred = 21, PPD = 23)) +
+      scale_shape_ppd(lgnd_title, labels = Typred_label()) +
       scale_fill_ppd(lgnd_title, labels = Typred_label(),
                      show_marginal = show_marginal) +
       scale_color_ppd(lgnd_title, labels = Typred_label(),
                       show_marginal = show_marginal) +
       labs(x = stat_labs[1], y = stat_labs[2]) +
       bayesplot_theme_get()
+
+    if (show_marginal) {
+      graph <- graph +
+        geom_point(
+          mapping = aes(
+            x = .data$value,
+            y = .data$value2,
+            fill = .data$type,
+            color = .data$type,
+            shape = .data$type
+          ),
+          data = data[data$type == "PPD", ],
+          size = size * 1.5,
+          stroke = 0.75
+        )
+    }
+
+    graph
   }
 
 

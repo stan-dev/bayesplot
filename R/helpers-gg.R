@@ -96,7 +96,7 @@ scale_color_ppc <-
            labels = NULL,
            ...) {
     scale_color_manual(
-      name = name %||% "",
+      name = name,
       values = values %||% get_color(c("dh", "lh")),
       labels = labels %||% c(y_label(), yrep_label()),
       ...
@@ -109,7 +109,7 @@ scale_fill_ppc <-
            labels = NULL,
            ...) {
     scale_fill_manual(
-      name = name %||% "",
+      name = name,
       values = values %||% get_color(c("d", "l")),
       labels = labels %||% c(y_label(), yrep_label()),
       ...
@@ -161,6 +161,33 @@ scale_fill_ppd <-
     scale_fill_ppc(
       name = name,
       values = values %||% default_values,
+      labels = labels %||% ypred_label(),
+      ...
+    )
+  }
+
+
+scale_linetype_ppd <-
+  function(name = NULL,
+           values = NULL,
+           labels = NULL,
+           ...) {
+    scale_linetype_manual(
+      name = name,
+      values = values %||% c(PPD = "5111", ypred = "solid"),
+      labels = labels %||% ypred_label(),
+      ...
+    )
+  }
+
+scale_shape_ppd <-
+  function(name = NULL,
+           values = NULL,
+           labels = NULL,
+           ...) {
+    scale_shape_manual(
+      name = name,
+      values = values %||% c(ypred = 21, PPD = 23),
       labels = labels %||% ypred_label(),
       ...
     )
