@@ -198,7 +198,7 @@ ppd_dens <-
           geom_density(
             aes(color = "PPD",
                 fill = "PPD"),
-            linewidth = 1,
+            linewidth = size * 1.5,
             trim = trim,
             bounds = bounds,
             data = data2
@@ -251,7 +251,7 @@ ppd_hist <-
         geom_histogram(
           aes(color = "PPD",
               fill = "PPD"),
-          linewidth = 1,
+          linewidth = 0.25,
           binwidth = binwidth,
           bins = bins,
           breaks = breaks,
@@ -375,7 +375,7 @@ ppd_freqpoly <-
           stat = "bin",
           binwidth = binwidth,
           bins = bins,
-          linewidth = 1,
+          linewidth = size * 1.5,
         )
 
     } else {
@@ -455,7 +455,7 @@ ppd_boxplot <-
               color = "PPD",
               fill = "PPD"),
           notch = notch,
-          linewidth = 1,
+          linewidth = size * 1.5,
           outlier.color = get_color("dh"),
           outlier.alpha = 2/3,
           outlier.size = 1
