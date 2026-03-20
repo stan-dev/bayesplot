@@ -25,7 +25,9 @@ already be merged (stacked).
 frame with one column per parameter (if only a single chain or all chains
 have already been merged), or a data frame with one column per parameter plus
 an additional column \code{"Chain"} that contains the chain number (an integer)
-corresponding to each row in the data frame.
+corresponding to each row in the data frame. When a \code{"Chain"} column is
+supplied, each chain must have the same number of iterations. Chain labels
+are used to identify groups and are renumbered internally to \code{1:N}.
 \item \strong{draws}: Any of the \code{draws} formats supported by the
 \pkg{posterior} package.
 }
