@@ -10,6 +10,7 @@
 #'
 #' @template args-ypred
 #' @inheritParams PPC-distributions
+#' @param show_marginal Plot the marginal PPD along with the `ypred`s.
 #'
 #' @template details-binomial
 #' @template return-ggplot-or-data
@@ -19,6 +20,7 @@
 #' color_scheme_set("brightblue")
 #' preds <- example_yrep_draws()
 #' ppd_dens_overlay(ypred = preds[1:50, ])
+#' ppd_dens_overlay(ypred = preds[1:50, ], show_marginal = TRUE)
 #' ppc_dens_overlay(y = example_y_data(), yrep = preds[1:50, ])
 #'
 NULL
@@ -37,36 +39,32 @@ ppd_data <- function(ypred, group = NULL) {
 #' @rdname PPD-distributions
 #' @export
 ppd_dens_overlay <-
-    function(ypred,
-             ...,
-             size = 0.25,
-             alpha = 0.7,
-             trim = FALSE,
-             bw = "nrd0",
-             adjust = 1,
-             kernel = "gaussian",
-             bounds = NULL,
-             n_dens = 1024) {
-      check_ignored_arguments(...)
-      bounds <- validate_density_bounds(bounds)
+  function(ypred,
+           show_marginal = FALSE,
+           ...,
+           size = 0.25,
+           alpha = 0.7,
+           trim = FALSE,
+           bw = "nrd0",
+           adjust = 1,
+           kernel = "gaussian",
+           bounds = NULL,
+           n_dens = 1024) {
+    check_ignored_arguments(...)
+    bounds <- validate_density_bounds(bounds)
 
-      data <- ppd_data(ypred)
-      ggplot(data, mapping = aes(x = .data$value)) +
-        overlay_ppd_densities(
-        mapping = aes(group = .data$rep_id, color = "ypred"),
+    data <- ppd_data(ypred)
+    p <- ggplot(data, mapping = aes(x = .data$value)) +
+      overlay_ppd_densities(
+        mapping = aes(group = .data$rep_id, color = "ypred", linetype = "ypred"),
         linewidth = size,
         alpha = alpha,
-          trim = trim,
-          bw = bw,
-          adjust = adjust,
-          kernel = kernel,
-          bounds = bounds,
-          n = n_dens
-        ) +
-      scale_color_ppd(
-        values = get_color("m"),
-        guide = guide_legend( # in case user turns legend back on
-          override.aes = list(size = 2 * size, alpha = 1))
+        trim = trim,
+        bw = bw,
+        adjust = adjust,
+        kernel = kernel,
+        bounds = bounds,
+        n = n_dens
       ) +
       bayesplot_theme_get() +
       dont_expand_axes() +
@@ -74,7 +72,32 @@ ppd_dens_overlay <-
       xaxis_title(FALSE) +
       yaxis_text(FALSE) +
       yaxis_ticks(FALSE) +
-      legend_none()
+      scale_linetype_ppd() +
+      scale_color_ppd(
+        highlight = show_marginal,
+        show_marginal = show_marginal,
+        # in case user turns legend back on
+        guide = guide_legend(
+          override.aes = list(linewidth = 2 * size, alpha = 1)
+        )
+      )
+
+    if (isTRUE(show_marginal)) {
+      p +
+        overlay_ppd_densities(
+          mapping = aes(color = "PPD", linetype = "PPD"),
+          linewidth = 1,
+          trim = trim,
+          bw = bw,
+          adjust = adjust,
+          kernel = kernel,
+          bounds = bounds,
+          n = n_dens
+        )
+    } else {
+      p + legend_none()
+    }
+
   }
 
 
@@ -82,6 +105,7 @@ ppd_dens_overlay <-
 #' @export
 ppd_ecdf_overlay <-
   function(ypred,
+           show_marginal= FALSE,
            ...,
            discrete = FALSE,
            pad = TRUE,
@@ -90,7 +114,7 @@ ppd_ecdf_overlay <-
     check_ignored_arguments(...)
 
     data <- ppd_data(ypred)
-    ggplot(data, mapping = aes(x = .data$value)) +
+    p <- ggplot(data, mapping = aes(x = .data$value)) +
       hline_at(
         c(0, 0.5, 1),
         linewidth = c(0.2, 0.1, 0.2),
@@ -98,22 +122,37 @@ ppd_ecdf_overlay <-
         color = get_color("dh")
       ) +
       stat_ecdf(
-        mapping = aes(group = .data$rep_id, color = "ypred"),
+        mapping = aes(group = .data$rep_id, color = "ypred", linetype = "ypred"),
         geom = if (discrete) "step" else "line",
         linewidth = size,
         alpha = alpha,
         pad = pad
       ) +
-      scale_color_ppd(
-        values = get_color("m"),
-        guide = guide_legend( # in case user turns legend back on
-          override.aes = list(linewidth = 2 * size, alpha = 1))
-      ) +
       scale_y_continuous(breaks = c(0, 0.5, 1)) +
       bayesplot_theme_get() +
       yaxis_title(FALSE) +
       xaxis_title(FALSE) +
-      legend_none()
+      scale_linetype_ppd() +
+      scale_color_ppd(
+        highlight = show_marginal,
+        show_marginal = show_marginal,
+        # in case user turns legend back on
+        guide = guide_legend(
+          override.aes = list(linewidth = 2 * size, alpha = 1)
+        )
+      )
+
+    if (isTRUE(show_marginal)) {
+      p +
+        stat_ecdf(
+          mapping = aes(color = "PPD", linetype = "PPD"),
+          geom = if (discrete) "step" else "line",
+          linewidth = 1,
+          pad = pad
+        )
+    } else {
+      p + legend_none()
+    }
   }
 
 
@@ -121,6 +160,7 @@ ppd_ecdf_overlay <-
 #' @export
 ppd_dens <-
     function(ypred,
+             show_marginal = FALSE,
              ...,
              trim = FALSE,
              size = 0.5,
@@ -130,73 +170,105 @@ ppd_dens <-
       bounds <- validate_density_bounds(bounds)
 
       data <- ppd_data(ypred)
-      ggplot(data, mapping = aes(
-        x = .data$value,
-        color = "ypred",
-        fill = "ypred"
-      )) +
+      p <- ggplot(data, mapping = aes(.data$value)) +
         geom_density(
+          aes(color = "ypred",
+              fill = "ypred"),
           linewidth = size,
           alpha = alpha,
           trim = trim,
           bounds = bounds
         ) +
-      scale_color_ppd() +
-      scale_fill_ppd() +
-      bayesplot_theme_get() +
-      facet_wrap_parsed("rep_label") +
-      force_axes_in_facets() +
-      dont_expand_y_axis() +
-      legend_none() +
-      yaxis_text(FALSE) +
-      yaxis_title(FALSE) +
-      yaxis_ticks(FALSE) +
-      xaxis_title(FALSE) +
-      facet_text(FALSE)
-  }
+        bayesplot_theme_get() +
+        facet_wrap_parsed("rep_label") +
+        force_axes_in_facets() +
+        dont_expand_y_axis() +
+        yaxis_text(FALSE) +
+        yaxis_title(FALSE) +
+        yaxis_ticks(FALSE) +
+        xaxis_title(FALSE) +
+        facet_text(FALSE) +
+        scale_color_ppd(show_marginal = show_marginal) +
+        scale_fill_ppd(show_marginal = show_marginal)
+
+      if (isTRUE(show_marginal)) {
+        data2 <- transform(data, rep_label = "PPD")
+
+        p +
+          geom_density(
+            aes(color = "PPD",
+                fill = "PPD"),
+            linewidth = size * 1.5,
+            trim = trim,
+            bounds = bounds,
+            data = data2
+          )
+      } else {
+        p +
+          legend_none()
+      }
+    }
 
 
 #' @rdname PPD-distributions
 #' @export
 ppd_hist <-
   function(ypred,
+           show_marginal = FALSE,
            ...,
            binwidth = NULL,
            bins = NULL,
            breaks = NULL,
-           freq = TRUE) {
+           freq = !show_marginal) {
     check_ignored_arguments(...)
 
     data <- ppd_data(ypred)
-    ggplot(data, mapping = set_hist_aes(
-      freq,
-      color = "ypred",
-      fill = "ypred"
-    )) +
+    p <- ggplot(data, mapping = set_hist_aes(freq)) +
       geom_histogram(
+        aes(color = "ypred",
+            fill = "ypred"),
         linewidth = 0.25,
         binwidth = binwidth,
         bins = bins,
         breaks = breaks
       ) +
-      scale_color_ppd() +
-      scale_fill_ppd() +
       bayesplot_theme_get() +
       facet_wrap_parsed("rep_label") +
       force_axes_in_facets() +
       dont_expand_y_axis() +
-      legend_none() +
       yaxis_text(FALSE) +
       yaxis_title(FALSE) +
       yaxis_ticks(FALSE) +
       xaxis_title(FALSE) +
-      facet_text(FALSE)
+      facet_text(FALSE) +
+      scale_color_ppd(show_marginal = show_marginal) +
+      scale_fill_ppd(show_marginal = show_marginal)
+
+    if (isTRUE(show_marginal)) {
+      data2 <- transform(data, rep_label = "PPD")
+
+      p +
+        geom_histogram(
+          aes(color = "PPD",
+              fill = "PPD"),
+          linewidth = 0.25,
+          binwidth = binwidth,
+          bins = bins,
+          breaks = breaks,
+          data = data2
+        )
+
+    } else {
+      p +
+        legend_none()
+    }
   }
 
 #' @rdname PPD-distributions
 #' @export
 ppd_dots <-
   function(ypred,
+           show_marginal = FALSE,
            ...,
            binwidth = NA,
            quantiles = 100,
@@ -206,28 +278,47 @@ ppd_dots <-
     suggested_package("ggdist")
 
     data <- ppd_data(ypred)
-    ggplot(data, mapping = set_hist_aes(
-      freq,
-      color = "ypred",
-      fill = "ypred"
-    )) +
+
+    p <- ggplot(data, mapping = set_hist_aes(freq)) +
       ggdist::stat_dots(
+        aes(color = "ypred",
+            fill = "ypred",
+            shape = "ypred"),
         binwidth = binwidth,
         quantiles = quantiles,
         ...
       ) +
-      scale_color_ppd() +
-      scale_fill_ppd() +
       bayesplot_theme_get() +
       facet_wrap_parsed("rep_label") +
       force_axes_in_facets() +
       dont_expand_y_axis() +
-      legend_none() +
       yaxis_text(FALSE) +
       yaxis_title(FALSE) +
       yaxis_ticks(FALSE) +
       xaxis_title(FALSE) +
-      facet_text(FALSE)
+      facet_text(FALSE) +
+      scale_shape_ppd() +
+      scale_color_ppd(show_marginal = show_marginal) +
+      scale_fill_ppd(show_marginal = show_marginal)
+
+    if (isTRUE(show_marginal)) {
+      data2 <- transform(data, rep_label = "PPD")
+
+      p +
+        ggdist::stat_dots(
+          aes(color = "PPD",
+              fill = "PPD",
+              shape = "PPD"),
+          data = data2,
+          binwidth = binwidth,
+          quantiles = quantiles,
+          ...
+        )
+
+    } else {
+      p +
+        legend_none()
+    }
   }
 
 
@@ -235,10 +326,11 @@ ppd_dots <-
 #' @export
 ppd_freqpoly <-
   function(ypred,
+           show_marginal = FALSE,
            ...,
            binwidth = NULL,
            bins = NULL,
-           freq = TRUE,
+           freq = !show_marginal,
            size = 0.5,
            alpha = 1) {
 
@@ -249,12 +341,10 @@ ppd_freqpoly <-
     }
 
     data <- ppd_data(ypred, group = dots$group)
-    ggplot(data, mapping = set_hist_aes(
-      freq,
-      color = "ypred",
-      fill = "ypred"
-    )) +
+    p <- ggplot(data, mapping = set_hist_aes(freq)) +
       geom_area(
+        aes(color = "ypred",
+            fill = "ypred"),
         stat = "bin",
         binwidth = binwidth,
         bins = bins,
@@ -262,8 +352,6 @@ ppd_freqpoly <-
         alpha = alpha
       ) +
       facet_wrap_parsed("rep_label") +
-      scale_color_ppd() +
-      scale_fill_ppd() +
       bayesplot_theme_get() +
       force_axes_in_facets() +
       dont_expand_y_axis() +
@@ -272,7 +360,28 @@ ppd_freqpoly <-
       yaxis_ticks(FALSE) +
       xaxis_title(FALSE) +
       facet_text(FALSE) +
-      legend_none()
+      scale_color_ppd(show_marginal = show_marginal) +
+      scale_fill_ppd(show_marginal = show_marginal)
+
+
+    if (isTRUE(show_marginal)) {
+      data2 <- transform(data, rep_label = "PPD")
+
+      p +
+        geom_area(
+          aes(color = "PPD",
+              fill = "PPD"),
+          data = data2,
+          stat = "bin",
+          binwidth = binwidth,
+          bins = bins,
+          linewidth = size * 1.5,
+        )
+
+    } else {
+      p +
+        legend_none()
+    }
   }
 
 
@@ -281,10 +390,11 @@ ppd_freqpoly <-
 ppd_freqpoly_grouped <-
   function(ypred,
            group,
+           show_marginal = FALSE,
            ...,
            binwidth = NULL,
            bins = NULL,
-           freq = TRUE,
+           freq = !show_marginal,
            size = 0.5,
            alpha = 1) {
 
@@ -307,6 +417,7 @@ ppd_freqpoly_grouped <-
 #' @export
 ppd_boxplot <-
   function(ypred,
+           show_marginal = FALSE,
            ...,
            notch = TRUE,
            size = 0.5,
@@ -314,13 +425,13 @@ ppd_boxplot <-
     check_ignored_arguments(...)
 
     data <- ppd_data(ypred)
-    ggplot(data, mapping = aes(
+    p <- ggplot(data, mapping = aes(
       x = .data$rep_label,
-      y = .data$value,
-      color = "ypred",
-      fill = "ypred"
+      y = .data$value
     )) +
       geom_boxplot(
+        aes(color = "ypred",
+            fill = "ypred"),
         notch = notch,
         linewidth = size,
         alpha = alpha,
@@ -328,15 +439,31 @@ ppd_boxplot <-
         outlier.alpha = 2/3,
         outlier.size = 1
       ) +
-      scale_color_ppd() +
-      scale_fill_ppd() +
+      scale_color_ppd(show_marginal = show_marginal) +
+      scale_fill_ppd(show_marginal = show_marginal) +
       scale_x_discrete(labels = function(x) parse(text=x)) +
       bayesplot_theme_get() +
       yaxis_title(FALSE) +
       xaxis_ticks(FALSE) +
       xaxis_text(FALSE) +
-      xaxis_title(FALSE) +
-      legend_none()
+      xaxis_title(FALSE)
+
+    if (isTRUE(show_marginal)) {
+      p +
+        geom_boxplot(
+          aes(x = "PPD",
+              color = "PPD",
+              fill = "PPD"),
+          notch = notch,
+          linewidth = size * 1.5,
+          outlier.color = get_color("dh"),
+          outlier.alpha = 2/3,
+          outlier.size = 1
+        )
+
+    } else {
+      p + legend_none()
+    }
   }
 
 

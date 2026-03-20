@@ -1,5 +1,7 @@
 # bayesplot (development version)
 
+
+* New `show_marginal` argument to `ppd_*()` functions to show the PPD - the marginal predictive distribution by @mattansb (#425)
 * Added unit tests for previously untested edge cases in `param_range()`, `param_glue()`, and `tidyselect_parameters()` (no-match, partial-match, and negation behavior).
 * Bumped minimum version for `rstantools` from `>= 1.5.0` to `>= 2.0.0` .
 * Use `rlang::warn()` and `rlang::inform()` for selected PPC user messages instead of base `warning()` and `message()`.
@@ -30,7 +32,7 @@
 
 # bayesplot 1.14.0
 
-* PPC "avg" functions (`ppc_scatter_avg()`, `ppc_error_scatter_avg()`, etc.) gain a `stat` argument 
+* PPC "avg" functions (`ppc_scatter_avg()`, `ppc_error_scatter_avg()`, etc.) gain a `stat` argument
   to set the averaging function. (Suggestion of #348, @kruschke).
 * `ppc_error_scatter_avg_vs_x(x = some_expression)` labels the x axis with `some_expression`.
 * New quantile dot plot functions `ppc_dots()` and `ppd_dots()` by @behramulukir (#357)
@@ -52,7 +54,7 @@
 
 * Expand checking workflows to more platforms by @andrjohns (#324)
 * Skip tests depending on Suggested dependency rstantools if not installed by @MichaelChirico (#325)
-* Skip tests depending on Suggested dependency gridExtra if not installed by @MichaelChirico (#326) 
+* Skip tests depending on Suggested dependency gridExtra if not installed by @MichaelChirico (#326)
 * Fix missing legends for unobserved levels in rhat and neff plots (#328)
 * Document problems with `ppc_stat` with `stat="mean"` (#329)
 * Ensure rank overlay plot starts at 0 even if not all bins present, thanks @sims1253 (#332)

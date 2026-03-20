@@ -594,4 +594,9 @@ u_scale <- function(x) {
 create_rep_ids <- function(ids) paste('italic(y)[rep] (', ids, ")")
 y_label <- function() expression(italic(y))
 yrep_label <- function() expression(italic(y)[rep])
-ypred_label <- function() expression(italic(y)[pred])
+ypred_label <- function() {
+  c(
+    PPD = "PPD",
+    ypred = expression(italic(y)[pred])
+  )
+}
