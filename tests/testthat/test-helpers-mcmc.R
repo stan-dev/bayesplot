@@ -114,12 +114,14 @@ test_that("df_with_chain2array works", {
 
   expect_error(df_with_chain2array(dframe), "is_df_with_chain")
 
-  # Unequal chain lengths should error, not silently recycle
+  # Unequal chain lengths should error via validate_df_with_chain
   unequal_df <- data.frame(
     Chain = c(1L, 1L, 1L, 1L, 2L, 2L, 2L),
     V1 = rnorm(7),
     V2 = rnorm(7)
   )
+  expect_error(validate_df_with_chain(unequal_df),
+               "All chains must have the same number of iterations")
   expect_error(df_with_chain2array(unequal_df),
                "All chains must have the same number of iterations")
 })

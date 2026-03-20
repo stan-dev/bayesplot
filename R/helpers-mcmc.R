@@ -210,6 +210,10 @@ validate_df_with_chain <- function(x) {
     x$chain <- NULL
   }
   x$Chain <- as.integer(x$Chain)
+  rows_per_chain <- table(x$Chain)
+  if (length(unique(rows_per_chain)) != 1) {
+    abort("All chains must have the same number of iterations.")
+  }
   x
 }
 
@@ -222,11 +226,7 @@ df_with_chain2array <- function(x) {
   a <- x[, !colnames(x) %in% "Chain", drop = FALSE]
   parnames <- colnames(a)
   a <- as.matrix(a)
-  rows_per_chain <- table(chain)
-  if (length(unique(rows_per_chain)) != 1) {
-    abort("All chains must have the same number of iterations.")
-  }
-  n_iter <- as.integer(rows_per_chain[[1]])
+  n_iter <- nrow(a) %/% n_chain
   x <- array(NA, dim = c(n_iter, n_chain, ncol(a)))
   for (j in seq_len(n_chain)) {
     x[, j, ] <- a[chain == j,, drop=FALSE]
