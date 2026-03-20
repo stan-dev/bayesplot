@@ -106,6 +106,14 @@ test_that("validate_df_with_chain works", {
   tbl <- tibble::tibble(parameter=rnorm(n=40), Chain=rep(1:4, each=10))
   a <- validate_df_with_chain(tbl)
   expect_type(a$Chain, "integer")
+
+  missing_chain_df <- data.frame(
+    Chain = c(1L, 1L, NA_integer_, NA_integer_),
+    V1 = rnorm(4),
+    V2 = rnorm(4)
+  )
+  expect_error(validate_df_with_chain(missing_chain_df),
+               "Chain values must not be NA")
 })
 
 test_that("df_with_chain2array works", {
@@ -124,6 +132,17 @@ test_that("df_with_chain2array works", {
                "All chains must have the same number of iterations")
   expect_error(df_with_chain2array(unequal_df),
                "All chains must have the same number of iterations")
+
+  renumbered_df <- data.frame(
+    Chain = c(2L, 2L, 3L, 3L),
+    V1 = 1:4,
+    V2 = 5:8
+  )
+  a <- df_with_chain2array(renumbered_df)
+  expect_equal(dim(a), c(2, 2, 2))
+  expect_identical(unname(a[, 1, "V1"]), c(1L, 2L))
+  expect_identical(unname(a[, 2, "V1"]), c(3L, 4L))
+  expect_identical(as.character(dimnames(a)$Chain), c("1", "2"))
 })
 
 
@@ -316,6 +335,7 @@ test_that("diagnostic_factor.rhat works", {
   )
   expect_identical(levels(r), c("low", "ok", "high"))
 })
+
 test_that("diagnostic_factor.neff_ratio works", {
   ratios <- new_neff_ratio(c(low = 0.05, low = 0.01,
                              ok = 0.2, ok = 0.49,
