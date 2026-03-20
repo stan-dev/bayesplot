@@ -458,15 +458,15 @@ ppc_loo_pit_overlay(y, yrep, lw = lw)
 #> Chain 1: Iteration: 90 / 100 [ 90%]  (Sampling)
 #> Chain 2: Iteration: 100 / 100 [100%]  (Sampling)
 #> Chain 2: 
-#> Chain 2:  Elapsed Time: 2.696 seconds (Warm-up)
-#> Chain 2:                2.458 seconds (Sampling)
-#> Chain 2:                5.154 seconds (Total)
+#> Chain 2:  Elapsed Time: 2.715 seconds (Warm-up)
+#> Chain 2:                2.506 seconds (Sampling)
+#> Chain 2:                5.221 seconds (Total)
 #> Chain 2: 
 #> Chain 1: Iteration: 100 / 100 [100%]  (Sampling)
 #> Chain 1: 
-#> Chain 1:  Elapsed Time: 2.812 seconds (Warm-up)
-#> Chain 1:                2.468 seconds (Sampling)
-#> Chain 1:                5.28 seconds (Total)
+#> Chain 1:  Elapsed Time: 2.806 seconds (Warm-up)
+#> Chain 1:                2.494 seconds (Sampling)
+#> Chain 1:                5.3 seconds (Total)
 #> Chain 1: 
 #> Warning: 
 #> NOTE: The kernel density estimate assumes continuous observations and is not optimal for discrete observations.

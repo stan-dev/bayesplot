@@ -2,6 +2,9 @@
 
 ## bayesplot (development version)
 
+- Validate equal chain lengths in `validate_df_with_chain()`, reject
+  missing chain labels, and renumber data-frame chain labels internally
+  when converting to arrays.
 - Added unit tests for previously untested edge cases in
   [`param_range()`](https://mc-stan.org/bayesplot/dev/reference/tidy-params.md),
   [`param_glue()`](https://mc-stan.org/bayesplot/dev/reference/tidy-params.md),

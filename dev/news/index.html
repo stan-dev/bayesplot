@@ -63,7 +63,8 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="bayesplot-development-version">bayesplot (development version)<a class="anchor" aria-label="anchor" href="#bayesplot-development-version"></a></h2>
-<ul><li>Added unit tests for previously untested edge cases in <code><a href="../reference/tidy-params.html">param_range()</a></code>, <code><a href="../reference/tidy-params.html">param_glue()</a></code>, and <code>tidyselect_parameters()</code> (no-match, partial-match, and negation behavior).</li>
+<ul><li>Validate equal chain lengths in <code>validate_df_with_chain()</code>, reject missing chain labels, and renumber data-frame chain labels internally when converting to arrays.</li>
+<li>Added unit tests for previously untested edge cases in <code><a href="../reference/tidy-params.html">param_range()</a></code>, <code><a href="../reference/tidy-params.html">param_glue()</a></code>, and <code>tidyselect_parameters()</code> (no-match, partial-match, and negation behavior).</li>
 <li>Bumped minimum version for <code>rstantools</code> from <code>&gt;= 1.5.0</code> to <code>&gt;= 2.0.0</code> .</li>
 <li>Use <code><a href="https://rlang.r-lib.org/reference/abort.html" class="external-link">rlang::warn()</a></code> and <code><a href="https://rlang.r-lib.org/reference/abort.html" class="external-link">rlang::inform()</a></code> for selected PPC user messages instead of base <code><a href="https://rdrr.io/r/base/warning.html" class="external-link">warning()</a></code> and <code><a href="https://rdrr.io/r/base/message.html" class="external-link">message()</a></code>.</li>
 <li>Standardize input validation errors in <code><a href="../reference/PPC-censoring.html">ppc_km_overlay()</a></code> and interpolation helpers to use <code><a href="https://rlang.r-lib.org/reference/abort.html" class="external-link">rlang::abort()</a></code> for consistent error handling.</li>

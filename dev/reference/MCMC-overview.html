@@ -19,7 +19,9 @@ data frame: There are two types of data frames allowed. Either a data
 frame with one column per parameter (if only a single chain or all chains
 have already been merged), or a data frame with one column per parameter plus
 an additional column "Chain" that contains the chain number (an integer)
-corresponding to each row in the data frame.
+corresponding to each row in the data frame. When a "Chain" column is
+supplied, each chain must have the same number of iterations. Chain labels
+are used to identify groups and are renumbered internally to 1:N.
 draws: Any of the draws formats supported by the
 posterior package.
 
@@ -46,7 +48,9 @@ data frame: There are two types of data frames allowed. Either a data
 frame with one column per parameter (if only a single chain or all chains
 have already been merged), or a data frame with one column per parameter plus
 an additional column "Chain" that contains the chain number (an integer)
-corresponding to each row in the data frame.
+corresponding to each row in the data frame. When a "Chain" column is
+supplied, each chain must have the same number of iterations. Chain labels
+are used to identify groups and are renumbered internally to 1:N.
 draws: Any of the draws formats supported by the
 posterior package.
 
@@ -135,7 +139,9 @@ already be merged (stacked).</p></li>
 frame with one column per parameter (if only a single chain or all chains
 have already been merged), or a data frame with one column per parameter plus
 an additional column <code>"Chain"</code> that contains the chain number (an integer)
-corresponding to each row in the data frame.</p></li>
+corresponding to each row in the data frame. When a <code>"Chain"</code> column is
+supplied, each chain must have the same number of iterations. Chain labels
+are used to identify groups and are renumbered internally to <code>1:N</code>.</p></li>
 <li><p><strong>draws</strong>: Any of the <code>draws</code> formats supported by the
 <span class="pkg">posterior</span> package.</p></li>
 </ul><p><strong>Note</strong>: typically the user should <em>not</em> include warmup iterations
