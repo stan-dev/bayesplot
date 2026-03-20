@@ -222,7 +222,12 @@ df_with_chain2array <- function(x) {
   a <- x[, !colnames(x) %in% "Chain", drop = FALSE]
   parnames <- colnames(a)
   a <- as.matrix(a)
-  x <- array(NA, dim = c(ceiling(nrow(a) / n_chain), n_chain, ncol(a)))
+  rows_per_chain <- table(chain)
+  if (length(unique(rows_per_chain)) != 1) {
+    abort("All chains must have the same number of iterations.")
+  }
+  n_iter <- as.integer(rows_per_chain[[1]])
+  x <- array(NA, dim = c(n_iter, n_chain, ncol(a)))
   for (j in seq_len(n_chain)) {
     x[, j, ] <- a[chain == j,, drop=FALSE]
   }

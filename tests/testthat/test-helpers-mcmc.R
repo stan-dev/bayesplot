@@ -113,6 +113,15 @@ test_that("df_with_chain2array works", {
   expect_mcmc_array(a)
 
   expect_error(df_with_chain2array(dframe), "is_df_with_chain")
+
+  # Unequal chain lengths should error, not silently recycle
+  unequal_df <- data.frame(
+    Chain = c(1L, 1L, 1L, 1L, 2L, 2L, 2L),
+    V1 = rnorm(7),
+    V2 = rnorm(7)
+  )
+  expect_error(df_with_chain2array(unequal_df),
+               "All chains must have the same number of iterations")
 })
 
 
