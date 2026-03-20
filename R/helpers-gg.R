@@ -153,7 +153,7 @@ scale_fill_ppd <-
            show_marginal = FALSE,
            ...) {
     if (isTRUE(show_marginal)) {
-      default_values <- setNames(get_color(c("d", "l")), nm = c("PPD", "ypred"))
+      default_values <- c(PPD = "white", ypred = get_color("l"))
     } else {
       default_values <- get_color("m")
     }
