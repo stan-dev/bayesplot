@@ -406,12 +406,16 @@ ppc_rootogram_grouped <-
     g <- eval(ungroup_call("ppc_rootogram", call), parent.frame())
     
     # In style = discrete, scale_y_sqrt() can't handle -Inf values in axis segments
-    # so force_axes_in_facets() results in errors
-    if (style != "discrete") {
+    # 
+    use_native_axes <- style == "discrete" && fixed_y(facet_args)
+    if (!use_native_axes) {
       g <- g + force_axes_in_facets()
     }
-    
-    g + bars_group_facets(facet_args)
+    g + bars_group_facets(
+      facet_args,
+      force_axes = use_native_axes,
+      axis_labels_default = "margins"
+    )
   }
 
 
@@ -517,9 +521,15 @@ ppc_bars_data <-
 #'   `bayesplot::intervals_group_facets()`, which has a default of `"free"`.
 #' @return Object returned by `facet_wrap()`.
 #' @noRd
-bars_group_facets <- function(facet_args, scales_default = "fixed") {
+bars_group_facets <- function(facet_args, scales_default = "fixed", force_axes = FALSE, axis_labels_default = "all") {
   facet_args[["facets"]] <- "group"
   facet_args[["scales"]] <- facet_args[["scales"]] %||% scales_default
+
+  if (force_axes) {
+    facet_args[["axes"]] <- facet_args[["axes"]] %||% "all"
+    facet_args[["axis.labels"]] <- facet_args[["axis.labels"]] %||% axis_labels_default
+  }
+
   do.call("facet_wrap", facet_args)
 }
 
