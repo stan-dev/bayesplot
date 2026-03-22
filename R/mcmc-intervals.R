@@ -593,18 +593,22 @@ mcmc_intervals_data <- function(x,
                                 prob = 0.5,
                                 prob_outer = 0.9,
                                 point_est = c("median", "mean", "none"),
-                                rhat = numeric()) {
+                                rhat = numeric(),
+                                .data_long = NULL) {
   check_ignored_arguments(...)
   probs <- check_interval_widths(prob, prob_outer)
   prob <- probs[1]
   prob_outer <- probs[2]
 
-  x <- prepare_mcmc_array(x, pars, regex_pars, transformations)
-  x <- merge_chains(x)
-
-  data_long <- melt_mcmc(x) %>%
-    dplyr::as_tibble() %>%
-    rlang::set_names(tolower)
+  if (is.null(.data_long)) {
+    x <- prepare_mcmc_array(x, pars, regex_pars, transformations)
+    x <- merge_chains(x)
+    data_long <- melt_mcmc(x) %>%
+      dplyr::as_tibble() %>%
+      rlang::set_names(tolower)
+  } else {
+    data_long <- .data_long
+  }
 
   probs <- c(0.5 - prob_outer / 2,
              0.5 - prob / 2,
@@ -691,16 +695,16 @@ mcmc_areas_data <- function(x,
   point_est <- match.arg(point_est)
   temp_point_est <- if (point_est == "none") "median" else point_est
 
-  intervals <- mcmc_intervals_data(x, pars, regex_pars, transformations,
-                                   prob = probs[1],  prob_outer = probs[2],
-                                   point_est = temp_point_est, rhat = rhat)
-
   x <- prepare_mcmc_array(x, pars, regex_pars, transformations)
   x <- merge_chains(x)
 
   data_long <- melt_mcmc(x) %>%
     dplyr::as_tibble() %>%
     rlang::set_names(tolower)
+
+  intervals <- mcmc_intervals_data(x, prob = probs[1], prob_outer = probs[2],
+                                   point_est = temp_point_est, rhat = rhat,
+                                   .data_long = data_long)
 
   # Compute the density intervals
   data_inner <- data_long %>%
