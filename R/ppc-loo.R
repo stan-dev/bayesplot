@@ -803,6 +803,10 @@ ppc_loo_ribbon <-
     x <- x[is.finite(x)]
   }
 
+  if (length(x) < 2) {
+    abort("Not enough finite PIT values for KDE boundary correction.")
+  }
+
   if (grid_len < 100) {
     grid_len <- 100
   }
@@ -823,6 +827,10 @@ ppc_loo_ribbon <-
   n_breaks <- length(grid_breaks)
 
   xs <- (grid_breaks[2:n_breaks] + grid_breaks[1:(n_breaks - 1)]) / 2
+
+  if (all(is.na(bc_pvals))) {
+    abort("KDE boundary correction produced all NA values.")
+  }
 
   first_nonNA <- utils::head(which(!is.na(bc_pvals)), 1)
   last_nonNA <- utils::tail(which(!is.na(bc_pvals)), 1)

@@ -72,6 +72,22 @@ test_that(".kde_correction warns when PIT values are non-finite", {
   expect_equal(length(out$bc_pvals), 128)
 })
 
+test_that(".kde_correction errors when all PIT values are infinite", {
+  pit_vals <- c(Inf, -Inf, Inf)
+  expect_error(
+    .kde_correction(pit_vals, bw = "nrd0", grid_len = 128),
+    "Not enough finite PIT values"
+  )
+})
+
+test_that(".kde_correction errors when only one finite PIT value remains", {
+  pit_vals <- c(Inf, 0.5, -Inf)
+  expect_error(
+    .kde_correction(pit_vals, bw = "nrd0", grid_len = 128),
+    "Not enough finite PIT values"
+  )
+})
+
 test_that("ppc_loo_pit_qq returns ggplot object", {
   skip_if_not_installed("rstanarm")
   skip_if_not_installed("loo")
