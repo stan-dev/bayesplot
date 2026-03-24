@@ -228,6 +228,7 @@ predictive distribution.
 - [`ppc_bars()`](https://mc-stan.org/bayesplot/dev/reference/PPC-discrete.md)
   [`ppc_bars_grouped()`](https://mc-stan.org/bayesplot/dev/reference/PPC-discrete.md)
   [`ppc_rootogram()`](https://mc-stan.org/bayesplot/dev/reference/PPC-discrete.md)
+  [`ppc_rootogram_grouped()`](https://mc-stan.org/bayesplot/dev/reference/PPC-discrete.md)
   [`ppc_bars_data()`](https://mc-stan.org/bayesplot/dev/reference/PPC-discrete.md)
   : PPCs for discrete outcomes
 - [`ppc_data()`](https://mc-stan.org/bayesplot/dev/reference/PPC-distributions.md)

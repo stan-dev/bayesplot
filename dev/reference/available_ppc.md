@@ -132,6 +132,7 @@ available_ppc()
 #>   ppc_ribbon
 #>   ppc_ribbon_grouped
 #>   ppc_rootogram
+#>   ppc_rootogram_grouped
 #>   ppc_scatter
 #>   ppc_scatter_avg
 #>   ppc_scatter_avg_grouped
@@ -154,6 +155,7 @@ available_ppc("grouped")
 #>   ppc_km_overlay_grouped
 #>   ppc_pit_ecdf_grouped
 #>   ppc_ribbon_grouped
+#>   ppc_rootogram_grouped
 #>   ppc_scatter_avg_grouped
 #>   ppc_stat_freqpoly_grouped
 #>   ppc_stat_grouped
@@ -260,6 +262,7 @@ available_ppc(plots_only = FALSE)
 #>   ppc_ribbon_data
 #>   ppc_ribbon_grouped
 #>   ppc_rootogram
+#>   ppc_rootogram_grouped
 #>   ppc_scatter
 #>   ppc_scatter_avg
 #>   ppc_scatter_avg_data

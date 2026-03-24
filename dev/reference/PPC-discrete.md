@@ -47,6 +47,18 @@ ppc_rootogram(
   bound_distinct = TRUE
 )
 
+ppc_rootogram_grouped(
+  y,
+  yrep,
+  group,
+  style = c("standing", "hanging", "suspended", "discrete"),
+  ...,
+  facet_args = list(),
+  prob = 0.9,
+  size = 1,
+  bound_distinct = TRUE
+)
+
 ppc_bars_data(y, yrep, group = NULL, prob = 0.9, freq = TRUE)
 ```
 
@@ -120,9 +132,10 @@ ppc_bars_data(y, yrep, group = NULL, prob = 0.9, freq = TRUE)
 
 - bound_distinct:
 
-  For `ppc_rootogram(style = "discrete)`, if `TRUE` then the observed
-  counts will be plotted with different shapes depending on whether they
-  are within the bounds of the `y` quantiles.
+  For `ppc_rootogram(style = "discrete)` and
+  `ppc_rootogram_grouped(style = "discrete)`, if `TRUE` then the
+  observed counts will be plotted with different shapes depending on
+  whether they are within the bounds of the `y` quantiles.
 
 ## Value
 
@@ -191,6 +204,11 @@ need not be integers in the strict sense of R's
   **All of the rootograms are plotted on the square root scale**. See
   Kleiber and Zeileis (2016) for advice on interpreting rootograms and
   selecting among the different styles.
+
+- `ppc_rootogram_grouped()`:
+
+  Same as `ppc_rootogram()` but a separate plot (facet) is generated for
+  each level of a grouping variable.
 
 ## Related functions
 
@@ -319,5 +337,14 @@ ppc_rootogram(y, yrep, style = "hanging", prob = 0.8)
 ppc_rootogram(y, yrep, style = "suspended")
 
 ppc_rootogram(y, yrep, style = "discrete")
+
+
+# rootograms for counts with groups
+group <- gl(2, 50, length = 100, labels = c("GroupA", "GroupB"))
+ppc_rootogram_grouped(y, yrep, group)
+
+ppc_rootogram_grouped(y, yrep, group, style = "hanging", facet_args = list(nrow = 2))
+
+ppc_rootogram_grouped(y, yrep, group, style = "discrete", prob = 0.5)
 
 ```

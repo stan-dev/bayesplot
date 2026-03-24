@@ -64,6 +64,10 @@
 - Replace uses of `geom_bar(stat = "identity")` with the more idiomatic
   ggplot2 form
   [`geom_col()`](https://ggplot2.tidyverse.org/reference/geom_bar.html)
+- New function `ppc_rootogram_grouped` for grouped rootogram plots by
+  [@behramulukir](https://github.com/behramulukir) and
+  [@jgabry](https://github.com/jgabry)
+  ([\#419](https://github.com/stan-dev/bayesplot/issues/419))
 
 ## bayesplot 1.15.0
 
