@@ -2,11 +2,11 @@ source(test_path("data-for-ppc-tests.R"))
 
 test_that("ppc_dens_overlay returns a ggplot object", {
   expect_gg(ppc_dens_overlay(y, yrep))
-  expect_gg(ppc_dens_overlay(y2, yrep2, size = 0.5, alpha = 0.2))
+  expect_gg(ppc_dens_overlay(y2, yrep2, linewidth = 0.5, alpha = 0.2))
 
   # ppd versions
   expect_gg(ppd_dens_overlay(yrep))
-  expect_gg(ppd_dens_overlay(yrep2, size = 0.5, alpha = 0.2))
+  expect_gg(ppd_dens_overlay(yrep2, linewidth = 0.5, alpha = 0.2))
 })
 
 test_that("density PPC/PPD plots accept bounds", {
@@ -42,11 +42,11 @@ test_that("density PPC/PPD plots reject invalid bounds", {
 })
 
 test_that("ppc_ecdf_overlay returns a ggplot object", {
-  expect_gg(ppc_ecdf_overlay(y, yrep, size = 0.5, alpha = 0.2))
+  expect_gg(ppc_ecdf_overlay(y, yrep, linewidth = 0.5, alpha = 0.2))
   expect_gg(ppc_ecdf_overlay(y2, yrep2))
 
   # ppd versions
-  expect_gg(ppd_ecdf_overlay(yrep, size = 0.5, alpha = 0.2))
+  expect_gg(ppd_ecdf_overlay(yrep, linewidth = 0.5, alpha = 0.2))
   expect_gg(ppd_ecdf_overlay(yrep2))
 })
 
@@ -58,7 +58,7 @@ test_that("ppc_dens,pp_hist,ppc_freqpoly,ppc_boxplot return ggplot objects", {
   expect_gg(ppc_dens(y, yrep[1:8, ]))
   expect_gg(ppc_dens(y2, yrep2))
 
-  expect_gg(ppc_freqpoly(y, yrep[1:8, ], binwidth = 2, size = 2, alpha = 0.1))
+  expect_gg(ppc_freqpoly(y, yrep[1:8, ], binwidth = 2, linewidth = 2, alpha = 0.1))
   expect_gg(ppc_freqpoly(y2, yrep2, binwidth = 0.1))
 
   expect_gg(ppc_boxplot(y, yrep[1,, drop = FALSE]))
@@ -79,7 +79,7 @@ test_that("ppc_dens,pp_hist,ppc_freqpoly,ppc_boxplot return ggplot objects", {
   expect_gg(ppd_dens(yrep[1:8, ]))
   expect_gg(ppd_dens(yrep2))
 
-  expect_gg(ppd_freqpoly(yrep[1:8, ], binwidth = 2, size = 2, alpha = 0.1))
+  expect_gg(ppd_freqpoly(yrep[1:8, ], binwidth = 2, linewidth = 2, alpha = 0.1))
   expect_gg(ppd_freqpoly(yrep2, binwidth = 0.1))
 
   expect_gg(ppd_boxplot(yrep[1,, drop = FALSE]))
@@ -164,10 +164,10 @@ test_that("ppc_freqpoly renders correctly", {
     y = vdiff_y,
     yrep = vdiff_yrep[1:8, ],
     binwidth = 2,
-    size = 2,
+    linewidth = 2,
     alpha = 0.1)
   vdiffr::expect_doppelganger(
-    title = "ppc_freqpoly (alpha, binwidth, size)",
+    title = "ppc_freqpoly (alpha, binwidth, linewidth)",
     fig = p_custom)
 
   # ppd versions
@@ -177,10 +177,10 @@ test_that("ppc_freqpoly renders correctly", {
   p_custom <- ppd_freqpoly(
     ypred = vdiff_yrep[1:8, ],
     binwidth = 2,
-    size = 2,
+    linewidth = 2,
     alpha = 0.1)
   vdiffr::expect_doppelganger(
-    title = "ppd_freqpoly (alpha, binwidth, size)",
+    title = "ppd_freqpoly (alpha, binwidth, linewidth)",
     fig = p_custom)
 })
 
@@ -208,8 +208,8 @@ test_that("ppc_boxplot renders correctly", {
   p_no_notch <- ppc_boxplot(vdiff_y, vdiff_yrep[1:8, ], notch = FALSE)
   vdiffr::expect_doppelganger("ppc_boxplot (no notch)", p_no_notch)
 
-  p_custom <- ppc_boxplot(vdiff_y, vdiff_yrep[1:8, ], size = 1.5, alpha = .5)
-  vdiffr::expect_doppelganger("ppc_boxplot (alpha, size)", p_custom)
+  p_custom <- ppc_boxplot(vdiff_y, vdiff_yrep[1:8, ], linewidth = 1.5, alpha = .5)
+  vdiffr::expect_doppelganger("ppc_boxplot (alpha, linewidth)", p_custom)
 
   # ppd versions
   p_base <- ppd_boxplot(vdiff_yrep[1:8, ])
@@ -218,8 +218,8 @@ test_that("ppc_boxplot renders correctly", {
   p_no_notch <- ppd_boxplot(vdiff_yrep[1:8, ], notch = FALSE)
   vdiffr::expect_doppelganger("ppd_boxplot (no notch)", p_no_notch)
 
-  p_custom <- ppd_boxplot(vdiff_yrep[1:8, ], size = 1.5, alpha = .5)
-  vdiffr::expect_doppelganger("ppd_boxplot (alpha, size)", p_custom)
+  p_custom <- ppd_boxplot(vdiff_yrep[1:8, ], linewidth = 1.5, alpha = .5)
+  vdiffr::expect_doppelganger("ppd_boxplot (alpha, linewidth)", p_custom)
 })
 
 test_that("ppc_dots renders correctly", {
@@ -270,12 +270,12 @@ test_that("ppc_ecdf_overlay renders correctly", {
     vdiff_y2,
     vdiff_yrep2,
     discrete = TRUE,
-    size = 2,
+    linewidth = 2,
     alpha = .2
   )
 
   vdiffr::expect_doppelganger(
-    "ppc_ecdf_overlay (discrete, size, alpha)",
+    "ppc_ecdf_overlay (discrete, linewidth, alpha)",
     p_custom
   )
 })
@@ -293,12 +293,12 @@ test_that("ppc_ecdf_overlay_grouped renders correctly", {
     vdiff_yrep2,
     vdiff_group2,
     discrete = TRUE,
-    size = 2,
+    linewidth = 2,
     alpha = .2
   )
 
   vdiffr::expect_doppelganger(
-    "ppc_ecdf_overlay_grouped (discrete, size, alpha)",
+    "ppc_ecdf_overlay_grouped (discrete, linewidth, alpha)",
     p_custom
   )
 })
@@ -324,8 +324,8 @@ test_that("ppc_dens_overlay renders correctly", {
   p_base <- ppc_dens_overlay(vdiff_y, vdiff_yrep)
   vdiffr::expect_doppelganger("ppc_dens_overlay (default)", p_base)
 
-  p_custom <- ppc_dens_overlay(vdiff_y, vdiff_yrep, size = 1, alpha = 0.2)
-  vdiffr::expect_doppelganger("ppc_dens_overlay (alpha, size)", p_custom)
+  p_custom <- ppc_dens_overlay(vdiff_y, vdiff_yrep, linewidth = 1, alpha = 0.2)
+  vdiffr::expect_doppelganger("ppc_dens_overlay (alpha, linewidth)", p_custom)
 
   p_bounds <- suppressWarnings(ppc_dens_overlay(vdiff_y, vdiff_yrep, bounds = c(0, Inf)))
   suppressWarnings(vdiffr::expect_doppelganger("ppc_dens_overlay (bounds)", p_bounds))
@@ -334,8 +334,8 @@ test_that("ppc_dens_overlay renders correctly", {
   p_base <- ppd_dens_overlay(vdiff_yrep)
   vdiffr::expect_doppelganger("ppd_dens_overlay (default)", p_base)
 
-  p_custom <- ppd_dens_overlay(vdiff_yrep, size = 1, alpha = 0.2)
-  vdiffr::expect_doppelganger("ppd_dens_overlay (alpha, size)", p_custom)
+  p_custom <- ppd_dens_overlay(vdiff_yrep, linewidth = 1, alpha = 0.2)
+  vdiffr::expect_doppelganger("ppd_dens_overlay (alpha, linewidth)", p_custom)
 
   p_bounds <- suppressWarnings(ppd_dens_overlay(vdiff_yrep, bounds = c(0, Inf)))
   suppressWarnings(vdiffr::expect_doppelganger("ppd_dens_overlay (bounds)", p_bounds))
@@ -353,12 +353,12 @@ test_that("ppc_dens_overlay_grouped renders correctly", {
     vdiff_y,
     vdiff_yrep,
     vdiff_group,
-    size = 1,
+    linewidth = 1,
     alpha = 0.2
   )
 
   vdiffr::expect_doppelganger(
-    "ppc_dens_overlay_grouped (alpha, size)",
+    "ppc_dens_overlay_grouped (alpha, linewidth)",
     p_custom
   )
 })

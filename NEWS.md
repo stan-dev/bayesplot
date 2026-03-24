@@ -1,5 +1,7 @@
 # bayesplot (development version)
 
+* Deprecate user-facing `size` arguments that controlled line width in favor of `linewidth` across all plotting functions.
+* Deprecate the `fatten` argument in `ppc_intervals()`, `ppd_intervals()`, `ppc_loo_intervals()`, `ppc_bars()`, and their grouped variants. Point size in `geom_pointrange()` is now controlled directly by `size`.
 * Validate equal chain lengths in `validate_df_with_chain()`, reject missing
   chain labels, and renumber data-frame chain labels internally when converting
   to arrays.

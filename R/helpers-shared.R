@@ -45,6 +45,59 @@ check_ignored_arguments <- function(..., ok_args = character()) {
   }
 }
 
+#' Handle size -> linewidth deprecation
+#'
+#' @param size User's `size` argument (deprecated for lines).
+#' @param linewidth User's `linewidth` argument (replacement).
+#' @param default_linewidth Default linewidth value if neither is specified.
+#' @param calling_fn Name of the calling function for the deprecation message.
+#' @return The resolved linewidth value.
+#' @noRd
+resolve_linewidth <- function(size, linewidth, default_linewidth, calling_fn = NULL) {
+  fn_name <- calling_fn %||% "fn"
+  if (!is.null(size) && !is.null(linewidth)) {
+    abort(paste0(
+      "Both `size` and `linewidth` were supplied to `", fn_name, "()`. ",
+      "Please use only `linewidth`."
+    ))
+  }
+  if (!is.null(size)) {
+    lifecycle::deprecate_warn(
+      when = "1.16.0",
+      what = paste0(fn_name, "(size)"),
+      with = paste0(fn_name, "(linewidth)")
+    )
+    return(size)
+  }
+  linewidth %||% default_linewidth
+}
+
+
+#' Handle fatten deprecation
+#'
+#' @param fatten User's `fatten` argument (deprecated).
+#' @param size User's `size` argument.
+#' @param default_size Default size when neither `fatten` nor `size` is given.
+#' @param calling_fn Name of the calling function for the deprecation message.
+#' @return The resolved point `size` value.
+#' @noRd
+resolve_fatten <- function(fatten, size, default_size, calling_fn = NULL) {
+  if (!lifecycle::is_present(fatten)) {
+    return(size %||% default_size)
+  }
+
+  lifecycle::deprecate_warn(
+    when = "1.16.0",
+    what = paste0(calling_fn %||% "fn", "(fatten)"),
+    details = paste0(
+      "The point size is now controlled directly by `size`. ",
+      "The `fatten` argument will be removed in a future release."
+    )
+  )
+  size %||% default_size
+}
+
+
 #' Validate bounds passed to stat_density/geom_density wrappers
 #' @noRd
 validate_density_bounds <- function(bounds) {

@@ -19,7 +19,8 @@ ppc_loo_pit_overlay(
   psis_object = NULL,
   pit = NULL,
   samples = 100,
-  size = 0.25,
+  size = NULL,
+  linewidth = 0.25,
   alpha = 0.7,
   boundary_correction = TRUE,
   grid_len = 512,
@@ -90,7 +91,7 @@ ppc_loo_intervals(
   prob_outer = 0.9,
   alpha = 0.33,
   size = 1,
-  fatten = 2.5,
+  fatten = deprecated(),
   linewidth = 1,
   order = c("index", "median")
 )
@@ -105,7 +106,8 @@ ppc_loo_ribbon(
   prob = 0.5,
   prob_outer = 0.9,
   alpha = 0.33,
-  size = 0.25
+  size = NULL,
+  linewidth = 0.25
 )
 }
 \arguments{
@@ -142,13 +144,13 @@ distribution. The default is 100. The density estimate of each dataset is
 plotted as a thin line in the plot, with the density estimate of the LOO
 PITs overlaid as a thicker dark line.}
 
-\item{alpha, size, fatten, linewidth}{Arguments passed to code geoms to control
-plot aesthetics. For \code{ppc_loo_pit_qq()} and \code{ppc_loo_pit_overlay()},\code{size}
-and \code{alpha} are passed to \code{\link[ggplot2:geom_point]{ggplot2::geom_point()}} and
-\code{\link[ggplot2:geom_density]{ggplot2::geom_density()}}, respectively. For \code{ppc_loo_intervals()}, \code{size}
-\code{linewidth} and \code{fatten} are passed to \code{\link[ggplot2:geom_linerange]{ggplot2::geom_pointrange()}}. For
-\code{ppc_loo_ribbon()}, \code{alpha} and \code{size}  are passed to
-\code{\link[ggplot2:geom_ribbon]{ggplot2::geom_ribbon()}}.}
+\item{alpha, size, linewidth}{Arguments passed to geoms to control plot
+aesthetics. For \code{ppc_loo_pit_qq()}, \code{size} and \code{alpha} are passed to
+\code{\link[ggplot2:geom_point]{ggplot2::geom_point()}}. For \code{ppc_loo_pit_overlay()}, \code{linewidth} and
+\code{alpha} control the line width and opacity. For \code{ppc_loo_intervals()},
+\code{size} controls the point size and \code{linewidth} controls the line width
+in \code{\link[ggplot2:geom_linerange]{ggplot2::geom_pointrange()}}. For \code{ppc_loo_ribbon()}, \code{alpha} and
+\code{linewidth} control the ribbon opacity and median line width.}
 
 \item{boundary_correction}{For \code{ppc_loo_pit_overlay()}, when set to \code{TRUE}
 (the default) the function will compute boundary corrected density values
@@ -216,6 +218,8 @@ the intervals are computed internally before plotting. If specified,
 data points and five columns in the following order: lower outer interval,
 lower inner interval, median (50\%), upper inner interval and upper outer
 interval (column names are ignored).}
+
+\item{fatten}{Deprecated. Point size is now controlled directly by \code{size}.}
 
 \item{order}{For \code{ppc_loo_intervals()}, a string indicating how to arrange
 the plotted intervals. The default (\code{"index"}) is to plot them in the

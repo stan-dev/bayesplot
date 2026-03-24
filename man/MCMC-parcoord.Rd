@@ -13,7 +13,8 @@ mcmc_parcoord(
   regex_pars = character(),
   transformations = list(),
   ...,
-  size = 0.2,
+  size = NULL,
+  linewidth = 0.2,
   alpha = 0.3,
   np = NULL,
   np_style = parcoord_style_np()
@@ -78,7 +79,7 @@ abbreviated for convenience in interactive use (e.g., \code{transform}).}
 
 \item{...}{Currently ignored.}
 
-\item{size, alpha}{Arguments passed on to \code{\link[ggplot2:geom_path]{ggplot2::geom_line()}}.}
+\item{size, alpha, linewidth}{Arguments passed on to \code{\link[ggplot2:geom_path]{ggplot2::geom_line()}}.}
 
 \item{np}{For models fit using \link{NUTS} (more generally,
 any \href{https://en.wikipedia.org/wiki/Symplectic_integrator}{symplectic integrator}),

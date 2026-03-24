@@ -15,7 +15,7 @@ ppc_bars(
   prob = 0.9,
   width = 0.9,
   size = 1,
-  fatten = 2.5,
+  fatten = deprecated(),
   linewidth = 1,
   freq = TRUE
 )
@@ -29,7 +29,7 @@ ppc_bars_grouped(
   prob = 0.9,
   width = 0.9,
   size = 1,
-  fatten = 2.5,
+  fatten = deprecated(),
   linewidth = 1,
   freq = TRUE
 )
@@ -67,10 +67,13 @@ of the expected counts.)}
 \item{width}{For bar plots only, passed to \code{\link[ggplot2:geom_bar]{ggplot2::geom_bar()}} to control
 the bar width.}
 
-\item{size, fatten, linewidth}{For bar plots, \code{size}, \code{fatten}, and \code{linewidth}
-are passed to \code{\link[ggplot2:geom_linerange]{ggplot2::geom_pointrange()}} to control the appearance of the
-\code{yrep} points and intervals. For rootograms \code{size} is passed to
+\item{size, linewidth}{For bar plots, \code{size} and \code{linewidth} are passed to
+\code{\link[ggplot2:geom_linerange]{ggplot2::geom_pointrange()}} to control the appearance of the \code{yrep} points
+and intervals, where \code{size} controls the point size and \code{linewidth} controls
+the line width. For rootograms \code{size} is passed to
 \code{\link[ggplot2:geom_path]{ggplot2::geom_line()}} and \code{\link[ggplot2:geom_linerange]{ggplot2::geom_pointrange()}}.}
+
+\item{fatten}{Deprecated. Point size is now controlled directly by \code{size}.}
 
 \item{freq}{For bar plots only, if \code{TRUE} (the default) the y-axis will
 display counts. Setting \code{freq=FALSE} will put proportions on the y-axis.}
@@ -232,7 +235,6 @@ ppc_bars_grouped(
   group = esoph$agegp,
   freq=FALSE,
   prob = 0.5,
-  fatten = 1,
   size = 1.5
 )
 }

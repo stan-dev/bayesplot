@@ -60,6 +60,6 @@
 <text x='159.17' y='568.03' text-anchor='middle' style='font-size: 9.60px; fill: #4D4D4D; font-family: sans;' textLength='8.54px' lengthAdjust='spacingAndGlyphs'>-2</text>
 <text x='355.65' y='568.03' text-anchor='middle' style='font-size: 9.60px; fill: #4D4D4D; font-family: sans;' textLength='5.34px' lengthAdjust='spacingAndGlyphs'>0</text>
 <text x='552.13' y='568.03' text-anchor='middle' style='font-size: 9.60px; fill: #4D4D4D; font-family: sans;' textLength='5.34px' lengthAdjust='spacingAndGlyphs'>2</text>
-<text x='5.98' y='15.89' style='font-size: 14.40px; font-family: sans;' textLength='200.15px' lengthAdjust='spacingAndGlyphs'>ppd_dens_overlay (alpha, size)</text>
+<text x='5.98' y='15.89' style='font-size: 14.40px; font-family: sans;' textLength='230.57px' lengthAdjust='spacingAndGlyphs'>ppd_dens_overlay (alpha, linewidth)</text>
 </g>
 </svg>

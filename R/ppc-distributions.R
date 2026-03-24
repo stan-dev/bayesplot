@@ -13,8 +13,10 @@
 #' @template args-hist-freq
 #' @template args-dens
 #' @template args-pit-ecdf
-#' @param size,alpha Passed to the appropriate geom to control the appearance of
-#'   the predictive distributions.
+#' @param linewidth,alpha Passed to the appropriate geom to control the
+#'   appearance of the predictive distributions. For overlay and density-type
+#'   plots, `linewidth` controls the line width.
+#' @param size Deprecated for line-width control. Use `linewidth` instead.
 #' @param ... For dot plots, optional additional arguments to pass to [ggdist::stat_dots()].
 #'
 #' @template details-binomial
@@ -111,7 +113,7 @@
 #'
 #' \donttest{
 #' # frequency polygons
-#' ppc_freqpoly(y, yrep[1:3, ], alpha = 0.1, size = 1, binwidth = 5)
+#' ppc_freqpoly(y, yrep[1:3, ], alpha = 0.1, linewidth = 1, binwidth = 5)
 #'
 #' ppc_freqpoly_grouped(y, yrep[1:3, ], group) + yaxis_text()
 #'
@@ -134,7 +136,7 @@
 #' # don't need to only use small number of rows for ppc_violin_grouped
 #' # (as it pools yrep draws within groups)
 #' color_scheme_set("gray")
-#' ppc_violin_grouped(y, yrep, group, size = 1.5)
+#' ppc_violin_grouped(y, yrep, group, linewidth = 1.5)
 #' ppc_violin_grouped(y, yrep, group, alpha = 0)
 #'
 #' # change how y is drawn
@@ -168,7 +170,8 @@ ppc_dens_overlay <-
   function(y,
            yrep,
            ...,
-           size = 0.25,
+           size = NULL,
+           linewidth = 0.25,
            alpha = 0.7,
            trim = FALSE,
            bw = "nrd0",
@@ -177,6 +180,7 @@ ppc_dens_overlay <-
            bounds = NULL,
            n_dens = 1024) {
     check_ignored_arguments(...)
+    linewidth <- resolve_linewidth(size, linewidth, default_linewidth = 0.25, calling_fn = "ppc_dens_overlay")
     bounds <- validate_density_bounds(bounds)
 
     data <- ppc_data(y, yrep)
@@ -184,7 +188,7 @@ ppc_dens_overlay <-
       overlay_ppd_densities(
         mapping = aes(group = .data$rep_id, color = "yrep"),
         data = function(x) dplyr::filter(x, !.data$is_y),
-        linewidth = size,
+        linewidth = linewidth,
         alpha = alpha,
         trim = trim,
         bw = bw,
@@ -222,7 +226,8 @@ ppc_dens_overlay_grouped <- function(y,
                                      yrep,
                                      group,
                                      ...,
-                                     size = 0.25,
+                                     size = NULL,
+                                     linewidth = 0.25,
                                      alpha = 0.7,
                                      trim = FALSE,
                                      bw = "nrd0",
@@ -231,12 +236,13 @@ ppc_dens_overlay_grouped <- function(y,
                                      bounds = NULL,
                                      n_dens = 1024) {
   check_ignored_arguments(...)
+  linewidth <- resolve_linewidth(size, linewidth, default_linewidth = 0.25, calling_fn = "ppc_dens_overlay_grouped")
 
   p_overlay <- ppc_dens_overlay(
     y = y,
     yrep = yrep,
     ...,
-    size = size,
+    linewidth = linewidth,
     alpha = alpha,
     trim = trim,
     bw = bw,
@@ -269,9 +275,11 @@ ppc_ecdf_overlay <- function(y,
                              ...,
                              discrete = FALSE,
                              pad = TRUE,
-                             size = 0.25,
+                             size = NULL,
+                             linewidth = 0.25,
                              alpha = 0.7) {
   check_ignored_arguments(...)
+  linewidth <- resolve_linewidth(size, linewidth, default_linewidth = 0.25, calling_fn = "ppc_ecdf_overlay")
   data <- ppc_data(y, yrep)
 
   ggplot(data) +
@@ -292,7 +300,7 @@ ppc_ecdf_overlay <- function(y,
       data = function(x) dplyr::filter(x, !.data$is_y),
       mapping = aes(group = .data$rep_id, color = "yrep"),
       geom = if (discrete) "step" else "line",
-      linewidth = size,
+      linewidth = linewidth,
       alpha = alpha,
       pad = pad
     ) +
@@ -318,9 +326,11 @@ ppc_ecdf_overlay_grouped <- function(y,
                                      ...,
                                      discrete = FALSE,
                                      pad = TRUE,
-                                     size = 0.25,
+                                     size = NULL,
+                                     linewidth = 0.25,
                                      alpha = 0.7) {
   check_ignored_arguments(...)
+  linewidth <- resolve_linewidth(size, linewidth, default_linewidth = 0.25, calling_fn = "ppc_ecdf_overlay_grouped")
 
   p_overlay <- ppc_ecdf_overlay(
     y = y,
@@ -328,7 +338,7 @@ ppc_ecdf_overlay_grouped <- function(y,
     ...,
     discrete = discrete,
     pad = pad,
-    size = size,
+    linewidth = linewidth,
     alpha = alpha
   )
 
@@ -349,10 +359,12 @@ ppc_dens <-
            yrep,
            ...,
            trim = FALSE,
-           size = 0.5,
+           size = NULL,
+           linewidth = 0.5,
            alpha = 1,
            bounds = NULL) {
     check_ignored_arguments(...)
+    linewidth <- resolve_linewidth(size, linewidth, default_linewidth = 0.5, calling_fn = "ppc_dens")
     bounds <- validate_density_bounds(bounds)
     data <- ppc_data(y, yrep)
     ggplot(data, mapping = aes(
@@ -361,7 +373,7 @@ ppc_dens <-
       color = .data$is_y_label
     )) +
       geom_density(
-        linewidth = size,
+        linewidth = linewidth,
         alpha = alpha,
         trim = trim,
         bounds = bounds
@@ -431,13 +443,15 @@ ppc_freqpoly <-
            binwidth = NULL,
            bins = NULL,
            freq = TRUE,
-           size = 0.5,
+           size = NULL,
+           linewidth = 0.5,
            alpha = 1) {
     dots <- list(...)
     if (!from_grouped(dots)) {
       check_ignored_arguments(...)
       dots$group <- NULL
     }
+    linewidth <- resolve_linewidth(size, linewidth, default_linewidth = 0.5, calling_fn = "ppc_freqpoly")
 
     data <- ppc_data(y, yrep, group = dots$group)
     ggplot(data, mapping = set_hist_aes(
@@ -449,7 +463,7 @@ ppc_freqpoly <-
         stat = "bin",
         binwidth = binwidth,
         bins = bins,
-        linewidth = size,
+        linewidth = linewidth,
         alpha = alpha
       ) +
       scale_fill_ppc() +
@@ -477,7 +491,8 @@ ppc_freqpoly_grouped <-
            binwidth = NULL,
            bins = NULL,
            freq = TRUE,
-           size = 0.5,
+           size = NULL,
+           linewidth = 0.5,
            alpha = 1) {
     check_ignored_arguments(...)
     call <- match.call(expand.dots = FALSE)
@@ -505,9 +520,11 @@ ppc_boxplot <-
            yrep,
            ...,
            notch = TRUE,
-           size = 0.5,
+           size = NULL,
+           linewidth = 0.5,
            alpha = 1) {
     check_ignored_arguments(...)
+    linewidth <- resolve_linewidth(size, linewidth, default_linewidth = 0.5, calling_fn = "ppc_boxplot")
 
     data <- ppc_data(y, yrep)
     ggplot(data, mapping = aes(
@@ -518,7 +535,7 @@ ppc_boxplot <-
     )) +
       geom_boxplot(
         notch = notch,
-        linewidth = size,
+        linewidth = linewidth,
         alpha = alpha,
         outlier.alpha = 2 / 3,
         outlier.size = 1
@@ -591,13 +608,15 @@ ppc_violin_grouped <-
            group,
            ...,
            probs = c(0.1, 0.5, 0.9),
-           size = 1,
+           size = NULL,
+           linewidth = 1,
            alpha = 1,
            y_draw = c("violin", "points", "both"),
            y_size = 1,
            y_alpha = 1,
            y_jitter = 0.1) {
     check_ignored_arguments(...)
+    linewidth <- resolve_linewidth(size, linewidth, default_linewidth = 1, calling_fn = "ppc_violin_grouped")
 
     y_draw <- match.arg(y_draw)
     y_violin <- y_draw %in% c("violin", "both")
@@ -608,7 +627,7 @@ ppc_violin_grouped <-
       aes(fill = "yrep", color = "yrep"),
       draw_quantiles = probs,
       alpha = alpha,
-      linewidth = size
+      linewidth = linewidth
     )
     if (utils::packageVersion("ggplot2") >= "4.0.0") {
       args_violin_yrep$draw_quantiles <- NULL

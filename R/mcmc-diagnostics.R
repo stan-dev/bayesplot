@@ -10,8 +10,9 @@
 #'
 #' @template args-hist
 #' @param size Optional values to override [ggplot2::geom_point()]'s
-#'   default size (for `mcmc_rhat()`, `mcmc_neff()`) or
-#'   [ggplot2::geom_line()]'s default line width (for `mcmc_acf()`).
+#'   default size (for `mcmc_rhat()`, `mcmc_neff()`).
+#' @param linewidth Optional value to override [ggplot2::geom_line()]'s
+#'   default line width (for `mcmc_acf()`).
 #' @param ... Currently ignored.
 #'
 #' @template return-ggplot-or-data
@@ -322,15 +323,17 @@ mcmc_acf <-
            ...,
            facet_args = list(),
            lags = 20,
-           size = NULL) {
+           size = NULL,
+           linewidth = NULL) {
     check_ignored_arguments(...)
+    linewidth <- resolve_linewidth(size, linewidth, default_linewidth = NULL, calling_fn = "mcmc_acf")
     .mcmc_acf(
       x,
       pars = pars,
       regex_pars = regex_pars,
       facet_args = facet_args,
       lags = lags,
-      size = size,
+      linewidth = linewidth,
       style = "line"
     )
   }
@@ -514,7 +517,7 @@ drop_NAs_and_warn <- function(x) {
 }
 
 # Autocorrelation plot (either bar or line)
-# @param size passed to geom_line() if style="line"
+# @param linewidth passed to geom_line() if style="line"
 .mcmc_acf <-
   function(x,
            pars = character(),
@@ -522,7 +525,7 @@ drop_NAs_and_warn <- function(x) {
            facet_args = list(),
            lags = 25,
            style = c("bar", "line"),
-           size = NULL) {
+           linewidth = NULL) {
 
     style <- match.arg(style)
     x <- prepare_mcmc_array(x, pars, regex_pars)
@@ -559,7 +562,7 @@ drop_NAs_and_warn <- function(x) {
         ) +
         do.call(
           "geom_line",
-          args = c(list(color = get_color("d")), linewidth = size)
+          args = c(list(color = get_color("d")), linewidth = linewidth)
         )
     }
 

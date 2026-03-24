@@ -2,7 +2,7 @@ source(test_path("data-for-ppc-tests.R"))
 
 test_that("ppc_intervals returns ggplot object", {
   expect_gg(ppc_intervals(y, yrep))
-  expect_gg(ppc_intervals(y, yrep, size = 2, fatten = 1))
+  expect_gg(ppc_intervals(y, yrep, size = 2))
   expect_gg(ppc_intervals(y, yrep, x = seq(1, 2 * length(y), by = 2)))
   expect_gg(ppc_intervals(y2, yrep2))
 
@@ -13,7 +13,7 @@ test_that("ppc_intervals returns ggplot object", {
 
 test_that("ppc_ribbon returns ggplot object", {
   expect_gg(ppc_ribbon(y, yrep, prob = 0.5))
-  expect_gg(ppc_ribbon(y, yrep, alpha = 0, size = .5))
+  expect_gg(ppc_ribbon(y, yrep, alpha = 0, linewidth = .5))
   expect_gg(ppc_ribbon(y2, yrep2, x = rnorm(length(y2)), prob = 0.5))
 
   # ppd versions
