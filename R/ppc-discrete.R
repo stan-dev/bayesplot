@@ -407,7 +407,7 @@ ppc_rootogram_grouped <-
     
     # In style = discrete, scale_y_sqrt() can't handle -Inf values in axis segments
     if (style != "discrete") {
-      g <- g <- g + force_axes_in_facets()
+      g <- g + force_axes_in_facets()
     }
 
     g + bars_group_facets(
