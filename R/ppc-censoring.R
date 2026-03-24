@@ -96,7 +96,6 @@ NULL
 #'   posterior predictive draws may not be shown by default because of the
 #'   controlled extrapolation. To display all posterior predictive draws, set
 #'   `extrapolation_factor = Inf`.
-#'
 ppc_km_overlay <- function(
   y,
   yrep,
@@ -114,23 +113,23 @@ ppc_km_overlay <- function(
   suggested_package("ggfortify")
 
   if (!is.numeric(status_y) || length(status_y) != length(y) || !all(status_y %in% c(0, 1))) {
-    stop("`status_y` must be a numeric vector of 0s and 1s the same length as `y`.", call. = FALSE)
+    abort("`status_y` must be a numeric vector of 0s and 1s the same length as `y`.")
   }
 
   if (!is.null(left_truncation_y)) {
     if (!is.numeric(left_truncation_y) || length(left_truncation_y) != length(y)) {
-      stop("`left_truncation_y` must be a numeric vector of the same length as `y`.", call. = FALSE)
+      abort("`left_truncation_y` must be a numeric vector of the same length as `y`.")
     }
   }
 
   if (extrapolation_factor < 1) {
-    stop("`extrapolation_factor` must be greater than or equal to 1.", call. = FALSE)
+    abort("`extrapolation_factor` must be greater than or equal to 1.")
   }
   if (extrapolation_factor == 1.2) {
-    message(
+    inform(paste0(
       "Note: `extrapolation_factor` now defaults to 1.2 (20%).\n",
       "To display all posterior predictive draws, set `extrapolation_factor = Inf`."
-    )
+    ))
   }
 
   data <- ppc_data(y, yrep, group = status_y)
@@ -173,7 +172,7 @@ ppc_km_overlay <- function(
   }
 
   fsf$is_y_color <- as.factor(sub("\\[rep\\] \\(.*$", "rep", sub("^italic\\(y\\)", "y", fsf$strata)))
-  fsf$is_y_size <- ifelse(fsf$is_y_color == "yrep", size, 1)
+  fsf$is_y_linewidth <- ifelse(fsf$is_y_color == "yrep", size, 1)
   fsf$is_y_alpha <- ifelse(fsf$is_y_color == "yrep", alpha, 1)
 
   max_time_y <- max(y, na.rm = TRUE)
@@ -189,7 +188,7 @@ ppc_km_overlay <- function(
                        y = .data$surv,
                        color = .data$is_y_color,
                        group = .data$strata,
-                       size = .data$is_y_size,
+                       linewidth = .data$is_y_linewidth,
                        alpha = .data$is_y_alpha)) +
     geom_step() +
     hline_at(
@@ -204,7 +203,7 @@ ppc_km_overlay <- function(
       linetype = 2,
       color = get_color("dh")
     ) +
-    scale_size_identity() +
+    scale_linewidth_identity() +
     scale_alpha_identity() +
     scale_color_ppc() +
     scale_y_continuous(breaks = c(0, 0.5, 1)) +

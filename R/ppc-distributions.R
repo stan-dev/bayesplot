@@ -31,7 +31,7 @@
 #'   \item{`ppc_dots()`}{
 #'    A dot plot plot is displayed for `y` and each dataset (row) in `yrep`.
 #'    For these plots `yrep` should therefore contain only a small number of rows.
-#'    See the **Examples** section. This function requires [ggdist::stat_dots] to be installed.
+#'    See the **Examples** section.
 #'    }
 #'   \item{`ppc_freqpoly_grouped()`}{
 #'    A separate frequency polygon is plotted for each level of a grouping
@@ -59,7 +59,16 @@
 #'    confidence intervals are provided to asses if `y` and `yrep` originate
 #'    from the same distribution. The PIT values can also be provided directly
 #'    as `pit`.
-#'    See Säilynoja et al. (2021) for more details.}
+#'    See Säilynoja et al. (2021) for more details.
+#'   }
+#'   \item{`ppc_data()`}{
+#'    This function prepares data for plotting with **ggplot2** and doesn't
+#'    itself make any plots. Users can call it directly to obtain the underlying
+#'    data frame that (in most cases) is passed to **ggplot2**. This is useful
+#'    when you want to customize the appearance of PPC plots beyond what the
+#'    built-in plotting functions allow, or when you want to construct new types
+#'    of PPC visualizations based on the same underlying data.
+#'   }
 #' }
 #'
 #' @template reference-vis-paper
@@ -532,7 +541,7 @@ ppc_dots <-
            yrep,
            ...,
            binwidth = NA,
-           quantiles = NA,
+           quantiles = 100,
            freq = TRUE) {
     check_ignored_arguments(..., ok_args = c("dotsize", "layout", "stackratio", "overflow"))
 

@@ -51,6 +51,13 @@
 #'    ridgelines. This plot provides a compact display of (hierarchically)
 #'    related distributions.
 #'   }
+#'   \item{`mcmc_intervals_data()`, `mcmc_areas_data()`, `mcmc_areas_ridges_data()`}{
+#'    Data-preparation back ends for `mcmc_intervals()`, `mcmc_areas()`, and
+#'    `mcmc_areas_ridges()`, respectively. Users can call these functions
+#'    directly to obtain the prepared data frames of posterior interval
+#'    summaries and create custom interval or density-area visualizations
+#'    with **ggplot2**.
+#'   }
 #' }
 #'
 #' @examples
@@ -592,71 +599,20 @@ mcmc_intervals_data <- function(x,
   prob <- probs[1]
   prob_outer <- probs[2]
 
-  x <- prepare_mcmc_array(x, pars, regex_pars, transformations)
-  x <- merge_chains(x)
-
-  data_long <- melt_mcmc(x) %>%
+  data_long <- melt_mcmc(
+    merge_chains(prepare_mcmc_array(x, pars, regex_pars, transformations))
+  ) %>%
     dplyr::as_tibble() %>%
     rlang::set_names(tolower)
 
-  probs <- c(0.5 - prob_outer / 2,
-             0.5 - prob / 2,
-             0.5 + prob / 2,
-             0.5 + prob_outer / 2)
-
-  point_est <- match.arg(point_est)
-  m_func <- if (point_est == "mean") mean else median
-
-  data <- data_long %>%
-    group_by(.data$parameter) %>%
-    summarise(
-      outer_width = prob_outer,
-      inner_width = prob,
-      point_est = point_est,
-      ll = unname(quantile(.data$value, probs[1])),
-      l  = unname(quantile(.data$value, probs[2])),
-      m  = m_func(.data$value),
-      h  = unname(quantile(.data$value, probs[3])),
-      hh = unname(quantile(.data$value, probs[4]))
-    )
-
-  if (point_est == "none") {
-    data$m <- NULL
-  }
-
-  color_by_rhat <- isTRUE(length(rhat) > 0)
-
-  if (color_by_rhat) {
-    rhat <- drop_NAs_and_warn(new_rhat(rhat))
-
-    if (length(rhat) != nrow(data)) {
-      abort(paste(
-        "'rhat' has length", length(rhat),
-        "but 'x' has", nrow(data), "parameters."
-      ))
-    }
-
-    rhat <- set_names(rhat, data$parameter)
-
-    rhat_tbl <- rhat %>%
-      mcmc_rhat_data() %>%
-      select(one_of("parameter"),
-             rhat_value = "value",
-             rhat_rating = "rating",
-             rhat_description = "description") %>%
-      mutate(parameter = factor(.data$parameter, levels(data$parameter)))
-
-    data <- dplyr::inner_join(data, rhat_tbl, by = "parameter")
-  }
-
-  data
+  compute_intervals(data_long, prob, prob_outer, point_est, rhat)
 }
 
 
 # Don't import `filter`: otherwise, you get a warning when using
 # `devtools::load_all(".")` because stats also has a `filter` function
 
-#' @importFrom dplyr inner_join one_of top_n
+#' @importFrom dplyr inner_join all_of slice_min
 #' @rdname MCMC-intervals
 #' @export
 mcmc_areas_data <- function(x,
@@ -684,16 +640,16 @@ mcmc_areas_data <- function(x,
   point_est <- match.arg(point_est)
   temp_point_est <- if (point_est == "none") "median" else point_est
 
-  intervals <- mcmc_intervals_data(x, pars, regex_pars, transformations,
-                                   prob = probs[1],  prob_outer = probs[2],
-                                   point_est = temp_point_est, rhat = rhat)
-
   x <- prepare_mcmc_array(x, pars, regex_pars, transformations)
   x <- merge_chains(x)
 
   data_long <- melt_mcmc(x) %>%
     dplyr::as_tibble() %>%
     rlang::set_names(tolower)
+
+  intervals <- compute_intervals(data_long, prob = probs[1],
+                                  prob_outer = probs[2],
+                                  point_est = temp_point_est, rhat = rhat)
 
   # Compute the density intervals
   data_inner <- data_long %>%
@@ -729,14 +685,14 @@ mcmc_areas_data <- function(x,
 
   # Find the density values closest to the point estimate
   point_ests <- intervals %>%
-    select(one_of("parameter", "m"))
+    select(all_of(c("parameter", "m")))
 
   point_centers <- data_inner %>%
     inner_join(point_ests, by = "parameter") %>%
     group_by(.data$parameter) %>%
     mutate(diff = abs(.data$m - .data$x)) %>%
-    dplyr::top_n(1, -.data$diff) %>%
-    select(one_of("parameter", "x", "m")) %>%
+    dplyr::slice_min(order_by = .data$diff, n = 1) %>%
+    select(all_of(c("parameter", "x", "m"))) %>%
     rename(center = "x") %>%
     ungroup()
 
@@ -758,15 +714,15 @@ mcmc_areas_data <- function(x,
   }
 
   data <- dplyr::bind_rows(data_inner, data_outer, points) %>%
-    select(one_of("parameter", "interval", "interval_width",
-                  "x", "density", "scaled_density")) %>%
+    select(all_of(c("parameter", "interval", "interval_width",
+                  "x", "density", "scaled_density"))) %>%
     # Density scaled so the highest in entire dataframe has height 1
     mutate(plotting_density = .data$density / max(.data$density))
 
   if (rlang::has_name(intervals, "rhat_value")) {
     rhat_info <- intervals %>%
-      select(one_of("parameter", "rhat_value",
-                    "rhat_rating", "rhat_description"))
+      select(all_of(c("parameter", "rhat_value",
+                    "rhat_rating", "rhat_description")))
     data <- inner_join(data, rhat_info, by = "parameter")
   }
   data
@@ -817,18 +773,15 @@ compute_column_density <- function(df, group_vars, value_var, ...) {
     syms()
 
   # Tuck away the subgroups to compute densities on into nested dataframes
-  sub_df <- dplyr::select(df, !!! group_cols, !! value_var)
-
   group_df <- df %>%
     dplyr::select(!!! group_cols, !! value_var) %>%
     group_by(!!! group_cols)
 
   by_group <- group_df %>%
-    split(dplyr::group_indices(group_df)) %>%
+    dplyr::group_split() %>%
     lapply(pull, !! value_var)
 
-  nested <- df %>%
-    dplyr::distinct(!!! group_cols) %>%
+  nested <- dplyr::group_keys(group_df) %>%
     mutate(data = by_group)
 
   nested$density <- lapply(nested$data, compute_interval_density, ...)
@@ -896,4 +849,62 @@ check_interval_widths <- function(prob, prob_outer) {
     warn(x)
   }
   sort(c(prob, prob_outer))
+}
+
+# Internal helper shared by mcmc_intervals_data() and mcmc_areas_data()
+compute_intervals <- function(data_long, prob, prob_outer,
+                              point_est = c("median", "mean", "none"),
+                              rhat = numeric()) {
+
+  probs <- c(0.5 - prob_outer / 2,
+             0.5 - prob / 2,
+             0.5 + prob / 2,
+             0.5 + prob_outer / 2)
+
+  point_est <- match.arg(point_est)
+  m_func <- if (point_est == "mean") mean else median
+
+  data <- data_long %>%
+    group_by(.data$parameter) %>%
+    summarise(
+      outer_width = prob_outer,
+      inner_width = prob,
+      point_est = point_est,
+      ll = unname(quantile(.data$value, probs[1])),
+      l  = unname(quantile(.data$value, probs[2])),
+      m  = m_func(.data$value),
+      h  = unname(quantile(.data$value, probs[3])),
+      hh = unname(quantile(.data$value, probs[4]))
+    )
+
+  if (point_est == "none") {
+    data$m <- NULL
+  }
+
+  color_by_rhat <- isTRUE(length(rhat) > 0)
+
+  if (color_by_rhat) {
+    rhat <- drop_NAs_and_warn(new_rhat(rhat))
+
+    if (length(rhat) != nrow(data)) {
+      abort(paste(
+        "'rhat' has length", length(rhat),
+        "but 'x' has", nrow(data), "parameters."
+      ))
+    }
+
+    rhat <- set_names(rhat, data$parameter)
+
+    rhat_tbl <- rhat %>%
+      mcmc_rhat_data() %>%
+      select(all_of("parameter"),
+             rhat_value = "value",
+             rhat_rating = "rating",
+             rhat_description = "description") %>%
+      mutate(parameter = factor(.data$parameter, levels(data$parameter)))
+
+    data <- dplyr::inner_join(data, rhat_tbl, by = "parameter")
+  }
+
+  data
 }

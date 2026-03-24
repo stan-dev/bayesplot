@@ -9,6 +9,8 @@
 \alias{mcmc_dens_chains}
 \alias{mcmc_dens_chains_data}
 \alias{mcmc_violin}
+\alias{mcmc_dots}
+\alias{mcmc_dots_by_chain}
 \title{Histograms and kernel density plots of MCMC draws}
 \usage{
 mcmc_hist(
@@ -106,6 +108,30 @@ mcmc_violin(
   facet_args = list(),
   probs = c(0.1, 0.5, 0.9)
 )
+
+mcmc_dots(
+  x,
+  pars = character(),
+  regex_pars = character(),
+  transformations = list(),
+  ...,
+  facet_args = list(),
+  binwidth = NA,
+  alpha = 1,
+  quantiles = 100
+)
+
+mcmc_dots_by_chain(
+  x,
+  pars = character(),
+  regex_pars = character(),
+  transformations = list(),
+  ...,
+  facet_args = list(),
+  binwidth = NA,
+  alpha = 1,
+  quantiles = 100
+)
 }
 \arguments{
 \item{x}{An object containing MCMC draws:
@@ -154,7 +180,7 @@ parameter is transformed (e.g. \code{"t(sigma)"}).
 Note: due to partial argument matching \code{transformations} can be
 abbreviated for convenience in interactive use (e.g., \code{transform}).}
 
-\item{...}{Currently ignored.}
+\item{...}{For dot plots, optional additional arguments to pass to \code{\link[ggdist:stat_dots]{ggdist::stat_dots()}}.}
 
 \item{facet_args}{A named list of arguments (other than \code{facets}) passed
 to \code{\link[ggplot2:facet_wrap]{ggplot2::facet_wrap()}} or \code{\link[ggplot2:facet_grid]{ggplot2::facet_grid()}}
@@ -162,19 +188,19 @@ to control faceting. Note: if \code{scales} is not included in \code{facet_args}
 then \strong{bayesplot} may use \code{scales="free"} as the default (depending
 on the plot) instead of the \strong{ggplot2} default of \code{scales="fixed"}.}
 
-\item{binwidth}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}} to override
-the default binwidth.}
+\item{binwidth}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}}, \code{\link[ggplot2:geom_ribbon]{ggplot2::geom_area()}},
+and \code{\link[ggdist:stat_dots]{ggdist::stat_dots()}} to override the default binwidth.}
 
-\item{bins}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}} to override
-the default binwidth.}
+\item{bins}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}} and \code{\link[ggplot2:geom_ribbon]{ggplot2::geom_area()}}
+to override the default binning.}
 
-\item{breaks}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}} as an
-alternative to \code{binwidth}.}
+\item{breaks}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}} as an alternative to
+\code{binwidth}.}
 
-\item{freq}{For histograms, \code{freq=TRUE} (the default) puts count on the
-y-axis. Setting \code{freq=FALSE} puts density on the y-axis. (For many
-plots the y-axis text is off by default. To view the count or density
-labels on the y-axis see the \code{\link[=yaxis_text]{yaxis_text()}} convenience
+\item{freq}{For histograms and frequency polygons, \code{freq=TRUE} (the default)
+puts count on the y-axis. Setting \code{freq=FALSE} puts density on the y-axis.
+(For many plots the y-axis text is off by default. To view the count or
+density labels on the y-axis see the \code{\link[=yaxis_text]{yaxis_text()}} convenience
 function.)}
 
 \item{alpha}{Passed to the geom to control the transparency.}
@@ -190,9 +216,18 @@ support. \code{n_dens} defaults to \code{1024}.}
 
 \item{probs}{A numeric vector of probabilities controlling where quantile
 lines are drawn. Set to \code{NULL} to remove the lines.}
+
+\item{quantiles}{For dot plots, an optional integer passed to
+\code{\link[ggdist:stat_dots]{ggdist::stat_dots()}} specifying the number of quantiles to use for a
+quantile dot plot. If \code{quantiles} is \code{NA} then all data points are plotted.
+The default is \code{quantiles=100} so that each dot represent one percent of
+posterior mass.}
 }
 \value{
-A ggplot object that can be further customized using the \strong{ggplot2} package.
+The plotting functions return a ggplot object that can be further
+customized using the \strong{ggplot2} package. The functions with suffix
+\verb{_data()} return the data that would have been drawn by the plotting
+function.
 }
 \description{
 Various types of histograms and kernel density plots of MCMC draws. See the
@@ -207,12 +242,18 @@ Histograms of posterior draws with all chains merged.
 \item{\code{mcmc_dens()}}{
 Kernel density plots of posterior draws with all chains merged.
 }
+\item{\code{mcmc_dots()}}{
+Dot plots of posterior draws with all chains merged.
+}
 \item{\code{mcmc_hist_by_chain()}}{
 Histograms of posterior draws with chains separated via faceting.
 }
 \item{\code{mcmc_dens_overlay()}}{
 Kernel density plots of posterior draws with chains separated but
 overlaid on a single plot.
+}
+\item{\code{mcmc_dots_by_chain()}}{
+Dot plots of posterior draws with chains separated via faceting.
 }
 \item{\code{mcmc_violin()}}{
 The density estimate of each chain is plotted as a violin with
@@ -223,6 +264,12 @@ Ridgeline kernel density plots of posterior draws with chains separated
 but overlaid on a single plot. In \code{mcmc_dens_overlay()} parameters
 appear in separate facets; in \code{mcmc_dens_chains()} they appear in the
 same panel and can overlap vertically.
+}
+\item{\code{mcmc_dens_chains_data()}}{
+Data-preparation back end for \code{mcmc_dens_chains()}. Users can call this
+function directly to obtain the prepared long-format data frame of MCMC
+draws (with chain information retained) and create custom visualizations
+with \strong{ggplot2}.
 }
 }
 }
@@ -260,14 +307,14 @@ mcmc_hist(x, transformations = list(sigma = "log"),
 mcmc_hist(x, transformations = list(sigma = log))
 
 # separate histograms by chain
-color_scheme_set("pink")
+color_scheme_set("orange")
 mcmc_hist_by_chain(x, regex_pars = "beta")
 }
 
 #################
 ### Densities ###
 #################
-
+color_scheme_set("purple")
 mcmc_dens(x, pars = c("sigma", "beta[2]"),
           facet_args = list(nrow = 2))
 \donttest{
@@ -281,7 +328,26 @@ mcmc_dens_chains(x2, pars = c("beta[1]", "beta[2]", "beta[3]"))
 }
 # separate chains as violin plots
 color_scheme_set("green")
-mcmc_violin(x) + panel_bg(color = "gray20", size = 2, fill = "gray30")
+mcmc_violin(x) + panel_bg(color = "gray20", linewidth = 2, fill = "gray30")
+
+
+#################
+### Dot Plots ###
+#################
+
+# dot plots of some parameters
+color_scheme_set("pink")
+mcmc_dots(x, pars = c("alpha", "beta[2]"))
+
+\donttest{
+color_scheme_set("teal")
+# separate dot plots by chain
+mcmc_dots_by_chain(x, regex_pars = "beta")
+
+# custom facet labels (will change row labels to e.g. "Chain: 1" instead of just "1")
+chain_labeller <- ggplot2::labeller(.rows = ggplot2::label_both)
+mcmc_dots_by_chain(x, regex_pars = "beta", facet_args = list(labeller = chain_labeller))
+}
 
 }
 \seealso{

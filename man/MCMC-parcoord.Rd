@@ -131,6 +131,12 @@ all variables before plotting you could use function \code{(x - mean(x))/sd(x)}
 when specifying the \code{transformations} argument to
 \code{mcmc_parcoord}. See the \strong{Examples} section for how to do this.
 }
+\item{\code{mcmc_parcoord_data()}}{
+Data-preparation back end for \code{mcmc_parcoord()}. Users can call
+\code{mcmc_parcoord_data()} directly to obtain the prepared long-format data
+frame of MCMC draws (with optional NUTS diagnostic information) and
+create custom visualizations with \strong{ggplot2}.
+}
 }
 }
 

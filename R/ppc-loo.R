@@ -23,10 +23,21 @@
 #'   `ppc_loo_ribbon()`, `alpha` and `size`  are passed to
 #'   [ggplot2::geom_ribbon()].
 #'
-#' @template return-ggplot
+#' @template return-ggplot-or-data
 #'
 #' @section Plot Descriptions:
 #' \describe{
+#' \item{`ppc_loo_pit_data()`}{
+#'  This function prepares LOO-PIT data for plotting with **ggplot2**. It is
+#'  the data-preparation back end for the LOO-PIT plotting functions
+#'  (`ppc_loo_pit_overlay()`, `ppc_loo_pit_qq()`, and `ppc_loo_pit_ecdf()`),
+#'  and users can call it directly to create custom LOO-PIT plots using
+#'  ggplot2. The function computes the leave-one-out probability integral
+#'  transform (LOO-PIT) values and returns a data frame that can be used to
+#'  build ggplot objects. This is useful when you want to create custom
+#'  visualizations of LOO-PIT values beyond what the built-in plotting
+#'  functions provide.
+#' }
 #' \item{`ppc_loo_pit_overlay()`, `ppc_loo_pit_qq()`, `ppc_loo_pit_ecdf()`}{
 #'  The calibration of marginal predictions can be assessed using probability
 #'  integral transformation (PIT) checks. LOO improves the check by avoiding the
@@ -191,15 +202,14 @@ ppc_loo_pit_overlay <- function(y,
     )
 
   if (!missing(y) && all(y %in% 0:1)) {
-    warning(
+    warn(paste0(
       "This plot is not recommended for binary data. ",
       "For plots that are more suitable see ",
-      "\nhttps://avehtari.github.io/modelselection/diabetes.html#44_calibration_of_predictions",
-      call. = FALSE
-    )
+      "\nhttps://avehtari.github.io/modelselection/diabetes.html#44_calibration_of_predictions"
+    ))
   }
 
-  message(paste(
+  inform(paste(
     "NOTE: The kernel density estimate assumes continuous observations",
     "and is not optimal for discrete observations."
   ))
@@ -786,7 +796,7 @@ ppc_loo_ribbon <-
   # 1-D Gaussian window filter. This method uses the "reflection method"
   # to estimate these pvalues and helps speed up the code
   if (any(is.infinite(x))) {
-    warning(paste(
+    warn(paste(
       "Ignored", sum(is.infinite(x)),
       "Non-finite PIT values are invalid for KDE boundary correction method"
     ))

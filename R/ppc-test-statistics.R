@@ -55,6 +55,13 @@
 #'    computed over the datasets (rows) in `yrep`. The value of the
 #'    statistics in the observed data is overlaid as large point.
 #'   }
+#'   \item{`ppc_stat_data()`}{
+#'    Data-preparation back end for `ppc_stat()`, `ppc_stat_freqpoly()`, and
+#'    their grouped variants. Users can call `ppc_stat_data()` directly to
+#'    obtain the data frame of test-statistic values computed from `y` and
+#'    each row of `yrep`, enabling custom test-statistic visualizations with
+#'    **ggplot2**.
+#'   }
 #' }
 #'
 #' @examples
@@ -256,7 +263,7 @@ ppc_stat_freqpoly <-
         values = set_names(get_color(c("m", "dh")), c("yrep", "y")),
         labels = c(yrep = Tyrep_label(), y = Ty_label())
       ) +
-      dont_expand_y_axis(c(0.005, 0)) +
+      dont_expand_y_axis(expansion(mult = 0.005, add = 0)) +
       bayesplot_theme_get() +
       xaxis_title(FALSE) +
       yaxis_text(FALSE) +
@@ -442,9 +449,9 @@ Tyrep_label <- function() expression(italic(T)(italic(y)[rep]))
 
 message_if_using_mean <- function(stat) {
   if (is.character(stat) && stat == "mean") {
-    message(
+    inform(paste0(
       "Note: in most cases the default test statistic 'mean' is ",
       "too weak to detect anything of interest."
-    )
+    ))
   }
 }
