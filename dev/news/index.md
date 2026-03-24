@@ -2,6 +2,10 @@
 
 ## bayesplot (development version)
 
+- Eliminate redundant data processing in
+  [`mcmc_areas_data()`](https://mc-stan.org/bayesplot/dev/reference/MCMC-intervals.md)
+  by reusing the prepared MCMC array for both interval and density
+  computation.
 - Validate equal chain lengths in `validate_df_with_chain()`, reject
   missing chain labels, and renumber data-frame chain labels internally
   when converting to arrays.

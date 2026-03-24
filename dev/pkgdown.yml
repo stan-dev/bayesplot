@@ -5,7 +5,7 @@ articles:
   graphical-ppcs: graphical-ppcs.html
   plotting-mcmc-draws: plotting-mcmc-draws.html
   visual-mcmc-diagnostics: visual-mcmc-diagnostics.html
-last_built: 2026-03-23T17:20Z
+last_built: 2026-03-24T16:22Z
 urls:
   reference: https://mc-stan.org/bayesplot/reference
   article: https://mc-stan.org/bayesplot/articles
