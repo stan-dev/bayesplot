@@ -19,6 +19,7 @@
 * Use `"neff_ratio"` consistently in diagnostic color scale helpers to avoid relying on partial matching of `"neff"`.
 * Replace `expand = c(mult, add)` with `ggplot2::expansion()` helper in scale functions for consistency with ggplot2 >= 3.3.0 style.
 * Replace uses of `geom_bar(stat = "identity")` with the more idiomatic ggplot2 form `geom_col()` 
+* New function `ppc_rootogram_grouped` for grouped rootogram plots by @behramulukir and @jgabry (#419)
 
 # bayesplot 1.15.0
 
