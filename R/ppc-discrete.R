@@ -406,14 +406,13 @@ ppc_rootogram_grouped <-
     g <- eval(ungroup_call("ppc_rootogram", call), parent.frame())
     
     # In style = discrete, scale_y_sqrt() can't handle -Inf values in axis segments
-    # 
-    use_native_axes <- style == "discrete" && fixed_y(facet_args)
-    if (!use_native_axes) {
-      g <- g + force_axes_in_facets()
+    if (style != "discrete") {
+      g <- g <- g + force_axes_in_facets()
     }
+
     g + bars_group_facets(
       facet_args,
-      force_axes = use_native_axes,
+      force_axes = style == "discrete",
       axis_labels_default = "margins"
     )
   }

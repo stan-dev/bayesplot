@@ -250,6 +250,34 @@ test_that("ppc_rootogram_grouped renders correctly", {
   vdiffr::expect_doppelganger(
     title = "ppc_rootogram_grouped (style='discrete', prob, size)",
     fig = p_discrete)
+  
+  p_discrete_multirow <- ppc_rootogram_grouped(
+    y = vdiff_y2,
+    yrep = vdiff_yrep2,
+    group = vdiff_group2,
+    prob = 0.5,
+    size = 1,
+    style = "discrete",
+    facet_args = list(nrow = 2)
+  )
+
+  vdiffr::expect_doppelganger(
+    title = "ppc_rootogram_grouped (style='discrete', facet_args=list(nrow=2))",
+    fig = p_discrete_multirow)
+  
+  p_discrete_multirow_freescale <- ppc_rootogram_grouped(
+    y = vdiff_y2,
+    yrep = vdiff_yrep2,
+    group = vdiff_group2,
+    prob = 0.5,
+    size = 1,
+    style = "discrete",
+    facet_args = list(nrow = 2, scales = "free")
+  )
+
+  vdiffr::expect_doppelganger(
+    title = "ppc_rootogram_grouped (style='discrete', facet_args=list(nrow=2, scales='free'))",
+    fig = p_discrete_multirow_freescale)
 })
 
 
