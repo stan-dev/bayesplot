@@ -302,7 +302,7 @@ ppc_loo_pit_data <-
            boundary_correction = TRUE,
            grid_len = 512) {
     if (!is.null(pit)) {
-      stopifnot(is.numeric(pit), is_vector_or_1Darray(pit))
+      pit <- validate_pit(pit)
       inform("'pit' specified so ignoring 'y','yrep','lw' if specified.")
     } else {
       suggested_package("rstantools")
@@ -795,18 +795,6 @@ ppc_loo_ribbon <-
   # Generate boundary corrected values via a linear convolution using a
   # 1-D Gaussian window filter. This method uses the "reflection method"
   # to estimate these pvalues and helps speed up the code
-  if (any(is.infinite(x))) {
-    warn(paste(
-      "Ignored", sum(is.infinite(x)),
-      "Non-finite PIT values are invalid for KDE boundary correction method"
-    ))
-    x <- x[is.finite(x)]
-  }
-
-  if (length(x) < 2) {
-    abort("Not enough finite PIT values for KDE boundary correction.")
-  }
-
   if (grid_len < 100) {
     grid_len <- 100
   }

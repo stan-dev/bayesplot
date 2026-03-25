@@ -1,6 +1,6 @@
 # bayesplot (development version)
 
-* Fix `.kde_correction()` crash on empty vector after removing infinite PIT values by adding guards for insufficient finite values and all-NA convolution results.
+* Validate user-provided `pit` values in `ppc_loo_pit_data()` using `validate_pit()` to reject invalid inputs (non-numeric, out of range, NAs) at the entry point instead of in internal helpers.
 * Eliminate redundant data processing in `mcmc_areas_data()` by reusing the prepared MCMC array for both interval and density computation.
 * Validate equal chain lengths in `validate_df_with_chain()`, reject missing
   chain labels, and renumber data-frame chain labels internally when converting
