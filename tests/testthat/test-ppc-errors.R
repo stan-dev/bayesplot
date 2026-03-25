@@ -170,3 +170,44 @@ test_that("ppc_error_binned renders correctly", {
   p_base_x <- ppc_error_binned(y, y_rep, x = x)
   vdiffr::expect_doppelganger("ppc_error_binned (with x)", p_base_x)
 })
+
+
+# ppc_error_data tests -----------------------------------------------------
+
+source(test_path("data-for-ppc-tests.R"))
+
+test_that("ppc_error_data returns correct structure", {
+  skip_if_not_installed("rstantools")
+  d <- ppc_error_data(y, yrep)
+  expect_s3_class(d, "data.frame")
+  expect_true(all(c("y_id", "y_obs", "rep_id", "rep_label", "value") %in% names(d)))
+})
+
+test_that("ppc_error_data computes errors correctly", {
+  skip_if_not_installed("rstantools")
+  d <- ppc_error_data(y, yrep)
+  # errors should be y - yrep
+  first_rep <- d[d$rep_id == 1, ]
+  expected_errors <- y - yrep[1, ]
+  expect_equal(first_rep$value, expected_errors)
+  expect_equal(first_rep$y_obs, y)
+})
+
+test_that("ppc_error_data returns correct number of rows", {
+  skip_if_not_installed("rstantools")
+  d <- ppc_error_data(y, yrep)
+  expect_equal(nrow(d), length(y) * nrow(yrep))
+})
+
+test_that("ppc_error_data with group adds group column", {
+  skip_if_not_installed("rstantools")
+  d <- ppc_error_data(y, yrep, group = group)
+  expect_true("group" %in% names(d))
+  expect_equal(nlevels(factor(d$group)), nlevels(group))
+})
+
+test_that("ppc_error_data works with single replicate", {
+  skip_if_not_installed("rstantools")
+  d <- ppc_error_data(y, yrep[1, , drop = FALSE])
+  expect_equal(nrow(d), length(y))
+})
