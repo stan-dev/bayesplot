@@ -475,3 +475,34 @@ test_that("mcmc_pairs renders correctly", {
   )
   vdiffr::expect_doppelganger("mcmc_pairs (divs, td)", p_divs_treedepth_divergences)
 })
+
+
+# mcmc_parcoord_data tests -------------------------------------------------
+
+test_that("mcmc_parcoord_data returns correct structure", {
+  d <- mcmc_parcoord_data(arr, pars = c("(Intercept)", "sigma"))
+  expect_s3_class(d, "data.frame")
+  expect_named(d, c("Draw", "Parameter", "Value", "Divergent"))
+})
+
+test_that("mcmc_parcoord_data sets Divergent to 0 when np is NULL", {
+  d <- mcmc_parcoord_data(arr, pars = c("(Intercept)", "sigma"))
+  expect_true(all(d$Divergent == 0))
+})
+
+test_that("mcmc_parcoord_data works with np argument", {
+  skip_if_not_installed("rstanarm")
+  d <- mcmc_parcoord_data(post, pars = c("wt", "am", "sigma"), np = np)
+  expect_named(d, c("Draw", "Parameter", "Value", "Divergent"))
+  expect_true(all(d$Divergent %in% c(0, 1)))
+})
+
+test_that("mcmc_parcoord_data errors with fewer than 2 parameters", {
+  expect_error(mcmc_parcoord_data(arr, pars = "sigma"), "at least two")
+})
+
+test_that("mcmc_parcoord_data works with regex_pars", {
+  d <- mcmc_parcoord_data(arr, regex_pars = "beta")
+  params <- unique(d$Parameter)
+  expect_true(length(params) >= 2)
+})

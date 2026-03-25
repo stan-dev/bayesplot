@@ -255,3 +255,30 @@ test_that("mcmc_areas_ridges renders correctly", {
   p_size <- mcmc_areas_ridges(vdiff_dframe, border_size = 2)
   vdiffr::expect_doppelganger("mcmc_areas_ridges (size)", p_size)
 })
+
+
+# mcmc_areas_ridges_data tests ---------------------------------------------
+
+test_that("mcmc_areas_ridges_data returns correct structure", {
+  d <- mcmc_areas_ridges_data(arr, pars = "beta[1]")
+  expect_s3_class(d, "data.frame")
+  expect_true(all(c("parameter", "x", "density", "interval") %in% names(d)))
+})
+
+test_that("mcmc_areas_ridges_data delegates to mcmc_areas_data with point_est='none'", {
+  d_ridges <- mcmc_areas_ridges_data(arr, pars = "beta[1]", prob = 0.5, prob_outer = 0.9)
+  d_areas <- mcmc_areas_data(arr, pars = "beta[1]", prob = 0.5, prob_outer = 0.9,
+                             point_est = "none")
+  expect_equal(d_ridges, d_areas)
+})
+
+test_that("mcmc_areas_ridges_data works with multiple parameters", {
+  d <- mcmc_areas_ridges_data(arr, regex_pars = "beta")
+  params <- unique(d$parameter)
+  expect_true(length(params) >= 2)
+})
+
+test_that("mcmc_areas_ridges_data works with single parameter", {
+  d <- mcmc_areas_ridges_data(arr, pars = "sigma")
+  expect_equal(length(unique(d$parameter)), 1)
+})

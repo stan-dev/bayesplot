@@ -278,3 +278,60 @@ test_that("mcmc_trace with 'np' renders correctly", {
   vdiffr::expect_doppelganger("mcmc_trace divergences (default)", p_base)
   vdiffr::expect_doppelganger("mcmc_trace divergences (custom)",  p_np_style)
 })
+
+
+# mcmc_trace_data tests ----------------------------------------------------
+
+test_that("mcmc_trace_data returns correct structure", {
+  d <- mcmc_trace_data(arr, pars = "beta[1]")
+  expect_s3_class(d, "tbl_df")
+  expect_true(all(c("parameter", "value", "value_rank", "chain",
+                     "iteration", "highlight", "warmup") %in% names(d)))
+})
+
+test_that("mcmc_trace_data returns correct dimensions", {
+  d <- mcmc_trace_data(arr, pars = "beta[1]")
+  n_iters <- dim(arr)[1]
+  n_chains <- dim(arr)[2]
+  expect_equal(nrow(d), n_iters * n_chains)
+  expect_equal(length(unique(d$chain)), n_chains)
+})
+
+test_that("mcmc_trace_data highlight argument works", {
+  d <- mcmc_trace_data(arr, pars = "beta[1]", highlight = 2)
+  expect_true(all(d$highlight[d$chain == 2]))
+  expect_true(all(!d$highlight[d$chain != 2]))
+})
+
+test_that("mcmc_trace_data warmup labeling works", {
+  d <- mcmc_trace_data(arr, pars = "beta[1]", n_warmup = 20)
+  expect_true(all(d$warmup[d$iteration <= 20]))
+  expect_true(all(!d$warmup[d$iteration > 20]))
+})
+
+test_that("mcmc_trace_data iter1 shifts iterations", {
+  d <- mcmc_trace_data(arr, pars = "beta[1]", iter1 = 100)
+  expect_true(min(d$iteration) == 101)
+})
+
+test_that("mcmc_trace_data errors on negative iter1", {
+  expect_error(mcmc_trace_data(arr, pars = "beta[1]", iter1 = -1), "iter1")
+})
+
+test_that("mcmc_trace_data errors if both n_warmup and iter1 specified", {
+  expect_error(
+    mcmc_trace_data(arr, pars = "beta[1]", n_warmup = 10, iter1 = 5),
+    "n_warmup.*iter1"
+  )
+})
+
+test_that("mcmc_trace_data works with multiple parameters", {
+  d <- mcmc_trace_data(arr, regex_pars = "beta")
+  expect_true(length(unique(d$parameter)) >= 2)
+})
+
+test_that("mcmc_trace_data value_rank is computed correctly", {
+  d <- mcmc_trace_data(arr, pars = "beta[1]")
+  # value_rank should be ranks within each parameter group
+  expect_equal(sort(unique(d$value_rank)), sort(unique(rank(d$value, ties.method = "average"))))
+})
