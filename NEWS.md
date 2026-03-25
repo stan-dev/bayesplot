@@ -1,5 +1,6 @@
 # bayesplot (development version)
 
+* Added unit tests for `mcmc_areas_ridges_data()`, `mcmc_parcoord_data()`, and `mcmc_trace_data()`.
 * Eliminate redundant data processing in `mcmc_areas_data()` by reusing the prepared MCMC array for both interval and density computation.
 * Validate equal chain lengths in `validate_df_with_chain()`, reject missing
   chain labels, and renumber data-frame chain labels internally when converting
