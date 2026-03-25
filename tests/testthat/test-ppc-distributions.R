@@ -422,3 +422,54 @@ test_that("ppc_pit_ecdf, ppc_pit_ecdf_grouped renders correctly", {
   vdiffr::expect_doppelganger("ppc_pit_ecdf (diff)", p_diff)
   vdiffr::expect_doppelganger("ppc_pit_ecdf_grouped (diff)", g_diff)
 })
+
+
+# ppc_data / ppd_data tests -----------------------------------------------
+
+test_that("ppc_data returns correct structure", {
+  d <- ppc_data(y, yrep)
+  expect_s3_class(d, "data.frame")
+  expect_true(all(c("y_id", "rep_id", "rep_label", "is_y", "value") %in% names(d)))
+})
+
+test_that("ppc_data includes y and yrep rows", {
+  d <- ppc_data(y, yrep)
+  y_rows <- d[d$is_y, ]
+  yrep_rows <- d[!d$is_y, ]
+  expect_equal(nrow(y_rows), length(y))
+  expect_equal(nrow(yrep_rows), length(y) * nrow(yrep))
+  expect_equal(y_rows$value, y)
+})
+
+test_that("ppc_data with group adds group column", {
+  d <- ppc_data(y, yrep, group = group)
+  expect_true("group" %in% names(d))
+  expect_equal(nlevels(factor(d$group)), nlevels(group))
+})
+
+test_that("ppc_data works with single replicate", {
+  d <- ppc_data(y, yrep[1, , drop = FALSE])
+  yrep_rows <- d[!d$is_y, ]
+  expect_equal(nrow(yrep_rows), length(y))
+})
+
+test_that("ppd_data returns correct structure", {
+  d <- ppd_data(yrep)
+  expect_s3_class(d, "data.frame")
+  expect_true(all(c("y_id", "rep_id", "rep_label", "value") %in% names(d)))
+})
+
+test_that("ppd_data returns correct number of rows", {
+  d <- ppd_data(yrep)
+  expect_equal(nrow(d), nrow(yrep) * ncol(yrep))
+})
+
+test_that("ppd_data with group adds group column", {
+  d <- ppd_data(yrep, group = group)
+  expect_true("group" %in% names(d))
+})
+
+test_that("ppd_data works with single replicate", {
+  d <- ppd_data(yrep[1, , drop = FALSE])
+  expect_equal(nrow(d), ncol(yrep))
+})
