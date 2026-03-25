@@ -37,7 +37,7 @@ Imports:
     lifecycle,
     posterior,
     reshape2,
-    rlang (>= 0.3.0),
+    rlang (>= 1.0.0),
     stats,
     tibble (>= 2.0.0),
     tidyr,

@@ -7,7 +7,7 @@ on_r_devel <- function() {
   isTRUE(Sys.getenv("R_VERSION_TYPE") == "devel")
 }
 on_r_oldrel <- function() {
-  isTRUE(Sys.getenv("R_VERSION_TYPE") == "oldrel")
+  startsWith(Sys.getenv("R_VERSION_TYPE"), "oldrel")
 }
 
 skip_on_r_devel <- function() {
