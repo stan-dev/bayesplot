@@ -113,23 +113,23 @@ ppc_km_overlay <- function(
   suggested_package("ggfortify")
 
   if (!is.numeric(status_y) || length(status_y) != length(y) || !all(status_y %in% c(0, 1))) {
-    stop("`status_y` must be a numeric vector of 0s and 1s the same length as `y`.", call. = FALSE)
+    abort("`status_y` must be a numeric vector of 0s and 1s the same length as `y`.")
   }
 
   if (!is.null(left_truncation_y)) {
     if (!is.numeric(left_truncation_y) || length(left_truncation_y) != length(y)) {
-      stop("`left_truncation_y` must be a numeric vector of the same length as `y`.", call. = FALSE)
+      abort("`left_truncation_y` must be a numeric vector of the same length as `y`.")
     }
   }
 
   if (extrapolation_factor < 1) {
-    stop("`extrapolation_factor` must be greater than or equal to 1.", call. = FALSE)
+    abort("`extrapolation_factor` must be greater than or equal to 1.")
   }
   if (extrapolation_factor == 1.2) {
-    message(
+    inform(paste0(
       "Note: `extrapolation_factor` now defaults to 1.2 (20%).\n",
       "To display all posterior predictive draws, set `extrapolation_factor = Inf`."
-    )
+    ))
   }
 
   data <- ppc_data(y, yrep, group = status_y)

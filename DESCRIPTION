@@ -26,12 +26,12 @@ Description: Plotting functions for posterior analysis, MCMC diagnostics,
 License: GPL (>= 3)
 URL: https://mc-stan.org/bayesplot/
 BugReports: https://github.com/stan-dev/bayesplot/issues/
-SystemRequirements: pandoc (>= 1.12.3), pandoc-citeproc
+SystemRequirements: pandoc (>= 1.12.3)
 Depends:
     R (>= 4.1.0)
 Imports:
     dplyr (>= 1.0.0),
-    ggplot2 (>= 3.4.0),
+    ggplot2 (>= 3.5.0),
     ggridges (>= 0.5.5),
     glue,
     lifecycle,
@@ -54,7 +54,7 @@ Suggests:
     rmarkdown (>= 1.0.0),
     rstan (>= 2.17.1),
     rstanarm (>= 2.17.4),
-    rstantools (>= 1.5.0),
+    rstantools (>= 2.0.0),
     scales,
     shinystan (>= 2.3.0),
     survival,
