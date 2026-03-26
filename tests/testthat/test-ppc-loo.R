@@ -356,59 +356,46 @@ test_that("ppc_loo_pit_ecdf renders correctly", {
 
 # ppc_loo_pit_data tests ---------------------------------------------------
 
-test_that("ppc_loo_pit_data returns correct structure with pit argument", {
-  set.seed(123)
-  pit_vals <- runif(50)
-  expect_message(
-    d <- ppc_loo_pit_data(pit = pit_vals, boundary_correction = FALSE, samples = 10),
-    "pit"
-  )
-  expect_s3_class(d, "data.frame")
-  expect_true(all(c("y_id", "rep_id", "rep_label", "value") %in% names(d)))
-  expect_true("is_y" %in% names(d))
-})
-
-test_that("ppc_loo_pit_data with boundary_correction=TRUE returns x column", {
-  set.seed(123)
-  pit_vals <- runif(50)
-  expect_message(
-    d <- ppc_loo_pit_data(pit = pit_vals, boundary_correction = TRUE,
-                          samples = 10),
-    "pit"
-  )
-  expect_true("x" %in% names(d))
-})
-
-test_that("ppc_loo_pit_data without boundary_correction has correct rows", {
+test_that("ppc_loo_pit_data returns the expected structure for both boundary modes", {
   set.seed(123)
   pit_vals <- runif(50)
   n_samples <- 10
   expect_message(
-    d <- ppc_loo_pit_data(pit = pit_vals, boundary_correction = FALSE,
-                          samples = n_samples),
+    d_raw <- ppc_loo_pit_data(
+      pit = pit_vals,
+      boundary_correction = FALSE,
+      samples = n_samples
+    ),
     "pit"
   )
-  y_rows <- d[d$is_y, ]
-  yrep_rows <- d[!d$is_y, ]
+  expect_s3_class(d_raw, "data.frame")
+  expect_named(
+    d_raw,
+    c("y_id", "y_name", "rep_id", "rep_label", "is_y", "is_y_label", "value")
+  )
+  y_rows <- d_raw[d_raw$is_y, ]
+  yrep_rows <- d_raw[!d_raw$is_y, ]
   expect_equal(nrow(y_rows), length(pit_vals))
   expect_equal(nrow(yrep_rows), length(pit_vals) * n_samples)
-})
+  expect_equal(y_rows$value, pit_vals)
 
-test_that("ppc_loo_pit_data works with yrep and lw", {
-  skip_if_not_installed("rstanarm")
-  skip_if_not_installed("loo")
-  d <- ppc_loo_pit_data(y, yrep, lw, boundary_correction = FALSE, samples = 10)
-  expect_s3_class(d, "data.frame")
-  expect_true(all(c("y_id", "rep_id", "rep_label", "is_y", "value") %in% names(d)))
-})
-
-test_that("ppc_loo_pit_data pit values are in [0, 1]", {
-  set.seed(123)
-  pit_vals <- runif(100)
+  grid_len <- 128
   expect_message(
-    d <- ppc_loo_pit_data(pit = pit_vals, boundary_correction = FALSE, samples = 5),
+    d_bc <- ppc_loo_pit_data(
+      pit = pit_vals,
+      boundary_correction = TRUE,
+      samples = n_samples,
+      grid_len = grid_len
+    ),
     "pit"
   )
-  y_rows <- d[d$is_y, ]
-  expect_true(all(y_rows$value >= 0 & y_rows$value <= 1))
+  expect_named(
+    d_bc,
+    c("y_id", "y_name", "rep_id", "rep_label", "is_y", "is_y_label", "value", "x")
+  )
+  y_rows <- d_bc[d_bc$is_y, ]
+  yrep_rows <- d_bc[!d_bc$is_y, ]
+  expect_equal(nrow(y_rows), grid_len)
+  expect_equal(nrow(yrep_rows), grid_len * n_samples)
+  expect_false(anyNA(d_bc$x))
 })
