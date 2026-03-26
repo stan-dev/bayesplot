@@ -204,15 +204,14 @@ ppc_loo_pit_overlay <- function(y,
     )
 
   if (!missing(y) && all(y %in% 0:1)) {
-    warning(
+    warn(paste0(
       "This plot is not recommended for binary data. ",
       "For plots that are more suitable see ",
-      "\nhttps://avehtari.github.io/modelselection/diabetes.html#44_calibration_of_predictions",
-      call. = FALSE
-    )
+      "\nhttps://avehtari.github.io/modelselection/diabetes.html#44_calibration_of_predictions"
+    ))
   }
 
-  message(paste(
+  inform(paste(
     "NOTE: The kernel density estimate assumes continuous observations",
     "and is not optimal for discrete observations."
   ))
@@ -1089,7 +1088,7 @@ ppc_loo_ribbon <-
   # 1-D Gaussian window filter. This method uses the "reflection method"
   # to estimate these pvalues and helps speed up the code
   if (any(is.infinite(x))) {
-    warning(paste(
+    warn(paste(
       "Ignored", sum(is.infinite(x)),
       "Non-finite PIT values are invalid for KDE boundary correction method"
     ))

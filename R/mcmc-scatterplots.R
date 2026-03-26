@@ -98,12 +98,12 @@
 #'    )
 #'
 #' # add ellipse
-#' p + stat_ellipse(level = 0.9, color = "gray20", size = 1)
+#' p + stat_ellipse(level = 0.9, color = "gray20", linewidth = 1)
 #'
 #' # add contour
 #' color_scheme_set("red")
 #' p2 <- mcmc_scatter(x, pars = c("alpha", "sigma"), size = 3.5, alpha = 0.25)
-#' p2 + stat_density_2d(color = "black", size = .5)
+#' p2 + stat_density_2d(color = "black", linewidth = .5)
 #'
 #' # can also add lines/smooths
 #' color_scheme_set("pink")
@@ -352,10 +352,10 @@ mcmc_pairs <- function(x,
     param <- sym("Parameter")
     val <- sym("Value")
     np <- validate_nuts_data_frame(np, lp)
-    divs <- dplyr::filter(np, UQ(param) == "divergent__") %>% pull(UQ(val))
+    divs <- dplyr::filter(np, !!param == "divergent__") %>% pull(!!val)
     divergent__ <- matrix(divs, nrow = n_iter * n_chain, ncol = n_param)[, 1]
     if (!no_max_td) {
-      gt_max_td <- (dplyr::filter(np, UQ(param) == "treedepth__") %>% pull(UQ(val))) >= max_treedepth
+      gt_max_td <- (dplyr::filter(np, !!param == "treedepth__") %>% pull(!!val)) >= max_treedepth
       max_td_hit__ <- matrix(gt_max_td, nrow = n_iter * n_chain, ncol = n_param)[, 1]
     }
   }
@@ -674,11 +674,11 @@ pairs_condition <- function(chains = NULL, draws = NULL, nuts = NULL) {
     divg <- sym("Divergent")
     xydata$Divergent <-
       np %>%
-      dplyr::filter(UQ(param) == "divergent__") %>%
-      pull(UQ(val))
+      dplyr::filter(!!param == "divergent__") %>%
+      pull(!!val)
 
-    divdata <- dplyr::filter(xydata, UQ(divg) == 1)
-    xydata <- dplyr::filter(xydata, UQ(divg) == 0)
+    divdata <- dplyr::filter(xydata, !!divg == 1)
+    xydata <- dplyr::filter(xydata, !!divg == 0)
   }
 
   graph <- ggplot(data = xydata, aes(x = .data$x, y = .data$y)) +
@@ -880,7 +880,7 @@ handle_condition <- function(x, condition=NULL, np=NULL, lp=NULL) {
 
     } else {
       param <- sym("Parameter")
-      mark <- dplyr::filter(np, UQ(param) == condition)
+      mark <- dplyr::filter(np, !!param == condition)
       mark <- unstack_to_matrix(mark, Value ~ Chain)
     }
     if (condition == "divergent__") {

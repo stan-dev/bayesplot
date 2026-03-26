@@ -332,7 +332,7 @@ mcmc_dens_chains <- function(
     labs(color = "Chain") +
     scale_y_discrete(
       limits = unique(rev(data$parameter)),
-      expand = c(0.05, .6)
+      expand = expansion(mult = 0.05, add = 0.6)
     ) +
     scale_color +
     bayesplot_theme_get() +
@@ -523,7 +523,7 @@ mcmc_dots_by_chain <- function(
   }
 
   graph +
-    dont_expand_y_axis(c(0.005, 0)) +
+    dont_expand_y_axis(expansion(mult = 0.005, add = 0)) +
     bayesplot_theme_get() +
     yaxis_text(FALSE) +
     yaxis_title(FALSE) +
@@ -642,7 +642,7 @@ mcmc_dots_by_chain <- function(
   }
 
   graph +
-    dont_expand_y_axis(c(0.005, 0)) +
+    dont_expand_y_axis(expansion(mult = 0.005, add = 0)) +
     bayesplot_theme_get() +
     yaxis_text(FALSE) +
     yaxis_ticks(FALSE) +
@@ -703,7 +703,7 @@ mcmc_dots_by_chain <- function(
   }
 
   graph +
-    dont_expand_y_axis(c(0.005, 0)) +
+    dont_expand_y_axis(expansion(mult = 0.005, add = 0)) +
     bayesplot_theme_get() +
     yaxis_text(FALSE) +
     yaxis_title(FALSE) +
