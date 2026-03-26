@@ -63,7 +63,8 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="bayesplot-development-version">bayesplot (development version)<a class="anchor" aria-label="anchor" href="#bayesplot-development-version"></a></h2>
-<ul><li>Eliminate redundant data processing in <code><a href="../reference/MCMC-intervals.html">mcmc_areas_data()</a></code> by reusing the prepared MCMC array for both interval and density computation.</li>
+<ul><li>Extract <code>drop_singleton_values()</code> helper in <code><a href="../reference/MCMC-nuts.html">mcmc_nuts_treedepth()</a></code> to remove duplicated filtering logic.</li>
+<li>Eliminate redundant data processing in <code><a href="../reference/MCMC-intervals.html">mcmc_areas_data()</a></code> by reusing the prepared MCMC array for both interval and density computation.</li>
 <li>Validate equal chain lengths in <code>validate_df_with_chain()</code>, reject missing chain labels, and renumber data-frame chain labels internally when converting to arrays.</li>
 <li>Added unit tests for previously untested edge cases in <code><a href="../reference/tidy-params.html">param_range()</a></code>, <code><a href="../reference/tidy-params.html">param_glue()</a></code>, and <code>tidyselect_parameters()</code> (no-match, partial-match, and negation behavior).</li>
 <li>Bumped minimum version for <code>rstantools</code> from <code>&gt;= 1.5.0</code> to <code>&gt;= 2.0.0</code> .</li>

@@ -2,6 +2,9 @@
 
 ## bayesplot (development version)
 
+- Extract `drop_singleton_values()` helper in
+  [`mcmc_nuts_treedepth()`](https://mc-stan.org/bayesplot/dev/reference/MCMC-nuts.md)
+  to remove duplicated filtering logic.
 - Eliminate redundant data processing in
   [`mcmc_areas_data()`](https://mc-stan.org/bayesplot/dev/reference/MCMC-intervals.md)
   by reusing the prepared MCMC array for both interval and density
