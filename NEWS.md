@@ -1,5 +1,6 @@
 # bayesplot (development version)
 
+* Added unit tests for `ppc_error_data()` and `ppc_loo_pit_data()` covering output structure, argument handling, and edge cases.
 * Added vignette sections demonstrating `*_data()` companion functions for building custom ggplot2 visualizations (#435)
 * Extract `drop_singleton_values()` helper in `mcmc_nuts_treedepth()` to remove duplicated filtering logic.
 * Eliminate redundant data processing in `mcmc_areas_data()` by reusing the prepared MCMC array for both interval and density computation.
