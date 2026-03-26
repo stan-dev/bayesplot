@@ -15,7 +15,7 @@
 #' @param ... For dot plots, optional additional arguments to pass to [ggdist::stat_dots()].
 #' @param alpha Passed to the geom to control the transparency.
 #'
-#' @template return-ggplot
+#' @template return-ggplot-or-data
 #'
 #' @section Plot Descriptions:
 #' \describe{
@@ -47,6 +47,12 @@
 #'    but overlaid on a single plot. In `mcmc_dens_overlay()` parameters
 #'    appear in separate facets; in `mcmc_dens_chains()` they appear in the
 #'    same panel and can overlap vertically.
+#'   }
+#'   \item{`mcmc_dens_chains_data()`}{
+#'    Data-preparation back end for `mcmc_dens_chains()`. Users can call this
+#'    function directly to obtain the prepared long-format data frame of MCMC
+#'    draws (with chain information retained) and create custom visualizations
+#'    with **ggplot2**.
 #'   }
 #' }
 #'
@@ -326,7 +332,7 @@ mcmc_dens_chains <- function(
     labs(color = "Chain") +
     scale_y_discrete(
       limits = unique(rev(data$parameter)),
-      expand = c(0.05, .6)
+      expand = expansion(mult = 0.05, add = 0.6)
     ) +
     scale_color +
     bayesplot_theme_get() +
@@ -483,7 +489,7 @@ mcmc_dots_by_chain <- function(
   data <- melt_mcmc(x, value.name = "value")
   n_param <- num_params(data)
 
-  graph <- ggplot(data, aes(x = ~ value)) +
+  graph <- ggplot(data, aes(x = .data$value)) +
     geom_histogram(
       set_hist_aes(freq),
       fill = get_color("mid"),
@@ -517,7 +523,7 @@ mcmc_dots_by_chain <- function(
   }
 
   graph +
-    dont_expand_y_axis(c(0.005, 0)) +
+    dont_expand_y_axis(expansion(mult = 0.005, add = 0)) +
     bayesplot_theme_get() +
     yaxis_text(FALSE) +
     yaxis_title(FALSE) +
@@ -636,7 +642,7 @@ mcmc_dots_by_chain <- function(
   }
 
   graph +
-    dont_expand_y_axis(c(0.005, 0)) +
+    dont_expand_y_axis(expansion(mult = 0.005, add = 0)) +
     bayesplot_theme_get() +
     yaxis_text(FALSE) +
     yaxis_ticks(FALSE) +
@@ -697,7 +703,7 @@ mcmc_dots_by_chain <- function(
   }
 
   graph +
-    dont_expand_y_axis(c(0.005, 0)) +
+    dont_expand_y_axis(expansion(mult = 0.005, add = 0)) +
     bayesplot_theme_get() +
     yaxis_text(FALSE) +
     yaxis_title(FALSE) +

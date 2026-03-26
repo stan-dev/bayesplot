@@ -63,7 +63,7 @@ panel_bg(on = TRUE, ...)
 
 plot_bg(on = TRUE, ...)
 
-grid_lines(color = "gray50", size = 0.2)
+grid_lines(color = "gray50", linewidth = 0.2, size = deprecated())
 
 overlay_function(...)
 }
@@ -112,7 +112,9 @@ example, facet text can be removed by adding \code{facet_text(on=FALSE)}, or
 simply \code{facet_text(FALSE)} to a ggplot object. If \code{on=TRUE} (the default),
 then \code{...} can be used to customize the appearance of the theme element.}
 
-\item{color, size}{Passed to \code{\link[ggplot2:element]{ggplot2::element_line()}}.}
+\item{color, linewidth}{Passed to \code{\link[ggplot2:element]{ggplot2::element_line()}}.}
+
+\item{size}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Use \code{linewidth} instead.}
 }
 \value{
 A \strong{ggplot2} layer or \code{\link[ggplot2:theme]{ggplot2::theme()}} object that can be

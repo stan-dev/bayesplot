@@ -189,7 +189,7 @@ color_scheme_view <- function(scheme = NULL) {
 
 #' @export
 print.bayesplot_scheme <- function(x, ...) {
-  tab <- data.frame(unlist(x, use.names = FALSE), stringsAsFactors = FALSE)
+  tab <- data.frame(unlist(x, use.names = FALSE))
   colnames(tab) <- attr(x, "scheme_name") %||% "hex_color"
   print(tab, ...)
 }
@@ -222,9 +222,8 @@ plot_scheme <- function(scheme = NULL) {
   )
 
   ggplot(color_data, aes(x = .data$name, y = .data$value, fill = .data$group)) +
-    geom_bar(
+    geom_col(
       width = .5,
-      stat = "identity",
       color = "white",
       linewidth = 0.1
     ) +
