@@ -187,7 +187,7 @@ test_that("ppc_rootogram renders correctly", {
   )
 
   vdiffr::expect_doppelganger(
-    title = "ppc_rootogram (style='hanging', prob, size)",
+    title = "ppc_rootogram (hanging,prob,size)",
     fig = p_custom_hanging)
 
   p_discrete <- ppc_rootogram(
@@ -199,7 +199,7 @@ test_that("ppc_rootogram renders correctly", {
   )
 
   vdiffr::expect_doppelganger(
-    title = "ppc_rootogram (style='discrete', prob, size)",
+    title = "ppc_rootogram (discrete,prob,size)",
     fig = p_discrete)
 
   p_discrete_nonbound <- ppc_rootogram(
@@ -212,7 +212,7 @@ test_that("ppc_rootogram renders correctly", {
   )
 
   vdiffr::expect_doppelganger(
-    title = "ppc_rootogram ('discrete', bound_distinct=FALSE)",
+    title = "ppc_rootogram (discrete,bound_distinct=FALSE)",
     fig = p_discrete_nonbound)
 })
 
@@ -235,7 +235,7 @@ test_that("ppc_rootogram_grouped renders correctly", {
   )
 
   vdiffr::expect_doppelganger(
-    title = "ppc_rootogram_grouped (style='hanging', prob, size, facet_args)",
+    title = "ppc_rootogram_grouped (hanging,prob,size,facet_args)",
     fig = p_custom_hanging)
 
   p_discrete <- ppc_rootogram_grouped(
@@ -248,9 +248,9 @@ test_that("ppc_rootogram_grouped renders correctly", {
   )
 
   vdiffr::expect_doppelganger(
-    title = "ppc_rootogram_grouped (style='discrete', prob, size)",
+    title = "ppc_rootogram_grouped (discrete,prob,size)",
     fig = p_discrete)
-  
+
   p_discrete_multirow <- ppc_rootogram_grouped(
     y = vdiff_y2,
     yrep = vdiff_yrep2,
@@ -262,9 +262,9 @@ test_that("ppc_rootogram_grouped renders correctly", {
   )
 
   vdiffr::expect_doppelganger(
-    title = "ppc_rootogram_grouped (style='discrete', facet_args=list(nrow=2))",
+    title = "ppc_rootogram_grouped (discrete,facet_args)",
     fig = p_discrete_multirow)
-  
+
   p_discrete_multirow_freescale <- ppc_rootogram_grouped(
     y = vdiff_y2,
     yrep = vdiff_yrep2,
@@ -276,7 +276,7 @@ test_that("ppc_rootogram_grouped renders correctly", {
   )
 
   vdiffr::expect_doppelganger(
-    title = "ppc_rootogram_grouped (style='discrete', facet_args=list(nrow=2, scales='free'))",
+    title = "ppc_rootogram_grouped (discrete,nrow=2,scales=free)",
     fig = p_discrete_multirow_freescale)
 })
 
