@@ -78,6 +78,25 @@ test_that("ppc_loo_pit_data validates user-provided pit values", {
   )
 })
 
+test_that("ppc_loo_pit_qq validates user-provided pit values", {
+  expect_error(
+    ppc_loo_pit_qq(pit = c(0.5, Inf)),
+    "between 0 and 1"
+  )
+  expect_error(
+    ppc_loo_pit_qq(pit = c(-1, 0.5)),
+    "between 0 and 1"
+  )
+  expect_error(
+    ppc_loo_pit_qq(pit = c(0.5, NA)),
+    "NAs not allowed"
+  )
+  expect_error(
+    ppc_loo_pit_qq(pit = "not numeric"),
+    "is.numeric"
+  )
+})
+
 test_that("ppc_loo_pit_qq returns ggplot object", {
   skip_if_not_installed("rstanarm")
   skip_if_not_installed("loo")

@@ -348,7 +348,7 @@ ppc_loo_pit_qq <- function(y,
 
   compare <- match.arg(compare)
   if (!is.null(pit)) {
-    stopifnot(is.numeric(pit), is_vector_or_1Darray(pit))
+    pit <- validate_pit(pit)
     inform("'pit' specified so ignoring 'y','yrep','lw' if specified.")
   } else {
     suggested_package("rstantools")
