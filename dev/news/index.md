@@ -3,6 +3,11 @@
 ## bayesplot (development version)
 
 - Added unit tests for
+  [`mcmc_areas_ridges_data()`](https://mc-stan.org/bayesplot/dev/reference/MCMC-intervals.md),
+  [`mcmc_parcoord_data()`](https://mc-stan.org/bayesplot/dev/reference/MCMC-parcoord.md),
+  and
+  [`mcmc_trace_data()`](https://mc-stan.org/bayesplot/dev/reference/MCMC-traces.md).
+- Added unit tests for
   [`ppc_error_data()`](https://mc-stan.org/bayesplot/dev/reference/PPC-errors.md)
   and
   [`ppc_loo_pit_data()`](https://mc-stan.org/bayesplot/dev/reference/PPC-loo.md)
