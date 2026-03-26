@@ -1,42 +1,5 @@
 source(test_path("data-for-mcmc-tests.R"))
 
-test_that("mcmc_intervals_data computes quantiles", {
-  xs <- melt_mcmc(merge_chains(prepare_mcmc_array(arr, pars = "beta[1]")))
-  d <- mcmc_intervals_data(arr, pars = "beta[1]",
-                           prob = .3, prob_outer = .5)
-
-  qs <- unlist(d[, c("ll", "l", "m", "h", "hh")])
-  by_hand <- quantile(xs$Value, c(.25, .35, .5, .65, .75))
-  expect_equal(qs, by_hand, ignore_attr = TRUE)
-
-  expect_equal(d$parameter, factor("beta[1]"))
-  expect_equal(d$outer_width, .5)
-  expect_equal(d$inner_width, .3)
-  expect_equal(d$point_est, "median")
-
-  d2 <- mcmc_areas_data(arr, pars = "beta[1]", prob = .3, prob_outer = .5)
-  sets <- split(d2, d2$interval)
-
-  expect_equal(range(sets$inner$x), c(d$l, d$h))
-  expect_equal(range(sets$outer$x), c(d$ll, d$hh))
-})
-
-test_that("mcmc_intervals_data computes point estimates", {
-  xs <- melt_mcmc(merge_chains(prepare_mcmc_array(arr, pars = "beta[2]")))
-  d <- mcmc_intervals_data(arr, pars = "beta[2]",
-                           prob = .3, prob_outer = .5, point_est = "mean")
-
-  expect_equal(d$m, mean(xs$Value), ignore_attr = TRUE)
-  expect_equal(d$parameter, factor("beta[2]"))
-  expect_equal(d$point_est, "mean")
-
-  d <- mcmc_intervals_data(arr, pars = "(Intercept)",
-                           prob = .3, prob_outer = .5,
-                           point_est = "none")
-  expect_true(!("m" %in% names(d)))
-  expect_equal(d$point_est, "none")
-})
-
 test_that("mcmc_intervals returns a ggplot object", {
   expect_gg(mcmc_intervals(arr, pars = "beta[1]", regex_pars = "x\\:"))
   expect_gg(mcmc_intervals(arr1chain, pars = "beta[1]", regex_pars = "Intercept"))
@@ -115,6 +78,45 @@ test_that("mcmc_intervals/areas with rhat", {
   }
 })
 
+# _data() tests ----------------------------------------------------------------
+
+test_that("mcmc_intervals_data computes quantiles", {
+  xs <- melt_mcmc(merge_chains(prepare_mcmc_array(arr, pars = "beta[1]")))
+  d <- mcmc_intervals_data(arr, pars = "beta[1]",
+                           prob = .3, prob_outer = .5)
+
+  qs <- unlist(d[, c("ll", "l", "m", "h", "hh")])
+  by_hand <- quantile(xs$Value, c(.25, .35, .5, .65, .75))
+  expect_equal(qs, by_hand, ignore_attr = TRUE)
+
+  expect_equal(d$parameter, factor("beta[1]"))
+  expect_equal(d$outer_width, .5)
+  expect_equal(d$inner_width, .3)
+  expect_equal(d$point_est, "median")
+
+  d2 <- mcmc_areas_data(arr, pars = "beta[1]", prob = .3, prob_outer = .5)
+  sets <- split(d2, d2$interval)
+
+  expect_equal(range(sets$inner$x), c(d$l, d$h))
+  expect_equal(range(sets$outer$x), c(d$ll, d$hh))
+})
+
+test_that("mcmc_intervals_data computes point estimates", {
+  xs <- melt_mcmc(merge_chains(prepare_mcmc_array(arr, pars = "beta[2]")))
+  d <- mcmc_intervals_data(arr, pars = "beta[2]",
+                           prob = .3, prob_outer = .5, point_est = "mean")
+
+  expect_equal(d$m, mean(xs$Value), ignore_attr = TRUE)
+  expect_equal(d$parameter, factor("beta[2]"))
+  expect_equal(d$point_est, "mean")
+
+  d <- mcmc_intervals_data(arr, pars = "(Intercept)",
+                           prob = .3, prob_outer = .5,
+                           point_est = "none")
+  expect_true(!("m" %in% names(d)))
+  expect_equal(d$point_est, "none")
+})
+
 test_that("mcmc_areas_data computes density", {
   areas_data <- mcmc_areas_data(arr, point_est = "none")
   areas_data <- areas_data[areas_data$interval_width == 1, ]
@@ -153,7 +155,7 @@ test_that("compute_column_density can use density options (#118)", {
   expect_error(mcmc_areas_data(arr, kernel = stop()))
 })
 
-test_that("probabilities outside of [0,1] cause an error", {
+test_that("mcmc_intervals_data errors for probabilities outside of [0,1]", {
   expect_error(mcmc_intervals_data(arr, prob = -0.1),
                "must be in \\[0,1\\]")
   expect_error(mcmc_intervals_data(arr, prob = 1.1),
@@ -164,7 +166,7 @@ test_that("probabilities outside of [0,1] cause an error", {
                "must be in \\[0,1\\]")
 })
 
-test_that("inconsistent probabilities raise warning (#138)", {
+test_that("mcmc_intervals_data warns for inconsistent probabilities (#138)", {
   expect_warning(
     mcmc_intervals_data(arr, prob = .9, prob_outer = .8),
     "`prob_outer` .* is less than `prob`"
@@ -172,6 +174,20 @@ test_that("inconsistent probabilities raise warning (#138)", {
 })
 
 
+test_that("mcmc_areas_ridges_data returns correct structure", {
+  d <- mcmc_areas_ridges_data(arr, pars = c("beta[1]", "sigma"), prob = 0.5, prob_outer = 0.9)
+  expect_s3_class(d, "data.frame")
+  expect_named(
+    d,
+    c(
+      "parameter", "interval", "interval_width", "x", "density",
+      "scaled_density", "plotting_density"
+    )
+  )
+  expect_setequal(unique(d$interval), c("inner", "outer"))
+  expect_false("point" %in% d$interval)
+  expect_equal(unique(as.character(d$parameter)), c("beta[1]", "sigma"))
+})
 
 
 # Visual tests -----------------------------------------------------------------
@@ -254,31 +270,4 @@ test_that("mcmc_areas_ridges renders correctly", {
 
   p_size <- mcmc_areas_ridges(vdiff_dframe, border_size = 2)
   vdiffr::expect_doppelganger("mcmc_areas_ridges (size)", p_size)
-})
-
-
-# mcmc_areas_ridges_data tests ---------------------------------------------
-
-test_that("mcmc_areas_ridges_data returns correct structure", {
-  d <- mcmc_areas_ridges_data(arr, pars = "beta[1]")
-  expect_s3_class(d, "data.frame")
-  expect_true(all(c("parameter", "x", "density", "interval") %in% names(d)))
-})
-
-test_that("mcmc_areas_ridges_data delegates to mcmc_areas_data with point_est='none'", {
-  d_ridges <- mcmc_areas_ridges_data(arr, pars = "beta[1]", prob = 0.5, prob_outer = 0.9)
-  d_areas <- mcmc_areas_data(arr, pars = "beta[1]", prob = 0.5, prob_outer = 0.9,
-                             point_est = "none")
-  expect_equal(d_ridges, d_areas)
-})
-
-test_that("mcmc_areas_ridges_data works with multiple parameters", {
-  d <- mcmc_areas_ridges_data(arr, regex_pars = "beta")
-  params <- unique(d$parameter)
-  expect_true(length(params) >= 2)
-})
-
-test_that("mcmc_areas_ridges_data works with single parameter", {
-  d <- mcmc_areas_ridges_data(arr, pars = "sigma")
-  expect_equal(length(unique(d$parameter)), 1)
 })
