@@ -369,11 +369,7 @@ mcmc_nuts_treedepth <- function(x, lp, chain = NULL, ...) {
     yaxis_ticks(FALSE)
 
   violin_lp_data <- data.frame(treedepth, lp = lp$Value)
-
-  # Only keep treedepth values that occur more than once for violin plot
-  value_counts <- table(violin_lp_data$Value)
-  keep_values <- names(value_counts[value_counts > 1])
-  violin_lp_data <- violin_lp_data[violin_lp_data$Value %in% keep_values, ]
+  violin_lp_data <- drop_singleton_values(violin_lp_data, "Value")
 
   violin_lp <-
     ggplot(violin_lp_data, aes(x = factor(.data$Value), y = .data$lp)) +
@@ -382,11 +378,7 @@ mcmc_nuts_treedepth <- function(x, lp, chain = NULL, ...) {
     bayesplot_theme_get()
 
   violin_accept_stat_data <- data.frame(treedepth, as = accept_stat$Value)
-
-  # Only keep treedepth values that occur more than once for violin plot
-  value_counts <- table(violin_accept_stat_data$Value)
-  keep_values <- names(value_counts[value_counts > 1])
-  violin_accept_stat_data <- violin_accept_stat_data[violin_accept_stat_data$Value %in% keep_values, ]
+  violin_accept_stat_data <- drop_singleton_values(violin_accept_stat_data, "Value")
 
   violin_accept_stat <-
     ggplot(violin_accept_stat_data, aes(x = factor(.data$Value), y = .data$as)) +
@@ -572,3 +564,11 @@ chain_violin <-
       alpha = alpha
     )
   }
+
+# Drop rows whose value in `col` appears only once (singletons cannot
+# produce a violin density estimate).
+drop_singleton_values <- function(df, col) {
+  counts <- table(df[[col]])
+  keep <- names(counts[counts > 1])
+  df[df[[col]] %in% keep, ]
+}
