@@ -1,10 +1,9 @@
 # bayesplot (development version)
 
+* Added vignette sections demonstrating `*_data()` companion functions for building custom ggplot2 visualizations (#435)
 * Extract `drop_singleton_values()` helper in `mcmc_nuts_treedepth()` to remove duplicated filtering logic.
 * Eliminate redundant data processing in `mcmc_areas_data()` by reusing the prepared MCMC array for both interval and density computation.
-* Validate equal chain lengths in `validate_df_with_chain()`, reject missing
-  chain labels, and renumber data-frame chain labels internally when converting
-  to arrays.
+* Validate equal chain lengths in `validate_df_with_chain()`, reject missing chain labels, and renumber data-frame chain labels internally when converting to arrays.
 * Added unit tests for previously untested edge cases in `param_range()`, `param_glue()`, and `tidyselect_parameters()` (no-match, partial-match, and negation behavior).
 * Bumped minimum version for `rstantools` from `>= 1.5.0` to `>= 2.0.0` .
 * Use `rlang::warn()` and `rlang::inform()` for selected PPC user messages instead of base `warning()` and `message()`.
