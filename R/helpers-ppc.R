@@ -595,3 +595,8 @@ create_rep_ids <- function(ids) paste('italic(y)[rep] (', ids, ")")
 y_label <- function() expression(italic(y))
 yrep_label <- function() expression(italic(y)[rep])
 ypred_label <- function() expression(italic(y)[pred])
+
+# helper function for formatting p-value when displayed in a plot
+fmt_p <- function(x) {
+  dplyr::if_else(x < 0.0005, "0.000", as.character(round(signif(x, 2) + 1e-10, 3)))
+}
