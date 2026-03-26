@@ -314,6 +314,45 @@ See Figure 8 in [Gabry et al. (2019)](#gabry2019) for another example of using
 
 <br>
 
+## Using `*_data()` functions for custom plots
+
+Many bayesplot plotting functions have a companion `*_data()` function that
+returns the pre-processed data as a tidy data frame instead of a plot. This is
+useful when you want to build a fully custom ggplot2 visualization using the
+same summary statistics that bayesplot computes internally.
+
+For example, `ppc_intervals_data()` returns the quantile summaries that
+`ppc_intervals()` uses:
+
+```{r data_intervals, eval=params$EVAL}
+d <- ppc_intervals_data(y, yrep_nb, prob = 0.5, prob_outer = 0.9)
+head(d)
+```
+
+You can then use this data to create your own plot:
+
+```{r data_intervals_custom, eval=params$EVAL}
+ggplot(d, aes(x = x, y = m)) +
+  geom_linerange(aes(ymin = ll, ymax = hh), color = "skyblue", linewidth = 0.6) +
+  geom_linerange(aes(ymin = l, ymax = h), color = "steelblue", linewidth = 1.2) +
+  geom_point(aes(y = y_obs), shape = 21, fill = "red", size = 1.5) +
+  labs(title = "Custom interval plot from ppc_intervals_data()",
+       x = "Observation", y = "Value") +
+  theme_minimal()
+```
+
+Similarly, `ppc_stat_data()` returns the computed test statistics:
+
+```{r data_stat, eval=params$EVAL, message=FALSE}
+stat_d <- ppc_stat_data(y, yrep_nb, stat = "median")
+head(stat_d)
+```
+
+See `available_ppc(plots_only = FALSE)` and `available_mcmc(plots_only = FALSE)`
+for a full list of data-preparation functions.
+
+<br>
+
 ## Providing an interface to bayesplot PPCs from another package
 
 The **bayesplot** package provides the S3 generic function `pp_check`. Authors of
