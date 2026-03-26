@@ -2,6 +2,9 @@
 
 ## bayesplot (development version)
 
+- Added vignette sections demonstrating `*_data()` companion functions
+  for building custom ggplot2 visualizations
+  ([\#435](https://github.com/stan-dev/bayesplot/issues/435))
 - Extract `drop_singleton_values()` helper in
   [`mcmc_nuts_treedepth()`](https://mc-stan.org/bayesplot/dev/reference/MCMC-nuts.md)
   to remove duplicated filtering logic.

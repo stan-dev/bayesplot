@@ -401,6 +401,33 @@ mcmc_trace_highlight(posterior, pars = "sigma", highlight = 3)
 
   
 
+## Using `*_data()` functions for custom plots
+
+As with PPC functions, many MCMC plotting functions have `*_data()`
+companions that return the underlying data instead of a plot. For
+example,
+[`mcmc_intervals_data()`](https://mc-stan.org/bayesplot/dev/reference/MCMC-intervals.md)
+returns the quantiles used by
+[`mcmc_intervals()`](https://mc-stan.org/bayesplot/dev/reference/MCMC-intervals.md):
+
+``` r
+d <- mcmc_intervals_data(posterior, pars = c("(Intercept)", "sigma"))
+d
+```
+
+     [38;5;246m# A tibble: 2 × 9 [39m
+      parameter   outer_width inner_width point_est     ll     l     m     h    hh
+       [3m [38;5;246m<fct> [39m [23m              [3m [38;5;246m<dbl> [39m [23m        [3m [38;5;246m<dbl> [39m [23m  [3m [38;5;246m<chr> [39m [23m       [3m [38;5;246m<dbl> [39m [23m  [3m [38;5;246m<dbl> [39m [23m  [3m [38;5;246m<dbl> [39m [23m  [3m [38;5;246m<dbl> [39m [23m  [3m [38;5;246m<dbl> [39m [23m
+     [38;5;250m1 [39m (Intercept)         0.9         0.5 median    - [31m20 [39m [31m. [39m [31m4 [39m  - [31m1 [39m [31m. [39m [31m0 [39m [31m1 [39m 12.0  25.1  44.8 
+     [38;5;250m2 [39m sigma               0.9         0.5 median      2.15  2.46  2.72  3.05  3.63
+
+This can be used to build fully custom ggplot2 visualizations using the
+same summary statistics that bayesplot computes internally. See
+`available_mcmc(plots_only = FALSE)` for a full list of `*_data()`
+functions.
+
+  
+
 ## References
 
 Gabry, J., and Goodrich, B. (2017). rstanarm: Bayesian Applied

@@ -482,6 +482,27 @@ specified using the <code>highlight</code> argument).</p>
 </div>
 </div>
 <div class="section level2">
+<h2 id="using-_data-functions-for-custom-plots">Using <code>*_data()</code> functions for custom plots<a class="anchor" aria-label="anchor" href="#using-_data-functions-for-custom-plots"></a>
+</h2>
+<p>As with PPC functions, many MCMC plotting functions have
+<code>*_data()</code> companions that return the underlying data instead
+of a plot. For example, <code><a href="../reference/MCMC-intervals.html">mcmc_intervals_data()</a></code> returns the
+quantiles used by <code><a href="../reference/MCMC-intervals.html">mcmc_intervals()</a></code>:</p>
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/MCMC-intervals.html">mcmc_intervals_data</a></span><span class="op">(</span><span class="va">posterior</span>, pars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"(Intercept)"</span>, <span class="st">"sigma"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">d</span></span></code></pre></div>
+<pre><code> [38;5;246m# A tibble: 2 × 9 [39m
+  parameter   outer_width inner_width point_est     ll     l     m     h    hh
+   [3m [38;5;246m&lt;fct&gt; [39m [23m              [3m [38;5;246m&lt;dbl&gt; [39m [23m        [3m [38;5;246m&lt;dbl&gt; [39m [23m  [3m [38;5;246m&lt;chr&gt; [39m [23m       [3m [38;5;246m&lt;dbl&gt; [39m [23m  [3m [38;5;246m&lt;dbl&gt; [39m [23m  [3m [38;5;246m&lt;dbl&gt; [39m [23m  [3m [38;5;246m&lt;dbl&gt; [39m [23m  [3m [38;5;246m&lt;dbl&gt; [39m [23m
+ [38;5;250m1 [39m (Intercept)         0.9         0.5 median    - [31m20 [39m [31m. [39m [31m4 [39m  - [31m1 [39m [31m. [39m [31m0 [39m [31m1 [39m 12.0  25.1  44.8 
+ [38;5;250m2 [39m sigma               0.9         0.5 median      2.15  2.46  2.72  3.05  3.63</code></pre>
+<p>This can be used to build fully custom ggplot2 visualizations using
+the same summary statistics that bayesplot computes internally. See
+<code>available_mcmc(plots_only = FALSE)</code> for a full list of
+<code>*_data()</code> functions.</p>
+<p><br></p>
+</div>
+<div class="section level2">
 <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
 <p>Gabry, J., and Goodrich, B. (2017). rstanarm: Bayesian Applied
