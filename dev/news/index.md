@@ -2,6 +2,11 @@
 
 ## bayesplot (development version)
 
+- Added unit tests for
+  [`ppc_error_data()`](https://mc-stan.org/bayesplot/dev/reference/PPC-errors.md)
+  and
+  [`ppc_loo_pit_data()`](https://mc-stan.org/bayesplot/dev/reference/PPC-loo.md)
+  covering output structure, argument handling, and edge cases.
 - Added vignette sections demonstrating `*_data()` companion functions
   for building custom ggplot2 visualizations
   ([\#435](https://github.com/stan-dev/bayesplot/issues/435))

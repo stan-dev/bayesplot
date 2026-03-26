@@ -63,7 +63,8 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="bayesplot-development-version">bayesplot (development version)<a class="anchor" aria-label="anchor" href="#bayesplot-development-version"></a></h2>
-<ul><li>Added vignette sections demonstrating <code>*_data()</code> companion functions for building custom ggplot2 visualizations (<a href="https://github.com/stan-dev/bayesplot/issues/435" class="external-link">#435</a>)</li>
+<ul><li>Added unit tests for <code><a href="../reference/PPC-errors.html">ppc_error_data()</a></code> and <code><a href="../reference/PPC-loo.html">ppc_loo_pit_data()</a></code> covering output structure, argument handling, and edge cases.</li>
+<li>Added vignette sections demonstrating <code>*_data()</code> companion functions for building custom ggplot2 visualizations (<a href="https://github.com/stan-dev/bayesplot/issues/435" class="external-link">#435</a>)</li>
 <li>Extract <code>drop_singleton_values()</code> helper in <code><a href="../reference/MCMC-nuts.html">mcmc_nuts_treedepth()</a></code> to remove duplicated filtering logic.</li>
 <li>Eliminate redundant data processing in <code><a href="../reference/MCMC-intervals.html">mcmc_areas_data()</a></code> by reusing the prepared MCMC array for both interval and density computation.</li>
 <li>Validate equal chain lengths in <code>validate_df_with_chain()</code>, reject missing chain labels, and renumber data-frame chain labels internally when converting to arrays.</li>
