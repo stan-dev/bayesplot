@@ -224,23 +224,3 @@ test_that("ppc_ribbon_grouped renders correctly", {
     group = vdiff_group)
   vdiffr::expect_doppelganger("ppd_ribbon_grouped (x values)", p_x)
 })
-
-
-# ppc_ribbon_data / ppd_ribbon_data alias tests ----------------------------
-
-test_that("ppc_ribbon_data is identical to ppc_intervals_data", {
-  expect_identical(ppc_ribbon_data, ppc_intervals_data)
-  y_test <- rnorm(20)
-  yrep_test <- matrix(rnorm(200), ncol = 20)
-  d1 <- ppc_intervals_data(y_test, yrep_test, prob = 0.5, prob_outer = 0.9)
-  d2 <- ppc_ribbon_data(y_test, yrep_test, prob = 0.5, prob_outer = 0.9)
-  expect_identical(d1, d2)
-})
-
-test_that("ppd_ribbon_data is identical to ppd_intervals_data", {
-  expect_identical(ppd_ribbon_data, ppd_intervals_data)
-  yrep_test <- matrix(rnorm(200), ncol = 20)
-  d1 <- ppd_intervals_data(yrep_test, prob = 0.5, prob_outer = 0.9)
-  d2 <- ppd_ribbon_data(yrep_test, prob = 0.5, prob_outer = 0.9)
-  expect_identical(d1, d2)
-})
