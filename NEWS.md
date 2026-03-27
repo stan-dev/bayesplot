@@ -1,5 +1,6 @@
 # bayesplot (development version)
 
+* Validate user-provided `pit` values in `ppc_loo_pit_data()` using `validate_pit()` to reject invalid inputs (non-numeric, out of range, NAs) at the entry point instead of in internal helpers.
 * Added unit tests for `mcmc_areas_ridges_data()`, `mcmc_parcoord_data()`, and `mcmc_trace_data()`.
 * Added unit tests for `ppc_error_data()` and `ppc_loo_pit_data()` covering output structure, argument handling, and edge cases.
 * Added vignette sections demonstrating `*_data()` companion functions for building custom ggplot2 visualizations (#435)

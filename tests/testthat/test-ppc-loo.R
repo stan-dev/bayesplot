@@ -59,17 +59,42 @@ test_that("ppc_loo_pit_overlay works with boundary_correction=FALSE", {
   expect_gg(p1)
 })
 
-test_that(".kde_correction warns when PIT values are non-finite", {
-  set.seed(123)
-  pit_vals <- c(stats::runif(500), Inf)
-  expect_warning(
-    out <- .kde_correction(pit_vals, bw = "nrd0", grid_len = 128),
-    "Non-finite PIT values are invalid"
+test_that("ppc_loo_pit_data validates user-provided pit values", {
+  expect_error(
+    ppc_loo_pit_data(pit = c(0.5, Inf)),
+    "between 0 and 1"
   )
-  expect_type(out, "list")
-  expect_true(all(c("xs", "bc_pvals") %in% names(out)))
-  expect_equal(length(out$xs), 128)
-  expect_equal(length(out$bc_pvals), 128)
+  expect_error(
+    ppc_loo_pit_data(pit = c(-1, 0.5)),
+    "between 0 and 1"
+  )
+  expect_error(
+    ppc_loo_pit_data(pit = c(0.5, NA)),
+    "NAs not allowed"
+  )
+  expect_error(
+    ppc_loo_pit_data(pit = "not numeric"),
+    "is.numeric"
+  )
+})
+
+test_that("ppc_loo_pit_qq validates user-provided pit values", {
+  expect_error(
+    ppc_loo_pit_qq(pit = c(0.5, Inf)),
+    "between 0 and 1"
+  )
+  expect_error(
+    ppc_loo_pit_qq(pit = c(-1, 0.5)),
+    "between 0 and 1"
+  )
+  expect_error(
+    ppc_loo_pit_qq(pit = c(0.5, NA)),
+    "NAs not allowed"
+  )
+  expect_error(
+    ppc_loo_pit_qq(pit = "not numeric"),
+    "is.numeric"
+  )
 })
 
 test_that("ppc_loo_pit_qq returns ggplot object", {
