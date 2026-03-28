@@ -1,7 +1,8 @@
 # bayesplot (development version)
 
+* Added dedicated edge-case tests for all exported `_data()` functions.
 * Added unit tests for `mcmc_areas_ridges_data()`, `mcmc_parcoord_data()`, and `mcmc_trace_data()`.
-* Added dedicated edge-case tests for all exported `_data()` functions: `ppc_bars_data()`, `ppc_error_data()`, `ppc_scatter_data()`, `ppc_scatter_avg_data()`, `ppc_loo_pit_data()`, `ppd_data()`, `ppd_stat_data()`, `ppd_intervals_data()`, `ppd_ribbon_data()`.
+* Added unit tests for `ppc_error_data()` and `ppc_loo_pit_data()` covering output structure, argument handling, and edge cases.
 * Added vignette sections demonstrating `*_data()` companion functions for building custom ggplot2 visualizations (#435)
 * Extract `drop_singleton_values()` helper in `mcmc_nuts_treedepth()` to remove duplicated filtering logic.
 * Eliminate redundant data processing in `mcmc_areas_data()` by reusing the prepared MCMC array for both interval and density computation.
