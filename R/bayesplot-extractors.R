@@ -145,7 +145,7 @@ nuts_params.stanreg <-
 #' @export
 #' @method nuts_params list
 nuts_params.list <- function(object, pars = NULL, ...) {
-  if (!all(sapply(object, is.matrix))) {
+  if (!all(vapply(object, is.matrix, logical(1)))) {
     abort("All list elements should be matrices.")
   }
 

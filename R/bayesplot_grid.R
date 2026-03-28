@@ -131,7 +131,7 @@ is_bayesplot_grid <- function(x) {
 }
 
 all_ggplot <- function(x) {
-  all(sapply(x, "inherits", what = "ggplot"))
+  all(vapply(x, inherits, logical(1), what = "ggplot"))
 }
 
 #' @export
