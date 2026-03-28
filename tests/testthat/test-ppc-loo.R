@@ -212,6 +212,50 @@ test_that("error if subset is bigger than num obs", {
   )
 })
 
+test_that(".psis_subset output structure matches valid psis object", {
+  skip_if_not_installed("rstanarm")
+  skip_if_not_installed("loo")
+
+  subset_idx <- 1:10
+  result <- .psis_subset(psis1, subset_idx)
+
+  # class preserved
+
+  expect_s3_class(result, "psis")
+
+  # log_weights columns match subset length, rows unchanged
+  orig_dims <- dim(psis1)
+  expect_equal(ncol(result$log_weights), length(subset_idx))
+  expect_equal(nrow(result$log_weights), orig_dims[1])
+
+  # log_weights values match the subsetted columns
+  expect_equal(
+    result$log_weights,
+    psis1$log_weights[, subset_idx, drop = FALSE]
+  )
+
+  # diagnostics subsetted correctly
+  expect_equal(result$diagnostics$pareto_k, psis1$diagnostics$pareto_k[subset_idx])
+  expect_equal(result$diagnostics$n_eff, psis1$diagnostics$n_eff[subset_idx])
+
+  # dims attribute updated
+  expect_equal(attr(result, "dims"), c(orig_dims[1], length(subset_idx)))
+
+  # other attributes subsetted correctly
+  expect_equal(
+    attr(result, "norm_const_log"),
+    attr(psis1, "norm_const_log")[subset_idx]
+  )
+  expect_equal(
+    attr(result, "tail_len"),
+    attr(psis1, "tail_len")[subset_idx]
+  )
+  expect_equal(
+    attr(result, "r_eff"),
+    attr(psis1, "r_eff")[subset_idx]
+  )
+})
+
 
 # Visual tests ------------------------------------------------------------
 
