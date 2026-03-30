@@ -167,8 +167,8 @@ ppc_km_overlay <- function(
   fsf <- fortify(sf)
   if(any(grepl("add_group", levels(fsf$strata)))){
     strata_split <- strsplit(as.character(fsf$strata), split = ", add_group:")
-    fsf$strata <- as.factor(vapply(strata_split, "[[", character(1), 1))
-    fsf$group <- as.factor(vapply(strata_split, "[[", character(1), 2))
+    fsf$strata <- as.factor(sapply(strata_split, "[[", 1))
+    fsf$group <- as.factor(sapply(strata_split, "[[", 2))
   }
 
   fsf$is_y_color <- as.factor(sub("\\[rep\\] \\(.*$", "rep", sub("^italic\\(y\\)", "y", fsf$strata)))

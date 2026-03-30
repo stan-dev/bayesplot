@@ -541,7 +541,7 @@ pairs_style_np <-
 pairs_condition <- function(chains = NULL, draws = NULL, nuts = NULL) {
   .ignore_args <- function(..., why = NULL) {
     dots <- list(...)
-    nms <- names(dots)[!vapply(dots, is.null, logical(1))]
+    nms <- names(dots)[!sapply(dots, is.null)]
     if (length(nms)) {
       inform(paste0(
         "The following specified arguments were ignored by 'pairs_condition' ",

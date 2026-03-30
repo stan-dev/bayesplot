@@ -251,7 +251,7 @@ is_chain_list <- function(x) {
     return(FALSE)
   }
   check1 <- !is.data.frame(x) && is.list(x)
-  dims <- try(vapply(x, function(chain) length(dim(chain)), integer(1)), silent=TRUE)
+  dims <- try(sapply(x, function(chain) length(dim(chain))), silent=TRUE)
   if (inherits(dims, "try-error")) {
     return(FALSE)
   }
@@ -271,7 +271,7 @@ validate_chain_list <- function(x) {
     }
   }
   if (n_chain > 1) {
-    n_iter <- vapply(x, nrow, integer(1))
+    n_iter <- sapply(x, nrow)
     same_iters <- length(unique(n_iter)) == 1
     if (!same_iters) {
       abort("Each chain should have the same number of iterations.")
@@ -302,7 +302,7 @@ chain_list2array <- function(x) {
     n_iter <- nrow(x[[1]])
     param_names <- colnames(x[[1]])
   } else {
-    n_iter <- vapply(x, nrow, integer(1))
+    n_iter <- sapply(x, nrow)
     cnames <- sapply(x, colnames)
     param_names <- if (is.array(cnames))
       cnames[, 1] else cnames
@@ -437,7 +437,7 @@ apply_transformations.array <- function(x, ..., transformations = list()) {
 
 rename_transformed_pars <- function(pars, transformations) {
   stopifnot(is.character(pars), is.list(transformations))
-  has_names <- vapply(transformations, is.character, logical(1))
+  has_names <- sapply(transformations, is.character)
   if (any(has_names)) {
     nms <- names(which(has_names))
     for (nm in nms) {
