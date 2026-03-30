@@ -247,6 +247,9 @@ df_with_chain2array <- function(x) {
 #' @param x object to check
 #' @return TRUE or FALSE
 is_chain_list <- function(x) {
+  if (length(x) == 0) {
+    return(FALSE)
+  }
   check1 <- !is.data.frame(x) && is.list(x)
   dims <- try(vapply(x, function(chain) length(dim(chain)), integer(1)), silent=TRUE)
   if (inherits(dims, "try-error")) {
