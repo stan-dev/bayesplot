@@ -1,6 +1,7 @@
 # bayesplot (development version)
 
 * Validate user-provided `pit` values in `ppc_loo_pit_data()` using `validate_pit()` to reject invalid inputs (non-numeric, out of range, NAs) at the entry point instead of in internal helpers.
+* Fixed `is_chain_list()` to correctly reject empty lists instead of silently returning `TRUE`.
 * Added unit tests for `mcmc_areas_ridges_data()`, `mcmc_parcoord_data()`, and `mcmc_trace_data()`.
 * Added unit tests for `ppc_error_data()` and `ppc_loo_pit_data()` covering output structure, argument handling, and edge cases.
 * Added vignette sections demonstrating `*_data()` companion functions for building custom ggplot2 visualizations (#435)
@@ -21,7 +22,7 @@
 * Default to `quantiles=100` for all dot plots by @behramulukir (#402)
 * Use `"neff_ratio"` consistently in diagnostic color scale helpers to avoid relying on partial matching of `"neff"`.
 * Replace `expand = c(mult, add)` with `ggplot2::expansion()` helper in scale functions for consistency with ggplot2 >= 3.3.0 style.
-* Replace uses of `geom_bar(stat = "identity")` with the more idiomatic ggplot2 form `geom_col()` 
+* Replace uses of `geom_bar(stat = "identity")` with the more idiomatic ggplot2 form `geom_col()`
 * New function `ppc_rootogram_grouped` for grouped rootogram plots by @behramulukir and @jgabry (#419)
 
 # bayesplot 1.15.0
@@ -38,7 +39,7 @@
 
 # bayesplot 1.14.0
 
-* PPC "avg" functions (`ppc_scatter_avg()`, `ppc_error_scatter_avg()`, etc.) gain a `stat` argument 
+* PPC "avg" functions (`ppc_scatter_avg()`, `ppc_error_scatter_avg()`, etc.) gain a `stat` argument
   to set the averaging function. (Suggestion of #348, @kruschke).
 * `ppc_error_scatter_avg_vs_x(x = some_expression)` labels the x axis with `some_expression`.
 * New quantile dot plot functions `ppc_dots()` and `ppd_dots()` by @behramulukir (#357)
@@ -60,7 +61,7 @@
 
 * Expand checking workflows to more platforms by @andrjohns (#324)
 * Skip tests depending on Suggested dependency rstantools if not installed by @MichaelChirico (#325)
-* Skip tests depending on Suggested dependency gridExtra if not installed by @MichaelChirico (#326) 
+* Skip tests depending on Suggested dependency gridExtra if not installed by @MichaelChirico (#326)
 * Fix missing legends for unobserved levels in rhat and neff plots (#328)
 * Document problems with `ppc_stat` with `stat="mean"` (#329)
 * Ensure rank overlay plot starts at 0 even if not all bins present, thanks @sims1253 (#332)
