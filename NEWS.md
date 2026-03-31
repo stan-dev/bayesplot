@@ -1,6 +1,7 @@
 # bayesplot (development version)
 
 * Added singleton-dimension edge-case tests for exported `_data()` functions.
+* Fixed `is_chain_list()` to correctly reject empty lists instead of silently returning `TRUE`.
 * Added unit tests for `mcmc_areas_ridges_data()`, `mcmc_parcoord_data()`, and `mcmc_trace_data()`.
 * Added unit tests for `ppc_error_data()` and `ppc_loo_pit_data()` covering output structure, argument handling, and edge cases.
 * Added vignette sections demonstrating `*_data()` companion functions for building custom ggplot2 visualizations (#435)

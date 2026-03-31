@@ -156,6 +156,7 @@ test_that("is_chain_list works", {
   expect_true(is_chain_list(chainlist))
   expect_true(is_chain_list(chainlist1))
   expect_true(is_chain_list(chainlist1chain))
+  expect_false(is_chain_list(list()))
 })
 
 test_that("validate_chain_list works", {
