@@ -399,3 +399,10 @@ test_that("ppc_loo_pit_data returns the expected structure for both boundary mod
   expect_equal(nrow(yrep_rows), grid_len * n_samples)
   expect_false(anyNA(d_bc$x))
 })
+
+test_that("ppc_loo_pit_data works with a single pit value", {
+  d <- suppressMessages(ppc_loo_pit_data(pit = 0.5, boundary_correction = FALSE, samples = 3))
+  y_rows <- d[d$is_y, ]
+  expect_equal(nrow(y_rows), 1)
+  expect_equal(y_rows$value, 0.5)
+})
