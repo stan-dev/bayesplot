@@ -2,6 +2,8 @@
 
 ## bayesplot (development version)
 
+- Fixed `is_chain_list()` to correctly reject empty lists instead of
+  silently returning `TRUE`.
 - Added unit tests for
   [`mcmc_areas_ridges_data()`](https://mc-stan.org/bayesplot/dev/reference/MCMC-intervals.md),
   [`mcmc_parcoord_data()`](https://mc-stan.org/bayesplot/dev/reference/MCMC-parcoord.md),
