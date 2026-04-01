@@ -811,14 +811,14 @@ ppc_loo_ribbon <-
   # 1-D Convolution
   bc_pvals <- .linear_convolution(x, bw, grid_counts, grid_breaks, grid_len)
 
+  if (all(is.na(bc_pvals))) {
+    abort("KDE boundary correction produced all NA values.")
+  }
+
   # Generate vector of x-axis values for plotting based on binned relative freqs
   n_breaks <- length(grid_breaks)
 
   xs <- (grid_breaks[2:n_breaks] + grid_breaks[1:(n_breaks - 1)]) / 2
-
-  if (all(is.na(bc_pvals))) {
-    abort("KDE boundary correction produced all NA values.")
-  }
 
   first_nonNA <- utils::head(which(!is.na(bc_pvals)), 1)
   last_nonNA <- utils::tail(which(!is.na(bc_pvals)), 1)
