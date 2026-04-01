@@ -137,6 +137,7 @@ test_that("ppd_stat_data handles single draw and single observation", {
   yrep_1obs <- matrix(rnorm(5), ncol = 1)
   d2 <- ppd_stat_data(yrep_1obs, stat = "mean")
   expect_s3_class(d2, "data.frame")
+  expect_equal(nrow(d2), 5)
 })
 
 
