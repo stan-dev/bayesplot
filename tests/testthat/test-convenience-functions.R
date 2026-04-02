@@ -91,6 +91,24 @@ test_that("facet_bg returns correct theme object", {
   expect_identical(bg2, theme(strip.background = element_rect(fill = "blue", linetype = 2)))
   expect_identical(facet_bg(on = FALSE), theme(strip.background = element_blank()))
 })
+test_that("background helpers are incomplete theme objects", {
+  expect_false(attr(plot_bg(), "complete"))
+  expect_false(attr(panel_bg(), "complete"))
+  expect_false(attr(facet_bg(), "complete"))
+})
+test_that("on = FALSE produces element_blank for background helpers", {
+  expect_s3_class(plot_bg(on = FALSE)$plot.background, "element_blank")
+  expect_s3_class(panel_bg(on = FALSE)$panel.background, "element_blank")
+  expect_s3_class(facet_bg(on = FALSE)$strip.background, "element_blank")
+})
+test_that("background helpers compose with bayesplot plots", {
+  y <- rnorm(100)
+  yrep <- matrix(rnorm(500), nrow = 5)
+  p <- ppc_hist(y, yrep[1:3, ])
+  expect_s3_class(p + plot_bg(fill = "gray90"), "ggplot")
+  expect_s3_class(p + panel_bg(fill = "white"), "ggplot")
+  expect_s3_class(p + facet_bg(fill = "gray80"), "ggplot")
+})
 
 # legend position and text ------------------------------------------------
 test_that("legend_none returns correct theme object", {
@@ -119,6 +137,21 @@ test_that("legend_text returns correct theme object", {
     legend_text(size = 16, color = "purple"),
     theme(legend.text = element_text(color = "purple", size = 16))
   )
+})
+test_that("legend_move('none') behaves like legend_none", {
+  expect_equal(
+    legend_move("none")$legend.position,
+    legend_none()$legend.position,
+    ignore_attr = TRUE
+  )
+})
+test_that("legend helpers compose with bayesplot plots", {
+  y <- rnorm(100)
+  yrep <- matrix(rnorm(500), nrow = 5)
+  p <- ppc_dens_overlay(y, yrep)
+  expect_s3_class(p + legend_move("bottom"), "ggplot")
+  expect_s3_class(p + legend_move(c(0.7, 0.8)), "ggplot")
+  expect_s3_class(p + legend_text(size = 12, color = "blue"), "ggplot")
 })
 
 # axis and facet text --------------------------------------------------
@@ -185,6 +218,30 @@ test_that("overlay_function returns the correct object", {
   b <- stat_function(fun = "dnorm", inherit.aes = FALSE)
   a$constructor <- b$constructor <- NULL
   expect_equal(a, b, ignore_function_env = TRUE)
+})
+test_that("overlay_function returns a layer, not a theme", {
+  layer <- overlay_function(fun = dnorm)
+  expect_s3_class(layer, "LayerInstance")
+  expect_false(inherits(layer, "theme"))
+})
+test_that("overlay_function composes with bayesplot plots", {
+  y <- rnorm(200)
+  yrep <- matrix(rnorm(1000), nrow = 5)
+  p <- ppc_dens(y, yrep)
+  expect_s3_class(p + overlay_function(fun = dnorm), "ggplot")
+})
+
+
+# multiple helpers stack ---------------------------------------------------
+test_that("multiple theme helpers can be stacked on a single plot", {
+  y <- rnorm(100)
+  yrep <- matrix(rnorm(500), nrow = 5)
+  p <- ppc_dens_overlay(y, yrep) +
+    plot_bg(fill = "gray95") +
+    panel_bg(fill = "white") +
+    legend_move("bottom") +
+    legend_text(size = 10)
+  expect_s3_class(p, "ggplot")
 })
 
 

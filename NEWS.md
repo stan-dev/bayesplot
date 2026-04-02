@@ -1,5 +1,6 @@
 # bayesplot (development version)
 
+* Added tests for theme/aesthetic helpers (`plot_bg()`, `panel_bg()`, `facet_bg()`, `legend_move()`, `legend_text()`, `overlay_function()`) verifying return types, error paths, and composition with plots.
 * Fixed `is_chain_list()` to correctly reject empty lists instead of silently returning `TRUE`.
 * Added unit tests for `mcmc_areas_ridges_data()`, `mcmc_parcoord_data()`, and `mcmc_trace_data()`.
 * Added unit tests for `ppc_error_data()` and `ppc_loo_pit_data()` covering output structure, argument handling, and edge cases.
