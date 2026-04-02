@@ -16,3 +16,4 @@ release-prep.R
 
 # vscode/positron/etc settings
 .vscode/*
+Rplots.pdf
