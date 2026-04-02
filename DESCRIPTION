@@ -35,7 +35,7 @@ Imports:
     ggridges (>= 0.5.5),
     glue,
     lifecycle,
-    posterior,
+    posterior (>= 1.7.0),
     reshape2,
     rlang (>= 1.0.0),
     stats,
