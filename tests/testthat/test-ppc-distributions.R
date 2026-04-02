@@ -173,6 +173,97 @@ test_that("ppc_violin_grouped returns a ggplot object", {
   expect_gg(ppc_violin_grouped(y, yrep, group, y_draw = "both", y_jitter = 0.3))
 })
 
+# ppc_data / ppd_data tests -----------------------------------------------
+
+test_that("ppc_data returns the correct structure", {
+  y_small <- c(10, 20)
+  yrep_small <- rbind(c(11, 21), c(12, 22))
+
+  d <- ppc_data(y_small, yrep_small)
+
+  expect_s3_class(d, "data.frame")
+  expect_named(d, c("y_id", "y_name", "rep_id", "rep_label",
+                    "is_y", "is_y_label", "value"))
+  expect_equal(nrow(d), length(y_small) * (nrow(yrep_small) + 1))
+  expect_equal(d$y_id, c(1L, 1L, 2L, 2L, 1L, 2L))
+  expect_equal(as.character(d$y_name), c("1", "1", "2", "2", "1", "2"))
+  expect_equal(d$rep_id, c(1L, 2L, 1L, 2L, NA, NA))
+  expect_equal(d$is_y, c(FALSE, FALSE, FALSE, FALSE, TRUE, TRUE))
+  expect_equal(d$value, c(11, 12, 21, 22, 10, 20))
+  expect_equal(d$value[d$is_y], y_small)
+
+  first_level <- levels(d$rep_label)[1]
+  expect_true(all(as.character(d$rep_label[d$is_y]) == first_level))
+  expect_true(all(as.character(d$rep_label[!d$is_y]) != first_level))
+})
+
+test_that("ppc_data carries group through correctly", {
+  y_small <- c(10, 20)
+  yrep_small <- rbind(c(11, 21), c(12, 22))
+  group_small <- factor(c("a", "b"))
+
+  d <- ppc_data(y_small, yrep_small, group = group_small)
+
+  expect_named(d, c("group", "y_id", "y_name", "rep_id", "rep_label",
+                    "is_y", "is_y_label", "value"))
+  expect_equal(as.character(d$group), c("a", "a", "b", "b", "a", "b"))
+  expect_equal(as.character(d$group[d$is_y]), as.character(group_small))
+})
+
+test_that("ppc_data handles a single replicate matrix", {
+  y_small <- c(10, 20)
+  yrep_small <- matrix(c(11, 21), nrow = 1)
+
+  d <- ppc_data(y_small, yrep_small)
+
+  expect_equal(sum(!d$is_y), length(y_small))
+  expect_equal(d$rep_id[!d$is_y], c(1L, 1L))
+  expect_equal(d$value[!d$is_y], c(11, 21))
+})
+
+test_that("ppd_data returns the correct structure", {
+  yrep_small <- rbind(c(11, 21), c(12, 22))
+
+  d <- ppd_data(yrep_small)
+
+  expect_s3_class(d, "data.frame")
+  expect_named(d, c("y_id", "y_name", "rep_id", "rep_label", "value"))
+  expect_equal(nrow(d), nrow(yrep_small) * ncol(yrep_small))
+  expect_equal(d$y_id, c(1L, 1L, 2L, 2L))
+  expect_equal(as.character(d$y_name), c("1", "1", "2", "2"))
+  expect_equal(d$rep_id, c(1L, 2L, 1L, 2L))
+  expect_equal(d$value, c(11, 12, 21, 22))
+  expect_true(all(grepl("pred", levels(d$rep_label), fixed = TRUE)))
+})
+
+test_that("ppd_data carries group through correctly", {
+  yrep_small <- rbind(c(11, 21), c(12, 22))
+  group_small <- factor(c("a", "b"))
+
+  d <- ppd_data(yrep_small, group = group_small)
+
+  expect_named(d, c("group", "y_id", "y_name", "rep_id", "rep_label", "value"))
+  expect_equal(as.character(d$group), c("a", "a", "b", "b"))
+})
+
+test_that("ppd_data carries observation names through to y_name", {
+  yrep_named <- rbind(c(11, 21), c(12, 22))
+  colnames(yrep_named) <- c("obs_a", "obs_b")
+
+  d <- ppd_data(yrep_named)
+
+  expect_equal(as.character(d$y_name), c("obs_a", "obs_a", "obs_b", "obs_b"))
+})
+
+test_that("ppd_data handles a single replicate matrix", {
+  yrep_small <- matrix(c(11, 21), nrow = 1)
+
+  d <- ppd_data(yrep_small)
+
+  expect_equal(nrow(d), ncol(yrep_small))
+  expect_equal(d$rep_id, c(1L, 1L))
+  expect_equal(d$value, c(11, 21))
+})
 
 
 # Visual tests -----------------------------------------------------------------
