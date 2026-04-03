@@ -217,14 +217,13 @@ test_that(".psis_subset output structure matches valid psis object", {
   skip_if_not_installed("loo")
 
   subset_idx <- 1:10
+  orig_dims <- dim(psis1)
   result <- .psis_subset(psis1, subset_idx)
 
   # class preserved
-
   expect_s3_class(result, "psis")
 
   # log_weights columns match subset length, rows unchanged
-  orig_dims <- dim(psis1)
   expect_equal(ncol(result$log_weights), length(subset_idx))
   expect_equal(nrow(result$log_weights), orig_dims[1])
 
