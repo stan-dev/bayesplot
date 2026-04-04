@@ -100,7 +100,44 @@ test_that("mcmc_trace 'np' argument works", {
                  "No divergences to plot.")
 })
 
+# mcmc_trace_data ----------------------------------------------------
 
+test_that("mcmc_trace_data returns plotting data with expected columns", {
+  d <- mcmc_trace_data(arr, pars = "beta[1]")
+  expect_s3_class(d, "tbl_df")
+  expect_named(
+    d,
+    c(
+      "parameter", "value", "value_rank", "iteration", "chain",
+      "n_chains", "n_iterations", "n_parameters", "highlight", "warmup"
+    )
+  )
+  expect_equal(nrow(d), dim(arr)[1] * dim(arr)[2])
+})
+
+test_that("mcmc_trace_data highlight argument works", {
+  d <- mcmc_trace_data(arr, pars = "beta[1]", highlight = 2)
+  expect_true(all(d$highlight[d$chain == 2]))
+  expect_true(all(!d$highlight[d$chain != 2]))
+})
+
+test_that("mcmc_trace_data warmup labeling works", {
+  d <- mcmc_trace_data(arr, pars = "beta[1]", n_warmup = 20)
+  expect_true(all(d$warmup[d$iteration <= 20]))
+  expect_true(all(!d$warmup[d$iteration > 20]))
+})
+
+test_that("mcmc_trace_data iter1 shifts iterations", {
+  d <- mcmc_trace_data(arr, pars = "beta[1]", iter1 = 100)
+  expect_true(min(d$iteration) == 101)
+})
+
+test_that("mcmc_trace_data computes value_rank within each parameter", {
+  d <- mcmc_trace_data(arr, pars = c("beta[1]", "beta[2]"))
+  observed_ranks <- split(d$value_rank, d$parameter)
+  expected_ranks <- lapply(split(d$value, d$parameter), rank, ties.method = "average")
+  expect_equal(observed_ranks, expected_ranks)
+})
 
 
 # Visual tests -----------------------------------------------------------------
