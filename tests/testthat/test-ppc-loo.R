@@ -611,7 +611,7 @@ testthat::test_that("ppc_loo_pit_ecdf takes correct PIT computation branch", {
     which(sapply(as.list(body(ppc_loo_pit_ecdf)), function(e) {
       is.call(e) && deparse(e[[1]]) == "if" &&
         grepl("pareto_pit", deparse(e[[2]]))
-    }))
+    }))[1]
   ]] <- quote({
 
     if (isTRUE(pareto_pit) && is.null(pit)) {
