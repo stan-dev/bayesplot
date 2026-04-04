@@ -550,7 +550,6 @@ ppc_loo_pit_ecdf <- function(y,
     lw <- .get_lw(lw, psis_object)
     stopifnot(identical(dim(yrep), dim(lw)))
 
-    # TODO: posterior::pareto_pit() from https://github.com/stan-dev/posterior/pull/435 - requires that PR merged
     pit <- posterior::pareto_pit(x = yrep, y = y, weights = lw, log = TRUE)
     K   <- K %||% length(pit)
 
@@ -601,7 +600,6 @@ ppc_loo_pit_ecdf <- function(y,
 
     # Compute the per-observation test statistics (sorted for Shapley values)
     # and the combined Cauchy p-value.
-    # TODO: posterior::uniformity_test() from https://github.com/stan-dev/posterior/pull/435 - requires that PR merged
     test_res <- posterior::uniformity_test(pit = pit, test = test)
     p_value_CCT <- test_res$pvalue
     pointwise_contrib <- test_res$pointwise

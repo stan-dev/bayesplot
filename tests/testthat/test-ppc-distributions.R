@@ -114,11 +114,23 @@ test_that("ppc_pit_ecdf, ppc_pit_ecdf_grouped returns a ggplot object", {
   expect_gg(ppc_pit_ecdf(y, yrep, method = "correlated", plot_diff = TRUE))
   expect_gg(ppc_pit_ecdf(y, yrep, method = "correlated", test = "PRIT"))
   expect_gg(ppc_pit_ecdf(y, yrep, method = "correlated", test = "PIET"))
+  expect_gg(ppc_pit_ecdf_grouped(y, yrep, group = group, method = "correlated"))
+  expect_gg(ppc_pit_ecdf_grouped(y, yrep, group = group, method = "correlated", plot_diff = TRUE))
+  expect_gg(ppc_pit_ecdf_grouped(y, yrep, group = group, method = "correlated", test = "PRIT"))
+  expect_gg(ppc_pit_ecdf_grouped(y, yrep, group = group, method = "correlated", test = "PIET"))
 
-  # Specify 'pit' directly
+  # Specify 'pit' directly (with y/yrep still supplied)
   expect_message(
-    ppc_pit_ecdf_grouped(pit = runif(length(group)), group = group, interpolate_adj = FALSE),
+    ppc_pit_ecdf_grouped(
+      y = y, yrep = yrep, pit = runif(length(group)),
+      group = group, interpolate_adj = FALSE
+    ),
     "'pit' specified"
+  )
+
+  # No y/yrep provided with pit -> no ignored-input message
+  expect_no_message(
+    ppc_pit_ecdf_grouped(pit = runif(length(group)), group = group, interpolate_adj = FALSE)
   )
 })
 
@@ -153,6 +165,47 @@ test_that("ppc_pit_ecdf method validation and ignored-argument warnings", {
 test_that("ppc_pit_ecdf correlated method validates gamma", {
   expect_error(
     ppc_pit_ecdf(y, yrep, method = "correlated", gamma = -1),
+    regexp = "gamma must be in"
+  )
+})
+
+test_that("ppc_pit_ecdf_grouped method validation and ignored-argument warnings", {
+  # Invalid method
+  expect_error(ppc_pit_ecdf_grouped(y, yrep, group = group, method = "bogus"))
+
+  # method = "correlated" warns about interpolate_adj
+  expect_message(
+    ppc_pit_ecdf_grouped(
+      y, yrep, group = group, method = "correlated", interpolate_adj = TRUE
+    ),
+    "ignoring.*interpolate_adj"
+  )
+
+  # method = "independent" warns about correlated-only args
+  expect_message(
+    ppc_pit_ecdf_grouped(
+      y, yrep, group = group, method = "independent",
+      test = "POT", interpolate_adj = FALSE
+    ),
+    "ignoring.*test"
+  )
+  expect_message(
+    ppc_pit_ecdf_grouped(
+      y, yrep, group = group, method = "independent",
+      test = "POT", gamma = 0.5, interpolate_adj = FALSE
+    ),
+    "ignoring.*test, gamma"
+  )
+
+  # Invalid test type for correlated
+  expect_error(
+    ppc_pit_ecdf_grouped(y, yrep, group = group, method = "correlated", test = "INVALID")
+  )
+})
+
+test_that("ppc_pit_ecdf_grouped correlated method validates gamma", {
+  expect_error(
+    ppc_pit_ecdf_grouped(y, yrep, group = group, method = "correlated", gamma = -1),
     regexp = "gamma must be in"
   )
 })
@@ -479,6 +532,14 @@ test_that("ppc_pit_ecdf, ppc_pit_ecdf_grouped renders correctly", {
 
   p_corr_piet <- ppc_pit_ecdf(y, yrep, method = "correlated", test = "PIET")
   vdiffr::expect_doppelganger("ppc_pit_ecdf (correlated PIET)", p_corr_piet)
+
+  g_corr <- ppc_pit_ecdf_grouped(y, yrep, group = group, method = "correlated")
+  vdiffr::expect_doppelganger("ppc_pit_ecdf_grouped (correlated)", g_corr)
+
+  g_corr_diff <- ppc_pit_ecdf_grouped(
+    y, yrep, group = group, method = "correlated", plot_diff = TRUE
+  )
+  vdiffr::expect_doppelganger("ppc_pit_ecdf_grouped (correlated diff)", g_corr_diff)
 })
 
 test_that("ppc_pit_ecdf with method correlated renders different tests correctly", {

@@ -235,7 +235,9 @@ defining whether to add informative text to the plot. Defaults to \code{TRUE}.}
 \item{pareto_pit}{For \code{ppc_loo_pit_ecdf()}. Computes PIT values using Pareto-PIT method.
 Defaults to \code{TRUE} if \code{test} is either \code{"POT"} or \code{"PIET"} and no \code{pit} values are
 provided otherwise \code{FALSE}. This argument should not normally be modified by the user,
-except for development purposes.}
+except for development purposes. When \code{TRUE}, this calls \code{posterior::pareto_pit()}, which is
+proposed in \url{https://github.com/stan-dev/posterior/pull/435}. This code path requires
+that PR to be merged and released in the posterior package.}
 
 \item{subset}{For \code{ppc_loo_intervals()} and \code{ppc_loo_ribbon()}, an optional
 integer vector indicating which observations in \code{y} (and \code{yrep}) to
