@@ -729,8 +729,9 @@ testthat::test_that("ppc_pit_ecdf takes correct PIT computation branch", {
     # Replace the PIT computation block (the large if/else if/else)
     # with a version that emits diagnostics
     which(sapply(as.list(body(ppc_pit_ecdf)), function(e) {
-      is.call(e) && deparse(e[[1]]) == "if" &&
-        grepl("pareto_pit", deparse(e[[2]]))
+      if (!is.call(e)) return(FALSE)
+      identical(e[[1]], as.name("if")) &&
+        grepl("pareto_pit", paste(deparse(e[[2]]), collapse = " "))
     }))[1]
   ]] <- quote({
 
