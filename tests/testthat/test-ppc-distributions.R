@@ -883,6 +883,7 @@ testthat::test_that("ppc_pit_ecdf takes correct PIT computation branch", {
 })
 
 test_that("ppc_pit_ecdf works with pareto_pit method", {
+  skip_on_cran()
   skip_if_not_installed("brms")
   skip_if_not_installed("rstanarm")
 

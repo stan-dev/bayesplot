@@ -304,6 +304,7 @@ test_that("error if subset is bigger than num obs", {
 })
 
 test_that("ppc_loo_pit_ecdf works with pareto_pit method", {
+  skip_on_cran()
   skip_if_not_installed("brms")
   skip_if_not_installed("rstanarm")
 
@@ -334,11 +335,6 @@ test_that("ppc_loo_pit_ecdf works with pareto_pit method", {
   expect_gg(brms::pp_check(
     fit_zinb, type = "loo_pit_ecdf", moment_match = TRUE, method = "correlated"
   ))
-  # prit -> pareto_pit should not be default (doesn't matter whether y, yrep, pit is provided)
-  # y, yrep + pot, piet -> pareto_pit
-  # pit -> no additional pareto_pit
-  # add in the docs that the pareto_pit on/off should usually not be touched by the user. Default is okay
-  # secondary step: ppcheck in brms -> cdf based pit
 })
 
 
