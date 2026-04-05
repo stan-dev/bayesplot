@@ -128,9 +128,11 @@ test_that("ppc_pit_ecdf, ppc_pit_ecdf_grouped returns a ggplot object", {
     "'pit' specified"
   )
 
-  # No y/yrep provided with pit -> no ignored-input message
-  expect_no_message(
-    ppc_pit_ecdf_grouped(pit = runif(length(group)), group = group, interpolate_adj = FALSE)
+  # No y/yrep provided with pit -> no ignored-input message but "independent" method message
+  expect_message(
+    ppc_pit_ecdf_grouped(pit = runif(length(group)), group = group,
+    method = "independent", interpolate_adj = FALSE),
+    "The 'independent' method is superseded by the 'correlated' method."
   )
 })
 
