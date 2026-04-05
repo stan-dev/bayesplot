@@ -132,7 +132,7 @@ ppc_pit_ecdf(
   prob = 0.99,
   plot_diff = FALSE,
   interpolate_adj = NULL,
-  method = "independent",
+  method = NULL,
   test = NULL,
   gamma = NULL,
   linewidth = NULL,
@@ -151,7 +151,7 @@ ppc_pit_ecdf_grouped(
   prob = 0.99,
   plot_diff = FALSE,
   interpolate_adj = NULL,
-  method = "independent",
+  method = NULL,
   test = NULL,
   gamma = NULL,
   linewidth = NULL,
@@ -295,14 +295,11 @@ the main ECDF line, the second for highlighted suspicious regions.}
 text to the plot. Defaults to \code{TRUE}.}
 
 \item{pareto_pit}{For \code{ppc_pit_ecdf()} and \code{ppc_pit_ecdf_grouped()}, a
-boolean defining whether to compute
-the PIT values using Pareto-smoothed importance sampling (if \code{TRUE} and no pit values are provided).
+boolean defining whether to compute the PIT values using Pareto-smoothed
+importance sampling (if \code{TRUE} and no pit values are provided).
 Defaults to \code{TRUE} when \code{method = "correlated"} and \code{test} is \code{"POT"} or \code{"PIET"}.
 Otherwise defaults to \code{FALSE}. If \code{TRUE} requires the specification of \code{lw} or \code{psis_object}.
-The defaults should not be changed by the user, but the option is provided for developers.
-When \code{TRUE}, this calls \code{posterior::pareto_pit()}, which is proposed in
-\url{https://github.com/stan-dev/posterior/pull/435}. This code path requires that PR to be merged
-and released in the posterior package.}
+The defaults should not be changed by the user, but the option is provided for developers.}
 }
 \value{
 The plotting functions return a ggplot object that can be further

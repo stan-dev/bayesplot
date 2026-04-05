@@ -431,10 +431,8 @@ ppc_loo_pit_qq <- function(y,
 #'   defining whether to add informative text to the plot. Defaults to `TRUE`.
 #' @param pareto_pit For `ppc_loo_pit_ecdf()`. Computes PIT values using Pareto-PIT method. 
 #'   Defaults to `TRUE` if `test` is either `"POT"` or `"PIET"` and no `pit` values are 
-#'   provided otherwise `FALSE`. This argument should not normally be modified by the user, 
-#'   except for development purposes. When `TRUE`, this calls `posterior::pareto_pit()`, which is
-#'   proposed in \url{https://github.com/stan-dev/posterior/pull/435}. This code path requires
-#'   that PR to be merged and released in the posterior package.
+#'   provided otherwise `FALSE`. This argument should normally not be modified by the user, 
+#'   except for development purposes.
 #' @note
 #' Note that the default "independent" method is **superseded** by
 #' the "correlated" method (Tesso & Vehtari, 2026) which accounts for dependent

@@ -690,14 +690,11 @@ ppc_violin_grouped <-
 #'   `method = "correlated"`, a boolean defining whether to add informative
 #'   text to the plot. Defaults to `TRUE`.
 #' @param pareto_pit For `ppc_pit_ecdf()` and `ppc_pit_ecdf_grouped()`, a
-#'   boolean defining whether to compute
-#'   the PIT values using Pareto-smoothed importance sampling (if `TRUE` and no pit values are provided). 
+#'   boolean defining whether to compute the PIT values using Pareto-smoothed 
+#'   importance sampling (if `TRUE` and no pit values are provided). 
 #'   Defaults to `TRUE` when `method = "correlated"` and `test` is `"POT"` or `"PIET"`.
 #'   Otherwise defaults to `FALSE`. If `TRUE` requires the specification of `lw` or `psis_object`.
 #'   The defaults should not be changed by the user, but the option is provided for developers.
-#'   When `TRUE`, this calls `posterior::pareto_pit()`, which is proposed in
-#'   \url{https://github.com/stan-dev/posterior/pull/435}. This code path requires that PR to be merged
-#'   and released in the posterior package.
 #' @rdname PPC-distributions
 #'
 ppc_pit_ecdf <- function(y,
