@@ -2,6 +2,9 @@
 
 ## bayesplot (development version)
 
+- Replace [`apply()`](https://rdrr.io/r/base/apply.html) with
+  [`storage.mode()`](https://rdrr.io/r/base/mode.html) for
+  integer-to-numeric matrix conversion in `validate_predictions()`.
 - Fixed `is_chain_list()` to correctly reject empty lists instead of
   silently returning `TRUE`.
 - Added unit tests for

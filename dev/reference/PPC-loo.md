@@ -124,11 +124,10 @@ ppc_loo_ribbon(
 - lw:
 
   A matrix of (smoothed) log weights with the same dimensions as `yrep`.
-  See [`loo::psis()`](https://mc-stan.org/loo/reference/psis.html) and
-  the associated [`weights()`](https://rdrr.io/r/stats/weights.html)
-  method as well as the **Examples** section, below. If `lw` is not
-  specified then `psis_object` can be provided and log weights will be
-  extracted.
+  See [`loo::psis()`](https://rdrr.io/pkg/loo/man/psis.html) and the
+  associated [`weights()`](https://rdrr.io/r/stats/weights.html) method
+  as well as the **Examples** section, below. If `lw` is not specified
+  then `psis_object` can be provided and log weights will be extracted.
 
 - ...:
 
@@ -137,9 +136,9 @@ ppc_loo_ribbon(
 - psis_object:
 
   If using **loo** version `2.0.0` or greater, an object returned by the
-  [`psis()`](https://mc-stan.org/loo/reference/psis.html) function (or
-  by the [`loo()`](https://mc-stan.org/loo/reference/loo.html) function
-  with argument `save_psis` set to `TRUE`).
+  [`psis()`](https://rdrr.io/pkg/loo/man/psis.html) function (or by the
+  [`loo()`](https://rdrr.io/pkg/loo/man/loo.html) function with argument
+  `save_psis` set to `TRUE`).
 
 - pit:
 
@@ -422,8 +421,8 @@ lw <- weights(psis1) # normalized log weights
 color_scheme_set("orange")
 ppc_loo_pit_overlay(y, yrep, lw = lw)
 #> Some PIT values larger than 1! Largest:  1 
-#> Rounding PIT > 1 to 1. Gradient evaluation took 0.000328 seconds
-#> Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 3.28 seconds.
+#> Rounding PIT > 1 to 1. Gradient evaluation took 0.000406 seconds
+#> Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 4.06 seconds.
 #> Chain 2: Adjust your expectations accordingly!
 #> Chain 2: 
 #> Chain 2: 
@@ -435,6 +434,21 @@ ppc_loo_pit_overlay(y, yrep, lw = lw)
 #> Chain 2:            adapt_window = 38
 #> Chain 2:            term_buffer = 5
 #> Chain 2: 
+#> Chain 1: 
+#> Chain 1: Gradient evaluation took 0.000519 seconds
+#> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 5.19 seconds.
+#> Chain 1: Adjust your expectations accordingly!
+#> Chain 1: 
+#> Chain 1: 
+#> Chain 1: WARNING: There aren't enough warmup iterations to fit the
+#> Chain 1:          three stages of adaptation as currently configured.
+#> Chain 1:          Reducing each adaptation stage to 15%/75%/10% of
+#> Chain 1:          the given number of warmup iterations:
+#> Chain 1:            init_buffer = 7
+#> Chain 1:            adapt_window = 38
+#> Chain 1:            term_buffer = 5
+#> Chain 1: 
+#> Chain 1: Iteration:  1 / 100 [  1%]  (Warmup)
 #> Chain 2: Iteration:  1 / 100 [  1%]  (Warmup)
 #> Chain 2: Iteration: 10 / 100 [ 10%]  (Warmup)
 #> Chain 1: Iteration: 10 / 100 [ 10%]  (Warmup)
@@ -458,15 +472,15 @@ ppc_loo_pit_overlay(y, yrep, lw = lw)
 #> Chain 1: Iteration: 90 / 100 [ 90%]  (Sampling)
 #> Chain 2: Iteration: 100 / 100 [100%]  (Sampling)
 #> Chain 2: 
-#> Chain 2:  Elapsed Time: 2.69 seconds (Warm-up)
-#> Chain 2:                2.467 seconds (Sampling)
+#> Chain 2:  Elapsed Time: 2.694 seconds (Warm-up)
+#> Chain 2:                2.463 seconds (Sampling)
 #> Chain 2:                5.157 seconds (Total)
 #> Chain 2: 
 #> Chain 1: Iteration: 100 / 100 [100%]  (Sampling)
 #> Chain 1: 
-#> Chain 1:  Elapsed Time: 2.814 seconds (Warm-up)
-#> Chain 1:                2.485 seconds (Sampling)
-#> Chain 1:                5.299 seconds (Total)
+#> Chain 1:  Elapsed Time: 2.828 seconds (Warm-up)
+#> Chain 1:                2.495 seconds (Sampling)
+#> Chain 1:                5.323 seconds (Total)
 #> Chain 1: 
 #> Warning: 
 #> NOTE: The kernel density estimate assumes continuous observations and is not optimal for discrete observations.
