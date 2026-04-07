@@ -7,7 +7,7 @@ output:
     toc: true
     toc_depth: 3
 params:
-  EVAL: true
+  EVAL: !r identical(Sys.getenv("NOT_CRAN"), "true")
 vignette: >
   %\VignetteIndexEntry{Model checking using ppc_pit_ecdf() and ppc_loo_pit_ecdf()}
   %\VignetteEngine{knitr::rmarkdown}
@@ -15,7 +15,6 @@ vignette: >
 ---
 
 ```{r, child="children/SETTINGS-knitr.txt"}
-# !r identical(Sys.getenv("NOT_CRAN"), "true")
 ```
 
 ```{r setup, include=FALSE}
