@@ -104,7 +104,7 @@ test_that("ppc_loo_pit_ecdf returns a ggplot object", {
   } else {
     ll1 <- p1$labels
   }
-  expect_equal(ll1$x, "PIT")
+  expect_equal(ll1$x, "LOO-PIT")
   expect_equal(ll1$y, "ECDF")
   expect_equal(p1$data, p2$data)
   expect_gg(p3 <- ppc_loo_pit_ecdf(y, yrep, lw, plot_diff = TRUE))
