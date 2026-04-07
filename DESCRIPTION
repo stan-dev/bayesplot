@@ -61,6 +61,7 @@ Suggests:
     survival,
     testthat (>= 3.0.0),
     vdiffr (>= 1.0.2)
+    patchwork (>= 1.0.0)
 RoxygenNote: 7.3.3
 VignetteBuilder: knitr
 Encoding: UTF-8
