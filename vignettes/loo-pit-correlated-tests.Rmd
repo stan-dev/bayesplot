@@ -99,7 +99,6 @@ plot_scenarios <- function(
     xlim(c(xlim[1], xlim[2])) +
     yaxis_ticks(FALSE) +
     xlab("y / yrep") +
-    scale_color_ppc() +
     bayesplot_theme_get() +
     theme(
       legend.position = "top",
