@@ -145,8 +145,16 @@ nuts_params.stanreg <-
 #' @export
 #' @method nuts_params list
 nuts_params.list <- function(object, pars = NULL, ...) {
+  if (length(object) == 0) {
+    abort("'object' must be a non-empty list.")
+  }
+
   if (!all(sapply(object, is.matrix))) {
     abort("All list elements should be matrices.")
+  }
+
+  if (nrow(object[[1]]) == 0) {
+    abort("All matrices in the list must have at least one row.")
   }
 
   dd <- lapply(object, dim)
