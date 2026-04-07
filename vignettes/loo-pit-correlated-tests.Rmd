@@ -17,14 +17,25 @@ vignette: >
 ```{r, child="children/SETTINGS-knitr.txt"}
 ```
 
-```{r setup, include=FALSE}
-set.seed(2026)
-#library(bayesplot)
-devtools::load_all()
+```{r pkgs, include=FALSE}
 library(ggplot2)
 library(patchwork)
 library(loo)
+library(brms)
+
 bayesplot_theme_set()
+
+set.seed(2026)
+```
+
+```{r, eval=FALSE}
+library(bayesplot)
+library(ggplot2)
+library(patchwork)
+library(loo)
+library(brms)
+
+set.seed(2026)
 ```
 
 ## Introduction
