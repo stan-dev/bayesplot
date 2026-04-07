@@ -153,7 +153,7 @@ nuts_params.list <- function(object, pars = NULL, ...) {
     abort("All list elements should be matrices.")
   }
 
-  if (nrow(object[[1]]) == 0) {
+  if (any(vapply(object, nrow, integer(1)) == 0)) {
     abort("All matrices in the list must have at least one row.")
   }
 

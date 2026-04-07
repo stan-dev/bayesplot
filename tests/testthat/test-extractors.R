@@ -22,6 +22,9 @@ test_that("nuts_params.list throws errors", {
 
   zero_row <- list(cbind(a = numeric(0), b = numeric(0)))
   expect_error(nuts_params.list(zero_row), "at least one row")
+
+  zero_row_nonfirst <- list(cbind(a = 1:3, b = rnorm(3)), cbind(a = numeric(0), b = numeric(0)))
+  expect_error(nuts_params.list(zero_row_nonfirst), "at least one row")
 })
 
 test_that("nuts_params.list works with single-chain list", {
