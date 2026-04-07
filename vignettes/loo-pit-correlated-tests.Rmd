@@ -121,10 +121,10 @@ plot_scenarios <- function(
 We begin by simulating a well-calibrated scenario where the predictive distribution (`ypred`) closely matches the data-generating process (`y`). In this case, the PIT values should be approximately uniform, and the ECDF should closely follow the identity (diagonal) line.
 
 $$
-\begin{align*}
+\begin{aligned}
 y &\sim \text{Normal}(0, 1) \\
 y_{rep} &\sim \text{Student}_{\nu = 100}(0, 1) \quad (\approx \text{Normal}(0, 1))
-\end{align*}
+\end{aligned}
 $$
 ```{r calibrated, fig.width=7, fig.height=3, fig.asp=NULL, out.width="80%", fig.align="center", warning=FALSE, message=FALSE}
 plot_scenarios(df = 100, ncp = 0)
@@ -134,10 +134,10 @@ plot_scenarios(df = 100, ncp = 0)
 When the predictive distribution is too wide, the model overestimates the probability mass in the tails. As a result, observed values tend to fall near the *centre* of the predictive distribution more often than expected. This leads to an `S`-shaped ECDF curve that typically falls below the diagonal line in the lower tail and rises above it in the upper tail.
 
 $$
-\begin{align*}
+\begin{aligned}
 y &\sim \text{Normal}(0, 1) \\
 y_{rep} &\sim \text{Student}_{\nu = 1}(0, 1) \quad (= \text{Cauchy}(0, 1))
-\end{align*}
+\end{aligned}
 $$
 
 ```{r too-wide, fig.width=7, fig.height=3, fig.asp=NULL, out.width="80%", fig.align="center", warning=FALSE, message=FALSE}
@@ -148,10 +148,10 @@ plot_scenarios(df = 1, ncp = 0, xlim = c(-7, 7))
 When the predictive distribution is too narrow, the model underestimates the potential for extreme values, causing observations to fall frequently in the tails. This results in a reverse `S`-shaped ECDF curve that typically lies above the diagonal line in the lower tail and below it in the upper tail.
 
 $$
-\begin{align*}
+\begin{aligned}
 y &\sim \text{Normal}(0, 0.5) \\
 y_{rep} &\sim \text{Student}_{\nu = 100}(0, 1) \quad (\approx \text{Normal}(0, 1))
-\end{align*}
+\end{aligned}
 $$
 
 ```{r too-narrow, fig.width=7, fig.height=3, fig.asp=NULL, out.width="80%", fig.align="center", warning=FALSE, message=FALSE}
@@ -165,10 +165,10 @@ When the model's predictions are systematically shifted relative to the data, ob
 + Overestimation (Negative Bias): If the model predicts values that are systematically too high, the PIT values will cluster near 0. The ECDF curve will stay above the diagonal line.
 
 $$
-\begin{align*}
+\begin{aligned}
 y &\sim \text{Normal}(1, 1) \\
 y_{rep} &\sim \text{Student}_{\nu = 100}(0, 1) \quad (\approx \text{Normal}(0, 1))
-\end{align*}
+\end{aligned}
 $$
 
 ```{r biased, fig.width=7, fig.height=3, fig.asp=NULL, out.width="80%", fig.align="center", warning=FALSE, message=FALSE}
@@ -424,7 +424,7 @@ When `pareto_pit = TRUE`, `ppc_loo_pit_ecdf()` requires LOO importance weights t
 |---|---|---|---|
 | `method` | all three | `"independent"`, `"correlated"` | `NULL` → falls back to `"independent"` with a deprecation notice |
 | `test` | all three | `"POT"`, `"PRIT"`, `"PIET"` | `"POT"` |
-| `gamma` | all three | numeric ≥ 0 | `0` |
+| `gamma` | all three | numeric $\ge 0$ | `0` |
 | `linewidth` | all three | numeric | `0.3` |
 | `color` | all three | named character vector | `c(ecdf = "grey60", highlight = "red")` |
 | `help_text` | all three | `TRUE`, `FALSE` | `TRUE` |
