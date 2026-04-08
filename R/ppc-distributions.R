@@ -41,11 +41,10 @@
 #'   }
 #'   \item{`ppc_ecdf_overlay()`, `ppc_dens_overlay()`,
 #'          `ppc_ecdf_overlay_grouped()`, `ppc_dens_overlay_grouped()`}{
-#'    Kernel density or empirical CDF estimates of each dataset (row) in
-#'    `yrep` are overlaid, with the distribution of `y` itself on top
-#'    (and in a darker shade). `ppc_ecdf_overlay()` uses step functions,
-#'    consistent with the mathematical definition of the ECDF.
-#'    For an example of `ppc_dens_overlay()` also see Gabry et al. (2019).
+#'    Kernel density or empirical CDF estimates of each dataset (row) in `yrep`
+#'    are overlaid, with the distribution of `y` itself on top (and in a darker
+#'    shade). For an example of `ppc_dens_overlay()` also see Gabry et al.
+#'    (2019).
 #'   }
 #'   \item{`ppc_violin_grouped()`}{
 #'    The density estimate of `yrep` within each level of a grouping
@@ -85,7 +84,7 @@
 #'
 #' ppc_dens_overlay(y, yrep[1:25, ])
 #' \donttest{
-#' # ppc_ecdf_overlay (always uses step functions)
+#' # ppc_ecdf_overlay
 #' ppc_ecdf_overlay(y, yrep[sample(nrow(yrep), 25), ])
 #'
 #' # PIT-ECDF and PIT-ECDF difference plot of the PIT values of y compared to
@@ -258,10 +257,9 @@ ppc_dens_overlay_grouped <- function(y,
 
 #' @export
 #' @rdname PPC-distributions
-#' @param discrete
-#'   `r lifecycle::badge("deprecated")` The `discrete` argument is
-#'   deprecated. The ECDF is a step function by definition, so `geom_step()`
-#'   is now always used.
+#' @param discrete `r lifecycle::badge("deprecated")` The `discrete` argument is
+#'   deprecated. The ECDF is a step function by definition, so `geom_step()` is
+#'   now always used.
 #' @param pad A logical scalar passed to [ggplot2::stat_ecdf()].
 #'
 ppc_ecdf_overlay <- function(y,

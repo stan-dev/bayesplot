@@ -175,8 +175,8 @@ default kernel density estimation parameters or truncate the density
 support. \code{n_dens} defaults to \code{1024}.}
 
 \item{discrete}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} The \code{discrete} argument is
-deprecated. The ECDF is a step function by definition, so \code{geom_step()}
-is now always used.}
+deprecated. The ECDF is a step function by definition, so \code{geom_step()} is
+now always used.}
 
 \item{pad}{A logical scalar passed to \code{\link[ggplot2:stat_ecdf]{ggplot2::stat_ecdf()}}.}
 
@@ -282,11 +282,10 @@ variable for \code{y} and each dataset (row) in \code{yrep}. For this plot
 }
 \item{\code{ppc_ecdf_overlay()}, \code{ppc_dens_overlay()},
 \code{ppc_ecdf_overlay_grouped()}, \code{ppc_dens_overlay_grouped()}}{
-Kernel density or empirical CDF estimates of each dataset (row) in
-\code{yrep} are overlaid, with the distribution of \code{y} itself on top
-(and in a darker shade). \code{ppc_ecdf_overlay()} uses step functions,
-consistent with the mathematical definition of the ECDF.
-For an example of \code{ppc_dens_overlay()} also see Gabry et al. (2019).
+Kernel density or empirical CDF estimates of each dataset (row) in \code{yrep}
+are overlaid, with the distribution of \code{y} itself on top (and in a darker
+shade). For an example of \code{ppc_dens_overlay()} also see Gabry et al.
+(2019).
 }
 \item{\code{ppc_violin_grouped()}}{
 The density estimate of \code{yrep} within each level of a grouping
@@ -322,7 +321,7 @@ dim(yrep)
 
 ppc_dens_overlay(y, yrep[1:25, ])
 \donttest{
-# ppc_ecdf_overlay (always uses step functions)
+# ppc_ecdf_overlay
 ppc_ecdf_overlay(y, yrep[sample(nrow(yrep), 25), ])
 
 # PIT-ECDF and PIT-ECDF difference plot of the PIT values of y compared to

@@ -90,8 +90,8 @@ default kernel density estimation parameters or truncate the density
 support. \code{n_dens} defaults to \code{1024}.}
 
 \item{discrete}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} The \code{discrete} argument is
-deprecated. The ECDF is a step function by definition, so \code{geom_step()}
-is now always used.}
+deprecated. The ECDF is a step function by definition, so \code{geom_step()} is
+now always used.}
 
 \item{pad}{A logical scalar passed to \code{\link[ggplot2:stat_ecdf]{ggplot2::stat_ecdf()}}.}
 
