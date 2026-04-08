@@ -91,7 +91,7 @@ ppd_ecdf_overlay <-
 
     if (is_present(discrete)) {
       deprecate_warn(
-        "1.12.0",
+        "1.16.0",
         "ppd_ecdf_overlay(discrete)",
         details = "The ECDF is now always plotted as a step function."
       )

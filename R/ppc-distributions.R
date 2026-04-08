@@ -275,7 +275,7 @@ ppc_ecdf_overlay <- function(y,
 
   if (is_present(discrete)) {
     deprecate_warn(
-      "1.12.0",
+      "1.16.0",
       "ppc_ecdf_overlay(discrete)",
       details = "The ECDF is now always plotted as a step function."
     )
@@ -333,7 +333,7 @@ ppc_ecdf_overlay_grouped <- function(y,
 
   if (is_present(discrete)) {
     deprecate_warn(
-      "1.12.0",
+      "1.16.0",
       "ppc_ecdf_overlay_grouped(discrete)",
       details = "The ECDF is now always plotted as a step function."
     )
