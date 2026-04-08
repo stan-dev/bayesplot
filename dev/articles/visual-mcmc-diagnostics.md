@@ -131,12 +131,15 @@ We then fit the model by calling Stan’s MCMC algorithm using the
 sampler a bit more “careful” and avoid false positive divergences),
 
 ``` r
-fit_cp <- sampling(schools_mod_cp, data = schools_dat, seed = 803214055, control = list(adapt_delta = 0.9))
+fit_cp <- sampling(schools_mod_cp, data = schools_dat, seed = 20251208, control = list(adapt_delta = 0.9))
 ```
 
-    Warning: There were 124 divergent transitions after warmup. See
+    Warning: There were 101 divergent transitions after warmup. See
     https://mc-stan.org/misc/warnings.html#divergent-transitions-after-warmup
     to find out why this is a problem and how to eliminate them.
+
+    Warning: There were 1 chains where the estimated Bayesian Fraction of Missing Information was low. See
+    https://mc-stan.org/misc/warnings.html#bfmi-low
 
     Warning: Examine the pairs() plot to diagnose sampling problems
 
@@ -221,12 +224,12 @@ head(lp_cp)
 ```
 
       Chain Iteration     Value
-    1     1         1 -25.73958
-    2     1         2 -24.52259
-    3     1         3 -22.32740
-    4     1         4 -22.54495
-    5     1         5 -20.49160
-    6     1         6 -24.06619
+    1     1         1 -22.58211
+    2     1         2 -21.65206
+    3     1         3 -20.93076
+    4     1         4 -22.44877
+    5     1         5 -19.37971
+    6     1         6 -23.64810
 
 ``` r
 np_cp <- nuts_params(fit_cp)
@@ -234,12 +237,12 @@ head(np_cp)
 ```
 
       Chain Iteration     Parameter     Value
-    1     1         1 accept_stat__ 0.9589744
-    2     1         2 accept_stat__ 0.9927801
-    3     1         3 accept_stat__ 0.9925771
-    4     1         4 accept_stat__ 0.9857866
-    5     1         5 accept_stat__ 0.9802687
-    6     1         6 accept_stat__ 0.9492450
+    1     1         1 accept_stat__ 0.9498106
+    2     1         2 accept_stat__ 0.9924560
+    3     1         3 accept_stat__ 0.9997295
+    4     1         4 accept_stat__ 0.9639225
+    5     1         5 accept_stat__ 1.0000000
+    6     1         6 accept_stat__ 0.7569227
 
 ``` r
 # for the second model
@@ -769,9 +772,9 @@ print(ratios_cp)
 ```
 
             mu        tau   theta[1]   theta[2]   theta[3]   theta[4]   theta[5] 
-    0.12692799 0.06376363 0.17873489 0.20191192 0.22967848 0.23713514 0.15317114 
+    0.15740859 0.08434451 0.20098612 0.26586062 0.30911057 0.30050081 0.26633252 
       theta[6]   theta[7]   theta[8]       lp__ 
-    0.21067336 0.14218173 0.24068546 0.03069567 
+    0.27841365 0.16827623 0.22816121 0.03631593 
 
 ``` r
 mcmc_neff(ratios_cp, size = 2)

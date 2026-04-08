@@ -62,7 +62,7 @@ for details."><meta property="og:image" content="https://mc-stan.org/bayesplot/l
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.svg" class="logo" alt=""><h1>LOO predictive checks</h1>
-      <small class="dont-index">Source: <a href="https://github.com/stan-dev/bayesplot/blob/master/R/ppc-loo.R" class="external-link"><code>R/ppc-loo.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/stan-dev/bayesplot/blob/fix-pkgdown-GHA/R/ppc-loo.R" class="external-link"><code>R/ppc-loo.R</code></a></small>
       <div class="d-none name"><code>PPC-loo.Rd</code></div>
     </div>
 
@@ -192,7 +192,7 @@ additional advice specific to particular plots.</p></dd>
 
 <dt id="arg-lw">lw<a class="anchor" aria-label="anchor" href="#arg-lw"></a></dt>
 <dd><p>A matrix of (smoothed) log weights with the same dimensions as
-<code>yrep</code>. See <code><a href="https://rdrr.io/pkg/loo/man/psis.html" class="external-link">loo::psis()</a></code> and the associated <code><a href="https://rdrr.io/r/stats/weights.html" class="external-link">weights()</a></code> method as well as
+<code>yrep</code>. See <code><a href="https://mc-stan.org/loo/reference/psis.html" class="external-link">loo::psis()</a></code> and the associated <code><a href="https://rdrr.io/r/stats/weights.html" class="external-link">weights()</a></code> method as well as
 the <strong>Examples</strong> section, below. If <code>lw</code> is not specified then
 <code>psis_object</code> can be provided and log weights will be extracted.</p></dd>
 
@@ -203,7 +203,7 @@ the <strong>Examples</strong> section, below. If <code>lw</code> is not specifie
 
 <dt id="arg-psis-object">psis_object<a class="anchor" aria-label="anchor" href="#arg-psis-object"></a></dt>
 <dd><p>If using <strong>loo</strong> version <code>2.0.0</code> or greater, an
-object returned by the <code><a href="https://rdrr.io/pkg/loo/man/psis.html" class="external-link">psis()</a></code> function (or by the <code><a href="https://rdrr.io/pkg/loo/man/loo.html" class="external-link">loo()</a></code> function
+object returned by the <code><a href="https://mc-stan.org/loo/reference/psis.html" class="external-link">psis()</a></code> function (or by the <code><a href="https://mc-stan.org/loo/reference/loo.html" class="external-link">loo()</a></code> function
 with argument <code>save_psis</code> set to <code>TRUE</code>).</p></dd>
 
 
@@ -464,7 +464,7 @@ https://www.jstor.org/stable/2986005.</p>
 <span class="r-in"><span><span class="va">y</span> <span class="op">&lt;-</span> <span class="va">radon</span><span class="op">$</span><span class="va">log_radon</span></span></span>
 <span class="r-in"><span><span class="va">yrep</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://mc-stan.org/rstantools/reference/posterior_predict.html" class="external-link">posterior_predict</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">loo1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/loo/man/loo.html" class="external-link">loo</a></span><span class="op">(</span><span class="va">fit</span>, save_psis <span class="op">=</span> <span class="cn">TRUE</span>, cores <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">loo1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://mc-stan.org/loo/reference/loo.html" class="external-link">loo</a></span><span class="op">(</span><span class="va">fit</span>, save_psis <span class="op">=</span> <span class="cn">TRUE</span>, cores <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Found 10 observation(s) with a pareto_k &gt; 0.7. We recommend calling 'loo' again with argument 'k_threshold = 0.7' in order to calculate the ELPD without the assumption that these observations are negligible. This will refit the model 10 times to compute the ELPDs for the problematic observations directly.</span>
 <span class="r-in"><span><span class="va">psis1</span> <span class="op">&lt;-</span> <span class="va">loo1</span><span class="op">$</span><span class="va">psis_object</span></span></span>
 <span class="r-in"><span><span class="va">lw</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/weights.html" class="external-link">weights</a></span><span class="op">(</span><span class="va">psis1</span><span class="op">)</span> <span class="co"># normalized log weights</span></span></span>
@@ -473,8 +473,8 @@ https://www.jstor.org/stable/2986005.</p>
 <span class="r-in"><span><span class="fu"><a href="bayesplot-colors.html">color_scheme_set</a></span><span class="op">(</span><span class="st">"orange"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">ppc_loo_pit_overlay</span><span class="op">(</span><span class="va">y</span>, <span class="va">yrep</span>, lw <span class="op">=</span> <span class="va">lw</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Some PIT values larger than 1! Largest:  1 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Rounding PIT &gt; 1 to 1. Gradient evaluation took 0.000406 seconds</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 4.06 seconds.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Rounding PIT &gt; 1 to 1. Gradient evaluation took 0.000342 seconds</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 3.42 seconds.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2: Adjust your expectations accordingly!</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2: </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2: </span>
@@ -486,21 +486,6 @@ https://www.jstor.org/stable/2986005.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2:            adapt_window = 38</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2:            term_buffer = 5</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2: </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: Gradient evaluation took 0.000519 seconds</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 5.19 seconds.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: Adjust your expectations accordingly!</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: WARNING: There aren't enough warmup iterations to fit the</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1:          three stages of adaptation as currently configured.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1:          Reducing each adaptation stage to 15%/75%/10% of</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1:          the given number of warmup iterations:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1:            init_buffer = 7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1:            adapt_window = 38</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1:            term_buffer = 5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: Iteration:  1 / 100 [  1%]  (Warmup)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2: Iteration:  1 / 100 [  1%]  (Warmup)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2: Iteration: 10 / 100 [ 10%]  (Warmup)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: Iteration: 10 / 100 [ 10%]  (Warmup)</span>
@@ -524,15 +509,15 @@ https://www.jstor.org/stable/2986005.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: Iteration: 90 / 100 [ 90%]  (Sampling)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2: Iteration: 100 / 100 [100%]  (Sampling)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2: </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2:  Elapsed Time: 2.694 seconds (Warm-up)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2:                2.463 seconds (Sampling)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2:                5.157 seconds (Total)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2:  Elapsed Time: 2.298 seconds (Warm-up)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2:                2.103 seconds (Sampling)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2:                4.401 seconds (Total)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2: </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: Iteration: 100 / 100 [100%]  (Sampling)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1:  Elapsed Time: 2.828 seconds (Warm-up)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1:                2.495 seconds (Sampling)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1:                5.323 seconds (Total)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1:  Elapsed Time: 2.405 seconds (Warm-up)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1:                2.122 seconds (Sampling)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1:                4.527 seconds (Total)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: </span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> NOTE: The kernel density estimate assumes continuous observations and is not optimal for discrete observations.</span>
