@@ -136,4 +136,12 @@ test_that("cmdstanr methods work", {
   ratio <- neff_ratio(fit)
   expect_named(head(ratio, 4), c("alpha", "beta[1]", "beta[2]", "beta[3]"))
   expect_true(all(ratio > 0))
+
+  # https://github.com/stan-dev/bayesplot/pull/535
+  np_one <- nuts_params(fit, pars = "divergent__")
+  expect_identical(levels(np_one$Parameter), "divergent__")
+  expect_true(all(np_one$Parameter == "divergent__"))
+  expect_equal(range(np_one$Iteration), c(1, 500))
+  expect_equal(range(np_one$Chain), c(1, 2))
+  expect_true(all(np_one$Value == 0))
 })
