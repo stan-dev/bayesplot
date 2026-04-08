@@ -1,5 +1,6 @@
 # bayesplot (development version)
 
+* Fixed missing `drop = FALSE` in `nuts_params.CmdStanMCMC()`.
 * Replace `apply()` with `storage.mode()` for integer-to-numeric matrix conversion in `validate_predictions()`.
 * Fixed `is_chain_list()` to correctly reject empty lists instead of silently returning `TRUE`.
 * Added unit tests for `mcmc_areas_ridges_data()`, `mcmc_parcoord_data()`, and `mcmc_trace_data()`.
