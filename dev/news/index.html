@@ -58,12 +58,13 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.svg" class="logo" alt=""><h1>Changelog</h1>
-      <small>Source: <a href="https://github.com/stan-dev/bayesplot/blob/fix-pkgdown-GHA/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
+      <small>Source: <a href="https://github.com/stan-dev/bayesplot/blob/master/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="bayesplot-development-version">bayesplot (development version)<a class="anchor" aria-label="anchor" href="#bayesplot-development-version"></a></h2>
-<ul><li>Replace <code><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply()</a></code> with <code><a href="https://rdrr.io/r/base/mode.html" class="external-link">storage.mode()</a></code> for integer-to-numeric matrix conversion in <code>validate_predictions()</code>.</li>
+<ul><li>Fixed missing <code>drop = FALSE</code> in <code><a href="../reference/bayesplot-extractors.html">nuts_params.CmdStanMCMC()</a></code>.</li>
+<li>Replace <code><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply()</a></code> with <code><a href="https://rdrr.io/r/base/mode.html" class="external-link">storage.mode()</a></code> for integer-to-numeric matrix conversion in <code>validate_predictions()</code>.</li>
 <li>Fixed <code>is_chain_list()</code> to correctly reject empty lists instead of silently returning <code>TRUE</code>.</li>
 <li>Added unit tests for <code><a href="../reference/MCMC-intervals.html">mcmc_areas_ridges_data()</a></code>, <code><a href="../reference/MCMC-parcoord.html">mcmc_parcoord_data()</a></code>, and <code><a href="../reference/MCMC-traces.html">mcmc_trace_data()</a></code>.</li>
 <li>Added unit tests for <code><a href="../reference/PPC-errors.html">ppc_error_data()</a></code> and <code><a href="../reference/PPC-loo.html">ppc_loo_pit_data()</a></code> covering output structure, argument handling, and edge cases.</li>

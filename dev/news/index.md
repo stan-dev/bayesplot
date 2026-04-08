@@ -2,6 +2,8 @@
 
 ## bayesplot (development version)
 
+- Fixed missing `drop = FALSE` in
+  [`nuts_params.CmdStanMCMC()`](https://mc-stan.org/bayesplot/dev/reference/bayesplot-extractors.md).
 - Replace [`apply()`](https://rdrr.io/r/base/apply.html) with
   [`storage.mode()`](https://rdrr.io/r/base/mode.html) for
   integer-to-numeric matrix conversion in `validate_predictions()`.
