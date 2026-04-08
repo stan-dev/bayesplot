@@ -1,0 +1,424 @@
+---
+title: "Model checking using ppc_pit_ecdf() and ppc_loo_pit_ecdf()"
+author: "bayesplot team"
+date: "`r Sys.Date()`"
+output:
+  rmarkdown::html_vignette:
+    toc: true
+    toc_depth: 3
+params:
+  EVAL: !r identical(Sys.getenv("NOT_CRAN"), "true")
+vignette: >
+  %\VignetteIndexEntry{Model checking using ppc_pit_ecdf() and ppc_loo_pit_ecdf()}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, child="children/SETTINGS-knitr.txt"}
+```
+
+```{r pkgs, include=FALSE}
+library(ggplot2)
+library(patchwork)
+library(loo)
+library(brms)
+
+bayesplot_theme_set()
+
+set.seed(2026)
+```
+
+## Setup
+```{r, eval=FALSE}
+library(bayesplot)
+library(ggplot2)
+library(patchwork)
+library(loo)
+library(brms)
+
+set.seed(2026)
+```
+
+## Introduction
+This vignette focuses on pointwise predictive checks based on the probability integral transform (PIT). The PIT is defined as the model’s univariate predictive cumulative distribution function (CDF) evaluated given the observation. For a well-calibrated model, these transformations result in values that should be approximately uniformly distributed between 0 and 1 (Tesso & Vehtari, [2026](#Tesso2026); Säilynoja et al., [2022](#Säilynoja2022)).
+
+In `bayesplot`, PIT-based checks are implemented in the `ppc_pit_ecdf()` and `ppc_loo_pit_ecdf()` functions, which plot the empirical CDF of the PIT values against the expected uniform distribution. The `ppc_pit_ecdf_grouped()` function extends this functionality to allow for grouping by covariates.
+
+**New Correlation-Aware Method**
+
+Following the work of Tesso & Vehtari ([2026](#Tesso2026)), `bayesplot` now offers a new method for evaluating the uniformity of PIT values that accounts for their correlation structure. This method is implemented via the argument `method = "correlated"` and is recommended for most applications. While the previous approach is retained via `method = "independent"` for backward compatibility and is the current default. 
+
+This vignette focuses specifically on the changes introduced by this new correlation-aware method. For background information on graphical uniformity tests using PIT, see Säilynoja et al. ([2022](#Säilynoja2022)). For a more general discussion on the use of Leave-One-Out Cross-Validation (LOO-CV), see Vehtari et al. ([2017](#Vehtari2017), [2024](#Vehtari2024)), among others.
+
+## Reading the plots for different (mis)calibration scenarios
+The shape of the ECDF curve provides direct insight into *how* a predictive distribution is miscalibrated. To illustrate this, the following examples utilize simulated scenarios where "observed" values (`y`) are drawn from a `normal(0, sd)` distribution, while "replicated" values (`yrep`) are generated from a non-central t-distribution. By varying the degrees of freedom (`df`) and non-centrality parameter (`ncp`), we can simulate and visualize several distinct types of miscalibration.
+
+```{r, echo=FALSE}
+plot_scenarios <- function(
+  df = NULL, ncp = NULL, sd = 1, n = 300, S = 100, seed = 2026, 
+  xlim = c(-5, 5)
+  ) {
+  set.seed(seed)
+  y <- rnorm(n, mean = 0, sd = sd)
+  yrep <- matrix(rt(n * S, df = df, ncp = ncp), nrow = S, ncol = n)
+
+  yrep_df <- data.frame(
+    value = as.vector(t(yrep)),
+    draw  = rep(seq_len(nrow(yrep)), each = ncol(yrep))
+  )
+
+  p1 <- ggplot(yrep_df, aes(x = .data$value, group = .data$draw, color = "yrep")) +
+    geom_density(linewidth = 0.5, alpha = 0.3) +
+    geom_density(
+      data = data.frame(value = y),
+      aes(x = .data$value, color = "y"),
+      linewidth = 1,
+      inherit.aes = FALSE
+    ) +
+    scale_color_manual(
+      values = c(yrep = "lightblue", y = "darkblue"),
+      breaks = c("yrep", "y"),
+      name = NULL
+    ) + 
+    xlim(c(xlim[1], xlim[2])) +
+    yaxis_ticks(FALSE) +
+    xlab("y / yrep") +
+    bayesplot_theme_get() +
+    theme(
+      legend.position = "top",
+      legend.direction = "horizontal"
+    )
+  p2 <- ppc_pit_ecdf(y = y, yrep = yrep, method = "correlated", prob = 0.95)
+  p3 <- ppc_pit_ecdf(y = y, yrep = yrep, method = "correlated", 
+    plot_diff = TRUE, prob = 0.95)
+
+  bayesplot_grid(
+    p1, p2, p3, 
+    grid_args = list(ncol = 3, widths = c(1.1, 1.1, 1.1))
+    )
+}
+
+```
+
+### Calibrated model
+We begin by simulating a well-calibrated scenario where the predictive distribution (`ypred`) closely matches the data-generating process (`y`). In this case, the PIT values should be approximately uniform, and the ECDF should closely follow the identity (diagonal) line.
+
+$$
+\begin{aligned}
+y &\sim \text{Normal}(0, 1) \\
+y_{rep} &\sim \text{Student}_{\nu = 100}(0, 1) \quad (\approx \text{Normal}(0, 1))
+\end{aligned}
+$$
+```{r calibrated, fig.width=7, fig.height=3, fig.asp=NULL, out.width="80%", fig.align="center", warning=FALSE, message=FALSE}
+plot_scenarios(df = 100, ncp = 0)
+```
+
+### Predictive distribution too wide (overdispersed)
+When the predictive distribution is too wide, the model overestimates the probability mass in the tails. As a result, observed values tend to fall near the *centre* of the predictive distribution more often than expected. This leads to an `S`-shaped ECDF curve that typically falls below the diagonal line in the lower tail and rises above it in the upper tail.
+
+$$
+\begin{aligned}
+y &\sim \text{Normal}(0, 1) \\
+y_{rep} &\sim \text{Student}_{\nu = 1}(0, 1) \quad (= \text{Cauchy}(0, 1))
+\end{aligned}
+$$
+
+```{r too-wide, fig.width=7, fig.height=3, fig.asp=NULL, out.width="80%", fig.align="center", warning=FALSE, message=FALSE}
+plot_scenarios(df = 1, ncp = 0, xlim = c(-7, 7))
+```
+
+### Predictive distribution too narrow (underdispersed)
+When the predictive distribution is too narrow, the model underestimates the potential for extreme values, causing observations to fall frequently in the tails. This results in a reverse `S`-shaped ECDF curve that typically lies above the diagonal line in the lower tail and below it in the upper tail.
+
+$$
+\begin{aligned}
+y &\sim \text{Normal}(0, 0.5) \\
+y_{rep} &\sim \text{Student}_{\nu = 100}(0, 1) \quad (\approx \text{Normal}(0, 1))
+\end{aligned}
+$$
+
+```{r too-narrow, fig.width=7, fig.height=3, fig.asp=NULL, out.width="80%", fig.align="center", warning=FALSE, message=FALSE}
+plot_scenarios(df = 100, ncp = 0, sd = 2)
+```
+
+### Systematically biased predictions (location shift)
+When the model's predictions are systematically shifted relative to the data, observations tend to fall consistently in one tail of the predictive distribution. This results in an ECDF curve that "bows" aways from the identity line:
+
++ Underestimation (Positive Bias): If the model predicts values that are systematically too low, the PIT values will cluster near 1. The ECDF curve will stay below the diagonal line.
++ Overestimation (Negative Bias): If the model predicts values that are systematically too high, the PIT values will cluster near 0. The ECDF curve will stay above the diagonal line.
+
+$$
+\begin{aligned}
+y &\sim \text{Normal}(0, 1) \\
+y_{rep} &\sim \text{Student}_{\nu = 100}(-1, 1)
+\end{aligned}
+$$
+
+```{r biased, fig.width=7, fig.height=3, fig.asp=NULL, out.width="80%", fig.align="center", warning=FALSE, message=FALSE}
+plot_scenarios(df = 100, ncp = -1)
+```
+
+## The `method` argument
+### `method = "independent"` (superseded)
+When `method = "independent"` is selected, simultaneous confidence bands for the ECDF are constructed under the assumption that the PIT values are both independent and uniform (Säilynoja et al., [2022](#Säilynoja2022)). However, if this independence assumption is violated, the resulting bands can be too wide, which reduces the test's sensitivity to actual miscalibration (Tesso & Vehtari, [2026](#Tesso2026)).
+
+**Deprecation and Compatibility**
+
+As of `bayesplot vX.X.X`, the `"independent"` method is officially superseded. To maintain backward compatibility, `"independent"` remains the current default; however, using it will now trigger a message informing the user:
+```
+"The 'independent' method is superseded by the 'correlated' method."
+```
+This is intended to encourage a transition to the `"correlated"` method, which will become the default in a future release.
+
+### `method = "correlated"` (new, recommended)
+This method employes one of three dependence-aware uniformity tests (selected via the `test` argument) to compute a global p-value for the null hypothesis of uniformity. Unlike the independent method, it accounts for the correlation among PIT values (Tesso & Vehtari, [2026](#Tesso2026)). 
+
+Instead of drawing traditional confidence bands, the plot highlights ECDF regions in red where the pointwise contribution to the test statistic is largest. This visualization makes it easier to diagnose the *type* and *location* of miscalibration.
+
+```{r comparison, fig.width=7, fig.height=3, fig.asp=NULL, out.width="80%", fig.align="center"}
+set.seed(2026)
+pit <- rbeta(300, 1, 1.2)
+
+p1 <- ppc_loo_pit_ecdf(
+  pit = pit, 
+  method = "independent"
+  ) +
+  labs(subtitle = "method = 'independent'")
+
+p2 <- ppc_loo_pit_ecdf(
+  pit = pit, method = "correlated"
+  ) +
+  labs(subtitle = "method = 'correlated'")
+
+p1 | p2
+```
+
+## The three uniformity-tests within `method = "correlated"`
+When using `method = "correlated"`, you select the testing procedure via the `test` argument. The three options correspond to the three procedures proposed by Tesso & Vehtari ([2026](#Tesso2026)):
+
+### `test = "POT"`
+Pointwise Order Tests Combination (`POT`) is based on order statistics of the PIT values and is the **recommended default** for most workflows. It should ideally use continuous LOO-PITs and works for PSIS-LOO weighted rank-based PITs.
+
+### `test = "PRIT"`
+Pointwise Rank-based Individual Tests Combination (`PRIT`) is designed for **rank-based or discrete PIT values**. It is most compatible with PITs computed as normalized ranks and is weaker than "POT" in testing weighted rank based LOO-PIT values for the same reason previously outlined.
+
+### `test = "PIET"`
+Pointwise Inverse-CDF Evaluation Tests Combination (`PIET`) applies an inverse-CDF transformation before testing and is **tail-sensitive**. It is exclusively recommended for detecting deviations in tails (or outliers) and requires continuous PIT values for reliable behavior.
+
+## Showcase functions for PIT-based checks using nabiximols data
+To illustrate the functions for PIT-based checks, we use data from the study "Nabiximols for the Treatment of Cannabis Dependence: A Randomized Clinical Trial" by Lintzeris et al. ([2019](#Lintzeris2019)). The dataset includes 128 participants (`id`) in two groups (`group`): Placebo and Nabiximols.
+
+Participants received a 12-week treatment involving weekly clinical reviews, structured counseling, and flexible medication doses, dispensed weekly, of up to 32 sprays daily (86.4 mg tetrahydrocannabinol and 80 mg cannabidiol). The number of cannabis use days (`cu`) during the previous 28 days (`set`) was recorded at 0, 4, 8, and 12 weeks (`week`).
+
+We fit a simple linear mixed model using the `brms` package to demonstrate the use of `ppc_pit_ecdf()`, `ppc_loo_pit_ecdf()`, and `ppc_pit_ecdf_grouped()`.
+
+For a more detailed analysis of this data within the Bayesian workflow, see the [Nabiximols Case Study](https://users.aalto.fi/~ave/casestudies/Nabiximols/nabiximols.html#ref-Lintzeris+etal:2019:Nabiximols) by Aki Vehtari.
+
+```{r naboximols-data, warning=FALSE, message=FALSE}
+id <- factor(c(1, 1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, 4, 5, 5, 6, 6, 6, 6, 7, 7, 8, 8, 8, 8, 9, 9, 9, 10, 10, 10, 10, 11, 11, 11, 12, 12, 13, 14, 15, 16, 16, 17, 18, 18, 18, 18, 19, 20, 20, 20, 20, 21, 21, 21, 21, 22, 22, 23, 23, 23, 24, 24, 24, 24, 25, 25, 25, 25, 26, 27, 27, 28, 28, 28, 28, 29, 30, 30, 30, 30, 31, 31, 32, 32, 32, 32, 33, 33, 33, 34, 34, 34, 35, 35, 36, 36, 37, 37, 37, 37, 38, 39, 39, 39, 39, 40, 40, 40, 41, 42, 42, 42, 42, 43, 43, 43, 43, 44, 44, 45, 45, 46, 46, 46, 46, 47, 47, 47, 47, 48, 48, 49, 49, 49, 50, 50, 50, 50, 51, 51, 51, 52, 52, 52, 52, 53, 53, 53, 53, 54, 54, 55, 55, 55, 55, 56, 57, 57, 57, 57, 58, 58, 58, 58, 59, 59, 59, 59, 60, 60, 60, 60, 61, 61, 61, 62, 63, 63, 64, 64, 64, 65, 65, 65, 65, 66, 66, 66, 66, 67, 67, 67, 67, 68, 68, 68, 69, 69, 69, 69, 70, 70, 70, 70, 71, 71, 71, 71, 72, 73, 73, 73, 73, 74, 74, 74, 75, 76, 76, 76, 76, 77, 77, 77, 77, 78, 78, 78, 79, 79, 79, 79, 80, 80, 80, 80, 81, 81, 81, 81, 82, 82, 83, 83, 84, 84, 84, 85, 85, 85, 86, 86, 86, 86, 87, 87, 87, 87, 88, 88, 88, 88, 89, 89, 89, 89, 90, 90, 90, 90, 91, 91, 91, 91, 92, 92, 92, 92, 93, 93, 93, 93, 94, 94, 94, 94, 95, 95, 95, 95, 96, 96, 96, 96, 97, 97, 97, 98, 98, 98, 98, 99, 99, 99, 99, 100, 101, 101, 101, 102, 102, 102, 102, 103, 103, 103, 103, 104, 104, 105, 105, 105, 105, 106, 106, 106, 106, 107, 107, 107, 107, 108, 108, 108, 108, 109, 109, 109, 109, 110, 110, 111, 111, 112, 112, 112, 112, 113, 113, 113, 113, 114, 115, 115, 115, 115, 116, 116, 116, 116, 117, 117, 117, 117, 118, 118, 119, 119, 119, 119, 120, 120, 120, 120, 121, 121, 121, 122, 123, 123, 123, 123, 124, 124, 124, 125, 125, 125, 125, 126, 126, 126, 126, 127, 127, 128))
+group <- factor(c(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 1, 0, 1, 0, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0), levels = 0:1, labels = c("placebo", "nabiximols"))
+week <- factor(c(0, 4, 8, 12, 0, 4, 8, 0, 4, 8, 0, 4, 8, 12, 0, 4, 0, 4, 8, 12, 0, 4, 0, 4, 8, 12, 0, 4, 8, 0, 4, 8, 12, 0, 4, 8, 0, 4, 0, 0, 0, 0, 4, 0, 0, 4, 8, 12, 0, 0, 4, 8, 12, 0, 4, 8, 12, 0, 4, 0, 4, 12, 0, 4, 8, 12, 0, 4, 8, 12, 0, 0, 4, 0, 4, 8, 12, 0, 0, 4, 8, 12, 0, 4, 0, 4, 8, 12, 0, 4, 8, 0, 4, 12, 0, 8, 0, 4, 0, 4, 8, 12, 0, 0, 4, 8, 12, 0, 4, 8, 0, 0, 4, 8, 12, 0, 4, 8, 12, 0, 4, 0, 4, 0, 4, 8, 12, 0, 4, 8, 12, 0, 4, 0, 4, 12, 0, 4, 8, 12, 0, 4, 12, 0, 4, 8, 12, 0, 4, 8, 12, 0, 4, 0, 4, 8, 12, 0, 0, 4, 8, 12, 0, 4, 8, 12, 0, 4, 8, 12, 0, 4, 8, 12, 0, 4, 12, 0, 0, 4, 0, 4, 8, 0, 4, 8, 12, 0, 4, 8, 12, 0, 4, 8, 12, 0, 4, 12, 0, 4, 8, 12, 0, 4, 8, 12, 0, 4, 8, 12, 0, 0, 4, 8, 12, 0, 4, 8, 0, 0, 4, 8, 12, 0, 4, 8, 12, 0, 4, 8, 0, 4, 8, 12, 0, 4, 8, 12, 0, 4, 8, 12, 0, 4, 0, 4, 0, 4, 8, 0, 4, 8, 0, 4, 8, 12, 0, 4, 8, 12, 0, 4, 8, 12, 0, 4, 8, 12, 0, 4, 8, 12, 0, 4, 8, 12, 0, 4, 8, 12, 0, 4, 8, 12, 0, 4, 8, 12, 0, 4, 8, 12, 0, 4, 8, 12, 0, 4, 8, 0, 4, 8, 12, 0, 4, 8, 12, 0, 0, 4, 8, 0, 4, 8, 12, 0, 4, 8, 12, 0, 4, 0, 4, 8, 12, 0, 4, 8, 12, 0, 4, 8, 12, 0, 4, 8, 12, 0, 4, 8, 12, 0, 4, 0, 4, 0, 4, 8, 12, 0, 4, 8, 12, 0, 0, 4, 8, 12, 0, 4, 8, 12, 0, 4, 8, 12, 0, 4, 0, 4, 8, 12, 0, 4, 8, 12, 0, 4, 12, 0, 0, 4, 8, 12, 0, 4, 12, 0, 4, 8, 12, 0, 4, 8, 12, 0, 4, 0))
+cu <- c(13, 12, 12, 12, 28, 0, NA, 16, 9, 2, 28, 28, 28, 28, 28, NA, 28, 28, 17, 28, 28, NA, 16, 0, 0, NA, 28, 28, 28, 28, 17, 0, NA, 28, 27, 28, 28, 26, 24, 28, 28, 28, 25, 28, 26, 28, 18, 16, 28, 28, 7, 0, 2, 28, 2, 4, 1, 28, 28, 16, 28, 28, 24, 26, 15, 28, 25, 17, 1, 8, 28, 24, 27, 28, 28, 28, 28, 28, 27, 28, 28, 28, 28, 20, 28, 28, 28, 28, 12, 28, NA, 17, 15, 14, 28, 0, 28, 28, 28, 0, 0, 0, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 21, 24, 28, 27, 28, 28, 26, NA, 28, NA, 20, 2, 3, 7, 28, 1, 19, 8, 21, 7, 28, 28, 20, 28, 28, 28, 24, 20, 17, 11, 25, 25, 28, 26, 28, 24, 17, 16, 27, 14, 28, 28, 28, 28, 28, 28, 14, 13, 4, 24, 28, 28, 28, 21, 28, 21, 26, 28, 28, 0, 0, 28, 23, 20, 28, 20, 16, 28, 28, 28, 10, 1, 1, 2, 28, 28, 28, 28, 18, 22, 9, 15, 28, 9, 1, 20, 18, 20, 24, 28, 28, 28, 19, 28, 28, 28, 28, 28, 28, 28, 28, 28, 4, 14, 20, 28, 28, 0, 0, 0, 28, 20, 9, 24, 28, 28, 28, 28, 28, 21, 28, 28, 14, 24, 28, 23, 0, 0, 0, 28, NA, 28, NA, 28, 15, NA, 12, 25, NA, 28, 2, 0, 0, 28, 10, 0, 0, 28, 0, 0, 0, 23, 0, 0, 0, 28, 0, 0, 0, 28, 0, 0, 0, 28, 2, 1, 0, 21, 14, 7, 8, 28, 28, 28, 0, 28, 28, 20, 18, 24, 0, 0, 0, 28, 15, NA, 28, 1, 1, 2, 28, 1, 0, 0, 28, 28, 14, 21, 25, 19, 16, 13, 28, 28, 28, 28, 28, 28, 28, 27, 19, 21, 18, 1, 0, 0, 28, 28, 28, 28, 28, 24, 27, 28, 18, 0, 3, 8, 28, 28, 28, 9, 20, 25, 20, 12, 19, 0, 0, 0, 27, 28, 0, 0, 0, 20, 17, 16, 14, 28, 7, 0, 1, 28, 24, 28, 25, 23, 20, 28, 14, 16, 7, 28, 28, 26, 28, 28, 26, 28, 28, 28, 24, 20, 28, 28, 28, 28, 28, 8, 6, 4, 28, 20, 28)
+set <- rep(28, length(cu))
+cu_df <- data.frame(id, group, week, cu, set)
+
+# remove the rows with NA's as they are not used for posteriors anyway
+cu_df <- cu_df |>
+  tidyr::drop_na(cu)
+
+fit_normal <- brms::brm(formula = cu ~ group*week + (1 | id),
+          data = cu_df,
+          family = gaussian(),
+          prior = c(brms::prior(normal(14, 1.5), class = Intercept),
+                    brms::prior(normal(0, 11), class = b),
+                    brms::prior(cauchy(1,2), class = sd)),
+          save_pars = brms::save_pars(all=TRUE),
+          seed = 1234,
+          refresh = 0)
+fit_normal <- brms::add_criterion(fit_normal, criterion="loo", save_psis=TRUE)
+```
+
+### `ppc_pit_ecdf()`
+
+```{r ppc-pit-example, fig.width=7, fig.height=3, fig.asp=NULL, out.width="80%", warning=FALSE, message=FALSE}
+p1 <- ppc_pit_ecdf(
+  y = cu_df$cu, 
+  yrep = brms::posterior_predict(fit_normal),
+  method = "correlated"
+)
+
+p2 <- ppc_pit_ecdf(
+  y = cu_df$cu, 
+  yrep = brms::posterior_predict(fit_normal),
+  method = "correlated",
+  plot_diff = TRUE
+)
+
+p1 | p2
+```
+
+### `ppc_loo_pit_ecdf()`
+
+```{r ppc-loo-pit-example, fig.width=7, fig.height=3, fig.asp=NULL, out.width="80%", warning=FALSE, message=FALSE}
+p1 <- ppc_loo_pit_ecdf(
+  y = cu_df$cu, 
+  yrep = brms::posterior_predict(fit_normal),
+  method = "correlated",
+  lw = weights(loo(fit_normal)$psis_object)
+)
+
+p2 <- ppc_loo_pit_ecdf(
+  y = cu_df$cu, 
+  yrep = brms::posterior_predict(fit_normal),
+  method = "correlated",
+  lw = weights(loo(fit_normal)$psis_object),
+  plot_diff = TRUE
+)
+
+p1 | p2
+```
+
+### `ppc_pit_ecdf_grouped()`
+
+```{r grouped-example, fig.width=7, fig.height=3, fig.asp=NULL, out.width="80%", warning=FALSE, message=FALSE}
+ppc_pit_ecdf_grouped(
+  y = cu_df$cu, 
+  yrep = brms::posterior_predict(fit_normal), 
+  lw = weights(loo(fit_normal)$psis_object), 
+  group = cu_df$group,
+  method = "correlated"
+  )
+```
+
+## Using `brms::pp_check()`
+It is also possible to use `brms::pp_check()` with `type = "loo_pit_ecdf"` to perform the same testing and plotting procedure as `ppc_loo_pit_ecdf()`. The following example demonstrates this using the same fitted model as above with `method = "correlated"`.
+```{r pp-check-example, fig.show="hold", out.width="80%", warning=FALSE, message=FALSE}
+brms::pp_check(
+  fit_normal, 
+  type = "loo_pit_ecdf", 
+  method = "correlated"
+)
+```
+
+## Additional arguments
+With the introduction of the `method = "correlated"` option, the three functions now have additional arguments that control the appearance and behavior of the plot when using correlated testing procedures. These arguments are:
+
+### `gamma`
+When `method = "correlated"` and the global test rejects uniformity, the plot uses color coding to highlight influential regions. The `gamma` argument is a non-negative numeric threshold: a point is highlighted if its pointwise contribution to the test statistic exceeds `gamma`. The default is `0`, which highlights all points that contribute at all when the test rejects. Increasing `gamma` raises the bar, flagging only the most strongly deviant points.
+
+```{r gamma-example, fig.width=7, fig.height=3, fig.asp=NULL, out.width="80%", fig.align="center"}
+set.seed(2026)
+pit <- rbeta(300, 1, 1.2)
+
+# Highlight only the most strongly influential regions
+p1 <- ppc_loo_pit_ecdf(
+  pit = pit, 
+  method = "correlated", 
+  plot_diff = TRUE, 
+  gamma = 0
+  ) +
+    labs(subtitle = "gamma = 0")
+
+# Highlight more broadly
+p2 <- ppc_loo_pit_ecdf(
+  pit = pit, method = "correlated", 
+  plot_diff = TRUE, 
+  gamma = 80
+  ) +
+    labs(subtitle = "gamma = 80")
+
+p1 | p2
+```
+
+### `linewidth` and `color`
+`linewidth` controls the width of the ECDF line (default `0.3`). `color` is a named character vector with two elements controlling the appearance of the plot: `c(ecdf = "grey60", highlight = "red")`. Whereby `ecdf` is the color of the main ECDF line; `highlight` is the color used for the
+flagged regions when the global test rejects. Both can be overridden:
+
+```{r color-example, fig.width=7, fig.height=3, fig.asp=NULL, out.width="80%", fig.align="center"}
+pit <- rbeta(300, 2, 2)
+
+p1 <- ppc_loo_pit_ecdf(
+  pit = pit,
+  method = "correlated"
+) +
+  labs(subtitle = "default style")
+
+p2 <- ppc_loo_pit_ecdf(
+  pit = pit,
+  method = "correlated",
+  color = c(ecdf = "steelblue", highlight = "orange"),
+  linewidth = 0.5
+) +
+  labs(subtitle = "custom color / linewidth")
+
+p1 | p2
+```
+
+### `help_text`
+Setting `help_text = TRUE` adds an annotation to the plot showing the `test` name, (1-`prob`) level ($\alpha$), and global p-value. This is the **default** (`help_text = TRUE`). Set `help_text = FALSE` to suppress the annotation, for example when embedding the plot in a figure with a caption.
+
+```{r help-text-example, fig.width=7, fig.height=3, fig.asp=NULL, out.width="80%", fig.align="center"}
+pit <- rbeta(300, 2, 2)
+
+p1 <- ppc_loo_pit_ecdf(
+  pit = pit,
+  method = "correlated",
+  plot_diff = TRUE
+) +
+  labs(subtitle = "help_text = TRUE")
+
+p2 <- ppc_loo_pit_ecdf(
+  pit = pit,
+  method = "correlated",
+  plot_diff = TRUE,
+  help_text = FALSE
+) +
+  labs(subtitle = "help_text = FALSE")
+
+p1 | p2
+```
+
+### `pareto_pit`
+The `pareto_pit` argument controls how PIT values are computed internally when precomputed `pit` values are not supplied.
+
+**Default behavior (recommended):** leave `pareto_pit` at its default value. The function chooses the appropriate PIT computation automatically based on `method` and `test`:
+
+| method | test | `pareto_pit` default |
+|:---|:------:|:------|
+| `"independent"` | -- | `FALSE` (empirical/rank-based PIT) |
+| `"correlated"` | `"PRIT"` | `FALSE` (empirical/rank-based PIT) |
+| `"correlated"` | `"POT"` | `TRUE` (Pareto-smoothed PIT) |
+| `"correlated"` | `"PIET"` | `TRUE` (Pareto-smoothed PIT) |
+
+When `pareto_pit = TRUE`, `ppc_loo_pit_ecdf()` requires LOO importance weights to be supplied (via `lw` or `psis_object`), since the LOO-PIT computation is weighted. `ppc_pit_ecdf()` and `ppc_pit_ecdf_grouped()` do not require weights; they call `posterior::pareto_pit()` with `weights = NULL`.
+
+**When to override:** You can set `pareto_pit` manually if you need to force a specific PIT computation path for diagnostic comparison. In practice this is rarely necessary.
+
+## Summary of new arguments
+
+| Argument | Functions | Values | Default |
+|---|---|---|---|
+| `method` | all three | `"independent"`, `"correlated"` | `NULL` → falls back to `"independent"` with a deprecation notice |
+| `test` | all three | `"POT"`, `"PRIT"`, `"PIET"` | `"POT"` |
+| `gamma` | all three | numeric $\ge 0$ | `0` |
+| `linewidth` | all three | numeric | `0.3` |
+| `color` | all three | named character vector | `c(ecdf = "grey60", highlight = "red")` |
+| `help_text` | all three | `TRUE`, `FALSE` | `TRUE` |
+| `pareto_pit` | all three | `TRUE`, `FALSE` | `TRUE` if `test` is `"POT"` or `"PIET"` and no `pit` supplied; `FALSE` otherwise |
+
+## References
+
+Tesso, H., & Vehtari, A. (2026). LOO-PIT predictive model checking. http://arxiv.org/abs/2603.02928
+<a id="Tesso2026"></a>
+
+Säilynoja, T., Bürkner, P.-C., and Vehtari, A. (2022). Graphical test for discrete uniformity and its applications in goodness-of-fit evaluation and multiple sample comparison. *Statistics and Computing*, 32, 32. https://link.springer.com/10.1007/s11222-022-10090-6
+<a id="Säilynoja2022"></a>
+
+Vehtari, A., Gelman, A., and Gabry, J. (2017). Practical Bayesian model evaluation using leave-one-out cross-validation and WAIC. *Statistics and Computing*, 27(5), 1413–1432. https://link.springer.com/article/10.1007/S11222-016-9696-4
+<a id="Vehtari2017"></a>
+
+Vehtari, A., Simpson, D., Gelman, A., Yao, Y., and Gabry, J. (2024). Pareto smoothed importance sampling. *Journal of Machine Learning Research*, 25(72), 1–58. https://www.jmlr.org/papers/v25/19-556.html
+<a id="Vehtari2024"></a>
+
+Lintzeris, Nicholas, Anjali Bhardwaj, Llewellyn Mills, Adrian Dunlop, Jan Copeland, Iain McGregor, Raimondo Bruno, et al. 2019. “Nabiximols for the Treatment of Cannabis Dependence: A Randomized Clinical Trial.” JAMA Internal Medicine 179 (9): 1242–53. https://jamanetwork.com/journals/jamainternalmedicine/fullarticle/2737918
+<a id="Lintzeris2019"></a>

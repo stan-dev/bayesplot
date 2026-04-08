@@ -35,7 +35,7 @@ Imports:
     ggridges (>= 0.5.5),
     glue,
     lifecycle,
-    posterior,
+    posterior (>= 1.7.0),
     reshape2,
     rlang (>= 1.0.0),
     stats,
@@ -44,6 +44,7 @@ Imports:
     tidyselect,
     utils
 Suggests:
+    brms (>= 2.23.0),
     ggdist,
     ggfortify,
     gridExtra (>= 2.2.1),
@@ -59,7 +60,8 @@ Suggests:
     shinystan (>= 2.3.0),
     survival,
     testthat (>= 3.0.0),
-    vdiffr (>= 1.0.2)
+    vdiffr (>= 1.0.2),
+    patchwork
 RoxygenNote: 7.3.3
 VignetteBuilder: knitr
 Encoding: UTF-8
