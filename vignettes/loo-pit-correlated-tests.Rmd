@@ -28,6 +28,7 @@ bayesplot_theme_set()
 set.seed(2026)
 ```
 
+## Setup
 ```{r, eval=FALSE}
 library(bayesplot)
 library(ggplot2)
@@ -48,23 +49,6 @@ In `bayesplot`, PIT-based checks are implemented in the `ppc_pit_ecdf()` and `pp
 Following the work of Tesso & Vehtari ([2026](#Tesso2026)), `bayesplot` now offers a new method for evaluating the uniformity of PIT values that accounts for their correlation structure. This method is implemented via the argument `method = "correlated"` and is recommended for most applications. While the previous approach is retained via `method = "independent"` for backward compatibility and is the current default. 
 
 This vignette focuses specifically on the changes introduced by this new correlation-aware method. For background information on graphical uniformity tests using PIT, see Säilynoja et al. ([2022](#Säilynoja2022)). For a more general discussion on the use of Leave-One-Out Cross-Validation (LOO-CV), see Vehtari et al. ([2017](#Vehtari2017), [2024](#Vehtari2024)), among others.
-
-## The `method` argument
-### `method = "independent"` (superseded)
-When `method = "independent"` is selected, simultaneous confidence bands for the ECDF are constructed under the assumption that the PIT values are both independent and uniform (Säilynoja et al., [2022](#Säilynoja2022)). However, if this independence assumption is violated, the resulting bands can be too wide, which reduces the test's sensitivity to actual miscalibration (Tesso & Vehtari, [2026](#Tesso2026)).
-
-**Deprecation and Compatibility**
-
-As of `bayesplot vX.X.X`, the `"independent"` method is officially superseded. To maintain backward compatibility, `"independent"` remains the current default; however, using it will now trigger a message informing the user:
-```
-"The 'independent' method is superseded by the 'correlated' method."
-```
-This is intended to encourage a transition to the `"correlated"` method, which will become the default in a future release.
-
-### `method = "correlated"` (new, recommended)
-This method employes one of three dependence-aware uniformity tests (selected via the `test` argument) to compute a global p-value for the null hypothesis of uniformity. Unlike the independent method, it accounts for the correlation among PIT values (Tesso & Vehtari, [2026](#Tesso2026)). 
-
-Instead of drawing traditional confidence bands, the plot highlights ECDF regions in red where the pointwise contribution to the test statistic is largest. This visualization makes it easier to diagnose the *type* and *location* of miscalibration.
 
 ## Reading the plots for different (mis)calibration scenarios
 The shape of the ECDF curve provides direct insight into *how* a predictive distribution is miscalibrated. To illustrate this, the following examples utilize simulated scenarios where "observed" values (`y`) are drawn from a `normal(0, sd)` distribution, while "replicated" values (`yrep`) are generated from a non-central t-distribution. By varying the degrees of freedom (`df`) and non-centrality parameter (`ncp`), we can simulate and visualize several distinct types of miscalibration.
@@ -104,10 +88,9 @@ plot_scenarios <- function(
       legend.position = "top",
       legend.direction = "horizontal"
     )
-  p2 <- ppc_pit_ecdf(y = y, yrep = yrep, method = "correlated", prob = 0.95) + 
-    labs(subtitle = "method = 'correlated'")
-  p3 <- ppc_pit_ecdf(y = y, yrep = yrep, method = "independent", prob = 0.95) + 
-    labs(subtitle = "method = 'independent'")
+  p2 <- ppc_pit_ecdf(y = y, yrep = yrep, method = "correlated", prob = 0.95)
+  p3 <- ppc_pit_ecdf(y = y, yrep = yrep, method = "correlated", 
+    plot_diff = TRUE, prob = 0.95)
 
   bayesplot_grid(
     p1, p2, p3, 
@@ -166,13 +149,48 @@ When the model's predictions are systematically shifted relative to the data, ob
 
 $$
 \begin{aligned}
-y &\sim \text{Normal}(1, 1) \\
-y_{rep} &\sim \text{Student}_{\nu = 100}(0, 1) \quad (\approx \text{Normal}(0, 1))
+y &\sim \text{Normal}(0, 1) \\
+y_{rep} &\sim \text{Student}_{\nu = 100}(-1, 1)
 \end{aligned}
 $$
 
 ```{r biased, fig.width=7, fig.height=3, fig.asp=NULL, out.width="80%", fig.align="center", warning=FALSE, message=FALSE}
-plot_scenarios(df = 100, ncp = 1)
+plot_scenarios(df = 100, ncp = -1)
+```
+
+## The `method` argument
+### `method = "independent"` (superseded)
+When `method = "independent"` is selected, simultaneous confidence bands for the ECDF are constructed under the assumption that the PIT values are both independent and uniform (Säilynoja et al., [2022](#Säilynoja2022)). However, if this independence assumption is violated, the resulting bands can be too wide, which reduces the test's sensitivity to actual miscalibration (Tesso & Vehtari, [2026](#Tesso2026)).
+
+**Deprecation and Compatibility**
+
+As of `bayesplot vX.X.X`, the `"independent"` method is officially superseded. To maintain backward compatibility, `"independent"` remains the current default; however, using it will now trigger a message informing the user:
+```
+"The 'independent' method is superseded by the 'correlated' method."
+```
+This is intended to encourage a transition to the `"correlated"` method, which will become the default in a future release.
+
+### `method = "correlated"` (new, recommended)
+This method employes one of three dependence-aware uniformity tests (selected via the `test` argument) to compute a global p-value for the null hypothesis of uniformity. Unlike the independent method, it accounts for the correlation among PIT values (Tesso & Vehtari, [2026](#Tesso2026)). 
+
+Instead of drawing traditional confidence bands, the plot highlights ECDF regions in red where the pointwise contribution to the test statistic is largest. This visualization makes it easier to diagnose the *type* and *location* of miscalibration.
+
+```{r comparison, fig.width=7, fig.height=3, fig.asp=NULL, out.width="80%", fig.align="center"}
+set.seed(2026)
+pit <- rbeta(300, 1, 1.2)
+
+p1 <- ppc_loo_pit_ecdf(
+  pit = pit, 
+  method = "independent"
+  ) +
+  labs(subtitle = "method = 'independent'")
+
+p2 <- ppc_loo_pit_ecdf(
+  pit = pit, method = "correlated"
+  ) +
+  labs(subtitle = "method = 'correlated'")
+
+p1 | p2
 ```
 
 ## The three uniformity-tests within `method = "correlated"`
@@ -222,28 +240,11 @@ fit_normal <- brms::add_criterion(fit_normal, criterion="loo", save_psis=TRUE)
 
 ### `ppc_pit_ecdf()`
 
-```{r ppc-pit-example-1, fig.width=7, fig.height=3, fig.asp=NULL, out.width="80%", warning=FALSE, message=FALSE}
+```{r ppc-pit-example, fig.width=7, fig.height=3, fig.asp=NULL, out.width="80%", warning=FALSE, message=FALSE}
 p1 <- ppc_pit_ecdf(
-  y = cu_df$cu, 
-  yrep = brms::posterior_predict(fit_normal),
-  method = "independent"
-)
-
-p2 <- ppc_pit_ecdf(
   y = cu_df$cu, 
   yrep = brms::posterior_predict(fit_normal),
   method = "correlated"
-)
-
-p1 | p2
-```
-
-```{r ppc-pit-example-2, fig.width=7, fig.height=3, fig.asp=NULL, out.width="80%", warning=FALSE, message=FALSE}
-p1 <- ppc_pit_ecdf(
-  y = cu_df$cu, 
-  yrep = brms::posterior_predict(fit_normal),
-  method = "independent",
-  plot_diff = TRUE
 )
 
 p2 <- ppc_pit_ecdf(
@@ -258,31 +259,12 @@ p1 | p2
 
 ### `ppc_loo_pit_ecdf()`
 
-```{r loo-pit-example-1, fig.width=7, fig.height=3, fig.asp=NULL, out.width="80%", warning=FALSE, message=FALSE}
+```{r ppc-loo-pit-example, fig.width=7, fig.height=3, fig.asp=NULL, out.width="80%", warning=FALSE, message=FALSE}
 p1 <- ppc_loo_pit_ecdf(
-  y = cu_df$cu, 
-  yrep = brms::posterior_predict(fit_normal),
-  method = "independent",
-  lw = weights(loo(fit_normal)$psis_object)
-)
-
-p2 <- ppc_loo_pit_ecdf(
   y = cu_df$cu, 
   yrep = brms::posterior_predict(fit_normal),
   method = "correlated",
   lw = weights(loo(fit_normal)$psis_object)
-)
-
-p1 | p2
-```
-
-```{r loo-pit-example-2, fig.width=7, fig.height=3, fig.asp=NULL, out.width="80%", warning=FALSE, message=FALSE}
-p1 <- ppc_loo_pit_ecdf(
-  y = cu_df$cu, 
-  yrep = brms::posterior_predict(fit_normal),
-  method = "independent",
-  lw = weights(loo(fit_normal)$psis_object),
-  plot_diff = TRUE
 )
 
 p2 <- ppc_loo_pit_ecdf(
@@ -310,18 +292,12 @@ ppc_pit_ecdf_grouped(
 
 ## Using `brms::pp_check()`
 It is also possible to use `brms::pp_check()` with `type = "loo_pit_ecdf"` to perform the same testing and plotting procedure as `ppc_loo_pit_ecdf()`. The following example demonstrates this using the same fitted model as above with `method = "correlated"`.
-```{r pp-check-example-1, fig.show="hold", out.width="80%", warning=FALSE, message=FALSE}
+```{r pp-check-example, fig.show="hold", out.width="80%", warning=FALSE, message=FALSE}
 brms::pp_check(
   fit_normal, 
   type = "loo_pit_ecdf", 
   method = "correlated"
 )
-```
-
-Or for `method = "independent"`:
-
-```{r pp-check-example-2, fig.show="hold", out.width="80%", warning=FALSE, message=FALSE}
-brms::pp_check(fit_normal, method = "independent", type = "pit_ecdf")
 ```
 
 ## Additional arguments
