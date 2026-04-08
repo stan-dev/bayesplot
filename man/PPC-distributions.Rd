@@ -53,7 +53,7 @@ ppc_ecdf_overlay(
   y,
   yrep,
   ...,
-  discrete = FALSE,
+  discrete = deprecated(),
   pad = TRUE,
   size = 0.25,
   alpha = 0.7
@@ -64,7 +64,7 @@ ppc_ecdf_overlay_grouped(
   yrep,
   group,
   ...,
-  discrete = FALSE,
+  discrete = deprecated(),
   pad = TRUE,
   size = 0.25,
   alpha = 0.7
@@ -174,10 +174,9 @@ the predictive distributions.}
 default kernel density estimation parameters or truncate the density
 support. \code{n_dens} defaults to \code{1024}.}
 
-\item{discrete}{For \code{ppc_ecdf_overlay()}, should the data be treated as
-discrete? The default is \code{FALSE}, in which case \code{geom="line"} is
-passed to \code{\link[ggplot2:stat_ecdf]{ggplot2::stat_ecdf()}}. If \code{discrete} is set to
-\code{TRUE} then \code{geom="step"} is used.}
+\item{discrete}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} The \code{discrete} argument is
+deprecated. The ECDF is a step function by definition, so \code{geom_step()}
+is now always used.}
 
 \item{pad}{A logical scalar passed to \code{\link[ggplot2:stat_ecdf]{ggplot2::stat_ecdf()}}.}
 
@@ -285,8 +284,8 @@ variable for \code{y} and each dataset (row) in \code{yrep}. For this plot
 \code{ppc_ecdf_overlay_grouped()}, \code{ppc_dens_overlay_grouped()}}{
 Kernel density or empirical CDF estimates of each dataset (row) in
 \code{yrep} are overlaid, with the distribution of \code{y} itself on top
-(and in a darker shade). When using \code{ppc_ecdf_overlay()} with discrete
-data, set the \code{discrete} argument to \code{TRUE} for better results.
+(and in a darker shade). \code{ppc_ecdf_overlay()} uses step functions,
+consistent with the mathematical definition of the ECDF.
 For an example of \code{ppc_dens_overlay()} also see Gabry et al. (2019).
 }
 \item{\code{ppc_violin_grouped()}}{
@@ -323,7 +322,7 @@ dim(yrep)
 
 ppc_dens_overlay(y, yrep[1:25, ])
 \donttest{
-# ppc_ecdf_overlay with continuous data (set discrete=TRUE if discrete data)
+# ppc_ecdf_overlay (always uses step functions)
 ppc_ecdf_overlay(y, yrep[sample(nrow(yrep), 25), ])
 
 # PIT-ECDF and PIT-ECDF difference plot of the PIT values of y compared to
