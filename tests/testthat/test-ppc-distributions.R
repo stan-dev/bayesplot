@@ -408,6 +408,15 @@ test_that("ppc_ecdf_overlay_grouped renders correctly", {
   )
 })
 
+test_that("ppd_ecdf_overlay renders correctly", {
+  testthat::skip_on_cran()
+  testthat::skip_if_not_installed("vdiffr")
+  skip_on_r_oldrel()
+
+  p_base <- ppd_ecdf_overlay(vdiff_yrep2)
+  vdiffr::expect_doppelganger("ppd_ecdf_overlay (default)", p_base)
+})
+
 test_that("ppc_dens renders correctly", {
   testthat::skip_on_cran()
   testthat::skip_if_not_installed("vdiffr")
