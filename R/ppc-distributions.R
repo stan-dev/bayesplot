@@ -43,8 +43,8 @@
 #'          `ppc_ecdf_overlay_grouped()`, `ppc_dens_overlay_grouped()`}{
 #'    Kernel density or empirical CDF estimates of each dataset (row) in
 #'    `yrep` are overlaid, with the distribution of `y` itself on top
-#'    (and in a darker shade). When using `ppc_ecdf_overlay()` with discrete
-#'    data, set the `discrete` argument to `TRUE` for better results.
+#'    (and in a darker shade). `ppc_ecdf_overlay()` uses step functions,
+#'    consistent with the mathematical definition of the ECDF.
 #'    For an example of `ppc_dens_overlay()` also see Gabry et al. (2019).
 #'   }
 #'   \item{`ppc_violin_grouped()`}{
@@ -85,7 +85,7 @@
 #'
 #' ppc_dens_overlay(y, yrep[1:25, ])
 #' \donttest{
-#' # ppc_ecdf_overlay with continuous data (set discrete=TRUE if discrete data)
+#' # ppc_ecdf_overlay (always uses step functions)
 #' ppc_ecdf_overlay(y, yrep[sample(nrow(yrep), 25), ])
 #'
 #' # PIT-ECDF and PIT-ECDF difference plot of the PIT values of y compared to
@@ -258,20 +258,29 @@ ppc_dens_overlay_grouped <- function(y,
 
 #' @export
 #' @rdname PPC-distributions
-#' @param discrete For `ppc_ecdf_overlay()`, should the data be treated as
-#'   discrete? The default is `FALSE`, in which case `geom="line"` is
-#'   passed to [ggplot2::stat_ecdf()]. If `discrete` is set to
-#'   `TRUE` then `geom="step"` is used.
+#' @param discrete
+#'   `r lifecycle::badge("deprecated")` The `discrete` argument is
+#'   deprecated. The ECDF is a step function by definition, so `geom_step()`
+#'   is now always used.
 #' @param pad A logical scalar passed to [ggplot2::stat_ecdf()].
 #'
 ppc_ecdf_overlay <- function(y,
                              yrep,
                              ...,
-                             discrete = FALSE,
+                             discrete = deprecated(),
                              pad = TRUE,
                              size = 0.25,
                              alpha = 0.7) {
   check_ignored_arguments(...)
+
+  if (is_present(discrete)) {
+    deprecate_warn(
+      "1.12.0",
+      "ppc_ecdf_overlay(discrete)",
+      details = "The ECDF is now always plotted as a step function."
+    )
+  }
+
   data <- ppc_data(y, yrep)
 
   ggplot(data) +
@@ -291,7 +300,7 @@ ppc_ecdf_overlay <- function(y,
     stat_ecdf(
       data = function(x) dplyr::filter(x, !.data$is_y),
       mapping = aes(group = .data$rep_id, color = "yrep"),
-      geom = if (discrete) "step" else "line",
+      geom = "step",
       linewidth = size,
       alpha = alpha,
       pad = pad
@@ -299,7 +308,7 @@ ppc_ecdf_overlay <- function(y,
     stat_ecdf(
       data = function(x) dplyr::filter(x, .data$is_y),
       mapping = aes(color = "y"),
-      geom = if (discrete) "step" else "line",
+      geom = "step",
       linewidth = 1,
       pad = pad
     ) +
@@ -316,17 +325,24 @@ ppc_ecdf_overlay_grouped <- function(y,
                                      yrep,
                                      group,
                                      ...,
-                                     discrete = FALSE,
+                                     discrete = deprecated(),
                                      pad = TRUE,
                                      size = 0.25,
                                      alpha = 0.7) {
   check_ignored_arguments(...)
 
+  if (is_present(discrete)) {
+    deprecate_warn(
+      "1.12.0",
+      "ppc_ecdf_overlay_grouped(discrete)",
+      details = "The ECDF is now always plotted as a step function."
+    )
+  }
+
   p_overlay <- ppc_ecdf_overlay(
     y = y,
     yrep = yrep,
     ...,
-    discrete = discrete,
     pad = pad,
     size = size,
     alpha = alpha
