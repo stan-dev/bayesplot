@@ -1,6 +1,3 @@
-library(bayesplot)
-context("PPC: pp_check generic and default method")
-
 test_that("default pp_check method works", {
   y <- example_y_data()
   yrep <- example_yrep_draws()
@@ -9,12 +6,12 @@ test_that("default pp_check method works", {
   expect_equal(
     pp_check(y, yrep[1:50, ], ppc_dens_overlay),
     ppc_dens_overlay(y, yrep[1:50, ]),
-    check.environment = FALSE
+    ignore_function_env = TRUE
   )
   expect_equal(
     pp_check(y, yrep, fun = "stat_grouped", group = g, stat = "median"),
     ppc_stat_grouped(y, yrep, group = g, stat = "median"),
-    check.environment = FALSE
+    ignore_function_env = TRUE
   )
 })
 

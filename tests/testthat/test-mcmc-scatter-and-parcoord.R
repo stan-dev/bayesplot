@@ -1,6 +1,3 @@
-library(bayesplot)
-context("MCMC: scatter, hex, and parallel coordinates plots")
-
 source(test_path("data-for-mcmc-tests.R"))
 
 if (requireNamespace("rstanarm", quietly = TRUE)) {
@@ -17,6 +14,7 @@ if (requireNamespace("rstanarm", quietly = TRUE)) {
 test_that("mcmc_scatter returns a ggplot object", {
   expect_gg(mcmc_scatter(arr, pars = c("beta[1]", "beta[2]")))
   expect_gg(mcmc_scatter(arr1chain, regex_pars = "beta", size = 3, alpha = 0.5))
+  expect_gg(mcmc_scatter(arr1chain, regex_pars = "beta", shape = 23, size = 3, alpha = 0.5))
   expect_gg(mcmc_scatter(drawsarr, pars = c("theta[1]", "theta[2]")))
   expect_gg(mcmc_scatter(mat, pars = c("sigma", "(Intercept)")))
   expect_gg(mcmc_scatter(dframe, regex_pars = "x:[2,4]"))
@@ -212,40 +210,40 @@ test_that("pairs_condition returns correct structure", {
   # default
   cond0 <- pairs_condition()
   expect_s3_class(cond0, "pairs_condition")
-  expect_equivalent(unclass(cond0), list())
+  expect_equal(unclass(cond0), list(), ignore_attr = TRUE)
   expect_equal(attr(cond0, "type"), "default")
 
   # chains
   cond1 <- pairs_condition(chains = 1:4)
   expect_s3_class(cond1, "integer")
   expect_s3_class(cond1, "pairs_condition")
-  expect_equivalent(unclass(cond1), 1:4)
+  expect_equal(unclass(cond1), 1:4, ignore_attr = TRUE)
   expect_equal(attr(cond1, "type"), "chain_vector")
 
   cond2 <- pairs_condition(chains = list(1:4, 5:6))
   expect_s3_class(cond2, "list")
   expect_s3_class(cond2, "pairs_condition")
-  expect_equivalent(unclass(cond2), list(upper=1:4, lower=5:6))
+  expect_equal(unclass(cond2), list(upper=1:4, lower=5:6), ignore_attr = TRUE)
   expect_equal(attr(cond2, "type"), "chain_list")
 
   # draws
   cond3 <- pairs_condition(draws = 0.7)
   expect_s3_class(cond3, "numeric")
   expect_s3_class(cond3, "pairs_condition")
-  expect_equivalent(unclass(cond3), 0.7)
+  expect_equal(unclass(cond3), 0.7, ignore_attr = TRUE)
   expect_equal(attr(cond3, "type"), "draws_proportion")
 
   cond4 <- pairs_condition(draws = c(T, F, T))
   expect_s3_class(cond4, "logical")
   expect_s3_class(cond4, "pairs_condition")
-  expect_equivalent(unclass(cond4), c(T, F, T))
+  expect_equal(unclass(cond4), c(T, F, T), ignore_attr = TRUE)
   expect_equal(attr(cond4, "type"), "draws_selection")
 
   # nuts
   cond5 <- pairs_condition(nuts = "lp__")
   expect_s3_class(cond5, "character")
   expect_s3_class(cond5, "pairs_condition")
-  expect_equivalent(unclass(cond5), "lp__")
+  expect_equal(unclass(cond5), "lp__", ignore_attr = TRUE)
   expect_equal(attr(cond5, "type"), "nuts")
 })
 
@@ -315,11 +313,18 @@ test_that("pairs_condition message if multiple args specified", {
 })
 
 
-
 # mcmc_parcoord -----------------------------------------------------------
 test_that("mcmc_parcoord returns a ggplot object", {
   expect_gg(mcmc_parcoord(arr, pars = c("(Intercept)", "sigma")))
   expect_gg(mcmc_parcoord(arr, pars = "sigma", regex_pars = "beta"))
+})
+
+test_that("mcmc_parcoord uses the expected x-axis expansion", {
+  built <- ggplot2::ggplot_build(
+    mcmc_parcoord(example_mcmc_draws(), pars = c("beta[1]", "beta[2]", "sigma"))
+  )
+
+  expect_equal(built$layout$panel_params[[1]]$x.range, c(1, 3.25))
 })
 
 test_that("mcmc_parcoord with nuts info returns a ggplot object", {
@@ -345,7 +350,6 @@ test_that("mcmc_parcoord throws correct warnings and errors", {
   )
 })
 
-
 # parcoord_style_np -------------------------------------------------------
 test_that("parcoord_style_np returns correct structure", {
   style <- parcoord_style_np()
@@ -369,6 +373,42 @@ test_that("parcoord_style_np throws correct errors", {
   )
 })
 
+# mcmc_parcoord_data -------------------------------------------------
+
+test_that("mcmc_parcoord_data returns expected structure", {
+  d <- mcmc_parcoord_data(arr, pars = c("(Intercept)", "sigma"))
+  expect_s3_class(d, "data.frame")
+  expect_named(d, c("Draw", "Parameter", "Value", "Divergent"))
+
+  draws_by_parameter <- split(d$Draw, d$Parameter)
+  expected_draws <- seq_len(dim(arr)[1] * dim(arr)[2])
+  expect_equal(draws_by_parameter[[1]], expected_draws)
+  expect_equal(draws_by_parameter[[2]], expected_draws)
+})
+
+test_that("mcmc_parcoord_data sets Divergent to 0 when np is NULL", {
+  d <- mcmc_parcoord_data(arr, pars = c("(Intercept)", "sigma"))
+  expect_true(all(d$Divergent == 0))
+})
+
+test_that("mcmc_parcoord_data joins divergence information from np", {
+  fake_np <- data.frame(
+    Iteration = rep(seq_len(dim(arr)[1]), each = dim(arr)[2]),
+    Chain = rep(seq_len(dim(arr)[2]), times = dim(arr)[1]),
+    Parameter = factor("divergent__"),
+    Value = as.integer(rep(c(0, 1, 0, 1), times = dim(arr)[1]))
+  )
+  d <- mcmc_parcoord_data(arr, pars = c("(Intercept)", "sigma"), np = fake_np)
+
+  expect_false(anyNA(d$Divergent))
+  expect_equal(sum(d$Divergent == 1), 400)
+  expect_equal(sum(d$Divergent == 0), 400)
+})
+
+test_that("mcmc_parcoord_data errors with fewer than 2 parameters", {
+  expect_error(mcmc_parcoord_data(arr, pars = "sigma"), "at least two")
+})
+
 
 # Visual tests -----------------------------------------------------------------
 
@@ -386,6 +426,14 @@ test_that("mcmc_scatter renders correctly", {
     alpha = 0.2
   )
   vdiffr::expect_doppelganger("mcmc_scatter (size, alpha)", p_custom)
+
+  p_custom_shape <- mcmc_scatter(
+    vdiff_dframe_chains,
+    shape = 3,
+    size = 2,
+    alpha = 0.2
+  )
+  vdiffr::expect_doppelganger("mcmc_scatter (shape, size, alpha)", p_custom_shape)
 
   p_divergences <- mcmc_scatter(
     vdiff_dframe_chains,

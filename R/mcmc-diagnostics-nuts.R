@@ -19,8 +19,9 @@
 #' @param chain A positive integer for selecting a particular chain. The default
 #'   (`NULL`) is to merge the chains before plotting. If `chain = k`
 #'   then the plot for chain `k` is overlaid (in a darker shade but with
-#'   transparency) on top of the plot for all chains. The `chain` argument
-#'   is not used by `mcmc_nuts_energy()`.
+#'   transparency) on top of the plot for all chains. For `mcmc_nuts_stepsize()`,
+#'   chains are always plotted separately, and `chain` simply highlights the
+#'   selected chain. The `chain` argument is not used by `mcmc_nuts_energy()`.
 #' @param ... Currently ignored.
 #'
 #' @return A gtable object (the result of calling
@@ -182,7 +183,7 @@ mcmc_nuts_acceptance <-
         )
     }
     hists <- hists +
-      dont_expand_y_axis(c(0.005, 0)) +
+      dont_expand_y_axis(expansion(mult = 0.005, add = 0)) +
       facet_wrap(vars(.data$Parameter), scales = "free") +
       yaxis_text(FALSE) +
       yaxis_title(FALSE) +
@@ -285,7 +286,6 @@ mcmc_nuts_divergence <- function(x, lp, chain = NULL, ...) {
   as_bayesplot_grid(nuts_plot)
 }
 
-
 #' @rdname MCMC-nuts
 #' @export
 mcmc_nuts_stepsize <- function(x, lp, chain = NULL, ...) {
@@ -369,6 +369,8 @@ mcmc_nuts_treedepth <- function(x, lp, chain = NULL, ...) {
     yaxis_ticks(FALSE)
 
   violin_lp_data <- data.frame(treedepth, lp = lp$Value)
+  violin_lp_data <- drop_singleton_values(violin_lp_data, "Value")
+
   violin_lp <-
     ggplot(violin_lp_data, aes(x = factor(.data$Value), y = .data$lp)) +
     geom_violin(fill = get_color("l"), color = get_color("lh")) +
@@ -376,6 +378,8 @@ mcmc_nuts_treedepth <- function(x, lp, chain = NULL, ...) {
     bayesplot_theme_get()
 
   violin_accept_stat_data <- data.frame(treedepth, as = accept_stat$Value)
+  violin_accept_stat_data <- drop_singleton_values(violin_accept_stat_data, "Value")
+
   violin_accept_stat <-
     ggplot(violin_accept_stat_data, aes(x = factor(.data$Value), y = .data$as)) +
     geom_violin(fill = get_color("l"), color = get_color("lh")) +
@@ -408,7 +412,6 @@ mcmc_nuts_treedepth <- function(x, lp, chain = NULL, ...) {
   )
   as_bayesplot_grid(nuts_plot)
 }
-
 
 #' @rdname MCMC-nuts
 #' @export
@@ -472,8 +475,8 @@ mcmc_nuts_energy <-
       ) +
       scale_fill_manual("", values = fills, labels = aes_labs) +
       scale_color_manual("", values = clrs, labels = aes_labs) +
-      dont_expand_y_axis(c(0.005, 0)) +
-      scale_x_continuous(expand = c(0.2, 0)) +
+      dont_expand_y_axis(expansion(mult = 0.005, add = 0)) +
+      scale_x_continuous(expand = expansion(mult = 0.2, add = 0)) +
       labs(y = NULL, x = expression(E - bar(E))) +
       bayesplot_theme_get() +
       space_legend_keys()  +
@@ -561,3 +564,11 @@ chain_violin <-
       alpha = alpha
     )
   }
+
+# Drop rows whose value in `col` appears only once (singletons cannot
+# produce a violin density estimate).
+drop_singleton_values <- function(df, col) {
+  counts <- table(df[[col]])
+  keep <- names(counts[counts > 1])
+  df[df[[col]] %in% keep, ]
+}

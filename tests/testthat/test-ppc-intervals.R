@@ -1,6 +1,3 @@
-library(bayesplot)
-context("PPC: intervals & ribbon")
-
 source(test_path("data-for-ppc-tests.R"))
 
 test_that("ppc_intervals returns ggplot object", {

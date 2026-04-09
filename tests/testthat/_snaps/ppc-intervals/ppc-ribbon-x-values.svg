@@ -66,8 +66,8 @@
 <text x='619.85' y='556.21' text-anchor='middle' style='font-size: 9.60px; fill: #4D4D4D; font-family: sans;' textLength='5.34px' lengthAdjust='spacingAndGlyphs'>3</text>
 <text x='330.03' y='567.53' style='font-size: 12.00px; font-style: italic; font-family: sans;' textLength='6.00px' lengthAdjust='spacingAndGlyphs'>x</text>
 <line x1='665.83' y1='284.26' x2='679.65' y2='284.26' style='stroke-width: 1.07; stroke: #011F4B; stroke-linecap: butt;' />
-<rect x='664.17' y='292.97' width='17.14' height='17.14' style='stroke-width: 0.11; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #D1E1EC; fill-opacity: 0.33;' />
-<rect x='664.28' y='293.08' width='16.93' height='16.93' style='stroke-width: 0.27; stroke: #B3CDE0; stroke-linecap: butt; stroke-linejoin: miter; fill: #D1E1EC;' />
+<rect x='664.17' y='292.97' width='17.14' height='17.14' style='stroke-width: 0.11; stroke: none; stroke-linecap: butt; fill: #D1E1EC; fill-opacity: 0.33;' />
+<rect x='664.28' y='293.08' width='16.93' height='16.93' style='stroke-width: 0.27; stroke: #B3CDE0; stroke-linecap: butt; fill: #D1E1EC;' />
 <text x='687.36' y='286.35' style='font-size: 13.00px; font-style: italic; font-family: sans;' textLength='6.51px' lengthAdjust='spacingAndGlyphs'>y</text>
 <text x='687.36' y='302.83' style='font-size: 13.00px; font-style: italic; font-family: sans;' textLength='6.51px' lengthAdjust='spacingAndGlyphs'>y</text>
 <text x='694.89' y='305.23' style='font-size: 9.10px; font-family: sans;' textLength='3.03px' lengthAdjust='spacingAndGlyphs'>r</text>

@@ -1,6 +1,3 @@
-library(bayesplot)
-context("Example draws")
-
 test_that("example_mcmc_draws throws correct errors", {
   expect_error(example_mcmc_draws(chains = 5), "chains <= 4")
   expect_error(example_mcmc_draws(chains = 0), "chains >= 1")
@@ -26,7 +23,7 @@ test_that("example ppc data works", {
 
   yrep <- example_yrep_draws()
   expect_type(yrep, "double")
-  expect_is(yrep, "matrix")
+  expect_true(is.matrix(yrep))
   expect_equal(ncol(yrep), length(y))
 
   group <- example_group_data()

@@ -1,6 +1,3 @@
-library(bayesplot)
-context("PPC: censoring")
-
 source(test_path("data-for-ppc-tests.R"))
 
 test_that("ppc_km_overlay returns a ggplot object", {

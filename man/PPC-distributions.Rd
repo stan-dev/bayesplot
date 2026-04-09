@@ -30,6 +30,7 @@ ppc_dens_overlay(
   bw = "nrd0",
   adjust = 1,
   kernel = "gaussian",
+  bounds = NULL,
   n_dens = 1024
 )
 
@@ -44,6 +45,7 @@ ppc_dens_overlay_grouped(
   bw = "nrd0",
   adjust = 1,
   kernel = "gaussian",
+  bounds = NULL,
   n_dens = 1024
 )
 
@@ -51,7 +53,7 @@ ppc_ecdf_overlay(
   y,
   yrep,
   ...,
-  discrete = FALSE,
+  discrete = deprecated(),
   pad = TRUE,
   size = 0.25,
   alpha = 0.7
@@ -62,13 +64,13 @@ ppc_ecdf_overlay_grouped(
   yrep,
   group,
   ...,
-  discrete = FALSE,
+  discrete = deprecated(),
   pad = TRUE,
   size = 0.25,
   alpha = 0.7
 )
 
-ppc_dens(y, yrep, ..., trim = FALSE, size = 0.5, alpha = 1)
+ppc_dens(y, yrep, ..., trim = FALSE, size = 0.5, alpha = 1, bounds = NULL)
 
 ppc_hist(
   y,
@@ -105,7 +107,7 @@ ppc_freqpoly_grouped(
 
 ppc_boxplot(y, yrep, ..., notch = TRUE, size = 0.5, alpha = 1)
 
-ppc_dots(y, yrep, ..., binwidth = NA, quantiles = NA, freq = TRUE)
+ppc_dots(y, yrep, ..., binwidth = NA, quantiles = 100, freq = TRUE)
 
 ppc_violin_grouped(
   y,
@@ -167,30 +169,30 @@ the predictive distributions.}
 
 \item{trim}{A logical scalar passed to \code{\link[ggplot2:geom_density]{ggplot2::geom_density()}}.}
 
-\item{bw, adjust, kernel, n_dens}{Optional arguments passed to
-\code{\link[stats:density]{stats::density()}} to override default kernel density estimation
-parameters. \code{n_dens} defaults to \code{1024}.}
+\item{bw, adjust, kernel, n_dens, bounds}{Optional arguments passed to
+\code{\link[stats:density]{stats::density()}} (and \code{bounds} to \code{\link[ggplot2:geom_density]{ggplot2::stat_density()}}) to override
+default kernel density estimation parameters or truncate the density
+support. \code{n_dens} defaults to \code{1024}.}
 
-\item{discrete}{For \code{ppc_ecdf_overlay()}, should the data be treated as
-discrete? The default is \code{FALSE}, in which case \code{geom="line"} is
-passed to \code{\link[ggplot2:stat_ecdf]{ggplot2::stat_ecdf()}}. If \code{discrete} is set to
-\code{TRUE} then \code{geom="step"} is used.}
+\item{discrete}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} The \code{discrete} argument is
+deprecated. The ECDF is a step function by definition, so \code{geom_step()} is
+now always used.}
 
 \item{pad}{A logical scalar passed to \code{\link[ggplot2:stat_ecdf]{ggplot2::stat_ecdf()}}.}
 
-\item{binwidth}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}} to override
-the default binwidth.}
+\item{binwidth}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}}, \code{\link[ggplot2:geom_ribbon]{ggplot2::geom_area()}},
+and \code{\link[ggdist:stat_dots]{ggdist::stat_dots()}} to override the default binwidth.}
 
-\item{bins}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}} to override
-the default binwidth.}
+\item{bins}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}} and \code{\link[ggplot2:geom_ribbon]{ggplot2::geom_area()}}
+to override the default binning.}
 
-\item{breaks}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}} as an
-alternative to \code{binwidth}.}
+\item{breaks}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}} as an alternative to
+\code{binwidth}.}
 
-\item{freq}{For histograms, \code{freq=TRUE} (the default) puts count on the
-y-axis. Setting \code{freq=FALSE} puts density on the y-axis. (For many
-plots the y-axis text is off by default. To view the count or density
-labels on the y-axis see the \code{\link[=yaxis_text]{yaxis_text()}} convenience
+\item{freq}{For histograms and frequency polygons, \code{freq=TRUE} (the default)
+puts count on the y-axis. Setting \code{freq=FALSE} puts density on the y-axis.
+(For many plots the y-axis text is off by default. To view the count or
+density labels on the y-axis see the \code{\link[=yaxis_text]{yaxis_text()}} convenience
 function.)}
 
 \item{notch}{For the box plot, a logical scalar passed to
@@ -199,12 +201,12 @@ function.)}
 
 \item{quantiles}{For dot plots, an optional integer passed to
 \code{\link[ggdist:stat_dots]{ggdist::stat_dots()}} specifying the number of quantiles to use for a
-quantile dot plot. If \code{quantiles} is \code{NA} (the default) then all data
-points are plotted.}
+quantile dot plot. If \code{quantiles} is \code{NA} then all data points are plotted.
+The default is \code{quantiles=100} so that each dot represent one percent of
+posterior mass.}
 
-\item{probs}{A numeric vector passed to \code{\link[ggplot2:geom_violin]{ggplot2::geom_violin()}}'s
-\code{draw_quantiles} argument to specify at which quantiles to draw
-horizontal lines. Set to \code{NULL} to remove the lines.}
+\item{probs}{A numeric vector of probabilities controlling where quantile
+lines are drawn. Set to \code{NULL} to remove the lines.}
 
 \item{y_draw}{For \code{ppc_violin_grouped()}, a string specifying how to draw
 \code{y}: \code{"violin"} (default), \code{"points"} (jittered points), or \code{"both"}.}
@@ -270,7 +272,7 @@ contain only a small number of rows. See the \strong{Examples} section.
 \item{\code{ppc_dots()}}{
 A dot plot plot is displayed for \code{y} and each dataset (row) in \code{yrep}.
 For these plots \code{yrep} should therefore contain only a small number of rows.
-See the \strong{Examples} section. This function requires \link[ggdist:stat_dots]{ggdist::stat_dots} to be installed.
+See the \strong{Examples} section.
 }
 \item{\code{ppc_freqpoly_grouped()}}{
 A separate frequency polygon is plotted for each level of a grouping
@@ -280,11 +282,10 @@ variable for \code{y} and each dataset (row) in \code{yrep}. For this plot
 }
 \item{\code{ppc_ecdf_overlay()}, \code{ppc_dens_overlay()},
 \code{ppc_ecdf_overlay_grouped()}, \code{ppc_dens_overlay_grouped()}}{
-Kernel density or empirical CDF estimates of each dataset (row) in
-\code{yrep} are overlaid, with the distribution of \code{y} itself on top
-(and in a darker shade). When using \code{ppc_ecdf_overlay()} with discrete
-data, set the \code{discrete} argument to \code{TRUE} for better results.
-For an example of \code{ppc_dens_overlay()} also see Gabry et al. (2019).
+Kernel density or empirical CDF estimates of each dataset (row) in \code{yrep}
+are overlaid, with the distribution of \code{y} itself on top (and in a darker
+shade). For an example of \code{ppc_dens_overlay()} also see Gabry et al.
+(2019).
 }
 \item{\code{ppc_violin_grouped()}}{
 The density estimate of \code{yrep} within each level of a grouping
@@ -298,7 +299,16 @@ the corresponding \code{yrep} values. \code{100 * prob}\% central simultaneous
 confidence intervals are provided to asses if \code{y} and \code{yrep} originate
 from the same distribution. The PIT values can also be provided directly
 as \code{pit}.
-See Säilynoja et al. (2021) for more details.}
+See Säilynoja et al. (2021) for more details.
+}
+\item{\code{ppc_data()}}{
+This function prepares data for plotting with \strong{ggplot2} and doesn't
+itself make any plots. Users can call it directly to obtain the underlying
+data frame that (in most cases) is passed to \strong{ggplot2}. This is useful
+when you want to customize the appearance of PPC plots beyond what the
+built-in plotting functions allow, or when you want to construct new types
+of PPC visualizations based on the same underlying data.
+}
 }
 }
 
@@ -311,7 +321,7 @@ dim(yrep)
 
 ppc_dens_overlay(y, yrep[1:25, ])
 \donttest{
-# ppc_ecdf_overlay with continuous data (set discrete=TRUE if discrete data)
+# ppc_ecdf_overlay
 ppc_ecdf_overlay(y, yrep[sample(nrow(yrep), 25), ])
 
 # PIT-ECDF and PIT-ECDF difference plot of the PIT values of y compared to

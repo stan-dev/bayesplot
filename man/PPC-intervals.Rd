@@ -158,6 +158,13 @@ to read than the other.
 Same as \code{ppc_intervals()} and \code{ppc_ribbon()}, respectively, but a
 separate plot (facet) is generated for each level of a grouping variable.
 }
+\item{\code{ppc_intervals_data()}, \code{ppc_ribbon_data()}}{
+Data-preparation back end for \code{ppc_intervals()}, \code{ppc_ribbon()}, and
+their grouped variants. \code{ppc_ribbon_data()} is an alias for
+\code{ppc_intervals_data()}. Users can call either function directly to
+obtain the prepared data frame and create custom interval or ribbon
+visualizations with \strong{ggplot2}.
+}
 }
 }
 

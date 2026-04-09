@@ -27,7 +27,8 @@
 #'   display the function name(s). If specified as a function (or functions)
 #'   then generic naming is used in the legend.
 #' @param ... Currently unused.
-#'
+#' @param discrete For `ppc_stat()` and `ppc_stat_grouped()`, if `TRUE` then a
+#'   bar chart is used instead of a histogram.
 #' @template details-binomial
 #' @template return-ggplot-or-data
 #'
@@ -38,7 +39,7 @@
 #' @section Plot Descriptions:
 #' \describe{
 #'   \item{`ppc_stat()`, `ppc_stat_freqpoly()`}{
-#'    A histogram or frequency polygon of the distribution of a statistic
+#'    A histogram/bar plot or frequency polygon of the distribution of a statistic
 #'    computed by applying `stat` to each dataset (row) in `yrep`. The value of
 #'    the statistic in the observed data, `stat(y)`, is overlaid as a vertical
 #'    line. More details and example usage of `ppc_stat()` can be found in Gabry
@@ -54,6 +55,13 @@
 #'    computed over the datasets (rows) in `yrep`. The value of the
 #'    statistics in the observed data is overlaid as large point.
 #'   }
+#'   \item{`ppc_stat_data()`}{
+#'    Data-preparation back end for `ppc_stat()`, `ppc_stat_freqpoly()`, and
+#'    their grouped variants. Users can call `ppc_stat_data()` directly to
+#'    obtain the data frame of test-statistic values computed from `y` and
+#'    each row of `yrep`, enabling custom test-statistic visualizations with
+#'    **ggplot2**.
+#'   }
 #' }
 #'
 #' @examples
@@ -61,6 +69,12 @@
 #' yrep <- example_yrep_draws()
 #' ppc_stat(y, yrep, stat = "median")
 #' ppc_stat(y, yrep, stat = "sd") + legend_none()
+#'
+#' # discrete data example
+#' set.seed(0)
+#' y_discrete <- rbinom(20, 1, 0.2)
+#' yrep_discrete <- matrix(rbinom(2000, 1, prob = 0.4), 1000, 20, byrow = TRUE)
+#' ppc_stat(y_discrete, yrep_discrete, stat = "mean", discrete = TRUE)
 #'
 #' # use your own function for the 'stat' argument
 #' color_scheme_set("brightblue")
@@ -76,6 +90,10 @@
 #' group <- example_group_data()
 #' ppc_stat_grouped(y, yrep, group, stat = "median")
 #' ppc_stat_grouped(y, yrep, group, stat = "mad") + yaxis_text()
+#'
+#' # discrete data example with groups
+#' group_discrete <- rep(c("First Half","Second Half"), each = 10)
+#' ppc_stat_grouped(y_discrete, yrep_discrete, group_discrete, stat = "mean", discrete = TRUE)
 #'
 #' # force y-axes to have same scales, allow x axis to vary
 #' ppc_stat_grouped(y, yrep, group, facet_args = list(scales = "free_x")) + yaxis_text()
@@ -106,6 +124,7 @@ ppc_stat <-
            yrep,
            stat = "mean",
            ...,
+           discrete = FALSE,
            binwidth = NULL,
            bins = NULL,
            breaks = NULL,
@@ -124,11 +143,21 @@ ppc_stat <-
       group = dots$group,
       stat = match.fun(stat)
     )
-    ggplot(
+
+    graph <- ggplot(
       data = dplyr::filter(data, .data$variable != "y"),
       mapping = set_hist_aes(freq)
-    ) +
-      geom_histogram(
+    )
+
+    graph <- if (discrete) {
+      graph + geom_bar(
+        aes(fill = "yrep"),
+        color = get_color("lh"),
+        linewidth = 0.25,
+        na.rm = TRUE,
+      )
+    } else {
+      graph + geom_histogram(
         aes(fill = "yrep"),
         color = get_color("lh"),
         linewidth = 0.25,
@@ -136,8 +165,10 @@ ppc_stat <-
         binwidth = binwidth,
         bins = bins,
         breaks = breaks
-      ) +
-      geom_vline(
+      )
+    }
+
+    graph + geom_vline(
         data = dplyr::filter(data, .data$variable == "y"),
         mapping = aes(xintercept = .data$value, color = "y"),
         linewidth = 1.5
@@ -169,6 +200,7 @@ ppc_stat_grouped <-
            group,
            stat = "mean",
            ...,
+           discrete = FALSE,
            facet_args = list(),
            binwidth = NULL,
            bins = NULL,
@@ -231,7 +263,7 @@ ppc_stat_freqpoly <-
         values = set_names(get_color(c("m", "dh")), c("yrep", "y")),
         labels = c(yrep = Tyrep_label(), y = Ty_label())
       ) +
-      dont_expand_y_axis(c(0.005, 0)) +
+      dont_expand_y_axis(expansion(mult = 0.005, add = 0)) +
       bayesplot_theme_get() +
       xaxis_title(FALSE) +
       yaxis_text(FALSE) +
@@ -417,9 +449,9 @@ Tyrep_label <- function() expression(italic(T)(italic(y)[rep]))
 
 message_if_using_mean <- function(stat) {
   if (is.character(stat) && stat == "mean") {
-    message(
+    inform(paste0(
       "Note: in most cases the default test statistic 'mean' is ",
       "too weak to detect anything of interest."
-    )
+    ))
   }
 }

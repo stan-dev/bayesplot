@@ -1,9 +1,9 @@
 Package: bayesplot
 Type: Package
 Title: Plotting for Bayesian Models
-Version: 1.13.0.9000
-Date: 2025-06-18
-Authors@R: c(person("Jonah", "Gabry", role = c("aut", "cre"), email = "jsg2201@columbia.edu"),
+Version: 1.15.0.9000
+Date: 2025-12-11
+Authors@R: c(person("Jonah", "Gabry", role = c("aut", "cre"), email = "jgabry@gmail.com"),
              person("Tristan", "Mahr", role = "aut", comment = c(ORCID = "0000-0002-8890-5116")),
              person("Paul-Christian", "Bürkner", role = "ctb"),
              person("Martin", "Modrák", role = "ctb"),
@@ -11,8 +11,10 @@ Authors@R: c(person("Jonah", "Gabry", role = c("aut", "cre"), email = "jsg2201@c
              person("Frank", "Weber", role = "ctb"),
              person("Eduardo", "Coronado Sroka", role = "ctb"),
              person("Teemu", "Sailynoja", role = "ctb"),
-             person("Aki", "Vehtari", role = "ctb"))
-Maintainer: Jonah Gabry <jsg2201@columbia.edu>
+             person("Aki", "Vehtari", role = "ctb"), 
+             person("Behram", "Ulukır", role = "ctb"), 
+             person("Visruth", "Srimath Kandali", role = "ctb"))
+Maintainer: Jonah Gabry <jgabry@gmail.com>
 Description: Plotting functions for posterior analysis, MCMC diagnostics,
     prior and posterior predictive checks, and other visualizations
     to support the applied Bayesian workflow advocated in
@@ -24,23 +26,25 @@ Description: Plotting functions for posterior analysis, MCMC diagnostics,
 License: GPL (>= 3)
 URL: https://mc-stan.org/bayesplot/
 BugReports: https://github.com/stan-dev/bayesplot/issues/
-SystemRequirements: pandoc (>= 1.12.3), pandoc-citeproc
+SystemRequirements: pandoc (>= 1.12.3)
 Depends:
     R (>= 4.1.0)
 Imports:
-    dplyr (>= 0.8.0),
-    ggplot2 (>= 3.4.0),
+    dplyr (>= 1.0.0),
+    ggplot2 (>= 3.5.0),
     ggridges (>= 0.5.5),
     glue,
+    lifecycle,
     posterior,
     reshape2,
-    rlang (>= 0.3.0),
+    rlang (>= 1.0.0),
     stats,
     tibble (>= 2.0.0),
     tidyr,
     tidyselect,
     utils
 Suggests:
+    cmdstanr,
     ggdist,
     ggfortify,
     gridExtra (>= 2.2.1),
@@ -51,13 +55,15 @@ Suggests:
     rmarkdown (>= 1.0.0),
     rstan (>= 2.17.1),
     rstanarm (>= 2.17.4),
-    rstantools (>= 1.5.0),
+    rstantools (>= 2.0.0),
     scales,
     shinystan (>= 2.3.0),
     survival,
-    testthat (>= 2.0.0),
+    testthat (>= 3.0.0),
     vdiffr (>= 1.0.2)
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 VignetteBuilder: knitr
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
+Config/testthat/edition: 3
+Additional_repositories: https://stan-dev.r-universe.dev/

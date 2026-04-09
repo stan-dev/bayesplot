@@ -31,7 +31,7 @@
 #'   \item{`ppc_dots()`}{
 #'    A dot plot plot is displayed for `y` and each dataset (row) in `yrep`.
 #'    For these plots `yrep` should therefore contain only a small number of rows.
-#'    See the **Examples** section. This function requires [ggdist::stat_dots] to be installed.
+#'    See the **Examples** section.
 #'    }
 #'   \item{`ppc_freqpoly_grouped()`}{
 #'    A separate frequency polygon is plotted for each level of a grouping
@@ -41,11 +41,10 @@
 #'   }
 #'   \item{`ppc_ecdf_overlay()`, `ppc_dens_overlay()`,
 #'          `ppc_ecdf_overlay_grouped()`, `ppc_dens_overlay_grouped()`}{
-#'    Kernel density or empirical CDF estimates of each dataset (row) in
-#'    `yrep` are overlaid, with the distribution of `y` itself on top
-#'    (and in a darker shade). When using `ppc_ecdf_overlay()` with discrete
-#'    data, set the `discrete` argument to `TRUE` for better results.
-#'    For an example of `ppc_dens_overlay()` also see Gabry et al. (2019).
+#'    Kernel density or empirical CDF estimates of each dataset (row) in `yrep`
+#'    are overlaid, with the distribution of `y` itself on top (and in a darker
+#'    shade). For an example of `ppc_dens_overlay()` also see Gabry et al.
+#'    (2019).
 #'   }
 #'   \item{`ppc_violin_grouped()`}{
 #'    The density estimate of `yrep` within each level of a grouping
@@ -59,7 +58,16 @@
 #'    confidence intervals are provided to asses if `y` and `yrep` originate
 #'    from the same distribution. The PIT values can also be provided directly
 #'    as `pit`.
-#'    See Säilynoja et al. (2021) for more details.}
+#'    See Säilynoja et al. (2021) for more details.
+#'   }
+#'   \item{`ppc_data()`}{
+#'    This function prepares data for plotting with **ggplot2** and doesn't
+#'    itself make any plots. Users can call it directly to obtain the underlying
+#'    data frame that (in most cases) is passed to **ggplot2**. This is useful
+#'    when you want to customize the appearance of PPC plots beyond what the
+#'    built-in plotting functions allow, or when you want to construct new types
+#'    of PPC visualizations based on the same underlying data.
+#'   }
 #' }
 #'
 #' @template reference-vis-paper
@@ -76,7 +84,7 @@
 #'
 #' ppc_dens_overlay(y, yrep[1:25, ])
 #' \donttest{
-#' # ppc_ecdf_overlay with continuous data (set discrete=TRUE if discrete data)
+#' # ppc_ecdf_overlay
 #' ppc_ecdf_overlay(y, yrep[sample(nrow(yrep), 25), ])
 #'
 #' # PIT-ECDF and PIT-ECDF difference plot of the PIT values of y compared to
@@ -165,8 +173,10 @@ ppc_dens_overlay <-
            bw = "nrd0",
            adjust = 1,
            kernel = "gaussian",
+           bounds = NULL,
            n_dens = 1024) {
     check_ignored_arguments(...)
+    bounds <- validate_density_bounds(bounds)
 
     data <- ppc_data(y, yrep)
     ggplot(data, mapping = aes(x = .data$value)) +
@@ -179,6 +189,7 @@ ppc_dens_overlay <-
         bw = bw,
         adjust = adjust,
         kernel = kernel,
+        bounds = bounds,
         n = n_dens
       ) +
       overlay_ppd_densities(
@@ -190,6 +201,7 @@ ppc_dens_overlay <-
         bw = bw,
         adjust = adjust,
         kernel = kernel,
+        bounds = bounds,
         n = n_dens
       ) +
       scale_color_ppc() +
@@ -215,6 +227,7 @@ ppc_dens_overlay_grouped <- function(y,
                                      bw = "nrd0",
                                      adjust = 1,
                                      kernel = "gaussian",
+                                     bounds = NULL,
                                      n_dens = 1024) {
   check_ignored_arguments(...)
 
@@ -228,6 +241,7 @@ ppc_dens_overlay_grouped <- function(y,
     bw = bw,
     adjust = adjust,
     kernel = kernel,
+    bounds = bounds,
     n_dens = n_dens
   )
   # Use + list(data) trick to replace the data in the plot. The layer-specific
@@ -243,20 +257,28 @@ ppc_dens_overlay_grouped <- function(y,
 
 #' @export
 #' @rdname PPC-distributions
-#' @param discrete For `ppc_ecdf_overlay()`, should the data be treated as
-#'   discrete? The default is `FALSE`, in which case `geom="line"` is
-#'   passed to [ggplot2::stat_ecdf()]. If `discrete` is set to
-#'   `TRUE` then `geom="step"` is used.
+#' @param discrete `r lifecycle::badge("deprecated")` The `discrete` argument is
+#'   deprecated. The ECDF is a step function by definition, so `geom_step()` is
+#'   now always used.
 #' @param pad A logical scalar passed to [ggplot2::stat_ecdf()].
 #'
 ppc_ecdf_overlay <- function(y,
                              yrep,
                              ...,
-                             discrete = FALSE,
+                             discrete = deprecated(),
                              pad = TRUE,
                              size = 0.25,
                              alpha = 0.7) {
   check_ignored_arguments(...)
+
+  if (is_present(discrete)) {
+    deprecate_warn(
+      "1.16.0",
+      "ppc_ecdf_overlay(discrete)",
+      details = "The ECDF is now always plotted as a step function."
+    )
+  }
+
   data <- ppc_data(y, yrep)
 
   ggplot(data) +
@@ -276,7 +298,7 @@ ppc_ecdf_overlay <- function(y,
     stat_ecdf(
       data = function(x) dplyr::filter(x, !.data$is_y),
       mapping = aes(group = .data$rep_id, color = "yrep"),
-      geom = if (discrete) "step" else "line",
+      geom = "step",
       linewidth = size,
       alpha = alpha,
       pad = pad
@@ -284,7 +306,7 @@ ppc_ecdf_overlay <- function(y,
     stat_ecdf(
       data = function(x) dplyr::filter(x, .data$is_y),
       mapping = aes(color = "y"),
-      geom = if (discrete) "step" else "line",
+      geom = "step",
       linewidth = 1,
       pad = pad
     ) +
@@ -301,17 +323,24 @@ ppc_ecdf_overlay_grouped <- function(y,
                                      yrep,
                                      group,
                                      ...,
-                                     discrete = FALSE,
+                                     discrete = deprecated(),
                                      pad = TRUE,
                                      size = 0.25,
                                      alpha = 0.7) {
   check_ignored_arguments(...)
 
+  if (is_present(discrete)) {
+    deprecate_warn(
+      "1.16.0",
+      "ppc_ecdf_overlay_grouped(discrete)",
+      details = "The ECDF is now always plotted as a step function."
+    )
+  }
+
   p_overlay <- ppc_ecdf_overlay(
     y = y,
     yrep = yrep,
     ...,
-    discrete = discrete,
     pad = pad,
     size = size,
     alpha = alpha
@@ -335,8 +364,10 @@ ppc_dens <-
            ...,
            trim = FALSE,
            size = 0.5,
-           alpha = 1) {
+           alpha = 1,
+           bounds = NULL) {
     check_ignored_arguments(...)
+    bounds <- validate_density_bounds(bounds)
     data <- ppc_data(y, yrep)
     ggplot(data, mapping = aes(
       x = .data$value,
@@ -346,7 +377,8 @@ ppc_dens <-
       geom_density(
         linewidth = size,
         alpha = alpha,
-        trim = trim
+        trim = trim,
+        bounds = bounds
       ) +
       scale_fill_ppc() +
       scale_color_ppc() +
@@ -523,7 +555,7 @@ ppc_dots <-
            yrep,
            ...,
            binwidth = NA,
-           quantiles = NA,
+           quantiles = 100,
            freq = TRUE) {
     check_ignored_arguments(..., ok_args = c("dotsize", "layout", "stackratio", "overflow"))
 
@@ -557,9 +589,8 @@ ppc_dots <-
 
 #' @rdname PPC-distributions
 #' @export
-#' @param probs A numeric vector passed to [ggplot2::geom_violin()]'s
-#'   `draw_quantiles` argument to specify at which quantiles to draw
-#'   horizontal lines. Set to `NULL` to remove the lines.
+#' @param probs A numeric vector of probabilities controlling where quantile
+#'   lines are drawn. Set to `NULL` to remove the lines.
 #' @param y_draw For `ppc_violin_grouped()`, a string specifying how to draw
 #'   `y`: `"violin"` (default), `"points"` (jittered points), or `"both"`.
 #' @param y_jitter,y_size,y_alpha For `ppc_violin_grouped()`, if `y_draw` is
@@ -593,6 +624,11 @@ ppc_violin_grouped <-
       alpha = alpha,
       linewidth = size
     )
+    if (utils::packageVersion("ggplot2") >= "4.0.0") {
+      args_violin_yrep$draw_quantiles <- NULL
+      args_violin_yrep$quantiles <- probs
+      args_violin_yrep$quantile.linetype <- 1
+    }
 
     args_violin_y <- list(
       data = function(x) dplyr::filter(x, .data$is_y),

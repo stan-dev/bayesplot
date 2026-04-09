@@ -1,6 +1,3 @@
-library(bayesplot)
-context("MCMC: nuts")
-
 if (requireNamespace("rstanarm", quietly = TRUE)) {
   ITER <- 1000
   CHAINS <- 3

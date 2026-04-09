@@ -12,10 +12,10 @@
 #' @template args-transformations
 #' @template args-facet_args
 #' @template args-density-controls
-#' @param ... Currently ignored.
+#' @param ... For dot plots, optional additional arguments to pass to [ggdist::stat_dots()].
 #' @param alpha Passed to the geom to control the transparency.
 #'
-#' @template return-ggplot
+#' @template return-ggplot-or-data
 #'
 #' @section Plot Descriptions:
 #' \describe{
@@ -25,12 +25,18 @@
 #'   \item{`mcmc_dens()`}{
 #'    Kernel density plots of posterior draws with all chains merged.
 #'   }
+#'   \item{`mcmc_dots()`}{
+#'   Dot plots of posterior draws with all chains merged.
+#'   }
 #'   \item{`mcmc_hist_by_chain()`}{
 #'    Histograms of posterior draws with chains separated via faceting.
 #'   }
 #'   \item{`mcmc_dens_overlay()`}{
 #'    Kernel density plots of posterior draws with chains separated but
 #'    overlaid on a single plot.
+#'   }
+#'   \item{`mcmc_dots_by_chain()`}{
+#'   Dot plots of posterior draws with chains separated via faceting.
 #'   }
 #'   \item{`mcmc_violin()`}{
 #'    The density estimate of each chain is plotted as a violin with
@@ -41,6 +47,12 @@
 #'    but overlaid on a single plot. In `mcmc_dens_overlay()` parameters
 #'    appear in separate facets; in `mcmc_dens_chains()` they appear in the
 #'    same panel and can overlap vertically.
+#'   }
+#'   \item{`mcmc_dens_chains_data()`}{
+#'    Data-preparation back end for `mcmc_dens_chains()`. Users can call this
+#'    function directly to obtain the prepared long-format data frame of MCMC
+#'    draws (with chain information retained) and create custom visualizations
+#'    with **ggplot2**.
 #'   }
 #' }
 #'
@@ -77,14 +89,14 @@
 #' mcmc_hist(x, transformations = list(sigma = log))
 #'
 #' # separate histograms by chain
-#' color_scheme_set("pink")
+#' color_scheme_set("orange")
 #' mcmc_hist_by_chain(x, regex_pars = "beta")
 #' }
 #'
 #' #################
 #' ### Densities ###
 #' #################
-#'
+#' color_scheme_set("purple")
 #' mcmc_dens(x, pars = c("sigma", "beta[2]"),
 #'           facet_args = list(nrow = 2))
 #' \donttest{
@@ -98,7 +110,26 @@
 #' }
 #' # separate chains as violin plots
 #' color_scheme_set("green")
-#' mcmc_violin(x) + panel_bg(color = "gray20", size = 2, fill = "gray30")
+#' mcmc_violin(x) + panel_bg(color = "gray20", linewidth = 2, fill = "gray30")
+#'
+#'
+#' #################
+#' ### Dot Plots ###
+#' #################
+#'
+#' # dot plots of some parameters
+#' color_scheme_set("pink")
+#' mcmc_dots(x, pars = c("alpha", "beta[2]"))
+#'
+#' \donttest{
+#' color_scheme_set("teal")
+#' # separate dot plots by chain
+#' mcmc_dots_by_chain(x, regex_pars = "beta")
+#'
+#' # custom facet labels (will change row labels to e.g. "Chain: 1" instead of just "1")
+#' chain_labeller <- ggplot2::labeller(.rows = ggplot2::label_both)
+#' mcmc_dots_by_chain(x, regex_pars = "beta", facet_args = list(labeller = chain_labeller))
+#' }
 #'
 NULL
 
@@ -151,6 +182,7 @@ mcmc_dens <- function(
   adjust = NULL,
   kernel = NULL,
   n_dens = NULL,
+  bounds = NULL,
   alpha = 1
 ) {
   check_ignored_arguments(...)
@@ -166,6 +198,7 @@ mcmc_dens <- function(
     adjust = adjust,
     kernel = kernel,
     n_dens = n_dens,
+    bounds = bounds,
     alpha = alpha,
     ...
   )
@@ -216,7 +249,8 @@ mcmc_dens_overlay <- function(
   bw = NULL,
   adjust = NULL,
   kernel = NULL,
-  n_dens = NULL
+  n_dens = NULL,
+  bounds = NULL
 ) {
   check_ignored_arguments(...)
   .mcmc_dens(
@@ -232,6 +266,7 @@ mcmc_dens_overlay <- function(
     adjust = adjust,
     kernel = kernel,
     n_dens = n_dens,
+    bounds = bounds,
     ...
   )
 }
@@ -250,7 +285,8 @@ mcmc_dens_chains <- function(
   bw = NULL,
   adjust = NULL,
   kernel = NULL,
-  n_dens = NULL
+  n_dens = NULL,
+  bounds = NULL
 ) {
   check_ignored_arguments(...)
   data <- mcmc_dens_chains_data(
@@ -261,7 +297,8 @@ mcmc_dens_chains <- function(
     bw = bw,
     adjust = adjust,
     kernel = kernel,
-    n_dens = n_dens
+    n_dens = n_dens,
+    bounds = bounds
   )
 
   n_chains <- length(unique(data$chain))
@@ -295,7 +332,7 @@ mcmc_dens_chains <- function(
     labs(color = "Chain") +
     scale_y_discrete(
       limits = unique(rev(data$parameter)),
-      expand = c(0.05, .6)
+      expand = expansion(mult = 0.05, add = 0.6)
     ) +
     scale_color +
     bayesplot_theme_get() +
@@ -314,9 +351,11 @@ mcmc_dens_chains_data <- function(
   transformations = list(),
   ...,
   bw = NULL, adjust = NULL, kernel = NULL,
-  n_dens = NULL
+  n_dens = NULL,
+  bounds = NULL
 ) {
   check_ignored_arguments(...)
+  bounds <- validate_density_bounds(bounds)
 
   x %>%
     prepare_mcmc_array(
@@ -329,7 +368,8 @@ mcmc_dens_chains_data <- function(
       group_vars = c("Parameter", "Chain"),
       value_var = "Value",
       interval_width = 1,
-      bw = bw, adjust = adjust, kernel = kernel, n_dens = n_dens
+      bw = bw, adjust = adjust, kernel = kernel,
+      bounds = bounds, n_dens = n_dens
     ) %>%
     mutate(Chain = factor(.data$Chain)) %>%
     rlang::set_names(tolower) %>%
@@ -362,7 +402,67 @@ mcmc_violin <- function(
   )
 }
 
+#' @rdname MCMC-distributions
+#' @export
+#' @template args-dots
+mcmc_dots <- function(
+    x,
+    pars = character(),
+    regex_pars = character(),
+    transformations = list(),
+    ...,
+    facet_args = list(),
+    binwidth = NA,
+    alpha = 1,
+    quantiles = 100
+) {
+  check_ignored_arguments(..., ok_args = c("dotsize", "layout", "stackratio", "overflow"))
 
+  suggested_package("ggdist")
+
+  .mcmc_dots(
+    x,
+    pars = pars,
+    regex_pars = regex_pars,
+    transformations = transformations,
+    binwidth = binwidth,
+    facet_args = facet_args,
+    alpha = alpha,
+    quantiles = quantiles,
+    ...
+  )
+}
+
+#' @rdname MCMC-distributions
+#' @export
+mcmc_dots_by_chain <- function(
+    x,
+    pars = character(),
+    regex_pars = character(),
+    transformations = list(),
+    ...,
+    facet_args = list(),
+    binwidth = NA,
+    alpha = 1,
+    quantiles = 100
+) {
+  check_ignored_arguments(..., ok_args = c("dotsize", "layout", "stackratio", "overflow"))
+
+  suggested_package("ggdist")
+
+  .mcmc_dots(
+    x,
+    pars = pars,
+    regex_pars = regex_pars,
+    transformations = transformations,
+    binwidth = binwidth,
+    facet_args = facet_args,
+    by_chain = TRUE,
+    alpha = alpha,
+    quantiles = quantiles,
+    ...
+  )
+}
 
 
 # internal -----------------------------------------------------------------
@@ -389,7 +489,7 @@ mcmc_violin <- function(
   data <- melt_mcmc(x, value.name = "value")
   n_param <- num_params(data)
 
-  graph <- ggplot(data, aes(x = ~ value)) +
+  graph <- ggplot(data, aes(x = .data$value)) +
     geom_histogram(
       set_hist_aes(freq),
       fill = get_color("mid"),
@@ -423,7 +523,7 @@ mcmc_violin <- function(
   }
 
   graph +
-    dont_expand_y_axis(c(0.005, 0)) +
+    dont_expand_y_axis(expansion(mult = 0.005, add = 0)) +
     bayesplot_theme_get() +
     yaxis_text(FALSE) +
     yaxis_title(FALSE) +
@@ -441,19 +541,21 @@ mcmc_violin <- function(
   color_chains = FALSE,
   geom = c("density", "violin"),
   probs = c(0.1, 0.5, 0.9),
-  trim = FALSE,
-  alpha = 1,
-  bw = NULL,
-  adjust = NULL,
-  kernel = NULL,
-  n_dens = NULL,
-  ...
-) {
+    trim = FALSE,
+    alpha = 1,
+    bw = NULL,
+    adjust = NULL,
+    kernel = NULL,
+    n_dens = NULL,
+    bounds = NULL,
+    ...
+  ) {
 
   bw <- bw %||% "nrd0"
   adjust <- adjust %||% 1
   kernel <- kernel %||% "gaussian"
   n_dens <- n_dens %||% 1024
+  bounds <- validate_density_bounds(bounds)
 
   x <- prepare_mcmc_array(x, pars, regex_pars, transformations)
   data <- melt_mcmc.mcmc_array(x)
@@ -475,12 +577,20 @@ mcmc_violin <- function(
   geom_args <- list(linewidth = 0.5, na.rm = TRUE, alpha = alpha)
   if (violin) {
     geom_args[["draw_quantiles"]] <- probs
+    if (utils::packageVersion("ggplot2") >= "4.0.0") {
+      geom_args[["draw_quantiles"]] <- NULL
+      geom_args[["quantiles"]] <- probs
+      geom_args[["quantile.linetype"]] <- 1
+    }
   } else {
     geom_args[["trim"]] <- trim
     geom_args[["bw"]] <- bw
     geom_args[["adjust"]] <- adjust
     geom_args[["kernel"]] <- kernel
     geom_args[["n"]] <- n_dens
+    if (!is.null(bounds)) {
+      geom_args[["bounds"]] <- bounds
+    }
   }
   if (by_chain) {
     # aes_mapping[["color"]] <- ~ Chain
@@ -532,10 +642,72 @@ mcmc_violin <- function(
   }
 
   graph +
-    dont_expand_y_axis(c(0.005, 0)) +
+    dont_expand_y_axis(expansion(mult = 0.005, add = 0)) +
     bayesplot_theme_get() +
     yaxis_text(FALSE) +
     yaxis_ticks(FALSE) +
     yaxis_title(on = n_param == 1 && violin) +
+    xaxis_title(on = n_param == 1)
+}
+
+
+.mcmc_dots <- function(
+    x,
+    pars = character(),
+    regex_pars = character(),
+    transformations = list(),
+    facet_args = list(),
+    binwidth = NA,
+    by_chain = FALSE,
+    alpha = 1,
+    quantiles = NA,
+    ...
+) {
+  x <- prepare_mcmc_array(x, pars, regex_pars, transformations)
+
+  if (by_chain && !has_multiple_chains(x)) {
+    STOP_need_multiple_chains()
+  }
+
+  data <- melt_mcmc(x, value.name = "value")
+  n_param <- num_params(data)
+
+  graph <- ggplot(data, aes(x = .data$value)) +
+    ggdist::stat_dots(
+      binwidth = binwidth,
+      quantiles = quantiles,
+      fill = get_color("mid"),
+      color = get_color("mid_highlight"),
+      alpha = alpha,
+      ...
+    )
+
+  facet_args[["scales"]] <- facet_args[["scales"]] %||% "free"
+  if (!by_chain) {
+    if (n_param > 1) {
+      facet_args[["facets"]] <- vars(.data$Parameter)
+      graph <- graph + do.call("facet_wrap", facet_args)
+    }
+  } else {
+    facet_args[["rows"]] <- vars(.data$Chain)
+    if (n_param > 1) {
+      facet_args[["cols"]] <- vars(.data$Parameter)
+    }
+    graph <- graph +
+      do.call("facet_grid", facet_args) +
+      force_x_axis_in_facets()
+  }
+
+  if (n_param == 1) {
+    graph <- graph + xlab(levels(data$Parameter))
+  }
+
+  graph +
+    dont_expand_y_axis(expansion(mult = 0.005, add = 0)) +
+    bayesplot_theme_get() +
+    yaxis_text(FALSE) +
+    yaxis_title(FALSE) +
+    yaxis_ticks(FALSE) +
+    theme(axis.line.y = element_blank()) +
     xaxis_title(on = n_param == 1)
 }

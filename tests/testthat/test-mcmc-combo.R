@@ -1,6 +1,3 @@
-library(bayesplot)
-context("MCMC: combo")
-
 source(test_path("data-for-mcmc-tests.R"))
 
 test_that("mcmc_combo returns a gtable object", {

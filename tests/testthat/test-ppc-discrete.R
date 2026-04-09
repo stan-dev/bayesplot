@@ -1,6 +1,4 @@
-library(bayesplot)
 # suppressPackageStartupMessages(library(rstanarm))
-context("PPC: discrete")
 
 source(test_path("data-for-ppc-tests.R"))
 load(test_path("data-for-ordinal.rda"))
@@ -74,9 +72,9 @@ test_that("ppc_bars_data includes all levels", {
   d3 <- ppc_bars_data(y_ord, yrep_ord2)
   expect_equal(d3$x, 1:4)
   expect_equal(d3$y_obs, tab)
-  expect_equivalent(d3$l[2], 0)
-  expect_equivalent(d3$m[2], 0)
-  expect_equivalent(d3$h[2], 0)
+  expect_equal(d3$l[2], 0, ignore_attr = TRUE)
+  expect_equal(d3$m[2], 0, ignore_attr = TRUE)
+  expect_equal(d3$h[2], 0, ignore_attr = TRUE)
 })
 
 
@@ -87,6 +85,7 @@ test_that("ppc_rootogram returns a ggplot object", {
   expect_gg(ppc_rootogram(y2, yrep2))
   expect_gg(ppc_rootogram(y2, yrep3, style = "hanging", prob = 0.5))
   expect_gg(ppc_rootogram(y2, yrep3, style = "suspended"))
+  expect_gg(ppc_rootogram(y2, yrep3, style = "discrete"))
 })
 
 test_that("ppc_rootogram errors if y/yrep not counts", {
@@ -96,6 +95,20 @@ test_that("ppc_rootogram errors if y/yrep not counts", {
                "ppc_rootogram expects counts as inputs to 'yrep'")
   expect_error(ppc_rootogram(y, yrep3),
                "ncol(yrep) must be equal to length(y)", fixed = TRUE)
+})
+
+test_that("ppc_rootogram_grouped returns a ggplot object", {
+  expect_gg(ppc_rootogram_grouped(y2, yrep2, group = vdiff_group2))
+  expect_gg(ppc_rootogram_grouped(y2, yrep3, group = vdiff_group2, style = "hanging", prob = 0.5))
+  expect_gg(ppc_rootogram_grouped(y2, yrep3, group = vdiff_group2, style = "suspended"))
+  expect_gg(ppc_rootogram_grouped(y2, yrep3, group = vdiff_group2, style = "discrete"))
+})
+
+test_that("ppc_rootogram_grouped errors if y/yrep not counts", {
+  expect_error(ppc_rootogram_grouped(y, yrep, group = vdiff_group2),
+               "ppc_rootogram expects counts as inputs to 'y'")
+  expect_error(ppc_rootogram_grouped(y2, yrep[1:5, seq_along(y2)], group = vdiff_group2),
+               "ppc_rootogram expects counts as inputs to 'yrep'")
 })
 
 
@@ -174,7 +187,97 @@ test_that("ppc_rootogram renders correctly", {
   )
 
   vdiffr::expect_doppelganger(
-    title = "ppc_rootogram (style='hanging', prob, size)",
+    title = "ppc_rootogram (hanging,prob,size)",
     fig = p_custom_hanging)
+
+  p_discrete <- ppc_rootogram(
+    y = vdiff_y2,
+    yrep = vdiff_yrep2,
+    prob = 0.5,
+    size = 1,
+    style = "discrete"
+  )
+
+  vdiffr::expect_doppelganger(
+    title = "ppc_rootogram (discrete,prob,size)",
+    fig = p_discrete)
+
+  p_discrete_nonbound <- ppc_rootogram(
+    y = vdiff_y2,
+    yrep = vdiff_yrep2,
+    prob = 0.8,
+    size = 1,
+    style = "discrete",
+    bound_distinct = FALSE
+  )
+
+  vdiffr::expect_doppelganger(
+    title = "ppc_rootogram (discrete,bound_distinct=FALSE)",
+    fig = p_discrete_nonbound)
 })
+
+test_that("ppc_rootogram_grouped renders correctly", {
+  testthat::skip_on_cran()
+  testthat::skip_if_not_installed("vdiffr")
+  skip_on_r_oldrel()
+
+  p_base <- ppc_rootogram_grouped(vdiff_y2, vdiff_yrep2, vdiff_group2)
+  vdiffr::expect_doppelganger("ppc_rootogram_grouped (default)", p_base)
+
+  p_custom_hanging <- ppc_rootogram_grouped(
+    y = vdiff_y2,
+    yrep = vdiff_yrep2,
+    group = vdiff_group2,
+    prob = 2/3,
+    size = 2,
+    style = "hanging",
+    facet_args = list(nrow = 2)
+  )
+
+  vdiffr::expect_doppelganger(
+    title = "ppc_rootogram_grouped (hanging,prob,size,facet_args)",
+    fig = p_custom_hanging)
+
+  p_discrete <- ppc_rootogram_grouped(
+    y = vdiff_y2,
+    yrep = vdiff_yrep2,
+    group = vdiff_group2,
+    prob = 0.5,
+    size = 1,
+    style = "discrete"
+  )
+
+  vdiffr::expect_doppelganger(
+    title = "ppc_rootogram_grouped (discrete,prob,size)",
+    fig = p_discrete)
+
+  p_discrete_multirow <- ppc_rootogram_grouped(
+    y = vdiff_y2,
+    yrep = vdiff_yrep2,
+    group = vdiff_group2,
+    prob = 0.5,
+    size = 1,
+    style = "discrete",
+    facet_args = list(nrow = 2)
+  )
+
+  vdiffr::expect_doppelganger(
+    title = "ppc_rootogram_grouped (discrete,facet_args)",
+    fig = p_discrete_multirow)
+
+  p_discrete_multirow_freescale <- ppc_rootogram_grouped(
+    y = vdiff_y2,
+    yrep = vdiff_yrep2,
+    group = vdiff_group2,
+    prob = 0.5,
+    size = 1,
+    style = "discrete",
+    facet_args = list(nrow = 2, scales = "free")
+  )
+
+  vdiffr::expect_doppelganger(
+    title = "ppc_rootogram_grouped (discrete,nrow=2,scales=free)",
+    fig = p_discrete_multirow_freescale)
+})
+
 

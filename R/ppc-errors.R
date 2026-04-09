@@ -9,6 +9,7 @@
 #' @template args-y-yrep
 #' @template args-group
 #' @template args-facet_args
+#' @param x A numeric vector the same length as `y` to use as the x-axis variable.
 #' @param ... Currently unused.
 #' @param stat A function or a string naming a function for computing the
 #' posterior average. In both cases, the function should take a vector input and
@@ -53,10 +54,12 @@
 #'    `y` and each dataset (row) in `yrep`. For each individual data point
 #'    `y[n]` the average error is the average of the errors for `y[n]` computed
 #'    over the the draws from the posterior predictive distribution.
+#'
+#'    When the optional `x` argument is provided, the average error is plotted
+#'    on the y-axis and the predictor variable `x` is plotted on the x-axis.
 #'   }
 #'   \item{`ppc_error_scatter_avg_vs_x()`}{
-#'    Same as `ppc_error_scatter_avg()`, except the average is plotted on the
-#'    y-axis and a predictor variable `x` is plotted on the x-axis.
+#'    Deprecated. Use `ppc_error_scatter_avg(x = x)` instead.
 #'   }
 #'   \item{`ppc_error_binned()`}{
 #'    Intended for use with binomial data. A separate binned error plot (similar
@@ -64,9 +67,15 @@
 #'    this plot `y` and `yrep` should contain proportions rather than counts,
 #'    and `yrep` should have only a small number of rows.
 #'   }
+#'   \item{`ppc_error_data()`}{
+#'    Data-preparation back end for the `ppc_error_*()` family of plotting
+#'    functions. Users can call `ppc_error_data()` directly to obtain the
+#'    data frame of predictive errors (`y - yrep`) and create custom error
+#'    visualizations with **ggplot2**.
+#'   }
 #' }
 #'
-#' @template return-ggplot
+#' @template return-ggplot-or-data
 #'
 #' @templateVar bdaRef (Ch. 6)
 #' @template reference-bda
@@ -91,7 +100,7 @@
 #' ppc_error_scatter_avg(y, yrep)
 #'
 #' x <- example_x_data()
-#' ppc_error_scatter_avg_vs_x(y, yrep, x)
+#' ppc_error_scatter_avg(y, yrep, x)
 #'
 #' \dontrun{
 #' # binned error plot with binomial model from rstanarm
@@ -109,6 +118,10 @@
 #' yrep_prop <- sweep(yrep, 2, trials, "/")
 #'
 #' ppc_error_binned(y_prop, yrep_prop[1:6, ])
+#'
+#' # plotting against a covariate on x-axis
+#' herd <- as.numeric(example_model$data$herd)
+#' ppc_error_binned(y_prop, yrep_prop[1:6, ], x = herd)
 #' }
 #'
 NULL
@@ -212,6 +225,7 @@ ppc_error_scatter <-
 ppc_error_scatter_avg <-
   function(y,
            yrep,
+           x = NULL,
            ...,
            stat = "mean",
            size = 2.5,
@@ -220,19 +234,31 @@ ppc_error_scatter_avg <-
 
     y <- validate_y(y)
     yrep <- validate_predictions(yrep, length(y))
+
+    if (!missing(x)) {
+      qx <- enquo(x)
+      x <- validate_x(x, y)
+    }
     errors <- compute_errors(y, yrep)
 
     stat <- as_tagged_function({{ stat }})
 
     ppc_scatter_avg(
-      y = y,
+      y = if (is_null(x)) y else x,
       yrep = errors,
       size = size,
       alpha = alpha,
       ref_line = FALSE,
       stat = stat
     ) +
-      labs(x = error_avg_label(stat), y = y_label())
+      labs(
+        x = error_avg_label(stat),
+        y = if (is_null(x)) y_label() else as_label((qx))
+        ) + if (is_null(x)) {
+          NULL
+        } else {
+          coord_flip()
+        }
   }
 
 
@@ -270,9 +296,6 @@ ppc_error_scatter_avg_grouped <-
 
 #' @rdname PPC-errors
 #' @export
-#' @param x A numeric vector the same length as `y` to use as the x-axis
-#'   variable.
-#'
 ppc_error_scatter_avg_vs_x <- function(
     y,
     yrep,
@@ -283,6 +306,8 @@ ppc_error_scatter_avg_vs_x <- function(
     alpha = 0.8
 ) {
   check_ignored_arguments(...)
+
+  .Deprecated(new = "ppc_error_scatter_avg(y, yrep, x)")
 
   y <- validate_y(y)
   yrep <- validate_predictions(yrep, length(y))
@@ -312,6 +337,7 @@ ppc_error_scatter_avg_vs_x <- function(
 ppc_error_binned <-
   function(y,
            yrep,
+           x = NULL,
            ...,
            facet_args = list(),
            bins = NULL,
@@ -319,7 +345,8 @@ ppc_error_binned <-
            alpha = 0.25) {
     check_ignored_arguments(...)
 
-    data <- ppc_error_binnned_data(y, yrep, bins = bins)
+    qx <- enquo(x)
+    data <- ppc_error_binnned_data(y, yrep, x = x, bins = bins)
     facet_layer <- if (nrow(yrep) == 1) {
       geom_ignore()
     } else {
@@ -356,7 +383,7 @@ ppc_error_binned <-
         color = point_color
       ) +
       labs(
-        x = "Predicted proportion",
+        x = if (is.null(x)) "Predicted proportion" else as_label((qx)),
         y = "Average Errors \n (with 2SE bounds)"
       ) +
       bayesplot_theme_get() +
@@ -454,9 +481,13 @@ error_avg_label <- function(stat = NULL) {
 
 
 # Data for binned errors plots
-ppc_error_binnned_data <- function(y, yrep, bins = NULL) {
+ppc_error_binnned_data <- function(y, yrep, x = NULL, bins = NULL) {
   y <- validate_y(y)
   yrep <- validate_predictions(yrep, length(y))
+
+  if (!is.null(x)) {
+    x <- validate_x(x, y)
+  }
 
   if (is.null(bins)) {
     bins <- n_bins(length(y))
@@ -465,13 +496,24 @@ ppc_error_binnned_data <- function(y, yrep, bins = NULL) {
   errors <- compute_errors(y, yrep)
   binned_errs <- list()
   for (s in 1:nrow(errors)) {
-    binned_errs[[s]] <-
-      bin_errors(
-        ey = yrep[s, ],
-        r = errors[s, ],
-        bins = bins,
-        rep_id = s
-      )
+    if (is.null(x)) {
+      binned_errs[[s]] <-
+        bin_errors(
+          ey = yrep[s, ],
+          r = errors[s, ],
+          bins = bins,
+          rep_id = s
+        )
+    } else {
+      binned_errs[[s]] <-
+        bin_errors(
+          ey = x,
+          r = errors[s, ],
+          bins = bins,
+          rep_id = s
+        )
+    }
+
   }
 
   binned_errs <- dplyr::bind_rows(binned_errs)

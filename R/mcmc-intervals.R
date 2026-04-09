@@ -51,6 +51,13 @@
 #'    ridgelines. This plot provides a compact display of (hierarchically)
 #'    related distributions.
 #'   }
+#'   \item{`mcmc_intervals_data()`, `mcmc_areas_data()`, `mcmc_areas_ridges_data()`}{
+#'    Data-preparation back ends for `mcmc_intervals()`, `mcmc_areas()`, and
+#'    `mcmc_areas_ridges()`, respectively. Users can call these functions
+#'    directly to obtain the prepared data frames of posterior interval
+#'    summaries and create custom interval or density-area visualizations
+#'    with **ggplot2**.
+#'   }
 #' }
 #'
 #' @examples
@@ -301,7 +308,8 @@ mcmc_areas <- function(x,
                        bw = NULL,
                        adjust = NULL,
                        kernel = NULL,
-                       n_dens = NULL) {
+                       n_dens = NULL,
+                       bounds = NULL) {
   check_ignored_arguments(...)
   area_method <- match.arg(area_method)
 
@@ -309,7 +317,8 @@ mcmc_areas <- function(x,
     x, pars, regex_pars, transformations,
     prob = prob, prob_outer = prob_outer,
     point_est = point_est, rhat = rhat,
-    bw = bw, adjust = adjust, kernel = kernel, n_dens = n_dens
+    bw = bw, adjust = adjust, kernel = kernel,
+    n_dens = n_dens, bounds = bounds
   )
   datas <- split(data, data$interval)
 
@@ -474,13 +483,14 @@ mcmc_areas_ridges <- function(x,
                              prob = 1,
                              border_size = NULL,
                              bw = NULL, adjust = NULL, kernel = NULL,
-                             n_dens = NULL) {
+                             n_dens = NULL,
+                             bounds = NULL) {
   check_ignored_arguments(...)
   data <- mcmc_areas_ridges_data(x, pars = pars, regex_pars = regex_pars,
                                  transformations = transformations,
                                  prob = prob, prob_outer = prob_outer,
                                  bw = bw, adjust = adjust, kernel = kernel,
-                                 n_dens = n_dens)
+                                 n_dens = n_dens, bounds = bounds)
 
   datas <- data %>%
     split(data$interval)
@@ -589,12 +599,262 @@ mcmc_intervals_data <- function(x,
   prob <- probs[1]
   prob_outer <- probs[2]
 
+  data_long <- melt_mcmc(
+    merge_chains(prepare_mcmc_array(x, pars, regex_pars, transformations))
+  ) %>%
+    dplyr::as_tibble() %>%
+    rlang::set_names(tolower)
+
+  compute_intervals(data_long, prob, prob_outer, point_est, rhat)
+}
+
+
+# Don't import `filter`: otherwise, you get a warning when using
+# `devtools::load_all(".")` because stats also has a `filter` function
+
+#' @importFrom dplyr inner_join all_of slice_min
+#' @rdname MCMC-intervals
+#' @export
+mcmc_areas_data <- function(x,
+                            pars = character(),
+                            regex_pars = character(),
+                            transformations = list(),
+                            ...,
+                            prob = 0.5,
+                            prob_outer = 1,
+                            point_est = c("median", "mean", "none"),
+                            rhat = numeric(),
+                            bw = NULL,
+                            adjust = NULL,
+                            kernel = NULL,
+                            n_dens = NULL,
+                            bounds = NULL) {
+  probs <- check_interval_widths(prob, prob_outer)
+  bounds <- validate_density_bounds(bounds)
+
+  # First compute normal intervals so we know the width of the data, point
+  # estimates, and have prepared rhat values.
+
+  # Compute intervals with a median (for now) if no point estimate. It will be
+  # cleaner to ignore results later than to have two branching code paths.
+  point_est <- match.arg(point_est)
+  temp_point_est <- if (point_est == "none") "median" else point_est
+
   x <- prepare_mcmc_array(x, pars, regex_pars, transformations)
   x <- merge_chains(x)
 
   data_long <- melt_mcmc(x) %>%
     dplyr::as_tibble() %>%
     rlang::set_names(tolower)
+
+  intervals <- compute_intervals(data_long, prob = probs[1],
+                                  prob_outer = probs[2],
+                                  point_est = temp_point_est, rhat = rhat)
+
+  # Compute the density intervals
+  data_inner <- data_long %>%
+    compute_column_density(
+      group_vars = "parameter",
+      value_var = "value",
+      interval_width = probs[1],
+      bw = bw,
+      adjust = adjust,
+      kernel = kernel,
+      bounds = bounds,
+      n_dens = n_dens) %>%
+    mutate(interval = "inner")
+
+  data_outer <- data_long %>%
+    compute_column_density(
+      group_vars = "parameter",
+      value_var = "value",
+      interval_width = probs[2],
+      bw = bw,
+      adjust = adjust,
+      kernel = kernel,
+      bounds = bounds,
+      n_dens = n_dens) %>%
+    mutate(interval = "outer")
+
+  # Point estimates will be intervals that take up .8% of the x-axis
+  x_lim <- range(data_outer$x)
+  x_range <- diff(x_lim)
+  x_lim[1] <- x_lim[1] - 0.05 * x_range
+  x_lim[2] <- x_lim[2] + 0.05 * x_range
+  half_point_width <- .004 * diff(x_lim)
+
+  # Find the density values closest to the point estimate
+  point_ests <- intervals %>%
+    select(all_of(c("parameter", "m")))
+
+  point_centers <- data_inner %>%
+    inner_join(point_ests, by = "parameter") %>%
+    group_by(.data$parameter) %>%
+    mutate(diff = abs(.data$m - .data$x)) %>%
+    dplyr::slice_min(order_by = .data$diff, n = 1) %>%
+    select(all_of(c("parameter", "x", "m"))) %>%
+    rename(center = "x") %>%
+    ungroup()
+
+  # Keep density values that are within +/- .4% of x-axis of the point estimate
+  points <- point_centers %>%
+    left_join(data_inner, by = "parameter") %>%
+    group_by(.data$parameter) %>%
+    dplyr::filter(abs(.data$center - .data$x) <= half_point_width) %>%
+    mutate(
+      interval_width = 0,
+      interval = "point"
+    ) %>%
+    select(-c("center"), "m") %>%
+    ungroup()
+
+  # Ignore points calculcation if no point estimate was requested
+  if (point_est == "none") {
+    points <- dplyr::filter(points, FALSE)
+  }
+
+  data <- dplyr::bind_rows(data_inner, data_outer, points) %>%
+    select(all_of(c("parameter", "interval", "interval_width",
+                  "x", "density", "scaled_density"))) %>%
+    # Density scaled so the highest in entire dataframe has height 1
+    mutate(plotting_density = .data$density / max(.data$density))
+
+  if (rlang::has_name(intervals, "rhat_value")) {
+    rhat_info <- intervals %>%
+      select(all_of(c("parameter", "rhat_value",
+                    "rhat_rating", "rhat_description")))
+    data <- inner_join(data, rhat_info, by = "parameter")
+  }
+  data
+}
+
+
+#' @rdname MCMC-intervals
+#' @export
+mcmc_areas_ridges_data <- function(x,
+                                   pars = character(),
+                                   regex_pars = character(),
+                                   transformations = list(),
+                                   ...,
+                                   prob_outer = 1,
+                                   prob = 1,
+                                   bw = NULL,
+                                   adjust = NULL, kernel = NULL,
+                                   n_dens = NULL,
+                                   bounds = NULL) {
+  check_ignored_arguments(...)
+  mcmc_areas_data(x, pars = pars, regex_pars = regex_pars,
+                  transformations = transformations,
+                  prob = prob, prob_outer = prob_outer, point_est = "none",
+                  bw = bw, adjust = adjust, kernel = kernel,
+                  n_dens = n_dens, bounds = bounds)
+}
+
+
+
+
+# internal ----------------------------------------------------------------
+
+#' Compute density for a dataframe column.
+#'
+#' @param df a dataframe of posterior samples
+#' @param group_vars columns to group by. e.g., `c(Parameter, Chain)`
+#' @param value_var column containing posterior samples
+#' @param ... arguments passed onto density calculation
+#' @noRd
+compute_column_density <- function(df, group_vars, value_var, ...) {
+  value_var <- enquo(value_var)
+  group_vars <- enquos(group_vars)
+
+  # Convert the vector of bare column names to a list of symbols
+  group_cols <- df %>%
+    dplyr::select(!!! group_vars) %>%
+    names() %>%
+    syms()
+
+  # Tuck away the subgroups to compute densities on into nested dataframes
+  group_df <- df %>%
+    dplyr::select(!!! group_cols, !! value_var) %>%
+    group_by(!!! group_cols)
+
+  by_group <- group_df %>%
+    dplyr::group_split() %>%
+    lapply(pull, !! value_var)
+
+  nested <- dplyr::group_keys(group_df) %>%
+    mutate(data = by_group)
+
+  nested$density <- lapply(nested$data, compute_interval_density, ...)
+  nested$data <- NULL
+
+  # Manually unnest the data
+  reconstructed <- as.list(seq_len(nrow(nested)))
+  for (df_i in seq_along(nested$density)) {
+    row <- nested[df_i, ]
+    parent <- row %>% select(-c("density"))
+    groups <- rep(list(parent), nrow(row$density[[1]])) %>% dplyr::bind_rows()
+
+    reconstructed[[df_i]] <- dplyr::bind_cols(groups, row$density[[1]])
+  }
+
+  dplyr::bind_rows(reconstructed)
+}
+
+
+# Given a vector of values, compute a density dataframe.
+compute_interval_density <- function(x, interval_width = 1, n_dens = 1024,
+                                     bw = NULL, adjust = NULL, kernel = NULL,
+                                     bounds = NULL) {
+  n_dens <- n_dens %||% 1024
+
+  tail_width <- (1 - interval_width) / 2
+  qs <- quantile(x, probs = c(tail_width, 1 - tail_width))
+  support <- range(qs)
+  if (!is.null(bounds)) {
+    support[1] <- max(bounds[1], support[1])
+    support[2] <- min(bounds[2], support[2])
+    if (!(support[1] < support[2])) {
+      support <- range(qs)
+    }
+  }
+
+  args <- c(
+    # can't be null
+    list(x = x, from = support[1], to = support[2], n = n_dens),
+    # might be null
+    bw = bw, adjust = adjust, kernel = kernel)
+
+  dens <- do.call(stats::density, args)
+
+  data.frame(
+    interval_width = interval_width,
+    x = dens$x,
+    density = dens$y,
+    scaled_density =  dens$y / max(dens$y, na.rm = TRUE)
+  )
+}
+
+check_interval_widths <- function(prob, prob_outer) {
+  if (!(is.numeric(prob) && is.numeric(prob_outer)))
+    abort("`prob` and `prob_outer` must be numeric")
+  if (prob < 0 || prob > 1 || prob_outer < 0 || prob_outer > 1)
+    abort("`prob` and `prob_outer` must be in [0,1].")
+  if (prob_outer < prob) {
+    x <- sprintf(
+      "`prob_outer` (%s) is less than `prob` (%s)\n... %s",
+      prob_outer,
+      prob,
+      "Swapping the values of `prob_outer` and `prob`"
+    )
+    warn(x)
+  }
+  sort(c(prob, prob_outer))
+}
+
+# Internal helper shared by mcmc_intervals_data() and mcmc_areas_data()
+compute_intervals <- function(data_long, prob, prob_outer,
+                              point_est = c("median", "mean", "none"),
+                              rhat = numeric()) {
 
   probs <- c(0.5 - prob_outer / 2,
              0.5 - prob / 2,
@@ -637,7 +897,7 @@ mcmc_intervals_data <- function(x,
 
     rhat_tbl <- rhat %>%
       mcmc_rhat_data() %>%
-      select(one_of("parameter"),
+      select(all_of("parameter"),
              rhat_value = "value",
              rhat_rating = "rating",
              rhat_description = "description") %>%
@@ -647,235 +907,4 @@ mcmc_intervals_data <- function(x,
   }
 
   data
-}
-
-
-# Don't import `filter`: otherwise, you get a warning when using
-# `devtools::load_all(".")` because stats also has a `filter` function
-
-#' @importFrom dplyr inner_join one_of top_n
-#' @rdname MCMC-intervals
-#' @export
-mcmc_areas_data <- function(x,
-                            pars = character(),
-                            regex_pars = character(),
-                            transformations = list(),
-                            ...,
-                            prob = 0.5,
-                            prob_outer = 1,
-                            point_est = c("median", "mean", "none"),
-                            rhat = numeric(),
-                            bw = NULL,
-                            adjust = NULL,
-                            kernel = NULL,
-                            n_dens = NULL) {
-  probs <- check_interval_widths(prob, prob_outer)
-
-  # First compute normal intervals so we know the width of the data, point
-  # estimates, and have prepared rhat values.
-
-  # Compute intervals with a median (for now) if no point estimate. It will be
-  # cleaner to ignore results later than to have two branching code paths.
-  point_est <- match.arg(point_est)
-  temp_point_est <- if (point_est == "none") "median" else point_est
-
-  intervals <- mcmc_intervals_data(x, pars, regex_pars, transformations,
-                                   prob = probs[1],  prob_outer = probs[2],
-                                   point_est = temp_point_est, rhat = rhat)
-
-  x <- prepare_mcmc_array(x, pars, regex_pars, transformations)
-  x <- merge_chains(x)
-
-  data_long <- melt_mcmc(x) %>%
-    dplyr::as_tibble() %>%
-    rlang::set_names(tolower)
-
-  # Compute the density intervals
-  data_inner <- data_long %>%
-    compute_column_density(
-      group_vars = "parameter",
-      value_var = "value",
-      interval_width = probs[1],
-      bw = bw,
-      adjust = adjust,
-      kernel = kernel,
-      n_dens = n_dens) %>%
-    mutate(interval = "inner")
-
-  data_outer <- data_long %>%
-    compute_column_density(
-      group_vars = "parameter",
-      value_var = "value",
-      interval_width = probs[2],
-      bw = bw,
-      adjust = adjust,
-      kernel = kernel,
-      n_dens = n_dens) %>%
-    mutate(interval = "outer")
-
-  # Point estimates will be intervals that take up .8% of the x-axis
-  x_lim <- range(data_outer$x)
-  x_range <- diff(x_lim)
-  x_lim[1] <- x_lim[1] - 0.05 * x_range
-  x_lim[2] <- x_lim[2] + 0.05 * x_range
-  half_point_width <- .004 * diff(x_lim)
-
-  # Find the density values closest to the point estimate
-  point_ests <- intervals %>%
-    select(one_of("parameter", "m"))
-
-  point_centers <- data_inner %>%
-    inner_join(point_ests, by = "parameter") %>%
-    group_by(.data$parameter) %>%
-    mutate(diff = abs(.data$m - .data$x)) %>%
-    dplyr::top_n(1, -.data$diff) %>%
-    select(one_of("parameter", "x", "m")) %>%
-    rename(center = "x") %>%
-    ungroup()
-
-  # Keep density values that are within +/- .4% of x-axis of the point estimate
-  points <- point_centers %>%
-    left_join(data_inner, by = "parameter") %>%
-    group_by(.data$parameter) %>%
-    dplyr::filter(abs(.data$center - .data$x) <= half_point_width) %>%
-    mutate(
-      interval_width = 0,
-      interval = "point"
-    ) %>%
-    select(-c("center"), "m") %>%
-    ungroup()
-
-  # Ignore points calculcation if no point estimate was requested
-  if (point_est == "none") {
-    points <- dplyr::filter(points, FALSE)
-  }
-
-  data <- dplyr::bind_rows(data_inner, data_outer, points) %>%
-    select(one_of("parameter", "interval", "interval_width",
-                  "x", "density", "scaled_density")) %>%
-    # Density scaled so the highest in entire dataframe has height 1
-    mutate(plotting_density = .data$density / max(.data$density))
-
-  if (rlang::has_name(intervals, "rhat_value")) {
-    rhat_info <- intervals %>%
-      select(one_of("parameter", "rhat_value",
-                    "rhat_rating", "rhat_description"))
-    data <- inner_join(data, rhat_info, by = "parameter")
-  }
-  data
-}
-
-
-#' @rdname MCMC-intervals
-#' @export
-mcmc_areas_ridges_data <- function(x,
-                                   pars = character(),
-                                   regex_pars = character(),
-                                   transformations = list(),
-                                   ...,
-                                   prob_outer = 1,
-                                   prob = 1,
-                                   bw = NULL,
-                                   adjust = NULL, kernel = NULL,
-                                   n_dens = NULL) {
-  check_ignored_arguments(...)
-  mcmc_areas_data(x, pars = pars, regex_pars = regex_pars,
-                  transformations = transformations,
-                  prob = prob, prob_outer = prob_outer, point_est = "none",
-                  bw = bw, adjust = adjust, kernel = kernel, n_dens = n_dens)
-}
-
-
-
-
-# internal ----------------------------------------------------------------
-
-#' Compute density for a dataframe column.
-#'
-#' @param df a dataframe of posterior samples
-#' @param group_vars columns to group by. e.g., `c(Parameter, Chain)`
-#' @param value_var column containing posterior samples
-#' @param ... arguments passed onto density calculation
-#' @noRd
-compute_column_density <- function(df, group_vars, value_var, ...) {
-  value_var <- enquo(value_var)
-  group_vars <- enquos(group_vars)
-
-  # Convert the vector of bare column names to a list of symbols
-  group_cols <- df %>%
-    dplyr::select(!!! group_vars) %>%
-    names() %>%
-    syms()
-
-  # Tuck away the subgroups to compute densities on into nested dataframes
-  sub_df <- dplyr::select(df, !!! group_cols, !! value_var)
-
-  group_df <- df %>%
-    dplyr::select(!!! group_cols, !! value_var) %>%
-    group_by(!!! group_cols)
-
-  by_group <- group_df %>%
-    split(dplyr::group_indices(group_df)) %>%
-    lapply(pull, !! value_var)
-
-  nested <- df %>%
-    dplyr::distinct(!!! group_cols) %>%
-    mutate(data = by_group)
-
-  nested$density <- lapply(nested$data, compute_interval_density, ...)
-  nested$data <- NULL
-
-  # Manually unnest the data
-  reconstructed <- as.list(seq_len(nrow(nested)))
-  for (df_i in seq_along(nested$density)) {
-    row <- nested[df_i, ]
-    parent <- row %>% select(-c("density"))
-    groups <- rep(list(parent), nrow(row$density[[1]])) %>% dplyr::bind_rows()
-
-    reconstructed[[df_i]] <- dplyr::bind_cols(groups, row$density[[1]])
-  }
-
-  dplyr::bind_rows(reconstructed)
-}
-
-
-# Given a vector of values, compute a density dataframe.
-compute_interval_density <- function(x, interval_width = 1, n_dens = 1024,
-                                     bw = NULL, adjust = NULL, kernel = NULL) {
-  n_dens <- n_dens %||% 1024
-
-  tail_width <- (1 - interval_width) / 2
-  qs <- quantile(x, probs = c(tail_width, 1 - tail_width))
-
-  args <- c(
-    # can't be null
-    list(x = x, from = min(qs), to = max(qs), n = n_dens),
-    # might be null
-    bw = bw, adjust = adjust, kernel = kernel)
-
-  dens <- do.call(stats::density, args)
-
-  data.frame(
-    interval_width = interval_width,
-    x = dens$x,
-    density = dens$y,
-    scaled_density =  dens$y / max(dens$y, na.rm = TRUE)
-  )
-}
-
-check_interval_widths <- function(prob, prob_outer) {
-  if (!(is.numeric(prob) && is.numeric(prob_outer)))
-    abort("`prob` and `prob_outer` must be numeric")
-  if (prob < 0 || prob > 1 || prob_outer < 0 || prob_outer > 1)
-    abort("`prob` and `prob_outer` must be in [0,1].")
-  if (prob_outer < prob) {
-    x <- sprintf(
-      "`prob_outer` (%s) is less than `prob` (%s)\n... %s",
-      prob_outer,
-      prob,
-      "Swapping the values of `prob_outer` and `prob`"
-    )
-    warn(x)
-  }
-  sort(c(prob, prob_outer))
 }

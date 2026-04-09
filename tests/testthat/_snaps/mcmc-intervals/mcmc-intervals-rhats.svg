@@ -36,11 +36,11 @@
 <line x1='271.43' y1='311.96' x2='508.16' y2='311.96' style='stroke-width: 4.27; stroke: #005B96; stroke-linecap: butt;' />
 <line x1='257.38' y1='405.84' x2='468.25' y2='405.84' style='stroke-width: 4.27; stroke: #011F4B; stroke-linecap: butt;' />
 <line x1='244.59' y1='499.72' x2='453.97' y2='499.72' style='stroke-width: 4.27; stroke: #011F4B; stroke-linecap: butt;' />
-<circle cx='353.39' cy='124.21' r='4.62' style='stroke-width: 0.71; stroke: #B3CDE0; fill: #D1E1EC;' />
-<circle cx='393.03' cy='218.08' r='4.62' style='stroke-width: 0.71; stroke: #B3CDE0; fill: #D1E1EC;' />
-<circle cx='407.20' cy='311.96' r='4.62' style='stroke-width: 0.71; stroke: #005B96; fill: #6497B1;' />
-<circle cx='366.14' cy='405.84' r='4.62' style='stroke-width: 0.71; stroke: #011F4B; fill: #03396C;' />
-<circle cx='364.02' cy='499.72' r='4.62' style='stroke-width: 0.71; stroke: #011F4B; fill: #03396C;' />
+<circle cx='353.39' cy='124.21' r='4.65' style='stroke-width: 0.77; stroke: #B3CDE0; fill: #D1E1EC;' />
+<circle cx='393.03' cy='218.08' r='4.65' style='stroke-width: 0.77; stroke: #B3CDE0; fill: #D1E1EC;' />
+<circle cx='407.20' cy='311.96' r='4.65' style='stroke-width: 0.77; stroke: #005B96; fill: #6497B1;' />
+<circle cx='366.14' cy='405.84' r='4.65' style='stroke-width: 0.77; stroke: #011F4B; fill: #03396C;' />
+<circle cx='364.02' cy='499.72' r='4.65' style='stroke-width: 0.77; stroke: #011F4B; fill: #03396C;' />
 </g>
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8MC4wMHw1NzYuMDA=)'>
 <polyline points='23.10,556.04 23.10,67.88 ' style='stroke-width: 0.85; stroke-linecap: butt;' />
@@ -65,9 +65,9 @@
 <text x='371.34' y='568.03' text-anchor='middle' style='font-size: 9.60px; fill: #4D4D4D; font-family: sans;' textLength='5.34px' lengthAdjust='spacingAndGlyphs'>0</text>
 <text x='526.81' y='568.03' text-anchor='middle' style='font-size: 9.60px; fill: #4D4D4D; font-family: sans;' textLength='5.34px' lengthAdjust='spacingAndGlyphs'>1</text>
 <text x='682.27' y='568.03' text-anchor='middle' style='font-size: 9.60px; fill: #4D4D4D; font-family: sans;' textLength='5.34px' lengthAdjust='spacingAndGlyphs'>2</text>
-<circle cx='267.35' cy='40.39' r='4.62' style='stroke-width: 0.71; stroke: #B3CDE0; fill: #D1E1EC;' />
-<circle cx='347.40' cy='40.39' r='4.62' style='stroke-width: 0.71; stroke: #005B96; fill: #6497B1;' />
-<circle cx='420.22' cy='40.39' r='4.62' style='stroke-width: 0.71; stroke: #011F4B; fill: #03396C;' />
+<circle cx='267.35' cy='40.39' r='4.65' style='stroke-width: 0.77; stroke: #B3CDE0; fill: #D1E1EC;' />
+<circle cx='347.40' cy='40.39' r='4.65' style='stroke-width: 0.77; stroke: #005B96; fill: #6497B1;' />
+<circle cx='420.22' cy='40.39' r='4.65' style='stroke-width: 0.77; stroke: #011F4B; fill: #03396C;' />
 <text x='281.97' y='46.70' style='font-size: 13.00px; font-family: sans;' textLength='9.39px' lengthAdjust='spacingAndGlyphs'>R</text>
 <text x='283.61' y='41.13' style='font-size: 13.00px; font-family: sans;' textLength='6.10px' lengthAdjust='spacingAndGlyphs'>^</text>
 <text x='294.37' y='46.70' style='font-size: 13.00px; font-family: sans;' textLength='10.10px' lengthAdjust='spacingAndGlyphs'>≤</text>

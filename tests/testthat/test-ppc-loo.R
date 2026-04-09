@@ -1,6 +1,3 @@
-library(bayesplot)
-context("PPC: loo")
-
 options(useFancyQuotes = FALSE)
 
 if (requireNamespace("rstanarm", quietly = TRUE) &&
@@ -60,6 +57,19 @@ test_that("ppc_loo_pit_overlay works with boundary_correction=FALSE", {
   skip_if_not_installed("loo")
   p1 <- ppc_loo_pit_overlay(y, yrep, lw, boundary_correction = FALSE)
   expect_gg(p1)
+})
+
+test_that(".kde_correction warns when PIT values are non-finite", {
+  set.seed(123)
+  pit_vals <- c(stats::runif(500), Inf)
+  expect_warning(
+    out <- .kde_correction(pit_vals, bw = "nrd0", grid_len = 128),
+    "Non-finite PIT values are invalid"
+  )
+  expect_type(out, "list")
+  expect_true(all(c("xs", "bc_pvals") %in% names(out)))
+  expect_equal(length(out$xs), 128)
+  expect_equal(length(out$bc_pvals), 128)
 })
 
 test_that("ppc_loo_pit_qq returns ggplot object", {
@@ -213,6 +223,7 @@ test_that("ppc_loo_pit_overlay renders correctly", {
   skip_if_not_installed("vdiffr")
   skip_if_not_installed("loo")
   skip_on_r_oldrel()
+  skip_if(packageVersion("rstantools") <= "2.4.0")
 
   p_base <- suppressMessages(ppc_loo_pit_overlay(vdiff_loo_y, vdiff_loo_yrep, vdiff_loo_lw))
   vdiffr::expect_doppelganger("ppc_loo_pit_overlay (default)", p_base)
@@ -231,6 +242,7 @@ test_that("ppc_loo_pit_qq renders correctly", {
   skip_if_not_installed("vdiffr")
   skip_if_not_installed("loo")
   skip_on_r_oldrel()
+  skip_if(packageVersion("rstantools") <= "2.4.0")
 
   p_base <- ppc_loo_pit_qq(vdiff_loo_y, vdiff_loo_yrep, vdiff_loo_lw)
   vdiffr::expect_doppelganger("ppc_loo_pit_qq (default)", p_base)
@@ -305,6 +317,7 @@ test_that("ppc_loo_pit_ecdf renders correctly", {
   skip_if_not_installed("vdiffr")
   skip_if_not_installed("loo")
   skip_on_r_oldrel()
+  skip_if(packageVersion("rstantools") <= "2.4.0")
 
   psis_object <- suppressWarnings(loo::psis(-vdiff_loo_lw))
   p_base <- ppc_loo_pit_ecdf(
@@ -338,4 +351,51 @@ test_that("ppc_loo_pit_ecdf renders correctly", {
     K = 100
   )
   vdiffr::expect_doppelganger("ppc_loo_pit_ecdf (ecdf difference)", p_custom)
+})
+
+
+# ppc_loo_pit_data tests ---------------------------------------------------
+
+test_that("ppc_loo_pit_data returns the expected structure for both boundary modes", {
+  set.seed(123)
+  pit_vals <- runif(50)
+  n_samples <- 10
+  expect_message(
+    d_raw <- ppc_loo_pit_data(
+      pit = pit_vals,
+      boundary_correction = FALSE,
+      samples = n_samples
+    ),
+    "pit"
+  )
+  expect_s3_class(d_raw, "data.frame")
+  expect_named(
+    d_raw,
+    c("y_id", "y_name", "rep_id", "rep_label", "is_y", "is_y_label", "value")
+  )
+  y_rows <- d_raw[d_raw$is_y, ]
+  yrep_rows <- d_raw[!d_raw$is_y, ]
+  expect_equal(nrow(y_rows), length(pit_vals))
+  expect_equal(nrow(yrep_rows), length(pit_vals) * n_samples)
+  expect_equal(y_rows$value, pit_vals)
+
+  grid_len <- 128
+  expect_message(
+    d_bc <- ppc_loo_pit_data(
+      pit = pit_vals,
+      boundary_correction = TRUE,
+      samples = n_samples,
+      grid_len = grid_len
+    ),
+    "pit"
+  )
+  expect_named(
+    d_bc,
+    c("y_id", "y_name", "rep_id", "rep_label", "is_y", "is_y_label", "value", "x")
+  )
+  y_rows <- d_bc[d_bc$is_y, ]
+  yrep_rows <- d_bc[!d_bc$is_y, ]
+  expect_equal(nrow(y_rows), grid_len)
+  expect_equal(nrow(yrep_rows), grid_len * n_samples)
+  expect_false(anyNA(d_bc$x))
 })

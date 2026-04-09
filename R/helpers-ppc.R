@@ -73,12 +73,7 @@ validate_predictions <- function(predictions, n_obs = NULL) {
   }
 
   if (is.integer(predictions)) {
-    if (nrow(predictions) == 1) {
-      predictions[1, ] <- as.numeric(predictions[1,, drop = FALSE])
-    }
-    else {
-      predictions <- apply(predictions, 2, as.numeric)
-    }
+    storage.mode(predictions) <- "numeric"
   }
 
   if (anyNA(predictions)) {
@@ -101,7 +96,7 @@ validate_predictions <- function(predictions, n_obs = NULL) {
 #' Validate PIT
 #'
 #' Checks that `pit` is numeric, doesn't have any NAs, and is either a vector,
-#' or a 1-D array with values in [0,1].
+#' or a 1-D array with values in `[0,1]`.
 #'
 #' @param pit The 'pit' object from the user.
 #' @return Either throws an error or returns a numeric vector.
@@ -456,7 +451,7 @@ interpolate_gamma <- function(N, K, prob, L) {
 get_interpolation_values <- function(N, K, L, prob) {
   for (dim in c("L", "prob")) {
     if (all(get(dim) != .gamma_adj[, dim])) {
-      stop(paste(
+      abort(paste(
         "No precomputed values to interpolate from for '", dim, "' = ",
         get(dim),
         ".\n",
@@ -469,7 +464,7 @@ get_interpolation_values <- function(N, K, L, prob) {
   }
   vals <- .gamma_adj[.gamma_adj$L == L & .gamma_adj$prob == prob, ]
   if (N > max(vals$N)) {
-    stop(paste(
+    abort(paste(
       "No precomputed values to interpolate from for sample length of ",
       N,
       ".\n",
@@ -480,7 +475,7 @@ get_interpolation_values <- function(N, K, L, prob) {
     ))
   }
   if (N < min(vals$N)) {
-    stop(paste(
+    abort(paste(
       "No precomputed values to interpolate from for sample length of ",
       N,
       ".\n",
@@ -491,7 +486,7 @@ get_interpolation_values <- function(N, K, L, prob) {
     ))
   }
   if (K > max(vals[vals$N <= N, ]$K)) {
-    stop(paste(
+    abort(paste(
       "No precomputed values available for interpolation for 'K' = ",
       K,
       ".\n",
@@ -502,7 +497,7 @@ get_interpolation_values <- function(N, K, L, prob) {
     ))
   }
   if (K < min(vals[vals$N <= N, ]$K)) {
-    stop(paste(
+    abort(paste(
       "No precomputed values available for interpolation for 'K' = ",
       K,
       ".\n",
@@ -521,8 +516,8 @@ get_interpolation_values <- function(N, K, L, prob) {
 #' within the bounds until z1 and takes the value in x1 at z1.
 #' @param x1 Vector of scaled ECDF values at the left end of the interval, z1.
 #' @param x2 Vector of scaled ECDF values at the right end of the interval, z2.
-#' @param z1 Left evaluation point in [0,1]
-#' @param z2 Right evaluation point in [0,1] with z2 > z1.
+#' @param z1 Left evaluation point in `[0,1]`
+#' @param z2 Right evaluation point in `[0,1]` with z2 > z1.
 #' @param N Total number of values in the sample.
 #' @return A vector containing the probability to transitioning from the values
 #' in x1 to each of the values in x2 weighted by the probabilities in p_int.

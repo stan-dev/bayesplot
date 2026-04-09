@@ -7,7 +7,7 @@
 \title{\strong{bayesplot}: Plotting for Bayesian Models}
 \description{
 \if{html}{
-   \figure{stanlogo.png}{options: width="50" alt="mc-stan.org"}
+   \figure{logo.svg}{options: width="50" alt="mc-stan.org"}
 }
 \emph{Stan Development Team}
 
@@ -25,9 +25,9 @@ Examples of packages that will soon (or already are) using \strong{bayesplot} ar
 \section{Plotting functionality}{
 
 \if{html}{
-   \figure{bayesplot1.png}{options: width="30\%" alt="mcmc_areas"}
-   \figure{bayesplot2.png}{options: width="30\%" alt="ppc_hist"}
-   \figure{bayesplot3.png}{options: width="30\%" alt="ppc_dens_overlay"}
+   \figure{bayesplot1.png}{options: style="width: 30\%;" alt="mcmc_areas"}
+   \figure{bayesplot2.png}{options: style="width: 30\%;" alt="ppc_hist"}
+   \figure{bayesplot3.png}{options: style="width: 30\%;" alt="ppc_dens_overlay"}
  }
 
 The plotting functions in \strong{bayesplot} are organized into several modules:
@@ -115,7 +115,7 @@ for plotting.
 \code{\link[ggplot2:ggsave]{ggplot2::ggsave()}} for saving plots.
 }
 \author{
-\strong{Maintainer}: Jonah Gabry \email{jsg2201@columbia.edu}
+\strong{Maintainer}: Jonah Gabry \email{jgabry@gmail.com}
 
 Authors:
 \itemize{
@@ -131,6 +131,8 @@ Other contributors:
   \item Eduardo Coronado Sroka [contributor]
   \item Teemu Sailynoja [contributor]
   \item Aki Vehtari [contributor]
+  \item Behram Ulukır [contributor]
+  \item Visruth Srimath Kandali [contributor]
 }
 
 }

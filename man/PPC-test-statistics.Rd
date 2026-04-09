@@ -16,6 +16,7 @@ ppc_stat(
   yrep,
   stat = "mean",
   ...,
+  discrete = FALSE,
   binwidth = NULL,
   bins = NULL,
   breaks = NULL,
@@ -28,6 +29,7 @@ ppc_stat_grouped(
   group,
   stat = "mean",
   ...,
+  discrete = FALSE,
   facet_args = list(),
   binwidth = NULL,
   bins = NULL,
@@ -82,19 +84,22 @@ then generic naming is used in the legend.}
 
 \item{...}{Currently unused.}
 
-\item{binwidth}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}} to override
-the default binwidth.}
+\item{discrete}{For \code{ppc_stat()} and \code{ppc_stat_grouped()}, if \code{TRUE} then a
+bar chart is used instead of a histogram.}
 
-\item{bins}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}} to override
-the default binwidth.}
+\item{binwidth}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}}, \code{\link[ggplot2:geom_ribbon]{ggplot2::geom_area()}},
+and \code{\link[ggdist:stat_dots]{ggdist::stat_dots()}} to override the default binwidth.}
 
-\item{breaks}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}} as an
-alternative to \code{binwidth}.}
+\item{bins}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}} and \code{\link[ggplot2:geom_ribbon]{ggplot2::geom_area()}}
+to override the default binning.}
 
-\item{freq}{For histograms, \code{freq=TRUE} (the default) puts count on the
-y-axis. Setting \code{freq=FALSE} puts density on the y-axis. (For many
-plots the y-axis text is off by default. To view the count or density
-labels on the y-axis see the \code{\link[=yaxis_text]{yaxis_text()}} convenience
+\item{breaks}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}} as an alternative to
+\code{binwidth}.}
+
+\item{freq}{For histograms and frequency polygons, \code{freq=TRUE} (the default)
+puts count on the y-axis. Setting \code{freq=FALSE} puts density on the y-axis.
+(For many plots the y-axis text is off by default. To view the count or
+density labels on the y-axis see the \code{\link[=yaxis_text]{yaxis_text()}} convenience
 function.)}
 
 \item{group}{A grouping variable of the same length as \code{y}.
@@ -138,7 +143,7 @@ the input contains the "success" \emph{proportions} (not discrete
 
 \describe{
 \item{\code{ppc_stat()}, \code{ppc_stat_freqpoly()}}{
-A histogram or frequency polygon of the distribution of a statistic
+A histogram/bar plot or frequency polygon of the distribution of a statistic
 computed by applying \code{stat} to each dataset (row) in \code{yrep}. The value of
 the statistic in the observed data, \code{stat(y)}, is overlaid as a vertical
 line. More details and example usage of \code{ppc_stat()} can be found in Gabry
@@ -154,6 +159,13 @@ A scatterplot showing the joint distribution of two statistics
 computed over the datasets (rows) in \code{yrep}. The value of the
 statistics in the observed data is overlaid as large point.
 }
+\item{\code{ppc_stat_data()}}{
+Data-preparation back end for \code{ppc_stat()}, \code{ppc_stat_freqpoly()}, and
+their grouped variants. Users can call \code{ppc_stat_data()} directly to
+obtain the data frame of test-statistic values computed from \code{y} and
+each row of \code{yrep}, enabling custom test-statistic visualizations with
+\strong{ggplot2}.
+}
 }
 }
 
@@ -162,6 +174,12 @@ y <- example_y_data()
 yrep <- example_yrep_draws()
 ppc_stat(y, yrep, stat = "median")
 ppc_stat(y, yrep, stat = "sd") + legend_none()
+
+# discrete data example
+set.seed(0)
+y_discrete <- rbinom(20, 1, 0.2)
+yrep_discrete <- matrix(rbinom(2000, 1, prob = 0.4), 1000, 20, byrow = TRUE)
+ppc_stat(y_discrete, yrep_discrete, stat = "mean", discrete = TRUE)
 
 # use your own function for the 'stat' argument
 color_scheme_set("brightblue")
@@ -177,6 +195,10 @@ color_scheme_set("teal")
 group <- example_group_data()
 ppc_stat_grouped(y, yrep, group, stat = "median")
 ppc_stat_grouped(y, yrep, group, stat = "mad") + yaxis_text()
+
+# discrete data example with groups
+group_discrete <- rep(c("First Half","Second Half"), each = 10)
+ppc_stat_grouped(y_discrete, yrep_discrete, group_discrete, stat = "mean", discrete = TRUE)
 
 # force y-axes to have same scales, allow x axis to vary
 ppc_stat_grouped(y, yrep, group, facet_args = list(scales = "free_x")) + yaxis_text()

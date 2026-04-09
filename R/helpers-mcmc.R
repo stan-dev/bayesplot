@@ -210,6 +210,13 @@ validate_df_with_chain <- function(x) {
     x$chain <- NULL
   }
   x$Chain <- as.integer(x$Chain)
+  if (anyNA(x$Chain)) {
+    abort("Chain values must not be NA.")
+  }
+  rows_per_chain <- table(x$Chain)
+  if (length(unique(rows_per_chain)) != 1) {
+    abort("All chains must have the same number of iterations.")
+  }
   x
 }
 
@@ -218,11 +225,14 @@ validate_df_with_chain <- function(x) {
 df_with_chain2array <- function(x) {
   x <- validate_df_with_chain(x)
   chain <- x$Chain
+  # Renumber arbitrary chain labels to the contiguous 1:N indices used internally.
+  chain <- match(chain, sort(unique(chain)))
   n_chain <- length(unique(chain))
   a <- x[, !colnames(x) %in% "Chain", drop = FALSE]
   parnames <- colnames(a)
   a <- as.matrix(a)
-  x <- array(NA, dim = c(ceiling(nrow(a) / n_chain), n_chain, ncol(a)))
+  n_iter <- nrow(a) %/% n_chain
+  x <- array(NA, dim = c(n_iter, n_chain, ncol(a)))
   for (j in seq_len(n_chain)) {
     x[, j, ] <- a[chain == j,, drop=FALSE]
   }
@@ -237,6 +247,9 @@ df_with_chain2array <- function(x) {
 #' @param x object to check
 #' @return TRUE or FALSE
 is_chain_list <- function(x) {
+  if (length(x) == 0) {
+    return(FALSE)
+  }
   check1 <- !is.data.frame(x) && is.list(x)
   dims <- try(sapply(x, function(chain) length(dim(chain))), silent=TRUE)
   if (inherits(dims, "try-error")) {

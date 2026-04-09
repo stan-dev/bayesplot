@@ -40,7 +40,8 @@ mcmc_areas(
   bw = NULL,
   adjust = NULL,
   kernel = NULL,
-  n_dens = NULL
+  n_dens = NULL,
+  bounds = NULL
 )
 
 mcmc_areas_ridges(
@@ -55,7 +56,8 @@ mcmc_areas_ridges(
   bw = NULL,
   adjust = NULL,
   kernel = NULL,
-  n_dens = NULL
+  n_dens = NULL,
+  bounds = NULL
 )
 
 mcmc_intervals_data(
@@ -83,7 +85,8 @@ mcmc_areas_data(
   bw = NULL,
   adjust = NULL,
   kernel = NULL,
-  n_dens = NULL
+  n_dens = NULL,
+  bounds = NULL
 )
 
 mcmc_areas_ridges_data(
@@ -97,7 +100,8 @@ mcmc_areas_ridges_data(
   bw = NULL,
   adjust = NULL,
   kernel = NULL,
-  n_dens = NULL
+  n_dens = NULL,
+  bounds = NULL
 )
 }
 \arguments{
@@ -179,9 +183,10 @@ points across the curves are the same height. The method \code{"scaled height"} 
 \item{border_size}{For \code{mcmc_areas()} and \code{mcmc_areas_ridges()}, the size of
 the ridgelines.}
 
-\item{bw, adjust, kernel, n_dens}{Optional arguments passed to
-\code{\link[stats:density]{stats::density()}} to override default kernel density estimation
-parameters. \code{n_dens} defaults to \code{1024}.}
+\item{bw, adjust, kernel, n_dens, bounds}{Optional arguments passed to
+\code{\link[stats:density]{stats::density()}} (and \code{bounds} to \code{\link[ggplot2:geom_density]{ggplot2::stat_density()}}) to override
+default kernel density estimation parameters or truncate the density
+support. \code{n_dens} defaults to \code{1024}.}
 }
 \value{
 The plotting functions return a ggplot object that can be further
@@ -208,6 +213,13 @@ with uncertainty intervals shown as shaded areas under the curves.
 Density plot, as in \code{mcmc_areas()}, but drawn with overlapping
 ridgelines. This plot provides a compact display of (hierarchically)
 related distributions.
+}
+\item{\code{mcmc_intervals_data()}, \code{mcmc_areas_data()}, \code{mcmc_areas_ridges_data()}}{
+Data-preparation back ends for \code{mcmc_intervals()}, \code{mcmc_areas()}, and
+\code{mcmc_areas_ridges()}, respectively. Users can call these functions
+directly to obtain the prepared data frames of posterior interval
+summaries and create custom interval or density-area visualizations
+with \strong{ggplot2}.
 }
 }
 }

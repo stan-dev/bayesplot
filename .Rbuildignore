@@ -3,7 +3,7 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 LICENSE
-^\.travis\.yml$
+^\_pkgdown\.yml$
 ^README\.md$
 .gitignore
 .git/*
@@ -14,5 +14,7 @@ images/*
 book/*
 docs/*
 Rplots.pdf
+.vscode/*
 ^\.github$
 ^release-prep\.R$
+release-prep.R
