@@ -11,9 +11,7 @@
 \alias{ppc_calibration_data}
 \alias{ppc_calibration_interval_data}
 \alias{ppc_calibration_interval_data_grouped}
-\title{Assess the calibration of the predictive distributions \code{yrep} in relation to
-the data `y'.
-See the \strong{Plot Descriptions} section, below, for details.}
+\title{PPC calibration}
 \usage{
 ppc_calibration_overlay(
   y,
@@ -203,21 +201,25 @@ customized using the \strong{ggplot2} package. The functions with suffix
 function.
 }
 \description{
-Assess the calibration of the predictive distributions \code{yrep} in relation to
-the data `y'.
+Assess the calibration of the predictions, or predictive probabilites in relation to
+binary observations.
 See the \strong{Plot Descriptions} section, below, for details.
 }
 \section{Plot Descriptions}{
 
 \describe{
 \item{\code{ppc_calibration()},\code{ppc_calibration_grouped()}}{
-
-},
+PAV-adjusted calibration plots showing the relationship between the
+predicted event probabilities and the conditional event probabilities.
+The \code{interval_type} parameter controls whether confidence intervals, or
+consistency intervals are computed.},
 \item{\code{ppc_calibration_overlay()},\code{ppc_calibration_overlay_grouped()}}{
-
+Overlay plots showing posterior samples of PAV-adjusted calibration
+curves.
 },
 \item{\code{ppc_loo_calibration()},\code{ppc_loo_calibration_grouped()}}{
-
+PAV-adjusted calibration plots to assess the calibration of the
+leave-one-out (LOO) predictive probabilities.
 }
 }
 }
@@ -232,6 +234,10 @@ y <- rbinom(length(example_y_data()), 1, (example_y_data() - ymin) / (ymax - ymi
 prep <- (example_yrep_draws() - ymin) / (ymax - ymin)
 
 ppc_calibration_overlay(y, prep[1:50, ])
+
+# Compare confidence vs consistency intervals
+ppc_calibration(y, prep, interval_type = "confidence")
+ppc_calibration(y, prep, interval_type = "consistency")
 }
 \seealso{
 Other PPCs: 
