@@ -42,7 +42,7 @@ ppc_ecdf_overlay(
   y,
   yrep,
   ...,
-  discrete = FALSE,
+  discrete = deprecated(),
   pad = TRUE,
   size = 0.25,
   alpha = 0.7
@@ -53,7 +53,7 @@ ppc_ecdf_overlay_grouped(
   yrep,
   group,
   ...,
-  discrete = FALSE,
+  discrete = deprecated(),
   pad = TRUE,
   size = 0.25,
   alpha = 0.7
@@ -185,10 +185,10 @@ ppc_pit_ecdf_grouped(
 
 - discrete:
 
-  For `ppc_ecdf_overlay()`, should the data be treated as discrete? The
-  default is `FALSE`, in which case `geom="line"` is passed to
-  [`ggplot2::stat_ecdf()`](https://ggplot2.tidyverse.org/reference/stat_ecdf.html).
-  If `discrete` is set to `TRUE` then `geom="step"` is used.
+  **\[deprecated\]** The `discrete` argument is deprecated. The ECDF is
+  a step function by definition, so
+  [`geom_step()`](https://ggplot2.tidyverse.org/reference/geom_path.html)
+  is now always used.
 
 - pad:
 
@@ -341,9 +341,8 @@ counts).
 
   Kernel density or empirical CDF estimates of each dataset (row) in
   `yrep` are overlaid, with the distribution of `y` itself on top (and
-  in a darker shade). When using `ppc_ecdf_overlay()` with discrete
-  data, set the `discrete` argument to `TRUE` for better results. For an
-  example of `ppc_dens_overlay()` also see Gabry et al. (2019).
+  in a darker shade). For an example of `ppc_dens_overlay()` also see
+  Gabry et al. (2019).
 
 - `ppc_violin_grouped()`:
 
@@ -413,7 +412,7 @@ dim(yrep)
 ppc_dens_overlay(y, yrep[1:25, ])
 
 # \donttest{
-# ppc_ecdf_overlay with continuous data (set discrete=TRUE if discrete data)
+# ppc_ecdf_overlay
 ppc_ecdf_overlay(y, yrep[sample(nrow(yrep), 25), ])
 
 

@@ -29,7 +29,7 @@ ppd_dens_overlay(
 ppd_ecdf_overlay(
   ypred,
   ...,
-  discrete = FALSE,
+  discrete = deprecated(),
   pad = TRUE,
   size = 0.25,
   alpha = 0.7
@@ -107,12 +107,10 @@ ppd_boxplot(ypred, ..., notch = TRUE, size = 0.5, alpha = 1)
 
 - discrete:
 
-  For
-  [`ppc_ecdf_overlay()`](https://mc-stan.org/bayesplot/dev/reference/PPC-distributions.md),
-  should the data be treated as discrete? The default is `FALSE`, in
-  which case `geom="line"` is passed to
-  [`ggplot2::stat_ecdf()`](https://ggplot2.tidyverse.org/reference/stat_ecdf.html).
-  If `discrete` is set to `TRUE` then `geom="step"` is used.
+  **\[deprecated\]** The `discrete` argument is deprecated. The ECDF is
+  a step function by definition, so
+  [`geom_step()`](https://ggplot2.tidyverse.org/reference/geom_path.html)
+  is now always used.
 
 - pad:
 

@@ -95,7 +95,7 @@ at <a href="PPC-distributions.html">PPC-distributions</a> has details on the ind
 <span><span class="fu">ppd_ecdf_overlay</span><span class="op">(</span></span>
 <span>  <span class="va">ypred</span>,</span>
 <span>  <span class="va">...</span>,</span>
-<span>  discrete <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  discrete <span class="op">=</span> <span class="fu">deprecated</span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  pad <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  size <span class="op">=</span> <span class="fl">0.25</span>,</span>
 <span>  alpha <span class="op">=</span> <span class="fl">0.7</span></span>
@@ -170,10 +170,9 @@ support. <code>n_dens</code> defaults to <code>1024</code>.</p></dd>
 
 
 <dt id="arg-discrete">discrete<a class="anchor" aria-label="anchor" href="#arg-discrete"></a></dt>
-<dd><p>For <code><a href="PPC-distributions.html">ppc_ecdf_overlay()</a></code>, should the data be treated as
-discrete? The default is <code>FALSE</code>, in which case <code>geom="line"</code> is
-passed to <code><a href="https://ggplot2.tidyverse.org/reference/stat_ecdf.html" class="external-link">ggplot2::stat_ecdf()</a></code>. If <code>discrete</code> is set to
-<code>TRUE</code> then <code>geom="step"</code> is used.</p></dd>
+<dd><p><a href="https://lifecycle.r-lib.org/articles/stages.html#deprecated" class="external-link"><img src="figures/lifecycle-deprecated.svg" alt="[Deprecated]"></a> The <code>discrete</code> argument is
+deprecated. The ECDF is a step function by definition, so <code><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_step()</a></code> is
+now always used.</p></dd>
 
 
 <dt id="arg-pad">pad<a class="anchor" aria-label="anchor" href="#arg-pad"></a></dt>

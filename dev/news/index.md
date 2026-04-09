@@ -2,6 +2,13 @@
 
 ## bayesplot (development version)
 
+- [`ppc_ecdf_overlay()`](https://mc-stan.org/bayesplot/dev/reference/PPC-distributions.md),
+  [`ppc_ecdf_overlay_grouped()`](https://mc-stan.org/bayesplot/dev/reference/PPC-distributions.md),
+  and
+  [`ppd_ecdf_overlay()`](https://mc-stan.org/bayesplot/dev/reference/PPD-distributions.md)
+  now always use
+  [`geom_step()`](https://ggplot2.tidyverse.org/reference/geom_path.html).
+  The `discrete` argument is deprecated.
 - Fixed missing `drop = FALSE` in
   [`nuts_params.CmdStanMCMC()`](https://mc-stan.org/bayesplot/dev/reference/bayesplot-extractors.md).
 - Replace [`apply()`](https://rdrr.io/r/base/apply.html) with
