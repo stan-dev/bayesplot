@@ -154,7 +154,7 @@ ppd_ecdf_overlay <-
       p +
         stat_ecdf(
           mapping = aes(color = "PPD", linetype = "PPD"),
-          geom = if (discrete) "step" else "line",
+          geom = "step",
           linewidth = 1,
           pad = pad
         )
