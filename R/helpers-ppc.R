@@ -73,12 +73,7 @@ validate_predictions <- function(predictions, n_obs = NULL) {
   }
 
   if (is.integer(predictions)) {
-    if (nrow(predictions) == 1) {
-      predictions[1, ] <- as.numeric(predictions[1,, drop = FALSE])
-    }
-    else {
-      predictions <- apply(predictions, 2, as.numeric)
-    }
+    storage.mode(predictions) <- "numeric"
   }
 
   if (anyNA(predictions)) {

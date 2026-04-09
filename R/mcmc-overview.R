@@ -24,7 +24,9 @@
 #' frame with one column per parameter (if only a single chain or all chains
 #' have already been merged), or a data frame with one column per parameter plus
 #' an additional column `"Chain"` that contains the chain number (an integer)
-#' corresponding to each row in the data frame.
+#' corresponding to each row in the data frame. When a `"Chain"` column is
+#' supplied, each chain must have the same number of iterations. Chain labels
+#' are used to identify groups and are renumbered internally to `1:N`.
 #' * __draws__: Any of the `draws` formats supported by the
 #' \pkg{posterior} package.
 #'

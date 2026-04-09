@@ -369,6 +369,23 @@ mcmc_trace_highlight(posterior, pars = "sigma", highlight = 3)
 
 <br>
 
+## Using `*_data()` functions for custom plots
+
+As with PPC functions, many MCMC plotting functions have `*_data()` companions
+that return the underlying data instead of a plot. For example,
+`mcmc_intervals_data()` returns the quantiles used by `mcmc_intervals()`:
+
+```{r data_intervals_mcmc}
+d <- mcmc_intervals_data(posterior, pars = c("(Intercept)", "sigma"))
+d
+```
+
+This can be used to build fully custom ggplot2 visualizations using the same
+summary statistics that bayesplot computes internally. See
+`available_mcmc(plots_only = FALSE)` for a full list of `*_data()` functions.
+
+<br>
+
 ## References
 
 Gabry, J., and Goodrich, B. (2017). rstanarm: Bayesian Applied Regression 

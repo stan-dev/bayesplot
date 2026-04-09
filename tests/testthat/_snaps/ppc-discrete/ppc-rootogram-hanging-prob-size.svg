@@ -68,6 +68,6 @@
 <rect x='628.41' y='302.45' width='17.28' height='17.28' style='stroke-width: 0.75; stroke: none; fill: #03396C; fill-opacity: 0.40;' />
 <line x1='630.14' y1='311.09' x2='643.96' y2='311.09' style='stroke-width: 6.40; stroke: #011F4B; stroke-linecap: butt;' />
 <text x='651.67' y='315.57' style='font-size: 13.00px; font-family: sans;' textLength='54.22px' lengthAdjust='spacingAndGlyphs'>Expected</text>
-<text x='36.41' y='15.89' style='font-size: 14.40px; font-family: sans;' textLength='275.69px' lengthAdjust='spacingAndGlyphs'>ppc_rootogram (style='hanging', prob, size)</text>
+<text x='36.41' y='15.89' style='font-size: 14.40px; font-family: sans;' textLength='224.16px' lengthAdjust='spacingAndGlyphs'>ppc_rootogram (hanging,prob,size)</text>
 </g>
 </svg>

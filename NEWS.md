@@ -2,6 +2,16 @@
 
 
 * New `show_marginal` argument to `ppd_*()` functions to show the PPD - the marginal predictive distribution by @mattansb (#425)
+* `ppc_ecdf_overlay()`, `ppc_ecdf_overlay_grouped()`, and `ppd_ecdf_overlay()` now always use `geom_step()`. The `discrete` argument is deprecated.
+* Fixed missing `drop = FALSE` in `nuts_params.CmdStanMCMC()`.
+* Replace `apply()` with `storage.mode()` for integer-to-numeric matrix conversion in `validate_predictions()`.
+* Fixed `is_chain_list()` to correctly reject empty lists instead of silently returning `TRUE`.
+* Added unit tests for `mcmc_areas_ridges_data()`, `mcmc_parcoord_data()`, and `mcmc_trace_data()`.
+* Added unit tests for `ppc_error_data()` and `ppc_loo_pit_data()` covering output structure, argument handling, and edge cases.
+* Added vignette sections demonstrating `*_data()` companion functions for building custom ggplot2 visualizations (#435)
+* Extract `drop_singleton_values()` helper in `mcmc_nuts_treedepth()` to remove duplicated filtering logic.
+* Eliminate redundant data processing in `mcmc_areas_data()` by reusing the prepared MCMC array for both interval and density computation.
+* Validate equal chain lengths in `validate_df_with_chain()`, reject missing chain labels, and renumber data-frame chain labels internally when converting to arrays.
 * Added unit tests for previously untested edge cases in `param_range()`, `param_glue()`, and `tidyselect_parameters()` (no-match, partial-match, and negation behavior).
 * Bumped minimum version for `rstantools` from `>= 1.5.0` to `>= 2.0.0` .
 * Use `rlang::warn()` and `rlang::inform()` for selected PPC user messages instead of base `warning()` and `message()`.
@@ -16,7 +26,8 @@
 * Default to `quantiles=100` for all dot plots by @behramulukir (#402)
 * Use `"neff_ratio"` consistently in diagnostic color scale helpers to avoid relying on partial matching of `"neff"`.
 * Replace `expand = c(mult, add)` with `ggplot2::expansion()` helper in scale functions for consistency with ggplot2 >= 3.3.0 style.
-* Replace uses of `geom_bar(stat = "identity")` with the more idiomatic ggplot2 form `geom_col()` 
+* Replace uses of `geom_bar(stat = "identity")` with the more idiomatic ggplot2 form `geom_col()`
+* New function `ppc_rootogram_grouped` for grouped rootogram plots by @behramulukir and @jgabry (#419)
 
 # bayesplot 1.15.0
 
