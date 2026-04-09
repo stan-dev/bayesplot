@@ -8,47 +8,149 @@
 \alias{ppc_calibration_grouped}
 \alias{ppc_loo_calibration}
 \alias{ppc_loo_calibration_grouped}
+\alias{ppc_calibration_data}
+\alias{ppc_calibration_interval_data}
+\alias{ppc_calibration_interval_data_grouped}
 \title{Assess the calibration of the predictive distributions \code{yrep} in relation to
 the data `y'.
 See the \strong{Plot Descriptions} section, below, for details.}
 \usage{
-ppc_calibration_overlay(y, prep, ..., linewidth = 0.25, alpha = 0.5)
+ppc_calibration_overlay(
+  y,
+  prep,
+  ...,
+  prob = NULL,
+  linewidth = 0.25,
+  alpha = 0.5,
+  x_range = c("full", "data")
+)
 
 ppc_calibration_overlay_grouped(
   y,
   prep,
   group,
   ...,
+  prob = NULL,
   linewidth = 0.25,
-  alpha = 0.7
+  alpha = 0.7,
+  x_range = c("full", "data")
 )
 
-ppc_calibration(y, prep, prob = 0.95, ..., linewidth = 0.5, alpha = 0.7)
+ppc_calibration(
+  y,
+  prep = NULL,
+  yrep = NULL,
+  prob = 0.95,
+  interval = c("confidence", "consistency"),
+  interval_type = NULL,
+  x_range = c("full", "data"),
+  help_text = TRUE,
+  B = 200,
+  show_mean = TRUE,
+  show_qdots = TRUE,
+  qdots_quantiles = 100,
+  ...,
+  linewidth = 1,
+  alpha = 0.1
+)
 
 ppc_calibration_grouped(
   y,
-  prep,
+  yrep = NULL,
+  prep = NULL,
   group,
   prob = 0.95,
+  interval = c("confidence", "consistency"),
+  interval_type = NULL,
+  x_range = c("full", "data"),
+  help_text = TRUE,
+  B = 200,
+  show_mean = TRUE,
+  show_qdots = TRUE,
+  qdots_quantiles = 100,
   ...,
-  linewidth = 0.5,
-  alpha = 0.7
+  linewidth = 1,
+  alpha = 0.1
 )
 
-ppc_loo_calibration(y, yrep, lw, ..., linewidth = 0.25, alpha = 0.7)
+ppc_loo_calibration(
+  y,
+  yrep,
+  lw,
+  prob = 0.95,
+  interval = c("confidence", "consistency"),
+  interval_type = NULL,
+  x_range = c("full", "data"),
+  help_text = TRUE,
+  B = 200,
+  show_mean = TRUE,
+  show_qdots = TRUE,
+  qdots_quantiles = 100,
+  ...,
+  linewidth = 1,
+  alpha = 0.1
+)
 
 ppc_loo_calibration_grouped(
   y,
   yrep,
-  group,
   lw,
+  group,
+  prob = 0.95,
+  interval = c("confidence", "consistency"),
+  interval_type = NULL,
+  x_range = c("full", "data"),
+  help_text = TRUE,
+  B = 200,
+  show_mean = TRUE,
+  show_qdots = TRUE,
+  qdots_quantiles = 100,
   ...,
-  linewidth = 0.25,
-  alpha = 0.7
+  linewidth = 1,
+  alpha = 0.1
+)
+
+ppc_calibration_data(y, prep, group = NULL)
+
+ppc_calibration_interval_data(
+  y,
+  prep = NULL,
+  yrep = NULL,
+  prob = 0.95,
+  interval = c("confidence", "consistency"),
+  B = 200
+)
+
+ppc_calibration_interval_data_grouped(
+  y,
+  prep = NULL,
+  yrep = NULL,
+  group,
+  prob = 0.95,
+  interval = c("confidence", "consistency"),
+  B = 200
 )
 }
 \arguments{
 \item{y}{A vector of observations. See \strong{Details}.}
+
+\item{prep}{For \code{ppc_calibration()}, \code{ppc_calibration_grouped()},
+\code{ppc_calibration_overlay()}, and \code{ppc_calibration_overlay_grouped()},
+an \code{S} by \code{N} matrix of predicted probabilities in \verb{[0, 1]}, where \code{S} is
+the number of draws and \code{N = length(y)}.}
+
+\item{...}{Currently unused.}
+
+\item{prob}{Probability mass to include in the plotted interval.}
+
+\item{linewidth, alpha}{Arguments passed to geoms controlling line width and
+opacity.}
+
+\item{x_range}{For \code{ppc_calibration()}, \code{ppc_calibration_grouped()},
+\code{ppc_calibration_overlay()}, and \code{ppc_calibration_overlay_grouped()},
+choose \code{"full"} to always show
+the x-axis on \verb{[0, 1]} (default), or \code{"data"} to zoom to the range of
+predicted probabilities in the plotted data.}
 
 \item{group}{A grouping variable of the same length as \code{y}.
 Will be coerced to \link[base:factor]{factor} if not already a factor.
@@ -62,6 +164,37 @@ posterior (or prior) sample used to generate \code{yrep}. The number of columns,
 \code{yrep} should be in the same order as the data points in \code{y} for the plots
 to make sense. See the \strong{Details} and \strong{Plot Descriptions} sections for
 additional advice specific to particular plots.}
+
+\item{interval}{For \code{ppc_calibration()}, \code{ppc_calibration_grouped()},
+\code{ppc_loo_calibration()}, and \code{ppc_loo_calibration_grouped()}, choose
+\code{"confidence"} to use uncertainty in the estimated calibration curve, or
+\code{"consistency"} to compare to replicated outcomes.}
+
+\item{interval_type}{Deprecated alias for \code{interval}.}
+
+\item{help_text}{For \code{ppc_calibration()} and \code{ppc_calibration_grouped()},
+if \code{TRUE} (default) display a math-style label in the plot indicating the
+interval as \code{CI} with the selected \code{prob} and \code{interval} values.}
+
+\item{B}{For calibration plots that use \code{yrep} with \code{interval = "confidence"},
+the number of bootstrap samples.}
+
+\item{show_mean}{For calibration interval plots, if \code{TRUE} (default), draw
+the estimated calibration curve.}
+
+\item{show_qdots}{For \code{ppc_calibration()}, \code{ppc_calibration_grouped()},
+\code{ppc_loo_calibration()}, and \code{ppc_loo_calibration_grouped()}, if \code{TRUE}
+add a quantile dot plot at the bottom of the panel to show the marginal
+distribution of predicted probabilities.}
+
+\item{qdots_quantiles}{For \code{ppc_calibration()}, \code{ppc_calibration_grouped()},
+\code{ppc_loo_calibration()}, and \code{ppc_loo_calibration_grouped()}, positive
+integer passed to
+the \code{quantiles} argument of \code{ggdist::stat_dots()} when
+\code{show_qdots = TRUE}.}
+
+\item{lw}{For \code{ppc_loo_calibration()} and \code{ppc_loo_calibration_grouped()},
+a matrix of log weights with the same dimensions as \code{yrep}.}
 }
 \value{
 The plotting functions return a ggplot object that can be further
