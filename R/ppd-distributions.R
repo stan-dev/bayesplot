@@ -83,11 +83,19 @@ ppd_dens_overlay <-
 ppd_ecdf_overlay <-
   function(ypred,
            ...,
-           discrete = FALSE,
+           discrete = deprecated(),
            pad = TRUE,
            size = 0.25,
            alpha = 0.7) {
     check_ignored_arguments(...)
+
+    if (is_present(discrete)) {
+      deprecate_warn(
+        "1.16.0",
+        "ppd_ecdf_overlay(discrete)",
+        details = "The ECDF is now always plotted as a step function."
+      )
+    }
 
     data <- ppd_data(ypred)
     ggplot(data, mapping = aes(x = .data$value)) +
@@ -99,7 +107,7 @@ ppd_ecdf_overlay <-
       ) +
       stat_ecdf(
         mapping = aes(group = .data$rep_id, color = "ypred"),
-        geom = if (discrete) "step" else "line",
+        geom = "step",
         linewidth = size,
         alpha = alpha,
         pad = pad
