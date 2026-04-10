@@ -50,6 +50,22 @@ test_that("ppc_ecdf_overlay returns a ggplot object", {
   expect_gg(ppd_ecdf_overlay(yrep2))
 })
 
+test_that("ppc_ecdf_overlay discrete argument is deprecated", {
+  lifecycle::expect_deprecated(
+    ppc_ecdf_overlay(vdiff_y2, vdiff_yrep2, discrete = TRUE)
+  )
+  lifecycle::expect_deprecated(
+    ppc_ecdf_overlay_grouped(vdiff_y2, vdiff_yrep2, vdiff_group2, discrete = TRUE)
+  )
+  lifecycle::expect_deprecated(
+    ppd_ecdf_overlay(vdiff_yrep2, discrete = TRUE)
+  )
+
+  # no warning when discrete is not supplied
+  expect_no_warning(ppc_ecdf_overlay(vdiff_y2, vdiff_yrep2))
+  expect_no_warning(ppd_ecdf_overlay(vdiff_yrep2))
+})
+
 test_that("ppc_dens,pp_hist,ppc_freqpoly,ppc_boxplot return ggplot objects", {
   expect_gg(ppc_hist(y, yrep[1,, drop = FALSE], binwidth = 0.1))
   expect_gg(ppc_hist(y, yrep[1:8, ], binwidth = 0.1))
@@ -459,13 +475,12 @@ test_that("ppc_ecdf_overlay renders correctly", {
   p_custom <- ppc_ecdf_overlay(
     vdiff_y2,
     vdiff_yrep2,
-    discrete = TRUE,
     size = 2,
     alpha = .2
   )
 
   vdiffr::expect_doppelganger(
-    "ppc_ecdf_overlay (discrete, size, alpha)",
+    "ppc_ecdf_overlay (size, alpha)",
     p_custom
   )
 })
@@ -482,15 +497,23 @@ test_that("ppc_ecdf_overlay_grouped renders correctly", {
     vdiff_y2,
     vdiff_yrep2,
     vdiff_group2,
-    discrete = TRUE,
     size = 2,
     alpha = .2
   )
 
   vdiffr::expect_doppelganger(
-    "ppc_ecdf_overlay_grouped (discrete, size, alpha)",
+    "ppc_ecdf_overlay_grouped (size, alpha)",
     p_custom
   )
+})
+
+test_that("ppd_ecdf_overlay renders correctly", {
+  testthat::skip_on_cran()
+  testthat::skip_if_not_installed("vdiffr")
+  skip_on_r_oldrel()
+
+  p_base <- ppd_ecdf_overlay(vdiff_yrep2)
+  vdiffr::expect_doppelganger("ppd_ecdf_overlay (default)", p_base)
 })
 
 test_that("ppc_dens renders correctly", {

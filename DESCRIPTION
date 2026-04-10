@@ -44,7 +44,11 @@ Imports:
     tidyselect,
     utils
 Suggests:
+<<<<<<< dependence-aware-LOO-PIT
     brms (>= 2.23.0),
+=======
+    cmdstanr,
+>>>>>>> master
     ggdist,
     ggfortify,
     gridExtra (>= 2.2.1),
@@ -66,3 +70,4 @@ VignetteBuilder: knitr
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 Config/testthat/edition: 3
+Additional_repositories: https://stan-dev.r-universe.dev/
