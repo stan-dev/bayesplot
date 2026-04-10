@@ -468,6 +468,7 @@ ppc_freqpoly <-
       ) +
       scale_fill_ppc() +
       scale_color_ppc() +
+      guides(fill = guide_legend(override.aes = list(color = NA))) +
       facet_wrap_parsed("rep_label") +
       bayesplot_theme_get() +
       force_axes_in_facets() +
