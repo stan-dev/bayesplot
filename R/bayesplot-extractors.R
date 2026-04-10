@@ -175,7 +175,7 @@ nuts_params.list <- function(object, pars = NULL, ...) {
 nuts_params.CmdStanMCMC <- function(object, pars = NULL, ...) {
   arr <- object$sampler_diagnostics()
   if (!is.null(pars)) {
-    arr <- arr[,, pars]
+    arr <- arr[,, pars, drop = FALSE]
   }
   out <- reshape2::melt(arr)
   colnames(out)[colnames(out) == "variable"] <- "parameter"
