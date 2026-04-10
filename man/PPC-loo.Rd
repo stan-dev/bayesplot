@@ -221,8 +221,8 @@ Defaults to \code{"POT"}.}
 
 \item{gamma}{For \code{ppc_loo_pit_ecdf()} when \code{method = "correlated"}, tolerance
 threshold controlling how strongly suspicious points are flagged. Larger
-values (gamma > 0) emphasizes points with larger deviations. If \code{NULL}, automatically
-determined based on p-value.}
+values (gamma > 0) emphasizes points with larger deviations. If \code{NULL} (default),
+\code{gamma} is set to 0, and thus all suspicious points are flagged.}
 
 \item{color}{For \code{ppc_loo_pit_ecdf()} when \code{method = "correlated"}, a vector
 with base color and highlight color for the ECDF plot. Defaults to
@@ -235,7 +235,8 @@ defining whether to add informative text to the plot. Defaults to \code{TRUE}.}
 \item{pareto_pit}{For \code{ppc_loo_pit_ecdf()}. Computes PIT values using Pareto-PIT method.
 Defaults to \code{TRUE} if \code{test} is either \code{"POT"} or \code{"PIET"} and no \code{pit} values are
 provided otherwise \code{FALSE}. This argument should normally not be modified by the user,
-except for development purposes.}
+except for development purposes. If \code{pit} is non-\code{NULL}, \code{pareto_pit} cannot
+be simultaneously \code{TRUE}.}
 
 \item{subset}{For \code{ppc_loo_intervals()} and \code{ppc_loo_ribbon()}, an optional
 integer vector indicating which observations in \code{y} (and \code{yrep}) to
