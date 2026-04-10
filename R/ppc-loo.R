@@ -407,9 +407,9 @@ ppc_loo_pit_qq <- function(y,
 #'   The default is `FALSE`, but for large samples we recommend setting
 #'   `plot_diff = TRUE` to better use the plot area.
 #' @param interpolate_adj For `ppc_loo_pit_ecdf()` when `method = "independent"`,
-#'   a boolean defining if the simultaneous confidence bands should be 
-#'   interpolated based on precomputed values rather than computed exactly. 
-#'   Computing the bands may be computationally intensive and the approximation 
+#'   a boolean defining if the simultaneous confidence bands should be
+#'   interpolated based on precomputed values rather than computed exactly.
+#'   Computing the bands may be computationally intensive and the approximation
 #'   gives a fast method for assessing the ECDF trajectory. The default is to use
 #'   interpolation if `K` is greater than 200.
 #' @param method For `ppc_loo_pit_ecdf()`, the method used to calculate the
@@ -421,18 +421,19 @@ ppc_loo_pit_qq <- function(y,
 #'   Defaults to `"POT"`.
 #' @param gamma For `ppc_loo_pit_ecdf()` when `method = "correlated"`, tolerance
 #'   threshold controlling how strongly suspicious points are flagged. Larger
-#'   values (gamma > 0) emphasizes points with larger deviations. If `NULL`, automatically
-#'   determined based on p-value.
+#'   values (gamma > 0) emphasizes points with larger deviations. If `NULL` (default),
+#'   `gamma` is set to 0, and thus all suspicious points are flagged.
 #' @param color For `ppc_loo_pit_ecdf()` when `method = "correlated"`, a vector
 #'   with base color and highlight color for the ECDF plot. Defaults to
 #'   `c(ecdf = "grey60", highlight = "red")`. The first element is used for
 #'   the main ECDF line, the second for highlighted suspicious regions.
 #' @param help_text For `ppc_loo_pit_ecdf()` when `method = "correlated"`, a boolean
 #'   defining whether to add informative text to the plot. Defaults to `TRUE`.
-#' @param pareto_pit For `ppc_loo_pit_ecdf()`. Computes PIT values using Pareto-PIT method. 
-#'   Defaults to `TRUE` if `test` is either `"POT"` or `"PIET"` and no `pit` values are 
-#'   provided otherwise `FALSE`. This argument should normally not be modified by the user, 
-#'   except for development purposes.
+#' @param pareto_pit For `ppc_loo_pit_ecdf()`. Computes PIT values using Pareto-PIT method.
+#'   Defaults to `TRUE` if `test` is either `"POT"` or `"PIET"` and no `pit` values are
+#'   provided otherwise `FALSE`. This argument should normally not be modified by the user,
+#'   except for development purposes. If `pit` is non-`NULL`, `pareto_pit` cannot
+#'   be simultaneously `TRUE`.
 #' @note
 #' Note that the default "independent" method is **superseded** by
 #' the "correlated" method (Tesso & Vehtari, 2026) which accounts for dependent
@@ -485,14 +486,19 @@ ppc_loo_pit_ecdf <- function(y,
   switch(method,
     "correlated" = {
       if (!is.null(interpolate_adj)) .warn_ignored("'correlated'", "interpolate_adj")
-      
+      if (!is.null(pit) && isTRUE(pareto_pit)) {
+        stop(paste(
+          "`pareto_pit = TRUE` cannot be used together with a non-`NULL`",
+          "`pit` value. Set either `pareto_pit = FALSE` or `pit = NULL`."
+        ))
+      }
       test <- match.arg(test %||% "POT", choices = c("POT", "PRIT", "PIET"))
       alpha <- 1 - prob
       gamma <- gamma %||% 0
       linewidth <- linewidth %||% 0.3
       color <- color %||% c(ecdf = "grey60", highlight = "red")
       help_text <- help_text %||% TRUE
-      pareto_pit <- pareto_pit %||% is.null(pit) && test %in% c("POT", "PIET")
+      pareto_pit <- pareto_pit %||% (is.null(pit) && test %in% c("POT", "PIET"))
     },
     "independent" = {
       # Collect args that are meaningless under the independent method.
@@ -570,10 +576,10 @@ ppc_loo_pit_ecdf <- function(y,
 
     p <- ggplot() +
       geom_step(
-        data = df_main, 
+        data = df_main,
         mapping = aes(x = .data$x, y = .data$ecdf_val),
-        show.legend = FALSE, 
-        linewidth = linewidth, 
+        show.legend = FALSE,
+        linewidth = linewidth,
         color = color["ecdf"]
       ) +
       geom_segment(
@@ -636,10 +642,10 @@ ppc_loo_pit_ecdf <- function(y,
           "p[unif]^{%s} == '%s' ~ (alpha == '%.2f')",
           test, fmt_p(p_value_CCT), alpha
         ),
-        hjust = -0.05, 
+        hjust = -0.05,
         vjust = 1.5,
-        color = "black", 
-        parse = TRUE, 
+        color = "black",
+        parse = TRUE,
         size = label_size
       )
     }
