@@ -178,6 +178,40 @@ test_that("yaxis_ticks returns correct theme object", {
 })
 
 
+# annotation_style --------------------------------------------------------
+test_that("annotation_style returns fallbacks when gridlines are blank", {
+  bayesplot_theme_set(theme_default())
+  on.exit(bayesplot_theme_set(), add = TRUE)
+
+  s <- annotation_style()
+  expect_equal(s$color, "gray90")
+  expect_equal(s$linewidth, 0.5)
+
+  s2 <- annotation_style(fallback_color = "gray", fallback_linewidth = 1)
+  expect_equal(s2$color, "gray")
+  expect_equal(s2$linewidth, 1)
+})
+
+test_that("annotation_style reads gridline aesthetics from theme", {
+  bayesplot_theme_set(ggplot2::theme_gray())
+  on.exit(bayesplot_theme_set(), add = TRUE)
+
+  s <- annotation_style()
+  expect_true(is.character(s$color))
+  expect_true(is.numeric(s$linewidth))
+  expect_true(s$linewidth > 0)
+})
+
+test_that("annotation_style prefers panel.grid.major.x over panel.grid.major", {
+  custom <- ggplot2::theme_gray() +
+    ggplot2::theme(panel.grid.major.x = ggplot2::element_line(colour = "red", linewidth = 3))
+  bayesplot_theme_set(custom)
+  on.exit(bayesplot_theme_set(), add = TRUE)
+
+  s <- annotation_style()
+  expect_equal(s$color, "red")
+})
+
 # overlay functions -------------------------------------------------------
 test_that("overlay_function returns the correct object", {
   expect_error(overlay_function(), 'argument "fun" is missing')
