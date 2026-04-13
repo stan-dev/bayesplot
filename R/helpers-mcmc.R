@@ -29,7 +29,9 @@ prepare_mcmc_array <- function(x,
     abort("Arrays should have 2 or 3 dimensions. See help('MCMC-overview').")
   }
   if (anyNA(x)) {
-    abort("NAs not allowed in 'x'.")
+    warn(
+      "NAs were found in 'x'. `prepare_mcmc_array()` does not remove them; some plots may render with missing values dropped, while summary functions (e.g. intervals, densities, diagnostics) may produce misleading results or error. Consider removing NAs before plotting or summarizing."
+    )
   }
 
   if (rlang::is_quosures(pars)) {

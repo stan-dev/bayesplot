@@ -1,5 +1,6 @@
 # bayesplot (development version)
 
+* `prepare_mcmc_array()` now warns instead of erroring on `NA`s in the input.
 * `ppc_ecdf_overlay()`, `ppc_ecdf_overlay_grouped()`, and `ppd_ecdf_overlay()` now always use `geom_step()`. The `discrete` argument is deprecated.
 * Fixed missing `drop = FALSE` in `nuts_params.CmdStanMCMC()`.
 * Replace `apply()` with `storage.mode()` for integer-to-numeric matrix conversion in `validate_predictions()`.
