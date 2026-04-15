@@ -133,6 +133,7 @@ Other contributors:
   \item Aki Vehtari [contributor]
   \item Behram Ulukır [contributor]
   \item Visruth Srimath Kandali [contributor]
+  \item Mattan S. Ben-Shachar [contributor]
 }
 
 }
