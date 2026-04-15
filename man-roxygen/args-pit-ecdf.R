@@ -7,8 +7,6 @@
 #'   how strongly suspicious points are flagged. Larger values (`gamma > 0`)
 #'   emphasize points with larger deviations. If `NULL`, defaults to `0` and
 #'   thus all suspicious points are flagged.
-#' @param linewidth When `method = "correlated"`, the line width of the ECDF.
-#'   Defaults to `0.3`.
 #' @param color When `method = "correlated"`, a vector with base color and
 #'   highlight color for the ECDF plot. Defaults to
 #'   `c(ecdf = "grey60", highlight = "red")`. The first element is used for

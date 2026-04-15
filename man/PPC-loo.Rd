@@ -189,8 +189,10 @@ when \code{method = 'independent'}. If \code{pit} is supplied, defaults to
 \code{length(pit)}, otherwise \code{yrep} determines the maximum accuracy of the
 estimated PIT values and \code{K} is set to \code{min(nrow(yrep) + 1, 1000)}.}
 
-\item{prob}{The desired simultaneous coverage level of the bands around the
-ECDF. A value in (0,1). For \code{ppc_loo_pit_ecdf()}.}
+\item{prob, prob_outer}{Values between \code{0} and \code{1} indicating the desired
+probability mass to include in the inner and outer intervals. The defaults
+are \code{prob=0.5} and \code{prob_outer=0.9} for \code{ppc_loo_intervals()} and
+\code{prob = 0.99} for \code{ppc_loo_pit_ecdf()}.}
 
 \item{plot_diff}{A boolean defining whether to plot the difference between
 the observed PIT-ECDF and the theoretical expectation for uniform PIT
@@ -218,9 +220,6 @@ The default is to use interpolation if \code{K} is greater than 200.}
 how strongly suspicious points are flagged. Larger values (\code{gamma > 0})
 emphasize points with larger deviations. If \code{NULL}, defaults to \code{0} and
 thus all suspicious points are flagged.}
-
-\item{linewidth}{When \code{method = "correlated"}, the line width of the ECDF.
-Defaults to \code{0.3}.}
 
 \item{color}{When \code{method = "correlated"}, a vector with base color and
 highlight color for the ECDF plot. Defaults to
@@ -263,11 +262,6 @@ interval (column names are ignored).}
 the plotted intervals. The default (\code{"index"}) is to plot them in the
 order of the observations. The alternative (\code{"median"}) arranges them
 by median value from smallest (left) to largest (right).}
-
-\item{prob, prob_outer}{Values between \code{0} and \code{1} indicating the desired
-probability mass to include in the inner and outer intervals. The defaults
-are \code{prob=0.5} and \code{prob_outer=0.9} for \code{ppc_loo_intervals()} and
-\code{prob = 0.99} for \code{ppc_loo_pit_ecdf()}.}
 }
 \value{
 The plotting functions return a ggplot object that can be further

@@ -697,6 +697,8 @@ ppc_violin_grouped <-
 #'   which the ECDF is to be drawn. For `ppc_pit_ecdf()` and
 #'   `ppc_pit_ecdf_grouped()`. If `NULL`, PIT values are computed to `y` with
 #'   respect to the corresponding values in `yrep`.
+#' @param linewidth When `method = "correlated"`, the line width of the ECDF.
+#'   Defaults to `0.3`.
 #' @note
 #' Note that the default "independent" method is **superseded** by
 #' the "correlated" method (Tesso & Vehtari, 2026) which accounts for dependent
@@ -801,6 +803,8 @@ ppc_pit_ecdf <- function(y,
 #'   which the ECDF is to be drawn. For `ppc_pit_ecdf()` and
 #'   `ppc_pit_ecdf_grouped()`. If `NULL`, PIT values are computed to `y` with
 #'   respect to the corresponding values in `yrep`.
+#' @param linewidth When `method = "correlated"`, the line width of the ECDF.
+#'   Defaults to `0.3`.
 #' @note
 #' Note that the default "independent" method is **superseded** by
 #' the "correlated" method (Tesso & Vehtari, 2026) which accounts for dependent

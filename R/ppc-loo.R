@@ -403,8 +403,6 @@ ppc_loo_pit_qq <- function(y,
 #'   when `method = 'independent'`. If `pit` is supplied, defaults to
 #'   `length(pit)`, otherwise `yrep` determines the maximum accuracy of the
 #'   estimated PIT values and `K` is set to `min(nrow(yrep) + 1, 1000)`.
-#' @param prob The desired simultaneous coverage level of the bands around the
-#'   ECDF. A value in (0,1). For `ppc_loo_pit_ecdf()`.
 #' @param plot_diff A boolean defining whether to plot the difference between
 #'   the observed PIT-ECDF and the theoretical expectation for uniform PIT
 #'   values rather than plotting the regular ECDF. For `ppc_loo_pit_ecdf()`,
