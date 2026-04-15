@@ -2,6 +2,10 @@
 
 ## bayesplot (development version)
 
+- New `show_marginal` argument to `ppd_*()` functions to show the PPD -
+  the marginal predictive distribution by
+  [@mattansb](https://github.com/mattansb)
+  ([\#425](https://github.com/stan-dev/bayesplot/issues/425))
 - [`ppc_ecdf_overlay()`](https://mc-stan.org/bayesplot/dev/reference/PPC-distributions.md),
   [`ppc_ecdf_overlay_grouped()`](https://mc-stan.org/bayesplot/dev/reference/PPC-distributions.md),
   and

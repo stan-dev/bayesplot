@@ -422,8 +422,8 @@ lw <- weights(psis1) # normalized log weights
 color_scheme_set("orange")
 ppc_loo_pit_overlay(y, yrep, lw = lw)
 #> Some PIT values larger than 1! Largest:  1 
-#> Rounding PIT > 1 to 1. Gradient evaluation took 0.000385 seconds
-#> Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 3.85 seconds.
+#> Rounding PIT > 1 to 1. Gradient evaluation took 0.000377 seconds
+#> Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 3.77 seconds.
 #> Chain 2: Adjust your expectations accordingly!
 #> Chain 2: 
 #> Chain 2: 
@@ -458,15 +458,15 @@ ppc_loo_pit_overlay(y, yrep, lw = lw)
 #> Chain 1: Iteration: 90 / 100 [ 90%]  (Sampling)
 #> Chain 2: Iteration: 100 / 100 [100%]  (Sampling)
 #> Chain 2: 
-#> Chain 2:  Elapsed Time: 2.316 seconds (Warm-up)
-#> Chain 2:                2.122 seconds (Sampling)
-#> Chain 2:                4.438 seconds (Total)
+#> Chain 2:  Elapsed Time: 2.698 seconds (Warm-up)
+#> Chain 2:                2.479 seconds (Sampling)
+#> Chain 2:                5.177 seconds (Total)
 #> Chain 2: 
 #> Chain 1: Iteration: 100 / 100 [100%]  (Sampling)
 #> Chain 1: 
-#> Chain 1:  Elapsed Time: 2.411 seconds (Warm-up)
-#> Chain 1:                2.126 seconds (Sampling)
-#> Chain 1:                4.537 seconds (Total)
+#> Chain 1:  Elapsed Time: 2.813 seconds (Warm-up)
+#> Chain 1:                2.485 seconds (Sampling)
+#> Chain 1:                5.298 seconds (Total)
 #> Chain 1: 
 #> Warning: 
 #> NOTE: The kernel density estimate assumes continuous observations and is not optimal for discrete observations.

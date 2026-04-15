@@ -86,30 +86,33 @@ any observed data <code>y</code>. The <strong>Plot Descriptions</strong> section
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">ppd_stat</span><span class="op">(</span></span>
 <span>  <span class="va">ypred</span>,</span>
 <span>  stat <span class="op">=</span> <span class="st">"mean"</span>,</span>
+<span>  show_marginal <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  <span class="va">...</span>,</span>
 <span>  discrete <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  binwidth <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  bins <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  breaks <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  freq <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  freq <span class="op">=</span> <span class="op">!</span><span class="va">show_marginal</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">ppd_stat_grouped</span><span class="op">(</span></span>
 <span>  <span class="va">ypred</span>,</span>
 <span>  <span class="va">group</span>,</span>
 <span>  stat <span class="op">=</span> <span class="st">"mean"</span>,</span>
+<span>  show_marginal <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  <span class="va">...</span>,</span>
 <span>  discrete <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  facet_args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  binwidth <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  bins <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  breaks <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  freq <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  freq <span class="op">=</span> <span class="op">!</span><span class="va">show_marginal</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">ppd_stat_freqpoly</span><span class="op">(</span></span>
 <span>  <span class="va">ypred</span>,</span>
 <span>  stat <span class="op">=</span> <span class="st">"mean"</span>,</span>
+<span>  show_marginal <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  <span class="va">...</span>,</span>
 <span>  facet_args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  binwidth <span class="op">=</span> <span class="cn">NULL</span>,</span>
@@ -121,6 +124,7 @@ any observed data <code>y</code>. The <strong>Plot Descriptions</strong> section
 <span>  <span class="va">ypred</span>,</span>
 <span>  <span class="va">group</span>,</span>
 <span>  stat <span class="op">=</span> <span class="st">"mean"</span>,</span>
+<span>  show_marginal <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  <span class="va">...</span>,</span>
 <span>  facet_args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  binwidth <span class="op">=</span> <span class="cn">NULL</span>,</span>
@@ -128,9 +132,16 @@ any observed data <code>y</code>. The <strong>Plot Descriptions</strong> section
 <span>  freq <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">ppd_stat_2d</span><span class="op">(</span><span class="va">ypred</span>, stat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"mean"</span>, <span class="st">"sd"</span><span class="op">)</span>, <span class="va">...</span>, size <span class="op">=</span> <span class="fl">2.5</span>, alpha <span class="op">=</span> <span class="fl">0.7</span><span class="op">)</span></span>
+<span><span class="fu">ppd_stat_2d</span><span class="op">(</span></span>
+<span>  <span class="va">ypred</span>,</span>
+<span>  stat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"mean"</span>, <span class="st">"sd"</span><span class="op">)</span>,</span>
+<span>  show_marginal <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  <span class="va">...</span>,</span>
+<span>  size <span class="op">=</span> <span class="fl">2.5</span>,</span>
+<span>  alpha <span class="op">=</span> <span class="fl">0.7</span></span>
+<span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">ppd_stat_data</span><span class="op">(</span><span class="va">ypred</span>, group <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">stat</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">ppd_stat_data</span><span class="op">(</span><span class="va">ypred</span>, group <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">stat</span>, show_marginal <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -151,6 +162,10 @@ cases the function(s) should take a vector input and return a scalar
 statistic. If specified as a string (or strings) then the legend will
 display the function name(s). If specified as a function (or functions)
 then generic naming is used in the legend.</p></dd>
+
+
+<dt id="arg-show-marginal">show_marginal<a class="anchor" aria-label="anchor" href="#arg-show-marginal"></a></dt>
+<dd><p>Plot the marginal PPD along with the <code>ypred</code>s.</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
@@ -244,13 +259,19 @@ Gelman, A. (2019), Visualization in Bayesian workflow.
 <span class="r-in"><span><span class="fu">ppd_stat</span><span class="op">(</span><span class="va">yrep</span>, stat <span class="op">=</span> <span class="st">"sd"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="bayesplot-helpers.html">legend_none</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> `stat_bin()` using `bins = 30`. Pick better value `binwidth`.</span>
 <span class="r-plt img"><img src="PPD-test-statistics-2.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span><span class="fu">ppd_stat</span><span class="op">(</span><span class="va">yrep</span>, show_marginal <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> `stat_bin()` using `bins = 30`. Pick better value `binwidth`.</span>
+<span class="r-plt img"><img src="PPD-test-statistics-3.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># use your own function for the 'stat' argument</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="bayesplot-colors.html">color_scheme_set</a></span><span class="op">(</span><span class="st">"brightblue"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">q25</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">y</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/stats/quantile.html" class="external-link">quantile</a></span><span class="op">(</span><span class="va">y</span>, <span class="fl">0.25</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">ppd_stat</span><span class="op">(</span><span class="va">yrep</span>, stat <span class="op">=</span> <span class="st">"q25"</span><span class="op">)</span> <span class="co"># legend includes function name</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> `stat_bin()` using `bins = 30`. Pick better value `binwidth`.</span>
-<span class="r-plt img"><img src="PPD-test-statistics-3.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="PPD-test-statistics-4.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span><span class="fu">ppd_stat</span><span class="op">(</span><span class="va">yrep</span>, stat <span class="op">=</span> <span class="st">"q25"</span>, show_marginal <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> `stat_bin()` using `bins = 30`. Pick better value `binwidth`.</span>
+<span class="r-plt img"><img src="PPD-test-statistics-5.png" alt="" width="700" height="433"></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

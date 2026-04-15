@@ -97,6 +97,8 @@ Other contributors:
 
 - Visruth Srimath Kandali \[contributor\]
 
+- Mattan S. Ben-Shachar \[contributor\]
+
 ## Examples
 
 ``` r

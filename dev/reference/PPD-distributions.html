@@ -81,6 +81,7 @@ at <a href="PPC-distributions.html">PPC-distributions</a> has details on the ind
 <span></span>
 <span><span class="fu">ppd_dens_overlay</span><span class="op">(</span></span>
 <span>  <span class="va">ypred</span>,</span>
+<span>  show_marginal <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  <span class="va">...</span>,</span>
 <span>  size <span class="op">=</span> <span class="fl">0.25</span>,</span>
 <span>  alpha <span class="op">=</span> <span class="fl">0.7</span>,</span>
@@ -94,6 +95,7 @@ at <a href="PPC-distributions.html">PPC-distributions</a> has details on the ind
 <span></span>
 <span><span class="fu">ppd_ecdf_overlay</span><span class="op">(</span></span>
 <span>  <span class="va">ypred</span>,</span>
+<span>  show_marginal <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  <span class="va">...</span>,</span>
 <span>  discrete <span class="op">=</span> <span class="fu">deprecated</span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  pad <span class="op">=</span> <span class="cn">TRUE</span>,</span>
@@ -101,18 +103,42 @@ at <a href="PPC-distributions.html">PPC-distributions</a> has details on the ind
 <span>  alpha <span class="op">=</span> <span class="fl">0.7</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">ppd_dens</span><span class="op">(</span><span class="va">ypred</span>, <span class="va">...</span>, trim <span class="op">=</span> <span class="cn">FALSE</span>, size <span class="op">=</span> <span class="fl">0.5</span>, alpha <span class="op">=</span> <span class="fl">1</span>, bounds <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">ppd_hist</span><span class="op">(</span><span class="va">ypred</span>, <span class="va">...</span>, binwidth <span class="op">=</span> <span class="cn">NULL</span>, bins <span class="op">=</span> <span class="cn">NULL</span>, breaks <span class="op">=</span> <span class="cn">NULL</span>, freq <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">ppd_dots</span><span class="op">(</span><span class="va">ypred</span>, <span class="va">...</span>, binwidth <span class="op">=</span> <span class="cn">NA</span>, quantiles <span class="op">=</span> <span class="fl">100</span>, freq <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">ppd_freqpoly</span><span class="op">(</span></span>
+<span><span class="fu">ppd_dens</span><span class="op">(</span></span>
 <span>  <span class="va">ypred</span>,</span>
+<span>  show_marginal <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  <span class="va">...</span>,</span>
+<span>  trim <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  size <span class="op">=</span> <span class="fl">0.5</span>,</span>
+<span>  alpha <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  bounds <span class="op">=</span> <span class="cn">NULL</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">ppd_hist</span><span class="op">(</span></span>
+<span>  <span class="va">ypred</span>,</span>
+<span>  show_marginal <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  <span class="va">...</span>,</span>
 <span>  binwidth <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  bins <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  freq <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  breaks <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  freq <span class="op">=</span> <span class="op">!</span><span class="va">show_marginal</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">ppd_dots</span><span class="op">(</span></span>
+<span>  <span class="va">ypred</span>,</span>
+<span>  show_marginal <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  <span class="va">...</span>,</span>
+<span>  binwidth <span class="op">=</span> <span class="cn">NA</span>,</span>
+<span>  quantiles <span class="op">=</span> <span class="fl">100</span>,</span>
+<span>  freq <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">ppd_freqpoly</span><span class="op">(</span></span>
+<span>  <span class="va">ypred</span>,</span>
+<span>  show_marginal <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  <span class="va">...</span>,</span>
+<span>  binwidth <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  bins <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  freq <span class="op">=</span> <span class="op">!</span><span class="va">show_marginal</span>,</span>
 <span>  size <span class="op">=</span> <span class="fl">0.5</span>,</span>
 <span>  alpha <span class="op">=</span> <span class="fl">1</span></span>
 <span><span class="op">)</span></span>
@@ -120,15 +146,23 @@ at <a href="PPC-distributions.html">PPC-distributions</a> has details on the ind
 <span><span class="fu">ppd_freqpoly_grouped</span><span class="op">(</span></span>
 <span>  <span class="va">ypred</span>,</span>
 <span>  <span class="va">group</span>,</span>
+<span>  show_marginal <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  <span class="va">...</span>,</span>
 <span>  binwidth <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  bins <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  freq <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  freq <span class="op">=</span> <span class="op">!</span><span class="va">show_marginal</span>,</span>
 <span>  size <span class="op">=</span> <span class="fl">0.5</span>,</span>
 <span>  alpha <span class="op">=</span> <span class="fl">1</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">ppd_boxplot</span><span class="op">(</span><span class="va">ypred</span>, <span class="va">...</span>, notch <span class="op">=</span> <span class="cn">TRUE</span>, size <span class="op">=</span> <span class="fl">0.5</span>, alpha <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">ppd_boxplot</span><span class="op">(</span></span>
+<span>  <span class="va">ypred</span>,</span>
+<span>  show_marginal <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  <span class="va">...</span>,</span>
+<span>  notch <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  size <span class="op">=</span> <span class="fl">0.5</span>,</span>
+<span>  alpha <span class="op">=</span> <span class="fl">1</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -147,6 +181,10 @@ columns, <code>N</code>, is the number of predicted observations.</p></dd>
 Will be coerced to <a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a> if not already a factor.
 Each value in <code>group</code> is interpreted as the group level pertaining
 to the corresponding observation.</p></dd>
+
+
+<dt id="arg-show-marginal">show_marginal<a class="anchor" aria-label="anchor" href="#arg-show-marginal"></a></dt>
+<dd><p>Plot the marginal PPD along with the <code>ypred</code>s.</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
@@ -244,8 +282,10 @@ the input contains the "success" <em>proportions</em> (not discrete
 <span class="r-in"><span><span class="va">preds</span> <span class="op">&lt;-</span> <span class="fu"><a href="example-data.html">example_yrep_draws</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">ppd_dens_overlay</span><span class="op">(</span>ypred <span class="op">=</span> <span class="va">preds</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">50</span>, <span class="op">]</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="PPD-distributions-1.png" alt="" width="700" height="433"></span>
-<span class="r-in"><span><span class="fu"><a href="PPC-distributions.html">ppc_dens_overlay</a></span><span class="op">(</span>y <span class="op">=</span> <span class="fu"><a href="example-data.html">example_y_data</a></span><span class="op">(</span><span class="op">)</span>, yrep <span class="op">=</span> <span class="va">preds</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">50</span>, <span class="op">]</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">ppd_dens_overlay</span><span class="op">(</span>ypred <span class="op">=</span> <span class="va">preds</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">50</span>, <span class="op">]</span>, show_marginal <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="PPD-distributions-2.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span><span class="fu"><a href="PPC-distributions.html">ppc_dens_overlay</a></span><span class="op">(</span>y <span class="op">=</span> <span class="fu"><a href="example-data.html">example_y_data</a></span><span class="op">(</span><span class="op">)</span>, yrep <span class="op">=</span> <span class="va">preds</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">50</span>, <span class="op">]</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="PPD-distributions-3.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
