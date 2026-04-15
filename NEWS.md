@@ -1,5 +1,6 @@
 # bayesplot (development version)
 
+* Added singleton-dimension edge-case tests for exported `_data()` functions.
 * Validate empty list and zero-row matrix inputs in `nuts_params.list()`.
 * Validate user-provided `pit` values in `ppc_loo_pit_data()` and `ppc_loo_pit_qq()`, rejecting non-numeric inputs, missing values, and values outside `[0, 1]`.
 * New `show_marginal` argument to `ppd_*()` functions to show the PPD - the marginal predictive distribution by @mattansb (#425)
