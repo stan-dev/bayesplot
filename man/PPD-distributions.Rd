@@ -17,6 +17,7 @@ ppd_data(ypred, group = NULL)
 
 ppd_dens_overlay(
   ypred,
+  show_marginal = FALSE,
   ...,
   size = 0.25,
   alpha = 0.7,
@@ -30,6 +31,7 @@ ppd_dens_overlay(
 
 ppd_ecdf_overlay(
   ypred,
+  show_marginal = FALSE,
   ...,
   discrete = deprecated(),
   pad = TRUE,
@@ -37,18 +39,42 @@ ppd_ecdf_overlay(
   alpha = 0.7
 )
 
-ppd_dens(ypred, ..., trim = FALSE, size = 0.5, alpha = 1, bounds = NULL)
-
-ppd_hist(ypred, ..., binwidth = NULL, bins = NULL, breaks = NULL, freq = TRUE)
-
-ppd_dots(ypred, ..., binwidth = NA, quantiles = 100, freq = TRUE)
-
-ppd_freqpoly(
+ppd_dens(
   ypred,
+  show_marginal = FALSE,
+  ...,
+  trim = FALSE,
+  size = 0.5,
+  alpha = 1,
+  bounds = NULL
+)
+
+ppd_hist(
+  ypred,
+  show_marginal = FALSE,
   ...,
   binwidth = NULL,
   bins = NULL,
-  freq = TRUE,
+  breaks = NULL,
+  freq = !show_marginal
+)
+
+ppd_dots(
+  ypred,
+  show_marginal = FALSE,
+  ...,
+  binwidth = NA,
+  quantiles = 100,
+  freq = TRUE
+)
+
+ppd_freqpoly(
+  ypred,
+  show_marginal = FALSE,
+  ...,
+  binwidth = NULL,
+  bins = NULL,
+  freq = !show_marginal,
   size = 0.5,
   alpha = 1
 )
@@ -56,26 +82,37 @@ ppd_freqpoly(
 ppd_freqpoly_grouped(
   ypred,
   group,
+  show_marginal = FALSE,
   ...,
   binwidth = NULL,
   bins = NULL,
-  freq = TRUE,
+  freq = !show_marginal,
   size = 0.5,
   alpha = 1
 )
 
-ppd_boxplot(ypred, ..., notch = TRUE, size = 0.5, alpha = 1)
+ppd_boxplot(
+  ypred,
+  show_marginal = FALSE,
+  ...,
+  notch = TRUE,
+  size = 0.5,
+  alpha = 1
+)
 }
 \arguments{
 \item{ypred}{An \code{S} by \code{N} matrix of draws from the posterior (or prior)
-predictive distribution. The number of rows, \code{S}, is the size of the
-posterior (or prior) sample used to generate \code{ypred}. The number of
-columns, \code{N}, is the number of predicted observations.}
+predictive distribution, or a \code{\link[posterior:draws]{posterior::draws}} object. The number of
+rows, \code{S}, is the size of the posterior (or prior) sample used to generate
+\code{ypred}. The number of columns, \code{N}, is the number of predicted
+observations.}
 
 \item{group}{A grouping variable of the same length as \code{y}.
 Will be coerced to \link[base:factor]{factor} if not already a factor.
 Each value in \code{group} is interpreted as the group level pertaining
 to the corresponding observation.}
+
+\item{show_marginal}{Plot the marginal PPD along with the \code{ypred}s.}
 
 \item{...}{For dot plots, optional additional arguments to pass to \code{\link[ggdist:stat_dots]{ggdist::stat_dots()}}.}
 
@@ -143,6 +180,7 @@ the input contains the "success" \emph{proportions} (not discrete
 color_scheme_set("brightblue")
 preds <- example_yrep_draws()
 ppd_dens_overlay(ypred = preds[1:50, ])
+ppd_dens_overlay(ypred = preds[1:50, ], show_marginal = TRUE)
 ppc_dens_overlay(y = example_y_data(), yrep = preds[1:50, ])
 
 }
