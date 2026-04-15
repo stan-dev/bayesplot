@@ -237,6 +237,14 @@ test_that("ppd_data handles a single replicate matrix", {
   expect_equal(d$value, c(11, 21))
 })
 
+test_that("ppd_data handles single observation (single column)", {
+  ypred <- matrix(c(1, 2, 3), ncol = 1)
+  d <- ppd_data(ypred)
+  expect_equal(nrow(d), 3)
+  expect_true(all(d$y_id == 1))
+  expect_equal(d$value, c(1, 2, 3))
+})
+
 
 # Visual tests -----------------------------------------------------------------
 
