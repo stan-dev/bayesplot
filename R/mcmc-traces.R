@@ -10,7 +10,6 @@
 #' @template args-regex_pars
 #' @template args-transformations
 #' @template args-facet_args
-#' @template args-pit-ecdf
 #' @param ... Currently ignored.
 #' @param size An optional value to override the default line size
 #'   for `mcmc_trace()` or the default point size for `mcmc_trace_highlight()`.
@@ -458,12 +457,27 @@ mcmc_rank_hist <- function(x,
 }
 
 #' @rdname MCMC-traces
+#' @param K An optional integer defining the number of equally spaced evaluation
+#'   points for the PIT-ECDF. Reducing K when using `interpolate_adj = FALSE`
+#'   makes computing the confidence bands faster. For `ppc_pit_ecdf()` and
+#'   `ppc_pit_ecdf_grouped()` when `method = 'independent'`. If `pit` is
+#'   supplied, defaults to `length(pit)`, otherwise `yrep` determines the
+#'   maximum accuracy of the estimated PIT values and `K` is set to
+#'   `min(nrow(yrep) + 1, 1000)`. For `mcmc_rank_ecdf()`, defaults to the number
+#'   of iterations per chain in `x`.
 #' @param prob For `mcmc_rank_ecdf()`, a value between 0 and 1
-#' specifying the desired simultaneous confidence of the confidence bands to be
-#' drawn for the rank ECDF plots.
+#'   specifying the desired simultaneous confidence of the confidence bands to be
+#'   drawn for the rank ECDF plots.
 #' @param plot_diff For `mcmc_rank_ecdf()`, a boolean specifying if the
-#' difference between the observed rank ECDFs and the theoretical expectation
-#' should be drawn instead of the unmodified rank ECDF plots.
+#'   difference between the observed rank ECDFs and the theoretical expectation
+#'   should be drawn instead of the unmodified rank ECDF plots.
+#' @param interpolate_adj A boolean defining if the simultaneous confidence
+#'   bands should be interpolated based on precomputed values rather than
+#'   computed exactly. Computing the bands may be computationally intensive and
+#'   the approximation gives a fast method for assessing the ECDF trajectory.
+#'   For `ppc_pit_ecdf()` and `ppc_pit_ecdf_grouped()` when
+#'   `method = 'independent'` and for `mcmc_rank_ecdf()`. The default is to use
+#'   interpolation if `K` is greater than 200.
 #' @export
 mcmc_rank_ecdf <-
   function(x,
