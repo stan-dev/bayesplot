@@ -9,10 +9,16 @@
 \alias{log_posterior.stanfit}
 \alias{log_posterior.stanreg}
 \alias{log_posterior.CmdStanMCMC}
+\alias{log_posterior.draws_array}
+\alias{log_posterior.draws_df}
+\alias{log_posterior.draws_matrix}
 \alias{nuts_params.stanfit}
 \alias{nuts_params.stanreg}
 \alias{nuts_params.list}
 \alias{nuts_params.CmdStanMCMC}
+\alias{nuts_params.draws_array}
+\alias{nuts_params.draws_df}
+\alias{nuts_params.draws_matrix}
 \alias{rhat.stanfit}
 \alias{rhat.stanreg}
 \alias{rhat.CmdStanMCMC}
@@ -35,6 +41,12 @@ neff_ratio(object, ...)
 
 \method{log_posterior}{CmdStanMCMC}(object, inc_warmup = FALSE, ...)
 
+\method{log_posterior}{draws_array}(object, ...)
+
+\method{log_posterior}{draws_df}(object, ...)
+
+\method{log_posterior}{draws_matrix}(object, ...)
+
 \method{nuts_params}{stanfit}(object, pars = NULL, inc_warmup = FALSE, ...)
 
 \method{nuts_params}{stanreg}(object, pars = NULL, inc_warmup = FALSE, ...)
@@ -42,6 +54,12 @@ neff_ratio(object, ...)
 \method{nuts_params}{list}(object, pars = NULL, ...)
 
 \method{nuts_params}{CmdStanMCMC}(object, pars = NULL, ...)
+
+\method{nuts_params}{draws_array}(object, pars = NULL, ...)
+
+\method{nuts_params}{draws_df}(object, pars = NULL, ...)
+
+\method{nuts_params}{draws_matrix}(object, pars = NULL, ...)
 
 \method{rhat}{stanfit}(object, pars = NULL, ...)
 

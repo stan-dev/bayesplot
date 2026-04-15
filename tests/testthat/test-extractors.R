@@ -145,3 +145,55 @@ test_that("cmdstanr methods work", {
   expect_equal(range(np_one$Chain), c(1, 2))
   expect_true(all(np_one$Value == 0))
 })
+
+
+# draws object methods ----------------------------------------------------
+make_draws_array <- function(iter = 50, chains = 2) {
+  vars <- c("mu", "sigma", "lp__", "accept_stat__", "stepsize__",
+            "treedepth__", "n_leapfrog__", "divergent__", "energy__")
+  arr <- array(stats::rnorm(iter * chains * length(vars)),
+               dim = c(iter, chains, length(vars)),
+               dimnames = list(NULL, NULL, vars))
+  posterior::as_draws_array(arr)
+}
+
+test_that("log_posterior methods for draws objects return correct structure", {
+  d <- make_draws_array(iter = 50, chains = 2)
+
+  lp_arr <- log_posterior(d)
+  expect_identical(colnames(lp_arr), c("Chain", "Iteration", "Value"))
+  expect_equal(length(unique(lp_arr$Iteration)), 50)
+  expect_equal(length(unique(lp_arr$Chain)), 2)
+
+  lp_df <- log_posterior(posterior::as_draws_df(d))
+  lp_mat <- log_posterior(posterior::as_draws_matrix(d))
+  expect_equal(lp_df$Value, lp_arr$Value)
+  expect_equal(lp_mat$Value, lp_arr$Value)
+})
+
+test_that("nuts_params methods for draws objects return correct structure", {
+  d <- make_draws_array(iter = 50, chains = 2)
+
+  np <- nuts_params(d)
+  expect_identical(colnames(np), c("Chain", "Iteration", "Parameter", "Value"))
+  expect_setequal(
+    levels(np$Parameter),
+    c("accept_stat__", "stepsize__", "treedepth__",
+      "n_leapfrog__", "divergent__", "energy__")
+  )
+  expect_false("lp__" %in% levels(np$Parameter))
+
+  np_one <- nuts_params(d, pars = "divergent__")
+  expect_identical(levels(np_one$Parameter), "divergent__")
+
+  np_df <- nuts_params(posterior::as_draws_df(d))
+  expect_equal(np_df$Value, np$Value)
+})
+
+test_that("draws-object extractors error on missing variables", {
+  d <- make_draws_array()
+  bare <- d[, , c("mu", "sigma"), drop = FALSE]
+  expect_error(log_posterior(bare), "lp__")
+  expect_error(nuts_params(bare), "sampler diagnostic")
+  expect_error(nuts_params(d, pars = "nope__"), "nope__")
+})

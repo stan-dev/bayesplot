@@ -103,12 +103,35 @@ log_posterior.stanreg <- function(object, inc_warmup = FALSE, ...) {
 #' @export
 #' @method log_posterior CmdStanMCMC
 log_posterior.CmdStanMCMC <- function(object, inc_warmup = FALSE, ...) {
-  lp <- object$draws("lp__", inc_warmup = inc_warmup)
-  lp <- reshape2::melt(lp)
+  log_posterior.draws_array(object$draws("lp__", inc_warmup = inc_warmup), ...)
+}
+
+#' @rdname bayesplot-extractors
+#' @export
+#' @method log_posterior draws_array
+log_posterior.draws_array <- function(object, ...) {
+  if (!"lp__" %in% posterior::variables(object)) {
+    abort("draws object does not contain an 'lp__' variable.")
+  }
+  lp <- reshape2::melt(object[, , "lp__", drop = FALSE])
   lp$variable <- NULL
   lp <- dplyr::rename_with(lp, capitalize_first)
   validate_df_classes(lp[, c("Chain", "Iteration", "Value")],
                       c("integer", "integer", "numeric"))
+}
+
+#' @rdname bayesplot-extractors
+#' @export
+#' @method log_posterior draws_df
+log_posterior.draws_df <- function(object, ...) {
+  log_posterior.draws_array(posterior::as_draws_array(object), ...)
+}
+
+#' @rdname bayesplot-extractors
+#' @export
+#' @method log_posterior draws_matrix
+log_posterior.draws_matrix <- function(object, ...) {
+  log_posterior.draws_array(posterior::as_draws_array(object), ...)
 }
 
 
@@ -173,15 +196,47 @@ nuts_params.list <- function(object, pars = NULL, ...) {
 #' @export
 #' @method nuts_params CmdStanMCMC
 nuts_params.CmdStanMCMC <- function(object, pars = NULL, ...) {
-  arr <- object$sampler_diagnostics()
-  if (!is.null(pars)) {
-    arr <- arr[,, pars, drop = FALSE]
+  nuts_params.draws_array(object$sampler_diagnostics(), pars = pars, ...)
+}
+
+#' @rdname bayesplot-extractors
+#' @export
+#' @method nuts_params draws_array
+nuts_params.draws_array <- function(object, pars = NULL, ...) {
+  vars <- posterior::variables(object)
+  if (is.null(pars)) {
+    pars <- grep("__$", vars, value = TRUE)
+    pars <- setdiff(pars, "lp__")
+    if (!length(pars)) {
+      abort("draws object does not contain any NUTS sampler diagnostic variables (names ending in '__').")
+    }
+  } else {
+    missing_pars <- setdiff(pars, vars)
+    if (length(missing_pars)) {
+      abort(paste0("Variables not found in draws object: ",
+                   paste(missing_pars, collapse = ", "), "."))
+    }
   }
+  arr <- object[, , pars, drop = FALSE]
   out <- reshape2::melt(arr)
   colnames(out)[colnames(out) == "variable"] <- "parameter"
   out <- dplyr::rename_with(out, capitalize_first)
   validate_df_classes(out[, c("Chain", "Iteration", "Parameter", "Value")],
                       c("integer", "integer", "factor", "numeric"))
+}
+
+#' @rdname bayesplot-extractors
+#' @export
+#' @method nuts_params draws_df
+nuts_params.draws_df <- function(object, pars = NULL, ...) {
+  nuts_params.draws_array(posterior::as_draws_array(object), pars = pars, ...)
+}
+
+#' @rdname bayesplot-extractors
+#' @export
+#' @method nuts_params draws_matrix
+nuts_params.draws_matrix <- function(object, pars = NULL, ...) {
+  nuts_params.draws_array(posterior::as_draws_array(object), pars = pars, ...)
 }
 
 

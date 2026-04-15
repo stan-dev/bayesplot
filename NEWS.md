@@ -1,5 +1,6 @@
 # bayesplot (development version)
 
+* Added `log_posterior()` and `nuts_params()` methods for `draws_array`, `draws_df`, and `draws_matrix` objects.
 * `ppc_ecdf_overlay()`, `ppc_ecdf_overlay_grouped()`, and `ppd_ecdf_overlay()` now always use `geom_step()`. The `discrete` argument is deprecated.
 * Fixed missing `drop = FALSE` in `nuts_params.CmdStanMCMC()`.
 * Replace `apply()` with `storage.mode()` for integer-to-numeric matrix conversion in `validate_predictions()`.
