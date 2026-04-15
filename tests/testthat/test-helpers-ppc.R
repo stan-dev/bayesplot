@@ -1,3 +1,4 @@
+library(posterior)
 source(test_path("data-for-ppc-tests.R"))
 source(test_path("data-for-mcmc-tests.R"))
 
@@ -111,6 +112,54 @@ test_that("get_interpolation_values catches impossible values", {
     get_interpolation_values(100, 300, 4, .95),
     "No precomputed values available for interpolation for 'K' = 300"
   )
+})
+
+# validate_predictions with posterior::draws objects ----------------------
+test_that("validate_predictions accepts draws_matrix", {
+  dm <- posterior::as_draws_matrix(yrep)
+  result <- validate_predictions(dm, ncol(yrep))
+  expect_true(is.matrix(result))
+  expect_equal(dim(result), dim(yrep))
+  expect_true(is.numeric(result))
+})
+
+test_that("validate_predictions accepts draws_array", {
+  da <- posterior::as_draws_array(yrep)
+  result <- validate_predictions(da)
+  expect_true(is.matrix(result))
+  expect_true(is.numeric(result))
+})
+
+test_that("validate_predictions accepts draws_df", {
+  ddf <- posterior::as_draws_df(yrep)
+  result <- validate_predictions(ddf)
+  expect_true(is.matrix(result))
+  expect_true(is.numeric(result))
+})
+
+test_that("validate_predictions accepts draws_rvars", {
+  dr <- posterior::as_draws_rvars(yrep)
+  result <- validate_predictions(dr)
+  expect_true(is.matrix(result))
+  expect_true(is.numeric(result))
+})
+
+test_that("ppc_dens_overlay works with draws_matrix input", {
+  dm <- posterior::as_draws_matrix(yrep)
+  p <- ppc_dens_overlay(y, dm)
+  expect_s3_class(p, "ggplot")
+})
+
+test_that("ppc_hist works with draws_matrix input", {
+  dm <- posterior::as_draws_matrix(yrep)
+  p <- ppc_hist(y, dm[1:8, ])
+  expect_s3_class(p, "ggplot")
+})
+
+test_that("ppc_stat works with draws_matrix input", {
+  dm <- posterior::as_draws_matrix(yrep)
+  p <- ppc_stat(y, dm)
+  expect_s3_class(p, "ggplot")
 })
 
 # ecdf_intervals ---------------------------------------------------------
