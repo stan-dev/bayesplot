@@ -26,7 +26,7 @@
 #' @param fatten Deprecated. Point size is now controlled directly by `size`.
 #' @param freq For bar plots only, if `TRUE` (the default) the y-axis will
 #'   display counts. Setting `freq=FALSE` will put proportions on the y-axis.
-#' @param bound_distinct For `ppc_rootogram(style = "discrete)`,
+#' @param bound_distinct For `ppc_rootogram(style = "discrete)` and `ppc_rootogram_grouped(style = "discrete)`,
 #'  if `TRUE` then the observed counts will be plotted with different shapes
 #'  depending on whether they are within the bounds of the `y` quantiles.
 #'
@@ -81,6 +81,10 @@
 #'   **All of the rootograms are plotted on the square root scale**. See Kleiber
 #'   and Zeileis (2016) for advice on interpreting rootograms and selecting
 #'   among the different styles.
+#' }
+#' \item{`ppc_rootogram_grouped()`}{
+#'   Same as `ppc_rootogram()` but a separate plot (facet) is generated for each
+#'   level of a grouping variable.
 #' }
 #' }
 #'
@@ -152,6 +156,24 @@
 #'   size = 1.5
 #' )
 #' }
+#'
+#' # rootograms for counts
+#' y <- rpois(100, 20)
+#' yrep <- matrix(rpois(10000, 20), ncol = 100)
+#'
+#' color_scheme_set("brightblue")
+#' ppc_rootogram(y, yrep)
+#' ppc_rootogram(y, yrep, prob = 0)
+#'
+#' ppc_rootogram(y, yrep, style = "hanging", prob = 0.8)
+#' ppc_rootogram(y, yrep, style = "suspended")
+#' ppc_rootogram(y, yrep, style = "discrete")
+#'
+#' # rootograms for counts with groups
+#' group <- gl(2, 50, length = 100, labels = c("GroupA", "GroupB"))
+#' ppc_rootogram_grouped(y, yrep, group)
+#' ppc_rootogram_grouped(y, yrep, group, style = "hanging", facet_args = list(nrow = 2))
+#' ppc_rootogram_grouped(y, yrep, group, style = "discrete", prob = 0.5)
 #'
 NULL
 
@@ -260,19 +282,6 @@ ppc_bars_grouped <-
 #' *The American Statistician*. 70(3): 296--303.
 #' <https://arxiv.org/abs/1605.01311>.
 #'
-#' @examples
-#' # rootograms for counts
-#' y <- rpois(100, 20)
-#' yrep <- matrix(rpois(10000, 20), ncol = 100)
-#'
-#' color_scheme_set("brightblue")
-#' ppc_rootogram(y, yrep)
-#' ppc_rootogram(y, yrep, prob = 0)
-#'
-#' ppc_rootogram(y, yrep, style = "hanging", prob = 0.8)
-#' ppc_rootogram(y, yrep, style = "suspended")
-#' ppc_rootogram(y, yrep, style = "discrete")
-#'
 ppc_rootogram <- function(y,
                           yrep,
                           style = c("standing", "hanging", "suspended", "discrete"),
@@ -280,12 +289,19 @@ ppc_rootogram <- function(y,
                           prob = 0.9,
                           size = 1,
                           bound_distinct = TRUE) {
-  check_ignored_arguments(...)
+  
+  dots <- list(...)
+  if (!from_grouped(dots)) {
+    check_ignored_arguments(...)
+    dots$group <- NULL
+  }
+  
   style <- match.arg(style)
 
   data <- .ppc_rootogram_data(
     y = y,
     yrep = yrep,
+    group = dots$group,
     style = style,
     prob = prob,
     bound_distinct = bound_distinct
@@ -371,6 +387,36 @@ ppc_rootogram <- function(y,
 
   return(graph)
 }
+
+
+#' @rdname PPC-discrete
+#' @export
+ppc_rootogram_grouped <- 
+  function(y,
+           yrep,
+           group,
+           style = c("standing", "hanging", "suspended", "discrete"),
+           ...,
+           facet_args = list(),
+           prob = 0.9,
+           size = 1,
+           bound_distinct = TRUE) {
+    check_ignored_arguments(...)
+    style <- match.arg(style)
+    call <- match.call(expand.dots = FALSE)
+    g <- eval(ungroup_call("ppc_rootogram", call), parent.frame())
+    
+    # In style = discrete, scale_y_sqrt() can't handle -Inf values in axis segments
+    if (style != "discrete") {
+      g <- g + force_axes_in_facets()
+    }
+
+    g + bars_group_facets(
+      facet_args,
+      force_axes = style == "discrete",
+      axis_labels_default = "margins"
+    )
+  }
 
 
 #' @rdname PPC-discrete
@@ -475,9 +521,15 @@ ppc_bars_data <-
 #'   `bayesplot::intervals_group_facets()`, which has a default of `"free"`.
 #' @return Object returned by `facet_wrap()`.
 #' @noRd
-bars_group_facets <- function(facet_args, scales_default = "fixed") {
+bars_group_facets <- function(facet_args, scales_default = "fixed", force_axes = FALSE, axis_labels_default = "all") {
   facet_args[["facets"]] <- "group"
   facet_args[["scales"]] <- facet_args[["scales"]] %||% scales_default
+
+  if (force_axes) {
+    facet_args[["axes"]] <- facet_args[["axes"]] %||% "all"
+    facet_args[["axis.labels"]] <- facet_args[["axis.labels"]] %||% axis_labels_default
+  }
+
   do.call("facet_wrap", facet_args)
 }
 
@@ -487,11 +539,13 @@ fixed_y <- function(facet_args) {
 
 #' Internal function for `ppc_rootogram()`
 #' @param y,yrep User's `y` and `yrep` arguments.
+#' @param group User's `group` argument (can be NULL).
 #' @param style,prob,bound_distinct User's `style`, `prob`, and
 #' (if applicable) `bound_distinct` arguments.
 #' @noRd
 .ppc_rootogram_data <- function(y,
                               yrep,
+                              group = NULL,
                               style = c("standing", "hanging", "suspended", "discrete"),
                               prob = 0.9,
                               bound_distinct) {
@@ -504,7 +558,41 @@ fixed_y <- function(facet_args) {
   if (!all_counts(yrep)) {
     abort("ppc_rootogram expects counts as inputs to 'yrep'.")
   }
+  
+  if (!is.null(group)) {
+    group <- validate_group(group, length(y))
+  }
 
+  # Handle grouped data
+  if (!is.null(group)) {
+    group_levels <- unique(group)
+    all_data <- list()
+    
+    for (g in seq_along(group_levels)) {
+      grp <- group_levels[g]
+      idx <- which(group == grp)
+      
+      y_g <- y[idx]
+      yrep_g <- yrep[, idx, drop = FALSE]
+      
+      # Call this function recursively without group
+      data_g <- .ppc_rootogram_data(
+        y = y_g,
+        yrep = yrep_g,
+        group = NULL,
+        style = style,
+        prob = prob,
+        bound_distinct = bound_distinct
+      )
+      
+      data_g$group <- grp
+      all_data[[g]] <- data_g
+    }
+    
+    return(do.call(rbind, all_data))
+  }
+
+  # Ungrouped data processing
   alpha <- (1 - prob) / 2
   probs <- c(alpha, 1 - alpha)
   ymax <- max(y, yrep)

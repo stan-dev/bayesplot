@@ -1,7 +1,7 @@
+skip_if_not_installed("rstantools")
 source(test_path("data-for-ppc-tests.R"))
 
 test_that("ppc_error_hist and ppc_error_scatter return ggplot object", {
-  skip_if_not_installed("rstantools")
   expect_gg(ppc_error_hist(y, yrep[1:5, ], binwidth = 0.1))
   expect_gg(ppc_error_scatter(y, yrep[1:5, ]))
 
@@ -13,14 +13,12 @@ test_that("ppc_error_hist and ppc_error_scatter return ggplot object", {
 })
 
 test_that("ppc_error_hist_grouped returns ggplot object", {
-  skip_if_not_installed("rstantools")
   expect_gg(ppc_error_hist_grouped(y, yrep[1:5, ], group, binwidth = 0.1))
   expect_gg(ppc_error_hist_grouped(y, yrep[1,, drop = FALSE], group,
                                    freq = FALSE, binwidth = 1))
 })
 
 test_that("ppc_error_scatter_avg returns ggplot2 object", {
-  skip_if_not_installed("rstantools")
   expect_gg(ppc_error_scatter_avg(y, yrep))
   expect_gg(ppc_error_scatter_avg(y, yrep[1:5, ]))
 
@@ -30,7 +28,6 @@ test_that("ppc_error_scatter_avg returns ggplot2 object", {
 })
 
 test_that("ppc_error_scatter_avg same as ppc_error_scatter if nrow(yrep) = 1", {
-  skip_if_not_installed("rstantools")
   p1 <- ppc_error_scatter_avg(y2, yrep2)
   p2 <- ppc_error_scatter(y2, yrep2)
   d1 <- p1$data
@@ -42,8 +39,6 @@ test_that("ppc_error_scatter_avg same as ppc_error_scatter if nrow(yrep) = 1", {
 })
 
 test_that("ppc_error_scatter_avg_vs_x returns ggplot2 object", {
-  skip_if_not_installed("rstantools")
-
   # expect warning
   expect_warning(expect_gg(ppc_error_scatter_avg_vs_x(y, yrep, x = rnorm(length(y)))),
                  "'ppc_error_scatter_avg_vs_x' is deprecated.")
@@ -52,7 +47,6 @@ test_that("ppc_error_scatter_avg_vs_x returns ggplot2 object", {
 })
 
 test_that("ppc_error_binned returns ggplot object", {
-  skip_if_not_installed("rstantools")
   load(test_path("data-for-binomial.rda"))
   expect_gg(ppc_error_binned(y, Ey))
   expect_gg(ppc_error_binned(y[1:5], Ey[, 1:5]))
@@ -71,6 +65,33 @@ test_that("bin_errors works for edge cases", {
     )
   val <- bin_errors(rep(1, 10), rep(0, 10), bins = 1)
   expect_equal(ans, val)
+})
+
+# ppc_error_data tests -----------------------------------------------------
+
+test_that("ppc_error_data returns exact structure and computed errors", {
+  d <- ppc_error_data(y, yrep)
+  expect_named(d, c("y_id", "y_name", "y_obs", "rep_id", "rep_label", "value"))
+  third_rep <- d[d$rep_id == 3, ]
+  expected_errors <- y - yrep[3, ]
+  expect_equal(third_rep$value, expected_errors)
+  expect_equal(third_rep$y_obs, y)
+})
+
+test_that("ppc_error_data with group returns exact structure", {
+  d <- ppc_error_data(y, yrep, group = group)
+  expect_named(d, c("group", "y_id", "y_name", "y_obs", "rep_id", "rep_label", "value"))
+  expect_identical(levels(d$group), levels(group))
+  expect_equal(d$group[d$rep_id == 1], group)
+})
+
+test_that("ppc_error_data handles single observation", {
+  y1 <- 5
+  yrep1 <- matrix(c(4, 6, 5), ncol = 1)
+  d <- ppc_error_data(y1, yrep1)
+  expect_equal(nrow(d), 3)
+  expect_equal(d$value, y1 - yrep1[, 1])
+  expect_true(all(d$y_obs == 5))
 })
 
 

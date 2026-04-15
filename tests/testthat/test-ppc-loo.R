@@ -59,17 +59,50 @@ test_that("ppc_loo_pit_overlay works with boundary_correction=FALSE", {
   expect_gg(p1)
 })
 
-test_that(".kde_correction warns when PIT values are non-finite", {
-  set.seed(123)
-  pit_vals <- c(stats::runif(500), Inf)
-  expect_warning(
-    out <- .kde_correction(pit_vals, bw = "nrd0", grid_len = 128),
-    "Non-finite PIT values are invalid"
+test_that("ppc_loo_pit_data validates user-provided pit values", {
+  expect_error(
+    ppc_loo_pit_data(pit = c(0.5, Inf)),
+    "between 0 and 1"
   )
-  expect_type(out, "list")
-  expect_true(all(c("xs", "bc_pvals") %in% names(out)))
-  expect_equal(length(out$xs), 128)
-  expect_equal(length(out$bc_pvals), 128)
+  expect_error(
+    ppc_loo_pit_data(pit = c(-1, 0.5)),
+    "between 0 and 1"
+  )
+  expect_error(
+    ppc_loo_pit_data(pit = c(0.5, NA)),
+    "NAs not allowed"
+  )
+  expect_error(
+    ppc_loo_pit_data(pit = "not numeric"),
+    "is.numeric"
+  )
+  expect_error(
+    ppc_loo_pit_data(pit = c(Inf, -Inf, Inf)),
+    "between 0 and 1"
+  )
+  expect_error(
+    ppc_loo_pit_data(pit = 0.5, boundary_correction = TRUE),
+    "At least 2 PIT values"
+  )
+})
+
+test_that("ppc_loo_pit_qq validates user-provided pit values", {
+  expect_error(
+    ppc_loo_pit_qq(pit = c(0.5, Inf)),
+    "between 0 and 1"
+  )
+  expect_error(
+    ppc_loo_pit_qq(pit = c(-1, 0.5)),
+    "between 0 and 1"
+  )
+  expect_error(
+    ppc_loo_pit_qq(pit = c(0.5, NA)),
+    "NAs not allowed"
+  )
+  expect_error(
+    ppc_loo_pit_qq(pit = "not numeric"),
+    "is.numeric"
+  )
 })
 
 test_that("ppc_loo_pit_qq returns ggplot object", {
@@ -351,4 +384,58 @@ test_that("ppc_loo_pit_ecdf renders correctly", {
     K = 100
   )
   vdiffr::expect_doppelganger("ppc_loo_pit_ecdf (ecdf difference)", p_custom)
+})
+
+
+# ppc_loo_pit_data tests ---------------------------------------------------
+
+test_that("ppc_loo_pit_data returns the expected structure for both boundary modes", {
+  set.seed(123)
+  pit_vals <- runif(50)
+  n_samples <- 10
+  expect_message(
+    d_raw <- ppc_loo_pit_data(
+      pit = pit_vals,
+      boundary_correction = FALSE,
+      samples = n_samples
+    ),
+    "pit"
+  )
+  expect_s3_class(d_raw, "data.frame")
+  expect_named(
+    d_raw,
+    c("y_id", "y_name", "rep_id", "rep_label", "is_y", "is_y_label", "value")
+  )
+  y_rows <- d_raw[d_raw$is_y, ]
+  yrep_rows <- d_raw[!d_raw$is_y, ]
+  expect_equal(nrow(y_rows), length(pit_vals))
+  expect_equal(nrow(yrep_rows), length(pit_vals) * n_samples)
+  expect_equal(y_rows$value, pit_vals)
+
+  grid_len <- 128
+  expect_message(
+    d_bc <- ppc_loo_pit_data(
+      pit = pit_vals,
+      boundary_correction = TRUE,
+      samples = n_samples,
+      grid_len = grid_len
+    ),
+    "pit"
+  )
+  expect_named(
+    d_bc,
+    c("y_id", "y_name", "rep_id", "rep_label", "is_y", "is_y_label", "value", "x")
+  )
+  y_rows <- d_bc[d_bc$is_y, ]
+  yrep_rows <- d_bc[!d_bc$is_y, ]
+  expect_equal(nrow(y_rows), grid_len)
+  expect_equal(nrow(yrep_rows), grid_len * n_samples)
+  expect_false(anyNA(d_bc$x))
+})
+
+test_that("ppc_loo_pit_data works with a single pit value", {
+  d <- suppressMessages(ppc_loo_pit_data(pit = 0.5, boundary_correction = FALSE, samples = 3))
+  y_rows <- d[d$is_y, ]
+  expect_equal(nrow(y_rows), 1)
+  expect_equal(y_rows$value, 0.5)
 })

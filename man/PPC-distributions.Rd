@@ -55,7 +55,7 @@ ppc_ecdf_overlay(
   y,
   yrep,
   ...,
-  discrete = FALSE,
+  discrete = deprecated(),
   pad = TRUE,
   size = NULL,
   linewidth = 0.25,
@@ -67,7 +67,7 @@ ppc_ecdf_overlay_grouped(
   yrep,
   group,
   ...,
-  discrete = FALSE,
+  discrete = deprecated(),
   pad = TRUE,
   size = NULL,
   linewidth = 0.25,
@@ -174,12 +174,13 @@ ppc_pit_ecdf_grouped(
 \item{y}{A vector of observations. See \strong{Details}.}
 
 \item{yrep}{An \code{S} by \code{N} matrix of draws from the posterior (or prior)
-predictive distribution. The number of rows, \code{S}, is the size of the
-posterior (or prior) sample used to generate \code{yrep}. The number of columns,
-\code{N} is the number of predicted observations (\code{length(y)}). The columns of
-\code{yrep} should be in the same order as the data points in \code{y} for the plots
-to make sense. See the \strong{Details} and \strong{Plot Descriptions} sections for
-additional advice specific to particular plots.}
+predictive distribution, or a \code{\link[posterior:draws]{posterior::draws}} object. The number of
+rows, \code{S}, is the size of the posterior (or prior) sample used to generate
+\code{yrep}. The number of columns, \code{N} is the number of predicted observations
+(\code{length(y)}). The columns of \code{yrep} should be in the same order as the
+data points in \code{y} for the plots to make sense. See the \strong{Details} and
+\strong{Plot Descriptions} sections for additional advice specific to particular
+plots.}
 
 \item{group}{A grouping variable of the same length as \code{y}.
 Will be coerced to \link[base:factor]{factor} if not already a factor.
@@ -201,10 +202,9 @@ plots, \code{linewidth} controls the line width.}
 default kernel density estimation parameters or truncate the density
 support. \code{n_dens} defaults to \code{1024}.}
 
-\item{discrete}{For \code{ppc_ecdf_overlay()}, should the data be treated as
-discrete? The default is \code{FALSE}, in which case \code{geom="line"} is
-passed to \code{\link[ggplot2:stat_ecdf]{ggplot2::stat_ecdf()}}. If \code{discrete} is set to
-\code{TRUE} then \code{geom="step"} is used.}
+\item{discrete}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} The \code{discrete} argument is
+deprecated. The ECDF is a step function by definition, so \code{geom_step()} is
+now always used.}
 
 \item{pad}{A logical scalar passed to \code{\link[ggplot2:stat_ecdf]{ggplot2::stat_ecdf()}}.}
 
@@ -310,11 +310,10 @@ variable for \code{y} and each dataset (row) in \code{yrep}. For this plot
 }
 \item{\code{ppc_ecdf_overlay()}, \code{ppc_dens_overlay()},
 \code{ppc_ecdf_overlay_grouped()}, \code{ppc_dens_overlay_grouped()}}{
-Kernel density or empirical CDF estimates of each dataset (row) in
-\code{yrep} are overlaid, with the distribution of \code{y} itself on top
-(and in a darker shade). When using \code{ppc_ecdf_overlay()} with discrete
-data, set the \code{discrete} argument to \code{TRUE} for better results.
-For an example of \code{ppc_dens_overlay()} also see Gabry et al. (2019).
+Kernel density or empirical CDF estimates of each dataset (row) in \code{yrep}
+are overlaid, with the distribution of \code{y} itself on top (and in a darker
+shade). For an example of \code{ppc_dens_overlay()} also see Gabry et al.
+(2019).
 }
 \item{\code{ppc_violin_grouped()}}{
 The density estimate of \code{yrep} within each level of a grouping
@@ -350,7 +349,7 @@ dim(yrep)
 
 ppc_dens_overlay(y, yrep[1:25, ])
 \donttest{
-# ppc_ecdf_overlay with continuous data (set discrete=TRUE if discrete data)
+# ppc_ecdf_overlay
 ppc_ecdf_overlay(y, yrep[sample(nrow(yrep), 25), ])
 
 # PIT-ECDF and PIT-ECDF difference plot of the PIT values of y compared to
