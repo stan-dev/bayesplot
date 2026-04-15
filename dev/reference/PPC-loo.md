@@ -114,9 +114,11 @@ ppc_loo_ribbon(
 - yrep:
 
   An `S` by `N` matrix of draws from the posterior (or prior) predictive
-  distribution. The number of rows, `S`, is the size of the posterior
-  (or prior) sample used to generate `yrep`. The number of columns, `N`
-  is the number of predicted observations (`length(y)`). The columns of
+  distribution, or a
+  [`posterior::draws`](https://mc-stan.org/posterior/reference/draws.html)
+  object. The number of rows, `S`, is the size of the posterior (or
+  prior) sample used to generate `yrep`. The number of columns, `N` is
+  the number of predicted observations (`length(y)`). The columns of
   `yrep` should be in the same order as the data points in `y` for the
   plots to make sense. See the **Details** and **Plot Descriptions**
   sections for additional advice specific to particular plots.
@@ -422,8 +424,8 @@ lw <- weights(psis1) # normalized log weights
 color_scheme_set("orange")
 ppc_loo_pit_overlay(y, yrep, lw = lw)
 #> Some PIT values larger than 1! Largest:  1 
-#> Rounding PIT > 1 to 1. Gradient evaluation took 0.000377 seconds
-#> Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 3.77 seconds.
+#> Rounding PIT > 1 to 1. Gradient evaluation took 0.000388 seconds
+#> Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 3.88 seconds.
 #> Chain 2: Adjust your expectations accordingly!
 #> Chain 2: 
 #> Chain 2: 
@@ -435,6 +437,21 @@ ppc_loo_pit_overlay(y, yrep, lw = lw)
 #> Chain 2:            adapt_window = 38
 #> Chain 2:            term_buffer = 5
 #> Chain 2: 
+#> Chain 1: 
+#> Chain 1: Gradient evaluation took 0.000491 seconds
+#> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 4.91 seconds.
+#> Chain 1: Adjust your expectations accordingly!
+#> Chain 1: 
+#> Chain 1: 
+#> Chain 1: WARNING: There aren't enough warmup iterations to fit the
+#> Chain 1:          three stages of adaptation as currently configured.
+#> Chain 1:          Reducing each adaptation stage to 15%/75%/10% of
+#> Chain 1:          the given number of warmup iterations:
+#> Chain 1:            init_buffer = 7
+#> Chain 1:            adapt_window = 38
+#> Chain 1:            term_buffer = 5
+#> Chain 1: 
+#> Chain 1: Iteration:  1 / 100 [  1%]  (Warmup)
 #> Chain 2: Iteration:  1 / 100 [  1%]  (Warmup)
 #> Chain 2: Iteration: 10 / 100 [ 10%]  (Warmup)
 #> Chain 1: Iteration: 10 / 100 [ 10%]  (Warmup)
@@ -458,15 +475,15 @@ ppc_loo_pit_overlay(y, yrep, lw = lw)
 #> Chain 1: Iteration: 90 / 100 [ 90%]  (Sampling)
 #> Chain 2: Iteration: 100 / 100 [100%]  (Sampling)
 #> Chain 2: 
-#> Chain 2:  Elapsed Time: 2.698 seconds (Warm-up)
-#> Chain 2:                2.479 seconds (Sampling)
-#> Chain 2:                5.177 seconds (Total)
+#> Chain 2:  Elapsed Time: 2.704 seconds (Warm-up)
+#> Chain 2:                2.472 seconds (Sampling)
+#> Chain 2:                5.176 seconds (Total)
 #> Chain 2: 
 #> Chain 1: Iteration: 100 / 100 [100%]  (Sampling)
 #> Chain 1: 
-#> Chain 1:  Elapsed Time: 2.813 seconds (Warm-up)
-#> Chain 1:                2.485 seconds (Sampling)
-#> Chain 1:                5.298 seconds (Total)
+#> Chain 1:  Elapsed Time: 2.836 seconds (Warm-up)
+#> Chain 1:                2.498 seconds (Sampling)
+#> Chain 1:                5.334 seconds (Total)
 #> Chain 1: 
 #> Warning: 
 #> NOTE: The kernel density estimate assumes continuous observations and is not optimal for discrete observations.

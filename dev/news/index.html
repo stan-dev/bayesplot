@@ -63,7 +63,11 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="bayesplot-development-version">bayesplot (development version)<a class="anchor" aria-label="anchor" href="#bayesplot-development-version"></a></h2>
-<ul><li>New <code>show_marginal</code> argument to <code>ppd_*()</code> functions to show the PPD - the marginal predictive distribution by <a href="https://github.com/mattansb" class="external-link">@mattansb</a> (<a href="https://github.com/stan-dev/bayesplot/issues/425" class="external-link">#425</a>)</li>
+<ul><li>Added test verifying <code>legend_move("none")</code> behaves equivalently to <code><a href="../reference/bayesplot-helpers.html">legend_none()</a></code>.</li>
+<li>Added singleton-dimension edge-case tests for exported <code>_data()</code> functions.</li>
+<li>Validate empty list and zero-row matrix inputs in <code><a href="../reference/bayesplot-extractors.html">nuts_params.list()</a></code>.</li>
+<li>Validate user-provided <code>pit</code> values in <code><a href="../reference/PPC-loo.html">ppc_loo_pit_data()</a></code> and <code><a href="../reference/PPC-loo.html">ppc_loo_pit_qq()</a></code>, rejecting non-numeric inputs, missing values, and values outside <code>[0, 1]</code>.</li>
+<li>New <code>show_marginal</code> argument to <code>ppd_*()</code> functions to show the PPD - the marginal predictive distribution by <a href="https://github.com/mattansb" class="external-link">@mattansb</a> (<a href="https://github.com/stan-dev/bayesplot/issues/425" class="external-link">#425</a>)</li>
 <li>
 <code><a href="../reference/PPC-distributions.html">ppc_ecdf_overlay()</a></code>, <code><a href="../reference/PPC-distributions.html">ppc_ecdf_overlay_grouped()</a></code>, and <code><a href="../reference/PPD-distributions.html">ppd_ecdf_overlay()</a></code> now always use <code><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_step()</a></code>. The <code>discrete</code> argument is deprecated.</li>
 <li>Fixed missing <code>drop = FALSE</code> in <code><a href="../reference/bayesplot-extractors.html">nuts_params.CmdStanMCMC()</a></code>.</li>

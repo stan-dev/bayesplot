@@ -144,12 +144,13 @@ plots for ordinal, categorical, and multinomial outcomes. See the
 
 <dt id="arg-yrep">yrep<a class="anchor" aria-label="anchor" href="#arg-yrep"></a></dt>
 <dd><p>An <code>S</code> by <code>N</code> matrix of draws from the posterior (or prior)
-predictive distribution. The number of rows, <code>S</code>, is the size of the
-posterior (or prior) sample used to generate <code>yrep</code>. The number of columns,
-<code>N</code> is the number of predicted observations (<code>length(y)</code>). The columns of
-<code>yrep</code> should be in the same order as the data points in <code>y</code> for the plots
-to make sense. See the <strong>Details</strong> and <strong>Plot Descriptions</strong> sections for
-additional advice specific to particular plots.</p></dd>
+predictive distribution, or a <code><a href="https://mc-stan.org/posterior/reference/draws.html" class="external-link">posterior::draws</a></code> object. The number of
+rows, <code>S</code>, is the size of the posterior (or prior) sample used to generate
+<code>yrep</code>. The number of columns, <code>N</code> is the number of predicted observations
+(<code>length(y)</code>). The columns of <code>yrep</code> should be in the same order as the
+data points in <code>y</code> for the plots to make sense. See the <strong>Details</strong> and
+<strong>Plot Descriptions</strong> sections for additional advice specific to particular
+plots.</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>

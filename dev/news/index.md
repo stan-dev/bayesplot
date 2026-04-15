@@ -2,6 +2,18 @@
 
 ## bayesplot (development version)
 
+- Added test verifying `legend_move("none")` behaves equivalently to
+  [`legend_none()`](https://mc-stan.org/bayesplot/dev/reference/bayesplot-helpers.md).
+- Added singleton-dimension edge-case tests for exported `_data()`
+  functions.
+- Validate empty list and zero-row matrix inputs in
+  [`nuts_params.list()`](https://mc-stan.org/bayesplot/dev/reference/bayesplot-extractors.md).
+- Validate user-provided `pit` values in
+  [`ppc_loo_pit_data()`](https://mc-stan.org/bayesplot/dev/reference/PPC-loo.md)
+  and
+  [`ppc_loo_pit_qq()`](https://mc-stan.org/bayesplot/dev/reference/PPC-loo.md),
+  rejecting non-numeric inputs, missing values, and values outside
+  `[0, 1]`.
 - New `show_marginal` argument to `ppd_*()` functions to show the PPD -
   the marginal predictive distribution by
   [@mattansb](https://github.com/mattansb)
