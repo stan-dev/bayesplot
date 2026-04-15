@@ -42,7 +42,8 @@ ppd_dens_overlay <-
   function(ypred,
            show_marginal = FALSE,
            ...,
-           size = 0.25,
+           size = NULL,
+           linewidth = 0.25,
            alpha = 0.7,
            trim = FALSE,
            bw = "nrd0",
@@ -51,13 +52,15 @@ ppd_dens_overlay <-
            bounds = NULL,
            n_dens = 1024) {
     check_ignored_arguments(...)
+    linewidth <- resolve_linewidth(size, linewidth, default_linewidth = 0.25,
+                                   calling_fn = "ppd_dens_overlay")
     bounds <- validate_density_bounds(bounds)
 
     data <- ppd_data(ypred)
     p <- ggplot(data, mapping = aes(x = .data$value)) +
       overlay_ppd_densities(
         mapping = aes(group = .data$rep_id, color = "ypred", linetype = "ypred"),
-        linewidth = size,
+        linewidth = linewidth,
         alpha = alpha,
         trim = trim,
         bw = bw,
@@ -78,7 +81,7 @@ ppd_dens_overlay <-
         show_marginal = show_marginal,
         # in case user turns legend back on
         guide = guide_legend(
-          override.aes = list(linewidth = 2 * size, alpha = 1)
+          override.aes = list(linewidth = 2 * linewidth, alpha = 1)
         )
       )
 
@@ -109,9 +112,12 @@ ppd_ecdf_overlay <-
            ...,
            discrete = deprecated(),
            pad = TRUE,
-           size = 0.25,
+           size = NULL,
+           linewidth = 0.25,
            alpha = 0.7) {
     check_ignored_arguments(...)
+    linewidth <- resolve_linewidth(size, linewidth, default_linewidth = 0.25,
+                                   calling_fn = "ppd_ecdf_overlay")
 
     if (is_present(discrete)) {
       deprecate_warn(
@@ -132,7 +138,7 @@ ppd_ecdf_overlay <-
       stat_ecdf(
         mapping = aes(group = .data$rep_id, color = "ypred", linetype = "ypred"),
         geom = "step",
-        linewidth = size,
+        linewidth = linewidth,
         alpha = alpha,
         pad = pad
       ) +
@@ -146,7 +152,7 @@ ppd_ecdf_overlay <-
         show_marginal = show_marginal,
         # in case user turns legend back on
         guide = guide_legend(
-          override.aes = list(linewidth = 2 * size, alpha = 1)
+          override.aes = list(linewidth = 2 * linewidth, alpha = 1)
         )
       )
 
@@ -171,10 +177,13 @@ ppd_dens <-
              show_marginal = FALSE,
              ...,
              trim = FALSE,
-             size = 0.5,
+             size = NULL,
+             linewidth = 0.5,
              alpha = 1,
              bounds = NULL) {
       check_ignored_arguments(...)
+      linewidth <- resolve_linewidth(size, linewidth, default_linewidth = 0.5,
+                                     calling_fn = "ppd_dens")
       bounds <- validate_density_bounds(bounds)
 
       data <- ppd_data(ypred)
@@ -182,7 +191,7 @@ ppd_dens <-
         geom_density(
           aes(color = "ypred",
               fill = "ypred"),
-          linewidth = size,
+          linewidth = linewidth,
           alpha = alpha,
           trim = trim,
           bounds = bounds
@@ -339,7 +348,8 @@ ppd_freqpoly <-
            binwidth = NULL,
            bins = NULL,
            freq = !show_marginal,
-           size = 0.5,
+           size = NULL,
+           linewidth = 0.5,
            alpha = 1) {
 
     dots <- list(...)
@@ -347,6 +357,8 @@ ppd_freqpoly <-
       check_ignored_arguments(...)
       dots$group <- NULL
     }
+    linewidth <- resolve_linewidth(size, linewidth, default_linewidth = 0.5,
+                                   calling_fn = "ppd_freqpoly")
 
     data <- ppd_data(ypred, group = dots$group)
     p <- ggplot(data, mapping = set_hist_aes(freq)) +
@@ -356,7 +368,7 @@ ppd_freqpoly <-
         stat = "bin",
         binwidth = binwidth,
         bins = bins,
-        linewidth = size,
+        linewidth = linewidth,
         alpha = alpha
       ) +
       facet_wrap_parsed("rep_label") +
@@ -403,10 +415,13 @@ ppd_freqpoly_grouped <-
            binwidth = NULL,
            bins = NULL,
            freq = !show_marginal,
-           size = 0.5,
+           size = NULL,
+           linewidth = 0.5,
            alpha = 1) {
 
     check_ignored_arguments(...)
+    linewidth <- resolve_linewidth(size, linewidth, default_linewidth = 0.5,
+                                   calling_fn = "ppd_freqpoly_grouped")
     call <- match.call(expand.dots = FALSE)
     g <- eval(ungroup_call("ppd_freqpoly", call), parent.frame())
     g +
@@ -428,9 +443,12 @@ ppd_boxplot <-
            show_marginal = FALSE,
            ...,
            notch = TRUE,
-           size = 0.5,
+           size = NULL,
+           linewidth = 0.5,
            alpha = 1) {
     check_ignored_arguments(...)
+    linewidth <- resolve_linewidth(size, linewidth, default_linewidth = 0.5,
+                                   calling_fn = "ppd_boxplot")
 
     data <- ppd_data(ypred)
     p <- ggplot(data, mapping = aes(
@@ -441,7 +459,7 @@ ppd_boxplot <-
         aes(color = "ypred",
             fill = "ypred"),
         notch = notch,
-        linewidth = size,
+        linewidth = linewidth,
         alpha = alpha,
         outlier.color = get_color("lh"),
         outlier.alpha = 2/3,
@@ -518,4 +536,3 @@ overlay_ppd_densities <-
            position = "identity") {
     stat_density(..., geom = geom, position = position)
   }
-

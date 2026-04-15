@@ -13,7 +13,7 @@
 #' @template args-regex_pars
 #' @template args-transformations
 #' @param ... Currently ignored.
-#' @param size,alpha Arguments passed on to [ggplot2::geom_line()].
+#' @param size,alpha,linewidth Arguments passed on to [ggplot2::geom_line()].
 #' @param np For models fit using [NUTS] (more generally,
 #'   any [symplectic integrator](https://en.wikipedia.org/wiki/Symplectic_integrator)),
 #'   an optional data frame providing NUTS diagnostic information. The data
@@ -114,11 +114,13 @@ mcmc_parcoord <-
            regex_pars = character(),
            transformations = list(),
            ...,
-           size = 0.2,
+           size = NULL,
+           linewidth = 0.2,
            alpha = 0.3,
            np = NULL,
            np_style = parcoord_style_np()) {
     check_ignored_arguments(...)
+    linewidth <- resolve_linewidth(size, linewidth, default_linewidth = 0.2, calling_fn = "mcmc_parcoord")
     stopifnot(inherits(np_style, "nuts_style"))
 
     data <-
@@ -142,7 +144,7 @@ mcmc_parcoord <-
       group = factor(.data$Draw)
     )) +
       geom_line(
-        linewidth = size,
+        linewidth = linewidth,
         alpha = alpha,
         color = get_color("dh")
       ) +

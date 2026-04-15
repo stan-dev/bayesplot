@@ -1,5 +1,7 @@
 # bayesplot (development version)
 
+* Deprecate user-facing `size` arguments that controlled line width in favor of `linewidth` across all plotting functions.
+* Deprecate the `fatten` argument in `ppc_intervals()`, `ppd_intervals()`, `ppc_loo_intervals()`, `ppc_bars()`, and their grouped variants. Point size in `geom_pointrange()` is now controlled directly by `size`.
 * Added test verifying `legend_move("none")` behaves equivalently to `legend_none()`.
 * Added singleton-dimension edge-case tests for exported `_data()` functions.
 * Validate empty list and zero-row matrix inputs in `nuts_params.list()`.

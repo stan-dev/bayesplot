@@ -15,13 +15,14 @@
 #' @param psis_object If using **loo** version `2.0.0` or greater, an
 #'   object returned by the `psis()` function (or by the `loo()` function
 #'   with argument `save_psis` set to `TRUE`).
-#' @param alpha,size,fatten,linewidth Arguments passed to code geoms to control
-#'   plot aesthetics. For `ppc_loo_pit_qq()` and `ppc_loo_pit_overlay()`,`size`
-#'   and `alpha` are passed to [ggplot2::geom_point()] and
-#'   [ggplot2::geom_density()], respectively. For `ppc_loo_intervals()`, `size`
-#'   `linewidth` and `fatten` are passed to [ggplot2::geom_pointrange()]. For
-#'   `ppc_loo_ribbon()`, `alpha` and `size`  are passed to
-#'   [ggplot2::geom_ribbon()].
+#' @param alpha,size,linewidth Arguments passed to geoms to control plot
+#'   aesthetics. For `ppc_loo_pit_qq()`, `size` and `alpha` are passed to
+#'   [ggplot2::geom_point()]. For `ppc_loo_pit_overlay()`, `linewidth` and
+#'   `alpha` control the line width and opacity. For `ppc_loo_intervals()`,
+#'   `size` controls the point size and `linewidth` controls the line width
+#'   in [ggplot2::geom_pointrange()]. For `ppc_loo_ribbon()`, `alpha` and
+#'   `linewidth` control the ribbon opacity and median line width.
+#' @param fatten Deprecated. Point size is now controlled directly by `size`.
 #'
 #' @template return-ggplot-or-data
 #'
@@ -177,7 +178,8 @@ ppc_loo_pit_overlay <- function(y,
                                 psis_object = NULL,
                                 pit = NULL,
                                 samples = 100,
-                                size = 0.25,
+                                size = NULL,
+                                linewidth = 0.25,
                                 alpha = 0.7,
                                 boundary_correction = TRUE,
                                 grid_len = 512,
@@ -187,6 +189,9 @@ ppc_loo_pit_overlay <- function(y,
                                 kernel = "gaussian",
                                 n_dens = 1024) {
   check_ignored_arguments(..., ok_args = list("moment_match"))
+  linewidth <- resolve_linewidth(size, linewidth,
+                                 default_linewidth = 0.25,
+                                 calling_fn = "ppc_loo_pit_overlay")
 
   data <-
     ppc_loo_pit_data(
@@ -221,7 +226,7 @@ ppc_loo_pit_overlay <- function(y,
         aes(group = .data$rep_id, color = "yrep"),
         data = function(x) dplyr::filter(x, !.data$is_y),
         alpha = alpha,
-        linewidth = size,
+        linewidth = linewidth,
         na.rm = TRUE
       ) +
       geom_line(
@@ -245,7 +250,7 @@ ppc_loo_pit_overlay <- function(y,
         data = function(x) dplyr::filter(x, !.data$is_y),
         geom = "line",
         position = "identity",
-        linewidth = size,
+        linewidth = linewidth,
         alpha = alpha,
         trim = trim,
         bw = bw,
@@ -545,10 +550,12 @@ ppc_loo_intervals <-
            prob_outer = 0.9,
            alpha = 0.33,
            size = 1,
-           fatten = 2.5,
+           fatten = deprecated(),
            linewidth = 1,
            order = c("index", "median")) {
     check_ignored_arguments(..., ok_args = list("moment_match"))
+    size <- resolve_fatten(fatten, size, default_size = 1,
+                           calling_fn = "ppc_loo_intervals")
     y <- validate_y(y)
     order_by_median <- match.arg(order) == "median"
     if (!is.null(intervals)) {
@@ -600,14 +607,13 @@ ppc_loo_intervals <-
       geom_linerange(
         mapping = intervals_outer_aes(color = "yrep"),
         alpha = alpha,
-        linewidth = size
+        linewidth = linewidth
       ) +
       geom_pointrange(
         shape = 21,
         stroke = 0.5,
         linewidth = linewidth,
-        size = size,
-        fatten = fatten
+        size = size
       ) +
       geom_point(
         mapping = aes(
@@ -639,8 +645,12 @@ ppc_loo_ribbon <-
            prob = 0.5,
            prob_outer = 0.9,
            alpha = 0.33,
-           size = 0.25) {
+           size = NULL,
+           linewidth = 0.25) {
     check_ignored_arguments(..., ok_args = list("moment_match"))
+    linewidth <- resolve_linewidth(size, linewidth,
+                                   default_linewidth = 0.25,
+                                   calling_fn = "ppc_loo_ribbon")
     y <- validate_y(y)
     if (!is.null(intervals)) {
       stopifnot(is.matrix(intervals), ncol(intervals) %in% c(3, 5))
@@ -690,7 +700,7 @@ ppc_loo_ribbon <-
       geom_line(
         mapping = aes(y = .data$m),
         color = get_color("m"),
-        linewidth = size
+        linewidth = linewidth
       ) +
       geom_blank(aes(fill = "y")) +
       geom_line(

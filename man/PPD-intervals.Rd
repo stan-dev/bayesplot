@@ -18,7 +18,7 @@ ppd_intervals(
   prob_outer = 0.9,
   alpha = 0.33,
   size = 1,
-  fatten = 2.5,
+  fatten = deprecated(),
   linewidth = 1
 )
 
@@ -32,7 +32,7 @@ ppd_intervals_grouped(
   prob_outer = 0.9,
   alpha = 0.33,
   size = 1,
-  fatten = 2.5,
+  fatten = deprecated(),
   linewidth = 1
 )
 
@@ -43,7 +43,8 @@ ppd_ribbon(
   prob = 0.5,
   prob_outer = 0.9,
   alpha = 0.33,
-  size = 0.25
+  size = NULL,
+  linewidth = 0.25
 )
 
 ppd_ribbon_grouped(
@@ -55,7 +56,8 @@ ppd_ribbon_grouped(
   prob = 0.5,
   prob_outer = 0.9,
   alpha = 0.33,
-  size = 0.25
+  size = NULL,
+  linewidth = 0.25
 )
 
 ppd_intervals_data(
@@ -94,13 +96,15 @@ is missing or \code{NULL} then the observation index is used for the x-axis.}
 probability mass to include in the inner and outer intervals. The defaults
 are \code{prob=0.5} and \code{prob_outer=0.9}.}
 
-\item{alpha, size, fatten, linewidth}{Arguments passed to geoms. For ribbon
-plots \code{alpha} is passed to \code{\link[ggplot2:geom_ribbon]{ggplot2::geom_ribbon()}} to control the opacity
-of the outer ribbon and \code{size} is passed to \code{\link[ggplot2:geom_path]{ggplot2::geom_line()}} to
-control the size of the line representing the median prediction (\code{size=0}
-will remove the line). For interval plots \code{alpha}, \code{size}, \code{fatten}, and
-\code{linewidth} are passed to \code{\link[ggplot2:geom_linerange]{ggplot2::geom_pointrange()}} (\code{fatten=0} will
-remove the point estimates).}
+\item{alpha, size, linewidth}{Arguments passed to geoms. For ribbon plots
+\code{alpha} is passed to \code{\link[ggplot2:geom_ribbon]{ggplot2::geom_ribbon()}} to control the opacity of the
+outer ribbon and \code{linewidth} is passed to \code{\link[ggplot2:geom_path]{ggplot2::geom_line()}} to control
+the width of the line representing the median prediction (\code{linewidth=0}
+will remove the line). For interval plots \code{alpha}, \code{size}, and \code{linewidth}
+are passed to \code{\link[ggplot2:geom_linerange]{ggplot2::geom_pointrange()}} where \code{size} controls the point
+size and \code{linewidth} controls the line width.}
+
+\item{fatten}{Deprecated. Point size is now controlled directly by \code{size}.}
 
 \item{group}{A grouping variable of the same length as \code{y}.
 Will be coerced to \link[base:factor]{factor} if not already a factor.
@@ -133,12 +137,12 @@ x <- example_x_data()
 group <- example_group_data()
 
 ppd_intervals(ypred[, 1:50])
-ppd_intervals(ypred[, 1:50], fatten = 0)
-ppd_intervals(ypred[, 1:50], fatten = 0, linewidth = 2)
-ppd_intervals(ypred[, 1:50], prob_outer = 0.75, fatten = 0, linewidth = 2)
+ppd_intervals(ypred[, 1:50], size = 0)
+ppd_intervals(ypred[, 1:50], size = 0, linewidth = 2)
+ppd_intervals(ypred[, 1:50], prob_outer = 0.75, size = 0, linewidth = 2)
 
 # put a predictor variable on the x-axis
-ppd_intervals(ypred[, 1:100], x = x[1:100], fatten = 1) +
+ppd_intervals(ypred[, 1:100], x = x[1:100], size = 1) +
   ggplot2::labs(y = "Prediction", x = "Some variable of interest")
 
 # with a grouping variable too
@@ -146,16 +150,15 @@ ppd_intervals_grouped(
   ypred = ypred[, 1:100],
   x = x[1:100],
   group = group[1:100],
-  size = 2,
-  fatten = 0,
+  size = 0,
   facet_args = list(nrow = 2)
 )
 
 # even reducing size, ppd_intervals is too cluttered when there are many
 # observations included (ppd_ribbon is better)
-ppd_intervals(ypred, size = 0.5, fatten = 0.1, linewidth = 0.5)
+ppd_intervals(ypred, size = 0.1, linewidth = 0.5)
 ppd_ribbon(ypred)
-ppd_ribbon(ypred, size = 0) # remove line showing median prediction
+ppd_ribbon(ypred, linewidth = 0) # remove line showing median prediction
 
 }
 \references{

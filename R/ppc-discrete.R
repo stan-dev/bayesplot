@@ -18,10 +18,12 @@
 #'   of the expected counts.)
 #' @param width For bar plots only, passed to [ggplot2::geom_bar()] to control
 #'   the bar width.
-#' @param size,fatten,linewidth For bar plots, `size`, `fatten`, and `linewidth`
-#'   are passed to [ggplot2::geom_pointrange()] to control the appearance of the
-#'   `yrep` points and intervals. For rootograms `size` is passed to
+#' @param size,linewidth For bar plots, `size` and `linewidth` are passed to
+#'   [ggplot2::geom_pointrange()] to control the appearance of the `yrep` points
+#'   and intervals, where `size` controls the point size and `linewidth` controls
+#'   the line width. For rootograms `size` is passed to
 #'   [ggplot2::geom_line()] and [ggplot2::geom_pointrange()].
+#' @param fatten Deprecated. Point size is now controlled directly by `size`.
 #' @param freq For bar plots only, if `TRUE` (the default) the y-axis will
 #'   display counts. Setting `freq=FALSE` will put proportions on the y-axis.
 #' @param bound_distinct For `ppc_rootogram(style = "discrete)` and `ppc_rootogram_grouped(style = "discrete)`,
@@ -151,7 +153,6 @@
 #'   group = esoph$agegp,
 #'   freq=FALSE,
 #'   prob = 0.5,
-#'   fatten = 1,
 #'   size = 1.5
 #' )
 #' }
@@ -185,7 +186,7 @@ ppc_bars <-
            prob = 0.9,
            width = 0.9,
            size = 1,
-           fatten = 2.5,
+           fatten = deprecated(),
            linewidth = 1,
            freq = TRUE) {
 
@@ -194,6 +195,8 @@ ppc_bars <-
       check_ignored_arguments(...)
       dots$group <- NULL
     }
+    size <- resolve_fatten(fatten, size, default_size = 1,
+                           calling_fn = "ppc_bars")
 
     data <- ppc_bars_data(
       y = y,
@@ -219,7 +222,6 @@ ppc_bars <-
       geom_pointrange(
         mapping = intervals_inner_aes(needs_y = TRUE, color = "yrep"),
         size = size,
-        fatten = fatten,
         linewidth = linewidth,
         na.rm = TRUE
       ) +
@@ -252,7 +254,7 @@ ppc_bars_grouped <-
            prob = 0.9,
            width = 0.9,
            size = 1,
-           fatten = 2.5,
+           fatten = deprecated(),
            linewidth = 1,
            freq = TRUE) {
     check_ignored_arguments(...)
@@ -305,7 +307,6 @@ ppc_rootogram <- function(y,
     bound_distinct = bound_distinct
   )
 
-  # Building geoms for y and y_rep
   geom_y <- if (style == "discrete") {
     geom_point(
       aes(y = .data$obs, shape = .data$obs_shape),

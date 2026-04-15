@@ -19,7 +19,8 @@ ppd_dens_overlay(
   ypred,
   show_marginal = FALSE,
   ...,
-  size = 0.25,
+  size = NULL,
+  linewidth = 0.25,
   alpha = 0.7,
   trim = FALSE,
   bw = "nrd0",
@@ -35,7 +36,8 @@ ppd_ecdf_overlay(
   ...,
   discrete = deprecated(),
   pad = TRUE,
-  size = 0.25,
+  size = NULL,
+  linewidth = 0.25,
   alpha = 0.7
 )
 
@@ -44,7 +46,8 @@ ppd_dens(
   show_marginal = FALSE,
   ...,
   trim = FALSE,
-  size = 0.5,
+  size = NULL,
+  linewidth = 0.5,
   alpha = 1,
   bounds = NULL
 )
@@ -75,7 +78,8 @@ ppd_freqpoly(
   binwidth = NULL,
   bins = NULL,
   freq = !show_marginal,
-  size = 0.5,
+  size = NULL,
+  linewidth = 0.5,
   alpha = 1
 )
 
@@ -87,7 +91,8 @@ ppd_freqpoly_grouped(
   binwidth = NULL,
   bins = NULL,
   freq = !show_marginal,
-  size = 0.5,
+  size = NULL,
+  linewidth = 0.5,
   alpha = 1
 )
 
@@ -96,7 +101,8 @@ ppd_boxplot(
   show_marginal = FALSE,
   ...,
   notch = TRUE,
-  size = 0.5,
+  size = NULL,
+  linewidth = 0.5,
   alpha = 1
 )
 }
@@ -116,8 +122,11 @@ to the corresponding observation.}
 
 \item{...}{For dot plots, optional additional arguments to pass to \code{\link[ggdist:stat_dots]{ggdist::stat_dots()}}.}
 
-\item{size, alpha}{Passed to the appropriate geom to control the appearance of
-the predictive distributions.}
+\item{size}{Deprecated for line-width control. Use \code{linewidth} instead.}
+
+\item{linewidth, alpha}{Passed to the appropriate geom to control the
+appearance of the predictive distributions. For overlay and density-type
+plots, \code{linewidth} controls the line width.}
 
 \item{trim}{A logical scalar passed to \code{\link[ggplot2:geom_density]{ggplot2::geom_density()}}.}
 

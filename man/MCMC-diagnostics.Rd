@@ -31,7 +31,8 @@ mcmc_acf(
   ...,
   facet_args = list(),
   lags = 20,
-  size = NULL
+  size = NULL,
+  linewidth = NULL
 )
 
 mcmc_acf_bar(
@@ -49,8 +50,7 @@ mcmc_acf_bar(
 \item{...}{Currently ignored.}
 
 \item{size}{Optional values to override \code{\link[ggplot2:geom_point]{ggplot2::geom_point()}}'s
-default size (for \code{mcmc_rhat()}, \code{mcmc_neff()}) or
-\code{\link[ggplot2:geom_path]{ggplot2::geom_line()}}'s default line width (for \code{mcmc_acf()}).}
+default size (for \code{mcmc_rhat()}, \code{mcmc_neff()}).}
 
 \item{binwidth}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}}, \code{\link[ggplot2:geom_ribbon]{ggplot2::geom_area()}},
 and \code{\link[ggdist:stat_dots]{ggdist::stat_dots()}} to override the default binwidth.}
@@ -95,6 +95,9 @@ then \strong{bayesplot} may use \code{scales="free"} as the default (depending
 on the plot) instead of the \strong{ggplot2} default of \code{scales="fixed"}.}
 
 \item{lags}{The number of lags to show in the autocorrelation plot.}
+
+\item{linewidth}{Optional value to override \code{\link[ggplot2:geom_path]{ggplot2::geom_line()}}'s
+default line width (for \code{mcmc_acf()}).}
 }
 \value{
 The plotting functions return a ggplot object that can be further

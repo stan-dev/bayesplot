@@ -147,12 +147,11 @@ test_that("ppc_bars renders correctly", {
     y = vdiff_y2,
     yrep = vdiff_yrep2,
     width = 0.5,
-    size = 0.5,
-    fatten = 5
+    size = 2.5
   )
 
   vdiffr::expect_doppelganger(
-    title = "ppc_bars (width, size, fatten)",
+    title = "ppc_bars (width, size)",
     fig = p_custom)
 
   p_custom_prob <- ppc_bars(
@@ -160,12 +159,11 @@ test_that("ppc_bars renders correctly", {
     yrep = vdiff_yrep2,
     prob = 0.33,
     width = 0.5,
-    size = 0.5,
-    fatten = 5
+    size = 2.5
   )
 
   vdiffr::expect_doppelganger(
-    title = "ppc_bars (prob=0.33, width, size, fatten)",
+    title = "ppc_bars (prob=0.33, width, size)",
     fig = p_custom_prob)
 })
 

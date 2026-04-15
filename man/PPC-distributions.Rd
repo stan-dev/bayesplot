@@ -24,7 +24,8 @@ ppc_dens_overlay(
   y,
   yrep,
   ...,
-  size = 0.25,
+  size = NULL,
+  linewidth = 0.25,
   alpha = 0.7,
   trim = FALSE,
   bw = "nrd0",
@@ -39,7 +40,8 @@ ppc_dens_overlay_grouped(
   yrep,
   group,
   ...,
-  size = 0.25,
+  size = NULL,
+  linewidth = 0.25,
   alpha = 0.7,
   trim = FALSE,
   bw = "nrd0",
@@ -55,7 +57,8 @@ ppc_ecdf_overlay(
   ...,
   discrete = deprecated(),
   pad = TRUE,
-  size = 0.25,
+  size = NULL,
+  linewidth = 0.25,
   alpha = 0.7
 )
 
@@ -66,11 +69,21 @@ ppc_ecdf_overlay_grouped(
   ...,
   discrete = deprecated(),
   pad = TRUE,
-  size = 0.25,
+  size = NULL,
+  linewidth = 0.25,
   alpha = 0.7
 )
 
-ppc_dens(y, yrep, ..., trim = FALSE, size = 0.5, alpha = 1, bounds = NULL)
+ppc_dens(
+  y,
+  yrep,
+  ...,
+  trim = FALSE,
+  size = NULL,
+  linewidth = 0.5,
+  alpha = 1,
+  bounds = NULL
+)
 
 ppc_hist(
   y,
@@ -89,7 +102,8 @@ ppc_freqpoly(
   binwidth = NULL,
   bins = NULL,
   freq = TRUE,
-  size = 0.5,
+  size = NULL,
+  linewidth = 0.5,
   alpha = 1
 )
 
@@ -101,11 +115,20 @@ ppc_freqpoly_grouped(
   binwidth = NULL,
   bins = NULL,
   freq = TRUE,
-  size = 0.5,
+  size = NULL,
+  linewidth = 0.5,
   alpha = 1
 )
 
-ppc_boxplot(y, yrep, ..., notch = TRUE, size = 0.5, alpha = 1)
+ppc_boxplot(
+  y,
+  yrep,
+  ...,
+  notch = TRUE,
+  size = NULL,
+  linewidth = 0.5,
+  alpha = 1
+)
 
 ppc_dots(y, yrep, ..., binwidth = NA, quantiles = 100, freq = TRUE)
 
@@ -115,7 +138,8 @@ ppc_violin_grouped(
   group,
   ...,
   probs = c(0.1, 0.5, 0.9),
-  size = 1,
+  size = NULL,
+  linewidth = 1,
   alpha = 1,
   y_draw = c("violin", "points", "both"),
   y_size = 1,
@@ -165,8 +189,11 @@ to the corresponding observation.}
 
 \item{...}{For dot plots, optional additional arguments to pass to \code{\link[ggdist:stat_dots]{ggdist::stat_dots()}}.}
 
-\item{size, alpha}{Passed to the appropriate geom to control the appearance of
-the predictive distributions.}
+\item{size}{Deprecated for line-width control. Use \code{linewidth} instead.}
+
+\item{linewidth, alpha}{Passed to the appropriate geom to control the
+appearance of the predictive distributions. For overlay and density-type
+plots, \code{linewidth} controls the line width.}
 
 \item{trim}{A logical scalar passed to \code{\link[ggplot2:geom_density]{ggplot2::geom_density()}}.}
 
@@ -348,7 +375,7 @@ ppc_dots(y, yrep[1:8, ])
 
 \donttest{
 # frequency polygons
-ppc_freqpoly(y, yrep[1:3, ], alpha = 0.1, size = 1, binwidth = 5)
+ppc_freqpoly(y, yrep[1:3, ], alpha = 0.1, linewidth = 1, binwidth = 5)
 
 ppc_freqpoly_grouped(y, yrep[1:3, ], group) + yaxis_text()
 
@@ -371,7 +398,7 @@ ppc_pit_ecdf_grouped(y, yrep, group=group, prob=0.99)
 # don't need to only use small number of rows for ppc_violin_grouped
 # (as it pools yrep draws within groups)
 color_scheme_set("gray")
-ppc_violin_grouped(y, yrep, group, size = 1.5)
+ppc_violin_grouped(y, yrep, group, linewidth = 1.5)
 ppc_violin_grouped(y, yrep, group, alpha = 0)
 
 # change how y is drawn
