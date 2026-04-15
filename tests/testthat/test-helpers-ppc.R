@@ -113,6 +113,85 @@ test_that("get_interpolation_values catches impossible values", {
   )
 })
 
+# validate_predictions with posterior::draws objects ----------------------
+test_that("validate_predictions accepts draws objects", {
+  result <- validate_predictions(posterior::as_draws_matrix(yrep), ncol(yrep))
+  expect_true(is.matrix(result))
+  expect_equal(dim(result), dim(yrep))
+  expect_true(is.numeric(result))
+
+  result <- validate_predictions(posterior::as_draws_array(yrep))
+  expect_true(is.matrix(result))
+  expect_equal(dim(result), dim(yrep))
+
+  result <- validate_predictions(posterior::as_draws_df(yrep))
+  expect_true(is.matrix(result))
+  expect_equal(dim(result), dim(yrep))
+
+  result <- validate_predictions(posterior::as_draws_list(yrep))
+  expect_true(is.matrix(result))
+  expect_equal(dim(result), dim(yrep))
+
+  result <- validate_predictions(posterior::as_draws_rvars(yrep))
+  expect_true(is.matrix(result))
+  expect_equal(dim(result), dim(yrep))
+})
+
+
+draws_arr <- posterior::bind_draws(
+  posterior::as_draws_array(matrix(rnorm(1000), nrow = 10, ncol = 100, dimnames = list(NULL, paste0("V", 1:100)))),
+  posterior::as_draws_array(matrix(rnorm(1000), nrow = 10, ncol = 100, dimnames = list(NULL, paste0("V", 1:100)))),
+  posterior::as_draws_array(matrix(rnorm(1000), nrow = 10, ncol = 100, dimnames = list(NULL, paste0("V", 1:100)))),
+  along = "chain"
+)
+
+test_that("validate_predictions merges chains from multi-chain draws objects", {
+  # 10 iterations x 3 chains x 100 variables -> 30 x 100 matrix
+  result <- validate_predictions(draws_arr)
+  expect_equal(nrow(result), 30)
+  expect_equal(ncol(result), 100)
+
+  result <- validate_predictions(posterior::as_draws_df(draws_arr))
+  expect_equal(nrow(result), 30)
+  expect_equal(ncol(result), 100)
+
+  result <- validate_predictions(posterior::as_draws_list(draws_arr))
+  expect_equal(nrow(result), 30)
+  expect_equal(ncol(result), 100)
+
+  result <- validate_predictions(posterior::as_draws_rvars(draws_arr))
+  expect_equal(nrow(result), 30)
+  expect_equal(ncol(result), 100)
+})
+
+test_that("posterior::draws input results in identical ggplot data", {
+  # comparing to regular yrep
+  p0 <- ggplot2::ggplot_build(ppc_dens_overlay(y, yrep))
+  p1 <- ggplot2::ggplot_build(ppc_dens_overlay(y, posterior::as_draws_matrix(yrep)))
+  p2 <- ggplot2::ggplot_build(ppc_dens_overlay(y, posterior::as_draws_array(yrep)))
+  p3 <- ggplot2::ggplot_build(ppc_dens_overlay(y, posterior::as_draws_df(yrep)))
+  p4 <- ggplot2::ggplot_build(ppc_dens_overlay(y, posterior::as_draws_list(yrep)))
+  p5 <- ggplot2::ggplot_build(ppc_dens_overlay(y, posterior::as_draws_rvars(yrep)))
+  expect_identical(p1@data, p0@data)
+  expect_identical(p2@data, p0@data)
+  expect_identical(p3@data, p0@data)
+  expect_identical(p4@data, p0@data)
+  expect_identical(p5@data, p0@data)
+
+  # comparing to converted draws_arr
+  p1 <- ggplot2::ggplot_build(ppc_dens_overlay(y, draws_arr))
+  p2 <- ggplot2::ggplot_build(ppc_dens_overlay(y, posterior::as_draws_matrix(draws_arr)))
+  p3 <- ggplot2::ggplot_build(ppc_dens_overlay(y, posterior::as_draws_df(draws_arr)))
+  p4 <- ggplot2::ggplot_build(ppc_dens_overlay(y, posterior::as_draws_list(draws_arr)))
+  p5 <- ggplot2::ggplot_build(ppc_dens_overlay(y, posterior::as_draws_rvars(draws_arr)))
+  expect_identical(p2@data, p1@data)
+  expect_identical(p3@data, p1@data)
+  expect_identical(p4@data, p1@data)
+  expect_identical(p5@data, p1@data)
+})
+
+
+
 # ecdf_intervals ---------------------------------------------------------
 test_that("ecdf_intervals returns right dimensions and values", {
   lims <- ecdf_intervals(.0001, N = 100, K = 100, L = 1)
