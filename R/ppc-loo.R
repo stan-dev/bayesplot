@@ -302,7 +302,10 @@ ppc_loo_pit_data <-
            boundary_correction = TRUE,
            grid_len = 512) {
     if (!is.null(pit)) {
-      stopifnot(is.numeric(pit), is_vector_or_1Darray(pit))
+      pit <- validate_pit(pit)
+      if (boundary_correction && length(pit) < 2L) {
+        abort("At least 2 PIT values are required when 'boundary_correction' is TRUE.")
+      }
       inform("'pit' specified so ignoring 'y','yrep','lw' if specified.")
     } else {
       suggested_package("rstantools")
@@ -348,7 +351,7 @@ ppc_loo_pit_qq <- function(y,
 
   compare <- match.arg(compare)
   if (!is.null(pit)) {
-    stopifnot(is.numeric(pit), is_vector_or_1Darray(pit))
+    pit <- validate_pit(pit)
     inform("'pit' specified so ignoring 'y','yrep','lw' if specified.")
   } else {
     suggested_package("rstantools")
@@ -795,14 +798,6 @@ ppc_loo_ribbon <-
   # Generate boundary corrected values via a linear convolution using a
   # 1-D Gaussian window filter. This method uses the "reflection method"
   # to estimate these pvalues and helps speed up the code
-  if (any(is.infinite(x))) {
-    warn(paste(
-      "Ignored", sum(is.infinite(x)),
-      "Non-finite PIT values are invalid for KDE boundary correction method"
-    ))
-    x <- x[is.finite(x)]
-  }
-
   if (grid_len < 100) {
     grid_len <- 100
   }
@@ -818,6 +813,10 @@ ppc_loo_ribbon <-
 
   # 1-D Convolution
   bc_pvals <- .linear_convolution(x, bw, grid_counts, grid_breaks, grid_len)
+
+  if (all(is.na(bc_pvals))) {
+    abort("KDE boundary correction produced all NA values.")
+  }
 
   # Generate vector of x-axis values for plotting based on binned relative freqs
   n_breaks <- length(grid_breaks)
