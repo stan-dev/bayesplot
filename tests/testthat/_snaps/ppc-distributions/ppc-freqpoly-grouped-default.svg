@@ -355,9 +355,9 @@
 <polyline points='5.98,420.59 5.98,306.74 ' style='stroke-width: 0.85; stroke-linecap: butt;' />
 <polyline points='5.98,556.04 5.98,442.19 ' style='stroke-width: 0.85; stroke-linecap: butt;' />
 <rect x='664.10' y='278.66' width='17.28' height='17.28' style='stroke-width: 2.33; stroke: #FFFFFF; fill: #FFFFFF;' />
-<rect x='664.81' y='279.37' width='15.86' height='15.86' style='stroke-width: 1.07; stroke: #011F4B; stroke-linecap: butt; fill: #03396C;' />
+<rect x='664.81' y='279.37' width='15.86' height='15.86' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; fill: #03396C;' />
 <rect x='664.10' y='295.94' width='17.28' height='17.28' style='stroke-width: 2.33; stroke: #FFFFFF; fill: #FFFFFF;' />
-<rect x='664.81' y='296.65' width='15.86' height='15.86' style='stroke-width: 1.07; stroke: #B3CDE0; stroke-linecap: butt; fill: #D1E1EC;' />
+<rect x='664.81' y='296.65' width='15.86' height='15.86' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; fill: #D1E1EC;' />
 <text x='687.36' y='289.39' style='font-size: 13.00px; font-style: italic; font-family: sans;' textLength='6.51px' lengthAdjust='spacingAndGlyphs'>y</text>
 <text x='687.36' y='305.87' style='font-size: 13.00px; font-style: italic; font-family: sans;' textLength='6.51px' lengthAdjust='spacingAndGlyphs'>y</text>
 <text x='694.89' y='308.28' style='font-size: 9.10px; font-family: sans;' textLength='3.03px' lengthAdjust='spacingAndGlyphs'>r</text>
