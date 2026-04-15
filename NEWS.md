@@ -1,6 +1,6 @@
 # bayesplot (development version)
 
-* Added tests for theme/aesthetic helpers (`plot_bg()`, `panel_bg()`, `facet_bg()`, `legend_move()`, `legend_text()`, `overlay_function()`) verifying return types, edge cases, and composition with plots.
+* Added test verifying `legend_move("none")` behaves equivalently to `legend_none()`.
 * `ppc_ecdf_overlay()`, `ppc_ecdf_overlay_grouped()`, and `ppd_ecdf_overlay()` now always use `geom_step()`. The `discrete` argument is deprecated.
 * Fixed missing `drop = FALSE` in `nuts_params.CmdStanMCMC()`.
 * Replace `apply()` with `storage.mode()` for integer-to-numeric matrix conversion in `validate_predictions()`.
