@@ -14,30 +14,33 @@
 ppd_stat(
   ypred,
   stat = "mean",
+  show_marginal = FALSE,
   ...,
   discrete = FALSE,
   binwidth = NULL,
   bins = NULL,
   breaks = NULL,
-  freq = TRUE
+  freq = !show_marginal
 )
 
 ppd_stat_grouped(
   ypred,
   group,
   stat = "mean",
+  show_marginal = FALSE,
   ...,
   discrete = FALSE,
   facet_args = list(),
   binwidth = NULL,
   bins = NULL,
   breaks = NULL,
-  freq = TRUE
+  freq = !show_marginal
 )
 
 ppd_stat_freqpoly(
   ypred,
   stat = "mean",
+  show_marginal = FALSE,
   ...,
   facet_args = list(),
   binwidth = NULL,
@@ -49,6 +52,7 @@ ppd_stat_freqpoly_grouped(
   ypred,
   group,
   stat = "mean",
+  show_marginal = FALSE,
   ...,
   facet_args = list(),
   binwidth = NULL,
@@ -56,9 +60,16 @@ ppd_stat_freqpoly_grouped(
   freq = TRUE
 )
 
-ppd_stat_2d(ypred, stat = c("mean", "sd"), ..., size = 2.5, alpha = 0.7)
+ppd_stat_2d(
+  ypred,
+  stat = c("mean", "sd"),
+  show_marginal = FALSE,
+  ...,
+  size = 2.5,
+  alpha = 0.7
+)
 
-ppd_stat_data(ypred, group = NULL, stat)
+ppd_stat_data(ypred, group = NULL, stat, show_marginal = FALSE)
 }
 \arguments{
 \item{ypred}{An \code{S} by \code{N} matrix of draws from the posterior (or prior)
@@ -72,6 +83,8 @@ cases the function(s) should take a vector input and return a scalar
 statistic. If specified as a string (or strings) then the legend will
 display the function name(s). If specified as a function (or functions)
 then generic naming is used in the legend.}
+
+\item{show_marginal}{Plot the marginal PPD along with the \code{ypred}s.}
 
 \item{...}{Currently unused.}
 
@@ -130,11 +143,13 @@ the input contains the "success" \emph{proportions} (not discrete
 yrep <- example_yrep_draws()
 ppd_stat(yrep)
 ppd_stat(yrep, stat = "sd") + legend_none()
+ppd_stat(yrep, show_marginal = TRUE)
 
 # use your own function for the 'stat' argument
 color_scheme_set("brightblue")
 q25 <- function(y) quantile(y, 0.25)
 ppd_stat(yrep, stat = "q25") # legend includes function name
+ppd_stat(yrep, stat = "q25", show_marginal = TRUE)
 }
 \references{
 Gabry, J. , Simpson, D. , Vehtari, A. , Betancourt, M. and

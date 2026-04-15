@@ -61,13 +61,13 @@
 <text x='391.93' y='568.03' text-anchor='middle' style='font-size: 9.60px; fill: #4D4D4D; font-family: sans;' textLength='5.34px' lengthAdjust='spacingAndGlyphs'>3</text>
 <text x='504.92' y='568.03' text-anchor='middle' style='font-size: 9.60px; fill: #4D4D4D; font-family: sans;' textLength='5.34px' lengthAdjust='spacingAndGlyphs'>4</text>
 <text x='617.92' y='568.03' text-anchor='middle' style='font-size: 9.60px; fill: #4D4D4D; font-family: sans;' textLength='5.34px' lengthAdjust='spacingAndGlyphs'>5</text>
-<line x1='665.83' y1='290.17' x2='679.65' y2='290.17' style='stroke-width: 1.16; stroke: #011F4B; stroke-linecap: butt;' />
-<line x1='665.83' y1='307.45' x2='679.65' y2='307.45' style='stroke-width: 1.16; stroke: #B3CDE0; stroke-linecap: butt;' />
-<text x='687.36' y='292.26' style='font-size: 13.00px; font-style: italic; font-family: sans;' textLength='6.51px' lengthAdjust='spacingAndGlyphs'>y</text>
-<text x='687.36' y='308.74' style='font-size: 13.00px; font-style: italic; font-family: sans;' textLength='6.51px' lengthAdjust='spacingAndGlyphs'>y</text>
-<text x='694.89' y='311.15' style='font-size: 9.10px; font-family: sans;' textLength='3.03px' lengthAdjust='spacingAndGlyphs'>r</text>
-<text x='697.92' y='311.15' style='font-size: 9.10px; font-family: sans;' textLength='5.06px' lengthAdjust='spacingAndGlyphs'>e</text>
-<text x='702.98' y='311.15' style='font-size: 9.10px; font-family: sans;' textLength='5.06px' lengthAdjust='spacingAndGlyphs'>p</text>
+<line x1='665.83' y1='281.81' x2='679.65' y2='281.81' style='stroke-width: 1.16; stroke: #011F4B; stroke-linecap: butt;' />
+<line x1='665.83' y1='299.09' x2='679.65' y2='299.09' style='stroke-width: 1.16; stroke: #B3CDE0; stroke-linecap: butt;' />
+<text x='687.36' y='283.90' style='font-size: 13.00px; font-style: italic; font-family: sans;' textLength='6.51px' lengthAdjust='spacingAndGlyphs'>y</text>
+<text x='687.36' y='300.38' style='font-size: 13.00px; font-style: italic; font-family: sans;' textLength='6.51px' lengthAdjust='spacingAndGlyphs'>y</text>
+<text x='694.89' y='302.78' style='font-size: 9.10px; font-family: sans;' textLength='3.03px' lengthAdjust='spacingAndGlyphs'>r</text>
+<text x='697.92' y='302.78' style='font-size: 9.10px; font-family: sans;' textLength='5.06px' lengthAdjust='spacingAndGlyphs'>e</text>
+<text x='702.98' y='302.78' style='font-size: 9.10px; font-family: sans;' textLength='5.06px' lengthAdjust='spacingAndGlyphs'>p</text>
 <text x='24.70' y='15.89' style='font-size: 14.40px; font-family: sans;' textLength='161.71px' lengthAdjust='spacingAndGlyphs'>ppc_km_overlay (default)</text>
 </g>
 </svg>

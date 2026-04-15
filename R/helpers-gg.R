@@ -96,7 +96,7 @@ scale_color_ppc <-
            labels = NULL,
            ...) {
     scale_color_manual(
-      name = name %||% "",
+      name = name,
       values = values %||% get_color(c("dh", "lh")),
       labels = labels %||% c(y_label(), yrep_label()),
       ...
@@ -109,7 +109,7 @@ scale_fill_ppc <-
            labels = NULL,
            ...) {
     scale_fill_manual(
-      name = name %||% "",
+      name = name,
       values = values %||% get_color(c("d", "l")),
       labels = labels %||% c(y_label(), yrep_label()),
       ...
@@ -118,22 +118,77 @@ scale_fill_ppc <-
 
 scale_color_ppd <-
   function(name = NULL,
-           values = get_color("mh"),
-           labels = ypred_label(),
+           values = NULL,
+           labels = NULL,
+           highlight = TRUE,
+           show_marginal = FALSE,
            ...) {
-    scale_color_ppc(name = name,
-                    values = values,
-                    labels = labels,
-                    ...)
+    if (isTRUE(show_marginal)) {
+      if (isTRUE(highlight)) {
+        cl <- c("dh", "lh")
+      } else {
+        cl <- c("d", "l")
+      }
+      default_values <- setNames(get_color(cl), nm = c("PPD", "ypred"))
+    } else {
+      if (isTRUE(highlight)) {
+        default_values <- get_color("mh")
+      } else {
+        default_values <- get_color("m")
+      }
+    }
+
+    scale_color_ppc(
+      name = name,
+      values = values %||% default_values,
+      labels = labels %||% ypred_label(),
+      ...
+    )
   }
 
 scale_fill_ppd <-
   function(name = NULL,
-           values = get_color("m"),
-           labels = ypred_label(),
+           values = NULL,
+           labels = NULL,
+           show_marginal = FALSE,
            ...) {
-    scale_fill_ppc(name = name,
-                   values = values,
-                   labels = labels,
-                   ...)
+    if (isTRUE(show_marginal)) {
+      default_values <- c(PPD = "white", ypred = get_color("l"))
+    } else {
+      default_values <- get_color("m")
+    }
+
+    scale_fill_ppc(
+      name = name,
+      values = values %||% default_values,
+      labels = labels %||% ypred_label(),
+      ...
+    )
+  }
+
+
+scale_linetype_ppd <-
+  function(name = NULL,
+           values = NULL,
+           labels = NULL,
+           ...) {
+    scale_linetype_manual(
+      name = name,
+      values = values %||% c(PPD = "5111", ypred = "solid"),
+      labels = labels %||% ypred_label(),
+      ...
+    )
+  }
+
+scale_shape_ppd <-
+  function(name = NULL,
+           values = NULL,
+           labels = NULL,
+           ...) {
+    scale_shape_manual(
+      name = name,
+      values = values %||% c(ypred = 21, PPD = 23),
+      labels = labels %||% ypred_label(),
+      ...
+    )
   }
