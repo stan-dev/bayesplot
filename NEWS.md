@@ -1,5 +1,6 @@
 # bayesplot (development version)
 
+* Fixed `validate_chain_list()` colnames check to compare all chains, not just the first two.
 * Added test verifying `legend_move("none")` behaves equivalently to `legend_none()`.
 * Added singleton-dimension edge-case tests for exported `_data()` functions.
 * Validate empty list and zero-row matrix inputs in `nuts_params.list()`.
