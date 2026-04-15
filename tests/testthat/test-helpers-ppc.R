@@ -1,4 +1,3 @@
-library(posterior)
 source(test_path("data-for-ppc-tests.R"))
 source(test_path("data-for-mcmc-tests.R"))
 
@@ -116,51 +115,52 @@ test_that("get_interpolation_values catches impossible values", {
 
 # validate_predictions with posterior::draws objects ----------------------
 test_that("validate_predictions accepts draws_matrix", {
-  dm <- posterior::as_draws_matrix(yrep)
-  result <- validate_predictions(dm, ncol(yrep))
+  result <- validate_predictions(posterior::as_draws_matrix(yrep), ncol(yrep))
   expect_true(is.matrix(result))
   expect_equal(dim(result), dim(yrep))
   expect_true(is.numeric(result))
 })
 
 test_that("validate_predictions accepts draws_array", {
-  da <- posterior::as_draws_array(yrep)
-  result <- validate_predictions(da)
+  result <- validate_predictions(posterior::as_draws_array(yrep))
   expect_true(is.matrix(result))
-  expect_true(is.numeric(result))
+  expect_equal(dim(result), dim(yrep))
 })
 
 test_that("validate_predictions accepts draws_df", {
-  ddf <- posterior::as_draws_df(yrep)
-  result <- validate_predictions(ddf)
+  result <- validate_predictions(posterior::as_draws_df(yrep))
   expect_true(is.matrix(result))
-  expect_true(is.numeric(result))
+  expect_equal(dim(result), dim(yrep))
+})
+
+test_that("validate_predictions accepts draws_list", {
+  result <- validate_predictions(posterior::as_draws_list(yrep))
+  expect_true(is.matrix(result))
+  expect_equal(dim(result), dim(yrep))
 })
 
 test_that("validate_predictions accepts draws_rvars", {
-  dr <- posterior::as_draws_rvars(yrep)
-  result <- validate_predictions(dr)
+  result <- validate_predictions(posterior::as_draws_rvars(yrep))
   expect_true(is.matrix(result))
-  expect_true(is.numeric(result))
+  expect_equal(dim(result), dim(yrep))
 })
 
-test_that("ppc_dens_overlay works with draws_matrix input", {
-  dm <- posterior::as_draws_matrix(yrep)
-  p <- ppc_dens_overlay(y, dm)
-  expect_s3_class(p, "ggplot")
+test_that("posterior::draws input results in identical ggplot data", {
+  p0 <- ggplot2::ggplot_build(ppc_dens_overlay(y, yrep))
+  p1 <- ggplot2::ggplot_build(ppc_dens_overlay(y, posterior::as_draws_matrix(yrep)))
+  p2 <- ggplot2::ggplot_build(ppc_dens_overlay(y, posterior::as_draws_array(yrep)))
+  p3 <- ggplot2::ggplot_build(ppc_dens_overlay(y, posterior::as_draws_df(yrep)))
+  p4 <- ggplot2::ggplot_build(ppc_dens_overlay(y, posterior::as_draws_list(yrep)))
+  p5 <- ggplot2::ggplot_build(ppc_dens_overlay(y, posterior::as_draws_rvars(yrep)))
+
+  expect_identical(p1@data, p0@data)
+  expect_identical(p2@data, p0@data)
+  expect_identical(p3@data, p0@data)
+  expect_identical(p4@data, p0@data)
+  expect_identical(p5@data, p0@data)
 })
 
-test_that("ppc_hist works with draws_matrix input", {
-  dm <- posterior::as_draws_matrix(yrep)
-  p <- ppc_hist(y, dm[1:8, ])
-  expect_s3_class(p, "ggplot")
-})
 
-test_that("ppc_stat works with draws_matrix input", {
-  dm <- posterior::as_draws_matrix(yrep)
-  p <- ppc_stat(y, dm)
-  expect_s3_class(p, "ggplot")
-})
 
 # ecdf_intervals ---------------------------------------------------------
 test_that("ecdf_intervals returns right dimensions and values", {
