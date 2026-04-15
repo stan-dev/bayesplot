@@ -76,6 +76,14 @@ test_that("ppc_loo_pit_data validates user-provided pit values", {
     ppc_loo_pit_data(pit = "not numeric"),
     "is.numeric"
   )
+  expect_error(
+    ppc_loo_pit_data(pit = c(Inf, -Inf, Inf)),
+    "between 0 and 1"
+  )
+  expect_error(
+    ppc_loo_pit_data(pit = 0.5, boundary_correction = TRUE),
+    "At least 2 PIT values"
+  )
 })
 
 test_that("ppc_loo_pit_qq validates user-provided pit values", {

@@ -303,6 +303,9 @@ ppc_loo_pit_data <-
            grid_len = 512) {
     if (!is.null(pit)) {
       pit <- validate_pit(pit)
+      if (boundary_correction && length(pit) < 2L) {
+        abort("At least 2 PIT values are required when 'boundary_correction' is TRUE.")
+      }
       inform("'pit' specified so ignoring 'y','yrep','lw' if specified.")
     } else {
       suggested_package("rstantools")
