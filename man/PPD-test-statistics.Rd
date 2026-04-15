@@ -62,9 +62,10 @@ ppd_stat_data(ypred, group = NULL, stat)
 }
 \arguments{
 \item{ypred}{An \code{S} by \code{N} matrix of draws from the posterior (or prior)
-predictive distribution. The number of rows, \code{S}, is the size of the
-posterior (or prior) sample used to generate \code{ypred}. The number of
-columns, \code{N}, is the number of predicted observations.}
+predictive distribution, or a \code{\link[posterior:draws]{posterior::draws}} object. The number of
+rows, \code{S}, is the size of the posterior (or prior) sample used to generate
+\code{ypred}. The number of columns, \code{N}, is the number of predicted
+observations.}
 
 \item{stat}{A single function or a string naming a function, except for the
 2D plot which requires a vector of exactly two names or functions. In all
