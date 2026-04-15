@@ -121,16 +121,6 @@
 <polyline points='21.71,532.77 24.70,532.77 ' style='stroke-width: 0.64; stroke: #333333; stroke-linecap: butt;' />
 <polyline points='21.71,300.07 24.70,300.07 ' style='stroke-width: 0.64; stroke: #333333; stroke-linecap: butt;' />
 <polyline points='21.71,67.36 24.70,67.36 ' style='stroke-width: 0.64; stroke: #333333; stroke-linecap: butt;' />
-<<<<<<<< HEAD:tests/testthat/_snaps/ppc-distributions/ppc-ecdf-overlay-grouped-discrete-linewidth-alpha.svg
-<line x1='665.83' y1='299.79' x2='679.65' y2='299.79' style='stroke-width: 2.13; stroke: #011F4B; stroke-linecap: butt;' />
-<line x1='665.83' y1='317.07' x2='679.65' y2='317.07' style='stroke-width: 4.27; stroke: #B3CDE0; stroke-opacity: 0.20; stroke-linecap: butt;' />
-<text x='687.36' y='301.88' style='font-size: 13.00px; font-style: italic; font-family: sans;' textLength='6.51px' lengthAdjust='spacingAndGlyphs'>y</text>
-<text x='687.36' y='318.36' style='font-size: 13.00px; font-style: italic; font-family: sans;' textLength='6.51px' lengthAdjust='spacingAndGlyphs'>y</text>
-<text x='694.89' y='320.77' style='font-size: 9.10px; font-family: sans;' textLength='3.03px' lengthAdjust='spacingAndGlyphs'>r</text>
-<text x='697.92' y='320.77' style='font-size: 9.10px; font-family: sans;' textLength='5.06px' lengthAdjust='spacingAndGlyphs'>e</text>
-<text x='702.98' y='320.77' style='font-size: 9.10px; font-family: sans;' textLength='5.06px' lengthAdjust='spacingAndGlyphs'>p</text>
-<text x='24.70' y='15.89' style='font-size: 14.40px; font-family: sans;' textLength='345.05px' lengthAdjust='spacingAndGlyphs'>ppc_ecdf_overlay_grouped (discrete, linewidth, alpha)</text>
-========
 <line x1='665.83' y1='291.43' x2='679.65' y2='291.43' style='stroke-width: 2.13; stroke: #011F4B; stroke-linecap: butt;' />
 <line x1='665.83' y1='308.71' x2='679.65' y2='308.71' style='stroke-width: 4.27; stroke: #B3CDE0; stroke-opacity: 0.20; stroke-linecap: butt;' />
 <text x='687.36' y='293.51' style='font-size: 13.00px; font-style: italic; font-family: sans;' textLength='6.51px' lengthAdjust='spacingAndGlyphs'>y</text>
@@ -138,7 +128,6 @@
 <text x='694.89' y='312.40' style='font-size: 9.10px; font-family: sans;' textLength='3.03px' lengthAdjust='spacingAndGlyphs'>r</text>
 <text x='697.92' y='312.40' style='font-size: 9.10px; font-family: sans;' textLength='5.06px' lengthAdjust='spacingAndGlyphs'>e</text>
 <text x='702.98' y='312.40' style='font-size: 9.10px; font-family: sans;' textLength='5.06px' lengthAdjust='spacingAndGlyphs'>p</text>
-<text x='24.70' y='15.89' style='font-size: 14.40px; font-family: sans;' textLength='256.20px' lengthAdjust='spacingAndGlyphs'>ppc_ecdf_overlay_grouped (size, alpha)</text>
->>>>>>>> master:tests/testthat/_snaps/ppc-distributions/ppc-ecdf-overlay-grouped-size-alpha.svg
+<text x='24.70' y='15.89' style='font-size: 14.40px; font-family: sans;' textLength='286.61px' lengthAdjust='spacingAndGlyphs'>ppc_ecdf_overlay_grouped (linewidth, alpha)</text>
 </g>
 </svg>
