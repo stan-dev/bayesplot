@@ -192,7 +192,7 @@ bayesplot_theme_replace <- function(...) {
 .theme_text_size <- function(theme = bayesplot_theme_get()) {
   el <- ggplot2::calc_element("text", theme)
   size <- el$size
-  if (is.null(size) && methods::isS4(el)) {
+  if (is.null(size) && isS4(el)) {
     size <- el@size
   }
   if (!is.numeric(size) || length(size) != 1 || is.na(size)) {
