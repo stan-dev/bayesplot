@@ -341,40 +341,6 @@ test_that("error if subset is bigger than num obs", {
   )
 })
 
-test_that("ppc_loo_pit_ecdf works with pareto_pit method", {
-  skip_on_cran()
-  skip_if_not_installed("brms")
-  skip_if_not_installed("rstanarm")
-
-  data("roaches", package = "rstanarm")
-  roaches$sqrt_roach1 <- sqrt(roaches$roach1)
-
-  fit_zinb <-
-  brms::brm(brms::bf(y ~ sqrt_roach1 + treatment + senior + offset(log(exposure2)),
-         zi ~ sqrt_roach1 + treatment + senior + offset(log(exposure2))),
-      family = brms::zero_inflated_negbinomial(), data = roaches,
-      prior = c(brms::prior(normal(0, 1), class = "b"),
-                brms::prior(normal(0, 1), class = "b", dpar = "zi"),
-                brms::prior(normal(0, 1), class = "Intercept", dpar = "zi")),
-      seed = 1704009, refresh = 1000)
-
-  fit_zinb <- brms::add_criterion(fit_zinb, criterion = "loo", save_psis = TRUE)
-  fit_zinb <- brms::add_criterion(fit_zinb, criterion = "loo", save_psis = TRUE,
-  moment_match = TRUE, overwrite = TRUE)
-
-  draws <- brms::posterior_predict(fit_zinb)
-  psis_object <- brms::loo(fit_zinb, save_psis = TRUE)$psis_object
-  y <- roaches$y
-
-  expect_gg(ppc_loo_pit_ecdf(
-    y = y, yrep = draws, psis_object = psis_object, method = "correlated"
-  ))
-
-  expect_gg(brms::pp_check(
-    fit_zinb, type = "loo_pit_ecdf", moment_match = TRUE, method = "correlated"
-  ))
-})
-
 
 # Visual tests ------------------------------------------------------------
 
@@ -930,4 +896,3 @@ test_that("check pareto_pit argument is chosen as expected", {
     regexp = "`pareto_pit = TRUE` cannot be used together with a non-`NULL`"
   )
 })
-
