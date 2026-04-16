@@ -252,9 +252,12 @@ test_that("transformations recycled properly if not a named list", {
 
 
 # prepare_mcmc_array ------------------------------------------------------
-test_that("prepare_mcmc_array errors if NAs", {
-  arr[1,1,1] <- NA
-  expect_error(prepare_mcmc_array(arr), "NAs not allowed")
+test_that("prepare_mcmc_array warns but does not error if NAs", {
+  arr_na <- arr
+  arr_na[1, 1, 1] <- NA
+  expect_warning(out <- prepare_mcmc_array(arr_na), "NAs found in 'x'")
+  expect_s3_class(out, "mcmc_array")
+  expect_true(anyNA(out))
 })
 test_that("prepare_mcmc_array processes non-array input types correctly", {
   # errors are mostly covered by tests of the many internal functions above

@@ -29,7 +29,9 @@ prepare_mcmc_array <- function(x,
     abort("Arrays should have 2 or 3 dimensions. See help('MCMC-overview').")
   }
   if (anyNA(x)) {
-    abort("NAs not allowed in 'x'.")
+    warn(
+      "NAs found in 'x'. These are passed through as-is and may affect the resulting plots."
+    )
   }
 
   if (rlang::is_quosures(pars)) {
