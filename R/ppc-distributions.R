@@ -170,12 +170,16 @@ ppc_dens_overlay <-
            size = 0.25,
            alpha = 0.7,
            trim = FALSE,
-           bw = "nrd0",
-           adjust = 1,
-           kernel = "gaussian",
+           bw = NULL,
+           adjust = NULL,
+           kernel = NULL,
            bounds = NULL,
-           n_dens = 1024) {
+           n_dens = NULL) {
     check_ignored_arguments(...)
+    bw <- bw %||% "nrd0"
+    adjust <- adjust %||% 1
+    kernel <- kernel %||% "gaussian"
+    n_dens <- n_dens %||% 1024
     bounds <- validate_density_bounds(bounds)
 
     data <- ppc_data(y, yrep)
@@ -224,11 +228,11 @@ ppc_dens_overlay_grouped <- function(y,
                                      size = 0.25,
                                      alpha = 0.7,
                                      trim = FALSE,
-                                     bw = "nrd0",
-                                     adjust = 1,
-                                     kernel = "gaussian",
+                                     bw = NULL,
+                                     adjust = NULL,
+                                     kernel = NULL,
                                      bounds = NULL,
-                                     n_dens = 1024) {
+                                     n_dens = NULL) {
   check_ignored_arguments(...)
 
   p_overlay <- ppc_dens_overlay(
