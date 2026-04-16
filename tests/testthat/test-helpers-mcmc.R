@@ -178,6 +178,18 @@ test_that("validate_chain_list works", {
                "Each chain should have the same number of iterations")
 })
 
+test_that("validate_chain_list detects colnames mismatch in chain 3+", {
+  ch <- matrix(rnorm(20), nrow = 2, dimnames = list(NULL, c("a", "b", "c", "d", "e",
+                                                             "f", "g", "h", "i", "j")))
+  chain3_bad <- ch
+  colnames(chain3_bad)[1] <- "z"
+  chains_ok <- list(ch, ch, ch)
+  chains_bad <- list(ch, ch, chain3_bad)
+
+  expect_identical(validate_chain_list(chains_ok), chains_ok)
+  expect_error(validate_chain_list(chains_bad), "parameters for each chain")
+})
+
 test_that("chain_list2array works", {
   expect_mcmc_array(chain_list2array(chainlist))
   expect_mcmc_array(chain_list2array(chainlist1))
