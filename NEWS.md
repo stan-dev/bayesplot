@@ -1,5 +1,6 @@
 # bayesplot (development version)
 
+* Deprecated `rhat()` and `neff_ratio()` in favor of `extract_rhat()` and `extract_neff_ratio()` to avoid masking the same-named (but different) functions in the **posterior** package. The old names still work but emit a deprecation warning. (#295)
 * Fixed `validate_chain_list()` colnames check to compare all chains, not just the first two.
 * Added test verifying `legend_move("none")` behaves equivalently to `legend_none()`.
 * Added singleton-dimension edge-case tests for exported `_data()` functions.

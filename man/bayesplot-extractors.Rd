@@ -4,6 +4,8 @@
 \alias{bayesplot-extractors}
 \alias{log_posterior}
 \alias{nuts_params}
+\alias{extract_rhat}
+\alias{extract_neff_ratio}
 \alias{rhat}
 \alias{neff_ratio}
 \alias{log_posterior.stanfit}
@@ -13,17 +15,21 @@
 \alias{nuts_params.stanreg}
 \alias{nuts_params.list}
 \alias{nuts_params.CmdStanMCMC}
-\alias{rhat.stanfit}
-\alias{rhat.stanreg}
-\alias{rhat.CmdStanMCMC}
-\alias{neff_ratio.stanfit}
-\alias{neff_ratio.stanreg}
-\alias{neff_ratio.CmdStanMCMC}
+\alias{extract_rhat.stanfit}
+\alias{extract_rhat.stanreg}
+\alias{extract_rhat.CmdStanMCMC}
+\alias{extract_neff_ratio.stanfit}
+\alias{extract_neff_ratio.stanreg}
+\alias{extract_neff_ratio.CmdStanMCMC}
 \title{Extract quantities needed for plotting from model objects}
 \usage{
 log_posterior(object, ...)
 
 nuts_params(object, ...)
+
+extract_rhat(object, ...)
+
+extract_neff_ratio(object, ...)
 
 rhat(object, ...)
 
@@ -43,17 +49,17 @@ neff_ratio(object, ...)
 
 \method{nuts_params}{CmdStanMCMC}(object, pars = NULL, ...)
 
-\method{rhat}{stanfit}(object, pars = NULL, ...)
+\method{extract_rhat}{stanfit}(object, pars = NULL, ...)
 
-\method{rhat}{stanreg}(object, pars = NULL, regex_pars = NULL, ...)
+\method{extract_rhat}{stanreg}(object, pars = NULL, regex_pars = NULL, ...)
 
-\method{rhat}{CmdStanMCMC}(object, pars = NULL, ...)
+\method{extract_rhat}{CmdStanMCMC}(object, pars = NULL, ...)
 
-\method{neff_ratio}{stanfit}(object, pars = NULL, ...)
+\method{extract_neff_ratio}{stanfit}(object, pars = NULL, ...)
 
-\method{neff_ratio}{stanreg}(object, pars = NULL, regex_pars = NULL, ...)
+\method{extract_neff_ratio}{stanreg}(object, pars = NULL, regex_pars = NULL, ...)
 
-\method{neff_ratio}{CmdStanMCMC}(object, pars = NULL, ...)
+\method{extract_neff_ratio}{CmdStanMCMC}(object, pars = NULL, ...)
 }
 \arguments{
 \item{object}{The object to use.}
@@ -85,8 +91,15 @@ The data frame should have columns \code{"Iteration"} (integer), \code{"Chain"}
 The data frame should have columns \code{"Parameter"} (factor), \code{"Iteration"}
 (integer), \code{"Chain"} (integer), and \code{"Value"} (numeric). See \strong{Examples}, below.
 }
-\item{\code{rhat()}, \code{neff_ratio()}}{
+\item{\code{extract_rhat()}, \code{extract_neff_ratio()}}{
 Methods return (named) vectors.
+}
+\item{\code{rhat()}, \code{neff_ratio()}}{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Use \code{extract_rhat()} and
+\code{extract_neff_ratio()} instead. These names clashed with
+\code{\link[posterior:rhat]{posterior::rhat()}} and \code{\link[posterior:ess_basic]{posterior::ess_basic()}} (and other ESS
+functions), which caused confusion because the bayesplot versions
+\emph{extract} already-computed values rather than compute them.
 }
 }
 }

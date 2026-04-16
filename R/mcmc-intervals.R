@@ -31,7 +31,7 @@
 #' @param rhat An optional numeric vector of R-hat estimates, with one element
 #'   per parameter included in `x`. If `rhat` is provided, the intervals/areas
 #'   and point estimates in the resulting plot are colored based on R-hat value.
-#'   See [rhat()] for methods for extracting R-hat estimates.
+#'   See [extract_rhat()] for methods for extracting R-hat estimates.
 #' @template args-density-controls
 #'
 #' @template return-ggplot-or-data
@@ -180,7 +180,7 @@
 #' color_scheme_set("teal")
 #' mcmc_intervals(x, point_est = "mean", prob = 0.8, prob_outer = 0.95)
 #' mcmc_areas(x, regex_pars = "cyl", bw = "SJ",
-#'            rhat = rhat(fit, regex_pars = "cyl"))
+#'            rhat = extract_rhat(fit, regex_pars = "cyl"))
 #' }
 #'
 #' \dontrun{
