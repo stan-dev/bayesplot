@@ -976,7 +976,7 @@ ppc_pit_ecdf_grouped <-
       }
 
       if (isTRUE(help_text) && nrow(ann_df) > 0) {
-        label_size <- help_text_shrinkage * bayesplot_theme_get()$text@size / ggplot2::.pt
+        label_size <- help_text_shrinkage * .theme_text_size() / ggplot2::.pt
         p <- p + geom_text(
           data = ann_df,
           mapping = aes(x = .data$x, y = .data$y, label = .data$label),

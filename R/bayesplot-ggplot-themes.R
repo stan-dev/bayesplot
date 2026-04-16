@@ -180,3 +180,23 @@ bayesplot_theme_replace <- function(...) {
 .bayesplot_theme_env$current <- theme_default()
 .bayesplot_theme_env$gg_current <- ggplot2::theme_grey()
 
+.theme_text_size <- function(theme = bayesplot_theme_get()) {
+  el <- ggplot2::calc_element("text", theme)
+  size <- el$size
+  if (!is.numeric(size) || length(size) != 1 || is.na(size)) {
+    size <- 12
+  }
+  size
+}
+
+.theme_text_size <- function(theme = bayesplot_theme_get()) {
+  el <- ggplot2::calc_element("text", theme)
+  size <- el$size
+  if (is.null(size) && methods::isS4(el)) {
+    size <- el@size
+  }
+  if (!is.numeric(size) || length(size) != 1 || is.na(size)) {
+    size <- 12
+  }
+  size
+}

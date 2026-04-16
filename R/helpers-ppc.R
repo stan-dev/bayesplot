@@ -785,7 +785,7 @@ ecdf_intervals <- function(gamma, N, K, L = 1) {
     }
 
     if (isTRUE(help_text)) {
-      label_size <- help_text_shrinkage * bayesplot_theme_get()$text@size / ggplot2::.pt
+      label_size <- help_text_shrinkage * .theme_text_size() / ggplot2::.pt
       p <- p + annotate(
         "text",
         x = -Inf, y = Inf,

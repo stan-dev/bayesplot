@@ -147,16 +147,20 @@ test_that("ppc_loo_pit_ecdf with method='correlated' returns ggplot object", {
   expect_gg(p1 <- ppc_loo_pit_ecdf(y, yrep, lw, method = "correlated"))
 
   # Test with PRIT-C
-  expect_gg(p2 <- ppc_loo_pit_ecdf(y, yrep, lw, method = "correlated", test = "PRIT"))
+  expect_gg(p2 <- ppc_loo_pit_ecdf(y, yrep, lw, method = "correlated",
+  test = "PRIT"))
 
   # Test with PIET-C
-  expect_gg(p3 <- ppc_loo_pit_ecdf(y, yrep, lw, method = "correlated", test = "PIET"))
+  expect_gg(p3 <- ppc_loo_pit_ecdf(y, yrep, lw, method = "correlated",
+  test = "PIET"))
 
   # Test with plot_diff = TRUE
-  expect_gg(p4 <- ppc_loo_pit_ecdf(y, yrep, lw, method = "correlated", plot_diff = TRUE))
+  expect_gg(p4 <- ppc_loo_pit_ecdf(y, yrep, lw, method = "correlated",
+  plot_diff = TRUE))
 
   # Test with gamma specified
-  expect_gg(p5 <- ppc_loo_pit_ecdf(y, yrep, lw, method = "correlated", gamma = 0.1))
+  expect_gg(p5 <- ppc_loo_pit_ecdf(y, yrep, lw, method = "correlated",
+  gamma = 0.1))
 })
 
 test_that("ppc_loo_pit_ecdf method argument works correctly", {
@@ -205,7 +209,8 @@ test_that("ppc_loo_pit_ecdf correlated method handles edge cases", {
   # Test with single value (edge case)
   single_pit <- 0.5
   expect_error(ppc_loo_pit_ecdf(pit = single_pit, method = "correlated"))
-  expect_gg(p5 <- ppc_loo_pit_ecdf(pit = single_pit, method = "correlated", test = "PIET"))
+  expect_gg(p5 <- ppc_loo_pit_ecdf(pit = single_pit, method = "correlated",
+  test = "PIET"))
 })
 
 test_that("ppc_loo_pit functions work when pit specified instead of y, yrep, and lw", {
@@ -854,13 +859,15 @@ test_that("check pareto_pit argument is chosen as expected", {
   test = "PIET"
   expect_true(pareto_pit %||% (is.null(pit) && test %in% c("POT", "PIET")))
 
-  # pareto_pit defaults to FALSE if test = "PRIT", pareto_pit = NULL, pit = NULL
+  # pareto_pit defaults to FALSE if test = "PRIT", and
+  # pareto_pit = NULL, pit = NULL
   pareto_pit = NULL
   pit = NULL
   test = "PRIT"
   expect_false(pareto_pit %||% (is.null(pit) && test %in% c("POT", "PIET")))
 
-  # pareto_pit is TRUE if user sets pareto_pit = TRUE, and test = "PRIT", pit = NULL
+  # pareto_pit is TRUE if user sets pareto_pit = TRUE, and
+  # test = "PRIT", pit = NULL
   pareto_pit = TRUE
   pit = NULL
   test = "PRIT"
@@ -883,4 +890,3 @@ test_that("check pareto_pit argument is chosen as expected", {
     regexp = "`pareto_pit = TRUE` cannot be used together with a non-`NULL`"
   )
 })
-
