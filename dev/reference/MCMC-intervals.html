@@ -275,7 +275,8 @@ the ridgelines.</p></dd>
 <dd><p>Optional arguments passed to
 <code><a href="https://rdrr.io/r/stats/density.html" class="external-link">stats::density()</a></code> (and <code>bounds</code> to <code><a href="https://ggplot2.tidyverse.org/reference/geom_density.html" class="external-link">ggplot2::stat_density()</a></code>) to override
 default kernel density estimation parameters or truncate the density
-support. <code>n_dens</code> defaults to <code>1024</code>.</p></dd>
+support. If <code>NULL</code> (default), <code>bw</code> is set to <code>"nrd0"</code>, <code>adjust</code> to <code>1</code>,
+<code>kernel</code> to <code>"gaussian"</code>, and <code>n_dens</code> to <code>1024</code>.</p></dd>
 
 </dl></div>
     <div class="section level2">

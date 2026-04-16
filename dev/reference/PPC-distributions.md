@@ -16,11 +16,11 @@ ppc_dens_overlay(
   size = 0.25,
   alpha = 0.7,
   trim = FALSE,
-  bw = "nrd0",
-  adjust = 1,
-  kernel = "gaussian",
+  bw = NULL,
+  adjust = NULL,
+  kernel = NULL,
   bounds = NULL,
-  n_dens = 1024
+  n_dens = NULL
 )
 
 ppc_dens_overlay_grouped(
@@ -31,11 +31,11 @@ ppc_dens_overlay_grouped(
   size = 0.25,
   alpha = 0.7,
   trim = FALSE,
-  bw = "nrd0",
-  adjust = 1,
-  kernel = "gaussian",
+  bw = NULL,
+  adjust = NULL,
+  kernel = NULL,
   bounds = NULL,
-  n_dens = 1024
+  n_dens = NULL
 )
 
 ppc_ecdf_overlay(
@@ -183,7 +183,8 @@ ppc_pit_ecdf_grouped(
   `bounds` to
   [`ggplot2::stat_density()`](https://ggplot2.tidyverse.org/reference/geom_density.html))
   to override default kernel density estimation parameters or truncate
-  the density support. `n_dens` defaults to `1024`.
+  the density support. If `NULL` (default), `bw` is set to `"nrd0"`,
+  `adjust` to `1`, `kernel` to `"gaussian"`, and `n_dens` to `1024`.
 
 - discrete:
 

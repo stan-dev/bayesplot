@@ -2,6 +2,9 @@
 
 ## bayesplot (development version)
 
+- Unified density-control argument defaults (`bw`, `adjust`, `kernel`,
+  `n_dens`) to use `NULL` with internal fallbacks. No change in
+  user-facing behavior.
 - `prepare_mcmc_array()` now warns instead of erroring on `NA`s in the
   input.
 - Fixed `validate_chain_list()` colnames check to compare all chains,

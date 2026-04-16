@@ -225,7 +225,8 @@ mcmc_areas_ridges_data(
   `bounds` to
   [`ggplot2::stat_density()`](https://ggplot2.tidyverse.org/reference/geom_density.html))
   to override default kernel density estimation parameters or truncate
-  the density support. `n_dens` defaults to `1024`.
+  the density support. If `NULL` (default), `bw` is set to `"nrd0"`,
+  `adjust` to `1`, `kernel` to `"gaussian"`, and `n_dens` to `1024`.
 
 ## Value
 

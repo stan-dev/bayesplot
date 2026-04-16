@@ -63,7 +63,8 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="bayesplot-development-version">bayesplot (development version)<a class="anchor" aria-label="anchor" href="#bayesplot-development-version"></a></h2>
-<ul><li>
+<ul><li>Unified density-control argument defaults (<code>bw</code>, <code>adjust</code>, <code>kernel</code>, <code>n_dens</code>) to use <code>NULL</code> with internal fallbacks. No change in user-facing behavior.</li>
+<li>
 <code>prepare_mcmc_array()</code> now warns instead of erroring on <code>NA</code>s in the input.</li>
 <li>Fixed <code>validate_chain_list()</code> colnames check to compare all chains, not just the first two.</li>
 <li>Added test verifying <code>legend_move("none")</code> behaves equivalently to <code><a href="../reference/bayesplot-helpers.html">legend_none()</a></code>.</li>

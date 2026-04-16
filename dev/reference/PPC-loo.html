@@ -86,11 +86,11 @@ for details.</p>
 <span>  alpha <span class="op">=</span> <span class="fl">0.7</span>,</span>
 <span>  boundary_correction <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  grid_len <span class="op">=</span> <span class="fl">512</span>,</span>
-<span>  bw <span class="op">=</span> <span class="st">"nrd0"</span>,</span>
+<span>  bw <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  trim <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  adjust <span class="op">=</span> <span class="fl">1</span>,</span>
-<span>  kernel <span class="op">=</span> <span class="st">"gaussian"</span>,</span>
-<span>  n_dens <span class="op">=</span> <span class="fl">1024</span></span>
+<span>  adjust <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  kernel <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  n_dens <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">ppc_loo_pit_data</span><span class="op">(</span></span>
@@ -474,8 +474,8 @@ https://www.jstor.org/stable/2986005.</p>
 <span class="r-in"><span><span class="fu"><a href="bayesplot-colors.html">color_scheme_set</a></span><span class="op">(</span><span class="st">"orange"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">ppc_loo_pit_overlay</span><span class="op">(</span><span class="va">y</span>, <span class="va">yrep</span>, lw <span class="op">=</span> <span class="va">lw</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Some PIT values larger than 1! Largest:  1 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Rounding PIT &gt; 1 to 1. Gradient evaluation took 0.000368 seconds</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 3.68 seconds.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Rounding PIT &gt; 1 to 1. Gradient evaluation took 0.000413 seconds</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 4.13 seconds.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2: Adjust your expectations accordingly!</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2: </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2: </span>
@@ -494,32 +494,32 @@ https://www.jstor.org/stable/2986005.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: Iteration: 20 / 100 [ 20%]  (Warmup)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2: Iteration: 30 / 100 [ 30%]  (Warmup)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: Iteration: 30 / 100 [ 30%]  (Warmup)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2: Iteration: 40 / 100 [ 40%]  (Warmup)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: Iteration: 40 / 100 [ 40%]  (Warmup)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2: Iteration: 50 / 100 [ 50%]  (Warmup)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2: Iteration: 51 / 100 [ 51%]  (Sampling)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2: Iteration: 40 / 100 [ 40%]  (Warmup)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: Iteration: 50 / 100 [ 50%]  (Warmup)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: Iteration: 51 / 100 [ 51%]  (Sampling)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2: Iteration: 60 / 100 [ 60%]  (Sampling)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2: Iteration: 50 / 100 [ 50%]  (Warmup)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2: Iteration: 51 / 100 [ 51%]  (Sampling)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: Iteration: 60 / 100 [ 60%]  (Sampling)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2: Iteration: 70 / 100 [ 70%]  (Sampling)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2: Iteration: 60 / 100 [ 60%]  (Sampling)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: Iteration: 70 / 100 [ 70%]  (Sampling)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2: Iteration: 80 / 100 [ 80%]  (Sampling)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2: Iteration: 70 / 100 [ 70%]  (Sampling)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: Iteration: 80 / 100 [ 80%]  (Sampling)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2: Iteration: 90 / 100 [ 90%]  (Sampling)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2: Iteration: 80 / 100 [ 80%]  (Sampling)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: Iteration: 90 / 100 [ 90%]  (Sampling)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2: Iteration: 100 / 100 [100%]  (Sampling)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2: </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2:  Elapsed Time: 2.15 seconds (Warm-up)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2:                1.971 seconds (Sampling)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2:                4.121 seconds (Total)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2: </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2: Iteration: 90 / 100 [ 90%]  (Sampling)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: Iteration: 100 / 100 [100%]  (Sampling)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1:  Elapsed Time: 2.24 seconds (Warm-up)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1:                1.974 seconds (Sampling)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1:                4.214 seconds (Total)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1:  Elapsed Time: 2.785 seconds (Warm-up)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1:                2.451 seconds (Sampling)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1:                5.236 seconds (Total)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2: Iteration: 100 / 100 [100%]  (Sampling)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2: </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2:  Elapsed Time: 2.916 seconds (Warm-up)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2:                2.693 seconds (Sampling)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2:                5.609 seconds (Total)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2: </span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> NOTE: The kernel density estimate assumes continuous observations and is not optimal for discrete observations.</span>
 <span class="r-plt img"><img src="PPC-loo-1.png" alt="" width="700" height="433"></span>
@@ -529,7 +529,7 @@ https://www.jstor.org/stable/2986005.</p>
 <span class="r-plt img"><img src="PPC-loo-2.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="fu">ppc_loo_pit_qq</span><span class="op">(</span><span class="va">y</span>, <span class="va">yrep</span>, lw <span class="op">=</span> <span class="va">lw</span>, compare <span class="op">=</span> <span class="st">"normal"</span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 13 rows containing non-finite outside the scale range (`stat_qq()`).</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 14 rows containing non-finite outside the scale range (`stat_qq()`).</span>
 <span class="r-plt img"><img src="PPC-loo-3.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># predictive calibration check using LOO probability integral transform</span></span></span>
