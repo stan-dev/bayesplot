@@ -7,7 +7,9 @@
 \alias{extract_rhat}
 \alias{extract_neff_ratio}
 \alias{rhat}
+\alias{rhat.default}
 \alias{neff_ratio}
+\alias{neff_ratio.default}
 \alias{log_posterior.stanfit}
 \alias{log_posterior.stanreg}
 \alias{log_posterior.CmdStanMCMC}
@@ -33,7 +35,11 @@ extract_neff_ratio(object, ...)
 
 rhat(object, ...)
 
+\method{rhat}{default}(object, ...)
+
 neff_ratio(object, ...)
+
+\method{neff_ratio}{default}(object, ...)
 
 \method{log_posterior}{stanfit}(object, inc_warmup = FALSE, ...)
 

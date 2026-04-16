@@ -81,6 +81,9 @@ extract_neff_ratio <- function(object, ...) {
 }
 
 # rhat -------------------------------------------------------------
+# Kept as an S3 generic (not just a wrapper) so third-party methods
+# registered against rhat (e.g. brms::rhat.brmsfit) still dispatch
+# during the deprecation window.
 #' @rdname bayesplot-extractors
 #' @export
 rhat <- function(object, ...) {
@@ -94,8 +97,16 @@ rhat <- function(object, ...) {
       "masking posterior::rhat(), which computes R-hat)."
     )
   )
+  UseMethod("rhat")
+}
+
+#' @rdname bayesplot-extractors
+#' @export
+#' @method rhat default
+rhat.default <- function(object, ...) {
   extract_rhat(object, ...)
 }
+
 # neff_ratio -------------------------------------------------------------
 #' @rdname bayesplot-extractors
 #' @export
@@ -110,6 +121,13 @@ neff_ratio <- function(object, ...) {
       "size ratios (and to avoid masking posterior's ESS functions)."
     )
   )
+  UseMethod("neff_ratio")
+}
+
+#' @rdname bayesplot-extractors
+#' @export
+#' @method neff_ratio default
+neff_ratio.default <- function(object, ...) {
   extract_neff_ratio(object, ...)
 }
 
