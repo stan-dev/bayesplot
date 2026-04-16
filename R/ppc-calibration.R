@@ -10,8 +10,8 @@
 #' @template args-y-yrep
 #' @template args-group
 #' @param interval_type For `ppc_calibration()`, `ppc_calibration_grouped()`,
-#'   'ppc_loo_calibration()', and ´ppc_loo_calibration_grouped()´, the type of
-#'    interval to compute. Options are '"consistency"' (default) for credible
+#'    `ppc_loo_calibration()`, and `ppc_loo_calibration_grouped()`, the type
+#'    of interval to compute. Options are `"consistency"` (default) for credible
 #'    intervals for the PAV-adjusted calibration curve of posterior predictive
 #'    sample, or `"confidence"` for the credible intervals of the calibration
 #'    curve of the observed binary events.
@@ -31,7 +31,9 @@
 #'   },
 #'   \item{`ppc_loo_calibration()`,`ppc_loo_calibration_grouped()`}{
 #'   PAV-adjusted calibration plots to assess the calibration of the
-#'   leave-one-out (LOO) predictive probabilities.
+#'   leave-one-out (LOO) predictive probabilities, computed by resampling each
+#'   observation's posterior predictive draws using the corresponding LOO
+#'   importance weights.
 #'   }
 #' }
 #'
@@ -55,7 +57,7 @@ NULL
 #' @rdname PPC-calibration
 #' @export
 ppc_calibration_overlay <- function(
-    y, prep, ..., prob = NULL, linewidth = 0.25, alpha = 0.5, 
+    y, prep, ..., prob = NULL, linewidth = 0.25, alpha = 0.2,
     x_range = c("full", "data")) {
   check_ignored_arguments(...)
   x_range <- match.arg(x_range)
@@ -88,7 +90,7 @@ ppc_calibration_overlay <- function(
 #' @rdname PPC-calibration
 #' @export
 ppc_calibration_overlay_grouped <- function(
-    y, prep, group, ..., prob = NULL, linewidth = 0.25, alpha = 0.7,
+    y, prep, group, ..., prob = NULL, linewidth = 0.25, alpha = 0.2,
     x_range = c("full", "data")) {
   check_ignored_arguments(...)
   x_range <- match.arg(x_range)
@@ -124,7 +126,12 @@ ppc_calibration_overlay_grouped <- function(
 #'   an `S` by `N` matrix of predicted probabilities in `[0, 1]`, where `S` is
 #'   the number of draws and `N = length(y)`.
 #' @param lw For `ppc_loo_calibration()` and `ppc_loo_calibration_grouped()`,
-#'   a matrix of log weights with the same dimensions as `yrep`.
+#'   a matrix of log weights with the same dimensions as `yrep`. Either
+#'   `psis_object` or `lw` has to be specified.
+#' @param psis_object For `ppc_loo_calibration()` and `ppc_loo_calibration_grouped()`,
+#'   an object of class `"psis"` that is created when the `loo()` function calls
+#'   `psis()` internally to do the PSIS procedure. Either `psis_object` or `lw`
+#'   has to be specified.
 #' @param prob Probability mass to include in the plotted interval.
 #' @param interval For `ppc_calibration()`, `ppc_calibration_grouped()`,
 #'   `ppc_loo_calibration()`, and `ppc_loo_calibration_grouped()`, choose
@@ -133,9 +140,9 @@ ppc_calibration_overlay_grouped <- function(
 #' @param interval_type Deprecated alias for `interval`.
 #' @param x_range For `ppc_calibration()`, `ppc_calibration_grouped()`,
 #'   `ppc_calibration_overlay()`, and `ppc_calibration_overlay_grouped()`,
-#'   choose `"full"` to always show
-#'   the x-axis on `[0, 1]` (default), or `"data"` to zoom to the range of
-#'   predicted probabilities in the plotted data.
+#'   choose `"full"` to always show the x-axis on `[0, 1]` (default), or
+#'   `"data"` to zoom to the range of predicted probabilities in the plotted
+#'   data.
 #' @param B For calibration plots that use `yrep` with `interval = "confidence"`,
 #'   the number of bootstrap samples.
 #' @param show_mean For calibration interval plots, if `TRUE` (default), draw
@@ -225,12 +232,12 @@ ppc_calibration <- function(
   }
   if (isTRUE(help_text)) {
     p <- p + annotate(
-      "text",
-      x = params$xlim[1] + 0.2 * (params$xlim[2] - params$xlim[1]),
-      y = 0.95,
-      label = params$ci_label,
-      parse = TRUE
-    )
+    "text",
+    x = params$xlim[1] + 0.05,
+    y = 0.95,
+    label = params$ci_label,
+    hjust = 0, size = 0.8 * .theme_text_size() / ggplot2::.pt
+  )
   }
   p
 }
@@ -309,10 +316,10 @@ ppc_calibration_grouped <- function(
   if (isTRUE(help_text)) {
     p <- p + annotate(
       "text",
-      x = params$xlim[1] + 0.2 * (params$xlim[2] - params$xlim[1]),
+      x = params$xlim[1] + 0.05,
       y = 0.95,
       label = params$ci_label,
-      parse = TRUE
+      hjust = 0, size = 0.8 * .theme_text_size() / ggplot2::.pt
     )
   }
   p
@@ -321,11 +328,12 @@ ppc_calibration_grouped <- function(
 #' @rdname PPC-calibration
 #' @export
 ppc_loo_calibration <- function(
-    y, 
-    yrep, 
-    lw,
-    prob = .95, 
-    interval = c("confidence", "consistency"), 
+    y,
+    yrep,
+    lw = NULL,
+    psis_object = NULL,
+    prob = .95,
+    interval = c("confidence", "consistency"),
     interval_type = NULL,
     x_range = c("full", "data"),
     help_text = TRUE,
@@ -334,10 +342,10 @@ ppc_loo_calibration <- function(
     show_qdots = TRUE,
     qdots_quantiles = 100,
     ...,
-    linewidth = 1, 
+    linewidth = 1,
     alpha = 0.1) {
   check_ignored_arguments(...)
-  yrep_resampled <- .loo_resample_data(yrep, lw, psis_object = NULL)
+  yrep_resampled <- .loo_resample_data(yrep, lw, psis_object)
   ppc_calibration(
     y = y,
     yrep = yrep_resampled,
@@ -360,12 +368,13 @@ ppc_loo_calibration <- function(
 #' @rdname PPC-calibration
 #' @export
 ppc_loo_calibration_grouped <- function(
-    y, 
+    y,
     yrep,
-    lw,
+    lw = NULL,
+    psis_object = NULL,
     group,
-    prob = .95, 
-    interval = c("confidence", "consistency"), 
+    prob = .95,
+    interval = c("confidence", "consistency"),
     interval_type = NULL,
     x_range = c("full", "data"),
     help_text = TRUE,
@@ -374,10 +383,10 @@ ppc_loo_calibration_grouped <- function(
     show_qdots = TRUE,
     qdots_quantiles = 100,
     ...,
-    linewidth = 1, 
+    linewidth = 1,
     alpha = 0.1) {
   check_ignored_arguments(...)
-  yrep_resampled <- .loo_resample_data(yrep, lw, psis_object = NULL)
+  yrep_resampled <- .loo_resample_data(yrep, lw, psis_object)
   ppc_calibration_grouped(
     y = y,
     yrep = yrep_resampled,
@@ -459,7 +468,7 @@ ppc_calibration_data <- function(y, prep, group = NULL) {
     x_labels = x_labels,
     ylim = c(0 - linewidth / 200, 1 + linewidth / 200),
     y_breaks = pretty(c(0, 1), n = 5),
-    ci_label = sprintf("CI['%s%%']^{%s}", prob_pct, interval)
+    ci_label = sprintf("%s%%-%sInterval", prob_pct, capitalize_first(interval))
   )
 }
 

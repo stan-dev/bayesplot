@@ -159,18 +159,45 @@ ppc_calibration_overlay_grouped(y = y, prep = prep_good, group = gr)
 curve together with an uncertainty band. The meaning of the band depends on
 the `interval` argument.
 
-### Inputs: `prep` vs. `yrep`
+### Expected input argument contract
 
-The function accepts two types of input, suited to different modelling
-workflows.
+`ppc_calibration()` expects the following input arguments
+
+- **Core data**
+  - **`y`**: numeric vector of observed outcomes of length `N`, no `NA`, with
+    values in `[0, 1]` (typically binary `0/1`).
+  - Exactly one of:
+    - **`prep`**: numeric `S x N` matrix of predicted probabilities in `[0, 1]`,
+      no `NA`, where `S` refers to the number of posterior draws.
+    - **`yrep`**: numeric `S x N` matrix of posterior predictive draws in `[0, 1]`,
+      no `NA` (typically binary draws), where `S` refers to the number of
+      posterior draws.
+  - `ncol(prep)` or `ncol(yrep)` must equal `length(y)`.
+
+- **Interval controls**
+  - **`prob`**: a single value strictly between `0` and `1`.
+  - **`interval`**: one of `"confidence"` or `"consistency"`.
+  - **`interval_type`**: deprecated alias for `interval`; if provided, it
+    overrides `interval`.
+  - **`B`**: positive integer number of bootstrap samples.
+
+- **Plot controls**
+  - **`x_range`**: `"full"` or `"data"`.
+  - **`help_text`**, **`show_mean`**: logical flags.
+  - **`show_qdots`**: single non-missing logical (`TRUE`/`FALSE`).
+  - **`qdots_quantiles`**: positive integer.
+
+- **Styling**
+  - **`linewidth`**, **`alpha`**: passed to ggplot geoms.
+  - **`...`**: currently unused.
+
+Because the function signature is `ppc_calibration(y, prep = NULL, yrep = NULL, ...)`,
+an unnamed second matrix argument is interpreted as `prep`. Use `yrep = ...`
+explicitly when supplying posterior predictive draws.
 
 #### Using `y` and `prep` (matrix of predicted probabilities)
 
-Supply:
-
-- **`y`**: a length-$n$ vector of binary observations $y_i \in \{0, 1\}$.
-- **`prep`**: an $S \times n$ matrix of predicted probabilities
-  $p_i^{(s)} \in [0, 1]$ for each posterior draw $s$.
+Input arguments are `y` ($y_i$)  and `prep` ($p_i^{(s)}$).
 
 **Building the calibration curve:**
 
@@ -184,8 +211,12 @@ Supply:
 
 | `interval` | How it is computed | What it answers |
 |---|---|---|
-| `"confidence"` | Quantiles of $\{m_{\text{obs},k}^{(s)}\}_{s=1}^S$ | *Where would we expect our model's calibration curve to lie?* (**estimation uncertainty**) |
-| `"consistency"` | Quantiles of CEPs computed from $\tilde{y}_k^{(s)} \sim \text{Bernoulli}(p_k^{(s)})$ | *Where would a perfectly calibrated model's curve lie?* (**posterior predictive consistency**) |
+| `"confidence"` | Quantiles of $\{m_{\text{obs},k}^{(s)}\}_{s=1}^S$ |
+*Where would we expect our model's calibration curve to lie?*
+(**estimation uncertainty**) |
+| `"consistency"` | Quantiles of CEPs computed from
+$\tilde{y}_k^{(s)} \sim \text{Bernoulli}(p_k^{(s)})$ | *Where would a perfectly
+calibrated model's curve lie?* (**posterior predictive consistency**) |
 
 ```{r setup-new-data}
 # New simulated dataset for the ppc_calibration() examples
@@ -216,11 +247,7 @@ p1 | p2
 
 #### Using `y` and `yrep` (matrix of posterior predictions)
 
-Supply:
-
-- **`y`**: a length-$n$ vector of binary observations $y_i \in \{0, 1\}$.
-- **`yrep`**: an $S \times n$ matrix of posterior predictions
-  $y_{\text{rep},i}^{(s)} \in \{0, 1\}$.
+Input arguments are `y` ($y_i$) and `yrep` ($y_{\text{rep},i}^{(s)}$).
 
 **Building the calibration curve:**
 
@@ -413,6 +440,37 @@ a systematic mismatch between predicted and observed event rates. The
 **zero-inflated** model's curve stays within the band and additionally covers
 a wider range of predicted probabilities, reflecting both better calibration
 and stronger discrimination between apartments with and without roaches.
+
+### Use `ppc_loo_calibration` with `psis_object`
+
+```{r roaches-loo-plot, fig.width=8, fig.height=3, fig.asp=NULL, out.width="90%", fig.align="center", message=FALSE, warning=FALSE}
+
+brm_glmzinb <- add_criterion(brm_glmzinb, criterion = "loo")
+fit_glmzinb <- loo(brm_glmzinb, save_psis = TRUE)
+
+pp <- pmin(brms::posterior_predict(stan_glmnb), 1)
+
+p1 <- ppc_calibration(
+  y             = pmin(roaches$y, 1),
+  yrep          = pp,
+  interval_type = "consistency",
+  prob          = 0.95,
+  x_range       = "full"
+) +
+  labs(title = "Negative binomial")
+
+p2 <- ppc_loo_calibration(
+  y             = pmin(roaches$y, 1),
+  yrep          = pp,
+  psis_object   = fit_glmzinb$psis_object,
+  interval_type = "consistency",
+  prob          = 0.95,
+  x_range       = "full"
+) +
+  labs(title = "Negative binomial (loo)")
+
+p1 | p2
+```
 
 ## References
 
