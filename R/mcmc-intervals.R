@@ -805,9 +805,6 @@ compute_column_density <- function(df, group_vars, value_var, ...) {
 compute_interval_density <- function(x, interval_width = 1, n_dens = 1024,
                                      bw = NULL, adjust = NULL, kernel = NULL,
                                      bounds = NULL) {
-  bw <- bw %||% "nrd0"
-  adjust <- adjust %||% 1
-  kernel <- kernel %||% "gaussian"
   n_dens <- n_dens %||% 1024
 
   tail_width <- (1 - interval_width) / 2

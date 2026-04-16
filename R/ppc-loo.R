@@ -181,12 +181,16 @@ ppc_loo_pit_overlay <- function(y,
                                 alpha = 0.7,
                                 boundary_correction = TRUE,
                                 grid_len = 512,
-                                bw = "nrd0",
+                                bw = NULL,
                                 trim = FALSE,
-                                adjust = 1,
-                                kernel = "gaussian",
-                                n_dens = 1024) {
+                                adjust = NULL,
+                                kernel = NULL,
+                                n_dens = NULL) {
   check_ignored_arguments(..., ok_args = list("moment_match"))
+  bw <- bw %||% "nrd0"
+  adjust <- adjust %||% 1
+  kernel <- kernel %||% "gaussian"
+  n_dens <- n_dens %||% 1024
 
   data <-
     ppc_loo_pit_data(
