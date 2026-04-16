@@ -254,8 +254,8 @@ test_that("transformations recycled properly if not a named list", {
 # prepare_mcmc_array ------------------------------------------------------
 test_that("prepare_mcmc_array warns but does not error if NAs", {
   arr_na <- arr
-  arr_na[1,1,1] <- NA
-  expect_warning(out <- prepare_mcmc_array(arr_na), "NAs were found")
+  arr_na[1, 1, 1] <- NA
+  expect_warning(out <- prepare_mcmc_array(arr_na), "NAs found in 'x'")
   expect_s3_class(out, "mcmc_array")
   expect_true(anyNA(out))
 })
