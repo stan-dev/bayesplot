@@ -129,6 +129,17 @@ test_that("ppc_stat_data and ppd_stat_data throw correct errors", {
                "object 'not_a_known_function' of mode 'function' was not found")
 })
 
+test_that("ppd_stat_data handles single draw and single observation", {
+  yrep_single <- matrix(rnorm(10), nrow = 1)
+  d <- ppd_stat_data(yrep_single, stat = "mean")
+  expect_equal(nrow(d), 1)
+
+  yrep_1obs <- matrix(rnorm(5), ncol = 1)
+  d2 <- ppd_stat_data(yrep_1obs, stat = "mean")
+  expect_s3_class(d2, "data.frame")
+  expect_equal(nrow(d2), 5)
+})
+
 
 # Visual tests ------------------------------------------------------------
 

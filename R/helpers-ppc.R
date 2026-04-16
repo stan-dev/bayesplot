@@ -58,15 +58,20 @@ validate_y <- function(y) {
 #' Validate predictions (`yrep` or `ypred`)
 #'
 #' Checks that `predictions` is a numeric matrix, doesn't have any NAs, and has
-#' the correct number of columns.
+#' the correct number of columns. If `predictions` is a `posterior::draws`
+#' object it is first coerced to a matrix.
 #'
-#' @param predictions The user's `yrep` or `ypred` object (SxN matrix).
+#' @param predictions The user's `yrep` or `ypred` object (SxN matrix or a
+#'   `posterior::draws` object).
 #' @param `n_obs` The number of observations (columns) that `predictions` should
 #'   have, if applicable.
 #' @return Either throws an error or returns a numeric matrix.
 #' @noRd
 validate_predictions <- function(predictions, n_obs = NULL) {
-  # sanity checks
+  if (posterior::is_draws(predictions)) {
+    predictions <- posterior::as_draws_matrix(predictions)
+    predictions <- unclass(predictions)
+  }
   stopifnot(is.matrix(predictions), is.numeric(predictions))
   if (!is.null(n_obs)) {
     stopifnot(length(n_obs) == 1, n_obs == as.integer(n_obs))
@@ -936,7 +941,12 @@ create_rep_ids <- function(ids) paste('italic(y)[rep] (', ids, ")")
 y_label <- function() expression(italic(y))
 yrep_label <- function() expression(italic(y)[rep])
 ypred_label <- function() expression(italic(y)[pred])
-
+ypred_label <- function() {
+  c(
+    PPD = "PPD",
+    ypred = expression(italic(y)[pred])
+  )
+}
 # helper function for formatting p-value when displayed in a plot
 fmt_p <- function(x) {
   dplyr::if_else(x < 0.0005, "0.000", as.character(round(signif(x, 2) + 1e-10, 3)))

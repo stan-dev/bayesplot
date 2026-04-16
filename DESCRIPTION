@@ -11,9 +11,10 @@ Authors@R: c(person("Jonah", "Gabry", role = c("aut", "cre"), email = "jgabry@gm
              person("Frank", "Weber", role = "ctb"),
              person("Eduardo", "Coronado Sroka", role = "ctb"),
              person("Teemu", "Sailynoja", role = "ctb"),
-             person("Aki", "Vehtari", role = "ctb"),
-             person("Behram", "Ulukır", role = "ctb"),
-             person("Visruth", "Srimath Kandali", role = "ctb"))
+             person("Aki", "Vehtari", role = "ctb"), 
+             person("Behram", "Ulukır", role = "ctb"), 
+             person("Visruth", "Srimath Kandali", role = "ctb"),
+             person("Mattan S.", "Ben-Shachar", role = "ctb"))
 Maintainer: Jonah Gabry <jgabry@gmail.com>
 Description: Plotting functions for posterior analysis, MCMC diagnostics,
     prior and posterior predictive checks, and other visualizations
