@@ -2,6 +2,8 @@
 
 ## bayesplot (development version)
 
+- `prepare_mcmc_array()` now warns instead of erroring on `NA`s in the
+  input.
 - Fixed `validate_chain_list()` colnames check to compare all chains,
   not just the first two.
 - Added test verifying `legend_move("none")` behaves equivalently to
