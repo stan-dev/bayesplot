@@ -472,6 +472,19 @@ ppc_loo_pit_ecdf <- function(y,
   pit <- pit_data$pit
   K <- pit_data$K
 
+  if (
+    (method == "correlated") &&
+    ((test %in% c("POT", "PIET")) && any(pit %in% c(0, 1)))
+  ) {
+    stop(
+      "PIT values contain 0 or 1, but 'POT' and 'PIET' uniformity tests expect\n",
+      "  continuous input (0, 1). If PIT values are discrete,\n",
+      "  use 'PRIT' test instead. If 0 or 1 arise due to rounding, consider\n",
+      "  appropriate scaling approach or perturbing 0 and 1 values by a\n",
+      "  small epsilon so that they are strictly non-zero and non-one."
+    )
+  }
+
   .pit_ecdf_plot_single(
     pit = pit,
     K = K,

@@ -196,6 +196,21 @@ test_that("ppc_loo_pit_ecdf with method='correlated' returns ggplot object", {
   gamma = 0.1))
 })
 
+test_that("error if 0,1 in PIT values and test POT or PIET", {
+  expect_error(
+      ppc_loo_pit_ecdf(pit = c(0, runif(3)), method = "correlated",
+      test = "POT")
+    )
+  expect_error(
+      ppc_loo_pit_ecdf(pit = c(0, runif(3)), method = "correlated",
+      test = "PIET")
+    )
+  expect_no_error(
+    ppc_loo_pit_ecdf(pit = c(0, runif(3)), method = "correlated",
+    test = "PRIT")
+  )
+})
+
 test_that("ppc_loo_pit_ecdf method argument works correctly", {
   skip_if_not_installed("rstanarm")
   skip_if_not_installed("loo")
@@ -232,11 +247,11 @@ test_that("ppc_loo_pit_ecdf correlated method handles edge cases", {
   expect_gg(p1 <- ppc_loo_pit_ecdf(pit = small_pit, method = "correlated"))
 
   # Test with perfect uniform
-  uniform_pit <- seq(0, 1, length.out = 100)
+  uniform_pit <- seq(0.0001, 0.9999, length.out = 100)
   expect_gg(p2 <- ppc_loo_pit_ecdf(pit = uniform_pit, method = "correlated"))
 
   # Test with extreme values
-  extreme_pit <- c(rep(0, 10), rep(1, 10), runif(80))
+  extreme_pit <- c(rep(0.0001, 10), rep(0.99999, 10), runif(80))
   expect_gg(p3 <- ppc_loo_pit_ecdf(pit = extreme_pit, method = "correlated"))
 
   # Test with single value (edge case)
