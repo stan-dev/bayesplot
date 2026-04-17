@@ -1,19 +1,24 @@
-#' @param K An optional integer defining the number of equally spaced evaluation
-#'  points for the PIT-ECDF. Reducing K when using `interpolate_adj = FALSE`
-#'  makes computing the confidence bands faster. For `ppc_pit_ecdf` and
-#'  `ppc_pit_ecdf_grouped`, if PIT values are supplied, defaults to
-#'  `length(pit)`, otherwise yrep determines the maximum accuracy of the
-#'  estimated PIT values and `K` is set to `min(nrow(yrep) + 1, 1000)`. For
-#'  `mcmc_rank_ecdf`, defaults to the number of iterations per chain in `x`.
-#' @param prob The desired simultaneous coverage level of the bands around the
-#'   ECDF. A value in (0,1).
-#' @param plot_diff A boolean defining whether to plot the difference between
-#'   the observed PIT- ECDF and the theoretical expectation for uniform PIT
-#'   values rather than plotting the regular ECDF. The default is `FALSE`, but
-#'   for large samples we recommend setting `plot_diff=TRUE` as the difference
-#'   plot will visually show a more dynamic range.
-#' @param interpolate_adj A boolean defining if the simultaneous confidence
-#'   bands should be interpolated based on precomputed values rather than
-#'   computed exactly. Computing the bands may be computationally intensive and
-#'   the approximation gives a fast method for assessing the ECDF trajectory.
-#'   The default is to use interpolation if `K` is greater than 200.
+#' @param method The method used to calculate the uniformity test:
+#'   * `"independent"`: assumes independent PIT values (Säilynoja et al., 2022).
+#'   * `"correlated"`: accounts for correlated PIT values (Tesso & Vehtari, 2026).
+#' @param test When `method = "correlated"`, which dependence-aware test to use:
+#'   `"POT"`, `"PRIT"`, or `"PIET"`. Defaults to `"POT"`.
+#' @param gamma When `method = "correlated"`, tolerance threshold controlling
+#'   how strongly suspicious points are flagged. Larger values (`gamma > 0`)
+#'   emphasize points with larger deviations. If `NULL`, defaults to `0` and
+#'   thus all suspicious points are flagged.
+#' @param color When `method = "correlated"`, a vector with base color and
+#'   highlight color for the ECDF plot. Defaults to
+#'   `c(ecdf = "grey60", highlight = "red")`. The first element is used for
+#'   the main ECDF line, the second for highlighted suspicious regions.
+#' @param help_text When `method = "correlated"`, a boolean defining whether
+#'   to add information about p-value to the plot. Defaults to `TRUE`.
+#' @param help_text_shrinkage When `method = "correlated"`, a numeric value
+#'   between 0 and 1 defining the factor by which the help-text (p-value
+#'   information) is scaled. The default is `0.8`.
+#' @param pareto_pit A boolean defining whether to compute PIT values using
+#'   Pareto-PIT method. Defaults to `TRUE` if `test` is either `"POT"` or
+#'   `"PIET"` and no `pit` values are provided otherwise `FALSE`. This argument
+#'   should normally not be modified by the user, except for development
+#'   purposes. If `pit` is non-`NULL`, `pareto_pit` cannot be simultaneously
+#'   `TRUE`.

@@ -53,12 +53,13 @@
 #'    both, depending on the `y_draw` argument.
 #'   }
 #'   \item{`ppc_pit_ecdf()`, `ppc_pit_ecdf_grouped()`}{
-#'    The PIT-ECDF of the empirical PIT values of `y` computed with respect to
-#'    the corresponding `yrep` values. `100 * prob`% central simultaneous
-#'    confidence intervals are provided to asses if `y` and `yrep` originate
-#'    from the same distribution. The PIT values can also be provided directly
-#'    as `pit`.
-#'    See Säilynoja et al. (2021) for more details.
+#'    The PIT-ECDF of empirical PIT values for `y` relative to corresponding
+#'    draws in `yrep` (or precomputed values supplied via `pit`).
+#'    With `method = "independent"`, the plot shows `100 * prob`% central
+#'    simultaneous confidence intervals under an independence assumption.
+#'    With `method = "correlated"`, the plot uses a dependence-aware
+#'    uniformity assessment and can highlight suspicious regions.
+#'    See Säilynoja et al. (2025) and Tesso & Vehtari (2026) for details.
 #'   }
 #'   \item{`ppc_data()`}{
 #'    This function prepares data for plotting with **ggplot2** and doesn't
@@ -670,13 +671,42 @@ ppc_violin_grouped <-
       bayesplot_theme_get()
   }
 
-
-#' @export
-#' @param pit An optional vector of probability integral transformed values for
-#'   which the ECDF is to be drawn. If NULL, PIT values are computed to `y` with
-#'   respect to the corresponding values in `yrep`.
 #' @rdname PPC-distributions
-#'
+#' @export
+#' @template args-pit-ecdf
+#' @param K An optional integer defining the number of equally spaced evaluation
+#'   points for the PIT-ECDF. Reducing K when using `interpolate_adj = FALSE`
+#'   makes computing the confidence bands faster. For `ppc_pit_ecdf()` and
+#'   `ppc_pit_ecdf_grouped()` when `method = 'independent'`. If `pit` is
+#'   supplied, defaults to `length(pit)`, otherwise `yrep` determines the
+#'   maximum accuracy of the estimated PIT values and `K` is set to
+#'   `min(nrow(yrep) + 1, 1000)`. For `mcmc_rank_ecdf()`, defaults to the number
+#'   of iterations per chain in `x`.
+#' @param prob The desired simultaneous coverage level of the bands around the
+#'   ECDF. A value in (0,1). For `ppc_pit_ecdf()` and `ppc_pit_ecdf_grouped()`.
+#' @param plot_diff A boolean defining whether to plot the difference between
+#'   the observed PIT-ECDF and the theoretical expectation for uniform PIT
+#'   values rather than plotting the regular ECDF. For `ppc_pit_ecdf()` and
+#'   `ppc_pit_ecdf_grouped()` when `method = 'independent'`. The default is
+#'   `FALSE`, but for large samples we recommend setting `plot_diff = TRUE` to
+#'   better use the plot area.
+#' @param interpolate_adj A boolean defining if the simultaneous confidence
+#'   bands should be interpolated based on precomputed values rather than
+#'   computed exactly. Computing the bands may be computationally intensive and
+#'   the approximation gives a fast method for assessing the ECDF trajectory.
+#'   For `ppc_pit_ecdf()` and `ppc_pit_ecdf_grouped()` when
+#'   `method = 'independent'` and for `mcmc_rank_ecdf()`. The default is to use
+#'   interpolation if `K` is greater than 200.
+#' @param pit An optional vector of probability integral transformed values for
+#'   which the ECDF is to be drawn. For `ppc_pit_ecdf()` and
+#'   `ppc_pit_ecdf_grouped()`. If `NULL`, PIT values are computed to `y` with
+#'   respect to the corresponding values in `yrep`.
+#' @param linewidth When `method = "correlated"`, the line width of the ECDF.
+#'   Defaults to `0.3`.
+#' @note
+#' Note that the default "independent" method is **superseded** by
+#' the "correlated" method (Tesso & Vehtari, 2026) which accounts for dependent
+#' PIT values.
 ppc_pit_ecdf <- function(y,
                          yrep,
                          ...,
@@ -684,64 +714,118 @@ ppc_pit_ecdf <- function(y,
                          K = NULL,
                          prob = .99,
                          plot_diff = FALSE,
-                         interpolate_adj = NULL) {
+                         interpolate_adj = NULL,
+                         method = NULL,
+                         test = NULL,
+                         gamma = NULL,
+                         linewidth = NULL,
+                         color = NULL,
+                         help_text = NULL,
+                         pareto_pit = NULL,
+                         help_text_shrinkage = NULL
+                        ) {
   check_ignored_arguments(...,
-    ok_args = c("K", "pit", "prob", "plot_diff", "interpolate_adj")
+    ok_args = c(
+      "K", "pareto_pit", "pit", "prob", "plot_diff",
+      "interpolate_adj", "method", "test", "gamma", "linewidth",
+      "color", "help_text", "help_text_shrinkage"
+    )
   )
 
-  if (is.null(pit)) {
-    pit <- ppc_data(y, yrep) %>%
-      group_by(.data$y_id) %>%
-      dplyr::group_map(
-        ~ mean(.x$value[.x$is_y] > .x$value[!.x$is_y]) +
-        runif(1, max = mean(.x$value[.x$is_y] == .x$value[!.x$is_y]))
-        ) %>%
-      unlist()
-    if (is.null(K)) {
-      K <- min(nrow(yrep) + 1, 1000)
-    }
-  } else {
-    inform("'pit' specified so ignoring 'y', and 'yrep' if specified.")
-    pit <- validate_pit(pit)
-    if (is.null(K)) {
-      K <- length(pit)
-    }
+  method_args <- .pit_ecdf_resolve_method_args(
+    method = method,
+    pit = pit,
+    prob = prob,
+    interpolate_adj = interpolate_adj,
+    test = test,
+    gamma = gamma,
+    linewidth = linewidth,
+    color = color,
+    help_text = help_text,
+    pareto_pit = pareto_pit,
+    help_text_shrinkage = help_text_shrinkage
+  )
+  method <- method_args$method
+  test <- method_args$test
+  gamma <- method_args$gamma
+  linewidth <- method_args$linewidth
+  color <- method_args$color
+  help_text <- method_args$help_text
+  pareto_pit <- method_args$pareto_pit
+  help_text_shrinkage <- method_args$help_text_shrinkage
+
+  pit_data <- .compute_pit_values(y = y, yrep = yrep, lw = NULL,
+    psis_object = NULL, group = NULL, K = K, pareto_pit = pareto_pit,
+    pit = pit, loo_cv = FALSE)
+  pit <- pit_data$pit
+  K <- pit_data$K
+
+  if (
+    (method == "correlated") &&
+    ((test %in% c("POT", "PIET")) && any(pit %in% c(0, 1)))
+  ) {
+    stop(
+      "PIT values contain 0 or 1, but 'POT' and 'PIET' uniformity tests expect\n",
+      "  continuous input (0, 1). If PIT values are discrete,\n",
+      "  use 'PRIT' test instead. If 0 or 1 arise due to rounding, consider\n",
+      "  appropriate scaling approach or perturbing 0 and 1 values by a\n",
+      "  small epsilon so that they are strictly non-zero and non-one."
+    )
   }
-  N <- length(pit)
-  gamma <- adjust_gamma(
-    N = N,
+
+  .pit_ecdf_plot_single(
+    pit = pit,
     K = K,
     prob = prob,
-    interpolate_adj = interpolate_adj
+    plot_diff = plot_diff,
+    interpolate_adj = interpolate_adj,
+    method = method,
+    test = test,
+    gamma = gamma,
+    linewidth = linewidth,
+    color = color,
+    help_text = help_text,
+    x_label = "PIT",
+    help_text_shrinkage = help_text_shrinkage
   )
-  lims <- ecdf_intervals(gamma = gamma, N = N, K = K)
-  ggplot() +
-    aes(
-      x = seq(0,1,length.out = K),
-      y = ecdf(pit)(seq(0, 1, length.out = K)) -
-          (plot_diff == TRUE) * seq(0, 1, length.out = K),
-      color = "y"
-    ) +
-    geom_step(show.legend = FALSE) +
-    geom_step(aes(
-      y = lims$upper[-1] / N - (plot_diff == TRUE) * seq(0, 1, length.out = K),
-      color = "yrep"
-    ),
-    linetype = 2, show.legend = FALSE) +
-    geom_step(aes(
-      y = lims$lower[-1] / N - (plot_diff == TRUE) * seq(0, 1, length.out = K),
-      color = "yrep"
-    ),
-    linetype = 2, show.legend = FALSE) +
-    labs(y = ifelse(plot_diff,"ECDF - difference","ECDF"), x = "PIT") +
-    yaxis_ticks(FALSE) +
-    scale_color_ppc() +
-    bayesplot_theme_get()
 }
 
-#' @export
 #' @rdname PPC-distributions
-#'
+#' @export
+#' @template args-pit-ecdf
+#' @param K An optional integer defining the number of equally spaced evaluation
+#'   points for the PIT-ECDF. Reducing K when using `interpolate_adj = FALSE`
+#'   makes computing the confidence bands faster. For `ppc_pit_ecdf()` and
+#'   `ppc_pit_ecdf_grouped()` when `method = 'independent'`. If `pit` is
+#'   supplied, defaults to `length(pit)`, otherwise `yrep` determines the
+#'   maximum accuracy of the estimated PIT values and `K` is set to
+#'   `min(nrow(yrep) + 1, 1000)`. For `mcmc_rank_ecdf()`, defaults to the number
+#'   of iterations per chain in `x`.
+#' @param prob The desired simultaneous coverage level of the bands around the
+#'   ECDF. A value in (0,1). For `ppc_pit_ecdf()` and `ppc_pit_ecdf_grouped()`.
+#' @param plot_diff A boolean defining whether to plot the difference between
+#'   the observed PIT-ECDF and the theoretical expectation for uniform PIT
+#'   values rather than plotting the regular ECDF. For `ppc_pit_ecdf()` and
+#'   `ppc_pit_ecdf_grouped()` when `method = 'independent'`. The default is
+#'   `FALSE`, but for large samples we recommend setting `plot_diff = TRUE` to
+#'   better use the plot area.
+#' @param interpolate_adj A boolean defining if the simultaneous confidence
+#'   bands should be interpolated based on precomputed values rather than
+#'   computed exactly. Computing the bands may be computationally intensive and
+#'   the approximation gives a fast method for assessing the ECDF trajectory.
+#'   For `ppc_pit_ecdf()` and `ppc_pit_ecdf_grouped()` when
+#'   `method = 'independent'` and for `mcmc_rank_ecdf()`. The default is to use
+#'   interpolation if `K` is greater than 200.
+#' @param pit An optional vector of probability integral transformed values for
+#'   which the ECDF is to be drawn. For `ppc_pit_ecdf()` and
+#'   `ppc_pit_ecdf_grouped()`. If `NULL`, PIT values are computed to `y` with
+#'   respect to the corresponding values in `yrep`.
+#' @param linewidth When `method = "correlated"`, the line width of the ECDF.
+#'   Defaults to `0.3`.
+#' @note
+#' Note that the default "independent" method is **superseded** by
+#' the "correlated" method (Tesso & Vehtari, 2026) which accounts for dependent
+#' PIT values.
 ppc_pit_ecdf_grouped <-
   function(y,
            yrep,
@@ -751,56 +835,228 @@ ppc_pit_ecdf_grouped <-
            pit = NULL,
            prob = .99,
            plot_diff = FALSE,
-           interpolate_adj = NULL) {
+           interpolate_adj = NULL,
+           method = NULL,
+           test = NULL,
+           gamma = NULL,
+           linewidth = NULL,
+           color = NULL,
+           help_text = NULL,
+           pareto_pit = NULL,
+           help_text_shrinkage = NULL) {
     check_ignored_arguments(...,
-      ok_args = c("K", "pit", "prob", "plot_diff", "interpolate_adj")
+      ok_args = c("K", "pareto_pit", "pit", "prob", "plot_diff",
+                  "interpolate_adj", "method", "test", "gamma",
+                  "linewidth", "color", "help_text", "help_text_shrinkage")
     )
 
-    if (is.null(pit)) {
-      pit <- ppc_data(y, yrep, group) %>%
-        group_by(.data$y_id) %>%
-        dplyr::group_map(
-          ~ mean(.x$value[.x$is_y] > .x$value[!.x$is_y]) +
-          runif(1, max = mean(.x$value[.x$is_y] == .x$value[!.x$is_y]))
-          ) %>%
-        unlist()
-      if (is.null(K)) {
-        K <- min(nrow(yrep) + 1, 1000)
-      }
-    } else {
-      inform("'pit' specified so ignoring 'y' and 'yrep' if specified.")
-      pit <- validate_pit(pit)
-    }
-    N <- length(pit)
+    method_args <- .pit_ecdf_resolve_method_args(
+      method = method,
+      pit = pit,
+      prob = prob,
+      interpolate_adj = interpolate_adj,
+      test = test,
+      gamma = gamma,
+      linewidth = linewidth,
+      color = color,
+      help_text = help_text,
+      pareto_pit = pareto_pit,
+      help_text_shrinkage = help_text_shrinkage
+    )
+    method <- method_args$method
+    alpha <- method_args$alpha
+    test <- method_args$test
+    gamma <- method_args$gamma
+    linewidth <- method_args$linewidth
+    color <- method_args$color
+    help_text <- method_args$help_text
+    pareto_pit <- method_args$pareto_pit
+    help_text_shrinkage <- method_args$help_text_shrinkage
 
-    gammas <- lapply(unique(group), function(g) {
-      N_g <- sum(group == g)
+    pit_data <- .compute_pit_values(y = y, yrep = yrep, lw = NULL,
+      psis_object = NULL, group = group, K = K, pareto_pit = pareto_pit,
+      pit = pit, loo_cv = FALSE)
+    group <- pit_data$group
+    pit <- pit_data$pit
+    K <- pit_data$K
+
+    if (
+      (method == "correlated") &&
+      ((test %in% c("POT", "PIET")) && any(pit %in% c(0, 1)))
+    ) {
+      stop(
+        "PIT values contain 0 or 1, but 'POT' and 'PIET' uniformity tests expect\n",
+        "  continuous input (0, 1). If PIT values are discrete,\n",
+        "  use 'PRIT' test instead. If 0 or 1 arise due to rounding, consider\n",
+        "  appropriate scaling approach or perturbing 0 and 1 values by a\n",
+        "  small epsilon so that they are strictly non-zero and non-one."
+      )
+    }
+    data <- data.frame(pit = pit, group = group, stringsAsFactors = FALSE)
+    group_levels <- unique(data$group)
+
+    if (method == "correlated") {
+      data_cor <- dplyr::group_by(data, .data$group) %>%
+        dplyr::group_map(function(.x, .y) {
+          n_obs <- nrow(.x)
+          K_g <- K %||% n_obs
+          correlated <- .pit_ecdf_correlated_data(
+            pit = .x$pit,
+            K = K_g,
+            plot_diff = plot_diff,
+            test = test,
+            alpha = alpha,
+            gamma = gamma
+          )
+          df_main <- data.frame(
+            x = correlated$main$x,
+            ecdf_value = correlated$main$ecdf_val,
+            group = .y[[1]],
+            stringsAsFactors = FALSE
+          )
+          red <- NULL
+          if (nrow(correlated$segments) > 0) {
+            red <- data.frame(
+              x = correlated$segments$x,
+              ecdf_value = correlated$segments$ecdf_val,
+              segment = correlated$segments$segment,
+              group = .y[[1]],
+              stringsAsFactors = FALSE
+            )
+          }
+          red_points <- NULL
+          if (nrow(correlated$isolated) > 0) {
+            red_points <- data.frame(
+              x = correlated$isolated$pit,
+              ecdf_value = correlated$isolated$ecdf_val,
+              group = .y[[1]],
+              stringsAsFactors = FALSE
+            )
+          }
+
+          ann <- NULL
+          if (isTRUE(help_text)) {
+            ann <- data.frame(
+              group = .y[[1]],
+              x = -Inf,
+              y = Inf,
+              label = sprintf(
+                "p[unif]^{%s} == '%s' ~ (alpha == '%.2f')",
+                test, fmt_p(correlated$p_value), alpha
+              ),
+              stringsAsFactors = FALSE
+            )
+          }
+
+          list(main = df_main, red = red, red_points = red_points, ann = ann)
+        })
+
+      main_df <- dplyr::bind_rows(lapply(data_cor, `[[`, "main"))
+      red_df <- dplyr::bind_rows(lapply(data_cor, `[[`, "red"))
+      red_points_df <- dplyr::bind_rows(lapply(data_cor, `[[`, "red_points"))
+      ann_df <- dplyr::bind_rows(lapply(data_cor, `[[`, "ann"))
+      ref_df <- data.frame(
+        group = group_levels,
+        x = 0,
+        y = 0,
+        xend = 1,
+        yend = if (plot_diff) 0 else 1,
+        stringsAsFactors = FALSE
+      )
+
+      p <- ggplot() +
+        geom_step(
+          data = main_df,
+          mapping = aes(x = .data$x, y = .data$ecdf_value, group = .data$group),
+          show.legend = FALSE,
+          linewidth = linewidth,
+          color = color["ecdf"]
+        ) +
+        geom_segment(
+          data = ref_df,
+          mapping = aes(
+            x = .data$x,
+            y = .data$y,
+            xend = .data$xend,
+            yend = .data$yend
+          ),
+          linetype = "dashed",
+          color = "darkgrey",
+          linewidth = 0.3
+        )
+
+      if (nrow(red_df) > 0) {
+        p <- p + geom_step(
+          data = red_df,
+          mapping = aes(x = .data$x, y = .data$ecdf_value,
+            group = interaction(.data$group, .data$segment)),
+          color = color["highlight"],
+          linewidth = linewidth + 0.8
+        )
+      }
+
+      if (nrow(red_points_df) > 0) {
+        p <- p + geom_point(
+          data = red_points_df,
+          mapping = aes(x = .data$x, y = .data$ecdf_value),
+          color = color["highlight"],
+          size = linewidth + 1
+        )
+      }
+
+      if (isTRUE(help_text) && nrow(ann_df) > 0) {
+        label_size <- help_text_shrinkage * .theme_text_size() / ggplot2::.pt
+        p <- p + geom_text(
+          data = ann_df,
+          mapping = aes(x = .data$x, y = .data$y, label = .data$label),
+          hjust = -0.05,
+          vjust = 1.5,
+          color = "black",
+          parse = TRUE,
+          size = label_size
+        )
+      }
+
+      return(
+        p +
+          labs(y = ifelse(plot_diff, "ECDF difference", "ECDF"), x = "PIT") +
+          yaxis_ticks(FALSE) +
+          bayesplot_theme_get() +
+          facet_wrap("group") +
+          scale_color_ppc() +
+          force_axes_in_facets()
+      )
+    }
+
+    # independent method
+    gammas <- lapply(group_levels, function(g) {
+      N_g <- sum(data$group == g)
       adjust_gamma(
         N = N_g,
-        K = ifelse(is.null(K), N_g, K),
+        K = K %||% N_g,
         prob = prob,
         interpolate_adj = interpolate_adj
       )
     })
-    names(gammas) <- unique(group)
+    names(gammas) <- group_levels
 
-    data <- data.frame(pit = pit, group = group) %>%
-      group_by(group) %>%
+    data <- data %>%
+      dplyr::group_by(.data$group) %>%
       dplyr::group_map(
         ~ data.frame(
-          ecdf_value = ecdf(.x$pit)(seq(0, 1, length.out = ifelse(is.null(K), nrow(.x), K))),
+          ecdf_value = ecdf(.x$pit)(seq(0, 1, length.out = K %||% nrow(.x))),
           group = .y[1],
           lims_upper = ecdf_intervals(
             gamma = gammas[[unlist(.y[1])]],
             N = nrow(.x),
-            K = ifelse(is.null(K), nrow(.x), K)
+            K = K %||% nrow(.x)
           )$upper[-1] / nrow(.x),
           lims_lower = ecdf_intervals(
             gamma = gammas[[unlist(.y[1])]],
             N = nrow(.x),
-            K = ifelse(is.null(K), nrow(.x), K)
+            K = K %||% nrow(.x)
           )$lower[-1] / nrow(.x),
-          x = seq(0, 1, length.out = ifelse(is.null(K), nrow(.x), K))
+          x = seq(0, 1, length.out = K %||% nrow(.x))
         )
       ) %>%
       dplyr::bind_rows()

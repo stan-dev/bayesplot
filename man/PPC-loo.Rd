@@ -65,7 +65,15 @@ ppc_loo_pit_ecdf(
   K = NULL,
   prob = 0.99,
   plot_diff = FALSE,
-  interpolate_adj = NULL
+  interpolate_adj = NULL,
+  method = NULL,
+  test = NULL,
+  gamma = NULL,
+  linewidth = NULL,
+  color = NULL,
+  help_text = NULL,
+  pareto_pit = NULL,
+  help_text_shrinkage = NULL
 )
 
 ppc_loo_pit(
@@ -131,11 +139,9 @@ the \strong{Examples} section, below. If \code{lw} is not specified then
 object returned by the \code{psis()} function (or by the \code{loo()} function
 with argument \code{save_psis} set to \code{TRUE}).}
 
-\item{pit}{For \code{ppc_loo_pit_overlay()}, \code{ppc_loo_pit_qq()}, and
-\code{ppc_loo_pit_ecdf()} optionally a vector of precomputed PIT values that
-can be specified instead of \code{y}, \code{yrep}, and \code{lw} (these are all ignored
-if \code{pit} is specified). If not specified the PIT values are computed
-internally before plotting.}
+\item{pit}{An optional vector of probability integral transformed values for
+which the ECDF is to be drawn. For \code{ppc_loo_pit_ecdf()}. If \code{NULL}, PIT
+values are computed to \code{y} with respect to the corresponding values in \code{yrep}.}
 
 \item{samples}{For \code{ppc_loo_pit_overlay()}, the number of data sets (each
 the same size as \code{y}) to simulate from the standard uniform
@@ -149,7 +155,9 @@ and \code{alpha} are passed to \code{\link[ggplot2:geom_point]{ggplot2::geom_poi
 \code{\link[ggplot2:geom_density]{ggplot2::geom_density()}}, respectively. For \code{ppc_loo_intervals()}, \code{size}
 \code{linewidth} and \code{fatten} are passed to \code{\link[ggplot2:geom_linerange]{ggplot2::geom_pointrange()}}. For
 \code{ppc_loo_ribbon()}, \code{alpha} and \code{size}  are passed to
-\code{\link[ggplot2:geom_ribbon]{ggplot2::geom_ribbon()}}.}
+\code{\link[ggplot2:geom_ribbon]{ggplot2::geom_ribbon()}}. For \code{ppc_loo_pit_ecdf()}, linewidth for the ECDF plot. When
+\code{method = "correlated"}, defaults to 0.3. When \code{method = "independent"},
+if \code{NULL} no linewidth is specified for the ECDF line.}
 
 \item{boundary_correction}{For \code{ppc_loo_pit_overlay()}, when set to \code{TRUE}
 (the default) the function will compute boundary corrected density values
@@ -175,30 +183,63 @@ compares computed PIT values to the standard uniform distribution. If
 calculated from the PIT values to the theoretical standard normal
 quantiles.}
 
-\item{K}{For \code{ppc_loo_pit_ecdf()} an optional integer defining the number
-of equally spaced evaluation points for the PIT-ECDF. Reducing K when
-using \code{interpolate_adj = FALSE} makes computing the confidence bands
-faster. If \code{pit} is supplied, defaults to \code{length(pit)}, otherwise
-\code{yrep} determines the maximum accuracy of the estimated PIT values and
-\code{K} is set to \code{min(nrow(yrep) + 1, 1000)}.}
+\item{K}{An optional integer defining the number of equally spaced evaluation
+points for the PIT-ECDF. Reducing K when using \code{interpolate_adj = FALSE}
+makes computing the confidence bands faster. For \code{ppc_loo_pit_ecdf()},
+when \code{method = 'independent'}. If \code{pit} is supplied, defaults to
+\code{length(pit)}, otherwise \code{yrep} determines the maximum accuracy of the
+estimated PIT values and \code{K} is set to \code{min(nrow(yrep) + 1, 1000)}.}
 
 \item{prob, prob_outer}{Values between \code{0} and \code{1} indicating the desired
 probability mass to include in the inner and outer intervals. The defaults
 are \code{prob=0.5} and \code{prob_outer=0.9} for \code{ppc_loo_intervals()} and
 \code{prob = 0.99} for \code{ppc_loo_pit_ecdf()}.}
 
-\item{plot_diff}{For \code{ppc_loo_pit_ecdf()}, a boolean defining whether to
-plot the difference between the observed PIT-ECDF and the theoretical
-expectation for uniform PIT values rather than plotting the regular ECDF.
-The default is \code{FALSE}, but for large samples we recommend setting
-\code{plot_diff = TRUE} to better use the plot area.}
+\item{plot_diff}{A boolean defining whether to plot the difference between
+the observed PIT-ECDF and the theoretical expectation for uniform PIT
+values rather than plotting the regular ECDF. For \code{ppc_loo_pit_ecdf()},
+when \code{method = 'independent'}. The default is \code{FALSE}, but for large
+samples we recommend setting \code{plot_diff = TRUE} to better use the plot area.}
 
-\item{interpolate_adj}{For \code{ppc_loo_pit_ecdf()}, a boolean defining if the
-simultaneous confidence bands should be interpolated based on precomputed
-values rather than computed exactly. Computing the bands may be
-computationally intensive and the approximation gives a fast method for
-assessing the ECDF trajectory. The default is to use interpolation if \code{K}
-is greater than 200.}
+\item{interpolate_adj}{A boolean defining if the simultaneous confidence
+bands should be interpolated based on precomputed values rather than
+computed exactly. Computing the bands may be computationally intensive and
+the approximation gives a fast method for assessing the ECDF trajectory.
+For \code{ppc_loo_pit_ecdf()} when \code{method = 'independent'}.
+The default is to use interpolation if \code{K} is greater than 200.}
+
+\item{method}{The method used to calculate the uniformity test:
+\itemize{
+\item \code{"independent"}: assumes independent PIT values (Säilynoja et al., 2022).
+\item \code{"correlated"}: accounts for correlated PIT values (Tesso & Vehtari, 2026).
+}}
+
+\item{test}{When \code{method = "correlated"}, which dependence-aware test to use:
+\code{"POT"}, \code{"PRIT"}, or \code{"PIET"}. Defaults to \code{"POT"}.}
+
+\item{gamma}{When \code{method = "correlated"}, tolerance threshold controlling
+how strongly suspicious points are flagged. Larger values (\code{gamma > 0})
+emphasize points with larger deviations. If \code{NULL}, defaults to \code{0} and
+thus all suspicious points are flagged.}
+
+\item{color}{When \code{method = "correlated"}, a vector with base color and
+highlight color for the ECDF plot. Defaults to
+\code{c(ecdf = "grey60", highlight = "red")}. The first element is used for
+the main ECDF line, the second for highlighted suspicious regions.}
+
+\item{help_text}{When \code{method = "correlated"}, a boolean defining whether
+to add information about p-value to the plot. Defaults to \code{TRUE}.}
+
+\item{pareto_pit}{A boolean defining whether to compute PIT values using
+Pareto-PIT method. Defaults to \code{TRUE} if \code{test} is either \code{"POT"} or
+\code{"PIET"} and no \code{pit} values are provided otherwise \code{FALSE}. This argument
+should normally not be modified by the user, except for development
+purposes. If \code{pit} is non-\code{NULL}, \code{pareto_pit} cannot be simultaneously
+\code{TRUE}.}
+
+\item{help_text_shrinkage}{When \code{method = "correlated"}, a numeric value
+between 0 and 1 defining the factor by which the help-text (p-value
+information) is scaled. The default is \code{0.8}.}
 
 \item{subset}{For \code{ppc_loo_intervals()} and \code{ppc_loo_ribbon()}, an optional
 integer vector indicating which observations in \code{y} (and \code{yrep}) to
@@ -233,6 +274,11 @@ function.
 Leave-One-Out (LOO) predictive checks. See the \strong{Plot Descriptions} section,
 below, and \href{https://github.com/jgabry/bayes-vis-paper#readme}{Gabry et al. (2019)}
 for details.
+}
+\note{
+Note that the default "independent" method is \strong{superseded} by
+the "correlated" method (Tesso & Vehtari, 2026) which accounts for dependent
+LOO-PIT values.
 }
 \section{Plot Descriptions}{
 
@@ -275,12 +321,13 @@ function will provide a clearer picture of calibration problems than the
 Q-Q plot.
 
 The \code{ppc_loo_pit_ecdf()} function visualizes the empirical cumulative
-distribution function (ECDF) of the LOO PITs overlaid with simultaneous
-confidence intervals for a standard uniform sample. For large samples,
-these confidence intervals are visually very narrow. Setting the
-\code{plot_diff} argument to \code{TRUE} transforms the plot to display the
-difference of the ECDF and the theoretical expectation, which can aid in
-the visual assessment of calibration.
+distribution function (ECDF) of the LOO PIT values.
+With \code{method = "independent"}, the plot overlays \code{100 * prob}\%
+simultaneous confidence intervals for a standard uniform sample.
+With \code{method = "correlated"}, the plot uses a dependence-aware
+uniformity assessment and can highlight suspicious regions.
+Setting \code{plot_diff = TRUE} displays the ECDF minus the theoretical
+expectation, which can improve visual assessment of calibration.
 }
 \item{\code{ppc_loo_intervals()}, \code{ppc_loo_ribbon()}}{
 Similar to \code{\link[=ppc_intervals]{ppc_intervals()}} and \code{\link[=ppc_ribbon]{ppc_ribbon()}} but the intervals are for

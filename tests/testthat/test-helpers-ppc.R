@@ -203,3 +203,11 @@ test_that("ecdf_intervals returns right dimensions and values", {
   expect_equal(min(lims$lower), 0)
   expect_equal(max(lims$lower), 100)
 })
+
+# display p-values in plots ------------------------------------------------
+test_that("formatting of p-values works as expected", {
+  expect_equal(fmt_p(0.446), "0.45")
+  expect_equal(fmt_p(0.045), "0.045")
+  expect_equal(fmt_p(0.0045), "0.005")
+  expect_equal(fmt_p(0.00045), "0.000")
+})

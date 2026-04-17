@@ -120,12 +120,111 @@ test_that("ppc_dots returns a ggplot object", {
 })
 
 test_that("ppc_pit_ecdf, ppc_pit_ecdf_grouped returns a ggplot object", {
+  # Independent method (default)
   expect_gg(ppc_pit_ecdf(y, yrep, interpolate_adj = FALSE))
+  expect_gg(ppc_pit_ecdf(y, yrep, method = "independent", interpolate_adj = FALSE))
   expect_gg(ppc_pit_ecdf_grouped(y, yrep, group = group, interpolate_adj = FALSE))
-  expect_message(ppc_pit_ecdf(pit = runif(100)), "'pit' specified")
+
+  # Correlated method
+  expect_gg(ppc_pit_ecdf(y, yrep, method = "correlated"))
+  expect_gg(ppc_pit_ecdf(y, yrep, method = "correlated", plot_diff = TRUE))
+  expect_gg(ppc_pit_ecdf(y, yrep, method = "correlated", test = "PRIT"))
+  expect_gg(ppc_pit_ecdf(y, yrep, method = "correlated", test = "PIET"))
+  expect_gg(ppc_pit_ecdf_grouped(y, yrep, group = group, method = "correlated"))
+  expect_gg(ppc_pit_ecdf_grouped(y, yrep, group = group, method = "correlated", plot_diff = TRUE))
+  expect_gg(ppc_pit_ecdf_grouped(y, yrep, group = group, method = "correlated", test = "PRIT"))
+  expect_gg(ppc_pit_ecdf_grouped(y, yrep, group = group, method = "correlated", test = "PIET"))
+
+  # Specify 'pit' directly (with y/yrep still supplied)
   expect_message(
-    ppc_pit_ecdf_grouped(pit = runif(length(group)), group = group, interpolate_adj = FALSE),
+    ppc_pit_ecdf_grouped(
+      y = y, yrep = yrep, pit = runif(length(group)),
+      group = group, interpolate_adj = FALSE
+    ),
     "'pit' specified"
+  )
+
+  # No y/yrep provided with pit -> no ignored-input message but "independent" method message
+  expect_message(
+    ppc_pit_ecdf_grouped(pit = runif(length(group)), group = group,
+    method = "independent", interpolate_adj = FALSE),
+    "The 'independent' method is superseded by the 'correlated' method."
+  )
+})
+
+test_that("ppc_pit_ecdf method validation and ignored-argument warnings", {
+  # Invalid method
+  expect_error(ppc_pit_ecdf(y, yrep, method = "bogus"))
+
+  # method = "correlated" warns about interpolate_adj
+  expect_message(
+    ppc_pit_ecdf(y, yrep, method = "correlated", interpolate_adj = TRUE),
+    "ignoring.*interpolate_adj"
+  )
+
+  # method = "independent" warns about test and gamma
+  expect_message(
+    ppc_pit_ecdf(y, yrep, method = "independent", test = "POT",
+                 interpolate_adj = FALSE),
+    "ignoring.*test"
+  )
+  expect_message(
+    ppc_pit_ecdf(y, yrep, method = "independent", test = "POT", gamma = 0.5,
+                 interpolate_adj = FALSE),
+    "ignoring.*test, gamma"
+  )
+
+  # Invalid test type for correlated
+  expect_error(
+    ppc_pit_ecdf(y, yrep, method = "correlated", test = "INVALID")
+  )
+})
+
+test_that("ppc_pit_ecdf correlated method validates gamma", {
+  expect_error(
+    ppc_pit_ecdf(y, yrep, method = "correlated", gamma = -1),
+    regexp = "gamma must be in"
+  )
+})
+
+test_that("ppc_pit_ecdf_grouped method validation and ignored-argument warnings", {
+  # Invalid method
+  expect_error(ppc_pit_ecdf_grouped(y, yrep, group = group, method = "bogus"))
+
+  # method = "correlated" warns about interpolate_adj
+  expect_message(
+    ppc_pit_ecdf_grouped(
+      y, yrep, group = group, method = "correlated", interpolate_adj = TRUE
+    ),
+    "ignoring.*interpolate_adj"
+  )
+
+  # method = "independent" warns about correlated-only args
+  expect_message(
+    ppc_pit_ecdf_grouped(
+      y, yrep, group = group, method = "independent",
+      test = "POT", interpolate_adj = FALSE
+    ),
+    "ignoring.*test"
+  )
+  expect_message(
+    ppc_pit_ecdf_grouped(
+      y, yrep, group = group, method = "independent",
+      test = "POT", gamma = 0.5, interpolate_adj = FALSE
+    ),
+    "ignoring.*test, gamma"
+  )
+
+  # Invalid test type for correlated
+  expect_error(
+    ppc_pit_ecdf_grouped(y, yrep, group = group, method = "correlated", test = "INVALID")
+  )
+})
+
+test_that("ppc_pit_ecdf_grouped correlated method validates gamma", {
+  expect_error(
+    ppc_pit_ecdf_grouped(y, yrep, group = group, method = "correlated", gamma = -1),
+    regexp = "gamma must be in"
   )
 })
 
@@ -534,6 +633,7 @@ test_that("ppc_pit_ecdf, ppc_pit_ecdf_grouped renders correctly", {
   testthat::skip_if_not_installed("vdiffr")
   skip_on_r_oldrel()
 
+  # Independent method
   p_base <- ppc_pit_ecdf(y, yrep, interpolate_adj = FALSE)
   g_base <- ppc_pit_ecdf_grouped(y, yrep, group = group, interpolate_adj = FALSE)
   p_diff <- ppc_pit_ecdf(y, yrep, plot_diff = TRUE, interpolate_adj = FALSE)
@@ -543,4 +643,302 @@ test_that("ppc_pit_ecdf, ppc_pit_ecdf_grouped renders correctly", {
   vdiffr::expect_doppelganger("ppc_pit_ecdf_grouped (default)", g_base)
   vdiffr::expect_doppelganger("ppc_pit_ecdf (diff)", p_diff)
   vdiffr::expect_doppelganger("ppc_pit_ecdf_grouped (diff)", g_diff)
+
+  # Correlated method
+  p_corr <- ppc_pit_ecdf(y, yrep, method = "correlated")
+  vdiffr::expect_doppelganger("ppc_pit_ecdf (correlated)", p_corr)
+
+  p_corr_diff <- ppc_pit_ecdf(y, yrep, method = "correlated", plot_diff = TRUE)
+  vdiffr::expect_doppelganger("ppc_pit_ecdf (correlated diff)", p_corr_diff)
+
+  p_corr_prit <- ppc_pit_ecdf(y, yrep, method = "correlated", test = "PRIT")
+  vdiffr::expect_doppelganger("ppc_pit_ecdf (correlated PRIT)", p_corr_prit)
+
+  p_corr_piet <- ppc_pit_ecdf(y, yrep, method = "correlated", test = "PIET")
+  vdiffr::expect_doppelganger("ppc_pit_ecdf (correlated PIET)", p_corr_piet)
+
+  g_corr <- ppc_pit_ecdf_grouped(y, yrep, group = group, method = "correlated")
+  vdiffr::expect_doppelganger("ppc_pit_ecdf_grouped (correlated)", g_corr)
+
+  g_corr_diff <- ppc_pit_ecdf_grouped(
+    y, yrep, group = group, method = "correlated", plot_diff = TRUE
+  )
+  vdiffr::expect_doppelganger("ppc_pit_ecdf_grouped (correlated diff)", g_corr_diff)
+})
+
+test_that("ppc_pit_ecdf with method correlated renders different tests correctly", {
+  set.seed(2025)
+  pit <- 1 - (1 - runif(300))^(1.2)
+
+  p_cor_pot <- ppc_pit_ecdf(
+    pit = pit,
+    method = "correlated"
+  )
+  vdiffr::expect_doppelganger("ppc_pit_ecdf (correlated pot)", p_cor_pot)
+
+  p_cor_prit <- ppc_pit_ecdf(
+    pit = pit,
+    method = "correlated",
+    test = "PRIT"
+  )
+  vdiffr::expect_doppelganger("ppc_pit_ecdf (correlated prit 2)", p_cor_prit)
+
+  p_cor_piet <- ppc_pit_ecdf(
+    pit = pit,
+    method = "correlated",
+    test = "PIET"
+  )
+  vdiffr::expect_doppelganger("ppc_pit_ecdf (correlated piet 2)", p_cor_piet)
+})
+
+test_that("ppc_pit_ecdf with plot_diff=TRUE and method correlated renders different tests correctly", {
+  set.seed(2025)
+  pit <- 1 - (1 - runif(300))^(1.2)
+
+  p_cor_pot <- ppc_pit_ecdf(
+    pit = pit,
+    method = "correlated",
+    plot_diff = TRUE
+  )
+  vdiffr::expect_doppelganger("ppc_pit_ecdf (diff, correlated pot)", p_cor_pot)
+
+  p_cor_prit <- ppc_pit_ecdf(
+    pit = pit,
+    method = "correlated",
+    test = "PRIT",
+    plot_diff = TRUE
+  )
+  vdiffr::expect_doppelganger("ppc_pit_ecdf (diff, correlated prit)", p_cor_prit)
+
+  p_cor_piet <- ppc_pit_ecdf(
+    pit = pit,
+    method = "correlated",
+    test = "PIET",
+    plot_diff = TRUE
+  )
+  vdiffr::expect_doppelganger("ppc_pit_ecdf (diff, correlated piet)", p_cor_piet)
+})
+
+test_that("ppc_pit_ecdf renders different linewidths and colors correctly", {
+  set.seed(2025)
+  pit <- 1 - (1 - runif(300))^(1.2)
+
+  p_cor_lw1 <- ppc_pit_ecdf(
+    pit = pit,
+    method = "correlated",
+    linewidth = 1.
+  )
+  vdiffr::expect_doppelganger("ppc_pit_ecdf (linewidth = 1)", p_cor_lw1)
+
+  p_cor_lw2 <- ppc_pit_ecdf(
+    pit = pit,
+    method = "correlated",
+    linewidth = 2.
+  )
+  vdiffr::expect_doppelganger("ppc_pit_ecdf (linewidth = 2)", p_cor_lw2)
+
+  p_cor_col <- ppc_pit_ecdf(
+    pit = pit,
+    method = "correlated",
+    color = c(ecdf = "darkblue", highlight = "red")
+  )
+  vdiffr::expect_doppelganger("ppc_pit_ecdf (color change)", p_cor_col)
+})
+
+
+# Test PIT computation branches ------------------------------------------------
+# use monkey-patching to test whether the correct branch of the
+# PIT computation is taken
+
+testthat::test_that("ppc_pit_ecdf takes correct PIT computation branch", {
+  skip_on_cran()
+  skip_if_not_installed("loo")
+  skip_on_r_oldrel()
+  skip_if(packageVersion("rstantools") <= "2.4.0")
+
+  compute_pit_values_patched <- .compute_pit_values
+
+  body(compute_pit_values_patched)[[
+    # Replace the PIT computation block with diagnostics.
+    which(sapply(as.list(body(.compute_pit_values)), function(e) {
+      if (!is.call(e)) return(FALSE)
+      identical(e[[1]], as.name("if")) &&
+        grepl("pareto_pit", paste(deparse(e[[2]]), collapse = " "))
+    }))[1]
+  ]] <- quote({
+    if (isTRUE(pareto_pit) && is.null(pit)) {
+      message("[PIT BRANCH] Pareto-smoothed LOO PIT")
+      suggested_package("rstantools")
+      y <- validate_y(y)
+      yrep <- validate_predictions(yrep, length(y))
+      pit <- posterior::pareto_pit(x = yrep, y = y, weights = NULL, log = TRUE)
+      K <- K %||% length(pit)
+    } else if (!is.null(pit)) {
+      message("[PIT BRANCH] Pre-supplied PIT")
+      pit <- validate_pit(pit)
+      K <- K %||% length(pit)
+
+      ignored <- c(
+        if (!missing(y) && !is.null(y)) "y",
+        if (!missing(yrep) && !is.null(yrep)) "yrep"
+      )
+      if (length(ignored) > 0) {
+        inform(paste0("As 'pit' specified; ignoring: ",
+          paste(ignored, collapse = ", "), "."))
+      }
+    } else {
+      message("[PIT BRANCH] Empirical PIT")
+      y <- validate_y(y)
+      yrep <- validate_predictions(yrep, length(y))
+      pit <- ppc_data(y, yrep) |>
+        group_by(.data$y_id) |>
+        dplyr::group_map(
+          ~ mean(.x$value[.x$is_y] > .x$value[!.x$is_y]) +
+          runif(1, max = mean(.x$value[.x$is_y] == .x$value[!.x$is_y]))
+        ) |>
+        unlist()
+      K <- K %||% min(nrow(yrep) + 1, 1000)
+    }
+    list("group" = group, "pit" = pit, "K" = K)
+  })
+
+  pit_branch_probe <- function(y = NULL,
+                               yrep = NULL,
+                               pit = NULL,
+                               method = NULL,
+                               test = NULL,
+                               pareto_pit = NULL) {
+    method_args <- .pit_ecdf_resolve_method_args(
+      method = method,
+      pit = pit,
+      prob = 0.99,
+      interpolate_adj = NULL,
+      test = test,
+      gamma = NULL,
+      linewidth = NULL,
+      color = NULL,
+      help_text = NULL,
+      pareto_pit = pareto_pit,
+      help_text_shrinkage = NULL
+    )
+    compute_pit_values_patched(
+      y = y,
+      yrep = yrep,
+      group = NULL,
+      K = NULL,
+      pareto_pit = method_args$pareto_pit,
+      pit = pit,
+      loo_cv = FALSE
+    )
+  }
+
+  # | yrep | y | pit | method      | test | pareto_pit | approach           |
+  # |------|---|-----|-------------|------|------------|--------------------|
+  # | x    | x |     | independent | NULL | FALSE      | empirical pit      |
+  # |      |   | x   | independent | NULL | FALSE      |                    |
+  # | x    | x |     | independent | NULL | TRUE       | compute pareto-pit |
+  # | x    | x |     | correlated  | POT  | TRUE       | compute pareto-pit |
+  # |      |   | x   | correlated  | POT  | FALSE      |                    |
+  # | x    | x |     | correlated  | PIET | TRUE       | compute pareto-pit |
+  # |      |   | x   | correlated  | PIET | FALSE      |                    |
+  # | x    | x |     | correlated  | PRIT | FALSE      | empirical pit      |
+  # |      |   | x   | correlated  | PRIT | FALSE      |                    |
+
+  pits <- rstantools::loo_pit(vdiff_loo_yrep, vdiff_loo_y, vdiff_loo_lw)
+
+  # method = independent ------------------------------------------
+  expect_message(
+    pit_branch_probe(
+      y = vdiff_loo_y,
+      yrep = vdiff_loo_yrep,
+      method = "independent"
+    ),
+    regexp = "\\[PIT BRANCH\\] Empirical PIT"
+  )
+
+  expect_message(
+    pit_branch_probe(
+      y = vdiff_loo_y,
+      yrep = vdiff_loo_yrep,
+      method = "independent",
+      pareto_pit = TRUE
+    ),
+    regexp = "\\[PIT BRANCH\\] Pareto-smoothed LOO PIT"
+  )
+
+  expect_message(
+    pit_branch_probe(
+      method = "independent",
+      pit = pits,
+    ),
+    regexp = "\\[PIT BRANCH\\] Pre-supplied PIT"
+  )
+
+  # method = correlated + POT test -------------------------------
+  expect_message(
+    pit_branch_probe(
+      y = vdiff_loo_y,
+      yrep = vdiff_loo_yrep,
+      method = "correlated"
+    ),
+    regexp = "\\[PIT BRANCH\\] Pareto-smoothed LOO PIT"
+  )
+
+  expect_message(
+    pit_branch_probe(
+      y = vdiff_loo_y,
+      yrep = vdiff_loo_yrep,
+      method = "correlated",
+      pareto_pit = FALSE
+    ),
+    regexp = "\\[PIT BRANCH\\] Empirical PIT"
+  )
+
+  expect_message(
+    pit_branch_probe(
+      method = "correlated",
+      pit = pits,
+    ),
+    regexp = "\\[PIT BRANCH\\] Pre-supplied PIT"
+  )
+
+  # method = correlated + PIET test -------------------------------
+  expect_message(
+    pit_branch_probe(
+      y = vdiff_loo_y,
+      yrep = vdiff_loo_yrep,
+      method = "correlated",
+      test = "PIET"
+    ),
+    regexp = "\\[PIT BRANCH\\] Pareto-smoothed LOO PIT"
+  )
+
+  expect_message(
+    pit_branch_probe(
+      method = "correlated",
+      test = "PIET",
+      pit = pits,
+    ),
+    regexp = "\\[PIT BRANCH\\] Pre-supplied PIT"
+  )
+
+  # method = correlated + PRIT test -------------------------------
+  expect_message(
+    pit_branch_probe(
+      y = vdiff_loo_y,
+      yrep = vdiff_loo_yrep,
+      method = "correlated",
+      test = "PRIT"
+    ),
+    regexp = "\\[PIT BRANCH\\] Empirical PIT"
+  )
+
+  expect_message(
+    pit_branch_probe(
+      method = "correlated",
+      test = "PRIT",
+      pit = pits,
+    ),
+    regexp = "\\[PIT BRANCH\\] Pre-supplied PIT"
+  )
 })
