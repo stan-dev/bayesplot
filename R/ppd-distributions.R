@@ -39,19 +39,23 @@ ppd_data <- function(ypred, group = NULL) {
 #' @rdname PPD-distributions
 #' @export
 ppd_dens_overlay <-
-  function(ypred,
-           show_marginal = FALSE,
-           ...,
-           size = 0.25,
-           alpha = 0.7,
-           trim = FALSE,
-           bw = "nrd0",
-           adjust = 1,
-           kernel = "gaussian",
-           bounds = NULL,
-           n_dens = 1024) {
-    check_ignored_arguments(...)
-    bounds <- validate_density_bounds(bounds)
+    function(ypred,
+             show_marginal = FALSE,
+             ...,
+             size = 0.25,
+             alpha = 0.7,
+             trim = FALSE,
+             bw = NULL,
+             adjust = NULL,
+             kernel = NULL,
+             bounds = NULL,
+             n_dens = NULL) {
+      check_ignored_arguments(...)
+      bw <- bw %||% "nrd0"
+      adjust <- adjust %||% 1
+      kernel <- kernel %||% "gaussian"
+      n_dens <- n_dens %||% 1024
+      bounds <- validate_density_bounds(bounds)
 
     data <- ppd_data(ypred)
     p <- ggplot(data, mapping = aes(x = .data$value)) +

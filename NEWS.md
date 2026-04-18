@@ -1,6 +1,8 @@
 # bayesplot (development version)
 
 * Deprecated `rhat()` and `neff_ratio()` in favor of `extract_rhat()` and `extract_neff_ratio()`.
+* Unified density-control argument defaults (`bw`, `adjust`, `kernel`, `n_dens`) to use `NULL` with internal fallbacks. No change in user-facing behavior. 
+* `prepare_mcmc_array()` now warns instead of erroring on `NA`s in the input.
 * Fixed `validate_chain_list()` colnames check to compare all chains, not just the first two.
 * Added test verifying `legend_move("none")` behaves equivalently to `legend_none()`.
 * Added singleton-dimension edge-case tests for exported `_data()` functions.
