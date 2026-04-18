@@ -625,13 +625,15 @@ fit_cp_bad_rhat <- sampling(schools_mod_cp, data = schools_dat,
                             iter = 50, init_r = 10, seed = 671254821)
 ```
 
-**bayesplot** provides a generic `rhat` extractor function, currently with
-methods defined for models fit using the **rstan**, **rstanarm** and **brms**
-packages. But regardless of how you fit your model, all **bayesplot** needs is a
-vector of $\hat{R}$ values.
+**bayesplot** provides a generic `extract_rhat` extractor function, currently
+with methods defined for models fit using the **rstan**, **rstanarm** and
+**brms** packages. But regardless of how you fit your model, all **bayesplot**
+needs is a vector of $\hat{R}$ values. (The older name `rhat()` is deprecated
+because it conflicted with `posterior::rhat()`, which actually *computes*
+$\hat{R}$; `extract_rhat()` only *extracts* already-computed values.)
 
 ```{r print-rhats}
-rhats <- rhat(fit_cp_bad_rhat)
+rhats <- extract_rhat(fit_cp_bad_rhat)
 print(rhats)
 ```
 
@@ -670,7 +672,7 @@ If we look at the same model fit using longer Markov chains we should see all
 $\hat{R} < 1.1$, and all points in the plot the same (light) color:
 
 ```{r mcmc_rhat-3}
-mcmc_rhat(rhat = rhat(fit_cp)) + yaxis_text(hjust = 0)
+mcmc_rhat(rhat = extract_rhat(fit_cp)) + yaxis_text(hjust = 0)
 ```
 
 We can see the same information shown by `mcmc_rhat` but in histogram form using
@@ -700,16 +702,18 @@ may not necessarily approach the true posterior faster. Google "antithetic sampl
 visit [the relevant forum thread](https://discourse.mc-stan.org/t/n-eff-bda3-vs-stan/2608/19)
 for some further explanation.
 
-The **bayesplot** package provides a generic `neff_ratio` extractor function,
-currently with methods defined for models fit using the **rstan**,
-**rstanarm** and **brms** packages. But regardless of how you fit your model, all
-**bayesplot** needs is a vector of $n_{eff}/N$ values. The `mcmc_neff` and 
-`mcmc_neff_hist` can then be used to plot the ratios.
+The **bayesplot** package provides a generic `extract_neff_ratio` extractor
+function, currently with methods defined for models fit using the **rstan**,
+**rstanarm** and **brms** packages. But regardless of how you fit your model,
+all **bayesplot** needs is a vector of $n_{eff}/N$ values. The `mcmc_neff` and
+`mcmc_neff_hist` can then be used to plot the ratios. (The older name
+`neff_ratio()` is deprecated to avoid masking the ESS functions in the
+**posterior** package.)
 
 #### mcmc_neff, mcmc_neff_hist
 
 ```{r print-neff-ratios}
-ratios_cp <- neff_ratio(fit_cp)
+ratios_cp <- extract_neff_ratio(fit_cp)
 print(ratios_cp)
 mcmc_neff(ratios_cp, size = 2)
 ```
@@ -732,8 +736,8 @@ difference. Here are the $n_{eff}/N$ plots for `fit_cp` and `fit_ncp`
 side by side.
 
 ```{r mcmc_neff-compare}
-neff_cp <- neff_ratio(fit_cp, pars = c("theta", "mu", "tau"))
-neff_ncp <- neff_ratio(fit_ncp, pars = c("theta", "mu", "tau"))
+neff_cp <- extract_neff_ratio(fit_cp, pars = c("theta", "mu", "tau"))
+neff_ncp <- extract_neff_ratio(fit_ncp, pars = c("theta", "mu", "tau"))
 compare_cp_ncp(mcmc_neff(neff_cp), mcmc_neff(neff_ncp), ncol = 1)
 ```
 

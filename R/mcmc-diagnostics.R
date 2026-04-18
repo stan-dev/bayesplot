@@ -105,8 +105,8 @@
 #' # intentionally use small 'iter' so there are some
 #' # problems with rhat and neff for demonstration
 #' fit <- stan_glm(mpg ~ ., data = mtcars, iter = 50, refresh = 0)
-#' rhats <- rhat(fit)
-#' ratios <- neff_ratio(fit)
+#' rhats <- extract_rhat(fit)
+#' ratios <- extract_neff_ratio(fit)
 #' mcmc_rhat(rhats)
 #' mcmc_neff(ratios, size = 3)
 #'
@@ -120,8 +120,8 @@
 #'
 #' # increase number of iterations and plots look much better
 #' fit2 <- update(fit, iter = 500)
-#' mcmc_rhat(rhat(fit2))
-#' mcmc_neff(neff_ratio(fit2))
+#' mcmc_rhat(extract_rhat(fit2))
+#' mcmc_neff(extract_neff_ratio(fit2))
 #' mcmc_acf(as.array(fit2), pars = c("wt", "cyl"), lags = 10)
 #' }
 #'
@@ -220,7 +220,7 @@ mcmc_rhat_data <- function(rhat, ...) {
 #' @rdname MCMC-diagnostics
 #' @export
 #' @param ratio A vector of *ratios* of effective sample size estimates to
-#'   total sample size. See [neff_ratio()].
+#'   total sample size. See [extract_neff_ratio()].
 #'
 mcmc_neff <- function(ratio, ..., size = NULL) {
   check_ignored_arguments(...)

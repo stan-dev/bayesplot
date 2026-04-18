@@ -78,54 +78,70 @@ test_that("log_posterior.stanreg returns correct structure", {
   expect_equal(length(unique(lp$Chain)), CHAINS)
 })
 
-test_that("rhat.stanreg returns correct structure", {
+test_that("extract_rhat.stanreg returns correct structure", {
   skip_if_not_installed("rstanarm")
 
-  r <- rhat(fit)
+  r <- extract_rhat(fit)
   expect_named(r)
   expect_equal(r, summary(fit)[1:length(r), "Rhat"])
 
-  expect_identical(names(rhat(fit, regex_pars = c("wt", "am"))),
+  expect_identical(names(extract_rhat(fit, regex_pars = c("wt", "am"))),
                    c("wt", "am"))
 })
 
-test_that("neff_ratio.stanreg returns correct structure", {
+test_that("extract_neff_ratio.stanreg returns correct structure", {
   skip_if_not_installed("rstanarm")
 
-  expect_named(neff_ratio(fit, pars = c("wt", "am")), c("wt", "am"))
+  expect_named(extract_neff_ratio(fit, pars = c("wt", "am")), c("wt", "am"))
 
-  ratio <- neff_ratio(fit)
+  ratio <- extract_neff_ratio(fit)
   expect_named(ratio)
   ans <- summary(fit)[1:length(ratio), "n_eff"] / (floor(ITER / 2) * CHAINS)
   expect_equal(ratio, ans, tolerance = 0.001)
 })
 
-test_that("rhat.stanfit returns correct structure", {
+test_that("extract_rhat.stanfit returns correct structure", {
   skip_if_not_installed("rstanarm")
 
-  r <- rhat(fit$stanfit)
+  r <- extract_rhat(fit$stanfit)
   expect_named(r)
   expect_equal(r, summary(fit)[, "Rhat"])
 
-  r2 <- rhat(fit$stanfit, pars = c("wt", "sigma"))
+  r2 <- extract_rhat(fit$stanfit, pars = c("wt", "sigma"))
   expect_named(r2)
   expect_equal(r2, summary(fit, pars = c("wt", "sigma"))[, "Rhat"])
 })
 
-test_that("neff_ratio.stanreg returns correct structure", {
+test_that("extract_neff_ratio.stanfit returns correct structure", {
   skip_if_not_installed("rstanarm")
 
   denom <- floor(ITER / 2) * CHAINS
 
-  ratio <- neff_ratio(fit$stanfit)
+  ratio <- extract_neff_ratio(fit$stanfit)
   expect_named(ratio)
   ans <- summary(fit)[, "n_eff"] / denom
   expect_equal(ratio, ans, tolerance = 0.001)
 
-  ratio2 <- neff_ratio(fit$stanfit, pars = c("wt", "sigma"))
+  ratio2 <- extract_neff_ratio(fit$stanfit, pars = c("wt", "sigma"))
   expect_named(ratio2)
   ans2 <- summary(fit, pars = c("wt", "sigma"))[, "n_eff"] / denom
   expect_equal(ratio2, ans2, tolerance = 0.001)
+})
+
+test_that("rhat() and neff_ratio() are deprecated but still work", {
+  skip_if_not_installed("rstanarm")
+
+  expect_warning(
+    r <- rhat(fit),
+    class = "lifecycle_warning_deprecated"
+  )
+  expect_equal(r, suppressWarnings(extract_rhat(fit)))
+
+  expect_warning(
+    ratio <- neff_ratio(fit),
+    class = "lifecycle_warning_deprecated"
+  )
+  expect_equal(ratio, suppressWarnings(extract_neff_ratio(fit)))
 })
 
 test_that("cmdstanr methods work", {
@@ -145,11 +161,11 @@ test_that("cmdstanr methods work", {
   expect_equal(range(np$Chain), c(1, 2))
   expect_equal(range(np$Iteration), c(1, 500))
 
-  r <- rhat(fit)
+  r <- extract_rhat(fit)
   expect_named(head(r, 4), c("alpha", "beta[1]", "beta[2]", "beta[3]"))
   expect_true(all(round(r) == 1))
 
-  ratio <- neff_ratio(fit)
+  ratio <- extract_neff_ratio(fit)
   expect_named(head(ratio, 4), c("alpha", "beta[1]", "beta[2]", "beta[3]"))
   expect_true(all(ratio > 0))
 
