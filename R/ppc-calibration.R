@@ -57,14 +57,11 @@ NULL
 #' @rdname PPC-calibration
 #' @export
 ppc_calibration_overlay <- function(
-    y, prep, ..., prob = NULL, linewidth = 0.25, alpha = 0.2,
-    x_range = c("full", "data")) {
+    y, prep, ..., prob = NULL, linewidth = 0.25, alpha = 0.2) {
   check_ignored_arguments(...)
-  x_range <- match.arg(x_range)
   data <- ppc_calibration_data(y, prep)
   params <- .calibration_plot_params(
     data = data,
-    x_range = x_range,
     linewidth = linewidth,
     show_qdots = FALSE,
     prob = 0.95,
@@ -90,14 +87,11 @@ ppc_calibration_overlay <- function(
 #' @rdname PPC-calibration
 #' @export
 ppc_calibration_overlay_grouped <- function(
-    y, prep, group, ..., prob = NULL, linewidth = 0.25, alpha = 0.2,
-    x_range = c("full", "data")) {
+    y, prep, group, ..., prob = NULL, linewidth = 0.25, alpha = 0.2) {
   check_ignored_arguments(...)
-  x_range <- match.arg(x_range)
   data <- ppc_calibration_data(y, prep, group)
   params <- .calibration_plot_params(
     data = data,
-    x_range = x_range,
     linewidth = linewidth,
     show_qdots = FALSE,
     prob = 0.95,
@@ -138,11 +132,6 @@ ppc_calibration_overlay_grouped <- function(
 #'   `"confidence"` to use uncertainty in the estimated calibration curve, or
 #'   `"consistency"` to compare to replicated outcomes.
 #' @param interval_type Deprecated alias for `interval`.
-#' @param x_range For `ppc_calibration()`, `ppc_calibration_grouped()`,
-#'   `ppc_calibration_overlay()`, and `ppc_calibration_overlay_grouped()`,
-#'   choose `"full"` to always show the x-axis on `[0, 1]` (default), or
-#'   `"data"` to zoom to the range of predicted probabilities in the plotted
-#'   data.
 #' @param B For calibration plots that use `yrep` with `interval = "confidence"`,
 #'   the number of bootstrap samples.
 #' @param show_mean For calibration interval plots, if `TRUE` (default), draw
@@ -170,7 +159,6 @@ ppc_calibration <- function(
     prob = .95,
     interval = c("confidence", "consistency"),
     interval_type = NULL,
-    x_range = c("full", "data"),
     help_text = TRUE,
     B = 200,
     show_mean = TRUE,
@@ -184,7 +172,6 @@ ppc_calibration <- function(
     interval <- interval_type
   }
   interval <- match.arg(interval)
-  x_range <- match.arg(x_range)
   .validate_calibration_qdots_args(show_qdots, qdots_quantiles)
 
   data <- ppc_calibration_interval_data(
@@ -197,7 +184,6 @@ ppc_calibration <- function(
   )
   params <- .calibration_plot_params(
     data = data,
-    x_range = x_range,
     linewidth = linewidth,
     show_qdots = show_qdots,
     prob = prob,
@@ -252,7 +238,6 @@ ppc_calibration_grouped <- function(
     prob = .95,
     interval = c("confidence", "consistency"),
     interval_type = NULL,
-    x_range = c("full", "data"),
     help_text = TRUE,
     B = 200,
     show_mean = TRUE,
@@ -266,7 +251,6 @@ ppc_calibration_grouped <- function(
     interval <- interval_type
   }
   interval <- match.arg(interval)
-  x_range <- match.arg(x_range)
   .validate_calibration_qdots_args(show_qdots, qdots_quantiles)
   data <- ppc_calibration_interval_data_grouped(
     y = y,
@@ -279,7 +263,6 @@ ppc_calibration_grouped <- function(
   )
   params <- .calibration_plot_params(
     data = data,
-    x_range = x_range,
     linewidth = linewidth,
     show_qdots = show_qdots,
     prob = prob,
@@ -335,7 +318,6 @@ ppc_loo_calibration <- function(
     prob = .95,
     interval = c("confidence", "consistency"),
     interval_type = NULL,
-    x_range = c("full", "data"),
     help_text = TRUE,
     B = 200,
     show_mean = TRUE,
@@ -353,7 +335,6 @@ ppc_loo_calibration <- function(
     prob = prob,
     interval = interval,
     interval_type = interval_type,
-    x_range = x_range,
     help_text = help_text,
     B = B,
     show_mean = show_mean,
@@ -376,7 +357,6 @@ ppc_loo_calibration_grouped <- function(
     prob = .95,
     interval = c("confidence", "consistency"),
     interval_type = NULL,
-    x_range = c("full", "data"),
     help_text = TRUE,
     B = 200,
     show_mean = TRUE,
@@ -395,7 +375,6 @@ ppc_loo_calibration_grouped <- function(
     prob = prob,
     interval = interval,
     interval_type = interval_type,
-    x_range = x_range,
     help_text = help_text,
     B = B,
     show_mean = show_mean,
@@ -444,23 +423,10 @@ ppc_calibration_data <- function(y, prep, group = NULL) {
   }
 }
 
-.calibration_plot_params <- function(data, x_range, linewidth, show_qdots, prob, interval) {
-  xlim <- if (identical(x_range, "data")) {
-    xlim_data <- range(data$value, na.rm = TRUE)
-    if (!all(is.finite(xlim_data)) || diff(xlim_data) <= 0) c(0, 1) else xlim_data
-  } else {
-    c(0, 1)
-  }
-  x_breaks <- if (identical(x_range, "data")) {
-    seq(from = xlim[1], to = xlim[2], length.out = 5)
-  } else {
-    ggplot2::waiver()
-  }
-  x_labels <- if (identical(x_range, "data")) {
-    scales::label_number(accuracy = 0.01)
-  } else {
-    ggplot2::waiver()
-  }
+.calibration_plot_params <- function(data, linewidth, show_qdots, prob, interval) {
+  xlim <- c(0, 1)
+  x_breaks <- ggplot2::waiver()
+  x_labels <- ggplot2::waiver()
   prob_pct <- sub("\\.?0+$", "", sprintf("%.2f", 100 * prob))
   list(
     xlim = xlim,
@@ -468,7 +434,11 @@ ppc_calibration_data <- function(y, prep, group = NULL) {
     x_labels = x_labels,
     ylim = c(0 - linewidth / 200, 1 + linewidth / 200),
     y_breaks = pretty(c(0, 1), n = 5),
-    ci_label = sprintf("%s%%-%sInterval", prob_pct, capitalize_first(interval))
+    ci_label = sprintf(
+      "%s%%-%sI (ptw.)",
+      prob_pct, 
+      switch(interval, consistency = "Cs", "C")
+    )
   )
 }
 

@@ -44,6 +44,7 @@ Imports:
     tidyselect,
     utils
 Suggests:
+    brms,
     cmdstanr,
     ggdist,
     ggfortify,
@@ -51,6 +52,8 @@ Suggests:
     hexbin,
     knitr (>= 1.16),
     loo (>= 2.0.0),
+    monotone,
+    patchwork,
     RColorBrewer,
     rmarkdown (>= 1.0.0),
     rstan (>= 2.17.1),
@@ -60,10 +63,7 @@ Suggests:
     shinystan (>= 2.3.0),
     survival,
     testthat (>= 3.0.0),
-    vdiffr (>= 1.0.2),
-    monotone,
-    patchwork,
-    brms
+    vdiffr (>= 1.0.2)
 RoxygenNote: 7.3.3
 VignetteBuilder: knitr
 Encoding: UTF-8

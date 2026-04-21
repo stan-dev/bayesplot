@@ -19,8 +19,7 @@ ppc_calibration_overlay(
   ...,
   prob = NULL,
   linewidth = 0.25,
-  alpha = 0.5,
-  x_range = c("full", "data")
+  alpha = 0.2
 )
 
 ppc_calibration_overlay_grouped(
@@ -30,8 +29,7 @@ ppc_calibration_overlay_grouped(
   ...,
   prob = NULL,
   linewidth = 0.25,
-  alpha = 0.7,
-  x_range = c("full", "data")
+  alpha = 0.2
 )
 
 ppc_calibration(
@@ -41,7 +39,6 @@ ppc_calibration(
   prob = 0.95,
   interval = c("confidence", "consistency"),
   interval_type = NULL,
-  x_range = c("full", "data"),
   help_text = TRUE,
   B = 200,
   show_mean = TRUE,
@@ -60,7 +57,6 @@ ppc_calibration_grouped(
   prob = 0.95,
   interval = c("confidence", "consistency"),
   interval_type = NULL,
-  x_range = c("full", "data"),
   help_text = TRUE,
   B = 200,
   show_mean = TRUE,
@@ -74,11 +70,11 @@ ppc_calibration_grouped(
 ppc_loo_calibration(
   y,
   yrep,
-  lw,
+  lw = NULL,
+  psis_object = NULL,
   prob = 0.95,
   interval = c("confidence", "consistency"),
   interval_type = NULL,
-  x_range = c("full", "data"),
   help_text = TRUE,
   B = 200,
   show_mean = TRUE,
@@ -92,12 +88,12 @@ ppc_loo_calibration(
 ppc_loo_calibration_grouped(
   y,
   yrep,
-  lw,
+  lw = NULL,
+  psis_object = NULL,
   group,
   prob = 0.95,
   interval = c("confidence", "consistency"),
   interval_type = NULL,
-  x_range = c("full", "data"),
   help_text = TRUE,
   B = 200,
   show_mean = TRUE,
@@ -144,12 +140,6 @@ the number of draws and \code{N = length(y)}.}
 \item{linewidth, alpha}{Arguments passed to geoms controlling line width and
 opacity.}
 
-\item{x_range}{For \code{ppc_calibration()}, \code{ppc_calibration_grouped()},
-\code{ppc_calibration_overlay()}, and \code{ppc_calibration_overlay_grouped()},
-choose \code{"full"} to always show
-the x-axis on \verb{[0, 1]} (default), or \code{"data"} to zoom to the range of
-predicted probabilities in the plotted data.}
-
 \item{group}{A grouping variable of the same length as \code{y}.
 Will be coerced to \link[base:factor]{factor} if not already a factor.
 Each value in \code{group} is interpreted as the group level pertaining
@@ -192,7 +182,13 @@ the \code{quantiles} argument of \code{ggdist::stat_dots()} when
 \code{show_qdots = TRUE}.}
 
 \item{lw}{For \code{ppc_loo_calibration()} and \code{ppc_loo_calibration_grouped()},
-a matrix of log weights with the same dimensions as \code{yrep}.}
+a matrix of log weights with the same dimensions as \code{yrep}. Either
+\code{psis_object} or \code{lw} has to be specified.}
+
+\item{psis_object}{For \code{ppc_loo_calibration()} and \code{ppc_loo_calibration_grouped()},
+an object of class \code{"psis"} that is created when the \code{loo()} function calls
+\code{psis()} internally to do the PSIS procedure. Either \code{psis_object} or \code{lw}
+has to be specified.}
 }
 \value{
 The plotting functions return a ggplot object that can be further
@@ -219,7 +215,9 @@ curves.
 },
 \item{\code{ppc_loo_calibration()},\code{ppc_loo_calibration_grouped()}}{
 PAV-adjusted calibration plots to assess the calibration of the
-leave-one-out (LOO) predictive probabilities.
+leave-one-out (LOO) predictive probabilities, computed by resampling each
+observation's posterior predictive draws using the corresponding LOO
+importance weights.
 }
 }
 }

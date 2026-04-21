@@ -17,11 +17,21 @@ vignette: >
 ```{r, child="children/SETTINGS-knitr.txt"}
 ```
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
+
+pkgs <- c("brms", "rstanarm")
+
+if (!all(sapply(pkgs, requireNamespace, quietly = TRUE))) {
+  knitr::opts_chunk$set(eval = FALSE)
+}
+```
+
 ```{r pkgs}
+library(brms)
+library(rstanarm)
 library("ggplot2")
 library("patchwork")
-library("rstanarm")
-library("brms")
 
 SEED <- 840
 set.seed(SEED)
@@ -57,7 +67,7 @@ S <- 80
 x <- runif(N, -2, 0)
 
 p_true <- plogis(0.8 * x)
-y      <- rbinom(N, size = 1, prob = p_true)
+y <- rbinom(N, size = 1, prob = p_true)
 
 # Helper: generate S posterior-like draws of predicted probabilities.
 # Noise is added on the logit scale so predictions remain in (0, 1).
@@ -65,21 +75,28 @@ make_prep <- function(mu, S = 100, sd_logit = 0.35) {
   lp  <- qlogis(pmin(pmax(mu, 1e-6), 1 - 1e-6))
   mat <- matrix(
     rnorm(S * length(mu), mean = rep(lp, each = S), sd = sd_logit),
-    nrow = S, byrow = FALSE
+    nrow = S, 
+    byrow = FALSE
   )
   plogis(mat)
 }
 
 # Two prediction systems
 # Nearly calibrated: centred at the true probabilities
-prep_good <- make_prep(p_true, S = S, sd_logit = 0.30)
+prep_good <- make_prep(
+  mu = p_true, 
+  S = S, 
+  sd_logit = 0.30
+  )
 
 # Miscalibrated: probabilities pushed to the extremes and shifted
 p_bad_center <- plogis(1.8 * qlogis(p_true) - 0.5)
-prep_bad     <- make_prep(p_bad_center, S = S, sd_logit = 0.25)
+prep_bad <- make_prep(
+  mu = p_bad_center, 
+  S = S, 
+  sd_logit = 0.25
+  )
 ```
-
----
 
 ## `ppc_calibration_data()` - the underlying data structure
 
@@ -87,7 +104,12 @@ prep_bad     <- make_prep(p_bad_center, S = S, sd_logit = 0.25)
 on. Understanding its output helps you work with or extend the visualisations.
 
 ```{r calib-data}
-dat <- ppc_calibration_data(y, prep_good, group = NULL)
+dat <- ppc_calibration_data(
+  y = y, 
+  prep = prep_good, 
+  group = NULL
+  )
+
 head(dat, 5)
 ```
 
@@ -119,24 +141,16 @@ variability of the calibration.
   observed rates).
 
 ```{r overlay-basic, fig.width=7, fig.height=3, fig.asp=NULL, out.width="80%", fig.align="center"}
-p1 <- ppc_calibration_overlay(y = y, prep = prep_good) +
+p1 <- ppc_calibration_overlay(
+  y = y, 
+  prep = prep_good
+  ) +
   labs(title = "Calibrated")
-p2 <- ppc_calibration_overlay(y = y, prep = prep_bad) +
-  labs(title = "Miscalibrated")
 
-p1 | p2
-```
-
-### Trimming the x-axis with `x_range`
-
-By default the x-axis spans the full [0, 1] interval (`x_range = "full"`).
-When predictions are concentrated in a narrower range you can focus the plot
-on the data by setting `x_range = "data"`:
-
-```{r overlay-xrange, fig.width=7, fig.height=3, fig.asp=NULL, out.width="80%", fig.align="center"}
-p1 <- ppc_calibration_overlay(y = y, prep = prep_good, x_range = "data") +
-  labs(title = "Calibrated")
-p2 <- ppc_calibration_overlay(y = y, prep = prep_bad, x_range = "data") +
+p2 <- ppc_calibration_overlay(
+  y = y, 
+  prep = prep_bad
+  ) +
   labs(title = "Miscalibrated")
 
 p1 | p2
@@ -150,7 +164,11 @@ When observations belong to meaningful subgroups, pass a group vector to
 ```{r overlay-grouped, fig.width=7, fig.height=3, fig.asp=NULL, out.width="80%", fig.align="center"}
 gr <- c(replicate(N / 2, "Group-A"), replicate(N / 2, "Group-B"))
 
-ppc_calibration_overlay_grouped(y = y, prep = prep_good, group = gr)
+ppc_calibration_overlay_grouped(
+  y = y, 
+  prep = prep_good, 
+  group = gr
+  )
 ```
 
 ## `ppc_calibration()` — calibration curve with uncertainty bands
@@ -182,7 +200,6 @@ the `interval` argument.
   - **`B`**: positive integer number of bootstrap samples.
 
 - **Plot controls**
-  - **`x_range`**: `"full"` or `"data"`.
   - **`help_text`**, **`show_mean`**: logical flags.
   - **`show_qdots`**: single non-missing logical (`TRUE`/`FALSE`).
   - **`qdots_quantiles`**: positive integer.
@@ -211,12 +228,8 @@ Input arguments are `y` ($y_i$)  and `prep` ($p_i^{(s)}$).
 
 | `interval` | How it is computed | What it answers |
 |---|---|---|
-| `"confidence"` | Quantiles of $\{m_{\text{obs},k}^{(s)}\}_{s=1}^S$ |
-*Where would we expect our model's calibration curve to lie?*
-(**estimation uncertainty**) |
-| `"consistency"` | Quantiles of CEPs computed from
-$\tilde{y}_k^{(s)} \sim \text{Bernoulli}(p_k^{(s)})$ | *Where would a perfectly
-calibrated model's curve lie?* (**posterior predictive consistency**) |
+| `"confidence"` | Quantiles of $\{m_{\text{obs},k}^{(s)}\}_{s=1}^S$ | *Where would we expect our model's calibration curve to lie?* (**estimation uncertainty**) |
+| `"consistency"` | Quantiles of CEPs computed from $\tilde{y}_k^{(s)} \sim \text{Bernoulli}(p_k^{(s)})$ | *Where would a perfectly calibrated model's curve lie?* (**posterior predictive consistency**) |
 
 ```{r setup-new-data}
 # New simulated dataset for the ppc_calibration() examples
@@ -225,22 +238,35 @@ S <- 200
 x <- runif(N, -2, 2)
 
 p_true <- plogis(-0.2 + 1.1 * x)
-y      <- rbinom(N, size = 1, prob = p_true)
+y <- rbinom(N, size = 1, prob = p_true)
 
 prep <- matrix(
   plogis(rnorm(S * N, mean = rep(qlogis(p_true), each = S), sd = 0.35)),
-  nrow = S, ncol = N
+  nrow = S, 
+  ncol = N
 )
 
 yrep <- matrix(
   rbinom(S * N, size = 1, prob = as.vector(prep)),
-  nrow = S, ncol = N
+  nrow = S, 
+  ncol = N
 )
 ```
 
 ```{r calib-prep-plot, fig.width=7, fig.height=3, fig.asp=NULL, out.width="80%", fig.align="center"}
-p1 <- ppc_calibration(y, prep, interval = "consistency", show_qdots = FALSE)
-p2 <- ppc_calibration(y, prep, interval = "confidence",  show_qdots = FALSE)
+p1 <- ppc_calibration(
+  y = y, 
+  prep = prep, 
+  interval = "consistency", 
+  show_qdots = FALSE
+  )
+
+p2 <- ppc_calibration(
+  y = y, 
+  prep = prep, 
+  interval = "confidence",
+  show_qdots = FALSE
+  )
 
 p1 | p2
 ```
@@ -265,8 +291,19 @@ Input arguments are `y` ($y_i$) and `yrep` ($y_{\text{rep},i}^{(s)}$).
 | `"consistency"` | For each draw $s$, compute the CEP of sorted posterior predictions $y_{\text{rep},k}^{(s)}$ | *Where would a calibrated model's curve lie?* (**posterior predictive consistency**) |
 
 ```{r calib-yrep-plot, fig.width=7, fig.height=3, fig.asp=NULL, out.width="80%", fig.align="center"}
-p1 <- ppc_calibration(y, yrep, interval = "consistency", show_qdots = FALSE)
-p2 <- ppc_calibration(y, yrep, interval = "confidence",  show_qdots = FALSE)
+p1 <- ppc_calibration(
+  y = y, 
+  yrep = yrep, 
+  interval = "consistency", 
+  show_qdots = FALSE
+  )
+
+p2 <- ppc_calibration(
+  y = y, 
+  yrep = yrep, 
+  interval = "confidence", 
+  show_qdots = FALSE
+  )
 
 p1 | p2
 ```
@@ -283,28 +320,22 @@ histogram but with low bias and higher variance. By default
 methodological details.
 
 ```{r qdots, fig.width=7, fig.height=3, fig.asp=NULL, out.width="80%", fig.align="center"}
-p1 <- ppc_calibration(y, prep, interval = "confidence", show_qdots = TRUE) +
+p1 <- ppc_calibration(
+  y = y, 
+  prep = prep, 
+  interval = "confidence", 
+  show_qdots = TRUE
+  ) +
   labs(title = "qdots_quantiles = 100")
-p2 <- ppc_calibration(y, prep, interval = "confidence", show_qdots = TRUE,
-                      qdots_quantiles = 200) +
+
+p2 <- ppc_calibration(
+  y = y, 
+  prep = prep, 
+  interval = "confidence", 
+  show_qdots = TRUE,
+  qdots_quantiles = 200
+  ) +
   labs(title = "qdots_quantiles = 200")
-
-p1 | p2
-```
-
-#### `x_range` - axis trimming
-
-Setting `x_range = "data"` restricts the x-axis to the range of predicted
-probabilities. This is useful when predictions are concentrated in a
-sub-interval of [0, 1]:
-
-```{r xrange, fig.width=7, fig.height=3, fig.asp=NULL, out.width="80%", fig.align="center"}
-p1 <- ppc_calibration(y, prep, interval = "confidence", show_qdots = TRUE,
-                      x_range = "data") +
-  labs(title = 'x_range = "data"')
-p2 <- ppc_calibration(y, prep, interval = "confidence", show_qdots = TRUE,
-                      x_range = "full") +
-  labs(title = 'x_range = "full"')
 
 p1 | p2
 ```
@@ -316,11 +347,22 @@ A short interpretive caption appears below the plot by default
 when embedding the plot in a report that provides its own caption:
 
 ```{r help-text, fig.width=7, fig.height=3, fig.asp=NULL, out.width="80%", fig.align="center"}
-p1 <- ppc_calibration(y, prep, interval = "confidence", show_qdots = TRUE,
-                      help_text = TRUE) +
+p1 <- ppc_calibration(
+  y = y, 
+  prep = prep, 
+  interval = "confidence", 
+  show_qdots = TRUE,
+  help_text = TRUE
+  ) +
   labs(title = "help_text = TRUE")
-p2 <- ppc_calibration(y, prep, interval = "confidence", show_qdots = TRUE,
-                      help_text = FALSE) +
+
+p2 <- ppc_calibration(
+  y = y, 
+  prep = prep, 
+  interval = "confidence", 
+  show_qdots = TRUE,
+  help_text = FALSE
+  ) +
   labs(title = "help_text = FALSE")
 
 p1 | p2
@@ -335,9 +377,9 @@ $\alpha/2$ to the $1 - \alpha/2$ quantile.
 
 ```{r interval-data, fig.width=7, fig.height=3, fig.asp=NULL, out.width="80%", fig.align="center"}
 dat_interval <- ppc_calibration_interval_data(
-  y        = y,
-  prep     = prep,
-  prob     = 0.95,
+  y = y,
+  prep = prep,
+  prob = 0.95,
   interval = "consistency"
 )
 
@@ -372,40 +414,39 @@ case study
 [*Roaches cross-validation model checking and comparison*](https://users.aalto.fi/~ave/casestudies/roaches/roaches.html).
 
 ```{r roaches-fit, fig.width=7, fig.height=3, fig.asp=NULL, out.width="80%", fig.align="center", message=FALSE, warning=FALSE}
-data(roaches)
+SEED <- 840
+data(roaches, package = "rstanarm")
 
 roaches$sqrt_roach1 <- sqrt(roaches$roach1)
 n <- length(roaches$y)
 
-# Zero-inflated negative binomial (brms)
 brm_glmzinb <- brms::brm(
-  brms::bf(
+  formula = brms::bf(
     y ~ sqrt_roach1 + treatment + senior + offset(log(exposure2)),
     zi ~ sqrt_roach1 + treatment + senior + offset(log(exposure2))
   ),
   family = brms::zero_inflated_negbinomial(),
-  data   = roaches,
-  prior  = c(
+  data = roaches,
+  prior = c(
     brms::prior(normal(0, 3), class = "b"),
-    brms::prior(normal(0, 3), class = "b",         dpar = "zi"),
+    brms::prior(normal(0, 3), class = "b", dpar = "zi"),
     brms::prior(normal(0, 3), class = "Intercept", dpar = "zi")
   ),
-  seed    = SEED,
+  seed = SEED,
   refresh = 0
 )
 
-# Negative binomial (rstanarm)
-stan_glmnb <- stan_glm(
-  y ~ sqrt_roach1 + treatment + senior,
-  offset          = log(exposure2),
-  data            = roaches,
-  family          = neg_binomial_2,
-  prior           = normal(0, 2.5),
+stan_glmnb <- rstanarm::stan_glm(
+  formula = y ~ sqrt_roach1 + treatment + senior,
+  offset = log(exposure2),
+  data = roaches,
+  family = neg_binomial_2,
+  prior = normal(0, 2.5),
   prior_intercept = normal(0, 5),
-  chains          = 4,
-  cores           = 1,
-  seed            = SEED,
-  refresh         = 0
+  chains = 4,
+  cores = 1,
+  seed = SEED,
+  refresh = 0
 )
 ```
 
@@ -413,20 +454,18 @@ stan_glmnb <- stan_glm(
 pp <- pmin(brms::posterior_predict(stan_glmnb), 1)
 
 p1 <- ppc_calibration(
-  y             = pmin(roaches$y, 1),
-  yrep          = pp,
+  y = pmin(roaches$y, 1),
+  yrep = pp,
   interval_type = "consistency",
-  prob          = 0.95,
-  x_range       = "full"
+  prob = 0.95
 ) +
   labs(title = "Negative binomial")
 
 p2 <- ppc_calibration(
-  y             = pmin(roaches$y, 1),
-  yrep          = apply(posterior_predict(brm_glmzinb), 2, pmin, 1),
+  y = pmin(roaches$y, 1),
+  yrep = apply(brms::posterior_predict(brm_glmzinb), 2, pmin, 1),
   interval_type = "consistency",
-  prob          = 0.95,
-  x_range       = "full"
+  prob = 0.95
 ) +
   labs(title = "Zero-inflated negative binomial")
 
@@ -445,27 +484,25 @@ and stronger discrimination between apartments with and without roaches.
 
 ```{r roaches-loo-plot, fig.width=8, fig.height=3, fig.asp=NULL, out.width="90%", fig.align="center", message=FALSE, warning=FALSE}
 
-brm_glmzinb <- add_criterion(brm_glmzinb, criterion = "loo")
-fit_glmzinb <- loo(brm_glmzinb, save_psis = TRUE)
+brm_glmzinb <- brms::add_criterion(brm_glmzinb, criterion = "loo")
+fit_glmzinb <- brms::loo(brm_glmzinb, save_psis = TRUE)
 
 pp <- pmin(brms::posterior_predict(stan_glmnb), 1)
 
 p1 <- ppc_calibration(
-  y             = pmin(roaches$y, 1),
-  yrep          = pp,
+  y = pmin(roaches$y, 1),
+  yrep = pp,
   interval_type = "consistency",
-  prob          = 0.95,
-  x_range       = "full"
+  prob = 0.95
 ) +
   labs(title = "Negative binomial")
 
 p2 <- ppc_loo_calibration(
-  y             = pmin(roaches$y, 1),
-  yrep          = pp,
-  psis_object   = fit_glmzinb$psis_object,
+  y = pmin(roaches$y, 1),
+  yrep = pp,
+  psis_object = fit_glmzinb$psis_object,
   interval_type = "consistency",
-  prob          = 0.95,
-  x_range       = "full"
+  prob = 0.95
 ) +
   labs(title = "Negative binomial (loo)")
 

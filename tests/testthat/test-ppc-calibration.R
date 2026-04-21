@@ -123,44 +123,12 @@ test_that("ppc_calibration_overlay returns a ggplot object", {
   expect_gg(ppc_calibration_overlay(calib_y, calib_prep))
   expect_gg(ppc_calibration_overlay(calib_y, calib_prep[1:5, ], 
                                    linewidth = 0.5, alpha = 0.3))
-  expect_gg(ppc_calibration_overlay(calib_y, calib_prep, x_range = "data"))
 })
 
 test_that("ppc_calibration_overlay_grouped returns a ggplot object", {
   expect_gg(ppc_calibration_overlay_grouped(calib_y, calib_prep, calib_group))
   expect_gg(ppc_calibration_overlay_grouped(calib_y, calib_prep[1:3, ], calib_group,
                                            linewidth = 0.5, alpha = 0.3))
-  expect_gg(ppc_calibration_overlay_grouped(
-    calib_y,
-    calib_prep,
-    calib_group,
-    x_range = "data"
-  ))
-})
-
-test_that("ppc_calibration overlay functions support x_range", {
-  y <- c(0, 1, 0, 1)
-  prep <- rbind(
-    c(0.20, 0.30, 0.40, 0.50),
-    c(0.25, 0.35, 0.45, 0.55)
-  )
-  group <- c("A", "A", "B", "B")
-
-  p_full <- ppc_calibration_overlay(y, prep, x_range = "full")
-  p_data <- ppc_calibration_overlay(y, prep, x_range = "data")
-  xr_full <- ggplot2::ggplot_build(p_full)$layout$panel_params[[1]]$x.range
-  xr_data <- ggplot2::ggplot_build(p_data)$layout$panel_params[[1]]$x.range
-
-  expect_equal(xr_full, c(0, 1))
-  expect_equal(xr_data, range(prep))
-
-  p_grouped_full <- ppc_calibration_overlay_grouped(y, prep, group, x_range = "full")
-  p_grouped_data <- ppc_calibration_overlay_grouped(y, prep, group, x_range = "data")
-  xr_grouped_full <- ggplot2::ggplot_build(p_grouped_full)$layout$panel_params[[1]]$x.range
-  xr_grouped_data <- ggplot2::ggplot_build(p_grouped_data)$layout$panel_params[[1]]$x.range
-
-  expect_equal(xr_grouped_full, c(0, 1))
-  expect_equal(xr_grouped_data, range(prep))
 })
 
 test_that("ppc_calibration returns a ggplot object", {
@@ -538,40 +506,19 @@ test_that("test-data-2 from paper", {
       y = pmin(roaches$y, 1),
       yrep = pp,
       interval_type = "consistency",
-      prob = 0.95,
-      x_range = "full"
+      prob = 0.95
     )
   )
 
-  vdiffr::expect_doppelganger("ppc_calibration consistency x-range=data",
+  vdiffr::expect_doppelganger("ppc_calibration roaches confidence",
     ppc_calibration(
       y = pmin(roaches$y, 1),
       yrep = pp,
       interval_type = "confidence",
-      prob = 0.95,
-      x_range = "data"
+      prob = 0.95
     )
   )
 
-  vdiffr::expect_doppelganger("ppc_calibration confidence x-range=data",
-    ppc_calibration(
-      y = pmin(roaches$y, 1),
-      yrep = pp,
-      interval_type = "confidence",
-      prob = 0.95,
-      x_range = "data"
-    )
-  )
-  
-  vdiffr::expect_doppelganger("ppc_calibration confidence x-range=full",
-    ppc_calibration(
-      y = pmin(roaches$y, 1),
-      yrep = pp,
-      interval_type = "confidence",
-      prob = 0.95,
-      x_range = "full"
-    )
-  )
 })
 
 test_that("test-data-2 from paper", {
@@ -602,8 +549,7 @@ test_that("test-data-2 from paper", {
         y = pmin(roaches$y, 1),
         yrep = apply(posterior_predict(brm_glmzinb), 2, pmin, 1),
         interval_type = "consistency",
-        prob = 0.95,
-        x_range = "data"
+        prob = 0.95
       )
     )
 })
