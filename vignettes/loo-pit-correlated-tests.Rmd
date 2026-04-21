@@ -298,16 +298,19 @@ cu_df <- data.frame(id, group, week, cu, set)
 cu_df <- cu_df |>
   tidyr::drop_na(cu)
 
-fit_normal <- brms::brm(formula = cu ~ group*week + (1 | id),
-          data = cu_df,
-          family = gaussian(),
-          prior = c(brms::prior(normal(14, 1.5), class = Intercept),
-                    brms::prior(normal(0, 11), class = b),
-                    brms::prior(cauchy(1,2), class = sd)),
-          save_pars = brms::save_pars(all=TRUE),
-          seed = 1234,
-          refresh = 0)
-fit_normal <- brms::add_criterion(fit_normal, criterion="loo", save_psis=TRUE)
+# fit_normal <- brms::brm(formula = cu ~ group*week + (1 | id),
+#           data = cu_df,
+#           family = gaussian(),
+#           prior = c(brms::prior(normal(14, 1.5), class = Intercept),
+#                     brms::prior(normal(0, 11), class = b),
+#                     brms::prior(cauchy(1,2), class = sd)),
+#           save_pars = brms::save_pars(all=TRUE),
+#           seed = 1234,
+#           refresh = 0)
+#
+# fit_normal <- brms::add_criterion(fit_normal, criterion="loo", save_psis=TRUE)
+
+fit_normal <- readRDS("saved-results/fit_normal.Rds")
 ```
 
 ### `ppc_pit_ecdf()`
