@@ -22,11 +22,11 @@ ppd_dens_overlay(
   size = 0.25,
   alpha = 0.7,
   trim = FALSE,
-  bw = "nrd0",
-  adjust = 1,
-  kernel = "gaussian",
+  bw = NULL,
+  adjust = NULL,
+  kernel = NULL,
   bounds = NULL,
-  n_dens = 1024
+  n_dens = NULL
 )
 
 ppd_ecdf_overlay(
@@ -124,7 +124,8 @@ the predictive distributions.}
 \item{bw, adjust, kernel, n_dens, bounds}{Optional arguments passed to
 \code{\link[stats:density]{stats::density()}} (and \code{bounds} to \code{\link[ggplot2:geom_density]{ggplot2::stat_density()}}) to override
 default kernel density estimation parameters or truncate the density
-support. \code{n_dens} defaults to \code{1024}.}
+support. If \code{NULL} (default), \code{bw} is set to \code{"nrd0"}, \code{adjust} to \code{1},
+\code{kernel} to \code{"gaussian"}, and \code{n_dens} to \code{1024}.}
 
 \item{discrete}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} The \code{discrete} argument is
 deprecated. The ECDF is a step function by definition, so \code{geom_step()} is
