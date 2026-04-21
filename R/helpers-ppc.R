@@ -609,8 +609,8 @@ ecdf_intervals <- function(gamma, N, K, L = 1) {
         "will change to 'correlated'."
       ),
       "*" = paste(
-        "To silence this message, explicitly set",
-        "`method = 'independent'` or `method = 'correlated'`."
+        "To silence this message, explicitly set `method = 'independent'` or\n",
+        " `method = 'correlated'`."
       )
     ))
     method <- "independent"
@@ -630,7 +630,7 @@ ecdf_intervals <- function(gamma, N, K, L = 1) {
     if (!is.null(pit) && isTRUE(pareto_pit)) {
       stop(paste(
         "`pareto_pit = TRUE` cannot be used together with a non-`NULL`",
-        "`pit` value. Set either `pareto_pit = FALSE` or `pit = NULL`."
+        "`pit` value.\n  Set either `pareto_pit = FALSE` or `pit = NULL`."
       ))
     }
     test <- test %||% "POT"
