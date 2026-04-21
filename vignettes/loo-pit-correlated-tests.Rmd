@@ -21,7 +21,6 @@ vignette: >
 library(ggplot2)
 library(patchwork)
 library(loo)
-library(brms)
 
 bayesplot_theme_set()
 
@@ -34,7 +33,6 @@ library(bayesplot)
 library(ggplot2)
 library(patchwork)
 library(loo)
-library(brms)
 
 set.seed(2026)
 ```
@@ -369,7 +367,7 @@ It is also possible to use `brms::pp_check()` with `type = "loo_pit_ecdf"` to
 perform the same testing and plotting procedure as `ppc_loo_pit_ecdf()`. The
 following example demonstrates this using the same fitted model as above with
 `method = "correlated"`.
-```{r pp-check-example, fig.show="hold", out.width="80%", warning=FALSE, message=FALSE}
+```{r pp-check-example, fig.show="hold", out.width="80%", eval=FALSE}
 brms::pp_check(
   fit_normal,
   type = "loo_pit_ecdf",
