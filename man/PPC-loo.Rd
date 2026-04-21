@@ -23,11 +23,11 @@ ppc_loo_pit_overlay(
   alpha = 0.7,
   boundary_correction = TRUE,
   grid_len = 512,
-  bw = "nrd0",
+  bw = NULL,
   trim = FALSE,
-  adjust = 1,
-  kernel = "gaussian",
-  n_dens = 1024
+  adjust = NULL,
+  kernel = NULL,
+  n_dens = NULL
 )
 
 ppc_loo_pit_data(
@@ -112,12 +112,13 @@ ppc_loo_ribbon(
 \item{y}{A vector of observations. See \strong{Details}.}
 
 \item{yrep}{An \code{S} by \code{N} matrix of draws from the posterior (or prior)
-predictive distribution. The number of rows, \code{S}, is the size of the
-posterior (or prior) sample used to generate \code{yrep}. The number of columns,
-\code{N} is the number of predicted observations (\code{length(y)}). The columns of
-\code{yrep} should be in the same order as the data points in \code{y} for the plots
-to make sense. See the \strong{Details} and \strong{Plot Descriptions} sections for
-additional advice specific to particular plots.}
+predictive distribution, or a \code{\link[posterior:draws]{posterior::draws}} object. The number of
+rows, \code{S}, is the size of the posterior (or prior) sample used to generate
+\code{yrep}. The number of columns, \code{N} is the number of predicted observations
+(\code{length(y)}). The columns of \code{yrep} should be in the same order as the
+data points in \code{y} for the plots to make sense. See the \strong{Details} and
+\strong{Plot Descriptions} sections for additional advice specific to particular
+plots.}
 
 \item{lw}{A matrix of (smoothed) log weights with the same dimensions as
 \code{yrep}. See \code{\link[loo:psis]{loo::psis()}} and the associated \code{weights()} method as well as

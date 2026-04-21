@@ -210,7 +210,8 @@ function.)}
 \item{bw, adjust, kernel, n_dens, bounds}{Optional arguments passed to
 \code{\link[stats:density]{stats::density()}} (and \code{bounds} to \code{\link[ggplot2:geom_density]{ggplot2::stat_density()}}) to override
 default kernel density estimation parameters or truncate the density
-support. \code{n_dens} defaults to \code{1024}.}
+support. If \code{NULL} (default), \code{bw} is set to \code{"nrd0"}, \code{adjust} to \code{1},
+\code{kernel} to \code{"gaussian"}, and \code{n_dens} to \code{1024}.}
 
 \item{color_chains}{Option for whether to separately color chains.}
 

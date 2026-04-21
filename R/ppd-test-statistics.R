@@ -13,6 +13,7 @@
 #'
 #' @template args-ypred
 #' @inheritParams PPC-test-statistics
+#' @inheritParams PPD-distributions
 #'
 #' @template details-binomial
 #' @template return-ggplot-or-data
@@ -22,11 +23,13 @@
 #' yrep <- example_yrep_draws()
 #' ppd_stat(yrep)
 #' ppd_stat(yrep, stat = "sd") + legend_none()
+#' ppd_stat(yrep, show_marginal = TRUE)
 #'
 #' # use your own function for the 'stat' argument
 #' color_scheme_set("brightblue")
 #' q25 <- function(y) quantile(y, 0.25)
 #' ppd_stat(yrep, stat = "q25") # legend includes function name
+#' ppd_stat(yrep, stat = "q25", show_marginal = TRUE)
 NULL
 
 #' @rdname PPD-test-statistics
@@ -34,12 +37,13 @@ NULL
 ppd_stat <-
   function(ypred,
            stat = "mean",
+           show_marginal = FALSE,
            ...,
            discrete = FALSE,
            binwidth = NULL,
            bins = NULL,
            breaks = NULL,
-           freq = TRUE) {
+           freq = !show_marginal) {
     stopifnot(length(stat) == 1)
     dots <- list(...)
     if (!from_grouped(dots)) {
@@ -50,34 +54,73 @@ ppd_stat <-
     data <- ppd_stat_data(
       ypred = ypred,
       group = dots$group,
-      stat = match.fun(stat)
+      stat = match.fun(stat),
+      show_marginal = show_marginal
     )
+    data$type <- ifelse(grepl("ypred", data$variable), "ypred", "PPD")
+
     graph <- ggplot(data, mapping = set_hist_aes(
-      freq,
-      color = "ypred",
-      fill = "ypred"
+      freq || discrete, # this is needed because geom_bar fails otherwise
+      color = .data$type,
+      fill = .data$type
     ))
-    graph <- graph + if (discrete) {
-      geom_bar(
-        color = get_color("lh"),
-        linewidth = 0.25,
-        na.rm = TRUE,
-        position = "identity",
-      )
+
+    if (discrete) {
+      graph <- graph +
+        geom_bar(
+          data = data[data$type != "PPD",],
+          linewidth = 0.25,
+          na.rm = TRUE,
+          position = "identity",
+        )
+    } else {
+      graph <- graph +
+        geom_histogram(
+          data = data[data$type != "PPD",],
+          linewidth = 0.25,
+          na.rm = TRUE,
+          binwidth = binwidth,
+          bins = bins,
+          breaks = breaks
+        )
     }
-    else {
-      geom_histogram(
-        linewidth = 0.25,
-        na.rm = TRUE,
-        binwidth = binwidth,
-        bins = bins,
-        breaks = breaks
-      ) }
-      graph +
-      scale_color_ppd(guide = "none") +
-      scale_fill_ppd(labels = Typred_label(), guide = guide_legend(
-        title = stat_legend_title(stat, deparse(substitute(stat)))
-      )) +
+
+    if (isTRUE(show_marginal)) {
+      graph <- graph +
+        geom_vline(
+          aes(xintercept = .data$value,
+              color = .data$type,
+              linetype = .data$type),
+          data = data[data$type == "PPD",],
+          linewidth = 1.5
+        )
+    }
+
+    stat_title <-  stat_legend_title(stat, deparse(substitute(stat)))
+
+    if (isTRUE(show_marginal)) {
+      graph <- graph +
+        scale_color_ppd(
+          name = stat_title,
+          labels = Typred_label(),
+          guide = guide_legend(override.aes = list(
+            fill = get_color(c("d", "l")))
+          ),
+          show_marginal = show_marginal
+        ) +
+        scale_fill_ppd(guide = "none",
+                       show_marginal = show_marginal) +
+        scale_linetype_ppd(guide = "none")
+    } else {
+      graph <- graph +
+        scale_fill_ppd(name = stat_title,
+                       labels = Typred_label(),
+                       show_marginal = show_marginal) +
+        scale_color_ppd(guide = "none",
+                        show_marginal = show_marginal)
+    }
+
+    graph +
       bayesplot_theme_get() +
       dont_expand_y_axis() +
       xaxis_title(FALSE) +
@@ -93,13 +136,14 @@ ppd_stat_grouped <-
   function(ypred,
            group,
            stat = "mean",
+           show_marginal = FALSE,
            ...,
            discrete = FALSE,
            facet_args = list(),
            binwidth = NULL,
            bins = NULL,
            breaks = NULL,
-           freq = TRUE) {
+           freq = !show_marginal) {
     check_ignored_arguments(...)
     call <- match.call(expand.dots = FALSE)
     g <- eval(ungroup_call("ppd_stat", call), parent.frame())
@@ -114,6 +158,7 @@ ppd_stat_grouped <-
 ppd_stat_freqpoly <-
   function(ypred,
            stat = "mean",
+           show_marginal = FALSE,
            ...,
            facet_args = list(),
            binwidth = NULL,
@@ -129,19 +174,28 @@ ppd_stat_freqpoly <-
     data <- ppd_stat_data(
       ypred = ypred,
       group = dots$group,
-      stat = match.fun(stat)
+      stat = match.fun(stat),
+      show_marginal = show_marginal
     )
-    ggplot(data, mapping = set_hist_aes(freq)) +
+    data$type <- ifelse(grepl("ypred", data$variable), "ypred", "PPD")
+
+    p <- ggplot(data, mapping = set_hist_aes(freq, color = .data$type)) +
       geom_freqpoly(
-        aes(color = "ypred"),
         linewidth = 0.5,
         na.rm = TRUE,
         binwidth = binwidth,
-        bins = bins
+        bins = bins,
+        data = data[data$type != "PPD",]
       ) +
       scale_color_ppd(
         name = stat_legend_title(stat, deparse(substitute(stat))),
-        labels = Typred_label()
+        labels = Typred_label(),
+        show_marginal = show_marginal,
+        values = if (show_marginal) {
+          set_names(get_color(c("m", "dh")), c("ypred", "PPD"))
+        } else {
+          get_color("mh")
+        }
       ) +
       dont_expand_y_axis(expansion(mult = 0.005, add = 0)) +
       bayesplot_theme_get() +
@@ -149,6 +203,19 @@ ppd_stat_freqpoly <-
       yaxis_text(FALSE) +
       yaxis_ticks(FALSE) +
       yaxis_title(FALSE)
+
+    if (isTRUE(show_marginal)) {
+      p <- p +
+        geom_vline(
+          aes(xintercept = .data$value, color = .data$type, linetype = .data$type),
+          data = data[data$type == "PPD",],
+          key_glyph = "path",
+          linewidth = 1
+        ) +
+        scale_linetype_ppd(guide = "none")
+    }
+
+    p
   }
 
 
@@ -158,6 +225,7 @@ ppd_stat_freqpoly_grouped <-
   function(ypred,
            group,
            stat = "mean",
+           show_marginal = FALSE,
            ...,
            facet_args = list(),
            binwidth = NULL,
@@ -177,6 +245,7 @@ ppd_stat_freqpoly_grouped <-
 ppd_stat_2d <-
   function(ypred,
            stat = c("mean", "sd"),
+           show_marginal = FALSE,
            ...,
            size = 2.5,
            alpha = 0.7) {
@@ -196,30 +265,55 @@ ppd_stat_2d <-
     data <- ppd_stat_data(
       ypred = ypred,
       group = NULL,
-      stat = c(match.fun(stat[[1]]), match.fun(stat[[2]]))
+      stat = c(match.fun(stat[[1]]), match.fun(stat[[2]])),
+      show_marginal = show_marginal
     )
-    ggplot(data) +
+    data$type <- ifelse(grepl("ypred", data$variable), "ypred", "PPD")
+
+    graph <- ggplot() +
       geom_point(
         mapping = aes(
           x = .data$value,
           y = .data$value2,
-          fill = "ypred",
-          color = "ypred"
+          fill = .data$type,
+          color = .data$type,
+          shape = .data$type
         ),
-        shape = 21,
+        data = data[data$type == "ypred", ],
         size = size,
         alpha = alpha
       ) +
-      scale_fill_ppd(lgnd_title, labels = Typred_label()) +
-      scale_color_ppd(lgnd_title, labels = Typred_label()) +
+      scale_shape_ppd(lgnd_title, labels = Typred_label()) +
+      scale_fill_ppd(lgnd_title, labels = Typred_label(),
+                     show_marginal = show_marginal) +
+      scale_color_ppd(lgnd_title, labels = Typred_label(),
+                      show_marginal = show_marginal) +
       labs(x = stat_labs[1], y = stat_labs[2]) +
       bayesplot_theme_get()
+
+    if (show_marginal) {
+      graph <- graph +
+        geom_point(
+          mapping = aes(
+            x = .data$value,
+            y = .data$value2,
+            fill = .data$type,
+            color = .data$type,
+            shape = .data$type
+          ),
+          data = data[data$type == "PPD", ],
+          size = size * 1.5,
+          stroke = 0.75
+        )
+    }
+
+    graph
   }
 
 
 #' @rdname PPD-test-statistics
 #' @export
-ppd_stat_data <- function(ypred, group = NULL, stat) {
+ppd_stat_data <- function(ypred, group = NULL, stat, show_marginal = FALSE) {
   if (!(length(stat) %in% 1:2)) {
     abort("'stat' must have length 1 or 2.")
   }
@@ -239,7 +333,8 @@ ppd_stat_data <- function(ypred, group = NULL, stat) {
     predictions = ypred,
     y = NULL,
     group = group,
-    stat = stat
+    stat = stat,
+    show_marginal = show_marginal
   )
 }
 
@@ -263,7 +358,7 @@ ppd_stat_data <- function(ypred, group = NULL, stat) {
 #' ppc_stat_data(y, yrep, group, stat = "median")
 #'
 #' @importFrom dplyr group_by ungroup summarise rename
-.ppd_stat_data <- function(predictions, y = NULL, group = NULL, stat) {
+.ppd_stat_data <- function(predictions, y = NULL, group = NULL, stat, show_marginal = FALSE) {
   stopifnot(length(stat) %in% c(1,2))
   if (length(stat) == 1) {
     stopifnot(is.function(stat)) # sanity check, should already be validated
@@ -292,10 +387,10 @@ ppd_stat_data <- function(ypred, group = NULL, stat) {
   )
   colnames(d) <- gsub(".", "_", colnames(d), fixed = TRUE)
   molten_d <- reshape2::melt(d, id.vars = "group")
-  molten_d <- group_by(molten_d, .data$group, .data$variable)
 
   data <-
     molten_d %>%
+    group_by(.data$group, .data$variable) %>%
     summarise(
       value1 = stat1(.data$value),
       value2 = if (!is.null(stat2))
@@ -303,6 +398,22 @@ ppd_stat_data <- function(ypred, group = NULL, stat) {
     ) %>%
     rename(value = "value1") %>%
     ungroup()
+
+  if (isTRUE(show_marginal)) {
+    data_ppd <- molten_d %>%
+      dplyr::filter(.data$variable != "y") %>%
+      group_by(.data$group) %>%
+      summarise(
+        variable = "PPD",
+        value1 = stat1(.data$value),
+        value2 = if (!is.null(stat2))
+          stat2(.data$value) else NA
+      ) %>%
+      rename(value = "value1") %>%
+      ungroup()
+
+    data <- rbind(data, data_ppd)
+  }
 
   if (is.null(stat2)) {
     data$value2 <- NULL
@@ -328,4 +439,7 @@ stat_group_facets <- function(facet_args, scales_default = "free") {
   do.call("facet_wrap", facet_args)
 }
 
-Typred_label <- function() expression(italic(T)(italic(y)[pred]))
+Typred_label <- function() {
+  expression(PPD = italic(T)(PPD),
+             ypred = italic(T)(italic(y)[pred]))
+}

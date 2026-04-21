@@ -161,13 +161,13 @@
 <text x='258.47' y='568.03' text-anchor='middle' style='font-size: 9.60px; fill: #4D4D4D; font-family: sans;' textLength='6.41px' lengthAdjust='spacingAndGlyphs'>B</text>
 <text x='407.59' y='568.03' text-anchor='middle' style='font-size: 9.60px; fill: #4D4D4D; font-family: sans;' textLength='6.94px' lengthAdjust='spacingAndGlyphs'>C</text>
 <text x='556.70' y='568.03' text-anchor='middle' style='font-size: 9.60px; fill: #4D4D4D; font-family: sans;' textLength='6.94px' lengthAdjust='spacingAndGlyphs'>D</text>
-<circle cx='672.74' cy='290.17' r='1.45' style='stroke-width: 0.77; stroke: #011F4B;' />
-<rect x='665.52' y='300.23' width='14.45' height='14.45' style='stroke-width: 2.13; stroke: #B3CDE0; stroke-linecap: butt; stroke-linejoin: miter; fill: #D1E1EC;' />
-<text x='687.36' y='292.26' style='font-size: 13.00px; font-style: italic; font-family: sans;' textLength='6.51px' lengthAdjust='spacingAndGlyphs'>y</text>
-<text x='687.36' y='308.74' style='font-size: 13.00px; font-style: italic; font-family: sans;' textLength='6.51px' lengthAdjust='spacingAndGlyphs'>y</text>
-<text x='694.89' y='311.15' style='font-size: 9.10px; font-family: sans;' textLength='3.03px' lengthAdjust='spacingAndGlyphs'>r</text>
-<text x='697.92' y='311.15' style='font-size: 9.10px; font-family: sans;' textLength='5.06px' lengthAdjust='spacingAndGlyphs'>e</text>
-<text x='702.98' y='311.15' style='font-size: 9.10px; font-family: sans;' textLength='5.06px' lengthAdjust='spacingAndGlyphs'>p</text>
+<circle cx='672.74' cy='281.81' r='1.45' style='stroke-width: 0.77; stroke: #011F4B;' />
+<rect x='665.52' y='291.87' width='14.45' height='14.45' style='stroke-width: 2.13; stroke: #B3CDE0; stroke-linecap: butt; stroke-linejoin: miter; fill: #D1E1EC;' />
+<text x='687.36' y='283.90' style='font-size: 13.00px; font-style: italic; font-family: sans;' textLength='6.51px' lengthAdjust='spacingAndGlyphs'>y</text>
+<text x='687.36' y='300.38' style='font-size: 13.00px; font-style: italic; font-family: sans;' textLength='6.51px' lengthAdjust='spacingAndGlyphs'>y</text>
+<text x='694.89' y='302.78' style='font-size: 9.10px; font-family: sans;' textLength='3.03px' lengthAdjust='spacingAndGlyphs'>r</text>
+<text x='697.92' y='302.78' style='font-size: 9.10px; font-family: sans;' textLength='5.06px' lengthAdjust='spacingAndGlyphs'>e</text>
+<text x='702.98' y='302.78' style='font-size: 9.10px; font-family: sans;' textLength='5.06px' lengthAdjust='spacingAndGlyphs'>p</text>
 <text x='19.89' y='15.89' style='font-size: 14.40px; font-family: sans;' textLength='237.74px' lengthAdjust='spacingAndGlyphs'>ppc_violin_grouped (points, low jitter)</text>
 </g>
 </svg>

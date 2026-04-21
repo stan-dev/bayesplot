@@ -85,6 +85,15 @@ test_that("ppc_error_data with group returns exact structure", {
   expect_equal(d$group[d$rep_id == 1], group)
 })
 
+test_that("ppc_error_data handles single observation", {
+  y1 <- 5
+  yrep1 <- matrix(c(4, 6, 5), ncol = 1)
+  d <- ppc_error_data(y1, yrep1)
+  expect_equal(nrow(d), 3)
+  expect_equal(d$value, y1 - yrep1[, 1])
+  expect_true(all(d$y_obs == 5))
+})
+
 
 # Visual tests -----------------------------------------------------------------
 

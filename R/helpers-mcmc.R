@@ -29,7 +29,9 @@ prepare_mcmc_array <- function(x,
     abort("Arrays should have 2 or 3 dimensions. See help('MCMC-overview').")
   }
   if (anyNA(x)) {
-    abort("NAs not allowed in 'x'.")
+    warn(
+      "NAs found in 'x'. These are passed through as-is and may affect the resulting plots."
+    )
   }
 
   if (rlang::is_quosures(pars)) {
@@ -277,12 +279,8 @@ validate_chain_list <- function(x) {
       abort("Each chain should have the same number of iterations.")
     }
 
-    cnames <- sapply(x, colnames)
-    if (is.array(cnames)) {
-      same_params <- identical(cnames[, 1], cnames[, 2])
-    } else {
-      same_params <- length(unique(cnames)) == 1
-    }
+    cnames <- lapply(x, colnames)
+    same_params <- all(vapply(cnames[-1], identical, logical(1), cnames[[1]]))
     if (!same_params) {
       abort(paste(
         "The parameters for each chain should be in the same order",

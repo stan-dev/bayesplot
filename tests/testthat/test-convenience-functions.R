@@ -120,6 +120,13 @@ test_that("legend_text returns correct theme object", {
     theme(legend.text = element_text(color = "purple", size = 16))
   )
 })
+test_that("legend_move('none') behaves like legend_none", {
+  expect_equal(
+    legend_move("none")$legend.position,
+    legend_none()$legend.position,
+    ignore_attr = TRUE
+  )
+})
 
 # axis and facet text --------------------------------------------------
 test_that("xaxis_text returns correct theme object", {
@@ -186,8 +193,6 @@ test_that("overlay_function returns the correct object", {
   a$constructor <- b$constructor <- NULL
   expect_equal(a, b, ignore_function_env = TRUE)
 })
-
-
 # tagged functions  -------------------------------------------------------
 
 test_that("as_tagged_function handles bare function (symbol)", {

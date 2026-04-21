@@ -34,6 +34,29 @@ test_that("ppc_scatter_avg_data can take a custom fun_avg", {
   expect_equal(sums$value, colSums(yrep))
 })
 
+test_that("ppc_scatter_data handles single observation and single draw", {
+  y1 <- 5
+  yrep1 <- matrix(c(4, 6, 5), ncol = 1)
+  d <- ppc_scatter_data(y1, yrep1)
+  expect_equal(nrow(d), 3)
+  expect_true(all(d$y_obs == 5))
+  expect_equal(d$value, c(4, 6, 5))
+
+  # single draw
+  d2 <- ppc_scatter_data(y, yrep[1, , drop = FALSE])
+  expect_equal(nrow(d2), length(y))
+  expect_equal(d2$value, yrep[1, ])
+  expect_equal(d2$y_obs, y)
+})
+
+test_that("ppc_scatter_avg_data handles single observation", {
+  y1 <- 5
+  yrep1 <- matrix(c(4, 6, 5), ncol = 1)
+  d <- ppc_scatter_avg_data(y1, yrep1)
+  expect_equal(nrow(d), 1)
+  expect_equal(d$value, mean(c(4, 6, 5)))
+  expect_equal(d$y_obs, 5)
+})
 
 
 # Visual tests ------------------------------------------------------------

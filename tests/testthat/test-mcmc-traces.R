@@ -165,6 +165,33 @@ test_that("mcmc_trace renders correctly", {
   vdiffr::expect_doppelganger("mcmc_trace (iter1 offset)", p_iter1)
 })
 
+# https://github.com/stan-dev/bayesplot/issues/250
+test_that("mcmc_trace renders correctly with NAs in draws", {
+  testthat::skip_on_cran()
+  testthat::skip_if_not_installed("vdiffr")
+  skip_on_r_oldrel()
+
+  set.seed(250)
+  draws_full_na <- array(
+    rnorm(500 * 4 * 2),
+    dim = c(500, 4, 2),
+    dimnames = list(NULL, NULL, c("theta[1,3]", "theta[2,3]"))
+  )
+  draws_full_na[, , "theta[2,3]"] <- NA
+
+  draws_partial_na <- draws_full_na
+  draws_partial_na[, , "theta[2,3]"] <- rnorm(500 * 4)
+  draws_partial_na[10:100, , "theta[2,3]"] <- NA
+
+  suppressWarnings({
+    p_full_na <- mcmc_trace(draws_full_na)
+    p_partial_na <- mcmc_trace(draws_partial_na)
+  })
+
+  vdiffr::expect_doppelganger("mcmc_trace (NA parameter)", p_full_na)
+  vdiffr::expect_doppelganger("mcmc_trace (partial NA parameter)", p_partial_na)
+})
+
 test_that("mcmc_rank_overlay renders correctly", {
   testthat::skip_on_cran()
   testthat::skip_if_not_installed("vdiffr")
