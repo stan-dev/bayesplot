@@ -72,6 +72,19 @@ test_that("ppd_intervals_data + y_obs column same as ppc_intervals_data", {
   expect_equal(tibble::add_column(d_group2, y_obs = d_group$y_obs, .after = "y_id"), d_group)
 })
 
+test_that("ppd_intervals_data handles single observation and single draw", {
+  yrep_1obs <- matrix(rnorm(25), ncol = 1)
+  d <- ppd_intervals_data(yrep_1obs)
+  expect_equal(nrow(d), 1)
+  expect_true(d$ll <= d$l && d$l <= d$m && d$m <= d$h && d$h <= d$hh)
+
+  # single draw: all quantiles collapse to the value
+  yrep_1draw <- matrix(rnorm(10), nrow = 1)
+  d2 <- ppd_intervals_data(yrep_1draw)
+  expect_equal(d2$ll, d2$m)
+  expect_equal(d2$hh, d2$m)
+})
+
 test_that("ppc_intervals_data does math correctly", {
   d <- ppc_intervals_data(y, yrep, prob = .4, prob_outer = .8)
   qs <- unname(quantile(yrep[, 1], c(.1, .3, .5, .7, .9)))

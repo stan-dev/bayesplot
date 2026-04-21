@@ -178,6 +178,18 @@ test_that("validate_chain_list works", {
                "Each chain should have the same number of iterations")
 })
 
+test_that("validate_chain_list detects colnames mismatch in chain 3+", {
+  ch <- matrix(rnorm(20), nrow = 2, dimnames = list(NULL, c("a", "b", "c", "d", "e",
+                                                             "f", "g", "h", "i", "j")))
+  chain3_bad <- ch
+  colnames(chain3_bad)[1] <- "z"
+  chains_ok <- list(ch, ch, ch)
+  chains_bad <- list(ch, ch, chain3_bad)
+
+  expect_identical(validate_chain_list(chains_ok), chains_ok)
+  expect_error(validate_chain_list(chains_bad), "parameters for each chain")
+})
+
 test_that("chain_list2array works", {
   expect_mcmc_array(chain_list2array(chainlist))
   expect_mcmc_array(chain_list2array(chainlist1))
@@ -240,9 +252,12 @@ test_that("transformations recycled properly if not a named list", {
 
 
 # prepare_mcmc_array ------------------------------------------------------
-test_that("prepare_mcmc_array errors if NAs", {
-  arr[1,1,1] <- NA
-  expect_error(prepare_mcmc_array(arr), "NAs not allowed")
+test_that("prepare_mcmc_array warns but does not error if NAs", {
+  arr_na <- arr
+  arr_na[1, 1, 1] <- NA
+  expect_warning(out <- prepare_mcmc_array(arr_na), "NAs found in 'x'")
+  expect_s3_class(out, "mcmc_array")
+  expect_true(anyNA(out))
 })
 test_that("prepare_mcmc_array processes non-array input types correctly", {
   # errors are mostly covered by tests of the many internal functions above

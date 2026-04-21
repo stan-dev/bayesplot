@@ -59,17 +59,50 @@ test_that("ppc_loo_pit_overlay works with boundary_correction=FALSE", {
   expect_gg(p1)
 })
 
-test_that(".kde_correction warns when PIT values are non-finite", {
-  set.seed(123)
-  pit_vals <- c(stats::runif(500), Inf)
-  expect_warning(
-    out <- .kde_correction(pit_vals, bw = "nrd0", grid_len = 128),
-    "Non-finite PIT values are invalid"
+test_that("ppc_loo_pit_data validates user-provided pit values", {
+  expect_error(
+    ppc_loo_pit_data(pit = c(0.5, Inf)),
+    "between 0 and 1"
   )
-  expect_type(out, "list")
-  expect_true(all(c("xs", "bc_pvals") %in% names(out)))
-  expect_equal(length(out$xs), 128)
-  expect_equal(length(out$bc_pvals), 128)
+  expect_error(
+    ppc_loo_pit_data(pit = c(-1, 0.5)),
+    "between 0 and 1"
+  )
+  expect_error(
+    ppc_loo_pit_data(pit = c(0.5, NA)),
+    "NAs not allowed"
+  )
+  expect_error(
+    ppc_loo_pit_data(pit = "not numeric"),
+    "is.numeric"
+  )
+  expect_error(
+    ppc_loo_pit_data(pit = c(Inf, -Inf, Inf)),
+    "between 0 and 1"
+  )
+  expect_error(
+    ppc_loo_pit_data(pit = 0.5, boundary_correction = TRUE),
+    "At least 2 PIT values"
+  )
+})
+
+test_that("ppc_loo_pit_qq validates user-provided pit values", {
+  expect_error(
+    ppc_loo_pit_qq(pit = c(0.5, Inf)),
+    "between 0 and 1"
+  )
+  expect_error(
+    ppc_loo_pit_qq(pit = c(-1, 0.5)),
+    "between 0 and 1"
+  )
+  expect_error(
+    ppc_loo_pit_qq(pit = c(0.5, NA)),
+    "NAs not allowed"
+  )
+  expect_error(
+    ppc_loo_pit_qq(pit = "not numeric"),
+    "is.numeric"
+  )
 })
 
 test_that("ppc_loo_pit_qq returns ggplot object", {
@@ -145,41 +178,60 @@ test_that("ppc_loo_pit_ecdf with method='correlated' returns ggplot object", {
 
   # Test with POT-C (default)
   expect_gg(p1 <- ppc_loo_pit_ecdf(y, yrep, lw, method = "correlated"))
-  
+
   # Test with PRIT-C
-  expect_gg(p2 <- ppc_loo_pit_ecdf(y, yrep, lw, method = "correlated", test = "PRIT"))
-  
+  expect_gg(p2 <- ppc_loo_pit_ecdf(y, yrep, lw, method = "correlated",
+  test = "PRIT"))
+
   # Test with PIET-C
-  expect_gg(p3 <- ppc_loo_pit_ecdf(y, yrep, lw, method = "correlated", test = "PIET"))
-  
+  expect_gg(p3 <- ppc_loo_pit_ecdf(y, yrep, lw, method = "correlated",
+  test = "PIET"))
+
   # Test with plot_diff = TRUE
-  expect_gg(p4 <- ppc_loo_pit_ecdf(y, yrep, lw, method = "correlated", plot_diff = TRUE))
-  
+  expect_gg(p4 <- ppc_loo_pit_ecdf(y, yrep, lw, method = "correlated",
+  plot_diff = TRUE))
+
   # Test with gamma specified
-  expect_gg(p5 <- ppc_loo_pit_ecdf(y, yrep, lw, method = "correlated", gamma = 0.1))
+  expect_gg(p5 <- ppc_loo_pit_ecdf(y, yrep, lw, method = "correlated",
+  gamma = 0.1))
+})
+
+test_that("error if 0,1 in PIT values and test POT or PIET", {
+  expect_error(
+      ppc_loo_pit_ecdf(pit = c(0, runif(3)), method = "correlated",
+      test = "POT")
+    )
+  expect_error(
+      ppc_loo_pit_ecdf(pit = c(0, runif(3)), method = "correlated",
+      test = "PIET")
+    )
+  expect_no_error(
+    ppc_loo_pit_ecdf(pit = c(0, runif(3)), method = "correlated",
+    test = "PRIT")
+  )
 })
 
 test_that("ppc_loo_pit_ecdf method argument works correctly", {
   skip_if_not_installed("rstanarm")
   skip_if_not_installed("loo")
-  
+
   # Test default (should inform about upcoming change)
   expect_message(
     p1 <- ppc_loo_pit_ecdf(y, yrep, lw),
     "In the next major release"
   )
   expect_gg(p1)
-  
+
   # Test explicit independent method (should inform about supersession)
   expect_message(
     p2 <- ppc_loo_pit_ecdf(y, yrep, lw, method = "independent"),
     "superseded by the 'correlated' method"
   )
   expect_gg(p2)
-  
+
   # Test correlated method (no message expected)
   expect_gg(p3 <- ppc_loo_pit_ecdf(y, yrep, lw, method = "correlated"))
-  
+
   # Test that independent and correlated produce different plots
   expect_true(!identical(p2$data, p3$data) || !identical(p2$layers, p3$layers))
 })
@@ -187,25 +239,26 @@ test_that("ppc_loo_pit_ecdf method argument works correctly", {
 test_that("ppc_loo_pit_ecdf correlated method handles edge cases", {
   skip_if_not_installed("rstanarm")
   skip_if_not_installed("loo")
-  
+
   set.seed(2026)
-  
+
   # Test with small sample
   small_pit <- runif(10)
   expect_gg(p1 <- ppc_loo_pit_ecdf(pit = small_pit, method = "correlated"))
-  
+
   # Test with perfect uniform
-  uniform_pit <- seq(0, 1, length.out = 100)
+  uniform_pit <- seq(0.0001, 0.9999, length.out = 100)
   expect_gg(p2 <- ppc_loo_pit_ecdf(pit = uniform_pit, method = "correlated"))
-  
+
   # Test with extreme values
-  extreme_pit <- c(rep(0, 10), rep(1, 10), runif(80))
+  extreme_pit <- c(rep(0.0001, 10), rep(0.99999, 10), runif(80))
   expect_gg(p3 <- ppc_loo_pit_ecdf(pit = extreme_pit, method = "correlated"))
-  
+
   # Test with single value (edge case)
   single_pit <- 0.5
   expect_error(ppc_loo_pit_ecdf(pit = single_pit, method = "correlated"))
-  expect_gg(p5 <- ppc_loo_pit_ecdf(pit = single_pit, method = "correlated", test = "PIET"))
+  expect_gg(p5 <- ppc_loo_pit_ecdf(pit = single_pit, method = "correlated",
+  test = "PIET"))
 })
 
 test_that("ppc_loo_pit functions work when pit specified instead of y, yrep, and lw", {
@@ -301,40 +354,6 @@ test_that("error if subset is bigger than num obs", {
     "length(y) >= length(subset) is not TRUE",
     fixed = TRUE
   )
-})
-
-test_that("ppc_loo_pit_ecdf works with pareto_pit method", {
-  skip_on_cran()
-  skip_if_not_installed("brms")
-  skip_if_not_installed("rstanarm")
-
-  data("roaches", package = "rstanarm")
-  roaches$sqrt_roach1 <- sqrt(roaches$roach1)
-
-  fit_zinb <-
-  brms::brm(brms::bf(y ~ sqrt_roach1 + treatment + senior + offset(log(exposure2)),
-         zi ~ sqrt_roach1 + treatment + senior + offset(log(exposure2))),
-      family = brms::zero_inflated_negbinomial(), data = roaches, 
-      prior = c(brms::prior(normal(0, 1), class = "b"), 
-                brms::prior(normal(0, 1), class = "b", dpar = "zi"), 
-                brms::prior(normal(0, 1), class = "Intercept", dpar = "zi")), 
-      seed = 1704009, refresh = 1000)
-
-  fit_zinb <- brms::add_criterion(fit_zinb, criterion = "loo", save_psis = TRUE)
-  fit_zinb <- brms::add_criterion(fit_zinb, criterion = "loo", save_psis = TRUE, 
-  moment_match = TRUE, overwrite = TRUE)
-  
-  draws <- brms::posterior_predict(fit_zinb)
-  psis_object <- brms::loo(fit_zinb, save_psis = TRUE)$psis_object
-  y <- roaches$y
-
-  expect_gg(ppc_loo_pit_ecdf(
-    y = y, yrep = draws, psis_object = psis_object, method = "correlated"
-  ))
-
-  expect_gg(brms::pp_check(
-    fit_zinb, type = "loo_pit_ecdf", moment_match = TRUE, method = "correlated"
-  ))
 })
 
 
@@ -440,23 +459,23 @@ test_that("ppc_loo_ribbon renders correctly", {
 test_that("ppc_loo_pit_ecdf with method correlated renders different tests correctly", {
   set.seed(2025)
   pit <- 1 - (1 - runif(300))^(1.2)
-  
+
   p_cor_pot <- ppc_loo_pit_ecdf(
-    pit = pit, 
+    pit = pit,
     method = "correlated"
   )
   vdiffr::expect_doppelganger("ppc_loo_pit_ecdf (correlated pot)", p_cor_pot)
 
   p_cor_prit <- ppc_loo_pit_ecdf(
-    pit = pit, 
-    method = "correlated", 
+    pit = pit,
+    method = "correlated",
     test = "PRIT"
   )
   vdiffr::expect_doppelganger("ppc_loo_pit_ecdf (correlated prit)", p_cor_prit)
 
   p_cor_piet <- ppc_loo_pit_ecdf(
-    pit = pit, 
-    method = "correlated", 
+    pit = pit,
+    method = "correlated",
     test = "PIET"
   )
   vdiffr::expect_doppelganger("ppc_loo_pit_ecdf (correlated piet)", p_cor_piet)
@@ -465,25 +484,25 @@ test_that("ppc_loo_pit_ecdf with method correlated renders different tests corre
 test_that("ppc_loo_pit_ecdf with plot_diff=TRUE and method correlated renders different tests correctly", {
   set.seed(2025)
   pit <- 1 - (1 - runif(300))^(1.2)
-  
+
   p_cor_pot <- ppc_loo_pit_ecdf(
-    pit = pit, 
+    pit = pit,
     method = "correlated",
     plot_diff = TRUE
   )
   vdiffr::expect_doppelganger("ppc_loo_pit_ecdf (diff, correlated pot)", p_cor_pot)
 
   p_cor_prit <- ppc_loo_pit_ecdf(
-    pit = pit, 
-    method = "correlated", 
+    pit = pit,
+    method = "correlated",
     test = "PRIT",
     plot_diff = TRUE
   )
   vdiffr::expect_doppelganger("ppc_loo_pit_ecdf (diff, correlated prit)", p_cor_prit)
 
   p_cor_piet <- ppc_loo_pit_ecdf(
-    pit = pit, 
-    method = "correlated", 
+    pit = pit,
+    method = "correlated",
     test = "PIET",
     plot_diff = TRUE
   )
@@ -493,23 +512,23 @@ test_that("ppc_loo_pit_ecdf with plot_diff=TRUE and method correlated renders di
 test_that("ppc_loo_pit_ecdf renders different linewidths and colors correctly", {
   set.seed(2025)
   pit <- 1 - (1 - runif(300))^(1.2)
-  
+
   p_cor_lw1 <- ppc_loo_pit_ecdf(
-    pit = pit, 
+    pit = pit,
     method = "correlated",
     linewidth = 1.
   )
   vdiffr::expect_doppelganger("ppc_loo_pit_ecdf (linewidth = 1)", p_cor_lw1)
 
   p_cor_lw2 <- ppc_loo_pit_ecdf(
-    pit = pit, 
+    pit = pit,
     method = "correlated",
     linewidth = 2.
   )
   vdiffr::expect_doppelganger("ppc_loo_pit_ecdf (linewidth = 2)", p_cor_lw2)
 
   p_cor_col <- ppc_loo_pit_ecdf(
-    pit = pit, 
+    pit = pit,
     method = "correlated",
     color = c(ecdf = "darkblue", highlight = "red")
   )
@@ -573,7 +592,7 @@ test_that("ppc_loo_pit_ecdf renders correctly", {
     method = "correlated",
     plot_diff = TRUE,
     prob = 0.95,
-    help_text = FALSE 
+    help_text = FALSE
   )
   vdiffr::expect_doppelganger("ppc_loo_pit_ecdf (no help_text)", p_custom)
 
@@ -590,8 +609,8 @@ test_that("ppc_loo_pit_ecdf renders correctly", {
 })
 
 # Test PIT computation branches ------------------------------------------------
-# use monkey-patching to test whether the correct branch of the 
-# PIT computation is taken 
+# use monkey-patching to test whether the correct branch of the
+# PIT computation is taken
 
 testthat::test_that("ppc_loo_pit_ecdf takes correct PIT computation branch", {
   skip_on_cran()
@@ -599,80 +618,103 @@ testthat::test_that("ppc_loo_pit_ecdf takes correct PIT computation branch", {
   skip_on_r_oldrel()
   skip_if(packageVersion("rstantools") <= "2.4.0")
 
-  ppc_loo_pit_ecdf_patched <- ppc_loo_pit_ecdf
+  compute_pit_values_patched <- .compute_pit_values
 
-  body(ppc_loo_pit_ecdf_patched)[[
-    # Replace the PIT computation block (the large if/else if/else)
-    # with a version that emits diagnostics
-    which(sapply(as.list(body(ppc_loo_pit_ecdf)), function(e) {
+  body(compute_pit_values_patched)[[
+    # Replace the PIT computation block with diagnostics.
+    which(sapply(as.list(body(.compute_pit_values)), function(e) {
       if (!is.call(e)) return(FALSE)
       identical(e[[1]], as.name("if")) &&
         grepl("pareto_pit", paste(deparse(e[[2]]), collapse = " "))
     }))[1]
   ]] <- quote({
-
     if (isTRUE(pareto_pit) && is.null(pit)) {
       message("[PIT BRANCH] Pareto-smoothed LOO PIT")
       suggested_package("rstantools")
-      y    <- validate_y(y)
+      y <- validate_y(y)
       yrep <- validate_predictions(yrep, length(y))
-      lw   <- .get_lw(lw, psis_object)
-      stopifnot(identical(dim(yrep), dim(lw)))
-      pit  <- posterior::pareto_pit(x = yrep, y = y, weights = lw, log = TRUE)
-      K    <- K %||% length(pit)
-
+      stopifnot(isTRUE(loo_cv), identical(dim(yrep), dim(lw)))
+      pit <- posterior::pareto_pit(x = yrep, y = y, weights = lw, log = TRUE)
+      K <- K %||% length(pit)
     } else if (!is.null(pit)) {
       message("[PIT BRANCH] Pre-supplied PIT")
       pit <- validate_pit(pit)
-      K   <- K %||% length(pit)
-      
+      K <- K %||% length(pit)
+
       ignored <- c(
-        if (!missing(y)    && !is.null(y))    "y",
+        if (!missing(y) && !is.null(y)) "y",
         if (!missing(yrep) && !is.null(yrep)) "yrep",
-        if (!is.null(lw))                     "lw"
+        if (isTRUE(loo_cv) && !is.null(lw)) "lw"
       )
       if (length(ignored) > 0) {
         inform(paste0("As 'pit' specified; ignoring: ",
-                      paste(ignored, collapse = ", "), "."))
+          paste(ignored, collapse = ", "), "."))
       }
-
     } else {
       message("[PIT BRANCH] Standard LOO PIT")
       suggested_package("rstantools")
-      y    <- validate_y(y)
+      y <- validate_y(y)
       yrep <- validate_predictions(yrep, length(y))
-      lw   <- .get_lw(lw, psis_object)
-      stopifnot(identical(dim(yrep), dim(lw)))
-      pit  <- pmin(1, rstantools::loo_pit(object = yrep, y = y, lw = lw))
-      K    <- K %||% min(nrow(yrep) + 1, 1000)
+      stopifnot(isTRUE(loo_cv), identical(dim(yrep), dim(lw)))
+      pit <- pmin(1, rstantools::loo_pit(object = yrep, y = y, lw = lw))
+      K <- K %||% min(nrow(yrep) + 1, 1000)
     }
+    list("group" = group, "pit" = pit, "K" = K)
   })
 
-  # | yrep | y | lw | psis_object | pit | method      | test | pareto_pit | approach           |
-  # |------|---|----|-------------|-----|-------------|------|------------|--------------------|
-  # | x    | x | x  |             |     | independent | NULL | FALSE (D)  | compute loo-pit    |
-  # | x    | x |    | x           |     | independent | NULL | FALSE (D)  | compute loo-pit    |
-  # | x    | x | x  |             |     | independent | NULL | TRUE       | compute pareto-pit |
-  # | x    | x |    | x           |     | independent | NULL | TRUE       | compute pareto-pit |
-  # |      |   |    |             | x   | independent | NULL | FALSE      |                    |
-  # | x    | x | x  |             |     | correlated  | POT  | TRUE       | compute pareto-pit |
-  # | x    | x |    | x           |     | correlated  | POT  | TRUE       | compute pareto-pit |
-  # |      |   |    |             | x   | correlated  | POT  | FALSE      |                    |
-  # | x    | x | x  |             |     | correlated  | PIET | TRUE       | compute pareto-pit |
-  # | x    | x |    | x           |     | correlated  | PIET | TRUE       | compute pareto-pit |
-  # |      |   |    |             | x   | correlated  | PIET | FALSE      |                    |
-  # | x    | x | x  |             |     | correlated  | PRIT | FALSE      | compute loo-pit    |
-  # | x    | x |    | x           |     | correlated  | PRIT | FALSE      | compute loo-pit    |
-  # |      |   |    |             | x   | correlated  | PRIT | FALSE      |                    |
+  pit_branch_probe <- function(y = NULL,
+                               yrep = NULL,
+                               lw = NULL,
+                               pit = NULL,
+                               method = NULL,
+                               test = NULL,
+                               pareto_pit = NULL) {
+    method_args <- .pit_ecdf_resolve_method_args(
+      method = method,
+      pit = pit,
+      prob = 0.99,
+      interpolate_adj = NULL,
+      test = test,
+      gamma = NULL,
+      linewidth = NULL,
+      color = NULL,
+      help_text = NULL,
+      pareto_pit = pareto_pit,
+      help_text_shrinkage = NULL
+    )
+    compute_pit_values_patched(
+      y = y,
+      yrep = yrep,
+      lw = lw,
+      psis_object =  psis_object,
+      group = NULL,
+      K = NULL,
+      pareto_pit = method_args$pareto_pit,
+      pit = pit,
+      loo_cv = TRUE
+    )
+  }
 
-  psis_object <- suppressWarnings(loo::psis(-vdiff_loo_lw))
+  # | yrep | y | lw | pit | method      | test | pareto_pit | approach           |
+  # |------|---|----|-----|-------------|------|------------|--------------------|
+  # | x    | x | x  |     | independent | NULL | FALSE (D)  | compute loo-pit    |
+  # | x    | x | x  |     | independent | NULL | TRUE       | compute pareto-pit |
+  # |      |   |    | x   | independent | NULL | FALSE      |                    |
+  # | x    | x | x  |     | correlated  | POT  | TRUE       | compute pareto-pit |
+  # | x    | x | x  |     | correlated  | POT  | FALSE      | compute loo-pit    |
+  # |      |   |    | x   | correlated  | POT  | FALSE      |                    |
+  # | x    | x | x  |     | correlated  | PIET | TRUE       | compute pareto-pit |
+  # |      |   |    | x   | correlated  | PIET | FALSE      |                    |
+  # | x    | x | x  |     | correlated  | PRIT | FALSE      | compute loo-pit    |
+  # |      |   |    | x   | correlated  | PRIT | FALSE      |                    |
+
   pits <- rstantools::loo_pit(vdiff_loo_yrep, vdiff_loo_y, vdiff_loo_lw)
 
   # method = independent ------------------------------------------
   expect_message(
-    ppc_loo_pit_ecdf_patched(
-      vdiff_loo_y,
-      vdiff_loo_yrep,
+    pit_branch_probe(
+      y = vdiff_loo_y,
+      yrep = vdiff_loo_yrep,
       method = "independent",
       lw = vdiff_loo_lw
     ),
@@ -680,28 +722,18 @@ testthat::test_that("ppc_loo_pit_ecdf takes correct PIT computation branch", {
   )
 
   expect_message(
-    ppc_loo_pit_ecdf_patched(
-      vdiff_loo_y,
-      vdiff_loo_yrep,
+    pit_branch_probe(
+      y = vdiff_loo_y,
+      yrep = vdiff_loo_yrep,
       method = "independent",
-      psis_object = psis_object,
-    ),
-    regexp = "\\[PIT BRANCH\\] Standard LOO PIT"
-  )
-
-  expect_message(
-    ppc_loo_pit_ecdf_patched(
-      vdiff_loo_y,
-      vdiff_loo_yrep,
-      method = "independent",
-      psis_object = psis_object,
+      lw = vdiff_loo_lw,
       pareto_pit = TRUE
     ),
     regexp = "\\[PIT BRANCH\\] Pareto-smoothed LOO PIT"
   )
 
   expect_message(
-    ppc_loo_pit_ecdf_patched(
+    pit_branch_probe(
       method = "independent",
       pit = pits,
     ),
@@ -710,9 +742,9 @@ testthat::test_that("ppc_loo_pit_ecdf takes correct PIT computation branch", {
 
   # method = correlated + POT test -------------------------------
   expect_message(
-    ppc_loo_pit_ecdf_patched(
-      vdiff_loo_y,
-      vdiff_loo_yrep,
+    pit_branch_probe(
+      y = vdiff_loo_y,
+      yrep = vdiff_loo_yrep,
       method = "correlated",
       lw = vdiff_loo_lw
     ),
@@ -720,9 +752,9 @@ testthat::test_that("ppc_loo_pit_ecdf takes correct PIT computation branch", {
   )
 
   expect_message(
-    ppc_loo_pit_ecdf_patched(
-      vdiff_loo_y,
-      vdiff_loo_yrep,
+    pit_branch_probe(
+      y = vdiff_loo_y,
+      yrep = vdiff_loo_yrep,
       method = "correlated",
       lw = vdiff_loo_lw,
       pareto_pit = FALSE
@@ -731,17 +763,7 @@ testthat::test_that("ppc_loo_pit_ecdf takes correct PIT computation branch", {
   )
 
   expect_message(
-    ppc_loo_pit_ecdf_patched(
-      vdiff_loo_y,
-      vdiff_loo_yrep,
-      method = "correlated",
-      psis_object = psis_object,
-    ),
-    regexp = "\\[PIT BRANCH\\] Pareto-smoothed LOO PIT"
-  )
-
-  expect_message(
-    ppc_loo_pit_ecdf_patched(
+    pit_branch_probe(
       method = "correlated",
       pit = pits,
     ),
@@ -750,9 +772,9 @@ testthat::test_that("ppc_loo_pit_ecdf takes correct PIT computation branch", {
 
   # method = correlated + PIET test -------------------------------
   expect_message(
-    ppc_loo_pit_ecdf_patched(
-      vdiff_loo_y,
-      vdiff_loo_yrep,
+    pit_branch_probe(
+      y = vdiff_loo_y,
+      yrep = vdiff_loo_yrep,
       method = "correlated",
       test = "PIET",
       lw = vdiff_loo_lw
@@ -761,18 +783,7 @@ testthat::test_that("ppc_loo_pit_ecdf takes correct PIT computation branch", {
   )
 
   expect_message(
-    ppc_loo_pit_ecdf_patched(
-      vdiff_loo_y,
-      vdiff_loo_yrep,
-      method = "correlated",
-      test = "PIET",
-      psis_object = psis_object,
-    ),
-    regexp = "\\[PIT BRANCH\\] Pareto-smoothed LOO PIT"
-  )
-
-  expect_message(
-    ppc_loo_pit_ecdf_patched(
+    pit_branch_probe(
       method = "correlated",
       test = "PIET",
       pit = pits,
@@ -782,9 +793,9 @@ testthat::test_that("ppc_loo_pit_ecdf takes correct PIT computation branch", {
 
   # method = correlated + PRIT test -------------------------------
   expect_message(
-    ppc_loo_pit_ecdf_patched(
-      vdiff_loo_y,
-      vdiff_loo_yrep,
+    pit_branch_probe(
+      y = vdiff_loo_y,
+      yrep = vdiff_loo_yrep,
       method = "correlated",
       test = "PRIT",
       lw = vdiff_loo_lw
@@ -793,18 +804,7 @@ testthat::test_that("ppc_loo_pit_ecdf takes correct PIT computation branch", {
   )
 
   expect_message(
-    ppc_loo_pit_ecdf_patched(
-      vdiff_loo_y,
-      vdiff_loo_yrep,
-      method = "correlated",
-      test = "PRIT",
-      psis_object = psis_object,
-    ),
-    regexp = "\\[PIT BRANCH\\] Standard LOO PIT"
-  )
-
-  expect_message(
-    ppc_loo_pit_ecdf_patched(
+    pit_branch_probe(
       method = "correlated",
       test = "PRIT",
       pit = pits,
@@ -858,4 +858,56 @@ test_that("ppc_loo_pit_data returns the expected structure for both boundary mod
   expect_equal(nrow(y_rows), grid_len)
   expect_equal(nrow(yrep_rows), grid_len * n_samples)
   expect_false(anyNA(d_bc$x))
+})
+
+test_that("ppc_loo_pit_data works with a single pit value", {
+  d <- suppressMessages(ppc_loo_pit_data(pit = 0.5, boundary_correction = FALSE, samples = 3))
+  y_rows <- d[d$is_y, ]
+  expect_equal(nrow(y_rows), 1)
+  expect_equal(y_rows$value, 0.5)
+})
+
+test_that("check pareto_pit argument is chosen as expected", {
+  # pareto_pit defaults to TRUE if test = "POT", pareto_pit = NULL, pit = NULL
+  pareto_pit = NULL
+  pit = NULL
+  test = "POT"
+  expect_true(pareto_pit %||% (is.null(pit) && test %in% c("POT", "PIET")))
+
+  # pareto_pit defaults to TRUE if test = "PIET", pareto_pit = NULL, pit = NULL
+  pareto_pit = NULL
+  pit = NULL
+  test = "PIET"
+  expect_true(pareto_pit %||% (is.null(pit) && test %in% c("POT", "PIET")))
+
+  # pareto_pit defaults to FALSE if test = "PRIT", and
+  # pareto_pit = NULL, pit = NULL
+  pareto_pit = NULL
+  pit = NULL
+  test = "PRIT"
+  expect_false(pareto_pit %||% (is.null(pit) && test %in% c("POT", "PIET")))
+
+  # pareto_pit is TRUE if user sets pareto_pit = TRUE, and
+  # test = "PRIT", pit = NULL
+  pareto_pit = TRUE
+  pit = NULL
+  test = "PRIT"
+  expect_true(pareto_pit %||% (is.null(pit) && test %in% c("POT", "PIET")))
+
+  # pareto_pit is FALSE if pit != NULL irrespective of test
+  for (test in c("POT", "PIET", "PRIT")) {
+    pareto_pit = NULL
+    pit = c(0.1, 0.2, 0.7)
+    expect_false(pareto_pit %||% (is.null(pit) && test %in% c("POT", "PIET")))
+  }
+
+  # if pit != NULL and user sets pareto_pit = TRUE: reset pareto_pit = NULL
+  # internally and warn user about change of behavior.
+  pit <- runif(length(y))
+  expect_error(
+    object = ppc_loo_pit_ecdf(
+      pit = pit, method = "correlated", test = "POT", pareto_pit = TRUE
+    ),
+    regexp = "`pareto_pit = TRUE` cannot be used together with a non-`NULL`"
+  )
 })

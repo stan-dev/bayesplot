@@ -9,6 +9,8 @@ x <- list(cbind(a = 1:3, b = rnorm(3)), cbind(a = 1:3, b = rnorm(3)))
 
 # nuts_params and log_posterior methods -----------------------------------
 test_that("nuts_params.list throws errors", {
+  expect_error(nuts_params.list(list()), "non-empty list")
+
   x[[3]] <- c(a = 1:3, b = rnorm(3))
   expect_error(nuts_params.list(x), "list elements should be matrices")
 
@@ -17,6 +19,20 @@ test_that("nuts_params.list throws errors", {
 
   x[[3]] <- cbind(a = 1:4, b = rnorm(4))
   expect_error(nuts_params.list(x), "same dimensions")
+
+  zero_row <- list(cbind(a = numeric(0), b = numeric(0)))
+  expect_error(nuts_params.list(zero_row), "at least one row")
+
+  zero_row_nonfirst <- list(cbind(a = 1:3, b = rnorm(3)), cbind(a = numeric(0), b = numeric(0)))
+  expect_error(nuts_params.list(zero_row_nonfirst), "at least one row")
+})
+
+test_that("nuts_params.list works with single-chain list", {
+  single <- list(cbind(a = 1:3, b = rnorm(3)))
+  np <- nuts_params.list(single)
+  expect_identical(colnames(np), c("Chain", "Iteration", "Parameter", "Value"))
+  expect_true(all(np$Chain == 1L))
+  expect_equal(nrow(np), 6L)
 })
 
 test_that("nuts_params.list parameter selection ok", {
@@ -136,4 +152,12 @@ test_that("cmdstanr methods work", {
   ratio <- neff_ratio(fit)
   expect_named(head(ratio, 4), c("alpha", "beta[1]", "beta[2]", "beta[3]"))
   expect_true(all(ratio > 0))
+
+  # https://github.com/stan-dev/bayesplot/pull/535
+  np_one <- nuts_params(fit, pars = "divergent__")
+  expect_identical(levels(np_one$Parameter), "divergent__")
+  expect_true(all(np_one$Parameter == "divergent__"))
+  expect_equal(range(np_one$Iteration), c(1, 500))
+  expect_equal(range(np_one$Chain), c(1, 2))
+  expect_true(all(np_one$Value == 0))
 })

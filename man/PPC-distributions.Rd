@@ -27,11 +27,11 @@ ppc_dens_overlay(
   size = 0.25,
   alpha = 0.7,
   trim = FALSE,
-  bw = "nrd0",
-  adjust = 1,
-  kernel = "gaussian",
+  bw = NULL,
+  adjust = NULL,
+  kernel = NULL,
   bounds = NULL,
-  n_dens = 1024
+  n_dens = NULL
 )
 
 ppc_dens_overlay_grouped(
@@ -42,18 +42,18 @@ ppc_dens_overlay_grouped(
   size = 0.25,
   alpha = 0.7,
   trim = FALSE,
-  bw = "nrd0",
-  adjust = 1,
-  kernel = "gaussian",
+  bw = NULL,
+  adjust = NULL,
+  kernel = NULL,
   bounds = NULL,
-  n_dens = 1024
+  n_dens = NULL
 )
 
 ppc_ecdf_overlay(
   y,
   yrep,
   ...,
-  discrete = FALSE,
+  discrete = deprecated(),
   pad = TRUE,
   size = 0.25,
   alpha = 0.7
@@ -64,7 +64,7 @@ ppc_ecdf_overlay_grouped(
   yrep,
   group,
   ...,
-  discrete = FALSE,
+  discrete = deprecated(),
   pad = TRUE,
   size = 0.25,
   alpha = 0.7
@@ -138,7 +138,8 @@ ppc_pit_ecdf(
   linewidth = NULL,
   color = NULL,
   help_text = NULL,
-  pareto_pit = NULL
+  pareto_pit = NULL,
+  help_text_shrinkage = NULL
 )
 
 ppc_pit_ecdf_grouped(
@@ -157,19 +158,21 @@ ppc_pit_ecdf_grouped(
   linewidth = NULL,
   color = NULL,
   help_text = NULL,
-  pareto_pit = NULL
+  pareto_pit = NULL,
+  help_text_shrinkage = NULL
 )
 }
 \arguments{
 \item{y}{A vector of observations. See \strong{Details}.}
 
 \item{yrep}{An \code{S} by \code{N} matrix of draws from the posterior (or prior)
-predictive distribution. The number of rows, \code{S}, is the size of the
-posterior (or prior) sample used to generate \code{yrep}. The number of columns,
-\code{N} is the number of predicted observations (\code{length(y)}). The columns of
-\code{yrep} should be in the same order as the data points in \code{y} for the plots
-to make sense. See the \strong{Details} and \strong{Plot Descriptions} sections for
-additional advice specific to particular plots.}
+predictive distribution, or a \code{\link[posterior:draws]{posterior::draws}} object. The number of
+rows, \code{S}, is the size of the posterior (or prior) sample used to generate
+\code{yrep}. The number of columns, \code{N} is the number of predicted observations
+(\code{length(y)}). The columns of \code{yrep} should be in the same order as the
+data points in \code{y} for the plots to make sense. See the \strong{Details} and
+\strong{Plot Descriptions} sections for additional advice specific to particular
+plots.}
 
 \item{group}{A grouping variable of the same length as \code{y}.
 Will be coerced to \link[base:factor]{factor} if not already a factor.
@@ -186,12 +189,12 @@ the predictive distributions.}
 \item{bw, adjust, kernel, n_dens, bounds}{Optional arguments passed to
 \code{\link[stats:density]{stats::density()}} (and \code{bounds} to \code{\link[ggplot2:geom_density]{ggplot2::stat_density()}}) to override
 default kernel density estimation parameters or truncate the density
-support. \code{n_dens} defaults to \code{1024}.}
+support. If \code{NULL} (default), \code{bw} is set to \code{"nrd0"}, \code{adjust} to \code{1},
+\code{kernel} to \code{"gaussian"}, and \code{n_dens} to \code{1024}.}
 
-\item{discrete}{For \code{ppc_ecdf_overlay()}, should the data be treated as
-discrete? The default is \code{FALSE}, in which case \code{geom="line"} is
-passed to \code{\link[ggplot2:stat_ecdf]{ggplot2::stat_ecdf()}}. If \code{discrete} is set to
-\code{TRUE} then \code{geom="step"} is used.}
+\item{discrete}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} The \code{discrete} argument is
+deprecated. The ECDF is a step function by definition, so \code{geom_step()} is
+now always used.}
 
 \item{pad}{A logical scalar passed to \code{\link[ggplot2:stat_ecdf]{ggplot2::stat_ecdf()}}.}
 
@@ -233,73 +236,72 @@ to control the appearance of \code{y} points. The default of \code{y_jitter=NULL
 will let \strong{ggplot2} determine the amount of jitter.}
 
 \item{pit}{An optional vector of probability integral transformed values for
-which the ECDF is to be drawn. If NULL, PIT values are computed to \code{y} with
+which the ECDF is to be drawn. For \code{ppc_pit_ecdf()} and
+\code{ppc_pit_ecdf_grouped()}. If \code{NULL}, PIT values are computed to \code{y} with
 respect to the corresponding values in \code{yrep}.}
 
 \item{K}{An optional integer defining the number of equally spaced evaluation
 points for the PIT-ECDF. Reducing K when using \code{interpolate_adj = FALSE}
-makes computing the confidence bands faster. For \code{ppc_pit_ecdf} and
-\code{ppc_pit_ecdf_grouped}, if PIT values are supplied, defaults to
-\code{length(pit)}, otherwise yrep determines the maximum accuracy of the
-estimated PIT values and \code{K} is set to \code{min(nrow(yrep) + 1, 1000)}. For
-\code{mcmc_rank_ecdf}, defaults to the number of iterations per chain in \code{x}.}
+makes computing the confidence bands faster. For \code{ppc_pit_ecdf()} and
+\code{ppc_pit_ecdf_grouped()} when \code{method = 'independent'}. If \code{pit} is
+supplied, defaults to \code{length(pit)}, otherwise \code{yrep} determines the
+maximum accuracy of the estimated PIT values and \code{K} is set to
+\code{min(nrow(yrep) + 1, 1000)}. For \code{mcmc_rank_ecdf()}, defaults to the number
+of iterations per chain in \code{x}.}
 
 \item{prob}{The desired simultaneous coverage level of the bands around the
-ECDF. A value in (0,1).}
+ECDF. A value in (0,1). For \code{ppc_pit_ecdf()} and \code{ppc_pit_ecdf_grouped()}.}
 
 \item{plot_diff}{A boolean defining whether to plot the difference between
-the observed PIT- ECDF and the theoretical expectation for uniform PIT
-values rather than plotting the regular ECDF. The default is \code{FALSE}, but
-for large samples we recommend setting \code{plot_diff=TRUE} as the difference
-plot will visually show a more dynamic range.}
+the observed PIT-ECDF and the theoretical expectation for uniform PIT
+values rather than plotting the regular ECDF. For \code{ppc_pit_ecdf()} and
+\code{ppc_pit_ecdf_grouped()} when \code{method = 'independent'}. The default is
+\code{FALSE}, but for large samples we recommend setting \code{plot_diff = TRUE} to
+better use the plot area.}
 
-\item{interpolate_adj}{For \code{ppc_pit_ecdf()} and \code{ppc_pit_ecdf_grouped()}
-when \code{method = "independent"},
-a boolean defining if the simultaneous confidence bands should be
-interpolated based on precomputed values rather than computed exactly.
-Computing the bands may be computationally intensive and the approximation
-gives a fast method for assessing the ECDF trajectory. The default is to use
+\item{interpolate_adj}{A boolean defining if the simultaneous confidence
+bands should be interpolated based on precomputed values rather than
+computed exactly. Computing the bands may be computationally intensive and
+the approximation gives a fast method for assessing the ECDF trajectory.
+For \code{ppc_pit_ecdf()} and \code{ppc_pit_ecdf_grouped()} when
+\code{method = 'independent'} and for \code{mcmc_rank_ecdf()}. The default is to use
 interpolation if \code{K} is greater than 200.}
 
-\item{method}{For \code{ppc_pit_ecdf()} and \code{ppc_pit_ecdf_grouped()}, the method
-used to calculate the
-uniformity test:
+\item{method}{The method used to calculate the uniformity test:
 \itemize{
-\item \code{"independent"}: (default) Assumes independence (Säilynoja et al., 2022).
-\item \code{"correlated"}: Accounts for correlation (Tesso & Vehtari, 2026).
+\item \code{"independent"}: assumes independent PIT values (Säilynoja et al., 2022).
+\item \code{"correlated"}: accounts for correlated PIT values (Tesso & Vehtari, 2026).
 }}
 
-\item{test}{For \code{ppc_pit_ecdf()} and \code{ppc_pit_ecdf_grouped()} when
-\code{method = "correlated"}, which
-dependence-aware test to use: \code{"POT"}, \code{"PRIT"}, or \code{"PIET"}.
-Defaults to \code{"POT"}.}
+\item{test}{When \code{method = "correlated"}, which dependence-aware test to use:
+\code{"POT"}, \code{"PRIT"}, or \code{"PIET"}. Defaults to \code{"POT"}.}
 
-\item{gamma}{For \code{ppc_pit_ecdf()} and \code{ppc_pit_ecdf_grouped()} when
-\code{method = "correlated"}, tolerance
-threshold controlling how strongly suspicious points are flagged. Larger
-values (gamma > 0) emphasizes points with larger deviations. If \code{NULL}, automatically
-determined based on p-value.}
+\item{gamma}{When \code{method = "correlated"}, tolerance threshold controlling
+how strongly suspicious points are flagged. Larger values (\code{gamma > 0})
+emphasize points with larger deviations. If \code{NULL}, defaults to \code{0} and
+thus all suspicious points are flagged.}
 
-\item{linewidth}{For \code{ppc_pit_ecdf()} and \code{ppc_pit_ecdf_grouped()} when
-\code{method = "correlated"}, the line width of the ECDF and highlighting
-points. Defaults to 0.3.}
+\item{linewidth}{When \code{method = "correlated"}, the line width of the ECDF.
+Defaults to \code{0.3}.}
 
-\item{color}{For \code{ppc_pit_ecdf()} and \code{ppc_pit_ecdf_grouped()} when
-\code{method = "correlated"}, a vector
-with base color and highlight color for the ECDF plot. Defaults to
+\item{color}{When \code{method = "correlated"}, a vector with base color and
+highlight color for the ECDF plot. Defaults to
 \code{c(ecdf = "grey60", highlight = "red")}. The first element is used for
 the main ECDF line, the second for highlighted suspicious regions.}
 
-\item{help_text}{For \code{ppc_pit_ecdf()} and \code{ppc_pit_ecdf_grouped()} when
-\code{method = "correlated"}, a boolean defining whether to add informative
-text to the plot. Defaults to \code{TRUE}.}
+\item{help_text}{When \code{method = "correlated"}, a boolean defining whether
+to add information about p-value to the plot. Defaults to \code{TRUE}.}
 
-\item{pareto_pit}{For \code{ppc_pit_ecdf()} and \code{ppc_pit_ecdf_grouped()}, a
-boolean defining whether to compute the PIT values using Pareto-smoothed
-importance sampling (if \code{TRUE} and no pit values are provided).
-Defaults to \code{TRUE} when \code{method = "correlated"} and \code{test} is \code{"POT"} or \code{"PIET"}.
-Otherwise defaults to \code{FALSE}. If \code{TRUE} requires the specification of \code{lw} or \code{psis_object}.
-The defaults should not be changed by the user, but the option is provided for developers.}
+\item{pareto_pit}{A boolean defining whether to compute PIT values using
+Pareto-PIT method. Defaults to \code{TRUE} if \code{test} is either \code{"POT"} or
+\code{"PIET"} and no \code{pit} values are provided otherwise \code{FALSE}. This argument
+should normally not be modified by the user, except for development
+purposes. If \code{pit} is non-\code{NULL}, \code{pareto_pit} cannot be simultaneously
+\code{TRUE}.}
+
+\item{help_text_shrinkage}{When \code{method = "correlated"}, a numeric value
+between 0 and 1 defining the factor by which the help-text (p-value
+information) is scaled. The default is \code{0.8}.}
 }
 \value{
 The plotting functions return a ggplot object that can be further
@@ -316,6 +318,15 @@ See the \strong{Plot Descriptions} section, below, for details.
 For Binomial data, the plots may be more useful if
 the input contains the "success" \emph{proportions} (not discrete
 "success" or "failure" counts).
+}
+\note{
+Note that the default "independent" method is \strong{superseded} by
+the "correlated" method (Tesso & Vehtari, 2026) which accounts for dependent
+PIT values.
+
+Note that the default "independent" method is \strong{superseded} by
+the "correlated" method (Tesso & Vehtari, 2026) which accounts for dependent
+PIT values.
 }
 \section{Plot Descriptions}{
 
@@ -339,11 +350,10 @@ variable for \code{y} and each dataset (row) in \code{yrep}. For this plot
 }
 \item{\code{ppc_ecdf_overlay()}, \code{ppc_dens_overlay()},
 \code{ppc_ecdf_overlay_grouped()}, \code{ppc_dens_overlay_grouped()}}{
-Kernel density or empirical CDF estimates of each dataset (row) in
-\code{yrep} are overlaid, with the distribution of \code{y} itself on top
-(and in a darker shade). When using \code{ppc_ecdf_overlay()} with discrete
-data, set the \code{discrete} argument to \code{TRUE} for better results.
-For an example of \code{ppc_dens_overlay()} also see Gabry et al. (2019).
+Kernel density or empirical CDF estimates of each dataset (row) in \code{yrep}
+are overlaid, with the distribution of \code{y} itself on top (and in a darker
+shade). For an example of \code{ppc_dens_overlay()} also see Gabry et al.
+(2019).
 }
 \item{\code{ppc_violin_grouped()}}{
 The density estimate of \code{yrep} within each level of a grouping
@@ -352,12 +362,13 @@ quantiles. \code{y} is overlaid on the plot either as a violin, points, or
 both, depending on the \code{y_draw} argument.
 }
 \item{\code{ppc_pit_ecdf()}, \code{ppc_pit_ecdf_grouped()}}{
-The PIT-ECDF of the empirical PIT values of \code{y} computed with respect to
-the corresponding \code{yrep} values. \code{100 * prob}\% central simultaneous
-confidence intervals are provided to asses if \code{y} and \code{yrep} originate
-from the same distribution. The PIT values can also be provided directly
-as \code{pit}.
-See Säilynoja et al. (2021) for more details.
+The PIT-ECDF of empirical PIT values for \code{y} relative to corresponding
+draws in \code{yrep} (or precomputed values supplied via \code{pit}).
+With \code{method = "independent"}, the plot shows \code{100 * prob}\% central
+simultaneous confidence intervals under an independence assumption.
+With \code{method = "correlated"}, the plot uses a dependence-aware
+uniformity assessment and can highlight suspicious regions.
+See Säilynoja et al. (2025) and Tesso & Vehtari (2026) for details.
 }
 \item{\code{ppc_data()}}{
 This function prepares data for plotting with \strong{ggplot2} and doesn't
@@ -379,7 +390,7 @@ dim(yrep)
 
 ppc_dens_overlay(y, yrep[1:25, ])
 \donttest{
-# ppc_ecdf_overlay with continuous data (set discrete=TRUE if discrete data)
+# ppc_ecdf_overlay
 ppc_ecdf_overlay(y, yrep[sample(nrow(yrep), 25), ])
 
 # PIT-ECDF and PIT-ECDF difference plot of the PIT values of y compared to

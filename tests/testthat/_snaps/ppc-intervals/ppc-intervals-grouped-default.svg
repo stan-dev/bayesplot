@@ -601,15 +601,15 @@
 <polyline points='16.90,387.56 19.89,387.56 ' style='stroke-width: 0.64; stroke: #333333; stroke-linecap: butt;' />
 <polyline points='16.90,346.44 19.89,346.44 ' style='stroke-width: 0.64; stroke: #333333; stroke-linecap: butt;' />
 <text x='333.03' y='567.53' text-anchor='middle' style='font-size: 12.00px; font-family: sans;' textLength='94.72px' lengthAdjust='spacingAndGlyphs'>Data point (index)</text>
-<circle cx='672.74' cy='292.92' r='1.42' style='stroke-width: 0.71; stroke: #011F4B; fill: #03396C;' />
-<line x1='672.74' y1='317.11' x2='672.74' y2='303.29' style='stroke-width: 2.13; stroke: #B3CDE0; stroke-opacity: 0.33; stroke-linecap: butt;' />
-<line x1='672.74' y1='317.11' x2='672.74' y2='303.29' style='stroke-width: 2.13; stroke: #B3CDE0; stroke-linecap: butt;' />
-<circle cx='672.74' cy='310.20' r='4.62' style='stroke-width: 0.71; stroke: #B3CDE0; fill: #D1E1EC;' />
-<text x='687.36' y='295.01' style='font-size: 13.00px; font-style: italic; font-family: sans;' textLength='6.51px' lengthAdjust='spacingAndGlyphs'>y</text>
-<text x='687.36' y='311.49' style='font-size: 13.00px; font-style: italic; font-family: sans;' textLength='6.51px' lengthAdjust='spacingAndGlyphs'>y</text>
-<text x='694.89' y='313.90' style='font-size: 9.10px; font-family: sans;' textLength='3.03px' lengthAdjust='spacingAndGlyphs'>r</text>
-<text x='697.92' y='313.90' style='font-size: 9.10px; font-family: sans;' textLength='5.06px' lengthAdjust='spacingAndGlyphs'>e</text>
-<text x='702.98' y='313.90' style='font-size: 9.10px; font-family: sans;' textLength='5.06px' lengthAdjust='spacingAndGlyphs'>p</text>
+<circle cx='672.74' cy='284.56' r='1.42' style='stroke-width: 0.71; stroke: #011F4B; fill: #03396C;' />
+<line x1='672.74' y1='308.75' x2='672.74' y2='294.93' style='stroke-width: 2.13; stroke: #B3CDE0; stroke-opacity: 0.33; stroke-linecap: butt;' />
+<line x1='672.74' y1='308.75' x2='672.74' y2='294.93' style='stroke-width: 2.13; stroke: #B3CDE0; stroke-linecap: butt;' />
+<circle cx='672.74' cy='301.84' r='4.62' style='stroke-width: 0.71; stroke: #B3CDE0; fill: #D1E1EC;' />
+<text x='687.36' y='286.65' style='font-size: 13.00px; font-style: italic; font-family: sans;' textLength='6.51px' lengthAdjust='spacingAndGlyphs'>y</text>
+<text x='687.36' y='303.13' style='font-size: 13.00px; font-style: italic; font-family: sans;' textLength='6.51px' lengthAdjust='spacingAndGlyphs'>y</text>
+<text x='694.89' y='305.53' style='font-size: 9.10px; font-family: sans;' textLength='3.03px' lengthAdjust='spacingAndGlyphs'>r</text>
+<text x='697.92' y='305.53' style='font-size: 9.10px; font-family: sans;' textLength='5.06px' lengthAdjust='spacingAndGlyphs'>e</text>
+<text x='702.98' y='305.53' style='font-size: 9.10px; font-family: sans;' textLength='5.06px' lengthAdjust='spacingAndGlyphs'>p</text>
 <text x='19.89' y='15.89' style='font-size: 14.40px; font-family: sans;' textLength='202.55px' lengthAdjust='spacingAndGlyphs'>ppc_intervals_grouped (default)</text>
 </g>
 </svg>

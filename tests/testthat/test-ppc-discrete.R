@@ -77,6 +77,27 @@ test_that("ppc_bars_data includes all levels", {
   expect_equal(d3$h[2], 0, ignore_attr = TRUE)
 })
 
+test_that("ppc_bars_data handles single observation and single draw", {
+  y1 <- 2L
+  yrep1 <- matrix(c(1L, 2L, 3L, 2L, 2L), ncol = 1)
+  d <- ppc_bars_data(y1, yrep1)
+  expect_s3_class(d, "data.frame")
+  expect_equal(d$y_obs[d$x == 2], 1)
+
+  # single draw: interval collapses to a point
+  y_s <- c(1L, 2L, 3L, 2L)
+  yrep_s <- matrix(c(1L, 2L, 2L, 3L), nrow = 1)
+  d2 <- ppc_bars_data(y_s, yrep_s)
+  expect_equal(d2$l, d2$m, ignore_attr = TRUE)
+  expect_equal(d2$m, d2$h, ignore_attr = TRUE)
+})
+
+test_that("ppc_bars_data prob = 0 collapses interval to median", {
+  d <- ppc_bars_data(y_ord, yrep_ord, prob = 0)
+  expect_equal(d$l, d$m, ignore_attr = TRUE)
+  expect_equal(d$m, d$h, ignore_attr = TRUE)
+})
+
 
 # rootograms -----------------------------------------------------------
 yrep3 <- matrix(yrep2, nrow = 5, ncol = ncol(yrep2), byrow = TRUE)
