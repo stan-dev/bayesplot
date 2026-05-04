@@ -38,7 +38,6 @@ ppc_calibration(
   yrep = NULL,
   prob = 0.95,
   interval = c("confidence", "consistency"),
-  interval_type = NULL,
   help_text = TRUE,
   B = 200,
   show_mean = TRUE,
@@ -56,7 +55,6 @@ ppc_calibration_grouped(
   group,
   prob = 0.95,
   interval = c("confidence", "consistency"),
-  interval_type = NULL,
   help_text = TRUE,
   B = 200,
   show_mean = TRUE,
@@ -74,7 +72,6 @@ ppc_loo_calibration(
   psis_object = NULL,
   prob = 0.95,
   interval = c("confidence", "consistency"),
-  interval_type = NULL,
   help_text = TRUE,
   B = 200,
   show_mean = TRUE,
@@ -93,7 +90,6 @@ ppc_loo_calibration_grouped(
   group,
   prob = 0.95,
   interval = c("confidence", "consistency"),
-  interval_type = NULL,
   help_text = TRUE,
   B = 200,
   show_mean = TRUE,
@@ -146,19 +142,18 @@ Each value in \code{group} is interpreted as the group level pertaining
 to the corresponding observation.}
 
 \item{yrep}{An \code{S} by \code{N} matrix of draws from the posterior (or prior)
-predictive distribution. The number of rows, \code{S}, is the size of the
-posterior (or prior) sample used to generate \code{yrep}. The number of columns,
-\code{N} is the number of predicted observations (\code{length(y)}). The columns of
-\code{yrep} should be in the same order as the data points in \code{y} for the plots
-to make sense. See the \strong{Details} and \strong{Plot Descriptions} sections for
-additional advice specific to particular plots.}
+predictive distribution, or a \code{\link[posterior:draws]{posterior::draws}} object. The number of
+rows, \code{S}, is the size of the posterior (or prior) sample used to generate
+\code{yrep}. The number of columns, \code{N} is the number of predicted observations
+(\code{length(y)}). The columns of \code{yrep} should be in the same order as the
+data points in \code{y} for the plots to make sense. See the \strong{Details} and
+\strong{Plot Descriptions} sections for additional advice specific to particular
+plots.}
 
 \item{interval}{For \code{ppc_calibration()}, \code{ppc_calibration_grouped()},
 \code{ppc_loo_calibration()}, and \code{ppc_loo_calibration_grouped()}, choose
 \code{"confidence"} to use uncertainty in the estimated calibration curve, or
 \code{"consistency"} to compare to replicated outcomes.}
-
-\item{interval_type}{Deprecated alias for \code{interval}.}
 
 \item{help_text}{For \code{ppc_calibration()} and \code{ppc_calibration_grouped()},
 if \code{TRUE} (default) display a math-style label in the plot indicating the
@@ -207,7 +202,7 @@ See the \strong{Plot Descriptions} section, below, for details.
 \item{\code{ppc_calibration()},\code{ppc_calibration_grouped()}}{
 PAV-adjusted calibration plots showing the relationship between the
 predicted event probabilities and the conditional event probabilities.
-The \code{interval_type} parameter controls whether confidence intervals, or
+The \code{interval} parameter controls whether confidence intervals, or
 consistency intervals are computed.},
 \item{\code{ppc_calibration_overlay()},\code{ppc_calibration_overlay_grouped()}}{
 Overlay plots showing posterior samples of PAV-adjusted calibration
@@ -234,8 +229,8 @@ prep <- (example_yrep_draws() - ymin) / (ymax - ymin)
 ppc_calibration_overlay(y, prep[1:50, ])
 
 # Compare confidence vs consistency intervals
-ppc_calibration(y, prep, interval_type = "confidence")
-ppc_calibration(y, prep, interval_type = "consistency")
+ppc_calibration(y, prep, interval = "confidence")
+ppc_calibration(y, prep, interval = "consistency")
 }
 \seealso{
 Other PPCs: 

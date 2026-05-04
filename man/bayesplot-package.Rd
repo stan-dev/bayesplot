@@ -134,6 +134,8 @@ Other contributors:
   \item Behram Ulukır [contributor]
   \item Visruth Srimath Kandali [contributor]
   \item Mattan S. Ben-Shachar [contributor]
+  \item Ishaan Arora [contributor]
+  \item Utkarsh Pawade [contributor]
 }
 
 }
