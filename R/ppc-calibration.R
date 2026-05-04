@@ -9,7 +9,7 @@
 #'
 #' @template args-y-yrep
 #' @template args-group
-#' @param interval_type For `ppc_calibration()`, `ppc_calibration_grouped()`,
+#' @param interval For `ppc_calibration()`, `ppc_calibration_grouped()`,
 #'    `ppc_loo_calibration()`, and `ppc_loo_calibration_grouped()`, the type
 #'    of interval to compute. Options are `"consistency"` (default) for credible
 #'    intervals for the PAV-adjusted calibration curve of posterior predictive
@@ -23,7 +23,7 @@
 #'   \item{`ppc_calibration()`,`ppc_calibration_grouped()`}{
 #'   PAV-adjusted calibration plots showing the relationship between the
 #'   predicted event probabilities and the conditional event probabilities.
-#'   The `interval_type` parameter controls whether confidence intervals, or
+#'   The `interval` parameter controls whether confidence intervals, or
 #'   consistency intervals are computed.},
 #'   \item{`ppc_calibration_overlay()`,`ppc_calibration_overlay_grouped()`}{
 #'   Overlay plots showing posterior samples of PAV-adjusted calibration
@@ -49,8 +49,8 @@
 #' ppc_calibration_overlay(y, prep[1:50, ])
 #'
 #' # Compare confidence vs consistency intervals
-#' ppc_calibration(y, prep, interval_type = "confidence")
-#' ppc_calibration(y, prep, interval_type = "consistency")
+#' ppc_calibration(y, prep, interval = "confidence")
+#' ppc_calibration(y, prep, interval = "consistency")
 NULL
 
 
@@ -65,7 +65,9 @@ ppc_calibration_overlay <- function(
     linewidth = linewidth,
     show_qdots = FALSE,
     prob = 0.95,
-    interval = "consistency"
+    interval = "consistency",
+    # currently hardcoded; in future we want to support also "simultaneous"
+    interval_type = "pointwise"
   )
   ggplot(data) +
     geom_abline(color = "darkgrey", linetype = 2, linewidth = 0.5) +
@@ -79,8 +81,8 @@ ppc_calibration_overlay <- function(
     bayesplot_theme_get() +
     legend_none() +
     coord_equal(xlim = params$xlim, ylim = c(0, 1), expand = FALSE) +
-    xlab("Predicted probability") +
-    ylab("Conditional event probability") +
+    xlab("predicted probability") +
+    ylab("conditional event probability") +
     NULL
 }
 
@@ -95,7 +97,9 @@ ppc_calibration_overlay_grouped <- function(
     linewidth = linewidth,
     show_qdots = FALSE,
     prob = 0.95,
-    interval = "consistency"
+    interval = "consistency",
+    # currently hardcoded; in future we want to support also "simultaneous"
+    interval_type = "pointwise"
   )
   ggplot(data) +
     geom_abline(color = "darkgrey", linetype = 2, linewidth = 0.5) +
@@ -109,8 +113,8 @@ ppc_calibration_overlay_grouped <- function(
     bayesplot_theme_get() +
     legend_none() +
     coord_equal(xlim = params$xlim, ylim = c(0, 1), expand = FALSE) +
-    xlab("Predicted probability") +
-    ylab("Conditional event probability") +
+    xlab("predicted probability") +
+    ylab("conditional event probability") +
     NULL
 }
 
@@ -131,7 +135,6 @@ ppc_calibration_overlay_grouped <- function(
 #'   `ppc_loo_calibration()`, and `ppc_loo_calibration_grouped()`, choose
 #'   `"confidence"` to use uncertainty in the estimated calibration curve, or
 #'   `"consistency"` to compare to replicated outcomes.
-#' @param interval_type Deprecated alias for `interval`.
 #' @param B For calibration plots that use `yrep` with `interval = "confidence"`,
 #'   the number of bootstrap samples.
 #' @param show_mean For calibration interval plots, if `TRUE` (default), draw
@@ -158,7 +161,6 @@ ppc_calibration <- function(
     yrep = NULL,
     prob = .95,
     interval = c("confidence", "consistency"),
-    interval_type = NULL,
     help_text = TRUE,
     B = 200,
     show_mean = TRUE,
@@ -168,10 +170,7 @@ ppc_calibration <- function(
     linewidth = 1,
     alpha = 0.1) {
   check_ignored_arguments(...)
-  if (!is.null(interval_type)) {
-    interval <- interval_type
-  }
-  interval <- match.arg(interval)
+  interval <- rlang::arg_match(interval, values = c("confidence", "consistency"))
   .validate_calibration_qdots_args(show_qdots, qdots_quantiles)
 
   data <- ppc_calibration_interval_data(
@@ -187,7 +186,9 @@ ppc_calibration <- function(
     linewidth = linewidth,
     show_qdots = show_qdots,
     prob = prob,
-    interval = interval
+    interval = interval,
+    # currently hardcoded; in future we want to support also "simultaneous"
+    interval_type = "pointwise"
   )
 
   p <- ggplot(data) +
@@ -237,7 +238,6 @@ ppc_calibration_grouped <- function(
     group,
     prob = .95,
     interval = c("confidence", "consistency"),
-    interval_type = NULL,
     help_text = TRUE,
     B = 200,
     show_mean = TRUE,
@@ -247,10 +247,7 @@ ppc_calibration_grouped <- function(
     linewidth = 1,
     alpha = 0.1) {
   check_ignored_arguments(...)
-  if (!is.null(interval_type)) {
-    interval <- interval_type
-  }
-  interval <- match.arg(interval)
+  interval <- rlang::arg_match(interval, values = c("confidence", "consistency"))
   .validate_calibration_qdots_args(show_qdots, qdots_quantiles)
   data <- ppc_calibration_interval_data_grouped(
     y = y,
@@ -266,7 +263,9 @@ ppc_calibration_grouped <- function(
     linewidth = linewidth,
     show_qdots = show_qdots,
     prob = prob,
-    interval = interval
+    interval = interval,
+    # currently hardcoded; in future we want to support also "simultaneous"
+    interval_type = "pointwise"
   )
 
   p <- ggplot(data) +
@@ -317,7 +316,6 @@ ppc_loo_calibration <- function(
     psis_object = NULL,
     prob = .95,
     interval = c("confidence", "consistency"),
-    interval_type = NULL,
     help_text = TRUE,
     B = 200,
     show_mean = TRUE,
@@ -334,7 +332,6 @@ ppc_loo_calibration <- function(
     prep = NULL,
     prob = prob,
     interval = interval,
-    interval_type = interval_type,
     help_text = help_text,
     B = B,
     show_mean = show_mean,
@@ -356,7 +353,6 @@ ppc_loo_calibration_grouped <- function(
     group,
     prob = .95,
     interval = c("confidence", "consistency"),
-    interval_type = NULL,
     help_text = TRUE,
     B = 200,
     show_mean = TRUE,
@@ -374,7 +370,6 @@ ppc_loo_calibration_grouped <- function(
     group = group,
     prob = prob,
     interval = interval,
-    interval_type = interval_type,
     help_text = help_text,
     B = B,
     show_mean = show_mean,
@@ -423,7 +418,8 @@ ppc_calibration_data <- function(y, prep, group = NULL) {
   }
 }
 
-.calibration_plot_params <- function(data, linewidth, show_qdots, prob, interval) {
+.calibration_plot_params <- function(data, linewidth, show_qdots, prob, interval,
+interval_type) {
   xlim <- c(0, 1)
   x_breaks <- ggplot2::waiver()
   x_labels <- ggplot2::waiver()
@@ -435,9 +431,10 @@ ppc_calibration_data <- function(y, prep, group = NULL) {
     ylim = c(0 - linewidth / 200, 1 + linewidth / 200),
     y_breaks = pretty(c(0, 1), n = 5),
     ci_label = sprintf(
-      "%s%%-%sI (ptw.)",
+      "%s%%-%sI (%s)",
       prob_pct, 
-      switch(interval, consistency = "Cs", "C")
+      switch(interval, consistency = "Cs", "C"),
+      switch(interval_type, pointwise = "ptw.", "sim.")
     )
   )
 }

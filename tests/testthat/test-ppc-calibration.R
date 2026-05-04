@@ -137,11 +137,10 @@ test_that("ppc_calibration returns a ggplot object", {
   expect_gg(ppc_calibration(calib_y, calib_prep, prob = 0.9,
                            linewidth = 0.8, alpha = 0.5))
   expect_gg(ppc_calibration(calib_y, calib_prep))
-  # Test new interval_type parameter
   expect_gg(ppc_calibration(y=calib_y, prep=calib_prep, 
-    interval_type = "confidence"))
+    interval = "confidence"))
   expect_gg(ppc_calibration(y=calib_y, prep=calib_prep, 
-    interval_type = "consistency"))
+    interval = "consistency"))
 })
 
 test_that("ppc_calibration adds quantile dot layer when requested", {
@@ -179,11 +178,10 @@ test_that("ppc_calibration_grouped returns a ggplot object", {
     linewidth = 0.8,
     alpha = 0.5
   ))
-  # Test new interval_type parameter
   expect_gg(ppc_calibration_grouped(y = calib_y, prep = calib_prep,
-    group = calib_group, interval_type = "confidence"))
+    group = calib_group, interval = "confidence"))
   expect_gg(ppc_calibration_grouped(y = calib_y, prep = calib_prep,
-    group = calib_group, interval_type = "consistency"))
+    group = calib_group, interval = "consistency"))
 })
 
 test_that("ppc_loo_calibration returns a ggplot object", {
@@ -242,8 +240,8 @@ test_that("calibration functions validate inputs correctly", {
                "length(group) must be equal to the number of observations.",
               fixed=TRUE)
   
-  # Invalid interval_type
-  expect_error(ppc_calibration(calib_y, calib_prep, interval_type = "invalid"),
+  # Invalid interval
+  expect_error(ppc_calibration(calib_y, calib_prep, interval = "invalid"),
                "should be one of")
   expect_error(ppc_calibration(calib_y, calib_prep, show_qdots = NA),
                "'show_qdots' must be a single TRUE or FALSE.",
@@ -335,18 +333,18 @@ test_that("ppc_calibration renders correctly", {
   )
   vdiffr::expect_doppelganger("ppc_calibration (custom)", p_custom)
   
-  # Test interval_type variants
+  # Test interval variants
   p_confidence <- ppc_calibration(
     calib_y,
     calib_prep,
-    interval_type = "confidence"
+    interval = "confidence"
   )
   vdiffr::expect_doppelganger("ppc_calibration (confidence)", p_confidence)
   
   p_consistency <- ppc_calibration(
     calib_y,
     calib_prep,
-    interval_type = "consistency"
+    interval = "consistency"
   )
   vdiffr::expect_doppelganger("ppc_calibration (consistency)", p_consistency)
 })
@@ -369,12 +367,12 @@ test_that("ppc_calibration_grouped renders correctly", {
   )
   vdiffr::expect_doppelganger("ppc_calibration_grouped (custom)", p_custom)
   
-  # Test interval_type variants
+  # Test interval variants
   p_confidence <- ppc_calibration_grouped(
     y = calib_y,
     prep = calib_prep,
     group = calib_group,
-    interval_type = "confidence"
+    interval = "confidence"
   )
   vdiffr::expect_doppelganger("ppc_calibration_grouped (confidence)", p_confidence)
   
@@ -382,7 +380,7 @@ test_that("ppc_calibration_grouped renders correctly", {
     y = calib_y,
     prep = calib_prep,
     group = calib_group,
-    interval_type = "consistency"
+    interval = "consistency"
   )
   vdiffr::expect_doppelganger("ppc_calibration_grouped (consistency)", p_consistency)
 })
@@ -505,7 +503,7 @@ test_that("test-data-2 from paper", {
     ppc_calibration(
       y = pmin(roaches$y, 1),
       yrep = pp,
-      interval_type = "consistency",
+      interval = "consistency",
       prob = 0.95
     )
   )
@@ -514,7 +512,7 @@ test_that("test-data-2 from paper", {
     ppc_calibration(
       y = pmin(roaches$y, 1),
       yrep = pp,
-      interval_type = "confidence",
+      interval = "confidence",
       prob = 0.95
     )
   )
@@ -548,7 +546,7 @@ test_that("test-data-2 from paper", {
       ppc_calibration(
         y = pmin(roaches$y, 1),
         yrep = apply(posterior_predict(brm_glmzinb), 2, pmin, 1),
-        interval_type = "consistency",
+        interval = "consistency",
         prob = 0.95
       )
     )
