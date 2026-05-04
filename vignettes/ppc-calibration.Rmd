@@ -19,12 +19,6 @@ vignette: >
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
-
-pkgs <- c("brms", "rstanarm")
-
-if (!all(sapply(pkgs, requireNamespace, quietly = TRUE))) {
-  knitr::opts_chunk$set(eval = FALSE)
-}
 ```
 
 ```{r pkgs}
@@ -40,146 +34,310 @@ set.seed(SEED)
 ## Overview
 
 This vignette introduces the **PPC calibration** family of functions in
-`bayesplot`. Calibration plots let you assess whether a model's predicted
-probabilities agree with observed event rates — a key aspect of predictive
-model checking for binary outcomes.
+`bayesplot`, which assess the calibration of Bayesian models with binary
+outcomes by examining the agreement between predicted probabilities and
+observed event rates.
 
-A well-calibrated model produces predicted probabilities that match empirical
-event frequencies. For example, among observations where the model predicts a
-30 % chance of an event, roughly 30 % of those events should actually occur.
-Deviations from this pattern reveal systematic over- or underprediction.
+A model is *well-calibrated* when its predicted probabilities match empirical 
+event frequencies. For example, among all observations where the model 
+assigns a 30% probability, roughly 30% of events should actually occur. 
+Deviations from this pattern signal systematic over- or underprediction.
 
-The sections below first explain the data structure returned by
-`ppc_calibration_data()`, then walk through the plotting functions step by step.
+This vignette explains the underlying methodology, walks through the core
+plotting functions and their customization options, and showcases the use
+of calibration plots in a real-world example. 
 
----
+## Methodological Background
 
-## Simulated example data
+### Conditional Event Probabilities (CEP)
 
-Throughout this vignette we use a simple simulated binary outcome. We generate
-400 observations from a logistic model, and construct two prediction systems:
-one approximately calibrated and one deliberately miscalibrated.
+Following Dimitriadis, Gneiting, and Jordan (2021), `bayesplot` does not work
+directly with raw binary outcomes. Instead, it estimates the **Conditional
+Event Probability (CEP)**: the true underlying probability that an event
+occurs, given that the model assigned a specific predicted probability $p$.
 
-```{r simulate}
-# Simulate binary outcome
-N <- 400
-S <- 80
-x <- runif(N, -2, 0)
+Formally, if the model predicts $p$ for an observation, the CEP answers:
+*"Among all observations that received this prediction, what fraction actually
+had the event?"*
 
-p_true <- plogis(0.8 * x)
-y <- rbinom(N, size = 1, prob = p_true)
+A perfectly calibrated model has a CEP function equal to the identity, that
+is, CEP($p$) = $p$ for all $p$. When plotted, this produces a diagonal reference
+line. Deviations from the diagonal reveal miscalibration.
 
-# Helper: generate S posterior-like draws of predicted probabilities.
-# Noise is added on the logit scale so predictions remain in (0, 1).
-make_prep <- function(mu, S = 100, sd_logit = 0.35) {
-  lp  <- qlogis(pmin(pmax(mu, 1e-6), 1 - 1e-6))
-  mat <- matrix(
-    rnorm(S * length(mu), mean = rep(lp, each = S), sd = sd_logit),
-    nrow = S, 
-    byrow = FALSE
-  )
-  plogis(mat)
-}
+### Estimating the CEP: the PAV Algorithm
 
-# Two prediction systems
-# Nearly calibrated: centred at the true probabilities
-prep_good <- make_prep(
-  mu = p_true, 
-  S = S, 
-  sd_logit = 0.30
-  )
+To estimate the CEP from data, `bayesplot` uses the **Pool Adjacent
+Violators (PAV)** algorithm (Ayer et al., 1955). For more details see
+Dimitriadis et al. (2021) and Säilynoja et al. (2025). The PAV algorithm solves
+an isotonic regression problem: it finds the monotone non-decreasing step
+function that best fits the binary outcomes as a function of the ordered
+predicted probabilities.
 
-# Miscalibrated: probabilities pushed to the extremes and shifted
-p_bad_center <- plogis(1.8 * qlogis(p_true) - 0.5)
-prep_bad <- make_prep(
-  mu = p_bad_center, 
-  S = S, 
-  sd_logit = 0.25
+The estimation procedure has three steps which are described below and
+illustrated with a toy example consisting of 8 observations with their
+predicted probabilities $p_i$ and binary outcomes $y_i$ for $i = 1, \ldots, 8$.
+
+#### Step 1: Sort by predicted probability
+
+Order observations by their predicted probability.
+
+```{r toy-data}
+df_toy <- data.frame(
+  p = c(0.05, 0.10, 0.20, 0.30, 0.45, 0.60, 0.75, 0.90),
+  y = c(0,    0,    1,    0,    1,    1,    0,    1)
+)
+df_toy
+```
+
+#### Step 2: Fit a monotone step function with PAV
+
+Apply the PAV algorithm to the ordered outcomes. The result is a piecewise-
+constant, non-decreasing estimate of the CEP at each predicted
+probability $p_i$.
+
+```{r pav-estimate}
+df_toy <- df_toy |>
+  mutate(cep = round(monotone::monotone(df_toy$y), 2))
+df_toy
+```
+
+#### Step 3: Plot CEP against predicted probability
+
+Plot the estimated step function with predicted probabilities $p_i$ on the
+x-axis and CEP on the y-axis. The diagonal reference line marks perfect
+calibration.
+
+```{r toy-plot, out.width = "60%", fig.align = "center", echo = FALSE}
+S <- 5
+ppc_calibration(
+  y = df_toy$y, prep = t(replicate(S, df_toy$p)), show_qdots = FALSE
   )
 ```
 
-## `ppc_calibration_data()` - the underlying data structure
+In a fitted Bayesian model the predicted probabilities are the posterior
+predictions and the CEP is estimated for each posterior draw separately. In the
+following code block we adjust the toy example by simulating $S=5$ draws of
+predicted probabilities for each observation.
+
+```{r toy-data2}
+S <- 5
+
+df_toy_draws <- list(
+  p = t(replicate(S, pmin(pmax(df_toy$p + rnorm(length(df_toy$p), 0, 0.08), 0), 1))),
+  y = c(0, 0, 1, 0, 1, 1, 0, 1)
+)
+```
+
+The calibration curve can then be plotted for each draw using
+`ppc_calibration_overlay()`. The resulting plot shows the draw-to-draw
+variability in the calibration curve.
+
+```{r toy-plot2, out.width = "60%", fig.align = "center"}
+ppc_calibration_overlay(y = df_toy_draws$y, prep = df_toy_draws$p, alpha = 0.9)
+```
+
+Alternatively, `ppc_calibration()` can be used to summarize the draw-specific
+curves into a single calibration curve with an uncertainty band. The next
+section explains how the uncertainty intervals are constructed.
+
+```{r toy-plot3, out.width = "60%", fig.align = "center"}
+ppc_calibration(y = df_toy_draws$y, prep = df_toy_draws$p, show_qdots = FALSE)
+```
+
+### Uncertainty Intervals {#uncertainty-intervals}
+
+`ppc_calibration()` summarizes the draw-specific curves into a single
+calibration curve with an uncertainty band. The plotting function supports two
+strategies for propagating uncertainty via the `interval` argument.
+
+#### Estimation uncertainty (`interval = "confidence"`): 
+
+The default setting `interval = "confidence"` reflects uncertainty in the CEP
+induced by variation across posterior draws:
+
+1. For each posterior draw $s$, sort observations $y_i$ by posterior predictions
+   $p_i^{(s)}$.
+2. Estimate for each posterior draw a CEP curve.
+3. Take pointwise quantiles of the draw-specific CEP values across all $S$
+   draws (e.g., 2.5% and 97.5% for `prob = 0.95`) to form the ribbon.
+
+The central step curve is the pointwise posterior mean of the draw-specific
+curves.
+
+In the `ppc_calibration()` plot, this interval type is labeled `95%-CI (ptw.)`,
+indicating a pointwise confidence interval for the CEP curve whose bounds are
+the 2.5% and 97.5% quantiles of the draw-specific CEP curves. The probability
+can be adjusted with the `prob` argument.
+
+#### Posterior predictive consistency (`interval = "consistency"`)
+
+The setting `interval = "consistency"` answers the question: *If the model is
+correctly specified, where would we expect the calibration curve to fall?*
+The band is constructed as follows:
+
+1. For each draw $s$ and its sorted posterior predictions $p_i^{(s)}$,
+   simulate replicated outcomes
+   $\tilde{y}_i^{(s)} \sim \mathrm{Bernoulli}(p_i^{(s)})$.
+2. Estimate for each replicated outcome a CEP curve.
+3. Take pointwise quantiles of the CEP values across all $S$ draws to
+   form the ribbon.
+
+The central curve is still estimated from the *observed* outcomes. If the
+observed curve falls outside the consistency band, the model is
+self-**in**consistent, that is, its predictions do not match the data-generating
+distribution it implies.
+
+In the `ppc_calibration()` plot, this interval type is labeled `95%-CsI (ptw.)`,
+indicating a pointwise consistency interval for the CEP curve whose bounds are
+the 2.5% and 97.5% quantiles of the draw-specific CEP curves. The probability
+can be adjusted with the `prob` argument.
+
+### Calibrated vs. Miscalibrated: an Illustration
+
+The following figure contrasts a calibrated and a miscalibrated model fitted to
+simulated data, and demonstrates the interpretation of the diagonal reference
+line introduced above.
+
+We simulate $n=600$ observations of a single predictor $x \sim N(0,1)$ and 
+generate two binary outcomes. 
+
++ The **calibrated** outcome follows a logistic model linear in $x$, so the 
+same linear model fitted by `brm()` is correctly specified and its predictions 
+should align with the observed event rates. 
+
++ The **miscalibrated** outcome is generated from a model that also includes a 
+quadratic term $0.9 \times x^2$, which the fitted linear model cannot capture; 
+this systematic misspecification causes the predicted probabilities to diverge 
+from the true event rates. 
+
+Both models share the same weakly informative priors and are fitted with a 
+single chain for illustration purposes.
+
+```{r simulate-data, warning = FALSE, message = FALSE}
+n <- 600
+
+x <- rnorm(n)
+y <- rbinom(n, size = 1, prob = plogis(-0.5 + 1.2 * x))
+y_mis <- rbinom(n, size = 1, prob = plogis(-0.5 + 1.2 * x + 0.9 * x^2))
+
+df <- data.frame(y = y, x = x)
+df_mis <- data.frame(y = y_mis, x = x)
+
+fit_model <- function(df, seed) {
+  brm(
+    formula = y ~ x,
+    data = df,
+    family = bernoulli(link = "logit"),
+    prior = c(
+      prior(normal(0, 2.5), class = "b"),
+      prior(normal(0, 5), class = "Intercept")
+    ),
+    chains = 1,
+    seed = seed
+  )
+}
+
+fit_calib <- fit_model(df, SEED)
+fit_miscalib <- fit_model(df_mis, SEED)
+
+prep <- posterior_epred(fit_calib)
+prep_mis <- posterior_epred(fit_miscalib)
+
+yrep <- posterior_predict(fit_calib)
+yrep_mis <- posterior_predict(fit_miscalib)
+```
+
+While the curve in the calibrated model (left) tracks the diagonal closely,
+the miscalibrated model (right) shows a systematic deviation from the diagonal
+reference line.
+
+```{r calib-vs-miscalib, fig.width = 7, fig.height = 3, fig.asp = NULL, out.width = "90%", fig.align = "center", echo = FALSE}
+p1 <- ppc_calibration(y = y, yrep = yrep, show_qdots = FALSE) +
+  labs(title = "Calibrated model")
+
+p2 <- ppc_calibration(y = y_mis, yrep = yrep_mis, show_qdots = FALSE) +
+  labs(title = "Miscalibrated model")
+
+p1 + p2
+```
+
+## Overview of ppc-calibration functions and customization options
+In the following an overview of the core `ppc_calibration` functions is 
+provided, along with explanations of their input arguments and customization 
+options. 
+
+### `ppc_calibration_data()` — the underlying data structure
 
 `ppc_calibration_data()` computes the data that all calibration plots are built
-on. Understanding its output helps you work with or extend the visualisations.
+on. Understanding its output helps to work with or extend the visualisations or
+to build custom calibration plots.
 
-```{r calib-data}
-dat <- ppc_calibration_data(
-  y = y, 
-  prep = prep_good, 
-  group = NULL
-  )
+```{r ppc-calibration-data}
+dat <- ppc_calibration_data(y = y, prep = prep)
 
 head(dat, 5)
 ```
 
-The returned data frame has the following columns:
+`ppc_calibration_data` returns a data frame with the following columns:
 
 | Column | Description |
 |---|---|
-| `group` | Group label $z = 1, \ldots, Z$. If `group = NULL`, all observations belong to group $z = 1$. |
-| `y_id` | Observation index ($i = 1, \ldots, n_z$ within group $z$). |
-| `y_name` | Variable label for `y_id`. |
-| `rep_id` | Posterior draw index ($s = 1, \ldots, S$). |
-| `rep_label` | Variable label for `rep_id`. |
-| `value` | Sorted predicted probabilities $p_i^{(s)}$. |
-| `ord` | Rank $k = g(i)$ of each sorted predicted probability within its group and draw. |
-| `cep` | Conditional event probability $m_k$. |
+| `group` | Group label; if `group = NULL`, all observations belong to one group. (factor or double) |
+| `y_id` | Observation index ($i = 1, \ldots, n_z$ within group $z$). (integer) |
+| `y_name` | Variable label for `y_id`. (factor) |
+| `rep_id` | Posterior draw index ($s = 1, \ldots, S$). (integer) |
+| `rep_label` | Variable label for `rep_id`. (factor) |
+| `value` | Sorted predicted probabilities $p_i^{(s)}$. (double) |
+| `ord` | Rank of each sorted predicted probability within its group and draw. (integer) |
+| `cep` | Conditional event probability $cep_i^{(s)}$. (double) |
 
-## `ppc_calibration_overlay()` - one curve per posterior draw
+### `ppc_calibration_overlay()` — one curve per posterior draw
 
-`ppc_calibration_overlay()` draws one calibration curve per posterior draw.
-This makes it easy to see both the central tendency and the draw-to-draw
-variability of the calibration.
+`ppc_calibration_overlay()` draws one calibration curve per posterior draw,
+making it a useful tool for exploring the variability in calibration across
+posterior draws.
 
-**How to read the plot:**
-
-- **Calibrated**: curves cluster tightly around the diagonal.
-- **Underprediction**: curves lie *above* the diagonal (observed rates exceed
-  predicted rates).
-- **Overprediction**: curves lie *below* the diagonal (predicted rates exceed
-  observed rates).
+In the following we use the simulated data from the previous section to compare 
+the draw-specific calibration curves of the calibrated and miscalibrated models.
+The plot shows that the curves from the calibrated model (left) cluster around 
+the diagonal reference line, while those from the miscalibrated model (right) 
+deviate from it for lower predicted probabilities.
 
 ```{r overlay-basic, fig.width=7, fig.height=3, fig.asp=NULL, out.width="80%", fig.align="center"}
-p1 <- ppc_calibration_overlay(
-  y = y, 
-  prep = prep_good
-  ) +
+p1 <- ppc_calibration_overlay(y = y, prep = prep) +
   labs(title = "Calibrated")
 
-p2 <- ppc_calibration_overlay(
-  y = y, 
-  prep = prep_bad
-  ) +
+p2 <- ppc_calibration_overlay(y = y, prep = prep_mis) +
   labs(title = "Miscalibrated")
 
-p1 | p2
+p1 + p2
 ```
 
-### Grouped data with `ppc_calibration_overlay_grouped()`
+#### Grouped data
 
-When observations belong to meaningful subgroups, pass a group vector to
-`ppc_calibration_overlay_grouped()` to produce a faceted plot:
+When observations belong to subgroups, `ppc_calibration_overlay_grouped()` 
+produces a faceted plot. 
+
+For illustration, we define for our simulated data a grouping variable by 
+assigning the first half of the simulated observations to group A and the 
+second half to group B.
 
 ```{r overlay-grouped, fig.width=7, fig.height=3, fig.asp=NULL, out.width="80%", fig.align="center"}
-gr <- c(replicate(N / 2, "Group-A"), replicate(N / 2, "Group-B"))
 
-ppc_calibration_overlay_grouped(
-  y = y, 
-  prep = prep_good, 
-  group = gr
-  )
+group <- rep(c("A", "B"), each = n / 2)
+
+ppc_calibration_overlay_grouped(y = y, prep = prep, group = group)
 ```
 
-## `ppc_calibration()` — calibration curve with uncertainty bands
+### `ppc_calibration()` — calibration curve with uncertainty bands
 
 `ppc_calibration()` is the main plotting function. It displays the calibration
 curve together with an uncertainty band. The meaning of the band depends on
-the `interval` argument.
+the `interval` argument (as discussed above).
 
-### Expected input argument contract
+#### Expected input arguments
 
-`ppc_calibration()` expects the following input arguments
+`ppc_calibration()` expects the following input arguments:
 
 - **Core data**
   - **`y`**: numeric vector of observed outcomes of length `N`, no `NA`, with
@@ -187,7 +345,7 @@ the `interval` argument.
   - Exactly one of:
     - **`prep`**: numeric `S x N` matrix of predicted probabilities in `[0, 1]`,
       no `NA`, where `S` refers to the number of posterior draws.
-    - **`yrep`**: numeric `S x N` matrix of posterior predictive draws in `[0, 1]`,
+    - **`yrep`**: numeric `S x N` matrix of posterior predictive draws,
       no `NA` (typically binary draws), where `S` refers to the number of
       posterior draws.
   - `ncol(prep)` or `ncol(yrep)` must equal `length(y)`.
@@ -195,210 +353,104 @@ the `interval` argument.
 - **Interval controls**
   - **`prob`**: a single value strictly between `0` and `1`.
   - **`interval`**: one of `"confidence"` or `"consistency"`.
-  - **`interval_type`**: deprecated alias for `interval`; if provided, it
-    overrides `interval`.
-  - **`B`**: positive integer number of bootstrap samples.
+  - **`B`**: if `interval = "consistency"`: positive integer indicating number
+    of bootstrap samples.
 
 - **Plot controls**
-  - **`help_text`**, **`show_mean`**: logical flags.
-  - **`show_qdots`**: single non-missing logical (`TRUE`/`FALSE`).
-  - **`qdots_quantiles`**: positive integer.
+  - **`help_text`**: whether label (e.g., `95%-CI (ptw.)`) is shown.
+  - **`show_mean`**: logical; whether the mean calibration curve is shown.
+  - **`show_qdots`**: logical; whether the marginal distribution of predicted
+    probabilities is shown as a quantile dot plot along the x-axis.
+  - **`qdots_quantiles`**: positive integer; number of quantiles to display in
+    the quantile dot plot (only if `show_qdots = TRUE`).
 
 - **Styling**
   - **`linewidth`**, **`alpha`**: passed to ggplot geoms.
-  - **`...`**: currently unused.
 
-Because the function signature is `ppc_calibration(y, prep = NULL, yrep = NULL, ...)`,
+Because the function signature is
+`ppc_calibration(y, prep = NULL, yrep = NULL, ...)`,
 an unnamed second matrix argument is interpreted as `prep`. Use `yrep = ...`
 explicitly when supplying posterior predictive draws.
 
-#### Using `y` and `prep` (matrix of predicted probabilities)
+#### `interval` and `prob` — uncertainty intervals
 
-Input arguments are `y` ($y_i$)  and `prep` ($p_i^{(s)}$).
+The `interval` argument controls the type of uncertainty interval displayed in
+the plot. The `prob` argument controls the width of the interval (e.g., `0.95`
+for a 95% interval). See the section on 
+[Uncertainty Intervals](#uncertainty-intervals) above for details.
 
-**Building the calibration curve:**
+The following plot shows the calibration curves for the simulated calibrated and miscalibrated models, with both confidence intervals (top row) and consistency intervals (bottom row). 
+```{r intervals, fig.width=7, fig.height=7, fig.asp=NULL, out.width="80%", fig.align="center"}
 
-1. For each draw $s$, sort predicted probabilities in ascending order: $p_k^{(s)}$.
-2. Reorder observations to match: $y_k^{(s)}$.
-3. Compute the conditional event probability (CEP) $m_{\text{obs},k}^{(s)}$
-   at each position $k$.
-4. Average the CEPs across all $S$ draws to produce the plotted curve.
+p1 <- ppc_calibration(y = y, yrep = yrep) +
+  labs(title = "Calibrated model")
 
-**Uncertainty bands:**
+p2 <- ppc_calibration(y = y, yrep = yrep_mis) +
+  labs(title = "Miscalibrated model")
 
-| `interval` | How it is computed | What it answers |
-|---|---|---|
-| `"confidence"` | Quantiles of $\{m_{\text{obs},k}^{(s)}\}_{s=1}^S$ | *Where would we expect our model's calibration curve to lie?* (**estimation uncertainty**) |
-| `"consistency"` | Quantiles of CEPs computed from $\tilde{y}_k^{(s)} \sim \text{Bernoulli}(p_k^{(s)})$ | *Where would a perfectly calibrated model's curve lie?* (**posterior predictive consistency**) |
+p3 <- ppc_calibration(y = y, yrep = yrep, interval = "consistency")
 
-```{r setup-new-data}
-# New simulated dataset for the ppc_calibration() examples
-N <- 300
-S <- 200
-x <- runif(N, -2, 2)
+p4 <- ppc_calibration(y = y, yrep = yrep_mis, interval = "consistency")
 
-p_true <- plogis(-0.2 + 1.1 * x)
-y <- rbinom(N, size = 1, prob = p_true)
-
-prep <- matrix(
-  plogis(rnorm(S * N, mean = rep(qlogis(p_true), each = S), sd = 0.35)),
-  nrow = S, 
-  ncol = N
-)
-
-yrep <- matrix(
-  rbinom(S * N, size = 1, prob = as.vector(prep)),
-  nrow = S, 
-  ncol = N
-)
+p1 + p2 + p3 + p4 + plot_layout(ncol = 2)
 ```
-
-```{r calib-prep-plot, fig.width=7, fig.height=3, fig.asp=NULL, out.width="80%", fig.align="center"}
-p1 <- ppc_calibration(
-  y = y, 
-  prep = prep, 
-  interval = "consistency", 
-  show_qdots = FALSE
-  )
-
-p2 <- ppc_calibration(
-  y = y, 
-  prep = prep, 
-  interval = "confidence",
-  show_qdots = FALSE
-  )
-
-p1 | p2
-```
-
-#### Using `y` and `yrep` (matrix of posterior predictions)
-
-Input arguments are `y` ($y_i$) and `yrep` ($y_{\text{rep},i}^{(s)}$).
-
-**Building the calibration curve:**
-
-1. Estimate predicted probabilities as the column-wise posterior mean:
-   $p_i = \frac{1}{S} \sum_{s=1}^S y_{\text{rep},i}^{(s)}$.
-2. Sort probabilities in ascending order: $p_k$.
-3. Reorder observations accordingly: $y_k$.
-4. Compute the CEP $m_{\text{obs},k}$ which is the calibration curve.
-
-**Uncertainty bands:**
-
-| `interval` | How it is computed | What it answers |
-|---|---|---|
-| `"confidence"` | Bootstrap: for each replicate $b$, sample indices with replacement, sort by $p_j$, compute $m_{\text{obs},k}^{(b)}$ | *Where would we expect our model's curve to lie?* (**estimation uncertainty**) |
-| `"consistency"` | For each draw $s$, compute the CEP of sorted posterior predictions $y_{\text{rep},k}^{(s)}$ | *Where would a calibrated model's curve lie?* (**posterior predictive consistency**) |
-
-```{r calib-yrep-plot, fig.width=7, fig.height=3, fig.asp=NULL, out.width="80%", fig.align="center"}
-p1 <- ppc_calibration(
-  y = y, 
-  yrep = yrep, 
-  interval = "consistency", 
-  show_qdots = FALSE
-  )
-
-p2 <- ppc_calibration(
-  y = y, 
-  yrep = yrep, 
-  interval = "confidence", 
-  show_qdots = FALSE
-  )
-
-p1 | p2
-```
-
-### Additional arguments
 
 #### `show_qdots` and `qdots_quantiles` — quantile dot plot
 
 Setting `show_qdots = TRUE` overlays a quantile dot plot along the x-axis,
 showing the marginal distribution of predicted probabilities. Each dot
-represents an empirical quantile; the visual density is analogous to a
-histogram but with low bias and higher variance. By default
-`qdots_quantiles = 100` dots are displayed. See Säilynoja et al. (2025) for
-methodological details.
+represents an empirical quantile. By default `qdots_quantiles = 100` dots are 
+displayed. See Säilynoja et al. (2025) for methodological details.
 
-```{r qdots, fig.width=7, fig.height=3, fig.asp=NULL, out.width="80%", fig.align="center"}
-p1 <- ppc_calibration(
-  y = y, 
-  prep = prep, 
-  interval = "confidence", 
-  show_qdots = TRUE
-  ) +
-  labs(title = "qdots_quantiles = 100")
+The following plot shows the calibration curves for the simulated calibrated and miscalibrated models, with quantile dot plots along the x-axis showing the 
+distribution of predicted probabilities. The top row shows 100 quantiles, 
+while the bottom row shows 300 quantiles.
 
-p2 <- ppc_calibration(
-  y = y, 
-  prep = prep, 
-  interval = "confidence", 
-  show_qdots = TRUE,
-  qdots_quantiles = 200
-  ) +
-  labs(title = "qdots_quantiles = 200")
+```{r qdots, fig.width=7, fig.height=7, fig.asp=NULL, out.width="80%", fig.align="center"}
+p1 <- ppc_calibration(y = y, yrep = yrep) +
+  labs(title = "Calibrated model \n # qdots = 100")
 
-p1 | p2
+p2 <- ppc_calibration(y = y, yrep = yrep_mis) +
+  labs(title = "Miscalibrated model \n # qdots = 100")
+
+p3 <- ppc_calibration(y = y, yrep = yrep, qdots_quantiles = 300) +
+  labs(title = "# qdots = 300")
+
+p4 <- ppc_calibration(y = y, yrep = yrep_mis, qdots_quantiles = 300) +
+  labs(title = "# qdots = 300")
+
+p1 + p2 + p3 + p4 + plot_layout(ncol = 2)
 ```
 
-#### `help_text` - interpretive caption
+#### `help_text` — interpretive caption
 
-A short interpretive caption appears below the plot by default
-(`help_text = TRUE`). Set `help_text = FALSE` to suppress it, for example
-when embedding the plot in a report that provides its own caption:
+A short caption appears in the plot by default (`help_text = TRUE`) which
+provides information about the interval type and probability. This is intended
+to help users interpret the plot correctly. It can be suppressed by setting
+`help_text = FALSE`.
+
+The following plot shows the calibration curve for the simulated calibrated 
+model with and without the interpretive caption.
 
 ```{r help-text, fig.width=7, fig.height=3, fig.asp=NULL, out.width="80%", fig.align="center"}
-p1 <- ppc_calibration(
-  y = y, 
-  prep = prep, 
-  interval = "confidence", 
-  show_qdots = TRUE,
-  help_text = TRUE
-  ) +
-  labs(title = "help_text = TRUE")
+p1 <- ppc_calibration(y = y, yrep = yrep, help_text = TRUE)
 
-p2 <- ppc_calibration(
-  y = y, 
-  prep = prep, 
-  interval = "confidence", 
-  show_qdots = TRUE,
-  help_text = FALSE
-  ) +
-  labs(title = "help_text = FALSE")
+p2 <- ppc_calibration(y = y, yrep = yrep, help_text = FALSE)
 
 p1 | p2
 ```
 
-## `ppc_calibration_interval_data()` - the interval data structure
+### `ppc_loo_calibration()` — LOO-adjusted calibration curve
 
-`ppc_calibration_interval_data()` returns the numerical summaries that
-underlie the uncertainty bands in `ppc_calibration()`. The `prob` argument
-sets the desired coverage $(1 - \alpha)$, so the band spans from the
-$\alpha/2$ to the $1 - \alpha/2$ quantile.
+`ppc_loo_calibration()` is a variant of `ppc_calibration()` that incorporates
+importance weights from a leave-one-out (LOO) analysis. Weights can be provided
+directly via the `lw` argument; alternatively, a `psis_object` can be passed 
+and the weights will be computed internally. 
 
-```{r interval-data, fig.width=7, fig.height=3, fig.asp=NULL, out.width="80%", fig.align="center"}
-dat_interval <- ppc_calibration_interval_data(
-  y = y,
-  prep = prep,
-  prob = 0.95,
-  interval = "consistency"
-)
+As with `ppc_calibration()`, a grouped version `ppc_loo_calibration_grouped()` 
+is available that produces a faceted plot when a grouping variable is supplied.
 
-head(dat_interval, 5)
-```
-
-The returned columns are:
-
-| Column | Description |
-|---|---|
-| `y_id` | Observation index ($i = 1, \ldots, n$). |
-| `value` | Predicted probability $p_k$, averaged across posterior draws. |
-| `cep` | Conditional event probability, averaged across posterior draws. |
-| `lb` | Lower bound of the uncertainty interval. |
-| `ub` | Upper bound of the uncertainty interval. |
-
----
-
-## Real-world example: modelling roach infestation
+## Real-World Example: Modelling Roach Infestation
 
 The following example is drawn from Säilynoja et al. (2025) and uses the
 `roaches` dataset from `rstanarm`. The data records the number of roaches
@@ -410,10 +462,9 @@ one roach observed":
 - A **zero-inflated negative binomial** model (fitted with `brms::brm()`).
 
 For a complete Bayesian workflow using this dataset see also Aki Vehtari's
-case study
-[*Roaches cross-validation model checking and comparison*](https://users.aalto.fi/~ave/casestudies/roaches/roaches.html).
+case study [*Roaches cross-validation model checking and comparison*](https://users.aalto.fi/~ave/casestudies/roaches/roaches.html).
 
-```{r roaches-fit, fig.width=7, fig.height=3, fig.asp=NULL, out.width="80%", fig.align="center", message=FALSE, warning=FALSE}
+```{r roaches-fit, fig.width=7, fig.height=3, fig.asp=NULL, out.width="80%", fig.align="center", message=FALSE, warning=FALSE, results = "hide"}
 SEED <- 840
 data(roaches, package = "rstanarm")
 
@@ -433,7 +484,8 @@ brm_glmzinb <- brms::brm(
     brms::prior(normal(0, 3), class = "Intercept", dpar = "zi")
   ),
   seed = SEED,
-  refresh = 0
+  refresh = 0,
+  silent = 2
 )
 
 stan_glmnb <- rstanarm::stan_glm(
@@ -450,70 +502,108 @@ stan_glmnb <- rstanarm::stan_glm(
 )
 ```
 
-```{r roaches-plot, fig.width=8, fig.height=3, fig.asp=NULL, out.width="90%", fig.align="center"}
-pp <- pmin(brms::posterior_predict(stan_glmnb), 1)
+### Confidence intervals for estimation uncertainty
+
+Where do we expect our model's calibration curve to lie?
+
+```{r roaches-plot-CI, fig.width=7, fig.height=3, fig.asp=NULL, out.width="90%", fig.align="center"}
+pp_nb <- pmin(brms::posterior_predict(stan_glmnb), 1)
+pp_zinb <- apply(brms::posterior_predict(brm_glmzinb), 2, pmin, 1)
 
 p1 <- ppc_calibration(
   y = pmin(roaches$y, 1),
-  yrep = pp,
-  interval_type = "consistency",
+  yrep = pp_nb,
+  interval = "confidence",
   prob = 0.95
 ) +
   labs(title = "Negative binomial")
 
 p2 <- ppc_calibration(
   y = pmin(roaches$y, 1),
-  yrep = apply(brms::posterior_predict(brm_glmzinb), 2, pmin, 1),
-  interval_type = "consistency",
+  yrep = pp_zinb,
+  interval = "confidence",
   prob = 0.95
 ) +
   labs(title = "Zero-inflated negative binomial")
 
-p1 | p2
+p1 + p2
 ```
 
-The calibration plots highlight a clear difference between the two models. The
-**negative binomial** model is under-confident when predicting zero-roach
-outcomes: its calibration curve falls outside the consistency band, indicating
-a systematic mismatch between predicted and observed event rates. The
-**zero-inflated** model's curve stays within the band and additionally covers
-a wider range of predicted probabilities, reflecting both better calibration
-and stronger discrimination between apartments with and without roaches.
+### Consistency intervals for model checking
 
-### Use `ppc_loo_calibration` with `psis_object`
+Where would the calibration curve of a calibrated model lie?
 
-```{r roaches-loo-plot, fig.width=8, fig.height=3, fig.asp=NULL, out.width="90%", fig.align="center", message=FALSE, warning=FALSE}
+```{r roaches-plot-CsI, fig.width=7, fig.height=3, fig.asp=NULL, out.width="90%", fig.align="center"}
+p1 <- ppc_calibration(
+  y = pmin(roaches$y, 1),
+  yrep = pp_nb,
+  interval = "consistency",
+  prob = 0.95
+) +
+  labs(title = "Negative binomial")
 
+p2 <- ppc_calibration(
+  y = pmin(roaches$y, 1),
+  yrep = pp_zinb,
+  interval = "consistency",
+  prob = 0.95
+) +
+  labs(title = "Zero-inflated negative binomial")
+
+p1 + p2
+```
+
+The `ppc_calibration()` plot indicates that the **negative binomial** model is
+underconfident when predicting zero-roach outcomes: its calibration curve falls
+outside the consistency band, revealing a mismatch between predicted and
+observed event rates.
+
+The **zero-inflated** model's curve stays within the band and spans a wider
+range of predicted probabilities, reflecting both better calibration and
+stronger discrimination between apartments with and without roaches.
+
+### LOO calibration
+
+`ppc_loo_calibration()` uses the `brm_glmzinb` object fitted above. The PSIS
+object is computed from it and then passed alongside the standard arguments.
+The comparison below shows the in-sample calibration curve (left) and the
+LOO-adjusted curve (right) for the negative binomial model.
+
+```{r calibration-loo-plot, fig.width=7, fig.height=3, fig.asp=NULL, out.width="90%", fig.align="center"}
 brm_glmzinb <- brms::add_criterion(brm_glmzinb, criterion = "loo")
-fit_glmzinb <- brms::loo(brm_glmzinb, save_psis = TRUE)
-
-pp <- pmin(brms::posterior_predict(stan_glmnb), 1)
+fit_glmzinb_loo <- brms::loo(brm_glmzinb, save_psis = TRUE)
 
 p1 <- ppc_calibration(
   y = pmin(roaches$y, 1),
-  yrep = pp,
-  interval_type = "consistency",
+  yrep = pp_nb,
+  interval = "consistency",
   prob = 0.95
 ) +
   labs(title = "Negative binomial")
 
 p2 <- ppc_loo_calibration(
   y = pmin(roaches$y, 1),
-  yrep = pp,
-  psis_object = fit_glmzinb$psis_object,
-  interval_type = "consistency",
+  yrep = pp_nb,
+  psis_object = fit_glmzinb_loo$psis_object,
+  interval = "consistency",
   prob = 0.95
 ) +
-  labs(title = "Negative binomial (loo)")
+  labs(title = "Negative binomial (LOO)")
 
-p1 | p2
+p1 + p2
 ```
 
 ## References
 
-Kay, M. (2023). *ggdist: Visualizations of Distributions and Uncertainty*.
-Zenodo. <https://doi.org/10.5281/zenodo.3879620>
+- Ayer, M., Brunk, H. D., Ewing, G. M., Reid, W. T., & Silverman, E. (1955).
+  An empirical distribution function for sampling with incomplete information.
+  *Annals of Mathematical Statistics*, 26(4), 641–647.
 
-Säilynoja, T., Johnson, A. R., Martin, O. A., & Vehtari, A. (2025).
-Recommendations for visual predictive checks in Bayesian workflow.
-<https://arxiv.org/abs/2503.01509>
+- Dimitriadis, T., Gneiting, T., & Jordan, A. I. (2021).
+  Stable reliability diagrams for probabilistic classifiers.
+  *Proceedings of the National Academy of Sciences*, 118(8).
+  https://doi.org/10.1073/pnas.2016191118
+
+- Säilynoja, T., Johnson, A. R., Martin, O. A., & Vehtari, A. (2025).
+  Recommendations for visual predictive checks in Bayesian workflow.
+  (Preprint). *arXiv*. https://doi.org/10.48550/arXiv.2503.01509
