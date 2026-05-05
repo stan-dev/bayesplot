@@ -242,7 +242,7 @@ test_that("calibration functions validate inputs correctly", {
   
   # Invalid interval
   expect_error(ppc_calibration(calib_y, calib_prep, interval = "invalid"),
-               "should be one of")
+               "must be one of")
   expect_error(ppc_calibration(calib_y, calib_prep, show_qdots = NA),
                "'show_qdots' must be a single TRUE or FALSE.",
                fixed = TRUE)

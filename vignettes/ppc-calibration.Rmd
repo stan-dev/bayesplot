@@ -98,7 +98,7 @@ probability $p_i$.
 
 ```{r pav-estimate}
 df_toy <- df_toy |>
-  dplyr::mutate(cep = round(monotone::monotone(df_toy$y), 2))
+  dplyr::mutate(cep = round(stats::isoreg(df_toy$y)$yf, 2))
 df_toy
 ```
 
