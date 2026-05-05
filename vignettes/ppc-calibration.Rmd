@@ -23,6 +23,7 @@ knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
 
 ```{r pkgs}
 library(brms)
+library(dplyr)
 library(rstanarm)
 library("ggplot2")
 library("patchwork")
@@ -97,7 +98,7 @@ probability $p_i$.
 
 ```{r pav-estimate}
 df_toy <- df_toy |>
-  mutate(cep = round(monotone::monotone(df_toy$y), 2))
+  dplyr::mutate(cep = round(monotone::monotone(df_toy$y), 2))
 df_toy
 ```
 
