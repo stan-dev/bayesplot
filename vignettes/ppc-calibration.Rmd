@@ -52,18 +52,17 @@ of calibration plots in a real-world example.
 
 ### Conditional Event Probabilities (CEP)
 
-Following Dimitriadis, Gneiting, and Jordan (2021), `bayesplot` does not work
-directly with raw binary outcomes. Instead, it estimates the **Conditional
-Event Probability (CEP)**: the true underlying probability that an event
-occurs, given that the model assigned a specific predicted probability $p$.
+Following Dimitriadis, Gneiting, and Jordan (2021), `bayesplot` estimates the 
+Conditional Event Probability (CEP), defined as the true underlying probability 
+of an event given the model-assigned predicted probability $p$.
 
 Formally, if the model predicts $p$ for an observation, the CEP answers:
 *"Among all observations that received this prediction, what fraction actually
 had the event?"*
 
 A perfectly calibrated model has a CEP function equal to the identity, that
-is, CEP($p$) = $p$ for all $p$. When plotted, this produces a diagonal reference
-line. Deviations from the diagonal reveal miscalibration.
+is, CEP($p$) = $p$ for all $p$. When plotted, this produces a 45-degree 
+diagonal reference line. Deviations from the diagonal reveal miscalibration.
 
 ### Estimating the CEP: the PAV Algorithm
 
@@ -109,19 +108,19 @@ x-axis and CEP on the y-axis. The diagonal reference line marks perfect
 calibration.
 
 ```{r toy-plot, out.width = "60%", fig.align = "center", echo = FALSE}
-S <- 5
+S <- 100
 ppc_calibration(
   y = df_toy$y, prep = t(replicate(S, df_toy$p)), show_qdots = FALSE
   )
 ```
 
-In a fitted Bayesian model the predicted probabilities are the posterior
-predictions and the CEP is estimated for each posterior draw separately. In the
-following code block we adjust the toy example by simulating $S=5$ draws of
-predicted probabilities for each observation.
+For a fitted Bayesian model, the CEP is estimated for each posterior draw 
+separately based on the predicted probabilities from the posterior 
+predictive distribution. In the following code block we adjust the toy example
+by simulating $S=100$ draws of predicted probabilities for each observation.
 
 ```{r toy-data2}
-S <- 5
+S <- 100
 
 df_toy_draws <- list(
   p = t(replicate(S, pmin(pmax(df_toy$p + rnorm(length(df_toy$p), 0, 0.08), 0), 1))),
@@ -134,7 +133,7 @@ The calibration curve can then be plotted for each draw using
 variability in the calibration curve.
 
 ```{r toy-plot2, out.width = "60%", fig.align = "center"}
-ppc_calibration_overlay(y = df_toy_draws$y, prep = df_toy_draws$p, alpha = 0.9)
+ppc_calibration_overlay(y = df_toy_draws$y, prep = df_toy_draws$p)
 ```
 
 Alternatively, `ppc_calibration()` can be used to summarize the draw-specific
@@ -153,7 +152,8 @@ strategies for propagating uncertainty via the `interval` argument.
 
 #### Estimation uncertainty (`interval = "confidence"`): 
 
-The default setting `interval = "confidence"` reflects uncertainty in the CEP
+The default setting `interval = "confidence"` answers the question: *Where does
+the calibration curve of our model lie?*. It reflects the uncertainty in the CEP
 induced by variation across posterior draws:
 
 1. For each posterior draw $s$, sort observations $y_i$ by posterior predictions
@@ -192,6 +192,23 @@ In the `ppc_calibration()` plot, this interval type is labeled `95%-CsI (ptw.)`,
 indicating a pointwise consistency interval for the CEP curve whose bounds are
 the 2.5% and 97.5% quantiles of the draw-specific CEP curves. The probability
 can be adjusted with the `prob` argument.
+
+The following figure shows for the toy example the calibration curve with both 
+types of intervals. The confidence band (left) reflects the uncertainty in the 
+CEP curve based on posterior variability and the consistency band (right) 
+reflects where the calibration curve is expected to lie if the model is 
+calibrated.
+
+```{r toy-plot4, fig.width=7, fig.height=3, fig.asp=NULL, out.width="80%", fig.align="center", echo=FALSE}
+p1 <- ppc_calibration(y = df_toy_draws$y, prep = df_toy_draws$p, 
+  show_qdots = FALSE) +
+  labs(title = "Confidence band")
+p2 <- ppc_calibration(y = df_toy_draws$y, prep = df_toy_draws$p, 
+  interval = "consistency", show_qdots = FALSE) +
+  labs(title = "Consistency band")
+  
+p1 + p2
+```
 
 ### Calibrated vs. Miscalibrated: an Illustration
 
