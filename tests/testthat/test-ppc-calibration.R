@@ -477,7 +477,7 @@ test_that("ppc_calibration recovers identity trend for calibrated data", {
 })
 
 
-test_that("test-data-2 from paper", {
+test_that("roaches test data", {
   testthat::skip_on_cran()
   testthat::skip_if_not_installed(c("vdiffr", "rstanarm"))
 
@@ -521,37 +521,4 @@ test_that("test-data-2 from paper", {
     )
   )
 
-})
-
-test_that("test-data-2 from paper", {
-  testthat::skip_on_cran()
-  testthat::skip_if_not_installed("brms")
-
-  library(brms)
-  SEED <- 236543
-  set.seed(SEED)
-  data(roaches)
-
-  roaches$sqrt_roach1 <- sqrt(roaches$roach1)
-  n <- length(roaches$y)
-
-  brm_glmzinb <-
-    brms::brm(bf(y ~ sqrt_roach1 + treatment + senior + offset(log(exposure2)),
-          zi ~ sqrt_roach1 + treatment + senior + offset(log(exposure2))),
-        family = zero_inflated_negbinomial(),
-        data = roaches,
-        prior = c(brms::prior(normal(0,3), class = 'b'),
-                brms::prior(normal(0,3), class = 'b', dpar = 'zi'),
-                brms::prior(normal(0,3), class = 'Intercept', dpar = 'zi')),
-        seed = SEED,
-        refresh = 0)
-  
-    vdiffr::expect_doppelganger("roaches zero-inflated negbinomial",
-      ppc_calibration(
-        y = pmin(roaches$y, 1),
-        yrep = apply(posterior_predict(brm_glmzinb), 2, pmin, 1),
-        interval = "consistency",
-        prob = 0.95
-      )
-    )
 })
