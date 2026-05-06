@@ -12,9 +12,10 @@ test_that("calibration interval helper matches prep confidence algorithm", {
   m2 <- stats::isoreg(y[order(prep[2, ])])$yf
   m <- rbind(m1, m2)
 
-  d <- bayesplot:::ppc_calibration_interval_data(
+  d <- bayesplot:::ppc_calibration_data(
     y = y,
     prep = prep,
+    type = "interval",
     prob = 0.8,
     interval = "confidence"
   )
@@ -43,13 +44,15 @@ test_that("calibration interval helper matches yrep consistency algorithm", {
   m_obs <- stats::isoreg(y[ord])$yf
   m_rep <- t(apply(yrep[, ord, drop = FALSE], 1, function(z) stats::isoreg(z)$yf))
 
-  d <- bayesplot:::ppc_calibration_interval_data(
+  d <- bayesplot:::ppc_calibration_data(
     y = y,
     yrep = yrep,
+    type = "interval",
     prob = 0.8,
     interval = "consistency"
   )
 
+  expect_false("rep_id" %in% names(d))
   expect_equal(d$value, p[ord])
   expect_equal(d$cep, m_obs)
   expect_equal(
@@ -89,11 +92,12 @@ test_that("ppc_calibration_data returns sorted values and isotonic cep", {
     c(0.2, 0.3, 0.4, 0.1)
   )
 
-  d <- ppc_calibration_data(y = y, prep = prep)
+  d <- ppc_calibration_data(y = y, prep = prep, type = "overlay")
 
   expect_s3_class(d, "data.frame")
   expect_equal(nrow(d), length(y) * nrow(prep))
   expect_true(all(d$group == 1))
+  expect_false(any(c("lb", "ub") %in% names(d)))
 
   for (s in seq_len(nrow(prep))) {
     ord <- order(prep[s, ])
@@ -445,7 +449,7 @@ test_that("ppc_calibration computes yrep confidence interval bands", {
   )
 
   expect_gg(p)
-  expect_named(p$data, c("y_id", "value", "cep", "lb", "ub"))
+  expect_named(p$data, c("group", "y_id", "value", "cep", "lb", "ub"))
   expect_equal(nrow(p$data), length(y))
   expect_lte(max(p$data$ub), 1)
   expect_gte(min(p$data$lb), 0)

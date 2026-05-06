@@ -47,7 +47,6 @@ Imports:
     tidyselect,
     utils
 Suggests:
-    brms,
     cmdstanr,
     ggdist,
     ggfortify,

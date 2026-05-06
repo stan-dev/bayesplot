@@ -9,8 +9,6 @@
 \alias{ppc_loo_calibration}
 \alias{ppc_loo_calibration_grouped}
 \alias{ppc_calibration_data}
-\alias{ppc_calibration_interval_data}
-\alias{ppc_calibration_interval_data_grouped}
 \title{PPC calibration}
 \usage{
 ppc_calibration_overlay(
@@ -100,22 +98,12 @@ ppc_loo_calibration_grouped(
   alpha = 0.1
 )
 
-ppc_calibration_data(y, prep, group = NULL)
-
-ppc_calibration_interval_data(
+ppc_calibration_data(
   y,
   prep = NULL,
   yrep = NULL,
-  prob = 0.95,
-  interval = c("confidence", "consistency"),
-  B = 200
-)
-
-ppc_calibration_interval_data_grouped(
-  y,
-  prep = NULL,
-  yrep = NULL,
-  group,
+  group = NULL,
+  type = c("overlay", "interval"),
   prob = 0.95,
   interval = c("confidence", "consistency"),
   B = 200
@@ -127,11 +115,14 @@ ppc_calibration_interval_data_grouped(
 \item{prep}{For \code{ppc_calibration()}, \code{ppc_calibration_grouped()},
 \code{ppc_calibration_overlay()}, and \code{ppc_calibration_overlay_grouped()},
 an \code{S} by \code{N} matrix of predicted probabilities in \verb{[0, 1]}, where \code{S} is
-the number of draws and \code{N = length(y)}.}
+the number of draws and \code{N} the number of observations (\code{N = length(y)}).}
 
 \item{...}{Currently unused.}
 
-\item{prob}{Probability mass to include in the plotted interval.}
+\item{prob}{Probability used to compute the uncertainty intervals. Is \code{NULL}
+for \code{ppc_calibration_overlay()} and \code{ppc_calibration_overlay_grouped()},
+where no intervals are computed, and defaults to \code{0.95} for the other
+calibration functions.}
 
 \item{linewidth, alpha}{Arguments passed to geoms controlling line width and
 opacity.}
@@ -151,30 +142,35 @@ data points in \code{y} for the plots to make sense. See the \strong{Details} an
 plots.}
 
 \item{interval}{For \code{ppc_calibration()}, \code{ppc_calibration_grouped()},
-\code{ppc_loo_calibration()}, and \code{ppc_loo_calibration_grouped()}, choose
-\code{"confidence"} to use uncertainty in the estimated calibration curve, or
-\code{"consistency"} to compare to replicated outcomes.}
+\code{ppc_loo_calibration()}, and \code{ppc_loo_calibration_grouped()}, pointwise
+uncertainty interval around the calibration curve. Choose \code{"confidence"}
+(default) to answer the question: "Where does the calibration curve of the
+model lie?" or \code{"consistency"} to answer the question: "If the model is
+correctly specified, where would we expect the calibration curve to fall?".}
 
-\item{help_text}{For \code{ppc_calibration()} and \code{ppc_calibration_grouped()},
-if \code{TRUE} (default) display a math-style label in the plot indicating the
-interval as \code{CI} with the selected \code{prob} and \code{interval} values.}
+\item{help_text}{For \code{ppc_calibration()}, \code{ppc_calibration_grouped()},
+\code{ppc_loo_calibration()}, and \code{ppc_loo_calibration_grouped()}, if \code{TRUE}
+(default) display a label in the plot indicating the interval type as
+\code{CI} (confidence) or \code{CsI} (consistency) with the selected \code{prob}.}
 
-\item{B}{For calibration plots that use \code{yrep} with \code{interval = "confidence"},
-the number of bootstrap samples.}
+\item{B}{For \code{ppc_calibration()}, \code{ppc_calibration_grouped()},
+\code{ppc_loo_calibration()}, and \code{ppc_loo_calibration_grouped()} that use
+\code{yrep} with \code{interval = "confidence"}, the number of bootstrap samples.
+Default is \code{200}. Ignored if \code{prep} is used or \code{interval = "consistency"}.}
 
-\item{show_mean}{For calibration interval plots, if \code{TRUE} (default), draw
-the estimated calibration curve.}
+\item{show_mean}{For \code{ppc_calibration()}, \code{ppc_calibration_grouped()},
+\code{ppc_loo_calibration()}, and \code{ppc_loo_calibration_grouped()}, if \code{TRUE}
+(default), draw the estimated calibration curve.}
 
 \item{show_qdots}{For \code{ppc_calibration()}, \code{ppc_calibration_grouped()},
 \code{ppc_loo_calibration()}, and \code{ppc_loo_calibration_grouped()}, if \code{TRUE}
-add a quantile dot plot at the bottom of the panel to show the marginal
-distribution of predicted probabilities.}
+(default) add a quantile dot plot at the bottom of the panel to show the
+marginal distribution of predicted probabilities.}
 
 \item{qdots_quantiles}{For \code{ppc_calibration()}, \code{ppc_calibration_grouped()},
 \code{ppc_loo_calibration()}, and \code{ppc_loo_calibration_grouped()}, positive
-integer passed to
-the \code{quantiles} argument of \code{ggdist::stat_dots()} when
-\code{show_qdots = TRUE}.}
+integer indicating the number of dots in the quantile dot plot. Default is
+\code{100}.}
 
 \item{lw}{For \code{ppc_loo_calibration()} and \code{ppc_loo_calibration_grouped()},
 a matrix of log weights with the same dimensions as \code{yrep}. Either
@@ -184,6 +180,10 @@ a matrix of log weights with the same dimensions as \code{yrep}. Either
 an object of class \code{"psis"} that is created when the \code{loo()} function calls
 \code{psis()} internally to do the PSIS procedure. Either \code{psis_object} or \code{lw}
 has to be specified.}
+
+\item{type}{For \code{ppc_calibration_data()}, the data structure to compute:
+\code{"overlay"} for \code{ppc_calibration_overlay()} or \code{"interval"} for
+\code{ppc_calibration()} and their corresponding _grouped and _loo variants.}
 }
 \value{
 The plotting functions return a ggplot object that can be further
@@ -196,6 +196,21 @@ Assess the calibration of the predictions, or predictive probabilites in relatio
 binary observations.
 See the \strong{Plot Descriptions} section, below, for details.
 }
+\details{
+The ppc_calibration functions are designed to assess the calibration of a
+model with binary outcomes. In this context, calibration refers to the
+agreement between predicted probabilities and conditional event probabilities
+(CEPs) see Dimitriadis et al. (2021) and Säilynoja et al. (2025) for details.
+
+The required inputs are \code{y}, representing binary observations
+(0 or 1), and either \code{yrep} or \code{prep}. Specifically,
+\code{ppc_calibration_overlay()} and \code{ppc_calibration_overlay_grouped()} require
+\code{prep}, while \code{ppc_calibration()}, \code{ppc_calibration_grouped()},
+\code{ppc_loo_calibration()}, and \code{ppc_loo_calibration_grouped()} accept either
+\code{prep} or \code{yrep}.
+
+A vignette with detailed explanations and examples is available at \url{TODO:add link to vignette}.
+}
 \section{Plot Descriptions}{
 
 \describe{
@@ -203,16 +218,21 @@ See the \strong{Plot Descriptions} section, below, for details.
 PAV-adjusted calibration plots showing the relationship between the
 predicted event probabilities and the conditional event probabilities.
 The \code{interval} parameter controls whether confidence intervals, or
-consistency intervals are computed.},
+consistency intervals are computed around the calibration curve.}
 \item{\code{ppc_calibration_overlay()},\code{ppc_calibration_overlay_grouped()}}{
 Overlay plots showing posterior samples of PAV-adjusted calibration
-curves.
-},
+curves for each posterior draw, which can be used to visually assess the
+uncertainty in the calibration curve.
+}
 \item{\code{ppc_loo_calibration()},\code{ppc_loo_calibration_grouped()}}{
 PAV-adjusted calibration plots to assess the calibration of the
 leave-one-out (LOO) predictive probabilities, computed by resampling each
-observation's posterior predictive draws using the corresponding LOO
-importance weights.
+observation's posterior predictive draws using LOO importance weights.
+}
+\item{\code{ppc_calibration_data()}}{
+Data frame containing the data underlying the calibration plots, which can
+be used to build custom calibration plots. The \code{type} argument controls
+whether the data frame for \code{ppc_calibration_overlay()} and its \verb{_grouped`` variant is computed (}type = "overlay"\verb{), or the data frame for  }ppc_calibration()\verb{and its}_grouped\code{or}_loo\verb{ variant is computed (}type = "interval"`).
 }
 }
 }
@@ -231,6 +251,16 @@ ppc_calibration_overlay(y, prep[1:50, ])
 # Compare confidence vs consistency intervals
 ppc_calibration(y, prep, interval = "confidence")
 ppc_calibration(y, prep, interval = "consistency")
+}
+\references{
+Dimitriadis, T., Gneiting, T., & Jordan, A. I. (2021). Stable
+reliability diagrams for probabilistic classifiers. Proceedings of the
+National Academy of Sciences, 118(8).
+https://doi.org/10.1073/pnas.2016191118
+
+Säilynoja, T., Johnson, A. R., Martin, O. A., & Vehtari, A. (2025).
+Recommendations for visual predictive checks in Bayesian workflow.
+(Preprint). arXiv. https://doi.org/10.48550/arXiv.2503.01509
 }
 \seealso{
 Other PPCs: 
