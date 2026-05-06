@@ -469,8 +469,7 @@ ppc_calibration_data <- function(
         cep = monotone(y[.data$ord])
       ) |>
       ungroup() |>
-      dplyr::select(dplyr::all_of(c("group", "y_id", "rep_id", "value", "cep"))) |> 
-      arrange(y_id)
+      dplyr::select(dplyr::all_of(c("group", "y_id", "rep_id", "value", "cep")))
   } else {
     interval <- match.arg(interval)
     stopifnot(prob > 0, prob < 1)
