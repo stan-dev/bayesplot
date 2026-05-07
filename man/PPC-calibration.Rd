@@ -209,7 +209,8 @@ The required inputs are \code{y}, representing binary observations
 \code{ppc_loo_calibration()}, and \code{ppc_loo_calibration_grouped()} accept either
 \code{prep} or \code{yrep}.
 
-A vignette with detailed explanations and examples is available at \url{TODO:add link to vignette}.
+A document with detailed explanations and examples is available in the
+\href{https://mc-stan.org/bayesplot/vignettes/articles-online-only/}{vignettes}.
 }
 \section{Plot Descriptions}{
 

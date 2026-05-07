@@ -31,8 +31,8 @@
 #' `ppc_loo_calibration()`, and `ppc_loo_calibration_grouped()` accept either
 #' `prep` or `yrep`.  
 #' 
-#' A vignette with detailed explanations and examples is available at [TODO: 
-#' add link to vignette]().
+#' A document with detailed explanations and examples is available in the 
+#' [vignettes](https://mc-stan.org/bayesplot/vignettes/articles-online-only/).
 #' 
 #' @section Plot Descriptions:
 #' \describe{

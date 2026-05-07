@@ -46,6 +46,7 @@ articles:
       - plotting-mcmc-draws
       - visual-mcmc-diagnostics
       - graphical-ppcs
+      - articles-online-only/ppc-calibration
 
 reference:
   - title: "Overview"
