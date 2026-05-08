@@ -7,7 +7,7 @@ output:
     toc: true
     toc_depth: 3
 params:
-  EVAL: !r identical(Sys.getenv("NOT_CRAN"), "true")
+  EVAL: true
 vignette: >
   %\VignetteIndexEntry{PPC Calibration - Calibration of Bayesian models with binary outcomes}
   %\VignetteEngine{knitr::rmarkdown}
@@ -15,6 +15,7 @@ vignette: >
 ---
 
 ```{r child="../children/SETTINGS-knitr.txt"}
+#!r identical(Sys.getenv("NOT_CRAN"), "true")
 ```
 
 ```{r setup, include=FALSE, message=FALSE, warning=FALSE}
@@ -116,39 +117,34 @@ ppc_calibration(
   )
 ```
 
-For a fitted Bayesian model, the CEP is estimated for each posterior draw 
-separately based on the predicted probabilities from the posterior 
-predictive distribution. In the following code block we adjust the toy example
-by simulating $S=100$ draws of predicted probabilities for each observation.
+Dimitriadis et al. (2021) estimate CEP using point estimates of the 
+probabilities (i.e., one probability per binary observation) as implemented in 
+the `reliabilitydiag` package. For a fitted Bayesian model, the CEP is estimated
+for each posterior draw separately based on the predicted probabilities from the
+posterior predictive distribution. In the following code block we adjust the toy
+example by simulating $S=100$ draws of predicted probabilities for each 
+observation.
 
 ```{r toy-data2}
 S <- 100
 N <- length(df_toy$y)
 
 # simulate a matrix of predicted probabilities of dimension S x N
-perturbed_p <- pmin(pmax(df_toy$p + rnorm(N, 0, 0.08), 0), 1)
-prep <- t(replicate(S, perturbed_p))
+prep <- t(replicate(S, pmin(pmax(df_toy$p + rnorm(N, 0, 0.08), 0), 1)))
 
-df_toy_draws <- list(
-  p = prep,
-  y = c(0, 0, 1, 0, 1, 1, 0, 1)
-)
+df_toy_draws <- list(p = prep, y = df_toy$y)
 ```
 
 The calibration curve can then be plotted for each draw using
 `ppc_calibration_overlay()`. The resulting plot shows the draw-to-draw
 variability in the calibration curve.
 
-```{r toy-plot2, out.width = "60%", fig.align = "center"}
-ppc_calibration_overlay(y = df_toy_draws$y, prep = df_toy_draws$p)
-```
-
 Alternatively, `ppc_calibration()` can be used to summarize the draw-specific
 curves into a single calibration curve with an uncertainty band. The next
 section explains how the uncertainty intervals are constructed.
 
 ```{r toy-plot3, out.width = "60%", fig.align = "center"}
-ppc_calibration(y = df_toy_draws$y, prep = df_toy_draws$p, show_qdots = FALSE)
+ppc_calibration(y = df_toy$y, prep = df_toy_draws$p, show_qdots = FALSE)
 ```
 
 ### Uncertainty Intervals {#uncertainty-intervals}
@@ -265,7 +261,8 @@ fit_model <- function(df, seed) {
       prior(normal(0, 5), class = "Intercept")
     ),
     chains = 1,
-    seed = seed
+    seed = seed,
+    refresh = 0
   )
 }
 
