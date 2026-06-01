@@ -686,7 +686,7 @@ interval_type) {
   yrep_resampled <- matrix(NA_real_, nrow = n_draws, ncol = n_obs)
 
   for (i in seq_len(n_obs)) {
-    probs_i <- .loo_resampling_probs(lw[, i])
+    probs_i <- exp(.normalize_lw(lw[, i]))
     idx_i <- sample.int(n_draws, size = n_draws, replace = TRUE, prob = probs_i)
     yrep_resampled[, i] <- yrep[idx_i, i]
   }
@@ -699,20 +699,9 @@ interval_type) {
   yrep_resampled
 }
 
-.loo_resampling_probs <- function(w) {
-  if (!all(is.finite(w))) {
+.normalize_lw <- function(lw) {
+  if (!all(is.finite(lw))) {
     abort("All values in 'lw' must be finite.")
   }
-  p <- if (any(w < 0)) {
-    # Treat negative entries as log-weights and stabilize before exponentiating.
-    exp(w - max(w))
-  } else {
-    w
-  }
-  total <- sum(p)
-  if (!is.finite(total) || total <= 0) {
-    rep(1 / length(w), length(w))
-  } else {
-    p / total
-  }
+  lw - matrixStats::logSumExp(lw)
 }

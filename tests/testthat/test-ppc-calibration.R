@@ -121,7 +121,7 @@ calib_prep <- matrix(pmin(1, pmax(0, p_true + rnorm(n_obs * n_draws, 0, .1))), n
 calib_yrep <- t(apply(calib_prep, 1, rbinom, n = n_obs, size = 1))
 
 calib_group <- gl(2, n_obs / 2, labels = c("A", "B"))
-calib_lw <- matrix(runif(n_obs * n_draws), ncol = n_obs, nrow = n_draws)
+calib_lw <- matrix(rnorm(n_obs * n_draws, mean = -2), ncol = n_obs, nrow = n_draws)
 
 test_that("ppc_calibration_overlay returns a ggplot object", {
   expect_gg(ppc_calibration_overlay(calib_y, calib_prep))
@@ -472,4 +472,28 @@ test_that("ppc_calibration recovers identity trend for calibrated data", {
       interval = "consistency"
     )
   )
+})
+
+test_that("resampling is identical for normalized and non-normalized log weights", {
+  n_draws <- 200
+  n_obs <- 15
+
+  set.seed(42)
+  yrep <- matrix(rnorm(n_draws * n_obs), nrow = n_draws, ncol = n_obs)
+  lw_raw <- matrix(rnorm(n_draws * n_obs, mean = -2), nrow = n_draws, ncol = n_obs)
+
+  # Normalize per column, matching what .normalize_lw does inside the loop
+  lw_norm <- apply(lw_raw, 2, function(x) x - matrixStats::logSumExp(x))
+
+  local_mocked_bindings(
+    .get_lw = function(lw, psis_object) lw
+  )
+
+  set.seed(123)
+  result_raw <- .loo_resample_data(yrep, lw = lw_raw, psis_object = NULL)
+
+  set.seed(123)
+  result_norm <- .loo_resample_data(yrep, lw = lw_norm, psis_object = NULL)
+
+  expect_identical(result_raw, result_norm)
 })
