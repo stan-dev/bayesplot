@@ -457,6 +457,10 @@ test_that("ppc_calibration computes yrep confidence interval bands", {
 })
 
 test_that("ppc_calibration recovers identity trend for calibrated data", {
+  testthat::skip_on_cran()
+  testthat::skip_if_not_installed("vdiffr")
+  skip_on_r_oldrel()
+  
   set.seed(20260408)
   n_obs <- 10000
   n_draws <- 1000
