@@ -91,14 +91,14 @@ NULL
 #' @rdname PPC-calibration
 #' @export
 ppc_calibration_overlay <- function(
-    y, prep, ..., prob = NULL, linewidth = 0.25, alpha = 0.2) {
+    y, prep, ..., linewidth = 0.25, alpha = 0.2) {
   check_ignored_arguments(...)
   data <- ppc_calibration_data(y = y, prep = prep, type = "overlay")
   params <- .calibration_plot_params(
     data = data,
     linewidth = linewidth,
     show_qdots = FALSE,
-    prob = 0.95,
+    prob = NULL,
     interval = "consistency",
     # currently hardcoded; in future we want to support also "simultaneous"
     interval_type = "pointwise"
@@ -123,14 +123,14 @@ ppc_calibration_overlay <- function(
 #' @rdname PPC-calibration
 #' @export
 ppc_calibration_overlay_grouped <- function(
-    y, prep, group, ..., prob = NULL, linewidth = 0.25, alpha = 0.2) {
+    y, prep, group, ..., linewidth = 0.25, alpha = 0.2) {
   check_ignored_arguments(...)
   data <- ppc_calibration_data(y = y, prep = prep, group = group, type = "overlay")
   params <- .calibration_plot_params(
     data = data,
     linewidth = linewidth,
     show_qdots = FALSE,
-    prob = 0.95,
+    prob = NULL,
     interval = "consistency",
     # currently hardcoded; in future we want to support also "simultaneous"
     interval_type = "pointwise"
@@ -167,10 +167,9 @@ ppc_calibration_overlay_grouped <- function(
 #'   an object of class `"psis"` that is created when the `loo()` function calls
 #'   `psis()` internally to do the PSIS procedure. Either `psis_object` or `lw`
 #'   has to be specified.
-#' @param prob Probability used to compute the uncertainty intervals. Is `NULL`
-#'   for `ppc_calibration_overlay()` and `ppc_calibration_overlay_grouped()`, 
-#'   where no intervals are computed, and defaults to `0.95` for the other 
-#'   calibration functions.
+#' @param prob For `ppc_calibration()`, `ppc_calibration_grouped()`,
+#'   `ppc_loo_calibration()`, and `ppc_loo_calibration_grouped()`. Probability 
+#'   used to compute the uncertainty intervals. Defaults to `0.95`.
 #' @param interval For `ppc_calibration()`, `ppc_calibration_grouped()`,
 #'   `ppc_loo_calibration()`, and `ppc_loo_calibration_grouped()`, pointwise 
 #'   uncertainty interval around the calibration curve. Choose `"confidence"` 

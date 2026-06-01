@@ -295,7 +295,6 @@ test_that("ppc_calibration_overlay renders correctly", {
   p_custom <- ppc_calibration_overlay(
     calib_y,
     calib_prep,
-    prob = .99,
     linewidth = 0.5,
     alpha = 0.3
   )
@@ -314,7 +313,6 @@ test_that("ppc_calibration_overlay_grouped renders correctly", {
     calib_y,
     calib_prep,
     calib_group,
-    prob = .99,
     linewidth = 0.5,
     alpha = 0.3
   )

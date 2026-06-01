@@ -11,21 +11,13 @@
 \alias{ppc_calibration_data}
 \title{PPC calibration}
 \usage{
-ppc_calibration_overlay(
-  y,
-  prep,
-  ...,
-  prob = NULL,
-  linewidth = 0.25,
-  alpha = 0.2
-)
+ppc_calibration_overlay(y, prep, ..., linewidth = 0.25, alpha = 0.2)
 
 ppc_calibration_overlay_grouped(
   y,
   prep,
   group,
   ...,
-  prob = NULL,
   linewidth = 0.25,
   alpha = 0.2
 )
@@ -119,11 +111,6 @@ the number of draws and \code{N} the number of observations (\code{N = length(y)
 
 \item{...}{Currently unused.}
 
-\item{prob}{Probability used to compute the uncertainty intervals. Is \code{NULL}
-for \code{ppc_calibration_overlay()} and \code{ppc_calibration_overlay_grouped()},
-where no intervals are computed, and defaults to \code{0.95} for the other
-calibration functions.}
-
 \item{linewidth, alpha}{Arguments passed to geoms controlling line width and
 opacity.}
 
@@ -140,6 +127,10 @@ rows, \code{S}, is the size of the posterior (or prior) sample used to generate
 data points in \code{y} for the plots to make sense. See the \strong{Details} and
 \strong{Plot Descriptions} sections for additional advice specific to particular
 plots.}
+
+\item{prob}{For \code{ppc_calibration()}, \code{ppc_calibration_grouped()},
+\code{ppc_loo_calibration()}, and \code{ppc_loo_calibration_grouped()}. Probability
+used to compute the uncertainty intervals. Defaults to \code{0.95}.}
 
 \item{interval}{For \code{ppc_calibration()}, \code{ppc_calibration_grouped()},
 \code{ppc_loo_calibration()}, and \code{ppc_loo_calibration_grouped()}, pointwise
