@@ -117,7 +117,10 @@ n_obs <- 1000
 n_draws <- 1000
 p_true <- runif(n_obs)
 calib_y <- rbinom(n_obs, 1, p_true)
-calib_prep <- matrix(pmin(1, pmax(0, p_true + rnorm(n_obs * n_draws, 0, .1))), nrow = n_draws, ncol = n_obs)
+calib_prep <- matrix(
+  pmin(1, pmax(0, p_true + rnorm(n_obs * n_draws, 0, .1))), 
+  nrow = n_draws, ncol = n_obs
+)
 calib_yrep <- t(apply(calib_prep, 1, rbinom, n = n_obs, size = 1))
 
 calib_group <- gl(2, n_obs / 2, labels = c("A", "B"))
@@ -198,10 +201,10 @@ test_that("ppc_loo_calibration_grouped returns a ggplot object", {
   # Note: This function now returns interval plots instead of overlay plots
   # Testing basic functionality for now
   expect_gg(ppc_loo_calibration_grouped(
-    y=calib_y, yrep=calib_prep, group=calib_group, lw=calib_lw)
+    y=calib_y, yrep=calib_yrep, group=calib_group, lw=calib_lw)
   )
   expect_gg(ppc_loo_calibration_grouped(
-    y=calib_y, yrep=calib_prep[1:3, ], group=calib_group, 
+    y=calib_y, yrep=calib_yrep[1:3, ], group=calib_group, 
     lw=calib_lw[1:3, ])
   )
 })
