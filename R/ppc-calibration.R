@@ -466,9 +466,10 @@ ppc_calibration_data <- function(
       group_by(.data$group, .data$rep_id) |>
       mutate(
         ord = order(.data$value),
+        y_id_orig = .data$y_id, # for selecting groups in y
         y_id = .data$ord,
         value = .data$value[.data$ord],
-        cep = monotone(y[.data$ord])
+        cep = monotone(y[.data$y_id_orig[.data$ord]])
       ) |>
       ungroup() |>
       dplyr::select(dplyr::all_of(c("group", "y_id", "rep_id", "value", "cep")))
