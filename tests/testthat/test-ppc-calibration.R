@@ -483,7 +483,10 @@ test_that("resampling is identical for normalized and non-normalized log weights
   lw_raw <- matrix(rnorm(n_draws * n_obs, mean = -2), nrow = n_draws, ncol = n_obs)
 
   # Normalize per column, matching what .normalize_lw does inside the loop
-  lw_norm <- apply(lw_raw, 2, function(x) x - matrixStats::logSumExp(x))
+  lw_norm <- apply(lw_raw, 2, function(x) {
+    max_x <- max(x)
+    x - (max_x + log(sum(exp(x - max_x))))
+  })
 
   local_mocked_bindings(
     .get_lw = function(lw, psis_object) lw

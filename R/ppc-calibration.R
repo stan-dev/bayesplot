@@ -703,5 +703,7 @@ interval_type) {
   if (!all(is.finite(lw))) {
     abort("All values in 'lw' must be finite.")
   }
-  lw - matrixStats::logSumExp(lw)
+  max_lw <- max(lw)
+  log_sum_exp <- max_lw + log(sum(exp(lw - max_lw)))
+  lw - log_sum_exp
 }
