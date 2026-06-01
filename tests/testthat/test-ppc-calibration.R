@@ -148,8 +148,6 @@ test_that("ppc_calibration returns a ggplot object", {
 })
 
 test_that("ppc_calibration adds quantile dot layer when requested", {
-  testthat::skip_if_not_installed("ggdist")
-
   p_no_qdots <- ppc_calibration(
     y = calib_y,
     prep = calib_prep,

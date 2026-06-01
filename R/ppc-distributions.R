@@ -563,8 +563,6 @@ ppc_dots <-
            freq = TRUE) {
     check_ignored_arguments(..., ok_args = c("dotsize", "layout", "stackratio", "overflow"))
 
-    suggested_package("ggdist")
-
     data <- ppc_data(y, yrep)
 
     ggplot(data, mapping = set_hist_aes(

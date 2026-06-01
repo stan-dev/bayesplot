@@ -552,7 +552,6 @@ interval_type) {
   if (!isTRUE(show_qdots)) {
     return(p)
   }
-  suggested_package("ggdist")
   p + ggdist::stat_dots(
     aes(x = .data$value),
     data = data,

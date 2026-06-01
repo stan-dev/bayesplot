@@ -34,6 +34,7 @@ Depends:
     R (>= 4.1.0)
 Imports:
     dplyr (>= 1.0.0),
+    ggdist,
     ggplot2 (>= 3.5.0),
     ggridges (>= 0.5.5),
     glue,
@@ -48,7 +49,6 @@ Imports:
     utils
 Suggests:
     cmdstanr,
-    ggdist,
     ggfortify,
     gridExtra (>= 2.2.1),
     hexbin,
