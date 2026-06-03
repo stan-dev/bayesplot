@@ -63,6 +63,7 @@ In addition to **bayesplot** we’ll load the following packages:
   vignette
 
 ``` r
+
 library("bayesplot")
 library("ggplot2")
 library("rstanarm")
@@ -90,6 +91,7 @@ representing the roach count in each apartment at the end of the
 experiment.
 
 ``` r
+
 head(roaches) # see help("rstanarm-datasets")
 ```
 
@@ -102,10 +104,12 @@ head(roaches) # see help("rstanarm-datasets")
     6   0   0.00         1      0  1.000000
 
 ``` r
+
 roaches$roach100 <- roaches$roach1 / 100 # pre-treatment number of roaches (in 100s)
 ```
 
 ``` r
+
 # using rstanarm's default priors. For details see the section on default
 # weakly informative priors at https://mc-stan.org/rstanarm/articles/priors.html
 fit_poisson <- stan_glm(
@@ -119,6 +123,7 @@ fit_poisson <- stan_glm(
 ```
 
 ``` r
+
 print(fit_poisson)
 ```
 
@@ -142,10 +147,12 @@ We’ll also fit the negative binomial model that we’ll compare to the
 Poisson:
 
 ``` r
+
 fit_nb <- update(fit_poisson, family = "neg_binomial_2")
 ```
 
 ``` r
+
 print(fit_nb)
 ```
 
@@ -175,12 +182,14 @@ In order to use the PPC functions from the **bayesplot** package we need
 a vector `y` of outcome values,
 
 ``` r
+
 y <- roaches$y
 ```
 
 and a matrix `yrep` of draws from the posterior predictive distribution,
 
 ``` r
+
 yrep_poisson <- posterior_predict(fit_poisson, draws = 500)
 yrep_nb <- posterior_predict(fit_nb, draws = 500)
 dim(yrep_poisson)
@@ -189,6 +198,7 @@ dim(yrep_poisson)
     [1] 500 262
 
 ``` r
+
 dim(yrep_nb)
 ```
 
@@ -218,6 +228,7 @@ and the distributions of some of the simulated datasets (rows) in the
 `yrep` matrix.
 
 ``` r
+
 color_scheme_set("brightblue")
 ppc_dens_overlay(y, yrep_poisson[1:50, ])
 ```
@@ -237,6 +248,7 @@ the `xlim` function from **ggplot2** to restrict the range of the
 x-axis:
 
 ``` r
+
 ppc_dens_overlay(y, yrep_poisson[1:50, ]) + xlim(0, 150)
 ```
 
@@ -252,6 +264,7 @@ separate histograms of `y` and some of the `yrep` datasets using the
 `ppc_hist` function:
 
 ``` r
+
 ppc_hist(y, yrep_poisson[1:5, ])
 ```
 
@@ -260,6 +273,7 @@ ppc_hist(y, yrep_poisson[1:5, ])
 The same plot for the negative binomial model looks much different:
 
 ``` r
+
 ppc_hist(y, yrep_nb[1:5, ])
 ```
 
@@ -272,6 +286,7 @@ it difficult to read. To see the predictions for the smaller values more
 clearly we can zoom in:
 
 ``` r
+
 ppc_hist(y, yrep_nb[1:5, ], binwidth = 20) + 
   coord_cartesian(xlim = c(-1, 300))
 ```
@@ -293,6 +308,7 @@ First we define a function that takes a vector as input and returns the
 proportion of zeros:
 
 ``` r
+
 prop_zero <- function(x) mean(x == 0)
 prop_zero(y) # check proportion of zeros in y
 ```
@@ -306,6 +322,7 @@ case we can specify `stat = "prop_zero"` since we’ve already defined the
 `stat = function(x) mean(x == 0)`.
 
 ``` r
+
 ppc_stat(y, yrep_poisson, stat = "prop_zero", binwidth = 0.005)
 ```
 
@@ -320,6 +337,7 @@ almost none of the simulated datasets in `yrep` have any zeros.
 Here’s the same plot for the negative binomial model:
 
 ``` r
+
 ppc_stat(y, yrep_nb, stat = "prop_zero")
 ```
 
@@ -333,18 +351,21 @@ the replications, we can see that the Poisson model makes more realistic
 predictions than the negative binomial:
 
 ``` r
+
 ppc_stat(y, yrep_poisson, stat = "max")
 ```
 
 ![](graphical-ppcs_files/figure-html/ppc_stat-max-1.png)
 
 ``` r
+
 ppc_stat(y, yrep_nb, stat = "max")
 ```
 
 ![](graphical-ppcs_files/figure-html/ppc_stat-max-2.png)
 
 ``` r
+
 ppc_stat(y, yrep_nb, stat = "max", binwidth = 100) + 
   coord_cartesian(xlim = c(-1, 5000))
 ```
@@ -370,6 +391,7 @@ The `available_ppc` function can also be used to list the names of all
 PPC plotting functions:
 
 ``` r
+
 available_ppc()
 ```
 
@@ -424,6 +446,7 @@ ending in `_grouped` and will accept an additional argument `group`. The
 full list of currently available `_grouped` functions is:
 
 ``` r
+
 available_ppc(pattern = "_grouped")
 ```
 
@@ -452,6 +475,7 @@ the test statistic is computed within levels of the grouping variable
 and a separate plot is made for each level:
 
 ``` r
+
 ppc_stat_grouped(y, yrep_nb, group = roaches$treatment, stat = "prop_zero")
 ```
 
@@ -477,6 +501,7 @@ returns the quantile summaries that
 uses:
 
 ``` r
+
 d <- ppc_intervals_data(y, yrep_nb, prob = 0.5, prob_outer = 0.9)
 head(d)
 ```
@@ -494,6 +519,7 @@ head(d)
 You can then use this data to create your own plot:
 
 ``` r
+
 ggplot(d, aes(x = x, y = m)) +
   geom_linerange(aes(ymin = ll, ymax = hh), color = "skyblue", linewidth = 0.6) +
   geom_linerange(aes(ymin = l, ymax = h), color = "steelblue", linewidth = 1.2) +
@@ -510,6 +536,7 @@ Similarly,
 returns the computed test statistics:
 
 ``` r
+
 stat_d <- ppc_stat_data(y, yrep_nb, stat = "median")
 head(stat_d)
 ```
@@ -559,6 +586,7 @@ two of which are `y` and `yrep`. Here’s a simple method `pp_check.foo`
 that offers the user the option of two different plots:
 
 ``` r
+
 # @param object An object of class "foo".
 # @param type The type of plot.
 # @param ... Optional arguments passed on to the bayesplot plotting function.
@@ -582,11 +610,13 @@ To try out `pp_check.foo` we can just make a list with `y` and `yrep`
 components and give it class `foo`:
 
 ``` r
+
 x <- list(y = rnorm(200), yrep = matrix(rnorm(1e5), nrow = 500, ncol = 200))
 class(x) <- "foo"
 ```
 
 ``` r
+
 color_scheme_set("purple")
 pp_check(x, type = "multiple", binwidth = 0.3)
 ```
@@ -594,6 +624,7 @@ pp_check(x, type = "multiple", binwidth = 0.3)
 ![](graphical-ppcs_files/figure-html/pp_check-1-1.png)
 
 ``` r
+
 color_scheme_set("darkgray")
 pp_check(x, type = "overlaid")
 ```

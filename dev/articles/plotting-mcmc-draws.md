@@ -19,6 +19,7 @@ In addition to **bayesplot** we’ll load the following packages:
   vignette
 
 ``` r
+
 library("bayesplot")
 library("ggplot2")
 library("rstanarm")      
@@ -40,6 +41,7 @@ MCMC draws from using any package can be used with the functions in the
 [Stan](https://mc-stan.org/)’s MCMC sampler.
 
 ``` r
+
 head(mtcars) # see help("mtcars")
 ```
 
@@ -52,6 +54,7 @@ head(mtcars) # see help("mtcars")
     Valiant           18.1   6  225 105 2.76 3.460 20.22  1  0    3    1
 
 ``` r
+
 # linear regression model using stan_glm
 # using '~ .' to include all variables
 fit <- stan_glm(mpg ~ ., data = mtcars, seed = 1111)
@@ -89,6 +92,7 @@ To use the posterior draws with the functions in the **bayesplot**
 package we’ll extract them from the fitted model object:
 
 ``` r
+
 posterior <- as.array(fit)
 dim(posterior)
 ```
@@ -96,6 +100,7 @@ dim(posterior)
     [1] 1000    4   12
 
 ``` r
+
 dimnames(posterior)
 ```
 
@@ -139,6 +144,7 @@ Central posterior uncertainty intervals can be plotted using the
 `mcmc_intervals` function.
 
 ``` r
+
 color_scheme_set("red")
 mcmc_intervals(posterior, pars = c("cyl", "drat", "am", "sigma"))
 ```
@@ -155,6 +161,7 @@ To show the uncertainty intervals as shaded areas under the estimated
 posterior density curves we can use the `mcmc_areas` function.
 
 ``` r
+
 mcmc_areas(
   posterior, 
   pars = c("cyl", "drat", "am", "sigma"),
@@ -187,6 +194,7 @@ The `mcmc_hist` function plots marginal posterior distributions
 (combining all chains):
 
 ``` r
+
 color_scheme_set("green")
 mcmc_hist(posterior, pars = c("wt", "sigma"))
 ```
@@ -197,6 +205,7 @@ If we want to plot `log(sigma)` rather than `sigma` we can either
 transform the draws in advance or use the `transformations` argument.
 
 ``` r
+
 color_scheme_set("blue")
 mcmc_hist(posterior, pars = c("wt", "sigma"),
           transformations = list("sigma" = "log"))
@@ -214,6 +223,7 @@ To view separate histograms of each of the four Markov chains we can use
 plot.
 
 ``` r
+
 color_scheme_set("brightblue")
 mcmc_hist_by_chain(posterior, pars = c("wt", "sigma"))
 ```
@@ -226,6 +236,7 @@ The `mcmc_dens` function is similar to `mcmc_hist` but plots kernel
 density estimates instead of histograms.
 
 ``` r
+
 color_scheme_set("purple")
 mcmc_dens(posterior, pars = c("wt", "sigma"))
 ```
@@ -239,6 +250,7 @@ the Markov chains. But instead of plotting each chain individually, the
 density estimates are overlaid.
 
 ``` r
+
 mcmc_dens_overlay(posterior, pars = c("wt", "sigma"))
 ```
 
@@ -250,6 +262,7 @@ The `mcmc_violin` function plots the density estimates of each chain as
 violins and draws horizontal line segments at user-specified quantiles.
 
 ``` r
+
 color_scheme_set("teal")
 mcmc_violin(posterior, pars = c("wt", "sigma"), probs = c(0.1, 0.5, 0.9))
 ```
@@ -280,6 +293,7 @@ The `mcmc_scatter` function creates a simple scatterplot of two
 parameters.
 
 ``` r
+
 color_scheme_set("gray")
 mcmc_scatter(posterior, pars = c("(Intercept)", "wt"), 
              size = 1.5, alpha = 0.5)
@@ -293,6 +307,7 @@ The `mcmc_hex` function creates a similar plot but using hexagonal
 binning, which can be useful to avoid overplotting.
 
 ``` r
+
 # requires hexbin package
 if (requireNamespace("hexbin", quietly = TRUE)) {
   mcmc_hex(posterior, pars = c("(Intercept)", "wt"))
@@ -308,6 +323,7 @@ an `mcmc_pairs` function for creating pairs plots with more than two
 parameters.
 
 ``` r
+
 color_scheme_set("pink")
 mcmc_pairs(posterior, pars = c("(Intercept)", "wt", "sigma"),
            off_diag_args = list(size = 1.5))
@@ -353,6 +369,7 @@ divergences to trace plots.
 The `mcmc_trace` function creates standard trace plots:
 
 ``` r
+
 color_scheme_set("blue")
 mcmc_trace(posterior, pars = c("wt", "sigma"))
 ```
@@ -363,6 +380,7 @@ If it’s hard to see the difference between the chains we can change to a
 mixed color scheme, for example:
 
 ``` r
+
 color_scheme_set("mix-blue-red")
 mcmc_trace(posterior, pars = c("wt", "sigma"), 
            facet_args = list(ncol = 1, strip.position = "left"))
@@ -381,6 +399,7 @@ scheme](https://CRAN.R-project.org/package=viridis) is also useful for
 trace plots because it is comprised of very distinct colors:
 
 ``` r
+
 color_scheme_set("viridis")
 mcmc_trace(posterior, pars = "(Intercept)")
 ```
@@ -394,6 +413,7 @@ reduces the opacity of all but a single chain (which is specified using
 the `highlight` argument).
 
 ``` r
+
 mcmc_trace_highlight(posterior, pars = "sigma", highlight = 3)
 ```
 
@@ -411,6 +431,7 @@ returns the quantiles used by
 [`mcmc_intervals()`](https://mc-stan.org/bayesplot/dev/reference/MCMC-intervals.md):
 
 ``` r
+
 d <- mcmc_intervals_data(posterior, pars = c("(Intercept)", "sigma"))
 d
 ```

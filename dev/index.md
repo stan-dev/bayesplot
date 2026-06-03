@@ -56,6 +56,7 @@ for details and/or reach out via the issue tracker.
 - Install from CRAN:
 
 ``` r
+
 install.packages("bayesplot")
 ```
 
@@ -64,6 +65,7 @@ install.packages("bayesplot")
   package):
 
 ``` r
+
 if (!require("devtools")) {
   install.packages("devtools")
 }
@@ -81,6 +83,7 @@ Some quick examples using MCMC draws obtained from the
 [**rstan**](https://mc-stan.org/rstann) packages.
 
 ``` r
+
 library("bayesplot")
 library("rstanarm")
 library("ggplot2")
@@ -98,6 +101,7 @@ mcmc_areas(posterior,
 ![](https://raw.githubusercontent.com/stan-dev/bayesplot/master/images/mcmc_areas-rstanarm.png)
 
 ``` r
+
 color_scheme_set("red")
 ppc_dens_overlay(y = fit$y, 
                  yrep = posterior_predict(fit, draws = 50))
@@ -106,6 +110,7 @@ ppc_dens_overlay(y = fit$y,
 ![](https://raw.githubusercontent.com/stan-dev/bayesplot/master/images/ppc_dens_overlay-rstanarm.png)
 
 ``` r
+
 # also works nicely with piping
 library("dplyr")
 color_scheme_set("brightblue")
@@ -119,6 +124,7 @@ fit %>%
 ![](https://raw.githubusercontent.com/stan-dev/bayesplot/master/images/ppc_stat_grouped-rstanarm.png)
 
 ``` r
+
 # with rstan demo model
 library("rstan")
 fit2 <- stan_demo("eight_schools", warmup = 300, iter = 700)
@@ -133,6 +139,7 @@ p + facet_text(size = 15)
 ![](https://raw.githubusercontent.com/stan-dev/bayesplot/master/images/mcmc_trace-rstan.png)
 
 ``` r
+
 # scatter plot also showing divergences
 color_scheme_set("darkgray")
 mcmc_scatter(
@@ -146,6 +153,7 @@ mcmc_scatter(
 ![](https://raw.githubusercontent.com/stan-dev/bayesplot/master/images/mcmc_scatter-rstan.png)
 
 ``` r
+
 color_scheme_set("red")
 np <- nuts_params(fit2)
 mcmc_nuts_energy(np) + ggtitle("NUTS Energy Diagnostic")
@@ -154,6 +162,7 @@ mcmc_nuts_energy(np) + ggtitle("NUTS Energy Diagnostic")
 ![](https://raw.githubusercontent.com/stan-dev/bayesplot/master/images/mcmc_nuts_energy-rstan.png)
 
 ``` r
+
 # another example with rstanarm
 color_scheme_set("purple")
 
