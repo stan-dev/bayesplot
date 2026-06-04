@@ -301,7 +301,7 @@ test_that(".pit_ecdf_resolve_method_args sets correlated defaults", {
     test = "PRIT",
     gamma = 0.5,
     linewidth = 1,
-    color = "blue",
+    color = c(ecdf = "grey60", highlight = "red"),
     help_text = FALSE,
     help_text_shrinkage = 0.5,
     pareto_pit = FALSE
@@ -309,7 +309,7 @@ test_that(".pit_ecdf_resolve_method_args sets correlated defaults", {
   expect_equal(out$test, "PRIT")
   expect_equal(out$gamma, 0.5)
   expect_equal(out$linewidth, 1)
-  expect_equal(out$color, "blue")
+  expect_equal(out$color, c(ecdf = "grey60", highlight = "red"))
   expect_false(out$help_text)
   expect_equal(out$help_text_shrinkage, 0.5)
   expect_false(out$pareto_pit)
@@ -394,4 +394,33 @@ test_that(".pit_ecdf_resolve_method_args ignores independent-incompatible args",
     pareto_pit = TRUE
   ))
   expect_true(out$pareto_pit)
+})
+
+test_that(".pit_ecdf_resolve_method_args validates color for correlated method", {
+  expect_error(
+    resolve_pit_ecdf_method_args(
+      method = "correlated", 
+      color = "blue"
+    ),
+    "`color`"
+  )
+  expect_error(
+    resolve_pit_ecdf_method_args(
+      method = "correlated", 
+      color = c("grey60", "red")
+    ),
+    "`color`"
+  )
+  expect_error(
+    resolve_pit_ecdf_method_args(
+      method = "correlated", 
+      color = c(ecdf = "grey60")
+    ),
+    "`color`"
+  )
+  out <- suppressMessages(resolve_pit_ecdf_method_args(
+    method = "correlated",
+    color = c(ecdf = "darkblue", highlight = "orange")
+  ))
+  expect_equal(out$color, c(ecdf = "darkblue", highlight = "orange"))
 })

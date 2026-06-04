@@ -222,10 +222,12 @@ how strongly suspicious points are flagged. Larger values (\code{gamma > 0})
 emphasize points with larger deviations. If \code{NULL}, defaults to \code{0} and
 thus all suspicious points are flagged.}
 
-\item{color}{When \code{method = "correlated"}, a vector with base color and
-highlight color for the ECDF plot. Defaults to
-\code{c(ecdf = "grey60", highlight = "red")}. The first element is used for
-the main ECDF line, the second for highlighted suspicious regions.}
+\item{color}{When \code{method = "correlated"}, a named character vector of
+plot colors with elements \code{ecdf} and \code{highlight}. \code{ecdf} is used for the
+main ECDF line; \code{highlight} for suspicious regions flagged by the
+uniformity test. Defaults to \code{c(ecdf = "grey60", highlight = "red")}.
+Values must be valid ggplot2 colors (e.g. R color names or hex codes).
+Ignored when \code{method = "independent"}.}
 
 \item{help_text}{When \code{method = "correlated"}, a boolean defining whether
 to add information about p-value to the plot. Defaults to \code{TRUE}.}

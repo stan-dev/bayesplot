@@ -644,6 +644,7 @@ ecdf_intervals <- function(gamma, N, K, L = 1) {
     gamma <- gamma %||% 0
     linewidth <- linewidth %||% 0.3
     color <- color %||% c(ecdf = "grey60", highlight = "red")
+    .pit_ecdf_validate_color(color)
     help_text <- help_text %||% TRUE
     pareto_pit <- pareto_pit %||% (is.null(pit) && test %in% c("POT", "PIET"))
     help_text_shrinkage <- help_text_shrinkage %||% 0.8
@@ -955,4 +956,21 @@ ypred_label <- function() {
 # helper function for formatting p-value when displayed in a plot
 fmt_p <- function(x) {
   dplyr::if_else(x < 0.0005, "0.000", as.character(round(signif(x, 2) + 1e-10, 3)))
+}
+
+.pit_ecdf_validate_color <- function(color) {
+  required <- c("ecdf", "highlight")
+  if (!is.character(color)) {
+    abort(sprintf(
+      "`color` must be a character vector, not %s.",
+      class(color)
+    ))
+  }
+  if (is.null(names(color)) || !all(required %in% names(color))) {
+    abort(c(
+      "`color` must be a named character vector with elements 'ecdf' and 'highlight'.",
+      "i" = "For example: c(ecdf = \"grey60\", highlight = \"red\")."
+    ))
+  }
+  invisible(color[required])
 }
