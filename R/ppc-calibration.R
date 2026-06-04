@@ -448,10 +448,7 @@ ppc_calibration_data <- function(
     group <- rep(1, n_obs)
   }
   if (!all(y == 0 | y == 1)) {
-    abort(sprintf(
-      "Values of 'y' must be 0 or 1. Got range [%g, %g].",
-      min(y), max(y)
-    ))
+    abort("Values of 'y' must be 0 or 1.")
   }
   monotone <- .calibration_monotone_fn()
   if (identical(type, "overlay")) {
@@ -493,10 +490,7 @@ ppc_calibration_data <- function(
     } else {
       yrep <- validate_predictions(yrep, n_obs)
       if (!all(yrep == 0 | yrep == 1)) {
-        abort(sprintf(
-          "Values of 'yrep' must be 0 or 1. Got range [%g, %g].",
-          min(yrep), max(yrep)
-        ))
+        abort("Values of 'yrep' must be 0 or 1.")
       }
     }
 

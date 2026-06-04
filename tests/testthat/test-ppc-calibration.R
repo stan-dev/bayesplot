@@ -1,5 +1,4 @@
 library(bayesplot)
-context("PPC: calibration")
 
 test_that("grouped overlay CEP uses original y indices within each group", {
   y <- c(0, 0, 1, 1)
