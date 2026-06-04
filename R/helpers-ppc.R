@@ -859,7 +859,6 @@ ecdf_intervals <- function(gamma, N, K, L = 1) {
 ) {
   # pareto-pit values
   if (isTRUE(pareto_pit) && is.null(pit)) {
-    suggested_package("rstantools")
     y <- validate_y(y)
     yrep <- validate_predictions(yrep, length(y))
     if (isTRUE(loo_cv)) {
