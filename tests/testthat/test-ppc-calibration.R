@@ -547,3 +547,21 @@ test_that("resampling is identical for normalized and non-normalized log weights
 
   expect_identical(result_raw, result_norm)
 })
+
+testthat::test_that(".normalize_lw() works as expected", {
+  lw <- c(0, -Inf, 0.2, -0.2)
+  
+  norm_lw <- .normalize_lw(lw)
+  probs <- exp(norm_lw)
+  
+  expect_equal(norm_lw[2], -Inf)
+  expect_equal(probs[2], 0)
+  expect_equal(sum(probs), 1L)
+  
+  lw <- c(0, Inf, 0.2, -0.2)
+  
+  expect_error(
+    .normalize_lw(lw),
+    regexp = "Log-weights must be finite or `-Inf`"
+  )
+})

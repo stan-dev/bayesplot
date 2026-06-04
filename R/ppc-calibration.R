@@ -706,8 +706,8 @@ interval_type) {
 }
 
 .normalize_lw <- function(lw) {
-  if (!all(is.finite(lw))) {
-    abort("All values in 'lw' must be finite.")
+  if (any(lw == Inf)) {
+    abort("Log-weights must be finite or `-Inf`.")
   }
   max_lw <- max(lw)
   log_sum_exp <- max_lw + log(sum(exp(lw - max_lw)))
