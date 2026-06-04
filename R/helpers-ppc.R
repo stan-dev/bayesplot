@@ -602,6 +602,12 @@ ecdf_intervals <- function(gamma, N, K, L = 1) {
   method, pit, prob, interpolate_adj, test, gamma,
   linewidth, color, help_text, pareto_pit, help_text_shrinkage
 ) {
+  if (any(prob < 0 | prob > 1)) {
+    abort(sprintf(
+    "`prob` must be a probability value in [0, 1], not %g.",
+    prob
+  ))
+  }
   if (is.null(method)) {
     inform(c(
       "i" = paste(

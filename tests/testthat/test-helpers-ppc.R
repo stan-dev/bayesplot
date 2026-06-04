@@ -211,3 +211,187 @@ test_that("formatting of p-values works as expected", {
   expect_equal(fmt_p(0.0045), "0.005")
   expect_equal(fmt_p(0.00045), "0.000")
 })
+
+resolve_pit_ecdf_method_args <- function(..., prob = 0.99) {
+  args <- c(
+    list(
+      method = NULL,
+      pit = NULL,
+      prob = prob,
+      interpolate_adj = NULL,
+      test = NULL,
+      gamma = NULL,
+      linewidth = NULL,
+      color = NULL,
+      help_text = NULL,
+      pareto_pit = NULL,
+      help_text_shrinkage = NULL
+    ),
+    list(...)
+  )
+  do.call(
+    .pit_ecdf_resolve_method_args,
+    args[!duplicated(names(args), fromLast = TRUE)]
+  )
+}
+
+test_that(".pit_ecdf_resolve_method_args validates prob", {
+  expect_error(
+    resolve_pit_ecdf_method_args(prob = -0.1),
+    "`prob` must be a probability value in [0, 1], not -0.1",
+    fixed = TRUE
+  )
+  expect_error(
+    resolve_pit_ecdf_method_args(prob = 1.1),
+    "`prob` must be a probability value in [0, 1], not 1.1",
+    fixed = TRUE
+  )
+
+  out <- resolve_pit_ecdf_method_args(prob = 0.99, method = "correlated")
+  expect_equal(out$alpha, 0.01)
+})
+
+test_that(".pit_ecdf_resolve_method_args handles NULL method", {
+  expect_message(
+    out <- resolve_pit_ecdf_method_args(),
+    "In the next major release"
+  )
+  expect_equal(out$method, "independent")
+
+  expect_silent(
+    out <- resolve_pit_ecdf_method_args(method = "correlated")
+  )
+  expect_equal(out$method, "correlated")
+})
+
+test_that(".pit_ecdf_resolve_method_args matches method", {
+  expect_error(
+    resolve_pit_ecdf_method_args(method = "bogus"),
+    class = "rlang_error"
+  )
+
+  expect_message(
+    out <- resolve_pit_ecdf_method_args(method = "independent"),
+    "superseded by the 'correlated' method"
+  )
+  expect_equal(out$method, "independent")
+})
+
+test_that(".pit_ecdf_resolve_method_args sets correlated defaults", {
+  out <- suppressMessages(
+    resolve_pit_ecdf_method_args(method = "correlated")
+  )
+  expect_named(
+    out,
+    c(
+      "method", "alpha", "test", "gamma", "linewidth", "color",
+      "help_text", "pareto_pit", "help_text_shrinkage"
+    )
+  )
+  expect_equal(out$method, "correlated")
+  expect_equal(out$test, "POT")
+  expect_equal(out$gamma, 0)
+  expect_equal(out$linewidth, 0.3)
+  expect_equal(out$color, c(ecdf = "grey60", highlight = "red"))
+  expect_true(out$help_text)
+  expect_equal(out$help_text_shrinkage, 0.8)
+
+  out <- suppressMessages(resolve_pit_ecdf_method_args(
+    method = "correlated",
+    test = "PRIT",
+    gamma = 0.5,
+    linewidth = 1,
+    color = "blue",
+    help_text = FALSE,
+    help_text_shrinkage = 0.5,
+    pareto_pit = FALSE
+  ))
+  expect_equal(out$test, "PRIT")
+  expect_equal(out$gamma, 0.5)
+  expect_equal(out$linewidth, 1)
+  expect_equal(out$color, "blue")
+  expect_false(out$help_text)
+  expect_equal(out$help_text_shrinkage, 0.5)
+  expect_false(out$pareto_pit)
+})
+
+test_that(".pit_ecdf_resolve_method_args auto-defaults pareto_pit for correlated", {
+  out <- suppressMessages(resolve_pit_ecdf_method_args(method = "correlated"))
+  expect_true(out$pareto_pit)
+
+  out <- suppressMessages(resolve_pit_ecdf_method_args(
+    method = "correlated",
+    test = "PIET"
+  ))
+  expect_true(out$pareto_pit)
+
+  out <- suppressMessages(resolve_pit_ecdf_method_args(
+    method = "correlated",
+    test = "PRIT"
+  ))
+  expect_false(out$pareto_pit)
+})
+
+test_that(".pit_ecdf_resolve_method_args warns and errors for correlated conflicts", {
+  expect_message(
+    resolve_pit_ecdf_method_args(
+      method = "correlated",
+      interpolate_adj = TRUE
+    ),
+    "ignoring.*interpolate_adj"
+  )
+
+  expect_error(
+    resolve_pit_ecdf_method_args(
+      method = "correlated",
+      pit = c(0.2, 0.5),
+      pareto_pit = TRUE
+    ),
+    "pareto_pit = TRUE"
+  )
+
+  expect_silent(
+    out <- resolve_pit_ecdf_method_args(
+      method = "correlated",
+      pit = NULL,
+      pareto_pit = TRUE
+    )
+  )
+  expect_true(out$pareto_pit)
+})
+
+test_that(".pit_ecdf_resolve_method_args ignores independent-incompatible args", {
+  expect_message(
+    expect_message(
+      out <- resolve_pit_ecdf_method_args(
+        method = "independent",
+        test = "POT",
+        gamma = 0,
+        help_text = TRUE,
+        help_text_shrinkage = 0.5
+      ),
+      "ignoring.*test.*gamma.*help_text.*help_text_shrinkage"
+    ),
+    "superseded by the 'correlated' method"
+  )
+  expect_equal(out$test, "POT")
+  expect_equal(out$gamma, 0)
+  expect_true(out$help_text)
+  expect_equal(out$help_text_shrinkage, 0.5)
+  expect_false(out$pareto_pit)
+
+  expect_message(
+    out <- resolve_pit_ecdf_method_args(
+      method = "independent",
+      test = "POT"
+    ),
+    "ignoring.*test"
+  )
+  expect_equal(out$test, "POT")
+
+  out <- suppressMessages(resolve_pit_ecdf_method_args(
+    method = "independent",
+    pareto_pit = TRUE
+  ))
+  expect_true(out$pareto_pit)
+})
