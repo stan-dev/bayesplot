@@ -73,7 +73,10 @@
 #'  With `method = "correlated"`, the plot uses a dependence-aware
 #'  uniformity assessment and can highlight suspicious regions.
 #'  Setting `plot_diff = TRUE` displays the ECDF minus the theoretical
-#'  expectation, which can improve visual assessment of calibration.
+#'  expectation, which can improve visual assessment of calibration. 
+#'  Note that the default "independent" method is **superseded** by
+#'  the "correlated" method (Tesso & Vehtari, 2026) which accounts for dependent
+#'  LOO-PIT values.
 #' }
 #' \item{`ppc_loo_intervals()`, `ppc_loo_ribbon()`}{
 #'  Similar to [ppc_intervals()] and [ppc_ribbon()] but the intervals are for
@@ -421,11 +424,6 @@ ppc_loo_pit_qq <- function(y,
 #'   the approximation gives a fast method for assessing the ECDF trajectory.
 #'   For `ppc_loo_pit_ecdf()` when `method = 'independent'`.
 #'   The default is to use interpolation if `K` is greater than 200.
-#' 
-#' @note
-#' Note that the default "independent" method is **superseded** by
-#' the "correlated" method (Tesso & Vehtari, 2026) which accounts for dependent
-#' LOO-PIT values.
 #' 
 #' @references Tesso, H., & Vehtari, A. (2026). LOO-PIT predictive model 
 #' checking. arXiv preprint https://arxiv.org/abs/2603.02928.

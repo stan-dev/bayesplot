@@ -279,11 +279,6 @@ Leave-One-Out (LOO) predictive checks. See the \strong{Plot Descriptions} sectio
 below, and \href{https://github.com/jgabry/bayes-vis-paper#readme}{Gabry et al. (2019)}
 for details.
 }
-\note{
-Note that the default "independent" method is \strong{superseded} by
-the "correlated" method (Tesso & Vehtari, 2026) which accounts for dependent
-LOO-PIT values.
-}
 \section{Plot Descriptions}{
 
 \describe{
@@ -332,6 +327,9 @@ With \code{method = "correlated"}, the plot uses a dependence-aware
 uniformity assessment and can highlight suspicious regions.
 Setting \code{plot_diff = TRUE} displays the ECDF minus the theoretical
 expectation, which can improve visual assessment of calibration.
+Note that the default "independent" method is \strong{superseded} by
+the "correlated" method (Tesso & Vehtari, 2026) which accounts for dependent
+LOO-PIT values.
 }
 \item{\code{ppc_loo_intervals()}, \code{ppc_loo_ribbon()}}{
 Similar to \code{\link[=ppc_intervals]{ppc_intervals()}} and \code{\link[=ppc_ribbon]{ppc_ribbon()}} but the intervals are for

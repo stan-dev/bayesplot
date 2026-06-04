@@ -60,6 +60,9 @@
 #'    With `method = "correlated"`, the plot uses a dependence-aware
 #'    uniformity assessment and can highlight suspicious regions.
 #'    See Säilynoja et al. (2025) and Tesso & Vehtari (2026) for details.
+#'    Note that the default "independent" method is **superseded** by
+#'    the "correlated" method (Tesso & Vehtari, 2026) which accounts for 
+#'    dependent LOO-PIT values.
 #'   }
 #'   \item{`ppc_data()`}{
 #'    This function prepares data for plotting with **ggplot2** and doesn't
@@ -697,16 +700,14 @@ ppc_violin_grouped <-
 #'   For `ppc_pit_ecdf()` and `ppc_pit_ecdf_grouped()` when
 #'   `method = 'independent'` and for `mcmc_rank_ecdf()`. The default is to use
 #'   interpolation if `K` is greater than 200.
-#' @param pit An optional vector of probability integral transformed values for
-#'   which the ECDF is to be drawn. For `ppc_pit_ecdf()` and
-#'   `ppc_pit_ecdf_grouped()`. If `NULL`, PIT values are computed to `y` with
-#'   respect to the corresponding values in `yrep`.
+#' @param pit For `ppc_pit_ecdf()` and `ppc_pit_ecdf_grouped()`, an optional 
+#'   vector of precomputed PIT values (length `length(y)`, values in `[0, 1]`). 
+#'   If `NULL` (default), PIT values are computed internally.
 #' @param linewidth When `method = "correlated"`, the line width of the ECDF.
 #'   Defaults to `0.3`.
-#' @note
-#' Note that the default "independent" method is **superseded** by
-#' the "correlated" method (Tesso & Vehtari, 2026) which accounts for dependent
-#' PIT values.
+#' 
+#' @references Tesso, H., & Vehtari, A. (2026). LOO-PIT predictive model 
+#'   checking. arXiv preprint https://arxiv.org/abs/2603.02928.
 ppc_pit_ecdf <- function(y,
                          yrep,
                          ...,
@@ -816,16 +817,11 @@ ppc_pit_ecdf <- function(y,
 #'   For `ppc_pit_ecdf()` and `ppc_pit_ecdf_grouped()` when
 #'   `method = 'independent'` and for `mcmc_rank_ecdf()`. The default is to use
 #'   interpolation if `K` is greater than 200.
-#' @param pit An optional vector of probability integral transformed values for
-#'   which the ECDF is to be drawn. For `ppc_pit_ecdf()` and
-#'   `ppc_pit_ecdf_grouped()`. If `NULL`, PIT values are computed to `y` with
-#'   respect to the corresponding values in `yrep`.
+#' @param pit For `ppc_pit_ecdf()` and `ppc_pit_ecdf_grouped()`, an optional 
+#'   vector of precomputed PIT values (length `length(y)`, values in `[0, 1]`). 
+#'   If `NULL` (default), PIT values are computed internally.
 #' @param linewidth When `method = "correlated"`, the line width of the ECDF.
 #'   Defaults to `0.3`.
-#' @note
-#' Note that the default "independent" method is **superseded** by
-#' the "correlated" method (Tesso & Vehtari, 2026) which accounts for dependent
-#' PIT values.
 ppc_pit_ecdf_grouped <-
   function(y,
            yrep,
