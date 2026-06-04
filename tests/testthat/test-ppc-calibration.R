@@ -1,6 +1,48 @@
 library(bayesplot)
 context("PPC: calibration")
 
+test_that("grouped overlay CEP uses original y indices within each group", {
+  y <- c(0, 0, 1, 1)
+  group <- c("A", "A", "B", "B")
+  prep <- matrix(c(0.2, 0.1, 0.2, 0.1), nrow = 1)
+  d <- ppc_calibration_data(
+    y = y,
+    prep = prep,
+    group = group,
+    type = "overlay"
+  )
+  d_b <- d[d$group == "B", , drop = FALSE]
+  expect_equal(d_b$value, c(0.1, 0.2))
+  expect_equal(d_b$cep, c(1, 1))
+})
+  
+test_that("overlay, grouped: values are sorted correctly", {
+  y <- c(0L, 1L, 1L, 0L)
+  group <- c("A", "A", "B", "B")
+
+  # One draw; prep deliberately reversed within each group:
+  #   Group A: obs1=0.9, obs2=0.1 > sorted: obs2 (y=1), obs1 (y=0)
+  #   Group B: obs3=0.8, obs4=0.2 > sorted: obs4 (y=0), obs3 (y=1)
+  prep <- matrix(c(0.9, 0.1, 0.8, 0.2), nrow = 1)
+
+  result <- ppc_calibration_data(
+    y, prep = prep, group = group, type = "overlay"
+  )
+
+  ga <- dplyr::filter(result, group == "A")
+  gb <- dplyr::filter(result, group == "B")
+
+  # values are sorted ascending within each group
+  expect_equal(ga$value, c(0.1, 0.9))
+  expect_equal(gb$value, c(0.2, 0.8))
+
+  # cep is computed from y of the *correctly reordered* observations:
+  #    Group A: y = c(1, 0) > isotonic regression: c(0.5, 0.5)
+  #    Group B: y = c(0, 1) > already monotone: c(0.0, 1.0)
+  expect_equal(ga$cep, c(0.5, 0.5))
+  expect_equal(gb$cep, c(0.0, 1.0))
+})
+
 test_that("calibration interval helper matches prep confidence algorithm", {
   y <- c(0, 1, 0, 1)
   prep <- rbind(
