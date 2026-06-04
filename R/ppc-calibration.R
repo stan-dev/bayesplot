@@ -700,7 +700,7 @@ interval_type) {
 }
 
 .normalize_lw <- function(lw) {
-  if (any(lw == Inf)) {
+  if (any(lw == Inf | is.na(lw))) {
     abort("Log-weights must be finite or `-Inf`.")
   }
   max_lw <- max(lw)

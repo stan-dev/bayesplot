@@ -563,4 +563,18 @@ testthat::test_that(".normalize_lw() works as expected", {
     .normalize_lw(lw),
     regexp = "Log-weights must be finite or `-Inf`"
   )
+  
+  lw <- c(0, NA, 0.2, -0.2)
+  
+  expect_error(
+    .normalize_lw(lw),
+    regexp = "Log-weights must be finite or `-Inf`"
+  )
+  
+    lw <- c(0, NaN, 0.2, -0.2)
+  
+  expect_error(
+    .normalize_lw(lw),
+    regexp = "Log-weights must be finite or `-Inf`"
+  )
 })
