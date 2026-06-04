@@ -139,9 +139,11 @@ the \strong{Examples} section, below. If \code{lw} is not specified then
 object returned by the \code{psis()} function (or by the \code{loo()} function
 with argument \code{save_psis} set to \code{TRUE}).}
 
-\item{pit}{An optional vector of probability integral transformed values for
-which the ECDF is to be drawn. For \code{ppc_loo_pit_ecdf()}. If \code{NULL}, PIT
-values are computed to \code{y} with respect to the corresponding values in \code{yrep}.}
+\item{pit}{For \code{ppc_loo_pit_overlay()}, \code{ppc_loo_pit_qq()}, and
+\code{ppc_loo_pit_ecdf()}, an optional vector of precomputed LOO-PIT values
+(length \code{length(y)}, values in \verb{[0, 1]}). If supplied, \code{y}, \code{yrep}, and
+\code{lw} / \code{psis_object} are ignored. If \code{NULL} (default), LOO-PIT values are
+computed internally.}
 
 \item{samples}{For \code{ppc_loo_pit_overlay()}, the number of data sets (each
 the same size as \code{y}) to simulate from the standard uniform
@@ -409,6 +411,9 @@ Boneva, L. I., Kendall, D., & Stefanov, I. (1971). Spline
 transformations: Three new diagnostic aids for the statistical
 data-analyst. \emph{J. R. Stat. Soc. B} (Methodological), 33(1), 1-71.
 https://www.jstor.org/stable/2986005.
+
+Tesso, H., & Vehtari, A. (2026). LOO-PIT predictive model
+checking. arXiv preprint https://arxiv.org/abs/2603.02928.
 }
 \seealso{
 Other PPCs: 
