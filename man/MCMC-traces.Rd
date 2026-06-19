@@ -51,7 +51,8 @@ mcmc_rank_overlay(
   facet_args = list(),
   ...,
   n_bins = 20,
-  ref_line = FALSE
+  ref_line = FALSE,
+  split_chains = FALSE
 )
 
 mcmc_rank_hist(
@@ -75,7 +76,8 @@ mcmc_rank_ecdf(
   facet_args = list(),
   prob = 0.99,
   plot_diff = FALSE,
-  interpolate_adj = NULL
+  interpolate_adj = NULL,
+  split_chains = FALSE
 )
 
 mcmc_trace_data(
@@ -192,6 +194,10 @@ of rank-normalized MCMC samples. Defaults to \code{20}.}
 
 \item{ref_line}{For the rank plots, whether to draw a horizontal line at the
 average number of ranks per bin. Defaults to \code{FALSE}.}
+
+\item{split_chains}{Logical indicating whether to split each chain into two parts.
+If TRUE, each chain is split into first and second half with "_1" and "_2" suffixes.
+Defaults to \code{FALSE}.}
 
 \item{K}{An optional integer defining the number of equally spaced evaluation
 points for the PIT-ECDF. Reducing K when using \code{interpolate_adj = FALSE}
