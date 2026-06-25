@@ -99,6 +99,12 @@ Other contributors:
 
 - Mattan S. Ben-Shachar \[contributor\]
 
+- Ishaan Arora \[contributor\]
+
+- Utkarsh Pawade \[contributor\]
+
+- Florence Bockting \[contributor\]
+
 ## Examples
 
 ``` r

@@ -61,7 +61,15 @@ ppc_loo_pit_ecdf(
   K = NULL,
   prob = 0.99,
   plot_diff = FALSE,
-  interpolate_adj = NULL
+  interpolate_adj = NULL,
+  method = NULL,
+  test = NULL,
+  gamma = NULL,
+  linewidth = NULL,
+  color = NULL,
+  help_text = NULL,
+  pareto_pit = NULL,
+  help_text_shrinkage = NULL
 )
 
 ppc_loo_pit(
@@ -146,10 +154,10 @@ ppc_loo_ribbon(
 - pit:
 
   For `ppc_loo_pit_overlay()`, `ppc_loo_pit_qq()`, and
-  `ppc_loo_pit_ecdf()` optionally a vector of precomputed PIT values
-  that can be specified instead of `y`, `yrep`, and `lw` (these are all
-  ignored if `pit` is specified). If not specified the PIT values are
-  computed internally before plotting.
+  `ppc_loo_pit_ecdf()`, an optional vector of precomputed LOO-PIT values
+  (length `length(y)`, values in `[0, 1]`). If supplied, `y`, `yrep`,
+  and `lw` / `psis_object` are ignored. If `NULL` (default), LOO-PIT
+  values are computed internally.
 
 - samples:
 
@@ -172,6 +180,10 @@ ppc_loo_ribbon(
   [`ggplot2::geom_pointrange()`](https://ggplot2.tidyverse.org/reference/geom_linerange.html).
   For `ppc_loo_ribbon()`, `alpha` and `size` are passed to
   [`ggplot2::geom_ribbon()`](https://ggplot2.tidyverse.org/reference/geom_ribbon.html).
+  For `ppc_loo_pit_ecdf()`, linewidth for the ECDF plot. When
+  `method = "correlated"`, defaults to 0.3. When
+  `method = "independent"`, if `NULL` no linewidth is specified for the
+  ECDF line.
 
 - boundary_correction:
 
@@ -211,12 +223,13 @@ ppc_loo_ribbon(
 
 - K:
 
-  For `ppc_loo_pit_ecdf()` an optional integer defining the number of
-  equally spaced evaluation points for the PIT-ECDF. Reducing K when
-  using `interpolate_adj = FALSE` makes computing the confidence bands
-  faster. If `pit` is supplied, defaults to `length(pit)`, otherwise
-  `yrep` determines the maximum accuracy of the estimated PIT values and
-  `K` is set to `min(nrow(yrep) + 1, 1000)`.
+  An optional integer defining the number of equally spaced evaluation
+  points for the PIT-ECDF. Reducing K when using
+  `interpolate_adj = FALSE` makes computing the confidence bands faster.
+  For `ppc_loo_pit_ecdf()`, when `method = 'independent'`. If `pit` is
+  supplied, defaults to `length(pit)`, otherwise `yrep` determines the
+  maximum accuracy of the estimated PIT values and `K` is set to
+  `min(nrow(yrep) + 1, 1000)`.
 
 - prob, prob_outer:
 
@@ -227,20 +240,71 @@ ppc_loo_ribbon(
 
 - plot_diff:
 
-  For `ppc_loo_pit_ecdf()`, a boolean defining whether to plot the
-  difference between the observed PIT-ECDF and the theoretical
-  expectation for uniform PIT values rather than plotting the regular
-  ECDF. The default is `FALSE`, but for large samples we recommend
-  setting `plot_diff = TRUE` to better use the plot area.
+  A boolean defining whether to plot the difference between the observed
+  PIT-ECDF and the theoretical expectation for uniform PIT values rather
+  than plotting the regular ECDF. For `ppc_loo_pit_ecdf()`, when
+  `method = 'independent'`. The default is `FALSE`, but for large
+  samples we recommend setting `plot_diff = TRUE` to better use the plot
+  area.
 
 - interpolate_adj:
 
-  For `ppc_loo_pit_ecdf()`, a boolean defining if the simultaneous
-  confidence bands should be interpolated based on precomputed values
-  rather than computed exactly. Computing the bands may be
-  computationally intensive and the approximation gives a fast method
-  for assessing the ECDF trajectory. The default is to use interpolation
-  if `K` is greater than 200.
+  A boolean defining if the simultaneous confidence bands should be
+  interpolated based on precomputed values rather than computed exactly.
+  Computing the bands may be computationally intensive and the
+  approximation gives a fast method for assessing the ECDF trajectory.
+  For `ppc_loo_pit_ecdf()` when `method = 'independent'`. The default is
+  to use interpolation if `K` is greater than 200.
+
+- method:
+
+  The method used to calculate the uniformity test:
+
+  - `"independent"`: assumes independent PIT values (Säilynoja et al.,
+    2022).
+
+  - `"correlated"`: accounts for correlated PIT values (Tesso & Vehtari,
+    2026).
+
+- test:
+
+  When `method = "correlated"`, which dependence-aware test to use:
+  `"POT"`, `"PRIT"`, or `"PIET"`. Defaults to `"POT"`.
+
+- gamma:
+
+  When `method = "correlated"`, tolerance threshold controlling how
+  strongly suspicious points are flagged. Larger values (`gamma > 0`)
+  emphasize points with larger deviations. If `NULL`, defaults to `0`
+  and thus all suspicious points are flagged.
+
+- color:
+
+  When `method = "correlated"`, a named character vector of plot colors
+  with elements `ecdf` and `highlight`. `ecdf` is used for the main ECDF
+  line; `highlight` for suspicious regions flagged by the uniformity
+  test. Defaults to `c(ecdf = "grey60", highlight = "red")`. Values must
+  be valid ggplot2 colors (e.g. R color names or hex codes). Ignored
+  when `method = "independent"`.
+
+- help_text:
+
+  When `method = "correlated"`, a boolean defining whether to add
+  information about p-value to the plot. Defaults to `TRUE`.
+
+- pareto_pit:
+
+  A boolean defining whether to compute PIT values using Pareto-PIT
+  method. Defaults to `TRUE` if `test` is either `"POT"` or `"PIET"` and
+  no `pit` values are provided otherwise `FALSE`. This argument should
+  normally not be modified by the user, except for development purposes.
+  If `pit` is non-`NULL`, `pareto_pit` cannot be simultaneously `TRUE`.
+
+- help_text_shrinkage:
+
+  When `method = "correlated"`, a numeric value between 0 and 1 defining
+  the factor by which the help-text (p-value information) is scaled. The
+  default is `0.8`.
 
 - subset:
 
@@ -322,12 +386,16 @@ function.
   picture of calibration problems than the Q-Q plot.
 
   The `ppc_loo_pit_ecdf()` function visualizes the empirical cumulative
-  distribution function (ECDF) of the LOO PITs overlaid with
-  simultaneous confidence intervals for a standard uniform sample. For
-  large samples, these confidence intervals are visually very narrow.
-  Setting the `plot_diff` argument to `TRUE` transforms the plot to
-  display the difference of the ECDF and the theoretical expectation,
-  which can aid in the visual assessment of calibration.
+  distribution function (ECDF) of the LOO PIT values. With
+  `method = "independent"`, the plot overlays `100 * prob`% simultaneous
+  confidence intervals for a standard uniform sample. With
+  `method = "correlated"`, the plot uses a dependence-aware uniformity
+  assessment and can highlight suspicious regions. Setting
+  `plot_diff = TRUE` displays the ECDF minus the theoretical
+  expectation, which can improve visual assessment of calibration. Note
+  that the default "independent" method is **superseded** by the
+  "correlated" method (Tesso & Vehtari, 2026) which accounts for
+  dependent LOO-PIT values.
 
 - `ppc_loo_intervals()`, `ppc_loo_ribbon()`:
 
@@ -359,6 +427,9 @@ Boneva, L. I., Kendall, D., & Stefanov, I. (1971). Spline
 transformations: Three new diagnostic aids for the statistical
 data-analyst. *J. R. Stat. Soc. B* (Methodological), 33(1), 1-71.
 https://www.jstor.org/stable/2986005.
+
+Tesso, H., & Vehtari, A. (2026). LOO-PIT predictive model checking.
+arXiv preprint https://arxiv.org/abs/2603.02928.
 
 ## See also
 
@@ -424,8 +495,8 @@ lw <- weights(psis1) # normalized log weights
 color_scheme_set("orange")
 ppc_loo_pit_overlay(y, yrep, lw = lw)
 #> Some PIT values larger than 1! Largest:  1 
-#> Rounding PIT > 1 to 1. Gradient evaluation took 0.000369 seconds
-#> Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 3.69 seconds.
+#> Rounding PIT > 1 to 1. Gradient evaluation took 0.000378 seconds
+#> Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 3.78 seconds.
 #> Chain 2: Adjust your expectations accordingly!
 #> Chain 2: 
 #> Chain 2: 
@@ -459,16 +530,16 @@ ppc_loo_pit_overlay(y, yrep, lw = lw)
 #> Chain 2: Iteration: 90 / 100 [ 90%]  (Sampling)
 #> Chain 1: Iteration: 90 / 100 [ 90%]  (Sampling)
 #> Chain 2: Iteration: 100 / 100 [100%]  (Sampling)
+#> Chain 2: 
+#> Chain 2:  Elapsed Time: 2.958 seconds (Warm-up)
+#> Chain 2:                2.711 seconds (Sampling)
+#> Chain 2:                5.669 seconds (Total)
+#> Chain 2: 
 #> Chain 1: Iteration: 100 / 100 [100%]  (Sampling)
-#> Chain 2: 
-#> Chain 2:  Elapsed Time: 2.718 seconds (Warm-up)
-#> Chain 2:                2.498 seconds (Sampling)
-#> Chain 2:                5.216 seconds (Total)
-#> Chain 2: 
 #> Chain 1: 
-#> Chain 1:  Elapsed Time: 2.802 seconds (Warm-up)
-#> Chain 1:                2.475 seconds (Sampling)
-#> Chain 1:                5.277 seconds (Total)
+#> Chain 1:  Elapsed Time: 3.092 seconds (Warm-up)
+#> Chain 1:                2.728 seconds (Sampling)
+#> Chain 1:                5.82 seconds (Total)
 #> Chain 1: 
 #> Warning: 
 #> NOTE: The kernel density estimate assumes continuous observations and is not optimal for discrete observations.
@@ -484,11 +555,17 @@ ppc_loo_pit_qq(y, yrep, lw = lw, compare = "normal")
 
 # predictive calibration check using LOO probability integral transform
 ppc_loo_pit_ecdf(y, yrep, lw)
+#> ℹ In the next major release, the default `method` will change to 'correlated'.
+#> • To silence this message, explicitly set `method = 'independent'` or
+#>   `method = 'correlated'`.
 #> Warning: 
 
 
 # With `plot_diff = TRUE` it is easier to assess the calibration.
 ppc_loo_pit_ecdf(y, yrep, lw, plot_diff = TRUE)
+#> ℹ In the next major release, the default `method` will change to 'correlated'.
+#> • To silence this message, explicitly set `method = 'independent'` or
+#>   `method = 'correlated'`.
 #> Warning: 
 
 

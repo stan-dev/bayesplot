@@ -247,11 +247,15 @@ mcmc_trace_data(
   An optional integer defining the number of equally spaced evaluation
   points for the PIT-ECDF. Reducing K when using
   `interpolate_adj = FALSE` makes computing the confidence bands faster.
-  For `ppc_pit_ecdf` and `ppc_pit_ecdf_grouped`, if PIT values are
-  supplied, defaults to `length(pit)`, otherwise yrep determines the
-  maximum accuracy of the estimated PIT values and `K` is set to
-  `min(nrow(yrep) + 1, 1000)`. For `mcmc_rank_ecdf`, defaults to the
-  number of iterations per chain in `x`.
+  For
+  [`ppc_pit_ecdf()`](https://mc-stan.org/bayesplot/dev/reference/PPC-distributions.md)
+  and
+  [`ppc_pit_ecdf_grouped()`](https://mc-stan.org/bayesplot/dev/reference/PPC-distributions.md)
+  when `method = 'independent'`. If `pit` is supplied, defaults to
+  `length(pit)`, otherwise `yrep` determines the maximum accuracy of the
+  estimated PIT values and `K` is set to `min(nrow(yrep) + 1, 1000)`.
+  For `mcmc_rank_ecdf()`, defaults to the number of iterations per chain
+  in `x`.
 
 - prob:
 
@@ -271,7 +275,12 @@ mcmc_trace_data(
   interpolated based on precomputed values rather than computed exactly.
   Computing the bands may be computationally intensive and the
   approximation gives a fast method for assessing the ECDF trajectory.
-  The default is to use interpolation if `K` is greater than 200.
+  For
+  [`ppc_pit_ecdf()`](https://mc-stan.org/bayesplot/dev/reference/PPC-distributions.md)
+  and
+  [`ppc_pit_ecdf_grouped()`](https://mc-stan.org/bayesplot/dev/reference/PPC-distributions.md)
+  when `method = 'independent'` and for `mcmc_rank_ecdf()`. The default
+  is to use interpolation if `K` is greater than 200.
 
 ## Value
 

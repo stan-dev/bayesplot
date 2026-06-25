@@ -120,7 +120,15 @@ ppc_pit_ecdf(
   K = NULL,
   prob = 0.99,
   plot_diff = FALSE,
-  interpolate_adj = NULL
+  interpolate_adj = NULL,
+  method = NULL,
+  test = NULL,
+  gamma = NULL,
+  linewidth = NULL,
+  color = NULL,
+  help_text = NULL,
+  pareto_pit = NULL,
+  help_text_shrinkage = NULL
 )
 
 ppc_pit_ecdf_grouped(
@@ -132,7 +140,15 @@ ppc_pit_ecdf_grouped(
   pit = NULL,
   prob = 0.99,
   plot_diff = FALSE,
-  interpolate_adj = NULL
+  interpolate_adj = NULL,
+  method = NULL,
+  test = NULL,
+  gamma = NULL,
+  linewidth = NULL,
+  color = NULL,
+  help_text = NULL,
+  pareto_pit = NULL,
+  help_text_shrinkage = NULL
 )
 ```
 
@@ -268,33 +284,36 @@ ppc_pit_ecdf_grouped(
 
 - pit:
 
-  An optional vector of probability integral transformed values for
-  which the ECDF is to be drawn. If NULL, PIT values are computed to `y`
-  with respect to the corresponding values in `yrep`.
+  For `ppc_pit_ecdf()` and `ppc_pit_ecdf_grouped()`, an optional vector
+  of precomputed PIT values (length `length(y)`, values in `[0, 1]`). If
+  `NULL` (default), PIT values are computed internally.
 
 - K:
 
   An optional integer defining the number of equally spaced evaluation
   points for the PIT-ECDF. Reducing K when using
   `interpolate_adj = FALSE` makes computing the confidence bands faster.
-  For `ppc_pit_ecdf` and `ppc_pit_ecdf_grouped`, if PIT values are
-  supplied, defaults to `length(pit)`, otherwise yrep determines the
-  maximum accuracy of the estimated PIT values and `K` is set to
-  `min(nrow(yrep) + 1, 1000)`. For `mcmc_rank_ecdf`, defaults to the
-  number of iterations per chain in `x`.
+  For `ppc_pit_ecdf()` and `ppc_pit_ecdf_grouped()` when
+  `method = 'independent'`. If `pit` is supplied, defaults to
+  `length(pit)`, otherwise `yrep` determines the maximum accuracy of the
+  estimated PIT values and `K` is set to `min(nrow(yrep) + 1, 1000)`.
+  For
+  [`mcmc_rank_ecdf()`](https://mc-stan.org/bayesplot/dev/reference/MCMC-traces.md),
+  defaults to the number of iterations per chain in `x`.
 
 - prob:
 
   The desired simultaneous coverage level of the bands around the ECDF.
-  A value in (0,1).
+  A value in (0,1). For `ppc_pit_ecdf()` and `ppc_pit_ecdf_grouped()`.
 
 - plot_diff:
 
   A boolean defining whether to plot the difference between the observed
-  PIT- ECDF and the theoretical expectation for uniform PIT values
-  rather than plotting the regular ECDF. The default is `FALSE`, but for
-  large samples we recommend setting `plot_diff=TRUE` as the difference
-  plot will visually show a more dynamic range.
+  PIT-ECDF and the theoretical expectation for uniform PIT values rather
+  than plotting the regular ECDF. For `ppc_pit_ecdf()` and
+  `ppc_pit_ecdf_grouped()` when `method = 'independent'`. The default is
+  `FALSE`, but for large samples we recommend setting `plot_diff = TRUE`
+  to better use the plot area.
 
 - interpolate_adj:
 
@@ -302,7 +321,65 @@ ppc_pit_ecdf_grouped(
   interpolated based on precomputed values rather than computed exactly.
   Computing the bands may be computationally intensive and the
   approximation gives a fast method for assessing the ECDF trajectory.
+  For `ppc_pit_ecdf()` and `ppc_pit_ecdf_grouped()` when
+  `method = 'independent'` and for
+  [`mcmc_rank_ecdf()`](https://mc-stan.org/bayesplot/dev/reference/MCMC-traces.md).
   The default is to use interpolation if `K` is greater than 200.
+
+- method:
+
+  The method used to calculate the uniformity test:
+
+  - `"independent"`: assumes independent PIT values (Säilynoja et al.,
+    2022).
+
+  - `"correlated"`: accounts for correlated PIT values (Tesso & Vehtari,
+    2026).
+
+- test:
+
+  When `method = "correlated"`, which dependence-aware test to use:
+  `"POT"`, `"PRIT"`, or `"PIET"`. Defaults to `"POT"`.
+
+- gamma:
+
+  When `method = "correlated"`, tolerance threshold controlling how
+  strongly suspicious points are flagged. Larger values (`gamma > 0`)
+  emphasize points with larger deviations. If `NULL`, defaults to `0`
+  and thus all suspicious points are flagged.
+
+- linewidth:
+
+  When `method = "correlated"`, the line width of the ECDF. Defaults to
+  `0.3`.
+
+- color:
+
+  When `method = "correlated"`, a named character vector of plot colors
+  with elements `ecdf` and `highlight`. `ecdf` is used for the main ECDF
+  line; `highlight` for suspicious regions flagged by the uniformity
+  test. Defaults to `c(ecdf = "grey60", highlight = "red")`. Values must
+  be valid ggplot2 colors (e.g. R color names or hex codes). Ignored
+  when `method = "independent"`.
+
+- help_text:
+
+  When `method = "correlated"`, a boolean defining whether to add
+  information about p-value to the plot. Defaults to `TRUE`.
+
+- pareto_pit:
+
+  A boolean defining whether to compute PIT values using Pareto-PIT
+  method. Defaults to `TRUE` if `test` is either `"POT"` or `"PIET"` and
+  no `pit` values are provided otherwise `FALSE`. This argument should
+  normally not be modified by the user, except for development purposes.
+  If `pit` is non-`NULL`, `pareto_pit` cannot be simultaneously `TRUE`.
+
+- help_text_shrinkage:
+
+  When `method = "correlated"`, a numeric value between 0 and 1 defining
+  the factor by which the help-text (p-value information) is scaled. The
+  default is `0.8`.
 
 ## Value
 
@@ -356,11 +433,16 @@ counts).
 
 - `ppc_pit_ecdf()`, `ppc_pit_ecdf_grouped()`:
 
-  The PIT-ECDF of the empirical PIT values of `y` computed with respect
-  to the corresponding `yrep` values. `100 * prob`% central simultaneous
-  confidence intervals are provided to asses if `y` and `yrep` originate
-  from the same distribution. The PIT values can also be provided
-  directly as `pit`. See Säilynoja et al. (2021) for more details.
+  The PIT-ECDF of empirical PIT values for `y` relative to corresponding
+  draws in `yrep` (or precomputed values supplied via `pit`). With
+  `method = "independent"`, the plot shows `100 * prob`% central
+  simultaneous confidence intervals under an independence assumption.
+  With `method = "correlated"`, the plot uses a dependence-aware
+  uniformity assessment and can highlight suspicious regions. See
+  Säilynoja et al. (2025) and Tesso & Vehtari (2026) for details. Note
+  that the default "independent" method is **superseded** by the
+  "correlated" method (Tesso & Vehtari, 2026) which accounts for
+  dependent LOO-PIT values.
 
 - `ppc_data()`:
 
@@ -389,6 +471,9 @@ preprint](https://arxiv.org/abs/2103.10522).
 Gelman, A., Carlin, J. B., Stern, H. S., Dunson, D. B., Vehtari, A., and
 Rubin, D. B. (2013). *Bayesian Data Analysis.* Chapman & Hall/CRC Press,
 London, third edition. (Ch. 6)
+
+Tesso, H., & Vehtari, A. (2026). LOO-PIT predictive model checking.
+arXiv preprint https://arxiv.org/abs/2603.02928.
 
 ## See also
 
@@ -422,8 +507,14 @@ ppc_ecdf_overlay(y, yrep[sample(nrow(yrep), 25), ])
 # PIT-ECDF and PIT-ECDF difference plot of the PIT values of y compared to
 # yrep with 99% simultaneous confidence bands.
 ppc_pit_ecdf(y, yrep, prob = 0.99, plot_diff = FALSE)
+#> ℹ In the next major release, the default `method` will change to 'correlated'.
+#> • To silence this message, explicitly set `method = 'independent'` or
+#>   `method = 'correlated'`.
 
 ppc_pit_ecdf(y, yrep, prob = 0.99, plot_diff = TRUE)
+#> ℹ In the next major release, the default `method` will change to 'correlated'.
+#> • To silence this message, explicitly set `method = 'independent'` or
+#>   `method = 'correlated'`.
 
 # }
 
@@ -473,6 +564,9 @@ ppc_ecdf_overlay_grouped(y, yrep[1:25, ], group = group)
 # PIT-ECDF plots of the PIT values by group
 # with 99% simultaneous confidence bands.
 ppc_pit_ecdf_grouped(y, yrep, group=group, prob=0.99)
+#> ℹ In the next major release, the default `method` will change to 'correlated'.
+#> • To silence this message, explicitly set `method = 'independent'` or
+#>   `method = 'correlated'`.
 
 # }
 

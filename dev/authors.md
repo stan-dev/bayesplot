@@ -30,6 +30,8 @@
 
 - **Utkarsh Pawade**. Contributor.
 
+- **Florence Bockting**. Contributor.
+
 ## Citation
 
 Source:

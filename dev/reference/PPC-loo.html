@@ -128,7 +128,15 @@ for details.</p>
 <span>  K <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  prob <span class="op">=</span> <span class="fl">0.99</span>,</span>
 <span>  plot_diff <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  interpolate_adj <span class="op">=</span> <span class="cn">NULL</span></span>
+<span>  interpolate_adj <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  method <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  test <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  gamma <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  linewidth <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  color <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  help_text <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  pareto_pit <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  help_text_shrinkage <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">ppc_loo_pit</span><span class="op">(</span></span>
@@ -210,10 +218,10 @@ with argument <code>save_psis</code> set to <code>TRUE</code>).</p></dd>
 
 <dt id="arg-pit">pit<a class="anchor" aria-label="anchor" href="#arg-pit"></a></dt>
 <dd><p>For <code>ppc_loo_pit_overlay()</code>, <code>ppc_loo_pit_qq()</code>, and
-<code>ppc_loo_pit_ecdf()</code> optionally a vector of precomputed PIT values that
-can be specified instead of <code>y</code>, <code>yrep</code>, and <code>lw</code> (these are all ignored
-if <code>pit</code> is specified). If not specified the PIT values are computed
-internally before plotting.</p></dd>
+<code>ppc_loo_pit_ecdf()</code>, an optional vector of precomputed LOO-PIT values
+(length <code>length(y)</code>, values in <code>[0, 1]</code>). If supplied, <code>y</code>, <code>yrep</code>, and
+<code>lw</code> / <code>psis_object</code> are ignored. If <code>NULL</code> (default), LOO-PIT values are
+computed internally.</p></dd>
 
 
 <dt id="arg-samples">samples<a class="anchor" aria-label="anchor" href="#arg-samples"></a></dt>
@@ -231,7 +239,9 @@ and <code>alpha</code> are passed to <code><a href="https://ggplot2.tidyverse.or
 <code><a href="https://ggplot2.tidyverse.org/reference/geom_density.html" class="external-link">ggplot2::geom_density()</a></code>, respectively. For <code>ppc_loo_intervals()</code>, <code>size</code>
 <code>linewidth</code> and <code>fatten</code> are passed to <code><a href="https://ggplot2.tidyverse.org/reference/geom_linerange.html" class="external-link">ggplot2::geom_pointrange()</a></code>. For
 <code>ppc_loo_ribbon()</code>, <code>alpha</code> and <code>size</code>  are passed to
-<code><a href="https://ggplot2.tidyverse.org/reference/geom_ribbon.html" class="external-link">ggplot2::geom_ribbon()</a></code>.</p></dd>
+<code><a href="https://ggplot2.tidyverse.org/reference/geom_ribbon.html" class="external-link">ggplot2::geom_ribbon()</a></code>. For <code>ppc_loo_pit_ecdf()</code>, linewidth for the ECDF plot. When
+<code>method = "correlated"</code>, defaults to 0.3. When <code>method = "independent"</code>,
+if <code>NULL</code> no linewidth is specified for the ECDF line.</p></dd>
 
 
 <dt id="arg-boundary-correction">boundary_correction<a class="anchor" aria-label="anchor" href="#arg-boundary-correction"></a></dt>
@@ -269,12 +279,12 @@ quantiles.</p></dd>
 
 
 <dt id="arg-k">K<a class="anchor" aria-label="anchor" href="#arg-k"></a></dt>
-<dd><p>For <code>ppc_loo_pit_ecdf()</code> an optional integer defining the number
-of equally spaced evaluation points for the PIT-ECDF. Reducing K when
-using <code>interpolate_adj = FALSE</code> makes computing the confidence bands
-faster. If <code>pit</code> is supplied, defaults to <code>length(pit)</code>, otherwise
-<code>yrep</code> determines the maximum accuracy of the estimated PIT values and
-<code>K</code> is set to <code>min(nrow(yrep) + 1, 1000)</code>.</p></dd>
+<dd><p>An optional integer defining the number of equally spaced evaluation
+points for the PIT-ECDF. Reducing K when using <code>interpolate_adj = FALSE</code>
+makes computing the confidence bands faster. For <code>ppc_loo_pit_ecdf()</code>,
+when <code>method = 'independent'</code>. If <code>pit</code> is supplied, defaults to
+<code>length(pit)</code>, otherwise <code>yrep</code> determines the maximum accuracy of the
+estimated PIT values and <code>K</code> is set to <code>min(nrow(yrep) + 1, 1000)</code>.</p></dd>
 
 
 <dt id="arg-prob-prob-outer">prob, prob_outer<a class="anchor" aria-label="anchor" href="#arg-prob-prob-outer"></a></dt>
@@ -285,20 +295,67 @@ are <code>prob=0.5</code> and <code>prob_outer=0.9</code> for <code>ppc_loo_inte
 
 
 <dt id="arg-plot-diff">plot_diff<a class="anchor" aria-label="anchor" href="#arg-plot-diff"></a></dt>
-<dd><p>For <code>ppc_loo_pit_ecdf()</code>, a boolean defining whether to
-plot the difference between the observed PIT-ECDF and the theoretical
-expectation for uniform PIT values rather than plotting the regular ECDF.
-The default is <code>FALSE</code>, but for large samples we recommend setting
-<code>plot_diff = TRUE</code> to better use the plot area.</p></dd>
+<dd><p>A boolean defining whether to plot the difference between
+the observed PIT-ECDF and the theoretical expectation for uniform PIT
+values rather than plotting the regular ECDF. For <code>ppc_loo_pit_ecdf()</code>,
+when <code>method = 'independent'</code>. The default is <code>FALSE</code>, but for large
+samples we recommend setting <code>plot_diff = TRUE</code> to better use the plot area.</p></dd>
 
 
 <dt id="arg-interpolate-adj">interpolate_adj<a class="anchor" aria-label="anchor" href="#arg-interpolate-adj"></a></dt>
-<dd><p>For <code>ppc_loo_pit_ecdf()</code>, a boolean defining if the
-simultaneous confidence bands should be interpolated based on precomputed
-values rather than computed exactly. Computing the bands may be
-computationally intensive and the approximation gives a fast method for
-assessing the ECDF trajectory. The default is to use interpolation if <code>K</code>
-is greater than 200.</p></dd>
+<dd><p>A boolean defining if the simultaneous confidence
+bands should be interpolated based on precomputed values rather than
+computed exactly. Computing the bands may be computationally intensive and
+the approximation gives a fast method for assessing the ECDF trajectory.
+For <code>ppc_loo_pit_ecdf()</code> when <code>method = 'independent'</code>.
+The default is to use interpolation if <code>K</code> is greater than 200.</p></dd>
+
+
+<dt id="arg-method">method<a class="anchor" aria-label="anchor" href="#arg-method"></a></dt>
+<dd><p>The method used to calculate the uniformity test:</p><ul><li><p><code>"independent"</code>: assumes independent PIT values (Säilynoja et al., 2022).</p></li>
+<li><p><code>"correlated"</code>: accounts for correlated PIT values (Tesso &amp; Vehtari, 2026).</p></li>
+</ul></dd>
+
+
+<dt id="arg-test">test<a class="anchor" aria-label="anchor" href="#arg-test"></a></dt>
+<dd><p>When <code>method = "correlated"</code>, which dependence-aware test to use:
+<code>"POT"</code>, <code>"PRIT"</code>, or <code>"PIET"</code>. Defaults to <code>"POT"</code>.</p></dd>
+
+
+<dt id="arg-gamma">gamma<a class="anchor" aria-label="anchor" href="#arg-gamma"></a></dt>
+<dd><p>When <code>method = "correlated"</code>, tolerance threshold controlling
+how strongly suspicious points are flagged. Larger values (<code>gamma &gt; 0</code>)
+emphasize points with larger deviations. If <code>NULL</code>, defaults to <code>0</code> and
+thus all suspicious points are flagged.</p></dd>
+
+
+<dt id="arg-color">color<a class="anchor" aria-label="anchor" href="#arg-color"></a></dt>
+<dd><p>When <code>method = "correlated"</code>, a named character vector of
+plot colors with elements <code>ecdf</code> and <code>highlight</code>. <code>ecdf</code> is used for the
+main ECDF line; <code>highlight</code> for suspicious regions flagged by the
+uniformity test. Defaults to <code>c(ecdf = "grey60", highlight = "red")</code>.
+Values must be valid ggplot2 colors (e.g. R color names or hex codes).
+Ignored when <code>method = "independent"</code>.</p></dd>
+
+
+<dt id="arg-help-text">help_text<a class="anchor" aria-label="anchor" href="#arg-help-text"></a></dt>
+<dd><p>When <code>method = "correlated"</code>, a boolean defining whether
+to add information about p-value to the plot. Defaults to <code>TRUE</code>.</p></dd>
+
+
+<dt id="arg-pareto-pit">pareto_pit<a class="anchor" aria-label="anchor" href="#arg-pareto-pit"></a></dt>
+<dd><p>A boolean defining whether to compute PIT values using
+Pareto-PIT method. Defaults to <code>TRUE</code> if <code>test</code> is either <code>"POT"</code> or
+<code>"PIET"</code> and no <code>pit</code> values are provided otherwise <code>FALSE</code>. This argument
+should normally not be modified by the user, except for development
+purposes. If <code>pit</code> is non-<code>NULL</code>, <code>pareto_pit</code> cannot be simultaneously
+<code>TRUE</code>.</p></dd>
+
+
+<dt id="arg-help-text-shrinkage">help_text_shrinkage<a class="anchor" aria-label="anchor" href="#arg-help-text-shrinkage"></a></dt>
+<dd><p>When <code>method = "correlated"</code>, a numeric value
+between 0 and 1 defining the factor by which the help-text (p-value
+information) is scaled. The default is <code>0.8</code>.</p></dd>
 
 
 <dt id="arg-subset">subset<a class="anchor" aria-label="anchor" href="#arg-subset"></a></dt>
@@ -376,12 +433,16 @@ we have found that the overlaid density plot (<code>ppc_loo_pit_overlay()</code>
 function will provide a clearer picture of calibration problems than the
 Q-Q plot.</p>
 <p>The <code>ppc_loo_pit_ecdf()</code> function visualizes the empirical cumulative
-distribution function (ECDF) of the LOO PITs overlaid with simultaneous
-confidence intervals for a standard uniform sample. For large samples,
-these confidence intervals are visually very narrow. Setting the
-<code>plot_diff</code> argument to <code>TRUE</code> transforms the plot to display the
-difference of the ECDF and the theoretical expectation, which can aid in
-the visual assessment of calibration.</p></dd>
+distribution function (ECDF) of the LOO PIT values.
+With <code>method = "independent"</code>, the plot overlays <code>100 * prob</code>%
+simultaneous confidence intervals for a standard uniform sample.
+With <code>method = "correlated"</code>, the plot uses a dependence-aware
+uniformity assessment and can highlight suspicious regions.
+Setting <code>plot_diff = TRUE</code> displays the ECDF minus the theoretical
+expectation, which can improve visual assessment of calibration.
+Note that the default "independent" method is <strong>superseded</strong> by
+the "correlated" method (Tesso &amp; Vehtari, 2026) which accounts for dependent
+LOO-PIT values.</p></dd>
 
 <dt><code>ppc_loo_intervals()</code>, <code>ppc_loo_ribbon()</code></dt>
 <dd><p>Similar to <code><a href="PPC-intervals.html">ppc_intervals()</a></code> and <code><a href="PPC-intervals.html">ppc_ribbon()</a></code> but the intervals are for
@@ -409,6 +470,8 @@ doi:10.1007/s11222-016-9696-4. arXiv preprint:
 transformations: Three new diagnostic aids for the statistical
 data-analyst. <em>J. R. Stat. Soc. B</em> (Methodological), 33(1), 1-71.
 https://www.jstor.org/stable/2986005.</p>
+<p>Tesso, H., &amp; Vehtari, A. (2026). LOO-PIT predictive model
+checking. arXiv preprint https://arxiv.org/abs/2603.02928.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
@@ -474,8 +537,8 @@ https://www.jstor.org/stable/2986005.</p>
 <span class="r-in"><span><span class="fu"><a href="bayesplot-colors.html">color_scheme_set</a></span><span class="op">(</span><span class="st">"orange"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">ppc_loo_pit_overlay</span><span class="op">(</span><span class="va">y</span>, <span class="va">yrep</span>, lw <span class="op">=</span> <span class="va">lw</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Some PIT values larger than 1! Largest:  1 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Rounding PIT &gt; 1 to 1. Gradient evaluation took 0.000369 seconds</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 3.69 seconds.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Rounding PIT &gt; 1 to 1. Gradient evaluation took 0.000378 seconds</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 3.78 seconds.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2: Adjust your expectations accordingly!</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2: </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2: </span>
@@ -509,16 +572,16 @@ https://www.jstor.org/stable/2986005.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2: Iteration: 90 / 100 [ 90%]  (Sampling)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: Iteration: 90 / 100 [ 90%]  (Sampling)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2: Iteration: 100 / 100 [100%]  (Sampling)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2: </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2:  Elapsed Time: 2.958 seconds (Warm-up)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2:                2.711 seconds (Sampling)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2:                5.669 seconds (Total)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2: </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: Iteration: 100 / 100 [100%]  (Sampling)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2: </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2:  Elapsed Time: 2.718 seconds (Warm-up)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2:                2.498 seconds (Sampling)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2:                5.216 seconds (Total)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2: </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1:  Elapsed Time: 2.802 seconds (Warm-up)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1:                2.475 seconds (Sampling)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1:                5.277 seconds (Total)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1:  Elapsed Time: 3.092 seconds (Warm-up)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1:                2.728 seconds (Sampling)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1:                5.82 seconds (Total)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: </span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> NOTE: The kernel density estimate assumes continuous observations and is not optimal for discrete observations.</span>
@@ -534,11 +597,17 @@ https://www.jstor.org/stable/2986005.</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># predictive calibration check using LOO probability integral transform</span></span></span>
 <span class="r-in"><span><span class="fu">ppc_loo_pit_ecdf</span><span class="op">(</span><span class="va">y</span>, <span class="va">yrep</span>, <span class="va">lw</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">ℹ</span> In the next major release, the default `method` will change to 'correlated'.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> To silence this message, explicitly set `method = 'independent'` or</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   `method = 'correlated'`.</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span></span>
 <span class="r-plt img"><img src="PPC-loo-4.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># With `plot_diff = TRUE` it is easier to assess the calibration.</span></span></span>
 <span class="r-in"><span><span class="fu">ppc_loo_pit_ecdf</span><span class="op">(</span><span class="va">y</span>, <span class="va">yrep</span>, <span class="va">lw</span>, plot_diff <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">ℹ</span> In the next major release, the default `method` will change to 'correlated'.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> To silence this message, explicitly set `method = 'independent'` or</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   `method = 'correlated'`.</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span></span>
 <span class="r-plt img"><img src="PPC-loo-5.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>

@@ -293,11 +293,12 @@ average number of ranks per bin. Defaults to <code>FALSE</code>.</p></dd>
 <dt id="arg-k">K<a class="anchor" aria-label="anchor" href="#arg-k"></a></dt>
 <dd><p>An optional integer defining the number of equally spaced evaluation
 points for the PIT-ECDF. Reducing K when using <code>interpolate_adj = FALSE</code>
-makes computing the confidence bands faster. For <code>ppc_pit_ecdf</code> and
-<code>ppc_pit_ecdf_grouped</code>, if PIT values are supplied, defaults to
-<code>length(pit)</code>, otherwise yrep determines the maximum accuracy of the
-estimated PIT values and <code>K</code> is set to <code>min(nrow(yrep) + 1, 1000)</code>. For
-<code>mcmc_rank_ecdf</code>, defaults to the number of iterations per chain in <code>x</code>.</p></dd>
+makes computing the confidence bands faster. For <code><a href="PPC-distributions.html">ppc_pit_ecdf()</a></code> and
+<code><a href="PPC-distributions.html">ppc_pit_ecdf_grouped()</a></code> when <code>method = 'independent'</code>. If <code>pit</code> is
+supplied, defaults to <code>length(pit)</code>, otherwise <code>yrep</code> determines the
+maximum accuracy of the estimated PIT values and <code>K</code> is set to
+<code>min(nrow(yrep) + 1, 1000)</code>. For <code>mcmc_rank_ecdf()</code>, defaults to the number
+of iterations per chain in <code>x</code>.</p></dd>
 
 
 <dt id="arg-prob">prob<a class="anchor" aria-label="anchor" href="#arg-prob"></a></dt>
@@ -317,7 +318,9 @@ should be drawn instead of the unmodified rank ECDF plots.</p></dd>
 bands should be interpolated based on precomputed values rather than
 computed exactly. Computing the bands may be computationally intensive and
 the approximation gives a fast method for assessing the ECDF trajectory.
-The default is to use interpolation if <code>K</code> is greater than 200.</p></dd>
+For <code><a href="PPC-distributions.html">ppc_pit_ecdf()</a></code> and <code><a href="PPC-distributions.html">ppc_pit_ecdf_grouped()</a></code> when
+<code>method = 'independent'</code> and for <code>mcmc_rank_ecdf()</code>. The default is to use
+interpolation if <code>K</code> is greater than 200.</p></dd>
 
 </dl></div>
     <div class="section level2">
