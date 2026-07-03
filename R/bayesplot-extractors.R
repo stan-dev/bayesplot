@@ -24,8 +24,15 @@
 #' The data frame should have columns `"Parameter"` (factor), `"Iteration"`
 #' (integer), `"Chain"` (integer), and `"Value"` (numeric). See **Examples**, below.
 #' }
-#' \item{`rhat()`, `neff_ratio()`}{
+#' \item{`extract_rhat()`, `extract_neff_ratio()`}{
 #' Methods return (named) vectors.
+#' }
+#' \item{`rhat()`, `neff_ratio()`}{
+#' `r lifecycle::badge("deprecated")` Use `extract_rhat()` and
+#' `extract_neff_ratio()` instead. These names clashed with
+#' [posterior::rhat()] and [posterior::ess_basic()] (and other ESS
+#' functions), which caused confusion because the bayesplot versions
+#' *extract* already-computed values rather than compute them.
 #' }
 #' }
 #'
@@ -60,17 +67,68 @@ log_posterior <- function(object, ...) {
 nuts_params <- function(object, ...) {
   UseMethod("nuts_params")
 }
+# extract_rhat -------------------------------------------------------------
+#' @rdname bayesplot-extractors
+#' @export
+extract_rhat <- function(object, ...) {
+  UseMethod("extract_rhat")
+}
+# extract_neff_ratio -------------------------------------------------------
+#' @rdname bayesplot-extractors
+#' @export
+extract_neff_ratio <- function(object, ...) {
+  UseMethod("extract_neff_ratio")
+}
+
 # rhat -------------------------------------------------------------
+# Kept as an S3 generic (not just a wrapper) so third-party methods
+# registered against rhat (e.g. brms::rhat.brmsfit) still dispatch
+# during the deprecation window.
 #' @rdname bayesplot-extractors
 #' @export
 rhat <- function(object, ...) {
+  lifecycle::deprecate_warn(
+    when = "1.16.0",
+    what = "rhat()",
+    with = "extract_rhat()",
+    details = paste(
+      "bayesplot's rhat() was renamed to extract_rhat() to make clear",
+      "it only extracts already-computed R-hat values (and to avoid",
+      "masking posterior::rhat(), which computes R-hat)."
+    )
+  )
   UseMethod("rhat")
 }
+
+#' @rdname bayesplot-extractors
+#' @export
+#' @method rhat default
+rhat.default <- function(object, ...) {
+  extract_rhat(object, ...)
+}
+
 # neff_ratio -------------------------------------------------------------
 #' @rdname bayesplot-extractors
 #' @export
 neff_ratio <- function(object, ...) {
+  lifecycle::deprecate_warn(
+    when = "1.16.0",
+    what = "neff_ratio()",
+    with = "extract_neff_ratio()",
+    details = paste(
+      "bayesplot's neff_ratio() was renamed to extract_neff_ratio() to",
+      "make clear it only extracts already-computed effective sample",
+      "size ratios (and to avoid masking posterior's ESS functions)."
+    )
+  )
   UseMethod("neff_ratio")
+}
+
+#' @rdname bayesplot-extractors
+#' @export
+#' @method neff_ratio default
+neff_ratio.default <- function(object, ...) {
+  extract_neff_ratio(object, ...)
 }
 
 
@@ -195,9 +253,9 @@ nuts_params.CmdStanMCMC <- function(object, pars = NULL, ...) {
 
 #' @rdname bayesplot-extractors
 #' @export
-#' @method rhat stanfit
+#' @method extract_rhat stanfit
 #'
-rhat.stanfit <- function(object, pars = NULL, ...) {
+extract_rhat.stanfit <- function(object, pars = NULL, ...) {
   suggested_package("rstan")
   s <- if (!is.null(pars)) {
     rstan::summary(object, pars = pars, ...)
@@ -210,10 +268,10 @@ rhat.stanfit <- function(object, pars = NULL, ...) {
 
 #' @rdname bayesplot-extractors
 #' @export
-#' @method rhat stanreg
+#' @method extract_rhat stanreg
 #' @template args-regex_pars
 #'
-rhat.stanreg <- function(object, pars = NULL, regex_pars = NULL, ...) {
+extract_rhat.stanreg <- function(object, pars = NULL, regex_pars = NULL, ...) {
   suggested_package("rstanarm")
   r <- summary(object, pars = pars, regex_pars = regex_pars, ...)[, "Rhat"]
   r <- validate_rhat(r)
@@ -226,8 +284,8 @@ rhat.stanreg <- function(object, pars = NULL, regex_pars = NULL, ...) {
 
 #' @rdname bayesplot-extractors
 #' @export
-#' @method rhat CmdStanMCMC
-rhat.CmdStanMCMC <- function(object, pars = NULL, ...) {
+#' @method extract_rhat CmdStanMCMC
+extract_rhat.CmdStanMCMC <- function(object, pars = NULL, ...) {
   .rhat <- utils::getFromNamespace("rhat", "posterior")
   s <- object$summary(pars, rhat = .rhat)[, c("variable", "rhat")]
   r <- setNames(s$rhat, s$variable)
@@ -238,9 +296,9 @@ rhat.CmdStanMCMC <- function(object, pars = NULL, ...) {
 
 #' @rdname bayesplot-extractors
 #' @export
-#' @method neff_ratio stanfit
+#' @method extract_neff_ratio stanfit
 #'
-neff_ratio.stanfit <- function(object, pars = NULL, ...) {
+extract_neff_ratio.stanfit <- function(object, pars = NULL, ...) {
   suggested_package("rstan")
   s <- if (!is.null(pars)) {
     rstan::summary(object, pars = pars, ...)
@@ -254,9 +312,9 @@ neff_ratio.stanfit <- function(object, pars = NULL, ...) {
 
 #' @rdname bayesplot-extractors
 #' @export
-#' @method neff_ratio stanreg
+#' @method extract_neff_ratio stanreg
 #'
-neff_ratio.stanreg <- function(object, pars = NULL, regex_pars = NULL, ...) {
+extract_neff_ratio.stanreg <- function(object, pars = NULL, regex_pars = NULL, ...) {
   suggested_package("rstanarm")
   s <- summary(object, pars = pars, regex_pars = regex_pars, ...)
   ess <- s[, "n_eff"]
@@ -272,8 +330,8 @@ neff_ratio.stanreg <- function(object, pars = NULL, regex_pars = NULL, ...) {
 
 #' @rdname bayesplot-extractors
 #' @export
-#' @method neff_ratio CmdStanMCMC
-neff_ratio.CmdStanMCMC <- function(object, pars = NULL, ...) {
+#' @method extract_neff_ratio CmdStanMCMC
+extract_neff_ratio.CmdStanMCMC <- function(object, pars = NULL, ...) {
   s <- object$summary(pars, "n_eff" = "ess_basic")[, c("variable", "n_eff")]
   ess <- setNames(s$n_eff, s$variable)
   tss <- prod(dim(object$draws())[1:2])

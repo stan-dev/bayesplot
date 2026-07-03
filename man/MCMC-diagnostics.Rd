@@ -62,7 +62,7 @@ to override the default binning.}
 \code{binwidth}.}
 
 \item{ratio}{A vector of \emph{ratios} of effective sample size estimates to
-total sample size. See \code{\link[=neff_ratio]{neff_ratio()}}.}
+total sample size. See \code{\link[=extract_neff_ratio]{extract_neff_ratio()}}.}
 
 \item{x}{An object containing MCMC draws:
 \itemize{
@@ -191,8 +191,8 @@ library(rstanarm)
 # intentionally use small 'iter' so there are some
 # problems with rhat and neff for demonstration
 fit <- stan_glm(mpg ~ ., data = mtcars, iter = 50, refresh = 0)
-rhats <- rhat(fit)
-ratios <- neff_ratio(fit)
+rhats <- extract_rhat(fit)
+ratios <- extract_neff_ratio(fit)
 mcmc_rhat(rhats)
 mcmc_neff(ratios, size = 3)
 
@@ -206,8 +206,8 @@ mcmc_acf(draws, pars = c("wt", "cyl"), lags = 10)
 
 # increase number of iterations and plots look much better
 fit2 <- update(fit, iter = 500)
-mcmc_rhat(rhat(fit2))
-mcmc_neff(neff_ratio(fit2))
+mcmc_rhat(extract_rhat(fit2))
+mcmc_neff(extract_neff_ratio(fit2))
 mcmc_acf(as.array(fit2), pars = c("wt", "cyl"), lags = 10)
 }
 
