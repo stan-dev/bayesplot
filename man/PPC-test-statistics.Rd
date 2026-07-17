@@ -88,10 +88,10 @@ then generic naming is used in the legend.}
 \item{discrete}{For \code{ppc_stat()} and \code{ppc_stat_grouped()}, if \code{TRUE} then a
 bar chart is used instead of a histogram.}
 
-\item{binwidth}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}}, \code{\link[ggplot2:geom_ribbon]{ggplot2::geom_area()}},
+\item{binwidth}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}}, \code{\link[ggplot2:geom_area]{ggplot2::geom_area()}},
 and \code{\link[ggdist:stat_dots]{ggdist::stat_dots()}} to override the default binwidth.}
 
-\item{bins}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}} and \code{\link[ggplot2:geom_ribbon]{ggplot2::geom_area()}}
+\item{bins}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}} and \code{\link[ggplot2:geom_area]{ggplot2::geom_area()}}
 to override the default binning.}
 
 \item{breaks}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}} as an alternative to
@@ -235,7 +235,7 @@ A., and Rubin, D. B. (2013). \emph{Bayesian Data Analysis.} Chapman & Hall/CRC
 Press, London, third edition. (Ch. 6)
 }
 \seealso{
-Other PPCs: 
+Other PPCs:
 \code{\link{PPC-censoring}},
 \code{\link{PPC-discrete}},
 \code{\link{PPC-distributions}},

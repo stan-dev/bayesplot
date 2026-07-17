@@ -155,7 +155,7 @@ PITs overlaid as a thicker dark line.}
 plot aesthetics. For \code{ppc_loo_pit_qq()} and \code{ppc_loo_pit_overlay()},\code{size}
 and \code{alpha} are passed to \code{\link[ggplot2:geom_point]{ggplot2::geom_point()}} and
 \code{\link[ggplot2:geom_density]{ggplot2::geom_density()}}, respectively. For \code{ppc_loo_intervals()}, \code{size}
-\code{linewidth} and \code{fatten} are passed to \code{\link[ggplot2:geom_linerange]{ggplot2::geom_pointrange()}}. For
+\code{linewidth} and \code{fatten} are passed to \code{\link[ggplot2:geom_pointrange]{ggplot2::geom_pointrange()}}. For
 \code{ppc_loo_ribbon()}, \code{alpha} and \code{size}  are passed to
 \code{\link[ggplot2:geom_ribbon]{ggplot2::geom_ribbon()}}. For \code{ppc_loo_pit_ecdf()}, linewidth for the ECDF plot. When
 \code{method = "correlated"}, defaults to 0.3. When \code{method = "independent"},
@@ -176,7 +176,7 @@ generate the estimations. This is set to 512 by default.}
 \item{bw, adjust, kernel, n_dens}{Optional arguments passed to
 \code{\link[stats:density]{stats::density()}} to override the defaults.}
 
-\item{trim}{Passed to \code{\link[ggplot2:geom_density]{ggplot2::stat_density()}}.}
+\item{trim}{Passed to \code{\link[ggplot2:stat_density]{ggplot2::stat_density()}}.}
 
 \item{compare}{For \code{ppc_loo_pit_qq()}, a string that can be either
 \code{"uniform"} or \code{"normal"}. If \code{"uniform"} (the default) the Q-Q plot
@@ -414,7 +414,7 @@ Tesso, H., & Vehtari, A. (2026). LOO-PIT predictive model
 checking. arXiv preprint https://arxiv.org/abs/2603.02928.
 }
 \seealso{
-Other PPCs: 
+Other PPCs:
 \code{\link{PPC-censoring}},
 \code{\link{PPC-discrete}},
 \code{\link{PPC-distributions}},

@@ -82,7 +82,7 @@ mcmc_combo(
 
 }
 \seealso{
-Other MCMC: 
+Other MCMC:
 \code{\link{MCMC-diagnostics}},
 \code{\link{MCMC-distributions}},
 \code{\link{MCMC-intervals}},
