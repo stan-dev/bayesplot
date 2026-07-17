@@ -22,7 +22,7 @@ mcmc_trace(
   iter1 = 0,
   window = NULL,
   size = NULL,
-  alpha = 0.2,
+  alpha = 0.4,
   highlight = NULL,
   np = NULL,
   np_style = trace_style_np(),
