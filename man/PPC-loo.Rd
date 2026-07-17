@@ -139,9 +139,11 @@ the \strong{Examples} section, below. If \code{lw} is not specified then
 object returned by the \code{psis()} function (or by the \code{loo()} function
 with argument \code{save_psis} set to \code{TRUE}).}
 
-\item{pit}{An optional vector of probability integral transformed values for
-which the ECDF is to be drawn. For \code{ppc_loo_pit_ecdf()}. If \code{NULL}, PIT
-values are computed to \code{y} with respect to the corresponding values in \code{yrep}.}
+\item{pit}{For \code{ppc_loo_pit_overlay()}, \code{ppc_loo_pit_qq()}, and
+\code{ppc_loo_pit_ecdf()}, an optional vector of precomputed LOO-PIT values
+(length \code{length(y)}, values in \verb{[0, 1]}). If supplied, \code{y}, \code{yrep}, and
+\code{lw} / \code{psis_object} are ignored. If \code{NULL} (default), LOO-PIT values are
+computed internally.}
 
 \item{samples}{For \code{ppc_loo_pit_overlay()}, the number of data sets (each
 the same size as \code{y}) to simulate from the standard uniform
@@ -222,10 +224,12 @@ how strongly suspicious points are flagged. Larger values (\code{gamma > 0})
 emphasize points with larger deviations. If \code{NULL}, defaults to \code{0} and
 thus all suspicious points are flagged.}
 
-\item{color}{When \code{method = "correlated"}, a vector with base color and
-highlight color for the ECDF plot. Defaults to
-\code{c(ecdf = "grey60", highlight = "red")}. The first element is used for
-the main ECDF line, the second for highlighted suspicious regions.}
+\item{color}{When \code{method = "correlated"}, a named character vector of
+plot colors with elements \code{ecdf} and \code{highlight}. \code{ecdf} is used for the
+main ECDF line; \code{highlight} for suspicious regions flagged by the
+uniformity test. Defaults to \code{c(ecdf = "grey60", highlight = "red")}.
+Values must be valid ggplot2 colors (e.g. R color names or hex codes).
+Ignored when \code{method = "independent"}.}
 
 \item{help_text}{When \code{method = "correlated"}, a boolean defining whether
 to add information about p-value to the plot. Defaults to \code{TRUE}.}
@@ -275,11 +279,6 @@ Leave-One-Out (LOO) predictive checks. See the \strong{Plot Descriptions} sectio
 below, and \href{https://github.com/jgabry/bayes-vis-paper#readme}{Gabry et al. (2019)}
 for details.
 }
-\note{
-Note that the default "independent" method is \strong{superseded} by
-the "correlated" method (Tesso & Vehtari, 2026) which accounts for dependent
-LOO-PIT values.
-}
 \section{Plot Descriptions}{
 
 \describe{
@@ -328,6 +327,9 @@ With \code{method = "correlated"}, the plot uses a dependence-aware
 uniformity assessment and can highlight suspicious regions.
 Setting \code{plot_diff = TRUE} displays the ECDF minus the theoretical
 expectation, which can improve visual assessment of calibration.
+Note that the default "independent" method is \strong{superseded} by
+the "correlated" method (Tesso & Vehtari, 2026) which accounts for dependent
+LOO-PIT values.
 }
 \item{\code{ppc_loo_intervals()}, \code{ppc_loo_ribbon()}}{
 Similar to \code{\link[=ppc_intervals]{ppc_intervals()}} and \code{\link[=ppc_ribbon]{ppc_ribbon()}} but the intervals are for
@@ -407,6 +409,9 @@ Boneva, L. I., Kendall, D., & Stefanov, I. (1971). Spline
 transformations: Three new diagnostic aids for the statistical
 data-analyst. \emph{J. R. Stat. Soc. B} (Methodological), 33(1), 1-71.
 https://www.jstor.org/stable/2986005.
+
+Tesso, H., & Vehtari, A. (2026). LOO-PIT predictive model
+checking. arXiv preprint https://arxiv.org/abs/2603.02928.
 }
 \seealso{
 Other PPCs: 

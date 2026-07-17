@@ -7,10 +7,12 @@
 #'   how strongly suspicious points are flagged. Larger values (`gamma > 0`)
 #'   emphasize points with larger deviations. If `NULL`, defaults to `0` and
 #'   thus all suspicious points are flagged.
-#' @param color When `method = "correlated"`, a vector with base color and
-#'   highlight color for the ECDF plot. Defaults to
-#'   `c(ecdf = "grey60", highlight = "red")`. The first element is used for
-#'   the main ECDF line, the second for highlighted suspicious regions.
+#' @param color When `method = "correlated"`, a named character vector of
+#'   plot colors with elements `ecdf` and `highlight`. `ecdf` is used for the
+#'   main ECDF line; `highlight` for suspicious regions flagged by the
+#'   uniformity test. Defaults to `c(ecdf = "grey60", highlight = "red")`.
+#'   Values must be valid ggplot2 colors (e.g. R color names or hex codes).
+#'   Ignored when `method = "independent"`.
 #' @param help_text When `method = "correlated"`, a boolean defining whether
 #'   to add information about p-value to the plot. Defaults to `TRUE`.
 #' @param help_text_shrinkage When `method = "correlated"`, a numeric value
