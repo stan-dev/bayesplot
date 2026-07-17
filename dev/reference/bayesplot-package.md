@@ -75,6 +75,8 @@ for saving plots.
 
 Authors:
 
+- Jonah Gabry <jgabry@gmail.com>
+
 - Tristan Mahr ([ORCID](https://orcid.org/0000-0002-8890-5116))
 
 Other contributors:
