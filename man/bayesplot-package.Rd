@@ -119,6 +119,7 @@ for plotting.
 
 Authors:
 \itemize{
+  \item Jonah Gabry \email{jgabry@gmail.com}
   \item Tristan Mahr (\href{https://orcid.org/0000-0002-8890-5116}{ORCID})
 }
 
