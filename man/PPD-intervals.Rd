@@ -96,10 +96,10 @@ are \code{prob=0.5} and \code{prob_outer=0.9}.}
 
 \item{alpha, size, fatten, linewidth}{Arguments passed to geoms. For ribbon
 plots \code{alpha} is passed to \code{\link[ggplot2:geom_ribbon]{ggplot2::geom_ribbon()}} to control the opacity
-of the outer ribbon and \code{size} is passed to \code{\link[ggplot2:geom_path]{ggplot2::geom_line()}} to
+of the outer ribbon and \code{size} is passed to \code{\link[ggplot2:geom_line]{ggplot2::geom_line()}} to
 control the size of the line representing the median prediction (\code{size=0}
 will remove the line). For interval plots \code{alpha}, \code{size}, \code{fatten}, and
-\code{linewidth} are passed to \code{\link[ggplot2:geom_linerange]{ggplot2::geom_pointrange()}} (\code{fatten=0} will
+\code{linewidth} are passed to \code{\link[ggplot2:geom_pointrange]{ggplot2::geom_pointrange()}} (\code{fatten=0} will
 remove the point estimates).}
 
 \item{group}{A grouping variable of the same length as \code{y}.
@@ -167,7 +167,7 @@ Gelman, A. (2019), Visualization in Bayesian workflow.
 \href{https://github.com/jgabry/bayes-vis-paper}{code on GitHub})
 }
 \seealso{
-Other PPDs: 
+Other PPDs:
 \code{\link{PPD-distributions}},
 \code{\link{PPD-overview}},
 \code{\link{PPD-test-statistics}}
