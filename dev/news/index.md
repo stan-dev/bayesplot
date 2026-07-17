@@ -44,6 +44,11 @@
   [`mcmc_parcoord_data()`](https://mc-stan.org/bayesplot/dev/reference/MCMC-parcoord.md),
   and
   [`mcmc_trace_data()`](https://mc-stan.org/bayesplot/dev/reference/MCMC-traces.md).
+- [`mcmc_trace()`](https://mc-stan.org/bayesplot/dev/reference/MCMC-traces.md)
+  now supports highlighting a chain with lines using the `highlight` and
+  `alpha` arguments. Previously this was only available via
+  `mcmc_trace_highligh()` and with points instead of lines.
+  ([\#552](https://github.com/stan-dev/bayesplot/issues/552))
 - Added unit tests for
   [`ppc_error_data()`](https://mc-stan.org/bayesplot/dev/reference/PPC-errors.md)
   and

@@ -82,6 +82,8 @@ section, below, for details.</p>
 <span>  iter1 <span class="op">=</span> <span class="fl">0</span>,</span>
 <span>  window <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  size <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  alpha <span class="op">=</span> <span class="fl">0.4</span>,</span>
+<span>  highlight <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  np <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  np_style <span class="op">=</span> <span class="fu">trace_style_np</span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  divergences <span class="op">=</span> <span class="cn">NULL</span></span>
@@ -241,6 +243,17 @@ range of iterations to display.</p></dd>
 for <code>mcmc_trace()</code> or the default point size for <code>mcmc_trace_highlight()</code>.</p></dd>
 
 
+<dt id="arg-alpha">alpha<a class="anchor" aria-label="anchor" href="#arg-alpha"></a></dt>
+<dd><p>For <code>mcmc_trace()</code> and <code>mcmc_trace_highlight()</code>, controls the
+transparency of the lines or points for the chains not highlighted.</p></dd>
+
+
+<dt id="arg-highlight">highlight<a class="anchor" aria-label="anchor" href="#arg-highlight"></a></dt>
+<dd><p>For <code>mcmc_trace()</code>, <code>NULL</code> (the default) or an integer
+specifying one chain to emphasize. For <code>mcmc_trace_highlight()</code>, an integer
+specifying one chain to emphasize.</p></dd>
+
+
 <dt id="arg-np">np<a class="anchor" aria-label="anchor" href="#arg-np"></a></dt>
 <dd><p>For models fit using <a href="MCMC-nuts.html">NUTS</a> (more generally, any
 <a href="https://en.wikipedia.org/wiki/Symplectic_integrator" class="external-link">symplectic integrator</a>),
@@ -259,17 +272,6 @@ divergences (if the <code>np</code> argument is specified).</p></dd>
 
 <dt id="arg-divergences">divergences<a class="anchor" aria-label="anchor" href="#arg-divergences"></a></dt>
 <dd><p>Deprecated. Use the <code>np</code> argument instead.</p></dd>
-
-
-<dt id="arg-alpha">alpha<a class="anchor" aria-label="anchor" href="#arg-alpha"></a></dt>
-<dd><p>For <code>mcmc_trace_highlight()</code>, passed to
-<code><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">ggplot2::geom_point()</a></code> to control the transparency of the points
-for the chains not highlighted.</p></dd>
-
-
-<dt id="arg-highlight">highlight<a class="anchor" aria-label="anchor" href="#arg-highlight"></a></dt>
-<dd><p>For <code>mcmc_trace_highlight()</code>, an integer specifying one
-of the chains that will be more visible than the others in the plot.</p></dd>
 
 
 <dt id="arg-div-color-div-size-div-alpha">div_color, div_size, div_alpha<a class="anchor" aria-label="anchor" href="#arg-div-color-div-size-div-alpha"></a></dt>
@@ -338,7 +340,8 @@ in the same data frame.</p>
 
 <dl><dt><code>mcmc_trace()</code></dt>
 <dd><p>Standard trace plots of MCMC draws. For models fit using <a href="MCMC-nuts.html">NUTS</a>,
-the <code>np</code> argument can be used to also show divergences on the trace plot.</p></dd>
+the <code>np</code> argument can be used to also show divergences on the trace plot.
+One chain can be emphasized using the <code>highlight</code> argument.</p></dd>
 
 <dt><code>mcmc_trace_highlight()</code></dt>
 <dd><p>Traces are plotted using points rather than lines and the opacity of all
@@ -430,13 +433,15 @@ Goodness of Fit Evaluation and Multiple Sample Comparison <a href="https://arxiv
 <span class="r-in"><span><span class="fu"><a href="bayesplot-colors.html">color_scheme_set</a></span><span class="op">(</span><span class="st">"mix-blue-red"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">mcmc_trace</span><span class="op">(</span><span class="va">x</span>, regex_pars <span class="op">=</span> <span class="st">"beta"</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="MCMC-traces-4.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span><span class="fu">mcmc_trace</span><span class="op">(</span><span class="va">x</span>, regex_pars <span class="op">=</span> <span class="st">"beta"</span>, highlight <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="MCMC-traces-5.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># use traditional ggplot discrete color scale</span></span></span>
 <span class="r-in"><span><span class="fu">mcmc_trace</span><span class="op">(</span><span class="va">x</span>, pars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"alpha"</span>, <span class="st">"sigma"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span></span>
 <span class="r-in"><span> <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_colour_discrete.html" class="external-link">scale_color_discrete</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Scale for <span style="color: #00BB00;">colour</span> is already present.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Adding another scale for <span style="color: #00BB00;">colour</span>, which will replace the existing scale.</span>
-<span class="r-plt img"><img src="MCMC-traces-5.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="MCMC-traces-6.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># zoom in on a window of iterations, increase line size,</span></span></span>
 <span class="r-in"><span><span class="co"># add tick marks, move legend to the top, add gray background</span></span></span>
@@ -444,25 +449,25 @@ Goodness of Fit Evaluation and Multiple Sample Comparison <a href="https://arxiv
 <span class="r-in"><span><span class="fu">mcmc_trace</span><span class="op">(</span><span class="va">x</span><span class="op">[</span>,, <span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span>, window <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">100</span>, <span class="fl">130</span><span class="op">)</span>, size <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">+</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="bayesplot-helpers.html">panel_bg</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="st">"gray90"</span>, color <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span> <span class="op">+</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="bayesplot-helpers.html">legend_move</a></span><span class="op">(</span><span class="st">"top"</span><span class="op">)</span></span></span>
-<span class="r-plt img"><img src="MCMC-traces-6.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="MCMC-traces-7.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Rank-normalized histogram plots. Instead of showing how chains mix over</span></span></span>
 <span class="r-in"><span><span class="co"># time, look at how the ranking of MCMC samples mixed between chains.</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="bayesplot-colors.html">color_scheme_set</a></span><span class="op">(</span><span class="st">"viridisE"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">mcmc_rank_hist</span><span class="op">(</span><span class="va">x</span>, <span class="st">"alpha"</span><span class="op">)</span></span></span>
-<span class="r-plt img"><img src="MCMC-traces-7.png" alt="" width="700" height="433"></span>
-<span class="r-in"><span><span class="fu">mcmc_rank_hist</span><span class="op">(</span><span class="va">x</span>, pars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"alpha"</span>, <span class="st">"sigma"</span><span class="op">)</span>, ref_line <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="MCMC-traces-8.png" alt="" width="700" height="433"></span>
-<span class="r-in"><span><span class="fu">mcmc_rank_overlay</span><span class="op">(</span><span class="va">x</span>, <span class="st">"alpha"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">mcmc_rank_hist</span><span class="op">(</span><span class="va">x</span>, pars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"alpha"</span>, <span class="st">"sigma"</span><span class="op">)</span>, ref_line <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="MCMC-traces-9.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span><span class="fu">mcmc_rank_overlay</span><span class="op">(</span><span class="va">x</span>, <span class="st">"alpha"</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="MCMC-traces-10.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># ECDF and ECDF difference plots of the ranking of MCMC samples between chains.</span></span></span>
 <span class="r-in"><span><span class="co"># Provide 99% simultaneous confidence intervals for the chains sampling from</span></span></span>
 <span class="r-in"><span><span class="co"># the same distribution.</span></span></span>
 <span class="r-in"><span><span class="fu">mcmc_rank_ecdf</span><span class="op">(</span><span class="va">x</span>, prob <span class="op">=</span> <span class="fl">0.99</span><span class="op">)</span></span></span>
-<span class="r-plt img"><img src="MCMC-traces-10.png" alt="" width="700" height="433"></span>
-<span class="r-in"><span><span class="fu">mcmc_rank_ecdf</span><span class="op">(</span><span class="va">x</span>, prob <span class="op">=</span> <span class="fl">0.99</span>, plot_diff <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="MCMC-traces-11.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span><span class="fu">mcmc_rank_ecdf</span><span class="op">(</span><span class="va">x</span>, prob <span class="op">=</span> <span class="fl">0.99</span>, plot_diff <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="MCMC-traces-12.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># \dontrun{</span></span></span>
 <span class="r-in"><span><span class="co"># parse facet label text</span></span></span>
@@ -473,16 +478,16 @@ Goodness of Fit Evaluation and Multiple Sample Comparison <a href="https://arxiv
 <span class="r-in"><span>  facet_args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>labeller <span class="op">=</span> <span class="fu">ggplot2</span><span class="fu">::</span><span class="va"><a href="https://ggplot2.tidyverse.org/reference/labellers.html" class="external-link">label_parsed</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">p</span> <span class="op">+</span> <span class="fu"><a href="bayesplot-helpers.html">facet_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">15</span><span class="op">)</span></span></span>
-<span class="r-plt img"><img src="MCMC-traces-12.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="MCMC-traces-13.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># mark first 100 draws as warmup</span></span></span>
 <span class="r-in"><span><span class="fu">mcmc_trace</span><span class="op">(</span><span class="va">x</span>, n_warmup <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span></span>
-<span class="r-plt img"><img src="MCMC-traces-13.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="MCMC-traces-14.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># plot as points, highlighting chain 2</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="bayesplot-colors.html">color_scheme_set</a></span><span class="op">(</span><span class="st">"brightblue"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">mcmc_trace_highlight</span><span class="op">(</span><span class="va">x</span>, pars <span class="op">=</span> <span class="st">"sigma"</span>, highlight <span class="op">=</span> <span class="fl">2</span>, size <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
-<span class="r-plt img"><img src="MCMC-traces-14.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="MCMC-traces-15.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># for models fit using HMC/NUTS divergences can be displayed in the trace plot</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://mc-stan.org/rstanarm/" class="external-link">"rstanarm"</a></span><span class="op">)</span></span></span>
@@ -506,7 +511,7 @@ Goodness of Fit Evaluation and Multiple Sample Comparison <a href="https://arxiv
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># for stanfit and stanreg objects use nuts_params() to get the divergences</span></span></span>
 <span class="r-in"><span><span class="fu">mcmc_trace</span><span class="op">(</span><span class="va">posterior</span>, pars <span class="op">=</span> <span class="st">"sigma"</span>, np <span class="op">=</span> <span class="fu"><a href="bayesplot-extractors.html">nuts_params</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-plt img"><img src="MCMC-traces-15.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="MCMC-traces-16.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="bayesplot-colors.html">color_scheme_set</a></span><span class="op">(</span><span class="st">"viridis"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">mcmc_trace</span><span class="op">(</span></span></span>
@@ -517,7 +522,7 @@ Goodness of Fit Evaluation and Multiple Sample Comparison <a href="https://arxiv
 <span class="r-in"><span>  np <span class="op">=</span> <span class="fu"><a href="bayesplot-extractors.html">nuts_params</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  np_style <span class="op">=</span> <span class="fu">trace_style_np</span><span class="op">(</span>div_color <span class="op">=</span> <span class="st">"black"</span>, div_size <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-plt img"><img src="MCMC-traces-16.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="MCMC-traces-17.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>

@@ -17,6 +17,8 @@ mcmc_trace(
   iter1 = 0,
   window = NULL,
   size = NULL,
+  alpha = 0.4,
+  highlight = NULL,
   np = NULL,
   np_style = trace_style_np(),
   divergences = NULL
@@ -187,6 +189,17 @@ mcmc_trace_data(
   An optional value to override the default line size for `mcmc_trace()`
   or the default point size for `mcmc_trace_highlight()`.
 
+- alpha:
+
+  For `mcmc_trace()` and `mcmc_trace_highlight()`, controls the
+  transparency of the lines or points for the chains not highlighted.
+
+- highlight:
+
+  For `mcmc_trace()`, `NULL` (the default) or an integer specifying one
+  chain to emphasize. For `mcmc_trace_highlight()`, an integer
+  specifying one chain to emphasize.
+
 - np:
 
   For models fit using
@@ -210,18 +223,6 @@ mcmc_trace_data(
 - divergences:
 
   Deprecated. Use the `np` argument instead.
-
-- alpha:
-
-  For `mcmc_trace_highlight()`, passed to
-  [`ggplot2::geom_point()`](https://ggplot2.tidyverse.org/reference/geom_point.html)
-  to control the transparency of the points for the chains not
-  highlighted.
-
-- highlight:
-
-  For `mcmc_trace_highlight()`, an integer specifying one of the chains
-  that will be more visible than the others in the plot.
 
 - div_color, div_size, div_alpha:
 
@@ -299,6 +300,7 @@ the same data frame.
   Standard trace plots of MCMC draws. For models fit using
   [NUTS](https://mc-stan.org/bayesplot/dev/reference/MCMC-nuts.md), the
   `np` argument can be used to also show divergences on the trace plot.
+  One chain can be emphasized using the `highlight` argument.
 
 - `mcmc_trace_highlight()`:
 
@@ -397,6 +399,8 @@ mcmc_trace(x, regex_pars = "beta")
 # mix color schemes
 color_scheme_set("mix-blue-red")
 mcmc_trace(x, regex_pars = "beta")
+
+mcmc_trace(x, regex_pars = "beta", highlight = 2)
 
 
 # use traditional ggplot discrete color scale
