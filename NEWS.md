@@ -13,6 +13,7 @@
 * Replace `apply()` with `storage.mode()` for integer-to-numeric matrix conversion in `validate_predictions()`.
 * Fixed `is_chain_list()` to correctly reject empty lists instead of silently returning `TRUE`.
 * Added unit tests for `mcmc_areas_ridges_data()`, `mcmc_parcoord_data()`, and `mcmc_trace_data()`.
+* `mcmc_trace()` now supports highlighting a chain with lines using the `highlight` and `alpha` arguments. Previously this was only available via `mcmc_trace_highligh()` and with points instead of lines. (#552)
 * Added unit tests for `ppc_error_data()` and `ppc_loo_pit_data()` covering output structure, argument handling, and edge cases.
 * Added vignette sections demonstrating `*_data()` companion functions for building custom ggplot2 visualizations (#435)
 * Extract `drop_singleton_values()` helper in `mcmc_nuts_treedepth()` to remove duplicated filtering logic.
