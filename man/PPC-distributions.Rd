@@ -187,7 +187,7 @@ the predictive distributions.}
 \item{trim}{A logical scalar passed to \code{\link[ggplot2:geom_density]{ggplot2::geom_density()}}.}
 
 \item{bw, adjust, kernel, n_dens, bounds}{Optional arguments passed to
-\code{\link[stats:density]{stats::density()}} (and \code{bounds} to \code{\link[ggplot2:geom_density]{ggplot2::stat_density()}}) to override
+\code{\link[stats:density]{stats::density()}} (and \code{bounds} to \code{\link[ggplot2:stat_density]{ggplot2::stat_density()}}) to override
 default kernel density estimation parameters or truncate the density
 support. If \code{NULL} (default), \code{bw} is set to \code{"nrd0"}, \code{adjust} to \code{1},
 \code{kernel} to \code{"gaussian"}, and \code{n_dens} to \code{1024}.}
@@ -198,10 +198,10 @@ now always used.}
 
 \item{pad}{A logical scalar passed to \code{\link[ggplot2:stat_ecdf]{ggplot2::stat_ecdf()}}.}
 
-\item{binwidth}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}}, \code{\link[ggplot2:geom_ribbon]{ggplot2::geom_area()}},
+\item{binwidth}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}}, \code{\link[ggplot2:geom_area]{ggplot2::geom_area()}},
 and \code{\link[ggdist:stat_dots]{ggdist::stat_dots()}} to override the default binwidth.}
 
-\item{bins}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}} and \code{\link[ggplot2:geom_ribbon]{ggplot2::geom_area()}}
+\item{bins}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}} and \code{\link[ggplot2:geom_area]{ggplot2::geom_area()}}
 to override the default binning.}
 
 \item{breaks}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}} as an alternative to
@@ -235,10 +235,9 @@ to to the \code{size}, \code{alpha}, and \code{width} arguments of \code{\link[g
 to control the appearance of \code{y} points. The default of \code{y_jitter=NULL}
 will let \strong{ggplot2} determine the amount of jitter.}
 
-\item{pit}{An optional vector of probability integral transformed values for
-which the ECDF is to be drawn. For \code{ppc_pit_ecdf()} and
-\code{ppc_pit_ecdf_grouped()}. If \code{NULL}, PIT values are computed to \code{y} with
-respect to the corresponding values in \code{yrep}.}
+\item{pit}{For \code{ppc_pit_ecdf()} and \code{ppc_pit_ecdf_grouped()}, an optional
+vector of precomputed PIT values (length \code{length(y)}, values in \verb{[0, 1]}).
+If \code{NULL} (default), PIT values are computed internally.}
 
 \item{K}{An optional integer defining the number of equally spaced evaluation
 points for the PIT-ECDF. Reducing K when using \code{interpolate_adj = FALSE}
@@ -284,10 +283,12 @@ thus all suspicious points are flagged.}
 \item{linewidth}{When \code{method = "correlated"}, the line width of the ECDF.
 Defaults to \code{0.3}.}
 
-\item{color}{When \code{method = "correlated"}, a vector with base color and
-highlight color for the ECDF plot. Defaults to
-\code{c(ecdf = "grey60", highlight = "red")}. The first element is used for
-the main ECDF line, the second for highlighted suspicious regions.}
+\item{color}{When \code{method = "correlated"}, a named character vector of
+plot colors with elements \code{ecdf} and \code{highlight}. \code{ecdf} is used for the
+main ECDF line; \code{highlight} for suspicious regions flagged by the
+uniformity test. Defaults to \code{c(ecdf = "grey60", highlight = "red")}.
+Values must be valid ggplot2 colors (e.g. R color names or hex codes).
+Ignored when \code{method = "independent"}.}
 
 \item{help_text}{When \code{method = "correlated"}, a boolean defining whether
 to add information about p-value to the plot. Defaults to \code{TRUE}.}
@@ -318,15 +319,6 @@ See the \strong{Plot Descriptions} section, below, for details.
 For Binomial data, the plots may be more useful if
 the input contains the "success" \emph{proportions} (not discrete
 "success" or "failure" counts).
-}
-\note{
-Note that the default "independent" method is \strong{superseded} by
-the "correlated" method (Tesso & Vehtari, 2026) which accounts for dependent
-PIT values.
-
-Note that the default "independent" method is \strong{superseded} by
-the "correlated" method (Tesso & Vehtari, 2026) which accounts for dependent
-PIT values.
 }
 \section{Plot Descriptions}{
 
@@ -369,6 +361,9 @@ simultaneous confidence intervals under an independence assumption.
 With \code{method = "correlated"}, the plot uses a dependence-aware
 uniformity assessment and can highlight suspicious regions.
 See Säilynoja et al. (2025) and Tesso & Vehtari (2026) for details.
+Note that the default "independent" method is \strong{superseded} by
+the "correlated" method (Tesso & Vehtari, 2026) which accounts for
+dependent LOO-PIT values.
 }
 \item{\code{ppc_data()}}{
 This function prepares data for plotting with \strong{ggplot2} and doesn't
@@ -465,9 +460,12 @@ Goodness of Fit Evaluation and Multiple Sample Comparison \href{https://arxiv.or
 Gelman, A., Carlin, J. B., Stern, H. S., Dunson, D. B., Vehtari,
 A., and Rubin, D. B. (2013). \emph{Bayesian Data Analysis.} Chapman & Hall/CRC
 Press, London, third edition. (Ch. 6)
+
+Tesso, H., & Vehtari, A. (2026). LOO-PIT predictive model
+checking. arXiv preprint https://arxiv.org/abs/2603.02928.
 }
 \seealso{
-Other PPCs: 
+Other PPCs:
 \code{\link{PPC-censoring}},
 \code{\link{PPC-discrete}},
 \code{\link{PPC-errors}},

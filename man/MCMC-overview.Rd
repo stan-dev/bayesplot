@@ -72,7 +72,7 @@ Gelman, A. (2019), Visualization in Bayesian workflow.
 \href{https://github.com/jgabry/bayes-vis-paper}{code on GitHub})
 }
 \seealso{
-Other MCMC: 
+Other MCMC:
 \code{\link{MCMC-combos}},
 \code{\link{MCMC-diagnostics}},
 \code{\link{MCMC-distributions}},

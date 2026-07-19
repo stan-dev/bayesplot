@@ -73,7 +73,10 @@
 #'  With `method = "correlated"`, the plot uses a dependence-aware
 #'  uniformity assessment and can highlight suspicious regions.
 #'  Setting `plot_diff = TRUE` displays the ECDF minus the theoretical
-#'  expectation, which can improve visual assessment of calibration.
+#'  expectation, which can improve visual assessment of calibration. 
+#'  Note that the default "independent" method is **superseded** by
+#'  the "correlated" method (Tesso & Vehtari, 2026) which accounts for dependent
+#'  LOO-PIT values.
 #' }
 #' \item{`ppc_loo_intervals()`, `ppc_loo_ribbon()`}{
 #'  Similar to [ppc_intervals()] and [ppc_ribbon()] but the intervals are for
@@ -139,10 +142,10 @@ NULL
 #' @rdname PPC-loo
 #' @export
 #' @param pit For `ppc_loo_pit_overlay()`, `ppc_loo_pit_qq()`, and
-#'   `ppc_loo_pit_ecdf()` optionally a vector of precomputed PIT values that
-#'   can be specified instead of `y`, `yrep`, and `lw` (these are all ignored
-#'   if `pit` is specified). If not specified the PIT values are computed
-#'   internally before plotting.
+#'   `ppc_loo_pit_ecdf()`, an optional vector of precomputed LOO-PIT values
+#'   (length `length(y)`, values in `[0, 1]`). If supplied, `y`, `yrep`, and
+#'   `lw` / `psis_object` are ignored. If `NULL` (default), LOO-PIT values are
+#'   computed internally.
 #' @param samples For `ppc_loo_pit_overlay()`, the number of data sets (each
 #'   the same size as `y`) to simulate from the standard uniform
 #'   distribution. The default is 100. The density estimate of each dataset is
@@ -421,13 +424,9 @@ ppc_loo_pit_qq <- function(y,
 #'   the approximation gives a fast method for assessing the ECDF trajectory.
 #'   For `ppc_loo_pit_ecdf()` when `method = 'independent'`.
 #'   The default is to use interpolation if `K` is greater than 200.
-#' @param pit An optional vector of probability integral transformed values for
-#'   which the ECDF is to be drawn. For `ppc_loo_pit_ecdf()`. If `NULL`, PIT
-#'   values are computed to `y` with respect to the corresponding values in `yrep`.
-#' @note
-#' Note that the default "independent" method is **superseded** by
-#' the "correlated" method (Tesso & Vehtari, 2026) which accounts for dependent
-#' LOO-PIT values.
+#' 
+#' @references Tesso, H., & Vehtari, A. (2026). LOO-PIT predictive model 
+#' checking. arXiv preprint https://arxiv.org/abs/2603.02928.
 ppc_loo_pit_ecdf <- function(y,
                              yrep,
                              lw = NULL,
