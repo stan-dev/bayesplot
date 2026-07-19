@@ -7,7 +7,7 @@ output:
     toc: true
     toc_depth: 3
 params:
-  EVAL: !r identical(Sys.getenv("NOT_CRAN"), "true")
+  EVAL: TRUE #!r identical(Sys.getenv("NOT_CRAN"), "true")
 vignette: >
   %\VignetteIndexEntry{loo-pit-correlated-tests}
   %\VignetteEngine{knitr::rmarkdown}
@@ -68,8 +68,8 @@ set.seed(2026)
 ## Introduction
 This vignette focuses on pointwise predictive checks based on the probability
 integral transform (PIT). The PIT is defined as the model’s univariate
-predictive cumulative distribution function (CDF) evaluated given the
-observation. For a well-calibrated model, these transformations result in 
+predictive cumulative distribution function (CDF) evaluated at the
+observed data. For a well-calibrated model, these transformations result in 
 values that should be approximately uniformly distributed between 0 and 1
 (Tesso & Vehtari, [2026](#Tesso2026); Säilynoja et al., [2022](#Säilynoja2022)).
 
@@ -85,7 +85,7 @@ offers a new method for evaluating the uniformity of PIT values that accounts
 for their correlation structure. This method is implemented via the argument
 `method = "correlated"` and is recommended for most applications. The
 previous approach is retained via `method = "independent"` for backward
-compatibility and is the current default.
+compatibility and is the current default to simplfy transition for the user.
 
 This vignette focuses specifically on the changes introduced by the new
 correlation-aware method. For background information on graphical uniformity
@@ -116,7 +116,10 @@ plot_scenarios <- function(
     draw  = rep(seq_len(nrow(yrep)), each = ncol(yrep))
   )
 
-  p1 <- ggplot(yrep_df, aes(x = .data$value, group = .data$draw, color = "yrep")) +
+  p1 <- ggplot(
+    yrep_df, 
+    aes(x = .data$value, group = .data$draw, color = "yrep")
+    ) +
     geom_density(linewidth = 0.5, alpha = 0.3) +
     geom_density(
       data = data.frame(value = y),
@@ -156,11 +159,12 @@ this case, the PIT values should be approximately uniform, and the ECDF should
 closely follow the identity (diagonal) line.
 
 $$
-\begin{aligned}
+\begin{align*}
 y &\sim \text{Normal}(0, 1) \\
 y_{rep} &\sim \text{Student}_{\nu = 100}(0, 1) \quad (\approx \text{Normal}(0, 1))
-\end{aligned}
+\end{align*}
 $$
+
 ```{r calibrated, opts.label="fig_wide"}
 plot_scenarios(df = 100, ncp = 0)
 ```
@@ -253,10 +257,11 @@ This is intended to encourage a transition to the `"correlated"` method, which
 will become the default in a future release.
 
 ### `method = "correlated"` (new, recommended)
-This method employes one of three dependence-aware uniformity tests (selected
- via the `test` argument) to compute a global p-value for the null hypothesis
- of uniformity. Unlike the independent method, it accounts for the correlation
- among PIT values (Tesso & Vehtari, [2026](#Tesso2026)).
+This method employes one of three dependence-aware uniformity tests 
+(selected via the `test` argument; details below) to compute a global p-value 
+for the null hypothesis of uniformity. Unlike the independent method, it 
+accounts for the correlation among PIT values (Tesso & Vehtari, 
+[2026](#Tesso2026)).
 
 Instead of drawing traditional confidence bands, the plot highlights ECDF
 regions in red where the pointwise contribution to the test statistic is
@@ -298,13 +303,13 @@ as normalized ranks and is weaker than "POT" in testing weighted rank based
 LOO-PIT values for the same reason previously outlined.
 
 ### `test = "PIET"`
-Pointwise Inverse-CDF Evaluation Tests Combination (`PIET`) applies an  
+Pointwise Inverse-CDF Evaluation Tests Combination (`PIET`) applies an 
 inverse-CDF transformation before testing and is **tail-sensitive**. It is
 exclusively recommended for detecting deviations in tails (or outliers) and
 requires continuous PIT values for reliable behavior.
 
 ## Additional arguments
-With the introduc tion of the `method = "correlated"` option, the three 
+With the introduction of the `method = "correlated"` option, the three 
 functions now have additional arguments that control the appearance and 
 behavior of the plot when using correlated testing procedures. 
 These arguments are:
@@ -331,15 +336,12 @@ p1 <- ppc_loo_pit_ecdf(
     labs(subtitle = "gamma = 0")
 
 # Highlight more broadly
-gamma <- quantile(
-  posterior::uniformity_test(pit = pit, test = "POT")$pointwise, 0.85
-)[1]
 p2 <- ppc_loo_pit_ecdf(
   pit = pit, method = "correlated",
   plot_diff = TRUE,
-  gamma = gamma
+  gamma = 80
   ) +
-  labs(subtitle = sprintf("gamma = %.0f", gamma))
+  labs(subtitle = "gamma = 80")
 
 p1 | p2
 ```
@@ -374,8 +376,7 @@ p1 | p2
 ### `help_text`
 Setting `help_text = TRUE` adds an annotation to the plot showing the `test`
 name, (1-`prob`) level ($\alpha$), and global p-value. This is the **default**
-(`help_text = TRUE`). Set `help_text = FALSE` to suppress the annotation, for
-example when embedding the plot in a figure with a caption.
+(`help_text = TRUE`). Set `help_text = FALSE` to suppress the annotation.
 
 ```{r help-text-example, opts.label="fig_wide"}
 pit <- rbeta(300, 1, 1.2)
@@ -556,8 +557,7 @@ helpful so annotations do not dominate the panels.
 ## Using `brms::pp_check()`
 It is also possible to use `brms::pp_check()` with `type = "loo_pit_ecdf"` to
 perform the same testing and plotting procedure as `ppc_loo_pit_ecdf()`. The
-following example demonstrates this using the same fitted model as above with
-`method = "correlated"`.
+following code snippet provides an example:
 ```{r pp-check-example, fig.show="hold", out.width="80%", eval=FALSE}
 brms::pp_check(
   fit_normal,
