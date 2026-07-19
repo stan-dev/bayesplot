@@ -7,7 +7,7 @@ output:
     toc: true
     toc_depth: 3
 params:
-  EVAL: TRUE #!r identical(Sys.getenv("NOT_CRAN"), "true")
+  EVAL: !r identical(Sys.getenv("NOT_CRAN"), "true")
 vignette: >
   %\VignetteIndexEntry{loo-pit-correlated-tests}
   %\VignetteEngine{knitr::rmarkdown}
