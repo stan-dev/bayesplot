@@ -41,6 +41,9 @@ jobs:
             any::withr
             any::BH
             any::RcppEigen
+            any::patchwork
+            any::loo
+            any::rstantools
             stan-dev/pkgdown-config
             local::.
             
