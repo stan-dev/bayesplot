@@ -46,6 +46,12 @@ articles:
       - plotting-mcmc-draws
       - visual-mcmc-diagnostics
       - graphical-ppcs
+  - title: "PIT-ECDF model checking"
+    desc: >
+      Articles on dependence-aware PIT-ECDF checks (website only; not included
+      in the CRAN package).
+    contents:
+      - articles-online-only/loo-pit-correlated-tests
 
 reference:
   - title: "Overview"

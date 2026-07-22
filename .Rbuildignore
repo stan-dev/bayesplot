@@ -18,3 +18,4 @@ Rplots.pdf
 ^\.github$
 ^release-prep\.R$
 release-prep.R
+^vignettes/articles-online-only$
