@@ -1,6 +1,7 @@
 <urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
 <url><loc>https://mc-stan.org/bayesplot/dev/CONTRIBUTING.html</loc></url>
 <url><loc>https://mc-stan.org/bayesplot/dev/LICENSE-text.html</loc></url>
+<url><loc>https://mc-stan.org/bayesplot/dev/articles/articles-online-only/loo-pit-correlated-tests.html</loc></url>
 <url><loc>https://mc-stan.org/bayesplot/dev/articles/graphical-ppcs.html</loc></url>
 <url><loc>https://mc-stan.org/bayesplot/dev/articles/index.html</loc></url>
 <url><loc>https://mc-stan.org/bayesplot/dev/articles/plotting-mcmc-draws.html</loc></url>
