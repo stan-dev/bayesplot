@@ -7,7 +7,7 @@ output:
     toc: true
     toc_depth: 3
 params:
-  EVAL: !r identical(Sys.getenv("NOT_CRAN"), "true")
+  EVAL: TRUE #!r identical(Sys.getenv("NOT_CRAN"), "true")
 vignette: >
   %\VignetteIndexEntry{loo-pit-correlated-tests}
   %\VignetteEngine{knitr::rmarkdown}
@@ -165,7 +165,7 @@ y_{rep} &\sim \text{Student}_{\nu = 100}(0, 1) \quad (\approx \text{Normal}(0, 1
 \end{align*}
 $$
 
-```{r calibrated, opts.label="fig_wide"}
+```{r calibrated, opts.label="fig_wide", echo = FALSE}
 plot_scenarios(df = 100, ncp = 0)
 ```
 
@@ -183,7 +183,7 @@ y_{rep} &\sim \text{Student}_{\nu = 1}(0, 1) \quad (= \text{Cauchy}(0, 1))
 \end{aligned}
 $$
 
-```{r too-wide, opts.label="fig_wide"}
+```{r too-wide, opts.label="fig_wide", echo = FALSE}
 plot_scenarios(df = 1, ncp = 0, xlim = c(-7, 7))
 ```
 
@@ -200,7 +200,7 @@ y_{rep} &\sim \text{Student}_{\nu = 100}(0, 1) \quad (\approx \text{Normal}(0, 1
 \end{aligned}
 $$
 
-```{r too-narrow, opts.label="fig_wide"}
+```{r too-narrow, opts.label="fig_wide", echo = FALSE}
 plot_scenarios(df = 100, ncp = 0, sd = 2)
 ```
 
@@ -224,7 +224,7 @@ y_{rep} &\sim \text{Student}_{\nu = 100}(-1, 1)
 \end{aligned}
 $$
 
-```{r biased, opts.label="fig_wide"}
+```{r biased, opts.label="fig_wide", echo = FALSE}
 plot_scenarios(df = 100, ncp = -1)
 ```
 
@@ -578,17 +578,16 @@ functions:
 
 ## Summary of new arguments
 
-| Argument | Functions | Values | Default |
-|---|---|---|---|
-| `method` | all three | `"independent"`, `"correlated"` | `NULL` → falls back
-to `"independent"` with a deprecation notice |
-| `test` | all three | `"POT"`, `"PRIT"`, `"PIET"` | `"POT"` |
-| `gamma` | all three | numeric $\ge 0$ | `0` |
-| `linewidth` | all three | numeric | `0.3` |
-| `color` | all three | named character vector | `c(ecdf = "grey60", highlight = "red")` |
-| `help_text` | all three | `TRUE`, `FALSE` | `TRUE` |
-| `help_text_shrinkage` | all three | numeric in $(0, 1]$ | `0.8` |
-| `pareto_pit` | all three | `TRUE`, `FALSE` | `TRUE` if `test` is `"POT"` or `"PIET"` and no `pit` supplied; `FALSE` otherwise |
+| Argument | Values | Default |
+|---|---|---|
+| `method` | `"independent"`, `"correlated"` | `NULL` → falls back to `"independent"` with a deprecation notice |
+| `test` | `"POT"`, `"PRIT"`, `"PIET"` | `"POT"` |
+| `gamma` | numeric $\ge 0$ | `0` |
+| `linewidth` | numeric | `0.3` |
+| `color` | named character vector | `c(ecdf = "grey60", highlight = "red")` |
+| `help_text` | `TRUE`, `FALSE` | `TRUE` |
+| `help_text_shrinkage` | numeric in $(0, 1]$ | `0.8` |
+| `pareto_pit` | `TRUE`, `FALSE` | `TRUE` if `test` is `"POT"` or `"PIET"` and no `pit` supplied; `FALSE` otherwise |
 
 ## References
 
@@ -597,13 +596,6 @@ Kennedy, L., Gabry, J., Burkner, P.-C., Modrak, M., & Leos Barajas, V. (2026).
 Bayesian Workflow. Routledge. 
 https://www.routledge.com/Bayesian-Workflow/Gelman-Vehtari-McElreath-Simpson-Margossian-Yao-Kennedy-Gabry-Burkner-Modrak-Barajas/p/book/9780367490140
 <a id="Gelman2026"></a>
-
-Lintzeris, Nicholas, Anjali Bhardwaj, Llewellyn Mills, Adrian Dunlop, Jan
-Copeland, Iain McGregor, Raimondo Bruno, et al. 2019. “Nabiximols for the
-Treatment of Cannabis Dependence: A Randomized Clinical Trial.” JAMA Internal
-Medicine 179 (9): 1242–53.
-https://jamanetwork.com/journals/jamainternalmedicine/fullarticle/2737918
-<a id="Lintzeris2019"></a>
 
 Säilynoja, T., Bürkner, P.-C., and Vehtari, A. (2022). Graphical test for
 discrete uniformity and its applications in goodness-of-fit evaluation and
