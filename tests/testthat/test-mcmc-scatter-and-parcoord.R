@@ -131,6 +131,58 @@ test_that("mcmc_pairs works with NUTS info", {
 })
 
 
+test_that("mcmc_pairs panels show their own divergences and treedepth hits", {
+  # https://discourse.mc-stan.org/t/bayesplot-mcmc-pairs-divergences-error/41457
+  skip_if_not_installed("gridExtra")
+
+  set.seed(42)
+  n_iter <- 100
+  n_chain <- 4
+  x2 <- array(rnorm(n_iter * n_chain * 2), dim = c(n_iter, n_chain, 2),
+              dimnames = list(NULL, NULL, c("alpha", "beta")))
+
+  # divergences in chains 2 (25) and 4 (4), max treedepth hits in chain 1 (10),
+  # each at distinctive locations so we can check they're plotted correctly
+  x2[1:25, 2, ] <- 50
+  x2[1:4, 4, ] <- -50
+  x2[1:10, 1, ] <- 80
+
+  divergent <- treedepth <- matrix(0, nrow = n_iter, ncol = n_chain)
+  divergent[1:25, 2] <- 1
+  divergent[1:4, 4] <- 1
+  treedepth[1:10, 1] <- 10
+  np2 <- data.frame(
+    Iteration = rep(seq_len(n_iter), times = 2 * n_chain),
+    Parameter = rep(c("divergent__", "treedepth__"), each = n_iter * n_chain),
+    Value = c(divergent, treedepth),
+    Chain = rep(rep(seq_len(n_chain), each = n_iter), times = 2)
+  )
+
+  p <- mcmc_pairs(x2, np = np2, max_treedepth = 9,
+                  condition = pairs_condition(chains = list(1:2, 3:4)))
+
+  nuts_points <- function(gg, color) {
+    b <- ggplot2::ggplot_build(gg)
+    d <- do.call(rbind, lapply(b$data, function(l) l[, c("x", "colour")]))
+    d[!is.na(d$colour) & d$colour == color, ]
+  }
+
+  # panel 2 is above the diagonal (chains 1:2), panel 3 below (chains 3:4)
+  divs_upper <- nuts_points(p$bayesplots[[2]], "red")
+  divs_lower <- nuts_points(p$bayesplots[[3]], "red")
+  expect_equal(nrow(divs_upper), 25)
+  expect_equal(nrow(divs_lower), 4)
+  expect_true(all(divs_upper$x == 50))
+  expect_true(all(divs_lower$x == -50))
+
+  td_upper <- nuts_points(p$bayesplots[[2]], "yellow2")
+  td_lower <- nuts_points(p$bayesplots[[3]], "yellow2")
+  expect_equal(nrow(td_upper), 10)
+  expect_equal(nrow(td_lower), 0)
+  expect_true(all(td_upper$x == 80))
+})
+
+
 test_that("mcmc_pairs throws correct warnings and errors", {
   skip_if_not_installed("rstanarm")
 
