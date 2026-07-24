@@ -46,6 +46,7 @@ jobs:
             any::rstantools
             stan-dev/pkgdown-config
             local::.
+          cache-version: 2
             
       - name: Build site
         run: |
