@@ -1,6 +1,6 @@
 # bayesplot (development version)
 
-* Fixed bug in `mcmc_pairs()` (introduced in bayesplot 1.10.0) where some divergences/treedepth hits were missing (#555)
+* Fixed bug in `mcmc_pairs()` (introduced in bayesplot 1.10.0) where some panels' divergences/treedepth hits were missing(#555)
 * Unified density-control argument defaults (`bw`, `adjust`, `kernel`, `n_dens`) to use `NULL` with internal fallbacks. No change in user-facing behavior. 
 * `prepare_mcmc_array()` now warns instead of erroring on `NA`s in the input.
 * Fixed `validate_chain_list()` colnames check to compare all chains, not just the first two.
