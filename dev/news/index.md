@@ -2,6 +2,11 @@
 
 ## bayesplot (development version)
 
+- Fixed bug in
+  [`mcmc_pairs()`](https://mc-stan.org/bayesplot/dev/reference/MCMC-scatterplots.md)
+  (introduced in bayesplot 1.10.0) where some panels’
+  divergences/treedepth hits were
+  missing([\#555](https://github.com/stan-dev/bayesplot/issues/555))
 - Unified density-control argument defaults (`bw`, `adjust`, `kernel`,
   `n_dens`) to use `NULL` with internal fallbacks. No change in
   user-facing behavior.

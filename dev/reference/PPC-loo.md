@@ -495,8 +495,8 @@ lw <- weights(psis1) # normalized log weights
 color_scheme_set("orange")
 ppc_loo_pit_overlay(y, yrep, lw = lw)
 #> Some PIT values larger than 1! Largest:  1 
-#> Rounding PIT > 1 to 1. Gradient evaluation took 0.000394 seconds
-#> Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 3.94 seconds.
+#> Rounding PIT > 1 to 1. Gradient evaluation took 0.000415 seconds
+#> Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 4.15 seconds.
 #> Chain 2: Adjust your expectations accordingly!
 #> Chain 2: 
 #> Chain 2: 
@@ -508,6 +508,21 @@ ppc_loo_pit_overlay(y, yrep, lw = lw)
 #> Chain 2:            adapt_window = 38
 #> Chain 2:            term_buffer = 5
 #> Chain 2: 
+#> Chain 1: 
+#> Chain 1: Gradient evaluation took 0.000562 seconds
+#> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 5.62 seconds.
+#> Chain 1: Adjust your expectations accordingly!
+#> Chain 1: 
+#> Chain 1: 
+#> Chain 1: WARNING: There aren't enough warmup iterations to fit the
+#> Chain 1:          three stages of adaptation as currently configured.
+#> Chain 1:          Reducing each adaptation stage to 15%/75%/10% of
+#> Chain 1:          the given number of warmup iterations:
+#> Chain 1:            init_buffer = 7
+#> Chain 1:            adapt_window = 38
+#> Chain 1:            term_buffer = 5
+#> Chain 1: 
+#> Chain 1: Iteration:  1 / 100 [  1%]  (Warmup)
 #> Chain 2: Iteration:  1 / 100 [  1%]  (Warmup)
 #> Chain 2: Iteration: 10 / 100 [ 10%]  (Warmup)
 #> Chain 1: Iteration: 10 / 100 [ 10%]  (Warmup)
@@ -518,29 +533,29 @@ ppc_loo_pit_overlay(y, yrep, lw = lw)
 #> Chain 2: Iteration: 40 / 100 [ 40%]  (Warmup)
 #> Chain 1: Iteration: 40 / 100 [ 40%]  (Warmup)
 #> Chain 2: Iteration: 50 / 100 [ 50%]  (Warmup)
-#> Chain 1: Iteration: 50 / 100 [ 50%]  (Warmup)
 #> Chain 2: Iteration: 51 / 100 [ 51%]  (Sampling)
+#> Chain 1: Iteration: 50 / 100 [ 50%]  (Warmup)
 #> Chain 1: Iteration: 51 / 100 [ 51%]  (Sampling)
-#> Chain 1: Iteration: 60 / 100 [ 60%]  (Sampling)
 #> Chain 2: Iteration: 60 / 100 [ 60%]  (Sampling)
-#> Chain 1: Iteration: 70 / 100 [ 70%]  (Sampling)
+#> Chain 1: Iteration: 60 / 100 [ 60%]  (Sampling)
 #> Chain 2: Iteration: 70 / 100 [ 70%]  (Sampling)
-#> Chain 1: Iteration: 80 / 100 [ 80%]  (Sampling)
+#> Chain 1: Iteration: 70 / 100 [ 70%]  (Sampling)
 #> Chain 2: Iteration: 80 / 100 [ 80%]  (Sampling)
-#> Chain 1: Iteration: 90 / 100 [ 90%]  (Sampling)
+#> Chain 1: Iteration: 80 / 100 [ 80%]  (Sampling)
 #> Chain 2: Iteration: 90 / 100 [ 90%]  (Sampling)
-#> Chain 1: Iteration: 100 / 100 [100%]  (Sampling)
-#> Chain 1: 
-#> Chain 1:  Elapsed Time: 2.531 seconds (Warm-up)
-#> Chain 1:                2.235 seconds (Sampling)
-#> Chain 1:                4.766 seconds (Total)
-#> Chain 1: 
+#> Chain 1: Iteration: 90 / 100 [ 90%]  (Sampling)
 #> Chain 2: Iteration: 100 / 100 [100%]  (Sampling)
 #> Chain 2: 
-#> Chain 2:  Elapsed Time: 2.515 seconds (Warm-up)
-#> Chain 2:                2.304 seconds (Sampling)
-#> Chain 2:                4.819 seconds (Total)
+#> Chain 2:  Elapsed Time: 2.465 seconds (Warm-up)
+#> Chain 2:                2.263 seconds (Sampling)
+#> Chain 2:                4.728 seconds (Total)
 #> Chain 2: 
+#> Chain 1: Iteration: 100 / 100 [100%]  (Sampling)
+#> Chain 1: 
+#> Chain 1:  Elapsed Time: 2.563 seconds (Warm-up)
+#> Chain 1:                2.259 seconds (Sampling)
+#> Chain 1:                4.822 seconds (Total)
+#> Chain 1: 
 #> Warning: 
 #> NOTE: The kernel density estimate assumes continuous observations and is not optimal for discrete observations.
 

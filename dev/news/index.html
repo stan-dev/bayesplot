@@ -63,7 +63,8 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="bayesplot-development-version">bayesplot (development version)<a class="anchor" aria-label="anchor" href="#bayesplot-development-version"></a></h2>
-<ul><li>Unified density-control argument defaults (<code>bw</code>, <code>adjust</code>, <code>kernel</code>, <code>n_dens</code>) to use <code>NULL</code> with internal fallbacks. No change in user-facing behavior.</li>
+<ul><li>Fixed bug in <code><a href="../reference/MCMC-scatterplots.html">mcmc_pairs()</a></code> (introduced in bayesplot 1.10.0) where some panels’ divergences/treedepth hits were missing(<a href="https://github.com/stan-dev/bayesplot/issues/555" class="external-link">#555</a>)</li>
+<li>Unified density-control argument defaults (<code>bw</code>, <code>adjust</code>, <code>kernel</code>, <code>n_dens</code>) to use <code>NULL</code> with internal fallbacks. No change in user-facing behavior.</li>
 <li>
 <code>prepare_mcmc_array()</code> now warns instead of erroring on <code>NA</code>s in the input.</li>
 <li>Fixed <code>validate_chain_list()</code> colnames check to compare all chains, not just the first two.</li>
