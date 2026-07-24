@@ -319,7 +319,7 @@ example("example_model", package = "rstanarm")
 #> 
 #> Error terms:
 #>  Groups Name        Std.Dev.
-#>  herd   (Intercept) 0.79    
+#>  herd   (Intercept) 0.76    
 #> Num. levels: herd 15 
 #> 
 #> ------
