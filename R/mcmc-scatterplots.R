@@ -405,9 +405,14 @@ mcmc_pairs <- function(x,
         divs_j_fac <- factor(as.logical(divs_j),
                              levels = c(FALSE, TRUE),
                              labels = c("NoDiv", "Div"))
+        # pass the indicator via `data` so each panel keeps its own values
+        # (a bare loop variable in aes() is only evaluated at plot-build time,
+        # when it would have just the value from the last panel)
+        # https://github.com/stan-dev/bayesplot/issues/555
         plots[[j]] <- plots[[j]] +
           geom_point(
-            aes(color = divs_j_fac, size = divs_j_fac),
+            aes(color = .data$Divergent, size = .data$Divergent),
+            data = data.frame(x = x_j[, 1], y = x_j[, 2], Divergent = divs_j_fac),
             shape = np_style$shape[["div"]],
             alpha = np_style$alpha[["div"]],
             na.rm = TRUE
@@ -418,7 +423,8 @@ mcmc_pairs <- function(x,
                                    labels = c("NoHit", "Hit"))
         plots[[j]] <- plots[[j]] +
           geom_point(
-            aes(color = max_td_hit_j_fac, size = max_td_hit_j_fac),
+            aes(color = .data$MaxTreedepth, size = .data$MaxTreedepth),
+            data = data.frame(x = x_j[, 1], y = x_j[, 2], MaxTreedepth = max_td_hit_j_fac),
             shape = np_style$shape[["td"]],
             alpha = np_style$alpha[["td"]],
             na.rm = TRUE
