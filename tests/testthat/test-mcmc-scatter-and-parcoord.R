@@ -132,7 +132,7 @@ test_that("mcmc_pairs works with NUTS info", {
 
 
 test_that("mcmc_pairs panels show their own divergences and treedepth hits", {
-  # https://discourse.mc-stan.org/t/bayesplot-mcmc-pairs-divergences-error/41457
+  #https://github.com/stan-dev/bayesplot/issues/555
   skip_if_not_installed("gridExtra")
 
   set.seed(42)
