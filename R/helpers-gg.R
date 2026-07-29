@@ -68,6 +68,49 @@ force_x_axis_in_facets <- function() {
   )
 }
 
+# Derive annotation line aesthetics from the active theme's gridlines.
+#
+# Because every current call-site draws a *vertical* reference line we first
+# inspect the axis-specific element (`panel.grid.major.x`) so that themes
+# which only customise vertical gridlines are handled correctly, then fall
+# back to the general `panel.grid.major`.
+#
+# @param fallback_color,fallback_linewidth Values returned when the resolved
+#   grid element is blank or NULL (i.e. the theme hides gridlines).  Different
+#   plots historically used different hardcoded values, so callers can preserve
+#   backward-compatible defaults.
+annotation_style <- function(fallback_color = "gray90",
+                             fallback_linewidth = 0.5) {
+  thm <- bayesplot_theme_get()
+
+  grid <- calc_element("panel.grid.major.x", thm)
+  if (inherits(grid, "element_blank") || is.null(grid)) {
+    grid <- calc_element("panel.grid.major", thm)
+  }
+
+  if (inherits(grid, "element_blank") || is.null(grid)) {
+    return(list(color = fallback_color, linewidth = fallback_linewidth))
+  }
+
+  minor <- calc_element("panel.grid.minor.x", thm)
+  if (inherits(minor, "element_blank") || is.null(minor)) {
+    minor <- calc_element("panel.grid.minor", thm)
+  }
+
+  minor_lw <- if (!inherits(minor, "element_blank") &&
+                   !is.null(minor) &&
+                   !is.null(minor$linewidth)) {
+    minor$linewidth
+  } else {
+    0.125
+  }
+  major_lw <- grid$linewidth %||% (minor_lw * 2)
+  list(
+    color = grid$colour %||% fallback_color,
+    linewidth = major_lw * 2
+  )
+}
+
 no_legend_spacing <- function() {
   theme(legend.spacing.y = unit(0, "cm"))
 }

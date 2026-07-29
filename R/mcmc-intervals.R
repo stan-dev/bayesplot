@@ -222,8 +222,9 @@ mcmc_intervals <- function(x,
   x_lim[2] <- x_lim[2] + 0.05 * x_range
 
   # faint vertical line at zero if zero is within x_lim
+  ref_style <- annotation_style()
   layer_vertical_line <- if (0 > x_lim[1] && 0 < x_lim[2]) {
-    vline_0(color = "gray90", linewidth = 0.5)
+    vline_0(color = ref_style$color, linewidth = ref_style$linewidth)
   } else {
     geom_ignore()
   }
@@ -338,8 +339,9 @@ mcmc_areas <- function(x,
   x_lim[1] <- x_lim[1] - 0.05 * x_range
   x_lim[2] <- x_lim[2] + 0.05 * x_range
 
+  ref_style <- annotation_style()
   layer_vertical_line <- if (0 > x_lim[1] && 0 < x_lim[2]) {
-    vline_0(color = "gray90", linewidth = 0.5)
+    vline_0(color = ref_style$color, linewidth = ref_style$linewidth)
   } else {
     geom_ignore()
   }
@@ -501,8 +503,9 @@ mcmc_areas_ridges <- function(x,
   x_lim[1] <- x_lim[1] - 0.05 * x_range
   x_lim[2] <- x_lim[2] + 0.05 * x_range
 
+  ref_style <- annotation_style()
   layer_vertical_line <- if (0 > x_lim[1] && 0 < x_lim[2]) {
-    vline_0(color = "gray90", linewidth = 0.5)
+    vline_0(color = ref_style$color, linewidth = ref_style$linewidth)
   } else {
     geom_ignore()
   }
