@@ -48,7 +48,6 @@ test_that("ppd-dist with show_marginal render correctly", {
   p <- ppd_boxplot(vdiff_yrep[1:8, ], show_marginal = TRUE)
   vdiffr::expect_doppelganger("ppd_boxplot (marginal)", p)
 
-  testthat::skip_if_not_installed("ggdist")
   p <- ppd_dots(vdiff_yrep[1:8, ], show_marginal = TRUE)
   vdiffr::expect_doppelganger("ppd_dots (marginal)", p)
 })

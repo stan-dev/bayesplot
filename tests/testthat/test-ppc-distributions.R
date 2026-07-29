@@ -104,7 +104,6 @@ test_that("ppc_dens,pp_hist,ppc_freqpoly,ppc_boxplot return ggplot objects", {
 })
 
 test_that("ppc_dots returns a ggplot object", {
-  testthat::skip_if_not_installed("ggdist")
 
   expect_gg(ppc_dots(y, yrep[1:8, ]))
   expect_gg(ppc_dots(y, yrep[1,, drop = FALSE], quantiles = 25))
@@ -439,7 +438,6 @@ test_that("ppc_boxplot renders correctly", {
 test_that("ppc_dots renders correctly", {
   testthat::skip_on_cran()
   testthat::skip_if_not_installed("vdiffr")
-  testthat::skip_if_not_installed("ggdist")
   skip_on_r_oldrel()
 
   p_base <- ppc_dots(vdiff_y, vdiff_yrep[1:8, ])
