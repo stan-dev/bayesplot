@@ -101,7 +101,7 @@ to control faceting. Note: if \code{scales} is not included in \code{facet_args}
 then \strong{bayesplot} may use \code{scales="free"} as the default (depending
 on the plot) instead of the \strong{ggplot2} default of \code{scales="fixed"}.}
 
-\item{binwidth}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}}, \code{\link[ggplot2:geom_ribbon]{ggplot2::geom_area()}},
+\item{binwidth}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}}, \code{\link[ggplot2:geom_area]{ggplot2::geom_area()}},
 and \code{\link[ggdist:stat_dots]{ggdist::stat_dots()}} to override the default binwidth.}
 
 \item{bins}{For \code{ppc_error_binned()}, the number of bins to use (approximately).}

@@ -14,6 +14,25 @@ test_that("mcmc_trace returns a ggplot object", {
   expect_gg(mcmc_trace(chainlist1))
 })
 
+test_that("mcmc_trace highlights a chain with lines", {
+  expect_no_warning(
+    p <- mcmc_trace(arr, pars = "sigma", highlight = 2, alpha = 0.4)
+  )
+
+  expect_s3_class(p$layers[[1]]$geom, "GeomLine")
+  expect_equal(p$data$highlight, p$data$chain == 2)
+  expect_equal(p$scales$get_scales("alpha")$palette(2), c(0.4, 1))
+})
+
+test_that("mcmc_trace shows divergences when highlighting a chain", {
+  np <- rep_len(c(0, 1), nrow(arr))
+  p <- mcmc_trace(arr, pars = "sigma", highlight = 2, np = np)
+
+  expect_s3_class(p$layers[[1]]$geom, "GeomLine")
+  expect_s3_class(p$layers[[2]]$geom, "GeomRug")
+  expect_named(p$layers[[2]]$data, "Divergent")
+})
+
 # functions that require multiple chains ----------------------------------
 test_that("mcmc_trace_highlight returns a ggplot object", {
   expect_gg(mcmc_trace_highlight(arr, regex_pars = c("beta", "x\\:")))

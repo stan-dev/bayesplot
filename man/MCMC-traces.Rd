@@ -22,6 +22,8 @@ mcmc_trace(
   iter1 = 0,
   window = NULL,
   size = NULL,
+  alpha = 0.4,
+  highlight = NULL,
   np = NULL,
   np_style = trace_style_np(),
   divergences = NULL
@@ -111,7 +113,7 @@ similar functions. Examples of using \code{pars} in this way can be found on the
 \item{regex_pars}{An optional \link[base:grep]{regular expression} to use for
 parameter selection. Can be specified instead of \code{pars} or in addition to
 \code{pars}. When using \code{pars} for tidy parameter selection, the \code{regex_pars}
-argument is ignored since \link[tidyselect:language]{select helpers}
+argument is ignored since \link[tidyselect:select_helpers]{select helpers}
 perform a similar function.}
 
 \item{transformations}{Optionally, transformations to apply to parameters
@@ -160,6 +162,13 @@ range of iterations to display.}
 \item{size}{An optional value to override the default line size
 for \code{mcmc_trace()} or the default point size for \code{mcmc_trace_highlight()}.}
 
+\item{alpha}{For \code{mcmc_trace()} and \code{mcmc_trace_highlight()}, controls the
+transparency of the lines or points for the chains not highlighted.}
+
+\item{highlight}{For \code{mcmc_trace()}, \code{NULL} (the default) or an integer
+specifying one chain to emphasize. For \code{mcmc_trace_highlight()}, an integer
+specifying one chain to emphasize.}
+
 \item{np}{For models fit using \link{NUTS} (more generally, any
 \href{https://en.wikipedia.org/wiki/Symplectic_integrator}{symplectic integrator}),
 an optional data frame providing NUTS diagnostic information. The data
@@ -173,13 +182,6 @@ specify arguments controlling the appearance of tick marks representing
 divergences (if the \code{np} argument is specified).}
 
 \item{divergences}{Deprecated. Use the \code{np} argument instead.}
-
-\item{alpha}{For \code{mcmc_trace_highlight()}, passed to
-\code{\link[ggplot2:geom_point]{ggplot2::geom_point()}} to control the transparency of the points
-for the chains not highlighted.}
-
-\item{highlight}{For \code{mcmc_trace_highlight()}, an integer specifying one
-of the chains that will be more visible than the others in the plot.}
 
 \item{div_color, div_size, div_alpha}{Optional arguments to the
 \code{trace_style_np()} helper function that are eventually passed to
@@ -195,11 +197,12 @@ average number of ranks per bin. Defaults to \code{FALSE}.}
 
 \item{K}{An optional integer defining the number of equally spaced evaluation
 points for the PIT-ECDF. Reducing K when using \code{interpolate_adj = FALSE}
-makes computing the confidence bands faster. For \code{ppc_pit_ecdf} and
-\code{ppc_pit_ecdf_grouped}, if PIT values are supplied, defaults to
-\code{length(pit)}, otherwise yrep determines the maximum accuracy of the
-estimated PIT values and \code{K} is set to \code{min(nrow(yrep) + 1, 1000)}. For
-\code{mcmc_rank_ecdf}, defaults to the number of iterations per chain in \code{x}.}
+makes computing the confidence bands faster. For \code{ppc_pit_ecdf()} and
+\code{ppc_pit_ecdf_grouped()} when \code{method = 'independent'}. If \code{pit} is
+supplied, defaults to \code{length(pit)}, otherwise \code{yrep} determines the
+maximum accuracy of the estimated PIT values and \code{K} is set to
+\code{min(nrow(yrep) + 1, 1000)}. For \code{mcmc_rank_ecdf()}, defaults to the number
+of iterations per chain in \code{x}.}
 
 \item{prob}{For \code{mcmc_rank_ecdf()}, a value between 0 and 1
 specifying the desired simultaneous confidence of the confidence bands to be
@@ -213,7 +216,9 @@ should be drawn instead of the unmodified rank ECDF plots.}
 bands should be interpolated based on precomputed values rather than
 computed exactly. Computing the bands may be computationally intensive and
 the approximation gives a fast method for assessing the ECDF trajectory.
-The default is to use interpolation if \code{K} is greater than 200.}
+For \code{ppc_pit_ecdf()} and \code{ppc_pit_ecdf_grouped()} when
+\code{method = 'independent'} and for \code{mcmc_rank_ecdf()}. The default is to use
+interpolation if \code{K} is greater than 200.}
 }
 \value{
 The plotting functions return a ggplot object that can be further
@@ -234,6 +239,7 @@ section, below, for details.
 \item{\code{mcmc_trace()}}{
 Standard trace plots of MCMC draws. For models fit using \link{NUTS},
 the \code{np} argument can be used to also show divergences on the trace plot.
+One chain can be emphasized using the \code{highlight} argument.
 }
 \item{\code{mcmc_trace_highlight()}}{
 Traces are plotted using points rather than lines and the opacity of all
@@ -288,6 +294,7 @@ mcmc_trace(x, regex_pars = "beta")
 # mix color schemes
 color_scheme_set("mix-blue-red")
 mcmc_trace(x, regex_pars = "beta")
+mcmc_trace(x, regex_pars = "beta", highlight = 2)
 
 # use traditional ggplot discrete color scale
 mcmc_trace(x, pars = c("alpha", "sigma")) +
@@ -365,7 +372,7 @@ Säilynoja, T., Bürkner, P., Vehtari, A.
 Goodness of Fit Evaluation and Multiple Sample Comparison \href{https://arxiv.org/abs/2103.10522}{arXiv preprint}.
 }
 \seealso{
-Other MCMC: 
+Other MCMC:
 \code{\link{MCMC-combos}},
 \code{\link{MCMC-diagnostics}},
 \code{\link{MCMC-distributions}},

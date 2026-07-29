@@ -87,10 +87,10 @@ default), \code{"mean"}, or \code{"none"}.}
 \item{size, alpha}{Passed to \code{\link[ggplot2:geom_point]{ggplot2::geom_point()}} to control the
 appearance of plotted points.}
 
-\item{binwidth}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}}, \code{\link[ggplot2:geom_ribbon]{ggplot2::geom_area()}},
+\item{binwidth}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}}, \code{\link[ggplot2:geom_area]{ggplot2::geom_area()}},
 and \code{\link[ggdist:stat_dots]{ggdist::stat_dots()}} to override the default binwidth.}
 
-\item{bins}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}} and \code{\link[ggplot2:geom_ribbon]{ggplot2::geom_area()}}
+\item{bins}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}} and \code{\link[ggplot2:geom_area]{ggplot2::geom_area()}}
 to override the default binning.}
 
 \item{breaks}{Passed to \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}} as an alternative to
@@ -166,7 +166,7 @@ mcmc_recover_hist(draws[, 1:4], true[1:4])
 
 }
 \seealso{
-Other MCMC: 
+Other MCMC:
 \code{\link{MCMC-combos}},
 \code{\link{MCMC-diagnostics}},
 \code{\link{MCMC-distributions}},

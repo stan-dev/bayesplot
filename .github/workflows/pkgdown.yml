@@ -23,7 +23,7 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - uses: r-lib/actions/setup-pandoc@v2
 
@@ -41,8 +41,12 @@ jobs:
             any::withr
             any::BH
             any::RcppEigen
+            any::patchwork
+            any::loo
+            any::rstantools
             stan-dev/pkgdown-config
             local::.
+          cache-version: 2
             
       - name: Build site
         run: |

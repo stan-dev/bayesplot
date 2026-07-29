@@ -32,7 +32,7 @@ jobs:
       R_VERSION_TYPE: ${{ matrix.config.r }}
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - uses: r-lib/actions/setup-pandoc@v2
 
@@ -46,6 +46,7 @@ jobs:
         with:
           extra-packages: any::rcmdcheck, any::BH, any::RcppEigen, any::vdiffr, github::stan-dev/cmdstanr
           needs: check
+          cache-version: 2
 
       - name: Install CmdStan
         run: Rscript -e "cmdstanr::install_cmdstan()"

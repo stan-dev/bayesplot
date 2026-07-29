@@ -10,13 +10,9 @@
 #' @template args-regex_pars
 #' @template args-transformations
 #' @template args-facet_args
-#' @template args-pit-ecdf
 #' @param ... Currently ignored.
 #' @param size An optional value to override the default line size
 #'   for `mcmc_trace()` or the default point size for `mcmc_trace_highlight()`.
-#' @param alpha For `mcmc_trace_highlight()`, passed to
-#'   [ggplot2::geom_point()] to control the transparency of the points
-#'   for the chains not highlighted.
 #' @param n_warmup An integer; the number of warmup iterations included in
 #'   `x`. The default is `n_warmup = 0`, i.e. to assume no warmup
 #'   iterations are included. If `n_warmup > 0` then the background for
@@ -27,6 +23,11 @@
 #'   if `n_warmup` is also set to a positive value.
 #' @param window An integer vector of length two specifying the limits of a
 #'   range of iterations to display.
+#' @param highlight For `mcmc_trace()`, `NULL` (the default) or an integer
+#'   specifying one chain to emphasize. For `mcmc_trace_highlight()`, an integer
+#'   specifying one chain to emphasize.
+#' @param alpha For `mcmc_trace()` and `mcmc_trace_highlight()`, controls the
+#'   transparency of the lines or points for the chains not highlighted.
 #' @param np For models fit using [NUTS] (more generally, any
 #'   [symplectic integrator](https://en.wikipedia.org/wiki/Symplectic_integrator)),
 #'   an optional data frame providing NUTS diagnostic information. The data
@@ -48,6 +49,7 @@
 #'   \item{`mcmc_trace()`}{
 #'    Standard trace plots of MCMC draws. For models fit using [NUTS],
 #'    the `np` argument can be used to also show divergences on the trace plot.
+#'    One chain can be emphasized using the `highlight` argument.
 #'   }
 #'   \item{`mcmc_trace_highlight()`}{
 #'    Traces are plotted using points rather than lines and the opacity of all
@@ -103,6 +105,7 @@
 #' # mix color schemes
 #' color_scheme_set("mix-blue-red")
 #' mcmc_trace(x, regex_pars = "beta")
+#' mcmc_trace(x, regex_pars = "beta", highlight = 2)
 #'
 #' # use traditional ggplot discrete color scale
 #' mcmc_trace(x, pars = c("alpha", "sigma")) +
@@ -184,6 +187,8 @@ mcmc_trace <-
            iter1 = 0,
            window = NULL,
            size = NULL,
+           alpha = 0.4,
+           highlight = NULL,
            np = NULL,
            np_style = trace_style_np(),
            divergences = NULL) {
@@ -214,18 +219,17 @@ mcmc_trace <-
     n_warmup = n_warmup,
     window = window,
     size = size,
+    alpha = alpha,
+    highlight = highlight,
     style = "line",
     np = np,
     np_style = np_style,
-    iter1 = iter1,
-    ...
+    iter1 = iter1
   )
 }
 
 #' @rdname MCMC-traces
 #' @export
-#' @param highlight For `mcmc_trace_highlight()`, an integer specifying one
-#'   of the chains that will be more visible than the others in the plot.
 mcmc_trace_highlight <- function(x,
                                  pars = character(),
                                  regex_pars = character(),
@@ -249,8 +253,7 @@ mcmc_trace_highlight <- function(x,
     size = size,
     alpha = alpha,
     highlight = highlight,
-    style = "point",
-    ...
+    style = "point"
   )
 }
 
@@ -458,12 +461,27 @@ mcmc_rank_hist <- function(x,
 }
 
 #' @rdname MCMC-traces
+#' @param K An optional integer defining the number of equally spaced evaluation
+#'   points for the PIT-ECDF. Reducing K when using `interpolate_adj = FALSE`
+#'   makes computing the confidence bands faster. For `ppc_pit_ecdf()` and
+#'   `ppc_pit_ecdf_grouped()` when `method = 'independent'`. If `pit` is
+#'   supplied, defaults to `length(pit)`, otherwise `yrep` determines the
+#'   maximum accuracy of the estimated PIT values and `K` is set to
+#'   `min(nrow(yrep) + 1, 1000)`. For `mcmc_rank_ecdf()`, defaults to the number
+#'   of iterations per chain in `x`.
 #' @param prob For `mcmc_rank_ecdf()`, a value between 0 and 1
-#' specifying the desired simultaneous confidence of the confidence bands to be
-#' drawn for the rank ECDF plots.
+#'   specifying the desired simultaneous confidence of the confidence bands to be
+#'   drawn for the rank ECDF plots.
 #' @param plot_diff For `mcmc_rank_ecdf()`, a boolean specifying if the
-#' difference between the observed rank ECDFs and the theoretical expectation
-#' should be drawn instead of the unmodified rank ECDF plots.
+#'   difference between the observed rank ECDFs and the theoretical expectation
+#'   should be drawn instead of the unmodified rank ECDF plots.
+#' @param interpolate_adj A boolean defining if the simultaneous confidence
+#'   bands should be interpolated based on precomputed values rather than
+#'   computed exactly. Computing the bands may be computationally intensive and
+#'   the approximation gives a fast method for assessing the ECDF trajectory.
+#'   For `ppc_pit_ecdf()` and `ppc_pit_ecdf_grouped()` when
+#'   `method = 'independent'` and for `mcmc_rank_ecdf()`. The default is to use
+#'   interpolation if `K` is greater than 200.
 #' @export
 mcmc_rank_ecdf <-
   function(x,
@@ -643,8 +661,7 @@ mcmc_trace_data <- function(x,
                         alpha = 0.2,
                         np = NULL,
                         np_style = trace_style_np(),
-                        iter1 = 0,
-                        ...) {
+                        iter1 = 0) {
   style <- match.arg(style)
   data <- mcmc_trace_data(
     x,
@@ -711,17 +728,17 @@ mcmc_trace_data <- function(x,
       labels = c("Other chains", paste("Chain", highlight)))
   } else {
     scale_color <- scale_color_manual("Chain", values = chain_colors(n_chain))
+  }
 
-    if (!is.null(np)) {
-      div_rug <- divergence_rug(np, np_style, n_iter, n_chain)
-      if (!is.null(div_rug)) {
-        div_guides <- guides(
-          color = guide_legend(order = 1),
-          linetype = guide_legend(
-            order = 2, title = NULL, keywidth = rel(1/2),
-            override.aes = list(linewidth = rel(1/2)))
-        )
-      }
+  if (!is.null(np)) {
+    div_rug <- divergence_rug(np, np_style, n_iter, n_chain)
+    if (!is.null(div_rug)) {
+      div_guides <- guides(
+        color = guide_legend(order = 1),
+        linetype = guide_legend(
+          order = 2, title = NULL, keywidth = rel(1/2),
+          override.aes = list(linewidth = rel(1/2)))
+      )
     }
   }
 

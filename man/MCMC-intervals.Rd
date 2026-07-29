@@ -126,7 +126,7 @@ similar functions. Examples of using \code{pars} in this way can be found on the
 \item{regex_pars}{An optional \link[base:grep]{regular expression} to use for
 parameter selection. Can be specified instead of \code{pars} or in addition to
 \code{pars}. When using \code{pars} for tidy parameter selection, the \code{regex_pars}
-argument is ignored since \link[tidyselect:language]{select helpers}
+argument is ignored since \link[tidyselect:select_helpers]{select helpers}
 perform a similar function.}
 
 \item{transformations}{Optionally, transformations to apply to parameters
@@ -184,7 +184,7 @@ points across the curves are the same height. The method \code{"scaled height"} 
 the ridgelines.}
 
 \item{bw, adjust, kernel, n_dens, bounds}{Optional arguments passed to
-\code{\link[stats:density]{stats::density()}} (and \code{bounds} to \code{\link[ggplot2:geom_density]{ggplot2::stat_density()}}) to override
+\code{\link[stats:density]{stats::density()}} (and \code{bounds} to \code{\link[ggplot2:stat_density]{ggplot2::stat_density()}}) to override
 default kernel density estimation parameters or truncate the density
 support. If \code{NULL} (default), \code{bw} is set to \code{"nrd0"}, \code{adjust} to \code{1},
 \code{kernel} to \code{"gaussian"}, and \code{n_dens} to \code{1024}.}
@@ -358,7 +358,7 @@ mcmc_areas_ridges(m, pars = "mu", regex_pars = "theta", border_size = 0.75) +
 
 }
 \seealso{
-Other MCMC: 
+Other MCMC:
 \code{\link{MCMC-combos}},
 \code{\link{MCMC-diagnostics}},
 \code{\link{MCMC-distributions}},

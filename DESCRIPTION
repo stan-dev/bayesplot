@@ -11,12 +11,13 @@ Authors@R: c(person("Jonah", "Gabry", role = c("aut", "cre"), email = "jgabry@gm
              person("Frank", "Weber", role = "ctb"),
              person("Eduardo", "Coronado Sroka", role = "ctb"),
              person("Teemu", "Sailynoja", role = "ctb"),
-             person("Aki", "Vehtari", role = "ctb"), 
-             person("Behram", "Ulukır", role = "ctb"), 
+             person("Aki", "Vehtari", role = "ctb"),
+             person("Behram", "Ulukır", role = "ctb"),
              person("Visruth", "Srimath Kandali", role = "ctb"),
              person("Mattan S.", "Ben-Shachar", role = "ctb"),
              person("Ishaan", "Arora", role = "ctb"),
-             person("Utkarsh", "Pawade", role = "ctb"))
+             person("Utkarsh", "Pawade", role = "ctb"),
+             person("Florence", "Bockting", role = "ctb"))
 Maintainer: Jonah Gabry <jgabry@gmail.com>
 Description: Plotting functions for posterior analysis, MCMC diagnostics,
     prior and posterior predictive checks, and other visualizations
@@ -39,7 +40,7 @@ Imports:
     ggridges (>= 0.5.5),
     glue,
     lifecycle,
-    posterior,
+    posterior (>= 1.7.0),
     reshape2,
     rlang (>= 1.0.0),
     stats,
@@ -66,9 +67,9 @@ Suggests:
     survival,
     testthat (>= 3.0.0),
     vdiffr (>= 1.0.2)
-RoxygenNote: 7.3.3
 VignetteBuilder: knitr
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 Config/testthat/edition: 3
 Additional_repositories: https://stan-dev.r-universe.dev/
+Config/roxygen2/version: 8.0.0
