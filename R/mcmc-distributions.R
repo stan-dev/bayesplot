@@ -418,8 +418,6 @@ mcmc_dots <- function(
 ) {
   check_ignored_arguments(..., ok_args = c("dotsize", "layout", "stackratio", "overflow"))
 
-  suggested_package("ggdist")
-
   .mcmc_dots(
     x,
     pars = pars,
@@ -447,8 +445,6 @@ mcmc_dots_by_chain <- function(
     quantiles = 100
 ) {
   check_ignored_arguments(..., ok_args = c("dotsize", "layout", "stackratio", "overflow"))
-
-  suggested_package("ggdist")
 
   .mcmc_dots(
     x,

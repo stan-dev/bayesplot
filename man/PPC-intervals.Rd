@@ -247,7 +247,8 @@ A., and Rubin, D. B. (2013). \emph{Bayesian Data Analysis.} Chapman & Hall/CRC
 Press, London, third edition. (Ch. 6)
 }
 \seealso{
-Other PPCs:
+Other PPCs: 
+\code{\link{PPC-calibration}},
 \code{\link{PPC-censoring}},
 \code{\link{PPC-discrete}},
 \code{\link{PPC-distributions}},

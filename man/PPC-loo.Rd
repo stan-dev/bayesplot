@@ -414,7 +414,8 @@ Tesso, H., & Vehtari, A. (2026). LOO-PIT predictive model
 checking. arXiv preprint https://arxiv.org/abs/2603.02928.
 }
 \seealso{
-Other PPCs:
+Other PPCs: 
+\code{\link{PPC-calibration}},
 \code{\link{PPC-censoring}},
 \code{\link{PPC-discrete}},
 \code{\link{PPC-distributions}},

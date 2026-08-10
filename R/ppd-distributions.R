@@ -286,9 +286,6 @@ ppd_dots <-
            quantiles = 100,
            freq = TRUE) {
     check_ignored_arguments(..., ok_args = c("dotsize", "layout", "stackratio", "overflow"))
-
-    suggested_package("ggdist")
-
     data <- ppd_data(ypred)
 
     p <- ggplot(data, mapping = set_hist_aes(freq)) +

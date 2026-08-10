@@ -1,0 +1,580 @@
+library(bayesplot)
+
+test_that("grouped overlay CEP uses original y indices within each group", {
+  y <- c(0, 0, 1, 1)
+  group <- c("A", "A", "B", "B")
+  prep <- matrix(c(0.2, 0.1, 0.2, 0.1), nrow = 1)
+  d <- ppc_calibration_data(
+    y = y,
+    prep = prep,
+    group = group,
+    type = "overlay"
+  )
+  d_b <- d[d$group == "B", , drop = FALSE]
+  expect_equal(d_b$value, c(0.1, 0.2))
+  expect_equal(d_b$cep, c(1, 1))
+})
+  
+test_that("overlay, grouped: values are sorted correctly", {
+  y <- c(0L, 1L, 1L, 0L)
+  group <- c("A", "A", "B", "B")
+
+  # One draw; prep deliberately reversed within each group:
+  #   Group A: obs1=0.9, obs2=0.1 > sorted: obs2 (y=1), obs1 (y=0)
+  #   Group B: obs3=0.8, obs4=0.2 > sorted: obs4 (y=0), obs3 (y=1)
+  prep <- matrix(c(0.9, 0.1, 0.8, 0.2), nrow = 1)
+
+  result <- ppc_calibration_data(
+    y, prep = prep, group = group, type = "overlay"
+  )
+
+  ga <- dplyr::filter(result, group == "A")
+  gb <- dplyr::filter(result, group == "B")
+
+  # values are sorted ascending within each group
+  expect_equal(ga$value, c(0.1, 0.9))
+  expect_equal(gb$value, c(0.2, 0.8))
+
+  # cep is computed from y of the *correctly reordered* observations:
+  #    Group A: y = c(1, 0) > isotonic regression: c(0.5, 0.5)
+  #    Group B: y = c(0, 1) > already monotone: c(0.0, 1.0)
+  expect_equal(ga$cep, c(0.5, 0.5))
+  expect_equal(gb$cep, c(0.0, 1.0))
+})
+
+test_that("calibration interval helper matches prep confidence algorithm", {
+  y <- c(0, 1, 0, 1)
+  prep <- rbind(
+    c(0.1, 0.8, 0.2, 0.9),
+    c(0.3, 0.7, 0.4, 0.6)
+  )
+
+  m1 <- stats::isoreg(y[order(prep[1, ])])$yf
+  m2 <- stats::isoreg(y[order(prep[2, ])])$yf
+  m <- rbind(m1, m2)
+
+  d <- bayesplot:::ppc_calibration_data(
+    y = y,
+    prep = prep,
+    type = "interval",
+    prob = 0.8,
+    interval = "confidence"
+  )
+
+  expect_equal(d$cep, colMeans(m))
+  expect_equal(
+    d$lb,
+    unname(apply(m, 2, stats::quantile, probs = 0.1))
+  )
+  expect_equal(
+    d$ub,
+    unname(apply(m, 2, stats::quantile, probs = 0.9))
+  )
+})
+
+test_that("calibration interval helper matches yrep consistency algorithm", {
+  y <- c(0, 1, 0, 1)
+  yrep <- rbind(
+    c(0, 1, 0, 1),
+    c(0, 1, 1, 1),
+    c(0, 0, 0, 1)
+  )
+
+  p <- colMeans(yrep)
+  ord <- order(p)
+  m_obs <- stats::isoreg(y[ord])$yf
+  m_rep <- t(apply(yrep[, ord, drop = FALSE], 1, function(z) stats::isoreg(z)$yf))
+
+  d <- bayesplot:::ppc_calibration_data(
+    y = y,
+    yrep = yrep,
+    type = "interval",
+    prob = 0.8,
+    interval = "consistency"
+  )
+
+  expect_false("rep_id" %in% names(d))
+  expect_equal(d$value, p[ord])
+  expect_equal(d$cep, m_obs)
+  expect_equal(
+    d$lb,
+    unname(apply(m_rep, 2, stats::quantile, probs = 0.1))
+  )
+  expect_equal(
+    d$ub,
+    unname(apply(m_rep, 2, stats::quantile, probs = 0.9))
+  )
+})
+
+test_that("ppc_calibration uses requested axis labels", {
+  y <- c(0, 1, 0, 1)
+  yrep <- rbind(
+    c(0, 1, 0, 1),
+    c(0, 1, 1, 1),
+    c(0, 0, 0, 1)
+  )
+
+  p <- ppc_calibration(y = y, yrep = yrep, interval = "consistency")
+  expect_gg(p)
+
+  if ("get_labs" %in% getNamespaceExports("ggplot2")) {
+    labs <- ggplot2::get_labs(p)
+  } else {
+    labs <- p$labels
+  }
+  expect_equal(labs$x, "predicted probability")
+  expect_equal(labs$y, "conditional event probability")
+})
+
+test_that("ppc_calibration_data returns sorted values and isotonic cep", {
+  y <- c(0, 0, 1, 1)
+  prep <- rbind(
+    c(0.4, 0.1, 0.3, 0.2),
+    c(0.2, 0.3, 0.4, 0.1)
+  )
+
+  d <- ppc_calibration_data(y = y, prep = prep, type = "overlay")
+
+  expect_s3_class(d, "data.frame")
+  expect_equal(nrow(d), length(y) * nrow(prep))
+  expect_true(all(d$group == 1))
+  expect_false(any(c("lb", "ub") %in% names(d)))
+
+  for (s in seq_len(nrow(prep))) {
+    ord <- order(prep[s, ])
+    expected_value <- prep[s, ord]
+    expected_cep <- stats::isoreg(y[ord])$yf
+    d_s <- d[d$rep_id == s, , drop = FALSE]
+
+    expect_equal(d_s$value, expected_value)
+    expect_equal(d_s$cep, expected_cep)
+  }
+})
+if (!exists("expect_gg")) expect_gg <- bayesplot:::expect_gg
+
+# Create binary test data for calibration plots
+set.seed(1234)
+n_obs <- 1000
+n_draws <- 1000
+p_true <- runif(n_obs)
+calib_y <- rbinom(n_obs, 1, p_true)
+calib_prep <- matrix(
+  pmin(1, pmax(0, p_true + rnorm(n_obs * n_draws, 0, .1))), 
+  nrow = n_draws, ncol = n_obs
+)
+calib_yrep <- t(apply(calib_prep, 1, rbinom, n = n_obs, size = 1))
+
+calib_group <- gl(2, n_obs / 2, labels = c("A", "B"))
+calib_lw <- matrix(rnorm(n_obs * n_draws, mean = -2), ncol = n_obs, nrow = n_draws)
+
+test_that("ppc_calibration_overlay returns a ggplot object", {
+  expect_gg(ppc_calibration_overlay(calib_y, calib_prep))
+  expect_gg(ppc_calibration_overlay(calib_y, calib_prep[1:5, ], 
+                                   linewidth = 0.5, alpha = 0.3))
+})
+
+test_that("ppc_calibration_overlay_grouped returns a ggplot object", {
+  expect_gg(ppc_calibration_overlay_grouped(calib_y, calib_prep, calib_group))
+  expect_gg(ppc_calibration_overlay_grouped(calib_y, calib_prep[1:3, ], calib_group,
+                                           linewidth = 0.5, alpha = 0.3))
+})
+
+test_that("ppc_calibration returns a ggplot object", {
+  expect_gg(ppc_calibration(calib_y, prep=calib_prep))
+  expect_gg(ppc_calibration(calib_y, yrep=calib_yrep))
+  expect_gg(ppc_calibration(calib_y, calib_prep, prob = 0.9,
+                           linewidth = 0.8, alpha = 0.5))
+  expect_gg(ppc_calibration(calib_y, calib_prep))
+  expect_gg(ppc_calibration(y=calib_y, prep=calib_prep, 
+    interval = "confidence"))
+  expect_gg(ppc_calibration(y=calib_y, prep=calib_prep, 
+    interval = "consistency"))
+})
+
+test_that("ppc_calibration adds quantile dot layer when requested", {
+  p_no_qdots <- ppc_calibration(
+    y = calib_y,
+    prep = calib_prep,
+    show_qdots = FALSE
+  )
+  p <- ppc_calibration(
+    calib_y,
+    calib_prep,
+    show_qdots = TRUE
+  )
+
+  expect_gg(p_no_qdots)
+  expect_gg(p)
+  expect_equal(length(p[["layers"]]), length(p_no_qdots[["layers"]]) + 1)
+  y_min <- ggplot2::ggplot_build(p)$layout$panel_params[[1]]$y.range[1]
+  y_min_no_qdots <- ggplot2::ggplot_build(p_no_qdots)$layout$panel_params[[1]]$y.range[1]
+  expect_lte(y_min, y_min_no_qdots)
+})
+
+test_that("ppc_calibration_grouped returns a ggplot object", {
+  expect_gg(ppc_calibration_grouped(y = calib_y, prep = calib_prep,
+    group = calib_group))
+  expect_gg(ppc_calibration_grouped(y = calib_y, yrep = calib_yrep,
+    group = calib_group))
+  expect_gg(ppc_calibration_grouped(
+    y = calib_y,
+    prep = calib_prep[1:5, ],
+    group = calib_group,
+    prob = 0.9,
+    linewidth = 0.8,
+    alpha = 0.5
+  ))
+  expect_gg(ppc_calibration_grouped(y = calib_y, prep = calib_prep,
+    group = calib_group, interval = "confidence"))
+  expect_gg(ppc_calibration_grouped(y = calib_y, prep = calib_prep,
+    group = calib_group, interval = "consistency"))
+})
+
+test_that("ppc_loo_calibration returns a ggplot object", {
+  # Note: This function now returns interval plots instead of overlay plots
+  # Testing basic functionality for now
+  expect_gg(ppc_loo_calibration(calib_y, calib_yrep, calib_prep))
+  expect_gg(ppc_loo_calibration(calib_y, calib_yrep[1:3, ], calib_prep[1:3, ],
+                               prob = 0.9, linewidth = 0.8, alpha = 0.5))
+})
+
+test_that("ppc_loo_calibration_grouped returns a ggplot object", {
+  # Note: This function now returns interval plots instead of overlay plots
+  # Testing basic functionality for now
+  expect_gg(ppc_loo_calibration_grouped(
+    y=calib_y, yrep=calib_yrep, group=calib_group, lw=calib_lw)
+  )
+  expect_gg(ppc_loo_calibration_grouped(
+    y=calib_y, yrep=calib_yrep[1:3, ], group=calib_group, 
+    lw=calib_lw[1:3, ])
+  )
+})
+
+test_that("calibration functions handle edge cases", {
+  # Single observation
+  expect_gg(ppc_calibration_overlay(1, matrix(0.5, nrow = 1, ncol = 1)))
+  expect_gg(ppc_calibration(1, matrix(0.5, nrow = 1, ncol = 1)))
+  
+  # Single draw
+  expect_gg(ppc_calibration_overlay(calib_y, calib_prep[1, , drop = FALSE]))
+  expect_gg(ppc_calibration(calib_y, calib_prep[1, , drop = FALSE]))
+  
+  # All zeros or ones
+  expect_gg(ppc_calibration_overlay(rep(0, 10), matrix(0.1, nrow = 5, ncol = 10)))
+  expect_gg(ppc_calibration_overlay(rep(1, 10), matrix(0.9, nrow = 5, ncol = 10)))
+})
+
+test_that("calibration functions validate inputs correctly", {
+  # Invalid probabilities (outside [0,1])
+  expect_error(
+    ppc_calibration_overlay(calib_y, matrix(1.5, nrow = 5, ncol = n_obs)),
+    "Values of 'prep' should be predictive probabilities between 0 and 1.",
+    fixed = TRUE
+  )
+  expect_error(
+    ppc_calibration_overlay(calib_y, matrix(-0.1, nrow = 5, ncol = n_obs)),
+    "Values of 'prep' should be predictive probabilities between 0 and 1.",
+    fixed = TRUE
+  )
+  
+  # Mismatched dimensions
+  expect_error(ppc_calibration_overlay(calib_y, calib_prep[, 1:25]),
+               "ncol(yrep) must be equal to length(y).", fixed=TRUE)
+  
+  # Invalid group
+  expect_error(ppc_calibration_overlay_grouped(calib_y, calib_prep, calib_group[1:25]),
+               "length(group) must be equal to the number of observations.",
+              fixed=TRUE)
+  
+  # Invalid interval
+  expect_error(ppc_calibration(calib_y, calib_prep, interval = "invalid"),
+               "must be one of")
+  expect_error(ppc_calibration(calib_y, calib_prep, show_qdots = NA),
+               "'show_qdots' must be a single TRUE or FALSE.",
+               fixed = TRUE)
+  expect_error(ppc_calibration(calib_y, calib_prep, qdots_quantiles = 0),
+               "'qdots_quantiles' must be a positive integer.",
+               fixed = TRUE)
+})
+
+test_that("calibration functions work with different group types", {
+  # Numeric groups
+  expect_gg(ppc_calibration_overlay_grouped(calib_y, calib_prep, as.numeric(calib_group)))
+  expect_gg(ppc_calibration_grouped(
+    y = calib_y,
+    prep = calib_prep,
+    group = as.numeric(calib_group)
+  ))
+  
+  # Integer groups
+  expect_gg(ppc_calibration_overlay_grouped(calib_y, calib_prep, as.integer(calib_group)))
+  expect_gg(ppc_calibration_grouped(
+    y = calib_y,
+    prep = calib_prep,
+    group = as.integer(calib_group)
+  ))
+  
+  # Character groups
+  expect_gg(ppc_calibration_overlay_grouped(calib_y, calib_prep, as.character(calib_group)))
+  expect_gg(ppc_calibration_grouped(
+    y = calib_y,
+    prep = calib_prep,
+    group = as.character(calib_group)
+  ))
+})
+
+# Visual tests -----------------------------------------------------------------
+
+test_that("ppc_calibration_overlay renders correctly", {
+  testthat::skip_on_cran()
+  testthat::skip_if_not_installed("vdiffr")
+  skip_on_r_oldrel()
+
+  p_base <- ppc_calibration_overlay(calib_y, calib_prep)
+  vdiffr::expect_doppelganger("ppc_calibration_overlay (default)", p_base)
+
+  p_custom <- ppc_calibration_overlay(
+    calib_y,
+    calib_prep,
+    linewidth = 0.5,
+    alpha = 0.3
+  )
+  vdiffr::expect_doppelganger("ppc_calibration_overlay (custom)", p_custom)
+})
+
+test_that("ppc_calibration_overlay_grouped renders correctly", {
+  testthat::skip_on_cran()
+  testthat::skip_if_not_installed("vdiffr")
+  skip_on_r_oldrel()
+
+  p_base <- ppc_calibration_overlay_grouped(calib_y, calib_prep, calib_group)
+  vdiffr::expect_doppelganger("ppc_calibration_overlay_grouped (default)", p_base)
+
+  p_custom <- ppc_calibration_overlay_grouped(
+    calib_y,
+    calib_prep,
+    calib_group,
+    linewidth = 0.5,
+    alpha = 0.3
+  )
+  vdiffr::expect_doppelganger("ppc_calibration_overlay_grouped (custom)", p_custom)
+})
+
+test_that("ppc_calibration renders correctly", {
+  testthat::skip_on_cran()
+  testthat::skip_if_not_installed("vdiffr")
+  skip_on_r_oldrel()
+
+  p_base <- ppc_calibration(calib_y, calib_prep)
+  vdiffr::expect_doppelganger("ppc_calibration (default)", p_base)
+
+  p_custom <- ppc_calibration(
+    calib_y,
+    calib_prep,
+    prob = 0.9,
+    linewidth = 0.8,
+    alpha = 0.5
+  )
+  vdiffr::expect_doppelganger("ppc_calibration (custom)", p_custom)
+  
+  # Test interval variants
+  p_confidence <- ppc_calibration(
+    calib_y,
+    calib_prep,
+    interval = "confidence"
+  )
+  vdiffr::expect_doppelganger("ppc_calibration (confidence)", p_confidence)
+  
+  p_consistency <- ppc_calibration(
+    calib_y,
+    calib_prep,
+    interval = "consistency"
+  )
+  vdiffr::expect_doppelganger("ppc_calibration (consistency)", p_consistency)
+})
+
+test_that("ppc_calibration_grouped renders correctly", {
+  testthat::skip_on_cran()
+  testthat::skip_if_not_installed("vdiffr")
+  skip_on_r_oldrel()
+
+  p_base <- ppc_calibration_grouped(y = calib_y, prep = calib_prep, group = calib_group)
+  vdiffr::expect_doppelganger("ppc_calibration_grouped (default)", p_base)
+
+  p_custom <- ppc_calibration_grouped(
+    y = calib_y,
+    prep = calib_prep,
+    group = calib_group,
+    prob = 0.9,
+    linewidth = 0.8,
+    alpha = 0.5
+  )
+  vdiffr::expect_doppelganger("ppc_calibration_grouped (custom)", p_custom)
+  
+  # Test interval variants
+  p_confidence <- ppc_calibration_grouped(
+    y = calib_y,
+    prep = calib_prep,
+    group = calib_group,
+    interval = "confidence"
+  )
+  vdiffr::expect_doppelganger("ppc_calibration_grouped (confidence)", p_confidence)
+  
+  p_consistency <- ppc_calibration_grouped(
+    y = calib_y,
+    prep = calib_prep,
+    group = calib_group,
+    interval = "consistency"
+  )
+  vdiffr::expect_doppelganger("ppc_calibration_grouped (consistency)", p_consistency)
+})
+
+test_that("ppc_loo_calibration renders correctly", {
+  testthat::skip_on_cran()
+  testthat::skip_if_not_installed("vdiffr")
+  skip_on_r_oldrel()
+
+  p_base <- ppc_loo_calibration(calib_y, calib_yrep, calib_lw)
+  vdiffr::expect_doppelganger("ppc_loo_calibration (default)", p_base)
+
+  p_custom <- ppc_loo_calibration(
+    calib_y,
+    calib_yrep,
+    calib_lw,
+    linewidth = 0.5,
+    alpha = 0.3
+  )
+  vdiffr::expect_doppelganger("ppc_loo_calibration (custom)", p_custom)
+})
+
+test_that("ppc_loo_calibration_grouped renders correctly", {
+  testthat::skip_on_cran()
+  testthat::skip_if_not_installed("vdiffr")
+  skip_on_r_oldrel()
+
+  p_base <- ppc_loo_calibration_grouped(
+    y = calib_y,
+    yrep = calib_yrep,
+    lw = calib_lw,
+    group = calib_group
+  )
+  vdiffr::expect_doppelganger("ppc_loo_calibration_grouped (default)", p_base)
+
+  p_custom <- ppc_loo_calibration_grouped(
+    y = calib_y,
+    yrep = calib_yrep,
+    lw = calib_lw,
+    group = calib_group,
+    linewidth = 0.5,
+    alpha = 0.3
+  )
+  vdiffr::expect_doppelganger("ppc_loo_calibration_grouped (custom)", p_custom)
+})
+
+test_that("ppc_calibration computes yrep confidence interval bands", {
+  set.seed(1001)
+  y <- c(0, 1, 0, 1, 0, 1)
+  yrep <- rbind(
+    c(0, 1, 0, 1, 0, 1),
+    c(0, 1, 1, 1, 0, 1),
+    c(0, 0, 0, 1, 0, 1),
+    c(1, 1, 0, 1, 0, 1)
+  )
+
+  p <- ppc_calibration(
+    y = y,
+    yrep = yrep,
+    interval = "confidence",
+    B = 50
+  )
+
+  expect_gg(p)
+  expect_named(p$data, c("group", "y_id", "value", "cep", "lb", "ub"))
+  expect_equal(nrow(p$data), length(y))
+  expect_lte(max(p$data$ub), 1)
+  expect_gte(min(p$data$lb), 0)
+})
+
+test_that("ppc_calibration recovers identity trend for calibrated data", {
+  testthat::skip_on_cran()
+  testthat::skip_if_not_installed("vdiffr")
+  skip_on_r_oldrel()
+  
+  set.seed(20260408)
+  n_obs <- 10000
+  n_draws <- 1000
+  p_true <- runif(n_obs)
+  y <- stats::rbinom(n_obs, size = 1, prob = p_true)
+  yrep <- t(vapply(
+    seq_len(n_draws),
+    function(i) stats::rbinom(n_obs, size = 1, prob = p_true),
+    numeric(n_obs)
+  ))
+
+  vdiffr::expect_doppelganger("ppc_calibration consistent_model",
+    ppc_calibration(
+      y = y,
+      yrep = yrep,
+      interval = "consistency"
+    )
+  )
+})
+
+test_that("resampling is identical for normalized and non-normalized log weights", {
+  n_draws <- 200
+  n_obs <- 15
+
+  set.seed(42)
+  yrep <- matrix(rnorm(n_draws * n_obs), nrow = n_draws, ncol = n_obs)
+  lw_raw <- matrix(rnorm(n_draws * n_obs, mean = -2), nrow = n_draws, ncol = n_obs)
+
+  # Normalize per column, matching what .normalize_lw does inside the loop
+  lw_norm <- apply(lw_raw, 2, function(x) {
+    max_x <- max(x)
+    x - (max_x + log(sum(exp(x - max_x))))
+  })
+
+  local_mocked_bindings(
+    .get_lw = function(lw, psis_object) lw
+  )
+
+  set.seed(123)
+  result_raw <- .loo_resample_data(yrep, lw = lw_raw, psis_object = NULL)
+
+  set.seed(123)
+  result_norm <- .loo_resample_data(yrep, lw = lw_norm, psis_object = NULL)
+
+  expect_identical(result_raw, result_norm)
+})
+
+testthat::test_that(".normalize_lw() works as expected", {
+  lw <- c(0, -Inf, 0.2, -0.2)
+  
+  norm_lw <- .normalize_lw(lw)
+  probs <- exp(norm_lw)
+  
+  expect_equal(norm_lw[2], -Inf)
+  expect_equal(probs[2], 0)
+  expect_equal(sum(probs), 1L)
+  
+  lw <- c(0, Inf, 0.2, -0.2)
+  
+  expect_error(
+    .normalize_lw(lw),
+    regexp = "Log-weights must be finite or `-Inf`"
+  )
+  
+  lw <- c(0, NA, 0.2, -0.2)
+  
+  expect_error(
+    .normalize_lw(lw),
+    regexp = "Log-weights must be finite or `-Inf`"
+  )
+  
+    lw <- c(0, NaN, 0.2, -0.2)
+  
+  expect_error(
+    .normalize_lw(lw),
+    regexp = "Log-weights must be finite or `-Inf`"
+  )
+})
