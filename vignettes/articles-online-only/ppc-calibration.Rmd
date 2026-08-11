@@ -239,7 +239,7 @@ from the true event rates.
 Both models share the same weakly informative priors and are fitted with a 
 single chain for illustration purposes.
 
-```{r simulate-data, warning = FALSE, message = FALSE}
+```{r simulate-data, warning = FALSE, message = FALSE, results = "hide"}
 n <- 600
 
 x <- rnorm(n)
