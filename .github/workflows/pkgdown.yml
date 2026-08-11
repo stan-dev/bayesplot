@@ -38,6 +38,7 @@ jobs:
         with:
           extra-packages: |
             any::pkgdown
+            any::brms
             any::withr
             any::BH
             any::RcppEigen
