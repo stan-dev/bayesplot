@@ -5,7 +5,7 @@ name: Reverse dependency check
 
 jobs:
   bayesplot-revdeps:
-    uses: stan-dev/ci-scripts/.github/workflows/revdeps.yml@6f9ccc34cf8011288a00be060d01168448ed6c49
+    uses: andrjohns/ci-scripts/.github/workflows/revdeps.yml@6f9ccc34cf8011288a00be060d01168448ed6c49
     with:
       package: bayesplot
       bayesplot-source: ${{ github.ref_name }}
