@@ -127,6 +127,7 @@ Association*. 53(282), 457–481. doi:10.1080/01621459.1958.10501452.
 ## See also
 
 Other PPCs:
+[`PPC-calibration`](https://mc-stan.org/bayesplot/dev/reference/PPC-calibration.md),
 [`PPC-discrete`](https://mc-stan.org/bayesplot/dev/reference/PPC-discrete.md),
 [`PPC-distributions`](https://mc-stan.org/bayesplot/dev/reference/PPC-distributions.md),
 [`PPC-errors`](https://mc-stan.org/bayesplot/dev/reference/PPC-errors.md),

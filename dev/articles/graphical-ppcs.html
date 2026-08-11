@@ -33,7 +33,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">
       <!-- Add Stan logo -->
-      <picture><source type="image/svg+xml" srcset="../logo.svg"><img src="../logo.png" class="stan-logo" alt="Stan blue hex logo"></source></picture>
+      <img src="../reference/figures/logo.svg" class="stan-logo" alt="Stan blue hex logo">
       bayesplot
     </a>
 
@@ -96,7 +96,7 @@
                         <h4 data-toc-skip class="author">Jonah
 Gabry</h4>
             
-            <h4 data-toc-skip class="date">2026-07-24</h4>
+            <h4 data-toc-skip class="date">2026-08-11</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/stan-dev/bayesplot/blob/master/vignettes/graphical-ppcs.Rmd" class="external-link"><code>vignettes/graphical-ppcs.Rmd</code></a></small>
       <div class="d-none name"><code>graphical-ppcs.Rmd</code></div>
@@ -418,6 +418,10 @@ names of all PPC plotting functions:</p>
   ppc_bars
   ppc_bars_grouped
   ppc_boxplot
+  ppc_calibration
+  ppc_calibration_grouped
+  ppc_calibration_overlay
+  ppc_calibration_overlay_grouped
   ppc_dens
   ppc_dens_overlay
   ppc_dens_overlay_grouped
@@ -438,6 +442,8 @@ names of all PPC plotting functions:</p>
   ppc_intervals_grouped
   ppc_km_overlay
   ppc_km_overlay_grouped
+  ppc_loo_calibration
+  ppc_loo_calibration_grouped
   ppc_loo_intervals
   ppc_loo_pit_ecdf
   ppc_loo_pit_overlay
@@ -468,6 +474,8 @@ ending in <code>_grouped</code> and will accept an additional argument
 <pre><code>bayesplot PPC module:
 (matching pattern '_grouped') 
   ppc_bars_grouped
+  ppc_calibration_grouped
+  ppc_calibration_overlay_grouped
   ppc_dens_overlay_grouped
   ppc_ecdf_overlay_grouped
   ppc_error_hist_grouped
@@ -475,6 +483,7 @@ ending in <code>_grouped</code> and will accept an additional argument
   ppc_freqpoly_grouped
   ppc_intervals_grouped
   ppc_km_overlay_grouped
+  ppc_loo_calibration_grouped
   ppc_pit_ecdf_grouped
   ppc_ribbon_grouped
   ppc_rootogram_grouped

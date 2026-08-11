@@ -12,6 +12,8 @@ the **bayesplot** package.
   package](https://mc-stan.org/bayesplot/dev/articles/visual-mcmc-diagnostics.md):
 - [Graphical posterior predictive checks using the bayesplot
   package](https://mc-stan.org/bayesplot/dev/articles/graphical-ppcs.md):
+- [PPC Calibration - Calibration of Bayesian models with binary
+  outcomes](https://mc-stan.org/bayesplot/dev/articles/articles-online-only/ppc-calibration.md):
 
 ### PIT-ECDF model checking
 

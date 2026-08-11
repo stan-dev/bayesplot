@@ -44,6 +44,14 @@ predictive distribution.
 - [`PPC-overview`](https://mc-stan.org/bayesplot/dev/reference/PPC-overview.md)
   [`PPC`](https://mc-stan.org/bayesplot/dev/reference/PPC-overview.md) :
   Graphical posterior predictive checking
+- [`ppc_calibration_overlay()`](https://mc-stan.org/bayesplot/dev/reference/PPC-calibration.md)
+  [`ppc_calibration_overlay_grouped()`](https://mc-stan.org/bayesplot/dev/reference/PPC-calibration.md)
+  [`ppc_calibration()`](https://mc-stan.org/bayesplot/dev/reference/PPC-calibration.md)
+  [`ppc_calibration_grouped()`](https://mc-stan.org/bayesplot/dev/reference/PPC-calibration.md)
+  [`ppc_loo_calibration()`](https://mc-stan.org/bayesplot/dev/reference/PPC-calibration.md)
+  [`ppc_loo_calibration_grouped()`](https://mc-stan.org/bayesplot/dev/reference/PPC-calibration.md)
+  [`ppc_calibration_data()`](https://mc-stan.org/bayesplot/dev/reference/PPC-calibration.md)
+  : PPC calibration
 - [`ppc_km_overlay()`](https://mc-stan.org/bayesplot/dev/reference/PPC-censoring.md)
   [`ppc_km_overlay_grouped()`](https://mc-stan.org/bayesplot/dev/reference/PPC-censoring.md)
   : PPC censoring

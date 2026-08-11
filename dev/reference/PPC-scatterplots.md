@@ -156,6 +156,7 @@ London, third edition. (Ch. 6)
 ## See also
 
 Other PPCs:
+[`PPC-calibration`](https://mc-stan.org/bayesplot/dev/reference/PPC-calibration.md),
 [`PPC-censoring`](https://mc-stan.org/bayesplot/dev/reference/PPC-censoring.md),
 [`PPC-discrete`](https://mc-stan.org/bayesplot/dev/reference/PPC-discrete.md),
 [`PPC-distributions`](https://mc-stan.org/bayesplot/dev/reference/PPC-distributions.md),

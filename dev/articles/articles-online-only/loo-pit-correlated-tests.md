@@ -453,8 +453,9 @@ annotations do not dominate the panels.
 
 ## Using `brms::pp_check()`
 
-It is also possible to use `brms::pp_check()` with
-`type = "loo_pit_ecdf"` to perform the same testing and plotting
+It is also possible to use
+[`brms::pp_check()`](https://mc-stan.org/bayesplot/reference/pp_check.html)
+with `type = "loo_pit_ecdf"` to perform the same testing and plotting
 procedure as
 [`ppc_loo_pit_ecdf()`](https://mc-stan.org/bayesplot/dev/reference/PPC-loo.md).
 The following code snippet provides an example:

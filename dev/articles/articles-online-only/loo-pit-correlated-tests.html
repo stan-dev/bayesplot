@@ -33,7 +33,7 @@
 
     <a class="navbar-brand me-2" href="../../index.html">
       <!-- Add Stan logo -->
-      <picture><source type="image/svg+xml" srcset="../../logo.svg"><img src="../../logo.png" class="stan-logo" alt="Stan blue hex logo"></source></picture>
+      <img src="../../reference/figures/logo.svg" class="stan-logo" alt="Stan blue hex logo">
       bayesplot
     </a>
 
@@ -96,7 +96,7 @@
                         <h4 data-toc-skip class="author">Florence
 Bockting</h4>
             
-            <h4 data-toc-skip class="date">2026-07-24</h4>
+            <h4 data-toc-skip class="date">2026-08-11</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/stan-dev/bayesplot/blob/master/vignettes/articles-online-only/loo-pit-correlated-tests.Rmd" class="external-link"><code>vignettes/articles-online-only/loo-pit-correlated-tests.Rmd</code></a></small>
       <div class="d-none name"><code>loo-pit-correlated-tests.Rmd</code></div>
@@ -587,12 +587,12 @@ dominate the panels.</p>
 <div class="section level2">
 <h2 id="using-brmspp_check">Using <code>brms::pp_check()</code><a class="anchor" aria-label="anchor" href="#using-brmspp_check"></a>
 </h2>
-<p>It is also possible to use <code>brms::pp_check()</code> with
+<p>It is also possible to use <code><a href="https://mc-stan.org/bayesplot/reference/pp_check.html">brms::pp_check()</a></code> with
 <code>type = "loo_pit_ecdf"</code> to perform the same testing and
 plotting procedure as <code><a href="../../reference/PPC-loo.html">ppc_loo_pit_ecdf()</a></code>. The following
 code snippet provides an example:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">brms</span><span class="fu">::</span><span class="fu">pp_check</span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="fu">brms</span><span class="fu">::</span><span class="fu"><a href="https://mc-stan.org/bayesplot/reference/pp_check.html">pp_check</a></span><span class="op">(</span></span>
 <span>  <span class="va">fit_normal</span>,</span>
 <span>  type <span class="op">=</span> <span class="st">"loo_pit_ecdf"</span>,</span>
 <span>  method <span class="op">=</span> <span class="st">"correlated"</span></span>

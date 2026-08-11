@@ -11,7 +11,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">
       <!-- Add Stan logo -->
-      <picture><source type="image/svg+xml" srcset="../logo.svg"><img src="../logo.png" class="stan-logo" alt="Stan blue hex logo"></source></picture>
+      <img src="../reference/figures/logo.svg" class="stan-logo" alt="Stan blue hex logo">
       bayesplot
     </a>
 
@@ -164,6 +164,10 @@ function names is returned.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ppc_bars</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ppc_bars_grouped</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ppc_boxplot</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ppc_calibration</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ppc_calibration_grouped</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ppc_calibration_overlay</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ppc_calibration_overlay_grouped</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ppc_dens</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ppc_dens_overlay</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ppc_dens_overlay_grouped</span>
@@ -184,6 +188,8 @@ function names is returned.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ppc_intervals_grouped</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ppc_km_overlay</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ppc_km_overlay_grouped</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ppc_loo_calibration</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ppc_loo_calibration_grouped</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ppc_loo_intervals</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ppc_loo_pit_ecdf</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ppc_loo_pit_overlay</span>
@@ -208,6 +214,8 @@ function names is returned.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> bayesplot PPC module:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> (matching pattern 'grouped') </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ppc_bars_grouped</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ppc_calibration_grouped</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ppc_calibration_overlay_grouped</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ppc_dens_overlay_grouped</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ppc_ecdf_overlay_grouped</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ppc_error_hist_grouped</span>
@@ -215,6 +223,7 @@ function names is returned.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ppc_freqpoly_grouped</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ppc_intervals_grouped</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ppc_km_overlay_grouped</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ppc_loo_calibration_grouped</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ppc_pit_ecdf_grouped</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ppc_ribbon_grouped</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ppc_rootogram_grouped</span>
@@ -227,6 +236,8 @@ function names is returned.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> (excluding pattern 'grouped') </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ppc_bars</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ppc_boxplot</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ppc_calibration</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ppc_calibration_overlay</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ppc_dens</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ppc_dens_overlay</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ppc_dots</span>
@@ -240,6 +251,7 @@ function names is returned.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ppc_hist</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ppc_intervals</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ppc_km_overlay</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ppc_loo_calibration</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ppc_loo_intervals</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ppc_loo_pit_ecdf</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ppc_loo_pit_overlay</span>
@@ -289,6 +301,11 @@ function names is returned.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ppc_bars_data</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ppc_bars_grouped</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ppc_boxplot</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ppc_calibration</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ppc_calibration_data</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ppc_calibration_grouped</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ppc_calibration_overlay</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ppc_calibration_overlay_grouped</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ppc_data</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ppc_dens</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ppc_dens_overlay</span>
@@ -312,6 +329,8 @@ function names is returned.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ppc_intervals_grouped</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ppc_km_overlay</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ppc_km_overlay_grouped</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ppc_loo_calibration</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ppc_loo_calibration_grouped</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ppc_loo_intervals</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ppc_loo_pit_data</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ppc_loo_pit_ecdf</span>
@@ -343,6 +362,7 @@ function names is returned.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> bayesplot PPC module:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> (matching pattern '_data') </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ppc_bars_data</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ppc_calibration_data</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ppc_data</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ppc_error_data</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ppc_intervals_data</span>

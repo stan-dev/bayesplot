@@ -252,6 +252,7 @@ using rootograms. *The American Statistician*. 70(3): 296–303.
 ## See also
 
 Other PPCs:
+[`PPC-calibration`](https://mc-stan.org/bayesplot/dev/reference/PPC-calibration.md),
 [`PPC-censoring`](https://mc-stan.org/bayesplot/dev/reference/PPC-censoring.md),
 [`PPC-distributions`](https://mc-stan.org/bayesplot/dev/reference/PPC-distributions.md),
 [`PPC-errors`](https://mc-stan.org/bayesplot/dev/reference/PPC-errors.md),

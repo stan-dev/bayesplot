@@ -478,6 +478,7 @@ arXiv preprint https://arxiv.org/abs/2603.02928.
 ## See also
 
 Other PPCs:
+[`PPC-calibration`](https://mc-stan.org/bayesplot/dev/reference/PPC-calibration.md),
 [`PPC-censoring`](https://mc-stan.org/bayesplot/dev/reference/PPC-censoring.md),
 [`PPC-discrete`](https://mc-stan.org/bayesplot/dev/reference/PPC-discrete.md),
 [`PPC-errors`](https://mc-stan.org/bayesplot/dev/reference/PPC-errors.md),
