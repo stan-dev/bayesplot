@@ -49,6 +49,7 @@ Imports:
     tidyselect,
     utils
 Suggests:
+    brms,
     cmdstanr,
     ggfortify,
     gridExtra (>= 2.2.1),
