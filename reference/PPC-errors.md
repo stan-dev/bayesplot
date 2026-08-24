@@ -85,9 +85,11 @@ ppc_error_data(y, yrep, group = NULL)
 - yrep:
 
   An `S` by `N` matrix of draws from the posterior (or prior) predictive
-  distribution. The number of rows, `S`, is the size of the posterior
-  (or prior) sample used to generate `yrep`. The number of columns, `N`
-  is the number of predicted observations (`length(y)`). The columns of
+  distribution, or a
+  [`posterior::draws`](https://mc-stan.org/posterior/reference/draws.html)
+  object. The number of rows, `S`, is the size of the posterior (or
+  prior) sample used to generate `yrep`. The number of columns, `N` is
+  the number of predicted observations (`length(y)`). The columns of
   `yrep` should be in the same order as the data points in `y` for the
   plots to make sense. See the **Details** and **Plot Descriptions**
   sections for additional advice specific to particular plots.
@@ -109,7 +111,10 @@ ppc_error_data(y, yrep, group = NULL)
 - binwidth:
 
   Passed to
-  [`ggplot2::geom_histogram()`](https://ggplot2.tidyverse.org/reference/geom_histogram.html)
+  [`ggplot2::geom_histogram()`](https://ggplot2.tidyverse.org/reference/geom_histogram.html),
+  [`ggplot2::geom_area()`](https://ggplot2.tidyverse.org/reference/geom_ribbon.html),
+  and
+  [`ggdist::stat_dots()`](https://mjskay.github.io/ggdist/reference/stat_dots.html)
   to override the default binwidth.
 
 - bins:
@@ -124,10 +129,10 @@ ppc_error_data(y, yrep, group = NULL)
 
 - freq:
 
-  For histograms, `freq=TRUE` (the default) puts count on the y-axis.
-  Setting `freq=FALSE` puts density on the y-axis. (For many plots the
-  y-axis text is off by default. To view the count or density labels on
-  the y-axis see the
+  For histograms and frequency polygons, `freq=TRUE` (the default) puts
+  count on the y-axis. Setting `freq=FALSE` puts density on the y-axis.
+  (For many plots the y-axis text is off by default. To view the count
+  or density labels on the y-axis see the
   [`yaxis_text()`](https://mc-stan.org/bayesplot/reference/bayesplot-helpers.md)
   convenience function.)
 
@@ -159,8 +164,10 @@ ppc_error_data(y, yrep, group = NULL)
 
 ## Value
 
-A ggplot object that can be further customized using the **ggplot2**
-package.
+The plotting functions return a ggplot object that can be further
+customized using the **ggplot2** package. The functions with suffix
+`_data()` return the data that would have been drawn by the plotting
+function.
 
 ## Details
 
@@ -220,6 +227,13 @@ section, below.
   rather than counts, and `yrep` should have only a small number of
   rows.
 
+- `ppc_error_data()`:
+
+  Data-preparation back end for the `ppc_error_*()` family of plotting
+  functions. Users can call `ppc_error_data()` directly to obtain the
+  data frame of predictive errors (`y - yrep`) and create custom error
+  visualizations with **ggplot2**.
+
 ## References
 
 Gelman, A., Carlin, J. B., Stern, H. S., Dunson, D. B., Vehtari, A., and
@@ -229,6 +243,7 @@ London, third edition. (Ch. 6)
 ## See also
 
 Other PPCs:
+[`PPC-calibration`](https://mc-stan.org/bayesplot/reference/PPC-calibration.md),
 [`PPC-censoring`](https://mc-stan.org/bayesplot/reference/PPC-censoring.md),
 [`PPC-discrete`](https://mc-stan.org/bayesplot/reference/PPC-discrete.md),
 [`PPC-distributions`](https://mc-stan.org/bayesplot/reference/PPC-distributions.md),

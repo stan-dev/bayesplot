@@ -90,9 +90,11 @@ ppc_ribbon_data(
 - yrep:
 
   An `S` by `N` matrix of draws from the posterior (or prior) predictive
-  distribution. The number of rows, `S`, is the size of the posterior
-  (or prior) sample used to generate `yrep`. The number of columns, `N`
-  is the number of predicted observations (`length(y)`). The columns of
+  distribution, or a
+  [`posterior::draws`](https://mc-stan.org/posterior/reference/draws.html)
+  object. The number of rows, `S`, is the size of the posterior (or
+  prior) sample used to generate `yrep`. The number of columns, `N` is
+  the number of predicted observations (`length(y)`). The columns of
   `yrep` should be in the same order as the data points in `y` for the
   plots to make sense. See the **Details** and **Plot Descriptions**
   sections for additional advice specific to particular plots.
@@ -177,6 +179,14 @@ function.
   separate plot (facet) is generated for each level of a grouping
   variable.
 
+- `ppc_intervals_data()`, `ppc_ribbon_data()`:
+
+  Data-preparation back end for `ppc_intervals()`, `ppc_ribbon()`, and
+  their grouped variants. `ppc_ribbon_data()` is an alias for
+  `ppc_intervals_data()`. Users can call either function directly to
+  obtain the prepared data frame and create custom interval or ribbon
+  visualizations with **ggplot2**.
+
 ## References
 
 Gabry, J. , Simpson, D. , Vehtari, A. , Betancourt, M. and Gelman, A.
@@ -193,6 +203,7 @@ London, third edition. (Ch. 6)
 ## See also
 
 Other PPCs:
+[`PPC-calibration`](https://mc-stan.org/bayesplot/reference/PPC-calibration.md),
 [`PPC-censoring`](https://mc-stan.org/bayesplot/reference/PPC-censoring.md),
 [`PPC-discrete`](https://mc-stan.org/bayesplot/reference/PPC-discrete.md),
 [`PPC-distributions`](https://mc-stan.org/bayesplot/reference/PPC-distributions.md),

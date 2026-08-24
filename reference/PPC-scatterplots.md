@@ -53,9 +53,11 @@ ppc_scatter_avg_data(y, yrep, group = NULL, stat = "mean")
 - yrep:
 
   An `S` by `N` matrix of draws from the posterior (or prior) predictive
-  distribution. The number of rows, `S`, is the size of the posterior
-  (or prior) sample used to generate `yrep`. The number of columns, `N`
-  is the number of predicted observations (`length(y)`). The columns of
+  distribution, or a
+  [`posterior::draws`](https://mc-stan.org/posterior/reference/draws.html)
+  object. The number of rows, `S`, is the size of the posterior (or
+  prior) sample used to generate `yrep`. The number of columns, `N` is
+  the number of predicted observations (`length(y)`). The columns of
   `yrep` should be in the same order as the data points in `y` for the
   plots to make sense. See the **Details** and **Plot Descriptions**
   sections for additional advice specific to particular plots.
@@ -136,6 +138,15 @@ counts).
   The same as `ppc_scatter_avg()`, but a separate plot is generated for
   each level of a grouping variable.
 
+- `ppc_scatter_data()`, `ppc_scatter_avg_data()`:
+
+  Data-preparation back ends for the `ppc_scatter*()` family of plotting
+  functions. `ppc_scatter_data()` returns a data frame with one row per
+  observation per `yrep` draw, while `ppc_scatter_avg_data()` returns a
+  data frame with one row per observation summarising `yrep` draws with
+  the chosen `stat`. Users can call these functions directly to create
+  custom visualizations with **ggplot2**.
+
 ## References
 
 Gelman, A., Carlin, J. B., Stern, H. S., Dunson, D. B., Vehtari, A., and
@@ -145,6 +156,7 @@ London, third edition. (Ch. 6)
 ## See also
 
 Other PPCs:
+[`PPC-calibration`](https://mc-stan.org/bayesplot/reference/PPC-calibration.md),
 [`PPC-censoring`](https://mc-stan.org/bayesplot/reference/PPC-censoring.md),
 [`PPC-discrete`](https://mc-stan.org/bayesplot/reference/PPC-discrete.md),
 [`PPC-distributions`](https://mc-stan.org/bayesplot/reference/PPC-distributions.md),

@@ -16,30 +16,33 @@ has details on the individual plots.
 ppd_stat(
   ypred,
   stat = "mean",
+  show_marginal = FALSE,
   ...,
   discrete = FALSE,
   binwidth = NULL,
   bins = NULL,
   breaks = NULL,
-  freq = TRUE
+  freq = !show_marginal
 )
 
 ppd_stat_grouped(
   ypred,
   group,
   stat = "mean",
+  show_marginal = FALSE,
   ...,
   discrete = FALSE,
   facet_args = list(),
   binwidth = NULL,
   bins = NULL,
   breaks = NULL,
-  freq = TRUE
+  freq = !show_marginal
 )
 
 ppd_stat_freqpoly(
   ypred,
   stat = "mean",
+  show_marginal = FALSE,
   ...,
   facet_args = list(),
   binwidth = NULL,
@@ -51,6 +54,7 @@ ppd_stat_freqpoly_grouped(
   ypred,
   group,
   stat = "mean",
+  show_marginal = FALSE,
   ...,
   facet_args = list(),
   binwidth = NULL,
@@ -58,9 +62,16 @@ ppd_stat_freqpoly_grouped(
   freq = TRUE
 )
 
-ppd_stat_2d(ypred, stat = c("mean", "sd"), ..., size = 2.5, alpha = 0.7)
+ppd_stat_2d(
+  ypred,
+  stat = c("mean", "sd"),
+  show_marginal = FALSE,
+  ...,
+  size = 2.5,
+  alpha = 0.7
+)
 
-ppd_stat_data(ypred, group = NULL, stat)
+ppd_stat_data(ypred, group = NULL, stat, show_marginal = FALSE)
 ```
 
 ## Arguments
@@ -68,9 +79,11 @@ ppd_stat_data(ypred, group = NULL, stat)
 - ypred:
 
   An `S` by `N` matrix of draws from the posterior (or prior) predictive
-  distribution. The number of rows, `S`, is the size of the posterior
-  (or prior) sample used to generate `ypred`. The number of columns,
-  `N`, is the number of predicted observations.
+  distribution, or a
+  [`posterior::draws`](https://mc-stan.org/posterior/reference/draws.html)
+  object. The number of rows, `S`, is the size of the posterior (or
+  prior) sample used to generate `ypred`. The number of columns, `N`, is
+  the number of predicted observations.
 
 - stat:
 
@@ -80,6 +93,10 @@ ppd_stat_data(ypred, group = NULL, stat)
   statistic. If specified as a string (or strings) then the legend will
   display the function name(s). If specified as a function (or
   functions) then generic naming is used in the legend.
+
+- show_marginal:
+
+  Plot the marginal PPD along with the `ypred`s.
 
 - ...:
 
@@ -96,14 +113,19 @@ ppd_stat_data(ypred, group = NULL, stat)
 - binwidth:
 
   Passed to
-  [`ggplot2::geom_histogram()`](https://ggplot2.tidyverse.org/reference/geom_histogram.html)
+  [`ggplot2::geom_histogram()`](https://ggplot2.tidyverse.org/reference/geom_histogram.html),
+  [`ggplot2::geom_area()`](https://ggplot2.tidyverse.org/reference/geom_ribbon.html),
+  and
+  [`ggdist::stat_dots()`](https://mjskay.github.io/ggdist/reference/stat_dots.html)
   to override the default binwidth.
 
 - bins:
 
   Passed to
   [`ggplot2::geom_histogram()`](https://ggplot2.tidyverse.org/reference/geom_histogram.html)
-  to override the default binwidth.
+  and
+  [`ggplot2::geom_area()`](https://ggplot2.tidyverse.org/reference/geom_ribbon.html)
+  to override the default binning.
 
 - breaks:
 
@@ -113,10 +135,10 @@ ppd_stat_data(ypred, group = NULL, stat)
 
 - freq:
 
-  For histograms, `freq=TRUE` (the default) puts count on the y-axis.
-  Setting `freq=FALSE` puts density on the y-axis. (For many plots the
-  y-axis text is off by default. To view the count or density labels on
-  the y-axis see the
+  For histograms and frequency polygons, `freq=TRUE` (the default) puts
+  count on the y-axis. Setting `freq=FALSE` puts density on the y-axis.
+  (For many plots the y-axis text is off by default. To view the count
+  or density labels on the y-axis see the
   [`yaxis_text()`](https://mc-stan.org/bayesplot/reference/bayesplot-helpers.md)
   convenience function.)
 
@@ -182,10 +204,16 @@ ppd_stat(yrep)
 ppd_stat(yrep, stat = "sd") + legend_none()
 #> `stat_bin()` using `bins = 30`. Pick better value `binwidth`.
 
+ppd_stat(yrep, show_marginal = TRUE)
+#> `stat_bin()` using `bins = 30`. Pick better value `binwidth`.
+
 
 # use your own function for the 'stat' argument
 color_scheme_set("brightblue")
 q25 <- function(y) quantile(y, 0.25)
 ppd_stat(yrep, stat = "q25") # legend includes function name
+#> `stat_bin()` using `bins = 30`. Pick better value `binwidth`.
+
+ppd_stat(yrep, stat = "q25", show_marginal = TRUE)
 #> `stat_bin()` using `bins = 30`. Pick better value `binwidth`.
 ```

@@ -32,6 +32,7 @@ mcmc_dens(
   adjust = NULL,
   kernel = NULL,
   n_dens = NULL,
+  bounds = NULL,
   alpha = 1
 )
 
@@ -60,7 +61,8 @@ mcmc_dens_overlay(
   bw = NULL,
   adjust = NULL,
   kernel = NULL,
-  n_dens = NULL
+  n_dens = NULL,
+  bounds = NULL
 )
 
 mcmc_dens_chains(
@@ -73,7 +75,8 @@ mcmc_dens_chains(
   bw = NULL,
   adjust = NULL,
   kernel = NULL,
-  n_dens = NULL
+  n_dens = NULL,
+  bounds = NULL
 )
 
 mcmc_dens_chains_data(
@@ -85,7 +88,8 @@ mcmc_dens_chains_data(
   bw = NULL,
   adjust = NULL,
   kernel = NULL,
-  n_dens = NULL
+  n_dens = NULL,
+  bounds = NULL
 )
 
 mcmc_violin(
@@ -96,6 +100,30 @@ mcmc_violin(
   ...,
   facet_args = list(),
   probs = c(0.1, 0.5, 0.9)
+)
+
+mcmc_dots(
+  x,
+  pars = character(),
+  regex_pars = character(),
+  transformations = list(),
+  ...,
+  facet_args = list(),
+  binwidth = NA,
+  alpha = 1,
+  quantiles = 100
+)
+
+mcmc_dots_by_chain(
+  x,
+  pars = character(),
+  regex_pars = character(),
+  transformations = list(),
+  ...,
+  facet_args = list(),
+  binwidth = NA,
+  alpha = 1,
+  quantiles = 100
 )
 ```
 
@@ -165,7 +193,8 @@ mcmc_violin(
 
 - ...:
 
-  Currently ignored.
+  For dot plots, optional additional arguments to pass to
+  [`ggdist::stat_dots()`](https://mjskay.github.io/ggdist/reference/stat_dots.html).
 
 - facet_args:
 
@@ -180,14 +209,19 @@ mcmc_violin(
 - binwidth:
 
   Passed to
-  [`ggplot2::geom_histogram()`](https://ggplot2.tidyverse.org/reference/geom_histogram.html)
+  [`ggplot2::geom_histogram()`](https://ggplot2.tidyverse.org/reference/geom_histogram.html),
+  [`ggplot2::geom_area()`](https://ggplot2.tidyverse.org/reference/geom_ribbon.html),
+  and
+  [`ggdist::stat_dots()`](https://mjskay.github.io/ggdist/reference/stat_dots.html)
   to override the default binwidth.
 
 - bins:
 
   Passed to
   [`ggplot2::geom_histogram()`](https://ggplot2.tidyverse.org/reference/geom_histogram.html)
-  to override the default binwidth.
+  and
+  [`ggplot2::geom_area()`](https://ggplot2.tidyverse.org/reference/geom_ribbon.html)
+  to override the default binning.
 
 - breaks:
 
@@ -197,10 +231,10 @@ mcmc_violin(
 
 - freq:
 
-  For histograms, `freq=TRUE` (the default) puts count on the y-axis.
-  Setting `freq=FALSE` puts density on the y-axis. (For many plots the
-  y-axis text is off by default. To view the count or density labels on
-  the y-axis see the
+  For histograms and frequency polygons, `freq=TRUE` (the default) puts
+  count on the y-axis. Setting `freq=FALSE` puts density on the y-axis.
+  (For many plots the y-axis text is off by default. To view the count
+  or density labels on the y-axis see the
   [`yaxis_text()`](https://mc-stan.org/bayesplot/reference/bayesplot-helpers.md)
   convenience function.)
 
@@ -213,12 +247,15 @@ mcmc_violin(
   A logical scalar passed to
   [`ggplot2::geom_density()`](https://ggplot2.tidyverse.org/reference/geom_density.html).
 
-- bw, adjust, kernel, n_dens:
+- bw, adjust, kernel, n_dens, bounds:
 
   Optional arguments passed to
-  [`stats::density()`](https://rdrr.io/r/stats/density.html) to override
-  default kernel density estimation parameters. `n_dens` defaults to
-  `1024`.
+  [`stats::density()`](https://rdrr.io/r/stats/density.html) (and
+  `bounds` to
+  [`ggplot2::stat_density()`](https://ggplot2.tidyverse.org/reference/geom_density.html))
+  to override default kernel density estimation parameters or truncate
+  the density support. If `NULL` (default), `bw` is set to `"nrd0"`,
+  `adjust` to `1`, `kernel` to `"gaussian"`, and `n_dens` to `1024`.
 
 - color_chains:
 
@@ -226,15 +263,24 @@ mcmc_violin(
 
 - probs:
 
-  A numeric vector passed to
-  [`ggplot2::geom_violin()`](https://ggplot2.tidyverse.org/reference/geom_violin.html)'s
-  `draw_quantiles` argument to specify at which quantiles to draw
-  horizontal lines. Set to `NULL` to remove the lines.
+  A numeric vector of probabilities controlling where quantile lines are
+  drawn. Set to `NULL` to remove the lines.
+
+- quantiles:
+
+  For dot plots, an optional integer passed to
+  [`ggdist::stat_dots()`](https://mjskay.github.io/ggdist/reference/stat_dots.html)
+  specifying the number of quantiles to use for a quantile dot plot. If
+  `quantiles` is `NA` then all data points are plotted. The default is
+  `quantiles=100` so that each dot represent one percent of posterior
+  mass.
 
 ## Value
 
-A ggplot object that can be further customized using the **ggplot2**
-package.
+The plotting functions return a ggplot object that can be further
+customized using the **ggplot2** package. The functions with suffix
+`_data()` return the data that would have been drawn by the plotting
+function.
 
 ## Plot Descriptions
 
@@ -246,6 +292,10 @@ package.
 
   Kernel density plots of posterior draws with all chains merged.
 
+- `mcmc_dots()`:
+
+  Dot plots of posterior draws with all chains merged.
+
 - `mcmc_hist_by_chain()`:
 
   Histograms of posterior draws with chains separated via faceting.
@@ -254,6 +304,10 @@ package.
 
   Kernel density plots of posterior draws with chains separated but
   overlaid on a single plot.
+
+- `mcmc_dots_by_chain()`:
+
+  Dot plots of posterior draws with chains separated via faceting.
 
 - `mcmc_violin()`:
 
@@ -266,6 +320,13 @@ package.
   separated but overlaid on a single plot. In `mcmc_dens_overlay()`
   parameters appear in separate facets; in `mcmc_dens_chains()` they
   appear in the same panel and can overlap vertically.
+
+- `mcmc_dens_chains_data()`:
+
+  Data-preparation back end for `mcmc_dens_chains()`. Users can call
+  this function directly to obtain the prepared long-format data frame
+  of MCMC draws (with chain information retained) and create custom
+  visualizations with **ggplot2**.
 
 ## See also
 
@@ -335,7 +396,7 @@ mcmc_hist(x, transformations = list(sigma = log))
 
 
 # separate histograms by chain
-color_scheme_set("pink")
+color_scheme_set("orange")
 mcmc_hist_by_chain(x, regex_pars = "beta")
 #> `stat_bin()` using `bins = 30`. Pick better value `binwidth`.
 
@@ -344,7 +405,7 @@ mcmc_hist_by_chain(x, regex_pars = "beta")
 #################
 ### Densities ###
 #################
-
+color_scheme_set("purple")
 mcmc_dens(x, pars = c("sigma", "beta[2]"),
           facet_args = list(nrow = 2))
 
@@ -361,10 +422,28 @@ mcmc_dens_chains(x2, pars = c("beta[1]", "beta[2]", "beta[3]"))
 # }
 # separate chains as violin plots
 color_scheme_set("green")
-mcmc_violin(x) + panel_bg(color = "gray20", size = 2, fill = "gray30")
-#> Warning: The `size` argument of `element_rect()` is deprecated as of ggplot2 3.4.0.
-#> ℹ Please use the `linewidth` argument instead.
-#> ℹ The deprecated feature was likely used in the bayesplot package.
-#>   Please report the issue at <https://github.com/stan-dev/bayesplot/issues/>.
+mcmc_violin(x) + panel_bg(color = "gray20", linewidth = 2, fill = "gray30")
 
+
+
+#################
+### Dot Plots ###
+#################
+
+# dot plots of some parameters
+color_scheme_set("pink")
+mcmc_dots(x, pars = c("alpha", "beta[2]"))
+
+
+# \donttest{
+color_scheme_set("teal")
+# separate dot plots by chain
+mcmc_dots_by_chain(x, regex_pars = "beta")
+
+
+# custom facet labels (will change row labels to e.g. "Chain: 1" instead of just "1")
+chain_labeller <- ggplot2::labeller(.rows = ggplot2::label_both)
+mcmc_dots_by_chain(x, regex_pars = "beta", facet_args = list(labeller = chain_labeller))
+
+# }
 ```

@@ -44,12 +44,21 @@ predictive distribution.
 - [`PPC-overview`](https://mc-stan.org/bayesplot/reference/PPC-overview.md)
   [`PPC`](https://mc-stan.org/bayesplot/reference/PPC-overview.md) :
   Graphical posterior predictive checking
+- [`ppc_calibration_overlay()`](https://mc-stan.org/bayesplot/reference/PPC-calibration.md)
+  [`ppc_calibration_overlay_grouped()`](https://mc-stan.org/bayesplot/reference/PPC-calibration.md)
+  [`ppc_calibration()`](https://mc-stan.org/bayesplot/reference/PPC-calibration.md)
+  [`ppc_calibration_grouped()`](https://mc-stan.org/bayesplot/reference/PPC-calibration.md)
+  [`ppc_loo_calibration()`](https://mc-stan.org/bayesplot/reference/PPC-calibration.md)
+  [`ppc_loo_calibration_grouped()`](https://mc-stan.org/bayesplot/reference/PPC-calibration.md)
+  [`ppc_calibration_data()`](https://mc-stan.org/bayesplot/reference/PPC-calibration.md)
+  : PPC calibration
 - [`ppc_km_overlay()`](https://mc-stan.org/bayesplot/reference/PPC-censoring.md)
   [`ppc_km_overlay_grouped()`](https://mc-stan.org/bayesplot/reference/PPC-censoring.md)
   : PPC censoring
 - [`ppc_bars()`](https://mc-stan.org/bayesplot/reference/PPC-discrete.md)
   [`ppc_bars_grouped()`](https://mc-stan.org/bayesplot/reference/PPC-discrete.md)
   [`ppc_rootogram()`](https://mc-stan.org/bayesplot/reference/PPC-discrete.md)
+  [`ppc_rootogram_grouped()`](https://mc-stan.org/bayesplot/reference/PPC-discrete.md)
   [`ppc_bars_data()`](https://mc-stan.org/bayesplot/reference/PPC-discrete.md)
   : PPCs for discrete outcomes
 - [`ppc_data()`](https://mc-stan.org/bayesplot/reference/PPC-distributions.md)
@@ -166,6 +175,8 @@ general MCMC diagnostics.
   [`mcmc_dens_chains()`](https://mc-stan.org/bayesplot/reference/MCMC-distributions.md)
   [`mcmc_dens_chains_data()`](https://mc-stan.org/bayesplot/reference/MCMC-distributions.md)
   [`mcmc_violin()`](https://mc-stan.org/bayesplot/reference/MCMC-distributions.md)
+  [`mcmc_dots()`](https://mc-stan.org/bayesplot/reference/MCMC-distributions.md)
+  [`mcmc_dots_by_chain()`](https://mc-stan.org/bayesplot/reference/MCMC-distributions.md)
   : Histograms and kernel density plots of MCMC draws
 - [`mcmc_intervals()`](https://mc-stan.org/bayesplot/reference/MCMC-intervals.md)
   [`mcmc_areas()`](https://mc-stan.org/bayesplot/reference/MCMC-intervals.md)

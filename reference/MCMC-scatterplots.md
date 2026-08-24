@@ -384,13 +384,13 @@ p +
 
 
 # add ellipse
-p + stat_ellipse(level = 0.9, color = "gray20", size = 1)
+p + stat_ellipse(level = 0.9, color = "gray20", linewidth = 1)
 
 
 # add contour
 color_scheme_set("red")
 p2 <- mcmc_scatter(x, pars = c("alpha", "sigma"), size = 3.5, alpha = 0.25)
-p2 + stat_density_2d(color = "black", size = .5)
+p2 + stat_density_2d(color = "black", linewidth = .5)
 
 
 # can also add lines/smooths
@@ -398,7 +398,7 @@ color_scheme_set("pink")
 (p3 <- mcmc_scatter(x, pars = c("alpha", "beta[3]"), alpha = 0.25, size = 3))
 
 p3 + geom_smooth(method = "lm", se = FALSE, color = "gray20",
-                 size = .75, linetype = 2)
+                 linewidth = .75, linetype = 2)
 #> `geom_smooth()` using formula = 'y ~ x'
 
 
@@ -450,7 +450,7 @@ fit <- stan_glm(
   prior = hs(),
   adapt_delta = 0.9
 )
-#> Warning: There were 35 divergent transitions after warmup. See
+#> Warning: There were 39 divergent transitions after warmup. See
 #> https://mc-stan.org/misc/warnings.html#divergent-transitions-after-warmup
 #> to find out why this is a problem and how to eliminate them.
 #> Warning: Examine the pairs() plot to diagnose sampling problems

@@ -17,6 +17,8 @@ mcmc_trace(
   iter1 = 0,
   window = NULL,
   size = NULL,
+  alpha = 0.4,
+  highlight = NULL,
   np = NULL,
   np_style = trace_style_np(),
   divergences = NULL
@@ -187,6 +189,17 @@ mcmc_trace_data(
   An optional value to override the default line size for `mcmc_trace()`
   or the default point size for `mcmc_trace_highlight()`.
 
+- alpha:
+
+  For `mcmc_trace()` and `mcmc_trace_highlight()`, controls the
+  transparency of the lines or points for the chains not highlighted.
+
+- highlight:
+
+  For `mcmc_trace()`, `NULL` (the default) or an integer specifying one
+  chain to emphasize. For `mcmc_trace_highlight()`, an integer
+  specifying one chain to emphasize.
+
 - np:
 
   For models fit using
@@ -210,18 +223,6 @@ mcmc_trace_data(
 - divergences:
 
   Deprecated. Use the `np` argument instead.
-
-- alpha:
-
-  For `mcmc_trace_highlight()`, passed to
-  [`ggplot2::geom_point()`](https://ggplot2.tidyverse.org/reference/geom_point.html)
-  to control the transparency of the points for the chains not
-  highlighted.
-
-- highlight:
-
-  For `mcmc_trace_highlight()`, an integer specifying one of the chains
-  that will be more visible than the others in the plot.
 
 - div_color, div_size, div_alpha:
 
@@ -247,11 +248,15 @@ mcmc_trace_data(
   An optional integer defining the number of equally spaced evaluation
   points for the PIT-ECDF. Reducing K when using
   `interpolate_adj = FALSE` makes computing the confidence bands faster.
-  For `ppc_pit_ecdf` and `ppc_pit_ecdf_grouped`, if PIT values are
-  supplied, defaults to `length(pit)`, otherwise yrep determines the
-  maximum accuracy of the estimated PIT values and `K` is set to
-  `min(nrow(yrep) + 1, 1000)`. For `mcmc_rank_ecdf`, defaults to the
-  number of iterations per chain in `x`.
+  For
+  [`ppc_pit_ecdf()`](https://mc-stan.org/bayesplot/reference/PPC-distributions.md)
+  and
+  [`ppc_pit_ecdf_grouped()`](https://mc-stan.org/bayesplot/reference/PPC-distributions.md)
+  when `method = 'independent'`. If `pit` is supplied, defaults to
+  `length(pit)`, otherwise `yrep` determines the maximum accuracy of the
+  estimated PIT values and `K` is set to `min(nrow(yrep) + 1, 1000)`.
+  For `mcmc_rank_ecdf()`, defaults to the number of iterations per chain
+  in `x`.
 
 - prob:
 
@@ -271,7 +276,12 @@ mcmc_trace_data(
   interpolated based on precomputed values rather than computed exactly.
   Computing the bands may be computationally intensive and the
   approximation gives a fast method for assessing the ECDF trajectory.
-  The default is to use interpolation if `K` is greater than 200.
+  For
+  [`ppc_pit_ecdf()`](https://mc-stan.org/bayesplot/reference/PPC-distributions.md)
+  and
+  [`ppc_pit_ecdf_grouped()`](https://mc-stan.org/bayesplot/reference/PPC-distributions.md)
+  when `method = 'independent'` and for `mcmc_rank_ecdf()`. The default
+  is to use interpolation if `K` is greater than 200.
 
 ## Value
 
@@ -289,7 +299,8 @@ the same data frame.
 
   Standard trace plots of MCMC draws. For models fit using
   [NUTS](https://mc-stan.org/bayesplot/reference/MCMC-nuts.md), the `np`
-  argument can be used to also show divergences on the trace plot.
+  argument can be used to also show divergences on the trace plot. One
+  chain can be emphasized using the `highlight` argument.
 
 - `mcmc_trace_highlight()`:
 
@@ -318,6 +329,15 @@ the same data frame.
   observed rank ECDFs and the theoretical expectation for samples
   originating from the same distribution is drawn. See Säilynoja et
   al. (2021) for details.
+
+- `mcmc_trace_data()`:
+
+  Data-preparation back end for `mcmc_trace()`,
+  `mcmc_trace_highlight()`, `mcmc_rank_hist()`, `mcmc_rank_overlay()`,
+  and `mcmc_rank_ecdf()`. The returned data frame contains columns for
+  both the original draw values and their within-parameter ranks, so it
+  can be used to build both trace and rank-based visualizations with
+  **ggplot2**.
 
 ## References
 
@@ -380,6 +400,8 @@ mcmc_trace(x, regex_pars = "beta")
 color_scheme_set("mix-blue-red")
 mcmc_trace(x, regex_pars = "beta")
 
+mcmc_trace(x, regex_pars = "beta", highlight = 2)
+
 
 # use traditional ggplot discrete color scale
 mcmc_trace(x, pars = c("alpha", "sigma")) +
@@ -439,7 +461,7 @@ library("rstanarm")
 fit <- stan_glm(mpg ~ ., data = mtcars, refresh = 0,
   # next line to keep example fast and also ensure we get some divergences
                 prior = hs(), iter = 400, adapt_delta = 0.8)
-#> Warning: There were 26 divergent transitions after warmup. See
+#> Warning: There were 13 divergent transitions after warmup. See
 #> https://mc-stan.org/misc/warnings.html#divergent-transitions-after-warmup
 #> to find out why this is a problem and how to eliminate them.
 #> Warning: Examine the pairs() plot to diagnose sampling problems

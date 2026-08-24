@@ -5,4 +5,4 @@ to see their documentation.
 
 - dplyr:
 
-  [`vars`](https://dplyr.tidyverse.org/reference/vars.html)
+  [`vars()`](https://dplyr.tidyverse.org/reference/vars.html)

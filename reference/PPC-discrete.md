@@ -47,6 +47,18 @@ ppc_rootogram(
   bound_distinct = TRUE
 )
 
+ppc_rootogram_grouped(
+  y,
+  yrep,
+  group,
+  style = c("standing", "hanging", "suspended", "discrete"),
+  ...,
+  facet_args = list(),
+  prob = 0.9,
+  size = 1,
+  bound_distinct = TRUE
+)
+
 ppc_bars_data(y, yrep, group = NULL, prob = 0.9, freq = TRUE)
 ```
 
@@ -59,9 +71,11 @@ ppc_bars_data(y, yrep, group = NULL, prob = 0.9, freq = TRUE)
 - yrep:
 
   An `S` by `N` matrix of draws from the posterior (or prior) predictive
-  distribution. The number of rows, `S`, is the size of the posterior
-  (or prior) sample used to generate `yrep`. The number of columns, `N`
-  is the number of predicted observations (`length(y)`). The columns of
+  distribution, or a
+  [`posterior::draws`](https://mc-stan.org/posterior/reference/draws.html)
+  object. The number of rows, `S`, is the size of the posterior (or
+  prior) sample used to generate `yrep`. The number of columns, `N` is
+  the number of predicted observations (`length(y)`). The columns of
   `yrep` should be in the same order as the data points in `y` for the
   plots to make sense. See the **Details** and **Plot Descriptions**
   sections for additional advice specific to particular plots.
@@ -120,9 +134,10 @@ ppc_bars_data(y, yrep, group = NULL, prob = 0.9, freq = TRUE)
 
 - bound_distinct:
 
-  For `ppc_rootogram(style = "discrete)`, if `TRUE` then the observed
-  counts will be plotted with different shapes depending on whether they
-  are within the bounds of the `y` quantiles.
+  For `ppc_rootogram(style = "discrete)` and
+  `ppc_rootogram_grouped(style = "discrete)`, if `TRUE` then the
+  observed counts will be plotted with different shapes depending on
+  whether they are within the bounds of the `y` quantiles.
 
 ## Value
 
@@ -149,6 +164,12 @@ need not be integers in the strict sense of R's
 
   Same as `ppc_bars()` but a separate plot (facet) is generated for each
   level of a grouping variable.
+
+- `ppc_bars_data()`:
+
+  Data-preparation back end for `ppc_bars()` and `ppc_bars_grouped()`.
+  Users can call `ppc_bars_data()` directly to obtain the prepared data
+  frame and create custom visualizations with **ggplot2**.
 
 - `ppc_rootogram()`:
 
@@ -185,6 +206,11 @@ need not be integers in the strict sense of R's
   **All of the rootograms are plotted on the square root scale**. See
   Kleiber and Zeileis (2016) for advice on interpreting rootograms and
   selecting among the different styles.
+
+- `ppc_rootogram_grouped()`:
+
+  Same as `ppc_rootogram()` but a separate plot (facet) is generated for
+  each level of a grouping variable.
 
 ## Related functions
 
@@ -226,6 +252,7 @@ using rootograms. *The American Statistician*. 70(3): 296–303.
 ## See also
 
 Other PPCs:
+[`PPC-calibration`](https://mc-stan.org/bayesplot/reference/PPC-calibration.md),
 [`PPC-censoring`](https://mc-stan.org/bayesplot/reference/PPC-censoring.md),
 [`PPC-distributions`](https://mc-stan.org/bayesplot/reference/PPC-distributions.md),
 [`PPC-errors`](https://mc-stan.org/bayesplot/reference/PPC-errors.md),
@@ -313,5 +340,14 @@ ppc_rootogram(y, yrep, style = "hanging", prob = 0.8)
 ppc_rootogram(y, yrep, style = "suspended")
 
 ppc_rootogram(y, yrep, style = "discrete")
+
+
+# rootograms for counts with groups
+group <- gl(2, 50, length = 100, labels = c("GroupA", "GroupB"))
+ppc_rootogram_grouped(y, yrep, group)
+
+ppc_rootogram_grouped(y, yrep, group, style = "hanging", facet_args = list(nrow = 2))
+
+ppc_rootogram_grouped(y, yrep, group, style = "discrete", prob = 0.5)
 
 ```

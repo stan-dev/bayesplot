@@ -63,14 +63,19 @@ mcmc_acf_bar(
 - binwidth:
 
   Passed to
-  [`ggplot2::geom_histogram()`](https://ggplot2.tidyverse.org/reference/geom_histogram.html)
+  [`ggplot2::geom_histogram()`](https://ggplot2.tidyverse.org/reference/geom_histogram.html),
+  [`ggplot2::geom_area()`](https://ggplot2.tidyverse.org/reference/geom_ribbon.html),
+  and
+  [`ggdist::stat_dots()`](https://mjskay.github.io/ggdist/reference/stat_dots.html)
   to override the default binwidth.
 
 - bins:
 
   Passed to
   [`ggplot2::geom_histogram()`](https://ggplot2.tidyverse.org/reference/geom_histogram.html)
-  to override the default binwidth.
+  and
+  [`ggplot2::geom_area()`](https://ggplot2.tidyverse.org/reference/geom_ribbon.html)
+  to override the default binning.
 
 - breaks:
 
@@ -144,6 +149,13 @@ customized using the **ggplot2** package. The functions with suffix
 function.
 
 ## Plot Descriptions
+
+- `mcmc_rhat_data()`, `mcmc_neff_data()`:
+
+  Data-preparation back ends for the R-hat and effective sample size
+  plots. Users can call these functions directly to obtain the data
+  frame of diagnostic values with rating labels and create custom
+  diagnostic visualizations with **ggplot2**.
 
 - `mcmc_rhat()`, `mcmc_rhat_hist()`:
 
@@ -233,11 +245,7 @@ color_scheme_set("pink")
 
 
 # add horiztonal dashed line at 0.5
-p + hline_at(0.5, linetype = 2, size = 0.15, color = "gray")
-#> Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
-#> ℹ Please use `linewidth` instead.
-#> ℹ The deprecated feature was likely used in the bayesplot package.
-#>   Please report the issue at <https://github.com/stan-dev/bayesplot/issues/>.
+p + hline_at(0.5, linetype = 2, linewidth = 0.15, color = "gray")
 
 # }
 
@@ -281,7 +289,11 @@ library(rstanarm)
 # intentionally use small 'iter' so there are some
 # problems with rhat and neff for demonstration
 fit <- stan_glm(mpg ~ ., data = mtcars, iter = 50, refresh = 0)
-#> Warning: The largest R-hat is 1.11, indicating chains have not mixed.
+#> Warning: There were 5 divergent transitions after warmup. See
+#> https://mc-stan.org/misc/warnings.html#divergent-transitions-after-warmup
+#> to find out why this is a problem and how to eliminate them.
+#> Warning: Examine the pairs() plot to diagnose sampling problems
+#> Warning: The largest R-hat is 1.28, indicating chains have not mixed.
 #> Running the chains for more iterations may help. See
 #> https://mc-stan.org/misc/warnings.html#r-hat
 #> Warning: Bulk Effective Samples Size (ESS) is too low, indicating posterior means and medians may be unreliable.
@@ -290,6 +302,7 @@ fit <- stan_glm(mpg ~ ., data = mtcars, iter = 50, refresh = 0)
 #> Warning: Tail Effective Samples Size (ESS) is too low, indicating posterior variances and tail quantiles may be unreliable.
 #> Running the chains for more iterations may help. See
 #> https://mc-stan.org/misc/warnings.html#tail-ess
+#> Warning: Markov chains did not converge! Do not analyze results!
 rhats <- rhat(fit)
 ratios <- neff_ratio(fit)
 mcmc_rhat(rhats)

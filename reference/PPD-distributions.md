@@ -15,37 +15,64 @@ ppd_data(ypred, group = NULL)
 
 ppd_dens_overlay(
   ypred,
+  show_marginal = FALSE,
   ...,
   size = 0.25,
   alpha = 0.7,
   trim = FALSE,
-  bw = "nrd0",
-  adjust = 1,
-  kernel = "gaussian",
-  n_dens = 1024
+  bw = NULL,
+  adjust = NULL,
+  kernel = NULL,
+  bounds = NULL,
+  n_dens = NULL
 )
 
 ppd_ecdf_overlay(
   ypred,
+  show_marginal = FALSE,
   ...,
-  discrete = FALSE,
+  discrete = deprecated(),
   pad = TRUE,
   size = 0.25,
   alpha = 0.7
 )
 
-ppd_dens(ypred, ..., trim = FALSE, size = 0.5, alpha = 1)
-
-ppd_hist(ypred, ..., binwidth = NULL, bins = NULL, breaks = NULL, freq = TRUE)
-
-ppd_dots(ypred, ..., binwidth = NA, quantiles = NA, freq = TRUE)
-
-ppd_freqpoly(
+ppd_dens(
   ypred,
+  show_marginal = FALSE,
+  ...,
+  trim = FALSE,
+  size = 0.5,
+  alpha = 1,
+  bounds = NULL
+)
+
+ppd_hist(
+  ypred,
+  show_marginal = FALSE,
   ...,
   binwidth = NULL,
   bins = NULL,
-  freq = TRUE,
+  breaks = NULL,
+  freq = !show_marginal
+)
+
+ppd_dots(
+  ypred,
+  show_marginal = FALSE,
+  ...,
+  binwidth = NA,
+  quantiles = 100,
+  freq = TRUE
+)
+
+ppd_freqpoly(
+  ypred,
+  show_marginal = FALSE,
+  ...,
+  binwidth = NULL,
+  bins = NULL,
+  freq = !show_marginal,
   size = 0.5,
   alpha = 1
 )
@@ -53,15 +80,23 @@ ppd_freqpoly(
 ppd_freqpoly_grouped(
   ypred,
   group,
+  show_marginal = FALSE,
   ...,
   binwidth = NULL,
   bins = NULL,
-  freq = TRUE,
+  freq = !show_marginal,
   size = 0.5,
   alpha = 1
 )
 
-ppd_boxplot(ypred, ..., notch = TRUE, size = 0.5, alpha = 1)
+ppd_boxplot(
+  ypred,
+  show_marginal = FALSE,
+  ...,
+  notch = TRUE,
+  size = 0.5,
+  alpha = 1
+)
 ```
 
 ## Arguments
@@ -69,9 +104,11 @@ ppd_boxplot(ypred, ..., notch = TRUE, size = 0.5, alpha = 1)
 - ypred:
 
   An `S` by `N` matrix of draws from the posterior (or prior) predictive
-  distribution. The number of rows, `S`, is the size of the posterior
-  (or prior) sample used to generate `ypred`. The number of columns,
-  `N`, is the number of predicted observations.
+  distribution, or a
+  [`posterior::draws`](https://mc-stan.org/posterior/reference/draws.html)
+  object. The number of rows, `S`, is the size of the posterior (or
+  prior) sample used to generate `ypred`. The number of columns, `N`, is
+  the number of predicted observations.
 
 - group:
 
@@ -79,6 +116,10 @@ ppd_boxplot(ypred, ..., notch = TRUE, size = 0.5, alpha = 1)
   [factor](https://rdrr.io/r/base/factor.html) if not already a factor.
   Each value in `group` is interpreted as the group level pertaining to
   the corresponding observation.
+
+- show_marginal:
+
+  Plot the marginal PPD along with the `ypred`s.
 
 - ...:
 
@@ -95,21 +136,22 @@ ppd_boxplot(ypred, ..., notch = TRUE, size = 0.5, alpha = 1)
   A logical scalar passed to
   [`ggplot2::geom_density()`](https://ggplot2.tidyverse.org/reference/geom_density.html).
 
-- bw, adjust, kernel, n_dens:
+- bw, adjust, kernel, n_dens, bounds:
 
   Optional arguments passed to
-  [`stats::density()`](https://rdrr.io/r/stats/density.html) to override
-  default kernel density estimation parameters. `n_dens` defaults to
-  `1024`.
+  [`stats::density()`](https://rdrr.io/r/stats/density.html) (and
+  `bounds` to
+  [`ggplot2::stat_density()`](https://ggplot2.tidyverse.org/reference/geom_density.html))
+  to override default kernel density estimation parameters or truncate
+  the density support. If `NULL` (default), `bw` is set to `"nrd0"`,
+  `adjust` to `1`, `kernel` to `"gaussian"`, and `n_dens` to `1024`.
 
 - discrete:
 
-  For
-  [`ppc_ecdf_overlay()`](https://mc-stan.org/bayesplot/reference/PPC-distributions.md),
-  should the data be treated as discrete? The default is `FALSE`, in
-  which case `geom="line"` is passed to
-  [`ggplot2::stat_ecdf()`](https://ggplot2.tidyverse.org/reference/stat_ecdf.html).
-  If `discrete` is set to `TRUE` then `geom="step"` is used.
+  **\[deprecated\]** The `discrete` argument is deprecated. The ECDF is
+  a step function by definition, so
+  [`geom_step()`](https://ggplot2.tidyverse.org/reference/geom_path.html)
+  is now always used.
 
 - pad:
 
@@ -119,14 +161,19 @@ ppd_boxplot(ypred, ..., notch = TRUE, size = 0.5, alpha = 1)
 - binwidth:
 
   Passed to
-  [`ggplot2::geom_histogram()`](https://ggplot2.tidyverse.org/reference/geom_histogram.html)
+  [`ggplot2::geom_histogram()`](https://ggplot2.tidyverse.org/reference/geom_histogram.html),
+  [`ggplot2::geom_area()`](https://ggplot2.tidyverse.org/reference/geom_ribbon.html),
+  and
+  [`ggdist::stat_dots()`](https://mjskay.github.io/ggdist/reference/stat_dots.html)
   to override the default binwidth.
 
 - bins:
 
   Passed to
   [`ggplot2::geom_histogram()`](https://ggplot2.tidyverse.org/reference/geom_histogram.html)
-  to override the default binwidth.
+  and
+  [`ggplot2::geom_area()`](https://ggplot2.tidyverse.org/reference/geom_ribbon.html)
+  to override the default binning.
 
 - breaks:
 
@@ -136,10 +183,10 @@ ppd_boxplot(ypred, ..., notch = TRUE, size = 0.5, alpha = 1)
 
 - freq:
 
-  For histograms, `freq=TRUE` (the default) puts count on the y-axis.
-  Setting `freq=FALSE` puts density on the y-axis. (For many plots the
-  y-axis text is off by default. To view the count or density labels on
-  the y-axis see the
+  For histograms and frequency polygons, `freq=TRUE` (the default) puts
+  count on the y-axis. Setting `freq=FALSE` puts density on the y-axis.
+  (For many plots the y-axis text is off by default. To view the count
+  or density labels on the y-axis see the
   [`yaxis_text()`](https://mc-stan.org/bayesplot/reference/bayesplot-helpers.md)
   convenience function.)
 
@@ -148,7 +195,9 @@ ppd_boxplot(ypred, ..., notch = TRUE, size = 0.5, alpha = 1)
   For dot plots, an optional integer passed to
   [`ggdist::stat_dots()`](https://mjskay.github.io/ggdist/reference/stat_dots.html)
   specifying the number of quantiles to use for a quantile dot plot. If
-  `quantiles` is `NA` (the default) then all data points are plotted.
+  `quantiles` is `NA` then all data points are plotted. The default is
+  `quantiles=100` so that each dot represent one percent of posterior
+  mass.
 
 - notch:
 
@@ -185,6 +234,8 @@ Other PPDs:
 color_scheme_set("brightblue")
 preds <- example_yrep_draws()
 ppd_dens_overlay(ypred = preds[1:50, ])
+
+ppd_dens_overlay(ypred = preds[1:50, ], show_marginal = TRUE)
 
 ppc_dens_overlay(y = example_y_data(), yrep = preds[1:50, ])
 

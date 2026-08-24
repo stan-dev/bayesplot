@@ -77,9 +77,11 @@ ppc_stat_data(y, yrep, group = NULL, stat)
 - yrep:
 
   An `S` by `N` matrix of draws from the posterior (or prior) predictive
-  distribution. The number of rows, `S`, is the size of the posterior
-  (or prior) sample used to generate `yrep`. The number of columns, `N`
-  is the number of predicted observations (`length(y)`). The columns of
+  distribution, or a
+  [`posterior::draws`](https://mc-stan.org/posterior/reference/draws.html)
+  object. The number of rows, `S`, is the size of the posterior (or
+  prior) sample used to generate `yrep`. The number of columns, `N` is
+  the number of predicted observations (`length(y)`). The columns of
   `yrep` should be in the same order as the data points in `y` for the
   plots to make sense. See the **Details** and **Plot Descriptions**
   sections for additional advice specific to particular plots.
@@ -105,14 +107,19 @@ ppc_stat_data(y, yrep, group = NULL, stat)
 - binwidth:
 
   Passed to
-  [`ggplot2::geom_histogram()`](https://ggplot2.tidyverse.org/reference/geom_histogram.html)
+  [`ggplot2::geom_histogram()`](https://ggplot2.tidyverse.org/reference/geom_histogram.html),
+  [`ggplot2::geom_area()`](https://ggplot2.tidyverse.org/reference/geom_ribbon.html),
+  and
+  [`ggdist::stat_dots()`](https://mjskay.github.io/ggdist/reference/stat_dots.html)
   to override the default binwidth.
 
 - bins:
 
   Passed to
   [`ggplot2::geom_histogram()`](https://ggplot2.tidyverse.org/reference/geom_histogram.html)
-  to override the default binwidth.
+  and
+  [`ggplot2::geom_area()`](https://ggplot2.tidyverse.org/reference/geom_ribbon.html)
+  to override the default binning.
 
 - breaks:
 
@@ -122,10 +129,10 @@ ppc_stat_data(y, yrep, group = NULL, stat)
 
 - freq:
 
-  For histograms, `freq=TRUE` (the default) puts count on the y-axis.
-  Setting `freq=FALSE` puts density on the y-axis. (For many plots the
-  y-axis text is off by default. To view the count or density labels on
-  the y-axis see the
+  For histograms and frequency polygons, `freq=TRUE` (the default) puts
+  count on the y-axis. Setting `freq=FALSE` puts density on the y-axis.
+  (For many plots the y-axis text is off by default. To view the count
+  or density labels on the y-axis see the
   [`yaxis_text()`](https://mc-stan.org/bayesplot/reference/bayesplot-helpers.md)
   convenience function.)
 
@@ -188,6 +195,14 @@ counts).
   computed over the datasets (rows) in `yrep`. The value of the
   statistics in the observed data is overlaid as large point.
 
+- `ppc_stat_data()`:
+
+  Data-preparation back end for `ppc_stat()`, `ppc_stat_freqpoly()`, and
+  their grouped variants. Users can call `ppc_stat_data()` directly to
+  obtain the data frame of test-statistic values computed from `y` and
+  each row of `yrep`, enabling custom test-statistic visualizations with
+  **ggplot2**.
+
 ## References
 
 Gabry, J. , Simpson, D. , Vehtari, A. , Betancourt, M. and Gelman, A.
@@ -204,6 +219,7 @@ London, third edition. (Ch. 6)
 ## See also
 
 Other PPCs:
+[`PPC-calibration`](https://mc-stan.org/bayesplot/reference/PPC-calibration.md),
 [`PPC-censoring`](https://mc-stan.org/bayesplot/reference/PPC-censoring.md),
 [`PPC-discrete`](https://mc-stan.org/bayesplot/reference/PPC-discrete.md),
 [`PPC-distributions`](https://mc-stan.org/bayesplot/reference/PPC-distributions.md),

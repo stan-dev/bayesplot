@@ -54,6 +54,8 @@ available_mcmc()
 #>   mcmc_dens
 #>   mcmc_dens_chains
 #>   mcmc_dens_overlay
+#>   mcmc_dots
+#>   mcmc_dots_by_chain
 #>   mcmc_hex
 #>   mcmc_hist
 #>   mcmc_hist_by_chain
@@ -100,6 +102,10 @@ available_ppc()
 #>   ppc_bars
 #>   ppc_bars_grouped
 #>   ppc_boxplot
+#>   ppc_calibration
+#>   ppc_calibration_grouped
+#>   ppc_calibration_overlay
+#>   ppc_calibration_overlay_grouped
 #>   ppc_dens
 #>   ppc_dens_overlay
 #>   ppc_dens_overlay_grouped
@@ -120,6 +126,8 @@ available_ppc()
 #>   ppc_intervals_grouped
 #>   ppc_km_overlay
 #>   ppc_km_overlay_grouped
+#>   ppc_loo_calibration
+#>   ppc_loo_calibration_grouped
 #>   ppc_loo_intervals
 #>   ppc_loo_pit_ecdf
 #>   ppc_loo_pit_overlay
@@ -130,6 +138,7 @@ available_ppc()
 #>   ppc_ribbon
 #>   ppc_ribbon_grouped
 #>   ppc_rootogram
+#>   ppc_rootogram_grouped
 #>   ppc_scatter
 #>   ppc_scatter_avg
 #>   ppc_scatter_avg_grouped
@@ -143,6 +152,8 @@ available_ppc("grouped")
 #> bayesplot PPC module:
 #> (matching pattern 'grouped') 
 #>   ppc_bars_grouped
+#>   ppc_calibration_grouped
+#>   ppc_calibration_overlay_grouped
 #>   ppc_dens_overlay_grouped
 #>   ppc_ecdf_overlay_grouped
 #>   ppc_error_hist_grouped
@@ -150,8 +161,10 @@ available_ppc("grouped")
 #>   ppc_freqpoly_grouped
 #>   ppc_intervals_grouped
 #>   ppc_km_overlay_grouped
+#>   ppc_loo_calibration_grouped
 #>   ppc_pit_ecdf_grouped
 #>   ppc_ribbon_grouped
+#>   ppc_rootogram_grouped
 #>   ppc_scatter_avg_grouped
 #>   ppc_stat_freqpoly_grouped
 #>   ppc_stat_grouped
@@ -161,6 +174,8 @@ available_ppc("grouped", invert = TRUE)
 #> (excluding pattern 'grouped') 
 #>   ppc_bars
 #>   ppc_boxplot
+#>   ppc_calibration
+#>   ppc_calibration_overlay
 #>   ppc_dens
 #>   ppc_dens_overlay
 #>   ppc_dots
@@ -174,6 +189,7 @@ available_ppc("grouped", invert = TRUE)
 #>   ppc_hist
 #>   ppc_intervals
 #>   ppc_km_overlay
+#>   ppc_loo_calibration
 #>   ppc_loo_intervals
 #>   ppc_loo_pit_ecdf
 #>   ppc_loo_pit_overlay
@@ -223,6 +239,11 @@ available_ppc(plots_only = FALSE)
 #>   ppc_bars_data
 #>   ppc_bars_grouped
 #>   ppc_boxplot
+#>   ppc_calibration
+#>   ppc_calibration_data
+#>   ppc_calibration_grouped
+#>   ppc_calibration_overlay
+#>   ppc_calibration_overlay_grouped
 #>   ppc_data
 #>   ppc_dens
 #>   ppc_dens_overlay
@@ -246,6 +267,8 @@ available_ppc(plots_only = FALSE)
 #>   ppc_intervals_grouped
 #>   ppc_km_overlay
 #>   ppc_km_overlay_grouped
+#>   ppc_loo_calibration
+#>   ppc_loo_calibration_grouped
 #>   ppc_loo_intervals
 #>   ppc_loo_pit_data
 #>   ppc_loo_pit_ecdf
@@ -258,6 +281,7 @@ available_ppc(plots_only = FALSE)
 #>   ppc_ribbon_data
 #>   ppc_ribbon_grouped
 #>   ppc_rootogram
+#>   ppc_rootogram_grouped
 #>   ppc_scatter
 #>   ppc_scatter_avg
 #>   ppc_scatter_avg_data
@@ -276,6 +300,7 @@ available_ppc("_data", plots_only = FALSE)
 #> bayesplot PPC module:
 #> (matching pattern '_data') 
 #>   ppc_bars_data
+#>   ppc_calibration_data
 #>   ppc_data
 #>   ppc_error_data
 #>   ppc_intervals_data

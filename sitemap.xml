@@ -2,6 +2,8 @@
 <url><loc>https://mc-stan.org/bayesplot/404.html</loc></url>
 <url><loc>https://mc-stan.org/bayesplot/CONTRIBUTING.html</loc></url>
 <url><loc>https://mc-stan.org/bayesplot/LICENSE-text.html</loc></url>
+<url><loc>https://mc-stan.org/bayesplot/articles/articles-online-only/loo-pit-correlated-tests.html</loc></url>
+<url><loc>https://mc-stan.org/bayesplot/articles/articles-online-only/ppc-calibration.html</loc></url>
 <url><loc>https://mc-stan.org/bayesplot/articles/graphical-ppcs.html</loc></url>
 <url><loc>https://mc-stan.org/bayesplot/articles/index.html</loc></url>
 <url><loc>https://mc-stan.org/bayesplot/articles/plotting-mcmc-draws.html</loc></url>
@@ -19,6 +21,7 @@
 <url><loc>https://mc-stan.org/bayesplot/reference/MCMC-recover.html</loc></url>
 <url><loc>https://mc-stan.org/bayesplot/reference/MCMC-scatterplots.html</loc></url>
 <url><loc>https://mc-stan.org/bayesplot/reference/MCMC-traces.html</loc></url>
+<url><loc>https://mc-stan.org/bayesplot/reference/PPC-calibration.html</loc></url>
 <url><loc>https://mc-stan.org/bayesplot/reference/PPC-censoring.html</loc></url>
 <url><loc>https://mc-stan.org/bayesplot/reference/PPC-discrete.html</loc></url>
 <url><loc>https://mc-stan.org/bayesplot/reference/PPC-distributions.html</loc></url>

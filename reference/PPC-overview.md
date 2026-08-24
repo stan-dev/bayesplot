@@ -113,6 +113,10 @@ its own documentation:
   `y` to the distributions of individual simulated datasets (rows) in
   `yrep`.
 
+- [PPC-calibration](https://mc-stan.org/bayesplot/reference/PPC-calibration.md):
+  PPC functions to assess the calibration of predictions or predictive
+  probabilities in relation to binary observations.
+
 ## Providing an interface for predictive checking from another package
 
 In addition to the various plotting functions, the **bayesplot** package
@@ -142,6 +146,7 @@ London, third edition. (Ch. 6)
 ## See also
 
 Other PPCs:
+[`PPC-calibration`](https://mc-stan.org/bayesplot/reference/PPC-calibration.md),
 [`PPC-censoring`](https://mc-stan.org/bayesplot/reference/PPC-censoring.md),
 [`PPC-discrete`](https://mc-stan.org/bayesplot/reference/PPC-discrete.md),
 [`PPC-distributions`](https://mc-stan.org/bayesplot/reference/PPC-distributions.md),

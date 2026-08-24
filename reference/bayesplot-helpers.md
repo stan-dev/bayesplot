@@ -45,7 +45,7 @@ panel_bg(on = TRUE, ...)
 
 plot_bg(on = TRUE, ...)
 
-grid_lines(color = "gray50", size = 0.2)
+grid_lines(color = "gray50", linewidth = 0.2, size = deprecated())
 
 overlay_function(...)
 ```
@@ -118,10 +118,14 @@ overlay_function(...)
   object. If `on=TRUE` (the default), then `...` can be used to
   customize the appearance of the theme element.
 
-- color, size:
+- color, linewidth:
 
   Passed to
   [`ggplot2::element_line()`](https://ggplot2.tidyverse.org/reference/element.html).
+
+- size:
+
+  **\[deprecated\]** Use `linewidth` instead.
 
 ## Value
 
