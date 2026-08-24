@@ -1,41 +1,64 @@
-# bayesplot (development version)
+# bayesplot 1.16.0
 
-* Fixed bug in `mcmc_pairs()` (introduced in bayesplot 1.10.0) where some panels' divergences/treedepth hits were missing(#555)
-* Unified density-control argument defaults (`bw`, `adjust`, `kernel`, `n_dens`) to use `NULL` with internal fallbacks. No change in user-facing behavior. 
-* `prepare_mcmc_array()` now warns instead of erroring on `NA`s in the input.
-* Fixed `validate_chain_list()` colnames check to compare all chains, not just the first two.
-* Added test verifying `legend_move("none")` behaves equivalently to `legend_none()`.
-* Added singleton-dimension edge-case tests for exported `_data()` functions.
-* Validate empty list and zero-row matrix inputs in `nuts_params.list()`.
-* Validate user-provided `pit` values in `ppc_loo_pit_data()` and `ppc_loo_pit_qq()`, rejecting non-numeric inputs, missing values, and values outside `[0, 1]`.
-* New `show_marginal` argument to `ppd_*()` functions to show the PPD - the marginal predictive distribution by @mattansb (#425)
-* `ppc_ecdf_overlay()`, `ppc_ecdf_overlay_grouped()`, and `ppd_ecdf_overlay()` now always use `geom_step()`. The `discrete` argument is deprecated.
-* Fixed missing `drop = FALSE` in `nuts_params.CmdStanMCMC()`.
-* Replace `apply()` with `storage.mode()` for integer-to-numeric matrix conversion in `validate_predictions()`.
-* Fixed `is_chain_list()` to correctly reject empty lists instead of silently returning `TRUE`.
-* Added unit tests for `mcmc_areas_ridges_data()`, `mcmc_parcoord_data()`, and `mcmc_trace_data()`.
-* `mcmc_trace()` now supports highlighting a chain with lines using the `highlight` and `alpha` arguments. Previously this was only available via `mcmc_trace_highligh()` and with points instead of lines. (#552)
-* Added unit tests for `ppc_error_data()` and `ppc_loo_pit_data()` covering output structure, argument handling, and edge cases.
-* Added vignette sections demonstrating `*_data()` companion functions for building custom ggplot2 visualizations (#435)
-* Extract `drop_singleton_values()` helper in `mcmc_nuts_treedepth()` to remove duplicated filtering logic.
-* Eliminate redundant data processing in `mcmc_areas_data()` by reusing the prepared MCMC array for both interval and density computation.
-* Validate equal chain lengths in `validate_df_with_chain()`, reject missing chain labels, and renumber data-frame chain labels internally when converting to arrays.
-* Added unit tests for previously untested edge cases in `param_range()`, `param_glue()`, and `tidyselect_parameters()` (no-match, partial-match, and negation behavior).
-* Bumped minimum version for `rstantools` from `>= 1.5.0` to `>= 2.0.0` .
-* Use `rlang::warn()` and `rlang::inform()` for selected PPC user messages instead of base `warning()` and `message()`.
-* Standardize input validation errors in `ppc_km_overlay()` and interpolation helpers to use `rlang::abort()` for consistent error handling.
-* Fix assignment-in-call bug in `mcmc_rank_ecdf()` (#).
-* Replaced deprecated `dplyr` and `tidyselect` functions (`top_n`, `one_of`, `group_indices`) with their modern equivalents to ensure future compatibility. (#431)
-* Documentation added for all exported `*_data()` functions (#209)
-* Improved documentation for `binwidth`, `bins`, and `breaks` arguments to clarify they are passed to `ggplot2::geom_area()` and `ggdist::stat_dots()` in addition to `ggplot2::geom_histogram()`
-* Improved documentation for `freq` argument to clarify it applies to frequency polygons in addition to histograms
-* Fixed test in `test-ppc-distributions.R` that incorrectly used `ppc_dens()` instead of `ppd_dens()` when testing PPD functions
-* New functions `mcmc_dots` and `mcmc_dots_by_chain` for dot plots of MCMC draws by @behramulukir (#402)
-* Default to `quantiles=100` for all dot plots by @behramulukir (#402)
-* Use `"neff_ratio"` consistently in diagnostic color scale helpers to avoid relying on partial matching of `"neff"`.
-* Replace `expand = c(mult, add)` with `ggplot2::expansion()` helper in scale functions for consistency with ggplot2 >= 3.3.0 style.
-* Replace uses of `geom_bar(stat = "identity")` with the more idiomatic ggplot2 form `geom_col()`
-* New function `ppc_rootogram_grouped` for grouped rootogram plots by @behramulukir and @jgabry (#419)
+### New plots and plotting capabilities
+
+* `mcmc_dots()` and `mcmc_dots_by_chain()` are new quantile dot plots for
+  MCMC draws. All dot-plot functions now default to `quantiles = 100`.
+  @behramulukir (#402)
+* `ppc_calibration()` and the new grouped, overlay, LOO, and `_data()`
+  variants provide calibration plots for models with binary outcomes.
+  @TeemuSailynoja and @florence-bockting (#352)
+* `ppc_loo_pit_ecdf()`, `ppc_pit_ecdf()`, and
+  `ppc_pit_ecdf_grouped()` gain `method = "correlated"` for
+  dependence-aware uniformity tests and visualization of influential ECDF
+  regions. The existing `"independent"` method remains the default but is
+  superseded. @florence-bockting (#428)
+* `ppc_rootogram_grouped()` is a new grouped and faceted rootogram supporting
+  all existing rootogram styles. @behramulukir and @jgabry (#419)
+* `ppd_*()` distribution and test-statistic functions gain `show_marginal` for
+  adding the marginal predictive distribution; defaults are unchanged.
+  @mattansb (#425)
+
+### Other improvements and behavior changes
+
+* `mcmc_areas()`, `mcmc_areas_ridges()`, `mcmc_dens()`,
+  `mcmc_dens_chains()`, and `mcmc_dens_overlay()` gain a `bounds` argument
+  for bounded density estimation, as do their `_data()` companions and the
+  PPC and PPD density functions. @VisruthSK (#317)
+* `mcmc_trace()` now officially supports the `highlight` and `alpha`
+  arguments for highlighting a chain with lines. @jgabry (#552)
+* `ppc_*()` and `ppd_*()` functions now accept `posterior::draws` objects for
+  predictive draws. @ishaan-arora-1 (#542)
+* `ppc_ecdf_overlay()`, `ppc_ecdf_overlay_grouped()`, and
+  `ppd_ecdf_overlay()` now always draw ECDFs as step functions; their
+  `discrete` argument is deprecated. @utkarshpawade (#259)
+* `prepare_mcmc_array()` now warns rather than errors when draws contain
+  `NA`s, allowing MCMC plots of ragged arrays padded with missing values. It
+  also rejects unequal chain lengths and mismatched parameter names that
+  could previously corrupt or misalign draws. @utkarshpawade
+  (#250, #498, #528)
+
+### Bug fixes and compatibility
+
+* Improved compatibility with ggplot2 4.0 and current dplyr and tidyselect
+  releases, eliminating deprecation and small-group warnings and fixing
+  linetype legends. @jgabry, @BjarkeHautop, @ishaan-arora-1, and
+  @utkarshpawade (#410, #412, #414, #442, #446, #448, #450, #458, #468)
+* `mcmc_pairs()` now correctly marks divergences and maximum-treedepth hits in
+  every panel; a regression introduced in bayesplot 1.10.0 could omit or
+  misassign them. @jgabry (#555)
+* `nuts_params()` preserves array dimensions when a single parameter is
+  selected from a `CmdStanMCMC` object and gives clear errors for empty or
+  zero-row list inputs. @utkarshpawade (#530, #534)
+* `ppc_loo_pit_data()` now validates user-supplied `pit` values at the entry
+  point and rejects nonnumeric, missing, or out-of-range inputs.
+  @utkarshpawade (#503)
+
+
+There were many other non user-facing changes, including internal refactoring
+and improved test coverage. The full changelog can be found at:
+https://github.com/stan-dev/bayesplot/compare/v1.15.0...v1.16.0
+
 
 # bayesplot 1.15.0
 
