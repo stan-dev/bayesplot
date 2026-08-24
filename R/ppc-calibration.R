@@ -1,8 +1,8 @@
 #' PPC calibration
 #'
-#' Assess the calibration of the predictions, or predictive probabilites in relation to
-#' binary observations.
-#' See the **Plot Descriptions** section, below, for details.
+#' Assess the calibration of the predictions, or predictive probabilities in
+#' relation to binary observations. See the **Plot Descriptions** section,
+#' below, for details.
 #'
 #' @name PPC-calibration
 #' @family PPCs
@@ -31,9 +31,11 @@
 #' `ppc_loo_calibration()`, and `ppc_loo_calibration_grouped()` accept either
 #' `prep` or `yrep`.  
 #' 
-#' A document with detailed explanations and examples is available in the 
-#' [vignettes](https://mc-stan.org/bayesplot/vignettes/articles-online-only/).
-#' 
+#' `prep` or `yrep`.
+#'
+#' A document with detailed explanations and examples is available in the
+#' [vignettes](https://mc-stan.org/bayesplot/articles/).
+#'
 #' @section Plot Descriptions:
 #' \describe{
 #'   \item{`ppc_calibration()`,`ppc_calibration_grouped()`}{
