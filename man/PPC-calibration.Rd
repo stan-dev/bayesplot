@@ -184,11 +184,12 @@ function.
 }
 \description{
 Assess the calibration of the predictions, or predictive probabilities in
-relation to binary observations. See the \strong{Plot Descriptions} section,
-below, for details.
+relation to binary observations. See the \strong{Plot Descriptions} and
+\strong{Details} sections below and also the PPC Calibration vignette for more
+details and examples.
 }
 \details{
-The ppc_calibration functions are designed to assess the calibration of a
+The PPC calibration functions are designed to assess the calibration of a
 model with binary outcomes. In this context, calibration refers to the
 agreement between predicted probabilities and conditional event probabilities
 (CEPs) see Dimitriadis et al. (2021) and Säilynoja et al. (2025) for details.
@@ -198,6 +199,8 @@ The required inputs are \code{y}, representing binary observations
 \code{ppc_calibration_overlay()} and \code{ppc_calibration_overlay_grouped()} require
 \code{prep}, while \code{ppc_calibration()}, \code{ppc_calibration_grouped()},
 \code{ppc_loo_calibration()}, and \code{ppc_loo_calibration_grouped()} accept either
+\code{prep} or \code{yrep}.
+
 \code{prep} or \code{yrep}.
 
 A document with detailed explanations and examples is available in the
@@ -224,7 +227,7 @@ observation's posterior predictive draws using LOO importance weights.
 \item{\code{ppc_calibration_data()}}{
 Data frame containing the data underlying the calibration plots, which can
 be used to build custom calibration plots. The \code{type} argument controls
-whether the data frame for \code{ppc_calibration_overlay()} and its \verb{_grouped`` variant is computed (}type = "overlay"\verb{), or the data frame for }ppc_calibration()\verb{and its}_grouped\code{or}_loo\verb{ variant is computed (}type = "interval"`).
+whether the data frame for \code{ppc_calibration_overlay()} and its \verb{_grouped`` variant is computed (}type = "overlay"\verb{), or the data frame for  }ppc_calibration()\verb{and its}_grouped\code{or}_loo\verb{ variant is computed (}type = "interval"`).
 }
 }
 }
