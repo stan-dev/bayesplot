@@ -96,6 +96,8 @@ leave-one-out (LOO) cross-validation.
 \item \link{PPC-censoring}: PPC functions comparing the empirical
 distribution of censored data \code{y} to the distributions of individual
 simulated datasets (rows) in \code{yrep}.
+\item \link{PPC-calibration}: PPC functions to assess the calibration of predictions
+or predictive probabilities in relation to binary observations.
 }
 }
 
@@ -123,7 +125,7 @@ A., and Rubin, D. B. (2013). \emph{Bayesian Data Analysis.} Chapman & Hall/CRC
 Press, London, third edition. (Ch. 6)
 }
 \seealso{
-Other PPCs: 
+Other PPCs:
 \code{\link{PPC-calibration}},
 \code{\link{PPC-censoring}},
 \code{\link{PPC-discrete}},

@@ -46,12 +46,12 @@ articles:
       - plotting-mcmc-draws
       - visual-mcmc-diagnostics
       - graphical-ppcs
-      - articles-online-only/ppc-calibration
-  - title: "PIT-ECDF model checking"
+  - title: "Additional topics"
     desc: >
-      Articles on dependence-aware PIT-ECDF checks (website only; not included
-      in the CRAN package).
+      Articles on specific topics like calibration for binary models and
+      dependence-aware PIT-ECDF checks
     contents:
+      - articles-online-only/ppc-calibration
       - articles-online-only/loo-pit-correlated-tests
 
 reference:

@@ -1,8 +1,9 @@
 #' PPC calibration
 #'
-#' Assess the calibration of the predictions, or predictive probabilites in relation to
-#' binary observations.
-#' See the **Plot Descriptions** section, below, for details.
+#' Assess the calibration of the predictions, or predictive probabilities in
+#' relation to binary observations. See the **Plot Descriptions** and
+#' **Details** sections below and also the PPC Calibration vignette for more
+#' details and examples.
 #'
 #' @name PPC-calibration
 #' @family PPCs
@@ -19,8 +20,8 @@
 #' @template return-ggplot-or-data
 #'
 #' @details
-#' The ppc_calibration functions are designed to assess the calibration of a 
-#' model with binary outcomes. In this context, calibration refers to the 
+#' The PPC calibration functions are designed to assess the calibration of a
+#' model with binary outcomes. In this context, calibration refers to the
 #' agreement between predicted probabilities and conditional event probabilities
 #' (CEPs) see Dimitriadis et al. (2021) and Säilynoja et al. (2025) for details.
 #' 
@@ -31,9 +32,11 @@
 #' `ppc_loo_calibration()`, and `ppc_loo_calibration_grouped()` accept either
 #' `prep` or `yrep`.  
 #' 
-#' A document with detailed explanations and examples is available in the 
-#' [vignettes](https://mc-stan.org/bayesplot/vignettes/articles-online-only/).
-#' 
+#' `prep` or `yrep`.
+#'
+#' A document with detailed explanations and examples is available in the
+#' [vignettes](https://mc-stan.org/bayesplot/articles/).
+#'
 #' @section Plot Descriptions:
 #' \describe{
 #'   \item{`ppc_calibration()`,`ppc_calibration_grouped()`}{
