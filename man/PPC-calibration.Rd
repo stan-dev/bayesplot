@@ -183,9 +183,9 @@ customized using the \strong{ggplot2} package. The functions with suffix
 function.
 }
 \description{
-Assess the calibration of the predictions, or predictive probabilites in relation to
-binary observations.
-See the \strong{Plot Descriptions} section, below, for details.
+Assess the calibration of the predictions, or predictive probabilities in
+relation to binary observations. See the \strong{Plot Descriptions} section,
+below, for details.
 }
 \details{
 The ppc_calibration functions are designed to assess the calibration of a
@@ -201,7 +201,7 @@ The required inputs are \code{y}, representing binary observations
 \code{prep} or \code{yrep}.
 
 A document with detailed explanations and examples is available in the
-\href{https://mc-stan.org/bayesplot/vignettes/articles-online-only/}{vignettes}.
+\href{https://mc-stan.org/bayesplot/articles/}{vignettes}.
 }
 \section{Plot Descriptions}{
 
@@ -224,7 +224,7 @@ observation's posterior predictive draws using LOO importance weights.
 \item{\code{ppc_calibration_data()}}{
 Data frame containing the data underlying the calibration plots, which can
 be used to build custom calibration plots. The \code{type} argument controls
-whether the data frame for \code{ppc_calibration_overlay()} and its \verb{_grouped`` variant is computed (}type = "overlay"\verb{), or the data frame for  }ppc_calibration()\verb{and its}_grouped\code{or}_loo\verb{ variant is computed (}type = "interval"`).
+whether the data frame for \code{ppc_calibration_overlay()} and its \verb{_grouped`` variant is computed (}type = "overlay"\verb{), or the data frame for }ppc_calibration()\verb{and its}_grouped\code{or}_loo\verb{ variant is computed (}type = "interval"`).
 }
 }
 }
@@ -255,7 +255,7 @@ Recommendations for visual predictive checks in Bayesian workflow.
 (Preprint). arXiv. https://doi.org/10.48550/arXiv.2503.01509
 }
 \seealso{
-Other PPCs: 
+Other PPCs:
 \code{\link{PPC-censoring}},
 \code{\link{PPC-discrete}},
 \code{\link{PPC-distributions}},
