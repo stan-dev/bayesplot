@@ -2,135 +2,118 @@
 
 ## bayesplot (development version)
 
-- Fixed bug in
-  [`mcmc_pairs()`](https://mc-stan.org/bayesplot/dev/reference/MCMC-scatterplots.md)
-  (introduced in bayesplot 1.10.0) where some panels’
-  divergences/treedepth hits were
-  missing([\#555](https://github.com/stan-dev/bayesplot/issues/555))
-- Unified density-control argument defaults (`bw`, `adjust`, `kernel`,
-  `n_dens`) to use `NULL` with internal fallbacks. No change in
-  user-facing behavior.
-- `prepare_mcmc_array()` now warns instead of erroring on `NA`s in the
-  input.
-- Fixed `validate_chain_list()` colnames check to compare all chains,
-  not just the first two.
-- Added test verifying `legend_move("none")` behaves equivalently to
-  [`legend_none()`](https://mc-stan.org/bayesplot/dev/reference/bayesplot-helpers.md).
-- Added singleton-dimension edge-case tests for exported `_data()`
-  functions.
-- Validate empty list and zero-row matrix inputs in
-  [`nuts_params.list()`](https://mc-stan.org/bayesplot/dev/reference/bayesplot-extractors.md).
-- Validate user-provided `pit` values in
-  [`ppc_loo_pit_data()`](https://mc-stan.org/bayesplot/dev/reference/PPC-loo.md)
+## bayesplot 1.16.0
+
+CRAN release: 2026-08-25
+
+#### New plots and plotting capabilities
+
+- [`mcmc_dots()`](https://mc-stan.org/bayesplot/dev/reference/MCMC-distributions.md)
   and
-  [`ppc_loo_pit_qq()`](https://mc-stan.org/bayesplot/dev/reference/PPC-loo.md),
-  rejecting non-numeric inputs, missing values, and values outside
-  `[0, 1]`.
-- New `show_marginal` argument to `ppd_*()` functions to show the PPD -
-  the marginal predictive distribution by
-  [@mattansb](https://github.com/mattansb)
+  [`mcmc_dots_by_chain()`](https://mc-stan.org/bayesplot/dev/reference/MCMC-distributions.md)
+  are new quantile dot plots for MCMC draws. All dot-plot functions now
+  default to `quantiles = 100`.
+  [@behramulukir](https://github.com/behramulukir)
+  ([\#402](https://github.com/stan-dev/bayesplot/issues/402))
+- [`ppc_calibration()`](https://mc-stan.org/bayesplot/dev/reference/PPC-calibration.md)
+  and the new grouped, overlay, LOO, and `_data()` variants provide
+  calibration plots for models with binary outcomes.
+  [@TeemuSailynoja](https://github.com/TeemuSailynoja) and
+  [@florence-bockting](https://github.com/florence-bockting)
+  ([\#352](https://github.com/stan-dev/bayesplot/issues/352))
+- [`ppc_loo_pit_ecdf()`](https://mc-stan.org/bayesplot/dev/reference/PPC-loo.md),
+  [`ppc_pit_ecdf()`](https://mc-stan.org/bayesplot/dev/reference/PPC-distributions.md),
+  and
+  [`ppc_pit_ecdf_grouped()`](https://mc-stan.org/bayesplot/dev/reference/PPC-distributions.md)
+  gain `method = "correlated"` for dependence-aware uniformity tests and
+  visualization of influential ECDF regions. The existing
+  `"independent"` method remains the default but is superseded.
+  [@florence-bockting](https://github.com/florence-bockting)
+  ([\#428](https://github.com/stan-dev/bayesplot/issues/428))
+- [`ppc_rootogram_grouped()`](https://mc-stan.org/bayesplot/dev/reference/PPC-discrete.md)
+  is a new grouped and faceted rootogram supporting all existing
+  rootogram styles. [@behramulukir](https://github.com/behramulukir) and
+  [@jgabry](https://github.com/jgabry)
+  ([\#419](https://github.com/stan-dev/bayesplot/issues/419))
+- `ppd_*()` distribution and test-statistic functions gain
+  `show_marginal` for adding the marginal predictive distribution;
+  defaults are unchanged. [@mattansb](https://github.com/mattansb)
   ([\#425](https://github.com/stan-dev/bayesplot/issues/425))
+
+#### Other improvements and behavior changes
+
+- [`mcmc_areas()`](https://mc-stan.org/bayesplot/dev/reference/MCMC-intervals.md),
+  [`mcmc_areas_ridges()`](https://mc-stan.org/bayesplot/dev/reference/MCMC-intervals.md),
+  [`mcmc_dens()`](https://mc-stan.org/bayesplot/dev/reference/MCMC-distributions.md),
+  [`mcmc_dens_chains()`](https://mc-stan.org/bayesplot/dev/reference/MCMC-distributions.md),
+  and
+  [`mcmc_dens_overlay()`](https://mc-stan.org/bayesplot/dev/reference/MCMC-distributions.md)
+  gain a `bounds` argument for bounded density estimation, as do their
+  `_data()` companions and the PPC and PPD density functions.
+  [@VisruthSK](https://github.com/VisruthSK)
+  ([\#317](https://github.com/stan-dev/bayesplot/issues/317))
+- [`mcmc_trace()`](https://mc-stan.org/bayesplot/dev/reference/MCMC-traces.md)
+  now officially supports the `highlight` and `alpha` arguments for
+  highlighting a chain with lines. [@jgabry](https://github.com/jgabry)
+  ([\#552](https://github.com/stan-dev/bayesplot/issues/552))
+- `ppc_*()` and `ppd_*()` functions now accept
+  [`posterior::draws`](https://mc-stan.org/posterior/reference/draws.html)
+  objects for predictive draws.
+  [@ishaan-arora-1](https://github.com/ishaan-arora-1)
+  ([\#542](https://github.com/stan-dev/bayesplot/issues/542))
 - [`ppc_ecdf_overlay()`](https://mc-stan.org/bayesplot/dev/reference/PPC-distributions.md),
   [`ppc_ecdf_overlay_grouped()`](https://mc-stan.org/bayesplot/dev/reference/PPC-distributions.md),
   and
   [`ppd_ecdf_overlay()`](https://mc-stan.org/bayesplot/dev/reference/PPD-distributions.md)
-  now always use
-  [`geom_step()`](https://ggplot2.tidyverse.org/reference/geom_path.html).
-  The `discrete` argument is deprecated.
-- Fixed missing `drop = FALSE` in
-  [`nuts_params.CmdStanMCMC()`](https://mc-stan.org/bayesplot/dev/reference/bayesplot-extractors.md).
-- Replace [`apply()`](https://rdrr.io/r/base/apply.html) with
-  [`storage.mode()`](https://rdrr.io/r/base/mode.html) for
-  integer-to-numeric matrix conversion in `validate_predictions()`.
-- Fixed `is_chain_list()` to correctly reject empty lists instead of
-  silently returning `TRUE`.
-- Added unit tests for
-  [`mcmc_areas_ridges_data()`](https://mc-stan.org/bayesplot/dev/reference/MCMC-intervals.md),
-  [`mcmc_parcoord_data()`](https://mc-stan.org/bayesplot/dev/reference/MCMC-parcoord.md),
-  and
-  [`mcmc_trace_data()`](https://mc-stan.org/bayesplot/dev/reference/MCMC-traces.md).
-- [`mcmc_trace()`](https://mc-stan.org/bayesplot/dev/reference/MCMC-traces.md)
-  now supports highlighting a chain with lines using the `highlight` and
-  `alpha` arguments. Previously this was only available via
-  `mcmc_trace_highligh()` and with points instead of lines.
-  ([\#552](https://github.com/stan-dev/bayesplot/issues/552))
-- Added unit tests for
-  [`ppc_error_data()`](https://mc-stan.org/bayesplot/dev/reference/PPC-errors.md)
-  and
-  [`ppc_loo_pit_data()`](https://mc-stan.org/bayesplot/dev/reference/PPC-loo.md)
-  covering output structure, argument handling, and edge cases.
-- Added vignette sections demonstrating `*_data()` companion functions
-  for building custom ggplot2 visualizations
-  ([\#435](https://github.com/stan-dev/bayesplot/issues/435))
-- Extract `drop_singleton_values()` helper in
-  [`mcmc_nuts_treedepth()`](https://mc-stan.org/bayesplot/dev/reference/MCMC-nuts.md)
-  to remove duplicated filtering logic.
-- Eliminate redundant data processing in
-  [`mcmc_areas_data()`](https://mc-stan.org/bayesplot/dev/reference/MCMC-intervals.md)
-  by reusing the prepared MCMC array for both interval and density
-  computation.
-- Validate equal chain lengths in `validate_df_with_chain()`, reject
-  missing chain labels, and renumber data-frame chain labels internally
-  when converting to arrays.
-- Added unit tests for previously untested edge cases in
-  [`param_range()`](https://mc-stan.org/bayesplot/dev/reference/tidy-params.md),
-  [`param_glue()`](https://mc-stan.org/bayesplot/dev/reference/tidy-params.md),
-  and `tidyselect_parameters()` (no-match, partial-match, and negation
-  behavior).
-- Bumped minimum version for `rstantools` from `>= 1.5.0` to `>= 2.0.0`
-  .
-- Use [`rlang::warn()`](https://rlang.r-lib.org/reference/abort.html)
-  and [`rlang::inform()`](https://rlang.r-lib.org/reference/abort.html)
-  for selected PPC user messages instead of base
-  [`warning()`](https://rdrr.io/r/base/warning.html) and
-  [`message()`](https://rdrr.io/r/base/message.html).
-- Standardize input validation errors in
-  [`ppc_km_overlay()`](https://mc-stan.org/bayesplot/dev/reference/PPC-censoring.md)
-  and interpolation helpers to use
-  [`rlang::abort()`](https://rlang.r-lib.org/reference/abort.html) for
-  consistent error handling.
-- Fix assignment-in-call bug in
-  [`mcmc_rank_ecdf()`](https://mc-stan.org/bayesplot/dev/reference/MCMC-traces.md)
-  (#).
-- Replaced deprecated `dplyr` and `tidyselect` functions (`top_n`,
-  `one_of`, `group_indices`) with their modern equivalents to ensure
-  future compatibility.
-  ([\#431](https://github.com/stan-dev/bayesplot/issues/431))
-- Documentation added for all exported `*_data()` functions
-  ([\#209](https://github.com/stan-dev/bayesplot/issues/209))
-- Improved documentation for `binwidth`, `bins`, and `breaks` arguments
-  to clarify they are passed to
-  [`ggplot2::geom_area()`](https://ggplot2.tidyverse.org/reference/geom_ribbon.html)
-  and
-  [`ggdist::stat_dots()`](https://mjskay.github.io/ggdist/reference/stat_dots.html)
-  in addition to
-  [`ggplot2::geom_histogram()`](https://ggplot2.tidyverse.org/reference/geom_histogram.html)
-- Improved documentation for `freq` argument to clarify it applies to
-  frequency polygons in addition to histograms
-- Fixed test in `test-ppc-distributions.R` that incorrectly used
-  [`ppc_dens()`](https://mc-stan.org/bayesplot/dev/reference/PPC-distributions.md)
-  instead of
-  [`ppd_dens()`](https://mc-stan.org/bayesplot/dev/reference/PPD-distributions.md)
-  when testing PPD functions
-- New functions `mcmc_dots` and `mcmc_dots_by_chain` for dot plots of
-  MCMC draws by [@behramulukir](https://github.com/behramulukir)
-  ([\#402](https://github.com/stan-dev/bayesplot/issues/402))
-- Default to `quantiles=100` for all dot plots by
-  [@behramulukir](https://github.com/behramulukir)
-  ([\#402](https://github.com/stan-dev/bayesplot/issues/402))
-- Use `"neff_ratio"` consistently in diagnostic color scale helpers to
-  avoid relying on partial matching of `"neff"`.
-- Replace `expand = c(mult, add)` with
-  [`ggplot2::expansion()`](https://ggplot2.tidyverse.org/reference/expansion.html)
-  helper in scale functions for consistency with ggplot2 \>= 3.3.0
-  style.
-- Replace uses of `geom_bar(stat = "identity")` with the more idiomatic
-  ggplot2 form
-  [`geom_col()`](https://ggplot2.tidyverse.org/reference/geom_bar.html)
-- New function `ppc_rootogram_grouped` for grouped rootogram plots by
-  [@behramulukir](https://github.com/behramulukir) and
-  [@jgabry](https://github.com/jgabry)
-  ([\#419](https://github.com/stan-dev/bayesplot/issues/419))
+  now always draw ECDFs as step functions; their `discrete` argument is
+  deprecated. [@utkarshpawade](https://github.com/utkarshpawade)
+  ([\#259](https://github.com/stan-dev/bayesplot/issues/259))
+- `prepare_mcmc_array()` now warns rather than errors when draws contain
+  `NA`s, allowing MCMC plots of ragged arrays padded with missing
+  values. It also rejects unequal chain lengths and mismatched parameter
+  names that could previously corrupt or misalign draws.
+  [@utkarshpawade](https://github.com/utkarshpawade)
+  ([\#250](https://github.com/stan-dev/bayesplot/issues/250),
+  [\#498](https://github.com/stan-dev/bayesplot/issues/498),
+  [\#528](https://github.com/stan-dev/bayesplot/issues/528))
+
+#### Bug fixes and compatibility
+
+- Improved compatibility with ggplot2 4.0 and current dplyr and
+  tidyselect releases, eliminating deprecation and small-group warnings
+  and fixing linetype legends. [@jgabry](https://github.com/jgabry),
+  [@BjarkeHautop](https://github.com/BjarkeHautop),
+  [@ishaan-arora-1](https://github.com/ishaan-arora-1), and
+  [@utkarshpawade](https://github.com/utkarshpawade)
+  ([\#410](https://github.com/stan-dev/bayesplot/issues/410),
+  [\#412](https://github.com/stan-dev/bayesplot/issues/412),
+  [\#414](https://github.com/stan-dev/bayesplot/issues/414),
+  [\#442](https://github.com/stan-dev/bayesplot/issues/442),
+  [\#446](https://github.com/stan-dev/bayesplot/issues/446),
+  [\#448](https://github.com/stan-dev/bayesplot/issues/448),
+  [\#450](https://github.com/stan-dev/bayesplot/issues/450),
+  [\#458](https://github.com/stan-dev/bayesplot/issues/458),
+  [\#468](https://github.com/stan-dev/bayesplot/issues/468))
+- [`mcmc_pairs()`](https://mc-stan.org/bayesplot/dev/reference/MCMC-scatterplots.md)
+  now correctly marks divergences and maximum-treedepth hits in every
+  panel; a regression introduced in bayesplot 1.10.0 could omit or
+  misassign them. [@jgabry](https://github.com/jgabry)
+  ([\#555](https://github.com/stan-dev/bayesplot/issues/555))
+- [`nuts_params()`](https://mc-stan.org/bayesplot/dev/reference/bayesplot-extractors.md)
+  preserves array dimensions when a single parameter is selected from a
+  `CmdStanMCMC` object and gives clear errors for empty or zero-row list
+  inputs. [@utkarshpawade](https://github.com/utkarshpawade)
+  ([\#530](https://github.com/stan-dev/bayesplot/issues/530),
+  [\#534](https://github.com/stan-dev/bayesplot/issues/534))
+- [`ppc_loo_pit_data()`](https://mc-stan.org/bayesplot/dev/reference/PPC-loo.md)
+  now validates user-supplied `pit` values at the entry point and
+  rejects nonnumeric, missing, or out-of-range inputs.
+  [@utkarshpawade](https://github.com/utkarshpawade)
+  ([\#503](https://github.com/stan-dev/bayesplot/issues/503))
+
+There were many other non user-facing changes, including internal
+refactoring and improved test coverage. The full changelog can be found
+at: <https://github.com/stan-dev/bayesplot/compare/v1.15.0>…v1.16.0
 
 ## bayesplot 1.15.0
 

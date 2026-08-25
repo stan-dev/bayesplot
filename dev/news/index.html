@@ -15,7 +15,7 @@
       bayesplot
     </a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.15.0.9000</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.16.0.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -63,48 +63,47 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="bayesplot-development-version">bayesplot (development version)<a class="anchor" aria-label="anchor" href="#bayesplot-development-version"></a></h2>
-<ul><li>Fixed bug in <code><a href="../reference/MCMC-scatterplots.html">mcmc_pairs()</a></code> (introduced in bayesplot 1.10.0) where some panels’ divergences/treedepth hits were missing(<a href="https://github.com/stan-dev/bayesplot/issues/555" class="external-link">#555</a>)</li>
-<li>Unified density-control argument defaults (<code>bw</code>, <code>adjust</code>, <code>kernel</code>, <code>n_dens</code>) to use <code>NULL</code> with internal fallbacks. No change in user-facing behavior.</li>
+</div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.16.0" id="bayesplot-1160">bayesplot 1.16.0<a class="anchor" aria-label="anchor" href="#bayesplot-1160"></a></h2><p class="text-muted">CRAN release: 2026-08-25</p>
+<div class="section level4">
+<h4 id="new-plots-and-plotting-capabilities-1-16-0">New plots and plotting capabilities<a class="anchor" aria-label="anchor" href="#new-plots-and-plotting-capabilities-1-16-0"></a></h4>
+<ul><li>
+<code><a href="../reference/MCMC-distributions.html">mcmc_dots()</a></code> and <code><a href="../reference/MCMC-distributions.html">mcmc_dots_by_chain()</a></code> are new quantile dot plots for MCMC draws. All dot-plot functions now default to <code>quantiles = 100</code>. <a href="https://github.com/behramulukir" class="external-link">@behramulukir</a> (<a href="https://github.com/stan-dev/bayesplot/issues/402" class="external-link">#402</a>)</li>
 <li>
-<code>prepare_mcmc_array()</code> now warns instead of erroring on <code>NA</code>s in the input.</li>
-<li>Fixed <code>validate_chain_list()</code> colnames check to compare all chains, not just the first two.</li>
-<li>Added test verifying <code>legend_move("none")</code> behaves equivalently to <code><a href="../reference/bayesplot-helpers.html">legend_none()</a></code>.</li>
-<li>Added singleton-dimension edge-case tests for exported <code>_data()</code> functions.</li>
-<li>Validate empty list and zero-row matrix inputs in <code><a href="../reference/bayesplot-extractors.html">nuts_params.list()</a></code>.</li>
-<li>Validate user-provided <code>pit</code> values in <code><a href="../reference/PPC-loo.html">ppc_loo_pit_data()</a></code> and <code><a href="../reference/PPC-loo.html">ppc_loo_pit_qq()</a></code>, rejecting non-numeric inputs, missing values, and values outside <code>[0, 1]</code>.</li>
-<li>New <code>show_marginal</code> argument to <code>ppd_*()</code> functions to show the PPD - the marginal predictive distribution by <a href="https://github.com/mattansb" class="external-link">@mattansb</a> (<a href="https://github.com/stan-dev/bayesplot/issues/425" class="external-link">#425</a>)</li>
+<code><a href="../reference/PPC-calibration.html">ppc_calibration()</a></code> and the new grouped, overlay, LOO, and <code>_data()</code> variants provide calibration plots for models with binary outcomes. <a href="https://github.com/TeemuSailynoja" class="external-link">@TeemuSailynoja</a> and <a href="https://github.com/florence-bockting" class="external-link">@florence-bockting</a> (<a href="https://github.com/stan-dev/bayesplot/issues/352" class="external-link">#352</a>)</li>
 <li>
-<code><a href="../reference/PPC-distributions.html">ppc_ecdf_overlay()</a></code>, <code><a href="../reference/PPC-distributions.html">ppc_ecdf_overlay_grouped()</a></code>, and <code><a href="../reference/PPD-distributions.html">ppd_ecdf_overlay()</a></code> now always use <code><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_step()</a></code>. The <code>discrete</code> argument is deprecated.</li>
-<li>Fixed missing <code>drop = FALSE</code> in <code><a href="../reference/bayesplot-extractors.html">nuts_params.CmdStanMCMC()</a></code>.</li>
-<li>Replace <code><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply()</a></code> with <code><a href="https://rdrr.io/r/base/mode.html" class="external-link">storage.mode()</a></code> for integer-to-numeric matrix conversion in <code>validate_predictions()</code>.</li>
-<li>Fixed <code>is_chain_list()</code> to correctly reject empty lists instead of silently returning <code>TRUE</code>.</li>
-<li>Added unit tests for <code><a href="../reference/MCMC-intervals.html">mcmc_areas_ridges_data()</a></code>, <code><a href="../reference/MCMC-parcoord.html">mcmc_parcoord_data()</a></code>, and <code><a href="../reference/MCMC-traces.html">mcmc_trace_data()</a></code>.</li>
+<code><a href="../reference/PPC-loo.html">ppc_loo_pit_ecdf()</a></code>, <code><a href="../reference/PPC-distributions.html">ppc_pit_ecdf()</a></code>, and <code><a href="../reference/PPC-distributions.html">ppc_pit_ecdf_grouped()</a></code> gain <code>method = "correlated"</code> for dependence-aware uniformity tests and visualization of influential ECDF regions. The existing <code>"independent"</code> method remains the default but is superseded. <a href="https://github.com/florence-bockting" class="external-link">@florence-bockting</a> (<a href="https://github.com/stan-dev/bayesplot/issues/428" class="external-link">#428</a>)</li>
 <li>
-<code><a href="../reference/MCMC-traces.html">mcmc_trace()</a></code> now supports highlighting a chain with lines using the <code>highlight</code> and <code>alpha</code> arguments. Previously this was only available via <code>mcmc_trace_highligh()</code> and with points instead of lines. (<a href="https://github.com/stan-dev/bayesplot/issues/552" class="external-link">#552</a>)</li>
-<li>Added unit tests for <code><a href="../reference/PPC-errors.html">ppc_error_data()</a></code> and <code><a href="../reference/PPC-loo.html">ppc_loo_pit_data()</a></code> covering output structure, argument handling, and edge cases.</li>
-<li>Added vignette sections demonstrating <code>*_data()</code> companion functions for building custom ggplot2 visualizations (<a href="https://github.com/stan-dev/bayesplot/issues/435" class="external-link">#435</a>)</li>
-<li>Extract <code>drop_singleton_values()</code> helper in <code><a href="../reference/MCMC-nuts.html">mcmc_nuts_treedepth()</a></code> to remove duplicated filtering logic.</li>
-<li>Eliminate redundant data processing in <code><a href="../reference/MCMC-intervals.html">mcmc_areas_data()</a></code> by reusing the prepared MCMC array for both interval and density computation.</li>
-<li>Validate equal chain lengths in <code>validate_df_with_chain()</code>, reject missing chain labels, and renumber data-frame chain labels internally when converting to arrays.</li>
-<li>Added unit tests for previously untested edge cases in <code><a href="../reference/tidy-params.html">param_range()</a></code>, <code><a href="../reference/tidy-params.html">param_glue()</a></code>, and <code>tidyselect_parameters()</code> (no-match, partial-match, and negation behavior).</li>
-<li>Bumped minimum version for <code>rstantools</code> from <code>&gt;= 1.5.0</code> to <code>&gt;= 2.0.0</code> .</li>
-<li>Use <code><a href="https://rlang.r-lib.org/reference/abort.html" class="external-link">rlang::warn()</a></code> and <code><a href="https://rlang.r-lib.org/reference/abort.html" class="external-link">rlang::inform()</a></code> for selected PPC user messages instead of base <code><a href="https://rdrr.io/r/base/warning.html" class="external-link">warning()</a></code> and <code><a href="https://rdrr.io/r/base/message.html" class="external-link">message()</a></code>.</li>
-<li>Standardize input validation errors in <code><a href="../reference/PPC-censoring.html">ppc_km_overlay()</a></code> and interpolation helpers to use <code><a href="https://rlang.r-lib.org/reference/abort.html" class="external-link">rlang::abort()</a></code> for consistent error handling.</li>
-<li>Fix assignment-in-call bug in <code><a href="../reference/MCMC-traces.html">mcmc_rank_ecdf()</a></code> (#).</li>
-<li>Replaced deprecated <code>dplyr</code> and <code>tidyselect</code> functions (<code>top_n</code>, <code>one_of</code>, <code>group_indices</code>) with their modern equivalents to ensure future compatibility. (<a href="https://github.com/stan-dev/bayesplot/issues/431" class="external-link">#431</a>)</li>
-<li>Documentation added for all exported <code>*_data()</code> functions (<a href="https://github.com/stan-dev/bayesplot/issues/209" class="external-link">#209</a>)</li>
-<li>Improved documentation for <code>binwidth</code>, <code>bins</code>, and <code>breaks</code> arguments to clarify they are passed to <code><a href="https://ggplot2.tidyverse.org/reference/geom_ribbon.html" class="external-link">ggplot2::geom_area()</a></code> and <code><a href="https://mjskay.github.io/ggdist/reference/stat_dots.html" class="external-link">ggdist::stat_dots()</a></code> in addition to <code><a href="https://ggplot2.tidyverse.org/reference/geom_histogram.html" class="external-link">ggplot2::geom_histogram()</a></code>
-</li>
-<li>Improved documentation for <code>freq</code> argument to clarify it applies to frequency polygons in addition to histograms</li>
-<li>Fixed test in <code>test-ppc-distributions.R</code> that incorrectly used <code><a href="../reference/PPC-distributions.html">ppc_dens()</a></code> instead of <code><a href="../reference/PPD-distributions.html">ppd_dens()</a></code> when testing PPD functions</li>
-<li>New functions <code>mcmc_dots</code> and <code>mcmc_dots_by_chain</code> for dot plots of MCMC draws by <a href="https://github.com/behramulukir" class="external-link">@behramulukir</a> (<a href="https://github.com/stan-dev/bayesplot/issues/402" class="external-link">#402</a>)</li>
-<li>Default to <code>quantiles=100</code> for all dot plots by <a href="https://github.com/behramulukir" class="external-link">@behramulukir</a> (<a href="https://github.com/stan-dev/bayesplot/issues/402" class="external-link">#402</a>)</li>
-<li>Use <code>"neff_ratio"</code> consistently in diagnostic color scale helpers to avoid relying on partial matching of <code>"neff"</code>.</li>
-<li>Replace <code>expand = c(mult, add)</code> with <code><a href="https://ggplot2.tidyverse.org/reference/expansion.html" class="external-link">ggplot2::expansion()</a></code> helper in scale functions for consistency with ggplot2 &gt;= 3.3.0 style.</li>
-<li>Replace uses of <code>geom_bar(stat = "identity")</code> with the more idiomatic ggplot2 form <code><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_col()</a></code>
-</li>
-<li>New function <code>ppc_rootogram_grouped</code> for grouped rootogram plots by <a href="https://github.com/behramulukir" class="external-link">@behramulukir</a> and <a href="https://github.com/jgabry" class="external-link">@jgabry</a> (<a href="https://github.com/stan-dev/bayesplot/issues/419" class="external-link">#419</a>)</li>
+<code><a href="../reference/PPC-discrete.html">ppc_rootogram_grouped()</a></code> is a new grouped and faceted rootogram supporting all existing rootogram styles. <a href="https://github.com/behramulukir" class="external-link">@behramulukir</a> and <a href="https://github.com/jgabry" class="external-link">@jgabry</a> (<a href="https://github.com/stan-dev/bayesplot/issues/419" class="external-link">#419</a>)</li>
+<li>
+<code>ppd_*()</code> distribution and test-statistic functions gain <code>show_marginal</code> for adding the marginal predictive distribution; defaults are unchanged. <a href="https://github.com/mattansb" class="external-link">@mattansb</a> (<a href="https://github.com/stan-dev/bayesplot/issues/425" class="external-link">#425</a>)</li>
 </ul></div>
+<div class="section level4">
+<h4 id="other-improvements-and-behavior-changes-1-16-0">Other improvements and behavior changes<a class="anchor" aria-label="anchor" href="#other-improvements-and-behavior-changes-1-16-0"></a></h4>
+<ul><li>
+<code><a href="../reference/MCMC-intervals.html">mcmc_areas()</a></code>, <code><a href="../reference/MCMC-intervals.html">mcmc_areas_ridges()</a></code>, <code><a href="../reference/MCMC-distributions.html">mcmc_dens()</a></code>, <code><a href="../reference/MCMC-distributions.html">mcmc_dens_chains()</a></code>, and <code><a href="../reference/MCMC-distributions.html">mcmc_dens_overlay()</a></code> gain a <code>bounds</code> argument for bounded density estimation, as do their <code>_data()</code> companions and the PPC and PPD density functions. <a href="https://github.com/VisruthSK" class="external-link">@VisruthSK</a> (<a href="https://github.com/stan-dev/bayesplot/issues/317" class="external-link">#317</a>)</li>
+<li>
+<code><a href="../reference/MCMC-traces.html">mcmc_trace()</a></code> now officially supports the <code>highlight</code> and <code>alpha</code> arguments for highlighting a chain with lines. <a href="https://github.com/jgabry" class="external-link">@jgabry</a> (<a href="https://github.com/stan-dev/bayesplot/issues/552" class="external-link">#552</a>)</li>
+<li>
+<code>ppc_*()</code> and <code>ppd_*()</code> functions now accept <code><a href="https://mc-stan.org/posterior/reference/draws.html" class="external-link">posterior::draws</a></code> objects for predictive draws. <a href="https://github.com/ishaan-arora-1" class="external-link">@ishaan-arora-1</a> (<a href="https://github.com/stan-dev/bayesplot/issues/542" class="external-link">#542</a>)</li>
+<li>
+<code><a href="../reference/PPC-distributions.html">ppc_ecdf_overlay()</a></code>, <code><a href="../reference/PPC-distributions.html">ppc_ecdf_overlay_grouped()</a></code>, and <code><a href="../reference/PPD-distributions.html">ppd_ecdf_overlay()</a></code> now always draw ECDFs as step functions; their <code>discrete</code> argument is deprecated. <a href="https://github.com/utkarshpawade" class="external-link">@utkarshpawade</a> (<a href="https://github.com/stan-dev/bayesplot/issues/259" class="external-link">#259</a>)</li>
+<li>
+<code>prepare_mcmc_array()</code> now warns rather than errors when draws contain <code>NA</code>s, allowing MCMC plots of ragged arrays padded with missing values. It also rejects unequal chain lengths and mismatched parameter names that could previously corrupt or misalign draws. <a href="https://github.com/utkarshpawade" class="external-link">@utkarshpawade</a> (<a href="https://github.com/stan-dev/bayesplot/issues/250" class="external-link">#250</a>, <a href="https://github.com/stan-dev/bayesplot/issues/498" class="external-link">#498</a>, <a href="https://github.com/stan-dev/bayesplot/issues/528" class="external-link">#528</a>)</li>
+</ul></div>
+<div class="section level4">
+<h4 id="bug-fixes-and-compatibility-1-16-0">Bug fixes and compatibility<a class="anchor" aria-label="anchor" href="#bug-fixes-and-compatibility-1-16-0"></a></h4>
+<ul><li>Improved compatibility with ggplot2 4.0 and current dplyr and tidyselect releases, eliminating deprecation and small-group warnings and fixing linetype legends. <a href="https://github.com/jgabry" class="external-link">@jgabry</a>, <a href="https://github.com/BjarkeHautop" class="external-link">@BjarkeHautop</a>, <a href="https://github.com/ishaan-arora-1" class="external-link">@ishaan-arora-1</a>, and <a href="https://github.com/utkarshpawade" class="external-link">@utkarshpawade</a> (<a href="https://github.com/stan-dev/bayesplot/issues/410" class="external-link">#410</a>, <a href="https://github.com/stan-dev/bayesplot/issues/412" class="external-link">#412</a>, <a href="https://github.com/stan-dev/bayesplot/issues/414" class="external-link">#414</a>, <a href="https://github.com/stan-dev/bayesplot/issues/442" class="external-link">#442</a>, <a href="https://github.com/stan-dev/bayesplot/issues/446" class="external-link">#446</a>, <a href="https://github.com/stan-dev/bayesplot/issues/448" class="external-link">#448</a>, <a href="https://github.com/stan-dev/bayesplot/issues/450" class="external-link">#450</a>, <a href="https://github.com/stan-dev/bayesplot/issues/458" class="external-link">#458</a>, <a href="https://github.com/stan-dev/bayesplot/issues/468" class="external-link">#468</a>)</li>
+<li>
+<code><a href="../reference/MCMC-scatterplots.html">mcmc_pairs()</a></code> now correctly marks divergences and maximum-treedepth hits in every panel; a regression introduced in bayesplot 1.10.0 could omit or misassign them. <a href="https://github.com/jgabry" class="external-link">@jgabry</a> (<a href="https://github.com/stan-dev/bayesplot/issues/555" class="external-link">#555</a>)</li>
+<li>
+<code><a href="../reference/bayesplot-extractors.html">nuts_params()</a></code> preserves array dimensions when a single parameter is selected from a <code>CmdStanMCMC</code> object and gives clear errors for empty or zero-row list inputs. <a href="https://github.com/utkarshpawade" class="external-link">@utkarshpawade</a> (<a href="https://github.com/stan-dev/bayesplot/issues/530" class="external-link">#530</a>, <a href="https://github.com/stan-dev/bayesplot/issues/534" class="external-link">#534</a>)</li>
+<li>
+<code><a href="../reference/PPC-loo.html">ppc_loo_pit_data()</a></code> now validates user-supplied <code>pit</code> values at the entry point and rejects nonnumeric, missing, or out-of-range inputs. <a href="https://github.com/utkarshpawade" class="external-link">@utkarshpawade</a> (<a href="https://github.com/stan-dev/bayesplot/issues/503" class="external-link">#503</a>)</li>
+</ul><p>There were many other non user-facing changes, including internal refactoring and improved test coverage. The full changelog can be found at: <a href="https://github.com/stan-dev/bayesplot/compare/v1.15.0" class="external-link uri">https://github.com/stan-dev/bayesplot/compare/v1.15.0</a>…v1.16.0</p>
+</div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.15.0" id="bayesplot-1150">bayesplot 1.15.0<a class="anchor" aria-label="anchor" href="#bayesplot-1150"></a></h2><p class="text-muted">CRAN release: 2025-12-12</p>
 <ul><li>Add <code>shape</code> argument to <code>mcmc_scatter</code> by <a href="https://github.com/behramulukir" class="external-link">@behramulukir</a> (<a href="https://github.com/stan-dev/bayesplot/issues/375" class="external-link">#375</a>)</li>

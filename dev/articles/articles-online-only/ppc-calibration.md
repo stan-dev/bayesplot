@@ -1,4 +1,4 @@
-# PPC Calibration - Calibration of Bayesian models with binary outcomes
+# Calibration of Bayesian models with binary outcomes
 
 ``` r
 

@@ -1,4 +1,4 @@
-# Model checking using 'ppc_pit_ecdf' and 'ppc_loo_pit_ecdf'
+# Model checking using \`ppc_pit_ecdf\` and \`ppc_loo_pit_ecdf\`
 
 ## Setup
 
