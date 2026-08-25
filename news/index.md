@@ -2,6 +2,8 @@
 
 ## bayesplot 1.16.0
 
+CRAN release: 2026-08-25
+
 #### New plots and plotting capabilities
 
 - [`mcmc_dots()`](https://mc-stan.org/bayesplot/reference/MCMC-distributions.md)
