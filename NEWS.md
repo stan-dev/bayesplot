@@ -1,3 +1,5 @@
+# bayesplot (development version)
+
 # bayesplot 1.16.0
 
 ### New plots and plotting capabilities
