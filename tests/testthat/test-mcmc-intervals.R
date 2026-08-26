@@ -271,3 +271,15 @@ test_that("mcmc_areas_ridges renders correctly", {
   p_size <- mcmc_areas_ridges(vdiff_dframe, border_size = 2)
   vdiffr::expect_doppelganger("mcmc_areas_ridges (size)", p_size)
 })
+
+test_that("mcmc_intervals annotation inherits from theme gridlines", {
+  testthat::skip_on_cran()
+  testthat::skip_if_not_installed("vdiffr")
+  skip_on_r_oldrel()
+
+  bayesplot_theme_set(ggplot2::theme_gray())
+  on.exit(bayesplot_theme_set(), add = TRUE)
+
+  p <- mcmc_intervals(vdiff_dframe)
+  vdiffr::expect_doppelganger("mcmc_intervals (theme_gray)", p)
+})
