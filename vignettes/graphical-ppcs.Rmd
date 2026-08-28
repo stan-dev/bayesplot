@@ -425,6 +425,45 @@ and [**brms**](https://CRAN.R-project.org/package=brms) packages.
 
 <br>
 
+## Using PPC plots for prior predictive checking
+
+Although this vignette focuses on *posterior* predictive checking, the same
+`ppc_*` functions can be used for **prior** predictive checking as well. The
+idea is the same: instead of passing draws from the posterior predictive
+distribution as `yrep`, you pass draws from the **prior** predictive
+distribution. This can be useful for understanding the implications of your
+priors before conditioning on the data (see Gabry et al. (2019) for more on
+when prior predictive checks are useful).
+
+For example, with **rstanarm** you can obtain prior predictive draws using
+`posterior_predict()` on a model fit with `prior_PD = TRUE`:
+
+```{r prior-pd, eval=FALSE}
+fit_prior <- stan_glm(
+  y ~ roach100 + treatment + senior,
+  offset = log(exposure2),
+  family = poisson,
+  data = roaches,
+  prior_PD = TRUE  # sample from prior predictive only
+)
+yrep_prior <- posterior_predict(fit_prior)
+
+# use the same ppc_ functions with prior predictive draws
+ppc_dens_overlay(y, yrep_prior[1:50, ])
+ppc_stat(y, yrep_prior, stat = "mean")
+```
+
+If you want to examine the prior predictive distribution *without* comparing to
+observed data, you can use the `ppd_*` functions (PPD = prior/posterior
+predictive distribution) instead:
+
+```{r ppd-example, eval=FALSE}
+ppd_dens_overlay(yrep_prior[1:50, ])
+ppd_stat(yrep_prior, stat = "mean")
+```
+
+<br>
+
 ## References
 
 Buerkner, P. (2017). brms: Bayesian Regression Models using Stan. R package
