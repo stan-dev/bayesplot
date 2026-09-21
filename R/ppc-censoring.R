@@ -78,6 +78,9 @@
 #' )
 #' ppc_km_overlay(y, yrep[1:25, ], status_y = status_y,
 #'               left_truncation_y = left_truncation_y)
+#'
+#' # With y_draw = "points"
+#' ppc_km_overlay(y, yrep[1:25, ], status_y = status_y, y_draw = "points")
 #' }
 NULL
 
@@ -96,6 +99,10 @@ NULL
 #'   posterior predictive draws may not be shown by default because of the
 #'   controlled extrapolation. To display all posterior predictive draws, set
 #'   `extrapolation_factor = Inf`.
+#' @param y_draw A parameter that controls how the observed data are plotted.
+#'   Possible values are "lines" and "points". If "lines" (default), event times
+#'   and censoring times are connected with lines. If "points", event times are
+#'   marked as points and censoring times are marked as plus signs.
 ppc_km_overlay <- function(
   y,
   yrep,
