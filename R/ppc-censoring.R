@@ -245,7 +245,7 @@ ppc_km_overlay <- function(
       labels = c("y" = expression(italic(y)),
                  "yrep" = expression(italic(y)[rep]))
     ) +
-    (if (y_draw == "points") {
+    (if (y_draw == "points" && any(fsf$is_y_color == "yrep")) {
       guides(
         color = guide_legend(
           override.aes = list(
