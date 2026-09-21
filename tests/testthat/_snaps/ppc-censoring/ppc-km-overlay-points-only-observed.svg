@@ -113,7 +113,6 @@
 <circle cx='672.74' cy='281.81' r='1.99' style='stroke-width: 0.77; stroke: #011F4B; fill: #011F4B;' />
 <circle cx='672.74' cy='281.81' r='2.31' style='stroke-width: 1.42; stroke: #011F4B; fill: #011F4B;' />
 <line x1='665.83' y1='299.09' x2='679.65' y2='299.09' style='stroke-width: 1.16; stroke: #B3CDE0; stroke-linecap: butt;' />
-<circle cx='672.74' cy='299.09' r='2.31' style='stroke-width: 1.42; stroke: #B3CDE0; fill: #B3CDE0;' />
 <text x='687.36' y='283.90' style='font-size: 13.00px; font-style: italic; font-family: sans;' textLength='6.51px' lengthAdjust='spacingAndGlyphs'>y</text>
 <text x='687.36' y='300.38' style='font-size: 13.00px; font-style: italic; font-family: sans;' textLength='6.51px' lengthAdjust='spacingAndGlyphs'>y</text>
 <text x='694.89' y='302.78' style='font-size: 9.10px; font-family: sans;' textLength='3.03px' lengthAdjust='spacingAndGlyphs'>r</text>

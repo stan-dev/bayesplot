@@ -240,6 +240,16 @@ ppc_km_overlay <- function(
       labels = c("y" = expression(italic(y)),
                  "yrep" = expression(italic(y)[rep]))
     ) +
+    (if (y_draw == "points") {
+      guides(
+        color = guide_legend(
+          override.aes = list(
+            shape = c(19, NA),  # 19 = point for 'y', NA = no point for 'yrep'
+            linetype = c(0, 1)  # 0 = no line for 'y', 1 = solid line for 'yrep'
+          )
+        )
+      )
+    }) +
     # Conditionally add shape scale and guide ONLY if drawing points AND censored data exists
     (if (y_draw == "points" && any(fsf$is_y_color == "y" & fsf$n.censor > 0, na.rm = TRUE)) {
       list(
