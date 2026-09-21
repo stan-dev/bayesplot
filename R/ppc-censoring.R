@@ -103,6 +103,7 @@ ppc_km_overlay <- function(
   status_y,
   left_truncation_y = NULL,
   extrapolation_factor = 1.2,
+  dots = FALSE,
   size = 0.25,
   alpha = 0.7
 ) {
@@ -171,9 +172,13 @@ ppc_km_overlay <- function(
     fsf$group <- as.factor(sapply(strata_split, "[[", 2))
   }
 
-  fsf$is_y_color <- as.factor(sub("\\[rep\\] \\(.*$", "rep", sub("^italic\\(y\\)", "y", fsf$strata)))
+  #fsf$is_y_color <- as.factor(sub("\\[rep\\] \\(.*$", "rep", sub("^italic\\(y\\)", "y", fsf$strata)))
+  is_replicate <- grepl("\\[rep\\]", as.character(fsf$strata))
+  fsf$is_y_color <- ifelse(is_replicate, "yrep", "y")
   fsf$is_y_linewidth <- ifelse(fsf$is_y_color == "yrep", size, 1)
   fsf$is_y_alpha <- ifelse(fsf$is_y_color == "yrep", alpha, 1)
+
+  fsf$censor_mark <- ifelse(fsf$is_y_color == "y" & fsf$n.censor > 0, "Censored", NA)
 
   max_time_y <- max(y, na.rm = TRUE)
   fsf <- fsf %>%
@@ -183,14 +188,35 @@ ppc_km_overlay <- function(
   # levels of the factor "strata"
   fsf$strata <- factor(fsf$strata, levels = rev(levels(fsf$strata)))
 
-  ggplot(data = fsf,
+  p <- ggplot(data = fsf,
          mapping = aes(x = .data$time,
                        y = .data$surv,
                        color = .data$is_y_color,
                        group = .data$strata,
                        linewidth = .data$is_y_linewidth,
-                       alpha = .data$is_y_alpha)) +
-    geom_step() +
+                       alpha = .data$is_y_alpha))
+
+  if (dots) {
+    p <- p +
+      # Bottom layer: yrep step curves
+      geom_step(data = function(x) dplyr::filter(x, .data$is_y_color == "yrep")) +
+      # Top layer: y points
+      geom_point(data = function(x) dplyr::filter(x, .data$is_y_color == "y" & .data$n.event > 0),
+                 size = 1.5) +
+      # Top layer 2: y points strictly at censoring times (e.g., plus signs)
+      geom_point(data = function(x) dplyr::filter(x, .data$is_y_color == "y" & .data$n.censor > 0),
+                 mapping = aes(shape = .data$censor_mark),
+                 size = 1.5,
+                 stroke = 1)
+  } else {
+    p <- p +
+      # Bottom layer: yrep step curves
+      geom_step(data = function(x) dplyr::filter(x, .data$is_y_color == "yrep")) +
+      # Top layer: y step curves
+      geom_step(data = function(x) dplyr::filter(x, .data$is_y_color == "y"))
+  }
+
+  p +
     hline_at(
       0.5,
       linewidth = 0.1,
@@ -205,13 +231,31 @@ ppc_km_overlay <- function(
     ) +
     scale_linewidth_identity() +
     scale_alpha_identity() +
-    scale_color_ppc() +
+    scale_color_manual(
+      name = NULL,
+      values = c("y" = get_color("dh"), "yrep" = get_color("lh")),
+      labels = c("y" = expression(italic(y)[obs]),
+                 "yrep" = expression(italic(y)[rep]))
+    ) +
+    scale_shape_manual(
+      name = NULL,
+      values = c("Censored" = 3),
+      labels = c("Censored" = expression(italic(y)[cens])),
+      na.translate = FALSE
+    ) +
+    # Force the censored sign in the legend to be the dark observation color
+    guides(
+      shape = guide_legend(override.aes = list(color = get_color("dh")))
+    ) +
     scale_y_continuous(breaks = c(0, 0.5, 1)) +
     xlab(y_label()) +
     yaxis_title(FALSE) +
     xaxis_title(FALSE) +
     yaxis_ticks(FALSE) +
-    bayesplot_theme_get()
+    bayesplot_theme_get() +
+    theme(
+      legend.spacing.y = unit(-10, "pt")
+    )
 }
 
 #' @export
