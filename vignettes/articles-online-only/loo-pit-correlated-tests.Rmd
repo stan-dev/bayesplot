@@ -1,5 +1,5 @@
 ---
-title: "Model checking using 'ppc_pit_ecdf' and 'ppc_loo_pit_ecdf'"
+title: "Model checking using `ppc_pit_ecdf` and `ppc_loo_pit_ecdf`"
 author: "Florence Bockting"
 date: "`r Sys.Date()`"
 output:

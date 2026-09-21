@@ -183,12 +183,13 @@ customized using the \strong{ggplot2} package. The functions with suffix
 function.
 }
 \description{
-Assess the calibration of the predictions, or predictive probabilites in relation to
-binary observations.
-See the \strong{Plot Descriptions} section, below, for details.
+Assess the calibration of the predictions, or predictive probabilities in
+relation to binary observations. See the \strong{Plot Descriptions} and
+\strong{Details} sections below and also the PPC Calibration vignette for more
+details and examples.
 }
 \details{
-The ppc_calibration functions are designed to assess the calibration of a
+The PPC calibration functions are designed to assess the calibration of a
 model with binary outcomes. In this context, calibration refers to the
 agreement between predicted probabilities and conditional event probabilities
 (CEPs) see Dimitriadis et al. (2021) and Säilynoja et al. (2025) for details.
@@ -200,8 +201,10 @@ The required inputs are \code{y}, representing binary observations
 \code{ppc_loo_calibration()}, and \code{ppc_loo_calibration_grouped()} accept either
 \code{prep} or \code{yrep}.
 
+\code{prep} or \code{yrep}.
+
 A document with detailed explanations and examples is available in the
-\href{https://mc-stan.org/bayesplot/vignettes/articles-online-only/}{vignettes}.
+\href{https://mc-stan.org/bayesplot/articles/}{vignettes}.
 }
 \section{Plot Descriptions}{
 
@@ -255,7 +258,7 @@ Recommendations for visual predictive checks in Bayesian workflow.
 (Preprint). arXiv. https://doi.org/10.48550/arXiv.2503.01509
 }
 \seealso{
-Other PPCs: 
+Other PPCs:
 \code{\link{PPC-censoring}},
 \code{\link{PPC-discrete}},
 \code{\link{PPC-distributions}},

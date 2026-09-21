@@ -175,8 +175,8 @@ test_that("ppc_error_binned renders correctly", {
 
   four_draws <- structure(
     c(-2.118, -2.061, -2.069, -2.011, 7.604, 9.720, 9.7186, 10.1888),
-    .Dim = c(4L, 2L),
-    .Dimnames = list(
+    dim = c(4L, 2L),
+    dimnames = list(
       iterations = NULL,
       parameters = c("(Intercept)", "(phi)")
     )

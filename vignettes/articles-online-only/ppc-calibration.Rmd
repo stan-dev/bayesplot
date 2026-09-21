@@ -1,5 +1,5 @@
 ---
-title: "PPC Calibration - Calibration of Bayesian models with binary outcomes"
+title: "Calibration of Bayesian models with binary outcomes"
 author: "Florence Bockting"
 date: "`r Sys.Date()`"
 output:
@@ -9,7 +9,7 @@ output:
 params:
   EVAL: true
 vignette: >
-  %\VignetteIndexEntry{PPC Calibration - Calibration of Bayesian models with binary outcomes}
+  %\VignetteIndexEntry{Calibration of Bayesian models with binary outcomes}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
