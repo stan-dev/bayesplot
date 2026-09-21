@@ -13,6 +13,7 @@ ppc_km_overlay(
   status_y,
   left_truncation_y = NULL,
   extrapolation_factor = 1.2,
+  y_draw = c("lines", "points"),
   size = 0.25,
   alpha = 0.7
 )
@@ -25,6 +26,7 @@ ppc_km_overlay_grouped(
   status_y,
   left_truncation_y = NULL,
   extrapolation_factor = 1.2,
+  y_draw = c("lines", "points"),
   size = 0.25,
   alpha = 0.7
 )
@@ -58,6 +60,11 @@ value is 1.2, which corresponds to 20 \% extrapolation. Note that all
 posterior predictive draws may not be shown by default because of the
 controlled extrapolation. To display all posterior predictive draws, set
 \code{extrapolation_factor = Inf}.}
+
+\item{y_draw}{How should the observed data be plotted? Possible values are
+\code{"lines"} and \code{"points"}. If \code{"lines"} (default), event times and censoring
+times are connected with lines. If \code{"points"}, event times are marked as
+points and censoring times are marked as plus signs.}
 
 \item{size, alpha}{Passed to the appropriate geom to control the appearance of
 the \code{yrep} distributions.}
@@ -137,6 +144,9 @@ left_truncation_y[condition] <- pmin(
 )
 ppc_km_overlay(y, yrep[1:25, ], status_y = status_y,
               left_truncation_y = left_truncation_y)
+
+# With y_draw = "points"
+ppc_km_overlay(y, yrep[1:25, ], status_y = status_y, y_draw = "points")
 }
 }
 \references{

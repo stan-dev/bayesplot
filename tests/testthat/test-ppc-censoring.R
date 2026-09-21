@@ -80,7 +80,7 @@ test_that("ppc_km_overlay errors if bad y_draw value", {
   skip_if_not_installed("ggfortify")
   expect_error(
     ppc_km_overlay(y, yrep, status_y = status_y, y_draw = "dots"),
-    "`y_draw` must be equal to \"lines\" or \"points\".",
+    "'arg' should be one of",
   )
 })
 

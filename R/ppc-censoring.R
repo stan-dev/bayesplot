@@ -99,10 +99,10 @@ NULL
 #'   posterior predictive draws may not be shown by default because of the
 #'   controlled extrapolation. To display all posterior predictive draws, set
 #'   `extrapolation_factor = Inf`.
-#' @param y_draw A parameter that controls how the observed data are plotted.
-#'   Possible values are "lines" and "points". If "lines" (default), event times
-#'   and censoring times are connected with lines. If "points", event times are
-#'   marked as points and censoring times are marked as plus signs.
+#' @param y_draw How should the observed data be plotted? Possible values are
+#'   `"lines"` and `"points"`. If `"lines"` (default), event times and censoring
+#'   times are connected with lines. If `"points"`, event times are marked as
+#'   points and censoring times are marked as plus signs.
 ppc_km_overlay <- function(
   y,
   yrep,
@@ -110,7 +110,7 @@ ppc_km_overlay <- function(
   status_y,
   left_truncation_y = NULL,
   extrapolation_factor = 1.2,
-  y_draw = "lines",
+  y_draw = c("lines", "points"),
   size = 0.25,
   alpha = 0.7
 ) {
@@ -140,9 +140,7 @@ ppc_km_overlay <- function(
     ))
   }
 
-  if (y_draw != "lines" && y_draw != "points") {
-    abort("`y_draw` must be equal to \"lines\" or \"points\".")
-  }
+  y_draw <- match.arg(y_draw)
 
   data <- ppc_data(y, yrep, group = status_y)
 
@@ -294,7 +292,7 @@ ppc_km_overlay_grouped <- function(
   status_y,
   left_truncation_y = NULL,
   extrapolation_factor = 1.2,
-  y_draw = "lines",
+  y_draw = c("lines", "points"),
   size = 0.25,
   alpha = 0.7
 ) {
