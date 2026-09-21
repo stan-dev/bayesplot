@@ -103,7 +103,7 @@ ppc_km_overlay <- function(
   status_y,
   left_truncation_y = NULL,
   extrapolation_factor = 1.2,
-  dots = FALSE,
+  ydraw = "lines",
   size = 0.25,
   alpha = 0.7
 ) {
@@ -131,6 +131,10 @@ ppc_km_overlay <- function(
       "Note: `extrapolation_factor` now defaults to 1.2 (20%).\n",
       "To display all posterior predictive draws, set `extrapolation_factor = Inf`."
     ))
+  }
+
+  if (ydraw != "lines" && ydraw != "points") {
+    abort("`ydraw` must be equal to \"lines\" or \"points\".")
   }
 
   data <- ppc_data(y, yrep, group = status_y)
@@ -172,7 +176,6 @@ ppc_km_overlay <- function(
     fsf$group <- as.factor(sapply(strata_split, "[[", 2))
   }
 
-  #fsf$is_y_color <- as.factor(sub("\\[rep\\] \\(.*$", "rep", sub("^italic\\(y\\)", "y", fsf$strata)))
   is_replicate <- grepl("\\[rep\\]", as.character(fsf$strata))
   fsf$is_y_color <- ifelse(is_replicate, "yrep", "y")
   fsf$is_y_linewidth <- ifelse(fsf$is_y_color == "yrep", size, 1)
@@ -196,14 +199,14 @@ ppc_km_overlay <- function(
                        linewidth = .data$is_y_linewidth,
                        alpha = .data$is_y_alpha))
 
-  if (dots) {
+  if (ydraw == "points") {
     p <- p +
       # Bottom layer: yrep step curves
       geom_step(data = function(x) dplyr::filter(x, .data$is_y_color == "yrep")) +
       # Top layer: y points
       geom_point(data = function(x) dplyr::filter(x, .data$is_y_color == "y" & .data$n.event > 0),
                  size = 1.5) +
-      # Top layer 2: y points strictly at censoring times (e.g., plus signs)
+      # Top layer 2: y plus signs at censoring times
       geom_point(data = function(x) dplyr::filter(x, .data$is_y_color == "y" & .data$n.censor > 0),
                  mapping = aes(shape = .data$censor_mark),
                  size = 1.5,
@@ -237,16 +240,21 @@ ppc_km_overlay <- function(
       labels = c("y" = expression(italic(y)[obs]),
                  "yrep" = expression(italic(y)[rep]))
     ) +
-    scale_shape_manual(
-      name = NULL,
-      values = c("Censored" = 3),
-      labels = c("Censored" = expression(italic(y)[cens])),
-      na.translate = FALSE
-    ) +
-    # Force the censored sign in the legend to be the dark observation color
-    guides(
-      shape = guide_legend(override.aes = list(color = get_color("dh")))
-    ) +
+    # Conditionally add shape scale and guide ONLY if drawing points AND censored data exists
+    (if (ydraw == "points" && any(fsf$is_y_color == "y" & fsf$n.censor > 0, na.rm = TRUE)) {
+      list(
+        scale_shape_manual(
+          name = NULL,
+          values = c("Censored" = 3),
+          labels = c("Censored" = expression(italic(y)[cens])),
+          na.translate = FALSE
+        ),
+        # Force the censored sign in the legend to be the dark observation color
+        guides(
+          shape = guide_legend(override.aes = list(color = get_color("dh")))
+        )
+      )
+    }) +
     scale_y_continuous(breaks = c(0, 0.5, 1)) +
     xlab(y_label()) +
     yaxis_title(FALSE) +
@@ -254,7 +262,7 @@ ppc_km_overlay <- function(
     yaxis_ticks(FALSE) +
     bayesplot_theme_get() +
     theme(
-      legend.spacing.y = unit(-10, "pt")
+      legend.spacing.y = unit(-13, "pt")
     )
 }
 
