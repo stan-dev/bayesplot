@@ -277,6 +277,7 @@ ppc_km_overlay_grouped <- function(
   status_y,
   left_truncation_y = NULL,
   extrapolation_factor = 1.2,
+  y_draw = "lines",
   size = 0.25,
   alpha = 0.7
 ) {
@@ -289,6 +290,7 @@ ppc_km_overlay_grouped <- function(
     ...,
     status_y = status_y,
     left_truncation_y = left_truncation_y,
+    y_draw = y_draw,
     size = size,
     alpha = alpha,
     extrapolation_factor = extrapolation_factor

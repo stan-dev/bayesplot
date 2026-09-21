@@ -16,10 +16,12 @@ test_that("ppc_km_overlay_grouped returns a ggplot object", {
   expect_gg(ppc_km_overlay_grouped(y, yrep, as.numeric(group),
                                    status_y = status_y,
                                    left_truncation_y = left_truncation_y,
+                                   y_draw = "lines",
                                    size = 0.5, alpha = 0.2))
   expect_gg(ppc_km_overlay_grouped(y, yrep, as.integer(group),
                                    status_y = status_y,
                                    left_truncation_y = left_truncation_y,
+                                   y_draw = "points",
                                    size = 0.5, alpha = 0.2))
 
   expect_gg(ppc_km_overlay_grouped(y2, yrep2, group2,
@@ -214,5 +216,31 @@ test_that("ppc_km_overlay_grouped renders correctly", {
   vdiffr::expect_doppelganger(
     "ppc_km_overlay_grouped (max extrapolation)",
     p_custom2_max_extrapolation
+  )
+
+  p_custom2_points_observed_and_censored <- ppc_km_overlay_grouped(
+    vdiff_y3,
+    vdiff_yrep3,
+    vdiff_group3,
+    status_y = vdiff_status_y3,
+    y_draw = "points"
+  )
+
+  vdiffr::expect_doppelganger(
+    "ppc_km_overlay_grouped (points, observed and censored)",
+    p_custom2_points_observed_and_censored
+  )
+
+  p_custom2_points_only_observed <- ppc_km_overlay_grouped(
+    vdiff_y3,
+    vdiff_yrep3,
+    vdiff_group3,
+    status_y = vdiff_status_y3_no_cens,
+    y_draw = "points"
+  )
+
+  vdiffr::expect_doppelganger(
+    "ppc_km_overlay_grouped (points, only observed)",
+    p_custom2_points_only_observed
   )
 })
