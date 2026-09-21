@@ -2,8 +2,8 @@ source(test_path("data-for-ppc-tests.R"))
 
 test_that("ppc_km_overlay returns a ggplot object", {
   skip_if_not_installed("ggfortify")
-  expect_gg(ppc_km_overlay(y, yrep, status_y = status_y, left_truncation_y = left_truncation_y, size = 0.5, alpha = 0.2, extrapolation_factor = Inf))
-  expect_gg(ppc_km_overlay(y, yrep, status_y = status_y, left_truncation_y = left_truncation_y, size = 0.5, alpha = 0.2, extrapolation_factor = 1))
+  expect_gg(ppc_km_overlay(y, yrep, status_y = status_y, left_truncation_y = left_truncation_y, size = 0.5, alpha = 0.2, extrapolation_factor = Inf, y_draw = "lines"))
+  expect_gg(ppc_km_overlay(y, yrep, status_y = status_y, left_truncation_y = left_truncation_y, size = 0.5, alpha = 0.2, extrapolation_factor = 1, y_draw = "points"))
   expect_gg(ppc_km_overlay(y2, yrep2, status_y = status_y2))
 })
 
@@ -74,6 +74,14 @@ test_that("ppc_km_overlay messages if extrapolation_factor left at default value
   )
 })
 
+test_that("ppc_km_overlay errors if bad y_draw value", {
+  skip_if_not_installed("ggfortify")
+  expect_error(
+    ppc_km_overlay(y, yrep, status_y = status_y, y_draw = "dots"),
+    "`y_draw` must be equal to \"lines\" or \"points\".",
+  )
+})
+
 # Visual tests -----------------------------------------------------------------
 
 test_that("ppc_km_overlay renders correctly", {
@@ -121,6 +129,24 @@ test_that("ppc_km_overlay renders correctly", {
   )
   vdiffr::expect_doppelganger("ppc_km_overlay (max extrapolation)",
                               p_custom2_max_extrapolation)
+
+  p_custom2_points_observed_and_censored <- ppc_km_overlay(
+    vdiff_y3,
+    vdiff_yrep3,
+    status_y = vdiff_status_y3,
+    y_draw = "points"
+  )
+  vdiffr::expect_doppelganger("ppc_km_overlay (points, observed and censored)",
+                              p_custom2_points_observed_and_censored)
+
+  p_custom2_points_only_observed <- ppc_km_overlay(
+    vdiff_y3,
+    vdiff_yrep3,
+    status_y = vdiff_status_y3_no_cens,
+    y_draw = "points"
+  )
+  vdiffr::expect_doppelganger("ppc_km_overlay (points, only observed)",
+                              p_custom2_points_only_observed)
 })
 
 test_that("ppc_km_overlay_grouped renders correctly", {

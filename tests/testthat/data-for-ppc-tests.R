@@ -31,6 +31,7 @@ vdiff_loo_lw[] <- rnorm(100 * 400, -8, 2)
 
 vdiff_y3 <- rexp(50, rate = 0.2)
 vdiff_status_y3 <- rep_len(0:1, length.out = length(vdiff_y3))
+vdiff_status_y3_no_cens <- rep_len(1, length.out = length(vdiff_y3))
 vdiff_group3 <- rep_len(c(1,2), length.out = 50)
 vdiff_left_truncation_y3 <- runif(length(vdiff_y3), min = 0, max = 0.6) * vdiff_y3
 

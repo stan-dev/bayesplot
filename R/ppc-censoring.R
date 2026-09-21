@@ -103,7 +103,7 @@ ppc_km_overlay <- function(
   status_y,
   left_truncation_y = NULL,
   extrapolation_factor = 1.2,
-  ydraw = "lines",
+  y_draw = "lines",
   size = 0.25,
   alpha = 0.7
 ) {
@@ -133,8 +133,8 @@ ppc_km_overlay <- function(
     ))
   }
 
-  if (ydraw != "lines" && ydraw != "points") {
-    abort("`ydraw` must be equal to \"lines\" or \"points\".")
+  if (y_draw != "lines" && y_draw != "points") {
+    abort("`y_draw` must be equal to \"lines\" or \"points\".")
   }
 
   data <- ppc_data(y, yrep, group = status_y)
@@ -199,7 +199,7 @@ ppc_km_overlay <- function(
                        linewidth = .data$is_y_linewidth,
                        alpha = .data$is_y_alpha))
 
-  if (ydraw == "points") {
+  if (y_draw == "points") {
     p <- p +
       # Bottom layer: yrep step curves
       geom_step(data = function(x) dplyr::filter(x, .data$is_y_color == "yrep")) +
@@ -237,11 +237,11 @@ ppc_km_overlay <- function(
     scale_color_manual(
       name = NULL,
       values = c("y" = get_color("dh"), "yrep" = get_color("lh")),
-      labels = c("y" = expression(italic(y)[obs]),
+      labels = c("y" = expression(italic(y)),
                  "yrep" = expression(italic(y)[rep]))
     ) +
     # Conditionally add shape scale and guide ONLY if drawing points AND censored data exists
-    (if (ydraw == "points" && any(fsf$is_y_color == "y" & fsf$n.censor > 0, na.rm = TRUE)) {
+    (if (y_draw == "points" && any(fsf$is_y_color == "y" & fsf$n.censor > 0, na.rm = TRUE)) {
       list(
         scale_shape_manual(
           name = NULL,
@@ -262,7 +262,7 @@ ppc_km_overlay <- function(
     yaxis_ticks(FALSE) +
     bayesplot_theme_get() +
     theme(
-      legend.spacing.y = unit(-13, "pt")
+      legend.spacing.y = unit(-12, "pt")
     )
 }
 
