@@ -2,6 +2,13 @@
 
 ## bayesplot (development version)
 
+- Add option to display observed data as points in
+  [`ppc_km_overlay()`](https://mc-stan.org/bayesplot/dev/reference/PPC-censoring.md)
+  and
+  [`ppc_km_overlay_grouped()`](https://mc-stan.org/bayesplot/dev/reference/PPC-censoring.md)
+  by [@Sakuski](https://github.com/Sakuski)
+  ([\#560](https://github.com/stan-dev/bayesplot/issues/560))
+
 ## bayesplot 1.16.0
 
 CRAN release: 2026-08-25

@@ -27,7 +27,7 @@ github.com/stan-dev/bayesplot."><meta property="og:image" content="https://mc-st
 
     <a class="navbar-brand me-2" href="../index.html">
       <!-- Add Stan logo -->
-      <img src="../reference/figures/logo.svg" class="stan-logo" alt="Stan blue hex logo">
+      <img src="../logo.svg" class="stan-logo" alt="Stan blue hex logo">
       bayesplot
     </a>
 
@@ -40,7 +40,6 @@ github.com/stan-dev/bayesplot."><meta property="og:image" content="https://mc-st
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto"><li class="nav-item"><a class="nav-link" href="../index.html" aria-label="Go to homepage"><span class="fa fa-home fa-lg"></span></a></li>
-<li class="nav-item"><a class="nav-link" href="../articles/index.html">Vignettes</a></li>
 <li class="active nav-item"><a class="nav-link" href="../reference/index.html">Functions</a></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
 <li class="nav-item dropdown">
@@ -99,6 +98,7 @@ additional plots at
 <span>  <span class="va">status_y</span>,</span>
 <span>  left_truncation_y <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  extrapolation_factor <span class="op">=</span> <span class="fl">1.2</span>,</span>
+<span>  y_draw <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"lines"</span>, <span class="st">"points"</span><span class="op">)</span>,</span>
 <span>  size <span class="op">=</span> <span class="fl">0.25</span>,</span>
 <span>  alpha <span class="op">=</span> <span class="fl">0.7</span></span>
 <span><span class="op">)</span></span>
@@ -111,6 +111,7 @@ additional plots at
 <span>  <span class="va">status_y</span>,</span>
 <span>  left_truncation_y <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  extrapolation_factor <span class="op">=</span> <span class="fl">1.2</span>,</span>
+<span>  y_draw <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"lines"</span>, <span class="st">"points"</span><span class="op">)</span>,</span>
 <span>  size <span class="op">=</span> <span class="fl">0.25</span>,</span>
 <span>  alpha <span class="op">=</span> <span class="fl">0.7</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -159,6 +160,13 @@ value is 1.2, which corresponds to 20 % extrapolation. Note that all
 posterior predictive draws may not be shown by default because of the
 controlled extrapolation. To display all posterior predictive draws, set
 <code>extrapolation_factor = Inf</code>.</p></dd>
+
+
+<dt id="arg-y-draw">y_draw<a class="anchor" aria-label="anchor" href="#arg-y-draw"></a></dt>
+<dd><p>How should the observed data be plotted? Possible values are
+<code>"lines"</code> and <code>"points"</code>. If <code>"lines"</code> (default), event times and censoring
+times are connected with lines. If <code>"points"</code>, event times are marked as
+points and censoring times are marked as plus signs.</p></dd>
 
 
 <dt id="arg-size-alpha">size, alpha<a class="anchor" aria-label="anchor" href="#arg-size-alpha"></a></dt>
@@ -269,6 +277,12 @@ doi:10.1080/01621459.1958.10501452.</p>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Note: `extrapolation_factor` now defaults to 1.2 (20%).</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> To display all posterior predictive draws, set `extrapolation_factor = Inf`.</span>
 <span class="r-plt img"><img src="PPC-censoring-5.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># With y_draw = "points"</span></span></span>
+<span class="r-in"><span><span class="fu">ppc_km_overlay</span><span class="op">(</span><span class="va">y</span>, <span class="va">yrep</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">25</span>, <span class="op">]</span>, status_y <span class="op">=</span> <span class="va">status_y</span>, y_draw <span class="op">=</span> <span class="st">"points"</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Note: `extrapolation_factor` now defaults to 1.2 (20%).</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> To display all posterior predictive draws, set `extrapolation_factor = Inf`.</span>
+<span class="r-plt img"><img src="PPC-censoring-6.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 </code></pre></div>
     </div>

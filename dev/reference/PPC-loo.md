@@ -475,7 +475,7 @@ fit <- stan_lmer(
   chains = 2,
   cores = 2
 )
-#> Warning: The largest R-hat is 1.15, indicating chains have not mixed.
+#> Warning: The largest R-hat is 1.19, indicating chains have not mixed.
 #> Running the chains for more iterations may help. See
 #> https://mc-stan.org/misc/warnings.html#r-hat
 #> Warning: Bulk Effective Samples Size (ESS) is too low, indicating posterior means and medians may be unreliable.
@@ -488,7 +488,7 @@ y <- radon$log_radon
 yrep <- posterior_predict(fit)
 
 loo1 <- loo(fit, save_psis = TRUE, cores = 4)
-#> Warning: Found 10 observation(s) with a pareto_k > 0.7. We recommend calling 'loo' again with argument 'k_threshold = 0.7' in order to calculate the ELPD without the assumption that these observations are negligible. This will refit the model 10 times to compute the ELPDs for the problematic observations directly.
+#> Warning: Found 19 observations with a pareto_k > 0.7. With this many problematic observations we recommend calling 'kfold' with argument 'K=10' to perform 10-fold cross-validation rather than LOO.
 psis1 <- loo1$psis_object
 lw <- weights(psis1) # normalized log weights
 
@@ -496,8 +496,8 @@ lw <- weights(psis1) # normalized log weights
 color_scheme_set("orange")
 ppc_loo_pit_overlay(y, yrep, lw = lw)
 #> Some PIT values larger than 1! Largest:  1 
-#> Rounding PIT > 1 to 1. Gradient evaluation took 0.000544 seconds
-#> Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 5.44 seconds.
+#> Rounding PIT > 1 to 1. Gradient evaluation took 0.000386 seconds
+#> Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 3.86 seconds.
 #> Chain 2: Adjust your expectations accordingly!
 #> Chain 2: 
 #> Chain 2: 
@@ -510,38 +510,38 @@ ppc_loo_pit_overlay(y, yrep, lw = lw)
 #> Chain 2:            term_buffer = 5
 #> Chain 2: 
 #> Chain 2: Iteration:  1 / 100 [  1%]  (Warmup)
-#> Chain 2: Iteration: 10 / 100 [ 10%]  (Warmup)
 #> Chain 1: Iteration: 10 / 100 [ 10%]  (Warmup)
-#> Chain 2: Iteration: 20 / 100 [ 20%]  (Warmup)
+#> Chain 2: Iteration: 10 / 100 [ 10%]  (Warmup)
 #> Chain 1: Iteration: 20 / 100 [ 20%]  (Warmup)
-#> Chain 2: Iteration: 30 / 100 [ 30%]  (Warmup)
+#> Chain 2: Iteration: 20 / 100 [ 20%]  (Warmup)
 #> Chain 1: Iteration: 30 / 100 [ 30%]  (Warmup)
-#> Chain 2: Iteration: 40 / 100 [ 40%]  (Warmup)
+#> Chain 2: Iteration: 30 / 100 [ 30%]  (Warmup)
 #> Chain 1: Iteration: 40 / 100 [ 40%]  (Warmup)
-#> Chain 2: Iteration: 50 / 100 [ 50%]  (Warmup)
-#> Chain 2: Iteration: 51 / 100 [ 51%]  (Sampling)
+#> Chain 2: Iteration: 40 / 100 [ 40%]  (Warmup)
 #> Chain 1: Iteration: 50 / 100 [ 50%]  (Warmup)
 #> Chain 1: Iteration: 51 / 100 [ 51%]  (Sampling)
-#> Chain 2: Iteration: 60 / 100 [ 60%]  (Sampling)
+#> Chain 2: Iteration: 50 / 100 [ 50%]  (Warmup)
+#> Chain 2: Iteration: 51 / 100 [ 51%]  (Sampling)
 #> Chain 1: Iteration: 60 / 100 [ 60%]  (Sampling)
-#> Chain 2: Iteration: 70 / 100 [ 70%]  (Sampling)
+#> Chain 2: Iteration: 60 / 100 [ 60%]  (Sampling)
 #> Chain 1: Iteration: 70 / 100 [ 70%]  (Sampling)
-#> Chain 2: Iteration: 80 / 100 [ 80%]  (Sampling)
+#> Chain 2: Iteration: 70 / 100 [ 70%]  (Sampling)
 #> Chain 1: Iteration: 80 / 100 [ 80%]  (Sampling)
-#> Chain 2: Iteration: 90 / 100 [ 90%]  (Sampling)
+#> Chain 2: Iteration: 80 / 100 [ 80%]  (Sampling)
 #> Chain 1: Iteration: 90 / 100 [ 90%]  (Sampling)
-#> Chain 2: Iteration: 100 / 100 [100%]  (Sampling)
-#> Chain 2: 
-#> Chain 2:  Elapsed Time: 2.659 seconds (Warm-up)
-#> Chain 2:                2.425 seconds (Sampling)
-#> Chain 2:                5.084 seconds (Total)
-#> Chain 2: 
+#> Chain 2: Iteration: 90 / 100 [ 90%]  (Sampling)
 #> Chain 1: Iteration: 100 / 100 [100%]  (Sampling)
+#> Chain 2: Iteration: 100 / 100 [100%]  (Sampling)
 #> Chain 1: 
-#> Chain 1:  Elapsed Time: 2.772 seconds (Warm-up)
-#> Chain 1:                2.442 seconds (Sampling)
-#> Chain 1:                5.214 seconds (Total)
+#> Chain 1:  Elapsed Time: 2.704 seconds (Warm-up)
+#> Chain 1:                2.592 seconds (Sampling)
+#> Chain 1:                5.296 seconds (Total)
 #> Chain 1: 
+#> Chain 2: 
+#> Chain 2:  Elapsed Time: 2.812 seconds (Warm-up)
+#> Chain 2:                2.515 seconds (Sampling)
+#> Chain 2:                5.327 seconds (Total)
+#> Chain 2: 
 #> Warning: 
 #> NOTE: The kernel density estimate assumes continuous observations and is not optimal for discrete observations.
 

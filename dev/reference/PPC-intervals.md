@@ -262,6 +262,10 @@ ppc_group_dat <- ppc_intervals_data(y, yrep, x = year, group = group, prob = 0.5
 # \dontrun{
 library("rstanarm")
 fit <- stan_glmer(mpg ~ wt + (1|cyl), data = mtcars, refresh = 0)
+#> Warning: There were 1 divergent transitions after warmup. See
+#> https://mc-stan.org/misc/warnings.html#divergent-transitions-after-warmup
+#> to find out why this is a problem and how to eliminate them.
+#> Warning: Examine the pairs() plot to diagnose sampling problems
 yrep <- posterior_predict(fit)
 
 color_scheme_set("purple")
