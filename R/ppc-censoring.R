@@ -248,6 +248,7 @@ ppc_km_overlay <- function(
     (if (y_draw == "points" && any(fsf$is_y_color == "yrep")) {
       guides(
         color = guide_legend(
+          order = 1,
           override.aes = list(
             shape = c(19, NA),  # 19 = point for 'y', NA = no point for 'yrep'
             linetype = c(0, 1)  # 0 = no line for 'y', 1 = solid line for 'yrep'
@@ -266,7 +267,7 @@ ppc_km_overlay <- function(
         ),
         # Force the censored sign in the legend to be the dark observation color
         guides(
-          shape = guide_legend(override.aes = list(color = get_color("dh")))
+          shape = guide_legend(order = 2, override.aes = list(color = get_color("dh")))
         )
       )
     }) +

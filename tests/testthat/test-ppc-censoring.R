@@ -138,7 +138,7 @@ test_that("ppc_km_overlay renders correctly", {
     status_y = vdiff_status_y3,
     y_draw = "points"
   )
-  vdiffr::expect_doppelganger("ppc_km_overlay (points, observed and censored)",
+  vdiffr::expect_doppelganger("ppc_km_overlay (points, censored)",
                               p_custom2_points_observed_and_censored)
 
   p_custom2_points_only_observed <- ppc_km_overlay(
@@ -227,7 +227,7 @@ test_that("ppc_km_overlay_grouped renders correctly", {
   )
 
   vdiffr::expect_doppelganger(
-    "ppc_km_overlay_grouped (points, observed and censored)",
+    "ppc_km_overlay_grouped (points, censored)",
     p_custom2_points_observed_and_censored
   )
 
