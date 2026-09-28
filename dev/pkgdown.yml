@@ -7,7 +7,7 @@ articles:
   plotting-mcmc-draws: plotting-mcmc-draws.html
   articles-online-only/ppc-calibration: articles-online-only/ppc-calibration.html
   visual-mcmc-diagnostics: visual-mcmc-diagnostics.html
-last_built: 2026-09-27T01:15Z
+last_built: 2026-09-28T17:07Z
 urls:
   reference: https://mc-stan.org/bayesplot/reference
   article: https://mc-stan.org/bayesplot/articles

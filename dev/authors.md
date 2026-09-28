@@ -38,7 +38,7 @@
 ## Citation
 
 Source:
-[`inst/CITATION`](https://github.com/stan-dev/bayesplot/blob/update-pkgdown-navbar/inst/CITATION)
+[`inst/CITATION`](https://github.com/stan-dev/bayesplot/blob/master/inst/CITATION)
 
 Gabry J, Mahr T (2026). “bayesplot: Plotting for Bayesian Models.” R
 package version 1.16.0.9000, <https://mc-stan.org/bayesplot/>.
