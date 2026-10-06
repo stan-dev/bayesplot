@@ -102,6 +102,8 @@
 #' These functions are not limited to discrete outcomes, but offer discrete-friendly
 #' displays for integer-valued statistics.
 #'
+#' @template reference-vpc-recommendations
+#'
 #' @examples
 #' set.seed(9222017)
 #'

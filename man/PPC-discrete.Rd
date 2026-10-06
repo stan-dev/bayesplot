@@ -275,6 +275,11 @@ ppc_rootogram_grouped(y, yrep, group, style = "discrete", prob = 0.5)
 
 }
 \references{
+Säilynoja, T., Johnson, A., Martin, O., and Vehtari, A. (2026).
+Recommendations for visual predictive checks in Bayesian workflow.
+\emph{Journal of Visualization and Interaction}. 1(1).
+doi:10.54337/jovi.v1i1.11478.
+
 Kleiber, C. and Zeileis, A. (2016).
 Visualizing count data regressions using rootograms.
 \emph{The American Statistician}. 70(3): 296--303.

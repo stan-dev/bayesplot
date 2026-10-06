@@ -88,6 +88,8 @@
 #' @template reference-bda
 #' @template reference-vis-paper
 #' @template reference-loo
+#' @template reference-uniformity-test
+#' @template reference-loo-pit-tests
 #'
 #' @examples
 #' \dontrun{
@@ -424,9 +426,6 @@ ppc_loo_pit_qq <- function(y,
 #'   the approximation gives a fast method for assessing the ECDF trajectory.
 #'   For `ppc_loo_pit_ecdf()` when `method = 'independent'`.
 #'   The default is to use interpolation if `K` is greater than 200.
-#' 
-#' @references Tesso, H., & Vehtari, A. (2026). LOO-PIT predictive model 
-#' checking. arXiv preprint https://arxiv.org/abs/2603.02928.
 ppc_loo_pit_ecdf <- function(y,
                              yrep,
                              lw = NULL,

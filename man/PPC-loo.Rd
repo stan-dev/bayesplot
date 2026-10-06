@@ -405,13 +405,20 @@ Bayesian model evaluation using leave-one-out cross-validation and WAIC.
 doi:10.1007/s11222-016-9696-4. arXiv preprint:
 \url{https://arxiv.org/abs/1507.04544}
 
+Säilynoja, T., Bürkner, P.-C., and Vehtari, A. (2022).
+Graphical test for discrete uniformity and its applications in
+goodness-of-fit evaluation and multiple sample comparison.
+\emph{Statistics and Computing}. 32(2), 32. doi:10.1007/s11222-022-10090-6.
+arXiv preprint: \url{https://arxiv.org/abs/2103.10522}
+
+Tesso, H., and Vehtari, A. (2026). LOO-PIT predictive model
+checking. \emph{arXiv preprint arXiv:2603.02928}.
+doi:10.48550/arXiv.2603.02928.
+
 Boneva, L. I., Kendall, D., & Stefanov, I. (1971). Spline
 transformations: Three new diagnostic aids for the statistical
 data-analyst. \emph{J. R. Stat. Soc. B} (Methodological), 33(1), 1-71.
 https://www.jstor.org/stable/2986005.
-
-Tesso, H., & Vehtari, A. (2026). LOO-PIT predictive model
-checking. arXiv preprint https://arxiv.org/abs/2603.02928.
 }
 \seealso{
 Other PPCs:

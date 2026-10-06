@@ -184,6 +184,12 @@ ppd_dens_overlay(ypred = preds[1:50, ], show_marginal = TRUE)
 ppc_dens_overlay(y = example_y_data(), yrep = preds[1:50, ])
 
 }
+\references{
+Säilynoja, T., Johnson, A., Martin, O., and Vehtari, A. (2026).
+Recommendations for visual predictive checks in Bayesian workflow.
+\emph{Journal of Visualization and Interaction}. 1(1).
+doi:10.54337/jovi.v1i1.11478.
+}
 \seealso{
 Other PPDs:
 \code{\link{PPD-intervals}},

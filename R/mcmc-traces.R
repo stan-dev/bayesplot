@@ -72,7 +72,7 @@
 #'    is, bands that completely cover all of the rank ECDFs with the probability
 #'    `prob`. If `plot_diff = TRUE`, the difference between the observed rank
 #'    ECDFs and the theoretical expectation for samples originating from the
-#'    same distribution is drawn. See Säilynoja et al. (2021) for details.
+#'    same distribution is drawn. See Säilynoja et al. (2022) for details.
 #'   }
 #'   \item{`mcmc_trace_data()`}{
 #'    Data-preparation back end for `mcmc_trace()`, `mcmc_trace_highlight()`,

@@ -192,7 +192,7 @@ details and examples.
 The PPC calibration functions are designed to assess the calibration of a
 model with binary outcomes. In this context, calibration refers to the
 agreement between predicted probabilities and conditional event probabilities
-(CEPs) see Dimitriadis et al. (2021) and Säilynoja et al. (2025) for details.
+(CEPs) see Dimitriadis et al. (2021) and Säilynoja et al. (2026) for details.
 
 The required inputs are \code{y}, representing binary observations
 (0 or 1), and either \code{yrep} or \code{prep}. Specifically,
@@ -253,9 +253,10 @@ reliability diagrams for probabilistic classifiers. Proceedings of the
 National Academy of Sciences, 118(8).
 https://doi.org/10.1073/pnas.2016191118
 
-Säilynoja, T., Johnson, A. R., Martin, O. A., & Vehtari, A. (2025).
+Säilynoja, T., Johnson, A., Martin, O., and Vehtari, A. (2026).
 Recommendations for visual predictive checks in Bayesian workflow.
-(Preprint). arXiv. https://doi.org/10.48550/arXiv.2503.01509
+\emph{Journal of Visualization and Interaction}. 1(1).
+doi:10.54337/jovi.v1i1.11478.
 }
 \seealso{
 Other PPCs:
