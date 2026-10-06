@@ -468,12 +468,18 @@ Bayesian model evaluation using leave-one-out cross-validation and WAIC.
 <em>Statistics and Computing</em>. 27(5), 1413–1432.
 doi:10.1007/s11222-016-9696-4. arXiv preprint:
 <a href="https://arxiv.org/abs/1507.04544" class="external-link">https://arxiv.org/abs/1507.04544</a></p>
+<p>Säilynoja, T., Bürkner, P.-C., and Vehtari, A. (2022).
+Graphical test for discrete uniformity and its applications in
+goodness-of-fit evaluation and multiple sample comparison.
+<em>Statistics and Computing</em>. 32(2), 32. doi:10.1007/s11222-022-10090-6.
+arXiv preprint: <a href="https://arxiv.org/abs/2103.10522" class="external-link">https://arxiv.org/abs/2103.10522</a></p>
+<p>Tesso, H., and Vehtari, A. (2026). LOO-PIT predictive model
+checking. <em>arXiv preprint arXiv:2603.02928</em>.
+doi:10.48550/arXiv.2603.02928.</p>
 <p>Boneva, L. I., Kendall, D., &amp; Stefanov, I. (1971). Spline
 transformations: Three new diagnostic aids for the statistical
 data-analyst. <em>J. R. Stat. Soc. B</em> (Methodological), 33(1), 1-71.
 https://www.jstor.org/stable/2986005.</p>
-<p>Tesso, H., &amp; Vehtari, A. (2026). LOO-PIT predictive model
-checking. arXiv preprint https://arxiv.org/abs/2603.02928.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
@@ -540,8 +546,8 @@ checking. arXiv preprint https://arxiv.org/abs/2603.02928.</p>
 <span class="r-in"><span><span class="fu"><a href="bayesplot-colors.html">color_scheme_set</a></span><span class="op">(</span><span class="st">"orange"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">ppc_loo_pit_overlay</span><span class="op">(</span><span class="va">y</span>, <span class="va">yrep</span>, lw <span class="op">=</span> <span class="va">lw</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Some PIT values larger than 1! Largest:  1 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Rounding PIT &gt; 1 to 1. Gradient evaluation took 0.000287 seconds</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 2.87 seconds.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Rounding PIT &gt; 1 to 1. Gradient evaluation took 0.00035 seconds</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 3.5 seconds.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2: Adjust your expectations accordingly!</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2: </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2: </span>
@@ -576,15 +582,15 @@ checking. arXiv preprint https://arxiv.org/abs/2603.02928.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2: Iteration: 90 / 100 [ 90%]  (Sampling)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: Iteration: 100 / 100 [100%]  (Sampling)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1:  Elapsed Time: 1.89 seconds (Warm-up)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1:                1.832 seconds (Sampling)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1:                3.722 seconds (Total)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1:  Elapsed Time: 2.435 seconds (Warm-up)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1:                2.271 seconds (Sampling)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1:                4.706 seconds (Total)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2: Iteration: 100 / 100 [100%]  (Sampling)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2: </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2:  Elapsed Time: 1.983 seconds (Warm-up)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2:                1.865 seconds (Sampling)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2:                3.848 seconds (Total)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2:  Elapsed Time: 2.534 seconds (Warm-up)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2:                2.276 seconds (Sampling)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2:                4.81 seconds (Total)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2: </span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> NOTE: The kernel density estimate assumes continuous observations and is not optimal for discrete observations.</span>

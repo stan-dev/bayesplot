@@ -245,6 +245,11 @@ discrete-friendly displays for integer-valued statistics.
 
 ## References
 
+Säilynoja, T., Johnson, A., Martin, O., and Vehtari, A. (2026).
+Recommendations for visual predictive checks in Bayesian workflow.
+*Journal of Visualization and Interaction*. 1(1).
+doi:10.54337/jovi.v1i1.11478.
+
 Kleiber, C. and Zeileis, A. (2016). Visualizing count data regressions
 using rootograms. *The American Statistician*. 70(3): 296–303.
 <https://arxiv.org/abs/1605.01311>.

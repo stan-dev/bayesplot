@@ -423,13 +423,19 @@ evaluation using leave-one-out cross-validation and WAIC. *Statistics
 and Computing*. 27(5), 1413–1432. doi:10.1007/s11222-016-9696-4. arXiv
 preprint: <https://arxiv.org/abs/1507.04544>
 
+Säilynoja, T., Bürkner, P.-C., and Vehtari, A. (2022). Graphical test
+for discrete uniformity and its applications in goodness-of-fit
+evaluation and multiple sample comparison. *Statistics and Computing*.
+32(2), 32. doi:10.1007/s11222-022-10090-6. arXiv preprint:
+<https://arxiv.org/abs/2103.10522>
+
+Tesso, H., and Vehtari, A. (2026). LOO-PIT predictive model checking.
+*arXiv preprint arXiv:2603.02928*. doi:10.48550/arXiv.2603.02928.
+
 Boneva, L. I., Kendall, D., & Stefanov, I. (1971). Spline
 transformations: Three new diagnostic aids for the statistical
 data-analyst. *J. R. Stat. Soc. B* (Methodological), 33(1), 1-71.
 https://www.jstor.org/stable/2986005.
-
-Tesso, H., & Vehtari, A. (2026). LOO-PIT predictive model checking.
-arXiv preprint https://arxiv.org/abs/2603.02928.
 
 ## See also
 
@@ -496,8 +502,8 @@ lw <- weights(psis1) # normalized log weights
 color_scheme_set("orange")
 ppc_loo_pit_overlay(y, yrep, lw = lw)
 #> Some PIT values larger than 1! Largest:  1 
-#> Rounding PIT > 1 to 1. Gradient evaluation took 0.000287 seconds
-#> Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 2.87 seconds.
+#> Rounding PIT > 1 to 1. Gradient evaluation took 0.00035 seconds
+#> Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 3.5 seconds.
 #> Chain 2: Adjust your expectations accordingly!
 #> Chain 2: 
 #> Chain 2: 
@@ -532,15 +538,15 @@ ppc_loo_pit_overlay(y, yrep, lw = lw)
 #> Chain 2: Iteration: 90 / 100 [ 90%]  (Sampling)
 #> Chain 1: Iteration: 100 / 100 [100%]  (Sampling)
 #> Chain 1: 
-#> Chain 1:  Elapsed Time: 1.89 seconds (Warm-up)
-#> Chain 1:                1.832 seconds (Sampling)
-#> Chain 1:                3.722 seconds (Total)
+#> Chain 1:  Elapsed Time: 2.435 seconds (Warm-up)
+#> Chain 1:                2.271 seconds (Sampling)
+#> Chain 1:                4.706 seconds (Total)
 #> Chain 1: 
 #> Chain 2: Iteration: 100 / 100 [100%]  (Sampling)
 #> Chain 2: 
-#> Chain 2:  Elapsed Time: 1.983 seconds (Warm-up)
-#> Chain 2:                1.865 seconds (Sampling)
-#> Chain 2:                3.848 seconds (Total)
+#> Chain 2:  Elapsed Time: 2.534 seconds (Warm-up)
+#> Chain 2:                2.276 seconds (Sampling)
+#> Chain 2:                4.81 seconds (Total)
 #> Chain 2: 
 #> Warning: 
 #> NOTE: The kernel density estimate assumes continuous observations and is not optimal for discrete observations.

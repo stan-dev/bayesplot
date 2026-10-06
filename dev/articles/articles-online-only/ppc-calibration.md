@@ -51,7 +51,7 @@ miscalibration.
 
 To estimate the CEP from data, `bayesplot` uses the **Pool Adjacent
 Violators (PAV)** algorithm (Ayer et al., 1955). For more details see
-Dimitriadis et al. (2021) and Säilynoja et al. (2025). The PAV algorithm
+Dimitriadis et al. (2021) and Säilynoja et al. (2026). The PAV algorithm
 solves an isotonic regression problem: it finds the monotone
 non-decreasing step function that best fits the binary outcomes as a
 function of the ordered predicted probabilities.
@@ -489,7 +489,7 @@ p1 + p2 + p3 + p4 + plot_layout(ncol = 2)
 Setting `show_qdots = TRUE` overlays a quantile dot plot along the
 x-axis, showing the marginal distribution of predicted probabilities.
 Each dot represents an empirical quantile. By default
-`qdots_quantiles = 100` dots are displayed. See Säilynoja et al. (2025)
+`qdots_quantiles = 100` dots are displayed. See Säilynoja et al. (2026)
 for methodological details.
 
 The following plot shows the calibration curves for the simulated
@@ -556,7 +556,7 @@ supplied.
 
 ## Real-World Example: Modelling Roach Infestation
 
-The following example is drawn from Säilynoja et al. (2025) and uses the
+The following example is drawn from Säilynoja et al. (2026) and uses the
 `roaches` dataset from `rstanarm`. The data records the number of
 roaches caught in traps across 264 apartments assigned to a treatment or
 control condition. We compare two count-data models for the binary
@@ -735,6 +735,7 @@ p1 + p2
   the National Academy of Sciences*, 118(8).
   <https://doi.org/10.1073/pnas.2016191118>
 
-- Säilynoja, T., Johnson, A. R., Martin, O. A., & Vehtari, A. (2025).
+- Säilynoja, T., Johnson, A., Martin, O., & Vehtari, A. (2026).
   Recommendations for visual predictive checks in Bayesian workflow.
-  (Preprint). *arXiv*. <https://doi.org/10.48550/arXiv.2503.01509>
+  *Journal of Visualization and Interaction*, 1(1).
+  <https://doi.org/10.54337/jovi.v1i1.11478>

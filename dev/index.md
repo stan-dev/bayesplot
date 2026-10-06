@@ -51,6 +51,67 @@ We are always looking for new contributors! See
 [CONTRIBUTING.md](https://raw.githubusercontent.com/stan-dev/bayesplot/master/.github/CONTRIBUTING.md)
 for details and/or reach out via the issue tracker.
 
+### Citing bayesplot
+
+Developing and maintaining open source software is an important yet
+often underappreciated contribution to scientific progress. Thus,
+whenever you are using open source software (or software in general),
+please make sure to cite it appropriately so that developers get credit
+for their work.
+
+When using **bayesplot**, please cite it as follows:
+
+- Gabry J, Mahr T (YEAR). bayesplot: Plotting for Bayesian Models. R
+  package version XXX, <https://mc-stan.org/bayesplot/>.
+
+- Gabry J, Simpson D, Vehtari A, Betancourt M, Gelman A (2019).
+  Visualization in Bayesian workflow. *J. R. Stat. Soc. A*, 182(2):
+  389-402. <doi:10.1111/rssa.12378>.
+
+When using the graphical uniformity test in
+[`mcmc_rank_ecdf()`](https://mc-stan.org/bayesplot/dev/reference/MCMC-traces.md),
+or in
+[`ppc_pit_ecdf()`](https://mc-stan.org/bayesplot/dev/reference/PPC-distributions.md),
+[`ppc_pit_ecdf_grouped()`](https://mc-stan.org/bayesplot/dev/reference/PPC-distributions.md),
+and
+[`ppc_loo_pit_ecdf()`](https://mc-stan.org/bayesplot/dev/reference/PPC-loo.md)
+with `method = "independent"`, please also cite
+
+- Säilynoja T, Bürkner P-C, Vehtari A (2022). Graphical test for
+  discrete uniformity and its applications in goodness-of-fit evaluation
+  and multiple sample comparison. *Statistics and Computing*, 32(2): 32.
+  <doi:10.1007/s11222-022-10090-6>.
+
+When using the calibration plots
+([`ppc_calibration()`](https://mc-stan.org/bayesplot/dev/reference/PPC-calibration.md),
+[`ppc_calibration_overlay()`](https://mc-stan.org/bayesplot/dev/reference/PPC-calibration.md),
+[`ppc_loo_calibration()`](https://mc-stan.org/bayesplot/dev/reference/PPC-calibration.md),
+and their `_grouped` variants), the quantile dot plots
+[`ppc_dots()`](https://mc-stan.org/bayesplot/dev/reference/PPC-distributions.md)
+and
+[`ppd_dots()`](https://mc-stan.org/bayesplot/dev/reference/PPD-distributions.md),
+[`ppc_rootogram()`](https://mc-stan.org/bayesplot/dev/reference/PPC-discrete.md)
+with `style = "discrete"`,
+[`ppc_rootogram_grouped()`](https://mc-stan.org/bayesplot/dev/reference/PPC-discrete.md),
+or the `bounds` argument of the PPC and PPD density plots, please also
+cite
+
+- Säilynoja T, Johnson A, Martin O, Vehtari A (2026). Recommendations
+  for visual predictive checks in Bayesian workflow. *Journal of
+  Visualization and Interaction*, 1(1). <doi:10.54337/jovi.v1i1.11478>.
+
+When using the dependence-aware uniformity tests in
+[`ppc_pit_ecdf()`](https://mc-stan.org/bayesplot/dev/reference/PPC-distributions.md),
+[`ppc_pit_ecdf_grouped()`](https://mc-stan.org/bayesplot/dev/reference/PPC-distributions.md),
+and
+[`ppc_loo_pit_ecdf()`](https://mc-stan.org/bayesplot/dev/reference/PPC-loo.md)
+with `method = "correlated"`, please also cite
+
+- Tesso H, Vehtari A (2026). LOO-PIT predictive model checking. *arXiv
+  preprint arXiv:2603.02928*. <doi:10.48550/arXiv.2603.02928>.
+
+The same information can be obtained by running `citation("bayesplot")`.
+
 ### Installation
 
 - Install from CRAN:

@@ -132,6 +132,29 @@
 <p>We are always looking for new contributors! See <a href="https://raw.githubusercontent.com/stan-dev/bayesplot/master/.github/CONTRIBUTING.md" class="external-link">CONTRIBUTING.md</a> for details and/or reach out via the issue tracker.</p>
 </div>
 <div class="section level3">
+<h3 id="citing-bayesplot">Citing bayesplot<a class="anchor" aria-label="anchor" href="#citing-bayesplot"></a>
+</h3>
+<p>Developing and maintaining open source software is an important yet often underappreciated contribution to scientific progress. Thus, whenever you are using open source software (or software in general), please make sure to cite it appropriately so that developers get credit for their work.</p>
+<p>When using <strong>bayesplot</strong>, please cite it as follows:</p>
+<ul>
+<li><p>Gabry J, Mahr T (YEAR). bayesplot: Plotting for Bayesian Models. R package version XXX, <a href="https://mc-stan.org/bayesplot/" class="uri">https://mc-stan.org/bayesplot/</a>.</p></li>
+<li><p>Gabry J, Simpson D, Vehtari A, Betancourt M, Gelman A (2019). Visualization in Bayesian workflow. <em>J. R. Stat. Soc. A</em>, 182(2): 389-402. <a href="doi:10.1111/rssa.12378" class="uri">doi:10.1111/rssa.12378</a>.</p></li>
+</ul>
+<p>When using the graphical uniformity test in <code><a href="reference/MCMC-traces.html">mcmc_rank_ecdf()</a></code>, or in <code><a href="reference/PPC-distributions.html">ppc_pit_ecdf()</a></code>, <code><a href="reference/PPC-distributions.html">ppc_pit_ecdf_grouped()</a></code>, and <code><a href="reference/PPC-loo.html">ppc_loo_pit_ecdf()</a></code> with <code>method = "independent"</code>, please also cite</p>
+<ul>
+<li>Säilynoja T, Bürkner P-C, Vehtari A (2022). Graphical test for discrete uniformity and its applications in goodness-of-fit evaluation and multiple sample comparison. <em>Statistics and Computing</em>, 32(2): 32. <a href="doi:10.1007/s11222-022-10090-6" class="uri">doi:10.1007/s11222-022-10090-6</a>.</li>
+</ul>
+<p>When using the calibration plots (<code><a href="reference/PPC-calibration.html">ppc_calibration()</a></code>, <code><a href="reference/PPC-calibration.html">ppc_calibration_overlay()</a></code>, <code><a href="reference/PPC-calibration.html">ppc_loo_calibration()</a></code>, and their <code>_grouped</code> variants), the quantile dot plots <code><a href="reference/PPC-distributions.html">ppc_dots()</a></code> and <code><a href="reference/PPD-distributions.html">ppd_dots()</a></code>, <code><a href="reference/PPC-discrete.html">ppc_rootogram()</a></code> with <code>style = "discrete"</code>, <code><a href="reference/PPC-discrete.html">ppc_rootogram_grouped()</a></code>, or the <code>bounds</code> argument of the PPC and PPD density plots, please also cite</p>
+<ul>
+<li>Säilynoja T, Johnson A, Martin O, Vehtari A (2026). Recommendations for visual predictive checks in Bayesian workflow. <em>Journal of Visualization and Interaction</em>, 1(1). <a href="doi:10.54337/jovi.v1i1.11478" class="uri">doi:10.54337/jovi.v1i1.11478</a>.</li>
+</ul>
+<p>When using the dependence-aware uniformity tests in <code><a href="reference/PPC-distributions.html">ppc_pit_ecdf()</a></code>, <code><a href="reference/PPC-distributions.html">ppc_pit_ecdf_grouped()</a></code>, and <code><a href="reference/PPC-loo.html">ppc_loo_pit_ecdf()</a></code> with <code>method = "correlated"</code>, please also cite</p>
+<ul>
+<li>Tesso H, Vehtari A (2026). LOO-PIT predictive model checking. <em>arXiv preprint arXiv:2603.02928</em>. <a href="doi:10.48550/arXiv.2603.02928" class="uri">doi:10.48550/arXiv.2603.02928</a>.</li>
+</ul>
+<p>The same information can be obtained by running <code>citation("bayesplot")</code>.</p>
+</div>
+<div class="section level3">
 <h3 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h3>
 <ul>

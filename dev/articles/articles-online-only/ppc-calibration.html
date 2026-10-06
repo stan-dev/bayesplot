@@ -98,7 +98,7 @@
                         <h4 data-toc-skip class="author">Florence
 Bockting</h4>
             
-            <h4 data-toc-skip class="date">2026-09-28</h4>
+            <h4 data-toc-skip class="date">2026-10-06</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/stan-dev/bayesplot/blob/master/vignettes/articles-online-only/ppc-calibration.Rmd" class="external-link"><code>vignettes/articles-online-only/ppc-calibration.Rmd</code></a></small>
       <div class="d-none name"><code>ppc-calibration.Rmd</code></div>
@@ -155,7 +155,7 @@ miscalibration.</p>
 <p>To estimate the CEP from data, <code>bayesplot</code> uses the
 <strong>Pool Adjacent Violators (PAV)</strong> algorithm (Ayer et al.,
 1955). For more details see Dimitriadis et al. (2021) and Säilynoja et
-al. (2025). The PAV algorithm solves an isotonic regression problem: it
+al. (2026). The PAV algorithm solves an isotonic regression problem: it
 finds the monotone non-decreasing step function that best fits the
 binary outcomes as a function of the ordered predicted
 probabilities.</p>
@@ -643,7 +643,7 @@ dot plot<a class="anchor" aria-label="anchor" href="#show_qdots-and-qdots_quanti
 along the x-axis, showing the marginal distribution of predicted
 probabilities. Each dot represents an empirical quantile. By default
 <code>qdots_quantiles = 100</code> dots are displayed. See Säilynoja et
-al. (2025) for methodological details.</p>
+al. (2026) for methodological details.</p>
 <p>The following plot shows the calibration curves for the simulated
 calibrated and miscalibrated models, with quantile dot plots along the
 x-axis showing the distribution of predicted probabilities. The top row
@@ -702,7 +702,7 @@ faceted plot when a grouping variable is supplied.</p>
 <div class="section level2">
 <h2 id="real-world-example-modelling-roach-infestation">Real-World Example: Modelling Roach Infestation<a class="anchor" aria-label="anchor" href="#real-world-example-modelling-roach-infestation"></a>
 </h2>
-<p>The following example is drawn from Säilynoja et al. (2025) and uses
+<p>The following example is drawn from Säilynoja et al. (2026) and uses
 the <code>roaches</code> dataset from <code>rstanarm</code>. The data
 records the number of roaches caught in traps across 264 apartments
 assigned to a treatment or control condition. We compare two count-data
@@ -865,9 +865,9 @@ with incomplete information. <em>Annals of Mathematical Statistics</em>,
 <li><p>Dimitriadis, T., Gneiting, T., &amp; Jordan, A. I. (2021). Stable
 reliability diagrams for probabilistic classifiers. <em>Proceedings of
 the National Academy of Sciences</em>, 118(8). <a href="https://doi.org/10.1073/pnas.2016191118" class="external-link uri">https://doi.org/10.1073/pnas.2016191118</a></p></li>
-<li><p>Säilynoja, T., Johnson, A. R., Martin, O. A., &amp; Vehtari, A.
-(2025). Recommendations for visual predictive checks in Bayesian
-workflow. (Preprint). <em>arXiv</em>. <a href="https://doi.org/10.48550/arXiv.2503.01509" class="external-link uri">https://doi.org/10.48550/arXiv.2503.01509</a></p></li>
+<li><p>Säilynoja, T., Johnson, A., Martin, O., &amp; Vehtari, A. (2026).
+Recommendations for visual predictive checks in Bayesian workflow.
+<em>Journal of Visualization and Interaction</em>, 1(1). <a href="https://doi.org/10.54337/jovi.v1i1.11478" class="external-link uri">https://doi.org/10.54337/jovi.v1i1.11478</a></p></li>
 </ul>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
