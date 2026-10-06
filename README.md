@@ -56,7 +56,7 @@ appropriately so that developers get credit for their work.
 
 When using **bayesplot**, please cite it as follows:
 
-* Gabry J, Mahr T (2026). bayesplot: Plotting for Bayesian Models. R package
+* Gabry J, Mahr T (YEAR). bayesplot: Plotting for Bayesian Models. R package
   version XXX, <https://mc-stan.org/bayesplot/>.
 
 * Gabry J, Simpson D, Vehtari A, Betancourt M, Gelman A (2019). Visualization
