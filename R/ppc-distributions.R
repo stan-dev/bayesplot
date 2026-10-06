@@ -59,7 +59,8 @@
 #'    simultaneous confidence intervals under an independence assumption.
 #'    With `method = "correlated"`, the plot uses a dependence-aware
 #'    uniformity assessment and can highlight suspicious regions.
-#'    See Säilynoja et al. (2025) and Tesso & Vehtari (2026) for details.
+#'    See Säilynoja et al. (2022), Säilynoja et al. (2026), and
+#'    Tesso & Vehtari (2026) for details.
 #'    Note that the default "independent" method is **superseded** by
 #'    the "correlated" method (Tesso & Vehtari, 2026) which accounts for 
 #'    dependent LOO-PIT values.
@@ -76,6 +77,8 @@
 #'
 #' @template reference-vis-paper
 #' @template reference-uniformity-test
+#' @template reference-vpc-recommendations
+#' @template reference-loo-pit-tests
 #' @templateVar bdaRef (Ch. 6)
 #' @template reference-bda
 #'
@@ -703,9 +706,6 @@ ppc_violin_grouped <-
 #'   If `NULL` (default), PIT values are computed internally.
 #' @param linewidth When `method = "correlated"`, the line width of the ECDF.
 #'   Defaults to `0.3`.
-#' 
-#' @references Tesso, H., & Vehtari, A. (2026). LOO-PIT predictive model 
-#'   checking. arXiv preprint https://arxiv.org/abs/2603.02928.
 ppc_pit_ecdf <- function(y,
                          yrep,
                          ...,

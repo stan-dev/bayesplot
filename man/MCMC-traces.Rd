@@ -262,7 +262,7 @@ simultaneous confidence bands with a coverage determined by \code{prob}, that
 is, bands that completely cover all of the rank ECDFs with the probability
 \code{prob}. If \code{plot_diff = TRUE}, the difference between the observed rank
 ECDFs and the theoretical expectation for samples originating from the
-same distribution is drawn. See Säilynoja et al. (2021) for details.
+same distribution is drawn. See Säilynoja et al. (2022) for details.
 }
 \item{\code{mcmc_trace_data()}}{
 Data-preparation back end for \code{mcmc_trace()}, \code{mcmc_trace_highlight()},
@@ -367,9 +367,11 @@ Vehtari, A., Gelman, A., Simpson, D., Carpenter, B., Bürkner, P.
 (2019). Rank-normalization, folding, and localization: An improved \emph{R}-hat
 for assessing convergence of MCMC. \href{https://arxiv.org/abs/1903.08008}{arXiv preprint}.
 
-Säilynoja, T., Bürkner, P., Vehtari, A.
-(2021). Graphical Test for Discrete Uniformity and its Applications in
-Goodness of Fit Evaluation and Multiple Sample Comparison \href{https://arxiv.org/abs/2103.10522}{arXiv preprint}.
+Säilynoja, T., Bürkner, P.-C., and Vehtari, A. (2022).
+Graphical test for discrete uniformity and its applications in
+goodness-of-fit evaluation and multiple sample comparison.
+\emph{Statistics and Computing}. 32(2), 32. doi:10.1007/s11222-022-10090-6.
+arXiv preprint: \url{https://arxiv.org/abs/2103.10522}
 }
 \seealso{
 Other MCMC:

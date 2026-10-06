@@ -14,6 +14,7 @@
 #'
 #' @template details-binomial
 #' @template return-ggplot-or-data
+#' @template reference-vpc-recommendations
 #'
 #' @examples
 #' # difference between ppd_dens_overlay() and ppc_dens_overlay()

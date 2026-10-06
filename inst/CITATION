@@ -22,8 +22,55 @@ bibentry(bibtype = "Article",
          year = "2019",
          journal = "J. R. Stat. Soc. A",
          volume = 182,
-         issue = 2,
+         number = 2,
          pages = "389-402",
          doi = "10.1111/rssa.12378",
          header = "To cite the bayesplot paper 'Visualization in Bayesian workflow':"
+)
+
+bibentry(bibtype = "Article",
+         title = paste("Graphical test for discrete uniformity and its applications in",
+                       "goodness-of-fit evaluation and multiple sample comparison"),
+         author = c(person("Teemu", "Säilynoja"),
+                    person("Paul-Christian", "Bürkner"),
+                    person("Aki", "Vehtari")),
+         year = "2022",
+         journal = "Statistics and Computing",
+         volume = 32,
+         number = 2,
+         pages = "32",
+         doi = "10.1007/s11222-022-10090-6",
+         header = "To cite the graphical uniformity test used in `mcmc_rank_ecdf()`, and in
+`ppc_pit_ecdf()`, `ppc_pit_ecdf_grouped()`, and `ppc_loo_pit_ecdf()` with
+`method = \"independent\"`:"
+)
+
+bibentry(bibtype = "Article",
+         title = "Recommendations for visual predictive checks in Bayesian workflow",
+         author = c(person("Teemu", "Säilynoja"),
+                    person("Andrew", "Johnson"),
+                    person("Osvaldo", "Martin"),
+                    person("Aki", "Vehtari")),
+         year = "2026",
+         journal = "Journal of Visualization and Interaction",
+         volume = 1,
+         number = 1,
+         doi = "10.54337/jovi.v1i1.11478",
+         header = "To cite the recommended visual predictive checks (`ppc_calibration()`,
+`ppc_calibration_overlay()`, `ppc_loo_calibration()`, and their `_grouped`
+variants, `ppc_dots()`, `ppd_dots()`, `ppc_rootogram()` with
+`style = \"discrete\"`, `ppc_rootogram_grouped()`, and the `bounds` argument
+of the PPC and PPD density plots):"
+)
+
+bibentry(bibtype = "Article",
+         title = "LOO-PIT predictive model checking",
+         author = c(person("Herman", "Tesso"),
+                    person("Aki", "Vehtari")),
+         year = "2026",
+         journal = "arXiv preprint arXiv:2603.02928",
+         doi = "10.48550/arXiv.2603.02928",
+         header = "To cite the dependence-aware uniformity tests (`ppc_pit_ecdf()`,
+`ppc_pit_ecdf_grouped()`, and `ppc_loo_pit_ecdf()` with
+`method = \"correlated\"`):"
 )

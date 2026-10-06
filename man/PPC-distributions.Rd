@@ -360,7 +360,8 @@ With \code{method = "independent"}, the plot shows \code{100 * prob}\% central
 simultaneous confidence intervals under an independence assumption.
 With \code{method = "correlated"}, the plot uses a dependence-aware
 uniformity assessment and can highlight suspicious regions.
-See Säilynoja et al. (2025) and Tesso & Vehtari (2026) for details.
+See Säilynoja et al. (2022), Säilynoja et al. (2026), and
+Tesso & Vehtari (2026) for details.
 Note that the default "independent" method is \strong{superseded} by
 the "correlated" method (Tesso & Vehtari, 2026) which accounts for
 dependent LOO-PIT values.
@@ -453,16 +454,24 @@ Gelman, A. (2019), Visualization in Bayesian workflow.
 \href{https://arxiv.org/abs/1709.01449}{arXiv preprint},
 \href{https://github.com/jgabry/bayes-vis-paper}{code on GitHub})
 
-Säilynoja, T., Bürkner, P., Vehtari, A.
-(2021). Graphical Test for Discrete Uniformity and its Applications in
-Goodness of Fit Evaluation and Multiple Sample Comparison \href{https://arxiv.org/abs/2103.10522}{arXiv preprint}.
+Säilynoja, T., Bürkner, P.-C., and Vehtari, A. (2022).
+Graphical test for discrete uniformity and its applications in
+goodness-of-fit evaluation and multiple sample comparison.
+\emph{Statistics and Computing}. 32(2), 32. doi:10.1007/s11222-022-10090-6.
+arXiv preprint: \url{https://arxiv.org/abs/2103.10522}
+
+Säilynoja, T., Johnson, A., Martin, O., and Vehtari, A. (2026).
+Recommendations for visual predictive checks in Bayesian workflow.
+\emph{Journal of Visualization and Interaction}. 1(1).
+doi:10.54337/jovi.v1i1.11478.
+
+Tesso, H., and Vehtari, A. (2026). LOO-PIT predictive model
+checking. \emph{arXiv preprint arXiv:2603.02928}.
+doi:10.48550/arXiv.2603.02928.
 
 Gelman, A., Carlin, J. B., Stern, H. S., Dunson, D. B., Vehtari,
 A., and Rubin, D. B. (2013). \emph{Bayesian Data Analysis.} Chapman & Hall/CRC
 Press, London, third edition. (Ch. 6)
-
-Tesso, H., & Vehtari, A. (2026). LOO-PIT predictive model
-checking. arXiv preprint https://arxiv.org/abs/2603.02928.
 }
 \seealso{
 Other PPCs:

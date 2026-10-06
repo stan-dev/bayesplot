@@ -47,6 +47,50 @@ _J. R. Stat. Soc. A_, 182: 389-402. doi:10.1111/rssa.12378.
 
 We are always looking for new contributors! See [CONTRIBUTING.md](https://raw.githubusercontent.com/stan-dev/bayesplot/master/.github/CONTRIBUTING.md) for details and/or reach out via the issue tracker.
 
+### Citing bayesplot
+
+Developing and maintaining open source software is an important yet often
+underappreciated contribution to scientific progress. Thus, whenever you are
+using open source software (or software in general), please make sure to cite it
+appropriately so that developers get credit for their work.
+
+When using **bayesplot**, please cite it as follows:
+
+* Gabry J, Mahr T (YEAR). bayesplot: Plotting for Bayesian Models. R package
+  version XXX, <https://mc-stan.org/bayesplot/>.
+
+* Gabry J, Simpson D, Vehtari A, Betancourt M, Gelman A (2019). Visualization
+  in Bayesian workflow. _J. R. Stat. Soc. A_, 182(2): 389-402.
+  doi:10.1111/rssa.12378.
+
+When using the graphical uniformity test in `mcmc_rank_ecdf()`, or in
+`ppc_pit_ecdf()`, `ppc_pit_ecdf_grouped()`, and `ppc_loo_pit_ecdf()` with
+`method = "independent"`, please also cite
+
+* Säilynoja T, Bürkner P-C, Vehtari A (2022). Graphical test for discrete
+  uniformity and its applications in goodness-of-fit evaluation and multiple
+  sample comparison. _Statistics and Computing_, 32(2): 32.
+  doi:10.1007/s11222-022-10090-6.
+
+When using the calibration plots (`ppc_calibration()`,
+`ppc_calibration_overlay()`, `ppc_loo_calibration()`, and their `_grouped`
+variants), the quantile dot plots `ppc_dots()` and `ppd_dots()`,
+`ppc_rootogram()` with `style = "discrete"`, `ppc_rootogram_grouped()`, or the
+`bounds` argument of the PPC and PPD density plots, please also cite
+
+* Säilynoja T, Johnson A, Martin O, Vehtari A (2026). Recommendations for
+  visual predictive checks in Bayesian workflow. _Journal of Visualization and
+  Interaction_, 1(1). doi:10.54337/jovi.v1i1.11478.
+
+When using the dependence-aware uniformity tests in `ppc_pit_ecdf()`,
+`ppc_pit_ecdf_grouped()`, and `ppc_loo_pit_ecdf()` with
+`method = "correlated"`, please also cite
+
+* Tesso H, Vehtari A (2026). LOO-PIT predictive model checking. _arXiv
+  preprint arXiv:2603.02928_. doi:10.48550/arXiv.2603.02928.
+
+The same information can be obtained by running `citation("bayesplot")`.
+
 ### Installation
 
 * Install from CRAN:

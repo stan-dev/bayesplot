@@ -599,18 +599,18 @@ https://www.routledge.com/Bayesian-Workflow/Gelman-Vehtari-McElreath-Simpson-Mar
 
 Säilynoja, T., Bürkner, P.-C., and Vehtari, A. (2022). Graphical test for
 discrete uniformity and its applications in goodness-of-fit evaluation and
-multiple sample comparison. *Statistics and Computing*, 32, 32.
-https://link.springer.com/10.1007/s11222-022-10090-6
+multiple sample comparison. *Statistics and Computing*, 32(2), 32.
+https://doi.org/10.1007/s11222-022-10090-6
 <a id="Säilynoja2022"></a>
 
 Tesso, H., & Vehtari, A. (2026). LOO-PIT predictive model checking.
-http://arxiv.org/abs/2603.02928
+*arXiv preprint arXiv:2603.02928*. https://doi.org/10.48550/arXiv.2603.02928
 <a id="Tesso2026"></a>
 
 Vehtari, A., Gelman, A., and Gabry, J. (2017). Practical Bayesian model
 evaluation using leave-one-out cross-validation and WAIC. *Statistics and
 Computing*, 27(5), 1413–1432.
-https://link.springer.com/article/10.1007/S11222-016-9696-4
+https://doi.org/10.1007/s11222-016-9696-4
 <a id="Vehtari2017"></a>
 
 Vehtari, A., Simpson, D., Gelman, A., Yao, Y., and Gabry, J. (2024). Pareto

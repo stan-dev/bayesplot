@@ -1,4 +1,5 @@
-#' @references Säilynoja, T., Bürkner, P., Vehtari, A.
-#'   (2021). Graphical Test for Discrete Uniformity and its Applications in
-#'   Goodness of Fit Evaluation and Multiple Sample Comparison [arXiv
-#'   preprint](https://arxiv.org/abs/2103.10522).
+#' @references Säilynoja, T., Bürkner, P.-C., and Vehtari, A. (2022).
+#'   Graphical test for discrete uniformity and its applications in
+#'   goodness-of-fit evaluation and multiple sample comparison.
+#'   *Statistics and Computing*. 32(2), 32. doi:10.1007/s11222-022-10090-6.
+#'   arXiv preprint: <https://arxiv.org/abs/2103.10522>
