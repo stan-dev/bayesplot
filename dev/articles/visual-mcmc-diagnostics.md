@@ -440,7 +440,7 @@ scatter_theta_ncp <- mcmc_scatter(
 compare_cp_ncp(scatter_theta_cp, scatter_theta_ncp, ylim = c(-8, 4))
 ```
 
-    Warning:  [1m [22mRemoved 5 rows containing missing values or values outside the scale range
+    Warning: Removed 5 rows containing missing values or values outside the scale range
     (`geom_point()`).
 
 ![](visual-mcmc-diagnostics_files/figure-html/mcmc_scatter-3-1.png)

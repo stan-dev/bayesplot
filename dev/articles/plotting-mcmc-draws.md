@@ -436,11 +436,11 @@ d <- mcmc_intervals_data(posterior, pars = c("(Intercept)", "sigma"))
 d
 ```
 
-     [38;5;246m# A tibble: 2 × 9 [39m
+    # A tibble: 2 × 9
       parameter   outer_width inner_width point_est     ll     l     m     h    hh
-       [3m [38;5;246m<fct> [39m [23m              [3m [38;5;246m<dbl> [39m [23m        [3m [38;5;246m<dbl> [39m [23m  [3m [38;5;246m<chr> [39m [23m       [3m [38;5;246m<dbl> [39m [23m  [3m [38;5;246m<dbl> [39m [23m  [3m [38;5;246m<dbl> [39m [23m  [3m [38;5;246m<dbl> [39m [23m  [3m [38;5;246m<dbl> [39m [23m
-     [38;5;250m1 [39m (Intercept)         0.9         0.5 median    - [31m20 [39m [31m. [39m [31m4 [39m  - [31m1 [39m [31m. [39m [31m0 [39m [31m1 [39m 12.0  25.1  44.8 
-     [38;5;250m2 [39m sigma               0.9         0.5 median      2.15  2.46  2.72  3.05  3.63
+      <fct>             <dbl>       <dbl> <chr>      <dbl> <dbl> <dbl> <dbl> <dbl>
+    1 (Intercept)         0.9         0.5 median    -20.4  -1.01 12.0  25.1  44.8 
+    2 sigma               0.9         0.5 median      2.15  2.46  2.72  3.05  3.63
 
 This can be used to build fully custom ggplot2 visualizations using the
 same summary statistics that bayesplot computes internally. See

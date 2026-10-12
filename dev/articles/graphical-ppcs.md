@@ -515,15 +515,15 @@ d <- ppc_intervals_data(y, yrep_nb, prob = 0.5, prob_outer = 0.9)
 head(d)
 ```
 
-     [38;5;246m# A tibble: 6 × 10 [39m
+    # A tibble: 6 × 10
        y_id y_obs     x outer_width inner_width    ll     l     m     h     hh
-       [3m [38;5;246m<int> [39m [23m  [3m [38;5;246m<int> [39m [23m  [3m [38;5;246m<int> [39m [23m        [3m [38;5;246m<dbl> [39m [23m        [3m [38;5;246m<dbl> [39m [23m  [3m [38;5;246m<dbl> [39m [23m  [3m [38;5;246m<dbl> [39m [23m  [3m [38;5;246m<dbl> [39m [23m  [3m [38;5;246m<dbl> [39m [23m   [3m [38;5;246m<dbl> [39m [23m
-     [38;5;250m1 [39m     1   153     1         0.9         0.5     0  5     67    345   [4m2 [24m058. 
-     [38;5;250m2 [39m     2   127     2         0.9         0.5     0  6.75  75.5  428.  [4m2 [24m344. 
-     [38;5;250m3 [39m     3     7     3         0.9         0.5     0  0      1      7    40.0
-     [38;5;250m4 [39m     4     7     4         0.9         0.5     0  0      2     10    39  
-     [38;5;250m5 [39m     5     0     5         0.9         0.5     0  0      2     11    40.1
-     [38;5;250m6 [39m     6     0     6         0.9         0.5     0  0      2     10    42.1
+      <int> <int> <int>       <dbl>       <dbl> <dbl> <dbl> <dbl> <dbl>  <dbl>
+    1     1   153     1         0.9         0.5     0  5     67    345  2058. 
+    2     2   127     2         0.9         0.5     0  6.75  75.5  428. 2344. 
+    3     3     7     3         0.9         0.5     0  0      1      7    40.0
+    4     4     7     4         0.9         0.5     0  0      2     10    39  
+    5     5     0     5         0.9         0.5     0  0      2     11    40.1
+    6     6     0     6         0.9         0.5     0  0      2     10    42.1
 
 You can then use this data to create your own plot:
 
@@ -550,15 +550,15 @@ stat_d <- ppc_stat_data(y, yrep_nb, stat = "median")
 head(stat_d)
 ```
 
-     [38;5;246m# A tibble: 6 × 2 [39m
+    # A tibble: 6 × 2
       variable value
-       [3m [38;5;246m<fct> [39m [23m     [3m [38;5;246m<dbl> [39m [23m
-     [38;5;250m1 [39m y          3  
-     [38;5;250m2 [39m yrep_1     2.5
-     [38;5;250m3 [39m yrep_2     5  
-     [38;5;250m4 [39m yrep_3     2  
-     [38;5;250m5 [39m yrep_4     3  
-     [38;5;250m6 [39m yrep_5     5  
+      <fct>    <dbl>
+    1 y          3  
+    2 yrep_1     2.5
+    3 yrep_2     5  
+    4 yrep_3     2  
+    5 yrep_4     3  
+    6 yrep_5     5  
 
 See `available_ppc(plots_only = FALSE)` and
 `available_mcmc(plots_only = FALSE)` for a full list of data-preparation

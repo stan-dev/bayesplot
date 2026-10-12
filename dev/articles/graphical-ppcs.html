@@ -98,7 +98,7 @@
                         <h4 data-toc-skip class="author">Jonah
 Gabry</h4>
             
-            <h4 data-toc-skip class="date">2026-10-06</h4>
+            <h4 data-toc-skip class="date">2026-10-12</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/stan-dev/bayesplot/blob/master/vignettes/graphical-ppcs.Rmd" class="external-link"><code>vignettes/graphical-ppcs.Rmd</code></a></small>
       <div class="d-none name"><code>graphical-ppcs.Rmd</code></div>
@@ -521,15 +521,15 @@ summaries that <code><a href="../reference/PPC-intervals.html">ppc_intervals()</
 <div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/PPC-intervals.html">ppc_intervals_data</a></span><span class="op">(</span><span class="va">y</span>, <span class="va">yrep_nb</span>, prob <span class="op">=</span> <span class="fl">0.5</span>, prob_outer <span class="op">=</span> <span class="fl">0.9</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span></span></code></pre></div>
-<pre><code> [38;5;246m# A tibble: 6 × 10 [39m
+<pre><code># A tibble: 6 × 10
    y_id y_obs     x outer_width inner_width    ll     l     m     h     hh
-   [3m [38;5;246m&lt;int&gt; [39m [23m  [3m [38;5;246m&lt;int&gt; [39m [23m  [3m [38;5;246m&lt;int&gt; [39m [23m        [3m [38;5;246m&lt;dbl&gt; [39m [23m        [3m [38;5;246m&lt;dbl&gt; [39m [23m  [3m [38;5;246m&lt;dbl&gt; [39m [23m  [3m [38;5;246m&lt;dbl&gt; [39m [23m  [3m [38;5;246m&lt;dbl&gt; [39m [23m  [3m [38;5;246m&lt;dbl&gt; [39m [23m   [3m [38;5;246m&lt;dbl&gt; [39m [23m
- [38;5;250m1 [39m     1   153     1         0.9         0.5     0  5     67    345   [4m2 [24m058. 
- [38;5;250m2 [39m     2   127     2         0.9         0.5     0  6.75  75.5  428.  [4m2 [24m344. 
- [38;5;250m3 [39m     3     7     3         0.9         0.5     0  0      1      7    40.0
- [38;5;250m4 [39m     4     7     4         0.9         0.5     0  0      2     10    39  
- [38;5;250m5 [39m     5     0     5         0.9         0.5     0  0      2     11    40.1
- [38;5;250m6 [39m     6     0     6         0.9         0.5     0  0      2     10    42.1</code></pre>
+  &lt;int&gt; &lt;int&gt; &lt;int&gt;       &lt;dbl&gt;       &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;
+1     1   153     1         0.9         0.5     0  5     67    345  2058. 
+2     2   127     2         0.9         0.5     0  6.75  75.5  428. 2344. 
+3     3     7     3         0.9         0.5     0  0      1      7    40.0
+4     4     7     4         0.9         0.5     0  0      2     10    39  
+5     5     0     5         0.9         0.5     0  0      2     11    40.1
+6     6     0     6         0.9         0.5     0  0      2     10    42.1</code></pre>
 <p>You can then use this data to create your own plot:</p>
 <div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">d</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, y <span class="op">=</span> <span class="va">m</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
@@ -545,15 +545,15 @@ statistics:</p>
 <div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">stat_d</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/PPC-test-statistics.html">ppc_stat_data</a></span><span class="op">(</span><span class="va">y</span>, <span class="va">yrep_nb</span>, stat <span class="op">=</span> <span class="st">"median"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">stat_d</span><span class="op">)</span></span></code></pre></div>
-<pre><code> [38;5;246m# A tibble: 6 × 2 [39m
+<pre><code># A tibble: 6 × 2
   variable value
-   [3m [38;5;246m&lt;fct&gt; [39m [23m     [3m [38;5;246m&lt;dbl&gt; [39m [23m
- [38;5;250m1 [39m y          3  
- [38;5;250m2 [39m yrep_1     2.5
- [38;5;250m3 [39m yrep_2     5  
- [38;5;250m4 [39m yrep_3     2  
- [38;5;250m5 [39m yrep_4     3  
- [38;5;250m6 [39m yrep_5     5  </code></pre>
+  &lt;fct&gt;    &lt;dbl&gt;
+1 y          3  
+2 yrep_1     2.5
+3 yrep_2     5  
+4 yrep_3     2  
+5 yrep_4     3  
+6 yrep_5     5  </code></pre>
 <p>See <code>available_ppc(plots_only = FALSE)</code> and
 <code>available_mcmc(plots_only = FALSE)</code> for a full list of
 data-preparation functions.</p>

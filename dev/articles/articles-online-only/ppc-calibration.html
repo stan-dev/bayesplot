@@ -98,7 +98,7 @@
                         <h4 data-toc-skip class="author">Florence
 Bockting</h4>
             
-            <h4 data-toc-skip class="date">2026-10-06</h4>
+            <h4 data-toc-skip class="date">2026-10-12</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/stan-dev/bayesplot/blob/master/vignettes/articles-online-only/ppc-calibration.Rmd" class="external-link"><code>vignettes/articles-online-only/ppc-calibration.Rmd</code></a></small>
       <div class="d-none name"><code>ppc-calibration.Rmd</code></div>
@@ -389,14 +389,14 @@ and posterior draw, so the number of rows equals <span class="math inline">\(N \
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/PPC-calibration.html">ppc_calibration_data</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">y</span>, prep <span class="op">=</span> <span class="va">prep</span>, type <span class="op">=</span> <span class="st">"overlay"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">dat</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 5 × 5</span></span></span>
+<span><span class="co">#&gt; # A tibble: 5 × 5</span></span>
 <span><span class="co">#&gt;   group  y_id rep_id   value   cep</span></span>
-<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>     1   311      1 0.001<span style="text-decoration: underline;">99</span>     0</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>     1   311      2 0.003<span style="text-decoration: underline;">23</span>     0</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>     1   311      3 0.001<span style="text-decoration: underline;">46</span>     0</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>     1   311      4 0.001<span style="text-decoration: underline;">69</span>     0</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>     1   311      5 0.005<span style="text-decoration: underline;">66</span>     0</span></span>
+<span><span class="co">#&gt;   &lt;dbl&gt; &lt;int&gt;  &lt;int&gt;   &lt;dbl&gt; &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1     1   311      1 0.00199     0</span></span>
+<span><span class="co">#&gt; 2     1   311      2 0.00323     0</span></span>
+<span><span class="co">#&gt; 3     1   311      3 0.00146     0</span></span>
+<span><span class="co">#&gt; 4     1   311      4 0.00169     0</span></span>
+<span><span class="co">#&gt; 5     1   311      5 0.00566     0</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"nrow:"</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "nrow: 600000"</span></span></code></pre></div>
@@ -408,14 +408,14 @@ posterior draws to form the uncertainty interval.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dat2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/PPC-calibration.html">ppc_calibration_data</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">y</span>, prep <span class="op">=</span> <span class="va">prep</span>, type <span class="op">=</span> <span class="st">"interval"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">dat2</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 5 × 6</span></span></span>
+<span><span class="co">#&gt; # A tibble: 5 × 6</span></span>
 <span><span class="co">#&gt;   group  y_id   value   cep    lb    ub</span></span>
-<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>     1     1 0.003<span style="text-decoration: underline;">41</span>     0     0     0</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>     1     2 0.007<span style="text-decoration: underline;">13</span>     0     0     0</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>     1     3 0.009<span style="text-decoration: underline;">99</span>     0     0     0</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>     1     4 0.010<span style="text-decoration: underline;">6</span>      0     0     0</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>     1     5 0.015<span style="text-decoration: underline;">8</span>      0     0     0</span></span>
+<span><span class="co">#&gt;   &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1     1     1 0.00341     0     0     0</span></span>
+<span><span class="co">#&gt; 2     1     2 0.00713     0     0     0</span></span>
+<span><span class="co">#&gt; 3     1     3 0.00999     0     0     0</span></span>
+<span><span class="co">#&gt; 4     1     4 0.0106      0     0     0</span></span>
+<span><span class="co">#&gt; 5     1     5 0.0158      0     0     0</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"nrow:"</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">dat2</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "nrow: 600"</span></span></code></pre></div>
