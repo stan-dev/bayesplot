@@ -199,3 +199,20 @@ test_that("mcmc_acf_bar renders correctly", {
   p_lags <- mcmc_acf_bar(vdiff_dframe, lags = 5)
   vdiffr::expect_doppelganger("mcmc_acf_bar (lags)", p_lags)
 })
+
+test_that("mcmc_rhat and mcmc_neff annotations inherit from theme gridlines", {
+  testthat::skip_on_cran()
+  testthat::skip_if_not_installed("vdiffr")
+  skip_on_r_oldrel()
+
+  bayesplot_theme_set(ggplot2::theme_gray())
+  on.exit(bayesplot_theme_set(), add = TRUE)
+
+  rhats <- seq(from = 1, to = 1.20, length.out = 10)
+  p_rhat <- mcmc_rhat(rhats)
+  vdiffr::expect_doppelganger("mcmc_rhat (theme_gray)", p_rhat)
+
+  neffs <- seq(from = 0, to = 1, length.out = 20)
+  p_neff <- mcmc_neff(neffs)
+  vdiffr::expect_doppelganger("mcmc_neff (theme_gray)", p_neff)
+})
