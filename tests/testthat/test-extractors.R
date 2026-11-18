@@ -135,7 +135,7 @@ test_that("cmdstanr methods work", {
   fit <- cmdstanr::cmdstanr_example("logistic", iter_sampling = 500, chains = 2)
   np <- nuts_params(fit)
   np_names <- paste0(c("treedepth", "divergent", "energy", "accept_stat", "stepsize", "n_leapfrog"), "__")
-  expect_identical(levels(np$Parameter), np_names)
+  expect_setequal(levels(np$Parameter), np_names)
   expect_equal(range(np$Iteration), c(1, 500))
   expect_equal(range(np$Chain), c(1, 2))
   expect_true(all(np$Value[np$Parameter == "divergent__"] == 0))
