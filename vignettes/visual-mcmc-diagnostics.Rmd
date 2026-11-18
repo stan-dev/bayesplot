@@ -445,20 +445,25 @@ mcmc_trace(posterior_cp, pars = "tau", np = np_cp) +
 The first thing to note is that all chains seem to be exploring the same region
 of parameter values, which is a good sign. But the plot is too crowded to help
 us diagnose divergences. We may however zoom in to investigate, using the
-`window` argument:
+`window` argument, which takes the first and last iteration to show. Here
+`zoom_window` is the stretch of 200 iterations with the most divergences:
 
 ```{r echo=FALSE}
-#A check that the chosen window still relevant
-n_divergent_in_window <- np_cp %>% filter(Parameter == "divergent__" & Value == 1 & Iteration >= 400 & Iteration <= 600) %>% nrow()
+# Zoom in on the 200-iteration window with the most divergences. Where the
+# divergences fall depends on the platform and compiler, so a hard-coded window
+# can stop being illustrative even with a fixed seed.
+div_iters <- np_cp %>% filter(Parameter == "divergent__" & Value == 1) %>% pull(Iteration)
+window_starts <- seq_len(max(np_cp$Iteration) - 200)
+n_div_in_window <- sapply(window_starts, function(s) sum(div_iters >= s & div_iters <= s + 200))
+zoom_window <- window_starts[which.max(n_div_in_window)] + c(0, 200)
 
-if(n_divergent_in_window < 6) {
-  divergences <- np_cp %>% filter(Parameter == "divergent__" & Value == 1) %>% select(Iteration) %>% get("Iteration", .) %>% sort() %>% paste(collapse = ",")
-  stop(paste("Too few divergences in the selected window for traceplot zoom. Change the window or the random seed.\nDivergences happened at: ", divergences))
+if (max(n_div_in_window) < 6) {
+  stop(paste("Too few divergences in any window for traceplot zoom. Change the random seed.\nDivergences happened at: ", paste(sort(div_iters), collapse = ",")))
 }
 ```
 
 ```{r mcmc_trace_zoom}
-mcmc_trace(posterior_cp, pars = "tau", np = np_cp, window = c(200,400)) + 
+mcmc_trace(posterior_cp, pars = "tau", np = np_cp, window = zoom_window) +
   xlab("Post-warmup iteration")
 ```
 
