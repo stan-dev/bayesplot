@@ -138,22 +138,15 @@ sampler a bit more “careful” and avoid false positive divergences),
 fit_cp <- sampling(schools_mod_cp, data = schools_dat, seed = 20251208, control = list(adapt_delta = 0.9))
 ```
 
-    Warning: There were 101 divergent transitions after warmup. See
+    Warning: There were 21 divergent transitions after warmup. See
     https://mc-stan.org/misc/warnings.html#divergent-transitions-after-warmup
     to find out why this is a problem and how to eliminate them.
-
-    Warning: There were 1 chains where the estimated Bayesian Fraction of Missing Information was low. See
-    https://mc-stan.org/misc/warnings.html#bfmi-low
 
     Warning: Examine the pairs() plot to diagnose sampling problems
 
     Warning: Bulk Effective Samples Size (ESS) is too low, indicating posterior means and medians may be unreliable.
     Running the chains for more iterations may help. See
     https://mc-stan.org/misc/warnings.html#bulk-ess
-
-    Warning: Tail Effective Samples Size (ESS) is too low, indicating posterior variances and tail quantiles may be unreliable.
-    Running the chains for more iterations may help. See
-    https://mc-stan.org/misc/warnings.html#tail-ess
 
 ``` r
 
@@ -232,12 +225,12 @@ head(lp_cp)
 ```
 
       Chain Iteration     Value
-    1     1         1 -22.58211
-    2     1         2 -21.65206
-    3     1         3 -20.93076
-    4     1         4 -22.44877
-    5     1         5 -19.37971
-    6     1         6 -23.64810
+    1     1         1 -23.45519
+    2     1         2 -23.43397
+    3     1         3 -18.74788
+    4     1         4 -22.92680
+    5     1         5 -19.39256
+    6     1         6 -17.18602
 
 ``` r
 
@@ -246,12 +239,12 @@ head(np_cp)
 ```
 
       Chain Iteration     Parameter     Value
-    1     1         1 accept_stat__ 0.9498106
-    2     1         2 accept_stat__ 0.9924560
-    3     1         3 accept_stat__ 0.9997295
-    4     1         4 accept_stat__ 0.9639225
-    5     1         5 accept_stat__ 1.0000000
-    6     1         6 accept_stat__ 0.7569227
+    1     1         1 accept_stat__ 0.9695874
+    2     1         2 accept_stat__ 0.9876288
+    3     1         3 accept_stat__ 0.9944300
+    4     1         4 accept_stat__ 0.9796986
+    5     1         5 accept_stat__ 0.9966107
+    6     1         6 accept_stat__ 0.9937834
 
 ``` r
 
@@ -440,9 +433,6 @@ scatter_theta_ncp <- mcmc_scatter(
 compare_cp_ncp(scatter_theta_cp, scatter_theta_ncp, ylim = c(-8, 4))
 ```
 
-    Warning: Removed 5 rows containing missing values or values outside the scale range
-    (`geom_point()`).
-
 ![](visual-mcmc-diagnostics_files/figure-html/mcmc_scatter-3-1.png)
 
 Once we transform the `eta` values into `theta` values we actually see
@@ -479,11 +469,13 @@ mcmc_trace(posterior_cp, pars = "tau", np = np_cp) +
 The first thing to note is that all chains seem to be exploring the same
 region of parameter values, which is a good sign. But the plot is too
 crowded to help us diagnose divergences. We may however zoom in to
-investigate, using the `window` argument:
+investigate, using the `window` argument, which takes the first and last
+iteration to show. Here `zoom_window` is the stretch of 200 iterations
+with the most divergences:
 
 ``` r
 
-mcmc_trace(posterior_cp, pars = "tau", np = np_cp, window = c(200,400)) + 
+mcmc_trace(posterior_cp, pars = "tau", np = np_cp, window = zoom_window) +
   xlab("Post-warmup iteration")
 ```
 
@@ -548,14 +540,18 @@ fit_cp_2 <- sampling(schools_mod_cp, data = schools_dat,
                      control = list(adapt_delta = 0.999), seed = 978245244)
 ```
 
-    Warning: There were 18 divergent transitions after warmup. See
+    Warning: There were 229 divergent transitions after warmup. See
     https://mc-stan.org/misc/warnings.html#divergent-transitions-after-warmup
     to find out why this is a problem and how to eliminate them.
 
-    Warning: There were 1 chains where the estimated Bayesian Fraction of Missing Information was low. See
+    Warning: There were 3 chains where the estimated Bayesian Fraction of Missing Information was low. See
     https://mc-stan.org/misc/warnings.html#bfmi-low
 
     Warning: Examine the pairs() plot to diagnose sampling problems
+
+    Warning: The largest R-hat is 1.13, indicating chains have not mixed.
+    Running the chains for more iterations may help. See
+    https://mc-stan.org/misc/warnings.html#r-hat
 
     Warning: Bulk Effective Samples Size (ESS) is too low, indicating posterior means and medians may be unreliable.
     Running the chains for more iterations may help. See
@@ -698,7 +694,7 @@ fit_cp_bad_rhat <- sampling(schools_mod_cp, data = schools_dat,
 
     Warning: Examine the pairs() plot to diagnose sampling problems
 
-    Warning: The largest R-hat is 1.73, indicating chains have not mixed.
+    Warning: The largest R-hat is 1.68, indicating chains have not mixed.
     Running the chains for more iterations may help. See
     https://mc-stan.org/misc/warnings.html#r-hat
 
@@ -722,9 +718,9 @@ print(rhats)
 ```
 
           mu      tau theta[1] theta[2] theta[3] theta[4] theta[5] theta[6] 
-    1.195704 1.652153 1.299397 1.396103 1.255961 1.123405 1.154049 1.424647 
+    1.233757 1.596157 1.300315 1.407213 1.318403 1.169319 1.182536 1.449462 
     theta[7] theta[8]     lp__ 
-    1.133948 1.577158 1.840006 
+    1.138100 1.545828 1.780886 
 
 #### mcmc_rhat, mcmc_rhat_hist
 
@@ -805,9 +801,9 @@ print(ratios_cp)
 ```
 
             mu        tau   theta[1]   theta[2]   theta[3]   theta[4]   theta[5] 
-    0.15740859 0.08434451 0.20098612 0.26586062 0.30911057 0.30050081 0.26633252 
+    0.17706174 0.10970612 0.26363129 0.29307626 0.34409883 0.36614048 0.25566954 
       theta[6]   theta[7]   theta[8]       lp__ 
-    0.27841365 0.16827623 0.22816121 0.03631593 
+    0.26496394 0.14726413 0.37745593 0.07163852 
 
 ``` r
 

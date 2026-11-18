@@ -230,8 +230,8 @@ fit <- stan_demo("eight_schools")
 #> 
 #> SAMPLING FOR MODEL 'eight_schools' NOW (CHAIN 1).
 #> Chain 1: 
-#> Chain 1: Gradient evaluation took 9e-06 seconds
-#> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.09 seconds.
+#> Chain 1: Gradient evaluation took 8e-06 seconds
+#> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.08 seconds.
 #> Chain 1: Adjust your expectations accordingly!
 #> Chain 1: 
 #> Chain 1: 
@@ -248,15 +248,15 @@ fit <- stan_demo("eight_schools")
 #> Chain 1: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 #> Chain 1: Iteration: 2000 / 2000 [100%]  (Sampling)
 #> Chain 1: 
-#> Chain 1:  Elapsed Time: 0.036 seconds (Warm-up)
-#> Chain 1:                0.037 seconds (Sampling)
-#> Chain 1:                0.073 seconds (Total)
+#> Chain 1:  Elapsed Time: 0.044 seconds (Warm-up)
+#> Chain 1:                0.024 seconds (Sampling)
+#> Chain 1:                0.068 seconds (Total)
 #> Chain 1: 
 #> 
 #> SAMPLING FOR MODEL 'eight_schools' NOW (CHAIN 2).
 #> Chain 2: 
-#> Chain 2: Gradient evaluation took 3e-06 seconds
-#> Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0.03 seconds.
+#> Chain 2: Gradient evaluation took 4e-06 seconds
+#> Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0.04 seconds.
 #> Chain 2: Adjust your expectations accordingly!
 #> Chain 2: 
 #> Chain 2: 
@@ -273,9 +273,9 @@ fit <- stan_demo("eight_schools")
 #> Chain 2: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 #> Chain 2: Iteration: 2000 / 2000 [100%]  (Sampling)
 #> Chain 2: 
-#> Chain 2:  Elapsed Time: 0.042 seconds (Warm-up)
-#> Chain 2:                0.046 seconds (Sampling)
-#> Chain 2:                0.088 seconds (Total)
+#> Chain 2:  Elapsed Time: 0.031 seconds (Warm-up)
+#> Chain 2:                0.021 seconds (Sampling)
+#> Chain 2:                0.052 seconds (Total)
 #> Chain 2: 
 #> 
 #> SAMPLING FOR MODEL 'eight_schools' NOW (CHAIN 3).
@@ -298,15 +298,15 @@ fit <- stan_demo("eight_schools")
 #> Chain 3: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 #> Chain 3: Iteration: 2000 / 2000 [100%]  (Sampling)
 #> Chain 3: 
-#> Chain 3:  Elapsed Time: 0.036 seconds (Warm-up)
-#> Chain 3:                0.017 seconds (Sampling)
-#> Chain 3:                0.053 seconds (Total)
+#> Chain 3:  Elapsed Time: 0.043 seconds (Warm-up)
+#> Chain 3:                0.022 seconds (Sampling)
+#> Chain 3:                0.065 seconds (Total)
 #> Chain 3: 
 #> 
 #> SAMPLING FOR MODEL 'eight_schools' NOW (CHAIN 4).
 #> Chain 4: 
-#> Chain 4: Gradient evaluation took 7e-06 seconds
-#> Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 0.07 seconds.
+#> Chain 4: Gradient evaluation took 3e-06 seconds
+#> Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 0.03 seconds.
 #> Chain 4: Adjust your expectations accordingly!
 #> Chain 4: 
 #> Chain 4: 
@@ -323,11 +323,11 @@ fit <- stan_demo("eight_schools")
 #> Chain 4: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 #> Chain 4: Iteration: 2000 / 2000 [100%]  (Sampling)
 #> Chain 4: 
-#> Chain 4:  Elapsed Time: 0.039 seconds (Warm-up)
-#> Chain 4:                0.022 seconds (Sampling)
-#> Chain 4:                0.061 seconds (Total)
+#> Chain 4:  Elapsed Time: 0.033 seconds (Warm-up)
+#> Chain 4:                0.019 seconds (Sampling)
+#> Chain 4:                0.052 seconds (Total)
 #> Chain 4: 
-#> Warning: There were 41 divergent transitions after warmup. See
+#> Warning: There were 77 divergent transitions after warmup. See
 #> https://mc-stan.org/misc/warnings.html#divergent-transitions-after-warmup
 #> to find out why this is a problem and how to eliminate them.
 #> Warning: Examine the pairs() plot to diagnose sampling problems
@@ -344,7 +344,7 @@ str(np)
 #>  $ Chain    : int  1 1 1 1 1 1 1 1 1 1 ...
 #>  $ Iteration: int  1 2 3 4 5 6 7 8 9 10 ...
 #>  $ Parameter: Factor w/ 6 levels "accept_stat__",..: 1 1 1 1 1 1 1 1 1 1 ...
-#>  $ Value    : num  0.998 0.973 0.996 0.995 0.998 ...
+#>  $ Value    : num  0.977 0.938 0.904 0.864 0.171 ...
 levels(np$Parameter)
 #> [1] "accept_stat__" "stepsize__"    "treedepth__"   "n_leapfrog__" 
 #> [5] "divergent__"   "energy__"     
@@ -391,9 +391,9 @@ tail(d)
 #> # A tibble: 6 × 4
 #>    Draw Parameter Value Divergent
 #>   <int> <fct>     <dbl>     <dbl>
-#> 1   995 beta[3]   1.04          0
+#> 1   995 beta[3]   1.04          1
 #> 2   996 beta[3]   1.07          0
-#> 3   997 beta[3]   0.983         0
+#> 3   997 beta[3]   0.983         1
 #> 4   998 beta[3]   0.821         0
 #> 5   999 beta[3]   0.903         0
 #> 6  1000 beta[3]   0.858         0
