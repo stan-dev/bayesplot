@@ -315,8 +315,8 @@ example("example_model", package = "rstanarm")
 #> (Intercept) -1.5    0.6  
 #> size         0.0    0.0  
 #> period2     -1.0    0.3  
-#> period3     -1.1    0.4  
-#> period4     -1.6    0.5  
+#> period3     -1.1    0.3  
+#> period4     -1.6    0.4  
 #> 
 #> Error terms:
 #>  Groups Name        Std.Dev.

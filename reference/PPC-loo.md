@@ -423,13 +423,19 @@ evaluation using leave-one-out cross-validation and WAIC. *Statistics
 and Computing*. 27(5), 1413–1432. doi:10.1007/s11222-016-9696-4. arXiv
 preprint: <https://arxiv.org/abs/1507.04544>
 
+Säilynoja, T., Bürkner, P.-C., and Vehtari, A. (2022). Graphical test
+for discrete uniformity and its applications in goodness-of-fit
+evaluation and multiple sample comparison. *Statistics and Computing*.
+32(2), 32. doi:10.1007/s11222-022-10090-6. arXiv preprint:
+<https://arxiv.org/abs/2103.10522>
+
+Tesso, H., and Vehtari, A. (2026). LOO-PIT predictive model checking.
+*arXiv preprint arXiv:2603.02928*. doi:10.48550/arXiv.2603.02928.
+
 Boneva, L. I., Kendall, D., & Stefanov, I. (1971). Spline
 transformations: Three new diagnostic aids for the statistical
 data-analyst. *J. R. Stat. Soc. B* (Methodological), 33(1), 1-71.
 https://www.jstor.org/stable/2986005.
-
-Tesso, H., & Vehtari, A. (2026). LOO-PIT predictive model checking.
-arXiv preprint https://arxiv.org/abs/2603.02928.
 
 ## See also
 
@@ -475,7 +481,7 @@ fit <- stan_lmer(
   chains = 2,
   cores = 2
 )
-#> Warning: The largest R-hat is 1.15, indicating chains have not mixed.
+#> Warning: The largest R-hat is 1.19, indicating chains have not mixed.
 #> Running the chains for more iterations may help. See
 #> https://mc-stan.org/misc/warnings.html#r-hat
 #> Warning: Bulk Effective Samples Size (ESS) is too low, indicating posterior means and medians may be unreliable.
@@ -488,7 +494,7 @@ y <- radon$log_radon
 yrep <- posterior_predict(fit)
 
 loo1 <- loo(fit, save_psis = TRUE, cores = 4)
-#> Warning: Found 10 observation(s) with a pareto_k > 0.7. We recommend calling 'loo' again with argument 'k_threshold = 0.7' in order to calculate the ELPD without the assumption that these observations are negligible. This will refit the model 10 times to compute the ELPDs for the problematic observations directly.
+#> Warning: Found 19 observations with a pareto_k > 0.7. With this many problematic observations we recommend calling 'kfold' with argument 'K=10' to perform 10-fold cross-validation rather than LOO.
 psis1 <- loo1$psis_object
 lw <- weights(psis1) # normalized log weights
 
@@ -496,8 +502,8 @@ lw <- weights(psis1) # normalized log weights
 color_scheme_set("orange")
 ppc_loo_pit_overlay(y, yrep, lw = lw)
 #> Some PIT values larger than 1! Largest:  1 
-#> Rounding PIT > 1 to 1. Gradient evaluation took 0.000415 seconds
-#> Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 4.15 seconds.
+#> Rounding PIT > 1 to 1. Gradient evaluation took 0.00038 seconds
+#> Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 3.8 seconds.
 #> Chain 2: Adjust your expectations accordingly!
 #> Chain 2: 
 #> Chain 2: 
@@ -510,38 +516,38 @@ ppc_loo_pit_overlay(y, yrep, lw = lw)
 #> Chain 2:            term_buffer = 5
 #> Chain 2: 
 #> Chain 2: Iteration:  1 / 100 [  1%]  (Warmup)
-#> Chain 2: Iteration: 10 / 100 [ 10%]  (Warmup)
 #> Chain 1: Iteration: 10 / 100 [ 10%]  (Warmup)
-#> Chain 2: Iteration: 20 / 100 [ 20%]  (Warmup)
+#> Chain 2: Iteration: 10 / 100 [ 10%]  (Warmup)
 #> Chain 1: Iteration: 20 / 100 [ 20%]  (Warmup)
-#> Chain 2: Iteration: 30 / 100 [ 30%]  (Warmup)
+#> Chain 2: Iteration: 20 / 100 [ 20%]  (Warmup)
 #> Chain 1: Iteration: 30 / 100 [ 30%]  (Warmup)
-#> Chain 2: Iteration: 40 / 100 [ 40%]  (Warmup)
+#> Chain 2: Iteration: 30 / 100 [ 30%]  (Warmup)
 #> Chain 1: Iteration: 40 / 100 [ 40%]  (Warmup)
-#> Chain 2: Iteration: 50 / 100 [ 50%]  (Warmup)
-#> Chain 2: Iteration: 51 / 100 [ 51%]  (Sampling)
+#> Chain 2: Iteration: 40 / 100 [ 40%]  (Warmup)
 #> Chain 1: Iteration: 50 / 100 [ 50%]  (Warmup)
 #> Chain 1: Iteration: 51 / 100 [ 51%]  (Sampling)
-#> Chain 2: Iteration: 60 / 100 [ 60%]  (Sampling)
+#> Chain 2: Iteration: 50 / 100 [ 50%]  (Warmup)
+#> Chain 2: Iteration: 51 / 100 [ 51%]  (Sampling)
 #> Chain 1: Iteration: 60 / 100 [ 60%]  (Sampling)
-#> Chain 2: Iteration: 70 / 100 [ 70%]  (Sampling)
+#> Chain 2: Iteration: 60 / 100 [ 60%]  (Sampling)
 #> Chain 1: Iteration: 70 / 100 [ 70%]  (Sampling)
-#> Chain 2: Iteration: 80 / 100 [ 80%]  (Sampling)
+#> Chain 2: Iteration: 70 / 100 [ 70%]  (Sampling)
 #> Chain 1: Iteration: 80 / 100 [ 80%]  (Sampling)
-#> Chain 2: Iteration: 90 / 100 [ 90%]  (Sampling)
+#> Chain 2: Iteration: 80 / 100 [ 80%]  (Sampling)
 #> Chain 1: Iteration: 90 / 100 [ 90%]  (Sampling)
-#> Chain 2: Iteration: 100 / 100 [100%]  (Sampling)
-#> Chain 2: 
-#> Chain 2:  Elapsed Time: 2.245 seconds (Warm-up)
-#> Chain 2:                2.041 seconds (Sampling)
-#> Chain 2:                4.286 seconds (Total)
-#> Chain 2: 
+#> Chain 2: Iteration: 90 / 100 [ 90%]  (Sampling)
 #> Chain 1: Iteration: 100 / 100 [100%]  (Sampling)
 #> Chain 1: 
-#> Chain 1:  Elapsed Time: 2.319 seconds (Warm-up)
-#> Chain 1:                2.038 seconds (Sampling)
-#> Chain 1:                4.357 seconds (Total)
+#> Chain 1:  Elapsed Time: 2.515 seconds (Warm-up)
+#> Chain 1:                2.36 seconds (Sampling)
+#> Chain 1:                4.875 seconds (Total)
 #> Chain 1: 
+#> Chain 2: Iteration: 100 / 100 [100%]  (Sampling)
+#> Chain 2: 
+#> Chain 2:  Elapsed Time: 2.638 seconds (Warm-up)
+#> Chain 2:                2.365 seconds (Sampling)
+#> Chain 2:                5.003 seconds (Total)
+#> Chain 2: 
 #> Warning: 
 #> NOTE: The kernel density estimate assumes continuous observations and is not optimal for discrete observations.
 
@@ -551,7 +557,7 @@ ppc_loo_pit_qq(y, yrep, lw = lw)
 
 ppc_loo_pit_qq(y, yrep, lw = lw, compare = "normal")
 #> Warning: 
-#> Warning: Removed 13 rows containing non-finite outside the scale range (`stat_qq()`).
+#> Warning: Removed 14 rows containing non-finite outside the scale range (`stat_qq()`).
 
 
 # predictive calibration check using LOO probability integral transform

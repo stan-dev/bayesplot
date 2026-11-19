@@ -21,6 +21,7 @@ ppc_km_overlay(
   status_y,
   left_truncation_y = NULL,
   extrapolation_factor = 1.2,
+  y_draw = c("lines", "points"),
   size = 0.25,
   alpha = 0.7
 )
@@ -33,6 +34,7 @@ ppc_km_overlay_grouped(
   status_y,
   left_truncation_y = NULL,
   extrapolation_factor = 1.2,
+  y_draw = c("lines", "points"),
   size = 0.25,
   alpha = 0.7
 )
@@ -81,6 +83,13 @@ ppc_km_overlay_grouped(
   predictive draws may not be shown by default because of the controlled
   extrapolation. To display all posterior predictive draws, set
   `extrapolation_factor = Inf`.
+
+- y_draw:
+
+  How should the observed data be plotted? Possible values are `"lines"`
+  and `"points"`. If `"lines"` (default), event times and censoring
+  times are connected with lines. If `"points"`, event times are marked
+  as points and censoring times are marked as plus signs.
 
 - size, alpha:
 
@@ -186,6 +195,12 @@ left_truncation_y[condition] <- pmin(
 )
 ppc_km_overlay(y, yrep[1:25, ], status_y = status_y,
               left_truncation_y = left_truncation_y)
+#> Note: `extrapolation_factor` now defaults to 1.2 (20%).
+#> To display all posterior predictive draws, set `extrapolation_factor = Inf`.
+
+
+# With y_draw = "points"
+ppc_km_overlay(y, yrep[1:25, ], status_y = status_y, y_draw = "points")
 #> Note: `extrapolation_factor` now defaults to 1.2 (20%).
 #> To display all posterior predictive draws, set `extrapolation_factor = Inf`.
 

@@ -328,7 +328,7 @@ the same data frame.
   probability `prob`. If `plot_diff = TRUE`, the difference between the
   observed rank ECDFs and the theoretical expectation for samples
   originating from the same distribution is drawn. See Säilynoja et
-  al. (2021) for details.
+  al. (2022) for details.
 
 - `mcmc_trace_data()`:
 
@@ -346,10 +346,11 @@ Rank-normalization, folding, and localization: An improved *R*-hat for
 assessing convergence of MCMC. [arXiv
 preprint](https://arxiv.org/abs/1903.08008).
 
-Säilynoja, T., Bürkner, P., Vehtari, A. (2021). Graphical Test for
-Discrete Uniformity and its Applications in Goodness of Fit Evaluation
-and Multiple Sample Comparison [arXiv
-preprint](https://arxiv.org/abs/2103.10522).
+Säilynoja, T., Bürkner, P.-C., and Vehtari, A. (2022). Graphical test
+for discrete uniformity and its applications in goodness-of-fit
+evaluation and multiple sample comparison. *Statistics and Computing*.
+32(2), 32. doi:10.1007/s11222-022-10090-6. arXiv preprint:
+<https://arxiv.org/abs/2103.10522>
 
 ## See also
 
