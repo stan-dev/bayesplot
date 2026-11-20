@@ -2,6 +2,11 @@
 
 ## bayesplot (development version)
 
+## bayesplot 1.17.0
+
+- Compatibility with posterior v1.8.0 by
+  [@jgabry](https://github.com/jgabry)
+  ([\#565](https://github.com/stan-dev/bayesplot/issues/565))
 - Add option to display observed data as points in
   [`ppc_km_overlay()`](https://mc-stan.org/bayesplot/dev/reference/PPC-censoring.md)
   and
